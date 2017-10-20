@@ -1400,170 +1400,194 @@ namespace FSSGlobal
       
       open Utils
       
-      type Location =
-        {
-          File: string
-          Line: int
-          Column: int
-        }
-      type CompletionResponse =
-        {
-          Name: string
-          ReplacementText: string
-          Glyph: string
-          GlyphChar: string
-        }
-      //type ProjectResponse =
-      //  {
-      //    Project: ProjectFilePath
-      //    Files: List<SourceFilePath>
-      //    Output: string
-      //    References: List<ProjectFilePath>
-      //    Logs: Map<string, string>
-      //  }
-      type OverloadDescription =
-        {
-          Signature: string
-          Comment: string
-        }
-      type OverloadParameter =
-        {
-          Name : string
-          CanonicalTypeTextForSorting : string
-          Display : string
-          Description : string
-        }
-      type Overload =
-        {
-          Tip : OverloadDescription list list
-          TypeText : string
-          Parameters : OverloadParameter list
-          IsStaticArguments : bool
-        }
-      type MethodResponse =
-        {
-          Name : string
-          CurrentParameter : int
-          Overloads : Overload list
-        }
-      type SymbolUseRange =
-        {
-          FileName: string
-          StartLine: int
-          StartColumn: int
-          EndLine: int
-          EndColumn: int
-          IsFromDefinition: bool
-          IsFromAttribute : bool
-          IsFromComputationExpression : bool
-          IsFromDispatchSlotImplementation : bool
-          IsFromPattern : bool
-          IsFromType : bool
-        }
-      type SymbolUseResponse =
-        {
-          Name: string
-          Uses: SymbolUseRange list
-        }
-      type HelpTextResponse =
-        {
-          Name: string
-          Overloads: OverloadDescription list list
-        }
-      type CompilerLocationResponse =
-        {
-          Fsc: string
-          Fsi: string
-          MSBuild: string
-        }
-      type FSharpErrorInfo =
-        {
-          FileName: string
-          StartLine:int
-          EndLine:int
-          StartColumn:int
-          EndColumn:int
-         // Severity:FSharpErrorSeverity
-          Message:string
-          Subcategory:string
-        }
-      type ErrorResponse =
-        {
-          File: string
-          Errors: FSharpErrorInfo []
-        }
-      type Colorization =
-        {
-      //    Range: Range
-          Kind: string
-        }
-      type Declaration =
-        {
-          UniqueName: string
-          Name: string
-          Glyph: string
-          GlyphChar: string
-          IsTopLevel: bool
-      //  Range     : Utils.Range
-      //    BodyRange : Utils.Range
-          File : string
-          EnclosingEntity: string
-          IsAbstract: bool
-        }
-      type DeclarationResponse = {
-          Declaration : Declaration;
-          Nested : Declaration []
-      }
-      type OpenNamespace = {
-        Namespace : string
-        Name : string
-        Type : string
-        Line : int
-        Column : int
-        MultipleNames : bool
-      }
-      type QualifySymbol = {
-        Name : string
-        Qualifier : string
-      }
-      type ResolveNamespaceResponse = {
-        Opens : OpenNamespace []
-        Qualifies: QualifySymbol []
-        Word : string
-      }
-      type UnionCaseResponse = {
-        Text : string
-      //  Position : Pos
-      }
-      type Kind = 
-      | KInfo             of string
-      | KError            of string
-      | KHelpText         of HelpTextResponse
-      | KCompletion       of CompletionResponse  []
-      | KSymbolUse        of SymbolUseResponse
-      | KHelp             of string
-      | KMethod           of MethodResponse
-      | KErrors           of ErrorResponse
-      | KColorizations    of Colorization list
-      | KFindDecl         of Location
-      | KDeclarations     of DeclarationResponse []
-      | KToolTip          of OverloadDescription [][]
-      | KTypeSig          of string
-      | KCompilerLocation of CompilerLocationResponse
-      | KNamespaces       of ResolveNamespaceResponse
-      | KUnionCase        of UnionCaseResponse
-      | KMultiple         of Kind                []
+      #if WEBSHARPER
+      [<WebSharper.JavaScript>]
+      #endif
+      module CommTypes =
+          type ResponseError =
+              {
+                Code: int
+                Message: string
+                //AdditionalData: 'T
+              }
+          type Location =
+            {
+              File: string
+              Line: int
+              Column: int
+            }
+          type CompletionResponse =
+            {
+              Name: string
+              ReplacementText: string
+              Glyph: string
+              GlyphChar: string
+            }
+          //type ProjectResponse =
+          //  {
+          //    Project: ProjectFilePath
+          //    Files: List<SourceFilePath>
+          //    Output: string
+          //    References: List<ProjectFilePath>
+          //    Logs: Map<string, string>
+          //  }
+          type OverloadDescription =
+            {
+              Signature: string
+              Comment: string
+            }
+          type OverloadParameter =
+            {
+              Name : string
+              CanonicalTypeTextForSorting : string
+              Display : string
+              Description : string
+            }
+          type Overload =
+            {
+              Tip : OverloadDescription list list
+              TypeText : string
+              Parameters : OverloadParameter list
+              IsStaticArguments : bool
+            }
+          type Parameter = {
+              Name : string
+              Type : string
+            }
+          type SignatureData = {
+              OutputType : string
+              Parameters : Parameter list list
+            }
+          type MethodResponse =
+            {
+              Name : string
+              CurrentParameter : int
+              Overloads : Overload list
+            }
+          type SymbolUseRange =
+            {
+              FileName: string
+              StartLine: int
+              StartColumn: int
+              EndLine: int
+              EndColumn: int
+              IsFromDefinition: bool
+              IsFromAttribute : bool
+              IsFromComputationExpression : bool
+              IsFromDispatchSlotImplementation : bool
+              IsFromPattern : bool
+              IsFromType : bool
+            }
+          type SymbolUseResponse =
+            {
+              Name: string
+              Uses: SymbolUseRange list
+            }
+          type HelpTextResponse =
+            {
+              Name: string
+              Overloads: OverloadDescription list list
+            }
+          type CompilerLocationResponse =
+            {
+              Fsc: string
+              Fsi: string
+              MSBuild: string
+            }
+          type FSharpErrorInfo =
+            {
+              FileName: string
+              StartLine:int
+              EndLine:int
+              StartColumn:int
+              EndColumn:int
+             // Severity:FSharpErrorSeverity
+              Message:string
+              Subcategory:string
+            }
+          type ErrorResponse =
+            {
+              File: string
+              Errors: FSharpErrorInfo []
+            }
+          type Colorization =
+            {
+          //    Range: Range
+              Kind: string
+            }
+          type Declaration =
+            {
+              UniqueName: string
+              Name: string
+              Glyph: string
+              GlyphChar: string
+              IsTopLevel: bool
+          //  Range     : Utils.Range
+          //    BodyRange : Utils.Range
+              File : string
+              EnclosingEntity: string
+              IsAbstract: bool
+            }
+          type DeclarationResponse = {
+              Declaration : Declaration;
+              Nested : Declaration []
+          }
+          type OpenNamespace = {
+            Namespace : string
+            Name : string
+            Type : string
+            Line : int
+            Column : int
+            MultipleNames : bool
+          }
+          type QualifySymbol = {
+            Name : string
+            Qualifier : string
+          }
+          type ResolveNamespaceResponse = {
+            Opens : OpenNamespace []
+            Qualifies: QualifySymbol []
+            Word : string
+          }
+          type UnionCaseResponse = {
+            Text : string
+          //  Position : Pos
+          }
+          type Kind = 
+          | KInfo             of string
+          | KError            of ResponseError
+          | KHelpText         of HelpTextResponse
+          | KCompletion       of CompletionResponse  []
+          | KSymbolUse        of SymbolUseResponse
+          | KHelp             of string
+          | KMethod           of MethodResponse
+          | KErrors           of ErrorResponse
+          | KColorizations    of Colorization list
+          | KFindDecl         of Location
+          | KDeclarations     of DeclarationResponse []
+          | KToolTip          of OverloadDescription [][]
+          | KTypeSig          of string
+          | KSignatureData    of SignatureData
+          | KCompilerLocation of CompilerLocationResponse
+          | KNamespaces       of ResolveNamespaceResponse
+          | KUnionCase        of UnionCaseResponse
+          | KMultiple         of Kind                []
+          
+          type ACMessage =
+          | ACMIdentification
+          | ACMEcho             of string
+          | ACMToolTip          of string * int * int
+          | ACMToolTip2         of string * int * int *  string
+          | ACMSignature        of string * int * int
+          | ACMSignature2       of string * int * int *  string
+          | ACMFindDeclaration  of string * int * int
+          | ACMFindDeclaration2 of string * int * int *  string
+          | ACMComplete         of string * int * int *  string
+          | ACMComplete2        of string * int * int *  string *  string
+          | ACMParse            of string * string    * (string * (int * int * int)) []
+          | ACMMustParse        of string * string
       
-      type ACMessage =
-      | ACMIdentification
-      | ACMEcho      of string
-      | ACMToolTip   of string * int * int
-      | ACMToolTip2  of string * int * int *  string
-      | ACMComplete  of string * int * int *  string
-      | ACMComplete2 of string * int * int *  string *  string
-      | ACMParse     of string * string    * (string * (int * int * int)) []
-      | ACMMustParse of string * string
-      
+      open CommTypes
       
       type ParseRequest         = { FileName  : string ; IsAsync    : bool   ; Lines : string[]           ; Version : int                                            }
       type DeclarationsRequest  = { FileName  : string ;                       Lines : string[]           ; Version : int                                            }
@@ -1609,7 +1633,7 @@ namespace FSSGlobal
               req.Method          <- "POST"
               req.ContentType     <- "application/json"
               let postBytes = Encoding.ASCII.GetBytes(data)
-              //printfn "%s" data
+              //printfn "<---\n%s\n" data
               req.ContentLength <- int64 postBytes.Length
               let reqStream = req.GetRequestStream() 
               reqStream.Write(postBytes, 0, postBytes.Length);
@@ -1621,20 +1645,26 @@ namespace FSSGlobal
               use stream = resp.GetResponseStream() 
               use reader = new StreamReader(stream)
               let msg    = reader.ReadToEnd()
-              //printfn "RpcCallResponse %s" msg// (extract 100 msg)
+              printfn "\n----> \n%s\n" (extract 100 msg)
               let jsonV  = JsonValue.Parse msg
               return       jsonV
           }
+      
+      let KindError msg = KError { Code = 0 ; Message = msg }
       
       let json2Kind (v:JsonValue) = 
           let item =JsonValue.Parse <| v.AsString()
           match item?Kind.AsString() with
           | "info"             -> jsonData2Obj item |> KInfo
+          | "error"            -> jsonData2Obj item |> KError
           | "errors"           -> jsonData2Obj item |> KErrors
           | "tooltip"          -> jsonData2Obj item |> KToolTip
+          | "typesig"          -> jsonData2Obj item |> KTypeSig
           | "completion"       -> jsonData2Obj item |> KCompletion
+          | "signatureData"    -> jsonData2Obj item |> KSignatureData
+          | "finddecl"         -> jsonData2Obj item |> KFindDecl
           | "compilerlocation" -> jsonData2Obj item |> KCompilerLocation
-          | _                  -> KError <| v.ToString()
+          | _                  -> KindError <| v.ToString()
       
       let FSAutocompleteCall cmd f (req: FARequest) =
           Wrap.wrapper {
@@ -1651,7 +1681,7 @@ namespace FSSGlobal
           Wrap.wrapper {
               let!  result = FSAutocompleteCall "parse" (function | KErrors _ -> true | _ -> false) <|
                                    FarParse
-                                       { FileName   = file
+                                       { FileName   = System.IO.Path.GetFullPath file
                                          IsAsync    = false   
                                          Lines      = code           
                                          Version    = 0
@@ -1663,7 +1693,19 @@ namespace FSSGlobal
           Wrap.wrapper {
               let!  result = FSAutocompleteCall "tooltip" (function | KToolTip _ -> true | _ -> false) <|
                                    FarPosition
-                                       { FileName   = file
+                                       { FileName   = System.IO.Path.GetFullPath file
+                                         Line       = lin         
+                                         Column     = col
+                                         Filter     = filter
+                                       }
+              return result
+          } 
+      
+      let signature file lin col filter =
+          Wrap.wrapper {
+              let!  result = FSAutocompleteCall "signatureData" (function | KSignatureData _ -> true | _ -> false) <|
+                                   FarPosition
+                                       { FileName   = System.IO.Path.GetFullPath file
                                          Line       = lin         
                                          Column     = col
                                          Filter     = filter
@@ -1675,7 +1717,7 @@ namespace FSSGlobal
           Wrap.wrapper {
               let!  result = FSAutocompleteCall "completion" (function | KCompletion _ -> true | _ -> false) <|
                                    FarCompletion
-                                       { FileName        = file
+                                       { FileName        = System.IO.Path.GetFullPath file
                                          Line            = lin         
                                          Column          = col
                                          Filter          = filter
@@ -1714,20 +1756,51 @@ namespace FSSGlobal
                                   return file, first, ind
                   | None       -> return file, 0    , 0 
               }
+          let getDeltaBack fname line =
+              Wrap.wrapper {
+                  do!  Result.tryProtection()
+                  let  file             = System.IO.Path.GetFullPath fname
+                  let! fileMap          = (!starts) |> Map.tryFind file |> Result.fromOption ``Code has not been parsed, use Parse F#``
+                  let! snp, first, ind  = fileMap 
+                                          |> Seq.map     (fun kv -> kv.Key, kv.Value) 
+                                          |> Seq.tryPick (fun (snp, (ind, first, last)) -> if line >= first && line < last then Some (snp, first, ind) else None) 
+                                          |> Result.fromOption ``This snippet has not been previosuly parsed, use Parse F#``
+                  return snp, first, ind                        
+              }
           let mustParse fname snpId =
               getDelta fname (Some snpId)
               |> Wrap.map              (fun _ -> false)
               |> Wrap.RunSynchronously 
               |> Result.withError      (fun _ -> true )
       
-          let getToolTip fname ln col (snpIdO:string option) =
+          let findDeclaration file lin col filter =
+              Wrap.wrapper {
+                  let!  result = FSAutocompleteCall "finddeclaration" (function | KFindDecl _ -> true | _ -> false) <|
+                                       FarPosition
+                                           { FileName   = System.IO.Path.GetFullPath file
+                                             Line       = lin         
+                                             Column     = col
+                                             Filter     = filter
+                                           }
+                  match result with
+                  | KFindDecl decl -> let! snp, dln, dcol = getDeltaBack decl.File decl.Line
+                                      let resultAdj = 
+                                       {  File    = snp
+                                          Line    = decl.Line   - dln
+                                          Column  = decl.Column - dcol
+                                       } |> KFindDecl
+                                      return resultAdj
+                  | _              -> return result
+              } 
+      
+          let getPosition (getKind: string -> int -> int -> string -> Wrap<Kind>) fname ln col (snpIdO:string option) =
               Wrap.wrapper {
                   let! file, dln, dcol = getDelta fname snpIdO
-                  let! res             = toolTip fname (ln + dln) (col + dcol) ""
+                  let! res             = getKind fname (ln + dln) (col + dcol) ""
                   return res
               } 
               |> Wrap.RunSynchronously
-              |> Result.withError (Result.getMessages >> KError)
+              |> Result.withError (Result.getMessages >> KindError)
       
           let getCompletion fname ln col lineText (snpIdO:string option) =
               Wrap.wrapper {
@@ -1736,7 +1809,7 @@ namespace FSSGlobal
                   return res
               } 
               |> Wrap.RunSynchronously
-              |> Result.withError (Result.getMessages >> KError)
+              |> Result.withError (Result.getMessages >> KindError)
               
           member this.Respond (msg:ACMessage) =
               match msg with
@@ -1748,8 +1821,7 @@ namespace FSSGlobal
                       let  file = System.IO.Path.GetFullPath (fname)
                       do   starts := !starts |> Map.add file (Map sts)
                       //printfn "\n%A\n" sts
-                      let! errors = parseCode file (code.Split '\n') //|> Array.filter (fun l -> l.StartsWith "# 1 @" |> not)) 
-                                    |> Wrap.getAsync
+                      let! errors = parseCode file (code.Split '\n') |> Wrap.getAsync
                       let  fixedErrors =
                           match errors with
                           | KErrors ers -> 
@@ -1770,25 +1842,29 @@ namespace FSSGlobal
                       return fixedErrors 
                   }
                   |> Async.RunSynchronously
-              | ACMToolTip  (fname, ln, col)             -> getToolTip    fname ln col None
-              | ACMToolTip2 (fname, ln, col,      snpId) -> getToolTip    fname ln col (Some snpId)
-              | ACMComplete (fname, ln, col, txt)        -> getCompletion fname ln col txt None
-              | ACMComplete2(fname, ln, col, txt, snpId) -> getCompletion fname ln col txt (Some snpId)
+              | ACMToolTip         (fname, ln, col)             -> getPosition   toolTip         fname ln col None
+              | ACMToolTip2        (fname, ln, col,      snpId) -> getPosition   toolTip         fname ln col (Some snpId)
+              | ACMSignature       (fname, ln, col)             -> getPosition   signature       fname ln col None
+              | ACMSignature2      (fname, ln, col,      snpId) -> getPosition   signature       fname ln col (Some snpId)
+              | ACMFindDeclaration (fname, ln, col)             -> getPosition   findDeclaration fname ln col None
+              | ACMFindDeclaration2(fname, ln, col,      snpId) -> getPosition   findDeclaration fname ln col (Some snpId)
+              | ACMComplete        (fname, ln, col, txt)        -> getCompletion                 fname ln col txt None
+              | ACMComplete2       (fname, ln, col, txt, snpId) -> getCompletion                 fname ln col txt (Some snpId)
       
       
       open Useful
       open FsStationShared
       open WebSharper
       open WebSharper.Remoting
+      
       #if FSS_SERVER
-      //#r @"Compiled\FsAutoCompleteDll\FsAutoCompleteDll.dll"
       
       let responder = Responder2()
       
       [< Rpc >]
       let sendMessageRpc msg = async { return responder.Respond msg }
       
-      [<WebSharper.JavaScript>]
+      [< JavaScript >]
       let sendMessage  (msg:ACMessage) : Async<Kind> = 
           async {
               let!   res = sendMessageRpc (msg |> box |> unbox)
@@ -1796,9 +1872,8 @@ namespace FSSGlobal
           }
       #endif
       
-      
       #if WEBSHARPER
-      [<WebSharper.JavaScript>]
+      [< JavaScript >]
       #endif
       type FSAutoCompleteIntermediaryClient(clientId, ?endPoint:string) =
            #if FSS_SERVER
@@ -1841,13 +1916,15 @@ namespace FSSGlobal
                | _            -> false
               
          with
-           member this.MustParse(fname,                 sId) = sendMessage (ACMMustParse(fname,                  sId)) |> Async_map info2Bool
-           member this.Parse    (fname, txt , sts          ) = sendMessage (ACMParse    (fname, txt , sts           )) |> Async_map errors2String
-           member this.Parse    (fname, txt                ) = sendMessage (ACMParse    (fname, txt , [||]          )) |> Async_map errors2String
-           member this.ToolTip  (fname, line, col          ) = sendMessage (ACMToolTip  (fname, line, col           )) |> Async_map tip2String
-           member this.ToolTip  (fname, line, col,      sId) = sendMessage (ACMToolTip2 (fname, line, col ,      sId)) |> Async_map tip2String
-           member this.Complete (fname, txt, line, col     ) = sendMessage (ACMComplete (fname, line, col , txt     )) |> Async_map comp2Strings
-           member this.Complete (fname, txt, line, col, sId) = sendMessage (ACMComplete2(fname, line, col , txt, sId)) |> Async_map comp2Strings
+           member this.MustParse(fname,                 sId) = sendMessage (ACMMustParse       (fname,                  sId)) |> Async_map info2Bool
+           member this.Parse    (fname, txt , sts          ) = sendMessage (ACMParse           (fname, txt , sts           )) |> Async_map errors2String
+           member this.Parse    (fname, txt                ) = sendMessage (ACMParse           (fname, txt , [||]          )) |> Async_map errors2String
+           member this.ToolTip  (fname, line, col          ) = sendMessage (ACMToolTip         (fname, line, col           )) |> Async_map tip2String
+           member this.ToolTip  (fname, line, col,      sId) = sendMessage (ACMToolTip2        (fname, line, col ,      sId)) |> Async_map tip2String
+           member this.Complete (fname, txt, line, col     ) = sendMessage (ACMComplete        (fname, line, col , txt     )) |> Async_map comp2Strings
+           member this.Complete (fname, txt, line, col, sId) = sendMessage (ACMComplete2       (fname, line, col , txt, sId)) |> Async_map comp2Strings
+           member this.FindDecl (fname, line, col          ) = sendMessage (ACMFindDeclaration (fname, line, col           )) |> Async_map id
+           member this.FindDecl (fname, line, col,      sId) = sendMessage (ACMFindDeclaration2(fname, line, col ,      sId)) |> Async_map id
       
   //#define WEBSHARPER
   (*
@@ -1864,6 +1941,7 @@ namespace FSSGlobal
           | Constant  of 'a
           | DynamicV  of IRef<'a>
           | Dynamic   of View<'a>
+        with member this.FooBar = 0
       
       module Val =
           
@@ -1948,7 +2026,7 @@ namespace FSSGlobal
               static member (&>) (HelperType, vr: IRef<_           >  ) = DynamicV vr
               static member (&>) (HelperType, vw: View<_           >  ) = Dynamic  vw
       
-          [< Inline @"(
+      (*    [< Inline @"(
                   typeof($v) == 'function' ? {$:2, $0:$v} // View
                   :   typeof($v) == 'object'
                             ? typeof($v.$) != 'undefined' // Val
@@ -1967,9 +2045,24 @@ namespace FSSGlobal
           [< Direct "FSSGlobal.HtmlNode.Val.fixit2($v)" >]
           //[< Inline >]
           let inline fixit v = HelperType &> v
+      *)
+          let toVal (o: obj) =
+              match o with
+              | :?      string   as t   -> Val.Constant t 
+              | :?      int      as t   -> Val.Constant t |> As<Val<string>> 
+              | :?      bool     as t   -> Val.Constant t |> As<Val<string>>  
+              | :?      Doc      as t   -> Val.Constant t |> As<Val<string>>  
+              | :? Val< string>  as v   ->              v        
+              | :? Var< string>  as v   -> Val.DynamicV v        
+              | v when JS.In "RSet" v   -> Val.DynamicV (As<IRef<string>> v)
+              | :? Function      as vw  -> Val.Dynamic  (As<View<string>> vw)        
+              | _                       -> failwith <| sprintf "Could not convert %A" o
       
-          [< Inline >]
-          let inline bindIRef0 (f: 'a->IRef<'b>) (view: View<'a>) = 
+          [< Direct "$f($v)" >]
+          let inline fixitF f v = HelperType &> v
+          let inline fixit    v = fixitF toVal v
+      
+          let [<Inline>] inline bindIRef0 (f: 'a->IRef<'b>) (view: View<'a>) = 
               let contentVar = Var.Create Unchecked.defaultof<'b>
               let changingIRefO : IRef<'b> option ref = ref None
               let contentVarChanged = ref 0L
@@ -2000,8 +2093,7 @@ namespace FSSGlobal
               contentVar
           
           let inline toDoc       v           = toView      (fixit v ) |> Doc.EmbedView
-          [< Inline >]
-          let inline bindIRef f  v           = bindIRef0 f (fixit v   |> toView)
+          let [<Inline>] inline bindIRef f  v           = bindIRef0 f (fixit v   |> toView)
           let inline iter     f  v           = iterV     f (fixit v )
           let inline bind     f  v           = bindV     f (fixit v )
           let inline map      f  v           = mapV      f (fixit v )
@@ -2375,21 +2467,22 @@ namespace FSSGlobal
                                     var         = var 
                                   }
         static member  New(v)   = TextArea.New(Var.Create v)
-        member        this.Render    =    
+        member        this.RenderWith  more  =    
           Doc.InputArea
-              [ 
+              ([ 
                 _class              this._class
                 attr.id             this.id  
                 atr "spellcheck" <| Val.map (fun spl -> if spl then "true" else "false") this.spellcheck
                 atr "title"         this.title
                 atr "style"        "height: 100%;  width: 100%; box-sizing: border-box; "
                 _placeholder        this.placeholder 
-              ]
+              ] @ more)
               this.var
           |> someElt 
           |> Seq.singleton 
           //|> Seq.append [ style "height: 100%;  width: 100%; box-sizing: border-box; " ] 
           |> div
+        member        this.Render           = this.RenderWith []    
         member inline this.Class       clas = { this with _class      = Val.fixit clas }
         member inline this.Placeholder plc  = { this with placeholder = Val.fixit plc  }
         member inline this.Title       ttl  = { this with title       = Val.fixit ttl  }
@@ -2441,6 +2534,10 @@ namespace FSSGlobal
           member this.SetOption(o:string, v:obj)                            : unit             = X<_>
           [< Inline "$this.getCursor()"             >]      
           member this.GetCursor()                                           : CodeMirrorPos    = X<_>
+          [< Inline "$this.setCursor($line, $col)"  >]      
+          member this.SetCursor(line:int, col:int)                          : unit             = X<_>
+          [< Inline "$this.focus()"                 >]      
+          member this.Focus()                                               : unit             = X<_>
           [< Inline "$this.getLine($l)"             >]      
           member this.GetLine(l:int)                                        : string           = X<_>
           [< Inline "$this.getDoc().markText({line:$fl, ch:$fc}, {line:$tl, ch:$tc}, {className: $className, title: $title})" >]
@@ -2669,14 +2766,23 @@ namespace FSSGlobal
           member inline this.After         = { this with after        =           true              }
           member inline this.Children   ch = { this with children     = ch                          }
           
+      [< Inline "new ResizeObserver($f)" >]
+      let newResizeObserver (f: unit->unit) = X<_> 
+      
+      [< Inline "$ro.observe($el)" >]
+      let RObserve ro (el:Dom.Element) = X<_> 
+      
+      let mutable observers : obj list = []
+      
+      let addResizeObserver f el =
+          let ro =  newResizeObserver f
+          observers <- ro::observers
+          RObserve ro el
       [<NoComparison ; NoEquality>]
       type Area =
       | Auto     of SplitterBar
       | Fixed    of HtmlMeasure
       | Splitter of SplitterBar
-      
-      [< Inline "new ResizeObserver($f).observe($el)" >]
-      let resizeObserver (f: unit->unit) (el:Dom.Element) = X<_> 
       
       [<NoComparison ; NoEquality>]
       type Grid = {
@@ -2798,11 +2904,14 @@ namespace FSSGlobal
                   yield! this.styles() 
                   yield style    <| sprintf "display: grid; grid-gap: %fpx; padding: %fpx; box-sizing: border-box" this.gap this.padding 
                   yield SomeAttr <| on.afterRender(fun el   -> 
+                      let setVar (vr:IRef<_>) vl = if vr.Value <> vl then vr.Value <- vl 
                       let setDimensions () =
-                          this.width.Value  <- el.GetBoundingClientRect().Width
-                          this.height.Value <- el.GetBoundingClientRect().Height
-                      JS.SetTimeout setDimensions 60 |> ignore
-                      resizeObserver setDimensions el
+                          el.GetBoundingClientRect()
+                          |> fun r ->  
+                              setVar this.width  r.Width
+                              setVar this.height r.Height
+                      JS.SetTimeout  setDimensions 60 |> ignore
+                      addResizeObserver setDimensions el
                     ) 
               ]
           member this.Render =
@@ -2910,6 +3019,9 @@ namespace FSSGlobal
           member this.Horizontal  = { this with horizontal = true  }
           member this.Vertical    = { this with horizontal = false }
           member this.Selected    = Val.map2 (fun tabs sel -> tabs |> Seq.tryItem sel |> Option.map fst) this.tabs this.selected
+          member this.Select    n = this.selected.Value <- n
+          member this.Select   nm = this.tabs.Value |> Seq.indexed |> Seq.tryPick (fun (i, (_ , (tn, _))) -> if tn = nm then this.selected.Value <- i ; Some true else None) |> Option.defaultValue false
+          member this.Select   gi = this.tabs.Value |> Seq.indexed |> Seq.tryPick (fun (i, (ti, (_ , _))) -> if ti = gi then this.selected.Value <- i ; Some true else None) |> Option.defaultValue false
           member this.Render      =
               let strip =
                   this.tabs
@@ -3055,6 +3167,12 @@ namespace FSSGlobal
           member this.SplitMe(first, ver, node:TabStrip) = this.SplitMe(first, ver, STabStrip node      )
           member this.SplitMe(first, ver, node:HtmlNode) = this.SplitMe(first, ver, SHtmlNode node      )
           member this.SplitMe(first, ver               ) = this.SplitMe(first, ver, TabStrip.New([||])  )
+          member this.Navigate recFun                    =
+              match this.Value with
+              | SHtmlNode _           
+              | STabStrip _           -> recFun this.Value
+              | Split   (ch1, ch2, f) -> ch1.Navigate recFun || ch2.Navigate recFun
+          member this.SelectTab  (nm: string)            = this.Navigate (function | STabStrip strip -> strip.Select nm | _ -> false) 
           member this.IsEmpty                            =
               match this.Value with
               | SHtmlNode HtmlEmpty   -> true
@@ -3504,7 +3622,8 @@ namespace FSSGlobal
         
         let codeFS         = Var.Create ""
         let codeJS         = Var.Create ""
-        let codeMsgs       = Var.Create ""
+        let parserMsgs     = Var.Create ""
+        let outputMsgs     = Var.Create ""
         let mutable parsed = false
         let dirty          = Var.Create false 
         let setDirtyPart() = parsed            <- false
@@ -3520,15 +3639,18 @@ namespace FSSGlobal
                              
         
         //storeVarCodeEditor "dirty" dirty
-        let sendMsg msg =
+        let appendMsg (var:IRef<string>) msg =
             if isUndefined msg then () else
-            codeMsgs.Value  <- 
-                match codeMsgs.Value, msg.ToString() with
+            var.Value  <- 
+                match var.Value, msg.ToString() with
                 | null, m 
                 | ""  , m
                 | m   , null
                 | m   , ""   -> m
                 | m1  , m2   -> m1 + "\n" + m2
+        
+        let addOutMsg msg = appendMsg outputMsgs msg
+        let addPrsMsg msg = appendMsg parserMsgs msg
         
         let getFSCode () =
             CodeSnippet.FetchO currentCodeSnippetId.Value 
@@ -3634,16 +3756,16 @@ namespace FSSGlobal
         
         let compileSnippetW (snpO: CodeSnippet option) =
             Wrap.wrapper {
-                let!   snp       = snpO |> Result.fromOption ``Snippet Missing``
-                codeMsgs.Value  <- "Compiling to JavaScript..."
-                codeJS.Value    <- ""
-                let    code      = snp.GetCodeFsx true
-                codeFS.Value    <- code
-                let!   jsR       = translateAR code false
-                let!   js        = jsR
-                let    jsc       = RunCode.completeJS js
-                codeJS.Value    <- jsc
-                sendMsg            "Compiled!"
+                let!   snp         = snpO |> Result.fromOption ``Snippet Missing``
+                parserMsgs.Value  <- "Compiling to JavaScript..."
+                codeJS.Value      <- ""
+                let    code        = snp.GetCodeFsx true
+                codeFS.Value      <- code
+                let!   jsR         = translateAR code false
+                let!   js          = jsR
+                let    jsc         = RunCode.completeJS js
+                codeJS.Value      <- jsc
+                addPrsMsg            "Compiled!"
                 return jsc
             }
             
@@ -3686,12 +3808,12 @@ namespace FSSGlobal
         let compileRunUrlW url pos snpO =
             Wrap.wrapper {
                 let! js  = compileSnippetW snpO
-                sendMsg "Running JavaScript..."
+                outputMsgs.Value <-  "Running JavaScript..."
                 let! res = match pos with
                            | NewBrowser -> evalWindowUrlJSW url js
                            | _          -> evalIFrameJSW        js
-                sendMsg res
-                sendMsg "Done!"
+                addOutMsg res
+                addOutMsg "Done!"
                 return  res
             }
         
@@ -3699,22 +3821,22 @@ namespace FSSGlobal
         
         let evaluateSnippetW (snpO: CodeSnippet option) =
             Wrap.wrapper {
-                let!   snp       = snpO |> Result.fromOption ``Snippet Missing``
-                codeMsgs.Value  <- "Evaluating F# code..."
-                let    code      = snp.GetCodeFsx true
-                codeFS.Value    <- code
-                let! resR        = evaluateAR code
-                let! res         = resR
-                sendMsg res
-                sendMsg "Done!"
+                let!   snp        = snpO |> Result.fromOption ``Snippet Missing``
+                outputMsgs.Value <- "Evaluating F# code..."
+                let    code       = snp.GetCodeFsx true
+                codeFS.Value     <- code
+                let! resR         = evaluateAR code
+                let! res          = resR
+                addOutMsg res
+                addOutMsg "Done!"
                 return  res
             }
         
         let compileRunW = compileRunUrlW (JS.Window.Location.Origin + "/Main.html") 
         
-        let compileRunP pos = getSnpO() |> compileRunW pos  |> Wrap.map ignore |> Wrap.start sendMsg
-        let justCompile     = getSnpO   >> compileSnippetW  >> Wrap.map ignore >> Wrap.start sendMsg
-        let evaluateFS      = getSnpO   >> evaluateSnippetW >> Wrap.map ignore >> Wrap.start sendMsg
+        let compileRunP pos = getSnpO() |> compileRunW pos  |> Wrap.map ignore |> Wrap.start addOutMsg
+        let justCompile     = getSnpO   >> compileSnippetW  >> Wrap.map ignore >> Wrap.start addOutMsg
+        let evaluateFS      = getSnpO   >> evaluateSnippetW >> Wrap.map ignore >> Wrap.start addOutMsg
         let compileRun  ()  = compileRunP position.Value
         
         
@@ -3820,8 +3942,11 @@ namespace FSSGlobal
                                     ]
                             ])
         
+        let mutable topScrollList = 0.0
+        
         let listEntries snps =
-            div [ 
+            let list =
+              div [ 
                 yield style "overflow: auto"
                 yield! 
                     snps
@@ -3835,7 +3960,12 @@ namespace FSSGlobal
                     )  (Set [])
                     |> fst
                     |> Seq.choose id
-            ]
+                yield SomeAttr <| on.scroll      (fun e _ -> topScrollList <- e.ScrollTop   )
+                yield SomeAttr <| on.afterRender (fun e   -> e.ScrollTop   <- topScrollList )
+              ]
+            list
+        
+        ()    
         let inline ifUndef def v = if isUndefined v then def else v
         let obj2CodeSnippetId o = 
             if isUndefined o then
@@ -3947,12 +4077,13 @@ namespace FSSGlobal
             let root = findRootElement e
             (root.QuerySelector("#" + fileInputElementId))?click()
         
+        ()
         let autoCompleteClient = FSAutoCompleteIntermediary.FSAutoCompleteIntermediaryClient("FSharpStation", endPoint = JS.Window.Location.Href)
         
         #if FSS_SERVER
-        let parseFile = @"C:\ParseFSharp.fsx"
+        let parseFile = @"ParseFSharp.fsx"
         #else
-        let parseFile = @"C:\ParseFSharp.fsx"
+        let parseFile = @"..\ParseFSharp.fsx"
         #endif
         
         let setDirtyCond() =
@@ -3979,18 +4110,18 @@ namespace FSSGlobal
         
         let parseFSA silent =
             async {
-                let msgF = if silent then ignore else fun txt -> codeMsgs.Value <- txt
+                let msgF = if silent then ignore else fun txt -> parserMsgs.Value <- txt
                 match CodeSnippet.FetchO currentCodeSnippetId.Value with 
                 | None     -> ()
                 | Some cur ->
-                let runN = parseRun + 1
-                parseRun <- runN
-                let  code, starts = getCodeAndStartsFast msgF cur false
-                let! res          = autoCompleteClient.Parse(parseFile, code, starts)
-                parsed           <- true
-                if not silent && runN = parseRun then
-                    sendMsg res
-                    sendMsg "Parsed!"
+                let runN           = parseRun + 1
+                parseRun          <- runN
+                let  code, starts  = getCodeAndStartsFast msgF cur false
+                parsed            <- true
+                let! res           = autoCompleteClient.Parse(parseFile, code, starts)
+                if not silent && runN = parseRun && parsed then
+                    addPrsMsg res
+                    addPrsMsg "Parsed!"
             }
         
         let parseFS() = 
@@ -4002,28 +4133,20 @@ namespace FSSGlobal
         
         let mustParse (cur:CodeSnippet) =
             async {
-                printfn "parsed = %b" parsed
                 if not parsed then return true 
                 else
-                    printfn "going to call autoCompleteClient.MustParse %s" cur.NameSanitized
                     let! must = autoCompleteClient.MustParse(parseFile, cur.NameSanitized)
-                    printfn "returned1 %b" must
                     return must
             }
         
-        let rec parseIfMustThen silent =
+        let parseIfMustThen silent =
             async {
                 match CodeSnippet.FetchO currentCodeSnippetId.Value with 
                 | None     -> ()
                 | Some cur ->
-                printfn "checking if mustParse %s" cur.NameSanitized
                 let! must = mustParse cur
-                printfn "returned2 %b" must
                 if must then 
-                    printfn "going to parse %s" cur.NameSanitized
                     do! parseFSA silent
-                    printfn "recursive parseIfMustThen %s" cur.NameSanitized
-                    do! parseIfMustThen silent
             }
         
         let getStartWord (line:string) ch =
@@ -4048,7 +4171,7 @@ namespace FSSGlobal
                 let  add0  = (getEndWord   l pos.ch |> String.length)    
                 let  add   = if sub = 0 && add0 = 0 then 2 else add0 
                 let! tip   = autoCompleteClient.ToolTip  (parseFile, pos.line + 1, pos.ch + 1, cur.NameSanitized)
-                sendMsg <| sprintf "InfoFSharp \"%s %A - %A %s \"" cur.NameSanitized (pos.line + 1, pos.ch - sub + 1) (pos.line + 1, pos.ch + add + 1) (tip.Replace("\"","''"))
+                addPrsMsg <| sprintf "InfoFSharp \"%s %A - %A %s \"" cur.NameSanitized (pos.line + 1, pos.ch - sub + 1) (pos.line + 1, pos.ch + add + 1) (tip.Replace("\"","''"))
             } |> Async.Start
         
         let getHints (ed:Template.CodeMirrorEditor, cb, _) =
@@ -4082,7 +4205,7 @@ namespace FSSGlobal
                 | None     -> ()
                 | Some cur ->
                 do!  parseIfMustThen false
-                match codeMsgs.Value with
+                match parserMsgs.Value with
                 | REGEX rex "g" m -> m
                 | _               -> [||]
                 |> Array.choose (fun v ->
@@ -4116,7 +4239,64 @@ namespace FSSGlobal
                 )
                 .Style("height: 100%")
         
-        codeMsgs
+        let rec expandParents snp = 
+            snp.parent
+            |> Option.bind CodeSnippet.FetchO
+            |> Option.iter (fun me -> 
+                expandParents me
+                if not me.expanded then toggleExpanded me)
+        
+        let goto codeId line col =
+            async {
+                currentCodeSnippetId.Value <- codeId
+                CodeSnippet.FetchO codeId |> Option.iter expandParents
+                do! Async.Sleep 200
+                codeMirror.editorO 
+                |> Option.iter (fun ed -> 
+                    ed.SetCursor(line - 1, col - 1) 
+                    ed.Focus()
+                )
+            } |> Async.Start
+        
+        let rexGuid = """([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}).+ \((\d+)\,\s*(\d+)\) - \((\d+)\,\s*(\d+)\)"""
+        
+        let jumpToLine (line:string) = 
+            match line with
+            | REGEX rexGuid "" [| _ ; guid ; line ; col ; _ ; _ |] -> goto <| CodeSnippetId (System.Guid guid) <| int line <| int col
+            | _                                                    -> ()
+        
+        let gotoDefinition () =
+            async {
+                match CodeSnippet.FetchO currentCodeSnippetId.Value with 
+                | None     -> ()
+                | Some cur ->
+                match codeMirror.editorO  with
+                | None     -> () 
+                | Some ed  ->
+                let  pos   = ed.GetCursor()
+                let  l     = ed.GetLine pos.line
+                let! kind  = autoCompleteClient.FindDecl(parseFile, pos.line + 1, pos.ch + 1, cur.NameSanitized)
+                match kind with
+                | FSAutoCompleteIntermediary.CommTypes.KFindDecl decl -> jumpToLine <| sprintf "%s (%d, %d) - (%d, %d)" decl.File decl.Line decl.Column decl.Line decl.Column
+                | FSAutoCompleteIntermediary.CommTypes.KError    err  -> JS.Alert   <| sprintf "%A" err
+                | _                                                   -> JS.Alert   <| sprintf "%A" kind
+            } |> Async.Start
+        
+        let codeMirrorRender = 
+            codeMirror.Render.AddChildren [ 
+                SomeAttr <| on.dblClick (fun _ _ -> showToolTip codeMirror.editorO.Value)  
+                htmlElement "menu" [  // does not work anymore. support for this was dropped by Chrome
+                    ``type`` "context"
+                    Id       "right-menu"
+                    htmlElement "menuitem" [ 
+                        htmlAttribute "label" "Goto Definition"
+                        SomeAttr <| on.click (fun _ _ -> gotoDefinition() )  
+                    ] 
+                ]
+                htmlAttribute "contextmenu" "right-menu"
+            ]
+        
+        parserMsgs
         |> Val.sink (fun msgs ->
             async {
                 if not parsed then () else
@@ -4232,19 +4412,20 @@ namespace FSSGlobal
         .body    { margin         : 0px                 }
             """
         
-        let actLoadFile       = Template.Action.New("Load..."                    ).OnClick(do_LoadFile                )  
-        let actSaveFile       = Template.Action.New("Save as..."                 ).OnClick(Do downloadFile  ()        ).Highlight(dirty)
-        let actAddSnippet     = Template.Action.New("Add Snippet"                ).OnClick(Do addCode       ()        )
-        let actDeleteSnippet  = Template.Action.New("Delete Snippet"             ).OnClick(Do deleteCode    ()        ).Disabled(noSelectionVal)
-        let actIndentSnippet  = Template.Action.New("Indent In  >>"              ).OnClick(Do indentCodeIn  ()        ).Disabled(noSelectionVal)
-        let actOutdentSnippet = Template.Action.New("Indent Out <<"              ).OnClick(Do indentCodeOut ()        ).Disabled(noSelectionVal)
-        let actGetFsCode      = Template.Action.New("Get F# Code"                ).OnClick(Do getFSCode     ()        ).Disabled(noSelectionVal)
-        let actEvalCode       = Template.Action.New("Evaluate F#"                ).OnClick(Do evaluateFS    ()        ).Disabled(noSelectionVal)
-        let actRunWSNewTab    = Template.Action.New("Run WebSharper in new tab"  ).OnClick(Do compileRunP   NewBrowser).Disabled(noSelectionVal)
-        let actRunWSHere      = Template.Action.New("Run WebSharper in WS Result").OnClick(Do compileRunP   Below     ).Disabled(noSelectionVal)
-        let actRunWSIn        = Template.Action.New("Run WebSharper in ..."      ).OnClick(Do compileRun    ()        ).Disabled(noSelectionVal)
-        let actParseCode      = Template.Action.New("Parse F#"                   ).OnClick(Do parseFS       ()        ).Disabled(noSelectionVal)
-        let actCompileWS      = Template.Action.New("Compile WebSharper"         ).OnClick(Do justCompile   ()        ).Disabled(noSelectionVal)
+        let actLoadFile       = Template.Action.New("Load..."                    ).OnClick(do_LoadFile                 )  
+        let actSaveFile       = Template.Action.New("Save as..."                 ).OnClick(Do downloadFile   ()        ).Highlight(dirty)
+        let actAddSnippet     = Template.Action.New("Add Snippet"                ).OnClick(Do addCode        ()        )
+        let actDeleteSnippet  = Template.Action.New("Delete Snippet"             ).OnClick(Do deleteCode     ()        ).Disabled(noSelectionVal)
+        let actIndentSnippet  = Template.Action.New("Indent In  >>"              ).OnClick(Do indentCodeIn   ()        ).Disabled(noSelectionVal)
+        let actOutdentSnippet = Template.Action.New("Indent Out <<"              ).OnClick(Do indentCodeOut  ()        ).Disabled(noSelectionVal)
+        let actGetFsCode      = Template.Action.New("Get F# Code"                ).OnClick(Do getFSCode      ()        ).Disabled(noSelectionVal)
+        let actEvalCode       = Template.Action.New("Evaluate F#"                ).OnClick(Do evaluateFS     ()        ).Disabled(noSelectionVal)
+        let actRunWSNewTab    = Template.Action.New("Run WebSharper in new tab"  ).OnClick(Do compileRunP    NewBrowser).Disabled(noSelectionVal)
+        let actRunWSHere      = Template.Action.New("Run WebSharper in WS Result").OnClick(Do compileRunP    Below     ).Disabled(noSelectionVal)
+        let actRunWSIn        = Template.Action.New("Run WebSharper in ..."      ).OnClick(Do compileRun     ()        ).Disabled(noSelectionVal)
+        let actParseCode      = Template.Action.New("Parse F#"                   ).OnClick(Do parseFS        ()        ).Disabled(noSelectionVal)
+        let actCompileWS      = Template.Action.New("Compile WebSharper"         ).OnClick(Do justCompile    ()        ).Disabled(noSelectionVal)
+        let actFindDefinition = Template.Action.New("Find Definition"            ).OnClick(Do gotoDefinition ()        ).Disabled(noSelectionVal)
         
         let buttonsH =
             div [ 
@@ -4257,7 +4438,7 @@ namespace FSSGlobal
                   actGetFsCode     .Button.Render
                
                   actDeleteSnippet .Button.Render
-                  span []       
+                  actFindDefinition.Button.Render
                   span []       
                   actSaveFile      .Button.Render
                   span []
@@ -4293,6 +4474,8 @@ namespace FSSGlobal
                                 actIndentSnippet .MenuEntry
                                 actOutdentSnippet.MenuEntry
                                 MenuEntry.New("").Divider           
+                                actFindDefinition.MenuEntry
+                                MenuEntry.New("").Divider           
                                 actGetFsCode     .MenuEntry
                             ]     
                     )      
@@ -4320,16 +4503,29 @@ namespace FSSGlobal
             navbar <| h1 [ htmlText "F# Station" ; style "font-size: 48px; margin-top: -17px" ]
                    <| menuLeft .Render 
                    <| menuRight.Render
+                   
+        ()           
         let spl1         = Template.SplitterBar.New(20.0).Children([ style "grid-row: 2 / 4" ])
         storeVarCodeEditor "splitterV1" spl1.Var
         //storeVarCodeEditor "splitterV2" splitterV2.Var
         //storeVarCodeEditor "splitterH3" splitterH3.Var
         
+        let jumpToRef (e:obj) _ = 
+            let v : string = e?value |> unbox
+            let s : int    = e?selectionStart |> unbox
+            let lines = v.Split '\n'
+            lines 
+            |> Seq.mapFold (fun total line -> (line, total, total + line.Length + 1), total + line.Length + 1) 0 
+            |> fst
+            |> Seq.pick (fun (line, from, to_) -> if s >= from && s < to_ then Some line else None)
+            |> jumpToLine
+        
         let Messages =
             [
-             "Output"    , Template.TextArea.New(codeMsgs).Placeholder("Output:"    ).Title("Messages"                 ).Render
-             "JavaScript", Template.TextArea.New(codeJS  ).Placeholder("Javascript:").Title("JavaScript code generated").Render
-             "F# code"   , Template.TextArea.New(codeFS  ).Placeholder("F# code:"   ).Title("F# code assembled"        ).Render
+             "Output"    , Template.TextArea.New(outputMsgs).Placeholder("Output:"    ).Title("Output"                   ).RenderWith [ on.dblClick jumpToRef ]
+             "Errors"    , Template.TextArea.New(parserMsgs).Placeholder("Errors:"    ).Title("Messages"                 ).RenderWith [ on.dblClick jumpToRef ]
+             "JavaScript", Template.TextArea.New(codeJS    ).Placeholder("Javascript:").Title("JavaScript code generated").Render
+             "F# code"   , Template.TextArea.New(codeFS    ).Placeholder("F# code:"   ).Title("F# code assembled"        ).Render
              "WS Result" , div [ div [ Id "TestNode" ; style "background: white; height: 100%; width: 100%; "] ]
             ]
             
@@ -4401,6 +4597,7 @@ namespace FSSGlobal
                         """)
         
         *)
+        ()
         let snippetList = 
             codeSnippets.View
                |> View.SnapshotOn codeSnippets.Value refresh.View
@@ -4416,10 +4613,9 @@ namespace FSSGlobal
                                .Content("two", renderSplitterNode ch2).Padding(0.0)
             grid.RowAuto(50.0).RowFixedPx(px).Content( style "grid-template-areas: 'one' 'two' " ).Render
         
-        
         let title         = SHtmlNode <| Template.Input.New(Val.bindIRef curSnippetNameOf currentCodeSnippetId).Prefix(htmlText "name:").Render
         let messages      = STabStrip <| TabStrip.New(Messages).Top
-        let code          = SHtmlNode <| codeMirror.Render
+        let code          = SHtmlNode <| codeMirrorRender
         let snippets      = SHtmlNode <| snippetList
         let buttons       = SHtmlNode <| buttonsH
         let menu          = SHtmlNode <| menuBar
@@ -4433,25 +4629,30 @@ namespace FSSGlobal
         //let code_messages = SplitterStructure.New(false, title_Code           , STabStrip messages,                   75.0)
         //let main_Buttons  = SplitterStructure.New(       snippets_code        , SHtmlNode buttons                 , fixedHorSplitter2 80.0)
         
-        
         let rootSplitter = SplitterNode.New(main_window)
         
-        div [ style "height: 100vh; width: 100% "
-              rootSplitter.Render.Style("height: 100%; width: 100% ")
-              script [ src  "/EPFileX/FileSaver/FileSaver.js"                                     ; ``type`` "text/javascript"             ]
-              script [ src  "http://code.jquery.com/jquery-3.1.1.min.js"                          ; ``type`` "text/javascript"             ]
-              script [ src  "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"  ; ``type`` "text/javascript"             ]
-              link   [ href "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"; ``type`` "text/css" ; rel "stylesheet" ]
-              link   [ href "/EPFileX/css/main.css"                                               ; ``type`` "text/css" ; rel "stylesheet" ]
-              css styleEditor                                                                                                               
-              style  """ 
-                    color      : #333;
-                    font-size  : small;
-                    font-family: monospace;
-                    line-height: 1.2;
-                        """
-            ]
-        |> renderDoc
+        Val.sink (fun _ -> rootSplitter.SelectTab "Output" |> ignore ) outputMsgs 
+        Val.sink (fun _ -> rootSplitter.SelectTab "Errors" |> ignore ) parserMsgs 
+        
+        let emptyMap = Map []
+        
+        div [
+            style "height: 100vh; width: 100% "
+            rootSplitter.Render.Style("height: 100%; width: 100% ")
+            script [ src  "/EPFileX/FileSaver/FileSaver.js"                                     ; ``type`` "text/javascript"             ]
+            script [ src  "http://code.jquery.com/jquery-3.1.1.min.js"                          ; ``type`` "text/javascript"             ]
+            script [ src  "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"  ; ``type`` "text/javascript"             ]
+            link   [ href "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"; ``type`` "text/css" ; rel "stylesheet" ]
+            link   [ href "/EPFileX/css/main.css"                                               ; ``type`` "text/css" ; rel "stylesheet" ]
+            css styleEditor                                                                                                               
+            style  """ 
+                  color      : #333;
+                  font-size  : small;
+                  font-family: monospace;
+                  line-height: 1.2;
+                      """
+        ] |> renderDoc
+        
         
       // Version using internal Rpc's
       //#define FSS_SERVER
