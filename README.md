@@ -10,7 +10,10 @@ Instead of files, organize your code in snippets, have them all in one place,
 select the ones you need, reuse the code in several projects and develop your own code base with your personal style.
 
 # WIP
-This is a work in progress. But it is already fully usable and fun to use. Try it.
-Try new things and integrate them into your projects.
+This is a work in progress. But it is already fully usable and fun to use. 
+
+Try it.
+
+Get code from the web, add your own, try new things and integrate them into your projects.
 
 With new actions added every time FSharpStation can become a personal console of operations.
