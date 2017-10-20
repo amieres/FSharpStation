@@ -4634,8 +4634,6 @@ namespace FSSGlobal
         Val.sink (fun _ -> rootSplitter.SelectTab "Output" |> ignore ) outputMsgs 
         Val.sink (fun _ -> rootSplitter.SelectTab "Errors" |> ignore ) parserMsgs 
         
-        let emptyMap = Map []
-        
         div [
             style "height: 100vh; width: 100% "
             rootSplitter.Render.Style("height: 100%; width: 100% ")
@@ -4690,6 +4688,8 @@ namespace FSSGlobal
       open Microsoft.Owin.StaticFiles
       open Microsoft.Owin.FileSystems
       open WebSharper.Owin
+      
+      let map = Map<string, string> []
       
       WebSharper.Web.Remoting.AddAllowedOrigin "http://localhost"
       WebSharper.Web.Remoting.AddAllowedOrigin "http://*"
