@@ -1,5 +1,5 @@
 # FSharpStation
-A Chrome editor for FSharp Development, powered by WebSharper &amp; CodeMirror
+A Chrome editor for FSharp development, powered by WebSharper &amp; CodeMirror
 
 ![alt text](https://raw.githubusercontent.com/amieres/FSharpStation/master/FSharpStation.PNG)
 
