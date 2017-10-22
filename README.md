@@ -29,6 +29,13 @@ select the ones you need, reuse the code in several projects and develop your ow
 
 - A new tab should open or it may be blocked by the popup blocker. Disable for localhost:9010
 
+# To Save your work:
+
+Saving a file is actually downloading it. For convenience is better to indicate where to save it everytime:
+- Goto chrome://settings/
+- Click on Advanced
+- Select option "Ask where to save each file before downloading" 
+
 # WIP
 This is a work in progress. But it is already fully usable and fun to use. 
 
