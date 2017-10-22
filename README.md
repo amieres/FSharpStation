@@ -41,8 +41,13 @@ Different from FSI only actual output is reported, so use printfn "%A" to show r
 - Run WebSharper opens a new browser with the WebSharper-generated JavaScript running.
 - Select the JavaScript tab to view the actual JS code, after invoking WebSharper with "Compile WebSharper" or "Run WebSharper"
 
-# To Save your work:
+# Intellisense features
+- Code checking. Double click on error message to jump to location
+- Hints. Double click on word to get hint.
+- Autocompletion. Alt-Space to activate.
+- Find Definition button.
 
+# To Save your work:
 Saving a file is actually downloading it. For convenience is better to indicate where to save it everytime:
 - Goto chrome://settings/
 - Click on Advanced
