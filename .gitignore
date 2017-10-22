@@ -3,3 +3,6 @@
 /bin0
 /bin1
 /bin/compiled
+
+!/bin/compiled/FsTranslator
+!/bin/compiled/RemotingDll
