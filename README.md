@@ -48,3 +48,6 @@ Try it.
 Get code from the web, add your own, try new things and integrate them into your projects.
 
 With new actions added every time FSharpStation can become a personal console of operations.
+
+FSharpStation is fully developed using FSharpStation. 
+Find the source code in the snippets: FSSGlobal/WebSharper Code/FSharpStation Code
