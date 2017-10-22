@@ -55,7 +55,7 @@ Saving a file is actually downloading it. For convenience is better to indicate 
 
 # Preprocessor directive: #define
 
-Even though it is not part of F# officially, F# stations lets you use #define directives to  define your own symbols.
+Even though it is not part of F# officially, F# Station lets you use #define directives to  define your own symbols.
 
 It takes effect regardless of placement, even within #if #else #endif directives.
 
