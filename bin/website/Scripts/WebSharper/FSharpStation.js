@@ -6557,7 +6557,7 @@
    $:1,
    $0:Global.location.href
   });
-  parseFile="ParseFSharp.fsx";
+  parseFile=FsGlobal.fsIds()+".fsx";
   parseRun=1;
   rex1="\\((\\d+)\\) F# (.+).fsx\\((\\d+)\\,(\\d+)\\): (error|warning) ((.|\\b)+)";
   rex2="(Err|Warning|Info)(FSharp|WebSharper)\\s+\"(\\((\\d+)\\) ?)?F?#? ?(.+?)(.fsx)? \\((\\d+)\\,\\s*(\\d+)\\) - \\((\\d+)\\,\\s*(\\d+)\\) ((.|\\s)+?)"+"\"";
@@ -6857,7 +6857,7 @@
   {
    return s.id;
   },List.T.Empty);
-  SC$1.fsIds="FSharpStation";
+  SC$1.fsIds="FSharpStation"+Global.String(Date.now());
  };
  FSharpStation_JsonDecoder.j=function()
  {
