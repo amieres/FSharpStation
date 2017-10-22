@@ -4520,7 +4520,7 @@
        }
       }
      else
-      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",2997,20);
+      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",2999,20);
    }
    else
     void 0;
@@ -6363,8 +6363,8 @@
   function jumpToLine(line)
   {
    var a,t,col;
-   a=Useful.REGEX("([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}).+ \\((\\d+)\\,\\s*(\\d+)\\) - \\((\\d+)\\,\\s*(\\d+)\\)","",line);
-   a!=null&&a.$==1?(t=a.$0,t&&Arrays.length(t)===6)?(col=Arrays.get(a.$0,3),_goto(new CodeSnippetId({
+   a=Useful.REGEX("([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}).+\\((\\d+)\\,\\s*(\\d+)\\)","",line);
+   a!=null&&a.$==1?(t=a.$0,t&&Arrays.length(t)===4)?(col=Arrays.get(a.$0,3),_goto(new CodeSnippetId({
     $:0,
     $0:Arrays.get(a.$0,1)
    }),Global.Number(Arrays.get(a.$0,2)),Global.Number(col))):void 0:void 0;

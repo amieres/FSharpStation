@@ -4258,7 +4258,7 @@ namespace FSSGlobal
                 )
             } |> Async.Start
         
-        let rexGuid = """([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}).+ \((\d+)\,\s*(\d+)\) - \((\d+)\,\s*(\d+)\)"""
+        let rexGuid = """([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}).+\((\d+)\,\s*(\d+)\)"""
         
         let jumpToLine (line:string) = 
             match line with
@@ -4688,8 +4688,6 @@ namespace FSSGlobal
       open Microsoft.Owin.StaticFiles
       open Microsoft.Owin.FileSystems
       open WebSharper.Owin
-      
-      let map = Map<string, string> []
       
       WebSharper.Web.Remoting.AddAllowedOrigin "http://localhost"
       WebSharper.Web.Remoting.AddAllowedOrigin "http://*"
