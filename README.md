@@ -1,7 +1,7 @@
 # FSharpStation
 A Chrome editor for FSharp Development, powered by WebSharper &amp; CodeMirror
 
-![alt text](https://raw.githubusercontent.com/amieres/FSharpStation/master/FSharpStation.png)
+![alt text](https://raw.githubusercontent.com/amieres/FSharpStation/master/FSharpStation.PNG)
 
 # Snippets, snippets, snippets.
 F# Station represents a different paradigm of code development.
