@@ -29,6 +29,10 @@ select the ones you need, reuse the code in several projects and develop your ow
 
 - A new tab should open or it may be blocked by the popup blocker. Disable for localhost:9010
 
+# Run WebSharper or Evaluate F#
+- Evaluate F# invokes F# code in FSI. Only actual output is reported. use prinfn "%A" to show results.
+- Run WebSharper opens a new browser with the WebSharper-generated JavaScript running.
+
 # To Save your work:
 
 Saving a file is actually downloading it. For convenience is better to indicate where to save it everytime:
