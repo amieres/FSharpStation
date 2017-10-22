@@ -15,7 +15,7 @@ select the ones you need, reuse the code in several projects and develop your ow
 
 - Download Zip File: https://github.com/amieres/FSharpStation/archive/master.zip
 - UnZip somewhere
-- Do paket dependencies: INSTALL FSharpStation.cmd
+- Run with PowerShell: INSTALL FSharpStation.ps1
 - Install .net Framework 4.6.1 SDK:  https://www.microsoft.com/en-us/download/details.aspx?id=49978
 
 # To Run:
