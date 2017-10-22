@@ -24,14 +24,24 @@ select the ones you need, reuse the code in several projects and develop your ow
 - DoubleClick on: Open FSharpStation.cmd
 - Open latest .fsjson file
 
-- Go to the snippet: FSSGlobal/WebSharper Code/WebSharper Snippets1/Demo Grid
+# Evaluate F# (FSI)
+
+- Go to snippet: FSSGlobal/F# Code/Snippets/Calculate primes
+- Click on: Evaluate F#
+- A little window that calculates prime numbers should pop up
+- Test other snippets
+
+Different from FSI only actual output is reported, so use printfn "%A" to show results.
+
+# Run WebSharper 
+- Go to snippet: FSSGlobal/WebSharper Code/WebSharper Snippets1/Demo Grid
+- Select: New Browser (bottom right)
 - Click on: Run WebSharper in...
+- Test other snippets
 
-- A new tab should open or it may be blocked by the popup blocker. Disable for localhost:9010
-
-# Run WebSharper or Evaluate F#
-- Evaluate F# invokes F# code in FSI. Only actual output is reported. use printfn "%A" to show results.
+- A new tab should open. It may be blocked by the popup blocker. Disable block for localhost:9010
 - Run WebSharper opens a new browser with the WebSharper-generated JavaScript running.
+- Select the JavaScript tab to view the actual JS code, after invoking WebSharper with "Compile WebSharper" or "Run WebSharper"
 
 # To Save your work:
 
