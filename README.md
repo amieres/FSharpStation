@@ -11,6 +11,24 @@ Programming by snippets.
 Instead of files, organize your code in snippets, have them all in one place, 
 select the ones you need, reuse the code in several projects and develop your own code base with your personal style.
 
+# How to Install
+
+- Download Zip File: https://github.com/amieres/FSharpStation/archive/master.zip
+- UnZip somewhere
+- Run installation: INSTALL FSharpStation.cmd
+- Install .net Framework 4.6.1 SDK:  https://www.microsoft.com/en-us/download/details.aspx?id=49978
+
+# To Run:
+
+- Close Chrome to ensure a new instance is opened
+- DoubleClick on: Open FSharpStation.cmd
+- Open latest .fsjson file
+
+- Go to the snippet: FSSGlobal/WebSharper Code/WebSharper Snippets1/Demo Grid
+- Click on: Run WebSharper in...
+
+- A new tab should open or it may be blocked by the popup blocker. Disable for localhost:9010
+
 # WIP
 This is a work in progress. But it is already fully usable and fun to use. 
 
