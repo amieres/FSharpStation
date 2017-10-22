@@ -53,7 +53,13 @@ Saving a file is actually downloading it. For convenience is better to indicate 
 - Click on Advanced
 - Select option "Ask where to save each file before downloading" 
 
-# Preprocessor directive: #define
+# Preprocessor directives
+
+## use #r and #I to reference your libraries
+
+Place #r and #I directives anywhere in any snippet 
+
+## #define
 
 Even though it is not part of F# officially, F# Station lets you use #define directives to  define your own symbols.
 
