@@ -18,7 +18,7 @@ select the ones you need, reuse the code in several projects and develop your ow
 - Run with PowerShell: INSTALL FSharpStation.ps1
 - Install .net Framework 4.6.1 SDK:  https://www.microsoft.com/en-us/download/details.aspx?id=49978
 
-# To Run:
+## To Run:
 
 - Close Chrome to ensure a new instance is opened
 - DoubleClick on: Open FSharpStation.cmd
@@ -53,8 +53,21 @@ Saving a file is actually downloading it. For convenience is better to indicate 
 - Click on Advanced
 - Select option "Ask where to save each file before downloading" 
 
-# That Message:
-"You are using an unsupported command-line flag: --enable-blink-features=ResizeObserver. Stability and security will suffer."
+# Preprocessor directives
+
+## use #r and #I to reference your libraries
+
+Place #r and #I directives anywhere in any snippet 
+
+## #define
+
+Even though it is not part of F# officially, F# Station lets you use #define directives to  define your own symbols.
+
+It takes effect regardless of placement, even within #if #else #endif directives.
+
+# ResizeObserver message:
+
+### "You are using an unsupported command-line flag: --enable-blink-features=ResizeObserver. Stability and security will suffer."
 
 F# Station uses ResizeObserver, still an experimental feature. 
 
