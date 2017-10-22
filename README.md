@@ -37,8 +37,6 @@ Different from FSI only actual output is reported, so use printfn "%A" to show r
 - Go to snippet: FSSGlobal/WebSharper Code/WebSharper Snippets1/Demo Grid
 - Select: New Browser (bottom right)
 - Click on: Run WebSharper in...
-- Test other snippets
-
 - A new tab should open. It may be blocked by the popup blocker. Disable block for localhost:9010
 - Run WebSharper opens a new browser with the WebSharper-generated JavaScript running.
 - Select the JavaScript tab to view the actual JS code, after invoking WebSharper with "Compile WebSharper" or "Run WebSharper"
