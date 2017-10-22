@@ -30,7 +30,7 @@ select the ones you need, reuse the code in several projects and develop your ow
 - A new tab should open or it may be blocked by the popup blocker. Disable for localhost:9010
 
 # Run WebSharper or Evaluate F#
-- Evaluate F# invokes F# code in FSI. Only actual output is reported. use prinfn "%A" to show results.
+- Evaluate F# invokes F# code in FSI. Only actual output is reported. use printfn "%A" to show results.
 - Run WebSharper opens a new browser with the WebSharper-generated JavaScript running.
 
 # To Save your work:
@@ -39,6 +39,13 @@ Saving a file is actually downloading it. For convenience is better to indicate 
 - Goto chrome://settings/
 - Click on Advanced
 - Select option "Ask where to save each file before downloading" 
+
+# That Message:
+"You are using an unsupported command-line flag: --enable-blink-features=ResizeObserver. Stability and security will suffer."
+
+F# Station uses ResizeObserver, still an experimental feature. 
+
+To eliminate the message goto chrome://flags and enable: Experimental Web Platform features
 
 # WIP
 This is a work in progress. But it is already fully usable and fun to use. 
@@ -50,4 +57,5 @@ Get code from the web, add your own, try new things and integrate them into your
 With new actions added every time FSharpStation can become a personal console of operations.
 
 FSharpStation is fully developed using FSharpStation. 
+
 Find the source code in the snippets: FSSGlobal/WebSharper Code/FSharpStation Code
