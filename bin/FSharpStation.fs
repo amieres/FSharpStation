@@ -3,6 +3,8 @@
 #nowarn "1178"
 //#nowarn "1182"
 //#nowarn "40"
+//#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
+//#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#r @"D:\Abe\CIPHERWorkspace\CIPHERPrototype\WebServer\bin\FSharp.Core.dll"
 #if INTERACTIVE
 //#I @"../WebServer/bin"
@@ -13,18 +15,16 @@ namespace FSSGlobal
 
   // Code to be evaluated using FSI: `Evaluate F#`
     #if WEBSHARPER
-    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
-    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
-    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+    //#I @"..\packages\Zafir\lib\net40"
     
-    //#r @"..\packages\Zafir\lib\net40\WebSharper.Core.dll"
-    //#r @"..\packages\Zafir\lib\net40\WebSharper.Core.JavaScript.dll"
-    //#r @"..\packages\Zafir\lib\net40\WebSharper.Collections.dll"
-    //#r @"..\packages\Zafir\lib\net40\WebSharper.Main.dll"
-    //#r @"..\packages\Zafir\lib\net40\WebSharper.JavaScript.dll"
-    //#r @"..\packages\Zafir\lib\net40\WebSharper.Web.dll"
+    //#r @"WebSharper.Core.dll"
+    //#r @"WebSharper.Core.JavaScript.dll"
+    //#r @"WebSharper.Collections.dll"
+    //#r @"WebSharper.Main.dll"
+    //#r @"WebSharper.JavaScript.dll"
+    //#r @"WebSharper.Web.dll"
+    //#r @"WebSharper.Sitelets.dll"
     //#r @"..\packages\Zafir.UI.Next\lib\net40\WebSharper.UI.Next.dll"
-    //#r @"..\packages\Zafir\lib\net40\WebSharper.Sitelets.dll"
     
     open WebSharper
     open WebSharper.JavaScript
@@ -500,6 +500,8 @@ namespace FSSGlobal
               | m            -> Some m
           with e -> None
       #endif
+      
+      let inline swap f a b = f b a
       
       #if WEBSHARPER
       [< Inline >]
@@ -1085,8 +1087,6 @@ namespace FSSGlobal
           
       open Useful
       
-      let inline swap f a b = f b a
-            
       let snippetName name (content: string) =
           if name <> "" then name else 
           content.Split([| '\n' |], System.StringSplitOptions.RemoveEmptyEntries)
@@ -4258,12 +4258,12 @@ namespace FSSGlobal
                 )
             } |> Async.Start
         
-        let rexGuid = """([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}).+\((\d+)\,\s*(\d+)\)"""
+        let rexGuid = """([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}).+?\((\d+)\,\s*(\d+)\)"""
         
         let jumpToLine (line:string) = 
             match line with
-            | REGEX rexGuid "" [| _ ; guid ; line ; col ; _ ; _ |] -> goto <| CodeSnippetId (System.Guid guid) <| int line <| int col
-            | _                                                    -> ()
+            | REGEX rexGuid "" [| _ ; guid ; line ; col |] -> goto <| CodeSnippetId (System.Guid guid) <| int line <| int col
+            | _                                            -> ()
         
         let gotoDefinition () =
             async {
@@ -4444,7 +4444,7 @@ namespace FSSGlobal
                   span []
                   actCompileWS     .Button.Render
                   actRunWSIn       .Button.Render
-                  Doc.Select [ attr.id "Position" ] positionTxt [ Below ; NewBrowser ] position |> someElt
+                  Doc.Select [ attr.id "Position" ] positionTxt [ NewBrowser ; Below ] position |> someElt
                   style """
                       overflow: hidden;
                       display: grid;
@@ -4522,10 +4522,10 @@ namespace FSSGlobal
         
         let Messages =
             [
-             "Output"    , Template.TextArea.New(outputMsgs).Placeholder("Output:"    ).Title("Output"                   ).RenderWith [ on.dblClick jumpToRef ]
-             "Errors"    , Template.TextArea.New(parserMsgs).Placeholder("Errors:"    ).Title("Messages"                 ).RenderWith [ on.dblClick jumpToRef ]
-             "JavaScript", Template.TextArea.New(codeJS    ).Placeholder("Javascript:").Title("JavaScript code generated").Render
-             "F# code"   , Template.TextArea.New(codeFS    ).Placeholder("F# code:"   ).Title("F# code assembled"        ).Render
+             "Output"    , Template.TextArea.New(outputMsgs).Placeholder("Output:"         ).Title("Output"                   ).RenderWith [ on.dblClick jumpToRef ]
+             "Parser"    , Template.TextArea.New(parserMsgs).Placeholder("Parser messages:").Title("Parser"                   ).RenderWith [ on.dblClick jumpToRef ]
+             "JavaScript", Template.TextArea.New(codeJS    ).Placeholder("Javascript:"     ).Title("JavaScript code generated").Render
+             "F# code"   , Template.TextArea.New(codeFS    ).Placeholder("F# code:"        ).Title("F# code assembled"        ).Render
              "WS Result" , div [ div [ Id "TestNode" ; style "background: white; height: 100%; width: 100%; "] ]
             ]
             
@@ -4632,7 +4632,7 @@ namespace FSSGlobal
         let rootSplitter = SplitterNode.New(main_window)
         
         Val.sink (fun _ -> rootSplitter.SelectTab "Output" |> ignore ) outputMsgs 
-        Val.sink (fun _ -> rootSplitter.SelectTab "Errors" |> ignore ) parserMsgs 
+        Val.sink (fun _ -> rootSplitter.SelectTab "Parser" |> ignore ) parserMsgs 
         
         div [
             style "height: 100vh; width: 100% "
