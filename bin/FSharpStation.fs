@@ -434,18 +434,20 @@ namespace FSSGlobal
                                           | Failure ms     -> raise (exn(getMessages ms))
                                    }
       //    let call wb = wb |> getR Rop.notifyMessages
-          let start (printMsg: string->unit) (w: Wrap<unit>) =
+          let startV (processVal: ('t option * string) ->unit) (w: Wrap<'t>) =
               w
               |> getAsyncR
               |> fun asy -> Async.StartWithContinuations
                               (asy 
-                             , Result.mapMsgs Result.getMessages
-                               >> function
-                                  | Some _, msgs -> msgs
-                                  | None  , msgs -> printfn "Failed!" ; msgs
-                               >> sprintf "%s" >> printMsg
-                             ,    sprintf "%A" >> printMsg
-                             ,    sprintf "%A" >> printMsg)
+                             , Result.mapMsgs Result.getMessages  >> processVal
+                             , sprintf "%A" >> (fun m -> None, m) >> processVal
+                             , sprintf "%A" >> (fun m -> None, m) >> processVal)
+                             
+          let start (printMsg: string->unit) (w: Wrap<unit>) = 
+              startV (function
+                      | Some (), msgs ->               msgs |> printMsg 
+                      | None   , msgs -> "Failed!\n" + msgs |> printMsg) w
+      
       #if WEBSHARPER
           [< Inline "console.log('runSynchronously should not be used in Javascript')" >]                       
       #endif
@@ -1266,7 +1268,7 @@ namespace FSSGlobal
                   | msg                        -> false
       
       type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-          let fsIds      = fsStationId |> Option.defaultValue "FSharpStation"
+          let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1508728705949"
           let msgClient  = MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
           let toId       = AddressId fsIds
           let stringResponseR response =
@@ -1305,7 +1307,7 @@ namespace FSSGlobal
           member this.RunSnippet      (url,snpPath:string   ) = sendMsg toId  (RunSnippetUrlJS     (snpPath.Split '/', url))    stringResponseR
           member this.FSStationId                             = fsIds
           member this.MessagingClient                         = msgClient    
-          static member FSStationId_                          = "FSharpStation"
+          static member FSStationId_                          = "FSharpStation1508728705949"
       
       
     module FsTranslator =
@@ -1775,6 +1777,7 @@ namespace FSSGlobal
       
           let findDeclaration file lin col filter =
               Wrap.wrapper {
+                  File.WriteAllText(file, " ")
                   let!  result = FSAutocompleteCall "finddeclaration" (function | KFindDecl _ -> true | _ -> false) <|
                                        FarPosition
                                            { FileName   = System.IO.Path.GetFullPath file
@@ -1782,6 +1785,7 @@ namespace FSSGlobal
                                              Column     = col
                                              Filter     = filter
                                            }
+                  File.Delete file                         
                   match result with
                   | KFindDecl decl -> let! snp, dln, dcol = getDeltaBack decl.File decl.Line
                                       let resultAdj = 
@@ -3456,7 +3460,10 @@ namespace FSSGlobal
           //let codeSnippetsStorage = WebSharper.UI.Next.Storage.LocalStorage "CodeSnippets" Serializer.Typed<CodeSnippet>
           //let codeSnippets        = ListModel.CreateWithStorage<CodeSnippetId, CodeSnippet> (fun s -> s.id) codeSnippetsStorage
           let codeSnippets        = ListModel.Create<CodeSnippetId, CodeSnippet> (fun s -> s.id) []
-          let fsIds  = "FSharpStation" //+ (System.Guid.NewGuid() |> string)
+      
+          [< Inline "(Date.now())" >]
+          let now() = 0
+          let fsIds  = "FSharpStation" + (now() |> string)
           
           let tryPickI f s = s |> Seq.indexed |> Seq.filter f |> Seq.tryHead
           
@@ -3641,13 +3648,15 @@ namespace FSSGlobal
         //storeVarCodeEditor "dirty" dirty
         let appendMsg (var:IRef<string>) msg =
             if isUndefined msg then () else
-            var.Value  <- 
+            let newM =
                 match var.Value, msg.ToString() with
                 | null, m 
                 | ""  , m
                 | m   , null
                 | m   , ""   -> m
                 | m1  , m2   -> m1 + "\n" + m2
+            if newM <> var.Value then
+                var.Value  <- newM
         
         let addOutMsg msg = appendMsg outputMsgs msg
         let addPrsMsg msg = appendMsg parserMsgs msg
@@ -3753,11 +3762,11 @@ namespace FSSGlobal
         
         let mutable draggedId   = CodeSnippetId.New
         
-        
+        ()
         let compileSnippetW (snpO: CodeSnippet option) =
             Wrap.wrapper {
                 let!   snp         = snpO |> Result.fromOption ``Snippet Missing``
-                parserMsgs.Value  <- "Compiling to JavaScript..."
+                outputMsgs.Value  <- "Compiling to JavaScript..."
                 codeJS.Value      <- ""
                 let    code        = snp.GetCodeFsx true
                 codeFS.Value      <- code
@@ -3765,7 +3774,7 @@ namespace FSSGlobal
                 let!   js          = jsR
                 let    jsc         = RunCode.completeJS js
                 codeJS.Value      <- jsc
-                addPrsMsg            "Compiled!"
+                addOutMsg            "Compiled!"
                 return jsc
             }
             
@@ -3814,7 +3823,7 @@ namespace FSSGlobal
                            | _          -> evalIFrameJSW        js
                 addOutMsg res
                 addOutMsg "Done!"
-                return  res
+                return  pos, res
             }
         
         let getSnpO () = CodeSnippet.FetchO currentCodeSnippetId.Value
@@ -3834,12 +3843,12 @@ namespace FSSGlobal
         
         let compileRunW = compileRunUrlW (JS.Window.Location.Origin + "/Main.html") 
         
-        let compileRunP pos = getSnpO() |> compileRunW pos  |> Wrap.map ignore |> Wrap.start addOutMsg
-        let justCompile     = getSnpO   >> compileSnippetW  >> Wrap.map ignore >> Wrap.start addOutMsg
-        let evaluateFS      = getSnpO   >> evaluateSnippetW >> Wrap.map ignore >> Wrap.start addOutMsg
+        let compileRunP pos = getSnpO() |> compileRunW pos  //|> Wrap.map ignore |> Wrap.start addOutMsg
+        let justCompile     = getSnpO   >> compileSnippetW  //>> Wrap.map ignore >> Wrap.start addOutMsg
+        let evaluateFS      = getSnpO   >> evaluateSnippetW //>> Wrap.map ignore >> Wrap.start addOutMsg
         let compileRun  ()  = compileRunP position.Value
         
-        
+        ()
         #if NOMESSAGING
         #else
         
@@ -3849,7 +3858,7 @@ namespace FSSGlobal
         
         let result2response res = 
             match res with 
-            | Result (a, b) -> StringResponseR (a, b |> Seq.map (fun err -> err.ErrMsg, if err.IsWarning then FSWarning else FSError) |> Seq.toArray ) 
+            | Result (a, b) -> StringResponseR (a |> Option.map snd, b |> Seq.map (fun err -> err.ErrMsg, if err.IsWarning then FSWarning else FSError) |> Seq.toArray ) 
         
         let respond fromId (msg:FSMessage) : Async<FSResponse> =
             async {
@@ -4052,7 +4061,7 @@ namespace FSSGlobal
                     with e -> JS.Alert <| e.ToString()
                 )
         
-        let downloadFile() =
+        let downloadFile() = // Save as...
             codeSnippets.Value
                 |> Seq.toArray
                 |> Json.Serialize
@@ -4081,9 +4090,9 @@ namespace FSSGlobal
         let autoCompleteClient = FSAutoCompleteIntermediary.FSAutoCompleteIntermediaryClient("FSharpStation", endPoint = JS.Window.Location.Href)
         
         #if FSS_SERVER
-        let parseFile = @"ParseFSharp.fsx"
+        let parseFile = fsIds + ".fsx"
         #else
-        let parseFile = @"..\ParseFSharp.fsx"
+        let parseFile = "..\\" + fsIds + ".fsx"
         #endif
         
         let setDirtyCond() =
@@ -4125,10 +4134,10 @@ namespace FSSGlobal
             }
         
         let parseFS() = 
-            async {
+            Wrap.wrapper {
                 lastCodeAndStarts <- None
                 do! parseFSA false
-            } |> Async.Start 
+            }
         
         
         let mustParse (cur:CodeSnippet) =
@@ -4411,21 +4420,28 @@ namespace FSSGlobal
         .Error   { text-decoration: underline red       } 
         .body    { margin         : 0px                 }
             """
+        let triggerWSResult = Var.Create ()
+        
+        let DoW f p _ _ = f p |> Wrap.map ignore |> Wrap.start addOutMsg
+        let DoP f p _ _ = f p |> Wrap.startV (function
+                                              | Some (Below, _), msgs -> msgs |> addOutMsg ;  triggerWSResult.Value <- ()
+                                              | Some _         , msgs -> msgs |> addOutMsg 
+                                              | None           , msgs -> "Failed!\n" + msgs |> addOutMsg)
         
         let actLoadFile       = Template.Action.New("Load..."                    ).OnClick(do_LoadFile                 )  
-        let actSaveFile       = Template.Action.New("Save as..."                 ).OnClick(Do downloadFile   ()        ).Highlight(dirty)
-        let actAddSnippet     = Template.Action.New("Add Snippet"                ).OnClick(Do addCode        ()        )
-        let actDeleteSnippet  = Template.Action.New("Delete Snippet"             ).OnClick(Do deleteCode     ()        ).Disabled(noSelectionVal)
-        let actIndentSnippet  = Template.Action.New("Indent In  >>"              ).OnClick(Do indentCodeIn   ()        ).Disabled(noSelectionVal)
-        let actOutdentSnippet = Template.Action.New("Indent Out <<"              ).OnClick(Do indentCodeOut  ()        ).Disabled(noSelectionVal)
-        let actGetFsCode      = Template.Action.New("Get F# Code"                ).OnClick(Do getFSCode      ()        ).Disabled(noSelectionVal)
-        let actEvalCode       = Template.Action.New("Evaluate F#"                ).OnClick(Do evaluateFS     ()        ).Disabled(noSelectionVal)
-        let actRunWSNewTab    = Template.Action.New("Run WebSharper in new tab"  ).OnClick(Do compileRunP    NewBrowser).Disabled(noSelectionVal)
-        let actRunWSHere      = Template.Action.New("Run WebSharper in WS Result").OnClick(Do compileRunP    Below     ).Disabled(noSelectionVal)
-        let actRunWSIn        = Template.Action.New("Run WebSharper in ..."      ).OnClick(Do compileRun     ()        ).Disabled(noSelectionVal)
-        let actParseCode      = Template.Action.New("Parse F#"                   ).OnClick(Do parseFS        ()        ).Disabled(noSelectionVal)
-        let actCompileWS      = Template.Action.New("Compile WebSharper"         ).OnClick(Do justCompile    ()        ).Disabled(noSelectionVal)
-        let actFindDefinition = Template.Action.New("Find Definition"            ).OnClick(Do gotoDefinition ()        ).Disabled(noSelectionVal)
+        let actSaveFile       = Template.Action.New("Save as..."                 ).OnClick(Do  downloadFile   ()        ).Highlight(dirty)
+        let actAddSnippet     = Template.Action.New("Add Snippet"                ).OnClick(Do  addCode        ()        )
+        let actDeleteSnippet  = Template.Action.New("Delete Snippet"             ).OnClick(Do  deleteCode     ()        ).Disabled(noSelectionVal)
+        let actIndentSnippet  = Template.Action.New("Indent In  >>"              ).OnClick(Do  indentCodeIn   ()        ).Disabled(noSelectionVal)
+        let actOutdentSnippet = Template.Action.New("Indent Out <<"              ).OnClick(Do  indentCodeOut  ()        ).Disabled(noSelectionVal)
+        let actGetFsCode      = Template.Action.New("Get F# Code"                ).OnClick(Do  getFSCode      ()        ).Disabled(noSelectionVal)
+        let actEvalCode       = Template.Action.New("Evaluate F#"                ).OnClick(DoW evaluateFS     ()        ).Disabled(noSelectionVal)
+        let actRunWSNewTab    = Template.Action.New("Run WebSharper in new tab"  ).OnClick(DoW compileRunP    NewBrowser).Disabled(noSelectionVal)
+        let actRunWSHere      = Template.Action.New("Run WebSharper in WS Result").OnClick(DoP compileRunP    Below     ).Disabled(noSelectionVal)
+        let actRunWSIn        = Template.Action.New("Run WebSharper in ..."      ).OnClick(DoP compileRun     ()        ).Disabled(noSelectionVal)
+        let actParseCode      = Template.Action.New("Parse F#"                   ).OnClick(DoW parseFS        ()        ).Disabled(noSelectionVal)
+        let actCompileWS      = Template.Action.New("Compile WebSharper"         ).OnClick(DoW justCompile    ()        ).Disabled(noSelectionVal)
+        let actFindDefinition = Template.Action.New("Find Definition"            ).OnClick(Do  gotoDefinition ()        ).Disabled(noSelectionVal)
         
         let buttonsH =
             div [ 
@@ -4631,8 +4647,9 @@ namespace FSSGlobal
         
         let rootSplitter = SplitterNode.New(main_window)
         
-        Val.sink (fun _ -> rootSplitter.SelectTab "Output" |> ignore ) outputMsgs 
-        Val.sink (fun _ -> rootSplitter.SelectTab "Parser" |> ignore ) parserMsgs 
+        Val.sink (fun _ -> rootSplitter.SelectTab "Output"    |> ignore ) outputMsgs 
+        Val.sink (fun _ -> rootSplitter.SelectTab "Parser"    |> ignore ) parserMsgs 
+        Val.sink (fun _ -> rootSplitter.SelectTab "WS Result" |> ignore ) triggerWSResult 
         
         div [
             style "height: 100vh; width: 100% "
