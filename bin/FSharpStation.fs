@@ -21,6 +21,7 @@ namespace FSSGlobal
     //#r @"WebSharper.Core.JavaScript.dll"
     //#r @"WebSharper.Collections.dll"
     //#r @"WebSharper.Main.dll"
+    //#r @"WebSharper.JQuery.dll"
     //#r @"WebSharper.JavaScript.dll"
     //#r @"WebSharper.Web.dll"
     //#r @"WebSharper.Sitelets.dll"
@@ -1117,7 +1118,7 @@ namespace FSSGlobal
           id           : CodeSnippetId
           expanded     : bool
           level        : int
-          properties   : Map<string, string>
+          properties   : System.Collections.Generic.Dictionary<string, string>
       } with
           member this.Name = snippetName this.name this.content
           member this.NameSanitized =
@@ -1268,7 +1269,7 @@ namespace FSSGlobal
                   | msg                        -> false
       
       type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-          let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1508728705949"
+          let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1508994284112"
           let msgClient  = MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
           let toId       = AddressId fsIds
           let stringResponseR response =
@@ -1307,7 +1308,7 @@ namespace FSSGlobal
           member this.RunSnippet      (url,snpPath:string   ) = sendMsg toId  (RunSnippetUrlJS     (snpPath.Split '/', url))    stringResponseR
           member this.FSStationId                             = fsIds
           member this.MessagingClient                         = msgClient    
-          static member FSStationId_                          = "FSharpStation1508728705949"
+          static member FSStationId_                          = "FSharpStation1508994284112"
       
       
     module FsTranslator =
@@ -2453,6 +2454,8 @@ namespace FSSGlobal
                   SomeAttr <| on.mouseLeave (fun _ _ -> this.hover.Value <- false)
                 ] 
         static member  Demo  = Hoverable.New.Content(div [ style "flex-flow: column;" ])
+        
+      let hoverable (c:HtmlNode) = Hoverable.New.Content c
       
       [<NoComparison ; NoEquality>]
       type TextArea = {
@@ -2788,6 +2791,11 @@ namespace FSSGlobal
       | Fixed    of HtmlMeasure
       | Splitter of SplitterBar
       
+      type SectionType =
+      | StVariable
+      | StFixedPx
+      | StFixedPerc
+      
       [<NoComparison ; NoEquality>]
       type Grid = {
           padding       : float
@@ -2914,12 +2922,35 @@ namespace FSSGlobal
                           |> fun r ->  
                               setVar this.width  r.Width
                               setVar this.height r.Height
-                      JS.SetTimeout  setDimensions 60 |> ignore
+                      async {
+                          do! Async.Sleep 60
+                          do  setDimensions()
+                      } |> Async.Start
                       addResizeObserver setDimensions el
                     ) 
               ]
           member this.Render =
               div <| this.GridTemplate()
+          static member inline NewBisect(first, secT, ver, per:float, ch1, ch2) =
+              let sect, auto, areas = 
+                  if ver then match secT with
+                              | StVariable  -> fun (g:Grid) -> g.ColVariable per
+                              | StFixedPx   -> fun (g:Grid) -> g.ColFixedPx  per
+                              | StFixedPerc -> fun (g:Grid) -> g.ColFixed    per
+                             ,                (fun (g:Grid) -> g.ColAuto 50.0)
+                             ,                 fun (g:Grid) -> g.Content( style "grid-template-areas: 'one   two' " )
+                         else match secT with
+                              | StVariable  -> fun (g:Grid) -> g.RowVariable per
+                              | StFixedPx   -> fun (g:Grid) -> g.RowFixedPx  per
+                              | StFixedPerc -> fun (g:Grid) -> g.RowFixed    per
+                             ,                (fun (g:Grid) -> g.RowAuto 50.0)
+                             ,                 fun (g:Grid) -> g.Content( style "grid-template-areas: 'one' 'two' " )
+              Grid.New.Content("one", ch1)
+                      .Content("two", ch2).Padding(0.0)
+              |> areas
+              |> (if first then sect >> auto
+                           else auto >> sect)
+              
       let reorderList (ts:'a list) drag drop =
           if drop < drag then
              ts.[0       ..drop - 1     ]
@@ -3072,10 +3103,10 @@ namespace FSSGlobal
                     css @"
       
       .tab-panel {
-       overflow : hidden ;
-       display  : flex   ;
-       flex-flow: column ;
-       background: pink    ;
+       overflow  : hidden   ;
+       display   : flex     ;
+       flex-flow : column   ;
+       background: lightgray;
       }
       .tab-content {
        flex      : 1 1     ;
@@ -3143,11 +3174,7 @@ namespace FSSGlobal
               | STabStrip strip       -> strip.Render  
               | Split   (ch1, ch2, f) -> f ch1 ch2
       
-      let renderSplitter (per:float) ver ch1 ch2 =
-          let grid = Grid.New.Content("one", renderSplitterNode ch1)
-                             .Content("two", renderSplitterNode ch2).Padding(0.0)
-          if ver then grid.ColVariable(per).ColAuto(50.0).Content( style "grid-template-areas: 'one   two' " ).Render
-                 else grid.RowVariable(per).RowAuto(50.0).Content( style "grid-template-areas: 'one' 'two' " ).Render
+      let renderSplitter (per:float) ver ch1 ch2 = Grid.NewBisect(true, StVariable, ver, per, renderSplitterNode ch1, renderSplitterNode ch2).Render
       
       type SplitterStructure with    
           static member New(vertical : bool, child1, child2, per) = Split(SplitterNode (Var.Create              child1), SplitterNode (Var.Create              child2), renderSplitter per  vertical)
@@ -3440,6 +3467,7 @@ namespace FSSGlobal
           this
         member inline this.RunDoc doc = doc :> Doc |> Doc.Run this.RunNode
         member inline this.RunHtml node = node |> renderDoc |> this.RunDoc
+        
     module FSharpStation =
     
       open Template
@@ -3487,7 +3515,7 @@ namespace FSSGlobal
                           id           = CodeSnippetId.New
                           expanded     = true
                           level        = 0
-                          properties   = Map.empty
+                          properties   = System.Collections.Generic.Dictionary<string, string>()
                       }
                   match od, codeSnippets.Length with
                   | _, 0            -> codeSnippets.Append newS
@@ -3540,7 +3568,11 @@ namespace FSSGlobal
                           |> tryFindByPath  (codeSnippets.Value |> Seq.filter (fun snp -> snp.parent = Some f.id))
                       )
                   names 
-                  |> tryFindByPath (codeSnippets.Value |> Seq.filter (fun snp -> snp.parent.IsNone))  
+                  |> tryFindByPath (codeSnippets.Value |> Seq.filter (fun snp -> snp.parent.IsNone))
+              member this.propValue p =
+                  if this.properties.ContainsKey p 
+                  then Some this.properties.[p]
+                  else this.parent |> Option.bind CodeSnippet.FetchO |> Option.bind (fun par -> par.propValue p)
           
           type Position =
               | Below
@@ -3572,16 +3604,54 @@ namespace FSSGlobal
               ``Ctrl-Space``  : Template.CodeMirrorEditor -> unit
           }
           
+          type Property(setDirty: unit->unit, props: Dictionary<string, string>, keyP: string) =
+              let mutable key = keyP
+              let getK () = key
+              let setK k  = props.Add(k, props.[key]) ; props.Remove key |> ignore ; key <- k ; setDirty()
+              let getV () = props.[key]
+              let setV v  = props.[key] <- v ; setDirty()
+              interface IRef<string> with
+                 member this.Id  = "?"
+                 member this.Set                                   v = setK v
+                 member this.Value                        with set v = setK v
+                 member this.Get ()                                  = getK()
+                 member this.Value                                   = getK()
+                 member this.Update      (f:string -> string       ) = getK() |> f |>             setK
+                 member this.UpdateMaybe (f:string -> string option) = getK() |> f |> Option.iter setK
+                 member this.View                     : View<string> = getK() |> View.Const
+              member this.KeyVar   = this :> IRef<string>  
+              member this.ValueVar =  PropValue this
+              member this.GetK     = getK
+              member this.SetK     = setK
+              member this.GetV     = getV
+              member this.SetV     = setV
+              member this.Remove() = props.Remove key |> ignore ; setDirty()
+      
+          and PropValue(prop: Property) =
+              let get  = prop.GetV
+              let set  = prop.SetV
+              interface IRef<string> with
+                 member this.Id  = "?"
+                 member this.Set                                   v = set v
+                 member this.Value                        with set v = set v
+                 member this.Get ()                                  = get()
+                 member this.Value                                   = get()
+                 member this.Update      (f:string -> string       ) = get() |> f |>             set
+                 member this.UpdateMaybe (f:string -> string option) = get() |> f |> Option.iter set
+                 member this.View                     : View<string> = get() |> View.Const
+      
       open FsGlobal                
+      
+      
       [< JavaScript >]
-      let FSharpStationClient () =
+      let FSharpStationClient (loadFromUri: string) =
       
         
         let missingVar  = Var.Create ""
-        let missing find lens k =
+        let missing def find lens k =
             match find k with
             | Some _ -> lens k
-            | None   -> missingVar.Lens (fun _ -> "") (fun _ _ -> "")
+            | None   -> missingVar.Lens (fun _ -> def) (fun _ _ -> "")
             
         let currentCodeSnippetId  = Var.Create <| CodeSnippetId.New
         
@@ -3592,8 +3662,9 @@ namespace FSSGlobal
         
         let currentCodeSnippetO = Val.map2 (fun k () -> codeSnippets.TryFindByKey k) currentCodeSnippetId refresh
         
-        let curSnippetNameOf k = missing codeSnippets.TryFindByKey <| codeSnippets.LensInto (fun s -> s.Name   ) (fun s n -> { s with name    = n }) <| k
-        let curSnippetCodeOf k = missing codeSnippets.TryFindByKey <| codeSnippets.LensInto (fun s -> s.content) (fun s n -> { s with content = n }) <| k
+        let curSnippetNameOf k = missing ""        codeSnippets.TryFindByKey <| codeSnippets.LensInto (fun s -> s.Name      ) (fun s n -> { s with name       = n }) <| k
+        let curSnippetCodeOf k = missing ""        codeSnippets.TryFindByKey <| codeSnippets.LensInto (fun s -> s.content   ) (fun s n -> { s with content    = n }) <| k
+        let curSnippetPrpsOf k = missing (System.Collections.Generic.Dictionary<string, string>()) codeSnippets.TryFindByKey <| codeSnippets.LensInto (fun s -> s.properties) (fun s p -> { s with properties = p }) <| k
             
         let positionTxt v =
             match v with
@@ -3612,12 +3683,26 @@ namespace FSSGlobal
                 | _     -> false
             ) position
             
-            
+        ()    
         
         
         let noSelection cur = CodeSnippet.FetchO cur = None
         let noSelectionVal  = Val.map noSelection currentCodeSnippetId
         
+        let disableGenericVal f =
+            currentCodeSnippetId
+            |> Val.map 
+                (CodeSnippet.FetchO
+                 >> Option.map f
+                 >> Option.defaultValue true
+                )
+        
+        let disablePropertyVal p = disableGenericVal <| fun snp -> snp.propValue p |> Option.map ((<>) "0") |> Option.defaultValue false
+        
+        let disableParseVal      = disablePropertyVal "DisableParse" 
+        let disableFSIVal        = disablePropertyVal "DisableFSI"        |> Val.map2 (||) disableParseVal  
+        let disableWebSharperVal = disablePropertyVal "DisableWebSharper" |> Val.map2 (||) disableParseVal 
+            
         let mutable lastCodeAndStarts : (CodeSnippetId * bool * ((string * int * int) [] * string [] * string [] * string [] * string [] * string [])) option = None
         
         let getPredecessors curO =
@@ -3810,6 +3895,7 @@ namespace FSSGlobal
                 do!    Result.tryProtection()
                 let!   frame        = createIFrameA () 
                 let    window       = frame?contentWindow
+                window?document?body?style?margin <- "0px"
                 let    res : string = eval window js
                 return res
             }
@@ -3889,7 +3975,10 @@ namespace FSSGlobal
                 return Json.Serialize res
             }
         
-        1000 |> JS.SetTimeout (fun () -> fsStationClient.MessagingClient.AwaitMessage respondMessage) |> ignore
+        async {
+            do! Async.Sleep 1000
+            do fsStationClient.MessagingClient.AwaitMessage respondMessage
+        } |> Async.Start
         
         #endif
         let isDirectPredecessor pre curO =
@@ -3990,10 +4079,12 @@ namespace FSSGlobal
                 Some <| obj2CodeSnippetId o
         
         let obj2Map o =
+            let dict = System.Collections.Generic.Dictionary<string, string>()
             if isUndefined o then
-                Map.empty
+                dict
             else
-                JS.GetFields o |> Array.map (fun (f, v) -> f, v :?> string ) |> Map.ofSeq
+                JS.GetFields o |> Array.map (fun (f, v) -> f, v :?> string ) |> Seq.iter dict.Add
+                dict
         
         let deserializeCodeSnipets v = 
             try
@@ -4015,6 +4106,8 @@ namespace FSSGlobal
                           } |> Some)
                 snps
             with _ -> [||]
+            
+        ()    
         let addCode   ()   =
             CodeSnippet.PickIO currentCodeSnippetId.Value
             |> Option.map (fun (i, snp) -> CodeSnippet.New(i + 1, "", snp.parent, [], [], ""))
@@ -4046,20 +4139,22 @@ namespace FSSGlobal
                 reader.Onload <- (fun e -> f e.Target?result)
                 reader.ReadAsText files.[0] 
         
+        let parseText txt =
+            try
+                txt
+                |> deserializeCodeSnipets
+                |> codeSnippets.Set
+                setClean()
+                refreshView()
+            with e -> JS.Alert <| e.ToString()
+        
         let fileInputElementId = "CodeEditorFileSel"
         let loadFile (e: Dom.Element) =
             if (not dirty.Value) || JS.Confirm "Changes have not been saved, do you really want to load?" then
               let root = findRootElement e
-              loadTextFile (root.QuerySelector("#" + fileInputElementId))
-                (fun txt ->
-                    try
-                        txt
-                        |> deserializeCodeSnipets
-                        |> codeSnippets.Set
-                        setClean()
-                        refreshView()
-                    with e -> JS.Alert <| e.ToString()
-                )
+              loadTextFile 
+                  <| root.QuerySelector("#" + fileInputElementId)
+                  <| parseText
         
         let downloadFile() = // Save as...
             codeSnippets.Value
@@ -4086,7 +4181,15 @@ namespace FSSGlobal
             let root = findRootElement e
             (root.QuerySelector("#" + fileInputElementId))?click()
         
-        ()
+        if loadFromUri <> "" then
+            async {
+                do! Async.Sleep 3000
+                printfn "loading %s..." loadFromUri
+                let  r = JQuery.JQuery.GetJSON(loadFromUri)
+                r.Done (fun () -> parseText r.ResponseText) |> ignore
+            } |> Async.Start
+            
+            
         let autoCompleteClient = FSAutoCompleteIntermediary.FSAutoCompleteIntermediaryClient("FSharpStation", endPoint = JS.Window.Location.Href)
         
         #if FSS_SERVER
@@ -4150,6 +4253,8 @@ namespace FSSGlobal
         
         let parseIfMustThen silent =
             async {
+                let! disabled = disableParseVal |> Val.toView |> View.GetAsync 
+                if disabled then () else
                 match CodeSnippet.FetchO currentCodeSnippetId.Value with 
                 | None     -> ()
                 | Some cur ->
@@ -4360,6 +4465,8 @@ namespace FSSGlobal
         
         let styleEditor    =
              """
+        body { margin: 0px }     
+             
         div textarea {
         font-family: monospace;
         }
@@ -4428,21 +4535,21 @@ namespace FSSGlobal
                                               | Some _         , msgs -> msgs |> addOutMsg 
                                               | None           , msgs -> "Failed!\n" + msgs |> addOutMsg)
         
-        let actLoadFile       = Template.Action.New("Load..."                    ).OnClick(do_LoadFile                 )  
+        let actLoadFile       = Template.Action.New("Load..."                    ).OnClick(do_LoadFile                  )  
         let actSaveFile       = Template.Action.New("Save as..."                 ).OnClick(Do  downloadFile   ()        ).Highlight(dirty)
         let actAddSnippet     = Template.Action.New("Add Snippet"                ).OnClick(Do  addCode        ()        )
-        let actDeleteSnippet  = Template.Action.New("Delete Snippet"             ).OnClick(Do  deleteCode     ()        ).Disabled(noSelectionVal)
-        let actIndentSnippet  = Template.Action.New("Indent In  >>"              ).OnClick(Do  indentCodeIn   ()        ).Disabled(noSelectionVal)
-        let actOutdentSnippet = Template.Action.New("Indent Out <<"              ).OnClick(Do  indentCodeOut  ()        ).Disabled(noSelectionVal)
-        let actGetFsCode      = Template.Action.New("Get F# Code"                ).OnClick(Do  getFSCode      ()        ).Disabled(noSelectionVal)
-        let actEvalCode       = Template.Action.New("Evaluate F#"                ).OnClick(DoW evaluateFS     ()        ).Disabled(noSelectionVal)
-        let actRunWSNewTab    = Template.Action.New("Run WebSharper in new tab"  ).OnClick(DoW compileRunP    NewBrowser).Disabled(noSelectionVal)
-        let actRunWSHere      = Template.Action.New("Run WebSharper in WS Result").OnClick(DoP compileRunP    Below     ).Disabled(noSelectionVal)
-        let actRunWSIn        = Template.Action.New("Run WebSharper in ..."      ).OnClick(DoP compileRun     ()        ).Disabled(noSelectionVal)
-        let actParseCode      = Template.Action.New("Parse F#"                   ).OnClick(DoW parseFS        ()        ).Disabled(noSelectionVal)
-        let actCompileWS      = Template.Action.New("Compile WebSharper"         ).OnClick(DoW justCompile    ()        ).Disabled(noSelectionVal)
-        let actFindDefinition = Template.Action.New("Find Definition"            ).OnClick(Do  gotoDefinition ()        ).Disabled(noSelectionVal)
-        
+        let actDeleteSnippet  = Template.Action.New("Delete Snippet"             ).OnClick(Do  deleteCode     ()        ).Disabled(noSelectionVal      )
+        let actIndentSnippet  = Template.Action.New("Indent In  >>"              ).OnClick(Do  indentCodeIn   ()        ).Disabled(noSelectionVal      )
+        let actOutdentSnippet = Template.Action.New("Indent Out <<"              ).OnClick(Do  indentCodeOut  ()        ).Disabled(noSelectionVal      )
+        let actGetFsCode      = Template.Action.New("Get F# Code"                ).OnClick(Do  getFSCode      ()        ).Disabled(disableParseVal     )
+        let actEvalCode       = Template.Action.New("Evaluate F#"                ).OnClick(DoW evaluateFS     ()        ).Disabled(disableFSIVal       )
+        let actRunWSNewTab    = Template.Action.New("Run WebSharper in new tab"  ).OnClick(DoW compileRunP    NewBrowser).Disabled(disableWebSharperVal)
+        let actRunWSHere      = Template.Action.New("Run WebSharper in WS Result").OnClick(DoP compileRunP    Below     ).Disabled(disableWebSharperVal)
+        let actRunWSIn        = Template.Action.New("Run WebSharper in ..."      ).OnClick(DoP compileRun     ()        ).Disabled(disableWebSharperVal)
+        let actParseCode      = Template.Action.New("Parse F#"                   ).OnClick(DoW parseFS        ()        ).Disabled(disableParseVal     )
+        let actCompileWS      = Template.Action.New("Compile WebSharper"         ).OnClick(DoW justCompile    ()        ).Disabled(disableWebSharperVal)
+        let actFindDefinition = Template.Action.New("Find Definition"            ).OnClick(Do  gotoDefinition ()        ).Disabled(disableParseVal     )
+             
         let buttonsH =
             div [ 
                   actAddSnippet    .Button.Render
@@ -4521,6 +4628,44 @@ namespace FSSGlobal
                    <| menuRight.Render
                    
         ()           
+        //let setProp k v = props.[k] <- v
+        
+        let redraw = Var.Create ()
+        let setDirtyP () = dirty.Value <- true
+        
+        let tableProps =
+          currentCodeSnippetId
+          |> Val.bind (curSnippetPrpsOf >> DynamicV)
+          |> Val.map2 (fun () (props: Dictionary<string,string>) ->
+              table [
+                yield thead [
+                    th [ htmlText "Property" ; style "padding-right:10px" ] 
+                    th [ htmlText "Value"                                 ] 
+                ] 
+                yield! 
+                    props.Keys
+                    |> Seq.map (fun kvp ->
+                        let prop = Property(setDirtyP, props, kvp)
+                        tr [
+                            td [ Doc.Input [] prop.KeyVar   |> someElt ] 
+                            td [ Doc.Input [] prop.ValueVar |> someElt ] 
+                            td [ title "remove" ; style " cursor: pointer "
+                                 htmlText "x" ; SomeAttr <| on.click (fun _ _ ->  prop.Remove()                    ; redraw.Value <- () ) ] |> hoverable
+                        ])
+                yield tr [
+                    td [ htmlText "Add..."    ; SomeAttr <| on.click (fun _ _ ->  props.Add("", "1") ; setDirtyP() ; redraw.Value <- () ) ] |> hoverable
+                    td [ htmlText ""    ] 
+                ]
+              ]
+          ) redraw
+        
+        let properties =
+            div [
+              HtmlElementV tableProps
+              css """ td.hovering { background: gray; } """
+            ]
+        
+        ()
         let spl1         = Template.SplitterBar.New(20.0).Children([ style "grid-row: 2 / 4" ])
         storeVarCodeEditor "splitterV1" spl1.Var
         //storeVarCodeEditor "splitterV2" splitterV2.Var
@@ -4629,18 +4774,27 @@ namespace FSSGlobal
                                .Content("two", renderSplitterNode ch2).Padding(0.0)
             grid.RowAuto(50.0).RowFixedPx(px).Content( style "grid-template-areas: 'one' 'two' " ).Render
         
-        let title         = SHtmlNode <| Template.Input.New(Val.bindIRef curSnippetNameOf currentCodeSnippetId).Prefix(htmlText "name:").Render
-        let messages      = STabStrip <| TabStrip.New(Messages).Top
-        let code          = SHtmlNode <| codeMirrorRender
-        let snippets      = SHtmlNode <| snippetList
-        let buttons       = SHtmlNode <| buttonsH
-        let menu          = SHtmlNode <| menuBar
+        let title          = SHtmlNode <| Template.Input.New(Val.bindIRef curSnippetNameOf currentCodeSnippetId).Prefix(htmlText "name:").Render
+        let messagesT      = STabStrip <| TabStrip.New([]      ).Bottom
+        let messagesB      = STabStrip <| TabStrip.New(Messages).Top
+        let messagesL      = STabStrip <| TabStrip.New([]      ).Top   .Vertical
+        let messagesR      = STabStrip <| TabStrip.New([ "Properties", properties ]).Top   .Vertical
+        let code           = SHtmlNode <| codeMirrorRender
+        let snippets       = SHtmlNode <| snippetList
+        let buttons        = SHtmlNode <| buttonsH
+        let menu           = SHtmlNode <| menuBar
         
-        let title_code    = SplitterStructure.New(       title        , code         , fixedHorSplitter1 34.0)
-        let code_buttons  = SplitterStructure.New(       title_code   , buttons      , fixedHorSplitter2 80.0)
-        let snippets_code = SplitterStructure.New(true , snippets     , code_buttons ,                   15.0)
-        let main_messages = SplitterStructure.New(false, snippets_code, messages     ,                   82.0)
-        let main_window   = SplitterStructure.New(       menu         , main_messages, fixedHorSplitter1 50.0)
+        let inline fixedHorSplitter first            px  ch1 ch2 = Grid.NewBisect(first, StFixedPx , false, px , renderSplitterNode ch1, renderSplitterNode ch2)                  .Render
+        let inline split (min:float) (max:float) ver per ch1 ch2 = Grid.NewBisect(true , StVariable, ver  , per, renderSplitterNode ch1, renderSplitterNode ch2).Min(min).Max(max).Render
+        
+        let title_code     = SplitterStructure.New(       title         , code          , fixedHorSplitter true  34.0)
+        let code_buttons   = SplitterStructure.New(       title_code    , buttons       , fixedHorSplitter false 80.0)
+        let snippets_code  = SplitterStructure.New(true , snippets      , code_buttons  ,                        15.0)
+        let main_messagesB = SplitterStructure.New(       snippets_code , messagesB     , split 30. 100. false   82.0)
+        let main_messagesT = SplitterStructure.New(       messagesT     , main_messagesB, split  0.  75. false    0.0)
+        let main_messagesR = SplitterStructure.New(       main_messagesT, messagesR     , split 25. 100. true    92.0)
+        let main_messagesL = SplitterStructure.New(       messagesL     , main_messagesR, split  0.  75. true     0.0)
+        let main_window    = SplitterStructure.New(       menu          , main_messagesL, fixedHorSplitter true  50.0)
         
         //let code_messages = SplitterStructure.New(false, title_Code           , STabStrip messages,                   75.0)
         //let main_Buttons  = SplitterStructure.New(       snippets_code        , SHtmlNode buttons                 , fixedHorSplitter2 80.0)
@@ -4666,7 +4820,7 @@ namespace FSSGlobal
                   font-family: monospace;
                   line-height: 1.2;
                       """
-        ] |> renderDoc
+        ] |> renderDoc 
         
         
       // Version using internal Rpc's
@@ -4677,15 +4831,23 @@ namespace FSSGlobal
       open WebSharper.UI.Next.Server
       open WebSharper.UI.Next
       
-      type EndPoint = | [< EndPoint "/" >] EP
+      type EndPoint = 
+          | [< EndPoint "/" >] EPStart
+          | EPLoad of string
       
-      let content (ctx:Context<EndPoint>) (endpoint:EndPoint) : Async<Content<EndPoint>> =
+      let FSharpStationPage uri =
           Content.Page(
               Title = "F# Station"
             , Head  = [ Html.scriptAttr [ attr.``type`` "text/javascript"; attr.src "https://code.jquery.com/jquery-3.1.1.min.js"] [] 
                         Html.scriptAttr [ attr.``type`` "text/javascript"; attr.src "/EPFileX/CIPHERSpaceLoadFiles.js"           ] [] 
                       ]
-            , Body  = [ Html.client <@  FSharpStationClient () @> ])
+            , Body  = [ Html.client <@  FSharpStationClient uri @> ])
+      
+      let content (ctx:Context<EndPoint>) (endpoint:EndPoint) : Async<Content<EndPoint>> =
+          printfn "%A" endpoint
+          match endpoint with
+          | EPStart     -> FSharpStationPage ""
+          | EPLoad  uri -> uri |> System.Web.HttpUtility.UrlDecode |> System.Web.HttpUtility.UrlDecode |> FSharpStationPage
       
       let site = Application.MultiPage content
       
@@ -4721,12 +4883,12 @@ namespace FSSGlobal
               | _ -> eprintfn "Usage: WebServer3 ROOT_DIRECTORY URL"; exit 1
           use server = 
               WebApp.Start(url, fun appB ->
-                  appB.UseStaticFiles(StaticFileOptions(FileSystem = PhysicalFileSystem(rootDirectory)))
-                      .UseWebSharper(WebSharperOptions(ServerRootDirectory = rootDirectory
+                  appB.UseWebSharper(WebSharperOptions(ServerRootDirectory = rootDirectory
                                                      , Sitelet             = Some site
                                                      , BinDirectory        = "."
                                                      , Debug               = true))
-                  |> ignore
+                      .UseStaticFiles(StaticFileOptions(FileSystem = PhysicalFileSystem(rootDirectory)))
+                                  |> ignore
                   let listener = appB.Properties.["Microsoft.Owin.Host.HttpListener.OwinHttpListener"] |> unbox<Microsoft.Owin.Host.HttpListener.OwinHttpListener>
                   listener.SetRequestProcessingLimits(1000, 1000)
                   let maxA : int ref = ref 0
