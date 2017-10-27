@@ -1469,12 +1469,12 @@
  },WebSharper.Obj,MessagingClient);
  MessagingClient.get_EndPoint_=function()
  {
-  return"http://localhost:9010/Main.html";
+  return"http://localhost:9010/";
  };
  MessagingClient.New=Runtime.Ctor(function(clientId,timeout,endPoint)
  {
   this.clientId=clientId;
-  this.wsEndPoint=Option.defaultValue("http://localhost:9010/Main.html",endPoint);
+  this.wsEndPoint=Option.defaultValue("http://localhost:9010/",endPoint);
   this.tout=Option.defaultValue(100000,timeout);
   this.fromId=FsStationShared.AddressId(this.clientId);
   Remoting.set_EndPoint(this.wsEndPoint);
@@ -1967,11 +1967,11 @@
  },WebSharper.Obj,FsStationClient);
  FsStationClient.get_FSStationId_=function()
  {
-  return"FSharpStation1509118851996";
+  return"FSharpStation1509122642861";
  };
  FsStationClient.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
-  this.fsIds=Option.defaultValue("FSharpStation1509118851996",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1509122642861",fsStationId);
   this.msgClient=new MessagingClient.New(clientId,timeout,endPoint);
   this.toId=FsStationShared.AddressId(this.fsIds);
  },FsStationClient);
@@ -4587,7 +4587,7 @@
        }
       }
      else
-      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3035,20);
+      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3037,20);
    }
    else
     void 0;
@@ -5658,7 +5658,7 @@
  };
  FSharpStation.FSharpStationClient=function(loadFromUri)
  {
-  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,propertyCssLinkVal,propertyModeVal,propertyThemeVal,propertyThemeLinkVal,disableParseVal,disableFSIVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,fsStationClient,b,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b$1,autoCompleteClient,parseFile,parseRun,rex1,rex2,rex,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actEvalCode,$2,actRunWSNewTab,$3,actRunWSHere,$4,actRunWSIn,actParseCode,actCompileWS,$5,actFindDefinition,buttonsH,menuLeft,menuRight,menuBar,redraw,properties,s$2,v$2,v$3,Messages,snippetList,x,title,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,messagesT,messagesB,messagesL,messagesR,rootSplitter,x$1;
+  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,propertyCssLinkVal,propertyModeVal,propertyThemeVal,propertyThemeLinkVal,disableParseVal,disableFSIVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,fsStationClient,b,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b$1,autoCompleteClient,parseFile,isParseDisabled,parseRun,rex1,rex2,rex,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actEvalCode,$2,actRunWSNewTab,$3,actRunWSHere,$4,actRunWSIn,actParseCode,actCompileWS,$5,actFindDefinition,buttonsH,menuLeft,menuRight,menuBar,redraw,properties,s$2,v$2,v$3,Messages,snippetList,x,title,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,messagesT,messagesB,messagesL,messagesR,rootSplitter,x$1;
   function missing(def,find,lens,k)
   {
    return find(k)==null?Var.Lens(missingVar,function()
@@ -6444,7 +6444,7 @@
    b$2=null;
    return Concurrency.Delay(function()
    {
-    return Concurrency.Bind(View.GetAsync(Val.toView(disableParseVal)),function(a)
+    return Concurrency.Bind(isParseDisabled,function(a)
     {
      var m;
      return a?Concurrency.Zero():(m=CodeSnippet$1.FetchO(currentCodeSnippetId.c),m!=null&&m.$==1?Concurrency.Bind(mustParse(m.$0),function(a$1)
@@ -6474,39 +6474,41 @@
    var b$2;
    Concurrency.Start((b$2=null,Concurrency.Delay(function()
    {
-    var m,cur;
-    m=CodeSnippet$1.FetchO(currentCodeSnippetId.c);
-    return m!=null&&m.$==1?(cur=m.$0,Concurrency.Bind(parseIfMustThen(false),function()
+    return Concurrency.Bind(isParseDisabled,function(a)
     {
-     var pos,l,sub,add0,add;
-     pos=ed.getCursor();
-     l=ed.getLine(pos.line);
-     sub=Strings.length(getStartWord(l,pos.ch));
-     add0=Strings.length(getEndWord(l,pos.ch));
-     add=sub===0&&add0===0?2:add0;
-     return Concurrency.Bind(autoCompleteClient.ToolTip(parseFile,pos.line+1,pos.ch+1,cur.get_NameSanitized()),function(a)
+     var m,cur;
+     return a?Concurrency.Zero():(m=CodeSnippet$1.FetchO(currentCodeSnippetId.c),m!=null&&m.$==1?(cur=m.$0,Concurrency.Bind(parseIfMustThen(false),function()
      {
-      var c;
-      addPrsMsg(((((c=(Runtime.Curried(function($8,$9,$10,$11,$12)
+      var pos,l,sub,add0,add;
+      pos=ed.getCursor();
+      l=ed.getLine(pos.line);
+      sub=Strings.length(getStartWord(l,pos.ch));
+      add0=Strings.length(getEndWord(l,pos.ch));
+      add=sub===0&&add0===0?2:add0;
+      return Concurrency.Bind(autoCompleteClient.ToolTip(parseFile,pos.line+1,pos.ch+1,cur.get_NameSanitized()),function(a$1)
       {
-       return $8("InfoFSharp \""+Utils.toSafe($9)+" "+("("+Utils.prettyPrint($10[0])+", "+Utils.prettyPrint($10[1])+")")+" - "+("("+Utils.prettyPrint($11[0])+", "+Utils.prettyPrint($11[1])+")")+" "+Utils.toSafe($12)+" \"");
-      },5))(Global.id),function(a$1)
-      {
-       var c$1;
-       c$1=c(a$1);
-       return function(t)
+       var c;
+       addPrsMsg(((((c=(Runtime.Curried(function($8,$9,$10,$11,$12)
        {
-        var c$2;
-        c$2=c$1([t[0],t[1]]);
-        return function(t$1)
+        return $8("InfoFSharp \""+Utils.toSafe($9)+" "+("("+Utils.prettyPrint($10[0])+", "+Utils.prettyPrint($10[1])+")")+" - "+("("+Utils.prettyPrint($11[0])+", "+Utils.prettyPrint($11[1])+")")+" "+Utils.toSafe($12)+" \"");
+       },5))(Global.id),function(a$2)
+       {
+        var c$1;
+        c$1=c(a$2);
+        return function(t)
         {
-         return c$2([t$1[0],t$1[1]]);
+         var c$2;
+         c$2=c$1([t[0],t[1]]);
+         return function(t$1)
+         {
+          return c$2([t$1[0],t$1[1]]);
+         };
         };
-       };
-      })(cur.get_NameSanitized()))([pos.line+1,pos.ch-sub+1]))([pos.line+1,pos.ch+add+1]))(Strings.Replace(a,"\"","''")));
-      return Concurrency.Zero();
-     });
-    })):Concurrency.Zero();
+       })(cur.get_NameSanitized()))([pos.line+1,pos.ch-sub+1]))([pos.line+1,pos.ch+add+1]))(Strings.Replace(a$1,"\"","''")));
+       return Concurrency.Zero();
+      });
+     })):Concurrency.Zero());
+    });
    })),null);
   }
   function getHints(ed,cb,a)
@@ -6514,27 +6516,29 @@
    var b$2;
    Concurrency.Start((b$2=null,Concurrency.Delay(function()
    {
-    var m,cur;
-    m=CodeSnippet$1.FetchO(currentCodeSnippetId.c);
-    return m!=null&&m.$==1?(cur=m.$0,Concurrency.Bind(parseIfMustThen(true),function()
+    return Concurrency.Bind(isParseDisabled,function(a$1)
     {
-     var pos,l,word;
-     pos=ed.getCursor();
-     l=ed.getLine(pos.line);
-     word=getStartWord(l,pos.ch);
-     return Concurrency.Bind(autoCompleteClient.Complete(parseFile,l,pos.line+1,pos.ch+1,cur.get_NameSanitized()),function(a$1)
+     var m,cur;
+     return a$1?Concurrency.Zero():(m=CodeSnippet$1.FetchO(currentCodeSnippetId.c),m!=null&&m.$==1?(cur=m.$0,Concurrency.Bind(parseIfMustThen(true),function()
      {
-      function m$1(dis,rep,cls,chr)
+      var pos,l,word;
+      pos=ed.getCursor();
+      l=ed.getLine(pos.line);
+      word=getStartWord(l,pos.ch);
+      return Concurrency.Bind(autoCompleteClient.Complete(parseFile,l,pos.line+1,pos.ch+1,cur.get_NameSanitized()),function(a$2)
       {
-       return Hint.New(rep,chr+"| "+dis,cls);
-      }
-      cb(HintResponse.New(Arrays.map(function($8)
-      {
-       return m$1($8[0],$8[1],$8[2],$8[3]);
-      },a$1),CodeMirrorPos.New(pos.line,pos.ch-word.length),pos));
-      return Concurrency.Zero();
-     });
-    })):Concurrency.Zero();
+       function m$1(dis,rep,cls,chr)
+       {
+        return Hint.New(rep,chr+"| "+dis,cls);
+       }
+       cb(HintResponse.New(Arrays.map(function($8)
+       {
+        return m$1($8[0],$8[1],$8[2],$8[3]);
+       },a$2),CodeMirrorPos.New(pos.line,pos.ch-word.length),pos));
+       return Concurrency.Zero();
+      });
+     })):Concurrency.Zero());
+    });
    })),null);
   }
   function getAnnotations(txt,cb,a,ed)
@@ -6833,7 +6837,7 @@
   propertyCssVal=genericPropertyVal("CSS","",Global.id);
   propertyCssLinkVal=genericPropertyVal("CSSLink","",Global.id);
   propertyModeVal=genericPropertyVal("Mode","fsharp",Global.id);
-  propertyThemeVal=genericPropertyVal("Theme","rubyblue",Global.id);
+  propertyThemeVal=genericPropertyVal("Theme","",Global.id);
   propertyThemeLinkVal=Val.map(function($8)
   {
    return function($9)
@@ -6957,6 +6961,7 @@
    $0:Global.location.href
   });
   parseFile=FsGlobal.fsIds()+".fsx";
+  isParseDisabled=View.GetAsync(Val.toView(disableParseVal));
   parseRun=1;
   rex1="\\((\\d+)\\) F# (.+).fsx\\((\\d+)\\,(\\d+)\\): (error|warning) ((.|\\b)+)";
   rex2="(Err|Warning|Info)(FSharp|WebSharper)\\s+\"(\\((\\d+)\\) ?)?F?#? ?(.+?)(.fsx)? \\((\\d+)\\,\\s*(\\d+)\\) - \\((\\d+)\\,\\s*(\\d+)\\) ((.|\\s)+?)"+"\"";
@@ -7001,7 +7006,16 @@
    });
    Val.sink(function(v$4)
    {
-    ed.setOption("theme",v$4);
+    var b$2;
+    Concurrency.Start((b$2=null,Concurrency.Delay(function()
+    {
+     ed.setOption("theme",v$4);
+     return Concurrency.Bind(Concurrency.Sleep(50),function()
+     {
+      ed.refresh();
+      return Concurrency.Zero();
+     });
+    })),null);
    },propertyThemeVal);
    Val.sink(function(v$4)
    {
@@ -7222,7 +7236,7 @@
   {
    rootSplitter.SelectTab("WS Result");
   },triggerWSResult);
-  x$1=HtmlNode.div([HtmlNode.style("height: 100vh; width: 100% "),rootSplitter.get_Render().Style("height: 100%; width: 100% "),HtmlNode.script([HtmlNode.src("/EPFileX/FileSaver/FileSaver.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://code.jquery.com/jquery-3.1.1.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.link([HtmlNode.href("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/css/main.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css("\n        \n          body { margin: 0px }     \n               \n          div textarea {\n              font-family     : monospace;\n          }\n          .code-editor-list-tile {\n              white-space     : nowrap; \n              border-style    : solid none none;\n              border-color    : white;\n              border-width    : 1px;\n              background-color: #D8D8D8;\n              display         : flex;\n          }\n          .code-editor-list-text{\n              padding      : 1px 10px 1px 5px;\n              overflow     :hidden;\n              text-overflow: ellipsis;\n              white-space  : nowrap;\n              flex         : 1;\n          }\n          \n          .code-editor-list-tile.direct-predecessor {\n              font-weight: bold;\n          }\n          .code-editor-list-tile.indirect-predecessor {\n              color: blue;\n          }\n          .code-editor-list-tile.selected {\n              background-color: #77F;\n              color           : white;\n          }\n          .code-editor-list-tile.hovering {\n              background: lightgray;\n          }\n          .code-editor-list-tile.hovering.selected {\n              background:  blue;\n          }\n          .code-editor-list-tile>.predecessor {\n              font-weight : bold;\n              border-style: inset;\n              border-width: 1px;\n              text-align  : center;\n              color       : transparent;\n          }\n          .code-editor-list-tile.direct-predecessor>.predecessor {\n              color       : blue;\n          }\n          \n          .CodeMirror { height: 100%; }\n          \n          .node {\n              background-color: white; \n              width           : 2ch; \n              color           : #A03; \n              font-weight     : bold; \n              text-align      : center;\n              font-family     : arial;\n          }\n          .Warning { text-decoration: underline lightblue } \n          .Error   { text-decoration: underline red       } \n          .body    { margin         : 0px                 }\n          "),HtmlNode.style(" \n                  color      : #333;\n                  font-size  : small;\n                  font-family: monospace;\n                  line-height: 1.2;\n                      "),HtmlNode.link([HtmlNode.href(propertyThemeLinkVal),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href(propertyCssLinkVal),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css(propertyCssVal)]);
+  x$1=HtmlNode.div([HtmlNode.style("height: 100vh; width: 100% "),rootSplitter.get_Render().Style("height: 100%; width: 100% "),HtmlNode.script([HtmlNode.src("/EPFileX/FileSaver/FileSaver.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://code.jquery.com/jquery-3.1.1.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.link([HtmlNode.href("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/css/main.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css("\n        \n          body { margin: 0px }     \n               \n          div textarea {\n              font-family     : monospace;\n          }\n          .code-editor-list-tile {\n              white-space     : nowrap; \n              border-style    : solid none none;\n              border-color    : white;\n              border-width    : 1px;\n              background-color: #D8D8D8;\n              display         : flex;\n          }\n          .code-editor-list-text{\n              padding         : 1px 10px 1px 5px;\n              overflow        : hidden;\n              text-overflow   : ellipsis;\n              white-space     : nowrap;\n              flex            : 1;\n          }\n          \n          .code-editor-list-tile.direct-predecessor {\n              font-weight     : bold;\n          }\n          .code-editor-list-tile.indirect-predecessor {\n              color           : blue;\n          }\n          .code-editor-list-tile.selected {\n              background-color: #77F;\n              color           : white;\n          }\n          .code-editor-list-tile.hovering {\n              background      : lightgray;\n          }\n          .code-editor-list-tile.hovering.selected {\n              background      : blue;\n          }\n          .code-editor-list-tile>.predecessor {\n              font-weight     : bold;\n              border-style    : inset;\n              border-width    : 1px;\n              text-align      : center;\n              color           : transparent;\n          }\n          .code-editor-list-tile.direct-predecessor>.predecessor {\n              color           : blue;\n          }\n          \n          .CodeMirror { height: 100%; }\n          \n          .node {\n              background-color: white; \n              width           : 2ch; \n              color           : #A03; \n              font-weight     : bold; \n              text-align      : center;\n              font-family     : arial;\n          }\n          .Warning { text-decoration: underline lightblue } \n          .Error   { text-decoration: underline red       } \n          .body    { margin         : 0px                 }\n          "),HtmlNode.style(" \n                  color      : #333;\n                  font-size  : small;\n                  font-family: monospace;\n                  line-height: 1.2;\n                      "),HtmlNode.link([HtmlNode.href(propertyThemeLinkVal),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href(propertyCssLinkVal),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css(propertyCssVal)]);
   return(HtmlNode.renderDoc())(x$1);
  };
  SC$1.$cctor=function()
