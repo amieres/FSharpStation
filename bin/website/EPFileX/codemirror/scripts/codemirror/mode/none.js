@@ -3,6 +3,7 @@ CodeMirror.defineMode('none', function ()
 
     function tokenBase(stream, state)
     {
+	var ch = stream.next();
         return 'variable';
     }
 
@@ -10,7 +11,6 @@ CodeMirror.defineMode('none', function ()
         startState: function () { return { tokenize: tokenBase, commentLevel: 0 }; },
         token: function (stream, state)
         {
-		 return null;
             if (stream.eatSpace()) return null;
             return state.tokenize(stream, state);
         },

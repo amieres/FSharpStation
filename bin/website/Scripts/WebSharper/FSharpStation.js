@@ -1469,12 +1469,12 @@
  },WebSharper.Obj,MessagingClient);
  MessagingClient.get_EndPoint_=function()
  {
-  return"http://localhost:9010/";
+  return"http://localhost:9010/Main.html";
  };
  MessagingClient.New=Runtime.Ctor(function(clientId,timeout,endPoint)
  {
   this.clientId=clientId;
-  this.wsEndPoint=Option.defaultValue("http://localhost:9010/",endPoint);
+  this.wsEndPoint=Option.defaultValue("http://localhost:9010/Main.html",endPoint);
   this.tout=Option.defaultValue(100000,timeout);
   this.fromId=FsStationShared.AddressId(this.clientId);
   Remoting.set_EndPoint(this.wsEndPoint);
@@ -1967,11 +1967,11 @@
  },WebSharper.Obj,FsStationClient);
  FsStationClient.get_FSStationId_=function()
  {
-  return"FSharpStation1509027444425";
+  return"FSharpStation1509118851996";
  };
  FsStationClient.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
-  this.fsIds=Option.defaultValue("FSharpStation1509027444425",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1509118851996",fsStationId);
   this.msgClient=new MessagingClient.New(clientId,timeout,endPoint);
   this.toId=FsStationShared.AddressId(this.fsIds);
  },FsStationClient);
@@ -3695,7 +3695,7 @@
       },$this["var"].RView());
      });
     })
-   })]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/content/editor.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/content/codemirror.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/content/theme/rubyblue.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/scripts/addon/display/fullscreen.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/scripts/addon/dialog/dialog.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/scripts/addon/hint/show-hint.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/scripts/addon/lint/lint.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css(".CodeMirror { height: 100% }")]);
+   })]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/content/editor.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/content/codemirror.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/scripts/addon/display/fullscreen.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/scripts/addon/dialog/dialog.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/scripts/addon/hint/show-hint.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/scripts/addon/lint/lint.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css(".CodeMirror { height: 100% }")]);
   }
  },null,CodeMirror);
  CodeMirror.New$1=function(v)
@@ -4587,7 +4587,7 @@
        }
       }
      else
-      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3032,20);
+      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3035,20);
    }
    else
     void 0;
@@ -5305,7 +5305,7 @@
  },RunNode);
  RunCode.completeJS=function(js)
  {
-  return"\n          CIPHERSpaceLoadFileGlobalFileRef = null;\n          CIPHERSpaceLoadFile = function (filename, callback) {\n              if (filename.slice(-3) == \".js\" || filename.slice(-4) == \".fsx\" || filename.slice(-3) == \".fs\") { //if filename is a external JavaScript file\n                  var fileRef = null;\n                  var pre = document.querySelector('script[src=\"' + filename + '\"]')\n                  if (!pre) {\n                      fileRef = document.createElement('script')\n                      fileRef.setAttribute(\"type\", \"text/javascript\")\n                      fileRef.setAttribute(\"src\", filename)\n                  }\n                  else callback();\n              }\n              else if (filename.slice(-4) == \".css\") { //if filename is an external CSS file\n                  var pre = document.querySelector('script[src=\"' + filename + '\"]')\n                  if (!pre) {\n                      fileRef = document.createElement(\"link\")\n                      fileRef.setAttribute(\"rel\", \"stylesheet\")\n                      fileRef.setAttribute(\"type\", \"text/css\")\n                      fileRef.setAttribute(\"href\", filename)\n                  }\n                  else callback();\n              }\n              else if (filename.slice(-5) == \".html\") { //if filename is an external HTML file\n                  var pre = document.querySelector('script[src=\"' + filename + '\"]')\n                  if (!pre) {\n                      fileRef = document.createElement(\"link\")\n                      fileRef.setAttribute(\"rel\", \"import\")\n                      fileRef.setAttribute(\"type\", \"text/html\")\n                      fileRef.setAttribute(\"href\", filename)\n                  }\n                  else callback();\n              }\n              if (!!fileRef) {\n                  CIPHERSpaceLoadFileGlobalFileRef = fileRef;\n      \u0009\u0009\u0009fileRef.onload = function () { fileRef.onload = null;  callback(); }\n                  document.getElementsByTagName(\"head\")[0].appendChild(fileRef);\n              }\n          }\n          CIPHERSpaceLoadFiles = function (files, callback) {\n              var newCallback = callback\n              if (!!CIPHERSpaceLoadFileGlobalFileRef && !!(CIPHERSpaceLoadFileGlobalFileRef.onload)) {\n                  var oldCallback = CIPHERSpaceLoadFileGlobalFileRef.onload;\n                  CIPHERSpaceLoadFileGlobalFileRef.onload = null;\n                  newCallback = function () {\n                      callback();\n                      oldCallback();\n                  }\n              }\n              var i = 0;\n              loadNext = function () {\n                  if (i < files.length) {\n                      var file = files[i];\n                      i++;\n                      CIPHERSpaceLoadFile(file, loadNext);\n                  }\n                  else newCallback();\n              };\n              loadNext();\n      \u0009}\n          CIPHERSpaceLoadFiles(['https://code.jquery.com/jquery-3.1.1.min.js'], function() {}); \n      \u0009CIPHERSpaceLoadFilesDoAfter = function (callback) {\n      \u0009\u0009var newCallback = callback\n      \u0009\u0009if (!!CIPHERSpaceLoadFileGlobalFileRef) {\n      \u0009\u0009\u0009if (!!(CIPHERSpaceLoadFileGlobalFileRef.onload)) {\n      \u0009\u0009\u0009\u0009var oldCallback = CIPHERSpaceLoadFileGlobalFileRef.onload;\n      \u0009\u0009\u0009\u0009CIPHERSpaceLoadFileGlobalFileRef.onload = null;\n      \u0009\u0009\u0009\u0009newCallback = function () {\n      \u0009\u0009\u0009\u0009\u0009oldCallback();\n      \u0009\u0009\u0009\u0009\u0009callback();\n      \u0009\u0009\u0009\u0009}\n      \u0009\u0009\u0009}\n      \u0009\u0009}\n      \u0009\u0009else CIPHERSpaceLoadFileGlobalFileRef = {};\n      \u0009\u0009CIPHERSpaceLoadFileGlobalFileRef.onload = newCallback;\n      \u0009}\n      \n      CIPHERSpaceLoadFilesDoAfter(function() { \n        if (typeof IntelliFactory !=='undefined')\n          IntelliFactory.Runtime.Start();\n        for (key in window) { \n          if (key.startsWith(\"StartupCode$\")) \n            try { window[key].$cctor(); } catch (e) {} \n        } \n      })\n                       "+js;
+  return"\n            CIPHERSpaceLoadFileGlobalFileRef = null;\n            CIPHERSpaceLoadFile = function (filename, callback) {\n                if (filename.slice(-3) == \".js\" || filename.slice(-4) == \".fsx\" || filename.slice(-3) == \".fs\") { //if filename is a external JavaScript file\n                    var fileRef = null;\n                    var pre = document.querySelector('script[src=\"' + filename + '\"]')\n                    if (!pre) {\n                        fileRef = document.createElement('script')\n                        fileRef.setAttribute(\"type\", \"text/javascript\")\n                        fileRef.setAttribute(\"src\", filename)\n                    }\n                    else callback();\n                }\n                else if (filename.slice(-4) == \".css\") { //if filename is an external CSS file\n                    var pre = document.querySelector('script[src=\"' + filename + '\"]')\n                    if (!pre) {\n                        fileRef = document.createElement(\"link\")\n                        fileRef.setAttribute(\"rel\", \"stylesheet\")\n                        fileRef.setAttribute(\"type\", \"text/css\")\n                        fileRef.setAttribute(\"href\", filename)\n                    }\n                    else callback();\n                }\n                else if (filename.slice(-5) == \".html\") { //if filename is an external HTML file\n                    var pre = document.querySelector('script[src=\"' + filename + '\"]')\n                    if (!pre) {\n                        fileRef = document.createElement(\"link\")\n                        fileRef.setAttribute(\"rel\", \"import\")\n                        fileRef.setAttribute(\"type\", \"text/html\")\n                        fileRef.setAttribute(\"href\", filename)\n                    }\n                    else callback();\n                }\n                if (!!fileRef) {\n                    CIPHERSpaceLoadFileGlobalFileRef = fileRef;\n        \u0009\u0009\u0009fileRef.onload = function () { fileRef.onload = null;  callback(); }\n                    document.getElementsByTagName(\"head\")[0].appendChild(fileRef);\n                }\n            }\n            CIPHERSpaceLoadFiles = function (files, callback) {\n                var newCallback = callback\n                if (!!CIPHERSpaceLoadFileGlobalFileRef && !!(CIPHERSpaceLoadFileGlobalFileRef.onload)) {\n                    var oldCallback = CIPHERSpaceLoadFileGlobalFileRef.onload;\n                    CIPHERSpaceLoadFileGlobalFileRef.onload = null;\n                    newCallback = function () {\n                        callback();\n                        oldCallback();\n                    }\n                }\n                var i = 0;\n                loadNext = function () {\n                    if (i < files.length) {\n                        var file = files[i];\n                        i++;\n                        CIPHERSpaceLoadFile(file, loadNext);\n                    }\n                    else newCallback();\n                };\n                loadNext();\n        \u0009}\n            CIPHERSpaceLoadFiles(['https://code.jquery.com/jquery-3.1.1.min.js'], function() {}); \n        \u0009CIPHERSpaceLoadFilesDoAfter = function (callback) {\n        \u0009\u0009var newCallback = callback\n        \u0009\u0009if (!!CIPHERSpaceLoadFileGlobalFileRef) {\n        \u0009\u0009\u0009if (!!(CIPHERSpaceLoadFileGlobalFileRef.onload)) {\n        \u0009\u0009\u0009\u0009var oldCallback = CIPHERSpaceLoadFileGlobalFileRef.onload;\n        \u0009\u0009\u0009\u0009CIPHERSpaceLoadFileGlobalFileRef.onload = null;\n        \u0009\u0009\u0009\u0009newCallback = function () {\n        \u0009\u0009\u0009\u0009\u0009oldCallback();\n        \u0009\u0009\u0009\u0009\u0009callback();\n        \u0009\u0009\u0009\u0009}\n        \u0009\u0009\u0009}\n        \u0009\u0009}\n        \u0009\u0009else CIPHERSpaceLoadFileGlobalFileRef = {};\n        \u0009\u0009CIPHERSpaceLoadFileGlobalFileRef.onload = newCallback;\n        \u0009}\n        \n        CIPHERSpaceLoadFilesDoAfter(function() { \n          if (typeof IntelliFactory !=='undefined')\n            IntelliFactory.Runtime.Start();\n          for (key in window) { \n            if (key.startsWith(\"StartupCode$\")) \n              try { window[key].$cctor(); } catch (e) {} \n          } \n        })\n        \n                         "+js;
  };
  Position.NewBrowser={
   $:3
@@ -5658,7 +5658,7 @@
  };
  FSharpStation.FSharpStationClient=function(loadFromUri)
  {
-  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,propertyCssLinkVal,disableParseVal,disableFSIVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,fsStationClient,b,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b$1,autoCompleteClient,parseFile,parseRun,rex1,rex2,rex,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actEvalCode,$2,actRunWSNewTab,$3,actRunWSHere,$4,actRunWSIn,actParseCode,actCompileWS,$5,actFindDefinition,buttonsH,menuLeft,menuRight,menuBar,redraw,properties,s$2,v$2,v$3,Messages,snippetList,x,title,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,messagesT,messagesB,messagesL,messagesR,rootSplitter,x$1;
+  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,propertyCssLinkVal,propertyModeVal,propertyThemeVal,propertyThemeLinkVal,disableParseVal,disableFSIVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,fsStationClient,b,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b$1,autoCompleteClient,parseFile,parseRun,rex1,rex2,rex,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actEvalCode,$2,actRunWSNewTab,$3,actRunWSHere,$4,actRunWSIn,actParseCode,actCompileWS,$5,actFindDefinition,buttonsH,menuLeft,menuRight,menuBar,redraw,properties,s$2,v$2,v$3,Messages,snippetList,x,title,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,messagesT,messagesB,messagesL,messagesR,rootSplitter,x$1;
   function missing(def,find,lens,k)
   {
    return find(k)==null?Var.Lens(missingVar,function()
@@ -5712,9 +5712,14 @@
   function genericPropertyVal(p,def,f$2)
   {
    var f$3,g$2;
-   function m(snp)
+   function b$2(snp)
    {
-    return f$2(FsGlobal["CodeSnippet.propValue"](snp,p));
+    var o;
+    o=FsGlobal["CodeSnippet.propValue"](snp,p);
+    return o==null?null:{
+     $:1,
+     $0:f$2(o.$0)
+    };
    }
    function g$3(a)
    {
@@ -5722,10 +5727,7 @@
    }
    return Val.map((f$3=(g$2=function(o)
    {
-    return o==null?null:{
-     $:1,
-     $0:m(o.$0)
-    };
+    return o==null?null:b$2(o.$0);
    },function(x$2)
    {
     return g$2(CodeSnippet$1.FetchO(x$2));
@@ -5736,25 +5738,10 @@
   }
   function disablePropertyVal(p)
   {
-   var f$2;
-   function m(y)
+   return genericPropertyVal(p,false,function(y)
    {
     return"0"!==y;
-   }
-   function g$2(a)
-   {
-    return Option.defaultValue(false,a);
-   }
-   return genericPropertyVal(p,false,(f$2=function(o)
-   {
-    return o==null?null:{
-     $:1,
-     $0:m(o.$0)
-    };
-   },function(x$2)
-   {
-    return g$2(f$2(x$2));
-   }));
+   });
   }
   function setDirtyPart()
   {
@@ -6843,14 +6830,17 @@
   {
    return Unchecked.Equals(CodeSnippet$1.FetchO(cur),null);
   },currentCodeSnippetId);
-  propertyCssVal=genericPropertyVal("CSS","",function(a)
+  propertyCssVal=genericPropertyVal("CSS","",Global.id);
+  propertyCssLinkVal=genericPropertyVal("CSSLink","",Global.id);
+  propertyModeVal=genericPropertyVal("Mode","fsharp",Global.id);
+  propertyThemeVal=genericPropertyVal("Theme","rubyblue",Global.id);
+  propertyThemeLinkVal=Val.map(function($8)
   {
-   return Option.defaultValue("",a);
-  });
-  propertyCssLinkVal=genericPropertyVal("CSSLink","",function(a)
-  {
-   return Option.defaultValue("",a);
-  });
+   return function($9)
+   {
+    return $8("/EPFileX/codemirror/content/theme/"+Utils.toSafe($9)+".css");
+   };
+  }(Global.id),propertyThemeVal);
   disableParseVal=disablePropertyVal("DisableParse");
   disableFSIVal=Val.map2(function(e)
   {
@@ -7009,6 +6999,14 @@
    {
     return getAnnotations($8[0],$8[1],$8[2],$8[3]);
    });
+   Val.sink(function(v$4)
+   {
+    ed.setOption("theme",v$4);
+   },propertyThemeVal);
+   Val.sink(function(v$4)
+   {
+    ed.setOption("mode",v$4);
+   },propertyModeVal);
   }).Style("height: 100%");
   codeMirrorRender=codeMirror.get_Render().AddChildren([new HtmlNode$1({
    $:7,
@@ -7224,7 +7222,7 @@
   {
    rootSplitter.SelectTab("WS Result");
   },triggerWSResult);
-  x$1=HtmlNode.div([HtmlNode.style("height: 100vh; width: 100% "),rootSplitter.get_Render().Style("height: 100%; width: 100% "),HtmlNode.script([HtmlNode.src("/EPFileX/FileSaver/FileSaver.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://code.jquery.com/jquery-3.1.1.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.link([HtmlNode.href("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/css/main.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css("\n        body { margin: 0px }     \n             \n        div textarea {\n        font-family: monospace;\n        }\n        .code-editor-list-tile {\n        white-space: nowrap; \n        border-style: solid none none;\n        border-color: white;\n        border-width: 1px;\n        background-color: #D8D8D8;\n        display: flex;\n        }\n        .code-editor-list-text{\n        padding: 1px 10px 1px 5px;\n        overflow:hidden;\n        text-overflow: ellipsis;\n        white-space: nowrap;\n        flex: 1;\n        }\n        \n        .code-editor-list-tile.direct-predecessor {\n        font-weight: bold;\n        }\n        .code-editor-list-tile.indirect-predecessor {\n        color: blue;\n        }\n        .code-editor-list-tile.selected {\n        background-color: #77F;\n        color: white;\n        }\n        .code-editor-list-tile.hovering {\n        background: lightgray;\n        }\n        .code-editor-list-tile.hovering.selected {\n        background:  blue;\n        }\n        .code-editor-list-tile>.predecessor {\n        font-weight: bold;\n        border-style: inset;\n        border-width: 1px;\n        text-align: center;\n        color: transparent;\n        }\n        .code-editor-list-tile.direct-predecessor>.predecessor {\n        color: blue;\n        }\n        \n        .CodeMirror { height: 100%; }\n        \n        .node {\n            background-color:white; \n            width: 2ch; \n            color: #A03; \n            font-weight:bold; \n            text-align: center;\n            font-family: arial;\n        }\n        .Warning { text-decoration: underline lightblue } \n        .Error   { text-decoration: underline red       } \n        .body    { margin         : 0px                 }\n            "),HtmlNode.style(" \n                  color      : #333;\n                  font-size  : small;\n                  font-family: monospace;\n                  line-height: 1.2;\n                      "),HtmlNode.link([HtmlNode.href(propertyCssLinkVal),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css(propertyCssVal)]);
+  x$1=HtmlNode.div([HtmlNode.style("height: 100vh; width: 100% "),rootSplitter.get_Render().Style("height: 100%; width: 100% "),HtmlNode.script([HtmlNode.src("/EPFileX/FileSaver/FileSaver.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://code.jquery.com/jquery-3.1.1.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.link([HtmlNode.href("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/css/main.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css("\n        \n          body { margin: 0px }     \n               \n          div textarea {\n              font-family     : monospace;\n          }\n          .code-editor-list-tile {\n              white-space     : nowrap; \n              border-style    : solid none none;\n              border-color    : white;\n              border-width    : 1px;\n              background-color: #D8D8D8;\n              display         : flex;\n          }\n          .code-editor-list-text{\n              padding      : 1px 10px 1px 5px;\n              overflow     :hidden;\n              text-overflow: ellipsis;\n              white-space  : nowrap;\n              flex         : 1;\n          }\n          \n          .code-editor-list-tile.direct-predecessor {\n              font-weight: bold;\n          }\n          .code-editor-list-tile.indirect-predecessor {\n              color: blue;\n          }\n          .code-editor-list-tile.selected {\n              background-color: #77F;\n              color           : white;\n          }\n          .code-editor-list-tile.hovering {\n              background: lightgray;\n          }\n          .code-editor-list-tile.hovering.selected {\n              background:  blue;\n          }\n          .code-editor-list-tile>.predecessor {\n              font-weight : bold;\n              border-style: inset;\n              border-width: 1px;\n              text-align  : center;\n              color       : transparent;\n          }\n          .code-editor-list-tile.direct-predecessor>.predecessor {\n              color       : blue;\n          }\n          \n          .CodeMirror { height: 100%; }\n          \n          .node {\n              background-color: white; \n              width           : 2ch; \n              color           : #A03; \n              font-weight     : bold; \n              text-align      : center;\n              font-family     : arial;\n          }\n          .Warning { text-decoration: underline lightblue } \n          .Error   { text-decoration: underline red       } \n          .body    { margin         : 0px                 }\n          "),HtmlNode.style(" \n                  color      : #333;\n                  font-size  : small;\n                  font-family: monospace;\n                  line-height: 1.2;\n                      "),HtmlNode.link([HtmlNode.href(propertyThemeLinkVal),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href(propertyCssLinkVal),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css(propertyCssVal)]);
   return(HtmlNode.renderDoc())(x$1);
  };
  SC$1.$cctor=function()
@@ -7283,7 +7281,7 @@
   {
    return g$1(HtmlNode.style2pairs(x));
   });
-  SC$1.codeMirrorIncludes=["/EPFileX/codemirror/scripts/codemirror/codemirror.js","/EPFileX/codemirror/scripts/intellisense.js","/EPFileX/codemirror/scripts/codemirror/codemirror-intellisense.js","/EPFileX/codemirror/scripts/codemirror/codemirror-compiler.js","/EPFileX/codemirror/scripts/codemirror/mode/fsharp.js","/EPFileX/codemirror/scripts/addon/search/searchcursor.js","/EPFileX/codemirror/scripts/addon/search/search.js","/EPFileX/codemirror/scripts/addon/search/jump-to-line.js","/EPFileX/codemirror/scripts/addon/dialog/dialog.js","/EPFileX/codemirror/scripts/addon/edit/matchbrackets.js","/EPFileX/codemirror/scripts/addon/selection/active-line.js","/EPFileX/codemirror/scripts/addon/display/fullscreen.js","/EPFileX/codemirror/scripts/addon/hint/show-hint.js","/EPFileX/codemirror/scripts/addon/lint/lint.js"];
+  SC$1.codeMirrorIncludes=["/EPFileX/codemirror/scripts/codemirror/codemirror.js","/EPFileX/codemirror/scripts/intellisense.js","/EPFileX/codemirror/scripts/codemirror/codemirror-intellisense.js","/EPFileX/codemirror/scripts/codemirror/codemirror-compiler.js","/EPFileX/codemirror/scripts/codemirror/mode/none.js","/EPFileX/codemirror/scripts/codemirror/mode/fsharp.js","/EPFileX/codemirror/scripts/codemirror/mode/css.js","/EPFileX/codemirror/scripts/codemirror/mode/javascript.js","/EPFileX/codemirror/scripts/codemirror/mode/markdown.js","/EPFileX/codemirror/scripts/addon/search/searchcursor.js","/EPFileX/codemirror/scripts/addon/search/search.js","/EPFileX/codemirror/scripts/addon/search/jump-to-line.js","/EPFileX/codemirror/scripts/addon/dialog/dialog.js","/EPFileX/codemirror/scripts/addon/edit/matchbrackets.js","/EPFileX/codemirror/scripts/addon/selection/active-line.js","/EPFileX/codemirror/scripts/addon/display/fullscreen.js","/EPFileX/codemirror/scripts/addon/hint/show-hint.js","/EPFileX/codemirror/scripts/addon/lint/lint.js"];
   SC$1.observers=List.T.Empty;
   SC$1.draggedTab=[null];
   SC$1.selectedPanels=Var.Create$1(new FSharpMap.New([]));
