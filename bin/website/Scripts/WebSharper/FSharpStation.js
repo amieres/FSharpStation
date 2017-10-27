@@ -1967,11 +1967,11 @@
  },WebSharper.Obj,FsStationClient);
  FsStationClient.get_FSStationId_=function()
  {
-  return"FSharpStation1508994284112";
+  return"FSharpStation1509027444425";
  };
  FsStationClient.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
-  this.fsIds=Option.defaultValue("FSharpStation1508994284112",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1509027444425",fsStationId);
   this.msgClient=new MessagingClient.New(clientId,timeout,endPoint);
   this.toId=FsStationShared.AddressId(this.fsIds);
  },FsStationClient);
@@ -5658,7 +5658,7 @@
  };
  FSharpStation.FSharpStationClient=function(loadFromUri)
  {
-  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,disableParseVal,disableFSIVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,fsStationClient,b,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b$1,autoCompleteClient,parseFile,parseRun,rex1,rex2,rex,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actEvalCode,$2,actRunWSNewTab,$3,actRunWSHere,$4,actRunWSIn,actParseCode,actCompileWS,$5,actFindDefinition,buttonsH,menuLeft,menuRight,menuBar,redraw,properties,s$2,v$2,v$3,Messages,snippetList,x,title,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,messagesT,messagesB,messagesL,messagesR,rootSplitter,x$1;
+  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,propertyCssLinkVal,disableParseVal,disableFSIVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,fsStationClient,b,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b$1,autoCompleteClient,parseFile,parseRun,rex1,rex2,rex,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actEvalCode,$2,actRunWSNewTab,$3,actRunWSHere,$4,actRunWSIn,actParseCode,actCompileWS,$5,actFindDefinition,buttonsH,menuLeft,menuRight,menuBar,redraw,properties,s$2,v$2,v$3,Messages,snippetList,x,title,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,messagesT,messagesB,messagesL,messagesR,rootSplitter,x$1;
   function missing(def,find,lens,k)
   {
    return find(k)==null?Var.Lens(missingVar,function()
@@ -5709,38 +5709,52 @@
     return FsGlobal.codeSnippets().LensInto(a,a$1,a$2);
    },k);
   }
-  function disableGenericVal(f$2)
+  function genericPropertyVal(p,def,f$2)
   {
-   var f$3;
-   function g$2(o)
+   var f$3,g$2;
+   function m(snp)
    {
-    return o==null?null:{
-     $:1,
-     $0:f$2(o.$0)
-    };
+    return f$2(FsGlobal["CodeSnippet.propValue"](snp,p));
    }
    function g$3(a)
    {
-    return Option.defaultValue(true,a);
+    return Option.defaultValue(def,a);
    }
-   return Val.map((f$3=function(x$2)
+   return Val.map((f$3=(g$2=function(o)
+   {
+    return o==null?null:{
+     $:1,
+     $0:m(o.$0)
+    };
+   },function(x$2)
    {
     return g$2(CodeSnippet$1.FetchO(x$2));
-   },function(x$2)
+   }),function(x$2)
    {
     return g$3(f$3(x$2));
    }),currentCodeSnippetId);
   }
   function disablePropertyVal(p)
   {
-   return disableGenericVal(function(snp)
+   var f$2;
+   function m(y)
    {
-    var o;
-    return Option.defaultValue(false,(o=FsGlobal["CodeSnippet.propValue"](snp,p),o==null?null:{
+    return"0"!==y;
+   }
+   function g$2(a)
+   {
+    return Option.defaultValue(false,a);
+   }
+   return genericPropertyVal(p,false,(f$2=function(o)
+   {
+    return o==null?null:{
      $:1,
-     $0:"0"!==o.$0
-    }));
-   });
+     $0:m(o.$0)
+    };
+   },function(x$2)
+   {
+    return g$2(f$2(x$2));
+   }));
   }
   function setDirtyPart()
   {
@@ -6714,7 +6728,7 @@
      {
       var prop;
       prop=new Property.New(setDirtyP,props,kvp);
-      return HtmlNode.tr([HtmlNode.td([HtmlNode.someElt(Doc.Input([],prop.get_KeyVar()))]),HtmlNode.td([HtmlNode.someElt(Doc.Input([],prop.get_ValueVar()))]),Template.hoverable(HtmlNode.td([HtmlNode.title("remove"),HtmlNode.style(" cursor: pointer "),HtmlNode.htmlText("x"),new HtmlNode$1({
+      return HtmlNode.tr([HtmlNode.td([HtmlNode.someElt(Doc.Input([],prop.get_KeyVar()))]),HtmlNode.td([HtmlNode.someElt(Doc.InputArea([HtmlNode.atr("style","height: 1.5em")],prop.get_ValueVar()))]),Template.hoverable(HtmlNode.td([HtmlNode.title("remove"),HtmlNode.style(" cursor: pointer "),HtmlNode.htmlText("x"),new HtmlNode$1({
        $:7,
        $0:AttrModule.Handler("click",function()
        {
@@ -6829,6 +6843,14 @@
   {
    return Unchecked.Equals(CodeSnippet$1.FetchO(cur),null);
   },currentCodeSnippetId);
+  propertyCssVal=genericPropertyVal("CSS","",function(a)
+  {
+   return Option.defaultValue("",a);
+  });
+  propertyCssLinkVal=genericPropertyVal("CSSLink","",function(a)
+  {
+   return Option.defaultValue("",a);
+  });
   disableParseVal=disablePropertyVal("DisableParse");
   disableFSIVal=Val.map2(function(e)
   {
@@ -7202,7 +7224,7 @@
   {
    rootSplitter.SelectTab("WS Result");
   },triggerWSResult);
-  x$1=HtmlNode.div([HtmlNode.style("height: 100vh; width: 100% "),rootSplitter.get_Render().Style("height: 100%; width: 100% "),HtmlNode.script([HtmlNode.src("/EPFileX/FileSaver/FileSaver.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://code.jquery.com/jquery-3.1.1.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.link([HtmlNode.href("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/css/main.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css("\n        body { margin: 0px }     \n             \n        div textarea {\n        font-family: monospace;\n        }\n        .code-editor-list-tile {\n        white-space: nowrap; \n        border-style: solid none none;\n        border-color: white;\n        border-width: 1px;\n        background-color: #D8D8D8;\n        display: flex;\n        }\n        .code-editor-list-text{\n        padding: 1px 10px 1px 5px;\n        overflow:hidden;\n        text-overflow: ellipsis;\n        white-space: nowrap;\n        flex: 1;\n        }\n        \n        .code-editor-list-tile.direct-predecessor {\n        font-weight: bold;\n        }\n        .code-editor-list-tile.indirect-predecessor {\n        color: blue;\n        }\n        .code-editor-list-tile.selected {\n        background-color: #77F;\n        color: white;\n        }\n        .code-editor-list-tile.hovering {\n        background: lightgray;\n        }\n        .code-editor-list-tile.hovering.selected {\n        background:  blue;\n        }\n        .code-editor-list-tile>.predecessor {\n        font-weight: bold;\n        border-style: inset;\n        border-width: 1px;\n        text-align: center;\n        color: transparent;\n        }\n        .code-editor-list-tile.direct-predecessor>.predecessor {\n        color: blue;\n        }\n        \n        .CodeMirror { height: 100%; }\n        \n        .node {\n            background-color:white; \n            width: 2ch; \n            color: #A03; \n            font-weight:bold; \n            text-align: center;\n            font-family: arial;\n        }\n        .Warning { text-decoration: underline lightblue } \n        .Error   { text-decoration: underline red       } \n        .body    { margin         : 0px                 }\n            "),HtmlNode.style(" \n                  color      : #333;\n                  font-size  : small;\n                  font-family: monospace;\n                  line-height: 1.2;\n                      ")]);
+  x$1=HtmlNode.div([HtmlNode.style("height: 100vh; width: 100% "),rootSplitter.get_Render().Style("height: 100%; width: 100% "),HtmlNode.script([HtmlNode.src("/EPFileX/FileSaver/FileSaver.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://code.jquery.com/jquery-3.1.1.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.link([HtmlNode.href("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/css/main.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css("\n        body { margin: 0px }     \n             \n        div textarea {\n        font-family: monospace;\n        }\n        .code-editor-list-tile {\n        white-space: nowrap; \n        border-style: solid none none;\n        border-color: white;\n        border-width: 1px;\n        background-color: #D8D8D8;\n        display: flex;\n        }\n        .code-editor-list-text{\n        padding: 1px 10px 1px 5px;\n        overflow:hidden;\n        text-overflow: ellipsis;\n        white-space: nowrap;\n        flex: 1;\n        }\n        \n        .code-editor-list-tile.direct-predecessor {\n        font-weight: bold;\n        }\n        .code-editor-list-tile.indirect-predecessor {\n        color: blue;\n        }\n        .code-editor-list-tile.selected {\n        background-color: #77F;\n        color: white;\n        }\n        .code-editor-list-tile.hovering {\n        background: lightgray;\n        }\n        .code-editor-list-tile.hovering.selected {\n        background:  blue;\n        }\n        .code-editor-list-tile>.predecessor {\n        font-weight: bold;\n        border-style: inset;\n        border-width: 1px;\n        text-align: center;\n        color: transparent;\n        }\n        .code-editor-list-tile.direct-predecessor>.predecessor {\n        color: blue;\n        }\n        \n        .CodeMirror { height: 100%; }\n        \n        .node {\n            background-color:white; \n            width: 2ch; \n            color: #A03; \n            font-weight:bold; \n            text-align: center;\n            font-family: arial;\n        }\n        .Warning { text-decoration: underline lightblue } \n        .Error   { text-decoration: underline red       } \n        .body    { margin         : 0px                 }\n            "),HtmlNode.style(" \n                  color      : #333;\n                  font-size  : small;\n                  font-family: monospace;\n                  line-height: 1.2;\n                      "),HtmlNode.link([HtmlNode.href(propertyCssLinkVal),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css(propertyCssVal)]);
   return(HtmlNode.renderDoc())(x$1);
  };
  SC$1.$cctor=function()
