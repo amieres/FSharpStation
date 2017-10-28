@@ -1271,7 +1271,7 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1509192187679"
+        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1509222247556"
         let msgClient  = MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
         let toId       = AddressId fsIds
         let stringResponseR response =
@@ -1310,7 +1310,7 @@ namespace FSSGlobal
         member this.RunSnippet      (url,snpPath:string   ) = sendMsg toId  (RunSnippetUrlJS     (snpPath.Split '/', url))    stringResponseR
         member this.FSStationId                             = fsIds
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1509192187679"
+        static member FSStationId_                          = "FSharpStation1509222247556"
     
     
   module FsTranslator =
@@ -2327,10 +2327,12 @@ namespace FSSGlobal
     let isUndefined v = true
     
     let  findRootElement (e:Dom.Element) =
-        let root = e.GetRootNode()
-        if isUndefined root?body 
-        then root.FirstChild :?> Dom.Element
-        else root?body  |> unbox<Dom.Element>
+        if isUndefined e.GetRootNode then JS.Document.Body
+        else
+            let root = e.GetRootNode()
+            if isUndefined root?body 
+            then root.FirstChild :?> Dom.Element
+            else root?body  |> unbox<Dom.Element>
     
     [< Inline >]
     let inline storeVar<'T> storeName (var:IRef<_>) =
@@ -2782,6 +2784,9 @@ namespace FSSGlobal
         member inline this.After         = { this with after        =           true              }
         member inline this.Children   ch = { this with children     = ch                          }
         
+    [< Inline "!!(ResizeObserver)" >]
+    let implementedResizeObserver() = false
+    
     [< Inline "new ResizeObserver($f)" >]
     let newResizeObserver (f: unit->unit) = X<_> 
     
@@ -2791,9 +2796,12 @@ namespace FSSGlobal
     let mutable observers : obj list = []
     
     let addResizeObserver f el =
-        let ro =  newResizeObserver f
-        observers <- ro::observers
-        RObserve ro el
+        if implementedResizeObserver() then
+            let ro =  newResizeObserver f
+            observers <- ro::observers
+            RObserve ro el
+        else 
+            JS.SetInterval f 110 |> ignore
     [<NoComparison ; NoEquality>]
     type Area =
     | Auto     of SplitterBar
@@ -4900,7 +4908,7 @@ namespace FSSGlobal
         printfn "%A" endpoint
         match endpoint with
         | FSharpStation -> FSharpStationPage ""
-        | EPStart       -> FSharpStationPage "Start.fsjson"
+        | EPStart       -> FSharpStationPage "https://raw.githubusercontent.com/amieres/FSharpStation/master/Start.fsjson"
         | EPLoad    uri -> uri |> System.Web.HttpUtility.UrlDecode |> System.Web.HttpUtility.UrlDecode |> FSharpStationPage
     
     let site = Application.MultiPage content
