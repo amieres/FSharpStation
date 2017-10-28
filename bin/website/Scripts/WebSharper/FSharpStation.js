@@ -1969,11 +1969,11 @@
  },WebSharper.Obj,FsStationClient);
  FsStationClient.get_FSStationId_=function()
  {
-  return"FSharpStation1509132633672";
+  return"FSharpStation1509134803027";
  };
  FsStationClient.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
-  this.fsIds=Option.defaultValue("FSharpStation1509132633672",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1509134803027",fsStationId);
   this.msgClient=new MessagingClient.New(clientId,timeout,endPoint);
   this.toId=FsStationShared.AddressId(this.fsIds);
  },FsStationClient);
@@ -2956,6 +2956,10 @@
  {
   return HtmlNode.htmlAttribute("href",v);
  };
+ HtmlNode.target=function(v)
+ {
+  return HtmlNode.htmlAttribute("target",v);
+ };
  HtmlNode.body=function(ch)
  {
   return HtmlNode.htmlElement("body",ch);
@@ -3394,6 +3398,10 @@
    return Input.New(this._type,this._class,this.style,this.placeholder,this.id,this["var"],this.prefix,s,this.content,this.prefixAdded,true);
   },
   Prefix:function(p)
+  {
+   return this.Prefix$1(HtmlNode.htmlText(p));
+  },
+  Prefix$1:function(p)
   {
    return Input.New(this._type,this._class,this.style,this.placeholder,this.id,this["var"],p,this.suffix,this.content,true,this.suffixAdded);
   },
@@ -3867,7 +3875,7 @@
       $0:el
      };
     })
-   }),HtmlNode.css("\n                      .Splitter.Vertical   { cursor: col-resize; background-color: #eef ; width : 5px ; margin-left:-7px; }\n                      .Splitter.Horizontal { cursor: row-resize; background-color: #eef ; height: 5px ; margin-top :-7px; }\n                  ")]).AddChildren(this.children);
+   }),HtmlNode.css("\n                    .Splitter.Vertical   { cursor: col-resize; background-color: #eef ; width : 5px ; margin-left:-7px; }\n                    .Splitter.Horizontal { cursor: row-resize; background-color: #eef ; height: 5px ; margin-top :-7px; }\n                ")]).AddChildren(this.children);
   },
   get_GetValue:function()
   {
@@ -4499,7 +4507,7 @@
       return $this.reorder(Arrays.length($this.tabs.RVal()));
      };
     })
-   }),HtmlNode.css("\n      \n      .tab-panel {\n       overflow  : hidden   ;\n       display   : flex     ;\n       flex-flow : column   ;\n       background: lightgray;\n      }\n      .tab-content {\n       flex      : 1 1     ;\n       overflow  : auto    ;\n       position  : relative;\n      }\n      .tab-children {\n       height    : 100%    ;\n       width     : 100%    ;\n       position  : absolute;\n       display   : grid    ;\n      }\n      .tab-strip {\n       padding   : 0pt     ;\n       flex      : 0 0     ;\n      }\n      .tab {\n       border     : 0.2pt solid transparent;\n       padding    : 0pt 4pt;\n       display    : inline-block;\n       font-family: sans-serif;\n       font-weight: 200;\n       font-size  : small;\n       color      : #666;\n       cursor     : pointer;\n      }\n      .top>.tab {\n       border-radius: 2pt 2pt 0pt 0pt;\n       border-bottom-width: 0pt;\n       vertical-align: bottom;\n      }\n      .bottom>.tab {\n       border-top-width: 0pt;\n       border-radius: 0pt 0pt 2pt 2pt;\n       vertical-align: top;\n      }\n      .horizontal>.tab:not(:first-child) {\n       border-left-width: 0pt;\n      }\n      .tab.hovering {\n       background: red;\n      }\n      .tab.selected {\n       background: white;\n       border-left-width: 0.2pt;\n       color: black;\n       font-weight: 500;\n       border-color: black;\n      }\n      .horizontal>.tab.selected {\n       border-left-width: 0.2pt;\n      }\n      ")]);
+   }),HtmlNode.css("\n    \n    .tab-panel {\n     overflow  : hidden   ;\n     display   : flex     ;\n     flex-flow : column   ;\n     background: lightgray;\n    }\n    .tab-content {\n     flex      : 1 1     ;\n     overflow  : auto    ;\n     position  : relative;\n    }\n    .tab-children {\n     height    : 100%    ;\n     width     : 100%    ;\n     position  : absolute;\n     display   : grid    ;\n    }\n    .tab-strip {\n     padding   : 0pt     ;\n     flex      : 0 0     ;\n    }\n    .tab {\n     border     : 0.2pt solid transparent;\n     padding    : 0pt 4pt;\n     display    : inline-block;\n     font-family: sans-serif;\n     font-weight: 200;\n     font-size  : small;\n     color      : #666;\n     cursor     : pointer;\n    }\n    .top>.tab {\n     border-radius: 2pt 2pt 0pt 0pt;\n     border-bottom-width: 0pt;\n     vertical-align: bottom;\n    }\n    .bottom>.tab {\n     border-top-width: 0pt;\n     border-radius: 0pt 0pt 2pt 2pt;\n     vertical-align: top;\n    }\n    .horizontal>.tab:not(:first-child) {\n     border-left-width: 0pt;\n    }\n    .tab.hovering {\n     background: red;\n    }\n    .tab.selected {\n     background: white;\n     border-left-width: 0.2pt;\n     color: black;\n     font-weight: 500;\n     border-color: black;\n    }\n    .horizontal>.tab.selected {\n     border-left-width: 0.2pt;\n    }\n    ")]);
   },
   Select:function(gi)
   {
@@ -4589,7 +4597,7 @@
        }
       }
      else
-      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3039,20);
+      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3041,18);
    }
    else
     void 0;
@@ -4854,37 +4862,44 @@
    return MenuEntry.New(this.text,this.ref,this.active,this.disabled,{
     $:1,
     $0:Menu.New2(es).get_DropDown()
-   },this.toolTip,this.divider,this.onClick);
+   },this.toolTip,this.target,this.divider,this.onClick);
   },
   SubMenu$1:function(es)
   {
    return MenuEntry.New(this.text,this.ref,this.active,this.disabled,{
     $:1,
     $0:Menu.New$1(es).get_DropDown()
-   },this.toolTip,this.divider,this.onClick);
+   },this.toolTip,this.target,this.divider,this.onClick);
   },
   Disabled:function(dis)
   {
-   return MenuEntry.New(this.text,this.ref,this.active,Val.fixit(dis),this.subMenu,this.toolTip,this.divider,this.onClick);
+   return MenuEntry.New(this.text,this.ref,this.active,Val.fixit(dis),this.subMenu,this.toolTip,this.target,this.divider,this.onClick);
   },
   OnClick:function(f)
   {
-   return MenuEntry.New(this.text,this.ref,this.active,this.disabled,this.subMenu,this.toolTip,this.divider,{
+   return MenuEntry.New(this.text,this.ref,this.active,this.disabled,this.subMenu,this.toolTip,this.target,this.divider,{
     $:1,
     $0:f
    });
   },
   get_Divider:function()
   {
-   return MenuEntry.New(this.text,this.ref,this.active,this.disabled,this.subMenu,this.toolTip,true,this.onClick);
+   return MenuEntry.New(this.text,this.ref,this.active,this.disabled,this.subMenu,this.toolTip,this.target,true,this.onClick);
+  },
+  Target:function(t)
+  {
+   return MenuEntry.New(this.text,this.ref,this.active,this.disabled,this.subMenu,this.toolTip,{
+    $:1,
+    $0:t
+   },this.divider,this.onClick);
   },
   get_Render:function()
   {
-   var x,x$1,x$2,x$3,m,a,m$1,a$1;
+   var x,x$1,x$2,x$3,o,m,a,m$1,a$1;
    return(this.divider?function(h)
    {
     return HtmlNode.addClass("divider",h);
-   }:Global.id)((x=(x$1=(x$2=(x$3=Template.entryTxt(this.text,this.ref),(HtmlNode.addClassIf("active",this.active))(x$3)),(HtmlNode.addClassIf("disabled",this.disabled))(x$2)),(m=this.subMenu,(m!=null&&m.$==1?(a=List.ofArray([HtmlNode["class"]("dropdown"),m.$0.get_Render()]),function(h)
+   }:Global.id)((x=(x$1=(x$2=(x$3=Template.entryTxt(this.text,(o=this.target,o==null?"":o.$0),this.ref),(HtmlNode.addClassIf("active",this.active))(x$3)),(HtmlNode.addClassIf("disabled",this.disabled))(x$2)),(m=this.subMenu,(m!=null&&m.$==1?(a=List.ofArray([HtmlNode["class"]("dropdown"),m.$0.get_Render()]),function(h)
    {
     return HtmlNode.addChildren(a,h);
    }):Global.id)(x$1))),(m$1=this.onClick,(m$1!=null&&m$1.$==1?(a$1=List.ofArray([new HtmlNode$1({
@@ -4906,16 +4921,16 @@
     $:1,
     $0:a
    };
-  },ref),i.active,i.disabled,i.subMenu,i.toolTip,i.divider,i.onClick);
+  },ref),i.active,i.disabled,i.subMenu,i.toolTip,i.target,i.divider,i.onClick);
  };
  MenuEntry.New$2=function(txt)
  {
   return MenuEntry.New(Val.fixit(txt),new Val({
    $:0,
    $0:null
-  }),Val.fixit(false),Val.fixit(false),null,null,false,null);
+  }),Val.fixit(false),Val.fixit(false),null,null,null,false,null);
  };
- MenuEntry.New=function(text,ref,active,disabled,subMenu,toolTip,divider,onClick)
+ MenuEntry.New=function(text,ref,active,disabled,subMenu,toolTip,target,divider,onClick)
  {
   return new MenuEntry({
    text:text,
@@ -4924,6 +4939,7 @@
    disabled:disabled,
    subMenu:subMenu,
    toolTip:toolTip,
+   target:target,
    divider:divider,
    onClick:onClick
   });
@@ -4997,7 +5013,7 @@
    return MenuEntry.New(this.text,new Val({
     $:0,
     $0:null
-   }),this.highlight,this.disabled,null,this.toolTip,false,this.onClick);
+   }),this.highlight,this.disabled,null,this.toolTip,null,false,this.onClick);
   },
   Highlight:function(h)
   {
@@ -5060,20 +5076,20 @@
  {
   return HtmlNode.addClass(cl,HtmlNode.ul(ch));
  };
- Template.entryTxt=function(txt,r)
+ Template.entryTxt=function(txt,t,r)
  {
-  return Template.menuEntry(Template.refText(txt,r));
+  return Template.menuEntry(Template.refText(txt,t,r));
  };
- Template.refText=function(txt,r)
+ Template.refText=function(txt,t,r)
  {
-  return HtmlNode.bindHElem(function(t)
+  return HtmlNode.bindHElem(function(t$1)
   {
-   return t===""?HtmlNode$1.HtmlEmpty:Template.ref(HtmlNode.htmlText(t),r);
+   return t$1===""?HtmlNode$1.HtmlEmpty:Template.refA(HtmlNode.htmlText(t$1),t$1,r);
   },txt);
  };
- Template.ref=function(content,r)
+ Template.refA=function(cont,t,r)
  {
-  return HtmlNode.a([content,HtmlNode.hrefO(r)]);
+  return HtmlNode.a([cont,HtmlNode.hrefO(r),HtmlNode.target(t)]);
  };
  Template.menuEntry=function(content)
  {
@@ -5282,7 +5298,7 @@
   {
    var el;
    el=Global.document.createElement("div");
-   el.innerHTML="<script src='http://code.jquery.com/jquery-3.1.1.min.js' type='text/javascript' charset='UTF-8'></script>\n                  <script src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' type='text/javascript' charset='UTF-8'></script>\n                  <link type='text/css' rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>\n                  <link type='text/css' rel='stylesheet' href='/EPFileX/css/main.css'>\n                 ";
+   el.innerHTML="<script src='http://code.jquery.com/jquery-3.1.1.min.js' type='text/javascript' charset='UTF-8'></script>\n                <script src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' type='text/javascript' charset='UTF-8'></script>\n                <link type='text/css' rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>\n                <link type='text/css' rel='stylesheet' href='/EPFileX/css/main.css'>\n               ";
    this.runNode.parentElement.appendChild(el);
    return this;
   },
@@ -5307,7 +5323,7 @@
  },RunNode);
  RunCode.completeJS=function(js)
  {
-  return"\n            CIPHERSpaceLoadFileGlobalFileRef = null;\n            CIPHERSpaceLoadFile = function (filename, callback) {\n                if (filename.slice(-3) == \".js\" || filename.slice(-4) == \".fsx\" || filename.slice(-3) == \".fs\") { //if filename is a external JavaScript file\n                    var fileRef = null;\n                    var pre = document.querySelector('script[src=\"' + filename + '\"]')\n                    if (!pre) {\n                        fileRef = document.createElement('script')\n                        fileRef.setAttribute(\"type\", \"text/javascript\")\n                        fileRef.setAttribute(\"src\", filename)\n                    }\n                    else callback();\n                }\n                else if (filename.slice(-4) == \".css\") { //if filename is an external CSS file\n                    var pre = document.querySelector('script[src=\"' + filename + '\"]')\n                    if (!pre) {\n                        fileRef = document.createElement(\"link\")\n                        fileRef.setAttribute(\"rel\", \"stylesheet\")\n                        fileRef.setAttribute(\"type\", \"text/css\")\n                        fileRef.setAttribute(\"href\", filename)\n                    }\n                    else callback();\n                }\n                else if (filename.slice(-5) == \".html\") { //if filename is an external HTML file\n                    var pre = document.querySelector('script[src=\"' + filename + '\"]')\n                    if (!pre) {\n                        fileRef = document.createElement(\"link\")\n                        fileRef.setAttribute(\"rel\", \"import\")\n                        fileRef.setAttribute(\"type\", \"text/html\")\n                        fileRef.setAttribute(\"href\", filename)\n                    }\n                    else callback();\n                }\n                if (!!fileRef) {\n                    CIPHERSpaceLoadFileGlobalFileRef = fileRef;\n        \u0009\u0009\u0009fileRef.onload = function () { fileRef.onload = null;  callback(); }\n                    document.getElementsByTagName(\"head\")[0].appendChild(fileRef);\n                }\n            }\n            CIPHERSpaceLoadFiles = function (files, callback) {\n                var newCallback = callback\n                if (!!CIPHERSpaceLoadFileGlobalFileRef && !!(CIPHERSpaceLoadFileGlobalFileRef.onload)) {\n                    var oldCallback = CIPHERSpaceLoadFileGlobalFileRef.onload;\n                    CIPHERSpaceLoadFileGlobalFileRef.onload = null;\n                    newCallback = function () {\n                        callback();\n                        oldCallback();\n                    }\n                }\n                var i = 0;\n                loadNext = function () {\n                    if (i < files.length) {\n                        var file = files[i];\n                        i++;\n                        CIPHERSpaceLoadFile(file, loadNext);\n                    }\n                    else newCallback();\n                };\n                loadNext();\n        \u0009}\n            CIPHERSpaceLoadFiles(['https://code.jquery.com/jquery-3.1.1.min.js'], function() {}); \n        \u0009CIPHERSpaceLoadFilesDoAfter = function (callback) {\n        \u0009\u0009var newCallback = callback\n        \u0009\u0009if (!!CIPHERSpaceLoadFileGlobalFileRef) {\n        \u0009\u0009\u0009if (!!(CIPHERSpaceLoadFileGlobalFileRef.onload)) {\n        \u0009\u0009\u0009\u0009var oldCallback = CIPHERSpaceLoadFileGlobalFileRef.onload;\n        \u0009\u0009\u0009\u0009CIPHERSpaceLoadFileGlobalFileRef.onload = null;\n        \u0009\u0009\u0009\u0009newCallback = function () {\n        \u0009\u0009\u0009\u0009\u0009oldCallback();\n        \u0009\u0009\u0009\u0009\u0009callback();\n        \u0009\u0009\u0009\u0009}\n        \u0009\u0009\u0009}\n        \u0009\u0009}\n        \u0009\u0009else CIPHERSpaceLoadFileGlobalFileRef = {};\n        \u0009\u0009CIPHERSpaceLoadFileGlobalFileRef.onload = newCallback;\n        \u0009}\n        \n        CIPHERSpaceLoadFilesDoAfter(function() { \n          if (typeof IntelliFactory !=='undefined')\n            IntelliFactory.Runtime.Start();\n          for (key in window) { \n            if (key.startsWith(\"StartupCode$\")) \n              try { window[key].$cctor(); } catch (e) {} \n          } \n        })\n        \n                         "+js;
+  return"\n          CIPHERSpaceLoadFileGlobalFileRef = null;\n          CIPHERSpaceLoadFile = function (filename, callback) {\n              if (filename.slice(-3) == \".js\" || filename.slice(-4) == \".fsx\" || filename.slice(-3) == \".fs\") { //if filename is a external JavaScript file\n                  var fileRef = null;\n                  var pre = document.querySelector('script[src=\"' + filename + '\"]')\n                  if (!pre) {\n                      fileRef = document.createElement('script')\n                      fileRef.setAttribute(\"type\", \"text/javascript\")\n                      fileRef.setAttribute(\"src\", filename)\n                  }\n                  else callback();\n              }\n              else if (filename.slice(-4) == \".css\") { //if filename is an external CSS file\n                  var pre = document.querySelector('script[src=\"' + filename + '\"]')\n                  if (!pre) {\n                      fileRef = document.createElement(\"link\")\n                      fileRef.setAttribute(\"rel\", \"stylesheet\")\n                      fileRef.setAttribute(\"type\", \"text/css\")\n                      fileRef.setAttribute(\"href\", filename)\n                  }\n                  else callback();\n              }\n              else if (filename.slice(-5) == \".html\") { //if filename is an external HTML file\n                  var pre = document.querySelector('script[src=\"' + filename + '\"]')\n                  if (!pre) {\n                      fileRef = document.createElement(\"link\")\n                      fileRef.setAttribute(\"rel\", \"import\")\n                      fileRef.setAttribute(\"type\", \"text/html\")\n                      fileRef.setAttribute(\"href\", filename)\n                  }\n                  else callback();\n              }\n              if (!!fileRef) {\n                  CIPHERSpaceLoadFileGlobalFileRef = fileRef;\n      \u0009\u0009\u0009fileRef.onload = function () { fileRef.onload = null;  callback(); }\n                  document.getElementsByTagName(\"head\")[0].appendChild(fileRef);\n              }\n          }\n          CIPHERSpaceLoadFiles = function (files, callback) {\n              var newCallback = callback\n              if (!!CIPHERSpaceLoadFileGlobalFileRef && !!(CIPHERSpaceLoadFileGlobalFileRef.onload)) {\n                  var oldCallback = CIPHERSpaceLoadFileGlobalFileRef.onload;\n                  CIPHERSpaceLoadFileGlobalFileRef.onload = null;\n                  newCallback = function () {\n                      callback();\n                      oldCallback();\n                  }\n              }\n              var i = 0;\n              loadNext = function () {\n                  if (i < files.length) {\n                      var file = files[i];\n                      i++;\n                      CIPHERSpaceLoadFile(file, loadNext);\n                  }\n                  else newCallback();\n              };\n              loadNext();\n      \u0009}\n          CIPHERSpaceLoadFiles(['https://code.jquery.com/jquery-3.1.1.min.js'], function() {}); \n      \u0009CIPHERSpaceLoadFilesDoAfter = function (callback) {\n      \u0009\u0009var newCallback = callback\n      \u0009\u0009if (!!CIPHERSpaceLoadFileGlobalFileRef) {\n      \u0009\u0009\u0009if (!!(CIPHERSpaceLoadFileGlobalFileRef.onload)) {\n      \u0009\u0009\u0009\u0009var oldCallback = CIPHERSpaceLoadFileGlobalFileRef.onload;\n      \u0009\u0009\u0009\u0009CIPHERSpaceLoadFileGlobalFileRef.onload = null;\n      \u0009\u0009\u0009\u0009newCallback = function () {\n      \u0009\u0009\u0009\u0009\u0009oldCallback();\n      \u0009\u0009\u0009\u0009\u0009callback();\n      \u0009\u0009\u0009\u0009}\n      \u0009\u0009\u0009}\n      \u0009\u0009}\n      \u0009\u0009else CIPHERSpaceLoadFileGlobalFileRef = {};\n      \u0009\u0009CIPHERSpaceLoadFileGlobalFileRef.onload = newCallback;\n      \u0009}\n      \n      CIPHERSpaceLoadFilesDoAfter(function() { \n        if (typeof IntelliFactory !=='undefined')\n          IntelliFactory.Runtime.Start();\n        for (key in window) { \n          if (key.startsWith(\"StartupCode$\")) \n            try { window[key].$cctor(); } catch (e) {} \n        } \n      })\n      \n                       "+js;
  };
  Position.NewBrowser={
   $:3
@@ -6938,7 +6954,7 @@
    return v$4==="";
   },fileName);
   fileInputElementId="CodeEditorFileSel";
-  loadFileElement=Input.New$2(Var.Lens(fileName,justFileName,Global.id)).Prefix(HtmlNode.label([HtmlNode["class"]("btn btn-primary"),HtmlNode.htmlText("Load File..."),Input.New$2(fileName).Type("file").Style("display: none").Content([AttrModule.Handler("change",function(el)
+  loadFileElement=Input.New$2(Var.Lens(fileName,justFileName,Global.id)).Prefix$1(HtmlNode.label([HtmlNode["class"]("btn btn-primary"),HtmlNode.htmlText("Load File..."),Input.New$2(fileName).Type("file").Style("display: none").Content([AttrModule.Handler("change",function(el)
   {
    return function()
    {
@@ -7101,9 +7117,9 @@
   buttonsH=HtmlNode.div([actAddSnippet.get_Button().get_Render(),actOutdentSnippet.get_Button().get_Render(),actIndentSnippet.get_Button().get_Render(),loadFileElement.get_Render().AddChildren([HtmlNode.style("grid-column: 4/6")]),actParseCode.get_Button().get_Render(),actEvalCode.get_Button().get_Render(),actGetFsCode.get_Button().get_Render(),actDeleteSnippet.get_Button().get_Render(),actFindDefinition.get_Button().get_Render(),HtmlNode.span([]),actSaveFile.get_Button().get_Render(),HtmlNode.span([]),actCompileWS.get_Button().get_Render(),actRunWSIn.get_Button().get_Render(),HtmlNode.someElt(Doc.Select([AttrProxy.Create("id","Position")],function(v$4)
   {
    return v$4.$==1?"Right":v$4.$==2?"In Tab":v$4.$==3?"New Browser":"Below";
-  },List.ofArray([Position.NewBrowser,Position.Below]),position)),HtmlNode.style("\n                      overflow: hidden;\n                      display: grid;\n                      grid-template-columns: repeat(8, 12.1%);\n                      bxackground-color: #eee;\n                      padding : 5px;\n                      grid-gap: 5px;\n                  ")]);
+  },List.ofArray([Position.NewBrowser,Position.Below]),position)),HtmlNode.style("\n                    overflow: hidden;\n                    display: grid;\n                    grid-template-columns: repeat(8, 12.1%);\n                    bxackground-color: #eee;\n                    padding : 5px;\n                    grid-gap: 5px;\n                ")]);
   menuLeft=Menu.New2([MenuEntry.New$2("File").SubMenu([actLoadFile.get_MenuEntry(),actSaveFile.get_MenuEntry()]),MenuEntry.New$2("Code").SubMenu([actAddSnippet.get_MenuEntry(),actDeleteSnippet.get_MenuEntry(),MenuEntry.New$2("").get_Divider(),actIndentSnippet.get_MenuEntry(),actOutdentSnippet.get_MenuEntry(),MenuEntry.New$2("").get_Divider(),actFindDefinition.get_MenuEntry(),MenuEntry.New$2("").get_Divider(),actGetFsCode.get_MenuEntry()]),MenuEntry.New$2("Run").SubMenu([actEvalCode.get_MenuEntry(),MenuEntry.New$2("").get_Divider(),actRunWSNewTab.get_MenuEntry(),actRunWSHere.get_MenuEntry(),MenuEntry.New$2("").get_Divider(),actParseCode.get_MenuEntry(),actCompileWS.get_MenuEntry()])]);
-  menuRight=Menu.New2([MenuEntry.New$2("About")]);
+  menuRight=Menu.New2([MenuEntry.New$2("About").SubMenu([MenuEntry.New$1("Source @ GitHub","https://github.com/amieres/FSharpStation").Target("_blank")])]);
   menuBar=Template.navbar(HtmlNode.h1([HtmlNode.htmlText("F# Station"),HtmlNode.style("font-size: 48px; margin-top: -17px")]),menuLeft.get_Render(),menuRight.get_Render());
   redraw=Var.Create$1();
   properties=HtmlNode.div([new HtmlNode$1({
@@ -7211,7 +7227,7 @@
     refVarChanged$1[0]=contentVarChanged$1[0]+100;
     Var.Set(contentVar$1,r.RVal());
     return r.RView();
-   },view$1)),contentVar$1))))))).Prefix(HtmlNode.htmlText("name:")).get_Render()
+   },view$1)),contentVar$1))))))).Prefix$1(HtmlNode.htmlText("name:")).get_Render()
   };
   messagesT={
    $:1,
@@ -7254,7 +7270,7 @@
   {
    rootSplitter.SelectTab("WS Result");
   },triggerWSResult);
-  x$1=HtmlNode.div([HtmlNode.style("height: 100vh; width: 100% "),rootSplitter.get_Render().Style("height: 100%; width: 100% "),HtmlNode.script([HtmlNode.src("/EPFileX/FileSaver/FileSaver.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://code.jquery.com/jquery-3.1.1.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.link([HtmlNode.href("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/css/main.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css("\n        \n          body { margin: 0px }     \n               \n          div textarea {\n              font-family     : monospace;\n          }\n          .code-editor-list-tile {\n              white-space     : nowrap; \n              border-style    : solid none none;\n              border-color    : white;\n              border-width    : 1px;\n              background-color: #D8D8D8;\n              display         : flex;\n          }\n          .code-editor-list-text{\n              padding         : 1px 10px 1px 5px;\n              overflow        : hidden;\n              text-overflow   : ellipsis;\n              white-space     : nowrap;\n              flex            : 1;\n          }\n          \n          .code-editor-list-tile.direct-predecessor {\n              font-weight     : bold;\n          }\n          .code-editor-list-tile.indirect-predecessor {\n              color           : blue;\n          }\n          .code-editor-list-tile.selected {\n              background-color: #77F;\n              color           : white;\n          }\n          .code-editor-list-tile.hovering {\n              background      : lightgray;\n          }\n          .code-editor-list-tile.hovering.selected {\n              background      : blue;\n          }\n          .code-editor-list-tile>.predecessor {\n              font-weight     : bold;\n              border-style    : inset;\n              border-width    : 1px;\n              text-align      : center;\n              color           : transparent;\n          }\n          .code-editor-list-tile.direct-predecessor>.predecessor {\n              color           : blue;\n          }\n          \n          .CodeMirror { height: 100%; }\n          \n          .node {\n              background-color: white; \n              width           : 2ch; \n              color           : #A03; \n              font-weight     : bold; \n              text-align      : center;\n              font-family     : arial;\n          }\n          .Warning { text-decoration: underline lightblue } \n          .Error   { text-decoration: underline red       } \n          .body    { margin         : 0px                 }\n          "),HtmlNode.style(" \n                  color      : #333;\n                  font-size  : small;\n                  font-family: monospace;\n                  line-height: 1.2;\n                      "),HtmlNode.link([HtmlNode.href(propertyThemeLinkVal),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href(propertyCssLinkVal),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css(propertyCssVal)]);
+  x$1=HtmlNode.div([HtmlNode.style("height: 100vh; width: 100% "),rootSplitter.get_Render().Style("height: 100%; width: 100% "),HtmlNode.script([HtmlNode.src("/EPFileX/FileSaver/FileSaver.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://code.jquery.com/jquery-3.1.1.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.link([HtmlNode.href("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/css/main.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css("\n      \n        body { margin: 0px }     \n             \n        div textarea {\n            font-family     : monospace;\n        }\n        .code-editor-list-tile {\n            white-space     : nowrap; \n            border-style    : solid none none;\n            border-color    : white;\n            border-width    : 1px;\n            background-color: #D8D8D8;\n            display         : flex;\n        }\n        .code-editor-list-text{\n            padding         : 1px 10px 1px 5px;\n            overflow        : hidden;\n            text-overflow   : ellipsis;\n            white-space     : nowrap;\n            flex            : 1;\n        }\n        \n        .code-editor-list-tile.direct-predecessor {\n            font-weight     : bold;\n        }\n        .code-editor-list-tile.indirect-predecessor {\n            color           : blue;\n        }\n        .code-editor-list-tile.selected {\n            background-color: #77F;\n            color           : white;\n        }\n        .code-editor-list-tile.hovering {\n            background      : lightgray;\n        }\n        .code-editor-list-tile.hovering.selected {\n            background      : blue;\n        }\n        .code-editor-list-tile>.predecessor {\n            font-weight     : bold;\n            border-style    : inset;\n            border-width    : 1px;\n            text-align      : center;\n            color           : transparent;\n        }\n        .code-editor-list-tile.direct-predecessor>.predecessor {\n            color           : blue;\n        }\n        \n        .CodeMirror { height: 100%; }\n        \n        .node {\n            background-color: white; \n            width           : 2ch; \n            color           : #A03; \n            font-weight     : bold; \n            text-align      : center;\n            font-family     : arial;\n        }\n        .Warning { text-decoration: underline lightblue } \n        .Error   { text-decoration: underline red       } \n        .body    { margin         : 0px                 }\n        "),HtmlNode.style(" \n                color      : #333;\n                font-size  : small;\n                font-family: monospace;\n                line-height: 1.2;\n                    "),HtmlNode.link([HtmlNode.href(propertyThemeLinkVal),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href(propertyCssLinkVal),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css(propertyCssVal)]);
   return(HtmlNode.renderDoc())(x$1);
  };
  SC$1.$cctor=function()
