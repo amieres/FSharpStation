@@ -1969,11 +1969,11 @@
  },WebSharper.Obj,FsStationClient);
  FsStationClient.get_FSStationId_=function()
  {
-  return"FSharpStation1509195289372";
+  return"FSharpStation1509222247556";
  };
  FsStationClient.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
-  this.fsIds=Option.defaultValue("FSharpStation1509195289372",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1509222247556",fsStationId);
   this.msgClient=new MessagingClient.New(clientId,timeout,endPoint);
   this.toId=FsStationShared.AddressId(this.fsIds);
  },FsStationClient);
@@ -2808,8 +2808,10 @@
  HtmlNode.findRootElement=function(e)
  {
   var root;
-  root=e.getRootNode();
-  return!root.body?root.firstChild:root.body;
+  return!function(a)
+  {
+   return e.getRootNode(a);
+  }?Global.document.body:(root=e.getRootNode(),!root.body?root.firstChild:root.body);
  };
  HtmlNode.createIFrame=function(f)
  {
@@ -4597,7 +4599,7 @@
        }
       }
      else
-      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3047,18);
+      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3049,18);
    }
    else
     void 0;
