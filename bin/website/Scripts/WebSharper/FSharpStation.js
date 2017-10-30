@@ -1969,11 +1969,11 @@
  },WebSharper.Obj,FsStationClient);
  FsStationClient.get_FSStationId_=function()
  {
-  return"FSharpStation1509222247556";
+  return"FSharpStation1509352506718";
  };
  FsStationClient.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
-  this.fsIds=Option.defaultValue("FSharpStation1509222247556",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1509352506718",fsStationId);
   this.msgClient=new MessagingClient.New(clientId,timeout,endPoint);
   this.toId=FsStationShared.AddressId(this.fsIds);
  },FsStationClient);
@@ -4599,7 +4599,7 @@
        }
       }
      else
-      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3049,18);
+      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3050,18);
    }
    else
     void 0;
@@ -7269,10 +7269,6 @@
   {
    rootSplitter.SelectTab("Output");
   },outputMsgs);
-  Val.sink(function()
-  {
-   rootSplitter.SelectTab("Parser");
-  },parserMsgs);
   Val.sink(function()
   {
    rootSplitter.SelectTab("WS Result");
