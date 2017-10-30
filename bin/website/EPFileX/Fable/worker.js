@@ -91,7 +91,8 @@ function compile(source, replacements, callback) {
           filename: 'repl',
           babelrc: false,
         };
-        var ast = babelAst; //JSON.parse(jsonAst);
+	var jsonAst = Fable.convertToJson(babelAst);
+        var ast = JSON.parse(jsonAst);
 	console.log(ast);
         var transformed = Babel.transformFromAst(ast , null, options);
 	console.log(transformed);
