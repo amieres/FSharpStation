@@ -1271,7 +1271,7 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1509222247556"
+        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1509453268497"
         let msgClient  = MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
         let toId       = AddressId fsIds
         let stringResponseR response =
@@ -1310,7 +1310,7 @@ namespace FSSGlobal
         member this.RunSnippet      (url,snpPath:string   ) = sendMsg toId  (RunSnippetUrlJS     (snpPath.Split '/', url))    stringResponseR
         member this.FSStationId                             = fsIds
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1509222247556"
+        static member FSStationId_                          = "FSharpStation1509453268497"
     
     
   module FsTranslator =
@@ -2342,6 +2342,7 @@ namespace FSSGlobal
     
     [< Inline "CIPHERSpaceLoadFiles($files, $cb)" >]
     let LoadFiles (files: string []) (cb: unit -> unit) : unit = X<_>
+    
   open HtmlNode
   [<JavaScript>]
   module Template      =
@@ -2908,7 +2909,7 @@ namespace FSSGlobal
                     |> Seq.map (fun (area, html) ->
                         match area with
                         | None   -> html
-                        | Some a -> html.AddChildren([ style <| sprintf "grid-area: %s" a ])
+                        | Some a -> html.AddChildren([ style <| sprintf "grid-area: %s; dispxlay: grid" a ])
                        )
                 yield!
                     this.cols
@@ -3671,6 +3672,103 @@ namespace FSSGlobal
     
     
     [< JavaScript >]
+    module FableModule =
+        //open Useful
+        
+        //[< Require(typeof<Resources.BaseResource>, "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.min.js")      >]    
+        [< Require(typeof<Resources.BaseResource>, "/EPFileX/Fable/babel-standalone.js")                               >]    
+        type Babel() =    
+            [< Inline "Babel.transformFromAst($ast , null, $options)"                  >] static member transformFromAst(ast , xx, options)                = X<_>
+            [< Inline "Babel.transform       ($ast ,       $options)"                  >] static member transform       (ast ,     options)                = X<_>
+        
+        [< Require(typeof<Resources.BaseResource>, "/EPFileX/Fable/babel-standalone.js")                               >]    
+        [< Require(typeof<Resources.BaseResource>, "/EPFileX/Fable", "Fable.js", "Worker.js")                          >]
+        type Fable() =
+            [< Inline "Fable.createChecker($f, $references)"                           >] static member createChecker(f, references)  : obj                = X<_>
+            [< Inline "Fable.makeCompiler($replacements)"                              >] static member makeCompiler(replacements)    : obj                = X<_>
+            [< Inline "Fable.parseFSharpProject($checker, $com, $fileName, $source)"   >] static member parseFSharpProject(checker, com, fileName, source) = X<_>
+            [< Inline "Fable.compileAst($com, $fsharpAst, $fileName)"                  >] static member compileAst(com, fsharpAst, fileName)               = X<_>
+            [< Inline "Fable.convertToJson($babelAst)"                                 >] static member convertToJson(babelAst)                            = X<_>
+        
+        let [< Inline "getFileBlob($key, $url)"                                        >] getFileBlob(key, url)                                            = X<_>
+        let [< Inline "metadata[$fn]"                                                  >] readAllBytes fn                                                  = X<_>
+        let [< Inline "Object.getOwnPropertyNames(metadata).length"                    >] metadataLength (): int                                           = X<_>
+        let [< Inline "babelPlugins"                                                   >] babelPlugins () : obj                                            = X<_>
+        
+        
+        let references = [|
+            "mscorlib.dll"
+            "System.dll"
+            "System.Core.dll"
+            "System.Data.dll"
+            "System.IO.dll"
+            "System.Xml.dll"
+            "System.Numerics.dll"
+            "FSharp.Core.sigdata"
+            "FSharp.Core.dll"
+            "Fable.Core.dll"
+            "Fable.Import.Browser.dll"
+            // When loading the REPL the browser console always shows: "Cannot find type System.ValueTuple`1"
+            // However, adding the following reference prevents opening System namespace
+            // See https://github.com/fable-compiler/Fable/issues/1152#issuecomment-330315250
+            // "System.ValueTuple.dll",
+        |]
+        
+        let loadReferences =
+            lazy
+                references |> Seq.iter (fun fn -> getFileBlob(fn, "metadata/" + fn))
+            
+        let getChecker = 
+            lazy Fable.createChecker(readAllBytes, references |> Array.choose (fun fn -> if fn.Contains "sigdata" then None else Some <| fn.Replace(".dll", "")) )
+            
+        let mutable addOutMsg : string -> unit = Console.Log
+    
+        let ToConsole arg = 
+            Console.Log arg
+            arg?cont addOutMsg
+    
+        let fableTranslate source : Wrap<string> =
+            Wrap.wrapper {
+                do! async { 
+                        loadReferences.Value
+                        while metadataLength() < references.Length do
+                            do! Async.Sleep 200
+                        LoadFiles [| "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.min.js" |] 
+                                  (fun () -> 
+                                      async {
+                                          do! Async.Sleep 100
+                                          let  options          = Object.Create null
+                                          options?skipDataMain <- 1
+                                          options?isBrowser    <- 1
+                                          JS.Window?require?config options
+                                      } |> Async.Start
+                                  )
+                    }
+                let  checker       = getChecker.Value
+                let  com           = Fable.makeCompiler [| "Microsoft.FSharp.Core.ExtraTopLevelOperators.PrintFormatLine"
+                                                         , "FSSGlobal.FSharpStation.FableModule.ToConsole($0)" |]  
+                let  fileName      = "stdin.fsx"
+                let  fsharpAst     = Fable.parseFSharpProject(checker, com, fileName, source)
+                let  babelAst      = Fable.compileAst(com, fsharpAst, fileName)
+                let  jsonAst       = Fable.convertToJson(babelAst)
+                let  ast           = JSON.Parse(jsonAst)
+                let  options       = Object.Create null
+                options?plugins   <- [| babelPlugins()?transformMacroExpressions
+                                        babelPlugins()?removeUnneededNulls 
+                                        "transform-es2015-modules-amd"    
+                                     |]
+                options?presets   <- [|  |]
+                options?filename  <- fileName
+                options?babelrc   <- false
+                let  transformed   = Babel.transformFromAst(ast , null, options)
+                let  jCode2:string = transformed?code
+                let  jCode3        = jCode2.Replace("define(["       , "require([")
+                                           .Replace("\"use strict\";", "\"use strict\"; try { exports = exports || {}; } catch (err) {}")
+                return jCode3
+            }
+        
+        
+    [< JavaScript >]
     let FSharpStationClient (loadFromUri: string) =
     
       
@@ -3965,11 +4063,30 @@ namespace FSSGlobal
               return  res
           }
       
+      let ToConsoleF arg = 
+          Console.Log arg
+          arg?cont addOutMsg
+          
+      FableModule.addOutMsg <- addOutMsg 
+      
+      let fableSnippetW (snpO: CodeSnippet option) =
+          Wrap.wrapper {
+              let!   snp        = snpO |> Result.fromOption ``Snippet Missing``
+              outputMsgs.Value <- "Running Fable..."
+              let    code       = snp.GetCodeFsx false
+              codeFS.Value     <- code
+              let! jsc          = FableModule.fableTranslate code
+              codeJS.Value     <- jsc
+              JS.Eval jsc |> ignore
+              addOutMsg "Done!"
+          }
+      
       let compileRunW = compileRunUrlW (JS.Window.Location.Origin + "/Main.html") 
       
       let compileRunP pos = getSnpO() |> compileRunW pos  //|> Wrap.map ignore |> Wrap.start addOutMsg
       let justCompile     = getSnpO   >> compileSnippetW  //>> Wrap.map ignore >> Wrap.start addOutMsg
       let evaluateFS      = getSnpO   >> evaluateSnippetW //>> Wrap.map ignore >> Wrap.start addOutMsg
+      let fableFS         = getSnpO   >> fableSnippetW
       let compileRun  ()  = compileRunP position.Value
       
       ()
@@ -4596,7 +4713,8 @@ namespace FSSGlobal
       let actIndentSnippet  = Template.Action.New("Indent In  >>"              ).OnClick(Do  indentCodeIn   ()        ).Disabled(noSelectionVal      )
       let actOutdentSnippet = Template.Action.New("Indent Out <<"              ).OnClick(Do  indentCodeOut  ()        ).Disabled(noSelectionVal      )
       let actGetFsCode      = Template.Action.New("Get F# Code"                ).OnClick(Do  getFSCode      ()        ).Disabled(disableParseVal     )
-      let actEvalCode       = Template.Action.New("Evaluate F#"                ).OnClick(DoW evaluateFS     ()        ).Disabled(disableFSIVal       )
+      let actEvalCode       = Template.Action.New("FSI F#"                     ).OnClick(DoW evaluateFS     ()        ).Disabled(disableFSIVal       )
+      let actFableCode      = Template.Action.New("Fable F#"                   ).OnClick(DoW fableFS        ()        ).Disabled(disableFSIVal       )
       let actRunWSNewTab    = Template.Action.New("Run WebSharper in new tab"  ).OnClick(DoW compileRunP    NewBrowser).Disabled(disableWebSharperVal)
       let actRunWSHere      = Template.Action.New("Run WebSharper in WS Result").OnClick(DoP compileRunP    Below     ).Disabled(disableWebSharperVal)
       let actRunWSIn        = Template.Action.New("Run WebSharper in ..."      ).OnClick(DoP compileRun     ()        ).Disabled(disableWebSharperVal)
@@ -4618,7 +4736,7 @@ namespace FSSGlobal
                 actFindDefinition.Button.Render
                 span []       
                 actSaveFile      .Button.Render
-                span []
+                actFableCode     .Button.Render
                 actCompileWS     .Button.Render
                 actRunWSIn       .Button.Render
                 Doc.Select [ attr.id "Position" ] positionTxt [ NewBrowser ; Below ] position |> someElt
@@ -4660,6 +4778,7 @@ namespace FSSGlobal
                   .SubMenu(     
                           [     
                               actEvalCode      .MenuEntry
+                              actFableCode     .MenuEntry
                               MenuEntry.New("").Divider     
                               actRunWSNewTab   .MenuEntry
                               actRunWSHere     .MenuEntry
@@ -4859,7 +4978,7 @@ namespace FSSGlobal
       let rootSplitter = SplitterNode.New(main_window)
       
       Val.sink (fun _ -> rootSplitter.SelectTab "Output"    |> ignore ) outputMsgs 
-      Val.sink (fun _ -> rootSplitter.SelectTab "Parser"    |> ignore ) parserMsgs 
+      //Val.sink (fun _ -> rootSplitter.SelectTab "Parser"    |> ignore ) parserMsgs 
       Val.sink (fun _ -> rootSplitter.SelectTab "WS Result" |> ignore ) triggerWSResult 
       
       div [
