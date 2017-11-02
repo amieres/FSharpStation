@@ -28,3 +28,5 @@ nuget Zafir.UI.Next
 nuget Newtonsoft.Json
 
 nuget FSharpPlus 1.0.0-CI00089 CI
+
+nuget Fable.Core
