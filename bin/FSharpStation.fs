@@ -1271,7 +1271,7 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1509709332684"
+        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1509735711749"
         let msgClient  = MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
         let toId       = AddressId fsIds
         let stringResponseR response =
@@ -1310,7 +1310,7 @@ namespace FSSGlobal
         member this.RunSnippet      (url,snpPath:string   ) = sendMsg toId  (RunSnippetUrlJS     (snpPath.Split '/', url))    stringResponseR
         member this.FSStationId                             = fsIds
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1509709332684"
+        static member FSStationId_                          = "FSharpStation1509735711749"
     
     
   module FsTranslator =
@@ -2117,9 +2117,8 @@ namespace FSSGlobal
     
         let [<Inline>] inline consistent   (vl:Val<_>)  = 
             let prior      = ref <| Var.Create Unchecked.defaultof<_>
-            let setPrior v = if (!prior).Value <> v then (!prior).Value <- v ; printfn "New Value %A" v else printfn "Same Value %A" v 
+            let setPrior v = if (!prior).Value <> v then (!prior).Value <- v 
             let vw         = toView vl
-            View.Get  (fun v -> printfn "View Get %A" v ;  setPrior v) vw
             View.Sink setPrior vw
             !prior :> IRef<_> |> DynamicV
         
@@ -3406,7 +3405,7 @@ namespace FSSGlobal
                 ts.Select tName
                 |> not
             )
-            |> Seq.iter ignore
+            |> Seq.iter (fun _ -> ())
     
     let inline fixedHorSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPx , false, px, ch1, ch2, 5.0, 95.0)
     let inline fixedVerSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPx , true , px, ch1, ch2, 5.0, 95.0)
@@ -3889,8 +3888,6 @@ namespace FSSGlobal
       let disableFSIVal        = disablePropertyVal "DisableFSI"        |> Val.map2 (||) disableParseVal  
       let disableFableVal      = disablePropertyVal "DisableFable"      |> Val.map2 (||) disableParseVal  
       let disableWebSharperVal = disablePropertyVal "DisableWebSharper" |> Val.map2 (||) disableParseVal 
-      
-      Val.sink (printfn "disableFSIVAl = %A") disableFSIVal
       
       let mutable lastCodeAndStarts : (CodeSnippetId * bool * ((string * int * int) [] * string [] * string [] * string [] * string [] * string [])) option = None
       
