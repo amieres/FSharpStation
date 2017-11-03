@@ -1271,7 +1271,7 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1509453268497"
+        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1509615086054"
         let msgClient  = MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
         let toId       = AddressId fsIds
         let stringResponseR response =
@@ -1310,7 +1310,7 @@ namespace FSSGlobal
         member this.RunSnippet      (url,snpPath:string   ) = sendMsg toId  (RunSnippetUrlJS     (snpPath.Split '/', url))    stringResponseR
         member this.FSStationId                             = fsIds
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1509453268497"
+        static member FSStationId_                          = "FSharpStation1509615086054"
     
     
   module FsTranslator =
@@ -2013,8 +2013,7 @@ namespace FSSGlobal
                 match va with
                 | Constant  a -> Attr.Create  att   a
                 | Dynamic  wa -> Attr.Dynamic att  wa
-                | DynamicV va -> Attr.Dynamic att  va.View
-    
+                | DynamicV va -> Attr.Dynamic att  va.View    
     
         type HelperType = HelperType with
             static member (&>) (HelperType, a :     string option   ) = Constant  a
@@ -2098,22 +2097,31 @@ namespace FSSGlobal
                    )
                 )
             contentVar
-        
-        let inline toDoc       v           = toView      (fixit v ) |> Doc.EmbedView
+            
+        let inline toDoc         v           = toView            (fixit v ) |> Doc.EmbedView
         let [<Inline>] inline bindIRef f  v           = bindIRef0 f (fixit v   |> toView)
-        let inline iter     f  v           = iterV     f (fixit v )
-        let inline bind     f  v           = bindV     f (fixit v )
-        let inline map      f  v           = mapV      f (fixit v )
-        let inline map2     f  v1 v2       = map2V     f (fixit v1) (fixit v2)
-        let inline map3     f  v1 v2 v3    = map3V     f (fixit v1) (fixit v2) (fixit v3)
-        let inline map4     f  v1 v2 v3 v4 = map4V     f (fixit v1) (fixit v2) (fixit v3) (fixit v4)
-        let inline sink     f  v           = fixit v |> toView |> View.Sink f
+        let inline iter       f  v           = iterV           f (fixit v )
+        let inline bind       f  v           = bindV           f (fixit v )
+        let inline map        f  v           = mapV            f (fixit v )
+        let inline map2       f  v1 v2       = map2V           f (fixit v1) (fixit v2)
+        let inline map3       f  v1 v2 v3    = map3V           f (fixit v1) (fixit v2) (fixit v3)
+        let inline map4       f  v1 v2 v3 v4 = map4V           f (fixit v1) (fixit v2) (fixit v3) (fixit v4)
+      
+        let inline iter2      f  v1 v2       = map2            f v1 v2       |> iterV id
+        let inline iter3      f  v1 v2 v3    = map3            f v1 v2 v3    |> iterV id
+        let inline iter4      f  v1 v2 v3 v4 = map4            f v1 v2 v3 v4 |> iterV id
+      
+        let inline mapAsync   f  v           = View.MapAsync   f (fixit v |> toView) |> Dynamic
+        let inline sink       f  v           = View.Sink       f (fixit v |> toView) 
+        let inline mapCached  f  v           = View.MapCached  f (      v |> toView) |> Dynamic
     
-        let inline iter2    f  v1 v2       = map2      f v1 v2       |> iterV id
-        let inline iter3    f  v1 v2 v3    = map3      f v1 v2 v3    |> iterV id
-        let inline iter4    f  v1 v2 v3 v4 = map4      f v1 v2 v3 v4 |> iterV id
-    
-        let inline mapAsync f  v           = View.MapAsync f (fixit v |> toView) 
+        let [<Inline>] inline consistent   (vl:Val<_>)  = 
+            let prior = ref <| Var.Create Unchecked.defaultof<_>
+            vl
+            |> toView
+            |> View.Sink (fun v -> if (!prior).Value <> v then (!prior).Value <- v)
+            !prior :> IRef<_> |> DynamicV
+        
     
     
     [<NoComparison ; NoEquality>]
@@ -3069,6 +3077,7 @@ namespace FSSGlobal
         static member New(tabs) = TabStrip.New(tabs |> Seq.map (fun def -> System.Guid.NewGuid(), def) |> Seq.toArray |> Var.Create)
         member this.Top         = { this with top        = true  }
         member this.Bottom      = { this with top        = false }
+        member this.SetTop    t = { this with top        = t     }
         member this.Horizontal  = { this with horizontal = true  }
         member this.Vertical    = { this with horizontal = false }
         member this.Selected    = Val.map2 (fun tabs sel -> tabs |> Seq.tryItem sel |> Option.map fst) this.tabs this.selected
@@ -3178,65 +3187,6 @@ namespace FSSGlobal
      border-left-width: 0.2pt;
     }
     "]
-    //#nowarn "1178"
-    type SplitterNode = | SplitterNode of Var<SplitterStructure>
-    and  SplitterStructure =
-        | SHtmlNode of HtmlNode
-        | STabStrip of TabStrip
-        | Split     of SplitterNode * SplitterNode * (SplitterNode -> SplitterNode -> HtmlNode)
-    
-    let rec renderSplitterNode      sn = match sn with SplitterNode chV -> bindHElem (fun ch -> renderSplitterStructure ch) chV 
-    and     renderSplitterStructure ss =
-            match ss with
-            | SHtmlNode node        -> node
-            | STabStrip strip       -> strip.Render  
-            | Split   (ch1, ch2, f) -> f ch1 ch2
-    
-    let renderSplitter (per:float) ver ch1 ch2 = Grid.NewBisect(true, StVariable, ver, per, renderSplitterNode ch1, renderSplitterNode ch2).Render
-    
-    type SplitterStructure with    
-        static member New(vertical : bool, child1, child2, per) = Split(SplitterNode (Var.Create              child1), SplitterNode (Var.Create              child2), renderSplitter per  vertical)
-        static member New(vertical : bool, child1, child2     ) = Split(SplitterNode (Var.Create              child1), SplitterNode (Var.Create              child2), renderSplitter 50.0 vertical)
-        static member New(vertical : bool, child1, child2, per) = Split(SplitterNode (Var.Create <| SHtmlNode child1), SplitterNode (Var.Create <| SHtmlNode child2), renderSplitter per  vertical)
-        static member New(vertical : bool, child1, child2, per) = Split(SplitterNode (Var.Create <| STabStrip child1), SplitterNode (Var.Create <| STabStrip child2), renderSplitter per  vertical)
-        static member New(ss1, ss2, f                    ) = Split(SplitterNode (Var.Create ss1                ), SplitterNode (Var.Create ss2                ), f                      )
-        static member New(strip                          ) = STabStrip strip
-        static member New(node                           ) = SHtmlNode node
-    
-    type SplitterNode with
-        static member New        ss           = SplitterNode <| Var.Create ss
-        static member New       (ss:HtmlNode) = SplitterNode <| Var.Create (SplitterStructure.New(ss))
-        static member New       (ss:TabStrip) = SplitterNode <| Var.Create (SplitterStructure.New(ss))
-        member this.Render                    = renderSplitterNode this
-        member this.Var                       = match this with SplitterNode chV -> chV
-        member this.Value                     = this.Var.Value
-        member this.SplitMe(first, ver, node) =
-            this.Var.Value <- if first then SplitterStructure.New(ver, node      , this.Value) 
-                                       else SplitterStructure.New(ver, this.Value, node      )
-        member this.SplitMe(first, ver, node:TabStrip) = this.SplitMe(first, ver, STabStrip node      )
-        member this.SplitMe(first, ver, node:HtmlNode) = this.SplitMe(first, ver, SHtmlNode node      )
-        member this.SplitMe(first, ver               ) = this.SplitMe(first, ver, TabStrip.New([||])  )
-        member this.Navigate recFun                    =
-            match this.Value with
-            | SHtmlNode _           
-            | STabStrip _           -> recFun this.Value
-            | Split   (ch1, ch2, f) -> ch1.Navigate recFun || ch2.Navigate recFun
-        member this.SelectTab  (nm: string)            = this.Navigate (function | STabStrip strip -> strip.Select nm | _ -> false) 
-        member this.IsEmpty                            =
-            match this.Value with
-            | SHtmlNode HtmlEmpty   -> true
-            | SHtmlNode _           -> false
-            | STabStrip strip       -> strip.tabs.Value.Length = 0
-            | Split   (ch1, ch2, f) -> ch1.IsEmpty && ch2.IsEmpty
-        member this.UnSplitEmpties()                   =
-            if                                    this.IsEmpty then this.Var.Value <- SplitterStructure.New(TabStrip.New([||])) else
-            match this.Value with
-            | Split   (ch1, ch2, f) -> if   ch1.IsEmpty then ch2.UnSplitEmpties() ; this.Var.Value <- ch2.Value 
-                                       elif ch2.IsEmpty then ch1.UnSplitEmpties() ; this.Var.Value <- ch1.Value 
-                                                        else ch1.UnSplitEmpties()
-                                                             ch2.UnSplitEmpties()
-            | _                     -> ()  
-    
     let inline menuEntry content   = li [ content ]
     let inline refA      cont  t r = a  [ cont ; hrefO r ; target t ] 
     let inline refText   txt   t r = bindHElem (fun t -> if t = "" then HtmlEmpty else refA(htmlText t) t r) txt
@@ -3361,6 +3311,103 @@ namespace FSSGlobal
     
     let Do  f p = (fun     _ _ -> f     p)
     let Do2 f p = (fun act _ _ -> f act p)
+    type GuiPart     = 
+       | GuiNode     of HtmlNode
+       | GuiAction   of Action
+       | GuiSplit    of first: bool * secT: SectionType * vertical: bool * per:float * string * string * min: float * max: float
+       | GuiTabStrip of top  : bool * string []
+    
+    let rec processLayoutSteps (steps: (string * GuiPart) seq) (parts: Map<string,GuiPart>) =
+        steps
+        |> Seq.tryHead
+        |> Option.map (fun (name, guiPart) ->
+            guiPart
+            |> Map.add name <| parts
+            |> processLayoutSteps (steps |> Seq.skip 1)
+           )
+        |> Option.defaultValue parts
+    
+    let inline addValue k v (dict: System.Collections.Generic.Dictionary<_, _>) = 
+        dict.Remove k |> ignore
+        dict.Add(k, v)
+    
+    type LayoutDescriptionFable = 
+        {
+           GuiTabStrip : (bool * string[]                                               ) option
+           GuiSplit    : (bool * string * bool * float * string * string * float * float) option  
+        }
+    
+    let toSect s =
+        match s with 
+        | "StVariable"  -> StVariable
+        | "StFixedPx"   -> StFixedPx
+        | _             -> StFixedPerc
+    
+    [<NoComparison ; NoEquality>]
+    type Layout = {
+        baseParts     : Map<string, GuiPart>
+        steps         : IRef<(string * GuiPart) []>
+        tabStrips     : System.Collections.Generic.Dictionary<string, TabStrip>
+        mutable main  : string
+    }
+    with
+        static member New parts =
+            {
+                baseParts = Map parts
+                steps     = Var.Create([||])
+                tabStrips = System.Collections.Generic.Dictionary<string, TabStrip>()
+                main      = "main"
+            }
+        member this.SetLayout steps = this.steps.Value <- steps |> Seq.toArray
+        member this.GetNode name (parts: Map<string, GuiPart>) =
+            Map.tryFind name parts
+            |> Option.map(
+               function
+               | GuiNode     node                                             -> node
+               | GuiAction   act                                              -> act.Button.Render
+               | GuiSplit   (first, secT , vertical, per, ch1, ch2, min, max) -> Grid.NewBisect(first, secT, vertical, per, this.GetNode ch1 parts, this.GetNode ch2 parts).Min(min).Max(max).Render
+               | GuiTabStrip(top  , nodes                                   ) -> let ts = TabStrip.New(nodes |> Seq.map (fun node -> node, this.GetNode node parts)).SetTop(top)
+                                                                                 addValue name ts this.tabStrips
+                                                                                 ts.Render
+            )
+            |> Option.defaultWith (fun () -> div [ htmlText (sprintf "GuiPart %s not found" name) ])
+        member this.Render  =
+            this.steps
+            |> Val.map (fun (steps: (string * GuiPart) []) -> 
+                let node =
+                    if steps.Length = 0 then this.main
+                    else steps |> Seq.last |> fst
+                processLayoutSteps steps this.baseParts |> this.GetNode node) 
+            |> HtmlElementV
+        member this.SetLayoutJson json =
+            try
+                let steps = 
+                    json
+                    |> WebSharper.Json.Deserialize<(string * LayoutDescriptionFable)[]>
+                    |> Array.choose (fun (name, ldf) ->
+                        ldf.GuiTabStrip
+                        |> Option.map GuiTabStrip
+                        |> (function 
+                            | Some e -> Some e 
+                            | None   ->
+                            ldf.GuiSplit
+                            |> Option.map (fun (first, secT: string  , vertical, per, ch1, ch2, min, max) -> 
+                                       GuiSplit(first, secT |> toSect, vertical, per, ch1, ch2, min, max)))
+                        |> Option.map (fun v -> name, v)
+                    )
+                this.steps.Value <- steps
+                printfn "updated layoutSteps"
+            with e -> printfn "Error: %A" e
+        member this.ExportSetLayoutJson name =
+            JS.Window?(name) <- this.SetLayoutJson
+        member this.SelectTab (tName:string) =
+            this.tabStrips.Values
+            |> Seq.takeWhile (fun ts ->
+                ts.Select tName
+                |> not
+            )
+            |> Seq.iter ignore
+            
   [<JavaScript>]
   module RunCode       =
     let completeJS js = 
@@ -3668,6 +3715,16 @@ namespace FSSGlobal
                member this.UpdateMaybe (f:string -> string option) = get() |> f |> Option.iter set
                member this.View                     : View<string> = get() |> View.Const
     
+        let [< Inline >] inline genericPropertyVal currentCodeSnippetId p def f =
+            currentCodeSnippetId
+            |> Val.map
+                (CodeSnippet.FetchO
+                 >> Option.bind (fun snp -> snp.propValue p |> Option.map f)
+                 >> Option.defaultValue def
+                )
+            |> Val.consistent
+    
+    
     open FsGlobal                
     
     
@@ -3811,32 +3868,21 @@ namespace FSSGlobal
       ()    
       
       
-      let noSelection cur = CodeSnippet.FetchO cur = None
-      let noSelectionVal  = Val.map noSelection currentCodeSnippetId
+      let noSelection cur      = CodeSnippet.FetchO cur = None
+      let noSelectionVal       = Val.map noSelection currentCodeSnippetId
       
-      let genericPropertyVal p def f =
-          currentCodeSnippetId
-          |> Val.map 
-              (CodeSnippet.FetchO
-               >> Option.bind (fun snp -> snp.propValue p |> Option.map f)
-               >> Option.defaultValue def
-              )
-      
-      let propertyCssVal       = genericPropertyVal "CSS"      ""         id
-      let propertyCssLinkVal   = genericPropertyVal "CSSLink"  ""         id   
-      let propertyModeVal      = genericPropertyVal "Mode"     "fsharp"   id   
-      let propertyThemeVal0    = genericPropertyVal "Theme"    ""         id   
-      let disablePropertyVal p = genericPropertyVal p          false      ((<>) "0")
-      
-      
-      let propertyThemeVar     = Var.Create                    ""
-      Val.sink (fun v -> if v <> propertyThemeVar.Value then propertyThemeVar.Value <- v) propertyThemeVal0
-      let propertyThemeVal     = Val.DynamicV propertyThemeVar   
+      let propertyCssVal       = genericPropertyVal  currentCodeSnippetId "CSS"      ""         id
+      let propertyCssLinkVal   = genericPropertyVal  currentCodeSnippetId "CSSLink"  ""         id   
+      let propertyModeVal      = genericPropertyVal  currentCodeSnippetId "Mode"     "fsharp"   id   
+      let propertyThemeVal     = genericPropertyVal  currentCodeSnippetId "Theme"    ""         id   
+      let propertyLayoutVal    = genericPropertyVal  currentCodeSnippetId "Layout"   ""         id   
+      let disablePropertyVal p = genericPropertyVal  currentCodeSnippetId p          false      ((<>) "0")
       
       let propertyThemeLinkVal = Val.map (sprintf "/EPFileX/codemirror/content/theme/%s.css") propertyThemeVal   
       
       let disableParseVal      = disablePropertyVal "DisableParse" 
       let disableFSIVal        = disablePropertyVal "DisableFSI"        |> Val.map2 (||) disableParseVal  
+      let disableFableVal      = disablePropertyVal "DisableFable"      |> Val.map2 (||) disableParseVal  
       let disableWebSharperVal = disablePropertyVal "DisableWebSharper" |> Val.map2 (||) disableParseVal 
       
       let mutable lastCodeAndStarts : (CodeSnippetId * bool * ((string * int * int) [] * string [] * string [] * string [] * string [] * string [])) option = None
@@ -4341,7 +4387,7 @@ namespace FSSGlobal
           async {
               do! Async.Sleep 3000
               printfn "loading %s..." loadFromUri
-              let  r = JQuery.JQuery.GetJSON(loadFromUri)
+              let  r = JQuery.JQuery.GetJSON(loadFromUri + "?t=" + (now() |> string))
               r.Done (fun () -> parseText r.ResponseText) |> ignore
           } |> Async.Start
           
@@ -4713,8 +4759,8 @@ namespace FSSGlobal
       let actIndentSnippet  = Template.Action.New("Indent In  >>"              ).OnClick(Do  indentCodeIn   ()        ).Disabled(noSelectionVal      )
       let actOutdentSnippet = Template.Action.New("Indent Out <<"              ).OnClick(Do  indentCodeOut  ()        ).Disabled(noSelectionVal      )
       let actGetFsCode      = Template.Action.New("Get F# Code"                ).OnClick(Do  getFSCode      ()        ).Disabled(disableParseVal     )
-      let actEvalCode       = Template.Action.New("FSI F#"                     ).OnClick(DoW evaluateFS     ()        ).Disabled(disableFSIVal       )
-      let actFableCode      = Template.Action.New("Fable F#"                   ).OnClick(DoW fableFS        ()        ).Disabled(disableFSIVal       )
+      let actEvalCode       = Template.Action.New("Run FSI"                    ).OnClick(DoW evaluateFS     ()        ).Disabled(disableFSIVal       )
+      let actFableCode      = Template.Action.New("Run Fable"                  ).OnClick(DoW fableFS        ()        ).Disabled(disableFableVal     )
       let actRunWSNewTab    = Template.Action.New("Run WebSharper in new tab"  ).OnClick(DoW compileRunP    NewBrowser).Disabled(disableWebSharperVal)
       let actRunWSHere      = Template.Action.New("Run WebSharper in WS Result").OnClick(DoP compileRunP    Below     ).Disabled(disableWebSharperVal)
       let actRunWSIn        = Template.Action.New("Run WebSharper in ..."      ).OnClick(DoP compileRun     ()        ).Disabled(disableWebSharperVal)
@@ -4728,18 +4774,19 @@ namespace FSSGlobal
                 actOutdentSnippet.Button.Render
                 actIndentSnippet .Button.Render
                 loadFileElement.Render.AddChildren([ style "grid-column: 4/6" ])
-                actParseCode     .Button.Render
                 actEvalCode      .Button.Render
-                actGetFsCode     .Button.Render
-             
+                actFableCode     .Button.Render
+                actRunWSIn       .Button.Render
+      
                 actDeleteSnippet .Button.Render
                 actFindDefinition.Button.Render
                 span []       
                 actSaveFile      .Button.Render
-                actFableCode     .Button.Render
-                actCompileWS     .Button.Render
-                actRunWSIn       .Button.Render
+                span []       
+                actGetFsCode     .Button.Render
+                actParseCode     .Button.Render
                 Doc.Select [ attr.id "Position" ] positionTxt [ NewBrowser ; Below ] position |> someElt
+      
                 style """
                     overflow: hidden;
                     display: grid;
@@ -4857,15 +4904,6 @@ namespace FSSGlobal
           |> Seq.pick (fun (line, from, to_) -> if s >= from && s < to_ then Some line else None)
           |> jumpToLine
       
-      let Messages =
-          [
-           "Output"    , Template.TextArea.New(outputMsgs).Placeholder("Output:"         ).Title("Output"                   ).RenderWith [ on.dblClick jumpToRef ]
-           "Parser"    , Template.TextArea.New(parserMsgs).Placeholder("Parser messages:").Title("Parser"                   ).RenderWith [ on.dblClick jumpToRef ]
-           "JavaScript", Template.TextArea.New(codeJS    ).Placeholder("Javascript:"     ).Title("JavaScript code generated").Render
-           "F# code"   , Template.TextArea.New(codeFS    ).Placeholder("F# code:"        ).Title("F# code assembled"        ).Render
-           "WS Result" , div [ div [ Id "TestNode" ; style "background: white; height: 100%; width: 100%; "] ]
-          ]
-          
       (*
       let CodeEditor() =
         Template.Grid.New
@@ -4939,8 +4977,46 @@ namespace FSSGlobal
           codeSnippets.View
              |> View.SnapshotOn codeSnippets.Value refresh.View
              |> bindHElem listEntries
-             
-      let inline fixedHorSplitter1 px ch1 ch2 =
+      
+      let layout =
+        Layout.New [
+           "Output"    , GuiNode <| Template.TextArea.New(outputMsgs).Placeholder("Output:"         ).Title("Output"                   ).RenderWith [ on.dblClick jumpToRef ]
+           "Parser"    , GuiNode <| Template.TextArea.New(parserMsgs).Placeholder("Parser messages:").Title("Parser"                   ).RenderWith [ on.dblClick jumpToRef ]
+           "JavaScript", GuiNode <| Template.TextArea.New(codeJS    ).Placeholder("Javascript:"     ).Title("JavaScript code generated").Render
+           "F# code"   , GuiNode <| Template.TextArea.New(codeFS    ).Placeholder("F# code:"        ).Title("F# code assembled"        ).Render
+           "Properties", GuiNode <| properties    
+           "WS Result" , GuiNode <| div [ div [ Id "TestNode" ; style "background: white; height: 100%; width: 100%; "] ]
+           "title"     , GuiNode <| Template.Input.New(Val.bindIRef curSnippetNameOf currentCodeSnippetId).Prefix(htmlText "name:").Render
+           "code"      , GuiNode <| codeMirrorRender
+           "snippets"  , GuiNode <| snippetList
+           "buttons"   , GuiNode <| buttonsH
+           "menu"      , GuiNode <| menuBar
+        ]
+      
+      
+      let inline fixedHorSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPx , false, px, ch1, ch2, 5.0, 95.0)
+      let inline varSplitter         ver pc ch1 ch2 min max = GuiSplit(true , StVariable, ver  , pc, ch1, ch2, min,  max)
+      
+      let steps = 
+          [
+              "messagesR"    , GuiTabStrip(     true ,  [| "Properties" |])
+              "messagesB"    , GuiTabStrip(     true ,  [| "Output"    
+                                                           "Parser"    
+                                                           "JavaScript"
+                                                           "F# code"   
+                                                           "WS Result"  |])
+              "title_code"   , fixedHorSplitter true  34.0 "title"         "code"
+              "code_props"   , varSplitter      true  85.0 "title_code"    "messagesR"     25.0 100.0
+              "code_buttons" , fixedHorSplitter false 80.0 "code_props"    "buttons"
+              "snippets_code", varSplitter      true  15.0 "snippets"      "code_buttons"   5.0  95.0
+              "main_messages", varSplitter      false 82.0 "snippets_code" "messagesB"     35.0 100.0             
+              "main_window"  , fixedHorSplitter true  50.0 "menu"          "main_messages"
+          ]             
+      
+      Val.sink (fun json -> if json = "" then layout.SetLayout steps else layout.SetLayoutJson json ) propertyLayoutVal
+      layout.ExportSetLayoutJson "setLayoutJson"
+      
+      (*let inline fixedHorSplitter1 px ch1 ch2 =
           let grid = Grid.New.Content("one", renderSplitterNode ch1)
                              .Content("two", renderSplitterNode ch2).Padding(0.0)
           grid.RowFixedPx(px).RowAuto(50.0).Content( style "grid-template-areas: 'one' 'two' " ).Render
@@ -4950,15 +5026,6 @@ namespace FSSGlobal
                              .Content("two", renderSplitterNode ch2).Padding(0.0)
           grid.RowAuto(50.0).RowFixedPx(px).Content( style "grid-template-areas: 'one' 'two' " ).Render
       
-      let title          = SHtmlNode <| Template.Input.New(Val.bindIRef curSnippetNameOf currentCodeSnippetId).Prefix(htmlText "name:").Render
-      let messagesT      = STabStrip <| TabStrip.New([]      ).Bottom
-      let messagesB      = STabStrip <| TabStrip.New(Messages).Top
-      let messagesL      = STabStrip <| TabStrip.New([]      ).Top   .Vertical
-      let messagesR      = STabStrip <| TabStrip.New([ "Properties", properties ]).Top   .Vertical
-      let code           = SHtmlNode <| codeMirrorRender
-      let snippets       = SHtmlNode <| snippetList
-      let buttons        = SHtmlNode <| buttonsH
-      let menu           = SHtmlNode <| menuBar
       
       let inline fixedHorSplitter first            px  ch1 ch2 = Grid.NewBisect(first, StFixedPx , false, px , renderSplitterNode ch1, renderSplitterNode ch2)                  .Render
       let inline split (min:float) (max:float) ver per ch1 ch2 = Grid.NewBisect(true , StVariable, ver  , per, renderSplitterNode ch1, renderSplitterNode ch2).Min(min).Max(max).Render
@@ -4971,19 +5038,17 @@ namespace FSSGlobal
       let main_messagesR = SplitterStructure.New(       main_messagesT, messagesR     , split 25. 100. true    92.0)
       let main_messagesL = SplitterStructure.New(       messagesL     , main_messagesR, split  0.  75. true     0.0)
       let main_window    = SplitterStructure.New(       menu          , main_messagesL, fixedHorSplitter true  50.0)
-      
+      *)
       //let code_messages = SplitterStructure.New(false, title_Code           , STabStrip messages,                   75.0)
       //let main_Buttons  = SplitterStructure.New(       snippets_code        , SHtmlNode buttons                 , fixedHorSplitter2 80.0)
       
-      let rootSplitter = SplitterNode.New(main_window)
-      
-      Val.sink (fun _ -> rootSplitter.SelectTab "Output"    |> ignore ) outputMsgs 
-      //Val.sink (fun _ -> rootSplitter.SelectTab "Parser"    |> ignore ) parserMsgs 
-      Val.sink (fun _ -> rootSplitter.SelectTab "WS Result" |> ignore ) triggerWSResult 
+      Val.sink (fun _ -> layout.SelectTab "Output"    |> ignore ) outputMsgs 
+      //Val.sink (fun _ -> layout.SelectTab "Parser"    |> ignore ) parserMsgs 
+      Val.sink (fun _ -> layout.SelectTab "WS Result" |> ignore ) triggerWSResult 
       
       div [
           style "height: 100vh; width: 100% "
-          rootSplitter.Render.Style("height: 100%; width: 100% ")
+          layout.Render.Style("height: 100%; width: 100% ")
           script [ src  "/EPFileX/FileSaver/FileSaver.js"                                     ; ``type`` "text/javascript"             ]
           script [ src  "http://code.jquery.com/jquery-3.1.1.min.js"                          ; ``type`` "text/javascript"             ]
           script [ src  "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"  ; ``type`` "text/javascript"             ]
