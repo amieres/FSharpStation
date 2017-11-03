@@ -1976,11 +1976,11 @@
  },WebSharper.Obj,FsStationClient);
  FsStationClient.get_FSStationId_=function()
  {
-  return"FSharpStation1509615086054";
+  return"FSharpStation1509672068131";
  };
  FsStationClient.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
-  this.fsIds=Option.defaultValue("FSharpStation1509615086054",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1509672068131",fsStationId);
   this.msgClient=new MessagingClient.New(clientId,timeout,endPoint);
   this.toId=FsStationShared.AddressId(this.fsIds);
  },FsStationClient);
@@ -3368,17 +3368,20 @@
   },
   get_Render:function()
   {
-   var view;
-   return HtmlNode.button([HtmlNode.type(this._type),HtmlNode["class"](this._class),HtmlNode.Id(this.id),HtmlNode.style(this.style),new HtmlNode$1({
-    $:7,
-    $0:(view=View.Const(""),AttrModule.DynamicPred("disabled",Val.toView(this.disabled),view))
-   }),new HtmlNode$1({
-    $:7,
-    $0:AttrProxy.Handler("click",this.onClick)
-   }),new HtmlNode$1({
-    $:3,
-    $0:this.text
-   })]);
+   var x,view;
+   return new HtmlNode$1({
+    $:6,
+    $0:(x=HtmlNode.button([HtmlNode.type(this._type),HtmlNode["class"](this._class),HtmlNode.Id(this.id),HtmlNode.style(this.style),new HtmlNode$1({
+     $:7,
+     $0:(view=View.Const(""),AttrModule.DynamicPred("disabled",Val.toView(this.disabled),view))
+    }),new HtmlNode$1({
+     $:7,
+     $0:AttrProxy.Handler("click",this.onClick)
+    }),new HtmlNode$1({
+     $:3,
+     $0:this.text
+    })]),(HtmlNode.renderDoc())(x))
+   });
   }
  },null,Button);
  Button.New$1=function(txt)
@@ -4953,7 +4956,7 @@
     },((Provider.DecodeArray(Provider.DecodeTuple([Provider.Id(),FSharpStation_JsonDecoder.j$7])))())(JSON.parse(json))));
     (function($1)
     {
-     return $1("updated layoutSteps");
+     return $1("SetLayoutJson");
     }(function(s)
     {
      console.log(s);
@@ -5007,6 +5010,13 @@
   SetLayout:function(steps)
   {
    this.steps.set_RVal(Arrays.ofSeq(steps));
+   (function($1)
+   {
+    return $1("SetLayout");
+   }(function(s)
+   {
+    console.log(s);
+   }));
   }
  },null,Layout);
  Layout.New$1=function(parts)
@@ -5756,7 +5766,7 @@
  };
  FSharpStation.FSharpStationClient=function(loadFromUri)
  {
-  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,v$2,f,g,prior,propertyCssLinkVal,v$3,f$1,g$1,prior$1,propertyModeVal,v$4,f$2,g$2,prior$2,propertyThemeVal,v$5,f$3,g$3,prior$3,propertyLayoutVal,v$6,f$4,g$4,prior$4,propertyThemeLinkVal,disableParseVal,disableFSIVal,disableFableVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,fsStationClient,b,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b$1,autoCompleteClient,parseFile,isParseDisabled,parseRun,rex1,rex2,rex,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actEvalCode,$2,actFableCode,$3,actRunWSNewTab,$4,actRunWSHere,$5,actRunWSIn,actParseCode,actCompileWS,$6,actFindDefinition,buttonsH,menuLeft,menuRight,menuBar,redraw,properties,s$2,v$7,v$8,snippetList,x,layout,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,steps,x$1;
+  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,v$2,f,g,prior,vw,propertyCssLinkVal,v$3,f$1,g$1,prior$1,vw$1,propertyModeVal,v$4,f$2,g$2,prior$2,vw$2,propertyThemeVal,v$5,f$3,g$3,prior$3,vw$3,propertyLayoutVal,v$6,f$4,g$4,prior$4,vw$4,propertyThemeLinkVal,disableParseVal,disableFSIVal,disableFableVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,fsStationClient,b,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b$1,autoCompleteClient,parseFile,isParseDisabled,parseRun,rex1,rex2,rex,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actEvalCode,$2,actFableCode,$3,actRunWSNewTab,$4,actRunWSHere,$5,actRunWSIn,actParseCode,actCompileWS,$6,actFindDefinition,buttonsH,menuLeft,menuRight,menuBar,redraw,properties,s$2,v$7,v$8,snippetList,x,layout,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,steps,x$1;
   function missing(def,find,lens,k)
   {
    return find(k)==null?Var.Lens(missingVar,function()
@@ -5820,6 +5830,34 @@
   {
    return Option.defaultValue("",a);
   }
+  function setPrior(v$9)
+  {
+   if(!Unchecked.Equals(prior[0].c,v$9))
+    {
+     Var.Set(prior[0],v$9);
+     ((function($9)
+     {
+      return function($10)
+      {
+       return $9("New Value "+Utils.prettyPrint($10));
+      };
+     }(function(s$3)
+     {
+      console.log(s$3);
+     }))(v$9));
+    }
+   else
+    ((function($9)
+    {
+     return function($10)
+     {
+      return $9("Same Value "+Utils.prettyPrint($10));
+     };
+    }(function(s$3)
+    {
+     console.log(s$3);
+    }))(v$9));
+  }
   function b$3(snp)
   {
    var o;
@@ -5832,6 +5870,34 @@
   function g$6(a)
   {
    return Option.defaultValue("",a);
+  }
+  function setPrior$1(v$9)
+  {
+   if(!Unchecked.Equals(prior$1[0].c,v$9))
+    {
+     Var.Set(prior$1[0],v$9);
+     ((function($9)
+     {
+      return function($10)
+      {
+       return $9("New Value "+Utils.prettyPrint($10));
+      };
+     }(function(s$3)
+     {
+      console.log(s$3);
+     }))(v$9));
+    }
+   else
+    ((function($9)
+    {
+     return function($10)
+     {
+      return $9("Same Value "+Utils.prettyPrint($10));
+     };
+    }(function(s$3)
+    {
+     console.log(s$3);
+    }))(v$9));
   }
   function b$4(snp)
   {
@@ -5846,6 +5912,34 @@
   {
    return Option.defaultValue("fsharp",a);
   }
+  function setPrior$2(v$9)
+  {
+   if(!Unchecked.Equals(prior$2[0].c,v$9))
+    {
+     Var.Set(prior$2[0],v$9);
+     ((function($9)
+     {
+      return function($10)
+      {
+       return $9("New Value "+Utils.prettyPrint($10));
+      };
+     }(function(s$3)
+     {
+      console.log(s$3);
+     }))(v$9));
+    }
+   else
+    ((function($9)
+    {
+     return function($10)
+     {
+      return $9("Same Value "+Utils.prettyPrint($10));
+     };
+    }(function(s$3)
+    {
+     console.log(s$3);
+    }))(v$9));
+  }
   function b$5(snp)
   {
    var o;
@@ -5858,6 +5952,34 @@
   function g$8(a)
   {
    return Option.defaultValue("",a);
+  }
+  function setPrior$3(v$9)
+  {
+   if(!Unchecked.Equals(prior$3[0].c,v$9))
+    {
+     Var.Set(prior$3[0],v$9);
+     ((function($9)
+     {
+      return function($10)
+      {
+       return $9("New Value "+Utils.prettyPrint($10));
+      };
+     }(function(s$3)
+     {
+      console.log(s$3);
+     }))(v$9));
+    }
+   else
+    ((function($9)
+    {
+     return function($10)
+     {
+      return $9("Same Value "+Utils.prettyPrint($10));
+     };
+    }(function(s$3)
+    {
+     console.log(s$3);
+    }))(v$9));
   }
   function b$6(snp)
   {
@@ -5872,9 +5994,37 @@
   {
    return Option.defaultValue("",a);
   }
+  function setPrior$4(v$9)
+  {
+   if(!Unchecked.Equals(prior$4[0].c,v$9))
+    {
+     Var.Set(prior$4[0],v$9);
+     ((function($9)
+     {
+      return function($10)
+      {
+       return $9("New Value "+Utils.prettyPrint($10));
+      };
+     }(function(s$3)
+     {
+      console.log(s$3);
+     }))(v$9));
+    }
+   else
+    ((function($9)
+    {
+     return function($10)
+     {
+      return $9("Same Value "+Utils.prettyPrint($10));
+     };
+    }(function(s$3)
+    {
+     console.log(s$3);
+    }))(v$9));
+  }
   function disablePropertyVal(p)
   {
-   var v$9,f$7,g$13,prior$5;
+   var v$9,f$7,g$13,prior$5,vw$5;
    function f$8(y)
    {
     return"0"!==y;
@@ -5892,6 +6042,34 @@
    {
     return Option.defaultValue(false,a);
    }
+   function setPrior$5(v$10)
+   {
+    if(!Unchecked.Equals(prior$5[0].c,v$10))
+     {
+      Var.Set(prior$5[0],v$10);
+      ((function($9)
+      {
+       return function($10)
+       {
+        return $9("New Value "+Utils.prettyPrint($10));
+       };
+      }(function(s$3)
+      {
+       console.log(s$3);
+      }))(v$10));
+     }
+    else
+     ((function($9)
+     {
+      return function($10)
+      {
+       return $9("Same Value "+Utils.prettyPrint($10));
+      };
+     }(function(s$3)
+     {
+      console.log(s$3);
+     }))(v$10));
+   }
    v$9=Val.map((f$7=(g$13=function(o)
    {
     return o==null?null:b$7(o.$0);
@@ -5903,11 +6081,22 @@
     return g$14(f$7(x$2));
    }),currentCodeSnippetId);
    prior$5=[Var.Create$1(null)];
-   View.Sink(function(v$10)
+   vw$5=Val.toView(v$9);
+   View.Get(function(v$10)
    {
-    if(!Unchecked.Equals(prior$5[0].c,v$10))
-     Var.Set(prior$5[0],v$10);
-   },Val.toView(v$9));
+    ((function($9)
+    {
+     return function($10)
+     {
+      return $9("View Get "+Utils.prettyPrint($10));
+     };
+    }(function(s$3)
+    {
+     console.log(s$3);
+    }))(v$10));
+    setPrior$5(v$10);
+   },vw$5);
+   View.Sink(setPrior$5,vw$5);
    return new Val({
     $:1,
     $0:prior$5[0]
@@ -7055,14 +7244,23 @@
   }),function(x$2)
   {
    return g$5(f(x$2));
-  }),currentCodeSnippetId),(prior=[Var.Create$1(null)],(View.Sink(function(v$9)
+  }),currentCodeSnippetId),(prior=[Var.Create$1(null)],(vw=Val.toView(v$2),(View.Get(function(v$9)
   {
-   if(!Unchecked.Equals(prior[0].c,v$9))
-    Var.Set(prior[0],v$9);
-  },Val.toView(v$2)),new Val({
+   ((function($9)
+   {
+    return function($10)
+    {
+     return $9("View Get "+Utils.prettyPrint($10));
+    };
+   }(function(s$3)
+   {
+    console.log(s$3);
+   }))(v$9));
+   setPrior(v$9);
+  },vw),View.Sink(setPrior,vw),new Val({
    $:1,
    $0:prior[0]
-  }))));
+  })))));
   propertyCssLinkVal=(v$3=Val.map((f$1=(g$1=function(o)
   {
    return o==null?null:b$3(o.$0);
@@ -7072,14 +7270,23 @@
   }),function(x$2)
   {
    return g$6(f$1(x$2));
-  }),currentCodeSnippetId),(prior$1=[Var.Create$1(null)],(View.Sink(function(v$9)
+  }),currentCodeSnippetId),(prior$1=[Var.Create$1(null)],(vw$1=Val.toView(v$3),(View.Get(function(v$9)
   {
-   if(!Unchecked.Equals(prior$1[0].c,v$9))
-    Var.Set(prior$1[0],v$9);
-  },Val.toView(v$3)),new Val({
+   ((function($9)
+   {
+    return function($10)
+    {
+     return $9("View Get "+Utils.prettyPrint($10));
+    };
+   }(function(s$3)
+   {
+    console.log(s$3);
+   }))(v$9));
+   setPrior$1(v$9);
+  },vw$1),View.Sink(setPrior$1,vw$1),new Val({
    $:1,
    $0:prior$1[0]
-  }))));
+  })))));
   propertyModeVal=(v$4=Val.map((f$2=(g$2=function(o)
   {
    return o==null?null:b$4(o.$0);
@@ -7089,14 +7296,23 @@
   }),function(x$2)
   {
    return g$7(f$2(x$2));
-  }),currentCodeSnippetId),(prior$2=[Var.Create$1(null)],(View.Sink(function(v$9)
+  }),currentCodeSnippetId),(prior$2=[Var.Create$1(null)],(vw$2=Val.toView(v$4),(View.Get(function(v$9)
   {
-   if(!Unchecked.Equals(prior$2[0].c,v$9))
-    Var.Set(prior$2[0],v$9);
-  },Val.toView(v$4)),new Val({
+   ((function($9)
+   {
+    return function($10)
+    {
+     return $9("View Get "+Utils.prettyPrint($10));
+    };
+   }(function(s$3)
+   {
+    console.log(s$3);
+   }))(v$9));
+   setPrior$2(v$9);
+  },vw$2),View.Sink(setPrior$2,vw$2),new Val({
    $:1,
    $0:prior$2[0]
-  }))));
+  })))));
   propertyThemeVal=(v$5=Val.map((f$3=(g$3=function(o)
   {
    return o==null?null:b$5(o.$0);
@@ -7106,14 +7322,23 @@
   }),function(x$2)
   {
    return g$8(f$3(x$2));
-  }),currentCodeSnippetId),(prior$3=[Var.Create$1(null)],(View.Sink(function(v$9)
+  }),currentCodeSnippetId),(prior$3=[Var.Create$1(null)],(vw$3=Val.toView(v$5),(View.Get(function(v$9)
   {
-   if(!Unchecked.Equals(prior$3[0].c,v$9))
-    Var.Set(prior$3[0],v$9);
-  },Val.toView(v$5)),new Val({
+   ((function($9)
+   {
+    return function($10)
+    {
+     return $9("View Get "+Utils.prettyPrint($10));
+    };
+   }(function(s$3)
+   {
+    console.log(s$3);
+   }))(v$9));
+   setPrior$3(v$9);
+  },vw$3),View.Sink(setPrior$3,vw$3),new Val({
    $:1,
    $0:prior$3[0]
-  }))));
+  })))));
   propertyLayoutVal=(v$6=Val.map((f$4=(g$4=function(o)
   {
    return o==null?null:b$6(o.$0);
@@ -7123,14 +7348,23 @@
   }),function(x$2)
   {
    return g$9(f$4(x$2));
-  }),currentCodeSnippetId),(prior$4=[Var.Create$1(null)],(View.Sink(function(v$9)
+  }),currentCodeSnippetId),(prior$4=[Var.Create$1(null)],(vw$4=Val.toView(v$6),(View.Get(function(v$9)
   {
-   if(!Unchecked.Equals(prior$4[0].c,v$9))
-    Var.Set(prior$4[0],v$9);
-  },Val.toView(v$6)),new Val({
+   ((function($9)
+   {
+    return function($10)
+    {
+     return $9("View Get "+Utils.prettyPrint($10));
+    };
+   }(function(s$3)
+   {
+    console.log(s$3);
+   }))(v$9));
+   setPrior$4(v$9);
+  },vw$4),View.Sink(setPrior$4,vw$4),new Val({
    $:1,
    $0:prior$4[0]
-  }))));
+  })))));
   propertyThemeLinkVal=Val.map(function($9)
   {
    return function($10)
@@ -7160,6 +7394,16 @@
     return e||e$1;
    };
   },disableParseVal,disablePropertyVal("DisableWebSharper"));
+  Val.sink(function($9)
+  {
+   return function($10)
+   {
+    return $9("disableFSIVAl = "+Utils.prettyPrint($10));
+   };
+  }(function(s$3)
+  {
+   console.log(s$3);
+  }),disableFSIVal);
   lastCodeAndStarts=null;
   getPredecessorsM=new ResetableMemoize.New(function(curO)
   {
