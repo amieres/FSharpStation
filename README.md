@@ -1,5 +1,5 @@
 # FSharpStation
-An editor for FSharp development, powered by Chrome, WebSharper &amp; CodeMirror
+An editor for FSharp development, powered by Chrome, WebSharper &amp; CodeMirror and Fable!
 
 Live demo: http://fsharpstation.hopto.org/
 
