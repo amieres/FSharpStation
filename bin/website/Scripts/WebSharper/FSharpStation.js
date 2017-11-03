@@ -1976,11 +1976,11 @@
  },WebSharper.Obj,FsStationClient);
  FsStationClient.get_FSStationId_=function()
  {
-  return"FSharpStation1509735711749";
+  return"FSharpStation1509740612776";
  };
  FsStationClient.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
-  this.fsIds=Option.defaultValue("FSharpStation1509735711749",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1509740612776",fsStationId);
   this.msgClient=new MessagingClient.New(clientId,timeout,endPoint);
   this.toId=FsStationShared.AddressId(this.fsIds);
  },FsStationClient);
@@ -5822,7 +5822,7 @@
  };
  FSharpStation.FSharpStationClient=function(loadFromUri)
  {
-  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,v$2,f,g,prior,propertyCssLinkVal,v$3,f$1,g$1,prior$1,propertyModeVal,v$4,f$2,g$2,prior$2,propertyThemeVal,v$5,f$3,g$3,prior$3,propertyLayoutVal,v$6,f$4,g$4,prior$4,propertyThemeLinkVal,disableParseVal,disableFSIVal,disableFableVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,fsStationClient,b,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b$1,autoCompleteClient,parseFile,isParseDisabled,parseRun,rex1,rex2,rex,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actEvalCode,$2,actFableCode,$3,actRunWSNewTab,$4,actRunWSHere,$5,actRunWSIn,actParseCode,actCompileWS,$6,actFindDefinition,buttonsH,menuLeft,menuRight,menuBar,redraw,properties,s$2,v$7,v$8,snippetList,x,layout,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,steps,x$1;
+  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,v$2,f,g,prior,propertyCssLinkVal,v$3,f$1,g$1,prior$1,propertyModeVal,v$4,f$2,g$2,prior$2,propertyThemeVal,v$5,f$3,g$3,prior$3,propertyLayoutVal,v$6,f$4,g$4,prior$4,disableParseVal,disableFSIVal,disableFableVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,fsStationClient,b,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b$1,autoCompleteClient,parseFile,isParseDisabled,parseRun,rex1,rex2,rex,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actEvalCode,$2,actFableCode,$3,actRunWSNewTab,$4,actRunWSHere,$5,actRunWSIn,actParseCode,actCompileWS,$6,actFindDefinition,buttonsH,menuLeft,menuRight,menuBar,redraw,properties,s$2,v$7,v$8,snippetList,x,layout,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,steps,cssLinks,f$5,x$1;
   function missing(def,find,lens,k)
   {
    return find(k)==null?Var.Lens(missingVar,function()
@@ -5940,8 +5940,8 @@
   }
   function disablePropertyVal(p)
   {
-   var v$9,f$7,g$13,prior$5;
-   function f$8(y)
+   var v$9,f$8,g$13,prior$5;
+   function f$9(y)
    {
     return"0"!==y;
    }
@@ -5951,14 +5951,14 @@
     o=FsGlobal["CodeSnippet.propValue"](snp,p);
     return o==null?null:{
      $:1,
-     $0:f$8(o.$0)
+     $0:f$9(o.$0)
     };
    }
    function g$14(a)
    {
     return Option.defaultValue(false,a);
    }
-   v$9=Val.map((f$7=(g$13=function(o)
+   v$9=Val.map((f$8=(g$13=function(o)
    {
     return o==null?null:b$7(o.$0);
    },function(x$2)
@@ -5966,7 +5966,7 @@
     return g$13(CodeSnippet$1.FetchO(x$2));
    }),function(x$2)
    {
-    return g$14(f$7(x$2));
+    return g$14(f$8(x$2));
    }),currentCodeSnippetId);
    prior$5=[Var.Create$1(null)];
    View.Sink(function(v$10)
@@ -6025,7 +6025,7 @@
    var p,others,moving,$9,$10,ti,tsn,a;
    function trySnippet(id)
    {
-    function f$7(a$1,snp)
+    function f$8(a$1,snp)
     {
      return Unchecked.Equals(snp.id,id);
     }
@@ -6033,7 +6033,7 @@
     {
      return FsGlobal.tryPickI(function($11)
      {
-      return f$7($11[0],$11[1]);
+      return f$8($11[0],$11[1]);
      },s$3);
     };
    }
@@ -6069,7 +6069,7 @@
    o=CodeSnippet$1.PickIO(currentCodeSnippetId.c);
    o==null?void 0:(function(j,snp)
    {
-    (function(f$7,i)
+    (function(f$8,i)
     {
      var x$2;
      while(true)
@@ -6077,7 +6077,7 @@
        if(i<0)
         return null;
        else
-        if(f$7((x$2=(FsGlobal.codeSnippets())["var"].RVal(),(function(i$1)
+        if(f$8((x$2=(FsGlobal.codeSnippets())["var"].RVal(),(function(i$1)
         {
          return function(s$3)
          {
@@ -6503,9 +6503,9 @@
    {
     dict.Add(a$1,a$2);
    }
-   function m(f$7,v$9)
+   function m(f$8,v$9)
    {
-    return[f$7,v$9];
+    return[f$8,v$9];
    }
    dict=new Dictionary.New$5();
    return!o?dict:(Seq.iter(function($9)
@@ -6570,17 +6570,17 @@
     };
    }(Global.id))(snp.get_Name()))?(Var.Set(currentCodeSnippetId,CodeSnippetId.get_New()),FsGlobal.codeSnippets().Remove(snp),setDirty(),refreshView()):void 0);
   }
-  function justFileName(f$7)
+  function justFileName(f$8)
   {
-   return Seq.last(Strings.SplitChars(f$7,["/","\\"],0));
+   return Seq.last(Strings.SplitChars(f$8,["/","\\"],0));
   }
-  function loadTextFile(element,f$7)
+  function loadTextFile(element,f$8)
   {
    var files,reader;
    files=element.files;
    return files.length>0?(reader=new Global.FileReader(),(reader.onload=function(e)
    {
-    return f$7(e.target.result);
+    return f$8(e.target.result);
    },reader.readAsText(files.item(0)))):null;
   }
   function parseText(txt)
@@ -6875,12 +6875,12 @@
     })))):Concurrency.Zero()):Concurrency.Zero();
    })),null);
   }
-  function DoW(f$7,p,a,a$1)
+  function DoW(f$8,p,a,a$1)
   {
    var x$2;
-   return Wrap.start(addOutMsg,(x$2=f$7(p),(Wrap.map(Global.ignore))(x$2)));
+   return Wrap.start(addOutMsg,(x$2=f$8(p),(Wrap.map(Global.ignore))(x$2)));
   }
-  function DoP(f$7,p,a,a$1)
+  function DoP(f$8,p,a,a$1)
   {
    function p$1($9,$10)
    {
@@ -6898,7 +6898,7 @@
    return Wrap.startV(function($9)
    {
     return p$1($9[0],$9[1]);
-   },f$7(p));
+   },f$8(p));
   }
   function g$10(snpO)
   {
@@ -6967,7 +6967,7 @@
   {
    Var.Set(dirty,true);
   }
-  function f$5(u,props)
+  function f$6(u,props)
   {
    return HtmlNode.table(List.ofSeq(Seq.delay(function()
    {
@@ -7006,7 +7006,7 @@
     }));
    })));
   }
-  function f$6(k)
+  function f$7(k)
   {
    function a(s$3)
    {
@@ -7050,6 +7050,15 @@
    {
     return[[line,total,total+line.length+1],total+line.length+1];
    },0,Strings.SplitChars(v$9,["\n"],0)))[0]));
+  }
+  function addCssLink(lnk)
+  {
+   if(!List.contains(lnk,cssLinks.c))
+    Var.Set(cssLinks,new List.T({
+     $:1,
+     $0:lnk,
+     $1:cssLinks.c
+    }));
   }
   missingVar=Var.Create$1("");
   currentCodeSnippetId=Var.Create$1(CodeSnippetId.get_New());
@@ -7169,13 +7178,6 @@
    $:1,
    $0:prior$4[0]
   }))));
-  propertyThemeLinkVal=Val.map(function($9)
-  {
-   return function($10)
-   {
-    return $9("/EPFileX/codemirror/content/theme/"+Utils.toSafe($10)+".css");
-   };
-  }(Global.id),propertyThemeVal);
   disableParseVal=disablePropertyVal("DisableParse");
   disableFSIVal=Val.map2(function(e)
   {
@@ -7437,11 +7439,11 @@
    {
     return function($10)
     {
-     return f$5($9,$10);
+     return f$6($9,$10);
     };
    },redraw,Val.bind(function(x$2)
    {
-    return g$12(f$6(x$2));
+    return g$12(f$7(x$2));
    },currentCodeSnippetId))
   }),HtmlNode.css(" td.hovering { background: gray; } ")]);
   s$2="CodeEditor."+"splitterV1";
@@ -7596,7 +7598,31 @@
   {
    layout.SelectTab("WS Result");
   },triggerWSResult);
-  x$1=HtmlNode.div([HtmlNode.style("height: 100vh; width: 100% "),layout.get_Render().Style("height: 100%; width: 100% "),HtmlNode.script([HtmlNode.src("/EPFileX/FileSaver/FileSaver.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://code.jquery.com/jquery-3.1.1.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.link([HtmlNode.href("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/css/main.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css("\n      \n        body { margin: 0px }     \n             \n        div textarea {\n            font-family     : monospace;\n        }\n        .code-editor-list-tile {\n            white-space     : nowrap; \n            border-style    : solid none none;\n            border-color    : white;\n            border-width    : 1px;\n            background-color: #D8D8D8;\n            display         : flex;\n        }\n        .code-editor-list-text{\n            padding         : 1px 10px 1px 5px;\n            overflow        : hidden;\n            text-overflow   : ellipsis;\n            white-space     : nowrap;\n            flex            : 1;\n        }\n        \n        .code-editor-list-tile.direct-predecessor {\n            font-weight     : bold;\n        }\n        .code-editor-list-tile.indirect-predecessor {\n            color           : blue;\n        }\n        .code-editor-list-tile.selected {\n            background-color: #77F;\n            color           : white;\n        }\n        .code-editor-list-tile.hovering {\n            background      : lightgray;\n        }\n        .code-editor-list-tile.hovering.selected {\n            background      : blue;\n        }\n        .code-editor-list-tile>.predecessor {\n            font-weight     : bold;\n            border-style    : inset;\n            border-width    : 1px;\n            text-align      : center;\n            color           : transparent;\n        }\n        .code-editor-list-tile.direct-predecessor>.predecessor {\n            color           : blue;\n        }\n        \n        .CodeMirror { height: 100%; }\n        \n        .node {\n            background-color: white; \n            width           : 2ch; \n            color           : #A03; \n            font-weight     : bold; \n            text-align      : center;\n            font-family     : arial;\n        }\n        .Warning { text-decoration: underline lightblue } \n        .Error   { text-decoration: underline red       } \n        .body    { margin         : 0px                 }\n        "),HtmlNode.style(" \n                color      : #333;\n                font-size  : small;\n                font-family: monospace;\n                line-height: 1.2;\n                    "),HtmlNode.link([HtmlNode.href(propertyThemeLinkVal),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href(propertyCssLinkVal),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css(propertyCssVal)]);
+  cssLinks=Var.Create$1(List.ofArray(["/EPFileX/css/main.css"]));
+  Val.sink(addCssLink,propertyCssLinkVal);
+  Val.sink((f$5=function($9)
+  {
+   return function($10)
+   {
+    return $9("/EPFileX/codemirror/content/theme/"+Utils.toSafe($10)+".css");
+   };
+  }(Global.id),function(x$2)
+  {
+   return addCssLink(f$5(x$2));
+  }),propertyThemeVal);
+  x$1=HtmlNode.div([HtmlNode.style("height: 100vh; width: 100% "),layout.get_Render().Style("height: 100%; width: 100% "),HtmlNode.script([HtmlNode.src("/EPFileX/FileSaver/FileSaver.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://code.jquery.com/jquery-3.1.1.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.link([HtmlNode.href("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css("\n      \n        body { margin: 0px }     \n             \n        div textarea {\n            font-family     : monospace;\n        }\n        .code-editor-list-tile {\n            white-space     : nowrap; \n            border-style    : solid none none;\n            border-color    : white;\n            border-width    : 1px;\n            background-color: #D8D8D8;\n            display         : flex;\n        }\n        .code-editor-list-text{\n            padding         : 1px 10px 1px 5px;\n            overflow        : hidden;\n            text-overflow   : ellipsis;\n            white-space     : nowrap;\n            flex            : 1;\n        }\n        \n        .code-editor-list-tile.direct-predecessor {\n            font-weight     : bold;\n        }\n        .code-editor-list-tile.indirect-predecessor {\n            color           : blue;\n        }\n        .code-editor-list-tile.selected {\n            background-color: #77F;\n            color           : white;\n        }\n        .code-editor-list-tile.hovering {\n            background      : lightgray;\n        }\n        .code-editor-list-tile.hovering.selected {\n            background      : blue;\n        }\n        .code-editor-list-tile>.predecessor {\n            font-weight     : bold;\n            border-style    : inset;\n            border-width    : 1px;\n            text-align      : center;\n            color           : transparent;\n        }\n        .code-editor-list-tile.direct-predecessor>.predecessor {\n            color           : blue;\n        }\n        \n        .CodeMirror { height: 100%; }\n        \n        .node {\n            background-color: white; \n            width           : 2ch; \n            color           : #A03; \n            font-weight     : bold; \n            text-align      : center;\n            font-family     : arial;\n        }\n        .Warning { text-decoration: underline lightblue } \n        .Error   { text-decoration: underline red       } \n        .body    { margin         : 0px                 }\n        "),HtmlNode.style(" \n                color      : #333;\n                font-size  : small;\n                font-family: monospace;\n                line-height: 1.2;\n                    "),new HtmlNode$1({
+   $:5,
+   $0:Val.map(function(csslnks)
+   {
+    return HtmlNode.div(List.ofSeq(Seq.delay(function()
+    {
+     return Seq.map(function(csslnk)
+     {
+      return HtmlNode.link([HtmlNode.href(csslnk),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]);
+     },csslnks);
+    })));
+   },cssLinks)
+  }),HtmlNode.css(propertyCssVal)]);
   return(HtmlNode.renderDoc())(x$1);
  };
  SC$1.$cctor=function()
