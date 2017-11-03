@@ -1271,7 +1271,7 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1509615086054"
+        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1509709332684"
         let msgClient  = MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
         let toId       = AddressId fsIds
         let stringResponseR response =
@@ -1310,7 +1310,7 @@ namespace FSSGlobal
         member this.RunSnippet      (url,snpPath:string   ) = sendMsg toId  (RunSnippetUrlJS     (snpPath.Split '/', url))    stringResponseR
         member this.FSStationId                             = fsIds
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1509615086054"
+        static member FSStationId_                          = "FSharpStation1509709332684"
     
     
   module FsTranslator =
@@ -2116,14 +2116,13 @@ namespace FSSGlobal
         let inline mapCached  f  v           = View.MapCached  f (      v |> toView) |> Dynamic
     
         let [<Inline>] inline consistent   (vl:Val<_>)  = 
-            let prior = ref <| Var.Create Unchecked.defaultof<_>
-            vl
-            |> toView
-            |> View.Sink (fun v -> if (!prior).Value <> v then (!prior).Value <- v)
+            let prior      = ref <| Var.Create Unchecked.defaultof<_>
+            let setPrior v = if (!prior).Value <> v then (!prior).Value <- v ; printfn "New Value %A" v else printfn "Same Value %A" v 
+            let vw         = toView vl
+            View.Get  (fun v -> printfn "View Get %A" v ;  setPrior v) vw
+            View.Sink setPrior vw
             !prior :> IRef<_> |> DynamicV
         
-    
-    
     [<NoComparison ; NoEquality>]
     type HtmlNode =
         | HtmlElement    of name: string * children: HtmlNode seq
@@ -2381,7 +2380,8 @@ namespace FSSGlobal
                  SomeAttr  <| attr.disabledDynPred (View.Const "") (this.disabled |> Val.toView)
                  SomeAttr  <| on.click <@ this.onClick @>
                  HtmlText  <| this.text 
-               ]
+               ] 
+        |> renderDoc |> SomeDoc
       member inline this.Id          id   = { this with id       = id             }
       member inline this.Class       clas = { this with _class   = Val.fixit clas }
       member inline this.Type        typ  = { this with _type    = Val.fixit typ  }
@@ -3358,7 +3358,7 @@ namespace FSSGlobal
                 tabStrips = System.Collections.Generic.Dictionary<string, TabStrip>()
                 main      = "main"
             }
-        member this.SetLayout steps = this.steps.Value <- steps |> Seq.toArray
+        member this.SetLayout steps = this.steps.Value <- steps |> Seq.toArray ; printfn "SetLayout"
         member this.GetNode name (parts: Map<string, GuiPart>) =
             Map.tryFind name parts
             |> Option.map(
@@ -3396,7 +3396,7 @@ namespace FSSGlobal
                         |> Option.map (fun v -> name, v)
                     )
                 this.steps.Value <- steps
-                printfn "updated layoutSteps"
+                printfn "SetLayoutJson"
             with e -> printfn "Error: %A" e
         member this.ExportSetLayoutJson name =
             JS.Window?(name) <- this.SetLayoutJson
@@ -3407,7 +3407,12 @@ namespace FSSGlobal
                 |> not
             )
             |> Seq.iter ignore
-            
+    
+    let inline fixedHorSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPx , false, px, ch1, ch2, 5.0, 95.0)
+    let inline fixedVerSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPx , true , px, ch1, ch2, 5.0, 95.0)
+    let inline varHorSplitter          pc ch1 ch2 min max = GuiSplit(true , StVariable, false, pc, ch1, ch2, min,  max)
+    let inline varVerSplitter          pc ch1 ch2 min max = GuiSplit(true , StVariable, true , pc, ch1, ch2, min,  max)
+    
   [<JavaScript>]
   module RunCode       =
     let completeJS js = 
@@ -3884,6 +3889,8 @@ namespace FSSGlobal
       let disableFSIVal        = disablePropertyVal "DisableFSI"        |> Val.map2 (||) disableParseVal  
       let disableFableVal      = disablePropertyVal "DisableFable"      |> Val.map2 (||) disableParseVal  
       let disableWebSharperVal = disablePropertyVal "DisableWebSharper" |> Val.map2 (||) disableParseVal 
+      
+      Val.sink (printfn "disableFSIVAl = %A") disableFSIVal
       
       let mutable lastCodeAndStarts : (CodeSnippetId * bool * ((string * int * int) [] * string [] * string [] * string [] * string [] * string [])) option = None
       
@@ -4994,25 +5001,22 @@ namespace FSSGlobal
         ]
       
       
-      let inline fixedHorSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPx , false, px, ch1, ch2, 5.0, 95.0)
-      let inline varSplitter         ver pc ch1 ch2 min max = GuiSplit(true , StVariable, ver  , pc, ch1, ch2, min,  max)
-      
       let steps = 
           [
               "messagesR"    , GuiTabStrip(     true ,  [| "Properties" |])
-              "messagesB"    , GuiTabStrip(     true ,  [| "Output"    
-                                                           "Parser"    
+              "messagesB1"   , GuiTabStrip(     true ,  [| "Output"    
                                                            "JavaScript"
-                                                           "F# code"   
+                                                           "F# code"    |])
+              "messagesB2"   , GuiTabStrip(     true ,  [| "Parser"    
                                                            "WS Result"  |])
-              "title_code"   , fixedHorSplitter true  34.0 "title"         "code"
-              "code_props"   , varSplitter      true  85.0 "title_code"    "messagesR"     25.0 100.0
-              "code_buttons" , fixedHorSplitter false 80.0 "code_props"    "buttons"
-              "snippets_code", varSplitter      true  15.0 "snippets"      "code_buttons"   5.0  95.0
-              "main_messages", varSplitter      false 82.0 "snippets_code" "messagesB"     35.0 100.0             
-              "main_window"  , fixedHorSplitter true  50.0 "menu"          "main_messages"
-          ]             
-      
+              "messagesB"    , varVerSplitter          55.0 "messagesB1"    "messagesB2"     0.0 100.0             
+              "title_code"   , fixedHorSplitter true   34.0 "title"         "code"
+              "code_props"   , varVerSplitter          85.0 "title_code"    "messagesR"     25.0 100.0
+              "code_buttons" , fixedHorSplitter false  80.0 "code_props"    "buttons"
+              "snippets_code", varVerSplitter          15.0 "snippets"      "code_buttons"   5.0  95.0
+              "main_messages", varHorSplitter          82.0 "snippets_code" "messagesB"     35.0 100.0             
+              "main_window"  , fixedHorSplitter true   50.0 "menu"          "main_messages"
+          ]   
       Val.sink (fun json -> if json = "" then layout.SetLayout steps else layout.SetLayoutJson json ) propertyLayoutVal
       layout.ExportSetLayoutJson "setLayoutJson"
       
