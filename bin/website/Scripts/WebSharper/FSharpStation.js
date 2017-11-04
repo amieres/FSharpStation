@@ -1976,11 +1976,11 @@
  },WebSharper.Obj,FsStationClient);
  FsStationClient.get_FSStationId_=function()
  {
-  return"FSharpStation1509740612776";
+  return"FSharpStation1509834423435";
  };
  FsStationClient.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
-  this.fsIds=Option.defaultValue("FSharpStation1509740612776",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1509834423435",fsStationId);
   this.msgClient=new MessagingClient.New(clientId,timeout,endPoint);
   this.toId=FsStationShared.AddressId(this.fsIds);
  },FsStationClient);
@@ -2822,6 +2822,24 @@
  HtmlNode$1.HtmlEmpty=new HtmlNode$1({
   $:4
  });
+ HtmlNode.LoadFilesAsync=function(files)
+ {
+  function a($1,$2)
+  {
+   try
+   {
+    Global.CIPHERSpaceLoadFiles(files,$1);
+   }
+   catch(e)
+   {
+    $2(e);
+   }
+  }
+  return Concurrency.FromContinuations(function($1,$2,$3)
+  {
+   return a.apply(null,[$1,$2,$3]);
+  });
+ };
  HtmlNode.findRootElement=function(e)
  {
   var root;
@@ -4038,7 +4056,6 @@
           $:7,
           $0:AttrModule.OnAfterRender(function(el)
           {
-           var b;
            function setVar(vr,vl)
            {
             return!Unchecked.Equals(vr.RVal(),vl)?vr.set_RVal(vl):null;
@@ -4050,14 +4067,7 @@
             setVar($this.width,r.width);
             setVar($this.height,r.height);
            }
-           Concurrency.Start((b=null,Concurrency.Delay(function()
-           {
-            return Concurrency.Bind(Concurrency.Sleep(60),function()
-            {
-             setDimensions();
-             return Concurrency.Zero();
-            });
-           })),null);
+           setDimensions();
            Template.addResizeObserver(setDimensions,el);
           })
          })];
@@ -4623,7 +4633,7 @@
        }
       }
      else
-      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3057,18);
+      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3065,18);
    }
    else
     void 0;
@@ -4911,10 +4921,13 @@
    $this=this;
    Global[name]=function(a)
    {
-    $this.SetLayoutJson(a);
+    return function(a$1)
+    {
+     return $this.SetLayoutJson(a,a$1);
+    };
    };
   },
-  SetLayoutJson:function(json)
+  SetLayoutJson:function(steps,json)
   {
    try
    {
@@ -4924,14 +4937,14 @@
      o=(a=(o$1=ldf.GuiTabStrip,o$1==null?null:{
       $:1,
       $0:{
-       $:3,
+       $:4,
        $0:o$1.$0[0],
        $1:o$1.$0[1]
       }
      }),a==null?(o$2=ldf.GuiSplit,o$2==null?null:{
       $:1,
       $0:(first=o$2.$0[0],(secT=o$2.$0[1],(vertical=o$2.$0[2],(per=o$2.$0[3],(ch1=o$2.$0[4],(ch2=o$2.$0[5],(min=o$2.$0[6],(max=o$2.$0[7],{
-       $:2,
+       $:3,
        $0:first,
        $1:Template.toSect(secT),
        $2:vertical,
@@ -4950,17 +4963,10 @@
       $0:[name,o.$0]
      };
     }
-    this.steps.set_RVal(Arrays.choose(function($1)
+    this.steps.set_RVal(steps.concat(json===""?[]:Arrays.choose(function($1)
     {
      return c($1[0],$1[1]);
-    },((Provider.DecodeArray(Provider.DecodeTuple([Provider.Id(),FSharpStation_JsonDecoder.j$7])))())(JSON.parse(json))));
-    (function($1)
-    {
-     return $1("SetLayoutJson");
-    }(function(s)
-    {
-     console.log(s);
-    }));
+    },((Provider.DecodeArray(Provider.DecodeTuple([Provider.Id(),FSharpStation_JsonDecoder.j$7])))())(JSON.parse(json)))));
    }
    catch(e)
    {
@@ -4984,7 +4990,18 @@
     $:5,
     $0:Val.map(function(steps)
     {
-     return $this.GetNode(Arrays.length(steps)===0?$this.main:(Seq.last(steps))[0],Template.processLayoutSteps(steps,$this.baseParts));
+     var o;
+     function c($1,$2)
+     {
+      return $2.$==0?{
+       $:1,
+       $0:$2.$0
+      }:null;
+     }
+     return $this.GetNode((o=Seq.tryPick(function($1)
+     {
+      return c($1[0],$1[1]);
+     },steps),o==null?"main":o.$0),Template.processLayoutSteps(steps,new FSharpMap.New([])));
     },this.steps)
    });
   },
@@ -4994,10 +5011,10 @@
    $this=this;
    o=(o$1=Map.TryFind(name,parts),o$1==null?null:{
     $:1,
-    $0:(a=o$1.$0,a.$==1?a.$0.get_Button().get_Render():a.$==2?Grid.NewBisect(a.$0,a.$1,a.$2,a.$3,$this.GetNode(a.$4,parts),$this.GetNode(a.$5,parts)).Min(a.$6).Max(a.$7).get_Render():a.$==3?(ts=TabStrip.New$1(Seq.map(function(node)
+    $0:(a=o$1.$0,a.$==1?a.$0:a.$==2?a.$0.get_Button().get_Render():a.$==3?Grid.NewBisect(a.$0,a.$1,a.$2,a.$3,$this.GetNode(a.$4,parts),$this.GetNode(a.$5,parts)).Min(a.$6).Max(a.$7).get_Render():a.$==4?(ts=TabStrip.New$1(Seq.map(function(node)
     {
      return[node,$this.GetNode(node,parts)];
-    },a.$1)).SetTop(a.$0),(Template.addValue(name,ts,$this.tabStrips),ts.get_Render())):a.$0)
+    },a.$1)).SetTop(a.$0),(Template.addValue(name,ts,$this.tabStrips),ts.get_Render())):HtmlNode$1.HtmlEmpty)
    });
    return o==null?HtmlNode.div([HtmlNode.htmlText((function($1)
    {
@@ -5019,23 +5036,21 @@
    }));
   }
  },null,Layout);
- Layout.New$1=function(parts)
+ Layout.New$1=function(steps)
  {
-  return Layout.New(new FSharpMap.New(parts),Var.Create$1([]),new Dictionary.New$5(),"main");
+  return Layout.New(Var.Create$1(steps),new Dictionary.New$5());
  };
- Layout.New=function(baseParts,steps,tabStrips,main)
+ Layout.New=function(steps,tabStrips)
  {
   return new Layout({
-   baseParts:baseParts,
    steps:steps,
-   tabStrips:tabStrips,
-   main:main
+   tabStrips:tabStrips
   });
  };
  Template.varVerSplitter=function(pc,ch1,ch2,min,max)
  {
   return{
-   $:2,
+   $:3,
    $0:true,
    $1:SectionType.StVariable,
    $2:true,
@@ -5049,7 +5064,7 @@
  Template.varHorSplitter=function(pc,ch1,ch2,min,max)
  {
   return{
-   $:2,
+   $:3,
    $0:true,
    $1:SectionType.StVariable,
    $2:false,
@@ -5063,7 +5078,7 @@
  Template.fixedVerSplitter=function(first,px,ch1,ch2)
  {
   return{
-   $:2,
+   $:3,
    $0:first,
    $1:SectionType.StFixedPx,
    $2:true,
@@ -5077,7 +5092,7 @@
  Template.fixedHorSplitter=function(first,px,ch1,ch2)
  {
   return{
-   $:2,
+   $:3,
    $0:first,
    $1:SectionType.StFixedPx,
    $2:false,
@@ -5742,10 +5757,10 @@
   return b.Delay(function()
   {
    var b$1;
+   FableModule.loadReferences().f();
    return b.Bind$2((b$1=null,Concurrency.Delay(function()
    {
-    FableModule.loadReferences().f();
-    return Concurrency.Combine(Concurrency.While(function()
+    return Concurrency.While(function()
     {
      return Object.getOwnPropertyNames(Global.metadata).length<Arrays.length(FableModule.references());
     },Concurrency.Delay(function()
@@ -5754,25 +5769,6 @@
      {
       return Concurrency.Return(null);
      });
-    })),Concurrency.Delay(function()
-    {
-     Global.CIPHERSpaceLoadFiles(["https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.min.js"],function()
-     {
-      var b$2;
-      Concurrency.Start((b$2=null,Concurrency.Delay(function()
-      {
-       return Concurrency.Bind(Concurrency.Sleep(100),function()
-       {
-        var options;
-        options=Object.create(null);
-        options.skipDataMain=1;
-        options.isBrowser=1;
-        Global.require.config(options);
-        return Concurrency.Zero();
-       });
-      })),null);
-     });
-     return Concurrency.Zero();
     }));
    })),function()
    {
@@ -5822,7 +5818,7 @@
  };
  FSharpStation.FSharpStationClient=function(loadFromUri)
  {
-  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,v$2,f,g,prior,propertyCssLinkVal,v$3,f$1,g$1,prior$1,propertyModeVal,v$4,f$2,g$2,prior$2,propertyThemeVal,v$5,f$3,g$3,prior$3,propertyLayoutVal,v$6,f$4,g$4,prior$4,disableParseVal,disableFSIVal,disableFableVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,fsStationClient,b,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b$1,autoCompleteClient,parseFile,isParseDisabled,parseRun,rex1,rex2,rex,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actEvalCode,$2,actFableCode,$3,actRunWSNewTab,$4,actRunWSHere,$5,actRunWSIn,actParseCode,actCompileWS,$6,actFindDefinition,buttonsH,menuLeft,menuRight,menuBar,redraw,properties,s$2,v$7,v$8,snippetList,x,layout,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,steps,cssLinks,f$5,x$1;
+  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,v$2,f,g,prior,propertyCssLinkVal,v$3,f$1,g$1,prior$1,propertyModeVal,v$4,f$2,g$2,prior$2,propertyThemeVal,v$5,f$3,g$3,prior$3,propertyLayoutVal,v$6,f$4,g$4,prior$4,disableParseVal,disableFSIVal,disableFableVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,fsStationClient,b,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b$1,autoCompleteClient,parseFile,isParseDisabled,parseRun,parsing,rex1,rex2,rex,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actEvalCode,$2,actFableCode,$3,actRunWSNewTab,$4,actRunWSHere,$5,actRunWSIn,actParseCode,actCompileWS,$6,actFindDefinition,actRefreshEditor,buttonsH,menuLeft,menuRight,menuBar,redraw,properties,s$2,v$7,v$8,snippetList,x,steps,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,layout,cssLinks,x$1;
   function missing(def,find,lens,k)
   {
    return find(k)==null?Var.Lens(missingVar,function()
@@ -5940,8 +5936,8 @@
   }
   function disablePropertyVal(p)
   {
-   var v$9,f$8,g$13,prior$5;
-   function f$9(y)
+   var v$9,f$7,g$13,prior$5;
+   function f$8(y)
    {
     return"0"!==y;
    }
@@ -5951,14 +5947,14 @@
     o=FsGlobal["CodeSnippet.propValue"](snp,p);
     return o==null?null:{
      $:1,
-     $0:f$9(o.$0)
+     $0:f$8(o.$0)
     };
    }
    function g$14(a)
    {
     return Option.defaultValue(false,a);
    }
-   v$9=Val.map((f$8=(g$13=function(o)
+   v$9=Val.map((f$7=(g$13=function(o)
    {
     return o==null?null:b$7(o.$0);
    },function(x$2)
@@ -5966,7 +5962,7 @@
     return g$13(CodeSnippet$1.FetchO(x$2));
    }),function(x$2)
    {
-    return g$14(f$8(x$2));
+    return g$14(f$7(x$2));
    }),currentCodeSnippetId);
    prior$5=[Var.Create$1(null)];
    View.Sink(function(v$10)
@@ -6025,7 +6021,7 @@
    var p,others,moving,$9,$10,ti,tsn,a;
    function trySnippet(id)
    {
-    function f$8(a$1,snp)
+    function f$7(a$1,snp)
     {
      return Unchecked.Equals(snp.id,id);
     }
@@ -6033,7 +6029,7 @@
     {
      return FsGlobal.tryPickI(function($11)
      {
-      return f$8($11[0],$11[1]);
+      return f$7($11[0],$11[1]);
      },s$3);
     };
    }
@@ -6069,7 +6065,7 @@
    o=CodeSnippet$1.PickIO(currentCodeSnippetId.c);
    o==null?void 0:(function(j,snp)
    {
-    (function(f$8,i)
+    (function(f$7,i)
     {
      var x$2;
      while(true)
@@ -6077,7 +6073,7 @@
        if(i<0)
         return null;
        else
-        if(f$8((x$2=(FsGlobal.codeSnippets())["var"].RVal(),(function(i$1)
+        if(f$7((x$2=(FsGlobal.codeSnippets())["var"].RVal(),(function(i$1)
         {
          return function(s$3)
          {
@@ -6503,9 +6499,9 @@
    {
     dict.Add(a$1,a$2);
    }
-   function m(f$8,v$9)
+   function m(f$7,v$9)
    {
-    return[f$8,v$9];
+    return[f$7,v$9];
    }
    dict=new Dictionary.New$5();
    return!o?dict:(Seq.iter(function($9)
@@ -6570,17 +6566,17 @@
     };
    }(Global.id))(snp.get_Name()))?(Var.Set(currentCodeSnippetId,CodeSnippetId.get_New()),FsGlobal.codeSnippets().Remove(snp),setDirty(),refreshView()):void 0);
   }
-  function justFileName(f$8)
+  function justFileName(f$7)
   {
-   return Seq.last(Strings.SplitChars(f$8,["/","\\"],0));
+   return Seq.last(Strings.SplitChars(f$7,["/","\\"],0));
   }
-  function loadTextFile(element,f$8)
+  function loadTextFile(element,f$7)
   {
    var files,reader;
    files=element.files;
    return files.length>0?(reader=new Global.FileReader(),(reader.onload=function(e)
    {
-    return f$8(e.target.result);
+    return f$7(e.target.result);
    },reader.readAsText(files.item(0)))):null;
   }
   function parseText(txt)
@@ -6648,18 +6644,41 @@
   function parseFSA(silent)
   {
    var b$7;
+   function msgF(txt)
+   {
+    if(!silent)
+     Var.Set(parserMsgs,txt);
+   }
    b$7=null;
    return Concurrency.Delay(function()
    {
-    var m,runN,p;
-    m=CodeSnippet$1.FetchO(currentCodeSnippetId.c);
-    return m!=null&&m.$==1?(runN=parseRun+1,(parseRun=runN,p=getCodeAndStartsFast(silent?Global.ignore:function(txt)
+    return Concurrency.TryWith(Concurrency.Delay(function()
     {
-     Var.Set(parserMsgs,txt);
-    },m.$0,false),parsed=true,Concurrency.Bind(autoCompleteClient.Parse$1(parseFile,p[0],p[1]),function(a)
+     var m,cur,runN;
+     m=CodeSnippet$1.FetchO(currentCodeSnippetId.c);
+     return m!=null&&m.$==1?(cur=m.$0,(runN=parseRun+1,(parseRun=runN,Concurrency.Combine(Concurrency.While(function()
+     {
+      return parsing;
+     },Concurrency.Delay(function()
+     {
+      return Concurrency.Bind(Concurrency.Sleep(1000),function()
+      {
+       return Concurrency.Return(null);
+      });
+     })),Concurrency.Delay(function()
+     {
+      var p;
+      return parseRun!==runN?Concurrency.Zero():(parsing=true,p=getCodeAndStartsFast(msgF,cur,false),parsed=true,Concurrency.Bind(autoCompleteClient.Parse$1(parseFile,p[0],p[1]),function(a)
+      {
+       parsing=false;
+       return!silent&&runN===parseRun&&parsed?(addPrsMsg(a),addPrsMsg("Parsed!"),Concurrency.Zero()):Concurrency.Zero();
+      }));
+     }))))):Concurrency.Zero();
+    }),function()
     {
-     return!silent&&runN===parseRun&&parsed?(addPrsMsg(a),addPrsMsg("Parsed!"),Concurrency.Zero()):Concurrency.Zero();
-    }))):Concurrency.Zero();
+     parsing=false;
+     return Concurrency.Zero();
+    });
    });
   }
   function mustParse(cur)
@@ -6875,12 +6894,30 @@
     })))):Concurrency.Zero()):Concurrency.Zero();
    })),null);
   }
-  function DoW(f$8,p,a,a$1)
+  function refreshCodeMirror()
+  {
+   var o;
+   o=codeMirror.editorO;
+   o==null?void 0:o.$0.refresh();
+  }
+  function delayedRefreshCM(delay)
+  {
+   var b$7;
+   Concurrency.Start((b$7=null,Concurrency.Delay(function()
+   {
+    return Concurrency.Bind(Concurrency.Sleep(delay),function()
+    {
+     refreshCodeMirror();
+     return Concurrency.Zero();
+    });
+   })),null);
+  }
+  function DoW(f$7,p,a,a$1)
   {
    var x$2;
-   return Wrap.start(addOutMsg,(x$2=f$8(p),(Wrap.map(Global.ignore))(x$2)));
+   return Wrap.start(addOutMsg,(x$2=f$7(p),(Wrap.map(Global.ignore))(x$2)));
   }
-  function DoP(f$8,p,a,a$1)
+  function DoP(f$7,p,a,a$1)
   {
    function p$1($9,$10)
    {
@@ -6898,7 +6935,7 @@
    return Wrap.startV(function($9)
    {
     return p$1($9[0],$9[1]);
-   },f$8(p));
+   },f$7(p));
   }
   function g$10(snpO)
   {
@@ -6967,7 +7004,7 @@
   {
    Var.Set(dirty,true);
   }
-  function f$6(u,props)
+  function f$5(u,props)
   {
    return HtmlNode.table(List.ofSeq(Seq.delay(function()
    {
@@ -7006,7 +7043,7 @@
     }));
    })));
   }
-  function f$7(k)
+  function f$6(k)
   {
    function a(s$3)
    {
@@ -7053,12 +7090,12 @@
   }
   function addCssLink(lnk)
   {
-   if(!List.contains(lnk,cssLinks.c))
-    Var.Set(cssLinks,new List.T({
-     $:1,
-     $0:lnk,
-     $1:cssLinks.c
-    }));
+   !List.contains(lnk,cssLinks.c)?Var.Set(cssLinks,new List.T({
+    $:1,
+    $0:lnk,
+    $1:cssLinks.c
+   })):void 0;
+   delayedRefreshCM(300);
   }
   missingVar=Var.Create$1("");
   currentCodeSnippetId=Var.Create$1(CodeSnippetId.get_New());
@@ -7304,6 +7341,7 @@
   parseFile=FsGlobal.fsIds()+".fsx";
   isParseDisabled=View.GetAsync(Val.toView(disableParseVal));
   parseRun=1;
+  parsing=false;
   rex1="\\((\\d+)\\) F# (.+).fsx\\((\\d+)\\,(\\d+)\\): (error|warning) ((.|\\b)+)";
   rex2="(Err|Warning|Info)(FSharp|WebSharper)\\s+\"(\\((\\d+)\\) ?)?F?#? ?(.+?)(.fsx)? \\((\\d+)\\,\\s*(\\d+)\\) - \\((\\d+)\\,\\s*(\\d+)\\) ((.|\\s)+?)"+"\"";
   rex=rex1+"|"+rex2;
@@ -7425,11 +7463,12 @@
    return compileSnippetW(getSnpO(x$2));
   },Runtime.Curried(DoW,2,[$6,null]))).Disabled(disableWebSharperVal);
   actFindDefinition=Action.New$1("Find Definition").OnClick(Runtime.Curried(Template.Do,2,[gotoDefinition,null])).Disabled(disableParseVal);
+  actRefreshEditor=Action.New$1("Refresh CodeMirror").OnClick(Runtime.Curried(Template.Do,2,[refreshCodeMirror,null]));
   buttonsH=HtmlNode.div([actAddSnippet.get_Button().get_Render(),actOutdentSnippet.get_Button().get_Render(),actIndentSnippet.get_Button().get_Render(),loadFileElement.get_Render().AddChildren([HtmlNode.style("grid-column: 4/6")]),actEvalCode.get_Button().get_Render(),actFableCode.get_Button().get_Render(),actRunWSIn.get_Button().get_Render(),actDeleteSnippet.get_Button().get_Render(),actFindDefinition.get_Button().get_Render(),HtmlNode.span([]),actSaveFile.get_Button().get_Render(),HtmlNode.span([]),actGetFsCode.get_Button().get_Render(),actParseCode.get_Button().get_Render(),HtmlNode.someElt(Doc.Select([AttrProxy.Create("id","Position")],function(v$9)
   {
    return v$9.$==1?"Right":v$9.$==2?"In Tab":v$9.$==3?"New Browser":"Below";
   },List.ofArray([Position.NewBrowser,Position.Below]),position)),HtmlNode.style("\n                    overflow: hidden;\n                    display: grid;\n                    grid-template-columns: repeat(8, 12.1%);\n                    bxackground-color: #eee;\n                    padding : 5px;\n                    grid-gap: 5px;\n                ")]);
-  menuLeft=Menu.New2([MenuEntry.New$2("File").SubMenu([actLoadFile.get_MenuEntry(),actSaveFile.get_MenuEntry()]),MenuEntry.New$2("Code").SubMenu([actAddSnippet.get_MenuEntry(),actDeleteSnippet.get_MenuEntry(),MenuEntry.New$2("").get_Divider(),actIndentSnippet.get_MenuEntry(),actOutdentSnippet.get_MenuEntry(),MenuEntry.New$2("").get_Divider(),actFindDefinition.get_MenuEntry(),MenuEntry.New$2("").get_Divider(),actGetFsCode.get_MenuEntry()]),MenuEntry.New$2("Run").SubMenu([actEvalCode.get_MenuEntry(),actFableCode.get_MenuEntry(),MenuEntry.New$2("").get_Divider(),actRunWSNewTab.get_MenuEntry(),actRunWSHere.get_MenuEntry(),MenuEntry.New$2("").get_Divider(),actParseCode.get_MenuEntry(),actCompileWS.get_MenuEntry()])]);
+  menuLeft=Menu.New2([MenuEntry.New$2("File").SubMenu([actLoadFile.get_MenuEntry(),actSaveFile.get_MenuEntry()]),MenuEntry.New$2("Code").SubMenu([actAddSnippet.get_MenuEntry(),actDeleteSnippet.get_MenuEntry(),MenuEntry.New$2("").get_Divider(),actIndentSnippet.get_MenuEntry(),actOutdentSnippet.get_MenuEntry(),MenuEntry.New$2("").get_Divider(),actFindDefinition.get_MenuEntry(),MenuEntry.New$2("").get_Divider(),actGetFsCode.get_MenuEntry(),MenuEntry.New$2("").get_Divider(),actRefreshEditor.get_MenuEntry()]),MenuEntry.New$2("Run").SubMenu([actEvalCode.get_MenuEntry(),actFableCode.get_MenuEntry(),MenuEntry.New$2("").get_Divider(),actRunWSNewTab.get_MenuEntry(),actRunWSHere.get_MenuEntry(),MenuEntry.New$2("").get_Divider(),actParseCode.get_MenuEntry(),actCompileWS.get_MenuEntry()])]);
   menuRight=Menu.New2([MenuEntry.New$2("About").SubMenu([MenuEntry.New$1("Source @ GitHub","https://github.com/amieres/FSharpStation").Target("_blank")])]);
   menuBar=Template.navbar(HtmlNode.h1([HtmlNode.htmlText("F# Station"),HtmlNode.style("font-size: 48px; margin-top: -17px")]),menuLeft.get_Render(),menuRight.get_Render());
   redraw=Var.Create$1();
@@ -7439,11 +7478,11 @@
    {
     return function($10)
     {
-     return f$6($9,$10);
+     return f$5($9,$10);
     };
    },redraw,Val.bind(function(x$2)
    {
-    return g$12(f$7(x$2));
+    return g$12(f$6(x$2));
    },currentCodeSnippetId))
   }),HtmlNode.css(" td.hovering { background: gray; } ")]);
   s$2="CodeEditor."+"splitterV1";
@@ -7502,8 +7541,8 @@
     }));
    })));
   },(x=FsGlobal.codeSnippets().v,View.SnapshotOn((FsGlobal.codeSnippets())["var"].RVal(),refresh.v,x)));
-  layout=Layout.New$1([["Output",{
-   $:0,
+  steps=[["Output",{
+   $:1,
    $0:TextArea.New$2(outputMsgs).Placeholder("Output:").Title("Output").RenderWith(List.ofArray([AttrModule.Handler("dblclick",function(a)
    {
     return function($9)
@@ -7512,7 +7551,7 @@
     };
    })]))
   }],["Parser",{
-   $:0,
+   $:1,
    $0:TextArea.New$2(parserMsgs).Placeholder("Parser messages:").Title("Parser").RenderWith(List.ofArray([AttrModule.Handler("dblclick",function(a)
    {
     return function($9)
@@ -7521,19 +7560,19 @@
     };
    })]))
   }],["JavaScript",{
-   $:0,
+   $:1,
    $0:TextArea.New$2(codeJS).Placeholder("Javascript:").Title("JavaScript code generated").get_Render()
   }],["F# code",{
-   $:0,
+   $:1,
    $0:TextArea.New$2(codeFS).Placeholder("F# code:").Title("F# code assembled").get_Render()
   }],["Properties",{
-   $:0,
+   $:1,
    $0:properties
   }],["WS Result",{
-   $:0,
+   $:1,
    $0:HtmlNode.div([HtmlNode.div([HtmlNode.Id("TestNode"),HtmlNode.style("background: white; height: 100%; width: 100%; ")])])
   }],["title",{
-   $:0,
+   $:1,
    $0:Input.New$2((view$1=Val.toView(Val.fixit(currentCodeSnippetId)),(contentVar$1=Var.Create$1(null),(changingIRefO$1=[null],(contentVarChanged$1=[0],(refVarChanged$1=[0],(View.Sink(function()
    {
     var o,r;
@@ -7557,39 +7596,38 @@
     return r.RView();
    },view$1)),contentVar$1))))))).Prefix$1(HtmlNode.htmlText("name:")).get_Render()
   }],["code",{
-   $:0,
+   $:1,
    $0:codeMirrorRender
   }],["snippets",{
-   $:0,
+   $:1,
    $0:snippetList
   }],["buttons",{
-   $:0,
+   $:1,
    $0:buttonsH
   }],["menu",{
-   $:0,
+   $:1,
    $0:menuBar
-  }]]);
-  steps=List.ofArray([["messagesR",{
-   $:3,
+  }],["messagesR",{
+   $:4,
    $0:true,
    $1:["Properties"]
   }],["messagesB1",{
-   $:3,
+   $:4,
    $0:true,
    $1:["Output","JavaScript","F# code"]
   }],["messagesB2",{
-   $:3,
+   $:4,
    $0:true,
    $1:["Parser","WS Result"]
-  }],["messagesB",Template.varVerSplitter(55,"messagesB1","messagesB2",0,100)],["title_code",Template.fixedHorSplitter(true,34,"title","code")],["code_props",Template.varVerSplitter(85,"title_code","messagesR",25,100)],["code_buttons",Template.fixedHorSplitter(false,80,"code_props","buttons")],["snippets_code",Template.varVerSplitter(15,"snippets","code_buttons",5,95)],["main_messages",Template.varHorSplitter(82,"snippets_code","messagesB",35,100)],["main_window",Template.fixedHorSplitter(true,50,"menu","main_messages")]]);
+  }],["messagesB",Template.varVerSplitter(55,"messagesB1","messagesB2",0,100)],["title_code",Template.fixedHorSplitter(true,34,"title","code")],["code_props",Template.varVerSplitter(85,"title_code","messagesR",25,100)],["code_buttons",Template.fixedHorSplitter(false,80,"code_props","buttons")],["snippets_code",Template.varVerSplitter(15,"snippets","code_buttons",5,95)],["main_messages",Template.varHorSplitter(82,"snippets_code","messagesB",35,100)],["main",Template.fixedHorSplitter(true,50,"menu","main_messages")]];
+  layout=Layout.New$1(steps);
+  layout.ExportSetLayoutJson("addLayoutJson");
   Val.sink(function(json)
   {
-   if(json==="")
-    layout.SetLayout(steps);
-   else
-    layout.SetLayoutJson(json);
+   delayedRefreshCM(1000);
+   delayedRefreshCM(2000);
+   layout.SetLayoutJson(steps,json);
   },propertyLayoutVal);
-  layout.ExportSetLayoutJson("setLayoutJson");
   Val.sink(function()
   {
    layout.SelectTab("Output");
@@ -7600,16 +7638,17 @@
   },triggerWSResult);
   cssLinks=Var.Create$1(List.ofArray(["/EPFileX/css/main.css"]));
   Val.sink(addCssLink,propertyCssLinkVal);
-  Val.sink((f$5=function($9)
+  Val.sink(function(theme)
   {
-   return function($10)
-   {
-    return $9("/EPFileX/codemirror/content/theme/"+Utils.toSafe($10)+".css");
-   };
-  }(Global.id),function(x$2)
-  {
-   return addCssLink(f$5(x$2));
-  }),propertyThemeVal);
+   if(theme!=="")
+    addCssLink((function($9)
+    {
+     return function($10)
+     {
+      return $9("/EPFileX/codemirror/content/theme/"+Utils.toSafe($10)+".css");
+     };
+    }(Global.id))(theme));
+  },propertyThemeVal);
   x$1=HtmlNode.div([HtmlNode.style("height: 100vh; width: 100% "),layout.get_Render().Style("height: 100%; width: 100% "),HtmlNode.script([HtmlNode.src("/EPFileX/FileSaver/FileSaver.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://code.jquery.com/jquery-3.1.1.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.link([HtmlNode.href("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css("\n      \n        body { margin: 0px }     \n             \n        div textarea {\n            font-family     : monospace;\n        }\n        .code-editor-list-tile {\n            white-space     : nowrap; \n            border-style    : solid none none;\n            border-color    : white;\n            border-width    : 1px;\n            background-color: #D8D8D8;\n            display         : flex;\n        }\n        .code-editor-list-text{\n            padding         : 1px 10px 1px 5px;\n            overflow        : hidden;\n            text-overflow   : ellipsis;\n            white-space     : nowrap;\n            flex            : 1;\n        }\n        \n        .code-editor-list-tile.direct-predecessor {\n            font-weight     : bold;\n        }\n        .code-editor-list-tile.indirect-predecessor {\n            color           : blue;\n        }\n        .code-editor-list-tile.selected {\n            background-color: #77F;\n            color           : white;\n        }\n        .code-editor-list-tile.hovering {\n            background      : lightgray;\n        }\n        .code-editor-list-tile.hovering.selected {\n            background      : blue;\n        }\n        .code-editor-list-tile>.predecessor {\n            font-weight     : bold;\n            border-style    : inset;\n            border-width    : 1px;\n            text-align      : center;\n            color           : transparent;\n        }\n        .code-editor-list-tile.direct-predecessor>.predecessor {\n            color           : blue;\n        }\n        \n        .CodeMirror { height: 100%; }\n        \n        .node {\n            background-color: white; \n            width           : 2ch; \n            color           : #A03; \n            font-weight     : bold; \n            text-align      : center;\n            font-family     : arial;\n        }\n        .Warning { text-decoration: underline lightblue } \n        .Error   { text-decoration: underline red       } \n        .body    { margin         : 0px                 }\n        "),HtmlNode.style(" \n                color      : #333;\n                font-size  : small;\n                font-family: monospace;\n                line-height: 1.2;\n                    "),new HtmlNode$1({
    $:5,
    $0:Val.map(function(csslnks)
@@ -7694,10 +7733,23 @@
   SC$1.references=["mscorlib.dll","System.dll","System.Core.dll","System.Data.dll","System.IO.dll","System.Xml.dll","System.Numerics.dll","FSharp.Core.sigdata","FSharp.Core.dll","Fable.Core.dll","Fable.Import.Browser.dll"];
   SC$1.loadReferences=Lazy.Create(function()
   {
-   Seq.iter(function(fn)
+   var b;
+   Concurrency.Start((b=null,Concurrency.Delay(function()
    {
-    Global.getFileBlob(fn,"metadata/"+fn);
-   },FableModule.references());
+    return Concurrency.Bind(HtmlNode.LoadFilesAsync(["https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.min.js"]),function()
+    {
+     var options;
+     options=Object.create(null);
+     options.skipDataMain=1;
+     options.isBrowser=1;
+     Global.require.config(options);
+     Seq.iter(function(fn)
+     {
+      Global.getFileBlob(fn,"metadata/"+fn);
+     },FableModule.references());
+     return Concurrency.Zero();
+    });
+   })),null);
   });
   SC$1.getChecker=Lazy.Create(function()
   {
