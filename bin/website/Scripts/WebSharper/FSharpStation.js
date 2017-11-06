@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FSSGlobal,Useful,Option,ExceptionThrown,ErrOptionIsNone,ErrSimple,Result,ropBuilder,Wrap,Builder,Async,ResetableMemoize,PreproDirective,FsEvaluator,FsStationShared,MessagingClient,CodeSnippetId,CodeSnippet,FSMessage,FSSeverity,FsStationClientErr,FsStationClient,FsTranslator,FSAutoCompleteIntermediary,CommTypes,ResponseError,Location,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,ACMessage,FSAutoCompleteIntermediaryClient,HtmlNode,Val,HelperType,HtmlNode$1,Template,Button,Input,Hoverable,TextArea,CodeMirrorPos,CodeMirrorEditor,CodeMirror,Hint,HintResponse,HintOptions,LintResponse,SplitterBar,SectionType,Grid,TabStrip,MenuEntry,MenuNode,Menu,Action,LayoutDescriptionFable,Layout,RunCode,RunNode,FSharpStation,FsGlobal,Position,ErrCompiler,KeyMapAutoComplete,Property,PropValue,CodeSnippet$1,FableModule,Babel,Fable,SC$1,FSharpStation_JsonDecoder,FSharpStation_JsonEncoder,FSharpStation_GeneratedPrintf,GeneratedPrintf,IntelliFactory,Runtime,WebSharper,Utils,List,Strings,Seq,Concurrency,console,Collections,Dictionary,Arrays,Unchecked,Remoting,AjaxRemotingProvider,JSON,Date,UsefulDotNet,Messaging,Guid,Option$1,UI,Next,View,Doc,Operators,AttrModule,AttrProxy,Var,Input$1,Mouse,FSharpSet,BalancedTree,Map,MatchFailureException,Slice,Json,Provider,FSharpMap,Object,Fable$1,Babel$1,HashSet,JavaScript,JSModule,$,ListModel,Lazy;
+ var Global,FSSGlobal,Useful,Option,ExceptionThrown,ErrOptionIsNone,ErrSimple,Result,ropBuilder,Wrap,Builder,Async,ResetableMemoize,PreproDirective,FsEvaluator,FsStationShared,MessagingClient,CodeSnippetId,CodeSnippet,FSMessage,FSSeverity,FsStationClientErr,FsStationClient,FsTranslator,FSAutoCompleteIntermediary,CommTypes,ResponseError,Location,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,ACMessage,FSAutoCompleteIntermediaryClient,HtmlNode,Val,HelperType,HtmlNode$1,Template,Button,Input,Hoverable,TextArea,CodeMirrorPos,CodeMirrorEditor,CodeMirror,Hint,HintResponse,HintOptions,LintResponse,SplitterBar,SectionType,Grid,TabStrip,MenuEntry,MenuNode,Menu,Action,GuiPart,HtmlNodeFable,LayoutDescriptionFable,GuiPartSourceId,Layout,RunCode,RunNode,FSharpStation,FsGlobal,Position,ErrCompiler,KeyMapAutoComplete,Property,PropValue,CodeSnippet$1,FableModule,Babel,Fable,SC$1,FSharpStation_JsonDecoder,FSharpStation_JsonEncoder,FSharpStation_GeneratedPrintf,GeneratedPrintf,IntelliFactory,Runtime,WebSharper,Utils,List,Strings,Seq,Concurrency,console,Collections,Dictionary,Arrays,Unchecked,Remoting,AjaxRemotingProvider,JSON,Date,UsefulDotNet,Messaging,Guid,Option$1,UI,Next,View,Doc,Operators,AttrModule,AttrProxy,Var,Input$1,Mouse,FSharpSet,BalancedTree,Map,MatchFailureException,Slice,Json,Provider,Object,Fable$1,Babel$1,HashSet,JavaScript,JSModule,$,FSharpMap,ListModel,Lazy;
  Global=window;
  FSSGlobal=Global.FSSGlobal=Global.FSSGlobal||{};
  Useful=FSSGlobal.Useful=FSSGlobal.Useful||{};
@@ -76,7 +76,10 @@
  MenuNode=Template.MenuNode=Template.MenuNode||{};
  Menu=Template.Menu=Template.Menu||{};
  Action=Template.Action=Template.Action||{};
+ GuiPart=Template.GuiPart=Template.GuiPart||{};
+ HtmlNodeFable=Template.HtmlNodeFable=Template.HtmlNodeFable||{};
  LayoutDescriptionFable=Template.LayoutDescriptionFable=Template.LayoutDescriptionFable||{};
+ GuiPartSourceId=Template.GuiPartSourceId=Template.GuiPartSourceId||{};
  Layout=Template.Layout=Template.Layout||{};
  RunCode=FSSGlobal.RunCode=FSSGlobal.RunCode||{};
  RunNode=RunCode.RunNode=RunCode.RunNode||{};
@@ -134,7 +137,6 @@
  Slice=WebSharper&&WebSharper.Slice;
  Json=WebSharper&&WebSharper.Json;
  Provider=Json&&Json.Provider;
- FSharpMap=Collections&&Collections.FSharpMap;
  Object=Global.Object;
  Fable$1=Global.Fable;
  Babel$1=Global.Babel;
@@ -142,6 +144,7 @@
  JavaScript=WebSharper&&WebSharper.JavaScript;
  JSModule=JavaScript&&JavaScript.JSModule;
  $=Global.jQuery;
+ FSharpMap=Collections&&Collections.FSharpMap;
  ListModel=Next&&Next.ListModel;
  Lazy=WebSharper&&WebSharper.Lazy;
  Option.modify=function(modifier)
@@ -1976,11 +1979,11 @@
  },WebSharper.Obj,FsStationClient);
  FsStationClient.get_FSStationId_=function()
  {
-  return"FSharpStation1509834423435";
+  return"FSharpStation1509869262849";
  };
  FsStationClient.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
-  this.fsIds=Option.defaultValue("FSharpStation1509834423435",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1509869262849",fsStationId);
   this.msgClient=new MessagingClient.New(clientId,timeout,endPoint);
   this.toId=FsStationShared.AddressId(this.fsIds);
  },FsStationClient);
@@ -4900,11 +4903,40 @@
    onClick:onClick
   });
  };
- LayoutDescriptionFable.New=function(GuiTabStrip,GuiSplit)
+ GuiPart=Template.GuiPart=Runtime.Class({
+  GetHtmlNode:function(lyt)
+  {
+   return this.$==1?this.$0:this.$==2?this.$0.get_Button().get_Render():this.$==3?Grid.NewBisect(this.$0,this.$1,this.$2,this.$3,lyt.GetNode(this.$4),lyt.GetNode(this.$5)).Min(this.$6).Max(this.$7).get_Render():this.$==4?TabStrip.New$1(Seq.map(function(node)
+   {
+    return[node,lyt.GetNode(node)];
+   },this.$1)).SetTop(this.$0).get_Render():HtmlNode$1.HtmlEmpty;
+  }
+ },null,GuiPart);
+ HtmlNodeFable.New=function(HtmlElementF,HtmlAttributeF,HtmlAttributeOF,HtmlTextF,HtmlEmptyF,HtmlGuiPart)
  {
   return{
+   HtmlElementF:HtmlElementF,
+   HtmlAttributeF:HtmlAttributeF,
+   HtmlAttributeOF:HtmlAttributeOF,
+   HtmlTextF:HtmlTextF,
+   HtmlEmptyF:HtmlEmptyF,
+   HtmlGuiPart:HtmlGuiPart
+  };
+ };
+ LayoutDescriptionFable.New=function(GuiRoot,GuiTabStrip,GuiSplit,GuiNode)
+ {
+  return{
+   GuiRoot:GuiRoot,
    GuiTabStrip:GuiTabStrip,
-   GuiSplit:GuiSplit
+   GuiSplit:GuiSplit,
+   GuiNode:GuiNode
+  };
+ };
+ GuiPartSourceId.get_New=function()
+ {
+  return{
+   $:0,
+   $0:Guid.NewGuid()
   };
  };
  Layout=Template.Layout=Runtime.Class({
@@ -4915,141 +4947,248 @@
     return!ts.Select$1(tName);
    },this.tabStrips.get_Values()));
   },
-  ExportSetLayoutJson:function(name)
-  {
-   var $this;
-   $this=this;
-   Global[name]=function(a)
-   {
-    return function(a$1)
-    {
-     return $this.SetLayoutJson(a,a$1);
-    };
-   };
-  },
   SetLayoutJson:function(steps,json)
   {
+   var $1,$this;
+   function jsonF2HtmlNode(a$1)
+   {
+    var a$2,a$3,a$4,a$5,$2,a$6;
+    a$2=Template.PHtmlElementF(a$1);
+    return a$2!=null&&a$2.$==1?{
+     $:1,
+     $0:new HtmlNode$1({
+      $:0,
+      $0:a$2.$0[0],
+      $1:Seq.choose(jsonF2HtmlNode,a$2.$0[1])
+     })
+    }:(a$3=Template.PHtmlAttributeF(a$1),a$3!=null&&a$3.$==1?{
+     $:1,
+     $0:new HtmlNode$1({
+      $:1,
+      $0:a$3.$0[0],
+      $1:new Val({
+       $:0,
+       $0:a$3.$0[1]
+      })
+     })
+    }:(a$4=Template.PHtmlAttributeOF(a$1),a$4!=null&&a$4.$==1?{
+     $:1,
+     $0:new HtmlNode$1({
+      $:2,
+      $0:a$4.$0[0],
+      $1:new Val({
+       $:0,
+       $0:a$4.$0[1]
+      })
+     })
+    }:(a$5=Template.PHtmlTextF(a$1),a$5!=null&&a$5.$==1?{
+     $:1,
+     $0:new HtmlNode$1({
+      $:3,
+      $0:new Val({
+       $:0,
+       $0:a$5.$0
+      })
+     })
+    }:($2=Template.PHtmlEmptyF(a$1),$2!=null&&$2.$==1)?{
+     $:1,
+     $0:HtmlNode$1.HtmlEmpty
+    }:(a$6=Template.PHtmlGuiPart(a$1),a$6!=null&&a$6.$==1?{
+     $:1,
+     $0:$this.GetNode(a$6.$0)
+    }:null))));
+   }
+   function jsonF2GuiRoot(a$1)
+   {
+    var a$2,o,a$3,a$4,t,a$5;
+    a$2=Template.PGuiNode(a$1);
+    return a$2!=null&&a$2.$==1?{
+     $:1,
+     $0:new GuiPart({
+      $:1,
+      $0:(o=jsonF2HtmlNode(a$2.$0),o==null?HtmlNode$1.HtmlEmpty:o.$0)
+     })
+    }:(a$3=Template.PGuiRoot(a$1),a$3!=null&&a$3.$==1?{
+     $:1,
+     $0:new GuiPart({
+      $:0,
+      $0:a$3.$0
+     })
+    }:(a$4=Template.PGuiTabStrip(a$1),a$4!=null&&a$4.$==1?{
+     $:1,
+     $0:(t=a$4.$0,new GuiPart({
+      $:4,
+      $0:t[0],
+      $1:t[1]
+     }))
+    }:(a$5=Template.PGuiSplit(a$1),a$5!=null&&a$5.$==1?{
+     $:1,
+     $0:new GuiPart({
+      $:3,
+      $0:a$5.$0[0],
+      $1:Template.toSect(a$5.$0[1]),
+      $2:a$5.$0[2],
+      $3:a$5.$0[3],
+      $4:a$5.$0[4],
+      $5:a$5.$0[5],
+      $6:a$5.$0[6],
+      $7:a$5.$0[7]
+     })
+    }:null)));
+   }
+   $this=this;
    try
    {
+    function a(name,si,part)
+    {
+     var partv;
+     partv=($this.parts.get_Item(name))[0];
+     !Unchecked.Equals((partv.RVal())[0],si)?partv.set_RVal([si,part]):void 0;
+    }
+    function m(name,det)
+    {
+     return Seq.last(det);
+    }
     function c(name,ldf)
     {
-     var o,a,o$1,o$2,first,secT,vertical,per,ch1,ch2,min,max;
-     o=(a=(o$1=ldf.GuiTabStrip,o$1==null?null:{
-      $:1,
-      $0:{
-       $:4,
-       $0:o$1.$0[0],
-       $1:o$1.$0[1]
-      }
-     }),a==null?(o$2=ldf.GuiSplit,o$2==null?null:{
-      $:1,
-      $0:(first=o$2.$0[0],(secT=o$2.$0[1],(vertical=o$2.$0[2],(per=o$2.$0[3],(ch1=o$2.$0[4],(ch2=o$2.$0[5],(min=o$2.$0[6],(max=o$2.$0[7],{
-       $:3,
-       $0:first,
-       $1:Template.toSect(secT),
-       $2:vertical,
-       $3:per,
-       $4:ch1,
-       $5:ch2,
-       $6:min,
-       $7:max
-      }))))))))
-     }):{
-      $:1,
-      $0:a.$0
-     });
+     var o;
+     o=jsonF2GuiRoot(ldf);
      return o==null?null:{
       $:1,
-      $0:[name,o.$0]
+      $0:[name,{
+       $:1,
+       $0:ldf
+      },o.$0]
      };
     }
-    this.steps.set_RVal(steps.concat(json===""?[]:Arrays.choose(function($1)
+    $1=Arrays.iter(function($2)
     {
-     return c($1[0],$1[1]);
-    },((Provider.DecodeArray(Provider.DecodeTuple([Provider.Id(),FSharpStation_JsonDecoder.j$7])))())(JSON.parse(json)))));
+     return a($2[0],$2[1],$2[2]);
+    },Arrays.map(function($2)
+    {
+     return m($2[0],$2[1]);
+    },Arrays.groupBy(function($2)
+    {
+     return Global.id($2[0],$2[1],$2[2]);
+    },steps.concat(json===""?[]:Arrays.choose(function($2)
+    {
+     return c($2[0],$2[1]);
+    },((Provider.DecodeArray(Provider.DecodeTuple([Provider.Id(),FSharpStation_JsonDecoder.j$7])))())(JSON.parse(json)))))));
    }
    catch(e)
    {
-    ((function($1)
+    $1=(function($2)
     {
-     return function($2)
+     return function($3)
      {
-      return $1("Error: "+Utils.prettyPrint($2));
+      return $2("Error: "+Utils.prettyPrint($3));
      };
     }(function(s)
     {
      console.log(s);
-    }))(e));
+    }))(e);
    }
   },
   get_Render:function()
   {
-   var $this;
-   $this=this;
-   return new HtmlNode$1({
-    $:5,
-    $0:Val.map(function(steps)
-    {
-     var o;
-     function c($1,$2)
-     {
-      return $2.$==0?{
-       $:1,
-       $0:$2.$0
-      }:null;
-     }
-     return $this.GetNode((o=Seq.tryPick(function($1)
-     {
-      return c($1[0],$1[1]);
-     },steps),o==null?"main":o.$0),Template.processLayoutSteps(steps,new FSharpMap.New([])));
-    },this.steps)
-   });
+   var o;
+   function f(t)
+   {
+    return t[0];
+   }
+   function g(v)
+   {
+    var m;
+    m=v.RVal();
+    return m[1].$==0?{
+     $:1,
+     $0:m[1].$0
+    }:null;
+   }
+   return this.GetNode((o=Seq.tryPick(function(x)
+   {
+    return g(f(x));
+   },this.parts.get_Values()),o==null?"main":o.$0));
   },
-  GetNode:function(name,parts)
+  GetNode:function(name)
   {
-   var $this,o,o$1,a,ts;
-   $this=this;
-   o=(o$1=Map.TryFind(name,parts),o$1==null?null:{
+   var res;
+   res=null;
+   return this.parts.TryGetValue(name,{
+    get:function()
+    {
+     return res;
+    },
+    set:function(v)
+    {
+     res=v;
+    }
+   })?res[1]:this.AddNode(name,GuiPartSourceId.get_New(),new GuiPart({
     $:1,
-    $0:(a=o$1.$0,a.$==1?a.$0:a.$==2?a.$0.get_Button().get_Render():a.$==3?Grid.NewBisect(a.$0,a.$1,a.$2,a.$3,$this.GetNode(a.$4,parts),$this.GetNode(a.$5,parts)).Min(a.$6).Max(a.$7).get_Render():a.$==4?(ts=TabStrip.New$1(Seq.map(function(node)
+    $0:HtmlNode.div([HtmlNode.htmlText((function($1)
     {
-     return[node,$this.GetNode(node,parts)];
-    },a.$1)).SetTop(a.$0),(Template.addValue(name,ts,$this.tabStrips),ts.get_Render())):HtmlNode$1.HtmlEmpty)
-   });
-   return o==null?HtmlNode.div([HtmlNode.htmlText((function($1)
-   {
-    return function($2)
-    {
-     return $1("GuiPart "+Utils.toSafe($2)+" not found");
-    };
-   }(Global.id))(name))]):o.$0;
-  },
-  SetLayout:function(steps)
-  {
-   this.steps.set_RVal(Arrays.ofSeq(steps));
-   (function($1)
-   {
-    return $1("SetLayout");
-   }(function(s)
-   {
-    console.log(s);
+     return function($2)
+     {
+      return $1("GuiPart "+Utils.toSafe($2)+" not found");
+     };
+    }(Global.id))(name))])
    }));
+  },
+  AddNode:function(name,sid,part)
+  {
+   var $this,partV,node;
+   function f(si,p)
+   {
+    return p.GetHtmlNode($this);
+   }
+   $this=this;
+   partV=Var.Create$1([sid,part]);
+   node=new HtmlNode$1({
+    $:5,
+    $0:Val.map(function($1)
+    {
+     return f($1[0],$1[1]);
+    },partV)
+   });
+   this.parts.Add(name,[partV,node]);
+   return node;
   }
  },null,Layout);
  Layout.New$1=function(steps)
  {
-  return Layout.New(Var.Create$1(steps),new Dictionary.New$5());
+  var lyt;
+  function a(name,part,id)
+  {
+   lyt.AddNode(name,part,id);
+  }
+  lyt=Layout.New(new Dictionary.New$5(),new Dictionary.New$5());
+  Seq.iter(function($1)
+  {
+   return a($1[0],$1[1],$1[2]);
+  },steps);
+  return lyt;
  };
- Layout.New=function(steps,tabStrips)
+ Layout.AddGuids=function(steps)
+ {
+  function m(name,part)
+  {
+   return[name,GuiPartSourceId.get_New(),part];
+  }
+  return Arrays.ofSeq(Seq.map(function($1)
+  {
+   return m($1[0],$1[1]);
+  },steps));
+ };
+ Layout.New=function(parts,tabStrips)
  {
   return new Layout({
-   steps:steps,
+   parts:parts,
    tabStrips:tabStrips
   });
  };
  Template.varVerSplitter=function(pc,ch1,ch2,min,max)
  {
-  return{
+  return new GuiPart({
    $:3,
    $0:true,
    $1:SectionType.StVariable,
@@ -5059,11 +5198,11 @@
    $5:ch2,
    $6:min,
    $7:max
-  };
+  });
  };
  Template.varHorSplitter=function(pc,ch1,ch2,min,max)
  {
-  return{
+  return new GuiPart({
    $:3,
    $0:true,
    $1:SectionType.StVariable,
@@ -5073,11 +5212,11 @@
    $5:ch2,
    $6:min,
    $7:max
-  };
+  });
  };
  Template.fixedVerSplitter=function(first,px,ch1,ch2)
  {
-  return{
+  return new GuiPart({
    $:3,
    $0:first,
    $1:SectionType.StFixedPx,
@@ -5087,11 +5226,11 @@
    $5:ch2,
    $6:5,
    $7:95
-  };
+  });
  };
  Template.fixedHorSplitter=function(first,px,ch1,ch2)
  {
-  return{
+  return new GuiPart({
    $:3,
    $0:first,
    $1:SectionType.StFixedPx,
@@ -5101,11 +5240,51 @@
    $5:ch2,
    $6:5,
    $7:95
-  };
+  });
  };
  Template.toSect=function(s)
  {
   return s==="StVariable"?SectionType.StVariable:s==="StFixedPx"?SectionType.StFixedPx:SectionType.StFixedPerc;
+ };
+ Template.PGuiNode=function(ldf)
+ {
+  return ldf.GuiNode;
+ };
+ Template.PGuiRoot=function(ldf)
+ {
+  return ldf.GuiRoot;
+ };
+ Template.PGuiSplit=function(ldf)
+ {
+  return ldf.GuiSplit;
+ };
+ Template.PGuiTabStrip=function(ldf)
+ {
+  return ldf.GuiTabStrip;
+ };
+ Template.PHtmlGuiPart=function(hnf)
+ {
+  return hnf.HtmlGuiPart;
+ };
+ Template.PHtmlEmptyF=function(hnf)
+ {
+  return hnf.HtmlEmptyF;
+ };
+ Template.PHtmlTextF=function(hnf)
+ {
+  return hnf.HtmlTextF;
+ };
+ Template.PHtmlAttributeOF=function(hnf)
+ {
+  return hnf.HtmlAttributeOF;
+ };
+ Template.PHtmlAttributeF=function(hnf)
+ {
+  return hnf.HtmlAttributeF;
+ };
+ Template.PHtmlElementF=function(hnf)
+ {
+  return hnf.HtmlElementF;
  };
  Template.addValue=function(k,v,dict)
  {
@@ -7088,6 +7267,13 @@
     return[[line,total,total+line.length+1],total+line.length+1];
    },0,Strings.SplitChars(v$9,["\n"],0)))[0]));
   }
+  function addLayoutJson(json)
+  {
+   delayedRefreshCM(1000);
+   delayedRefreshCM(2000);
+   delayedRefreshCM(3000);
+   layout.SetLayoutJson(steps,json);
+  }
   function addCssLink(lnk)
   {
    !List.contains(lnk,cssLinks.c)?Var.Set(cssLinks,new List.T({
@@ -7541,7 +7727,52 @@
     }));
    })));
   },(x=FsGlobal.codeSnippets().v,View.SnapshotOn((FsGlobal.codeSnippets())["var"].RVal(),refresh.v,x)));
-  steps=[["Output",{
+  steps=Layout.AddGuids([["actLoadFile",new GuiPart({
+   $:2,
+   $0:actLoadFile
+  })],["actSaveFile",new GuiPart({
+   $:2,
+   $0:actSaveFile
+  })],["actAddSnippet",new GuiPart({
+   $:2,
+   $0:actAddSnippet
+  })],["actDeleteSnippet",new GuiPart({
+   $:2,
+   $0:actDeleteSnippet
+  })],["actIndentSnippet",new GuiPart({
+   $:2,
+   $0:actIndentSnippet
+  })],["actOutdentSnippet",new GuiPart({
+   $:2,
+   $0:actOutdentSnippet
+  })],["actGetFsCode",new GuiPart({
+   $:2,
+   $0:actGetFsCode
+  })],["actEvalCode",new GuiPart({
+   $:2,
+   $0:actEvalCode
+  })],["actRunFable",new GuiPart({
+   $:2,
+   $0:actFableCode
+  })],["actRunWSNewTab",new GuiPart({
+   $:2,
+   $0:actRunWSNewTab
+  })],["actRunWSHere",new GuiPart({
+   $:2,
+   $0:actRunWSHere
+  })],["actRunWSIn",new GuiPart({
+   $:2,
+   $0:actRunWSIn
+  })],["actParseCode",new GuiPart({
+   $:2,
+   $0:actParseCode
+  })],["actCompileWS",new GuiPart({
+   $:2,
+   $0:actCompileWS
+  })],["actFindDefinition",new GuiPart({
+   $:2,
+   $0:actFindDefinition
+  })],["Output",new GuiPart({
    $:1,
    $0:TextArea.New$2(outputMsgs).Placeholder("Output:").Title("Output").RenderWith(List.ofArray([AttrModule.Handler("dblclick",function(a)
    {
@@ -7550,7 +7781,7 @@
      return jumpToRef(a,$9);
     };
    })]))
-  }],["Parser",{
+  })],["Parser",new GuiPart({
    $:1,
    $0:TextArea.New$2(parserMsgs).Placeholder("Parser messages:").Title("Parser").RenderWith(List.ofArray([AttrModule.Handler("dblclick",function(a)
    {
@@ -7559,19 +7790,19 @@
      return jumpToRef(a,$9);
     };
    })]))
-  }],["JavaScript",{
+  })],["JavaScript",new GuiPart({
    $:1,
    $0:TextArea.New$2(codeJS).Placeholder("Javascript:").Title("JavaScript code generated").get_Render()
-  }],["F# code",{
+  })],["F# code",new GuiPart({
    $:1,
    $0:TextArea.New$2(codeFS).Placeholder("F# code:").Title("F# code assembled").get_Render()
-  }],["Properties",{
+  })],["Properties",new GuiPart({
    $:1,
    $0:properties
-  }],["WS Result",{
+  })],["WS Result",new GuiPart({
    $:1,
    $0:HtmlNode.div([HtmlNode.div([HtmlNode.Id("TestNode"),HtmlNode.style("background: white; height: 100%; width: 100%; ")])])
-  }],["title",{
+  })],["title",new GuiPart({
    $:1,
    $0:Input.New$2((view$1=Val.toView(Val.fixit(currentCodeSnippetId)),(contentVar$1=Var.Create$1(null),(changingIRefO$1=[null],(contentVarChanged$1=[0],(refVarChanged$1=[0],(View.Sink(function()
    {
@@ -7595,39 +7826,34 @@
     Var.Set(contentVar$1,r.RVal());
     return r.RView();
    },view$1)),contentVar$1))))))).Prefix$1(HtmlNode.htmlText("name:")).get_Render()
-  }],["code",{
+  })],["code",new GuiPart({
    $:1,
    $0:codeMirrorRender
-  }],["snippets",{
+  })],["snippets",new GuiPart({
    $:1,
    $0:snippetList
-  }],["buttons",{
+  })],["buttons",new GuiPart({
    $:1,
    $0:buttonsH
-  }],["menu",{
+  })],["menu",new GuiPart({
    $:1,
    $0:menuBar
-  }],["messagesR",{
+  })],["messagesR",new GuiPart({
    $:4,
    $0:true,
    $1:["Properties"]
-  }],["messagesB1",{
+  })],["messagesB1",new GuiPart({
    $:4,
    $0:true,
    $1:["Output","JavaScript","F# code"]
-  }],["messagesB2",{
+  })],["messagesB2",new GuiPart({
    $:4,
    $0:true,
    $1:["Parser","WS Result"]
-  }],["messagesB",Template.varVerSplitter(55,"messagesB1","messagesB2",0,100)],["title_code",Template.fixedHorSplitter(true,34,"title","code")],["code_props",Template.varVerSplitter(85,"title_code","messagesR",25,100)],["code_buttons",Template.fixedHorSplitter(false,80,"code_props","buttons")],["snippets_code",Template.varVerSplitter(15,"snippets","code_buttons",5,95)],["main_messages",Template.varHorSplitter(82,"snippets_code","messagesB",35,100)],["main",Template.fixedHorSplitter(true,50,"menu","main_messages")]];
+  })],["messagesB",Template.varVerSplitter(55,"messagesB1","messagesB2",0,100)],["title_code",Template.fixedHorSplitter(true,34,"title","code")],["code_props",Template.varVerSplitter(85,"title_code","messagesR",25,100)],["code_buttons",Template.fixedHorSplitter(false,80,"code_props","buttons")],["snippets_code",Template.varVerSplitter(15,"snippets","code_buttons",5,95)],["main_messages",Template.varHorSplitter(82,"snippets_code","messagesB",35,100)],["main",Template.fixedHorSplitter(true,50,"menu","main_messages")]]);
   layout=Layout.New$1(steps);
-  layout.ExportSetLayoutJson("addLayoutJson");
-  Val.sink(function(json)
-  {
-   delayedRefreshCM(1000);
-   delayedRefreshCM(2000);
-   layout.SetLayoutJson(steps,json);
-  },propertyLayoutVal);
+  Global.addLayoutJson=addLayoutJson;
+  Val.sink(addLayoutJson,propertyLayoutVal);
   Val.sink(function()
   {
    layout.SelectTab("Output");
@@ -7976,7 +8202,15 @@
  };
  FSharpStation_JsonDecoder.j$7=function()
  {
-  return FSharpStation_JsonDecoder._v$7?FSharpStation_JsonDecoder._v$7:FSharpStation_JsonDecoder._v$7=(Provider.DecodeRecord(void 0,[["GuiTabStrip",Provider.DecodeTuple([Provider.Id(),Provider.DecodeArray(Provider.Id())]),1],["GuiSplit",Provider.DecodeTuple([Provider.Id(),Provider.Id(),Provider.Id(),Provider.Id(),Provider.Id(),Provider.Id(),Provider.Id(),Provider.Id()]),1]]))();
+  return FSharpStation_JsonDecoder._v$7?FSharpStation_JsonDecoder._v$7:FSharpStation_JsonDecoder._v$7=(Provider.DecodeRecord(void 0,[["GuiRoot",Provider.Id(),1],["GuiTabStrip",Provider.DecodeTuple([Provider.Id(),Provider.DecodeArray(Provider.Id())]),1],["GuiSplit",Provider.DecodeTuple([Provider.Id(),Provider.Id(),Provider.Id(),Provider.Id(),Provider.Id(),Provider.Id(),Provider.Id(),Provider.Id()]),1],["GuiNode",FSharpStation_JsonDecoder.j$8,1]]))();
+ };
+ FSharpStation_JsonDecoder.j$8=function()
+ {
+  return FSharpStation_JsonDecoder._v$8?FSharpStation_JsonDecoder._v$8:FSharpStation_JsonDecoder._v$8=(Provider.DecodeRecord(void 0,[["HtmlElementF",Provider.DecodeTuple([Provider.Id(),Provider.DecodeArray(FSharpStation_JsonDecoder.j$8)]),1],["HtmlAttributeF",Provider.DecodeTuple([Provider.Id(),Provider.Id()]),1],["HtmlAttributeOF",Provider.DecodeTuple([Provider.Id(),FSharpStation_JsonDecoder.j$9]),1],["HtmlTextF",Provider.Id(),1],["HtmlEmptyF",Provider.Id(),1],["HtmlGuiPart",Provider.Id(),1]]))();
+ };
+ FSharpStation_JsonDecoder.j$9=function()
+ {
+  return FSharpStation_JsonDecoder._v$9?FSharpStation_JsonDecoder._v$9:FSharpStation_JsonDecoder._v$9=(Provider.DecodeUnion(void 0,"$",[null,[1,[["$0","Value",Provider.Id(),0]]]]))();
  };
  FSharpStation_GeneratedPrintf.p=function($1)
  {
