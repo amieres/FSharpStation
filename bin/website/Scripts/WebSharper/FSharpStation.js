@@ -1979,11 +1979,11 @@
  },WebSharper.Obj,FsStationClient);
  FsStationClient.get_FSStationId_=function()
  {
-  return"FSharpStation1509869262849";
+  return"FSharpStation1509940538776";
  };
  FsStationClient.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
-  this.fsIds=Option.defaultValue("FSharpStation1509869262849",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1509940538776",fsStationId);
   this.msgClient=new MessagingClient.New(clientId,timeout,endPoint);
   this.toId=FsStationShared.AddressId(this.fsIds);
  },FsStationClient);
@@ -4904,12 +4904,13 @@
   });
  };
  GuiPart=Template.GuiPart=Runtime.Class({
-  GetHtmlNode:function(lyt)
+  GetHtmlNode:function(lyt,name)
   {
-   return this.$==1?this.$0:this.$==2?this.$0.get_Button().get_Render():this.$==3?Grid.NewBisect(this.$0,this.$1,this.$2,this.$3,lyt.GetNode(this.$4),lyt.GetNode(this.$5)).Min(this.$6).Max(this.$7).get_Render():this.$==4?TabStrip.New$1(Seq.map(function(node)
+   var ts;
+   return this.$==1?this.$0:this.$==2?this.$0.get_Button().get_Render():this.$==3?Grid.NewBisect(this.$0,this.$1,this.$2,this.$3,lyt.GetNode(this.$4),lyt.GetNode(this.$5)).Min(this.$6).Max(this.$7).get_Render():this.$==4?(ts=TabStrip.New$1(Seq.map(function(node)
    {
     return[node,lyt.GetNode(node)];
-   },this.$1)).SetTop(this.$0).get_Render():HtmlNode$1.HtmlEmpty;
+   },this.$1)).SetTop(this.$0),(Template.addValue(name,ts,lyt.tabStrips),ts.get_Render())):HtmlNode$1.HtmlEmpty;
   }
  },null,GuiPart);
  HtmlNodeFable.New=function(HtmlElementF,HtmlAttributeF,HtmlAttributeOF,HtmlTextF,HtmlEmptyF,HtmlGuiPart)
@@ -4942,10 +4943,10 @@
  Layout=Template.Layout=Runtime.Class({
   SelectTab:function(tName)
   {
-   Seq.iter(Global.ignore,Seq.takeWhile(function(ts)
+   Seq.iter(function(ts)
    {
-    return!ts.Select$1(tName);
-   },this.tabStrips.get_Values()));
+    ts.Select$1(tName);
+   },this.tabStrips.get_Values());
   },
   SetLayoutJson:function(steps,json)
   {
@@ -5139,7 +5140,7 @@
    var $this,partV,node;
    function f(si,p)
    {
-    return p.GetHtmlNode($this);
+    return p.GetHtmlNode($this,name);
    }
    $this=this;
    partV=Var.Create$1([sid,part]);
