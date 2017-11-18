@@ -1271,7 +1271,7 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1509735711749"
+        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1510928331780"
         let msgClient  = MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
         let toId       = AddressId fsIds
         let stringResponseR response =
@@ -1310,7 +1310,7 @@ namespace FSSGlobal
         member this.RunSnippet      (url,snpPath:string   ) = sendMsg toId  (RunSnippetUrlJS     (snpPath.Split '/', url))    stringResponseR
         member this.FSStationId                             = fsIds
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1509735711749"
+        static member FSStationId_                          = "FSharpStation1510928331780"
     
     
   module FsTranslator =
@@ -1999,7 +1999,7 @@ namespace FSSGlobal
             fun     tag            va     ->
                 match va with
                 | Constant  a -> tag   a :> Doc
-                | Dynamic  wa -> wa     |> View.Map tag |> Doc.EmbedView
+                | Dynamic  wa -> wa      |> View.Map tag |> Doc.EmbedView
                 | DynamicV va -> va.View |> View.Map tag |> Doc.EmbedView
     
         let attrVO att       vao     =
@@ -2349,6 +2349,14 @@ namespace FSSGlobal
     [< Inline "CIPHERSpaceLoadFiles($files, $cb)" >]
     let LoadFiles (files: string []) (cb: unit -> unit) : unit = X<_>
     
+    let LoadFilesAsync (files: string []) =
+        Async.FromContinuations <| 
+            fun (cont, econt, ccont) -> 
+                try 
+                    LoadFiles files cont
+                with e -> econt e
+    
+    
   open HtmlNode
   [<JavaScript>]
   module Template      =
@@ -2612,8 +2620,8 @@ namespace FSSGlobal
                     SomeAttr <| on.afterRender (fun el ->
                       LoadFiles codeMirrorIncludes
                         (fun () ->                       
-                           let editor = CodeMirrorEditor.SetupEditor el
-                           this.editorO <- Some editor
+                           let editor        = CodeMirrorEditor.SetupEditor el
+                           this.editorO     <- Some editor
                            this.onRender |> Option.iter (fun onrender -> onrender editor)
                            let editorChanged = ref 0L
                            let varChanged    = ref 0L
@@ -2828,8 +2836,7 @@ namespace FSSGlobal
         content       : (string option * HtmlNode) []
         cols          : Area []
         rows          : Area []
-        width         : IRef<float>
-        height        : IRef<float>
+        widthHeight   : IRef<float * float>
         lastSplitter  : (int * bool) option
     }
     with
@@ -2839,8 +2846,7 @@ namespace FSSGlobal
            cols          = [| |]
            rows          = [| |]
            content       = [| |]
-           width         = Var.Create 1000.0
-           height        = Var.Create  100.0
+           widthHeight   = Var.Create (1000.0, 100.0)
            lastSplitter  = None
         }
         member this.NewSplitter  (f: float)  col =
@@ -2906,8 +2912,8 @@ namespace FSSGlobal
                )  <| (Val.Constant [])
             |> Val.map (String.concat " ")
         member this.styles() =
-            [ style1 "grid-template-columns" <| this.style this.cols this.width
-              style1 "grid-template-rows"    <| this.style this.rows this.height
+            [ style1 "grid-template-columns" <| this.style this.cols (Val.map fst this.widthHeight)
+              style1 "grid-template-rows"    <| this.style this.rows (Val.map snd this.widthHeight)
             ]
         member this.GridTemplate() =
             [ 
@@ -2944,13 +2950,13 @@ namespace FSSGlobal
                     let setVar (vr:IRef<_>) vl = if vr.Value <> vl then vr.Value <- vl 
                     let setDimensions () =
                         el.GetBoundingClientRect()
-                        |> fun r ->  
-                            setVar this.width  r.Width
-                            setVar this.height r.Height
-                    async {
-                        do! Async.Sleep 60
-                        do  setDimensions()
-                    } |> Async.Start
+                        |> fun r ->
+                            if (r.Top, r.Left, r.Height, r.Width) <> (0., 0., 0., 0.) then
+                                setVar this.widthHeight (r.Width, r.Height)
+                    //async {
+    //                    do! Async.Sleep 60
+                    do  setDimensions()
+                    //} |> Async.Start
                     addResizeObserver setDimensions el
                   ) 
             ]
@@ -3273,7 +3279,8 @@ namespace FSSGlobal
         highlight  : Val<bool>
         disabled   : Val<bool>
         toolTip    : string option
-        onClick    : (Dom.Element -> Dom.MouseEvent -> unit) option
+        onClick    : (Action -> Dom.Element -> Dom.MouseEvent -> unit) option
+        parms      : obj[] option
     } with
         static member inline New txt = { 
             text      = Val.fixit  txt
@@ -3281,17 +3288,21 @@ namespace FSSGlobal
             disabled  = Val.fixit  false
             toolTip   = None
             onClick   = None
+            parms     = None
         } 
-        member inline this.OnClick   f   = { this with onClick   = Some f        }
-        member inline this.OnClick2  f   = { this with onClick   = Some (f this) }
-        member inline this.Disabled  dis = { this with disabled  = Val.fixit dis }
-        member inline this.Highlight h   = { this with highlight = Val.fixit h   }
+        member inline this.Text      txt = { this with text      = Val.fixit txt
+                                                       disabled  = Val.fixit false  }
+        member inline this.Parms     ps  = { this with parms     = Some ps          }
+        member inline this.OnClick   f   = { this with onClick   = Some (fun _ -> f)}
+        member inline this.OnClick2  f   = { this with onClick   = Some f           }
+        member inline this.Disabled  dis = { this with disabled  = Val.fixit dis    }
+        member inline this.Highlight h   = { this with highlight = Val.fixit h      }
         member        this.MenuEntry     = {
             MenuEntry.text      = this.text
             MenuEntry.active    = this.highlight 
             MenuEntry.disabled  = this.disabled
             MenuEntry.toolTip   = this.toolTip
-            MenuEntry.onClick   = this.onClick
+            MenuEntry.onClick   = this.onClick |> Option.map (fun f -> f this)
             MenuEntry.ref       = Val.Constant None
             MenuEntry.divider   = false
             MenuEntry.subMenu   = None
@@ -3300,7 +3311,7 @@ namespace FSSGlobal
         member        this.Button       = {
             Button.text      = this.text
             Button.disabled  = this.disabled
-            Button.onClick   = this.onClick |> Option.defaultValue (fun _ _ -> ())
+            Button.onClick   = this.onClick |> Option.map (fun f -> f this) |> Option.defaultValue (fun _ _ -> ())
     //        Button.toolTip   = this.toolTip
             Button._class    = Val.map (fun h -> if h then "btn btn-primary" else "btn") this.highlight 
             Button._type     = Val.fixit "button" 
@@ -3310,18 +3321,43 @@ namespace FSSGlobal
     
     let Do  f p = (fun     _ _ -> f     p)
     let Do2 f p = (fun act _ _ -> f act p)
+    
     type GuiPart     = 
-       | GuiNode     of HtmlNode
-       | GuiAction   of Action
-       | GuiSplit    of first: bool * secT: SectionType * vertical: bool * per:float * string * string * min: float * max: float
-       | GuiTabStrip of top  : bool * string []
+       | GuiRoot       of string
+       | GuiNode       of HtmlNode
+       | GuiAction     of Action
+       | GuiSplit      of first: bool * secT: SectionType * vertical: bool * per:float * string * string * min: float * max: float
+       | GuiTabStrip   of top  : bool * string []
+       | GuiCall       of name: string * action: string * parms: string[]
+    
+    type HtmlNodeFable = {
+        HtmlElementF    : (string * HtmlNodeFable [] ) option
+        HtmlAttributeF  : (string * string           ) option
+        HtmlAttributeOF : (string * string option    ) option
+        HtmlTextF       : string                       option
+        HtmlEmptyF      : string                       option
+        HtmlGuiPart     : string                       option
+    }
+    
+    type LayoutDescriptionFable = 
+        {
+           GuiRoot     :  string                                                          option  
+           GuiTabStrip : (bool * string[]                                               ) option
+           GuiSplit    : (bool * string * bool * float * string * string * float * float) option  
+           GuiNode     :  HtmlNodeFable                                                   option
+           GuiCall     : (string * string * string[]                                    ) option
+        }
+    
+    type GuiPartSourceId =
+        | GPSI_Internal of System.Guid
+        | GPSI_Json     of LayoutDescriptionFable
+        with static member New =  GPSI_Internal <| System.Guid.NewGuid()
     
     let rec processLayoutSteps (steps: (string * GuiPart) seq) (parts: Map<string,GuiPart>) =
         steps
         |> Seq.tryHead
         |> Option.map (fun (name, guiPart) ->
-            guiPart
-            |> Map.add name <| parts
+            Map.add name guiPart parts
             |> processLayoutSteps (steps |> Seq.skip 1)
            )
         |> Option.defaultValue parts
@@ -3330,11 +3366,18 @@ namespace FSSGlobal
         dict.Remove k |> ignore
         dict.Add(k, v)
     
-    type LayoutDescriptionFable = 
-        {
-           GuiTabStrip : (bool * string[]                                               ) option
-           GuiSplit    : (bool * string * bool * float * string * string * float * float) option  
-        }
+    let (|PHtmlElementF   |_|) (hnf: HtmlNodeFable) = hnf.HtmlElementF   
+    let (|PHtmlAttributeF |_|) (hnf: HtmlNodeFable) = hnf.HtmlAttributeF 
+    let (|PHtmlAttributeOF|_|) (hnf: HtmlNodeFable) = hnf.HtmlAttributeOF
+    let (|PHtmlTextF      |_|) (hnf: HtmlNodeFable) = hnf.HtmlTextF      
+    let (|PHtmlEmptyF     |_|) (hnf: HtmlNodeFable) = hnf.HtmlEmptyF     
+    let (|PHtmlGuiPart    |_|) (hnf: HtmlNodeFable) = hnf.HtmlGuiPart     
+    
+    let (|PGuiTabStrip|_|) (ldf:LayoutDescriptionFable) = ldf.GuiTabStrip  
+    let (|PGuiSplit   |_|) (ldf:LayoutDescriptionFable) = ldf.GuiSplit 
+    let (|PGuiRoot    |_|) (ldf:LayoutDescriptionFable) = ldf.GuiRoot  
+    let (|PGuiNode    |_|) (ldf:LayoutDescriptionFable) = ldf.GuiNode  
+    let (|PGuiCall    |_|) (ldf:LayoutDescriptionFable) = ldf.GuiCall  
     
     let toSect s =
         match s with 
@@ -3344,73 +3387,95 @@ namespace FSSGlobal
     
     [<NoComparison ; NoEquality>]
     type Layout = {
-        baseParts     : Map<string, GuiPart>
-        steps         : IRef<(string * GuiPart) []>
+        parts         : System.Collections.Generic.Dictionary<string, IRef<GuiPartSourceId * GuiPart> * HtmlNode>
         tabStrips     : System.Collections.Generic.Dictionary<string, TabStrip>
-        mutable main  : string
     }
-    with
-        static member New parts =
-            {
-                baseParts = Map parts
-                steps     = Var.Create([||])
-                tabStrips = System.Collections.Generic.Dictionary<string, TabStrip>()
-                main      = "main"
+    
+    type GuiPart with
+        member this.GetHtmlNode (lyt: Layout) name =
+            match this with
+            | GuiRoot     root                                             -> HtmlEmpty
+            | GuiNode     node                                             -> node
+            | GuiAction   act                                              -> act.Button.Render
+            | GuiSplit   (first, secT , vertical, per, ch1, ch2, min, max) -> Grid.NewBisect(first, secT, vertical, per, lyt.GetNode ch1, lyt.GetNode ch2).Min(min).Max(max).Render
+            | GuiTabStrip(top  , nodes                                   ) -> let ts = TabStrip.New(nodes |> Seq.map (fun node -> node, lyt.GetNode node)).SetTop(top)
+                                                                              addValue name ts lyt.tabStrips
+                                                                              ts.Render
+            | GuiCall    (name, action, parms)                             -> 
+                if lyt.parts.ContainsKey action then
+                    match lyt.parts.[action] with
+                    | partv, _ ->
+                        match partv.Value with 
+                        | _, GuiAction act -> act.Text(name).Parms(parms |> Array.map (fun s -> s:>obj)).Button.Render
+                        | _                -> div [ htmlText (sprintf "GuiPart %s is not a GuiAction" action) ]
+                else div [ htmlText (sprintf "GuiAction %s not found" action) ]
+    and  Layout with
+        member this.AddNode name sid part =
+            let partV = Var.Create (sid, part)
+            let node  = partV |> Val.map (fun (si, p: GuiPart) -> p.GetHtmlNode this name) |> HtmlElementV 
+            this.parts.Add(name, (partV :> IRef<_>, node ))
+            node
+        member this.GetNode name =
+            let mutable res = Unchecked.defaultof<_>
+            let ok = this.parts.TryGetValue(name, &res)
+            if ok 
+            then snd res
+            else this.AddNode name GuiPartSourceId.New (GuiNode <| div [ htmlText (sprintf "GuiPart %s not found" name) ])
+        static member AddGuids steps = steps |> Seq.map (fun (name, part) -> name, GuiPartSourceId.New, part)  |> Seq.toArray
+        static member New(steps) =
+            let lyt = {
+                parts     = System.Collections.Generic.Dictionary<_, _>()
+                tabStrips = System.Collections.Generic.Dictionary<_, _>()
             }
-        member this.SetLayout steps = this.steps.Value <- steps |> Seq.toArray ; printfn "SetLayout"
-        member this.GetNode name (parts: Map<string, GuiPart>) =
-            Map.tryFind name parts
-            |> Option.map(
-               function
-               | GuiNode     node                                             -> node
-               | GuiAction   act                                              -> act.Button.Render
-               | GuiSplit   (first, secT , vertical, per, ch1, ch2, min, max) -> Grid.NewBisect(first, secT, vertical, per, this.GetNode ch1 parts, this.GetNode ch2 parts).Min(min).Max(max).Render
-               | GuiTabStrip(top  , nodes                                   ) -> let ts = TabStrip.New(nodes |> Seq.map (fun node -> node, this.GetNode node parts)).SetTop(top)
-                                                                                 addValue name ts this.tabStrips
-                                                                                 ts.Render
-            )
-            |> Option.defaultWith (fun () -> div [ htmlText (sprintf "GuiPart %s not found" name) ])
+            steps |> Seq.iter (fun (name, part, id) -> lyt.AddNode name part id |> ignore )
+            lyt
         member this.Render  =
-            this.steps
-            |> Val.map (fun (steps: (string * GuiPart) []) -> 
-                let node =
-                    if steps.Length = 0 then this.main
-                    else steps |> Seq.last |> fst
-                processLayoutSteps steps this.baseParts |> this.GetNode node) 
-            |> HtmlElementV
-        member this.SetLayoutJson json =
+            let node = 
+                this.parts.Values 
+                |> Seq.tryPick(fst >> fun v -> match v.Value with | _, GuiRoot root -> Some root | _ -> None )
+                |> Option.defaultValue "main"
+            this.GetNode node
+        member this.SetLayoutJson steps json =
+            let rec jsonF2HtmlNode =
+               function
+               | PHtmlElementF    (name, ch) -> Some <| HtmlElement   (name, ch |> Seq.choose jsonF2HtmlNode)
+               | PHtmlAttributeF  (name, v ) -> Some <| HtmlAttribute (name, Val.Constant v  )
+               | PHtmlAttributeOF (name, vO) -> Some <| HtmlAttributeO(name, Val.Constant vO )
+               | PHtmlTextF        txt       -> Some <| HtmlText      (      Val.Constant txt)
+               | PHtmlEmptyF       _         -> Some <| HtmlEmpty
+               | PHtmlGuiPart      part      -> Some <| this.GetNode part
+               | _                           -> None
+            let jsonF2GuiRoot =
+               function
+               | PGuiNode      html                                                      -> Some <| GuiNode     (jsonF2HtmlNode html |> Option.defaultValue HtmlEmpty)
+               | PGuiRoot      root                                                      -> Some <| GuiRoot      root
+               | PGuiTabStrip  p                                                         -> Some <| GuiTabStrip  p
+               | PGuiSplit    (first, secT: string  , vertical, per, ch1, ch2, min, max) -> Some <| GuiSplit    (first, secT |> toSect, vertical, per, ch1, ch2, min, max)
+               | PGuiCall     (name, call, parms                                       ) -> Some <| GuiCall     (name, call, parms) 
+               | _                                                                       -> None
             try
-                let steps = 
-                    json
-                    |> WebSharper.Json.Deserialize<(string * LayoutDescriptionFable)[]>
-                    |> Array.choose (fun (name, ldf) ->
-                        ldf.GuiTabStrip
-                        |> Option.map GuiTabStrip
-                        |> (function 
-                            | Some e -> Some e 
-                            | None   ->
-                            ldf.GuiSplit
-                            |> Option.map (fun (first, secT: string  , vertical, per, ch1, ch2, min, max) -> 
-                                       GuiSplit(first, secT |> toSect, vertical, per, ch1, ch2, min, max)))
-                        |> Option.map (fun v -> name, v)
-                    )
-                this.steps.Value <- steps
-                printfn "SetLayoutJson"
+                let steps2 = if json = "" then [||] else
+                             json
+                             |> WebSharper.Json.Deserialize<(string * LayoutDescriptionFable)[]>
+                             |> Array.choose (fun (name, ldf) -> jsonF2GuiRoot ldf |> Option.map (fun v -> name, GPSI_Json ldf, v))
+                Array.append steps steps2
+                |> Array.groupBy (fun (name, si, part) -> name           )
+                |> Array.map     (fun (name, det     ) -> det |> Seq.last)
+                |> Array.iter    (fun (name, si, part) -> if this.parts.ContainsKey name then
+                                                               let partv, _ = this.parts.[name] 
+                                                               if fst partv.Value <> si then partv.Value <- (si, part)
+                                                          else this.AddNode name si part |> ignore
+                ) 
             with e -> printfn "Error: %A" e
-        member this.ExportSetLayoutJson name =
-            JS.Window?(name) <- this.SetLayoutJson
         member this.SelectTab (tName:string) =
             this.tabStrips.Values
-            |> Seq.takeWhile (fun ts ->
-                ts.Select tName
-                |> not
-            )
-            |> Seq.iter (fun _ -> ())
+            |> Seq.iter (fun ts -> ts.Select tName |> ignore )
     
     let inline fixedHorSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPx , false, px, ch1, ch2, 5.0, 95.0)
     let inline fixedVerSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPx , true , px, ch1, ch2, 5.0, 95.0)
     let inline varHorSplitter          pc ch1 ch2 min max = GuiSplit(true , StVariable, false, pc, ch1, ch2, min,  max)
     let inline varVerSplitter          pc ch1 ch2 min max = GuiSplit(true , StVariable, true , pc, ch1, ch2, min,  max)
+    
     
   [<JavaScript>]
   module RunCode       =
@@ -3774,10 +3839,17 @@ namespace FSSGlobal
             // See https://github.com/fable-compiler/Fable/issues/1152#issuecomment-330315250
             // "System.ValueTuple.dll",
         |]
-        
+    
         let loadReferences =
             lazy
-                references |> Seq.iter (fun fn -> getFileBlob(fn, "metadata/" + fn))
+                async {
+                    do! LoadFilesAsync [| "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.min.js" |] 
+                    let  options          = Object.Create null
+                    options?skipDataMain <- 1
+                    options?isBrowser    <- 1
+                    JS.Window?require?config options
+                    references |> Seq.iter (fun fn -> getFileBlob(fn, "metadata/" + fn))
+                } |> Async.Start
             
         let getChecker = 
             lazy Fable.createChecker(readAllBytes, references |> Array.choose (fun fn -> if fn.Contains "sigdata" then None else Some <| fn.Replace(".dll", "")) )
@@ -3790,20 +3862,10 @@ namespace FSSGlobal
     
         let fableTranslate source : Wrap<string> =
             Wrap.wrapper {
+                loadReferences.Value
                 do! async { 
-                        loadReferences.Value
                         while metadataLength() < references.Length do
                             do! Async.Sleep 200
-                        LoadFiles [| "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.min.js" |] 
-                                  (fun () -> 
-                                      async {
-                                          do! Async.Sleep 100
-                                          let  options          = Object.Create null
-                                          options?skipDataMain <- 1
-                                          options?isBrowser    <- 1
-                                          JS.Window?require?config options
-                                      } |> Async.Start
-                                  )
                     }
                 let  checker       = getChecker.Value
                 let  com           = Fable.makeCompiler [| "Microsoft.FSharp.Core.ExtraTopLevelOperators.PrintFormatLine"
@@ -3881,8 +3943,6 @@ namespace FSSGlobal
       let propertyThemeVal     = genericPropertyVal  currentCodeSnippetId "Theme"    ""         id   
       let propertyLayoutVal    = genericPropertyVal  currentCodeSnippetId "Layout"   ""         id   
       let disablePropertyVal p = genericPropertyVal  currentCodeSnippetId p          false      ((<>) "0")
-      
-      let propertyThemeLinkVal = Val.map (sprintf "/EPFileX/codemirror/content/theme/%s.css") propertyThemeVal   
       
       let disableParseVal      = disablePropertyVal "DisableParse" 
       let disableFSIVal        = disablePropertyVal "DisableFSI"        |> Val.map2 (||) disableParseVal  
@@ -4427,21 +4487,29 @@ namespace FSSGlobal
           |> CodeSnippet.FinishCode addLinePrepos
       
       let mutable parseRun = 1
+      let mutable parsing  = false
       
       let parseFSA silent =
+          let msgF txt = if not silent then parserMsgs.Value <- txt
           async {
-              let msgF = if silent then ignore else fun txt -> parserMsgs.Value <- txt
-              match CodeSnippet.FetchO currentCodeSnippetId.Value with 
-              | None     -> ()
-              | Some cur ->
-              let runN           = parseRun + 1
-              parseRun          <- runN
-              let  code, starts  = getCodeAndStartsFast msgF cur false
-              parsed            <- true
-              let! res           = autoCompleteClient.Parse(parseFile, code, starts)
-              if not silent && runN = parseRun && parsed then
-                  addPrsMsg res
-                  addPrsMsg "Parsed!"
+              try
+                  match CodeSnippet.FetchO currentCodeSnippetId.Value with 
+                  | None     -> ()
+                  | Some cur ->
+                  let runN           = parseRun + 1
+                  parseRun          <- runN
+                  while parsing do
+                      do! Async.Sleep 1000
+                  if parseRun <> runN then () else
+                  parsing           <- true
+                  let  code, starts  = getCodeAndStartsFast msgF cur false
+                  parsed            <- true
+                  let! res           = autoCompleteClient.Parse(parseFile, code, starts)
+                  parsing           <- false
+                  if not silent && runN = parseRun && parsed then
+                      addPrsMsg res
+                      addPrsMsg "Parsed!"
+              with e -> parsing <- false
           }
       
       let parseFS() = 
@@ -4616,6 +4684,14 @@ namespace FSSGlobal
               | _                                                   -> JS.Alert   <| sprintf "%A" kind
           } |> Async.Start
       
+      let refreshCodeMirror() = codeMirror.editorO |> Option.iter (fun cm -> cm.Refresh())
+      
+      let delayedRefreshCM delay =
+          async {
+              do! Async.Sleep delay
+              refreshCodeMirror() 
+          } |> Async.Start
+          
       let codeMirrorRender = 
           codeMirror.Render.AddChildren [ 
               SomeAttr <| on.dblClick (fun _ _ -> showToolTip codeMirror.editorO.Value)  
@@ -4750,27 +4826,41 @@ namespace FSSGlobal
         """
       let triggerWSResult = Var.Create ()
       
-      let DoW f p _ _ = f p |> Wrap.map ignore |> Wrap.start addOutMsg
-      let DoP f p _ _ = f p |> Wrap.startV (function
-                                            | Some (Below, _), msgs -> msgs |> addOutMsg ;  triggerWSResult.Value <- ()
-                                            | Some _         , msgs -> msgs |> addOutMsg 
-                                            | None           , msgs -> "Failed!\n" + msgs |> addOutMsg)
+      let DoW  f p   _ _ = f p   |> Wrap.map ignore |> Wrap.start addOutMsg
+      let DoP  f p   _ _ = f p   |> Wrap.startV (function
+                                                 | Some (Below, _), msgs -> msgs |> addOutMsg ;  triggerWSResult.Value <- ()
+                                                 | Some _         , msgs -> msgs |> addOutMsg 
+                                                 | None           , msgs -> "Failed!\n" + msgs |> addOutMsg)
       
-      let actLoadFile       = Template.Action.New("Load..."                    ).OnClick(do_LoadFile                  )  
-      let actSaveFile       = Template.Action.New("Save as..."                 ).OnClick(Do  downloadFile   ()        ).Highlight(dirty)
-      let actAddSnippet     = Template.Action.New("Add Snippet"                ).OnClick(Do  addCode        ()        )
-      let actDeleteSnippet  = Template.Action.New("Delete Snippet"             ).OnClick(Do  deleteCode     ()        ).Disabled(noSelectionVal      )
-      let actIndentSnippet  = Template.Action.New("Indent In  >>"              ).OnClick(Do  indentCodeIn   ()        ).Disabled(noSelectionVal      )
-      let actOutdentSnippet = Template.Action.New("Indent Out <<"              ).OnClick(Do  indentCodeOut  ()        ).Disabled(noSelectionVal      )
-      let actGetFsCode      = Template.Action.New("Get F# Code"                ).OnClick(Do  getFSCode      ()        ).Disabled(disableParseVal     )
-      let actEvalCode       = Template.Action.New("Run FSI"                    ).OnClick(DoW evaluateFS     ()        ).Disabled(disableFSIVal       )
-      let actFableCode      = Template.Action.New("Run Fable"                  ).OnClick(DoW fableFS        ()        ).Disabled(disableFableVal     )
-      let actRunWSNewTab    = Template.Action.New("Run WebSharper in new tab"  ).OnClick(DoW compileRunP    NewBrowser).Disabled(disableWebSharperVal)
-      let actRunWSHere      = Template.Action.New("Run WebSharper in WS Result").OnClick(DoP compileRunP    Below     ).Disabled(disableWebSharperVal)
-      let actRunWSIn        = Template.Action.New("Run WebSharper in ..."      ).OnClick(DoP compileRun     ()        ).Disabled(disableWebSharperVal)
-      let actParseCode      = Template.Action.New("Parse F#"                   ).OnClick(DoW parseFS        ()        ).Disabled(disableParseVal     )
-      let actCompileWS      = Template.Action.New("Compile WebSharper"         ).OnClick(DoW justCompile    ()        ).Disabled(disableWebSharperVal)
-      let actFindDefinition = Template.Action.New("Find Definition"            ).OnClick(Do  gotoDefinition ()        ).Disabled(disableParseVal     )
+      let DoW2 f p t     = DoW (fun p' -> f t p') p
+      let DoP2 f p t     = DoP (fun p' -> f t p') p
+      
+      let doForSnippet (act: Action) f =
+          match act.parms with
+          | Some [| path |] -> path |> unbox<string> |> (fun s -> s.Split '/') |> CodeSnippet.FetchByPathO
+          | _               -> getSnpO()                                                 
+          |> f
+      
+      let evaluateFS2  (act: Action) () = doForSnippet act  evaluateSnippetW
+      let fableFS2     (act: Action) () = doForSnippet act  fableSnippetW
+      let compileRunP2 (act: Action) p  = doForSnippet act (compileRunW p)    
+      
+      let actLoadFile       = Template.Action.New("Load..."                    ).OnClick( do_LoadFile                    )  
+      let actSaveFile       = Template.Action.New("Save as..."                 ).OnClick( Do   downloadFile      ()      ).Highlight(dirty)
+      let actAddSnippet     = Template.Action.New("Add Snippet"                ).OnClick( Do   addCode           ()      )
+      let actDeleteSnippet  = Template.Action.New("Delete Snippet"             ).OnClick( Do   deleteCode        ()      ).Disabled(noSelectionVal      )
+      let actIndentSnippet  = Template.Action.New("Indent In  >>"              ).OnClick( Do   indentCodeIn      ()      ).Disabled(noSelectionVal      )
+      let actOutdentSnippet = Template.Action.New("Indent Out <<"              ).OnClick( Do   indentCodeOut     ()      ).Disabled(noSelectionVal      )
+      let actGetFsCode      = Template.Action.New("Get F# Code"                ).OnClick( Do   getFSCode         ()      ).Disabled(disableParseVal     )
+      let actEvalCode       = Template.Action.New("Run FSI"                    ).OnClick2(DoW2 evaluateFS2       ()      ).Disabled(disableFSIVal       )
+      let actFableCode      = Template.Action.New("Run Fable"                  ).OnClick2(DoW2 fableFS2          ()      ).Disabled(disableFableVal     )
+      let actRunWSNewTab    = Template.Action.New("Run WebSharper in new tab"  ).OnClick2(DoW2 compileRunP2   NewBrowser ).Disabled(disableWebSharperVal)
+      let actRunWSHere      = Template.Action.New("Run WebSharper in WS Result").OnClick2(DoP2 compileRunP2   Below      ).Disabled(disableWebSharperVal)
+      let actRunWSIn        = Template.Action.New("Run WebSharper in ..."      ).OnClick( DoP  compileRun        ()      ).Disabled(disableWebSharperVal)
+      let actParseCode      = Template.Action.New("Parse F#"                   ).OnClick( DoW  parseFS           ()      ).Disabled(disableParseVal     )
+      let actCompileWS      = Template.Action.New("Compile WebSharper"         ).OnClick( DoW  justCompile       ()      ).Disabled(disableWebSharperVal)
+      let actFindDefinition = Template.Action.New("Find Definition"            ).OnClick( Do   gotoDefinition    ()      ).Disabled(disableParseVal     )
+      let actRefreshEditor  = Template.Action.New("Refresh CodeMirror"         ).OnClick( Do   refreshCodeMirror ()      )
            
       let buttonsH =
           div [ 
@@ -4823,6 +4913,8 @@ namespace FSSGlobal
                               actFindDefinition.MenuEntry
                               MenuEntry.New("").Divider           
                               actGetFsCode     .MenuEntry
+                              MenuEntry.New("").Divider           
+                              actRefreshEditor .MenuEntry
                           ]     
                   )      
               MenuEntry.New("Run")     
@@ -4982,40 +5074,57 @@ namespace FSSGlobal
              |> View.SnapshotOn codeSnippets.Value refresh.View
              |> bindHElem listEntries
       
-      let layout =
-        Layout.New [
-           "Output"    , GuiNode <| Template.TextArea.New(outputMsgs).Placeholder("Output:"         ).Title("Output"                   ).RenderWith [ on.dblClick jumpToRef ]
-           "Parser"    , GuiNode <| Template.TextArea.New(parserMsgs).Placeholder("Parser messages:").Title("Parser"                   ).RenderWith [ on.dblClick jumpToRef ]
-           "JavaScript", GuiNode <| Template.TextArea.New(codeJS    ).Placeholder("Javascript:"     ).Title("JavaScript code generated").Render
-           "F# code"   , GuiNode <| Template.TextArea.New(codeFS    ).Placeholder("F# code:"        ).Title("F# code assembled"        ).Render
-           "Properties", GuiNode <| properties    
-           "WS Result" , GuiNode <| div [ div [ Id "TestNode" ; style "background: white; height: 100%; width: 100%; "] ]
-           "title"     , GuiNode <| Template.Input.New(Val.bindIRef curSnippetNameOf currentCodeSnippetId).Prefix(htmlText "name:").Render
-           "code"      , GuiNode <| codeMirrorRender
-           "snippets"  , GuiNode <| snippetList
-           "buttons"   , GuiNode <| buttonsH
-           "menu"      , GuiNode <| menuBar
-        ]
-      
-      
       let steps = 
-          [
-              "messagesR"    , GuiTabStrip(     true ,  [| "Properties" |])
-              "messagesB1"   , GuiTabStrip(     true ,  [| "Output"    
-                                                           "JavaScript"
-                                                           "F# code"    |])
-              "messagesB2"   , GuiTabStrip(     true ,  [| "Parser"    
-                                                           "WS Result"  |])
-              "messagesB"    , varVerSplitter          55.0 "messagesB1"    "messagesB2"     0.0 100.0             
-              "title_code"   , fixedHorSplitter true   34.0 "title"         "code"
-              "code_props"   , varVerSplitter          85.0 "title_code"    "messagesR"     25.0 100.0
-              "code_buttons" , fixedHorSplitter false  80.0 "code_props"    "buttons"
-              "snippets_code", varVerSplitter          15.0 "snippets"      "code_buttons"   5.0  95.0
-              "main_messages", varHorSplitter          82.0 "snippets_code" "messagesB"     35.0 100.0             
-              "main_window"  , fixedHorSplitter true   50.0 "menu"          "main_messages"
-          ]   
-      Val.sink (fun json -> if json = "" then layout.SetLayout steps else layout.SetLayoutJson json ) propertyLayoutVal
-      layout.ExportSetLayoutJson "setLayoutJson"
+        Layout.AddGuids
+          [|
+              "actLoadFile"       , GuiAction actLoadFile      
+              "actSaveFile"       , GuiAction actSaveFile      
+              "actAddSnippet"     , GuiAction actAddSnippet    
+              "actDeleteSnippet"  , GuiAction actDeleteSnippet 
+              "actIndentSnippet"  , GuiAction actIndentSnippet 
+              "actOutdentSnippet" , GuiAction actOutdentSnippet
+              "actGetFsCode"      , GuiAction actGetFsCode     
+              "actEvalCode"       , GuiAction actEvalCode
+              "actRunFable"       , GuiAction actFableCode
+              "actRunWSNewTab"    , GuiAction actRunWSNewTab   
+              "actRunWSHere"      , GuiAction actRunWSHere     
+              "actRunWSIn"        , GuiAction actRunWSIn       
+              "actParseCode"      , GuiAction actParseCode     
+              "actCompileWS"      , GuiAction actCompileWS     
+              "actFindDefinition" , GuiAction actFindDefinition    
+              "Output"            , GuiNode <| Template.TextArea.New(outputMsgs).Placeholder("Output:"         ).Title("Output"                   ).RenderWith [ on.dblClick jumpToRef ]
+              "Parser"            , GuiNode <| Template.TextArea.New(parserMsgs).Placeholder("Parser messages:").Title("Parser"                   ).RenderWith [ on.dblClick jumpToRef ]
+              "JavaScript"        , GuiNode <| Template.TextArea.New(codeJS    ).Placeholder("Javascript:"     ).Title("JavaScript code generated").Render
+              "F# code"           , GuiNode <| Template.TextArea.New(codeFS    ).Placeholder("F# code:"        ).Title("F# code assembled"        ).Render
+              "Properties"        , GuiNode <| properties    
+              "WS Result"         , GuiNode <| div [ div [ Id "TestNode" ; style "background: white; height: 100%; width: 100%; "] ]
+              "title"             , GuiNode <| Template.Input.New(Val.bindIRef curSnippetNameOf currentCodeSnippetId).Prefix(htmlText "name:").Render
+              "code"              , GuiNode <| codeMirrorRender
+              "snippets"          , GuiNode <| snippetList
+              "buttons"           , GuiNode <| buttonsH
+              "menu"              , GuiNode <| menuBar
+              "messagesR"         , GuiTabStrip(     true ,  [| "Properties" |])
+              "messagesB1"        , GuiTabStrip(     true ,  [| "Output"    
+                                                                "JavaScript"
+                                                                "F# code"    |])
+              "messagesB2"        , GuiTabStrip(     true ,  [| "Parser"    
+                                                                "WS Result"  |])
+              "messagesB"         , varVerSplitter          55.0 "messagesB1"    "messagesB2"     0.0 100.0             
+              "title_code"        , fixedHorSplitter true   34.0 "title"         "code"
+              "code_props"        , varVerSplitter          85.0 "title_code"    "messagesR"     25.0 100.0
+              "code_buttons"      , fixedHorSplitter false  80.0 "code_props"    "buttons"
+              "snippets_code"     , varVerSplitter          15.0 "snippets"      "code_buttons"   5.0  95.0
+              "main_messages"     , varHorSplitter          82.0 "snippets_code" "messagesB"     35.0 100.0             
+              "main"              , fixedHorSplitter true   50.0 "menu"          "main_messages"
+          |]   
+      
+      let layout = Layout.New steps
+      
+      let addLayoutJson json = delayedRefreshCM 1000 ; delayedRefreshCM 2000 ; delayedRefreshCM 3000 ; layout.SetLayoutJson steps json
+      
+      JS.Window?addLayoutJson <-    addLayoutJson
+      propertyLayoutVal |> Val.sink addLayoutJson 
+      
       
       (*let inline fixedHorSplitter1 px ch1 ch2 =
           let grid = Grid.New.Content("one", renderSplitterNode ch1)
@@ -5043,9 +5152,19 @@ namespace FSSGlobal
       //let code_messages = SplitterStructure.New(false, title_Code           , STabStrip messages,                   75.0)
       //let main_Buttons  = SplitterStructure.New(       snippets_code        , SHtmlNode buttons                 , fixedHorSplitter2 80.0)
       
-      Val.sink (fun _ -> layout.SelectTab "Output"    |> ignore ) outputMsgs 
+      Val.sink (fun _   -> layout.SelectTab "Output"    |> ignore ) outputMsgs 
       //Val.sink (fun _ -> layout.SelectTab "Parser"    |> ignore ) parserMsgs 
-      Val.sink (fun _ -> layout.SelectTab "WS Result" |> ignore ) triggerWSResult 
+      Val.sink (fun _   -> layout.SelectTab "WS Result" |> ignore ) triggerWSResult 
+      
+      
+      let cssLinks      = Var.Create [ "/EPFileX/css/main.css" ]
+      let addCssLink lnk =
+          if  cssLinks.Value |> List.contains lnk |> not then
+              cssLinks.Value <- lnk :: cssLinks.Value
+          delayedRefreshCM 300
+      
+      Val.sink addCssLink propertyCssLinkVal
+      Val.sink (fun theme -> if theme <> "" then sprintf "/EPFileX/codemirror/content/theme/%s.css" theme |> addCssLink) propertyThemeVal
       
       div [
           style "height: 100vh; width: 100% "
@@ -5054,7 +5173,6 @@ namespace FSSGlobal
           script [ src  "http://code.jquery.com/jquery-3.1.1.min.js"                          ; ``type`` "text/javascript"             ]
           script [ src  "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"  ; ``type`` "text/javascript"             ]
           link   [ href "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"; ``type`` "text/css" ; rel "stylesheet" ]
-          link   [ href "/EPFileX/css/main.css"                                               ; ``type`` "text/css" ; rel "stylesheet" ]
           css styleEditor                                                                                                               
           style  """ 
                 color      : #333;
@@ -5062,8 +5180,12 @@ namespace FSSGlobal
                 font-family: monospace;
                 line-height: 1.2;
                     """
-          link   [ href propertyThemeLinkVal                                                  ; ``type`` "text/css" ; rel "stylesheet" ]
-          link   [ href propertyCssLinkVal                                                    ; ``type`` "text/css" ; rel "stylesheet" ]
+          Val.map (fun csslnks ->
+              div [
+                  yield! csslnks |> Seq.map (fun csslnk -> link   [ href csslnk; ``type`` "text/css" ; rel "stylesheet" ])
+              ]
+          ) cssLinks 
+          |> HtmlElementV 
           css propertyCssVal
       ] |> renderDoc 
       
