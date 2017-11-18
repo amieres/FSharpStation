@@ -2,7 +2,7 @@ source https://www.nuget.org/api/v2
 framework: net47
 
 nuget FSharp.Compiler.Tools 4.1.23
-nuget FSharp.Compiler.Service 13
+nuget FSharp.Compiler.Service 17.0.1
 
 nuget CryptSharpOfficial 
 nuget FSharp.Configuration
@@ -30,3 +30,6 @@ nuget Newtonsoft.Json
 nuget FSharpPlus 1.0.0-CI00089 CI
 
 nuget Fable.Core
+
+nuget FsUnit
+nuget NUnit
