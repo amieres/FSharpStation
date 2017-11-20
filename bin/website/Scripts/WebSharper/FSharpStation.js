@@ -1979,11 +1979,11 @@
  },WebSharper.Obj,FsStationClient);
  FsStationClient.get_FSStationId_=function()
  {
-  return"FSharpStation1509941957748";
+  return"FSharpStation1511081898135";
  };
  FsStationClient.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
-  this.fsIds=Option.defaultValue("FSharpStation1509941957748",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1511081898135",fsStationId);
   this.msgClient=new MessagingClient.New(clientId,timeout,endPoint);
   this.toId=FsStationShared.AddressId(this.fsIds);
  },FsStationClient);
@@ -4067,8 +4067,7 @@
            {
             var r;
             r=el.getBoundingClientRect();
-            setVar($this.width,r.width);
-            setVar($this.height,r.height);
+            setVar($this.widthHeight,[r.width,r.height]);
            }
            setDimensions();
            Template.addResizeObserver(setDimensions,el);
@@ -4083,7 +4082,13 @@
   },
   styles:function()
   {
-   return List.ofArray([HtmlNode.style1("grid-template-columns",this.style(this.cols,this.width)),HtmlNode.style1("grid-template-rows",this.style(this.rows,this.height))]);
+   return List.ofArray([HtmlNode.style1("grid-template-columns",this.style(this.cols,Val.map(function(t)
+   {
+    return t[0];
+   },this.widthHeight))),HtmlNode.style1("grid-template-rows",this.style(this.rows,Val.map(function(t)
+   {
+    return t[1];
+   },this.widthHeight)))]);
   },
   style:function(areas,size)
   {
@@ -4253,29 +4258,29 @@
   },
   Gap:function(f)
   {
-   return Grid.New(this.padding,f,this.content,this.cols,this.rows,this.width,this.height,this.lastSplitter);
+   return Grid.New(this.padding,f,this.content,this.cols,this.rows,this.widthHeight,this.lastSplitter);
   },
   Padding:function(f)
   {
-   return Grid.New(f,this.gap,this.content,this.cols,this.rows,this.width,this.height,this.lastSplitter);
+   return Grid.New(f,this.gap,this.content,this.cols,this.rows,this.widthHeight,this.lastSplitter);
   },
   Content:function(html)
   {
-   return Grid.New(this.padding,this.gap,this.content.concat([[null,html]]),this.cols,this.rows,this.width,this.height,this.lastSplitter);
+   return Grid.New(this.padding,this.gap,this.content.concat([[null,html]]),this.cols,this.rows,this.widthHeight,this.lastSplitter);
   },
   Content$1:function(area,html)
   {
    return Grid.New(this.padding,this.gap,this.content.concat([[{
     $:1,
     $0:area
-   },html]]),this.cols,this.rows,this.width,this.height,this.lastSplitter);
+   },html]]),this.cols,this.rows,this.widthHeight,this.lastSplitter);
   },
   RowAuto:function(f)
   {
    return Grid.New(this.padding,this.gap,this.content,this.cols,this.rows.concat([{
     $:0,
     $0:SplitterBar.New$1(f).Horizontal()
-   }]),this.width,this.height,this.lastSplitter);
+   }]),this.widthHeight,this.lastSplitter);
   },
   RowVariable:function(f)
   {
@@ -4286,7 +4291,7 @@
    return Grid.New(this.padding,this.gap,this.content,this.cols,this.rows.concat([{
     $:2,
     $0:s
-   }]),this.width,this.height,this.lastSplitter);
+   }]),this.widthHeight,this.lastSplitter);
   },
   RowFixed:function(f)
   {
@@ -4296,7 +4301,7 @@
      $:0,
      $0:Val.fixit(f)
     }
-   }]),this.width,this.height,this.lastSplitter);
+   }]),this.widthHeight,this.lastSplitter);
   },
   RowFixedPx:function(f)
   {
@@ -4306,14 +4311,14 @@
      $:1,
      $0:Val.fixit(f)
     }
-   }]),this.width,this.height,this.lastSplitter);
+   }]),this.widthHeight,this.lastSplitter);
   },
   ColAuto:function(f)
   {
    return Grid.New(this.padding,this.gap,this.content,this.cols.concat([{
     $:0,
     $0:SplitterBar.New$1(f)
-   }]),this.rows,this.width,this.height,this.lastSplitter);
+   }]),this.rows,this.widthHeight,this.lastSplitter);
   },
   ColVariable:function(f)
   {
@@ -4324,7 +4329,7 @@
    return Grid.New(this.padding,this.gap,this.content,this.cols.concat([{
     $:2,
     $0:s
-   }]),this.rows,this.width,this.height,this.lastSplitter);
+   }]),this.rows,this.widthHeight,this.lastSplitter);
   },
   ColFixed:function(f)
   {
@@ -4334,7 +4339,7 @@
      $:0,
      $0:Val.fixit(f)
     }
-   }]),this.rows,this.width,this.height,this.lastSplitter);
+   }]),this.rows,this.widthHeight,this.lastSplitter);
   },
   ColFixedPx:function(f)
   {
@@ -4344,7 +4349,7 @@
      $:1,
      $0:Val.fixit(f)
     }
-   }]),this.rows,this.width,this.height,this.lastSplitter);
+   }]),this.rows,this.widthHeight,this.lastSplitter);
   },
   NewSplitter:function(f,col)
   {
@@ -4356,13 +4361,13 @@
    },Grid.New(this.padding,this.gap,this.content,this.cols.concat([{
     $:2,
     $0:spl
-   }]),this.rows,this.width,this.height,l)):(l$1={
+   }]),this.rows,this.widthHeight,l)):(l$1={
     $:1,
     $0:[Arrays.length(this.rows),col]
    },Grid.New(this.padding,this.gap,this.content,this.cols,this.rows.concat([{
     $:2,
     $0:spl.Horizontal()
-   }]),this.width,this.height,l$1));
+   }]),this.widthHeight,l$1));
   }
  },null,Grid);
  Grid.NewBisect=function(first,secT,ver,per,ch1,ch2)
@@ -4411,9 +4416,9 @@
  };
  Grid.get_New=function()
  {
-  return Grid.New(9,9,[],[],[],Var.Create$1(1000),Var.Create$1(100),null);
+  return Grid.New(9,9,[],[],[],Var.Create$1([1000,100]),null);
  };
- Grid.New=function(padding,gap,content,cols,rows,width,height,lastSplitter)
+ Grid.New=function(padding,gap,content,cols,rows,widthHeight,lastSplitter)
  {
   return new Grid({
    padding:padding,
@@ -4421,8 +4426,7 @@
    content:content,
    cols:cols,
    rows:rows,
-   width:width,
-   height:height,
+   widthHeight:widthHeight,
    lastSplitter:lastSplitter
   });
  };
@@ -4636,7 +4640,7 @@
        }
       }
      else
-      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3065,18);
+      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3071,18);
    }
    else
     void 0;
@@ -5513,7 +5517,7 @@
  };
  Template.addResizeObserver=function(f,el)
  {
-  var ro;
+  var ro,b;
   if(!(!Global.ResizeObserver))
    {
     ro=new Global.ResizeObserver(f);
@@ -5525,7 +5529,28 @@
     ro.observe(el);
    }
   else
-   Global.setInterval(f,110);
+   {
+    Concurrency.Start((b=null,Concurrency.Delay(function()
+    {
+     return Concurrency.While(function()
+     {
+      return Template.isValidElement(el);
+     },Concurrency.Delay(function()
+     {
+      return Concurrency.Bind(Concurrency.Sleep(110),function()
+      {
+       f();
+       return Concurrency.Zero();
+      });
+     }));
+    })),null);
+   }
+ };
+ Template.isValidElement=function(el)
+ {
+  var r;
+  r=el.getBoundingClientRect();
+  return!Unchecked.Equals([r.top,r.left,r.width,r.height],[0,0,0,0]);
  };
  Template.observers=function()
  {
