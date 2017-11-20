@@ -1271,7 +1271,7 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1510928331780"
+        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1511081898135"
         let msgClient  = MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
         let toId       = AddressId fsIds
         let stringResponseR response =
@@ -1310,7 +1310,7 @@ namespace FSSGlobal
         member this.RunSnippet      (url,snpPath:string   ) = sendMsg toId  (RunSnippetUrlJS     (snpPath.Split '/', url))    stringResponseR
         member this.FSStationId                             = fsIds
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1510928331780"
+        static member FSStationId_                          = "FSharpStation1511081898135"
     
     
   module FsTranslator =
@@ -2811,13 +2811,23 @@ namespace FSSGlobal
     
     let mutable observers : obj list = []
     
+    let rec isValidElement (el:Dom.Element) = 
+        let r = el.GetBoundingClientRect()
+        (r.Top, r.Left, r.Width, r.Height) <> (0., 0., 0., 0.)
+    
+    
     let addResizeObserver f el =
         if implementedResizeObserver() then
             let ro =  newResizeObserver f
             observers <- ro::observers
             RObserve ro el
         else 
-            JS.SetInterval f 110 |> ignore
+            async {
+                while isValidElement el do
+                    do! Async.Sleep 110
+                    f()
+            } |> Async.Start
+            
     [<NoComparison ; NoEquality>]
     type Area =
     | Auto     of SplitterBar
@@ -2950,9 +2960,7 @@ namespace FSSGlobal
                     let setVar (vr:IRef<_>) vl = if vr.Value <> vl then vr.Value <- vl 
                     let setDimensions () =
                         el.GetBoundingClientRect()
-                        |> fun r ->
-                            if (r.Top, r.Left, r.Height, r.Width) <> (0., 0., 0., 0.) then
-                                setVar this.widthHeight (r.Width, r.Height)
+                        |> fun r -> setVar this.widthHeight (r.Width, r.Height)
                     //async {
     //                    do! Async.Sleep 60
                     do  setDimensions()
@@ -5221,6 +5229,7 @@ namespace FSSGlobal
     let site = Application.MultiPage content
     
     //#r @"..\packages\Owin\lib\net40\Owin.dll"
+    //#r @"..\packages\Owin.Compression\lib\net452\Owin.Compression.dll"
     //#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
     //#r @"..\packages\Microsoft.Owin.Hosting\lib\net45\Microsoft.Owin.Hosting.dll"
     //#r @"..\packages\Microsoft.Owin.Host.HttpListener\lib\net45\Microsoft.Owin.Host.HttpListener.dll"
@@ -5237,6 +5246,7 @@ namespace FSSGlobal
     open Microsoft.Owin.StaticFiles.ContentTypes
     open Microsoft.Owin.FileSystems
     open WebSharper.Owin
+    
     
     WebSharper.Web.Remoting.AddAllowedOrigin "http://localhost"
     WebSharper.Web.Remoting.AddAllowedOrigin "http://*"
@@ -5255,7 +5265,8 @@ namespace FSSGlobal
         provider.Mappings.[".fsjson"] <- "application/x-fsjson"
         use server = 
             WebApp.Start(url, fun appB ->
-                appB.UseWebSharper( WebSharperOptions(ServerRootDirectory  = rootDirectory
+                appB.UseCompressionModule()
+                    .UseWebSharper( WebSharperOptions(ServerRootDirectory  = rootDirectory
                                                     , Sitelet              = Some site
                                                     , BinDirectory         = "."
                                                     , Debug                = true))
