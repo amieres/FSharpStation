@@ -12,12 +12,18 @@ NUGET
     FSharp.Core (4.2.3)
     FSharp.Data (2.3.3)
     FSharp.Data.SqlClient (1.8.2)
+    FSharp.Quotations.Evaluator (1.0.7)
     FSharpPlus (1.0.0-CI00089)
       FSharp.Core
     FsUnit (3.0)
       FSharp.Core (>= 3.1.2.5)
       NUnit (>= 3.6)
+    Hopac (0.3.23)
+      FSharp.Core (>= 3.1.2.5)
     HtmlAgilityPack (1.5.5)
+    Http.fs (4.1.2)
+      FSharp.Core (>= 3.1.2.5)
+      Hopac (>= 0.3.21)
     Microsoft.NETCore.Platforms (2.0.1)
     Microsoft.Owin (3.1)
       Owin (>= 1.0)
@@ -50,6 +56,9 @@ NUGET
       NETStandard.Library (>= 1.6.1)
       System.Collections.Immutable (>= 1.4)
     System.ValueTuple (4.4)
+    XPlot.Plotly (1.4.1)
+      Http.fs
+      Newtonsoft.Json
     Zafir (4.0.188.91-beta10)
     Zafir.Compiler (4.0.188.91-beta10)
       Zafir (>= 4.0.188.91-beta10)

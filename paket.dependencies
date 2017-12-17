@@ -27,8 +27,11 @@ nuget Zafir.FSharp
 nuget Zafir.Owin
 nuget Zafir.UI.Next        
 nuget Newtonsoft.Json
+nuget XPlot.Plotly
 
 nuget FSharpPlus 1.0.0-CI00089 CI
+
+nuget FSharp.Quotations.Evaluator
 
 nuget Fable.Core
 
