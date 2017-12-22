@@ -247,7 +247,8 @@ namespace FSSGlobal
                              | false -> elems |> Seq.map   (function | Result (vO,_)-> vO.Value            ) |> succeed
             )
     
-        let getMessages   (ms: ErrMsg list) = ms |> List.map (fun m -> m.ErrMsg) |> String.concat "\n"
+        let msgs2String   (ms: ErrMsg list) = ms |> List.map (fun m -> m.ErrMsg)
+        let getMessages   (ms: ErrMsg list) = ms |> msgs2String |> String.concat "\n"
         let countMessages (ms: ErrMsg list) =
             if ms = [] then "" else
             let errors   = ms |> List.filter(fun m -> m.IsWarning |> not)
@@ -577,6 +578,15 @@ namespace FSSGlobal
         code, assembs, defines, prepoIs, nowarns
     
     
+    let asyncStartCancelling() =    
+        let mutable tokenSource : System.Threading.CancellationTokenSource option = None
+        fun a ->
+            tokenSource |> Option.iter (fun oldTokenSource -> oldTokenSource.Cancel() )
+            let newTokenSource = new System.Threading.CancellationTokenSource() 
+            Async.Start(a, newTokenSource.Token)
+            tokenSource <- Some newTokenSource
+    
+            
   module UsefulDotNet =
     open Useful
     
@@ -665,33 +675,28 @@ namespace FSSGlobal
             let v = sb.ToString()
             sb.Clear() |> ignore
             v
+        let outputHandler                     = DataReceivedEventHandler(fun sender args -> try bufferOutput.Append(args.Data + "\n") |> ignore with _ -> () )
+        let errorHandler                      = DataReceivedEventHandler(fun sender args -> try bufferError .Append(args.Data + "\n") |> ignore with _ -> () )
         do  startInfo.RedirectStandardInput  <- true
             startInfo.RedirectStandardOutput <- true
             startInfo.RedirectStandardError  <- true
             startInfo.UseShellExecute        <- false
             proc.StartInfo                   <- startInfo
             proc.EnableRaisingEvents         <- true
-            proc.OutputDataReceived.AddHandler(DataReceivedEventHandler(fun sender args -> try bufferOutput.Append(args.Data + "\n") |> ignore with _ -> () ))
-            proc.ErrorDataReceived .AddHandler(DataReceivedEventHandler(fun sender args -> try bufferError .Append(args.Data + "\n") |> ignore with _ -> () ))
+            proc.OutputDataReceived.AddHandler outputHandler
+            proc.ErrorDataReceived .AddHandler errorHandler
     //        proc.Exited            .AddHandler(System.EventHandler     (fun sender args -> try proc.Close()                                    with _ -> () ))
         new (program, args) =             
-            let startInfo                         = new ProcessStartInfo()
-            do  startInfo.FileName               <- program
-                startInfo.Arguments              <- args
+            let startInfo                     = new ProcessStartInfo()
+            do  startInfo.FileName           <- program
+                startInfo.Arguments          <- args
             new ShellEx(startInfo)
         member this.Start() = 
             let r = proc.Start() 
             proc.BeginOutputReadLine()
             proc.BeginErrorReadLine ()
             r
-        member this.StartAndWait() =
-            let started = this.Start()
-            proc.WaitForExit()
-            let    output  = (consume bufferOutput).Trim()
-            let    error   = (consume bufferError ).Trim()
-            (output, error, if proc.HasExited then proc.ExitCode else -99999)
-        member this.StartAndWaitR() =
-            let out, errs, exit = this.StartAndWait()
+        member this.stdOutErr2Result out errs exit =
             if exit <> 0
             then Result.failWithMsgs
                     [ if out  <> ""              then yield ErrSimple ("stdout: " + out           , true ) :> ErrMsg
@@ -700,6 +705,35 @@ namespace FSSGlobal
                     ]
             else Result.succeedWithMsgs out 
                     [ if errs <> ""              then yield ErrSimple (errs                       , false) :> ErrMsg ]
+        member this.WaitToFinish() =
+            proc.WaitForExit()
+            let    output  = (consume bufferOutput).Trim()
+            let    error   = (consume bufferError ).Trim()
+            (output, error, if proc.HasExited then proc.ExitCode else -99999)
+        member this.StartAndWait() =
+            let started = this.Start()
+            this.WaitToFinish()
+        member this.StartAndWaitR() =
+            this.StartAndWait()
+            |||> this.stdOutErr2Result
+        member this.result2String res =
+            match res with
+            | Result(vO, msgs) -> [ vO |> Option.defaultValue "Failed: " ] @ Result.msgs2String msgs
+            |> String.concat "\n"
+        member this.RunToFinish() =
+            this.StartAndWaitR()
+            |> this.result2String
+        member this.RunOutputToFileR file =
+            proc.OutputDataReceived.RemoveHandler outputHandler
+            use stream  = new System.IO.FileStream(file, System.IO.FileMode.Create)
+            let started = proc.Start() 
+            proc.BeginErrorReadLine ()
+            proc.StandardOutput.BaseStream.CopyTo stream
+            this.WaitToFinish()
+            |||> this.stdOutErr2Result
+        member this.RunOutputToFile file =
+            this.RunOutputToFileR file
+            |> this.result2String
         member this.Send(txt: string)   = proc.StandardInput.WriteLine txt
         member this.Output  ()          = consume bufferOutput
         member this.Error   ()          = consume bufferError
@@ -742,6 +776,16 @@ namespace FSSGlobal
         let procStart   = ProcessStartInfo(p, ops)
         let shell       = new ShellEx(procStart)
         shell.StartAndWaitR() 
+    
+    let runProcess3 p ops =
+        let procStart   = ProcessStartInfo(p, ops)
+        let shell       = new ShellEx(procStart)
+        shell.RunToFinish() 
+    
+    let runProcess4 p ops file =
+        let procStart   = ProcessStartInfo(p, ops)
+        let shell       = new ShellEx(procStart)
+        shell.RunOutputToFile file 
     
     
     open System.IO
@@ -958,7 +1002,7 @@ namespace FSSGlobal
                 member this.Dispose () = 
                     (shell :> System.IDisposable).Dispose()
         
-        let fsiExe = lazy new ResourceAgent<_, string> (20, (fun config -> new FsiExe(["--nologo" ; "--quiet" ; defaultArg config ""] )), (fun fsi -> (fsi :> System.IDisposable).Dispose()), (fun fsi -> fsi.IsAlive), "")
+        let fsiExe = lazy new ResourceAgent<_, string> (70, (fun config -> new FsiExe(["--nologo" ; "--quiet" ; defaultArg config ""] )), (fun fsi -> (fsi :> System.IDisposable).Dispose()), (fun fsi -> fsi.IsAlive), "")
     
         let extractConfig (code:string[]) = if code.[0].StartsWith "////-d:" then code.[0].[4..] else ""
     
@@ -1046,7 +1090,7 @@ namespace FSSGlobal
     let AsyncStartF      = selectF AsyncStart             Async.Start
     
     type MessagingClient(clientId, ?timeout, ?endPoint:string) =
-        let wsEndPoint = endPoint    |> Option.defaultValue "http://localhost:9010/"
+        let wsEndPoint = endPoint    |> Option.defaultValue "http://localhost:9010/FSharpStation"
         let tout       = timeout     |> Option.defaultValue 100_000
         let fromId     = AddressId clientId
         do WebSharper.Remoting.EndPoint <- wsEndPoint 
@@ -1086,7 +1130,7 @@ namespace FSSGlobal
         member this.POListeners      ()   = poMsg poStrings POListeners
         member this.EndPoint              = wsEndPoint
         member this.ClientId              = clientId
-        static member EndPoint_           = "http://localhost:9010/"
+        static member EndPoint_           = "http://localhost:9010/FSharpStation"
         
     open Useful
     
@@ -1271,7 +1315,7 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1511081898135"
+        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1513505339057"
         let msgClient  = MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
         let toId       = AddressId fsIds
         let stringResponseR response =
@@ -1310,7 +1354,7 @@ namespace FSSGlobal
         member this.RunSnippet      (url,snpPath:string   ) = sendMsg toId  (RunSnippetUrlJS     (snpPath.Split '/', url))    stringResponseR
         member this.FSStationId                             = fsIds
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1511081898135"
+        static member FSStationId_                          = "FSharpStation1513505339057"
     
     
   module FsTranslator =
@@ -2207,12 +2251,24 @@ namespace FSSGlobal
     let inline htmlAttribute  name v  = HtmlAttribute (name, Val.fixit v  )
     let inline htmlAttributeO name v  = HtmlAttributeO(name, Val.fixit v  )
     let inline htmlText       txt     = HtmlText      (      Val.fixit txt)
+    let inline str            txt     = HtmlText      (      Val.fixit txt)
     let inline someElt        elt     = SomeDoc       (elt :> Doc         )    
       
     let inline addChildren    add (h:HtmlNode) = h |> mapHtmlElement (fun n ch -> n, Seq.append ch   add)
     let inline insertChildren add (h:HtmlNode) = h |> mapHtmlElement (fun n ch -> n, Seq.append add  ch )
     let inline addClass       c    h           = h |> addChildren [ htmlAttribute  "class" c ] 
     let inline addClassIf     c v              = addClass <| Val.map (fun b -> if b then c else "") (Val.fixit v)
+    
+    let out (ps:HtmlNode list) =
+        match ps with
+        | [ ]            -> [ ]
+        | [h]            -> [h]
+        | h :: p :: tail -> addChildren [h] p :: tail
+        
+    let rec indent2Level lvl chn  (ps:HtmlNode list) =
+        match ps with
+        | l when l.Length < lvl -> chn :: l
+        | l                     -> indent2Level lvl chn <| out ps        
     
     type HtmlNode with
         member inline this.toDoc = 
@@ -2224,6 +2280,35 @@ namespace FSSGlobal
         member          this.AddChildren    add  = this |> addChildren    add
         member          this.InsertChildren add  = this |> insertChildren add
         member inline   this.AddClass       c    = this |> addClass       c
+        static member ( - ) (ps:HtmlNode list, chn : HtmlNode) : HtmlNode list = 
+            match ps with 
+            | h :: tail -> h.AddChildren [chn] :: tail
+            | []        -> []        
+        static member ( --- ) (ps:HtmlNode list, chn) : HtmlNode list = 
+            match ps with 
+            | [ ]            -> [ ]
+            | [h]            -> [ h.AddChildren [                 chn ] ]
+            | h :: p :: tail ->   p.AddChildren [ h.AddChildren [ chn ] ] :: tail
+        static member ( +  ) (ps:HtmlNode list, r:HtmlNode) : (HtmlNode list) =   r :: ps
+        static member ( --                   ) (ps: HtmlNode list, chn:HtmlNode) : HtmlNode list = indent2Level  2 chn ps
+        static member ( ----                 ) (ps: HtmlNode list, chn:HtmlNode) : HtmlNode list = indent2Level  3 chn ps    
+        static member ( ------               ) (ps: HtmlNode list, chn:HtmlNode) : HtmlNode list = indent2Level  4 chn ps    
+        static member ( --------             ) (ps: HtmlNode list, chn:HtmlNode) : HtmlNode list = indent2Level  5 chn ps    
+        static member ( ----------           ) (ps: HtmlNode list, chn:HtmlNode) : HtmlNode list = indent2Level  6 chn ps    
+        static member ( ------------         ) (ps: HtmlNode list, chn:HtmlNode) : HtmlNode list = indent2Level  7 chn ps    
+        static member ( --------------       ) (ps: HtmlNode list, chn:HtmlNode) : HtmlNode list = indent2Level  8 chn ps    
+        static member ( ----------------     ) (ps: HtmlNode list, chn:HtmlNode) : HtmlNode list = indent2Level  9 chn ps    
+        static member ( ------------------   ) (ps: HtmlNode list, chn:HtmlNode) : HtmlNode list = indent2Level 10 chn ps    
+        static member ( -------------------- ) (ps: HtmlNode list, chn:HtmlNode) : HtmlNode list = indent2Level 11 chn ps    
+    
+    let rec finishO (ps:HtmlNode list) =
+        match ps with
+        | [ ]            -> None
+        | [h]            -> Some h
+        | h :: p :: tail -> finishO <| out ps        
+    
+    let endHtmlIndent ps = finishO ps |> Option.defaultWith (fun () -> htmlText "Malformed HTMLNode")
+    let ( !! ) (p:HtmlNode seq -> HtmlNode) l = [ p l ]
     
     let renderDoc = chooseNode >> Option.defaultValue Doc.Empty
         
@@ -2237,6 +2322,7 @@ namespace FSSGlobal
     let inline textV        v = tag  Html.text    v
     
     let inline a           ch = htmlElement   "a"           ch
+    let inline p           ch = htmlElement   "p"           ch
     let inline ul          ch = htmlElement   "ul"          ch
     let inline li          ch = htmlElement   "li"          ch
     let inline br          ch = htmlElement   "br"          ch
@@ -2265,6 +2351,8 @@ namespace FSSGlobal
     let inline link        sc = htmlElement   "link"        sc
     let inline iframe      at = htmlElement   "iframe"      at
     let inline body        ch = htmlElement   "body"        ch
+    let inline section     ch = htmlElement   "section"     ch
+    let inline strong      at = htmlElement   "strong"      at
     
     
     let inline target      v  = htmlAttribute  "target"      v
@@ -2539,7 +2627,6 @@ namespace FSSGlobal
           "/EPFileX/codemirror/scripts/addon/display/fullscreen.js"          
           "/EPFileX/codemirror/scripts/addon/hint/show-hint.js"          
           "/EPFileX/codemirror/scripts/addon/lint/lint.js"          
-    //      "/EPFileX/codemirror/scripts/codemirror/mode/markdown.js"                 
        |]
     type CodeMirrorPos = { line: int ; ch  : int }
     let inline cmPos(l, c) = { line = l ; ch  = c }
@@ -2587,6 +2674,8 @@ namespace FSSGlobal
         member this.AddKeyMap(keyMap: obj)                                : unit              = X<_>
         [< Inline "$this.getWrapperElement()"     >]
         member this.GetWrapperElement()                                   : Dom.Element       = X<_>
+        [< Inline "$this.replaceSelection($v, $s)" >]
+        member this.ReplaceSelection(v:string, s:string)                                      = ()
     
     [<NoComparison ; NoEquality>]
     type CodeMirror = {
@@ -2800,7 +2889,7 @@ namespace FSSGlobal
         member inline this.After         = { this with after        =           true              }
         member inline this.Children   ch = { this with children     = ch                          }
         
-    [< Inline "!!(ResizeObserver)" >]
+    [< Inline "try { return !!(ResizeObserver) } catch(e) { return false }" >] 
     let implementedResizeObserver() = false
     
     [< Inline "new ResizeObserver($f)" >]
@@ -2811,21 +2900,28 @@ namespace FSSGlobal
     
     let mutable observers : obj list = []
     
-    let rec isValidElement (el:Dom.Element) = 
-        let r = el.GetBoundingClientRect()
-        (r.Top, r.Left, r.Width, r.Height) <> (0., 0., 0., 0.)
+    let domRect2Tuple (r:Dom.DomRect) = (r.Top, r.Left, r.Width, r.Height)
     
+    let [< Inline "$el.isConnected" >] isValidElement (el:Dom.Element) = true
+    
+    let dimsChanged (el:Dom.Element) = 
+        let mutable dims = el.GetBoundingClientRect()
+        fun () ->
+            let ndims = el.GetBoundingClientRect()
+            if domRect2Tuple dims = domRect2Tuple ndims then false
+            else dims <- ndims    ; true
     
     let addResizeObserver f el =
         if implementedResizeObserver() then
             let ro =  newResizeObserver f
             observers <- ro::observers
             RObserve ro el
-        else 
+        else
+            let changed = dimsChanged el
             async {
                 while isValidElement el do
                     do! Async.Sleep 110
-                    f()
+                    if changed() then f()
             } |> Async.Start
             
     [<NoComparison ; NoEquality>]
@@ -3342,9 +3438,10 @@ namespace FSSGlobal
         HtmlElementF    : (string * HtmlNodeFable [] ) option
         HtmlAttributeF  : (string * string           ) option
         HtmlAttributeOF : (string * string option    ) option
-        HtmlTextF       : string                       option
-        HtmlEmptyF      : string                       option
-        HtmlGuiPart     : string                       option
+        HtmlTextF       :  string                      option
+        HtmlEmptyF      :  string                      option
+        HtmlGuiPart     :  string                      option
+        HtmlGuiCall     : (string * string * string[]) option
     }
     
     type LayoutDescriptionFable = 
@@ -3380,6 +3477,7 @@ namespace FSSGlobal
     let (|PHtmlTextF      |_|) (hnf: HtmlNodeFable) = hnf.HtmlTextF      
     let (|PHtmlEmptyF     |_|) (hnf: HtmlNodeFable) = hnf.HtmlEmptyF     
     let (|PHtmlGuiPart    |_|) (hnf: HtmlNodeFable) = hnf.HtmlGuiPart     
+    let (|PHtmlGuiCall    |_|) (hnf: HtmlNodeFable) = hnf.HtmlGuiCall
     
     let (|PGuiTabStrip|_|) (ldf:LayoutDescriptionFable) = ldf.GuiTabStrip  
     let (|PGuiSplit   |_|) (ldf:LayoutDescriptionFable) = ldf.GuiSplit 
@@ -3400,6 +3498,14 @@ namespace FSSGlobal
     }
     
     type GuiPart with
+        static member GetCallButton (lyt: Layout) name action parms =
+            if lyt.parts.ContainsKey action then
+                match lyt.parts.[action] with
+                | partv, _ ->
+                    match partv.Value with 
+                    | _, GuiAction act -> act.Text(name).Parms(parms |> Array.map (fun s -> s:>obj)).Button.Render
+                    | _                -> div [ htmlText (sprintf "GuiPart %s is not a GuiAction" action) ]
+            else div [ htmlText (sprintf "GuiAction %s not found" action) ]
         member this.GetHtmlNode (lyt: Layout) name =
             match this with
             | GuiRoot     root                                             -> HtmlEmpty
@@ -3409,14 +3515,7 @@ namespace FSSGlobal
             | GuiTabStrip(top  , nodes                                   ) -> let ts = TabStrip.New(nodes |> Seq.map (fun node -> node, lyt.GetNode node)).SetTop(top)
                                                                               addValue name ts lyt.tabStrips
                                                                               ts.Render
-            | GuiCall    (name, action, parms)                             -> 
-                if lyt.parts.ContainsKey action then
-                    match lyt.parts.[action] with
-                    | partv, _ ->
-                        match partv.Value with 
-                        | _, GuiAction act -> act.Text(name).Parms(parms |> Array.map (fun s -> s:>obj)).Button.Render
-                        | _                -> div [ htmlText (sprintf "GuiPart %s is not a GuiAction" action) ]
-                else div [ htmlText (sprintf "GuiAction %s not found" action) ]
+            | GuiCall    (name, action, parms)                             -> GuiPart.GetCallButton lyt name action parms
     and  Layout with
         member this.AddNode name sid part =
             let partV = Var.Create (sid, part)
@@ -3446,13 +3545,14 @@ namespace FSSGlobal
         member this.SetLayoutJson steps json =
             let rec jsonF2HtmlNode =
                function
-               | PHtmlElementF    (name, ch) -> Some <| HtmlElement   (name, ch |> Seq.choose jsonF2HtmlNode)
-               | PHtmlAttributeF  (name, v ) -> Some <| HtmlAttribute (name, Val.Constant v  )
-               | PHtmlAttributeOF (name, vO) -> Some <| HtmlAttributeO(name, Val.Constant vO )
-               | PHtmlTextF        txt       -> Some <| HtmlText      (      Val.Constant txt)
-               | PHtmlEmptyF       _         -> Some <| HtmlEmpty
-               | PHtmlGuiPart      part      -> Some <| this.GetNode part
-               | _                           -> None
+               | PHtmlElementF    (name, ch)          -> Some <| HtmlElement   (name, ch |> Seq.choose jsonF2HtmlNode)
+               | PHtmlAttributeF  (name, v )          -> Some <| HtmlAttribute (name, Val.Constant v  )
+               | PHtmlAttributeOF (name, vO)          -> Some <| HtmlAttributeO(name, Val.Constant vO )
+               | PHtmlTextF        txt                -> Some <| HtmlText      (      Val.Constant txt)
+               | PHtmlEmptyF       _                  -> Some <| HtmlEmpty
+               | PHtmlGuiPart      part               -> Some <| this.GetNode part
+               | PHtmlGuiCall     (name, call, parms) -> Some <| GuiPart.GetCallButton this name call parms
+               | _                                    -> None
             let jsonF2GuiRoot =
                function
                | PGuiNode      html                                                      -> Some <| GuiNode     (jsonF2HtmlNode html |> Option.defaultValue HtmlEmpty)
@@ -3754,6 +3854,7 @@ namespace FSSGlobal
             F2              : Template.CodeMirrorEditor -> unit 
             LeftDoubleClick : Template.CodeMirrorEditor -> unit
             ``Ctrl-Space``  : Template.CodeMirrorEditor -> unit
+            ``.``           : Template.CodeMirrorEditor -> unit
         }
         
         type Property(setDirty: unit->unit, props: Dictionary<string, string>, keyP: string) =
@@ -4168,18 +4269,32 @@ namespace FSSGlobal
       
       let getSnpO () = CodeSnippet.FetchO currentCodeSnippetId.Value
       
-      let evaluateSnippetW (snpO: CodeSnippet option) =
+      let evalCodeW (code: string) =
           Wrap.wrapper {
-              let!   snp        = snpO |> Result.fromOption ``Snippet Missing``
-              outputMsgs.Value <- "Evaluating F# code..."
-              let    code       = snp.GetCodeFsx true
               codeFS.Value     <- code
               let! resR         = evaluateAR code
               let! res          = resR
-              addOutMsg res
-              addOutMsg "Done!"
               return  res
           }
+      
+      let evalSnippetW (snpO: CodeSnippet option) =
+          Wrap.wrapper {
+              let!   snp        = snpO |> Result.fromOption ``Snippet Missing``
+              let    code       = snp.GetCodeFsx true
+              return!             evalCodeW code
+          }
+          
+      let doSomething msgStart msgFinish (doIt: unit -> Wrap<_>) = 
+          Wrap.wrapper {
+              outputMsgs.Value <- msgStart // "Evaluating F# code..."
+              let! res          = doIt()
+              addOutMsg res
+              addOutMsg msgFinish          //"Done!"
+              return  res
+          }
+      
+      let evaluateSnippetW snpO = doSomething "Evaluating F# code..." "Done!" (fun () -> evalSnippetW snpO)
+      let evaluateCodeW    code = doSomething "Evaluating F# code..." "Done!" (fun () -> evalCodeW    code)
       
       let ToConsoleF arg = 
           Console.Log arg
@@ -4187,17 +4302,25 @@ namespace FSSGlobal
           
       FableModule.addOutMsg <- addOutMsg 
       
-      let fableSnippetW (snpO: CodeSnippet option) =
+      let evalFableCodeW code =
           Wrap.wrapper {
-              let!   snp        = snpO |> Result.fromOption ``Snippet Missing``
-              outputMsgs.Value <- "Running Fable..."
-              let    code       = snp.GetCodeFsx false
               codeFS.Value     <- code
               let! jsc          = FableModule.fableTranslate code
               codeJS.Value     <- jsc
               JS.Eval jsc |> ignore
-              addOutMsg "Done!"
+              return ""
           }
+      
+      let evalFableSnippetW (snpO: CodeSnippet option) =
+          Wrap.wrapper {
+              let!   snp        = snpO |> Result.fromOption ``Snippet Missing``
+              let    code       = snp.GetCodeFsx false
+              return!             evalFableCodeW code
+          }
+      
+      let fableSnippetW snpO = doSomething "Running Fable..." "Done!" (fun () -> evalFableSnippetW snpO)
+      let fableCodeW    code = doSomething "Running Fable..." "Done!" (fun () -> evalFableCodeW    code)
+      
       
       let compileRunW = compileRunUrlW (JS.Window.Location.Origin + "/Main.html") 
       
@@ -4384,7 +4507,13 @@ namespace FSSGlobal
       ()    
       let addCode   ()   =
           CodeSnippet.PickIO currentCodeSnippetId.Value
-          |> Option.map (fun (i, snp) -> CodeSnippet.New(i + 1, "", snp.parent, [], [], ""))
+          |> Option.map (fun (i, snp) ->
+              let rec nextI lvl k =
+                  codeSnippets.Value 
+                  |> Seq.tryItem k 
+                  |> Option.map (fun s -> if (fst s.Levels) <= lvl then k else nextI lvl (k + 1) ) 
+                  |> Option.defaultValue k
+              CodeSnippet.New(nextI (fst snp.Levels) (i + 1), "", snp.parent, [], [], ""))
           |> Option.defaultWith (fun _ -> CodeSnippet.New "")
           |> fun n -> currentCodeSnippetId.Value <- n.id
           setDirty()
@@ -4500,24 +4629,24 @@ namespace FSSGlobal
       let parseFSA silent =
           let msgF txt = if not silent then parserMsgs.Value <- txt
           async {
+              match CodeSnippet.FetchO currentCodeSnippetId.Value with 
+              | None     -> ()
+              | Some cur ->
+              let runN           = parseRun + 1
+              parseRun          <- runN
+              while parsing do
+                  do! Async.Sleep 1000
+              if parseRun <> runN then () else
               try
-                  match CodeSnippet.FetchO currentCodeSnippetId.Value with 
-                  | None     -> ()
-                  | Some cur ->
-                  let runN           = parseRun + 1
-                  parseRun          <- runN
-                  while parsing do
-                      do! Async.Sleep 1000
-                  if parseRun <> runN then () else
                   parsing           <- true
-                  let  code, starts  = getCodeAndStartsFast msgF cur false
                   parsed            <- true
+                  let  code, starts  = getCodeAndStartsFast msgF cur false
                   let! res           = autoCompleteClient.Parse(parseFile, code, starts)
-                  parsing           <- false
                   if not silent && runN = parseRun && parsed then
                       addPrsMsg res
                       addPrsMsg "Parsed!"
-              with e -> parsing <- false
+              finally  
+                  parsing <- false
           }
       
       let parseFS() = 
@@ -4525,7 +4654,6 @@ namespace FSSGlobal
               lastCodeAndStarts <- None
               do! parseFSA false
           }
-      
       
       let mustParse (cur:CodeSnippet) =
           async {
@@ -4574,29 +4702,6 @@ namespace FSSGlobal
               addPrsMsg <| sprintf "InfoFSharp \"%s %A - %A %s \"" cur.NameSanitized (pos.line + 1, pos.ch - sub + 1) (pos.line + 1, pos.ch + add + 1) (tip.Replace("\"","''"))
           } |> Async.Start
       
-      let getHints (ed:Template.CodeMirrorEditor, cb, _) =
-          async {
-              let! disabled = isParseDisabled 
-              if disabled then () else
-              match CodeSnippet.FetchO currentCodeSnippetId.Value with 
-              | None     -> ()
-              | Some cur ->
-              do!  parseIfMustThen true
-              let  pos    = ed.GetCursor()
-              let  l      = ed.GetLine pos.line
-              let  word   = getStartWord l pos.ch     
-              let! com    = autoCompleteClient.Complete(parseFile, l, pos.line + 1, pos.ch + 1, cur.NameSanitized)
-              cb { Template.list   = com 
-                                     |> Array.map (fun (dis, rep, cls, chr) -> 
-                                          { text        = rep
-                                            displayText = chr + "| " + dis
-                                            className   = cls                              
-                                          })
-                   Template.from   = { pos with ch = pos.ch - word.Length }
-                   Template.``to`` = pos 
-                 }
-          } |> Async.Start
-          
       let rex1 = """\((\d+)\) F# (.+).fsx\((\d+)\,(\d+)\): (error|warning) ((.|\b)+)"""
       let rex2 = """(Err|Warning|Info)(FSharp|WebSharper)\s+"(\((\d+)\) ?)?F?#? ?(.+?)(.fsx)? \((\d+)\,\s*(\d+)\) - \((\d+)\,\s*(\d+)\) ((.|\s)+?)""" + "\""
       let rex = rex1 + "|" + rex2
@@ -4606,6 +4711,7 @@ namespace FSSGlobal
               match CodeSnippet.FetchO currentCodeSnippetId.Value with 
               | None     -> ()
               | Some cur ->
+              printfn "calling parseIfMustThen"
               do!  parseIfMustThen false
               match parserMsgs.Value with
               | REGEX rex "g" m -> m
@@ -4625,10 +4731,42 @@ namespace FSSGlobal
                         Template.LintResponse.``to``   = Template.cmPos(tl - 1, tc - 1 - ind)
                       } |> Some
                   else     None
-                )
+                )        
               |> cb
           } |> Async.Start
       
+      let asyncStartDelayed = asyncStartCancelling()
+      let getAnnotationsDelayed parms =
+          async {
+              printfn "before delaying"
+              do! Async.Sleep 400
+              printfn "calling getAnnotations"
+              do getAnnotations parms
+          } |> asyncStartDelayed 
+      
+      let getHints (ed:Template.CodeMirrorEditor, cb, _) =
+          async {
+              let! disabled = isParseDisabled 
+              if disabled then () else
+              match CodeSnippet.FetchO currentCodeSnippetId.Value with 
+              | None     -> ()
+              | Some cur ->
+              do!  parseIfMustThen true
+              let  pos    = ed.GetCursor()
+              let  l      = ed.GetLine pos.line
+              let  word   = getStartWord l pos.ch     
+              let! com    = autoCompleteClient.Complete(parseFile, l + "a", pos.line + 1, pos.ch + 1, cur.NameSanitized)
+              cb { Template.list   = com 
+                                     |> Array.map (fun (dis, rep, cls, chr) -> 
+                                          { text        = rep
+                                            displayText = chr + "| " + dis
+                                            className   = cls                              
+                                          })
+                   Template.from   = { pos with ch = pos.ch - word.Length }
+                   Template.``to`` = pos 
+                 }
+          } |> asyncStartDelayed
+          
       let codeMirror = 
           Template.CodeMirror.New(Val.bindIRef curSnippetCodeOf currentCodeSnippetId)
               .OnChange(setDirtyCond)
@@ -4636,8 +4774,10 @@ namespace FSSGlobal
                 ed.AddKeyMap({  F2              = showToolTip            
                                 LeftDoubleClick = showToolTip
                                 ``Ctrl-Space``  = Template.showHints ed getHints false
+                                ``.``           = (fun _ -> ed.ReplaceSelection(".", "end"))
+                                                  >> Template.showHints ed getHints false
                              })
-                Template.setLint ed getAnnotations 
+                Template.setLint ed getAnnotationsDelayed 
                 Val.sink (fun v ->
                     async {
                         ed.SetOption("theme", v)
@@ -4836,22 +4976,43 @@ namespace FSSGlobal
       
       let DoW  f p   _ _ = f p   |> Wrap.map ignore |> Wrap.start addOutMsg
       let DoP  f p   _ _ = f p   |> Wrap.startV (function
-                                                 | Some (Below, _), msgs -> msgs |> addOutMsg ;  triggerWSResult.Value <- ()
-                                                 | Some _         , msgs -> msgs |> addOutMsg 
+                                                 | Some (Below, _), msgs -> msgs               |> addOutMsg ;  triggerWSResult.Value <- ()
+                                                 | Some _         , msgs -> msgs               |> addOutMsg 
                                                  | None           , msgs -> "Failed!\n" + msgs |> addOutMsg)
       
       let DoW2 f p t     = DoW (fun p' -> f t p') p
       let DoP2 f p t     = DoP (fun p' -> f t p') p
       
-      let doForSnippet (act: Action) f =
+      let getSnippet     (act: Action) =
           match act.parms with
-          | Some [| path |] -> path |> unbox<string> |> (fun s -> s.Split '/') |> CodeSnippet.FetchByPathO
-          | _               -> getSnpO()                                                 
-          |> f
+          | Some [| path |] -> path |> unbox<string> |> (fun s -> s.Split '/') |> CodeSnippet.FetchByPathO 
+          | _               -> getSnpO()
       
-      let evaluateFS2  (act: Action) () = doForSnippet act  evaluateSnippetW
-      let fableFS2     (act: Action) () = doForSnippet act  fableSnippetW
-      let compileRunP2 (act: Action) p  = doForSnippet act (compileRunW p)    
+      let getCodeFromAct (act: Action) addOpen = 
+          let getValue =
+              function
+              | Constant v  -> v
+              | Dynamic  vw -> failwith "Get value from View not implemented"
+              | DynamicV vr -> vr.Value
+          let snpO = getSnpO()
+          let propValue p = snpO |> Option.bind (fun snp -> snp.propValue p)
+          let openPre     = if addOpen then propValue "open" |> Option.map (swap (+) "\n") |> Option.defaultValue "" else ""
+          let funcName    = lazy (act.text |> getValue |> fun s -> s.Replace(" ", ""))
+          act.parms
+          |> Option.map (Array.map unbox<string>)
+          |> function
+             | Some [| "Code"     ; code |] -> code |> Some
+             | Some [| "Property" ; prop |] -> prop |> propValue 
+             | _                            -> None
+          |> Option.orElseWith  (fun () -> funcName.Value |> propValue            )
+          |> Option.defaultWith (fun () -> funcName.Value + "() |> printfn \"%A\"")
+          |> (+) openPre
+      
+      let evalFsCode   (act: Action) () = getCodeFromAct act true  |>  evaluateCodeW
+      let evalFableCode(act: Action) () = getCodeFromAct act false |>  fableCodeW
+      let evaluateFS2  (act: Action) () = getSnippet     act       |>  evaluateSnippetW
+      let fableFS2     (act: Action) () = getSnippet     act       |>  fableSnippetW
+      let compileRunP2 (act: Action) p  = getSnippet     act       |> (compileRunW p)    
       
       let actLoadFile       = Template.Action.New("Load..."                    ).OnClick( do_LoadFile                    )  
       let actSaveFile       = Template.Action.New("Save as..."                 ).OnClick( Do   downloadFile      ()      ).Highlight(dirty)
@@ -4860,7 +5021,9 @@ namespace FSSGlobal
       let actIndentSnippet  = Template.Action.New("Indent In  >>"              ).OnClick( Do   indentCodeIn      ()      ).Disabled(noSelectionVal      )
       let actOutdentSnippet = Template.Action.New("Indent Out <<"              ).OnClick( Do   indentCodeOut     ()      ).Disabled(noSelectionVal      )
       let actGetFsCode      = Template.Action.New("Get F# Code"                ).OnClick( Do   getFSCode         ()      ).Disabled(disableParseVal     )
+      let actEvalFsCode     = Template.Action.New("Run FSI on Code"            ).OnClick2(DoW2 evalFsCode        ()      ).Disabled(disableFSIVal       )
       let actEvalCode       = Template.Action.New("Run FSI"                    ).OnClick2(DoW2 evaluateFS2       ()      ).Disabled(disableFSIVal       )
+      let actFableFsCode    = Template.Action.New("Run Fable on Code"          ).OnClick2(DoW2 evalFableCode     ()      ).Disabled(disableFableVal     )
       let actFableCode      = Template.Action.New("Run Fable"                  ).OnClick2(DoW2 fableFS2          ()      ).Disabled(disableFableVal     )
       let actRunWSNewTab    = Template.Action.New("Run WebSharper in new tab"  ).OnClick2(DoW2 compileRunP2   NewBrowser ).Disabled(disableWebSharperVal)
       let actRunWSHere      = Template.Action.New("Run WebSharper in WS Result").OnClick2(DoP2 compileRunP2   Below      ).Disabled(disableWebSharperVal)
@@ -5092,7 +5255,9 @@ namespace FSSGlobal
               "actIndentSnippet"  , GuiAction actIndentSnippet 
               "actOutdentSnippet" , GuiAction actOutdentSnippet
               "actGetFsCode"      , GuiAction actGetFsCode     
+              "actEvalFsCode"     , GuiAction actEvalFsCode
               "actEvalCode"       , GuiAction actEvalCode
+              "actRunFableFs"     , GuiAction actFableFsCode
               "actRunFable"       , GuiAction actFableCode
               "actRunWSNewTab"    , GuiAction actRunWSNewTab   
               "actRunWSHere"      , GuiAction actRunWSHere     

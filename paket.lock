@@ -3,6 +3,7 @@ NUGET
   remote: https://www.nuget.org/api/v2
     CryptSharpOfficial (2.1)
     Fable.Core (1.2.4)
+    Fable.Import.Browser (0.1.2)
     FSharp.Compiler.Service (17.0.1)
       System.Collections.Immutable (>= 1.3.1)
       System.Reflection.Metadata (>= 1.4.2)
@@ -49,6 +50,7 @@ NUGET
       FSharp.Core (>= 4.2.3 < 4.3)
       Microsoft.Owin (>= 3.1 < 4.0)
       Owin (>= 1.0)
+    SSH.NET (2016.1)
     System.Collections.Immutable (1.4)
       NETStandard.Library (>= 1.6.1)
     System.IO.Compression (4.3.0-preview1-24530-04)
