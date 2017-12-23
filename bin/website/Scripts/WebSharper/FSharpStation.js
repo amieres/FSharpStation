@@ -1515,12 +1515,12 @@
  },WebSharper.Obj,MessagingClient);
  MessagingClient.get_EndPoint_=function()
  {
-  return"http://localhost:9010/FSharpStation";
+  return"http://localhost:9010/";
  };
  MessagingClient.New=Runtime.Ctor(function(clientId,timeout,endPoint)
  {
   this.clientId=clientId;
-  this.wsEndPoint=Option.defaultValue("http://localhost:9010/FSharpStation",endPoint);
+  this.wsEndPoint=Option.defaultValue("http://localhost:9010/",endPoint);
   this.tout=Option.defaultValue(100000,timeout);
   this.fromId=FsStationShared.AddressId(this.clientId);
   Remoting.set_EndPoint(this.wsEndPoint);
@@ -2043,11 +2043,11 @@
  },WebSharper.Obj,FsStationClient);
  FsStationClient.get_FSStationId_=function()
  {
-  return"FSharpStation1513976097253";
+  return"FSharpStation1513983627196";
  };
  FsStationClient.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
-  this.fsIds=Option.defaultValue("FSharpStation1513976097253",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1513983627196",fsStationId);
   this.msgClient=new MessagingClient.New(clientId,timeout,endPoint);
   this.toId=FsStationShared.AddressId(this.fsIds);
  },FsStationClient);
@@ -7587,7 +7587,7 @@
   }
   function getCodeFromAct(act,addOpen)
   {
-   var o,$7,$8,$9,$10,o$1,o$2,$11,snpO,openPre,funcName,actionTempl,a,t;
+   var o,code,$7,$8,o$1,o$2,$9,snpO,openPre,funcName,actionTempl,a,t;
    function getValue(a$1)
    {
     return a$1.$==2?Operators.FailWith("Get value from View not implemented"):a$1.$==1?a$1.$0.RVal():a$1.$0;
@@ -7616,29 +7616,29 @@
     $:1,
     $0:Arrays.map(Global.id,o$2.$0)
    });
-   switch(a!=null&&a.$==1?(t=a.$0,t&&Arrays.length(t)===2)?Arrays.get(a.$0,0)==="Code"?($11=Arrays.get(a.$0,1),0):Arrays.get(a.$0,0)==="Property"?($11=Arrays.get(a.$0,1),1):2:2:2)
+   switch(a!=null&&a.$==1?(t=a.$0,t&&Arrays.length(t)===2)?Arrays.get(a.$0,0)==="Code"?($9=Arrays.get(a.$0,1),0):Arrays.get(a.$0,0)==="Property"?($9=Arrays.get(a.$0,1),1):2:2:2)
    {
     case 0:
      o$1={
       $:1,
-      $0:$11
+      $0:$9
      };
      break;
     case 1:
-     o$1=propValue($11);
+     o$1=propValue($9);
      break;
     case 2:
      o$1=null;
      break;
    }
-   $10=o$1==null?propValue(funcName.f()):o$1;
-   $8=Option.defaultWith(function()
+   $8=o$1==null?propValue(funcName.f()):o$1;
+   code=Option.defaultWith(function()
    {
     var x$2;
     x$2=funcName.f();
     return((Object.constructor("return function(parm) { return `"+actionTempl.f()+"`}"))())(x$2);
-   },$10);
-   return openPre+$8;
+   },$8);
+   return Strings.StartsWith(code,"////")?code:openPre+code;
   }
   function evalFsCode(act,u)
   {
@@ -7817,7 +7817,7 @@
    b$8=null;
    return Concurrency.Delay(function()
    {
-    var o,o$1,o$2,o$3,o$4,m,o$5,x$2;
+    var o,o$1,o$2,o$3,o$4,m,o$5,nm,x$2;
     return msg.$==2?Concurrency.Return({
      $:1,
      $0:(o=CodeSnippet$1.FetchO(msg.$0),o==null?null:{
@@ -7880,10 +7880,16 @@
     }):msg.$==0?Concurrency.Return({
      $:0,
      $0:fromId
-    }):msg.$==12?Async.map(result2response,Wrap.getAsyncR(compileRunUrlW(msg.$1,Position.NewBrowser,CodeSnippet$1.FetchO(msg.$0)))):msg.$==13?Async.map(result2response,Wrap.getAsyncR(compileRunUrlW(msg.$1,Position.NewBrowser,CodeSnippet$1.FetchByPathO(msg.$0)))):msg.$==14?Concurrency.Return(result2StringResponse(Result.map(function()
+    }):msg.$==12?Async.map(result2response,Wrap.getAsyncR(compileRunUrlW(msg.$1,Position.NewBrowser,CodeSnippet$1.FetchO(msg.$0)))):msg.$==13?Async.map(result2response,Wrap.getAsyncR(compileRunUrlW(msg.$1,Position.NewBrowser,CodeSnippet$1.FetchByPathO(msg.$0)))):msg.$==14?(nm=msg.$0,Concurrency.Return(result2StringResponse(Result.map(function()
     {
-     return"Done!";
-    },doGuiCallR(msg.$0,msg.$1,msg.$2)))):Concurrency.Return({
+     return(function($7)
+     {
+      return function($8)
+      {
+       return $7("success: "+Utils.toSafe($8));
+      };
+     }(Global.id))(nm);
+    },doGuiCallR(nm,msg.$1,msg.$2))))):Concurrency.Return({
      $:1,
      $0:{
       $:1,
