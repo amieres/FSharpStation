@@ -1,3 +1,6 @@
+@setlocal enableextensions
+@cd /d "%~dp0"
+
 rem paket.exe init
 rem paket.exe install
 rem paket.exe add FSharp.Compiler.Tools --version 4.1.23

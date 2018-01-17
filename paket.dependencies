@@ -39,3 +39,7 @@ nuget Fable.Import.Browser
 
 nuget FsUnit
 nuget NUnit
+
+nuget CommonServiceLocator 
+nuget Owin.WebSocket
+nuget Zafir.Owin.WebSocket

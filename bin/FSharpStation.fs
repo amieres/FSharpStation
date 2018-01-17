@@ -675,24 +675,28 @@ namespace FSSGlobal
                 | _                          -> false 
     
     
-    type ShellEx(startInfo: ProcessStartInfo) =
+    type ShellEx(startInfo: ProcessStartInfo, ?outHndl, ?errHndl) =
         let proc                              = new Process()
         let bufferOutput                      = new StringBuilder()
         let bufferError                       = new StringBuilder()
+        let append  (sb: StringBuilder) txt   = sb.Append(txt + "\n") |> ignore
         let consume (sb: StringBuilder)       = 
             let v = sb.ToString()
             sb.Clear() |> ignore
             v
-        let outputHandler                     = DataReceivedEventHandler(fun sender args -> try bufferOutput.Append(args.Data + "\n") |> ignore with _ -> () )
-        let errorHandler                      = DataReceivedEventHandler(fun sender args -> try bufferError .Append(args.Data + "\n") |> ignore with _ -> () )
+        let dataHandler handler               = DataReceivedEventHandler(fun sender args -> try handler args.Data with _ -> ())
+        let outputHandler                     = append bufferOutput |> dataHandler
+        let errorHandler                      = append bufferError  |> dataHandler
         do  startInfo.RedirectStandardInput  <- true
             startInfo.RedirectStandardOutput <- true
             startInfo.RedirectStandardError  <- true
             startInfo.UseShellExecute        <- false
             proc.StartInfo                   <- startInfo
             proc.EnableRaisingEvents         <- true
-            proc.OutputDataReceived.AddHandler outputHandler
-            proc.ErrorDataReceived .AddHandler errorHandler
+            outputHandler                    |>             proc.OutputDataReceived.AddHandler
+            errorHandler                     |>             proc.ErrorDataReceived .AddHandler
+            Option.map dataHandler outHndl   |> Option.iter proc.OutputDataReceived.AddHandler
+            Option.map dataHandler errHndl   |> Option.iter proc.ErrorDataReceived .AddHandler
     //        proc.Exited            .AddHandler(System.EventHandler     (fun sender args -> try proc.Close()                                    with _ -> () ))
         new (program, args) =             
             let startInfo                     = new ProcessStartInfo()
@@ -721,6 +725,8 @@ namespace FSSGlobal
         member this.StartAndWait() =
             let started = this.Start()
             this.WaitToFinish()
+        member this.WaitForInputIdle() =
+            proc.WaitForInputIdle()
         member this.StartAndWaitR() =
             this.StartAndWait()
             |||> this.stdOutErr2Result
@@ -980,67 +986,6 @@ namespace FSSGlobal
             options2
         
     
-  module FsEvaluator =
-    open Useful
-    
-    module Evaluator =
-        open System.Diagnostics
-        open UsefulDotNet
-        
-        type FsiExe(config) =
-            let startInfo                 = ProcessStartInfo(@"fsiAnyCPU.exe", config |> String.concat " ")             
-            let shell                     = new ShellEx(startInfo)  // --noninteractive
-            let endToken                  = "xXxY" + "yYyhH"
-            do  startInfo.CreateNoWindow <- false
-                shell.Start() |> ignore
-            member this.Eval txt =
-                Wrap.wrapper {
-                    do! Result.tryProtection()
-                    shell.Send txt 
-                    shell.Send ";;"
-                    let! res = shell.SendAndWait(endToken + ";;", endToken, true)
-                    return res
-                }
-            member this.IsAlive = not shell.HasExited
-            interface System.IDisposable with
-                member this.Dispose () = 
-                    (shell :> System.IDisposable).Dispose()
-        
-        let fsiExe = lazy new ResourceAgent<_, string> (70, (fun config -> new FsiExe(["--nologo" ; "--quiet" ; defaultArg config ""] )), (fun fsi -> (fsi :> System.IDisposable).Dispose()), (fun fsi -> fsi.IsAlive), "")
-    
-        let extractConfig (code:string[]) = if code.[0].StartsWith "////-d:" then code.[0].[4..] else ""
-    
-        let evalFsiExe (code:string) =
-            Wrap.wrapper {
-                let config = extractConfig (code.Split '\n')
-                let! resR = fsiExe.Value.Process(fun fsi -> 
-                    Wrap.wrapper {
-                      do! Result.tryProtection()
-                      let! res = fsi.Eval code 
-                      return res
-                    }
-                , config)
-                let! res = resR
-                return res
-            }
-    
-    //#define WEBSHARPER
-    open WebSharper
-    
-    [< Rpc >]
-    let evaluateAS source =
-        async {
-            let!    res  = Evaluator.evalFsiExe source |> Wrap.getAsyncR 
-            return  res |> Result.mapMsgs (Seq.map (fun (e:ErrMsg) -> e.ErrMsg, e.IsWarning) >> Seq.toArray)
-        }
-        
-    [< JavaScript >]
-    let evaluateAR source =
-        async {
-            let!   vO, msgs = evaluateAS source
-            return  Result (vO,  msgs |> Seq.map (fun (msg, wrn) -> ErrSimple(msg, wrn) :> ErrMsg) |> Seq.toList)
-        }
-        
   #if WEBSHARPER
   [<WebSharper.JavaScript>]
   #endif
@@ -1088,9 +1033,15 @@ namespace FSSGlobal
     
     let  AddressId = AddressId
     
+    #if FSS_SERVER
     let awaitRequestForF = selectF awaitRequestFor awaitRequestForRpc
     let sendRequestF     = selectF sendRequest         sendRequestRpc
     let replyToF         = selectF replyTo                 replyToRpc
+    #else
+    let awaitRequestForF = selectF awaitRequestFor awaitRequestFor
+    let sendRequestF     = selectF sendRequest         sendRequest
+    let replyToF         = selectF replyTo                 replyTo
+    #endif
     let AsyncStartF      = selectF AsyncStart             Async.Start
     
     type MessagingClient(clientId, ?timeout, ?endPoint:string) =
@@ -1320,29 +1271,31 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1513976734546"
+        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1516199756515"
         let msgClient  = MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
         let toId       = AddressId fsIds
         let stringResponseR response =
             match response with
             | StringResponseR (Some code, msgs) -> Result.succeedWithMsgs code (msgs |> Seq.map (fun v -> FSMessage v :> ErrMsg) |> Seq.toList)
             | _                                 -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
-        let stringResponse  response =
+        let stringResponse   response =
             match response with
-            | StringResponse (Some code)    -> Result.succeed code
-            | _                             -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
-        let snippetsResponse response =
-            match response with
-            | SnippetsResponse snps         -> Result.succeed snps
-            | _                             -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
-        let snippetResponse response =
-            match response with
-            | SnippetResponse  snp          -> Result.succeed snp
-            | _                             -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
+            | StringResponse (Some code)        -> Result.succeed code
+            | _                                 -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
+        let snippetsResponse response =    
+            match response with    
+            | SnippetsResponse snps             -> Result.succeed snps
+            | _                                 -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
+        let snippetResponse  response =    
+            match response with    
+            | SnippetResponse  snp              -> Result.succeed snp
+            | _                                 -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
         [< Inline >]
         let sendMsg toId (msg: FSMessage) (checkResponse: FSResponse -> Result<'a>) =
+            let msgser =  msg |> Json.Serialize
+            let respA  =  msgClient.SendMessage toId msgser
             Wrap.wrapper {
-                let!   response = msgClient.SendMessage toId (msg |> Json.Serialize)
+                let!   response = respA
                 let!   resp     = checkResponse (Json.Deserialize<FSResponse> response)
                 return resp
             } 
@@ -1360,9 +1313,113 @@ namespace FSSGlobal
         member this.RunActionCall   (name, act, parms     ) = sendMsg toId  (RunActionCall       (name, act, parms      ))    stringResponseR
         member this.FSStationId                             = fsIds
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1513976734546"
+        static member FSStationId_                          = "FSharpStation1516199756515"
     
     
+  module FsEvaluator =
+    open Useful
+    
+    module Evaluator =
+        open System.Diagnostics
+        open UsefulDotNet
+        
+        let endToken = "xXxY" + "yYyhH"
+        type FsiExe(config, ?outHndl, ?errHndl) =
+            let startInfo                 = ProcessStartInfo(@"fsiAnyCpu.exe", config |> String.concat " ")             
+            let shell                     = new ShellEx(startInfo, ?outHndl = outHndl, ?errHndl = errHndl)  // --noninteractive
+            do  startInfo.CreateNoWindow <- false
+                shell.Start() |> ignore
+            member this.Eval txt =
+                Wrap.wrapper {
+                    do! Result.tryProtection()
+                    shell.Send txt 
+                    shell.Send ";;"
+                    let! res = shell.SendAndWait("printfn \"" + endToken + "\";;", endToken)
+                    //shell.WaitForInputIdle() |> ignore
+                    //let! resR = shell.Response()
+                    //let! res  = resR
+                    return res
+                }
+            member this.IsAlive = not shell.HasExited
+            interface System.IDisposable with
+                member this.Dispose () = 
+                    (shell :> System.IDisposable).Dispose()
+    
+        #if FSS_SERVER
+        let mutable fssClient = FsStationShared.FsStationClient("Fsi")
+        let queueOutput = MailboxProcessor.Start(fun mail -> 
+            let output      = new System.Text.StringBuilder()
+            let append  txt = output.Append(txt + "\n") |> ignore
+            let consume ()  = let v = output.ToString()
+                              output.Clear() |> ignore
+                              v
+            async {
+                while true do
+                    let! msg = mail.Receive()
+                    match msg with
+                    | Some txt -> append txt
+                    | None     ->   // None means send the queued text
+                        let txt2send =  consume()
+                        if  txt2send <> "" then
+                            fssClient.RunActionCall("OutText", "actOutText", [| "+" ; txt2send |])
+                            |> Wrap.getAsyncR 
+                            |> Async.map ignore 
+                            |> Async.RunSynchronously            
+            })
+        let queueText txt = 
+            txt |> Some |> queueOutput.Post
+            async { do! Async.Sleep 100
+                    queueOutput.Post None } |> Async.Start
+        let outHndl (txt:string) = txt.Replace(endToken, "Done!") |> queueText
+        let errHndl (txt:string) = "ERR : " + txt                 |> queueText
+        let setFsid id ep = if id <> fssClient.FSStationId && id <> "" then fssClient <- FsStationShared.FsStationClient("Fsi", id, endPoint = ep) ; printfn "setFSid = %s" id
+        #else
+        let outHndl       = ignore
+        let errHndl       = ignore
+        let setFsid id ep = ()
+        #endif
+    
+        let fsiExe = lazy new ResourceAgent<_, string> (70
+                                                      , (fun config -> new FsiExe([ "--nologo"
+                                                                                    "--quiet"
+                                                                                    defaultArg config ""
+                                                                                  ], outHndl, errHndl))
+                                                      , (fun fsi -> (fsi :> System.IDisposable).Dispose()), (fun fsi -> fsi.IsAlive), "")
+    
+        let extractConfig (code:string[]) = if code.[0].StartsWith "////-d:" then code.[0].[4..] else ""
+    
+        let evalFsiExe (code:string) =
+            Wrap.wrapper {
+                let config = extractConfig (code.Split '\n')
+                let! resR = fsiExe.Value.Process(fun fsi -> 
+                    Wrap.wrapper {
+                      do! Result.tryProtection()
+                      let! res = fsi.Eval code 
+                      return res
+                    }
+                , config)
+                let! res = resR
+                return res
+            }
+    
+    //#define WEBSHARPER
+    open WebSharper
+    
+    [< Rpc >]
+    let evaluateAS (fsid:string) (ep:string) source =
+        async {
+            Evaluator.setFsid fsid ep
+            let!    res  = Evaluator.evalFsiExe source |> Wrap.getAsyncR 
+            return  res |> Result.mapMsgs (Seq.map (fun (e:ErrMsg) -> e.ErrMsg, e.IsWarning) >> Seq.toArray)
+        }
+        
+    [< JavaScript >]
+    let evaluateAR fsid ep source =
+        async {
+            let!   vO, msgs = evaluateAS fsid ep source
+            return  Result (vO,  msgs |> Seq.map (fun (msg, wrn) -> ErrSimple(msg, wrn) :> ErrMsg) |> Seq.toList)
+        }
+        
   module FsTranslator =
     module TranslatorCaller =
         open Useful
@@ -4136,6 +4193,7 @@ namespace FSSGlobal
           if newM <> var.Value then
               var.Value  <- newM
       
+      let setOutMsg msg = outputMsgs.Value <-  msg
       let addOutMsg msg = appendMsg outputMsgs msg
       let addPrsMsg msg = appendMsg parserMsgs msg
       
@@ -4310,9 +4368,9 @@ namespace FSSGlobal
       let evalCodeW (code: string) =
           Wrap.wrapper {
               codeFS.Value     <- code
-              let! resR         = evaluateAR code
+              let! resR         = evaluateAR fsIds JS.Window.Location.Href code
               let! res          = resR
-              return  res
+              return  ""
           }
       
       let evalSnippetW (snpO: CodeSnippet option) =
@@ -4331,8 +4389,8 @@ namespace FSSGlobal
               return  res
           }
       
-      let evaluateSnippetW snpO = doSomething "Evaluating F# code..." "Done!" (fun () -> evalSnippetW snpO)
-      let evaluateCodeW    code = doSomething "Evaluating F# code..." "Done!" (fun () -> evalCodeW    code)
+      let evaluateSnippetW snpO = doSomething "Evaluating F# code..." "" (fun () -> evalSnippetW snpO)
+      let evaluateCodeW    code = doSomething "Evaluating F# code..." "" (fun () -> evalCodeW    code)
       
       let ToConsoleF arg = 
           Console.Log arg
@@ -4899,7 +4957,7 @@ namespace FSSGlobal
       //    } |> Async.Start
       //)
       
-      let styleEditor    =
+      let styleEditor =
            """
       
         body { margin: 0px }     
@@ -5039,7 +5097,7 @@ namespace FSSGlobal
              | _                            -> None
           |> Option.orElseWith  (fun () -> funcName.Value |> propValue                           )
           |> Option.defaultWith (fun () -> funcName.Value |> translateTemplate actionTempl.Value )
-          |> (+) openPre
+          |> (fun code -> if code.StartsWith "////" then code else openPre + code)
       
       let evalFsCode    (act: Action) () = getCodeFromAct act true  |>  evaluateCodeW
       let evalFableCode (act: Action) () = getCodeFromAct act false |>  fableCodeW
@@ -5060,6 +5118,14 @@ namespace FSSGlobal
                   | _                          -> sprintf "setSnippetProp wrong parms: %A" act.parms |> Result.failSimpleError
               return res
           }
+          
+      let showOutText (act: Action) () = 
+          printfn "showOutText: %A" act
+          match act.parms with
+          | Some [|       txt |]                      -> setOutMsg <| unbox txt
+          | Some [| cmd ; txt |] when unbox cmd = ""  -> setOutMsg <| unbox txt
+          | Some [| cmd ; txt |] when unbox cmd = "+" -> addOutMsg <| unbox txt
+          | _                                         -> printfn "error: showOutText %A" act
       
       let actLoadFile       = Template.Action.New("Load..."                    ).OnClick( do_LoadFile                    )  
       let actSaveFile       = Template.Action.New("Save as..."                 ).OnClick( Do   downloadFile      ()      ).Highlight(dirty)
@@ -5080,6 +5146,7 @@ namespace FSSGlobal
       let actCompileWS      = Template.Action.New("Compile WebSharper"         ).OnClick( DoW  justCompile       ()      ).Disabled(disableWebSharperVal)
       let actFindDefinition = Template.Action.New("Find Definition"            ).OnClick( Do   gotoDefinition    ()      ).Disabled(disableParseVal     )
       let actRefreshEditor  = Template.Action.New("Refresh CodeMirror"         ).OnClick( Do   refreshCodeMirror ()      )
+      let actOutText        = Template.Action.New("Show Output text"           ).OnClick2(Do2  showOutText       ()      )
            
       let buttonsH =
           div [ 
@@ -5276,6 +5343,7 @@ namespace FSSGlobal
               "actParseCode"      , GuiAction actParseCode     
               "actCompileWS"      , GuiAction actCompileWS     
               "actFindDefinition" , GuiAction actFindDefinition    
+              "actOutText"        , GuiAction actOutText
               "Output"            , GuiNode <| Template.TextArea.New(outputMsgs).Placeholder("Output:"         ).Title("Output"                   ).RenderWith [ on.dblClick jumpToRef ]
               "Parser"            , GuiNode <| Template.TextArea.New(parserMsgs).Placeholder("Parser messages:").Title("Parser"                   ).RenderWith [ on.dblClick jumpToRef ]
               "JavaScript"        , GuiNode <| Template.TextArea.New(codeJS    ).Placeholder("Javascript:"     ).Title("JavaScript code generated").Render

@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FSSGlobal,Useful,Option,ExceptionThrown,ErrOptionIsNone,ErrSimple,Result,ropBuilder,Wrap,Builder,Async,ResetableMemoize,PreproDirective,FsEvaluator,FsStationShared,MessagingClient,CodeSnippetId,CodeSnippet,FSMessage,FSSeverity,FsStationClientErr,FsStationClient,FsTranslator,FSAutoCompleteIntermediary,CommTypes,ResponseError,Location,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,ACMessage,FSAutoCompleteIntermediaryClient,HtmlNode,Val,HelperType,HtmlNode$1,Template,Button,Input,Hoverable,TextArea,CodeMirrorPos,CodeMirrorEditor,CodeMirror,Hint,HintResponse,HintOptions,LintResponse,SplitterBar,SectionType,Grid,TabStrip,MenuEntry,MenuNode,Menu,Action,GuiPart,HtmlNodeFable,LayoutDescriptionFable,GuiPartSourceId,Layout,RunCode,RunNode,FSharpStation,FsGlobal,Position,ErrCompiler,KeyMapAutoComplete,Property,PropValue,CodeSnippet$1,FableModule,Babel,Fable,SC$1,FSharpStation_JsonDecoder,FSharpStation_JsonEncoder,FSharpStation_GeneratedPrintf,GeneratedPrintf,IntelliFactory,Runtime,WebSharper,Utils,Strings,List,Seq,Concurrency,console,Collections,Dictionary,CancellationTokenSource,Arrays,Unchecked,Remoting,AjaxRemotingProvider,JSON,Date,UsefulDotNet,Messaging,Guid,Option$1,UI,Next,View,Doc,Operators,AttrModule,AttrProxy,Var,Input$1,Mouse,FSharpSet,BalancedTree,Map,MatchFailureException,Slice,Json,Provider,Object,Fable$1,Babel$1,HashSet,JavaScript,JSModule,Lazy,$,FSharpMap,ListModel;
+ var Global,FSSGlobal,Useful,Option,ExceptionThrown,ErrOptionIsNone,ErrSimple,Result,ropBuilder,Wrap,Builder,Async,ResetableMemoize,PreproDirective,FsStationShared,MessagingClient,CodeSnippetId,CodeSnippet,FSMessage,FSSeverity,FsStationClientErr,FsStationClient,FsEvaluator,FsTranslator,FSAutoCompleteIntermediary,CommTypes,ResponseError,Location,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,ACMessage,FSAutoCompleteIntermediaryClient,HtmlNode,Val,HelperType,HtmlNode$1,Template,Button,Input,Hoverable,TextArea,CodeMirrorPos,CodeMirrorEditor,CodeMirror,Hint,HintResponse,HintOptions,LintResponse,SplitterBar,SectionType,Grid,TabStrip,MenuEntry,MenuNode,Menu,Action,GuiPart,HtmlNodeFable,LayoutDescriptionFable,GuiPartSourceId,Layout,RunCode,RunNode,FSharpStation,FsGlobal,Position,ErrCompiler,KeyMapAutoComplete,Property,PropValue,CodeSnippet$1,FableModule,Babel,Fable,SC$1,FSharpStation_JsonDecoder,FSharpStation_JsonEncoder,GeneratedPrintf,FSharpStation_GeneratedPrintf,IntelliFactory,Runtime,WebSharper,Utils,Strings,List,Seq,Concurrency,console,Collections,Dictionary,CancellationTokenSource,Arrays,Unchecked,JSON,Date,UsefulDotNet,Messaging,Remoting,Guid,Option$1,AjaxRemotingProvider,UI,Next,View,Doc,Operators,AttrModule,AttrProxy,Var,Input$1,Mouse,FSharpSet,BalancedTree,Map,MatchFailureException,Slice,Json,Provider,Object,Fable$1,Babel$1,HashSet,JavaScript,JSModule,Lazy,$,FSharpMap,ListModel;
  Global=window;
  FSSGlobal=Global.FSSGlobal=Global.FSSGlobal||{};
  Useful=FSSGlobal.Useful=FSSGlobal.Useful||{};
@@ -16,7 +16,6 @@
  Async=Useful.Async=Useful.Async||{};
  ResetableMemoize=Useful.ResetableMemoize=Useful.ResetableMemoize||{};
  PreproDirective=Useful.PreproDirective=Useful.PreproDirective||{};
- FsEvaluator=FSSGlobal.FsEvaluator=FSSGlobal.FsEvaluator||{};
  FsStationShared=FSSGlobal.FsStationShared=FSSGlobal.FsStationShared||{};
  MessagingClient=FsStationShared.MessagingClient=FsStationShared.MessagingClient||{};
  CodeSnippetId=FsStationShared.CodeSnippetId=FsStationShared.CodeSnippetId||{};
@@ -25,6 +24,7 @@
  FSSeverity=FsStationShared.FSSeverity=FsStationShared.FSSeverity||{};
  FsStationClientErr=FsStationShared.FsStationClientErr=FsStationShared.FsStationClientErr||{};
  FsStationClient=FsStationShared.FsStationClient=FsStationShared.FsStationClient||{};
+ FsEvaluator=FSSGlobal.FsEvaluator=FSSGlobal.FsEvaluator||{};
  FsTranslator=FSSGlobal.FsTranslator=FSSGlobal.FsTranslator||{};
  FSAutoCompleteIntermediary=FSSGlobal.FSAutoCompleteIntermediary=FSSGlobal.FSAutoCompleteIntermediary||{};
  CommTypes=FSAutoCompleteIntermediary.CommTypes=FSAutoCompleteIntermediary.CommTypes||{};
@@ -97,8 +97,8 @@
  SC$1=Global.StartupCode$FSharpStation$FSharpStation=Global.StartupCode$FSharpStation$FSharpStation||{};
  FSharpStation_JsonDecoder=Global.FSharpStation_JsonDecoder=Global.FSharpStation_JsonDecoder||{};
  FSharpStation_JsonEncoder=Global.FSharpStation_JsonEncoder=Global.FSharpStation_JsonEncoder||{};
- FSharpStation_GeneratedPrintf=Global.FSharpStation_GeneratedPrintf=Global.FSharpStation_GeneratedPrintf||{};
  GeneratedPrintf=Global.GeneratedPrintf=Global.GeneratedPrintf||{};
+ FSharpStation_GeneratedPrintf=Global.FSharpStation_GeneratedPrintf=Global.FSharpStation_GeneratedPrintf||{};
  IntelliFactory=Global.IntelliFactory;
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
  WebSharper=Global.WebSharper;
@@ -113,14 +113,14 @@
  CancellationTokenSource=WebSharper&&WebSharper.CancellationTokenSource;
  Arrays=WebSharper&&WebSharper.Arrays;
  Unchecked=WebSharper&&WebSharper.Unchecked;
- Remoting=WebSharper&&WebSharper.Remoting;
- AjaxRemotingProvider=Remoting&&Remoting.AjaxRemotingProvider;
  JSON=Global.JSON;
  Date=Global.Date;
  UsefulDotNet=FSSGlobal&&FSSGlobal.UsefulDotNet;
  Messaging=UsefulDotNet&&UsefulDotNet.Messaging;
+ Remoting=WebSharper&&WebSharper.Remoting;
  Guid=WebSharper&&WebSharper.Guid;
  Option$1=WebSharper&&WebSharper.Option;
+ AjaxRemotingProvider=Remoting&&Remoting.AjaxRemotingProvider;
  UI=WebSharper&&WebSharper.UI;
  Next=UI&&UI.Next;
  View=Next&&Next.View;
@@ -1355,29 +1355,6 @@
   var b;
   return Strings.Substring(s,0,(b=s.length,Unchecked.Compare(n,b)===-1?n:b));
  };
- FsEvaluator.evaluateAR=function(source)
- {
-  var b;
-  b=null;
-  return Concurrency.Delay(function()
-  {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsEvaluator.evaluateAS:-1404420254",[source]),function(a)
-   {
-    function m(msg,wrn)
-    {
-     return new ErrSimple.New(msg,wrn);
-    }
-    return Concurrency.Return({
-     $:0,
-     $0:a[0],
-     $1:List.ofSeq(Seq.map(function($1)
-     {
-      return m($1[0],$1[1]);
-     },a[1]))
-    });
-   });
-  });
- };
  MessagingClient=FsStationShared.MessagingClient=Runtime.Class({
   poStrings:function(resp)
   {
@@ -1515,12 +1492,12 @@
  },WebSharper.Obj,MessagingClient);
  MessagingClient.get_EndPoint_=function()
  {
-  return"http://localhost:9010/";
+  return"http://localhost:9010/FSharpStation";
  };
  MessagingClient.New=Runtime.Ctor(function(clientId,timeout,endPoint)
  {
   this.clientId=clientId;
-  this.wsEndPoint=Option.defaultValue("http://localhost:9010/",endPoint);
+  this.wsEndPoint=Option.defaultValue("http://localhost:9010/FSharpStation",endPoint);
   this.tout=Option.defaultValue(100000,timeout);
   this.fromId=FsStationShared.AddressId(this.clientId);
   Remoting.set_EndPoint(this.wsEndPoint);
@@ -1775,24 +1752,22 @@
   },
   RunActionCall:function(name,act,parms)
   {
-   var $this,t,toId,msg,b;
+   var $this,respA,b;
    function checkResponse(r)
    {
     return $this.stringResponseR(r);
    }
    $this=this;
-   t=this;
-   toId=this.toId;
-   msg={
+   respA=this.msgClient.SendMessage(this.toId,JSON.stringify((FSharpStation_JsonEncoder.j())({
     $:14,
     $0:name,
     $1:act,
     $2:parms
-   };
+   })));
    b=Wrap.wrapper();
    return b.Delay(function()
    {
-    return b.Bind$2(t.msgClient.SendMessage(toId,JSON.stringify((FSharpStation_JsonEncoder.j())(msg))),function(a)
+    return b.Bind$2(respA,function(a)
     {
      return b.Bind$1(checkResponse((FSharpStation_JsonDecoder.j())(JSON.parse(a))),function(a$1)
      {
@@ -1803,23 +1778,21 @@
   },
   RunSnippet:function(url,snpPath)
   {
-   var $this,m,t,toId,b;
+   var $this,respA,b;
    function checkResponse(r)
    {
     return $this.stringResponseR(r);
    }
    $this=this;
-   m={
+   respA=this.msgClient.SendMessage(this.toId,JSON.stringify((FSharpStation_JsonEncoder.j())({
     $:13,
     $0:Strings.SplitChars(snpPath,["/"],0),
     $1:url
-   };
-   t=this;
-   toId=this.toId;
+   })));
    b=Wrap.wrapper();
    return b.Delay(function()
    {
-    return b.Bind$2(t.msgClient.SendMessage(toId,JSON.stringify((FSharpStation_JsonEncoder.j())(m))),function(a)
+    return b.Bind$2(respA,function(a)
     {
      return b.Bind$1(checkResponse((FSharpStation_JsonDecoder.j())(JSON.parse(a))),function(a$1)
      {
@@ -1830,22 +1803,20 @@
   },
   GenericMessage:function(txt)
   {
-   var $this,t,toId,msg,b;
+   var $this,respA,b;
    function checkResponse(r)
    {
     return $this.stringResponse(r);
    }
    $this=this;
-   t=this;
-   toId=this.toId;
-   msg={
+   respA=this.msgClient.SendMessage(this.toId,JSON.stringify((FSharpStation_JsonEncoder.j())({
     $:1,
     $0:txt
-   };
+   })));
    b=Wrap.wrapper();
    return b.Delay(function()
    {
-    return b.Bind$2(t.msgClient.SendMessage(toId,JSON.stringify((FSharpStation_JsonEncoder.j())(msg))),function(a)
+    return b.Bind$2(respA,function(a)
     {
      return b.Bind$1(checkResponse((FSharpStation_JsonDecoder.j())(JSON.parse(a))),function(a$1)
      {
@@ -1856,19 +1827,17 @@
   },
   RequestWholeFile:function()
   {
-   var $this,t,toId,msg,b;
+   var $this,respA,b;
    function checkResponse(r)
    {
     return $this.stringResponse(r);
    }
    $this=this;
-   t=this;
-   toId=this.toId;
-   msg=FSMessage.GetWholeFile;
+   respA=this.msgClient.SendMessage(this.toId,JSON.stringify((FSharpStation_JsonEncoder.j())(FSMessage.GetWholeFile)));
    b=Wrap.wrapper();
    return b.Delay(function()
    {
-    return b.Bind$2(t.msgClient.SendMessage(toId,JSON.stringify((FSharpStation_JsonEncoder.j())(msg))),function(a)
+    return b.Bind$2(respA,function(a)
     {
      return b.Bind$1(checkResponse((FSharpStation_JsonDecoder.j())(JSON.parse(a))),function(a$1)
      {
@@ -1879,22 +1848,20 @@
   },
   RequestPredsById:function(snpId)
   {
-   var $this,t,toId,msg,b;
+   var $this,respA,b;
    function checkResponse(r)
    {
     return $this.snippetsResponse(r);
    }
    $this=this;
-   t=this;
-   toId=this.toId;
-   msg={
+   respA=this.msgClient.SendMessage(this.toId,JSON.stringify((FSharpStation_JsonEncoder.j())({
     $:4,
     $0:snpId
-   };
+   })));
    b=Wrap.wrapper();
    return b.Delay(function()
    {
-    return b.Bind$2(t.msgClient.SendMessage(toId,JSON.stringify((FSharpStation_JsonEncoder.j())(msg))),function(a)
+    return b.Bind$2(respA,function(a)
     {
      return b.Bind$1(checkResponse((FSharpStation_JsonDecoder.j())(JSON.parse(a))),function(a$1)
      {
@@ -1905,22 +1872,20 @@
   },
   RequestPreds:function(snpPath)
   {
-   var $this,m,t,toId,b;
+   var $this,respA,b;
    function checkResponse(r)
    {
     return $this.snippetsResponse(r);
    }
    $this=this;
-   m={
+   respA=this.msgClient.SendMessage(this.toId,JSON.stringify((FSharpStation_JsonEncoder.j())({
     $:8,
     $0:Strings.SplitChars(snpPath,["/"],0)
-   };
-   t=this;
-   toId=this.toId;
+   })));
    b=Wrap.wrapper();
    return b.Delay(function()
    {
-    return b.Bind$2(t.msgClient.SendMessage(toId,JSON.stringify((FSharpStation_JsonEncoder.j())(m))),function(a)
+    return b.Bind$2(respA,function(a)
     {
      return b.Bind$1(checkResponse((FSharpStation_JsonDecoder.j())(JSON.parse(a))),function(a$1)
      {
@@ -1931,22 +1896,20 @@
   },
   RequestJSCode:function(snpPath)
   {
-   var $this,m,t,toId,b;
+   var $this,respA,b;
    function checkResponse(r)
    {
     return $this.stringResponseR(r);
    }
    $this=this;
-   m={
+   respA=this.msgClient.SendMessage(this.toId,JSON.stringify((FSharpStation_JsonEncoder.j())({
     $:10,
     $0:Strings.SplitChars(snpPath,["/"],0)
-   };
-   t=this;
-   toId=this.toId;
+   })));
    b=Wrap.wrapper();
    return b.Delay(function()
    {
-    return b.Bind$2(t.msgClient.SendMessage(toId,JSON.stringify((FSharpStation_JsonEncoder.j())(m))),function(a)
+    return b.Bind$2(respA,function(a)
     {
      return b.Bind$1(checkResponse((FSharpStation_JsonDecoder.j())(JSON.parse(a))),function(a$1)
      {
@@ -1957,22 +1920,20 @@
   },
   RequestCode:function(snpPath)
   {
-   var $this,m,t,toId,b;
+   var $this,respA,b;
    function checkResponse(r)
    {
     return $this.stringResponse(r);
    }
    $this=this;
-   m={
+   respA=this.msgClient.SendMessage(this.toId,JSON.stringify((FSharpStation_JsonEncoder.j())({
     $:7,
     $0:Strings.SplitChars(snpPath,["/"],0)
-   };
-   t=this;
-   toId=this.toId;
+   })));
    b=Wrap.wrapper();
    return b.Delay(function()
    {
-    return b.Bind$2(t.msgClient.SendMessage(toId,JSON.stringify((FSharpStation_JsonEncoder.j())(m))),function(a)
+    return b.Bind$2(respA,function(a)
     {
      return b.Bind$1(checkResponse((FSharpStation_JsonDecoder.j())(JSON.parse(a))),function(a$1)
      {
@@ -1983,22 +1944,20 @@
   },
   RequestSnippet:function(snpPath)
   {
-   var $this,m,t,toId,b;
+   var $this,respA,b;
    function checkResponse(r)
    {
     return $this.snippetResponse(r);
    }
    $this=this;
-   m={
+   respA=this.msgClient.SendMessage(this.toId,JSON.stringify((FSharpStation_JsonEncoder.j())({
     $:9,
     $0:Strings.SplitChars(snpPath,["/"],0)
-   };
-   t=this;
-   toId=this.toId;
+   })));
    b=Wrap.wrapper();
    return b.Delay(function()
    {
-    return b.Bind$2(t.msgClient.SendMessage(toId,JSON.stringify((FSharpStation_JsonEncoder.j())(m))),function(a)
+    return b.Bind$2(respA,function(a)
     {
      return b.Bind$1(checkResponse((FSharpStation_JsonDecoder.j())(JSON.parse(a))),function(a$1)
      {
@@ -2009,13 +1968,12 @@
   },
   SendMessage:function(msg)
   {
-   var t,toId,b;
-   t=this;
-   toId=this.toId;
+   var respA,b;
+   respA=this.msgClient.SendMessage(this.toId,JSON.stringify((FSharpStation_JsonEncoder.j())(msg)));
    b=Wrap.wrapper();
    return b.Delay(function()
    {
-    return b.Bind$2(t.msgClient.SendMessage(toId,JSON.stringify((FSharpStation_JsonEncoder.j())(msg))),function(a)
+    return b.Bind$2(respA,function(a)
     {
      return b.Bind$1(Result.succeed((FSharpStation_JsonDecoder.j())(JSON.parse(a))),function(a$1)
      {
@@ -2026,12 +1984,12 @@
   },
   SendMessage$1:function(toId2,msg)
   {
-   var t,b;
-   t=this;
+   var respA,b;
+   respA=this.msgClient.SendMessage(toId2,JSON.stringify((FSharpStation_JsonEncoder.j())(msg)));
    b=Wrap.wrapper();
    return b.Delay(function()
    {
-    return b.Bind$2(t.msgClient.SendMessage(toId2,JSON.stringify((FSharpStation_JsonEncoder.j())(msg))),function(a)
+    return b.Bind$2(respA,function(a)
     {
      return b.Bind$1(Result.succeed((FSharpStation_JsonDecoder.j())(JSON.parse(a))),function(a$1)
      {
@@ -2043,11 +2001,11 @@
  },WebSharper.Obj,FsStationClient);
  FsStationClient.get_FSStationId_=function()
  {
-  return"FSharpStation1513983627196";
+  return"FSharpStation1516199756515";
  };
  FsStationClient.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
-  this.fsIds=Option.defaultValue("FSharpStation1513983627196",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1516199756515",fsStationId);
   this.msgClient=new MessagingClient.New(clientId,timeout,endPoint);
   this.toId=FsStationShared.AddressId(this.fsIds);
  },FsStationClient);
@@ -2137,6 +2095,29 @@
   },null);
  };
  FsStationShared.selectF=Global.id;
+ FsEvaluator.evaluateAR=function(fsid,ep,source)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsEvaluator.evaluateAS:133318652",[fsid,ep,source]),function(a)
+   {
+    function m(msg,wrn)
+    {
+     return new ErrSimple.New(msg,wrn);
+    }
+    return Concurrency.Return({
+     $:0,
+     $0:a[0],
+     $1:List.ofSeq(Seq.map(function($1)
+     {
+      return m($1[0],$1[1]);
+     },a[1]))
+    });
+   });
+  });
+ };
  FsTranslator.translateAR=function(source,minified)
  {
   var b;
@@ -4820,7 +4801,7 @@
        }
       }
      else
-      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3174,18);
+      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3231,18);
    }
    else
     void 0;
@@ -6328,7 +6309,7 @@
  };
  FSharpStation.FSharpStationClient=function(loadFromUri)
  {
-  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,v$2,f,g,prior,propertyCssLinkVal,v$3,f$1,g$1,prior$1,propertyModeVal,v$4,f$2,g$2,prior$2,propertyThemeVal,v$5,f$3,g$3,prior$3,propertyLayoutVal,v$6,f$4,g$4,prior$4,propertyLayoutJSVal,v$7,f$5,g$5,prior$5,disableParseVal,disableFSIVal,disableFableVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b,autoCompleteClient,parseFile,isParseDisabled,parseRun,parsing,rex1,rex2,rex,asyncStartDelayed,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,redraw,properties,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actSetSnippetProp,actEvalFsCode,actEvalCode,actFableFsCode,actFableCode,actRunWSNewTab,$2,actRunWSHere,$3,actRunWSIn,actParseCode,actCompileWS,$4,actFindDefinition,actRefreshEditor,buttonsH,menuLeft,menuRight,menuBar,s$2,v$8,v$9,snippetList,x,steps,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,layout,fsStationClient,b$1,cssLinks,x$1;
+  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,v$2,f,g,prior,propertyCssLinkVal,v$3,f$1,g$1,prior$1,propertyModeVal,v$4,f$2,g$2,prior$2,propertyThemeVal,v$5,f$3,g$3,prior$3,propertyLayoutVal,v$6,f$4,g$4,prior$4,propertyLayoutJSVal,v$7,f$5,g$5,prior$5,disableParseVal,disableFSIVal,disableFableVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b,autoCompleteClient,parseFile,isParseDisabled,parseRun,parsing,rex1,rex2,rex,asyncStartDelayed,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,redraw,properties,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actSetSnippetProp,actEvalFsCode,actEvalCode,actFableFsCode,actFableCode,actRunWSNewTab,$2,actRunWSHere,$3,actRunWSIn,actParseCode,actCompileWS,$4,actFindDefinition,actRefreshEditor,actOutText,buttonsH,menuLeft,menuRight,menuBar,s$2,v$8,v$9,snippetList,x,steps,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,layout,fsStationClient,b$1,cssLinks,x$1;
   function missing(def,find,lens,k)
   {
    return find(k)==null?Var.Lens(missingVar,function()
@@ -6524,6 +6505,10 @@
   {
    var newM,$7,$8;
    return!msg?null:(newM=($7=_var.RVal(),($8=Global.String(msg),$7===null?$8:$7===""?$8:$8===null?$7:$8===""?$7:$7+"\n"+$8)),newM!==_var.RVal()?_var.set_RVal(newM):null);
+  }
+  function setOutMsg(msg)
+  {
+   Var.Set(outputMsgs,msg);
   }
   function addOutMsg(msg)
   {
@@ -6756,11 +6741,11 @@
    return b$8.Delay(function()
    {
     Var.Set(codeFS,code);
-    return b$8.Bind$2(FsEvaluator.evaluateAR(code),function(a)
+    return b$8.Bind$2(FsEvaluator.evaluateAR(FsGlobal.fsIds(),Global.location.href,code),function(a)
     {
-     return b$8.Bind$1(a,function(a$1)
+     return b$8.Bind$1(a,function()
      {
-      return b$8.Return(a$1);
+      return b$8.Return("");
      });
     });
    });
@@ -6794,14 +6779,14 @@
   }
   function evaluateSnippetW(snpO)
   {
-   return doSomething("Evaluating F# code...","Done!",function()
+   return doSomething("Evaluating F# code...","",function()
    {
     return evalSnippetW(snpO);
    });
   }
   function evaluateCodeW(code)
   {
-   return doSomething("Evaluating F# code...","Done!",function()
+   return doSomething("Evaluating F# code...","",function()
    {
     return evalCodeW(code);
    });
@@ -7699,6 +7684,42 @@
     });
    });
   }
+  function showOutText(act,u)
+  {
+   var $7,m,t,t$1,$8,t$2;
+   ((function($9)
+   {
+    return function($10)
+    {
+     return $9("showOutText: "+GeneratedPrintf.p$22($10));
+    };
+   }(function(s$3)
+   {
+    console.log(s$3);
+   }))(act));
+   m=act.parms;
+   switch(m!=null&&m.$==1?(t=m.$0,t&&Arrays.length(t)===1?($7=Arrays.get(m.$0,0),0):(t$1=m.$0,t$1&&Arrays.length(t$1)===2?(Arrays.get(m.$0,1),Arrays.get(m.$0,0)===""?($7=[Arrays.get(m.$0,0),Arrays.get(m.$0,1)],1):2):2)):2)
+   {
+    case 0:
+     return setOutMsg($7);
+     break;
+    case 1:
+     return setOutMsg($7[1]);
+     break;
+    case 2:
+     return m!=null&&m.$==1&&((t$2=m.$0,t$2&&Arrays.length(t$2)===2)&&(Arrays.get(m.$0,1),Arrays.get(m.$0,0)==="+"&&($8=[Arrays.get(m.$0,0),Arrays.get(m.$0,1)],true)))?addOutMsg($8[1]):(function($9)
+     {
+      return function($10)
+      {
+       return $9("error: showOutText "+GeneratedPrintf.p$22($10));
+      };
+     }(function(s$3)
+     {
+      console.log(s$3);
+     }))(act);
+     break;
+   }
+  }
   function $5()
   {
    return compileRunP(position.c);
@@ -8377,6 +8398,7 @@
   },Runtime.Curried(DoW,2,[$4,null]))).Disabled(disableWebSharperVal);
   actFindDefinition=Action.New$1("Find Definition").OnClick(Runtime.Curried(Template.Do,2,[gotoDefinition,null])).Disabled(disableParseVal);
   actRefreshEditor=Action.New$1("Refresh CodeMirror").OnClick(Runtime.Curried(Template.Do,2,[refreshCodeMirror,null]));
+  actOutText=Action.New$1("Show Output text").OnClick2(Runtime.Curried(Template.Do2,3,[showOutText,null]));
   buttonsH=HtmlNode.div([actAddSnippet.get_Button().get_Render(),actOutdentSnippet.get_Button().get_Render(),actIndentSnippet.get_Button().get_Render(),loadFileElement.get_Render().AddChildren([HtmlNode.style("grid-column: 4/6")]),actEvalCode.get_Button().get_Render(),actFableCode.get_Button().get_Render(),actRunWSIn.get_Button().get_Render(),actDeleteSnippet.get_Button().get_Render(),actFindDefinition.get_Button().get_Render(),HtmlNode.span([]),actSaveFile.get_Button().get_Render(),HtmlNode.span([]),actGetFsCode.get_Button().get_Render(),actParseCode.get_Button().get_Render(),HtmlNode.someElt(Doc.Select([AttrProxy.Create("id","Position")],function(v$10)
   {
    return v$10.$==1?"Right":v$10.$==2?"In Tab":v$10.$==3?"New Browser":"Below";
@@ -8494,6 +8516,9 @@
   })],["actFindDefinition",new GuiPart({
    $:2,
    $0:actFindDefinition
+  })],["actOutText",new GuiPart({
+   $:2,
+   $0:actOutText
   })],["Output",new GuiPart({
    $:1,
    $0:TextArea.New$2(outputMsgs).Placeholder("Output:").Title("Output").RenderWith(List.ofArray([AttrModule.Handler("dblclick",function(a)
@@ -8798,6 +8823,34 @@
  FSharpStation_JsonDecoder.j$5=function()
  {
   return FSharpStation_JsonDecoder._v$5?FSharpStation_JsonDecoder._v$5:FSharpStation_JsonDecoder._v$5=(Provider.DecodeUnion(void 0,"$",[[0,[]],[1,[["$0","Item",Provider.Id(),0]]],[2,[["$0","Item",FSharpStation_JsonDecoder.j$3,0]]],[3,[["$0","Item",FSharpStation_JsonDecoder.j$3,0]]],[4,[["$0","Item",FSharpStation_JsonDecoder.j$3,0]]],[5,[["$0","Item",FSharpStation_JsonDecoder.j$3,0]]],[6,[["$0","Item",Provider.DecodeArray(Provider.Id()),0]]],[7,[["$0","Item",Provider.DecodeArray(Provider.Id()),0]]],[8,[["$0","Item",Provider.DecodeArray(Provider.Id()),0]]],[9,[["$0","Item",Provider.DecodeArray(Provider.Id()),0]]],[10,[["$0","Item",Provider.DecodeArray(Provider.Id()),0]]],[11,[]],[12,[["$0","Item1",FSharpStation_JsonDecoder.j$3,0],["$1","Item2",Provider.Id(),0]]],[13,[["$0","Item1",Provider.DecodeArray(Provider.Id()),0],["$1","Item2",Provider.Id(),0]]],[14,[["$0","name",Provider.Id(),0],["$1","action",Provider.Id(),0],["$2","parms",Provider.DecodeArray(Provider.Id()),0]]]]))();
+ };
+ GeneratedPrintf.p$22=function($1)
+ {
+  return"{"+("text = "+FSharpStation_GeneratedPrintf.p$5($1.text))+"; "+("highlight = "+FSharpStation_GeneratedPrintf.p$7($1.highlight))+"; "+("disabled = "+FSharpStation_GeneratedPrintf.p$7($1.disabled))+"; "+("toolTip = "+FSharpStation_GeneratedPrintf.p$9($1.toolTip))+"; "+("onClick = "+FSharpStation_GeneratedPrintf.p$10($1.onClick))+"; "+("parms = "+FSharpStation_GeneratedPrintf.p$4($1.parms))+"}";
+ };
+ FSharpStation_GeneratedPrintf.p$10=function($1)
+ {
+  return $1==null?"null":"Some <fun>";
+ };
+ FSharpStation_GeneratedPrintf.p$9=function($1)
+ {
+  return $1==null?"null":"Some "+Utils.prettyPrint($1.$0);
+ };
+ FSharpStation_GeneratedPrintf.p$7=function($1)
+ {
+  return $1.$==2?"Dynamic "+FSharpStation_GeneratedPrintf.p$8($1.$0):$1.$==1?"DynamicV "+Utils.prettyPrint($1.$0):"Constant "+Utils.prettyPrint($1.$0);
+ };
+ FSharpStation_GeneratedPrintf.p$8=function($1)
+ {
+  return"V <fun>";
+ };
+ FSharpStation_GeneratedPrintf.p$5=function($1)
+ {
+  return $1.$==2?"Dynamic "+FSharpStation_GeneratedPrintf.p$6($1.$0):$1.$==1?"DynamicV "+Utils.prettyPrint($1.$0):"Constant "+Utils.prettyPrint($1.$0);
+ };
+ FSharpStation_GeneratedPrintf.p$6=function($1)
+ {
+  return"V <fun>";
  };
  FSharpStation_GeneratedPrintf.p$4=function($1)
  {
