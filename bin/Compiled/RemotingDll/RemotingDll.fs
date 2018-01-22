@@ -63,6 +63,8 @@ namespace FSSGlobal
     [< JavaScript >]
     #endif
     module Messaging =
+        let mutable Debug = true
+        
         type AddressId = AddressId of string
         
         type Request = {
@@ -103,13 +105,13 @@ namespace FSSGlobal
                     let! mbMsg = mail.Receive()
                     match mbMsg with
                     | Listener                  (listener, lfs, lfe, lfc)  ->
-                        printfn "%s Listener:   %A"       (now()) listener
+                        if Messaging.Debug then printfn "%s Listener:   %A"       (now()) listener
                         requests
                         |> Seq.indexed
                         |> Seq.tryPick (fun (i, (request , rfs, rfe, rfc)) -> 
                             if request.toId <> listener then None else
                             requests <- Array.append requests .[0..i-1]  requests .[i+1..requests .Length - 1]
-                            printfn "removed %d" requests.Length
+                            if Messaging.Debug then printfn "removed %d" requests.Length
                             Some(lfs, request, rfs))
                         |> (fun v -> (if v.IsNone then 
                                         listeners <- 
@@ -128,7 +130,7 @@ namespace FSSGlobal
                                                 else true) 
                                             |> Array.append [| listener, lfs, lfe, lfc |]); v)
                     | Request                     (request , rfs, rfe, rfc)  ->
-                        printfn "%s Request: %A %A %A" (now()) request.toId request.fromId (extract 80 request.content)
+                        if Messaging.Debug then printfn "%s Request: %A %A %A" (now()) request.toId request.fromId (extract 80 request.content)
                         listeners
                         |> Seq.indexed
                         |> Seq.tryPick (fun (i, (listener, lfs, lfe, lfc)) -> 
@@ -136,10 +138,10 @@ namespace FSSGlobal
                             listeners <- Array.append listeners.[0..i-1] listeners.[i+1..listeners.Length - 1]
                             Some(lfs, request, rfs))
                         |> (fun v -> if v.IsNone then requests  <- requests  |> Array.append <| [| request , rfs, rfe, rfc |]
-                                                      printfn "appended %d" requests.Length
+                                                      if Messaging.Debug then printfn "appended %d" requests.Length
                                      v)
                     | Reply                       (reply   , response)  ->
-                        printfn "%s Reply:   %s"       (now()) (extract 100 response)
+                        if Messaging.Debug then printfn "%s Reply:   %s"       (now()) (extract 100 response)
                         sent
                         |> Seq.indexed
                         |> Seq.pick (fun (i, (request , rfs)) -> 
@@ -157,7 +159,7 @@ namespace FSSGlobal
         )
         with
             member this.AwaitRequest    listener  fs fe fc = agent.Post <| Listener (listener, fs, fe, fc)
-            member this.SendRequest     request   fs fe fc = agent.Post <| Request  (request , fs, fe, fc) ; printfn "SendRequest sent"
+            member this.SendRequest     request   fs fe fc = agent.Post <| Request  (request , fs, fe, fc) ; if Messaging.Debug then printfn "SendRequest sent"
             member this.ReplyTo         request   response = agent.Post <| Reply    (request , response  )
             member this.Listeners       ()                 = listeners |> Array.map (function | AddressId id, _, _, _ -> id)
             member this.Requests        ()                 = requests  |> Array.map (sprintf "%A")

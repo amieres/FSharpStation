@@ -1,13 +1,14 @@
 (function()
 {
  "use strict";
- var Global,FSSGlobal,UsefulDotNet,Messaging,Request,POMessage;
+ var Global,FSSGlobal,UsefulDotNet,Messaging,Request,POMessage,SC$1;
  Global=window;
  FSSGlobal=Global.FSSGlobal=Global.FSSGlobal||{};
  UsefulDotNet=FSSGlobal.UsefulDotNet=FSSGlobal.UsefulDotNet||{};
  Messaging=UsefulDotNet.Messaging=UsefulDotNet.Messaging||{};
  Request=Messaging.Request=Messaging.Request||{};
  POMessage=Messaging.POMessage=Messaging.POMessage||{};
+ SC$1=Global.StartupCode$RemotingDll$RemotingDll=Global.StartupCode$RemotingDll$RemotingDll||{};
  Request.New=function(toId,fromId,content,messageId)
  {
   return{
@@ -28,5 +29,20 @@
  };
  POMessage.POIdentification={
   $:0
+ };
+ Messaging.Debug=function()
+ {
+  SC$1.$cctor();
+  return SC$1.Debug;
+ };
+ Messaging.set_Debug=function($1)
+ {
+  SC$1.$cctor();
+  SC$1.Debug=$1;
+ };
+ SC$1.$cctor=function()
+ {
+  SC$1.$cctor=Global.ignore;
+  SC$1.Debug=true;
  };
 }());

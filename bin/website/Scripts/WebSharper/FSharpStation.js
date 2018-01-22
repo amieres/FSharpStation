@@ -1155,6 +1155,35 @@
   SC$1.$cctor();
   return SC$1.errOptionIsNone;
  };
+ Async.bind=function(f,va)
+ {
+  return Concurrency.Bind(va,f);
+ };
+ Async.apply=function(fAsync,xAsync)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind(Concurrency.StartChild(fAsync,null),function(a)
+   {
+    return Concurrency.Bind(Concurrency.StartChild(xAsync,null),function(a$1)
+    {
+     return Concurrency.Bind(a,function(a$2)
+     {
+      return Concurrency.Bind(a$1,function(a$3)
+      {
+       return Concurrency.Return(a$2(a$3));
+      });
+     });
+    });
+   });
+  });
+ };
+ Async.retn=function(x)
+ {
+  return Concurrency.Return(x);
+ };
  Async.map=function(f,va)
  {
   var b;
@@ -2001,11 +2030,11 @@
  },WebSharper.Obj,FsStationClient);
  FsStationClient.get_FSStationId_=function()
  {
-  return"FSharpStation1516199756515";
+  return"FSharpStation1516571497034";
  };
  FsStationClient.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
-  this.fsIds=Option.defaultValue("FSharpStation1516199756515",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1516571497034",fsStationId);
   this.msgClient=new MessagingClient.New(clientId,timeout,endPoint);
   this.toId=FsStationShared.AddressId(this.fsIds);
  },FsStationClient);
@@ -2095,13 +2124,13 @@
   },null);
  };
  FsStationShared.selectF=Global.id;
- FsEvaluator.evaluateAR=function(fsid,ep,source)
+ FsEvaluator.evaluateAR=function(fsid,ep,incrUseCount,source)
  {
   var b;
   b=null;
   return Concurrency.Delay(function()
   {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsEvaluator.evaluateAS:133318652",[fsid,ep,source]),function(a)
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsEvaluator.evaluateAS:-156288114",[fsid,ep,incrUseCount,source]),function(a)
    {
     function m(msg,wrn)
     {
@@ -4801,7 +4830,7 @@
        }
       }
      else
-      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3231,18);
+      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3234,18);
    }
    else
     void 0;
@@ -6741,7 +6770,7 @@
    return b$8.Delay(function()
    {
     Var.Set(codeFS,code);
-    return b$8.Bind$2(FsEvaluator.evaluateAR(FsGlobal.fsIds(),Global.location.href,code),function(a)
+    return b$8.Bind$2(FsEvaluator.evaluateAR(FsGlobal.fsIds(),Global.location.href,true,code),function(a)
     {
      return b$8.Bind$1(a,function()
      {
@@ -8685,7 +8714,7 @@
  };
  SC$1.$cctor=function()
  {
-  var $1,$2,$3,$4,$5,$6,g,v,g$1;
+  var g,v,g$1;
   SC$1.$cctor=Global.ignore;
   function m(n,v$1)
   {
@@ -8697,24 +8726,33 @@
   SC$1.result=new ropBuilder.New();
   SC$1.errOptionIsNone=new ErrOptionIsNone.New();
   SC$1.wrapper=new Builder.New();
-  $2=FsStationShared.selectF(function(l)
+  SC$1.awaitRequestForF=FsStationShared.selectF(function(l)
   {
    return(new AjaxRemotingProvider.New()).Async("RemotingDll:FSSGlobal.UsefulDotNet.awaitRequestFor:-439983525",[l]);
-  },void 0);
-  SC$1.awaitRequestForF=$2;
-  $4=FsStationShared.selectF(Runtime.Curried3(function(t,f,c)
+  },function(l)
+  {
+   return(new AjaxRemotingProvider.New()).Async("RemotingDll:FSSGlobal.UsefulDotNet.awaitRequestFor:-439983525",[l]);
+  });
+  SC$1.sendRequestF=FsStationShared.selectF(Runtime.Curried3(function(t,f,c)
   {
    return(new AjaxRemotingProvider.New()).Async("RemotingDll:FSSGlobal.UsefulDotNet.sendRequest:-426626804",[t,f,c]);
-  }),void 0);
-  SC$1.sendRequestF=$4;
-  $6=FsStationShared.selectF(function(r)
+  }),Runtime.Curried3(function(t,f,c)
+  {
+   return(new AjaxRemotingProvider.New()).Async("RemotingDll:FSSGlobal.UsefulDotNet.sendRequest:-426626804",[t,f,c]);
+  }));
+  SC$1.replyToF=FsStationShared.selectF(function(r)
   {
    return function(r$1)
    {
     return(new AjaxRemotingProvider.New()).Async("RemotingDll:FSSGlobal.UsefulDotNet.replyTo:-1092841374",[r,r$1]);
    };
-  },void 0);
-  SC$1.replyToF=$6;
+  },function(r)
+  {
+   return function(r$1)
+   {
+    return(new AjaxRemotingProvider.New()).Async("RemotingDll:FSSGlobal.UsefulDotNet.replyTo:-1092841374",[r,r$1]);
+   };
+  });
   SC$1.AsyncStartF=FsStationShared.selectF(function(a)
   {
    FsStationShared.AsyncStart(a);
@@ -8731,9 +8769,9 @@
   });
   SC$1.string2Styles=(g$1=function(a)
   {
-   return Arrays.map(function($7)
+   return Arrays.map(function($1)
    {
-    return m($7[0],$7[1]);
+    return m($1[0],$1[1]);
    },a);
   },function(x)
   {

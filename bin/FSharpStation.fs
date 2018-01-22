@@ -40,9 +40,7 @@ namespace FSSGlobal
   module Useful =
     open System
     //#nowarn "1178"
-    #if WEBSHARPER
-    [<JavaScript>]
-    #endif
+         
     module Option =
         let defaultValue v =
             function
@@ -99,23 +97,14 @@ namespace FSSGlobal
             member this.ErrMsg   : string = "Option is None"
             member this.IsWarning: bool   = false
     
-    #if WEBSHARPER
-    [<JavaScript>]
-    #endif
     type ErrSimple(msg, warning) =
         interface ErrMsg with
             member this.ErrMsg   : string = msg
             member this.IsWarning: bool   = warning
         override this.ToString() = (this :> ErrMsg).ErrMsg
     
-    #if WEBSHARPER
-    [<JavaScript>]
-    #endif
     type Result<'TSuccess> = Result of 'TSuccess option * ErrMsg list     
     
-    #if WEBSHARPER
-    [<JavaScript>]
-    #endif
     module Result =
         let inline succeed             x       = Result (Some x           , [  ]             )
         let inline succeedWithMsg      x  m    = Result (Some x           , [m ]             )
@@ -280,9 +269,6 @@ namespace FSSGlobal
     | WSimple of 'T
     | WOption of 'T option
     
-    #if WEBSHARPER
-    [<JavaScript>]
-    #endif
     module Wrap =
         let errOptionIsNone = ErrOptionIsNone() :> ErrMsg
     
@@ -477,9 +463,6 @@ namespace FSSGlobal
                | None  , msgs -> sprintf "Failed!\n%s" msgs
                
     
-    #if WEBSHARPER
-    [<JavaScript>]
-    #endif
     type Wrap<'T> with
         static member Start           (w:Wrap<_   >,           ?cancToken) = Async.Start           (Wrap.getAsync  w,                                ?cancellationToken= cancToken)
         static member StartAsTask     (w:Wrap<'T  >, ?options, ?cancToken) = Async.StartAsTask     (Wrap.getAsyncR w, ?taskCreationOptions= options, ?cancellationToken= cancToken)
@@ -501,6 +484,19 @@ namespace FSSGlobal
                 let! a = va
                 return f a 
             } 
+    
+        let retn x = async.Return x
+    
+        let apply fAsync xAsync = async {
+            let! fChild = Async.StartChild fAsync
+            let! xChild = Async.StartChild xAsync
+            let! f = fChild
+            let! x = xChild 
+            return f x 
+            }
+    
+        let bind f va = async.Bind(va, f)
+            
     #if WEBSHARPER
     
     let (|REGEX|_|) (expr: string) (opt: string) (value: string) =
@@ -598,39 +594,44 @@ namespace FSSGlobal
   module UsefulDotNet =
     open Useful
     
-    type ResourceAgent<'T, 'C when 'C : equality>(restartAfter:int, ctor: 'C option ->'T, ?cleanup, ?isAlive, ?configuration: 'C) =
+    type ResourceAgent<'T, 'C when 'C : equality>(maxUseCount:int, ctor: 'C option ->'T, ?cleanup, ?isAlive, ?configuration: 'C) =
         let mutable configuration = configuration
-        let mutable resource = ctor configuration
+        let mutable resource      = ctor configuration
+        let mutable useCount      = 0
         let respawn() =
             cleanup |> Option.iter (fun clean -> clean resource) 
             resource <- ctor configuration
+            useCount <- 0
         let agent    = 
             MailboxProcessor.Start(fun inbox ->
                 async {
                    while true do
                      try
-                         for i in 1 .. restartAfter do
-                             let! config, work = inbox.Receive()
-                             isAlive |> Option.iter (fun alive -> if not (alive resource) then respawn())
-                             if config <> configuration then
-                                configuration <- config
-                                respawn()
-                             do!  work resource
-                         respawn()
+                         let! increment, config, work = inbox.Receive()
+                         isAlive |> Option.iter (fun alive -> if not (alive resource) then respawn())
+                         if config <> configuration then
+                            configuration <- config
+                            respawn()
+                         do!  work resource
+                         if increment then useCount <- useCount + 1
+                                           if useCount >= maxUseCount && maxUseCount > 0 then respawn()
                      with _ -> respawn() 
                 }
             )
         do agent.Error.AddHandler <| Handler (fun _ _ -> respawn())
-        member x.Process (work:'T -> Wrap<'a>, ?config) =
+        member this.Process (work:'T -> Wrap<'a>, ?config, ?incrUse) =
             agent.PostAndAsyncReply
                 (fun reply ->
-                     (config, fun resource ->
+                     (defaultArg incrUse true, config, fun resource ->
                               async {
                                    let! res = work resource |> Wrap.getAsyncR
                                    reply.Reply res
                               } 
                      )
                 )
+        member this.Configuration  = configuration
+        member this.MaxUseCount    = maxUseCount
+        member this.UseCount       = useCount
         interface System.IDisposable with
             member this.Dispose () =
                 try cleanup |> Option.iter (fun clean -> clean resource) with _ -> ()
@@ -646,158 +647,160 @@ namespace FSSGlobal
     open System.Text
     open Useful
     
-    let runProcess p ops =
-        let procStart   = ProcessStartInfo(p, ops)
-        let proc        = new Process()
-        proc.StartInfo <- procStart
-        proc.Start() 
+    module RunProcess =
     
-    type ShellExError =
-        | ShellExitCode              of int
-        | ShellOutput                of string
-        | ShellErrors                of string
-        | ShellFailWithMessage       of string
-        | ShellFinishedWithNoMessage 
-        | ShellDidNotStart 
-        | ShellCrashed               of string
-    with interface ErrMsg with
-            member this.ErrMsg    = 
-                match this with 
-                | ShellFailWithMessage msg   -> msg  
-                | ShellFinishedWithNoMessage -> "warning - No output"
-                | ShellOutput          msg   -> msg
-                | ShellCrashed         msg   -> "Crashed " + msg
-                | msg                        -> sprintf "%A" msg
-            member this.IsWarning =
-                match this with 
-                | ShellFinishedWithNoMessage
-                | ShellOutput _              -> true
-                | _                          -> false 
-    
-    
-    type ShellEx(startInfo: ProcessStartInfo, ?outHndl, ?errHndl) =
-        let proc                              = new Process()
-        let bufferOutput                      = new StringBuilder()
-        let bufferError                       = new StringBuilder()
-        let append  (sb: StringBuilder) txt   = sb.Append(txt + "\n") |> ignore
-        let consume (sb: StringBuilder)       = 
-            let v = sb.ToString()
-            sb.Clear() |> ignore
-            v
-        let dataHandler handler               = DataReceivedEventHandler(fun sender args -> try handler args.Data with _ -> ())
-        let outputHandler                     = append bufferOutput |> dataHandler
-        let errorHandler                      = append bufferError  |> dataHandler
-        do  startInfo.RedirectStandardInput  <- true
-            startInfo.RedirectStandardOutput <- true
-            startInfo.RedirectStandardError  <- true
-            startInfo.UseShellExecute        <- false
-            proc.StartInfo                   <- startInfo
-            proc.EnableRaisingEvents         <- true
-            outputHandler                    |>             proc.OutputDataReceived.AddHandler
-            errorHandler                     |>             proc.ErrorDataReceived .AddHandler
-            Option.map dataHandler outHndl   |> Option.iter proc.OutputDataReceived.AddHandler
-            Option.map dataHandler errHndl   |> Option.iter proc.ErrorDataReceived .AddHandler
-    //        proc.Exited            .AddHandler(System.EventHandler     (fun sender args -> try proc.Close()                                    with _ -> () ))
-        new (program, args) =             
-            let startInfo                     = new ProcessStartInfo()
-            do  startInfo.FileName           <- program
-                startInfo.Arguments          <- args
-            new ShellEx(startInfo)
-        member this.Start() = 
-            let r = proc.Start() 
-            proc.BeginOutputReadLine()
-            proc.BeginErrorReadLine ()
-            r
-        member this.stdOutErr2Result out errs exit =
-            if exit <> 0
-            then Result.failWithMsgs
-                    [ if out  <> ""              then yield ErrSimple ("stdout: " + out           , true ) :> ErrMsg
-                      if errs <> ""              then yield ErrSimple (errs                       , false) :> ErrMsg
-                      if errs  = "" || exit <> 1 then yield ErrSimple (sprintf "ExitCode: %d" exit, false) :> ErrMsg
-                    ]
-            else Result.succeedWithMsgs out 
-                    [ if errs <> ""              then yield ErrSimple (errs                       , false) :> ErrMsg ]
-        member this.WaitToFinish() =
-            proc.WaitForExit()
-            let    output  = (consume bufferOutput).Trim()
-            let    error   = (consume bufferError ).Trim()
-            (output, error, if proc.HasExited then proc.ExitCode else -99999)
-        member this.StartAndWait() =
-            let started = this.Start()
-            this.WaitToFinish()
-        member this.WaitForInputIdle() =
-            proc.WaitForInputIdle()
-        member this.StartAndWaitR() =
-            this.StartAndWait()
-            |||> this.stdOutErr2Result
-        member this.RunToFinish() =
-            this.StartAndWaitR()
-            |> Result.result2String
-        member this.RunOutputToFileR file =
-            proc.OutputDataReceived.RemoveHandler outputHandler
-            use stream  = new System.IO.FileStream(file, System.IO.FileMode.Create)
-            let started = proc.Start() 
-            proc.BeginErrorReadLine ()
-            proc.StandardOutput.BaseStream.CopyTo stream
-            this.WaitToFinish()
-            |||> this.stdOutErr2Result
-        member this.RunOutputToFile file =
-            this.RunOutputToFileR file
-            |> Result.result2String
-        member this.Send(txt: string)   = proc.StandardInput.WriteLine txt
-        member this.Output  ()          = consume bufferOutput
-        member this.Error   ()          = consume bufferError
-        member this.Response(out:string, err:string)  = 
-            match out.Trim(), err.Trim() with
-    //        | ""  , ""  -> None
-            | good, ""  -> Some( Result.succeed        good                             )
-            | ""  , bad -> Some( Result.fail                <| ShellFailWithMessage bad )
-            | good, bad -> Some( Result.succeedWithMsg good <| ShellFailWithMessage bad )
-        member this.Response()          = this.Response(this.Output(), this.Error())
-        member this.SendAndWait(send, wait, ?onError) =
-            let eventWait = 
-                if defaultArg onError false then proc.ErrorDataReceived else proc.OutputDataReceived
-                |> Event.choose (fun evArgs -> try evArgs.Data |> (fun v -> if v.Contains wait then Some <| Result.succeed v else None) with _ -> None)
-            let eventAll = Event.merge eventWait  (Event.map (fun _ -> Result.fail <| ShellCrashed startInfo.FileName) proc.Exited)
-            Wrap.wrapper {
-                do! Result.tryProtection()
-                async { 
-                    do!    Async.Sleep 20 
-                    this.Send send        } |> Async.Start
-                let!   waitedR = Async.AwaitEvent eventAll
-                let!   waited  = waitedR
-                do!    Async.Sleep 200
-                let!   res =
-                       if defaultArg onError false then 
-                           this.Response(this.Output(), this.Error() |> fun msg -> msg.Split([| waited |], System.StringSplitOptions.None) |> Array.head)
-                       else this.Response()
-                       |> Option.defaultWith (fun () -> Result.succeedWithMsg "" ShellFinishedWithNoMessage)
-                return res
-            }
-        member this.HasExited = try proc.HasExited with _ -> true
-        interface System.IDisposable with
-            member this.Dispose () =
-                try proc.Kill   () with _ -> ()
-                try proc.Close  () with _ -> ()
-                try proc.Dispose() with _ -> ()
-    
-    
-    let runProcess2 p ops =
-        let procStart   = ProcessStartInfo(p, ops)
-        let shell       = new ShellEx(procStart)
-        shell.StartAndWaitR() 
-    
-    let runProcess3 p ops =
-        let procStart   = ProcessStartInfo(p, ops)
-        let shell       = new ShellEx(procStart)
-        shell.RunToFinish() 
-    
-    let runProcess4 p ops file =
-        let procStart   = ProcessStartInfo(p, ops)
-        let shell       = new ShellEx(procStart)
-        shell.RunOutputToFile file 
-    
-    
+        let startProcess p ops =
+            let procStart   = ProcessStartInfo(p, ops)
+            let proc        = new Process()
+            proc.StartInfo <- procStart
+            proc.Start() 
+        
+        type ShellExError =
+            | ShellExitCode              of int
+            | ShellOutput                of string
+            | ShellErrors                of string
+            | ShellFailWithMessage       of string
+            | ShellFinishedWithNoMessage 
+            | ShellDidNotStart 
+            | ShellCrashed               of string
+        with interface ErrMsg with
+                member this.ErrMsg    = 
+                    match this with 
+                    | ShellFailWithMessage msg   -> msg  
+                    | ShellFinishedWithNoMessage -> "warning - No output"
+                    | ShellOutput          msg   -> msg
+                    | ShellCrashed         msg   -> "Crashed " + msg
+                    | msg                        -> sprintf "%A" msg
+                member this.IsWarning =
+                    match this with 
+                    | ShellFinishedWithNoMessage
+                    | ShellOutput _              -> true
+                    | _                          -> false 
+        
+        
+        type ShellEx(startInfo: ProcessStartInfo, ?outHndl, ?errHndl) =
+            let proc                              = new Process()
+            let bufferOutput                      = new StringBuilder()
+            let bufferError                       = new StringBuilder()
+            let append  (sb: StringBuilder) txt   = sb.Append(txt + "\n") |> ignore
+            let consume (sb: StringBuilder)       = 
+                let v = sb.ToString()
+                sb.Clear() |> ignore
+                v
+            let dataHandler handler               = DataReceivedEventHandler(fun sender args -> try handler args.Data with _ -> ())
+            let outputHandler                     = append bufferOutput |> dataHandler
+            let errorHandler                      = append bufferError  |> dataHandler
+            do  startInfo.RedirectStandardInput  <- true
+                startInfo.RedirectStandardOutput <- true
+                startInfo.RedirectStandardError  <- true
+                startInfo.UseShellExecute        <- false
+                proc.StartInfo                   <- startInfo
+                proc.EnableRaisingEvents         <- true
+                outputHandler                    |>             proc.OutputDataReceived.AddHandler
+                errorHandler                     |>             proc.ErrorDataReceived .AddHandler
+                Option.map dataHandler outHndl   |> Option.iter proc.OutputDataReceived.AddHandler
+                Option.map dataHandler errHndl   |> Option.iter proc.ErrorDataReceived .AddHandler
+        //        proc.Exited            .AddHandler(System.EventHandler     (fun sender args -> try proc.Close()                                    with _ -> () ))
+            new (program, args) =             
+                let startInfo                     = new ProcessStartInfo()
+                do  startInfo.FileName           <- program
+                    startInfo.Arguments          <- args
+                new ShellEx(startInfo)
+            member this.Start() = 
+                let r = proc.Start() 
+                proc.BeginOutputReadLine()
+                proc.BeginErrorReadLine ()
+                r
+            member this.stdOutErr2Result out errs exit =
+                if exit <> 0
+                then Result.failWithMsgs
+                        [ if out  <> ""              then yield ErrSimple ("stdout: " + out           , true ) :> ErrMsg
+                          if errs <> ""              then yield ErrSimple (errs                       , false) :> ErrMsg
+                          if errs  = "" || exit <> 1 then yield ErrSimple (sprintf "ExitCode: %d" exit, false) :> ErrMsg
+                        ]
+                else Result.succeedWithMsgs out 
+                        [ if errs <> ""              then yield ErrSimple (errs                       , false) :> ErrMsg ]
+            member this.WaitToFinish() =
+                proc.WaitForExit()
+                let    output  = (consume bufferOutput).Trim()
+                let    error   = (consume bufferError ).Trim()
+                (output, error, if proc.HasExited then proc.ExitCode else -99999)
+            member this.StartAndWait() =
+                let started = this.Start()
+                this.WaitToFinish()
+            member this.WaitForInputIdle() =
+                proc.WaitForInputIdle()
+            member this.StartAndWaitR() =
+                this.StartAndWait()
+                |||> this.stdOutErr2Result
+            member this.RunToFinish() =
+                this.StartAndWaitR()
+                |> Result.result2String
+            member this.RunOutputToFileR file =
+                proc.OutputDataReceived.RemoveHandler outputHandler
+                use stream  = new System.IO.FileStream(file, System.IO.FileMode.Create)
+                let started = proc.Start() 
+                proc.BeginErrorReadLine ()
+                proc.StandardOutput.BaseStream.CopyTo stream
+                this.WaitToFinish()
+                |||> this.stdOutErr2Result
+            member this.RunOutputToFile file =
+                this.RunOutputToFileR file
+                |> Result.result2String
+            member this.Send(txt: string)   = proc.StandardInput.WriteLine txt
+            member this.Output  ()          = consume bufferOutput
+            member this.Error   ()          = consume bufferError
+            member this.Response(out:string, err:string)  = 
+                match out.Trim(), err.Trim() with
+        //        | ""  , ""  -> None
+                | good, ""  -> Some( Result.succeed        good                             )
+                | ""  , bad -> Some( Result.fail                <| ShellFailWithMessage bad )
+                | good, bad -> Some( Result.succeedWithMsg good <| ShellFailWithMessage bad )
+            member this.Response()          = this.Response(this.Output(), this.Error())
+            member this.SendAndWait(send, wait, ?onError) =
+                let eventWait = 
+                    if defaultArg onError false then proc.ErrorDataReceived else proc.OutputDataReceived
+                    |> Event.choose (fun evArgs -> try evArgs.Data |> (fun v -> if v.Contains wait then Some <| Result.succeed v else None) with _ -> None)
+                let eventAll = Event.merge eventWait  (Event.map (fun _ -> Result.fail <| ShellCrashed startInfo.FileName) proc.Exited)
+                Wrap.wrapper {
+                    do! Result.tryProtection()
+                    async { 
+                        do!    Async.Sleep 20 
+                        this.Send send        } |> Async.Start
+                    let!   waitedR = Async.AwaitEvent eventAll
+                    let!   waited  = waitedR
+                    do!    Async.Sleep 200
+                    let!   res =
+                           if defaultArg onError false then 
+                               this.Response(this.Output(), this.Error() |> fun msg -> msg.Split([| waited |], System.StringSplitOptions.None) |> Array.head)
+                           else this.Response()
+                           |> Option.defaultWith (fun () -> Result.succeedWithMsg "" ShellFinishedWithNoMessage)
+                    return res
+                }
+            member this.HasExited = try proc.HasExited with _ -> true
+            interface System.IDisposable with
+                member this.Dispose () =
+                    try proc.Kill   () with _ -> ()
+                    try proc.Close  () with _ -> ()
+                    try proc.Dispose() with _ -> ()
+        
+        
+        let runAndWaitR p ops =
+            let procStart   = ProcessStartInfo(p, ops)
+            let shell       = new ShellEx(procStart)
+            shell.StartAndWaitR() 
+        
+        let runToFinish p ops =
+            let procStart   = ProcessStartInfo(p, ops)
+            let shell       = new ShellEx(procStart, printfn "%s", eprintfn "%s")
+            shell.RunToFinish() 
+        
+        let runOutputToFile p ops file =
+            let procStart   = ProcessStartInfo(p, ops)
+            let shell       = new ShellEx(procStart)
+            shell.RunOutputToFile file 
+        
+        
     open System.IO
     
     let copyIfNotExistsToFile from dest =
@@ -993,17 +996,17 @@ namespace FSSGlobal
   
     //#define FSS_SERVER
     
-    #if FSS_SERVER
+    //#if FSS_SERVER
     open FSSGlobal.UsefulDotNet
     open FSSGlobal.UsefulDotNet.Messaging
     //#r @"Compiled\RemotingDll\RemotingDll.dll"
     //#r @"..\packages\FSharp.Data\lib\net40\FSharp.Data.dll"
     //#r @"..\packages\FSharp.Data\lib\net40\FSharp.Data.DesignTime.dll"
-    #else
+    //#else
     
     //#r "remote.dll"
-    open CIPHERPrototype.Messaging
-    #endif
+    //open CIPHERPrototype.Messaging
+    //#endif
     open WebSharper
     open Useful
     //open UsefulFewJS
@@ -1034,13 +1037,13 @@ namespace FSSGlobal
     let  AddressId = AddressId
     
     #if FSS_SERVER
-    let awaitRequestForF = selectF awaitRequestFor awaitRequestForRpc
-    let sendRequestF     = selectF sendRequest         sendRequestRpc
-    let replyToF         = selectF replyTo                 replyToRpc
-    #else
     let awaitRequestForF = selectF awaitRequestFor awaitRequestFor
     let sendRequestF     = selectF sendRequest         sendRequest
     let replyToF         = selectF replyTo                 replyTo
+    #else
+    let awaitRequestForF = selectF awaitRequestFor awaitRequestForRpc
+    let sendRequestF     = selectF sendRequest         sendRequestRpc
+    let replyToF         = selectF replyTo                 replyToRpc
     #endif
     let AsyncStartF      = selectF AsyncStart             Async.Start
     
@@ -1271,7 +1274,7 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1516199756515"
+        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1516571497034"
         let msgClient  = MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
         let toId       = AddressId fsIds
         let stringResponseR response =
@@ -1313,7 +1316,7 @@ namespace FSSGlobal
         member this.RunActionCall   (name, act, parms     ) = sendMsg toId  (RunActionCall       (name, act, parms      ))    stringResponseR
         member this.FSStationId                             = fsIds
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1516199756515"
+        static member FSStationId_                          = "FSharpStation1516571497034"
     
     
   module FsEvaluator =
@@ -1322,6 +1325,7 @@ namespace FSSGlobal
     module Evaluator =
         open System.Diagnostics
         open UsefulDotNet
+        open RunProcess
         
         let endToken = "xXxY" + "yYyhH"
         type FsiExe(config, ?outHndl, ?errHndl) =
@@ -1349,7 +1353,7 @@ namespace FSSGlobal
         let mutable fssClient = FsStationShared.FsStationClient("Fsi")
         let queueOutput = MailboxProcessor.Start(fun mail -> 
             let output      = new System.Text.StringBuilder()
-            let append  txt = output.Append(txt + "\n") |> ignore
+            let append  txt = output.Append((if output.Length = 0 then "" else "\n") + txt) |> ignore
             let consume ()  = let v = output.ToString()
                               output.Clear() |> ignore
                               v
@@ -1370,8 +1374,8 @@ namespace FSSGlobal
             txt |> Some |> queueOutput.Post
             async { do! Async.Sleep 100
                     queueOutput.Post None } |> Async.Start
-        let outHndl (txt:string) = txt.Replace(endToken, "Done!") |> queueText
-        let errHndl (txt:string) = "ERR : " + txt                 |> queueText
+        let outHndl (txt:string) = txt.Replace(endToken, "Done!")   |> queueText
+        let errHndl (txt:string) = if txt <> "" then "ERR : " + txt |> queueText
         let setFsid id ep = if id <> fssClient.FSStationId && id <> "" then fssClient <- FsStationShared.FsStationClient("Fsi", id, endPoint = ep) ; printfn "setFSid = %s" id
         #else
         let outHndl       = ignore
@@ -1388,17 +1392,15 @@ namespace FSSGlobal
     
         let extractConfig (code:string[]) = if code.[0].StartsWith "////-d:" then code.[0].[4..] else ""
     
-        let evalFsiExe (code:string) =
+        let evalFsiExe (code:string) incrUseCount =
             Wrap.wrapper {
-                let config = extractConfig (code.Split '\n')
-                let! resR = fsiExe.Value.Process(fun fsi -> 
+                let  config = extractConfig (code.Split '\n')
+                let! resR   = fsiExe.Value.Process(fun fsi -> 
                     Wrap.wrapper {
-                      do! Result.tryProtection()
-                      let! res = fsi.Eval code 
-                      return res
+                      return! fsi.Eval code 
                     }
-                , config)
-                let! res = resR
+                , config, incrUseCount)
+                let! res    = resR
                 return res
             }
     
@@ -1406,17 +1408,17 @@ namespace FSSGlobal
     open WebSharper
     
     [< Rpc >]
-    let evaluateAS (fsid:string) (ep:string) source =
+    let evaluateAS (fsid:string) (ep:string) incrUseCount source =
         async {
             Evaluator.setFsid fsid ep
-            let!    res  = Evaluator.evalFsiExe source |> Wrap.getAsyncR 
+            let!    res  = Evaluator.evalFsiExe source incrUseCount |> Wrap.getAsyncR 
             return  res |> Result.mapMsgs (Seq.map (fun (e:ErrMsg) -> e.ErrMsg, e.IsWarning) >> Seq.toArray)
         }
         
     [< JavaScript >]
-    let evaluateAR fsid ep source =
+    let evaluateAR fsid ep incrUseCount source =
         async {
-            let!   vO, msgs = evaluateAS fsid ep source
+            let!   vO, msgs = evaluateAS fsid ep incrUseCount source 
             return  Result (vO,  msgs |> Seq.map (fun (msg, wrn) -> ErrSimple(msg, wrn) :> ErrMsg) |> Seq.toList)
         }
         
@@ -1424,6 +1426,7 @@ namespace FSSGlobal
     module TranslatorCaller =
         open Useful
         open UsefulDotNet
+        open UsefulDotNet.RunProcess
         open CompOptionsModule
         open System
         open System.IO
@@ -3812,11 +3815,8 @@ namespace FSSGlobal
     open FsStationShared
     open System.Collections.Generic
     open Useful
-    
-    #if FSS_SERVER
     open FsTranslator
     open FsEvaluator
-    #endif
     
     [< JavaScript >]
     module FsGlobal =
@@ -4368,7 +4368,7 @@ namespace FSSGlobal
       let evalCodeW (code: string) =
           Wrap.wrapper {
               codeFS.Value     <- code
-              let! resR         = evaluateAR fsIds JS.Window.Location.Href code
+              let! resR         = evaluateAR fsIds JS.Window.Location.Href true code
               let! res          = resR
               return  ""
           }
