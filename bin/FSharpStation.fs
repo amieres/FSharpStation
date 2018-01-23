@@ -510,6 +510,8 @@ namespace FSSGlobal
     #endif
     
     let inline swap f a b = f b a
+    let inline __   f a b = f b a
+    
     
     #if WEBSHARPER
     [< Inline >]
@@ -758,8 +760,9 @@ namespace FSSGlobal
                 | good, bad -> Some( Result.succeedWithMsg good <| ShellFailWithMessage bad )
             member this.Response()          = this.Response(this.Output(), this.Error())
             member this.SendAndWait(send, wait, ?onError) =
+                let waitOnError   = defaultArg onError false
                 let eventWait = 
-                    if defaultArg onError false then proc.ErrorDataReceived else proc.OutputDataReceived
+                    if waitOnError then proc.ErrorDataReceived else proc.OutputDataReceived
                     |> Event.choose (fun evArgs -> try evArgs.Data |> (fun v -> if v.Contains wait then Some <| Result.succeed v else None) with _ -> None)
                 let eventAll = Event.merge eventWait  (Event.map (fun _ -> Result.fail <| ShellCrashed startInfo.FileName) proc.Exited)
                 Wrap.wrapper {
@@ -771,7 +774,7 @@ namespace FSSGlobal
                     let!   waited  = waitedR
                     do!    Async.Sleep 200
                     let!   res =
-                           if defaultArg onError false then 
+                           if waitOnError then 
                                this.Response(this.Output(), this.Error() |> fun msg -> msg.Split([| waited |], System.StringSplitOptions.None) |> Array.head)
                            else this.Response()
                            |> Option.defaultWith (fun () -> Result.succeedWithMsg "" ShellFinishedWithNoMessage)
@@ -1274,7 +1277,7 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1516571497034"
+        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1516664183943"
         let msgClient  = MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
         let toId       = AddressId fsIds
         let stringResponseR response =
@@ -1316,7 +1319,7 @@ namespace FSSGlobal
         member this.RunActionCall   (name, act, parms     ) = sendMsg toId  (RunActionCall       (name, act, parms      ))    stringResponseR
         member this.FSStationId                             = fsIds
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1516571497034"
+        static member FSStationId_                          = "FSharpStation1516664183943"
     
     
   module FsEvaluator =
@@ -1328,6 +1331,7 @@ namespace FSSGlobal
         open RunProcess
         
         let endToken = "xXxY" + "yYyhH"
+        let mutable silent    = false
         type FsiExe(config, ?outHndl, ?errHndl) =
             let startInfo                 = ProcessStartInfo(@"fsiAnyCpu.exe", config |> String.concat " ")             
             let shell                     = new ShellEx(startInfo, ?outHndl = outHndl, ?errHndl = errHndl)  // --noninteractive
@@ -1350,6 +1354,7 @@ namespace FSSGlobal
                     (shell :> System.IDisposable).Dispose()
     
         #if FSS_SERVER
+        printfn "FSS_SERVER"
         let mutable fssClient = FsStationShared.FsStationClient("Fsi")
         let queueOutput = MailboxProcessor.Start(fun mail -> 
             let output      = new System.Text.StringBuilder()
@@ -1374,8 +1379,8 @@ namespace FSSGlobal
             txt |> Some |> queueOutput.Post
             async { do! Async.Sleep 100
                     queueOutput.Post None } |> Async.Start
-        let outHndl (txt:string) = txt.Replace(endToken, "Done!")   |> queueText
-        let errHndl (txt:string) = if txt <> "" then "ERR : " + txt |> queueText
+        let outHndl (txt:string) = if not silent then txt.Replace(endToken, "Done!")   |> queueText
+        let errHndl (txt:string) = if not silent then if txt <> "" then "ERR : " + txt |> queueText
         let setFsid id ep = if id <> fssClient.FSStationId && id <> "" then fssClient <- FsStationShared.FsStationClient("Fsi", id, endPoint = ep) ; printfn "setFSid = %s" id
         #else
         let outHndl       = ignore
@@ -1384,17 +1389,22 @@ namespace FSSGlobal
         #endif
     
         let fsiExe = lazy new ResourceAgent<_, string> (70
-                                                      , (fun config -> new FsiExe([ "--nologo"
-                                                                                    "--quiet"
-                                                                                    defaultArg config ""
-                                                                                  ], outHndl, errHndl))
+                                                      , (fun config ->
+                                                              printfn "FsiExe %s" (defaultArg config "")
+                                                              new FsiExe([ "--nologo"
+                                                                           "--quiet"
+                                                                           defaultArg config ""
+                                                                         ], outHndl, errHndl))
                                                       , (fun fsi -> (fsi :> System.IDisposable).Dispose()), (fun fsi -> fsi.IsAlive), "")
     
-        let extractConfig (code:string[]) = if code.[0].StartsWith "////-d:" then code.[0].[4..] else ""
+        #if WEBSHARPER
+        [< JavaScript >]
+        #endif
+        let extractConfig (code:string) = if code.StartsWith "////-d:" then code.[4..code.IndexOf '\n' - 1] else ""
     
         let evalFsiExe (code:string) incrUseCount =
             Wrap.wrapper {
-                let  config = extractConfig (code.Split '\n')
+                let  config = extractConfig code
                 let! resR   = fsiExe.Value.Process(fun fsi -> 
                     Wrap.wrapper {
                       return! fsi.Eval code 
@@ -1404,6 +1414,58 @@ namespace FSSGlobal
                 return res
             }
     
+        let evalSilent (config:string option) fs = 
+            Wrap.wrapper {
+                silent <- true
+                let! resR   = fsiExe.Value.Process(fun fsi -> 
+                    Wrap.wrapper {
+                      return! fsi.Eval fs
+                    }
+                , config 
+                  |> Option.orElse fsiExe.Value.Configuration
+                  |> Option.defaultValue ""
+                , false)
+                let! res    = resR
+                silent <- false
+                return res
+            }
+            |> Wrap.runSynchronouslyS false 
+            |> fun s -> s.Split('\n').[0]     
+            
+        let installPresence configO = evalSilent configO """
+    module CodePresence =
+        let mutable present : Map<string, string>  = Map.empty
+        let presenceOf    k   = present |> Map.tryFind k |> Option.defaultValue "--" |> printfn "%s"
+        let addPresenceOf k v = present <- present |> Map.add k v ; printfn "ok"
+    """
+    
+        #if WEBSHARPER
+        [< Rpc >]
+        #endif
+        let addPresence (name:string) (v:string) = 
+            async {
+                let code = sprintf "CodePresence.addPresenceOf %A %A" (name.Replace("\"", "\\\"")) v
+                evalSilent None code
+                |> function
+                   | "ok" -> ()
+                   | _    -> installPresence None      |> ignore
+                             evalSilent      None code |> ignore
+            }
+        #if WEBSHARPER
+        [< Rpc >]
+        #endif
+        let getPresence config (name:string)   = 
+            async {
+                let code = sprintf "CodePresence.presenceOf    %A" (name.Replace("\"", "\\\""))
+                return
+                    evalSilent (Some config) code
+                    |> function
+                       | v when v = endToken -> installPresence (Some config) |> ignore
+                                                None
+                       | "--"                -> None
+                       | v                   -> Some v
+            }
+        
     //#define WEBSHARPER
     open WebSharper
     
@@ -4377,7 +4439,9 @@ namespace FSSGlobal
           Wrap.wrapper {
               let!   snp        = snpO |> Result.fromOption ``Snippet Missing``
               let    code       = snp.GetCodeFsx true
-              return!             evalCodeW code
+              let!   res        = evalCodeW code
+              do!    Evaluator.addPresence (sprintf "%A" snp.id) "ok"
+              return res
           }
           
       let doSomething msgStart msgFinish (doIt: unit -> Wrap<_>) = 
@@ -5079,31 +5143,41 @@ namespace FSSGlobal
           | _               -> getSnpO()
       
       let getCodeFromAct (act: Action) addOpen = 
-          let getValue =
-              function
-              | Constant v  -> v
-              | Dynamic  vw -> failwith "Get value from View not implemented"
-              | DynamicV vr -> vr.Value
-          let snpO = getSnpO()
-          let propValue p = snpO |> Option.bind (fun snp -> snp.propValue p)
-          let openPre     = if addOpen then propValue "open" |> Option.map (swap (+) "\n") |> Option.defaultValue "" else ""
-          let funcName    = lazy (act.text |> getValue)
-          let actionTempl = lazy (propValue "action-template" |> Option.defaultValue "${parm}() |> printfn \"%A\"")
-          act.parms
-          |> Option.map (Array.map unbox<string>)
-          |> function
-             | Some [| "Code"     ; code |] -> code |> Some
-             | Some [| "Property" ; prop |] -> prop |> propValue 
-             | _                            -> None
-          |> Option.orElseWith  (fun () -> funcName.Value |> propValue                           )
-          |> Option.defaultWith (fun () -> funcName.Value |> translateTemplate actionTempl.Value )
-          |> (fun code -> if code.StartsWith "////" then code else openPre + code)
+          Wrap.wrapper {
+              let getValue =
+                  function
+                  | Constant v  -> v
+                  | Dynamic  vw -> failwith "Get value from View not implemented"
+                  | DynamicV vr -> vr.Value
+              let snpO = getSnpO()
+              let propValue p = snpO |> Option.bind (fun snp -> snp.propValue p)
+              let openPre     = if addOpen then propValue "open" |> Option.map (__ (+) "\n") |> Option.defaultValue "" else ""
+              let funcName    = lazy (act.text |> getValue)
+              let actionTempl = lazy (propValue "action-template" |> Option.defaultValue "${parm}() |> printfn \"%A\"")
+              let code =
+                  act.parms
+                  |> Option.map (Array.map unbox<string>)
+                  |> function
+                     | Some [| "Code"     ; code |] -> code |> Some
+                     | Some [| "Property" ; prop |] -> prop |> propValue 
+                     | _                            -> None
+                  |> Option.orElseWith  (fun () -> funcName.Value |> propValue                           )
+                  |> Option.defaultWith (fun () -> funcName.Value |> translateTemplate actionTempl.Value )
+                  |> (fun code -> if code.StartsWith "////" then code else openPre + code)
+              match snpO with
+              | None     -> return code
+              | Some snp -> let! presence = Evaluator.getPresence (Evaluator.extractConfig code) (sprintf "%A" snp.id) 
+                            if presence = Some "ok" then return code else
+                            let! r = evalSnippetW snpO
+                            return code
+                            
+          }
       
-      let evalFsCode    (act: Action) () = getCodeFromAct act true  |>  evaluateCodeW
-      let evalFableCode (act: Action) () = getCodeFromAct act false |>  fableCodeW
-      let evaluateFS2   (act: Action) () = getSnippet     act       |>  evaluateSnippetW
-      let fableFS2      (act: Action) () = getSnippet     act       |>  fableSnippetW
-      let compileRunP2  (act: Action) p  = getSnippet     act       |> (compileRunW p)   
+      let evalFsCode    (act: Action) () = getCodeFromAct act true  |> Wrap.bind evaluateCodeW
+      let evalFableCode (act: Action) () = getCodeFromAct act false |> Wrap.bind fableCodeW
+      let evaluateFS2   (act: Action) () = getSnippet     act       |>           evaluateSnippetW
+      let fableFS2      (act: Action) () = getSnippet     act       |>           fableSnippetW
+      let compileRunP2  (act: Action) p  = getSnippet     act       |>           compileRunW p
       let setSnippetProp(act: Action) () =
           Wrap.wrapper {
               do!  Result.tryProtection()
