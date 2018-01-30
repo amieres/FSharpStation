@@ -30,7 +30,7 @@ nuget Newtonsoft.Json
 nuget XPlot.Plotly
 nuget SSH.NET
 
-nuget FSharpPlus 1.0.0-CI00089 CI
+nuget FSharpPlus 1.0.0-CI00136
 
 nuget FSharp.Quotations.Evaluator
 
@@ -43,3 +43,6 @@ nuget NUnit
 nuget CommonServiceLocator 
 nuget Owin.WebSocket
 nuget Zafir.Owin.WebSocket
+
+nuget AWSSDK.Core
+nuget AWSSDK.Lambda

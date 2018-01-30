@@ -1277,7 +1277,7 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1516664183943"
+        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1516754472774"
         let msgClient  = MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
         let toId       = AddressId fsIds
         let stringResponseR response =
@@ -1319,7 +1319,7 @@ namespace FSSGlobal
         member this.RunActionCall   (name, act, parms     ) = sendMsg toId  (RunActionCall       (name, act, parms      ))    stringResponseR
         member this.FSStationId                             = fsIds
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1516664183943"
+        static member FSStationId_                          = "FSharpStation1516754472774"
     
     
   module FsEvaluator =
@@ -2144,6 +2144,12 @@ namespace FSSGlobal
             | Dynamic  wa -> wa
             | DynamicV va -> va.View
     
+        let getAsync v =
+            match v with
+            | Constant  a -> async.Return   a
+            | Dynamic  wa -> View.GetAsync wa
+            | DynamicV va -> async.Return  va.Value
+    
         let bindV : ('a -> Val<'b>) -> Val<'a> -> Val<'b> =
             fun     f                  v       -> 
                 match v with
@@ -2279,6 +2285,8 @@ namespace FSSGlobal
         let inline map2       f  v1 v2       = map2V           f (fixit v1) (fixit v2)
         let inline map3       f  v1 v2 v3    = map3V           f (fixit v1) (fixit v2) (fixit v3)
         let inline map4       f  v1 v2 v3 v4 = map4V           f (fixit v1) (fixit v2) (fixit v3) (fixit v4)
+    
+        let inline apply      va vf          = bindV(fun f-> mapV f va) vf
       
         let inline iter2      f  v1 v2       = map2            f v1 v2       |> iterV id
         let inline iter3      f  v1 v2 v3    = map3            f v1 v2 v3    |> iterV id
@@ -3084,21 +3092,24 @@ namespace FSSGlobal
            widthHeight   = Var.Create (1000.0, 100.0)
            lastSplitter  = None
         }
-        member this.NewSplitter  (f: float)  col =
+        member this.NewSplitter  (f: Var<float>, col) =
             let spl = SplitterBar.New(f)
             if col then
                 { this with lastSplitter = Some (this.cols.Length, col) ; cols = Array.append this.cols  [| spl              |> Splitter |] }
             else 
                 { this with lastSplitter = Some (this.rows.Length, col) ; rows = Array.append this.rows  [| spl.Horizontal() |> Splitter |] }
+        member this.NewSplitter        (f: float, col) = this.NewSplitter(Var.Create f, col)
         member inline this.ColFixedPx   f              = { this with cols    = Array.append this.cols    [| Pixel     (Val.fixit f)              |> Fixed    |] }
         member inline this.ColFixed     f              = { this with cols    = Array.append this.cols    [| Percentage(Val.fixit f)              |> Fixed    |] }
         member inline this.ColVariable (s:SplitterBar) = { this with cols    = Array.append this.cols    [| s                                    |> Splitter |] }
-        member inline this.ColVariable (f:float)       = this.NewSplitter f true
+        member inline this.ColVariable (f:float)       = this.NewSplitter(f, true)
+        member inline this.ColVariable (f:Var<float>)  = this.NewSplitter(f, true)
         member inline this.ColAuto     (f:float)       = { this with cols    = Array.append this.cols    [| SplitterBar.New(     f)              |> Auto     |] }
         member inline this.RowFixedPx   f              = { this with rows    = Array.append this.rows    [| Pixel     (Val.fixit f)              |> Fixed    |] }
         member inline this.RowFixed     f              = { this with rows    = Array.append this.rows    [| Percentage(Val.fixit f)              |> Fixed    |] }
         member inline this.RowVariable (s:SplitterBar) = { this with rows    = Array.append this.rows    [| s                                    |> Splitter |] }
-        member inline this.RowVariable (f:float)       = this.NewSplitter f false
+        member inline this.RowVariable (f:float)       = this.NewSplitter(f, false)
+        member inline this.RowVariable (f:Var<float>)  = this.NewSplitter(f, false)
         member inline this.RowAuto     (f:float)       = { this with rows    = Array.append this.rows    [| SplitterBar.New(     f).Horizontal() |> Auto     |] }
         member        this.Content (area, html)        = { this with content = Array.append this.content [| Some area, html                                  |] }
         member        this.Content        html         = { this with content = Array.append this.content [| None     , html                                  |] }
@@ -3195,7 +3206,7 @@ namespace FSSGlobal
             ]
         member this.Render =
             div <| this.GridTemplate()
-        static member inline NewBisect(first, secT, ver, per:float, ch1, ch2) =
+        static member inline NewBisect(first, secT, ver, per:Var<float>, ch1, ch2) =
             let sect, auto, areas = 
                 if ver then match secT with
                             | StVariable  -> fun (g:Grid) -> g.ColVariable per
@@ -3591,7 +3602,7 @@ namespace FSSGlobal
         | GPSI_Json       of LayoutDescriptionFable
         | GPSI_Root       of string
         | GPSI_TabStrip   of bool * string[]                                               
-        | GPSI_Split      of first: bool * secT: SectionType * vertical: bool * per:float * string * string * min: float * max: float
+        | GPSI_Split      of first: bool * secT: SectionType * vertical: bool * string * string
         | GPSI_Call       of string * string * string[]                                    
         with static member New =  GPSI_Internal <| System.Guid.NewGuid()
     
@@ -3630,26 +3641,43 @@ namespace FSSGlobal
     
     [<NoComparison ; NoEquality>]
     type Layout = {
-        parts         : System.Collections.Generic.Dictionary<string, IRef<GuiPartSourceId * GuiPart> * HtmlNode>
+        parts         : System.Collections.Generic.Dictionary<string, IRef<GuiPartSourceId * GuiPart> * HtmlNode * Val<GuiPart -> unit>>
         tabStrips     : System.Collections.Generic.Dictionary<string, TabStrip>
     }
+    
+    let t1of3 = function v, _, _ -> v
+    let t2of3 = function _, v, _ -> v
+    let t3of3 = function _, _, v -> v
     
     type GuiPart with
         member this.GetHtmlNode (lyt: Layout) name =
             match this with
-            | GuiRoot     root                                             -> HtmlEmpty
-            | GuiNode     node                                             -> node
-            | GuiAction   act                                              -> act.Button.Render
-            | GuiSplit   (first, secT , vertical, per, ch1, ch2, min, max) -> Grid.NewBisect(first, secT, vertical, per, lyt.GetNode ch1, lyt.GetNode ch2).Min(min).Max(max).Render
+            | GuiRoot     root                                             -> HtmlEmpty                          , ignore
+            | GuiNode     node                                             -> node                               , ignore
+            | GuiAction   act                                              -> act.Button.Render                  , ignore
+            | GuiCall    (name, action, parms)                             -> lyt.GetCallButton name action parms, ignore
             | GuiTabStrip(top  , nodes                                   ) -> let ts = TabStrip.New(nodes |> Seq.map (fun node -> node, lyt.GetNode node)).SetTop(top)
                                                                               addValue name ts lyt.tabStrips
-                                                                              ts.Render
-            | GuiCall    (name, action, parms)                             -> lyt.GetCallButton name action parms
+                                                                              ts.Render                          , ignore
+            | GuiSplit   (first, secT , vertical, per, ch1, ch2, min, max) -> let minV            = Var.Create min
+                                                                              let maxV            = Var.Create max
+                                                                              let perV            = Var.Create per
+                                                                              let mutable curper  =            per
+                                                                              let grd = Grid.NewBisect(first, secT, vertical, perV, lyt.GetNode ch1, lyt.GetNode ch2).Min(minV).Max(maxV)
+                                                                              grd.Render
+                                                                             ,function 
+                                                                              | GuiSplit   (first, secT , vertical, per, ch1, ch2, min, max) -> 
+                                                                                  if curper     <> per then
+                                                                                     curper     <- per
+                                                                                     perV.Value <- per
+                                                                                  minV.Value    <- min
+                                                                                  maxV.Value    <- max
+                                                                              | _ -> ()
     and  Layout with
         member this.GetGuiCallAction (name:string) (action:string) (parms:string[]) =
             if this.parts.ContainsKey action then
                 match this.parts.[action] with
-                | partv, _ ->
+                | partv, _, _ ->
                     match partv.Value with 
                     | _, GuiAction act -> act.Text(name).Parms(parms |> Array.map (fun s -> s:>obj))           |> Result.succeed
                     | _                -> sprintf "GuiPart %s is not a GuiAction" action |> Result.failSimpleError
@@ -3659,15 +3687,17 @@ namespace FSSGlobal
             | Result.Success(act, _) -> act.Button.Render
             | Result.Failure ms      -> div [ ms |> Result.msgs2String |> String.concat ". " |> htmlText ]
         member this.AddNode name sid part =
-            let partV = Var.Create (sid, part)
-            let node  = partV |> Val.map (fun (si, p: GuiPart) -> p.GetHtmlNode this name) |> HtmlElementV 
-            this.parts.Add(name, (partV :> IRef<_>, node ))
+            let partV  = Var.Create (sid, part)
+            let nodeFv = partV  |> Val.map (fun (si, p: GuiPart) -> p.GetHtmlNode this name)
+            let node   = nodeFv |> Val.map fst |> HtmlElementV 
+            let update = nodeFv |> Val.map snd
+            this.parts.Add(name, (partV :> IRef<_>, node, update))
             node
         member this.GetNode name =
             let mutable res = Unchecked.defaultof<_>
             let ok = this.parts.TryGetValue(name, &res)
             if ok 
-            then snd res
+            then t2of3 res
             else this.AddNode name GuiPartSourceId.New (GuiNode <| div [ htmlText (sprintf "GuiPart %s not found" name) ])
         static member AddGuids steps = 
             steps 
@@ -3677,8 +3707,8 @@ namespace FSSGlobal
                  | GuiNode     node                                             -> GuiPartSourceId.New
                  | GuiAction   act                                              -> GuiPartSourceId.New
                  | GuiRoot     root                                             -> GPSI_Root     root                                            
-                 | GuiSplit   (first, secT , vertical, per, ch1, ch2, min, max) -> GPSI_Split   (first, secT , vertical, per, ch1, ch2, min, max)
-                 | GuiTabStrip(top  , nodes                                   ) -> GPSI_TabStrip(top  , nodes                                   )
+                 | GuiSplit   (first, secT , vertical, per, ch1, ch2, min, max) -> GPSI_Split   (first, secT , vertical, ch1, ch2)
+                 | GuiTabStrip(top  , nodes                                   ) -> GPSI_TabStrip(top  , nodes                    )
                  | GuiCall    (name, action, parms)                             -> GPSI_Call    (name, action, parms)                            
                ,part        )  
             |> Seq.toArray
@@ -3692,7 +3722,7 @@ namespace FSSGlobal
         member this.Render  =
             let node = 
                 this.parts.Values 
-                |> Seq.tryPick(fst >> fun v -> match v.Value with | _, GuiRoot root -> Some root | _ -> None )
+                |> Seq.tryPick(t1of3 >> fun v -> match v.Value with | _, GuiRoot root -> Some root | _ -> None )
                 |> Option.defaultValue "main"
             this.GetNode node
         member this.AddNewSteps steps steps2 =
@@ -3700,8 +3730,11 @@ namespace FSSGlobal
             |> Array.groupBy (fun (name, si, part) -> name           )
             |> Array.map     (fun (name, det     ) -> det |> Seq.last)
             |> Array.iter    (fun (name, si, part) -> if this.parts.ContainsKey name then
-                                                           let partv, _ = this.parts.[name] 
-                                                           if fst partv.Value <> si then partv.Value <- (si, part)
+                                                           let partv, node, upd = this.parts.[name] 
+                                                           let xsi, xpart = partv.Value
+                                                           if xsi = si 
+                                                           then Val.apply (Val.Constant part) upd |> Val.iter id
+                                                           else partv.Value <- (si, part)
                                                       else this.AddNode name si part |> ignore
             ) 
         member this.SetLayoutJson steps json =
@@ -5149,10 +5182,11 @@ namespace FSSGlobal
                   | Constant v  -> v
                   | Dynamic  vw -> failwith "Get value from View not implemented"
                   | DynamicV vr -> vr.Value
+              let! text = Val.getAsync act.text
+              setOutMsg (text + "...")
               let snpO = getSnpO()
               let propValue p = snpO |> Option.bind (fun snp -> snp.propValue p)
               let openPre     = if addOpen then propValue "open" |> Option.map (__ (+) "\n") |> Option.defaultValue "" else ""
-              let funcName    = lazy (act.text |> getValue)
               let actionTempl = lazy (propValue "action-template" |> Option.defaultValue "${parm}() |> printfn \"%A\"")
               let code =
                   act.parms
@@ -5161,8 +5195,8 @@ namespace FSSGlobal
                      | Some [| "Code"     ; code |] -> code |> Some
                      | Some [| "Property" ; prop |] -> prop |> propValue 
                      | _                            -> None
-                  |> Option.orElseWith  (fun () -> funcName.Value |> propValue                           )
-                  |> Option.defaultWith (fun () -> funcName.Value |> translateTemplate actionTempl.Value )
+                  |> Option.orElseWith  (fun () -> text |> propValue                           )
+                  |> Option.defaultWith (fun () -> text |> translateTemplate actionTempl.Value )
                   |> (fun code -> if code.StartsWith "////" then code else openPre + code)
               match snpO with
               | None     -> return code
@@ -5441,7 +5475,9 @@ namespace FSSGlobal
               "code_buttons"      , fixedHorSplitter false  80.0 "code_props"    "buttons"
               "snippets_code"     , varVerSplitter          15.0 "snippets"      "code_buttons"   5.0  95.0
               "main_messages"     , varHorSplitter          82.0 "snippets_code" "messagesB"     35.0 100.0             
-              "main"              , fixedHorSplitter true   50.0 "menu"          "main_messages"
+              "extrabuttons"      , GuiNode <| div []
+              "main_extra"        , varVerSplitter         100.0 "main_messages" "extrabuttons"  20.0 100.0
+              "main"              , fixedHorSplitter true   50.0 "menu"          "main_extra"
           |]   
       
       let layout = Layout.New steps

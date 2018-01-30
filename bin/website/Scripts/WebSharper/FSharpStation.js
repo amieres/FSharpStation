@@ -2035,11 +2035,11 @@
  },WebSharper.Obj,FsStationClient);
  FsStationClient.get_FSStationId_=function()
  {
-  return"FSharpStation1516664183943";
+  return"FSharpStation1516754472774";
  };
  FsStationClient.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
-  this.fsIds=Option.defaultValue("FSharpStation1516664183943",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1516754472774",fsStationId);
   this.msgClient=new MessagingClient.New(clientId,timeout,endPoint);
   this.toId=FsStationShared.AddressId(this.fsIds);
  },FsStationClient);
@@ -2701,6 +2701,13 @@
  {
   Val.iterV(Global.ignore,Val.map2(f,v1,v2));
  };
+ Val.apply=function(va,vf)
+ {
+  return Val.bindV(function(f)
+  {
+   return Val.mapV(f,va);
+  },vf);
+ };
  Val.map4=function(f,v1,v2,v3,v4)
  {
   return Val.map4V(f,Val.fixit(v1),Val.fixit(v2),Val.fixit(v3),Val.fixit(v4));
@@ -2860,6 +2867,10 @@
     return Val.toView(f(x));
    },v.$0.RView())
   }):f(v.$0);
+ };
+ Val.getAsync=function(v)
+ {
+  return v.$==2?View.GetAsync(v.$0):v.$==1?Concurrency.Return(v.$0.RVal()):Concurrency.Return(v.$0);
  };
  Val.toView=function(v)
  {
@@ -4489,9 +4500,13 @@
   },
   RowVariable:function(f)
   {
+   return this.NewSplitter$1(f,false);
+  },
+  RowVariable$1:function(f)
+  {
    return this.NewSplitter(f,false);
   },
-  RowVariable$1:function(s)
+  RowVariable$2:function(s)
   {
    return Grid.New(this.padding,this.gap,this.content,this.cols,this.rows.concat([{
     $:2,
@@ -4527,9 +4542,13 @@
   },
   ColVariable:function(f)
   {
+   return this.NewSplitter$1(f,true);
+  },
+  ColVariable$1:function(f)
+  {
    return this.NewSplitter(f,true);
   },
-  ColVariable$1:function(s)
+  ColVariable$2:function(s)
   {
    return Grid.New(this.padding,this.gap,this.content,this.cols.concat([{
     $:2,
@@ -4558,8 +4577,12 @@
   },
   NewSplitter:function(f,col)
   {
+   return this.NewSplitter$1(Var.Create$1(f),col);
+  },
+  NewSplitter$1:function(f,col)
+  {
    var spl,l,l$1;
-   spl=SplitterBar.New$1(f);
+   spl=SplitterBar.New$2(f);
    return col?(l={
     $:1,
     $0:[Arrays.length(this.cols),col]
@@ -4845,7 +4868,7 @@
        }
       }
      else
-      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3296,18);
+      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3307,18);
    }
    else
     void 0;
@@ -5138,11 +5161,21 @@
  GuiPart=Template.GuiPart=Runtime.Class({
   GetHtmlNode:function(lyt,name)
   {
-   var ts;
-   return this.$==1?this.$0:this.$==2?this.$0.get_Button().get_Render():this.$==3?Grid.NewBisect(this.$0,this.$1,this.$2,this.$3,lyt.GetNode(this.$4),lyt.GetNode(this.$5)).Min(this.$6).Max(this.$7).get_Render():this.$==4?(ts=TabStrip.New$1(Seq.map(function(node)
+   var ts,per,minV,maxV,perV,curper;
+   return this.$==1?[this.$0,Global.ignore]:this.$==2?[this.$0.get_Button().get_Render(),Global.ignore]:this.$==5?[lyt.GetCallButton(this.$0,this.$1,this.$2),Global.ignore]:this.$==4?(ts=TabStrip.New$1(Seq.map(function(node)
    {
     return[node,lyt.GetNode(node)];
-   },this.$1)).SetTop(this.$0),(Template.addValue(name,ts,lyt.tabStrips),ts.get_Render())):this.$==5?lyt.GetCallButton(this.$0,this.$1,this.$2):HtmlNode$1.HtmlEmpty;
+   },this.$1)).SetTop(this.$0),(Template.addValue(name,ts,lyt.tabStrips),[ts.get_Render(),Global.ignore])):this.$==3?(per=this.$3,(minV=Var.Create$1(this.$6),(maxV=Var.Create$1(this.$7),(perV=Var.Create$1(per),(curper=per,[Grid.NewBisect(this.$0,this.$1,this.$2,perV,lyt.GetNode(this.$4),lyt.GetNode(this.$5)).Min(minV).Max(maxV).get_Render(),function(a)
+   {
+    var per$1;
+    if(a.$==3)
+     {
+      per$1=a.$3;
+      curper!==per$1?(curper=per$1,Var.Set(perV,per$1)):void 0;
+      Var.Set(minV,a.$6);
+      Var.Set(maxV,a.$7);
+     }
+   }]))))):[HtmlNode$1.HtmlEmpty,Global.ignore];
   }
  },null,GuiPart);
  HtmlNodeFable.New=function(HtmlElementF,HtmlAttributeF,HtmlAttributeOF,HtmlTextF,HtmlEmptyF,HtmlGuiPart,HtmlGuiCall)
@@ -5321,11 +5354,15 @@
    var $this;
    function a(name,si,part)
    {
-    var partv;
+    var p,partv;
     if($this.parts.ContainsKey(name))
      {
-      partv=($this.parts.get_Item(name))[0];
-      !Unchecked.Equals((partv.RVal())[0],si)?partv.set_RVal([si,part]):void 0;
+      p=$this.parts.get_Item(name);
+      partv=p[0];
+      Unchecked.Equals((partv.RVal())[0],si)?Val.iter(Global.ignore,Val.apply(new Val({
+       $:0,
+       $0:part
+      }),p[2])):partv.set_RVal([si,part]);
      }
     else
      $this.AddNode(name,si,part);
@@ -5348,10 +5385,6 @@
   },
   get_Render:function()
   {
-   function f(t)
-   {
-    return t[0];
-   }
    function g(v)
    {
     var m;
@@ -5363,7 +5396,7 @@
    }
    return this.GetNode(Option.defaultValue("main",Seq.tryPick(function(x)
    {
-    return g(f(x));
+    return g(Template.t1of3.apply(null,x));
    },this.parts.get_Values())));
   },
   GetNode:function(name)
@@ -5379,7 +5412,7 @@
     {
      res=v;
     }
-   })?res[1]:this.AddNode(name,GuiPartSourceId.get_New(),new GuiPart({
+   })?Template.t2of3(res[0],res[1],res[2]):this.AddNode(name,GuiPartSourceId.get_New(),new GuiPart({
     $:1,
     $0:HtmlNode.div([HtmlNode.htmlText((function($1)
     {
@@ -5392,21 +5425,28 @@
   },
   AddNode:function(name,sid,part)
   {
-   var $this,partV,node;
+   var $this,partV,nodeFv,node;
    function f(si,p)
    {
     return p.GetHtmlNode($this,name);
    }
    $this=this;
    partV=Var.Create$1([sid,part]);
+   nodeFv=Val.map(function($1)
+   {
+    return f($1[0],$1[1]);
+   },partV);
    node=new HtmlNode$1({
     $:5,
-    $0:Val.map(function($1)
+    $0:Val.map(function(t)
     {
-     return f($1[0],$1[1]);
-    },partV)
+     return t[0];
+    },nodeFv)
    });
-   this.parts.Add(name,[partV,node]);
+   this.parts.Add(name,[partV,node,Val.map(function(t)
+   {
+    return t[1];
+   },nodeFv)]);
    return node;
   },
   GetCallButton:function(name,action,parms)
@@ -5459,11 +5499,8 @@
     $0:part.$0,
     $1:part.$1,
     $2:part.$2,
-    $3:part.$3,
-    $4:part.$4,
-    $5:part.$5,
-    $6:part.$6,
-    $7:part.$7
+    $3:part.$4,
+    $4:part.$5
    }:part.$==4?{
     $:3,
     $0:part.$0,
@@ -5543,6 +5580,15 @@
    $7:95
   });
  };
+ Template.t3of3=function(a,a$1,a$2)
+ {
+  return a$2;
+ };
+ Template.t2of3=function(a,a$1,a$2)
+ {
+  return a$1;
+ };
+ Template.t1of3=Global.id;
  Template.toSect=function(s)
  {
   return s==="StVariable"?SectionType.StVariable:s==="StFixedPx"?SectionType.StFixedPx:SectionType.StFixedPerc;
@@ -7632,73 +7678,67 @@
    b$8=Wrap.wrapper();
    return b$8.Delay(function()
    {
-    var o,code,code$1,$7,$8,o$1,o$2,$9,snpO,openPre,funcName,actionTempl,a,t;
-    function getValue(a$1)
+    return b$8.Bind$2(Val.getAsync(act.text),function(a)
     {
-     return a$1.$==2?Operators.FailWith("Get value from View not implemented"):a$1.$==1?a$1.$0.RVal():a$1.$0;
-    }
-    function propValue(p)
-    {
-     return snpO==null?null:FsGlobal["CodeSnippet.propValue"](snpO.$0,p);
-    }
-    snpO=getSnpO();
-    openPre=addOpen?Option.defaultValue("",(o=propValue("open"),o==null?null:{
-     $:1,
-     $0:Useful.__(function(x$2,y)
+     var $7,o,code,code$1,$8,$9,o$1,o$2,$10,snpO,openPre,actionTempl,a$1,t;
+     function propValue(p)
      {
-      return x$2+y;
-     },"\n",o.$0)
-    })):"";
-    funcName=Lazy.Create(function()
-    {
-     return getValue(act.text);
-    });
-    actionTempl=Lazy.Create(function()
-    {
-     return Option.defaultValue("${parm}() |> printfn \"%A\"",propValue("action-template"));
-    });
-    a=(o$2=act.parms,o$2==null?null:{
-     $:1,
-     $0:Arrays.map(Global.id,o$2.$0)
-    });
-    switch(a!=null&&a.$==1?(t=a.$0,t&&Arrays.length(t)===2)?Arrays.get(a.$0,0)==="Code"?($9=Arrays.get(a.$0,1),0):Arrays.get(a.$0,0)==="Property"?($9=Arrays.get(a.$0,1),1):2:2:2)
-    {
-     case 0:
-      o$1={
-       $:1,
-       $0:$9
-      };
-      break;
-     case 1:
-      o$1=propValue($9);
-      break;
-     case 2:
-      o$1=null;
-      break;
-    }
-    $8=o$1==null?propValue(funcName.f()):o$1;
-    code=(code$1=Option.defaultWith(function()
-    {
-     var x$2;
-     x$2=funcName.f();
-     return((Object.constructor("return function(parm) { return `"+actionTempl.f()+"`}"))())(x$2);
-    },$8),Strings.StartsWith(code$1,"////")?code$1:openPre+code$1);
-    return snpO!=null&&snpO.$==1?b$8.Bind$2((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsEvaluator+Evaluator.getPresence:-1568677081",[Evaluator.extractConfig(code),(function($10)
-    {
-     return function($11)
-     {
-      return $10(FSharpStation_GeneratedPrintf.p$3($11));
-     };
-    }(Global.id))(snpO.$0.id)]),function(a$1)
-    {
-     return Unchecked.Equals(a$1,{
+      return snpO==null?null:FsGlobal["CodeSnippet.propValue"](snpO.$0,p);
+     }
+     setOutMsg(a+"...");
+     snpO=getSnpO();
+     openPre=addOpen?Option.defaultValue("",(o=propValue("open"),o==null?null:{
       $:1,
-      $0:"ok"
-     })?b$8.Return(code):b$8.Bind$3(evalSnippetW(snpO),function()
+      $0:Useful.__(function(x$2,y)
+      {
+       return x$2+y;
+      },"\n",o.$0)
+     })):"";
+     actionTempl=Lazy.Create(function()
      {
-      return b$8.Return(code);
+      return Option.defaultValue("${parm}() |> printfn \"%A\"",propValue("action-template"));
      });
-    }):b$8.Return(code);
+     a$1=(o$2=act.parms,o$2==null?null:{
+      $:1,
+      $0:Arrays.map(Global.id,o$2.$0)
+     });
+     switch(a$1!=null&&a$1.$==1?(t=a$1.$0,t&&Arrays.length(t)===2?Arrays.get(a$1.$0,0)==="Code"?($10=Arrays.get(a$1.$0,1),0):Arrays.get(a$1.$0,0)==="Property"?($10=Arrays.get(a$1.$0,1),1):2:2):2)
+     {
+      case 0:
+       o$1={
+        $:1,
+        $0:$10
+       };
+       break;
+      case 1:
+       o$1=propValue($10);
+       break;
+      case 2:
+       o$1=null;
+       break;
+     }
+     $9=o$1==null?propValue(a):o$1;
+     code=(code$1=Option.defaultWith(function()
+     {
+      return((Object.constructor("return function(parm) { return `"+actionTempl.f()+"`}"))())(a);
+     },$9),Strings.StartsWith(code$1,"////")?code$1:openPre+code$1);
+     return snpO!=null&&snpO.$==1?b$8.Bind$2((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsEvaluator+Evaluator.getPresence:-1568677081",[Evaluator.extractConfig(code),(function($11)
+     {
+      return function($12)
+      {
+       return $11(FSharpStation_GeneratedPrintf.p$3($12));
+      };
+     }(Global.id))(snpO.$0.id)]),function(a$2)
+     {
+      return Unchecked.Equals(a$2,{
+       $:1,
+       $0:"ok"
+      })?b$8.Return(code):b$8.Bind$3(evalSnippetW(snpO),function()
+      {
+       return b$8.Return(code);
+      });
+     }):b$8.Return(code);
+    });
    });
   }
   function evalFsCode(act,u)
@@ -8673,7 +8713,10 @@
    $:4,
    $0:true,
    $1:["Parser","WS Result"]
-  })],["messagesB",Template.varVerSplitter(55,"messagesB1","messagesB2",0,100)],["title_code",Template.fixedHorSplitter(true,34,"title","code")],["code_props",Template.varVerSplitter(85,"title_code","messagesR",25,100)],["code_buttons",Template.fixedHorSplitter(false,80,"code_props","buttons")],["snippets_code",Template.varVerSplitter(15,"snippets","code_buttons",5,95)],["main_messages",Template.varHorSplitter(82,"snippets_code","messagesB",35,100)],["main",Template.fixedHorSplitter(true,50,"menu","main_messages")]]);
+  })],["messagesB",Template.varVerSplitter(55,"messagesB1","messagesB2",0,100)],["title_code",Template.fixedHorSplitter(true,34,"title","code")],["code_props",Template.varVerSplitter(85,"title_code","messagesR",25,100)],["code_buttons",Template.fixedHorSplitter(false,80,"code_props","buttons")],["snippets_code",Template.varVerSplitter(15,"snippets","code_buttons",5,95)],["main_messages",Template.varHorSplitter(82,"snippets_code","messagesB",35,100)],["extrabuttons",new GuiPart({
+   $:1,
+   $0:HtmlNode.div([])
+  })],["main_extra",Template.varVerSplitter(100,"main_messages","extrabuttons",20,100)],["main",Template.fixedHorSplitter(true,50,"menu","main_extra")]]);
   layout=Layout.New$1(steps);
   Global.addLayoutJson=addLayoutJson;
   Val.sink(addLayoutJson,propertyLayoutVal);
