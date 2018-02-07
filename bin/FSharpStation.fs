@@ -496,7 +496,17 @@ namespace FSSGlobal
             }
     
         let bind f va = async.Bind(va, f)
-            
+    
+    module Dict =
+        let tryGetValue key   (dict:System.Collections.Generic.Dictionary<_, _>) = if dict.ContainsKey key then Some dict.[key]      else None
+        let add         key v (dict:System.Collections.Generic.Dictionary<_, _>) = if dict.ContainsKey key then      dict.[key] <- v else dict.Add(key, v)
+        
+    module String =
+        let splitByChar (c: char) (s: string) = s.Split c
+        let trim                  (s: string) = s.Trim()
+        let append     (a: string)(b: string) =  a + b
+        
+        
     #if WEBSHARPER
     
     let (|REGEX|_|) (expr: string) (opt: string) (value: string) =
@@ -1034,10 +1044,11 @@ namespace FSSGlobal
     [< Inline "" >]
     let replyToRpc         = replyToRpc
     #else
-    let AsyncStart asy = Async.Start asy
+    let AsyncStart asy     = Async.Start asy
     #endif          
     
-    let  AddressId = AddressId
+    let AddressId        = AddressId
+    let addressIdTxt     = function | AddressId txt -> txt
     
     #if FSS_SERVER
     let awaitRequestForF = selectF awaitRequestFor awaitRequestFor
@@ -1050,19 +1061,24 @@ namespace FSSGlobal
     #endif
     let AsyncStartF      = selectF AsyncStart             Async.Start
     
+    [< Inline "WebSharper.Remoting.EndPoint()" >]
+    let getEndPoint() = "http://localhost:9010/FSharpStation"
+    
     type MessagingClient(clientId, ?timeout, ?endPoint:string) =
-        let wsEndPoint = endPoint    |> Option.defaultValue "http://localhost:9010/FSharpStation"
-        let tout       = timeout     |> Option.defaultValue 100_000
-        let fromId     = AddressId clientId
+        //do printfn "%s %s" WebSharper.Remoting.EndPoint clientId
+        let mutable active = true
+        let wsEndPoint     = endPoint    |> Option.defaultValue (getEndPoint())
+        let tout           = timeout     |> Option.defaultValue 100_000
+        let fromId         = AddressId clientId
         do WebSharper.Remoting.EndPoint <- wsEndPoint 
         let awaitMessage respond =
             async {
-                while true do
-                    printfn "%s awaitRequest %s" (nowStamp()) clientId
+                while active do
+                    printfn "%s awaitRequest %s %s" (nowStamp()) clientId wsEndPoint
                     let! msgA  = Async.StartChild(awaitRequestForF fromId, tout)
                     try
                         let! msg   = msgA
-                        let! resp  = respond clientId msg.content
+                        let! resp  = respond (addressIdTxt msg.fromId) msg.content
                         do!          replyToF msg.messageId.Value resp
                     with 
                     | :? System.TimeoutException -> ()
@@ -1082,17 +1098,51 @@ namespace FSSGlobal
         let poStrings resp =
                     match resp with
                     | POString  v  -> [| sprintf "unexpected response: %s" v |]
-                    | POStrings vs -> vs
+                    | POStrings vs -> vs     
+        [<Inline>] 
+        let respondMessageG respond fromId txt =
+            async {
+                printfn "respondMessageG txt: %s" txt
+                let  msg = Json.Deserialize txt 
+                printfn "respondMessageG msg: %A" msg
+                let! res = respond fromId msg
+                return Json.Serialize res
+            }                
+        [<Inline>] 
+        let sendMessageG toId msg =
+            async {
+                let! resp = sendMessage toId (Json.Serialize msg)
+                let  acr  = resp |> Json.Deserialize
+                return acr
+            }
       with 
-        member this.AwaitMessage respond  = awaitMessage (fun clientId request -> async { return respond clientId request })
-        member this.AwaitMessage respondA = awaitMessage respondA
-        member this.SendMessage toId msg  = sendMessage toId msg
-        member this.POMessage        msg  = poMsg id        msg
-        member this.POListeners      ()   = poMsg poStrings POListeners
-        member this.EndPoint              = wsEndPoint
-        member this.ClientId              = clientId
-        static member EndPoint_           = "http://localhost:9010/FSharpStation"
-        
+        member this.AwaitMessage  respond  = awaitMessage (fun senderId request -> async { return respond senderId request })
+        member this.AwaitMessage  respondA = awaitMessage respondA
+        member this.SendMessage  toId msg  = sendMessage  toId msg
+        [<Inline>] 
+        member this.AwaitMessageG respondA = awaitMessage (respondMessageG respondA)
+        [<Inline>] 
+        member this.SendMessageG toId msg  = sendMessageG toId msg
+        member this.POMessage        msg   = poMsg id          msg
+        member this.POListeners      ()    = poMsg poStrings   POListeners
+        member this.EndPoint               = wsEndPoint
+        member this.ClientId               = clientId
+        member this.Deactivate       ()    = active <- false
+        static member EndPoint_            = getEndPoint()
+        interface System.IDisposable with
+               member this.Dispose () = active <- false
+    
+    type GenSeverity =
+        | GenError
+        | GenWarning
+        | GenInfor
+    
+    type GenResponse =
+        | StringResponse   of string
+        | OpStringResponse of string option
+        | ResultResponse   of string option * (string * GenSeverity)[]
+    
+    
     open Useful
     
     let snippetName name (content: string) =
@@ -1115,6 +1165,7 @@ namespace FSSGlobal
     with static member New = CodeSnippetId <| System.Guid.NewGuid()
          member this.Text  = match this with CodeSnippetId guid -> guid.ToString()
     
+    [< NoComparison >]
     type CodeSnippet = {
         name         : string
         content      : string
@@ -1277,8 +1328,8 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1516754472774"
-        let msgClient  = MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
+        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1517916030213"
+        let msgClient  = new MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
         let toId       = AddressId fsIds
         let stringResponseR response =
             match response with
@@ -1319,7 +1370,7 @@ namespace FSSGlobal
         member this.RunActionCall   (name, act, parms     ) = sendMsg toId  (RunActionCall       (name, act, parms      ))    stringResponseR
         member this.FSStationId                             = fsIds
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1516754472774"
+        static member FSStationId_                          = "FSharpStation1517916030213"
     
     
   module FsEvaluator =
@@ -2057,14 +2108,14 @@ namespace FSSGlobal
     type FSAutoCompleteIntermediaryClient(clientId, ?endPoint:string) =
          #if FSS_SERVER
          #else
-         let msgClient = MessagingClient(clientId, ?endPoint = endPoint)
+         let msgClient = new MessagingClient(clientId, ?endPoint = endPoint)
          let toId      = AddressId "FSAutoComplete"
          let sendMessage (msg:ACMessage) =
              Wrap.wrapper {
                  let! resp = msgClient.SendMessage toId (Json.Serialize msg)
-                 let  acr  = resp |> Json.Deserialize<CommandResponse.Kind>
+                 let  acr  = resp |> Json.Deserialize<Kind>
                  return acr
-             } |> Wrap.getAsyncWithDefault (Result.getMessages >> CommandResponse.KError)
+             } |> Wrap.getAsyncWithDefault (Result.getMessages >> KInfo)
          #endif
          let Async_map f aa = 
              async { 
@@ -2302,7 +2353,18 @@ namespace FSSGlobal
             let vw         = toView vl
             View.Sink setPrior vw
             !prior :> IRef<_> |> DynamicV
+    
+        type valBuilder() =
+            member inline this.Return     (x)                            = Constant x
+            member inline this.ReturnFrom (x)                            = x
+            member        this.Bind       (w:Val<'a> , r: 'a -> Val<'b>) = bind r w
+            member        this.Bind       (w:Var<'a> , r: 'a -> Val<'b>) = bind r w
+            member        this.Bind       (w:View<'a>, r: 'a -> Val<'b>) = bind r w
+            member inline this.Zero       ()                             = Constant ()
+            member inline this.Delay      (f)                            = f()
         
+        let valFlow = valBuilder()
+    
     [<NoComparison ; NoEquality>]
     type HtmlNode =
         | HtmlElement    of name: string * children: HtmlNode seq
@@ -4415,8 +4477,8 @@ namespace FSSGlobal
              | null   -> Result.fail    ``Could not open new browser, Popup blocker may be active``
              | window -> Result.succeed window
           
-      let eval  window js = JS.Apply window "eval"  [| js  |]
-      let focus window    = JS.Apply window "focus" [|     |] |> ignore
+      let eval  window js = try JS.Apply window "eval"  [| js  |]           with e -> printfn "%A" e ; sprintf "%A" e
+      let focus window    = try JS.Apply window "focus" [|     |] |> ignore with e -> printfn "%A" e
       
       let evalWindowUrlJSW (url:string) js =
           Wrap.wrapper {
@@ -5502,13 +5564,17 @@ namespace FSSGlobal
       propertyLayoutVal |> Val.sink addLayoutJson 
       
       let addLayoutSteps steps2 = delayedRefreshCM 1000 ; delayedRefreshCM 2000 ; delayedRefreshCM 3000 ; layout.AddNewSteps steps steps2
-      propertyLayoutJSVal |> Val.sink (fun js -> if js = "" then addLayoutSteps [||] else eval JS.Window js)
+      propertyLayoutJSVal |> Val.sink (fun js -> if js = "" then addLayoutSteps [||] else eval JS.Window js |> ignore)
+      
+      let setFSharpStationLayout (f:FuncWithArgs<Layout * CodeSnippet, _>)  =
+              CodeSnippet.FetchO currentCodeSnippetId.Value
+              |> Option.iter (fun cur -> f.Call(layout, cur) |> addLayoutSteps)
       
       JS.Window?doFSharpStationGuiCall <- doGuiCall
-      
-      JS.Window?setFSharpStationLayout <- fun f -> f layout |> addLayoutSteps
+      JS.Window?setFSharpStationLayout <- setFSharpStationLayout
       
       ()
+      
       #if NOMESSAGING
       #else
       
@@ -5524,7 +5590,7 @@ namespace FSSGlobal
           match res with 
           | Result (a, b) -> StringResponseR (a |> Option.map (sprintf "%A"), b |> Seq.map (fun err -> err.ErrMsg, if err.IsWarning then FSWarning else FSError) |> Seq.toArray ) 
       
-      let respond fromId (msg:FSMessage) : Async<FSResponse> =
+      let respond (fromId:string) (msg:FSMessage) : Async<FSResponse> =
           async {
               match msg with
               | GetWholeFile                     -> return  codeSnippets.Value            |> Seq.toArray |> Json.Serialize |> Some                                   |> StringResponse       
@@ -5541,22 +5607,15 @@ namespace FSSGlobal
               | GetSnippetPreds       path       -> return  CodeSnippet.FetchByPathO path |> Option.map (fun snp -> snp.Predecessors ()) |> Option.defaultValue [||] |> SnippetsResponse
               | GetSnippet            path       -> return  CodeSnippet.FetchByPathO path                                                                            |> SnippetResponse 
               | GenericMessage        txt        -> return  (Some <| "Message received: " + txt)                                                                     |> StringResponse
-              | GetIdentification                -> return  fromId                                                                                                   |> IdResponse  
+              | GetIdentification                -> return  fsIds                                                                                                   |> IdResponse  
               | RunSnippetUrlJSById  (sId , url) -> return! CodeSnippet.FetchO       sId  |> compileRunUrlW url NewBrowser |> Wrap.getAsyncR |> Async.map result2response
               | RunSnippetUrlJS      (path, url) -> return! CodeSnippet.FetchByPathO path |> compileRunUrlW url NewBrowser |> Wrap.getAsyncR |> Async.map result2response
               | RunActionCall        (nm,ac, ps) -> return  doGuiCallR(nm, ac, ps) |> Result.map (fun _ -> sprintf "success: %s" nm)                   |> result2StringResponse
           }     
            
-      let respondMessage fromId txt =
-          async {
-              let  msg = Json.Deserialize txt 
-              let! res = respond fromId msg
-              return Json.Serialize res
-          }
-      
       async {
           do! Async.Sleep 1000
-          do fsStationClient.MessagingClient.AwaitMessage respondMessage
+          do fsStationClient.MessagingClient.AwaitMessageG respond
       } |> Async.Start
       
       #endif

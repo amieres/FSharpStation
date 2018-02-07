@@ -25,6 +25,7 @@ nuget Zafir
 nuget Zafir.Compiler
 nuget Zafir.FSharp
 nuget Zafir.Owin
+nuget Zafir.Owin.WebSocket
 nuget Zafir.UI.Next        
 nuget Newtonsoft.Json
 nuget XPlot.Plotly
@@ -41,7 +42,6 @@ nuget FsUnit
 nuget NUnit
 
 nuget CommonServiceLocator 
-nuget Owin.WebSocket
 nuget Zafir.Owin.WebSocket
 
 nuget AWSSDK.Core
