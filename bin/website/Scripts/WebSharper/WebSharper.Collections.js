@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,WebSharper,Collections,BalancedTree,Tree,Pair,MapUtil,FSharpMap,Map,FSharpSet,Set,ListEnumerator,List,ResizeArray,LinkedListEnumerator,LinkedList,Grouping,FsComparer,ProjectionComparer,CompoundComparer,ReverseComparer,OrderedEnumerable,Linq,Arrays,Seq,Unchecked,List$1,IntelliFactory,Runtime,Enumerator,Operators,HashSet,Dictionary,Nullable;
+ var Global,WebSharper,Collections,BalancedTree,Tree,Pair,MapUtil,Obj,FSharpMap,Map,FSharpSet,Set,ListEnumerator,List,LinkedListEnumerator,LinkedList,Grouping,FsComparer,ProjectionComparer,CompoundComparer,ReverseComparer,OrderedEnumerable,Linq,Arrays,Seq,Unchecked,List$1,IntelliFactory,Runtime,Enumerator,Operators,HashSet,Dictionary,Nullable;
  Global=window;
  WebSharper=Global.WebSharper=Global.WebSharper||{};
  Collections=WebSharper.Collections=WebSharper.Collections||{};
@@ -9,13 +9,13 @@
  Tree=BalancedTree.Tree=BalancedTree.Tree||{};
  Pair=Collections.Pair=Collections.Pair||{};
  MapUtil=Collections.MapUtil=Collections.MapUtil||{};
+ Obj=WebSharper&&WebSharper.Obj;
  FSharpMap=Collections.FSharpMap=Collections.FSharpMap||{};
  Map=Collections.Map=Collections.Map||{};
  FSharpSet=Collections.FSharpSet=Collections.FSharpSet||{};
  Set=Collections.Set=Collections.Set||{};
  ListEnumerator=Collections.ListEnumerator=Collections.ListEnumerator||{};
  List=Collections.List=Collections.List||{};
- ResizeArray=Collections.ResizeArray=Collections.ResizeArray||{};
  LinkedListEnumerator=Collections.LinkedListEnumerator=Collections.LinkedListEnumerator||{};
  LinkedList=Collections.LinkedList=Collections.LinkedList||{};
  Grouping=WebSharper.Grouping=WebSharper.Grouping||{};
@@ -274,7 +274,7 @@
   {
    return Seq.compareWith(Unchecked.Compare,this,other);
   }
- },WebSharper.Obj,FSharpMap);
+ },Obj,FSharpMap);
  FSharpMap.New=Runtime.Ctor(function(s)
  {
   FSharpMap.New$1.call(this,MapUtil.fromSeq(s));
@@ -488,7 +488,7 @@
   {
    return this.GetEnumerator$1();
   }
- },WebSharper.Obj,FSharpSet);
+ },Obj,FSharpSet);
  FSharpSet.op_Subtraction=function(x,y)
  {
   return Set.Filter(function(x$1)
@@ -553,114 +553,52 @@
   {
    return this.MoveNext$1();
   }
- },WebSharper.Obj,ListEnumerator);
+ },Obj,ListEnumerator);
  ListEnumerator.New=Runtime.Ctor(function(arr)
  {
   this.arr=arr;
   this.i=-1;
  },ListEnumerator);
  List=Collections.List=Runtime.Class({
-  ToArray:function()
-  {
-   return this.arr.slice();
-  },
-  Reverse:function(index,count)
-  {
-   Arrays.reverse(this.arr,index,count);
-  },
-  Reverse$1:function()
-  {
-   this.arr.reverse();
-  },
-  RemoveRange:function(index,count)
-  {
-   ResizeArray.splice(this.arr,index,count,[]);
-  },
-  RemoveAt:function(x)
-  {
-   ResizeArray.splice(this.arr,x,1,[]);
-  },
-  set_Item:function(x,v)
-  {
-   Arrays.set(this.arr,x,v);
-  },
-  get_Item:function(x)
-  {
-   return Arrays.get(this.arr,x);
-  },
-  InsertRange:function(index,items)
-  {
-   ResizeArray.splice(this.arr,index,0,Arrays.ofSeq(items));
-  },
-  Insert:function(index,items)
-  {
-   ResizeArray.splice(this.arr,index,0,[items]);
-  },
-  GetRange:function(index,count)
-  {
-   return new List.New$3(Arrays.sub(this.arr,index,count));
-  },
-  get_Count:function()
-  {
-   return Arrays.length(this.arr);
-  },
-  CopyTo:function(index,target,offset,count)
-  {
-   Arrays.blit(this.arr,index,target,offset,count);
-  },
-  CopyTo$1:function(arr,offset)
-  {
-   this.CopyTo(0,arr,offset,this.get_Count());
-  },
-  CopyTo$2:function(arr)
-  {
-   this.CopyTo$1(arr,0);
-  },
-  Clear:function()
-  {
-   ResizeArray.splice(this.arr,0,Arrays.length(this.arr),[]);
-  },
-  AddRange:function(x)
-  {
-   var $this;
-   $this=this;
-   Seq.iter(function(a)
-   {
-    $this.Add(a);
-   },x);
-  },
-  Add:function(x)
-  {
-   this.arr.push(x);
-  },
   GetEnumerator:function()
   {
-   return Enumerator.Get(this.arr);
+   return Enumerator.Get(this);
   },
   GetEnumerator0:function()
   {
-   return Enumerator.Get0(this.arr);
+   return Enumerator.Get0(this);
   }
- },WebSharper.Obj,List);
- List.New=Runtime.Ctor(function(el)
+ },null,List);
+ List.RemoveAll=function($this,pred)
  {
-  List.New$3.call(this,Arrays.ofSeq(el));
- },List);
- List.New$1=Runtime.Ctor(function(size)
+  var removed,i,j,_delete;
+  removed=0;
+  i=0;
+  while(i<Arrays.length($this))
+   if(pred($this[i]))
+    {
+     j=i+1;
+     while(j<Arrays.length($this)&&pred($this[j]))
+      j=j+1;
+     removed=removed+j-i;
+     _delete=j-i;
+     $this.splice.apply($this,[i,_delete]);
+    }
+   else
+    i=i+1;
+  return removed;
+ };
+ List.Remove=function($this,item)
  {
-  List.New$3.call(this,[]);
- },List);
- List.New$2=Runtime.Ctor(function()
- {
-  List.New$3.call(this,[]);
- },List);
- List.New$3=Runtime.Ctor(function(arr)
- {
-  this.arr=arr;
- },List);
- ResizeArray.splice=function(arr,index,howMany,items)
- {
-  return Global.Array.prototype.splice.apply(arr,[index,howMany].concat(items));
+  var m;
+  m=Arrays.findIndexBound($this,0,Arrays.length($this),item==null?function(v)
+  {
+   return v==null;
+  }:function(a)
+  {
+   return Unchecked.Equals(item,a);
+  });
+  return m===-1?false:($this.splice.apply($this,[m,1]),true);
  };
  LinkedListEnumerator=Collections.LinkedListEnumerator=Runtime.Class({
   Reset:Global.ignore,
@@ -678,7 +616,7 @@
   {
    return this.c.v;
   }
- },WebSharper.Obj,LinkedListEnumerator);
+ },Obj,LinkedListEnumerator);
  LinkedListEnumerator.New=Runtime.Ctor(function(l)
  {
   this.c=l;
@@ -809,7 +747,7 @@
   {
    return this.GetEnumerator$1();
   }
- },WebSharper.Obj,LinkedList);
+ },Obj,LinkedList);
  LinkedList.New=Runtime.Ctor(function()
  {
   LinkedList.New$1.call(this,[]);
@@ -851,7 +789,7 @@
   {
    return Enumerator.Get(this.v);
   }
- },WebSharper.Obj,Grouping);
+ },Obj,Grouping);
  Grouping.New=Runtime.Ctor(function(k,v)
  {
   this.k=k;
@@ -862,7 +800,7 @@
   {
    return Unchecked.Compare(x,y);
   }
- },WebSharper.Obj,FsComparer);
+ },Obj,FsComparer);
  FsComparer.New=Runtime.Ctor(function()
  {
  },FsComparer);
@@ -871,7 +809,7 @@
   {
    return this.primary.Compare(this.projection(x),this.projection(y));
   }
- },WebSharper.Obj,ProjectionComparer);
+ },Obj,ProjectionComparer);
  ProjectionComparer.New=Runtime.Ctor(function(primary,projection)
  {
   this.primary=primary;
@@ -884,7 +822,7 @@
    m=this.primary.Compare(x,y);
    return m===0?this.secondary.Compare(x,y):m;
   }
- },WebSharper.Obj,CompoundComparer);
+ },Obj,CompoundComparer);
  CompoundComparer.New=Runtime.Ctor(function(primary,secondary)
  {
   this.primary=primary;
@@ -895,7 +833,7 @@
   {
    return this.primary.Compare(this.projection(y),this.projection(x));
   }
- },WebSharper.Obj,ReverseComparer);
+ },Obj,ReverseComparer);
  ReverseComparer.New=Runtime.Ctor(function(primary,projection)
  {
   this.primary=primary;
@@ -921,7 +859,7 @@
   {
    return new OrderedEnumerable.New(this.source,new CompoundComparer.New(this.primary,descending?new ReverseComparer.New(secondary,keySelector):new ProjectionComparer.New(secondary,keySelector)));
   }
- },WebSharper.Obj,OrderedEnumerable);
+ },Obj,OrderedEnumerable);
  OrderedEnumerable.New=Runtime.Ctor(function(source,primary)
  {
   this.source=source;
@@ -1385,7 +1323,7 @@
       {
        o$1=v;
       }
-     }),o$1])[0]?[]:(pair=[o,new List.New$2()],(t.Add(k,pair),[pair]));
+     }),o$1])[0]?[]:(pair=[o,[]],(t.Add(k,pair),[pair]));
     },outer);
    }));
    e=Enumerator.Get(inner);
@@ -1406,7 +1344,7 @@
         o=v;
        }
       }),o]);
-      return m[0]?m[1][1].Add(i):null;
+      return m[0]?void m[1][1].push(i):null;
      }());
    }
    finally
@@ -1463,7 +1401,7 @@
       {
        o$1=v;
       }
-     }),o$1])[0]?[]:(pair=[o,new List.New$2()],(t.Add(k,pair),[pair]));
+     }),o$1])[0]?[]:(pair=[o,[]],(t.Add(k,pair),[pair]));
     },outer);
    }));
    e=Enumerator.Get(inner);
@@ -1484,7 +1422,7 @@
         o=v;
        }
       }),o]);
-      return m[0]?m[1][1].Add(i):null;
+      return m[0]?void m[1][1].push(i):null;
      }());
    }
    finally
@@ -1529,7 +1467,7 @@
        o=v;
       }
      }),o]);
-     return m[0]?(m[1].Add(e),[]):(a=new List.New$2(),(a.Add(e),t.set_Item(k,a),[new Grouping.New(k,a)]));
+     return m[0]?(m[1].push(e),[]):(a=[],(a.push(e),t.set_Item(k,a),[new Grouping.New(k,a)]));
     },_this);
    }));
   });

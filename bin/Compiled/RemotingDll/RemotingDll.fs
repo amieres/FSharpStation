@@ -14,17 +14,17 @@ namespace FSSGlobal
 
 // Code to be evaluated using FSI: `Evaluate F#`
   #if WEBSHARPER
-  //#I @"..\packages\Zafir\lib\net40"
+  //#I @"..\packages\WebSharper\lib\net40"
   
-  //#r @"WebSharper.Core.dll"
-  //#r @"WebSharper.Core.JavaScript.dll"
-  //#r @"WebSharper.Collections.dll"
-  //#r @"WebSharper.Main.dll"
-  //#r @"WebSharper.JQuery.dll"
-  //#r @"WebSharper.JavaScript.dll"
-  //#r @"WebSharper.Web.dll"
-  //#r @"WebSharper.Sitelets.dll"
-  //#r @"..\packages\Zafir.UI.Next\lib\net40\WebSharper.UI.Next.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.JavaScript.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Collections.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Main.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.JQuery.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.JavaScript.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Web.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Sitelets.dll"
+  //#r @"..\packages\WebSharper.UI.Next\lib\net40\WebSharper.UI.Next.dll"
   
   open WebSharper
   open WebSharper.JavaScript
@@ -34,8 +34,8 @@ namespace FSSGlobal
   type attr = WebSharper.UI.Next.Html.attr
   #endif
   module UsefulDotNet =
-    //#r @"..\packages\FSharp.Data\lib\net40\FSharp.Data.dll"
-    //#r @"..\packages\FSharp.Data\lib\net40\FSharp.Data.DesignTime.dll"
+    //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+    //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
     
     //#define WEBSHARPER
     //#define FSS_SERVER
@@ -233,7 +233,7 @@ namespace FSSGlobal
             use reader = new StreamReader(stream)
             let msg    = reader.ReadToEnd()
             //printfn "RpcCallResponse %s" (extract 100 msg)
-            let json   = JsonValue.Parse msg
+            let json   = JsonValue.Parse (if msg.[0] = '"' then "{\"$DATA\":" + msg + "}" else msg)
             return       json.["$DATA"]
         }
     

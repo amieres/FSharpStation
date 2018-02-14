@@ -1,0 +1,48 @@
+source https://www.nuget.org/api/v2
+framework: net47
+
+nuget FSharp.Compiler.Tools 4.1.23
+nuget FSharp.Compiler.Service 17.0.1
+
+nuget CryptSharpOfficial 
+nuget FSharp.Configuration
+nuget FSharp.Core
+nuget FSharp.Data
+nuget FSharp.Data.SqlClient
+nuget HtmlAgilityPack
+nuget Microsoft.Owin
+nuget Microsoft.Owin.Diagnostics
+nuget Microsoft.Owin.FileSystems
+nuget Microsoft.Owin.Host.HttpListener
+nuget Microsoft.Owin.Hosting
+nuget Microsoft.Owin.StaticFiles
+nuget Mono.Cecil 0.10.0-beta6
+nuget Owin
+nuget Owin.Compression
+nuget System.ValueTuple
+nuget System.IO.Compression 4.3.0-preview1-24530-04
+nuget Zafir         
+nuget Zafir.Compiler
+nuget Zafir.FSharp
+nuget Zafir.Owin
+nuget Zafir.Owin.WebSocket
+nuget Zafir.UI.Next        
+nuget Newtonsoft.Json
+nuget XPlot.Plotly
+nuget SSH.NET
+
+nuget FSharpPlus 1.0.0-CI00136
+
+nuget FSharp.Quotations.Evaluator
+
+nuget Fable.Core
+nuget Fable.Import.Browser
+
+nuget FsUnit
+nuget NUnit
+
+nuget CommonServiceLocator 
+nuget Zafir.Owin.WebSocket
+
+nuget AWSSDK.Core
+nuget AWSSDK.Lambda

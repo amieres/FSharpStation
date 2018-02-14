@@ -15,17 +15,17 @@ namespace FSSGlobal
 
 // Code to be evaluated using FSI: `Evaluate F#`
   #if WEBSHARPER
-  //#I @"..\packages\Zafir\lib\net40"
+  //#I @"..\packages\WebSharper\lib\net40"
   
-  //#r @"WebSharper.Core.dll"
-  //#r @"WebSharper.Core.JavaScript.dll"
-  //#r @"WebSharper.Collections.dll"
-  //#r @"WebSharper.Main.dll"
-  //#r @"WebSharper.JQuery.dll"
-  //#r @"WebSharper.JavaScript.dll"
-  //#r @"WebSharper.Web.dll"
-  //#r @"WebSharper.Sitelets.dll"
-  //#r @"..\packages\Zafir.UI.Next\lib\net40\WebSharper.UI.Next.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.JavaScript.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Collections.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Main.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.JQuery.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.JavaScript.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Web.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Sitelets.dll"
+  //#r @"..\packages\WebSharper.UI.Next\lib\net40\WebSharper.UI.Next.dll"
   
   open WebSharper
   open WebSharper.JavaScript
@@ -1013,8 +1013,8 @@ namespace FSSGlobal
     open FSSGlobal.UsefulDotNet
     open FSSGlobal.UsefulDotNet.Messaging
     //#r @"Compiled\RemotingDll\RemotingDll.dll"
-    //#r @"..\packages\FSharp.Data\lib\net40\FSharp.Data.dll"
-    //#r @"..\packages\FSharp.Data\lib\net40\FSharp.Data.DesignTime.dll"
+    //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+    //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
     //#else
     
     //#r "remote.dll"
@@ -1328,7 +1328,7 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1517916030213"
+        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1518039175740"
         let msgClient  = new MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
         let toId       = AddressId fsIds
         let stringResponseR response =
@@ -1370,7 +1370,7 @@ namespace FSSGlobal
         member this.RunActionCall   (name, act, parms     ) = sendMsg toId  (RunActionCall       (name, act, parms      ))    stringResponseR
         member this.FSStationId                             = fsIds
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1517916030213"
+        static member FSStationId_                          = "FSharpStation1518039175740"
     
     
   module FsEvaluator =
@@ -1613,8 +1613,8 @@ namespace FSSGlobal
         
   module FSAutoCompleteIntermediary =
   
-    //#r @"..\packages\FSharp.Data\lib\net40\FSharp.Data.dll"
-    //#r @"..\packages\FSharp.Data\lib\net40\FSharp.Data.DesignTime.dll"
+    //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+    //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
     //#r @"..\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
     
     open System.Net
@@ -5199,6 +5199,7 @@ namespace FSSGlobal
               ] 
               yield! 
                   props.Keys
+                  |> Seq.sort
                   |> Seq.map (fun kvp ->
                       let prop = getProperty props kvp
                       tr [
@@ -5686,14 +5687,14 @@ namespace FSSGlobal
     let site = Application.MultiPage content
     
     //#r @"..\packages\Owin\lib\net40\Owin.dll"
-    //#r @"..\packages\Owin.Compression\lib\net452\Owin.Compression.dll"
+    //#r @"..\packages\Owin.Compression\lib\Owin.Compression.dll"
     //#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
     //#r @"..\packages\Microsoft.Owin.Hosting\lib\net45\Microsoft.Owin.Hosting.dll"
     //#r @"..\packages\Microsoft.Owin.Host.HttpListener\lib\net45\Microsoft.Owin.Host.HttpListener.dll"
     //#r @"..\packages\Microsoft.Owin.StaticFiles\lib\net45\Microsoft.Owin.StaticFiles.dll"
     //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net45\Microsoft.Owin.FileSystems.dll"
-    //#r @"..\packages\Zafir.Owin\lib\net45\WebSharper.Owin.dll"
-    //#r @"..\packages\Zafir.Owin\lib\net45\HttpMultipartParser.dll"
+    //#r @"..\packages\WebSharper.Owin\lib\net45\WebSharper.Owin.dll"
+    //#r @"..\packages\WebSharper.Owin\lib\net45\HttpMultipartParser.dll"
     //#r @"WebSharper.Core.JavaScript.dll"
     //#r @"..\packages\FSharp.Compiler.Service\lib\net45\FSharp.Compiler.Service.dll"
     
@@ -5722,7 +5723,7 @@ namespace FSSGlobal
         provider.Mappings.[".fsjson"] <- "application/x-fsjson"
         use server = 
             WebApp.Start(url, fun appB ->
-                appB.UseCompressionModule()
+                appB//.UseCompressionModule()
                     .UseWebSharper( WebSharperOptions(ServerRootDirectory  = rootDirectory
                                                     , Sitelet              = Some site
                                                     , BinDirectory         = "."
@@ -5730,12 +5731,12 @@ namespace FSSGlobal
                     .UseStaticFiles(StaticFileOptions(FileSystem           = PhysicalFileSystem(rootDirectory)
                                                     , ContentTypeProvider  = provider ))
                                 |> ignore
-                let listener = appB.Properties.["Microsoft.Owin.Host.HttpListener.OwinHttpListener"] |> unbox<Microsoft.Owin.Host.HttpListener.OwinHttpListener>
-                listener.SetRequestProcessingLimits(1000, 1000)
-                let maxA : int ref = ref 0
-                let maxB : int ref = ref 0
-                listener.GetRequestProcessingLimits(maxA, maxB)
-                printfn "Accepts: %d Requests:%d" !maxA !maxB
+                //let listener = appB.Properties.["Microsoft.Owin.Host.HttpListener.OwinHttpListener"] |> unbox<Microsoft.Owin.Host.HttpListener.OwinHttpListener>
+                //listener.SetRequestProcessingLimits(1000, 1000)
+                //let maxA : int ref = ref 0
+                //let maxB : int ref = ref 0
+                //listener.GetRequestProcessingLimits(maxA, maxB)
+                //printfn "Accepts: %d Requests:%d" !maxA !maxB
             )
         stdout.WriteLine("Serving {0}", url)
         stdin.ReadLine() |> ignore
