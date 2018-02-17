@@ -1,4 +1,3 @@
-#nowarn "1182"
 #nowarn "40"
 #nowarn "1178"
 //#nowarn "1182"
@@ -20,11 +19,13 @@ namespace FSSGlobal
   //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.dll"
   //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.JavaScript.dll"
   //#r @"..\packages\WebSharper\lib\net40\WebSharper.Collections.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.InterfaceGenerator.dll"
   //#r @"..\packages\WebSharper\lib\net40\WebSharper.Main.dll"
   //#r @"..\packages\WebSharper\lib\net40\WebSharper.JQuery.dll"
   //#r @"..\packages\WebSharper\lib\net40\WebSharper.JavaScript.dll"
   //#r @"..\packages\WebSharper\lib\net40\WebSharper.Web.dll"
   //#r @"..\packages\WebSharper\lib\net40\WebSharper.Sitelets.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Control.dll"
   //#r @"..\packages\WebSharper.UI.Next\lib\net40\WebSharper.UI.Next.dll"
   
   open WebSharper
@@ -38,6 +39,51 @@ namespace FSSGlobal
   [<WebSharper.JavaScript>]
   #endif
   module Useful =
+    let extract n (s:string) = s.Substring(0, min n s.Length)
+    
+    #if WEBSHARPER
+    [< Inline "(function (n) { return n.getFullYear() + '-' +(n.getMonth() + 1) + '-' +  n.getDate() + ' '+n.getHours()+ ':'+n.getMinutes()+ ':'+n.getSeconds()+ ':'+n.getMilliseconds() })(new Date(Date.now()))" >]
+    #endif
+    let nowStamp() = System.DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
+    
+    module Async =
+        let map f va = 
+            async { 
+                let! a = va
+                return f a 
+            } 
+        let iter f va = 
+            async { 
+                let! a = va
+                do f a 
+            } 
+    
+        let retn x = async.Return x
+    
+        let apply fAsync xAsync = async {
+            let! fChild = Async.StartChild fAsync
+            let! xChild = Async.StartChild xAsync
+            let! f = fChild
+            let! x = xChild 
+            return f x 
+            }
+    
+        let bind f va = async.Bind(va, f)
+    
+    module KeyVal =
+        //let inline getEnumerator dict = (^a : (member get_Enumerator : _) (dict, ()))
+        let inline tryGetValue key (dict) =
+            dict 
+            :> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<_, _>> 
+            |> Seq.tryPick (fun kp -> if kp.Key = key then Some kp.Value else None)
+    
+    
+    module String =
+        let splitByChar (c: char) (s: string) = s.Split c
+        let trim                  (s: string) = s.Trim()
+        let append     (a: string)(b: string) =  a + b
+        
+        
     open System
     //#nowarn "1178"
          
@@ -103,7 +149,8 @@ namespace FSSGlobal
             member this.IsWarning: bool   = warning
         override this.ToString() = (this :> ErrMsg).ErrMsg
     
-    type Result<'TSuccess> = Result of 'TSuccess option * ErrMsg list     
+    type Result< 'TSuccess> = Result  of 'TSuccess option * ErrMsg    list     
+    type ResultS<'TSuccess> = ResultS of 'TSuccess option * ErrSimple list
     
     module Result =
         let inline succeed             x       = Result (Some x           , [  ]             )
@@ -135,10 +182,6 @@ namespace FSSGlobal
             function 
             | Result(Some x, ms) -> Success (x, ms) 
             | Result(None  , ms) -> Failure     ms  
-    
-        let x = function
-                  | Success (x, ms) -> "yes"
-                  | Failure     ms  -> "No"
     
     //    let successTee f result =                           // given an RopResult, call a unit function on the success branch
     //        let fSuccess (x,msgs) =                         // and pass thru the result
@@ -183,25 +226,34 @@ namespace FSSGlobal
             member inline this.Return     (x)                       = succeed x
             member inline this.ReturnFrom (x)                       = x
             member        this.Bind       (w:Result<'a>, r: 'a -> Result<'b>) = bind (tryCall r) w
-            member inline this.Using      (disposable, restOfCExpr) = using disposable restOfCExpr
             member inline this.Zero       ()                        = succeed ()
-            member inline this.Delay      (f)                       = f()
+            member inline this.Delay      (f)                       = f
             member inline this.Combine    (a, b)                    = combine a b
-    //        member this.Run        (f)                       = f
-    //        member this.While(guard, body) =
-    //            if not (guard()) 
-    //            then this.Zero() 
-    //            else this.Bind( body(), fun () -> 
-    //                this.While(guard, body))  
-    //        member this.For(sequence:seq<_>, body) =
-    //            this.Using(sequence.GetEnumerator(),fun enum -> 
-    //                this.While(enum.MoveNext, 
-    //                    this.Delay(fun () -> body enum.Current)))
+            member inline this.Run        (f)                       = f()
+            member this.While(guard, body) =
+                if not (guard()) 
+                then this.Zero() 
+                else this.Bind( body(), fun () -> 
+                    this.While(guard, body))  
+            member this.TryWith(body, handler) =
+                try this.ReturnFrom(body())
+                with e -> handler e
+            member this.TryFinally(body, compensation) =
+                try this.ReturnFrom(body())
+                finally compensation()
+            member this.Using(disposable:#System.IDisposable, body) =
+                let body' = fun () -> body disposable
+                this.TryFinally(body', fun () -> if disposable :> obj <> null then disposable.Dispose() )
+            member this.For(sequence:seq<_>, body) =
+                this.Using(sequence.GetEnumerator(),fun enum -> 
+                    this.While(enum.MoveNext, 
+                        this.Delay(fun () -> body enum.Current)))              
     
         let result = ropBuilder()
     //    let inline flow_ () = new ropBuilder ()
     
-        let fromChoice context c =
+    //    let fromChoice context c =  context?????
+        let fromChoice c =
             match c with | Choice1Of2 v -> succeed v
                          | Choice2Of2 e -> fail    e
     
@@ -209,7 +261,8 @@ namespace FSSGlobal
             function | None   -> fail    m
                      | Some v -> succeed v
     
-        let toOption (Result(o, _)) = o
+        let toOption   (Result(o, _ )) = o
+        let toOptionMs (Result(o, ms)) = o, ms
     
         let tryProtection() : Result<unit> = succeed ()
     
@@ -260,7 +313,14 @@ namespace FSSGlobal
             | Result(vO, msgs) -> [ vO |> Option.defaultValue "Failed: " ] @ msgs2String msgs
             |> String.concat "\n"
     
+        let fromResultS (ResultS(v, ms)) = Result (v, ms |> List.map (fun m -> m :> ErrMsg                     ))
+        let toResultS   (Result( v, ms)) = ResultS(v, ms |> List.map (fun m -> ErrSimple(m.ErrMsg, m.IsWarning)))
+    
     open Result
+    
+    module ResultS =
+        let fromResult = Result.toResultS
+        let toResult   = Result.fromResultS
     
     type Wrap<'T> =
     | WResult of Result<'T>
@@ -321,6 +381,40 @@ namespace FSSGlobal
                                          } |> WAsyncR
         let Return = WSimple 
         let map  (f: 'a -> 'b  ) = bind (f >> Return)     
+        let inline getAsyncR (wb: Wrap<'T>) =
+            match wb with
+            | WAsync      va  -> async {
+                                   let! v = va
+                                   return      succeed                           v}
+            | WSimple     v   -> async.Return (succeed                           v)
+            | WOption     v   -> async.Return (Result.fromOption errOptionIsNone v)
+            | WResult     v   -> async.Return                                    v
+            | WAsyncR     vra -> vra
+            
+            
+        let inline getAsyncWithDefault f w = getAsyncR w |> Async.map (Result.withError f)
+        let inline getAsync              w = getAsyncWithDefault (fun ms -> raise (exn(getMessages ms))) w
+    
+        let toAsync            w = getAsync  w
+        let toAsyncResult      w = getAsyncR w
+        let toAsyncOption      w = getAsyncR w |> Async.map Result.toOption
+        let toAsyncOptionMs    w = getAsyncR w |> Async.map Result.toOptionMs
+        let toAsyncWithDefault w = getAsyncWithDefault w
+    
+    //    let call wb = wb |> getR Rop.notifyMessages
+        let startV (processVal: ('t option * string) ->unit) (w: Wrap<'t>) =
+            w
+            |> getAsyncR
+            |> fun asy -> Async.StartWithContinuations
+                            (asy 
+                           , Result.mapMsgs Result.getMessages  >> processVal
+                           , sprintf "%A" >> (fun m -> None, m) >> processVal
+                           , sprintf "%A" >> (fun m -> None, m) >> processVal)
+                           
+        let start (printMsg: string->unit) (w: Wrap<unit>) = 
+            startV (function
+                    | Some (), msgs ->               msgs |> printMsg 
+                    | None   , msgs -> "Failed!\n" + msgs |> printMsg) w
     
         let wrapper2Async (f: 'a -> Wrap<'b>) a : Async<Result<'b>> =
             let wb = tryCall f a
@@ -330,7 +424,7 @@ namespace FSSGlobal
             | WResult (Result(_, ms)) -> wb |> wb2arb ms
             | WAsync  ab              -> async { let!   b = ab
                                                  return succeed b }
-            | WAsyncR arb              -> arb
+            | WAsyncR arb             -> arb
     
         let addMsgs errOptionIsNone ms wb =
             if ms = [] then wb else
@@ -348,15 +442,32 @@ namespace FSSGlobal
                                             return vr                    |> Result.mergeMsgs ms
                                           } |> WAsyncR
     
-        let combine errOptionIsNone wa wb =
+        let combine errOptionIsNone wa (wb: unit -> Wrap<_>) =
             match wa with
             | WSimple          _
             | WOption (Some    _)
-            | WResult (Result (_, []))
-            | WAsync           _       -> wb
-            | WAsyncR          _       -> wb
-            | WOption (None     )      -> wb |> addMsgs errOptionIsNone [errOptionIsNone]
-            | WResult (Result(_, ms))  -> wb |> addMsgs errOptionIsNone ms
+            | WResult (Result (_, [])) -> wb()
+            | WAsync           aa      -> async { let!   a  = aa
+                                                  let!   br = wb() |> toAsyncResult
+                                                  return br
+                                                 } |> WAsyncR
+            | WAsyncR          ara     -> async { let! ar = ara
+                                                  match ar with
+                                                  | Failure    ms
+                                                  | Success(_, ms)->
+                                                  let! br = wb() |> toAsyncResult
+                                                  return br |> Result.mergeMsgs ms
+                                                } |> WAsyncR
+            | WOption (None     )      -> wb() |> addMsgs errOptionIsNone [errOptionIsNone]
+            | WResult (Result(_, ms))  -> wb() |> addMsgs errOptionIsNone ms
+            
+        let rec whileLoop pred body =
+            if pred() then body() |> bind (fun () -> whileLoop pred body)
+            else WSimple ()
+            //while pred() do
+            //    body() //|> ignore
+            //WSimple ()
+    
     
         type Builder() =
     //        member        this.Bind (wrapped: Async<Result<'a>>, restOfCExpr: 'a -> Wrap<'b>) = wrapped |> WAsyncR |> bind restOfCExpr //<< cannot differentiate from next 
@@ -370,79 +481,50 @@ namespace FSSGlobal
     //        member inline this.ReturnFrom   (w) = WAsync  w
     //        member inline this.ReturnFrom   (w) = WResult w
     //        member inline this.ReturnFrom   (w) = WOption w        
-            member inline this.Delay        (f) = f()
+            member inline this.Delay        (f) = f
+            member this.Run(f) = f()
             member        this.Combine   (a, b) = combine errOptionIsNone a b
-            member        this.Using (resource, body: 'a -> Wrap<'b>) =
-                async.Using(resource, wrapper2Async body) |> WAsyncR
-                        
-        let wrapper = Builder()
+            member        this.While(guard, body) = whileLoop guard body
+            member this.TryWith(body, handler) =
+                async {
+                    let! r = body() |> toAsyncResult |> Async.Catch 
+                    return
+                        match r with
+                        | Choice1Of2 v -> v
+                        | Choice2Of2 e -> handler e
+                } |> WAsyncR
+            member this.TryFinally(body, compensation) =
+                async {
+                    let! r1 = body() |> toAsyncResult |> Async.Catch 
+                    let r2 = compensation()     
+                    return
+                        match r1 with
+                        | Choice1Of2 v -> v
+                        | Choice2Of2 e -> raise e
+                } |> WAsyncR
+            member this.Using(disposable:#System.IDisposable, body) =
+                let body' = fun () -> body disposable
+                this.TryFinally(body', fun () -> if disposable :> obj <> null then disposable.Dispose() )
+            member this.For(sequence:seq<_>, body) =
+                this.Using(sequence.GetEnumerator(),fun enum -> 
+                    this.While(enum.MoveNext, 
+                        this.Delay(fun () -> body enum.Current)))            
+        let wrap    = Builder()
+        let wrapper = Builder()  // deprecated use wrap instead
     
         let getResult callback (wb: Wrap<'T>) =
             match wb with
-            | WSimple      s  -> s               |> succeed                                      |> callback
-            | WOption(Some s) -> s               |> succeed                                      |> callback
-            | WOption None    -> errOptionIsNone |> fail                                         |> callback
-            | WResult      rb -> rb                                                              |> callback
-            | WAsync       ab -> Async.StartWithContinuations(ab , (fun v   -> succeed v         |> callback), 
+            | WSimple      s  -> s               |> succeed                                              |> callback
+            | WOption(Some s) -> s               |> succeed                                              |> callback
+            | WOption None    -> errOptionIsNone |> fail                                                 |> callback
+            | WResult      rb -> rb                                                                      |> callback
+            | WAsync       ab -> Async.StartWithContinuations(ab , (fun v   -> succeed v                 |> callback), 
                                                                    (fun exc -> failException exc |> fail |> callback), 
                                                                     fun can -> failException can |> fail |> callback)
             | WAsyncR     arb -> Async.StartWithContinuations(arb,                                          callback , 
                                                                    (fun exc -> failException exc |> fail |> callback), 
                                                                     fun can -> failException can |> fail |> callback)
     
-        let inline getAsyncR (wb: Wrap<'T>) =
-            match wb with
-            | WAsync      va  -> async {
-                                   let! v = va
-                                   return      succeed                           v}
-            | WSimple     v   -> async.Return (succeed                           v)
-            | WOption     v   -> async.Return (Result.fromOption errOptionIsNone v)
-            | WResult     v   -> async.Return                                    v
-            | WAsyncR     vra -> vra
-            
-        let inline getAsyncWithDefault f (wb: Wrap<'T>) = 
-            async {
-                let!   vR = getAsyncR wb
-                return vR |> Result.withError f
-            }
-    
-        let inline getAsync w =
-            match w with
-            | WAsync      va  ->              va
-            | WSimple     v   -> async.Return v
-            | WOption     vo  -> async {
-                                    return
-                                        match vo with 
-                                        | Some v         -> v
-                                        | None           -> raise (exn(getMessages [errOptionIsNone]))
-                                 }
-            | WResult     vr  -> async {
-                                    return
-                                        match vr with 
-                                        | Success (v, _) -> v
-                                        | Failure ms     -> raise (exn(getMessages ms))
-                                 }
-            | WAsyncR     vra -> async {
-                                    let! vr = vra
-                                    return
-                                        match vr with 
-                                        | Success (v, _) -> v
-                                        | Failure ms     -> raise (exn(getMessages ms))
-                                 }
-    //    let call wb = wb |> getR Rop.notifyMessages
-        let startV (processVal: ('t option * string) ->unit) (w: Wrap<'t>) =
-            w
-            |> getAsyncR
-            |> fun asy -> Async.StartWithContinuations
-                            (asy 
-                           , Result.mapMsgs Result.getMessages  >> processVal
-                           , sprintf "%A" >> (fun m -> None, m) >> processVal
-                           , sprintf "%A" >> (fun m -> None, m) >> processVal)
-                           
-        let start (printMsg: string->unit) (w: Wrap<unit>) = 
-            startV (function
-                    | Some (), msgs ->               msgs |> printMsg 
-                    | None   , msgs -> "Failed!\n" + msgs |> printMsg) w
     
     #if WEBSHARPER
         [< Inline "console.log('runSynchronously should not be used in Javascript')" >]                       
@@ -462,51 +544,78 @@ namespace FSSGlobal
                | Some r, msgs -> sprintf "%O\n%s" r    msgs
                | None  , msgs -> sprintf "Failed!\n%s" msgs
                
-    
     type Wrap<'T> with
         static member Start           (w:Wrap<_   >,           ?cancToken) = Async.Start           (Wrap.getAsync  w,                                ?cancellationToken= cancToken)
         static member StartAsTask     (w:Wrap<'T  >, ?options, ?cancToken) = Async.StartAsTask     (Wrap.getAsyncR w, ?taskCreationOptions= options, ?cancellationToken= cancToken)
     #if WEBSHARPER
         [< Inline "console.log('RunSynchronously should not be used in Javascript')" >]                       
     #endif
-        static member RunSynchronously(w:Wrap<'T  >, ?timeout, ?cancToken) = Async.RunSynchronously(Wrap.getAsyncR w, ?timeout            = timeout, ?cancellationToken= cancToken)
-    
-    let extract n (s:string) = s.Substring(0, min n s.Length)
-    
+        static member RunSynchronouslyR(w:Wrap<'T  >, ?timeout, ?cancToken) = Async.RunSynchronously(Wrap.getAsyncR w, ?timeout            = timeout, ?cancellationToken= cancToken)
     #if WEBSHARPER
-    [< Inline "(function (n) { return n.getFullYear() + '-' +(n.getMonth() + 1) + '-' +  n.getDate() + ' '+n.getHours()+ ':'+n.getMinutes()+ ':'+n.getSeconds()+ ':'+n.getMilliseconds() })(new Date(Date.now()))" >]
+        [< Inline "console.log('RunSynchronously should not be used in Javascript')" >]                       
     #endif
-    let nowStamp() = System.DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
+        static member RunSynchronously( w:Wrap<'T  >, ?timeout, ?cancToken) = Async.RunSynchronously(Wrap.getAsync  w, ?timeout            = timeout, ?cancellationToken= cancToken)
     
-    module Async =
-        let map f va = 
-            async { 
-                let! a = va
-                return f a 
-            } 
+    module Mailbox =
     
-        let retn x = async.Return x
-    
-        let apply fAsync xAsync = async {
-            let! fChild = Async.StartChild fAsync
-            let! xChild = Async.StartChild xAsync
-            let! f = fChild
-            let! x = xChild 
-            return f x 
-            }
-    
-        let bind f va = async.Bind(va, f)
-    
+        /// A simple Mailbox processor to serially process tasks
+        let iter f =
+            MailboxProcessor.Start(fun inbox ->
+                async {
+                    while true do
+                        let!   msg = inbox.Receive()
+                        do!  f msg
+                }
+            )
+        
+        /// A Mailbox processor that maintains a state
+        let fold f initState =
+            MailboxProcessor.Start(fun inbox ->
+                let rec loop state : Async<unit> = async {
+                    let! msg = inbox.Receive()
+                    let! newState = f state msg
+                    return! loop newState
+                }
+                loop initState
+            )
+            
+    (* issues with websharper Type not found in JavaScript compilation: System.Collections.Generic.IDictionary`2
+    module IDict =
+    #if WEBSHARPER
+        [< Inline >]
+    #endif
+        let inline tryGetValue key (dict:System.Collections.Generic.IDictionary<_, _>) =
+            let mutable res = Unchecked.defaultof<_>
+            if dict.TryGetValue(key, &res)
+            then Some res 
+            else None
+        let add          key v (dict:System.Collections.Generic.IDictionary<_, _>) = if dict.ContainsKey key then      dict.[key] <- v else dict.Add(key, v)
+    *)
     module Dict =
-        let tryGetValue key   (dict:System.Collections.Generic.Dictionary<_, _>) = if dict.ContainsKey key then Some dict.[key]      else None
-        let add         key v (dict:System.Collections.Generic.Dictionary<_, _>) = if dict.ContainsKey key then      dict.[key] <- v else dict.Add(key, v)
-        
-    module String =
-        let splitByChar (c: char) (s: string) = s.Split c
-        let trim                  (s: string) = s.Trim()
-        let append     (a: string)(b: string) =  a + b
-        
-        
+    #if WEBSHARPER
+        [< Inline >]
+    #endif
+        let inline tryGetValue key (dict:System.Collections.Generic. Dictionary<_, _>) =
+            let mutable res = Unchecked.defaultof<_>
+            if dict.TryGetValue(key, &res)
+            then Some res 
+            else None
+        let add          key v (dict:System.Collections.Generic. Dictionary<_, _>) = if dict.ContainsKey key then      dict.[key] <- v else dict.Add(key, v)
+    
+    module LDict =
+    #if WEBSHARPER
+        [< Inline >]
+    #endif
+        let inline containsKey  key  dict = (^a : (member ContainsKey : _ -> bool) (dict, key))
+        //let inline item         key  dict = (^a : (member get_Item    : _ -> _   ) (dict, key))
+    #if WEBSHARPER
+        [< Inline >]
+    #endif
+        let inline tryGetValue fitem key  dict =
+            if containsKey key dict then Some (fitem key)
+            else None
+    
+    
     #if WEBSHARPER
     
     let (|REGEX|_|) (expr: string) (opt: string) (value: string) =
@@ -522,6 +631,10 @@ namespace FSSGlobal
     let inline swap f a b = f b a
     let inline __   f a b = f b a
     
+    
+    let dprintfn       fmt = fmt |> Printf.ksprintf (fun s -> printfn "%s"  s)
+    let printoutfn out fmt = fmt |> Printf.ksprintf (fun s -> s + "\n" |> out)
+    //let printoutf  out fmt = Printf.kprintf                        out  fmt
     
     #if WEBSHARPER
     [< Inline >]
@@ -1328,7 +1441,7 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1518039175740"
+        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1518784878221"
         let msgClient  = new MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
         let toId       = AddressId fsIds
         let stringResponseR response =
@@ -1370,7 +1483,653 @@ namespace FSSGlobal
         member this.RunActionCall   (name, act, parms     ) = sendMsg toId  (RunActionCall       (name, act, parms      ))    stringResponseR
         member this.FSStationId                             = fsIds
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1518039175740"
+        static member FSStationId_                          = "FSharpStation1518784878221"
+    
+    
+  #if WEBSHARPER
+  [<WebSharper.JavaScript>]
+  #endif
+  module WSMessagingBroker =
+    open WebSharper
+    open Useful
+    
+    let MessageBrokerId  = "<MessageBroker>"
+    
+    type Address = Address of address:string
+    with member this.txt = match this with Address txt -> txt
+    
+    let MessageBrokerAddress = Address MessageBrokerId
+    
+    /// Requests made to Message Broker
+    [< NamedUnionCases "type" >]
+    type BrokerRequest = 
+        | BRGetConnections  /// request for list of connections
+    
+    /// Replies from Message Broker
+    [< NamedUnionCases "type" >]
+    type BrokerReply = 
+        | BRConnections  of string[]
+      //  | BRPleaseClose  
+    
+    [< NamedUnionCases "type" >]
+    type MessageType = 
+        | MsgInformation             // does not expect a reply, payload may or may not be structured
+        | MsgRequest                 // expects a reply, structured payload
+        | MsgReply                   // structured payload.
+        | MsgFromBroker              // Payload is BrokerMessage. Only Broker should use this
+        | MsgRequestForId            // expects reply as Information with id
+        | MsgRequestForEcho          // expects reply as Information with same payload
+    
+    /// Replies from Message Broker
+    [< NamedUnionCases "type" >]
+    type BrokerMessage = 
+        | BMOk
+        | BMOnlyBrokerShouldUse
+        | BMDestinationNotFound of Address  
+        | BMWebSocketError      of string
+        | BMReceiverCantReply
+        | BMUnexpectedMsgType   of MessageType
+    
+    [< NamedUnionCases "type" >]
+    type Replier = 
+        | NoReply
+        | Broker
+        | Receiver
+    
+    [< NamedUnionCases "type" >]
+    type MessageGeneric = {
+        from          : Address
+        destination   : Address
+        msgType       : MessageType
+        subtype       : string      // free short string that provides information to deserialize payload
+        id            : System.Guid
+        payload       : string
+        replier       : Replier
+    }
+    
+    [< Inline >]
+    let inline processPayload f (payload:string) : string =
+        if payload = "" then Unchecked.defaultof<_> else Json.Deserialize payload
+        |> f
+        |> Json.Serialize
+                
+    [<  Inline >]
+    let newMsgSerialized dst payload = {
+        from          = Address ""
+        destination   = dst
+        msgType       = MsgRequest
+        subtype       = ""
+        id            = System.Guid.NewGuid()
+        payload       = payload
+        replier       = NoReply
+    }
+    
+    [< Inline >]
+    let inline payload        pl  msg = { msg with payload       = Json.Serialize pl }
+    let inline from           frm msg = { msg with from          = frm               }
+    let inline destination    dst msg = { msg with destination   = dst               }
+    let inline msgType        typ msg = { msg with msgType       = typ               }
+    let inline subtype        sub msg = { msg with subtype       = sub               }
+    let inline replier        rpl msg = { msg with replier       = rpl               }
+    let inline msgId          id  msg = { msg with id            = id                }
+    
+    [<  Inline >]
+    let inline newMsg dst payload = Json.Serialize payload |> newMsgSerialized dst
+    
+    [<  Inline >]
+    let inline msgPayload msg = Json.Deserialize msg.payload
+    
+    let mapPayload f msg = { msg with payload = f msg.payload }
+    
+    let inline makeReply msg =
+        msg
+        |> msgType MsgReply
+        |> replier NoReply
+    
+    [<  Inline >]
+    let inline respond pyld msg =
+        msg
+        |> makeReply
+        |> payload  pyld
+    
+    
+    //#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\WebSharper.Owin.WebSocket.dll"
+    
+    #if WEBSHARPER
+    [< JavaScript false >]
+    #endif
+    module Broker =
+        open WebSharper
+        open WebSharper.Owin.WebSocket.Server
+        open Useful
+        open System.Collections.Generic
+        
+        type SomeState = {
+            info       : string
+        }
+        
+        type IClient =
+            abstract member Post : MessageGeneric -> unit
+            abstract member Ip   : unit           -> string
+            abstract member Id   : unit           -> string
+            abstract member Close: unit           -> unit
+    
+        type BrokerAgent(epWebSocket: WebSharper.Owin.WebSocket.Endpoint<MessageGeneric,MessageGeneric>) =
+    #if FSS_SERVER                          
+            static let mutable fssWebSocketO : BrokerAgent option = None
+    #endif
+            do printfn "WebSocket server start"
+            let mutable connections = Map.empty
+            let processBrokerRequest req = 
+                match req with
+                | BRGetConnections -> connections |> Map.toSeq |> Seq.map (fun (Address cl, _) -> cl) |> Seq.toArray |> BRConnections 
+                
+            let respondFromBroker pyld msg =
+                msg
+                |> respond     pyld
+                |> msgType     MsgFromBroker
+                |> subtype     "FromBroker"
+    
+            let post reply msg =
+                match connections |> Map.tryFind msg.destination with
+                | None                      -> msg |> respondFromBroker (BMDestinationNotFound msg.destination) |> reply
+                | Some(_, clientTo:IClient) -> msg |> clientTo.Post
+                
+            let clientConnect (client: IClient) = async {
+                let clientId = client.Id()
+                let uniqueId = System.Guid.NewGuid()
+                printfn "New Connection from %s" clientId                           
+                let clientAddress = Address clientId
+                connections
+                |> Seq.filter(fun kp -> kp.Key = clientAddress)
+                |> Seq.iter  (fun (kp:KeyValuePair<_, _ * IClient>) -> 
+                    printfn "Closing old connection from %s" clientId
+                    kp.Value 
+                    |> fun (_, conn) -> conn.Close()
+                )
+                connections <- connections |> Map.add clientAddress (uniqueId, client)
+                
+                let reply msg = msg |> from MessageBrokerAddress |> destination clientAddress |> client.Post
+                let checkReply msg = if msg.replier = Broker then
+                                            msg |> respondFromBroker BMOk |> reply
+                let forward msg = msg |> from clientAddress |> post reply
+                                  checkReply msg
+                let respondMsg (msg:MessageGeneric) =
+                    checkReply msg
+                    printfn "%A" msg
+                    match msg.msgType with
+                    | MsgInformation    -> printfn "Information from '%s': %s" msg.from.txt (msgPayload msg)
+                    | MsgReply          -> printfn              "Reply %s: %s" msg.from.txt  msg.payload
+                    | MsgRequest        -> msg |> respond (msgPayload msg  |> processBrokerRequest)  |> reply
+                    | MsgRequestForId   -> msg |> respond  MessageBrokerId |> msgType MsgInformation |> reply
+                    | MsgRequestForEcho -> msg |> mapPayload id            |> msgType MsgInformation |> reply
+                    | MsgFromBroker     -> ()
+                let clientIp = client.Ip()
+                return Unchecked.defaultof<_>, fun state wsmsg -> async {
+                    printfn "Received message %A from %s - %s" state clientIp clientId
+                    match wsmsg with
+                    | Message msg ->
+                        if   msg.msgType     = MsgFromBroker        then msg |> respondFromBroker BMOnlyBrokerShouldUse |> reply
+                        elif msg.destination = MessageBrokerAddress then respondMsg msg
+                        else                                             forward    msg     
+                        return state
+                    | Error exn -> 
+                        printfn "Error in WebSocket server connected to %s - %s: %s" clientIp clientId (exn.ToString())
+                        newMsg clientAddress (BMWebSocketError exn.Message) |> msgId System.Guid.Empty |> msgType MsgFromBroker |> msgType MsgFromBroker |> reply
+                        return state
+                    | Close ->
+                        printfn "Closed connection to %s - %s" clientIp clientId
+                        connections <- connections |> Map.filter (fun _ (uid, _) -> uid <> uniqueId)
+                        return state
+                }
+            }
+            member this.Post msg = post (fun m -> dprintfn "%s" m.payload) msg
+            member this.Start (client : WebSocketClient<MessageGeneric,MessageGeneric>) =
+                clientConnect { new IClient with
+                                    member this.Post v  = client.Post v
+                                    member this.Ip()    = client.Connection.Context.Request.RemoteIpAddress
+                                    member this.Id()    = client.Connection.Context.Request.Query 
+                                                          |> KeyVal.tryGetValue  "ClientId" 
+                                                          |> Option.bind         Array.tryHead 
+                                                          |> Option.defaultValue ""
+                                    member this.Close() = client.Connection.Close(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, null) |> Async.AwaitTask |> Async.Start
+                              }
+    #if FSS_SERVER
+            static member FssWebSocketO = fssWebSocketO
+            static member FssWebSocketO with set value = fssWebSocketO <- value
+            member this.ConnectLocal clientId receiver = 
+                clientConnect { new IClient with
+                                    member this.Post v  = receiver v 
+                                    member this.Ip()    = "(server)"
+                                    member this.Id()    = clientId
+                                    member this.Close() = () // probably shouldn't be called at all
+                              }
+    #endif        
+            
+            
+    #if WEBSHARPER
+    #else
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.dll"
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.JavaScript.dll"
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Main.dll"
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Collections.dll"
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.InterfaceGenerator.dll"
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.JQuery.dll"
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.JavaScript.dll"
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Web.dll"
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Sitelets.dll"
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Control.dll"
+    //#r @"..\packages\WebSharper.UI.Next\lib\net40\WebSharper.UI.Next.dll"
+    
+    open System
+    open System.Threading
+    open System.Net.WebSockets
+    open WebSharper
+    open Useful
+    
+    module Client =
+        //open WebSharper.JavaScript
+    
+        type Message<'S2C> =
+            | Message of 'S2C
+            | Error
+            | Open
+            | Close
+    
+        let startStateFull receive f =
+            async {
+                let! initState, func = f
+                let agentBox = Mailbox.fold func initState
+                let finish a = agentBox.Post Message.Close ; printfn "%A" a
+                let error  a = agentBox.Post Message.Error ; finish a
+                Async.StartWithContinuations(receive agentBox, finish, error, error)
+            }
+    
+        type WebSocketServer<'S2C, 'C2S>(uri:string) =
+            let conn = new ClientWebSocket()
+            let chunkSize = 1024
+            let send (txt:string)  =
+                async {
+                    let buffer = System.Text.Encoding.UTF8.GetBytes txt
+                    let chunks = buffer.Length / chunkSize
+                    for i = 0 to chunks do
+                        let last = i = chunks
+                        let size = if last then buffer.Length % chunkSize else chunkSize
+                        do! conn.SendAsync(new ArraySegment<byte>(buffer, i * chunkSize, size), WebSocketMessageType.Binary, last, CancellationToken.None) |> Async.AwaitTask
+                }
+            let receive (receiverBox:MailboxProcessor<Message<'S2C>>) =
+                let buffer : byte[] = Array.create chunkSize 0uy
+                let builder         = System.Text.StringBuilder()
+                let mutable keepgo  = true
+                async {
+                    receiverBox.Post Message.Open
+                    while conn.State = WebSocketState.Open && keepgo do
+                        let! result = conn.ReceiveAsync(ArraySegment buffer, CancellationToken.None) |> Async.AwaitTask
+                        match result.MessageType with
+                        | WebSocketMessageType.Close -> keepgo <- false
+                        | WebSocketMessageType.Text ->
+                            builder.Append (System.Text.Encoding.UTF8.GetString(ArraySegment(buffer, 0, result.Count).Array)) |> ignore
+                            if result.EndOfMessage then
+                                let txt = builder.ToString()
+                                builder.Clear() |> ignore
+                                Json.Deserialize txt |> Message.Message |> receiverBox.Post
+                        | _ -> ()
+                    return "WebSocketServer receive Closed."
+                }
+            let brokerBox = Mailbox.iter (Json.Serialize >> send)
+            let connect f =
+                async {
+                    dprintfn "Connecting %s" uri
+                    do! conn.ConnectAsync(new Uri(uri), CancellationToken.None) |> Async.AwaitTask
+                    dprintfn "Connected %A" WebSocketState.Open
+                    do! startStateFull receive f
+                }
+            member this.WebSocket        = conn
+            member this.Post (msg: 'C2S) = brokerBox.Post msg
+            member this.Connect          = connect
+    
+        let ConnectStateful<'S2C, 'C2S> uri agent =
+            async {
+                let  server          = WebSocketServer uri
+                do!  server.Connect (agent server)
+                return server
+            }
+    #endif
+    
+    //#r @"..\packages\Owin\lib\net40\Owin.dll"
+    //#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\WebSharper.Owin.WebSocket.dll"
+    
+    open System
+    open Useful
+    #if WEBSHARPER
+    open WebSharper.Owin.WebSocket
+    open WebSharper.Owin.WebSocket.Client
+    #else
+    open Client
+    #endif
+    
+    //#define FSS_SERVER
+    //#define WEBSHARPER
+    
+    type  Server = WebSocketServer<MessageGeneric,MessageGeneric>
+    type IServer =
+        abstract member Post  : MessageGeneric -> unit
+        abstract member Close : unit           -> unit
+    
+    #if WEBSHARPER
+    type NotJs = NotJS
+    
+    [< Inline >]
+    let ConnectStatefulJS uri clientId (f:IServer -> Async<int * (int -> Message<MessageGeneric> -> Async<int>)>) =
+        let uri2 = sprintf "ws://%s?ClientId=%s" uri clientId
+        let func (serverP:WebSocketServer<MessageGeneric,MessageGeneric>) =
+            f { new IServer with
+                  member this.Post  v = serverP.Post v
+                  member this.Close() = serverP.Connection.Close 0
+               }
+        let  endPoint = Endpoint.CreateRemote(uri2, JsonEncoding.Readable)
+        ConnectStateful endPoint func
+        |> Async.map ignore
+    #endif
+    
+    #if WEBSHARPER
+    [< JavaScript false >]
+    #endif
+    let ConnectStatefulFS uri clientId (f:IServer -> Async<int * (int -> Message<MessageGeneric> -> Async<int>)>) =
+    #if FSS_SERVER
+        async {
+            match Broker.BrokerAgent.FssWebSocketO with 
+            | None -> raise (exn "FssWebSocketO is not set")
+            | Some serverP ->
+            let  mutable clientBoxO : MailboxProcessor<Client.Message<MessageGeneric>> option = None
+            let  receiver msg = clientBoxO |> Option.iter (fun cbox -> cbox.Post (Client.Message msg))
+            let! brokerInitState, brokerFunc = serverP.ConnectLocal clientId receiver
+            let  brokerBox   = Mailbox.fold brokerFunc brokerInitState
+            let! clientInitState, clientFunc = f { new IServer with
+                                                       member this.Post msg = brokerBox.Post (Owin.WebSocket.Server.Message msg)
+                                                       member this.Close()  = ()
+                                                 }
+            let  clientBox = Mailbox.fold clientFunc clientInitState
+            clientBoxO <- Some clientBox
+            clientBox.Post Open
+        }
+    #else                        
+    #if WEBSHARPER
+        async { () }
+    #else
+        let uri2 = sprintf "ws://%s?ClientId=%s" uri clientId
+        let func (serverP:WebSocketServer<MessageGeneric,MessageGeneric>) =
+            f { new IServer with
+                  member this.Post  v = serverP.Post v
+                  member this.Close() = serverP.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None) 
+                                        |> Async.AwaitTask |> Async.RunSynchronously            
+               }
+        ConnectStateful uri2 func
+        |> Async.map ignore
+    #endif
+    #endif
+    
+    
+    type ErrBroker(bm : BrokerMessage) =
+        interface ErrMsg with
+            member this.ErrMsg   : string = bm.ToString()
+            member this.IsWarning: bool   = false
+    
+    type WaitForReplyMsg =
+        | Add    of Guid * ((MessageGeneric -> unit) * (exn -> unit) * (OperationCanceledException -> unit))
+        | Reply  of Guid *   MessageGeneric
+        | Excpn  of Guid * (unit -> exn)
+        | Cancel of Guid * (unit -> OperationCanceledException)
+        
+    let waitingAgent defProc =    
+        Mailbox.fold (fun waitingForReply action ->
+            async {
+                match action with
+                | Add   (key, fns) -> ()
+                | Reply (key, msg) -> waitingForReply |> Map.tryFind key |> Option.map  (fun (f,_,_) -> f  msg   ) 
+                                      |> Option.defaultWith (fun () -> defProc msg)
+                | Excpn (key, exn) -> waitingForReply |> Map.tryFind key |> Option.iter (fun (_,f,_) -> f (exn()))
+                | Cancel(key, cnl) -> waitingForReply |> Map.tryFind key |> Option.iter (fun (_,_,f) -> f (cnl()))
+                return
+                    match action with
+                    | Reply (key, _  )
+                    | Excpn (key, _  )
+                    | Cancel(key, _  ) -> waitingForReply |> Map.remove key
+                    | Add   (key, fns) -> waitingForReply |> Map.add    key fns
+            }
+        ) Map.empty
+    
+    [< Inline "window.location.href" >]
+    let getEndPoint() = "http://localhost:9010/FSharpStation"
+    
+    let extractEndPoint() = 
+        let ep : string = getEndPoint()
+        let ep2 = ep.Substring(ep.IndexOf "//" + 2)
+        ep2.Split('/').[0]
+    
+    type WSMessagingClient(connectStateful, clientId, ?timeout, ?endPoint:string) =    
+        let wsEndPoint    = defaultArg endPoint (extractEndPoint() + "/ws")
+        let clientAddress = Address clientId
+        let wsTimeout     = defaultArg timeout 60000
+    
+        let mutable out = printfn "%s"
+        //let printoutfn out     = 0 // just to catch printoutfn out that should not be around 
+        let mutable serverO : IServer option = None
+        let mutable payloadProcessorO : (string -> Wrap<string>) option = None
+        let waiting = waitingAgent (fun msg -> printoutfn out "Reply from '%s': %s" msg.from.txt msg.payload)
+    
+        let reply msg = serverO |> Option.iter (fun server -> msg |> from clientAddress |> destination msg.from |> server.Post)
+        let close ()  = serverO |> Option.iter (fun server -> server.Close() ; serverO <- None                                )
+    
+        let processReply      msg = waiting.Post (Reply(msg.id,msg))
+        let mapPayloadWrap (fW: _ -> Wrap<_> ) msg =
+            Wrap.wrapper {
+                let! r = fW msg.payload
+                return msg |> mapPayload (fun _ -> r)
+            }
+        let processMessage msg =
+            dprintfn "%A" msg
+            match msg.msgType with
+            | MsgFromBroker     
+            | MsgReply          -> processReply msg
+            | MsgInformation    -> printoutfn out "Information from '%s': %s" msg.from.txt (msgPayload msg)
+            | MsgRequest        -> match payloadProcessorO with 
+                                   | None           -> if msg.replier = Receiver then () // requires a reply but cannot give one, ask broker to handle it
+                                   | Some processor ->
+                                   msg |> mapPayloadWrap processor |> Wrap.map  (makeReply >> reply) |> Wrap<unit>.Start
+            | MsgRequestForEcho -> msg |> mapPayload     id        |> msgType MsgInformation |> reply
+            | MsgRequestForId   -> msg |> respond        clientId  |> msgType MsgInformation |> reply
+        
+        let connectToWebSocketServer() =
+            dprintfn "in connectToWebSocketServer"
+            async {
+                do! connectStateful wsEndPoint clientId <| fun (server: IServer) -> async {
+                    return 0, fun state wsmsg -> async {
+                        dprintfn "connectToWebSocketServer %A" wsmsg
+                        match wsmsg with
+                        | Message msg -> processMessage msg
+                        | Open        -> printoutfn out "WebSocket %s connection open."   clientId ; serverO <- Some server
+                        | Close       -> printoutfn out "WebSocket %s connection closed." clientId ; close()
+                        | Error       -> printoutfn out "WebSocket %s connection error!"  clientId
+                        return state
+                    }
+                }
+                dprintfn "connectToWebSocketServer with server"
+                
+            }
+        
+        let getServer() : Wrap<IServer> =
+            Wrap.wrapper {
+                dprintfn "getServer"
+                while serverO.IsNone do
+                    dprintfn "getServer Connecting"
+                    do! connectToWebSocketServer()
+                    do! Async.Sleep 200
+                let!   server = serverO
+                return server
+            }
+    
+        let postR (server: IServer) rpl msg = 
+            msg |> from clientAddress |> replier rpl |> server.Post
+    
+        let sendAndForget msg =
+            Wrap.wrapper {
+                let! server = getServer()
+                msg |> postR server NoReply
+            }
+            
+        let sendAndReply rpl msg =
+            Wrap.wrapper {
+                let! server  = getServer()
+                let  replyA  = Async.FromContinuations(fun v -> 
+                    Add(msg.id, v) |> waiting.Post 
+                    msg |> postR server rpl
+                    if wsTimeout > 0 then
+                        async {
+                            do! Async.Sleep wsTimeout
+                            Excpn(msg.id, fun () -> TimeoutException(sprintf "Did not receive reply in %d seconds for Message: %A" (wsTimeout / 1000) msg) :> exn) |> waiting.Post
+                        } |> Async.Start
+                )
+                let! reply   = replyA
+                return reply
+            }
+            
+        let sendAndVerify msg =
+            Wrap.wrapper {
+                let! reply   = sendAndReply Broker msg 
+                do!  match reply.msgType with
+                     | MsgFromBroker  -> let  bm = msgPayload reply
+                                         if   bm = BMOk 
+                                         then Result.succeed () 
+                                         else Result.fail (ErrBroker bm)
+                     | _              ->      Result.fail (ErrBroker (BMUnexpectedMsgType reply.msgType))
+            }
+        
+        let sendGetReply msg =
+            Wrap.wrapper {
+                let! reply   = sendAndReply Receiver msg 
+                let! result =
+                    match reply.msgType with
+                    | MsgReply      -> Result.succeed reply.payload
+                    | MsgFromBroker -> let bm = msgPayload reply
+                                       Result.fail (ErrBroker bm)
+                    | _             -> Result.fail (ErrBroker (BMUnexpectedMsgType reply.msgType))
+                return result
+            }
+    
+        let getListeners() =
+            Wrap.wrapper {
+                let  msg    = newMsg MessageBrokerAddress BRGetConnections
+                let! reply  = sendGetReply msg
+                match Json.Deserialize<BrokerReply> reply with
+                | BRConnections listeners -> return listeners
+                //| _ -> ()
+            } 
+            
+        let sendMsg msg =
+            Wrap.wrapper {
+                if msg.replier = NoReply
+                then do!     sendAndForget msg
+                     return  ""
+                else return! sendGetReply  msg
+            }
+        member this.MBListeners            = getListeners()
+        member this.EndPoint               = wsEndPoint
+        member this.ClientId               = clientId
+        member this.SendMsg           msg  = sendMsg msg
+        [<  Inline >]
+        member this.SendAndForget dst pyld = newMsg dst pyld |> sendAndForget
+        [<  Inline >]
+        member this.SendAndVerify dst pyld = newMsg dst pyld |> sendAndVerify
+        [<  Inline >]
+        member this.SendGetReply  dst pyld = newMsg dst pyld |> sendGetReply  |> Wrap.map Json.Deserialize
+        member this.Out with set fout      = out <- fout
+        [<  Inline >]
+        member this.ProcessIncoming   pro  = payloadProcessorO <- Some (Json.Deserialize >> pro >> (Wrap.map Json.Serialize))
+                                             newMsg MessageBrokerAddress "Registering Processor" 
+                                             |> msgType MsgInformation
+                                             |> sendAndForget |> Wrap<unit>.Start
+        interface IDisposable with
+            member this.Dispose() = close()
+    
+    #if WEBSHARPER
+        [< JavaScript false >]
+        new (clientId, NotJS, ?timeout, ?endPoint) = new WSMessagingClient(ConnectStatefulFS, clientId, ?timeout = timeout, ?endPoint = endPoint)
+        new (clientId,        ?timeout, ?endPoint) = new WSMessagingClient(ConnectStatefulJS, clientId, ?timeout = timeout, ?endPoint = endPoint)
+    #else
+        new (clientId,        ?timeout, ?endPoint) = new WSMessagingClient(ConnectStatefulFS, clientId, ?timeout = timeout, ?endPoint = endPoint)
+    #endif
+    
+    
+    open FsStationShared
+    
+    type FsStationClientErr =
+        | FSMessage             of string * FSSeverity
+        | ``Snippet Not Found`` of string
+    with interface ErrMsg with
+            member this.ErrMsg    = 
+                match this with 
+                | FSMessage (msg, sev    )   -> sprintf "%A %s" sev msg
+                | msg                        -> sprintf "%A"        msg
+            member this.IsWarning =     
+                match this with 
+                | FSMessage (_  , FSError)   -> true
+                | msg                        -> false
+    
+    type FStationMessaging(msgClient:WSMessagingClient, clientId, ?fsStationId:string) =
+        let mutable fsIds      = fsStationId |> Option.defaultValue "FSharpStation1518784878221"
+        let         toId()     = Address fsIds
+        let stringResponseR response =
+            match response with
+            | StringResponseR (Some code, msgs) -> Result.succeedWithMsgs code (msgs |> Seq.map (fun v -> FSMessage v :> ErrMsg) |> Seq.toList)
+            | _                                 -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
+        let stringResponse   response =
+            match response with
+            | StringResponse (Some code)        -> Result.succeed code
+            | _                                 -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
+        let snippetsResponse response =    
+            match response with    
+            | SnippetsResponse snps             -> Result.succeed snps
+            | _                                 -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
+        let snippetResponse  response =    
+            match response with    
+            | SnippetResponse  snp              -> Result.succeed snp
+            | _                                 -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
+        [< Inline >]
+        let sendMsg toId (msg: FSMessage) (checkResponse: FSResponse -> Result<'a>) =
+            Wrap.wrap {
+                printfn "FStationMessaging message: %A" msg
+                let!   res   = msgClient.SendGetReply toId msg
+                printfn "FStationMessaging response: %A" res
+                let!   check = checkResponse res
+                return check
+            } 
+      with 
+        member this.SendMessage     (toId2,  msg:FSMessage) = sendMsg  toId2    msg    Result.succeed   
+        member this.SendMessage     (        msg:FSMessage) = sendMsg (toId())  msg    Result.succeed   
+        member this.RequestSnippet  (    snpPath:string   ) = sendMsg (toId()) (GetSnippet          (snpPath.Split '/'     ))    snippetResponse  
+        member this.RequestCode     (    snpPath:string   ) = sendMsg (toId()) (GetSnippetCode      (snpPath.Split '/'     ))    stringResponse   
+        member this.RequestJSCode   (    snpPath:string   ) = sendMsg (toId()) (GetSnippetJSCode    (snpPath.Split '/'     ))    stringResponseR  
+        member this.RequestPreds    (    snpPath:string   ) = sendMsg (toId()) (GetSnippetPreds     (snpPath.Split '/'     ))    snippetsResponse 
+        member this.RequestPredsById(      snpId          ) = sendMsg (toId()) (GetSnippetPredsById  snpId                  )    snippetsResponse 
+        member this.RequestWholeFile(                     ) = sendMsg (toId())  GetWholeFile                                     stringResponse   
+        member this.GenericMessage  (        txt:string   ) = sendMsg (toId()) (GenericMessage       txt                    )    stringResponse   
+        member this.RunSnippet      (url,snpPath:string   ) = sendMsg (toId()) (RunSnippetUrlJS     (snpPath.Split '/', url))    stringResponseR
+        member this.RunActionCall   (name, act, parms     ) = sendMsg (toId()) (RunActionCall       (name, act, parms      ))    stringResponseR
+        member this.FSStationId                             = fsIds
+        member this.FSStationId with set id                 = fsIds <- id
+        member this.MessagingClient                         = msgClient    
+        static member FSStationId_                          = "FSharpStation1518784878221"
+        [< JavaScript false >]
+    #if WEBSHARPER
+        new (clientId, NotJS, ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId, NotJS, ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
+    #endif    
+        new (clientId,        ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId,        ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
+    
     
     
   module FsEvaluator =
@@ -1406,7 +2165,7 @@ namespace FSSGlobal
     
         #if FSS_SERVER
         printfn "FSS_SERVER"
-        let mutable fssClient = FsStationShared.FsStationClient("Fsi")
+        let fssClient = WSMessagingBroker.FStationMessaging("Fsi", WSMessagingBroker.NotJS)
         let queueOutput = MailboxProcessor.Start(fun mail -> 
             let output      = new System.Text.StringBuilder()
             let append  txt = output.Append((if output.Length = 0 then "" else "\n") + txt) |> ignore
@@ -1421,6 +2180,7 @@ namespace FSSGlobal
                     | None     ->   // None means send the queued text
                         let txt2send =  consume()
                         if  txt2send <> "" then
+                            printfn "CALLING OUTTEXT"
                             fssClient.RunActionCall("OutText", "actOutText", [| "+" ; txt2send |])
                             |> Wrap.getAsyncR 
                             |> Async.map ignore 
@@ -1432,7 +2192,7 @@ namespace FSSGlobal
                     queueOutput.Post None } |> Async.Start
         let outHndl (txt:string) = if not silent then txt.Replace(endToken, "Done!")   |> queueText
         let errHndl (txt:string) = if not silent then if txt <> "" then "ERR : " + txt |> queueText
-        let setFsid id ep = if id <> fssClient.FSStationId && id <> "" then fssClient <- FsStationShared.FsStationClient("Fsi", id, endPoint = ep) ; printfn "setFSid = %s" id
+        let setFsid id ep = if id <> fssClient.FSStationId && id <> "" then fssClient.FSStationId <- id ; printfn "setFSid = %s" id
         #else
         let outHndl       = ignore
         let errHndl       = ignore
@@ -1996,9 +2756,9 @@ namespace FSSGlobal
                 return snp, first, ind                        
             }
         let mustParse fname snpId =
-            getDelta fname (Some snpId)
+            getDelta  fname (Some snpId)
             |> Wrap.map              (fun _ -> false)
-            |> Wrap.RunSynchronously 
+            |> Wrap.RunSynchronouslyR 
             |> Result.withError      (fun _ -> true )
     
         let findDeclaration file lin col filter =
@@ -2029,7 +2789,7 @@ namespace FSSGlobal
                 let! res             = getKind fname (ln + dln) (col + dcol) ""
                 return res
             } 
-            |> Wrap.RunSynchronously
+            |> Wrap.RunSynchronouslyR
             |> Result.withError (Result.getMessages >> KindError)
     
         let getCompletion fname ln col lineText (snpIdO:string option) =
@@ -2038,7 +2798,7 @@ namespace FSSGlobal
                 let! res             = completion fname (ln + dln) (col + dcol) ((String.replicate dcol " ") + lineText) "Contains"
                 return res
             } 
-            |> Wrap.RunSynchronously
+            |> Wrap.RunSynchronouslyR
             |> Result.withError (Result.getMessages >> KindError)
             
         member this.Respond (msg:ACMessage) =
@@ -2617,7 +3377,7 @@ namespace FSSGlobal
             ]
     
     [< Inline """(!$v)""">]
-    let isUndefined v = true
+    let isUndefined v = v.GetType() = v.GetType()
     
     let  findRootElement (e:Dom.Element) =
         if isUndefined e.GetRootNode then JS.Document.Body
@@ -5574,11 +6334,14 @@ namespace FSSGlobal
       JS.Window?doFSharpStationGuiCall <- doGuiCall
       JS.Window?setFSharpStationLayout <- setFSharpStationLayout
       
+      let dict = Dictionary<string, string>()
+      let dictTryGetValue = Dict.tryGetValue "" dict // this is here so it gets included in the code for Layouts
       ()
       
       #if NOMESSAGING
       #else
       
+      let wsStationClient = new WSMessagingBroker.WSMessagingClient(fsIds)
       let fsStationClient = FsStationClient(fsIds, fsIds, endPoint = JS.Window.Location.Href)
       
       let transMsgs (msgs: ErrMsg list)  =  msgs |> Seq.map (fun e -> e.ErrMsg, if e.IsWarning then FSWarning else FSError) |> Seq.toArray
@@ -5617,6 +6380,13 @@ namespace FSSGlobal
       async {
           do! Async.Sleep 1000
           do fsStationClient.MessagingClient.AwaitMessageG respond
+      } |> Async.Start
+      
+      async {
+          do! Async.Sleep 1000
+          while true do
+              wsStationClient.ProcessIncoming (respond "" >> WAsync)
+              do! Async.Sleep 60000
       } |> Async.Start
       
       #endif
@@ -5660,6 +6430,12 @@ namespace FSSGlobal
     //#define FSS_SERVER
     //#define NOMESSAGING
     
+    //#r @"..\packages\WebSharper.UI.Next\lib\net40\HtmlAgilityPack.dll"
+    //#r @"..\packages\WebSharper.UI.Next\lib\net40\WebSharper.UI.Next.Templating.dll"
+    //#r @"..\packages\WebSharper.UI.Next\lib\net40\WebSharper.UI.Next.Templating.Common.dll"
+    //#r @"..\packages\WebSharper.UI.Next\lib\net40\WebSharper.UI.Next.Templating.Runtime.dll"
+    
+    open WebSharper.UI.Next.Templating
     open WebSharper.Sitelets
     open WebSharper.UI.Next.Server
     open WebSharper.UI.Next
@@ -5669,13 +6445,23 @@ namespace FSSGlobal
         | EPLoad of string
         | FSharpStation
     
-    let FSharpStationPage uri =
+    let FSharpStationPageold uri =
         Content.Page(
             Title = "F# Station"
           , Head  = [ Html.scriptAttr [ attr.``type`` "text/javascript"; attr.src "https://code.jquery.com/jquery-3.1.1.min.js"] [] 
                       Html.scriptAttr [ attr.``type`` "text/javascript"; attr.src "/EPFileX/CIPHERSpaceLoadFiles.js"           ] [] 
                     ]
           , Body  = [ Html.client <@  FSharpStationClient uri @> ])
+    
+    type MainTemplate = Template< @"D:\Abe\CIPHERWorkspace\FSharpStation\bin\website/FSstation.html">
+    
+    let FSharpStationPage uri : Async<Content<EndPoint>> =
+        MainTemplate()
+            .Title("Main Page")
+            .Body( [ Html.client <@  FSharpStationClient uri @> ])
+            .Doc()
+        |> Content.Page
+    
     
     let content (ctx:Context<EndPoint>) (endpoint:EndPoint) : Async<Content<EndPoint>> =
         printfn "%A" endpoint
@@ -5687,7 +6473,7 @@ namespace FSSGlobal
     let site = Application.MultiPage content
     
     //#r @"..\packages\Owin\lib\net40\Owin.dll"
-    //#r @"..\packages\Owin.Compression\lib\Owin.Compression.dll"
+    //#r @"..\packages\Owin.Compression\lib\net452\Owin.Compression.dll"
     //#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
     //#r @"..\packages\Microsoft.Owin.Hosting\lib\net45\Microsoft.Owin.Hosting.dll"
     //#r @"..\packages\Microsoft.Owin.Host.HttpListener\lib\net45\Microsoft.Owin.Host.HttpListener.dll"
@@ -5695,6 +6481,8 @@ namespace FSSGlobal
     //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net45\Microsoft.Owin.FileSystems.dll"
     //#r @"..\packages\WebSharper.Owin\lib\net45\WebSharper.Owin.dll"
     //#r @"..\packages\WebSharper.Owin\lib\net45\HttpMultipartParser.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\WebSharper.Owin.WebSocket.dll"
     //#r @"WebSharper.Core.JavaScript.dll"
     //#r @"..\packages\FSharp.Compiler.Service\lib\net45\FSharp.Compiler.Service.dll"
     
@@ -5704,7 +6492,8 @@ namespace FSSGlobal
     open Microsoft.Owin.StaticFiles.ContentTypes
     open Microsoft.Owin.FileSystems
     open WebSharper.Owin
-    
+    open WebSharper.Owin.WebSocket
+    open WSMessagingBroker
     
     WebSharper.Web.Remoting.AddAllowedOrigin "http://localhost"
     WebSharper.Web.Remoting.AddAllowedOrigin "http://*"
@@ -5719,15 +6508,19 @@ namespace FSSGlobal
             | [| url                |] -> "website"    , url
             | [|                    |] -> "website"    , "http://localhost:9010/"
             | _ -> eprintfn "Usage: WebServer3 ROOT_DIRECTORY URL"; exit 1
+        let epWebSocket = Endpoint.Create(url, "/ws", JsonEncoding.Readable)
+        let brokerAgent = Broker.BrokerAgent epWebSocket
+        Broker.BrokerAgent.FssWebSocketO <- Some brokerAgent
         let provider = FileExtensionContentTypeProvider()
         provider.Mappings.[".fsjson"] <- "application/x-fsjson"
         use server = 
             WebApp.Start(url, fun appB ->
-                appB//.UseCompressionModule()
+                appB.UseCompressionModule()
                     .UseWebSharper( WebSharperOptions(ServerRootDirectory  = rootDirectory
                                                     , Sitelet              = Some site
                                                     , BinDirectory         = "."
                                                     , Debug                = true))
+                    .UseWebSocket(epWebSocket, brokerAgent.Start)
                     .UseStaticFiles(StaticFileOptions(FileSystem           = PhysicalFileSystem(rootDirectory)
                                                     , ContentTypeProvider  = provider ))
                                 |> ignore
