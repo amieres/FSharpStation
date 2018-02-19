@@ -69,6 +69,11 @@ namespace FSSGlobal
             }
     
         let bind f va = async.Bind(va, f)
+        let sleepThen f milliseconds =
+            async {
+                do! Async.Sleep milliseconds
+                do  f()
+            }
     
     module KeyVal =
         //let inline getEnumerator dict = (^a : (member get_Enumerator : _) (dict, ()))
@@ -563,8 +568,9 @@ namespace FSSGlobal
             MailboxProcessor.Start(fun inbox ->
                 async {
                     while true do
-                        let!   msg = inbox.Receive()
-                        do!  f msg
+                        try       let!   msg = inbox.Receive()
+                                  do!  f msg
+                        with e -> printfn "%A" e
                 }
             )
         
@@ -572,13 +578,33 @@ namespace FSSGlobal
         let fold f initState =
             MailboxProcessor.Start(fun inbox ->
                 let rec loop state : Async<unit> = async {
-                    let! msg = inbox.Receive()
-                    let! newState = f state msg
-                    return! loop newState
+                    try       let! msg      = inbox.Receive()
+                              let! newState = f state msg
+                              return! loop newState
+                    with e -> printfn "%A" e
+                              return! loop state
                 }
                 loop initState
             )
-            
+    
+    // object expressions work only on types not objects
+    //
+    //    /// A simple Mailbox processor to serially process tasks
+    //    /// with a Flush option
+    //    let iterFlushable f =
+    //        let ff msg = match msg with 
+    //                     | Some m -> f m 
+    //                     | None   -> async { () }
+    //        let mailbox = iter ff
+    //        { new mailbox with member this.Flush() = mailbox.Post None }  
+    //
+    //    let foldFlushable f initState =
+    //        let ff msg = match msg with 
+    //                     | Some m -> f m 
+    //                     | None   -> async { () }
+    //        let mailbox = fold ff initState
+    //        { new mailbox with member this.Flush() = mailbox.Post None }
+    //        
     (* issues with websharper Type not found in JavaScript compilation: System.Collections.Generic.IDictionary`2
     module IDict =
     #if WEBSHARPER
@@ -632,7 +658,7 @@ namespace FSSGlobal
     let inline __   f a b = f b a
     
     
-    let dprintfn       fmt = fmt |> Printf.ksprintf (fun s -> printfn "%s"  s)
+    let dprintfn       fmt = fmt |> Printf.ksprintf ignore //(fun s -> printfn "%s"  s)
     let printoutfn out fmt = fmt |> Printf.ksprintf (fun s -> s + "\n" |> out)
     //let printoutf  out fmt = Printf.kprintf                        out  fmt
     
@@ -780,6 +806,12 @@ namespace FSSGlobal
             proc.StartInfo <- procStart
             proc.Start() 
         
+        let startProcessDir p ops dir =
+            let procStart   = ProcessStartInfo(p, ops, WorkingDirectory = dir)
+            let proc        = new Process()
+            proc.StartInfo <- procStart
+            proc.Start() 
+        
         type ShellExError =
             | ShellExitCode              of int
             | ShellOutput                of string
@@ -856,8 +888,9 @@ namespace FSSGlobal
             member this.WaitForInputIdle() =
                 proc.WaitForInputIdle()
             member this.StartAndWaitR() =
-                this.StartAndWait()
-                |||> this.stdOutErr2Result
+                let r = this.StartAndWait()
+                (this :> System.IDisposable).Dispose()
+                r |||> this.stdOutErr2Result
             member this.RunToFinish() =
                 this.StartAndWaitR()
                 |> Result.result2String
@@ -904,6 +937,7 @@ namespace FSSGlobal
                     return res
                 }
             member this.HasExited = try proc.HasExited with _ -> true
+            member this.Abort()   = try proc.Kill   () with _ -> ()
             interface System.IDisposable with
                 member this.Dispose () =
                     try proc.Kill   () with _ -> ()
@@ -953,10 +987,10 @@ namespace FSSGlobal
     module CompOptionsModule = // needs to be in a module so (?) operator does not collide with websharper
         
         type CompOptionClass = 
-            | OpFSharp
-            | OpWebSharper
-            | OpInternal
-        
+             | OpFSharp
+             | OpWebSharper
+             | OpInternal
+    
         type CompOption = 
             {
                 name   : string
@@ -970,7 +1004,7 @@ namespace FSSGlobal
             static member (/=) (op: CompOption, v                 ) = op, OpVTextOF v
         
         and CompOptionValue =
-            | OpVText   of                string
+            | OpVText   of                 string
             | OpVTextOF of (CompOptions -> string)
         with 
             member this.Value ops = 
@@ -982,7 +1016,7 @@ namespace FSSGlobal
         with
             member this.Pairs             =  this |> function CompOptions ops ->  ops
             member this.Exists   f        =  this.Pairs |> Array.exists f 
-            member this.Find     name     =  this.Pairs |> Array.find (fun (opT, opV) -> name = opT.name)
+            member this.Find     name     =  this.Pairs |> Array.tryFind (fun (opT, opV) -> name = opT.name) |> Option.defaultWith (fun () -> raise (exn ("option " + name + " not found.")) )
             member this.FindV    name     = (this.Find name |> snd).Value this
             member this.Contains co       =  this.Exists (fun (opT, opV) -> co   = opT                           )
             member this.Contains v        =  this.Exists (fun (opT, opV) -> v    = opT.prefix + (opV.Value this) )
@@ -1008,6 +1042,7 @@ namespace FSSGlobal
         let opName        = { name = "Name"        ; unique = true  ; opClass = OpInternal   ; prefix = "++name:"      }
         let opExtension   = { name = "Extension"   ; unique = true  ; opClass = OpInternal   ; prefix = "++extension:" }
         let opFileName    = { name = "Filename"    ; unique = true  ; opClass = OpInternal   ; prefix = "++filename:"  }
+        let opOutputFile  = { name = "OutputFile"  ; unique = true  ; opClass = OpInternal   ; prefix = "++fileout:"   }
         let opConfig      = { name = "Config"      ; unique = true  ; opClass = OpInternal   ; prefix = "++config:"    }
         let opGenInternal = { name = "GenInternal" ; unique = false ; opClass = OpInternal   ; prefix = "++"           }
         let opWebSharper  = { name = "WebSharper"  ; unique = true  ; opClass = OpInternal   ; prefix = "++websharper:"}
@@ -1023,6 +1058,7 @@ namespace FSSGlobal
         let opGenFSharp2  = { name = "GenFSharp2"  ; unique = false ; opClass = OpFSharp     ; prefix = "--"           }
         
         let opWebSite     = { name = "Website"     ; unique = true  ; opClass = OpWebSharper ; prefix = "--wsoutput:"  }
+        let opWsProject   = { name = "WsProject"   ; unique = true  ; opClass = OpWebSharper ; prefix = "--project:"   }
         let opGenWSharper = { name = "GenWSharper" ; unique = false ; opClass = OpWebSharper ; prefix = "--"           }
         
         let dllOptions     = CompOptions [| opTarget      /= "library"                                                                     |]  
@@ -1039,6 +1075,7 @@ namespace FSSGlobal
                opFileName    /= fun os -> os?Directory +/+ os?Name + ".fs"
                opSource      /= fun os -> os?Filename
                opOutput      /= fun os -> System.IO.Path.ChangeExtension(os?Source, os?Extension)
+               opOutputFile  /= fun os -> System.IO.Path.GetFileName(os?Output)
                opConfig      /= fun os -> os?Output + ".config"
                opWebSharper  /= fun os -> if (os:CompOptions).Exists (fun (opT, opV) -> opT.opClass = OpWebSharper) then "1" else "0"
             |]
@@ -1048,13 +1085,13 @@ namespace FSSGlobal
             [|
                opGenWSharper /= "ws:Site"
                opWebSite     /= fun os -> os?Directory +/+ "website"
-               opGenWSharper /= fun os -> sprintf "project:%s"  os?Name
+               opWsProject   /= fun os -> os?Name
             |] 
          
         let wsProjectOptions =
           CompOptions
             [|
-               opGenWSharper /= fun os -> sprintf "project:%s"  os?Name
+               opWsProject   /= fun os -> os?Name
             |] 
          
         let debugOptions = 
@@ -1120,142 +1157,6 @@ namespace FSSGlobal
   #endif
   module FsStationShared =
   
-    //#define FSS_SERVER
-    
-    //#if FSS_SERVER
-    open FSSGlobal.UsefulDotNet
-    open FSSGlobal.UsefulDotNet.Messaging
-    //#r @"Compiled\RemotingDll\RemotingDll.dll"
-    //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
-    //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
-    //#else
-    
-    //#r "remote.dll"
-    //open CIPHERPrototype.Messaging
-    //#endif
-    open WebSharper
-    open Useful
-    //open UsefulFewJS
-    //open UsefulFewJS.Messaging
-    
-    #if WEBSHARPER
-    [< Inline "true" >]
-    #endif          
-    let inJavaScript = false
-    
-    let selectF fj fn =
-        match inJavaScript with
-        | true  -> fj
-        | false -> fn
-        
-    #if WEBSHARPER
-    let AsyncStart asy     = Async.StartWithContinuations(asy, id, (fun e -> JS.Alert(e.ToString()) ), fun c -> JS.Alert(c.ToString()))    
-    [< Inline "" >]
-    let awaitRequestForRpc = awaitRequestForRpc
-    [< Inline "" >]
-    let sendRequestRpc     = sendRequestRpc
-    [< Inline "" >]
-    let replyToRpc         = replyToRpc
-    #else
-    let AsyncStart asy     = Async.Start asy
-    #endif          
-    
-    let AddressId        = AddressId
-    let addressIdTxt     = function | AddressId txt -> txt
-    
-    #if FSS_SERVER
-    let awaitRequestForF = selectF awaitRequestFor awaitRequestFor
-    let sendRequestF     = selectF sendRequest         sendRequest
-    let replyToF         = selectF replyTo                 replyTo
-    #else
-    let awaitRequestForF = selectF awaitRequestFor awaitRequestForRpc
-    let sendRequestF     = selectF sendRequest         sendRequestRpc
-    let replyToF         = selectF replyTo                 replyToRpc
-    #endif
-    let AsyncStartF      = selectF AsyncStart             Async.Start
-    
-    [< Inline "WebSharper.Remoting.EndPoint()" >]
-    let getEndPoint() = "http://localhost:9010/FSharpStation"
-    
-    type MessagingClient(clientId, ?timeout, ?endPoint:string) =
-        //do printfn "%s %s" WebSharper.Remoting.EndPoint clientId
-        let mutable active = true
-        let wsEndPoint     = endPoint    |> Option.defaultValue (getEndPoint())
-        let tout           = timeout     |> Option.defaultValue 100_000
-        let fromId         = AddressId clientId
-        do WebSharper.Remoting.EndPoint <- wsEndPoint 
-        let awaitMessage respond =
-            async {
-                while active do
-                    printfn "%s awaitRequest %s %s" (nowStamp()) clientId wsEndPoint
-                    let! msgA  = Async.StartChild(awaitRequestForF fromId, tout)
-                    try
-                        let! msg   = msgA
-                        let! resp  = respond (addressIdTxt msg.fromId) msg.content
-                        do!          replyToF msg.messageId.Value resp
-                    with 
-                    | :? System.TimeoutException -> ()
-                    | e                          -> printfn "%A" e
-            } 
-            |> AsyncStartF
-        let sendMessage  toId msg = sendRequestF toId fromId msg
-        let poMsg checkResponse msg =
-            async {
-                let! resp = sendMessage (AddressId "WebServer:PostOffice") (Json.Serialize<POMessage> msg)
-                return checkResponse (Json.Deserialize<POResponse> resp)
-            }
-        let poString resp =
-                    match resp with
-                    | POString  v  -> v
-                    | POStrings vs -> sprintf "%A" vs
-        let poStrings resp =
-                    match resp with
-                    | POString  v  -> [| sprintf "unexpected response: %s" v |]
-                    | POStrings vs -> vs     
-        [<Inline>] 
-        let respondMessageG respond fromId txt =
-            async {
-                printfn "respondMessageG txt: %s" txt
-                let  msg = Json.Deserialize txt 
-                printfn "respondMessageG msg: %A" msg
-                let! res = respond fromId msg
-                return Json.Serialize res
-            }                
-        [<Inline>] 
-        let sendMessageG toId msg =
-            async {
-                let! resp = sendMessage toId (Json.Serialize msg)
-                let  acr  = resp |> Json.Deserialize
-                return acr
-            }
-      with 
-        member this.AwaitMessage  respond  = awaitMessage (fun senderId request -> async { return respond senderId request })
-        member this.AwaitMessage  respondA = awaitMessage respondA
-        member this.SendMessage  toId msg  = sendMessage  toId msg
-        [<Inline>] 
-        member this.AwaitMessageG respondA = awaitMessage (respondMessageG respondA)
-        [<Inline>] 
-        member this.SendMessageG toId msg  = sendMessageG toId msg
-        member this.POMessage        msg   = poMsg id          msg
-        member this.POListeners      ()    = poMsg poStrings   POListeners
-        member this.EndPoint               = wsEndPoint
-        member this.ClientId               = clientId
-        member this.Deactivate       ()    = active <- false
-        static member EndPoint_            = getEndPoint()
-        interface System.IDisposable with
-               member this.Dispose () = active <- false
-    
-    type GenSeverity =
-        | GenError
-        | GenWarning
-        | GenInfor
-    
-    type GenResponse =
-        | StringResponse   of string
-        | OpStringResponse of string option
-        | ResultResponse   of string option * (string * GenSeverity)[]
-    
-    
     open Useful
     
     let snippetName name (content: string) =
@@ -1426,70 +1327,14 @@ namespace FSSGlobal
         | StringResponseR   of string option * (string * FSSeverity)[]
     
     
-    
-    type FsStationClientErr =
-        | FSMessage             of string * FSSeverity
-        | ``Snippet Not Found`` of string
-    with interface ErrMsg with
-            member this.ErrMsg    = 
-                match this with 
-                | FSMessage (msg, sev    )   -> sprintf "%A %s" sev msg
-                | msg                        -> sprintf "%A"        msg
-            member this.IsWarning =     
-                match this with 
-                | FSMessage (_  , FSError)   -> true
-                | msg                        -> false
-    
-    type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1518784878221"
-        let msgClient  = new MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
-        let toId       = AddressId fsIds
-        let stringResponseR response =
-            match response with
-            | StringResponseR (Some code, msgs) -> Result.succeedWithMsgs code (msgs |> Seq.map (fun v -> FSMessage v :> ErrMsg) |> Seq.toList)
-            | _                                 -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
-        let stringResponse   response =
-            match response with
-            | StringResponse (Some code)        -> Result.succeed code
-            | _                                 -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
-        let snippetsResponse response =    
-            match response with    
-            | SnippetsResponse snps             -> Result.succeed snps
-            | _                                 -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
-        let snippetResponse  response =    
-            match response with    
-            | SnippetResponse  snp              -> Result.succeed snp
-            | _                                 -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
-        [< Inline >]
-        let sendMsg toId (msg: FSMessage) (checkResponse: FSResponse -> Result<'a>) =
-            let msgser =  msg |> Json.Serialize
-            let respA  =  msgClient.SendMessage toId msgser
-            Wrap.wrapper {
-                let!   response = respA
-                let!   resp     = checkResponse (Json.Deserialize<FSResponse> response)
-                return resp
-            } 
-      with 
-        member this.SendMessage     (toId2,  msg:FSMessage) = sendMsg toId2  msg    Result.succeed   
-        member this.SendMessage     (        msg:FSMessage) = sendMsg toId   msg    Result.succeed   
-        member this.RequestSnippet  (    snpPath:string   ) = sendMsg toId  (GetSnippet          (snpPath.Split '/'     ))    snippetResponse  
-        member this.RequestCode     (    snpPath:string   ) = sendMsg toId  (GetSnippetCode      (snpPath.Split '/'     ))    stringResponse   
-        member this.RequestJSCode   (    snpPath:string   ) = sendMsg toId  (GetSnippetJSCode    (snpPath.Split '/'     ))    stringResponseR  
-        member this.RequestPreds    (    snpPath:string   ) = sendMsg toId  (GetSnippetPreds     (snpPath.Split '/'     ))    snippetsResponse 
-        member this.RequestPredsById(      snpId          ) = sendMsg toId  (GetSnippetPredsById  snpId                  )    snippetsResponse 
-        member this.RequestWholeFile(                     ) = sendMsg toId   GetWholeFile                                     stringResponse   
-        member this.GenericMessage  (        txt:string   ) = sendMsg toId  (GenericMessage       txt                    )    stringResponse   
-        member this.RunSnippet      (url,snpPath:string   ) = sendMsg toId  (RunSnippetUrlJS     (snpPath.Split '/', url))    stringResponseR
-        member this.RunActionCall   (name, act, parms     ) = sendMsg toId  (RunActionCall       (name, act, parms      ))    stringResponseR
-        member this.FSStationId                             = fsIds
-        member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1518784878221"
-    
-    
   #if WEBSHARPER
   [<WebSharper.JavaScript>]
   #endif
   module WSMessagingBroker =
+    //#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\WebSharper.Owin.WebSocket.dll"
+    
     open WebSharper
     open Useful
     
@@ -1592,10 +1437,14 @@ namespace FSSGlobal
         |> makeReply
         |> payload  pyld
     
+    type IServer =
+        abstract member Post  : MessageGeneric -> unit
+        abstract member Close : unit           -> unit
     
-    //#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
-    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
-    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\WebSharper.Owin.WebSocket.dll"
+    type CMessage<'C2S> = WebSharper.Owin.WebSocket.Client.Message<'C2S>
+    
+    
+    type SMessage<'S2C> = WebSharper.Owin.WebSocket.Server.Message<'S2C>
     
     #if WEBSHARPER
     [< JavaScript false >]
@@ -1706,11 +1555,27 @@ namespace FSSGlobal
                                     member this.Id()    = clientId
                                     member this.Close() = () // probably shouldn't be called at all
                               }
+    
+        let ConnectStatefulFSS uri clientId (f:IServer -> Async<int * (int -> CMessage<MessageGeneric> -> Async<int>)>) =
+            async {
+                match BrokerAgent.FssWebSocketO with 
+                | None -> raise (exn "FssWebSocketO is not set")
+                | Some serverP ->
+                let  mutable clientBoxO : MailboxProcessor<CMessage<MessageGeneric>> option = None
+                let  receiver msg = clientBoxO |> Option.iter (fun cbox -> cbox.Post (CMessage.Message msg))
+                let! brokerInitState, brokerFunc = serverP.ConnectLocal clientId receiver
+                let  brokerBox   = Mailbox.fold brokerFunc brokerInitState
+                let! clientInitState, clientFunc = f { new IServer with
+                                                           member this.Post msg = brokerBox.Post (Owin.WebSocket.Server.Message msg)
+                                                           member this.Close()  = ()
+                                                     }
+                let  clientBox = Mailbox.fold clientFunc clientInitState
+                clientBoxO <- Some clientBox
+                clientBox.Post CMessage.Open
+            }
     #endif        
             
             
-    #if WEBSHARPER
-    #else
     //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.dll"
     //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.JavaScript.dll"
     //#r @"..\packages\WebSharper\lib\net40\WebSharper.Main.dll"
@@ -1729,27 +1594,22 @@ namespace FSSGlobal
     open WebSharper
     open Useful
     
+    #if WEBSHARPER
+    [< JavaScript false >]
+    #endif
     module Client =
-        //open WebSharper.JavaScript
-    
-        type Message<'S2C> =
-            | Message of 'S2C
-            | Error
-            | Open
-            | Close
-    
         let startStateFull receive f =
             async {
                 let! initState, func = f
                 let agentBox = Mailbox.fold func initState
-                let finish a = agentBox.Post Message.Close ; printfn "%A" a
-                let error  a = agentBox.Post Message.Error ; finish a
+                let finish a = agentBox.Post CMessage.Close ; printfn "%A" a
+                let error  a = agentBox.Post CMessage.Error ; finish a
                 Async.StartWithContinuations(receive agentBox, finish, error, error)
             }
     
         type WebSocketServer<'S2C, 'C2S>(uri:string) =
             let conn = new ClientWebSocket()
-            let chunkSize = 1024
+            let chunkSize = 8192
             let send (txt:string)  =
                 async {
                     let buffer = System.Text.Encoding.UTF8.GetBytes txt
@@ -1759,22 +1619,23 @@ namespace FSSGlobal
                         let size = if last then buffer.Length % chunkSize else chunkSize
                         do! conn.SendAsync(new ArraySegment<byte>(buffer, i * chunkSize, size), WebSocketMessageType.Binary, last, CancellationToken.None) |> Async.AwaitTask
                 }
-            let receive (receiverBox:MailboxProcessor<Message<'S2C>>) =
+            let receive (receiverBox:MailboxProcessor<CMessage<'S2C>>) =
                 let buffer : byte[] = Array.create chunkSize 0uy
                 let builder         = System.Text.StringBuilder()
                 let mutable keepgo  = true
                 async {
-                    receiverBox.Post Message.Open
+                    receiverBox.Post CMessage.Open
                     while conn.State = WebSocketState.Open && keepgo do
                         let! result = conn.ReceiveAsync(ArraySegment buffer, CancellationToken.None) |> Async.AwaitTask
                         match result.MessageType with
                         | WebSocketMessageType.Close -> keepgo <- false
                         | WebSocketMessageType.Text ->
-                            builder.Append (System.Text.Encoding.UTF8.GetString(ArraySegment(buffer, 0, result.Count).Array)) |> ignore
+                            let txt = System.Text.Encoding.UTF8.GetString buffer.[0..result.Count - 1]
+                            builder.Append txt |> ignore
                             if result.EndOfMessage then
                                 let txt = builder.ToString()
                                 builder.Clear() |> ignore
-                                Json.Deserialize txt |> Message.Message |> receiverBox.Post
+                                Json.Deserialize txt |> CMessage.Message |> receiverBox.Post
                         | _ -> ()
                     return "WebSocketServer receive Closed."
                 }
@@ -1796,8 +1657,18 @@ namespace FSSGlobal
                 do!  server.Connect (agent server)
                 return server
             }
-    #endif
     
+        let ConnectStatefulFS uri clientId (f:IServer -> _) =
+            let uri2 = sprintf "ws://%s?ClientId=%s" uri clientId
+            let func (serverP:WebSocketServer<MessageGeneric,MessageGeneric>) =
+                f { new IServer with
+                      member this.Post  v = serverP.Post v
+                      member this.Close() = serverP.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None) 
+                                            |> Async.AwaitTask |> Async.RunSynchronously            
+                   }
+            ConnectStateful uri2 func
+            |> Async.map ignore
+            
     //#r @"..\packages\Owin\lib\net40\Owin.dll"
     //#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
     //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
@@ -1805,74 +1676,31 @@ namespace FSSGlobal
     
     open System
     open Useful
-    #if WEBSHARPER
     open WebSharper.Owin.WebSocket
     open WebSharper.Owin.WebSocket.Client
-    #else
-    open Client
-    #endif
     
     //#define FSS_SERVER
     //#define WEBSHARPER
     
     type  Server = WebSocketServer<MessageGeneric,MessageGeneric>
-    type IServer =
-        abstract member Post  : MessageGeneric -> unit
-        abstract member Close : unit           -> unit
     
+    type ClientTypeFSharp    = FSharp
     #if WEBSHARPER
-    type NotJs = NotJS
+    type ClientTypeFSStation = FSStation
+    type ClientTypeJScript   = JScript
     
     [< Inline >]
-    let ConnectStatefulJS uri clientId (f:IServer -> Async<int * (int -> Message<MessageGeneric> -> Async<int>)>) =
+    let ConnectStatefulJS uri clientId (f:IServer -> Async<int * (int -> CMessage<MessageGeneric> -> Async<int>)>) =
         let uri2 = sprintf "ws://%s?ClientId=%s" uri clientId
         let func (serverP:WebSocketServer<MessageGeneric,MessageGeneric>) =
             f { new IServer with
                   member this.Post  v = serverP.Post v
-                  member this.Close() = serverP.Connection.Close 0
+                  member this.Close() = serverP.Connection.Close 1000 // Normal Closure
                }
         let  endPoint = Endpoint.CreateRemote(uri2, JsonEncoding.Readable)
         ConnectStateful endPoint func
         |> Async.map ignore
     #endif
-    
-    #if WEBSHARPER
-    [< JavaScript false >]
-    #endif
-    let ConnectStatefulFS uri clientId (f:IServer -> Async<int * (int -> Message<MessageGeneric> -> Async<int>)>) =
-    #if FSS_SERVER
-        async {
-            match Broker.BrokerAgent.FssWebSocketO with 
-            | None -> raise (exn "FssWebSocketO is not set")
-            | Some serverP ->
-            let  mutable clientBoxO : MailboxProcessor<Client.Message<MessageGeneric>> option = None
-            let  receiver msg = clientBoxO |> Option.iter (fun cbox -> cbox.Post (Client.Message msg))
-            let! brokerInitState, brokerFunc = serverP.ConnectLocal clientId receiver
-            let  brokerBox   = Mailbox.fold brokerFunc brokerInitState
-            let! clientInitState, clientFunc = f { new IServer with
-                                                       member this.Post msg = brokerBox.Post (Owin.WebSocket.Server.Message msg)
-                                                       member this.Close()  = ()
-                                                 }
-            let  clientBox = Mailbox.fold clientFunc clientInitState
-            clientBoxO <- Some clientBox
-            clientBox.Post Open
-        }
-    #else                        
-    #if WEBSHARPER
-        async { () }
-    #else
-        let uri2 = sprintf "ws://%s?ClientId=%s" uri clientId
-        let func (serverP:WebSocketServer<MessageGeneric,MessageGeneric>) =
-            f { new IServer with
-                  member this.Post  v = serverP.Post v
-                  member this.Close() = serverP.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None) 
-                                        |> Async.AwaitTask |> Async.RunSynchronously            
-               }
-        ConnectStateful uri2 func
-        |> Async.map ignore
-    #endif
-    #endif
-    
     
     type ErrBroker(bm : BrokerMessage) =
         interface ErrMsg with
@@ -1904,14 +1732,20 @@ namespace FSSGlobal
         ) Map.empty
     
     [< Inline "window.location.href" >]
-    let getEndPoint() = "http://localhost:9010/FSharpStation"
+    let getEndPoint() = 
+    #if FSS_SERVER
+        "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
+    #else
+        "http://localhost:9010/"
+    #endif
     
     let extractEndPoint() = 
         let ep : string = getEndPoint()
         let ep2 = ep.Substring(ep.IndexOf "//" + 2)
         ep2.Split('/').[0]
     
-    type WSMessagingClient(connectStateful, clientId, ?timeout, ?endPoint:string) =    
+    type WSMessagingClient(connectStateful: string -> string -> (IServer -> Async<'state * ('state -> CMessage<MessageGeneric> -> Async<'state>)>) -> Async<unit>
+            , clientId:string, ?timeout:int, ?endPoint:string) =    
         let wsEndPoint    = defaultArg endPoint (extractEndPoint() + "/ws")
         let clientAddress = Address clientId
         let wsTimeout     = defaultArg timeout 60000
@@ -1927,7 +1761,7 @@ namespace FSSGlobal
     
         let processReply      msg = waiting.Post (Reply(msg.id,msg))
         let mapPayloadWrap (fW: _ -> Wrap<_> ) msg =
-            Wrap.wrapper {
+            Wrap.wrap {
                 let! r = fW msg.payload
                 return msg |> mapPayload (fun _ -> r)
             }
@@ -1948,13 +1782,13 @@ namespace FSSGlobal
             dprintfn "in connectToWebSocketServer"
             async {
                 do! connectStateful wsEndPoint clientId <| fun (server: IServer) -> async {
-                    return 0, fun state wsmsg -> async {
-                        dprintfn "connectToWebSocketServer %A" wsmsg
-                        match wsmsg with
-                        | Message msg -> processMessage msg
-                        | Open        -> printoutfn out "WebSocket %s connection open."   clientId ; serverO <- Some server
-                        | Close       -> printoutfn out "WebSocket %s connection closed." clientId ; close()
-                        | Error       -> printoutfn out "WebSocket %s connection error!"  clientId
+                    return Unchecked.defaultof<_>, fun state wsmsg -> async {
+                        try match wsmsg with
+                            | CMessage.Message msg -> processMessage msg
+                            | CMessage.Open        -> printoutfn out "WebSocket %s connection open."   clientId ; serverO <- Some server
+                            | CMessage.Close       -> printoutfn out "WebSocket %s connection closed." clientId ; close()
+                            | CMessage.Error       -> printoutfn out "WebSocket %s connection error!"  clientId
+                        with e -> printfn "msg: %A \nexn:%A" wsmsg e 
                         return state
                     }
                 }
@@ -1963,27 +1797,30 @@ namespace FSSGlobal
             }
         
         let getServer() : Wrap<IServer> =
-            Wrap.wrapper {
+            Wrap.wrap {
                 dprintfn "getServer"
-                while serverO.IsNone do
+                if serverO.IsNone then
                     dprintfn "getServer Connecting"
                     do! connectToWebSocketServer()
                     do! Async.Sleep 200
                 let!   server = serverO
                 return server
             }
-    
+            
         let postR (server: IServer) rpl msg = 
-            msg |> from clientAddress |> replier rpl |> server.Post
+            let m = msg |> from clientAddress |> replier rpl 
+            try       server.Post m
+            with e -> serverO <- None
+                      raise e
     
         let sendAndForget msg =
-            Wrap.wrapper {
+            Wrap.wrap {
                 let! server = getServer()
                 msg |> postR server NoReply
             }
             
         let sendAndReply rpl msg =
-            Wrap.wrapper {
+            Wrap.wrap {
                 let! server  = getServer()
                 let  replyA  = Async.FromContinuations(fun v -> 
                     Add(msg.id, v) |> waiting.Post 
@@ -1999,7 +1836,7 @@ namespace FSSGlobal
             }
             
         let sendAndVerify msg =
-            Wrap.wrapper {
+            Wrap.wrap {
                 let! reply   = sendAndReply Broker msg 
                 do!  match reply.msgType with
                      | MsgFromBroker  -> let  bm = msgPayload reply
@@ -2010,7 +1847,7 @@ namespace FSSGlobal
             }
         
         let sendGetReply msg =
-            Wrap.wrapper {
+            Wrap.wrap {
                 let! reply   = sendAndReply Receiver msg 
                 let! result =
                     match reply.msgType with
@@ -2022,7 +1859,7 @@ namespace FSSGlobal
             }
     
         let getListeners() =
-            Wrap.wrapper {
+            Wrap.wrap {
                 let  msg    = newMsg MessageBrokerAddress BRGetConnections
                 let! reply  = sendGetReply msg
                 match Json.Deserialize<BrokerReply> reply with
@@ -2031,7 +1868,7 @@ namespace FSSGlobal
             } 
             
         let sendMsg msg =
-            Wrap.wrapper {
+            Wrap.wrap {
                 if msg.replier = NoReply
                 then do!     sendAndForget msg
                      return  ""
@@ -2056,12 +1893,16 @@ namespace FSSGlobal
         interface IDisposable with
             member this.Dispose() = close()
     
+    #if FSS_SERVER   
+        [< JavaScript false >]
+        new (clientId:string, FSStation, ?timeout, ?endPoint) = new WSMessagingClient(Broker.ConnectStatefulFSS, clientId, ?timeout = timeout, ?endPoint = endPoint)
+    #endif
     #if WEBSHARPER
         [< JavaScript false >]
-        new (clientId, NotJS, ?timeout, ?endPoint) = new WSMessagingClient(ConnectStatefulFS, clientId, ?timeout = timeout, ?endPoint = endPoint)
-        new (clientId,        ?timeout, ?endPoint) = new WSMessagingClient(ConnectStatefulJS, clientId, ?timeout = timeout, ?endPoint = endPoint)
-    #else
-        new (clientId,        ?timeout, ?endPoint) = new WSMessagingClient(ConnectStatefulFS, clientId, ?timeout = timeout, ?endPoint = endPoint)
+        new (clientId:string, FSharp   , ?timeout, ?endPoint) = new WSMessagingClient(Client.ConnectStatefulFS , clientId, ?timeout = timeout, ?endPoint = endPoint)
+        new (clientId:string,            ?timeout, ?endPoint) = new WSMessagingClient(       ConnectStatefulJS , clientId, ?timeout = timeout, ?endPoint = endPoint)
+    #else    
+        new (clientId:string,            ?timeout, ?endPoint) = new WSMessagingClient(Client.ConnectStatefulFS , clientId, ?timeout = timeout, ?endPoint = endPoint)
     #endif
     
     
@@ -2081,7 +1922,7 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FStationMessaging(msgClient:WSMessagingClient, clientId, ?fsStationId:string) =
-        let mutable fsIds      = fsStationId |> Option.defaultValue "FSharpStation1518784878221"
+        let mutable fsIds      = fsStationId |> Option.defaultValue "FSharpStation1519033396993"
         let         toId()     = Address fsIds
         let stringResponseR response =
             match response with
@@ -2102,9 +1943,7 @@ namespace FSSGlobal
         [< Inline >]
         let sendMsg toId (msg: FSMessage) (checkResponse: FSResponse -> Result<'a>) =
             Wrap.wrap {
-                printfn "FStationMessaging message: %A" msg
                 let!   res   = msgClient.SendGetReply toId msg
-                printfn "FStationMessaging response: %A" res
                 let!   check = checkResponse res
                 return check
             } 
@@ -2123,12 +1962,16 @@ namespace FSSGlobal
         member this.FSStationId                             = fsIds
         member this.FSStationId with set id                 = fsIds <- id
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1518784878221"
+        static member FSStationId_                          = "FSharpStation1519033396993"
+    #if FSS_SERVER   
+        [< JavaScript false >]
+        new (clientId, FSStation, ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId, FSStation, ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
+    #endif
         [< JavaScript false >]
     #if WEBSHARPER
-        new (clientId, NotJS, ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId, NotJS, ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
+        new (clientId, FSharp   , ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId, FSharp   , ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
     #endif    
-        new (clientId,        ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId,        ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
+        new (clientId,            ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId,            ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
     
     
     
@@ -2159,33 +2002,29 @@ namespace FSSGlobal
                     return res
                 }
             member this.IsAlive = not shell.HasExited
+            member this.Abort() = shell.Abort()
             interface System.IDisposable with
                 member this.Dispose () = 
                     (shell :> System.IDisposable).Dispose()
     
         #if FSS_SERVER
         printfn "FSS_SERVER"
-        let fssClient = WSMessagingBroker.FStationMessaging("Fsi", WSMessagingBroker.NotJS)
-        let queueOutput = MailboxProcessor.Start(fun mail -> 
+        let fssClient = WSMessagingBroker.FStationMessaging("<FsEvaluator>", WSMessagingBroker.FSStation)
+        let queueOutput =
             let output      = new System.Text.StringBuilder()
             let append  txt = output.Append((if output.Length = 0 then "" else "\n") + txt) |> ignore
             let consume ()  = let v = output.ToString()
                               output.Clear() |> ignore
                               v
-            async {
-                while true do
-                    let! msg = mail.Receive()
-                    match msg with
-                    | Some txt -> append txt
-                    | None     ->   // None means send the queued text
-                        let txt2send =  consume()
-                        if  txt2send <> "" then
-                            printfn "CALLING OUTTEXT"
-                            fssClient.RunActionCall("OutText", "actOutText", [| "+" ; txt2send |])
-                            |> Wrap.getAsyncR 
-                            |> Async.map ignore 
-                            |> Async.RunSynchronously            
-            })
+            Mailbox.iter (fun msg -> async {
+                match msg with
+                | Some txt -> append txt
+                | None     -> let txt2send =  consume()
+                              if  txt2send <> "" then
+                                  fssClient.RunActionCall("OutText", "actOutText", [| "+" ; txt2send |])
+                                  |> Wrap.RunSynchronously 
+                                  |> ignore
+              })
         let queueText txt = 
             txt |> Some |> queueOutput.Post
             async { do! Async.Sleep 100
@@ -2224,7 +2063,7 @@ namespace FSSGlobal
                 let! res    = resR
                 return res
             }
-    
+            
         let evalSilent (config:string option) fs = 
             Wrap.wrapper {
                 silent <- true
@@ -2276,7 +2115,17 @@ namespace FSSGlobal
                        | "--"                -> None
                        | v                   -> Some v
             }
-        
+            
+        #if WEBSHARPER
+        [< Rpc >]
+        #endif
+        let abortFsiExe () = 
+            fsiExe.Value.Process(fun fsi -> Wrap.wrap { fsi.Abort() }) 
+            |> WAsyncR 
+            |> Wrap.toAsync
+    
+    
+    
     //#define WEBSHARPER
     open WebSharper
     
@@ -2294,6 +2143,9 @@ namespace FSSGlobal
             let!   vO, msgs = evaluateAS fsid ep incrUseCount source 
             return  Result (vO,  msgs |> Seq.map (fun (msg, wrn) -> ErrSimple(msg, wrn) :> ErrMsg) |> Seq.toList)
         }
+    
+    [< JavaScript >]
+    let abortFsiExe () = Evaluator.abortFsiExe() |> Async.Start 
         
   module FsTranslator =
     module TranslatorCaller =
@@ -2338,7 +2190,7 @@ namespace FSSGlobal
                 let  name           = "Temp_" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName())
                 let  options1       = compileOptionsDll name
                                       + opDirectory   /= Path.GetDirectoryName(codeBase)
-                                      + opGenWSharper /= "project:FSharpStation"
+                                      + opWsProject   /= name
                                      // + opIOption   /= @"D:\Abe\CIPHERWorkspace\CIPHERPrototype\WebServer\bin"
                                       + options0
                 let  options2       = prepOptions options1 (fs, assembs, defines, prepIs, nowarns)
@@ -2843,7 +2695,8 @@ namespace FSSGlobal
     
     
     open Useful
-    open FsStationShared
+    //open FsStationShared
+    open WSMessagingBroker
     open WebSharper
     open WebSharper.Remoting
     
@@ -2868,14 +2721,9 @@ namespace FSSGlobal
     type FSAutoCompleteIntermediaryClient(clientId, ?endPoint:string) =
          #if FSS_SERVER
          #else
-         let msgClient = new MessagingClient(clientId, ?endPoint = endPoint)
-         let toId      = AddressId "FSAutoComplete"
-         let sendMessage (msg:ACMessage) =
-             Wrap.wrapper {
-                 let! resp = msgClient.SendMessage toId (Json.Serialize msg)
-                 let  acr  = resp |> Json.Deserialize<Kind>
-                 return acr
-             } |> Wrap.getAsyncWithDefault (Result.getMessages >> KInfo)
+         let msgClient = new WSMessagingClient(clientId, ?endPoint = endPoint)
+         let toId      = Address "FSAutoComplete"
+         let sendMessage (msg:ACMessage) : Async<Kind> = msgClient.SendGetReply toId msg |> Wrap.getAsyncWithDefault (Result.getMessages >> KInfo)
          #endif
          let Async_map f aa = 
              async { 
@@ -5999,7 +5847,7 @@ namespace FSSGlobal
           | _               -> getSnpO()
       
       let getCodeFromAct (act: Action) addOpen = 
-          Wrap.wrapper {
+          Wrap.wrap {
               let getValue =
                   function
                   | Constant v  -> v
@@ -6078,6 +5926,7 @@ namespace FSSGlobal
       let actFindDefinition = Template.Action.New("Find Definition"            ).OnClick( Do   gotoDefinition    ()      ).Disabled(disableParseVal     )
       let actRefreshEditor  = Template.Action.New("Refresh CodeMirror"         ).OnClick( Do   refreshCodeMirror ()      )
       let actOutText        = Template.Action.New("Show Output text"           ).OnClick2(Do2  showOutText       ()      )
+      let actAbortFsi       = Template.Action.New("Abort FSI"                  ).OnClick( Do   abortFsiExe       ()      )
            
       let buttonsH =
           div [ 
@@ -6138,6 +5987,8 @@ namespace FSSGlobal
                   .SubMenu(     
                           [     
                               actEvalCode      .MenuEntry
+                              actAbortFsi      .MenuEntry
+                              MenuEntry.New("").Divider     
                               actFableCode     .MenuEntry
                               MenuEntry.New("").Divider     
                               actRunWSNewTab   .MenuEntry
@@ -6178,6 +6029,12 @@ namespace FSSGlobal
           |> fst
           |> Seq.pick (fun (line, from, to_) -> if s >= from && s < to_ then Some line else None)
           |> jumpToLine
+      
+      let scrollToBottom (e:obj) _ = 
+          async { 
+              do! Async.Sleep 100
+              do  e?scrollTop <- e?scrollHeight
+          } |> Async.Start
       
       (*
       let CodeEditor() =
@@ -6275,7 +6132,7 @@ namespace FSSGlobal
               "actCompileWS"      , GuiAction actCompileWS     
               "actFindDefinition" , GuiAction actFindDefinition    
               "actOutText"        , GuiAction actOutText
-              "Output"            , GuiNode <| Template.TextArea.New(outputMsgs).Placeholder("Output:"         ).Title("Output"                   ).RenderWith [ on.dblClick jumpToRef ]
+              "Output"            , GuiNode <| Template.TextArea.New(outputMsgs).Placeholder("Output:"         ).Title("Output"                   ).RenderWith [ on.dblClick jumpToRef ; on.afterRender (fun e -> outputMsgs |> Val.sink (scrollToBottom e)) ]
               "Parser"            , GuiNode <| Template.TextArea.New(parserMsgs).Placeholder("Parser messages:").Title("Parser"                   ).RenderWith [ on.dblClick jumpToRef ]
               "JavaScript"        , GuiNode <| Template.TextArea.New(codeJS    ).Placeholder("Javascript:"     ).Title("JavaScript code generated").Render
               "F# code"           , GuiNode <| Template.TextArea.New(codeFS    ).Placeholder("F# code:"        ).Title("F# code assembled"        ).Render
@@ -6342,7 +6199,7 @@ namespace FSSGlobal
       #else
       
       let wsStationClient = new WSMessagingBroker.WSMessagingClient(fsIds)
-      let fsStationClient = FsStationClient(fsIds, fsIds, endPoint = JS.Window.Location.Href)
+      //let fsStationClient = FsStationClient(fsIds, fsIds, endPoint = JS.Window.Location.Href)
       
       let transMsgs (msgs: ErrMsg list)  =  msgs |> Seq.map (fun e -> e.ErrMsg, if e.IsWarning then FSWarning else FSError) |> Seq.toArray
       
@@ -6377,21 +6234,25 @@ namespace FSSGlobal
               | RunActionCall        (nm,ac, ps) -> return  doGuiCallR(nm, ac, ps) |> Result.map (fun _ -> sprintf "success: %s" nm)                   |> result2StringResponse
           }     
            
-      async {
-          do! Async.Sleep 1000
-          do fsStationClient.MessagingClient.AwaitMessageG respond
-      } |> Async.Start
+      //async {
+      //    do! Async.Sleep 1000
+      //    do fsStationClient.MessagingClient.AwaitMessageG respond
+      //} |> Async.Start
       
       async {
           do! Async.Sleep 1000
           while true do
-              wsStationClient.ProcessIncoming (respond "" >> WAsync)
-              do! Async.Sleep 60000
+              try       wsStationClient.ProcessIncoming (respond "" >> WAsync)
+                        do! Async.Sleep 60000
+              with e -> printfn "%s" e.Message
+                        do! Async.Sleep 1000
       } |> Async.Start
       
       #endif
-      Val.sink (fun _   -> layout.SelectTab "Output"    |> ignore ) outputMsgs 
-      Val.sink (fun _   -> layout.SelectTab "WS Result" |> ignore ) triggerWSResult 
+      Val.sink        (fun _  -> layout.SelectTab "Output"    |> ignore) outputMsgs 
+      Val.sink        (fun _  -> layout.SelectTab "WS Result" |> ignore) triggerWSResult
+      Async.sleepThen (fun () -> layout.SelectTab "Parser"    |> ignore) 1000 |> Async.Start
+      
       
       let cssLinks      = Var.Create [ "/EPFileX/css/main.css" ]
       let addCssLink lnk =
@@ -6430,12 +6291,6 @@ namespace FSSGlobal
     //#define FSS_SERVER
     //#define NOMESSAGING
     
-    //#r @"..\packages\WebSharper.UI.Next\lib\net40\HtmlAgilityPack.dll"
-    //#r @"..\packages\WebSharper.UI.Next\lib\net40\WebSharper.UI.Next.Templating.dll"
-    //#r @"..\packages\WebSharper.UI.Next\lib\net40\WebSharper.UI.Next.Templating.Common.dll"
-    //#r @"..\packages\WebSharper.UI.Next\lib\net40\WebSharper.UI.Next.Templating.Runtime.dll"
-    
-    open WebSharper.UI.Next.Templating
     open WebSharper.Sitelets
     open WebSharper.UI.Next.Server
     open WebSharper.UI.Next
@@ -6445,7 +6300,7 @@ namespace FSSGlobal
         | EPLoad of string
         | FSharpStation
     
-    let FSharpStationPageold uri =
+    let FSharpStationPage uri =
         Content.Page(
             Title = "F# Station"
           , Head  = [ Html.scriptAttr [ attr.``type`` "text/javascript"; attr.src "https://code.jquery.com/jquery-3.1.1.min.js"] [] 
@@ -6453,21 +6308,11 @@ namespace FSSGlobal
                     ]
           , Body  = [ Html.client <@  FSharpStationClient uri @> ])
     
-    type MainTemplate = Template< @"D:\Abe\CIPHERWorkspace\FSharpStation\bin\website/FSstation.html">
-    
-    let FSharpStationPage uri : Async<Content<EndPoint>> =
-        MainTemplate()
-            .Title("Main Page")
-            .Body( [ Html.client <@  FSharpStationClient uri @> ])
-            .Doc()
-        |> Content.Page
-    
-    
     let content (ctx:Context<EndPoint>) (endpoint:EndPoint) : Async<Content<EndPoint>> =
         printfn "%A" endpoint
         match endpoint with
-        | FSharpStation -> FSharpStationPage ""
-        | EPStart       -> FSharpStationPage "https://raw.githubusercontent.com/amieres/FSharpStation/master/Start.fsjson"
+        | FSharpStation -> FSharpStationPage "https://raw.githubusercontent.com/amieres/FSharpStation/master/Start.fsjson"
+        | EPStart       -> FSharpStationPage ""
         | EPLoad    uri -> uri |> System.Web.HttpUtility.UrlDecode |> System.Web.HttpUtility.UrlDecode |> FSharpStationPage
     
     let site = Application.MultiPage content
@@ -6502,12 +6347,10 @@ namespace FSSGlobal
     
     [< EntryPoint >]
     let Main args =
-        let rootDirectory, url =
-            match args with
-            | [| rootDirectory; url |] -> rootDirectory, url
-            | [| url                |] -> "website"    , url
-            | [|                    |] -> "website"    , "http://localhost:9010/"
-            | _ -> eprintfn "Usage: WebServer3 ROOT_DIRECTORY URL"; exit 1
+        printfn "Usage: FSharpStation URL ROOT_DIRECTORY MaxMessageSize"
+        let url           = args |> Seq.tryItem 0 |>                   Option.defaultValue "http://localhost:9010/"
+        let rootDirectory = args |> Seq.tryItem 1 |>                   Option.defaultValue "website"
+        let max           = args |> Seq.tryItem 2 |> Option.map int |> Option.defaultValue 1_000_000
         let epWebSocket = Endpoint.Create(url, "/ws", JsonEncoding.Readable)
         let brokerAgent = Broker.BrokerAgent epWebSocket
         Broker.BrokerAgent.FssWebSocketO <- Some brokerAgent
@@ -6519,11 +6362,11 @@ namespace FSSGlobal
                     .UseWebSharper( WebSharperOptions(ServerRootDirectory  = rootDirectory
                                                     , Sitelet              = Some site
                                                     , BinDirectory         = "."
-                                                    , Debug                = true))
-                    .UseWebSocket(epWebSocket, brokerAgent.Start)
+                                                    , Debug                = true                             ))
                     .UseStaticFiles(StaticFileOptions(FileSystem           = PhysicalFileSystem(rootDirectory)
-                                                    , ContentTypeProvider  = provider ))
-                                |> ignore
+                                                    , ContentTypeProvider  = provider                         ))
+                    .UseWebSocket(epWebSocket, brokerAgent.Start, maxMessageSize = max                         )
+                |> ignore
                 //let listener = appB.Properties.["Microsoft.Owin.Host.HttpListener.OwinHttpListener"] |> unbox<Microsoft.Owin.Host.HttpListener.OwinHttpListener>
                 //listener.SetRequestProcessingLimits(1000, 1000)
                 //let maxA : int ref = ref 0

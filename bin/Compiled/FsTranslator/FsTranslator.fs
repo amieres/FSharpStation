@@ -1,4 +1,3 @@
-#nowarn "1182"
 #nowarn "40"
 #nowarn "1178"
 //#nowarn "1182"
@@ -20,11 +19,13 @@ namespace FSSGlobal
   //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.dll"
   //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.JavaScript.dll"
   //#r @"..\packages\WebSharper\lib\net40\WebSharper.Collections.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.InterfaceGenerator.dll"
   //#r @"..\packages\WebSharper\lib\net40\WebSharper.Main.dll"
   //#r @"..\packages\WebSharper\lib\net40\WebSharper.JQuery.dll"
   //#r @"..\packages\WebSharper\lib\net40\WebSharper.JavaScript.dll"
   //#r @"..\packages\WebSharper\lib\net40\WebSharper.Web.dll"
   //#r @"..\packages\WebSharper\lib\net40\WebSharper.Sitelets.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Control.dll"
   //#r @"..\packages\WebSharper.UI.Next\lib\net40\WebSharper.UI.Next.dll"
   
   open WebSharper
@@ -38,6 +39,51 @@ namespace FSSGlobal
   [<WebSharper.JavaScript>]
   #endif
   module Useful =
+    let extract n (s:string) = s.Substring(0, min n s.Length)
+    
+    #if WEBSHARPER
+    [< Inline "(function (n) { return n.getFullYear() + '-' +(n.getMonth() + 1) + '-' +  n.getDate() + ' '+n.getHours()+ ':'+n.getMinutes()+ ':'+n.getSeconds()+ ':'+n.getMilliseconds() })(new Date(Date.now()))" >]
+    #endif
+    let nowStamp() = System.DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
+    
+    module Async =
+        let map f va = 
+            async { 
+                let! a = va
+                return f a 
+            } 
+        let iter f va = 
+            async { 
+                let! a = va
+                do f a 
+            } 
+    
+        let retn x = async.Return x
+    
+        let apply fAsync xAsync = async {
+            let! fChild = Async.StartChild fAsync
+            let! xChild = Async.StartChild xAsync
+            let! f = fChild
+            let! x = xChild 
+            return f x 
+            }
+    
+        let bind f va = async.Bind(va, f)
+    
+    module KeyVal =
+        //let inline getEnumerator dict = (^a : (member get_Enumerator : _) (dict, ()))
+        let inline tryGetValue key (dict) =
+            dict 
+            :> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<_, _>> 
+            |> Seq.tryPick (fun kp -> if kp.Key = key then Some kp.Value else None)
+    
+    
+    module String =
+        let splitByChar (c: char) (s: string) = s.Split c
+        let trim                  (s: string) = s.Trim()
+        let append     (a: string)(b: string) =  a + b
+        
+        
     open System
     //#nowarn "1178"
          
@@ -103,7 +149,8 @@ namespace FSSGlobal
             member this.IsWarning: bool   = warning
         override this.ToString() = (this :> ErrMsg).ErrMsg
     
-    type Result<'TSuccess> = Result of 'TSuccess option * ErrMsg list     
+    type Result< 'TSuccess> = Result  of 'TSuccess option * ErrMsg    list     
+    type ResultS<'TSuccess> = ResultS of 'TSuccess option * ErrSimple list
     
     module Result =
         let inline succeed             x       = Result (Some x           , [  ]             )
@@ -135,10 +182,6 @@ namespace FSSGlobal
             function 
             | Result(Some x, ms) -> Success (x, ms) 
             | Result(None  , ms) -> Failure     ms  
-    
-        let x = function
-                  | Success (x, ms) -> "yes"
-                  | Failure     ms  -> "No"
     
     //    let successTee f result =                           // given an RopResult, call a unit function on the success branch
     //        let fSuccess (x,msgs) =                         // and pass thru the result
@@ -183,25 +226,34 @@ namespace FSSGlobal
             member inline this.Return     (x)                       = succeed x
             member inline this.ReturnFrom (x)                       = x
             member        this.Bind       (w:Result<'a>, r: 'a -> Result<'b>) = bind (tryCall r) w
-            member inline this.Using      (disposable, restOfCExpr) = using disposable restOfCExpr
             member inline this.Zero       ()                        = succeed ()
-            member inline this.Delay      (f)                       = f()
+            member inline this.Delay      (f)                       = f
             member inline this.Combine    (a, b)                    = combine a b
-    //        member this.Run        (f)                       = f
-    //        member this.While(guard, body) =
-    //            if not (guard()) 
-    //            then this.Zero() 
-    //            else this.Bind( body(), fun () -> 
-    //                this.While(guard, body))  
-    //        member this.For(sequence:seq<_>, body) =
-    //            this.Using(sequence.GetEnumerator(),fun enum -> 
-    //                this.While(enum.MoveNext, 
-    //                    this.Delay(fun () -> body enum.Current)))
+            member inline this.Run        (f)                       = f()
+            member this.While(guard, body) =
+                if not (guard()) 
+                then this.Zero() 
+                else this.Bind( body(), fun () -> 
+                    this.While(guard, body))  
+            member this.TryWith(body, handler) =
+                try this.ReturnFrom(body())
+                with e -> handler e
+            member this.TryFinally(body, compensation) =
+                try this.ReturnFrom(body())
+                finally compensation()
+            member this.Using(disposable:#System.IDisposable, body) =
+                let body' = fun () -> body disposable
+                this.TryFinally(body', fun () -> if disposable :> obj <> null then disposable.Dispose() )
+            member this.For(sequence:seq<_>, body) =
+                this.Using(sequence.GetEnumerator(),fun enum -> 
+                    this.While(enum.MoveNext, 
+                        this.Delay(fun () -> body enum.Current)))              
     
         let result = ropBuilder()
     //    let inline flow_ () = new ropBuilder ()
     
-        let fromChoice context c =
+    //    let fromChoice context c =  context?????
+        let fromChoice c =
             match c with | Choice1Of2 v -> succeed v
                          | Choice2Of2 e -> fail    e
     
@@ -209,7 +261,8 @@ namespace FSSGlobal
             function | None   -> fail    m
                      | Some v -> succeed v
     
-        let toOption (Result(o, _)) = o
+        let toOption   (Result(o, _ )) = o
+        let toOptionMs (Result(o, ms)) = o, ms
     
         let tryProtection() : Result<unit> = succeed ()
     
@@ -260,7 +313,14 @@ namespace FSSGlobal
             | Result(vO, msgs) -> [ vO |> Option.defaultValue "Failed: " ] @ msgs2String msgs
             |> String.concat "\n"
     
+        let fromResultS (ResultS(v, ms)) = Result (v, ms |> List.map (fun m -> m :> ErrMsg                     ))
+        let toResultS   (Result( v, ms)) = ResultS(v, ms |> List.map (fun m -> ErrSimple(m.ErrMsg, m.IsWarning)))
+    
     open Result
+    
+    module ResultS =
+        let fromResult = Result.toResultS
+        let toResult   = Result.fromResultS
     
     type Wrap<'T> =
     | WResult of Result<'T>
@@ -279,7 +339,7 @@ namespace FSSGlobal
             | WAsyncR     arb  -> async { let!   rb = arb                               
                                           return rb |> mergeMsgs                     ms }
             | WResult      rb  -> async { return rb |> mergeMsgs                     ms }
-            | WSimple       b                                                           
+            | WSimple       b                                        t.ma                   
             | WOption (Some b) -> async { return succeedWithMsgs b                   ms }
             | WOption None     -> async { return failWithMsgs      (errOptionIsNone::ms)}
     
@@ -321,6 +381,40 @@ namespace FSSGlobal
                                          } |> WAsyncR
         let Return = WSimple 
         let map  (f: 'a -> 'b  ) = bind (f >> Return)     
+        let inline getAsyncR (wb: Wrap<'T>) =
+            match wb with
+            | WAsync      va  -> async {
+                                   let! v = va
+                                   return      succeed                           v}
+            | WSimple     v   -> async.Return (succeed                           v)
+            | WOption     v   -> async.Return (Result.fromOption errOptionIsNone v)
+            | WResult     v   -> async.Return                                    v
+            | WAsyncR     vra -> vra
+            
+            
+        let inline getAsyncWithDefault f w = getAsyncR w |> Async.map (Result.withError f)
+        let inline getAsync              w = getAsyncWithDefault (fun ms -> raise (exn(getMessages ms))) w
+    
+        let toAsync            w = getAsync  w
+        let toAsyncResult      w = getAsyncR w
+        let toAsyncOption      w = getAsyncR w |> Async.map Result.toOption
+        let toAsyncOptionMs    w = getAsyncR w |> Async.map Result.toOptionMs
+        let toAsyncWithDefault w = getAsyncWithDefault w
+    
+    //    let call wb = wb |> getR Rop.notifyMessages
+        let startV (processVal: ('t option * string) ->unit) (w: Wrap<'t>) =
+            w
+            |> getAsyncR
+            |> fun asy -> Async.StartWithContinuations
+                            (asy 
+                           , Result.mapMsgs Result.getMessages  >> processVal
+                           , sprintf "%A" >> (fun m -> None, m) >> processVal
+                           , sprintf "%A" >> (fun m -> None, m) >> processVal)
+                           
+        let start (printMsg: string->unit) (w: Wrap<unit>) = 
+            startV (function
+                    | Some (), msgs ->               msgs |> printMsg 
+                    | None   , msgs -> "Failed!\n" + msgs |> printMsg) w
     
         let wrapper2Async (f: 'a -> Wrap<'b>) a : Async<Result<'b>> =
             let wb = tryCall f a
@@ -330,7 +424,7 @@ namespace FSSGlobal
             | WResult (Result(_, ms)) -> wb |> wb2arb ms
             | WAsync  ab              -> async { let!   b = ab
                                                  return succeed b }
-            | WAsyncR arb              -> arb
+            | WAsyncR arb             -> arb
     
         let addMsgs errOptionIsNone ms wb =
             if ms = [] then wb else
@@ -348,15 +442,32 @@ namespace FSSGlobal
                                             return vr                    |> Result.mergeMsgs ms
                                           } |> WAsyncR
     
-        let combine errOptionIsNone wa wb =
+        let combine errOptionIsNone wa (wb: unit -> Wrap<_>) =
             match wa with
             | WSimple          _
             | WOption (Some    _)
-            | WResult (Result (_, []))
-            | WAsync           _       -> wb
-            | WAsyncR          _       -> wb
-            | WOption (None     )      -> wb |> addMsgs errOptionIsNone [errOptionIsNone]
-            | WResult (Result(_, ms))  -> wb |> addMsgs errOptionIsNone ms
+            | WResult (Result (_, [])) -> wb()
+            | WAsync           aa      -> async { let!   a  = aa
+                                                  let!   br = wb() |> toAsyncResult
+                                                  return br
+                                                 } |> WAsyncR
+            | WAsyncR          ara     -> async { let! ar = ara
+                                                  match ar with
+                                                  | Failure    ms
+                                                  | Success(_, ms)->
+                                                  let! br = wb() |> toAsyncResult
+                                                  return br |> Result.mergeMsgs ms
+                                                } |> WAsyncR
+            | WOption (None     )      -> wb() |> addMsgs errOptionIsNone [errOptionIsNone]
+            | WResult (Result(_, ms))  -> wb() |> addMsgs errOptionIsNone ms
+            
+        let rec whileLoop pred body =
+            if pred() then body() |> bind (fun () -> whileLoop pred body)
+            else WSimple ()
+            //while pred() do
+            //    body() //|> ignore
+            //WSimple ()
+    
     
         type Builder() =
     //        member        this.Bind (wrapped: Async<Result<'a>>, restOfCExpr: 'a -> Wrap<'b>) = wrapped |> WAsyncR |> bind restOfCExpr //<< cannot differentiate from next 
@@ -370,79 +481,50 @@ namespace FSSGlobal
     //        member inline this.ReturnFrom   (w) = WAsync  w
     //        member inline this.ReturnFrom   (w) = WResult w
     //        member inline this.ReturnFrom   (w) = WOption w        
-            member inline this.Delay        (f) = f()
+            member inline this.Delay        (f) = f
+            member this.Run(f) = f()
             member        this.Combine   (a, b) = combine errOptionIsNone a b
-            member        this.Using (resource, body: 'a -> Wrap<'b>) =
-                async.Using(resource, wrapper2Async body) |> WAsyncR
-                        
-        let wrapper = Builder()
+            member        this.While(guard, body) = whileLoop guard body
+            member this.TryWith(body, handler) =
+                async {
+                    let! r = body() |> toAsyncResult |> Async.Catch 
+                    return
+                        match r with
+                        | Choice1Of2 v -> v
+                        | Choice2Of2 e -> handler e
+                } |> WAsyncR
+            member this.TryFinally(body, compensation) =
+                async {
+                    let! r1 = body() |> toAsyncResult |> Async.Catch 
+                    let r2 = compensation()     
+                    return
+                        match r1 with
+                        | Choice1Of2 v -> v
+                        | Choice2Of2 e -> raise e
+                } |> WAsyncR
+            member this.Using(disposable:#System.IDisposable, body) =
+                let body' = fun () -> body disposable
+                this.TryFinally(body', fun () -> if disposable :> obj <> null then disposable.Dispose() )
+            member this.For(sequence:seq<_>, body) =
+                this.Using(sequence.GetEnumerator(),fun enum -> 
+                    this.While(enum.MoveNext, 
+                        this.Delay(fun () -> body enum.Current)))            
+        let wrap    = Builder()
+        let wrapper = Builder()  // deprecated use wrap instead
     
         let getResult callback (wb: Wrap<'T>) =
             match wb with
-            | WSimple      s  -> s               |> succeed                                      |> callback
-            | WOption(Some s) -> s               |> succeed                                      |> callback
-            | WOption None    -> errOptionIsNone |> fail                                         |> callback
-            | WResult      rb -> rb                                                              |> callback
-            | WAsync       ab -> Async.StartWithContinuations(ab , (fun v   -> succeed v         |> callback), 
+            | WSimple      s  -> s               |> succeed                                              |> callback
+            | WOption(Some s) -> s               |> succeed                                              |> callback
+            | WOption None    -> errOptionIsNone |> fail                                                 |> callback
+            | WResult      rb -> rb                                                                      |> callback
+            | WAsync       ab -> Async.StartWithContinuations(ab , (fun v   -> succeed v                 |> callback), 
                                                                    (fun exc -> failException exc |> fail |> callback), 
                                                                     fun can -> failException can |> fail |> callback)
             | WAsyncR     arb -> Async.StartWithContinuations(arb,                                          callback , 
                                                                    (fun exc -> failException exc |> fail |> callback), 
                                                                     fun can -> failException can |> fail |> callback)
     
-        let inline getAsyncR (wb: Wrap<'T>) =
-            match wb with
-            | WAsync      va  -> async {
-                                   let! v = va
-                                   return      succeed                           v}
-            | WSimple     v   -> async.Return (succeed                           v)
-            | WOption     v   -> async.Return (Result.fromOption errOptionIsNone v)
-            | WResult     v   -> async.Return                                    v
-            | WAsyncR     vra -> vra
-            
-        let inline getAsyncWithDefault f (wb: Wrap<'T>) = 
-            async {
-                let!   vR = getAsyncR wb
-                return vR |> Result.withError f
-            }
-    
-        let inline getAsync w =
-            match w with
-            | WAsync      va  ->              va
-            | WSimple     v   -> async.Return v
-            | WOption     vo  -> async {
-                                    return
-                                        match vo with 
-                                        | Some v         -> v
-                                        | None           -> raise (exn(getMessages [errOptionIsNone]))
-                                 }
-            | WResult     vr  -> async {
-                                    return
-                                        match vr with 
-                                        | Success (v, _) -> v
-                                        | Failure ms     -> raise (exn(getMessages ms))
-                                 }
-            | WAsyncR     vra -> async {
-                                    let! vr = vra
-                                    return
-                                        match vr with 
-                                        | Success (v, _) -> v
-                                        | Failure ms     -> raise (exn(getMessages ms))
-                                 }
-    //    let call wb = wb |> getR Rop.notifyMessages
-        let startV (processVal: ('t option * string) ->unit) (w: Wrap<'t>) =
-            w
-            |> getAsyncR
-            |> fun asy -> Async.StartWithContinuations
-                            (asy 
-                           , Result.mapMsgs Result.getMessages  >> processVal
-                           , sprintf "%A" >> (fun m -> None, m) >> processVal
-                           , sprintf "%A" >> (fun m -> None, m) >> processVal)
-                           
-        let start (printMsg: string->unit) (w: Wrap<unit>) = 
-            startV (function
-                    | Some (), msgs ->               msgs |> printMsg 
-                    | None   , msgs -> "Failed!\n" + msgs |> printMsg) w
     
     #if WEBSHARPER
         [< Inline "console.log('runSynchronously should not be used in Javascript')" >]                       
@@ -462,14 +544,17 @@ namespace FSSGlobal
                | Some r, msgs -> sprintf "%O\n%s" r    msgs
                | None  , msgs -> sprintf "Failed!\n%s" msgs
                
-    
     type Wrap<'T> with
         static member Start           (w:Wrap<_   >,           ?cancToken) = Async.Start           (Wrap.getAsync  w,                                ?cancellationToken= cancToken)
         static member StartAsTask     (w:Wrap<'T  >, ?options, ?cancToken) = Async.StartAsTask     (Wrap.getAsyncR w, ?taskCreationOptions= options, ?cancellationToken= cancToken)
     #if WEBSHARPER
         [< Inline "console.log('RunSynchronously should not be used in Javascript')" >]                       
     #endif
-        static member RunSynchronously(w:Wrap<'T  >, ?timeout, ?cancToken) = Async.RunSynchronously(Wrap.getAsyncR w, ?timeout            = timeout, ?cancellationToken= cancToken)
+        static member RunSynchronouslyR(w:Wrap<'T  >, ?timeout, ?cancToken) = Async.RunSynchronously(Wrap.getAsyncR w, ?timeout            = timeout, ?cancellationToken= cancToken)
+    #if WEBSHARPER
+        [< Inline "console.log('RunSynchronously should not be used in Javascript')" >]                       
+    #endif
+        static member RunSynchronously( w:Wrap<'T  >, ?timeout, ?cancToken) = Async.RunSynchronously(Wrap.getAsync  w, ?timeout            = timeout, ?cancellationToken= cancToken)
     
   module UsefulDotNet =
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
