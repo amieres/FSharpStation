@@ -2896,7 +2896,7 @@
  },Obj,FStationMessaging);
  FStationMessaging.get_FSStationId_=function()
  {
-  return"FSharpStation1519033396993";
+  return"FSharpStation1519372239283";
  };
  FStationMessaging.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
@@ -2905,7 +2905,7 @@
  FStationMessaging.New$1=Runtime.Ctor(function(msgClient,clientId,fsStationId)
  {
   this.msgClient=msgClient;
-  this.fsIds=Option.defaultValue("FSharpStation1519033396993",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1519372239283",fsStationId);
  },FStationMessaging);
  WSMessagingBroker.extractEndPoint=function()
  {
@@ -6830,16 +6830,16 @@
    return this.runNode;
   }
  },Obj,RunNode);
- RunNode.New=Runtime.Ctor(function(clearNode)
+ RunNode.New=Runtime.Ctor(function(clearNode,useShadowRoot)
  {
-  RunNode.New$1.call(this,"TestNode",clearNode);
+  RunNode.New$1.call(this,"TestNode",clearNode,useShadowRoot);
  },RunNode);
- RunNode.New$1=Runtime.Ctor(function(nodeName,clearNode)
+ RunNode.New$1=Runtime.Ctor(function(nodeName,clearNode,useShadowRoot)
  {
   var baseNode,m,m$1,p,e;
   this.nodeName=nodeName;
   baseNode=(m=Global.document.getElementById(this.nodeName),Unchecked.Equals(m,null)?this.createBaseNode():m);
-  this.runNode=(m$1=baseNode.shadowRoot,Unchecked.Equals(m$1,null)?(p=this.createNode(),(baseNode.attachShadow({
+  this.runNode=!(useShadowRoot==null||useShadowRoot.$0)?baseNode:(m$1=baseNode.shadowRoot,Unchecked.Equals(m$1,null)?(p=this.createNode(),(baseNode.attachShadow({
    mode:"open"
   }).appendChild(p),e=this.createNode(),p.appendChild(e),e)):m$1.firstChild);
   clearNode==null||clearNode.$0?this.runNode.innerHTML="":void 0;
@@ -7280,7 +7280,7 @@
  };
  FSharpStation.FSharpStationClient=function(loadFromUri)
  {
-  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,v$2,f,g,prior,propertyCssLinkVal,v$3,f$1,g$1,prior$1,propertyModeVal,v$4,f$2,g$2,prior$2,propertyThemeVal,v$5,f$3,g$3,prior$3,propertyLayoutVal,v$6,f$4,g$4,prior$4,propertyLayoutJSVal,v$7,f$5,g$5,prior$5,disableParseVal,disableFSIVal,disableFableVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b,autoCompleteClient,parseFile,isParseDisabled,parseRun,parsing,rex1,rex2,rex,asyncStartDelayed,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,redraw,properties,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actSetSnippetProp,actEvalFsCode,actEvalCode,actFableFsCode,actFableCode,actRunWSNewTab,$2,actRunWSHere,$3,actRunWSIn,actParseCode,actCompileWS,$4,actFindDefinition,actRefreshEditor,actOutText,actAbortFsi,buttonsH,menuLeft,menuRight,menuBar,s$2,v$8,v$9,snippetList,x,steps,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,layout,res,wsStationClient,b$1,cssLinks,x$1;
+  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,v$2,f,g,prior,propertyCssLinkVal,v$3,f$1,g$1,prior$1,propertyModeVal,v$4,f$2,g$2,prior$2,propertyThemeVal,v$5,f$3,g$3,prior$3,propertyLayoutVal,v$6,f$4,g$4,prior$4,propertyLayoutJSVal,v$7,f$5,g$5,prior$5,disableParseVal,disableFSIVal,disableFableVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b,autoCompleteClient,parseFileName,latestParsedPrefix,isParseDisabled,parseRun,parsing,rex1,rex2,rex,asyncStartDelayed,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,redraw,properties,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actSetSnippetProp,actEvalFsCode,actEvalCode,actFableFsCode,actFableCode,actRunWSNewTab,$2,actRunWSHere,$3,actRunWSIn,actParseCode,actCompileWS,$4,actFindDefinition,actRefreshEditor,actOutText,actAbortFsi,buttonsH,menuLeft,menuRight,menuBar,s$2,v$8,v$9,snippetList,x,steps,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,layout,res,wsStationClient,b$1,cssLinks,x$1;
   function missing(def,find,lens,k)
   {
    return find(k)==null?Var.Lens(missingVar,function()
@@ -7694,7 +7694,7 @@
     try
     {
      x$2=HtmlNode.createIFrame(cb);
-     return(new RunNode.New(null)).RunHtml(x$2);
+     return(new RunNode.New(null,null)).RunHtml(x$2);
     }
     catch(e)
     {
@@ -8135,34 +8135,48 @@
   {
    return HtmlNode.findRootElement(e).querySelector("#"+fileInputElementId).click();
   }
+  function nextParsedPrefix()
+  {
+   return latestParsedPrefix==="a"?"b":"a";
+  }
+  function parseFile(prefix)
+  {
+   return prefix+parseFileName;
+  }
   function getCodeAndStartsFast(msgF,snp,addLinePrepos)
   {
-   var p,$7,pId,alp,preds,red,cur,red1,t;
-   p=lastCodeAndStarts!=null&&lastCodeAndStarts.$==1&&((pId=lastCodeAndStarts.$0[0],(alp=lastCodeAndStarts.$0[1],Unchecked.Equals(pId,snp.id)&&Unchecked.Equals(alp,addLinePrepos)))&&($7=[lastCodeAndStarts.$0[1],lastCodeAndStarts.$0[0],lastCodeAndStarts.$0[2]],true))?(msgF("Reparsing..."),[$7[2],FsGlobal["CodeSnippet.get_PrepareSnippet"](snp)]):(msgF("Parsing..."),preds=FsGlobal["CodeSnippet.Predecessors"](snp),red=CodeSnippet.ReducedCode(addLinePrepos,Slice.array(preds,{
+   var p,$7,pId,alp,preds,redO,cur,red1,t,o;
+   p=lastCodeAndStarts!=null&&lastCodeAndStarts.$==1&&((pId=lastCodeAndStarts.$0[0],(alp=lastCodeAndStarts.$0[1],Unchecked.Equals(pId,snp.id)&&Unchecked.Equals(alp,addLinePrepos)))&&($7=[lastCodeAndStarts.$0[1],lastCodeAndStarts.$0[0],lastCodeAndStarts.$0[2]],true))?(msgF("Reparsing..."),[$7[2],FsGlobal["CodeSnippet.get_PrepareSnippet"](snp)]):(msgF("Parsing..."),preds=FsGlobal["CodeSnippet.Predecessors"](snp),redO=Arrays.length(preds)===1?null:{
     $:1,
-    $0:0
-   },{
+    $0:CodeSnippet.ReducedCode(addLinePrepos,Slice.array(preds,{
+     $:1,
+     $0:0
+    },{
+     $:1,
+     $0:Arrays.length(preds)-2
+    }))
+   },cur=Arrays.get(preds,Arrays.length(preds)-1),lastCodeAndStarts={
     $:1,
-    $0:Arrays.length(preds)-2
-   })),cur=Arrays.get(preds,Arrays.length(preds)-1),lastCodeAndStarts={
-    $:1,
-    $0:[cur.id,addLinePrepos,red]
-   },[red,cur]);
+    $0:[cur.id,addLinePrepos,redO]
+   },[redO,cur]);
    red1=CodeSnippet.ReducedCode(addLinePrepos,[p[1]]);
-   t=(function(t$1)
-   {
-    var a,a$1,a$2,a$3,a$4,a$5;
-    a=t$1[0];
-    a$1=t$1[1];
-    a$2=t$1[2];
-    a$3=t$1[3];
-    a$4=t$1[4];
-    a$5=t$1[5];
-    return function(t$2)
+   t=Option.defaultValue(red1,(o=p[0],o==null?null:{
+    $:1,
+    $0:(function(t$1)
     {
-     return CodeSnippet.AddSeps(a,a$1,a$2,a$3,a$4,a$5,t$2[0],t$2[1],t$2[2],t$2[3],t$2[4],t$2[5]);
-    };
-   }(p[0]))(red1);
+     var a,a$1,a$2,a$3,a$4,a$5;
+     a=t$1[0];
+     a$1=t$1[1];
+     a$2=t$1[2];
+     a$3=t$1[3];
+     a$4=t$1[4];
+     a$5=t$1[5];
+     return function(t$2)
+     {
+      return CodeSnippet.AddSeps(a,a$1,a$2,a$3,a$4,a$5,t$2[0],t$2[1],t$2[2],t$2[3],t$2[4],t$2[5]);
+     };
+    }(o.$0))(red1)
+   }));
    return CodeSnippet.FinishCode(addLinePrepos,t[0],t[1],t[2],t[3],t[4],t[5]);
   }
   function parseFSA(silent)
@@ -8176,34 +8190,47 @@
    b$8=null;
    return Concurrency.Delay(function()
    {
-    var m,cur,runN;
+    var m,cur;
     m=CodeSnippet$1.FetchO(currentCodeSnippetId.c);
-    return m!=null&&m.$==1?(cur=m.$0,(runN=parseRun+1,(parseRun=runN,Concurrency.Combine(Concurrency.While(function()
+    return m!=null&&m.$==1?(cur=m.$0,Concurrency.TryFinally(Concurrency.Delay(function()
     {
-     return parsing;
-    },Concurrency.Delay(function()
-    {
-     return Concurrency.Bind(Concurrency.Sleep(1000),function()
+     var p,prefix;
+     p=getCodeAndStartsFast(msgF,cur,false);
+     prefix=nextParsedPrefix();
+     ((function($7)
      {
-      return Concurrency.Return(null);
-     });
-    })),Concurrency.Delay(function()
-    {
-     return parseRun!==runN?Concurrency.Zero():Concurrency.TryFinally(Concurrency.Delay(function()
-     {
-      var p;
-      parsing=true;
-      parsed=true;
-      p=getCodeAndStartsFast(msgF,cur,false);
-      return Concurrency.Bind(autoCompleteClient.Parse$1(parseFile,p[0],p[1]),function(a)
+      return function($8)
       {
-       return!silent&&runN===parseRun&&parsed?(addPrsMsg(a),addPrsMsg("Parsed!"),Concurrency.Zero()):Concurrency.Zero();
-      });
-     }),function()
+       return $7("Parsing "+Utils.toSafe($8));
+      };
+     }(function(s$3)
      {
-      parsing=false;
+      console.log(s$3);
+     }))(prefix));
+     parsed=false;
+     return Concurrency.Bind(autoCompleteClient.Parse$1(parseFile(prefix),p[0],p[1]),function(a)
+     {
+      ((function($7)
+      {
+       return function($8)
+       {
+        return $7("Parse result= "+Utils.prettyPrint($8));
+       };
+      }(function(s$3)
+      {
+       console.log(s$3);
+      }))(a!==""));
+      latestParsedPrefix=prefix;
+      return Concurrency.Combine(!silent?(addPrsMsg(a),addPrsMsg("Parsed!"),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
+      {
+       parsed=true;
+       return Concurrency.Zero();
+      }));
      });
-    }))))):Concurrency.Zero();
+    }),function()
+    {
+     parsing=false;
+    })):Concurrency.Zero();
    });
   }
   function mustParse(cur)
@@ -8212,7 +8239,7 @@
    b$8=null;
    return Concurrency.Delay(function()
    {
-    return!parsed?Concurrency.Return(true):Concurrency.Bind(autoCompleteClient.MustParse(parseFile,cur.get_NameSanitized()),function(a)
+    return!parsed?Concurrency.Return(true):Concurrency.Bind(autoCompleteClient.MustParse(parseFile(latestParsedPrefix),cur.get_NameSanitized()),function(a)
     {
      return Concurrency.Return(a);
     });
@@ -8265,7 +8292,7 @@
       sub=Strings.length(getStartWord(l,pos.ch));
       add0=Strings.length(getEndWord(l,pos.ch));
       add=sub===0&&add0===0?2:add0;
-      return Concurrency.Bind(autoCompleteClient.ToolTip(parseFile,pos.line+1,pos.ch+1,cur.get_NameSanitized()),function(a$1)
+      return Concurrency.Bind(autoCompleteClient.ToolTip(parseFile(latestParsedPrefix),pos.line+1,pos.ch+1,cur.get_NameSanitized()),function(a$1)
       {
        var c;
        addPrsMsg(((((c=(Runtime.Curried(function($7,$8,$9,$10,$11)
@@ -8335,29 +8362,11 @@
   }
   function getAnnotationsDelayed(parms)
   {
-   var b$8;
-   asyncStartDelayed((b$8=null,Concurrency.Delay(function()
-   {
-    (function($7)
-    {
-     return $7("before delaying");
-    }(function(s$3)
-    {
-     console.log(s$3);
-    }));
-    return Concurrency.Bind(Concurrency.Sleep(400),function()
-    {
-     (function($7)
-     {
-      return $7("calling getAnnotations");
-     }(function(s$3)
-     {
-      console.log(s$3);
-     }));
-     getAnnotations.apply(null,parms);
-     return Concurrency.Zero();
-    });
-   })));
+   getAnnotations.apply(null,parms);
+  }
+  function getSymbolType(chr)
+  {
+   return chr==="C"?"class":chr==="Cn"?"Constant":chr==="D"?"delegate":chr==="E"?"enum":chr==="P"?"property":chr==="e"?"event":chr==="X"?"exception":chr==="F"?"field":chr==="I"?"interface":chr==="M"?"function":chr==="N"?"module":chr==="S"?"struct":chr==="T"?"type":chr==="V"?"Variable":chr;
   }
   function getHints(ed,cb,a)
   {
@@ -8366,26 +8375,22 @@
    {
     return Concurrency.Bind(isParseDisabled,function(a$1)
     {
-     var m,cur;
-     return a$1?Concurrency.Zero():(m=CodeSnippet$1.FetchO(currentCodeSnippetId.c),m!=null&&m.$==1?(cur=m.$0,Concurrency.Bind(parseIfMustThen(true),function()
+     var m,pos,l,word;
+     return a$1?Concurrency.Zero():(m=CodeSnippet$1.FetchO(currentCodeSnippetId.c),m!=null&&m.$==1?(pos=ed.getCursor(),(l=ed.getLine(pos.line),(word=getStartWord(l,pos.ch),Concurrency.Bind(autoCompleteClient.Complete(parseFile(latestParsedPrefix),l+"a",pos.line+1,pos.ch+1,m.$0.get_NameSanitized()),function(a$2)
      {
-      var pos,l,word;
-      pos=ed.getCursor();
-      l=ed.getLine(pos.line);
-      word=getStartWord(l,pos.ch);
-      return Concurrency.Bind(autoCompleteClient.Complete(parseFile,l+"a",pos.line+1,pos.ch+1,cur.get_NameSanitized()),function(a$2)
+      function m$1(dis,rep,cls,chr)
       {
-       function m$1(dis,rep,cls,chr)
+       return Hint.New(rep,(((Runtime.Curried3(function($7,$8,$9)
        {
-        return Hint.New(rep,chr+"| "+dis,cls);
-       }
-       cb(HintResponse.New(Arrays.map(function($7)
-       {
-        return m$1($7[0],$7[1],$7[2],$7[3]);
-       },a$2),CodeMirrorPos.New(pos.line,pos.ch-word.length),pos));
-       return Concurrency.Zero();
-      });
-     })):Concurrency.Zero());
+        return $7(Strings.PadRight(Utils.toSafe($8),40)+" "+Strings.PadLeft(Utils.toSafe($9),20));
+       }))(Global.id))(dis))(getSymbolType(chr)),cls);
+      }
+      cb(HintResponse.New(Arrays.map(function($7)
+      {
+       return m$1($7[0],$7[1],$7[2],$7[3]);
+      },a$2),CodeMirrorPos.New(pos.line,pos.ch-word.length),pos));
+      return Concurrency.Zero();
+     })))):Concurrency.Zero());
     });
    })));
   }
@@ -8427,28 +8432,29 @@
    var b$8;
    Concurrency.Start((b$8=null,Concurrency.Delay(function()
    {
-    var m,m$1,ed,pos;
-    m=CodeSnippet$1.FetchO(currentCodeSnippetId.c);
-    return m!=null&&m.$==1?(m$1=codeMirror.editorO,m$1!=null&&m$1.$==1?(ed=m$1.$0,(pos=ed.getCursor(),(ed.getLine(pos.line),Concurrency.Bind(autoCompleteClient.FindDecl(parseFile,pos.line+1,pos.ch+1,m.$0.get_NameSanitized()),function(a)
+    var $7,$8,$9,ed,pos;
+    $7=CodeSnippet$1.FetchO(currentCodeSnippetId.c);
+    $8=codeMirror.editorO;
+    return($8!=null&&$8.$==1?$7!=null&&$7.$==1?($9=[$7.$0,$8.$0],false):true:true)?Concurrency.Zero():(ed=$9[1],(pos=ed.getCursor(),(ed.getLine(pos.line),Concurrency.Bind(autoCompleteClient.FindDecl(parseFile(latestParsedPrefix),pos.line+1,pos.ch+1,$9[0].get_NameSanitized()),function(a)
     {
      var decl;
-     return a.$==9?(decl=a.$0,(jumpToLine(((((((Runtime.Curried(function($7,$8,$9,$10,$11,$12)
+     return a.$==9?(decl=a.$0,(jumpToLine(((((((Runtime.Curried(function($10,$11,$12,$13,$14,$15)
      {
-      return $7(Utils.toSafe($8)+" ("+Global.String($9)+", "+Global.String($10)+") - ("+Global.String($11)+", "+Global.String($12)+")");
-     },6))(Global.id))(decl.File))(decl.Line))(decl.Column))(decl.Line))(decl.Column)),Concurrency.Zero())):a.$==1?(Global.alert((function($7)
+      return $10(Utils.toSafe($11)+" ("+Global.String($12)+", "+Global.String($13)+") - ("+Global.String($14)+", "+Global.String($15)+")");
+     },6))(Global.id))(decl.File))(decl.Line))(decl.Column))(decl.Line))(decl.Column)),Concurrency.Zero())):a.$==1?(Global.alert((function($10)
      {
-      return function($8)
+      return function($11)
       {
-       return $7(GeneratedPrintf.p($8));
+       return $10(GeneratedPrintf.p($11));
       };
-     }(Global.id))(a.$0)),Concurrency.Zero()):(Global.alert((function($7)
+     }(Global.id))(a.$0)),Concurrency.Zero()):(Global.alert((function($10)
      {
-      return function($8)
+      return function($11)
       {
-       return $7(FSharpStation_GeneratedPrintf.p$4($8));
+       return $10(FSharpStation_GeneratedPrintf.p$4($11));
       };
      }(Global.id))(a)),Concurrency.Zero());
-    })))):Concurrency.Zero()):Concurrency.Zero();
+    }))));
    })),null);
   }
   function refreshCodeMirror()
@@ -9224,7 +9230,8 @@
    $:1,
    $0:Global.location.href
   });
-  parseFile=FsGlobal.fsIds()+".fsx";
+  parseFileName=FsGlobal.fsIds()+".fsx";
+  latestParsedPrefix="a";
   isParseDisabled=View.GetAsync(Val.toView(disableParseVal));
   parseRun=1;
   parsing=false;
@@ -9325,11 +9332,8 @@
    var b$8;
    Concurrency.Start((b$8=null,Concurrency.Delay(function()
    {
-    var m,ed,m$1;
-    return!parsed?Concurrency.Zero():(m=codeMirror.editorO,m!=null&&m.$==1?(ed=m.$0,(m$1=CodeSnippet$1.FetchO(currentCodeSnippetId.c),m$1!=null&&m$1.$==1?Concurrency.Bind(autoCompleteClient.MustParse(parseFile,m$1.$0.get_NameSanitized()),function(a)
-    {
-     return a?Concurrency.Zero():(ed.performLint(),Concurrency.Zero());
-    }):Concurrency.Zero())):Concurrency.Zero());
+    var m,m$1;
+    return!parsed?Concurrency.Zero():(m=codeMirror.editorO,m!=null&&m.$==1?(m$1=CodeSnippet$1.FetchO(currentCodeSnippetId.c),m$1!=null&&m$1.$==1?(m.$0.performLint(),Concurrency.Zero()):Concurrency.Zero()):Concurrency.Zero());
    })),null);
   },parserMsgs);
   redraw=Var.Create$1();

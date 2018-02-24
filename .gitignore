@@ -1,6 +1,6 @@
 /packages
 /paket-files
-/bin0
+/binold
 /bin1
 /bin/compiled/*
 !/bin/compiled/FsTranslator

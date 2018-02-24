@@ -1,5 +1,36 @@
+////-d:INTERACTIVE -d:INTERACTIVE
+#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
+#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
+#I @"..\packages\WebSharper\lib\net40"
+#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.dll"
+#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.JavaScript.dll"
+#r @"..\packages\WebSharper\lib\net40\WebSharper.Collections.dll"
+#r @"..\packages\WebSharper\lib\net40\WebSharper.InterfaceGenerator.dll"
+#r @"..\packages\WebSharper\lib\net40\WebSharper.Main.dll"
+#r @"..\packages\WebSharper\lib\net40\WebSharper.JQuery.dll"
+#r @"..\packages\WebSharper\lib\net40\WebSharper.JavaScript.dll"
+#r @"..\packages\WebSharper\lib\net40\WebSharper.Web.dll"
+#r @"..\packages\WebSharper\lib\net40\WebSharper.Sitelets.dll"
+#r @"..\packages\WebSharper\lib\net40\WebSharper.Control.dll"
+#r @"..\packages\WebSharper.UI.Next\lib\net40\WebSharper.UI.Next.dll"
+#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
+#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
+#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\WebSharper.Owin.WebSocket.dll"
+#r @"..\packages\Owin\lib\net40\Owin.dll"
+#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
+#r @"..\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
+#r @"..\packages\Owin.Compression\lib\net452\Owin.Compression.dll"
+#r @"..\packages\Microsoft.Owin.Hosting\lib\net45\Microsoft.Owin.Hosting.dll"
+#r @"..\packages\Microsoft.Owin.Host.HttpListener\lib\net45\Microsoft.Owin.Host.HttpListener.dll"
+#r @"..\packages\Microsoft.Owin.StaticFiles\lib\net45\Microsoft.Owin.StaticFiles.dll"
+#r @"..\packages\Microsoft.Owin.FileSystems\lib\net45\Microsoft.Owin.FileSystems.dll"
+#r @"..\packages\WebSharper.Owin\lib\net45\WebSharper.Owin.dll"
+#r @"..\packages\WebSharper.Owin\lib\net45\HttpMultipartParser.dll"
+//# 1 "required for nowarns to work"
 #nowarn "40"
 #nowarn "1178"
+//# 1 @"bf864f3c-1370-42f2-ac8a-565a604892e8 FSSGlobal.fsx"
 //#nowarn "1182"
 //#nowarn "40"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
@@ -12,8 +43,10 @@ module FSSGlobal   =
 namespace FSSGlobal
 #endif
 
+//# 1 @"edbbf11e-4698-4e33-af0c-135d5b21799b F# Code.fsx"
 // Code to be evaluated using FSI: `Evaluate F#`
-  #if WEBSHARPER
+  //# 1 @"(2)60bffe71-edde-4971-8327-70b9f5c578bb open WebSharper.fsx"
+  #if INTERACTIVE
   //#I @"..\packages\WebSharper\lib\net40"
   
   //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.dll"
@@ -35,13 +68,15 @@ namespace FSSGlobal
   type on   = WebSharper.UI.Next.Html.on
   type attr = WebSharper.UI.Next.Html.attr
   #endif
-  #if WEBSHARPER
+  //# 1 @"(2)7c4a82bc-58cd-48a7-bd7e-79de148a1cf0 Useful.fsx"
+  #if INTERACTIVE
   [<WebSharper.JavaScript>]
   #endif
   module Useful =
+    //# 1 @"(4)7a655466-e218-4121-a7b6-f9c70a922e07 extract, now, Async, String.fsx"
     let extract n (s:string) = s.Substring(0, min n s.Length)
     
-    #if WEBSHARPER
+    #if INTERACTIVE
     [< Inline "(function (n) { return n.getFullYear() + '-' +(n.getMonth() + 1) + '-' +  n.getDate() + ' '+n.getHours()+ ':'+n.getMinutes()+ ':'+n.getSeconds()+ ':'+n.getMilliseconds() })(new Date(Date.now()))" >]
     #endif
     let nowStamp() = System.DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
@@ -89,6 +124,7 @@ namespace FSSGlobal
         let append     (a: string)(b: string) =  a + b
         
         
+    //# 1 @"(4)368caae7-6a67-4063-9af3-978c25b81ac2 Result, Wrap.fsx"
     open System
     //#nowarn "1178"
          
@@ -131,7 +167,7 @@ namespace FSSGlobal
         abstract member ErrMsg   : string
         abstract member IsWarning: bool
     
-    #if WEBSHARPER
+    #if INTERACTIVE
     [<JavaScript>]
     #endif
     type ExceptionThrown(exn:Exception) =
@@ -140,7 +176,7 @@ namespace FSSGlobal
             member this.IsWarning: bool   = false
         override this.ToString() = (this :> ErrMsg).ErrMsg
     
-    #if WEBSHARPER
+    #if INTERACTIVE
     [<JavaScript>]
     #endif
     type ErrOptionIsNone() =
@@ -150,8 +186,8 @@ namespace FSSGlobal
     
     type ErrSimple(msg, warning) =
         interface ErrMsg with
-            member this.ErrMsg   : string = msg
-            member this.IsWarning: bool   = warning
+            member __.ErrMsg   : string = msg
+            member __.IsWarning: bool   = warning
         override this.ToString() = (this :> ErrMsg).ErrMsg
     
     type Result< 'TSuccess> = Result  of 'TSuccess option * ErrMsg    list     
@@ -227,14 +263,14 @@ namespace FSSGlobal
     ///            tryCall: (exn -> Result<'b>) ->  ('a -> Result<'b>) -> 'a -> Result<'b> =
         let inline tryCall (f:'a -> Result<'b>) (v:'a) : Result<'b> = try f v with e -> failException e |> fail
     
-        type ropBuilder() =
-            member inline this.Return     (x)                       = succeed x
-            member inline this.ReturnFrom (x)                       = x
-            member        this.Bind       (w:Result<'a>, r: 'a -> Result<'b>) = bind (tryCall r) w
-            member inline this.Zero       ()                        = succeed ()
-            member inline this.Delay      (f)                       = f
-            member inline this.Combine    (a, b)                    = combine a b
-            member inline this.Run        (f)                       = f()
+        type RopBuilder() =
+            member inline __.Return     (x)                       = succeed x
+            member inline __.ReturnFrom (x)                       = x
+            member        __.Bind       (w:Result<'a>, r: 'a -> Result<'b>) = bind (tryCall r) w
+            member inline __.Zero       ()                        = succeed ()
+            member inline __.Delay      (f)                       = f
+            member inline __.Combine    (a, b)                    = combine a b
+            member inline __.Run        (f)                       = f()
             member this.While(guard, body) =
                 if not (guard()) 
                 then this.Zero() 
@@ -254,7 +290,7 @@ namespace FSSGlobal
                     this.While(enum.MoveNext, 
                         this.Delay(fun () -> body enum.Current)))              
     
-        let result = ropBuilder()
+        let result = RopBuilder()
     //    let inline flow_ () = new ropBuilder ()
     
     //    let fromChoice context c =  context?????
@@ -519,19 +555,19 @@ namespace FSSGlobal
     
         let getResult callback (wb: Wrap<'T>) =
             match wb with
-            | WSimple      s  -> s               |> succeed                                              |> callback
-            | WOption(Some s) -> s               |> succeed                                              |> callback
-            | WOption None    -> errOptionIsNone |> fail                                                 |> callback
-            | WResult      rb -> rb                                                                      |> callback
-            | WAsync       ab -> Async.StartWithContinuations(ab , (fun v   -> succeed v                 |> callback), 
-                                                                   (fun exc -> failException exc |> fail |> callback), 
-                                                                    fun can -> failException can |> fail |> callback)
-            | WAsyncR     arb -> Async.StartWithContinuations(arb,                                          callback , 
-                                                                   (fun exc -> failException exc |> fail |> callback), 
-                                                                    fun can -> failException can |> fail |> callback)
+            | WSimple      s  -> s               |> succeed                              |> callback
+            | WOption(Some s) -> s               |> succeed                              |> callback
+            | WOption None    -> errOptionIsNone |> fail                                 |> callback
+            | WResult      rb -> rb                                                      |> callback
+            | WAsync       ab -> Async.StartWithContinuations(ab , succeed               >> callback, 
+                                                                   failException >> fail >> callback, 
+                                                                   failException >> fail >> callback)
+            | WAsyncR     arb -> Async.StartWithContinuations(arb,                          callback, 
+                                                                   failException >> fail >> callback, 
+                                                                   failException >> fail >> callback)
     
     
-    #if WEBSHARPER
+    #if INTERACTIVE
         [< Inline "console.log('runSynchronously should not be used in Javascript')" >]                       
     #endif
         let runSynchronouslyR (w: Wrap<_>) =
@@ -552,15 +588,16 @@ namespace FSSGlobal
     type Wrap<'T> with
         static member Start           (w:Wrap<_   >,           ?cancToken) = Async.Start           (Wrap.getAsync  w,                                ?cancellationToken= cancToken)
         static member StartAsTask     (w:Wrap<'T  >, ?options, ?cancToken) = Async.StartAsTask     (Wrap.getAsyncR w, ?taskCreationOptions= options, ?cancellationToken= cancToken)
-    #if WEBSHARPER
+    #if INTERACTIVE
         [< Inline "console.log('RunSynchronously should not be used in Javascript')" >]                       
     #endif
         static member RunSynchronouslyR(w:Wrap<'T  >, ?timeout, ?cancToken) = Async.RunSynchronously(Wrap.getAsyncR w, ?timeout            = timeout, ?cancellationToken= cancToken)
-    #if WEBSHARPER
+    #if INTERACTIVE
         [< Inline "console.log('RunSynchronously should not be used in Javascript')" >]                       
     #endif
         static member RunSynchronously( w:Wrap<'T  >, ?timeout, ?cancToken) = Async.RunSynchronously(Wrap.getAsync  w, ?timeout            = timeout, ?cancellationToken= cancToken)
     
+    //# 1 @"(4)aa485846-7b78-4ca8-ae22-84ba0c42d962 Mailbox.fsx"
     module Mailbox =
     
         /// A simple Mailbox processor to serially process tasks
@@ -605,9 +642,10 @@ namespace FSSGlobal
     //        let mailbox = fold ff initState
     //        { new mailbox with member this.Flush() = mailbox.Post None }
     //        
+    //# 1 @"(4)995f98ae-4f13-4225-9d00-9aa3e630058a Dict, LDict, IDict.fsx"
     (* issues with websharper Type not found in JavaScript compilation: System.Collections.Generic.IDictionary`2
     module IDict =
-    #if WEBSHARPER
+    #if INTERACTIVE
         [< Inline >]
     #endif
         let inline tryGetValue key (dict:System.Collections.Generic.IDictionary<_, _>) =
@@ -618,7 +656,7 @@ namespace FSSGlobal
         let add          key v (dict:System.Collections.Generic.IDictionary<_, _>) = if dict.ContainsKey key then      dict.[key] <- v else dict.Add(key, v)
     *)
     module Dict =
-    #if WEBSHARPER
+    #if INTERACTIVE
         [< Inline >]
     #endif
         let inline tryGetValue key (dict:System.Collections.Generic. Dictionary<_, _>) =
@@ -629,12 +667,12 @@ namespace FSSGlobal
         let add          key v (dict:System.Collections.Generic. Dictionary<_, _>) = if dict.ContainsKey key then      dict.[key] <- v else dict.Add(key, v)
     
     module LDict =
-    #if WEBSHARPER
+    #if INTERACTIVE
         [< Inline >]
     #endif
         let inline containsKey  key  dict = (^a : (member ContainsKey : _ -> bool) (dict, key))
         //let inline item         key  dict = (^a : (member get_Item    : _ -> _   ) (dict, key))
-    #if WEBSHARPER
+    #if INTERACTIVE
         [< Inline >]
     #endif
         let inline tryGetValue fitem key  dict =
@@ -642,7 +680,8 @@ namespace FSSGlobal
             else None
     
     
-    #if WEBSHARPER
+    //# 1 @"(4)218507eb-4a87-4c11-b5d9-53a2213dd36a REGEX.fsx"
+    #if INTERACTIVE
     
     let (|REGEX|_|) (expr: string) (opt: string) (value: string) =
         if value = null then None else
@@ -654,15 +693,18 @@ namespace FSSGlobal
         with e -> None
     #endif
     
+    //# 1 @"(4)657c8f34-c917-4659-825d-c9ead206efcf swap.fsx"
     let inline swap f a b = f b a
     let inline __   f a b = f b a
     
     
+    //# 1 @"(4)e24d6bc0-703c-4f12-aca8-8158af50b7cd dprintfn, oprintfn.fsx"
     let dprintfn       fmt = fmt |> Printf.ksprintf ignore //(fun s -> printfn "%s"  s)
     let printoutfn out fmt = fmt |> Printf.ksprintf (fun s -> s + "\n" |> out)
     //let printoutf  out fmt = Printf.kprintf                        out  fmt
     
-    #if WEBSHARPER
+    //# 1 @"(4)8efdcd5a-95c4-4212-9c75-1ebedce83dd8 memoize.fsx"
+    #if INTERACTIVE
     [< Inline >]
     #endif
     let memoize f = 
@@ -678,7 +720,7 @@ namespace FSSGlobal
     type ResetableMemoize(f) =             
         let cache = System.Collections.Generic.Dictionary<_, _>()
         member this.ClearCache() = cache.Clear()
-        #if WEBSHARPER
+        #if INTERACTIVE
         [< Inline >]
         #endif
         member this.Call x =
@@ -689,6 +731,7 @@ namespace FSSGlobal
                  cache.[x] <- res
                  res
         
+    //# 1 @"(4)ace1fc12-3dfb-4db8-80c9-5bde1e7d0597 separateDirectives.fsx"
     type PreproDirective =
     | PrepoR      of string
     | PrepoDefine of string
@@ -733,6 +776,7 @@ namespace FSSGlobal
         code, assembs, defines, prepoIs, nowarns
     
     
+    //# 1 @"(4)ece85c79-829d-4bec-a607-a1cd01f9dafa asyncStartCancelling.fsx"
     let asyncStartCancelling() =    
         let mutable tokenSource : System.Threading.CancellationTokenSource option = None
         fun a ->
@@ -742,7 +786,9 @@ namespace FSSGlobal
             tokenSource <- Some newTokenSource
     
             
+  //# 1 @"(2)376fdef6-dfcf-40c5-bd14-97c3b246bb30 UsefulDotNet.fsx"
   module UsefulDotNet =
+    //# 1 @"(4)f930dc48-39e8-453c-8c77-18a2cd73637a ResourceAgent.fsx"
     open Useful
     
     type ResourceAgent<'T, 'C when 'C : equality>(maxUseCount:int, ctor: 'C option ->'T, ?cleanup, ?isAlive, ?configuration: 'C) =
@@ -787,6 +833,7 @@ namespace FSSGlobal
             member this.Dispose () =
                 try cleanup |> Option.iter (fun clean -> clean resource) with _ -> ()
     
+    //# 1 @"(4)4137cad8-fd64-426e-98de-16a92a56388d TempFileName.fsx"
     type TempFileName(fn) =
         new () = new TempFileName(System.IO.Path.GetTempFileName())
         member this.Name = fn
@@ -794,6 +841,7 @@ namespace FSSGlobal
             member this.Dispose() = if System.IO.File.Exists fn then System.IO.File.Delete fn
             
             
+    //# 1 @"(4)b30f4582-64bd-49e5-aca2-29897fef74c5 RunProcess.fsx"
     open System.Diagnostics
     open System.Text
     open Useful
@@ -961,6 +1009,7 @@ namespace FSSGlobal
             shell.RunOutputToFile file 
         
         
+    //# 1 @"(4)ab5ab0ca-eb45-4851-affe-4690bb75d055 copyIfMust.fsx"
     open System.IO
     
     let copyIfNotExistsToFile from dest =
@@ -983,7 +1032,9 @@ namespace FSSGlobal
         let dest = Path.Combine(destDir, Path.GetFileName(from))
         copyIfMustToFile from dest
         
+    //# 1 @"(4)15cf771f-22b1-4796-8e34-6c16f35d6506 Path.Combine.fsx"
     let inline (+/+) a b = System.IO.Path.Combine(a, b)
+    //# 1 @"(4)ef053bdf-997b-49c8-a401-1611a568bd8a CompOptions.fsx"
     module CompOptionsModule = // needs to be in a module so (?) operator does not collide with websharper
         
         type CompOptionClass = 
@@ -1152,11 +1203,13 @@ namespace FSSGlobal
             options2
         
     
-  #if WEBSHARPER
+  //# 1 @"(2)63eca270-405a-4789-941a-e298bbd265bd FsStationShared.fsx"
+  #if INTERACTIVE
   [<WebSharper.JavaScript>]
   #endif
   module FsStationShared =
   
+    //# 1 @"(4)2deb54e7-009e-4297-b2bc-1c86d04203a4 CodeSnippet.fsx"
     open Useful
     
     let snippetName name (content: string) =
@@ -1199,7 +1252,7 @@ namespace FSSGlobal
     //    member this.ContentIndented addLinePrepos =
     //        let indent        = this.levelCode * 2
     //        let indentF, prfx = if indent = 0         then (id, "") else (Array.map    (fun (l, pr) -> String.replicate indent " " + l, pr), sprintf"(%d)" indent)
-    //        let addLinePs     = if not addLinePrepos  then  id      else  Array.append [| sprintf "# 1 @\"%s%s\"" prfx this.NameSanitized |] 
+    //        let addLinePs     = if not addLinePrepos  then  id      else  Array.append [| sprintf "//# 1 @\"%s%s\"" prfx this.NameSanitized |] 
     //        this.content.Split('\n') 
     //        |> addLinePs
     //        |> separatePrepros (not addLinePrepos)
@@ -1233,7 +1286,7 @@ namespace FSSGlobal
             let noLinePre     = not addLinePrepos || this.properties.ContainsKey "NoLinePre"
             let indent        = this.levelCode * 2
             let indentF, prfx = if indent = 0         then (id, "") else (Array.map    (fun (l, pr) -> String.replicate indent " " + l, pr), sprintf"(%d)" indent)
-            let addLinePs     = if noLinePre          then  id      else  Array.append [| sprintf "# 1 @\"%s%s\"" prfx this.NameSanitized |]
+            let addLinePs     = if noLinePre          then  id      else  Array.append [| sprintf "//# 1 @\"%s%s\"" prfx this.NameSanitized |]
             let code, assembs, defines, prepIs, nowarns  =
                 this.content.Split('\n') 
                 |> addLinePs
@@ -1262,7 +1315,7 @@ namespace FSSGlobal
               [ if config <> "" then yield "////" + config
                 yield! prepIs  |> Seq.map (sprintf "#I @\"%s\""    )
                 yield! assembs |> Seq.map (sprintf "#r @\"%s\""    )
-                if addLinePrepos && (nowarns |> Seq.isEmpty |> not) then yield "# 1 \"required for nowarns to work\""
+                if addLinePrepos && (nowarns |> Seq.isEmpty |> not) then yield "//# 1 \"required for nowarns to work\""
                 yield! nowarns |> Seq.map (sprintf "#nowarn \"%s\"")
               ]
             Seq.append part1 code |> String.concat "\n"
@@ -1289,7 +1342,7 @@ namespace FSSGlobal
     //        [   if config <> "" then yield "////" + config
     //            yield! prepIs  |> Seq.distinct             |> Seq.map (sprintf "#I @\"%s\""    )
     //            yield! assembs |> Seq.distinct             |> Seq.map (sprintf "#r @\"%s\""    )
-    //            if addLinePrepos && (nowarns |> Seq.isEmpty |> not) then yield "# 1 \"required for nowarns to work\""
+    //            if addLinePrepos && (nowarns |> Seq.isEmpty |> not) then yield "//# 1 \"required for nowarns to work\""
     //            yield! nowarns |> Seq.distinct             |> Seq.map (sprintf "#nowarn \"%s\"")
     //        ], code, bySnippet
     //    static member CodeFsx0 addLinePrepos (cur, snippets) =
@@ -1297,6 +1350,7 @@ namespace FSSGlobal
     //        [ yield! part1 ; yield! part2 ] |> String.concat "\n"
     
     
+    //# 1 @"(4)f6ebdffc-049c-4493-8de8-e32072419479 FSMessage,FSResponse.fsx"
     type FSMessage =
         | GetIdentification
         | GenericMessage        of string
@@ -1327,10 +1381,12 @@ namespace FSSGlobal
         | StringResponseR   of string option * (string * FSSeverity)[]
     
     
-  #if WEBSHARPER
+  //# 1 @"(2)64110b26-2d5c-4b29-a81b-75a5495e67a2 WSMessagingBroker.fsx"
+  #if INTERACTIVE
   [<WebSharper.JavaScript>]
   #endif
   module WSMessagingBroker =
+    //# 1 @"(4)b95ef4c5-ca1b-443a-acad-ca8158403d8b WebSocket Messages.fsx"
     //#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
     //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
     //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\WebSharper.Owin.WebSocket.dll"
@@ -1443,10 +1499,11 @@ namespace FSSGlobal
     
     type CMessage<'C2S> = WebSharper.Owin.WebSocket.Client.Message<'C2S>
     
+    //# 1 @"(4)e137b990-172b-4879-bc74-8650123b7a5d StatefulAgent.fsx"
     
     type SMessage<'S2C> = WebSharper.Owin.WebSocket.Server.Message<'S2C>
     
-    #if WEBSHARPER
+    #if INTERACTIVE
     [< JavaScript false >]
     #endif
     module Broker =
@@ -1466,7 +1523,7 @@ namespace FSSGlobal
             abstract member Close: unit           -> unit
     
         type BrokerAgent(epWebSocket: WebSharper.Owin.WebSocket.Endpoint<MessageGeneric,MessageGeneric>) =
-    #if FSS_SERVER                          
+    #if INTERACTIVE                          
             static let mutable fssWebSocketO : BrokerAgent option = None
     #endif
             do printfn "WebSocket server start"
@@ -1545,7 +1602,7 @@ namespace FSSGlobal
                                                           |> Option.defaultValue ""
                                     member this.Close() = client.Connection.Close(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, null) |> Async.AwaitTask |> Async.Start
                               }
-    #if FSS_SERVER
+    #if INTERACTIVE
             static member FssWebSocketO = fssWebSocketO
             static member FssWebSocketO with set value = fssWebSocketO <- value
             member this.ConnectLocal clientId receiver = 
@@ -1576,6 +1633,7 @@ namespace FSSGlobal
     #endif        
             
             
+    //# 1 @"(4)9c253bae-ab8b-4c99-b7e5-38fc50756bec ClientWebSocket .Net.fsx"
     //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.dll"
     //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.JavaScript.dll"
     //#r @"..\packages\WebSharper\lib\net40\WebSharper.Main.dll"
@@ -1594,7 +1652,7 @@ namespace FSSGlobal
     open WebSharper
     open Useful
     
-    #if WEBSHARPER
+    #if INTERACTIVE
     [< JavaScript false >]
     #endif
     module Client =
@@ -1669,6 +1727,7 @@ namespace FSSGlobal
             ConnectStateful uri2 func
             |> Async.map ignore
             
+    //# 1 @"(4)e665bede-c870-4041-b7ed-8be419c52a83 WSMessagingClient.fsx"
     //#r @"..\packages\Owin\lib\net40\Owin.dll"
     //#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
     //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
@@ -1679,13 +1738,13 @@ namespace FSSGlobal
     open WebSharper.Owin.WebSocket
     open WebSharper.Owin.WebSocket.Client
     
-    //#define FSS_SERVER
-    //#define WEBSHARPER
+    //#define INTERACTIVE
+    //#define INTERACTIVE
     
     type  Server = WebSocketServer<MessageGeneric,MessageGeneric>
     
     type ClientTypeFSharp    = FSharp
-    #if WEBSHARPER
+    #if INTERACTIVE
     type ClientTypeFSStation = FSStation
     type ClientTypeJScript   = JScript
     
@@ -1733,7 +1792,7 @@ namespace FSSGlobal
     
     [< Inline "window.location.href" >]
     let getEndPoint() = 
-    #if FSS_SERVER
+    #if INTERACTIVE
         "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
     #else
         "http://localhost:9010/"
@@ -1893,11 +1952,11 @@ namespace FSSGlobal
         interface IDisposable with
             member this.Dispose() = close()
     
-    #if FSS_SERVER   
+    #if INTERACTIVE   
         [< JavaScript false >]
         new (clientId:string, FSStation, ?timeout, ?endPoint) = new WSMessagingClient(Broker.ConnectStatefulFSS, clientId, ?timeout = timeout, ?endPoint = endPoint)
     #endif
-    #if WEBSHARPER
+    #if INTERACTIVE
         [< JavaScript false >]
         new (clientId:string, FSharp   , ?timeout, ?endPoint) = new WSMessagingClient(Client.ConnectStatefulFS , clientId, ?timeout = timeout, ?endPoint = endPoint)
         new (clientId:string,            ?timeout, ?endPoint) = new WSMessagingClient(       ConnectStatefulJS , clientId, ?timeout = timeout, ?endPoint = endPoint)
@@ -1906,6 +1965,7 @@ namespace FSSGlobal
     #endif
     
     
+    //# 1 @"(4)4413b3ee-f968-458d-8a5f-7a7c9281c38f FStationMessaging.fsx"
     open FsStationShared
     
     type FsStationClientErr =
@@ -1922,7 +1982,7 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FStationMessaging(msgClient:WSMessagingClient, clientId, ?fsStationId:string) =
-        let mutable fsIds      = fsStationId |> Option.defaultValue "FSharpStation1519372239283"
+        let mutable fsIds      = fsStationId |> Option.defaultValue "FSharpStation1519083605409"
         let         toId()     = Address fsIds
         let stringResponseR response =
             match response with
@@ -1962,20 +2022,22 @@ namespace FSSGlobal
         member this.FSStationId                             = fsIds
         member this.FSStationId with set id                 = fsIds <- id
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1519372239283"
-    #if FSS_SERVER   
+        static member FSStationId_                          = "FSharpStation1519083605409"
+    #if INTERACTIVE   
         [< JavaScript false >]
         new (clientId, FSStation, ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId, FSStation, ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
     #endif
         [< JavaScript false >]
-    #if WEBSHARPER
+    #if INTERACTIVE
         new (clientId, FSharp   , ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId, FSharp   , ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
     #endif    
         new (clientId,            ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId,            ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
     
     
     
+  //# 1 @"(2)a70b4838-75d6-40c3-9a0c-5bd03c57cce5 FsEvaluator.fsx"
   module FsEvaluator =
+    //# 1 @"(4)82c8fbfd-6b85-4b5c-8bd0-81bcd8de1e58 evalFsiExe.fsx"
     open Useful
     
     module Evaluator =
@@ -2007,8 +2069,8 @@ namespace FSSGlobal
                 member this.Dispose () = 
                     (shell :> System.IDisposable).Dispose()
     
-        #if FSS_SERVER
-        printfn "FSS_SERVER"
+        #if INTERACTIVE
+        printfn "INTERACTIVE"
         let fssClient = WSMessagingBroker.FStationMessaging("<FsEvaluator>", WSMessagingBroker.FSStation)
         let queueOutput =
             let output      = new System.Text.StringBuilder()
@@ -2047,7 +2109,7 @@ namespace FSSGlobal
                                                                          ], outHndl, errHndl))
                                                       , (fun fsi -> (fsi :> System.IDisposable).Dispose()), (fun fsi -> fsi.IsAlive), "")
     
-        #if WEBSHARPER
+        #if INTERACTIVE
         [< JavaScript >]
         #endif
         let extractConfig (code:string) = if code.StartsWith "////-d:" then code.[4..code.IndexOf '\n' - 1] else ""
@@ -2089,7 +2151,7 @@ namespace FSSGlobal
         let addPresenceOf k v = present <- present |> Map.add k v ; printfn "ok"
     """
     
-        #if WEBSHARPER
+        #if INTERACTIVE
         [< Rpc >]
         #endif
         let addPresence (name:string) (v:string) = 
@@ -2101,7 +2163,7 @@ namespace FSSGlobal
                    | _    -> installPresence None      |> ignore
                              evalSilent      None code |> ignore
             }
-        #if WEBSHARPER
+        #if INTERACTIVE
         [< Rpc >]
         #endif
         let getPresence config (name:string)   = 
@@ -2116,7 +2178,7 @@ namespace FSSGlobal
                        | v                   -> Some v
             }
             
-        #if WEBSHARPER
+        #if INTERACTIVE
         [< Rpc >]
         #endif
         let abortFsiExe () = 
@@ -2126,7 +2188,8 @@ namespace FSSGlobal
     
     
     
-    //#define WEBSHARPER
+    //# 1 @"(4)2f12f36b-fde1-48ab-ab97-0d3ca54021cb evaluateAR.fsx"
+    //#define INTERACTIVE
     open WebSharper
     
     [< Rpc >]
@@ -2147,7 +2210,9 @@ namespace FSSGlobal
     [< JavaScript >]
     let abortFsiExe () = Evaluator.abortFsiExe() |> Async.Start 
         
+  //# 1 @"(2)6568955e-6aa8-4f8f-b93f-b7e97622c677 FsTranslator.fsx"
   module FsTranslator =
+    //# 1 @"(4)96f91fe1-3aa2-4aa0-b04f-b428fd2f0948 TranslatorCaller.fsx"
     module TranslatorCaller =
         open Useful
         open UsefulDotNet
@@ -2206,6 +2271,7 @@ namespace FSSGlobal
     
     
     
+    //# 1 @"(4)95a237c8-a9ff-40d1-bd72-bd298b20af8c translateAR.fsx"
     open Useful
     open WebSharper
     
@@ -2223,8 +2289,10 @@ namespace FSSGlobal
             return  Result (vO,  msgs |> Seq.map (fun (msg, wrn) -> ErrSimple(msg, wrn) :> ErrMsg) |> Seq.toList)
         }
         
+  //# 1 @"(2)b6577554-e62e-41ed-983e-d4dd12e3512f FSAutoCompleteIntermediary.fsx"
   module FSAutoCompleteIntermediary =
   
+    //# 1 @"(4)319e0842-b83e-4036-9f57-602ca4a30ac5 FSAutocompleteCall.fsx"
     //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
     //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
     //#r @"..\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
@@ -2240,7 +2308,7 @@ namespace FSSGlobal
     
     open Utils
     
-    #if WEBSHARPER
+    #if INTERACTIVE
     [<WebSharper.JavaScript>]
     #endif
     module CommTypes =
@@ -2522,7 +2590,7 @@ namespace FSSGlobal
             let!  result = FSAutocompleteCall "parse" (function | KErrors _ -> true | _ -> false) <|
                                  FarParse
                                      { FileName   = System.IO.Path.GetFullPath file
-                                       IsAsync    = true   
+                                       IsAsync    = false   
                                        Lines      = code           
                                        Version    = 0
                                      }
@@ -2615,7 +2683,7 @@ namespace FSSGlobal
     
         let findDeclaration file lin col filter =
             Wrap.wrapper {
-                //File.WriteAllText(file, " ")
+                File.WriteAllText(file, " ")
                 let!  result = FSAutocompleteCall "finddeclaration" (function | KFindDecl _ -> true | _ -> false) <|
                                      FarPosition
                                          { FileName   = System.IO.Path.GetFullPath file
@@ -2623,7 +2691,7 @@ namespace FSSGlobal
                                            Column     = col
                                            Filter     = filter
                                          }
-                //File.Delete file                         
+                File.Delete file                         
                 match result with
                 | KFindDecl decl -> let! snp, dln, dcol = getDeltaBack decl.File decl.Line
                                     let resultAdj = 
@@ -2671,7 +2739,7 @@ namespace FSSGlobal
                                           Errors = ers.Errors 
                                             |> Array.map (fun err ->
                                               sts 
-                                              |> Array.tryFind (fun (snpNm, (ind, first, last)) -> err.StartLine >= first && err.StartLine <= last)
+                                              |> Array.tryFind (fun (snpNm, (ind, first, last)) -> err.StartLine >= first && err.StartLine < last)
                                               |> Option.map    (fun (snpNm, (ind, first, last)) -> 
                                                   { err with FileName    = snpNm
                                                              StartLine   = err.StartLine   - first
@@ -2694,13 +2762,14 @@ namespace FSSGlobal
             | ACMComplete2       (fname, ln, col, txt, snpId) -> getCompletion                 fname ln col txt (Some snpId)
     
     
+    //# 1 @"(4)466e6783-0751-48d5-b79b-165aaa7d2173 FSAutoCompleteIntermediaryClient.fsx"
     open Useful
     //open FsStationShared
     open WSMessagingBroker
     open WebSharper
     open WebSharper.Remoting
     
-    #if FSS_SERVER
+    #if INTERACTIVE
     
     let responder = Responder2()
     
@@ -2715,11 +2784,11 @@ namespace FSSGlobal
         }
     #endif
     
-    #if WEBSHARPER
+    #if INTERACTIVE
     [< JavaScript >]
     #endif
     type FSAutoCompleteIntermediaryClient(clientId, ?endPoint:string) =
-         #if FSS_SERVER
+         #if INTERACTIVE
          #else
          let msgClient = new WSMessagingClient(clientId, ?endPoint = endPoint)
          let toId      = Address "FSAutoComplete"
@@ -2764,16 +2833,19 @@ namespace FSSGlobal
          member this.FindDecl (fname, line, col          ) = sendMessage (ACMFindDeclaration (fname, line, col           )) |> Async_map id
          member this.FindDecl (fname, line, col,      sId) = sendMessage (ACMFindDeclaration2(fname, line, col ,      sId)) |> Async_map id
     
-//#define WEBSHARPER
+//# 1 @"7479dc9d-94cd-4762-a1b8-cf6e09436c3f WebSharper Code.fsx"
+//#define INTERACTIVE
 (*
  Code to be Compiled to Javascript and run in the browser
  using `Compile WebSharper` or `Run WebSharper`
 *)
 
+  //# 1 @"(2)495bce0a-4fb6-48fa-9158-c242d5965baa HtmlNode.fsx"
   
   [<JavaScript>]
   module HtmlNode      =
   
+    //# 1 @"(4)0f5719f0-e95e-498d-ab88-f89ff1440e32 Val.fsx"
     [<NoComparison>]
     type Val<'a> =
         | Constant  of 'a
@@ -2973,6 +3045,7 @@ namespace FSSGlobal
         
         let valFlow = valBuilder()
     
+    //# 1 @"(4)d9124644-0af6-4a7f-a711-ef76ca77f0de HtmlNode.fsx"
     [<NoComparison ; NoEquality>]
     type HtmlNode =
         | HtmlElement    of name: string * children: HtmlNode seq
@@ -3119,6 +3192,7 @@ namespace FSSGlobal
     
     let renderDoc = chooseNode >> Option.defaultValue Doc.Empty
         
+    //# 1 @"(4)c3755c07-1385-495d-bad7-a5b0fa54ac9b HTML Elements & Attributes.fsx"
     let inline atr att v = Val.attrV  att (Val.fixit v)
     let inline tag tag v = Val.tagDoc tag (Val.fixit v)
     
@@ -3235,12 +3309,14 @@ namespace FSSGlobal
             then root.FirstChild :?> Dom.Element
             else root?body  |> unbox<Dom.Element>
     
+    //# 1 @"(4)336d6f19-0c57-4af9-8716-1b3fbf6b112c storeVar.fsx"
     [< Inline >]
     let inline storeVar<'T> storeName (var:IRef<_>) =
         JS.Window.LocalStorage.GetItem storeName |> fun v -> if v <> null then           var.Value <- Json.Deserialize<'T> v
         Val.sink (fun v -> JS.Window.LocalStorage.SetItem (storeName, Json.Serialize v)) var
     
     
+    //# 1 @"(4)1f1aa135-fd74-42cc-b9a5-87f380c113a9 LoadFiles.fsx"
     [< Inline "CIPHERSpaceLoadFiles($files, $cb)" >]
     let LoadFiles (files: string []) (cb: unit -> unit) : unit = X<_>
     
@@ -3252,9 +3328,12 @@ namespace FSSGlobal
                 with e -> econt e
     
     
+  //# 1 @"(2)3709b431-1507-48ed-9487-dd49ce7be748 open HtmlNode.fsx"
   open HtmlNode
+  //# 1 @"(2)e9ac2d66-474a-46a6-95fa-d369e6d703d1 Template.fsx"
   [<JavaScript>]
   module Template      =
+    //# 1 @"(4)5e1dd5fc-a27c-4b0d-821a-06cc8a27bb82 Button.fsx"
     [<NoComparison ; NoEquality>]
     type Button = {
         _class  : Val<string>
@@ -3291,6 +3370,7 @@ namespace FSSGlobal
       member inline this.Text        txt  = { this with text     = Val.fixit txt  }
       member inline this.Disabled    dis  = { this with disabled = Val.fixit dis  }
       member inline this.OnClick     f    = { this with onClick  = f              }
+    //# 1 @"(4)29c4d6ae-2bb7-457a-ba64-fcb7cce96a30 Input.fsx"
     [<NoComparison ; NoEquality>]
     type Input = {
         _type       : Val<string>
@@ -3348,6 +3428,7 @@ namespace FSSGlobal
       member inline this.Suffix      s    = { this with suffix      =       s    ; suffixAdded = true }
       member inline this.SetVar      v    = { this with var         = v                               }
       member inline this.Var              = this.var
+    //# 1 @"(4)c7841be7-5cd5-40f3-b91c-c107b487bc0c Hoverable.fsx"
     [<NoComparison ; NoEquality>]
     type Hoverable = {
         hover      : IRef<bool>
@@ -3374,6 +3455,7 @@ namespace FSSGlobal
       
     let hoverable (c:HtmlNode) = Hoverable.New.Content c
     
+    //# 1 @"(4)3234a0bf-4541-4f2c-8bbf-b5ab3a0e415b TextArea.fsx"
     [<NoComparison ; NoEquality>]
     type TextArea = {
         _class      : Val<string>
@@ -3415,6 +3497,7 @@ namespace FSSGlobal
       member inline this.SetVar      v    = { this with var         = v              }
       member inline this.Var              = this.var
       
+    //# 1 @"(4)4180353c-9dc5-438d-862d-851539b02075 codeMirrorIncludes.fsx"
     let codeMirrorIncludes =
        [| "/EPFileX/codemirror/scripts/codemirror/codemirror.js"             
           "/EPFileX/codemirror/scripts/intellisense.js"                      
@@ -3435,6 +3518,7 @@ namespace FSSGlobal
           "/EPFileX/codemirror/scripts/addon/hint/show-hint.js"          
           "/EPFileX/codemirror/scripts/addon/lint/lint.js"          
        |]
+    //# 1 @"(4)b03ba35c-a03c-4bbe-a373-1ce551524e56 CodeMirror.fsx"
     type CodeMirrorPos = { line: int ; ch  : int }
     let inline cmPos(l, c) = { line = l ; ch  = c }
     
@@ -3548,6 +3632,7 @@ namespace FSSGlobal
       member inline this.OnRender f    = { this with onRender  = Some f         }
       member inline this.Var           = this.var
     
+    //# 1 @"(4)a05dd36e-a15e-4394-8013-128e21e69574 CodeMirror Hints.fsx"
     
     type Hint = {
         text        : string
@@ -3578,6 +3663,7 @@ namespace FSSGlobal
                container      = ed.GetWrapperElement() |> findRootElement
             }
     
+    //# 1 @"(4)18d8153d-422c-42f6-8266-9a9d854bd6a1 CodeMirror Lint.fsx"
     type LintResponse  = {
         message        : string
         severity       : string
@@ -3593,6 +3679,7 @@ namespace FSSGlobal
         setLint_ ed (LintFunc getAnnotations) (ed.GetWrapperElement() |> findRootElement)
     
     
+    //# 1 @"(4)70030378-692d-431d-bed9-c839a7f95798 SplitterBar.fsx"
     [<NoComparison ; NoEquality>]
     type HtmlMeasure =
     | Percentage of Val<float>
@@ -3696,6 +3783,7 @@ namespace FSSGlobal
         member inline this.After         = { this with after        =           true              }
         member inline this.Children   ch = { this with children     = ch                          }
         
+    //# 1 @"(4)5878287a-a18f-4c71-b086-bd6e146270a1 ResizeObserver.fsx"
     [< Inline "try { return !!(ResizeObserver) } catch(e) { return false }" >] 
     let implementedResizeObserver() = false
     
@@ -3731,6 +3819,7 @@ namespace FSSGlobal
                     if changed() then f()
             } |> Async.Start
             
+    //# 1 @"(4)0047d2f0-ec1d-43b1-b432-95462c318445 Grid.fsx"
     [<NoComparison ; NoEquality>]
     type Area =
     | Auto     of SplitterBar
@@ -3896,6 +3985,7 @@ namespace FSSGlobal
             |> (if first then sect >> auto
                          else auto >> sect)
             
+    //# 1 @"(4)cddabd38-7ecb-4692-99bd-13ca70e4232f TabStrip.fsx"
     let reorderList (ts:'a list) drag drop =
         if drop < drag then
            ts.[0       ..drop - 1     ]
@@ -4106,6 +4196,7 @@ namespace FSSGlobal
      border-left-width: 0.2pt;
     }
     "]
+    //# 1 @"(4)f3c86328-e5b6-4ef1-a3d9-d82098f4ffe2 MenuBar.fsx"
     let inline menuEntry content   = li [ content ]
     let inline refA      cont  t r = a  [ cont ; hrefO r ; target t ] 
     let inline refText   txt   t r = bindHElem (fun t -> if t = "" then HtmlEmpty else refA(htmlText t) t r) txt
@@ -4188,6 +4279,7 @@ namespace FSSGlobal
                     for entry in this.entries -> 
                         entry.Render
                 ]
+    //# 1 @"(4)8346ae00-dde8-4368-acad-f8cca1164ff6 Action.fsx"
     type Action = {
         text       : Val<string>
         highlight  : Val<bool>
@@ -4236,6 +4328,7 @@ namespace FSSGlobal
     let Do  f p = (fun     _ _ -> f     p)
     let Do2 f p = (fun act _ _ -> f act p)
     
+    //# 1 @"(4)9c870b72-8f9a-4e7d-ad81-7f1fd73fdd76 Layout.fsx"
     open Useful
     
     type GuiPart     = 
@@ -4443,8 +4536,10 @@ namespace FSSGlobal
     let inline varVerSplitter          pc ch1 ch2 min max = GuiSplit(true , StVariable, true , pc, ch1, ch2, min,  max)
     
     
+  //# 1 @"(2)e2ca8cb1-fb1e-4793-855f-55e3ca07b8f5 RunCode.fsx"
   [<JavaScript>]
   module RunCode       =
+    //# 1 @"(4)36fc221f-7e61-4a04-abf3-317f901e5211 completeJS.fsx"
     let completeJS js = 
       """
           CIPHERSpaceLoadFileGlobalFileRef = null;
@@ -4533,9 +4628,9 @@ namespace FSSGlobal
       })
       
                        """ + js
-    type RunNode(nodeName, ?clearNode: bool, ?useShadowRoot:bool) =
-      let bClearNode    = defaultArg clearNode     true
-      let useShadowRoot = defaultArg useShadowRoot true
+    //# 1 @"(4)f2571ac9-37ec-4d7c-9ead-9e5f79ae1be1 type RunNode(nodeName, clearNode bool) =.fsx"
+    type RunNode(nodeName, ?clearNode: bool) =
+      let bClearNode    = defaultArg clearNode true
       let createNode() =
           let e = JS.Document.CreateElement "div"
           e?style <- "height: 100%; width: 100%;"
@@ -4550,7 +4645,6 @@ namespace FSSGlobal
           | null -> createBaseNode()
           | node -> node
       let runNode =
-          if not useShadowRoot then baseNode else
           match baseNode.ShadowRoot with
           | null -> let p = createNode()
                     baseNode.AttachShadow(Dom.ShadowRootInit(Dom.ShadowRootMode.Open)).AppendChild p |> ignore
@@ -4560,9 +4654,9 @@ namespace FSSGlobal
           | root -> root.FirstChild :?> Dom.Element
       do if bClearNode then runNode.InnerHTML <- ""
     with
-      new(?clearNode: bool, ?useShadowRoot:bool) = RunNode("TestNode", ?clearNode = clearNode, ?useShadowRoot = useShadowRoot)
+      new(?clearNode: bool) = RunNode("TestNode", ?clearNode = clearNode)
       member this.RunNode   = runNode
-    
+    //# 1 @"(4)081bac32-e739-4124-87eb-eb7d6f2220bc AddBootstrap.fsx"
       member this.AddBootstrap =
         JS.Document.CreateElement "div"
         |> fun el -> 
@@ -4574,11 +4668,15 @@ namespace FSSGlobal
                "
             runNode.ParentElement.AppendChild el |> ignore
         this
+    //# 1 @"(4)c110a9c9-bc3b-4be7-8e5d-f43cc75f93ed RunDoc.fsx"
       member inline this.RunDoc doc = doc :> Doc |> Doc.Run this.RunNode
+    //# 1 @"(4)3038cd62-093c-4385-aa9b-799297bd379c RunHtml.fsx"
       member inline this.RunHtml node = node |> renderDoc |> this.RunDoc
       
+  //# 1 @"(2)529e1429-a4ce-48be-a89f-f13fec19bef3 FSharpStation Code.fsx"
   module FSharpStation =
   
+    //# 1 @"(4)1787d1fe-db11-4716-b3f6-164048e8991b CodeSnippet Extensions, Position.fsx"
     open Template
     open FsStationShared
     open System.Collections.Generic
@@ -4766,6 +4864,7 @@ namespace FSSGlobal
     open FsGlobal                
     
     
+    //# 1 @"(4)dca77d6a-5c2c-4c3e-9bef-14f0464f9ada FableModule.fsx"
     [< JavaScript >]
     module FableModule =
         //open Useful
@@ -4860,9 +4959,11 @@ namespace FSSGlobal
             }
         
         
+    //# 1 @"(4)c2188026-a06a-4963-a95a-93075e5f5b6e FSharpStationClient.fsx"
     [< JavaScript >]
     let FSharpStationClient (loadFromUri: string) =
     
+      //# 1 @"(6)987560b0-1fe6-4835-ad99-aed93db7da1a currentCodeSnippetId.fsx"
       
       let missingVar  = Var.Create ""
       let missing def find lens k =
@@ -4901,6 +5002,7 @@ namespace FSSGlobal
           ) position
           
       ()    
+      //# 1 @"(6)07e477d3-fb6e-4c83-bb89-b4b2cce55d7b CodeEditorMain.fsx"
       
       
       let noSelection cur      = CodeSnippet.FetchO cur = None
@@ -4921,7 +5023,7 @@ namespace FSSGlobal
       let disableFableVal      = disablePropertyVal "DisableFable"      |> Val.map2 disableEval disableParseVal  
       let disableWebSharperVal = disablePropertyVal "DisableWebSharper" |> Val.map2 disableEval disableParseVal 
       
-      let mutable lastCodeAndStarts : (CodeSnippetId * bool * ((string * int * int) [] * string [] * string [] * string [] * string [] * string []) option) option = None
+      let mutable lastCodeAndStarts : (CodeSnippetId * bool * ((string * int * int) [] * string [] * string [] * string [] * string [] * string [])) option = None
       
       let getPredecessors curO =
           curO
@@ -5067,6 +5169,7 @@ namespace FSSGlobal
       let mutable draggedId   = CodeSnippetId.New
       
       ()
+      //# 1 @"(6)3f2ec5e2-8ab6-4e5b-bb89-1943ed3a4964 Compile.fsx"
       let compileSnippetW (snpO: CodeSnippet option) =
           Wrap.wrapper {
               let!   snp         = snpO |> Result.fromOption ``Snippet Missing``
@@ -5197,6 +5300,7 @@ namespace FSSGlobal
       let compileRun  ()  = compileRunP position.Value
       
       ()
+      //# 1 @"(6)93f32df7-da8b-472f-8bad-e82cc58ec52b List Code.fsx"
       let isDirectPredecessor pre curO =
           curO
           |> Option.map (fun snp -> snp.predecessors |> List.contains pre)
@@ -5280,6 +5384,7 @@ namespace FSSGlobal
           list
       
       ()    
+      //# 1 @"(6)54304360-819a-498c-a091-e6ece880a35a Deserialize.fsx"
       let inline ifUndef def v = if isUndefined v then def else v
       let obj2CodeSnippetId o = 
           if isUndefined o then
@@ -5325,6 +5430,7 @@ namespace FSSGlobal
           with _ -> [||]
           
       ()    
+      //# 1 @"(6)60191ea0-da20-4fbf-96b8-3871338a66d8 Add,Delete,Load,Save.fsx"
       let addCode   ()   =
           CodeSnippet.PickIO currentCodeSnippetId.Value
           |> Option.map (fun (i, snp) ->
@@ -5413,17 +5519,14 @@ namespace FSSGlobal
           } |> Async.Start
           
           
+      //# 1 @"(6)47f7c0ba-35b0-466e-a759-4e4d9963e524 codeMirror.fsx"
       let autoCompleteClient = FSAutoCompleteIntermediary.FSAutoCompleteIntermediaryClient("FSharpStation", endPoint = JS.Window.Location.Href)
       
-      #if FSS_SERVER
-      let parseFileName = fsIds + ".fsx"
+      #if INTERACTIVE
+      let parseFile = fsIds + ".fsx"
       #else
-      let parseFileName = "..\\" + fsIds + ".fsx"
+      let parseFile = "..\\" + fsIds + ".fsx"
       #endif
-      
-      let mutable latestParsedPrefix = "a"
-      let nextParsedPrefix() = if latestParsedPrefix = "a" then "b" else "a"
-      let parseFile prefix = prefix + parseFileName
       
       let setDirtyCond() =
           match lastCodeAndStarts with
@@ -5433,20 +5536,18 @@ namespace FSSGlobal
       let isParseDisabled = disableParseVal |> Val.toView |> View.GetAsync 
       
       let getCodeAndStartsFast msgF (snp:CodeSnippet) addLinePrepos =
-          let redO, cur = 
+          let red0, cur = 
               match lastCodeAndStarts with
-              | Some (pId, alp, redO) when pId = snp.id && alp = addLinePrepos -> msgF "Reparsing..."; redO, snp.PrepareSnippet
+              | Some (pId, alp, red) when pId = snp.id && alp = addLinePrepos -> msgF "Reparsing..."; red, snp.PrepareSnippet
               | _ -> 
               msgF "Parsing..."
-              let preds = snp.Predecessors()        
-              let redO  = if preds.Length = 1 then None else CodeSnippet.ReducedCode addLinePrepos preds.[0..preds.Length - 2] |> Some
-              let cur   = preds.[preds.Length - 1]
-              lastCodeAndStarts <- Some(cur.id, addLinePrepos, redO)
-              redO, cur
+              let preds = snp.Predecessors()
+              let red = CodeSnippet.ReducedCode addLinePrepos preds.[0..preds.Length - 2]
+              let cur = preds.[preds.Length - 1]
+              lastCodeAndStarts <- Some(cur.id, addLinePrepos, red)
+              red, cur
           let red1 = CodeSnippet.ReducedCode addLinePrepos [| cur |]
-          redO
-          |> Option.map (fun red0 -> CodeSnippet.AddSeps red0 red1)
-          |> Option.defaultValue red1
+          CodeSnippet.AddSeps red0 red1
           |> CodeSnippet.FinishCode addLinePrepos
       
       let mutable parseRun = 1
@@ -5458,18 +5559,19 @@ namespace FSSGlobal
               match CodeSnippet.FetchO currentCodeSnippetId.Value with 
               | None     -> ()
               | Some cur ->
+              let runN           = parseRun + 1
+              parseRun          <- runN
+              while parsing do
+                  do! Async.Sleep 1000
+              if parseRun <> runN then () else
               try
-                  let  code, starts     = getCodeAndStartsFast msgF cur false
-                  let prefix            = nextParsedPrefix()
-                  printfn "Parsing %s" prefix
-                  parsed               <- false
-                  let! res              = autoCompleteClient.Parse(parseFile prefix, code, starts)
-                  printfn "Parse result= %A" (res <> "")
-                  latestParsedPrefix   <- prefix
-                  if not silent then
+                  parsing           <- true
+                  parsed            <- true
+                  let  code, starts  = getCodeAndStartsFast msgF cur false
+                  let! res           = autoCompleteClient.Parse(parseFile, code, starts)
+                  if not silent && runN = parseRun && parsed then
                       addPrsMsg res
                       addPrsMsg "Parsed!"
-                  parsed               <- true
               finally  
                   parsing <- false
           }
@@ -5484,7 +5586,7 @@ namespace FSSGlobal
           async {
               if not parsed then return true 
               else
-                  let! must = autoCompleteClient.MustParse(parseFile latestParsedPrefix, cur.NameSanitized)
+                  let! must = autoCompleteClient.MustParse(parseFile, cur.NameSanitized)
                   return must
           }
       
@@ -5523,7 +5625,7 @@ namespace FSSGlobal
               let  sub   = (getStartWord l pos.ch |> String.length)   
               let  add0  = (getEndWord   l pos.ch |> String.length)    
               let  add   = if sub = 0 && add0 = 0 then 2 else add0 
-              let! tip   = autoCompleteClient.ToolTip  (parseFile latestParsedPrefix, pos.line + 1, pos.ch + 1, cur.NameSanitized)
+              let! tip   = autoCompleteClient.ToolTip  (parseFile, pos.line + 1, pos.ch + 1, cur.NameSanitized)
               addPrsMsg <| sprintf "InfoFSharp \"%s %A - %A %s \"" cur.NameSanitized (pos.line + 1, pos.ch - sub + 1) (pos.line + 1, pos.ch + add + 1) (tip.Replace("\"","''"))
           } |> Async.Start
       
@@ -5562,47 +5664,29 @@ namespace FSSGlobal
       
       let asyncStartDelayed = asyncStartCancelling()
       let getAnnotationsDelayed parms =
-          //async {
-          //    printfn "before delaying"
-          //    do! Async.Sleep 400
-          //    printfn "calling getAnnotations"
+          async {
+              printfn "before delaying"
+              do! Async.Sleep 400
+              printfn "calling getAnnotations"
               do getAnnotations parms
-          //} |> asyncStartDelayed 
-      
-      let getSymbolType chr =
-          match chr with
-          | "C"   -> "class"     
-          | "Cn"  -> "Constant"  
-          | "D"   -> "delegate"  
-          | "E"   -> "enum"      
-          | "P"   -> "property"  
-          | "e"   -> "event"     
-          | "X"   -> "exception" 
-          | "F"   -> "field"     
-          | "I"   -> "interface" 
-          | "M"   -> "function"    
-          | "N"   -> "module"    
-          | "S"   -> "struct"    
-          | "T"   -> "type"      
-          | "V"   -> "Variable"  
-          | _     -> chr
+          } |> asyncStartDelayed 
       
       let getHints (ed:Template.CodeMirrorEditor, cb, _) =
           async {
-              let! disabled = isParseDisabled
+              let! disabled = isParseDisabled 
               if disabled then () else
               match CodeSnippet.FetchO currentCodeSnippetId.Value with 
               | None     -> ()
               | Some cur ->
-              //do!  parseIfMustThen true
+              do!  parseIfMustThen true
               let  pos    = ed.GetCursor()
               let  l      = ed.GetLine pos.line
-              let  word   = getStartWord l pos.ch
-              let! com    = autoCompleteClient.Complete(parseFile latestParsedPrefix, l + "a", pos.line + 1, pos.ch + 1, cur.NameSanitized)
+              let  word   = getStartWord l pos.ch     
+              let! com    = autoCompleteClient.Complete(parseFile, l + "a", pos.line + 1, pos.ch + 1, cur.NameSanitized)
               cb { Template.list   = com 
                                      |> Array.map (fun (dis, rep, cls, chr) -> 
                                           { text        = rep
-                                            displayText = (sprintf "%-40s %20s" dis (getSymbolType chr))
+                                            displayText = chr + "| " + dis
                                             className   = cls                              
                                           })
                    Template.from   = { pos with ch = pos.ch - word.Length }
@@ -5660,13 +5744,15 @@ namespace FSSGlobal
       
       let gotoDefinition () =
           async {
-              match CodeSnippet.FetchO currentCodeSnippetId.Value, codeMirror.editorO with 
-              | _       , None     
-              | None    , _       -> ()
-              | Some cur, Some ed ->
+              match CodeSnippet.FetchO currentCodeSnippetId.Value with 
+              | None     -> ()
+              | Some cur ->
+              match codeMirror.editorO  with
+              | None     -> () 
+              | Some ed  ->
               let  pos   = ed.GetCursor()
               let  l     = ed.GetLine pos.line
-              let! kind  = autoCompleteClient.FindDecl(parseFile latestParsedPrefix, pos.line + 1, pos.ch + 1, cur.NameSanitized)
+              let! kind  = autoCompleteClient.FindDecl(parseFile, pos.line + 1, pos.ch + 1, cur.NameSanitized)
               match kind with
               | FSAutoCompleteIntermediary.CommTypes.KFindDecl decl -> jumpToLine <| sprintf "%s (%d, %d) - (%d, %d)" decl.File decl.Line decl.Column decl.Line decl.Column
               | FSAutoCompleteIntermediary.CommTypes.KError    err  -> JS.Alert   <| sprintf "%A" err
@@ -5684,9 +5770,9 @@ namespace FSSGlobal
       let codeMirrorRender = 
           codeMirror.Render.AddChildren [ 
               SomeAttr <| on.dblClick (fun _ _ -> showToolTip codeMirror.editorO.Value)  
-              htmlElement     "menu" [  // does not work anymore. support for this was dropped by Chrome
-                  ``type``    "context"
-                  Id          "right-menu"
+              htmlElement "menu" [  // does not work anymore. support for this was dropped by Chrome
+                  ``type`` "context"
+                  Id       "right-menu"
                   htmlElement "menuitem" [ 
                       htmlAttribute "label" "Goto Definition"
                       SomeAttr <| on.click (fun _ _ -> gotoDefinition() )  
@@ -5705,8 +5791,8 @@ namespace FSSGlobal
               match CodeSnippet.FetchO currentCodeSnippetId.Value with 
               | None     -> ()
               | Some cur ->
-              //let! must = autoCompleteClient.MustParse(parseFile latestParsedPrefix, cur.NameSanitized)
-              //if must       then do! Async.Sleep 400
+              let! must = autoCompleteClient.MustParse(parseFile, cur.NameSanitized)
+              if must       then () else
               ed?performLint() |> ignore
           } |> Async.Start      
       )
@@ -5748,6 +5834,7 @@ namespace FSSGlobal
       //    } |> Async.Start
       //)
       
+      //# 1 @"(6)fa5b4506-b26d-4387-8e04-ac7a5a90861a let styleEditor =.fsx"
       let styleEditor =
            """
       
@@ -5813,6 +5900,7 @@ namespace FSSGlobal
         .Error   { text-decoration: underline red       } 
         .body    { margin         : 0px                 }
         """
+      //# 1 @"(6)7cdba50e-5de9-4377-a7fc-705df0d909fa Properties.fsx"
       //let setProp k v = props.[k] <- v
       
       let redraw = Var.Create ()
@@ -5854,6 +5942,7 @@ namespace FSSGlobal
           ]
       
       ()
+      //# 1 @"(6)70bc3916-4714-4ee1-a2d0-d3917eeadf9d Actions.fsx"
       let triggerWSResult = Var.Create ()
       
       let DoW  f p   _ _ = f p   |> Wrap.map ignore |> Wrap.start addOutMsg
@@ -6039,6 +6128,7 @@ namespace FSSGlobal
                  <| menuRight.Render
                  
       ()           
+      //# 1 @"(6)75c3d033-99b5-409f-8ecb-cd9bd8b101ab CodeEditorGrid.fsx"
       let spl1         = Template.SplitterBar.New(20.0).Children([ style "grid-row: 2 / 4" ])
       storeVarCodeEditor "splitterV1" spl1.Var
       //storeVarCodeEditor "splitterV2" splitterV2.Var
@@ -6129,6 +6219,7 @@ namespace FSSGlobal
       
       *)
       ()
+      //# 1 @"(6)4e040028-ff11-458e-a43b-e8a1b7fcaeec Layout.fsx"
       let snippetList = 
           codeSnippets.View
              |> View.SnapshotOn codeSnippets.Value refresh.View
@@ -6200,11 +6291,12 @@ namespace FSSGlobal
              | _ -> ()
       
       
+      let addLayoutJson json = delayedRefreshCM 1000 ; delayedRefreshCM 2000 ; delayedRefreshCM 3000 ; layout.SetLayoutJson steps json
       
-      let addLayoutJson  json   = delayedRefreshCM 1000 ; delayedRefreshCM 2000 ; delayedRefreshCM 3000 ; layout.SetLayoutJson steps json
-      let addLayoutSteps steps2 = delayedRefreshCM 1000 ; delayedRefreshCM 2000 ; delayedRefreshCM 3000 ; layout.AddNewSteps steps steps2
       JS.Window?addLayoutJson <-    addLayoutJson
-      propertyLayoutVal   |> Val.sink addLayoutJson 
+      propertyLayoutVal |> Val.sink addLayoutJson 
+      
+      let addLayoutSteps steps2 = delayedRefreshCM 1000 ; delayedRefreshCM 2000 ; delayedRefreshCM 3000 ; layout.AddNewSteps steps steps2
       propertyLayoutJSVal |> Val.sink (fun js -> if js = "" then addLayoutSteps [||] else eval JS.Window js |> ignore)
       
       let setFSharpStationLayout (f:FuncWithArgs<Layout * CodeSnippet, _>)  =
@@ -6218,6 +6310,7 @@ namespace FSSGlobal
       let dictTryGetValue = Dict.tryGetValue "" dict // this is here so it gets included in the code for Layouts
       ()
       
+      //# 1 @"(6)95ca1e9f-4029-4fc1-8b1c-ab12db71c90b Messaging.fsx"
       #if NOMESSAGING
       #else
       
@@ -6272,6 +6365,7 @@ namespace FSSGlobal
       } |> Async.Start
       
       #endif
+      //# 1 @"(6)8ee8705a-f115-437e-8d7d-418773f3c6d4 MainForm.fsx"
       Val.sink        (fun _  -> layout.SelectTab "Output"    |> ignore) outputMsgs 
       Val.sink        (fun _  -> layout.SelectTab "WS Result" |> ignore) triggerWSResult
       Async.sleepThen (fun () -> layout.SelectTab "Parser"    |> ignore) 1000 |> Async.Start
@@ -6310,8 +6404,9 @@ namespace FSSGlobal
       ] |> renderDoc 
       
       
+    //# 1 @"(4)b9ca9697-6cb4-4085-b509-9f702a62086f Site.fsx"
     // Version using internal Rpc's
-    //#define FSS_SERVER
+    //#define INTERACTIVE
     //#define NOMESSAGING
     
     open WebSharper.Sitelets
@@ -6340,6 +6435,7 @@ namespace FSSGlobal
     
     let site = Application.MultiPage content
     
+    //# 1 @"(4)0dbfcc9d-8ea2-42a3-8f81-ce2bf7d0fad4 FSharpStation.fsx"
     //#r @"..\packages\Owin\lib\net40\Owin.dll"
     //#r @"..\packages\Owin.Compression\lib\net452\Owin.Compression.dll"
     //#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
