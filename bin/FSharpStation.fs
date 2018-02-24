@@ -1922,7 +1922,7 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FStationMessaging(msgClient:WSMessagingClient, clientId, ?fsStationId:string) =
-        let mutable fsIds      = fsStationId |> Option.defaultValue "FSharpStation1519372239283"
+        let mutable fsIds      = fsStationId |> Option.defaultValue "FSharpStation1519456996762"
         let         toId()     = Address fsIds
         let stringResponseR response =
             match response with
@@ -1962,7 +1962,7 @@ namespace FSSGlobal
         member this.FSStationId                             = fsIds
         member this.FSStationId with set id                 = fsIds <- id
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1519372239283"
+        static member FSStationId_                          = "FSharpStation1519456996762"
     #if FSS_SERVER   
         [< JavaScript false >]
         new (clientId, FSStation, ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId, FSStation, ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
@@ -3375,6 +3375,45 @@ namespace FSSGlobal
     let hoverable (c:HtmlNode) = Hoverable.New.Content c
     
     [<NoComparison ; NoEquality>]
+    type Panel = {
+        _class   : Val<string>
+        _style   : Val<string>
+        title    : Val<string>
+        header   : HtmlNode seq
+        content  : HtmlNode seq
+        disabled : Val<bool>
+    } with
+      static member  New   = { _class   = Val.fixit <| "panel panel-default shadow"
+                               _style   = Val.fixit <| "text-align:center" 
+                               title    = Val.fixit <| "Panel"        
+                               header   =          [ htmlText "Some text"    ] 
+                               content  =          [ htmlText "Some Content" ] 
+                               disabled = Val.fixit <| Var.Create false
+                             }
+      member        this.Render          =  
+        fieldset [ SomeAttr <| attr.disabledDynPred (View.Const "")  (this.disabled |> Val.toView)
+                   div [ ``class`` this._class
+                         div (Seq.append
+                                  [ ``class`` "panel-heading"
+                                    label [ ``class``  "panel-title text-center" ; htmlText this.title ]
+                                  ]
+                                  this.header)
+    
+                         div (Seq.append
+                                  [ ``class`` "panel-body"
+                                    style     this._style 
+                                  ]
+                                  this.content)
+                       ] 
+                 ]
+      member inline this.Class       clas = { this with _class   = Val.fixit clas }
+      member inline this.Style       sty  = { this with _style   = Val.fixit sty  }
+      member inline this.Title       txt  = { this with title    = Val.fixit txt  }
+      member inline this.Header      h    = { this with header   =       h        }
+      member inline this.Content     c    = { this with content  =       c        }
+      member inline this.Disabled    dis  = { this with disabled =       dis      }
+    
+    [<NoComparison ; NoEquality>]
     type TextArea = {
         _class      : Val<string>
         placeholder : Val<string>
@@ -4437,10 +4476,12 @@ namespace FSSGlobal
             this.tabStrips.Values
             |> Seq.iter (fun ts -> ts.Select tName |> ignore )
     
-    let inline fixedHorSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPx , false, px, ch1, ch2, 5.0, 95.0)
-    let inline fixedVerSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPx , true , px, ch1, ch2, 5.0, 95.0)
-    let inline varHorSplitter          pc ch1 ch2 min max = GuiSplit(true , StVariable, false, pc, ch1, ch2, min,  max)
-    let inline varVerSplitter          pc ch1 ch2 min max = GuiSplit(true , StVariable, true , pc, ch1, ch2, min,  max)
+    let inline fixedHorSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPx  , false, px, ch1, ch2, 5.0, 95.0)
+    let inline fixedVerSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPx  , true , px, ch1, ch2, 5.0, 95.0)
+    let inline fixPcHorSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPerc, false, px, ch1, ch2, 5.0, 95.0)
+    let inline fixPcVerSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPerc, true , px, ch1, ch2, 5.0, 95.0)
+    let inline varHorSplitter          pc ch1 ch2 min max = GuiSplit(true , StVariable , false, pc, ch1, ch2, min,  max)
+    let inline varVerSplitter          pc ch1 ch2 min max = GuiSplit(true , StVariable , true , pc, ch1, ch2, min,  max)
     
     
   [<JavaScript>]
@@ -5872,11 +5913,6 @@ namespace FSSGlobal
       
       let getCodeFromAct (act: Action) addOpen = 
           Wrap.wrap {
-              let getValue =
-                  function
-                  | Constant v  -> v
-                  | Dynamic  vw -> failwith "Get value from View not implemented"
-                  | DynamicV vr -> vr.Value
               let! text = Val.getAsync act.text
               setOutMsg (text + "...")
               let snpO = getSnpO()
@@ -6214,8 +6250,10 @@ namespace FSSGlobal
       JS.Window?doFSharpStationGuiCall <- doGuiCall
       JS.Window?setFSharpStationLayout <- setFSharpStationLayout
       
+      // these are here so it gets included in the code for Layouts
       let dict = Dictionary<string, string>()
-      let dictTryGetValue = Dict.tryGetValue "" dict // this is here so it gets included in the code for Layouts
+      let dictTryGetValue = Dict.tryGetValue "" dict 
+      let pnl  = Template.Panel.New
       ()
       
       #if NOMESSAGING

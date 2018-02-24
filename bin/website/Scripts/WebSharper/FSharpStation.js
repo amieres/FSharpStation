@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FSSGlobal,Useful,Async,KeyVal,String,Option,WebSharper,Obj,ExceptionThrown,ErrOptionIsNone,ErrSimple,Result,ropBuilder,ResultS,Wrap,Builder,Mailbox,Dict,ResetableMemoize,PreproDirective,FsStationShared,CodeSnippetId,CodeSnippet,FSMessage,FSSeverity,WSMessagingBroker,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ErrBroker,WSMessagingClient,FsStationClientErr,FStationMessaging,FsEvaluator,Evaluator,FsTranslator,FSAutoCompleteIntermediary,CommTypes,ResponseError,Location,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,ACMessage,FSAutoCompleteIntermediaryClient,HtmlNode,Val,HelperType,valBuilder,HtmlNode$1,Template,Button,Input,Hoverable,TextArea,CodeMirrorPos,CodeMirrorEditor,CodeMirror,Hint,HintResponse,HintOptions,LintResponse,SplitterBar,SectionType,Grid,TabStrip,MenuEntry,MenuNode,Menu,Action,GuiPart,HtmlNodeFable,LayoutDescriptionFable,GuiPartSourceId,Layout,RunCode,RunNode,FSharpStation,FsGlobal,Position,ErrCompiler,KeyMapAutoComplete,Property,PropValue,CodeSnippet$1,FableModule,Babel,Fable,SC$1,FSharpStation_JsonDecoder,FSharpStation_JsonEncoder,FSharpStation_GeneratedPrintf,GeneratedPrintf,Concurrency,Seq,Unchecked,Strings,IntelliFactory,Runtime,Utils,Enumerator,List,console,Control,MailboxProcessor,Collections,Dictionary,CancellationTokenSource,Arrays,System,Guid,Option$1,JSON,TimeoutException,Json,Provider,Owin,WebSocket,Client,WithEncoding,Endpoint,location,Map,FSharpMap,Slice,Remoting,AjaxRemotingProvider,UI,Next,View,Doc,Operators,AttrModule,AttrProxy,Var,Input$1,Mouse,FSharpSet,BalancedTree,MatchFailureException,Object,Fable$1,Babel$1,HashSet,JavaScript,JSModule,Lazy,$,Date,ListModel;
+ var Global,FSSGlobal,Useful,Async,KeyVal,String,Option,WebSharper,Obj,ExceptionThrown,ErrOptionIsNone,ErrSimple,Result,ropBuilder,ResultS,Wrap,Builder,Mailbox,Dict,ResetableMemoize,PreproDirective,FsStationShared,CodeSnippetId,CodeSnippet,FSMessage,FSSeverity,WSMessagingBroker,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ErrBroker,WSMessagingClient,FsStationClientErr,FStationMessaging,FsEvaluator,Evaluator,FsTranslator,FSAutoCompleteIntermediary,CommTypes,ResponseError,Location,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,ACMessage,FSAutoCompleteIntermediaryClient,HtmlNode,Val,HelperType,valBuilder,HtmlNode$1,Template,Button,Input,Hoverable,Panel,TextArea,CodeMirrorPos,CodeMirrorEditor,CodeMirror,Hint,HintResponse,HintOptions,LintResponse,SplitterBar,SectionType,Grid,TabStrip,MenuEntry,MenuNode,Menu,Action,GuiPart,HtmlNodeFable,LayoutDescriptionFable,GuiPartSourceId,Layout,RunCode,RunNode,FSharpStation,FsGlobal,Position,ErrCompiler,KeyMapAutoComplete,Property,PropValue,CodeSnippet$1,FableModule,Babel,Fable,SC$1,FSharpStation_JsonDecoder,FSharpStation_JsonEncoder,FSharpStation_GeneratedPrintf,GeneratedPrintf,Concurrency,Seq,Unchecked,Strings,IntelliFactory,Runtime,Utils,Enumerator,List,console,Control,MailboxProcessor,Collections,Dictionary,CancellationTokenSource,Arrays,System,Guid,Option$1,JSON,TimeoutException,Json,Provider,Owin,WebSocket,Client,WithEncoding,Endpoint,location,Map,FSharpMap,Slice,Remoting,AjaxRemotingProvider,UI,Next,View,Doc,Operators,AttrModule,AttrProxy,Var,Input$1,Mouse,FSharpSet,BalancedTree,MatchFailureException,Object,Fable$1,Babel$1,HashSet,JavaScript,JSModule,Lazy,$,Date,ListModel;
  Global=window;
  FSSGlobal=Global.FSSGlobal=Global.FSSGlobal||{};
  Useful=FSSGlobal.Useful=FSSGlobal.Useful||{};
@@ -80,6 +80,7 @@
  Button=Template.Button=Template.Button||{};
  Input=Template.Input=Template.Input||{};
  Hoverable=Template.Hoverable=Template.Hoverable||{};
+ Panel=Template.Panel=Template.Panel||{};
  TextArea=Template.TextArea=Template.TextArea||{};
  CodeMirrorPos=Template.CodeMirrorPos=Template.CodeMirrorPos||{};
  CodeMirrorEditor=Template.CodeMirrorEditor=Template.CodeMirrorEditor||{};
@@ -2896,7 +2897,7 @@
  },Obj,FStationMessaging);
  FStationMessaging.get_FSStationId_=function()
  {
-  return"FSharpStation1519372239283";
+  return"FSharpStation1519456996762";
  };
  FStationMessaging.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
@@ -2905,7 +2906,7 @@
  FStationMessaging.New$1=Runtime.Ctor(function(msgClient,clientId,fsStationId)
  {
   this.msgClient=msgClient;
-  this.fsIds=Option.defaultValue("FSharpStation1519372239283",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1519456996762",fsStationId);
  },FStationMessaging);
  WSMessagingBroker.extractEndPoint=function()
  {
@@ -4696,6 +4697,55 @@
    hover:hover
   });
  };
+ Panel=Template.Panel=Runtime.Class({
+  Disabled:function(dis)
+  {
+   return Panel.New(this._class,this._style,this.title,this.header,this.content,dis);
+  },
+  Content:function(c)
+  {
+   return Panel.New(this._class,this._style,this.title,this.header,c,this.disabled);
+  },
+  Header:function(h)
+  {
+   return Panel.New(this._class,this._style,this.title,h,this.content,this.disabled);
+  },
+  Title:function(txt)
+  {
+   return Panel.New(this._class,this._style,Val.fixit(txt),this.header,this.content,this.disabled);
+  },
+  Style:function(sty)
+  {
+   return Panel.New(this._class,Val.fixit(sty),this.title,this.header,this.content,this.disabled);
+  },
+  Class:function(clas)
+  {
+   return Panel.New(Val.fixit(clas),this._style,this.title,this.header,this.content,this.disabled);
+  },
+  get_Render:function()
+  {
+   var view;
+   return HtmlNode.fieldset([new HtmlNode$1({
+    $:7,
+    $0:(view=View.Const(""),AttrModule.DynamicPred("disabled",Val.toView(this.disabled),view))
+   }),HtmlNode.div([HtmlNode["class"](this._class),HtmlNode.div(Seq.append([HtmlNode["class"]("panel-heading"),HtmlNode.label([HtmlNode["class"]("panel-title text-center"),HtmlNode.htmlText(this.title)])],this.header)),HtmlNode.div(Seq.append([HtmlNode["class"]("panel-body"),HtmlNode.style(this._style)],this.content))])]);
+  }
+ },null,Panel);
+ Panel.get_New=function()
+ {
+  return Panel.New(Val.fixit("panel panel-default shadow"),Val.fixit("text-align:center"),Val.fixit("Panel"),List.ofArray([HtmlNode.htmlText("Some text")]),List.ofArray([HtmlNode.htmlText("Some Content")]),Val.fixit(Var.Create$1(false)));
+ };
+ Panel.New=function(_class,_style,title,header,content,disabled)
+ {
+  return new Panel({
+   _class:_class,
+   _style:_style,
+   title:title,
+   header:header,
+   content:content,
+   disabled:disabled
+  });
+ };
  TextArea=Template.TextArea=Runtime.Class({
   get_Var:function()
   {
@@ -5745,7 +5795,7 @@
        this.selected.set_RVal(sel===drag?drop:sel<drag&&sel<drop||sel>drag&&sel>drop?sel:sel<drag?sel+1:sel-1);
       }
      else
-      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",3977,18);
+      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",4016,18);
    }
    else
     void 0;
@@ -6431,6 +6481,34 @@
    $5:ch2,
    $6:min,
    $7:max
+  });
+ };
+ Template.fixPcVerSplitter=function(first,px,ch1,ch2)
+ {
+  return new GuiPart({
+   $:3,
+   $0:first,
+   $1:SectionType.StFixedPerc,
+   $2:true,
+   $3:px,
+   $4:ch1,
+   $5:ch2,
+   $6:5,
+   $7:95
+  });
+ };
+ Template.fixPcHorSplitter=function(first,px,ch1,ch2)
+ {
+  return new GuiPart({
+   $:3,
+   $0:first,
+   $1:SectionType.StFixedPerc,
+   $2:false,
+   $3:px,
+   $4:ch1,
+   $5:ch2,
+   $6:5,
+   $7:95
   });
  };
  Template.fixedVerSplitter=function(first,px,ch1,ch2)
@@ -9703,6 +9781,7 @@
     res=v$10;
    }
   })?void 0:void 0;
+  Panel.get_New();
   wsStationClient=new WSMessagingClient.New(FsGlobal.fsIds(),null,null);
   Concurrency.Start((b$1=null,Concurrency.Delay(function()
   {
