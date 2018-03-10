@@ -1,4 +1,4 @@
-////-d:INTERACTIVE -d:INTERACTIVE
+////-d:INTERACTIVE
 #I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 #I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 #I @"..\packages\WebSharper\lib\net40"
@@ -13,24 +13,11 @@
 #r @"..\packages\WebSharper\lib\net40\WebSharper.Sitelets.dll"
 #r @"..\packages\WebSharper\lib\net40\WebSharper.Control.dll"
 #r @"..\packages\WebSharper.UI.Next\lib\net40\WebSharper.UI.Next.dll"
-#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
-#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
-#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\WebSharper.Owin.WebSocket.dll"
-#r @"..\packages\Owin\lib\net40\Owin.dll"
-#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
-#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
-#r @"..\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
-#r @"..\packages\Owin.Compression\lib\net452\Owin.Compression.dll"
-#r @"..\packages\Microsoft.Owin.Hosting\lib\net45\Microsoft.Owin.Hosting.dll"
-#r @"..\packages\Microsoft.Owin.Host.HttpListener\lib\net45\Microsoft.Owin.Host.HttpListener.dll"
-#r @"..\packages\Microsoft.Owin.StaticFiles\lib\net45\Microsoft.Owin.StaticFiles.dll"
-#r @"..\packages\Microsoft.Owin.FileSystems\lib\net45\Microsoft.Owin.FileSystems.dll"
-#r @"..\packages\WebSharper.Owin\lib\net45\WebSharper.Owin.dll"
-#r @"..\packages\WebSharper.Owin\lib\net45\HttpMultipartParser.dll"
-//# 1 "required for nowarns to work"
+// # 1  "required for nowarns to work"
 #nowarn "40"
 #nowarn "1178"
-//# 1 @"bf864f3c-1370-42f2-ac8a-565a604892e8 FSSGlobal.fsx"
+#nowarn "68"
+// # 1  @"bf864f3c-1370-42f2-ac8a-565a604892e8 FSSGlobal.fsx"
 //#nowarn "1182"
 //#nowarn "40"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
@@ -43,9 +30,9 @@ module FSSGlobal   =
 namespace FSSGlobal
 #endif
 
-//# 1 @"edbbf11e-4698-4e33-af0c-135d5b21799b F# Code.fsx"
+// # 1  @"edbbf11e-4698-4e33-af0c-135d5b21799b F# Code.fsx"
 // Code to be evaluated using FSI: `Evaluate F#`
-  //# 1 @"(2)60bffe71-edde-4971-8327-70b9f5c578bb open WebSharper.fsx"
+  // # 1  @"(2)60bffe71-edde-4971-8327-70b9f5c578bb open WebSharper.fsx"
   #if INTERACTIVE
   //#I @"..\packages\WebSharper\lib\net40"
   
@@ -68,18 +55,20 @@ namespace FSSGlobal
   type on   = WebSharper.UI.Next.Html.on
   type attr = WebSharper.UI.Next.Html.attr
   #endif
-  //# 1 @"(2)7c4a82bc-58cd-48a7-bd7e-79de148a1cf0 Useful.fsx"
+  // # 1  @"(2)7c4a82bc-58cd-48a7-bd7e-79de148a1cf0 Useful.fsx"
   #if INTERACTIVE
   [<WebSharper.JavaScript>]
   #endif
   module Useful =
-    //# 1 @"(4)7a655466-e218-4121-a7b6-f9c70a922e07 extract, now, Async, String.fsx"
+    // # 1  @"(4)7a655466-e218-4121-a7b6-f9c70a922e07 extract, now, Async, String.fsx"
     let extract n (s:string) = s.Substring(0, min n s.Length)
     
     #if INTERACTIVE
     [< Inline "(function (n) { return n.getFullYear() + '-' +(n.getMonth() + 1) + '-' +  n.getDate() + ' '+n.getHours()+ ':'+n.getMinutes()+ ':'+n.getSeconds()+ ':'+n.getMilliseconds() })(new Date(Date.now()))" >]
     #endif
-    let nowStamp() = System.DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
+    let nowStamp() = 
+        let t = System.DateTime.UtcNow // in two steps to avoid Warning: The value has been copied to ensure the original is not mutated
+        t.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
     
     module Async =
         let map f va = 
@@ -124,7 +113,7 @@ namespace FSSGlobal
         let append     (a: string)(b: string) =  a + b
         
         
-    //# 1 @"(4)368caae7-6a67-4063-9af3-978c25b81ac2 Result, Wrap.fsx"
+    // # 1  @"(4)368caae7-6a67-4063-9af3-978c25b81ac2 Result, Wrap.fsx"
     open System
     //#nowarn "1178"
          
@@ -186,8 +175,8 @@ namespace FSSGlobal
     
     type ErrSimple(msg, warning) =
         interface ErrMsg with
-            member __.ErrMsg   : string = msg
-            member __.IsWarning: bool   = warning
+            member this.ErrMsg   : string = msg
+            member this.IsWarning: bool   = warning
         override this.ToString() = (this :> ErrMsg).ErrMsg
     
     type Result< 'TSuccess> = Result  of 'TSuccess option * ErrMsg    list     
@@ -263,14 +252,14 @@ namespace FSSGlobal
     ///            tryCall: (exn -> Result<'b>) ->  ('a -> Result<'b>) -> 'a -> Result<'b> =
         let inline tryCall (f:'a -> Result<'b>) (v:'a) : Result<'b> = try f v with e -> failException e |> fail
     
-        type RopBuilder() =
-            member inline __.Return     (x)                       = succeed x
-            member inline __.ReturnFrom (x)                       = x
-            member        __.Bind       (w:Result<'a>, r: 'a -> Result<'b>) = bind (tryCall r) w
-            member inline __.Zero       ()                        = succeed ()
-            member inline __.Delay      (f)                       = f
-            member inline __.Combine    (a, b)                    = combine a b
-            member inline __.Run        (f)                       = f()
+        type ropBuilder() =
+            member inline this.Return     (x)                       = succeed x
+            member inline this.ReturnFrom (x)                       = x
+            member        this.Bind       (w:Result<'a>, r: 'a -> Result<'b>) = bind (tryCall r) w
+            member inline this.Zero       ()                        = succeed ()
+            member inline this.Delay      (f)                       = f
+            member inline this.Combine    (a, b)                    = combine a b
+            member inline this.Run        (f)                       = f()
             member this.While(guard, body) =
                 if not (guard()) 
                 then this.Zero() 
@@ -290,7 +279,7 @@ namespace FSSGlobal
                     this.While(enum.MoveNext, 
                         this.Delay(fun () -> body enum.Current)))              
     
-        let result = RopBuilder()
+        let result = ropBuilder()
     //    let inline flow_ () = new ropBuilder ()
     
     //    let fromChoice context c =  context?????
@@ -488,7 +477,7 @@ namespace FSSGlobal
             | WSimple          _
             | WOption (Some    _)
             | WResult (Result (_, [])) -> wb()
-            | WAsync           aa      -> async { let!   a  = aa
+            | WAsync           aa      -> async { let!   _a = aa
                                                   let!   br = wb() |> toAsyncResult
                                                   return br
                                                  } |> WAsyncR
@@ -537,7 +526,7 @@ namespace FSSGlobal
             member this.TryFinally(body, compensation) =
                 async {
                     let! r1 = body() |> toAsyncResult |> Async.Catch 
-                    let r2 = compensation()     
+                    let _r2 = compensation()     
                     return
                         match r1 with
                         | Choice1Of2 v -> v
@@ -555,16 +544,16 @@ namespace FSSGlobal
     
         let getResult callback (wb: Wrap<'T>) =
             match wb with
-            | WSimple      s  -> s               |> succeed                              |> callback
-            | WOption(Some s) -> s               |> succeed                              |> callback
-            | WOption None    -> errOptionIsNone |> fail                                 |> callback
-            | WResult      rb -> rb                                                      |> callback
-            | WAsync       ab -> Async.StartWithContinuations(ab , succeed               >> callback, 
-                                                                   failException >> fail >> callback, 
-                                                                   failException >> fail >> callback)
-            | WAsyncR     arb -> Async.StartWithContinuations(arb,                          callback, 
-                                                                   failException >> fail >> callback, 
-                                                                   failException >> fail >> callback)
+            | WSimple      s  -> s               |> succeed                                              |> callback
+            | WOption(Some s) -> s               |> succeed                                              |> callback
+            | WOption None    -> errOptionIsNone |> fail                                                 |> callback
+            | WResult      rb -> rb                                                                      |> callback
+            | WAsync       ab -> Async.StartWithContinuations(ab , (fun v   -> succeed v                 |> callback), 
+                                                                   (fun exc -> failException exc |> fail |> callback), 
+                                                                    fun can -> failException can |> fail |> callback)
+            | WAsyncR     arb -> Async.StartWithContinuations(arb,                                          callback , 
+                                                                   (fun exc -> failException exc |> fail |> callback), 
+                                                                    fun can -> failException can |> fail |> callback)
     
     
     #if INTERACTIVE
@@ -597,7 +586,7 @@ namespace FSSGlobal
     #endif
         static member RunSynchronously( w:Wrap<'T  >, ?timeout, ?cancToken) = Async.RunSynchronously(Wrap.getAsync  w, ?timeout            = timeout, ?cancellationToken= cancToken)
     
-    //# 1 @"(4)aa485846-7b78-4ca8-ae22-84ba0c42d962 Mailbox.fsx"
+    // # 1  @"(4)aa485846-7b78-4ca8-ae22-84ba0c42d962 Mailbox.fsx"
     module Mailbox =
     
         /// A simple Mailbox processor to serially process tasks
@@ -610,6 +599,14 @@ namespace FSSGlobal
                         with e -> printfn "%A" e
                 }
             )
+        
+        /// A simple Mailbox processor to serially and synchronously process tasks
+        /// invoke f with: agent.PostAndReply     (fun reply -> reply, parm)
+        ///         or     agent.PostAndReplyAsync(fun reply -> reply, parm)
+        let call f = iter (fun ((replyChannel: AsyncReplyChannel<_>), msg) -> async {
+            let! r = f msg
+            replyChannel.Reply r
+        })
         
         /// A Mailbox processor that maintains a state
         let fold f initState =
@@ -642,68 +639,12 @@ namespace FSSGlobal
     //        let mailbox = fold ff initState
     //        { new mailbox with member this.Flush() = mailbox.Post None }
     //        
-    //# 1 @"(4)995f98ae-4f13-4225-9d00-9aa3e630058a Dict, LDict, IDict.fsx"
-    (* issues with websharper Type not found in JavaScript compilation: System.Collections.Generic.IDictionary`2
-    module IDict =
-    #if INTERACTIVE
-        [< Inline >]
-    #endif
-        let inline tryGetValue key (dict:System.Collections.Generic.IDictionary<_, _>) =
-            let mutable res = Unchecked.defaultof<_>
-            if dict.TryGetValue(key, &res)
-            then Some res 
-            else None
-        let add          key v (dict:System.Collections.Generic.IDictionary<_, _>) = if dict.ContainsKey key then      dict.[key] <- v else dict.Add(key, v)
-    *)
-    module Dict =
-    #if INTERACTIVE
-        [< Inline >]
-    #endif
-        let inline tryGetValue key (dict:System.Collections.Generic. Dictionary<_, _>) =
-            let mutable res = Unchecked.defaultof<_>
-            if dict.TryGetValue(key, &res)
-            then Some res 
-            else None
-        let add          key v (dict:System.Collections.Generic. Dictionary<_, _>) = if dict.ContainsKey key then      dict.[key] <- v else dict.Add(key, v)
-    
-    module LDict =
-    #if INTERACTIVE
-        [< Inline >]
-    #endif
-        let inline containsKey  key  dict = (^a : (member ContainsKey : _ -> bool) (dict, key))
-        //let inline item         key  dict = (^a : (member get_Item    : _ -> _   ) (dict, key))
-    #if INTERACTIVE
-        [< Inline >]
-    #endif
-        let inline tryGetValue fitem key  dict =
-            if containsKey key dict then Some (fitem key)
-            else None
-    
-    
-    //# 1 @"(4)218507eb-4a87-4c11-b5d9-53a2213dd36a REGEX.fsx"
-    #if INTERACTIVE
-    
-    let (|REGEX|_|) (expr: string) (opt: string) (value: string) =
-        if value = null then None else
-        try 
-            match JavaScript.String(value).Match(RegExp(expr, opt)) with
-            | null         -> None
-            | [| |]        -> None
-            | m            -> Some m
-        with e -> None
-    #endif
-    
-    //# 1 @"(4)657c8f34-c917-4659-825d-c9ead206efcf swap.fsx"
+    // # 1  @"(4)657c8f34-c917-4659-825d-c9ead206efcf swap.fsx"
     let inline swap f a b = f b a
     let inline __   f a b = f b a
     
     
-    //# 1 @"(4)e24d6bc0-703c-4f12-aca8-8158af50b7cd dprintfn, oprintfn.fsx"
-    let dprintfn       fmt = fmt |> Printf.ksprintf ignore //(fun s -> printfn "%s"  s)
-    let printoutfn out fmt = fmt |> Printf.ksprintf (fun s -> s + "\n" |> out)
-    //let printoutf  out fmt = Printf.kprintf                        out  fmt
-    
-    //# 1 @"(4)8efdcd5a-95c4-4212-9c75-1ebedce83dd8 memoize.fsx"
+    // # 1  @"(4)8efdcd5a-95c4-4212-9c75-1ebedce83dd8 memoize.fsx"
     #if INTERACTIVE
     [< Inline >]
     #endif
@@ -731,2121 +672,19 @@ namespace FSSGlobal
                  cache.[x] <- res
                  res
         
-    //# 1 @"(4)ace1fc12-3dfb-4db8-80c9-5bde1e7d0597 separateDirectives.fsx"
-    type PreproDirective =
-    | PrepoR      of string
-    | PrepoDefine of string
-    | PrepoLoad   of string
-    | PrepoLine   of string //* int
-    | PrepoNoWarn of string
-    | PrepoI      of string
-    | PrepoIf     of string
-    | PrepoElse   
-    | PrepoEndIf
-    | PrepoLight  of bool
-    | PrepoOther  of string
-    | NoPrepo
-    
-    let separatePrepros removePrepoLine (code:string[]) =
-        let  quoted (line:string) = line.Trim().Split([| "\""       |], System.StringSplitOptions.RemoveEmptyEntries) |> Seq.tryLast |> Option.defaultValue line
-        let  define (line:string) = line.Trim().Split([| "#define " |], System.StringSplitOptions.RemoveEmptyEntries) |> Seq.tryHead |> Option.defaultValue ""
-        let  comment = ((+)"//") 
-        let  preL    = if removePrepoLine then comment else id 
-        let  prepro (line:string) = match true with 
-                                    | true when line.StartsWith("#define") -> (comment line, line |> define |> PrepoDefine)
-                                    | true when line.StartsWith("#r"     ) -> (comment line, line |> quoted |> PrepoR     )
-                                    | true when line.StartsWith("#load"  ) -> (comment line, line |> quoted |> PrepoLoad  )
-                                    | true when line.StartsWith("#nowarn") -> (comment line, line |> quoted |> PrepoNoWarn)
-                                    | true when line.StartsWith("# "     ) -> (preL    line, line |> quoted |> PrepoLine  )
-                                    | true when line.StartsWith("#line"  ) -> (preL    line, line |> quoted |> PrepoLine  )
-                                    | true when line.StartsWith("#I"     ) -> (comment line, line |> quoted |> PrepoI     )
-                                    | true when line.StartsWith("#if"    ) -> (        line, line           |> PrepoIf    )
-                                    | true when line.StartsWith("#else"  ) -> (        line,                   PrepoElse  )
-                                    | true when line.StartsWith("#endif" ) -> (        line,                   PrepoEndIf )
-                                    | true when line.StartsWith("#light" ) -> (        line, false          |> PrepoLight )
-                                    | true when line.StartsWith("#"      ) -> (comment line, line           |> PrepoOther )
-                                    | _                                    -> (        line,                   NoPrepo    ) 
-        code |> Array.map prepro
-        
-    let separateDirectives (fsNass:(string * PreproDirective) seq) =
-        let  assembs  = fsNass |> Seq.choose (snd >> (function | PrepoR assemb -> Some assemb | _ -> None)) |> Seq.distinct |> Seq.toArray
-        let  defines  = fsNass |> Seq.choose (snd >> (function | PrepoDefine d -> Some d      | _ -> None)) |> Seq.distinct |> Seq.toArray
-        let  prepoIs  = fsNass |> Seq.choose (snd >> (function | PrepoI      d -> Some d      | _ -> None)) |> Seq.distinct |> Seq.toArray
-        let  nowarns  = fsNass |> Seq.choose (snd >> (function | PrepoNoWarn d -> Some d      | _ -> None)) |> Seq.distinct |> Seq.toArray
-        let  code     = fsNass |> Seq.map     fst                                                                           |> Seq.toArray
-        code, assembs, defines, prepoIs, nowarns
-    
-    
-    //# 1 @"(4)ece85c79-829d-4bec-a607-a1cd01f9dafa asyncStartCancelling.fsx"
-    let asyncStartCancelling() =    
-        let mutable tokenSource : System.Threading.CancellationTokenSource option = None
-        fun a ->
-            tokenSource |> Option.iter (fun oldTokenSource -> oldTokenSource.Cancel() )
-            let newTokenSource = new System.Threading.CancellationTokenSource() 
-            Async.Start(a, newTokenSource.Token)
-            tokenSource <- Some newTokenSource
-    
-            
-  //# 1 @"(2)376fdef6-dfcf-40c5-bd14-97c3b246bb30 UsefulDotNet.fsx"
-  module UsefulDotNet =
-    //# 1 @"(4)f930dc48-39e8-453c-8c77-18a2cd73637a ResourceAgent.fsx"
-    open Useful
-    
-    type ResourceAgent<'T, 'C when 'C : equality>(maxUseCount:int, ctor: 'C option ->'T, ?cleanup, ?isAlive, ?configuration: 'C) =
-        let mutable configuration = configuration
-        let mutable resource      = ctor configuration
-        let mutable useCount      = 0
-        let respawn() =
-            cleanup |> Option.iter (fun clean -> clean resource) 
-            resource <- ctor configuration
-            useCount <- 0
-        let agent    = 
-            MailboxProcessor.Start(fun inbox ->
-                async {
-                   while true do
-                     try
-                         let! increment, config, work = inbox.Receive()
-                         isAlive |> Option.iter (fun alive -> if not (alive resource) then respawn())
-                         if config <> configuration then
-                            configuration <- config
-                            respawn()
-                         do!  work resource
-                         if increment then useCount <- useCount + 1
-                                           if useCount >= maxUseCount && maxUseCount > 0 then respawn()
-                     with _ -> respawn() 
-                }
-            )
-        do agent.Error.AddHandler <| Handler (fun _ _ -> respawn())
-        member this.Process (work:'T -> Wrap<'a>, ?config, ?incrUse) =
-            agent.PostAndAsyncReply
-                (fun reply ->
-                     (defaultArg incrUse true, config, fun resource ->
-                              async {
-                                   let! res = work resource |> Wrap.getAsyncR
-                                   reply.Reply res
-                              } 
-                     )
-                )
-        member this.Configuration  = configuration
-        member this.MaxUseCount    = maxUseCount
-        member this.UseCount       = useCount
-        interface System.IDisposable with
-            member this.Dispose () =
-                try cleanup |> Option.iter (fun clean -> clean resource) with _ -> ()
-    
-    //# 1 @"(4)4137cad8-fd64-426e-98de-16a92a56388d TempFileName.fsx"
-    type TempFileName(fn) =
-        new () = new TempFileName(System.IO.Path.GetTempFileName())
-        member this.Name = fn
-        interface System.IDisposable with
-            member this.Dispose() = if System.IO.File.Exists fn then System.IO.File.Delete fn
-            
-            
-    //# 1 @"(4)b30f4582-64bd-49e5-aca2-29897fef74c5 RunProcess.fsx"
-    open System.Diagnostics
-    open System.Text
-    open Useful
-    
-    module RunProcess =
-    
-        let startProcess p ops =
-            let procStart   = ProcessStartInfo(p, ops)
-            let proc        = new Process()
-            proc.StartInfo <- procStart
-            proc.Start() 
-        
-        let startProcessDir p ops dir =
-            let procStart   = ProcessStartInfo(p, ops, WorkingDirectory = dir)
-            let proc        = new Process()
-            proc.StartInfo <- procStart
-            proc.Start() 
-        
-        type ShellExError =
-            | ShellExitCode              of int
-            | ShellOutput                of string
-            | ShellErrors                of string
-            | ShellFailWithMessage       of string
-            | ShellFinishedWithNoMessage 
-            | ShellDidNotStart 
-            | ShellCrashed               of string
-        with interface ErrMsg with
-                member this.ErrMsg    = 
-                    match this with 
-                    | ShellFailWithMessage msg   -> msg  
-                    | ShellFinishedWithNoMessage -> "warning - No output"
-                    | ShellOutput          msg   -> msg
-                    | ShellCrashed         msg   -> "Crashed " + msg
-                    | msg                        -> sprintf "%A" msg
-                member this.IsWarning =
-                    match this with 
-                    | ShellFinishedWithNoMessage
-                    | ShellOutput _              -> true
-                    | _                          -> false 
-        
-        
-        type ShellEx(startInfo: ProcessStartInfo, ?outHndl, ?errHndl) =
-            let proc                              = new Process()
-            let bufferOutput                      = new StringBuilder()
-            let bufferError                       = new StringBuilder()
-            let append  (sb: StringBuilder) txt   = sb.Append(txt + "\n") |> ignore
-            let consume (sb: StringBuilder)       = 
-                let v = sb.ToString()
-                sb.Clear() |> ignore
-                v
-            let dataHandler handler               = DataReceivedEventHandler(fun sender args -> try handler args.Data with _ -> ())
-            let outputHandler                     = append bufferOutput |> dataHandler
-            let errorHandler                      = append bufferError  |> dataHandler
-            do  startInfo.RedirectStandardInput  <- true
-                startInfo.RedirectStandardOutput <- true
-                startInfo.RedirectStandardError  <- true
-                startInfo.UseShellExecute        <- false
-                proc.StartInfo                   <- startInfo
-                proc.EnableRaisingEvents         <- true
-                outputHandler                    |>             proc.OutputDataReceived.AddHandler
-                errorHandler                     |>             proc.ErrorDataReceived .AddHandler
-                Option.map dataHandler outHndl   |> Option.iter proc.OutputDataReceived.AddHandler
-                Option.map dataHandler errHndl   |> Option.iter proc.ErrorDataReceived .AddHandler
-        //        proc.Exited            .AddHandler(System.EventHandler     (fun sender args -> try proc.Close()                                    with _ -> () ))
-            new (program, args) =             
-                let startInfo                     = new ProcessStartInfo()
-                do  startInfo.FileName           <- program
-                    startInfo.Arguments          <- args
-                new ShellEx(startInfo)
-            member this.Start() = 
-                let r = proc.Start() 
-                proc.BeginOutputReadLine()
-                proc.BeginErrorReadLine ()
-                r
-            member this.stdOutErr2Result out errs exit =
-                if exit <> 0
-                then Result.failWithMsgs
-                        [ if out  <> ""              then yield ErrSimple ("stdout: " + out           , true ) :> ErrMsg
-                          if errs <> ""              then yield ErrSimple (errs                       , false) :> ErrMsg
-                          if errs  = "" || exit <> 1 then yield ErrSimple (sprintf "ExitCode: %d" exit, false) :> ErrMsg
-                        ]
-                else Result.succeedWithMsgs out 
-                        [ if errs <> ""              then yield ErrSimple (errs                       , false) :> ErrMsg ]
-            member this.WaitToFinish() =
-                proc.WaitForExit()
-                let    output  = (consume bufferOutput).Trim()
-                let    error   = (consume bufferError ).Trim()
-                (output, error, if proc.HasExited then proc.ExitCode else -99999)
-            member this.StartAndWait() =
-                let started = this.Start()
-                this.WaitToFinish()
-            member this.WaitForInputIdle() =
-                proc.WaitForInputIdle()
-            member this.StartAndWaitR() =
-                let r = this.StartAndWait()
-                (this :> System.IDisposable).Dispose()
-                r |||> this.stdOutErr2Result
-            member this.RunToFinish() =
-                this.StartAndWaitR()
-                |> Result.result2String
-            member this.RunOutputToFileR file =
-                proc.OutputDataReceived.RemoveHandler outputHandler
-                use stream  = new System.IO.FileStream(file, System.IO.FileMode.Create)
-                let started = proc.Start() 
-                proc.BeginErrorReadLine ()
-                proc.StandardOutput.BaseStream.CopyTo stream
-                this.WaitToFinish()
-                |||> this.stdOutErr2Result
-            member this.RunOutputToFile file =
-                this.RunOutputToFileR file
-                |> Result.result2String
-            member this.Send(txt: string)   = proc.StandardInput.WriteLine txt
-            member this.Output  ()          = consume bufferOutput
-            member this.Error   ()          = consume bufferError
-            member this.Response(out:string, err:string)  = 
-                match out.Trim(), err.Trim() with
-        //        | ""  , ""  -> None
-                | good, ""  -> Some( Result.succeed        good                             )
-                | ""  , bad -> Some( Result.fail                <| ShellFailWithMessage bad )
-                | good, bad -> Some( Result.succeedWithMsg good <| ShellFailWithMessage bad )
-            member this.Response()          = this.Response(this.Output(), this.Error())
-            member this.SendAndWait(send, wait, ?onError) =
-                let waitOnError   = defaultArg onError false
-                let eventWait = 
-                    if waitOnError then proc.ErrorDataReceived else proc.OutputDataReceived
-                    |> Event.choose (fun evArgs -> try evArgs.Data |> (fun v -> if v.Contains wait then Some <| Result.succeed v else None) with _ -> None)
-                let eventAll = Event.merge eventWait  (Event.map (fun _ -> Result.fail <| ShellCrashed startInfo.FileName) proc.Exited)
-                Wrap.wrapper {
-                    do! Result.tryProtection()
-                    async { 
-                        do!    Async.Sleep 20 
-                        this.Send send        } |> Async.Start
-                    let!   waitedR = Async.AwaitEvent eventAll
-                    let!   waited  = waitedR
-                    do!    Async.Sleep 200
-                    let!   res =
-                           if waitOnError then 
-                               this.Response(this.Output(), this.Error() |> fun msg -> msg.Split([| waited |], System.StringSplitOptions.None) |> Array.head)
-                           else this.Response()
-                           |> Option.defaultWith (fun () -> Result.succeedWithMsg "" ShellFinishedWithNoMessage)
-                    return res
-                }
-            member this.HasExited = try proc.HasExited with _ -> true
-            member this.Abort()   = try proc.Kill   () with _ -> ()
-            interface System.IDisposable with
-                member this.Dispose () =
-                    try proc.Kill   () with _ -> ()
-                    try proc.Close  () with _ -> ()
-                    try proc.Dispose() with _ -> ()
-        
-        
-        let runAndWaitR p ops =
-            let procStart   = ProcessStartInfo(p, ops)
-            let shell       = new ShellEx(procStart)
-            shell.StartAndWaitR() 
-        
-        let runToFinish p ops =
-            let procStart   = ProcessStartInfo(p, ops)
-            let shell       = new ShellEx(procStart, printfn "%s", eprintfn "%s")
-            shell.RunToFinish() 
-        
-        let runOutputToFile p ops file =
-            let procStart   = ProcessStartInfo(p, ops)
-            let shell       = new ShellEx(procStart)
-            shell.RunOutputToFile file 
-        
-        
-    //# 1 @"(4)ab5ab0ca-eb45-4851-affe-4690bb75d055 copyIfMust.fsx"
-    open System.IO
-    
-    let copyIfNotExistsToFile from dest =
-        let fit = FileInfo dest
-        if not fit.Exists then
-            File.Copy(from, dest, true )
-    
-    let copyIfMustToFile from dest =
-        let fit = FileInfo dest
-        let must = 
-            match fit.Exists with 
-            | false -> true
-            | true  ->
-                let fif = FileInfo dest
-                fif.Length <> fit.Length || fif.LastWriteTime <> fit.LastWriteTime
-        if must then
-            File.Copy(from, dest, true )
-    
-    let copyIfMustToDir from destDir =
-        let dest = Path.Combine(destDir, Path.GetFileName(from))
-        copyIfMustToFile from dest
-        
-    //# 1 @"(4)15cf771f-22b1-4796-8e34-6c16f35d6506 Path.Combine.fsx"
-    let inline (+/+) a b = System.IO.Path.Combine(a, b)
-    //# 1 @"(4)ef053bdf-997b-49c8-a401-1611a568bd8a CompOptions.fsx"
-    module CompOptionsModule = // needs to be in a module so (?) operator does not collide with websharper
-        
-        type CompOptionClass = 
-             | OpFSharp
-             | OpWebSharper
-             | OpInternal
-    
-        type CompOption = 
-            {
-                name   : string
-                unique : bool
-                opClass: CompOptionClass  
-                prefix : string
-            }
-        with
-            static member (/=) (op: CompOption, v: CompOptionValue) = op,           v
-            static member (/=) (op: CompOption, v                 ) = op, OpVText   v
-            static member (/=) (op: CompOption, v                 ) = op, OpVTextOF v
-        
-        and CompOptionValue =
-            | OpVText   of                 string
-            | OpVTextOF of (CompOptions -> string)
-        with 
-            member this.Value ops = 
-                match this with
-                | OpVText   v  -> v
-                | OpVTextOF fo -> fo ops
-        
-        and CompOptions = CompOptions of (CompOption * CompOptionValue) []
-        with
-            member this.Pairs             =  this |> function CompOptions ops ->  ops
-            member this.Exists   f        =  this.Pairs |> Array.exists f 
-            member this.Find     name     =  this.Pairs |> Array.tryFind (fun (opT, opV) -> name = opT.name) |> Option.defaultWith (fun () -> raise (exn ("option " + name + " not found.")) )
-            member this.FindV    name     = (this.Find name |> snd).Value this
-            member this.Contains co       =  this.Exists (fun (opT, opV) -> co   = opT                           )
-            member this.Contains v        =  this.Exists (fun (opT, opV) -> v    = opT.prefix + (opV.Value this) )
-            member this.Get      f        =  this.Pairs |> Array.filter f |> Array.map (fun (opT, opV) ->        opT.prefix + (opV.Value this) )
-            static member FSharpOptions   = fun ({opClass=cls}, _) -> cls = OpFSharp
-            static member WSharperOptions = fun ({opClass=cls}, _) -> cls = OpFSharp || cls = OpWebSharper
-            static member (?) (ops: CompOptions, name: string) = ops.FindV name
-            static member (+) (os1: CompOptions, a2: (CompOption * CompOptionValue) seq) = 
-                match os1 with 
-                | CompOptions a1 -> 
-                    a1
-                    |> Array.filter (fun (opT, _) -> (not opT.unique) || (a2 |> Seq.exists (fst >> (=) opT) |> not) )
-                    |> Seq.append <| a2
-                    |> Seq.toArray
-                    |> CompOptions
-            static member (+) (ops: CompOptions, o:   CompOption * CompOptionValue      ) = ops + [| o |]
-            static member (+) (os1: CompOptions, os2: CompOptions                       ) = match os2 with | CompOptions a2 -> os1 + a2
-        
-        let (?) (ops:CompOptions) name = ops.FindV name
-        
-        let opSnippet     = { name = "Snippet"     ; unique = true  ; opClass = OpInternal   ; prefix = "++snippet:"   }
-        let opDirectory   = { name = "Directory"   ; unique = true  ; opClass = OpInternal   ; prefix = "++directory:" }
-        let opName        = { name = "Name"        ; unique = true  ; opClass = OpInternal   ; prefix = "++name:"      }
-        let opExtension   = { name = "Extension"   ; unique = true  ; opClass = OpInternal   ; prefix = "++extension:" }
-        let opFileName    = { name = "Filename"    ; unique = true  ; opClass = OpInternal   ; prefix = "++filename:"  }
-        let opOutputFile  = { name = "OutputFile"  ; unique = true  ; opClass = OpInternal   ; prefix = "++fileout:"   }
-        let opConfig      = { name = "Config"      ; unique = true  ; opClass = OpInternal   ; prefix = "++config:"    }
-        let opGenInternal = { name = "GenInternal" ; unique = false ; opClass = OpInternal   ; prefix = "++"           }
-        let opWebSharper  = { name = "WebSharper"  ; unique = true  ; opClass = OpInternal   ; prefix = "++websharper:"}
-            
-        let opIOption     = { name = "IOption"     ; unique = false ; opClass = OpFSharp     ; prefix = "-I:"          }
-        let opReference   = { name = "Reference"   ; unique = false ; opClass = OpFSharp     ; prefix = "-r:"          }
-        let opSource      = { name = "Source"      ; unique = false ; opClass = OpFSharp     ; prefix = ""             }
-        let opTarget      = { name = "Target"      ; unique = true  ; opClass = OpFSharp     ; prefix = "--target:"    }
-        let opOutput      = { name = "Output"      ; unique = true  ; opClass = OpFSharp     ; prefix = "-o:"          }
-        let opDebug       = { name = "Debug"       ; unique = true  ; opClass = OpFSharp     ; prefix = "--debug:"     }
-        let opDefine      = { name = "Define"      ; unique = false ; opClass = OpFSharp     ; prefix = "--define:"    }
-        let opGenFSharp1  = { name = "GenFSharp1"  ; unique = false ; opClass = OpFSharp     ; prefix = "-"            }
-        let opGenFSharp2  = { name = "GenFSharp2"  ; unique = false ; opClass = OpFSharp     ; prefix = "--"           }
-        
-        let opWebSite     = { name = "Website"     ; unique = true  ; opClass = OpWebSharper ; prefix = "--wsoutput:"  }
-        let opWsProject   = { name = "WsProject"   ; unique = true  ; opClass = OpWebSharper ; prefix = "--project:"   }
-        let opGenWSharper = { name = "GenWSharper" ; unique = false ; opClass = OpWebSharper ; prefix = "--"           }
-        
-        let dllOptions     = CompOptions [| opTarget      /= "library"                                                                     |]  
-        let exeOptions     = CompOptions [| opTarget      /= "exe"     ; opGenInternal /= "copyassemblies" ; opGenInternal /= "copyconfig" |]
-        let winExeOptions  = CompOptions [| opTarget      /= "winexe"  ; opGenInternal /= "copyassemblies" ; opGenInternal /= "copyconfig" |]
-        
-        let genericOptions = 
-          CompOptions
-            [|
-               opSnippet     /= "Test"
-               opName        /= fun os -> (os?Snippet : string).Split('/') |> Array.last
-               opDirectory   /= fun os -> "Compiled" +/+ os?Name
-               opExtension   /= fun os -> match os?Target with | "library" -> "dll" | _ -> "exe"
-               opFileName    /= fun os -> os?Directory +/+ os?Name + ".fs"
-               opSource      /= fun os -> os?Filename
-               opOutput      /= fun os -> System.IO.Path.ChangeExtension(os?Source, os?Extension)
-               opOutputFile  /= fun os -> System.IO.Path.GetFileName(os?Output)
-               opConfig      /= fun os -> os?Output + ".config"
-               opWebSharper  /= fun os -> if (os:CompOptions).Exists (fun (opT, opV) -> opT.opClass = OpWebSharper) then "1" else "0"
-            |]
-            
-        let siteOptions =
-          CompOptions
-            [|
-               opGenWSharper /= "ws:Site"
-               opWebSite     /= fun os -> os?Directory +/+ "website"
-               opWsProject   /= fun os -> os?Name
-            |] 
-         
-        let wsProjectOptions =
-          CompOptions
-            [|
-               opWsProject   /= fun os -> os?Name
-            |] 
-         
-        let debugOptions = 
-          CompOptions
-            [|
-               opGenFSharp1  /= "g"
-               opDebug       /= "full"
-               opDefine      /= "DEBUG"
-               opDefine      /= "TRACE"
-               opGenFSharp2  /= "optimize-"
-               opGenFSharp2  /= "tailcalls-"
-            |]
-        
-        let otherOptions =
-          CompOptions
-            [|
-               //@"--noframework"
-               opGenFSharp2  /= "warn:3"
-               opGenFSharp2  /= "warnaserror:76"
-               opGenFSharp2  /= "vserrors"
-               opGenFSharp2  /= "utf8output"
-               opGenFSharp2  /= "fullpaths"
-               opGenFSharp2  /= "flaterrors"
-               opGenFSharp2  /= "subsystemversion:6.00"
-               opGenFSharp2  /= "highentropyva+"
-               opGenInternal /= "removelinedirectives"
-            |]
-        
-        let compileOptionsDll (snp:string) = 
-            genericOptions
-            + dllOptions
-            + otherOptions
-            + opSnippet     /= snp
-            
-        let compileOptionsDllDebug (snp:string) = compileOptionsDll snp + debugOptions        
-        let compileOptionsExeDebug    snp = compileOptionsDllDebug snp + exeOptions   
-        let compileOptionsWinExeDebug snp = compileOptionsDllDebug snp + winExeOptions
-            
-        let prepOptions (options:CompOptions) (code : string [], assembs : string [], defines : string [], prepoIs : string [], nowarns : string []) =
-            let  code2 =
-               [
-                  yield! nowarns |> Seq.distinct |> Seq.map (sprintf "#nowarn \"%s\"")
-                  yield! code 
-               ] |> String.concat "\n"
-            let  fileName = options?Filename
-            do   System.IO.File.WriteAllText(fileName, code2)
-            let  options2 = 
-                 options  + [|
-                               yield! prepoIs |> Array.map ((/=) opIOption  ) 
-                               yield! assembs |> Array.map ((/=) opReference)
-                               yield! defines |> Array.map ((/=) opDefine   )
-                               if options.Contains "++staticlinkall" then 
-                                   yield! assembs |> Array.map (System.IO.Path.GetFileNameWithoutExtension >> ((+) "staticlink:") >> ((/=) opGenFSharp2 ))         
-                            |]
-            if options.Contains "++copyassemblies" then 
-                assembs |> Array.iter (fun f -> System.IO.Path.GetDirectoryName(fileName) |> copyIfMustToDir f)      
-            if options2.Contains "++showoptions"    then printfn "%s" (options2.Get (fun _ -> true) |> String.concat "\n")               
-            options2
-        
-    
-  //# 1 @"(2)63eca270-405a-4789-941a-e298bbd265bd FsStationShared.fsx"
-  #if INTERACTIVE
-  [<WebSharper.JavaScript>]
-  #endif
-  module FsStationShared =
-  
-    //# 1 @"(4)2deb54e7-009e-4297-b2bc-1c86d04203a4 CodeSnippet.fsx"
-    open Useful
-    
-    let snippetName name (content: string) =
-        if name <> "" then name else 
-        content.Split([| '\n' |], System.StringSplitOptions.RemoveEmptyEntries)
-        |> Seq.map    (fun l -> l.Trim())
-        |> Seq.filter (fun l -> not (l.StartsWith("#") || l.StartsWith("[<") || l.StartsWith("//")))
-        |> Seq.tryHead
-        |> Option.defaultValue "<empty>"
-    
-    let sanitize n =
-        let illegal = [|'"'   ; '<'   ; '>'   ; '|'   ; '\000'; '\001'; '\002'; '\003'; '\004'; '\005'; '\006';
-                        '\007'; '\b'  ; '\009'; '\010'; '\011'; '\012'; '\013'; '\014'; '\015';
-                        '\016'; '\017'; '\018'; '\019'; '\020'; '\021'; '\022'; '\023'; '\024';
-                        '\025'; '\026'; '\027'; '\028'; '\029'; '\030'; '\031'; ':'   ; '*'   ; '?';
-                        '\\'  ; '/'|] //"
-        n |> String.filter (fun c -> not <| Array.contains c illegal)
-    
-    type CodeSnippetId = CodeSnippetId of System.Guid   
-    with static member New = CodeSnippetId <| System.Guid.NewGuid()
-         member this.Text  = match this with CodeSnippetId guid -> guid.ToString()
-    
-    [< NoComparison >]
-    type CodeSnippet = {
-        name         : string
-        content      : string
-        parent       : CodeSnippetId option
-        predecessors : CodeSnippetId list
-        id           : CodeSnippetId
-        expanded     : bool
-        level        : int
-        levelCode    : int
-        properties   : System.Collections.Generic.Dictionary<string, string>
-    } with
-        member this.Name = snippetName this.name this.content
-        member this.NameSanitized =
-            this.Name
-            |> sanitize
-            |> (fun c -> this.id.Text + " " + c + ".fsx")
-    //    member this.ContentIndented addLinePrepos =
-    //        let indent        = this.levelCode * 2
-    //        let indentF, prfx = if indent = 0         then (id, "") else (Array.map    (fun (l, pr) -> String.replicate indent " " + l, pr), sprintf"(%d)" indent)
-    //        let addLinePs     = if not addLinePrepos  then  id      else  Array.append [| sprintf "//# 1 @\"%s%s\"" prfx this.NameSanitized |] 
-    //        this.content.Split('\n') 
-    //        |> addLinePs
-    //        |> separatePrepros (not addLinePrepos)
-    //        |> indentF
-    //      , indent
-    
-    // tail recursion does not optimize
-    let rec preds fetcher outs (ins : CodeSnippetId list) : CodeSnippetId list =
-        match ins with
-        | []         -> outs
-        | hd :: rest -> List.collect id [ rest ; hd |> fetcher |> Option.toList |> List.collect (fun s -> s.parent |> Option.toList |> List.append <| s.predecessors) ]
-                        |> preds fetcher (if outs |> Seq.contains hd then outs else hd::outs)
-    
-    let predsL fetcher (ins : CodeSnippetId list) : CodeSnippetId list =
-        let mutable ins  = ins 
-        let mutable outs = []
-        while not ins.IsEmpty do
-            match ins with
-            | []         -> ()
-            | hd :: rest -> if outs |> Seq.contains hd then
-                                ins  <- rest
-                            else
-                                ins  <- List.collect id [ rest ; hd |> fetcher |> Option.toList |> List.collect (fun s -> s.parent |> Option.toList |> List.append <| s.predecessors) ]
-                                outs <- hd::outs
-        outs
-    
-    type CodeSnippet with
-        member this.UniquePredecessors (fetcher: CodeSnippetId -> CodeSnippet option) = predsL fetcher [ this.id ]        
-        static member TryFindByKey  snps key = snps |> Seq.tryFind (fun snp        -> snp.id = key)
-        member this.SeparateCode addLinePrepos =
-            let noLinePre     = not addLinePrepos || this.properties.ContainsKey "NoLinePre"
-            let indent        = this.levelCode * 2
-            let indentF, prfx = if indent = 0         then (id, "") else (Array.map    (fun (l, pr) -> String.replicate indent " " + l, pr), sprintf"(%d)" indent)
-            let addLinePs     = if noLinePre          then  id      else  Array.append [| sprintf "//# 1 @\"%s%s\"" prfx this.NameSanitized |]
-            let code, assembs, defines, prepIs, nowarns  =
-                this.content.Split('\n') 
-                |> addLinePs
-                |> separatePrepros (not addLinePrepos)
-                |> indentF
-                |> separateDirectives
-            [| this.NameSanitized, code.Length, indent |] , code, assembs, defines, prepIs, nowarns
-        static member AddSeps (lines1:(string*int*int)[], code1:string[], assembs1:string[], defines1:string[], prepIs1:string[], nowarns1:string[])
-                              (lines2:(string*int*int)[], code2:string[], assembs2:string[], defines2:string[], prepIs2:string[], nowarns2:string[]) =
-            Array.append lines1   lines2
-          , Array.append code1    code2
-          , Seq  .append assembs1 assembs2 |> Seq.distinct |> Seq.toArray
-          , Seq  .append defines1 defines2 |> Seq.distinct |> Seq.toArray
-          , Seq  .append prepIs1  prepIs2  |> Seq.distinct |> Seq.toArray
-          , Seq  .append nowarns1 nowarns2 |> Seq.distinct |> Seq.toArray
-        static member ReducedCode  addLinePrepos (snippets: CodeSnippet seq) =
-            snippets
-            |> Seq.map(fun snp -> snp.SeparateCode addLinePrepos)
-            |> fun snps -> if snps |> Seq.isEmpty then seq [ [||],  [||],  [||],  [||],  [||],  [||] ] else snps
-            |> Seq.reduce CodeSnippet.AddSeps
-            |> fun (lines, code, assembs, defines, prepIs, nowarns) ->
-               (lines, code |> String.concat "\n" |> Array.singleton, assembs, defines, prepIs, nowarns)
-        static member FinishCode addLinePrepos (lines:(string*int*int)[],code:string[], assembs:string[], defines:string[], prepIs:string[], nowarns:string[]) =
-            let config = defines |> Seq.sort |> Seq.map ((+)"-d:") |> String.concat " "
-            let part1  =
-              [ if config <> "" then yield "////" + config
-                yield! prepIs  |> Seq.map (sprintf "#I @\"%s\""    )
-                yield! assembs |> Seq.map (sprintf "#r @\"%s\""    )
-                if addLinePrepos && (nowarns |> Seq.isEmpty |> not) then yield "//# 1 \"required for nowarns to work\""
-                yield! nowarns |> Seq.map (sprintf "#nowarn \"%s\"")
-              ]
-            Seq.append part1 code |> String.concat "\n"
-          , lines 
-            |> Seq.mapFold (fun firstLine (name, len, ind) -> (name, (ind, firstLine, firstLine + len)), firstLine + len) part1.Length
-            |> fst
-            |> Seq.toArray
-        static member CodeAndStarts   addLinePrepos (snippets:CodeSnippet seq) =
-            CodeSnippet.ReducedCode   addLinePrepos snippets
-            |> CodeSnippet.FinishCode addLinePrepos
-        static member CodeFsx         addLinePrepos snps = CodeSnippet.CodeAndStarts addLinePrepos snps |> fst
-    //    static member CodeMerged  addLinePrepos (snippets: CodeSnippet seq) =
-    //        let bySnippet = 
-    //            snippets
-    //            |> Seq.map(fun snp -> 
-    //                let code, indent = snp.ContentIndented addLinePrepos
-    //                snp, indent, code
-    //            )
-    //        (bySnippet, bySnippet |> Seq.collect (function _, _, code -> code))
-    //    static member CodeParts addLinePrepos snippets =
-    //        let bySnippet, merged                        = CodeSnippet.CodeMerged addLinePrepos snippets
-    //        let code, assembs, defines, prepIs, nowarns  = separateDirectives merged
-    //        let config = defines |> Seq.distinct |> Seq.sort |> Seq.map ((+)"-d:")             |> String.concat " "
-    //        [   if config <> "" then yield "////" + config
-    //            yield! prepIs  |> Seq.distinct             |> Seq.map (sprintf "#I @\"%s\""    )
-    //            yield! assembs |> Seq.distinct             |> Seq.map (sprintf "#r @\"%s\""    )
-    //            if addLinePrepos && (nowarns |> Seq.isEmpty |> not) then yield "//# 1 \"required for nowarns to work\""
-    //            yield! nowarns |> Seq.distinct             |> Seq.map (sprintf "#nowarn \"%s\"")
-    //        ], code, bySnippet
-    //    static member CodeFsx0 addLinePrepos (cur, snippets) =
-    //        let part1, part2, bySnippet = CodeSnippet.CodeParts addLinePrepos (Array.append snippets [| cur |])
-    //        [ yield! part1 ; yield! part2 ] |> String.concat "\n"
-    
-    
-    //# 1 @"(4)f6ebdffc-049c-4493-8de8-e32072419479 FSMessage,FSResponse.fsx"
-    type FSMessage =
-        | GetIdentification
-        | GenericMessage        of string
-        | GetSnippetContentById of CodeSnippetId
-        | GetSnippetCodeById    of CodeSnippetId
-        | GetSnippetPredsById   of CodeSnippetId
-        | GetSnippetById        of CodeSnippetId
-        | GetSnippetContent     of string []
-        | GetSnippetCode        of string []
-        | GetSnippetPreds       of string []
-        | GetSnippet            of string []
-        | GetSnippetJSCode      of string []
-        | GetWholeFile
-        | RunSnippetUrlJSById   of CodeSnippetId * string
-        | RunSnippetUrlJS       of string []     * string
-        | RunActionCall         of name: string * action: string * parms: string[]
-    
-    type FSSeverity =
-        | FSError
-        | FSWarning
-        | FSInfor
-    
-    type FSResponse =
-        | IdResponse        of string
-        | StringResponse    of string option
-        | SnippetResponse   of CodeSnippet option
-        | SnippetsResponse  of CodeSnippet []
-        | StringResponseR   of string option * (string * FSSeverity)[]
-    
-    
-  //# 1 @"(2)64110b26-2d5c-4b29-a81b-75a5495e67a2 WSMessagingBroker.fsx"
-  #if INTERACTIVE
-  [<WebSharper.JavaScript>]
-  #endif
-  module WSMessagingBroker =
-    //# 1 @"(4)b95ef4c5-ca1b-443a-acad-ca8158403d8b WebSocket Messages.fsx"
-    //#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
-    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
-    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\WebSharper.Owin.WebSocket.dll"
-    
-    open WebSharper
-    open Useful
-    
-    let MessageBrokerId  = "<MessageBroker>"
-    
-    type Address = Address of address:string
-    with member this.txt = match this with Address txt -> txt
-    
-    let MessageBrokerAddress = Address MessageBrokerId
-    
-    /// Requests made to Message Broker
-    [< NamedUnionCases "type" >]
-    type BrokerRequest = 
-        | BRGetConnections  /// request for list of connections
-    
-    /// Replies from Message Broker
-    [< NamedUnionCases "type" >]
-    type BrokerReply = 
-        | BRConnections  of string[]
-      //  | BRPleaseClose  
-    
-    [< NamedUnionCases "type" >]
-    type MessageType = 
-        | MsgInformation             // does not expect a reply, payload may or may not be structured
-        | MsgRequest                 // expects a reply, structured payload
-        | MsgReply                   // structured payload.
-        | MsgFromBroker              // Payload is BrokerMessage. Only Broker should use this
-        | MsgRequestForId            // expects reply as Information with id
-        | MsgRequestForEcho          // expects reply as Information with same payload
-    
-    /// Replies from Message Broker
-    [< NamedUnionCases "type" >]
-    type BrokerMessage = 
-        | BMOk
-        | BMOnlyBrokerShouldUse
-        | BMDestinationNotFound of Address  
-        | BMWebSocketError      of string
-        | BMReceiverCantReply
-        | BMUnexpectedMsgType   of MessageType
-    
-    [< NamedUnionCases "type" >]
-    type Replier = 
-        | NoReply
-        | Broker
-        | Receiver
-    
-    [< NamedUnionCases "type" >]
-    type MessageGeneric = {
-        from          : Address
-        destination   : Address
-        msgType       : MessageType
-        subtype       : string      // free short string that provides information to deserialize payload
-        id            : System.Guid
-        payload       : string
-        replier       : Replier
-    }
-    
-    [< Inline >]
-    let inline processPayload f (payload:string) : string =
-        if payload = "" then Unchecked.defaultof<_> else Json.Deserialize payload
-        |> f
-        |> Json.Serialize
-                
-    [<  Inline >]
-    let newMsgSerialized dst payload = {
-        from          = Address ""
-        destination   = dst
-        msgType       = MsgRequest
-        subtype       = ""
-        id            = System.Guid.NewGuid()
-        payload       = payload
-        replier       = NoReply
-    }
-    
-    [< Inline >]
-    let inline payload        pl  msg = { msg with payload       = Json.Serialize pl }
-    let inline from           frm msg = { msg with from          = frm               }
-    let inline destination    dst msg = { msg with destination   = dst               }
-    let inline msgType        typ msg = { msg with msgType       = typ               }
-    let inline subtype        sub msg = { msg with subtype       = sub               }
-    let inline replier        rpl msg = { msg with replier       = rpl               }
-    let inline msgId          id  msg = { msg with id            = id                }
-    
-    [<  Inline >]
-    let inline newMsg dst payload = Json.Serialize payload |> newMsgSerialized dst
-    
-    [<  Inline >]
-    let inline msgPayload msg = Json.Deserialize msg.payload
-    
-    let mapPayload f msg = { msg with payload = f msg.payload }
-    
-    let inline makeReply msg =
-        msg
-        |> msgType MsgReply
-        |> replier NoReply
-    
-    [<  Inline >]
-    let inline respond pyld msg =
-        msg
-        |> makeReply
-        |> payload  pyld
-    
-    type IServer =
-        abstract member Post  : MessageGeneric -> unit
-        abstract member Close : unit           -> unit
-    
-    type CMessage<'C2S> = WebSharper.Owin.WebSocket.Client.Message<'C2S>
-    
-    //# 1 @"(4)e137b990-172b-4879-bc74-8650123b7a5d StatefulAgent.fsx"
-    
-    type SMessage<'S2C> = WebSharper.Owin.WebSocket.Server.Message<'S2C>
-    
-    #if INTERACTIVE
-    [< JavaScript false >]
-    #endif
-    module Broker =
-        open WebSharper
-        open WebSharper.Owin.WebSocket.Server
-        open Useful
-        open System.Collections.Generic
-        
-        type SomeState = {
-            info       : string
-        }
-        
-        type IClient =
-            abstract member Post : MessageGeneric -> unit
-            abstract member Ip   : unit           -> string
-            abstract member Id   : unit           -> string
-            abstract member Close: unit           -> unit
-    
-        type BrokerAgent(epWebSocket: WebSharper.Owin.WebSocket.Endpoint<MessageGeneric,MessageGeneric>) =
-    #if INTERACTIVE                          
-            static let mutable fssWebSocketO : BrokerAgent option = None
-    #endif
-            do printfn "WebSocket server start"
-            let mutable connections = Map.empty
-            let processBrokerRequest req = 
-                match req with
-                | BRGetConnections -> connections |> Map.toSeq |> Seq.map (fun (Address cl, _) -> cl) |> Seq.toArray |> BRConnections 
-                
-            let respondFromBroker pyld msg =
-                msg
-                |> respond     pyld
-                |> msgType     MsgFromBroker
-                |> subtype     "FromBroker"
-    
-            let post reply msg =
-                match connections |> Map.tryFind msg.destination with
-                | None                      -> msg |> respondFromBroker (BMDestinationNotFound msg.destination) |> reply
-                | Some(_, clientTo:IClient) -> msg |> clientTo.Post
-                
-            let clientConnect (client: IClient) = async {
-                let clientId = client.Id()
-                let uniqueId = System.Guid.NewGuid()
-                printfn "New Connection from %s" clientId                           
-                let clientAddress = Address clientId
-                connections
-                |> Seq.filter(fun kp -> kp.Key = clientAddress)
-                |> Seq.iter  (fun (kp:KeyValuePair<_, _ * IClient>) -> 
-                    printfn "Closing old connection from %s" clientId
-                    kp.Value 
-                    |> fun (_, conn) -> conn.Close()
-                )
-                connections <- connections |> Map.add clientAddress (uniqueId, client)
-                
-                let reply msg = msg |> from MessageBrokerAddress |> destination clientAddress |> client.Post
-                let checkReply msg = if msg.replier = Broker then
-                                            msg |> respondFromBroker BMOk |> reply
-                let forward msg = msg |> from clientAddress |> post reply
-                                  checkReply msg
-                let respondMsg (msg:MessageGeneric) =
-                    checkReply msg
-                    printfn "%A" msg
-                    match msg.msgType with
-                    | MsgInformation    -> printfn "Information from '%s': %s" msg.from.txt (msgPayload msg)
-                    | MsgReply          -> printfn              "Reply %s: %s" msg.from.txt  msg.payload
-                    | MsgRequest        -> msg |> respond (msgPayload msg  |> processBrokerRequest)  |> reply
-                    | MsgRequestForId   -> msg |> respond  MessageBrokerId |> msgType MsgInformation |> reply
-                    | MsgRequestForEcho -> msg |> mapPayload id            |> msgType MsgInformation |> reply
-                    | MsgFromBroker     -> ()
-                let clientIp = client.Ip()
-                return Unchecked.defaultof<_>, fun state wsmsg -> async {
-                    printfn "Received message %A from %s - %s" state clientIp clientId
-                    match wsmsg with
-                    | Message msg ->
-                        if   msg.msgType     = MsgFromBroker        then msg |> respondFromBroker BMOnlyBrokerShouldUse |> reply
-                        elif msg.destination = MessageBrokerAddress then respondMsg msg
-                        else                                             forward    msg     
-                        return state
-                    | Error exn -> 
-                        printfn "Error in WebSocket server connected to %s - %s: %s" clientIp clientId (exn.ToString())
-                        newMsg clientAddress (BMWebSocketError exn.Message) |> msgId System.Guid.Empty |> msgType MsgFromBroker |> msgType MsgFromBroker |> reply
-                        return state
-                    | Close ->
-                        printfn "Closed connection to %s - %s" clientIp clientId
-                        connections <- connections |> Map.filter (fun _ (uid, _) -> uid <> uniqueId)
-                        return state
-                }
-            }
-            member this.Post msg = post (fun m -> dprintfn "%s" m.payload) msg
-            member this.Start (client : WebSocketClient<MessageGeneric,MessageGeneric>) =
-                clientConnect { new IClient with
-                                    member this.Post v  = client.Post v
-                                    member this.Ip()    = client.Connection.Context.Request.RemoteIpAddress
-                                    member this.Id()    = client.Connection.Context.Request.Query 
-                                                          |> KeyVal.tryGetValue  "ClientId" 
-                                                          |> Option.bind         Array.tryHead 
-                                                          |> Option.defaultValue ""
-                                    member this.Close() = client.Connection.Close(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, null) |> Async.AwaitTask |> Async.Start
-                              }
-    #if INTERACTIVE
-            static member FssWebSocketO = fssWebSocketO
-            static member FssWebSocketO with set value = fssWebSocketO <- value
-            member this.ConnectLocal clientId receiver = 
-                clientConnect { new IClient with
-                                    member this.Post v  = receiver v 
-                                    member this.Ip()    = "(server)"
-                                    member this.Id()    = clientId
-                                    member this.Close() = () // probably shouldn't be called at all
-                              }
-    
-        let ConnectStatefulFSS uri clientId (f:IServer -> Async<int * (int -> CMessage<MessageGeneric> -> Async<int>)>) =
-            async {
-                match BrokerAgent.FssWebSocketO with 
-                | None -> raise (exn "FssWebSocketO is not set")
-                | Some serverP ->
-                let  mutable clientBoxO : MailboxProcessor<CMessage<MessageGeneric>> option = None
-                let  receiver msg = clientBoxO |> Option.iter (fun cbox -> cbox.Post (CMessage.Message msg))
-                let! brokerInitState, brokerFunc = serverP.ConnectLocal clientId receiver
-                let  brokerBox   = Mailbox.fold brokerFunc brokerInitState
-                let! clientInitState, clientFunc = f { new IServer with
-                                                           member this.Post msg = brokerBox.Post (Owin.WebSocket.Server.Message msg)
-                                                           member this.Close()  = ()
-                                                     }
-                let  clientBox = Mailbox.fold clientFunc clientInitState
-                clientBoxO <- Some clientBox
-                clientBox.Post CMessage.Open
-            }
-    #endif        
-            
-            
-    //# 1 @"(4)9c253bae-ab8b-4c99-b7e5-38fc50756bec ClientWebSocket .Net.fsx"
-    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.dll"
-    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.JavaScript.dll"
-    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Main.dll"
-    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Collections.dll"
-    //#r @"..\packages\WebSharper\lib\net40\WebSharper.InterfaceGenerator.dll"
-    //#r @"..\packages\WebSharper\lib\net40\WebSharper.JQuery.dll"
-    //#r @"..\packages\WebSharper\lib\net40\WebSharper.JavaScript.dll"
-    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Web.dll"
-    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Sitelets.dll"
-    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Control.dll"
-    //#r @"..\packages\WebSharper.UI.Next\lib\net40\WebSharper.UI.Next.dll"
-    
-    open System
-    open System.Threading
-    open System.Net.WebSockets
-    open WebSharper
-    open Useful
-    
-    #if INTERACTIVE
-    [< JavaScript false >]
-    #endif
-    module Client =
-        let startStateFull receive f =
-            async {
-                let! initState, func = f
-                let agentBox = Mailbox.fold func initState
-                let finish a = agentBox.Post CMessage.Close ; printfn "%A" a
-                let error  a = agentBox.Post CMessage.Error ; finish a
-                Async.StartWithContinuations(receive agentBox, finish, error, error)
-            }
-    
-        type WebSocketServer<'S2C, 'C2S>(uri:string) =
-            let conn = new ClientWebSocket()
-            let chunkSize = 8192
-            let send (txt:string)  =
-                async {
-                    let buffer = System.Text.Encoding.UTF8.GetBytes txt
-                    let chunks = buffer.Length / chunkSize
-                    for i = 0 to chunks do
-                        let last = i = chunks
-                        let size = if last then buffer.Length % chunkSize else chunkSize
-                        do! conn.SendAsync(new ArraySegment<byte>(buffer, i * chunkSize, size), WebSocketMessageType.Binary, last, CancellationToken.None) |> Async.AwaitTask
-                }
-            let receive (receiverBox:MailboxProcessor<CMessage<'S2C>>) =
-                let buffer : byte[] = Array.create chunkSize 0uy
-                let builder         = System.Text.StringBuilder()
-                let mutable keepgo  = true
-                async {
-                    receiverBox.Post CMessage.Open
-                    while conn.State = WebSocketState.Open && keepgo do
-                        let! result = conn.ReceiveAsync(ArraySegment buffer, CancellationToken.None) |> Async.AwaitTask
-                        match result.MessageType with
-                        | WebSocketMessageType.Close -> keepgo <- false
-                        | WebSocketMessageType.Text ->
-                            let txt = System.Text.Encoding.UTF8.GetString buffer.[0..result.Count - 1]
-                            builder.Append txt |> ignore
-                            if result.EndOfMessage then
-                                let txt = builder.ToString()
-                                builder.Clear() |> ignore
-                                Json.Deserialize txt |> CMessage.Message |> receiverBox.Post
-                        | _ -> ()
-                    return "WebSocketServer receive Closed."
-                }
-            let brokerBox = Mailbox.iter (Json.Serialize >> send)
-            let connect f =
-                async {
-                    dprintfn "Connecting %s" uri
-                    do! conn.ConnectAsync(new Uri(uri), CancellationToken.None) |> Async.AwaitTask
-                    dprintfn "Connected %A" WebSocketState.Open
-                    do! startStateFull receive f
-                }
-            member this.WebSocket        = conn
-            member this.Post (msg: 'C2S) = brokerBox.Post msg
-            member this.Connect          = connect
-    
-        let ConnectStateful<'S2C, 'C2S> uri agent =
-            async {
-                let  server          = WebSocketServer uri
-                do!  server.Connect (agent server)
-                return server
-            }
-    
-        let ConnectStatefulFS uri clientId (f:IServer -> _) =
-            let uri2 = sprintf "ws://%s?ClientId=%s" uri clientId
-            let func (serverP:WebSocketServer<MessageGeneric,MessageGeneric>) =
-                f { new IServer with
-                      member this.Post  v = serverP.Post v
-                      member this.Close() = serverP.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None) 
-                                            |> Async.AwaitTask |> Async.RunSynchronously            
-                   }
-            ConnectStateful uri2 func
-            |> Async.map ignore
-            
-    //# 1 @"(4)e665bede-c870-4041-b7ed-8be419c52a83 WSMessagingClient.fsx"
-    //#r @"..\packages\Owin\lib\net40\Owin.dll"
-    //#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
-    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
-    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\WebSharper.Owin.WebSocket.dll"
-    
-    open System
-    open Useful
-    open WebSharper.Owin.WebSocket
-    open WebSharper.Owin.WebSocket.Client
-    
-    //#define INTERACTIVE
-    //#define INTERACTIVE
-    
-    type  Server = WebSocketServer<MessageGeneric,MessageGeneric>
-    
-    type ClientTypeFSharp    = FSharp
-    #if INTERACTIVE
-    type ClientTypeFSStation = FSStation
-    type ClientTypeJScript   = JScript
-    
-    [< Inline >]
-    let ConnectStatefulJS uri clientId (f:IServer -> Async<'state * ('state -> CMessage<MessageGeneric> -> Async<'state>)>) =
-        let uri2 = sprintf "ws://%s?ClientId=%s" uri clientId
-        let func (serverP:WebSocketServer<MessageGeneric,MessageGeneric>) =
-            f { new IServer with
-                  member this.Post  v = serverP.Post v
-                  member this.Close() = serverP.Connection.Close 1000 // Normal Closure
-               }
-        let  endPoint = Endpoint.CreateRemote(uri2, JsonEncoding.Readable)
-        ConnectStateful endPoint func
-        |> Async.map ignore
-    #endif
-    
-    type ErrBroker(bm : BrokerMessage) =
-        interface ErrMsg with
-            member this.ErrMsg   : string = bm.ToString()
-            member this.IsWarning: bool   = false
-    
-    type WaitForReplyMsg =
-        | Add    of Guid * ((MessageGeneric -> unit) * (exn -> unit) * (OperationCanceledException -> unit))
-        | Reply  of Guid *   MessageGeneric
-        | Excpn  of Guid * (unit -> exn)
-        | Cancel of Guid * (unit -> OperationCanceledException)
-        
-    let waitingAgent defProc =    
-        Mailbox.fold (fun waitingForReply action ->
-            async {
-                match action with
-                | Add   (key, fns) -> ()
-                | Reply (key, msg) -> waitingForReply |> Map.tryFind key |> Option.map  (fun (f,_,_) -> f  msg   ) 
-                                      |> Option.defaultWith (fun () -> defProc msg)
-                | Excpn (key, exn) -> waitingForReply |> Map.tryFind key |> Option.iter (fun (_,f,_) -> f (exn()))
-                | Cancel(key, cnl) -> waitingForReply |> Map.tryFind key |> Option.iter (fun (_,_,f) -> f (cnl()))
-                return
-                    match action with
-                    | Reply (key, _  )
-                    | Excpn (key, _  )
-                    | Cancel(key, _  ) -> waitingForReply |> Map.remove key
-                    | Add   (key, fns) -> waitingForReply |> Map.add    key fns
-            }
-        ) Map.empty
-    
-    [< Inline "window.location.href" >]
-    let getEndPoint() = 
-    #if INTERACTIVE
-        "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
-    #else
-        "http://localhost:9010/"
-    #endif
-    
-    let extractEndPoint() = 
-        let ep : string = getEndPoint()
-        let ep2 = ep.Substring(ep.IndexOf "//" + 2)
-        ep2.Split('/').[0]
-    
-    type WSMessagingClient(connectStateful: string -> string -> (IServer -> Async<int * (int -> CMessage<MessageGeneric> -> Async<int>)>) -> Async<unit>
-            , clientId:string, ?timeout:int, ?endPoint:string) =    
-        let wsEndPoint    = defaultArg endPoint (extractEndPoint() + "/ws")
-        let clientAddress = Address clientId
-        let wsTimeout     = defaultArg timeout 60000
-    
-        let mutable out = printfn "%s"
-        //let printoutfn out     = 0 // just to catch printoutfn out that should not be around 
-        let mutable serverO : IServer option = None
-        let mutable payloadProcessorO : (string -> Wrap<string>) option = None
-        let waiting = waitingAgent (fun msg -> printoutfn out "Reply from '%s': %s" msg.from.txt msg.payload)
-    
-        let reply msg = serverO |> Option.iter (fun server -> msg |> from clientAddress |> destination msg.from |> server.Post)
-        let close ()  = serverO |> Option.iter (fun server -> server.Close() ; serverO <- None                                )
-    
-        let processReply      msg = waiting.Post (Reply(msg.id,msg))
-        let mapPayloadWrap (fW: _ -> Wrap<_> ) msg =
-            Wrap.wrap {
-                let! r = fW msg.payload
-                return msg |> mapPayload (fun _ -> r)
-            }
-        let processMessage msg =
-            dprintfn "%A" msg
-            match msg.msgType with
-            | MsgFromBroker     
-            | MsgReply          -> processReply msg
-            | MsgInformation    -> printoutfn out "Information from '%s': %s" msg.from.txt (msgPayload msg)
-            | MsgRequest        -> match payloadProcessorO with 
-                                   | None           -> if msg.replier = Receiver then () // requires a reply but cannot give one, ask broker to handle it
-                                   | Some processor ->
-                                   msg |> mapPayloadWrap processor |> Wrap.map  (makeReply >> reply) |> Wrap<unit>.Start
-            | MsgRequestForEcho -> msg |> mapPayload     id        |> msgType MsgInformation |> reply
-            | MsgRequestForId   -> msg |> respond        clientId  |> msgType MsgInformation |> reply
-        
-        let connectToWebSocketServer() =
-            dprintfn "in connectToWebSocketServer"
-            async {
-                do! connectStateful wsEndPoint clientId <| fun (server: IServer) -> async {
-                    return 0, fun state wsmsg -> async {
-                        try match wsmsg with
-                            | CMessage.Message msg -> processMessage msg
-                            | CMessage.Open        -> printoutfn out "WebSocket %s connection open."   clientId ; serverO <- Some server
-                            | CMessage.Close       -> printoutfn out "WebSocket %s connection closed." clientId ; close()
-                            | CMessage.Error       -> printoutfn out "WebSocket %s connection error!"  clientId
-                        with e -> printfn "msg: %A \nexn:%A" wsmsg e 
-                        return state
-                    }
-                }
-                dprintfn "connectToWebSocketServer with server"
-                
-            }
-        
-        let getServer() : Wrap<IServer> =
-            Wrap.wrap {
-                dprintfn "getServer"
-                if serverO.IsNone then
-                    dprintfn "getServer Connecting"
-                    do! connectToWebSocketServer()
-                    do! Async.Sleep 200
-                let!   server = serverO
-                return server
-            }
-            
-        let postR (server: IServer) rpl msg = 
-            let m = msg |> from clientAddress |> replier rpl 
-            try       server.Post m
-            with e -> serverO <- None
-                      raise e
-    
-        let sendAndForget msg =
-            Wrap.wrap {
-                let! server = getServer()
-                msg |> postR server NoReply
-            }
-            
-        let sendAndReply rpl msg =
-            Wrap.wrap {
-                let! server  = getServer()
-                let  replyA  = Async.FromContinuations(fun v -> 
-                    Add(msg.id, v) |> waiting.Post 
-                    msg |> postR server rpl
-                    if wsTimeout > 0 then
-                        async {
-                            do! Async.Sleep wsTimeout
-                            Excpn(msg.id, fun () -> TimeoutException(sprintf "Did not receive reply in %d seconds for Message: %A" (wsTimeout / 1000) msg) :> exn) |> waiting.Post
-                        } |> Async.Start
-                )
-                let! reply   = replyA
-                return reply
-            }
-            
-        let sendAndVerify msg =
-            Wrap.wrap {
-                let! reply   = sendAndReply Broker msg 
-                do!  match reply.msgType with
-                     | MsgFromBroker  -> let  bm = msgPayload reply
-                                         if   bm = BMOk 
-                                         then Result.succeed () 
-                                         else Result.fail (ErrBroker bm)
-                     | _              ->      Result.fail (ErrBroker (BMUnexpectedMsgType reply.msgType))
-            }
-        
-        let sendGetReply msg =
-            Wrap.wrap {
-                let! reply   = sendAndReply Receiver msg 
-                let! result =
-                    match reply.msgType with
-                    | MsgReply      -> Result.succeed reply.payload
-                    | MsgFromBroker -> let bm = msgPayload reply
-                                       Result.fail (ErrBroker bm)
-                    | _             -> Result.fail (ErrBroker (BMUnexpectedMsgType reply.msgType))
-                return result
-            }
-    
-        let getListeners() =
-            Wrap.wrap {
-                let  msg    = newMsg MessageBrokerAddress BRGetConnections
-                let! reply  = sendGetReply msg
-                match Json.Deserialize<BrokerReply> reply with
-                | BRConnections listeners -> return listeners
-                //| _ -> ()
-            } 
-            
-        let sendMsg msg =
-            Wrap.wrap {
-                if msg.replier = NoReply
-                then do!     sendAndForget msg
-                     return  ""
-                else return! sendGetReply  msg
-            }
-        member this.MBListeners            = getListeners()
-        member this.EndPoint               = wsEndPoint
-        member this.ClientId               = clientId
-        member this.SendMsg           msg  = sendMsg msg
-        [<  Inline >]
-        member this.SendAndForget dst pyld = newMsg dst pyld |> sendAndForget
-        [<  Inline >]
-        member this.SendAndVerify dst pyld = newMsg dst pyld |> sendAndVerify
-        [<  Inline >]
-        member this.SendGetReply  dst pyld = newMsg dst pyld |> sendGetReply  |> Wrap.map Json.Deserialize
-        member this.Out with set fout      = out <- fout
-        [<  Inline >]
-        member this.ProcessIncoming   pro  = payloadProcessorO <- Some (Json.Deserialize >> pro >> (Wrap.map Json.Serialize))
-                                             newMsg MessageBrokerAddress "Registering Processor" 
-                                             |> msgType MsgInformation
-                                             |> sendAndForget |> Wrap<unit>.Start
-        interface IDisposable with
-            member this.Dispose() = close()
-    
-    #if INTERACTIVE   
-        [< JavaScript false >]
-        new (clientId:string, FSStation, ?timeout, ?endPoint) = new WSMessagingClient(Broker.ConnectStatefulFSS, clientId, ?timeout = timeout, ?endPoint = endPoint)
-    #endif
-    #if INTERACTIVE
-        [< JavaScript false >]
-        new (clientId:string, FSharp   , ?timeout, ?endPoint) = new WSMessagingClient(Client.ConnectStatefulFS , clientId, ?timeout = timeout, ?endPoint = endPoint)
-        new (clientId:string,            ?timeout, ?endPoint) = new WSMessagingClient(       ConnectStatefulJS , clientId, ?timeout = timeout, ?endPoint = endPoint)
-    #else    
-        new (clientId:string,            ?timeout, ?endPoint) = new WSMessagingClient(Client.ConnectStatefulFS , clientId, ?timeout = timeout, ?endPoint = endPoint)
-    #endif
-    
-    
-    //# 1 @"(4)4413b3ee-f968-458d-8a5f-7a7c9281c38f FStationMessaging.fsx"
-    open FsStationShared
-    
-    type FsStationClientErr =
-        | FSMessage             of string * FSSeverity
-        | ``Snippet Not Found`` of string
-    with interface ErrMsg with
-            member this.ErrMsg    = 
-                match this with 
-                | FSMessage (msg, sev    )   -> sprintf "%A %s" sev msg
-                | msg                        -> sprintf "%A"        msg
-            member this.IsWarning =     
-                match this with 
-                | FSMessage (_  , FSError)   -> true
-                | msg                        -> false
-    
-    type FStationMessaging(msgClient:WSMessagingClient, clientId, ?fsStationId:string) =
-        let mutable fsIds      = fsStationId |> Option.defaultValue "FSharpStation1519083605409"
-        let         toId()     = Address fsIds
-        let stringResponseR response =
-            match response with
-            | StringResponseR (Some code, msgs) -> Result.succeedWithMsgs code (msgs |> Seq.map (fun v -> FSMessage v :> ErrMsg) |> Seq.toList)
-            | _                                 -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
-        let stringResponse   response =
-            match response with
-            | StringResponse (Some code)        -> Result.succeed code
-            | _                                 -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
-        let snippetsResponse response =    
-            match response with    
-            | SnippetsResponse snps             -> Result.succeed snps
-            | _                                 -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
-        let snippetResponse  response =    
-            match response with    
-            | SnippetResponse  snp              -> Result.succeed snp
-            | _                                 -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
-        [< Inline >]
-        let sendMsg toId (msg: FSMessage) (checkResponse: FSResponse -> Result<'a>) =
-            Wrap.wrap {
-                let!   res   = msgClient.SendGetReply toId msg
-                let!   check = checkResponse res
-                return check
-            } 
-      with 
-        member this.SendMessage     (toId2,  msg:FSMessage) = sendMsg  toId2    msg    Result.succeed   
-        member this.SendMessage     (        msg:FSMessage) = sendMsg (toId())  msg    Result.succeed   
-        member this.RequestSnippet  (    snpPath:string   ) = sendMsg (toId()) (GetSnippet          (snpPath.Split '/'     ))    snippetResponse  
-        member this.RequestCode     (    snpPath:string   ) = sendMsg (toId()) (GetSnippetCode      (snpPath.Split '/'     ))    stringResponse   
-        member this.RequestJSCode   (    snpPath:string   ) = sendMsg (toId()) (GetSnippetJSCode    (snpPath.Split '/'     ))    stringResponseR  
-        member this.RequestPreds    (    snpPath:string   ) = sendMsg (toId()) (GetSnippetPreds     (snpPath.Split '/'     ))    snippetsResponse 
-        member this.RequestPredsById(      snpId          ) = sendMsg (toId()) (GetSnippetPredsById  snpId                  )    snippetsResponse 
-        member this.RequestWholeFile(                     ) = sendMsg (toId())  GetWholeFile                                     stringResponse   
-        member this.GenericMessage  (        txt:string   ) = sendMsg (toId()) (GenericMessage       txt                    )    stringResponse   
-        member this.RunSnippet      (url,snpPath:string   ) = sendMsg (toId()) (RunSnippetUrlJS     (snpPath.Split '/', url))    stringResponseR
-        member this.RunActionCall   (name, act, parms     ) = sendMsg (toId()) (RunActionCall       (name, act, parms      ))    stringResponseR
-        member this.FSStationId                             = fsIds
-        member this.FSStationId with set id                 = fsIds <- id
-        member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1519083605409"
-    #if INTERACTIVE   
-        [< JavaScript false >]
-        new (clientId, FSStation, ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId, FSStation, ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
-    #endif
-        [< JavaScript false >]
-    #if INTERACTIVE
-        new (clientId, FSharp   , ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId, FSharp   , ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
-    #endif    
-        new (clientId,            ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId,            ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
-    
-    
-    
-  //# 1 @"(2)a70b4838-75d6-40c3-9a0c-5bd03c57cce5 FsEvaluator.fsx"
-  module FsEvaluator =
-    //# 1 @"(4)82c8fbfd-6b85-4b5c-8bd0-81bcd8de1e58 evalFsiExe.fsx"
-    open Useful
-    
-    module Evaluator =
-        open System.Diagnostics
-        open UsefulDotNet
-        open RunProcess
-        
-        let endToken = "xXxY" + "yYyhH"
-        let mutable silent    = false
-        type FsiExe(config, ?outHndl, ?errHndl) =
-            let startInfo                 = ProcessStartInfo(@"fsiAnyCpu.exe", config |> String.concat " ")             
-            let shell                     = new ShellEx(startInfo, ?outHndl = outHndl, ?errHndl = errHndl)  // --noninteractive
-            do  startInfo.CreateNoWindow <- false
-                shell.Start() |> ignore
-            member this.Eval txt =
-                Wrap.wrapper {
-                    do! Result.tryProtection()
-                    shell.Send txt 
-                    shell.Send ";;"
-                    let! res = shell.SendAndWait("printfn \"" + endToken + "\";;", endToken)
-                    //shell.WaitForInputIdle() |> ignore
-                    //let! resR = shell.Response()
-                    //let! res  = resR
-                    return res
-                }
-            member this.IsAlive = not shell.HasExited
-            member this.Abort() = shell.Abort()
-            interface System.IDisposable with
-                member this.Dispose () = 
-                    (shell :> System.IDisposable).Dispose()
-    
-        #if INTERACTIVE
-        printfn "INTERACTIVE"
-        let fssClient = WSMessagingBroker.FStationMessaging("<FsEvaluator>", WSMessagingBroker.FSStation)
-        let queueOutput =
-            let output      = new System.Text.StringBuilder()
-            let append  txt = output.Append((if output.Length = 0 then "" else "\n") + txt) |> ignore
-            let consume ()  = let v = output.ToString()
-                              output.Clear() |> ignore
-                              v
-            Mailbox.iter (fun msg -> async {
-                match msg with
-                | Some txt -> append txt
-                | None     -> let txt2send =  consume()
-                              if  txt2send <> "" then
-                                  fssClient.RunActionCall("OutText", "actOutText", [| "+" ; txt2send |])
-                                  |> Wrap.RunSynchronously 
-                                  |> ignore
-              })
-        let queueText txt = 
-            txt |> Some |> queueOutput.Post
-            async { do! Async.Sleep 100
-                    queueOutput.Post None } |> Async.Start
-        let outHndl (txt:string) = if not silent then txt.Replace(endToken, "Done!")   |> queueText
-        let errHndl (txt:string) = if not silent then if txt <> "" then "ERR : " + txt |> queueText
-        let setFsid id ep = if id <> fssClient.FSStationId && id <> "" then fssClient.FSStationId <- id ; printfn "setFSid = %s" id
-        #else
-        let outHndl       = ignore
-        let errHndl       = ignore
-        let setFsid id ep = ()
-        #endif
-    
-        let fsiExe = lazy new ResourceAgent<_, string> (70
-                                                      , (fun config ->
-                                                              printfn "FsiExe %s" (defaultArg config "")
-                                                              new FsiExe([ "--nologo"
-                                                                           "--quiet"
-                                                                           defaultArg config ""
-                                                                         ], outHndl, errHndl))
-                                                      , (fun fsi -> (fsi :> System.IDisposable).Dispose()), (fun fsi -> fsi.IsAlive), "")
-    
-        #if INTERACTIVE
-        [< JavaScript >]
-        #endif
-        let extractConfig (code:string) = if code.StartsWith "////-d:" then code.[4..code.IndexOf '\n' - 1] else ""
-    
-        let evalFsiExe (code:string) incrUseCount =
-            Wrap.wrapper {
-                let  config = extractConfig code
-                let! resR   = fsiExe.Value.Process(fun fsi -> 
-                    Wrap.wrapper {
-                      return! fsi.Eval code 
-                    }
-                , config, incrUseCount)
-                let! res    = resR
-                return res
-            }
-            
-        let evalSilent (config:string option) fs = 
-            Wrap.wrapper {
-                silent <- true
-                let! resR   = fsiExe.Value.Process(fun fsi -> 
-                    Wrap.wrapper {
-                      return! fsi.Eval fs
-                    }
-                , config 
-                  |> Option.orElse fsiExe.Value.Configuration
-                  |> Option.defaultValue ""
-                , false)
-                let! res    = resR
-                silent <- false
-                return res
-            }
-            |> Wrap.runSynchronouslyS false 
-            |> fun s -> s.Split('\n').[0]     
-            
-        let installPresence configO = evalSilent configO """
-    module CodePresence =
-        let mutable present : Map<string, string>  = Map.empty
-        let presenceOf    k   = present |> Map.tryFind k |> Option.defaultValue "--" |> printfn "%s"
-        let addPresenceOf k v = present <- present |> Map.add k v ; printfn "ok"
-    """
-    
-        #if INTERACTIVE
-        [< Rpc >]
-        #endif
-        let addPresence (name:string) (v:string) = 
-            async {
-                let code = sprintf "CodePresence.addPresenceOf %A %A" (name.Replace("\"", "\\\"")) v
-                evalSilent None code
-                |> function
-                   | "ok" -> ()
-                   | _    -> installPresence None      |> ignore
-                             evalSilent      None code |> ignore
-            }
-        #if INTERACTIVE
-        [< Rpc >]
-        #endif
-        let getPresence config (name:string)   = 
-            async {
-                let code = sprintf "CodePresence.presenceOf    %A" (name.Replace("\"", "\\\""))
-                return
-                    evalSilent (Some config) code
-                    |> function
-                       | v when v = endToken -> installPresence (Some config) |> ignore
-                                                None
-                       | "--"                -> None
-                       | v                   -> Some v
-            }
-            
-        #if INTERACTIVE
-        [< Rpc >]
-        #endif
-        let abortFsiExe () = 
-            fsiExe.Value.Process(fun fsi -> Wrap.wrap { fsi.Abort() }) 
-            |> WAsyncR 
-            |> Wrap.toAsync
-    
-    
-    
-    //# 1 @"(4)2f12f36b-fde1-48ab-ab97-0d3ca54021cb evaluateAR.fsx"
-    //#define INTERACTIVE
-    open WebSharper
-    
-    [< Rpc >]
-    let evaluateAS (fsid:string) (ep:string) incrUseCount source =
-        async {
-            Evaluator.setFsid fsid ep
-            let!    res  = Evaluator.evalFsiExe source incrUseCount |> Wrap.getAsyncR 
-            return  res |> Result.mapMsgs (Seq.map (fun (e:ErrMsg) -> e.ErrMsg, e.IsWarning) >> Seq.toArray)
-        }
-        
-    [< JavaScript >]
-    let evaluateAR fsid ep incrUseCount source =
-        async {
-            let!   vO, msgs = evaluateAS fsid ep incrUseCount source 
-            return  Result (vO,  msgs |> Seq.map (fun (msg, wrn) -> ErrSimple(msg, wrn) :> ErrMsg) |> Seq.toList)
-        }
-    
-    [< JavaScript >]
-    let abortFsiExe () = Evaluator.abortFsiExe() |> Async.Start 
-        
-  //# 1 @"(2)6568955e-6aa8-4f8f-b93f-b7e97622c677 FsTranslator.fsx"
-  module FsTranslator =
-    //# 1 @"(4)96f91fe1-3aa2-4aa0-b04f-b428fd2f0948 TranslatorCaller.fsx"
-    module TranslatorCaller =
-        open Useful
-        open UsefulDotNet
-        open UsefulDotNet.RunProcess
-        open CompOptionsModule
-        open System
-        open System.IO
-        open System.Diagnostics
-        
-        type TranslatorExe(config) =
-            let startInfo                 = ProcessStartInfo(@"Compiled\FsTranslator\FsTranslator.exe", config |> String.concat " ")             
-            let shell                     = new ShellEx(startInfo)  // --noninteractive
-            let endToken                  = sprintf "//---------------%s-----------------" "EOF"
-            do  startInfo.CreateNoWindow <- false
-                shell.Start() |> ignore
-            member this.Translate txt =
-                Wrap.wrapper {
-                    do! Result.tryProtection()
-                    let! res1 = shell.SendAndWait(txt, endToken, true)
-                    let! res2 = if res1.EndsWith "//success" then Result.succeed res1 else Result.fail (ErrSimple ("Translator Failed", false))
-                    return res2
-                }
-            member this.IsAlive = not shell.HasExited
-            interface System.IDisposable with
-                member this.Dispose () = 
-                    (shell :> System.IDisposable).Dispose()    
-    
-        let translator = lazy new ResourceAgent<_, string> (20, (fun config -> new TranslatorExe(["++loop"; defaultArg config ""] )), (fun exe -> (exe :> System.IDisposable).Dispose()), (fun exe -> exe.IsAlive), "")
-        
-        let extractConfig (code:string[]) = if code.[0].StartsWith "////-d:" then code.[0].[4..] else ""
-    
-        let getJSW (minified:bool) (options0 : (CompOption * CompOptionValue) seq) (fsCode:string) =
-            Wrap.wrapper {
-                do!  Result.tryProtection()
-                let  code           = fsCode.Split '\n'
-                let  defines0       = (extractConfig code).Split([| " " ; "-d:" |], StringSplitOptions.RemoveEmptyEntries) 
-                let  fs, assembs, defines1, prepIs, nowarns = separatePrepros false code |> separateDirectives
-                let  defines        = Array.append defines0 defines1
-                let  codeBase       = Path.GetFullPath "bin"
-                let  name           = "Temp_" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName())
-                let  options1       = compileOptionsDll name
-                                      + opDirectory   /= Path.GetDirectoryName(codeBase)
-                                      + opWsProject   /= name
-                                     // + opIOption   /= @"D:\Abe\CIPHERWorkspace\CIPHERPrototype\WebServer\bin"
-                                      + options0
-                let  options2       = prepOptions options1 (fs, assembs, defines, prepIs, nowarns)
-                use  toErase        = new TempFileName(options2?Source)
-                let  ops            = options2.Get CompOptions.WSharperOptions
-                                      |> Seq.append [ "IGNORED" ]
-                                      |> Seq.map (sprintf "%A")
-                                      |> String.concat " "
-                let! jsR            = translator.Value.Process (fun tra -> tra.Translate ops)
-                let! js             = jsR
-                return js
-            }
-    
-    
-    
-    //# 1 @"(4)95a237c8-a9ff-40d1-bd72-bd298b20af8c translateAR.fsx"
-    open Useful
-    open WebSharper
-    
-    [< Rpc >]
-    let translateAS source minified = 
-        async {
-            let!    res  = TranslatorCaller.getJSW minified [] source |> Wrap.getAsyncR
-            return  res |> Result.mapMsgs (Seq.map (fun (e:ErrMsg) -> e.ErrMsg, e.IsWarning) >> Seq.toArray)
-        }
-        
-    [< JavaScript >]
-    let translateAR source minified = 
-        async {
-            let!   vO, msgs = translateAS source minified
-            return  Result (vO,  msgs |> Seq.map (fun (msg, wrn) -> ErrSimple(msg, wrn) :> ErrMsg) |> Seq.toList)
-        }
-        
-  //# 1 @"(2)b6577554-e62e-41ed-983e-d4dd12e3512f FSAutoCompleteIntermediary.fsx"
-  module FSAutoCompleteIntermediary =
-  
-    //# 1 @"(4)319e0842-b83e-4036-9f57-602ca4a30ac5 FSAutocompleteCall.fsx"
-    //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
-    //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
-    //#r @"..\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
-    
-    open System.Net
-    open System.Text
-    open System.IO
-    open FSharp.Data
-    open FSharp.Data.JsonExtensions
-    open Useful
-    open Useful.Result
-    open Newtonsoft.Json
-    
-    open Utils
-    
-    #if INTERACTIVE
-    [<WebSharper.JavaScript>]
-    #endif
-    module CommTypes =
-        type ResponseError =
-            {
-              Code: int
-              Message: string
-              //AdditionalData: 'T
-            }
-        type Location =
-          {
-            File: string
-            Line: int
-            Column: int
-          }
-        type CompletionResponse =
-          {
-            Name: string
-            ReplacementText: string
-            Glyph: string
-            GlyphChar: string
-          }
-        //type ProjectResponse =
-        //  {
-        //    Project: ProjectFilePath
-        //    Files: List<SourceFilePath>
-        //    Output: string
-        //    References: List<ProjectFilePath>
-        //    Logs: Map<string, string>
-        //  }
-        type OverloadDescription =
-          {
-            Signature: string
-            Comment: string
-          }
-        type OverloadParameter =
-          {
-            Name : string
-            CanonicalTypeTextForSorting : string
-            Display : string
-            Description : string
-          }
-        type Overload =
-          {
-            Tip : OverloadDescription list list
-            TypeText : string
-            Parameters : OverloadParameter list
-            IsStaticArguments : bool
-          }
-        type Parameter = {
-            Name : string
-            Type : string
-          }
-        type SignatureData = {
-            OutputType : string
-            Parameters : Parameter list list
-          }
-        type MethodResponse =
-          {
-            Name : string
-            CurrentParameter : int
-            Overloads : Overload list
-          }
-        type SymbolUseRange =
-          {
-            FileName: string
-            StartLine: int
-            StartColumn: int
-            EndLine: int
-            EndColumn: int
-            IsFromDefinition: bool
-            IsFromAttribute : bool
-            IsFromComputationExpression : bool
-            IsFromDispatchSlotImplementation : bool
-            IsFromPattern : bool
-            IsFromType : bool
-          }
-        type SymbolUseResponse =
-          {
-            Name: string
-            Uses: SymbolUseRange list
-          }
-        type HelpTextResponse =
-          {
-            Name: string
-            Overloads: OverloadDescription list list
-          }
-        type CompilerLocationResponse =
-          {
-            Fsc: string
-            Fsi: string
-            MSBuild: string
-          }
-        type FSharpErrorInfo =
-          {
-            FileName: string
-            StartLine:int
-            EndLine:int
-            StartColumn:int
-            EndColumn:int
-           // Severity:FSharpErrorSeverity
-            Message:string
-            Subcategory:string
-          }
-        type ErrorResponse =
-          {
-            File: string
-            Errors: FSharpErrorInfo []
-          }
-        type Colorization =
-          {
-        //    Range: Range
-            Kind: string
-          }
-        type Declaration =
-          {
-            UniqueName: string
-            Name: string
-            Glyph: string
-            GlyphChar: string
-            IsTopLevel: bool
-        //  Range     : Utils.Range
-        //    BodyRange : Utils.Range
-            File : string
-            EnclosingEntity: string
-            IsAbstract: bool
-          }
-        type DeclarationResponse = {
-            Declaration : Declaration;
-            Nested : Declaration []
-        }
-        type OpenNamespace = {
-          Namespace : string
-          Name : string
-          Type : string
-          Line : int
-          Column : int
-          MultipleNames : bool
-        }
-        type QualifySymbol = {
-          Name : string
-          Qualifier : string
-        }
-        type ResolveNamespaceResponse = {
-          Opens : OpenNamespace []
-          Qualifies: QualifySymbol []
-          Word : string
-        }
-        type UnionCaseResponse = {
-          Text : string
-        //  Position : Pos
-        }
-        type Kind = 
-        | KInfo             of string
-        | KError            of ResponseError
-        | KHelpText         of HelpTextResponse
-        | KCompletion       of CompletionResponse  []
-        | KSymbolUse        of SymbolUseResponse
-        | KHelp             of string
-        | KMethod           of MethodResponse
-        | KErrors           of ErrorResponse
-        | KColorizations    of Colorization list
-        | KFindDecl         of Location
-        | KDeclarations     of DeclarationResponse []
-        | KToolTip          of OverloadDescription [][]
-        | KTypeSig          of string
-        | KSignatureData    of SignatureData
-        | KCompilerLocation of CompilerLocationResponse
-        | KNamespaces       of ResolveNamespaceResponse
-        | KUnionCase        of UnionCaseResponse
-        | KMultiple         of Kind                []
-        
-        type ACMessage =
-        | ACMIdentification
-        | ACMEcho             of string
-        | ACMToolTip          of string * int * int
-        | ACMToolTip2         of string * int * int *  string
-        | ACMSignature        of string * int * int
-        | ACMSignature2       of string * int * int *  string
-        | ACMFindDeclaration  of string * int * int
-        | ACMFindDeclaration2 of string * int * int *  string
-        | ACMComplete         of string * int * int *  string
-        | ACMComplete2        of string * int * int *  string *  string
-        | ACMParse            of string * string    * (string * (int * int * int)) []
-        | ACMMustParse        of string * string
-    
-    open CommTypes
-    
-    type ParseRequest         = { FileName  : string ; IsAsync    : bool   ; Lines : string[]           ; Version : int                                            }
-    type DeclarationsRequest  = { FileName  : string ;                       Lines : string[]           ; Version : int                                            }
-    type CompletionRequest    = { FileName  : string ; SourceLine : string ; Line  : int                ; Column  : int ; Filter : string; IncludeKeywords : bool  }
-    type PositionRequest      = { FileName  : string ;                       Line  : int                ; Column  : int ; Filter : string                          }
-    type ProjectRequest       = { FileName  : string                                                                                                               }
-    type LintRequest          = { FileName  : string                                                                                                               }
-    type HelptextRequest      = { Symbol    : string                                                                                                               }
-    type WorkspacePeekRequest = { Directory : string ; Deep       : int    ; ExcludedDirs : string []                                                              }
-    
-    type FARequest =
-        | FarParse         of ParseRequest         
-        | FarDeclarations  of DeclarationsRequest  
-        | FarCompletion    of CompletionRequest    
-        | FarPosition      of PositionRequest      
-        | FarProject       of ProjectRequest       
-        | FarLint          of LintRequest          
-        | FarHelptext      of HelptextRequest      
-        | FarWorkspacePeek of WorkspacePeekRequest    
-    with
-      member this.Json =
-        match this with 
-        | FarParse         data -> JsonConvert.SerializeObject data 
-        | FarDeclarations  data -> JsonConvert.SerializeObject data 
-        | FarCompletion    data -> JsonConvert.SerializeObject data 
-        | FarPosition      data -> JsonConvert.SerializeObject data 
-        | FarProject       data -> JsonConvert.SerializeObject data 
-        | FarLint          data -> JsonConvert.SerializeObject data 
-        | FarHelptext      data -> JsonConvert.SerializeObject data 
-        | FarWorkspacePeek data -> JsonConvert.SerializeObject data    
-    
-    let fromJson<'a> json = JsonConvert.DeserializeObject(json, typeof<'a>) :?> 'a
-    let jsonData2Obj item = item?Data.ToString() |> fromJson
-    
-    let UrlAddress = "http://localhost:9001/"
-    
-    let HttpRequestCall (url:string) (data:string) =
-        async {
-            //printfn "RpcCall %s" (extract 100 data)
-            let req = WebRequest.Create(url) :?> HttpWebRequest 
-            req.Timeout         <- 300_000
-            req.ProtocolVersion <- HttpVersion.Version10
-            req.Method          <- "POST"
-            req.ContentType     <- "application/json"
-            let postBytes = Encoding.ASCII.GetBytes(data)
-            //printfn "<---\n%s\n" data
-            req.ContentLength <- int64 postBytes.Length
-            let reqStream = req.GetRequestStream() 
-            reqStream.Write(postBytes, 0, postBytes.Length);
-            reqStream.Close()
-            
-            // Obtain response and download the resulting page 
-            // (The sample contains the first & last name from POST data)
-            use resp   = req.GetResponse() 
-            use stream = resp.GetResponseStream() 
-            use reader = new StreamReader(stream)
-            let msg    = reader.ReadToEnd()
-            printfn "\n----> \n%s\n" (extract 100 msg)
-            let jsonV  = JsonValue.Parse msg
-            return       jsonV
-        }
-    
-    let KindError msg = KError { Code = 0 ; Message = msg }
-    
-    let json2Kind (v:JsonValue) = 
-        let item =JsonValue.Parse <| v.AsString()
-        match item?Kind.AsString() with
-        | "info"             -> jsonData2Obj item |> KInfo
-        | "error"            -> jsonData2Obj item |> KError
-        | "errors"           -> jsonData2Obj item |> KErrors
-        | "tooltip"          -> jsonData2Obj item |> KToolTip
-        | "typesig"          -> jsonData2Obj item |> KTypeSig
-        | "completion"       -> jsonData2Obj item |> KCompletion
-        | "signatureData"    -> jsonData2Obj item |> KSignatureData
-        | "finddecl"         -> jsonData2Obj item |> KFindDecl
-        | "compilerlocation" -> jsonData2Obj item |> KCompilerLocation
-        | _                  -> KindError <| v.ToString()
-    
-    let FSAutocompleteCall cmd f (req: FARequest) =
-        Wrap.wrapper {
-            let  data         = req.Json
-            let! jsonV        = HttpRequestCall (UrlAddress + cmd) data
-            let  several      = jsonV.AsArray() |> Array.map json2Kind
-            let  good, others = several |> Array.partition f
-            let  msgs         = others  |> Seq.map (fun v -> (v.ToString(), match v with | KInfo _ -> true | _ -> false) |> ErrSimple :> ErrMsg) |> Seq.toList
-            let! result       = Result (Seq.tryHead good, msgs) 
-            return result
-        } 
-    
-    let parseCode file code =
-        Wrap.wrapper {
-            let!  result = FSAutocompleteCall "parse" (function | KErrors _ -> true | _ -> false) <|
-                                 FarParse
-                                     { FileName   = System.IO.Path.GetFullPath file
-                                       IsAsync    = false   
-                                       Lines      = code           
-                                       Version    = 0
-                                     }
-            return result
-        } 
-    
-    let toolTip file lin col filter =
-        Wrap.wrapper {
-            let!  result = FSAutocompleteCall "tooltip" (function | KToolTip _ -> true | _ -> false) <|
-                                 FarPosition
-                                     { FileName   = System.IO.Path.GetFullPath file
-                                       Line       = lin         
-                                       Column     = col
-                                       Filter     = filter
-                                     }
-            return result
-        } 
-    
-    let signature file lin col filter =
-        Wrap.wrapper {
-            let!  result = FSAutocompleteCall "signatureData" (function | KSignatureData _ -> true | _ -> false) <|
-                                 FarPosition
-                                     { FileName   = System.IO.Path.GetFullPath file
-                                       Line       = lin         
-                                       Column     = col
-                                       Filter     = filter
-                                     }
-            return result
-        } 
-    
-    let completion file lin col lineText filter =
-        Wrap.wrapper {
-            let!  result = FSAutocompleteCall "completion" (function | KCompletion _ -> true | _ -> false) <|
-                                 FarCompletion
-                                     { FileName        = System.IO.Path.GetFullPath file
-                                       Line            = lin         
-                                       Column          = col
-                                       Filter          = filter
-                                       SourceLine      = lineText 
-                                       IncludeKeywords = false                                     
-                                     }
-            return result
-        } 
-    
-    type FsAutoCompleteErr =
-        | ``Code has not been parsed, use Parse F#``
-        | ``This snippet has not been previosuly parsed, use Parse F#``
-        | ``Cached typecheck results not yet available``
-        | ``Error FileCheckerOptions`` of string
-    with interface ErrMsg with
-            member this.ErrMsg    = match this with | msg -> sprintf "%A" msg
-            member this.IsWarning = false    
-            
-    /// this converts from Result to Rop.Result
-    let fromResult' f = 
-        function 
-        | Failure s  -> Result.fail <| f s
-        | Success v  -> Result.succeed v
-    
-    type Responder2() =
-        //let commands = Commands()
-        let starts : Map<string, Map<string, int * int * int>> ref = ref Map.empty
-        
-        let getDelta fname snpIdO =
-            Wrap.wrapper {
-                do!  Result.tryProtection()
-                let  file = System.IO.Path.GetFullPath fname
-                match snpIdO with
-                | Some snpId -> let! fileMap          = (!starts) |> Map.tryFind file         |> Result.fromOption ``Code has not been parsed, use Parse F#``
-                                let! ind, first, last = fileMap   |> Map.tryFind snpIdO.Value |> Result.fromOption ``This snippet has not been previosuly parsed, use Parse F#``
-                                return file, first, ind
-                | None       -> return file, 0    , 0 
-            }
-        let getDeltaBack fname line =
-            Wrap.wrapper {
-                do!  Result.tryProtection()
-                let  file             = System.IO.Path.GetFullPath fname
-                let! fileMap          = (!starts) |> Map.tryFind file |> Result.fromOption ``Code has not been parsed, use Parse F#``
-                let! snp, first, ind  = fileMap 
-                                        |> Seq.map     (fun kv -> kv.Key, kv.Value) 
-                                        |> Seq.tryPick (fun (snp, (ind, first, last)) -> if line >= first && line < last then Some (snp, first, ind) else None) 
-                                        |> Result.fromOption ``This snippet has not been previosuly parsed, use Parse F#``
-                return snp, first, ind                        
-            }
-        let mustParse fname snpId =
-            getDelta  fname (Some snpId)
-            |> Wrap.map              (fun _ -> false)
-            |> Wrap.RunSynchronouslyR 
-            |> Result.withError      (fun _ -> true )
-    
-        let findDeclaration file lin col filter =
-            Wrap.wrapper {
-                File.WriteAllText(file, " ")
-                let!  result = FSAutocompleteCall "finddeclaration" (function | KFindDecl _ -> true | _ -> false) <|
-                                     FarPosition
-                                         { FileName   = System.IO.Path.GetFullPath file
-                                           Line       = lin         
-                                           Column     = col
-                                           Filter     = filter
-                                         }
-                File.Delete file                         
-                match result with
-                | KFindDecl decl -> let! snp, dln, dcol = getDeltaBack decl.File decl.Line
-                                    let resultAdj = 
-                                     {  File    = snp
-                                        Line    = decl.Line   - dln
-                                        Column  = decl.Column - dcol
-                                     } |> KFindDecl
-                                    return resultAdj
-                | _              -> return result
-            } 
-    
-        let getPosition (getKind: string -> int -> int -> string -> Wrap<Kind>) fname ln col (snpIdO:string option) =
-            Wrap.wrapper {
-                let! file, dln, dcol = getDelta fname snpIdO
-                let! res             = getKind fname (ln + dln) (col + dcol) ""
-                return res
-            } 
-            |> Wrap.RunSynchronouslyR
-            |> Result.withError (Result.getMessages >> KindError)
-    
-        let getCompletion fname ln col lineText (snpIdO:string option) =
-            Wrap.wrapper {
-                let! file, dln, dcol = getDelta fname snpIdO
-                let! res             = completion fname (ln + dln) (col + dcol) ((String.replicate dcol " ") + lineText) "Contains"
-                return res
-            } 
-            |> Wrap.RunSynchronouslyR
-            |> Result.withError (Result.getMessages >> KindError)
-            
-        member this.Respond (msg:ACMessage) =
-            match msg with
-            | ACMIdentification              -> KInfo "FSAutoCompleteIntermedirary"
-            | ACMEcho   txt                  -> KInfo txt 
-            | ACMMustParse(fname, snpId    ) -> mustParse fname snpId |> sprintf "%b" |> KInfo
-            | ACMParse    (fname, code, sts) ->
-                async {
-                    let  file = System.IO.Path.GetFullPath (fname)
-                    do   starts := !starts |> Map.add file (Map sts)
-                    //printfn "\n%A\n" sts
-                    let! errors = parseCode file (code.Split '\n') |> Wrap.getAsync
-                    let  fixedErrors =
-                        match errors with
-                        | KErrors ers -> 
-                              KErrors { ers with 
-                                          Errors = ers.Errors 
-                                            |> Array.map (fun err ->
-                                              sts 
-                                              |> Array.tryFind (fun (snpNm, (ind, first, last)) -> err.StartLine >= first && err.StartLine < last)
-                                              |> Option.map    (fun (snpNm, (ind, first, last)) -> 
-                                                  { err with FileName    = snpNm
-                                                             StartLine   = err.StartLine   - first
-                                                             EndLine     = err.EndLine     - first
-                                                             StartColumn = err.StartColumn - ind
-                                                             EndColumn   = err.EndColumn   - ind   }) 
-                                              |> Option.defaultValue err)
-                                      } 
-                        | _ -> errors
-                    return fixedErrors 
-                }
-                |> Async.RunSynchronously
-            | ACMToolTip         (fname, ln, col)             -> getPosition   toolTip         fname ln col None
-            | ACMToolTip2        (fname, ln, col,      snpId) -> getPosition   toolTip         fname ln col (Some snpId)
-            | ACMSignature       (fname, ln, col)             -> getPosition   signature       fname ln col None
-            | ACMSignature2      (fname, ln, col,      snpId) -> getPosition   signature       fname ln col (Some snpId)
-            | ACMFindDeclaration (fname, ln, col)             -> getPosition   findDeclaration fname ln col None
-            | ACMFindDeclaration2(fname, ln, col,      snpId) -> getPosition   findDeclaration fname ln col (Some snpId)
-            | ACMComplete        (fname, ln, col, txt)        -> getCompletion                 fname ln col txt None
-            | ACMComplete2       (fname, ln, col, txt, snpId) -> getCompletion                 fname ln col txt (Some snpId)
-    
-    
-    //# 1 @"(4)466e6783-0751-48d5-b79b-165aaa7d2173 FSAutoCompleteIntermediaryClient.fsx"
-    open Useful
-    //open FsStationShared
-    open WSMessagingBroker
-    open WebSharper
-    open WebSharper.Remoting
-    
-    #if INTERACTIVE
-    
-    let responder = Responder2()
-    
-    [< Rpc >]
-    let sendMessageRpc msg = async { return responder.Respond msg }
-    
-    [< JavaScript >]
-    let sendMessage  (msg:ACMessage) : Async<Kind> = 
-        async {
-            let!   res = sendMessageRpc (msg |> box |> unbox)
-            return res                       |> box |> unbox
-        }
-    #endif
-    
-    #if INTERACTIVE
-    [< JavaScript >]
-    #endif
-    type FSAutoCompleteIntermediaryClient(clientId, ?endPoint:string) =
-         #if INTERACTIVE
-         #else
-         let msgClient = new WSMessagingClient(clientId, ?endPoint = endPoint)
-         let toId      = Address "FSAutoComplete"
-         let sendMessage (msg:ACMessage) : Async<Kind> = msgClient.SendGetReply toId msg |> Wrap.getAsyncWithDefault (Result.getMessages >> KInfo)
-         #endif
-         let Async_map f aa = 
-             async { 
-                 let! a = aa
-                 return f a
-             }
-         let rec comp2Strings comp =
-             match comp with 
-             | KCompletion cs -> cs |> Array.map (fun cs -> cs.Name, cs.ReplacementText, cs.Glyph, cs.GlyphChar)
-             | KHelpText   _  -> [||]
-             | KMultiple   ks -> ks |> Array.collect comp2Strings 
-             | m              -> [| sprintf "%A" m, "", "ErrorMsg", "E" |] 
-         let tip2String tip =
-             match tip with 
-             | KToolTip ts -> ts |> Seq.collect id |> Seq.collect (fun t -> [ t.Signature ; t.Comment ] ) |> String.concat "\n"
-             | m           -> sprintf "%A" m 
-         let errors2String errs =
-             match errs with 
-             | KErrors  es -> 
-                 es.Errors 
-                 |> Seq.map (fun er -> sprintf "ErrFSharp \"F# %s.fsx (%d,%d) - (%d,%d) %s:%s\"" 
-                                          er.FileName er.StartLine er.StartColumn er.EndLine er.EndColumn er.Subcategory er.Message) 
-                 |> String.concat "\n"
-             | m           -> sprintf "%A" m 
-         let info2Bool inf =
-             match inf with
-             | KInfo "true" -> true
-             | _            -> false
-            
-       with
-         member this.MustParse(fname,                 sId) = sendMessage (ACMMustParse       (fname,                  sId)) |> Async_map info2Bool
-         member this.Parse    (fname, txt , sts          ) = sendMessage (ACMParse           (fname, txt , sts           )) |> Async_map errors2String
-         member this.Parse    (fname, txt                ) = sendMessage (ACMParse           (fname, txt , [||]          )) |> Async_map errors2String
-         member this.ToolTip  (fname, line, col          ) = sendMessage (ACMToolTip         (fname, line, col           )) |> Async_map tip2String
-         member this.ToolTip  (fname, line, col,      sId) = sendMessage (ACMToolTip2        (fname, line, col ,      sId)) |> Async_map tip2String
-         member this.Complete (fname, txt, line, col     ) = sendMessage (ACMComplete        (fname, line, col , txt     )) |> Async_map comp2Strings
-         member this.Complete (fname, txt, line, col, sId) = sendMessage (ACMComplete2       (fname, line, col , txt, sId)) |> Async_map comp2Strings
-         member this.FindDecl (fname, line, col          ) = sendMessage (ACMFindDeclaration (fname, line, col           )) |> Async_map id
-         member this.FindDecl (fname, line, col,      sId) = sendMessage (ACMFindDeclaration2(fname, line, col ,      sId)) |> Async_map id
-    
-//# 1 @"7479dc9d-94cd-4762-a1b8-cf6e09436c3f WebSharper Code.fsx"
+// # 1  @"7479dc9d-94cd-4762-a1b8-cf6e09436c3f WebSharper Code.fsx"
 //#define INTERACTIVE
 (*
  Code to be Compiled to Javascript and run in the browser
  using `Compile WebSharper` or `Run WebSharper`
 *)
 
-  //# 1 @"(2)495bce0a-4fb6-48fa-9158-c242d5965baa HtmlNode.fsx"
+  // # 1  @"(2)495bce0a-4fb6-48fa-9158-c242d5965baa HtmlNode.fsx"
   
   [<JavaScript>]
   module HtmlNode      =
   
-    //# 1 @"(4)0f5719f0-e95e-498d-ab88-f89ff1440e32 Val.fsx"
+    // # 1  @"(4)0f5719f0-e95e-498d-ab88-f89ff1440e32 Val.fsx"
     [<NoComparison>]
     type Val<'a> =
         | Constant  of 'a
@@ -2974,8 +813,8 @@ namespace FSSGlobal
             | _ when o?get_ValTypeMember() = 0 -> o |> As<Val<string>> 
             | _                       -> failwith <| sprintf "Could not convert %A" o
     
-        [< Direct "$f($v)" >]
-        let inline fixitF f v = HelperType &> v
+        [< Direct "$_f($v)" >]
+        let inline fixitF _f v = HelperType &> v
         let inline fixit    v = fixitF toVal v
     
         let [<Inline>] inline bindIRef0 (f: 'a->IRef<'b>) (view: View<'a>) = 
@@ -3045,15 +884,16 @@ namespace FSSGlobal
         
         let valFlow = valBuilder()
     
-    //# 1 @"(4)d9124644-0af6-4a7f-a711-ef76ca77f0de HtmlNode.fsx"
+    // # 1  @"(4)d9124644-0af6-4a7f-a711-ef76ca77f0de HtmlNode.fsx"
     [<NoComparison ; NoEquality>]
     type HtmlNode =
         | HtmlElement    of name: string * children: HtmlNode seq
+        | HtmlElementF   of func:(Attr seq -> Doc seq -> Doc) * children: HtmlNode seq
+        | HtmlElementV   of Val<HtmlNode>
         | HtmlAttribute  of name: string * value:    Val<string>
         | HtmlAttributeO of name: string * value:    Val<string option>
         | HtmlText       of Val<string>
         | HtmlEmpty
-        | HtmlElementV   of Val<HtmlNode>
         | SomeDoc        of Doc
         | SomeAttr       of Attr
         
@@ -3092,9 +932,10 @@ namespace FSSGlobal
     let rec chooseNode node =
         match node with
         | HtmlElement (name, children) -> Some <| (Doc.Element name (getAttrsFromSeq children) (children |> Seq.choose chooseNode) :> Doc)
+        | HtmlElementF(func, children) -> Some <| (func             (getAttrsFromSeq children) (children |> Seq.choose chooseNode)       )
+        | HtmlElementV vnode           -> Some <| (vnode |> Val.toView |> Doc.BindView (chooseNode >> Option.defaultValue Doc.Empty))
         | HtmlText     vtext           -> Some <| Val.tagDoc WebSharper.UI.Next.Html.text vtext
         | SomeDoc      doc             -> Some <| doc
-        | HtmlElementV vnode           -> Some <| (vnode |> Val.toView |> Doc.BindView (chooseNode >> Option.defaultValue Doc.Empty))
         | _                            -> None
     
     let getAttrChildren attr =
@@ -3128,6 +969,7 @@ namespace FSSGlobal
     //let replaceAtt att node newVal = mapHtmlElement (fun n ch -> n, replaceAttribute att ch newVal |> Seq.ofList) node
     
     let inline htmlElement    name ch = HtmlElement   (name, ch           )
+    let inline htmlElementF   func ch = HtmlElementF  (func, ch           )
     let inline htmlAttribute  name v  = HtmlAttribute (name, Val.fixit v  )
     let inline htmlAttributeO name v  = HtmlAttributeO(name, Val.fixit v  )
     let inline htmlText       txt     = HtmlText      (      Val.fixit txt)
@@ -3148,7 +990,7 @@ namespace FSSGlobal
     let rec indent2Level lvl chn  (ps:HtmlNode list) =
         match ps with
         | l when l.Length < lvl -> chn :: l
-        | l                     -> indent2Level lvl chn <| out ps        
+        | _                     -> indent2Level lvl chn <| out ps        
     
     type HtmlNode with
         member inline this.toDoc = 
@@ -3183,16 +1025,16 @@ namespace FSSGlobal
     
     let rec finishO (ps:HtmlNode list) =
         match ps with
-        | [ ]            -> None
-        | [h]            -> Some h
-        | h :: p :: tail -> finishO <| out ps        
+        | [ ]               -> None
+        | [h]               -> Some h
+        | _h :: _p :: _tail -> finishO <| out ps        
     
     let endHtmlIndent ps = finishO ps |> Option.defaultWith (fun () -> htmlText "Malformed HTMLNode")
     let ( !! ) (p:HtmlNode seq -> HtmlNode) l = [ p l ]
     
     let renderDoc = chooseNode >> Option.defaultValue Doc.Empty
         
-    //# 1 @"(4)c3755c07-1385-495d-bad7-a5b0fa54ac9b HTML Elements & Attributes.fsx"
+    // # 1  @"(4)c3755c07-1385-495d-bad7-a5b0fa54ac9b HTML Elements & Attributes.fsx"
     let inline atr att v = Val.attrV  att (Val.fixit v)
     let inline tag tag v = Val.tagDoc tag (Val.fixit v)
     
@@ -3251,6 +1093,7 @@ namespace FSSGlobal
     let inline spellcheck  v  = htmlAttribute  "spellcheck"  v
     let inline draggable   v  = htmlAttribute  "draggable"   v
     let inline style       v  = htmlAttribute  "style"       v
+    let inline placeholder v  = htmlAttribute  "placeholder" v
     
     let inline style1    n v  = style <| Val.map ((+) (n + ":")) v
     
@@ -3309,126 +1152,12 @@ namespace FSSGlobal
             then root.FirstChild :?> Dom.Element
             else root?body  |> unbox<Dom.Element>
     
-    //# 1 @"(4)336d6f19-0c57-4af9-8716-1b3fbf6b112c storeVar.fsx"
-    [< Inline >]
-    let inline storeVar<'T> storeName (var:IRef<_>) =
-        JS.Window.LocalStorage.GetItem storeName |> fun v -> if v <> null then           var.Value <- Json.Deserialize<'T> v
-        Val.sink (fun v -> JS.Window.LocalStorage.SetItem (storeName, Json.Serialize v)) var
-    
-    
-    //# 1 @"(4)1f1aa135-fd74-42cc-b9a5-87f380c113a9 LoadFiles.fsx"
-    [< Inline "CIPHERSpaceLoadFiles($files, $cb)" >]
-    let LoadFiles (files: string []) (cb: unit -> unit) : unit = X<_>
-    
-    let LoadFilesAsync (files: string []) =
-        Async.FromContinuations <| 
-            fun (cont, econt, ccont) -> 
-                try 
-                    LoadFiles files cont
-                with e -> econt e
-    
-    
-  //# 1 @"(2)3709b431-1507-48ed-9487-dd49ce7be748 open HtmlNode.fsx"
+  // # 1  @"(2)3709b431-1507-48ed-9487-dd49ce7be748 open HtmlNode.fsx"
   open HtmlNode
-  //# 1 @"(2)e9ac2d66-474a-46a6-95fa-d369e6d703d1 Template.fsx"
+  // # 1  @"(2)e9ac2d66-474a-46a6-95fa-d369e6d703d1 Template.fsx"
   [<JavaScript>]
   module Template      =
-    //# 1 @"(4)5e1dd5fc-a27c-4b0d-821a-06cc8a27bb82 Button.fsx"
-    [<NoComparison ; NoEquality>]
-    type Button = {
-        _class  : Val<string>
-        _type   : Val<string>
-        style   : Val<string>
-        text    : Val<string>
-        onClick : Dom.Element -> Dom.MouseEvent -> unit
-        disabled: Val<bool>
-        id      : string
-    } with
-      static member inline New txt = 
-          { _class   = Val.fixit "btn" 
-            _type    = Val.fixit "button" 
-            style    = Val.fixit ""
-            text     = Val.fixit txt
-            onClick  = fun _ _ -> ()
-            disabled = Val.fixit false
-            id       = ""
-          }
-      member        this.Render     =         
-        button [ ``type``  <| this._type
-                 ``class`` <| this._class
-                 Id        <| this.id  
-                 style     <| this.style
-                 SomeAttr  <| attr.disabledDynPred (View.Const "") (this.disabled |> Val.toView)
-                 SomeAttr  <| on.click <@ this.onClick @>
-                 HtmlText  <| this.text 
-               ] 
-        |> renderDoc |> SomeDoc
-      member inline this.Id          id   = { this with id       = id             }
-      member inline this.Class       clas = { this with _class   = Val.fixit clas }
-      member inline this.Type        typ  = { this with _type    = Val.fixit typ  }
-      member inline this.Style       sty  = { this with style    = Val.fixit sty  }
-      member inline this.Text        txt  = { this with text     = Val.fixit txt  }
-      member inline this.Disabled    dis  = { this with disabled = Val.fixit dis  }
-      member inline this.OnClick     f    = { this with onClick  = f              }
-    //# 1 @"(4)29c4d6ae-2bb7-457a-ba64-fcb7cce96a30 Input.fsx"
-    [<NoComparison ; NoEquality>]
-    type Input = {
-        _type       : Val<string>
-        _class      : Val<string>
-        style       : Val<string>
-        placeholder : Val<string>
-        id          : string
-        var         : IRef<string>
-        prefix      : HtmlNode
-        suffix      : HtmlNode
-        content     : Attr seq
-        prefixAdded : bool
-        suffixAdded : bool
-    } with
-      static member  New(var) = { _class      = Val.fixit "form-control" 
-                                  _type       = Val.fixit "text" 
-                                  style       = Val.fixit "" 
-                                  placeholder = Val.fixit "Enter text:"
-                                  id          = ""
-                                  content     = []
-                                  prefix      = HtmlEmpty
-                                  prefixAdded = false
-                                  suffix      = HtmlEmpty
-                                  suffixAdded = false
-                                  var         = var   
-                                }
-      static member  New(v)   = Input.New(Var.Create v)
-      member        this.Render    =         
-        let groupClass det = match det with HtmlText _  -> "input-group-addon" | _ -> "input-group-btn"
-        div [
-            if this.prefixAdded || this.suffixAdded then
-                yield ``class`` "input-group"
-            if this.prefixAdded then
-                yield  span     [ ``class`` <| groupClass this.prefix 
-                                  this.prefix       ]
-            yield Doc.Input ([_type            this._type
-                              _class           this._class
-                              _style           this.style
-                              attr.id          this.id  
-                              _placeholder     this.placeholder ] |> Seq.append this.content)
-                              this.var
-                  :> Doc |> SomeDoc
-            if this.suffixAdded then
-                yield  span     [ ``class`` <| groupClass this.suffix 
-                                  this.suffix       ]
-          ]
-      member inline this.Class       clas = { this with _class      = Val.fixit clas                  }
-      member inline this.Type        typ  = { this with _type       = Val.fixit typ                   }
-      member inline this.Style       sty  = { this with style       = Val.fixit sty                   }
-      member inline this.Placeholder plc  = { this with placeholder = Val.fixit plc                   }
-      member inline this.Id          id   = { this with id          =       id                        }
-      member inline this.Content     c    = { this with content     =       c                         }
-      member inline this.Prefix      p    = { this with prefix      =       p    ; prefixAdded = true }
-      member inline this.Prefix      p    = this.Prefix(htmlText p)
-      member inline this.Suffix      s    = { this with suffix      =       s    ; suffixAdded = true }
-      member inline this.SetVar      v    = { this with var         = v                               }
-      member inline this.Var              = this.var
-    //# 1 @"(4)c7841be7-5cd5-40f3-b91c-c107b487bc0c Hoverable.fsx"
+    // # 1  @"(4)c7841be7-5cd5-40f3-b91c-c107b487bc0c Hoverable.fsx"
     [<NoComparison ; NoEquality>]
     type Hoverable = {
         hover      : IRef<bool>
@@ -3455,1182 +1184,53 @@ namespace FSSGlobal
       
     let hoverable (c:HtmlNode) = Hoverable.New.Content c
     
-    //# 1 @"(4)3234a0bf-4541-4f2c-8bbf-b5ab3a0e415b TextArea.fsx"
+    // # 1  @"(4)0a11766b-f227-4b38-88a3-919d964387bf Panel.fsx"
     [<NoComparison ; NoEquality>]
-    type TextArea = {
-        _class      : Val<string>
-        placeholder : Val<string>
-        title       : Val<string>
-        spellcheck  : Val<bool>
-        id          : string
-        var         : IRef<string>
+    type Panel = {
+        _class   : Val<string>
+        _style   : Val<string>
+        title    : Val<string>
+        header   : HtmlNode seq
+        content  : HtmlNode seq
+        disabled : Val<bool>
     } with
-      static member  New(var) = { _class      = Val.fixit "form-control"
-                                  placeholder = Val.fixit "Enter text:"
-                                  title       = Val.fixit ""
-                                  spellcheck  = Val.fixit false
-                                  id          = ""
-                                  var         = var 
-                                }
-      static member  New(v)   = TextArea.New(Var.Create v)
-      member        this.RenderWith  more  =    
-        Doc.InputArea
-            ([ 
-              _class              this._class
-              attr.id             this.id  
-              atr "spellcheck" <| Val.map (fun spl -> if spl then "true" else "false") this.spellcheck
-              atr "title"         this.title
-              atr "style"        "height: 100%;  width: 100%; box-sizing: border-box; "
-              _placeholder        this.placeholder 
-            ] @ more)
-            this.var
-        |> someElt 
-        |> Seq.singleton 
-        //|> Seq.append [ style "height: 100%;  width: 100%; box-sizing: border-box; " ] 
-        |> div
-      member        this.Render           = this.RenderWith []    
-      member inline this.Class       clas = { this with _class      = Val.fixit clas }
-      member inline this.Placeholder plc  = { this with placeholder = Val.fixit plc  }
-      member inline this.Title       ttl  = { this with title       = Val.fixit ttl  }
-      member inline this.Spellcheck  spl  = { this with spellcheck  = spl            }
-      member inline this.Id          id   = { this with id          = id             }
-      member inline this.SetVar      v    = { this with var         = v              }
-      member inline this.Var              = this.var
-      
-    //# 1 @"(4)4180353c-9dc5-438d-862d-851539b02075 codeMirrorIncludes.fsx"
-    let codeMirrorIncludes =
-       [| "/EPFileX/codemirror/scripts/codemirror/codemirror.js"             
-          "/EPFileX/codemirror/scripts/intellisense.js"                      
-          "/EPFileX/codemirror/scripts/codemirror/codemirror-intellisense.js"
-          "/EPFileX/codemirror/scripts/codemirror/codemirror-compiler.js"    
-          "/EPFileX/codemirror/scripts/codemirror/mode/none.js"            
-          "/EPFileX/codemirror/scripts/codemirror/mode/fsharp.js"            
-          "/EPFileX/codemirror/scripts/codemirror/mode/css.js"            
-          "/EPFileX/codemirror/scripts/codemirror/mode/javascript.js"            
-          "/EPFileX/codemirror/scripts/codemirror/mode/markdown.js"            
-          "/EPFileX/codemirror/scripts/addon/search/searchcursor.js"          
-          "/EPFileX/codemirror/scripts/addon/search/search.js"          
-          "/EPFileX/codemirror/scripts/addon/search/jump-to-line.js"          
-          "/EPFileX/codemirror/scripts/addon/dialog/dialog.js"          
-          "/EPFileX/codemirror/scripts/addon/edit/matchbrackets.js"          
-          "/EPFileX/codemirror/scripts/addon/selection/active-line.js"       
-          "/EPFileX/codemirror/scripts/addon/display/fullscreen.js"          
-          "/EPFileX/codemirror/scripts/addon/hint/show-hint.js"          
-          "/EPFileX/codemirror/scripts/addon/lint/lint.js"          
-       |]
-    //# 1 @"(4)b03ba35c-a03c-4bbe-a373-1ce551524e56 CodeMirror.fsx"
-    type CodeMirrorPos = { line: int ; ch  : int }
-    let inline cmPos(l, c) = { line = l ; ch  = c }
+      static member  New   = { _class   = Val.fixit <| "panel panel-default shadow"
+                               _style   = Val.fixit <| "text-align:center" 
+                               title    = Val.fixit <| "Panel"        
+                               header   =          [ htmlText "Some text"    ] 
+                               content  =          [ htmlText "Some Content" ] 
+                               disabled = Val.fixit <| Var.Create false
+                             }
+      member        this.Render          =  
+        fieldset [ SomeAttr <| attr.disabledDynPred (View.Const "")  (this.disabled |> Val.toView)
+                   div [ ``class`` this._class
+                         div (Seq.append
+                                  [ ``class`` "panel-heading"
+                                    label [ ``class``  "panel-title text-center" ; htmlText this.title ]
+                                  ]
+                                  this.header)
     
-    type CodeMirrorEditor() =
-        let a = 1
-      with
-        [< Inline "CodeMirror($elt, {
-    	    theme        : 'rubyblue'
-    	  , lineNumbers  : true
-    	  , matchBrackets: true
-          , gutters      : ['CodeMirror-lint-markers']
-          , extraKeys    : {
-    		    Tab  : function (cm) { cm.replaceSelection('    ', 'end'); }
-    		  , 'F11': function (cm) { cm.setOption('fullScreen', !cm.getOption('fullScreen')); }
-            }
-    })"    >]
-    //    [< Inline "setupEditor($elt)" >]
-        static member SetupEditor elt                                     : CodeMirrorEditor = X<_>
-        [< Inline "$this.getValue()"              >]      
-        member this.GetValue()                                            : string           = X<_>
-        [< Inline "$this.setValue($v)"            >]      
-        member this.SetValue(v:string)                                    : unit             = X<_>
-        [< Inline "$this.refresh()"               >]      
-        member this.Refresh()                                             : unit             = X<_>
-        [< Inline "$this.setOption($o, $v)"       >]      
-        member this.SetOption(o:string, v:obj)                            : unit             = X<_>
-        [< Inline "$this.getCursor()"             >]      
-        member this.GetCursor()                                           : CodeMirrorPos    = X<_>
-        [< Inline "$this.setCursor($line, $col)"  >]      
-        member this.SetCursor(line:int, col:int)                          : unit             = X<_>
-        [< Inline "$this.focus()"                 >]      
-        member this.Focus()                                               : unit             = X<_>
-        [< Inline "$this.getLine($l)"             >]      
-        member this.GetLine(l:int)                                        : string           = X<_>
-        [< Inline "$this.getDoc().markText({line:$fl, ch:$fc}, {line:$tl, ch:$tc}, {className: $className, title: $title})" >]
-        member this.MarkText (fl:int, fc:int) (tl:int, tc:int) (className: string) (title: string): unit       = X<_>
-        [< Inline "while($this.getAllMarks().length > 0) { $this.getAllMarks()[0].clear() }" >]
-        member this.RemoveMarks() : unit       = X<_>
-        [< Inline "$this.getDoc().clearHistory()" >]
-        member this.ClearHistory()                                        : unit             = X<_>
-        [< Inline "$this.on($event, $f)"          >]
-        member this.On(event: string, f:(CodeMirrorEditor * obj) -> unit) : unit             = X<_>
-        [< Inline "$this.addKeyMap($keyMap)"      >]
-        member this.AddKeyMap(keyMap: obj)                                : unit              = X<_>
-        [< Inline "$this.getWrapperElement()"     >]
-        member this.GetWrapperElement()                                   : Dom.Element       = X<_>
-        [< Inline "$this.replaceSelection($v, $s)" >]
-        member this.ReplaceSelection(v:string, s:string)                                      = ()
+                         div (Seq.append
+                                  [ ``class`` "panel-body"
+                                    style     this._style 
+                                  ]
+                                  this.content)
+                       ] 
+                 ]
+      member inline this.Class       clas = { this with _class   = Val.fixit clas }
+      member inline this.Style       sty  = { this with _style   = Val.fixit sty  }
+      member inline this.Title       txt  = { this with title    = Val.fixit txt  }
+      member inline this.Header      h    = { this with header   =       h        }
+      member inline this.Content     c    = { this with content  =       c        }
+      member inline this.Disabled    dis  = { this with disabled =       dis      }
     
-    [<NoComparison ; NoEquality>]
-    type CodeMirror = {
-        _class          : Val<string>
-        style           : Val<string>
-        id              : string
-        var             : IRef<string>
-        onChange        : (unit             -> unit)
-        onRender        : (CodeMirrorEditor -> unit) option
-        mutable editorO : CodeMirrorEditor option
-    } with
-    
-      static member  New(var) = 
-          { _class   = Val.fixit "" 
-            style    = Val.fixit "" 
-            id       = ""
-            var      = var 
-            onChange = ignore
-            onRender = None
-            editorO  = None
-          }
-      static member  New(v)   = CodeMirror.New(Var.Create v)
-      member        this.Render    =
-        div [ 
-              ``class``            this._class
-              SomeAttr <| attr.id  this.id 
-              style "position: relative; height: 300px"
-              style                this.style
-              div [
-                    style "height: 100%; width: 100%; position: absolute;"
-                    SomeAttr <| on.afterRender (fun el ->
-                      LoadFiles codeMirrorIncludes
-                        (fun () ->                       
-                           let editor        = CodeMirrorEditor.SetupEditor el
-                           this.editorO     <- Some editor
-                           this.onRender |> Option.iter (fun onrender -> onrender editor)
-                           let editorChanged = ref 0L
-                           let varChanged    = ref 0L
-                           editor.On("changes", fun (cm, change) ->
-                               let v = editor.GetValue() 
-                               if this.var.Value <> v then editorChanged := !editorChanged + 1L; this.var.Value <- v; this.onChange() 
-                           )
-                           this.var.View |> View.Sink (fun _ ->
-                               if  !editorChanged      > !varChanged    then varChanged := !editorChanged
-                               elif editor.GetValue() <> this.var.Value then editor.SetValue this.var.Value ; editor.ClearHistory()
-                           )
-                        )
-                    )    
-                  ]
-              link [ href "/EPFileX/codemirror/content/editor.css"                   ; ``type`` "text/css" ; rel "stylesheet" ]
-              link [ href "/EPFileX/codemirror/content/codemirror.css"               ; ``type`` "text/css" ; rel "stylesheet" ]
-              link [ href "/EPFileX/codemirror/scripts/addon/display/fullscreen.css" ; ``type`` "text/css" ; rel "stylesheet" ]
-              link [ href "/EPFileX/codemirror/scripts/addon/dialog/dialog.css"      ; ``type`` "text/css" ; rel "stylesheet" ]
-              link [ href "/EPFileX/codemirror/scripts/addon/hint/show-hint.css"     ; ``type`` "text/css" ; rel "stylesheet" ]
-              link [ href "/EPFileX/codemirror/scripts/addon/lint/lint.css"          ; ``type`` "text/css" ; rel "stylesheet" ]
-              css  ".CodeMirror { height: 100% }"
-         ]
-      member inline this.Class    clas = { this with _class    = Val.fixit clas }
-      member inline this.Id       id   = { this with id        =       id       }
-      member inline this.SetVar   v    = { this with var       = v              }
-      member inline this.Style    sty  = { this with style     = Val.fixit sty  }
-      member inline this.OnChange f    = { this with onChange  = f              }
-      member inline this.OnRender f    = { this with onRender  = Some f         }
-      member inline this.Var           = this.var
-    
-    //# 1 @"(4)a05dd36e-a15e-4394-8013-128e21e69574 CodeMirror Hints.fsx"
-    
-    type Hint = {
-        text        : string
-        displayText : string
-        className   : string
-    }
-    
-    type HintResponse  = {
-        list           : Hint []
-        from           : CodeMirrorPos   
-        ``to``         : CodeMirrorPos   
-    }
-    
-    type HintFunc      = FuncWithArgs<CodeMirrorEditor * (HintResponse -> unit) * obj,  unit>
-    
-    type HintOptions   = {
-        hint           : HintFunc
-        completeSingle : bool   
-        container      : Dom.Element
-    }
-    
-    [< Inline "($v.hint.async = 1, $ed.showHint($v))"          >]
-    let showHint_ (ed:CodeMirrorEditor) v   : unit       = X<_>
-    let showHints (ed:CodeMirrorEditor) getHints completeSingle _ =
-        showHint_ ed
-            {  completeSingle = completeSingle
-               hint           = HintFunc getHints
-               container      = ed.GetWrapperElement() |> findRootElement
-            }
-    
-    //# 1 @"(4)18d8153d-422c-42f6-8266-9a9d854bd6a1 CodeMirror Lint.fsx"
-    type LintResponse  = {
-        message        : string
-        severity       : string
-        from           : CodeMirrorPos   
-        ``to``         : CodeMirrorPos   
-    }
-    
-    type LintFunc      = FuncWithArgs<string * (LintResponse[] -> unit) * obj * CodeMirrorEditor,  unit>
-    
-    [< Inline "($ed.setOption('lint', { async: 1, getAnnotations: $f, container: $elm }))"          >]
-    let setLint_(ed:CodeMirrorEditor) (f:LintFunc) (elm:Dom.Element)  : unit = X<_>
-    let setLint (ed:CodeMirrorEditor) getAnnotations       = 
-        setLint_ ed (LintFunc getAnnotations) (ed.GetWrapperElement() |> findRootElement)
-    
-    
-    //# 1 @"(4)70030378-692d-431d-bed9-c839a7f95798 SplitterBar.fsx"
-    [<NoComparison ; NoEquality>]
-    type HtmlMeasure =
-    | Percentage of Val<float>
-    | Pixel      of Val<float>
-    
-    [<NoComparison ; NoEquality>]
-    type SplitterBar = {
-        value            : IRef<float>
-        min              : Val<float>
-        max              : Val<float>
-        vertical         : Val<bool>
-        node             : HtmlNode
-        children         : HtmlNode seq
-        after            : bool
-        mutable dragging : bool
-        mutable startVer : bool 
-        mutable startP   : float 
-        mutable start    : float 
-        mutable size     : float 
-        mutable domElem  : Dom.Element option
-    }
-    with
-        static member New(var) = 
-            {
-                value    = var
-                min      = Val.fixit   5.0
-                max      = Val.fixit  95.0
-                vertical = Val.fixit  true  
-                node     = div [ ``class`` "Splitter" ]
-                children = []
-                after    = true
-                dragging = false
-                startVer = true
-                startP   = 0.0
-                start    = 0.0
-                size     = 0.0
-                domElem  = None
-            }
-        static member New(value)    = SplitterBar.New(Var.Create value)
-        member        this.Var      = this.value
-        member        this.GetValue = this.value |> Val.map2 max this.min |> Val.map2 min this.max
-        member        this.Render   =
-            let mouseCoord (ev: Dom.MouseEvent) = if this.startVer then float ev.ClientX else float ev.ClientY
-            let size () : float =
-                match this.domElem with
-                | None    -> 100.0
-                | Some el -> 
-                 el.ParentElement.GetBoundingClientRect() 
-                 |> fun r -> 
-                     match this.startVer, this.after with
-                     | true , true  ->  r.Width  
-                     | true , false -> -r.Width 
-                     | false, true  ->  r.Height
-                     | false, false -> -r.Height
-            let drag (ev: Dom.Event) =
-                ev :?> Dom.MouseEvent
-                |> mouseCoord
-                |> fun m   -> (m - this.start) * 100.0 / this.size + this.startP
-                |> fun v   -> this.value.Value <- v // ; JS.Inline("console.log($0)", this)
-               
-            let rec finishDragging (_: Dom.Event) =
-                if this.dragging then
-                    this.dragging <- false
-                    JS.Window.RemoveEventListener("mousemove", drag          , false) 
-                    JS.Window.RemoveEventListener("mouseup"  , finishDragging, false) 
-                    //printfn "mouseup"
-            let startDragging _ (ev: Dom.MouseEvent) =
-                if not this.dragging then
-                    Val.map2 (fun startP dirV ->
-                        this.dragging <- true
-                        this.startVer <- dirV
-                        this.startP   <- startP
-                        this.start    <- mouseCoord ev
-                        this.size     <- size()
-                        JS.Window.AddEventListener("mousemove", drag          , false) 
-                        JS.Window.AddEventListener("mouseup"  , finishDragging, false) 
-                        ev.PreventDefault()
-                    ) this.GetValue this.vertical
-                    |> Val.iter id
-            this.node
-              .AddChildren(
-              [
-                ``class`` <| Val.map (fun ver -> if ver then "Vertical" else "Horizontal") this.vertical 
-                SomeAttr  <| on.mouseDown startDragging
-                SomeAttr  <| on.afterRender (fun el -> this.domElem <- Some el)
-                css "
-                    .Splitter.Vertical   { cursor: col-resize; background-color: #eef ; width : 5px ; margin-left:-7px; }
-                    .Splitter.Horizontal { cursor: row-resize; background-color: #eef ; height: 5px ; margin-top :-7px; }
-                "
-              ])
-              .AddChildren this.children
-        member inline this.Value       v =   this.value.Value <- v  ; this
-        member inline this.Node     node = { this with node         = node                        }
-        member inline this.Min         v = { this with min          = Val.fixit v                 }
-        member inline this.Max         v = { this with max          = Val.fixit v                 }
-        member inline this.Vertical    v = { this with vertical     = Val.fixit v                 }
-        member inline this.Horizontal  v = { this with vertical     = Val.fixit v |> Val.map not  }
-        member inline this.Vertical   () = { this with vertical     = Val.fixit true              }
-        member inline this.Horizontal () = { this with vertical     = Val.fixit false             }
-        member inline this.Before        = { this with after        =           false             }
-        member inline this.After         = { this with after        =           true              }
-        member inline this.Children   ch = { this with children     = ch                          }
-        
-    //# 1 @"(4)5878287a-a18f-4c71-b086-bd6e146270a1 ResizeObserver.fsx"
-    [< Inline "try { return !!(ResizeObserver) } catch(e) { return false }" >] 
-    let implementedResizeObserver() = false
-    
-    [< Inline "new ResizeObserver($f)" >]
-    let newResizeObserver (f: unit->unit) = X<_> 
-    
-    [< Inline "$ro.observe($el)" >]
-    let RObserve ro (el:Dom.Element) = X<_> 
-    
-    let mutable observers : obj list = []
-    
-    let domRect2Tuple (r:Dom.DomRect) = (r.Top, r.Left, r.Width, r.Height)
-    
-    let [< Inline "$el.isConnected" >] isValidElement (el:Dom.Element) = true
-    
-    let dimsChanged (el:Dom.Element) = 
-        let mutable dims = el.GetBoundingClientRect()
-        fun () ->
-            let ndims = el.GetBoundingClientRect()
-            if domRect2Tuple dims = domRect2Tuple ndims then false
-            else dims <- ndims    ; true
-    
-    let addResizeObserver f el =
-        if implementedResizeObserver() then
-            let ro =  newResizeObserver f
-            observers <- ro::observers
-            RObserve ro el
-        else
-            let changed = dimsChanged el
-            async {
-                while isValidElement el do
-                    do! Async.Sleep 110
-                    if changed() then f()
-            } |> Async.Start
-            
-    //# 1 @"(4)0047d2f0-ec1d-43b1-b432-95462c318445 Grid.fsx"
-    [<NoComparison ; NoEquality>]
-    type Area =
-    | Auto     of SplitterBar
-    | Fixed    of HtmlMeasure
-    | Splitter of SplitterBar
-    
-    type SectionType =
-    | StVariable
-    | StFixedPx
-    | StFixedPerc
-    
-    [<NoComparison ; NoEquality>]
-    type Grid = {
-        padding       : float
-        gap           : float
-        content       : (string option * HtmlNode) []
-        cols          : Area []
-        rows          : Area []
-        widthHeight   : IRef<float * float>
-        lastSplitter  : (int * bool) option
-    }
-    with
-        static member New = {
-           padding       = 9.0
-           gap           = 9.0
-           cols          = [| |]
-           rows          = [| |]
-           content       = [| |]
-           widthHeight   = Var.Create (1000.0, 100.0)
-           lastSplitter  = None
-        }
-        member this.NewSplitter  (f: Var<float>, col) =
-            let spl = SplitterBar.New(f)
-            if col then
-                { this with lastSplitter = Some (this.cols.Length, col) ; cols = Array.append this.cols  [| spl              |> Splitter |] }
-            else 
-                { this with lastSplitter = Some (this.rows.Length, col) ; rows = Array.append this.rows  [| spl.Horizontal() |> Splitter |] }
-        member this.NewSplitter        (f: float, col) = this.NewSplitter(Var.Create f, col)
-        member inline this.ColFixedPx   f              = { this with cols    = Array.append this.cols    [| Pixel     (Val.fixit f)              |> Fixed    |] }
-        member inline this.ColFixed     f              = { this with cols    = Array.append this.cols    [| Percentage(Val.fixit f)              |> Fixed    |] }
-        member inline this.ColVariable (s:SplitterBar) = { this with cols    = Array.append this.cols    [| s                                    |> Splitter |] }
-        member inline this.ColVariable (f:float)       = this.NewSplitter(f, true)
-        member inline this.ColVariable (f:Var<float>)  = this.NewSplitter(f, true)
-        member inline this.ColAuto     (f:float)       = { this with cols    = Array.append this.cols    [| SplitterBar.New(     f)              |> Auto     |] }
-        member inline this.RowFixedPx   f              = { this with rows    = Array.append this.rows    [| Pixel     (Val.fixit f)              |> Fixed    |] }
-        member inline this.RowFixed     f              = { this with rows    = Array.append this.rows    [| Percentage(Val.fixit f)              |> Fixed    |] }
-        member inline this.RowVariable (s:SplitterBar) = { this with rows    = Array.append this.rows    [| s                                    |> Splitter |] }
-        member inline this.RowVariable (f:float)       = this.NewSplitter(f, false)
-        member inline this.RowVariable (f:Var<float>)  = this.NewSplitter(f, false)
-        member inline this.RowAuto     (f:float)       = { this with rows    = Array.append this.rows    [| SplitterBar.New(     f).Horizontal() |> Auto     |] }
-        member        this.Content (area, html)        = { this with content = Array.append this.content [| Some area, html                                  |] }
-        member        this.Content        html         = { this with content = Array.append this.content [| None     , html                                  |] }
-        member inline this.Padding      f              = { this with padding = f                                                                                }
-        member inline this.Gap          f              = { this with gap     = f                                                                                }
-        member this.changeSplitter f =
-            this.lastSplitter
-            |> Option.iter (fun (pos, col) ->
-                if col then
-                    match this.cols.[pos] with
-                    | Splitter spl -> this.cols.[pos] <- Splitter <| f spl 
-                    | _            -> ()
-                else 
-                    match this.rows.[pos] with
-                    | Splitter spl -> this.rows.[pos] <- Splitter <| f spl 
-                    | _            -> ()
-            )
-            this
-        member        this.Before                = this.changeSplitter (fun spl -> spl.Before     )
-        member inline this.Max                 v = this.changeSplitter (fun spl -> spl.Max       v)
-        member inline this.Min                 v = this.changeSplitter (fun spl -> spl.Min       v)
-        member inline this.Children           ch = this.changeSplitter (fun spl -> spl.Children ch)
-        member this.style    (areas:Area[]) size =
-            if areas.Length = 0 then Val.Constant "100%" else
-            let pcs, pxs = 
-                areas 
-                |> Seq.fold (fun (pcs, pxs) a ->
-                    match a with
-                    | Auto              spl -> (                          pcs,                pxs)          
-                    | Splitter          spl -> (Val.map2 (+) spl.GetValue pcs,                pxs) 
-                    | Fixed (Percentage v)  -> (Val.map2 (+) v            pcs,                pxs)
-                    | Fixed (Pixel      v)  -> (                          pcs, Val.map2 (+) v pxs)
-                ) (Val.Constant 0.0, Val.Constant 0.0)
-            let finalPerc = Val.map2 (fun v size -> (size - this.padding * 2. - this.gap * ((float areas.Length) - 1.) - v) / (size - this.padding * 2.)) pxs size
-            let autoPct   = Val.map  ((-) 100.0)  pcs 
-            let perc   pc = Val.map2 (fun finalPerc pc -> finalPerc * pc |> max 0.0 |> sprintf "%f%%") finalPerc pc
-            let pixel  px = Val.map  (fun           px ->             px |> max 0.0 |> sprintf "%fpx")           px
-            areas
-            |> Seq.foldBack (fun a state ->
-                match a with
-                |  Auto              spl -> perc  autoPct          
-                |  Splitter          spl -> perc  spl.GetValue
-                |  Fixed (Percentage v)  -> perc  v
-                |  Fixed (Pixel      v)  -> pixel v
-                |> Val.map2(fun state v -> v::state) state
-               )  <| (Val.Constant [])
-            |> Val.map (String.concat " ")
-        member this.styles() =
-            [ style1 "grid-template-columns" <| this.style this.cols (Val.map fst this.widthHeight)
-              style1 "grid-template-rows"    <| this.style this.rows (Val.map snd this.widthHeight)
-            ]
-        member this.GridTemplate() =
-            [ 
-                yield!
-                    this.content
-                    |> Seq.map (fun (area, html) ->
-                        match area with
-                        | None   -> html
-                        | Some a -> html.AddChildren([ style <| sprintf "grid-area: %s; dispxlay: grid" a ])
-                       )
-                yield!
-                    this.cols
-                    |> Seq.indexed
-                    |> Seq.choose (function
-                        | i, Auto     spl -> None           
-                        | i, Splitter spl -> Some <| spl.Render.InsertChildren( 
-                                                [ style1 "grid-column" (string (i + if spl.after then 2 else 1))
-                                                  style1 "grid-row"    (sprintf "1 / %d" (this.rows.Length + 1)) ] ) 
-                        | i, Fixed    _   -> None
-                   )
-                yield!
-                    this.rows
-                    |> Seq.indexed
-                    |> Seq.choose (function
-                        | i, Auto     spl -> None           
-                        | i, Splitter spl -> Some <| spl.Render.InsertChildren( 
-                                                [ style1 "grid-row"    (string (i + if spl.after then 2 else 1))
-                                                  style1 "grid-column" (sprintf "1 / %d" (this.cols.Length + 1)) ] ) 
-                        | i, Fixed    _   -> None
-                   )
-                yield! this.styles() 
-                yield style    <| sprintf "display: grid; grid-gap: %fpx; padding: %fpx; box-sizing: border-box" this.gap this.padding 
-                yield SomeAttr <| on.afterRender(fun el   -> 
-                    let setVar (vr:IRef<_>) vl = if vr.Value <> vl then vr.Value <- vl 
-                    let setDimensions () =
-                        el.GetBoundingClientRect()
-                        |> fun r -> setVar this.widthHeight (r.Width, r.Height)
-                    //async {
-    //                    do! Async.Sleep 60
-                    do  setDimensions()
-                    //} |> Async.Start
-                    addResizeObserver setDimensions el
-                  ) 
-            ]
-        member this.Render =
-            div <| this.GridTemplate()
-        static member inline NewBisect(first, secT, ver, per:Var<float>, ch1, ch2) =
-            let sect, auto, areas = 
-                if ver then match secT with
-                            | StVariable  -> fun (g:Grid) -> g.ColVariable per
-                            | StFixedPx   -> fun (g:Grid) -> g.ColFixedPx  per
-                            | StFixedPerc -> fun (g:Grid) -> g.ColFixed    per
-                           ,                (fun (g:Grid) -> g.ColAuto 50.0)
-                           ,                 fun (g:Grid) -> g.Content( style "grid-template-areas: 'one   two' " )
-                       else match secT with
-                            | StVariable  -> fun (g:Grid) -> g.RowVariable per
-                            | StFixedPx   -> fun (g:Grid) -> g.RowFixedPx  per
-                            | StFixedPerc -> fun (g:Grid) -> g.RowFixed    per
-                           ,                (fun (g:Grid) -> g.RowAuto 50.0)
-                           ,                 fun (g:Grid) -> g.Content( style "grid-template-areas: 'one' 'two' " )
-            Grid.New.Content("one", ch1)
-                    .Content("two", ch2).Padding(0.0)
-            |> areas
-            |> (if first then sect >> auto
-                         else auto >> sect)
-            
-    //# 1 @"(4)cddabd38-7ecb-4692-99bd-13ca70e4232f TabStrip.fsx"
-    let reorderList (ts:'a list) drag drop =
-        if drop < drag then
-           ts.[0       ..drop - 1     ]
-         @    [      ts.[drag]        ]
-         @ ts.[drop    ..drag - 1     ]
-         @ ts.[drag + 1..ts.Length - 1]
-        else
-           ts.[0..drag - 1            ]
-         @ ts.[drag + 1..drop         ]
-         @    [      ts.[drag]        ]
-         @ ts.[drop + 1..ts.Length - 1]
-    
-    let reorderArray (ts:'a []) drag drop =
-       (if drop < drag then
-          [|
-           ts.[0       ..drop - 1     ]
-           [|        ts.[drag]       |]
-           ts.[drop    ..drag - 1     ]
-           ts.[drag + 1..ts.Length - 1]
-          |]
-        else
-          [|
-           ts.[0..drag - 1            ]
-           ts.[drag + 1..drop         ]
-           [|        ts.[drag]       |]
-           ts.[drop + 1..ts.Length - 1]
-          |]
-       )|> Array.collect id 
-    
-    
-    [< NoComparison >]
-    type TabStrip =
-        { selected  : IRef<int>
-          tabs      : IRef<(System.Guid * (string * HtmlNode)) []>
-          top       : bool
-          horizontal: bool
-          id        : System.Guid
-        } 
-    
-    let draggedTab: (TabStrip * int) option ref = ref None
-    
-    let uid2s (uid: System.Guid) = "X" + uid.ToString().Replace("-", "")
-    
-    let selectedPanels: Var<Map<System.Guid, System.Guid>> = Var.Create Map.empty 
-    
-    let setSelectedPanel group panelO = 
-        selectedPanels.Value <- 
-            match panelO with
-            | Some panel -> selectedPanels.Value.Add    (group, panel)
-            | None       -> selectedPanels.Value.Remove  group
-    
-    let mutable TabMoved : ((TabStrip * TabStrip) -> unit) option = None
-    let RaiseTabMoved fromS toS = TabMoved |> Option.iter (fun f -> f (fromS, toS))
-    
-    type TabStrip with
-        member this.moveTab from drag drop =
-            let ts = this.tabs.Value
-            let ft = from.tabs.Value
-            let newTabsT =
-                [|
-                 ts.[0       ..drop - 1     ]
-                 [|        ft.[drag]       |]
-                 ts.[drop    ..ts.Length - 1]
-                |]
-                |> Array.collect id
-            let newTabsF =
-                [|
-                 ft.[0       ..drag - 1     ]
-                 ft.[drag + 1..ft.Length - 1]
-                |]
-                |> Array.collect id
-            from.tabs.Value     <- newTabsF
-            this.tabs.Value     <- newTabsT
-            this.selected.Value <- drop
-            if from.selected.Value >= newTabsF.Length then from.selected.Value <- 0
-            RaiseTabMoved from this
-    
-        member this.reorder drop =
-            match !draggedTab with
-            | None                                     -> ()
-            | Some(from, drag) when from.id <> this.id -> this.moveTab from drag drop
-            | Some(from, drag)                         ->
-            this.tabs.Value     <- reorderArray this.tabs.Value drag drop
-            let sel = this.selected.Value
-            this.selected.Value <- if    sel = drag                then drop
-                                   elif (sel < drag && sel < drop)
-                                     || (sel > drag && sel > drop) then sel 
-                                   elif  sel < drag                then sel + 1
-                                   else                                 sel - 1
-                                   
-        static member New(tabs)    =
-            { selected   = Var.Create 0
-              tabs       = tabs 
-              top        = false 
-              horizontal = true
-              id         = System.Guid.NewGuid() 
-            } 
-        static member New(tabs) = TabStrip.New(tabs |> Seq.map (fun def -> System.Guid.NewGuid(), def) |> Seq.toArray |> Var.Create)
-        member this.Top         = { this with top        = true  }
-        member this.Bottom      = { this with top        = false }
-        member this.SetTop    t = { this with top        = t     }
-        member this.Horizontal  = { this with horizontal = true  }
-        member this.Vertical    = { this with horizontal = false }
-        member this.Selected    = Val.map2 (fun tabs sel -> tabs |> Seq.tryItem sel |> Option.map fst) this.tabs this.selected
-        member this.Select    n = this.selected.Value <- n
-        member this.Select   nm = this.tabs.Value |> Seq.indexed |> Seq.tryPick (fun (i, (_ , (tn, _))) -> if tn = nm then this.selected.Value <- i ; Some true else None) |> Option.defaultValue false
-        member this.Select   gi = this.tabs.Value |> Seq.indexed |> Seq.tryPick (fun (i, (ti, (_ , _))) -> if ti = gi then this.selected.Value <- i ; Some true else None) |> Option.defaultValue false
-        member this.Render      =
-            let strip =
-                this.tabs
-                |> bindHElem (
-                    fun tabs ->
-                        div [ yield ``class`` <| sprintf "tab-strip %s %s"
-                                                    (if this.top        then "top"        else "bottom"  ) 
-                                                    (if this.horizontal then "horizontal" else "vertical")
-                              
-                              for i, (uid, (txt, _)) in  tabs |> Seq.indexed  do
-                                  yield Hoverable.New.Content(
-                                        div [ htmlText txt
-                                              ``class`` <| Val.map (fun sel -> "tab" + (if sel = i then " selected" else "")) this.selected
-                                              draggable "true"
-                                              SomeAttr <| on.dragOver(fun _ ev -> ev.PreventDefault()                            )
-                                              SomeAttr <| on.drag    (fun _ _  ->                     draggedTab := Some(this, i))
-                                              SomeAttr <| on.drop    (fun e ev -> ev.PreventDefault(); ev.StopPropagation() ; this.reorder i )
-                                              SomeAttr <| on.click   (fun _ _  ->                       this.selected.Value <- i ) 
-                                            ])
-                            ]
-                )
-            Val.sink (setSelectedPanel this.id) this.Selected  
-            let content = 
-                this.tabs
-                |> bindHElem (fun tabs ->
-                    div [
-                      yield  ``class`` "tab-children"
-                      yield  Id <| uid2s this.id
-                      yield!
-                          tabs
-                          |> Seq.map (fun (uid, (txt, sub)) -> 
-                              sub.AddChildren(
-                                [ style <| Val.map (fun sels -> if sels |> Map.toSeq |> Seq.map snd |> Seq.contains uid then "" else "display : none") selectedPanels
-                                  Id    <| uid2s uid
-                                ]))
-                    ] 
-                 )
-            div [ ``class`` "tab-panel"
-                  (if     this.top then strip else HtmlEmpty)
-                  div [ content ; ``class`` "tab-content" ]
-                  (if not this.top then strip else HtmlEmpty)
-                  SomeAttr <| on.dragOver(fun _ ev -> ev.PreventDefault()                                      )
-                  SomeAttr <| on.drop    (fun e ev -> ev.PreventDefault() ; this.reorder this.tabs.Value.Length)
-                  css @"
-    
-    .tab-panel {
-     overflow  : hidden   ;
-     display   : flex     ;
-     flex-flow : column   ;
-     background: lightgray;
-    }
-    .tab-content {
-     flex      : 1 1     ;
-     overflow  : auto    ;
-     position  : relative;
-    }
-    .tab-children {
-     height    : 100%    ;
-     width     : 100%    ;
-     position  : absolute;
-     display   : grid    ;
-    }
-    .tab-strip {
-     padding   : 0pt     ;
-     flex      : 0 0     ;
-    }
-    .tab {
-     border     : 0.2pt solid transparent;
-     padding    : 0pt 4pt;
-     display    : inline-block;
-     font-family: sans-serif;
-     font-weight: 200;
-     font-size  : small;
-     color      : #666;
-     cursor     : pointer;
-    }
-    .top>.tab {
-     border-radius: 2pt 2pt 0pt 0pt;
-     border-bottom-width: 0pt;
-     vertical-align: bottom;
-    }
-    .bottom>.tab {
-     border-top-width: 0pt;
-     border-radius: 0pt 0pt 2pt 2pt;
-     vertical-align: top;
-    }
-    .horizontal>.tab:not(:first-child) {
-     border-left-width: 0pt;
-    }
-    .tab.hovering {
-     background: red;
-    }
-    .tab.selected {
-     background: white;
-     border-left-width: 0.2pt;
-     color: black;
-     font-weight: 500;
-     border-color: black;
-    }
-    .horizontal>.tab.selected {
-     border-left-width: 0.2pt;
-    }
-    "]
-    //# 1 @"(4)f3c86328-e5b6-4ef1-a3d9-d82098f4ffe2 MenuBar.fsx"
-    let inline menuEntry content   = li [ content ]
-    let inline refA      cont  t r = a  [ cont ; hrefO r ; target t ] 
-    let inline refText   txt   t r = bindHElem (fun t -> if t = "" then HtmlEmpty else refA(htmlText t) t r) txt
-    let inline entryTxt  txt   t r = menuEntry (refText  txt t  r)
-      
-    let inline entries    ch cl    =  ul ch |> addClass cl
-    let inline nav        ch       =  entries ch "nav navbar-nav"
-    let inline dropdown   ch       =  entries ch "dropdown-menu"
-    let navbar brand center right  =
-        div [ ``class``                     "navbar navbar-default"
-              div [ ``class``               "container-fluid"
-                    div [ ``class``         "navbar-header"
-                          div [ ``class``   "navbar-brand"
-                                brand
-                              ]
-                        ]
-                    div [ ``class``         "navbar-collapse collapse"
-                          center
-                          right |> addClass "navbar-right"
-                        ]
-                  ]
-        ]
-        
-    //#nowarn "1178"    
-    
-    type MenuEntry = {
-        text       : Val<string>
-        ref        : Val<string option>
-        active     : Val<bool>
-        disabled   : Val<bool>
-        subMenu    : Menu option
-        toolTip    : string option
-        target     : string option
-        divider    : bool
-        onClick    : (Dom.Element -> Dom.MouseEvent -> unit) option
-    } with
-        static member inline New txt = { 
-            text      = Val.fixit  txt
-            active    = Val.fixit  false 
-            ref       = Val.Constant None
-            toolTip   = None
-            subMenu   = None
-            onClick   = None
-            target    = None
-            divider   = false
-            disabled  = Val.fixit false
-        } 
-        static member inline New(txt, ref) = { MenuEntry.New(txt) with ref      = Val.map Some ref }
-        member this.Render           = 
-            entryTxt this.text (this.target |> Option.defaultValue "") this.ref 
-            |> addClassIf "active" this.active |> addClassIf "disabled" this.disabled
-            |> match this.subMenu with | None  -> id | Some m -> addChildren [ ``class`` "dropdown" ; m.Render ]
-            |> match this.onClick with | None  -> id | Some f -> addChildren [ SomeAttr  <| on.click <@ f @>   ; style "cursor : pointer" ]
-            |> match this.divider with | false -> id | true   -> addClass    "divider"
-        member inline this.Target   t   = { this with target   = Some t                         }
-        member inline this.Divider      = { this with divider  = true                           }
-        member inline this.OnClick  f   = { this with onClick  = Some f                         }
-        member inline this.Disabled dis = { this with disabled = Val.fixit dis                  }
-        member inline this.SubMenu  es  = { this with subMenu  = Some <| Menu.New( es).DropDown } 
-        member inline this.SubMenu  es  = { this with subMenu  = Some <| Menu.New2(es).DropDown } 
-        member        this.MenuNode     = MenuEntry this
-    and MenuNode =
-        | MenuHtml  of HtmlNode
-        | MenuEntry of MenuEntry 
-      with
-        member this.Render = match this with | MenuHtml h -> h | MenuEntry e -> e.Render
-    and Menu = {
-        entries  : MenuNode seq
-        dropdown : bool
-    } with
-        static member New es : Menu = { 
-            entries = es
-            dropdown = false
-        }    
-        static member New2 es : Menu = Menu.New(es |> Seq.map MenuEntry) 
-        member this.DropDown        = { this      with dropdown = true  }
-        member this.Render          =
-            (if this.dropdown then dropdown else nav) <|
-                seq [
-                    for entry in this.entries -> 
-                        entry.Render
-                ]
-    //# 1 @"(4)8346ae00-dde8-4368-acad-f8cca1164ff6 Action.fsx"
-    type Action = {
-        text       : Val<string>
-        highlight  : Val<bool>
-        disabled   : Val<bool>
-        toolTip    : string option
-        onClick    : (Action -> Dom.Element -> Dom.MouseEvent -> unit) option
-        parms      : obj[] option
-    } with
-        static member inline New txt = { 
-            text      = Val.fixit  txt
-            highlight = Val.fixit  false 
-            disabled  = Val.fixit  false
-            toolTip   = None
-            onClick   = None
-            parms     = None
-        } 
-        member inline this.Text      txt = { this with text      = Val.fixit txt
-                                                       disabled  = Val.fixit false  }
-        member inline this.Parms     ps  = { this with parms     = Some ps          }
-        member inline this.OnClick   f   = { this with onClick   = Some (fun _ -> f)}
-        member inline this.OnClick2  f   = { this with onClick   = Some f           }
-        member inline this.Disabled  dis = { this with disabled  = Val.fixit dis    }
-        member inline this.Highlight h   = { this with highlight = Val.fixit h      }
-        member        this.MenuEntry     = {
-            MenuEntry.text      = this.text
-            MenuEntry.active    = this.highlight 
-            MenuEntry.disabled  = this.disabled
-            MenuEntry.toolTip   = this.toolTip
-            MenuEntry.onClick   = this.onClick |> Option.map (fun f -> f this)
-            MenuEntry.ref       = Val.Constant None
-            MenuEntry.divider   = false
-            MenuEntry.subMenu   = None
-            MenuEntry.target    = None
-        }
-        member        this.Button       = {
-            Button.text      = this.text
-            Button.disabled  = this.disabled
-            Button.onClick   = this.onClick |> Option.map (fun f -> f this) |> Option.defaultValue (fun _ _ -> ())
-    //        Button.toolTip   = this.toolTip
-            Button._class    = Val.map (fun h -> if h then "btn btn-primary" else "btn") this.highlight 
-            Button._type     = Val.fixit "button" 
-            Button.style     = Val.fixit ""
-            Button.id        = ""
-          }
-    
-    let Do  f p = (fun     _ _ -> f     p)
-    let Do2 f p = (fun act _ _ -> f act p)
-    
-    //# 1 @"(4)9c870b72-8f9a-4e7d-ad81-7f1fd73fdd76 Layout.fsx"
-    open Useful
-    
-    type GuiPart     = 
-       | GuiRoot       of string
-       | GuiNode       of HtmlNode
-       | GuiAction     of Action
-       | GuiSplit      of first: bool * secT: SectionType * vertical: bool * per:float * string * string * min: float * max: float
-       | GuiTabStrip   of top  : bool * string []
-       | GuiCall       of name: string * action: string * parms: string[]
-    
-    let HtmlGuiCall (p: string * string * string[]) = GuiCall p
-    
-    type HtmlNodeFable = {
-        HtmlElementF    : (string * HtmlNodeFable [] ) option
-        HtmlAttributeF  : (string * string           ) option
-        HtmlAttributeOF : (string * string option    ) option
-        HtmlTextF       :  string                      option
-        HtmlEmptyF      :  string                      option
-        HtmlGuiPart     :  string                      option
-        HtmlGuiCall     : (string * string * string[]) option
-    }
-    
-    type LayoutDescriptionFable = 
-        {
-           GuiRoot     :  string                                                          option  
-           GuiTabStrip : (bool * string[]                                               ) option
-           GuiSplit    : (bool * string * bool * float * string * string * float * float) option  
-           GuiNode     :  HtmlNodeFable                                                   option
-           GuiCall     : (string * string * string[]                                    ) option
-        }
-    
-    type GuiPartSourceId =
-        | GPSI_Internal   of System.Guid
-        | GPSI_Json       of LayoutDescriptionFable
-        | GPSI_Root       of string
-        | GPSI_TabStrip   of bool * string[]                                               
-        | GPSI_Split      of first: bool * secT: SectionType * vertical: bool * string * string
-        | GPSI_Call       of string * string * string[]                                    
-        with static member New =  GPSI_Internal <| System.Guid.NewGuid()
-    
-    let rec processLayoutSteps (steps: (string * GuiPart) seq) (parts: Map<string,GuiPart>) =
-        steps
-        |> Seq.tryHead
-        |> Option.map (fun (name, guiPart) ->
-            Map.add name guiPart parts
-            |> processLayoutSteps (steps |> Seq.skip 1)
-           )
-        |> Option.defaultValue parts
-    
-    let inline addValue k v (dict: System.Collections.Generic.Dictionary<_, _>) = 
-        dict.Remove k |> ignore
-        dict.Add(k, v)
-    
-    let (|PHtmlElementF   |_|) (hnf: HtmlNodeFable) = hnf.HtmlElementF   
-    let (|PHtmlAttributeF |_|) (hnf: HtmlNodeFable) = hnf.HtmlAttributeF 
-    let (|PHtmlAttributeOF|_|) (hnf: HtmlNodeFable) = hnf.HtmlAttributeOF
-    let (|PHtmlTextF      |_|) (hnf: HtmlNodeFable) = hnf.HtmlTextF      
-    let (|PHtmlEmptyF     |_|) (hnf: HtmlNodeFable) = hnf.HtmlEmptyF     
-    let (|PHtmlGuiPart    |_|) (hnf: HtmlNodeFable) = hnf.HtmlGuiPart     
-    let (|PHtmlGuiCall    |_|) (hnf: HtmlNodeFable) = hnf.HtmlGuiCall
-    
-    let (|PGuiTabStrip|_|) (ldf:LayoutDescriptionFable) = ldf.GuiTabStrip  
-    let (|PGuiSplit   |_|) (ldf:LayoutDescriptionFable) = ldf.GuiSplit 
-    let (|PGuiRoot    |_|) (ldf:LayoutDescriptionFable) = ldf.GuiRoot  
-    let (|PGuiNode    |_|) (ldf:LayoutDescriptionFable) = ldf.GuiNode  
-    let (|PGuiCall    |_|) (ldf:LayoutDescriptionFable) = ldf.GuiCall  
-    
-    let toSect s =
-        match s with 
-        | "StVariable"  -> StVariable
-        | "StFixedPx"   -> StFixedPx
-        | _             -> StFixedPerc
-    
-    [<NoComparison ; NoEquality>]
-    type Layout = {
-        parts         : System.Collections.Generic.Dictionary<string, IRef<GuiPartSourceId * GuiPart> * HtmlNode * Val<GuiPart -> unit>>
-        tabStrips     : System.Collections.Generic.Dictionary<string, TabStrip>
-    }
-    
-    let t1of3 = function v, _, _ -> v
-    let t2of3 = function _, v, _ -> v
-    let t3of3 = function _, _, v -> v
-    
-    type GuiPart with
-        member this.GetHtmlNode (lyt: Layout) name =
-            match this with
-            | GuiRoot     root                                             -> HtmlEmpty                          , ignore
-            | GuiNode     node                                             -> node                               , ignore
-            | GuiAction   act                                              -> act.Button.Render                  , ignore
-            | GuiCall    (name, action, parms)                             -> lyt.GetCallButton name action parms, ignore
-            | GuiTabStrip(top  , nodes                                   ) -> let ts = TabStrip.New(nodes |> Seq.map (fun node -> node, lyt.GetNode node)).SetTop(top)
-                                                                              addValue name ts lyt.tabStrips
-                                                                              ts.Render                          , ignore
-            | GuiSplit   (first, secT , vertical, per, ch1, ch2, min, max) -> let minV            = Var.Create min
-                                                                              let maxV            = Var.Create max
-                                                                              let perV            = Var.Create per
-                                                                              let mutable curper  =            per
-                                                                              let grd = Grid.NewBisect(first, secT, vertical, perV, lyt.GetNode ch1, lyt.GetNode ch2).Min(minV).Max(maxV)
-                                                                              grd.Render
-                                                                             ,function 
-                                                                              | GuiSplit   (first, secT , vertical, per, ch1, ch2, min, max) -> 
-                                                                                  if curper     <> per then
-                                                                                     curper     <- per
-                                                                                     perV.Value <- per
-                                                                                  minV.Value    <- min
-                                                                                  maxV.Value    <- max
-                                                                              | _ -> ()
-    and  Layout with
-        member this.GetGuiCallAction (name:string) (action:string) (parms:string[]) =
-            if this.parts.ContainsKey action then
-                match this.parts.[action] with
-                | partv, _, _ ->
-                    match partv.Value with 
-                    | _, GuiAction act -> act.Text(name).Parms(parms |> Array.map (fun s -> s:>obj))           |> Result.succeed
-                    | _                -> sprintf "GuiPart %s is not a GuiAction" action |> Result.failSimpleError
-            else                          sprintf "GuiAction %s not found"        action |> Result.failSimpleError
-        member this.GetCallButton name action parms =
-            match this.GetGuiCallAction name action parms with
-            | Result.Success(act, _) -> act.Button.Render
-            | Result.Failure ms      -> div [ ms |> Result.msgs2String |> String.concat ". " |> htmlText ]
-        member this.AddNode name sid part =
-            let partV  = Var.Create (sid, part)
-            let nodeFv = partV  |> Val.map (fun (si, p: GuiPart) -> p.GetHtmlNode this name)
-            let node   = nodeFv |> Val.map fst |> HtmlElementV 
-            let update = nodeFv |> Val.map snd
-            this.parts.Add(name, (partV :> IRef<_>, node, update))
-            node
-        member this.GetNode name =
-            let mutable res = Unchecked.defaultof<_>
-            let ok = this.parts.TryGetValue(name, &res)
-            if ok 
-            then t2of3 res
-            else this.AddNode name GuiPartSourceId.New (GuiNode <| div [ htmlText (sprintf "GuiPart %s not found" name) ])
-        static member AddGuids steps = 
-            steps 
-            |> Seq.map (fun (name, part) -> 
-                name
-               ,match part with
-                 | GuiNode     node                                             -> GuiPartSourceId.New
-                 | GuiAction   act                                              -> GuiPartSourceId.New
-                 | GuiRoot     root                                             -> GPSI_Root     root                                            
-                 | GuiSplit   (first, secT , vertical, per, ch1, ch2, min, max) -> GPSI_Split   (first, secT , vertical, ch1, ch2)
-                 | GuiTabStrip(top  , nodes                                   ) -> GPSI_TabStrip(top  , nodes                    )
-                 | GuiCall    (name, action, parms)                             -> GPSI_Call    (name, action, parms)                            
-               ,part        )  
-            |> Seq.toArray
-        static member New(steps) =
-            let lyt = {
-                parts     = System.Collections.Generic.Dictionary<_, _>()
-                tabStrips = System.Collections.Generic.Dictionary<_, _>()
-            }
-            steps |> Seq.iter (fun (name, part, id) -> lyt.AddNode name part id |> ignore )
-            lyt
-        member this.Render  =
-            let node = 
-                this.parts.Values 
-                |> Seq.tryPick(t1of3 >> fun v -> match v.Value with | _, GuiRoot root -> Some root | _ -> None )
-                |> Option.defaultValue "main"
-            this.GetNode node
-        member this.AddNewSteps steps steps2 =
-            Array.append steps steps2
-            |> Array.groupBy (fun (name, si, part) -> name           )
-            |> Array.map     (fun (name, det     ) -> det |> Seq.last)
-            |> Array.iter    (fun (name, si, part) -> if this.parts.ContainsKey name then
-                                                           let partv, node, upd = this.parts.[name] 
-                                                           let xsi, xpart = partv.Value
-                                                           if xsi = si 
-                                                           then Val.apply (Val.Constant part) upd |> Val.iter id
-                                                           else partv.Value <- (si, part)
-                                                      else this.AddNode name si part |> ignore
-            ) 
-        member this.SetLayoutJson steps json =
-            let rec jsonF2HtmlNode =
-               function
-               | PHtmlElementF    (name, ch)          -> Some <| HtmlElement   (name, ch |> Seq.choose jsonF2HtmlNode)
-               | PHtmlAttributeF  (name, v )          -> Some <| HtmlAttribute (name, Val.Constant v  )
-               | PHtmlAttributeOF (name, vO)          -> Some <| HtmlAttributeO(name, Val.Constant vO )
-               | PHtmlTextF        txt                -> Some <| HtmlText      (      Val.Constant txt)
-               | PHtmlEmptyF       _                  -> Some <| HtmlEmpty
-               | PHtmlGuiPart      part               -> Some <| this.GetNode part
-               | PHtmlGuiCall     (name, call, parms) -> Some <| this.GetCallButton name call parms
-               | _                                    -> None
-            let jsonF2GuiRoot =
-               function
-               | PGuiNode      html                                                      -> Some <| GuiNode     (jsonF2HtmlNode html |> Option.defaultValue HtmlEmpty)
-               | PGuiRoot      root                                                      -> Some <| GuiRoot      root
-               | PGuiTabStrip  p                                                         -> Some <| GuiTabStrip  p
-               | PGuiSplit    (first, secT: string  , vertical, per, ch1, ch2, min, max) -> Some <| GuiSplit    (first, secT |> toSect, vertical, per, ch1, ch2, min, max)
-               | PGuiCall     (name, call, parms                                       ) -> Some <| GuiCall     (name, call, parms) 
-               | _                                                                       -> None
-            try
-                let steps2 = if json = "" then [||] else
-                             json
-                             |> WebSharper.Json.Deserialize<(string * LayoutDescriptionFable)[]>
-                             |> Array.choose (fun (name, ldf) -> jsonF2GuiRoot ldf |> Option.map (fun v -> name, GPSI_Json ldf, v))
-                this.AddNewSteps steps steps2
-            with e -> printfn "Error: %A" e
-        member this.SelectTab (tName:string) =
-            this.tabStrips.Values
-            |> Seq.iter (fun ts -> ts.Select tName |> ignore )
-    
-    let inline fixedHorSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPx , false, px, ch1, ch2, 5.0, 95.0)
-    let inline fixedVerSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPx , true , px, ch1, ch2, 5.0, 95.0)
-    let inline varHorSplitter          pc ch1 ch2 min max = GuiSplit(true , StVariable, false, pc, ch1, ch2, min,  max)
-    let inline varVerSplitter          pc ch1 ch2 min max = GuiSplit(true , StVariable, true , pc, ch1, ch2, min,  max)
-    
-    
-  //# 1 @"(2)e2ca8cb1-fb1e-4793-855f-55e3ca07b8f5 RunCode.fsx"
+  // # 1  @"(2)e2ca8cb1-fb1e-4793-855f-55e3ca07b8f5 RunCode.fsx"
   [<JavaScript>]
   module RunCode       =
-    //# 1 @"(4)36fc221f-7e61-4a04-abf3-317f901e5211 completeJS.fsx"
-    let completeJS js = 
-      """
-          CIPHERSpaceLoadFileGlobalFileRef = null;
-          CIPHERSpaceLoadFile = function (filename, callback) {
-              if (filename.slice(-3) == ".js" || filename.slice(-4) == ".fsx" || filename.slice(-3) == ".fs") { //if filename is a external JavaScript file
-                  var fileRef = null;
-                  var pre = document.querySelector('script[src="' + filename + '"]')
-                  if (!pre) {
-                      fileRef = document.createElement('script')
-                      fileRef.setAttribute("type", "text/javascript")
-                      fileRef.setAttribute("src", filename)
-                  }
-                  else callback();
-              }
-              else if (filename.slice(-4) == ".css") { //if filename is an external CSS file
-                  var pre = document.querySelector('script[src="' + filename + '"]')
-                  if (!pre) {
-                      fileRef = document.createElement("link")
-                      fileRef.setAttribute("rel", "stylesheet")
-                      fileRef.setAttribute("type", "text/css")
-                      fileRef.setAttribute("href", filename)
-                  }
-                  else callback();
-              }
-              else if (filename.slice(-5) == ".html") { //if filename is an external HTML file
-                  var pre = document.querySelector('script[src="' + filename + '"]')
-                  if (!pre) {
-                      fileRef = document.createElement("link")
-                      fileRef.setAttribute("rel", "import")
-                      fileRef.setAttribute("type", "text/html")
-                      fileRef.setAttribute("href", filename)
-                  }
-                  else callback();
-              }
-              if (!!fileRef) {
-                  CIPHERSpaceLoadFileGlobalFileRef = fileRef;
-      			fileRef.onload = function () { fileRef.onload = null;  callback(); }
-                  document.getElementsByTagName("head")[0].appendChild(fileRef);
-              }
-          }
-          CIPHERSpaceLoadFiles = function (files, callback) {
-              var newCallback = callback
-              if (!!CIPHERSpaceLoadFileGlobalFileRef && !!(CIPHERSpaceLoadFileGlobalFileRef.onload)) {
-                  var oldCallback = CIPHERSpaceLoadFileGlobalFileRef.onload;
-                  CIPHERSpaceLoadFileGlobalFileRef.onload = null;
-                  newCallback = function () {
-                      callback();
-                      oldCallback();
-                  }
-              }
-              var i = 0;
-              loadNext = function () {
-                  if (i < files.length) {
-                      var file = files[i];
-                      i++;
-                      CIPHERSpaceLoadFile(file, loadNext);
-                  }
-                  else newCallback();
-              };
-              loadNext();
-      	}
-          CIPHERSpaceLoadFiles(['https://code.jquery.com/jquery-3.1.1.min.js'], function() {}); 
-      	CIPHERSpaceLoadFilesDoAfter = function (callback) {
-      		var newCallback = callback
-      		if (!!CIPHERSpaceLoadFileGlobalFileRef) {
-      			if (!!(CIPHERSpaceLoadFileGlobalFileRef.onload)) {
-      				var oldCallback = CIPHERSpaceLoadFileGlobalFileRef.onload;
-      				CIPHERSpaceLoadFileGlobalFileRef.onload = null;
-      				newCallback = function () {
-      					oldCallback();
-      					callback();
-      				}
-      			}
-      		}
-      		else CIPHERSpaceLoadFileGlobalFileRef = {};
-      		CIPHERSpaceLoadFileGlobalFileRef.onload = newCallback;
-      	}
-      
-      CIPHERSpaceLoadFilesDoAfter(function() { 
-        if (typeof IntelliFactory !=='undefined')
-          IntelliFactory.Runtime.Start();
-        for (key in window) { 
-          if (key.startsWith("StartupCode$")) 
-            try { window[key].$cctor(); } catch (e) {} 
-        } 
-      })
-      
-                       """ + js
-    //# 1 @"(4)f2571ac9-37ec-4d7c-9ead-9e5f79ae1be1 type RunNode(nodeName, clearNode bool) =.fsx"
-    type RunNode(nodeName, ?clearNode: bool) =
-      let bClearNode    = defaultArg clearNode true
+    // # 1  @"(4)f2571ac9-37ec-4d7c-9ead-9e5f79ae1be1 type RunNode(nodeName, clearNode bool, useShadowRootbool) =.fsx"
+    type RunNode(nodeName, ?clearNode: bool, ?useShadowRoot:bool) =
+      let bClearNode    = defaultArg clearNode     true
+      let useShadowRoot = defaultArg useShadowRoot true
       let createNode() =
           let e = JS.Document.CreateElement "div"
           e?style <- "height: 100%; width: 100%;"
@@ -4645,6 +1245,7 @@ namespace FSSGlobal
           | null -> createBaseNode()
           | node -> node
       let runNode =
+          if not useShadowRoot then baseNode else
           match baseNode.ShadowRoot with
           | null -> let p = createNode()
                     baseNode.AttachShadow(Dom.ShadowRootInit(Dom.ShadowRootMode.Open)).AppendChild p |> ignore
@@ -4654,9 +1255,10 @@ namespace FSSGlobal
           | root -> root.FirstChild :?> Dom.Element
       do if bClearNode then runNode.InnerHTML <- ""
     with
-      new(?clearNode: bool) = RunNode("TestNode", ?clearNode = clearNode)
+      new(?clearNode: bool, ?useShadowRoot:bool) = RunNode("TestNode", ?clearNode = clearNode, ?useShadowRoot = useShadowRoot)
       member this.RunNode   = runNode
-    //# 1 @"(4)081bac32-e739-4124-87eb-eb7d6f2220bc AddBootstrap.fsx"
+    
+    // # 1  @"(4)081bac32-e739-4124-87eb-eb7d6f2220bc AddBootstrap.fsx"
       member this.AddBootstrap =
         JS.Document.CreateElement "div"
         |> fun el -> 
@@ -4668,1832 +1270,566 @@ namespace FSSGlobal
                "
             runNode.ParentElement.AppendChild el |> ignore
         this
-    //# 1 @"(4)c110a9c9-bc3b-4be7-8e5d-f43cc75f93ed RunDoc.fsx"
+    // # 1  @"(4)6332dfb8-b57a-40de-b669-f796820883db AddFontAwesome.fsx"
+      member this.AddFontAwesome =
+        JS.Document.CreateElement "div"
+        |> fun el -> 
+            el.InnerHTML <-  @"<link type='text/css' rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>"
+            runNode.ParentElement.AppendChild el |> ignore
+        this
+    // # 1  @"(4)47bf25cf-e7f5-452a-9247-156146348a14 AddBulma.fsx"
+      member this.AddBulma =
+        JS.Document.CreateElement "div"
+        |> fun el -> 
+            el.InnerHTML <-  @"<link type='text/css' rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css'>"
+            runNode.ParentElement.AppendChild el |> ignore
+        this
+    // # 1  @"(4)c110a9c9-bc3b-4be7-8e5d-f43cc75f93ed RunDoc.fsx"
       member inline this.RunDoc doc = doc :> Doc |> Doc.Run this.RunNode
-    //# 1 @"(4)3038cd62-093c-4385-aa9b-799297bd379c RunHtml.fsx"
+    // # 1  @"(4)3038cd62-093c-4385-aa9b-799297bd379c RunHtml.fsx"
       member inline this.RunHtml node = node |> renderDoc |> this.RunDoc
       
-  //# 1 @"(2)529e1429-a4ce-48be-a89f-f13fec19bef3 FSharpStation Code.fsx"
-  module FSharpStation =
-  
-    //# 1 @"(4)1787d1fe-db11-4716-b3f6-164048e8991b CodeSnippet Extensions, Position.fsx"
-    open Template
-    open FsStationShared
-    open System.Collections.Generic
-    open Useful
-    open FsTranslator
-    open FsEvaluator
+    // # 1  @"(4)bf400a85-8264-4540-9381-f3be0c968c94 ShowHtmlResult.fsx"
+      member inline this.ShowHtmlResult res =
+        this.AddBootstrap |> ignore
+        div [ ``class`` "container"
+              Template.Panel.New
+                .Title("Result:")
+                .Header([])
+                .Content([ h3 res ; style "font-family:monospace;" ])
+                .Render
+         ] |> this.RunHtml
+      member inline this.ShowHtmlResult res = this.ShowHtmlResult [res]
     
-    [< JavaScript >]
-    module FsGlobal =
-        [< Inline >]
-        let inline storeVarCodeEditor name = storeVar <| "CodeEditor." + name
-        
-        //let codeSnippetsStorage = WebSharper.UI.Next.Storage.LocalStorage "CodeSnippets" Serializer.Typed<CodeSnippet>
-        //let codeSnippets        = ListModel.CreateWithStorage<CodeSnippetId, CodeSnippet> (fun s -> s.id) codeSnippetsStorage
-        let codeSnippets        = ListModel.Create<CodeSnippetId, CodeSnippet> (fun s -> s.id) []
+    // # 1  @"(4)c47adc01-4550-4830-8df5-e1ebedaee7d0 ShowResult.fsx"
+      member inline this.ShowResult res = htmlText (sprintf "%A" res) |> this.ShowHtmlResult
     
-        [< Inline "(Date.now())" >]
-        let now() = 0
-        let fsIds  = "FSharpStation" + (now() |> string)
+  // # 1  @"(2)be49e291-252c-4064-a3d6-bc61b39895fa Calculation Editor Code.fsx"
+  [< JavaScript >]
+  module CalcEditor = 
+    // # 1  @"(4)58a9fc2a-df09-42ef-ba7a-54e780167009 CalculationModel.fsx"
+    module CalculationModel =
+        open Useful
+        open System
         
-        let tryPickI f s = s |> Seq.indexed |> Seq.filter f |> Seq.tryHead
+        type DimType =
+            | DtDataType
+            | DtTime
+            | DtVersion
+            | DtTCalc
+            | DtCalc
+            | DtMeasure
+            | DtOther
         
-        type CodeSnippet 
-            with
-            static member PickIO       id   = codeSnippets.Value    |> tryPickI (fun (_, snp) -> snp.id = id)
-            static member FetchO       id   = codeSnippets.TryFindByKey id
-            static member FetchL       id   = CodeSnippet.FetchO id |> Option.toList
-            static member New(            pred    , cnt) = CodeSnippet.New("", None   , pred, [], cnt)
-            static member New(        pa, pred    , cnt) = CodeSnippet.New("", Some pa, pred, [], cnt)
-            static member New(        pa,           cnt) = CodeSnippet.New("", Some pa, []  , [], cnt)
-            static member New(                      cnt) = CodeSnippet.New("", None   , []  , [], cnt)
-            static member New(    nm, pa, pred, co, cnt) = CodeSnippet.New(codeSnippets.Length, nm, pa, pred, co, cnt)
-            static member New(od, nm, pa, pred, co, cnt) =
-                let newS =
-                    {
-                        name         = nm
-                        content      = cnt
-                        parent       = pa
-                        predecessors = pred
-                        id           = CodeSnippetId.New
-                        expanded     = true
-                        level        = 0
-                        levelCode    = 0
-                        properties   = System.Collections.Generic.Dictionary<string, string>()
-                    }
-                match od, codeSnippets.Length with
-                | _, 0            -> codeSnippets.Append newS
-                | 0, _            -> codeSnippets.Set <| Seq.append [| newS |] codeSnippets.Value
-                | i, n when i < n -> codeSnippets.Value 
-                                        |> Seq.toArray
-                                        |> Array.splitAt od
-                                        |> fun (fst, snd) -> Array.append fst <| Array.append [| newS |] snd
-                                        |> codeSnippets.Set 
-                | _, _            -> codeSnippets.Append newS
-                newS
-            member this.Levels =
-                let rec levels (out, out2) snp = 
-                    snp.parent
-                    |> Option.bind CodeSnippet.FetchO
-                    |> Option.map (levels <| (out + 1, out2 + if snp.properties.ContainsKey "NoIndent" then 0 else 1)) 
-                    |> Option.defaultValue (out, out2)
-                levels (0, 0) this
-            member this.PrepareSnippet   =
-                let lvl, lvlCode = this.Levels
-                { this with level     = lvl
-                            levelCode = lvlCode
-                            content   = this.content
-                                            .Replace("##" + "FSHARPSTATION_ID" + "##"      , fsIds                  )
-                                            .Replace("##" + "FSHARPSTATION_ENDPOINT" + "##", JS.Window.Location.Href) }
-            member this.Predecessors     () =
-                let preds = this.UniquePredecessors CodeSnippet.FetchO |> Seq.toArray
-                codeSnippets.Value
-                |> Seq.filter (fun snp -> preds |> Array.contains snp.id)
-                |> Seq.map    (fun snp -> snp.PrepareSnippet)
-                |> Seq.toArray
-            member this.GetCodeAndStarts addLinePrepos = this.Predecessors() |> CodeSnippet.CodeAndStarts addLinePrepos
-            member this.GetCodeFsx       addLinePrepos = this.GetCodeAndStarts addLinePrepos |> fst
-            member this.IsDescendantOf antId =
-                let rec isDescendantOf snp =
-                    match snp.parent with
-                    | None       -> false
-                    | Some parId ->
-                    if parId = antId then true else
-                    CodeSnippet.FetchO parId
-                    |> Option.map isDescendantOf
-                    |> Option.defaultValue false
-                isDescendantOf this
-            static member FetchByPathO names      = 
-                let tryFindByName      snps name  = snps |> Seq.filter (fun (snp:CodeSnippet) -> snp.Name = name) |> Seq.tryHead
-                let rec tryFindByPath  snps names = 
-                    let first = names |> Seq.tryHead |> Option.bind (tryFindByName snps)
-                    if names |> Seq.length <= 1 then first else
-                    first
-                    |> Option.bind (fun f ->
-                        names 
-                        |> Seq.tail
-                        |> tryFindByPath  (codeSnippets.Value |> Seq.filter (fun snp -> snp.parent = Some f.id))
-                    )
-                names 
-                |> tryFindByPath (codeSnippets.Value |> Seq.filter (fun snp -> snp.parent.IsNone))
-            member this.propValue p =
-                if this.properties.ContainsKey p 
-                then Some this.properties.[p]
-                else this.parent |> Option.bind CodeSnippet.FetchO |> Option.bind (fun par -> par.propValue p)
+        type CubeType =
+            | CtOther
+            | CtCalc
+            | CtFreeze
         
-        type Position =
-            | Below
-            | Right
-            | Tab
-            | NewBrowser
-            
+        type AttType =
+            | AtString
+            | AtNumber
         
-        type ErrCompiler =
-            | JsCompilerMsg  of string * bool
-            | ``Snippet Missing``
-            | ``Could not open new browser, Popup blocker may be active``
-            interface ErrMsg with
-                member this.ErrMsg   : string = 
-                    match this with 
-                    | JsCompilerMsg(msg, err) -> sprintf "%s" msg
-                    | _                       -> sprintf "%A" this
-                member this.IsWarning: bool   = 
-                    match this with 
-                    | JsCompilerMsg(msg, err) -> not err
-                    | _                       -> false
-                    
-        [< Inline "saveAs(new Blob([$txt], {type: 'text/plain;charset=utf-8'}), $name)" >]
-        let saveAs (txt:string) (name:string) = ()
+        type ElmType =
+            | EtString
+            | EtNumber
         
-        type KeyMapAutoComplete = { 
-            F2              : Template.CodeMirrorEditor -> unit 
-            LeftDoubleClick : Template.CodeMirrorEditor -> unit
-            ``Ctrl-Space``  : Template.CodeMirrorEditor -> unit
-            ``.``           : Template.CodeMirrorEditor -> unit
+        type ModId = ModId of Guid
+        type AttId = AttId of Guid
+        type ElmId = ElmId of Guid
+        type CubId = CubId of Guid
+        type DimId = DimId of Guid
+        type CalId = CalId of Guid
+        type ForId = ForId of Guid
+        type RulId = RulId of Guid
+        
+        type Attribute = {
+            attId                  : AttId
+            mutable attName        : string
+            mutable attType        : AttType
+            mutable attTableNum    : int
         }
         
-        type Property(setDirty: unit->unit, props: Dictionary<string, string>, keyP: string) =
-            let mutable key = keyP
-            let getK () = key
-            let setK k  = props.Add(k, props.[key]) ; props.Remove key |> ignore ; key <- k ; setDirty()
-            let getV () = props.[key]
-            let setV v  = props.[key] <- v ; setDirty()
-            interface IRef<string> with
-               member this.Id  = "?"
-               member this.Set                                   v = setK v
-               member this.Value                        with set v = setK v
-               member this.Get ()                                  = getK()
-               member this.Value                                   = getK()
-               member this.Update      (f:string -> string       ) = getK() |> f |>             setK
-               member this.UpdateMaybe (f:string -> string option) = getK() |> f |> Option.iter setK
-               member this.View                     : View<string> = getK() |> View.Const
-            member this.KeyVar   = this :> IRef<string>  
-            member this.ValueVar =  PropValue this
-            member this.GetK     = getK
-            member this.SetK     = setK
-            member this.GetV     = getV
-            member this.SetV     = setV
-            member this.Remove() = props.Remove key |> ignore ; setDirty()
-    
-        and PropValue(prop: Property) =
-            let get  = prop.GetV
-            let set  = prop.SetV
-            interface IRef<string> with
-               member this.Id  = "?"
-               member this.Set                                   v = set v
-               member this.Value                        with set v = set v
-               member this.Get ()                                  = get()
-               member this.Value                                   = get()
-               member this.Update      (f:string -> string       ) = get() |> f |>             set
-               member this.UpdateMaybe (f:string -> string option) = get() |> f |> Option.iter set
-               member this.View                     : View<string> = get() |> View.Const
-    
-        let [< Inline >] inline genericPropertyVal currentCodeSnippetId p def f =
-            currentCodeSnippetId
-            |> Val.map
-                (CodeSnippet.FetchO
-                 >> Option.bind (fun snp -> snp.propValue p |> Option.map f)
-                 >> Option.defaultValue def
-                )
-            |> Val.consistent
-    
-        let [< Inline "Object.constructor('return function(parm) { return `' + $template + '`}')()($p)" >] translateTemplate (template: string) p = ""
-    
-    
-    open FsGlobal                
-    
-    
-    //# 1 @"(4)dca77d6a-5c2c-4c3e-9bef-14f0464f9ada FableModule.fsx"
-    [< JavaScript >]
-    module FableModule =
-        //open Useful
+        type Element = {
+            elmId                  : ElmId
+            elmDim                 : DimId
+            mutable elmType        : ElmType
+            mutable elmName        : string
+            mutable elmDescription : string
+            mutable elmAttributes  : Map<AttId, string> 
+            mutable elmParents     : ElmId     []
+        } 
+        with
+            static member New name = 
+              {
+                elmId          = ElmId <| Guid.NewGuid()
+                elmDim         = DimId <| Guid.NewGuid()
+                elmType        = EtString
+                elmName        = name
+                elmDescription = name
+                elmAttributes  = Map.empty
+                elmParents     = [||]
+              }
         
-        //[< Require(typeof<Resources.BaseResource>, "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.min.js")      >]    
-        [< Require(typeof<Resources.BaseResource>, "/EPFileX/Fable/babel-standalone.js")                               >]    
-        type Babel() =    
-            [< Inline "Babel.transformFromAst($ast , null, $options)"                  >] static member transformFromAst(ast , xx, options)                = X<_>
-            [< Inline "Babel.transform       ($ast ,       $options)"                  >] static member transform       (ast ,     options)                = X<_>
+        type Dimension = {
+            dimId                  : DimId
+            mutable dimName        : string
+            mutable dimPrefix      : string
+            mutable dimType        : DimType
+            mutable defaultElm     : ElmId     option
+            mutable dimElements    : Element   []
+            mutable dimAttributes  : Attribute []
+            isCalcDim              : bool
+        } with
+            member this.GetElement       eId = this.dimElements |> Seq.find (fun e -> e.elmId = eId)
         
-        [< Require(typeof<Resources.BaseResource>, "/EPFileX/Fable/babel-standalone.js")                               >]    
-        [< Require(typeof<Resources.BaseResource>, "/EPFileX/Fable", "Fable.js", "Worker.js")                          >]
-        type Fable() =
-            [< Inline "Fable.createChecker($f, $references)"                           >] static member createChecker(f, references)  : obj                = X<_>
-            [< Inline "Fable.makeCompiler($replacements)"                              >] static member makeCompiler(replacements)    : obj                = X<_>
-            [< Inline "Fable.parseFSharpProject($checker, $com, $fileName, $source)"   >] static member parseFSharpProject(checker, com, fileName, source) = X<_>
-            [< Inline "Fable.compileAst($com, $fsharpAst, $fileName)"                  >] static member compileAst(com, fsharpAst, fileName)               = X<_>
-            [< Inline "Fable.convertToJson($babelAst)"                                 >] static member convertToJson(babelAst)                            = X<_>
+        type Operator = 
+            | OpAdd      
+            | OpSubtract 
+            | OpMultiply 
+            | OpDivide   
+            | OpEQ    
+            | OpNE
+            | OpGT       
+            | OpGE       
+            | OpLT       
+            | OpLE       
+            | OpAnd      
+            | OpOr           
         
-        let [< Inline "getFileBlob($key, $url)"                                        >] getFileBlob(key, url)                                            = X<_>
-        let [< Inline "metadata[$fn]"                                                  >] readAllBytes fn                                                  = X<_>
-        let [< Inline "Object.getOwnPropertyNames(metadata).length"                    >] metadataLength (): int                                           = X<_>
-        let [< Inline "babelPlugins"                                                   >] babelPlugins () : obj                                            = X<_>
+        type Function = Function
         
+        type ElmReference =
+            | ElemFixed   of DimId * ElmId
+            | ElemDynamic of DimId * ExpressionText
+          with
+            member this.DimId =
+                match this with
+                | ElemFixed  (id, _)
+                | ElemDynamic(id, _) -> id
+                
+        and  ExpressionText =
+            | ExtNA
+            | ExtStet
+            | ExtSlice      of Slice
+            | ExtString     of string
+            | ExtDimElement of DimId
+            | ExtDimName    of DimId
+            | ExtFunction   of Function * ExpressionAny []
+            | ExtIf         of ExpressionNumber * ExpressionText   * ExpressionText
+            | ExtSubSt      of ExpressionText   * ExpressionNumber * ExpressionNumber
         
-        let references = [|
-            "mscorlib.dll"
-            "System.dll"
-            "System.Core.dll"
-            "System.Data.dll"
-            "System.IO.dll"
-            "System.Xml.dll"
-            "System.Numerics.dll"
-            "FSharp.Core.sigdata"
-            "FSharp.Core.dll"
-            "Fable.Core.dll"
-            "Fable.Import.Browser.dll"
-            // When loading the REPL the browser console always shows: "Cannot find type System.ValueTuple`1"
-            // However, adding the following reference prevents opening System namespace
-            // See https://github.com/fable-compiler/Fable/issues/1152#issuecomment-330315250
-            // "System.ValueTuple.dll",
-        |]
-    
-        let loadReferences =
-            lazy
-                async {
-                    do! LoadFilesAsync [| "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.min.js" |] 
-                    let  options          = Object.Create null
-                    options?skipDataMain <- 1
-                    options?isBrowser    <- 1
-                    JS.Window?require?config options
-                    references |> Seq.iter (fun fn -> getFileBlob(fn, "metadata/" + fn))
-                } |> Async.Start
+        and  ExpressionNumber =
+            | ExnNA
+            | ExnStet
+            | ExnSlice      of Slice
+            | ExnNumber     of float
+            | ExnOperationN of Operator * ExpressionNumber * ExpressionNumber
+            | ExnOperationT of Operator * ExpressionText   * ExpressionText
+            | ExnOperationI of Operator * ExpressionAny    * ExpressionAny
+            | ExnFunction   of Function * ExpressionAny []
+            | ExnIf         of ExpressionNumber * ExpressionNumber * ExpressionNumber
+            | ExnMax        of ExpressionNumber * ExpressionNumber
+            | ExnMin        of ExpressionNumber * ExpressionNumber
+            | ExnDeIsChild  of ExpressionText   * ExpressionText   * ExpressionText  
             
-        let getChecker = 
-            lazy Fable.createChecker(readAllBytes, references |> Array.choose (fun fn -> if fn.Contains "sigdata" then None else Some <| fn.Replace(".dll", "")) )
+        and ExpressionAny =    
+            | ExiNA
+            | ExiStet
+            | ExiSlice      of Slice
+            | ExNumeric     of ExpressionNumber
+            | ExText        of ExpressionText
+            | ExiIf         of ExpressionNumber * ExpressionAny * ExpressionAny
             
-        let mutable addOutMsg : string -> unit = Console.Log
-    
-        let ToConsole arg = 
-            Console.Log arg
-            arg?cont addOutMsg
-    
-        let fableTranslate source : Wrap<string> =
-            Wrap.wrapper {
-                loadReferences.Value
-                do! async { 
-                        while metadataLength() < references.Length do
-                            do! Async.Sleep 200
-                    }
-                let  checker       = getChecker.Value
-                let  com           = Fable.makeCompiler [| "Microsoft.FSharp.Core.ExtraTopLevelOperators.PrintFormatLine"
-                                                         , "FSSGlobal.FSharpStation.FableModule.ToConsole($0)" |]  
-                let  fileName      = "stdin.fsx"
-                let  fsharpAst     = Fable.parseFSharpProject(checker, com, fileName, source)
-                let  babelAst      = Fable.compileAst(com, fsharpAst, fileName)
-                let  jsonAst       = Fable.convertToJson(babelAst)
-                let  ast           = JSON.Parse(jsonAst)
-                let  options       = Object.Create null
-                options?plugins   <- [| babelPlugins()?transformMacroExpressions
-                                        babelPlugins()?removeUnneededNulls 
-                                        "transform-es2015-modules-amd"    
-                                     |]
-                options?presets   <- [|  |]
-                options?filename  <- fileName
-                options?babelrc   <- false
-                let  transformed   = Babel.transformFromAst(ast , null, options)
-                let  jCode2:string = transformed?code
-                let  jCode3        = jCode2.Replace("define(["       , "require([")
-                                           .Replace("\"use strict\";", "\"use strict\"; try { exports = exports || {}; } catch (err) {}")
-                return jCode3
+        and  Slice = {
+            sliDims     : Map<DimId, ElmReference>   
+            calculation : CalId option
+            cube        : CubId option
+        } with 
+            static member New ds = {
+                     sliDims       = ds |> Seq.map (fun (dr:ElmReference) -> dr.DimId, dr) |> Map 
+                     calculation   = None
+                     cube          = None
+            }
+            static member ForAll = {
+                     sliDims       = Map.empty
+                     calculation   = None
+                     cube          = None
             }
         
         
-    //# 1 @"(4)c2188026-a06a-4963-a95a-93075e5f5b6e FSharpStationClient.fsx"
-    [< JavaScript >]
-    let FSharpStationClient (loadFromUri: string) =
-    
-      //# 1 @"(6)987560b0-1fe6-4835-ad99-aed93db7da1a currentCodeSnippetId.fsx"
-      
-      let missingVar  = Var.Create ""
-      let missing def find lens k =
-          match find k with
-          | Some _ -> lens k
-          | None   -> missingVar.Lens (fun _ -> def) (fun _ _ -> "")
-          
-      let currentCodeSnippetId  = Var.Create <| CodeSnippetId.New
-      
-      storeVarCodeEditor "currentCodeSnippetId" currentCodeSnippetId
-      
-      let refresh       = Var.Create()
-      let refreshView b = refresh.Value <- b
-      
-      let currentCodeSnippetO = Val.map2 (fun k () -> codeSnippets.TryFindByKey k) currentCodeSnippetId refresh
-      
-      let curSnippetNameOf k = missing ""        codeSnippets.TryFindByKey <| codeSnippets.LensInto (fun s -> s.Name      ) (fun s n -> { s with name       = n }) <| k
-      let curSnippetCodeOf k = missing ""        codeSnippets.TryFindByKey <| codeSnippets.LensInto (fun s -> s.content   ) (fun s n -> { s with content    = n }) <| k
-      let curSnippetPrpsOf k = missing (System.Collections.Generic.Dictionary<string, string>()) codeSnippets.TryFindByKey <| codeSnippets.LensInto (fun s -> s.properties) (fun s p -> { s with properties = p }) <| k
-          
-      let positionTxt v =
-          match v with
-          | Below      -> "Below"
-          | Right      -> "Right"
-          | Tab        -> "In Tab"
-          | NewBrowser -> "New Browser"
-          
-      let position = Var.Create Below
-      storeVarCodeEditor "position" position
-      
-      let directionVertical    = 
-          Val.map (fun pos -> 
-              match pos with
-              | Right -> true
-              | _     -> false
-          ) position
-          
-      ()    
-      //# 1 @"(6)07e477d3-fb6e-4c83-bb89-b4b2cce55d7b CodeEditorMain.fsx"
-      
-      
-      let noSelection cur      = CodeSnippet.FetchO cur = None
-      let noSelectionVal       = Val.map noSelection currentCodeSnippetId
-      
-      let propertyCssVal       = genericPropertyVal  currentCodeSnippetId "CSS"      ""         id
-      let propertyCssLinkVal   = genericPropertyVal  currentCodeSnippetId "CSSLink"  ""         id   
-      let propertyModeVal      = genericPropertyVal  currentCodeSnippetId "Mode"     "fsharp"   id   
-      let propertyThemeVal     = genericPropertyVal  currentCodeSnippetId "Theme"    ""         id   
-      let propertyLayoutVal    = genericPropertyVal  currentCodeSnippetId "Layout"   ""         id   
-      let propertyLayoutJSVal  = genericPropertyVal  currentCodeSnippetId "LayoutJS" ""         id   
-      let disablePropertyVal p = genericPropertyVal  currentCodeSnippetId p          ""         id
-      
-      let disableEval parse ev = if ev = "" then parse else ev <> "0"
-      
-      let disableParseVal      = disablePropertyVal "DisableParse"      |> Val.map (fun p -> p <> "0" && p <> "")
-      let disableFSIVal        = disablePropertyVal "DisableFSI"        |> Val.map2 disableEval disableParseVal  
-      let disableFableVal      = disablePropertyVal "DisableFable"      |> Val.map2 disableEval disableParseVal  
-      let disableWebSharperVal = disablePropertyVal "DisableWebSharper" |> Val.map2 disableEval disableParseVal 
-      
-      let mutable lastCodeAndStarts : (CodeSnippetId * bool * ((string * int * int) [] * string [] * string [] * string [] * string [] * string [])) option = None
-      
-      let getPredecessors curO =
-          curO
-          |> Option.map (fun (snp:CodeSnippet) -> snp.UniquePredecessors CodeSnippet.FetchO |> HashSet)
-          |> Option.defaultValue (System.Collections.Generic.HashSet())
-      
-      let getPredecessorsM = Useful.ResetableMemoize(getPredecessors)
-      
-      let codeFS         = Var.Create ""
-      let codeJS         = Var.Create ""
-      let parserMsgs     = Var.Create ""
-      let outputMsgs     = Var.Create ""
-      let mutable parsed = false
-      let dirty          = Var.Create false 
-      let setDirtyPart() = parsed            <- false
-                           dirty.Value       <- true       
-      let setDirty()     = lastCodeAndStarts <- None
-                           setDirtyPart               ()
-      let setDirtyPred() = setDirty                   ()
-                           getPredecessorsM.ClearCache()
-                           refreshView                ()
-      let setClean()     = getPredecessorsM.ClearCache()
-                           dirty.Value       <- false
-                           lastCodeAndStarts <- None
-                           
-      
-      //storeVarCodeEditor "dirty" dirty
-      let appendMsg (var:IRef<string>) msg =
-          if isUndefined msg then () else
-          let newM =
-              match var.Value, msg.ToString() with
-              | null, m 
-              | ""  , m
-              | m   , null
-              | m   , ""   -> m
-              | m1  , m2   -> m1 + "\n" + m2
-          if newM <> var.Value then
-              var.Value  <- newM
-      
-      let setOutMsg msg = outputMsgs.Value <-  msg
-      let addOutMsg msg = appendMsg outputMsgs msg
-      let addPrsMsg msg = appendMsg parserMsgs msg
-      
-      let getFSCode () =
-          CodeSnippet.FetchO currentCodeSnippetId.Value 
-          |> Option.iter (fun snp -> codeFS.Value <- snp.GetCodeFsx true )
-      
-      do Val.sink (fun m -> 
-          JS.Window.Onbeforeunload <- 
-              if m then System.Action<Dom.Event>(fun (e:Dom.Event) -> e?returnValue  <- "Changes you made may not be saved.")
-              else null
-          ) dirty 
-      
-      //let evalIFrameJS success failure js =
-      //    createIFrame (fun frame ->
-      //        try
-      //             let window   = frame?contentWindow
-      //             let eval   s = JS.Apply window "eval" [| s |]
-      //             eval js           |> success
-      //        with e -> e.ToString() |> failure
-      //    )
-      //    |> RunCode.RunNode().RunHtml
-      //
-      //let evalWindowUrlJS (url:string) success failure js =
-      //    let window       = JS.Apply JS.Window "open" [| url |]
-      //    match window with
-      //    | null -> failure "could not open new browser. Popup blocker may be active."
-      //    | _    ->
-      //    800 
-      //    |> JS.SetTimeout (fun () -> 
-      //        try
-      //             let eval   s = JS.Apply window   "eval" [| s |]
-      //             //printfn "Evaluating..."
-      //             JS.Apply window   "focus" [|  |]
-      //             eval js           |> success
-      //        with e -> e.ToString() |> failure)
-      //    |> ignore
-      //
-      //let runUrlJS url pos msgs js =
-      //    sendMsg "Running JavaScript..."
-      //    match pos with
-      //    | NewBrowser -> evalWindowUrlJS url
-      //    | _          -> evalIFrameJS
-      //    <| (fun res  -> sendMsg "Done!"   ; sendMsg res ; sendMsg msgs) 
-      //    <| (fun res  -> sendMsg "Failed!" ; sendMsg res ; sendMsg msgs)
-      //    <| js
-      //
-      //let processSnippet getCode msg processCode =
-      //    CodeSnippet.FetchO currentCodeSnippetId.Value 
-      //    |> Option.iter (fun snp -> 
-      //        codeMsgs.Value <- msg
-      //        codeJS.Value   <- ""
-      //        let code = getCode snp
-      //        codeFS.Value   <- code
-      //        processCode       code
-      //    )
-      //
-      //let compileSnippet fThen fFail = 
-      //    processSnippet (fun snp -> snp.GetCodeFsx true) "Compiling to JavaScript..." (RunCode.compile (fun msgs js -> codeJS.Value <- js ; fThen msgs js) fFail)
-      //
-      //let compileRunP pos = compileSnippet (runJS pos)                                         sendMsg
-      //let compileRun  ()  = compileRunP           position.Value
-      //let justCompile ()  = compileSnippet (fun msgs _ -> sendMsg "Compiled!" ; sendMsg msgs)  sendMsg
-      
-      let reorderSnippet toId fromId =
-          let trySnippet id = tryPickI (fun (_, snp) -> snp.id = id) 
-          let moving, others = codeSnippets.Value |> Seq.toArray |> Array.partition (fun snp -> snp.id = fromId || snp.IsDescendantOf fromId)
-          match trySnippet fromId moving, trySnippet toId others with
-          | Some(_, snp), Some(ti, tsn) ->
-              [| others.[0..ti - 1] ; moving ; others.[ti..] |]
-              |> Array.collect id
-              |> codeSnippets.Set
-              codeSnippets.UpdateBy (fun c -> Some { c with parent = tsn.parent }) snp.id
-          | _ -> ()
-          setDirtyPred()
-      
-      let indentCodeIn () =
-          CodeSnippet.PickIO currentCodeSnippetId.Value
-          |> Option.iter (fun (j, snp) ->
-              let rec doPriorUntil f i =
-                  if i < 0 then () else
-                  if codeSnippets.Value |> Seq.item i |> f then () else
-                  doPriorUntil f (i - 1)
-              j - 1 |> doPriorUntil (fun pri ->
-                  if pri.parent = snp.parent 
-                  then codeSnippets.UpdateBy (fun c -> Some { c with parent = Some pri.id }) snp.id
-                       true
-                  else false
-              )
-              setDirtyPred()
-          )
-      
-      let indentCodeOut () =
-          CodeSnippet.FetchO currentCodeSnippetId.Value
-          |> Option.iter (fun snp ->
-              let newP = snp.parent
-                         |> Option.bind CodeSnippet.FetchO
-                         |> Option.bind (fun p -> p.parent)
-              codeSnippets.UpdateBy (fun c -> Some { c with parent = newP }) snp.id
-              setDirtyPred()
-          )
-      
-      let mutable draggedId   = CodeSnippetId.New
-      
-      ()
-      //# 1 @"(6)3f2ec5e2-8ab6-4e5b-bb89-1943ed3a4964 Compile.fsx"
-      let compileSnippetW (snpO: CodeSnippet option) =
-          Wrap.wrapper {
-              let!   snp         = snpO |> Result.fromOption ``Snippet Missing``
-              outputMsgs.Value  <- "Compiling to JavaScript..."
-              codeJS.Value      <- ""
-              let    code        = snp.GetCodeFsx true
-              codeFS.Value      <- code
-              let!   jsR         = translateAR code false
-              let!   js          = jsR
-              let    jsc         = RunCode.completeJS js
-              codeJS.Value      <- jsc
-              addOutMsg            "Compiled!"
-              return jsc
-          }
-          
-      let newWindow url = 
-          JS.Apply JS.Window "open"  [| url |]
-          |> function
-             | null   -> Result.fail    ``Could not open new browser, Popup blocker may be active``
-             | window -> Result.succeed window
-          
-      let eval  window js = try JS.Apply window "eval"  [| js  |]           with e -> printfn "%A" e ; sprintf "%A" e
-      let focus window    = try JS.Apply window "focus" [|     |] |> ignore with e -> printfn "%A" e
-      
-      let evalWindowUrlJSW (url:string) js =
-          Wrap.wrapper {
-              do!    Result.tryProtection()
-              let!   window       = newWindow url
-              do     focus window
-              do!    Async.Sleep 800 
-              let    res : string = eval window js
-              return res
-          }
-      
-      let createIFrameA () =
-          Async.FromContinuations
-              (fun (cb, errF: exn -> unit, canF: System.OperationCanceledException -> unit) ->
-                  try
-                      createIFrame cb |> RunCode.RunNode().RunHtml     
-                  with e -> errF e
-              )
-      
-      let evalIFrameJSW js =
-          Wrap.wrapper {
-              do!    Result.tryProtection()
-              let!   frame        = createIFrameA () 
-              let    window       = frame?contentWindow
-              window?document?body?style?margin <- "0px"
-              let    res : string = eval window js
-              return res
-          }
-      
-      let compileRunUrlW url pos snpO =
-          Wrap.wrapper {
-              let! js  = compileSnippetW snpO
-              outputMsgs.Value <-  "Running JavaScript..."
-              let! res = match pos with
-                         | NewBrowser -> evalWindowUrlJSW url js
-                         | _          -> evalIFrameJSW        js
-              addOutMsg res
-              addOutMsg "Done!"
-              return  pos, res
-          }
-      
-      let getSnpO () = CodeSnippet.FetchO currentCodeSnippetId.Value
-      
-      let evalCodeW (code: string) =
-          Wrap.wrapper {
-              codeFS.Value     <- code
-              let! resR         = evaluateAR fsIds JS.Window.Location.Href true code
-              let! res          = resR
-              return  ""
-          }
-      
-      let evalSnippetW (snpO: CodeSnippet option) =
-          Wrap.wrapper {
-              let!   snp        = snpO |> Result.fromOption ``Snippet Missing``
-              let    code       = snp.GetCodeFsx true
-              let!   res        = evalCodeW code
-              do!    Evaluator.addPresence (sprintf "%A" snp.id) "ok"
-              return res
-          }
-          
-      let doSomething msgStart msgFinish (doIt: unit -> Wrap<_>) = 
-          Wrap.wrapper {
-              outputMsgs.Value <- msgStart // "Evaluating F# code..."
-              let! res          = doIt()
-              addOutMsg res
-              addOutMsg msgFinish          //"Done!"
-              return  res
-          }
-      
-      let evaluateSnippetW snpO = doSomething "Evaluating F# code..." "" (fun () -> evalSnippetW snpO)
-      let evaluateCodeW    code = doSomething "Evaluating F# code..." "" (fun () -> evalCodeW    code)
-      
-      let ToConsoleF arg = 
-          Console.Log arg
-          arg?cont addOutMsg
-          
-      FableModule.addOutMsg <- addOutMsg 
-      
-      let evalFableCodeW code =
-          Wrap.wrapper {
-              codeFS.Value     <- code
-              let! jsc          = FableModule.fableTranslate code
-              codeJS.Value     <- jsc
-              JS.Eval jsc |> ignore
-              return ""
-          }
-      
-      let evalFableSnippetW (snpO: CodeSnippet option) =
-          Wrap.wrapper {
-              let!   snp        = snpO |> Result.fromOption ``Snippet Missing``
-              let    code       = snp.GetCodeFsx false
-              return!             evalFableCodeW code
-          }
-      
-      let fableSnippetW snpO = doSomething "Running Fable..." "Done!" (fun () -> evalFableSnippetW snpO)
-      let fableCodeW    code = doSomething "Running Fable..." "Done!" (fun () -> evalFableCodeW    code)
-      
-      
-      let compileRunW = compileRunUrlW (JS.Window.Location.Origin + "/Main.html") 
-      
-      let compileRunP pos = getSnpO() |> compileRunW pos  //|> Wrap.map ignore |> Wrap.start addOutMsg
-      let justCompile     = getSnpO   >> compileSnippetW  //>> Wrap.map ignore >> Wrap.start addOutMsg
-      let evaluateFS      = getSnpO   >> evaluateSnippetW //>> Wrap.map ignore >> Wrap.start addOutMsg
-      let fableFS         = getSnpO   >> fableSnippetW
-      let compileRun  ()  = compileRunP position.Value
-      
-      ()
-      //# 1 @"(6)93f32df7-da8b-472f-8bad-e82cc58ec52b List Code.fsx"
-      let isDirectPredecessor pre curO =
-          curO
-          |> Option.map (fun snp -> snp.predecessors |> List.contains pre)
-          |> Option.defaultValue false
-      
-      
-      let curPredecessors = Val.map getPredecessorsM.Call currentCodeSnippetO
-      
-      let isIndirectPredecessor pre (predecessors: HashSet<CodeSnippetId>) = predecessors.Contains pre //predecessors |> Set.contains pre
-      
-      //let isIndirectPredecessorT (preId, curId) = getPredecessors curId |> Set.contains preId            // horrible performance
-      //let isIndirectPredecessorM  preId  curId  = (Useful.memoize isIndirectPredecessorT) (preId, curId) // horrible performance
-      
-      let togglePredecessorForCur (pre:CodeSnippet) curO =
-          curO |> Option.iter (fun cur ->
-              if cur = pre || isIndirectPredecessor cur.id (pre.UniquePredecessors CodeSnippet.FetchO |> HashSet) then () else
-              let preds = 
-                  if cur.predecessors |> List.contains pre.id
-                  then List.filter ((<>) pre.id)
-                  else fun l -> pre.id :: l
-                  <| cur.predecessors
-              codeSnippets.UpdateBy  (fun c -> Some { c with predecessors = preds }) cur.id
-              setDirtyPred()
-          )
-      
-      let toggleExpanded snp =
-          codeSnippets.UpdateBy  (fun c -> Some { c with expanded = not c.expanded }) snp.id
-          refreshView()
-      
-      let listEntry isParent isExpanded code =
-          Template.Hoverable.New
-              .Content( [ ``class`` "code-editor-list-tile"
-                          classIf   "selected"              <| Val.map ((=)                    code.id) currentCodeSnippetId
-                          classIf   "direct-predecessor"    <| Val.map (isDirectPredecessor    code.id) currentCodeSnippetO
-                          classIf   "indirect-predecessor"  <| Val.map (isIndirectPredecessor  code.id) curPredecessors
-                          draggable "true"
-                          SomeAttr <| on.dragOver(fun _ ev -> ev.PreventDefault()                                              )
-                          SomeAttr <| on.drag    (fun _ _  ->                                              draggedId <- code.id)
-                          SomeAttr <| on.drop    (fun _ ev -> ev.PreventDefault() ; reorderSnippet code.id draggedId           )
-                          span    [ ``class`` "node"
-                                    classIf   "parent"   isParent
-                                    classIf   "expanded" isExpanded
-                                    SomeAttr <| on.click(fun _ _ -> if isParent then toggleExpanded code)
-                                    title    <| if isParent then (if isExpanded then "collapse" else "expand") else ""
-                                    htmlText <| if isParent then (if isExpanded then "-"        else "+"     ) else ""
-                                  ]
-                          div     [ ``class`` "code-editor-list-text"
-                                    style1 "text-indent" (code.Levels |> fst |> sprintf "%dem")
-                                    style  "white-space: pre"
-                                    htmlText <| Val.map2 snippetName (curSnippetNameOf code.id) (curSnippetCodeOf code.id)
-                                    SomeAttr <| on.click (fun _ _ -> currentCodeSnippetId.Value <- code.id)
-                                  ]
-                          span    [ ``class``   "predecessor"
-                                    title       "toggle predecessor"
-                                    SomeAttr <| on.click(fun _ _ -> Val.iter (togglePredecessorForCur code) currentCodeSnippetO)
-                                    htmlText    "X"
-                                  ]
-                          ])
-      
-      let mutable topScrollList = 0.0
-      
-      let listEntries snps =
-          let list =
-            div [ 
-              yield style "overflow: auto"
-              yield! 
-                  snps
-                  |> Seq.indexed
-                  |> Seq.mapFold (fun expanded (i, snp) ->
-                      if snp.parent |> Option.map (fun p -> Set.contains p expanded) |> Option.defaultValue true then 
-                          let isParent    = codeSnippets |> Seq.tryItem (i + 1) |> Option.map (fun nxt -> nxt.parent = Some snp.id) |> Option.defaultValue false
-                          let isExpanded  = isParent && snp.expanded
-                          (listEntry isParent isExpanded snp |> Some, if isExpanded then Set.add snp.id expanded else expanded)
-                      else  (None, expanded)
-                  )  (Set [])
-                  |> fst
-                  |> Seq.choose id
-              yield SomeAttr <| on.scroll      (fun e _ -> topScrollList <- e.ScrollTop   )
-              yield SomeAttr <| on.afterRender (fun e   -> e.ScrollTop   <- topScrollList )
-            ]
-          list
-      
-      ()    
-      //# 1 @"(6)54304360-819a-498c-a091-e6ece880a35a Deserialize.fsx"
-      let inline ifUndef def v = if isUndefined v then def else v
-      let obj2CodeSnippetId o = 
-          if isUndefined o then
-              System.Guid("00000000-0000-0000-0000-000000000000")
-          else
-              o?Item
-          |> CodeSnippetId 
-      
-      let obj2CodeSnippetIdO o = // the json representation of an option is different from the internal representation
-          if isUndefined o then
-              None
-          else
-              Some <| obj2CodeSnippetId o
-      
-      let obj2Map o =
-          let dict = System.Collections.Generic.Dictionary<string, string>()
-          if isUndefined o then
-              dict
-          else
-              JS.GetFields o |> Array.map (fun (f, v) -> f, v :?> string ) |> Seq.iter dict.Add
-              dict
-      
-      let deserializeCodeSnipets v = 
-          try
-              let objs= WebSharper.Json.Parse v |> unbox<obj[]>
-              printfn "%A" <| Array.length objs
-              let snps =
-                  objs
-                  |> Array.choose (fun o ->
-                       if isUndefined o then None else
-                       {
-                          name         = o?name         |> ifUndef ""
-                          content      = o?content      |> ifUndef ""
-                          parent       = o?parent       |> obj2CodeSnippetIdO
-                          predecessors = o?predecessors |> ifUndef [||] |> Array.map  obj2CodeSnippetId |> Seq.toList
-                          id           = o?id           |> obj2CodeSnippetId
-                          expanded     = o?expanded     |> ifUndef false
-                          level        = o?level        |> ifUndef 0
-                          levelCode    = o?levelCode    |> ifUndef 0
-                          properties   = o?properties   |> obj2Map
-                        } |> Some)
-              snps
-          with _ -> [||]
-          
-      ()    
-      //# 1 @"(6)60191ea0-da20-4fbf-96b8-3871338a66d8 Add,Delete,Load,Save.fsx"
-      let addCode   ()   =
-          CodeSnippet.PickIO currentCodeSnippetId.Value
-          |> Option.map (fun (i, snp) ->
-              let rec nextI lvl k =
-                  codeSnippets.Value 
-                  |> Seq.tryItem k 
-                  |> Option.map (fun s -> if (fst s.Levels) <= lvl then k else nextI lvl (k + 1) ) 
-                  |> Option.defaultValue k
-              CodeSnippet.New(nextI (fst snp.Levels) (i + 1), "", snp.parent, [], [], ""))
-          |> Option.defaultWith (fun _ -> CodeSnippet.New "")
-          |> fun n -> currentCodeSnippetId.Value <- n.id
-          setDirty()
-          refreshView()
-      
-      
-      let deleteCode () =
-          CodeSnippet.FetchO currentCodeSnippetId.Value
-          |> Option.iter (fun snp -> 
-              if JS.Confirm (sprintf "Do you want to delete %s?" snp.Name) then
-                  currentCodeSnippetId.Value <- CodeSnippetId.New
-                  codeSnippets.Remove snp
-                  setDirty()
-                  refreshView()
-          )
-          
-      let justFileName (f:string) = f.Split [| '/' ; '\\' |] |> Seq.last
-      
-      let fileName  = Var.Create ""
-      let emptyFile = Val.map (fun v -> v = "") fileName
-      
-      let loadTextFile element (f: string -> unit) =
-          let files = element |> FileList.OfElement 
-          if files.Length > 0 then
-              let  reader  = TextFileReader()
-              reader.Onload <- (fun e -> f e.Target?result)
-              reader.ReadAsText files.[0] 
-      
-      let parseText txt =
-          try
-              txt
-              |> deserializeCodeSnipets
-              |> codeSnippets.Set
-              setClean()
-              refreshView()
-          with e -> JS.Alert <| e.ToString()
-      
-      let fileInputElementId = "CodeEditorFileSel"
-      let loadFile (e: Dom.Element) =
-          if (not dirty.Value) || JS.Confirm "Changes have not been saved, do you really want to load?" then
-            let root = findRootElement e
-            loadTextFile 
-                <| root.QuerySelector("#" + fileInputElementId)
-                <| parseText
-      
-      let downloadFile() = // Save as...
-          codeSnippets.Value
-              |> Seq.toArray
-              |> Json.Serialize
-              |> saveAs <| match justFileName fileName.Value with | "" -> "snippets.fsjson" | fname -> fname
-          setClean()
-      
-      let loadFileElement =
-          Template.Input.New(fileName.Lens justFileName (fun prev n -> prev) )
-              .Prefix( label [ ``class`` "btn btn-primary" ; htmlText "Load File..." 
-                               Template.Input.New(fileName)
-                                       .Type("file")
-                                       .Style("display: none")
-                                       .Content([ on.change (fun el _ -> loadFile el   )
-                                                  on.click  (fun el _ -> el?value <- "")
-                                                ])
-                                       .Id(fileInputElementId)
-                                       .Render 
-                              ]
-                      )
-                      
-      let do_LoadFile (e:Dom.Element) _ =          
-          let root = findRootElement e
-          (root.QuerySelector("#" + fileInputElementId))?click()
-      
-      if loadFromUri <> "" then
-          async {
-              do! Async.Sleep 3000
-              printfn "loading %s..." loadFromUri
-              let  r = JQuery.JQuery.GetJSON(loadFromUri + "?t=" + (now() |> string))
-              r.Done (fun () -> parseText r.ResponseText) |> ignore
-          } |> Async.Start
-          
-          
-      //# 1 @"(6)47f7c0ba-35b0-466e-a759-4e4d9963e524 codeMirror.fsx"
-      let autoCompleteClient = FSAutoCompleteIntermediary.FSAutoCompleteIntermediaryClient("FSharpStation", endPoint = JS.Window.Location.Href)
-      
-      #if INTERACTIVE
-      let parseFile = fsIds + ".fsx"
-      #else
-      let parseFile = "..\\" + fsIds + ".fsx"
-      #endif
-      
-      let setDirtyCond() =
-          match lastCodeAndStarts with
-          | Some (pId, _, red) when pId = currentCodeSnippetId.Value -> setDirtyPart()
-          | _                                                        -> setDirty    ()
-      
-      let isParseDisabled = disableParseVal |> Val.toView |> View.GetAsync 
-      
-      let getCodeAndStartsFast msgF (snp:CodeSnippet) addLinePrepos =
-          let red0, cur = 
-              match lastCodeAndStarts with
-              | Some (pId, alp, red) when pId = snp.id && alp = addLinePrepos -> msgF "Reparsing..."; red, snp.PrepareSnippet
-              | _ -> 
-              msgF "Parsing..."
-              let preds = snp.Predecessors()
-              let red = CodeSnippet.ReducedCode addLinePrepos preds.[0..preds.Length - 2]
-              let cur = preds.[preds.Length - 1]
-              lastCodeAndStarts <- Some(cur.id, addLinePrepos, red)
-              red, cur
-          let red1 = CodeSnippet.ReducedCode addLinePrepos [| cur |]
-          CodeSnippet.AddSeps red0 red1
-          |> CodeSnippet.FinishCode addLinePrepos
-      
-      let mutable parseRun = 1
-      let mutable parsing  = false
-      
-      let parseFSA silent =
-          let msgF txt = if not silent then parserMsgs.Value <- txt
-          async {
-              match CodeSnippet.FetchO currentCodeSnippetId.Value with 
-              | None     -> ()
-              | Some cur ->
-              let runN           = parseRun + 1
-              parseRun          <- runN
-              while parsing do
-                  do! Async.Sleep 1000
-              if parseRun <> runN then () else
-              try
-                  parsing           <- true
-                  parsed            <- true
-                  let  code, starts  = getCodeAndStartsFast msgF cur false
-                  let! res           = autoCompleteClient.Parse(parseFile, code, starts)
-                  if not silent && runN = parseRun && parsed then
-                      addPrsMsg res
-                      addPrsMsg "Parsed!"
-              finally  
-                  parsing <- false
-          }
-      
-      let parseFS() = 
-          Wrap.wrapper {
-              lastCodeAndStarts <- None
-              do! parseFSA false
-          }
-      
-      let mustParse (cur:CodeSnippet) =
-          async {
-              if not parsed then return true 
-              else
-                  let! must = autoCompleteClient.MustParse(parseFile, cur.NameSanitized)
-                  return must
-          }
-      
-      let parseIfMustThen silent =
-          async {
-              let! disabled = isParseDisabled 
-              if disabled then () else
-              match CodeSnippet.FetchO currentCodeSnippetId.Value with 
-              | None     -> ()
-              | Some cur ->
-              let! must = mustParse cur
-              if must then 
-                  do! parseFSA silent
-          }
-      
-      let getStartWord (line:string) ch =
-          match line.Substring(0, ch) with
-          | REGEX @"([a-zA-Z_]\w*)$" "g" [| txt |] -> txt
-          | _                                      -> ""          
-      
-      let getEndWord (line:string) ch =
-          match line.Substring(ch) with
-          | REGEX @"^([a-zA-Z_]\w*)" "g" [| txt |] -> txt
-          | _                                      -> ""          
-      
-      let showToolTip (ed:Template.CodeMirrorEditor) =
-          async {
-              let! disabled = isParseDisabled 
-              if disabled then () else
-              match CodeSnippet.FetchO currentCodeSnippetId.Value with 
-              | None     -> ()
-              | Some cur ->
-              do!  parseIfMustThen false
-              let  pos   = ed.GetCursor()
-              let  l     = ed.GetLine pos.line
-              let  sub   = (getStartWord l pos.ch |> String.length)   
-              let  add0  = (getEndWord   l pos.ch |> String.length)    
-              let  add   = if sub = 0 && add0 = 0 then 2 else add0 
-              let! tip   = autoCompleteClient.ToolTip  (parseFile, pos.line + 1, pos.ch + 1, cur.NameSanitized)
-              addPrsMsg <| sprintf "InfoFSharp \"%s %A - %A %s \"" cur.NameSanitized (pos.line + 1, pos.ch - sub + 1) (pos.line + 1, pos.ch + add + 1) (tip.Replace("\"","''"))
-          } |> Async.Start
-      
-      let rex1 = """\((\d+)\) F# (.+).fsx\((\d+)\,(\d+)\): (error|warning) ((.|\b)+)"""
-      let rex2 = """(Err|Warning|Info)(FSharp|WebSharper)\s+"(\((\d+)\) ?)?F?#? ?(.+?)(.fsx)? \((\d+)\,\s*(\d+)\) - \((\d+)\,\s*(\d+)\) ((.|\s)+?)""" + "\""
-      let rex = rex1 + "|" + rex2
-      
-      let getAnnotations (txt, cb, _, ed:Template.CodeMirrorEditor) =
-          async {
-              match CodeSnippet.FetchO currentCodeSnippetId.Value with 
-              | None     -> ()
-              | Some cur ->
-              printfn "calling parseIfMustThen"
-              do!  parseIfMustThen false
-              match parserMsgs.Value with
-              | REGEX rex "g" m -> m
-              | _               -> [||]
-              |> Array.choose (fun v ->
-                  match v with
-                  | REGEX rex2 "" [| _ ; sev; from;  _; indent; file; _; fl; fc; tl; tc; msg; _ |] -> Some (file, indent, int fl, int fc    , int tl, int tc, sev, from , msg)
-                  | REGEX rex1 "" [| _ ;                indent; file   ; fl; fc;    sev; msg; _ |] -> Some (file, indent, int fl, int fc - 1, int fl, int fc, sev, "fsi", msg)
-                  | _ -> None
-              )
-              |> Array.choose (fun (file, indent, fl, fc, tl, tc, sev, from, msg) ->
-                  if file.StartsWith cur.id.Text || file = sanitize cur.name then
-                      let ind = if int indent > 0 then int indent else 0
-                      { Template.LintResponse.message  = msg
-                        Template.LintResponse.severity = (if sev.ToUpper().StartsWith("ERR") then "error" elif sev.ToUpper().StartsWith("INFO") then "info" else "warning")
-                        Template.LintResponse.from     = Template.cmPos(fl - 1, fc - 1 - ind) 
-                        Template.LintResponse.``to``   = Template.cmPos(tl - 1, tc - 1 - ind)
-                      } |> Some
-                  else     None
-                )        
-              |> cb
-          } |> Async.Start
-      
-      let asyncStartDelayed = asyncStartCancelling()
-      let getAnnotationsDelayed parms =
-          async {
-              printfn "before delaying"
-              do! Async.Sleep 400
-              printfn "calling getAnnotations"
-              do getAnnotations parms
-          } |> asyncStartDelayed 
-      
-      let getHints (ed:Template.CodeMirrorEditor, cb, _) =
-          async {
-              let! disabled = isParseDisabled 
-              if disabled then () else
-              match CodeSnippet.FetchO currentCodeSnippetId.Value with 
-              | None     -> ()
-              | Some cur ->
-              do!  parseIfMustThen true
-              let  pos    = ed.GetCursor()
-              let  l      = ed.GetLine pos.line
-              let  word   = getStartWord l pos.ch     
-              let! com    = autoCompleteClient.Complete(parseFile, l + "a", pos.line + 1, pos.ch + 1, cur.NameSanitized)
-              cb { Template.list   = com 
-                                     |> Array.map (fun (dis, rep, cls, chr) -> 
-                                          { text        = rep
-                                            displayText = chr + "| " + dis
-                                            className   = cls                              
-                                          })
-                   Template.from   = { pos with ch = pos.ch - word.Length }
-                   Template.``to`` = pos 
+        type ForType = 
+            | ForBase
+            | ForConsolidated
+            | ForAll
+        
+        type Formula = {
+            forId                  : ForId
+            mutable forDestination : ElmReference list
+            mutable forDescription : string
+            mutable forExpression  : ExpressionAny
+            mutable forType        : ForType
+        }
+        
+        type Calculation = {
+            calId                  : CalId
+            mutable calName        : string
+            mutable calDescription : string
+            mutable format         : string
+            mutable isText         : bool
+            mutable isInput        : bool
+            mutable isBalance      : bool
+            mutable calDims        : Set<DimId>
+            mutable calFormulas    : Formula []
+            mutable cube           : CubId   option
+            properties             : System.Collections.Generic.Dictionary<string, string>
+        } with
+            member this.Slice : Slice = 
+                 {
+                     sliDims       = Map.empty
+                     calculation   = Some this.calId
+                     cube          = None
                  }
-          } |> asyncStartDelayed
-          
-      let codeMirror = 
-          Template.CodeMirror.New(Val.bindIRef curSnippetCodeOf currentCodeSnippetId)
-              .OnChange(setDirtyCond)
-              .OnRender(fun ed ->
-                ed.AddKeyMap({  F2              = showToolTip            
-                                LeftDoubleClick = showToolTip
-                                ``Ctrl-Space``  = Template.showHints ed getHints false
-                                ``.``           = (fun _ -> ed.ReplaceSelection(".", "end"))
-                                                  >> Template.showHints ed getHints false
-                             })
-                Template.setLint ed getAnnotationsDelayed 
-                Val.sink (fun v ->
-                    async {
-                        ed.SetOption("theme", v)
-                        do! Async.Sleep(50)
-                        ed.Refresh()
-                    } |> Async.Start
-                    ) propertyThemeVal 
-                Val.sink (fun v -> ed.SetOption("mode" , v)) propertyModeVal 
-              )
-              .Style("height: 100%")
-      
-      let rec expandParents snp = 
-          snp.parent
-          |> Option.bind CodeSnippet.FetchO
-          |> Option.iter (fun me -> 
-              expandParents me
-              if not me.expanded then toggleExpanded me)
-      
-      let goto codeId line col =
-          async {
-              currentCodeSnippetId.Value <- codeId
-              CodeSnippet.FetchO codeId |> Option.iter expandParents
-              do! Async.Sleep 200
-              codeMirror.editorO 
-              |> Option.iter (fun ed -> 
-                  ed.SetCursor(line - 1, col - 1) 
-                  ed.Focus()
-              )
-          } |> Async.Start
-      
-      let rexGuid = """([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}).+?\((\d+)\,\s*(\d+)\)"""
-      
-      let jumpToLine (line:string) = 
-          match line with
-          | REGEX rexGuid "" [| _ ; guid ; line ; col |] -> goto <| CodeSnippetId (System.Guid guid) <| int line <| int col
-          | _                                            -> ()
-      
-      let gotoDefinition () =
-          async {
-              match CodeSnippet.FetchO currentCodeSnippetId.Value with 
-              | None     -> ()
-              | Some cur ->
-              match codeMirror.editorO  with
-              | None     -> () 
-              | Some ed  ->
-              let  pos   = ed.GetCursor()
-              let  l     = ed.GetLine pos.line
-              let! kind  = autoCompleteClient.FindDecl(parseFile, pos.line + 1, pos.ch + 1, cur.NameSanitized)
-              match kind with
-              | FSAutoCompleteIntermediary.CommTypes.KFindDecl decl -> jumpToLine <| sprintf "%s (%d, %d) - (%d, %d)" decl.File decl.Line decl.Column decl.Line decl.Column
-              | FSAutoCompleteIntermediary.CommTypes.KError    err  -> JS.Alert   <| sprintf "%A" err
-              | _                                                   -> JS.Alert   <| sprintf "%A" kind
-          } |> Async.Start
-      
-      let refreshCodeMirror() = codeMirror.editorO |> Option.iter (fun cm -> cm.Refresh())
-      
-      let delayedRefreshCM delay =
-          async {
-              do! Async.Sleep delay
-              refreshCodeMirror() 
-          } |> Async.Start
-          
-      let codeMirrorRender = 
-          codeMirror.Render.AddChildren [ 
-              SomeAttr <| on.dblClick (fun _ _ -> showToolTip codeMirror.editorO.Value)  
-              htmlElement "menu" [  // does not work anymore. support for this was dropped by Chrome
-                  ``type`` "context"
-                  Id       "right-menu"
-                  htmlElement "menuitem" [ 
-                      htmlAttribute "label" "Goto Definition"
-                      SomeAttr <| on.click (fun _ _ -> gotoDefinition() )  
-                  ] 
-              ]
-              htmlAttribute "contextmenu" "right-menu"
-          ]
-      
-      parserMsgs
-      |> Val.sink (fun msgs ->
-          async {
-              if not parsed then () else
-              match codeMirror.editorO  with
-              | None    -> () 
-              | Some ed ->
-              match CodeSnippet.FetchO currentCodeSnippetId.Value with 
-              | None     -> ()
-              | Some cur ->
-              let! must = autoCompleteClient.MustParse(parseFile, cur.NameSanitized)
-              if must       then () else
-              ed?performLint() |> ignore
-          } |> Async.Start      
-      )
-      //let mutable prior = "", ""
-      //Val.map2 (fun msgs curO -> msgs, curO) codeMsgs currentCodeSnippetO
-      //|> Val.sink (fun (msgs, curO) ->
-      //    async {
-      //        match codeMirror.editorO  with
-      //        | None        -> () 
-      //        | Some editor ->
-      //            match curO with 
-      //            | None -> () 
-      //            | Some cur ->
-      //            curSnippetNameOf cur.id
-      //            |> Val.iter (fun name ->
-      //                printfn "RemoveMarks: %s" name
-      //                if prior = (msgs, name) then () else
-      //                prior   <- (msgs, name)
-      //                editor.RemoveMarks()
-      //                match msgs with
-      //                | REGEX rex "g" m -> m
-      //                | _               -> [||]
-      //                |> Array.choose (fun v ->
-      //                    match v with
-      //                    | REGEX rex2 "" [| _ ; sev; from;  _; indent; file; _; fl; fc; tl; tc; msg; _ |] -> Some (file, int fl, int fc - int indent    , int tl, int tc - int indent, sev, from , msg)
-      //                    | REGEX rex1 "" [| _ ;                indent; file   ; fl; fc;    sev; msg; _ |] -> Some (file, int fl, int fc - int indent - 1, int fl, int fc - int indent, sev, "fsi", msg)
-      //                    | _ -> None
-      //                )
-      //                |> Array.iter (fun (file, fl, fc, tl, tc, sev, from, msg) ->
-      //                    printfn "inside -%s-%s-" file (sanitize name)
-      //                    if file.StartsWith cur.id.Text || file = sanitize name then
-      //                        100
-      //                        |> JS.SetTimeout (fun () ->
-      //                            editor.MarkText (fl - 1, fc - 1) (tl - 1, tc - 1) (if sev.ToUpper().StartsWith("ERR") then "Error" else "Warning")  msg)
-      //                        |> ignore
-      //    
-      //                )
-      //            )
-      //    } |> Async.Start
-      //)
-      
-      //# 1 @"(6)fa5b4506-b26d-4387-8e04-ac7a5a90861a let styleEditor =.fsx"
-      let styleEditor =
-           """
-      
-        body { margin: 0px }     
-             
-        div textarea {
-            font-family     : monospace;
-        }
-        .code-editor-list-tile {
-            white-space     : nowrap; 
-            border-style    : solid none none;
-            border-color    : white;
-            border-width    : 1px;
-            background-color: #D8D8D8;
-            display         : flex;
-        }
-        .code-editor-list-text{
-            padding         : 1px 10px 1px 5px;
-            overflow        : hidden;
-            text-overflow   : ellipsis;
-            white-space     : nowrap;
-            flex            : 1;
+            member this.Type = if this.isInput then "INPUT" else "CALC"
+        
+        type RuleKey = 
+            | RuleKey     of RulId
+            | CalcRuleKey of CalId
+            | FormulaKey  of ForId
+            | ForTextKey  of ForId
+            | ActualRuleKey 
+            | InputRuleKey
+            | ConsolidatedRuleKey
+        
+        type Cube = {
+            cubId                  : CubId
+            mutable cubName        : string
+            mutable cubRules       : Map<RuleKey, Rule option>
+            cubDims                : DimId []
+            measureDim             : DimId option
+            cubType                : CubeType
+        } with
+            member this.Slice : Slice = 
+                 {
+                     sliDims       = Map.empty
+                     calculation   = None
+                     cube          = Some this.cubId
+                 }
+            member this.ContainsDim dimId = this.cubDims |> Seq.contains dimId
+            member this.IsCalcCube        = this.cubType = CtCalc
+        
+        and  Rule = {
+            rulId                  : RulId
+            rulSourceId            : IComparable
+            mutable rulDescription : string
+            mutable rulDestination : ElmReference list
+            mutable rulExpression  : ExpressionAny
+            mutable rulType        : ForType
+            mutable rulOrder       : string
         }
         
-        .code-editor-list-tile.direct-predecessor {
-            font-weight     : bold;
-        }
-        .code-editor-list-tile.indirect-predecessor {
-            color           : blue;
-        }
-        .code-editor-list-tile.selected {
-            background-color: #77F;
-            color           : white;
-        }
-        .code-editor-list-tile.hovering {
-            background      : lightgray;
-        }
-        .code-editor-list-tile.hovering.selected {
-            background      : blue;
-        }
-        .code-editor-list-tile>.predecessor {
-            font-weight     : bold;
-            border-style    : inset;
-            border-width    : 1px;
-            text-align      : center;
-            color           : transparent;
-        }
-        .code-editor-list-tile.direct-predecessor>.predecessor {
-            color           : blue;
-        }
+        type Model = {
+            modId                   : ModId
+            mutable server          : string
+            mutable modDims         : Dimension   []
+            mutable modCubes        : Cube        []
+            mutable modCalculations : Calculation []
+        } 
+        with
+            member this.GetDim        dId   = this.modDims         |> Seq.find    (fun d   ->   d.dimId   =    dId)
+            member this.GetCalc       cId   = this.modCalculations |> Seq.find    (fun c   ->   c.calId   =    cId)
+            member this.GetCube     cubId   = this.modCubes        |> Seq.tryFind (fun cub -> cub.cubId   =  cubId)
+            member this.PickCube       ct   = this.modCubes        |> Seq.tryPick (fun c   ->   if c.cubType = ct then Some c else None)
+            member this.PickDim        dt   = this.modDims         |> Seq.tryPick (fun d   ->   if d.dimType = dt then Some d else None)
+            member this.PickCalc       cn   = this.modCalculations |> Seq.tryPick (fun c   ->   if c.calName = cn then Some c else None)
+            member this.FreezeCube          = this.PickCube CtFreeze
+            member this.TCalcDim            = this.PickDim  DtTCalc
+            member this.DataTypeDim         = this.PickDim  DtDataType
+            member this.TimeDim             = this.PickDim  DtTime    
+            member this.VersionDim          = this.PickDim  DtVersion 
+            member this.IsActualCalc        = this.PickCalc "IsActual"
+            member this.GetCalcCube dims    = 
+                this.modCubes 
+                |> Seq.filter  (fun cub -> cub.IsCalcCube   ) 
+                |> Seq.tryFind (fun cub -> 
+                    cub.cubDims 
+                    |> Seq.filter (fun d -> Some d <> cub.measureDim) 
+                    |> Set = dims )
+            member this.withDims f =
+                this.TCalcDim                         |> swap Option.bind <| fun tCalcDim    ->
+                this.DataTypeDim                      |> swap Option.bind <| fun dataTypeDim ->
+                f tCalcDim dataTypeDim
         
-        .CodeMirror { height: 100%; }
-        
-        .node {
-            background-color: white; 
-            width           : 2ch; 
-            color           : #A03; 
-            font-weight     : bold; 
-            text-align      : center;
-            font-family     : arial;
-        }
-        .Warning { text-decoration: underline lightblue } 
-        .Error   { text-decoration: underline red       } 
-        .body    { margin         : 0px                 }
-        """
-      //# 1 @"(6)7cdba50e-5de9-4377-a7fc-705df0d909fa Properties.fsx"
-      //let setProp k v = props.[k] <- v
-      
-      let redraw = Var.Create ()
-      let setDirtyP () = dirty.Value <- true
-      let getProperty props key   = Property(setDirtyP, props, key) 
-      let setProperty props key v = ((getProperty props key).ValueVar :> IRef<_>).Set v
-      
-      let tableProps =
-        currentCodeSnippetId
-        |> Val.bind (curSnippetPrpsOf >> DynamicV)
-        |> Val.map2 (fun () (props: Dictionary<string,string>) ->
-            table [
-              yield thead [
-                  th [ htmlText "Property" ; style "padding-right:10px" ] 
-                  th [ htmlText "Value"                                 ] 
-              ] 
-              yield! 
-                  props.Keys
-                  |> Seq.sort
-                  |> Seq.map (fun kvp ->
-                      let prop = getProperty props kvp
-                      tr [
-                          td [ Doc.Input     [                             ] prop.KeyVar   |> someElt ] 
-                          td [ Doc.InputArea [ atr "style" "height: 1.5em" ] prop.ValueVar |> someElt ] 
-                          td [ title "remove" ; style " cursor: pointer "
-                               htmlText "x" ; SomeAttr <| on.click (fun _ _ ->  prop.Remove()                    ; redraw.Value <- () ) ] |> hoverable
-                      ])
-              yield tr [
-                  td [ htmlText "Add..."    ; SomeAttr <| on.click (fun _ _ ->  props.Add("", "1") ; setDirtyP() ; redraw.Value <- () ) ] |> hoverable
-                  td [ htmlText ""    ] 
-              ]
-            ]
-        ) redraw
-      
-      let properties =
-          div [
-            HtmlElementV tableProps
-            css """ td.hovering { background: gray; } """
-          ]
-      
-      ()
-      //# 1 @"(6)70bc3916-4714-4ee1-a2d0-d3917eeadf9d Actions.fsx"
-      let triggerWSResult = Var.Create ()
-      
-      let DoW  f p   _ _ = f p   |> Wrap.map ignore |> Wrap.start addOutMsg
-      let DoP  f p   _ _ = f p   |> Wrap.startV (function
-                                                 | Some (Below, _), msgs -> msgs               |> addOutMsg ;  triggerWSResult.Value <- ()
-                                                 | Some _         , msgs -> msgs               |> addOutMsg 
-                                                 | None           , msgs -> "Failed!\n" + msgs |> addOutMsg)
-      
-      let DoW2 f p t     = DoW (fun p' -> f t p') p
-      let DoP2 f p t     = DoP (fun p' -> f t p') p
-      
-      let getSnippet     (act: Action) =
-          match act.parms with
-          | Some [| path |] -> path |> unbox<string> |> (fun s -> s.Split '/') |> CodeSnippet.FetchByPathO 
-          | _               -> getSnpO()
-      
-      let getCodeFromAct (act: Action) addOpen = 
-          Wrap.wrap {
-              let getValue =
-                  function
-                  | Constant v  -> v
-                  | Dynamic  vw -> failwith "Get value from View not implemented"
-                  | DynamicV vr -> vr.Value
-              let! text = Val.getAsync act.text
-              setOutMsg (text + "...")
-              let snpO = getSnpO()
-              let propValue p = snpO |> Option.bind (fun snp -> snp.propValue p)
-              let openPre     = if addOpen then propValue "open" |> Option.map (__ (+) "\n") |> Option.defaultValue "" else ""
-              let actionTempl = lazy (propValue "action-template" |> Option.defaultValue "${parm}() |> printfn \"%A\"")
-              let code =
-                  act.parms
-                  |> Option.map (Array.map unbox<string>)
-                  |> function
-                     | Some [| "Code"     ; code |] -> code |> Some
-                     | Some [| "Property" ; prop |] -> prop |> propValue 
-                     | _                            -> None
-                  |> Option.orElseWith  (fun () -> text |> propValue                           )
-                  |> Option.defaultWith (fun () -> text |> translateTemplate actionTempl.Value )
-                  |> (fun code -> if code.StartsWith "////" then code else openPre + code)
-              match snpO with
-              | None     -> return code
-              | Some snp -> let! presence = Evaluator.getPresence (Evaluator.extractConfig code) (sprintf "%A" snp.id) 
-                            if presence = Some "ok" then return code else
-                            let! r = evalSnippetW snpO
-                            return code
-                            
+        let model = 
+          {
+            modId           = ModId <| Guid.NewGuid()
+            server          = @"local\Budget"
+            modDims         = [||]
+            modCubes        = [||]
+            modCalculations = [||]
           }
-      
-      let evalFsCode    (act: Action) () = getCodeFromAct act true  |> Wrap.bind evaluateCodeW
-      let evalFableCode (act: Action) () = getCodeFromAct act false |> Wrap.bind fableCodeW
-      let evaluateFS2   (act: Action) () = getSnippet     act       |>           evaluateSnippetW
-      let fableFS2      (act: Action) () = getSnippet     act       |>           fableSnippetW
-      let compileRunP2  (act: Action) p  = getSnippet     act       |>           compileRunW p
-      let setSnippetProp(act: Action) () =
-          Wrap.wrapper {
-              do!  Result.tryProtection()
-              let! res = 
-                  match act.parms with
-                  | Some [| opth ; oprp; ov |] -> let path, prop, v = unbox<string> opth, unbox<string> oprp, unbox<string> ov
-                                                  path.Split '/'
-                                                  |> CodeSnippet.FetchByPathO 
-                                                  |> Option.map (fun snp -> setProperty snp.properties prop v)
-                                                  |> Option.defaultWith (fun () -> printfn "setSnippetProp snippet not found: %s" path)
-                                                  |> Result.succeed
-                  | _                          -> sprintf "setSnippetProp wrong parms: %A" act.parms |> Result.failSimpleError
-              return res
-          }
-          
-      let showOutText (act: Action) () = 
-          printfn "showOutText: %A" act
-          match act.parms with
-          | Some [|       txt |]                      -> setOutMsg <| unbox txt
-          | Some [| cmd ; txt |] when unbox cmd = ""  -> setOutMsg <| unbox txt
-          | Some [| cmd ; txt |] when unbox cmd = "+" -> addOutMsg <| unbox txt
-          | _                                         -> printfn "error: showOutText %A" act
-      
-      let actLoadFile       = Template.Action.New("Load..."                    ).OnClick( do_LoadFile                    )  
-      let actSaveFile       = Template.Action.New("Save as..."                 ).OnClick( Do   downloadFile      ()      ).Highlight(dirty)
-      let actAddSnippet     = Template.Action.New("Add Snippet"                ).OnClick( Do   addCode           ()      )
-      let actDeleteSnippet  = Template.Action.New("Delete Snippet"             ).OnClick( Do   deleteCode        ()      ).Disabled(noSelectionVal      )
-      let actIndentSnippet  = Template.Action.New("Indent In  >>"              ).OnClick( Do   indentCodeIn      ()      ).Disabled(noSelectionVal      )
-      let actOutdentSnippet = Template.Action.New("Indent Out <<"              ).OnClick( Do   indentCodeOut     ()      ).Disabled(noSelectionVal      )
-      let actGetFsCode      = Template.Action.New("Get F# Code"                ).OnClick( Do   getFSCode         ()      ).Disabled(disableParseVal     )
-      let actSetSnippetProp = Template.Action.New("actSetSnippetProp"          ).OnClick2(DoW2 setSnippetProp    ()      ).Disabled(disableFSIVal       )
-      let actEvalFsCode     = Template.Action.New("Run FSI on Code"            ).OnClick2(DoW2 evalFsCode        ()      ).Disabled(disableFSIVal       )
-      let actEvalCode       = Template.Action.New("Run FSI"                    ).OnClick2(DoW2 evaluateFS2       ()      ).Disabled(disableFSIVal       )
-      let actFableFsCode    = Template.Action.New("Run Fable on Code"          ).OnClick2(DoW2 evalFableCode     ()      ).Disabled(disableFableVal     )
-      let actFableCode      = Template.Action.New("Run Fable"                  ).OnClick2(DoW2 fableFS2          ()      ).Disabled(disableFableVal     )
-      let actRunWSNewTab    = Template.Action.New("Run WebSharper in new tab"  ).OnClick2(DoW2 compileRunP2   NewBrowser ).Disabled(disableWebSharperVal)
-      let actRunWSHere      = Template.Action.New("Run WebSharper in WS Result").OnClick2(DoP2 compileRunP2   Below      ).Disabled(disableWebSharperVal)
-      let actRunWSIn        = Template.Action.New("Run WebSharper in ..."      ).OnClick( DoP  compileRun        ()      ).Disabled(disableWebSharperVal)
-      let actParseCode      = Template.Action.New("Parse F#"                   ).OnClick( DoW  parseFS           ()      ).Disabled(disableParseVal     )
-      let actCompileWS      = Template.Action.New("Compile WebSharper"         ).OnClick( DoW  justCompile       ()      ).Disabled(disableWebSharperVal)
-      let actFindDefinition = Template.Action.New("Find Definition"            ).OnClick( Do   gotoDefinition    ()      ).Disabled(disableParseVal     )
-      let actRefreshEditor  = Template.Action.New("Refresh CodeMirror"         ).OnClick( Do   refreshCodeMirror ()      )
-      let actOutText        = Template.Action.New("Show Output text"           ).OnClick2(Do2  showOutText       ()      )
-      let actAbortFsi       = Template.Action.New("Abort FSI"                  ).OnClick( Do   abortFsiExe       ()      )
+            
+        type HelperTypeN = HelperTypeN with
+            static member (&%>)  (HelperTypeN, a :     bool             ) : ExpressionNumber = ExnNumber <| if    a then 1.0 else 0.0
+            static member (&%>)  (HelperTypeN, a :     int              ) : ExpressionNumber = ExnNumber <| float a
+            static member (&%>)  (HelperTypeN, a :     float            ) : ExpressionNumber = ExnNumber          a
+            static member (&%>)  (HelperTypeN, a :     Slice            ) : ExpressionNumber = ExnSlice           a
+            static member (&%>)  (HelperTypeN, a :     Calculation      ) : ExpressionNumber = ExnSlice           a.Slice
+            static member (&%>)  (HelperTypeN, a :     ExpressionNumber ) : ExpressionNumber =                    a
+            
+        let inline toExpN v : ExpressionNumber = HelperTypeN &%>  v
+        
+        type HelperTypeT = HelperTypeT with
+            static member (&&>)  (HelperTypeT, a :     string           ) : ExpressionText   = ExtString          a 
+            static member (&&>)  (HelperTypeT, a :     Dimension        ) : ExpressionText   = ExtDimName         a.dimId 
+            static member (&&>)  (HelperTypeT, a :     Slice            ) : ExpressionText   = ExtSlice           a
+            static member (&&>)  (HelperTypeT, a :     Calculation      ) : ExpressionText   = ExtSlice           a.Slice
+            static member (&&>)  (HelperTypeT, a :     ExpressionText   ) : ExpressionText   =                    a
+        
+        let inline toExpT  v : ExpressionText = HelperTypeT &&>  v
+        
+        type HelperTypeA = HelperTypeA with
+            static member (&>>)  (HelperTypeA, a :     ExpressionNumber) : ExpressionAny = ExNumeric          a 
+            static member (&>>)  (HelperTypeA, a :     ExpressionText  ) : ExpressionAny = ExText             a
+            static member (&>>)  (HelperTypeA, a :     Slice           ) : ExpressionAny = ExiSlice           a
+            static member (&>>)  (HelperTypeA, a :     Calculation     ) : ExpressionAny = ExiSlice           a.Slice
+            static member (&>>)  (HelperTypeA, a :     bool            ) : ExpressionAny = toExpN             a |> ExNumeric
+            static member (&>>)  (HelperTypeA, a :     int             ) : ExpressionAny = toExpN             a |> ExNumeric
+            static member (&>>)  (HelperTypeA, a :     float           ) : ExpressionAny = toExpN             a |> ExNumeric
+            static member (&>>)  (HelperTypeA, a :     string          ) : ExpressionAny = toExpT             a |> ExText
+            static member (&>>)  (HelperTypeA, a :     ExpressionAny   ) : ExpressionAny =                    a
+        
+        let inline toExpA  v : ExpressionAny = HelperTypeA &>>  v
+        
+        type Formula with
+            static member inline New(dest, exp, typ) =
+                  {
+                      forId          = ForId <| Guid.NewGuid()
+                      forDestination = dest
+                      forDescription = ""
+                      forExpression  = toExpA exp
+                      forType        = typ
+                  }
+            member this.Conso = { this with forType = ForConsolidated }
+           //static member inline Base(formula      ) = Formula.New([]  , formula, ForBase        )        
+           //static member inline Base(formula, dest) = Formula.New(dest, formula, ForBase        )        
+           //static member inline Cons(formula      ) = Formula.New([]  , formula, ForConsolidated)  
+           //static member inline Cons(formula, dest) = Formula.New(dest, formula, ForConsolidated)  
+           //static member inline All (formula      ) = Formula.New([]  , formula, ForAll         )    
+           //static member inline All (formula, dest) = Formula.New(dest, formula, ForAll         )    
            
-      let buttonsH =
-          div [ 
-                actAddSnippet    .Button.Render
-                actOutdentSnippet.Button.Render
-                actIndentSnippet .Button.Render
-                loadFileElement.Render.AddChildren([ style "grid-column: 4/6" ])
-                actEvalCode      .Button.Render
-                actFableCode     .Button.Render
-                actRunWSIn       .Button.Render
-      
-                actDeleteSnippet .Button.Render
-                actFindDefinition.Button.Render
-                span []       
-                actSaveFile      .Button.Render
-                span []       
-                actGetFsCode     .Button.Render
-                actParseCode     .Button.Render
-                Doc.Select [ attr.id "Position" ] positionTxt [ NewBrowser ; Below ] position |> someElt
-      
-                style """
-                    overflow: hidden;
-                    display: grid;
-                    grid-template-columns: repeat(8, 12.1%);
-                    bxackground-color: #eee;
-                    padding : 5px;
-                    grid-gap: 5px;
-                """
-              ]
-      
-      let menuLeft =
-          Menu.New2
-            [
-              MenuEntry.New("File")
-                  .SubMenu(
-                          [
-                              actLoadFile.MenuEntry
-                              actSaveFile.MenuEntry
-                          ]           
-                  )            
-              MenuEntry.New("Code")           
-                  .SubMenu(           
-                          [           
-                              actAddSnippet    .MenuEntry
-                              actDeleteSnippet .MenuEntry
-                              MenuEntry.New("").Divider           
-                              actIndentSnippet .MenuEntry
-                              actOutdentSnippet.MenuEntry
-                              MenuEntry.New("").Divider           
-                              actFindDefinition.MenuEntry
-                              MenuEntry.New("").Divider           
-                              actGetFsCode     .MenuEntry
-                              MenuEntry.New("").Divider           
-                              actRefreshEditor .MenuEntry
-                          ]     
-                  )      
-              MenuEntry.New("Run")     
-                  .SubMenu(     
-                          [     
-                              actEvalCode      .MenuEntry
-                              actAbortFsi      .MenuEntry
-                              MenuEntry.New("").Divider     
-                              actFableCode     .MenuEntry
-                              MenuEntry.New("").Divider     
-                              actRunWSNewTab   .MenuEntry
-                              actRunWSHere     .MenuEntry
-                              MenuEntry.New("").Divider     
-                              actParseCode     .MenuEntry
-                              actCompileWS     .MenuEntry
-                          ]
-                  ) 
-            ]
-      
-      let menuRight =
-          Menu.New2
-            [
-              MenuEntry.New("About")
-                  .SubMenu [
-                      MenuEntry.New("Source @ GitHub", "https://github.com/amieres/FSharpStation").Target "_blank"
-                  ]
-            ]      
-      
-      let menuBar =
-          navbar <| h1 [ htmlText "F# Station" ; style "font-size: 48px; margin-top: -17px" ]
-                 <| menuLeft .Render 
-                 <| menuRight.Render
-                 
-      ()           
-      //# 1 @"(6)75c3d033-99b5-409f-8ecb-cd9bd8b101ab CodeEditorGrid.fsx"
-      let spl1         = Template.SplitterBar.New(20.0).Children([ style "grid-row: 2 / 4" ])
-      storeVarCodeEditor "splitterV1" spl1.Var
-      //storeVarCodeEditor "splitterV2" splitterV2.Var
-      //storeVarCodeEditor "splitterH3" splitterH3.Var
-      
-      let jumpToRef (e:obj) _ = 
-          let v : string = e?value |> unbox
-          let s : int    = e?selectionStart |> unbox
-          let lines = v.Split '\n'
-          lines 
-          |> Seq.mapFold (fun total line -> (line, total, total + line.Length + 1), total + line.Length + 1) 0 
-          |> fst
-          |> Seq.pick (fun (line, from, to_) -> if s >= from && s < to_ then Some line else None)
-          |> jumpToLine
-      
-      let scrollToBottom (e:obj) _ = 
-          async { 
-              do! Async.Sleep 100
-              do  e?scrollTop <- e?scrollHeight
-          } |> Async.Start
-      
-      (*
-      let CodeEditor() =
-        Template.Grid.New
-           .ColVariable(spl1)
-           .ColAuto(     0.0)
-           .ColVariable( 0.0).Min(0.0).Max(Val.map ((-) 92.0) spl1.GetValue).Before.Children([ style "grid-row   : 1 / 5" ])
-           .RowFixedPx( 34.0) 
-           .RowAuto(     0.0)
-           .RowVariable(17.0)                                               .Before.Children([ style "grid-column: 2 / 3" ])
-           .RowFixedPx( 80.0)
-           .Padding(1.0)
-           .Content("sidebar", 
-               codeSnippets.View
-               |> View.SnapshotOn codeSnippets.Value refresh.View
-               |> bindHElem listEntries
-            )
-           .Content("header"  , Template.Input     .New(Val.bindIRef curSnippetNameOf currentCodeSnippetId).Prefix(htmlText "name:")         .Render)
-           .Content("content1", codeMirror                                                                                                   .Render)
-           .Content("content2", Template.TabStrip  .New(Messages).Top                                                                        .Render)
-           .Content("footer"  ,       
-              div [ 
-                    actAddSnippet    .Button.Render
-                    actOutdentSnippet.Button.Render
-                    actIndentSnippet .Button.Render
-                    loadFileElement.Render.AddChildren([ style "grid-column: 4/6" ])
-                    actParseCode     .Button.Render
-                    actEvalCode      .Button.Render
-                    actGetFsCode     .Button.Render
-             
-                    actDeleteSnippet .Button.Render
-                    span []       
-                    span []       
-                    actSaveFile      .Button.Render
-                    span []
-                    actCompileWS     .Button.Render
-                    actRunWSIn       .Button.Render
-                    Doc.Select [ attr.id "Position" ] positionTxt [ Below ; Right ; NewBrowser ] position |> someElt
-                    style """
-                        overflow: hidden;
-                        display: grid;
-                        grid-template-columns: repeat(8, 12.1%);
-                        bxackground-color: #eee;
-                        padding : 5px;
-                        grid-gap: 5px;
-                    """
-                  ]
-              )
-           .Content( script [ src  "/EPFileX/FileSaver/FileSaver.js"                                     ; ``type`` "text/javascript"             ] )
-           .Content( script [ src  "http://code.jquery.com/jquery-3.1.1.min.js"                          ; ``type`` "text/javascript"             ] )
-           .Content( script [ src  "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"  ; ``type`` "text/javascript"             ] )
-           .Content( link   [ href "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"; ``type`` "text/css" ; rel "stylesheet" ] )
-           .Content( link   [ href "/EPFileX/css/main.css"                                               ; ``type`` "text/css" ; rel "stylesheet" ] )
-           .Content( css styleEditor                                                                                                                )
-           .Render
-           .Style(""" 
-                  grid-template-areas:
-                      'header0 header   sidebar2'
-                      'sidebar content1 sidebar2'
-                      'sidebar content2 sidebar2'
-                      'footer  footer   sidebar2';
-                  color      : #333;
-                  height     : 100%;
-                  font-size  : small;
-                  font-family: monospace;
-                  line-height: 1.2;
-                      """)
-      
-      *)
-      ()
-      //# 1 @"(6)4e040028-ff11-458e-a43b-e8a1b7fcaeec Layout.fsx"
-      let snippetList = 
-          codeSnippets.View
-             |> View.SnapshotOn codeSnippets.Value refresh.View
-             |> bindHElem listEntries
-      
-      let steps = 
-        Layout.AddGuids
-          [|
-              "actLoadFile"       , GuiAction actLoadFile      
-              "actSaveFile"       , GuiAction actSaveFile      
-              "actAddSnippet"     , GuiAction actAddSnippet    
-              "actDeleteSnippet"  , GuiAction actDeleteSnippet 
-              "actIndentSnippet"  , GuiAction actIndentSnippet 
-              "actOutdentSnippet" , GuiAction actOutdentSnippet
-              "actGetFsCode"      , GuiAction actGetFsCode     
-              "actSetSnippetProp" , GuiAction actSetSnippetProp
-              "actEvalFsCode"     , GuiAction actEvalFsCode
-              "actEvalCode"       , GuiAction actEvalCode
-              "actRunFableFs"     , GuiAction actFableFsCode
-              "actRunFable"       , GuiAction actFableCode
-              "actRunWSNewTab"    , GuiAction actRunWSNewTab   
-              "actRunWSHere"      , GuiAction actRunWSHere     
-              "actRunWSIn"        , GuiAction actRunWSIn       
-              "actParseCode"      , GuiAction actParseCode     
-              "actCompileWS"      , GuiAction actCompileWS     
-              "actFindDefinition" , GuiAction actFindDefinition    
-              "actOutText"        , GuiAction actOutText
-              "Output"            , GuiNode <| Template.TextArea.New(outputMsgs).Placeholder("Output:"         ).Title("Output"                   ).RenderWith [ on.dblClick jumpToRef ; on.afterRender (fun e -> outputMsgs |> Val.sink (scrollToBottom e)) ]
-              "Parser"            , GuiNode <| Template.TextArea.New(parserMsgs).Placeholder("Parser messages:").Title("Parser"                   ).RenderWith [ on.dblClick jumpToRef ]
-              "JavaScript"        , GuiNode <| Template.TextArea.New(codeJS    ).Placeholder("Javascript:"     ).Title("JavaScript code generated").Render
-              "F# code"           , GuiNode <| Template.TextArea.New(codeFS    ).Placeholder("F# code:"        ).Title("F# code assembled"        ).Render
-              "Properties"        , GuiNode <| properties    
-              "WS Result"         , GuiNode <| div [ div [ Id "TestNode" ; style "background: white; height: 100%; width: 100%; "] ]
-              "title"             , GuiNode <| Template.Input.New(Val.bindIRef curSnippetNameOf currentCodeSnippetId).Prefix(htmlText "name:").Render
-              "code"              , GuiNode <| codeMirrorRender
-              "snippets"          , GuiNode <| snippetList
-              "buttons"           , GuiNode <| buttonsH
-              "menu"              , GuiNode <| menuBar
-              "messagesR"         , GuiTabStrip(     true ,  [| "Properties" |])
-              "messagesB1"        , GuiTabStrip(     true ,  [| "Output"    
-                                                                "JavaScript"
-                                                                "F# code"    |])
-              "messagesB2"        , GuiTabStrip(     true ,  [| "Parser"    
-                                                                "WS Result"  |])
-              "messagesB"         , varVerSplitter          55.0 "messagesB1"    "messagesB2"     0.0 100.0             
-              "title_code"        , fixedHorSplitter true   34.0 "title"         "code"
-              "code_props"        , varVerSplitter          85.0 "title_code"    "messagesR"     25.0 100.0
-              "code_buttons"      , fixedHorSplitter false  80.0 "code_props"    "buttons"
-              "snippets_code"     , varVerSplitter          15.0 "snippets"      "code_buttons"   5.0  95.0
-              "main_messages"     , varHorSplitter          82.0 "snippets_code" "messagesB"     35.0 100.0             
-              "extrabuttons"      , GuiNode <| div []
-              "main_extra"        , varVerSplitter         100.0 "main_messages" "extrabuttons"  20.0 100.0
-              "main"              , fixedHorSplitter true   50.0 "menu"          "main_extra"
-          |]   
-      
-      let layout = Layout.New steps
-      
-      let doGuiCallR(name:string, action:string, parms: string[]) =
-          Result.result {
-              do! Result.tryProtection()
-              let! act = layout.GetGuiCallAction name action parms
-              act.onClick |> Option.iter (fun f -> f act null null)
-          }
-          
-      let doGuiCall  v =
-          doGuiCallR v
-          |> function
-             | Result.Failure ms -> printfn "Error doGuiCall %A: %A" ms v
-             | _ -> ()
-      
-      
-      let addLayoutJson json = delayedRefreshCM 1000 ; delayedRefreshCM 2000 ; delayedRefreshCM 3000 ; layout.SetLayoutJson steps json
-      
-      JS.Window?addLayoutJson <-    addLayoutJson
-      propertyLayoutVal |> Val.sink addLayoutJson 
-      
-      let addLayoutSteps steps2 = delayedRefreshCM 1000 ; delayedRefreshCM 2000 ; delayedRefreshCM 3000 ; layout.AddNewSteps steps steps2
-      propertyLayoutJSVal |> Val.sink (fun js -> if js = "" then addLayoutSteps [||] else eval JS.Window js |> ignore)
-      
-      let setFSharpStationLayout (f:FuncWithArgs<Layout * CodeSnippet, _>)  =
-              CodeSnippet.FetchO currentCodeSnippetId.Value
-              |> Option.iter (fun cur -> f.Call(layout, cur) |> addLayoutSteps)
-      
-      JS.Window?doFSharpStationGuiCall <- doGuiCall
-      JS.Window?setFSharpStationLayout <- setFSharpStationLayout
-      
-      let dict = Dictionary<string, string>()
-      let dictTryGetValue = Dict.tryGetValue "" dict // this is here so it gets included in the code for Layouts
-      ()
-      
-      //# 1 @"(6)95ca1e9f-4029-4fc1-8b1c-ab12db71c90b Messaging.fsx"
-      #if NOMESSAGING
-      #else
-      
-      let wsStationClient = new WSMessagingBroker.WSMessagingClient(fsIds)
-      //let fsStationClient = FsStationClient(fsIds, fsIds, endPoint = JS.Window.Location.Href)
-      
-      let transMsgs (msgs: ErrMsg list)  =  msgs |> Seq.map (fun e -> e.ErrMsg, if e.IsWarning then FSWarning else FSError) |> Seq.toArray
-      
-      let result2response res = 
-          match res with 
-          | Result (a, b) -> StringResponseR (a |> Option.map snd, b |> Seq.map (fun err -> err.ErrMsg, if err.IsWarning then FSWarning else FSError) |> Seq.toArray ) 
-      
-      let result2StringResponse res = 
-          match res with 
-          | Result (a, b) -> StringResponseR (a |> Option.map (sprintf "%A"), b |> Seq.map (fun err -> err.ErrMsg, if err.IsWarning then FSWarning else FSError) |> Seq.toArray ) 
-      
-      let respond (fromId:string) (msg:FSMessage) : Async<FSResponse> =
-          async {
-              match msg with
-              | GetWholeFile                     -> return  codeSnippets.Value            |> Seq.toArray |> Json.Serialize |> Some                                   |> StringResponse       
-              | GetSnippetContentById sId        -> return  CodeSnippet.FetchO       sId  |> Option.map (fun snp -> snp.content        )                             |> StringResponse       
-              | GetSnippetCodeById    sId        -> return  CodeSnippet.FetchO       sId  |> Option.map (fun snp -> snp.GetCodeFsx true)                             |> StringResponse 
-              | GetSnippetPredsById   sId        -> return  CodeSnippet.FetchO       sId  |> Option.map (fun snp -> snp.Predecessors ()) |> Option.defaultValue [||] |> SnippetsResponse
-              | GetSnippetById        sId        -> return  CodeSnippet.FetchO       sId                                                                             |> SnippetResponse 
-              | GetSnippetContent     path       -> return  CodeSnippet.FetchByPathO path |> Option.map (fun snp -> snp.content        )                             |> StringResponse
-              | GetSnippetCode        path       -> return  CodeSnippet.FetchByPathO path |> Option.map (fun snp -> snp.GetCodeFsx true)                             |> StringResponse
-              | GetSnippetJSCode      path       -> match   CodeSnippet.FetchByPathO path with
-                                                    | Some snp -> let!    jsR = translateAR (snp.GetCodeFsx true) false
-                                                                  return (jsR |> Result.map RunCode.completeJS |> Result.getOption, jsR |> Result.getMsgs |> transMsgs)      |> StringResponseR
-                                                    | None     -> return (None, [| "Snippet not found" , FSError |] )                                                |> StringResponseR
-              | GetSnippetPreds       path       -> return  CodeSnippet.FetchByPathO path |> Option.map (fun snp -> snp.Predecessors ()) |> Option.defaultValue [||] |> SnippetsResponse
-              | GetSnippet            path       -> return  CodeSnippet.FetchByPathO path                                                                            |> SnippetResponse 
-              | GenericMessage        txt        -> return  (Some <| "Message received: " + txt)                                                                     |> StringResponse
-              | GetIdentification                -> return  fsIds                                                                                                   |> IdResponse  
-              | RunSnippetUrlJSById  (sId , url) -> return! CodeSnippet.FetchO       sId  |> compileRunUrlW url NewBrowser |> Wrap.getAsyncR |> Async.map result2response
-              | RunSnippetUrlJS      (path, url) -> return! CodeSnippet.FetchByPathO path |> compileRunUrlW url NewBrowser |> Wrap.getAsyncR |> Async.map result2response
-              | RunActionCall        (nm,ac, ps) -> return  doGuiCallR(nm, ac, ps) |> Result.map (fun _ -> sprintf "success: %s" nm)                   |> result2StringResponse
-          }     
-           
-      //async {
-      //    do! Async.Sleep 1000
-      //    do fsStationClient.MessagingClient.AwaitMessageG respond
-      //} |> Async.Start
-      
-      async {
-          do! Async.Sleep 1000
-          while true do
-              try       wsStationClient.ProcessIncoming (respond "" >> WAsync)
-                        do! Async.Sleep 60000
-              with e -> printfn "%s" e.Message
-                        do! Async.Sleep 1000
-      } |> Async.Start
-      
-      #endif
-      //# 1 @"(6)8ee8705a-f115-437e-8d7d-418773f3c6d4 MainForm.fsx"
-      Val.sink        (fun _  -> layout.SelectTab "Output"    |> ignore) outputMsgs 
-      Val.sink        (fun _  -> layout.SelectTab "WS Result" |> ignore) triggerWSResult
-      Async.sleepThen (fun () -> layout.SelectTab "Parser"    |> ignore) 1000 |> Async.Start
-      
-      
-      let cssLinks      = Var.Create [ "/EPFileX/css/main.css" ]
-      let addCssLink lnk =
-          if  cssLinks.Value |> List.contains lnk |> not then
-              cssLinks.Value <- lnk :: cssLinks.Value
-          delayedRefreshCM 300
-      
-      Val.sink addCssLink propertyCssLinkVal
-      Val.sink (fun theme -> if theme <> "" then sprintf "/EPFileX/codemirror/content/theme/%s.css" theme |> addCssLink) propertyThemeVal
-      
-      div [
-          style "height: 100vh; width: 100% "
-          layout.Render.Style("height: 100%; width: 100% ")
-          script [ src  "/EPFileX/FileSaver/FileSaver.js"                                     ; ``type`` "text/javascript"             ]
-          script [ src  "http://code.jquery.com/jquery-3.1.1.min.js"                          ; ``type`` "text/javascript"             ]
-          script [ src  "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"  ; ``type`` "text/javascript"             ]
-          link   [ href "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"; ``type`` "text/css" ; rel "stylesheet" ]
-          css styleEditor                                                                                                               
-          style  """ 
-                color      : #333;
-                font-size  : small;
-                font-family: monospace;
-                line-height: 1.2;
-                    """
-          Val.map (fun csslnks ->
-              div [
-                  yield! csslnks |> Seq.map (fun csslnk -> link   [ href csslnk; ``type`` "text/css" ; rel "stylesheet" ])
-              ]
-          ) cssLinks 
-          |> HtmlElementV 
-          css propertyCssVal
-      ] |> renderDoc 
-      
-      
-    //# 1 @"(4)b9ca9697-6cb4-4085-b509-9f702a62086f Site.fsx"
-    // Version using internal Rpc's
-    //#define INTERACTIVE
-    //#define NOMESSAGING
+        
+        let Map_adds kvs map = Seq.append (map |> Map.toSeq) kvs |> Map
+        
+        type Calculation with
+            static member Input (name: string) dims  =
+                let c =
+                  {
+                    calId          = CalId <| Guid.NewGuid()
+                    calName        = name.Replace("_", " ").Trim()
+                    calDescription = ""
+                    format         = "#,##0.00"
+                    isText         = false
+                    isInput        = true
+                    isBalance      = false
+                    calDims        = dims |> Seq.map (fun d -> d.dimId) |> Set 
+                    calFormulas    = [||]
+                    cube           = None
+                    properties     = System.Collections.Generic.Dictionary<string, string>()
+                  }
+                model.modCalculations <- Array.append model.modCalculations [| c |]
+                c
+            static member Calc name dims = 
+                let c = Calculation.Input name dims
+                c.isInput <- false
+                c 
+            member        this.Name name           = this.calName     <- name                                                                         ; this
+            member inline this.Add (formula      ) = this.calFormulas <- Array.append this.calFormulas [| formula                                  |] ; this 
+            member inline this.Base(expr         ) = this.calFormulas <- Array.append this.calFormulas [| Formula.New([]  , expr, ForBase        ) |] ; this 
+            member inline this.Base(expr   , dest) = this.calFormulas <- Array.append this.calFormulas [| Formula.New(dest, expr, ForBase        ) |] ; this 
+            member inline this.Cons(expr         ) = this.calFormulas <- Array.append this.calFormulas [| Formula.New([]  , expr, ForConsolidated) |] ; this 
+            member inline this.Cons(expr   , dest) = this.calFormulas <- Array.append this.calFormulas [| Formula.New(dest, expr, ForConsolidated) |] ; this 
+            member inline this.All (expr         ) = this.calFormulas <- Array.append this.calFormulas [| Formula.New([]  , expr, ForAll         ) |] ; this 
+            member inline this.All (expr   , dest) = this.calFormulas <- Array.append this.calFormulas [| Formula.New(dest, expr, ForAll         ) |] ; this 
+            member inline this.For (es: ElmReference list) = { this.Slice with sliDims = Map_adds (List.map (fun (e:ElmReference) -> e.DimId, e) es) this.Slice.sliDims } 
+            member        this.AddFormulas fs = Array.append this.calFormulas (fs |> Seq.toArray)
+            member        this.withCube (model: Model) f = this.cube |> Option.bind model.GetCube |> swap Option.bind <| f
+        
+        type Dimension with 
+            static member New(name, isCalcDim) =
+                let d =
+                  {
+                    dimId          = DimId <| Guid.NewGuid()
+                    dimName        = name
+                    dimPrefix      = ""
+                    dimType        = DtOther
+                    defaultElm     = None
+                    dimElements    = [|  |]
+                    dimAttributes  = [|  |]      
+                    isCalcDim      = isCalcDim
+                  }
+                model.modDims <- Array.append model.modDims [| d |]
+                d
+            static member New     name  = Dimension.New(name, false)
+            static member NewCalc name  = Dimension.New(name, true )
+            member inline this.Item (it) : ElmReference = 
+                match toExpT it with 
+                | ExtString s1 -> let s2 = s1.Replace("_", " ")
+                                  let elm =
+                                     this.dimElements
+                                     
+                                     |> Seq.tryFind (fun e -> e.elmName = s2)
+                                     |> Option.defaultWith (fun () -> 
+                                         let newE = Element.New s2
+                                         this.dimElements <- Array.append this.dimElements [| newE |]
+                                         newE
+                                     )
+                                  ElemFixed  (this.dimId, elm.elmId) 
+                | exp          -> ElemDynamic(this.dimId, exp                         )  
+            //member inline this.__     it     = this.Item it
+            //member inline this.M      it     = this.Item it
+            //member inline this.E      it     = this.Item it
+            //member inline this.I      it     = this.Item it
+            member        this.Prefix pr     = this.dimPrefix <- pr   ; this
+            member        this.DType  dt     = this.dimType   <- dt   ; this
+            member        this.Name   name   = this.dimName   <- name ; this
+                
+        type Rule with
+            static member inline New(dest, exp, typ) =
+                  {
+                      rulId          = RulId <| Guid.NewGuid()
+                      rulDestination = dest
+                      rulDescription = ""
+                      rulExpression  = toExpA exp
+                      rulType        = typ
+                      rulOrder       = "A"
+                      rulSourceId    = None
+                  }
+            static member inline New(dest, exp, typ) = Rule.New(dest.sliDims |> Map.toList |> List.map snd, exp, typ)
+            member this.Conso = { this with rulType = ForConsolidated }    
+        
+        type Cube with
+            static member New(name, dims, mDimO, cType) = 
+                let c =
+                    {
+                      cubId      = CubId <| Guid.NewGuid()
+                      cubName    = name
+                      cubDims    = dims
+                      cubRules   = Map.empty
+                      measureDim = mDimO
+                      cubType    = cType
+                    }
+                model.modCubes <- Array.append model.modCubes [| c |]
+                c
+            static member NewCalc(name, dims, mDimO) = Cube.New(name, dims                                             , mDimO, CtCalc )
+            static member New    (name, dims, mDimO) = Cube.New(name, dims |> Seq.map (fun d -> d.dimId) |> Seq.toArray, mDimO, CtOther) 
+            member inline this.AddRule key rule      = this.cubRules <- Map.add key rule this.cubRules ; this 
+            //member inline this.Calc ()    = { this with cubType = CtCalc } 
+            member inline this.For (es: ElmReference list) = { this.Slice with sliDims = Map_adds (List.map (fun (e:ElmReference) -> e.DimId, e) es) this.Slice.sliDims } 
+        
+        
+    // # 1  @"(4)4f4d9d79-09fe-4df1-8af2-0ba6a4fffa2c CalculationSyntax.fsx"
+    //#nowarn "68"
+    module CalculationSyntax = 
+        open CalculationModel
+        let And = (&&)
     
-    open WebSharper.Sitelets
-    open WebSharper.UI.Next.Server
-    open WebSharper.UI.Next
-    
-    type EndPoint = 
-        | [< EndPoint "/" >] EPStart
-        | EPLoad of string
-        | FSharpStation
-    
-    let FSharpStationPage uri =
-        Content.Page(
-            Title = "F# Station"
-          , Head  = [ Html.scriptAttr [ attr.``type`` "text/javascript"; attr.src "https://code.jquery.com/jquery-3.1.1.min.js"] [] 
-                      Html.scriptAttr [ attr.``type`` "text/javascript"; attr.src "/EPFileX/CIPHERSpaceLoadFiles.js"           ] [] 
-                    ]
-          , Body  = [ Html.client <@  FSharpStationClient uri @> ])
-    
-    let content (ctx:Context<EndPoint>) (endpoint:EndPoint) : Async<Content<EndPoint>> =
-        printfn "%A" endpoint
-        match endpoint with
-        | FSharpStation -> FSharpStationPage "https://raw.githubusercontent.com/amieres/FSharpStation/master/Start.fsjson"
-        | EPStart       -> FSharpStationPage ""
-        | EPLoad    uri -> uri |> System.Web.HttpUtility.UrlDecode |> System.Web.HttpUtility.UrlDecode |> FSharpStationPage
-    
-    let site = Application.MultiPage content
-    
-    //# 1 @"(4)0dbfcc9d-8ea2-42a3-8f81-ce2bf7d0fad4 FSharpStation.fsx"
-    //#r @"..\packages\Owin\lib\net40\Owin.dll"
-    //#r @"..\packages\Owin.Compression\lib\net452\Owin.Compression.dll"
-    //#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
-    //#r @"..\packages\Microsoft.Owin.Hosting\lib\net45\Microsoft.Owin.Hosting.dll"
-    //#r @"..\packages\Microsoft.Owin.Host.HttpListener\lib\net45\Microsoft.Owin.Host.HttpListener.dll"
-    //#r @"..\packages\Microsoft.Owin.StaticFiles\lib\net45\Microsoft.Owin.StaticFiles.dll"
-    //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net45\Microsoft.Owin.FileSystems.dll"
-    //#r @"..\packages\WebSharper.Owin\lib\net45\WebSharper.Owin.dll"
-    //#r @"..\packages\WebSharper.Owin\lib\net45\HttpMultipartParser.dll"
-    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
-    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\WebSharper.Owin.WebSocket.dll"
-    //#r @"WebSharper.Core.JavaScript.dll"
-    //#r @"..\packages\FSharp.Compiler.Service\lib\net45\FSharp.Compiler.Service.dll"
-    
-    open global.Owin
-    open Microsoft.Owin.Hosting
-    open Microsoft.Owin.StaticFiles
-    open Microsoft.Owin.StaticFiles.ContentTypes
-    open Microsoft.Owin.FileSystems
-    open WebSharper.Owin
-    open WebSharper.Owin.WebSocket
-    open WSMessagingBroker
-    
-    WebSharper.Web.Remoting.AddAllowedOrigin "http://localhost"
-    WebSharper.Web.Remoting.AddAllowedOrigin "http://*"
-    WebSharper.Web.Remoting.AddAllowedOrigin "file://"
-    WebSharper.Web.Remoting.DisableCsrfProtection()
-    
-    [< EntryPoint >]
-    let Main args =
-        printfn "Usage: FSharpStation URL ROOT_DIRECTORY MaxMessageSize"
-        let url           = args |> Seq.tryItem 0 |>                   Option.defaultValue "http://localhost:9010/"
-        let rootDirectory = args |> Seq.tryItem 1 |>                   Option.defaultValue "website"
-        let max           = args |> Seq.tryItem 2 |> Option.map int |> Option.defaultValue 1_000_000
-        let epWebSocket = Endpoint.Create(url, "/ws", JsonEncoding.Readable)
-        let brokerAgent = Broker.BrokerAgent epWebSocket
-        Broker.BrokerAgent.FssWebSocketO <- Some brokerAgent
-        let provider = FileExtensionContentTypeProvider()
-        provider.Mappings.[".fsjson"] <- "application/x-fsjson"
-        use server = 
-            WebApp.Start(url, fun appB ->
-                appB.UseCompressionModule()
-                    .UseWebSharper( WebSharperOptions(ServerRootDirectory  = rootDirectory
-                                                    , Sitelet              = Some site
-                                                    , BinDirectory         = "."
-                                                    , Debug                = true                             ))
-                    .UseStaticFiles(StaticFileOptions(FileSystem           = PhysicalFileSystem(rootDirectory)
-                                                    , ContentTypeProvider  = provider                         ))
-                    .UseWebSocket(epWebSocket, brokerAgent.Start, maxMessageSize = max                         )
-                |> ignore
-                //let listener = appB.Properties.["Microsoft.Owin.Host.HttpListener.OwinHttpListener"] |> unbox<Microsoft.Owin.Host.HttpListener.OwinHttpListener>
-                //listener.SetRequestProcessingLimits(1000, 1000)
-                //let maxA : int ref = ref 0
-                //let maxB : int ref = ref 0
-                //listener.GetRequestProcessingLimits(maxA, maxB)
-                //printfn "Accepts: %d Requests:%d" !maxA !maxB
-            )
-        stdout.WriteLine("Serving {0}", url)
-        stdin.ReadLine() |> ignore
-        0
+        let inline ( +   ) x y = ExnOperationN (OpAdd     , toExpN    x      , toExpN    y)
+        let inline ( -   ) x y = ExnOperationN (OpSubtract, toExpN    x      , toExpN    y)
+        let inline ( *   ) x y = ExnOperationN (OpMultiply, toExpN    x      , toExpN    y)
+        let inline ( /   ) x y = ExnOperationN (OpDivide  , toExpN    x      , toExpN    y)
+        let inline ( =   ) x y = ExnOperationN (OpEQ      , toExpN    x      , toExpN    y)
+        let inline ( <>  ) x y = ExnOperationN (OpNE      , toExpN    x      , toExpN    y)
+        let inline ( >   ) x y = ExnOperationN (OpGT      , toExpN    x      , toExpN    y)
+        let inline ( >=  ) x y = ExnOperationN (OpGE      , toExpN    x      , toExpN    y)
+        let inline ( <   ) x y = ExnOperationN (OpLT      , toExpN    x      , toExpN    y)
+        let inline ( <=  ) x y = ExnOperationN (OpLE      , toExpN    x      , toExpN    y)
+        let inline ( &&  ) x y = ExnOperationN (OpAnd     , toExpN    x      , toExpN    y)
+        let inline ( ||  ) x y = ExnOperationN (OpOr      , toExpN    x      , toExpN    y)
+         
+        let inline ( &=  ) x y = ExnOperationT (OpEQ      , toExpT    x      , toExpT    y)
+        let inline ( &<> ) x y = ExnOperationT (OpNE      , toExpT    x      , toExpT    y)
+        let inline ( &>  ) x y = ExnOperationT (OpGT      , toExpT    x      , toExpT    y)
+        let inline ( &>= ) x y = ExnOperationT (OpGE      , toExpT    x      , toExpT    y)
+        let inline ( &<  ) x y = ExnOperationT (OpLT      , toExpT    x      , toExpT    y)
+        let inline ( &<= ) x y = ExnOperationT (OpLE      , toExpT    x      , toExpT    y)
+         
+        let inline ( ?   ) (d:Dimension) e = d.[ toExpT e ]
+        let inline ( !   ) (d:Dimension)   = ExtDimElement d.dimId
+        
+        
+        let inline IF          (cond, thenR , elseR) = ExnIf       (toExpN cond, toExpN thenR , toExpN elseR)
+        let inline MAX         (v1  , v2           ) = ExnMax      (toExpN v1  , toExpN v2                  )
+        let inline MIN         (v1  , v2           ) = ExnMin      (toExpN v1  , toExpN v2                  )
+        let inline DE_ISCHILD  (dim , parent, child) = ExnDeIsChild(toExpT dim , toExpT parent, toExpT child)
+        
+        let inline IFt  (cond, thenR, elseR) = ExtIf   (toExpN cond, toExpT thenR, toExpT elseR)
+        let inline IFa  (cond, thenR, elseR) = ExiIf   (toExpN cond, toExpA thenR, toExpA elseR)
+        let inline SUBST(txt , from , len  ) = ExtSubSt(toExpT txt , toExpN from , toExpN len  )
+        
+        let ForAll = {
+                     sliDims       = Map.empty
+                     calculation   = None
+                     cube          = None
+        }
+        
+        let inline toForm0 e = Formula.New([], toExpA e, ForBase)
+        let inline addFormula  (c:Calculation) f dest forT = c.Add({ f with forDestination = dest ; forType = forT })
+        let inline addFormulaE (c:Calculation) e           = addFormula c (toForm0 e)
+        let inline toRule0 e = Rule.New([], toExpA e, ForBase)
+        let inline addRule     (c:Cube       ) r dest rulT = c.AddRule (RuleKey r.rulId) (Some { r with rulDestination = dest ; rulType = rulT })
+        let inline addRuleE    (c:Cube       ) e           = addRule c (toRule0 e)
+        
+    (*    let elmRef2ElmId r =
+            match r with
+            | ElemFixed  (d, eId) -> d, eId
+            | ElemDynamic(d, exp) -> failwith <| sprintf "dynamic references not allowed: %O" (d, exp)
+            
+        let elmRefs2ElmIds rs = rs |> List.map elmRef2ElmId
+    *)    
+    //    type HelperForm = HelperForm with
+    //        static member (?<-) (c:Cube       , HelperForm, l : ElmReference list) = fun dest rulT f -> addRule    c f l rulT
+    //        static member (?<-) (c:Calculation, HelperForm, f : Formula          ) = addFormula  c f 
+    //        static member (?<-) (c:Calculation, HelperForm, e : ExpressionNumber ) = addFormulaE c e 
+    //        static member (?<-) (c:Calculation, HelperForm, e : ExpressionText   ) = addFormulaE c e
+    //        static member (?<-) (c:Calculation, HelperForm, e : Slice            ) = addFormulaE c e
+    //        static member (?<-) (c:Calculation, HelperForm, e : Calculation      ) = addFormulaE c e
+    //        static member (?<-) (c:Calculation, HelperForm, e : bool             ) = addFormulaE c e
+    //        static member (?<-) (c:Calculation, HelperForm, e : int              ) = addFormulaE c e
+    //        static member (?<-) (c:Calculation, HelperForm, e : float            ) = addFormulaE c e
+    //        static member (?<-) (c:Calculation, HelperForm, e : string           ) = addFormulaE c e
+    //        static member (?<-) (c:Calculation, HelperForm, e : ExpressionAny    ) = addFormulaE c e 
+    //        static member (?<-) (c:Calculation, HelperForm, l : ElmReference list) = fun dest forT f -> addFormula c f l forT
+    //    
+    //    let inline (<<|  )  c e = (c?(HelperForm)<-e) [] ForBase
+    //    let inline (<<|* )  c e = (c?(HelperForm)<-e) [] ForConsolidated
+    //    
+    //    type HelperForm2 = HelperForm2 with
+    //        static member (?<-) (add :Rule    -> Cube       , HelperForm2, r : Rule             ) = add(r        )
+    //        static member (?<-) (add :Rule    -> Cube       , HelperForm2, f : ExpressionNumber ) = add(toRule0 f) 
+    //        static member (?<-) (add :Rule    -> Cube       , HelperForm2, f : ExpressionText   ) = add(toRule0 f)
+    //        static member (?<-) (add :Rule    -> Cube       , HelperForm2, f : Slice            ) = add(toRule0 f)
+    //        static member (?<-) (add :Rule    -> Cube       , HelperForm2, f : Calculation      ) = add(toRule0 f)
+    //        static member (?<-) (add :Rule    -> Cube       , HelperForm2, f : bool             ) = add(toRule0 f)
+    //        static member (?<-) (add :Rule    -> Cube       , HelperForm2, f : int              ) = add(toRule0 f)
+    //        static member (?<-) (add :Rule    -> Cube       , HelperForm2, f : float            ) = add(toRule0 f)
+    //        static member (?<-) (add :Rule    -> Cube       , HelperForm2, f : string           ) = add(toRule0 f)
+    //        static member (?<-) (add :Rule    -> Cube       , HelperForm2, f : ExpressionAny    ) = add(toRule0 f) 
+    //        static member (?<-) (add :Formula -> Calculation, HelperForm2, f : Formula          ) = add(f        )
+    //        static member (?<-) (add :Formula -> Calculation, HelperForm2, f : ExpressionNumber ) = add(toForm0 f) 
+    //        static member (?<-) (add :Formula -> Calculation, HelperForm2, f : ExpressionText   ) = add(toForm0 f)
+    //        static member (?<-) (add :Formula -> Calculation, HelperForm2, f : Slice            ) = add(toForm0 f)
+    //        static member (?<-) (add :Formula -> Calculation, HelperForm2, f : Calculation      ) = add(toForm0 f)
+    //        static member (?<-) (add :Formula -> Calculation, HelperForm2, f : bool             ) = add(toForm0 f)
+    //        static member (?<-) (add :Formula -> Calculation, HelperForm2, f : int              ) = add(toForm0 f)
+    //        static member (?<-) (add :Formula -> Calculation, HelperForm2, f : float            ) = add(toForm0 f)
+    //        static member (?<-) (add :Formula -> Calculation, HelperForm2, f : string           ) = add(toForm0 f)
+    //        static member (?<-) (add :Formula -> Calculation, HelperForm2, f : ExpressionAny    ) = add(toForm0 f) 
+    //    
+    //    let inline (<<<)  p e = p?(HelperForm2)<-e
+        
+        let Calc  = Calculation.Calc
+        let Input = Calculation.Input
+        let NA    = ExnNA
+        
         

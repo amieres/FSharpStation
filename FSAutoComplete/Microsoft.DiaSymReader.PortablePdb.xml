@@ -1,0 +1,382 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.DiaSymReader.PortablePdb</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.DiaSymReader.PortablePdb.DocumentId">
+            <summary>
+            Unique ID representing a document across all generations.
+            </summary>
+        </member>
+        <member name="F:Microsoft.DiaSymReader.PortablePdb.DocumentMap._infos">
+            <summary>
+            Info for each document, indexed by <see cref="F:Microsoft.DiaSymReader.PortablePdb.DocumentId.Value"/> - 1. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.MethodExtents.GetMethodBodyDocuments(System.Reflection.Metadata.MetadataReader,System.Reflection.Metadata.MethodDebugInformationHandle)">
+            <summary>
+            Enumerates all documents that include at least one non-hidden sequence point of the specified method body.
+            </summary>
+        </member>
+        <member name="T:Microsoft.DiaSymReader.PortablePdb.MethodId">
+            <summary>
+            Unique ID representing a method across all generations.
+            </summary>
+        </member>
+        <member name="F:Microsoft.DiaSymReader.PortablePdb.MethodLineDeltas._delta">
+            <summary>
+            Delta applied to all sequence points.
+            </summary>
+        </member>
+        <member name="F:Microsoft.DiaSymReader.PortablePdb.MethodLineDeltas._deltas">
+            <summary>
+            Per-sequence-point deltas.
+            </summary>
+        </member>
+        <member name="F:Microsoft.DiaSymReader.PortablePdb.PortablePdbReader.PreviousDocumentCount">
+            <summary>
+            Aggregate number of unique documents in all previous generations.
+            </summary>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.PortablePdbReader.#ctor(System.Reflection.Metadata.MetadataReaderProvider,System.Int32,System.Int32)">
+            <summary>
+            The method takes ownership of the <paramref name="provider"/> upon entry and disposes it in case of a failure to construct the reader.
+            </summary>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.PortablePdbReader.GetDocumentId(System.Reflection.Metadata.DocumentHandle)">
+            <summary>
+            Maps <see cref="T:System.Reflection.Metadata.DocumentHandle"/> relative to this reader to the corresponding global <see cref="T:Microsoft.DiaSymReader.PortablePdb.DocumentId"/>.
+            Null if handles correspond to ids 1:1 (baseline).
+            </summary>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.PortablePdbReader.GetMethodId(System.Reflection.Metadata.MethodDebugInformationHandle)">
+            <summary>
+            Maps <see cref="T:System.Reflection.Metadata.MethodDebugInformationHandle"/> relative to this reader to the corresponding global <see cref="T:Microsoft.DiaSymReader.PortablePdb.MethodId"/>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymBinder.GetReaderForFile2(System.Object,System.String,System.String,Microsoft.DiaSymReader.SymUnmanagedSearchPolicy,Microsoft.DiaSymReader.ISymUnmanagedReader@)">
+            <summary>
+            Given a metadata interface and a file name, returns the 
+            <see cref="T:Microsoft.DiaSymReader.ISymUnmanagedReader"/> interface that will read the debugging symbols associated
+            with the module.
+            </summary>
+            <remarks>
+            This version of the function can search for the PDB in areas other than
+            right next to the module.
+            The search policy can be controlled by combining CorSymSearchPolicyAttributes
+            e.g AllowReferencePathAccess|AllowSymbolServerAccess will look for the pdb next
+            to the PE file and on a symbol server, but won't query the registry or use the path
+            in the PE file.
+            If a searchPath is provided, those directories will always be searched.
+            </remarks>
+            <exception cref="T:System.ArgumentException"><paramref name="fileName"/> is null or empty.</exception>
+            <exception cref="T:System.ArgumentException"><paramref name="metadataImport"/> does not implement IMetadataImport interface.</exception>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymBinder.GetReaderFromStream(System.Object,System.Object,Microsoft.DiaSymReader.ISymUnmanagedReader@)">
+            <summary>
+            Creates a new <see cref="T:Microsoft.DiaSymReader.ISymUnmanagedReader"/> for the specified PDB stream.
+            </summary>
+            <param name="metadataImport">IMetadataImport reading metadata in PE file.</param>
+            <param name="stream">PDB stream. The implementation supports Portable PDB and Embedded Portable PDB formats.</param>
+            <param name="reader">The new reader instance.</param>
+            <returns>
+            E_INVALIDARG
+              <paramref name="metadataImport"/> doesn't implement <see cref="T:Microsoft.DiaSymReader.PortablePdb.IMetadataImport"/>, or
+              <paramref name="stream"/> doesn't implement <see cref="T:System.Runtime.InteropServices.ComTypes.IStream"/>.
+            Another error code describing failure to read the stream.
+            </returns>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymBinder.GetReaderFromPdbFile(Microsoft.DiaSymReader.IMetadataImportProvider,System.String,Microsoft.DiaSymReader.ISymUnmanagedReader@)">
+            <summary>
+            Creates a new <see cref="T:Microsoft.DiaSymReader.ISymUnmanagedReader"/> for the specified PDB file.
+            </summary>
+            <param name="metadataImportProvider">
+            Provider of a metadata importer for the corresponding PE file.
+            The importer is only constructed if the operation performed on the SymReader requires access
+            to the metadata.
+            </param>
+            <param name="pdbFilePath">PDB file path. The implementation supports Portable PDB format.</param>
+            <param name="reader">The new reader instance.</param>
+            <returns>
+            E_INVALIDARG
+              <paramref name="metadataImportProvider"/> is null, or
+              <paramref name="pdbFilePath"/> is null or empty.
+            Another error code describing failure to open the file.
+            </returns>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymBinder.GetReaderFromPdbStream(Microsoft.DiaSymReader.IMetadataImportProvider,System.Object,Microsoft.DiaSymReader.ISymUnmanagedReader@)">
+            <summary>
+            Creates a new <see cref="T:Microsoft.DiaSymReader.ISymUnmanagedReader"/> for the specified PDB file.
+            </summary>
+            <param name="metadataImportProvider">
+            Provider of a metadata importer for the corresponding PE file.
+            The importer is only constructed if the operation performed on the SymReader requires access
+            to the metadata.
+            </param>
+            <param name="stream">PDB stream. The implementation supports Portable PDB and Embedded Portable PDB formats.</param>
+            <param name="reader">The new reader instance.</param>
+            <exception cref="T:System.ArgumentException"><paramref name="metadataImportProvider"/> is null</exception>
+            <exception cref="T:System.ArgumentException"><paramref name="stream"/> is null</exception>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymMethod.GetLocalSignatureToken(System.Int32@)">
+            <summary>
+            Get the token of the local signature.
+            </summary>
+            <param name="localSignatureToken">Local signature token (StandAloneSig), or 0 if the method doesn't have any local variables.</param>
+            <returns>
+            S_OK if the method has a local signature,
+            S_FALSE if the method doesn't have a local signature, 
+            E_* if an error occurs while reading the signature.
+            </returns>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymMethod.GetFileNameFromOffset(System.Int32,System.Int32,System.Int32@,System.Char[])">
+            <summary>
+            Get the file name for the line associated with specified offset.
+            </summary>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymMethod.GetLineFromOffset(System.Int32,System.Int32@,System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <summary>
+            Get the line information associated with <paramref name="offset"/>.
+            </summary>
+            <remarks>
+            If <paramref name="offset"/> is not a sequence point it is associated with the previous one.
+            <paramref name="sequencePointOffset"/> provides the associated sequence point.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymMethod.GetDocumentsForMethodCount(System.Int32@)">
+            <summary>
+            Get the number of Documents that this method has lines in.
+            </summary>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymMethod.GetDocumentsForMethod(System.Int32,System.Int32@,Microsoft.DiaSymReader.ISymUnmanagedDocument[])">
+            <summary>
+            Get the documents this method has lines in.
+            </summary>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymMethod.GetSourceExtentInDocument(Microsoft.DiaSymReader.ISymUnmanagedDocument,System.Int32@,System.Int32@)">
+            <summary>
+            Get the smallest start line and largest end line, for the method, in a specific document.
+            </summary>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymReader.#ctor(Microsoft.DiaSymReader.PortablePdb.PortablePdbReader,Microsoft.DiaSymReader.PortablePdb.LazyMetadataImport)">
+            Takes ownership of <paramref name="pdbReader"/> and <paramref name="metadataImport"/>.
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymReader.GetDocument(System.String,System.Guid,System.Guid,System.Guid,Microsoft.DiaSymReader.ISymUnmanagedDocument@)">
+            <summary>
+            Finds document of a specified name.
+            </summary>
+            <param name="url">Document name.</param>
+            <param name="language">Ignored.</param>
+            <param name="languageVendor">Ignored.</param>
+            <param name="documentType">Ignored.</param>
+            <param name="document">Document or null.</param>
+            <returns>
+            S_OK if found, S_FALSE if not found.
+            </returns>
+            <remarks>
+            EnC: Returns document in the first generation that defines one with matching name,
+            even if the document is not referred to by any sequence point anymore 
+            (e.g. the statement was removed by a subsequent edit).
+            </remarks>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymReader.GetDocuments(System.Int32,System.Int32@,Microsoft.DiaSymReader.ISymUnmanagedDocument[])">
+            <summary>
+            Get a list of all documents, incuding those added via EnC.
+            </summary>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymReader.GetMethod(System.Int32,Microsoft.DiaSymReader.ISymUnmanagedMethod@)">
+            <summary>
+            Get the latest version of a method with specified token.
+            </summary>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymReader.GetMethodByVersion(System.Int32,System.Int32,Microsoft.DiaSymReader.ISymUnmanagedMethod@)">
+            <summary>
+            Get a particular version of a method with specified token.
+            </summary>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymReader.MatchesModule(System.Guid,System.UInt32,System.Int32,System.Boolean@)">
+            <summary>
+            Checkes whether the id stored in the PDB matches the PDB ID stored in the PE/COFF Debug Directory.
+            </summary>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymReader.GetPortableDebugMetadata(System.Byte*@,System.Int32@)">
+            <summary>
+            Returns a pointer to Portable Debug Metadata. Only available for Portable PDBs.
+            </summary>
+            <param name="metadata">
+            A pointer to memory where Portable Debug Metadata start. The memory is owned by the SymReader and 
+            valid until <see cref="M:Microsoft.DiaSymReader.ISymUnmanagedDispose.Destroy"/> is invoked. 
+            
+            Null if the PDB is not portable.
+            </param>
+            <param name="size">Size of the metadata block.</param>
+            <returns>
+            S_OK if the PDB is portable, S_FALSE if it isn't.
+            </returns>
+            <remarks>
+            If the store was updated via <see cref="M:Microsoft.DiaSymReader.PortablePdb.SymReader.UpdateSymbolStore(System.String,System.Runtime.InteropServices.ComTypes.IStream)"/> 
+            returns the metadata of the latest update.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymReader.GetPortableDebugMetadataByVersion(System.Int32,System.Byte*@,System.Int32@)">
+            <summary>
+            Returns a pointer to Portable Debug Metadata of the specified version (EnC generation). Only available for Portable PDBs.
+            </summary>
+            <param name="version">
+            EnC 1-based version number. Version 1 corresponds to the baseline.
+            </param>
+            <param name="metadata">
+            A pointer to memory where Portable Debug Metadata start. The memory is owned by the SymReader and 
+            valid until <see cref="M:Microsoft.DiaSymReader.ISymUnmanagedDispose.Destroy"/> is invoked. 
+            
+            Null if the PDB is not portable.
+            </param>
+            <param name="size">Size of the metadata block.</param>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymReader.GetSourceServerData(System.Byte*@,System.Int32@)">
+            <summary>
+            Returns a pointer to Source Server data stored in the PDB.
+            </summary>
+            <param name="data">
+            A pointer to memory where Source Server data start. The memory is owned by the SymReader and 
+            valid until <see cref="M:Microsoft.DiaSymReader.ISymUnmanagedDispose.Destroy"/> is invoked. 
+            
+            Null if the PDB doesn't contain Source Server data.
+            </param>
+            <param name="size">Size of the data in bytes.</param>
+            <returns>
+            S_OK if the PDB contains Source Server data, S_FALSE if it doesn't.
+            </returns>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymReader.UpdateSymbolStore2(System.Runtime.InteropServices.ComTypes.IStream,Microsoft.DiaSymReader.SymUnmanagedLineDelta[],System.Int32)">
+            <summary>
+            Applies EnC edit. 
+            </summary>
+            <remarks>
+            Not thread safe. Must not be run in parallel with any other operation on the SymReader or objects it owns.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymReader.GetLocalVariableCount(System.Int32,System.Int32@)">
+            <summary>
+            Gets the number of local variables of the latest version of the specified method.
+            </summary>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymReader.GetLocalVariables(System.Int32,System.Int32,Microsoft.DiaSymReader.ISymUnmanagedVariable[],System.Int32@)">
+            <summary>
+            Gets local variables of the latest version of the specified method.
+            </summary>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.SymReader.UpdateMethodLines(System.Int32,System.Int32[],System.Int32)">
+            <summary>
+            Allows updating the line info for a method that has not been recompiled,
+            but whose lines have moved independently.  A delta for each statement is allowed.
+            </summary>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.EnumerableHelpers.GroupBy``2(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{``0,``1}},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Groups specified entries by key optimizing for single-item groups. 
+            The ordering of values within each bucket is the same as their ordering in the <paramref name="entries"/> sequence.
+            </summary>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.FileNameUtilities.IndexOfFileName(System.String)">
+            <summary>
+            Returns the position in given path where the file name starts.
+            </summary>
+            <returns>-1 if path is null.</returns>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.FileNameUtilities.GetFileName(System.String)">
+            <summary>
+            Get file name from path.
+            </summary>
+            <remarks>Unlike <see cref="M:System.IO.Path.GetFileName(System.String)"/> doesn't check for invalid path characters.</remarks>
+        </member>
+        <member name="T:Microsoft.DiaSymReader.PortablePdb.ImmutableByteArrayInterop">
+             <summary>
+             Provides tools for using <see cref="T:System.Collections.Immutable.ImmutableArray`1"/> in interop scenarios.
+             </summary>
+             <remarks>
+             *** WARNING *** 
+             
+             If you decide to copy this code elsewhere, please retain the documentation here
+             and the Dangerous prefixes in the API names. This will help track down and audit
+             other places where this technique (with dangerous consequences when misused) may
+             be applied.
+            
+             A generic version of this API was once public in a pre-release of immutable 
+             collections, but  it was deemed to be too subject to abuse when available publicly.
+             
+             This implementation is scoped to byte arrays as that is all that the metadata reader needs.
+             
+             Also, since we don't have access to immutable collection internals, we use a trick involving
+             overlapping a <see cref="T:System.Collections.Immutable.ImmutableArray`1"/> with a <see cref="T:Byte[]"/> refer. While
+             unverifiable, it is valid. See ECMA-335, section II.10.7 Controlling instance layout:
+             
+             "It is possible to overlap fields in this way, though offsets occupied by an object reference 
+             shall not overlap with offsets occupied by a built-in value type or a part of
+             another object reference. While one object reference can completely overlap another, this is
+             unverifiable."
+             
+             Furthermore, the fact that <see cref="T:System.Collections.Immutable.ImmutableArray`1"/> backed by a single <see cref="T:Byte[]"/> 
+             field is something inherent to the design of ImmutableArray in order to get its performance
+             characteristics and therefore something we (Microsoft) are comfortable defining as a contract that 
+             can be depended upon as below.
+             </remarks>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.ImmutableByteArrayInterop.DangerousCreateFromUnderlyingArray(System.Byte[]@)">
+            <summary>
+            Creates a new instance of <see cref="T:System.Collections.Immutable.ImmutableArray`1"/> using a given mutable array as the backing
+            field, without creating a defensive copy. It is the responsibility of the caller to ensure no other mutable 
+            references exist to the array.  Do not mutate the array after calling this method.
+            </summary>
+            <param name="array">The mutable array to use as the backing field. The incoming reference is set to null 
+            since it should not be retained by the caller.</param>
+            <remarks>
+            Users of this method should take extra care to ensure that the mutable array given as a parameter
+            is never modified. The returned <see cref="T:System.Collections.Immutable.ImmutableArray`1"/> will use the given array as its backing
+            field without creating a defensive copy, so changes made to the given mutable array will be observable
+            on the returned <see cref="T:System.Collections.Immutable.ImmutableArray`1"/>.  Instance and static methods of <see cref="T:System.Collections.Immutable.ImmutableArray`1"/>
+            and <see cref="T:System.Collections.Immutable.ImmutableArray"/> may malfunction if they operate on an <see cref="T:System.Collections.Immutable.ImmutableArray`1"/> instance
+            whose underlying backing field is modified. 
+            </remarks>
+            <returns>An immutable array.</returns>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.ImmutableByteArrayInterop.DangerousGetUnderlyingArray(System.Collections.Immutable.ImmutableArray{System.Byte})">
+            <summary>
+            Access the backing mutable array instance for the given <see cref="T:System.Collections.Immutable.ImmutableArray`1"/>, without
+            creating a defensive copy.  It is the responsibility of the caller to ensure the array is not modified
+            through the returned mutable reference.  Do not mutate the returned array.
+            </summary>
+            <param name="array">The <see cref="T:System.Collections.Immutable.ImmutableArray`1"/> from which to retrieve the backing field.</param>
+            <remarks>
+            Users of this method should take extra care to ensure that the returned mutable array is never modified.
+            The returned mutable array continues to be used as the backing field of the given <see cref="T:System.Collections.Immutable.ImmutableArray`1"/>
+            without creating a defensive copy, so changes made to the returned mutable array will be observable
+            on the given <see cref="T:System.Collections.Immutable.ImmutableArray`1"/>.  Instance and static methods of <see cref="T:System.Collections.Immutable.ImmutableArray`1"/>
+            and <see cref="T:System.Collections.Immutable.ImmutableArray"/> may malfunction if they operate on an <see cref="T:System.Collections.Immutable.ImmutableArray`1"/> instance
+            whose underlying backing field is modified. 
+            </remarks>
+            <returns>The underlying array, or null if <see cref="P:System.Collections.Immutable.ImmutableArray`1.IsDefault"/> is true.</returns>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.ReflectionUtilities.GetTypeFromEither(System.String,System.String)">
+            <summary>
+            Find a <see cref="T:System.Type"/> instance by first probing the contract name and then the name as it
+            would exist in mscorlib.  This helps satisfy both the CoreCLR and Desktop scenarios. 
+            </summary>
+        </member>
+        <member name="M:Microsoft.DiaSymReader.PortablePdb.StreamExtensions.TryReadAll(System.IO.Stream,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Attempts to read all of the requested bytes from the stream into the buffer
+            </summary>
+            <returns>
+            The number of bytes read. Less than <paramref name="count" /> will
+            only be returned if the end of stream is reached before all bytes can be read.
+            </returns>
+            <remarks>
+            Unlike <see cref="M:System.IO.Stream.Read(System.Byte[],System.Int32,System.Int32)"/> it is not guaranteed that
+            the stream position or the output buffer will be unchanged if an exception is
+            returned.
+            </remarks>
+        </member>
+    </members>
+</doc>
