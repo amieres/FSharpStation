@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FSSGlobal,Useful,Async,KeyVal,String,Option,WebSharper,Obj,ExceptionThrown,ErrOptionIsNone,ErrSimple,Result,ropBuilder,ResultS,Wrap,Builder,Mailbox,Dict,ResetableMemoize,PreproDirective,FsStationShared,CodeSnippetId,CodeSnippet,FSMessage,FSSeverity,WSMessagingBroker,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ErrBroker,WSMessagingClient,FsStationClientErr,FStationMessaging,FsEvaluator,Evaluator,FsTranslator,FSAutoCompleteIntermediary,CommTypes,ResponseError,Location,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,ACMessage,FSAutoCompleteIntermediaryClient,HtmlNode,Val,HelperType,valBuilder,HtmlNode$1,Template,Button,Input,Hoverable,Panel,TextArea,CodeMirrorPos,CodeMirrorEditor,CodeMirror,Hint,HintResponse,HintOptions,LintResponse,SplitterBar,SectionType,Grid,TabStrip,MenuEntry,MenuNode,Menu,Action,GuiPart,HtmlNodeFable,LayoutDescriptionFable,GuiPartSourceId,Layout,RunCode,RunNode,FSharpStation,FsGlobal,Position,ErrCompiler,KeyMapAutoComplete,Property,PropValue,CodeSnippet$1,FableModule,Babel,Fable,SC$1,FSharpStation_JsonDecoder,FSharpStation_JsonEncoder,FSharpStation_GeneratedPrintf,GeneratedPrintf,Concurrency,Seq,Unchecked,Strings,IntelliFactory,Runtime,Utils,Enumerator,Arrays,console,Control,MailboxProcessor,Collections,Dictionary,CancellationTokenSource,System,Guid,List,Option$1,JSON,TimeoutException,Json,Provider,Owin,WebSocket,Client,WithEncoding,Endpoint,location,Map,FSharpMap,Slice,Remoting,AjaxRemotingProvider,UI,Next,View,Doc,Operators,AttrModule,AttrProxy,Var,Input$1,Mouse,FSharpSet,BalancedTree,MatchFailureException,Object,Fable$1,Babel$1,HashSet,JavaScript,JSModule,Lazy,$,Date,ListModel;
+ var Global,FSSGlobal,Useful,Async,KeyVal,String,Option,WebSharper,Obj,ExceptionThrown,ErrOptionIsNone,ErrSimple,Result,ropBuilder,ResultS,Wrap,Builder,Mailbox,Dict,ResetableMemoize,PreproDirective,FsStationShared,CodeSnippetId,CodeSnippet,FSMessage,FSSeverity,WSMessagingBroker,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ErrBroker,WSMessagingClient,FsStationClientErr,FStationMessaging,FsEvaluator,Evaluator,FsTranslator,FSAutoCompleteIntermediary,CommTypes,ResponseError,Location,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,ACMessage,FSAutoCompleteIntermediaryClient,HtmlNode,Val,HelperType,valBuilder,HtmlNode$1,Template,Button,Input,Hoverable,Panel,TextArea,CodeMirrorPos,CodeMirrorEditor,CodeMirror,Hint,HintResponse,HintOptions,LintResponse,SplitterBar,SectionType,Grid,TabStrip,MenuEntry,MenuNode,Menu,Action,GuiPart,HtmlNodeFable,LayoutDescriptionFable,GuiPartSourceId,Layout,RunCode,RunNode,FSharpStation,FsGlobal,Position,ErrCompiler,KeyMapAutoComplete,Property,PropValue,CodeSnippet$1,FableModule,Babel,Fable,SC$1,FSharpStation_JsonDecoder,FSharpStation_JsonEncoder,FSharpStation_GeneratedPrintf,GeneratedPrintf,Concurrency,Seq,Unchecked,Strings,IntelliFactory,Runtime,Utils,Enumerator,List,console,Control,MailboxProcessor,Collections,Dictionary,CancellationTokenSource,Arrays,System,Guid,Option$1,JSON,TimeoutException,Json,Provider,Owin,WebSocket,Client,WithEncoding,Endpoint,location,Map,FSharpMap,Slice,Remoting,AjaxRemotingProvider,UI,Next,View,Doc,Operators,AttrModule,AttrProxy,Var,Input$1,Mouse,FSharpSet,BalancedTree,MatchFailureException,Object,Fable$1,Babel$1,HashSet,JavaScript,JSModule,Lazy,$,Date,ListModel;
  Global=window;
  FSSGlobal=Global.FSSGlobal=Global.FSSGlobal||{};
  Useful=FSSGlobal.Useful=FSSGlobal.Useful||{};
@@ -128,16 +128,16 @@
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
  Utils=WebSharper&&WebSharper.Utils;
  Enumerator=WebSharper&&WebSharper.Enumerator;
- Arrays=WebSharper&&WebSharper.Arrays;
+ List=WebSharper&&WebSharper.List;
  console=Global.console;
  Control=WebSharper&&WebSharper.Control;
  MailboxProcessor=Control&&Control.MailboxProcessor;
  Collections=WebSharper&&WebSharper.Collections;
  Dictionary=Collections&&Collections.Dictionary;
  CancellationTokenSource=WebSharper&&WebSharper.CancellationTokenSource;
+ Arrays=WebSharper&&WebSharper.Arrays;
  System=Global.System;
  Guid=System&&System.Guid;
- List=WebSharper&&WebSharper.List;
  Option$1=WebSharper&&WebSharper.Option;
  JSON=Global.JSON;
  TimeoutException=WebSharper&&WebSharper.TimeoutException;
@@ -467,7 +467,7 @@
   return{
    $:0,
    $0:a.$0,
-   $1:Arrays.map(function(m)
+   $1:List.map(function(m)
    {
     return new ErrSimple.New(m.FSSGlobal_Useful_ErrMsg$get_ErrMsg(),m.FSSGlobal_Useful_ErrMsg$get_IsWarning());
    },a.$1)
@@ -478,30 +478,30 @@
   return{
    $:0,
    $0:a.$0,
-   $1:Arrays.map(Global.id,a.$1)
+   $1:List.map(Global.id,a.$1)
   };
  };
  Result.result2String=function(res)
  {
-  return Strings.concat("\n",[Option.defaultValue("Failed: ",res.$0)].concat(Result.msgs2String(res.$1)));
+  return Strings.concat("\n",List.append(List.ofArray([Option.defaultValue("Failed: ",res.$0)]),Result.msgs2String(res.$1)));
  };
  Result.countMessages=function(ms)
  {
   var $1,$2,$3,errors,warnings,$4,$5;
-  if(Unchecked.Equals(ms,[]))
+  if(ms.$===0)
    return"";
   else
    {
-    errors=Arrays.filter(function(m)
+    errors=List.filter(function(m)
     {
      return!m.FSSGlobal_Useful_ErrMsg$get_IsWarning();
     },ms);
-    warnings=Arrays.filter(function(m)
+    warnings=List.filter(function(m)
     {
      return m.FSSGlobal_Useful_ErrMsg$get_IsWarning();
     },ms);
-    $4=Arrays.length(errors);
-    $5=Arrays.length(warnings);
+    $4=errors.get_Length();
+    $5=warnings.get_Length();
     switch($4===0?$5===0?0:$5===1?2:5:$4===1?$5===0?1:$5===1?3:($1=[$4,$5],6):$5===0?4:($1=[$4,$5],6))
     {
      case 0:
@@ -568,7 +568,7 @@
  };
  Result.msgs2String=function(ms)
  {
-  return Arrays.map(function(m)
+  return List.map(function(m)
   {
    return m.FSSGlobal_Useful_ErrMsg$get_ErrMsg();
   },ms);
@@ -683,11 +683,11 @@
     $:1,
     $0:$3[0]($3[1])
    },
-   $1:fMs.concat(ms)
+   $1:List.append(fMs,ms)
   }:{
    $:0,
    $0:null,
-   $1:fMs.concat(ms)
+   $1:List.append(fMs,ms)
   };
  };
  Result.bind=function(f,a)
@@ -702,7 +702,7 @@
   }:(m=f(o.$0),{
    $:0,
    $0:m.$0,
-   $1:ms.concat(m.$1)
+   $1:List.append(ms,m.$1)
   });
  };
  Result.combine=function(a)
@@ -717,9 +717,9 @@
  Result.mergeMsgs=function(ms,r)
  {
   var t;
-  t=Result.mapMsgs(function(a)
+  t=Result.mapMsgs(function(l)
   {
-   return ms.concat(a);
+   return List.append(ms,l);
   },r);
   return{
    $:0,
@@ -741,7 +741,7 @@
  };
  Result.mapMsg=function(f,a)
  {
-  return[a.$0,Arrays.map(f,a.$1)];
+  return[a.$0,List.map(f,a.$1)];
  };
  Result.map=function(f,a)
  {
@@ -768,7 +768,7 @@
   return{
    $:0,
    $0:null,
-   $1:[m]
+   $1:List.ofArray([m])
   };
  };
  Result.succeedWithMsgs=function(x,ms)
@@ -790,7 +790,7 @@
     $:1,
     $0:x
    },
-   $1:[m]
+   $1:List.ofArray([m])
   };
  };
  Result.succeed=function(x)
@@ -801,7 +801,7 @@
     $:1,
     $0:x
    },
-   $1:[]
+   $1:List.T.Empty
   };
  };
  ResultS.toResult=function()
@@ -1017,8 +1017,8 @@
  };
  Wrap.combine=function(errOptionIsNone,wa,wb)
  {
-  var $1,t,b,b$1;
-  switch(wa.$==4?wa.$0==null?3:0:wa.$==0?(t=wa.$0.$1,t&&Arrays.length(t)===0?0:($1=wa.$0.$1,4)):wa.$==1?($1=wa.$0,1):wa.$==2?($1=wa.$0,2):0)
+  var $1,b,b$1,x;
+  switch(wa.$==4?wa.$0==null?3:0:wa.$==0?wa.$0.$1.$==0?0:($1=wa.$0.$1,4):wa.$==1?($1=wa.$0,1):wa.$==2?($1=wa.$0,2):0)
   {
    case 0:
     return wb();
@@ -1057,7 +1057,8 @@
     };
     break;
    case 3:
-    return Wrap.addMsgs(errOptionIsNone,[errOptionIsNone],wb());
+    x=wb();
+    return Wrap.addMsgs(errOptionIsNone,List.ofArray([errOptionIsNone]),x);
     break;
    case 4:
     return Wrap.addMsgs(errOptionIsNone,$1,wb());
@@ -1067,7 +1068,7 @@
  Wrap.addMsgs=function(errOptionIsNone,ms,wb)
  {
   var $1,b,b$1;
-  if(Unchecked.Equals(ms,[]))
+  if(ms.$===0)
    return wb;
   else
    switch(wb.$==4?wb.$0==null?1:($1=wb.$0.$0,0):wb.$==0?($1=wb.$0,2):wb.$==1?($1=wb.$0,3):wb.$==2?($1=wb.$0,4):($1=wb.$0,0))
@@ -1123,7 +1124,7 @@
   switch(wb.$==4?0:wb.$==0?1:wb.$==1?2:wb.$==2?3:0)
   {
    case 0:
-    return Wrap.wb2arb([],wb);
+    return Wrap.wb2arb(List.T.Empty,wb);
     break;
    case 1:
     return Wrap.wb2arb(wb.$0.$1,wb);
@@ -1267,8 +1268,8 @@
  };
  Wrap.bind=function(f,wa)
  {
-  var $1,a,t,ms,b,b$1;
-  switch(wa.$==4?wa.$0==null?1:($1=wa.$0.$0,0):wa.$==0?(a=Result.Success(wa.$0),a.$==1?($1=a.$0,2):(t=a.$0[1],t&&Arrays.length(t)===0?($1=a.$0[0],0):($1=[a.$0[0],a.$0[1]],3))):wa.$==1?($1=wa.$0,4):wa.$==2?($1=wa.$0,5):($1=wa.$0,0))
+  var $1,a,ms,b,b$1;
+  switch(wa.$==4?wa.$0==null?1:($1=wa.$0.$0,0):wa.$==0?(a=Result.Success(wa.$0),a.$==1?($1=a.$0,2):a.$0[1].$==0?($1=a.$0[0],0):($1=[a.$0[0],a.$0[1]],3)):wa.$==1?($1=wa.$0,4):wa.$==2?($1=wa.$0,5):($1=wa.$0,0))
   {
    case 0:
     return Wrap.tryCall(f,$1);
@@ -1289,8 +1290,8 @@
     ms=$1[1];
     return function(a$1)
     {
-     var $2,a$2,t$1,b$2,b$3;
-     switch(a$1.$==4?a$1.$0==null?1:($2=a$1.$0.$0,0):a$1.$==0?(a$2=Result.Success(a$1.$0),a$2.$==1?($2=a$2.$0,4):(t$1=a$2.$0[1],t$1&&Arrays.length(t$1)===0?($2=a$2.$0[0],2):($2=[a$2.$0[0],a$2.$0[1]],3))):a$1.$==1?($2=a$1.$0,5):a$1.$==2?($2=a$1.$0,6):($2=a$1.$0,0))
+     var $2,a$2,b$2,b$3;
+     switch(a$1.$==4?a$1.$0==null?1:($2=a$1.$0.$0,0):a$1.$==0?(a$2=Result.Success(a$1.$0),a$2.$==1?($2=a$2.$0,4):a$2.$0[1].$==0?($2=a$2.$0[0],2):($2=[a$2.$0[0],a$2.$0[1]],3)):a$1.$==1?($2=a$1.$0,5):a$1.$==2?($2=a$1.$0,6):($2=a$1.$0,0))
      {
       case 0:
        return{
@@ -1301,7 +1302,11 @@
       case 1:
        return{
         $:0,
-        $0:Result.failWithMsgs(ms.concat([Wrap.errOptionIsNone()]))
+        $0:Result.failWithMsgs(new List.T({
+         $:1,
+         $0:Wrap.errOptionIsNone(),
+         $1:ms
+        }))
        };
        break;
       case 2:
@@ -1313,13 +1318,13 @@
       case 3:
        return{
         $:0,
-        $0:Result.succeedWithMsgs($2[0],ms.concat($2[1]))
+        $0:Result.succeedWithMsgs($2[0],List.append(ms,$2[1]))
        };
        break;
       case 4:
        return{
         $:0,
-        $0:Result.failWithMsgs(ms.concat($2))
+        $0:Result.failWithMsgs(List.append(ms,$2))
        };
        break;
       case 5:
@@ -1356,7 +1361,7 @@
      {
       return Concurrency.Bind($1,function(a$1)
       {
-       return Wrap.wb2arb([],Wrap.tryCall(f,a$1));
+       return Wrap.wb2arb(List.T.Empty,Wrap.tryCall(f,a$1));
       });
      }))
     };
@@ -1437,7 +1442,11 @@
     b$4=null;
     return Concurrency.Delay(function()
     {
-     return Concurrency.Return(Result.failWithMsgs(ms.concat([Wrap.errOptionIsNone()])));
+     return Concurrency.Return(Result.failWithMsgs(new List.T({
+      $:1,
+      $0:Wrap.errOptionIsNone(),
+      $1:ms
+     })));
     });
     break;
   }
@@ -1484,24 +1493,6 @@
    }
    return loop(initState);
   },null);
- };
- Mailbox.call=function(f)
- {
-  return Mailbox.iter(function(t)
-  {
-   var replyChannel,msg,b;
-   replyChannel=t[0];
-   msg=t[1];
-   b=null;
-   return Concurrency.Delay(function()
-   {
-    return Concurrency.Bind(f(msg),function(a)
-    {
-     replyChannel(a);
-     return Concurrency.Zero();
-    });
-   });
-  });
  };
  Mailbox.iter=function(f)
  {
@@ -1710,20 +1701,6 @@
    }]:[line,PreproDirective.NoPrepo];
   },code);
  };
- Useful.mapPrint=function(v)
- {
-  ((function($1)
-  {
-   return function($2)
-   {
-    return $1(Utils.prettyPrint($2));
-   };
-  }(function(s)
-  {
-   console.log(s);
-  }))(v));
-  return v;
- };
  Useful.printoutfn=function(out,fmt)
  {
   return fmt(function(s)
@@ -1742,11 +1719,6 @@
  Useful.swap=function(f,a,b)
  {
   return f(b,a);
- };
- Useful.rexGuid=function()
- {
-  SC$1.$cctor();
-  return SC$1.rexGuid;
  };
  Useful.REGEX=function(expr,opt,value)
  {
@@ -2231,16 +2203,26 @@
    b=Wrap.wrap();
    return b.Run(b.Delay(function()
    {
-    return b.Bind$2($this.checkServer.PostAndAsyncReply(function(reply)
+    Useful.dprintfn(function($1)
     {
-     return[reply,null];
-    },null),function(a)
-    {
-     return b.Bind$1(a,function(a$1)
-     {
-      return b.Return(a$1);
-     });
+     return $1("getServer");
     });
+    return b.Combine($this.serverO==null?(Useful.dprintfn(function($1)
+    {
+     return $1("getServer Connecting");
+    }),b.Bind$2($this.connectToWebSocketServer(),function()
+    {
+     return b.Bind$2(Concurrency.Sleep(200),function()
+     {
+      return b.Return();
+     });
+    })):b.Zero(),b.Delay(function()
+    {
+     return b.Bind($this.serverO,function(a)
+     {
+      return b.Return(a);
+     });
+    }));
    }));
   },
   connectToWebSocketServer:function()
@@ -2487,32 +2469,6 @@
     return $1("Reply from '"+Utils.toSafe($2)+"': "+Utils.toSafe($3));
    })))(msg.from.get_txt()))(msg.payload);
   });
-  this.checkServer=Mailbox.call(function()
-  {
-   var b;
-   b=null;
-   return Concurrency.Delay(function()
-   {
-    Useful.dprintfn(function($1)
-    {
-     return $1("getServer");
-    });
-    return Concurrency.Combine($this.serverO==null?(Useful.dprintfn(function($1)
-    {
-     return $1("getServer Connecting");
-    }),Concurrency.Bind($this.connectToWebSocketServer(),function()
-    {
-     return Concurrency.Bind(Concurrency.Sleep(200),function()
-     {
-      return Concurrency.Return(null);
-     });
-    })):Concurrency.Zero(),Concurrency.Delay(function()
-    {
-     var x;
-     return Concurrency.Return((x=$this.serverO,Result.fromOption(new ErrSimple.New("could not connect to Server",false),x)));
-    }));
-   });
-  });
  },WSMessagingClient);
  FsStationClientErr=WSMessagingBroker.FsStationClientErr=Runtime.Class({
   FSSGlobal_Useful_ErrMsg$get_IsWarning:function()
@@ -2567,7 +2523,7 @@
      $1:a$1
     });
    }
-   return response.$==4&&(($2=response.$0,$2!=null&&$2.$==1)&&($1=[response.$0.$0,response.$1],true))?Result.succeedWithMsgs($1[0],Arrays.ofSeq(Seq.map(function($3)
+   return response.$==4&&(($2=response.$0,$2!=null&&$2.$==1)&&($1=[response.$0.$0,response.$1],true))?Result.succeedWithMsgs($1[0],List.ofSeq(Seq.map(function($3)
    {
     return m($3[0],$3[1]);
    },$1[1]))):Result.fail(new FsStationClientErr({
@@ -2941,7 +2897,7 @@
  },Obj,FStationMessaging);
  FStationMessaging.get_FSStationId_=function()
  {
-  return"FSharpStation1520847369299";
+  return"FSharpStation1519456996762";
  };
  FStationMessaging.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
@@ -2950,7 +2906,7 @@
  FStationMessaging.New$1=Runtime.Ctor(function(msgClient,clientId,fsStationId)
  {
   this.msgClient=msgClient;
-  this.fsIds=Option.defaultValue("FSharpStation1520847369299",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1519456996762",fsStationId);
  },FStationMessaging);
  WSMessagingBroker.extractEndPoint=function()
  {
@@ -3050,7 +3006,7 @@
     return Concurrency.Return({
      $:0,
      $0:a[0],
-     $1:Arrays.ofSeq(Seq.map(function($1)
+     $1:List.ofSeq(Seq.map(function($1)
      {
       return m($1[0],$1[1]);
      },a[1]))
@@ -3073,7 +3029,7 @@
     return Concurrency.Return({
      $:0,
      $0:a[0],
-     $1:Arrays.ofSeq(Seq.map(function($1)
+     $1:List.ofSeq(Seq.map(function($1)
      {
       return m($1[0],$1[1]);
      },a[1]))
@@ -3599,9 +3555,9 @@
  valBuilder.New=Runtime.Ctor(function()
  {
  },valBuilder);
- Val.fixitF=function(_f,v)
+ Val.fixitF=function(f,v)
  {
-  return _f(v);
+  return f(v);
  };
  Val.valFlow=function()
  {
@@ -3856,11 +3812,11 @@
   get_toDoc:function()
   {
    var $1,x,v;
-   return this.$==3||this.$==6?Doc.Empty():(x=HtmlNode.chooseNode(this),(v=Doc.Empty(),x==null?v:x.$0));
+   return this.$==1||this.$==4?Doc.Empty():(x=HtmlNode.chooseNode(this),(v=Doc.Empty(),x==null?v:x.$0));
   }
  },null,HtmlNode$1);
  HtmlNode$1.HtmlEmpty=new HtmlNode$1({
-  $:6
+  $:4
  });
  HtmlNode$1.op_MinusMinusMinusMinusMinusMinusMinusMinusMinusMinusMinusMinusMinusMinusMinusMinusMinusMinusMinusMinus=function(ps,chn)
  {
@@ -3957,10 +3913,10 @@
   var cover;
   cover=Var.Create$1(true);
   return HtmlNode.div([HtmlNode.style("position: relative; overflow: hidden; height: 100%; width: 100%;"),HtmlNode.iframe([HtmlNode.style("position: absolute; width:100%; height:100%;"),HtmlNode.frameborder("0"),new HtmlNode$1({
-   $:8,
+   $:7,
    $0:AttrModule.OnAfterRender(f)
   }),new HtmlNode$1({
-   $:8,
+   $:7,
    $0:AttrModule.Handler("mouseleave",function()
    {
     return function()
@@ -3969,7 +3925,7 @@
     };
    })
   })]),HtmlNode.div([HtmlNode.style("position: absolute;"),HtmlNode.classIf("iframe-cover",Val.map(Global.id,cover)),new HtmlNode$1({
-   $:8,
+   $:7,
    $0:AttrModule.Handler("mouseenter",function()
    {
     return function()
@@ -3986,7 +3942,7 @@
  HtmlNode.bindHElem=function(hElemF,v)
  {
   return new HtmlNode$1({
-   $:2,
+   $:5,
    $0:Val.map(hElemF,Val.fixit(v))
   });
  };
@@ -4012,7 +3968,7 @@
  {
   var m,cv;
   return new HtmlNode$1({
-   $:8,
+   $:7,
    $0:(m=Val.fixit(v),m.$==2?AttrModule.DynamicClass("class_for_view_not_implemented",m.$0,function(y)
    {
     return""!==y;
@@ -4040,10 +3996,6 @@
   {
    return x+y;
   }),v));
- };
- HtmlNode.placeholder=function(v)
- {
-  return HtmlNode.htmlAttribute("placeholder",v);
  };
  HtmlNode.style=function(v)
  {
@@ -4346,28 +4298,28 @@
  HtmlNode.someElt=function(elt)
  {
   return new HtmlNode$1({
-   $:7,
+   $:6,
    $0:elt
   });
  };
  HtmlNode.str=function(txt)
  {
   return new HtmlNode$1({
-   $:5,
+   $:3,
    $0:Val.fixit(txt)
   });
  };
  HtmlNode.htmlText=function(txt)
  {
   return new HtmlNode$1({
-   $:5,
+   $:3,
    $0:Val.fixit(txt)
   });
  };
  HtmlNode.htmlAttributeO=function(name,v)
  {
   return new HtmlNode$1({
-   $:4,
+   $:2,
    $0:name,
    $1:Val.fixit(v)
   });
@@ -4375,17 +4327,9 @@
  HtmlNode.htmlAttribute=function(name,v)
  {
   return new HtmlNode$1({
-   $:3,
+   $:1,
    $0:name,
    $1:Val.fixit(v)
-  });
- };
- HtmlNode.htmlElementF=function(func,ch)
- {
-  return new HtmlNode$1({
-   $:1,
-   $0:func,
-   $1:ch
   });
  };
  HtmlNode.htmlElement=function(name,ch)
@@ -4403,8 +4347,8 @@
    $:0,
    $0:t[0],
    $1:t[1]
-  })):element.$==2?new HtmlNode$1({
-   $:2,
+  })):element.$==5?new HtmlNode$1({
+   $:5,
    $0:Val.map(function(e)
    {
     return HtmlNode.mapHtmlElement(f,e);
@@ -4417,7 +4361,7 @@
   function c(a)
   {
    var $1;
-   return a.$==3&&(a.$0===attr&&($1=[a.$0,a.$1],true))?{
+   return a.$==1&&(a.$0===attr&&($1=[a.$0,a.$1],true))?{
     $:1,
     $0:$1[1]
    }:null;
@@ -4440,14 +4384,17 @@
  };
  HtmlNode.chooseNode=function(node)
  {
-  var children,children$1,x,g,v;
+  var children,x,g,v;
   return node.$==0?(children=node.$1,{
    $:1,
    $0:Doc.Element(node.$0,HtmlNode.getAttrsFromSeq(children),Seq.choose(HtmlNode.chooseNode,children))
-  }):node.$==1?(children$1=node.$1,{
+  }):node.$==3?{
    $:1,
-   $0:(node.$0(HtmlNode.getAttrsFromSeq(children$1)))(Seq.choose(HtmlNode.chooseNode,children$1))
-  }):node.$==2?{
+   $0:Val.tagDoc(Doc.TextNode,node.$0)
+  }:node.$==6?{
+   $:1,
+   $0:node.$0
+  }:node.$==5?{
    $:1,
    $0:(x=Val.toView(node.$0),Doc.BindView((g=(v=Doc.Empty(),function(o)
    {
@@ -4456,12 +4403,6 @@
    {
     return g(HtmlNode.chooseNode(x$1));
    }),x))
-  }:node.$==5?{
-   $:1,
-   $0:Val.tagDoc(Doc.TextNode,node.$0)
-  }:node.$==7?{
-   $:1,
-   $0:node.$0
   }:null;
  };
  HtmlNode.getAttrsFromSeq=function(children)
@@ -4502,7 +4443,7 @@
  HtmlNode.chooseThisAttr=function(_this,node)
  {
   var $1;
-  return node.$==3&&(node.$0===_this&&($1=[node.$0,node.$1],true))?{
+  return node.$==1&&(node.$0===_this&&($1=[node.$0,node.$1],true))?{
    $:1,
    $0:$1[1]
   }:null;
@@ -4510,13 +4451,13 @@
  HtmlNode.chooseAttr=function(node)
  {
   var $1,name,$2,name$1;
-  return node.$==3&&((name=node.$0,name!=="class"&&name!=="style")&&($1=[node.$0,node.$1],true))?{
+  return node.$==1&&((name=node.$0,name!=="class"&&name!=="style")&&($1=[node.$0,node.$1],true))?{
    $:1,
    $0:Val.attrV($1[0],$1[1])
-  }:node.$==4&&((name$1=node.$0,name$1!=="class"&&name$1!=="style")&&($2=[node.$0,node.$1],true))?{
+  }:node.$==2&&((name$1=node.$0,name$1!=="class"&&name$1!=="style")&&($2=[node.$0,node.$1],true))?{
    $:1,
    $0:Val.attrVO($2[0],$2[1])
-  }:node.$==8?{
+  }:node.$==7?{
    $:1,
    $0:node.$0
   }:null;
@@ -4559,15 +4500,15 @@
   {
    var x,view;
    return new HtmlNode$1({
-    $:7,
+    $:6,
     $0:(x=HtmlNode.button([HtmlNode.type(this._type),HtmlNode["class"](this._class),HtmlNode.Id(this.id),HtmlNode.style(this.style),new HtmlNode$1({
-     $:8,
+     $:7,
      $0:(view=View.Const(""),AttrModule.DynamicPred("disabled",Val.toView(this.disabled),view))
     }),new HtmlNode$1({
-     $:8,
+     $:7,
      $0:AttrProxy.Handler("click",this.onClick)
     }),new HtmlNode$1({
-     $:5,
+     $:3,
      $0:this.text
     })]),(HtmlNode.renderDoc())(x))
    });
@@ -4600,17 +4541,13 @@
   {
    return this["var"];
   },
-  Disabled:function(dis)
-  {
-   return Input.New(this._type,this._class,this.style,this.placeholder,this.id,this["var"],this.prefix,this.suffix,this.content,this.prefixAdded,this.suffixAdded,Val.fixit(dis));
-  },
   SetVar:function(v)
   {
-   return Input.New(this._type,this._class,this.style,this.placeholder,this.id,v,this.prefix,this.suffix,this.content,this.prefixAdded,this.suffixAdded,this.disabled);
+   return Input.New(this._type,this._class,this.style,this.placeholder,this.id,v,this.prefix,this.suffix,this.content,this.prefixAdded,this.suffixAdded);
   },
   Suffix:function(s)
   {
-   return Input.New(this._type,this._class,this.style,this.placeholder,this.id,this["var"],this.prefix,s,this.content,this.prefixAdded,true,this.disabled);
+   return Input.New(this._type,this._class,this.style,this.placeholder,this.id,this["var"],this.prefix,s,this.content,this.prefixAdded,true);
   },
   Prefix:function(p)
   {
@@ -4618,38 +4555,38 @@
   },
   Prefix$1:function(p)
   {
-   return Input.New(this._type,this._class,this.style,this.placeholder,this.id,this["var"],p,this.suffix,this.content,true,this.suffixAdded,this.disabled);
+   return Input.New(this._type,this._class,this.style,this.placeholder,this.id,this["var"],p,this.suffix,this.content,true,this.suffixAdded);
   },
   Content:function(c)
   {
-   return Input.New(this._type,this._class,this.style,this.placeholder,this.id,this["var"],this.prefix,this.suffix,c,this.prefixAdded,this.suffixAdded,this.disabled);
+   return Input.New(this._type,this._class,this.style,this.placeholder,this.id,this["var"],this.prefix,this.suffix,c,this.prefixAdded,this.suffixAdded);
   },
   Id:function(id)
   {
-   return Input.New(this._type,this._class,this.style,this.placeholder,id,this["var"],this.prefix,this.suffix,this.content,this.prefixAdded,this.suffixAdded,this.disabled);
+   return Input.New(this._type,this._class,this.style,this.placeholder,id,this["var"],this.prefix,this.suffix,this.content,this.prefixAdded,this.suffixAdded);
   },
   Placeholder:function(plc)
   {
-   return Input.New(this._type,this._class,this.style,Val.fixit(plc),this.id,this["var"],this.prefix,this.suffix,this.content,this.prefixAdded,this.suffixAdded,this.disabled);
+   return Input.New(this._type,this._class,this.style,Val.fixit(plc),this.id,this["var"],this.prefix,this.suffix,this.content,this.prefixAdded,this.suffixAdded);
   },
   Style:function(sty)
   {
-   return Input.New(this._type,this._class,Val.fixit(sty),this.placeholder,this.id,this["var"],this.prefix,this.suffix,this.content,this.prefixAdded,this.suffixAdded,this.disabled);
+   return Input.New(this._type,this._class,Val.fixit(sty),this.placeholder,this.id,this["var"],this.prefix,this.suffix,this.content,this.prefixAdded,this.suffixAdded);
   },
   Type:function(typ)
   {
-   return Input.New(Val.fixit(typ),this._class,this.style,this.placeholder,this.id,this["var"],this.prefix,this.suffix,this.content,this.prefixAdded,this.suffixAdded,this.disabled);
+   return Input.New(Val.fixit(typ),this._class,this.style,this.placeholder,this.id,this["var"],this.prefix,this.suffix,this.content,this.prefixAdded,this.suffixAdded);
   },
   Class:function(clas)
   {
-   return Input.New(this._type,Val.fixit(clas),this.style,this.placeholder,this.id,this["var"],this.prefix,this.suffix,this.content,this.prefixAdded,this.suffixAdded,this.disabled);
+   return Input.New(this._type,Val.fixit(clas),this.style,this.placeholder,this.id,this["var"],this.prefix,this.suffix,this.content,this.prefixAdded,this.suffixAdded);
   },
   get_Render:function()
   {
    var $this;
    function groupClass(det)
    {
-    return det.$==5?"input-group-addon":"input-group-btn";
+    return det.$==3?"input-group-addon":"input-group-btn";
    }
    $this=this;
    return HtmlNode.div(List.ofSeq(Seq.delay(function()
@@ -4658,10 +4595,9 @@
     {
      return Seq.append($this.prefixAdded?[HtmlNode.span([HtmlNode["class"](groupClass($this.prefix)),$this.prefix])]:[],Seq.delay(function()
      {
-      var view;
       return Seq.append([new HtmlNode$1({
-       $:7,
-       $0:Doc.Input(Seq.append($this.content,List.ofArray([HtmlNode._type($this._type),HtmlNode._class($this._class),HtmlNode._style($this.style),AttrProxy.Create("id",$this.id),(view=View.Const(""),AttrModule.DynamicPred("disabled",Val.toView($this.disabled),view)),HtmlNode._placeholder($this.placeholder)])),$this["var"])
+       $:6,
+       $0:Doc.Input(Seq.append($this.content,List.ofArray([HtmlNode._type($this._type),HtmlNode._class($this._class),HtmlNode._style($this.style),AttrProxy.Create("id",$this.id),HtmlNode._placeholder($this.placeholder)])),$this["var"])
       })],Seq.delay(function()
       {
        return $this.suffixAdded?[HtmlNode.span([HtmlNode["class"](groupClass($this.suffix)),$this.suffix])]:[];
@@ -4673,31 +4609,15 @@
  },null,Input);
  Input.New$1=function(v)
  {
-  return Input.New$3(Var.Lens(v,function(o)
-  {
-   return o==null?"":o.$0;
-  },function(sO,s)
-  {
-   return sO==null?null:{
-    $:1,
-    $0:s
-   };
-  })).Disabled(Val.map(function(o)
-  {
-   return o==null;
-  },v));
+  return Input.New$2(Var.Create$1(v));
  };
- Input.New$2=function(v)
- {
-  return Input.New$3(Var.Create$1(v));
- };
- Input.New$3=function(_var)
+ Input.New$2=function(_var)
  {
   var c;
   c=Val.fixit("form-control");
-  return Input.New(Val.fixit("text"),c,Val.fixit(""),Val.fixit("Enter text:"),"",_var,HtmlNode$1.HtmlEmpty,HtmlNode$1.HtmlEmpty,List.T.Empty,false,false,Val.fixit(false));
+  return Input.New(Val.fixit("text"),c,Val.fixit(""),Val.fixit("Enter text:"),"",_var,HtmlNode$1.HtmlEmpty,HtmlNode$1.HtmlEmpty,List.T.Empty,false,false);
  };
- Input.New=function(_type,_class,style,placeholder,id,_var,prefix,suffix,content,prefixAdded,suffixAdded,disabled)
+ Input.New=function(_type,_class,style,placeholder,id,_var,prefix,suffix,content,prefixAdded,suffixAdded)
  {
   return new Input({
    _type:_type,
@@ -4710,8 +4630,7 @@
    suffix:suffix,
    content:content,
    prefixAdded:prefixAdded,
-   suffixAdded:suffixAdded,
-   disabled:disabled
+   suffixAdded:suffixAdded
   });
  };
  Hoverable=Template.Hoverable=Runtime.Class({
@@ -4720,7 +4639,7 @@
    var $this;
    $this=this;
    return c.AddChildren([HtmlNode.classIf("hovering",this.hover),new HtmlNode$1({
-    $:8,
+    $:7,
     $0:AttrModule.Handler("mouseenter",function()
     {
      return function()
@@ -4729,7 +4648,7 @@
      };
     })
    }),new HtmlNode$1({
-    $:8,
+    $:7,
     $0:AttrModule.Handler("mouseleave",function()
     {
      return function()
@@ -4744,7 +4663,7 @@
    var $this;
    $this=this;
    return HtmlNode.div(Seq.append(c,List.ofArray([HtmlNode.classIf("hovering",this.hover),new HtmlNode$1({
-    $:8,
+    $:7,
     $0:AttrModule.Handler("mouseenter",function()
     {
      return function()
@@ -4753,7 +4672,7 @@
      };
     })
    }),new HtmlNode$1({
-    $:8,
+    $:7,
     $0:AttrModule.Handler("mouseleave",function()
     {
      return function()
@@ -4807,7 +4726,7 @@
   {
    var view;
    return HtmlNode.fieldset([new HtmlNode$1({
-    $:8,
+    $:7,
     $0:(view=View.Const(""),AttrModule.DynamicPred("disabled",Val.toView(this.disabled),view))
    }),HtmlNode.div([HtmlNode["class"](this._class),HtmlNode.div(Seq.append([HtmlNode["class"]("panel-heading"),HtmlNode.label([HtmlNode["class"]("panel-title text-center"),HtmlNode.htmlText(this.title)])],this.header)),HtmlNode.div(Seq.append([HtmlNode["class"]("panel-body"),HtmlNode.style(this._style)],this.content))])]);
   }
@@ -4832,33 +4751,29 @@
   {
    return this["var"];
   },
-  Disabled:function(dis)
-  {
-   return TextArea.New(this._class,this.placeholder,this.title,this.spellcheck,this.id,this["var"],Val.fixit(dis));
-  },
   SetVar:function(v)
   {
-   return TextArea.New(this._class,this.placeholder,this.title,this.spellcheck,this.id,v,this.disabled);
+   return TextArea.New(this._class,this.placeholder,this.title,this.spellcheck,this.id,v);
   },
   Id:function(id)
   {
-   return TextArea.New(this._class,this.placeholder,this.title,this.spellcheck,id,this["var"],this.disabled);
+   return TextArea.New(this._class,this.placeholder,this.title,this.spellcheck,id,this["var"]);
   },
   Spellcheck:function(spl)
   {
-   return TextArea.New(this._class,this.placeholder,this.title,spl,this.id,this["var"],this.disabled);
+   return TextArea.New(this._class,this.placeholder,this.title,spl,this.id,this["var"]);
   },
   Title:function(ttl)
   {
-   return TextArea.New(this._class,this.placeholder,Val.fixit(ttl),this.spellcheck,this.id,this["var"],this.disabled);
+   return TextArea.New(this._class,this.placeholder,Val.fixit(ttl),this.spellcheck,this.id,this["var"]);
   },
   Placeholder:function(plc)
   {
-   return TextArea.New(this._class,Val.fixit(plc),this.title,this.spellcheck,this.id,this["var"],this.disabled);
+   return TextArea.New(this._class,Val.fixit(plc),this.title,this.spellcheck,this.id,this["var"]);
   },
   Class:function(clas)
   {
-   return TextArea.New(Val.fixit(clas),this.placeholder,this.title,this.spellcheck,this.id,this["var"],this.disabled);
+   return TextArea.New(Val.fixit(clas),this.placeholder,this.title,this.spellcheck,this.id,this["var"]);
   },
   get_Render:function()
   {
@@ -4866,48 +4781,21 @@
   },
   RenderWith:function(more)
   {
-   var $this,view;
-   $this=this;
-   return HtmlNode.div([HtmlNode.htmlElementF(function(att)
-   {
-    return function()
-    {
-     return Doc.InputArea(att,$this["var"]);
-    };
-   },List.append(List.ofArray([HtmlNode["class"](this._class),HtmlNode.Id(this.id),HtmlNode.spellcheck(Val.map(function(spl)
+   return HtmlNode.div([HtmlNode.someElt(Doc.InputArea(List.append(List.ofArray([HtmlNode._class(this._class),AttrProxy.Create("id",this.id),HtmlNode.atr("spellcheck",Val.map(function(spl)
    {
     return spl?"true":"false";
-   },this.spellcheck)),HtmlNode.title(this.title),HtmlNode.style("height: 100%;  width: 100%; box-sizing: border-box; "),HtmlNode.placeholder(this.placeholder),new HtmlNode$1({
-    $:8,
-    $0:(view=View.Const(""),AttrModule.DynamicPred("disabled",Val.toView(this.disabled),view))
-   })]),more))]);
+   },this.spellcheck)),HtmlNode.atr("title",this.title),HtmlNode.atr("style","height: 100%;  width: 100%; box-sizing: border-box; "),HtmlNode._placeholder(this.placeholder)]),more),this["var"]))]);
   }
  },null,TextArea);
  TextArea.New$1=function(v)
  {
-  return TextArea.New$3(Var.Lens(v,function(o)
-  {
-   return o==null?"":o.$0;
-  },function(sO,s)
-  {
-   return sO==null?null:{
-    $:1,
-    $0:s
-   };
-  })).Disabled(Val.map(function(o)
-  {
-   return o==null;
-  },v));
+  return TextArea.New$2(Var.Create$1(v));
  };
- TextArea.New$2=function(v)
+ TextArea.New$2=function(_var)
  {
-  return TextArea.New$3(Var.Create$1(v));
+  return TextArea.New(Val.fixit("form-control"),Val.fixit("Enter text:"),Val.fixit(""),Val.fixit(false),"",_var);
  };
- TextArea.New$3=function(_var)
- {
-  return TextArea.New(Val.fixit("form-control"),Val.fixit("Enter text:"),Val.fixit(""),Val.fixit(false),"",_var,Val.fixit(false));
- };
- TextArea.New=function(_class,placeholder,title,spellcheck,id,_var,disabled)
+ TextArea.New=function(_class,placeholder,title,spellcheck,id,_var)
  {
   return new TextArea({
    _class:_class,
@@ -4915,8 +4803,7 @@
    title:title,
    spellcheck:spellcheck,
    id:id,
-   "var":_var,
-   disabled:disabled
+   "var":_var
   });
  };
  CodeMirrorPos.New=function(line,ch)
@@ -4935,46 +4822,42 @@
   {
    return this["var"];
   },
-  Disabled:function(dis)
-  {
-   return CodeMirror.New(this._class,this.style,this.id,this["var"],this.onChange,this.onRender,this.editorO,Val.fixit(dis));
-  },
   OnRender:function(f)
   {
    return CodeMirror.New(this._class,this.style,this.id,this["var"],this.onChange,{
     $:1,
     $0:f
-   },this.editorO,this.disabled);
+   },this.editorO);
   },
   OnChange:function(f)
   {
-   return CodeMirror.New(this._class,this.style,this.id,this["var"],f,this.onRender,this.editorO,this.disabled);
+   return CodeMirror.New(this._class,this.style,this.id,this["var"],f,this.onRender,this.editorO);
   },
   Style:function(sty)
   {
-   return CodeMirror.New(this._class,Val.fixit(sty),this.id,this["var"],this.onChange,this.onRender,this.editorO,this.disabled);
+   return CodeMirror.New(this._class,Val.fixit(sty),this.id,this["var"],this.onChange,this.onRender,this.editorO);
   },
   SetVar:function(v)
   {
-   return CodeMirror.New(this._class,this.style,this.id,v,this.onChange,this.onRender,this.editorO,this.disabled);
+   return CodeMirror.New(this._class,this.style,this.id,v,this.onChange,this.onRender,this.editorO);
   },
   Id:function(id)
   {
-   return CodeMirror.New(this._class,this.style,id,this["var"],this.onChange,this.onRender,this.editorO,this.disabled);
+   return CodeMirror.New(this._class,this.style,id,this["var"],this.onChange,this.onRender,this.editorO);
   },
   Class:function(clas)
   {
-   return CodeMirror.New(Val.fixit(clas),this.style,this.id,this["var"],this.onChange,this.onRender,this.editorO,this.disabled);
+   return CodeMirror.New(Val.fixit(clas),this.style,this.id,this["var"],this.onChange,this.onRender,this.editorO);
   },
   get_Render:function()
   {
    var $this;
    $this=this;
    return HtmlNode.div([HtmlNode["class"](this._class),new HtmlNode$1({
-    $:8,
+    $:7,
     $0:AttrProxy.Create("id",this.id)
    }),HtmlNode.style("position: relative; height: 300px"),HtmlNode.style(this.style),HtmlNode.div([HtmlNode.style("height: 100%; width: 100%; position: absolute;"),new HtmlNode$1({
-    $:8,
+    $:7,
     $0:AttrModule.OnAfterRender(function(el)
     {
      Global.CIPHERSpaceLoadFiles(Template.codeMirrorIncludes(),function()
@@ -5021,10 +4904,6 @@
           editor.getDoc().clearHistory();
          }
       },$this["var"].RView());
-      Val.sink(function(dis)
-      {
-       editor.setOption("readOnly",dis&&"nocursor");
-      },$this.disabled);
      });
     })
    })]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/content/editor.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/content/codemirror.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/scripts/addon/display/fullscreen.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/scripts/addon/dialog/dialog.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/scripts/addon/hint/show-hint.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/scripts/addon/lint/lint.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css(".CodeMirror { height: 100% }")]);
@@ -5032,29 +4911,13 @@
  },null,CodeMirror);
  CodeMirror.New$1=function(v)
  {
-  return CodeMirror.New$3(Var.Lens(v,function(o)
-  {
-   return o==null?"":o.$0;
-  },function(sO,s)
-  {
-   return sO==null?null:{
-    $:1,
-    $0:s
-   };
-  })).Disabled(Val.map(function(o)
-  {
-   return o==null;
-  },v));
+  return CodeMirror.New$2(Var.Create$1(v));
  };
- CodeMirror.New$2=function(v)
+ CodeMirror.New$2=function(_var)
  {
-  return CodeMirror.New$3(Var.Create$1(v));
+  return CodeMirror.New(Val.fixit(""),Val.fixit(""),"",_var,Global.ignore,null,null);
  };
- CodeMirror.New$3=function(_var)
- {
-  return CodeMirror.New(Val.fixit(""),Val.fixit(""),"",_var,Global.ignore,null,null,Val.fixit(false));
- };
- CodeMirror.New=function(_class,style,id,_var,onChange,onRender,editorO,disabled)
+ CodeMirror.New=function(_class,style,id,_var,onChange,onRender,editorO)
  {
   return new CodeMirror({
    _class:_class,
@@ -5063,8 +4926,7 @@
    "var":_var,
    onChange:onChange,
    onRender:onRender,
-   editorO:editorO,
-   disabled:disabled
+   editorO:editorO
   });
  };
  Hint.New=function(text,displayText,className)
@@ -5197,7 +5059,7 @@
    {
     return ver?"Vertical":"Horizontal";
    },this.vertical)),new HtmlNode$1({
-    $:8,
+    $:7,
     $0:AttrModule.Handler("mousedown",function($1)
     {
      return function($2)
@@ -5206,7 +5068,7 @@
      };
     })
    }),new HtmlNode$1({
-    $:8,
+    $:7,
     $0:AttrModule.OnAfterRender(function(el)
     {
      $this.domElem={
@@ -5352,7 +5214,7 @@
         }))(Global.id))($this.gap))($this.padding))],Seq.delay(function()
         {
          return[new HtmlNode$1({
-          $:8,
+          $:7,
           $0:AttrModule.OnAfterRender(function(el)
           {
            function setVar(vr,vl)
@@ -5747,7 +5609,7 @@
        {
         return"tab"+(sel===i?" selected":"");
        },$this.selected)),HtmlNode.draggable("true"),new HtmlNode$1({
-        $:8,
+        $:7,
         $0:AttrModule.Handler("dragover",function()
         {
          return function(ev)
@@ -5756,7 +5618,7 @@
          };
         })
        }),new HtmlNode$1({
-        $:8,
+        $:7,
         $0:AttrModule.Handler("drag",function()
         {
          return function()
@@ -5768,7 +5630,7 @@
          };
         })
        }),new HtmlNode$1({
-        $:8,
+        $:7,
         $0:AttrModule.Handler("drop",function()
         {
          return function(ev)
@@ -5779,7 +5641,7 @@
          };
         })
        }),new HtmlNode$1({
-        $:8,
+        $:7,
         $0:AttrModule.Handler("click",function()
         {
          return function()
@@ -5823,7 +5685,7 @@
     })));
    },this.tabs);
    return HtmlNode.div([HtmlNode["class"]("tab-panel"),this.top?strip:HtmlNode$1.HtmlEmpty,HtmlNode.div([content,HtmlNode["class"]("tab-content")]),!this.top?strip:HtmlNode$1.HtmlEmpty,new HtmlNode$1({
-    $:8,
+    $:7,
     $0:AttrModule.Handler("dragover",function()
     {
      return function(ev)
@@ -5832,7 +5694,7 @@
      };
     })
    }),new HtmlNode$1({
-    $:8,
+    $:7,
     $0:AttrModule.Handler("drop",function()
     {
      return function(ev)
@@ -5933,7 +5795,7 @@
        this.selected.set_RVal(sel===drag?drop:sel<drag&&sel<drop||sel>drag&&sel>drop?sel:sel<drag?sel+1:sel-1);
       }
      else
-      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",4089,18);
+      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",4016,18);
    }
    else
     void 0;
@@ -6051,7 +5913,7 @@
    {
     return HtmlNode.addChildren(a,h);
    }):Global.id)(x$1))),(m$1=this.onClick,(m$1!=null&&m$1.$==1?(a$1=List.ofArray([new HtmlNode$1({
-    $:8,
+    $:7,
     $0:AttrProxy.Handler("click",m$1.$0)
    }),HtmlNode.style("cursor : pointer")]),function(h)
    {
@@ -6234,13 +6096,13 @@
    return this.$==1?[this.$0,Global.ignore]:this.$==2?[this.$0.get_Button().get_Render(),Global.ignore]:this.$==5?[lyt.GetCallButton(this.$0,this.$1,this.$2),Global.ignore]:this.$==4?(ts=TabStrip.New$1(Seq.map(function(node)
    {
     return[node,lyt.GetNode(node)];
-   },this.$1)).SetTop(this.$0),(Template.addValue(name,ts,lyt.tabStrips),[ts.get_Render(),Global.ignore])):this.$==3?(per=this.$3,(minV=Var.Create$1(this.$6),(maxV=Var.Create$1(this.$7),(perV=Var.Create$1(per),(curper=[per],[Grid.NewBisect(this.$0,this.$1,this.$2,perV,lyt.GetNode(this.$4),lyt.GetNode(this.$5)).Min(minV).Max(maxV).get_Render(),function(a)
+   },this.$1)).SetTop(this.$0),(Template.addValue(name,ts,lyt.tabStrips),[ts.get_Render(),Global.ignore])):this.$==3?(per=this.$3,(minV=Var.Create$1(this.$6),(maxV=Var.Create$1(this.$7),(perV=Var.Create$1(per),(curper=per,[Grid.NewBisect(this.$0,this.$1,this.$2,perV,lyt.GetNode(this.$4),lyt.GetNode(this.$5)).Min(minV).Max(maxV).get_Render(),function(a)
    {
     var per$1;
     if(a.$==3)
      {
       per$1=a.$3;
-      curper[0]!==per$1?(curper[0]=per$1,Var.Set(perV,per$1)):void 0;
+      curper!==per$1?(curper=per$1,Var.Set(perV,per$1)):void 0;
       Var.Set(minV,a.$6);
       Var.Set(maxV,a.$7);
      }
@@ -6301,7 +6163,7 @@
     }:(a$2=Template.PHtmlAttributeF(a),a$2!=null&&a$2.$==1?{
      $:1,
      $0:new HtmlNode$1({
-      $:3,
+      $:1,
       $0:a$2.$0[0],
       $1:new Val({
        $:0,
@@ -6311,7 +6173,7 @@
     }:(a$3=Template.PHtmlAttributeOF(a),a$3!=null&&a$3.$==1?{
      $:1,
      $0:new HtmlNode$1({
-      $:4,
+      $:2,
       $0:a$3.$0[0],
       $1:new Val({
        $:0,
@@ -6321,7 +6183,7 @@
     }:(a$4=Template.PHtmlTextF(a),a$4!=null&&a$4.$==1?{
      $:1,
      $0:new HtmlNode$1({
-      $:5,
+      $:3,
       $0:new Val({
        $:0,
        $0:a$4.$0
@@ -6436,7 +6298,7 @@
     else
      $this.AddNode(name,si,part);
    }
-   function m(_name,det)
+   function m(name,det)
    {
     return Seq.last(det);
    }
@@ -6495,7 +6357,7 @@
   AddNode:function(name,sid,part)
   {
    var $this,partV,nodeFv,node;
-   function f(_si,p)
+   function f(si,p)
    {
     return p.GetHtmlNode($this,name);
    }
@@ -6506,7 +6368,7 @@
     return f($1[0],$1[1]);
    },partV);
    node=new HtmlNode$1({
-    $:2,
+    $:5,
     $0:Val.map(function(t)
     {
      return t[0];
@@ -6788,11 +6650,11 @@
  {
   return Template.menuEntry(Template.refText(txt,t,r));
  };
- Template.refText=function(txt,_t,r)
+ Template.refText=function(txt,t,r)
  {
-  return HtmlNode.bindHElem(function(t)
+  return HtmlNode.bindHElem(function(t$1)
   {
-   return t===""?HtmlNode$1.HtmlEmpty:Template.refA(HtmlNode.htmlText(t),t,r);
+   return t$1===""?HtmlNode$1.HtmlEmpty:Template.refA(HtmlNode.htmlText(t$1),t$1,r);
   },txt);
  };
  Template.refA=function(cont,t,r)
@@ -6959,12 +6821,12 @@
  Template.dimsChanged=function(el)
  {
   var dims;
-  dims=[el.getBoundingClientRect()];
+  dims=el.getBoundingClientRect();
   return function()
   {
    var ndims;
    ndims=el.getBoundingClientRect();
-   return Unchecked.Equals(Template.domRect2Tuple(dims[0]),Template.domRect2Tuple(ndims))?false:(dims[0]=ndims,true);
+   return Unchecked.Equals(Template.domRect2Tuple(dims),Template.domRect2Tuple(ndims))?false:(dims=ndims,true);
   };
  };
  Template.domRect2Tuple=function(r)
@@ -8133,7 +7995,7 @@
    {
     return isIndirectPredecessor($8,$9);
    }),curPredecessors)),HtmlNode.draggable("true"),new HtmlNode$1({
-    $:8,
+    $:7,
     $0:AttrModule.Handler("dragover",function()
     {
      return function(ev)
@@ -8142,7 +8004,7 @@
      };
     })
    }),new HtmlNode$1({
-    $:8,
+    $:7,
     $0:AttrModule.Handler("drag",function()
     {
      return function()
@@ -8151,7 +8013,7 @@
      };
     })
    }),new HtmlNode$1({
-    $:8,
+    $:7,
     $0:AttrModule.Handler("drop",function()
     {
      return function(ev)
@@ -8161,7 +8023,7 @@
      };
     })
    }),HtmlNode.span([HtmlNode["class"]("node"),HtmlNode.classIf("parent",isParent),HtmlNode.classIf("expanded",isExpanded),new HtmlNode$1({
-    $:8,
+    $:7,
     $0:AttrModule.Handler("click",function()
     {
      return function()
@@ -8182,7 +8044,7 @@
      return FsStationShared.snippetName(n,c);
     };
    },curSnippetNameOf(code.id),curSnippetCodeOf(code.id))),new HtmlNode$1({
-    $:8,
+    $:7,
     $0:AttrModule.Handler("click",function()
     {
      return function()
@@ -8191,7 +8053,7 @@
      };
     })
    })]),HtmlNode.span([HtmlNode["class"]("predecessor"),HtmlNode.title("toggle predecessor"),new HtmlNode$1({
-    $:8,
+    $:7,
     $0:AttrModule.Handler("click",function()
     {
      return function()
@@ -8714,7 +8576,7 @@
       var prop;
       prop=getProperty(props,kvp);
       return HtmlNode.tr([HtmlNode.td([HtmlNode.someElt(Doc.Input([],prop.get_KeyVar()))]),HtmlNode.td([HtmlNode.someElt(Doc.InputArea([HtmlNode.atr("style","height: 1.5em")],prop.get_ValueVar()))]),Template.hoverable(HtmlNode.td([HtmlNode.title("remove"),HtmlNode.style(" cursor: pointer "),HtmlNode.htmlText("x"),new HtmlNode$1({
-       $:8,
+       $:7,
        $0:AttrModule.Handler("click",function()
        {
         return function()
@@ -8727,7 +8589,7 @@
      },Seq.sort(props.get_Keys())),Seq.delay(function()
      {
       return[HtmlNode.tr([Template.hoverable(HtmlNode.td([HtmlNode.htmlText("Add..."),new HtmlNode$1({
-       $:8,
+       $:7,
        $0:AttrModule.Handler("click",function()
        {
         return function()
@@ -9406,7 +9268,7 @@
    return v$10==="";
   },fileName);
   fileInputElementId="CodeEditorFileSel";
-  loadFileElement=Input.New$3(Var.Lens(fileName,justFileName,Global.id)).Prefix$1(HtmlNode.label([HtmlNode["class"]("btn btn-primary"),HtmlNode.htmlText("Load File..."),Input.New$3(fileName).Type("file").Style("display: none").Content([AttrModule.Handler("change",function(el)
+  loadFileElement=Input.New$2(Var.Lens(fileName,justFileName,Global.id)).Prefix$1(HtmlNode.label([HtmlNode["class"]("btn btn-primary"),HtmlNode.htmlText("Load File..."),Input.New$2(fileName).Type("file").Style("display: none").Content([AttrModule.Handler("change",function(el)
   {
    return function()
    {
@@ -9455,7 +9317,7 @@
   rex2="(Err|Warning|Info)(FSharp|WebSharper)\\s+\"(\\((\\d+)\\) ?)?F?#? ?(.+?)(.fsx)? \\((\\d+)\\,\\s*(\\d+)\\) - \\((\\d+)\\,\\s*(\\d+)\\) ((.|\\s)+?)"+"\"";
   rex=rex1+"|"+rex2;
   asyncStartDelayed=Useful.asyncStartCancelling();
-  codeMirror=CodeMirror.New$3((view=Val.toView(Val.fixit(currentCodeSnippetId)),(contentVar=Var.Create$1(null),(changingIRefO=[null],(contentVarChanged=[0],(refVarChanged=[0],(View.Sink(function()
+  codeMirror=CodeMirror.New$2((view=Val.toView(Val.fixit(currentCodeSnippetId)),(contentVar=Var.Create$1(null),(changingIRefO=[null],(contentVarChanged=[0],(refVarChanged=[0],(View.Sink(function()
   {
    var o,r;
    o=changingIRefO[0];
@@ -9525,7 +9387,7 @@
    },propertyModeVal);
   }).Style("height: 100%");
   codeMirrorRender=codeMirror.get_Render().AddChildren([new HtmlNode$1({
-   $:8,
+   $:7,
    $0:AttrModule.Handler("dblclick",function()
    {
     return function()
@@ -9534,7 +9396,7 @@
     };
    })
   }),HtmlNode.htmlElement("menu",[HtmlNode.type("context"),HtmlNode.Id("right-menu"),HtmlNode.htmlElement("menuitem",[HtmlNode.htmlAttribute("label","Goto Definition"),new HtmlNode$1({
-   $:8,
+   $:7,
    $0:AttrModule.Handler("click",function()
    {
     return function()
@@ -9554,7 +9416,7 @@
   },parserMsgs);
   redraw=Var.Create$1();
   properties=HtmlNode.div([new HtmlNode$1({
-   $:2,
+   $:5,
    $0:Val.map2(function($7)
    {
     return function($8)
@@ -9705,7 +9567,7 @@
      },new FSharpSet.New(List.T.Empty),x$2))[0]),Seq.delay(function()
      {
       return Seq.append([new HtmlNode$1({
-       $:8,
+       $:7,
        $0:AttrModule.Handler("scroll",function(e)
        {
         return function()
@@ -9716,7 +9578,7 @@
       })],Seq.delay(function()
       {
        return[new HtmlNode$1({
-        $:8,
+        $:7,
         $0:AttrModule.OnAfterRender(function(e)
         {
          e.scrollTop=topScrollList;
@@ -9786,43 +9648,34 @@
    $0:actOutText
   })],["Output",new GuiPart({
    $:1,
-   $0:TextArea.New$3(outputMsgs).Placeholder("Output:").Title("Output").RenderWith(List.ofArray([new HtmlNode$1({
-    $:8,
-    $0:AttrModule.Handler("dblclick",function(a)
+   $0:TextArea.New$2(outputMsgs).Placeholder("Output:").Title("Output").RenderWith(List.ofArray([AttrModule.Handler("dblclick",function(a)
+   {
+    return function($7)
     {
-     return function($7)
-     {
-      return jumpToRef(a,$7);
-     };
-    })
-   }),new HtmlNode$1({
-    $:8,
-    $0:AttrModule.OnAfterRender(function(e)
+     return jumpToRef(a,$7);
+    };
+   }),AttrModule.OnAfterRender(function(e)
+   {
+    Val.sink(function($7)
     {
-     Val.sink(function($7)
-     {
-      return scrollToBottom(e,$7);
-     },outputMsgs);
-    })
+     return scrollToBottom(e,$7);
+    },outputMsgs);
    })]))
   })],["Parser",new GuiPart({
    $:1,
-   $0:TextArea.New$3(parserMsgs).Placeholder("Parser messages:").Title("Parser").RenderWith(List.ofArray([new HtmlNode$1({
-    $:8,
-    $0:AttrModule.Handler("dblclick",function(a)
+   $0:TextArea.New$2(parserMsgs).Placeholder("Parser messages:").Title("Parser").RenderWith(List.ofArray([AttrModule.Handler("dblclick",function(a)
+   {
+    return function($7)
     {
-     return function($7)
-     {
-      return jumpToRef(a,$7);
-     };
-    })
+     return jumpToRef(a,$7);
+    };
    })]))
   })],["JavaScript",new GuiPart({
    $:1,
-   $0:TextArea.New$3(codeJS).Placeholder("Javascript:").Title("JavaScript code generated").get_Render()
+   $0:TextArea.New$2(codeJS).Placeholder("Javascript:").Title("JavaScript code generated").get_Render()
   })],["F# code",new GuiPart({
    $:1,
-   $0:TextArea.New$3(codeFS).Placeholder("F# code:").Title("F# code assembled").get_Render()
+   $0:TextArea.New$2(codeFS).Placeholder("F# code:").Title("F# code assembled").get_Render()
   })],["Properties",new GuiPart({
    $:1,
    $0:properties
@@ -9831,7 +9684,7 @@
    $0:HtmlNode.div([HtmlNode.div([HtmlNode.Id("TestNode"),HtmlNode.style("background: white; height: 100%; width: 100%; ")])])
   })],["title",new GuiPart({
    $:1,
-   $0:Input.New$3((view$1=Val.toView(Val.fixit(currentCodeSnippetId)),(contentVar$1=Var.Create$1(null),(changingIRefO$1=[null],(contentVarChanged$1=[0],(refVarChanged$1=[0],(View.Sink(function()
+   $0:Input.New$2((view$1=Val.toView(Val.fixit(currentCodeSnippetId)),(contentVar$1=Var.Create$1(null),(changingIRefO$1=[null],(contentVarChanged$1=[0],(refVarChanged$1=[0],(View.Sink(function()
    {
     var o,r;
     o=changingIRefO$1[0];
@@ -9897,7 +9750,7 @@
    a=Result.Success(doGuiCallR.apply(null,v$10));
    a.$==1?((c=(Runtime.Curried3(function($7,$8,$9)
    {
-    return $7("Error doGuiCall "+Utils.printArray(Utils.prettyPrint,$8)+": "+("("+Utils.prettyPrint($9[0])+", "+Utils.prettyPrint($9[1])+", "+Utils.printArray(Utils.prettyPrint,$9[2])+")"));
+    return $7("Error doGuiCall "+Utils.printList(Utils.prettyPrint,$8)+": "+("("+Utils.prettyPrint($9[0])+", "+Utils.prettyPrint($9[1])+", "+Utils.printArray(Utils.prettyPrint,$9[2])+")"));
    }))(function(s$3)
    {
     console.log(s$3);
@@ -10028,7 +9881,7 @@
     }(Global.id))(theme));
   },propertyThemeVal);
   x$1=HtmlNode.div([HtmlNode.style("height: 100vh; width: 100% "),layout.get_Render().Style("height: 100%; width: 100% "),HtmlNode.script([HtmlNode.src("/EPFileX/FileSaver/FileSaver.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://code.jquery.com/jquery-3.1.1.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.script([HtmlNode.src("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"),HtmlNode.type("text/javascript")]),HtmlNode.link([HtmlNode.href("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css("\n      \n        body { margin: 0px }     \n             \n        div textarea {\n            font-family     : monospace;\n        }\n        .code-editor-list-tile {\n            white-space     : nowrap; \n            border-style    : solid none none;\n            border-color    : white;\n            border-width    : 1px;\n            background-color: #D8D8D8;\n            display         : flex;\n        }\n        .code-editor-list-text{\n            padding         : 1px 10px 1px 5px;\n            overflow        : hidden;\n            text-overflow   : ellipsis;\n            white-space     : nowrap;\n            flex            : 1;\n        }\n        \n        .code-editor-list-tile.direct-predecessor {\n            font-weight     : bold;\n        }\n        .code-editor-list-tile.indirect-predecessor {\n            color           : blue;\n        }\n        .code-editor-list-tile.selected {\n            background-color: #77F;\n            color           : white;\n        }\n        .code-editor-list-tile.hovering {\n            background      : lightgray;\n        }\n        .code-editor-list-tile.hovering.selected {\n            background      : blue;\n        }\n        .code-editor-list-tile>.predecessor {\n            font-weight     : bold;\n            border-style    : inset;\n            border-width    : 1px;\n            text-align      : center;\n            color           : transparent;\n        }\n        .code-editor-list-tile.direct-predecessor>.predecessor {\n            color           : blue;\n        }\n        \n        .CodeMirror { height: 100%; }\n        \n        .node {\n            background-color: white; \n            width           : 2ch; \n            color           : #A03; \n            font-weight     : bold; \n            text-align      : center;\n            font-family     : arial;\n        }\n        .Warning { text-decoration: underline lightblue } \n        .Error   { text-decoration: underline red       } \n        .body    { margin         : 0px                 }\n        "),HtmlNode.style(" \n                color      : #333;\n                font-size  : small;\n                font-family: monospace;\n                line-height: 1.2;\n                    "),new HtmlNode$1({
-   $:2,
+   $:5,
    $0:Val.map(function(csslnks)
    {
     return HtmlNode.div(List.ofSeq(Seq.delay(function()
@@ -10049,7 +9902,7 @@
   function m(n,v$1)
   {
    return new HtmlNode$1({
-    $:8,
+    $:7,
     $0:AttrModule.Style(n,v$1)
    });
   }
@@ -10059,7 +9912,6 @@
   SC$1.errOptionIsNone=new ErrOptionIsNone.New();
   SC$1.wrap=new Builder.New();
   SC$1.wrapper=new Builder.New();
-  SC$1.rexGuid="([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}).+?\\((\\d+)\\,\\s*(\\d+)\\)";
   SC$1.MessageBrokerId="<MessageBroker>";
   SC$1.MessageBrokerAddress=new Address({
    $:0,
