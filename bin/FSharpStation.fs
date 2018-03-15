@@ -149,6 +149,7 @@ namespace FSSGlobal
         interface ErrMsg with
             member this.ErrMsg   : string = "Option is None"
             member this.IsWarning: bool   = false
+        override this.ToString() = (this :> ErrMsg).ErrMsg
     
     type ErrSimple(msg, warning) =
         interface ErrMsg with
@@ -415,8 +416,8 @@ namespace FSSGlobal
             |> fun asy -> Async.StartWithContinuations
                             (asy 
                            , Result.mapMsgs Result.getMessages  >> processVal
-                           , sprintf "%A" >> (fun m -> None, m) >> processVal
-                           , sprintf "%A" >> (fun m -> None, m) >> processVal)
+                           , sprintf "%O" >> (fun m -> None, m) >> processVal
+                           , sprintf "%O" >> (fun m -> None, m) >> processVal)
                            
         let start (printMsg: string->unit) (w: Wrap<unit>) = 
             startV (function
@@ -663,7 +664,7 @@ namespace FSSGlobal
             | m            -> Some m
         with e -> None
     
-    let rexGuid = """([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}).+?\((\d+)\,\s*(\d+)\)"""
+    let rexGuid = """([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})"""
     #endif
     
     let inline swap f a b = f b a
@@ -1716,7 +1717,7 @@ namespace FSSGlobal
     
     type ErrBroker(bm : BrokerMessage) =
         interface ErrMsg with
-            member this.ErrMsg   : string = bm.ToString()
+            member this.ErrMsg   : string = sprintf "%A" bm
             member this.IsWarning: bool   = false
     
     type WaitForReplyMsg =
@@ -1939,7 +1940,7 @@ namespace FSSGlobal
                 | msg                        -> false
     
     type FStationMessaging(msgClient:WSMessagingClient, clientId, ?fsStationId:string) =
-        let mutable fsIds      = fsStationId |> Option.defaultValue "FSharpStation1520847369299"
+        let mutable fsIds      = fsStationId |> Option.defaultValue "FSharpStation1520945071083"
         let         toId()     = Address fsIds
         let stringResponseR response =
             match response with
@@ -1979,7 +1980,7 @@ namespace FSSGlobal
         member this.FSStationId                             = fsIds
         member this.FSStationId with set id                 = fsIds <- id
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1520847369299"
+        static member FSStationId_                          = "FSharpStation1520945071083"
     #if FSS_SERVER   
         [< JavaScript false >]
         new (clientId, FSStation, ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId, FSStation, ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
@@ -1992,254 +1993,6 @@ namespace FSSGlobal
     
     
     
-  module FsEvaluator =
-    open Useful
-    
-    module Evaluator =
-        open System.Diagnostics
-        open UsefulDotNet
-        open RunProcess
-        
-        let endToken = "xXxY" + "yYyhH"
-        let mutable silent    = false
-        type FsiExe(config, ?outHndl, ?errHndl) =
-            let startInfo                 = ProcessStartInfo(@"fsiAnyCpu.exe", config |> String.concat " ")             
-            let shell                     = new ShellEx(startInfo, ?outHndl = outHndl, ?errHndl = errHndl)  // --noninteractive
-            do  startInfo.CreateNoWindow <- false
-                shell.Start() |> ignore
-            member this.Eval txt =
-                Wrap.wrapper {
-                    do! Result.tryProtection()
-                    shell.Send txt 
-                    shell.Send ";;"
-                    let! res = shell.SendAndWait("printfn \"" + endToken + "\";;", endToken)
-                    //shell.WaitForInputIdle() |> ignore
-                    //let! resR = shell.Response()
-                    //let! res  = resR
-                    return res
-                }
-            member this.IsAlive = not shell.HasExited
-            member this.Abort() = shell.Abort()
-            interface System.IDisposable with
-                member this.Dispose () = 
-                    (shell :> System.IDisposable).Dispose()
-    
-    #if FSS_SERVER
-        printfn "FSS_SERVER"
-        let fssClient = WSMessagingBroker.FStationMessaging("<FsEvaluator>", WSMessagingBroker.FSStation)
-        let queueOutput =
-            let output      = new System.Text.StringBuilder()
-            let append  txt = output.Append((if output.Length = 0 then "" else "\n") + txt) |> ignore
-            let consume ()  = let v = output.ToString()
-                              output.Clear() |> ignore
-                              v
-            Mailbox.iter (fun msg -> async {
-                match msg with
-                | Some txt -> append txt
-                | None     -> let txt2send =  consume()
-                              if  txt2send <> "" then
-                                  fssClient.RunActionCall("OutText", "actOutText", [| "+" ; txt2send |])
-                                  |> Wrap.RunSynchronously 
-                                  |> ignore
-              })
-        let queueText txt = 
-            txt |> Some |> queueOutput.Post
-            async { do! Async.Sleep 100
-                    queueOutput.Post None } |> Async.Start
-        let outHndl (txt:string) = if not silent then txt.Replace(endToken, "Done!")   |> queueText
-        let errHndl (txt:string) = if not silent then if txt <> "" then "ERR : " + txt |> queueText
-        let setFsid id ep = if id <> fssClient.FSStationId && id <> "" then fssClient.FSStationId <- id ; printfn "setFSid = %s" id
-    #else
-        let outHndl       = ignore
-        let errHndl       = ignore
-        let setFsid id ep = ()
-    #endif
-    
-        let fsiExe = lazy new ResourceAgent<_, string> (70
-                                                      , (fun config ->
-                                                              printfn "FsiExe %s" (defaultArg config "")
-                                                              new FsiExe([ "--nologo"
-                                                                           "--quiet"
-                                                                           defaultArg config ""
-                                                                         ], outHndl, errHndl))
-                                                      , (fun fsi -> (fsi :> System.IDisposable).Dispose()), (fun fsi -> fsi.IsAlive), "")
-    
-        #if WEBSHARPER
-        [< JavaScript >]
-        #endif
-        let extractConfig (code:string) = if code.StartsWith "////-d:" then code.[4..code.IndexOf '\n' - 1] else ""
-    
-        let evalFsiExe (code:string) incrUseCount =
-            Wrap.wrapper {
-                let  config = extractConfig code
-                let! resR   = fsiExe.Value.Process(fun fsi -> 
-                    Wrap.wrapper {
-                      return! fsi.Eval code 
-                    }
-                , config, incrUseCount)
-                let! res    = resR
-                return res
-            }
-            
-        let evalSilent (config:string option) fs = 
-            Wrap.wrapper {
-                silent <- true
-                let! resR   = fsiExe.Value.Process(fun fsi -> 
-                    Wrap.wrapper {
-                      return! fsi.Eval fs
-                    }
-                , config 
-                  |> Option.orElse fsiExe.Value.Configuration
-                  |> Option.defaultValue ""
-                , false)
-                let! res    = resR
-                silent <- false
-                return res
-            }
-            |> Wrap.runSynchronouslyS false 
-            |> fun s -> s.Split('\n').[0]     
-            
-        let installPresence configO = evalSilent configO """
-    module CodePresence =
-        let mutable present : Map<string, string>  = Map.empty
-        let presenceOf    k   = present |> Map.tryFind k |> Option.defaultValue "--" |> printfn "%s"
-        let addPresenceOf k v = present <- present |> Map.add k v ; printfn "ok"
-    """
-    
-        #if WEBSHARPER
-        [< Rpc >]
-        #endif
-        let addPresence (name:string) (v:string) = 
-            async {
-                let code = sprintf "CodePresence.addPresenceOf %A %A" (name.Replace("\"", "\\\"")) v
-                evalSilent None code
-                |> function
-                   | "ok" -> ()
-                   | _    -> installPresence None      |> ignore
-                             evalSilent      None code |> ignore
-            }
-        #if WEBSHARPER
-        [< Rpc >]
-        #endif
-        let getPresence config (name:string)   = 
-            async {
-                let code = sprintf "CodePresence.presenceOf    %A" (name.Replace("\"", "\\\""))
-                return
-                    evalSilent (Some config) code
-                    |> function
-                       | v when v = endToken -> installPresence (Some config) |> ignore
-                                                None
-                       | "--"                -> None
-                       | v                   -> Some v
-            }
-            
-        #if WEBSHARPER
-        [< Rpc >]
-        #endif
-        let abortFsiExe () = 
-            fsiExe.Value.Process(fun fsi -> Wrap.wrap { fsi.Abort() }) 
-            |> WAsyncR 
-            |> Wrap.toAsync
-    
-    
-    
-    //#define WEBSHARPER
-    open WebSharper
-    
-    [< Rpc >]
-    let evaluateAS (fsid:string) (ep:string) incrUseCount source =
-        async {
-            Evaluator.setFsid fsid ep
-            let!    res  = Evaluator.evalFsiExe source incrUseCount |> Wrap.getAsyncR 
-            return  res |> Result.mapMsgs (Seq.map (fun (e:ErrMsg) -> e.ErrMsg, e.IsWarning) >> Seq.toArray)
-        }
-        
-    [< JavaScript >]
-    let evaluateAR fsid ep incrUseCount source =
-        async {
-            let!   vO, msgs = evaluateAS fsid ep incrUseCount source 
-            return  Result (vO,  msgs |> Seq.map (fun (msg, wrn) -> ErrSimple(msg, wrn) :> ErrMsg) |> Seq.toArray)
-        }
-    
-    [< JavaScript >]
-    let abortFsiExe () = Evaluator.abortFsiExe() |> Async.Start 
-        
-  module FsTranslator =
-    module TranslatorCaller =
-        open Useful
-        open UsefulDotNet
-        open UsefulDotNet.RunProcess
-        open CompOptionsModule
-        open System
-        open System.IO
-        open System.Diagnostics
-        
-        type TranslatorExe(config) =
-            let startInfo                 = ProcessStartInfo(@"Compiled\FsTranslator\FsTranslator.exe", config |> String.concat " ")             
-            let shell                     = new ShellEx(startInfo)  // --noninteractive
-            let endToken                  = sprintf "//---------------%s-----------------" "EOF"
-            do  startInfo.CreateNoWindow <- false
-                shell.Start() |> ignore
-            member this.Translate txt =
-                Wrap.wrapper {
-                    do! Result.tryProtection()
-                    let! res1 = shell.SendAndWait(txt, endToken, true)
-                    let! res2 = if res1.EndsWith "//success" then Result.succeed res1 else Result.fail (ErrSimple ("Translator Failed", false))
-                    return res2
-                }
-            member this.IsAlive = not shell.HasExited
-            interface System.IDisposable with
-                member this.Dispose () = 
-                    (shell :> System.IDisposable).Dispose()    
-    
-        let translator = lazy new ResourceAgent<_, string> (20, (fun config -> new TranslatorExe(["++loop"; defaultArg config ""] )), (fun exe -> (exe :> System.IDisposable).Dispose()), (fun exe -> exe.IsAlive), "")
-        
-        let extractConfig (code:string[]) = if code.[0].StartsWith "////-d:" then code.[0].[4..] else ""
-    
-        let getJSW (minified:bool) (options0 : (CompOption * CompOptionValue) seq) (fsCode:string) =
-            Wrap.wrapper {
-                do!  Result.tryProtection()
-                let  code           = fsCode.Split '\n'
-                let  defines0       = (extractConfig code).Split([| " " ; "-d:" |], StringSplitOptions.RemoveEmptyEntries) 
-                let  fs, assembs, defines1, prepIs, nowarns = separatePrepros false code |> separateDirectives
-                let  defines        = Array.append defines0 defines1
-                let  codeBase       = Path.GetFullPath "bin"
-                let  name           = "Temp_" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName())
-                let  options1       = compileOptionsDll name
-                                      + opDirectory   /= Path.GetDirectoryName(codeBase)
-                                      + opWsProject   /= name
-                                     // + opIOption   /= @"D:\Abe\CIPHERWorkspace\CIPHERPrototype\WebServer\bin"
-                                      + options0
-                let  options2       = prepOptions options1 (fs, assembs, defines, prepIs, nowarns)
-                use  toErase        = new TempFileName(options2?Source)
-                let  ops            = options2.Get CompOptions.WSharperOptions
-                                      |> Seq.append [ "IGNORED" ]
-                                      |> Seq.map (sprintf "%A")
-                                      |> String.concat " "
-                let! jsR            = translator.Value.Process (fun tra -> tra.Translate ops)
-                let! js             = jsR
-                return js
-            }
-    
-    
-    
-    open Useful
-    open WebSharper
-    
-    [< Rpc >]
-    let translateAS source minified = 
-        async {
-            let!    res  = TranslatorCaller.getJSW minified [] source |> Wrap.getAsyncR
-            return  res |> Result.mapMsgs (Seq.map (fun (e:ErrMsg) -> e.ErrMsg, e.IsWarning) >> Seq.toArray)
-        }
-        
-    [< JavaScript >]
-    let translateAR source minified = 
-        async {
-            let!   vO, msgs = translateAS source minified
-            return  Result (vO,  msgs |> Seq.map (fun (msg, wrn) -> ErrSimple(msg, wrn) :> ErrMsg) |> Seq.toArray)
-        }
-        
   module FSAutoCompleteIntermediary =
   
     //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
@@ -2711,6 +2464,8 @@ namespace FSSGlobal
             | ACMComplete2       (fname, ln, col, txt, snpId) -> getCompletion                 fname ln col txt (Some snpId)
     
     
+    //#define FSAUTOCOMPLETE
+    
     open Useful
     //open FsStationShared
     open WSMessagingBroker
@@ -2721,10 +2476,10 @@ namespace FSSGlobal
     
     let responder = Responder2()
     
-    let wsStationClient = new WSMessagingBroker.WSMessagingClient("FSAutoComplete", FSStation)
+    let fssClient = new WSMessagingBroker.FStationMessaging("FSAutoComplete", FSStation)
     async {
         do! Async.Sleep 1000
-        wsStationClient.ProcessIncoming (responder.Respond >> WSimple)
+        fssClient.MessagingClient.ProcessIncoming (responder.Respond >> WSimple)
     } |> Async.Start
     
     [< Rpc >]
@@ -2786,7 +2541,304 @@ namespace FSSGlobal
          member this.Complete (fname, txt, line, col, sId) = sendMessage (ACMComplete2       (fname, line, col , txt, sId)) |> Async_map comp2Strings
          member this.FindDecl (fname, line, col          ) = sendMessage (ACMFindDeclaration (fname, line, col           )) |> Async_map id
          member this.FindDecl (fname, line, col,      sId) = sendMessage (ACMFindDeclaration2(fname, line, col ,      sId)) |> Async_map id
+         #if FSS_SERVER
+         #else
+         member this.MessagingClient                       = msgClient    
+         member this.ToId                                  = toId
+         #endif
     
+  module FsEvaluator =
+    open Useful
+    
+    module Evaluator =
+        open System.Diagnostics
+        open UsefulDotNet
+        open RunProcess
+        
+        let endToken = "xXxY" + "yYyhH"
+        let mutable silent    = false
+        type FsiExe(config, ?outHndl, ?errHndl) =
+            let startInfo                 = ProcessStartInfo(@"fsiAnyCpu.exe", config |> String.concat " ")             
+            let shell                     = new ShellEx(startInfo, ?outHndl = outHndl, ?errHndl = errHndl)  // --noninteractive
+            do  startInfo.CreateNoWindow <- false
+                shell.Start() |> ignore
+            member this.Eval txt =
+                Wrap.wrapper {
+                    do! Result.tryProtection()
+                    shell.Send txt 
+                    shell.Send ";;"
+                    let! res = shell.SendAndWait("printfn \"" + endToken + "\";;", endToken)
+                    //shell.WaitForInputIdle() |> ignore
+                    //let! resR = shell.Response()
+                    //let! res  = resR
+                    return res
+                }
+            member this.IsAlive = not shell.HasExited
+            member this.Abort() = shell.Abort()
+            interface System.IDisposable with
+                member this.Dispose () = 
+                    (shell :> System.IDisposable).Dispose()
+    
+    #if FSS_SERVER
+        printfn "FSS_SERVER"
+        let fssClient = FSAutoCompleteIntermediary.fssClient //WSMessagingBroker.FStationMessaging("<FsEvaluator>", WSMessagingBroker.FSStation)
+        let queueOutput =
+            let output      = new System.Text.StringBuilder()
+            let append  txt = output.Append((if output.Length = 0 then "" else "\n") + txt) |> ignore
+            let consume ()  = let v = output.ToString()
+                              output.Clear() |> ignore
+                              v
+            Mailbox.iter (fun msg -> async {
+                match msg with
+                | Some txt -> append txt
+                | None     -> let txt2send =  consume()
+                              if  txt2send <> "" then
+                                  fssClient.RunActionCall("OutText", "actOutText", [| "+" ; txt2send |])
+                                  |> Wrap.RunSynchronously 
+                                  |> ignore
+              })
+        let queueText txt = 
+            txt |> Some |> queueOutput.Post
+            async { do! Async.Sleep 100
+                    queueOutput.Post None } |> Async.Start
+        let outHndl (txt:string) = if not silent then txt.Replace(endToken, "Done!")   |> queueText
+        let errHndl (txt:string) = if not silent then if txt <> "" then "ERR : " + txt |> queueText
+        let setFsid id ep = if id <> fssClient.FSStationId && id <> "" then fssClient.FSStationId <- id ; printfn "setFSid = %s" id
+    #else
+        let outHndl       = ignore
+        let errHndl       = ignore
+        let setFsid id ep = ()
+    #endif
+    
+        let fsiExe = lazy new ResourceAgent<_, string> (70
+                                                      , (fun config ->
+                                                              printfn "FsiExe %s" (defaultArg config "")
+                                                              new FsiExe([ "--nologo"
+                                                                           "--quiet"
+                                                                           defaultArg config ""
+                                                                         ], outHndl, errHndl))
+                                                      , (fun fsi -> (fsi :> System.IDisposable).Dispose()), (fun fsi -> fsi.IsAlive), "")
+    
+        #if WEBSHARPER
+        [< JavaScript >]
+        #endif
+        let extractConfig (code:string) = if code.StartsWith "////-d:" then code.[4..code.IndexOf '\n' - 1] else ""
+    
+        let evalFsiExe (code:string) incrUseCount =
+            Wrap.wrapper {
+                let  config = extractConfig code
+                let! resR   = fsiExe.Value.Process(fun fsi -> 
+                    Wrap.wrapper {
+                      return! fsi.Eval code 
+                    }
+                , config, incrUseCount)
+                let! res    = resR
+                return res
+            }
+            
+        let evalSilent (config:string option) fs = 
+            Wrap.wrapper {
+                silent <- true
+                let! resR   = fsiExe.Value.Process(fun fsi -> 
+                    Wrap.wrapper {
+                      return! fsi.Eval fs
+                    }
+                , config 
+                  |> Option.orElse fsiExe.Value.Configuration
+                  |> Option.defaultValue ""
+                , false)
+                let! res    = resR
+                silent <- false
+                return res
+            }
+            |> Wrap.runSynchronouslyS false 
+            |> fun s -> s.Split('\n').[0]     
+            
+        let installPresence configO = evalSilent configO """
+    module CodePresence =
+        let mutable present : Map<string, string>  = Map.empty
+        let presenceOf    k   = present |> Map.tryFind k |> Option.defaultValue "--" |> printfn "%s"
+        let addPresenceOf k v = present <- present |> Map.add k v ; printfn "ok"
+    """
+    
+        #if WEBSHARPER
+        [< Rpc >]
+        #endif
+        let addPresence (name:string) (v:string) = 
+            async {
+                let code = sprintf "CodePresence.addPresenceOf %A %A" (name.Replace("\"", "\\\"")) v
+                evalSilent None code
+                |> function
+                   | "ok" -> ()
+                   | _    -> installPresence None      |> ignore
+                             evalSilent      None code |> ignore
+            }
+        #if WEBSHARPER
+        [< Rpc >]
+        #endif
+        let getPresence config (name:string)   = 
+            async {
+                let code = sprintf "CodePresence.presenceOf    %A" (name.Replace("\"", "\\\""))
+                return
+                    evalSilent (Some config) code
+                    |> function
+                       | v when v = endToken -> installPresence (Some config) |> ignore
+                                                None
+                       | "--"                -> None
+                       | v                   -> Some v
+            }
+            
+        #if WEBSHARPER
+        [< Rpc >]
+        #endif
+        let abortFsiExe () = 
+            fsiExe.Value.Process(fun fsi -> Wrap.wrap { fsi.Abort() }) 
+            |> WAsyncR 
+            |> Wrap.toAsync
+    
+        type EVMessage =
+        | EVMEvaluate of string
+        | EVMAbort
+        
+        type EVResponse =
+        | EVROk
+        | EVRResult   of ResultS<string>
+    
+        let respond msg = 
+            Wrap.wrap {
+                match msg with
+                | EVMEvaluate fs -> let!   r =  evalFsiExe fs true |> Wrap.toAsyncResult
+                                    return r |> Result.toResultS   |> EVRResult
+                | EVMAbort       -> do! abortFsiExe()
+                                    return EVROk
+            }
+    
+    
+    //#define WEBSHARPER
+    open WebSharper
+    
+    [< Rpc >]
+    let evaluateAS (fsid:string) (ep:string) incrUseCount source =
+        async {
+            Evaluator.setFsid fsid ep
+            let!    res  = Evaluator.evalFsiExe source incrUseCount |> Wrap.getAsyncR 
+            return  res |> Result.mapMsgs (Seq.map (fun (e:ErrMsg) -> e.ErrMsg, e.IsWarning) >> Seq.toArray)
+        }
+        
+    [< JavaScript >]
+    let evaluateAR fsid ep incrUseCount source =
+        async {
+            let!   vO, msgs = evaluateAS fsid ep incrUseCount source 
+            return  Result (vO,  msgs |> Seq.map (fun (msg, wrn) -> ErrSimple(msg, wrn) :> ErrMsg) |> Seq.toArray)
+        }
+    
+    [< JavaScript >]
+    let abortFsiExe () = Evaluator.abortFsiExe() |> Async.Start 
+    
+    #if FSS_SERVER
+    
+    let fssClient = new WSMessagingBroker.FStationMessaging("FSEvaluator", WSMessagingBroker.FSStation)
+    
+    async {
+        do! Async.Sleep 1000
+        fssClient.MessagingClient.ProcessIncoming Evaluator.respond
+    } |> Async.Start
+    
+    #else
+    
+    #if FSS_SERVER
+    #else
+    type WSMessagingBroker.WSMessagingClient with
+    #if WEBSHARPER
+    [< JavaScript >]
+    #endif
+         member this.EvaluateFS fs = 
+             Wrap.wrap {
+                 let! repS = Evaluator.EVMEvaluate fs |> this.SendGetReply (WSMessagingBroker.Address "FSEvaluator")
+                 let! rep  = match repS with
+                             | Evaluator.EVROk       -> Result.fail (ErrSimple ("Unexpected EVROk reply received", false))
+                             | Evaluator.EVRResult r -> Result.fromResultS r
+                 return rep
+             }
+    #endif
+    #endif
+    
+  module FsTranslator =
+    module TranslatorCaller =
+        open Useful
+        open UsefulDotNet
+        open UsefulDotNet.RunProcess
+        open CompOptionsModule
+        open System
+        open System.IO
+        open System.Diagnostics
+        
+        type TranslatorExe(config) =
+            let startInfo                 = ProcessStartInfo(@"Compiled\FsTranslator\FsTranslator.exe", config |> String.concat " ")             
+            let shell                     = new ShellEx(startInfo)  // --noninteractive
+            let endToken                  = sprintf "//---------------%s-----------------" "EOF"
+            do  startInfo.CreateNoWindow <- false
+                shell.Start() |> ignore
+            member this.Translate txt =
+                Wrap.wrapper {
+                    do! Result.tryProtection()
+                    let! res1 = shell.SendAndWait(txt, endToken, true)
+                    let! res2 = if res1.EndsWith "//success" then Result.succeed res1 else Result.fail (ErrSimple ("Translator Failed", false))
+                    return res2
+                }
+            member this.IsAlive = not shell.HasExited
+            interface System.IDisposable with
+                member this.Dispose () = 
+                    (shell :> System.IDisposable).Dispose()    
+    
+        let translator = lazy new ResourceAgent<_, string> (20, (fun config -> new TranslatorExe(["++loop"; defaultArg config ""] )), (fun exe -> (exe :> System.IDisposable).Dispose()), (fun exe -> exe.IsAlive), "")
+        
+        let extractConfig (code:string[]) = if code.[0].StartsWith "////-d:" then code.[0].[4..] else ""
+    
+        let getJSW (minified:bool) (options0 : (CompOption * CompOptionValue) seq) (fsCode:string) =
+            Wrap.wrapper {
+                do!  Result.tryProtection()
+                let  code           = fsCode.Split '\n'
+                let  defines0       = (extractConfig code).Split([| " " ; "-d:" |], StringSplitOptions.RemoveEmptyEntries) 
+                let  fs, assembs, defines1, prepIs, nowarns = separatePrepros false code |> separateDirectives
+                let  defines        = Array.append defines0 defines1
+                let  codeBase       = Path.GetFullPath "bin"
+                let  name           = "Temp_" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName())
+                let  options1       = compileOptionsDll name
+                                      + opDirectory   /= Path.GetDirectoryName(codeBase)
+                                      + opWsProject   /= name
+                                     // + opIOption   /= @"D:\Abe\CIPHERWorkspace\CIPHERPrototype\WebServer\bin"
+                                      + options0
+                let  options2       = prepOptions options1 (fs, assembs, defines, prepIs, nowarns)
+                use  toErase        = new TempFileName(options2?Source)
+                let  ops            = options2.Get CompOptions.WSharperOptions
+                                      |> Seq.append [ "IGNORED" ]
+                                      |> Seq.map (sprintf "%A")
+                                      |> String.concat " "
+                let! jsR            = translator.Value.Process (fun tra -> tra.Translate ops)
+                let! js             = jsR
+                return js
+            }
+    
+    
+    
+    open Useful
+    open WebSharper
+    
+    [< Rpc >]
+    let translateAS source minified = 
+        async {
+            let!    res  = TranslatorCaller.getJSW minified [] source |> Wrap.getAsyncR
+            return  res |> Result.mapMsgs (Seq.map (fun (e:ErrMsg) -> e.ErrMsg, e.IsWarning) >> Seq.toArray)
+        }
+        
+    [< JavaScript >]
+    let translateAR source minified = 
+        async {
+            let!   vO, msgs = translateAS source minified
+            return  Result (vO,  msgs |> Seq.map (fun (msg, wrn) -> ErrSimple(msg, wrn) :> ErrMsg) |> Seq.toArray)
+        }
+        
 //#define WEBSHARPER
 (*
  Code to be Compiled to Javascript and run in the browser

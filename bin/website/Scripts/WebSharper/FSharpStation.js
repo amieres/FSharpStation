@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FSSGlobal,Useful,Async,KeyVal,String,Option,WebSharper,Obj,ExceptionThrown,ErrOptionIsNone,ErrSimple,Result,ropBuilder,ResultS,Wrap,Builder,Mailbox,Dict,ResetableMemoize,PreproDirective,FsStationShared,CodeSnippetId,CodeSnippet,FSMessage,FSSeverity,WSMessagingBroker,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ErrBroker,WSMessagingClient,FsStationClientErr,FStationMessaging,FsEvaluator,Evaluator,FsTranslator,FSAutoCompleteIntermediary,CommTypes,ResponseError,Location,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,ACMessage,FSAutoCompleteIntermediaryClient,HtmlNode,Val,HelperType,valBuilder,HtmlNode$1,Template,Button,Input,Hoverable,Panel,TextArea,CodeMirrorPos,CodeMirrorEditor,CodeMirror,Hint,HintResponse,HintOptions,LintResponse,SplitterBar,SectionType,Grid,TabStrip,MenuEntry,MenuNode,Menu,Action,GuiPart,HtmlNodeFable,LayoutDescriptionFable,GuiPartSourceId,Layout,RunCode,RunNode,FSharpStation,FsGlobal,Position,ErrCompiler,KeyMapAutoComplete,Property,PropValue,CodeSnippet$1,FableModule,Babel,Fable,SC$1,FSharpStation_JsonDecoder,FSharpStation_JsonEncoder,FSharpStation_GeneratedPrintf,GeneratedPrintf,Concurrency,Seq,Unchecked,Strings,IntelliFactory,Runtime,Utils,Enumerator,Arrays,console,Control,MailboxProcessor,Collections,Dictionary,CancellationTokenSource,System,Guid,List,Option$1,JSON,TimeoutException,Json,Provider,Owin,WebSocket,Client,WithEncoding,Endpoint,location,Map,FSharpMap,Slice,Remoting,AjaxRemotingProvider,UI,Next,View,Doc,Operators,AttrModule,AttrProxy,Var,Input$1,Mouse,FSharpSet,BalancedTree,MatchFailureException,Object,Fable$1,Babel$1,HashSet,JavaScript,JSModule,Lazy,$,Date,ListModel;
+ var Global,FSSGlobal,Useful,Async,KeyVal,String,Option,WebSharper,Obj,ExceptionThrown,ErrOptionIsNone,ErrSimple,Result,ropBuilder,ResultS,Wrap,Builder,Mailbox,Dict,ResetableMemoize,PreproDirective,FsStationShared,CodeSnippetId,CodeSnippet,FSMessage,FSSeverity,WSMessagingBroker,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ErrBroker,WSMessagingClient,FsStationClientErr,FStationMessaging,FSAutoCompleteIntermediary,CommTypes,ResponseError,Location,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,ACMessage,FSAutoCompleteIntermediaryClient,FsEvaluator,Evaluator,FsTranslator,HtmlNode,Val,HelperType,valBuilder,HtmlNode$1,Template,Button,Input,Hoverable,Panel,TextArea,CodeMirrorPos,CodeMirrorEditor,CodeMirror,Hint,HintResponse,HintOptions,LintResponse,SplitterBar,SectionType,Grid,TabStrip,MenuEntry,MenuNode,Menu,Action,GuiPart,HtmlNodeFable,LayoutDescriptionFable,GuiPartSourceId,Layout,RunCode,RunNode,FSharpStation,FsGlobal,Position,ErrCompiler,KeyMapAutoComplete,Property,PropValue,CodeSnippet$1,FableModule,Babel,Fable,SC$1,FSharpStation_JsonDecoder,FSharpStation_JsonEncoder,FSharpStation_GeneratedPrintf,GeneratedPrintf,Concurrency,Seq,Unchecked,Strings,IntelliFactory,Runtime,Utils,Enumerator,Arrays,console,Control,MailboxProcessor,Collections,Dictionary,CancellationTokenSource,System,Guid,List,Option$1,JSON,TimeoutException,Json,Provider,Owin,WebSocket,Client,WithEncoding,Endpoint,location,Map,FSharpMap,Remoting,AjaxRemotingProvider,Slice,UI,Next,View,Doc,Operators,AttrModule,AttrProxy,Var,Input$1,Mouse,FSharpSet,BalancedTree,MatchFailureException,Object,Fable$1,Babel$1,HashSet,JavaScript,JSModule,Lazy,$,Date,ListModel;
  Global=window;
  FSSGlobal=Global.FSSGlobal=Global.FSSGlobal||{};
  Useful=FSSGlobal.Useful=FSSGlobal.Useful||{};
@@ -42,9 +42,6 @@
  WSMessagingClient=WSMessagingBroker.WSMessagingClient=WSMessagingBroker.WSMessagingClient||{};
  FsStationClientErr=WSMessagingBroker.FsStationClientErr=WSMessagingBroker.FsStationClientErr||{};
  FStationMessaging=WSMessagingBroker.FStationMessaging=WSMessagingBroker.FStationMessaging||{};
- FsEvaluator=FSSGlobal.FsEvaluator=FSSGlobal.FsEvaluator||{};
- Evaluator=FsEvaluator.Evaluator=FsEvaluator.Evaluator||{};
- FsTranslator=FSSGlobal.FsTranslator=FSSGlobal.FsTranslator||{};
  FSAutoCompleteIntermediary=FSSGlobal.FSAutoCompleteIntermediary=FSSGlobal.FSAutoCompleteIntermediary||{};
  CommTypes=FSAutoCompleteIntermediary.CommTypes=FSAutoCompleteIntermediary.CommTypes||{};
  ResponseError=CommTypes.ResponseError=CommTypes.ResponseError||{};
@@ -71,6 +68,9 @@
  UnionCaseResponse=CommTypes.UnionCaseResponse=CommTypes.UnionCaseResponse||{};
  ACMessage=CommTypes.ACMessage=CommTypes.ACMessage||{};
  FSAutoCompleteIntermediaryClient=FSAutoCompleteIntermediary.FSAutoCompleteIntermediaryClient=FSAutoCompleteIntermediary.FSAutoCompleteIntermediaryClient||{};
+ FsEvaluator=FSSGlobal.FsEvaluator=FSSGlobal.FsEvaluator||{};
+ Evaluator=FsEvaluator.Evaluator=FsEvaluator.Evaluator||{};
+ FsTranslator=FSSGlobal.FsTranslator=FSSGlobal.FsTranslator||{};
  HtmlNode=FSSGlobal.HtmlNode=FSSGlobal.HtmlNode||{};
  Val=HtmlNode.Val=HtmlNode.Val||{};
  HelperType=Val.HelperType=Val.HelperType||{};
@@ -151,9 +151,9 @@
  location=Global.location;
  Map=Collections&&Collections.Map;
  FSharpMap=Collections&&Collections.FSharpMap;
- Slice=WebSharper&&WebSharper.Slice;
  Remoting=WebSharper&&WebSharper.Remoting;
  AjaxRemotingProvider=Remoting&&Remoting.AjaxRemotingProvider;
+ Slice=WebSharper&&WebSharper.Slice;
  UI=WebSharper&&WebSharper.UI;
  Next=UI&&UI.Next;
  View=Next&&Next.View;
@@ -344,6 +344,10 @@
   this.exn=exn;
  },ExceptionThrown);
  ErrOptionIsNone=Useful.ErrOptionIsNone=Runtime.Class({
+  toString:function()
+  {
+   return this.FSSGlobal_Useful_ErrMsg$get_ErrMsg();
+  },
   FSSGlobal_Useful_ErrMsg$get_IsWarning:function()
   {
    return false;
@@ -1176,7 +1180,7 @@
   {
    return function($2)
    {
-    return $1(Utils.prettyPrint($2));
+    return $1(Global.String($2));
    };
   }(Global.id),function(x)
   {
@@ -1188,7 +1192,7 @@
   {
    return function($2)
    {
-    return $1(Utils.prettyPrint($2));
+    return $1(Global.String($2));
    };
   }(Global.id),function(x)
   {
@@ -2072,7 +2076,13 @@
   },
   FSSGlobal_Useful_ErrMsg$get_ErrMsg:function()
   {
-   return Global.String(this.bm);
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(FSharpStation_GeneratedPrintf.p($2));
+    };
+   }(Global.id))(this.bm);
   }
  },Obj,ErrBroker);
  ErrBroker.New=Runtime.Ctor(function(bm)
@@ -2296,7 +2306,7 @@
          {
           (((Runtime.Curried3(function($1,$2,$3)
           {
-           return $1("msg: "+FSharpStation_GeneratedPrintf.p$15($2)+" \nexn:"+Utils.prettyPrint($3));
+           return $1("msg: "+FSharpStation_GeneratedPrintf.p$16($2)+" \nexn:"+Utils.prettyPrint($3));
           }))(function(s)
           {
            console.log(s);
@@ -2523,12 +2533,12 @@
   {
    return this.$==0?(((Runtime.Curried3(function($1,$2,$3)
    {
-    return $1(FSharpStation_GeneratedPrintf.p($2)+" "+Utils.toSafe($3));
+    return $1(FSharpStation_GeneratedPrintf.p$3($2)+" "+Utils.toSafe($3));
    }))(Global.id))(this.$1))(this.$0):(function($1)
    {
     return function($2)
     {
-     return $1(FSharpStation_GeneratedPrintf.p$1($2));
+     return $1(FSharpStation_GeneratedPrintf.p$4($2));
     };
    }(Global.id))(this);
   }
@@ -2941,7 +2951,7 @@
  },Obj,FStationMessaging);
  FStationMessaging.get_FSStationId_=function()
  {
-  return"FSharpStation1520847369299";
+  return"FSharpStation1520945071083";
  };
  FStationMessaging.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
@@ -2950,7 +2960,7 @@
  FStationMessaging.New$1=Runtime.Ctor(function(msgClient,clientId,fsStationId)
  {
   this.msgClient=msgClient;
-  this.fsIds=Option.defaultValue("FSharpStation1520847369299",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1520945071083",fsStationId);
  },FStationMessaging);
  WSMessagingBroker.extractEndPoint=function()
  {
@@ -3020,66 +3030,6 @@
  {
   SC$1.$cctor();
   return SC$1.MessageBrokerId;
- };
- Evaluator.extractConfig=function(code)
- {
-  return Strings.StartsWith(code,"////-d:")?Slice.string(code,{
-   $:1,
-   $0:4
-  },{
-   $:1,
-   $0:code.indexOf("\n")-1
-  }):"";
- };
- FsEvaluator.abortFsiExe=function()
- {
-  Concurrency.Start((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsEvaluator+Evaluator.abortFsiExe:-829366048",[]),null);
- };
- FsEvaluator.evaluateAR=function(fsid,ep,incrUseCount,source)
- {
-  var b;
-  b=null;
-  return Concurrency.Delay(function()
-  {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsEvaluator.evaluateAS:-156288114",[fsid,ep,incrUseCount,source]),function(a)
-   {
-    function m(msg,wrn)
-    {
-     return new ErrSimple.New(msg,wrn);
-    }
-    return Concurrency.Return({
-     $:0,
-     $0:a[0],
-     $1:Arrays.ofSeq(Seq.map(function($1)
-     {
-      return m($1[0],$1[1]);
-     },a[1]))
-    });
-   });
-  });
- };
- FsTranslator.translateAR=function(source,minified)
- {
-  var b;
-  b=null;
-  return Concurrency.Delay(function()
-  {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsTranslator.translateAS:608897894",[source,minified]),function(a)
-   {
-    function m(msg,wrn)
-    {
-     return new ErrSimple.New(msg,wrn);
-    }
-    return Concurrency.Return({
-     $:0,
-     $0:a[0],
-     $1:Arrays.ofSeq(Seq.map(function($1)
-     {
-      return m($1[0],$1[1]);
-     },a[1]))
-    });
-   });
-  });
  };
  ResponseError.New=function(Code,Message)
  {
@@ -3287,7 +3237,7 @@
    {
     return function($2)
     {
-     return $1(FSharpStation_GeneratedPrintf.p$4($2));
+     return $1(FSharpStation_GeneratedPrintf.p$7($2));
     };
    }(Global.id))(errs);
   },
@@ -3300,7 +3250,7 @@
    {
     return function($2)
     {
-     return $1(FSharpStation_GeneratedPrintf.p$4($2));
+     return $1(FSharpStation_GeneratedPrintf.p$7($2));
     };
    }(Global.id))(tip);
   },
@@ -3318,7 +3268,7 @@
    {
     return function($2)
     {
-     return $1(FSharpStation_GeneratedPrintf.p$4($2));
+     return $1(FSharpStation_GeneratedPrintf.p$7($2));
     };
    }(Global.id))(comp),"","ErrorMsg","E"]];
   },
@@ -3467,6 +3417,66 @@
    return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FSAutoCompleteIntermediary.sendMessageRpc:1124743568",[msg]),function(a)
    {
     return Concurrency.Return(a);
+   });
+  });
+ };
+ Evaluator.extractConfig=function(code)
+ {
+  return Strings.StartsWith(code,"////-d:")?Slice.string(code,{
+   $:1,
+   $0:4
+  },{
+   $:1,
+   $0:code.indexOf("\n")-1
+  }):"";
+ };
+ FsEvaluator.abortFsiExe=function()
+ {
+  Concurrency.Start((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsEvaluator+Evaluator.abortFsiExe:-829366048",[]),null);
+ };
+ FsEvaluator.evaluateAR=function(fsid,ep,incrUseCount,source)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsEvaluator.evaluateAS:-156288114",[fsid,ep,incrUseCount,source]),function(a)
+   {
+    function m(msg,wrn)
+    {
+     return new ErrSimple.New(msg,wrn);
+    }
+    return Concurrency.Return({
+     $:0,
+     $0:a[0],
+     $1:Arrays.ofSeq(Seq.map(function($1)
+     {
+      return m($1[0],$1[1]);
+     },a[1]))
+    });
+   });
+  });
+ };
+ FsTranslator.translateAR=function(source,minified)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsTranslator.translateAS:608897894",[source,minified]),function(a)
+   {
+    function m(msg,wrn)
+    {
+     return new ErrSimple.New(msg,wrn);
+    }
+    return Concurrency.Return({
+     $:0,
+     $0:a[0],
+     $1:Arrays.ofSeq(Seq.map(function($1)
+     {
+      return m($1[0],$1[1]);
+     },a[1]))
+    });
    });
   });
  };
@@ -5933,7 +5943,7 @@
        this.selected.set_RVal(sel===drag?drop:sel<drag&&sel<drop||sel>drag&&sel>drop?sel:sel<drag?sel+1:sel-1);
       }
      else
-      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",4089,18);
+      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",4141,18);
    }
    else
     void 0;
@@ -7093,7 +7103,7 @@
    {
     return function($2)
     {
-     return $1(FSharpStation_GeneratedPrintf.p$2($2));
+     return $1(FSharpStation_GeneratedPrintf.p$5($2));
     };
    }(Global.id))(this);
   }
@@ -7988,7 +7998,7 @@
       {
        return function($8)
        {
-        return $7(FSharpStation_GeneratedPrintf.p$3($8));
+        return $7(FSharpStation_GeneratedPrintf.p$6($8));
        };
       }(Global.id))(a.id),"ok"]),function()
       {
@@ -8667,7 +8677,7 @@
      {
       return function($11)
       {
-       return $10(FSharpStation_GeneratedPrintf.p$4($11));
+       return $10(FSharpStation_GeneratedPrintf.p$7($11));
       };
      }(Global.id))(a)),Concurrency.Zero());
     }))));
@@ -8868,7 +8878,7 @@
      {
       return function($12)
       {
-       return $11(FSharpStation_GeneratedPrintf.p$3($12));
+       return $11(FSharpStation_GeneratedPrintf.p$6($12));
       };
      }(Global.id))(snpO.$0.id)]),function(a$2)
      {
@@ -8933,7 +8943,7 @@
      {
       return function($9)
       {
-       return $8("setSnippetProp wrong parms: "+FSharpStation_GeneratedPrintf.p$5($9));
+       return $8("setSnippetProp wrong parms: "+FSharpStation_GeneratedPrintf.p$8($9));
       };
      }(Global.id))(act.parms))),function()
      {
@@ -10059,7 +10069,7 @@
   SC$1.errOptionIsNone=new ErrOptionIsNone.New();
   SC$1.wrap=new Builder.New();
   SC$1.wrapper=new Builder.New();
-  SC$1.rexGuid="([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}).+?\\((\\d+)\\,\\s*(\\d+)\\)";
+  SC$1.rexGuid="([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})";
   SC$1.MessageBrokerId="<MessageBroker>";
   SC$1.MessageBrokerAddress=new Address({
    $:0,
@@ -10156,9 +10166,9 @@
  {
   return FSharpStation_JsonEncoder._v$5?FSharpStation_JsonEncoder._v$5:FSharpStation_JsonEncoder._v$5=(Provider.EncodeUnion(CodeSnippetId,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
  };
- FSharpStation_GeneratedPrintf.p=function($1)
+ FSharpStation_GeneratedPrintf.p$1=function($1)
  {
-  return $1.$==2?"FSInfor":$1.$==1?"FSWarning":"FSError";
+  return"Address "+Utils.prettyPrint($1.$0);
  };
  FSharpStation_JsonEncoder.j$8=function()
  {
@@ -10174,41 +10184,41 @@
  };
  GeneratedPrintf.p$22=function($1)
  {
-  return"{"+("text = "+FSharpStation_GeneratedPrintf.p$6($1.text))+"; "+("highlight = "+FSharpStation_GeneratedPrintf.p$8($1.highlight))+"; "+("disabled = "+FSharpStation_GeneratedPrintf.p$8($1.disabled))+"; "+("toolTip = "+FSharpStation_GeneratedPrintf.p$10($1.toolTip))+"; "+("onClick = "+FSharpStation_GeneratedPrintf.p$11($1.onClick))+"; "+("parms = "+FSharpStation_GeneratedPrintf.p$5($1.parms))+"}";
+  return"{"+("text = "+FSharpStation_GeneratedPrintf.p$9($1.text))+"; "+("highlight = "+FSharpStation_GeneratedPrintf.p$11($1.highlight))+"; "+("disabled = "+FSharpStation_GeneratedPrintf.p$11($1.disabled))+"; "+("toolTip = "+FSharpStation_GeneratedPrintf.p$13($1.toolTip))+"; "+("onClick = "+FSharpStation_GeneratedPrintf.p$14($1.onClick))+"; "+("parms = "+FSharpStation_GeneratedPrintf.p$8($1.parms))+"}";
  };
- FSharpStation_GeneratedPrintf.p$11=function($1)
+ FSharpStation_GeneratedPrintf.p$14=function($1)
  {
   return $1==null?"null":"Some <fun>";
  };
- FSharpStation_GeneratedPrintf.p$10=function($1)
+ FSharpStation_GeneratedPrintf.p$13=function($1)
  {
   return $1==null?"null":"Some "+Utils.prettyPrint($1.$0);
  };
- FSharpStation_GeneratedPrintf.p$8=function($1)
+ FSharpStation_GeneratedPrintf.p$11=function($1)
  {
-  return $1.$==2?"Dynamic "+FSharpStation_GeneratedPrintf.p$9($1.$0):$1.$==1?"DynamicV "+Utils.prettyPrint($1.$0):"Constant "+Utils.prettyPrint($1.$0);
+  return $1.$==2?"Dynamic "+FSharpStation_GeneratedPrintf.p$12($1.$0):$1.$==1?"DynamicV "+Utils.prettyPrint($1.$0):"Constant "+Utils.prettyPrint($1.$0);
+ };
+ FSharpStation_GeneratedPrintf.p$12=function($1)
+ {
+  return"V <fun>";
  };
  FSharpStation_GeneratedPrintf.p$9=function($1)
  {
-  return"V <fun>";
+  return $1.$==2?"Dynamic "+FSharpStation_GeneratedPrintf.p$10($1.$0):$1.$==1?"DynamicV "+Utils.prettyPrint($1.$0):"Constant "+Utils.prettyPrint($1.$0);
  };
- FSharpStation_GeneratedPrintf.p$6=function($1)
- {
-  return $1.$==2?"Dynamic "+FSharpStation_GeneratedPrintf.p$7($1.$0):$1.$==1?"DynamicV "+Utils.prettyPrint($1.$0):"Constant "+Utils.prettyPrint($1.$0);
- };
- FSharpStation_GeneratedPrintf.p$7=function($1)
+ FSharpStation_GeneratedPrintf.p$10=function($1)
  {
   return"V <fun>";
  };
- FSharpStation_GeneratedPrintf.p$5=function($1)
+ FSharpStation_GeneratedPrintf.p$8=function($1)
  {
   return $1==null?"null":"Some "+Utils.printArray(Utils.prettyPrint,$1.$0);
  };
- FSharpStation_GeneratedPrintf.p$4=function($1)
+ FSharpStation_GeneratedPrintf.p$7=function($1)
  {
   return $1.$==17?"KMultiple "+Utils.printArray(function($2)
   {
-   return FSharpStation_GeneratedPrintf.p$4($2);
+   return FSharpStation_GeneratedPrintf.p$7($2);
   },$1.$0):$1.$==16?"KUnionCase "+GeneratedPrintf.p$21($1.$0):$1.$==15?"KNamespaces "+GeneratedPrintf.p$18($1.$0):$1.$==14?"KCompilerLocation "+GeneratedPrintf.p$17($1.$0):$1.$==13?"KSignatureData "+GeneratedPrintf.p$15($1.$0):$1.$==12?"KTypeSig "+Utils.prettyPrint($1.$0):$1.$==11?"KToolTip "+Utils.printArray(function($2)
   {
    return Utils.printArray(function($3)
@@ -10357,7 +10367,7 @@
  {
   return FSharpStation_JsonEncoder._v$7?FSharpStation_JsonEncoder._v$7:FSharpStation_JsonEncoder._v$7=(Provider.EncodeRecord(CodeSnippet,[["name",Provider.Id(),0],["content",Provider.Id(),0],["parent",FSharpStation_JsonEncoder.j$5,1],["predecessors",Provider.EncodeList(FSharpStation_JsonEncoder.j$5),0],["id",FSharpStation_JsonEncoder.j$5,0],["expanded",Provider.Id(),0],["level",Provider.Id(),0],["levelCode",Provider.Id(),0],["properties",Provider.EncodeStringDictionary(Provider.Id()),0]]))();
  };
- FSharpStation_GeneratedPrintf.p$3=function($1)
+ FSharpStation_GeneratedPrintf.p$6=function($1)
  {
   return"CodeSnippetId "+Utils.prettyPrint($1.$0);
  };
@@ -10381,23 +10391,15 @@
  {
   return FSharpStation_JsonDecoder._v$11?FSharpStation_JsonDecoder._v$11:FSharpStation_JsonDecoder._v$11=(Provider.DecodeUnion(void 0,"type",[["BMOk",[]],["BMOnlyBrokerShouldUse",[]],["BMDestinationNotFound",[["$0","Item",FSharpStation_JsonDecoder.j$1,0]]],["BMWebSocketError",[["$0","Item",Provider.Id(),0]]],["BMReceiverCantReply",[]],["BMUnexpectedMsgType",[["$0","Item",FSharpStation_JsonDecoder.j$2,0]]]]))();
  };
- FSharpStation_GeneratedPrintf.p$14=function($1)
+ GeneratedPrintf.p$23=function($1)
+ {
+  return"{"+("from = "+FSharpStation_GeneratedPrintf.p$1($1.from))+"; "+("destination = "+FSharpStation_GeneratedPrintf.p$1($1.destination))+"; "+("msgType = "+FSharpStation_GeneratedPrintf.p$2($1.msgType))+"; "+("subtype = "+Utils.prettyPrint($1.subtype))+"; "+("id = "+Utils.prettyPrint($1.id))+"; "+("payload = "+Utils.prettyPrint($1.payload))+"; "+("replier = "+FSharpStation_GeneratedPrintf.p$15($1.replier))+"}";
+ };
+ FSharpStation_GeneratedPrintf.p$15=function($1)
  {
   return $1.$==2?"Receiver":$1.$==1?"Broker":"NoReply";
  };
- FSharpStation_GeneratedPrintf.p$13=function($1)
- {
-  return $1.$==5?"MsgRequestForEcho":$1.$==4?"MsgRequestForId":$1.$==3?"MsgFromBroker":$1.$==2?"MsgReply":$1.$==1?"MsgRequest":"MsgInformation";
- };
- GeneratedPrintf.p$23=function($1)
- {
-  return"{"+("from = "+FSharpStation_GeneratedPrintf.p$12($1.from))+"; "+("destination = "+FSharpStation_GeneratedPrintf.p$12($1.destination))+"; "+("msgType = "+FSharpStation_GeneratedPrintf.p$13($1.msgType))+"; "+("subtype = "+Utils.prettyPrint($1.subtype))+"; "+("id = "+Utils.prettyPrint($1.id))+"; "+("payload = "+Utils.prettyPrint($1.payload))+"; "+("replier = "+FSharpStation_GeneratedPrintf.p$14($1.replier))+"}";
- };
- FSharpStation_GeneratedPrintf.p$12=function($1)
- {
-  return"Address "+Utils.prettyPrint($1.$0);
- };
- FSharpStation_GeneratedPrintf.p$15=function($1)
+ FSharpStation_GeneratedPrintf.p$16=function($1)
  {
   return $1.$==3?"Close":$1.$==2?"Open":$1.$==1?"Error":"Message "+GeneratedPrintf.p$23($1.$0);
  };
@@ -10445,11 +10447,23 @@
  {
   return FSharpStation_JsonEncoder._v?FSharpStation_JsonEncoder._v:FSharpStation_JsonEncoder._v=(Provider.EncodeRecord(void 0,[["from",FSharpStation_JsonEncoder.j$1,0],["destination",FSharpStation_JsonEncoder.j$1,0],["msgType",FSharpStation_JsonEncoder.j$2,0],["subtype",Provider.Id(),0],["id",Provider.Id(),0],["payload",Provider.Id(),0],["replier",FSharpStation_JsonEncoder.j$3,0]]))();
  };
- FSharpStation_GeneratedPrintf.p$1=function($1)
- {
-  return $1.$==1?"Snippet Not Found "+Utils.prettyPrint($1.$0):"FSMessage ("+Utils.prettyPrint($1.$0)+", "+FSharpStation_GeneratedPrintf.p($1.$1)+")";
- };
  FSharpStation_GeneratedPrintf.p$2=function($1)
+ {
+  return $1.$==5?"MsgRequestForEcho":$1.$==4?"MsgRequestForId":$1.$==3?"MsgFromBroker":$1.$==2?"MsgReply":$1.$==1?"MsgRequest":"MsgInformation";
+ };
+ FSharpStation_GeneratedPrintf.p=function($1)
+ {
+  return $1.$==5?"BMUnexpectedMsgType "+FSharpStation_GeneratedPrintf.p$2($1.$0):$1.$==4?"BMReceiverCantReply":$1.$==3?"BMWebSocketError "+Utils.prettyPrint($1.$0):$1.$==2?"BMDestinationNotFound "+FSharpStation_GeneratedPrintf.p$1($1.$0):$1.$==1?"BMOnlyBrokerShouldUse":"BMOk";
+ };
+ FSharpStation_GeneratedPrintf.p$3=function($1)
+ {
+  return $1.$==2?"FSInfor":$1.$==1?"FSWarning":"FSError";
+ };
+ FSharpStation_GeneratedPrintf.p$4=function($1)
+ {
+  return $1.$==1?"Snippet Not Found "+Utils.prettyPrint($1.$0):"FSMessage ("+Utils.prettyPrint($1.$0)+", "+FSharpStation_GeneratedPrintf.p$3($1.$1)+")";
+ };
+ FSharpStation_GeneratedPrintf.p$5=function($1)
  {
   return $1.$==2?"Could not open new browser, Popup blocker may be active":$1.$==1?"Snippet Missing":"JsCompilerMsg ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+")";
  };
