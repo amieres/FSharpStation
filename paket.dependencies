@@ -22,12 +22,14 @@ nuget Owin.Compression 1.0.18
 nuget System.ValueTuple
 //nuget System.IO.Compression 4.3.0-preview1-24530-04
 nuget System.IO.Compression
-nuget WebSharper         
+nuget WebSharper         4.1.7.232
 nuget WebSharper.Compiler
 nuget WebSharper.FSharp
 nuget WebSharper.Owin
 nuget WebSharper.Owin.WebSocket
-nuget WebSharper.UI.Next        
+nuget WebSharper.UI.Next    
+nuget WebSharper.Formlets    
+nuget WebSharper.Html
 nuget Newtonsoft.Json
 nuget XPlot.Plotly
 nuget SSH.NET
