@@ -28,6 +28,7 @@ nuget WebSharper.FSharp
 nuget WebSharper.Owin
 nuget WebSharper.Owin.WebSocket
 nuget WebSharper.UI.Next    
+nuget WebSharper.UI
 nuget WebSharper.Formlets    
 nuget WebSharper.Html
 nuget Newtonsoft.Json

@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FSSGlobal,Useful,Async,KeyVal,String,Option,WebSharper,Obj,ExceptionThrown,ErrOptionIsNone,ErrSimple,Result,ropBuilder,ResultS,Wrap,Builder,Mailbox,Dict,ResetableMemoize,PreproDirective,FsStationShared,CodeSnippetId,CodeSnippet,FSMessage,FSSeverity,WSMessagingBroker,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ErrBroker,WSMessagingClient,FsStationClientErr,FStationMessaging,FSAutoCompleteIntermediary,CommTypes,ResponseError,Location,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,ACMessage,FSAutoCompleteIntermediaryClient,FsEvaluator,Evaluator,FsTranslator,HtmlNode,Val,HelperType,valBuilder,HtmlNode$1,Template,Button,Input,Hoverable,Panel,TextArea,CodeMirrorPos,CodeMirrorEditor,CodeMirror,Hint,HintResponse,HintOptions,LintResponse,SplitterBar,SectionType,Grid,TabStrip,MenuEntry,MenuNode,Menu,Action,GuiPart,HtmlNodeFable,LayoutDescriptionFable,GuiPartSourceId,Layout,RunCode,RunNode,FSharpStation,FsGlobal,Position,ErrCompiler,KeyMapAutoComplete,Property,PropValue,CodeSnippet$1,FableModule,Babel,Fable,SC$1,FSharpStation_JsonDecoder,FSharpStation_JsonEncoder,FSharpStation_GeneratedPrintf,GeneratedPrintf,Concurrency,Seq,Unchecked,Strings,IntelliFactory,Runtime,Utils,Enumerator,Arrays,console,Control,MailboxProcessor,Collections,Dictionary,CancellationTokenSource,System,Guid,List,Option$1,JSON,TimeoutException,Json,Provider,Owin,WebSocket,Client,WithEncoding,Endpoint,location,Map,FSharpMap,Remoting,AjaxRemotingProvider,Slice,UI,Next,View,Doc,Operators,AttrModule,AttrProxy,Var,Input$1,Mouse,FSharpSet,BalancedTree,MatchFailureException,Object,Fable$1,Babel$1,HashSet,JavaScript,JSModule,Lazy,$,Date,ListModel;
+ var Global,FSSGlobal,Useful,Async,KeyVal,String,Option,WebSharper,Obj,ExceptionThrown,ErrOptionIsNone,ErrSimple,Result,ropBuilder,ResultS,Wrap,Builder,Mailbox,Dict,ResetableMemoize,PreproDirective,FsStationShared,CodeSnippetId,CodeSnippet,FSMessage,FSSeverity,WSMessagingBroker,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ErrBroker,WSMessagingClient,FsStationClientErr,FStationMessaging,FSAutoCompleteIntermediary,CommTypes,ResponseError,Location,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,ACMessage,FSAutoCompleteIntermediaryClient,FsEvaluator,Evaluator,FsTranslator,HtmlNode,Val,HelperType,valBuilder,HtmlNode$1,Template,Button,Input,Hoverable,Panel,TextArea,CodeMirrorPos,CodeMirrorEditor,CodeMirror,Hint,HintResponse,HintOptions,LintResponse,SplitterBar,SectionType,Grid,TabStrip,MenuEntry,MenuNode,Menu,Action,GuiPart,HtmlNodeFable,LayoutDescriptionFable,GuiPartSourceId,Layout,RunCode,RunNode,FSharpStation,FsGlobal,Position,ErrCompiler,KeyMapAutoComplete,UI,Var,Property,PropValue,CodeSnippet$1,FableModule,Babel,Fable,SC$1,FSharpStation_JsonDecoder,FSharpStation_JsonEncoder,FSharpStation_GeneratedPrintf,GeneratedPrintf,Concurrency,Seq,Unchecked,Strings,IntelliFactory,Runtime,Utils,Enumerator,Arrays,console,Control,MailboxProcessor,Collections,Dictionary,CancellationTokenSource,System,Guid,List,Option$1,JSON,TimeoutException,Json,Provider,Owin,WebSocket,Client,WithEncoding,Endpoint,location,Map,FSharpMap,Remoting,AjaxRemotingProvider,Slice,View,Doc,Operators,AttrModule,AttrProxy,Input$1,Mouse,FSharpSet,BalancedTree,MatchFailureException,Object,Fable$1,Babel$1,HashSet,JavaScript,JSModule,Lazy,$,Date,ListModel;
  Global=window;
  FSSGlobal=Global.FSSGlobal=Global.FSSGlobal||{};
  Useful=FSSGlobal.Useful=FSSGlobal.Useful||{};
@@ -109,6 +109,8 @@
  Position=FsGlobal.Position=FsGlobal.Position||{};
  ErrCompiler=FsGlobal.ErrCompiler=FsGlobal.ErrCompiler||{};
  KeyMapAutoComplete=FsGlobal.KeyMapAutoComplete=FsGlobal.KeyMapAutoComplete||{};
+ UI=WebSharper&&WebSharper.UI;
+ Var=UI&&UI.Var;
  Property=FsGlobal.Property=FsGlobal.Property||{};
  PropValue=FsGlobal.PropValue=FsGlobal.PropValue||{};
  CodeSnippet$1=FsGlobal.CodeSnippet=FsGlobal.CodeSnippet||{};
@@ -154,15 +156,12 @@
  Remoting=WebSharper&&WebSharper.Remoting;
  AjaxRemotingProvider=Remoting&&Remoting.AjaxRemotingProvider;
  Slice=WebSharper&&WebSharper.Slice;
- UI=WebSharper&&WebSharper.UI;
- Next=UI&&UI.Next;
- View=Next&&Next.View;
- Doc=Next&&Next.Doc;
+ View=UI&&UI.View;
+ Doc=UI&&UI.Doc;
  Operators=WebSharper&&WebSharper.Operators;
- AttrModule=Next&&Next.AttrModule;
- AttrProxy=Next&&Next.AttrProxy;
- Var=Next&&Next.Var;
- Input$1=Next&&Next.Input;
+ AttrModule=UI&&UI.AttrModule;
+ AttrProxy=UI&&UI.AttrProxy;
+ Input$1=UI&&UI.Input;
  Mouse=Input$1&&Input$1.Mouse;
  FSharpSet=Collections&&Collections.FSharpSet;
  BalancedTree=Collections&&Collections.BalancedTree;
@@ -176,7 +175,7 @@
  Lazy=WebSharper&&WebSharper.Lazy;
  $=Global.jQuery;
  Date=Global.Date;
- ListModel=Next&&Next.ListModel;
+ ListModel=UI&&UI.ListModel;
  Async.sleepThen=function(f,milliseconds)
  {
   var b;
@@ -443,7 +442,7 @@
   },
   Combine:function(a,b)
   {
-   return(Result.combine(a))(b);
+   return Result.combine(a,b);
   },
   Delay:Global.id,
   Zero:function()
@@ -709,14 +708,18 @@
    $1:ms.concat(m.$1)
   });
  };
- Result.combine=function(a)
+ Result.combine=function(a,rb)
  {
   var ms;
   ms=a.$1;
-  return function(r)
-  {
-   return Result.mergeMsgs(ms,r);
-  };
+  return Option.defaultValue({
+   $:0,
+   $0:null,
+   $1:ms
+  },a.$0==null?null:{
+   $:1,
+   $0:Result.mergeMsgs(ms,rb())
+  });
  };
  Result.mergeMsgs=function(ms,r)
  {
@@ -746,6 +749,14 @@
  Result.mapMsg=function(f,a)
  {
   return[a.$0,Arrays.map(f,a.$1)];
+ };
+ Result.mapErr=function(f,a)
+ {
+  return{
+   $:0,
+   $0:a.$0,
+   $1:Arrays.map(f,a.$1)
+  };
  };
  Result.map=function(f,a)
  {
@@ -1022,12 +1033,15 @@
  Wrap.combine=function(errOptionIsNone,wa,wb)
  {
   var $1,t,b,b$1;
-  switch(wa.$==4?wa.$0==null?3:0:wa.$==0?(t=wa.$0.$1,t&&Arrays.length(t)===0?0:($1=wa.$0.$1,4)):wa.$==1?($1=wa.$0,1):wa.$==2?($1=wa.$0,2):0)
+  switch(wa.$==4?wa.$0==null?4:0:wa.$==0?wa.$0.$0==null?($1=wa.$0.$1,5):(t=wa.$0.$1,t&&Arrays.length(t)===0?0:($1=wa.$0.$1,1)):wa.$==1?($1=wa.$0,2):wa.$==2?($1=wa.$0,3):0)
   {
    case 0:
     return wb();
     break;
    case 1:
+    return Wrap.addMsgs(errOptionIsNone,$1,wb());
+    break;
+   case 2:
     return{
      $:2,
      $0:(b=null,Concurrency.Delay(function()
@@ -1042,29 +1056,34 @@
      }))
     };
     break;
-   case 2:
+   case 3:
     return{
      $:2,
      $0:(b$1=null,Concurrency.Delay(function()
      {
       return Concurrency.Bind($1,function(a)
       {
-       var $2,a$1;
+       var a$1,ms;
        a$1=Result.Success(a);
-       a$1.$==0?$2=a$1.$0[1]:$2=a$1.$0;
-       return Concurrency.Bind(Wrap.toAsyncResult(wb()),function(a$2)
+       return a$1.$==0?(ms=a$1.$0[1],Concurrency.Bind(Wrap.toAsyncResult(wb()),function(a$2)
        {
-        return Concurrency.Return(Result.mergeMsgs($2,a$2));
-       });
+        return Concurrency.Return(Result.mergeMsgs(ms,a$2));
+       })):Concurrency.Return(Result.failWithMsgs(a$1.$0));
       });
      }))
     };
     break;
-   case 3:
-    return Wrap.addMsgs(errOptionIsNone,[errOptionIsNone],wb());
-    break;
    case 4:
-    return Wrap.addMsgs(errOptionIsNone,$1,wb());
+    return{
+     $:4,
+     $0:null
+    };
+    break;
+   case 5:
+    return{
+     $:0,
+     $0:Result.failWithMsgs($1)
+    };
     break;
   }
  };
@@ -1716,6 +1735,11 @@
  };
  Useful.mapPrint=function(v)
  {
+  Useful.print(v);
+  return v;
+ };
+ Useful.print=function(v)
+ {
   ((function($1)
   {
    return function($2)
@@ -1726,7 +1750,6 @@
   {
    console.log(s);
   }))(v));
-  return v;
  };
  Useful.printoutfn=function(out,fmt)
  {
@@ -2951,16 +2974,16 @@
  },Obj,FStationMessaging);
  FStationMessaging.get_FSStationId_=function()
  {
-  return"FSharpStation1520945071083";
+  return"FSharpStation1522010782884";
  };
  FStationMessaging.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
   FStationMessaging.New$1.call(this,new WSMessagingClient.New(clientId,timeout,endPoint),clientId,fsStationId);
  },FStationMessaging);
- FStationMessaging.New$1=Runtime.Ctor(function(msgClient,clientId,fsStationId)
+ FStationMessaging.New$1=Runtime.Ctor(function(msgClient,_clientId,fsStationId)
  {
   this.msgClient=msgClient;
-  this.fsIds=Option.defaultValue("FSharpStation1520945071083",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1522010782884",fsStationId);
  },FStationMessaging);
  WSMessagingBroker.extractEndPoint=function()
  {
@@ -3701,7 +3724,7 @@
   }):o instanceof Doc?new Val({
    $:0,
    $0:o
-  }):o instanceof Val?o:o instanceof Next.Var?new Val({
+  }):o instanceof Val?o:o instanceof Var?new Val({
    $:1,
    $0:o
   }):"RSet"in o?new Val({
@@ -3720,7 +3743,7 @@
  };
  Val.attrV=function(att,va)
  {
-  return va.$==2?AttrModule.Dynamic(att,va.$0):va.$==1?AttrModule.Dynamic(att,va.$0.RView()):AttrProxy.Create(att,va.$0);
+  return va.$==2?AttrModule.Dynamic(att,va.$0):va.$==1?AttrModule.Dynamic(att,va.$0.get_View()):AttrProxy.Create(att,va.$0);
  };
  Val.attrVO=function(att,vao)
  {
@@ -3734,18 +3757,18 @@
   },wa))):vao.$==1?(va=vao.$0,AttrModule.DynamicPred(att,View.Map(function(o)
   {
    return o!=null;
-  },va.RView()),View.Map(function(o)
+  },va.get_View()),View.Map(function(o)
   {
    return o==null?"":o.$0;
-  },va.RView()))):vao.$0==null?AttrModule.DynamicPred(att,View.Const(false),View.Const("")):AttrProxy.Create(att,vao.$0.$0);
+  },va.get_View()))):vao.$0==null?AttrModule.DynamicPred(att,View.Const(false),View.Const("")):AttrProxy.Create(att,vao.$0.$0);
  };
  Val.tagElt=function(tag,va)
  {
-  return va.$==2?Doc.EmbedView(View.Map(tag,va.$0)):va.$==1?Doc.EmbedView(View.Map(tag,va.$0.RView())):tag(va.$0);
+  return va.$==2?Doc.EmbedView(View.Map(tag,va.$0)):va.$==1?Doc.EmbedView(View.Map(tag,va.$0.get_View())):tag(va.$0);
  };
  Val.tagDoc=function(tag,va)
  {
-  return va.$==2?Doc.EmbedView(View.Map(tag,va.$0)):va.$==1?Doc.EmbedView(View.Map(tag,va.$0.RView())):tag(va.$0);
+  return va.$==2?Doc.EmbedView(View.Map(tag,va.$0)):va.$==1?Doc.EmbedView(View.Map(tag,va.$0.get_View())):tag(va.$0);
  };
  Val.map4V=function(f3,v1,v2,v3,v4)
  {
@@ -3812,16 +3835,16 @@
    $0:View.Bind(function(x)
    {
     return Val.toView(f(x));
-   },v.$0.RView())
+   },v.$0.get_View())
   }):f(v.$0);
  };
  Val.getAsync=function(v)
  {
-  return v.$==2?View.GetAsync(v.$0):v.$==1?Concurrency.Return(v.$0.RVal()):Concurrency.Return(v.$0);
+  return v.$==2?View.GetAsync(v.$0):v.$==1?Concurrency.Return(v.$0.Get()):Concurrency.Return(v.$0);
  };
  Val.toView=function(v)
  {
-  return v.$==2?v.$0:v.$==1?v.$0.RView():View.Const(v.$0);
+  return v.$==2?v.$0:v.$==1?v.$0.get_View():View.Const(v.$0);
  };
  Val.iterV=function(f,va)
  {
@@ -3829,7 +3852,7 @@
    View.Get(f,va.$0);
   else
    if(va.$==1)
-    f(va.$0.RVal());
+    f(va.$0.Get());
    else
     f(va.$0);
  };
@@ -3840,7 +3863,7 @@
    $0:View.Map(f,va.$0)
   }):va.$==1?new Val({
    $:2,
-   $0:View.Map(f,va.$0.RView())
+   $0:View.Map(f,va.$0.get_View())
   }):new Val({
    $:0,
    $0:f(va.$0)
@@ -3962,33 +3985,53 @@
    return e.getRootNode(a);
   }?Global.document.body:(root=e.getRootNode(),!root.body?root.firstChild:root.body);
  };
+ HtmlNode.createIFrame$3340$45=Runtime.Curried3(function(cover,$1,$2)
+ {
+  return View.Get(function(pressed)
+  {
+   if(!pressed)
+    cover.Set(false);
+  },Mouse.get_MousePressed());
+ });
+ HtmlNode.createIFrame$3335$45=Runtime.Curried3(function(cover,$1,$2)
+ {
+  return cover.Set(true);
+ });
  HtmlNode.createIFrame=function(f)
  {
   var cover;
+  function a(a$2,a$3)
+  {
+   return cover.Set(true);
+  }
+  function a$1(a$2,a$3)
+  {
+   return View.Get(function(pressed)
+   {
+    if(!pressed)
+     cover.Set(false);
+   },Mouse.get_MousePressed());
+  }
   cover=Var.Create$1(true);
   return HtmlNode.div([HtmlNode.style("position: relative; overflow: hidden; height: 100%; width: 100%;"),HtmlNode.iframe([HtmlNode.style("position: absolute; width:100%; height:100%;"),HtmlNode.frameborder("0"),new HtmlNode$1({
    $:8,
    $0:AttrModule.OnAfterRender(f)
   }),new HtmlNode$1({
    $:8,
-   $0:AttrModule.Handler("mouseleave",function()
+   $0:AttrProxy.HandlerImpl("mouseleave",function($1)
    {
-    return function()
+    return function($2)
     {
-     return Var.Set(cover,true);
+     return a($1,$2);
     };
    })
   })]),HtmlNode.div([HtmlNode.style("position: absolute;"),HtmlNode.classIf("iframe-cover",Val.map(Global.id,cover)),new HtmlNode$1({
    $:8,
-   $0:AttrModule.Handler("mouseenter",function()
+   $0:AttrProxy.HandlerImpl("mouseenter",function($1)
    {
-    return function()
+    return function($2)
     {
-     return View.Get(function(pressed)
-     {
-      if(!pressed)
-       Var.Set(cover,false);
-     },Mouse.get_MousePressed());
+     return a$1($1,$2);
     };
    })
   })]),HtmlNode.styleH([HtmlNode.htmlText(".iframe-cover { top:0; left:0; right:0; bottom:0; background: blue; opacity: 0.04; z-index: 2; }")])]);
@@ -4026,7 +4069,7 @@
    $0:(m=Val.fixit(v),m.$==2?AttrModule.DynamicClass("class_for_view_not_implemented",m.$0,function(y)
    {
     return""!==y;
-   }):m.$==1?(cv=m.$0,AttrModule.DynamicClass(cv.RVal(),cv.RView(),function(y)
+   }):m.$==1?(cv=m.$0,AttrModule.DynamicClass(cv.Get(),cv.get_View(),function(y)
    {
     return""!==y;
    })):AttrModule.Class(m.$0))
@@ -4575,7 +4618,7 @@
      $0:(view=View.Const(""),AttrModule.DynamicPred("disabled",Val.toView(this.disabled),view))
     }),new HtmlNode$1({
      $:8,
-     $0:AttrProxy.Handler("click",this.onClick)
+     $0:AttrProxy.HandlerImpl("click",this.onClick)
     }),new HtmlNode$1({
      $:5,
      $0:this.text
@@ -4583,6 +4626,10 @@
    });
   }
  },null,Button);
+ Button.get_Render$3402$42=function(_this)
+ {
+  return _this.onClick;
+ };
  Button.New$1=function(txt)
  {
   return Button.New(Val.fixit("btn"),Val.fixit("button"),Val.fixit(""),Val.fixit(txt),function()
@@ -4728,23 +4775,31 @@
   Content:function(c)
   {
    var $this;
+   function a(a$2,a$3)
+   {
+    return $this.hover.Set(true);
+   }
+   function a$1(a$2,a$3)
+   {
+    return $this.hover.Set(false);
+   }
    $this=this;
    return c.AddChildren([HtmlNode.classIf("hovering",this.hover),new HtmlNode$1({
     $:8,
-    $0:AttrModule.Handler("mouseenter",function()
+    $0:AttrProxy.HandlerImpl("mouseenter",function($1)
     {
-     return function()
+     return function($2)
      {
-      return $this.hover.set_RVal(true);
+      return a($1,$2);
      };
     })
    }),new HtmlNode$1({
     $:8,
-    $0:AttrModule.Handler("mouseleave",function()
+    $0:AttrProxy.HandlerImpl("mouseleave",function($1)
     {
-     return function()
+     return function($2)
      {
-      return $this.hover.set_RVal(false);
+      return a$1($1,$2);
      };
     })
    })]);
@@ -4752,23 +4807,31 @@
   Content$1:function(c)
   {
    var $this;
+   function a(a$2,a$3)
+   {
+    return $this.hover.Set(true);
+   }
+   function a$1(a$2,a$3)
+   {
+    return $this.hover.Set(false);
+   }
    $this=this;
    return HtmlNode.div(Seq.append(c,List.ofArray([HtmlNode.classIf("hovering",this.hover),new HtmlNode$1({
     $:8,
-    $0:AttrModule.Handler("mouseenter",function()
+    $0:AttrProxy.HandlerImpl("mouseenter",function($1)
     {
-     return function()
+     return function($2)
      {
-      return $this.hover.set_RVal(true);
+      return a($1,$2);
      };
     })
    }),new HtmlNode$1({
     $:8,
-    $0:AttrModule.Handler("mouseleave",function()
+    $0:AttrProxy.HandlerImpl("mouseleave",function($1)
     {
-     return function()
+     return function($2)
      {
-      return $this.hover.set_RVal(false);
+      return a$1($1,$2);
      };
     })
    })])));
@@ -4778,6 +4841,22 @@
  {
   return Hoverable.get_New().Content(HtmlNode.div([HtmlNode.style("flex-flow: column;")]));
  };
+ Hoverable.Content$3496$43=Runtime.Curried3(function(_this,$1,$2)
+ {
+  return _this.hover.Set(false);
+ });
+ Hoverable.Content$3495$43=Runtime.Curried3(function(_this,$1,$2)
+ {
+  return _this.hover.Set(true);
+ });
+ Hoverable.Content$3488$37=Runtime.Curried3(function(_this,$1,$2)
+ {
+  return _this.hover.Set(false);
+ });
+ Hoverable.Content$3487$37=Runtime.Curried3(function(_this,$1,$2)
+ {
+  return _this.hover.Set(true);
+ });
  Hoverable.get_New=function()
  {
   return Hoverable.New(Var.Create$1(false));
@@ -5018,19 +5097,19 @@
       {
        var v;
        v=editor.getValue();
-       $this["var"].RVal()!==v?(editorChanged[0]=editorChanged[0]+1,$this["var"].set_RVal(v),$this.onChange()):void 0;
+       $this["var"].Get()!==v?(editorChanged[0]=editorChanged[0]+1,$this["var"].Set(v),$this.onChange()):void 0;
       });
       View.Sink(function()
       {
        if(editorChanged[0]>varChanged[0])
         varChanged[0]=editorChanged[0];
        else
-        if(editor.getValue()!==$this["var"].RVal())
+        if(editor.getValue()!==$this["var"].Get())
          {
-          editor.setValue($this["var"].RVal());
+          editor.setValue($this["var"].Get());
           editor.getDoc().clearHistory();
          }
-      },$this["var"].RView());
+      },$this["var"].get_View());
       Val.sink(function(dis)
       {
        editor.setOption("readOnly",dis&&"nocursor");
@@ -5156,7 +5235,7 @@
   },
   Value:function(v)
   {
-   this.value.set_RVal(v);
+   this.value.Set(v);
    return this;
   },
   get_Render:function()
@@ -5174,7 +5253,7 @@
    }
    function drag(ev)
    {
-    $this.value.set_RVal((mouseCoord(ev)-$this.start)*100/$this.size+$this.startP);
+    $this.value.Set((mouseCoord(ev)-$this.start)*100/$this.size+$this.startP);
    }
    function finishDragging()
    {
@@ -5208,7 +5287,7 @@
     return ver?"Vertical":"Horizontal";
    },this.vertical)),new HtmlNode$1({
     $:8,
-    $0:AttrModule.Handler("mousedown",function($1)
+    $0:AttrProxy.HandlerImpl("mousedown",function($1)
     {
      return function($2)
      {
@@ -5255,6 +5334,7 @@
    return this.value;
   }
  },null,SplitterBar);
+ SplitterBar.get_Render$3851$42=Global.id;
  SplitterBar.New$1=function(value)
  {
   return SplitterBar.New$2(Var.Create$1(value));
@@ -5367,7 +5447,7 @@
           {
            function setVar(vr,vl)
            {
-            return!Unchecked.Equals(vr.RVal(),vl)?vr.set_RVal(vl):null;
+            return!Unchecked.Equals(vr.Get(),vl)?vr.Set(vl):null;
            }
            function setDimensions()
            {
@@ -5739,6 +5819,15 @@
   get_Render:function()
   {
    var $this,strip,g,content;
+   function a(a$2,ev)
+   {
+    return ev.preventDefault();
+   }
+   function a$1(_e,ev)
+   {
+    ev.preventDefault();
+    return $this.reorder(Arrays.length($this.tabs.Get()));
+   }
    $this=this;
    strip=HtmlNode.bindHElem(function(tabs)
    {
@@ -5752,49 +5841,65 @@
       return Seq.collect(function(m)
       {
        var i;
+       function a$2(a$6,ev)
+       {
+        return ev.preventDefault();
+       }
+       function a$3(a$6,a$7)
+       {
+        (Template.draggedTab())[0]={
+         $:1,
+         $0:[$this,i]
+        };
+       }
+       function a$4(_e,ev)
+       {
+        ev.preventDefault();
+        ev.stopPropagation();
+        return $this.reorder(i);
+       }
+       function a$5(a$6,a$7)
+       {
+        return $this.selected.Set(i);
+       }
        i=m[0];
        return[Hoverable.get_New().Content(HtmlNode.div([HtmlNode.htmlText(m[1][1][0]),HtmlNode["class"](Val.map(function(sel)
        {
         return"tab"+(sel===i?" selected":"");
        },$this.selected)),HtmlNode.draggable("true"),new HtmlNode$1({
         $:8,
-        $0:AttrModule.Handler("dragover",function()
+        $0:AttrProxy.HandlerImpl("dragover",function($1)
         {
-         return function(ev)
+         return function($2)
          {
-          return ev.preventDefault();
+          return a$2($1,$2);
          };
         })
        }),new HtmlNode$1({
         $:8,
-        $0:AttrModule.Handler("drag",function()
+        $0:AttrProxy.HandlerImpl("drag",function($1)
         {
-         return function()
+         return function($2)
          {
-          (Template.draggedTab())[0]={
-           $:1,
-           $0:[$this,i]
-          };
+          return a$3($1,$2);
          };
         })
        }),new HtmlNode$1({
         $:8,
-        $0:AttrModule.Handler("drop",function()
+        $0:AttrProxy.HandlerImpl("drop",function($1)
         {
-         return function(ev)
+         return function($2)
          {
-          ev.preventDefault();
-          ev.stopPropagation();
-          return $this.reorder(i);
+          return a$4($1,$2);
          };
         })
        }),new HtmlNode$1({
         $:8,
-        $0:AttrModule.Handler("click",function()
+        $0:AttrProxy.HandlerImpl("click",function($1)
         {
-         return function()
+         return function($2)
          {
-          return $this.selected.set_RVal(i);
+          return a$5($1,$2);
          };
         })
        })]))];
@@ -5814,9 +5919,9 @@
      {
       return Seq.append([HtmlNode.Id(Template.uid2s($this.id))],Seq.delay(function()
       {
-       function m(uid,a)
+       function m(uid,a$2)
        {
-        return a[1].AddChildren([HtmlNode.style(Val.map(function(sels)
+        return a$2[1].AddChildren([HtmlNode.style(Val.map(function(sels)
         {
          return Seq.contains(uid,Seq.map(function(t)
          {
@@ -5834,21 +5939,20 @@
    },this.tabs);
    return HtmlNode.div([HtmlNode["class"]("tab-panel"),this.top?strip:HtmlNode$1.HtmlEmpty,HtmlNode.div([content,HtmlNode["class"]("tab-content")]),!this.top?strip:HtmlNode$1.HtmlEmpty,new HtmlNode$1({
     $:8,
-    $0:AttrModule.Handler("dragover",function()
+    $0:AttrProxy.HandlerImpl("dragover",function($1)
     {
-     return function(ev)
+     return function($2)
      {
-      return ev.preventDefault();
+      return a($1,$2);
      };
     })
    }),new HtmlNode$1({
     $:8,
-    $0:AttrModule.Handler("drop",function()
+    $0:AttrProxy.HandlerImpl("drop",function($1)
     {
-     return function(ev)
+     return function($2)
      {
-      ev.preventDefault();
-      return $this.reorder(Arrays.length($this.tabs.RVal()));
+      return a$1($1,$2);
      };
     })
    }),HtmlNode.css("\n    \n    .tab-panel {\n     overflow  : hidden   ;\n     display   : flex     ;\n     flex-flow : column   ;\n     background: lightgray;\n    }\n    .tab-content {\n     flex      : 1 1     ;\n     overflow  : auto    ;\n     position  : relative;\n    }\n    .tab-children {\n     height    : 100%    ;\n     width     : 100%    ;\n     position  : absolute;\n     display   : grid    ;\n    }\n    .tab-strip {\n     padding   : 0pt     ;\n     flex      : 0 0     ;\n    }\n    .tab {\n     border     : 0.2pt solid transparent;\n     padding    : 0pt 4pt;\n     display    : inline-block;\n     font-family: sans-serif;\n     font-weight: 200;\n     font-size  : small;\n     color      : #666;\n     cursor     : pointer;\n    }\n    .top>.tab {\n     border-radius: 2pt 2pt 0pt 0pt;\n     border-bottom-width: 0pt;\n     vertical-align: bottom;\n    }\n    .bottom>.tab {\n     border-top-width: 0pt;\n     border-radius: 0pt 0pt 2pt 2pt;\n     vertical-align: top;\n    }\n    .horizontal>.tab:not(:first-child) {\n     border-left-width: 0pt;\n    }\n    .tab.hovering {\n     background: red;\n    }\n    .tab.selected {\n     background: white;\n     border-left-width: 0.2pt;\n     color: black;\n     font-weight: 500;\n     border-color: black;\n    }\n    .horizontal>.tab.selected {\n     border-left-width: 0.2pt;\n    }\n    ")]);
@@ -5858,7 +5962,7 @@
    var $this,o;
    function c(i,a)
    {
-    return Unchecked.Equals(a[0],gi)?($this.selected.set_RVal(i),{
+    return Unchecked.Equals(a[0],gi)?($this.selected.Set(i),{
      $:1,
      $0:true
     }):null;
@@ -5867,7 +5971,7 @@
    o=Seq.tryPick(function($1)
    {
     return c($1[0],$1[1]);
-   },Seq.indexed(this.tabs.RVal()));
+   },Seq.indexed(this.tabs.Get()));
    return o==null?false:o.$0;
   },
   Select$1:function(nm)
@@ -5875,7 +5979,7 @@
    var $this,o;
    function c(i,a)
    {
-    return a[1][0]===nm?($this.selected.set_RVal(i),{
+    return a[1][0]===nm?($this.selected.Set(i),{
      $:1,
      $0:true
     }):null;
@@ -5884,12 +5988,12 @@
    o=Seq.tryPick(function($1)
    {
     return c($1[0],$1[1]);
-   },Seq.indexed(this.tabs.RVal()));
+   },Seq.indexed(this.tabs.Get()));
    return o==null?false:o.$0;
   },
   Select$2:function(n)
   {
-   this.selected.set_RVal(n);
+   this.selected.Set(n);
   },
   get_Selected:function()
   {
@@ -5938,12 +6042,12 @@
      if(m!=null&&m.$==1)
       {
        drag=m.$0[1];
-       this.tabs.set_RVal(Template.reorderArray(this.tabs.RVal(),drag,drop));
-       sel=this.selected.RVal();
-       this.selected.set_RVal(sel===drag?drop:sel<drag&&sel<drop||sel>drag&&sel>drop?sel:sel<drag?sel+1:sel-1);
+       this.tabs.Set(Template.reorderArray(this.tabs.Get(),drag,drop));
+       sel=this.selected.Get();
+       this.selected.Set(sel===drag?drop:sel<drag&&sel<drop||sel>drag&&sel>drop?sel:sel<drag?sel+1:sel-1);
       }
      else
-      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",4141,18);
+      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",4149,18);
    }
    else
     void 0;
@@ -5951,8 +6055,8 @@
   moveTab:function(from,drag,drop)
   {
    var ts,ft,newTabsT,newTabsF;
-   ts=this.tabs.RVal();
-   ft=from.tabs.RVal();
+   ts=this.tabs.Get();
+   ft=from.tabs.Get();
    newTabsT=Arrays.collect(Global.id,[Slice.array(ts,{
     $:1,
     $0:0
@@ -5979,13 +6083,61 @@
     $:1,
     $0:Arrays.length(ft)-1
    })]);
-   from.tabs.set_RVal(newTabsF);
-   this.tabs.set_RVal(newTabsT);
-   this.selected.set_RVal(drop);
-   from.selected.RVal()>=Arrays.length(newTabsF)?from.selected.set_RVal(0):void 0;
+   from.tabs.Set(newTabsF);
+   this.tabs.Set(newTabsT);
+   this.selected.Set(drop);
+   from.selected.Get()>=Arrays.length(newTabsF)?from.selected.Set(0):void 0;
    Template.RaiseTabMoved(from,this);
   }
  },null,TabStrip);
+ TabStrip.get_Render$4220$42=Runtime.Curried3(function(_this,$1,ev)
+ {
+  ev.preventDefault();
+  return _this.reorder(Arrays.length(_this.tabs.Get()));
+ });
+ TabStrip.get_Render$4219$42=Runtime.Curried3(function($1,$2,ev)
+ {
+  return ev.preventDefault();
+ });
+ TabStrip.get_Render$4195$70=function(i,_this)
+ {
+  return function()
+  {
+   return function()
+   {
+    return _this.selected.Set(i);
+   };
+  };
+ };
+ TabStrip.get_Render$4194$70=function(i,_this)
+ {
+  return function()
+  {
+   return function(ev)
+   {
+    ev.preventDefault();
+    ev.stopPropagation();
+    return _this.reorder(i);
+   };
+  };
+ };
+ TabStrip.get_Render$4193$70=function(_this,i)
+ {
+  return function()
+  {
+   return function()
+   {
+    (Template.draggedTab())[0]={
+     $:1,
+     $0:[_this,i]
+    };
+   };
+  };
+ };
+ TabStrip.get_Render$4192$70=Runtime.Curried3(function($1,$2,ev)
+ {
+  return ev.preventDefault();
+ });
  TabStrip.New$1=function(tabs)
  {
   return TabStrip.New$2(Var.Create$1(Arrays.ofSeq(Seq.map(function(def)
@@ -6062,13 +6214,14 @@
     return HtmlNode.addChildren(a,h);
    }):Global.id)(x$1))),(m$1=this.onClick,(m$1!=null&&m$1.$==1?(a$1=List.ofArray([new HtmlNode$1({
     $:8,
-    $0:AttrProxy.Handler("click",m$1.$0)
+    $0:AttrProxy.HandlerImpl("click",m$1.$0)
    }),HtmlNode.style("cursor : pointer")]),function(h)
    {
     return HtmlNode.addChildren(a$1,h);
    }):Global.id)(x))));
   }
  },null,MenuEntry);
+ MenuEntry.get_Render$4333$104=Global.id;
  MenuEntry.New$1=function(txt,ref)
  {
   var i;
@@ -6250,9 +6403,9 @@
     if(a.$==3)
      {
       per$1=a.$3;
-      curper[0]!==per$1?(curper[0]=per$1,Var.Set(perV,per$1)):void 0;
-      Var.Set(minV,a.$6);
-      Var.Set(maxV,a.$7);
+      curper[0]!==per$1?(curper[0]=per$1,perV.Set(per$1)):void 0;
+      minV.Set(a.$6);
+      maxV.Set(a.$7);
      }
    }]))))):[HtmlNode$1.HtmlEmpty,Global.ignore];
   }
@@ -6438,10 +6591,10 @@
      {
       p=$this.parts.get_Item(name);
       partv=p[0];
-      Unchecked.Equals((partv.RVal())[0],si)?Val.iter(Global.ignore,Val.apply(new Val({
+      Unchecked.Equals((partv.Get())[0],si)?Val.iter(Global.ignore,Val.apply(new Val({
        $:0,
        $0:part
-      }),p[2])):partv.set_RVal([si,part]);
+      }),p[2])):partv.Set([si,part]);
      }
     else
      $this.AddNode(name,si,part);
@@ -6467,7 +6620,7 @@
    function g(v)
    {
     var m;
-    m=v.RVal();
+    m=v.Get();
     return m[1].$==0?{
      $:1,
      $0:m[1].$0
@@ -6537,7 +6690,7 @@
   GetGuiCallAction:function(name,action,parms)
   {
    var m;
-   return this.parts.ContainsKey(action)?(m=(this.parts.get_Item(action))[0].RVal(),m[1].$==2?Result.succeed(m[1].$0.Text(name).Parms(Arrays.map(Global.id,parms))):Result.failSimpleError((function($1)
+   return this.parts.ContainsKey(action)?(m=(this.parts.get_Item(action))[0].Get(),m[1].$==2?Result.succeed(m[1].$0.Text(name).Parms(Arrays.map(Global.id,parms))):Result.failSimpleError((function($1)
    {
     return function($2)
     {
@@ -6831,7 +6984,7 @@
  };
  Template.setSelectedPanel=function(group,panelO)
  {
-  Var.Set(Template.selectedPanels(),panelO==null?Template.selectedPanels().c.Remove(group):Template.selectedPanels().c.Add(group,panelO.$0));
+  Template.selectedPanels().Set(panelO==null?Template.selectedPanels().Get().Remove(group):Template.selectedPanels().Get().Add(group,panelO.$0));
  };
  Template.selectedPanels=function()
  {
@@ -7001,10 +7154,8 @@
  };
  Template.showHints=function(ed,getHints,completeSingle,a)
  {
-  var v;
-  v=HintOptions.New(Runtime.CreateFuncWithArgs(getHints),completeSingle,HtmlNode.findRootElement(ed.getWrapperElement()));
-  v.hint.async=1;
-  ed.showHint(v);
+  HintOptions.New(Runtime.CreateFuncWithArgs(getHints),completeSingle,HtmlNode.findRootElement(ed.getWrapperElement())).hint.async=1;
+  ed.showHint(Global.$v);
  };
  Template.cmPos=function(l,c)
  {
@@ -7193,85 +7344,79 @@
   {
    return this;
   },
-  RView:function()
+  get_View:function()
   {
    return View.Const(this.getK());
   },
-  RUpdM:function(f)
+  UpdateMaybe:function(f)
   {
    var o;
    o=f(this.getK());
    o==null?void 0:this.setK(o.$0);
   },
-  RUpd:function(f)
+  Update:function(f)
   {
    this.setK(f(this.getK()));
   },
-  RVal:function()
+  Get:function()
   {
    return this.getK();
   },
-  RGet:function()
-  {
-   return this.getK();
-  },
-  set_RVal:function(v)
+  Set:function(v)
   {
    this.setK(v);
   },
-  RSet:function(v)
+  SetFinal:function(v)
   {
    this.setK(v);
   },
-  RId:function()
+  get_Id:function()
   {
    return"?";
   }
- },Obj,Property);
+ },Var,Property);
  Property.New=Runtime.Ctor(function(setDirty,props,keyP)
  {
+  Var.New.call(this);
   this.setDirty=setDirty;
   this.props=props;
   this.key=keyP;
  },Property);
  PropValue=FsGlobal.PropValue=Runtime.Class({
-  RView:function()
+  get_View:function()
   {
    return View.Const(this.get());
   },
-  RUpdM:function(f)
+  UpdateMaybe:function(f)
   {
    var o;
    o=f(this.get());
    o==null?void 0:this.set(o.$0);
   },
-  RUpd:function(f)
+  Update:function(f)
   {
    this.set(f(this.get()));
   },
-  RVal:function()
+  Get:function()
   {
    return this.get();
   },
-  RGet:function()
-  {
-   return this.get();
-  },
-  set_RVal:function(v)
+  Set:function(v)
   {
    this.set(v);
   },
-  RSet:function(v)
+  SetFinal:function(v)
   {
    this.set(v);
   },
-  RId:function()
+  get_Id:function()
   {
    return"?";
   }
- },Obj,PropValue);
+ },Var,PropValue);
  PropValue.New=Runtime.Ctor(function(prop)
  {
+  Var.New.call(this);
   this.get=prop.get_GetV();
   this.set=prop.get_SetV();
  },PropValue);
@@ -7302,12 +7447,12 @@
      $:1,
      $0:f.id
     });
-   },(FsGlobal.codeSnippets())["var"].RVal()),x$1)));
+   },(FsGlobal.codeSnippets())["var"].Get()),x$1)));
   }
   return tryFindByPath(Seq.filter(function(snp)
   {
    return snp.parent==null;
-  },(FsGlobal.codeSnippets())["var"].RVal()),names);
+  },(FsGlobal.codeSnippets())["var"].Get()),names);
  };
  FsGlobal["CodeSnippet.IsDescendantOf"]=function(_this,antId)
  {
@@ -7337,7 +7482,7 @@
   return Arrays.ofSeq(Seq.map(FsGlobal["CodeSnippet.get_PrepareSnippet"],Seq.filter(function(snp)
   {
    return Arrays.contains(snp.id,preds);
-  },(FsGlobal.codeSnippets())["var"].RVal())));
+  },(FsGlobal.codeSnippets())["var"].Get())));
  };
  FsGlobal["CodeSnippet.get_PrepareSnippet"]=function(_this,u)
  {
@@ -7368,7 +7513,7 @@
   var newS,$1,a,a$1,t;
   newS=CodeSnippet.New(nm,cnt,pa,pred,CodeSnippetId.get_New(),true,0,0,new Dictionary.New$5());
   $1=FsGlobal.codeSnippets().get_Length();
-  $1===0?FsGlobal.codeSnippets().Append(newS):od===0?(a=Seq.append([newS],(FsGlobal.codeSnippets())["var"].RVal()),FsGlobal.codeSnippets().Set(a)):od<$1?(a$1=(t=Arrays.splitAt(od,Arrays.ofSeq((FsGlobal.codeSnippets())["var"].RVal())),t[0].concat([newS].concat(t[1]))),FsGlobal.codeSnippets().Set(a$1)):FsGlobal.codeSnippets().Append(newS);
+  $1===0?FsGlobal.codeSnippets().Append(newS):od===0?(a=Seq.append([newS],(FsGlobal.codeSnippets())["var"].Get()),FsGlobal.codeSnippets().Set(a)):od<$1?(a$1=(t=Arrays.splitAt(od,Arrays.ofSeq((FsGlobal.codeSnippets())["var"].Get())),t[0].concat([newS].concat(t[1]))),FsGlobal.codeSnippets().Set(a$1)):FsGlobal.codeSnippets().Append(newS);
   return newS;
  };
  CodeSnippet$1.New$1=function(nm,pa,pred,co,cnt)
@@ -7414,7 +7559,7 @@
   return FsGlobal.tryPickI(function($1)
   {
    return f($1[0],$1[1]);
-  },(FsGlobal.codeSnippets())["var"].RVal());
+  },(FsGlobal.codeSnippets())["var"].Get());
  };
  FsGlobal.tryPickI=function(f,s)
  {
@@ -7504,6 +7649,112 @@
   SC$1.$cctor();
   return SC$1.references;
  };
+ FSharpStation.FSharpStationClient$6328$173=Global.id;
+ FSharpStation.FSharpStationClient$6327$173=Global.id;
+ FSharpStation.FSharpStationClient$6017$68=function(props,setDirtyP,redraw)
+ {
+  return function()
+  {
+   return function()
+   {
+    props.Add("","1");
+    setDirtyP();
+    return redraw.Set(null);
+   };
+  };
+ };
+ FSharpStation.FSharpStationClient$6014$68=function(prop,redraw)
+ {
+  return function()
+  {
+   return function()
+   {
+    prop.Remove();
+    return redraw.Set(null);
+   };
+  };
+ };
+ FSharpStation.FSharpStationClient$5865$44=Runtime.Curried3(function(gotoDefinition,$1,$2)
+ {
+  return gotoDefinition();
+ });
+ FSharpStation.FSharpStationClient$5859$39=function(showToolTip,codeMirror)
+ {
+  return function()
+  {
+   return function()
+   {
+    return showToolTip(codeMirror.editorO.$0);
+   };
+  };
+ };
+ FSharpStation.FSharpStationClient$5569$61=Runtime.Curried3(function($1,el,$2)
+ {
+  el.value="";
+ });
+ FSharpStation.FSharpStationClient$5568$61=Runtime.Curried3(function(loadFile,el,$1)
+ {
+  return loadFile(el);
+ });
+ FSharpStation.FSharpStationClient$5450$48=Runtime.Curried3(function(topScrollList,e,$1)
+ {
+  topScrollList[0]=e.scrollTop;
+ });
+ FSharpStation.FSharpStationClient$5427$57=function(togglePredecessorForCur,code,currentCodeSnippetO)
+ {
+  return function()
+  {
+   return function()
+   {
+    return Val.iter(togglePredecessorForCur(code),currentCodeSnippetO);
+   };
+  };
+ };
+ FSharpStation.FSharpStationClient$5423$58=function(code,currentCodeSnippetId)
+ {
+  return function()
+  {
+   return function()
+   {
+    return currentCodeSnippetId.Set(code.id);
+   };
+  };
+ };
+ FSharpStation.FSharpStationClient$5415$57=function(isParent,toggleExpanded,code)
+ {
+  return function()
+  {
+   return function()
+   {
+    return isParent?toggleExpanded(code):null;
+   };
+  };
+ };
+ FSharpStation.FSharpStationClient$5411$50=function(reorderSnippet,code,draggedId)
+ {
+  return function()
+  {
+   return function(ev)
+   {
+    ev.preventDefault();
+    return(reorderSnippet(code.id))(draggedId[0]);
+   };
+  };
+ };
+ FSharpStation.FSharpStationClient$5410$50=function(draggedId,code)
+ {
+  return function()
+  {
+   return function()
+   {
+    draggedId[0]=code.id;
+   };
+  };
+ };
+ FSharpStation.FSharpStationClient$5409$50=Runtime.Curried3(function($1,$2,ev)
+ {
+  return ev.preventDefault();
+ });
  FSharpStation.FSharpStationClient=function(loadFromUri)
  {
   var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,v$2,f,g,prior,propertyCssLinkVal,v$3,f$1,g$1,prior$1,propertyModeVal,v$4,f$2,g$2,prior$2,propertyThemeVal,v$5,f$3,g$3,prior$3,propertyLayoutVal,v$6,f$4,g$4,prior$4,propertyLayoutJSVal,v$7,f$5,g$5,prior$5,disableParseVal,disableFSIVal,disableFableVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b,autoCompleteClient,parseFileName,latestParsedPrefix,isParseDisabled,parseRun,parsing,rex1,rex2,rex,asyncStartDelayed,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,redraw,properties,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actSetSnippetProp,actEvalFsCode,actEvalCode,actFableFsCode,actFableCode,actRunWSNewTab,$2,actRunWSHere,$3,actRunWSIn,actParseCode,actCompileWS,$4,actFindDefinition,actRefreshEditor,actOutText,actAbortFsi,buttonsH,menuLeft,menuRight,menuBar,s$2,v$8,v$9,snippetList,x,steps,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,layout,res,wsStationClient,b$1,cssLinks,x$1;
@@ -7519,42 +7770,42 @@
   }
   function refreshView()
   {
-   Var.Set(refresh,null);
+   refresh.Set(null);
   }
   function curSnippetNameOf(k)
   {
-   function a(s$3)
+   function a$4(s$3)
    {
     return s$3.get_Name();
    }
-   function a$1(s$3,n)
+   function a$5(s$3,n)
    {
     return CodeSnippet.New(n,s$3.content,s$3.parent,s$3.predecessors,s$3.id,s$3.expanded,s$3.level,s$3.levelCode,s$3.properties);
    }
-   return missing("",function(a$2)
+   return missing("",function(a$6)
    {
-    return FsGlobal.codeSnippets().TryFindByKey(a$2);
-   },function(a$2)
+    return FsGlobal.codeSnippets().TryFindByKey(a$6);
+   },function(a$6)
    {
-    return FsGlobal.codeSnippets().LensInto(a,a$1,a$2);
+    return FsGlobal.codeSnippets().LensInto(a$4,a$5,a$6);
    },k);
   }
   function curSnippetCodeOf(k)
   {
-   function a(s$3)
+   function a$4(s$3)
    {
     return s$3.content;
    }
-   function a$1(s$3,n)
+   function a$5(s$3,n)
    {
     return CodeSnippet.New(s$3.name,n,s$3.parent,s$3.predecessors,s$3.id,s$3.expanded,s$3.level,s$3.levelCode,s$3.properties);
    }
-   return missing("",function(a$2)
+   return missing("",function(a$6)
    {
-    return FsGlobal.codeSnippets().TryFindByKey(a$2);
-   },function(a$2)
+    return FsGlobal.codeSnippets().TryFindByKey(a$6);
+   },function(a$6)
    {
-    return FsGlobal.codeSnippets().LensInto(a,a$1,a$2);
+    return FsGlobal.codeSnippets().LensInto(a$4,a$5,a$6);
    },k);
   }
   function b$2(snp)
@@ -7566,9 +7817,9 @@
     $0:Global.id(o.$0)
    };
   }
-  function g$6(a)
+  function g$6(a$4)
   {
-   return Option.defaultValue("",a);
+   return Option.defaultValue("",a$4);
   }
   function b$3(snp)
   {
@@ -7579,9 +7830,9 @@
     $0:Global.id(o.$0)
    };
   }
-  function g$7(a)
+  function g$7(a$4)
   {
-   return Option.defaultValue("",a);
+   return Option.defaultValue("",a$4);
   }
   function b$4(snp)
   {
@@ -7592,9 +7843,9 @@
     $0:Global.id(o.$0)
    };
   }
-  function g$8(a)
+  function g$8(a$4)
   {
-   return Option.defaultValue("fsharp",a);
+   return Option.defaultValue("fsharp",a$4);
   }
   function b$5(snp)
   {
@@ -7605,9 +7856,9 @@
     $0:Global.id(o.$0)
    };
   }
-  function g$9(a)
+  function g$9(a$4)
   {
-   return Option.defaultValue("",a);
+   return Option.defaultValue("",a$4);
   }
   function b$6(snp)
   {
@@ -7618,9 +7869,9 @@
     $0:Global.id(o.$0)
    };
   }
-  function g$10(a)
+  function g$10(a$4)
   {
-   return Option.defaultValue("",a);
+   return Option.defaultValue("",a$4);
   }
   function b$7(snp)
   {
@@ -7631,9 +7882,9 @@
     $0:Global.id(o.$0)
    };
   }
-  function g$11(a)
+  function g$11(a$4)
   {
-   return Option.defaultValue("",a);
+   return Option.defaultValue("",a$4);
   }
   function disablePropertyVal(p)
   {
@@ -7647,9 +7898,9 @@
      $0:Global.id(o.$0)
     };
    }
-   function g$14(a)
+   function g$14(a$4)
    {
-    return Option.defaultValue("",a);
+    return Option.defaultValue("",a$4);
    }
    v$10=Val.map((f$8=(g$13=function(o)
    {
@@ -7664,8 +7915,8 @@
    prior$6=[Var.Create$1(null)];
    View.Sink(function(v$11)
    {
-    if(!Unchecked.Equals(prior$6[0].c,v$11))
-     Var.Set(prior$6[0],v$11);
+    if(!Unchecked.Equals(prior$6[0].Get(),v$11))
+     prior$6[0].Set(v$11);
    },Val.toView(v$10));
    return new Val({
     $:1,
@@ -7679,7 +7930,7 @@
   function setDirtyPart()
   {
    parsed=false;
-   Var.Set(dirty,true);
+   dirty.Set(true);
   }
   function setDirty()
   {
@@ -7695,17 +7946,17 @@
   function setClean()
   {
    getPredecessorsM.ClearCache();
-   Var.Set(dirty,false);
+   dirty.Set(false);
    lastCodeAndStarts=null;
   }
   function appendMsg(_var,msg)
   {
    var newM,$7,$8;
-   return!msg?null:(newM=($7=_var.RVal(),($8=Global.String(msg),$7===null?$8:$7===""?$8:$8===null?$7:$8===""?$7:$7+"\n"+$8)),newM!==_var.RVal()?_var.set_RVal(newM):null);
+   return!msg?null:(newM=($7=_var.Get(),($8=Global.String(msg),$7===null?$8:$7===""?$8:$8===null?$7:$8===""?$7:$7+"\n"+$8)),newM!==_var.Get()?_var.Set(newM):null);
   }
   function setOutMsg(msg)
   {
-   Var.Set(outputMsgs,msg);
+   outputMsgs.Set(msg);
   }
   function addOutMsg(msg)
   {
@@ -7718,15 +7969,15 @@
   function getFSCode()
   {
    var o;
-   o=CodeSnippet$1.FetchO(currentCodeSnippetId.c);
-   o==null?void 0:Var.Set(codeFS,FsGlobal["CodeSnippet.GetCodeFsx"](o.$0,true));
+   o=CodeSnippet$1.FetchO(currentCodeSnippetId.Get());
+   o==null?void 0:codeFS.Set(FsGlobal["CodeSnippet.GetCodeFsx"](o.$0,true));
   }
   function reorderSnippet(toId,fromId)
   {
-   var p,others,moving,$7,$8,ti,tsn,a;
+   var p,others,moving,$7,$8,ti,tsn,a$4;
    function trySnippet(id)
    {
-    function f$8(a$1,snp)
+    function f$8(a$5,snp)
     {
      return Unchecked.Equals(snp.id,id);
     }
@@ -7741,12 +7992,12 @@
    p=Arrays.partition(function(snp)
    {
     return Unchecked.Equals(snp.id,fromId)||FsGlobal["CodeSnippet.IsDescendantOf"](snp,fromId);
-   },Arrays.ofSeq((FsGlobal.codeSnippets())["var"].RVal()));
+   },Arrays.ofSeq((FsGlobal.codeSnippets())["var"].Get()));
    others=p[1];
    moving=p[0];
    $7=(trySnippet(fromId))(moving);
    $8=(trySnippet(toId))(others);
-   $7!=null&&$7.$==1?$8!=null&&$8.$==1?(ti=$8.$0[0],tsn=$8.$0[1],a=Arrays.collect(Global.id,[Slice.array(others,{
+   $7!=null&&$7.$==1?$8!=null&&$8.$==1?(ti=$8.$0[0],tsn=$8.$0[1],a$4=Arrays.collect(Global.id,[Slice.array(others,{
     $:1,
     $0:0
    },{
@@ -7755,7 +8006,7 @@
    }),moving,Slice.array(others,{
     $:1,
     $0:ti
-   },null)]),FsGlobal.codeSnippets().Set(a),FsGlobal.codeSnippets().UpdateBy(function(c)
+   },null)]),FsGlobal.codeSnippets().Set(a$4),FsGlobal.codeSnippets().UpdateBy(function(c)
    {
     return{
      $:1,
@@ -7767,7 +8018,7 @@
   function indentCodeIn()
   {
    var o,$7,j,snp;
-   o=CodeSnippet$1.PickIO(currentCodeSnippetId.c);
+   o=CodeSnippet$1.PickIO(currentCodeSnippetId.Get());
    o==null?void 0:($7=o.$0,j=$7[0],snp=$7[1],function(f$8,i)
    {
     var x$2;
@@ -7776,7 +8027,7 @@
       if(i<0)
        return null;
       else
-       if(f$8((x$2=(FsGlobal.codeSnippets())["var"].RVal(),(function(i$1)
+       if(f$8((x$2=(FsGlobal.codeSnippets())["var"].Get(),(function(i$1)
        {
         return function(s$3)
         {
@@ -7804,7 +8055,7 @@
   function indentCodeOut()
   {
    var o,snp,newP,o$1,o$2;
-   o=CodeSnippet$1.FetchO(currentCodeSnippetId.c);
+   o=CodeSnippet$1.FetchO(currentCodeSnippetId.Get());
    o==null?void 0:(snp=o.$0,newP=(o$1=(o$2=snp.parent,o$2==null?null:CodeSnippet$1.FetchO(o$2.$0)),o$1==null?null:o$1.$0.parent),FsGlobal.codeSnippets().UpdateBy(function(c)
    {
     return{
@@ -7819,20 +8070,20 @@
    b$8=Wrap.wrapper();
    return b$8.Run(b$8.Delay(function()
    {
-    return b$8.Bind$1(Result.fromOption(ErrCompiler["Snippet Missing"],snpO),function(a)
+    return b$8.Bind$1(Result.fromOption(ErrCompiler["Snippet Missing"],snpO),function(a$4)
     {
      var code;
-     Var.Set(outputMsgs,"Compiling to JavaScript...");
-     Var.Set(codeJS,"");
-     code=FsGlobal["CodeSnippet.GetCodeFsx"](a,true);
-     Var.Set(codeFS,code);
-     return b$8.Bind$2(FsTranslator.translateAR(code,false),function(a$1)
+     outputMsgs.Set("Compiling to JavaScript...");
+     codeJS.Set("");
+     code=FsGlobal["CodeSnippet.GetCodeFsx"](a$4,true);
+     codeFS.Set(code);
+     return b$8.Bind$2(FsTranslator.translateAR(code,false),function(a$5)
      {
-      return b$8.Bind$1(a$1,function(a$2)
+      return b$8.Bind$1(a$5,function(a$6)
       {
        var jsc;
-       jsc=RunCode.completeJS(a$2);
-       Var.Set(codeJS,jsc);
+       jsc=RunCode.completeJS(a$6);
+       codeJS.Set(jsc);
        addOutMsg("Compiled!");
        return b$8.Return(jsc);
       });
@@ -7842,9 +8093,9 @@
   }
   function newWindow(url)
   {
-   var a;
-   a=Global.open.apply(Global,[url]);
-   return Unchecked.Equals(a,null)?Result.fail(ErrCompiler["Could not open new browser, Popup blocker may be active"]):Result.succeed(a);
+   var a$4;
+   a$4=Global.open.apply(Global,[url]);
+   return Unchecked.Equals(a$4,null)?Result.fail(ErrCompiler["Could not open new browser, Popup blocker may be active"]):Result.succeed(a$4);
   }
   function _eval(window$1,js)
   {
@@ -7901,12 +8152,12 @@
    {
     return b$8.Bind$1(Result.tryProtection(),function()
     {
-     return b$8.Bind$1(newWindow(url),function(a)
+     return b$8.Bind$1(newWindow(url),function(a$4)
      {
-      focus(a);
+      focus(a$4);
       return b$8.Bind$2(Concurrency.Sleep(800),function()
       {
-       return b$8.Return(_eval(a,js));
+       return b$8.Return(_eval(a$4,js));
       });
      });
     });
@@ -7936,10 +8187,10 @@
    {
     return b$8.Bind$1(Result.tryProtection(),function()
     {
-     return b$8.Bind$2(createIFrameA(),function(a)
+     return b$8.Bind$2(createIFrameA(),function(a$4)
      {
       var window$1;
-      window$1=a.contentWindow;
+      window$1=a$4.contentWindow;
       window$1.document.body.style.margin="0px";
       return b$8.Return(_eval(window$1,js));
      });
@@ -7952,21 +8203,21 @@
    b$8=Wrap.wrapper();
    return b$8.Run(b$8.Delay(function()
    {
-    return b$8.Bind$3(compileSnippetW(snpO),function(a)
+    return b$8.Bind$3(compileSnippetW(snpO),function(a$4)
     {
-     Var.Set(outputMsgs,"Running JavaScript...");
-     return b$8.Bind$3(pos.$==3?evalWindowUrlJSW(url,a):evalIFrameJSW(a),function(a$1)
+     outputMsgs.Set("Running JavaScript...");
+     return b$8.Bind$3(pos.$==3?evalWindowUrlJSW(url,a$4):evalIFrameJSW(a$4),function(a$5)
      {
-      addOutMsg(a$1);
+      addOutMsg(a$5);
       addOutMsg("Done!");
-      return b$8.Return([pos,a$1]);
+      return b$8.Return([pos,a$5]);
      });
     });
    }));
   }
   function getSnpO()
   {
-   return CodeSnippet$1.FetchO(currentCodeSnippetId.c);
+   return CodeSnippet$1.FetchO(currentCodeSnippetId.Get());
   }
   function evalCodeW(code)
   {
@@ -7974,10 +8225,10 @@
    b$8=Wrap.wrapper();
    return b$8.Run(b$8.Delay(function()
    {
-    Var.Set(codeFS,code);
-    return b$8.Bind$2(FsEvaluator.evaluateAR(FsGlobal.fsIds(),Global.location.href,true,code),function(a)
+    codeFS.Set(code);
+    return b$8.Bind$2(FsEvaluator.evaluateAR(FsGlobal.fsIds(),Global.location.href,true,code),function(a$4)
     {
-     return b$8.Bind$1(a,function()
+     return b$8.Bind$1(a$4,function()
      {
       return b$8.Return("");
      });
@@ -7990,9 +8241,9 @@
    b$8=Wrap.wrapper();
    return b$8.Run(b$8.Delay(function()
    {
-    return b$8.Bind$1(Result.fromOption(ErrCompiler["Snippet Missing"],snpO),function(a)
+    return b$8.Bind$1(Result.fromOption(ErrCompiler["Snippet Missing"],snpO),function(a$4)
     {
-     return b$8.Bind$3(evalCodeW(FsGlobal["CodeSnippet.GetCodeFsx"](a,true)),function(a$1)
+     return b$8.Bind$3(evalCodeW(FsGlobal["CodeSnippet.GetCodeFsx"](a$4,true)),function(a$5)
      {
       return b$8.Bind$2((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsEvaluator+Evaluator.addPresence:-1250306105",[(function($7)
       {
@@ -8000,9 +8251,9 @@
        {
         return $7(FSharpStation_GeneratedPrintf.p$6($8));
        };
-      }(Global.id))(a.id),"ok"]),function()
+      }(Global.id))(a$4.id),"ok"]),function()
       {
-       return b$8.Return(a$1);
+       return b$8.Return(a$5);
       });
      });
     });
@@ -8014,12 +8265,12 @@
    b$8=Wrap.wrapper();
    return b$8.Run(b$8.Delay(function()
    {
-    Var.Set(outputMsgs,msgStart);
-    return b$8.Bind$3(doIt(),function(a)
+    outputMsgs.Set(msgStart);
+    return b$8.Bind$3(doIt(),function(a$4)
     {
-     addOutMsg(a);
+     addOutMsg(a$4);
      addOutMsg(msgFinish);
-     return b$8.Return(a);
+     return b$8.Return(a$4);
     });
    }));
   }
@@ -8043,11 +8294,11 @@
    b$8=Wrap.wrapper();
    return b$8.Run(b$8.Delay(function()
    {
-    Var.Set(codeFS,code);
-    return b$8.Bind$3(FableModule.fableTranslate(code),function(a)
+    codeFS.Set(code);
+    return b$8.Bind$3(FableModule.fableTranslate(code),function(a$4)
     {
-     Var.Set(codeJS,a);
-     Global["eval"](a);
+     codeJS.Set(a$4);
+     Global["eval"](a$4);
      return b$8.Return("");
     });
    }));
@@ -8058,9 +8309,9 @@
    b$8=Wrap.wrapper();
    return b$8.Run(b$8.Delay(function()
    {
-    return b$8.Bind$1(Result.fromOption(ErrCompiler["Snippet Missing"],snpO),function(a)
+    return b$8.Bind$1(Result.fromOption(ErrCompiler["Snippet Missing"],snpO),function(a$4)
     {
-     return b$8.ReturnFrom(evalFableCodeW(FsGlobal["CodeSnippet.GetCodeFsx"](a,false)));
+     return b$8.ReturnFrom(evalFableCodeW(FsGlobal["CodeSnippet.GetCodeFsx"](a$4,false)));
     });
    }));
   }
@@ -8133,6 +8384,34 @@
   function listEntry(isParent,isExpanded,code)
   {
    var x$2,$7,$8,x$3;
+   function a$4(a$10,ev)
+   {
+    return ev.preventDefault();
+   }
+   function a$5(a$10,a$11)
+   {
+    draggedId[0]=code.id;
+   }
+   function a$6(a$10,ev)
+   {
+    ev.preventDefault();
+    return reorderSnippet(code.id,draggedId[0]);
+   }
+   function a$7(a$10,a$11)
+   {
+    return isParent?toggleExpanded(code):null;
+   }
+   function a$8(a$10,a$11)
+   {
+    return currentCodeSnippetId.Set(code.id);
+   }
+   function a$9(a$10,a$11)
+   {
+    return Val.iter(function($9)
+    {
+     return togglePredecessorForCur(code,$9);
+    },currentCodeSnippetO);
+   }
    return Hoverable.get_New().Content$1([HtmlNode["class"]("code-editor-list-tile"),HtmlNode.classIf("selected",Val.map((x$2=code.id,function(y)
    {
     return Unchecked.Equals(x$2,y);
@@ -8144,39 +8423,38 @@
     return isIndirectPredecessor($8,$9);
    }),curPredecessors)),HtmlNode.draggable("true"),new HtmlNode$1({
     $:8,
-    $0:AttrModule.Handler("dragover",function()
+    $0:AttrProxy.HandlerImpl("dragover",function($9)
     {
-     return function(ev)
+     return function($10)
      {
-      return ev.preventDefault();
+      return a$4($9,$10);
      };
     })
    }),new HtmlNode$1({
     $:8,
-    $0:AttrModule.Handler("drag",function()
+    $0:AttrProxy.HandlerImpl("drag",function($9)
     {
-     return function()
+     return function($10)
      {
-      draggedId=code.id;
+      return a$5($9,$10);
      };
     })
    }),new HtmlNode$1({
     $:8,
-    $0:AttrModule.Handler("drop",function()
+    $0:AttrProxy.HandlerImpl("drop",function($9)
     {
-     return function(ev)
+     return function($10)
      {
-      ev.preventDefault();
-      return reorderSnippet(code.id,draggedId);
+      return a$6($9,$10);
      };
     })
    }),HtmlNode.span([HtmlNode["class"]("node"),HtmlNode.classIf("parent",isParent),HtmlNode.classIf("expanded",isExpanded),new HtmlNode$1({
     $:8,
-    $0:AttrModule.Handler("click",function()
+    $0:AttrProxy.HandlerImpl("click",function($9)
     {
-     return function()
+     return function($10)
      {
-      return isParent?toggleExpanded(code):null;
+      return a$7($9,$10);
      };
     })
    }),HtmlNode.title(isParent?isExpanded?"collapse":"expand":""),HtmlNode.htmlText(isParent?isExpanded?"-":"+":"")]),HtmlNode.div([HtmlNode["class"]("code-editor-list-text"),HtmlNode.style1("text-indent",(x$3=(FsGlobal["CodeSnippet.get_Levels"](code))[0],(function($9)
@@ -8193,23 +8471,20 @@
     };
    },curSnippetNameOf(code.id),curSnippetCodeOf(code.id))),new HtmlNode$1({
     $:8,
-    $0:AttrModule.Handler("click",function()
+    $0:AttrProxy.HandlerImpl("click",function($9)
     {
-     return function()
+     return function($10)
      {
-      return Var.Set(currentCodeSnippetId,code.id);
+      return a$8($9,$10);
      };
     })
    })]),HtmlNode.span([HtmlNode["class"]("predecessor"),HtmlNode.title("toggle predecessor"),new HtmlNode$1({
     $:8,
-    $0:AttrModule.Handler("click",function()
+    $0:AttrProxy.HandlerImpl("click",function($9)
     {
-     return function()
+     return function($10)
      {
-      return Val.iter(function($9)
-      {
-       return togglePredecessorForCur(code,$9);
-      },currentCodeSnippetO);
+      return a$9($9,$10);
      };
     })
    }),HtmlNode.htmlText("X")])]);
@@ -8235,9 +8510,9 @@
   function obj2Map(o)
   {
    var dict;
-   function a(a$1,a$2)
+   function a$4(a$5,a$6)
    {
-    dict.Add(a$1,a$2);
+    dict.Add(a$5,a$6);
    }
    function m(f$8,v$10)
    {
@@ -8246,7 +8521,7 @@
    dict=new Dictionary.New$5();
    return!o?dict:(Seq.iter(function($7)
    {
-    return a($7[0],$7[1]);
+    return a$4($7[0],$7[1]);
    },Arrays.map(function($7)
    {
     return m($7[0],$7[1]);
@@ -8287,15 +8562,15 @@
    function nextI(lvl,k)
    {
     var o$1;
-    return Option.defaultValue(k,(o$1=Seq.tryItem(k,(FsGlobal.codeSnippets())["var"].RVal()),o$1==null?null:{
+    return Option.defaultValue(k,(o$1=Seq.tryItem(k,(FsGlobal.codeSnippets())["var"].Get()),o$1==null?null:{
      $:1,
      $0:(FsGlobal["CodeSnippet.get_Levels"](o$1.$0))[0]<=lvl?k:nextI(lvl,k+1)
     }));
    }
-   Var.Set(currentCodeSnippetId,Option.defaultWith(function()
+   currentCodeSnippetId.Set(Option.defaultWith(function()
    {
     return CodeSnippet$1.New$2("");
-   },(o=CodeSnippet$1.PickIO(currentCodeSnippetId.c),o==null?null:{
+   },(o=CodeSnippet$1.PickIO(currentCodeSnippetId.Get()),o==null?null:{
     $:1,
     $0:($7=o.$0,(i=$7[0],(snp=$7[1],CodeSnippet$1.New(nextI((FsGlobal["CodeSnippet.get_Levels"](snp))[0],i+1),"",snp.parent,List.T.Empty,List.T.Empty,""))))
    })).id);
@@ -8305,14 +8580,14 @@
   function deleteCode()
   {
    var o,snp;
-   o=CodeSnippet$1.FetchO(currentCodeSnippetId.c);
+   o=CodeSnippet$1.FetchO(currentCodeSnippetId.Get());
    o==null?void 0:(snp=o.$0,Global.confirm((function($7)
    {
     return function($8)
     {
      return $7("Do you want to delete "+Utils.toSafe($8)+"?");
     };
-   }(Global.id))(snp.get_Name()))?(Var.Set(currentCodeSnippetId,CodeSnippetId.get_New()),FsGlobal.codeSnippets().Remove(snp),setDirty(),refreshView()):void 0);
+   }(Global.id))(snp.get_Name()))?(currentCodeSnippetId.Set(CodeSnippetId.get_New()),FsGlobal.codeSnippets().Remove(snp),setDirty(),refreshView()):void 0);
   }
   function justFileName(f$8)
   {
@@ -8329,11 +8604,11 @@
   }
   function parseText(txt)
   {
-   var a;
+   var a$4;
    try
    {
-    a=deserializeCodeSnipets(txt);
-    FsGlobal.codeSnippets().Set(a);
+    a$4=deserializeCodeSnipets(txt);
+    FsGlobal.codeSnippets().Set(a$4);
     setClean();
     refreshView();
    }
@@ -8344,20 +8619,28 @@
   }
   function loadFile(e)
   {
-   if(!dirty.c||Global.confirm("Changes have not been saved, do you really want to load?"))
+   if(!dirty.Get()||Global.confirm("Changes have not been saved, do you really want to load?"))
     loadTextFile(HtmlNode.findRootElement(e).querySelector("#"+fileInputElementId),parseText);
   }
   function downloadFile()
   {
    var t,x$2,n,m;
-   t=(x$2=Arrays.ofSeq((FsGlobal.codeSnippets())["var"].RVal()),JSON.stringify(((Provider.EncodeArray(FSharpStation_JsonEncoder.j$7))())(x$2)));
-   n=(m=justFileName(fileName.c),m===""?"snippets.fsjson":m);
+   t=(x$2=Arrays.ofSeq((FsGlobal.codeSnippets())["var"].Get()),JSON.stringify(((Provider.EncodeArray(FSharpStation_JsonEncoder.j$7))())(x$2)));
+   n=(m=justFileName(fileName.Get()),m===""?"snippets.fsjson":m);
    Global.saveAs(new Global.Blob([t],{
     type:"text/plain;charset=utf-8"
    }),n);
    setClean();
   }
-  function do_LoadFile(e,a)
+  function a(el,a$4)
+  {
+   return loadFile(el);
+  }
+  function a$1(el,a$4)
+  {
+   el.value="";
+  }
+  function do_LoadFile(e,a$4)
   {
    return HtmlNode.findRootElement(e).querySelector("#"+fileInputElementId).click();
   }
@@ -8390,16 +8673,16 @@
     $:1,
     $0:(function(t$1)
     {
-     var a,a$1,a$2,a$3,a$4,a$5;
-     a=t$1[0];
-     a$1=t$1[1];
-     a$2=t$1[2];
-     a$3=t$1[3];
-     a$4=t$1[4];
-     a$5=t$1[5];
+     var a$4,a$5,a$6,a$7,a$8,a$9;
+     a$4=t$1[0];
+     a$5=t$1[1];
+     a$6=t$1[2];
+     a$7=t$1[3];
+     a$8=t$1[4];
+     a$9=t$1[5];
      return function(t$2)
      {
-      return CodeSnippet.AddSeps(a,a$1,a$2,a$3,a$4,a$5,t$2[0],t$2[1],t$2[2],t$2[3],t$2[4],t$2[5]);
+      return CodeSnippet.AddSeps(a$4,a$5,a$6,a$7,a$8,a$9,t$2[0],t$2[1],t$2[2],t$2[3],t$2[4],t$2[5]);
      };
     }(o.$0))(red1)
    }));
@@ -8411,13 +8694,13 @@
    function msgF(txt)
    {
     if(!silent)
-     Var.Set(parserMsgs,txt);
+     parserMsgs.Set(txt);
    }
    b$8=null;
    return Concurrency.Delay(function()
    {
     var m,cur;
-    m=CodeSnippet$1.FetchO(currentCodeSnippetId.c);
+    m=CodeSnippet$1.FetchO(currentCodeSnippetId.Get());
     return m!=null&&m.$==1?(cur=m.$0,Concurrency.TryFinally(Concurrency.Delay(function()
     {
      var p,prefix;
@@ -8434,7 +8717,7 @@
       console.log(s$3);
      }))(prefix));
      parsed=false;
-     return Concurrency.Bind(autoCompleteClient.Parse$1(parseFile(prefix),p[0],p[1]),function(a)
+     return Concurrency.Bind(autoCompleteClient.Parse$1(parseFile(prefix),p[0],p[1]),function(a$4)
      {
       ((function($7)
       {
@@ -8445,9 +8728,9 @@
       }(function(s$3)
       {
        console.log(s$3);
-      }))(a!==""));
+      }))(a$4!==""));
       latestParsedPrefix=prefix;
-      return Concurrency.Combine(!silent?(addPrsMsg(a),addPrsMsg("Parsed!"),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
+      return Concurrency.Combine(!silent?(addPrsMsg(a$4),addPrsMsg("Parsed!"),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
       {
        parsed=true;
        return Concurrency.Zero();
@@ -8465,9 +8748,9 @@
    b$8=null;
    return Concurrency.Delay(function()
    {
-    return!parsed?Concurrency.Return(true):Concurrency.Bind(autoCompleteClient.MustParse(parseFile(latestParsedPrefix),cur.get_NameSanitized()),function(a)
+    return!parsed?Concurrency.Return(true):Concurrency.Bind(autoCompleteClient.MustParse(parseFile(latestParsedPrefix),cur.get_NameSanitized()),function(a$4)
     {
-     return Concurrency.Return(a);
+     return Concurrency.Return(a$4);
     });
    });
   }
@@ -8477,12 +8760,12 @@
    b$8=null;
    return Concurrency.Delay(function()
    {
-    return Concurrency.Bind(isParseDisabled,function(a)
+    return Concurrency.Bind(isParseDisabled,function(a$4)
     {
      var m;
-     return a?Concurrency.Zero():(m=CodeSnippet$1.FetchO(currentCodeSnippetId.c),m!=null&&m.$==1?Concurrency.Bind(mustParse(m.$0),function(a$1)
+     return a$4?Concurrency.Zero():(m=CodeSnippet$1.FetchO(currentCodeSnippetId.Get()),m!=null&&m.$==1?Concurrency.Bind(mustParse(m.$0),function(a$5)
      {
-      return a$1?Concurrency.Bind(parseFSA(silent),function()
+      return a$5?Concurrency.Bind(parseFSA(silent),function()
       {
        return Concurrency.Return(null);
       }):Concurrency.Zero();
@@ -8492,25 +8775,25 @@
   }
   function getStartWord(line,ch)
   {
-   var a,t;
-   a=Useful.REGEX("([a-zA-Z_]\\w*)$","g",Strings.Substring(line,0,ch));
-   return a!=null&&a.$==1?(t=a.$0,t&&Arrays.length(t)===1)?Arrays.get(a.$0,0):"":"";
+   var a$4,t;
+   a$4=Useful.REGEX("([a-zA-Z_]\\w*)$","g",Strings.Substring(line,0,ch));
+   return a$4!=null&&a$4.$==1?(t=a$4.$0,t&&Arrays.length(t)===1)?Arrays.get(a$4.$0,0):"":"";
   }
   function getEndWord(line,ch)
   {
-   var a,t;
-   a=Useful.REGEX("^([a-zA-Z_]\\w*)","g",line.substring(ch));
-   return a!=null&&a.$==1?(t=a.$0,t&&Arrays.length(t)===1)?Arrays.get(a.$0,0):"":"";
+   var a$4,t;
+   a$4=Useful.REGEX("^([a-zA-Z_]\\w*)","g",line.substring(ch));
+   return a$4!=null&&a$4.$==1?(t=a$4.$0,t&&Arrays.length(t)===1)?Arrays.get(a$4.$0,0):"":"";
   }
   function showToolTip(ed)
   {
    var b$8;
    Concurrency.Start((b$8=null,Concurrency.Delay(function()
    {
-    return Concurrency.Bind(isParseDisabled,function(a)
+    return Concurrency.Bind(isParseDisabled,function(a$4)
     {
      var m,cur;
-     return a?Concurrency.Zero():(m=CodeSnippet$1.FetchO(currentCodeSnippetId.c),m!=null&&m.$==1?(cur=m.$0,Concurrency.Bind(parseIfMustThen(false),function()
+     return a$4?Concurrency.Zero():(m=CodeSnippet$1.FetchO(currentCodeSnippetId.Get()),m!=null&&m.$==1?(cur=m.$0,Concurrency.Bind(parseIfMustThen(false),function()
      {
       var pos,l,sub,add0,add;
       pos=ed.getCursor();
@@ -8518,16 +8801,16 @@
       sub=Strings.length(getStartWord(l,pos.ch));
       add0=Strings.length(getEndWord(l,pos.ch));
       add=sub===0&&add0===0?2:add0;
-      return Concurrency.Bind(autoCompleteClient.ToolTip(parseFile(latestParsedPrefix),pos.line+1,pos.ch+1,cur.get_NameSanitized()),function(a$1)
+      return Concurrency.Bind(autoCompleteClient.ToolTip(parseFile(latestParsedPrefix),pos.line+1,pos.ch+1,cur.get_NameSanitized()),function(a$5)
       {
        var c;
        addPrsMsg(((((c=(Runtime.Curried(function($7,$8,$9,$10,$11)
        {
         return $7("InfoFSharp \""+Utils.toSafe($8)+" "+("("+Utils.prettyPrint($9[0])+", "+Utils.prettyPrint($9[1])+")")+" - "+("("+Utils.prettyPrint($10[0])+", "+Utils.prettyPrint($10[1])+")")+" "+Utils.toSafe($11)+" \"");
-       },5))(Global.id),function(a$2)
+       },5))(Global.id),function(a$6)
        {
         var c$1;
-        c$1=c(a$2);
+        c$1=c(a$6);
         return function(t)
         {
          var c$2;
@@ -8537,20 +8820,20 @@
           return c$2([t$1[0],t$1[1]]);
          };
         };
-       })(cur.get_NameSanitized()))([pos.line+1,pos.ch-sub+1]))([pos.line+1,pos.ch+add+1]))(Strings.Replace(a$1,"\"","''")));
+       })(cur.get_NameSanitized()))([pos.line+1,pos.ch-sub+1]))([pos.line+1,pos.ch+add+1]))(Strings.Replace(a$5,"\"","''")));
        return Concurrency.Zero();
       });
      })):Concurrency.Zero());
     });
    })),null);
   }
-  function getAnnotations(txt,cb,a,ed)
+  function getAnnotations(txt,cb,a$4,ed)
   {
    var b$8;
    Concurrency.Start((b$8=null,Concurrency.Delay(function()
    {
     var m,cur;
-    m=CodeSnippet$1.FetchO(currentCodeSnippetId.c);
+    m=CodeSnippet$1.FetchO(currentCodeSnippetId.Get());
     return m!=null&&m.$==1?(cur=m.$0,(function($7)
     {
      return $7("calling parseIfMustThen");
@@ -8559,7 +8842,7 @@
      console.log(s$3);
     }),Concurrency.Bind(parseIfMustThen(false),function()
     {
-     var a$1;
+     var a$5;
      function c(file,indent,fl,fc,tl,tc,sev,from,msg)
      {
       var ind;
@@ -8573,15 +8856,15 @@
       return c($7[0],$7[1],$7[2],$7[3],$7[4],$7[5],$7[6],$7[7],$7[8]);
      },Arrays.choose(function(v$10)
      {
-      var $7,a$2,t,$8,a$3,t$1,fc,fl;
-      return(a$2=Useful.REGEX(rex2,"",v$10),a$2!=null&&a$2.$==1&&((t=a$2.$0,t&&Arrays.length(t)===13)&&($7=[Arrays.get(a$2.$0,8),Arrays.get(a$2.$0,5),Arrays.get(a$2.$0,7),Arrays.get(a$2.$0,2),Arrays.get(a$2.$0,4),Arrays.get(a$2.$0,11),Arrays.get(a$2.$0,1),Arrays.get(a$2.$0,10),Arrays.get(a$2.$0,9)],true)))?{
+      var $7,a$6,t,$8,a$7,t$1,fc,fl;
+      return(a$6=Useful.REGEX(rex2,"",v$10),a$6!=null&&a$6.$==1&&((t=a$6.$0,t&&Arrays.length(t)===13)&&($7=[Arrays.get(a$6.$0,8),Arrays.get(a$6.$0,5),Arrays.get(a$6.$0,7),Arrays.get(a$6.$0,2),Arrays.get(a$6.$0,4),Arrays.get(a$6.$0,11),Arrays.get(a$6.$0,1),Arrays.get(a$6.$0,10),Arrays.get(a$6.$0,9)],true)))?{
        $:1,
        $0:[$7[1],$7[4],Global.Number($7[2]),Global.Number($7[0]),Global.Number($7[8]),Global.Number($7[7]),$7[6],$7[3],$7[5]]
-      }:(a$3=Useful.REGEX(rex1,"",v$10),a$3!=null&&a$3.$==1&&((t$1=a$3.$0,t$1&&Arrays.length(t$1)===8)&&($8=[Arrays.get(a$3.$0,4),Arrays.get(a$3.$0,2),Arrays.get(a$3.$0,3),Arrays.get(a$3.$0,1),Arrays.get(a$3.$0,6),Arrays.get(a$3.$0,5)],true)))?(fc=$8[0],(fl=$8[2],{
+      }:(a$7=Useful.REGEX(rex1,"",v$10),a$7!=null&&a$7.$==1&&((t$1=a$7.$0,t$1&&Arrays.length(t$1)===8)&&($8=[Arrays.get(a$7.$0,4),Arrays.get(a$7.$0,2),Arrays.get(a$7.$0,3),Arrays.get(a$7.$0,1),Arrays.get(a$7.$0,6),Arrays.get(a$7.$0,5)],true)))?(fc=$8[0],(fl=$8[2],{
        $:1,
        $0:[$8[1],$8[3],Global.Number(fl),Global.Number(fc)-1,Global.Number(fl),Global.Number(fc),$8[5],"fsi",$8[4]]
       })):null;
-     },(a$1=Useful.REGEX(rex,"g",parserMsgs.c),a$1!=null&&a$1.$==1?a$1.$0:[]))));
+     },(a$5=Useful.REGEX(rex,"g",parserMsgs.Get()),a$5!=null&&a$5.$==1?a$5.$0:[]))));
      return Concurrency.Zero();
     }))):Concurrency.Zero();
    })),null);
@@ -8594,15 +8877,15 @@
   {
    return chr==="C"?"class":chr==="Cn"?"Constant":chr==="D"?"delegate":chr==="E"?"enum":chr==="P"?"property":chr==="e"?"event":chr==="X"?"exception":chr==="F"?"field":chr==="I"?"interface":chr==="M"?"function":chr==="N"?"module":chr==="S"?"struct":chr==="T"?"type":chr==="V"?"Variable":chr;
   }
-  function getHints(ed,cb,a)
+  function getHints(ed,cb,a$4)
   {
    var b$8;
    asyncStartDelayed((b$8=null,Concurrency.Delay(function()
    {
-    return Concurrency.Bind(isParseDisabled,function(a$1)
+    return Concurrency.Bind(isParseDisabled,function(a$5)
     {
      var m,pos,l,word;
-     return a$1?Concurrency.Zero():(m=CodeSnippet$1.FetchO(currentCodeSnippetId.c),m!=null&&m.$==1?(pos=ed.getCursor(),(l=ed.getLine(pos.line),(word=getStartWord(l,pos.ch),Concurrency.Bind(autoCompleteClient.Complete(parseFile(latestParsedPrefix),l+"a",pos.line+1,pos.ch+1,m.$0.get_NameSanitized()),function(a$2)
+     return a$5?Concurrency.Zero():(m=CodeSnippet$1.FetchO(currentCodeSnippetId.Get()),m!=null&&m.$==1?(pos=ed.getCursor(),(l=ed.getLine(pos.line),(word=getStartWord(l,pos.ch),Concurrency.Bind(autoCompleteClient.Complete(parseFile(latestParsedPrefix),l+"a",pos.line+1,pos.ch+1,m.$0.get_NameSanitized()),function(a$6)
      {
       function m$1(dis,rep,cls,chr)
       {
@@ -8614,7 +8897,7 @@
       cb(HintResponse.New(Arrays.map(function($7)
       {
        return m$1($7[0],$7[1],$7[2],$7[3]);
-      },a$2),CodeMirrorPos.New(pos.line,pos.ch-word.length),pos));
+      },a$6),CodeMirrorPos.New(pos.line,pos.ch-word.length),pos));
       return Concurrency.Zero();
      })))):Concurrency.Zero());
     });
@@ -8632,7 +8915,7 @@
    return Concurrency.Start((b$8=null,Concurrency.Delay(function()
    {
     var o;
-    Var.Set(currentCodeSnippetId,codeId);
+    currentCodeSnippetId.Set(codeId);
     o=CodeSnippet$1.FetchO(codeId);
     o==null?void 0:expandParents(o.$0);
     return Concurrency.Bind(Concurrency.Sleep(200),function()
@@ -8646,9 +8929,9 @@
   }
   function jumpToLine(line)
   {
-   var a,t,col,guid,line$1;
-   a=Useful.REGEX("([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}).+?\\((\\d+)\\,\\s*(\\d+)\\)","",line);
-   a!=null&&a.$==1?(t=a.$0,t&&Arrays.length(t)===4)?(col=Arrays.get(a.$0,3),guid=Arrays.get(a.$0,1),line$1=Arrays.get(a.$0,2),_goto(new CodeSnippetId({
+   var a$4,t,col,guid,line$1;
+   a$4=Useful.REGEX("([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}).+?\\((\\d+)\\,\\s*(\\d+)\\)","",line);
+   a$4!=null&&a$4.$==1?(t=a$4.$0,t&&Arrays.length(t)===4)?(col=Arrays.get(a$4.$0,3),guid=Arrays.get(a$4.$0,1),line$1=Arrays.get(a$4.$0,2),_goto(new CodeSnippetId({
     $:0,
     $0:guid
    }),Global.Number(line$1),Global.Number(col))):void 0:void 0;
@@ -8659,27 +8942,27 @@
    Concurrency.Start((b$8=null,Concurrency.Delay(function()
    {
     var $7,$8,$9,ed,pos;
-    $7=CodeSnippet$1.FetchO(currentCodeSnippetId.c);
+    $7=CodeSnippet$1.FetchO(currentCodeSnippetId.Get());
     $8=codeMirror.editorO;
-    return($8!=null&&$8.$==1?$7!=null&&$7.$==1?($9=[$7.$0,$8.$0],false):true:true)?Concurrency.Zero():(ed=$9[1],(pos=ed.getCursor(),(ed.getLine(pos.line),Concurrency.Bind(autoCompleteClient.FindDecl(parseFile(latestParsedPrefix),pos.line+1,pos.ch+1,$9[0].get_NameSanitized()),function(a)
+    return($8!=null&&$8.$==1?$7!=null&&$7.$==1?($9=[$7.$0,$8.$0],false):true:true)?Concurrency.Zero():(ed=$9[1],(pos=ed.getCursor(),(ed.getLine(pos.line),Concurrency.Bind(autoCompleteClient.FindDecl(parseFile(latestParsedPrefix),pos.line+1,pos.ch+1,$9[0].get_NameSanitized()),function(a$4)
     {
      var decl;
-     return a.$==9?(decl=a.$0,(jumpToLine(((((((Runtime.Curried(function($10,$11,$12,$13,$14,$15)
+     return a$4.$==9?(decl=a$4.$0,(jumpToLine(((((((Runtime.Curried(function($10,$11,$12,$13,$14,$15)
      {
       return $10(Utils.toSafe($11)+" ("+Global.String($12)+", "+Global.String($13)+") - ("+Global.String($14)+", "+Global.String($15)+")");
-     },6))(Global.id))(decl.File))(decl.Line))(decl.Column))(decl.Line))(decl.Column)),Concurrency.Zero())):a.$==1?(Global.alert((function($10)
+     },6))(Global.id))(decl.File))(decl.Line))(decl.Column))(decl.Line))(decl.Column)),Concurrency.Zero())):a$4.$==1?(Global.alert((function($10)
      {
       return function($11)
       {
        return $10(GeneratedPrintf.p($11));
       };
-     }(Global.id))(a.$0)),Concurrency.Zero()):(Global.alert((function($10)
+     }(Global.id))(a$4.$0)),Concurrency.Zero()):(Global.alert((function($10)
      {
       return function($11)
       {
        return $10(FSharpStation_GeneratedPrintf.p$7($11));
       };
-     }(Global.id))(a)),Concurrency.Zero());
+     }(Global.id))(a$4)),Concurrency.Zero());
     }))));
    })),null);
   }
@@ -8701,9 +8984,17 @@
     });
    })),null);
   }
+  function a$2(a$4,a$5)
+  {
+   return showToolTip(codeMirror.editorO.$0);
+  }
+  function a$3(a$4,a$5)
+  {
+   return gotoDefinition();
+  }
   function setDirtyP()
   {
-   Var.Set(dirty,true);
+   dirty.Set(true);
   }
   function getProperty(props,key)
   {
@@ -8711,7 +9002,7 @@
   }
   function setProperty(props,key,v$10)
   {
-   return getProperty(props,key).get_ValueVar().RSet(v$10);
+   return getProperty(props,key).get_ValueVar().Set(v$10);
   }
   function f$6(u,props)
   {
@@ -8722,29 +9013,37 @@
      return Seq.append(Seq.map(function(kvp)
      {
       var prop;
+      function a$4(a$5,a$6)
+      {
+       prop.Remove();
+       return redraw.Set(null);
+      }
       prop=getProperty(props,kvp);
       return HtmlNode.tr([HtmlNode.td([HtmlNode.someElt(Doc.Input([],prop.get_KeyVar()))]),HtmlNode.td([HtmlNode.someElt(Doc.InputArea([HtmlNode.atr("style","height: 1.5em")],prop.get_ValueVar()))]),Template.hoverable(HtmlNode.td([HtmlNode.title("remove"),HtmlNode.style(" cursor: pointer "),HtmlNode.htmlText("x"),new HtmlNode$1({
        $:8,
-       $0:AttrModule.Handler("click",function()
+       $0:AttrProxy.HandlerImpl("click",function($7)
        {
-        return function()
+        return function($8)
         {
-         prop.Remove();
-         return Var.Set(redraw,null);
+         return a$4($7,$8);
         };
        })
       })]))]);
      },Seq.sort(props.get_Keys())),Seq.delay(function()
      {
+      function a$4(a$5,a$6)
+      {
+       props.Add("","1");
+       setDirtyP();
+       return redraw.Set(null);
+      }
       return[HtmlNode.tr([Template.hoverable(HtmlNode.td([HtmlNode.htmlText("Add..."),new HtmlNode$1({
        $:8,
-       $0:AttrModule.Handler("click",function()
+       $0:AttrProxy.HandlerImpl("click",function($7)
        {
-        return function()
+        return function($8)
         {
-         props.Add("","1");
-         setDirtyP();
-         return Var.Set(redraw,null);
+         return a$4($7,$8);
         };
        })
       })])),HtmlNode.td([HtmlNode.htmlText("")])])];
@@ -8754,35 +9053,35 @@
   }
   function f$7(k)
   {
-   function a(s$3)
+   function a$4(s$3)
    {
     return s$3.properties;
    }
-   function a$1(s$3,p)
+   function a$5(s$3,p)
    {
     return CodeSnippet.New(s$3.name,s$3.content,s$3.parent,s$3.predecessors,s$3.id,s$3.expanded,s$3.level,s$3.levelCode,p);
    }
-   return missing(new Dictionary.New$5(),function(a$2)
+   return missing(new Dictionary.New$5(),function(a$6)
    {
-    return FsGlobal.codeSnippets().TryFindByKey(a$2);
-   },function(a$2)
+    return FsGlobal.codeSnippets().TryFindByKey(a$6);
+   },function(a$6)
    {
-    return FsGlobal.codeSnippets().LensInto(a,a$1,a$2);
+    return FsGlobal.codeSnippets().LensInto(a$4,a$5,a$6);
    },k);
   }
-  function g$12(a)
+  function g$12(a$4)
   {
    return new Val({
     $:1,
-    $0:a
+    $0:a$4
    });
   }
-  function DoW(f$8,p,a,a$1)
+  function DoW(f$8,p,a$4,a$5)
   {
    var x$2;
    return Wrap.start(addOutMsg,(x$2=f$8(p),(Wrap.map(Global.ignore))(x$2)));
   }
-  function DoP(f$8,p,a,a$1)
+  function DoP(f$8,p,a$4,a$5)
   {
    function p$1($7,$8)
    {
@@ -8792,7 +9091,7 @@
      if($7.$0[0].$==0)
       {
        addOutMsg($8);
-       Var.Set(triggerWSResult,null);
+       triggerWSResult.Set(null);
       }
      else
       addOutMsg($8);
@@ -8830,14 +9129,14 @@
    b$8=Wrap.wrap();
    return b$8.Run(b$8.Delay(function()
    {
-    return b$8.Bind$2(Val.getAsync(act.text),function(a)
+    return b$8.Bind$2(Val.getAsync(act.text),function(a$4)
     {
-     var $7,o,code,code$1,$8,$9,o$1,o$2,$10,snpO,openPre,actionTempl,a$1,t;
+     var $7,o,code,code$1,$8,$9,o$1,o$2,$10,snpO,openPre,actionTempl,a$5,t;
      function propValue(p)
      {
       return snpO==null?null:FsGlobal["CodeSnippet.propValue"](snpO.$0,p);
      }
-     setOutMsg(a+"...");
+     setOutMsg(a$4+"...");
      snpO=getSnpO();
      openPre=addOpen?Option.defaultValue("",(o=propValue("open"),o==null?null:{
       $:1,
@@ -8850,11 +9149,11 @@
      {
       return Option.defaultValue("${parm}() |> printfn \"%A\"",propValue("action-template"));
      });
-     a$1=(o$2=act.parms,o$2==null?null:{
+     a$5=(o$2=act.parms,o$2==null?null:{
       $:1,
       $0:Arrays.map(Global.id,o$2.$0)
      });
-     switch(a$1!=null&&a$1.$==1?(t=a$1.$0,t&&Arrays.length(t)===2?Arrays.get(a$1.$0,0)==="Code"?($10=Arrays.get(a$1.$0,1),0):Arrays.get(a$1.$0,0)==="Property"?($10=Arrays.get(a$1.$0,1),1):2:2):2)
+     switch(a$5!=null&&a$5.$==1?(t=a$5.$0,t&&Arrays.length(t)===2?Arrays.get(a$5.$0,0)==="Code"?($10=Arrays.get(a$5.$0,1),0):Arrays.get(a$5.$0,0)==="Property"?($10=Arrays.get(a$5.$0,1),1):2:2):2)
      {
       case 0:
        o$1={
@@ -8869,10 +9168,10 @@
        o$1=null;
        break;
      }
-     $9=o$1==null?propValue(a):o$1;
+     $9=o$1==null?propValue(a$4):o$1;
      code=(code$1=Option.defaultWith(function()
      {
-      return((Object.constructor("return function(parm) { return `"+actionTempl.f()+"`}"))())(a);
+      return((Object.constructor("return function(parm) { return `"+actionTempl.f()+"`}"))())(a$4);
      },$9),Strings.StartsWith(code$1,"////")?code$1:openPre+code$1);
      return snpO!=null&&snpO.$==1?b$8.Bind$2((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsEvaluator+Evaluator.getPresence:-1568677081",[Evaluator.extractConfig(code),(function($11)
      {
@@ -8880,9 +9179,9 @@
       {
        return $11(FSharpStation_GeneratedPrintf.p$6($12));
       };
-     }(Global.id))(snpO.$0.id)]),function(a$2)
+     }(Global.id))(snpO.$0.id)]),function(a$6)
      {
-      return Unchecked.Equals(a$2,{
+      return Unchecked.Equals(a$6,{
        $:1,
        $0:"ok"
       })?b$8.Return(code):b$8.Bind$3(evalSnippetW(snpO),function()
@@ -8990,7 +9289,7 @@
   }
   function $5()
   {
-   return compileRunP(position.c);
+   return compileRunP(position.Get());
   }
   function $6()
   {
@@ -9005,7 +9304,7 @@
     });
    }));
   }
-  function jumpToRef(e,a)
+  function jumpToRef(e,a$4)
   {
    var v$10,s$3;
    function c(line,from,to_)
@@ -9025,7 +9324,7 @@
     return[[line,total,total+line.length+1],total+line.length+1];
    },0,Strings.SplitChars(v$10,["\n"],0)))[0]));
   }
-  function scrollToBottom(e,a)
+  function scrollToBottom(e,a$4)
   {
    var b$8;
    return Concurrency.Start((b$8=null,Concurrency.Delay(function()
@@ -9045,11 +9344,11 @@
    {
     return b$8.Bind(Result.tryProtection(),function()
     {
-     return b$8.Bind(layout.GetGuiCallAction(name,action,parms),function(a)
+     return b$8.Bind(layout.GetGuiCallAction(name,action,parms),function(a$4)
      {
       var o;
-      o=a.onClick;
-      o==null?void 0:((o.$0(a))(null))(null);
+      o=a$4.onClick;
+      o==null?void 0:((o.$0(a$4))(null))(null);
       return b$8.Zero();
      });
     });
@@ -9156,12 +9455,12 @@
      $:4,
      $0:null,
      $1:[["Snippet not found",FSSeverity.FSError]]
-    }):Concurrency.Bind(FsTranslator.translateAR(FsGlobal["CodeSnippet.GetCodeFsx"](m.$0,true),false),function(a)
+    }):Concurrency.Bind(FsTranslator.translateAR(FsGlobal["CodeSnippet.GetCodeFsx"](m.$0,true),false),function(a$4)
     {
      return Concurrency.Return({
       $:4,
-      $0:Result.getOption(Result.map(RunCode.completeJS,a)),
-      $1:transMsgs(Result.getMsgs(a))
+      $0:Result.getOption(Result.map(RunCode.completeJS,a$4)),
+      $1:transMsgs(Result.getMsgs(a$4))
      });
     })):msg.$==8?Concurrency.Return({
      $:3,
@@ -9194,17 +9493,17 @@
      $:1,
      $0:{
       $:1,
-      $0:(x$2=Arrays.ofSeq((FsGlobal.codeSnippets())["var"].RVal()),JSON.stringify(((Provider.EncodeArray(FSharpStation_JsonEncoder.j$7))())(x$2)))
+      $0:(x$2=Arrays.ofSeq((FsGlobal.codeSnippets())["var"].Get()),JSON.stringify(((Provider.EncodeArray(FSharpStation_JsonEncoder.j$7))())(x$2)))
      }
     });
    });
   }
   function addCssLink(lnk)
   {
-   !List.contains(lnk,cssLinks.c)?Var.Set(cssLinks,new List.T({
+   !List.contains(lnk,cssLinks.Get())?cssLinks.Set(new List.T({
     $:1,
     $0:lnk,
-    $1:cssLinks.c
+    $1:cssLinks.Get()
    })):void 0;
    delayedRefreshCM(300);
   }
@@ -9212,7 +9511,7 @@
   currentCodeSnippetId=Var.Create$1(CodeSnippetId.get_New());
   s="CodeEditor."+"currentCodeSnippetId";
   v=Global.localStorage.getItem(s);
-  v!==null?currentCodeSnippetId.set_RVal((FSharpStation_JsonDecoder.j$7())(JSON.parse(v))):void 0;
+  v!==null?currentCodeSnippetId.Set((FSharpStation_JsonDecoder.j$7())(JSON.parse(v))):void 0;
   Val.sink(function(v$10)
   {
    Global.localStorage.setItem(s,JSON.stringify((FSharpStation_JsonEncoder.j$5())(v$10)));
@@ -9228,7 +9527,7 @@
   position=Var.Create$1(Position.Below);
   s$1="CodeEditor."+"position";
   v$1=Global.localStorage.getItem(s$1);
-  v$1!==null?position.set_RVal((FSharpStation_JsonDecoder.j$8())(JSON.parse(v$1))):void 0;
+  v$1!==null?position.Set((FSharpStation_JsonDecoder.j$8())(JSON.parse(v$1))):void 0;
   Val.sink(function(v$10)
   {
    Global.localStorage.setItem(s$1,JSON.stringify((FSharpStation_JsonEncoder.j$6())(v$10)));
@@ -9252,8 +9551,8 @@
    return g$6(f(x$2));
   }),currentCodeSnippetId),(prior=[Var.Create$1(null)],(View.Sink(function(v$10)
   {
-   if(!Unchecked.Equals(prior[0].c,v$10))
-    Var.Set(prior[0],v$10);
+   if(!Unchecked.Equals(prior[0].Get(),v$10))
+    prior[0].Set(v$10);
   },Val.toView(v$2)),new Val({
    $:1,
    $0:prior[0]
@@ -9269,8 +9568,8 @@
    return g$7(f$1(x$2));
   }),currentCodeSnippetId),(prior$1=[Var.Create$1(null)],(View.Sink(function(v$10)
   {
-   if(!Unchecked.Equals(prior$1[0].c,v$10))
-    Var.Set(prior$1[0],v$10);
+   if(!Unchecked.Equals(prior$1[0].Get(),v$10))
+    prior$1[0].Set(v$10);
   },Val.toView(v$3)),new Val({
    $:1,
    $0:prior$1[0]
@@ -9286,8 +9585,8 @@
    return g$8(f$2(x$2));
   }),currentCodeSnippetId),(prior$2=[Var.Create$1(null)],(View.Sink(function(v$10)
   {
-   if(!Unchecked.Equals(prior$2[0].c,v$10))
-    Var.Set(prior$2[0],v$10);
+   if(!Unchecked.Equals(prior$2[0].Get(),v$10))
+    prior$2[0].Set(v$10);
   },Val.toView(v$4)),new Val({
    $:1,
    $0:prior$2[0]
@@ -9303,8 +9602,8 @@
    return g$9(f$3(x$2));
   }),currentCodeSnippetId),(prior$3=[Var.Create$1(null)],(View.Sink(function(v$10)
   {
-   if(!Unchecked.Equals(prior$3[0].c,v$10))
-    Var.Set(prior$3[0],v$10);
+   if(!Unchecked.Equals(prior$3[0].Get(),v$10))
+    prior$3[0].Set(v$10);
   },Val.toView(v$5)),new Val({
    $:1,
    $0:prior$3[0]
@@ -9320,8 +9619,8 @@
    return g$10(f$4(x$2));
   }),currentCodeSnippetId),(prior$4=[Var.Create$1(null)],(View.Sink(function(v$10)
   {
-   if(!Unchecked.Equals(prior$4[0].c,v$10))
-    Var.Set(prior$4[0],v$10);
+   if(!Unchecked.Equals(prior$4[0].Get(),v$10))
+    prior$4[0].Set(v$10);
   },Val.toView(v$6)),new Val({
    $:1,
    $0:prior$4[0]
@@ -9337,8 +9636,8 @@
    return g$11(f$5(x$2));
   }),currentCodeSnippetId),(prior$5=[Var.Create$1(null)],(View.Sink(function(v$10)
   {
-   if(!Unchecked.Equals(prior$5[0].c,v$10))
-    Var.Set(prior$5[0],v$10);
+   if(!Unchecked.Equals(prior$5[0].Get(),v$10))
+    prior$5[0].Set(v$10);
   },Val.toView(v$7)),new Val({
    $:1,
    $0:prior$5[0]
@@ -9391,14 +9690,14 @@
     e.returnValue="Changes you made may not be saved.";
    }:null;
   },dirty);
-  draggedId=CodeSnippetId.get_New();
+  draggedId=[CodeSnippetId.get_New()];
   FableModule.set_addOutMsg(addOutMsg);
   compileRunW=($1=Global.location.origin+"/Main.html",(Runtime.Curried3(compileRunUrlW))($1));
-  curPredecessors=Val.map(function(a)
+  curPredecessors=Val.map(function(a$4)
   {
    var res$1,res$2;
    res$1=null;
-   return getPredecessorsM.cache.TryGetValue(a,{
+   return getPredecessorsM.cache.TryGetValue(a$4,{
     get:function()
     {
      return res$1;
@@ -9407,26 +9706,26 @@
     {
      res$1=v$10;
     }
-   })?res$1:(res$2=getPredecessorsM.f(a),(getPredecessorsM.cache.set_Item(a,res$2),res$2));
+   })?res$1:(res$2=getPredecessorsM.f(a$4),(getPredecessorsM.cache.set_Item(a$4,res$2),res$2));
   },currentCodeSnippetO);
-  topScrollList=0;
+  topScrollList=[0];
   fileName=Var.Create$1("");
   Val.map(function(v$10)
   {
    return v$10==="";
   },fileName);
   fileInputElementId="CodeEditorFileSel";
-  loadFileElement=Input.New$3(Var.Lens(fileName,justFileName,Global.id)).Prefix$1(HtmlNode.label([HtmlNode["class"]("btn btn-primary"),HtmlNode.htmlText("Load File..."),Input.New$3(fileName).Type("file").Style("display: none").Content([AttrModule.Handler("change",function(el)
+  loadFileElement=Input.New$3(Var.Lens(fileName,justFileName,Global.id)).Prefix$1(HtmlNode.label([HtmlNode["class"]("btn btn-primary"),HtmlNode.htmlText("Load File..."),Input.New$3(fileName).Type("file").Style("display: none").Content([AttrProxy.HandlerImpl("change",function($7)
   {
-   return function()
+   return function($8)
    {
-    return loadFile(el);
+    return a($7,$8);
    };
-  }),AttrModule.Handler("click",function(el)
+  }),AttrProxy.HandlerImpl("click",function($7)
   {
-   return function()
+   return function($8)
    {
-    el.value="";
+    return a$1($7,$8);
    };
   })]).Id(fileInputElementId).get_Render()]));
   loadFromUri!==""?Concurrency.Start((b=null,Concurrency.Delay(function()
@@ -9469,12 +9768,12 @@
   {
    var o,r;
    o=changingIRefO[0];
-   o==null?void 0:(r=o.$0,contentVarChanged[0]>refVarChanged[0]?refVarChanged[0]=contentVarChanged[0]:!Unchecked.Equals(r.RVal(),contentVar.c)?(refVarChanged[0]=refVarChanged[0]+1,r.set_RVal(contentVar.c)):void 0);
-  },contentVar.v),View.Sink(function()
+   o==null?void 0:(r=o.$0,contentVarChanged[0]>refVarChanged[0]?refVarChanged[0]=contentVarChanged[0]:!Unchecked.Equals(r.Get(),contentVar.Get())?(refVarChanged[0]=refVarChanged[0]+1,r.Set(contentVar.Get())):void 0);
+  },contentVar.get_View()),View.Sink(function()
   {
    var o,r;
    o=changingIRefO[0];
-   o==null?void 0:(r=o.$0,refVarChanged[0]>contentVarChanged[0]?contentVarChanged[0]=refVarChanged[0]:!Unchecked.Equals(r.RVal(),contentVar.c)?(contentVarChanged[0]=contentVarChanged[0]+10,Var.Set(contentVar,r.RVal())):void 0);
+   o==null?void 0:(r=o.$0,refVarChanged[0]>contentVarChanged[0]?contentVarChanged[0]=refVarChanged[0]:!Unchecked.Equals(r.Get(),contentVar.Get())?(contentVarChanged[0]=contentVarChanged[0]+10,contentVar.Set(r.Get())):void 0);
   },View.Bind(function(cur)
   {
    var r;
@@ -9484,12 +9783,12 @@
     $0:r
    };
    refVarChanged[0]=contentVarChanged[0]+100;
-   Var.Set(contentVar,r.RVal());
-   return r.RView();
+   contentVar.Set(r.Get());
+   return r.get_View();
   },view)),contentVar))))))).OnChange(function()
   {
    var $7;
-   lastCodeAndStarts!=null&&lastCodeAndStarts.$==1&&(Unchecked.Equals(lastCodeAndStarts.$0[0],currentCodeSnippetId.c)&&($7=[lastCodeAndStarts.$0[0],lastCodeAndStarts.$0[2]],true))?setDirtyPart():setDirty();
+   lastCodeAndStarts!=null&&lastCodeAndStarts.$==1&&(Unchecked.Equals(lastCodeAndStarts.$0[0],currentCodeSnippetId.Get())&&($7=[lastCodeAndStarts.$0[0],lastCodeAndStarts.$0[2]],true))?setDirtyPart():setDirty();
   }).OnRender(function(ed)
   {
    var g$13;
@@ -9497,7 +9796,7 @@
    {
     return getHints($7[0],$7[1],$7[2]);
    }
-   function f$8(a)
+   function f$8(a$4)
    {
     ed.replaceSelection(".","end");
    }
@@ -9505,9 +9804,9 @@
    {
     return getHints($7[0],$7[1],$7[2]);
    }
-   ed.addKeyMap(KeyMapAutoComplete.New(showToolTip,showToolTip,function(a)
+   ed.addKeyMap(KeyMapAutoComplete.New(showToolTip,showToolTip,function(a$4)
    {
-    Template.showHints(ed,g$14,false,a);
+    Template.showHints(ed,g$14,false,a$4);
    },(g$13=function()
    {
     Template.showHints(ed,g$15,false,void 0);
@@ -9536,20 +9835,20 @@
   }).Style("height: 100%");
   codeMirrorRender=codeMirror.get_Render().AddChildren([new HtmlNode$1({
    $:8,
-   $0:AttrModule.Handler("dblclick",function()
+   $0:AttrProxy.HandlerImpl("dblclick",function($7)
    {
-    return function()
+    return function($8)
     {
-     return showToolTip(codeMirror.editorO.$0);
+     return a$2($7,$8);
     };
    })
   }),HtmlNode.htmlElement("menu",[HtmlNode.type("context"),HtmlNode.Id("right-menu"),HtmlNode.htmlElement("menuitem",[HtmlNode.htmlAttribute("label","Goto Definition"),new HtmlNode$1({
    $:8,
-   $0:AttrModule.Handler("click",function()
+   $0:AttrProxy.HandlerImpl("click",function($7)
    {
-    return function()
+    return function($8)
     {
-     return gotoDefinition();
+     return a$3($7,$8);
     };
    })
   })])]),HtmlNode.htmlAttribute("contextmenu","right-menu")]);
@@ -9559,7 +9858,7 @@
    Concurrency.Start((b$8=null,Concurrency.Delay(function()
    {
     var m,m$1;
-    return!parsed?Concurrency.Zero():(m=codeMirror.editorO,m!=null&&m.$==1?(m$1=CodeSnippet$1.FetchO(currentCodeSnippetId.c),m$1!=null&&m$1.$==1?(m.$0.performLint(),Concurrency.Zero()):Concurrency.Zero()):Concurrency.Zero());
+    return!parsed?Concurrency.Zero():(m=codeMirror.editorO,m!=null&&m.$==1?(m$1=CodeSnippet$1.FetchO(currentCodeSnippetId.Get()),m$1!=null&&m$1.$==1?(m.$0.performLint(),Concurrency.Zero()):Concurrency.Zero()):Concurrency.Zero());
    })),null);
   },parserMsgs);
   redraw=Var.Create$1();
@@ -9683,7 +9982,7 @@
   s$2="CodeEditor."+"splitterV1";
   v$8=SplitterBar.New$1(20).Children([HtmlNode.style("grid-row: 2 / 4")]).get_Var();
   v$9=Global.localStorage.getItem(s$2);
-  v$9!==null?v$8.set_RVal(((Provider.Id())())(JSON.parse(v$9))):void 0;
+  v$9!==null?v$8.Set(((Provider.Id())())(JSON.parse(v$9))):void 0;
   Val.sink(function(v$10)
   {
    Global.localStorage.setItem(s$2,JSON.stringify(((Provider.Id())())(v$10)));
@@ -9714,13 +10013,17 @@
       },isExpanded?expanded.Add(snp.id):expanded])):[null,expanded];
      },new FSharpSet.New(List.T.Empty),x$2))[0]),Seq.delay(function()
      {
+      function a$4(e,a$5)
+      {
+       topScrollList[0]=e.scrollTop;
+      }
       return Seq.append([new HtmlNode$1({
        $:8,
-       $0:AttrModule.Handler("scroll",function(e)
+       $0:AttrProxy.HandlerImpl("scroll",function($7)
        {
-        return function()
+        return function($8)
         {
-         topScrollList=e.scrollTop;
+         return a$4($7,$8);
         };
        })
       })],Seq.delay(function()
@@ -9729,14 +10032,14 @@
         $:8,
         $0:AttrModule.OnAfterRender(function(e)
         {
-         e.scrollTop=topScrollList;
+         e.scrollTop=topScrollList[0];
         })
        })];
       }));
      }));
     }));
    })));
-  },(x=FsGlobal.codeSnippets().v,View.SnapshotOn((FsGlobal.codeSnippets())["var"].RVal(),refresh.v,x)));
+  },(x=FsGlobal.codeSnippets().v,View.SnapshotOn((FsGlobal.codeSnippets())["var"].Get(),refresh.get_View(),x)));
   steps=Layout.AddGuids([["actLoadFile",new GuiPart({
    $:2,
    $0:actLoadFile
@@ -9798,11 +10101,11 @@
    $:1,
    $0:TextArea.New$3(outputMsgs).Placeholder("Output:").Title("Output").RenderWith(List.ofArray([new HtmlNode$1({
     $:8,
-    $0:AttrModule.Handler("dblclick",function(a)
+    $0:AttrProxy.HandlerImpl("dblclick",function(a$4)
     {
      return function($7)
      {
-      return jumpToRef(a,$7);
+      return jumpToRef(a$4,$7);
      };
     })
    }),new HtmlNode$1({
@@ -9819,11 +10122,11 @@
    $:1,
    $0:TextArea.New$3(parserMsgs).Placeholder("Parser messages:").Title("Parser").RenderWith(List.ofArray([new HtmlNode$1({
     $:8,
-    $0:AttrModule.Handler("dblclick",function(a)
+    $0:AttrProxy.HandlerImpl("dblclick",function(a$4)
     {
      return function($7)
      {
-      return jumpToRef(a,$7);
+      return jumpToRef(a$4,$7);
      };
     })
    })]))
@@ -9845,12 +10148,12 @@
    {
     var o,r;
     o=changingIRefO$1[0];
-    o==null?void 0:(r=o.$0,contentVarChanged$1[0]>refVarChanged$1[0]?refVarChanged$1[0]=contentVarChanged$1[0]:!Unchecked.Equals(r.RVal(),contentVar$1.c)?(refVarChanged$1[0]=refVarChanged$1[0]+1,r.set_RVal(contentVar$1.c)):void 0);
-   },contentVar$1.v),View.Sink(function()
+    o==null?void 0:(r=o.$0,contentVarChanged$1[0]>refVarChanged$1[0]?refVarChanged$1[0]=contentVarChanged$1[0]:!Unchecked.Equals(r.Get(),contentVar$1.Get())?(refVarChanged$1[0]=refVarChanged$1[0]+1,r.Set(contentVar$1.Get())):void 0);
+   },contentVar$1.get_View()),View.Sink(function()
    {
     var o,r;
     o=changingIRefO$1[0];
-    o==null?void 0:(r=o.$0,refVarChanged$1[0]>contentVarChanged$1[0]?contentVarChanged$1[0]=refVarChanged$1[0]:!Unchecked.Equals(r.RVal(),contentVar$1.c)?(contentVarChanged$1[0]=contentVarChanged$1[0]+10,Var.Set(contentVar$1,r.RVal())):void 0);
+    o==null?void 0:(r=o.$0,refVarChanged$1[0]>contentVarChanged$1[0]?contentVarChanged$1[0]=refVarChanged$1[0]:!Unchecked.Equals(r.Get(),contentVar$1.Get())?(contentVarChanged$1[0]=contentVarChanged$1[0]+10,contentVar$1.Set(r.Get())):void 0);
    },View.Bind(function(cur)
    {
     var r;
@@ -9860,8 +10163,8 @@
      $0:r
     };
     refVarChanged$1[0]=contentVarChanged$1[0]+100;
-    Var.Set(contentVar$1,r.RVal());
-    return r.RView();
+    contentVar$1.Set(r.Get());
+    return r.get_View();
    },view$1)),contentVar$1))))))).Prefix$1(HtmlNode.htmlText("name:")).get_Render()
   })],["code",new GuiPart({
    $:1,
@@ -9903,28 +10206,28 @@
   },propertyLayoutJSVal);
   Global.doFSharpStationGuiCall=function(v$10)
   {
-   var a,c;
-   a=Result.Success(doGuiCallR.apply(null,v$10));
-   a.$==1?((c=(Runtime.Curried3(function($7,$8,$9)
+   var a$4,c;
+   a$4=Result.Success(doGuiCallR.apply(null,v$10));
+   a$4.$==1?((c=(Runtime.Curried3(function($7,$8,$9)
    {
     return $7("Error doGuiCall "+Utils.printArray(Utils.prettyPrint,$8)+": "+("("+Utils.prettyPrint($9[0])+", "+Utils.prettyPrint($9[1])+", "+Utils.printArray(Utils.prettyPrint,$9[2])+")"));
    }))(function(s$3)
    {
     console.log(s$3);
-   }),function(a$1)
+   }),function(a$5)
    {
     var c$1;
-    c$1=c(a$1);
+    c$1=c(a$5);
     return function(t)
     {
      c$1([t[0],t[1],t[2]]);
     };
-   })(a.$0))(v$10):void 0;
+   })(a$4.$0))(v$10):void 0;
   };
   Global.setFSharpStationLayout=function(f$8)
   {
    var o;
-   o=CodeSnippet$1.FetchO(currentCodeSnippetId.c);
+   o=CodeSnippet$1.FetchO(currentCodeSnippetId.Get());
    o==null?void 0:addLayoutSteps(f$8.apply(null,[layout,o.$0]));
   };
   res=null;
@@ -9956,11 +10259,11 @@
       {
        return respond("",$7);
       }
-      function g$14(a)
+      function g$14(a$4)
       {
        return{
         $:1,
-        $0:a
+        $0:a$4
        };
       }
       function f$10(x$2)
@@ -9992,7 +10295,7 @@
       {
        return Concurrency.Return(null);
       });
-     }),function(a)
+     }),function(a$4)
      {
       ((function($7)
       {
@@ -10003,7 +10306,7 @@
       }(function(s$3)
       {
        console.log(s$3);
-      }))(a.message));
+      }))(a$4.message));
       return Concurrency.Bind(Concurrency.Sleep(1000),function()
       {
        return Concurrency.Return(null);
@@ -10200,7 +10503,7 @@
  };
  FSharpStation_GeneratedPrintf.p$12=function($1)
  {
-  return"V <fun>";
+  return"View <fun>";
  };
  FSharpStation_GeneratedPrintf.p$9=function($1)
  {
@@ -10208,7 +10511,7 @@
  };
  FSharpStation_GeneratedPrintf.p$10=function($1)
  {
-  return"V <fun>";
+  return"View <fun>";
  };
  FSharpStation_GeneratedPrintf.p$8=function($1)
  {
