@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,WebSharper,Obj,UI,Templating,Runtime,Server,TemplateInitializer,TemplateInstances,Handler,TemplateInstance,Client,IntelliFactory,Runtime$1,Collections,Dictionary,Arrays,Var,Operators,Doc,HashSet,Enumerator,Seq,MatchFailureException;
+ var Global,WebSharper,Obj,UI,Templating,Runtime,Server,TemplateInitializer,TemplateInstances,Handler,TemplateInstance,Client,IntelliFactory,Runtime$1,Collections,Dictionary,Arrays,Var,Operators,Doc,Activator,HashSet,Enumerator,Seq;
  Global=window;
  WebSharper=Global.WebSharper;
  Obj=WebSharper&&WebSharper.Obj;
@@ -22,10 +22,10 @@
  Var=UI&&UI.Var;
  Operators=WebSharper&&WebSharper.Operators;
  Doc=UI&&UI.Doc;
+ Activator=WebSharper&&WebSharper.Activator;
  HashSet=Collections&&Collections.HashSet;
  Enumerator=WebSharper&&WebSharper.Enumerator;
  Seq=WebSharper&&WebSharper.Seq;
- MatchFailureException=WebSharper&&WebSharper.MatchFailureException;
  TemplateInitializer=Server.TemplateInitializer=Runtime$1.Class({
   get_Vars:function()
   {
@@ -34,46 +34,44 @@
   get_Id:function()
   {
    return this.id;
+  },
+  get_Instance:function()
+  {
+   var i,d,a,i$1,$1,f,t;
+   if(this.hasOwnProperty("instance"))
+    return this.instance;
+   else
+    {
+     d=new Dictionary.New$5();
+     a=this.vars;
+     for(i$1=0,$1=a.length-1;i$1<=$1;i$1++){
+      f=Arrays.get(a,i$1);
+      t=f[1];
+      d.set_Item(f[0],t===0?Var.Create$1(""):t===1?Var.Create$1(0):t===2?Var.Create$1(false):Operators.FailWith("Invalid value type"));
+     }
+     i=new TemplateInstance.New({
+      $:0,
+      $0:d
+     },Doc.Empty());
+     this.instance=i;
+     return i;
+    }
   }
  },Obj,TemplateInitializer);
  TemplateInitializer.New=Runtime$1.Ctor(function(id,vars)
  {
-  var $1,d,a,i,$2,f,t;
   this.id=id;
   this.vars=vars;
-  d=new Dictionary.New$5();
-  a=this.vars;
-  for(i=0,$2=a.length-1;i<=$2;i++){
-   f=Arrays.get(a,i);
-   t=f[1];
-   d.set_Item(f[0],t===0?Var.Create$1(""):t===1?Var.Create$1(0):t===2?Var.Create$1(false):Operators.FailWith("Invalid value type"));
-  }
-  TemplateInstances.get_Instances().set_Item(this.id,new TemplateInstance.New({
-   $:0,
-   $0:d
-  },Doc.Empty()));
  },TemplateInitializer);
- TemplateInstances.$cctor=function()
- {
-  TemplateInstances.$cctor=Global.ignore;
-  TemplateInstances.instances=new Dictionary.New$5();
- };
  TemplateInstances=Server.TemplateInstances=Runtime$1.Class({},Obj,TemplateInstances);
  TemplateInstances.GetInstance=function(key)
  {
-  TemplateInstances.$cctor();
-  return TemplateInstances.instances.get_Item(key);
- };
- TemplateInstances.get_Instances=function()
- {
-  TemplateInstances.$cctor();
-  return TemplateInstances.instances;
+  return(Activator.Instances())[key].get_Instance();
  };
  TemplateInstances.New=Runtime$1.Ctor(function()
  {
-  TemplateInstances.$cctor();
  },TemplateInstances);
- Handler.CompleteHoles$145$20=function(key,s)
+ Handler.CompleteHoles$142$20=function(key,s)
  {
   return function(el)
   {
@@ -83,7 +81,7 @@
    };
   };
  };
- Handler.EventQ2$120$42=function(key,f)
+ Handler.EventQ2$117$42=function(key,f)
  {
   return function(el)
   {
@@ -157,11 +155,7 @@
  TemplateInstance.New=Runtime$1.Ctor(function(c,doc)
  {
   this.doc=doc;
-  if(c.$==0)
-   void 0;
-  else
-   throw new MatchFailureException.New("RuntimeClient.fs",47,8);
-  this.allVars=c.$0;
+  this.allVars=c.$==0?c.$0:Operators.FailWith("Should not happen");
  },TemplateInstance);
  Client.WrapEventWithOnlyArgs=Runtime$1.Curried3(function(f,el,ev)
  {

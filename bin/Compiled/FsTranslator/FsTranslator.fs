@@ -1,4 +1,3 @@
-#nowarn "40"
 #nowarn "1178"
 //#nowarn "1182"
 //#nowarn "40"
@@ -14,26 +13,31 @@ namespace FSSGlobal
 
 // Code to be evaluated using FSI: `Evaluate F#`
   #if WEBSHARPER
-  //#I @"..\packages\WebSharper\lib\net40"
+  //#I @"..\packages\WebSharper\lib\net461"
+  //#I @"..\packages\WebSharper.UI\lib\net461"
   
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.dll"
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.JavaScript.dll"
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Collections.dll"
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.InterfaceGenerator.dll"
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Main.dll"
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.JQuery.dll"
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.JavaScript.dll"
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Web.dll"
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Sitelets.dll"
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Control.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.Main.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.Web.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.Control.dll"
   //#r @"..\packages\WebSharper.UI.Next\lib\net40\WebSharper.UI.Next.dll"
+  //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+  //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+  //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+  //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
   
   open WebSharper
   open WebSharper.JavaScript
-  open WebSharper.UI.Next
-  open WebSharper.UI.Next.Client
-  type on   = WebSharper.UI.Next.Html.on
-  type attr = WebSharper.UI.Next.Html.attr
+  open WebSharper.UI
+  open WebSharper.UI.Client
+  type on   = WebSharper.UI.Html.on
+  type attr = WebSharper.UI.Html.attr
   #endif
   #if WEBSHARPER
   [<WebSharper.JavaScript>]
@@ -44,7 +48,9 @@ namespace FSSGlobal
     #if WEBSHARPER
     [< Inline "(function (n) { return n.getFullYear() + '-' +(n.getMonth() + 1) + '-' +  n.getDate() + ' '+n.getHours()+ ':'+n.getMinutes()+ ':'+n.getSeconds()+ ':'+n.getMilliseconds() })(new Date(Date.now()))" >]
     #endif
-    let nowStamp() = System.DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
+    let nowStamp() = 
+        let t = System.DateTime.UtcNow // in two steps to avoid Warning: The value has been copied to ensure the original is not mutated
+        t.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
     
     module Async =
         let map f va = 
@@ -69,6 +75,11 @@ namespace FSSGlobal
             }
     
         let bind f va = async.Bind(va, f)
+        let sleepThen f milliseconds =
+            async {
+                do! Async.Sleep milliseconds
+                do  f()
+            }
     
     module KeyVal =
         //let inline getEnumerator dict = (^a : (member get_Enumerator : _) (dict, ()))
@@ -142,6 +153,7 @@ namespace FSSGlobal
         interface ErrMsg with
             member this.ErrMsg   : string = "Option is None"
             member this.IsWarning: bool   = false
+        override this.ToString() = (this :> ErrMsg).ErrMsg
     
     type ErrSimple(msg, warning) =
         interface ErrMsg with
@@ -149,30 +161,31 @@ namespace FSSGlobal
             member this.IsWarning: bool   = warning
         override this.ToString() = (this :> ErrMsg).ErrMsg
     
-    type Result< 'TSuccess> = Result  of 'TSuccess option * ErrMsg    list     
-    type ResultS<'TSuccess> = ResultS of 'TSuccess option * ErrSimple list
+    type Result< 'TSuccess> = Result  of 'TSuccess option * ErrMsg    []     
+    type ResultS<'TSuccess> = ResultS of 'TSuccess option * ErrSimple []
     
     module Result =
-        let inline succeed             x       = Result (Some x           , [  ]             )
-        let inline succeedWithMsg      x  m    = Result (Some x           , [m ]             )
-        let inline succeedWithMsgs     x  ms   = Result (Some x           ,  ms              )
-        let inline fail                   m    = Result (None             , [m ]             )
-        let inline failWithMsgs           ms   = Result (None             ,  ms              )
-        let inline map       f (Result(o, ms)) = Result (o |> Option.map f,  ms              )
-        let inline mapMsg    f (Result(o, ms)) =        (o                ,  ms |> List.map f)
-        let inline mapMsgs   f (Result(o, ms)) =        (o                ,  ms |>          f)
+        let inline succeed             x       = Result (Some x           , [|  |]             )
+        let inline succeedWithMsg      x  m    = Result (Some x           , [|m |]             )
+        let inline succeedWithMsgs     x  ms   = Result (Some x           ,   ms               )
+        let inline fail                   m    = Result (None             , [|m |]             )
+        let inline failWithMsgs           ms   = Result (None             ,   ms               )
+        let inline map       f (Result(o, ms)) = Result (o |> Option.map f,   ms               )
+        let inline mapErr    f (Result(o, ms)) = Result (o                ,   ms |> Array.map f)
+        let inline mapMsg    f (Result(o, ms)) =        (o                ,   ms |> Array.map f)
+        let inline mapMsgs   f (Result(o, ms)) =        (o                ,   ms |>           f)
         let inline getOption   (Result(o, _ )) =         o                   
         let inline getMsgs     (Result(_, ms)) =                             ms
-        let inline mergeMsgs              ms r = Result (r |> mapMsgs   ((@) ms) )
-        let inline combine     (Result(_, ms)) = mergeMsgs ms
+        let inline mergeMsgs              ms r = Result (r |> mapMsgs   (Array.append ms) )
+        let inline combine     (Result(o, ms)) (rb: unit -> Result<_>) = o |> Option.map (fun _ -> rb() |> mergeMsgs ms) |> Option.defaultValue (Result(None, ms))
         let inline bind      f (Result(o, ms)) = 
             match o with
-            | Some x   -> match f x with Result(o2, ms2) -> Result(o2, ms @ ms2)
+            | Some x   -> match f x with Result(o2, ms2) -> Result(o2, Array.append ms ms2)
             | None     -> Result(None, ms)
         let inline apply (Result(fO, fMs))  (Result(o , ms)) = 
             match fO, o with
-            | Some f, Some x -> Result(f x |> Some, fMs @ ms)
-            | _              -> Result(None       , fMs @ ms)
+            | Some f, Some x -> Result(f x |> Some, Array.append fMs ms)
+            | _              -> Result(None       , Array.append fMs ms)
             
         let inline failSimpleError   m = (m, false) |> ErrSimple |> fail 
         let inline failSimpleWarning m = (m, true ) |> ErrSimple |> fail 
@@ -292,12 +305,12 @@ namespace FSSGlobal
                              | false -> elems |> Seq.map   (function | Result (vO,_)-> vO.Value            ) |> succeed
             )
     
-        let msgs2String   (ms: ErrMsg list) = ms |> List.map (fun m -> m.ErrMsg)
-        let getMessages   (ms: ErrMsg list) = ms |> msgs2String |> String.concat "\n"
-        let countMessages (ms: ErrMsg list) =
-            if ms = [] then "" else
-            let errors   = ms |> List.filter(fun m -> m.IsWarning |> not)
-            let warnings = ms |> List.filter(fun m -> m.IsWarning       )
+        let msgs2String   (ms: ErrMsg []) = ms |> Array.map (fun m -> m.ErrMsg)
+        let getMessages   (ms: ErrMsg []) = ms |> msgs2String |> String.concat "\n"
+        let countMessages (ms: ErrMsg []) =
+            if ms = [||] then "" else
+            let errors   = ms |> Array.filter(fun m -> m.IsWarning |> not)
+            let warnings = ms |> Array.filter(fun m -> m.IsWarning       )
             match errors.Length, warnings.Length with
             | 0, 0 -> sprintf "%s"
             | 1, 0 -> sprintf "%s"
@@ -310,11 +323,11 @@ namespace FSSGlobal
     
         let result2String res =
             match res with
-            | Result(vO, msgs) -> [ vO |> Option.defaultValue "Failed: " ] @ msgs2String msgs
+            | Result(vO, msgs) -> Array.append [| vO |> Option.defaultValue "Failed: " |] (msgs2String msgs)
             |> String.concat "\n"
     
-        let fromResultS (ResultS(v, ms)) = Result (v, ms |> List.map (fun m -> m :> ErrMsg                     ))
-        let toResultS   (Result( v, ms)) = ResultS(v, ms |> List.map (fun m -> ErrSimple(m.ErrMsg, m.IsWarning)))
+        let fromResultS (ResultS(v, ms)) = Result (v, ms |> Array.map (fun m -> m :> ErrMsg                     ))
+        let toResultS   (Result( v, ms)) = ResultS(v, ms |> Array.map (fun m -> ErrSimple(m.ErrMsg, m.IsWarning)))
     
     open Result
     
@@ -335,13 +348,13 @@ namespace FSSGlobal
         let wb2arb ms = 
             function
             | WAsync       ab  -> async { let!   b = ab
-                                          return succeedWithMsgs b                   ms }
+                                          return succeedWithMsgs b               ms }
             | WAsyncR     arb  -> async { let!   rb = arb                               
-                                          return rb |> mergeMsgs                     ms }
-            | WResult      rb  -> async { return rb |> mergeMsgs                     ms }
-            | WSimple       b                                        t.ma                   
-            | WOption (Some b) -> async { return succeedWithMsgs b                   ms }
-            | WOption None     -> async { return failWithMsgs      (errOptionIsNone::ms)}
+                                          return rb |> mergeMsgs                 ms }
+            | WResult      rb  -> async { return rb |> mergeMsgs                 ms }
+            | WSimple       b                                                           
+            | WOption (Some b) -> async { return succeedWithMsgs b               ms }
+            | WOption None     -> async { return failWithMsgs      (Array.append ms [| errOptionIsNone |] )}
     
         let tryCall (f: 'a -> Wrap<'b>) (a:'a) = 
             try f a 
@@ -351,26 +364,26 @@ namespace FSSGlobal
             match wa with
             | WSimple         a       
             | WOption(Some    a)       
-            | WResult(Success(a, [])) -> tryCall f a
+            | WResult(Success(a, [||])) -> tryCall f a
             | WOption None            -> None            |> WOption
             | WResult(Failure    ms ) -> failWithMsgs ms |> WResult 
             | WResult(Success(a, ms)) -> tryCall f a
                                          |> function
                                          | WSimple         b              
-                                         | WOption(Some    b     ) -> succeedWithMsgs b  ms             |> WResult 
-                                         | WOption None            -> failWithMsgs (errOptionIsNone::ms)|> WResult
-                                         | WResult(Success(b, [])) -> succeedWithMsgs b  ms             |> WResult 
-                                         | WResult(Success(b, m2)) -> succeedWithMsgs b (ms @ m2)       |> WResult 
-                                         | WResult(Failure    m2)  -> failWithMsgs      (ms @ m2)       |> WResult 
-                                         | WAsync  ab              -> async { let!  b = ab
-                                                                              return succeedWithMsgs b ms
-                                                                      } |> WAsyncR
-                                         | WAsyncR arb             -> async { let! rb = arb
-                                                                              return mergeMsgs ms rb
-                                                                      } |> WAsyncR
+                                         | WOption(Some    b       ) -> succeedWithMsgs b               ms                   |> WResult 
+                                         | WOption None              -> failWithMsgs (Array.append ms [| errOptionIsNone |] )|> WResult
+                                         | WResult(Success(b, [||])) -> succeedWithMsgs b               ms                   |> WResult 
+                                         | WResult(Success(b, m2  )) -> succeedWithMsgs b (Array.append ms m2)               |> WResult 
+                                         | WResult(Failure    m2  )  -> failWithMsgs      (Array.append ms m2)               |> WResult 
+                                         | WAsync  ab                -> async { let!  b = ab
+                                                                                return succeedWithMsgs b ms
+                                                                        } |> WAsyncR
+                                         | WAsyncR arb               -> async { let! rb = arb
+                                                                                return mergeMsgs ms rb
+                                                                        } |> WAsyncR
             | WAsync         aa       -> async {
                                              let! a  = aa
-                                             return! tryCall f a |> wb2arb []
+                                             return! tryCall f a |> wb2arb [||]
                                          } |> WAsyncR
             | WAsyncR       ara       -> async {
                                              let! ar  = ara
@@ -408,8 +421,8 @@ namespace FSSGlobal
             |> fun asy -> Async.StartWithContinuations
                             (asy 
                            , Result.mapMsgs Result.getMessages  >> processVal
-                           , sprintf "%A" >> (fun m -> None, m) >> processVal
-                           , sprintf "%A" >> (fun m -> None, m) >> processVal)
+                           , sprintf "%O" >> (fun m -> None, m) >> processVal
+                           , sprintf "%O" >> (fun m -> None, m) >> processVal)
                            
         let start (printMsg: string->unit) (w: Wrap<unit>) = 
             startV (function
@@ -420,14 +433,14 @@ namespace FSSGlobal
             let wb = tryCall f a
             match wb with
             | WSimple _
-            | WOption _               -> wb |> wb2arb []
+            | WOption _               -> wb |> wb2arb [||]
             | WResult (Result(_, ms)) -> wb |> wb2arb ms
             | WAsync  ab              -> async { let!   b = ab
                                                  return succeed b }
             | WAsyncR arb             -> arb
     
         let addMsgs errOptionIsNone ms wb =
-            if ms = [] then wb else
+            if ms = [||] then wb else
             match wb with
             | WSimple          v       
             | WOption (Some    v)      -> WResult (succeedWithMsgs                        v ms)
@@ -444,22 +457,22 @@ namespace FSSGlobal
     
         let combine errOptionIsNone wa (wb: unit -> Wrap<_>) =
             match wa with
-            | WSimple          _
-            | WOption (Some    _)
-            | WResult (Result (_, [])) -> wb()
-            | WAsync           aa      -> async { let!   a  = aa
-                                                  let!   br = wb() |> toAsyncResult
-                                                  return br
-                                                 } |> WAsyncR
-            | WAsyncR          ara     -> async { let! ar = ara
-                                                  match ar with
-                                                  | Failure    ms
-                                                  | Success(_, ms)->
-                                                  let! br = wb() |> toAsyncResult
-                                                  return br |> Result.mergeMsgs ms
-                                                } |> WAsyncR
-            | WOption (None     )      -> wb() |> addMsgs errOptionIsNone [errOptionIsNone]
-            | WResult (Result(_, ms))  -> wb() |> addMsgs errOptionIsNone ms
+            | WSimple             _
+            | WOption(       Some _)
+            | WResult(Result(Some _,[||]))-> wb()
+            | WResult(Result(Some _, ms ))-> wb() |> addMsgs errOptionIsNone ms
+            | WAsync           aa         -> async { let!   _a = aa
+                                                     let!   br = wb() |> toAsyncResult
+                                                     return br
+                                                    } |> WAsyncR
+            | WAsyncR          ara        -> async { let!  ar = ara
+                                                     match ar with
+                                                     | Failure    ms -> return Result.failWithMsgs ms
+                                                     | Success(_, ms)-> let! br = wb() |> toAsyncResult
+                                                                        return br |> Result.mergeMsgs ms
+                                                   } |> WAsyncR
+            | WOption(       None     )   -> WOption None
+            | WResult(Result(None, ms))   -> Result.failWithMsgs ms |> WResult
             
         let rec whileLoop pred body =
             if pred() then body() |> bind (fun () -> whileLoop pred body)
@@ -475,7 +488,7 @@ namespace FSSGlobal
             member        this.Bind (wrapped: Async<'a>        , restOfCExpr: 'a -> Wrap<'b>) = wrapped |> WAsync  |> bind restOfCExpr  
             member        this.Bind (wrapped: Result<'a>       , restOfCExpr: 'a -> Wrap<'b>) = wrapped |> WResult |> bind restOfCExpr 
             member        this.Bind (wrapped: 'a option        , restOfCExpr: 'a -> Wrap<'b>) = wrapped |> WOption |> bind restOfCExpr 
-            member inline this.Zero         ()  = WSimple ()
+            member inline this.Zero         ( ) = WSimple ()
             member inline this.Return       (x) = WSimple x
             member inline this.ReturnFrom   (w) = w
     //        member inline this.ReturnFrom   (w) = WAsync  w
@@ -496,7 +509,7 @@ namespace FSSGlobal
             member this.TryFinally(body, compensation) =
                 async {
                     let! r1 = body() |> toAsyncResult |> Async.Catch 
-                    let r2 = compensation()     
+                    let _r2 = compensation()     
                     return
                         match r1 with
                         | Choice1Of2 v -> v
@@ -608,8 +621,8 @@ namespace FSSGlobal
   module FsTranslator =
     //#r @"..\packages\WebSharper.FSharp\tools\System.Reflection.Metadata.dll"
     //#r @"..\packages\FSharp.Compiler.Service\lib\net45\FSharp.Compiler.Service.dll"
-    //#r @"..\packages\WebSharper.Compiler\lib\net45\WebSharper.Compiler.dll"
-    //#r @"..\packages\WebSharper.Compiler\lib\net45\WebSharper.Compiler.FSharp.dll"
+    //#r @"..\packages\WebSharper.Compiler\lib\net461\WebSharper.Compiler.dll"
+    //#r @"..\packages\WebSharper.Compiler\lib\net461\WebSharper.Compiler.FSharp.dll"
     //#r @"..\packages\Mono.Cecil\lib\net40\Mono.Cecil.dll"
     //#r @"..\packages\Mono.Cecil\lib\net40\Mono.Cecil.Pdb.dll"
     //#r @"..\packages\Mono.Cecil\lib\net40\Mono.Cecil.Mdb.dll"
@@ -628,7 +641,7 @@ namespace FSSGlobal
         open WebSharper.Compiler.FrontEnd
         open WebSharper.Core
         open WebSharper.Core.Resources
-        open WebSharper.Compile.CommandTools
+        open WebSharper.Compiler.CommandTools
         open Microsoft.FSharp.Compiler.SourceCodeServices
         open Microsoft.FSharp.Compiler
         
@@ -653,6 +666,8 @@ namespace FSSGlobal
                 |>  sprintf "%s%s" <| error.ToString()
                 |> ErrWebSharper
                 :> ErrMsg
+                
+        let PrintGlobalError err = eprintfn "WebSharper error FS9001: %s" (ErrorPrinting.NormalizeErrorString err)
         
         let CompileToJsW: WsConfig -> Wrap<string> =
             fun           config   -> Wrap.wrapper {
@@ -660,7 +675,7 @@ namespace FSSGlobal
                 do!  config.AssemblyFile = null       |> Result.failIfTrue  MustProvideAssemblyOutputPath
                 let  fsharpChecker       = FSharpChecker.Create(keepAssemblyContents = true)
                 let! errors, exitCode    = fsharpChecker.Compile(config.CompilerArgs)
-                let  fsErrors            = errors |> Array.map fSharpError2TranspilerError |> List.ofArray
+                let  fsErrors            = errors |> Array.map fSharpError2TranspilerError 
                 do!  (if exitCode = 0 then Result.succeedWithMsgs () else Result.failWithMsgs) <| fsErrors
                 do!  File.Exists config.AssemblyFile  |> Result.failIfFalse (OutputAssemblyNotFound config.AssemblyFile)
                 let  assemblyBytes       = File.ReadAllBytes config.AssemblyFile
@@ -672,28 +687,39 @@ namespace FSSGlobal
                 let  aR                  = AssemblyResolver.Create().SearchPaths(paths)
                 let  loader              = Loader.Create aR (printfn "%s")
                 let  refs                = [ for r in config.References -> loader.LoadFile(r, false) ]
-                let  refMeta             =
-                     System.Threading.Tasks.Task.Run(fun () ->
-                         let refErrors = ref false
-                         let metas = refs |> List.choose (fun r -> 
-                             try ReadFromAssembly FullMetadata r
-                             with e ->
-                                 eprintfn "WebSharper error %s" e.Message
-                                 refErrors := true
-                                 None
-                         )
-                         if !refErrors then None
-                         elif List.isEmpty metas then Some ([], WebSharper.Core.Metadata.Info.Empty)
-                         else
-                             try
-                                 Some(metas, { 
-                                     WebSharper.Core.Metadata.Info.UnionWithoutDependencies metas with
-                                         Dependencies = WebSharper.Core.DependencyGraph.Graph.NewWithDependencyAssemblies(metas |> Seq.map (fun m -> m.Dependencies)).GetData()
-                                 })
-                             with e ->
-                                 eprintfn "WebSharper error Error merging WebSharper metadata: %s" e.Message
-                                 None
-                     )
+                let wsRefsMeta =
+                    System.Threading.Tasks.Task.Run(fun () ->
+                        let mutable refError = false
+                        let wsRefs, metas = 
+                            refs |> List.choose (fun r -> 
+                                match TryReadFromAssembly FullMetadata r with
+                                | None -> None
+                                | Some (Ok m) -> Some (r, m)
+                                | Some (Error e) ->
+                                    refError <- true
+                                    PrintGlobalError e
+                                    None
+                            ) |> List.unzip
+                        if refError then None
+                        elif List.isEmpty metas then Some ([], [], WebSharper.Core.Metadata.Info.Empty) 
+                        else
+                            try
+                                Some (
+                                    wsRefs, metas,
+                                    { 
+                                        WebSharper.Core.Metadata.Info.UnionWithoutDependencies metas with
+                                            Dependencies = WebSharper.Core.DependencyGraph.Graph.NewWithDependencyAssemblies(metas |> Seq.map (fun m -> m.Dependencies)).GetData()
+                                    }
+                                )
+                            with e ->
+                                refError <- true
+                                PrintGlobalError ("Error merging WebSharper metadata: " + e.Message)
+                                None
+                    )
+                let refMeta = wsRefsMeta.ContinueWith(fun (t: System.Threading.Tasks.Task<_>) -> 
+                                match t.Result with 
+                                | Some (_, _, m) -> Some m 
+                                | _ -> None )
                 let  referencedAsmNames     = paths
                                               |> Seq.map (fun i -> 
                                                   let n = Path.GetFileNameWithoutExtension(i)
@@ -711,12 +737,12 @@ namespace FSSGlobal
                     )
                 System.AppDomain.CurrentDomain.add_AssemblyResolve(assemblyResolveHandler)
                 let! comp        = WebSharper.Compiler.FSharp.WebSharperFSharpCompiler(printfn "%s", fsharpChecker)
-                                            .Compile(refMeta, config.CompilerArgs, ".", config.ProjectFile) 
-                let  wsErrors    = comp.Errors |> List.map webSharperError2TranspilerError
-                do! if wsErrors.IsEmpty then Result.succeed () else
+                                            .Compile(refMeta, config.CompilerArgs, config, config.ProjectFile) 
+                let  wsErrors    = comp.Errors |> Seq.map webSharperError2TranspilerError |> Seq.toArray
+                do! if wsErrors |> Seq.isEmpty then Result.succeed () else
                     Result.failWithMsgs wsErrors
                 let  assem       = loader.LoadRaw assemblyBytes None
-                let getRefMeta() = match refMeta.Result with | Some (_, m) -> m  | _ -> WebSharper.Core.Metadata.Info.Empty            
+                let  getRefMeta()= match wsRefsMeta.Result with | Some (_, _, m) -> m | _ -> WebSharper.Core.Metadata.Info.Empty
                 let jsO, currentMeta, sources = ModifyAssembly (Some comp) 
                                                   (getRefMeta()) 
                                                   (comp.ToCurrentMetadata(config.WarnOnly)) 
@@ -724,7 +750,7 @@ namespace FSSGlobal
                 let! js, jsMin   = jsO |> Result.fromOption NothingToTranslateToJavaScript
                 let  thisProject = Path.GetFileNameWithoutExtension config.ProjectFile
                 use  stringW     = new System.IO.StringWriter()
-                use  writer      = new System.Web.UI.HtmlTextWriter(stringW)
+                use  writer      = new HtmlTextWriter(stringW)
                 let  pu          = P.PathUtility.VirtualPaths("/")
                 let ctx : Resources.Context =
                     {
@@ -760,12 +786,17 @@ namespace FSSGlobal
                 let  incs     = includes.Split([| "src="; "href=" ; "<" ; ">" |], System.StringSplitOptions.RemoveEmptyEntries)
                                 |> Seq.choose(fun v -> if v.[0] = '"' then v.Split([| '"' |], System.StringSplitOptions.RemoveEmptyEntries).[0] |> sprintf "%A" |> Some else None)
                                 |> String.concat ", "
-                let! f        = Result.succeedWithMsgs js.[1..js.Length - 7] (comp.Warnings |> List.map (fun v -> (sprintf "%A" v, true) |> ErrSimple :> ErrMsg))
+                let! f        = Result.succeedWithMsgs js.[1..js.Length - 7] (comp.Warnings |> Seq.map (fun v -> (sprintf "%A" v, true) |> ErrSimple :> ErrMsg) |> Seq.toArray)
                 return          sprintf "CIPHERSpaceLoadFiles([%s], %s);" incs f
             }
         
         let compileMainW: string[] -> Wrap<string> =
           fun             argv     ->
+            let resSplit (r:string) = 
+                match r.Split(',') with 
+                | [| res           |] -> (res, None         )
+                | [| res; fullName |] -> (res, Some fullName)
+                | _ -> argError ("Unexpected value --resource:" + r)
             let wsArgs    = ref WsConfig.Empty
             let refs      = ResizeArray()
             let resources = ResizeArray()
@@ -824,7 +855,7 @@ namespace FSSGlobal
                     | StartsWith "--doc:"            d -> wsArgs := { !wsArgs with Documentation = Some d } ; fscArgs.Add a
                     | StartsWith "-r:"               r             
                     | StartsWith "--reference:"      r -> refs.Add      r                                   ; fscArgs.Add a
-                    | StartsWith "--resource:"       r -> resources.Add r                                   ; fscArgs.Add a
+                    | StartsWith "--resource:"       r -> resources.Add (resSplit r)                        ; fscArgs.Add a
                     | _                                ->                                                     fscArgs.Add a  
                 with e ->
                     failwithf "Parsing argument failed: '%s' - %s" a e.Message
@@ -842,7 +873,7 @@ namespace FSSGlobal
             |> Wrap.runSynchronouslyR
             |> fun (Result(jsO, msgs)) -> 
                    jsO |> Option.iter (printfn "%s")
-                   if not msgs.IsEmpty then Result.getMessages msgs |> eprintfn "%O"
+                   if msgs |> Seq.isEmpty |> not then Result.getMessages msgs |> eprintfn "%O"
                    match jsO with
                    | Some js -> 0
                    | None    -> 1

@@ -891,6 +891,49 @@
    Snap.MarkDone(res$1,sn,v);
   },res$1),res$1)):sn;
  };
+ Snap.WithInitOption=function(sn)
+ {
+  var m,res,res$1;
+  m=sn.s;
+  return m==null?Snap.New(null):m!=null&&m.$==2?(res=Snap.New({
+   $:2,
+   $0:{
+    $:1,
+    $0:m.$0
+   },
+   $1:[]
+  }),(Snap.WhenObsolete(sn,res),res)):m!=null&&m.$==3?(res$1=Snap.New({
+   $:2,
+   $0:null,
+   $1:[]
+  }),(Snap.When(sn,function()
+  {
+   Snap.Obsolete(res$1);
+  },res$1),res$1)):Snap.New({
+   $:0,
+   $0:{
+    $:1,
+    $0:m.$0
+   }
+  });
+ };
+ Snap.WithInit=function(x,sn)
+ {
+  var m,res,res$1;
+  m=sn.s;
+  return m==null?sn:m!=null&&m.$==2?(res=Snap.New({
+   $:2,
+   $0:m.$0,
+   $1:[]
+  }),(Snap.WhenObsolete(sn,res),res)):m!=null&&m.$==3?(res$1=Snap.New({
+   $:2,
+   $0:x,
+   $1:[]
+  }),(Snap.When(sn,function()
+  {
+   Snap.Obsolete(res$1);
+  },res$1),res$1)):sn;
+ };
  Snap.Map=function(fn,sn)
  {
   var m,res;
@@ -1648,6 +1691,20 @@
    return View.Get(ok,v);
   });
  };
+ View.WithInitOption=function(a)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.WithInitOption(a());
+  });
+ };
+ View.WithInit=function(x,a)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.WithInit(x,a());
+  });
+ };
  View.Get=function(f,a)
  {
   var ok;
@@ -1960,10 +2017,9 @@
   },
   "LensInto'":function(get,update,key,view)
   {
-   var $this,id,view$1,$1;
+   var $this,id,$1;
    $this=this;
    id=Fresh.Id();
-   view$1=View.Map(get,this.FindByKeyAsView(key));
    $1=new Var({
     Get:function()
     {
@@ -2007,7 +2063,7 @@
     },
     get_View:function()
     {
-     return view$1;
+     return view;
     },
     get_Id:function()
     {
@@ -3347,11 +3403,29 @@
  };
  AttrModule.DynamicClass=function(name,view,ok)
  {
+  return AttrModule.DynamicClassPred(name,View.Map(ok,view));
+ };
+ AttrModule.Class=function(name)
+ {
+  return AttrModule.ClassPred(name,true);
+ };
+ AttrModule.ClassPred=function(name,isSet)
+ {
+  return Attrs$1.Static(function(el)
+  {
+   if(isSet)
+    DomUtility.AddClass(el,name);
+   else
+    DomUtility.RemoveClass(el,name);
+  });
+ };
+ AttrModule.DynamicClassPred=function(name,view)
+ {
   return Attrs$1.Dynamic(view,function(el)
   {
    return function(v)
    {
-    return ok(v)?DomUtility.AddClass(el,name):DomUtility.RemoveClass(el,name);
+    return v?DomUtility.AddClass(el,name):DomUtility.RemoveClass(el,name);
    };
   });
  };
@@ -3441,13 +3515,6 @@
    {
     return DomUtility.SetAttr(el,name,attr$1(v));
    };
-  });
- };
- AttrModule.Class=function(name)
- {
-  return Attrs$1.Static(function(el)
-  {
-   DomUtility.AddClass(el,name);
   });
  };
  AttrModule.Style=function(name,value)
@@ -5154,7 +5221,7 @@
    },$1?$1.$0:void 0)
   },["Render"]);
   updates=Array.TreeReduce(View.Const(),View.Map2Unit,updates$1);
-  return els&&Arrays.length(els)===1&&(Arrays.get(els,0)instanceof Node&&(Unchecked.Equals(Arrays.get(els,0).nodeType,Node.ELEMENT_NODE)&&($2=Arrays.get(els,0),true)))?Elt.TreeNode(docTreeNode,updates):Doc.Mk({
+  return!Unchecked.Equals(els,null)&&els.length===1&&(Arrays.get(els,0)instanceof Node&&(Unchecked.Equals(Arrays.get(els,0).nodeType,Node.ELEMENT_NODE)&&($2=Arrays.get(els,0),true)))?Elt.TreeNode(docTreeNode,updates):Doc.Mk({
    $:6,
    $0:docTreeNode
   },updates);
@@ -5731,7 +5798,7 @@
   {
    var m,target,href,m$1;
    m=$(ev.target).closest("a").toArray();
-   return m&&Arrays.length(m)===1?(target=Arrays.get(m,0),target.localName==="a"?(href=target.getAttribute("href"),!(href==null)&&Strings.StartsWith(href,"#")?(m$1=parse(href),m$1==null?null:(set(m$1.$0),ev.preventDefault())):null):null):null;
+   return!Unchecked.Equals(m,null)&&m.length===1?(target=Arrays.get(m,0),target.localName==="a"?(href=target.getAttribute("href"),!(href==null)&&Strings.StartsWith(href,"#")?(m$1=parse(href),m$1==null?null:(set(m$1.$0),ev.preventDefault())):null):null):null;
   });
   View.Sink(function(value)
   {
@@ -5782,7 +5849,7 @@
   {
    var m,target,href,m$1;
    m=$(ev.target).closest("a").toArray();
-   return m&&Arrays.length(m)===1?(target=Arrays.get(m,0),target.localName==="a"?(href=target.getAttribute("href"),!(href==null)?(m$1=parse(Route$1.FromUrl(href,null)),m$1==null?null:(set(m$1.$0),ev.preventDefault())):null):null):null;
+   return!Unchecked.Equals(m,null)&&m.length===1?(target=Arrays.get(m,0),target.localName==="a"?(href=target.getAttribute("href"),!(href==null)?(m$1=parse(Route$1.FromUrl(href,null)),m$1==null?null:(set(m$1.$0),ev.preventDefault())):null):null):null;
   });
   View.Sink(function(value)
   {

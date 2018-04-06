@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,WebSharper,Collections,BalancedTree,Tree,Pair,MapUtil,Obj,FSharpMap,Map,FSharpSet,Set,ListEnumerator,List,LinkedListEnumerator,LinkedList,Grouping,FsComparer,ProjectionComparer,CompoundComparer,ReverseComparer,OrderedEnumerable,Linq,Arrays,Seq,Unchecked,List$1,IntelliFactory,Runtime,Enumerator,Operators,HashSet,Dictionary,Nullable;
+ var Global,WebSharper,Collections,BalancedTree,Tree,Pair,MapUtil,Obj,FSharpMap,Map,FSharpSet,Set,ListEnumerator,List,LinkedListEnumerator,LinkedList,Grouping,FsComparer,ProjectionComparer,CompoundComparer,ReverseComparer,OrderedEnumerable,Linq,Query,Arrays,Seq,Unchecked,List$1,IntelliFactory,Runtime,Enumerator,Operators,HashSet,Dictionary,Nullable,Option;
  Global=window;
  WebSharper=Global.WebSharper=Global.WebSharper||{};
  Collections=WebSharper.Collections=WebSharper.Collections||{};
@@ -25,6 +25,7 @@
  ReverseComparer=WebSharper.ReverseComparer=WebSharper.ReverseComparer||{};
  OrderedEnumerable=WebSharper.OrderedEnumerable=WebSharper.OrderedEnumerable||{};
  Linq=WebSharper.Linq=WebSharper.Linq||{};
+ Query=WebSharper.Query=WebSharper.Query||{};
  Arrays=WebSharper&&WebSharper.Arrays;
  Seq=WebSharper&&WebSharper.Seq;
  Unchecked=WebSharper&&WebSharper.Unchecked;
@@ -36,6 +37,7 @@
  HashSet=Collections&&Collections.HashSet;
  Dictionary=Collections&&Collections.Dictionary;
  Nullable=WebSharper&&WebSharper.Nullable;
+ Option=WebSharper&&WebSharper.Option;
  Tree.New=function(Node,Left,Right,Height,Count)
  {
   return{
@@ -1533,4 +1535,28 @@
     e.Dispose();
   }
  };
+ Query=WebSharper.Query=Runtime.Class({},Obj,Query);
+ Query.averageByNullable=function(source,projection)
+ {
+  var filtered;
+  filtered=Arrays.ofSeq(Seq.choose(function(x)
+  {
+   return Option.ofNullable(projection(x));
+  },source));
+  return Arrays.length(filtered)===0?null:Arrays.average(filtered);
+ };
+ Query.sumByNullable=function(source,projection)
+ {
+  return Arrays.sum(Arrays.ofSeq(Seq.choose(function(x)
+  {
+   return Option.ofNullable(projection(x));
+  },source)));
+ };
+ Query.CheckThenBySource=function(source)
+ {
+  return"System_Linq_IOrderedEnumerable_1$CreateOrderedEnumerable"in source?source:Operators.FailWith("'thenBy' and 'thenByDescending' may only be used with an ordered input");
+ };
+ Query.New=Runtime.Ctor(function()
+ {
+ },Query);
 }());

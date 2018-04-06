@@ -13,24 +13,24 @@ namespace FSSGlobal
 
 // Code to be evaluated using FSI: `Evaluate F#`
   #if WEBSHARPER
-  //#I @"..\packages\WebSharper\lib\net40"
-  //#I @"..\packages\WebSharper.UI\lib\net40"
+  //#I @"..\packages\WebSharper\lib\net461"
+  //#I @"..\packages\WebSharper.UI\lib\net461"
   
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.dll"
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.JavaScript.dll"
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Collections.dll"
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.InterfaceGenerator.dll"
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Main.dll"
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.JQuery.dll"
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.JavaScript.dll"
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Web.dll"
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Sitelets.dll"
-  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Control.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.Main.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.Web.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+  //#r @"..\packages\WebSharper\lib\net461\WebSharper.Control.dll"
   //#r @"..\packages\WebSharper.UI.Next\lib\net40\WebSharper.UI.Next.dll"
-  //#r @"..\packages\WebSharper.UI\lib\net40\WebSharper.UI.dll"
-  //#r @"..\packages\WebSharper.UI\lib\net40\WebSharper.UI.Templating.dll"
-  //#r @"..\packages\WebSharper.UI\lib\net40\WebSharper.UI.Templating.Runtime.dll"
-  //#r @"..\packages\WebSharper.UI\lib\net40\WebSharper.UI.Templating.Common.dll"
+  //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+  //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+  //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+  //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
   
   open WebSharper
   open WebSharper.JavaScript
@@ -1352,8 +1352,8 @@ namespace FSSGlobal
   #endif
   module WSMessagingBroker =
     //#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
-    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
-    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\WebSharper.Owin.WebSocket.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
     
     open WebSharper
     open Useful
@@ -1691,8 +1691,8 @@ namespace FSSGlobal
             
     //#r @"..\packages\Owin\lib\net40\Owin.dll"
     //#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
-    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
-    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\WebSharper.Owin.WebSocket.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
     
     open System
     open Useful
@@ -1947,7 +1947,7 @@ namespace FSSGlobal
                 | _msg                       -> false
     
     type FStationMessaging(msgClient:WSMessagingClient, _clientId, ?fsStationId:string) =
-        let mutable fsIds      = fsStationId |> Option.defaultValue "FSharpStation1522010782884"
+        let mutable fsIds      = fsStationId |> Option.defaultValue "FSharpStation1522920858103"
         let         toId()     = Address fsIds
         let stringResponseR response =
             match response with
@@ -1987,7 +1987,7 @@ namespace FSSGlobal
         member this.FSStationId                             = fsIds
         member this.FSStationId with set id                 = fsIds <- id
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1522010782884"
+        static member FSStationId_                          = "FSharpStation1522920858103"
     #if FSS_SERVER   
         [< JavaScript false >]
         new (clientId, FSStation, ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId, FSStation, ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
@@ -2449,7 +2449,7 @@ namespace FSSGlobal
                                             |> Array.map (fun err ->
                                               sts 
                                               |> Array.tryFind (fun (_snpN, (_in, first, last)) -> err.StartLine >= first && err.StartLine <= last)
-                                              |> Option.map    (fun (snpNm, (ind, first, _las)) -> 
+                                              |> Option.map    (fun (snpNm, (ind, first, _las)) ->
                                                   { err with FileName    = snpNm
                                                              StartLine   = err.StartLine   - first
                                                              EndLine     = err.EndLine     - first
@@ -2864,6 +2864,51 @@ namespace FSSGlobal
         | Dynamic   of View<'a>
       with member this.ValTypeMember = 0
     
+    module Var =
+        let mutable private counter = 1
+        let freshId () =
+            counter <- counter + 1
+            "varuid" + string counter
+                
+        let Make (init: 'T) (view: View<'T>) (set: 'T -> unit) =
+            let id = freshId ()
+            let current = ref init
+            let view = view |> View.Map (fun x -> current := x; x)
+            { new Var<'T>() with
+                member this.View           = view
+                member this.Get         () = !current
+                member this.Set         x  = set x
+                member this.SetFinal    x  = set x
+                member this.UpdateMaybe f  = view |> View.Get (f >> Option.iter set)
+                member this.Update      f  = view |> View.Get (f >>             set)
+                member this.Id             = id
+            }
+        let lensView get update view0 (var: Var<_>) =
+            let id   = freshId()
+            let view = View.Map2 (fun v _ -> get v) var.View view0
+            { new Var<'V>() with
+                member this.Get        () = get (var.Get())
+                member this.Set         v = var.Update(fun t -> update t v)
+                member this.SetFinal    v = this.Set(v)
+                member this.Update      f = var.Update(fun t -> update t (f (get t)))
+                member this.UpdateMaybe f = var.UpdateMaybe(fun t -> Option.map (fun x -> update t x) (f (get t)))
+                member this.View          = view
+                member this.Id            = id
+            }
+    
+    module ListModel =
+        let currentLensUpd def curr upd (model:ListModel<_,_>) = 
+            curr 
+            |> Var.lensView (Option.bind (model.TryFindByKey) >> Option.defaultValue def) 
+                            (fun kO v -> kO |> Option.iter (upd v) ; kO)
+                            model.View
+        let currentLensUpd' def curr upd (model:ListModel<_,_>) = 
+            let view = curr |> View.Map2 (fun _mdl kO -> kO |> Option.bind model.TryFindByKey |> Option.defaultValue def) model.View
+            Var.Make def view upd
+        let currentLens def curr (model:ListModel<_,_>) = 
+            model 
+            |> currentLensUpd' def curr (fun v -> model.UpdateBy (fun _ -> model.TryFindByKey (model.Key v) |> Option.map (fun _ -> v) ) <| model.Key v)
+        
     module Val =
         
         let mapV : ('a -> 'b) -> Val<'a> -> Val<'b> =
@@ -3306,12 +3351,12 @@ namespace FSSGlobal
     
     let inline classIf cls v = ``class`` <| Val.map (fun b -> if b then cls else "") (Val.fixit v)
     
-    let inline ``xclass`` v  = 
-        match Val.fixit v with
-        | Constant c  -> Attr.Class        c       
-        | Dynamic  cw -> Attr.DynamicClass "class_for_view_not_implemented" cw      ((<>)"")
-        | DynamicV cv -> Attr.DynamicClass cv.Value                         cv.View ((<>)"")
-        |> SomeAttr
+    //let inline ``xclass`` v  = 
+    //    match Val.fixit v with
+    //    | Constant c  -> Attr.Class        c       
+    //    | Dynamic  cw -> Attr.DynamicClass "class_for_view_not_implemented" cw      ((<>)"")
+    //    | DynamicV cv -> Attr.DynamicClass cv.Value                         cv.View ((<>)"")
+    //    |> SomeAttr
     
     let style2pairs (ss:string) : (string * string) [] =
         ss.Split(';') 
@@ -3741,7 +3786,7 @@ namespace FSSGlobal
         container      : Dom.Element
     }
     
-    [< Inline "($_v.hint.async = 1, $_ed.showHint($v))"          >]
+    [< Inline "($_v.hint.async = 1, $_ed.showHint($_v))"          >]
     let showHint_ (_ed:CodeMirrorEditor) _v : unit       = X<_>
     let showHints (ed:CodeMirrorEditor) getHints completeSingle _ =
         showHint_ ed
@@ -5603,7 +5648,7 @@ namespace FSSGlobal
           | Some (pId, _, red) when pId = currentCodeSnippetId.Value -> setDirtyPart()
           | _                                                        -> setDirty    ()
       
-      let isParseDisabled = disableParseVal |> Val.toView |> View.GetAsync 
+      let isParseDisabled = disableParseVal |> Val.toView |> View.GetAsync
       
       let getCodeAndStartsFast msgF (snp:CodeSnippet) addLinePrepos =
           let redO, cur = 
@@ -5624,6 +5669,7 @@ namespace FSSGlobal
       
       let mutable parseRun = 1
       let mutable parsing  = false
+      let mutable parsingCode = ""
       
       let parseFSA silent =
           let msgF txt = if not silent then parserMsgs.Value <- txt
@@ -5632,17 +5678,20 @@ namespace FSSGlobal
               | None     -> ()
               | Some cur ->
               try
-                  let  code, starts     = getCodeAndStartsFast msgF cur false
-                  let prefix            = nextParsedPrefix()
-                  printfn "Parsing %s" prefix
-                  parsed               <- false
-                  let! res              = autoCompleteClient.Parse(parseFile prefix, code, starts)
-                  printfn "Parse result= %A" (res <> "")
-                  latestParsedPrefix   <- prefix
-                  if not silent then
-                      addPrsMsg res
-                      addPrsMsg "Parsed!"
-                  parsed               <- true
+                  parsed                 <- false
+                  let  code, starts       = getCodeAndStartsFast msgF cur false
+                  if not parsing || code <> parsingCode then
+                      parsingCode        <- code
+                      parsing            <- true
+                      let prefix          = nextParsedPrefix()
+                      printfn "Parsing %s" prefix
+                      let! res            = autoCompleteClient.Parse(parseFile prefix, code, starts)
+                      printfn "Parse result= %A" (res <> "")
+                      latestParsedPrefix <- prefix
+                      if not silent then
+                          addPrsMsg res
+                          addPrsMsg "Parsed!"
+                      parsed             <- true
               finally  
                   parsing <- false
           }
@@ -5763,6 +5812,7 @@ namespace FSSGlobal
       let getHints (ed:Template.CodeMirrorEditor, cb, _) =
           async {
               let! disabled = isParseDisabled
+              printfn "getHints (Complete) %A" disabled
               if disabled then () else
               match CodeSnippet.FetchO currentCodeSnippetId.Value with 
               | None     -> ()
@@ -6517,10 +6567,10 @@ namespace FSSGlobal
     //#r @"..\packages\Microsoft.Owin.Host.HttpListener\lib\net45\Microsoft.Owin.Host.HttpListener.dll"
     //#r @"..\packages\Microsoft.Owin.StaticFiles\lib\net45\Microsoft.Owin.StaticFiles.dll"
     //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net45\Microsoft.Owin.FileSystems.dll"
-    //#r @"..\packages\WebSharper.Owin\lib\net45\WebSharper.Owin.dll"
-    //#r @"..\packages\WebSharper.Owin\lib\net45\HttpMultipartParser.dll"
-    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
-    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\WebSharper.Owin.WebSocket.dll"
+    //#r @"..\packages\WebSharper.Owin\lib\net461\WebSharper.Owin.dll"
+    //#r @"..\packages\WebSharper.Owin\lib\net461\HttpMultipartParser.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
     //#r @"WebSharper.Core.JavaScript.dll"
     //#r @"..\packages\FSharp.Compiler.Service\lib\net45\FSharp.Compiler.Service.dll"
     

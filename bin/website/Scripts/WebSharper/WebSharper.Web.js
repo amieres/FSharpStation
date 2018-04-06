@@ -1,11 +1,11 @@
 (function()
 {
  "use strict";
- var Global,WebSharper,Json,Provider,Web,Control,FSharpInlineControl,InlineControl,IntelliFactory,Runtime,Collections,LinkedList,Arrays,Dictionary,FSharpMap,List,Operators,Unchecked,FSharpSet,BalancedTree,Enumerator,Map,Seq,DateTimeOffset;
+ var Global,WebSharper,ClientSideJson,Provider,Web,Control,FSharpInlineControl,InlineControl,IntelliFactory,Runtime,Collections,LinkedList,Arrays,Dictionary,FSharpMap,List,Operators,Unchecked,FSharpSet,BalancedTree,Enumerator,Map,Seq,DateTimeOffset;
  Global=window;
  WebSharper=Global.WebSharper=Global.WebSharper||{};
- Json=WebSharper.Json=WebSharper.Json||{};
- Provider=Json.Provider=Json.Provider||{};
+ ClientSideJson=WebSharper.ClientSideJson=WebSharper.ClientSideJson||{};
+ Provider=ClientSideJson.Provider=ClientSideJson.Provider||{};
  Web=WebSharper.Web=WebSharper.Web||{};
  Control=Web.Control=Web.Control||{};
  FSharpInlineControl=Web.FSharpInlineControl=Web.FSharpInlineControl||{};

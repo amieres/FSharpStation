@@ -1,5 +1,3 @@
-#nowarn "1182"
-#nowarn "40"
 #nowarn "1178"
 //#nowarn "1182"
 //#nowarn "40"
@@ -15,29 +13,88 @@ namespace FSSGlobal
 
 // Code to be evaluated using FSI: `Evaluate F#`
   #if WEBSHARPER
-  //#I @"..\packages\Zafir\lib\net40"
+  //#I @"..\packages\WebSharper\lib\net40"
+  //#I @"..\packages\WebSharper.UI\lib\net40"
   
-  //#r @"WebSharper.Core.dll"
-  //#r @"WebSharper.Core.JavaScript.dll"
-  //#r @"WebSharper.Collections.dll"
-  //#r @"WebSharper.Main.dll"
-  //#r @"WebSharper.JQuery.dll"
-  //#r @"WebSharper.JavaScript.dll"
-  //#r @"WebSharper.Web.dll"
-  //#r @"WebSharper.Sitelets.dll"
-  //#r @"..\packages\Zafir.UI.Next\lib\net40\WebSharper.UI.Next.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.JavaScript.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Collections.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.InterfaceGenerator.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Main.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.JQuery.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.JavaScript.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Web.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Sitelets.dll"
+  //#r @"..\packages\WebSharper\lib\net40\WebSharper.Control.dll"
+  //#r @"..\packages\WebSharper.UI.Next\lib\net40\WebSharper.UI.Next.dll"
+  //#r @"..\packages\WebSharper.UI\lib\net40\WebSharper.UI.dll"
+  //#r @"..\packages\WebSharper.UI\lib\net40\WebSharper.UI.Templating.dll"
+  //#r @"..\packages\WebSharper.UI\lib\net40\WebSharper.UI.Templating.Runtime.dll"
+  //#r @"..\packages\WebSharper.UI\lib\net40\WebSharper.UI.Templating.Common.dll"
   
   open WebSharper
   open WebSharper.JavaScript
-  open WebSharper.UI.Next
-  open WebSharper.UI.Next.Client
-  type on   = WebSharper.UI.Next.Html.on
-  type attr = WebSharper.UI.Next.Html.attr
+  open WebSharper.UI
+  open WebSharper.UI.Client
+  type on   = WebSharper.UI.Html.on
+  type attr = WebSharper.UI.Html.attr
   #endif
   #if WEBSHARPER
   [<WebSharper.JavaScript>]
   #endif
   module Useful =
+    let extract n (s:string) = s.Substring(0, min n s.Length)
+    
+    #if WEBSHARPER
+    [< Inline "(function (n) { return n.getFullYear() + '-' +(n.getMonth() + 1) + '-' +  n.getDate() + ' '+n.getHours()+ ':'+n.getMinutes()+ ':'+n.getSeconds()+ ':'+n.getMilliseconds() })(new Date(Date.now()))" >]
+    #endif
+    let nowStamp() = 
+        let t = System.DateTime.UtcNow // in two steps to avoid Warning: The value has been copied to ensure the original is not mutated
+        t.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
+    
+    module Async =
+        let map f va = 
+            async { 
+                let! a = va
+                return f a 
+            } 
+        let iter f va = 
+            async { 
+                let! a = va
+                do f a 
+            } 
+    
+        let retn x = async.Return x
+    
+        let apply fAsync xAsync = async {
+            let! fChild = Async.StartChild fAsync
+            let! xChild = Async.StartChild xAsync
+            let! f = fChild
+            let! x = xChild 
+            return f x 
+            }
+    
+        let bind f va = async.Bind(va, f)
+        let sleepThen f milliseconds =
+            async {
+                do! Async.Sleep milliseconds
+                do  f()
+            }
+    
+    module KeyVal =
+        //let inline getEnumerator dict = (^a : (member get_Enumerator : _) (dict, ()))
+        let inline tryGetValue key (dict) =
+            dict 
+            :> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<_, _>> 
+            |> Seq.tryPick (fun kp -> if kp.Key = key then Some kp.Value else None)
+    
+    
+    module String =
+        let splitByChar (c: char) (s: string) = s.Split c
+        let trim                  (s: string) = s.Trim()
+        let append     (a: string)(b: string) =  a + b
+        
+        
     open System
     //#nowarn "1178"
          
@@ -96,6 +153,7 @@ namespace FSSGlobal
         interface ErrMsg with
             member this.ErrMsg   : string = "Option is None"
             member this.IsWarning: bool   = false
+        override this.ToString() = (this :> ErrMsg).ErrMsg
     
     type ErrSimple(msg, warning) =
         interface ErrMsg with
@@ -103,29 +161,31 @@ namespace FSSGlobal
             member this.IsWarning: bool   = warning
         override this.ToString() = (this :> ErrMsg).ErrMsg
     
-    type Result<'TSuccess> = Result of 'TSuccess option * ErrMsg list     
+    type Result< 'TSuccess> = Result  of 'TSuccess option * ErrMsg    []     
+    type ResultS<'TSuccess> = ResultS of 'TSuccess option * ErrSimple []
     
     module Result =
-        let inline succeed             x       = Result (Some x           , [  ]             )
-        let inline succeedWithMsg      x  m    = Result (Some x           , [m ]             )
-        let inline succeedWithMsgs     x  ms   = Result (Some x           ,  ms              )
-        let inline fail                   m    = Result (None             , [m ]             )
-        let inline failWithMsgs           ms   = Result (None             ,  ms              )
-        let inline map       f (Result(o, ms)) = Result (o |> Option.map f,  ms              )
-        let inline mapMsg    f (Result(o, ms)) =        (o                ,  ms |> List.map f)
-        let inline mapMsgs   f (Result(o, ms)) =        (o                ,  ms |>          f)
+        let inline succeed             x       = Result (Some x           , [|  |]             )
+        let inline succeedWithMsg      x  m    = Result (Some x           , [|m |]             )
+        let inline succeedWithMsgs     x  ms   = Result (Some x           ,   ms               )
+        let inline fail                   m    = Result (None             , [|m |]             )
+        let inline failWithMsgs           ms   = Result (None             ,   ms               )
+        let inline map       f (Result(o, ms)) = Result (o |> Option.map f,   ms               )
+        let inline mapErr    f (Result(o, ms)) = Result (o                ,   ms |> Array.map f)
+        let inline mapMsg    f (Result(o, ms)) =        (o                ,   ms |> Array.map f)
+        let inline mapMsgs   f (Result(o, ms)) =        (o                ,   ms |>           f)
         let inline getOption   (Result(o, _ )) =         o                   
         let inline getMsgs     (Result(_, ms)) =                             ms
-        let inline mergeMsgs              ms r = Result (r |> mapMsgs   ((@) ms) )
-        let inline combine     (Result(_, ms)) = mergeMsgs ms
+        let inline mergeMsgs              ms r = Result (r |> mapMsgs   (Array.append ms) )
+        let inline combine     (Result(o, ms)) (rb: unit -> Result<_>) = o |> Option.map (fun _ -> rb() |> mergeMsgs ms) |> Option.defaultValue (Result(None, ms))
         let inline bind      f (Result(o, ms)) = 
             match o with
-            | Some x   -> match f x with Result(o2, ms2) -> Result(o2, ms @ ms2)
+            | Some x   -> match f x with Result(o2, ms2) -> Result(o2, Array.append ms ms2)
             | None     -> Result(None, ms)
         let inline apply (Result(fO, fMs))  (Result(o , ms)) = 
             match fO, o with
-            | Some f, Some x -> Result(f x |> Some, fMs @ ms)
-            | _              -> Result(None       , fMs @ ms)
+            | Some f, Some x -> Result(f x |> Some, Array.append fMs ms)
+            | _              -> Result(None       , Array.append fMs ms)
             
         let inline failSimpleError   m = (m, false) |> ErrSimple |> fail 
         let inline failSimpleWarning m = (m, true ) |> ErrSimple |> fail 
@@ -135,10 +195,6 @@ namespace FSSGlobal
             function 
             | Result(Some x, ms) -> Success (x, ms) 
             | Result(None  , ms) -> Failure     ms  
-    
-        let x = function
-                  | Success (x, ms) -> "yes"
-                  | Failure     ms  -> "No"
     
     //    let successTee f result =                           // given an RopResult, call a unit function on the success branch
     //        let fSuccess (x,msgs) =                         // and pass thru the result
@@ -183,25 +239,34 @@ namespace FSSGlobal
             member inline this.Return     (x)                       = succeed x
             member inline this.ReturnFrom (x)                       = x
             member        this.Bind       (w:Result<'a>, r: 'a -> Result<'b>) = bind (tryCall r) w
-            member inline this.Using      (disposable, restOfCExpr) = using disposable restOfCExpr
             member inline this.Zero       ()                        = succeed ()
-            member inline this.Delay      (f)                       = f()
+            member inline this.Delay      (f)                       = f
             member inline this.Combine    (a, b)                    = combine a b
-    //        member this.Run        (f)                       = f
-    //        member this.While(guard, body) =
-    //            if not (guard()) 
-    //            then this.Zero() 
-    //            else this.Bind( body(), fun () -> 
-    //                this.While(guard, body))  
-    //        member this.For(sequence:seq<_>, body) =
-    //            this.Using(sequence.GetEnumerator(),fun enum -> 
-    //                this.While(enum.MoveNext, 
-    //                    this.Delay(fun () -> body enum.Current)))
+            member inline this.Run        (f)                       = f()
+            member this.While(guard, body) =
+                if not (guard()) 
+                then this.Zero() 
+                else this.Bind( body(), fun () -> 
+                    this.While(guard, body))  
+            member this.TryWith(body, handler) =
+                try this.ReturnFrom(body())
+                with e -> handler e
+            member this.TryFinally(body, compensation) =
+                try this.ReturnFrom(body())
+                finally compensation()
+            member this.Using(disposable:#System.IDisposable, body) =
+                let body' = fun () -> body disposable
+                this.TryFinally(body', fun () -> if disposable :> obj <> null then disposable.Dispose() )
+            member this.For(sequence:seq<_>, body) =
+                this.Using(sequence.GetEnumerator(),fun enum -> 
+                    this.While(enum.MoveNext, 
+                        this.Delay(fun () -> body enum.Current)))              
     
         let result = ropBuilder()
     //    let inline flow_ () = new ropBuilder ()
     
-        let fromChoice context c =
+    //    let fromChoice context c =  context?????
+        let fromChoice c =
             match c with | Choice1Of2 v -> succeed v
                          | Choice2Of2 e -> fail    e
     
@@ -209,7 +274,8 @@ namespace FSSGlobal
             function | None   -> fail    m
                      | Some v -> succeed v
     
-        let toOption (Result(o, _)) = o
+        let toOption   (Result(o, _ )) = o
+        let toOptionMs (Result(o, ms)) = o, ms
     
         let tryProtection() : Result<unit> = succeed ()
     
@@ -239,12 +305,12 @@ namespace FSSGlobal
                              | false -> elems |> Seq.map   (function | Result (vO,_)-> vO.Value            ) |> succeed
             )
     
-        let msgs2String   (ms: ErrMsg list) = ms |> List.map (fun m -> m.ErrMsg)
-        let getMessages   (ms: ErrMsg list) = ms |> msgs2String |> String.concat "\n"
-        let countMessages (ms: ErrMsg list) =
-            if ms = [] then "" else
-            let errors   = ms |> List.filter(fun m -> m.IsWarning |> not)
-            let warnings = ms |> List.filter(fun m -> m.IsWarning       )
+        let msgs2String   (ms: ErrMsg []) = ms |> Array.map (fun m -> m.ErrMsg)
+        let getMessages   (ms: ErrMsg []) = ms |> msgs2String |> String.concat "\n"
+        let countMessages (ms: ErrMsg []) =
+            if ms = [||] then "" else
+            let errors   = ms |> Array.filter(fun m -> m.IsWarning |> not)
+            let warnings = ms |> Array.filter(fun m -> m.IsWarning       )
             match errors.Length, warnings.Length with
             | 0, 0 -> sprintf "%s"
             | 1, 0 -> sprintf "%s"
@@ -257,10 +323,17 @@ namespace FSSGlobal
     
         let result2String res =
             match res with
-            | Result(vO, msgs) -> [ vO |> Option.defaultValue "Failed: " ] @ msgs2String msgs
+            | Result(vO, msgs) -> Array.append [| vO |> Option.defaultValue "Failed: " |] (msgs2String msgs)
             |> String.concat "\n"
     
+        let fromResultS (ResultS(v, ms)) = Result (v, ms |> Array.map (fun m -> m :> ErrMsg                     ))
+        let toResultS   (Result( v, ms)) = ResultS(v, ms |> Array.map (fun m -> ErrSimple(m.ErrMsg, m.IsWarning)))
+    
     open Result
+    
+    module ResultS =
+        let fromResult = Result.toResultS
+        let toResult   = Result.fromResultS
     
     type Wrap<'T> =
     | WResult of Result<'T>
@@ -275,13 +348,13 @@ namespace FSSGlobal
         let wb2arb ms = 
             function
             | WAsync       ab  -> async { let!   b = ab
-                                          return succeedWithMsgs b                   ms }
+                                          return succeedWithMsgs b               ms }
             | WAsyncR     arb  -> async { let!   rb = arb                               
-                                          return rb |> mergeMsgs                     ms }
-            | WResult      rb  -> async { return rb |> mergeMsgs                     ms }
+                                          return rb |> mergeMsgs                 ms }
+            | WResult      rb  -> async { return rb |> mergeMsgs                 ms }
             | WSimple       b                                                           
-            | WOption (Some b) -> async { return succeedWithMsgs b                   ms }
-            | WOption None     -> async { return failWithMsgs      (errOptionIsNone::ms)}
+            | WOption (Some b) -> async { return succeedWithMsgs b               ms }
+            | WOption None     -> async { return failWithMsgs      (Array.append ms [| errOptionIsNone |] )}
     
         let tryCall (f: 'a -> Wrap<'b>) (a:'a) = 
             try f a 
@@ -291,26 +364,26 @@ namespace FSSGlobal
             match wa with
             | WSimple         a       
             | WOption(Some    a)       
-            | WResult(Success(a, [])) -> tryCall f a
+            | WResult(Success(a, [||])) -> tryCall f a
             | WOption None            -> None            |> WOption
             | WResult(Failure    ms ) -> failWithMsgs ms |> WResult 
             | WResult(Success(a, ms)) -> tryCall f a
                                          |> function
                                          | WSimple         b              
-                                         | WOption(Some    b     ) -> succeedWithMsgs b  ms             |> WResult 
-                                         | WOption None            -> failWithMsgs (errOptionIsNone::ms)|> WResult
-                                         | WResult(Success(b, [])) -> succeedWithMsgs b  ms             |> WResult 
-                                         | WResult(Success(b, m2)) -> succeedWithMsgs b (ms @ m2)       |> WResult 
-                                         | WResult(Failure    m2)  -> failWithMsgs      (ms @ m2)       |> WResult 
-                                         | WAsync  ab              -> async { let!  b = ab
-                                                                              return succeedWithMsgs b ms
-                                                                      } |> WAsyncR
-                                         | WAsyncR arb             -> async { let! rb = arb
-                                                                              return mergeMsgs ms rb
-                                                                      } |> WAsyncR
+                                         | WOption(Some    b       ) -> succeedWithMsgs b               ms                   |> WResult 
+                                         | WOption None              -> failWithMsgs (Array.append ms [| errOptionIsNone |] )|> WResult
+                                         | WResult(Success(b, [||])) -> succeedWithMsgs b               ms                   |> WResult 
+                                         | WResult(Success(b, m2  )) -> succeedWithMsgs b (Array.append ms m2)               |> WResult 
+                                         | WResult(Failure    m2  )  -> failWithMsgs      (Array.append ms m2)               |> WResult 
+                                         | WAsync  ab                -> async { let!  b = ab
+                                                                                return succeedWithMsgs b ms
+                                                                        } |> WAsyncR
+                                         | WAsyncR arb               -> async { let! rb = arb
+                                                                                return mergeMsgs ms rb
+                                                                        } |> WAsyncR
             | WAsync         aa       -> async {
                                              let! a  = aa
-                                             return! tryCall f a |> wb2arb []
+                                             return! tryCall f a |> wb2arb [||]
                                          } |> WAsyncR
             | WAsyncR       ara       -> async {
                                              let! ar  = ara
@@ -321,19 +394,53 @@ namespace FSSGlobal
                                          } |> WAsyncR
         let Return = WSimple 
         let map  (f: 'a -> 'b  ) = bind (f >> Return)     
+        let inline getAsyncR (wb: Wrap<'T>) =
+            match wb with
+            | WAsync      va  -> async {
+                                   let! v = va
+                                   return      succeed                           v}
+            | WSimple     v   -> async.Return (succeed                           v)
+            | WOption     v   -> async.Return (Result.fromOption errOptionIsNone v)
+            | WResult     v   -> async.Return                                    v
+            | WAsyncR     vra -> vra
+            
+            
+        let inline getAsyncWithDefault f w = getAsyncR w |> Async.map (Result.withError f)
+        let inline getAsync              w = getAsyncWithDefault (fun ms -> raise (exn(getMessages ms))) w
+    
+        let toAsync            w = getAsync  w
+        let toAsyncResult      w = getAsyncR w
+        let toAsyncOption      w = getAsyncR w |> Async.map Result.toOption
+        let toAsyncOptionMs    w = getAsyncR w |> Async.map Result.toOptionMs
+        let toAsyncWithDefault w = getAsyncWithDefault w
+    
+    //    let call wb = wb |> getR Rop.notifyMessages
+        let startV (processVal: ('t option * string) ->unit) (w: Wrap<'t>) =
+            w
+            |> getAsyncR
+            |> fun asy -> Async.StartWithContinuations
+                            (asy 
+                           , Result.mapMsgs Result.getMessages  >> processVal
+                           , sprintf "%O" >> (fun m -> None, m) >> processVal
+                           , sprintf "%O" >> (fun m -> None, m) >> processVal)
+                           
+        let start (printMsg: string->unit) (w: Wrap<unit>) = 
+            startV (function
+                    | Some (), msgs ->               msgs |> printMsg 
+                    | None   , msgs -> "Failed!\n" + msgs |> printMsg) w
     
         let wrapper2Async (f: 'a -> Wrap<'b>) a : Async<Result<'b>> =
             let wb = tryCall f a
             match wb with
             | WSimple _
-            | WOption _               -> wb |> wb2arb []
+            | WOption _               -> wb |> wb2arb [||]
             | WResult (Result(_, ms)) -> wb |> wb2arb ms
             | WAsync  ab              -> async { let!   b = ab
                                                  return succeed b }
-            | WAsyncR arb              -> arb
+            | WAsyncR arb             -> arb
     
         let addMsgs errOptionIsNone ms wb =
-            if ms = [] then wb else
+            if ms = [||] then wb else
             match wb with
             | WSimple          v       
             | WOption (Some    v)      -> WResult (succeedWithMsgs                        v ms)
@@ -348,15 +455,32 @@ namespace FSSGlobal
                                             return vr                    |> Result.mergeMsgs ms
                                           } |> WAsyncR
     
-        let combine errOptionIsNone wa wb =
+        let combine errOptionIsNone wa (wb: unit -> Wrap<_>) =
             match wa with
-            | WSimple          _
-            | WOption (Some    _)
-            | WResult (Result (_, []))
-            | WAsync           _       -> wb
-            | WAsyncR          _       -> wb
-            | WOption (None     )      -> wb |> addMsgs errOptionIsNone [errOptionIsNone]
-            | WResult (Result(_, ms))  -> wb |> addMsgs errOptionIsNone ms
+            | WSimple             _
+            | WOption(       Some _)
+            | WResult(Result(Some _,[||]))-> wb()
+            | WResult(Result(Some _, ms ))-> wb() |> addMsgs errOptionIsNone ms
+            | WAsync           aa         -> async { let!   _a = aa
+                                                     let!   br = wb() |> toAsyncResult
+                                                     return br
+                                                    } |> WAsyncR
+            | WAsyncR          ara        -> async { let!  ar = ara
+                                                     match ar with
+                                                     | Failure    ms -> return Result.failWithMsgs ms
+                                                     | Success(_, ms)-> let! br = wb() |> toAsyncResult
+                                                                        return br |> Result.mergeMsgs ms
+                                                   } |> WAsyncR
+            | WOption(       None     )   -> WOption None
+            | WResult(Result(None, ms))   -> Result.failWithMsgs ms |> WResult
+            
+        let rec whileLoop pred body =
+            if pred() then body() |> bind (fun () -> whileLoop pred body)
+            else WSimple ()
+            //while pred() do
+            //    body() //|> ignore
+            //WSimple ()
+    
     
         type Builder() =
     //        member        this.Bind (wrapped: Async<Result<'a>>, restOfCExpr: 'a -> Wrap<'b>) = wrapped |> WAsyncR |> bind restOfCExpr //<< cannot differentiate from next 
@@ -364,85 +488,56 @@ namespace FSSGlobal
             member        this.Bind (wrapped: Async<'a>        , restOfCExpr: 'a -> Wrap<'b>) = wrapped |> WAsync  |> bind restOfCExpr  
             member        this.Bind (wrapped: Result<'a>       , restOfCExpr: 'a -> Wrap<'b>) = wrapped |> WResult |> bind restOfCExpr 
             member        this.Bind (wrapped: 'a option        , restOfCExpr: 'a -> Wrap<'b>) = wrapped |> WOption |> bind restOfCExpr 
-            member inline this.Zero         ()  = WSimple ()
+            member inline this.Zero         ( ) = WSimple ()
             member inline this.Return       (x) = WSimple x
             member inline this.ReturnFrom   (w) = w
     //        member inline this.ReturnFrom   (w) = WAsync  w
     //        member inline this.ReturnFrom   (w) = WResult w
     //        member inline this.ReturnFrom   (w) = WOption w        
-            member inline this.Delay        (f) = f()
+            member inline this.Delay        (f) = f
+            member this.Run(f) = f()
             member        this.Combine   (a, b) = combine errOptionIsNone a b
-            member        this.Using (resource, body: 'a -> Wrap<'b>) =
-                async.Using(resource, wrapper2Async body) |> WAsyncR
-                        
-        let wrapper = Builder()
+            member        this.While(guard, body) = whileLoop guard body
+            member this.TryWith(body, handler) =
+                async {
+                    let! r = body() |> toAsyncResult |> Async.Catch 
+                    return
+                        match r with
+                        | Choice1Of2 v -> v
+                        | Choice2Of2 e -> handler e
+                } |> WAsyncR
+            member this.TryFinally(body, compensation) =
+                async {
+                    let! r1 = body() |> toAsyncResult |> Async.Catch 
+                    let _r2 = compensation()     
+                    return
+                        match r1 with
+                        | Choice1Of2 v -> v
+                        | Choice2Of2 e -> raise e
+                } |> WAsyncR
+            member this.Using(disposable:#System.IDisposable, body) =
+                let body' = fun () -> body disposable
+                this.TryFinally(body', fun () -> if disposable :> obj <> null then disposable.Dispose() )
+            member this.For(sequence:seq<_>, body) =
+                this.Using(sequence.GetEnumerator(),fun enum -> 
+                    this.While(enum.MoveNext, 
+                        this.Delay(fun () -> body enum.Current)))            
+        let wrap    = Builder()
+        let wrapper = Builder()  // deprecated use wrap instead
     
         let getResult callback (wb: Wrap<'T>) =
             match wb with
-            | WSimple      s  -> s               |> succeed                                      |> callback
-            | WOption(Some s) -> s               |> succeed                                      |> callback
-            | WOption None    -> errOptionIsNone |> fail                                         |> callback
-            | WResult      rb -> rb                                                              |> callback
-            | WAsync       ab -> Async.StartWithContinuations(ab , (fun v   -> succeed v         |> callback), 
+            | WSimple      s  -> s               |> succeed                                              |> callback
+            | WOption(Some s) -> s               |> succeed                                              |> callback
+            | WOption None    -> errOptionIsNone |> fail                                                 |> callback
+            | WResult      rb -> rb                                                                      |> callback
+            | WAsync       ab -> Async.StartWithContinuations(ab , (fun v   -> succeed v                 |> callback), 
                                                                    (fun exc -> failException exc |> fail |> callback), 
                                                                     fun can -> failException can |> fail |> callback)
             | WAsyncR     arb -> Async.StartWithContinuations(arb,                                          callback , 
                                                                    (fun exc -> failException exc |> fail |> callback), 
                                                                     fun can -> failException can |> fail |> callback)
     
-        let inline getAsyncR (wb: Wrap<'T>) =
-            match wb with
-            | WAsync      va  -> async {
-                                   let! v = va
-                                   return      succeed                           v}
-            | WSimple     v   -> async.Return (succeed                           v)
-            | WOption     v   -> async.Return (Result.fromOption errOptionIsNone v)
-            | WResult     v   -> async.Return                                    v
-            | WAsyncR     vra -> vra
-            
-        let inline getAsyncWithDefault f (wb: Wrap<'T>) = 
-            async {
-                let!   vR = getAsyncR wb
-                return vR |> Result.withError f
-            }
-    
-        let inline getAsync w =
-            match w with
-            | WAsync      va  ->              va
-            | WSimple     v   -> async.Return v
-            | WOption     vo  -> async {
-                                    return
-                                        match vo with 
-                                        | Some v         -> v
-                                        | None           -> raise (exn(getMessages [errOptionIsNone]))
-                                 }
-            | WResult     vr  -> async {
-                                    return
-                                        match vr with 
-                                        | Success (v, _) -> v
-                                        | Failure ms     -> raise (exn(getMessages ms))
-                                 }
-            | WAsyncR     vra -> async {
-                                    let! vr = vra
-                                    return
-                                        match vr with 
-                                        | Success (v, _) -> v
-                                        | Failure ms     -> raise (exn(getMessages ms))
-                                 }
-    //    let call wb = wb |> getR Rop.notifyMessages
-        let startV (processVal: ('t option * string) ->unit) (w: Wrap<'t>) =
-            w
-            |> getAsyncR
-            |> fun asy -> Async.StartWithContinuations
-                            (asy 
-                           , Result.mapMsgs Result.getMessages  >> processVal
-                           , sprintf "%A" >> (fun m -> None, m) >> processVal
-                           , sprintf "%A" >> (fun m -> None, m) >> processVal)
-                           
-        let start (printMsg: string->unit) (w: Wrap<unit>) = 
-            startV (function
-                    | Some (), msgs ->               msgs |> printMsg 
-                    | None   , msgs -> "Failed!\n" + msgs |> printMsg) w
     
     #if WEBSHARPER
         [< Inline "console.log('runSynchronously should not be used in Javascript')" >]                       
@@ -462,51 +557,107 @@ namespace FSSGlobal
                | Some r, msgs -> sprintf "%O\n%s" r    msgs
                | None  , msgs -> sprintf "Failed!\n%s" msgs
                
-    
     type Wrap<'T> with
         static member Start           (w:Wrap<_   >,           ?cancToken) = Async.Start           (Wrap.getAsync  w,                                ?cancellationToken= cancToken)
         static member StartAsTask     (w:Wrap<'T  >, ?options, ?cancToken) = Async.StartAsTask     (Wrap.getAsyncR w, ?taskCreationOptions= options, ?cancellationToken= cancToken)
     #if WEBSHARPER
         [< Inline "console.log('RunSynchronously should not be used in Javascript')" >]                       
     #endif
-        static member RunSynchronously(w:Wrap<'T  >, ?timeout, ?cancToken) = Async.RunSynchronously(Wrap.getAsyncR w, ?timeout            = timeout, ?cancellationToken= cancToken)
-    
-    let extract n (s:string) = s.Substring(0, min n s.Length)
-    
+        static member RunSynchronouslyR(w:Wrap<'T  >, ?timeout, ?cancToken) = Async.RunSynchronously(Wrap.getAsyncR w, ?timeout            = timeout, ?cancellationToken= cancToken)
     #if WEBSHARPER
-    [< Inline "(function (n) { return n.getFullYear() + '-' +(n.getMonth() + 1) + '-' +  n.getDate() + ' '+n.getHours()+ ':'+n.getMinutes()+ ':'+n.getSeconds()+ ':'+n.getMilliseconds() })(new Date(Date.now()))" >]
+        [< Inline "console.log('RunSynchronously should not be used in Javascript')" >]                       
     #endif
-    let nowStamp() = System.DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
+        static member RunSynchronously( w:Wrap<'T  >, ?timeout, ?cancToken) = Async.RunSynchronously(Wrap.getAsync  w, ?timeout            = timeout, ?cancellationToken= cancToken)
     
-    module Async =
-        let map f va = 
-            async { 
-                let! a = va
-                return f a 
-            } 
+    module Mailbox =
     
-        let retn x = async.Return x
+        /// A simple Mailbox processor to serially process tasks
+        let iter f =
+            MailboxProcessor.Start(fun inbox ->
+                async {
+                    while true do
+                        try       let!   msg = inbox.Receive()
+                                  do!  f msg
+                        with e -> printfn "%A" e
+                }
+            )
+        
+        /// A simple Mailbox processor to serially and synchronously process tasks
+        /// invoke f with: agent.PostAndReply     (fun reply -> reply, parm)
+        ///         or     agent.PostAndReplyAsync(fun reply -> reply, parm)
+        let call f = iter (fun ((replyChannel: AsyncReplyChannel<_>), msg) -> async {
+            let! r = f msg
+            replyChannel.Reply r
+        })
+        
+        /// A Mailbox processor that maintains a state
+        let fold f initState =
+            MailboxProcessor.Start(fun inbox ->
+                let rec loop state : Async<unit> = async {
+                    try       let! msg      = inbox.Receive()
+                              let! newState = f state msg
+                              return! loop newState
+                    with e -> printfn "%A" e
+                              return! loop state
+                }
+                loop initState
+            )
     
-        let apply fAsync xAsync = async {
-            let! fChild = Async.StartChild fAsync
-            let! xChild = Async.StartChild xAsync
-            let! f = fChild
-            let! x = xChild 
-            return f x 
-            }
-    
-        let bind f va = async.Bind(va, f)
-    
+    // object expressions work only on types not objects
+    //
+    //    /// A simple Mailbox processor to serially process tasks
+    //    /// with a Flush option
+    //    let iterFlushable f =
+    //        let ff msg = match msg with 
+    //                     | Some m -> f m 
+    //                     | None   -> async { () }
+    //        let mailbox = iter ff
+    //        { new mailbox with member this.Flush() = mailbox.Post None }  
+    //
+    //    let foldFlushable f initState =
+    //        let ff msg = match msg with 
+    //                     | Some m -> f m 
+    //                     | None   -> async { () }
+    //        let mailbox = fold ff initState
+    //        { new mailbox with member this.Flush() = mailbox.Post None }
+    //        
+    (* issues with websharper Type not found in JavaScript compilation: System.Collections.Generic.IDictionary`2
+    module IDict =
+    #if WEBSHARPER
+        [< Inline >]
+    #endif
+        let inline tryGetValue key (dict:System.Collections.Generic.IDictionary<_, _>) =
+            let mutable res = Unchecked.defaultof<_>
+            if dict.TryGetValue(key, &res)
+            then Some res 
+            else None
+        let add          key v (dict:System.Collections.Generic.IDictionary<_, _>) = if dict.ContainsKey key then      dict.[key] <- v else dict.Add(key, v)
+    *)
     module Dict =
-        let tryGetValue key   (dict:System.Collections.Generic.Dictionary<_, _>) = if dict.ContainsKey key then Some dict.[key]      else None
-        let add         key v (dict:System.Collections.Generic.Dictionary<_, _>) = if dict.ContainsKey key then      dict.[key] <- v else dict.Add(key, v)
-        
-    module String =
-        let splitByChar (c: char) (s: string) = s.Split c
-        let trim                  (s: string) = s.Trim()
-        let append     (a: string)(b: string) =  a + b
-        
-        
+    #if WEBSHARPER
+        [< Inline >]
+    #endif
+        let inline tryGetValue key (dict:System.Collections.Generic. Dictionary<_, _>) =
+            let mutable res = Unchecked.defaultof<_>
+            if dict.TryGetValue(key, &res)
+            then Some res 
+            else None
+        let add          key v (dict:System.Collections.Generic. Dictionary<_, _>) = if dict.ContainsKey key then      dict.[key] <- v else dict.Add(key, v)
+    
+    module LDict =
+    #if WEBSHARPER
+        [< Inline >]
+    #endif
+        let inline containsKey  key  dict = (^a : (member ContainsKey : _ -> bool) (dict, key))
+        //let inline item         key  dict = (^a : (member get_Item    : _ -> _   ) (dict, key))
+    #if WEBSHARPER
+        [< Inline >]
+    #endif
+        let inline tryGetValue fitem key  dict =
+            if containsKey key dict then Some (fitem key)
+            else None
+    
+    
     #if WEBSHARPER
     
     let (|REGEX|_|) (expr: string) (opt: string) (value: string) =
@@ -517,11 +668,19 @@ namespace FSSGlobal
             | [| |]        -> None
             | m            -> Some m
         with e -> None
+    
+    let rexGuid = """([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})"""
     #endif
     
     let inline swap f a b = f b a
     let inline __   f a b = f b a
     
+    
+    let dprintfn       fmt = fmt |> Printf.ksprintf ignore //(fun s -> printfn "%s"  s)
+    let printoutfn out fmt = fmt |> Printf.ksprintf (fun s -> s + "\n" |> out)
+    //let printoutf  out fmt = Printf.kprintf                        out  fmt
+    let print    v = printfn "%A" v
+    let mapPrint v = print        v; v
     
     #if WEBSHARPER
     [< Inline >]
@@ -667,6 +826,12 @@ namespace FSSGlobal
             proc.StartInfo <- procStart
             proc.Start() 
         
+        let startProcessDir p ops dir =
+            let procStart   = ProcessStartInfo(p, ops, WorkingDirectory = dir)
+            let proc        = new Process()
+            proc.StartInfo <- procStart
+            proc.Start() 
+        
         type ShellExError =
             | ShellExitCode              of int
             | ShellOutput                of string
@@ -726,32 +891,33 @@ namespace FSSGlobal
             member this.stdOutErr2Result out errs exit =
                 if exit <> 0
                 then Result.failWithMsgs
-                        [ if out  <> ""              then yield ErrSimple ("stdout: " + out           , true ) :> ErrMsg
-                          if errs <> ""              then yield ErrSimple (errs                       , false) :> ErrMsg
-                          if errs  = "" || exit <> 1 then yield ErrSimple (sprintf "ExitCode: %d" exit, false) :> ErrMsg
-                        ]
+                        [| if out  <> ""              then yield ErrSimple ("stdout: " + out           , true ) :> ErrMsg
+                           if errs <> ""              then yield ErrSimple (errs                       , false) :> ErrMsg
+                           if errs  = "" || exit <> 1 then yield ErrSimple (sprintf "ExitCode: %d" exit, false) :> ErrMsg
+                        |]
                 else Result.succeedWithMsgs out 
-                        [ if errs <> ""              then yield ErrSimple (errs                       , false) :> ErrMsg ]
+                        [| if errs <> ""              then yield ErrSimple (errs                       , false) :> ErrMsg |]
             member this.WaitToFinish() =
                 proc.WaitForExit()
                 let    output  = (consume bufferOutput).Trim()
                 let    error   = (consume bufferError ).Trim()
                 (output, error, if proc.HasExited then proc.ExitCode else -99999)
             member this.StartAndWait() =
-                let started = this.Start()
+                let _started = this.Start()
                 this.WaitToFinish()
             member this.WaitForInputIdle() =
                 proc.WaitForInputIdle()
             member this.StartAndWaitR() =
-                this.StartAndWait()
-                |||> this.stdOutErr2Result
+                let r = this.StartAndWait()
+                (this :> System.IDisposable).Dispose()
+                r |||> this.stdOutErr2Result
             member this.RunToFinish() =
                 this.StartAndWaitR()
                 |> Result.result2String
             member this.RunOutputToFileR file =
                 proc.OutputDataReceived.RemoveHandler outputHandler
                 use stream  = new System.IO.FileStream(file, System.IO.FileMode.Create)
-                let started = proc.Start() 
+                let _started = proc.Start() 
                 proc.BeginErrorReadLine ()
                 proc.StandardOutput.BaseStream.CopyTo stream
                 this.WaitToFinish()
@@ -791,6 +957,7 @@ namespace FSSGlobal
                     return res
                 }
             member this.HasExited = try proc.HasExited with _ -> true
+            member this.Abort()   = try proc.Kill   () with _ -> ()
             interface System.IDisposable with
                 member this.Dispose () =
                     try proc.Kill   () with _ -> ()
@@ -840,10 +1007,10 @@ namespace FSSGlobal
     module CompOptionsModule = // needs to be in a module so (?) operator does not collide with websharper
         
         type CompOptionClass = 
-            | OpFSharp
-            | OpWebSharper
-            | OpInternal
-        
+             | OpFSharp
+             | OpWebSharper
+             | OpInternal
+    
         type CompOption = 
             {
                 name   : string
@@ -857,7 +1024,7 @@ namespace FSSGlobal
             static member (/=) (op: CompOption, v                 ) = op, OpVTextOF v
         
         and CompOptionValue =
-            | OpVText   of                string
+            | OpVText   of                 string
             | OpVTextOF of (CompOptions -> string)
         with 
             member this.Value ops = 
@@ -869,7 +1036,7 @@ namespace FSSGlobal
         with
             member this.Pairs             =  this |> function CompOptions ops ->  ops
             member this.Exists   f        =  this.Pairs |> Array.exists f 
-            member this.Find     name     =  this.Pairs |> Array.find (fun (opT, opV) -> name = opT.name)
+            member this.Find     name     =  this.Pairs |> Array.tryFind (fun (opT, opV) -> name = opT.name) |> Option.defaultWith (fun () -> raise (exn ("option " + name + " not found.")) )
             member this.FindV    name     = (this.Find name |> snd).Value this
             member this.Contains co       =  this.Exists (fun (opT, opV) -> co   = opT                           )
             member this.Contains v        =  this.Exists (fun (opT, opV) -> v    = opT.prefix + (opV.Value this) )
@@ -895,6 +1062,7 @@ namespace FSSGlobal
         let opName        = { name = "Name"        ; unique = true  ; opClass = OpInternal   ; prefix = "++name:"      }
         let opExtension   = { name = "Extension"   ; unique = true  ; opClass = OpInternal   ; prefix = "++extension:" }
         let opFileName    = { name = "Filename"    ; unique = true  ; opClass = OpInternal   ; prefix = "++filename:"  }
+        let opOutputFile  = { name = "OutputFile"  ; unique = true  ; opClass = OpInternal   ; prefix = "++fileout:"   }
         let opConfig      = { name = "Config"      ; unique = true  ; opClass = OpInternal   ; prefix = "++config:"    }
         let opGenInternal = { name = "GenInternal" ; unique = false ; opClass = OpInternal   ; prefix = "++"           }
         let opWebSharper  = { name = "WebSharper"  ; unique = true  ; opClass = OpInternal   ; prefix = "++websharper:"}
@@ -910,6 +1078,7 @@ namespace FSSGlobal
         let opGenFSharp2  = { name = "GenFSharp2"  ; unique = false ; opClass = OpFSharp     ; prefix = "--"           }
         
         let opWebSite     = { name = "Website"     ; unique = true  ; opClass = OpWebSharper ; prefix = "--wsoutput:"  }
+        let opWsProject   = { name = "WsProject"   ; unique = true  ; opClass = OpWebSharper ; prefix = "--project:"   }
         let opGenWSharper = { name = "GenWSharper" ; unique = false ; opClass = OpWebSharper ; prefix = "--"           }
         
         let dllOptions     = CompOptions [| opTarget      /= "library"                                                                     |]  
@@ -926,6 +1095,7 @@ namespace FSSGlobal
                opFileName    /= fun os -> os?Directory +/+ os?Name + ".fs"
                opSource      /= fun os -> os?Filename
                opOutput      /= fun os -> System.IO.Path.ChangeExtension(os?Source, os?Extension)
+               opOutputFile  /= fun os -> System.IO.Path.GetFileName(os?Output)
                opConfig      /= fun os -> os?Output + ".config"
                opWebSharper  /= fun os -> if (os:CompOptions).Exists (fun (opT, opV) -> opT.opClass = OpWebSharper) then "1" else "0"
             |]
@@ -935,13 +1105,13 @@ namespace FSSGlobal
             [|
                opGenWSharper /= "ws:Site"
                opWebSite     /= fun os -> os?Directory +/+ "website"
-               opGenWSharper /= fun os -> sprintf "project:%s"  os?Name
+               opWsProject   /= fun os -> os?Name
             |] 
          
         let wsProjectOptions =
           CompOptions
             [|
-               opGenWSharper /= fun os -> sprintf "project:%s"  os?Name
+               opWsProject   /= fun os -> os?Name
             |] 
          
         let debugOptions = 
@@ -1007,142 +1177,6 @@ namespace FSSGlobal
   #endif
   module FsStationShared =
   
-    //#define FSS_SERVER
-    
-    //#if FSS_SERVER
-    open FSSGlobal.UsefulDotNet
-    open FSSGlobal.UsefulDotNet.Messaging
-    //#r @"Compiled\RemotingDll\RemotingDll.dll"
-    //#r @"..\packages\FSharp.Data\lib\net40\FSharp.Data.dll"
-    //#r @"..\packages\FSharp.Data\lib\net40\FSharp.Data.DesignTime.dll"
-    //#else
-    
-    //#r "remote.dll"
-    //open CIPHERPrototype.Messaging
-    //#endif
-    open WebSharper
-    open Useful
-    //open UsefulFewJS
-    //open UsefulFewJS.Messaging
-    
-    #if WEBSHARPER
-    [< Inline "true" >]
-    #endif          
-    let inJavaScript = false
-    
-    let selectF fj fn =
-        match inJavaScript with
-        | true  -> fj
-        | false -> fn
-        
-    #if WEBSHARPER
-    let AsyncStart asy     = Async.StartWithContinuations(asy, id, (fun e -> JS.Alert(e.ToString()) ), fun c -> JS.Alert(c.ToString()))    
-    [< Inline "" >]
-    let awaitRequestForRpc = awaitRequestForRpc
-    [< Inline "" >]
-    let sendRequestRpc     = sendRequestRpc
-    [< Inline "" >]
-    let replyToRpc         = replyToRpc
-    #else
-    let AsyncStart asy     = Async.Start asy
-    #endif          
-    
-    let AddressId        = AddressId
-    let addressIdTxt     = function | AddressId txt -> txt
-    
-    #if FSS_SERVER
-    let awaitRequestForF = selectF awaitRequestFor awaitRequestFor
-    let sendRequestF     = selectF sendRequest         sendRequest
-    let replyToF         = selectF replyTo                 replyTo
-    #else
-    let awaitRequestForF = selectF awaitRequestFor awaitRequestForRpc
-    let sendRequestF     = selectF sendRequest         sendRequestRpc
-    let replyToF         = selectF replyTo                 replyToRpc
-    #endif
-    let AsyncStartF      = selectF AsyncStart             Async.Start
-    
-    [< Inline "WebSharper.Remoting.EndPoint()" >]
-    let getEndPoint() = "http://localhost:9010/FSharpStation"
-    
-    type MessagingClient(clientId, ?timeout, ?endPoint:string) =
-        //do printfn "%s %s" WebSharper.Remoting.EndPoint clientId
-        let mutable active = true
-        let wsEndPoint     = endPoint    |> Option.defaultValue (getEndPoint())
-        let tout           = timeout     |> Option.defaultValue 100_000
-        let fromId         = AddressId clientId
-        do WebSharper.Remoting.EndPoint <- wsEndPoint 
-        let awaitMessage respond =
-            async {
-                while active do
-                    printfn "%s awaitRequest %s %s" (nowStamp()) clientId wsEndPoint
-                    let! msgA  = Async.StartChild(awaitRequestForF fromId, tout)
-                    try
-                        let! msg   = msgA
-                        let! resp  = respond (addressIdTxt msg.fromId) msg.content
-                        do!          replyToF msg.messageId.Value resp
-                    with 
-                    | :? System.TimeoutException -> ()
-                    | e                          -> printfn "%A" e
-            } 
-            |> AsyncStartF
-        let sendMessage  toId msg = sendRequestF toId fromId msg
-        let poMsg checkResponse msg =
-            async {
-                let! resp = sendMessage (AddressId "WebServer:PostOffice") (Json.Serialize<POMessage> msg)
-                return checkResponse (Json.Deserialize<POResponse> resp)
-            }
-        let poString resp =
-                    match resp with
-                    | POString  v  -> v
-                    | POStrings vs -> sprintf "%A" vs
-        let poStrings resp =
-                    match resp with
-                    | POString  v  -> [| sprintf "unexpected response: %s" v |]
-                    | POStrings vs -> vs     
-        [<Inline>] 
-        let respondMessageG respond fromId txt =
-            async {
-                printfn "respondMessageG txt: %s" txt
-                let  msg = Json.Deserialize txt 
-                printfn "respondMessageG msg: %A" msg
-                let! res = respond fromId msg
-                return Json.Serialize res
-            }                
-        [<Inline>] 
-        let sendMessageG toId msg =
-            async {
-                let! resp = sendMessage toId (Json.Serialize msg)
-                let  acr  = resp |> Json.Deserialize
-                return acr
-            }
-      with 
-        member this.AwaitMessage  respond  = awaitMessage (fun senderId request -> async { return respond senderId request })
-        member this.AwaitMessage  respondA = awaitMessage respondA
-        member this.SendMessage  toId msg  = sendMessage  toId msg
-        [<Inline>] 
-        member this.AwaitMessageG respondA = awaitMessage (respondMessageG respondA)
-        [<Inline>] 
-        member this.SendMessageG toId msg  = sendMessageG toId msg
-        member this.POMessage        msg   = poMsg id          msg
-        member this.POListeners      ()    = poMsg poStrings   POListeners
-        member this.EndPoint               = wsEndPoint
-        member this.ClientId               = clientId
-        member this.Deactivate       ()    = active <- false
-        static member EndPoint_            = getEndPoint()
-        interface System.IDisposable with
-               member this.Dispose () = active <- false
-    
-    type GenSeverity =
-        | GenError
-        | GenWarning
-        | GenInfor
-    
-    type GenResponse =
-        | StringResponse   of string
-        | OpStringResponse of string option
-        | ResultResponse   of string option * (string * GenSeverity)[]
-    
-    
     open Useful
     
     let snippetName name (content: string) =
@@ -1313,6 +1347,591 @@ namespace FSSGlobal
         | StringResponseR   of string option * (string * FSSeverity)[]
     
     
+  #if WEBSHARPER
+  [<WebSharper.JavaScript>]
+  #endif
+  module WSMessagingBroker =
+    //#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\WebSharper.Owin.WebSocket.dll"
+    
+    open WebSharper
+    open Useful
+    
+    let MessageBrokerId  = "<MessageBroker>"
+    
+    type Address = Address of address:string
+    with member this.txt = match this with Address txt -> txt
+    
+    let MessageBrokerAddress = Address MessageBrokerId
+    
+    /// Requests made to Message Broker
+    [< NamedUnionCases "type" >]
+    type BrokerRequest = 
+        | BRGetConnections  /// request for list of connections
+    
+    /// Replies from Message Broker
+    [< NamedUnionCases "type" >]
+    type BrokerReply = 
+        | BRConnections  of string[]
+      //  | BRPleaseClose  
+    
+    [< NamedUnionCases "type" >]
+    type MessageType = 
+        | MsgInformation             // does not expect a reply, payload may or may not be structured
+        | MsgRequest                 // expects a reply, structured payload
+        | MsgReply                   // structured payload.
+        | MsgFromBroker              // Payload is BrokerMessage. Only Broker should use this
+        | MsgRequestForId            // expects reply as Information with id
+        | MsgRequestForEcho          // expects reply as Information with same payload
+    
+    /// Replies from Message Broker
+    [< NamedUnionCases "type" >]
+    type BrokerMessage = 
+        | BMOk
+        | BMOnlyBrokerShouldUse
+        | BMDestinationNotFound of Address  
+        | BMWebSocketError      of string
+        | BMReceiverCantReply
+        | BMUnexpectedMsgType   of MessageType
+    
+    [< NamedUnionCases "type" >]
+    type Replier = 
+        | NoReply
+        | Broker
+        | Receiver
+    
+    [< NamedUnionCases "type" >]
+    type MessageGeneric = {
+        from          : Address
+        destination   : Address
+        msgType       : MessageType
+        subtype       : string      // free short string that provides information to deserialize payload
+        id            : System.Guid
+        payload       : string
+        replier       : Replier
+    }
+    
+    [< Inline >]
+    let inline processPayload f (payload:string) : string =
+        if payload = "" then Unchecked.defaultof<_> else Json.Deserialize payload
+        |> f
+        |> Json.Serialize
+                
+    [<  Inline >]
+    let newMsgSerialized dst payload = {
+        from          = Address ""
+        destination   = dst
+        msgType       = MsgRequest
+        subtype       = ""
+        id            = System.Guid.NewGuid()
+        payload       = payload
+        replier       = NoReply
+    }
+    
+    [< Inline >]
+    let inline payload        pl  msg = { msg with payload       = Json.Serialize pl }
+    let inline from           frm msg = { msg with from          = frm               }
+    let inline destination    dst msg = { msg with destination   = dst               }
+    let inline msgType        typ msg = { msg with msgType       = typ               }
+    let inline subtype        sub msg = { msg with subtype       = sub               }
+    let inline replier        rpl msg = { msg with replier       = rpl               }
+    let inline msgId          id  msg = { msg with id            = id                }
+    
+    [<  Inline >]
+    let inline newMsg dst payload = Json.Serialize payload |> newMsgSerialized dst
+    
+    [<  Inline >]
+    let inline msgPayload msg = Json.Deserialize msg.payload
+    
+    let mapPayload f msg = { msg with payload = f msg.payload }
+    
+    let inline makeReply msg =
+        msg
+        |> msgType MsgReply
+        |> replier NoReply
+    
+    [<  Inline >]
+    let inline respond pyld msg =
+        msg
+        |> makeReply
+        |> payload  pyld
+    
+    type IServer =
+        abstract member Post  : MessageGeneric -> unit
+        abstract member Close : unit           -> unit
+    
+    type CMessage<'C2S> = WebSharper.Owin.WebSocket.Client.Message<'C2S>
+    
+    
+    type SMessage<'S2C> = WebSharper.Owin.WebSocket.Server.Message<'S2C>
+    
+    #if WEBSHARPER
+    [< JavaScript false >]
+    #endif
+    module Broker =
+        open WebSharper
+        open WebSharper.Owin.WebSocket.Server
+        open Useful
+        open System.Collections.Generic
+        
+        type SomeState = {
+            info       : string
+        }
+        
+        type IClient =
+            abstract member Post : MessageGeneric -> unit
+            abstract member Ip   : unit           -> string
+            abstract member Id   : unit           -> string
+            abstract member Close: unit           -> unit
+    
+        type BrokerAgent(_epWebSocket: WebSharper.Owin.WebSocket.Endpoint<MessageGeneric,MessageGeneric>) =
+    #if FSS_SERVER                          
+            static let mutable fssWebSocketO : BrokerAgent option = None
+    #endif
+            do printfn "WebSocket server start"
+            let mutable connections = Map.empty
+            let processBrokerRequest req = 
+                match req with
+                | BRGetConnections -> connections |> Map.toSeq |> Seq.map (fun (Address cl, _) -> cl) |> Seq.toArray |> BRConnections 
+                
+            let respondFromBroker pyld msg =
+                msg
+                |> respond     pyld
+                |> msgType     MsgFromBroker
+                |> subtype     "FromBroker"
+    
+            let post reply msg =
+                match connections |> Map.tryFind msg.destination with
+                | None                      -> msg |> respondFromBroker (BMDestinationNotFound msg.destination) |> reply
+                | Some(_, clientTo:IClient) -> msg |> clientTo.Post
+                
+            let clientConnect (client: IClient) = async {
+                let clientId = client.Id()
+                let uniqueId = System.Guid.NewGuid()
+                printfn "New Connection from %s" clientId                           
+                let clientAddress = Address clientId
+                connections
+                |> Seq.filter(fun kp -> kp.Key = clientAddress)
+                |> Seq.iter  (fun (kp:KeyValuePair<_, _ * IClient>) -> 
+                    printfn "Closing old connection from %s" clientId
+                    kp.Value 
+                    |> fun (_, conn) -> conn.Close()
+                )
+                connections <- connections |> Map.add clientAddress (uniqueId, client)
+                
+                let reply msg = msg |> from MessageBrokerAddress |> destination clientAddress |> client.Post
+                let checkReply msg = if msg.replier = Broker then
+                                            msg |> respondFromBroker BMOk |> reply
+                let forward msg = msg |> from clientAddress |> post reply
+                                  checkReply msg
+                let respondMsg (msg:MessageGeneric) =
+                    checkReply msg
+                    printfn "%A" msg
+                    match msg.msgType with
+                    | MsgInformation    -> printfn "Information from '%s': %s" msg.from.txt (msgPayload msg)
+                    | MsgReply          -> printfn              "Reply %s: %s" msg.from.txt  msg.payload
+                    | MsgRequest        -> msg |> respond (msgPayload msg  |> processBrokerRequest)  |> reply
+                    | MsgRequestForId   -> msg |> respond  MessageBrokerId |> msgType MsgInformation |> reply
+                    | MsgRequestForEcho -> msg |> mapPayload id            |> msgType MsgInformation |> reply
+                    | MsgFromBroker     -> ()
+                let clientIp = client.Ip()
+                return Unchecked.defaultof<_>, fun state wsmsg -> async {
+                    printfn "Received message %A from %s - %s" state clientIp clientId
+                    match wsmsg with
+                    | Message msg ->
+                        if   msg.msgType     = MsgFromBroker        then msg |> respondFromBroker BMOnlyBrokerShouldUse |> reply
+                        elif msg.destination = MessageBrokerAddress then respondMsg msg
+                        else                                             forward    msg     
+                        return state
+                    | Error exn -> 
+                        printfn "Error in WebSocket server connected to %s - %s: %s" clientIp clientId (exn.ToString())
+                        newMsg clientAddress (BMWebSocketError exn.Message) |> msgId System.Guid.Empty |> msgType MsgFromBroker |> msgType MsgFromBroker |> reply
+                        return state
+                    | Close ->
+                        printfn "Closed connection to %s - %s" clientIp clientId
+                        connections <- connections |> Map.filter (fun _ (uid, _) -> uid <> uniqueId)
+                        return state
+                }
+            }
+            member this.Post msg = post (fun m -> dprintfn "%s" m.payload) msg
+            member this.Start (client : WebSocketClient<MessageGeneric,MessageGeneric>) =
+                clientConnect { new IClient with
+                                    member this.Post v  = client.Post v
+                                    member this.Ip()    = client.Connection.Context.Request.RemoteIpAddress
+                                    member this.Id()    = client.Connection.Context.Request.Query 
+                                                          |> KeyVal.tryGetValue  "ClientId" 
+                                                          |> Option.bind         Array.tryHead 
+                                                          |> Option.defaultValue ""
+                                    member this.Close() = client.Connection.Close(System.Net.WebSockets.WebSocketCloseStatus.NormalClosure, null) |> Async.AwaitTask |> Async.Start
+                              }
+    #if FSS_SERVER
+            static member FssWebSocketO                = fssWebSocketO
+            static member FssWebSocketO with set value = fssWebSocketO <- value
+            member this.ConnectLocal clientId receiver = 
+                clientConnect { new IClient with
+                                    member this.Post v  = receiver v 
+                                    member this.Ip()    = "(server)"
+                                    member this.Id()    = clientId
+                                    member this.Close() = () // probably shouldn't be called at all
+                              }
+    
+        let ConnectStatefulFSS uri clientId (f:IServer -> Async<int * (int -> CMessage<MessageGeneric> -> Async<int>)>) =
+            async {
+                match BrokerAgent.FssWebSocketO with 
+                | None -> raise (exn "FssWebSocketO is not set")
+                | Some serverP ->
+                let  mutable clientBoxO : MailboxProcessor<CMessage<MessageGeneric>> option = None
+                let  receiver msg = clientBoxO |> Option.iter (fun cbox -> cbox.Post (CMessage.Message msg))
+                let! brokerInitState, brokerFunc = serverP.ConnectLocal clientId receiver
+                let  brokerBox   = Mailbox.fold brokerFunc brokerInitState
+                let! clientInitState, clientFunc = f { new IServer with
+                                                           member this.Post msg = brokerBox.Post (Owin.WebSocket.Server.Message msg)
+                                                           member this.Close()  = ()
+                                                     }
+                let  clientBox = Mailbox.fold clientFunc clientInitState
+                clientBoxO <- Some clientBox
+                clientBox.Post CMessage.Open
+            }
+    #endif        
+            
+            
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.dll"
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Core.JavaScript.dll"
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Main.dll"
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Collections.dll"
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.InterfaceGenerator.dll"
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.JQuery.dll"
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.JavaScript.dll"
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Web.dll"
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Sitelets.dll"
+    //#r @"..\packages\WebSharper\lib\net40\WebSharper.Control.dll"
+    //#r @"..\packages\WebSharper.UI.Next\lib\net40\WebSharper.UI.Next.dll"
+    
+    open System
+    open System.Threading
+    open System.Net.WebSockets
+    open WebSharper
+    open Useful
+    
+    #if WEBSHARPER
+    [< JavaScript false >]
+    #endif
+    module Client =
+        let startStateFull receive f =
+            async {
+                let! initState, func = f
+                let agentBox = Mailbox.fold func initState
+                let finish a = agentBox.Post CMessage.Close ; printfn "%A" a
+                let error  a = agentBox.Post CMessage.Error ; finish a
+                Async.StartWithContinuations(receive agentBox, finish, error, error)
+            }
+    
+        type WebSocketServer<'S2C, 'C2S>(uri:string) =
+            let conn = new ClientWebSocket()
+            let chunkSize = 8192
+            let send (txt:string)  =
+                async {
+                    let buffer = System.Text.Encoding.UTF8.GetBytes txt
+                    let chunks = buffer.Length / chunkSize
+                    for i = 0 to chunks do
+                        let last = i = chunks
+                        let size = if last then buffer.Length % chunkSize else chunkSize
+                        do! conn.SendAsync(new ArraySegment<byte>(buffer, i * chunkSize, size), WebSocketMessageType.Binary, last, CancellationToken.None) |> Async.AwaitTask
+                }
+            let receive (receiverBox:MailboxProcessor<CMessage<'S2C>>) =
+                let buffer : byte[] = Array.create chunkSize 0uy
+                let builder         = System.Text.StringBuilder()
+                let keepgo          = ref true
+                async {
+                    receiverBox.Post CMessage.Open
+                    while conn.State = WebSocketState.Open && !keepgo do
+                        let! result = conn.ReceiveAsync(ArraySegment buffer, CancellationToken.None) |> Async.AwaitTask
+                        match result.MessageType with
+                        | WebSocketMessageType.Close -> keepgo := false
+                        | WebSocketMessageType.Text ->
+                            let txt = System.Text.Encoding.UTF8.GetString buffer.[0..result.Count - 1]
+                            builder.Append txt |> ignore
+                            if result.EndOfMessage then
+                                let txt = builder.ToString()
+                                builder.Clear() |> ignore
+                                Json.Deserialize txt |> CMessage.Message |> receiverBox.Post
+                        | _ -> ()
+                    return "WebSocketServer receive Closed."
+                }
+            let brokerBox = Mailbox.iter (Json.Serialize >> send)
+            let connect f =
+                async {
+                    dprintfn "Connecting %s" uri
+                    do! conn.ConnectAsync(new Uri(uri), CancellationToken.None) |> Async.AwaitTask
+                    dprintfn "Connected %A" WebSocketState.Open
+                    do! startStateFull receive f
+                }
+            member this.WebSocket        = conn
+            member this.Post (msg: 'C2S) = brokerBox.Post msg
+            member this.Connect          = connect
+    
+        let ConnectStateful<'S2C, 'C2S> uri agent =
+            async {
+                let  server          = WebSocketServer uri
+                do!  server.Connect (agent server)
+                return server
+            }
+    
+        let ConnectStatefulFS uri clientId (f:IServer -> _) =
+            let uri2 = sprintf "ws://%s?ClientId=%s" uri clientId
+            let func (serverP:WebSocketServer<MessageGeneric,MessageGeneric>) =
+                f { new IServer with
+                      member this.Post  v = serverP.Post v
+                      member this.Close() = serverP.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None) 
+                                            |> Async.AwaitTask |> Async.RunSynchronously            
+                   }
+            ConnectStateful uri2 func
+            |> Async.map ignore
+            
+    //#r @"..\packages\Owin\lib\net40\Owin.dll"
+    //#r @"..\packages\Microsoft.Owin\lib\net45\Microsoft.Owin.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\WebSharper.Owin.WebSocket.dll"
+    
+    open System
+    open Useful
+    open WebSharper.Owin.WebSocket
+    open WebSharper.Owin.WebSocket.Client
+    
+    //#define FSS_SERVER
+    //#define WEBSHARPER
+    
+    type  Server = WebSocketServer<MessageGeneric,MessageGeneric>
+    
+    type ClientTypeFSharp    = FSharp
+    #if WEBSHARPER
+    type ClientTypeFSStation = FSStation
+    type ClientTypeJScript   = JScript
+    
+    [< Inline >]
+    let ConnectStatefulJS uri clientId (f:IServer -> Async<'state * ('state -> CMessage<MessageGeneric> -> Async<'state>)>) =
+        let uri2 = sprintf "ws://%s?ClientId=%s" uri clientId
+        let func (serverP:WebSocketServer<MessageGeneric,MessageGeneric>) =
+            f { new IServer with
+                  member this.Post  v = serverP.Post v
+                  member this.Close() = serverP.Connection.Close 1000 // Normal Closure
+               }
+        let  endPoint = Endpoint.CreateRemote(uri2, JsonEncoding.Readable)
+        ConnectStateful endPoint func
+        |> Async.map ignore
+    #endif
+    
+    type ErrBroker(bm : BrokerMessage) =
+        interface ErrMsg with
+            member this.ErrMsg   : string = sprintf "%A" bm
+            member this.IsWarning: bool   = false
+    
+    type WaitForReplyMsg =
+        | Add    of Guid * ((MessageGeneric -> unit) * (exn -> unit) * (OperationCanceledException -> unit))
+        | Reply  of Guid *   MessageGeneric
+        | Excpn  of Guid * (unit -> exn)
+        | Cancel of Guid * (unit -> OperationCanceledException)
+        
+    let waitingAgent defProc =    
+        Mailbox.fold (fun waitingForReply action ->
+            async {
+                match action with
+                | Add   (_ky, _fn) -> ()
+                | Reply (key, msg) -> waitingForReply |> Map.tryFind key |> Option.map  (fun (f,_,_) -> f  msg   ) 
+                                      |> Option.defaultWith (fun () -> defProc msg)
+                | Excpn (key, exn) -> waitingForReply |> Map.tryFind key |> Option.iter (fun (_,f,_) -> f (exn()))
+                | Cancel(key, cnl) -> waitingForReply |> Map.tryFind key |> Option.iter (fun (_,_,f) -> f (cnl()))
+                return
+                    match action with
+                    | Reply (key, _  )
+                    | Excpn (key, _  )
+                    | Cancel(key, _  ) -> waitingForReply |> Map.remove key
+                    | Add   (key, fns) -> waitingForReply |> Map.add    key fns
+            }
+        ) Map.empty
+    
+    [< Inline "window.location.href" >]
+    let getEndPoint() = 
+    #if FSS_SERVER
+        "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
+    #else
+        "http://localhost:9010/"
+    #endif
+    
+    let extractEndPoint() = 
+        let ep : string = getEndPoint()
+        let ep2 = ep.Substring(ep.IndexOf "//" + 2)
+        ep2.Split('/').[0]
+    
+    type WSMessagingClient(connectStateful: string -> string -> (IServer -> Async<int * (int -> CMessage<MessageGeneric> -> Async<int>)>) -> Async<unit>
+            , clientId:string, ?timeout:int, ?endPoint:string) =    
+        let wsEndPoint    = defaultArg endPoint (extractEndPoint() + "/ws")
+        let clientAddress = Address clientId
+        let wsTimeout     = defaultArg timeout 60000
+    
+        let mutable out = printfn "%s"
+        //let printoutfn out     = 0 // just to catch printoutfn out that should not be around 
+        let mutable serverO : IServer option = None
+        let mutable payloadProcessorO : (string -> Wrap<string>) option = None
+        let waiting = waitingAgent (fun msg -> printoutfn out "Reply from '%s': %s" msg.from.txt msg.payload)
+    
+        let reply msg = serverO |> Option.iter (fun server -> msg |> from clientAddress |> destination msg.from |> server.Post)
+        let close ()  = serverO |> Option.iter (fun server -> server.Close() ; serverO <- None                                )
+    
+        let processReply      msg = waiting.Post (Reply(msg.id,msg))
+        let mapPayloadWrap (fW: _ -> Wrap<_> ) msg =
+            Wrap.wrap {
+                let! r = fW msg.payload
+                return msg |> mapPayload (fun _ -> r)
+            }
+        let processMessage msg =
+            dprintfn "%A" msg
+            match msg.msgType with
+            | MsgFromBroker     
+            | MsgReply          -> processReply msg
+            | MsgInformation    -> printoutfn out "Information from '%s': %s" msg.from.txt (msgPayload msg)
+            | MsgRequest        -> match payloadProcessorO with 
+                                   | None           -> if msg.replier = Receiver then () // requires a reply but cannot give one, ask broker to handle it
+                                   | Some processor ->
+                                   msg |> mapPayloadWrap processor |> Wrap.map  (makeReply >> reply) |> Wrap<unit>.Start
+            | MsgRequestForEcho -> msg |> mapPayload     id        |> msgType MsgInformation |> reply
+            | MsgRequestForId   -> msg |> respond        clientId  |> msgType MsgInformation |> reply
+        
+        let connectToWebSocketServer() =
+            dprintfn "in connectToWebSocketServer"
+            async {
+                do! connectStateful wsEndPoint clientId <| fun (server: IServer) -> async {
+                    return 0, fun state wsmsg -> async {
+                        try match wsmsg with
+                            | CMessage.Message msg -> processMessage msg
+                            | CMessage.Open        -> printoutfn out "WebSocket %s connection open."   clientId ; serverO <- Some server
+                            | CMessage.Close       -> printoutfn out "WebSocket %s connection closed." clientId ; close()
+                            | CMessage.Error       -> printoutfn out "WebSocket %s connection error!"  clientId
+                        with e -> printfn "msg: %A \nexn:%A" wsmsg e 
+                        return state
+                    }
+                }
+                dprintfn "connectToWebSocketServer with server"
+                
+            }
+    
+        let checkServer = Mailbox.call ( fun () -> async {
+            dprintfn "getServer"
+            if serverO.IsNone then
+                dprintfn "getServer Connecting"
+                do! connectToWebSocketServer()
+                do! Async.Sleep 200
+            return serverO |> Result.fromOption (ErrSimple("could not connect to Server", false))
+        })        
+    
+        let getServer() : Wrap<IServer> =
+            Wrap.wrap {
+                let! serverA = checkServer.PostAndAsyncReply(fun reply -> reply, ())
+                let! server  = serverA
+                return server
+            }
+            
+        let postR (server: IServer) rpl msg = 
+            let m = msg |> from clientAddress |> replier rpl 
+            try       server.Post m
+            with e -> serverO <- None
+                      raise e
+    
+        let sendAndForget msg =
+            Wrap.wrap {
+                let! server = getServer()
+                msg |> postR server NoReply
+            }
+            
+        let sendAndReply rpl msg =
+            Wrap.wrap {
+                let! server  = getServer()
+                let  replyA  = Async.FromContinuations(fun v -> 
+                    Add(msg.id, v) |> waiting.Post 
+                    msg |> postR server rpl
+                    if wsTimeout > 0 then
+                        async {
+                            do! Async.Sleep wsTimeout
+                            Excpn(msg.id, fun () -> TimeoutException(sprintf "Did not receive reply in %d seconds for Message: %A" (wsTimeout / 1000) msg) :> exn) |> waiting.Post
+                        } |> Async.Start
+                )
+                let! reply   = replyA
+                return reply
+            }
+            
+        let sendAndVerify msg =
+            Wrap.wrap {
+                let! reply   = sendAndReply Broker msg 
+                do!  match reply.msgType with
+                     | MsgFromBroker  -> let  bm = msgPayload reply
+                                         if   bm = BMOk 
+                                         then Result.succeed () 
+                                         else Result.fail (ErrBroker bm)
+                     | _              ->      Result.fail (ErrBroker (BMUnexpectedMsgType reply.msgType))
+            }
+        
+        let sendGetReply msg =
+            Wrap.wrap {
+                let! reply   = sendAndReply Receiver msg 
+                let! result =
+                    match reply.msgType with
+                    | MsgReply      -> Result.succeed reply.payload
+                    | MsgFromBroker -> let bm = msgPayload reply
+                                       Result.fail (ErrBroker bm)
+                    | _             -> Result.fail (ErrBroker (BMUnexpectedMsgType reply.msgType))
+                return result
+            }
+    
+        let getListeners() =
+            Wrap.wrap {
+                let  msg    = newMsg MessageBrokerAddress BRGetConnections
+                let! reply  = sendGetReply msg
+                match Json.Deserialize<BrokerReply> reply with
+                | BRConnections listeners -> return listeners
+                //| _ -> ()
+            } 
+            
+        let sendMsg msg =
+            Wrap.wrap {
+                if msg.replier = NoReply
+                then do!     sendAndForget msg
+                     return  ""
+                else return! sendGetReply  msg
+            }
+        member this.MBListeners            = getListeners()
+        member this.EndPoint               = wsEndPoint
+        member this.ClientId               = clientId
+        member this.SendMsg           msg  = sendMsg msg
+        [<  Inline >]
+        member this.SendAndForget dst pyld = newMsg dst pyld |> sendAndForget
+        [<  Inline >]
+        member this.SendAndVerify dst pyld = newMsg dst pyld |> sendAndVerify
+        [<  Inline >]
+        member this.SendGetReply  dst pyld = newMsg dst pyld |> sendGetReply  |> Wrap.map Json.Deserialize
+        member this.Out with set fout      = out <- fout
+        [<  Inline >]
+        member this.ProcessIncoming   pro  = payloadProcessorO <- Some (Json.Deserialize >> pro >> (Wrap.map Json.Serialize))
+                                             newMsg MessageBrokerAddress "Registering Processor" 
+                                             |> msgType MsgInformation
+                                             |> sendAndForget |> Wrap<unit>.Start
+        interface IDisposable with
+            member this.Dispose() = close()
+    
+    #if FSS_SERVER   
+        [< JavaScript false >]
+        new (clientId:string, FSStation, ?timeout, ?endPoint) = new WSMessagingClient(Broker.ConnectStatefulFSS, clientId, ?timeout = timeout, ?endPoint = endPoint)
+    #endif
+    #if WEBSHARPER
+        [< JavaScript false >]
+        new (clientId:string, FSharp   , ?timeout, ?endPoint) = new WSMessagingClient(Client.ConnectStatefulFS , clientId, ?timeout = timeout, ?endPoint = endPoint)
+        new (clientId:string,            ?timeout, ?endPoint) = new WSMessagingClient(       ConnectStatefulJS , clientId, ?timeout = timeout, ?endPoint = endPoint)
+    #else    
+        new (clientId:string,            ?timeout, ?endPoint) = new WSMessagingClient(Client.ConnectStatefulFS , clientId, ?timeout = timeout, ?endPoint = endPoint)
+    #endif
+    
+    
+    open FsStationShared
     
     type FsStationClientErr =
         | FSMessage             of string * FSSeverity
@@ -1325,15 +1944,14 @@ namespace FSSGlobal
             member this.IsWarning =     
                 match this with 
                 | FSMessage (_  , FSError)   -> true
-                | msg                        -> false
+                | _msg                       -> false
     
-    type FsStationClient(clientId, ?fsStationId:string, ?timeout, ?endPoint) =
-        let fsIds      = fsStationId |> Option.defaultValue "FSharpStation1517916030213"
-        let msgClient  = new MessagingClient(clientId, ?timeout= timeout, ?endPoint= endPoint)
-        let toId       = AddressId fsIds
+    type FStationMessaging(msgClient:WSMessagingClient, _clientId, ?fsStationId:string) =
+        let mutable fsIds      = fsStationId |> Option.defaultValue "FSharpStation1522641651102"
+        let         toId()     = Address fsIds
         let stringResponseR response =
             match response with
-            | StringResponseR (Some code, msgs) -> Result.succeedWithMsgs code (msgs |> Seq.map (fun v -> FSMessage v :> ErrMsg) |> Seq.toList)
+            | StringResponseR (Some code, msgs) -> Result.succeedWithMsgs code (msgs |> Seq.map (fun v -> FSMessage v :> ErrMsg) |> Seq.toArray)
             | _                                 -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
         let stringResponse   response =
             match response with
@@ -1349,272 +1967,43 @@ namespace FSSGlobal
             | _                                 -> Result.fail    (``Snippet Not Found`` <| response.ToString()) 
         [< Inline >]
         let sendMsg toId (msg: FSMessage) (checkResponse: FSResponse -> Result<'a>) =
-            let msgser =  msg |> Json.Serialize
-            let respA  =  msgClient.SendMessage toId msgser
-            Wrap.wrapper {
-                let!   response = respA
-                let!   resp     = checkResponse (Json.Deserialize<FSResponse> response)
-                return resp
+            Wrap.wrap {
+                let!   res   = msgClient.SendGetReply toId msg
+                let!   check = checkResponse res
+                return check
             } 
       with 
-        member this.SendMessage     (toId2,  msg:FSMessage) = sendMsg toId2  msg    Result.succeed   
-        member this.SendMessage     (        msg:FSMessage) = sendMsg toId   msg    Result.succeed   
-        member this.RequestSnippet  (    snpPath:string   ) = sendMsg toId  (GetSnippet          (snpPath.Split '/'     ))    snippetResponse  
-        member this.RequestCode     (    snpPath:string   ) = sendMsg toId  (GetSnippetCode      (snpPath.Split '/'     ))    stringResponse   
-        member this.RequestJSCode   (    snpPath:string   ) = sendMsg toId  (GetSnippetJSCode    (snpPath.Split '/'     ))    stringResponseR  
-        member this.RequestPreds    (    snpPath:string   ) = sendMsg toId  (GetSnippetPreds     (snpPath.Split '/'     ))    snippetsResponse 
-        member this.RequestPredsById(      snpId          ) = sendMsg toId  (GetSnippetPredsById  snpId                  )    snippetsResponse 
-        member this.RequestWholeFile(                     ) = sendMsg toId   GetWholeFile                                     stringResponse   
-        member this.GenericMessage  (        txt:string   ) = sendMsg toId  (GenericMessage       txt                    )    stringResponse   
-        member this.RunSnippet      (url,snpPath:string   ) = sendMsg toId  (RunSnippetUrlJS     (snpPath.Split '/', url))    stringResponseR
-        member this.RunActionCall   (name, act, parms     ) = sendMsg toId  (RunActionCall       (name, act, parms      ))    stringResponseR
+        member this.SendMessage     (toId2,  msg:FSMessage) = sendMsg  toId2    msg    Result.succeed   
+        member this.SendMessage     (        msg:FSMessage) = sendMsg (toId())  msg    Result.succeed   
+        member this.RequestSnippet  (    snpPath:string   ) = sendMsg (toId()) (GetSnippet          (snpPath.Split '/'     ))    snippetResponse  
+        member this.RequestCode     (    snpPath:string   ) = sendMsg (toId()) (GetSnippetCode      (snpPath.Split '/'     ))    stringResponse   
+        member this.RequestJSCode   (    snpPath:string   ) = sendMsg (toId()) (GetSnippetJSCode    (snpPath.Split '/'     ))    stringResponseR  
+        member this.RequestPreds    (    snpPath:string   ) = sendMsg (toId()) (GetSnippetPreds     (snpPath.Split '/'     ))    snippetsResponse 
+        member this.RequestPredsById(      snpId          ) = sendMsg (toId()) (GetSnippetPredsById  snpId                  )    snippetsResponse 
+        member this.RequestWholeFile(                     ) = sendMsg (toId())  GetWholeFile                                     stringResponse   
+        member this.GenericMessage  (        txt:string   ) = sendMsg (toId()) (GenericMessage       txt                    )    stringResponse   
+        member this.RunSnippet      (url,snpPath:string   ) = sendMsg (toId()) (RunSnippetUrlJS     (snpPath.Split '/', url))    stringResponseR
+        member this.RunActionCall   (name, act, parms     ) = sendMsg (toId()) (RunActionCall       (name, act, parms      ))    stringResponseR
         member this.FSStationId                             = fsIds
+        member this.FSStationId with set id                 = fsIds <- id
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1517916030213"
-    
-    
-  module FsEvaluator =
-    open Useful
-    
-    module Evaluator =
-        open System.Diagnostics
-        open UsefulDotNet
-        open RunProcess
-        
-        let endToken = "xXxY" + "yYyhH"
-        let mutable silent    = false
-        type FsiExe(config, ?outHndl, ?errHndl) =
-            let startInfo                 = ProcessStartInfo(@"fsiAnyCpu.exe", config |> String.concat " ")             
-            let shell                     = new ShellEx(startInfo, ?outHndl = outHndl, ?errHndl = errHndl)  // --noninteractive
-            do  startInfo.CreateNoWindow <- false
-                shell.Start() |> ignore
-            member this.Eval txt =
-                Wrap.wrapper {
-                    do! Result.tryProtection()
-                    shell.Send txt 
-                    shell.Send ";;"
-                    let! res = shell.SendAndWait("printfn \"" + endToken + "\";;", endToken)
-                    //shell.WaitForInputIdle() |> ignore
-                    //let! resR = shell.Response()
-                    //let! res  = resR
-                    return res
-                }
-            member this.IsAlive = not shell.HasExited
-            interface System.IDisposable with
-                member this.Dispose () = 
-                    (shell :> System.IDisposable).Dispose()
-    
-        #if FSS_SERVER
-        printfn "FSS_SERVER"
-        let mutable fssClient = FsStationShared.FsStationClient("Fsi")
-        let queueOutput = MailboxProcessor.Start(fun mail -> 
-            let output      = new System.Text.StringBuilder()
-            let append  txt = output.Append((if output.Length = 0 then "" else "\n") + txt) |> ignore
-            let consume ()  = let v = output.ToString()
-                              output.Clear() |> ignore
-                              v
-            async {
-                while true do
-                    let! msg = mail.Receive()
-                    match msg with
-                    | Some txt -> append txt
-                    | None     ->   // None means send the queued text
-                        let txt2send =  consume()
-                        if  txt2send <> "" then
-                            fssClient.RunActionCall("OutText", "actOutText", [| "+" ; txt2send |])
-                            |> Wrap.getAsyncR 
-                            |> Async.map ignore 
-                            |> Async.RunSynchronously            
-            })
-        let queueText txt = 
-            txt |> Some |> queueOutput.Post
-            async { do! Async.Sleep 100
-                    queueOutput.Post None } |> Async.Start
-        let outHndl (txt:string) = if not silent then txt.Replace(endToken, "Done!")   |> queueText
-        let errHndl (txt:string) = if not silent then if txt <> "" then "ERR : " + txt |> queueText
-        let setFsid id ep = if id <> fssClient.FSStationId && id <> "" then fssClient <- FsStationShared.FsStationClient("Fsi", id, endPoint = ep) ; printfn "setFSid = %s" id
-        #else
-        let outHndl       = ignore
-        let errHndl       = ignore
-        let setFsid id ep = ()
-        #endif
-    
-        let fsiExe = lazy new ResourceAgent<_, string> (70
-                                                      , (fun config ->
-                                                              printfn "FsiExe %s" (defaultArg config "")
-                                                              new FsiExe([ "--nologo"
-                                                                           "--quiet"
-                                                                           defaultArg config ""
-                                                                         ], outHndl, errHndl))
-                                                      , (fun fsi -> (fsi :> System.IDisposable).Dispose()), (fun fsi -> fsi.IsAlive), "")
-    
-        #if WEBSHARPER
-        [< JavaScript >]
-        #endif
-        let extractConfig (code:string) = if code.StartsWith "////-d:" then code.[4..code.IndexOf '\n' - 1] else ""
-    
-        let evalFsiExe (code:string) incrUseCount =
-            Wrap.wrapper {
-                let  config = extractConfig code
-                let! resR   = fsiExe.Value.Process(fun fsi -> 
-                    Wrap.wrapper {
-                      return! fsi.Eval code 
-                    }
-                , config, incrUseCount)
-                let! res    = resR
-                return res
-            }
-    
-        let evalSilent (config:string option) fs = 
-            Wrap.wrapper {
-                silent <- true
-                let! resR   = fsiExe.Value.Process(fun fsi -> 
-                    Wrap.wrapper {
-                      return! fsi.Eval fs
-                    }
-                , config 
-                  |> Option.orElse fsiExe.Value.Configuration
-                  |> Option.defaultValue ""
-                , false)
-                let! res    = resR
-                silent <- false
-                return res
-            }
-            |> Wrap.runSynchronouslyS false 
-            |> fun s -> s.Split('\n').[0]     
-            
-        let installPresence configO = evalSilent configO """
-    module CodePresence =
-        let mutable present : Map<string, string>  = Map.empty
-        let presenceOf    k   = present |> Map.tryFind k |> Option.defaultValue "--" |> printfn "%s"
-        let addPresenceOf k v = present <- present |> Map.add k v ; printfn "ok"
-    """
-    
-        #if WEBSHARPER
-        [< Rpc >]
-        #endif
-        let addPresence (name:string) (v:string) = 
-            async {
-                let code = sprintf "CodePresence.addPresenceOf %A %A" (name.Replace("\"", "\\\"")) v
-                evalSilent None code
-                |> function
-                   | "ok" -> ()
-                   | _    -> installPresence None      |> ignore
-                             evalSilent      None code |> ignore
-            }
-        #if WEBSHARPER
-        [< Rpc >]
-        #endif
-        let getPresence config (name:string)   = 
-            async {
-                let code = sprintf "CodePresence.presenceOf    %A" (name.Replace("\"", "\\\""))
-                return
-                    evalSilent (Some config) code
-                    |> function
-                       | v when v = endToken -> installPresence (Some config) |> ignore
-                                                None
-                       | "--"                -> None
-                       | v                   -> Some v
-            }
-        
-    //#define WEBSHARPER
-    open WebSharper
-    
-    [< Rpc >]
-    let evaluateAS (fsid:string) (ep:string) incrUseCount source =
-        async {
-            Evaluator.setFsid fsid ep
-            let!    res  = Evaluator.evalFsiExe source incrUseCount |> Wrap.getAsyncR 
-            return  res |> Result.mapMsgs (Seq.map (fun (e:ErrMsg) -> e.ErrMsg, e.IsWarning) >> Seq.toArray)
-        }
-        
-    [< JavaScript >]
-    let evaluateAR fsid ep incrUseCount source =
-        async {
-            let!   vO, msgs = evaluateAS fsid ep incrUseCount source 
-            return  Result (vO,  msgs |> Seq.map (fun (msg, wrn) -> ErrSimple(msg, wrn) :> ErrMsg) |> Seq.toList)
-        }
-        
-  module FsTranslator =
-    module TranslatorCaller =
-        open Useful
-        open UsefulDotNet
-        open UsefulDotNet.RunProcess
-        open CompOptionsModule
-        open System
-        open System.IO
-        open System.Diagnostics
-        
-        type TranslatorExe(config) =
-            let startInfo                 = ProcessStartInfo(@"Compiled\FsTranslator\FsTranslator.exe", config |> String.concat " ")             
-            let shell                     = new ShellEx(startInfo)  // --noninteractive
-            let endToken                  = sprintf "//---------------%s-----------------" "EOF"
-            do  startInfo.CreateNoWindow <- false
-                shell.Start() |> ignore
-            member this.Translate txt =
-                Wrap.wrapper {
-                    do! Result.tryProtection()
-                    let! res1 = shell.SendAndWait(txt, endToken, true)
-                    let! res2 = if res1.EndsWith "//success" then Result.succeed res1 else Result.fail (ErrSimple ("Translator Failed", false))
-                    return res2
-                }
-            member this.IsAlive = not shell.HasExited
-            interface System.IDisposable with
-                member this.Dispose () = 
-                    (shell :> System.IDisposable).Dispose()    
-    
-        let translator = lazy new ResourceAgent<_, string> (20, (fun config -> new TranslatorExe(["++loop"; defaultArg config ""] )), (fun exe -> (exe :> System.IDisposable).Dispose()), (fun exe -> exe.IsAlive), "")
-        
-        let extractConfig (code:string[]) = if code.[0].StartsWith "////-d:" then code.[0].[4..] else ""
-    
-        let getJSW (minified:bool) (options0 : (CompOption * CompOptionValue) seq) (fsCode:string) =
-            Wrap.wrapper {
-                do!  Result.tryProtection()
-                let  code           = fsCode.Split '\n'
-                let  defines0       = (extractConfig code).Split([| " " ; "-d:" |], StringSplitOptions.RemoveEmptyEntries) 
-                let  fs, assembs, defines1, prepIs, nowarns = separatePrepros false code |> separateDirectives
-                let  defines        = Array.append defines0 defines1
-                let  codeBase       = Path.GetFullPath "bin"
-                let  name           = "Temp_" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName())
-                let  options1       = compileOptionsDll name
-                                      + opDirectory   /= Path.GetDirectoryName(codeBase)
-                                      + opGenWSharper /= "project:FSharpStation"
-                                     // + opIOption   /= @"D:\Abe\CIPHERWorkspace\CIPHERPrototype\WebServer\bin"
-                                      + options0
-                let  options2       = prepOptions options1 (fs, assembs, defines, prepIs, nowarns)
-                use  toErase        = new TempFileName(options2?Source)
-                let  ops            = options2.Get CompOptions.WSharperOptions
-                                      |> Seq.append [ "IGNORED" ]
-                                      |> Seq.map (sprintf "%A")
-                                      |> String.concat " "
-                let! jsR            = translator.Value.Process (fun tra -> tra.Translate ops)
-                let! js             = jsR
-                return js
-            }
+        static member FSStationId_                          = "FSharpStation1522641651102"
+    #if FSS_SERVER   
+        [< JavaScript false >]
+        new (clientId, FSStation, ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId, FSStation, ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
+    #endif
+        [< JavaScript false >]
+    #if WEBSHARPER
+        new (clientId, FSharp   , ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId, FSharp   , ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
+    #endif    
+        new (clientId,            ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId,            ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
     
     
     
-    open Useful
-    open WebSharper
-    
-    [< Rpc >]
-    let translateAS source minified = 
-        async {
-            let!    res  = TranslatorCaller.getJSW minified [] source |> Wrap.getAsyncR
-            return  res |> Result.mapMsgs (Seq.map (fun (e:ErrMsg) -> e.ErrMsg, e.IsWarning) >> Seq.toArray)
-        }
-        
-    [< JavaScript >]
-    let translateAR source minified = 
-        async {
-            let!   vO, msgs = translateAS source minified
-            return  Result (vO,  msgs |> Seq.map (fun (msg, wrn) -> ErrSimple(msg, wrn) :> ErrMsg) |> Seq.toList)
-        }
-        
   module FSAutoCompleteIntermediary =
   
-    //#r @"..\packages\FSharp.Data\lib\net40\FSharp.Data.dll"
-    //#r @"..\packages\FSharp.Data\lib\net40\FSharp.Data.DesignTime.dll"
+    //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+    //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
     //#r @"..\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
     
     open System.Net
@@ -1900,7 +2289,7 @@ namespace FSSGlobal
             let! jsonV        = HttpRequestCall (UrlAddress + cmd) data
             let  several      = jsonV.AsArray() |> Array.map json2Kind
             let  good, others = several |> Array.partition f
-            let  msgs         = others  |> Seq.map (fun v -> (v.ToString(), match v with | KInfo _ -> true | _ -> false) |> ErrSimple :> ErrMsg) |> Seq.toList
+            let  msgs         = others  |> Seq.map (fun v -> (v.ToString(), match v with | KInfo _ -> true | _ -> false) |> ErrSimple :> ErrMsg) |> Seq.toArray
             let! result       = Result (Seq.tryHead good, msgs) 
             return result
         } 
@@ -1910,7 +2299,7 @@ namespace FSSGlobal
             let!  result = FSAutocompleteCall "parse" (function | KErrors _ -> true | _ -> false) <|
                                  FarParse
                                      { FileName   = System.IO.Path.GetFullPath file
-                                       IsAsync    = false   
+                                       IsAsync    = true   
                                        Lines      = code           
                                        Version    = 0
                                      }
@@ -1979,8 +2368,8 @@ namespace FSSGlobal
                 do!  Result.tryProtection()
                 let  file = System.IO.Path.GetFullPath fname
                 match snpIdO with
-                | Some snpId -> let! fileMap          = (!starts) |> Map.tryFind file         |> Result.fromOption ``Code has not been parsed, use Parse F#``
-                                let! ind, first, last = fileMap   |> Map.tryFind snpIdO.Value |> Result.fromOption ``This snippet has not been previosuly parsed, use Parse F#``
+                | Some _snpI -> let! fileMap          = (!starts) |> Map.tryFind file         |> Result.fromOption ``Code has not been parsed, use Parse F#``
+                                let! ind, first, _las = fileMap   |> Map.tryFind snpIdO.Value |> Result.fromOption ``This snippet has not been previosuly parsed, use Parse F#``
                                 return file, first, ind
                 | None       -> return file, 0    , 0 
             }
@@ -1996,14 +2385,14 @@ namespace FSSGlobal
                 return snp, first, ind                        
             }
         let mustParse fname snpId =
-            getDelta fname (Some snpId)
+            getDelta  fname (Some snpId)
             |> Wrap.map              (fun _ -> false)
-            |> Wrap.RunSynchronously 
+            |> Wrap.RunSynchronouslyR 
             |> Result.withError      (fun _ -> true )
     
         let findDeclaration file lin col filter =
             Wrap.wrapper {
-                File.WriteAllText(file, " ")
+                //File.WriteAllText(file, " ")
                 let!  result = FSAutocompleteCall "finddeclaration" (function | KFindDecl _ -> true | _ -> false) <|
                                      FarPosition
                                          { FileName   = System.IO.Path.GetFullPath file
@@ -2011,7 +2400,7 @@ namespace FSSGlobal
                                            Column     = col
                                            Filter     = filter
                                          }
-                File.Delete file                         
+                //File.Delete file                         
                 match result with
                 | KFindDecl decl -> let! snp, dln, dcol = getDeltaBack decl.File decl.Line
                                     let resultAdj = 
@@ -2025,20 +2414,20 @@ namespace FSSGlobal
     
         let getPosition (getKind: string -> int -> int -> string -> Wrap<Kind>) fname ln col (snpIdO:string option) =
             Wrap.wrapper {
-                let! file, dln, dcol = getDelta fname snpIdO
+                let! _fil, dln, dcol = getDelta fname snpIdO
                 let! res             = getKind fname (ln + dln) (col + dcol) ""
                 return res
             } 
-            |> Wrap.RunSynchronously
+            |> Wrap.RunSynchronouslyR
             |> Result.withError (Result.getMessages >> KindError)
     
         let getCompletion fname ln col lineText (snpIdO:string option) =
             Wrap.wrapper {
-                let! file, dln, dcol = getDelta fname snpIdO
+                let! _fil, dln, dcol = getDelta fname snpIdO
                 let! res             = completion fname (ln + dln) (col + dcol) ((String.replicate dcol " ") + lineText) "Contains"
                 return res
             } 
-            |> Wrap.RunSynchronously
+            |> Wrap.RunSynchronouslyR
             |> Result.withError (Result.getMessages >> KindError)
             
         member this.Respond (msg:ACMessage) =
@@ -2059,8 +2448,8 @@ namespace FSSGlobal
                                           Errors = ers.Errors 
                                             |> Array.map (fun err ->
                                               sts 
-                                              |> Array.tryFind (fun (snpNm, (ind, first, last)) -> err.StartLine >= first && err.StartLine < last)
-                                              |> Option.map    (fun (snpNm, (ind, first, last)) -> 
+                                              |> Array.tryFind (fun (_snpN, (_in, first, last)) -> err.StartLine >= first && err.StartLine <= last)
+                                              |> Option.map    (fun (snpNm, (ind, first, _las)) ->
                                                   { err with FileName    = snpNm
                                                              StartLine   = err.StartLine   - first
                                                              EndLine     = err.EndLine     - first
@@ -2082,14 +2471,23 @@ namespace FSSGlobal
             | ACMComplete2       (fname, ln, col, txt, snpId) -> getCompletion                 fname ln col txt (Some snpId)
     
     
+    //#define FSAUTOCOMPLETE
+    
     open Useful
-    open FsStationShared
+    //open FsStationShared
+    open WSMessagingBroker
     open WebSharper
     open WebSharper.Remoting
     
     #if FSS_SERVER
     
     let responder = Responder2()
+    
+    let fssClient = new WSMessagingBroker.FStationMessaging("FSAutoComplete", FSStation)
+    async {
+        do! Async.Sleep 1000
+        fssClient.MessagingClient.ProcessIncoming (responder.Respond >> WSimple)
+    } |> Async.Start
     
     [< Rpc >]
     let sendMessageRpc msg = async { return responder.Respond msg }
@@ -2108,14 +2506,9 @@ namespace FSSGlobal
     type FSAutoCompleteIntermediaryClient(clientId, ?endPoint:string) =
          #if FSS_SERVER
          #else
-         let msgClient = new MessagingClient(clientId, ?endPoint = endPoint)
-         let toId      = AddressId "FSAutoComplete"
-         let sendMessage (msg:ACMessage) =
-             Wrap.wrapper {
-                 let! resp = msgClient.SendMessage toId (Json.Serialize msg)
-                 let  acr  = resp |> Json.Deserialize<Kind>
-                 return acr
-             } |> Wrap.getAsyncWithDefault (Result.getMessages >> KInfo)
+         let msgClient = new WSMessagingClient(clientId, ?endPoint = endPoint)
+         let toId      = Address "FSAutoComplete"
+         let sendMessage (msg:ACMessage) : Async<Kind> = msgClient.SendGetReply toId msg |> Wrap.getAsyncWithDefault (Result.getMessages >> KInfo)
          #endif
          let Async_map f aa = 
              async { 
@@ -2155,7 +2548,305 @@ namespace FSSGlobal
          member this.Complete (fname, txt, line, col, sId) = sendMessage (ACMComplete2       (fname, line, col , txt, sId)) |> Async_map comp2Strings
          member this.FindDecl (fname, line, col          ) = sendMessage (ACMFindDeclaration (fname, line, col           )) |> Async_map id
          member this.FindDecl (fname, line, col,      sId) = sendMessage (ACMFindDeclaration2(fname, line, col ,      sId)) |> Async_map id
+         #if FSS_SERVER
+         #else
+         member this.MessagingClient                       = msgClient    
+         member this.ToId                                  = toId
+         #endif
     
+  module FsEvaluator =
+    open Useful
+    
+    module Evaluator =
+        open System.Diagnostics
+        open UsefulDotNet
+        open RunProcess
+        
+        let endToken = "xXxY" + "yYyhH"
+        let mutable silent    = false
+        type FsiExe(config, ?outHndl, ?errHndl) =
+            let fsiexe                    = if config |> Seq.contains "-d:FSI32BIT" then "fsi.exe" else "fsianycpu.exe"
+            let startInfo                 = ProcessStartInfo(fsiexe, config |> String.concat " ")             
+            let shell                     = new ShellEx(startInfo, ?outHndl = outHndl, ?errHndl = errHndl)  // --noninteractive
+            do  startInfo.CreateNoWindow <- false
+                shell.Start() |> ignore
+            member this.Eval txt =
+                Wrap.wrapper {
+                    do! Result.tryProtection()
+                    shell.Send txt 
+                    shell.Send ";;"
+                    let! res = shell.SendAndWait("printfn \"" + endToken + "\";;", endToken)
+                    //shell.WaitForInputIdle() |> ignore
+                    //let! resR = shell.Response()
+                    //let! res  = resR
+                    return res
+                }
+            member this.IsAlive = not shell.HasExited
+            member this.Abort() = shell.Abort()
+            interface System.IDisposable with
+                member this.Dispose () = 
+                    (shell :> System.IDisposable).Dispose()
+    
+    #if FSS_SERVER
+        printfn "FSS_SERVER"
+        let fssClient = FSAutoCompleteIntermediary.fssClient //WSMessagingBroker.FStationMessaging("<FsEvaluator>", WSMessagingBroker.FSStation)
+        let queueOutput =
+            let output      = new System.Text.StringBuilder()
+            let append  txt = output.Append((if output.Length = 0 then "" else "\n") + txt) |> ignore
+            let consume ()  = let v = output.ToString()
+                              output.Clear() |> ignore
+                              v
+            Mailbox.iter (fun msg -> async {
+                match msg with
+                | Some txt -> append txt
+                | None     -> let txt2send =  consume()
+                              if  txt2send <> "" then
+                                  fssClient.RunActionCall("OutText", "actOutText", [| "+" ; txt2send |])
+                                  |> Wrap.RunSynchronously 
+                                  |> ignore
+              })
+        let queueText txt = 
+            txt |> Some |> queueOutput.Post
+            async { do! Async.Sleep 100
+                    queueOutput.Post None } |> Async.Start
+        let outHndl (txt:string) = if not silent then txt.Replace(endToken, "Done!")   |> queueText
+        let errHndl (txt:string) = if not silent then if txt <> "" then "ERR : " + txt |> queueText
+        let setFsid id ep = if id <> fssClient.FSStationId && id <> "" then fssClient.FSStationId <- id ; printfn "setFSid = %s" id
+    #else
+        let outHndl       = ignore
+        let errHndl       = ignore
+        let setFsid _i _e = ()
+    #endif
+    
+        let fsiExe = lazy new ResourceAgent<_, string> (70
+                                                      , (fun config ->
+                                                              printfn "FsiExe %s" (defaultArg config "")
+                                                              new FsiExe([ "--nologo"
+                                                                           "--quiet"
+                                                                           defaultArg config ""
+                                                                         ], outHndl, errHndl))
+                                                      , (fun fsi -> (fsi :> System.IDisposable).Dispose()), (fun fsi -> fsi.IsAlive), "")
+    
+        #if WEBSHARPER
+        [< JavaScript >]
+        #endif
+        let extractConfig (code:string) = if code.StartsWith "////-d:" then code.[4..code.IndexOf '\n' - 1] else ""
+    
+        let evalFsiExe (code:string) incrUseCount =
+            Wrap.wrapper {
+                let  config = extractConfig code
+                let! resR   = fsiExe.Value.Process(fun fsi -> 
+                    Wrap.wrapper {
+                      return! fsi.Eval code 
+                    }
+                , config, incrUseCount)
+                let! res    = resR
+                return res
+            }
+            
+        let evalSilent (config:string option) fs = 
+            Wrap.wrapper {
+                silent <- true
+                let! resR   = fsiExe.Value.Process(fun fsi -> 
+                    Wrap.wrapper {
+                      return! fsi.Eval fs
+                    }
+                , config 
+                  |> Option.orElse fsiExe.Value.Configuration
+                  |> Option.defaultValue ""
+                , false)
+                let! res    = resR
+                silent <- false
+                return res
+            }
+            |> Wrap.runSynchronouslyS false 
+            |> fun s -> s.Split('\n').[0]     
+            
+        let installPresence configO = evalSilent configO """
+    module CodePresence =
+        let mutable present : Map<string, string>  = Map.empty
+        let presenceOf    k   = present |> Map.tryFind k |> Option.defaultValue "--" |> printfn "%s"
+        let addPresenceOf k v = present <- present |> Map.add k v ; printfn "ok"
+    """
+    
+        #if WEBSHARPER
+        [< Rpc >]
+        #endif
+        let addPresence (name:string) (v:string) = 
+            async {
+                let code = sprintf "CodePresence.addPresenceOf %A %A" (name.Replace("\"", "\\\"")) v
+                evalSilent None code
+                |> function
+                   | "ok" -> ()
+                   | _    -> installPresence None      |> ignore
+                             evalSilent      None code |> ignore
+            }
+        #if WEBSHARPER
+        [< Rpc >]
+        #endif
+        let getPresence config (name:string)   = 
+            async {
+                let code = sprintf "CodePresence.presenceOf    %A" (name.Replace("\"", "\\\""))
+                return
+                    evalSilent (Some config) code
+                    |> function
+                       | v when v = endToken -> installPresence (Some config) |> ignore
+                                                None
+                       | "--"                -> None
+                       | v                   -> Some v
+            }
+            
+        #if WEBSHARPER
+        [< Rpc >]
+        #endif
+        let abortFsiExe () = 
+            fsiExe.Value.Process(fun fsi -> Wrap.wrap { fsi.Abort() }) 
+            |> WAsyncR 
+            |> Wrap.toAsync
+    
+        type EVMessage =
+        | EVMEvaluate of string
+        | EVMAbort
+        
+        type EVResponse =
+        | EVROk
+        | EVRResult   of ResultS<string>
+    
+        let respond msg = 
+            Wrap.wrap {
+                match msg with
+                | EVMEvaluate fs -> let!   r =  evalFsiExe fs true |> Wrap.toAsyncResult
+                                    return r |> Result.toResultS   |> EVRResult
+                | EVMAbort       -> do! abortFsiExe()
+                                    return EVROk
+            }
+    
+    
+    //#define WEBSHARPER
+    open WebSharper
+    
+    [< Rpc >]
+    let evaluateAS (fsid:string) (ep:string) incrUseCount source =
+        async {
+            Evaluator.setFsid fsid ep
+            let!    res  = Evaluator.evalFsiExe source incrUseCount |> Wrap.getAsyncR 
+            return  res |> Result.mapMsgs (Seq.map (fun (e:ErrMsg) -> e.ErrMsg, e.IsWarning) >> Seq.toArray)
+        }
+        
+    [< JavaScript >]
+    let evaluateAR fsid ep incrUseCount source =
+        async {
+            let!   vO, msgs = evaluateAS fsid ep incrUseCount source 
+            return  Result (vO,  msgs |> Seq.map (fun (msg, wrn) -> ErrSimple(msg, wrn) :> ErrMsg) |> Seq.toArray)
+        }
+    
+    [< JavaScript >]
+    let abortFsiExe () = Evaluator.abortFsiExe() |> Async.Start 
+    
+    #if FSS_SERVER
+    
+    let fssClient = new WSMessagingBroker.FStationMessaging("FSEvaluator", WSMessagingBroker.FSStation)
+    
+    async {
+        do! Async.Sleep 1000
+        fssClient.MessagingClient.ProcessIncoming Evaluator.respond
+    } |> Async.Start
+    
+    #else
+    
+    #if FSS_SERVER
+    #else
+    type WSMessagingBroker.WSMessagingClient with
+    #if WEBSHARPER
+    [< JavaScript >]
+    #endif
+         member this.EvaluateFS fs = 
+             Wrap.wrap {
+                 let! repS = Evaluator.EVMEvaluate fs |> this.SendGetReply (WSMessagingBroker.Address "FSEvaluator")
+                 let! rep  = match repS with
+                             | Evaluator.EVROk       -> Result.fail (ErrSimple ("Unexpected EVROk reply received", false))
+                             | Evaluator.EVRResult r -> Result.fromResultS r
+                 return rep
+             }
+    #endif
+    #endif
+    
+  module FsTranslator =
+    module TranslatorCaller =
+        open Useful
+        open UsefulDotNet
+        open UsefulDotNet.RunProcess
+        open CompOptionsModule
+        open System
+        open System.IO
+        open System.Diagnostics
+        
+        type TranslatorExe(config) =
+            let startInfo                 = ProcessStartInfo(@"Compiled\FsTranslator\FsTranslator.exe", config |> String.concat " ")             
+            let shell                     = new ShellEx(startInfo)  // --noninteractive
+            let endToken                  = sprintf "//---------------%s-----------------" "EOF"
+            do  startInfo.CreateNoWindow <- false
+                shell.Start() |> ignore
+            member this.Translate txt =
+                Wrap.wrapper {
+                    do! Result.tryProtection()
+                    let! res1 = shell.SendAndWait(txt, endToken, true)
+                    let! res2 = if res1.EndsWith "//success" then Result.succeed res1 else Result.fail (ErrSimple ("Translator Failed", false))
+                    return res2
+                }
+            member this.IsAlive = not shell.HasExited
+            interface System.IDisposable with
+                member this.Dispose () = 
+                    (shell :> System.IDisposable).Dispose()    
+    
+        let translator = lazy new ResourceAgent<_, string> (20, (fun config -> new TranslatorExe(["++loop"; defaultArg config ""] )), (fun exe -> (exe :> System.IDisposable).Dispose()), (fun exe -> exe.IsAlive), "")
+        
+        let extractConfig (code:string[]) = if code.[0].StartsWith "////-d:" then code.[0].[4..] else ""
+    
+        let getJSW (minified:bool) (options0 : (CompOption * CompOptionValue) seq) (fsCode:string) =
+            Wrap.wrapper {
+                do!  Result.tryProtection()
+                let  code           = fsCode.Split '\n'
+                let  defines0       = (extractConfig code).Split([| " " ; "-d:" |], StringSplitOptions.RemoveEmptyEntries) 
+                let  fs, assembs, defines1, prepIs, nowarns = separatePrepros false code |> separateDirectives
+                let  defines        = Array.append defines0 defines1
+                let  codeBase       = Path.GetFullPath "bin"
+                let  name           = "Temp_" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName())
+                let  options1       = compileOptionsDll name
+                                      + opDirectory   /= Path.GetDirectoryName(codeBase)
+                                      + opWsProject   /= name
+                                     // + opIOption   /= @"D:\Abe\CIPHERWorkspace\CIPHERPrototype\WebServer\bin"
+                                      + options0
+                let  options2       = prepOptions options1 (fs, assembs, defines, prepIs, nowarns)
+                use  toErase        = new TempFileName(options2?Source)
+                let  ops            = options2.Get CompOptions.WSharperOptions
+                                      |> Seq.append [ "IGNORED" ]
+                                      |> Seq.map (sprintf "%A")
+                                      |> String.concat " "
+                let! jsR            = translator.Value.Process (fun tra -> tra.Translate ops)
+                let! js             = jsR
+                return js
+            }
+    
+    
+    
+    open Useful
+    open WebSharper
+    
+    [< Rpc >]
+    let translateAS source minified = 
+        async {
+            let!    res  = TranslatorCaller.getJSW minified [] source |> Wrap.getAsyncR
+            return  res |> Result.mapMsgs (Seq.map (fun (e:ErrMsg) -> e.ErrMsg, e.IsWarning) >> Seq.toArray)
+        }
+        
+    [< JavaScript >]
+    let translateAR source minified = 
+        async {
+            let!   vO, msgs = translateAS source minified
+            return  Result (vO,  msgs |> Seq.map (fun (msg, wrn) -> ErrSimple(msg, wrn) :> ErrMsg) |> Seq.toArray)
+        }
+        
 //#define WEBSHARPER
 (*
  Code to be Compiled to Javascript and run in the browser
@@ -2169,10 +2860,55 @@ namespace FSSGlobal
     [<NoComparison>]
     type Val<'a> =
         | Constant  of 'a
-        | DynamicV  of IRef<'a>
+        | DynamicV  of Var<'a>
         | Dynamic   of View<'a>
       with member this.ValTypeMember = 0
     
+    module Var =
+        let mutable private counter = 1
+        let freshId () =
+            counter <- counter + 1
+            "varuid" + string counter
+                
+        let Make (init: 'T) (view: View<'T>) (set: 'T -> unit) =
+            let id = freshId ()
+            let current = ref init
+            let view = view |> View.Map (fun x -> current := x; x)
+            { new Var<'T>() with
+                member this.View           = view
+                member this.Get         () = !current
+                member this.Set         x  = set x
+                member this.SetFinal    x  = set x
+                member this.UpdateMaybe f  = view |> View.Get (f >> Option.iter set)
+                member this.Update      f  = view |> View.Get (f >>             set)
+                member this.Id             = id
+            }
+        let lensView get update view0 (var: Var<_>) =
+            let id   = freshId()
+            let view = View.Map2 (fun v _ -> get v) var.View view0
+            { new Var<'V>() with
+                member this.Get        () = get (var.Get())
+                member this.Set         v = var.Update(fun t -> update t v)
+                member this.SetFinal    v = this.Set(v)
+                member this.Update      f = var.Update(fun t -> update t (f (get t)))
+                member this.UpdateMaybe f = var.UpdateMaybe(fun t -> Option.map (fun x -> update t x) (f (get t)))
+                member this.View          = view
+                member this.Id            = id
+            }
+    
+    module ListModel =
+        let currentLensUpd def curr upd (model:ListModel<_,_>) = 
+            curr 
+            |> Var.lensView (Option.bind (model.TryFindByKey) >> Option.defaultValue def) 
+                            (fun kO v -> kO |> Option.iter (upd v) ; kO)
+                            model.View
+        let currentLensUpd' def curr upd (model:ListModel<_,_>) = 
+            let view = curr |> View.Map2 (fun _mdl kO -> kO |> Option.bind model.TryFindByKey |> Option.defaultValue def) model.View
+            Var.Make def view upd
+        let currentLens def curr (model:ListModel<_,_>) = 
+            model 
+            |> currentLensUpd' def curr (fun v -> model.UpdateBy (fun _ -> model.TryFindByKey (model.Key v) |> Option.map (fun _ -> v) ) <| model.Key v)
+        
     module Val =
         
         let mapV : ('a -> 'b) -> Val<'a> -> Val<'b> =
@@ -2258,7 +2994,7 @@ namespace FSSGlobal
             static member (&>) (HelperType, va: Val<float        >  ) =          va
             static member (&>) (HelperType, va: Val<Doc          >  ) =          va
             static member (&>) (HelperType, va: Val<_            >  ) =          va
-            static member (&>) (HelperType, vr: IRef<_           >  ) = DynamicV vr
+            static member (&>) (HelperType, vr: Var<_            >  ) = DynamicV vr
             static member (&>) (HelperType, vw: View<_           >  ) = Dynamic  vw
     
     (*    [< Inline @"(
@@ -2289,18 +3025,49 @@ namespace FSSGlobal
             | :?      Doc      as t   -> Val.Constant t |> As<Val<string>>  
             | :? Val< string>  as v   ->              v        
             | :? Var< string>  as v   -> Val.DynamicV v        
-            | v when JS.In "RSet" v   -> Val.DynamicV (As<IRef<string>> v)
+            | v when JS.In "RSet" v   -> Val.DynamicV (As<Var< string>> v)
             | :? Function      as vw  -> Val.Dynamic  (As<View<string>> vw)        
             | _ when o?get_ValTypeMember() = 0 -> o |> As<Val<string>> 
             | _                       -> failwith <| sprintf "Could not convert %A" o
     
-        [< Direct "$f($v)" >]
-        let inline fixitF f v = HelperType &> v
+        [< Direct "$_f($v)" >]
+        let inline fixitF _f v = HelperType &> v
         let inline fixit    v = fixitF toVal v
     
-        let [<Inline>] inline bindIRef0 (f: 'a->IRef<'b>) (view: View<'a>) = 
+        let [<Inline>] inline bindIRefO0 (f: 'a->Var< 'b> option) (view: View<'a>) = 
+            let contentVar                          = Var.Create None
+            let changingIRefO : Var< 'b> option ref = ref        None
+            let contentVarChanged                   = ref 0L
+            let refVarChanged                       = ref 0L
+        
+            contentVar.View 
+            |> View.Sink (fun _ ->            
+                match !changingIRefO, contentVar.Value with
+                | Some(r), Some(v) ->
+                    if  !contentVarChanged  > !refVarChanged   then refVarChanged := !contentVarChanged
+                    elif r.Value           <> v                then refVarChanged := !refVarChanged       + 1L ; r.Value         <-  v
+                | None, Some(_)    -> contentVar.Value <- None
+                | _   , None       -> ()
+             )
+        
+            view |> View.Bind (fun cur ->
+                let rO            = f cur
+                changingIRefO    := rO
+                refVarChanged    := !contentVarChanged + 100L
+                contentVar.Value <- rO |> Option.map (fun r -> r.Value)
+                rO |> Option.map (fun r -> r.View) |> Option.defaultWith (fun () -> View.Const Unchecked.defaultof<_>)
+            ) |> View.Sink (fun _ -> 
+                !changingIRefO 
+                |> Option.iter (fun r -> 
+                    if  !refVarChanged  > !contentVarChanged then contentVarChanged := !refVarChanged
+                    elif Some r.Value  <>  contentVar.Value  then contentVarChanged := !contentVarChanged + 10L; contentVar.Value  <- Some r.Value
+                )
+            )
+            contentVar
+            
+        let [<Inline>] inline bindIRef0 (f: 'a->Var< 'b>) (view: View<'a>) = 
             let contentVar = Var.Create Unchecked.defaultof<'b>
-            let changingIRefO : IRef<'b> option ref = ref None
+            let changingIRefO : Var< 'b> option ref = ref None
             let contentVarChanged = ref 0L
             let refVarChanged     = ref 0L
         
@@ -2329,7 +3096,8 @@ namespace FSSGlobal
             contentVar
             
         let inline toDoc         v           = toView            (fixit v ) |> Doc.EmbedView
-        let [<Inline>] inline bindIRef f  v           = bindIRef0 f (fixit v   |> toView)
+        let [<Inline>] inline bindIRef  f  v           = bindIRef0  f (fixit v   |> toView)
+        let [<Inline>] inline bindIRefO f  v           = bindIRefO0 f (fixit v   |> toView)
         let inline iter       f  v           = iterV           f (fixit v )
         let inline bind       f  v           = bindV           f (fixit v )
         let inline map        f  v           = mapV            f (fixit v )
@@ -2352,7 +3120,7 @@ namespace FSSGlobal
             let setPrior v = if (!prior).Value <> v then (!prior).Value <- v 
             let vw         = toView vl
             View.Sink setPrior vw
-            !prior :> IRef<_> |> DynamicV
+            !prior :> Var< _> |> DynamicV
     
         type valBuilder() =
             member inline this.Return     (x)                            = Constant x
@@ -2368,11 +3136,12 @@ namespace FSSGlobal
     [<NoComparison ; NoEquality>]
     type HtmlNode =
         | HtmlElement    of name: string * children: HtmlNode seq
+        | HtmlElementF   of func:(Attr seq -> Doc seq -> Doc) * children: HtmlNode seq
+        | HtmlElementV   of Val<HtmlNode>
         | HtmlAttribute  of name: string * value:    Val<string>
         | HtmlAttributeO of name: string * value:    Val<string option>
         | HtmlText       of Val<string>
         | HtmlEmpty
-        | HtmlElementV   of Val<HtmlNode>
         | SomeDoc        of Doc
         | SomeAttr       of Attr
         
@@ -2411,9 +3180,10 @@ namespace FSSGlobal
     let rec chooseNode node =
         match node with
         | HtmlElement (name, children) -> Some <| (Doc.Element name (getAttrsFromSeq children) (children |> Seq.choose chooseNode) :> Doc)
-        | HtmlText     vtext           -> Some <| Val.tagDoc WebSharper.UI.Next.Html.text vtext
-        | SomeDoc      doc             -> Some <| doc
+        | HtmlElementF(func, children) -> Some <| (func             (getAttrsFromSeq children) (children |> Seq.choose chooseNode)       )
         | HtmlElementV vnode           -> Some <| (vnode |> Val.toView |> Doc.BindView (chooseNode >> Option.defaultValue Doc.Empty))
+        | HtmlText     vtext           -> Some <| Val.tagDoc WebSharper.UI.Html.text vtext
+        | SomeDoc      doc             -> Some <| doc
         | _                            -> None
     
     let getAttrChildren attr =
@@ -2447,6 +3217,7 @@ namespace FSSGlobal
     //let replaceAtt att node newVal = mapHtmlElement (fun n ch -> n, replaceAttribute att ch newVal |> Seq.ofList) node
     
     let inline htmlElement    name ch = HtmlElement   (name, ch           )
+    let inline htmlElementF   func ch = HtmlElementF  (func, ch           )
     let inline htmlAttribute  name v  = HtmlAttribute (name, Val.fixit v  )
     let inline htmlAttributeO name v  = HtmlAttributeO(name, Val.fixit v  )
     let inline htmlText       txt     = HtmlText      (      Val.fixit txt)
@@ -2467,7 +3238,7 @@ namespace FSSGlobal
     let rec indent2Level lvl chn  (ps:HtmlNode list) =
         match ps with
         | l when l.Length < lvl -> chn :: l
-        | l                     -> indent2Level lvl chn <| out ps        
+        | _                     -> indent2Level lvl chn <| out ps        
     
     type HtmlNode with
         member inline this.toDoc = 
@@ -2502,9 +3273,9 @@ namespace FSSGlobal
     
     let rec finishO (ps:HtmlNode list) =
         match ps with
-        | [ ]            -> None
-        | [h]            -> Some h
-        | h :: p :: tail -> finishO <| out ps        
+        | [ ]               -> None
+        | [h]               -> Some h
+        | _h :: _p :: _tail -> finishO <| out ps        
     
     let endHtmlIndent ps = finishO ps |> Option.defaultWith (fun () -> htmlText "Malformed HTMLNode")
     let ( !! ) (p:HtmlNode seq -> HtmlNode) l = [ p l ]
@@ -2569,6 +3340,7 @@ namespace FSSGlobal
     let inline spellcheck  v  = htmlAttribute  "spellcheck"  v
     let inline draggable   v  = htmlAttribute  "draggable"   v
     let inline style       v  = htmlAttribute  "style"       v
+    let inline placeholder v  = htmlAttribute  "placeholder" v
     
     let inline style1    n v  = style <| Val.map ((+) (n + ":")) v
     
@@ -2617,7 +3389,7 @@ namespace FSSGlobal
             ]
     
     [< Inline """(!$v)""">]
-    let isUndefined v = true
+    let isUndefined v = v.GetType() = v.GetType()
     
     let  findRootElement (e:Dom.Element) =
         if isUndefined e.GetRootNode then JS.Document.Body
@@ -2628,17 +3400,17 @@ namespace FSSGlobal
             else root?body  |> unbox<Dom.Element>
     
     [< Inline >]
-    let inline storeVar<'T> storeName (var:IRef<_>) =
+    let inline storeVar<'T> storeName (var:Var<_>) =
         JS.Window.LocalStorage.GetItem storeName |> fun v -> if v <> null then           var.Value <- Json.Deserialize<'T> v
         Val.sink (fun v -> JS.Window.LocalStorage.SetItem (storeName, Json.Serialize v)) var
     
     
-    [< Inline "CIPHERSpaceLoadFiles($files, $cb)" >]
-    let LoadFiles (files: string []) (cb: unit -> unit) : unit = X<_>
+    [< Inline "CIPHERSpaceLoadFiles($_files, $_cb)" >]
+    let LoadFiles (_files: string []) (_cb: unit -> unit) : unit = X<_>
     
     let LoadFilesAsync (files: string []) =
         Async.FromContinuations <| 
-            fun (cont, econt, ccont) -> 
+            fun (cont, econt, _ccont) -> 
                 try 
                     LoadFiles files cont
                 with e -> econt e
@@ -2690,12 +3462,13 @@ namespace FSSGlobal
         style       : Val<string>
         placeholder : Val<string>
         id          : string
-        var         : IRef<string>
+        var         : Var<string>
         prefix      : HtmlNode
         suffix      : HtmlNode
         content     : Attr seq
         prefixAdded : bool
         suffixAdded : bool
+        disabled    : Val<bool>
     } with
       static member  New(var) = { _class      = Val.fixit "form-control" 
                                   _type       = Val.fixit "text" 
@@ -2708,8 +3481,8 @@ namespace FSSGlobal
                                   suffix      = HtmlEmpty
                                   suffixAdded = false
                                   var         = var   
+                                  disabled    = Val.fixit false
                                 }
-      static member  New(v)   = Input.New(Var.Create v)
       member        this.Render    =         
         let groupClass det = match det with HtmlText _  -> "input-group-addon" | _ -> "input-group-btn"
         div [
@@ -2722,6 +3495,7 @@ namespace FSSGlobal
                               _class           this._class
                               _style           this.style
                               attr.id          this.id  
+                              attr.disabledDynPred (View.Const "") (this.disabled |> Val.toView)
                               _placeholder     this.placeholder ] |> Seq.append this.content)
                               this.var
                   :> Doc |> SomeDoc
@@ -2739,10 +3513,14 @@ namespace FSSGlobal
       member inline this.Prefix      p    = this.Prefix(htmlText p)
       member inline this.Suffix      s    = { this with suffix      =       s    ; suffixAdded = true }
       member inline this.SetVar      v    = { this with var         = v                               }
+      member inline this.Disabled    dis  = { this with disabled    = Val.fixit dis                   }
       member inline this.Var              = this.var
+      static member  New(v:string)              = Input.New(Var.Create v)
+      static member  New(v:Var<string option>) = Input.New(Var.Lens v (Option.defaultValue "") (fun sO s -> sO |> Option.map (fun _ -> s) )).Disabled(v |> Val.map Option.isNone)
+      
     [<NoComparison ; NoEquality>]
     type Hoverable = {
-        hover      : IRef<bool>
+        hover      : Var<bool>
     } with
       static member  New   = 
         let hover      = Var.Create false
@@ -2767,13 +3545,53 @@ namespace FSSGlobal
     let hoverable (c:HtmlNode) = Hoverable.New.Content c
     
     [<NoComparison ; NoEquality>]
+    type Panel = {
+        _class   : Val<string>
+        _style   : Val<string>
+        title    : Val<string>
+        header   : HtmlNode seq
+        content  : HtmlNode seq
+        disabled : Val<bool>
+    } with
+      static member  New   = { _class   = Val.fixit <| "panel panel-default shadow"
+                               _style   = Val.fixit <| "text-align:center" 
+                               title    = Val.fixit <| "Panel"        
+                               header   =          [ htmlText "Some text"    ] 
+                               content  =          [ htmlText "Some Content" ] 
+                               disabled = Val.fixit <| Var.Create false
+                             }
+      member        this.Render          =  
+        fieldset [ SomeAttr <| attr.disabledDynPred (View.Const "")  (this.disabled |> Val.toView)
+                   div [ ``class`` this._class
+                         div (Seq.append
+                                  [ ``class`` "panel-heading"
+                                    label [ ``class``  "panel-title text-center" ; htmlText this.title ]
+                                  ]
+                                  this.header)
+    
+                         div (Seq.append
+                                  [ ``class`` "panel-body"
+                                    style     this._style 
+                                  ]
+                                  this.content)
+                       ] 
+                 ]
+      member inline this.Class       clas = { this with _class   = Val.fixit clas }
+      member inline this.Style       sty  = { this with _style   = Val.fixit sty  }
+      member inline this.Title       txt  = { this with title    = Val.fixit txt  }
+      member inline this.Header      h    = { this with header   =       h        }
+      member inline this.Content     c    = { this with content  =       c        }
+      member inline this.Disabled    dis  = { this with disabled =       dis      }
+    
+    [<NoComparison ; NoEquality>]
     type TextArea = {
         _class      : Val<string>
         placeholder : Val<string>
         title       : Val<string>
         spellcheck  : Val<bool>
         id          : string
-        var         : IRef<string>
+        var         : Var<string>
+        disabled    : Val<bool>
     } with
       static member  New(var) = { _class      = Val.fixit "form-control"
                                   placeholder = Val.fixit "Enter text:"
@@ -2781,20 +3599,19 @@ namespace FSSGlobal
                                   spellcheck  = Val.fixit false
                                   id          = ""
                                   var         = var 
+                                  disabled    = Val.fixit false
                                 }
-      static member  New(v)   = TextArea.New(Var.Create v)
       member        this.RenderWith  more  =    
-        Doc.InputArea
+        htmlElementF (fun att _ch -> Doc.InputArea att this.var :> Doc)
             ([ 
-              _class              this._class
-              attr.id             this.id  
-              atr "spellcheck" <| Val.map (fun spl -> if spl then "true" else "false") this.spellcheck
-              atr "title"         this.title
-              atr "style"        "height: 100%;  width: 100%; box-sizing: border-box; "
-              _placeholder        this.placeholder 
+              ``class``           this._class
+              Id                  this.id  
+              spellcheck       <| Val.map (fun spl -> if spl then "true" else "false") this.spellcheck
+              title               this.title
+              style               "height: 100%;  width: 100%; box-sizing: border-box; "
+              placeholder         this.placeholder 
+              SomeAttr         <| attr.disabledDynPred (View.Const "") (this.disabled |> Val.toView)
             ] @ more)
-            this.var
-        |> someElt 
         |> Seq.singleton 
         //|> Seq.append [ style "height: 100%;  width: 100%; box-sizing: border-box; " ] 
         |> div
@@ -2805,7 +3622,10 @@ namespace FSSGlobal
       member inline this.Spellcheck  spl  = { this with spellcheck  = spl            }
       member inline this.Id          id   = { this with id          = id             }
       member inline this.SetVar      v    = { this with var         = v              }
+      member inline this.Disabled    dis  = { this with disabled    = Val.fixit dis  }
       member inline this.Var              = this.var
+      static member  New(v:string)              = TextArea.New(Var.Create v)
+      static member  New(v:Var<string option>) = TextArea.New(Var.Lens v (Option.defaultValue "") (fun sO s -> sO |> Option.map (fun _ -> s) )).Disabled(v |> Val.map Option.isNone)
       
     let codeMirrorIncludes =
        [| "/EPFileX/codemirror/scripts/codemirror/codemirror.js"             
@@ -2831,9 +3651,9 @@ namespace FSSGlobal
     let inline cmPos(l, c) = { line = l ; ch  = c }
     
     type CodeMirrorEditor() =
-        let a = 1
+        let _a = 1
       with
-        [< Inline "CodeMirror($elt, {
+        [< Inline "CodeMirror($_elt, {
     	    theme        : 'rubyblue'
     	  , lineNumbers  : true
     	  , matchBrackets: true
@@ -2843,48 +3663,49 @@ namespace FSSGlobal
     		  , 'F11': function (cm) { cm.setOption('fullScreen', !cm.getOption('fullScreen')); }
             }
     })"    >]
-    //    [< Inline "setupEditor($elt)" >]
-        static member SetupEditor elt                                     : CodeMirrorEditor = X<_>
+    //    [< Inline "setupEditor($_elt)" >]
+        static member SetupEditor _elt                                    : CodeMirrorEditor = X<_>
         [< Inline "$this.getValue()"              >]      
         member this.GetValue()                                            : string           = X<_>
-        [< Inline "$this.setValue($v)"            >]      
-        member this.SetValue(v:string)                                    : unit             = X<_>
+        [< Inline "$this.setValue($_v)"           >]      
+        member this.SetValue(_v:string)                                   : unit             = X<_>
         [< Inline "$this.refresh()"               >]      
         member this.Refresh()                                             : unit             = X<_>
-        [< Inline "$this.setOption($o, $v)"       >]      
-        member this.SetOption(o:string, v:obj)                            : unit             = X<_>
+        [< Inline "$this.setOption($_o, $_v)"     >]      
+        member this.SetOption(_o:string, _v:obj)                          : unit             = X<_>
         [< Inline "$this.getCursor()"             >]      
         member this.GetCursor()                                           : CodeMirrorPos    = X<_>
-        [< Inline "$this.setCursor($line, $col)"  >]      
-        member this.SetCursor(line:int, col:int)                          : unit             = X<_>
+        [< Inline "$this.setCursor($_line, $_col)">]      
+        member this.SetCursor(_line:int, _col:int)                        : unit             = X<_>
         [< Inline "$this.focus()"                 >]      
         member this.Focus()                                               : unit             = X<_>
-        [< Inline "$this.getLine($l)"             >]      
-        member this.GetLine(l:int)                                        : string           = X<_>
-        [< Inline "$this.getDoc().markText({line:$fl, ch:$fc}, {line:$tl, ch:$tc}, {className: $className, title: $title})" >]
-        member this.MarkText (fl:int, fc:int) (tl:int, tc:int) (className: string) (title: string): unit       = X<_>
+        [< Inline "$this.getLine($_l)"            >]      
+        member this.GetLine(_l:int)                                       : string           = X<_>
+        [< Inline "$this.getDoc().markText({line:$_fl, ch:$_fc}, {line:$_tl, ch:$_tc}, {className: $_className, title: $_title})" >]
+        member this.MarkText (_fl:int,_fc:int) (_tl:int,_tc:int) (_className: string) (_title: string): unit       = X<_>
         [< Inline "while($this.getAllMarks().length > 0) { $this.getAllMarks()[0].clear() }" >]
         member this.RemoveMarks() : unit       = X<_>
         [< Inline "$this.getDoc().clearHistory()" >]
         member this.ClearHistory()                                        : unit             = X<_>
-        [< Inline "$this.on($event, $f)"          >]
-        member this.On(event: string, f:(CodeMirrorEditor * obj) -> unit) : unit             = X<_>
-        [< Inline "$this.addKeyMap($keyMap)"      >]
-        member this.AddKeyMap(keyMap: obj)                                : unit              = X<_>
+        [< Inline "$this.on($_event, $_f)"        >]
+        member this.On(_event: string, _f:(CodeMirrorEditor * obj)->unit) : unit             = X<_>
+        [< Inline "$this.addKeyMap($_keyMap)"     >]
+        member this.AddKeyMap(_keyMap: obj)                               : unit             = X<_>
         [< Inline "$this.getWrapperElement()"     >]
-        member this.GetWrapperElement()                                   : Dom.Element       = X<_>
-        [< Inline "$this.replaceSelection($v, $s)" >]
-        member this.ReplaceSelection(v:string, s:string)                                      = ()
+        member this.GetWrapperElement()                                   : Dom.Element      = X<_>
+        [< Inline "$this.replaceSelection($_v, $_s)">]
+        member this.ReplaceSelection(_v:string, _s:string)                                    = ()
     
     [<NoComparison ; NoEquality>]
     type CodeMirror = {
         _class          : Val<string>
         style           : Val<string>
         id              : string
-        var             : IRef<string>
+        var             : Var<string>
         onChange        : (unit             -> unit)
         onRender        : (CodeMirrorEditor -> unit) option
         mutable editorO : CodeMirrorEditor option
+        disabled        : Val<bool>
     } with
     
       static member  New(var) = 
@@ -2895,9 +3716,9 @@ namespace FSSGlobal
             onChange = ignore
             onRender = None
             editorO  = None
+            disabled = Val.fixit false
           }
-      static member  New(v)   = CodeMirror.New(Var.Create v)
-      member        this.Render    =
+      member        this.Render                 =
         div [ 
               ``class``            this._class
               SomeAttr <| attr.id  this.id 
@@ -2913,7 +3734,7 @@ namespace FSSGlobal
                            this.onRender |> Option.iter (fun onrender -> onrender editor)
                            let editorChanged = ref 0L
                            let varChanged    = ref 0L
-                           editor.On("changes", fun (cm, change) ->
+                           editor.On("changes", fun (_cm, _change) ->
                                let v = editor.GetValue() 
                                if this.var.Value <> v then editorChanged := !editorChanged + 1L; this.var.Value <- v; this.onChange() 
                            )
@@ -2921,6 +3742,7 @@ namespace FSSGlobal
                                if  !editorChanged      > !varChanged    then varChanged := !editorChanged
                                elif editor.GetValue() <> this.var.Value then editor.SetValue this.var.Value ; editor.ClearHistory()
                            )
+                           this.disabled |> Val.sink (fun dis -> editor.SetOption("readOnly", if dis then "nocursor" :> obj else false :> obj) )
                         )
                     )    
                   ]
@@ -2938,7 +3760,10 @@ namespace FSSGlobal
       member inline this.Style    sty  = { this with style     = Val.fixit sty  }
       member inline this.OnChange f    = { this with onChange  = f              }
       member inline this.OnRender f    = { this with onRender  = Some f         }
+      member inline this.Disabled dis  = { this with disabled  = Val.fixit dis  }
       member inline this.Var           = this.var
+      static member  New(v:string)              = CodeMirror.New(Var.Create v)
+      static member  New(v:Var<string option>) = CodeMirror.New(Var.Lens v (Option.defaultValue "") (fun sO s -> sO |> Option.map (fun _ -> s) )).Disabled(v |> Val.map Option.isNone)
     
     
     type Hint = {
@@ -2961,8 +3786,8 @@ namespace FSSGlobal
         container      : Dom.Element
     }
     
-    [< Inline "($v.hint.async = 1, $ed.showHint($v))"          >]
-    let showHint_ (ed:CodeMirrorEditor) v   : unit       = X<_>
+    [< Inline "($_v.hint.async = 1, $_ed.showHint($_v))"          >]
+    let showHint_ (_ed:CodeMirrorEditor) _v : unit       = X<_>
     let showHints (ed:CodeMirrorEditor) getHints completeSingle _ =
         showHint_ ed
             {  completeSingle = completeSingle
@@ -2979,8 +3804,8 @@ namespace FSSGlobal
     
     type LintFunc      = FuncWithArgs<string * (LintResponse[] -> unit) * obj * CodeMirrorEditor,  unit>
     
-    [< Inline "($ed.setOption('lint', { async: 1, getAnnotations: $f, container: $elm }))"          >]
-    let setLint_(ed:CodeMirrorEditor) (f:LintFunc) (elm:Dom.Element)  : unit = X<_>
+    [< Inline "($_ed.setOption('lint', { async: 1, getAnnotations: $_f, container: $_elm }))"          >]
+    let setLint_(_ed:CodeMirrorEditor) (_f:LintFunc) (_elm:Dom.Element)  : unit = X<_>
     let setLint (ed:CodeMirrorEditor) getAnnotations       = 
         setLint_ ed (LintFunc getAnnotations) (ed.GetWrapperElement() |> findRootElement)
     
@@ -2992,7 +3817,7 @@ namespace FSSGlobal
     
     [<NoComparison ; NoEquality>]
     type SplitterBar = {
-        value            : IRef<float>
+        value            : Var<float>
         min              : Val<float>
         max              : Val<float>
         vertical         : Val<bool>
@@ -3051,7 +3876,7 @@ namespace FSSGlobal
                     JS.Window.RemoveEventListener("mousemove", drag          , false) 
                     JS.Window.RemoveEventListener("mouseup"  , finishDragging, false) 
                     //printfn "mouseup"
-            let startDragging _ (ev: Dom.MouseEvent) =
+            let startDragging (_: Dom.Element) (ev: Dom.MouseEvent) =
                 if not this.dragging then
                     Val.map2 (fun startP dirV ->
                         this.dragging <- true
@@ -3091,24 +3916,24 @@ namespace FSSGlobal
     [< Inline "try { return !!(ResizeObserver) } catch(e) { return false }" >] 
     let implementedResizeObserver() = false
     
-    [< Inline "new ResizeObserver($f)" >]
-    let newResizeObserver (f: unit->unit) = X<_> 
+    [< Inline "new ResizeObserver($_f)" >]
+    let newResizeObserver (_f: unit->unit) = X<_> 
     
-    [< Inline "$ro.observe($el)" >]
-    let RObserve ro (el:Dom.Element) = X<_> 
+    [< Inline "$_ro.observe($_el)" >]
+    let RObserve _ro (_el:Dom.Element) = X<_> 
     
     let mutable observers : obj list = []
     
     let domRect2Tuple (r:Dom.DomRect) = (r.Top, r.Left, r.Width, r.Height)
     
-    let [< Inline "$el.isConnected" >] isValidElement (el:Dom.Element) = true
+    let [< Inline "$_el.isConnected" >] isValidElement (_el:Dom.Element) = true
     
     let dimsChanged (el:Dom.Element) = 
-        let mutable dims = el.GetBoundingClientRect()
+        let dims = ref <| el.GetBoundingClientRect()
         fun () ->
             let ndims = el.GetBoundingClientRect()
-            if domRect2Tuple dims = domRect2Tuple ndims then false
-            else dims <- ndims    ; true
+            if domRect2Tuple !dims = domRect2Tuple ndims then false
+            else dims := ndims    ; true
     
     let addResizeObserver f el =
         if implementedResizeObserver() then
@@ -3141,7 +3966,7 @@ namespace FSSGlobal
         content       : (string option * HtmlNode) []
         cols          : Area []
         rows          : Area []
-        widthHeight   : IRef<float * float>
+        widthHeight   : Var<float * float>
         lastSplitter  : (int * bool) option
     }
     with
@@ -3200,7 +4025,7 @@ namespace FSSGlobal
                 areas 
                 |> Seq.fold (fun (pcs, pxs) a ->
                     match a with
-                    | Auto              spl -> (                          pcs,                pxs)          
+                    | Auto             _spl -> (                          pcs,                pxs)          
                     | Splitter          spl -> (Val.map2 (+) spl.GetValue pcs,                pxs) 
                     | Fixed (Percentage v)  -> (Val.map2 (+) v            pcs,                pxs)
                     | Fixed (Pixel      v)  -> (                          pcs, Val.map2 (+) v pxs)
@@ -3212,7 +4037,7 @@ namespace FSSGlobal
             areas
             |> Seq.foldBack (fun a state ->
                 match a with
-                |  Auto              spl -> perc  autoPct          
+                |  Auto             _spl -> perc  autoPct          
                 |  Splitter          spl -> perc  spl.GetValue
                 |  Fixed (Percentage v)  -> perc  v
                 |  Fixed (Pixel      v)  -> pixel v
@@ -3236,26 +4061,26 @@ namespace FSSGlobal
                     this.cols
                     |> Seq.indexed
                     |> Seq.choose (function
-                        | i, Auto     spl -> None           
+                        |_i, Auto    _spl -> None           
                         | i, Splitter spl -> Some <| spl.Render.InsertChildren( 
                                                 [ style1 "grid-column" (string (i + if spl.after then 2 else 1))
                                                   style1 "grid-row"    (sprintf "1 / %d" (this.rows.Length + 1)) ] ) 
-                        | i, Fixed    _   -> None
+                        |_i, Fixed    _   -> None
                    )
                 yield!
                     this.rows
                     |> Seq.indexed
                     |> Seq.choose (function
-                        | i, Auto     spl -> None           
+                        |_i, Auto    _spl -> None           
                         | i, Splitter spl -> Some <| spl.Render.InsertChildren( 
                                                 [ style1 "grid-row"    (string (i + if spl.after then 2 else 1))
                                                   style1 "grid-column" (sprintf "1 / %d" (this.cols.Length + 1)) ] ) 
-                        | i, Fixed    _   -> None
+                        |_i, Fixed    _   -> None
                    )
                 yield! this.styles() 
                 yield style    <| sprintf "display: grid; grid-gap: %fpx; padding: %fpx; box-sizing: border-box" this.gap this.padding 
                 yield SomeAttr <| on.afterRender(fun el   -> 
-                    let setVar (vr:IRef<_>) vl = if vr.Value <> vl then vr.Value <- vl 
+                    let setVar (vr:Var<_>) vl = if vr.Value <> vl then vr.Value <- vl 
                     let setDimensions () =
                         el.GetBoundingClientRect()
                         |> fun r -> setVar this.widthHeight (r.Width, r.Height)
@@ -3320,8 +4145,8 @@ namespace FSSGlobal
     
     [< NoComparison >]
     type TabStrip =
-        { selected  : IRef<int>
-          tabs      : IRef<(System.Guid * (string * HtmlNode)) []>
+        { selected  : Var<int>
+          tabs      : Var<(System.Guid * (string * HtmlNode)) []>
           top       : bool
           horizontal: bool
           id        : System.Guid
@@ -3367,9 +4192,9 @@ namespace FSSGlobal
     
         member this.reorder drop =
             match !draggedTab with
-            | None                                     -> ()
-            | Some(from, drag) when from.id <> this.id -> this.moveTab from drag drop
-            | Some(from, drag)                         ->
+            | None                                      -> ()
+            | Some( from, drag) when from.id <> this.id -> this.moveTab from drag drop
+            | Some(_from, drag)                         ->
             this.tabs.Value     <- reorderArray this.tabs.Value drag drop
             let sel = this.selected.Value
             this.selected.Value <- if    sel = drag                then drop
@@ -3404,15 +4229,15 @@ namespace FSSGlobal
                                                     (if this.top        then "top"        else "bottom"  ) 
                                                     (if this.horizontal then "horizontal" else "vertical")
                               
-                              for i, (uid, (txt, _)) in  tabs |> Seq.indexed  do
+                              for i, (_uid, (txt, _)) in  tabs |> Seq.indexed  do
                                   yield Hoverable.New.Content(
                                         div [ htmlText txt
                                               ``class`` <| Val.map (fun sel -> "tab" + (if sel = i then " selected" else "")) this.selected
                                               draggable "true"
-                                              SomeAttr <| on.dragOver(fun _ ev -> ev.PreventDefault()                            )
-                                              SomeAttr <| on.drag    (fun _ _  ->                     draggedTab := Some(this, i))
-                                              SomeAttr <| on.drop    (fun e ev -> ev.PreventDefault(); ev.StopPropagation() ; this.reorder i )
-                                              SomeAttr <| on.click   (fun _ _  ->                       this.selected.Value <- i ) 
+                                              SomeAttr <| on.dragOver(fun _  ev -> ev.PreventDefault()                            )
+                                              SomeAttr <| on.drag    (fun _  _  ->                     draggedTab := Some(this, i))
+                                              SomeAttr <| on.drop    (fun _e ev -> ev.PreventDefault(); ev.StopPropagation() ; this.reorder i )
+                                              SomeAttr <| on.click   (fun _  _  ->                       this.selected.Value <- i ) 
                                             ])
                             ]
                 )
@@ -3425,7 +4250,7 @@ namespace FSSGlobal
                       yield  Id <| uid2s this.id
                       yield!
                           tabs
-                          |> Seq.map (fun (uid, (txt, sub)) -> 
+                          |> Seq.map (fun (uid, (_txt, sub)) -> 
                               sub.AddChildren(
                                 [ style <| Val.map (fun sels -> if sels |> Map.toSeq |> Seq.map snd |> Seq.contains uid then "" else "display : none") selectedPanels
                                   Id    <| uid2s uid
@@ -3436,8 +4261,8 @@ namespace FSSGlobal
                   (if     this.top then strip else HtmlEmpty)
                   div [ content ; ``class`` "tab-content" ]
                   (if not this.top then strip else HtmlEmpty)
-                  SomeAttr <| on.dragOver(fun _ ev -> ev.PreventDefault()                                      )
-                  SomeAttr <| on.drop    (fun e ev -> ev.PreventDefault() ; this.reorder this.tabs.Value.Length)
+                  SomeAttr <| on.dragOver(fun _  ev -> ev.PreventDefault()                                      )
+                  SomeAttr <| on.drop    (fun _e ev -> ev.PreventDefault() ; this.reorder this.tabs.Value.Length)
                   css @"
     
     .tab-panel {
@@ -3500,7 +4325,7 @@ namespace FSSGlobal
     "]
     let inline menuEntry content   = li [ content ]
     let inline refA      cont  t r = a  [ cont ; hrefO r ; target t ] 
-    let inline refText   txt   t r = bindHElem (fun t -> if t = "" then HtmlEmpty else refA(htmlText t) t r) txt
+    let inline refText   txt  _t r = bindHElem (fun t -> if t = "" then HtmlEmpty else refA(htmlText t) t r) txt
     let inline entryTxt  txt   t r = menuEntry (refText  txt t  r)
       
     let inline entries    ch cl    =  ul ch |> addClass cl
@@ -3580,6 +4405,7 @@ namespace FSSGlobal
                     for entry in this.entries -> 
                         entry.Render
                 ]
+    [<NoComparison ; NoEquality>]
     type Action = {
         text       : Val<string>
         highlight  : Val<bool>
@@ -3703,7 +4529,7 @@ namespace FSSGlobal
     
     [<NoComparison ; NoEquality>]
     type Layout = {
-        parts         : System.Collections.Generic.Dictionary<string, IRef<GuiPartSourceId * GuiPart> * HtmlNode * Val<GuiPart -> unit>>
+        parts         : System.Collections.Generic.Dictionary<string, Var<GuiPartSourceId * GuiPart> * HtmlNode * Val<GuiPart -> unit>>
         tabStrips     : System.Collections.Generic.Dictionary<string, TabStrip>
     }
     
@@ -3714,26 +4540,26 @@ namespace FSSGlobal
     type GuiPart with
         member this.GetHtmlNode (lyt: Layout) name =
             match this with
-            | GuiRoot     root                                             -> HtmlEmpty                          , ignore
+            | GuiRoot    _root                                             -> HtmlEmpty                          , ignore
             | GuiNode     node                                             -> node                               , ignore
             | GuiAction   act                                              -> act.Button.Render                  , ignore
             | GuiCall    (name, action, parms)                             -> lyt.GetCallButton name action parms, ignore
             | GuiTabStrip(top  , nodes                                   ) -> let ts = TabStrip.New(nodes |> Seq.map (fun node -> node, lyt.GetNode node)).SetTop(top)
                                                                               addValue name ts lyt.tabStrips
                                                                               ts.Render                          , ignore
-            | GuiSplit   (first, secT , vertical, per, ch1, ch2, min, max) -> let minV            = Var.Create min
-                                                                              let maxV            = Var.Create max
-                                                                              let perV            = Var.Create per
-                                                                              let mutable curper  =            per
+            | GuiSplit   (first, secT , vertical, per, ch1, ch2, min, max) -> let minV   = Var.Create min
+                                                                              let maxV   = Var.Create max
+                                                                              let perV   = Var.Create per
+                                                                              let curper = ref        per
                                                                               let grd = Grid.NewBisect(first, secT, vertical, perV, lyt.GetNode ch1, lyt.GetNode ch2).Min(minV).Max(maxV)
                                                                               grd.Render
                                                                              ,function 
-                                                                              | GuiSplit   (first, secT , vertical, per, ch1, ch2, min, max) -> 
-                                                                                  if curper     <> per then
-                                                                                     curper     <- per
-                                                                                     perV.Value <- per
-                                                                                  minV.Value    <- min
-                                                                                  maxV.Value    <- max
+                                                                              | GuiSplit   (_first, _secT , _vertical, per, _ch1, _ch2, min, max) -> 
+                                                                                  if !curper     <> per then
+                                                                                      curper     := per
+                                                                                      perV.Value <- per
+                                                                                  minV.Value     <- min
+                                                                                  maxV.Value     <- max
                                                                               | _ -> ()
     and  Layout with
         member this.GetGuiCallAction (name:string) (action:string) (parms:string[]) =
@@ -3750,10 +4576,10 @@ namespace FSSGlobal
             | Result.Failure ms      -> div [ ms |> Result.msgs2String |> String.concat ". " |> htmlText ]
         member this.AddNode name sid part =
             let partV  = Var.Create (sid, part)
-            let nodeFv = partV  |> Val.map (fun (si, p: GuiPart) -> p.GetHtmlNode this name)
+            let nodeFv = partV  |> Val.map (fun (_si, p: GuiPart) -> p.GetHtmlNode this name)
             let node   = nodeFv |> Val.map fst |> HtmlElementV 
             let update = nodeFv |> Val.map snd
-            this.parts.Add(name, (partV :> IRef<_>, node, update))
+            this.parts.Add(name, (partV :> Var<_>, node, update))
             node
         member this.GetNode name =
             let mutable res = Unchecked.defaultof<_>
@@ -3766,10 +4592,10 @@ namespace FSSGlobal
             |> Seq.map (fun (name, part) -> 
                 name
                ,match part with
-                 | GuiNode     node                                             -> GuiPartSourceId.New
-                 | GuiAction   act                                              -> GuiPartSourceId.New
+                 | GuiNode    _node                                             -> GuiPartSourceId.New
+                 | GuiAction  _act                                              -> GuiPartSourceId.New
                  | GuiRoot     root                                             -> GPSI_Root     root                                            
-                 | GuiSplit   (first, secT , vertical, per, ch1, ch2, min, max) -> GPSI_Split   (first, secT , vertical, ch1, ch2)
+                 | GuiSplit   (first, secT , vertical,_per, ch1, ch2,_min,_max) -> GPSI_Split   (first, secT , vertical, ch1, ch2)
                  | GuiTabStrip(top  , nodes                                   ) -> GPSI_TabStrip(top  , nodes                    )
                  | GuiCall    (name, action, parms)                             -> GPSI_Call    (name, action, parms)                            
                ,part        )  
@@ -3789,11 +4615,11 @@ namespace FSSGlobal
             this.GetNode node
         member this.AddNewSteps steps steps2 =
             Array.append steps steps2
-            |> Array.groupBy (fun (name, si, part) -> name           )
-            |> Array.map     (fun (name, det     ) -> det |> Seq.last)
+            |> Array.groupBy (fun (name,_si,_part) -> name           )
+            |> Array.map     (fun(_name, det     ) -> det |> Seq.last)
             |> Array.iter    (fun (name, si, part) -> if this.parts.ContainsKey name then
-                                                           let partv, node, upd = this.parts.[name] 
-                                                           let xsi, xpart = partv.Value
+                                                           let partv,_node, upd = this.parts.[name] 
+                                                           let xsi,_xpart = partv.Value
                                                            if xsi = si 
                                                            then Val.apply (Val.Constant part) upd |> Val.iter id
                                                            else partv.Value <- (si, part)
@@ -3829,10 +4655,12 @@ namespace FSSGlobal
             this.tabStrips.Values
             |> Seq.iter (fun ts -> ts.Select tName |> ignore )
     
-    let inline fixedHorSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPx , false, px, ch1, ch2, 5.0, 95.0)
-    let inline fixedVerSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPx , true , px, ch1, ch2, 5.0, 95.0)
-    let inline varHorSplitter          pc ch1 ch2 min max = GuiSplit(true , StVariable, false, pc, ch1, ch2, min,  max)
-    let inline varVerSplitter          pc ch1 ch2 min max = GuiSplit(true , StVariable, true , pc, ch1, ch2, min,  max)
+    let inline fixedHorSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPx  , false, px, ch1, ch2, 5.0, 95.0)
+    let inline fixedVerSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPx  , true , px, ch1, ch2, 5.0, 95.0)
+    let inline fixPcHorSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPerc, false, px, ch1, ch2, 5.0, 95.0)
+    let inline fixPcVerSplitter  first px ch1 ch2         = GuiSplit(first, StFixedPerc, true , px, ch1, ch2, 5.0, 95.0)
+    let inline varHorSplitter          pc ch1 ch2 min max = GuiSplit(true , StVariable , false, pc, ch1, ch2, min,  max)
+    let inline varVerSplitter          pc ch1 ch2 min max = GuiSplit(true , StVariable , true , pc, ch1, ch2, min,  max)
     
     
   [<JavaScript>]
@@ -3925,8 +4753,9 @@ namespace FSSGlobal
       })
       
                        """ + js
-    type RunNode(nodeName, ?clearNode: bool) =
-      let bClearNode    = defaultArg clearNode true
+    type RunNode(nodeName, ?clearNode: bool, ?useShadowRoot:bool) =
+      let bClearNode    = defaultArg clearNode     true
+      let useShadowRoot = defaultArg useShadowRoot true
       let createNode() =
           let e = JS.Document.CreateElement "div"
           e?style <- "height: 100%; width: 100%;"
@@ -3941,6 +4770,7 @@ namespace FSSGlobal
           | null -> createBaseNode()
           | node -> node
       let runNode =
+          if not useShadowRoot then baseNode else
           match baseNode.ShadowRoot with
           | null -> let p = createNode()
                     baseNode.AttachShadow(Dom.ShadowRootInit(Dom.ShadowRootMode.Open)).AppendChild p |> ignore
@@ -3950,8 +4780,9 @@ namespace FSSGlobal
           | root -> root.FirstChild :?> Dom.Element
       do if bClearNode then runNode.InnerHTML <- ""
     with
-      new(?clearNode: bool) = RunNode("TestNode", ?clearNode = clearNode)
+      new(?clearNode: bool, ?useShadowRoot:bool) = RunNode("TestNode", ?clearNode = clearNode, ?useShadowRoot = useShadowRoot)
       member this.RunNode   = runNode
+    
       member this.AddBootstrap =
         JS.Document.CreateElement "div"
         |> fun el -> 
@@ -4105,22 +4936,21 @@ namespace FSSGlobal
         }
         
         type Property(setDirty: unit->unit, props: Dictionary<string, string>, keyP: string) =
+            inherit Var<string>()
             let mutable key = keyP
             let getK () = key
             let setK k  = props.Add(k, props.[key]) ; props.Remove key |> ignore ; key <- k ; setDirty()
             let getV () = props.[key]
             let setV v  = props.[key] <- v ; setDirty()
-            interface IRef<string> with
-               member this.Id  = "?"
-               member this.Set                                   v = setK v
-               member this.Value                        with set v = setK v
-               member this.Get ()                                  = getK()
-               member this.Value                                   = getK()
-               member this.Update      (f:string -> string       ) = getK() |> f |>             setK
-               member this.UpdateMaybe (f:string -> string option) = getK() |> f |> Option.iter setK
-               member this.View                     : View<string> = getK() |> View.Const
-            member this.KeyVar   = this :> IRef<string>  
-            member this.ValueVar =  PropValue this
+            override this.Id  = "?"
+            override this.SetFinal                              v = setK v
+            override this.Set                                   v = setK v
+            override this.Get ()                                  = getK()
+            override this.Update      (f:string -> string       ) = getK() |> f |>             setK
+            override this.UpdateMaybe (f:string -> string option) = getK() |> f |> Option.iter setK
+            override this.View                     : View<string> = getK() |> View.Const
+            member this.KeyVar   = this :> Var<string>  
+            member this.ValueVar = PropValue this
             member this.GetK     = getK
             member this.SetK     = setK
             member this.GetV     = getV
@@ -4128,17 +4958,16 @@ namespace FSSGlobal
             member this.Remove() = props.Remove key |> ignore ; setDirty()
     
         and PropValue(prop: Property) =
+            inherit Var<string>()
             let get  = prop.GetV
             let set  = prop.SetV
-            interface IRef<string> with
-               member this.Id  = "?"
-               member this.Set                                   v = set v
-               member this.Value                        with set v = set v
-               member this.Get ()                                  = get()
-               member this.Value                                   = get()
-               member this.Update      (f:string -> string       ) = get() |> f |>             set
-               member this.UpdateMaybe (f:string -> string option) = get() |> f |> Option.iter set
-               member this.View                     : View<string> = get() |> View.Const
+            override this.Id  = "?"
+            override this.SetFinal                              v = set v
+            override this.Set                                   v = set v
+            override this.Get ()                                  = get()
+            override this.Update      (f:string -> string       ) = get() |> f |>             set
+            override this.UpdateMaybe (f:string -> string option) = get() |> f |> Option.iter set
+            override this.View                     : View<string> = get() |> View.Const
     
         let [< Inline >] inline genericPropertyVal currentCodeSnippetId p def f =
             currentCodeSnippetId
@@ -4310,7 +5139,7 @@ namespace FSSGlobal
       let disableFableVal      = disablePropertyVal "DisableFable"      |> Val.map2 disableEval disableParseVal  
       let disableWebSharperVal = disablePropertyVal "DisableWebSharper" |> Val.map2 disableEval disableParseVal 
       
-      let mutable lastCodeAndStarts : (CodeSnippetId * bool * ((string * int * int) [] * string [] * string [] * string [] * string [] * string [])) option = None
+      let mutable lastCodeAndStarts : (CodeSnippetId * bool * ((string * int * int) [] * string [] * string [] * string [] * string [] * string []) option) option = None
       
       let getPredecessors curO =
           curO
@@ -4338,7 +5167,7 @@ namespace FSSGlobal
                            
       
       //storeVarCodeEditor "dirty" dirty
-      let appendMsg (var:IRef<string>) msg =
+      let appendMsg (var:Var<string>) msg =
           if isUndefined msg then () else
           let newM =
               match var.Value, msg.ToString() with
@@ -4453,7 +5282,7 @@ namespace FSSGlobal
               setDirtyPred()
           )
       
-      let mutable draggedId   = CodeSnippetId.New
+      let draggedId   = ref CodeSnippetId.New
       
       ()
       let compileSnippetW (snpO: CodeSnippet option) =
@@ -4622,9 +5451,9 @@ namespace FSSGlobal
                           classIf   "direct-predecessor"    <| Val.map (isDirectPredecessor    code.id) currentCodeSnippetO
                           classIf   "indirect-predecessor"  <| Val.map (isIndirectPredecessor  code.id) curPredecessors
                           draggable "true"
-                          SomeAttr <| on.dragOver(fun _ ev -> ev.PreventDefault()                                              )
-                          SomeAttr <| on.drag    (fun _ _  ->                                              draggedId <- code.id)
-                          SomeAttr <| on.drop    (fun _ ev -> ev.PreventDefault() ; reorderSnippet code.id draggedId           )
+                          SomeAttr <| on.dragOver(fun _ ev -> ev.PreventDefault()                                               )
+                          SomeAttr <| on.drag    (fun _ _  ->                                               draggedId := code.id)
+                          SomeAttr <| on.drop    (fun _ ev -> ev.PreventDefault() ; reorderSnippet code.id !draggedId           )
                           span    [ ``class`` "node"
                                     classIf   "parent"   isParent
                                     classIf   "expanded" isExpanded
@@ -4645,7 +5474,7 @@ namespace FSSGlobal
                                   ]
                           ])
       
-      let mutable topScrollList = 0.0
+      let topScrollList = ref 0.0
       
       let listEntries snps =
           let list =
@@ -4663,8 +5492,8 @@ namespace FSSGlobal
                   )  (Set [])
                   |> fst
                   |> Seq.choose id
-              yield SomeAttr <| on.scroll      (fun e _ -> topScrollList <- e.ScrollTop   )
-              yield SomeAttr <| on.afterRender (fun e   -> e.ScrollTop   <- topScrollList )
+              yield SomeAttr <| on.scroll      (fun e _ -> topScrollList :=  e.ScrollTop   )
+              yield SomeAttr <| on.afterRender (fun e   -> e.ScrollTop   <- !topScrollList )
             ]
           list
       
@@ -4805,35 +5634,42 @@ namespace FSSGlobal
       let autoCompleteClient = FSAutoCompleteIntermediary.FSAutoCompleteIntermediaryClient("FSharpStation", endPoint = JS.Window.Location.Href)
       
       #if FSS_SERVER
-      let parseFile = fsIds + ".fsx"
+      let parseFileName = fsIds + ".fsx"
       #else
-      let parseFile = "..\\" + fsIds + ".fsx"
+      let parseFileName = "..\\" + fsIds + ".fsx"
       #endif
+      
+      let mutable latestParsedPrefix = "a"
+      let nextParsedPrefix() = if latestParsedPrefix = "a" then "b" else "a"
+      let parseFile prefix = prefix + parseFileName
       
       let setDirtyCond() =
           match lastCodeAndStarts with
           | Some (pId, _, red) when pId = currentCodeSnippetId.Value -> setDirtyPart()
           | _                                                        -> setDirty    ()
       
-      let isParseDisabled = disableParseVal |> Val.toView |> View.GetAsync 
+      let isParseDisabled = disableParseVal |> Val.toView |> View.GetAsync
       
       let getCodeAndStartsFast msgF (snp:CodeSnippet) addLinePrepos =
-          let red0, cur = 
+          let redO, cur = 
               match lastCodeAndStarts with
-              | Some (pId, alp, red) when pId = snp.id && alp = addLinePrepos -> msgF "Reparsing..."; red, snp.PrepareSnippet
+              | Some (pId, alp, redO) when pId = snp.id && alp = addLinePrepos -> msgF "Reparsing..."; redO, snp.PrepareSnippet
               | _ -> 
               msgF "Parsing..."
-              let preds = snp.Predecessors()
-              let red = CodeSnippet.ReducedCode addLinePrepos preds.[0..preds.Length - 2]
-              let cur = preds.[preds.Length - 1]
-              lastCodeAndStarts <- Some(cur.id, addLinePrepos, red)
-              red, cur
+              let preds = snp.Predecessors()        
+              let redO  = if preds.Length = 1 then None else CodeSnippet.ReducedCode addLinePrepos preds.[0..preds.Length - 2] |> Some
+              let cur   = preds.[preds.Length - 1]
+              lastCodeAndStarts <- Some(cur.id, addLinePrepos, redO)
+              redO, cur
           let red1 = CodeSnippet.ReducedCode addLinePrepos [| cur |]
-          CodeSnippet.AddSeps red0 red1
+          redO
+          |> Option.map (fun red0 -> CodeSnippet.AddSeps red0 red1)
+          |> Option.defaultValue red1
           |> CodeSnippet.FinishCode addLinePrepos
       
       let mutable parseRun = 1
       let mutable parsing  = false
+      let mutable parsingCode = ""
       
       let parseFSA silent =
           let msgF txt = if not silent then parserMsgs.Value <- txt
@@ -4841,19 +5677,21 @@ namespace FSSGlobal
               match CodeSnippet.FetchO currentCodeSnippetId.Value with 
               | None     -> ()
               | Some cur ->
-              let runN           = parseRun + 1
-              parseRun          <- runN
-              while parsing do
-                  do! Async.Sleep 1000
-              if parseRun <> runN then () else
               try
-                  parsing           <- true
-                  parsed            <- true
-                  let  code, starts  = getCodeAndStartsFast msgF cur false
-                  let! res           = autoCompleteClient.Parse(parseFile, code, starts)
-                  if not silent && runN = parseRun && parsed then
-                      addPrsMsg res
-                      addPrsMsg "Parsed!"
+                  parsed                 <- false
+                  let  code, starts       = getCodeAndStartsFast msgF cur false
+                  if not parsing || code <> parsingCode then
+                      parsingCode        <- code
+                      parsing            <- true
+                      let prefix          = nextParsedPrefix()
+                      printfn "Parsing %s" prefix
+                      let! res            = autoCompleteClient.Parse(parseFile prefix, code, starts)
+                      printfn "Parse result= %A" (res <> "")
+                      latestParsedPrefix <- prefix
+                      if not silent then
+                          addPrsMsg res
+                          addPrsMsg "Parsed!"
+                      parsed             <- true
               finally  
                   parsing <- false
           }
@@ -4868,7 +5706,7 @@ namespace FSSGlobal
           async {
               if not parsed then return true 
               else
-                  let! must = autoCompleteClient.MustParse(parseFile, cur.NameSanitized)
+                  let! must = autoCompleteClient.MustParse(parseFile latestParsedPrefix, cur.NameSanitized)
                   return must
           }
       
@@ -4907,7 +5745,7 @@ namespace FSSGlobal
               let  sub   = (getStartWord l pos.ch |> String.length)   
               let  add0  = (getEndWord   l pos.ch |> String.length)    
               let  add   = if sub = 0 && add0 = 0 then 2 else add0 
-              let! tip   = autoCompleteClient.ToolTip  (parseFile, pos.line + 1, pos.ch + 1, cur.NameSanitized)
+              let! tip   = autoCompleteClient.ToolTip  (parseFile latestParsedPrefix, pos.line + 1, pos.ch + 1, cur.NameSanitized)
               addPrsMsg <| sprintf "InfoFSharp \"%s %A - %A %s \"" cur.NameSanitized (pos.line + 1, pos.ch - sub + 1) (pos.line + 1, pos.ch + add + 1) (tip.Replace("\"","''"))
           } |> Async.Start
       
@@ -4946,29 +5784,48 @@ namespace FSSGlobal
       
       let asyncStartDelayed = asyncStartCancelling()
       let getAnnotationsDelayed parms =
-          async {
-              printfn "before delaying"
-              do! Async.Sleep 400
-              printfn "calling getAnnotations"
+          //async {
+          //    printfn "before delaying"
+          //    do! Async.Sleep 400
+          //    printfn "calling getAnnotations"
               do getAnnotations parms
-          } |> asyncStartDelayed 
+          //} |> asyncStartDelayed 
+      
+      let getSymbolType chr =
+          match chr with
+          | "C"   -> "class"     
+          | "Cn"  -> "Constant"  
+          | "D"   -> "delegate"  
+          | "E"   -> "enum"      
+          | "P"   -> "property"  
+          | "e"   -> "event"     
+          | "X"   -> "exception" 
+          | "F"   -> "field"     
+          | "I"   -> "interface" 
+          | "M"   -> "function"    
+          | "N"   -> "module"    
+          | "S"   -> "struct"    
+          | "T"   -> "type"      
+          | "V"   -> "Variable"  
+          | _     -> chr
       
       let getHints (ed:Template.CodeMirrorEditor, cb, _) =
           async {
-              let! disabled = isParseDisabled 
+              let! disabled = isParseDisabled
+              printfn "getHints (Complete) %A" disabled
               if disabled then () else
               match CodeSnippet.FetchO currentCodeSnippetId.Value with 
               | None     -> ()
               | Some cur ->
-              do!  parseIfMustThen true
+              //do!  parseIfMustThen true
               let  pos    = ed.GetCursor()
               let  l      = ed.GetLine pos.line
-              let  word   = getStartWord l pos.ch     
-              let! com    = autoCompleteClient.Complete(parseFile, l + "a", pos.line + 1, pos.ch + 1, cur.NameSanitized)
+              let  word   = getStartWord l pos.ch
+              let! com    = autoCompleteClient.Complete(parseFile latestParsedPrefix, l + "a", pos.line + 1, pos.ch + 1, cur.NameSanitized)
               cb { Template.list   = com 
                                      |> Array.map (fun (dis, rep, cls, chr) -> 
                                           { text        = rep
-                                            displayText = chr + "| " + dis
+                                            displayText = (sprintf "%-40s %20s" dis (getSymbolType chr))
                                             className   = cls                              
                                           })
                    Template.from   = { pos with ch = pos.ch - word.Length }
@@ -5026,15 +5883,13 @@ namespace FSSGlobal
       
       let gotoDefinition () =
           async {
-              match CodeSnippet.FetchO currentCodeSnippetId.Value with 
-              | None     -> ()
-              | Some cur ->
-              match codeMirror.editorO  with
-              | None     -> () 
-              | Some ed  ->
+              match CodeSnippet.FetchO currentCodeSnippetId.Value, codeMirror.editorO with 
+              | _       , None     
+              | None    , _       -> ()
+              | Some cur, Some ed ->
               let  pos   = ed.GetCursor()
               let  l     = ed.GetLine pos.line
-              let! kind  = autoCompleteClient.FindDecl(parseFile, pos.line + 1, pos.ch + 1, cur.NameSanitized)
+              let! kind  = autoCompleteClient.FindDecl(parseFile latestParsedPrefix, pos.line + 1, pos.ch + 1, cur.NameSanitized)
               match kind with
               | FSAutoCompleteIntermediary.CommTypes.KFindDecl decl -> jumpToLine <| sprintf "%s (%d, %d) - (%d, %d)" decl.File decl.Line decl.Column decl.Line decl.Column
               | FSAutoCompleteIntermediary.CommTypes.KError    err  -> JS.Alert   <| sprintf "%A" err
@@ -5052,9 +5907,9 @@ namespace FSSGlobal
       let codeMirrorRender = 
           codeMirror.Render.AddChildren [ 
               SomeAttr <| on.dblClick (fun _ _ -> showToolTip codeMirror.editorO.Value)  
-              htmlElement "menu" [  // does not work anymore. support for this was dropped by Chrome
-                  ``type`` "context"
-                  Id       "right-menu"
+              htmlElement     "menu" [  // does not work anymore. support for this was dropped by Chrome
+                  ``type``    "context"
+                  Id          "right-menu"
                   htmlElement "menuitem" [ 
                       htmlAttribute "label" "Goto Definition"
                       SomeAttr <| on.click (fun _ _ -> gotoDefinition() )  
@@ -5073,8 +5928,8 @@ namespace FSSGlobal
               match CodeSnippet.FetchO currentCodeSnippetId.Value with 
               | None     -> ()
               | Some cur ->
-              let! must = autoCompleteClient.MustParse(parseFile, cur.NameSanitized)
-              if must       then () else
+              //let! must = autoCompleteClient.MustParse(parseFile latestParsedPrefix, cur.NameSanitized)
+              //if must       then do! Async.Sleep 400
               ed?performLint() |> ignore
           } |> Async.Start      
       )
@@ -5186,7 +6041,7 @@ namespace FSSGlobal
       let redraw = Var.Create ()
       let setDirtyP () = dirty.Value <- true
       let getProperty props key   = Property(setDirtyP, props, key) 
-      let setProperty props key v = ((getProperty props key).ValueVar :> IRef<_>).Set v
+      let setProperty props key v = ((getProperty props key).ValueVar :> Var<_>).Set v
       
       let tableProps =
         currentCodeSnippetId
@@ -5199,6 +6054,7 @@ namespace FSSGlobal
               ] 
               yield! 
                   props.Keys
+                  |> Seq.sort
                   |> Seq.map (fun kvp ->
                       let prop = getProperty props kvp
                       tr [
@@ -5238,12 +6094,7 @@ namespace FSSGlobal
           | _               -> getSnpO()
       
       let getCodeFromAct (act: Action) addOpen = 
-          Wrap.wrapper {
-              let getValue =
-                  function
-                  | Constant v  -> v
-                  | Dynamic  vw -> failwith "Get value from View not implemented"
-                  | DynamicV vr -> vr.Value
+          Wrap.wrap {
               let! text = Val.getAsync act.text
               setOutMsg (text + "...")
               let snpO = getSnpO()
@@ -5317,6 +6168,7 @@ namespace FSSGlobal
       let actFindDefinition = Template.Action.New("Find Definition"            ).OnClick( Do   gotoDefinition    ()      ).Disabled(disableParseVal     )
       let actRefreshEditor  = Template.Action.New("Refresh CodeMirror"         ).OnClick( Do   refreshCodeMirror ()      )
       let actOutText        = Template.Action.New("Show Output text"           ).OnClick2(Do2  showOutText       ()      )
+      let actAbortFsi       = Template.Action.New("Abort FSI"                  ).OnClick( Do   abortFsiExe       ()      )
            
       let buttonsH =
           div [ 
@@ -5377,6 +6229,8 @@ namespace FSSGlobal
                   .SubMenu(     
                           [     
                               actEvalCode      .MenuEntry
+                              actAbortFsi      .MenuEntry
+                              MenuEntry.New("").Divider     
                               actFableCode     .MenuEntry
                               MenuEntry.New("").Divider     
                               actRunWSNewTab   .MenuEntry
@@ -5408,7 +6262,7 @@ namespace FSSGlobal
       //storeVarCodeEditor "splitterV2" splitterV2.Var
       //storeVarCodeEditor "splitterH3" splitterH3.Var
       
-      let jumpToRef (e:obj) _ = 
+      let jumpToRef (e:obj) (_:Dom.MouseEvent) = 
           let v : string = e?value |> unbox
           let s : int    = e?selectionStart |> unbox
           let lines = v.Split '\n'
@@ -5417,6 +6271,12 @@ namespace FSSGlobal
           |> fst
           |> Seq.pick (fun (line, from, to_) -> if s >= from && s < to_ then Some line else None)
           |> jumpToLine
+      
+      let scrollToBottom (e:obj) _ = 
+          async { 
+              do! Async.Sleep 100
+              do  e?scrollTop <- e?scrollHeight
+          } |> Async.Start
       
       (*
       let CodeEditor() =
@@ -5514,8 +6374,8 @@ namespace FSSGlobal
               "actCompileWS"      , GuiAction actCompileWS     
               "actFindDefinition" , GuiAction actFindDefinition    
               "actOutText"        , GuiAction actOutText
-              "Output"            , GuiNode <| Template.TextArea.New(outputMsgs).Placeholder("Output:"         ).Title("Output"                   ).RenderWith [ on.dblClick jumpToRef ]
-              "Parser"            , GuiNode <| Template.TextArea.New(parserMsgs).Placeholder("Parser messages:").Title("Parser"                   ).RenderWith [ on.dblClick jumpToRef ]
+              "Output"            , GuiNode <| Template.TextArea.New(outputMsgs).Placeholder("Output:"         ).Title("Output"                   ).RenderWith [ on.dblClick jumpToRef |> SomeAttr; on.afterRender (fun e -> outputMsgs |> Val.sink (scrollToBottom e)) |> SomeAttr]
+              "Parser"            , GuiNode <| Template.TextArea.New(parserMsgs).Placeholder("Parser messages:").Title("Parser"                   ).RenderWith [ on.dblClick jumpToRef |> SomeAttr]
               "JavaScript"        , GuiNode <| Template.TextArea.New(codeJS    ).Placeholder("Javascript:"     ).Title("JavaScript code generated").Render
               "F# code"           , GuiNode <| Template.TextArea.New(codeFS    ).Placeholder("F# code:"        ).Title("F# code assembled"        ).Render
               "Properties"        , GuiNode <| properties    
@@ -5558,12 +6418,11 @@ namespace FSSGlobal
              | _ -> ()
       
       
-      let addLayoutJson json = delayedRefreshCM 1000 ; delayedRefreshCM 2000 ; delayedRefreshCM 3000 ; layout.SetLayoutJson steps json
       
-      JS.Window?addLayoutJson <-    addLayoutJson
-      propertyLayoutVal |> Val.sink addLayoutJson 
-      
+      let addLayoutJson  json   = delayedRefreshCM 1000 ; delayedRefreshCM 2000 ; delayedRefreshCM 3000 ; layout.SetLayoutJson steps json
       let addLayoutSteps steps2 = delayedRefreshCM 1000 ; delayedRefreshCM 2000 ; delayedRefreshCM 3000 ; layout.AddNewSteps steps steps2
+      JS.Window?addLayoutJson <-    addLayoutJson
+      propertyLayoutVal   |> Val.sink addLayoutJson 
       propertyLayoutJSVal |> Val.sink (fun js -> if js = "" then addLayoutSteps [||] else eval JS.Window js |> ignore)
       
       let setFSharpStationLayout (f:FuncWithArgs<Layout * CodeSnippet, _>)  =
@@ -5573,14 +6432,19 @@ namespace FSSGlobal
       JS.Window?doFSharpStationGuiCall <- doGuiCall
       JS.Window?setFSharpStationLayout <- setFSharpStationLayout
       
+      // these are here so it gets included in the code for Layouts
+      let dict = Dictionary<string, string>()
+      let dictTryGetValue = Dict.tryGetValue "" dict 
+      let pnl  = Template.Panel.New
       ()
       
       #if NOMESSAGING
       #else
       
-      let fsStationClient = FsStationClient(fsIds, fsIds, endPoint = JS.Window.Location.Href)
+      let wsStationClient = new WSMessagingBroker.WSMessagingClient(fsIds)
+      //let fsStationClient = FsStationClient(fsIds, fsIds, endPoint = JS.Window.Location.Href)
       
-      let transMsgs (msgs: ErrMsg list)  =  msgs |> Seq.map (fun e -> e.ErrMsg, if e.IsWarning then FSWarning else FSError) |> Seq.toArray
+      let transMsgs (msgs: ErrMsg [])  =  msgs |> Seq.map (fun e -> e.ErrMsg, if e.IsWarning then FSWarning else FSError) |> Seq.toArray
       
       let result2response res = 
           match res with 
@@ -5613,14 +6477,25 @@ namespace FSSGlobal
               | RunActionCall        (nm,ac, ps) -> return  doGuiCallR(nm, ac, ps) |> Result.map (fun _ -> sprintf "success: %s" nm)                   |> result2StringResponse
           }     
            
+      //async {
+      //    do! Async.Sleep 1000
+      //    do fsStationClient.MessagingClient.AwaitMessageG respond
+      //} |> Async.Start
+      
       async {
           do! Async.Sleep 1000
-          do fsStationClient.MessagingClient.AwaitMessageG respond
+          while true do
+              try       wsStationClient.ProcessIncoming (respond "" >> WAsync)
+                        do! Async.Sleep 60000
+              with e -> printfn "%s" e.Message
+                        do! Async.Sleep 1000
       } |> Async.Start
       
       #endif
-      Val.sink (fun _   -> layout.SelectTab "Output"    |> ignore ) outputMsgs 
-      Val.sink (fun _   -> layout.SelectTab "WS Result" |> ignore ) triggerWSResult 
+      Val.sink        (fun _  -> layout.SelectTab "Output"    |> ignore) outputMsgs 
+      Val.sink        (fun _  -> layout.SelectTab "WS Result" |> ignore) triggerWSResult
+      Async.sleepThen (fun () -> layout.SelectTab "Parser"    |> ignore) 1000 |> Async.Start
+      
       
       let cssLinks      = Var.Create [ "/EPFileX/css/main.css" ]
       let addCssLink lnk =
@@ -5660,8 +6535,8 @@ namespace FSSGlobal
     //#define NOMESSAGING
     
     open WebSharper.Sitelets
-    open WebSharper.UI.Next.Server
-    open WebSharper.UI.Next
+    open WebSharper.UI.Server
+    open WebSharper.UI
     
     type EndPoint = 
         | [< EndPoint "/" >] EPStart
@@ -5671,16 +6546,16 @@ namespace FSSGlobal
     let FSharpStationPage uri =
         Content.Page(
             Title = "F# Station"
-          , Head  = [ Html.scriptAttr [ attr.``type`` "text/javascript"; attr.src "https://code.jquery.com/jquery-3.1.1.min.js"] [] 
-                      Html.scriptAttr [ attr.``type`` "text/javascript"; attr.src "/EPFileX/CIPHERSpaceLoadFiles.js"           ] [] 
+          , Head  = [ Html.script [ attr.``type`` "text/javascript"; attr.src "https://code.jquery.com/jquery-3.1.1.min.js"] [] 
+                      Html.script [ attr.``type`` "text/javascript"; attr.src "/EPFileX/CIPHERSpaceLoadFiles.js"           ] [] 
                     ]
           , Body  = [ Html.client <@  FSharpStationClient uri @> ])
     
     let content (ctx:Context<EndPoint>) (endpoint:EndPoint) : Async<Content<EndPoint>> =
         printfn "%A" endpoint
         match endpoint with
-        | FSharpStation -> FSharpStationPage ""
-        | EPStart       -> FSharpStationPage "https://raw.githubusercontent.com/amieres/FSharpStation/master/Start.fsjson"
+        | FSharpStation -> FSharpStationPage "https://raw.githubusercontent.com/amieres/FSharpStation/master/Start.fsjson"
+        | EPStart       -> FSharpStationPage ""
         | EPLoad    uri -> uri |> System.Web.HttpUtility.UrlDecode |> System.Web.HttpUtility.UrlDecode |> FSharpStationPage
     
     let site = Application.MultiPage content
@@ -5692,8 +6567,10 @@ namespace FSSGlobal
     //#r @"..\packages\Microsoft.Owin.Host.HttpListener\lib\net45\Microsoft.Owin.Host.HttpListener.dll"
     //#r @"..\packages\Microsoft.Owin.StaticFiles\lib\net45\Microsoft.Owin.StaticFiles.dll"
     //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net45\Microsoft.Owin.FileSystems.dll"
-    //#r @"..\packages\Zafir.Owin\lib\net45\WebSharper.Owin.dll"
-    //#r @"..\packages\Zafir.Owin\lib\net45\HttpMultipartParser.dll"
+    //#r @"..\packages\WebSharper.Owin\lib\net45\WebSharper.Owin.dll"
+    //#r @"..\packages\WebSharper.Owin\lib\net45\HttpMultipartParser.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\Owin.WebSocket.dll"
+    //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net45\WebSharper.Owin.WebSocket.dll"
     //#r @"WebSharper.Core.JavaScript.dll"
     //#r @"..\packages\FSharp.Compiler.Service\lib\net45\FSharp.Compiler.Service.dll"
     
@@ -5703,7 +6580,8 @@ namespace FSSGlobal
     open Microsoft.Owin.StaticFiles.ContentTypes
     open Microsoft.Owin.FileSystems
     open WebSharper.Owin
-    
+    open WebSharper.Owin.WebSocket
+    open WSMessagingBroker
     
     WebSharper.Web.Remoting.AddAllowedOrigin "http://localhost"
     WebSharper.Web.Remoting.AddAllowedOrigin "http://*"
@@ -5712,12 +6590,13 @@ namespace FSSGlobal
     
     [< EntryPoint >]
     let Main args =
-        let rootDirectory, url =
-            match args with
-            | [| rootDirectory; url |] -> rootDirectory, url
-            | [| url                |] -> "website"    , url
-            | [|                    |] -> "website"    , "http://localhost:9010/"
-            | _ -> eprintfn "Usage: WebServer3 ROOT_DIRECTORY URL"; exit 1
+        printfn "Usage: FSharpStation URL ROOT_DIRECTORY MaxMessageSize"
+        let url           = args |> Seq.tryItem 0 |>                   Option.defaultValue "http://localhost:9010/"
+        let rootDirectory = args |> Seq.tryItem 1 |>                   Option.defaultValue "website"
+        let max           = args |> Seq.tryItem 2 |> Option.map int |> Option.defaultValue 1_000_000
+        let epWebSocket = Endpoint.Create(url, "/ws", JsonEncoding.Readable)
+        let brokerAgent = Broker.BrokerAgent epWebSocket
+        Broker.BrokerAgent.FssWebSocketO <- Some brokerAgent
         let provider = FileExtensionContentTypeProvider()
         provider.Mappings.[".fsjson"] <- "application/x-fsjson"
         use server = 
@@ -5726,16 +6605,17 @@ namespace FSSGlobal
                     .UseWebSharper( WebSharperOptions(ServerRootDirectory  = rootDirectory
                                                     , Sitelet              = Some site
                                                     , BinDirectory         = "."
-                                                    , Debug                = true))
+                                                    , Debug                = true                             ))
                     .UseStaticFiles(StaticFileOptions(FileSystem           = PhysicalFileSystem(rootDirectory)
-                                                    , ContentTypeProvider  = provider ))
-                                |> ignore
-                let listener = appB.Properties.["Microsoft.Owin.Host.HttpListener.OwinHttpListener"] |> unbox<Microsoft.Owin.Host.HttpListener.OwinHttpListener>
-                listener.SetRequestProcessingLimits(1000, 1000)
-                let maxA : int ref = ref 0
-                let maxB : int ref = ref 0
-                listener.GetRequestProcessingLimits(maxA, maxB)
-                printfn "Accepts: %d Requests:%d" !maxA !maxB
+                                                    , ContentTypeProvider  = provider                         ))
+                    .UseWebSocket(epWebSocket, brokerAgent.Start, maxMessageSize = max                         )
+                |> ignore
+                //let listener = appB.Properties.["Microsoft.Owin.Host.HttpListener.OwinHttpListener"] |> unbox<Microsoft.Owin.Host.HttpListener.OwinHttpListener>
+                //listener.SetRequestProcessingLimits(1000, 1000)
+                //let maxA : int ref = ref 0
+                //let maxB : int ref = ref 0
+                //listener.GetRequestProcessingLimits(maxA, maxB)
+                //printfn "Accepts: %d Requests:%d" !maxA !maxB
             )
         stdout.WriteLine("Serving {0}", url)
         stdin.ReadLine() |> ignore

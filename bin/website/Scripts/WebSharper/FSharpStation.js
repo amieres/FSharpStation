@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FSSGlobal,Useful,Async,KeyVal,String,Option,WebSharper,Obj,ExceptionThrown,ErrOptionIsNone,ErrSimple,Result,ropBuilder,ResultS,Wrap,Builder,Mailbox,Dict,ResetableMemoize,PreproDirective,FsStationShared,CodeSnippetId,CodeSnippet,FSMessage,FSSeverity,WSMessagingBroker,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ErrBroker,WSMessagingClient,FsStationClientErr,FStationMessaging,FSAutoCompleteIntermediary,CommTypes,ResponseError,Location,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,ACMessage,FSAutoCompleteIntermediaryClient,FsEvaluator,Evaluator,FsTranslator,HtmlNode,Val,HelperType,valBuilder,HtmlNode$1,Template,Button,Input,Hoverable,Panel,TextArea,CodeMirrorPos,CodeMirrorEditor,CodeMirror,Hint,HintResponse,HintOptions,LintResponse,SplitterBar,SectionType,Grid,TabStrip,MenuEntry,MenuNode,Menu,Action,GuiPart,HtmlNodeFable,LayoutDescriptionFable,GuiPartSourceId,Layout,RunCode,RunNode,FSharpStation,FsGlobal,Position,ErrCompiler,KeyMapAutoComplete,UI,Var,Property,PropValue,CodeSnippet$1,FableModule,Babel,Fable,SC$1,FSharpStation_JsonDecoder,FSharpStation_JsonEncoder,FSharpStation_GeneratedPrintf,GeneratedPrintf,Concurrency,Seq,Unchecked,Strings,IntelliFactory,Runtime,Utils,Enumerator,Arrays,console,Control,MailboxProcessor,Collections,Dictionary,CancellationTokenSource,System,Guid,List,Option$1,JSON,TimeoutException,Json,Provider,Owin,WebSocket,Client,WithEncoding,Endpoint,location,Map,FSharpMap,Remoting,AjaxRemotingProvider,Slice,View,Doc,Operators,AttrModule,AttrProxy,Input$1,Mouse,FSharpSet,BalancedTree,MatchFailureException,Object,Fable$1,Babel$1,HashSet,JavaScript,JSModule,Lazy,$,Date,ListModel;
+ var Global,FSSGlobal,Useful,Async,KeyVal,String,Option,WebSharper,Obj,ExceptionThrown,ErrOptionIsNone,ErrSimple,Result,ropBuilder,ResultS,Wrap,Builder,Mailbox,Dict,ResetableMemoize,PreproDirective,FsStationShared,CodeSnippetId,CodeSnippet,FSMessage,FSSeverity,WSMessagingBroker,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ErrBroker,WSMessagingClient,FsStationClientErr,FStationMessaging,FSAutoCompleteIntermediary,CommTypes,ResponseError,Location,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,ACMessage,FSAutoCompleteIntermediaryClient,FsEvaluator,Evaluator,FsTranslator,HtmlNode,Val,Var,ListModel,HelperType,valBuilder,HtmlNode$1,Template,Button,Input,Hoverable,Panel,TextArea,CodeMirrorPos,CodeMirrorEditor,CodeMirror,Hint,HintResponse,HintOptions,LintResponse,SplitterBar,SectionType,Grid,TabStrip,MenuEntry,MenuNode,Menu,Action,GuiPart,HtmlNodeFable,LayoutDescriptionFable,GuiPartSourceId,Layout,RunCode,RunNode,FSharpStation,FsGlobal,Position,ErrCompiler,KeyMapAutoComplete,UI,Var$1,Property,PropValue,CodeSnippet$1,FableModule,Babel,Fable,SC$1,FSharpStation_JsonDecoder,FSharpStation_JsonEncoder,FSharpStation_GeneratedPrintf,GeneratedPrintf,Concurrency,Seq,Unchecked,Strings,IntelliFactory,Runtime,Utils,Enumerator,Arrays,console,Control,MailboxProcessor,Collections,Dictionary,CancellationTokenSource,System,Guid,List,Option$1,JSON,TimeoutException,ClientSideJson,Provider,Owin,WebSocket,Client,WithEncoding,Endpoint,location,Map,FSharpMap,Remoting,AjaxRemotingProvider,Slice,View,Doc,Operators,AttrModule,AttrProxy,Input$1,Mouse,FSharpSet,BalancedTree,MatchFailureException,Object,Fable$1,Babel$1,HashSet,JavaScript,JSModule,Lazy,$,Date,ListModel$1;
  Global=window;
  FSSGlobal=Global.FSSGlobal=Global.FSSGlobal||{};
  Useful=FSSGlobal.Useful=FSSGlobal.Useful||{};
@@ -73,6 +73,8 @@
  FsTranslator=FSSGlobal.FsTranslator=FSSGlobal.FsTranslator||{};
  HtmlNode=FSSGlobal.HtmlNode=FSSGlobal.HtmlNode||{};
  Val=HtmlNode.Val=HtmlNode.Val||{};
+ Var=HtmlNode.Var=HtmlNode.Var||{};
+ ListModel=HtmlNode.ListModel=HtmlNode.ListModel||{};
  HelperType=Val.HelperType=Val.HelperType||{};
  valBuilder=Val.valBuilder=Val.valBuilder||{};
  HtmlNode$1=HtmlNode.HtmlNode=HtmlNode.HtmlNode||{};
@@ -110,7 +112,7 @@
  ErrCompiler=FsGlobal.ErrCompiler=FsGlobal.ErrCompiler||{};
  KeyMapAutoComplete=FsGlobal.KeyMapAutoComplete=FsGlobal.KeyMapAutoComplete||{};
  UI=WebSharper&&WebSharper.UI;
- Var=UI&&UI.Var;
+ Var$1=UI&&UI.Var;
  Property=FsGlobal.Property=FsGlobal.Property||{};
  PropValue=FsGlobal.PropValue=FsGlobal.PropValue||{};
  CodeSnippet$1=FsGlobal.CodeSnippet=FsGlobal.CodeSnippet||{};
@@ -143,8 +145,8 @@
  Option$1=WebSharper&&WebSharper.Option;
  JSON=Global.JSON;
  TimeoutException=WebSharper&&WebSharper.TimeoutException;
- Json=WebSharper&&WebSharper.Json;
- Provider=Json&&Json.Provider;
+ ClientSideJson=WebSharper&&WebSharper.ClientSideJson;
+ Provider=ClientSideJson&&ClientSideJson.Provider;
  Owin=WebSharper&&WebSharper.Owin;
  WebSocket=Owin&&Owin.WebSocket;
  Client=WebSocket&&WebSocket.Client;
@@ -175,7 +177,7 @@
  Lazy=WebSharper&&WebSharper.Lazy;
  $=Global.jQuery;
  Date=Global.Date;
- ListModel=UI&&UI.ListModel;
+ ListModel$1=UI&&UI.ListModel;
  Async.sleepThen=function(f,milliseconds)
  {
   var b;
@@ -1033,7 +1035,7 @@
  Wrap.combine=function(errOptionIsNone,wa,wb)
  {
   var $1,t,b,b$1;
-  switch(wa.$==4?wa.$0==null?4:0:wa.$==0?wa.$0.$0==null?($1=wa.$0.$1,5):(t=wa.$0.$1,t&&Arrays.length(t)===0?0:($1=wa.$0.$1,1)):wa.$==1?($1=wa.$0,2):wa.$==2?($1=wa.$0,3):0)
+  switch(wa.$==4?wa.$0==null?4:0:wa.$==0?wa.$0.$0==null?($1=wa.$0.$1,5):(t=wa.$0.$1,!Unchecked.Equals(t,null)&&t.length===0?0:($1=wa.$0.$1,1)):wa.$==1?($1=wa.$0,2):wa.$==2?($1=wa.$0,3):0)
   {
    case 0:
     return wb();
@@ -1291,7 +1293,7 @@
  Wrap.bind=function(f,wa)
  {
   var $1,a,t,ms,b,b$1;
-  switch(wa.$==4?wa.$0==null?1:($1=wa.$0.$0,0):wa.$==0?(a=Result.Success(wa.$0),a.$==1?($1=a.$0,2):(t=a.$0[1],t&&Arrays.length(t)===0?($1=a.$0[0],0):($1=[a.$0[0],a.$0[1]],3))):wa.$==1?($1=wa.$0,4):wa.$==2?($1=wa.$0,5):($1=wa.$0,0))
+  switch(wa.$==4?wa.$0==null?1:($1=wa.$0.$0,0):wa.$==0?(a=Result.Success(wa.$0),a.$==1?($1=a.$0,2):(t=a.$0[1],!Unchecked.Equals(t,null)&&t.length===0?($1=a.$0[0],0):($1=[a.$0[0],a.$0[1]],3))):wa.$==1?($1=wa.$0,4):wa.$==2?($1=wa.$0,5):($1=wa.$0,0))
   {
    case 0:
     return Wrap.tryCall(f,$1);
@@ -1313,7 +1315,7 @@
     return function(a$1)
     {
      var $2,a$2,t$1,b$2,b$3;
-     switch(a$1.$==4?a$1.$0==null?1:($2=a$1.$0.$0,0):a$1.$==0?(a$2=Result.Success(a$1.$0),a$2.$==1?($2=a$2.$0,4):(t$1=a$2.$0[1],t$1&&Arrays.length(t$1)===0?($2=a$2.$0[0],2):($2=[a$2.$0[0],a$2.$0[1]],3))):a$1.$==1?($2=a$1.$0,5):a$1.$==2?($2=a$1.$0,6):($2=a$1.$0,0))
+     switch(a$1.$==4?a$1.$0==null?1:($2=a$1.$0.$0,0):a$1.$==0?(a$2=Result.Success(a$1.$0),a$2.$==1?($2=a$2.$0,4):(t$1=a$2.$0[1],!Unchecked.Equals(t$1,null)&&t$1.length===0?($2=a$2.$0[0],2):($2=[a$2.$0[0],a$2.$0[1]],3))):a$1.$==1?($2=a$1.$0,5):a$1.$==2?($2=a$1.$0,6):($2=a$1.$0,0))
      {
       case 0:
        return{
@@ -1784,7 +1786,7 @@
    try
    {
     m=(new Global.String(value)).match(new Global.RegExp(expr,opt));
-    return Unchecked.Equals(m,null)?null:m&&Arrays.length(m)===0?null:{
+    return Unchecked.Equals(m,null)?null:!Unchecked.Equals(m,null)&&m.length===0?null:{
      $:1,
      $0:m
     };
@@ -2462,12 +2464,12 @@
  {
   WSMessagingClient.New$1.call(this,Runtime.Curried3(function(u,c,f)
   {
-   return Async.map(Global.ignore,WithEncoding.ConnectStateful(function(x)
+   return Async.map(Global.ignore,WithEncoding.ConnectStateful(function(a)
    {
-    return JSON.stringify((FSharpStation_JsonEncoder.j())(x));
-   },function(x)
+    return JSON.stringify((FSharpStation_JsonEncoder.j())(a));
+   },function(a)
    {
-    return(FSharpStation_JsonDecoder.j())(JSON.parse(x));
+    return(FSharpStation_JsonDecoder.j())(JSON.parse(a));
    },Endpoint.CreateRemote((((Runtime.Curried3(function($1,$2,$3)
    {
     return $1("ws://"+Utils.toSafe($2)+"?ClientId="+Utils.toSafe($3));
@@ -2650,9 +2652,9 @@
     return b.Bind$3((x=t$1.msgClient.sendGetReply((p=JSON.stringify((FSharpStation_JsonEncoder.j$4())(msg)),MessageGeneric.New(new Address({
      $:0,
      $0:""
-    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(x$1)
+    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(a)
     {
-     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(x$1));
+     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(a));
     }))(x)),function(a)
     {
      return b.Bind$1(checkResponse(a),function(a$1)
@@ -2684,9 +2686,9 @@
     return b.Bind$3((x=t$1.msgClient.sendGetReply((p=JSON.stringify((FSharpStation_JsonEncoder.j$4())(m)),MessageGeneric.New(new Address({
      $:0,
      $0:""
-    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(x$1)
+    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(a)
     {
-     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(x$1));
+     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(a));
     }))(x)),function(a)
     {
      return b.Bind$1(checkResponse(a),function(a$1)
@@ -2717,9 +2719,9 @@
     return b.Bind$3((x=t$1.msgClient.sendGetReply((p=JSON.stringify((FSharpStation_JsonEncoder.j$4())(msg)),MessageGeneric.New(new Address({
      $:0,
      $0:""
-    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(x$1)
+    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(a)
     {
-     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(x$1));
+     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(a));
     }))(x)),function(a)
     {
      return b.Bind$1(checkResponse(a),function(a$1)
@@ -2747,9 +2749,9 @@
     return b.Bind$3((x=t$1.msgClient.sendGetReply((p=JSON.stringify((FSharpStation_JsonEncoder.j$4())(msg)),MessageGeneric.New(new Address({
      $:0,
      $0:""
-    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(x$1)
+    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(a)
     {
-     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(x$1));
+     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(a));
     }))(x)),function(a)
     {
      return b.Bind$1(checkResponse(a),function(a$1)
@@ -2780,9 +2782,9 @@
     return b.Bind$3((x=t$1.msgClient.sendGetReply((p=JSON.stringify((FSharpStation_JsonEncoder.j$4())(msg)),MessageGeneric.New(new Address({
      $:0,
      $0:""
-    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(x$1)
+    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(a)
     {
-     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(x$1));
+     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(a));
     }))(x)),function(a)
     {
      return b.Bind$1(checkResponse(a),function(a$1)
@@ -2813,9 +2815,9 @@
     return b.Bind$3((x=t$1.msgClient.sendGetReply((p=JSON.stringify((FSharpStation_JsonEncoder.j$4())(m)),MessageGeneric.New(new Address({
      $:0,
      $0:""
-    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(x$1)
+    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(a)
     {
-     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(x$1));
+     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(a));
     }))(x)),function(a)
     {
      return b.Bind$1(checkResponse(a),function(a$1)
@@ -2846,9 +2848,9 @@
     return b.Bind$3((x=t$1.msgClient.sendGetReply((p=JSON.stringify((FSharpStation_JsonEncoder.j$4())(m)),MessageGeneric.New(new Address({
      $:0,
      $0:""
-    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(x$1)
+    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(a)
     {
-     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(x$1));
+     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(a));
     }))(x)),function(a)
     {
      return b.Bind$1(checkResponse(a),function(a$1)
@@ -2879,9 +2881,9 @@
     return b.Bind$3((x=t$1.msgClient.sendGetReply((p=JSON.stringify((FSharpStation_JsonEncoder.j$4())(m)),MessageGeneric.New(new Address({
      $:0,
      $0:""
-    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(x$1)
+    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(a)
     {
-     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(x$1));
+     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(a));
     }))(x)),function(a)
     {
      return b.Bind$1(checkResponse(a),function(a$1)
@@ -2912,9 +2914,9 @@
     return b.Bind$3((x=t$1.msgClient.sendGetReply((p=JSON.stringify((FSharpStation_JsonEncoder.j$4())(m)),MessageGeneric.New(new Address({
      $:0,
      $0:""
-    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(x$1)
+    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(a)
     {
-     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(x$1));
+     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(a));
     }))(x)),function(a)
     {
      return b.Bind$1(checkResponse(a),function(a$1)
@@ -2936,9 +2938,9 @@
     return b.Bind$3((x=t$1.msgClient.sendGetReply((p=JSON.stringify((FSharpStation_JsonEncoder.j$4())(msg)),MessageGeneric.New(new Address({
      $:0,
      $0:""
-    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(x$1)
+    }),t,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(a)
     {
-     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(x$1));
+     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(a));
     }))(x)),function(a)
     {
      return b.Bind$1(Result.succeed(a),function(a$1)
@@ -2959,9 +2961,9 @@
     return b.Bind$3((x=t.msgClient.sendGetReply((p=JSON.stringify((FSharpStation_JsonEncoder.j$4())(msg)),MessageGeneric.New(new Address({
      $:0,
      $0:""
-    }),toId2,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(x$1)
+    }),toId2,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))),(Wrap.map(function(a)
     {
-     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(x$1));
+     return(FSharpStation_JsonDecoder.j$4())(JSON.parse(a));
     }))(x)),function(a)
     {
      return b.Bind$1(Result.succeed(a),function(a$1)
@@ -2974,7 +2976,7 @@
  },Obj,FStationMessaging);
  FStationMessaging.get_FSStationId_=function()
  {
-  return"FSharpStation1522010782884";
+  return"FSharpStation1522920858103";
  };
  FStationMessaging.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
@@ -2983,7 +2985,7 @@
  FStationMessaging.New$1=Runtime.Ctor(function(msgClient,_clientId,fsStationId)
  {
   this.msgClient=msgClient;
-  this.fsIds=Option.defaultValue("FSharpStation1522010782884",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1522920858103",fsStationId);
  },FStationMessaging);
  WSMessagingBroker.extractEndPoint=function()
  {
@@ -3463,7 +3465,7 @@
   b=null;
   return Concurrency.Delay(function()
   {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsEvaluator.evaluateAS:-156288114",[fsid,ep,incrUseCount,source]),function(a)
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsEvaluator.evaluateAS:-1357873018",[fsid,ep,incrUseCount,source]),function(a)
    {
     function m(msg,wrn)
     {
@@ -3486,7 +3488,7 @@
   b=null;
   return Concurrency.Delay(function()
   {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsTranslator.translateAS:608897894",[source,minified]),function(a)
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsTranslator.translateAS:1220910711",[source,minified]),function(a)
    {
     function m(msg,wrn)
     {
@@ -3509,6 +3511,173 @@
    return 0;
   }
  },null,Val);
+ Var.lensView=function(get,update,view0,_var)
+ {
+  var id,view,$1;
+  id=Var.freshId();
+  view=View.Map2(function(v)
+  {
+   return get(v);
+  },_var.get_View(),view0);
+  $1=new Var$1({
+   Get:function()
+   {
+    return get(_var.Get());
+   },
+   Set:function(v)
+   {
+    return _var.Update(function(t)
+    {
+     return update(t,v);
+    });
+   },
+   SetFinal:function(v)
+   {
+    return this.Set(v);
+   },
+   Update:function(f)
+   {
+    return _var.Update(function(t)
+    {
+     return update(t,f(get(t)));
+    });
+   },
+   UpdateMaybe:function(f)
+   {
+    return _var.UpdateMaybe(function(t)
+    {
+     var x;
+     x=f(get(t));
+     return x==null?null:{
+      $:1,
+      $0:update(t,x.$0)
+     };
+    });
+   },
+   get_View:function()
+   {
+    return view;
+   },
+   get_Id:function()
+   {
+    return id;
+   }
+  });
+  Var$1.New.call($1);
+  return $1;
+ };
+ Var.Make=function(init,view,set)
+ {
+  var id,current,view$1,$1;
+  id=Var.freshId();
+  current=[init];
+  view$1=View.Map(function(x)
+  {
+   current[0]=x;
+   return x;
+  },view);
+  $1=new Var$1({
+   get_View:function()
+   {
+    return view$1;
+   },
+   Get:function()
+   {
+    return current[0];
+   },
+   Set:set,
+   SetFinal:set,
+   UpdateMaybe:function(f)
+   {
+    function g(o)
+    {
+     if(o==null)
+      ;
+     else
+      set(o.$0);
+    }
+    return View.Get(function(x)
+    {
+     return g(f(x));
+    },view$1);
+   },
+   Update:function(f)
+   {
+    return View.Get(function(x)
+    {
+     return set(f(x));
+    },view$1);
+   },
+   get_Id:function()
+   {
+    return id;
+   }
+  });
+  Var$1.New.call($1);
+  return $1;
+ };
+ Var.freshId=function()
+ {
+  Var.set_counter(Var.counter()+1);
+  return"varuid"+Global.String(Var.counter());
+ };
+ Var.counter=function()
+ {
+  SC$1.$cctor();
+  return SC$1.counter;
+ };
+ Var.set_counter=function($1)
+ {
+  SC$1.$cctor();
+  SC$1.counter=$1;
+ };
+ ListModel.currentLens=function(def,curr,model)
+ {
+  return ListModel["currentLensUpd'"](def,curr,function(v)
+  {
+   model.UpdateBy(function()
+   {
+    return model.TryFindByKey(model.key(v))==null?null:{
+     $:1,
+     $0:v
+    };
+   },model.key(v));
+  },model);
+ };
+ ListModel["currentLensUpd'"]=function(def,curr,upd,model)
+ {
+  return Var.Make(def,View.Map2(function(_mdl,kO)
+  {
+   var o;
+   o=kO==null?null:model.TryFindByKey(kO.$0);
+   return o==null?def:o.$0;
+  },model.v,curr),upd);
+ };
+ ListModel.currentLensUpd=function(def,curr,upd,model)
+ {
+  var f;
+  function b(a)
+  {
+   return model.TryFindByKey(a);
+  }
+  function g(o)
+  {
+   return o==null?def:o.$0;
+  }
+  return Var.lensView((f=function(o)
+  {
+   return o==null?null:b(o.$0);
+  },function(x)
+  {
+   return g(f(x));
+  }),function(kO,v)
+  {
+   var a;
+   a=upd(v);
+   kO==null?void 0:a(kO.$0);
+   return kO;
+  },model.v,curr);
+ };
  HelperType.HelperType={
   $:0
  };
@@ -3724,7 +3893,7 @@
   }):o instanceof Doc?new Val({
    $:0,
    $0:o
-  }):o instanceof Val?o:o instanceof Var?new Val({
+  }):o instanceof Val?o:o instanceof Var$1?new Val({
    $:1,
    $0:o
   }):"RSet"in o?new Val({
@@ -3985,7 +4154,7 @@
    return e.getRootNode(a);
   }?Global.document.body:(root=e.getRootNode(),!root.body?root.firstChild:root.body);
  };
- HtmlNode.createIFrame$3340$45=Runtime.Curried3(function(cover,$1,$2)
+ HtmlNode.createIFrame$3385$45=Runtime.Curried3(function(cover,$1,$2)
  {
   return View.Get(function(pressed)
   {
@@ -3993,7 +4162,7 @@
     cover.Set(false);
   },Mouse.get_MousePressed());
  });
- HtmlNode.createIFrame$3335$45=Runtime.Curried3(function(cover,$1,$2)
+ HtmlNode.createIFrame$3380$45=Runtime.Curried3(function(cover,$1,$2)
  {
   return cover.Set(true);
  });
@@ -4012,7 +4181,7 @@
      cover.Set(false);
    },Mouse.get_MousePressed());
   }
-  cover=Var.Create$1(true);
+  cover=Var$1.Create$1(true);
   return HtmlNode.div([HtmlNode.style("position: relative; overflow: hidden; height: 100%; width: 100%;"),HtmlNode.iframe([HtmlNode.style("position: absolute; width:100%; height:100%;"),HtmlNode.frameborder("0"),new HtmlNode$1({
    $:8,
    $0:AttrModule.OnAfterRender(f)
@@ -4060,20 +4229,6 @@
   {
    return Strings.SplitChars(s,[":"],0);
   },Strings.SplitChars(ss,[";"],0))));
- };
- HtmlNode.xclass=function(v)
- {
-  var m,cv;
-  return new HtmlNode$1({
-   $:8,
-   $0:(m=Val.fixit(v),m.$==2?AttrModule.DynamicClass("class_for_view_not_implemented",m.$0,function(y)
-   {
-    return""!==y;
-   }):m.$==1?(cv=m.$0,AttrModule.DynamicClass(cv.Get(),cv.get_View(),function(y)
-   {
-    return""!==y;
-   })):AttrModule.Class(m.$0))
-  });
  };
  HtmlNode.classIf=function(cls,v)
  {
@@ -4626,7 +4781,7 @@
    });
   }
  },null,Button);
- Button.get_Render$3402$42=function(_this)
+ Button.get_Render$3447$42=function(_this)
  {
   return _this.onClick;
  };
@@ -4730,7 +4885,7 @@
  },null,Input);
  Input.New$1=function(v)
  {
-  return Input.New$3(Var.Lens(v,function(o)
+  return Input.New$3(Var$1.Lens(v,function(o)
   {
    return o==null?"":o.$0;
   },function(sO,s)
@@ -4746,7 +4901,7 @@
  };
  Input.New$2=function(v)
  {
-  return Input.New$3(Var.Create$1(v));
+  return Input.New$3(Var$1.Create$1(v));
  };
  Input.New$3=function(_var)
  {
@@ -4841,25 +4996,25 @@
  {
   return Hoverable.get_New().Content(HtmlNode.div([HtmlNode.style("flex-flow: column;")]));
  };
- Hoverable.Content$3496$43=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable.Content$3541$43=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(false);
  });
- Hoverable.Content$3495$43=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable.Content$3540$43=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(true);
  });
- Hoverable.Content$3488$37=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable.Content$3533$37=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(false);
  });
- Hoverable.Content$3487$37=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable.Content$3532$37=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(true);
  });
  Hoverable.get_New=function()
  {
-  return Hoverable.New(Var.Create$1(false));
+  return Hoverable.New(Var$1.Create$1(false));
  };
  Hoverable.New=function(hover)
  {
@@ -4903,7 +5058,7 @@
  },null,Panel);
  Panel.get_New=function()
  {
-  return Panel.New(Val.fixit("panel panel-default shadow"),Val.fixit("text-align:center"),Val.fixit("Panel"),List.ofArray([HtmlNode.htmlText("Some text")]),List.ofArray([HtmlNode.htmlText("Some Content")]),Val.fixit(Var.Create$1(false)));
+  return Panel.New(Val.fixit("panel panel-default shadow"),Val.fixit("text-align:center"),Val.fixit("Panel"),List.ofArray([HtmlNode.htmlText("Some text")]),List.ofArray([HtmlNode.htmlText("Some Content")]),Val.fixit(Var$1.Create$1(false)));
  };
  Panel.New=function(_class,_style,title,header,content,disabled)
  {
@@ -4974,7 +5129,7 @@
  },null,TextArea);
  TextArea.New$1=function(v)
  {
-  return TextArea.New$3(Var.Lens(v,function(o)
+  return TextArea.New$3(Var$1.Lens(v,function(o)
   {
    return o==null?"":o.$0;
   },function(sO,s)
@@ -4990,7 +5145,7 @@
  };
  TextArea.New$2=function(v)
  {
-  return TextArea.New$3(Var.Create$1(v));
+  return TextArea.New$3(Var$1.Create$1(v));
  };
  TextArea.New$3=function(_var)
  {
@@ -5121,7 +5276,7 @@
  },null,CodeMirror);
  CodeMirror.New$1=function(v)
  {
-  return CodeMirror.New$3(Var.Lens(v,function(o)
+  return CodeMirror.New$3(Var$1.Lens(v,function(o)
   {
    return o==null?"":o.$0;
   },function(sO,s)
@@ -5137,7 +5292,7 @@
  };
  CodeMirror.New$2=function(v)
  {
-  return CodeMirror.New$3(Var.Create$1(v));
+  return CodeMirror.New$3(Var$1.Create$1(v));
  };
  CodeMirror.New$3=function(_var)
  {
@@ -5334,10 +5489,10 @@
    return this.value;
   }
  },null,SplitterBar);
- SplitterBar.get_Render$3851$42=Global.id;
+ SplitterBar.get_Render$3896$42=Global.id;
  SplitterBar.New$1=function(value)
  {
-  return SplitterBar.New$2(Var.Create$1(value));
+  return SplitterBar.New$2(Var$1.Create$1(value));
  };
  SplitterBar.New$2=function(_var)
  {
@@ -5734,7 +5889,7 @@
   },
   NewSplitter:function(f,col)
   {
-   return this.NewSplitter$1(Var.Create$1(f),col);
+   return this.NewSplitter$1(Var$1.Create$1(f),col);
   },
   NewSplitter$1:function(f,col)
   {
@@ -5801,7 +5956,7 @@
  };
  Grid.get_New=function()
  {
-  return Grid.New(9,9,[],[],[],Var.Create$1([1000,100]),null);
+  return Grid.New(9,9,[],[],[],Var$1.Create$1([1000,100]),null);
  };
  Grid.New=function(padding,gap,content,cols,rows,widthHeight,lastSplitter)
  {
@@ -6047,7 +6202,7 @@
        this.selected.Set(sel===drag?drop:sel<drag&&sel<drop||sel>drag&&sel>drop?sel:sel<drag?sel+1:sel-1);
       }
      else
-      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",4149,18);
+      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",4194,18);
    }
    else
     void 0;
@@ -6090,16 +6245,16 @@
    Template.RaiseTabMoved(from,this);
   }
  },null,TabStrip);
- TabStrip.get_Render$4220$42=Runtime.Curried3(function(_this,$1,ev)
+ TabStrip.get_Render$4265$42=Runtime.Curried3(function(_this,$1,ev)
  {
   ev.preventDefault();
   return _this.reorder(Arrays.length(_this.tabs.Get()));
  });
- TabStrip.get_Render$4219$42=Runtime.Curried3(function($1,$2,ev)
+ TabStrip.get_Render$4264$42=Runtime.Curried3(function($1,$2,ev)
  {
   return ev.preventDefault();
  });
- TabStrip.get_Render$4195$70=function(i,_this)
+ TabStrip.get_Render$4240$70=function(i,_this)
  {
   return function()
   {
@@ -6109,7 +6264,7 @@
    };
   };
  };
- TabStrip.get_Render$4194$70=function(i,_this)
+ TabStrip.get_Render$4239$70=function(i,_this)
  {
   return function()
   {
@@ -6121,7 +6276,7 @@
    };
   };
  };
- TabStrip.get_Render$4193$70=function(_this,i)
+ TabStrip.get_Render$4238$70=function(_this,i)
  {
   return function()
   {
@@ -6134,20 +6289,20 @@
    };
   };
  };
- TabStrip.get_Render$4192$70=Runtime.Curried3(function($1,$2,ev)
+ TabStrip.get_Render$4237$70=Runtime.Curried3(function($1,$2,ev)
  {
   return ev.preventDefault();
  });
  TabStrip.New$1=function(tabs)
  {
-  return TabStrip.New$2(Var.Create$1(Arrays.ofSeq(Seq.map(function(def)
+  return TabStrip.New$2(Var$1.Create$1(Arrays.ofSeq(Seq.map(function(def)
   {
    return[Guid.NewGuid(),def];
   },tabs))));
  };
  TabStrip.New$2=function(tabs)
  {
-  return TabStrip.New(Var.Create$1(0),tabs,false,true,Guid.NewGuid());
+  return TabStrip.New(Var$1.Create$1(0),tabs,false,true,Guid.NewGuid());
  };
  TabStrip.New=function(selected,tabs,top,horizontal,id)
  {
@@ -6221,7 +6376,7 @@
    }):Global.id)(x))));
   }
  },null,MenuEntry);
- MenuEntry.get_Render$4333$104=Global.id;
+ MenuEntry.get_Render$4378$104=Global.id;
  MenuEntry.New$1=function(txt,ref)
  {
   var i;
@@ -6397,7 +6552,7 @@
    return this.$==1?[this.$0,Global.ignore]:this.$==2?[this.$0.get_Button().get_Render(),Global.ignore]:this.$==5?[lyt.GetCallButton(this.$0,this.$1,this.$2),Global.ignore]:this.$==4?(ts=TabStrip.New$1(Seq.map(function(node)
    {
     return[node,lyt.GetNode(node)];
-   },this.$1)).SetTop(this.$0),(Template.addValue(name,ts,lyt.tabStrips),[ts.get_Render(),Global.ignore])):this.$==3?(per=this.$3,(minV=Var.Create$1(this.$6),(maxV=Var.Create$1(this.$7),(perV=Var.Create$1(per),(curper=[per],[Grid.NewBisect(this.$0,this.$1,this.$2,perV,lyt.GetNode(this.$4),lyt.GetNode(this.$5)).Min(minV).Max(maxV).get_Render(),function(a)
+   },this.$1)).SetTop(this.$0),(Template.addValue(name,ts,lyt.tabStrips),[ts.get_Render(),Global.ignore])):this.$==3?(per=this.$3,(minV=Var$1.Create$1(this.$6),(maxV=Var$1.Create$1(this.$7),(perV=Var$1.Create$1(per),(curper=[per],[Grid.NewBisect(this.$0,this.$1,this.$2,perV,lyt.GetNode(this.$4),lyt.GetNode(this.$5)).Min(minV).Max(maxV).get_Render(),function(a)
    {
     var per$1;
     if(a.$==3)
@@ -6663,7 +6818,7 @@
     return p.GetHtmlNode($this,name);
    }
    $this=this;
-   partV=Var.Create$1([sid,part]);
+   partV=Var$1.Create$1([sid,part]);
    nodeFv=Val.map(function($1)
    {
     return f($1[0],$1[1]);
@@ -7154,8 +7309,10 @@
  };
  Template.showHints=function(ed,getHints,completeSingle,a)
  {
-  HintOptions.New(Runtime.CreateFuncWithArgs(getHints),completeSingle,HtmlNode.findRootElement(ed.getWrapperElement())).hint.async=1;
-  ed.showHint(Global.$v);
+  var _v;
+  _v=HintOptions.New(Runtime.CreateFuncWithArgs(getHints),completeSingle,HtmlNode.findRootElement(ed.getWrapperElement()));
+  _v.hint.async=1;
+  ed.showHint(_v);
  };
  Template.cmPos=function(l,c)
  {
@@ -7374,10 +7531,10 @@
   {
    return"?";
   }
- },Var,Property);
+ },Var$1,Property);
  Property.New=Runtime.Ctor(function(setDirty,props,keyP)
  {
-  Var.New.call(this);
+  Var$1.New.call(this);
   this.setDirty=setDirty;
   this.props=props;
   this.key=keyP;
@@ -7413,10 +7570,10 @@
   {
    return"?";
   }
- },Var,PropValue);
+ },Var$1,PropValue);
  PropValue.New=Runtime.Ctor(function(prop)
  {
-  Var.New.call(this);
+  Var$1.New.call(this);
   this.get=prop.get_GetV();
   this.set=prop.get_SetV();
  },PropValue);
@@ -7649,9 +7806,9 @@
   SC$1.$cctor();
   return SC$1.references;
  };
- FSharpStation.FSharpStationClient$6328$173=Global.id;
- FSharpStation.FSharpStationClient$6327$173=Global.id;
- FSharpStation.FSharpStationClient$6017$68=function(props,setDirtyP,redraw)
+ FSharpStation.FSharpStationClient$6378$173=Global.id;
+ FSharpStation.FSharpStationClient$6377$173=Global.id;
+ FSharpStation.FSharpStationClient$6067$68=function(props,setDirtyP,redraw)
  {
   return function()
   {
@@ -7663,7 +7820,7 @@
    };
   };
  };
- FSharpStation.FSharpStationClient$6014$68=function(prop,redraw)
+ FSharpStation.FSharpStationClient$6064$68=function(prop,redraw)
  {
   return function()
   {
@@ -7674,11 +7831,11 @@
    };
   };
  };
- FSharpStation.FSharpStationClient$5865$44=Runtime.Curried3(function(gotoDefinition,$1,$2)
+ FSharpStation.FSharpStationClient$5915$44=Runtime.Curried3(function(gotoDefinition,$1,$2)
  {
   return gotoDefinition();
  });
- FSharpStation.FSharpStationClient$5859$39=function(showToolTip,codeMirror)
+ FSharpStation.FSharpStationClient$5909$39=function(showToolTip,codeMirror)
  {
   return function()
   {
@@ -7688,19 +7845,19 @@
    };
   };
  };
- FSharpStation.FSharpStationClient$5569$61=Runtime.Curried3(function($1,el,$2)
+ FSharpStation.FSharpStationClient$5614$61=Runtime.Curried3(function($1,el,$2)
  {
   el.value="";
  });
- FSharpStation.FSharpStationClient$5568$61=Runtime.Curried3(function(loadFile,el,$1)
+ FSharpStation.FSharpStationClient$5613$61=Runtime.Curried3(function(loadFile,el,$1)
  {
   return loadFile(el);
  });
- FSharpStation.FSharpStationClient$5450$48=Runtime.Curried3(function(topScrollList,e,$1)
+ FSharpStation.FSharpStationClient$5495$48=Runtime.Curried3(function(topScrollList,e,$1)
  {
   topScrollList[0]=e.scrollTop;
  });
- FSharpStation.FSharpStationClient$5427$57=function(togglePredecessorForCur,code,currentCodeSnippetO)
+ FSharpStation.FSharpStationClient$5472$57=function(togglePredecessorForCur,code,currentCodeSnippetO)
  {
   return function()
   {
@@ -7710,7 +7867,7 @@
    };
   };
  };
- FSharpStation.FSharpStationClient$5423$58=function(code,currentCodeSnippetId)
+ FSharpStation.FSharpStationClient$5468$58=function(code,currentCodeSnippetId)
  {
   return function()
   {
@@ -7720,7 +7877,7 @@
    };
   };
  };
- FSharpStation.FSharpStationClient$5415$57=function(isParent,toggleExpanded,code)
+ FSharpStation.FSharpStationClient$5460$57=function(isParent,toggleExpanded,code)
  {
   return function()
   {
@@ -7730,7 +7887,7 @@
    };
   };
  };
- FSharpStation.FSharpStationClient$5411$50=function(reorderSnippet,code,draggedId)
+ FSharpStation.FSharpStationClient$5456$50=function(reorderSnippet,code,draggedId)
  {
   return function()
   {
@@ -7741,7 +7898,7 @@
    };
   };
  };
- FSharpStation.FSharpStationClient$5410$50=function(draggedId,code)
+ FSharpStation.FSharpStationClient$5455$50=function(draggedId,code)
  {
   return function()
   {
@@ -7751,16 +7908,16 @@
    };
   };
  };
- FSharpStation.FSharpStationClient$5409$50=Runtime.Curried3(function($1,$2,ev)
+ FSharpStation.FSharpStationClient$5454$50=Runtime.Curried3(function($1,$2,ev)
  {
   return ev.preventDefault();
  });
  FSharpStation.FSharpStationClient=function(loadFromUri)
  {
-  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,v$2,f,g,prior,propertyCssLinkVal,v$3,f$1,g$1,prior$1,propertyModeVal,v$4,f$2,g$2,prior$2,propertyThemeVal,v$5,f$3,g$3,prior$3,propertyLayoutVal,v$6,f$4,g$4,prior$4,propertyLayoutJSVal,v$7,f$5,g$5,prior$5,disableParseVal,disableFSIVal,disableFableVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b,autoCompleteClient,parseFileName,latestParsedPrefix,isParseDisabled,parseRun,parsing,rex1,rex2,rex,asyncStartDelayed,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,redraw,properties,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actSetSnippetProp,actEvalFsCode,actEvalCode,actFableFsCode,actFableCode,actRunWSNewTab,$2,actRunWSHere,$3,actRunWSIn,actParseCode,actCompileWS,$4,actFindDefinition,actRefreshEditor,actOutText,actAbortFsi,buttonsH,menuLeft,menuRight,menuBar,s$2,v$8,v$9,snippetList,x,steps,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,layout,res,wsStationClient,b$1,cssLinks,x$1;
+  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,v$2,f,g,prior,propertyCssLinkVal,v$3,f$1,g$1,prior$1,propertyModeVal,v$4,f$2,g$2,prior$2,propertyThemeVal,v$5,f$3,g$3,prior$3,propertyLayoutVal,v$6,f$4,g$4,prior$4,propertyLayoutJSVal,v$7,f$5,g$5,prior$5,disableParseVal,disableFSIVal,disableFableVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b,autoCompleteClient,parseFileName,latestParsedPrefix,isParseDisabled,parseRun,parsing,parsingCode,rex1,rex2,rex,asyncStartDelayed,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,redraw,properties,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actSetSnippetProp,actEvalFsCode,actEvalCode,actFableFsCode,actFableCode,actRunWSNewTab,$2,actRunWSHere,$3,actRunWSIn,actParseCode,actCompileWS,$4,actFindDefinition,actRefreshEditor,actOutText,actAbortFsi,buttonsH,menuLeft,menuRight,menuBar,s$2,v$8,v$9,snippetList,x,steps,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,layout,res,wsStationClient,b$1,cssLinks,x$1;
   function missing(def,find,lens,k)
   {
-   return find(k)==null?Var.Lens(missingVar,function()
+   return find(k)==null?Var$1.Lens(missingVar,function()
    {
     return def;
    },function()
@@ -7912,7 +8069,7 @@
    {
     return g$14(f$8(x$2));
    }),currentCodeSnippetId);
-   prior$6=[Var.Create$1(null)];
+   prior$6=[Var$1.Create$1(null)];
    View.Sink(function(v$11)
    {
     if(!Unchecked.Equals(prior$6[0].Get(),v$11))
@@ -8245,7 +8402,7 @@
     {
      return b$8.Bind$3(evalCodeW(FsGlobal["CodeSnippet.GetCodeFsx"](a$4,true)),function(a$5)
      {
-      return b$8.Bind$2((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsEvaluator+Evaluator.addPresence:-1250306105",[(function($7)
+      return b$8.Bind$2((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsEvaluator+Evaluator.addPresence:1381500690",[(function($7)
       {
        return function($8)
        {
@@ -8624,8 +8781,8 @@
   }
   function downloadFile()
   {
-   var t,x$2,n,m;
-   t=(x$2=Arrays.ofSeq((FsGlobal.codeSnippets())["var"].Get()),JSON.stringify(((Provider.EncodeArray(FSharpStation_JsonEncoder.j$7))())(x$2)));
+   var t,a$4,n,m;
+   t=(a$4=Arrays.ofSeq((FsGlobal.codeSnippets())["var"].Get()),JSON.stringify(((Provider.EncodeArray(FSharpStation_JsonEncoder.j$7))())(a$4)));
    n=(m=justFileName(fileName.Get()),m===""?"snippets.fsjson":m);
    Global.saveAs(new Global.Blob([t],{
     type:"text/plain;charset=utf-8"
@@ -8703,10 +8860,11 @@
     m=CodeSnippet$1.FetchO(currentCodeSnippetId.Get());
     return m!=null&&m.$==1?(cur=m.$0,Concurrency.TryFinally(Concurrency.Delay(function()
     {
-     var p,prefix;
+     var p,code,prefix;
+     parsed=false;
      p=getCodeAndStartsFast(msgF,cur,false);
-     prefix=nextParsedPrefix();
-     ((function($7)
+     code=p[0];
+     return!parsing||code!==parsingCode?(parsingCode=code,parsing=true,prefix=nextParsedPrefix(),(function($7)
      {
       return function($8)
       {
@@ -8715,9 +8873,7 @@
      }(function(s$3)
      {
       console.log(s$3);
-     }))(prefix));
-     parsed=false;
-     return Concurrency.Bind(autoCompleteClient.Parse$1(parseFile(prefix),p[0],p[1]),function(a$4)
+     }))(prefix),Concurrency.Bind(autoCompleteClient.Parse$1(parseFile(prefix),code,p[1]),function(a$4)
      {
       ((function($7)
       {
@@ -8735,7 +8891,7 @@
        parsed=true;
        return Concurrency.Zero();
       }));
-     });
+     })):Concurrency.Zero();
     }),function()
     {
      parsing=false;
@@ -8777,13 +8933,13 @@
   {
    var a$4,t;
    a$4=Useful.REGEX("([a-zA-Z_]\\w*)$","g",Strings.Substring(line,0,ch));
-   return a$4!=null&&a$4.$==1?(t=a$4.$0,t&&Arrays.length(t)===1)?Arrays.get(a$4.$0,0):"":"";
+   return a$4!=null&&a$4.$==1?(t=a$4.$0,!Unchecked.Equals(t,null)&&t.length===1)?Arrays.get(a$4.$0,0):"":"";
   }
   function getEndWord(line,ch)
   {
    var a$4,t;
    a$4=Useful.REGEX("^([a-zA-Z_]\\w*)","g",line.substring(ch));
-   return a$4!=null&&a$4.$==1?(t=a$4.$0,t&&Arrays.length(t)===1)?Arrays.get(a$4.$0,0):"":"";
+   return a$4!=null&&a$4.$==1?(t=a$4.$0,!Unchecked.Equals(t,null)&&t.length===1)?Arrays.get(a$4.$0,0):"":"";
   }
   function showToolTip(ed)
   {
@@ -8857,10 +9013,10 @@
      },Arrays.choose(function(v$10)
      {
       var $7,a$6,t,$8,a$7,t$1,fc,fl;
-      return(a$6=Useful.REGEX(rex2,"",v$10),a$6!=null&&a$6.$==1&&((t=a$6.$0,t&&Arrays.length(t)===13)&&($7=[Arrays.get(a$6.$0,8),Arrays.get(a$6.$0,5),Arrays.get(a$6.$0,7),Arrays.get(a$6.$0,2),Arrays.get(a$6.$0,4),Arrays.get(a$6.$0,11),Arrays.get(a$6.$0,1),Arrays.get(a$6.$0,10),Arrays.get(a$6.$0,9)],true)))?{
+      return(a$6=Useful.REGEX(rex2,"",v$10),a$6!=null&&a$6.$==1&&((t=a$6.$0,!Unchecked.Equals(t,null)&&t.length===13)&&($7=[Arrays.get(a$6.$0,8),Arrays.get(a$6.$0,5),Arrays.get(a$6.$0,7),Arrays.get(a$6.$0,2),Arrays.get(a$6.$0,4),Arrays.get(a$6.$0,11),Arrays.get(a$6.$0,1),Arrays.get(a$6.$0,10),Arrays.get(a$6.$0,9)],true)))?{
        $:1,
        $0:[$7[1],$7[4],Global.Number($7[2]),Global.Number($7[0]),Global.Number($7[8]),Global.Number($7[7]),$7[6],$7[3],$7[5]]
-      }:(a$7=Useful.REGEX(rex1,"",v$10),a$7!=null&&a$7.$==1&&((t$1=a$7.$0,t$1&&Arrays.length(t$1)===8)&&($8=[Arrays.get(a$7.$0,4),Arrays.get(a$7.$0,2),Arrays.get(a$7.$0,3),Arrays.get(a$7.$0,1),Arrays.get(a$7.$0,6),Arrays.get(a$7.$0,5)],true)))?(fc=$8[0],(fl=$8[2],{
+      }:(a$7=Useful.REGEX(rex1,"",v$10),a$7!=null&&a$7.$==1&&((t$1=a$7.$0,!Unchecked.Equals(t$1,null)&&t$1.length===8)&&($8=[Arrays.get(a$7.$0,4),Arrays.get(a$7.$0,2),Arrays.get(a$7.$0,3),Arrays.get(a$7.$0,1),Arrays.get(a$7.$0,6),Arrays.get(a$7.$0,5)],true)))?(fc=$8[0],(fl=$8[2],{
        $:1,
        $0:[$8[1],$8[3],Global.Number(fl),Global.Number(fc)-1,Global.Number(fl),Global.Number(fc),$8[5],"fsi",$8[4]]
       })):null;
@@ -8885,6 +9041,16 @@
     return Concurrency.Bind(isParseDisabled,function(a$5)
     {
      var m,pos,l,word;
+     ((function($7)
+     {
+      return function($8)
+      {
+       return $7("getHints (Complete) "+Utils.prettyPrint($8));
+      };
+     }(function(s$3)
+     {
+      console.log(s$3);
+     }))(a$5));
      return a$5?Concurrency.Zero():(m=CodeSnippet$1.FetchO(currentCodeSnippetId.Get()),m!=null&&m.$==1?(pos=ed.getCursor(),(l=ed.getLine(pos.line),(word=getStartWord(l,pos.ch),Concurrency.Bind(autoCompleteClient.Complete(parseFile(latestParsedPrefix),l+"a",pos.line+1,pos.ch+1,m.$0.get_NameSanitized()),function(a$6)
      {
       function m$1(dis,rep,cls,chr)
@@ -8931,7 +9097,7 @@
   {
    var a$4,t,col,guid,line$1;
    a$4=Useful.REGEX("([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}).+?\\((\\d+)\\,\\s*(\\d+)\\)","",line);
-   a$4!=null&&a$4.$==1?(t=a$4.$0,t&&Arrays.length(t)===4)?(col=Arrays.get(a$4.$0,3),guid=Arrays.get(a$4.$0,1),line$1=Arrays.get(a$4.$0,2),_goto(new CodeSnippetId({
+   a$4!=null&&a$4.$==1?(t=a$4.$0,!Unchecked.Equals(t,null)&&t.length===4)?(col=Arrays.get(a$4.$0,3),guid=Arrays.get(a$4.$0,1),line$1=Arrays.get(a$4.$0,2),_goto(new CodeSnippetId({
     $:0,
     $0:guid
    }),Global.Number(line$1),Global.Number(col))):void 0:void 0;
@@ -9121,7 +9287,7 @@
   {
    var m,$7,t;
    m=act.parms;
-   return m!=null&&m.$==1&&((t=m.$0,t&&Arrays.length(t)===1)&&($7=Arrays.get(m.$0,0),true))?CodeSnippet$1.FetchByPathO(Strings.SplitChars($7,["/"],0)):getSnpO();
+   return m!=null&&m.$==1&&((t=m.$0,!Unchecked.Equals(t,null)&&t.length===1)&&($7=Arrays.get(m.$0,0),true))?CodeSnippet$1.FetchByPathO(Strings.SplitChars($7,["/"],0)):getSnpO();
   }
   function getCodeFromAct(act,addOpen)
   {
@@ -9153,7 +9319,7 @@
       $:1,
       $0:Arrays.map(Global.id,o$2.$0)
      });
-     switch(a$5!=null&&a$5.$==1?(t=a$5.$0,t&&Arrays.length(t)===2?Arrays.get(a$5.$0,0)==="Code"?($10=Arrays.get(a$5.$0,1),0):Arrays.get(a$5.$0,0)==="Property"?($10=Arrays.get(a$5.$0,1),1):2:2):2)
+     switch(a$5!=null&&a$5.$==1?(t=a$5.$0,!Unchecked.Equals(t,null)&&t.length===2?Arrays.get(a$5.$0,0)==="Code"?($10=Arrays.get(a$5.$0,1),0):Arrays.get(a$5.$0,0)==="Property"?($10=Arrays.get(a$5.$0,1),1):2:2):2)
      {
       case 0:
        o$1={
@@ -9173,7 +9339,7 @@
      {
       return((Object.constructor("return function(parm) { return `"+actionTempl.f()+"`}"))())(a$4);
      },$9),Strings.StartsWith(code$1,"////")?code$1:openPre+code$1);
-     return snpO!=null&&snpO.$==1?b$8.Bind$2((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsEvaluator+Evaluator.getPresence:-1568677081",[Evaluator.extractConfig(code),(function($11)
+     return snpO!=null&&snpO.$==1?b$8.Bind$2((new AjaxRemotingProvider.New()).Async("FSharpStation:FSSGlobal.FsEvaluator+Evaluator.getPresence:1818471758",[Evaluator.extractConfig(code),(function($11)
      {
       return function($12)
       {
@@ -9223,7 +9389,7 @@
     return b$8.Bind$1(Result.tryProtection(),function()
     {
      var m,$7,t,opth,o;
-     return b$8.Bind$1((m=act.parms,m!=null&&m.$==1&&((t=m.$0,t&&Arrays.length(t)===3)&&($7=[Arrays.get(m.$0,1),Arrays.get(m.$0,0),Arrays.get(m.$0,2)],true))?(opth=$7[1],(Option.defaultWith(function()
+     return b$8.Bind$1((m=act.parms,m!=null&&m.$==1&&((t=m.$0,!Unchecked.Equals(t,null)&&t.length===3)&&($7=[Arrays.get(m.$0,1),Arrays.get(m.$0,0),Arrays.get(m.$0,2)],true))?(opth=$7[1],(Option.defaultWith(function()
      {
       ((function($8)
       {
@@ -9265,7 +9431,7 @@
     console.log(s$3);
    }))(act));
    m=act.parms;
-   switch(m!=null&&m.$==1?(t=m.$0,t&&Arrays.length(t)===1?($7=Arrays.get(m.$0,0),0):(t$1=m.$0,t$1&&Arrays.length(t$1)===2?(Arrays.get(m.$0,1),Arrays.get(m.$0,0)===""?($7=[Arrays.get(m.$0,0),Arrays.get(m.$0,1)],1):2):2)):2)
+   switch(m!=null&&m.$==1?(t=m.$0,!Unchecked.Equals(t,null)&&t.length===1?($7=Arrays.get(m.$0,0),0):(t$1=m.$0,!Unchecked.Equals(t$1,null)&&t$1.length===2?(Arrays.get(m.$0,1),Arrays.get(m.$0,0)===""?($7=[Arrays.get(m.$0,0),Arrays.get(m.$0,1)],1):2):2)):2)
    {
     case 0:
      return setOutMsg($7);
@@ -9274,7 +9440,7 @@
      return setOutMsg($7[1]);
      break;
     case 2:
-     return m!=null&&m.$==1&&((t$2=m.$0,t$2&&Arrays.length(t$2)===2)&&(Arrays.get(m.$0,1),Arrays.get(m.$0,0)==="+"&&($8=[Arrays.get(m.$0,0),Arrays.get(m.$0,1)],true)))?addOutMsg($8[1]):(function($9)
+     return m!=null&&m.$==1&&((t$2=m.$0,!Unchecked.Equals(t$2,null)&&t$2.length===2)&&(Arrays.get(m.$0,1),Arrays.get(m.$0,0)==="+"&&($8=[Arrays.get(m.$0,0),Arrays.get(m.$0,1)],true)))?addOutMsg($8[1]):(function($9)
      {
       return function($10)
       {
@@ -9417,7 +9583,7 @@
    b$8=null;
    return Concurrency.Delay(function()
    {
-    var o,o$1,o$2,o$3,o$4,m,o$5,nm,x$2;
+    var o,o$1,o$2,o$3,o$4,m,o$5,nm,a$4;
     return msg.$==2?Concurrency.Return({
      $:1,
      $0:(o=CodeSnippet$1.FetchO(msg.$0),o==null?null:{
@@ -9455,12 +9621,12 @@
      $:4,
      $0:null,
      $1:[["Snippet not found",FSSeverity.FSError]]
-    }):Concurrency.Bind(FsTranslator.translateAR(FsGlobal["CodeSnippet.GetCodeFsx"](m.$0,true),false),function(a$4)
+    }):Concurrency.Bind(FsTranslator.translateAR(FsGlobal["CodeSnippet.GetCodeFsx"](m.$0,true),false),function(a$5)
     {
      return Concurrency.Return({
       $:4,
-      $0:Result.getOption(Result.map(RunCode.completeJS,a$4)),
-      $1:transMsgs(Result.getMsgs(a$4))
+      $0:Result.getOption(Result.map(RunCode.completeJS,a$5)),
+      $1:transMsgs(Result.getMsgs(a$5))
      });
     })):msg.$==8?Concurrency.Return({
      $:3,
@@ -9493,7 +9659,7 @@
      $:1,
      $0:{
       $:1,
-      $0:(x$2=Arrays.ofSeq((FsGlobal.codeSnippets())["var"].Get()),JSON.stringify(((Provider.EncodeArray(FSharpStation_JsonEncoder.j$7))())(x$2)))
+      $0:(a$4=Arrays.ofSeq((FsGlobal.codeSnippets())["var"].Get()),JSON.stringify(((Provider.EncodeArray(FSharpStation_JsonEncoder.j$7))())(a$4)))
      }
     });
    });
@@ -9507,8 +9673,8 @@
    })):void 0;
    delayedRefreshCM(300);
   }
-  missingVar=Var.Create$1("");
-  currentCodeSnippetId=Var.Create$1(CodeSnippetId.get_New());
+  missingVar=Var$1.Create$1("");
+  currentCodeSnippetId=Var$1.Create$1(CodeSnippetId.get_New());
   s="CodeEditor."+"currentCodeSnippetId";
   v=Global.localStorage.getItem(s);
   v!==null?currentCodeSnippetId.Set((FSharpStation_JsonDecoder.j$7())(JSON.parse(v))):void 0;
@@ -9516,7 +9682,7 @@
   {
    Global.localStorage.setItem(s,JSON.stringify((FSharpStation_JsonEncoder.j$5())(v$10)));
   },currentCodeSnippetId);
-  refresh=Var.Create$1();
+  refresh=Var$1.Create$1();
   currentCodeSnippetO=Val.map2(function(k)
   {
    return function()
@@ -9524,7 +9690,7 @@
     return FsGlobal.codeSnippets().TryFindByKey(k);
    };
   },currentCodeSnippetId,refresh);
-  position=Var.Create$1(Position.Below);
+  position=Var$1.Create$1(Position.Below);
   s$1="CodeEditor."+"position";
   v$1=Global.localStorage.getItem(s$1);
   v$1!==null?position.Set((FSharpStation_JsonDecoder.j$8())(JSON.parse(v$1))):void 0;
@@ -9549,7 +9715,7 @@
   }),function(x$2)
   {
    return g$6(f(x$2));
-  }),currentCodeSnippetId),(prior=[Var.Create$1(null)],(View.Sink(function(v$10)
+  }),currentCodeSnippetId),(prior=[Var$1.Create$1(null)],(View.Sink(function(v$10)
   {
    if(!Unchecked.Equals(prior[0].Get(),v$10))
     prior[0].Set(v$10);
@@ -9566,7 +9732,7 @@
   }),function(x$2)
   {
    return g$7(f$1(x$2));
-  }),currentCodeSnippetId),(prior$1=[Var.Create$1(null)],(View.Sink(function(v$10)
+  }),currentCodeSnippetId),(prior$1=[Var$1.Create$1(null)],(View.Sink(function(v$10)
   {
    if(!Unchecked.Equals(prior$1[0].Get(),v$10))
     prior$1[0].Set(v$10);
@@ -9583,7 +9749,7 @@
   }),function(x$2)
   {
    return g$8(f$2(x$2));
-  }),currentCodeSnippetId),(prior$2=[Var.Create$1(null)],(View.Sink(function(v$10)
+  }),currentCodeSnippetId),(prior$2=[Var$1.Create$1(null)],(View.Sink(function(v$10)
   {
    if(!Unchecked.Equals(prior$2[0].Get(),v$10))
     prior$2[0].Set(v$10);
@@ -9600,7 +9766,7 @@
   }),function(x$2)
   {
    return g$9(f$3(x$2));
-  }),currentCodeSnippetId),(prior$3=[Var.Create$1(null)],(View.Sink(function(v$10)
+  }),currentCodeSnippetId),(prior$3=[Var$1.Create$1(null)],(View.Sink(function(v$10)
   {
    if(!Unchecked.Equals(prior$3[0].Get(),v$10))
     prior$3[0].Set(v$10);
@@ -9617,7 +9783,7 @@
   }),function(x$2)
   {
    return g$10(f$4(x$2));
-  }),currentCodeSnippetId),(prior$4=[Var.Create$1(null)],(View.Sink(function(v$10)
+  }),currentCodeSnippetId),(prior$4=[Var$1.Create$1(null)],(View.Sink(function(v$10)
   {
    if(!Unchecked.Equals(prior$4[0].Get(),v$10))
     prior$4[0].Set(v$10);
@@ -9634,7 +9800,7 @@
   }),function(x$2)
   {
    return g$11(f$5(x$2));
-  }),currentCodeSnippetId),(prior$5=[Var.Create$1(null)],(View.Sink(function(v$10)
+  }),currentCodeSnippetId),(prior$5=[Var$1.Create$1(null)],(View.Sink(function(v$10)
   {
    if(!Unchecked.Equals(prior$5[0].Get(),v$10))
     prior$5[0].Set(v$10);
@@ -9677,12 +9843,12 @@
    };
    return Option.defaultValue(new HashSet.New$3(),x$2);
   });
-  codeFS=Var.Create$1("");
-  codeJS=Var.Create$1("");
-  parserMsgs=Var.Create$1("");
-  outputMsgs=Var.Create$1("");
+  codeFS=Var$1.Create$1("");
+  codeJS=Var$1.Create$1("");
+  parserMsgs=Var$1.Create$1("");
+  outputMsgs=Var$1.Create$1("");
   parsed=false;
-  dirty=Var.Create$1(false);
+  dirty=Var$1.Create$1(false);
   Val.sink(function(m)
   {
    Global.onbeforeunload=m?function(e)
@@ -9709,13 +9875,13 @@
    })?res$1:(res$2=getPredecessorsM.f(a$4),(getPredecessorsM.cache.set_Item(a$4,res$2),res$2));
   },currentCodeSnippetO);
   topScrollList=[0];
-  fileName=Var.Create$1("");
+  fileName=Var$1.Create$1("");
   Val.map(function(v$10)
   {
    return v$10==="";
   },fileName);
   fileInputElementId="CodeEditorFileSel";
-  loadFileElement=Input.New$3(Var.Lens(fileName,justFileName,Global.id)).Prefix$1(HtmlNode.label([HtmlNode["class"]("btn btn-primary"),HtmlNode.htmlText("Load File..."),Input.New$3(fileName).Type("file").Style("display: none").Content([AttrProxy.HandlerImpl("change",function($7)
+  loadFileElement=Input.New$3(Var$1.Lens(fileName,justFileName,Global.id)).Prefix$1(HtmlNode.label([HtmlNode["class"]("btn btn-primary"),HtmlNode.htmlText("Load File..."),Input.New$3(fileName).Type("file").Style("display: none").Content([AttrProxy.HandlerImpl("change",function($7)
   {
    return function($8)
    {
@@ -9760,11 +9926,12 @@
   isParseDisabled=View.GetAsync(Val.toView(disableParseVal));
   parseRun=1;
   parsing=false;
+  parsingCode="";
   rex1="\\((\\d+)\\) F# (.+).fsx\\((\\d+)\\,(\\d+)\\): (error|warning) ((.|\\b)+)";
   rex2="(Err|Warning|Info)(FSharp|WebSharper)\\s+\"(\\((\\d+)\\) ?)?F?#? ?(.+?)(.fsx)? \\((\\d+)\\,\\s*(\\d+)\\) - \\((\\d+)\\,\\s*(\\d+)\\) ((.|\\s)+?)"+"\"";
   rex=rex1+"|"+rex2;
   asyncStartDelayed=Useful.asyncStartCancelling();
-  codeMirror=CodeMirror.New$3((view=Val.toView(Val.fixit(currentCodeSnippetId)),(contentVar=Var.Create$1(null),(changingIRefO=[null],(contentVarChanged=[0],(refVarChanged=[0],(View.Sink(function()
+  codeMirror=CodeMirror.New$3((view=Val.toView(Val.fixit(currentCodeSnippetId)),(contentVar=Var$1.Create$1(null),(changingIRefO=[null],(contentVarChanged=[0],(refVarChanged=[0],(View.Sink(function()
   {
    var o,r;
    o=changingIRefO[0];
@@ -9861,7 +10028,7 @@
     return!parsed?Concurrency.Zero():(m=codeMirror.editorO,m!=null&&m.$==1?(m$1=CodeSnippet$1.FetchO(currentCodeSnippetId.Get()),m$1!=null&&m$1.$==1?(m.$0.performLint(),Concurrency.Zero()):Concurrency.Zero()):Concurrency.Zero());
    })),null);
   },parserMsgs);
-  redraw=Var.Create$1();
+  redraw=Var$1.Create$1();
   properties=HtmlNode.div([new HtmlNode$1({
    $:2,
    $0:Val.map2(function($7)
@@ -9875,7 +10042,7 @@
     return g$12(f$7(x$2));
    },currentCodeSnippetId))
   }),HtmlNode.css(" td.hovering { background: gray; } ")]);
-  triggerWSResult=Var.Create$1();
+  triggerWSResult=Var$1.Create$1();
   actLoadFile=Action.New$1("Load...").OnClick(function($7)
   {
    return function($8)
@@ -10144,7 +10311,7 @@
    $0:HtmlNode.div([HtmlNode.div([HtmlNode.Id("TestNode"),HtmlNode.style("background: white; height: 100%; width: 100%; ")])])
   })],["title",new GuiPart({
    $:1,
-   $0:Input.New$3((view$1=Val.toView(Val.fixit(currentCodeSnippetId)),(contentVar$1=Var.Create$1(null),(changingIRefO$1=[null],(contentVarChanged$1=[0],(refVarChanged$1=[0],(View.Sink(function()
+   $0:Input.New$3((view$1=Val.toView(Val.fixit(currentCodeSnippetId)),(contentVar$1=Var$1.Create$1(null),(changingIRefO$1=[null],(contentVarChanged$1=[0],(refVarChanged$1=[0],(View.Sink(function()
    {
     var o,r;
     o=changingIRefO$1[0];
@@ -10266,9 +10433,9 @@
         $0:a$4
        };
       }
-      function f$10(x$2)
+      function f$10(a$4)
       {
-       return(FSharpStation_JsonDecoder.j$9())(JSON.parse(x$2));
+       return(FSharpStation_JsonDecoder.j$9())(JSON.parse(a$4));
       }
       pro=function(x$2)
       {
@@ -10279,9 +10446,9 @@
        $0:(f$8=function(x$2)
        {
         return pro(f$10(x$2));
-       },(g$13=Wrap.map(function(x$2)
+       },(g$13=Wrap.map(function(a$4)
        {
-        return JSON.stringify((FSharpStation_JsonEncoder.j$8())(x$2));
+        return JSON.stringify((FSharpStation_JsonEncoder.j$8())(a$4));
        }),function(x$2)
        {
         return g$13(f$8(x$2));
@@ -10327,7 +10494,7 @@
   {
    layout.SelectTab("Parser");
   },1000),null);
-  cssLinks=Var.Create$1(List.ofArray(["/EPFileX/css/main.css"]));
+  cssLinks=Var$1.Create$1(List.ofArray(["/EPFileX/css/main.css"]));
   Val.sink(addCssLink,propertyCssLinkVal);
   Val.sink(function(theme)
   {
@@ -10378,6 +10545,7 @@
    $:0,
    $0:WSMessagingBroker.MessageBrokerId()
   });
+  SC$1.counter=1;
   SC$1.valFlow=new valBuilder.New();
   SC$1.renderDoc=(g=(v=Doc.Empty(),function(o)
   {
@@ -10399,9 +10567,9 @@
   SC$1.codeMirrorIncludes=["/EPFileX/codemirror/scripts/codemirror/codemirror.js","/EPFileX/codemirror/scripts/intellisense.js","/EPFileX/codemirror/scripts/codemirror/codemirror-intellisense.js","/EPFileX/codemirror/scripts/codemirror/codemirror-compiler.js","/EPFileX/codemirror/scripts/codemirror/mode/none.js","/EPFileX/codemirror/scripts/codemirror/mode/fsharp.js","/EPFileX/codemirror/scripts/codemirror/mode/css.js","/EPFileX/codemirror/scripts/codemirror/mode/javascript.js","/EPFileX/codemirror/scripts/codemirror/mode/markdown.js","/EPFileX/codemirror/scripts/addon/search/searchcursor.js","/EPFileX/codemirror/scripts/addon/search/search.js","/EPFileX/codemirror/scripts/addon/search/jump-to-line.js","/EPFileX/codemirror/scripts/addon/dialog/dialog.js","/EPFileX/codemirror/scripts/addon/edit/matchbrackets.js","/EPFileX/codemirror/scripts/addon/selection/active-line.js","/EPFileX/codemirror/scripts/addon/display/fullscreen.js","/EPFileX/codemirror/scripts/addon/hint/show-hint.js","/EPFileX/codemirror/scripts/addon/lint/lint.js"];
   SC$1.observers=List.T.Empty;
   SC$1.draggedTab=[null];
-  SC$1.selectedPanels=Var.Create$1(new FSharpMap.New([]));
+  SC$1.selectedPanels=Var$1.Create$1(new FSharpMap.New([]));
   SC$1.TabMoved=null;
-  SC$1.codeSnippets=ListModel.Create(function(s)
+  SC$1.codeSnippets=ListModel$1.Create(function(s)
   {
    return s.id;
   },List.T.Empty);

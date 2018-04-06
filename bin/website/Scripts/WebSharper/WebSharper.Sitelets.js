@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,WebSharper,Sitelets,StringEncoding,PathUtil,Route,List,Router,Obj,RouterModule,ListArrayConverter,RouterOperators,SC$1,Strings,String,List$1,Seq,Collections,Map,Arrays,IntelliFactory,Runtime,FSharpMap,Utils,console,Unchecked,Nullable,Numeric,Lazy,Concurrency,$,Operators,Char,System,Guid,Slice;
+ var Global,WebSharper,Sitelets,StringEncoding,PathUtil,Route,List,Router,Obj,RouterModule,ListArrayConverter,RouterOperators,SC$1,Strings,String,List$1,Seq,Collections,Map,Arrays,IntelliFactory,Runtime,FSharpMap,Unchecked,Utils,console,Lazy,Nullable,Numeric,Concurrency,$,Operators,Char,System,Guid,Slice;
  Global=window;
  WebSharper=Global.WebSharper=Global.WebSharper||{};
  Sitelets=WebSharper.Sitelets=WebSharper.Sitelets||{};
@@ -25,12 +25,12 @@
  IntelliFactory=Global.IntelliFactory;
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
  FSharpMap=Collections&&Collections.FSharpMap;
+ Unchecked=WebSharper&&WebSharper.Unchecked;
  Utils=WebSharper&&WebSharper.Utils;
  console=Global.console;
- Unchecked=WebSharper&&WebSharper.Unchecked;
+ Lazy=WebSharper&&WebSharper.Lazy;
  Nullable=WebSharper&&WebSharper.Nullable;
  Numeric=WebSharper&&WebSharper.Numeric;
- Lazy=WebSharper&&WebSharper.Lazy;
  Concurrency=WebSharper&&WebSharper.Concurrency;
  $=Global.jQuery;
  Operators=WebSharper&&WebSharper.Operators;
@@ -176,7 +176,7 @@
   {
    var m,v;
    m=Strings.SplitChars(kv,["="],0);
-   return m&&Arrays.length(m)===2?(v=Arrays.get(m,1),{
+   return!Unchecked.Equals(m,null)&&m.length===2?(v=Arrays.get(m,1),{
     $:1,
     $0:[Arrays.get(m,0),v]
    }):((function($1)
@@ -217,8 +217,8 @@
        p=Arrays.get(paths$1,i);
        m$1=p.Method;
        m$1!=null&&m$1.$==1?method=m$1:void 0;
-       m$2=p.Body;
-       m$2!=null&&m$2.$==1?body=m$2:void 0;
+       m$2=p.Body.f();
+       m$2===null?void 0:body=m$2;
        queryArgs=Map.FoldBack(function(k,v,t)
        {
         return t.Add(k,v);
@@ -233,7 +233,7 @@
        },p.Segments);
        i=i+1;
       }());
-     return Route.New(List$1.ofSeq(segments),queryArgs,formData,method,body);
+     return Route.New(List$1.ofSeq(segments),queryArgs,formData,method,Lazy.CreateFromValue(body));
     }
  };
  Route.Segment=function(s,m)
@@ -256,7 +256,7 @@
  };
  Route.get_Empty=function()
  {
-  return Route.New(List$1.T.Empty,new FSharpMap.New([]),new FSharpMap.New([]),null,null);
+  return Route.New(List$1.T.Empty,new FSharpMap.New([]),new FSharpMap.New([]),null,Lazy.CreateFromValue(null));
  };
  Route.New=function(Segments,QueryArgs,FormData,Method,Body)
  {
@@ -792,10 +792,10 @@
  {
   var m,path,settings,r,m$1,m$2,fd;
   m=RouterModule.Write(router,endpoint);
-  return m!=null&&m.$==1?(path=m.$0,(settings=(r={},r.dataType="text",r),(m$1=path.Method,m$1!=null&&m$1.$==1?settings.type=m$1.$0:void 0,m$2=path.Body,m$2!=null&&m$2.$==1?(settings.contentType="application/json",settings.data=m$2.$0,settings.processData=false,path.Method==null?settings.type="POST":void 0):(!path.FormData.get_IsEmpty()?(fd=new Global.FormData(),Map.Iterate(function(k,v)
+  return m!=null&&m.$==1?(path=m.$0,(settings=(r={},r.dataType="text",r),(m$1=path.Method,m$1!=null&&m$1.$==1?settings.type=m$1.$0:void 0,m$2=path.Body.f(),m$2===null?(!path.FormData.get_IsEmpty()?(fd=new Global.FormData(),Map.Iterate(function(k,v)
   {
    return fd.append(k,v);
-  },path.FormData),settings.contentType=false,settings.data=fd,settings.processData=false):void 0,path.Method==null?settings.type="POST":void 0),Concurrency.FromContinuations(function(ok,err)
+  },path.FormData),settings.contentType=false,settings.data=fd,settings.processData=false):void 0,path.Method==null?settings.type="POST":void 0):(settings.contentType="application/json",settings.data=m$2,settings.processData=false,path.Method==null?settings.type="POST":void 0),Concurrency.FromContinuations(function(ok,err)
   {
    settings.success=function(res)
    {
@@ -875,18 +875,15 @@
  {
   return Router.New$1(function(path)
   {
-   var m,o;
-   m=(o=path.Body,o==null?null:deserialize(o.$0));
-   return m!=null&&m.$==1?[[Route.New(path.Segments,path.QueryArgs,path.FormData,path.Method,null),m.$0]]:[];
+   var m,m$1;
+   m=path.Body.f();
+   return m===null?[]:(m$1=deserialize(m),m$1!=null&&m$1.$==1?[[Route.New(path.Segments,path.QueryArgs,path.FormData,path.Method,Lazy.CreateFromValue(null)),m$1.$0]]:[]);
   },function(value)
   {
    var i;
    return{
     $:1,
-    $0:[(i=Route.get_Empty(),Route.New(i.Segments,i.QueryArgs,i.FormData,i.Method,{
-     $:1,
-     $0:serialize(value)
-    }))]
+    $0:[(i=Route.get_Empty(),Route.New(i.Segments,i.QueryArgs,i.FormData,i.Method,Lazy.CreateFromValue(serialize(value))))]
    };
   });
  };
@@ -1226,7 +1223,7 @@
    fields=p[2];
    p$1=Arrays.get(p[1],0);
    casePath=[Route.Segment(List$1.ofArray(p$1[1]),p$1[0])];
-   return fields&&Arrays.length(fields)===0?{
+   return!Unchecked.Equals(fields,null)&&fields.length===0?{
     $:1,
     $0:casePath
    }:(fieldParts=(((Runtime.Curried3(Arrays.map2))(m$1))(readFields(tag,value)))(fields),Arrays.forall(function(o)
