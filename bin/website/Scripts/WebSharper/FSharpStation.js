@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FSSGlobal,Useful,Async,KeyVal,String,Option,WebSharper,Obj,ExceptionThrown,ErrOptionIsNone,ErrSimple,Result,ropBuilder,ResultS,Wrap,Builder,Mailbox,Dict,ResetableMemoize,PreproDirective,FsStationShared,CodeSnippetId,CodeSnippet,FSMessage,FSSeverity,WSMessagingBroker,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ErrBroker,WSMessagingClient,FsStationClientErr,FStationMessaging,FSAutoCompleteIntermediary,CommTypes,ResponseError,Location,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,ACMessage,FSAutoCompleteIntermediaryClient,FsEvaluator,Evaluator,FsTranslator,HtmlNode,Val,Var,ListModel,HelperType,valBuilder,HtmlNode$1,Template,Button,Input,Hoverable,Panel,TextArea,CodeMirrorPos,CodeMirrorEditor,CodeMirror,Hint,HintResponse,HintOptions,LintResponse,SplitterBar,SectionType,Grid,TabStrip,MenuEntry,MenuNode,Menu,Action,GuiPart,HtmlNodeFable,LayoutDescriptionFable,GuiPartSourceId,Layout,RunCode,RunNode,FSharpStation,FsGlobal,Position,ErrCompiler,KeyMapAutoComplete,UI,Var$1,Property,PropValue,CodeSnippet$1,FableModule,Babel,Fable,SC$1,FSharpStation_JsonDecoder,FSharpStation_JsonEncoder,FSharpStation_GeneratedPrintf,GeneratedPrintf,Concurrency,Seq,Unchecked,Strings,IntelliFactory,Runtime,Utils,Enumerator,Arrays,console,Control,MailboxProcessor,Collections,Dictionary,CancellationTokenSource,System,Guid,List,Option$1,JSON,TimeoutException,ClientSideJson,Provider,Owin,WebSocket,Client,WithEncoding,Endpoint,location,Map,FSharpMap,Remoting,AjaxRemotingProvider,Slice,View,Doc,Operators,AttrModule,AttrProxy,Input$1,Mouse,FSharpSet,BalancedTree,MatchFailureException,Object,Fable$1,Babel$1,HashSet,JavaScript,JSModule,Lazy,$,Date,ListModel$1;
+ var Global,FSSGlobal,Useful,Async,KeyVal,String,Option,WebSharper,Obj,ExceptionThrown,ErrOptionIsNone,ErrSimple,Result,ropBuilder,ResultS,Wrap,Builder,Mailbox,Dict,ResetableMemoize,PreproDirective,FsStationShared,CodeSnippetId,CodeSnippet,FSMessage,FSSeverity,WSMessagingBroker,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ErrBroker,WSMessagingClient,FsStationClientErr,FStationMessaging,FSAutoCompleteIntermediary,CommTypes,ResponseError,Location,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,ACMessage,FSAutoCompleteIntermediaryClient,FsEvaluator,Evaluator,FsTranslator,HtmlNode,Val,Var,ListModel,HelperType,valBuilder,HtmlNode$1,LoadFiles,Template,Button,Input,Hoverable,Panel,TextArea,CodeMirrorPos,CodeMirrorEditor,CodeMirror,Hint,HintResponse,HintOptions,LintResponse,SplitterBar,SectionType,Grid,TabStrip,MenuEntry,MenuNode,Menu,Action,GuiPart,HtmlNodeFable,LayoutDescriptionFable,GuiPartSourceId,Layout,RunCode,RunNode,FSharpStation,FsGlobal,Position,ErrCompiler,KeyMapAutoComplete,UI,Var$1,Property,PropValue,CodeSnippet$1,FableModule,Babel,Fable,SC$1,FSharpStation_JsonDecoder,FSharpStation_JsonEncoder,FSharpStation_GeneratedPrintf,GeneratedPrintf,Concurrency,Seq,Unchecked,Strings,IntelliFactory,Runtime,Utils,Enumerator,Arrays,console,Control,MailboxProcessor,Collections,Dictionary,CancellationTokenSource,System,Guid,List,Option$1,JSON,TimeoutException,ClientSideJson,Provider,Owin,WebSocket,Client,WithEncoding,Endpoint,location,Map,FSharpMap,Remoting,AjaxRemotingProvider,Slice,View,Doc,Operators,AttrModule,AttrProxy,Input$1,Mouse,FSharpSet,BalancedTree,MatchFailureException,Object,Fable$1,Babel$1,HashSet,JavaScript,JSModule,Lazy,$,Date,ListModel$1;
  Global=window;
  FSSGlobal=Global.FSSGlobal=Global.FSSGlobal||{};
  Useful=FSSGlobal.Useful=FSSGlobal.Useful||{};
@@ -78,6 +78,7 @@
  HelperType=Val.HelperType=Val.HelperType||{};
  valBuilder=Val.valBuilder=Val.valBuilder||{};
  HtmlNode$1=HtmlNode.HtmlNode=HtmlNode.HtmlNode||{};
+ LoadFiles=HtmlNode.LoadFiles=HtmlNode.LoadFiles||{};
  Template=FSSGlobal.Template=FSSGlobal.Template||{};
  Button=Template.Button=Template.Button||{};
  Input=Template.Input=Template.Input||{};
@@ -2976,7 +2977,7 @@
  },Obj,FStationMessaging);
  FStationMessaging.get_FSStationId_=function()
  {
-  return"FSharpStation1522920858103";
+  return"FSharpStation1523056942862";
  };
  FStationMessaging.New=Runtime.Ctor(function(clientId,fsStationId,timeout,endPoint)
  {
@@ -2985,7 +2986,7 @@
  FStationMessaging.New$1=Runtime.Ctor(function(msgClient,_clientId,fsStationId)
  {
   this.msgClient=msgClient;
-  this.fsIds=Option.defaultValue("FSharpStation1522920858103",fsStationId);
+  this.fsIds=Option.defaultValue("FSharpStation1523056942862",fsStationId);
  },FStationMessaging);
  WSMessagingBroker.extractEndPoint=function()
  {
@@ -4128,7 +4129,7 @@
    $1:ps.$1
   });
  };
- HtmlNode.LoadFilesAsync=function(files)
+ LoadFiles.LoadFilesAsyncOld=function(files)
  {
   function a($1,$2)
   {
@@ -4145,6 +4146,90 @@
   {
    return a.apply(null,[$1,$2,$3]);
   });
+ };
+ LoadFiles.LoadFilesAsync=function(files)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.For(files,function(a)
+   {
+    return Concurrency.Bind(LoadFiles.LoadFile(a),function()
+    {
+     return Concurrency.Return(null);
+    });
+   });
+  });
+ };
+ LoadFiles.LoadFile=function(file)
+ {
+  var o,o$1,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,ref,b;
+  function EndsWith(s,fn)
+  {
+   return Strings.EndsWith(fn,s)?{
+    $:1,
+    $0:null
+   }:null;
+  }
+  function a($11,$12)
+  {
+   try
+   {
+    ref.onload=$11;
+    Global.document.head.appendChild(ref);
+   }
+   catch(e)
+   {
+    $12(e);
+   }
+  }
+  o=(o$1=(($2=EndsWith(".js",file),$2!=null&&$2.$==1)?!Global.document.querySelector("script[src='"+file+"']")||(($3=EndsWith(".fsx",file),$3!=null&&$3.$==1)?!Global.document.querySelector("script[src='"+file+"']")||($4=EndsWith(".fs",file),$4!=null&&$4.$==1)&&!Global.document.querySelector("script[src='"+file+"']"):($5=EndsWith(".fs",file),$5!=null&&$5.$==1)&&!Global.document.querySelector("script[src='"+file+"']")):($6=EndsWith(".fsx",file),$6!=null&&$6.$==1)?!Global.document.querySelector("script[src='"+file+"']")||($7=EndsWith(".fs",file),$7!=null&&$7.$==1)&&!Global.document.querySelector("script[src='"+file+"']"):($8=EndsWith(".fs",file),$8!=null&&$8.$==1)&&!Global.document.querySelector("script[src='"+file+"']"))?{
+   $:1,
+   $0:LoadFiles.createScript(file)
+  }:($9=EndsWith(".css",file),$9!=null&&$9.$==1)?{
+   $:1,
+   $0:LoadFiles.createCss(file)
+  }:($10=EndsWith(".html",file),$10!=null&&$10.$==1)?{
+   $:1,
+   $0:LoadFiles.createHtml(file)
+  }:null,o$1==null?null:{
+   $:1,
+   $0:(ref=o$1.$0,Concurrency.FromContinuations(function($11,$12,$13)
+   {
+    return a.apply(null,[$11,$12,$13]);
+   }))
+  });
+  return o==null?(b=null,Concurrency.Delay(function()
+  {
+   return Concurrency.Return(null);
+  })):o.$0;
+ };
+ LoadFiles.createHtml=function(fn)
+ {
+  var fileRef;
+  fileRef=Global.document.createElement("link");
+  fileRef.setAttribute("rel","import");
+  fileRef.setAttribute("type","text/html");
+  fileRef.setAttribute("href",fn);
+  return fileRef;
+ };
+ LoadFiles.createCss=function(fn)
+ {
+  var fileRef;
+  fileRef=Global.document.createElement("link");
+  fileRef.setAttribute("rel","stylesheet");
+  fileRef.setAttribute("type","text/css");
+  fileRef.setAttribute("href",fn);
+  return fileRef;
+ };
+ LoadFiles.createScript=function(fn)
+ {
+  var fileRef;
+  fileRef=Global.document.createElement("script");
+  fileRef.setAttribute("type","text/javascript");
+  fileRef.setAttribute("src",fn);
+  return fileRef;
  };
  HtmlNode.findRootElement=function(e)
  {
@@ -4781,7 +4866,7 @@
    });
   }
  },null,Button);
- Button.get_Render$3447$42=function(_this)
+ Button.get_Render$3498$42=function(_this)
  {
   return _this.onClick;
  };
@@ -4996,19 +5081,19 @@
  {
   return Hoverable.get_New().Content(HtmlNode.div([HtmlNode.style("flex-flow: column;")]));
  };
- Hoverable.Content$3541$43=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable.Content$3592$43=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(false);
  });
- Hoverable.Content$3540$43=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable.Content$3591$43=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(true);
  });
- Hoverable.Content$3533$37=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable.Content$3584$37=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(false);
  });
- Hoverable.Content$3532$37=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable.Content$3583$37=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(true);
  });
@@ -5221,55 +5306,60 @@
     $:8,
     $0:AttrModule.OnAfterRender(function(el)
     {
-     Global.CIPHERSpaceLoadFiles(Template.codeMirrorIncludes(),function()
+     var b;
+     Concurrency.Start((b=null,Concurrency.Delay(function()
      {
-      var editor,o,editorChanged,varChanged;
-      editor=Global.CodeMirror(el,{
-       theme:"rubyblue",
-       lineNumbers:true,
-       matchBrackets:true,
-       gutters:["CodeMirror-lint-markers"],
-       extraKeys:{
-        Tab:function(cm)
-        {
-         cm.replaceSelection("    ","end");
-        },
-        F11:function(cm)
-        {
-         cm.setOption("fullScreen",!cm.getOption("fullScreen"));
-        }
-       }
-      });
-      $this.editorO={
-       $:1,
-       $0:editor
-      };
-      o=$this.onRender;
-      o==null?void 0:o.$0(editor);
-      editorChanged=[0];
-      varChanged=[0];
-      editor.on("changes",function()
+      return Concurrency.Bind(LoadFiles.LoadFilesAsync(Template.codeMirrorIncludes()),function()
       {
-       var v;
-       v=editor.getValue();
-       $this["var"].Get()!==v?(editorChanged[0]=editorChanged[0]+1,$this["var"].Set(v),$this.onChange()):void 0;
-      });
-      View.Sink(function()
-      {
-       if(editorChanged[0]>varChanged[0])
-        varChanged[0]=editorChanged[0];
-       else
-        if(editor.getValue()!==$this["var"].Get())
+       var editor,o,editorChanged,varChanged;
+       editor=Global.CodeMirror(el,{
+        theme:"rubyblue",
+        lineNumbers:true,
+        matchBrackets:true,
+        gutters:["CodeMirror-lint-markers"],
+        extraKeys:{
+         Tab:function(cm)
          {
-          editor.setValue($this["var"].Get());
-          editor.getDoc().clearHistory();
+          cm.replaceSelection("    ","end");
+         },
+         F11:function(cm)
+         {
+          cm.setOption("fullScreen",!cm.getOption("fullScreen"));
          }
-      },$this["var"].get_View());
-      Val.sink(function(dis)
-      {
-       editor.setOption("readOnly",dis&&"nocursor");
-      },$this.disabled);
-     });
+        }
+       });
+       $this.editorO={
+        $:1,
+        $0:editor
+       };
+       o=$this.onRender;
+       o==null?void 0:o.$0(editor);
+       editorChanged=[0];
+       varChanged=[0];
+       editor.on("changes",function()
+       {
+        var v;
+        v=editor.getValue();
+        $this["var"].Get()!==v?(editorChanged[0]=editorChanged[0]+1,$this["var"].Set(v),$this.onChange()):void 0;
+       });
+       View.Sink(function()
+       {
+        if(editorChanged[0]>varChanged[0])
+         varChanged[0]=editorChanged[0];
+        else
+         if(editor.getValue()!==$this["var"].Get())
+          {
+           editor.setValue($this["var"].Get());
+           editor.getDoc().clearHistory();
+          }
+       },$this["var"].get_View());
+       Val.sink(function(dis)
+       {
+        editor.setOption("readOnly",dis&&"nocursor");
+       },$this.disabled);
+       return Concurrency.Zero();
+      });
+     })),null);
     })
    })]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/content/editor.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/content/codemirror.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/scripts/addon/display/fullscreen.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/scripts/addon/dialog/dialog.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/scripts/addon/hint/show-hint.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.link([HtmlNode.href("/EPFileX/codemirror/scripts/addon/lint/lint.css"),HtmlNode.type("text/css"),HtmlNode.rel("stylesheet")]),HtmlNode.css(".CodeMirror { height: 100% }")]);
   }
@@ -5489,7 +5579,7 @@
    return this.value;
   }
  },null,SplitterBar);
- SplitterBar.get_Render$3896$42=Global.id;
+ SplitterBar.get_Render$3947$42=Global.id;
  SplitterBar.New$1=function(value)
  {
   return SplitterBar.New$2(Var$1.Create$1(value));
@@ -6202,7 +6292,7 @@
        this.selected.Set(sel===drag?drop:sel<drag&&sel<drop||sel>drag&&sel>drop?sel:sel<drag?sel+1:sel-1);
       }
      else
-      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",4194,18);
+      throw new MatchFailureException.New("Compiled\\FSharpStation2\\FSharpStation.fs",4245,18);
    }
    else
     void 0;
@@ -6245,16 +6335,16 @@
    Template.RaiseTabMoved(from,this);
   }
  },null,TabStrip);
- TabStrip.get_Render$4265$42=Runtime.Curried3(function(_this,$1,ev)
+ TabStrip.get_Render$4316$42=Runtime.Curried3(function(_this,$1,ev)
  {
   ev.preventDefault();
   return _this.reorder(Arrays.length(_this.tabs.Get()));
  });
- TabStrip.get_Render$4264$42=Runtime.Curried3(function($1,$2,ev)
+ TabStrip.get_Render$4315$42=Runtime.Curried3(function($1,$2,ev)
  {
   return ev.preventDefault();
  });
- TabStrip.get_Render$4240$70=function(i,_this)
+ TabStrip.get_Render$4291$70=function(i,_this)
  {
   return function()
   {
@@ -6264,7 +6354,7 @@
    };
   };
  };
- TabStrip.get_Render$4239$70=function(i,_this)
+ TabStrip.get_Render$4290$70=function(i,_this)
  {
   return function()
   {
@@ -6276,7 +6366,7 @@
    };
   };
  };
- TabStrip.get_Render$4238$70=function(_this,i)
+ TabStrip.get_Render$4289$70=function(_this,i)
  {
   return function()
   {
@@ -6289,7 +6379,7 @@
    };
   };
  };
- TabStrip.get_Render$4237$70=Runtime.Curried3(function($1,$2,ev)
+ TabStrip.get_Render$4288$70=Runtime.Curried3(function($1,$2,ev)
  {
   return ev.preventDefault();
  });
@@ -6376,7 +6466,7 @@
    }):Global.id)(x))));
   }
  },null,MenuEntry);
- MenuEntry.get_Render$4378$104=Global.id;
+ MenuEntry.get_Render$4429$104=Global.id;
  MenuEntry.New$1=function(txt,ref)
  {
   var i;
@@ -7806,9 +7896,9 @@
   SC$1.$cctor();
   return SC$1.references;
  };
- FSharpStation.FSharpStationClient$6378$173=Global.id;
- FSharpStation.FSharpStationClient$6377$173=Global.id;
- FSharpStation.FSharpStationClient$6067$68=function(props,setDirtyP,redraw)
+ FSharpStation.FSharpStationClient$6433$173=Global.id;
+ FSharpStation.FSharpStationClient$6432$173=Global.id;
+ FSharpStation.FSharpStationClient$6122$68=function(props,setDirtyP,redraw)
  {
   return function()
   {
@@ -7820,7 +7910,7 @@
    };
   };
  };
- FSharpStation.FSharpStationClient$6064$68=function(prop,redraw)
+ FSharpStation.FSharpStationClient$6119$68=function(prop,redraw)
  {
   return function()
   {
@@ -7831,11 +7921,11 @@
    };
   };
  };
- FSharpStation.FSharpStationClient$5915$44=Runtime.Curried3(function(gotoDefinition,$1,$2)
+ FSharpStation.FSharpStationClient$5970$44=Runtime.Curried3(function(gotoDefinition,$1,$2)
  {
   return gotoDefinition();
  });
- FSharpStation.FSharpStationClient$5909$39=function(showToolTip,codeMirror)
+ FSharpStation.FSharpStationClient$5964$39=function(showToolTip,codeMirror)
  {
   return function()
   {
@@ -7845,19 +7935,19 @@
    };
   };
  };
- FSharpStation.FSharpStationClient$5614$61=Runtime.Curried3(function($1,el,$2)
+ FSharpStation.FSharpStationClient$5665$61=Runtime.Curried3(function($1,el,$2)
  {
   el.value="";
  });
- FSharpStation.FSharpStationClient$5613$61=Runtime.Curried3(function(loadFile,el,$1)
+ FSharpStation.FSharpStationClient$5664$61=Runtime.Curried3(function(loadFile,el,$1)
  {
   return loadFile(el);
  });
- FSharpStation.FSharpStationClient$5495$48=Runtime.Curried3(function(topScrollList,e,$1)
+ FSharpStation.FSharpStationClient$5546$48=Runtime.Curried3(function(topScrollList,e,$1)
  {
   topScrollList[0]=e.scrollTop;
  });
- FSharpStation.FSharpStationClient$5472$57=function(togglePredecessorForCur,code,currentCodeSnippetO)
+ FSharpStation.FSharpStationClient$5523$57=function(togglePredecessorForCur,code,currentCodeSnippetO)
  {
   return function()
   {
@@ -7867,7 +7957,7 @@
    };
   };
  };
- FSharpStation.FSharpStationClient$5468$58=function(code,currentCodeSnippetId)
+ FSharpStation.FSharpStationClient$5519$58=function(code,currentCodeSnippetId)
  {
   return function()
   {
@@ -7877,7 +7967,7 @@
    };
   };
  };
- FSharpStation.FSharpStationClient$5460$57=function(isParent,toggleExpanded,code)
+ FSharpStation.FSharpStationClient$5511$57=function(isParent,toggleExpanded,code)
  {
   return function()
   {
@@ -7887,7 +7977,7 @@
    };
   };
  };
- FSharpStation.FSharpStationClient$5456$50=function(reorderSnippet,code,draggedId)
+ FSharpStation.FSharpStationClient$5507$50=function(reorderSnippet,code,draggedId)
  {
   return function()
   {
@@ -7898,7 +7988,7 @@
    };
   };
  };
- FSharpStation.FSharpStationClient$5455$50=function(draggedId,code)
+ FSharpStation.FSharpStationClient$5506$50=function(draggedId,code)
  {
   return function()
   {
@@ -7908,13 +7998,13 @@
    };
   };
  };
- FSharpStation.FSharpStationClient$5454$50=Runtime.Curried3(function($1,$2,ev)
+ FSharpStation.FSharpStationClient$5505$50=Runtime.Curried3(function($1,$2,ev)
  {
   return ev.preventDefault();
  });
  FSharpStation.FSharpStationClient=function(loadFromUri)
  {
-  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,v$2,f,g,prior,propertyCssLinkVal,v$3,f$1,g$1,prior$1,propertyModeVal,v$4,f$2,g$2,prior$2,propertyThemeVal,v$5,f$3,g$3,prior$3,propertyLayoutVal,v$6,f$4,g$4,prior$4,propertyLayoutJSVal,v$7,f$5,g$5,prior$5,disableParseVal,disableFSIVal,disableFableVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b,autoCompleteClient,parseFileName,latestParsedPrefix,isParseDisabled,parseRun,parsing,parsingCode,rex1,rex2,rex,asyncStartDelayed,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,redraw,properties,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actSetSnippetProp,actEvalFsCode,actEvalCode,actFableFsCode,actFableCode,actRunWSNewTab,$2,actRunWSHere,$3,actRunWSIn,actParseCode,actCompileWS,$4,actFindDefinition,actRefreshEditor,actOutText,actAbortFsi,buttonsH,menuLeft,menuRight,menuBar,s$2,v$8,v$9,snippetList,x,steps,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,layout,res,wsStationClient,b$1,cssLinks,x$1;
+  var missingVar,currentCodeSnippetId,s,v,refresh,currentCodeSnippetO,position,s$1,v$1,noSelectionVal,propertyCssVal,v$2,f,g,prior,propertyCssLinkVal,v$3,f$1,g$1,prior$1,propertyModeVal,v$4,f$2,g$2,prior$2,propertyThemeVal,v$5,f$3,g$3,prior$3,propertyLayoutVal,v$6,f$4,g$4,prior$4,propertyLayoutJSVal,v$7,f$5,g$5,prior$5,disableParseVal,disableFSIVal,disableFableVal,disableWebSharperVal,lastCodeAndStarts,getPredecessorsM,codeFS,codeJS,parserMsgs,outputMsgs,parsed,dirty,draggedId,compileRunW,$1,curPredecessors,topScrollList,fileName,fileInputElementId,loadFileElement,b,autoCompleteClient,parseFileName,latestParsedPrefix,isParseDisabled,parseIn,parseOut,parsingCode,rex1,rex2,rex,asyncStartDelayed,codeMirror,view,contentVar,changingIRefO,contentVarChanged,refVarChanged,codeMirrorRender,redraw,properties,triggerWSResult,actLoadFile,actSaveFile,actAddSnippet,actDeleteSnippet,actIndentSnippet,actOutdentSnippet,actGetFsCode,actSetSnippetProp,actEvalFsCode,actEvalCode,actFableFsCode,actFableCode,actRunWSNewTab,$2,actRunWSHere,$3,actRunWSIn,actParseCode,actCompileWS,$4,actFindDefinition,actRefreshEditor,actOutText,actAbortFsi,buttonsH,menuLeft,menuRight,menuBar,s$2,v$8,v$9,snippetList,x,steps,view$1,contentVar$1,changingIRefO$1,contentVarChanged$1,refVarChanged$1,layout,res,wsStationClient,b$1,cssLinks,x$1;
   function missing(def,find,lens,k)
   {
    return find(k)==null?Var$1.Lens(missingVar,function()
@@ -8809,10 +8899,10 @@
   {
    return prefix+parseFileName;
   }
-  function getCodeAndStartsFast(msgF,snp,addLinePrepos)
+  function getCodeAndStartsFast(snp,addLinePrepos)
   {
    var p,$7,pId,alp,preds,redO,cur,red1,t,o;
-   p=lastCodeAndStarts!=null&&lastCodeAndStarts.$==1&&((pId=lastCodeAndStarts.$0[0],(alp=lastCodeAndStarts.$0[1],Unchecked.Equals(pId,snp.id)&&Unchecked.Equals(alp,addLinePrepos)))&&($7=[lastCodeAndStarts.$0[1],lastCodeAndStarts.$0[0],lastCodeAndStarts.$0[2]],true))?(msgF("Reparsing..."),[$7[2],FsGlobal["CodeSnippet.get_PrepareSnippet"](snp)]):(msgF("Parsing..."),preds=FsGlobal["CodeSnippet.Predecessors"](snp),redO=Arrays.length(preds)===1?null:{
+   p=lastCodeAndStarts!=null&&lastCodeAndStarts.$==1&&((pId=lastCodeAndStarts.$0[0],(alp=lastCodeAndStarts.$0[1],Unchecked.Equals(pId,snp.id)&&Unchecked.Equals(alp,addLinePrepos)))&&($7=[lastCodeAndStarts.$0[1],lastCodeAndStarts.$0[0],lastCodeAndStarts.$0[2]],true))?[$7[2],FsGlobal["CodeSnippet.get_PrepareSnippet"](snp)]:(preds=FsGlobal["CodeSnippet.Predecessors"](snp),(redO=Arrays.length(preds)===1?null:{
     $:1,
     $0:CodeSnippet.ReducedCode(addLinePrepos,Slice.array(preds,{
      $:1,
@@ -8821,10 +8911,10 @@
      $:1,
      $0:Arrays.length(preds)-2
     }))
-   },cur=Arrays.get(preds,Arrays.length(preds)-1),lastCodeAndStarts={
+   },(cur=Arrays.get(preds,Arrays.length(preds)-1),(lastCodeAndStarts={
     $:1,
     $0:[cur.id,addLinePrepos,redO]
-   },[redO,cur]);
+   },[redO,cur]))));
    red1=CodeSnippet.ReducedCode(addLinePrepos,[p[1]]);
    t=Option.defaultValue(red1,(o=p[0],o==null?null:{
     $:1,
@@ -8845,26 +8935,21 @@
    }));
    return CodeSnippet.FinishCode(addLinePrepos,t[0],t[1],t[2],t[3],t[4],t[5]);
   }
-  function parseFSA(silent)
+  function parseRecFSA(silent,reparse)
   {
    var b$8;
-   function msgF(txt)
-   {
-    if(!silent)
-     parserMsgs.Set(txt);
-   }
    b$8=null;
    return Concurrency.Delay(function()
    {
-    var m,cur;
+    var m,p,starts,code;
     m=CodeSnippet$1.FetchO(currentCodeSnippetId.Get());
-    return m!=null&&m.$==1?(cur=m.$0,Concurrency.TryFinally(Concurrency.Delay(function()
+    return m!=null&&m.$==1?(p=getCodeAndStartsFast(m.$0,false),(starts=p[1],(code=p[0],code!==parsingCode||parseIn===parseOut&&reparse?Concurrency.Combine(Concurrency.TryFinally(Concurrency.Delay(function()
     {
-     var p,code,prefix;
+     var prefix;
      parsed=false;
-     p=getCodeAndStartsFast(msgF,cur,false);
-     code=p[0];
-     return!parsing||code!==parsingCode?(parsingCode=code,parsing=true,prefix=nextParsedPrefix(),(function($7)
+     parseIn=parseIn+1;
+     prefix=nextParsedPrefix();
+     ((function($7)
      {
       return function($8)
       {
@@ -8873,30 +8958,45 @@
      }(function(s$3)
      {
       console.log(s$3);
-     }))(prefix),Concurrency.Bind(autoCompleteClient.Parse$1(parseFile(prefix),code,p[1]),function(a$4)
+     }))(prefix));
+     return Concurrency.Combine(!silent?(parserMsgs.Set("Parsing..."),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
      {
-      ((function($7)
+      parsingCode=code;
+      return Concurrency.Bind(autoCompleteClient.Parse$1(parseFile(prefix),code,starts),function(a$4)
       {
-       return function($8)
+       latestParsedPrefix=prefix;
+       return Concurrency.Combine(!silent?(parserMsgs.Set("Parsed!"),addPrsMsg(a$4),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
        {
-        return $7("Parse result= "+Utils.prettyPrint($8));
-       };
-      }(function(s$3)
-      {
-       console.log(s$3);
-      }))(a$4!==""));
-      latestParsedPrefix=prefix;
-      return Concurrency.Combine(!silent?(addPrsMsg(a$4),addPrsMsg("Parsed!"),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
-      {
-       parsed=true;
-       return Concurrency.Zero();
-      }));
-     })):Concurrency.Zero();
+        parsed=true;
+        ((function($7)
+        {
+         return function($8)
+         {
+          return $7("Parse result= "+Utils.prettyPrint($8));
+         };
+        }(function(s$3)
+        {
+         console.log(s$3);
+        }))(a$4!==""));
+        return Concurrency.Zero();
+       }));
+      });
+     }));
     }),function()
     {
-     parsing=false;
-    })):Concurrency.Zero();
+     parseOut=parseOut+1;
+    }),Concurrency.Delay(function()
+    {
+     return parseIn===parseOut?Concurrency.Bind(parseRecFSA(silent,false),function()
+     {
+      return Concurrency.Return(null);
+     }):Concurrency.Zero();
+    })):Concurrency.Zero()))):Concurrency.Zero();
    });
+  }
+  function parseFSA(silent)
+  {
+   return parseRecFSA(silent,true);
   }
   function mustParse(cur)
   {
@@ -9924,8 +10024,8 @@
   parseFileName=FsGlobal.fsIds()+".fsx";
   latestParsedPrefix="a";
   isParseDisabled=View.GetAsync(Val.toView(disableParseVal));
-  parseRun=1;
-  parsing=false;
+  parseIn=0;
+  parseOut=0;
   parsingCode="";
   rex1="\\((\\d+)\\) F# (.+).fsx\\((\\d+)\\,(\\d+)\\): (error|warning) ((.|\\b)+)";
   rex2="(Err|Warning|Info)(FSharp|WebSharper)\\s+\"(\\((\\d+)\\) ?)?F?#? ?(.+?)(.fsx)? \\((\\d+)\\,\\s*(\\d+)\\) - \\((\\d+)\\,\\s*(\\d+)\\) ((.|\\s)+?)"+"\"";
@@ -10580,7 +10680,7 @@
    var b;
    Concurrency.Start((b=null,Concurrency.Delay(function()
    {
-    return Concurrency.Bind(HtmlNode.LoadFilesAsync(["https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.min.js"]),function()
+    return Concurrency.Bind(LoadFiles.LoadFilesAsync(["https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.min.js"]),function()
     {
      var options;
      options=Object.create(null);
