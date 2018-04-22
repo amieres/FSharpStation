@@ -1,0 +1,299 @@
+<div style="display:none" >
+    <div ws-template="CalculationTable" style="overflow: auto">
+        <table class="table table-striped" style="border-spacing: 0px; border-collapse: collapse; ">
+            <thead>
+                <th style="width: 20px " class="">&gt;</th>
+                <th style="width: 25%  ">Calculation</th>
+                <th style="width: 20px ">Type</th>
+                <th style="width: 75%  ">Formula</th>
+                <th style="width: 30px ">Order</th>
+                <th style="width: 10%  ">Format</th>
+                <th style="width: 20px ">text</th>
+                <th style="width: 20px ">bal.</th>
+            </thead>
+            <tbody ws-hole="TBody" >
+                <tr ws-template="TotalRow" class="level ${Selected} " ws-onafterrender="AfterRender" ws-onclick="Select">
+                    <td class="level-item">${SelectedMark}</td>
+                    <td class="level-item">
+                        <div>
+                            <input type="text" ws-var="TotName" class="form-control"  placeholder="New Total...">
+                        </div>
+                    </td>
+                    <td class="level-item">
+                    </td>
+                    <td class="level-item" >
+                    </td>
+                    <td class="level-item">
+                    </td>
+                    <td class="level-item">
+                        <div>
+                            <input type="text" ws-var="OrderTot" class="form-control"  placeholder="Sorting text...">
+                        </div>
+                    </td>
+                    <td class="level-item">
+                    </td>
+                    <td class="level-item">
+                        <div>
+                            <input type="text" ws-var="Format" class="form-control"  placeholder="Excel style Format...">
+                        </div>
+                    </td>
+                    <td class="level-item">
+                    </td>
+                    <td class="level-item">
+                    </td>
+                    <td class="level-item">
+                        <div style=" cursor: pointer " title="remove">
+                            <button ws-onclick="Remove" class="delete is-small">x</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr ws-template="CalculationRow" style="vertical-align: top" class="level ${Selected} hover" ws-onafterrender="AfterRender" ws-onclick="Select">
+                    <td class="level-item">${SelectedMark}</td>
+                    <td class="level-item">
+                        <div>
+                            <input type="text" ws-var="CalcName" class="form-control"  placeholder="New Calculation...">
+                        </div>
+                    </td>
+                    <td class="level-item">
+                        <select ws-var="CalcType" style="max-height: 1.6em">
+                            <option>Input</option>
+                            <option>Calc</option>
+                        </select>
+                    </td>
+                    <td class="level-item" >
+                        <table class="table table-nonstriped" style="border-spacing: 0px; width: 100%; border-collapse: collapse; ">
+                            <tbody ws-hole="Formulas">
+                                <tr ws-template="FormulaRow" style="vertical-align: top" class="level ${Selected} " ws-onafterrender="AfterRender" ws-onclick="Select">
+                                    <td style="width: 20px " class="level-item">${SelectedMark}</td>
+                                    <td style="width: 20px "class="level-item" >
+                                        <select ws-var="FormType" style="max-height: 1.55em" ws-attr="DisableForm1">
+                                            <option>Base</option>
+                                            <option>Consolidated</option>
+                                            <option>All</option>
+                                        </select>
+                                    </td>
+                                    <td  style="width: 75%  "class="level-item">
+                                        <div>
+                                            <input type="text" ws-var="Formula" ws-attr="DisableForm2" class="form-control"  placeholder="New Formula...">
+                                        </div>
+                                    </td>
+                                    <td style="width: 30px "class="level-item">
+                                        <div>
+                                            <input type="text" ws-var="OrderForm" ws-attr="DisableForm3" class="form-control"  placeholder="Sorting text...">
+                                        </div>
+                                    </td>
+                                    <td style="width: 15px "class="level-item">
+                                        <div style=" cursor: pointer; max-height: 1.55em " title="remove">
+                                            <button ws-onclick="Remove" class="delete is-small">x</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td class="level-item">
+                        <div>
+                            <input type="text" ws-var="OrderCalc" class="form-control"  placeholder="Sorting text...">
+                        </div>
+                    </td>
+                    <td class="level-item">
+                        <div>
+                            <input type="text" ws-var="Format" class="form-control"  placeholder="Excel style Format...">
+                        </div>
+                    </td>
+                    <td class="level-item">
+                        <input type="checkbox" ws-var="IsText"     id="IsText"     ws-attr="DisableCalc4" >
+                    </td>
+                    <td class="level-item">
+                        <input type="checkbox" ws-var="IsBalance"  id="IsBalance"  ws-attr="DisableCalc5" >
+                    </td>
+                    <td class="level-item">
+                        <div style=" cursor: pointer " title="remove">
+                            <button ws-onclick="Remove" class="delete is-small">x</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div ws-template="DimensionTable">
+        <table style="border-spacing:0px">
+            <thead>
+                <th style="width: 30%  ">Dimension</th>
+                <th style="width: 14% ">Abbreviation</th>
+                <th style="width: 14% ">Order</th>
+                <th style="width: 14% ">Type</th>
+                <th style="width: 14%  ">Exclude Cube Name</th>
+                <th style="width: 14% ">Include Freeze</th>
+            </thead>
+            <tbody ws-hole="TBody" ws-children-template="DimensionRow">
+                <tr ws-onclick="Select" style="margin-bottom: 2px" class="level  ">
+                <td class="level-item">
+                    <div>
+                        <input ws-var="Name" type="text" class="form-control" id="" placeholder="New Dimension...">
+                    </div>
+                </td>
+                <td class="level-item">
+                    <div>
+                        <input ws-var="Abbreviation" type="text" class="form-control" id="" placeholder="Abbreviation...">
+                    </div>
+                </td>
+                <td class="level-item">
+                    <div>
+                        <input ws-var="Order" type="text" class="form-control" id="" placeholder="order...">
+                    </div>
+                </td>
+                <td class="level-item">
+                    <select ws-var="Type" style="max-height: 1.6em">
+                        <option>DataType</option>
+                        <option>Time</option>
+                        <option>Version</option>
+                        <option>Other</option>
+                    </select>
+                </td>
+                <td class="level-item">
+                    <input type="checkbox" ws-var="ExcludeName"   >
+                </td>
+                <td class="level-item">
+                    <input type="checkbox" ws-var="IncludeFreeze" >
+                </td>
+                <td class="level-item">
+                    <div style=" cursor: pointer " title="remove">
+                        <button ws-onclick="Remove" class="delete is-small">x</button>
+                    </div>
+                </td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="btn" ws-onclick="NewDimension" type="button" id="">New Dimension...</button>
+    </div>
+    <table ws-template="DimsSelected" style="border-spacing:0px; width: 100%">
+            <thead>
+                <th>Dimension</th>
+                <th>For</th>
+            </thead>
+            <tbody ws-hole="TBody" ws-children-template="DimSelectedRow">
+                <tr>
+                    <td>
+                        <input type="checkbox" ws-var="DimensionCheck" id="SelectedDim" ><label for="SelectedDim">${Dimension}</label>
+                    </td>
+                    <td>
+                        <div>
+                            <input type="text" ws-var="Destination" class="form-control ${Hidden}" id="" placeholder="" >
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+    </table>
+    <div ws-template="FormulaDetail" style="overflow: auto; grid-area: two">
+        <div style="display: grid;height:100%;grid-template-rows: min-content;">
+        <table>
+          <thead>
+                <th style="width:50%"></th>
+                <th style="width:15%"></th>
+                <th style="width:25ch"></th>
+                <th style="width:15ch"></th>
+                <th style="width:15ch"></th>
+            </thead>
+          <tbody>
+          <tr>
+            <td><label>Name:  </label><input ws-var="CalcName" ws-attr="DisableCalc1" style="width:90%" placeHolder="New Calculation..."   ></td>
+            <td><label>Format:</label><input ws-var="Format"   ws-attr="DisableCalc2" style="width:50%" placeHolder="Excel style Format..."></td>
+            <td><div><label>type Calc.</label><select ws-var="CalcType" ws-attr="DisableCalc3" style="min-width: 60%">
+                    <option >Input</option>
+                    <option >Calc </option>
+                </select> </div>
+                <div><label>type Form.</label><select ws-var="FormType" ws-attr="DisableForm1" style="min-width: 60%" >
+                    <option>Base        </option>
+                    <option>Consolidated</option>
+                    <option>All         </option>
+                </select> </div>
+            </td>
+            <td>
+                <div><input type="checkbox" ws-var="IsText"     id="IsText"     ws-attr="DisableCalc4" ><label for="IsText"    >is Text    </label></div>
+                <div><input type="checkbox" ws-var="IsBalance"  id="IsBalance"  ws-attr="DisableCalc5" ><label for="IsBalance" >is Balance </label></div>
+                <div><input type="checkbox" ws-var="AlsoActual" id="AlsoActual" ws-attr="DisableForm2" ><label for="AlsoActual">also Actual</label></div>
+            </td>
+            <td><button class="btn" ws-onclick="AddFormula" ws-attr="DisableCalc6" type="button">Add Formula</button></td>
+          </tr>
+        </tbody>
+        </table>
+        <div style="margin-top: -12px; margin-bottom: 15px">
+            <label>Formula:</label>
+            <div ws-hole="Formula" style="margin-top:-12px; height:100%"></div>
+        </div>
+    </div>
+    </div>
+    <div ws-template="Buttons" style="
+                          overflow: hidden;
+                          display: grid;
+                          grid-template-columns: repeat(8, 12.1%);
+                          bxackground-color: #eee;
+                          padding : 5px;
+                          grid-gap: 5px;
+                      ; grid-area: two; dispxlay: grid">
+        <button ws-onclick="AddCalculation" class="btn" type="button" id="">Add Calculation</button>
+        <button ws-onclick="IndentOut" class="btn" type="button" id="">Indent Out &lt;&lt;</button>
+        <button ws-onclick="IndentIn"  class="btn" type="button" id="">Indent In &gt;&gt;</button>
+        <div class="input-group" style="grid-column: 4/6">
+            <span class="input-group-btn">
+                <label class="btn btn-primary">Load File...
+                    <div>
+                        <input ws-onclick="LoadFileClear" ws-onchange="LoadFileChanged" type="file" class="form-control" style="display: none" id="RuleEditorFileSel" placeholder="Enter text:">
+                    </div>
+                </label>
+            </span>
+            <input type="text" class="form-control" id="" placeholder="Enter text:">
+        </div>
+        <button ws-onclick="UpdateRules" class="btn" type="button" id="">Update Rules</button>
+        <button class="btn" type="button" id="">Run Fable</button>
+        <button class="btn" type="button" id="">Run WebSharper in ...</button>
+        <button ws-onclick="AddTotal" class="btn" type="button" id="">Add Total</button>
+        <button class="btn" type="button" id="">Find Definition</button>
+        <span></span>
+        <button ws-onclick="SaveAs" type="button" id="" class="btn">Save as...</button>
+        <span></span>
+        <button ws-onclick="GetFSCode" class="btn" type="button" id="">Get F# Code</button>
+        <button ws-onclick="Parse" class="btn" type="button" id="">Parse F#</button>
+    </div>
+    <textarea ws-template="GlobalText" ws-var="Var" style="height: 100%;  width: 100%; box-sizing: border-box; " spellcheck="false" title="" placeholder="Enter text:"                             ></textarea>
+    <textarea ws-template="Output"     ws-var="Var" style="height: 100%;  width: 100%; box-sizing: border-box; " spellcheck="false" title="" placeholder="Output:"                                 ></textarea>
+    <textarea ws-template="FSCode"     ws-var="Var" style="height: 100%;  width: 100%; box-sizing: border-box; " spellcheck="false" title="" placeholder="F# Code:"                                ></textarea>
+    <textarea ws-template="Parser"     ws-var="Var" style="height: 100%;  width: 100%; box-sizing: border-box; " spellcheck="false" title="" placeholder="Parser messages:" ws-ondblclick="JumpRef"></textarea>
+    <style>
+        .Hidden     { display   : none         }
+        table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }
+        td input.form-control { 
+            padding    : 0px; 
+            font-family: monospace;
+            font-size  :   small;
+            margin-top :   0px;
+            margin-left: -2px;
+            width      : 100%
+        }
+        td select {
+            font-size : smaller;
+            max-width : 8ch;
+        }
+        textarea {
+           resize : none;
+        }
+        .tab-content {
+            overflow: hidden
+        }
+        table.table-striped    tbody tr:nth-child(even) {background: #EEE  }
+        table.table-striped    tbody tr:nth-child(odd ) {background: #FFF  }
+        table.table-striped    tbody input              {background: transparent; border: none}
+        table.table-striped    tbody select             {background: transparent; border: none}
+        table.table-nonstriped tbody tr:nth-child(even) {background: inherit }
+        table.table-nonstriped tbody tr:nth-child(odd ) {background: inherit }
+    </style>
+    <style>
+        table.table            tbody th:hover    { background   : gray; cursor: pointer }
+        table.table            tbody tr.hover          { border       : solid thin transparent; } 
+        table.table            tbody tr.hover:hover    { border       : solid thin blue     ; } 
+        table.table            tbody tr.hover:hover>td { border-top   : solid thin blue     ; 
+                                                   border-bottom: solid thin blue     ; } 
+        table.table            tbody tr.selected { background   : #b9eeff             ; }       
+    </style>
+</div>

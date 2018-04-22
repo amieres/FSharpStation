@@ -4,4 +4,8 @@
 /bin1
 /bin/compiled/*
 !/bin/compiled/FsTranslator
-!/bin/compiled/RemotingDll
+!/bin/compiled/RuleEditor
+/bin/compiled/RuleEditor/*
+!/bin/compiled/RuleEditor/website
+/bin/compiled/RuleEditor/website/*
+!/bin/compiled/RuleEditor/website/*.html
