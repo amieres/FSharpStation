@@ -12,11 +12,11 @@
                 <th style="width: 20px ">bal.</th>
             </thead>
             <tbody ws-hole="TBody" >
-                <tr ws-template="TotalRow" class="level ${Selected} " ws-onafterrender="AfterRender" ws-onclick="Select">
+                <tr ws-template="TotalRow" class="level ${Selected} hover" ws-onafterrender="AfterRender" ws-onclick="Select">
                     <td class="level-item">${SelectedMark}</td>
                     <td class="level-item">
                         <div>
-                            <input type="text" ws-var="TotName" class="form-control"  placeholder="New Total...">
+                            <input type="text" ws-var="TotName" class="form-control" style="margin-left:${Indent}; width: calc(100% - ${Indent})" placeholder="New Total...">
                         </div>
                     </td>
                     <td class="level-item">
@@ -47,11 +47,11 @@
                         </div>
                     </td>
                 </tr>
-                <tr ws-template="CalculationRow" style="vertical-align: top" class="level ${Selected} hover" ws-onafterrender="AfterRender" ws-onclick="Select">
+                <tr ws-template="CalculationRow" style="vertical-align: top" class="calculation ${Selected} hover" ws-onafterrender="AfterRender" ws-onclick="Select">
                     <td class="level-item">${SelectedMark}</td>
                     <td class="level-item">
                         <div>
-                            <input type="text" ws-var="CalcName" class="form-control"  placeholder="New Calculation...">
+                            <input type="text" ws-var="CalcName" class="form-control" style="margin-left:${Indent}; width: calc(100% - ${Indent})" placeholder="New Calculation...">
                         </div>
                     </td>
                     <td class="level-item">
@@ -63,7 +63,7 @@
                     <td class="level-item" >
                         <table class="table table-nonstriped" style="border-spacing: 0px; width: 100%; border-collapse: collapse; ">
                             <tbody ws-hole="Formulas">
-                                <tr ws-template="FormulaRow" style="vertical-align: top" class="level ${Selected} " ws-onafterrender="AfterRender" ws-onclick="Select">
+                                <tr ws-template="FormulaRow" style="vertical-align: top" class="formula ${Selected} " ws-onafterrender="AfterRender" ws-onclick="Select">
                                     <td style="width: 20px " class="level-item">${SelectedMark}</td>
                                     <td style="width: 20px "class="level-item" >
                                         <select ws-var="FormType" style="max-height: 1.55em" ws-attr="DisableForm1">
@@ -102,10 +102,10 @@
                         </div>
                     </td>
                     <td class="level-item">
-                        <input type="checkbox" ws-var="IsText"     id="IsText"     ws-attr="DisableCalc4" >
+                        <input type="checkbox" ws-var="IsText"     id="IsText"     ws-attr="DisableCalc4" class="form-control"  >
                     </td>
                     <td class="level-item">
-                        <input type="checkbox" ws-var="IsBalance"  id="IsBalance"  ws-attr="DisableCalc5" >
+                        <input type="checkbox" ws-var="IsBalance"  id="IsBalance"  ws-attr="DisableCalc5" class="form-control"  >
                     </td>
                     <td class="level-item">
                         <div style=" cursor: pointer " title="remove">
@@ -294,6 +294,9 @@
         table.table            tbody tr.hover:hover    { border       : solid thin blue     ; } 
         table.table            tbody tr.hover:hover>td { border-top   : solid thin blue     ; 
                                                    border-bottom: solid thin blue     ; } 
-        table.table            tbody tr.selected { background   : #b9eeff             ; }       
+        table.table            tbody tr.selected { background   : #b9eeff             ; }
+        table.table            tbody tr.formula.selected { background: #20f7f7             ; }
+        button       { border: solid thin transparent }
+        button:hover { border: solid thin blue }
     </style>
 </div>
