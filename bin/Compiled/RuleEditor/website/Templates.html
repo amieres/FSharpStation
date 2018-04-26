@@ -13,24 +13,19 @@
             </thead>
             <tbody ws-hole="TBody" >
                 <tr ws-template="TotalRow" class="level ${Selected} hover" ws-onafterrender="AfterRender" ws-onclick="Select">
-                    <td class="level-item">${SelectedMark}</td>
-                    <td class="level-item">
-                        <div>
-                            <input type="text" ws-var="TotName" class="form-control" style="margin-left:${Indent}; width: calc(100% - ${Indent})" placeholder="New Total...">
-                        </div>
+                    <td class="level-item" ws-onclick="Collapse" style="cursor: pointer; background: white" >${SelectedMark}</td>
+                    <td class="level-item" style="padding-left: 0px; position: relative">
+                        <span class="indenter" style="min-width:${Indent}; width:${Indent}"></span>
+                        <input type="text" ws-var="TotName" class="form-control" style="margin-left:calc(2px + ${Indent}); width: calc(100% - ${Indent})" placeholder="New Total...">
                     </td>
                     <td class="level-item">
                     </td>
                     <td class="level-item" >
                     </td>
                     <td class="level-item">
-                    </td>
-                    <td class="level-item">
                         <div>
                             <input type="text" ws-var="OrderTot" class="form-control"  placeholder="Sorting text...">
                         </div>
-                    </td>
-                    <td class="level-item">
                     </td>
                     <td class="level-item">
                         <div>
@@ -42,17 +37,16 @@
                     <td class="level-item">
                     </td>
                     <td class="level-item">
-                        <div style=" cursor: pointer " title="remove">
+                        <div style=" cursor: pointer " title="remove Total">
                             <button ws-onclick="Remove" class="delete is-small">x</button>
                         </div>
                     </td>
                 </tr>
                 <tr ws-template="CalculationRow" style="vertical-align: top" class="calculation ${Selected} hover" ws-onafterrender="AfterRender" ws-onclick="Select">
-                    <td class="level-item">${SelectedMark}</td>
-                    <td class="level-item">
-                        <div>
-                            <input type="text" ws-var="CalcName" class="form-control" style="margin-left:${Indent}; width: calc(100% - ${Indent})" placeholder="New Calculation...">
-                        </div>
+                    <td class="level-item" style="cursor: pointer; background: white">${SelectedMark}</td>
+                    <td class="level-item" style="padding-left: 0px; position: relative">
+                        <span class="indenter" style="min-width:${Indent}; width:${Indent}"></span>
+                        <input type="text" ws-var="CalcName" class="form-control" style="margin-left:calc(2px + ${Indent}); width: calc(100% - ${Indent})" placeholder="New Calculation...">
                     </td>
                     <td class="level-item">
                         <select ws-var="CalcType" style="max-height: 1.6em">
@@ -64,7 +58,7 @@
                         <table class="table table-nonstriped" style="border-spacing: 0px; width: 100%; border-collapse: collapse; ">
                             <tbody ws-hole="Formulas">
                                 <tr ws-template="FormulaRow" style="vertical-align: top" class="formula ${Selected} " ws-onafterrender="AfterRender" ws-onclick="Select">
-                                    <td style="width: 20px " class="level-item">${SelectedMark}</td>
+                                    <td style="width: 1ch ; max-width: 1ch; min-width: 1ch;" class="level-item">${SelectedMark}</td>
                                     <td style="width: 20px "class="level-item" >
                                         <select ws-var="FormType" style="max-height: 1.55em" ws-attr="DisableForm1">
                                             <option>Base</option>
@@ -77,13 +71,9 @@
                                             <input type="text" ws-var="Formula" ws-attr="DisableForm2" class="form-control"  placeholder="New Formula...">
                                         </div>
                                     </td>
-                                    <td style="width: 30px "class="level-item">
-                                        <div>
-                                            <input type="text" ws-var="OrderForm" ws-attr="DisableForm3" class="form-control"  placeholder="Sorting text...">
-                                        </div>
-                                    </td>
+                                    <td style="max-width: 30ch; text-align: right; white-space: nowrap;" class="level-item">${FormulaFor}</td>
                                     <td style="width: 15px "class="level-item">
-                                        <div style=" cursor: pointer; max-height: 1.55em " title="remove">
+                                        <div style=" cursor: pointer; max-height: 1.55em " title="remove Formula">
                                             <button ws-onclick="Remove" class="delete is-small">x</button>
                                         </div>
                                     </td>
@@ -108,7 +98,7 @@
                         <input type="checkbox" ws-var="IsBalance"  id="IsBalance"  ws-attr="DisableCalc5" class="form-control"  >
                     </td>
                     <td class="level-item">
-                        <div style=" cursor: pointer " title="remove">
+                        <div style=" cursor: pointer " title="remove Calculation">
                             <button ws-onclick="Remove" class="delete is-small">x</button>
                         </div>
                     </td>
@@ -249,7 +239,7 @@
         <button class="btn" type="button" id="">Run Fable</button>
         <button class="btn" type="button" id="">Run WebSharper in ...</button>
         <button ws-onclick="AddTotal" class="btn" type="button" id="">Add Total</button>
-        <button class="btn" type="button" id="">Find Definition</button>
+        <span style="grid-column: 2/4"><label>Server:</label><input ws-var="Server" style="width: calc(100% - 7ch)" placeHolder="Server..."   ></span>
         <span></span>
         <button ws-onclick="SaveAs" type="button" id="" class="btn">Save as...</button>
         <span></span>
@@ -298,5 +288,10 @@
         table.table            tbody tr.formula.selected { background: #20f7f7             ; }
         button       { border: solid thin transparent }
         button:hover { border: solid thin blue }
+        .indenter { position  : absolute; 
+                    top:0px; bottom:0px; left:0px; 
+                    background: white; color:white;
+                    border-right: gray thin dotted;
+                    }
     </style>
 </div>
