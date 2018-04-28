@@ -157,24 +157,29 @@
         </table>
         <button class="btn" ws-onclick="NewDimension" type="button" id="">New Dimension...</button>
     </div>
-    <table ws-template="DimsSelected" style="border-spacing:0px; width: 100%">
-            <thead>
-                <th>Dimension</th>
-                <th>For</th>
-            </thead>
-            <tbody ws-hole="TBody" ws-children-template="DimSelectedRow">
-                <tr>
-                    <td>
-                        <input type="checkbox" ws-var="DimensionCheck" id="SelectedDim" ><label for="SelectedDim">${Dimension}</label>
-                    </td>
-                    <td>
-                        <div>
-                            <input type="text" ws-var="Destination" class="form-control ${Hidden}" id="" placeholder="" >
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-    </table>
+    <div ws-template="DimsSelected" style="background: white; height: 100%">
+        <div style="height: 1em"></div>
+        <span><label>Cube:</label><input ws-var="CubeName" ws-attr="DisableCalc1" style="width:calc(100% - 5ch)" placeHolder="cube name..." ></span>
+        <div style="height: 1em"></div>
+        <table style="border-spacing:0px; width: 100%">
+                <thead>
+                    <th>Dimension</th>
+                    <th>For</th>
+                </thead>
+                <tbody ws-hole="TBody" ws-children-template="DimSelectedRow">
+                    <tr>
+                        <td>
+                            <input type="checkbox" ws-var="DimensionCheck" id="SelectedDim" ><label for="SelectedDim">${Dimension}</label>
+                        </td>
+                        <td>
+                            <div>
+                                <input type="text" ws-var="Destination" class="form-control ${Hidden}" id="" placeholder="" >
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+        </table>
+    </div>
     <div ws-template="FormulaDetail" style="overflow: auto; grid-area: two">
         <div style="display: grid;height:100%;grid-template-rows: min-content;">
         <table>
