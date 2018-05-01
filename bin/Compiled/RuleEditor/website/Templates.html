@@ -42,7 +42,15 @@
                         </div>
                     </td>
                 </tr>
-                <tr ws-template="CalculationRow" style="vertical-align: top" class="calculation ${Selected} hover" ws-onafterrender="AfterRender" ws-onclick="Select">
+                <tr ws-template="CalculationRow" style="vertical-align: top" 
+                    class="calculation ${Selected} hover" 
+                    ws-onafterrender="AfterRender" 
+                    ws-onclick="Select"
+                    draggable="true"
+                    ws-ondrag="Drag"
+                    ws-ondragover="DragOver"
+                    ws-ondrop="Drop"
+                    >
                     <td class="level-item" style="cursor: pointer; background: white">${SelectedMark}</td>
                     <td class="level-item" style="padding-left: 0px; position: relative">
                         <span class="indenter" style="min-width:${Indent}; width:${Indent}"></span>
@@ -57,7 +65,15 @@
                     <td class="level-item" >
                         <table class="table table-nonstriped" style="border-spacing: 0px; width: 100%; border-collapse: collapse; ">
                             <tbody ws-hole="Formulas">
-                                <tr ws-template="FormulaRow" style="vertical-align: top" class="formula ${Selected} " ws-onafterrender="AfterRender" ws-onclick="Select">
+                                <tr ws-template="FormulaRow" style="vertical-align: top" 
+                                    class="formula ${Selected} " 
+                                    ws-onafterrender="AfterRender" 
+                                    ws-onclick="Select"
+                                    draggable="true"
+                                    ws-ondrag="Drag"
+                                    ws-ondragover="DragOver"
+                                    ws-ondrop="Drop"
+                                    >
                                     <td style="width: 1ch ; max-width: 1ch; min-width: 1ch;" class="level-item">${SelectedMark}</td>
                                     <td style="width: 20px "class="level-item" >
                                         <select ws-var="FormType" style="max-height: 1.55em" ws-attr="DisableForm1">
@@ -159,7 +175,7 @@
     </div>
     <div ws-template="DimsSelected" style="background: white; height: 100%">
         <div style="height: 1em"></div>
-        <span><label>Cube:</label><input ws-var="CubeName" ws-attr="DisableCalc1" style="width:calc(100% - 5ch)" placeHolder="cube name..." ></span>
+        <span><label>Cube:</label><input ws-var="CubeName" ws-attr="DisableCalc1" style="width:calc(100% - 5ch)" placeHolder="${PossibleCubeName}" ></span>
         <div style="height: 1em"></div>
         <table style="border-spacing:0px; width: 100%">
                 <thead>
@@ -241,7 +257,7 @@
             <input type="text" class="form-control" id="" placeholder="Enter text:">
         </div>
         <button ws-onclick="UpdateRules" class="btn" type="button" id="">Update Rules</button>
-        <button class="btn" type="button" id="">Run Fable</button>
+        <button ws-onclick="Reorder" class="btn" type="button" id="">Reorder</button>
         <button class="btn" type="button" id="">Run WebSharper in ...</button>
         <button ws-onclick="AddTotal" class="btn" type="button" id="">Add Total</button>
         <span style="grid-column: 2/4"><label>Server:</label><input ws-var="Server" style="width: calc(100% - 7ch)" placeHolder="Server..."   ></span>
