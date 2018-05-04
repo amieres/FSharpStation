@@ -12,7 +12,15 @@
                 <th style="width: 20px ">bal.</th>
             </thead>
             <tbody ws-hole="TBody" >
-                <tr ws-template="TotalRow" class="level ${Selected} hover" ws-onafterrender="AfterRender" ws-onclick="Select">
+                <tr ws-template="TotalRow" 
+                    class="level ${Selected} hover" 
+                    ws-onafterrender="AfterRender" 
+                    ws-onclick="Select"
+                    draggable="true"
+                    ws-ondrag="Drag"
+                    ws-ondragover="DragOver"
+                    ws-ondrop="Drop"
+                    >
                     <td class="level-item" ws-onclick="Collapse" style="cursor: pointer; background: white" >${SelectedMark}</td>
                     <td class="level-item" style="padding-left: 0px; position: relative">
                         <span class="indenter" style="min-width:${Indent}; width:${Indent}"></span>
