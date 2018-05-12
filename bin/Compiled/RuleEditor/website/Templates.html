@@ -58,12 +58,30 @@
     <div ws-template="Layout" style="height: calc(100vh - 16px); width: calc(100vw - 16px)" class="relative" >
         <ws-FixedSplitterHor>
             <PartSizes>55px calc(100% - 55px)</PartSizes>
-            <First><div class="title">Rule Editor</div></First>
+            <First>
+                <span style="display: grid;
+                      grid-template-columns: 30% 20% 20% 10%;
+                      grid-gap: 25px;
+                    ">
+                    <div class="title">Rule Editor</div>
+                    <div ><div><label>Server:</label></div><input ws-var="Server" style="width: 100%" placeHolder="Server..."   ></div>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <label class="btn btn-primary">Load File...
+                                <div>
+                                    <input ws-onclick="LoadFileClear" ws-onchange="LoadFileChanged" type="file" class="form-control" style="display: none" id="RuleEditorFileSel" placeholder="Filename:">
+                                </div>
+                            </label>
+                        </span>
+                        <input type="text" class="form-control" id="" placeholder="Filename:" style="width: 100%;">
+                    </div>                                    
+                    <button ws-onclick="SaveAs" type="button" id="" class="btn">Save as...</button>
+                </span>
+            </First>
             <Second>
                 <wcomp-splitter value="85" min="0" max="100" >
-                    <ws-FixedSplitterVer class="absolute">
+                    <ws-FixedSplitterVer>
                         <PartSizes>150px calc(100% - 150px)</PartSizes>
-                        <Gap>5px</Gap>
                         <First>
                             <div style="
                                 overflow: hidden;
@@ -86,18 +104,6 @@
                                 <button ws-onclick="GetFSCode" class="btn" type="button" id="">Get F# Code</button>
                                 <button ws-onclick="Parse" class="btn" type="button" id="">Parse F#</button>
                                 <span></span>
-                                <div ><div><label>Server:</label></div><input ws-var="Server" style="width: 100%" placeHolder="Server..."   ></div>
-                                <div class="input-group">
-                                    <span class="input-group-btn">
-                                        <label class="btn btn-primary">Load File...
-                                            <div>
-                                                <input ws-onclick="LoadFileClear" ws-onchange="LoadFileChanged" type="file" class="form-control" style="display: none" id="RuleEditorFileSel" placeholder="Filename:">
-                                            </div>
-                                        </label>
-                                    </span>
-                                    <input type="text" class="form-control" id="" placeholder="Filename:" style="width: 100%;">
-                                </div>                                    
-                                <button ws-onclick="SaveAs" type="button" id="" class="btn">Save as...</button>
                             </div>
                         </First>
                         <Second>
@@ -107,11 +113,11 @@
                                     <div    ws-hole="FormulaDetail"    style="overflow: auto;"></div>
                                 </wcomp-splitter>        
                                 <wcomp-tabstrip >
-                                    <wcomp-splitter min="0" max="100" tabname="Dimensions">
+                                        <div style="display: grid; grid-template-rows: 16px auto; background-color: aliceblue " tabname="Global Definitions"><h3>Global Definitions</h3><div ws-replace="GlobalText" style="height: 100%;" ></div></div>
+                                        <wcomp-splitter min="0" max="100" tabname="Dimensions" style="background-color:aliceblue">
                                         <div ws-hole="DimensionTable" style="overflow: auto;"></div>
                                         <div ws-hole="DimsSelected"   style="overflow: auto;"></div>
                                     </wcomp-splitter>
-                                    <div style="display: grid; grid-template-rows: 16px auto " tabname="Global Definitions"><h3>Global Definitions</h3><div ws-replace="GlobalText" style="height: 100%;" ></div></div>
                                 </wcomp-tabstrip>
                             </wcomp-splitter>
                         </Second>
