@@ -93,8 +93,42 @@ namespace FSSGlobal
         let splitByChar (c: char) (s: string) = s.Split c
         let trim                  (s: string) = s.Trim()
         let append     (a: string)(b: string) =  a + b
+        let skipFirstLine (txt:string) = txt.IndexOf '\n' |> fun i -> if i < 0 then "" else txt.[i + 1..]
+        
+    #if WEBSHARPER
+    [<WebSharper.Inline>]
+    #endif
+    let inline tee f v = f v ; v
+    
+    module Log =
+    
+        #if WEBSHARPER
+        [<WebSharper.Inline>]
+        #endif
+        let inline In  n f =      tee (printfn "%s %s in: %A"  (nowStamp()) n) >> f
+        
+        #if WEBSHARPER
+        [<WebSharper.Inline>]
+        #endif
+        let inline Out n f = f >> tee (printfn "%s %s out: %A" (nowStamp()) n)
+        
+        #if WEBSHARPER
+        [<WebSharper.Inline>]
+        #endif
+        let inline InOut n = In n >> Out n
         
         
+    #if WEBSHARPER
+    [<WebSharper.Inline>]
+    #endif
+    let inline swap f a b = f b a
+    
+    #if WEBSHARPER
+    [<WebSharper.Inline>]
+    #endif
+    let inline __   f a b = f b a
+    
+    
     open System
     //#nowarn "1178"
          
@@ -124,10 +158,15 @@ namespace FSSGlobal
             | Some v, Some f -> f v
             | _     , _      -> ()
     
-        let apply vO fO =
-            match vO, fO with
-            | Some v, Some f -> f v |> Some
+        let apply fO  vO =
+            match fO, vO with
+            | Some f, Some v -> f v |> Some
             | _     , _      -> None
+    
+        let join vOO =
+            match vOO with
+            | Some vO -> vO
+            | _       -> None
     
         let modify modifier = Option.map (fun f -> modifier f) >> defaultValue id
           
@@ -160,6 +199,7 @@ namespace FSSGlobal
             member this.ErrMsg   : string = msg
             member this.IsWarning: bool   = warning
         override this.ToString() = (this :> ErrMsg).ErrMsg
+    let errSimple msg = ErrSimple(msg, false)
     
     type Result< 'TSuccess> = Result  of 'TSuccess option * ErrMsg    []     
     type ResultS<'TSuccess> = ResultS of 'TSuccess option * ErrSimple []
@@ -170,7 +210,12 @@ namespace FSSGlobal
         let inline succeedWithMsgs     x  ms   = Result (Some x           ,   ms               )
         let inline fail                   m    = Result (None             , [|m |]             )
         let inline failWithMsgs           ms   = Result (None             ,   ms               )
-        let inline map       f (Result(o, ms)) = Result (o |> Option.map f,   ms               )
+        let inline failException          e    = ExceptionThrown(e) :> ErrMsg
+        /// map without try protection
+        let inline map0      f (Result(o, ms)) =       Result(o |> Option.map f, ms)
+        /// map with try protection in case of exceptions
+        let inline map       f (Result(o, ms)) = try   Result(o |> Option.map f, ms)
+                                                 with  e -> failException e |> fail
         let inline mapErr    f (Result(o, ms)) = Result (o                ,   ms |> Array.map f)
         let inline mapMsg    f (Result(o, ms)) =        (o                ,   ms |> Array.map f)
         let inline mapMsgs   f (Result(o, ms)) =        (o                ,   ms |>           f)
@@ -178,18 +223,28 @@ namespace FSSGlobal
         let inline getMsgs     (Result(_, ms)) =                             ms
         let inline mergeMsgs              ms r = Result (r |> mapMsgs   (Array.append ms) )
         let inline combine     (Result(o, ms)) (rb: unit -> Result<_>) = o |> Option.map (fun _ -> rb() |> mergeMsgs ms) |> Option.defaultValue (Result(None, ms))
-        let inline bind      f (Result(o, ms)) = 
-            match o with
-            | Some x   -> match f x with Result(o2, ms2) -> Result(o2, Array.append ms ms2)
-            | None     -> Result(None, ms)
-        let inline apply (Result(fO, fMs))  (Result(o , ms)) = 
-            match fO, o with
-            | Some f, Some x -> Result(f x |> Some, Array.append fMs ms)
-            | _              -> Result(None       , Array.append fMs ms)
+        let inline join arr                    =
+            match arr with
+            | Result(None                , ms ) -> Result(None, ms                  ) 
+            | Result(Some(Result(b, ms1)), ms2) -> Result(b   , Array.append ms2 ms1) 
+        /// bind with no try protection
+        let inline bind0     f  ar             = map0 f ar |> join 
+        /// bind with try protection in case of exceptions
+        let inline bind      f  ar             = map  f ar |> join
+        let inline applyMap mapF (Result(fO, fMs)) aR =
+            match fO with
+            | None   -> aR |> getMsgs |> Array.append fMs |> failWithMsgs
+            | Some f -> aR |> mapF f
+        /// apply with try protection in case of exceptions
+        let inline apply0    fr ar = applyMap map0 fr ar
+        /// apply with try protection in case of exceptions
+        let inline apply     fr ar = applyMap map  fr ar
+        let map2 f a1 a2 = apply <| apply (succeed f) a1 <| a2
             
         let inline failSimpleError   m = (m, false) |> ErrSimple |> fail 
         let inline failSimpleWarning m = (m, true ) |> ErrSimple |> fail 
-    
+        let inline isError (Result (v, _)) = v.IsNone
+        let inline isGood  (Result (v, _)) = v.IsSome
     
         let (|Success|Failure|) =
             function 
@@ -230,7 +285,6 @@ namespace FSSGlobal
     //        | Some rop -> rop                               /// or the given message if None
     //        | None -> fail message 
     
-        let failException e = ExceptionThrown(e) :> ErrMsg
     
     ///            tryCall: (exn -> Result<'b>) ->  ('a -> Result<'b>) -> 'a -> Result<'b> =
         let inline tryCall (f:'a -> Result<'b>) (v:'a) : Result<'b> = try f v with e -> failException e |> fail
@@ -238,11 +292,11 @@ namespace FSSGlobal
         type ropBuilder() =
             member inline this.Return     (x)                       = succeed x
             member inline this.ReturnFrom (x)                       = x
-            member        this.Bind       (w:Result<'a>, r: 'a -> Result<'b>) = bind (tryCall r) w
+            member        this.Bind       (w:Result<'a>, r: 'a -> Result<'b>) = bind r w
             member inline this.Zero       ()                        = succeed ()
             member inline this.Delay      (f)                       = f
             member inline this.Combine    (a, b)                    = combine a b
-            member inline this.Run        (f)                       = f()
+            member inline this.Run        (f)                       = bind f <| succeed ()
             member this.While(guard, body) =
                 if not (guard()) 
                 then this.Zero() 
@@ -273,6 +327,9 @@ namespace FSSGlobal
         let fromOption m =
             function | None   -> fail    m
                      | Some v -> succeed v
+        let fromOptionW m =
+            function | None   -> fail    (m())
+                     | Some v -> succeed v
     
         let toOption   (Result(o, _ )) = o
         let toOptionMs (Result(o, ms)) = o, ms
@@ -298,12 +355,12 @@ namespace FSSGlobal
     //        function | Success (_, ms) -> f false ms
     //                 | Failure     ms  -> f true  ms
     
-        let seqCheck s = 
-            s 
-            |> (fun elems -> match      elems |> Seq.exists(function | Failure _    -> true    | _ -> false) with
-                             | true  -> elems |> Seq.pick  (function | Failure ms   -> Some ms | _ -> None ) |> failWithMsgs
-                             | false -> elems |> Seq.map   (function | Result (vO,_)-> vO.Value            ) |> succeed
-            )
+    //    let seqCheck s = 
+    //        s 
+    //        |> (fun elems -> match      elems |> Seq.exists(function | Failure _    -> true    | _ -> false) with
+    //                         | true  -> elems |> Seq.pick  (function | Failure ms   -> Some ms | _ -> None ) |> failWithMsgs
+    //                         | false -> elems |> Seq.map   (function | Result (vO,_)-> vO.Value            ) |> succeed
+    //        )
     
         let msgs2String   (ms: ErrMsg []) = ms |> Array.map (fun m -> m.ErrMsg)
         let getMessages   (ms: ErrMsg []) = ms |> msgs2String |> String.concat "\n"
@@ -329,7 +386,33 @@ namespace FSSGlobal
         let fromResultS (ResultS(v, ms)) = Result (v, ms |> Array.map (fun m -> m :> ErrMsg                     ))
         let toResultS   (Result( v, ms)) = ResultS(v, ms |> Array.map (fun m -> ErrSimple(m.ErrMsg, m.IsWarning)))
     
-    open Result
+        module Seq =
+            let cons h t = Seq.append t (Seq.singleton h) 
+            /// Map an AsyncResult producing function over a list to get a new AsyncResult
+            /// using monadic style
+            /// ('a -> XResult<'b>) -> 'a list -> XResult<'b list>
+            let rec traverseM f sequ =
+                let (>>=) v f = bind f v
+                let retn      = succeed
+                let initState = retn (seq[])
+                let folder tail head = f head >>= (fun h -> tail >>= (fun t -> retn (cons h t) ))
+                Seq.fold folder initState sequ  
+            /// Transform a "list<XResult>" into a "XResult<list>"
+            /// and collect the results using bind.
+            let inline sequenceM x = traverseM id x
+        
+            /// Map a Result producing function over a list to get a new Result 
+            /// using applicative style
+            /// ('a -> Result<'b>) -> 'a list -> Result<'b list>
+            let rec traverseA f sequ =
+                let (<*>)     = apply
+                let retn      = succeed
+                let initState = retn (Seq.empty)
+                let folder tail head = retn cons <*> f head <*> tail
+                Seq.fold folder initState sequ
+            /// Transform a "list<Result>" into a "Result<list>" 
+            /// and collect the results using apply.
+            let inline sequenceA x = traverseA id x
     
     module ResultS =
         let fromResult = Result.toResultS
@@ -339,10 +422,11 @@ namespace FSSGlobal
     | WResult of Result<'T>
     | WAsync  of Async<'T>
     | WAsyncR of Async<Result<'T>>
-    | WSimple of 'T
-    | WOption of 'T option
+    | WSome   of 'T
+    | WNone
     
     module Wrap =
+        open Result
         let errOptionIsNone = ErrOptionIsNone() :> ErrMsg
     
         let wb2arb ms = 
@@ -352,26 +436,24 @@ namespace FSSGlobal
             | WAsyncR     arb  -> async { let!   rb = arb                               
                                           return rb |> mergeMsgs                 ms }
             | WResult      rb  -> async { return rb |> mergeMsgs                 ms }
-            | WSimple       b                                                           
-            | WOption (Some b) -> async { return succeedWithMsgs b               ms }
-            | WOption None     -> async { return failWithMsgs      (Array.append ms [| errOptionIsNone |] )}
+            | WSome         b  -> async { return succeedWithMsgs b               ms }
+            | WNone            -> async { return failWithMsgs      (Array.append ms [| errOptionIsNone |] )}
     
         let tryCall (f: 'a -> Wrap<'b>) (a:'a) = 
             try f a 
             with e -> failException e |> fail |> WResult
     
-        let bind (f: 'a -> Wrap<'b>) (wa: Wrap<'a>) :Wrap<'b> =
+        /// bind with old implementation
+        let bind0' (f: 'a -> Wrap<'b>) (wa: Wrap<'a>) :Wrap<'b> =
             match wa with
-            | WSimple         a       
-            | WOption(Some    a)       
+            | WSome           a       
             | WResult(Success(a, [||])) -> tryCall f a
-            | WOption None            -> None            |> WOption
+            | WNone                     -> WNone
             | WResult(Failure    ms ) -> failWithMsgs ms |> WResult 
             | WResult(Success(a, ms)) -> tryCall f a
                                          |> function
-                                         | WSimple         b              
-                                         | WOption(Some    b       ) -> succeedWithMsgs b               ms                   |> WResult 
-                                         | WOption None              -> failWithMsgs (Array.append ms [| errOptionIsNone |] )|> WResult
+                                         | WSome           b         -> succeedWithMsgs b               ms                   |> WResult 
+                                         | WNone                     -> failWithMsgs (Array.append ms [| errOptionIsNone |] )|> WResult
                                          | WResult(Success(b, [||])) -> succeedWithMsgs b               ms                   |> WResult 
                                          | WResult(Success(b, m2  )) -> succeedWithMsgs b (Array.append ms m2)               |> WResult 
                                          | WResult(Failure    m2  )  -> failWithMsgs      (Array.append ms m2)               |> WResult 
@@ -392,15 +474,84 @@ namespace FSSGlobal
                                                         | Failure    ms  -> async { return failWithMsgs ms }
                                              return! arb
                                          } |> WAsyncR
-        let Return = WSimple 
-        let map  (f: 'a -> 'b  ) = bind (f >> Return)     
+        let Return = WSome   
+        /// map with no try protection
+        let map0 (f: 'a -> 'b) (aw: Wrap<'a>) = 
+            match aw with
+            | WNone       -> WNone
+            | WSome   a   -> f a                                               |> WSome
+            | WResult ar  -> Result.map f ar                                   |> WResult
+            | WAsync  aa  -> async {
+                                 let!   a  = aa
+                                 return f a
+                             }                                                 |> WAsync
+            | WAsyncR ara -> async {
+                                 let!   ar  = ara
+                                 return Result.map  f ar
+                             }                                                 |> WAsyncR
+        /// map with try protection in case of exceptions
+        let map  (f: 'a -> 'b) (aw: Wrap<'a>) = 
+            match aw with
+            | WNone       -> WNone
+            | WSome   a   -> try  f a                                          |> WSome
+                             with e -> failException e            |> fail      |> WResult
+            | WResult ar  -> Result.map f ar                                   |> WResult
+            | WAsync  aa  -> async {
+                                 let!   a  = aa
+                                 return try  f a                  |> succeed
+                                        with e -> failException e |> fail
+                             }                                                 |> WAsyncR
+            | WAsyncR ara -> async {
+                                 let!   ar  = ara
+                                 return Result.map  f ar
+                             }                                                 |> WAsyncR
+        let join aww =
+            match aww with
+            | WSome   aw                   -> aw
+            | WNone                        -> WNone
+            | WResult(Result(None   , ms)) -> WResult(Result(None, ms))
+            | WResult(Result(Some aw, ms)) -> aw
+            | WAsync  awa                  -> async {
+                                                  let!  aw = awa
+                                                  match aw with
+                                                  | WNone       -> return            Result.fail errOptionIsNone
+                                                  | WSome   a   -> return a       |> Result.succeed
+                                                  | WResult ar  -> return ar
+                                                  | WAsync  aa  -> let!   a  = aa
+                                                                   return a       |> Result.succeed
+                                                  | WAsyncR ara -> let!   ar = ara
+                                                                   return ar
+                                              } |> WAsyncR
+            | WAsyncR awra                 -> async {
+                                                  let!  awr = awra
+                                                  match awr with
+                                                  | Result(None   , ms) -> return Result.failWithMsgs ms
+                                                  | Result(Some aw, ms) ->
+                                                  match aw with
+                                                  | WNone               -> return             Result.failWithMsgs    <| Array.append ms [| errOptionIsNone |]
+                                                  | WSome   a           -> return a        |> Result.succeedWithMsgs <| ms
+                                                  | WResult ar          -> return ar       |> Result.mergeMsgs ms
+                                                  | WAsync  aa          -> let!   a  = aa 
+                                                                           return a        |> Result.succeedWithMsgs <| ms
+                                                  | WAsyncR ara         -> let!   ar = ara 
+                                                                           return ar       |> Result.mergeMsgs ms
+                                              } |> WAsyncR
+        /// bind with no try protection 
+        let bind0 (f: 'a -> Wrap<'b>) (aw: Wrap<'a>) :Wrap<'b> = aw |> map0 f |> join
+        /// bind with try protection in case of exceptions
+        let bind  (f: 'a -> Wrap<'b>) (aw: Wrap<'a>) :Wrap<'b> = aw |> map  f |> join
+        /// apply with no try protection
+        let apply0 (fw: Wrap<'a -> 'b>) (aw: Wrap<'a>) = fw |> bind0 (swap map0 aw)
+        /// apply with try protection in case of exceptions
+        let apply  (fw: Wrap<'a -> 'b>) (aw: Wrap<'a>) = fw |> bind  (swap map  aw)
+    
         let inline getAsyncR (wb: Wrap<'T>) =
             match wb with
             | WAsync      va  -> async {
                                    let! v = va
                                    return      succeed                           v}
-            | WSimple     v   -> async.Return (succeed                           v)
-            | WOption     v   -> async.Return (Result.fromOption errOptionIsNone v)
+            | WSome       v   -> async.Return (succeed                           v)
+            | WNone           -> async.Return (Result.fail       errOptionIsNone  )
             | WResult     v   -> async.Return                                    v
             | WAsyncR     vra -> vra
             
@@ -432,8 +583,8 @@ namespace FSSGlobal
         let wrapper2Async (f: 'a -> Wrap<'b>) a : Async<Result<'b>> =
             let wb = tryCall f a
             match wb with
-            | WSimple _
-            | WOption _               -> wb |> wb2arb [||]
+            | WNone                   
+            | WSome   _               -> wb |> wb2arb [||]
             | WResult (Result(_, ms)) -> wb |> wb2arb ms
             | WAsync  ab              -> async { let!   b = ab
                                                  return succeed b }
@@ -442,9 +593,8 @@ namespace FSSGlobal
         let addMsgs errOptionIsNone ms wb =
             if ms = [||] then wb else
             match wb with
-            | WSimple          v       
-            | WOption (Some    v)      -> WResult (succeedWithMsgs                        v ms)
-            | WOption (None     )      -> WResult (fail errOptionIsNone |> Result.mergeMsgs ms)
+            | WSome            v       -> WResult (succeedWithMsgs                        v ms)
+            | WNone                    -> WResult (fail errOptionIsNone |> Result.mergeMsgs ms)
             | WResult r                -> WResult (r                    |> Result.mergeMsgs ms)
             | WAsync           va      -> async {
                                             let! v = va
@@ -457,8 +607,7 @@ namespace FSSGlobal
     
         let combine errOptionIsNone wa (wb: unit -> Wrap<_>) =
             match wa with
-            | WSimple             _
-            | WOption(       Some _)
+            | WSome               _
             | WResult(Result(Some _,[||]))-> wb()
             | WResult(Result(Some _, ms ))-> wb() |> addMsgs errOptionIsNone ms
             | WAsync           aa         -> async { let!   _a = aa
@@ -471,25 +620,29 @@ namespace FSSGlobal
                                                      | Success(_, ms)-> let! br = wb() |> toAsyncResult
                                                                         return br |> Result.mergeMsgs ms
                                                    } |> WAsyncR
-            | WOption(       None     )   -> WOption None
+            | WNone                       -> WNone
             | WResult(Result(None, ms))   -> Result.failWithMsgs ms |> WResult
             
         let rec whileLoop pred body =
             if pred() then body() |> bind (fun () -> whileLoop pred body)
-            else WSimple ()
+            else WSome   ()
             //while pred() do
             //    body() //|> ignore
-            //WSimple ()
+            //WSome   ()
     
     
         type Builder() =
     //        member        this.Bind (wrapped: Async<Result<'a>>, restOfCExpr: 'a -> Wrap<'b>) = wrapped |> WAsyncR |> bind restOfCExpr //<< cannot differentiate from next 
             member        this.Bind (wrapped: Wrap<'a>         , restOfCExpr: 'a -> Wrap<'b>) = wrapped            |> bind restOfCExpr 
             member        this.Bind (wrapped: Async<'a>        , restOfCExpr: 'a -> Wrap<'b>) = wrapped |> WAsync  |> bind restOfCExpr  
-            member        this.Bind (wrapped: Result<'a>       , restOfCExpr: 'a -> Wrap<'b>) = wrapped |> WResult |> bind restOfCExpr 
-            member        this.Bind (wrapped: 'a option        , restOfCExpr: 'a -> Wrap<'b>) = wrapped |> WOption |> bind restOfCExpr 
-            member inline this.Zero         ( ) = WSimple ()
-            member inline this.Return       (x) = WSimple x
+            member        this.Bind (wrapped: Result<'a>       , restOfCExpr: 'a -> Wrap<'b>) = match wrapped with 
+                                                                                                | Result(Some v, [||]) -> WSome v
+                                                                                                | Result(None  , [||]) -> WNone
+                                                                                                | _                    -> WResult wrapped
+                                                                                                |> bind restOfCExpr 
+            member        this.Bind (wrapped: 'a option        , restOfCExpr: 'a -> Wrap<'b>) = wrapped |> Option.map WSome   |> Option.defaultValue WNone |> bind restOfCExpr 
+            member inline this.Zero         ( ) = WSome   ()
+            member inline this.Return       (x) = WSome   x
             member inline this.ReturnFrom   (w) = w
     //        member inline this.ReturnFrom   (w) = WAsync  w
     //        member inline this.ReturnFrom   (w) = WResult w
@@ -527,9 +680,8 @@ namespace FSSGlobal
     
         let getResult callback (wb: Wrap<'T>) =
             match wb with
-            | WSimple      s  -> s               |> succeed                                              |> callback
-            | WOption(Some s) -> s               |> succeed                                              |> callback
-            | WOption None    -> errOptionIsNone |> fail                                                 |> callback
+            | WSome        s  -> s               |> succeed                                              |> callback
+            | WNone           -> errOptionIsNone |> fail                                                 |> callback
             | WResult      rb -> rb                                                                      |> callback
             | WAsync       ab -> Async.StartWithContinuations(ab , (fun v   -> succeed v                 |> callback), 
                                                                    (fun exc -> failException exc |> fail |> callback), 
@@ -569,6 +721,53 @@ namespace FSSGlobal
     #endif
         static member RunSynchronously( w:Wrap<'T  >, ?timeout, ?cancToken) = Async.RunSynchronously(Wrap.getAsync  w, ?timeout            = timeout, ?cancellationToken= cancToken)
     
+    let cons head tail = head :: tail
+    
+    module List =
+        /// Map an AsyncResult producing function over a list to get a new AsyncResult
+        /// using monadic style
+        /// ('a -> Wrap<'b>) -> 'a list -> Wrap<'b list>
+        let rec traverseWrapM f list =
+            let (>>=) x f = Wrap.bind f x
+            let initState = Wrap.Return []
+            let folder head tail = f head >>= (fun h -> tail >>= (fun t -> Wrap.Return (cons h t) ))
+            List.foldBack folder list initState 
+        /// Transform a "list<Wrap>" into a "Wrap<list>"
+        /// and collect the results using bind.
+        let sequenceWrapM x = traverseWrapM id x
+        
+        /// Map an AsyncResult producing function over a list to get a new AsyncResult
+        /// using monadic style
+        /// ('a -> Wrap<'b>) -> 'a list -> Wrap<'b list>
+        let rec traverseWrapA f list =
+            let (<*>)     = Wrap.apply
+            let retn      = Wrap.WSome  
+            let initState = retn []
+            let folder head tail = retn cons <*> f head <*> tail
+            List.foldBack folder list initState 
+        /// Transform a "list<Wrap>" into a "Wrap<list>"
+        /// and collect the results using bind.
+        let sequenceWrapA x = traverseWrapA id x
+        
+        /// Map a Result producing function over a list to get a new Result 
+        /// using applicative style
+        /// ('a -> Result<'b>) -> 'a list -> Result<'b list>
+        let rec traverseResultA f list =
+            let (<*>)            = Result.apply
+            let retn             = Result.succeed
+            let initState        = retn []
+            let folder head tail = retn cons <*> (f head) <*> tail
+            List.foldBack folder list initState
+        /// Transform a "list<Result>" into a "Result<list>" 
+        /// and collect the results using apply.
+        let sequenceResultA x = traverseResultA id x
+        
+    [< AutoOpen >]    
+    module ResultWrap =
+        let result = Result.result
+        let wrap   = Wrap  .wrap
+    
+    
     module Mailbox =
     
         /// A simple Mailbox processor to serially process tasks
@@ -602,6 +801,26 @@ namespace FSSGlobal
                 }
                 loop initState
             )
+    
+        type FoldNShare<'S, 'X>(f: 'S -> 'X -> Async<'S>, initState:'S) =
+            let mutable share = initState
+            let agent =
+              MailboxProcessor.Start(fun inbox ->
+                let rec loop state : Async<unit> = async {
+                    try       let! msg      = inbox.Receive()
+                              let! newState = f state msg
+                              share <- newState
+                              return! loop newState
+                    with e -> printfn "%A" e
+                              return! loop state
+                }
+                loop initState
+            )
+            member this.Post  = agent.Post
+            member this.State = share
+    
+        /// A Mailbox processor that maintains a state and shares its current value
+        let foldNShare f initState = FoldNShare(f, initState)
     
     // object expressions work only on types not objects
     //
@@ -671,10 +890,6 @@ namespace FSSGlobal
     
     let rexGuid = """([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})"""
     #endif
-    
-    let inline swap f a b = f b a
-    let inline __   f a b = f b a
-    
     
     let dprintfn       fmt = fmt |> Printf.ksprintf ignore //(fun s -> printfn "%s"  s)
     let printoutfn out fmt = fmt |> Printf.ksprintf (fun s -> s + "\n" |> out)
@@ -855,7 +1070,7 @@ namespace FSSGlobal
                     | _                          -> false 
         
         
-        type ShellEx(startInfo: ProcessStartInfo, ?outHndl, ?errHndl) =
+        type ShellEx(startInfo: ProcessStartInfo, ?outHndl, ?errHndl, ?priorityClass) =
             let proc                              = new Process()
             let bufferOutput                      = new StringBuilder()
             let bufferError                       = new StringBuilder()
@@ -878,13 +1093,14 @@ namespace FSSGlobal
                 Option.map dataHandler outHndl   |> Option.iter proc.OutputDataReceived.AddHandler
                 Option.map dataHandler errHndl   |> Option.iter proc.ErrorDataReceived .AddHandler
         //        proc.Exited            .AddHandler(System.EventHandler     (fun sender args -> try proc.Close()                                    with _ -> () ))
-            new (program, args) =             
+            new (program, args, ?priorityClass) =             
                 let startInfo                     = new ProcessStartInfo()
                 do  startInfo.FileName           <- program
                     startInfo.Arguments          <- args
-                new ShellEx(startInfo)
+                new ShellEx(startInfo, ?priorityClass = priorityClass)
             member this.Start() = 
                 let r = proc.Start() 
+                priorityClass |> Option.iter (fun p -> proc.PriorityClass <- p)
                 proc.BeginOutputReadLine()
                 proc.BeginErrorReadLine ()
                 r
@@ -1490,10 +1706,16 @@ namespace FSSGlobal
             static let mutable fssWebSocketO : BrokerAgent option = None
     #endif
             do printfn "WebSocket server start"
-            let mutable connections = Map.empty
+            let connectionsFunc state action = async {
+                return 
+                    match action with
+                    | Choice1Of2 (clientAddress, (uniqueId, client)) -> state |> Map.add clientAddress (uniqueId, client)
+                    | Choice2Of2                  uniqueId           -> state |> Map.filter (fun _ (uid, _) -> uid <> uniqueId)
+              }
+            let connectionsAgent = Mailbox.foldNShare connectionsFunc Map.empty
             let processBrokerRequest req = 
                 match req with
-                | BRGetConnections -> connections |> Map.toSeq |> Seq.map (fun (Address cl, _) -> cl) |> Seq.toArray |> BRConnections 
+                | BRGetConnections -> connectionsAgent.State |> Map.toSeq |> Seq.map (fun (Address cl, _) -> cl) |> Seq.toArray |> BRConnections 
                 
             let respondFromBroker pyld msg =
                 msg
@@ -1502,23 +1724,24 @@ namespace FSSGlobal
                 |> subtype     "FromBroker"
     
             let post reply msg =
-                match connections |> Map.tryFind msg.destination with
+                match connectionsAgent.State |> Map.tryFind msg.destination with
                 | None                      -> msg |> respondFromBroker (BMDestinationNotFound msg.destination) |> reply
                 | Some(_, clientTo:IClient) -> msg |> clientTo.Post
                 
             let clientConnect (client: IClient) = async {
                 let clientId = client.Id()
+                printfn "clientConnect: %A" clientId
                 let uniqueId = System.Guid.NewGuid()
                 printfn "New Connection from %s" clientId                           
                 let clientAddress = Address clientId
-                connections
+                connectionsAgent.State
                 |> Seq.filter(fun kp -> kp.Key = clientAddress)
                 |> Seq.iter  (fun (kp:KeyValuePair<_, _ * IClient>) -> 
                     printfn "Closing old connection from %s" clientId
                     kp.Value 
                     |> fun (_, conn) -> conn.Close()
                 )
-                connections <- connections |> Map.add clientAddress (uniqueId, client)
+                connectionsAgent.Post (Choice1Of2(clientAddress, (uniqueId, client))) // add connection
                 
                 let reply msg = msg |> from MessageBrokerAddress |> destination clientAddress |> client.Post
                 let checkReply msg = if msg.replier = Broker then
@@ -1550,7 +1773,7 @@ namespace FSSGlobal
                         return state
                     | Close ->
                         printfn "Closed connection to %s - %s" clientIp clientId
-                        connections <- connections |> Map.filter (fun _ (uid, _) -> uid <> uniqueId)
+                        connectionsAgent.Post (Choice2Of2 uniqueId) // remove connection
                         return state
                 }
             }
@@ -1947,7 +2170,7 @@ namespace FSSGlobal
                 | _msg                       -> false
     
     type FStationMessaging(msgClient:WSMessagingClient, _clientId, ?fsStationId:string) =
-        let mutable fsIds      = fsStationId |> Option.defaultValue "FSharpStation1522920858103"
+        let mutable fsIds      = fsStationId |> Option.defaultValue "FSharpStation1526507454032"
         let         toId()     = Address fsIds
         let stringResponseR response =
             match response with
@@ -1987,7 +2210,7 @@ namespace FSSGlobal
         member this.FSStationId                             = fsIds
         member this.FSStationId with set id                 = fsIds <- id
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1522920858103"
+        static member FSStationId_                          = "FSharpStation1526507454032"
     #if FSS_SERVER   
         [< JavaScript false >]
         new (clientId, FSStation, ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId, FSStation, ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
@@ -2486,7 +2709,7 @@ namespace FSSGlobal
     let fssClient = new WSMessagingBroker.FStationMessaging("FSAutoComplete", FSStation)
     async {
         do! Async.Sleep 1000
-        fssClient.MessagingClient.ProcessIncoming (responder.Respond >> WSimple)
+        fssClient.MessagingClient.ProcessIncoming (responder.Respond >> WSome)
     } |> Async.Start
     
     [< Rpc >]
@@ -2864,25 +3087,32 @@ namespace FSSGlobal
         | Dynamic   of View<'a>
       with member this.ValTypeMember = 0
     
+    module View =
+        let [<Inline>] inline consistent   (vl:View<_>)  = 
+            let prior      = ref <| Var.Create Unchecked.defaultof<_>
+            let setPrior v = if (!prior).Value <> v then (!prior).Value <- v 
+            View.Sink setPrior vl
+            !prior |> View.FromVar
+    
     module Var =
         let mutable private counter = 1
         let freshId () =
             counter <- counter + 1
             "varuid" + string counter
                 
-        let Make (init: 'T) (view: View<'T>) (set: 'T -> unit) =
-            let id = freshId ()
-            let current = ref init
-            let view = view |> View.Map (fun x -> current := x; x)
-            { new Var<'T>() with
-                member this.View           = view
-                member this.Get         () = !current
-                member this.Set         x  = set x
-                member this.SetFinal    x  = set x
-                member this.UpdateMaybe f  = view |> View.Get (f >> Option.iter set)
-                member this.Update      f  = view |> View.Get (f >>             set)
-                member this.Id             = id
-            }
+    //    let Make (init: 'T) (view: View<'T>) (set: 'T -> unit) =
+    //        let id = freshId ()
+    //        let current = ref init
+    //        let view = view |> View.Map (fun x -> current := x; x)
+    //        { new Var<'T>() with
+    //            member this.View           = view
+    //            member this.Get         () = !current
+    //            member this.Set         x  = set x
+    //            member this.SetFinal    x  = set x
+    //            member this.UpdateMaybe f  = view |> View.Get (f >> Option.iter set)
+    //            member this.Update      f  = view |> View.Get (f >>             set)
+    //            member this.Id             = id
+    //        }
         let lensView get update view0 (var: Var<_>) =
             let id   = freshId()
             let view = View.Map2 (fun v _ -> get v) var.View view0
@@ -2904,12 +3134,13 @@ namespace FSSGlobal
                             model.View
         let currentLensUpd' def curr upd (model:ListModel<_,_>) = 
             let view = curr |> View.Map2 (fun _mdl kO -> kO |> Option.bind model.TryFindByKey |> Option.defaultValue def) model.View
-            Var.Make def view upd
+            Var.Make view upd
         let currentLens def curr (model:ListModel<_,_>) = 
             model 
             |> currentLensUpd' def curr (fun v -> model.UpdateBy (fun _ -> model.TryFindByKey (model.Key v) |> Option.map (fun _ -> v) ) <| model.Key v)
         
     module Val =
+        let swap = Useful.swap
         
         let mapV : ('a -> 'b) -> Val<'a> -> Val<'b> =
             fun    f             va      ->
@@ -2944,11 +3175,12 @@ namespace FSSGlobal
                 | Dynamic  wa -> wa      |> View.Bind (f >> toView) |> Dynamic 
                 | DynamicV va -> va.View |> View.Bind (f >> toView) |> Dynamic 
     
-        let inline map2V f = // : ('a -> 'b -> 'c) -> Val<'a> -> Val<'b> -> Val<'c> =
-            //fun     f                ->
-            let inline swap f a b = f b a
-            let inline fv vb = bindV (swap (f >> mapV) vb)
-            swap fv
+        let inline map2V (f_a_b_c: 'a->'b->'c) : Val<'a>->Val<'b>->Val<'c> =
+            let inline    f_aVbVc   a =  mapV  (f_a_b_c   a)
+            let inline    fVb_aVc  vb = (swap   f_aVbVc) vb
+            let inline    fVbVaVc  vb =  bindV (fVb_aVc  vb)
+            let inline    fVaVbVc  va = (swap   fVbVaVc) va
+            fVaVbVc
     
         let inline map3V f3 v1 v2 v3    = map2V f3 v1 v2    |> map2V (|>) v3
         let inline map4V f3 v1 v2 v3 v4 = map3V f3 v1 v2 v3 |> map2V (|>) v4
@@ -3405,17 +3637,68 @@ namespace FSSGlobal
         Val.sink (fun v -> JS.Window.LocalStorage.SetItem (storeName, Json.Serialize v)) var
     
     
-    [< Inline "CIPHERSpaceLoadFiles($_files, $_cb)" >]
-    let LoadFiles (_files: string []) (_cb: unit -> unit) : unit = X<_>
+    module LoadFiles =
     
-    let LoadFilesAsync (files: string []) =
-        Async.FromContinuations <| 
-            fun (cont, econt, _ccont) -> 
-                try 
-                    LoadFiles files cont
-                with e -> econt e
-    
-    
+        [< Inline "CIPHERSpaceLoadFiles($_files, $_cb)" >]
+        let LoadFilesCb (_files: string []) (_cb: unit -> unit) : unit = X<_>
+        
+        let createScript fn =
+            let fileRef = JS.Document.CreateElement("script")
+            fileRef.SetAttribute("type", "text/javascript"  )
+            fileRef.SetAttribute("src" , fn                 )
+            fileRef
+        
+        let createCss fn =
+            let fileRef = JS.Document.CreateElement("link")
+            fileRef.SetAttribute("rel" , "stylesheet"     )
+            fileRef.SetAttribute("type", "text/css"       )
+            fileRef.SetAttribute("href", fn               )
+            fileRef
+        
+        let createHtml fn =
+            let fileRef = JS.Document.CreateElement("link")
+            fileRef.SetAttribute("rel" , "import"         )
+            fileRef.SetAttribute("type", "text/html"      )
+            fileRef.SetAttribute("href", fn               )
+            fileRef
+        
+        [< Inline """(!$v)""">]
+        let isUndefined v = v.GetType() = v.GetType()
+        
+        let LoadFile(file: string) =
+            let (|EndsWith|_|) s (fn:string) = if fn.EndsWith s then Some() else None
+            match file with
+            | EndsWith ".js"   ()
+            | EndsWith ".fsx"  ()
+            | EndsWith ".fs"   () when isUndefined <| JS.Document.QuerySelector("script[src='" + file + "']") ->
+                                    createScript file |> Some
+            | EndsWith ".css"  ()-> createCss    file |> Some
+            | EndsWith ".html" ()-> createHtml   file |> Some
+            | _                  -> None
+            |> Option.map         (fun ref -> 
+                Async.FromContinuations <| 
+                    fun (cont, econt, _ccont) -> 
+                        try 
+                            ref?onload <- cont
+                            JS.Document.Head.AppendChild ref |> ignore
+                        with e -> econt e
+            )
+            |> Option.defaultWith (fun ()  -> async { return () })
+        
+        let LoadFilesAsync(files: string []) =
+            async {
+                for file in files do
+                    do! LoadFile file
+            }
+        
+        let LoadFilesAsyncOld (files: string []) =
+            Async.FromContinuations <| 
+                fun (cont, econt, _ccont) -> 
+                    try 
+                        LoadFilesCb files cont
+                    with e -> econt e
+        
+        
   open HtmlNode
   [<JavaScript>]
   module Template      =
@@ -3727,8 +4010,8 @@ namespace FSSGlobal
               div [
                     style "height: 100%; width: 100%; position: absolute;"
                     SomeAttr <| on.afterRender (fun el ->
-                      LoadFiles codeMirrorIncludes
-                        (fun () ->                       
+                       async {
+                           do! LoadFiles.LoadFilesAsync codeMirrorIncludes
                            let editor        = CodeMirrorEditor.SetupEditor el
                            this.editorO     <- Some editor
                            this.onRender |> Option.iter (fun onrender -> onrender editor)
@@ -3743,7 +4026,7 @@ namespace FSSGlobal
                                elif editor.GetValue() <> this.var.Value then editor.SetValue this.var.Value ; editor.ClearHistory()
                            )
                            this.disabled |> Val.sink (fun dis -> editor.SetOption("readOnly", if dis then "nocursor" :> obj else false :> obj) )
-                        )
+                       } |> Async.Start
                     )    
                   ]
               link [ href "/EPFileX/codemirror/content/editor.css"                   ; ``type`` "text/css" ; rel "stylesheet" ]
@@ -3762,7 +4045,7 @@ namespace FSSGlobal
       member inline this.OnRender f    = { this with onRender  = Some f         }
       member inline this.Disabled dis  = { this with disabled  = Val.fixit dis  }
       member inline this.Var           = this.var
-      static member  New(v:string)              = CodeMirror.New(Var.Create v)
+      static member  New(v:string)             = CodeMirror.New(Var.Create v)
       static member  New(v:Var<string option>) = CodeMirror.New(Var.Lens v (Option.defaultValue "") (fun sO s -> sO |> Option.map (fun _ -> s) )).Disabled(v |> Val.map Option.isNone)
     
     
@@ -3878,17 +4161,14 @@ namespace FSSGlobal
                     //printfn "mouseup"
             let startDragging (_: Dom.Element) (ev: Dom.MouseEvent) =
                 if not this.dragging then
-                    Val.map2 (fun startP dirV ->
-                        this.dragging <- true
-                        this.startVer <- dirV
-                        this.startP   <- startP
-                        this.start    <- mouseCoord ev
-                        this.size     <- size()
-                        JS.Window.AddEventListener("mousemove", drag          , false) 
-                        JS.Window.AddEventListener("mouseup"  , finishDragging, false) 
-                        ev.PreventDefault()
-                    ) this.GetValue this.vertical
-                    |> Val.iter id
+                    this.dragging <- true
+                    this.startVer <- this.vertical |> Val.toView |> View.TryGet |> Option.get
+                    this.startP   <- this.GetValue |> Val.toView |> View.TryGet |> Option.get
+                    this.start    <- mouseCoord ev
+                    this.size     <- size()
+                    JS.Window.AddEventListener("mousemove", drag          , false) 
+                    JS.Window.AddEventListener("mouseup"  , finishDragging, false) 
+                    ev.PreventDefault()
             this.node
               .AddChildren(
               [
@@ -3958,6 +4238,8 @@ namespace FSSGlobal
     | StVariable
     | StFixedPx
     | StFixedPerc
+    
+    let setVar (vr:Var<_>) vl = if vr.Value <> vl then vr.Value <- vl 
     
     [<NoComparison ; NoEquality>]
     type Grid = {
@@ -4080,7 +4362,6 @@ namespace FSSGlobal
                 yield! this.styles() 
                 yield style    <| sprintf "display: grid; grid-gap: %fpx; padding: %fpx; box-sizing: border-box" this.gap this.padding 
                 yield SomeAttr <| on.afterRender(fun el   -> 
-                    let setVar (vr:Var<_>) vl = if vr.Value <> vl then vr.Value <- vl 
                     let setDimensions () =
                         el.GetBoundingClientRect()
                         |> fun r -> setVar this.widthHeight (r.Width, r.Height)
@@ -4748,7 +5029,8 @@ namespace FSSGlobal
           IntelliFactory.Runtime.Start();
         for (key in window) { 
           if (key.startsWith("StartupCode$")) 
-            try { window[key].$cctor(); } catch (e) {} 
+            //try { window[key].$cctor(); } catch (e) {} 
+            window[key].$cctor();
         } 
       })
       
@@ -4909,7 +5191,6 @@ namespace FSSGlobal
             | Right
             | Tab
             | NewBrowser
-            
         
         type ErrCompiler =
             | JsCompilerMsg  of string * bool
@@ -5030,7 +5311,7 @@ namespace FSSGlobal
         let loadReferences =
             lazy
                 async {
-                    do! LoadFilesAsync [| "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.min.js" |] 
+                    do! LoadFiles.LoadFilesAsync [| "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.min.js" |] 
                     let  options          = Object.Create null
                     options?skipDataMain <- 1
                     options?isBrowser    <- 1
@@ -5643,19 +5924,11 @@ namespace FSSGlobal
       let nextParsedPrefix() = if latestParsedPrefix = "a" then "b" else "a"
       let parseFile prefix = prefix + parseFileName
       
-      let setDirtyCond() =
-          match lastCodeAndStarts with
-          | Some (pId, _, red) when pId = currentCodeSnippetId.Value -> setDirtyPart()
-          | _                                                        -> setDirty    ()
-      
-      let isParseDisabled = disableParseVal |> Val.toView |> View.GetAsync
-      
-      let getCodeAndStartsFast msgF (snp:CodeSnippet) addLinePrepos =
+      let getCodeAndStartsFast (snp:CodeSnippet) addLinePrepos =
           let redO, cur = 
               match lastCodeAndStarts with
-              | Some (pId, alp, redO) when pId = snp.id && alp = addLinePrepos -> msgF "Reparsing..."; redO, snp.PrepareSnippet
+              | Some (pId, alp, redO) when pId = snp.id && alp = addLinePrepos -> redO, snp.PrepareSnippet
               | _ -> 
-              msgF "Parsing..."
               let preds = snp.Predecessors()        
               let redO  = if preds.Length = 1 then None else CodeSnippet.ReducedCode addLinePrepos preds.[0..preds.Length - 2] |> Some
               let cur   = preds.[preds.Length - 1]
@@ -5667,39 +5940,71 @@ namespace FSSGlobal
           |> Option.defaultValue red1
           |> CodeSnippet.FinishCode addLinePrepos
       
-      let mutable parseRun = 1
-      let mutable parsing  = false
-      let mutable parsingCode = ""
-      
-      let parseFSA silent =
-          let msgF txt = if not silent then parserMsgs.Value <- txt
-          async {
+      let cancellationTokenSourceO = ref None
+      let parseCode() =
+          let asy = async {
               match CodeSnippet.FetchO currentCodeSnippetId.Value with 
               | None     -> ()
               | Some cur ->
-              try
-                  parsed                 <- false
-                  let  code, starts       = getCodeAndStartsFast msgF cur false
-                  if not parsing || code <> parsingCode then
-                      parsingCode        <- code
-                      parsing            <- true
-                      let prefix          = nextParsedPrefix()
-                      printfn "Parsing %s" prefix
-                      let! res            = autoCompleteClient.Parse(parseFile prefix, code, starts)
-                      printfn "Parse result= %A" (res <> "")
-                      latestParsedPrefix <- prefix
-                      if not silent then
-                          addPrsMsg res
-                          addPrsMsg "Parsed!"
-                      parsed             <- true
-              finally  
-                  parsing <- false
-          }
+              parserMsgs.Value         <- "Parsing...\n" + String.skipFirstLine parserMsgs.Value
+              do!                         Async.Sleep 500
+              let  prefix               = nextParsedPrefix()
+              let  code, starts         = getCodeAndStartsFast cur false
+              let! res                  = autoCompleteClient.Parse(parseFile prefix, code, starts)
+              cancellationTokenSourceO := None
+              latestParsedPrefix       <- prefix
+              parserMsgs.Value         <- "Parsed!\n" + res
+           }
+          !cancellationTokenSourceO |> Option.iter (fun (tokenSource:System.Threading.CancellationTokenSource) -> tokenSource.Cancel())
+          cancellationTokenSourceO := Some <| new System.Threading.CancellationTokenSource()
+          Async.Start(asy, cancellationToken = (!cancellationTokenSourceO).Value.Token)
+      
+      let setDirtyCond() =
+          match lastCodeAndStarts with
+          | Some (pId, _, red) when pId = currentCodeSnippetId.Value -> setDirtyPart()
+          | _                                                        -> setDirty    ()
+          parseCode()
+      
+      let isParseDisabled = disableParseVal |> Val.toView |> View.GetAsync
+      
+      let mutable parseIn     = 0
+      let mutable parseOut    = 0
+      let mutable parsingCode = ""
+      
+      //let rec parseRecFSA silent reparse =
+      //    async {
+      //        match CodeSnippet.FetchO currentCodeSnippetId.Value with 
+      //        | None     -> ()
+      //        | Some cur ->
+      //        let  code, starts  = getCodeAndStartsFast cur false
+      //        if code <> parsingCode || (parseIn = parseOut && reparse) then
+      //           try
+      //              parsed             <- false
+      //              parseIn            <- parseIn + 1
+      //              let  prefix         = nextParsedPrefix()
+      //              printfn "Parsing %s" prefix
+      //              if not silent then parserMsgs.Set ("Parsing...\n" + String.skipFirstLine parserMsgs.Value)
+      //              parsingCode        <- code
+      //              let! res            = autoCompleteClient.Parse(parseFile prefix, code, starts)
+      //              latestParsedPrefix <- prefix
+      //              if not silent then
+      //                  parserMsgs.Set  "Parsed!"
+      //                  addPrsMsg res
+      //              parsed             <- true
+      //              printfn "Parse result= %A" (res <> "")
+      //           finally
+      //              parseOut <- parseOut + 1
+      //           if parseIn = parseOut then
+      //              do! parseRecFSA silent false
+      //    }
+      
+      let parseFSA silent = parseCode() // parseRecFSA silent true
+      
       
       let parseFS() = 
           Wrap.wrapper {
               lastCodeAndStarts <- None
-              do! parseFSA false
+              do parseFSA false
           }
       
       let mustParse (cur:CodeSnippet) =
@@ -5719,7 +6024,7 @@ namespace FSSGlobal
               | Some cur ->
               let! must = mustParse cur
               if must then 
-                  do! parseFSA silent
+                  do parseFSA silent
           }
       
       let getStartWord (line:string) ch =
@@ -5832,6 +6137,30 @@ namespace FSSGlobal
                    Template.``to`` = pos 
                  }
           } |> asyncStartDelayed
+      
+      let filterSnippet msgs (snpId:CodeSnippetId) =
+          match msgs with
+          | REGEX rex "g" m -> m
+          | _               -> [||]
+          |> Array.choose (fun v ->
+              match v with
+              | REGEX rex2 "" [| _ ; sev; from;  _; indent; file; _; fl; fc; tl; tc; msg; _ |] -> Some (file, indent, int fl, int fc    , int tl, int tc, sev, from , msg)
+              | REGEX rex1 "" [| _ ;                indent; file   ; fl; fc;    sev; msg; _ |] -> Some (file, indent, int fl, int fc - 1, int fl, int fc, sev, "fsi", msg)
+              | _ -> None
+          )
+          |> Array.choose (fun (file, indent, fl, fc, tl, tc, sev, from, msg) ->
+              if file.StartsWith snpId.Text then
+                  let ind = if int indent > 0 then int indent else 0
+                  { Template.LintResponse.message  = msg
+                    Template.LintResponse.severity = (if sev.ToUpper().StartsWith("ERR") then "error" elif sev.ToUpper().StartsWith("INFO") then "info" else "warning")
+                    Template.LintResponse.from     = Template.cmPos(fl - 1, fc - 1 - ind) 
+                    Template.LintResponse.``to``   = Template.cmPos(tl - 1, tc - 1 - ind)
+                  } |> Some
+              else     None
+            )        
+      
+      let annotationsV = currentCodeSnippetId.View |> View.Map2 filterSnippet parserMsgs.View |> View.consistent
+      currentCodeSnippetId.View |> View.Sink (fun _ -> parseIfMustThen() |> Async.Start)
           
       let codeMirror = 
           Template.CodeMirror.New(Val.bindIRef curSnippetCodeOf currentCodeSnippetId)
@@ -5843,14 +6172,14 @@ namespace FSSGlobal
                                 ``.``           = (fun _ -> ed.ReplaceSelection(".", "end"))
                                                   >> Template.showHints ed getHints false
                              })
-                Template.setLint ed getAnnotationsDelayed 
+                View.Sink (fun _ -> ed?performLint() |> ignore) annotationsV
+                Template.setLint ed (fun (_t, send, _o, _ed) -> annotationsV |> View.Get send)
                 Val.sink (fun v ->
                     async {
                         ed.SetOption("theme", v)
                         do! Async.Sleep(50)
                         ed.Refresh()
-                    } |> Async.Start
-                    ) propertyThemeVal 
+                    } |> Async.Start                       ) propertyThemeVal 
                 Val.sink (fun v -> ed.SetOption("mode" , v)) propertyModeVal 
               )
               .Style("height: 100%")
@@ -6272,7 +6601,7 @@ namespace FSSGlobal
           |> Seq.pick (fun (line, from, to_) -> if s >= from && s < to_ then Some line else None)
           |> jumpToLine
       
-      let scrollToBottom (e:obj) _ = 
+      let scrollToBottom (e:obj) (_:obj) = 
           async { 
               do! Async.Sleep 100
               do  e?scrollTop <- e?scrollHeight
