@@ -51,3 +51,5 @@ nuget AWSSDK.Core
 nuget AWSSDK.Lambda
 
 nuget FSharp.ComProvider 1.0.0-pre1
+
+nuget FsCheck
