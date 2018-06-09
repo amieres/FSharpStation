@@ -1,7 +1,7 @@
 # FSharpStation
 An editor for FSharp development, powered by Chrome, WebSharper &amp; CodeMirror and Fable!
 
-Live demo: http://fsharpstation.hopto.org/
+Live demo (down for now): http://fsharpstation.hopto.org/
 
 ![alt text](https://raw.githubusercontent.com/amieres/FSharpStation/master/FSharpStation.PNG)
 
@@ -12,6 +12,9 @@ Programming by snippets.
 
 Instead of files, organize your code in snippets, have them all in one place, 
 select the ones you need, reuse the code in several projects and develop your own code base with your personal style.
+
+By having all your code in one place, you will develop and continously refine your own library of frequently used functions. 
+A personal toolset for functional programing with snippets collected from the web or developed and improved by you. A toolset that will evolve and where you will always find your prior developments when needed for future reference.
 
 # How to Install
 
