@@ -38,16 +38,28 @@ namespace FSSGlobal
   open WebSharper.UI.Client
   type on   = WebSharper.UI.Html.on
   type attr = WebSharper.UI.Html.attr
+  #else
+  
+  module WebSharper =
+      type RpcAttribute() =
+          let a = 1
+      type JavaScriptAttribute(translate:bool) =
+          let a = 1
+          new() = JavaScriptAttribute true
+      type InlineAttribute(code:string) =
+          let a = 1
+          new() = InlineAttribute ""
+      type DirectAttribute(code:string) =
+          let a = 1
+  
+  open WebSharper
+  
   #endif
-  #if WEBSHARPER
-  [<WebSharper.JavaScript>]
-  #endif
+  [<JavaScript>]
   module Useful =
     let extract n (s:string) = s.Substring(0, min n s.Length)
     
-    #if WEBSHARPER
     [< Inline "(function (n) { return n.getFullYear() + '-' +(n.getMonth() + 1) + '-' +  n.getDate() + ' '+n.getHours()+ ':'+n.getMinutes()+ ':'+n.getSeconds()+ ':'+n.getMilliseconds() })(new Date(Date.now()))" >]
-    #endif
     let nowStamp() = 
         let t = System.DateTime.UtcNow // in two steps to avoid Warning: The value has been copied to ensure the original is not mutated
         t.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
@@ -95,38 +107,25 @@ namespace FSSGlobal
         let append     (a: string)(b: string) =  a + b
         let skipFirstLine (txt:string) = txt.IndexOf '\n' |> fun i -> if i < 0 then "" else txt.[i + 1..]
         
-    #if WEBSHARPER
-    [<WebSharper.Inline>]
-    #endif
-    let inline tee f v = f v ; v
+    
+    let [<Inline>] inline tee f v = f v ; v
     
     module Log =
     
-        #if WEBSHARPER
-        [<WebSharper.Inline>]
-        #endif
-        let inline In  n f =      tee (printfn "%s %s in: %A"  (nowStamp()) n) >> f
-        
-        #if WEBSHARPER
-        [<WebSharper.Inline>]
-        #endif
-        let inline Out n f = f >> tee (printfn "%s %s out: %A" (nowStamp()) n)
-        
-        #if WEBSHARPER
-        [<WebSharper.Inline>]
-        #endif
-        let inline InOut n = In n >> Out n
+        let [<Inline>] inline In     n f   =      tee (printfn "%s %s in: %A"  (nowStamp()) n) >> f
+        let [<Inline>] inline Out    n f   = f >> tee (printfn "%s %s out: %A" (nowStamp()) n)
+        let [<Inline>] inline InA    n f p = async { return! In  n f p }
+        let [<Inline>] inline OutA   n f p = async { return! Out n f p }
+        let [<Inline>] inline InOut  n     = In  n >> Out  n
+        let [<Inline>] inline InOutA n f p = async {
+            let!   r = InA n f  p
+            do         Out n id r |> ignore
+            return r 
+          }
         
         
-    #if WEBSHARPER
-    [<WebSharper.Inline>]
-    #endif
-    let inline swap f a b = f b a
-    
-    #if WEBSHARPER
-    [<WebSharper.Inline>]
-    #endif
-    let inline __   f a b = f b a
+    let [<Inline>] inline swap f a b = f b a
+    let [<Inline>] inline __   f a b = f b a
     
     
     open System
@@ -176,18 +175,12 @@ namespace FSSGlobal
         abstract member ErrMsg   : string
         abstract member IsWarning: bool
     
-    #if WEBSHARPER
-    [<JavaScript>]
-    #endif
     type ExceptionThrown(exn:Exception) =
         interface ErrMsg with
             member this.ErrMsg   : string = sprintf "%A" exn
             member this.IsWarning: bool   = false
         override this.ToString() = (this :> ErrMsg).ErrMsg
     
-    #if WEBSHARPER
-    [<JavaScript>]
-    #endif
     type ErrOptionIsNone() =
         interface ErrMsg with
             member this.ErrMsg   : string = "Option is None"
@@ -320,6 +313,10 @@ namespace FSSGlobal
     //    let inline flow_ () = new ropBuilder ()
     
     //    let fromChoice context c =  context?????
+        let fromResult c =
+            match c with | Result.Ok    v -> succeed  v
+                         | Result.Error e -> fail    (ErrSimple(e, false))
+    
         let fromChoice c =
             match c with | Choice1Of2 v -> succeed v
                          | Choice2Of2 e -> fail    e
@@ -330,6 +327,13 @@ namespace FSSGlobal
         let fromOptionW m =
             function | None   -> fail    (m())
                      | Some v -> succeed v
+                     
+        type RResult<'V,'E> = Result<'V,'E>
+        let inline toResult fv fe r =
+            match r with | Result(Some v, ms) -> RResult<_,_>.Ok    (fv (v, ms))
+                         | Result(None  , ms) -> RResult<_,_>.Error (fe     ms )
+    
+        let inline toResultStr r = toResult fst (Seq.map (fun e -> e.ToString()) >> String.concat "\n") r 
     
         let toOption   (Result(o, _ )) = o
         let toOptionMs (Result(o, ms)) = o, ms
@@ -388,7 +392,7 @@ namespace FSSGlobal
     
         module Seq =
             let cons h t = Seq.append t (Seq.singleton h) 
-            /// Map an AsyncResult producing function over a list to get a new AsyncResult
+            /// Map a Result producing function over a sequence to get a new Result
             /// using monadic style
             /// ('a -> XResult<'b>) -> 'a list -> XResult<'b list>
             let rec traverseM f sequ =
@@ -397,11 +401,11 @@ namespace FSSGlobal
                 let initState = retn (seq[])
                 let folder tail head = f head >>= (fun h -> tail >>= (fun t -> retn (cons h t) ))
                 Seq.fold folder initState sequ  
-            /// Transform a "list<XResult>" into a "XResult<list>"
+            /// Transform a "Seq<Result>" into a "Result<Seq>"
             /// and collect the results using bind.
             let inline sequenceM x = traverseM id x
         
-            /// Map a Result producing function over a list to get a new Result 
+            /// Map a Result producing function over a sequence to get a new Result 
             /// using applicative style
             /// ('a -> Result<'b>) -> 'a list -> Result<'b list>
             let rec traverseA f sequ =
@@ -410,7 +414,7 @@ namespace FSSGlobal
                 let initState = retn (Seq.empty)
                 let folder tail head = retn cons <*> f head <*> tail
                 Seq.fold folder initState sequ
-            /// Transform a "list<Result>" into a "Result<list>" 
+            /// Transform a "Seq<Result>" into a "Result<Seq>" 
             /// and collect the results using apply.
             let inline sequenceA x = traverseA id x
     
@@ -474,7 +478,7 @@ namespace FSSGlobal
                                                         | Failure    ms  -> async { return failWithMsgs ms }
                                              return! arb
                                          } |> WAsyncR
-        let Return = WSome   
+        let Return v = v |> WSome
         /// map with no try protection
         let map0 (f: 'a -> 'b) (aw: Wrap<'a>) = 
             match aw with
@@ -555,12 +559,15 @@ namespace FSSGlobal
             | WResult     v   -> async.Return                                    v
             | WAsyncR     vra -> vra
             
-            
+        let inline getResultW  w = w |> getAsyncR |> WAsync
         let inline getAsyncWithDefault f w = getAsyncR w |> Async.map (Result.withError f)
         let inline getAsync              w = getAsyncWithDefault (fun ms -> raise (exn(getMessages ms))) w
     
+        let fromAsyncResultStr a = a |> Async.map Result.fromResult |> WAsyncR
+    
         let toAsync            w = getAsync  w
         let toAsyncResult      w = getAsyncR w
+        let toAsyncResultStr   w = getAsyncR w |> Async.map Result.toResultStr
         let toAsyncOption      w = getAsyncR w |> Async.map Result.toOption
         let toAsyncOptionMs    w = getAsyncR w |> Async.map Result.toOptionMs
         let toAsyncWithDefault w = getAsyncWithDefault w
@@ -630,6 +637,23 @@ namespace FSSGlobal
             //    body() //|> ignore
             //WSome   ()
     
+        let tryWith    (handler: exn -> Wrap<'a>) (body: unit -> Wrap<'a>) = 
+            async {
+                let! r = body() |> toAsyncResult |> Async.Catch 
+                match r with
+                | Choice1Of2 v -> return  v
+                | Choice2Of2 e -> return! handler e |> toAsyncResult
+            } |> WAsyncR
+        let tryFinally compensation body = 
+            async {
+                let! r1 = body() |> toAsyncResult |> Async.Catch 
+                do        compensation()     
+                return
+                    match r1 with
+                    | Choice1Of2 v -> v
+                    | Choice2Of2 e -> raise e
+            } |> WAsyncR
+    
     
         type Builder() =
     //        member        this.Bind (wrapped: Async<Result<'a>>, restOfCExpr: 'a -> Wrap<'b>) = wrapped |> WAsyncR |> bind restOfCExpr //<< cannot differentiate from next 
@@ -651,23 +675,8 @@ namespace FSSGlobal
             member this.Run(f) = f()
             member        this.Combine   (a, b) = combine errOptionIsNone a b
             member        this.While(guard, body) = whileLoop guard body
-            member this.TryWith(body, handler) =
-                async {
-                    let! r = body() |> toAsyncResult |> Async.Catch 
-                    return
-                        match r with
-                        | Choice1Of2 v -> v
-                        | Choice2Of2 e -> handler e
-                } |> WAsyncR
-            member this.TryFinally(body, compensation) =
-                async {
-                    let! r1 = body() |> toAsyncResult |> Async.Catch 
-                    let _r2 = compensation()     
-                    return
-                        match r1 with
-                        | Choice1Of2 v -> v
-                        | Choice2Of2 e -> raise e
-                } |> WAsyncR
+            member this.TryWith   (body, handler     ) = tryWith    handler      body
+            member this.TryFinally(body, compensation) = tryFinally compensation body
             member this.Using(disposable:#System.IDisposable, body) =
                 let body' = fun () -> body disposable
                 this.TryFinally(body', fun () -> if disposable :> obj <> null then disposable.Dispose() )
@@ -690,10 +699,35 @@ namespace FSSGlobal
                                                                    (fun exc -> failException exc |> fail |> callback), 
                                                                     fun can -> failException can |> fail |> callback)
     
+        module Seq =
+            let cons h t = Seq.append t (Seq.singleton h) 
+            /// Map an AsyncResult producing function over a list to get a new AsyncResult
+            /// using monadic style
+            /// ('a -> XResult<'b>) -> 'a list -> XResult<'b list>
+            let rec traverseM f sequ =
+                let (>>=) v f = bind f v
+                let retn      = Return
+                let initState = retn (seq[])
+                let folder tail head = f head >>= (fun h -> tail >>= (fun t -> retn (cons h t) ))
+                Seq.fold folder initState sequ  
+            /// Transform a "list<XResult>" into a "XResult<list>"
+            /// and collect the results using bind.
+            let inline sequenceM x = traverseM id x
+        
+            /// Map a Result producing function over a list to get a new Result 
+            /// using applicative style
+            /// ('a -> Result<'b>) -> 'a list -> Result<'b list>
+            let rec traverseA f sequ =
+                let (<*>)     = apply
+                let retn      = Return
+                let initState = retn (Seq.empty)
+                let folder tail head = retn cons <*> f head <*> tail
+                Seq.fold folder initState sequ
+            /// Transform a "list<Result>" into a "Result<list>" 
+            /// and collect the results using apply.
+            let inline sequenceA x = traverseA id x
     
-    #if WEBSHARPER
         [< Inline "console.log('runSynchronously should not be used in Javascript')" >]                       
-    #endif
         let runSynchronouslyR (w: Wrap<_>) =
             w
             |> getAsyncR
@@ -712,13 +746,9 @@ namespace FSSGlobal
     type Wrap<'T> with
         static member Start           (w:Wrap<_   >,           ?cancToken) = Async.Start           (Wrap.getAsync  w,                                ?cancellationToken= cancToken)
         static member StartAsTask     (w:Wrap<'T  >, ?options, ?cancToken) = Async.StartAsTask     (Wrap.getAsyncR w, ?taskCreationOptions= options, ?cancellationToken= cancToken)
-    #if WEBSHARPER
         [< Inline "console.log('RunSynchronously should not be used in Javascript')" >]                       
-    #endif
         static member RunSynchronouslyR(w:Wrap<'T  >, ?timeout, ?cancToken) = Async.RunSynchronously(Wrap.getAsyncR w, ?timeout            = timeout, ?cancellationToken= cancToken)
-    #if WEBSHARPER
         [< Inline "console.log('RunSynchronously should not be used in Javascript')" >]                       
-    #endif
         static member RunSynchronously( w:Wrap<'T  >, ?timeout, ?cancToken) = Async.RunSynchronously(Wrap.getAsync  w, ?timeout            = timeout, ?cancellationToken= cancToken)
     
     let cons head tail = head :: tail
@@ -768,10 +798,24 @@ namespace FSSGlobal
         let wrap   = Wrap  .wrap
     
     
+    [<System.Runtime.CompilerServices.Extension ; JavaScript false>]
+    type MailboxProcessorExt =
+        [<System.Runtime.CompilerServices.Extension>]
+        static member PostAndReply     (agent:MailboxProcessor<_>, msg) = agent.PostAndReply     (fun reply -> reply, msg)
+        [<System.Runtime.CompilerServices.Extension>]
+        static member PostAndAsyncReply(agent:MailboxProcessor<_>, msg) = agent.PostAndAsyncReply(fun reply -> reply, msg)
+        
+    
+    
     module Mailbox =
     
-        /// A simple Mailbox processor to serially process tasks
-        let iter f =
+        /// A simple Mailbox processor to serially process Async tasks
+        /// use:
+        ///      let logThisMsgA = Mailbox.iterA (fun msg -> 
+        ///                            async { printfn "Log: %s" msg } )
+        ///      logThisMsgA.Post "message Async"
+        ///      
+        let iterA f =
             MailboxProcessor.Start(fun inbox ->
                 async {
                     while true do
@@ -780,17 +824,66 @@ namespace FSSGlobal
                         with e -> printfn "%A" e
                 }
             )
+            
+        /// A simple Mailbox processor to serially process tasks
+        /// use:
+        ///      let logThisMsg = Mailbox.iter (printfn "Log: %s")
+        ///      logThisMsg.Post "message"
+        ///      
+        let iter f = iterA (fun msg -> async { f msg } )
         
         /// A simple Mailbox processor to serially and synchronously process tasks
-        /// invoke f with: agent.PostAndReply     (fun reply -> reply, parm)
-        ///         or     agent.PostAndReplyAsync(fun reply -> reply, parm)
-        let call f = iter (fun ((replyChannel: AsyncReplyChannel<_>), msg) -> async {
+        /// use:
+        ///      let toUpperCaseA = Mailbox.callA (fun (msg:string) -> 
+        ///                                async { return msg.ToUpper() } )
+        ///
+        ///      toUpperCaseA.PostAndReply(fun reply -> reply, "message") 
+        ///      |> printfn "%s"
+        ///
+        ///      toUpperCaseA.PostAndReply "message"
+        ///      |> printfn "%s"
+        ///
+        ///      async {
+        ///          let! res = toUpperCaseA.PostAndAsyncReply(fun reply -> 
+        ///                                                        reply, "message")
+        ///          printfn "Async: %s" res
+        ///      } |> Async.RunSynchronously
+        ///
+        ///      async {
+        ///          let! res = toUpperCaseA.PostAndAsyncReply "message"
+        ///          printfn "Async: %s" res
+        ///      } |> Async.RunSynchronously    
+        ///      
+        let callA f = iterA (fun ((replyChannel: AsyncReplyChannel<_>), msg) -> async {
             let! r = f msg
             replyChannel.Reply r
         })
         
+        /// A simple Mailbox processor to serially and synchronously process tasks
+        /// use:
+        ///      let toUpperCase = Mailbox.call (fun (msg:string) -> msg.ToUpper() )
+        ///      
+        ///      toUpperCase.PostAndReply(fun reply -> reply, "message") 
+        ///      |> printfn "%s"
+        ///      
+        ///      toUpperCase.PostAndReply "message"
+        ///      |> printfn "%s"
+        ///      
+        ///      async {
+        ///          let! res = toUpperCase.PostAndAsyncReply(fun reply -> 
+        ///                                                       reply, "message")
+        ///          printfn "Async: %s" res
+        ///      } |> Async.RunSynchronously
+        ///      
+        ///      async {
+        ///          let! res = toUpperCase.PostAndAsyncReply "message"
+        ///          printfn "Async: %s" res
+        ///      } |> Async.RunSynchronously
+        ///      
+        let call f = callA (fun (msg:string) -> async { return f msg } )
+        
         /// A Mailbox processor that maintains a state
-        let fold f initState =
+        let foldA f initState =
             MailboxProcessor.Start(fun inbox ->
                 let rec loop state : Async<unit> = async {
                     try       let! msg      = inbox.Receive()
@@ -801,6 +894,9 @@ namespace FSSGlobal
                 }
                 loop initState
             )
+    
+        /// A Mailbox processor that maintains a state
+        let fold f initState = foldA (fun state msg -> async { return f state msg } ) initState
     
         type FoldNShare<'S, 'X>(f: 'S -> 'X -> Async<'S>, initState:'S) =
             let mutable share = initState
@@ -817,7 +913,9 @@ namespace FSSGlobal
                 loop initState
             )
             member this.Post  = agent.Post
+            /// Copy of current state. This is a mutable value
             member this.State = share
+            member this.Agent = agent
     
         /// A Mailbox processor that maintains a state and shares its current value
         let foldNShare f initState = FoldNShare(f, initState)
@@ -840,6 +938,8 @@ namespace FSSGlobal
     //        let mailbox = fold ff initState
     //        { new mailbox with member this.Flush() = mailbox.Post None }
     //        
+    
+    
     (* issues with websharper Type not found in JavaScript compilation: System.Collections.Generic.IDictionary`2
     module IDict =
     #if WEBSHARPER
@@ -853,10 +953,7 @@ namespace FSSGlobal
         let add          key v (dict:System.Collections.Generic.IDictionary<_, _>) = if dict.ContainsKey key then      dict.[key] <- v else dict.Add(key, v)
     *)
     module Dict =
-    #if WEBSHARPER
-        [< Inline >]
-    #endif
-        let inline tryGetValue key (dict:System.Collections.Generic. Dictionary<_, _>) =
+        let [<Inline>] inline tryGetValue key (dict:System.Collections.Generic. Dictionary<_, _>) =
             let mutable res = Unchecked.defaultof<_>
             if dict.TryGetValue(key, &res)
             then Some res 
@@ -864,15 +961,9 @@ namespace FSSGlobal
         let add          key v (dict:System.Collections.Generic. Dictionary<_, _>) = if dict.ContainsKey key then      dict.[key] <- v else dict.Add(key, v)
     
     module LDict =
-    #if WEBSHARPER
-        [< Inline >]
-    #endif
-        let inline containsKey  key  dict = (^a : (member ContainsKey : _ -> bool) (dict, key))
+        let [<Inline>] inline containsKey  key  dict = (^a : (member ContainsKey : _ -> bool) (dict, key))
         //let inline item         key  dict = (^a : (member get_Item    : _ -> _   ) (dict, key))
-    #if WEBSHARPER
-        [< Inline >]
-    #endif
-        let inline tryGetValue fitem key  dict =
+        let [<Inline>] inline tryGetValue fitem key  dict =
             if containsKey key dict then Some (fitem key)
             else None
     
@@ -897,10 +988,7 @@ namespace FSSGlobal
     let print    v = printfn "%A" v
     let mapPrint v = print        v; v
     
-    #if WEBSHARPER
-    [< Inline >]
-    #endif
-    let memoize f = 
+    let [<Inline>] memoize f = 
         let cache = System.Collections.Generic.Dictionary<_, _>()
         fun x -> 
             let mutable res = Unchecked.defaultof<_>
@@ -913,9 +1001,7 @@ namespace FSSGlobal
     type ResetableMemoize(f) =             
         let cache = System.Collections.Generic.Dictionary<_, _>()
         member this.ClearCache() = cache.Clear()
-        #if WEBSHARPER
-        [< Inline >]
-        #endif
+        [<Inline>] 
         member this.Call x =
             let mutable res = Unchecked.defaultof<_>
             let ok = cache.TryGetValue(x, &res)
@@ -1287,6 +1373,7 @@ namespace FSSGlobal
         let opReference   = { name = "Reference"   ; unique = false ; opClass = OpFSharp     ; prefix = "-r:"          }
         let opSource      = { name = "Source"      ; unique = false ; opClass = OpFSharp     ; prefix = ""             }
         let opTarget      = { name = "Target"      ; unique = true  ; opClass = OpFSharp     ; prefix = "--target:"    }
+        let opPlatform    = { name = "Platform"    ; unique = true  ; opClass = OpFSharp     ; prefix = "--platform:"  }
         let opOutput      = { name = "Output"      ; unique = true  ; opClass = OpFSharp     ; prefix = "-o:"          }
         let opDebug       = { name = "Debug"       ; unique = true  ; opClass = OpFSharp     ; prefix = "--debug:"     }
         let opDefine      = { name = "Define"      ; unique = false ; opClass = OpFSharp     ; prefix = "--define:"    }
@@ -1805,14 +1892,14 @@ namespace FSSGlobal
                 | None -> raise (exn "FssWebSocketO is not set")
                 | Some serverP ->
                 let  mutable clientBoxO : MailboxProcessor<CMessage<MessageGeneric>> option = None
-                let  receiver msg = clientBoxO |> Option.iter (fun cbox -> cbox.Post (CMessage.Message msg))
+                let  receiver msg                = clientBoxO |> Option.iter (fun cbox -> cbox.Post (CMessage.Message msg))
                 let! brokerInitState, brokerFunc = serverP.ConnectLocal clientId receiver
-                let  brokerBox   = Mailbox.fold brokerFunc brokerInitState
+                let  brokerBox                   = Mailbox.foldA brokerFunc brokerInitState
                 let! clientInitState, clientFunc = f { new IServer with
                                                            member this.Post msg = brokerBox.Post (Owin.WebSocket.Server.Message msg)
                                                            member this.Close()  = ()
                                                      }
-                let  clientBox = Mailbox.fold clientFunc clientInitState
+                let  clientBox    = Mailbox.foldA clientFunc clientInitState
                 clientBoxO <- Some clientBox
                 clientBox.Post CMessage.Open
             }
@@ -1844,7 +1931,7 @@ namespace FSSGlobal
         let startStateFull receive f =
             async {
                 let! initState, func = f
-                let agentBox = Mailbox.fold func initState
+                let agentBox = Mailbox.foldA func initState
                 let finish a = agentBox.Post CMessage.Close ; printfn "%A" a
                 let error  a = agentBox.Post CMessage.Error ; finish a
                 Async.StartWithContinuations(receive agentBox, finish, error, error)
@@ -1882,7 +1969,7 @@ namespace FSSGlobal
                         | _ -> ()
                     return "WebSocketServer receive Closed."
                 }
-            let brokerBox = Mailbox.iter (Json.Serialize >> send)
+            let brokerBox = Mailbox.iterA (Json.Serialize >> send)
             let connect f =
                 async {
                     dprintfn "Connecting %s" uri
@@ -1903,7 +1990,7 @@ namespace FSSGlobal
     
         let ConnectStatefulFS uri clientId (f:IServer -> _) =
             let uri2 = sprintf "ws://%s?ClientId=%s" uri clientId
-            let func (serverP:WebSocketServer<MessageGeneric,MessageGeneric>) =
+            let func (serverP:WebSocketServer<MessageGeneric, MessageGeneric>) =
                 f { new IServer with
                       member this.Post  v = serverP.Post v
                       member this.Close() = serverP.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None) 
@@ -1957,7 +2044,7 @@ namespace FSSGlobal
         | Cancel of Guid * (unit -> OperationCanceledException)
         
     let waitingAgent defProc =    
-        Mailbox.fold (fun waitingForReply action ->
+        Mailbox.foldA (fun waitingForReply action ->
             async {
                 match action with
                 | Add   (_ky, _fn) -> ()
@@ -2039,7 +2126,7 @@ namespace FSSGlobal
                 
             }
     
-        let checkServer = Mailbox.call ( fun () -> async {
+        let checkServer = Mailbox.callA ( fun () -> async {
             dprintfn "getServer"
             if serverO.IsNone then
                 dprintfn "getServer Connecting"
@@ -2170,7 +2257,7 @@ namespace FSSGlobal
                 | _msg                       -> false
     
     type FStationMessaging(msgClient:WSMessagingClient, _clientId, ?fsStationId:string) =
-        let mutable fsIds      = fsStationId |> Option.defaultValue "FSharpStation1526507454032"
+        let mutable fsIds      = fsStationId |> Option.defaultValue "FSharpStation1528950548035"
         let         toId()     = Address fsIds
         let stringResponseR response =
             match response with
@@ -2210,7 +2297,7 @@ namespace FSSGlobal
         member this.FSStationId                             = fsIds
         member this.FSStationId with set id                 = fsIds <- id
         member this.MessagingClient                         = msgClient    
-        static member FSStationId_                          = "FSharpStation1526507454032"
+        static member FSStationId_                          = "FSharpStation1528950548035"
     #if FSS_SERVER   
         [< JavaScript false >]
         new (clientId, FSStation, ?fsStationId:string, ?timeout, ?endPoint) = FStationMessaging(new WSMessagingClient(clientId, FSStation, ?timeout= timeout, ?endPoint= endPoint), clientId, ?fsStationId = fsStationId)
@@ -2819,7 +2906,7 @@ namespace FSSGlobal
             let consume ()  = let v = output.ToString()
                               output.Clear() |> ignore
                               v
-            Mailbox.iter (fun msg -> async {
+            Mailbox.iter (fun msg -> 
                 match msg with
                 | Some txt -> append txt
                 | None     -> let txt2send =  consume()
@@ -2827,7 +2914,7 @@ namespace FSSGlobal
                                   fssClient.RunActionCall("OutText", "actOutText", [| "+" ; txt2send |])
                                   |> Wrap.RunSynchronously 
                                   |> ignore
-              })
+              )
         let queueText txt = 
             txt |> Some |> queueOutput.Post
             async { do! Async.Sleep 100
@@ -5940,9 +6027,13 @@ namespace FSSGlobal
           |> Option.defaultValue red1
           |> CodeSnippet.FinishCode addLinePrepos
       
+      let isParseDisabled = disableParseVal |> Val.toView |> View.GetAsync
+      
       let cancellationTokenSourceO = ref None
       let parseCode() =
           let asy = async {
+              let! disabled = isParseDisabled
+              if disabled then () else
               match CodeSnippet.FetchO currentCodeSnippetId.Value with 
               | None     -> ()
               | Some cur ->
@@ -5952,6 +6043,7 @@ namespace FSSGlobal
               let  code, starts         = getCodeAndStartsFast cur false
               let! res                  = autoCompleteClient.Parse(parseFile prefix, code, starts)
               cancellationTokenSourceO := None
+              parsed                   <- true
               latestParsedPrefix       <- prefix
               parserMsgs.Value         <- "Parsed!\n" + res
            }
@@ -5964,8 +6056,6 @@ namespace FSSGlobal
           | Some (pId, _, red) when pId = currentCodeSnippetId.Value -> setDirtyPart()
           | _                                                        -> setDirty    ()
           parseCode()
-      
-      let isParseDisabled = disableParseVal |> Val.toView |> View.GetAsync
       
       let mutable parseIn     = 0
       let mutable parseOut    = 0
