@@ -1,0 +1,545 @@
+<div style="display:none" >
+    <div links>
+    <link   href="/EPFileX/codemirror/content/editor.css"                   type="text/css" rel="stylesheet"></link>
+    <link   href="/EPFileX/codemirror/content/codemirror.css"               type="text/css" rel="stylesheet"></link>
+    <link   href="/EPFileX/codemirror/scripts/addon/display/fullscreen.css" type="text/css" rel="stylesheet"></link>
+    <link   href="/EPFileX/codemirror/scripts/addon/dialog/dialog.css"      type="text/css" rel="stylesheet"></link>
+    <link   href="/EPFileX/codemirror/scripts/addon/hint/show-hint.css"     type="text/css" rel="stylesheet"></link>
+    <link   href="/EPFileX/codemirror/scripts/addon/lint/lint.css"          type="text/css" rel="stylesheet"></link>
+    <link   href="/EPFileX/codemirror/content/theme/rubyblue.css"           type="text/css" rel="stylesheet"></link>
+    <script type="text/javascript" src="/EPFileX/FileSaver/FileSaver.js"                                  ></script>
+    <script type="text/javascript" src="/EPFileX/codemirror/scripts/codemirror/codemirror.js"             ></script>
+    <zscript type="text/javascript" src="/EPFileX/codemirror/scripts/intellisense.js"                      ></zscript>
+    <script type="text/javascript" src="/EPFileX/codemirror/scripts/codemirror/codemirror-intellisense.js"></script>
+    <script type="text/javascript" src="/EPFileX/codemirror/scripts/codemirror/codemirror-compiler.js"    ></script>
+    <script type="text/javascript" src="/EPFileX/codemirror/scripts/codemirror/mode/none.js"              ></script>
+    <script type="text/javascript" src="/EPFileX/codemirror/scripts/codemirror/mode/fsharp.js"            ></script>
+    <script type="text/javascript" src="/EPFileX/codemirror/scripts/codemirror/mode/css.js"               ></script>
+    <script type="text/javascript" src="/EPFileX/codemirror/scripts/codemirror/mode/javascript.js"        ></script>
+    <script type="text/javascript" src="/EPFileX/codemirror/scripts/codemirror/mode/markdown.js"          ></script>
+    <script type="text/javascript" src="/EPFileX/codemirror/scripts/addon/search/searchcursor.js"         ></script>
+    <script type="text/javascript" src="/EPFileX/codemirror/scripts/addon/search/search.js"               ></script>
+    <script type="text/javascript" src="/EPFileX/codemirror/scripts/addon/search/jump-to-line.js"         ></script>
+    <script type="text/javascript" src="/EPFileX/codemirror/scripts/addon/dialog/dialog.js"               ></script>
+    <script type="text/javascript" src="/EPFileX/codemirror/scripts/addon/edit/matchbrackets.js"          ></script>
+    <script type="text/javascript" src="/EPFileX/codemirror/scripts/addon/selection/active-line.js"       ></script>
+    <script type="text/javascript" src="/EPFileX/codemirror/scripts/addon/display/fullscreen.js"          ></script>
+    <script type="text/javascript" src="/EPFileX/codemirror/scripts/addon/hint/show-hint.js"              ></script>
+    <script type="text/javascript" src="/EPFileX/codemirror/scripts/addon/lint/lint.js"                   ></script>
+    </div>
+    <div ws-template="FixedSplitterVer" 
+        style="display: grid; 
+               grid-gap: 0px; 
+               box-sizing: border-box; 
+               height: 100%;
+               width : 100%;
+               grid-template-areas: 'one two'; 
+               grid-template-rows   :100%; 
+               overflow: hidden; 
+               grid-template-columns: ${PartSizes}"  >
+       <div ws-hole="First"  style="grid-area: one; " class="relative" ></div>
+       <div ws-hole="Second" style="grid-area: two; " class="relative" ></div>
+    </div>               
+    <div ws-template="FixedSplitterHor" 
+   style="display: grid; 
+          grid-gap: 0px; 
+          box-sizing: border-box; 
+          height: 100%;
+          width : 100%;
+          grid-template-areas: 'one' 'two'; 
+          grid-template-columns:100%; 
+          overflow: hidden; 
+          grid-template-rows   : ${PartSizes}"  >
+  <div ws-hole="First"  style="grid-area: one; " class="relative" ></div>
+  <div ws-hole="Second" style="grid-area: two; " class="relative" ></div>
+    </div>               
+    <div ws-template="xLayout" style="position: relative; height: calc(100vh - 16px); width: calc(100vw - 16px)">
+        <wcomp-splitter  min="0" max="100" style="position: absolute; height: 100%;">
+        <wcomp-splitter  min="0" max="100">
+            <div>              
+                
+                <div ws-hole="DimensionTable"   style="overflow: auto;"></div>
+            </div>
+            <div ws-hole="CalculationTable" style="overflow: auto;"></div>
+        </wcomp-splitter>
+        </wcomp-splitter>
+    </div>
+    <div ws-template="Layout" style="height: calc(100vh - 16px); width: calc(100vw - 16px)" class="relative" >
+        <ws-FixedSplitterHor>
+            <PartSizes>55px calc(100% - 55px)</PartSizes>
+            <First>
+                <span style="display: grid;
+                      grid-template-columns: 30% 20% 20% 10%;
+                      grid-gap: 25px;
+                    ">
+                    <div class="title">Rule Editor</div>
+                    <div ><div><label>Server:</label></div><input ws-var="Server" style="width: 100%" placeHolder="Server..."   ></div>
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <label class="btn btn-primary">Load File...
+                                <div>
+                                    <input ws-onclick="LoadFileClear" ws-onchange="LoadFileChanged" type="file" class="form-control" style="display: none" id="RuleEditorFileSel" placeholder="Filename:">
+                                </div>
+                            </label>
+                        </span>
+                        <input type="text" class="form-control" id="" placeholder="Filename:" style="width: 100%;">
+                    </div>                                    
+                    <button ws-onclick="SaveAs" type="button" id="" class="btn">Save as...</button>
+                </span>
+            </First>
+            <Second>
+                <wcomp-splitter value="85" min="0" max="100" >
+                    <ws-FixedSplitterVer>
+                        <PartSizes>150px calc(100% - 150px)</PartSizes>
+                        <First>
+                            <div style="
+                                overflow: hidden;
+                                display: grid;
+                                grid-template-columns: 100%;
+                                grid-template-rows: repeat(15, calc(100% / 15));
+                                bxackground-color: #eee;
+                                box-sizing: border-box;
+                                padding : 5px;
+                                grid-gap: 5px;
+                                margin-right: 21px;
+                           "  class="absolute">
+                                <button ws-onclick="AddCalculation" class="btn" type="button" id="">Add Calculation</button>
+                                <button ws-onclick="AddTotal" class="btn" type="button" id="">Add Total</button>
+                                <button ws-onclick="IndentIn"  class="btn" type="button" id="">Indent In &gt;&gt;</button>
+                                <button ws-onclick="IndentOut" class="btn" type="button" id="">Indent Out &lt;&lt;</button>
+                                <span></span>
+                                <button ws-onclick="UpdateRules" class="btn" type="button" id="">Update Model</button>
+                                <button ws-onclick="Reorder" class="btn" type="button" id="">Reorder</button>
+                                <span></span>
+                            </div>
+                        </First>
+                        <Second>
+                            <wcomp-splitter vertical value="72" max="100">
+                                <wcomp-splitter value="70" >
+                                    <div    ws-hole="CalculationTable" style="overflow: auto;"></div>
+                                    <div    ws-hole="FormulaDetail"    style="overflow: auto;"></div>
+                                </wcomp-splitter>        
+                                <wcomp-tabstrip >
+                                        <div style="display: grid; grid-template-rows: 16px auto; background-color: aliceblue " tabname="Global Definitions">
+                                            <h3 style="margin-top: 0.7em">Global Definitions</h3>
+                                            <div style="margin-top: 0.7em; position: relative;">
+                                                <div ws-hole="GlobalText" style="position: absolute; height: 100%; width: 100%;" ></div>
+                                            </div>
+                                        </div>
+                                        <wcomp-splitter min="0" max="100" tabname="Dimensions" style="background-color:aliceblue">
+                                            <div style="display: block">
+                                                <button class="btn" ws-onclick="NewDimension" type="button" id="">Add Dimension...</button>
+                                                <div ws-hole="DimensionTable" style="overflow: auto; ; height: 100%;"></div>
+                                            </div>
+                                        <div ws-hole="DimsSelected"   style="overflow: auto; height: 100%;"></div>
+                                    </wcomp-splitter>
+                                </wcomp-tabstrip>
+                            </wcomp-splitter>
+                        </Second>
+                    </ws-FixedSplitterVer>
+                    <wcomp-splitter vertical >
+                        <wcomp-tabstrip bottom>
+                            <textarea tabname="Output"  ws-var="Output" ws-onafterrender="OutputAfterRender" style="height: 100%;  width: 100%; box-sizing: border-box; " spellcheck="false" title="" placeholder="Output:"                                 ></textarea>
+                            <textarea tabname="F# code" ws-var="FSCode" style="height: 100%;  width: 100%; box-sizing: border-box; " spellcheck="false" title="" placeholder="F# Code:"                                ></textarea>
+                        </wcomp-tabstrip>
+                        <wcomp-tabstrip bottom>
+                            <textarea tabname="Parser"  ws-var="Parser" style="height: 100%;  width: 100%; box-sizing: border-box; " spellcheck="false" title="" placeholder="Parser messages:" ws-ondblclick="JumpRef"></textarea>
+                        </wcomp-tabstrip>
+                    </wcomp-splitter>
+                </wcomp-splitter>
+            </Second>
+        </ws-FixedSplitterHor>
+    </div>
+    <div ws-template="WCompSplitterHor" 
+         ws-onafterrender="AfterRender"
+         style="display: grid;
+                grid-gap: 5px; 
+                box-sizing: border-box; 
+                grid-template-areas: 'one' 'two'; 
+                grid-template-columns:100%; 
+                overflow: hidden; 
+                grid-template-rows   : ${PartSizes}" 
+         >
+         <slot></slot>
+        <slot name="splitter">  <div style="grid-row:2; grid-column:1 / 1 ; cursor: row-resize; z-index: 3; background-color: #eef ; height: ${Gap}; margin-top :-${Gap}" ws-onmousedown="MouseDown" ws-onafterrender="AfterRenderSp" ></div> </slot>
+        <style>
+            ::slotted(*) {
+                display: grid;
+                height : 100%;
+                width  : 100%;
+                overflow: hidden;
+            }
+            ::slotted(*:nth-child(2)) {
+                grid-area: two;
+            }
+            ::slotted(*[slot="splitter"]) {
+                grid-row:2; grid-column:1 / 1 ; 
+                cursor: row-resize; 
+                z-index: 3; 
+                background-color: #eef ; 
+                height: ${Gap}; 
+                margin-top :-${Gap}
+            }
+        </style>
+    </div>        
+    <div ws-template="WCompSplitterVer" 
+         ws-onafterrender="AfterRender"
+         style="display: grid; 
+                grid-gap: 5px; 
+                box-sizing: border-box; 
+                grid-template-areas: 'one two'; 
+                grid-template-rows   :100%; 
+                overflow: hidden; 
+                grid-template-columns: ${PartSizes}"  >
+        <slot></slot>
+        <slot name="splitter"> <div style="grid-column:2; grid-row:1 / 1 ; cursor: col-resize; z-index: 3; background-color: #eef ; width: ${Gap}; margin-left :-${Gap}" ws-onmousedown="MouseDown" ws-onafterrender="AfterRenderSp" ></div> </slot>
+        <style>
+            ::slotted(*) {
+                display: grid;
+                height : 100%;
+                width  : 100%;
+                overflow: hidden;
+            }
+            ::slotted(*:nth-child(2)) {
+                grid-area: two;
+            }
+            ::slotted(*[slot="splitter"]) {
+                grid-column:2; grid-row:1 / 1
+                cursor: column-resize; 
+                z-index: 3; 
+                background-color: #eef ; 
+                width: ${Gap}; 
+                margin-left:-${Gap}
+            }
+        </style>
+    </div>
+    <div ws-template="CalculationTable" >
+        <table class="table table-striped" style="border-spacing: 0px; border-collapse: collapse; ">
+            <thead>
+                <th style="width: 20px " class="">&gt;</th>
+                <th style="width: 25%  ">Calculation</th>
+                <th style="width: 20px ">Type</th>
+                <th style="width: 75%  ">Formula</th>
+                <th style="width: 30px ">Order</th>
+                <th style="width: 10%  ">Format</th>
+                <th style="width: 20px ">text</th>
+                <th style="width: 20px ">bal.</th>
+            </thead>
+            <tbody ws-hole="TBody" >
+                <tr ws-template="TotalRow" 
+                    class="level ${Selected} hover" 
+                    ws-onafterrender="AfterRender" 
+                    ws-onclick="Select"
+                    draggable="true"
+                    ws-ondrag="Drag"
+                    ws-ondragover="DragOver"
+                    ws-ondrop="Drop"
+                    >
+                    <td class="level-item" ws-onclick="Collapse" style="cursor: pointer; background: white" >${SelectedMark}</td>
+                    <td class="level-item" style="padding-left: 0px; position: relative">
+                        <span class="indenter" style="min-width:${Indent}; width:${Indent}"></span>
+                        <input type="text" ws-var="TotName" class="form-control" style="margin-left:calc(2px + ${Indent}); width: calc(100% - ${Indent})" placeholder="New Total...">
+                    </td>
+                    <td class="level-item">
+                    </td>
+                    <td class="level-item" >
+                    </td>
+                    <td class="level-item">
+                        <div>
+                            <input type="text" ws-var="OrderTot" class="form-control"  placeholder="Sorting text...">
+                        </div>
+                    </td>
+                    <td class="level-item">
+                        <div>
+                            <input type="text" ws-var="Format" class="form-control"  placeholder="Excel style Format...">
+                        </div>
+                    </td>
+                    <td class="level-item">
+                    </td>
+                    <td class="level-item">
+                    </td>
+                    <td class="level-item">
+                        <div style=" cursor: pointer " title="remove Total">
+                            <button ws-onclick="Remove" class="delete is-small">x</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr ws-template="CalculationRow" style="vertical-align: top" 
+                    class="calculation ${Selected} hover" 
+                    ws-onafterrender="AfterRender" 
+                    ws-onclick="Select"
+                    draggable="true"
+                    ws-ondrag="Drag"
+                    ws-ondragover="DragOver"
+                    ws-ondrop="Drop"
+                    >
+                    <td class="level-item" style="cursor: pointer; background: white">${SelectedMark}</td>
+                    <td class="level-item" style="padding-left: 0px; position: relative">
+                        <span class="indenter" style="min-width:${Indent}; width:${Indent}"></span>
+                        <input type="text" ws-var="CalcName" class="form-control" style="margin-left:calc(2px + ${Indent}); width: calc(100% - ${Indent})" placeholder="New Calculation...">
+                    </td>
+                    <td class="level-item">
+                        <select ws-var="CalcType" style="max-height: 1.6em">
+                            <option>Input</option>
+                            <option>Calc</option>
+                        </select>
+                    </td>
+                    <td class="level-item" >
+                        <table class="table table-nonstriped" style="border-spacing: 0px; width: 100%; border-collapse: collapse; ">
+                            <tbody ws-hole="Formulas">
+                                <tr ws-template="FormulaRow" style="vertical-align: top" 
+                                    class="formula ${Selected} " 
+                                    ws-onafterrender="AfterRender" 
+                                    ws-onclick="Select"
+                                    draggable="true"
+                                    ws-ondrag="Drag"
+                                    ws-ondragover="DragOver"
+                                    ws-ondrop="Drop"
+                                    >
+                                    <td style="width: 1ch ; max-width: 1ch; min-width: 1ch;" class="level-item">${SelectedMark}</td>
+                                    <td style="width: 20px "class="level-item" >
+                                        <select ws-var="FormType" style="max-height: 1.55em" ws-attr="DisableForm1">
+                                            <option>Base</option>
+                                            <option>Consolidated</option>
+                                            <option>All</option>
+                                        </select>
+                                    </td>
+                                    <td  style="width: 75%  "class="level-item">
+                                        <div>
+                                            <input type="text" ws-var="Formula" ws-attr="DisableForm2" class="form-control"  placeholder="New Formula...">
+                                        </div>
+                                    </td>
+                                    <td style="max-width: 30ch; text-align: right; white-space: nowrap;" class="level-item">${FormulaFor}</td>
+                                    <td style="width: 15px "class="level-item">
+                                        <div style=" cursor: pointer; max-height: 1.55em " title="remove Formula">
+                                            <button ws-onclick="Remove" class="delete is-small">x</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td class="level-item">
+                        <div>
+                            <input type="text" ws-var="OrderCalc" class="form-control"  placeholder="Sorting text...">
+                        </div>
+                    </td>
+                    <td class="level-item">
+                        <div>
+                            <input type="text" ws-var="Format" class="form-control"  placeholder="Excel style Format...">
+                        </div>
+                    </td>
+                    <td class="level-item">
+                        <input type="checkbox" ws-var="IsText"     id="IsText"     ws-attr="DisableCalc4" class="form-control"  >
+                    </td>
+                    <td class="level-item">
+                        <input type="checkbox" ws-var="IsBalance"  id="IsBalance"  ws-attr="DisableCalc5" class="form-control"  >
+                    </td>
+                    <td class="level-item">
+                        <div style=" cursor: pointer " title="remove Calculation">
+                            <button ws-onclick="Remove" class="delete is-small">x</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div ws-template="DimensionTable">
+            <div style="background-color: aqua"></div>
+            <div slot="part2" >
+                <table style="border-spacing:0px">
+            <thead>
+                <th style="width: 30%  ">Dimension</th>
+                <th style="width: 14% ">Abbreviation</th>
+                <th style="width: 14% ">Order</th>
+                <th style="width: 14% ">Type</th>
+                <th style="width: 14%  ">Exclude Cube Name</th>
+                <th style="width: 14% ">Include Freeze</th>
+            </thead>
+            <tbody ws-hole="TBody" ws-children-template="DimensionRow">
+                <tr ws-onclick="Select" style="margin-bottom: 2px" class="level  ">
+                <td class="level-item">
+                    <div>
+                        <input ws-var="Name" type="text" class="form-control" id="" placeholder="New Dimension...">
+                    </div>
+                </td>
+                <td class="level-item">
+                    <div>
+                        <input ws-var="Abbreviation" type="text" class="form-control" id="" placeholder="Abbreviation...">
+                    </div>
+                </td>
+                <td class="level-item">
+                    <div>
+                        <input ws-var="Order" type="text" class="form-control" id="" placeholder="order...">
+                    </div>
+                </td>
+                <td class="level-item">
+                    <select ws-var="Type" style="max-height: 1.6em">
+                        <option>DataType</option>
+                        <option>Time</option>
+                        <option>Version</option>
+                        <option>Other</option>
+                    </select>
+                </td>
+                <td class="level-item">
+                    <input type="checkbox" ws-var="ExcludeName"   >
+                </td>
+                <td class="level-item">
+                    <input type="checkbox" ws-var="IncludeFreeze" >
+                </td>
+                <td class="level-item">
+                    <div style=" cursor: pointer " title="remove">
+                        <button ws-onclick="Remove" class="delete is-small">x</button>
+                    </div>
+                </td>
+                </tr>
+            </tbody>
+                </table>
+            </div>
+    </div>
+    <div ws-template="DimsSelected" >
+        <div style="height: 1em"></div>
+        <span><label>Cube:</label><input ws-var="CubeName" ws-attr="DisableCalc1" style="width:calc(100% - 5ch)" placeHolder="${PossibleCubeName}" ></span>
+        <div style="height: 1em"></div>
+        <table style="border-spacing:0px; width: 100%">
+                <thead>
+                    <th>Dimension</th>
+                    <th>For</th>
+                </thead>
+                <tbody ws-hole="TBody" ws-children-template="DimSelectedRow">
+                    <tr>
+                        <td>
+                            <input type="checkbox" ws-var="DimensionCheck" id="SelectedDim" ><label for="SelectedDim">${Dimension}</label>
+                        </td>
+                        <td>
+                            <div>
+                                <input type="text" ws-var="Destination" class="form-control ${Hidden}" id="" placeholder="" >
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+        </table>
+    </div>
+    <div ws-template="FormulaDetail" >
+        <div style="display: grid;height:100%;grid-template-rows: min-content;">
+        <table>
+          <thead>
+                <th style="width:35%"></th>
+                <th style="width:15%"></th>
+                <th style="width:25ch"></th>
+                <th style="width:15ch"></th>
+                <th style="width:15ch"></th>
+            </thead>
+          <tbody>
+          <tr>
+            <td><label>Name:  </label><input ws-var="CalcName" ws-attr="DisableCalc1" style="width:90%" placeHolder="New Calculation..."   ></td>
+            <td><label>Format:</label><input ws-var="Format"   ws-attr="DisableCalc2" style="width:50%" placeHolder="Excel style Format..."></td>
+            <td><div><label>type Calc.</label><select ws-var="CalcType" ws-attr="DisableCalc3" style="min-width: 60%">
+                    <option >Input</option>
+                    <option >Calc </option>
+                </select> </div>
+                <div><label>type Form.</label><select ws-var="FormType" ws-attr="DisableForm1" style="min-width: 60%" >
+                    <option>Base        </option>
+                    <option>Consolidated</option>
+                    <option>All         </option>
+                </select> </div>
+            </td>
+            <td>
+                <div><input type="checkbox" ws-var="IsText"     id="IsText"     ws-attr="DisableCalc4" ><label for="IsText"    >is Text    </label></div>
+                <div><input type="checkbox" ws-var="IsBalance"  id="IsBalance"  ws-attr="DisableCalc5" ><label for="IsBalance" >is Balance </label></div>
+                <div><input type="checkbox" ws-var="AlsoActual" id="AlsoActual" ws-attr="DisableForm2" ><label for="AlsoActual">also Actual</label></div>
+            </td>
+            <td><button class="btn" ws-onclick="AddFormula" ws-attr="DisableCalc6" type="button">Add Formula</button></td>
+          </tr>
+        </tbody>
+        </table>
+        <div style="margin-top: -12px; margin-bottom: 15px">
+            <label>Formula:</label>
+            <div style="position: relative; height: 100%; width: 100%;">
+                <div ws-hole="Formula" style="position: absolute; height: 100%; width: 100%;" ></div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <textarea ws-template="GlobalText" ws-var="Var" style="height: 100%;  width: 100%; box-sizing: border-box; " spellcheck="false" title="" placeholder="Enter text:"                             ></textarea>
+    <style>
+        .Hidden     { display   : none         }
+        table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }
+        td input.form-control { 
+            padding    : 0px; 
+            font-family: monospace;
+            font-size  :   small;
+            margin-top :   0px;
+            margin-left: -2px;
+            width      : 100%
+        }
+        td select {
+            font-size : smaller;
+            max-width : 8ch;
+        }
+        textarea {
+           resize : none;
+        }
+        .tab-content {
+            overflow: hidden
+        }
+        .tab-children {
+            position:relative;
+        }
+        .tab-children>div>* {
+            position:absolute;
+            height: 100%;
+            width:  100%;
+            display: grid;
+        }
+        .relative {
+            position:relative;
+        }
+        .relative>* {
+            position:absolute;
+            height: 100%;
+            width:  100%;
+            display: grid;
+        }
+        table.table-striped    tbody tr:nth-child(even) { background: #EEE  }
+        table.table-striped    tbody tr:nth-child(odd ) { background: #FFF  }
+        table.table-striped    tbody input              { background: transparent; border: none}
+        table.table-striped    tbody select             { background: transparent; border: none}
+        table.table-nonstriped tbody tr:nth-child(even) { background: inherit }
+        table.table-nonstriped tbody tr:nth-child(odd ) { background: inherit }
+        table.table            tbody tr.hover           { border    : solid thin transparent; } 
+        table.table            tbody tr.hover:hover     { border    : solid thin blue     ; } 
+        table.table            tbody th:hover           { background: gray; cursor: pointer }
+        table.table            tbody tr.hover:hover>td  { border-top: solid thin blue     ; 
+                                                   border-bottom: solid thin blue     ; } 
+        table.table            tbody tr.selected { background   : #b9eeff             ; }
+        table.table            tbody tr.formula.selected { background: #20f7f7             ; }
+        thead { color: gray }
+        h3 { 
+            color: gray;
+            line-height: 1em;
+        }
+        button       { border: solid thin transparent ; border-radius: 3px; }
+        button:hover { border: solid thin blue }
+        .indenter { position  : absolute; 
+                    top:0px; bottom:0px; left:0px; 
+                    background: white; color:white;
+                    border-right: gray thin dotted;
+                    }
+        body {
+            color      : #333;
+            font-size  : small;
+            font-family: monospace;
+            line-height: 1.2;
+        }
+        .title {  
+            font-size: 48px;
+            font-weight: 500;
+            color: gray;
+            margin-top: -12px;
+        }
+        .CodeMirror {
+            height: 100%;
+        }
+    </style>
+</div>
