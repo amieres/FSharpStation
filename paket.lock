@@ -100,3 +100,6 @@ NUGET
     XPlot.Plotly (1.4.1)
       Http.fs
       Newtonsoft.Json
+
+GROUP ruleeditor
+RESTRICTION: == net461
