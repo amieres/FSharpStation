@@ -44,6 +44,7 @@ nuget Fable.Core
 nuget Fable.Import.Browser
 
 nuget NUnit 2.6.4
+nuget Fuchu
 nuget Unquote
 
 nuget CommonServiceLocator 
