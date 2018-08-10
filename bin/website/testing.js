@@ -361,7 +361,7 @@ if (!console) {
 (function()
 {
  "use strict";
- var Global,FsRoot,TestingJS,Monaco,WebSharper,Obj,UI,Var$1,Operators,HtmlModule,attr,LibraryJS,Monaco$1,Var,EventTarget,Node,JavaScript,JS,View,ConcreteVar,Snap,Doc,AttrProxy,LoadFiles,Editor,Monaco$2,Pervasives,Abbrev,Fresh,SC$1,Client,Templates,WindowOrWorkerGlobalScope,HoverProvider,Library,Arrays,Unchecked,MarkerData,DomUtility,Attrs,Concurrency,Seq,AttrModule,String,Strings,Slice,Docs,Collections,Dictionary,Hover,MarkDownString,Utils,Range,Object,Elt,Array,AsyncBody,SC$2,CT,Enumerator,T,SC$3,SC$4,HashSet,An,Settings,Mailbox,DocElemNode,CharacterData,Updates,SC$5,List,T$1,Scheduler,CancellationTokenSource,DictionaryUtil,Prepare,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$6,Attrs$1,Dyn,SC$7,Error,OperationCanceledException,SC$8,AppendList,Queue,Easing,HashSet$1,HashSetUtil,DynamicAttrNode,DomNodes,Lazy,SC$9,LazyExtensionsProxy,LazyRecord,IntelliFactory,Runtime,Math,console,$,Date;
+ var Global,FsRoot,TestingJS,Monaco,WebSharper,Obj,UI,Var$1,Operators,HtmlModule,attr,LibraryJS,Monaco$1,Var,EventTarget,Node,JavaScript,JS,View,ConcreteVar,Snap,Doc,AttrProxy,LoadFiles,Editor,Monaco$2,Pervasives,Abbrev,Fresh,SC$1,Client,Templates,WindowOrWorkerGlobalScope,HoverProvider,CompletionItemProvider,DefinitionProvider,Library,Arrays,Unchecked,MarkerData,DomUtility,Attrs,Concurrency,Seq,AttrModule,String,Strings,Slice,Docs,Collections,Dictionary,Hover,MarkDownString,Utils,Range,CompletionItem,Location,Object,Elt,Array,AsyncBody,SC$2,CT,Enumerator,T,SC$3,SC$4,HashSet,An,Settings,Mailbox,DocElemNode,CharacterData,Updates,SC$5,List,T$1,Scheduler,CancellationTokenSource,DictionaryUtil,Prepare,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$6,Attrs$1,Dyn,SC$7,Error,OperationCanceledException,SC$8,AppendList,Queue,Easing,HashSet$1,HashSetUtil,DynamicAttrNode,DomNodes,Lazy,SC$9,LazyExtensionsProxy,LazyRecord,IntelliFactory,Runtime,Math,console,$,Date;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
@@ -391,11 +391,13 @@ if (!console) {
  Pervasives=JavaScript.Pervasives=JavaScript.Pervasives||{};
  Abbrev=UI.Abbrev=UI.Abbrev||{};
  Fresh=Abbrev.Fresh=Abbrev.Fresh||{};
- SC$1=Global["StartupCode$Temp_sogrbqs2$4c4be76d-72f0-4ba5-b740-e22f7a48c525 FsRoot"]=Global["StartupCode$Temp_sogrbqs2$4c4be76d-72f0-4ba5-b740-e22f7a48c525 FsRoot"]||{};
+ SC$1=Global["StartupCode$Temp_d2tttp0a$4c4be76d-72f0-4ba5-b740-e22f7a48c525 FsRoot"]=Global["StartupCode$Temp_d2tttp0a$4c4be76d-72f0-4ba5-b740-e22f7a48c525 FsRoot"]||{};
  Client=UI.Client=UI.Client||{};
  Templates=Client.Templates=Client.Templates||{};
  WindowOrWorkerGlobalScope=Global.WindowOrWorkerGlobalScope;
  HoverProvider=Monaco.HoverProvider=Monaco.HoverProvider||{};
+ CompletionItemProvider=Monaco.CompletionItemProvider=Monaco.CompletionItemProvider||{};
+ DefinitionProvider=Monaco.DefinitionProvider=Monaco.DefinitionProvider||{};
  Library=FsRoot.Library=FsRoot.Library||{};
  Arrays=WebSharper.Arrays=WebSharper.Arrays||{};
  Unchecked=WebSharper.Unchecked=WebSharper.Unchecked||{};
@@ -415,6 +417,8 @@ if (!console) {
  MarkDownString=Monaco$1.MarkDownString=Monaco$1.MarkDownString||{};
  Utils=WebSharper.Utils=WebSharper.Utils||{};
  Range=Monaco$1.Range=Monaco$1.Range||{};
+ CompletionItem=Monaco$1.CompletionItem=Monaco$1.CompletionItem||{};
+ Location=Monaco$1.Location=Monaco$1.Location||{};
  Object=Global.Object;
  Elt=UI.Elt=UI.Elt||{};
  Array=UI.Array=UI.Array||{};
@@ -471,7 +475,7 @@ if (!console) {
  Monaco.main=function()
  {
   var _var,monaco,x,a;
-  _var=Var$1.Create$1("Hello there.\nHello there.\nHello there.\n");
+  _var=Var$1.Create$1("Hello there.\nHello there.\nHello there.\nHello there.\n");
   monaco=Monaco.monacoNew(_var,{
    $:1,
    $0:View.Map2(function($1,$2)
@@ -496,20 +500,48 @@ if (!console) {
  {
   return Monaco$1.onRender(function(ed)
   {
-   var _m,p;
+   var _m,hp,cp,dp;
    function x(a,a$1,a$2)
    {
-    return p.provideHover(a,a$1,a$2);
+    return hp.provideHover(a,a$1,a$2);
+   }
+   function x$1(a,a$1,a$2,a$3)
+   {
+    return cp.provideCompletionItems(a,a$1,a$2,a$3);
+   }
+   function x$2(a,a$1)
+   {
+    return cp.resolveCompletionItem(a,a$1);
+   }
+   function x$3(a,a$1,a$2)
+   {
+    return dp.provideDefinition(a,a$1,a$2);
    }
    _m=ed.getModel();
    self.monaco.editor.setModelLanguage(_m,"fsharp");
    self.monaco.editor.setTheme("vs-dark");
-   p=new HoverProvider.New(ed);
+   hp=new HoverProvider.New(ed);
+   cp=new CompletionItemProvider.New(ed);
+   dp=new DefinitionProvider.New(ed);
    Library.print(function($1)
    {
     return x($1[0],$1[1],$1[2]);
    });
-   self.monaco.languages.registerHoverProvider("fsharp",p);
+   Library.print(function($1)
+   {
+    return x$1($1[0],$1[1],$1[2],$1[3]);
+   });
+   Library.print(function($1)
+   {
+    return x$2($1[0],$1[1]);
+   });
+   Library.print(function($1)
+   {
+    return x$3($1[0],$1[1],$1[2]);
+   });
+   self.monaco.languages.registerHoverProvider("fsharp",hp);
+   self.monaco.languages.registerCompletionItemProvider("fsharp",cp);
+   self.monaco.languages.registerDefinitionProvider("fsharp",dp);
    annotationsWO==null?void 0:View.Sink(function(ms)
    {
     var _m$1;
@@ -1309,7 +1341,7 @@ if (!console) {
   });
   SC$1.rexGuid="([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})";
   SC$1.includes=["/EPFileX/monaco/package/min/vs/loader.js"];
-  SC$1.annotationsV=Var$1.Create$1("Err (1, 7) - (1, 12): \"This shows over there as an error\".\nWarn (2, 7) - (2, 12): \"This shows over there as a warning\".\nInfo (3, 7) - (3, 12): \"This shows over there as information\".");
+  SC$1.annotationsV=Var$1.Create$1("Err (1, 7) - (1, 12): \"This shows over there as an error\".\nWarn (2, 7) - (2, 12): \"This shows over there as a warning\".\nInfo (3, 7) - (3, 12): \"This shows over there as information\".\nHint (4, 7) - (4, 12): \"This shows over there as a hint\".");
  };
  Templates.LoadLocalTemplates=function(baseName)
  {
@@ -1648,6 +1680,34 @@ if (!console) {
  {
   Obj.New.call(this);
  },HoverProvider);
+ CompletionItemProvider=Monaco.CompletionItemProvider=Runtime.Class({
+  provideCompletionItems:function(model,pos,token,context)
+  {
+   var word;
+   word=model.getWordAtPosition(pos);
+   return!word?null:[CompletionItem.New(2,"Hello",""),CompletionItem.New(2,"How",""),CompletionItem.New(2,"Are",""),CompletionItem.New(2,"You",""),CompletionItem.New(2,word.word,"")];
+  },
+  resolveCompletionItem:function(item,token)
+  {
+   return CompletionItem.New(item.kind,item.label,"more details");
+  }
+ },Obj,CompletionItemProvider);
+ CompletionItemProvider.New=Runtime.Ctor(function(ed)
+ {
+  Obj.New.call(this);
+ },CompletionItemProvider);
+ DefinitionProvider=Monaco.DefinitionProvider=Runtime.Class({
+  provideDefinition:function(model,pos,token)
+  {
+   var word,ms;
+   word=model.getWordAtPosition(pos);
+   return!word?null:(ms=model.findMatches(word.word,false,false,true," <>()+-=.,/#@$%^&*\"",false,1),Arrays.length(ms)===0?null:Location.New(Arrays.get(ms,0).range,model.uri));
+  }
+ },Obj,DefinitionProvider);
+ DefinitionProvider.New=Runtime.Ctor(function(ed)
+ {
+  Obj.New.call(this);
+ },DefinitionProvider);
  Library.print=function(v)
  {
   ((function($1)
@@ -3138,6 +3198,21 @@ if (!console) {
    endColumn:endColumn,
    startLineNumber:startLineNumber,
    endLineNumber:endLineNumber
+  };
+ };
+ CompletionItem.New=function(kind,label,detail)
+ {
+  return{
+   kind:kind,
+   label:label,
+   detail:detail
+  };
+ };
+ Location.New=function(range,uri)
+ {
+  return{
+   range:range,
+   uri:uri
   };
  };
  Snap.Obsolete=function(sn)
