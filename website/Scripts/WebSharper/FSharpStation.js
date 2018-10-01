@@ -4844,15 +4844,15 @@
  {
   return Hoverable$1.New$1().Content(Doc.Element("div",[AttrProxy.Create("style","flex-flow: column;")],[Doc.TextNode("Hover over me!")]));
  };
- Hoverable$1.Content$2095$81=Runtime.Curried3(function(e,$1,$2)
+ Hoverable$1.Content$2094$81=Runtime.Curried3(function(e,$1,$2)
  {
   return DomUtility.RemoveClass(e.elt,"hovering");
  });
- Hoverable$1.get_Attributes$2091$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$2090$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(false);
  });
- Hoverable$1.get_Attributes$2090$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$2089$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(true);
  });
@@ -4994,7 +4994,7 @@
   SC$1.$cctor();
   return SC$1.init;
  };
- WcTabStrip.tabStrip$2234$64=function(i,selected)
+ WcTabStrip.tabStrip$2233$64=function(i,selected)
  {
   return function()
   {
@@ -5042,7 +5042,7 @@
        {
         return function($2)
         {
-         return $1("\n                                              ::slotted(*              ) { display: none }\n                                              ::slotted(*:nth-child("+Global.String($2)+")) { display: grid }\n                                           ");
+         return $1("\r\n                                              ::slotted(*              ) { display: none }\r\n                                              ::slotted(*:nth-child("+Global.String($2)+")) { display: grid }\r\n                                           ");
         };
        }(Global.id),selected.get_View()))]))];
       }));
@@ -5379,7 +5379,7 @@
  {
   return MonacoConfig.New(v,monc.onChange,monc.onRender,monc.editorO,monc.disabled,monc.options,monc.overrides);
  };
- Monaco.render$2577$42=function(monc)
+ Monaco.render$2576$42=function(monc)
  {
   return function(elchild)
   {
@@ -5629,15 +5629,15 @@
  {
   return PlugInVar.New(name,_var);
  };
- AppFramework.vertical$2806$39=function(mouseDown)
+ AppFramework.vertical$2805$39=function(mouseDown)
  {
   return function(te)
   {
    mouseDown(te.Event);
   };
  };
- AppFramework.vertical$2805$39=Global.id;
  AppFramework.vertical$2804$39=Global.id;
+ AppFramework.vertical$2803$39=Global.id;
  AppFramework.vertical=function(partSizes,afterRender,afterRenderSp,mouseDown,gap)
  {
   var b,t,p,i;
@@ -5665,15 +5665,15 @@
    $1:gap
   }),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.wcompsplitterver(p[0])),(b.i=i,i)))).get_Doc();
  };
- AppFramework.horizontal$2798$39=function(mouseDown)
+ AppFramework.horizontal$2797$39=function(mouseDown)
  {
   return function(te)
   {
    mouseDown(te.Event);
   };
  };
- AppFramework.horizontal$2797$39=Global.id;
  AppFramework.horizontal$2796$39=Global.id;
+ AppFramework.horizontal$2795$39=Global.id;
  AppFramework.horizontal=function(partSizes,afterRender,afterRenderSp,mouseDown,gap)
  {
   var b,t,p,i;
@@ -5701,7 +5701,7 @@
    $1:gap
   }),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.wcompsplitterhor(p[0])),(b.i=i,i)))).get_Doc();
  };
- AppFramework.mainDoc$2787$42=function()
+ AppFramework.mainDoc$2786$42=function()
  {
   return function()
   {
@@ -5766,14 +5766,14 @@
   SC$1.$cctor();
   return SC$1.AppFwkClient;
  };
- AppFramework.renderActions$2752$51=function(act)
+ AppFramework.renderActions$2751$51=function(act)
  {
   return function(ev)
   {
    AppFramework.callFunction(ev,null,act.actFunction);
   };
  };
- AppFramework.renderActions$2748$51=function(act)
+ AppFramework.renderActions$2747$51=function(act)
  {
   return function(ev)
   {
@@ -5841,7 +5841,7 @@
    else
     actF.$0();
  };
- AppFramework.renderQueries$2726$39=function(qry)
+ AppFramework.renderQueries$2725$39=function(qry)
  {
   return function()
   {
@@ -5916,7 +5916,7 @@
    return plg.plgVars;
   },AppFramework.currentPlugInW()));
  };
- AppFramework.renderDocs$2696$39=function(doc)
+ AppFramework.renderDocs$2695$39=function(doc)
  {
   return function()
   {
@@ -5983,7 +5983,7 @@
    return plg.plgDocs;
   },AppFramework.currentPlugInW()));
  };
- AppFramework.renderPlugIns$2678$35=function(name)
+ AppFramework.renderPlugIns$2677$35=function(name)
  {
   return function()
   {
@@ -6128,11 +6128,11 @@
    };
   }(Global.id))(varName)):o.$0;
  };
- LayoutEngineModule.inputFile$3170$69=Runtime.Curried3(function(act,el,$1)
+ LayoutEngineModule.inputFile$3169$69=Runtime.Curried3(function(act,el,$1)
  {
   return AppFramework.callFunction(el,null,act.actFunction);
  });
- LayoutEngineModule.inputFile$3169$69=Runtime.Curried3(function($1,el,$2)
+ LayoutEngineModule.inputFile$3168$69=Runtime.Curried3(function($1,el,$2)
  {
   el.value="";
  });
@@ -10238,7 +10238,7 @@
   }];
   SC$1.rexGuid="([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})";
   SC$1.observers=List.T.Empty;
-  SC$1.css="\n                .tab-panel {\n                 overflow  : hidden   ;\n                 display   : flex     ;\n                 flex-flow : column   ;\n                 background: lightgray;\n                 height    : 100%    ;\n                 width     : 100%    ;\n                }\n                .tab-content {\n                 flex      : 1 1     ;\n                 overflow  : auto    ;\n                 position  : relative;\n                }\n                .tab-children {\n                 height    : 100%    ;\n                 width     : 100%    ;\n                 position  : absolute;\n                 display   : grid    ;\n                }\n                .tab-strip {\n                 padding   : 0pt     ;\n                 flex      : 0 0     ;\n                }\n                .tab {\n                 border     : 0.2pt solid transparent;\n                 padding    : 0pt 4pt;\n                 display    : inline-block;\n                 font-family: sans-serif;\n                 font-weight: 200;\n                 font-size  : small;\n                 color      : #666;\n                 cursor     : pointer;\n                }\n                .top>.tab {\n                 border-radius: 2pt 2pt 0pt 0pt;\n                 border-bottom-width: 0pt;\n                 vertical-align: bottom;\n                }\n                .bottom>.tab {\n                 border-top-width: 0pt;\n                 border-radius: 0pt 0pt 2pt 2pt;\n                 vertical-align: top;\n                }\n                .horizontal>.tab:not(:first-child) {\n                 border-left-width: 0pt;\n                }\n                .tab.hovering {\n                 background: red;\n                }\n                .tab.selected {\n                 background: white;\n                 border-left-width: 0.2pt;\n                 color: black;\n                 font-weight: 500;\n                 border-color: black;\n                }\n                .horizontal>.tab.selected {\n                 border-left-width: 0.2pt;\n                }\n                ::slotted(*              ) { \n                 width : 100%;\n                 height: 100%;\n                }\n                        ";
+  SC$1.css="\r\n                .tab-panel {\r\n                 overflow  : hidden   ;\r\n                 display   : flex     ;\r\n                 flex-flow : column   ;\r\n                 background: lightgray;\r\n                 height    : 100%    ;\r\n                 width     : 100%    ;\r\n                }\r\n                .tab-content {\r\n                 flex      : 1 1     ;\r\n                 overflow  : auto    ;\r\n                 position  : relative;\r\n                }\r\n                .tab-children {\r\n                 height    : 100%    ;\r\n                 width     : 100%    ;\r\n                 position  : absolute;\r\n                 display   : grid    ;\r\n                }\r\n                .tab-strip {\r\n                 padding   : 0pt     ;\r\n                 flex      : 0 0     ;\r\n                }\r\n                .tab {\r\n                 border     : 0.2pt solid transparent;\r\n                 padding    : 0pt 4pt;\r\n                 display    : inline-block;\r\n                 font-family: sans-serif;\r\n                 font-weight: 200;\r\n                 font-size  : small;\r\n                 color      : #666;\r\n                 cursor     : pointer;\r\n                }\r\n                .top>.tab {\r\n                 border-radius: 2pt 2pt 0pt 0pt;\r\n                 border-bottom-width: 0pt;\r\n                 vertical-align: bottom;\r\n                }\r\n                .bottom>.tab {\r\n                 border-top-width: 0pt;\r\n                 border-radius: 0pt 0pt 2pt 2pt;\r\n                 vertical-align: top;\r\n                }\r\n                .horizontal>.tab:not(:first-child) {\r\n                 border-left-width: 0pt;\r\n                }\r\n                .tab.hovering {\r\n                 background: red;\r\n                }\r\n                .tab.selected {\r\n                 background: white;\r\n                 border-left-width: 0.2pt;\r\n                 color: black;\r\n                 font-weight: 500;\r\n                 border-color: black;\r\n                }\r\n                .horizontal>.tab.selected {\r\n                 border-left-width: 0.2pt;\r\n                }\r\n                ::slotted(*              ) { \r\n                 width : 100%;\r\n                 height: 100%;\r\n                }\r\n                        ";
   SC$1.init=Lazy.Create(function()
   {
    var _nm,_c;
@@ -10282,7 +10282,7 @@
    return plg.plgName;
   });
   SC$1.mainDocV=Var$1.Create$1("AppFramework.AppFwkClient");
-  SC$1.TemplateFileName="D:\\Abe\\CIPHERWorkspace\\FSharpStationN\\website\\AppFramework.html";
+  SC$1.TemplateFileName="..\\website\\AppFramework.html";
   SC$1.defaultPlugIn=PlugIn.New("",[],[],[],[],[]);
   SC$1.selectionPlugInO=Var$1.Create$1({
    $:1,
@@ -10923,8 +10923,8 @@
    },snps)?"btn-primary":"";
   },Snippets.snippets().v,Snippets.generation().get_View());
   SC$1.drag=DragInfo.DragNone;
-  SC$1.rootdir="D:\\Abe\\CIPHERWorkspace\\FSharpStationN\\website";
-  SC$1.TemplatesFileName="D:\\Abe\\CIPHERWorkspace\\FSharpStationN\\website"+"\\Templates.html";
+  SC$1.rootdir="..\\website";
+  SC$1.TemplatesFileName="..\\website"+"\\Templates.html";
   ((function($7)
   {
    return function($8)
@@ -10934,7 +10934,7 @@
   }(function(s$1)
   {
    console.log(s$1);
-  }))("D:\\Abe\\CIPHERWorkspace\\FSharpStationN\\website\\Templates.html"));
+  }))("..\\website\\Templates.html"));
   SC$1.startsV=Var$1.Create$1([]);
   SC$1.defaultStart=(v$1=[[SnippetId.get_Empty(),""],[0,1,0]],function(o)
   {
