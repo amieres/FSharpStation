@@ -6795,6 +6795,9 @@
    return this.$0;
   }
  },null,Address);
+ BrokerRequest.BRGetProcessId={
+  $:1
+ };
  BrokerRequest.BRGetConnections={
   $:0
  };
@@ -6946,6 +6949,40 @@
     }):b.ReturnFrom$1($this.sendGetReply(msg));
    }));
   },
+  getProcessId:function()
+  {
+   var $this,b;
+   $this=this;
+   b=Monads.asyncResult();
+   return b.Run(b.Delay(function()
+   {
+    var dst,p;
+    return b.Bind$1($this.sendGetReply((dst=WebSockets.MessageBrokerAddress(),(p=JSON.stringify((FSharpStation_JsonEncoder.j$9())(BrokerRequest.BRGetProcessId)),MessageGeneric.New(new Address({
+     $:0,
+     $0:""
+    }),dst,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply)))),function(a)
+    {
+     var m;
+     m=(FSharpStation_JsonDecoder.j$7())(JSON.parse(a));
+     return m.$==1?b.Return(m.$0):b.ReturnFrom({
+      $:1,
+      $0:new ResultMessage({
+       $:2,
+       $0:{
+        $:6,
+        $0:(function($1)
+        {
+         return function($2)
+         {
+          return $1(FSharpStation_GeneratedPrintf.p$6($2));
+         };
+        }(Global.id))(m)
+       }
+      })
+     });
+    });
+   }));
+  },
   getListeners:function()
   {
    var $this,b;
@@ -6959,7 +6996,24 @@
      $0:""
     }),dst,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply)))),function(a)
     {
-     return b.Return((FSharpStation_JsonDecoder.j$7())(JSON.parse(a)).$0);
+     var m;
+     m=(FSharpStation_JsonDecoder.j$7())(JSON.parse(a));
+     return m.$==0?b.Return(m.$0):b.ReturnFrom({
+      $:1,
+      $0:new ResultMessage({
+       $:2,
+       $0:{
+        $:6,
+        $0:(function($1)
+        {
+         return function($2)
+         {
+          return $1(FSharpStation_GeneratedPrintf.p$6($2));
+         };
+        }(Global.id))(m)
+       }
+      })
+     });
     });
    }));
   },
@@ -7160,7 +7214,7 @@
          {
           (((Runtime.Curried3(function($1,$2,$3)
           {
-           return $1("msg: "+FSharpStation_GeneratedPrintf.p$9($2)+" \nexn:"+Utils.prettyPrint($3));
+           return $1("msg: "+FSharpStation_GeneratedPrintf.p$10($2)+" \nexn:"+Utils.prettyPrint($3));
           }))(function(s)
           {
            console.log(s);
@@ -7278,6 +7332,10 @@
   get_EndPoint:function()
   {
    return this.wsEndPoint;
+  },
+  get_MBProcessId:function()
+  {
+   return this.getProcessId();
   },
   get_MBListeners:function()
   {
@@ -8504,7 +8562,7 @@
    $1:S
   })),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.snippetlist(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderSnippets.snippets$4620$40=function(snpId)
+ RenderSnippets.snippets$4635$40=function(snpId)
  {
   return function(ev)
   {
@@ -8514,7 +8572,7 @@
    o==null?void 0:Snippets.moveNode(o.$0,snpId);
   };
  };
- RenderSnippets.snippets$4619$40=function(snpId)
+ RenderSnippets.snippets$4634$40=function(snpId)
  {
   return function(ev)
   {
@@ -8522,7 +8580,7 @@
     ev.Event.preventDefault();
   };
  };
- RenderSnippets.snippets$4618$40=function(snpId)
+ RenderSnippets.snippets$4633$40=function(snpId)
  {
   return function(ev)
   {
@@ -8530,21 +8588,21 @@
    ev.Event.stopPropagation();
   };
  };
- RenderSnippets.snippets$4617$40=function(snpId)
+ RenderSnippets.snippets$4632$40=function(snpId)
  {
   return function()
   {
    Snippets.toggleCollapse(snpId);
   };
  };
- RenderSnippets.snippets$4616$40=function(snpId)
+ RenderSnippets.snippets$4631$40=function(snpId)
  {
   return function()
   {
    Snippets.togglePredecessor(snpId);
   };
  };
- RenderSnippets.snippets$4615$40=function(snpId)
+ RenderSnippets.snippets$4630$40=function(snpId)
  {
   var s;
   s=View$1.Map(function(y)
@@ -8556,7 +8614,7 @@
    return RenderSnippets.scrollIntoView(s,e);
   };
  };
- RenderSnippets.snippets$4614$40=function(snpId)
+ RenderSnippets.snippets$4629$40=function(snpId)
  {
   return function()
   {
@@ -8692,7 +8750,7 @@
     e.scrollIntoViewIfNeeded();
   },selW);
  };
- RenderProperties.render$4657$34=function()
+ RenderProperties.render$4672$34=function()
  {
   return function()
   {
@@ -8714,7 +8772,7 @@
    RenderProperties.addProperty();
   }))),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.propertytable(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderProperties.properties$4650$33=function(i)
+ RenderProperties.properties$4665$33=function(i)
  {
   return function()
   {
@@ -8832,7 +8890,7 @@
     {
      return function($2)
      {
-      return $1(FSharpStation_GeneratedPrintf.p$10($2));
+      return $1(FSharpStation_GeneratedPrintf.p$11($2));
      };
     }(Global.id))(a.$0)):a.$0;
    }
@@ -8872,7 +8930,7 @@
     {
      return function($2)
      {
-      return $1(FSharpStation_GeneratedPrintf.p$10($2));
+      return $1(FSharpStation_GeneratedPrintf.p$11($2));
      };
     }(Global.id))(a.$0)):a.$0;
    }
@@ -8912,7 +8970,7 @@
     {
      return function($2)
      {
-      return $1(FSharpStation_GeneratedPrintf.p$10($2));
+      return $1(FSharpStation_GeneratedPrintf.p$11($2));
      };
     }(Global.id))(a.$0)):a.$0;
    }
@@ -9610,36 +9668,36 @@
    });
   })));
  };
- MainProgram.mainDoc$5253$78=Global.id;
- MainProgram.mainDoc$5245$39=function()
+ MainProgram.mainDoc$5268$78=Global.id;
+ MainProgram.mainDoc$5260$39=function()
  {
   return function(ev)
   {
    JumpTo.jumpToRef(ev.Target);
   };
  };
- MainProgram.mainDoc$5244$39=function()
+ MainProgram.mainDoc$5259$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5243$39=function()
+ MainProgram.mainDoc$5258$39=function()
  {
   return function(ev)
   {
    Importer.importFile(ev.Target);
   };
  };
- MainProgram.mainDoc$5242$39=function()
+ MainProgram.mainDoc$5257$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5241$39=function()
+ MainProgram.mainDoc$5256$39=function()
  {
   return function(ev)
   {
@@ -9758,11 +9816,11 @@
   }))))))))))))));
   return(p=Handler$1.CompleteHoles(tmp.k,tmp.h,[["filename",0],["name",0],["output",0],["fscode",0],["parser",0]]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.layout(p[0])),(tmp.i=i,i))).get_Doc();
  };
- MainProgram.buttonsRight$5227$74=Global.id;
- MainProgram.buttonsRight$5226$74=Global.id;
- MainProgram.buttonsRight$5225$74=Global.id;
- MainProgram.buttonsRight$5224$74=Global.id;
- MainProgram.buttonsRight$5223$74=Global.id;
+ MainProgram.buttonsRight$5242$74=Global.id;
+ MainProgram.buttonsRight$5241$74=Global.id;
+ MainProgram.buttonsRight$5240$74=Global.id;
+ MainProgram.buttonsRight$5239$74=Global.id;
+ MainProgram.buttonsRight$5238$74=Global.id;
  MainProgram.buttonsRight=function()
  {
   var tmp,p,i;
@@ -11570,70 +11628,52 @@
  };
  FSharpStation_JsonEncoder.j$9=function()
  {
-  return FSharpStation_JsonEncoder._v$9?FSharpStation_JsonEncoder._v$9:FSharpStation_JsonEncoder._v$9=(Provider.EncodeUnion(void 0,"type",[["BRGetConnections",[]]]))();
+  return FSharpStation_JsonEncoder._v$9?FSharpStation_JsonEncoder._v$9:FSharpStation_JsonEncoder._v$9=(Provider.EncodeUnion(void 0,"type",[["BRGetConnections",[]],["BRGetProcessId",[]]]))();
+ };
+ FSharpStation_GeneratedPrintf.p$6=function($1)
+ {
+  return $1.$==2?"BRString "+Utils.prettyPrint($1.$0):$1.$==1?"BRPid "+Utils.prettyPrint($1.$0):"BRConnections "+Utils.printArray(Utils.prettyPrint,$1.$0);
  };
  FSharpStation_JsonDecoder.j$7=function()
  {
-  return FSharpStation_JsonDecoder._v$7?FSharpStation_JsonDecoder._v$7:FSharpStation_JsonDecoder._v$7=(Provider.DecodeUnion(void 0,"type",[["BRConnections",[["$0","Item",Provider.DecodeArray(Provider.Id()),0]]]]))();
+  return FSharpStation_JsonDecoder._v$7?FSharpStation_JsonDecoder._v$7:FSharpStation_JsonDecoder._v$7=(Provider.DecodeUnion(void 0,"type",[["BRConnections",[["$0","Item",Provider.DecodeArray(Provider.Id()),0]]],["BRPid",[["$0","Item",Provider.Id(),0]]],["BRString",[["$0","Item",Provider.Id(),0]]]]))();
  };
  FSharpStation_JsonDecoder.j$8=function()
  {
-  return FSharpStation_JsonDecoder._v$8?FSharpStation_JsonDecoder._v$8:FSharpStation_JsonDecoder._v$8=(Provider.DecodeUnion(void 0,"type",[["BMOk",[]],["BMOnlyBrokerShouldUse",[]],["BMDestinationNotFound",[["$0","Item",FSharpStation_JsonDecoder.j$1,0]]],["BMWebSocketError",[["$0","Item",Provider.Id(),0]]],["BMReceiverCantReply",[]],["BMUnexpectedMsgType",[["$0","Item",FSharpStation_JsonDecoder.j$2,0]]]]))();
+  return FSharpStation_JsonDecoder._v$8?FSharpStation_JsonDecoder._v$8:FSharpStation_JsonDecoder._v$8=(Provider.DecodeUnion(void 0,"type",[["BMOk",[]],["BMOnlyBrokerShouldUse",[]],["BMDestinationNotFound",[["$0","Item",FSharpStation_JsonDecoder.j$1,0]]],["BMWebSocketError",[["$0","Item",Provider.Id(),0]]],["BMReceiverCantReply",[]],["BMUnexpectedMsgType",[["$0","Item",FSharpStation_JsonDecoder.j$2,0]]],["BMUnexpectedResponse",[["$0","Item",Provider.Id(),0]]]]))();
  };
- FSharpStation_GeneratedPrintf.p$8=function($1)
+ FSharpStation_GeneratedPrintf.p$9=function($1)
  {
   return $1.$==2?"Receiver":$1.$==1?"Broker":"NoReply";
  };
- FSharpStation_GeneratedPrintf.p$7=function($1)
+ FSharpStation_GeneratedPrintf.p$8=function($1)
  {
   return $1.$==5?"MsgRequestForEcho":$1.$==4?"MsgRequestForId":$1.$==3?"MsgFromBroker":$1.$==2?"MsgReply":$1.$==1?"MsgRequest":"MsgInformation";
  };
  GeneratedPrintf.p$1=function($1)
  {
-  return"{"+("from = "+FSharpStation_GeneratedPrintf.p$6($1.from))+"; "+("destination = "+FSharpStation_GeneratedPrintf.p$6($1.destination))+"; "+("msgType = "+FSharpStation_GeneratedPrintf.p$7($1.msgType))+"; "+("subtype = "+Utils.prettyPrint($1.subtype))+"; "+("id = "+Utils.prettyPrint($1.id))+"; "+("payload = "+Utils.prettyPrint($1.payload))+"; "+("replier = "+FSharpStation_GeneratedPrintf.p$8($1.replier))+"}";
+  return"{"+("from = "+FSharpStation_GeneratedPrintf.p$7($1.from))+"; "+("destination = "+FSharpStation_GeneratedPrintf.p$7($1.destination))+"; "+("msgType = "+FSharpStation_GeneratedPrintf.p$8($1.msgType))+"; "+("subtype = "+Utils.prettyPrint($1.subtype))+"; "+("id = "+Utils.prettyPrint($1.id))+"; "+("payload = "+Utils.prettyPrint($1.payload))+"; "+("replier = "+FSharpStation_GeneratedPrintf.p$9($1.replier))+"}";
  };
- FSharpStation_GeneratedPrintf.p$6=function($1)
+ FSharpStation_GeneratedPrintf.p$7=function($1)
  {
   return"Address "+Utils.prettyPrint($1.$0);
  };
- FSharpStation_GeneratedPrintf.p$9=function($1)
+ FSharpStation_GeneratedPrintf.p$10=function($1)
  {
   return $1.$==3?"Close":$1.$==2?"Open":$1.$==1?"Error":"Message "+GeneratedPrintf.p$1($1.$0);
  };
- FSharpStation_GeneratedPrintf.p$10=function($1)
+ FSharpStation_GeneratedPrintf.p$11=function($1)
  {
   return $1.$==3?"ExceptMsg ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+")":$1.$==2?"Message "+Utils.printArray(function($2)
   {
-   return FSharpStation_GeneratedPrintf.p$11($2);
+   return FSharpStation_GeneratedPrintf.p$12($2);
   },$1.$0):$1.$==1?"Warning "+Utils.prettyPrint($1.$0):"ErrorMsg "+Utils.prettyPrint($1.$0);
  };
- GeneratedPrintf.p$23=function($1)
- {
-  return"{"+("Text = "+Utils.prettyPrint($1.Text))+"}";
- };
- GeneratedPrintf.p$20=function($1)
- {
-  return"{"+("Opens = "+Utils.printArray(function($2)
-  {
-   return GeneratedPrintf.p$21($2);
-  },$1.Opens))+"; "+("Qualifies = "+Utils.printArray(function($2)
-  {
-   return GeneratedPrintf.p$22($2);
-  },$1.Qualifies))+"; "+("Word = "+Utils.prettyPrint($1.Word))+"}";
- };
- GeneratedPrintf.p$21=function($1)
- {
-  return"{"+("Namespace = "+Utils.prettyPrint($1.Namespace))+"; "+("Name = "+Utils.prettyPrint($1.Name))+"; "+("Type = "+Utils.prettyPrint($1.Type))+"; "+("Line = "+Utils.prettyPrint($1.Line))+"; "+("Column = "+Utils.prettyPrint($1.Column))+"; "+("MultipleNames = "+Utils.prettyPrint($1.MultipleNames))+"}";
- };
- GeneratedPrintf.p$19=function($1)
- {
-  return"{"+("Fsc = "+Utils.prettyPrint($1.Fsc))+"; "+("Fsi = "+Utils.prettyPrint($1.Fsi))+"; "+("MSBuild = "+Utils.prettyPrint($1.MSBuild))+"}";
- };
- FSharpStation_GeneratedPrintf.p$11=function($1)
+ FSharpStation_GeneratedPrintf.p$12=function($1)
  {
   return $1.$==17?"KMultiple "+Utils.printArray(function($2)
   {
-   return FSharpStation_GeneratedPrintf.p$11($2);
+   return FSharpStation_GeneratedPrintf.p$12($2);
   },$1.$0):$1.$==16?"KUnionCase "+GeneratedPrintf.p$23($1.$0):$1.$==15?"KNamespaces "+GeneratedPrintf.p$20($1.$0):$1.$==14?"KCompilerLocation "+GeneratedPrintf.p$19($1.$0):$1.$==13?"KSignatureData "+GeneratedPrintf.p$17($1.$0):$1.$==12?"KTypeSig "+Utils.prettyPrint($1.$0):$1.$==11?"KToolTip "+Utils.printArray(function($2)
   {
    return Utils.printArray(function($3)
@@ -11651,6 +11691,22 @@
    return GeneratedPrintf.p$5($2);
   },$1.$0):$1.$==2?"KHelpText "+GeneratedPrintf.p$3($1.$0):$1.$==1?"KError "+GeneratedPrintf.p$2($1.$0):"KInfo "+Utils.prettyPrint($1.$0);
  };
+ GeneratedPrintf.p$23=function($1)
+ {
+  return"{"+("Text = "+Utils.prettyPrint($1.Text))+"}";
+ };
+ GeneratedPrintf.p$22=function($1)
+ {
+  return"{"+("Name = "+Utils.prettyPrint($1.Name))+"; "+("Qualifier = "+Utils.prettyPrint($1.Qualifier))+"}";
+ };
+ GeneratedPrintf.p$21=function($1)
+ {
+  return"{"+("Namespace = "+Utils.prettyPrint($1.Namespace))+"; "+("Name = "+Utils.prettyPrint($1.Name))+"; "+("Type = "+Utils.prettyPrint($1.Type))+"; "+("Line = "+Utils.prettyPrint($1.Line))+"; "+("Column = "+Utils.prettyPrint($1.Column))+"; "+("MultipleNames = "+Utils.prettyPrint($1.MultipleNames))+"}";
+ };
+ GeneratedPrintf.p$19=function($1)
+ {
+  return"{"+("Fsc = "+Utils.prettyPrint($1.Fsc))+"; "+("Fsi = "+Utils.prettyPrint($1.Fsi))+"; "+("MSBuild = "+Utils.prettyPrint($1.MSBuild))+"}";
+ };
  GeneratedPrintf.p$17=function($1)
  {
   return"{"+("OutputType = "+Utils.prettyPrint($1.OutputType))+"; "+("Parameters = "+Utils.printList(function($2)
@@ -11661,13 +11717,19 @@
    },$2);
   },$1.Parameters))+"}";
  };
+ GeneratedPrintf.p$20=function($1)
+ {
+  return"{"+("Opens = "+Utils.printArray(function($2)
+  {
+   return GeneratedPrintf.p$21($2);
+  },$1.Opens))+"; "+("Qualifies = "+Utils.printArray(function($2)
+  {
+   return GeneratedPrintf.p$22($2);
+  },$1.Qualifies))+"; "+("Word = "+Utils.prettyPrint($1.Word))+"}";
+ };
  GeneratedPrintf.p$18=function($1)
  {
   return"{"+("Name = "+Utils.prettyPrint($1.Name))+"; "+("Type = "+Utils.prettyPrint($1.Type))+"}";
- };
- GeneratedPrintf.p$22=function($1)
- {
-  return"{"+("Name = "+Utils.prettyPrint($1.Name))+"; "+("Qualifier = "+Utils.prettyPrint($1.Qualifier))+"}";
  };
  GeneratedPrintf.p$15=function($1)
  {
@@ -11676,6 +11738,10 @@
    return GeneratedPrintf.p$16($2);
   },$1.Nested))+"}";
  };
+ GeneratedPrintf.p$14=function($1)
+ {
+  return"{"+("File = "+Utils.prettyPrint($1.File))+"; "+("Line = "+Utils.prettyPrint($1.Line))+"; "+("Column = "+Utils.prettyPrint($1.Column))+"}";
+ };
  GeneratedPrintf.p$16=function($1)
  {
   return"{"+("UniqueName = "+Utils.prettyPrint($1.UniqueName))+"; "+("Name = "+Utils.prettyPrint($1.Name))+"; "+("Glyph = "+Utils.prettyPrint($1.Glyph))+"; "+("GlyphChar = "+Utils.prettyPrint($1.GlyphChar))+"; "+("IsTopLevel = "+Utils.prettyPrint($1.IsTopLevel))+"; "+("File = "+Utils.prettyPrint($1.File))+"; "+("EnclosingEntity = "+Utils.prettyPrint($1.EnclosingEntity))+"; "+("IsAbstract = "+Utils.prettyPrint($1.IsAbstract))+"}";
@@ -11683,10 +11749,6 @@
  GeneratedPrintf.p$13=function($1)
  {
   return"{"+("Kind = "+Utils.prettyPrint($1.Kind))+"}";
- };
- GeneratedPrintf.p$14=function($1)
- {
-  return"{"+("File = "+Utils.prettyPrint($1.File))+"; "+("Line = "+Utils.prettyPrint($1.Line))+"; "+("Column = "+Utils.prettyPrint($1.Column))+"}";
  };
  GeneratedPrintf.p$11=function($1)
  {

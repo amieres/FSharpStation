@@ -361,7 +361,7 @@ if (!console) {
 (function()
 {
  "use strict";
- var Global,FsRoot,LibraryJS,WebComponent,WcTabStrip,WebSharper,Obj,WcTabStripT,WcSplitter,WcSplitterT,AppFramework,PlugInVar,PlugInView,PlugInDoc,PlugInAction,PlugInQuery,PlugIn,LayoutEngineModule,Test,SC$1,Operators,UI,HtmlModule,attr,Utils,Seq,Hoverable,Hoverable$1,View,Var,Doc,List,T,Numeric,Var$1,JavaScript,Pervasives,EventTarget,Node,JS,Unchecked,Arrays,Library,Event,UIEvent,ResizeObserver,Templating,Runtime,Server,TemplateInstance,ProviderBuilder,Handler,test_Templates,GeneratedPrintf,test_GeneratedPrintf,Strings,ListModel,Client,String,ParseO,AttrProxy,AttrModule,Lazy,LayoutEngine,WindowOrWorkerGlobalScope,Slice,System,Guid,Enumerator,Elt,Snap,T$1,DomUtility,ConcreteVar,Client$1,Templates,CancellationTokenSource,Collections,List$1,Dictionary,HashSet,Object,FromView,Attrs,Array,LazyExtensionsProxy,LazyRecord,DateUtil,Docs,Abbrev,Fresh,Error,AggregateException,Concurrency,DocElemNode,CharacterData,CheckedInput,DictionaryUtil,DynamicAttrNode,Storage,Updates,SC$2,SC$3,An,Settings,Mailbox,CT,AsyncBody,SC$4,Attrs$1,Dyn,ArrayStorage,SC$5,SC$6,Prepare,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$7,Scheduler,OperationCanceledException,HashSetUtil,FormatException,Queue,SC$8,AppendList,Easing,HashSet$1,DomNodes,String$1,SC$9,Char,IntelliFactory,Runtime$1,Reflect,console,$,Math,Date;
+ var Global,FsRoot,LibraryJS,WebComponent,WcTabStrip,WebSharper,Obj,WcTabStripT,WcSplitter,WcSplitterT,AppFramework,PlugInVar,PlugInView,PlugInDoc,PlugInAction,PlugInQuery,PlugIn,LayoutEngine,SC$1,Operators,UI,HtmlModule,attr,Utils,Seq,Hoverable,Hoverable$1,View,Var,Doc,List,T,Numeric,Var$1,JavaScript,Pervasives,EventTarget,Node,JS,Unchecked,Arrays,Library,Event,UIEvent,ResizeObserver,Templating,Runtime,Server,TemplateInstance,ProviderBuilder,Handler,Temp_z4nitg3o_Templates,GeneratedPrintf,Temp_z4nitg3o_GeneratedPrintf,Strings,ListModel,Client,String,ParseO,AttrProxy,AttrModule,Lazy,WindowOrWorkerGlobalScope,Slice,System,Guid,Enumerator,Elt,Snap,T$1,DomUtility,ConcreteVar,Client$1,Templates,CancellationTokenSource,Collections,List$1,Dictionary,HashSet,Object,FromView,Attrs,Array,LazyExtensionsProxy,LazyRecord,DateUtil,Docs,Abbrev,Fresh,Error,AggregateException,Concurrency,DocElemNode,CharacterData,CheckedInput,DictionaryUtil,DynamicAttrNode,Storage,Updates,SC$2,SC$3,An,Settings,Mailbox,CT,AsyncBody,SC$4,Attrs$1,Dyn,ArrayStorage,SC$5,SC$6,Prepare,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$7,Scheduler,OperationCanceledException,HashSetUtil,FormatException,Queue,SC$8,AppendList,Easing,HashSet$1,DomNodes,String$1,SC$9,Char,IntelliFactory,Runtime$1,Reflect,console,$,Math,Date;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
@@ -372,16 +372,15 @@ if (!console) {
  WcTabStripT=WcTabStrip.WcTabStripT=WcTabStrip.WcTabStripT||{};
  WcSplitter=WebComponent.WcSplitter=WebComponent.WcSplitter||{};
  WcSplitterT=WcSplitter.WcSplitterT=WcSplitter.WcSplitterT||{};
- AppFramework=LibraryJS.AppFramework=LibraryJS.AppFramework||{};
+ AppFramework=FsRoot.AppFramework=FsRoot.AppFramework||{};
  PlugInVar=AppFramework.PlugInVar=AppFramework.PlugInVar||{};
  PlugInView=AppFramework.PlugInView=AppFramework.PlugInView||{};
  PlugInDoc=AppFramework.PlugInDoc=AppFramework.PlugInDoc||{};
  PlugInAction=AppFramework.PlugInAction=AppFramework.PlugInAction||{};
  PlugInQuery=AppFramework.PlugInQuery=AppFramework.PlugInQuery||{};
  PlugIn=AppFramework.PlugIn=AppFramework.PlugIn||{};
- LayoutEngineModule=LibraryJS.LayoutEngineModule=LibraryJS.LayoutEngineModule||{};
- Test=FsRoot.Test=FsRoot.Test||{};
- SC$1=Global.StartupCode$test$test=Global.StartupCode$test$test||{};
+ LayoutEngine=FsRoot.LayoutEngine=FsRoot.LayoutEngine||{};
+ SC$1=Global.StartupCode$Temp_z4nitg3o$Temp_z4nitg3o=Global.StartupCode$Temp_z4nitg3o$Temp_z4nitg3o||{};
  Operators=WebSharper.Operators=WebSharper.Operators||{};
  UI=WebSharper.UI=WebSharper.UI||{};
  HtmlModule=UI.HtmlModule=UI.HtmlModule||{};
@@ -414,9 +413,9 @@ if (!console) {
  TemplateInstance=Server.TemplateInstance=Server.TemplateInstance||{};
  ProviderBuilder=Server.ProviderBuilder=Server.ProviderBuilder||{};
  Handler=Server.Handler=Server.Handler||{};
- test_Templates=Global.test_Templates=Global.test_Templates||{};
+ Temp_z4nitg3o_Templates=Global.Temp_z4nitg3o_Templates=Global.Temp_z4nitg3o_Templates||{};
  GeneratedPrintf=Global.GeneratedPrintf=Global.GeneratedPrintf||{};
- test_GeneratedPrintf=Global.test_GeneratedPrintf=Global.test_GeneratedPrintf||{};
+ Temp_z4nitg3o_GeneratedPrintf=Global.Temp_z4nitg3o_GeneratedPrintf=Global.Temp_z4nitg3o_GeneratedPrintf||{};
  Strings=WebSharper.Strings=WebSharper.Strings||{};
  ListModel=UI.ListModel=UI.ListModel||{};
  Client=Runtime.Client=Runtime.Client||{};
@@ -425,7 +424,6 @@ if (!console) {
  AttrProxy=UI.AttrProxy=UI.AttrProxy||{};
  AttrModule=UI.AttrModule=UI.AttrModule||{};
  Lazy=WebSharper.Lazy=WebSharper.Lazy||{};
- LayoutEngine=LibraryJS.LayoutEngine=LibraryJS.LayoutEngine||{};
  WindowOrWorkerGlobalScope=Global.WindowOrWorkerGlobalScope;
  Slice=WebSharper.Slice=WebSharper.Slice||{};
  System=Global.System=Global.System||{};
@@ -841,7 +839,7 @@ if (!console) {
   return Doc.Flatten(AppFramework.plugIns().MapLens(function($1)
   {
    var b,t,p,i;
-   return(b=(t=ProviderBuilder.Make$1().WithHole({
+   return(b=(t=ProviderBuilder.Make().WithHole({
     $:1,
     $0:"name",
     $1:$1
@@ -864,7 +862,7 @@ if (!console) {
       $0:$1
      })?"selected":"";
     },AppFramework.selectionPlugInO().get_View())
-   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],test_Templates.tile(p[0])),(b.i=i,i)))).get_Doc();
+   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],Temp_z4nitg3o_Templates.tile(p[0])),(b.i=i,i)))).get_Doc();
   }));
  };
  AppFramework.renderDocs=function()
@@ -905,7 +903,7 @@ if (!console) {
     {
      return $1("("+Utils.toSafe($2)+")");
     };
-   }(Global.id))(x$4)):""),ProviderBuilder.Make$1().WithHole({
+   }(Global.id))(x$4)):""),ProviderBuilder.Make().WithHole({
     $:1,
     $0:"name",
     $1:N
@@ -918,7 +916,7 @@ if (!console) {
     {
      AppFramework.mainDocV().Set(plg.plgName+"."+doc.docName);
     },AppFramework.currentPlugInW());
-   }))),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],test_Templates.tile(p[0])),(b.i=i,i)))).get_Doc();
+   }))),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],Temp_z4nitg3o_Templates.tile(p[0])),(b.i=i,i)))).get_Doc();
   },View.Map(function(plg)
   {
    return plg.plgDocs;
@@ -932,7 +930,7 @@ if (!console) {
   },function(_var)
   {
    var b,p,i;
-   return(b=ProviderBuilder.Make$1().WithHole({
+   return(b=ProviderBuilder.Make().WithHole({
     $:1,
     $0:"name",
     $1:_var.varName
@@ -940,7 +938,7 @@ if (!console) {
     $:8,
     $0:"value",
     $1:_var.varVar
-   }),(p=Handler.CompleteHoles(b.k,b.h,[["value",0]]),(i=new TemplateInstance.New(p[1],test_Templates.namevalueinput(p[0])),(b.i=i,i)))).get_Doc();
+   }),(p=Handler.CompleteHoles(b.k,b.h,[["value",0]]),(i=new TemplateInstance.New(p[1],Temp_z4nitg3o_Templates.namevalueinput(p[0])),(b.i=i,i)))).get_Doc();
   },View.Map(function(plg)
   {
    return plg.plgVars;
@@ -954,7 +952,7 @@ if (!console) {
   },function(viw)
   {
    var b,p,i;
-   return(b=ProviderBuilder.Make$1().WithHole({
+   return(b=ProviderBuilder.Make().WithHole({
     $:1,
     $0:"name",
     $1:viw.viwName
@@ -962,7 +960,7 @@ if (!console) {
     $:2,
     $0:"value",
     $1:viw.viwView
-   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],test_Templates.namevalue(p[0])),(b.i=i,i)))).get_Doc();
+   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],Temp_z4nitg3o_Templates.namevalue(p[0])),(b.i=i,i)))).get_Doc();
   },View.Map(function(plg)
   {
    return plg.plgViews;
@@ -976,7 +974,7 @@ if (!console) {
   },function(qry)
   {
    var b,t,p,i;
-   return(b=(t=ProviderBuilder.Make$1().WithHole({
+   return(b=(t=ProviderBuilder.Make().WithHole({
     $:1,
     $0:"name",
     $1:qry.qryName
@@ -986,7 +984,7 @@ if (!console) {
    },function()
    {
     Global.alert(qry.qryFunction(null));
-   }))),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],test_Templates.tile(p[0])),(b.i=i,i)))).get_Doc();
+   }))),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],Temp_z4nitg3o_Templates.tile(p[0])),(b.i=i,i)))).get_Doc();
   },View.Map(function(plg)
   {
    return plg.plgQueries;
@@ -1026,7 +1024,7 @@ if (!console) {
    return Doc.EmbedView(View.Map(function(a)
    {
     var b,t,p,i,b$1,t$1,p$1,i$1;
-    return a?(b=(t=ProviderBuilder.Make$1().WithHole({
+    return a?(b=(t=ProviderBuilder.Make().WithHole({
      $:1,
      $0:"name",
      $1:act.actName+parms
@@ -1036,7 +1034,7 @@ if (!console) {
     },function(ev)
     {
      AppFramework.callFunction(ev,null,act.actFunction);
-    }))),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],test_Templates.action(p[0])),(b.i=i,i)))).get_Doc():(b$1=(t$1=ProviderBuilder.Make$1().WithHole({
+    }))),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],Temp_z4nitg3o_Templates.action(p[0])),(b.i=i,i)))).get_Doc():(b$1=(t$1=ProviderBuilder.Make().WithHole({
      $:1,
      $0:"name",
      $1:act.actName
@@ -1046,7 +1044,7 @@ if (!console) {
     },function(ev)
     {
      AppFramework.callFunction(ev,null,act.actFunction);
-    }))),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i$1=new TemplateInstance.New(p$1[1],test_Templates.actiondisabled(p$1[0])),(b$1.i=i$1,i$1)))).get_Doc();
+    }))),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i$1=new TemplateInstance.New(p$1[1],Temp_z4nitg3o_Templates.actiondisabled(p$1[0])),(b$1.i=i$1,i$1)))).get_Doc();
    },act.actEnabled));
   },View.Map(function(plg)
   {
@@ -1095,7 +1093,7 @@ if (!console) {
  AppFramework.mainDoc=function()
  {
   var b,M,t,M$1,p,i;
-  return(b=(M=AppFramework.getMainClientDoc(),(t=(M$1=AppFramework.mainDocV().get_View(),ProviderBuilder.Make$1().WithHole({
+  return(b=(M=AppFramework.getMainClientDoc(),(t=(M$1=AppFramework.mainDocV().get_View(),ProviderBuilder.Make().WithHole({
    $:2,
    $0:"maindoc",
    $1:M$1
@@ -1109,12 +1107,12 @@ if (!console) {
    $:0,
    $0:"mainclient",
    $1:M
-  })),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],test_Templates.appframework(p[0])),(b.i=i,i)))).get_Doc();
+  })),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],Temp_z4nitg3o_Templates.appframework(p[0])),(b.i=i,i)))).get_Doc();
  };
  AppFramework.horizontal=function(partSizes,afterRender,afterRenderSp,mouseDown,gap)
  {
   var b,t,p,i;
-  return(b=(t=ProviderBuilder.Make$1().WithHole({
+  return(b=(t=ProviderBuilder.Make().WithHole({
    $:2,
    $0:"partsizes",
    $1:partSizes
@@ -1136,12 +1134,12 @@ if (!console) {
    $:2,
    $0:"gap",
    $1:gap
-  }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],test_Templates.wcompsplitterhor(p[0])),(b.i=i,i)))).get_Doc();
+  }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],Temp_z4nitg3o_Templates.wcompsplitterhor(p[0])),(b.i=i,i)))).get_Doc();
  };
  AppFramework.vertical=function(partSizes,afterRender,afterRenderSp,mouseDown,gap)
  {
   var b,t,p,i;
-  return(b=(t=ProviderBuilder.Make$1().WithHole({
+  return(b=(t=ProviderBuilder.Make().WithHole({
    $:2,
    $0:"partsizes",
    $1:partSizes
@@ -1163,7 +1161,7 @@ if (!console) {
    $:2,
    $0:"gap",
    $1:gap
-  }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],test_Templates.wcompsplitterver(p[0])),(b.i=i,i)))).get_Doc();
+  }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],Temp_z4nitg3o_Templates.wcompsplitterver(p[0])),(b.i=i,i)))).get_Doc();
  };
  AppFramework.newVar=function(name,_var)
  {
@@ -1327,7 +1325,12 @@ if (!console) {
    plgQueries:plgQueries
   };
  };
- LayoutEngineModule.Identifier=function(a)
+ LayoutEngine.LayoutDefV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.LayoutDefV;
+ };
+ LayoutEngine.Identifier=function(a)
  {
   var $1,a$1,t;
   return(a$1=LibraryJS.REGEX$1("^[$a-zA-Z_][0-9a-zA-Z_\\.\\-$]*$","",a),a$1!=null&&a$1.$==1&&((t=a$1.$0,!Unchecked.Equals(t,null)&&t.length===1)&&($1=Arrays.get(a$1.$0,0),true)))?{
@@ -1335,7 +1338,7 @@ if (!console) {
    $0:$1
   }:null;
  };
- LayoutEngineModule.Vertical=function(a)
+ LayoutEngine.Vertical=function(a)
  {
   var a$1;
   return a==="vertical"?{
@@ -1347,7 +1350,7 @@ if (!console) {
   }:a==="grid"?{
    $:2,
    $0:null
-  }:(a$1=LayoutEngineModule.Identifier(a),a$1!=null&&a$1.$==1?{
+  }:(a$1=LayoutEngine.Identifier(a),a$1!=null&&a$1.$==1?{
    $:3,
    $0:a$1.$0
   }:{
@@ -1355,7 +1358,7 @@ if (!console) {
    $0:null
   });
  };
- LayoutEngineModule.Doc=function(a)
+ LayoutEngine.Doc=function(a)
  {
   return a==="Doc"?{
    $:0,
@@ -1377,7 +1380,7 @@ if (!console) {
    $0:null
   };
  };
- LayoutEngineModule.Measures$1=function(txt)
+ LayoutEngine.Measures$1=function(txt)
  {
   var a,$1,a$1,$2,a$2,$3,a$3,a$4,a$5;
   a=String.splitByChar("-",txt);
@@ -1405,7 +1408,7 @@ if (!console) {
    }
   }:null;
  };
- LayoutEngineModule.fixedSplitter=function(vertical,pixel,first,doc1,doc2)
+ LayoutEngine.fixedSplitter=function(vertical,pixel,first,doc1,doc2)
  {
   var sizes,b,p,i,b$1,p$1,i$1;
   sizes=(((first?Runtime$1.Curried3(function($1,$2,$3)
@@ -1415,7 +1418,7 @@ if (!console) {
   {
    return $1("calc(100% - "+$2.toFixed(6)+"px) "+$3.toFixed(6)+"px");
   }))(Global.id))(pixel))(pixel);
-  return vertical?(b=ProviderBuilder.Make$1().WithHole({
+  return vertical?(b=ProviderBuilder.Make().WithHole({
    $:1,
    $0:"partsizes",
    $1:sizes
@@ -1427,7 +1430,7 @@ if (!console) {
    $:0,
    $0:"second",
    $1:doc2
-  }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],test_Templates.fixedsplitterver(p[0])),(b.i=i,i)))).get_Doc():(b$1=ProviderBuilder.Make$1().WithHole({
+  }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],Temp_z4nitg3o_Templates.fixedsplitterver(p[0])),(b.i=i,i)))).get_Doc():(b$1=ProviderBuilder.Make().WithHole({
    $:1,
    $0:"partsizes",
    $1:sizes
@@ -1439,9 +1442,9 @@ if (!console) {
    $:0,
    $0:"second",
    $1:doc2
-  }),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i$1=new TemplateInstance.New(p$1[1],test_Templates.fixedsplitterhor(p$1[0])),(b$1.i=i$1,i$1)))).get_Doc();
+  }),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i$1=new TemplateInstance.New(p$1[1],Temp_z4nitg3o_Templates.fixedsplitterhor(p$1[0])),(b$1.i=i$1,i$1)))).get_Doc();
  };
- LayoutEngineModule.variableSplitter=function(vertical,min,value,max,doc1,doc2)
+ LayoutEngine.variableSplitter=function(vertical,min,value,max,doc1,doc2)
  {
   return Doc.Element("wcomp-splitter",List.ofSeq(Seq.delay(function()
   {
@@ -1457,26 +1460,21 @@ if (!console) {
    }));
   })),List.ofArray([doc1,doc2]));
  };
- LayoutEngineModule.errDoc=function(txt)
+ LayoutEngine.plugInName=function()
+ {
+  SC$1.$cctor();
+  return SC$1.plugInName;
+ };
+ LayoutEngine.errDoc=function(txt)
  {
   return Doc.Element("div",[],[Doc.TextNode(txt)]);
  };
- LayoutEngineModule.splitName=function(lytNm)
+ LayoutEngine.splitName=function()
  {
-  function f(s)
-  {
-   return String.splitByChar(".",s);
-  }
-  function g(a)
-  {
-   return Arrays.length(a)===1?[lytNm,Arrays.get(a,0)]:[Arrays.get(a,0),Arrays.get(a,1)];
-  }
-  return function(x)
-  {
-   return g(f(x));
-  };
+  SC$1.$cctor();
+  return SC$1.splitName;
  };
- LayoutEngineModule.splitTokens=function(line)
+ LayoutEngine.splitTokens=function(line)
  {
   return List.ofSeq(Seq.collect(Global.id,Seq.mapi(function(i,s)
   {
@@ -1484,18 +1482,18 @@ if (!console) {
    return i%2===1?[" "+s]:(t=Strings.Trim(s),t===""?[]:Strings.SplitChars(t,[" "],1));
   },String.splitByChar("\"",line))));
  };
- LayoutEngineModule.getTextData=function(lytNm,txt)
+ LayoutEngine.getTextData=function(txt)
  {
-  var o,o$1,$1,bef,name,aft,p,plg,n,o$2,o$3,o$4,o$5;
+  var o,o$1,$1,bef,nm,aft,o$2,o$3,t;
   o=(o$1=String.delimitedO("${","}",txt),o$1==null?null:{
    $:1,
-   $0:($1=o$1.$0,(bef=$1[0],(name=$1[1],(aft=$1[2],(p=(LayoutEngineModule.splitName(lytNm))(name),(plg=p[0],(n=p[1],(o$2=(o$3=AppFramework.tryGetWoW(plg,n),o$3==null?null:{
+   $0:($1=o$1.$0,(bef=$1[0],(nm=$1[1],(aft=$1[2],(o$2=(o$3=(t=(LayoutEngine.splitName())(nm),AppFramework.tryGetWoW(t[0],t[1])),o$3==null?null:{
     $:1,
     $0:function(txW)
     {
      var $2,$3;
-     $3=LayoutEngineModule.getTextData(lytNm,aft);
-     switch(bef===""?$3.$==1?($2=$3.$0,2):$3.$==2?($2=$3.$0,3):$3.$0===""?0:($2=$3.$0,1):$3.$==1?($2=$3.$0,2):$3.$==2?($2=$3.$0,3):($2=$3.$0,1))
+     $3=LayoutEngine.getTextData(aft);
+     switch(bef===""?$3.$==1?($2=$3.$0,2):$3.$0===""?0:($2=$3.$0,1):$3.$==1?($2=$3.$0,2):($2=$3.$0,1))
      {
       case 0:
        return{
@@ -1518,48 +1516,31 @@ if (!console) {
          return bef+a+b;
         },txW,$2)
        };
-      case 3:
-       return{
-        $:2,
-        $0:$2
-       };
      }
     }(o$3.$0)
-   }),o$2==null?(o$4=(o$5=AppFramework.tryGetAct(plg,n),o$5==null?null:{
-    $:1,
-    $0:{
-     $:2,
-     $0:o$5.$0
-    }
-   }),o$4==null?{
+   }),o$2==null?{
     $:0,
     $0:((((Runtime$1.Curried(function($2,$3,$4,$5)
     {
      return $2(Utils.toSafe($3)+" ${Missing "+Utils.toSafe($4)+"}"+Utils.toSafe($5));
-    },4))(Global.id))(bef))(name))(aft)
-   }:o$4.$0):o$2.$0))))))))
+    },4))(Global.id))(bef))(nm))(aft)
+   }:o$2.$0)))))
   });
   return o==null?{
    $:0,
    $0:txt
   }:o.$0;
  };
- LayoutEngineModule.getAttrs=function(lytNm,attrs)
+ LayoutEngine.getAttrs=function(attrs)
  {
   return List.ofSeq(Seq.delay(function()
   {
    return Seq.append(Seq.choose(function(a)
    {
-    var $1,value,value$1,name,m,act;
+    var $1,value,value$1,name,m;
     return!Unchecked.Equals(a,null)&&a.length===2&&(value=Arrays.get(a,1),Strings.Trim(Arrays.get(a,0))!==""&&Strings.Trim(value)!=="")?(value$1=Arrays.get(a,1),(name=Arrays.get(a,0),{
      $:1,
-     $0:(m=LayoutEngineModule.getTextData(lytNm,Strings.Trim(value$1)),m.$==1?AttrModule.Dynamic(Strings.Trim(name),m.$0):m.$==2?(act=m.$0,AttrModule.Handler(Strings.Trim(name),function(el)
-     {
-      return function(ev)
-      {
-       return AppFramework.callFunction(el,ev,act.actFunction);
-      };
-     })):AttrProxy.Create(Strings.Trim(name),Strings.Trim(m.$0)))
+     $0:(m=LayoutEngine.getTextData(Strings.Trim(value$1)),m.$==1?AttrModule.Dynamic(Strings.Trim(name),m.$0):AttrProxy.Create(Strings.Trim(name),Strings.Trim(m.$0)))
     })):null;
    },Seq.map(function(s)
    {
@@ -1571,13 +1552,7 @@ if (!console) {
      var $1,value,value$1,name,m;
      return!Unchecked.Equals(a,null)&&a.length===2&&(value=Arrays.get(a,1),Strings.Trim(Arrays.get(a,0))!==""&&Strings.Trim(value)!=="")?(value$1=Arrays.get(a,1),(name=Arrays.get(a,0),{
       $:1,
-      $0:(m=LayoutEngineModule.getTextData(lytNm,Strings.Trim(value$1)),m.$==1?AttrModule.DynamicStyle(Strings.Trim(name),m.$0):m.$==2?AttrModule.Style(Strings.Trim(name),(function($2)
-      {
-       return function($3)
-       {
-        return $2("${"+Utils.toSafe($3)+"}");
-       };
-      }(Global.id))(m.$0.actName)):AttrModule.Style(Strings.Trim(name),Strings.Trim(m.$0)))
+      $0:(m=LayoutEngine.getTextData(Strings.Trim(value$1)),m.$==1?AttrModule.DynamicStyle(Strings.Trim(name),m.$0):AttrModule.Style(Strings.Trim(name),Strings.Trim(m.$0)))
      })):null;
     },Seq.map(function(s)
     {
@@ -1586,7 +1561,7 @@ if (!console) {
    }));
   }));
  };
- LayoutEngineModule.getDocF=function(parms,doc)
+ LayoutEngine.getDocF=function(parms,doc)
  {
   var $1,$2;
   $2=doc.docDoc;
@@ -1611,67 +1586,61 @@ if (!console) {
     }))(Global.id))(doc))(parms))]),T.Empty];
   }
  };
- LayoutEngineModule.getDocFinal=function(parms,doc)
+ LayoutEngine.getDocFinal=function(parms,doc)
  {
   var m;
-  m=LayoutEngineModule.getDocF(parms,doc);
-  return m[1].$==0?m[0]:LayoutEngineModule.errDoc((((Runtime$1.Curried3(function($1,$2,$3)
+  m=LayoutEngine.getDocF(parms,doc);
+  return m[1].$==0?m[0]:LayoutEngine.errDoc((((Runtime$1.Curried3(function($1,$2,$3)
   {
    return $1("Too many parameters "+GeneratedPrintf.p($2)+" "+Utils.printList(Utils.prettyPrint,$3));
   }))(Global.id))(doc))(parms));
  };
- LayoutEngineModule.turnToView=function(f)
+ LayoutEngine.turnToView=function(f)
  {
   return Doc.EmbedView(View.Map(f,AppFramework.mainDocV().get_View()));
  };
- LayoutEngineModule.getOneDoc=function(lytNm,docs)
+ LayoutEngine.getOneDoc=function(docs)
  {
   var $1,a,id,parms,p,plg,nm,o,o$1,o$2,o$3,rest,m;
-  return docs.$==1&&(a=LayoutEngineModule.Identifier(docs.$0),a!=null&&a.$==1&&($1=[a.$0,docs.$1],true))?(id=$1[0],(parms=$1[1],(p=(LayoutEngineModule.splitName(lytNm))(id),(plg=p[0],(nm=p[1],(o=(o$1=AppFramework.tryGetDoc(plg,nm),o$1==null?null:{
+  return docs.$==1&&(a=LayoutEngine.Identifier(docs.$0),a!=null&&a.$==1&&($1=[a.$0,docs.$1],true))?(id=$1[0],(parms=$1[1],(p=(LayoutEngine.splitName())(id),(plg=p[0],(nm=p[1],(o=(o$1=AppFramework.tryGetDoc(plg,nm),o$1==null?null:{
    $:1,
-   $0:LayoutEngineModule.getDocF(parms,o$1.$0)
+   $0:LayoutEngine.getDocF(parms,o$1.$0)
   }),o==null?(o$2=(o$3=AppFramework.tryGetWoW(plg,nm),o$3==null?null:{
    $:1,
    $0:[Doc.TextView(o$3.$0),parms]
-  }),o$2==null?[LayoutEngineModule.errDoc((function($2)
+  }),o$2==null?[LayoutEngine.errDoc((function($2)
   {
    return function($3)
    {
     return $2("Missing doc: "+Utils.toSafe($3));
    };
-  }(Global.id))(id)),parms]:o$2.$0):o.$0)))))):docs.$==0?[Doc.get_Empty(),T.Empty]:(rest=docs.$1,(m=LayoutEngineModule.getTextData(lytNm,docs.$0),m.$==1?[Doc.TextView(m.$0),rest]:m.$==2?[LayoutEngineModule.errDoc((function($2)
-  {
-   return function($3)
-   {
-    return $2("Unexpected action: "+Utils.toSafe($3));
-   };
-  }(Global.id))(m.$0.actName)),rest]:[Doc.TextNode(m.$0),rest]));
+  }(Global.id))(id)),parms]:o$2.$0):o.$0)))))):docs.$==0?[Doc.get_Empty(),T.Empty]:(rest=docs.$1,(m=LayoutEngine.getTextData(docs.$0),m.$==1?[Doc.TextView(m.$0),rest]:[Doc.TextNode(m.$0),rest]));
  };
- LayoutEngineModule.getDocs=function(lytNm,docs)
+ LayoutEngine.getDocs=function(docs)
  {
   var m;
-  return docs.$==0?T.Empty:(m=LayoutEngineModule.getOneDoc(lytNm,docs),new T({
+  return docs.$==0?T.Empty:(m=LayoutEngine.getOneDoc(docs),new T({
    $:1,
    $0:m[0],
-   $1:LayoutEngineModule.getDocs(lytNm,m[1])
+   $1:LayoutEngine.getDocs(m[1])
   }));
  };
- LayoutEngineModule.pairOfDocs=function(lytNm,docs)
+ LayoutEngine.pairOfDocs=function(docs)
  {
   var dsW;
   dsW=View.Map(function(a)
   {
    var $1;
-   return a.$==1&&(a.$1.$==1&&(a.$1.$1.$==0&&($1=[a.$0,a.$1.$0],true)))?[$1[0],$1[1]]:[LayoutEngineModule.errDoc((function($2)
+   return a.$==1&&(a.$1.$==1&&(a.$1.$1.$==0&&($1=[a.$0,a.$1.$0],true)))?[$1[0],$1[1]]:[LayoutEngine.errDoc((function($2)
    {
     return function($3)
     {
      return $2("splitter expects exactly 2 elements "+Utils.printList(Utils.prettyPrint,$3));
     };
-   }(Global.id))(docs)),LayoutEngineModule.errDoc("part 2")];
+   }(Global.id))(docs)),LayoutEngine.errDoc("part 2")];
   },View.Map(function()
   {
-   return LayoutEngineModule.getDocs(lytNm,docs);
+   return LayoutEngine.getDocs(docs);
   },AppFramework.mainDocV().get_View()));
   return[Doc.EmbedView(View.Map(function(t)
   {
@@ -1681,12 +1650,12 @@ if (!console) {
    return t[1];
   },dsW))];
  };
- LayoutEngineModule.singleDoc=function(lytNm,docs)
+ LayoutEngine.singleDoc=function(docs)
  {
   return Doc.EmbedView(View.Map(function(a)
   {
    var $1;
-   return a.$==1&&(a.$1.$==0&&($1=a.$0,true))?$1:LayoutEngineModule.errDoc((function($2)
+   return a.$==1&&(a.$1.$==0&&($1=a.$0,true))?$1:LayoutEngine.errDoc((function($2)
    {
     return function($3)
     {
@@ -1695,56 +1664,56 @@ if (!console) {
    }(Global.id))(docs));
   },View.Map(function()
   {
-   return LayoutEngineModule.getDocs(lytNm,docs);
+   return LayoutEngine.getDocs(docs);
   },AppFramework.mainDocV().get_View())));
  };
- LayoutEngineModule.createSplitter=function(lytNm,vertical,measures,docs)
+ LayoutEngine.createSplitter=function(vertical,measures,docs)
  {
   var p;
-  p=LayoutEngineModule.pairOfDocs(lytNm,docs);
-  return measures.$==1?LayoutEngineModule.variableSplitter(vertical,measures.$0,measures.$1,measures.$2,p[0],p[1]):LayoutEngineModule.fixedSplitter(vertical,measures.$0,measures.$1,p[0],p[1]);
+  p=LayoutEngine.pairOfDocs(docs);
+  return measures.$==1?LayoutEngine.variableSplitter(vertical,measures.$0,measures.$1,measures.$2,p[0],p[1]):LayoutEngine.fixedSplitter(vertical,measures.$0,measures.$1,p[0],p[1]);
  };
- LayoutEngineModule.createElement=function(lytNm,element,attrs,docs)
+ LayoutEngine.createElement=function(element,attrs,docs)
  {
   var x;
-  x=[LayoutEngineModule.turnToView(function()
+  x=[LayoutEngine.turnToView(function()
   {
-   return Doc.Concat(LayoutEngineModule.getDocs(lytNm,docs));
+   return Doc.Concat(LayoutEngine.getDocs(docs));
   })];
-  return Doc.Element(element,LayoutEngineModule.getAttrs(lytNm,attrs),x);
+  return Doc.Element(element,LayoutEngine.getAttrs(attrs),x);
  };
- LayoutEngineModule.createButton=function(lytNm,actName,attrs,text)
+ LayoutEngine.createButton=function(actName,attrs,text)
  {
-  return LayoutEngineModule.turnToView(function()
+  return LayoutEngine.turnToView(function()
   {
    var x,o,o$1,t,$1;
    function m(act,u)
    {
     return AppFramework.callFunction(null,null,act.actFunction);
    }
-   x=(o=(o$1=(t=(LayoutEngineModule.splitName(lytNm))(actName),AppFramework.tryGetAct(t[0],t[1])),o$1==null?null:{
+   x=(o=(o$1=(t=(LayoutEngine.splitName())(actName),AppFramework.tryGetAct(t[0],t[1])),o$1==null?null:{
     $:1,
     $0:($1=o$1.$0,function($2)
     {
      return m($1,$2);
     })
    }),o==null?Global.ignore:o.$0);
-   return Doc.Button(text,LayoutEngineModule.getAttrs(lytNm,attrs),x);
+   return Doc.Button(text,LayoutEngine.getAttrs(attrs),x);
   });
  };
- LayoutEngineModule.createInput=function(lytNm,varName,attrs)
+ LayoutEngine.createInput=function(varName,attrs)
  {
-  return LayoutEngineModule.turnToView(function()
+  return LayoutEngine.turnToView(function()
   {
    var o,x,t,m,a;
-   o=(x=(t=(LayoutEngineModule.splitName(lytNm))(varName),AppFramework.tryGetVoV(t[0],t[1])),(m=(a=LayoutEngineModule.getAttrs(lytNm,attrs),function(a$1)
+   o=(x=(t=(LayoutEngine.splitName())(varName),AppFramework.tryGetVoV(t[0],t[1])),(m=(a=LayoutEngine.getAttrs(attrs),function(a$1)
    {
     return Doc.Input(a,a$1);
    }),x==null?null:{
     $:1,
     $0:m(x.$0)
    }));
-   return o==null?LayoutEngineModule.errDoc((function($1)
+   return o==null?LayoutEngine.errDoc((function($1)
    {
     return function($2)
     {
@@ -1753,19 +1722,19 @@ if (!console) {
    }(Global.id))(varName)):o.$0;
   });
  };
- LayoutEngineModule.createTextArea=function(lytNm,varName,attrs)
+ LayoutEngine.createTextArea=function(varName,attrs)
  {
-  return LayoutEngineModule.turnToView(function()
+  return LayoutEngine.turnToView(function()
   {
    var o,x,t,m,a;
-   o=(x=(t=(LayoutEngineModule.splitName(lytNm))(varName),AppFramework.tryGetVoV(t[0],t[1])),(m=(a=LayoutEngineModule.getAttrs(lytNm,attrs),function(a$1)
+   o=(x=(t=(LayoutEngine.splitName())(varName),AppFramework.tryGetVoV(t[0],t[1])),(m=(a=LayoutEngine.getAttrs(attrs),function(a$1)
    {
     return Doc.InputArea(a,a$1);
    }),x==null?null:{
     $:1,
     $0:m(x.$0)
    }));
-   return o==null?LayoutEngineModule.errDoc((function($1)
+   return o==null?LayoutEngine.errDoc((function($1)
    {
     return function($2)
     {
@@ -1774,17 +1743,17 @@ if (!console) {
    }(Global.id))(varName)):o.$0;
   });
  };
- LayoutEngineModule.createDoc=function(lytNm,docName,parms)
+ LayoutEngine.createDoc=function(docName,parms)
  {
-  return LayoutEngineModule.turnToView(function()
+  return LayoutEngine.turnToView(function()
   {
    var p,o,o$1;
-   p=(LayoutEngineModule.splitName(lytNm))(docName);
+   p=(LayoutEngine.splitName())(docName);
    o=(o$1=AppFramework.tryGetDoc(p[0],p[1]),o$1==null?null:{
     $:1,
-    $0:LayoutEngineModule.getDocFinal(parms,o$1.$0)
+    $0:LayoutEngine.getDocFinal(parms,o$1.$0)
    });
-   return o==null?LayoutEngineModule.errDoc((function($1)
+   return o==null?LayoutEngine.errDoc((function($1)
    {
     return function($2)
     {
@@ -1793,63 +1762,63 @@ if (!console) {
    }(Global.id))(docName)):o.$0;
   });
  };
- LayoutEngineModule.createSplitterM=function()
+ LayoutEngine.createSplitterM=function()
  {
   SC$1.$cctor();
   return SC$1.createSplitterM;
  };
- LayoutEngineModule.createButtonM=function()
+ LayoutEngine.createButtonM=function()
  {
   SC$1.$cctor();
   return SC$1.createButtonM;
  };
- LayoutEngineModule.createInputM=function()
+ LayoutEngine.createInputM=function()
  {
   SC$1.$cctor();
   return SC$1.createInputM;
  };
- LayoutEngineModule.createTextAreaM=function()
+ LayoutEngine.createTextAreaM=function()
  {
   SC$1.$cctor();
   return SC$1.createTextAreaM;
  };
- LayoutEngineModule.createElementM=function()
+ LayoutEngine.createElementM=function()
  {
   SC$1.$cctor();
   return SC$1.createElementM;
  };
- LayoutEngineModule.createDocM=function()
+ LayoutEngine.createDocM=function()
  {
   SC$1.$cctor();
   return SC$1.createDocM;
  };
- LayoutEngineModule.createDocO=function(lytNm,line)
+ LayoutEngine.createDocO=function(line)
  {
   var m,$1,a,a$1,$2,a$2,a$3,$3,a$4,a$5,$4,a$6,a$7,$5,a$8,a$9,$6,a$10,$7,a$11,$8,a$12,a$13;
   try
   {
-   m=LayoutEngineModule.splitTokens(line);
-   return m.$==1&&(a=LayoutEngineModule.Identifier(m.$0),a!=null&&a.$==1&&(m.$1.$==1&&(LayoutEngineModule.Vertical(m.$1.$0).$==0&&(m.$1.$1.$==1&&(a$1=LayoutEngineModule.Measures$1(m.$1.$1.$0),a$1!=null&&a$1.$==1&&($1=[m.$1.$1.$1,a$1.$0,a.$0],true))))))?{
+   m=LayoutEngine.splitTokens(line);
+   return m.$==1&&(a=LayoutEngine.Identifier(m.$0),a!=null&&a.$==1&&(m.$1.$==1&&(LayoutEngine.Vertical(m.$1.$0).$==0&&(m.$1.$1.$==1&&(a$1=LayoutEngine.Measures$1(m.$1.$1.$0),a$1!=null&&a$1.$==1&&($1=[m.$1.$1.$1,a$1.$0,a.$0],true))))))?{
     $:1,
-    $0:[$1[2],(LayoutEngineModule.createSplitterM())([lytNm,true,$1[1],$1[0]])]
-   }:m.$==1&&(a$2=LayoutEngineModule.Identifier(m.$0),a$2!=null&&a$2.$==1&&(m.$1.$==1&&(LayoutEngineModule.Vertical(m.$1.$0).$==1&&(m.$1.$1.$==1&&(a$3=LayoutEngineModule.Measures$1(m.$1.$1.$0),a$3!=null&&a$3.$==1&&($2=[m.$1.$1.$1,a$3.$0,a$2.$0],true))))))?{
+    $0:[$1[2],(LayoutEngine.createSplitterM())([true,$1[1],$1[0]])]
+   }:m.$==1&&(a$2=LayoutEngine.Identifier(m.$0),a$2!=null&&a$2.$==1&&(m.$1.$==1&&(LayoutEngine.Vertical(m.$1.$0).$==1&&(m.$1.$1.$==1&&(a$3=LayoutEngine.Measures$1(m.$1.$1.$0),a$3!=null&&a$3.$==1&&($2=[m.$1.$1.$1,a$3.$0,a$2.$0],true))))))?{
     $:1,
-    $0:[$2[2],(LayoutEngineModule.createSplitterM())([lytNm,false,$2[1],$2[0]])]
-   }:m.$==1&&(a$4=LayoutEngineModule.Identifier(m.$0),a$4!=null&&a$4.$==1&&(m.$1.$==1&&(LayoutEngineModule.Doc(m.$1.$0).$==1&&(m.$1.$1.$==1&&(a$5=LayoutEngineModule.Identifier(m.$1.$1.$0),a$5!=null&&a$5.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$1.$==0&&($3=[a$5.$0,m.$1.$1.$1.$0,a$4.$0,m.$1.$1.$1.$1.$0],true)))))))))?{
+    $0:[$2[2],(LayoutEngine.createSplitterM())([false,$2[1],$2[0]])]
+   }:m.$==1&&(a$4=LayoutEngine.Identifier(m.$0),a$4!=null&&a$4.$==1&&(m.$1.$==1&&(LayoutEngine.Doc(m.$1.$0).$==1&&(m.$1.$1.$==1&&(a$5=LayoutEngine.Identifier(m.$1.$1.$0),a$5!=null&&a$5.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$1.$==0&&($3=[a$5.$0,m.$1.$1.$1.$0,a$4.$0,m.$1.$1.$1.$1.$0],true)))))))))?{
     $:1,
-    $0:[$3[2],(LayoutEngineModule.createButtonM())([lytNm,$3[0],$3[1],$3[3]])]
-   }:m.$==1&&(a$6=LayoutEngineModule.Identifier(m.$0),a$6!=null&&a$6.$==1&&(m.$1.$==1&&(LayoutEngineModule.Doc(m.$1.$0).$==2&&(m.$1.$1.$==1&&(a$7=LayoutEngineModule.Identifier(m.$1.$1.$0),a$7!=null&&a$7.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==0&&($4=[m.$1.$1.$1.$0,a$6.$0,a$7.$0],true))))))))?{
+    $0:[$3[2],(LayoutEngine.createButtonM())([$3[0],$3[1],$3[3]])]
+   }:m.$==1&&(a$6=LayoutEngine.Identifier(m.$0),a$6!=null&&a$6.$==1&&(m.$1.$==1&&(LayoutEngine.Doc(m.$1.$0).$==2&&(m.$1.$1.$==1&&(a$7=LayoutEngine.Identifier(m.$1.$1.$0),a$7!=null&&a$7.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==0&&($4=[m.$1.$1.$1.$0,a$6.$0,a$7.$0],true))))))))?{
     $:1,
-    $0:[$4[1],(LayoutEngineModule.createInputM())([lytNm,$4[2],$4[0]])]
-   }:m.$==1&&(a$8=LayoutEngineModule.Identifier(m.$0),a$8!=null&&a$8.$==1&&(m.$1.$==1&&(LayoutEngineModule.Doc(m.$1.$0).$==3&&(m.$1.$1.$==1&&(a$9=LayoutEngineModule.Identifier(m.$1.$1.$0),a$9!=null&&a$9.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==0&&($5=[m.$1.$1.$1.$0,a$8.$0,a$9.$0],true))))))))?{
+    $0:[$4[1],(LayoutEngine.createInputM())([$4[2],$4[0]])]
+   }:m.$==1&&(a$8=LayoutEngine.Identifier(m.$0),a$8!=null&&a$8.$==1&&(m.$1.$==1&&(LayoutEngine.Doc(m.$1.$0).$==3&&(m.$1.$1.$==1&&(a$9=LayoutEngine.Identifier(m.$1.$1.$0),a$9!=null&&a$9.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==0&&($5=[m.$1.$1.$1.$0,a$8.$0,a$9.$0],true))))))))?{
     $:1,
-    $0:[$5[1],(LayoutEngineModule.createTextAreaM())([lytNm,$5[2],$5[0]])]
-   }:m.$==1&&(a$10=LayoutEngineModule.Identifier(m.$0),a$10!=null&&a$10.$==1&&(m.$1.$==1&&(LayoutEngineModule.Doc(m.$1.$0).$==0&&(m.$1.$1.$==1&&($6=[m.$1.$1.$0,a$10.$0,m.$1.$1.$1],true)))))?{
+    $0:[$5[1],(LayoutEngine.createTextAreaM())([$5[2],$5[0]])]
+   }:m.$==1&&(a$10=LayoutEngine.Identifier(m.$0),a$10!=null&&a$10.$==1&&(m.$1.$==1&&(LayoutEngine.Doc(m.$1.$0).$==0&&(m.$1.$1.$==1&&($6=[m.$1.$1.$0,a$10.$0,m.$1.$1.$1],true)))))?{
     $:1,
-    $0:[$6[1],(LayoutEngineModule.createDocM())([lytNm,$6[0],$6[2]])]
-   }:m.$==1&&(a$11=LayoutEngineModule.Identifier(m.$0),a$11!=null&&a$11.$==1&&(m.$1.$==1&&(LayoutEngineModule.Vertical(m.$1.$0).$==2&&(m.$1.$1.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==1&&($7=[m.$1.$1.$1.$1.$0,m.$1.$1.$0,m.$1.$1.$1.$1.$1,a$11.$0,m.$1.$1.$1.$0],true)))))))?null:m.$==1&&(a$12=LayoutEngineModule.Identifier(m.$0),a$12!=null&&a$12.$==1&&(m.$1.$==1&&(a$13=LayoutEngineModule.Vertical(m.$1.$0),a$13.$==3&&(m.$1.$1.$==1&&($8=[m.$1.$1.$0,m.$1.$1.$1,a$13.$0,a$12.$0],true)))))?{
+    $0:[$6[1],(LayoutEngine.createDocM())([$6[0],$6[2]])]
+   }:m.$==1&&(a$11=LayoutEngine.Identifier(m.$0),a$11!=null&&a$11.$==1&&(m.$1.$==1&&(LayoutEngine.Vertical(m.$1.$0).$==2&&(m.$1.$1.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==1&&($7=[m.$1.$1.$1.$1.$0,m.$1.$1.$0,m.$1.$1.$1.$1.$1,a$11.$0,m.$1.$1.$1.$0],true)))))))?null:m.$==1&&(a$12=LayoutEngine.Identifier(m.$0),a$12!=null&&a$12.$==1&&(m.$1.$==1&&(a$13=LayoutEngine.Vertical(m.$1.$0),a$13.$==3&&(m.$1.$1.$==1&&($8=[m.$1.$1.$0,m.$1.$1.$1,a$13.$0,a$12.$0],true)))))?{
     $:1,
-    $0:[$8[3],(LayoutEngineModule.createElementM())([lytNm,$8[2],$8[0],$8[1]])]
+    $0:[$8[3],(LayoutEngine.createElementM())([$8[2],$8[0],$8[1]])]
    }:null;
   }
   catch(e)
@@ -1867,7 +1836,7 @@ if (!console) {
    return null;
   }
  };
- LayoutEngineModule.createDocs=function(lytNm,txt)
+ LayoutEngine.createDocs=function(txt)
  {
   function m(a,b)
   {
@@ -1879,16 +1848,13 @@ if (!console) {
   return Seq.map(function($1)
   {
    return m($1[0],$1[1]);
-  },Seq.choose(function(l)
-  {
-   return LayoutEngineModule.createDocO(lytNm,l);
-  },String.splitByChar("\n",txt)));
+  },Seq.choose(LayoutEngine.createDocO,String.splitByChar("\n",txt)));
  };
- LayoutEngineModule.getText=function(lytNm,txtName)
+ LayoutEngine.getText=function(txtName)
  {
   var a,id,p,plg,nm,o,o$1,o$2,o$3;
-  a=LayoutEngineModule.Identifier(txtName);
-  return a!=null&&a.$==1?(id=a.$0,(p=(LayoutEngineModule.splitName(lytNm))(id),(plg=p[0],(nm=p[1],(o=(o$1=AppFramework.tryGetViw(plg,nm),o$1==null?null:{
+  a=LayoutEngine.Identifier(txtName);
+  return a!=null&&a.$==1?(id=a.$0,(p=(LayoutEngine.splitName())(id),(plg=p[0],(nm=p[1],(o=(o$1=AppFramework.tryGetViw(plg,nm),o$1==null?null:{
    $:1,
    $0:Doc.TextView(o$1.$0.viwView)
   }),o==null?(o$2=(o$3=AppFramework.tryGetVar(plg,nm),o$3==null?null:{
@@ -1896,12 +1862,12 @@ if (!console) {
    $0:Doc.TextView(o$3.$0.varVar.get_View())
   }),o$2==null?Doc.TextNode(id):o$2.$0):o.$0))))):Doc.TextNode(txtName);
  };
- LayoutEngineModule.inputFile=function(lytNm,attrs,labelName,actName,doc)
+ LayoutEngine.inputFile=function(attrs,labelName,actName,doc)
  {
   var o,o$1,t,act;
-  o=(o$1=(t=(LayoutEngineModule.splitName(lytNm))(actName),AppFramework.tryGetAct(t[0],t[1])),o$1==null?null:{
+  o=(o$1=(t=(LayoutEngine.splitName())(actName),AppFramework.tryGetAct(t[0],t[1])),o$1==null?null:{
    $:1,
-   $0:(act=o$1.$0,Doc.Element("div",LayoutEngineModule.getAttrs(lytNm,attrs),[Doc.Element("div",[AttrProxy.Create("class","input-group")],[Doc.Element("span",[AttrProxy.Create("class","input-group-btn")],[Doc.Element("label",[AttrProxy.Create("class","btn")],[LayoutEngineModule.getText(lytNm,labelName),Doc.Element("input",[AttrProxy.Create("class","form-control"),AttrProxy.Create("type","file"),AttrModule.Style("display","none"),AttrProxy.HandlerImpl("click",function(el)
+   $0:(act=o$1.$0,Doc.Element("div",LayoutEngine.getAttrs(attrs),[Doc.Element("div",[AttrProxy.Create("class","input-group")],[Doc.Element("span",[AttrProxy.Create("class","input-group-btn")],[Doc.Element("label",[AttrProxy.Create("class","btn")],[LayoutEngine.getText(labelName),Doc.Element("input",[AttrProxy.Create("class","form-control"),AttrProxy.Create("type","file"),AttrModule.Style("display","none"),AttrProxy.HandlerImpl("click",function(el)
    {
     return function()
     {
@@ -1913,9 +1879,9 @@ if (!console) {
     {
      return AppFramework.callFunction(el,null,act.actFunction);
     };
-   })],[])])]),doc!==""?LayoutEngineModule.singleDoc(lytNm,List.ofArray([doc])):Doc.get_Empty()])]))
+   })],[])])]),doc!==""?LayoutEngine.singleDoc(List.ofArray([doc])):Doc.get_Empty()])]))
   });
-  return o==null?LayoutEngineModule.errDoc((function($1)
+  return o==null?LayoutEngine.errDoc((function($1)
   {
    return function($2)
    {
@@ -1923,14 +1889,14 @@ if (!console) {
    };
   }(Global.id))(actName)):o.$0;
  };
- LayoutEngineModule.inputLabel=function(lytNm,attrs,labelName,varName)
+ LayoutEngine.inputLabel=function(attrs,labelName,varName)
  {
   var o,o$1,t;
-  o=(o$1=(t=(LayoutEngineModule.splitName(lytNm))(varName),AppFramework.tryGetVar(t[0],t[1])),o$1==null?null:{
+  o=(o$1=(t=(LayoutEngine.splitName())(varName),AppFramework.tryGetVar(t[0],t[1])),o$1==null?null:{
    $:1,
-   $0:Doc.Element("div",LayoutEngineModule.getAttrs(lytNm,attrs),[Doc.Element("div",[AttrProxy.Create("class","input-group")],[Doc.Element("span",[AttrProxy.Create("class","input-group-addon")],[LayoutEngineModule.getText(lytNm,labelName)]),Doc.Input([AttrProxy.Create("class","form-control")],o$1.$0.varVar)])])
+   $0:Doc.Element("div",LayoutEngine.getAttrs(attrs),[Doc.Element("div",[AttrProxy.Create("class","input-group")],[Doc.Element("span",[AttrProxy.Create("class","input-group-addon")],[LayoutEngine.getText(labelName)]),Doc.Input([AttrProxy.Create("class","form-control")],o$1.$0.varVar)])])
   });
-  return o==null?LayoutEngineModule.errDoc((function($1)
+  return o==null?LayoutEngine.errDoc((function($1)
   {
    return function($2)
    {
@@ -1938,54 +1904,11 @@ if (!console) {
    };
   }(Global.id))(varName)):o.$0;
  };
- LayoutEngineModule.none=function(x)
+ LayoutEngine.none=function(x)
  {
   return Doc.Element("span",[],[]);
  };
- LayoutEngineModule.addLayout=function(lyt)
- {
-  View.Sink(function(txt)
-  {
-   AppFramework.plugIns().Append(PlugIn.New(lyt.lytName,[AppFramework.newVar("Layout",lyt.lytDefinition)],[],Arrays.ofSeq(Seq.delay(function()
-   {
-    return Seq.append(LayoutEngineModule.createDocs(lyt.lytName,txt),Seq.delay(function()
-    {
-     var l;
-     return Seq.append([AppFramework.newDocF("InputFile",{
-      $:4,
-      $0:(l=lyt.lytName,Runtime$1.Curried(LayoutEngineModule.inputFile,4,[l])),
-      $1:"attrs",
-      $2:"Label",
-      $3:"Action",
-      $4:"[Doc]"
-     })],Seq.delay(function()
-     {
-      var l$1;
-      return Seq.append([AppFramework.newDocF("InputLabel",{
-       $:3,
-       $0:(l$1=lyt.lytName,Runtime$1.Curried(LayoutEngineModule.inputLabel,3,[l$1])),
-       $1:"attrs",
-       $2:"Label",
-       $3:"Var"
-      })],Seq.delay(function()
-      {
-       return[AppFramework.newDocF("none",{
-        $:1,
-        $0:LayoutEngineModule.none,
-        $1:"x"
-       })];
-      }));
-     }));
-    }));
-   })),[],[]));
-   AppFramework.mainDocV().Set(AppFramework.mainDocV().Get());
-  },lyt.lytDefinition.get_View());
- };
- LayoutEngineModule.newLyt=function(name,lyt)
- {
-  return LayoutEngine.New(name,Var$1.Create$1(lyt));
- };
- Test.main=function()
+ LayoutEngine.main=function()
  {
   var x,a;
   x=AppFramework.getMainDoc().f();
@@ -2022,25 +1945,33 @@ if (!console) {
   }
   function a(a$1)
   {
-   var f$2;
+   var f$3;
    function b(a$2)
    {
     return AppFramework.plugIns().TryFindByKey(a$2);
    }
-   function g$3(o)
+   function g$4(o)
    {
     var v;
     v=AppFramework.defaultPlugIn();
     return o==null?v:o.$0;
    }
-   f$2=function(o)
+   f$3=function(o)
    {
     return o==null?null:b(o.$0);
    };
    return function(x$1)
    {
-    return g$3(f$2(x$1));
+    return g$4(f$3(x$1));
    };
+  }
+  function f$2(s)
+  {
+   return String.splitByChar(".",s);
+  }
+  function g$3(a$1)
+  {
+   return Arrays.length(a$1)===1?[LayoutEngine.plugInName(),Arrays.get(a$1,0)]:[Arrays.get(a$1,0),Arrays.get(a$1,1)];
   }
   function store$12(v,res)
   {
@@ -2163,7 +2094,7 @@ if (!console) {
    return plg.plgName;
   });
   SC$1.mainDocV=Var$1.Create$1("AppFramework.AppFwkClient");
-  SC$1.TemplateFileName="..\\website\\AppFramework.html";
+  SC$1.TemplateFileName="D:\\Abe\\CIPHERWorkspace\\FSharpStationN\\website\\AppFramework.html";
   SC$1.defaultPlugIn=PlugIn.New("",[],[],[],[],[]);
   SC$1.selectionPlugInO=Var$1.Create$1({
    $:1,
@@ -2180,7 +2111,7 @@ if (!console) {
   SC$1.AppFwkClient=Lazy.Create(function()
   {
    var b,Q,A,D,V,V$1,P,p$6,i;
-   return(b=(Q=AppFramework.renderQueries(),(A=AppFramework.renderActions(),(D=AppFramework.renderDocs(),(V=AppFramework.renderViews(),(V$1=AppFramework.renderVars(),(P=AppFramework.renderPlugIns(),ProviderBuilder.Make$1().WithHole({
+   return(b=(Q=AppFramework.renderQueries(),(A=AppFramework.renderActions(),(D=AppFramework.renderDocs(),(V=AppFramework.renderViews(),(V$1=AppFramework.renderVars(),(P=AppFramework.renderPlugIns(),ProviderBuilder.Make().WithHole({
     $:0,
     $0:"plugins",
     $1:P
@@ -2211,7 +2142,7 @@ if (!console) {
     $:0,
     $0:"queries",
     $1:Q
-   })),(p$6=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p$6[1],test_Templates.appfwkclient(p$6[0])),(b.i=i,i)))).get_Doc();
+   })),(p$6=Handler.CompleteHoles(b.k,b.h,[["output",0],["fscode",0],["parser",0]]),(i=new TemplateInstance.New(p$6[1],Temp_z4nitg3o_Templates.appfwkclient(p$6[0])),(b.i=i,i)))).get_Doc();
   });
   SC$1.actHello=AppFramework.newAct("Hello",function()
   {
@@ -2234,6 +2165,12 @@ if (!console) {
    AppFramework.plugIns().Append(PlugIn.New("AppFramework",[AppFramework.newVar("mainDocV",AppFramework.mainDocV())],[],[AppFramework.newDoc("AppFwkClient",AppFramework.AppFwkClient())],[AppFramework.actHello(),AppFramework.actHello(),AppFramework.actHello(),AppFramework.actHello()],[AppFramework.qryDocs()]));
    return AppFramework.mainDoc();
   });
+  SC$1.LayoutDefV=Var$1.Create$1("");
+  SC$1.plugInName="LayoutEngine";
+  SC$1.splitName=function(x$1)
+  {
+   return g$3(f$2(x$1));
+  };
   SC$1.createSplitterM=(p=(cache=new Dictionary.New$5(),[[function(v)
   {
    var res;
@@ -2264,7 +2201,7 @@ if (!console) {
   {
    var o,x$1;
    o=checkO(p$6);
-   return o==null?(x$1=LayoutEngineModule.createSplitter.apply(null,p$6),(store$1(p$6))(x$1)):o.$0;
+   return o==null?(x$1=LayoutEngine.createSplitter.apply(null,p$6),(store$1(p$6))(x$1)):o.$0;
   })),p[1]]))[0];
   SC$1.createButtonM=(p$1=(cache$1=new Dictionary.New$5(),[[function(v)
   {
@@ -2296,7 +2233,7 @@ if (!console) {
   {
    var o,x$1;
    o=checkO$1(p$6);
-   return o==null?(x$1=LayoutEngineModule.createButton.apply(null,p$6),(store$3(p$6))(x$1)):o.$0;
+   return o==null?(x$1=LayoutEngine.createButton.apply(null,p$6),(store$3(p$6))(x$1)):o.$0;
   })),p$1[1]]))[0];
   SC$1.createInputM=(p$2=(cache$2=new Dictionary.New$5(),[[function(v)
   {
@@ -2328,7 +2265,7 @@ if (!console) {
   {
    var o,x$1;
    o=checkO$2(p$6);
-   return o==null?(x$1=LayoutEngineModule.createInput.apply(null,p$6),(store$5(p$6))(x$1)):o.$0;
+   return o==null?(x$1=LayoutEngine.createInput.apply(null,p$6),(store$5(p$6))(x$1)):o.$0;
   })),p$2[1]]))[0];
   SC$1.createTextAreaM=(p$3=(cache$3=new Dictionary.New$5(),[[function(v)
   {
@@ -2360,7 +2297,7 @@ if (!console) {
   {
    var o,x$1;
    o=checkO$3(p$6);
-   return o==null?(x$1=LayoutEngineModule.createTextArea.apply(null,p$6),(store$7(p$6))(x$1)):o.$0;
+   return o==null?(x$1=LayoutEngine.createTextArea.apply(null,p$6),(store$7(p$6))(x$1)):o.$0;
   })),p$3[1]]))[0];
   SC$1.createElementM=(p$4=(cache$4=new Dictionary.New$5(),[[function(v)
   {
@@ -2392,7 +2329,7 @@ if (!console) {
   {
    var o,x$1;
    o=checkO$4(p$6);
-   return o==null?(x$1=LayoutEngineModule.createElement.apply(null,p$6),(store$9(p$6))(x$1)):o.$0;
+   return o==null?(x$1=LayoutEngine.createElement.apply(null,p$6),(store$9(p$6))(x$1)):o.$0;
   })),p$4[1]]))[0];
   SC$1.createDocM=(p$5=(cache$5=new Dictionary.New$5(),[[function(v)
   {
@@ -2424,8 +2361,42 @@ if (!console) {
   {
    var o,x$1;
    o=checkO$5(p$6);
-   return o==null?(x$1=LayoutEngineModule.createDoc.apply(null,p$6),(store$11(p$6))(x$1)):o.$0;
+   return o==null?(x$1=LayoutEngine.createDoc.apply(null,p$6),(store$11(p$6))(x$1)):o.$0;
   })),p$5[1]]))[0];
+  View.Sink(function(txt)
+  {
+   AppFramework.plugIns().Append(PlugIn.New(LayoutEngine.plugInName(),[AppFramework.newVar("Layout",LayoutEngine.LayoutDefV())],[],Arrays.ofSeq(Seq.delay(function()
+   {
+    return Seq.append(LayoutEngine.createDocs(txt),Seq.delay(function()
+    {
+     return Seq.append([AppFramework.newDocF("InputFile",{
+      $:4,
+      $0:Runtime$1.Curried(LayoutEngine.inputFile,4),
+      $1:"attrs",
+      $2:"Label",
+      $3:"Action",
+      $4:"[Doc]"
+     })],Seq.delay(function()
+     {
+      return Seq.append([AppFramework.newDocF("InputLabel",{
+       $:3,
+       $0:Runtime$1.Curried3(LayoutEngine.inputLabel),
+       $1:"attrs",
+       $2:"Label",
+       $3:"Var"
+      })],Seq.delay(function()
+      {
+       return[AppFramework.newDocF("none",{
+        $:1,
+        $0:LayoutEngine.none,
+        $1:"x"
+       })];
+      }));
+     }));
+    }));
+   })),[],[]));
+   AppFramework.mainDocV().Set(AppFramework.mainDocV().Get());
+  },LayoutEngine.LayoutDefV().get_View());
  };
  Operators.range=function(min,max)
  {
@@ -3638,19 +3609,18 @@ if (!console) {
    return this;
   }
  },null,ProviderBuilder);
- ProviderBuilder.Make$1=function()
+ ProviderBuilder.Make=function()
  {
   var c;
-  return ProviderBuilder.New(null,(c=Guid.NewGuid(),Global.String(c)),[],null);
+  return ProviderBuilder.New(null,(c=Guid.NewGuid(),Global.String(c)),[]);
  };
- ProviderBuilder.New=function(Instance,Key,Holes,Source)
+ ProviderBuilder.New=function(Instance,Key,Holes)
  {
-  var $1;
-  return new ProviderBuilder(($1={
+  return new ProviderBuilder({
    i:Instance,
    k:Key,
    h:Holes
-  },(Runtime$1.SetOptional($1,"s",Source),$1)));
+  });
  };
  Handler.EventQ2=function(key,holeName,ti,f)
  {
@@ -3718,7 +3688,7 @@ if (!console) {
    $0:allVars
   }];
  };
- test_Templates.tile=function(h)
+ Temp_z4nitg3o_Templates.tile=function(h)
  {
   return h?Templates.GetOrLoadTemplate("appframework",{
    $:1,
@@ -3734,7 +3704,7 @@ if (!console) {
    return $.parseHTML("<div>\r\n                                        <div draggable=\"true\" class=\"code-editor-list-tile ${Predecessor} ${Selected}\" ws-ondrag=\"Drag\" ws-ondragover=\"DragOver\" ws-ondrop=\"Drop\">\r\n                                       <span class=\"node ${Parent} ${ErrorMsg}\" title=\"expand\" ws-onclick=\"ToggleCollapse\"></span>\r\n                                       <div class=\"code-editor-list-text\" style=\"text-indent:${Indent}em; white-space: pre\" ws-onclick=\"Select\" ws-onafterrender=\"AfterRender\">${Name}</div>\r\n                                       <span class=\"predecessor\" title=\"toggle predecessor\" ws-onclick=\"TogglePred\">X</span>\r\n                                   </div>\r\n                           \r\n                                    </div>");
   });
  };
- test_Templates.namevalueinput=function(h)
+ Temp_z4nitg3o_Templates.namevalueinput=function(h)
  {
   return h?Templates.GetOrLoadTemplate("appframework",{
    $:1,
@@ -3750,7 +3720,7 @@ if (!console) {
    return $.parseHTML("<div class=\"input-group\">\r\n                                                            <span class=\"input-group-addon\">${Name}:</span>\r\n                                                            <textarea class=\"form-control\" id=\"\" placeholder=\"Value...\" ws-var=\"Value\" spellcheck=\"false\">\r\n                                                        </textarea></div>");
   });
  };
- test_Templates.namevalue=function(h)
+ Temp_z4nitg3o_Templates.namevalue=function(h)
  {
   return h?Templates.GetOrLoadTemplate("appframework",{
    $:1,
@@ -3766,7 +3736,7 @@ if (!console) {
    return $.parseHTML("<div class=\"input-group\">\r\n                                                            <span class=\"input-group-addon\">${Name}:</span>\r\n                                                            <span class=\"input-group-addon\">${Value}</span>\r\n                                                        </div>");
   });
  };
- test_Templates.action=function(h)
+ Temp_z4nitg3o_Templates.action=function(h)
  {
   return h?Templates.GetOrLoadTemplate("appframework",{
    $:1,
@@ -3782,7 +3752,7 @@ if (!console) {
    return $.parseHTML("<button ws-onclick=\"Click\" class=\"btn\" type=\"button\" id=\"\">${Name}</button>");
   });
  };
- test_Templates.actiondisabled=function(h)
+ Temp_z4nitg3o_Templates.actiondisabled=function(h)
  {
   return h?Templates.GetOrLoadTemplate("appframework",{
    $:1,
@@ -3800,9 +3770,9 @@ if (!console) {
  };
  GeneratedPrintf.p=function($1)
  {
-  return"{"+("docName = "+Utils.prettyPrint($1.docName))+"; "+("docDoc = "+test_GeneratedPrintf.p($1.docDoc))+"}";
+  return"{"+("docName = "+Utils.prettyPrint($1.docName))+"; "+("docDoc = "+Temp_z4nitg3o_GeneratedPrintf.p($1.docDoc))+"}";
  };
- test_Templates.appframework=function(h)
+ Temp_z4nitg3o_Templates.appframework=function(h)
  {
   return h?Templates.GetOrLoadTemplate("appframework",{
    $:1,
@@ -3818,7 +3788,7 @@ if (!console) {
    return $.parseHTML("<div style=\"height: calc(100vh - 4px); width: calc(100vw - 4px) \" class=\"relative\">\r\n        <wcomp-splitter value=\"0\" min=\"0\" max=\"100\">\r\n            <div><button ws-onclick=\"GoClient\">${MainDoc}</button></div>\r\n            <div ws-hole=\"MainClient\"></div>\r\n        </wcomp-splitter>\r\n        <style style=\"display: none\">\r\n            .Hidden     { display   : none         }\r\n            table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }\r\n            td input.form-control { \r\n                padding    : 0px; \r\n                font-family: monospace;\r\n                font-size  :   small;\r\n                margin-top :   0px;\r\n                margin-left: -2px;\r\n                width      : 100%\r\n            }\r\n            td select {\r\n                font-size : smaller;\r\n                max-width : 8ch;\r\n            }\r\n            xtextarea {\r\n               resize : none;\r\n            }\r\n            .tab-content {\r\n                overflow: hidden\r\n            }\r\n            .tab-children {\r\n                position:relative;\r\n            }\r\n            .tab-children>div>* {\r\n                position:absolute;\r\n                height: 100%;\r\n                width:  100%;\r\n                display: grid;\r\n            }\r\n            .relative {\r\n                position:relative;\r\n            }\r\n            .relative>* {\r\n                position:absolute;\r\n                height: 100%;\r\n                width:  100%;\r\n                display: grid;\r\n            }\r\n            table.table-striped    tbody tr:nth-child(even) { background: #EEE  }\r\n            table.table-striped    tbody tr:nth-child(odd ) { background: #FFF  }\r\n            table.table-striped    tbody input              { background: transparent; border: none}\r\n            table.table-striped    tbody select             { background: transparent; border: none}\r\n            table.table-nonstriped tbody tr:nth-child(even) { background: inherit }\r\n            table.table-nonstriped tbody tr:nth-child(odd ) { background: inherit }\r\n            table.table            tbody tr.hover           { border    : solid thin transparent; } \r\n            table.table            tbody tr.hover:hover     { border    : solid thin blue     ; } \r\n            table.table            tbody th:hover           { background: gray; cursor: pointer }\r\n            table.table            tbody tr.hover:hover>td  { border-top: solid thin blue     ; \r\n                                                       border-bottom: solid thin blue     ; } \r\n            table.table            tbody tr.selected { background   : #b9eeff             ; }\r\n            table.table            tbody tr.formula.selected { background: #20f7f7             ; }\r\n            thead { color: gray }\r\n            h3 { \r\n                color: gray;\r\n                line-height: 1em;\r\n            }\r\n            button       { border: solid thin transparent ; border-radius: 3px; }\r\n            button:hover { border: solid thin blue }\r\n            .indenter { position  : absolute; \r\n                        top:0px; bottom:0px; left:0px; \r\n                        background: white; color:white;\r\n                        border-right: gray thin dotted;\r\n                        }\r\n            body {\r\n                color      : #333;\r\n                font-size  : small;\r\n                font-family: monospace;\r\n                line-height: 1.2;\r\n            }\r\n            .mainTitle {  \r\n                font-size: 48px;\r\n                font-weight: 500;\r\n                color: gray;\r\n                margin-top: -12px;\r\n            }\r\n            .CodeMirror {\r\n                height: 100%;\r\n            }\r\n            \r\n          \r\n            body { margin: 0px }     \r\n                 \r\n            div textarea {\r\n                font-family     : monospace;\r\n            }\r\n            .code-editor-list-tile {\r\n                white-space     : nowrap; \r\n                border-style    : solid none none;\r\n                border-color    : white;\r\n                border-width    : 1px;\r\n                background-color: #D8D8D8;\r\n                display         : flex;\r\n            }\r\n            .code-editor-list-text{\r\n                padding         : 1px 10px 1px 5px;\r\n                overflow        : hidden;\r\n                text-overflow   : ellipsis;\r\n                white-space     : nowrap;\r\n                flex            : 1;\r\n            }\r\n            \r\n            .code-editor-list-tile span.node.ErrorMsg {\r\n                background-color: red\r\n            }\r\n            .code-editor-list-tile span.node.expanded::before {\r\n                content: \"-\"\r\n            }\r\n            .code-editor-list-tile span.node.collapsed::before {\r\n                content: \"+\"\r\n            }\r\n            .code-editor-list-tile.direct-predecessor {\r\n                font-weight     : bold;\r\n                color           : blue;\r\n            }\r\n            .code-editor-list-tile.indirect-predecessor {\r\n                color           : blue;\r\n            }\r\n            .code-editor-list-tile.included-predecessor {\r\n                color           : chocolate;\r\n            }\r\n            .code-editor-list-tile.selected {\r\n                background-color: #77F;\r\n                color           : white;\r\n            }\r\n            .code-editor-list-tile.codeSnippet {\r\n                text-decoration: underline\r\n            }\r\n            .code-editor-list-tile:hover {\r\n                background      : lightgray;\r\n            }\r\n            .code-editor-list-tile.selected:hover {\r\n                background      : blue;\r\n            }\r\n            .code-editor-list-tile>.predecessor {\r\n                font-weight     : bold;\r\n                border-style    : inset;\r\n                border-width    : 1px;\r\n                text-align      : center;\r\n                color           : transparent;\r\n            }\r\n            .code-editor-list-tile.direct-predecessor>.predecessor {\r\n                color           : blue;\r\n            }\r\n            \r\n            .CodeMirror { height: 100%; }\r\n            \r\n            .node {\r\n                background-color: white; \r\n                width           : 2ch; \r\n                color           : #A03; \r\n                font-weight     : bold; \r\n                text-align      : center;\r\n                font-family     : arial;\r\n            }\r\n            .Warning { text-decoration: underline lightblue } \r\n            .Error   { text-decoration: underline red       } \r\n            \r\n        </style>\r\n    </div>");
   });
  };
- test_Templates.wcompsplitterhor=function(h)
+ Temp_z4nitg3o_Templates.wcompsplitterhor=function(h)
  {
   return h?Templates.GetOrLoadTemplate("appframework",{
    $:1,
@@ -3834,7 +3804,7 @@ if (!console) {
    return $.parseHTML("<div ws-onafterrender=\"AfterRender\" style=\"display: grid;\r\n                grid-gap: 5px; \r\n                box-sizing: border-box; \r\n                grid-template-areas: 'one' 'two'; \r\n                grid-template-columns:100%; \r\n                overflow: hidden; \r\n                grid-template-rows   : ${PartSizes}\">\r\n         <slot></slot>\r\n        <slot name=\"splitter\">  <div style=\"grid-row:2; grid-column:1 / 1 ; cursor: row-resize; z-index: 3; background-color: #eef ; height: ${Gap}; margin-top :-${Gap}\" ws-onmousedown=\"MouseDown\" ws-onafterrender=\"AfterRenderSp\"></div> </slot>\r\n        <style>\r\n            ::slotted(*) {\r\n                display: grid;\r\n                height : 100%;\r\n                width  : 100%;\r\n                overflow: hidden;\r\n            }\r\n            ::slotted(*:nth-child(2)) {\r\n                grid-area: two;\r\n            }\r\n            ::slotted(*[slot=\"splitter\"]) {\r\n                grid-row:2; grid-column:1 / 1 ; \r\n                cursor: row-resize; \r\n                z-index: 3; \r\n                background-color: #eef ; \r\n                height: ${Gap}; \r\n                margin-top :-${Gap}\r\n            }\r\n        </style>\r\n    </div>");
   });
  };
- test_Templates.wcompsplitterver=function(h)
+ Temp_z4nitg3o_Templates.wcompsplitterver=function(h)
  {
   return h?Templates.GetOrLoadTemplate("appframework",{
    $:1,
@@ -3850,7 +3820,7 @@ if (!console) {
    return $.parseHTML("<div ws-onafterrender=\"AfterRender\" style=\"display: grid; \r\n                grid-gap: 5px; \r\n                box-sizing: border-box; \r\n                grid-template-areas: 'one two'; \r\n                grid-template-rows   :100%; \r\n                overflow: hidden; \r\n                grid-template-columns: ${PartSizes}\">\r\n        <slot></slot>\r\n        <slot name=\"splitter\"> <div style=\"grid-column:2; grid-row:1 / 1 ; cursor: col-resize; z-index: 3; background-color: #eef ; width: ${Gap}; margin-left :-${Gap}\" ws-onmousedown=\"MouseDown\" ws-onafterrender=\"AfterRenderSp\"></div> </slot>\r\n        <style>\r\n            ::slotted(*) {\r\n                display: grid;\r\n                height : 100%;\r\n                width  : 100%;\r\n                overflow: hidden;\r\n            }\r\n            ::slotted(*:nth-child(2)) {\r\n                grid-area: two;\r\n            }\r\n            ::slotted(*[slot=\"splitter\"]) {\r\n                grid-column:2; grid-row:1 / 1\r\n                cursor: column-resize; \r\n                z-index: 3; \r\n                background-color: #eef ; \r\n                width: ${Gap}; \r\n                margin-left:-${Gap}\r\n            }\r\n        </style>\r\n    </div>");
   });
  };
- test_Templates.fixedsplitterver=function(h)
+ Temp_z4nitg3o_Templates.fixedsplitterver=function(h)
  {
   return h?Templates.GetOrLoadTemplate("appframework",{
    $:1,
@@ -3866,7 +3836,7 @@ if (!console) {
    return $.parseHTML("<div style=\"display: grid; \r\n               grid-gap: 0px; \r\n               box-sizing: border-box; \r\n               height: 100%;\r\n               width : 100%;\r\n               grid-template-areas: 'one two'; \r\n               grid-template-rows   :100%; \r\n               overflow: hidden; \r\n               grid-template-columns: ${PartSizes}\">\r\n       <div ws-hole=\"First\" style=\"grid-area: one; \" class=\"relative\"></div>\r\n       <div ws-hole=\"Second\" style=\"grid-area: two; \" class=\"relative\"></div>\r\n    </div>");
   });
  };
- test_Templates.fixedsplitterhor=function(h)
+ Temp_z4nitg3o_Templates.fixedsplitterhor=function(h)
  {
   return h?Templates.GetOrLoadTemplate("appframework",{
    $:1,
@@ -3882,24 +3852,24 @@ if (!console) {
    return $.parseHTML("<div style=\"display: grid; \r\n          grid-gap: 0px; \r\n          box-sizing: border-box; \r\n          height: 100%;\r\n          width : 100%;\r\n          grid-template-areas: 'one' 'two'; \r\n          grid-template-columns:100%; \r\n          overflow: hidden; \r\n          grid-template-rows   : ${PartSizes}\">\r\n  <div ws-hole=\"First\" style=\"grid-area: one; \" class=\"relative\"></div>\r\n  <div ws-hole=\"Second\" style=\"grid-area: two; \" class=\"relative\"></div>\r\n    </div>");
   });
  };
- test_Templates.appfwkclient=function(h)
+ Temp_z4nitg3o_Templates.appfwkclient=function(h)
  {
   var n;
   n={
    $:1,
    $0:"appfwkclient"
   };
-  test_Templates.fixedsplitterhor();
-  test_Templates.fixedsplitterver();
+  Temp_z4nitg3o_Templates.fixedsplitterhor();
+  Temp_z4nitg3o_Templates.fixedsplitterver();
   return h?Templates.GetOrLoadTemplate("appframework",n,function()
   {
-   return $.parseHTML("<div>\r\n        <ws-fixedsplitterhor>\r\n            <partsizes>55px calc(100% - 55px)</partsizes>\r\n            <first>\r\n                <span style=\"display: grid;\r\n                      grid-template-columns: 30% 20% 20% 10%;\r\n                      grid-gap: 25px;\r\n                    \">\r\n                    <div class=\"mainTitle\">AppFramework</div>\r\n                </span>\r\n            </first>\r\n            <second>\r\n                    <ws-fixedsplitterver>\r\n                        <partsizes>calc(100% - 150px) 150px</partsizes>\r\n                        <first>\r\n                            <wcomp-splitter vertical=\"\" value=\"18\" max=\"100\">\r\n                                <div><div ws-hole=\"PlugIns\" style=\"overflow:auto\">\r\n                                    \r\n                                </div></div>\r\n                                <wcomp-splitter vertical=\"\" value=\"100\" min=\"30\" max=\"100\">\r\n                                    <ws-fixedsplitterhor>\r\n                                        <partsizes>32px calc(100% - 32px)</partsizes>\r\n                                        <first>\r\n                                            <div>\r\n                                                <div class=\"input-group\">\r\n                                                    <span class=\"input-group-addon\">name:</span>\r\n                                                    <span class=\"input-group-addon\">${PlugInName}</span>\r\n                                                </div>\r\n                                            </div>\r\n                                        </first>\r\n                                        <second>\r\n                                            <div style=\"overflow:auto\">\r\n                                                <div>\r\n                                                    <div>Docs:</div>\r\n                                                    <div ws-hole=\"Docs\" style=\"overflow:auto\"></div>\r\n                                                </div>\r\n                                                <div>\r\n                                                    <div>Vars:</div>\r\n                                                    <div ws-hole=\"Vars\" style=\"overflow:auto\">\r\n                                                            \r\n                                                    </div>\r\n                                                </div>\r\n                                                <div>\r\n                                                    <div>Views:</div>\r\n                                                    <div ws-hole=\"Views\" style=\"overflow:auto\">\r\n                                                        \r\n                                                    </div>\r\n                                                </div>\r\n                                                <div>\r\n                                                    <div>Queries:</div>\r\n                                                    <div ws-hole=\"Queries\" style=\"overflow:auto\"></div>\r\n                                                </div>\r\n                                            </div>\r\n                                        </second>\r\n                                    </ws-fixedsplitterhor>\r\n                                    <wcomp-tabstrip>\r\n                                        <div tabname=\"Properties\">\r\n                                            <div>\r\n                                                <table style=\"border-spacing:0px\">\r\n                                                    <thead>\r\n                                                        <th style=\"width: 30%  \">Name</th>\r\n                                                        <th style=\"width: 70% \">Value</th>\r\n                                                    </thead>\r\n                                                    <tbody ws-hole=\"Properties\"></tbody>\r\n                                                </table>\r\n                                                <button ws-onclick=\"AddProperty\" class=\"add is-small\">add ...</button>\r\n                                            </div>\r\n                                        </div>\r\n                                    </wcomp-tabstrip>\r\n                                </wcomp-splitter>\r\n                            </wcomp-splitter>\r\n                        </first>\r\n                        <second>\r\n                            <div style=\"\r\n                                overflow: hidden;\r\n                                display: grid;\r\n                                grid-template-columns: 100%;\r\n                                grid-template-rows: repeat(15, calc(100% / 15));\r\n                                bxackground-color: #eee;\r\n                                box-sizing: border-box;\r\n                                padding : 5px;\r\n                                grid-gap: 5px;\r\n                                margin-right: 21px;\r\n                           \" class=\"absolute\" ws-hole=\"Actions\">\r\n                                \r\n                                \r\n                            </div>\r\n                        </second>\r\n                    </ws-fixedsplitterver>\r\n            </second>\r\n        </ws-fixedsplitterhor>\r\n    </div>");
+   return $.parseHTML("<div>\r\n        <ws-fixedsplitterhor>\r\n            <partsizes>55px calc(100% - 55px)</partsizes>\r\n            <first>\r\n                <span style=\"display: grid;\r\n                      grid-template-columns: 30% 20% 20% 10%;\r\n                      grid-gap: 25px;\r\n                    \">\r\n                    <div class=\"mainTitle\">AppFramework</div>\r\n                </span>\r\n            </first>\r\n            <second>\r\n                <wcomp-splitter value=\"85\" min=\"0\" max=\"100\">\r\n                    <ws-fixedsplitterver>\r\n                        <partsizes>calc(100% - 150px) 150px</partsizes>\r\n                        <first>\r\n                            <wcomp-splitter vertical=\"\" value=\"18\" max=\"100\">\r\n                                <div><div ws-hole=\"PlugIns\" style=\"overflow:auto\">\r\n                                    \r\n                                </div></div>\r\n                                <wcomp-splitter vertical=\"\" value=\"100\" min=\"30\" max=\"100\">\r\n                                    <ws-fixedsplitterhor>\r\n                                        <partsizes>32px calc(100% - 32px)</partsizes>\r\n                                        <first>\r\n                                            <div>\r\n                                                <div class=\"input-group\">\r\n                                                    <span class=\"input-group-addon\">name:</span>\r\n                                                    <span class=\"input-group-addon\">${PlugInName}</span>\r\n                                                </div>\r\n                                            </div>\r\n                                        </first>\r\n                                        <second>\r\n                                            <div style=\"overflow:auto\">\r\n                                                <div>\r\n                                                    <div>Docs:</div>\r\n                                                    <div ws-hole=\"Docs\" style=\"overflow:auto\"></div>\r\n                                                </div>\r\n                                                <div>\r\n                                                    <div>Vars:</div>\r\n                                                    <div ws-hole=\"Vars\" style=\"overflow:auto\">\r\n                                                            \r\n                                                    </div>\r\n                                                </div>\r\n                                                <div>\r\n                                                    <div>Views:</div>\r\n                                                    <div ws-hole=\"Views\" style=\"overflow:auto\">\r\n                                                        \r\n                                                    </div>\r\n                                                </div>\r\n                                                <div>\r\n                                                    <div>Queries:</div>\r\n                                                    <div ws-hole=\"Queries\" style=\"overflow:auto\"></div>\r\n                                                </div>\r\n                                            </div>\r\n                                        </second>\r\n                                    </ws-fixedsplitterhor>\r\n                                    <wcomp-tabstrip>\r\n                                        <div tabname=\"Properties\">\r\n                                            <div>\r\n                                                <table style=\"border-spacing:0px\">\r\n                                                    <thead>\r\n                                                        <th style=\"width: 30%  \">Name</th>\r\n                                                        <th style=\"width: 70% \">Value</th>\r\n                                                    </thead>\r\n                                                    <tbody ws-hole=\"Properties\"></tbody>\r\n                                                </table>\r\n                                                <button ws-onclick=\"AddProperty\" class=\"add is-small\">add ...</button>\r\n                                            </div>\r\n                                        </div>\r\n                                    </wcomp-tabstrip>\r\n                                </wcomp-splitter>\r\n                            </wcomp-splitter>\r\n                        </first>\r\n                        <second>\r\n                            <div style=\"\r\n                                overflow: hidden;\r\n                                display: grid;\r\n                                grid-template-columns: 100%;\r\n                                grid-template-rows: repeat(15, calc(100% / 15));\r\n                                bxackground-color: #eee;\r\n                                box-sizing: border-box;\r\n                                padding : 5px;\r\n                                grid-gap: 5px;\r\n                                margin-right: 21px;\r\n                           \" class=\"absolute\" ws-hole=\"Actions\">\r\n                                \r\n                                \r\n                            </div>\r\n                        </second>\r\n                    </ws-fixedsplitterver>\r\n                    <wcomp-splitter vertical=\"\">\r\n                        <wcomp-tabstrip>\r\n                            <textarea tabname=\"Output\" ws-var=\"Output\" ws-onafterrender=\"OutputAfterRender\" style=\"height: 100%;  width: 100%; box-sizing: border-box; \" spellcheck=\"false\" title=\"\" placeholder=\"Output:\"></textarea>\r\n                            <textarea tabname=\"F# code\" ws-var=\"FSCode\" style=\"height: 100%;  width: 100%; box-sizing: border-box; \" spellcheck=\"false\" title=\"\" placeholder=\"F# Code:\"></textarea>\r\n                        </wcomp-tabstrip>\r\n                        <wcomp-tabstrip>\r\n                            <textarea tabname=\"Parser\" ws-var=\"Parser\" style=\"height: 100%;  width: 100%; box-sizing: border-box; \" spellcheck=\"false\" title=\"\" placeholder=\"Parser messages:\" ws-ondblclick=\"JumpRef\"></textarea>\r\n                        </wcomp-tabstrip>\r\n                    </wcomp-splitter>\r\n                </wcomp-splitter>\r\n            </second>\r\n        </ws-fixedsplitterhor>\r\n    </div>");
   },h):Templates.PrepareTemplate("appframework",n,function()
   {
-   return $.parseHTML("<div>\r\n        <ws-fixedsplitterhor>\r\n            <partsizes>55px calc(100% - 55px)</partsizes>\r\n            <first>\r\n                <span style=\"display: grid;\r\n                      grid-template-columns: 30% 20% 20% 10%;\r\n                      grid-gap: 25px;\r\n                    \">\r\n                    <div class=\"mainTitle\">AppFramework</div>\r\n                </span>\r\n            </first>\r\n            <second>\r\n                    <ws-fixedsplitterver>\r\n                        <partsizes>calc(100% - 150px) 150px</partsizes>\r\n                        <first>\r\n                            <wcomp-splitter vertical=\"\" value=\"18\" max=\"100\">\r\n                                <div><div ws-hole=\"PlugIns\" style=\"overflow:auto\">\r\n                                    \r\n                                </div></div>\r\n                                <wcomp-splitter vertical=\"\" value=\"100\" min=\"30\" max=\"100\">\r\n                                    <ws-fixedsplitterhor>\r\n                                        <partsizes>32px calc(100% - 32px)</partsizes>\r\n                                        <first>\r\n                                            <div>\r\n                                                <div class=\"input-group\">\r\n                                                    <span class=\"input-group-addon\">name:</span>\r\n                                                    <span class=\"input-group-addon\">${PlugInName}</span>\r\n                                                </div>\r\n                                            </div>\r\n                                        </first>\r\n                                        <second>\r\n                                            <div style=\"overflow:auto\">\r\n                                                <div>\r\n                                                    <div>Docs:</div>\r\n                                                    <div ws-hole=\"Docs\" style=\"overflow:auto\"></div>\r\n                                                </div>\r\n                                                <div>\r\n                                                    <div>Vars:</div>\r\n                                                    <div ws-hole=\"Vars\" style=\"overflow:auto\">\r\n                                                            \r\n                                                    </div>\r\n                                                </div>\r\n                                                <div>\r\n                                                    <div>Views:</div>\r\n                                                    <div ws-hole=\"Views\" style=\"overflow:auto\">\r\n                                                        \r\n                                                    </div>\r\n                                                </div>\r\n                                                <div>\r\n                                                    <div>Queries:</div>\r\n                                                    <div ws-hole=\"Queries\" style=\"overflow:auto\"></div>\r\n                                                </div>\r\n                                            </div>\r\n                                        </second>\r\n                                    </ws-fixedsplitterhor>\r\n                                    <wcomp-tabstrip>\r\n                                        <div tabname=\"Properties\">\r\n                                            <div>\r\n                                                <table style=\"border-spacing:0px\">\r\n                                                    <thead>\r\n                                                        <th style=\"width: 30%  \">Name</th>\r\n                                                        <th style=\"width: 70% \">Value</th>\r\n                                                    </thead>\r\n                                                    <tbody ws-hole=\"Properties\"></tbody>\r\n                                                </table>\r\n                                                <button ws-onclick=\"AddProperty\" class=\"add is-small\">add ...</button>\r\n                                            </div>\r\n                                        </div>\r\n                                    </wcomp-tabstrip>\r\n                                </wcomp-splitter>\r\n                            </wcomp-splitter>\r\n                        </first>\r\n                        <second>\r\n                            <div style=\"\r\n                                overflow: hidden;\r\n                                display: grid;\r\n                                grid-template-columns: 100%;\r\n                                grid-template-rows: repeat(15, calc(100% / 15));\r\n                                bxackground-color: #eee;\r\n                                box-sizing: border-box;\r\n                                padding : 5px;\r\n                                grid-gap: 5px;\r\n                                margin-right: 21px;\r\n                           \" class=\"absolute\" ws-hole=\"Actions\">\r\n                                \r\n                                \r\n                            </div>\r\n                        </second>\r\n                    </ws-fixedsplitterver>\r\n            </second>\r\n        </ws-fixedsplitterhor>\r\n    </div>");
+   return $.parseHTML("<div>\r\n        <ws-fixedsplitterhor>\r\n            <partsizes>55px calc(100% - 55px)</partsizes>\r\n            <first>\r\n                <span style=\"display: grid;\r\n                      grid-template-columns: 30% 20% 20% 10%;\r\n                      grid-gap: 25px;\r\n                    \">\r\n                    <div class=\"mainTitle\">AppFramework</div>\r\n                </span>\r\n            </first>\r\n            <second>\r\n                <wcomp-splitter value=\"85\" min=\"0\" max=\"100\">\r\n                    <ws-fixedsplitterver>\r\n                        <partsizes>calc(100% - 150px) 150px</partsizes>\r\n                        <first>\r\n                            <wcomp-splitter vertical=\"\" value=\"18\" max=\"100\">\r\n                                <div><div ws-hole=\"PlugIns\" style=\"overflow:auto\">\r\n                                    \r\n                                </div></div>\r\n                                <wcomp-splitter vertical=\"\" value=\"100\" min=\"30\" max=\"100\">\r\n                                    <ws-fixedsplitterhor>\r\n                                        <partsizes>32px calc(100% - 32px)</partsizes>\r\n                                        <first>\r\n                                            <div>\r\n                                                <div class=\"input-group\">\r\n                                                    <span class=\"input-group-addon\">name:</span>\r\n                                                    <span class=\"input-group-addon\">${PlugInName}</span>\r\n                                                </div>\r\n                                            </div>\r\n                                        </first>\r\n                                        <second>\r\n                                            <div style=\"overflow:auto\">\r\n                                                <div>\r\n                                                    <div>Docs:</div>\r\n                                                    <div ws-hole=\"Docs\" style=\"overflow:auto\"></div>\r\n                                                </div>\r\n                                                <div>\r\n                                                    <div>Vars:</div>\r\n                                                    <div ws-hole=\"Vars\" style=\"overflow:auto\">\r\n                                                            \r\n                                                    </div>\r\n                                                </div>\r\n                                                <div>\r\n                                                    <div>Views:</div>\r\n                                                    <div ws-hole=\"Views\" style=\"overflow:auto\">\r\n                                                        \r\n                                                    </div>\r\n                                                </div>\r\n                                                <div>\r\n                                                    <div>Queries:</div>\r\n                                                    <div ws-hole=\"Queries\" style=\"overflow:auto\"></div>\r\n                                                </div>\r\n                                            </div>\r\n                                        </second>\r\n                                    </ws-fixedsplitterhor>\r\n                                    <wcomp-tabstrip>\r\n                                        <div tabname=\"Properties\">\r\n                                            <div>\r\n                                                <table style=\"border-spacing:0px\">\r\n                                                    <thead>\r\n                                                        <th style=\"width: 30%  \">Name</th>\r\n                                                        <th style=\"width: 70% \">Value</th>\r\n                                                    </thead>\r\n                                                    <tbody ws-hole=\"Properties\"></tbody>\r\n                                                </table>\r\n                                                <button ws-onclick=\"AddProperty\" class=\"add is-small\">add ...</button>\r\n                                            </div>\r\n                                        </div>\r\n                                    </wcomp-tabstrip>\r\n                                </wcomp-splitter>\r\n                            </wcomp-splitter>\r\n                        </first>\r\n                        <second>\r\n                            <div style=\"\r\n                                overflow: hidden;\r\n                                display: grid;\r\n                                grid-template-columns: 100%;\r\n                                grid-template-rows: repeat(15, calc(100% / 15));\r\n                                bxackground-color: #eee;\r\n                                box-sizing: border-box;\r\n                                padding : 5px;\r\n                                grid-gap: 5px;\r\n                                margin-right: 21px;\r\n                           \" class=\"absolute\" ws-hole=\"Actions\">\r\n                                \r\n                                \r\n                            </div>\r\n                        </second>\r\n                    </ws-fixedsplitterver>\r\n                    <wcomp-splitter vertical=\"\">\r\n                        <wcomp-tabstrip>\r\n                            <textarea tabname=\"Output\" ws-var=\"Output\" ws-onafterrender=\"OutputAfterRender\" style=\"height: 100%;  width: 100%; box-sizing: border-box; \" spellcheck=\"false\" title=\"\" placeholder=\"Output:\"></textarea>\r\n                            <textarea tabname=\"F# code\" ws-var=\"FSCode\" style=\"height: 100%;  width: 100%; box-sizing: border-box; \" spellcheck=\"false\" title=\"\" placeholder=\"F# Code:\"></textarea>\r\n                        </wcomp-tabstrip>\r\n                        <wcomp-tabstrip>\r\n                            <textarea tabname=\"Parser\" ws-var=\"Parser\" style=\"height: 100%;  width: 100%; box-sizing: border-box; \" spellcheck=\"false\" title=\"\" placeholder=\"Parser messages:\" ws-ondblclick=\"JumpRef\"></textarea>\r\n                        </wcomp-tabstrip>\r\n                    </wcomp-splitter>\r\n                </wcomp-splitter>\r\n            </second>\r\n        </ws-fixedsplitterhor>\r\n    </div>");
   });
  };
- test_GeneratedPrintf.p=function($1)
+ Temp_z4nitg3o_GeneratedPrintf.p=function($1)
  {
   return $1.$==5?"FunDoc5 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+", "+Utils.prettyPrint($1.$3)+", "+Utils.prettyPrint($1.$4)+", "+Utils.prettyPrint($1.$5)+")":$1.$==4?"FunDoc4 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+", "+Utils.prettyPrint($1.$3)+", "+Utils.prettyPrint($1.$4)+")":$1.$==3?"FunDoc3 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+", "+Utils.prettyPrint($1.$3)+")":$1.$==2?"FunDoc2 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+")":$1.$==1?"FunDoc1 (<fun>, "+Utils.prettyPrint($1.$1)+")":"LazyDoc "+Utils.prettyPrint($1.$0);
  };
@@ -4427,16 +4397,6 @@ if (!console) {
    };
   });
  };
- AttrModule.Handler=function(name,callback)
- {
-  return Attrs.Static(function(el)
-  {
-   el.addEventListener(name,function(d)
-   {
-    return(callback(el))(d);
-   },false);
-  });
- };
  AttrModule.DynamicStyle=function(name,view)
  {
   return Attrs.Dynamic(view,function(el)
@@ -4520,6 +4480,16 @@ if (!console) {
     return set$1($1,$2);
    };
   },_var.get_View())]);
+ };
+ AttrModule.Handler=function(name,callback)
+ {
+  return Attrs.Static(function(el)
+  {
+   el.addEventListener(name,function(d)
+   {
+    return(callback(el))(d);
+   },false);
+  });
  };
  AttrModule.DynamicCustom=function(set,view)
  {
@@ -4669,13 +4639,6 @@ if (!console) {
  Lazy.cachedLazy=function()
  {
   return this.v;
- };
- LayoutEngine.New=function(lytName,lytDefinition)
- {
-  return{
-   lytName:lytName,
-   lytDefinition:lytDefinition
-  };
  };
  Slice.array=function(source,start,finish)
  {
@@ -8083,7 +8046,7 @@ if (!console) {
  };
  Runtime$1.OnLoad(function()
  {
-  Test.main();
+  LayoutEngine.main();
  });
 }());
 

@@ -3329,11 +3329,14 @@ namespace FsRoot
                 [< NamedUnionCases "type" >]
                 type BrokerRequest = 
                     | BRGetConnections  /// request for list of connections
+                    | BRGetProcessId    /// request PID of broker process
                 
                 /// Replies from Message Broker
                 [< NamedUnionCases "type" >]
                 type BrokerReply = 
                     | BRConnections  of string[]
+                    | BRPid          of int
+                    | BRString       of string
                   //  | BRPleaseClose  
                 
                 [< NamedUnionCases "type" >]
@@ -3354,6 +3357,7 @@ namespace FsRoot
                     | BMWebSocketError      of string
                     | BMReceiverCantReply
                     | BMUnexpectedMsgType   of MessageType
+                    | BMUnexpectedResponse  of string
                 
                 [< NamedUnionCases "type" >]
                 type Replier = 
@@ -3455,6 +3459,7 @@ namespace FsRoot
                         let processBrokerRequest req = 
                             match req with
                             | BRGetConnections -> getConnections() |> Map.toSeq |> Seq.map (fun (Address cl, _) -> cl) |> Seq.toArray |> BRConnections 
+                            | BRGetProcessId   -> System.Diagnostics.Process.GetCurrentProcess().Id |> BRPid
                             
                         let respondFromBroker pyld msg =
                             msg
@@ -3824,7 +3829,16 @@ namespace FsRoot
                             let! reply  = sendGetReply msg
                             match Json.Deserialize<BrokerReply> reply with
                             | BRConnections listeners -> return listeners
-                            //| _ -> ()
+                            | r -> return! Result.Error <| ResultMessage.Message (BMUnexpectedResponse <| sprintf "%A" r)
+                        } 
+                        
+                    let getProcessId() =
+                        asyncResult {
+                            let  msg    = newMsg MessageBrokerAddress BRGetProcessId
+                            let! reply  = sendGetReply msg
+                            match Json.Deserialize<BrokerReply> reply with
+                            | BRPid pid -> return pid
+                            | r -> return! Result.Error <| ResultMessage.Message (BMUnexpectedResponse <| sprintf "%A" r)
                         } 
                         
                     let sendMsg msg =
@@ -3835,6 +3849,7 @@ namespace FsRoot
                             else return! sendGetReply  msg
                         }
                     member this.MBListeners            = getListeners()
+                    member this.MBProcessId            = getProcessId()
                     member this.EndPoint               = wsEndPoint
                     member this.ClientId               = clientId
                     member this.SendMsg           msg  = sendMsg msg
@@ -3879,14 +3894,14 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1538376434745"
+                let mutable fsharpStationAddress = Address "FSharpStation1538406128835"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
                     printfn "set %A" fsharpStationAddress
                 }
             
-                let sendMessage : FSMessage -> AsyncResult<FSResponse, _> =        
+                let fsharpStationClient, sendMessage : WSMessagingClient * (FSMessage -> AsyncResult<FSResponse, _>) = 
                     let client =
             #if WEBSHARPER 
                         if IsClient then 
@@ -3898,7 +3913,7 @@ namespace FsRoot
             #else
                             new WSMessagingClient("FSharpStationClientFSharp"   , FSharp)
             #endif
-                    fun m -> client.SendGetReply fsharpStationAddress m |> AsyncResult.absorbR
+                    client, fun m -> client.SendGetReply fsharpStationAddress m |> AsyncResult.absorbR
             
                 let respString response = asyncResult { 
                     match response with
@@ -3920,7 +3935,7 @@ namespace FsRoot
                                         |> MsgAction
                                         |> sendMessage
                                         
-            
+                let getBrokerProcessId() = fsharpStationClient.MBProcessId
             module FsAutoComplete =
                 [<JavaScript>]
                 module CommTypes =

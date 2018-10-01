@@ -2,7 +2,7 @@
 ////#cd @"..\projects\FSharpStation\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
-//#I @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\Owin\lib\net40"
+//#I @"..\packages\Owin\lib\net40"
 //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
 //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
 //#r @"..\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
@@ -17,19 +17,19 @@
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\Owin\lib\net40\Owin.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\Microsoft.Owin.Hosting\lib\net451\Microsoft.Owin.Hosting.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\Microsoft.Owin.Host.HttpListener\lib\net451\Microsoft.Owin.Host.HttpListener.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\WebSharper.Owin\lib\net461\WebSharper.Owin.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\WebSharper.Owin\lib\net461\HttpMultipartParser.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\Microsoft.Owin.StaticFiles\lib\net451\Microsoft.Owin.StaticFiles.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
+//#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
+//#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
+//#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
+//#r @"..\packages\Owin\lib\net40\Owin.dll"
+//#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+//#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
+//#r @"..\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
+//#r @"..\packages\Microsoft.Owin.Hosting\lib\net451\Microsoft.Owin.Hosting.dll"
+//#r @"..\packages\Microsoft.Owin.Host.HttpListener\lib\net451\Microsoft.Owin.Host.HttpListener.dll"
+//#r @"..\packages\WebSharper.Owin\lib\net461\WebSharper.Owin.dll"
+//#r @"..\packages\WebSharper.Owin\lib\net461\HttpMultipartParser.dll"
+//#r @"..\packages\Microsoft.Owin.StaticFiles\lib\net451\Microsoft.Owin.StaticFiles.dll"
+//#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 /// Root namespace for all code
 #if INTERACTIVE
 module FsRoot   =
@@ -1731,7 +1731,7 @@ namespace FsRoot
                   CommArgCollection
                     [
             //           intSnippet     /= "Test"
-                        intRootDir     /= "D:\Abe\CIPHERWorkspace\FSharpStationN\projects"
+                        intRootDir     /= "..\projects"
                         intName        /= (rtn (fun s     -> String.splitByChar '/' s |> Array.last ) <*> gS intSnippet                                       )
                         intDirectory   /= (rtn (fun r n   -> r +/+           n                      ) <*> gS intRootDir    <*> gS intName                     )
                         intFileName    /= (rtn (fun d n   -> d +/+ "src" +/+ n + ".fs"              ) <*> gS intDirectory  <*> gS intName                     )
@@ -1834,7 +1834,6 @@ namespace FsRoot
                 
                 
                 let inline (+/+) a b = System.IO.Path.Combine(a, b)
-            //    let rootFSNetCore = @"D:\Abe\CIPHERWorkspace\FSNetCore"
             
                 [< Literal >]
                 let endToken = "xXxY" + "yYyhH"
@@ -2655,7 +2654,7 @@ namespace FsRoot
             
                 open WebSharper.UI.Templating
             
-                let [< Literal >] TemplateFileName =  @"D:\Abe\CIPHERWorkspace\FSharpStationN\website\AppFramework.html" 
+                let [< Literal >] TemplateFileName =  @"..\website\AppFramework.html" 
             
                 type AppFwkTemplate = Templating.Template<TemplateFileName, ClientLoad.Inline, ServerLoad.WhenChanged, LegacyMode.New>
             
@@ -3313,9 +3312,9 @@ namespace FsRoot
             
             [<WebSharper.JavaScript>]
             module WebSockets =
-                //#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
-                //#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
-                //#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
+                //#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
+                //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
+                //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
                 
                 open WebSharper
                 
@@ -3330,11 +3329,14 @@ namespace FsRoot
                 [< NamedUnionCases "type" >]
                 type BrokerRequest = 
                     | BRGetConnections  /// request for list of connections
+                    | BRGetProcessId    /// request PID of broker process
                 
                 /// Replies from Message Broker
                 [< NamedUnionCases "type" >]
                 type BrokerReply = 
                     | BRConnections  of string[]
+                    | BRPid          of int
+                    | BRString       of string
                   //  | BRPleaseClose  
                 
                 [< NamedUnionCases "type" >]
@@ -3355,6 +3357,7 @@ namespace FsRoot
                     | BMWebSocketError      of string
                     | BMReceiverCantReply
                     | BMUnexpectedMsgType   of MessageType
+                    | BMUnexpectedResponse  of string
                 
                 [< NamedUnionCases "type" >]
                 type Replier = 
@@ -3456,6 +3459,7 @@ namespace FsRoot
                         let processBrokerRequest req = 
                             match req with
                             | BRGetConnections -> getConnections() |> Map.toSeq |> Seq.map (fun (Address cl, _) -> cl) |> Seq.toArray |> BRConnections 
+                            | BRGetProcessId   -> System.Diagnostics.Process.GetCurrentProcess().Id |> BRPid
                             
                         let respondFromBroker pyld msg =
                             msg
@@ -3640,11 +3644,11 @@ namespace FsRoot
                         ConnectStateful uri2 func
                         |> Async.map ignore
                         
-                //#I @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\Owin\lib\net40"
-                //#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\Owin\lib\net40\Owin.dll"
-                //#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
-                //#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
-                //#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
+                //#I @"..\packages\Owin\lib\net40"
+                //#r @"..\packages\Owin\lib\net40\Owin.dll"
+                //#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
+                //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
+                //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
                 
                 open System
                 open WebSharper.Owin.WebSocket
@@ -3825,7 +3829,16 @@ namespace FsRoot
                             let! reply  = sendGetReply msg
                             match Json.Deserialize<BrokerReply> reply with
                             | BRConnections listeners -> return listeners
-                            //| _ -> ()
+                            | r -> return! Result.Error <| ResultMessage.Message (BMUnexpectedResponse <| sprintf "%A" r)
+                        } 
+                        
+                    let getProcessId() =
+                        asyncResult {
+                            let  msg    = newMsg MessageBrokerAddress BRGetProcessId
+                            let! reply  = sendGetReply msg
+                            match Json.Deserialize<BrokerReply> reply with
+                            | BRPid pid -> return pid
+                            | r -> return! Result.Error <| ResultMessage.Message (BMUnexpectedResponse <| sprintf "%A" r)
                         } 
                         
                     let sendMsg msg =
@@ -3836,6 +3849,7 @@ namespace FsRoot
                             else return! sendGetReply  msg
                         }
                     member this.MBListeners            = getListeners()
+                    member this.MBProcessId            = getProcessId()
                     member this.EndPoint               = wsEndPoint
                     member this.ClientId               = clientId
                     member this.SendMsg           msg  = sendMsg msg
@@ -3880,14 +3894,14 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1538345257308"
+                let mutable fsharpStationAddress = Address "FSharpStation1538406128835"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
                     printfn "set %A" fsharpStationAddress
                 }
             
-                let sendMessage : FSMessage -> AsyncResult<FSResponse, _> =        
+                let fsharpStationClient, sendMessage : WSMessagingClient * (FSMessage -> AsyncResult<FSResponse, _>) = 
                     let client =
             #if WEBSHARPER 
                         if IsClient then 
@@ -3899,7 +3913,7 @@ namespace FsRoot
             #else
                             new WSMessagingClient("FSharpStationClientFSharp"   , FSharp)
             #endif
-                    fun m -> client.SendGetReply fsharpStationAddress m |> AsyncResult.absorbR
+                    client, fun m -> client.SendGetReply fsharpStationAddress m |> AsyncResult.absorbR
             
                 let respString response = asyncResult { 
                     match response with
@@ -3921,7 +3935,7 @@ namespace FsRoot
                                         |> MsgAction
                                         |> sendMessage
                                         
-            
+                let getBrokerProcessId() = fsharpStationClient.MBProcessId
             module FsAutoComplete =
                 [<JavaScript>]
                 module CommTypes =
@@ -4095,9 +4109,9 @@ namespace FsRoot
                     | KUnionCase        of UnionCaseResponse
                     | KMultiple         of Kind                []
                     
-                //#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
-                //#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
-                //#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
+                //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+                //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
+                //#r @"..\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
                 
                 open System.Net
                 open System.Text
@@ -4273,10 +4287,11 @@ namespace FsRoot
                     
                     
     
-    //#cd @"..\projects\FSharpStation\src"
     //#define WEBSHARPER
     [< JavaScript >]
     module FSharpStation =
+        //#cd @"..\projects\FSharpStation\src"
+        
         module FStation =
         
             let [< Rpc >] getRootDir() = async {
@@ -4577,7 +4592,7 @@ namespace FsRoot
         [< AutoOpen >]
         module Templating =
             open WebSharper.UI.Templating
-            let [< Literal >] rootdir = @"D:\Abe\CIPHERWorkspace\FSharpStationN\website"
+            let [< Literal >] rootdir = @"..\website"
         
             let [< Literal >] TemplatesFileName = rootdir + @"\Templates.html"
             type TemplateLib  = Template< TemplatesFileName, ClientLoad.FromDocument, ServerLoad.WhenChanged, LegacyMode.New>
@@ -5375,14 +5390,14 @@ namespace FsRoot
                 FsiAgent.setQueueHandlers (fun (txt:string)  -> txt.Replace(FsiEvaluator.endToken, "Done!") 
                                                                 |> FSharpStationClient.sendOutput 
                                                                 |> AsyncResult.iterS print print)
-        //#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\Owin\lib\net40\Owin.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\Microsoft.Owin.Hosting\lib\net451\Microsoft.Owin.Hosting.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\Microsoft.Owin.Host.HttpListener\lib\net451\Microsoft.Owin.Host.HttpListener.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\WebSharper.Owin\lib\net461\WebSharper.Owin.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\WebSharper.Owin\lib\net461\HttpMultipartParser.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\Microsoft.Owin.StaticFiles\lib\net451\Microsoft.Owin.StaticFiles.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSNetCore\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
+        //#r @"..\packages\Owin\lib\net40\Owin.dll"
+        //#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
+        //#r @"..\packages\Microsoft.Owin.Hosting\lib\net451\Microsoft.Owin.Hosting.dll"
+        //#r @"..\packages\Microsoft.Owin.Host.HttpListener\lib\net451\Microsoft.Owin.Host.HttpListener.dll"
+        //#r @"..\packages\WebSharper.Owin\lib\net461\WebSharper.Owin.dll"
+        //#r @"..\packages\WebSharper.Owin\lib\net461\HttpMultipartParser.dll"
+        //#r @"..\packages\Microsoft.Owin.StaticFiles\lib\net451\Microsoft.Owin.StaticFiles.dll"
+        //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
         
         //#define FSS_SERVER
         
