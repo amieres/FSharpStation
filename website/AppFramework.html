@@ -1,0 +1,387 @@
+<div style="display:none" >
+    <div links>
+        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"  type="text/javascript"></script>
+    </div>
+    <div ws-template="FixedSplitterVer" 
+        style="display: grid; 
+               grid-gap: 0px; 
+               box-sizing: border-box; 
+               height: 100%;
+               width : 100%;
+               grid-template-areas: 'one two'; 
+               grid-template-rows   :100%; 
+               overflow: hidden; 
+               grid-template-columns: ${PartSizes}"  >
+       <div ws-hole="First"  style="grid-area: one; " class="relative" ></div>
+       <div ws-hole="Second" style="grid-area: two; " class="relative" ></div>
+    </div>               
+    <div ws-template="FixedSplitterHor" 
+   style="display: grid; 
+          grid-gap: 0px; 
+          box-sizing: border-box; 
+          height: 100%;
+          width : 100%;
+          grid-template-areas: 'one' 'two'; 
+          grid-template-columns:100%; 
+          overflow: hidden; 
+          grid-template-rows   : ${PartSizes}"  >
+  <div ws-hole="First"  style="grid-area: one; " class="relative" ></div>
+  <div ws-hole="Second" style="grid-area: two; " class="relative" ></div>
+    </div>               
+    <div ws-template="WCompSplitterHor" 
+         ws-onafterrender="AfterRender"
+         style="display: grid;
+                grid-gap: 5px; 
+                box-sizing: border-box; 
+                grid-template-areas: 'one' 'two'; 
+                grid-template-columns:100%; 
+                overflow: hidden; 
+                grid-template-rows   : ${PartSizes}" 
+         >
+         <slot></slot>
+        <slot name="splitter">  <div style="grid-row:2; grid-column:1 / 1 ; cursor: row-resize; z-index: 3; background-color: #eef ; height: ${Gap}; margin-top :-${Gap}" ws-onmousedown="MouseDown" ws-onafterrender="AfterRenderSp" ></div> </slot>
+        <style>
+            ::slotted(*) {
+                display: grid;
+                height : 100%;
+                width  : 100%;
+                overflow: hidden;
+            }
+            ::slotted(*:nth-child(2)) {
+                grid-area: two;
+            }
+            ::slotted(*[slot="splitter"]) {
+                grid-row:2; grid-column:1 / 1 ; 
+                cursor: row-resize; 
+                z-index: 3; 
+                background-color: #eef ; 
+                height: ${Gap}; 
+                margin-top :-${Gap}
+            }
+        </style>
+    </div>        
+    <div ws-template="WCompSplitterVer" 
+         ws-onafterrender="AfterRender"
+         style="display: grid; 
+                grid-gap: 5px; 
+                box-sizing: border-box; 
+                grid-template-areas: 'one two'; 
+                grid-template-rows   :100%; 
+                overflow: hidden; 
+                grid-template-columns: ${PartSizes}"  >
+        <slot></slot>
+        <slot name="splitter"> <div style="grid-column:2; grid-row:1 / 1 ; cursor: col-resize; z-index: 3; background-color: #eef ; width: ${Gap}; margin-left :-${Gap}" ws-onmousedown="MouseDown" ws-onafterrender="AfterRenderSp" ></div> </slot>
+        <style>
+            ::slotted(*) {
+                display: grid;
+                height : 100%;
+                width  : 100%;
+                overflow: hidden;
+            }
+            ::slotted(*:nth-child(2)) {
+                grid-area: two;
+            }
+            ::slotted(*[slot="splitter"]) {
+                grid-column:2; grid-row:1 / 1
+                cursor: column-resize; 
+                z-index: 3; 
+                background-color: #eef ; 
+                width: ${Gap}; 
+                margin-left:-${Gap}
+            }
+        </style>
+    </div>
+    <div ws-template="AppFwkClient" >
+        <ws-FixedSplitterHor>
+            <PartSizes>55px calc(100% - 55px)</PartSizes>
+            <First>
+                <span style="display: grid;
+                      grid-template-columns: 30% 20% 20% 10%;
+                      grid-gap: 25px;
+                    ">
+                    <div class="mainTitle">AppFramework</div>
+                </span>
+            </First>
+            <Second>
+                    <ws-FixedSplitterVer>
+                        <PartSizes>calc(100% - 150px) 150px</PartSizes>
+                        <First>
+                            <wcomp-splitter vertical value="18" max="100">
+                                <div><div ws-hole="PlugIns" style="overflow:auto" >
+                                    <div ws-template="Tile">
+                                        <div draggable="true" class="code-editor-list-tile ${Predecessor} ${Selected}" 
+                                        ws-ondrag="Drag"
+                                        ws-ondragover="DragOver"
+                                        ws-ondrop="Drop"
+                                       >
+                                       <span class="node ${Parent} ${ErrorMsg}" title="expand" ws-onclick="ToggleCollapse"></span>
+                                       <div  class="code-editor-list-text" style="text-indent:${Indent}em; white-space: pre" ws-onclick="Select" ws-onafterrender="AfterRender" >${Name}</div>
+                                       <span class="predecessor" title="toggle predecessor" ws-onclick="TogglePred">X</span>
+                                   </div>
+                           
+                                    </div>
+                                </div></div>
+                                <wcomp-splitter vertical value="100" min="30" max="100">
+                                    <ws-FixedSplitterHor>
+                                        <PartSizes>32px calc(100% - 32px)</PartSizes>
+                                        <First>
+                                            <div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">name:</span>
+                                                    <span class="input-group-addon">${PlugInName}</span>
+                                                </div>
+                                            </div>
+                                        </First>
+                                        <Second>
+                                            <div style="overflow:auto">
+                                                <div>
+                                                    <div>Docs:</div>
+                                                    <div ws-hole="Docs" style="overflow:auto" ></div>
+                                                </div>
+                                                <div>
+                                                    <div>Vars:</div>
+                                                    <div ws-hole="Vars" style="overflow:auto" >
+                                                            <div ws-template="NameValueInput" class="input-group">
+                                                            <span class="input-group-addon">${Name}:</span>
+                                                            <textarea class="form-control" id="" placeholder="Value..." ws-var="Value" spellcheck="false">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div>Views:</div>
+                                                    <div ws-hole="Views" style="overflow:auto" >
+                                                        <div ws-template="NameValue" class="input-group">
+                                                            <span class="input-group-addon">${Name}:</span>
+                                                            <span class="input-group-addon">${Value}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div>Queries:</div>
+                                                    <div ws-hole="Queries" style="overflow:auto" ></div>
+                                                </div>
+                                            </div>
+                                        </Second>
+                                    </ws-FixedSplitterHor>
+                                    <wcomp-tabstrip >
+                                        <div tabname="Properties">
+                                            <div>
+                                                <table style="border-spacing:0px">
+                                                    <thead>
+                                                        <th style="width: 30%  ">Name</th>
+                                                        <th style="width: 70% ">Value</th>
+                                                    </thead>
+                                                    <tbody ws-hole="Properties" ws-children-template="Property">
+                                                        <tr ws-onclick="Select" style="margin-bottom: 2px" class="level  ">
+                                                            <td class="level-item">
+                                                                <div>
+                                                                    <input ws-var="Name" type="text" class="form-control" id="" placeholder="Property...">
+                                                                </div>
+                                                            </td>
+                                                            <td class="level-item">
+                                                                <div>
+                                                                    <textarea ws-var="Value" class="form-control" id="" placeholder="Value..."></textarea>
+                                                                </div>
+                                                            </td>
+                                                            <td class="level-item">
+                                                                <div style=" cursor: pointer " title="remove">
+                                                                    <button ws-onclick="Remove" class="delete is-small">x</button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <button ws-onclick="AddProperty" class="add is-small">add ...</button>
+                                            </div>
+                                        </div>
+                                    </wcomp-tabstrip>
+                                </wcomp-splitter>
+                            </wcomp-splitter>
+                        </First>
+                        <Second>
+                            <div style="
+                                overflow: hidden;
+                                display: grid;
+                                grid-template-columns: 100%;
+                                grid-template-rows: repeat(15, calc(100% / 15));
+                                bxackground-color: #eee;
+                                box-sizing: border-box;
+                                padding : 5px;
+                                grid-gap: 5px;
+                                margin-right: 21px;
+                           "  class="absolute" ws-hole="Actions" >
+                                <button ws-template="Action"         ws-onclick="Click" class="btn" type="button" id=""          >${Name}</button>
+                                <button ws-template="ActionDisabled" ws-onclick="Click" class="btn" type="button" id="" disabled >${Name}</button>
+                            </div>
+                        </Second>
+                    </ws-FixedSplitterVer>
+            </Second>
+        </ws-FixedSplitterHor>
+    </div>
+    <div ws-template="AppFramework" style="height: calc(100vh - 4px); width: calc(100vw - 4px) " class="relative" >
+        <wcomp-splitter value="0" min="0" max="100" >
+            <div ><button ws-onclick="GoClient">${MainDoc}</button></div>
+            <div ws-hole="MainClient"></div>
+        </wcomp-splitter>
+        <style style="display: none">
+            .Hidden     { display   : none         }
+            table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }
+            td input.form-control { 
+                padding    : 0px; 
+                font-family: monospace;
+                font-size  :   small;
+                margin-top :   0px;
+                margin-left: -2px;
+                width      : 100%
+            }
+            td select {
+                font-size : smaller;
+                max-width : 8ch;
+            }
+            xtextarea {
+               resize : none;
+            }
+            .tab-content {
+                overflow: hidden
+            }
+            .tab-children {
+                position:relative;
+            }
+            .tab-children>div>* {
+                position:absolute;
+                height: 100%;
+                width:  100%;
+                display: grid;
+            }
+            .relative {
+                position:relative;
+            }
+            .relative>* {
+                position:absolute;
+                height: 100%;
+                width:  100%;
+                display: grid;
+            }
+            table.table-striped    tbody tr:nth-child(even) { background: #EEE  }
+            table.table-striped    tbody tr:nth-child(odd ) { background: #FFF  }
+            table.table-striped    tbody input              { background: transparent; border: none}
+            table.table-striped    tbody select             { background: transparent; border: none}
+            table.table-nonstriped tbody tr:nth-child(even) { background: inherit }
+            table.table-nonstriped tbody tr:nth-child(odd ) { background: inherit }
+            table.table            tbody tr.hover           { border    : solid thin transparent; } 
+            table.table            tbody tr.hover:hover     { border    : solid thin blue     ; } 
+            table.table            tbody th:hover           { background: gray; cursor: pointer }
+            table.table            tbody tr.hover:hover>td  { border-top: solid thin blue     ; 
+                                                       border-bottom: solid thin blue     ; } 
+            table.table            tbody tr.selected { background   : #b9eeff             ; }
+            table.table            tbody tr.formula.selected { background: #20f7f7             ; }
+            thead { color: gray }
+            h3 { 
+                color: gray;
+                line-height: 1em;
+            }
+            button       { border: solid thin transparent ; border-radius: 3px; }
+            button:hover { border: solid thin blue }
+            .indenter { position  : absolute; 
+                        top:0px; bottom:0px; left:0px; 
+                        background: white; color:white;
+                        border-right: gray thin dotted;
+                        }
+            body {
+                color      : #333;
+                font-size  : small;
+                font-family: monospace;
+                line-height: 1.2;
+            }
+            .mainTitle {  
+                font-size: 48px;
+                font-weight: 500;
+                color: gray;
+                margin-top: -12px;
+            }
+            .CodeMirror {
+                height: 100%;
+            }
+            
+          
+            body { margin: 0px }     
+                 
+            div textarea {
+                font-family     : monospace;
+            }
+            .code-editor-list-tile {
+                white-space     : nowrap; 
+                border-style    : solid none none;
+                border-color    : white;
+                border-width    : 1px;
+                background-color: #D8D8D8;
+                display         : flex;
+            }
+            .code-editor-list-text{
+                padding         : 1px 10px 1px 5px;
+                overflow        : hidden;
+                text-overflow   : ellipsis;
+                white-space     : nowrap;
+                flex            : 1;
+            }
+            
+            .code-editor-list-tile span.node.ErrorMsg {
+                background-color: red
+            }
+            .code-editor-list-tile span.node.expanded::before {
+                content: "-"
+            }
+            .code-editor-list-tile span.node.collapsed::before {
+                content: "+"
+            }
+            .code-editor-list-tile.direct-predecessor {
+                font-weight     : bold;
+                color           : blue;
+            }
+            .code-editor-list-tile.indirect-predecessor {
+                color           : blue;
+            }
+            .code-editor-list-tile.included-predecessor {
+                color           : chocolate;
+            }
+            .code-editor-list-tile.selected {
+                background-color: #77F;
+                color           : white;
+            }
+            .code-editor-list-tile.codeSnippet {
+                text-decoration: underline
+            }
+            .code-editor-list-tile:hover {
+                background      : lightgray;
+            }
+            .code-editor-list-tile.selected:hover {
+                background      : blue;
+            }
+            .code-editor-list-tile>.predecessor {
+                font-weight     : bold;
+                border-style    : inset;
+                border-width    : 1px;
+                text-align      : center;
+                color           : transparent;
+            }
+            .code-editor-list-tile.direct-predecessor>.predecessor {
+                color           : blue;
+            }
+            
+            .CodeMirror { height: 100%; }
+            
+            .node {
+                background-color: white; 
+                width           : 2ch; 
+                color           : #A03; 
+                font-weight     : bold; 
+                text-align      : center;
+                font-family     : arial;
+            }
+            .Warning { text-decoration: underline lightblue } 
+            .Error   { text-decoration: underline red       } 
+            
+        </style>
+    </div>
+</div>

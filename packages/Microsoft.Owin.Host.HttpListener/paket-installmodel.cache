@@ -1,0 +1,14 @@
+D: /lib
+D: /lib/net451
+F: /lib/net451/Microsoft.Owin.Host.HttpListener.dll
+F: /lib/net451/Microsoft.Owin.Host.HttpListener.xml
+D: /package
+D: /package/services
+D: /package/services/metadata
+D: /package/services/metadata/core-properties
+F: /package/services/metadata/core-properties/ce8638dcf9824edb972a9e9ab3704963.psmdcp
+D: /_rels
+F: /_rels/.rels
+F: /microsoft.owin.host.httplistener.4.0.0.nupkg
+F: /Microsoft.Owin.Host.HttpListener.nuspec
+F: /[Content_Types].xml

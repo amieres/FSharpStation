@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <link href="/content/editor.css" rel="stylesheet" />
+  <link href="/content/codemirror.css" rel="stylesheet" />
+  <script src="/scripts/intellisense.js"></script>
+  <script src="/scripts/codemirror/codemirror.js"></script>
+  <script src="/scripts/codemirror/codemirror-intellisense.js"></script>
+  <script src="/scripts/codemirror/codemirror-compiler.js"></script>
+  <script src="/scripts/codemirror/mode/markdown.js"></script>
+  <script src="/scripts/codemirror/mode/fsharp.js"></script>
+</head>
+<body>
+  <div style="width:800px" id="demo1">let x = 10</div>
+  <button id="run1">Run</button>
+  <script>
+    // Initialize the F# editor with autocomplete etc.
+    var editor = setupEditor(document.getElementById('demo1'));
+
+    // Evaluate the script when run is clicked
+    document.getElementById('run1').onclick = function () {
+      fsiEval(editor.getValue(), function (res) {
+        var output = document.getElementById('result');
+        if (res.result == "error")
+          // There ere compiler errors so the code was not run
+          output.innerHTML = res.data.map(function (e) {
+            return e.startLine + ":" + e.startColumn + " - " + e.endLine + ":" + e.endColumn + " " + e.message;
+          }).join("\n");
+        else if (res.result == "exception")
+          // The code was evaluated, but it threw an exception
+          output.innerHTML = "EXCEPTION:\n" + res.data;
+        else if (res.result == "success") {
+          // The code was evaluated, we get the last value ('it') and the printed output
+          output.innerHTML = "RESULT: " + res.data.result + "\nOUTPUT:" + res.data.output;
+        }
+      });
+    }
+  </script>
+  <pre id="result"></pre>
+</body>
+</html>

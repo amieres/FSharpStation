@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>WebSharper.Owin.WebSocket</name></assembly>
+<members>
+<member name="T:WebSharper.Owin.WebSocket.WebSharperWebSocketMiddleware`2">
+<summary>
+ The OWIN middleware for WebSharper WebSockets.
+ Must be located after the WebSharper Sitelets or Remoting middleware in the pipeline.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.WebSocket.Endpoint`2.CreateRemote(System.String,Microsoft.FSharp.Core.FSharpOption{WebSharper.Owin.WebSocket.JsonEncoding})">
+<summary>
+ Create a websockets endpoint for a given full URL.
+ Call this to connect to an external websocket from the client.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.WebSocket.Endpoint`2.Create(Owin.IAppBuilder,System.String,Microsoft.FSharp.Core.FSharpOption{WebSharper.Owin.WebSocket.JsonEncoding})">
+<summary>
+ Create a websockets endpoint for a given Owin app and path.
+ Call this on the server side and pass it down to the client.
+ This overload only works when the site is hosted on ASP.NET using Microsoft.Owin.Host.SystemWeb.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.WebSocket.Endpoint`2.Create(System.String,System.String,Microsoft.FSharp.Core.FSharpOption{WebSharper.Owin.WebSocket.JsonEncoding})">
+<summary>
+ Create a websockets endpoint for a given base URL and path.
+ Call this on the server side and pass it down to the client.
+</summary>
+</member>
+<member name="T:WebSharper.Owin.WebSocket.Endpoint`2">
+<summary>
+ A WebSockets endpoint.
+</summary>
+</member>
+<member name="T:WebSharper.Owin.WebSocket.Context">
+<summary>
+ Use the given server-side and client-side JSON encoding providers.
+</summary>
+</member>
+<member name="T:WebSharper.Owin.WebSocket.JsonEncoding.Readable">
+<summary>
+ Readable and external API-friendly encoding that drops
+ some information regarding subtypes.
+ This is the same encoding used by WebSharper Sitelets
+ and by the WebSharper.Json.Serialize family of functions.
+</summary>
+</member>
+<member name="T:WebSharper.Owin.WebSocket.JsonEncoding.Typed">
+<summary>
+ Verbose encoding that includes extra type information.
+ This is the same encoding used by WebSharper RPC.
+</summary>
+</member>
+<member name="T:WebSharper.Owin.WebSocket.JsonEncoding">
+<summary>
+ Which JSON encoding to use when sending messages through the websocket.
+</summary>
+</member>
+<member name="T:WebSharper.Owin.WebSocket.Client.WebSocketServer`2">
+<summary>
+ A server to which you can post messages.
+</summary>
+</member>
+<member name="T:WebSharper.Owin.WebSocket.Client.Message`1">
+<summary>
+ Messages received by the client.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.WebSocket.Client.ConnectStateful``3(WebSharper.Owin.WebSocket.Endpoint{``0,``1},Microsoft.FSharp.Core.FSharpFunc{WebSharper.Owin.WebSocket.Client.WebSocketServer{``0,``1},Microsoft.FSharp.Control.FSharpAsync{System.Tuple{``2,Microsoft.FSharp.Core.FSharpFunc{``2,Microsoft.FSharp.Core.FSharpFunc{WebSharper.Owin.WebSocket.Client.Message{``0},Microsoft.FSharp.Control.FSharpAsync{``2}}}}}})">
+<summary>
+ Connect to a websocket server.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.WebSocket.Client.Connect``2(WebSharper.Owin.WebSocket.Endpoint{``0,``1},Microsoft.FSharp.Core.FSharpFunc{WebSharper.Owin.WebSocket.Client.WebSocketServer{``0,``1},Microsoft.FSharp.Control.FSharpAsync{Microsoft.FSharp.Core.FSharpFunc{WebSharper.Owin.WebSocket.Client.Message{``0},Microsoft.FSharp.Core.Unit}}})">
+<summary>
+ Connect to a websocket server.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.WebSocket.Client.FromWebSocketStateful``3(WebSharper.JavaScript.WebSocket,Microsoft.FSharp.Core.FSharpFunc{WebSharper.Owin.WebSocket.Client.WebSocketServer{``0,``1},Microsoft.FSharp.Control.FSharpAsync{System.Tuple{``2,Microsoft.FSharp.Core.FSharpFunc{``2,Microsoft.FSharp.Core.FSharpFunc{WebSharper.Owin.WebSocket.Client.Message{``0},Microsoft.FSharp.Control.FSharpAsync{``2}}}}}},WebSharper.Owin.WebSocket.JsonEncoding)">
+<summary>
+ Connect to a websocket server.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.WebSocket.Client.FromWebSocket``2(WebSharper.JavaScript.WebSocket,Microsoft.FSharp.Core.FSharpFunc{WebSharper.Owin.WebSocket.Client.WebSocketServer{``0,``1},Microsoft.FSharp.Control.FSharpAsync{Microsoft.FSharp.Core.FSharpFunc{WebSharper.Owin.WebSocket.Client.Message{``0},Microsoft.FSharp.Core.Unit}}},WebSharper.Owin.WebSocket.JsonEncoding)">
+<summary>
+ Connect to a websocket server.
+</summary>
+</member>
+<member name="T:WebSharper.Owin.WebSocket.Client">
+<summary>
+ WebSocket client.
+</summary>
+</member>
+<member name="T:WebSharper.Owin.WebSocket.Server.CustomWebSocketAgent`3">
+<summary>
+ The agent of a WebSocket server that can receive custom server-side messages.
+</summary>
+</member>
+<member name="T:WebSharper.Owin.WebSocket.Server.CustomMessage`2">
+<summary>
+ Messages received by the server supporting custom server-side messages.
+</summary>
+</member>
+<member name="T:WebSharper.Owin.WebSocket.Server.WebSocketClient`2">
+<summary>
+ A client to which you can post messages.
+</summary>
+</member>
+<member name="T:WebSharper.Owin.WebSocket.Server.Message`1">
+<summary>
+ Messages received by the server.
+</summary>
+</member>
+<member name="T:WebSharper.Owin.WebSocket.Server">
+<summary>
+ WebSocket server.
+</summary>
+</member>
+</members>
+</doc>

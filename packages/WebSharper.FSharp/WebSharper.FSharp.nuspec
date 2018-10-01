@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+  <metadata>
+    <id>WebSharper.FSharp</id>
+    <version>4.5.1.304</version>
+    <authors>IntelliFactory</authors>
+    <licenseUrl>http://websharper.com/licensing</licenseUrl>
+    <projectUrl>http://websharper.com</projectUrl>
+    <description>F#-to-JavaScript compiler</description>
+    <tags>Web JavaScript F#</tags>
+    <dependencies>
+      <dependency id="WebSharper" version="[4.5.1.304]" />
+    </dependencies>
+  </metadata>
+</package>

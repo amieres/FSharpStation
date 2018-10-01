@@ -1,62 +1,26 @@
+framework: netstandard2, net461
+//storage: symlink
 
 source https://www.nuget.org/api/v2
-framework: net461
 
-nuget FSharp.Compiler.Tools 4.1.23
-nuget FSharp.Compiler.Service 17.0.1
-
-nuget CryptSharpOfficial 
-nuget FSharp.Configuration
-nuget FSharp.Core
-nuget FSharp.Data
-nuget FSharp.Data.SqlClient
-nuget HtmlAgilityPack
-nuget Microsoft.Owin
-nuget Microsoft.Owin.Diagnostics
-nuget Microsoft.Owin.FileSystems
-nuget Microsoft.Owin.Host.HttpListener
-nuget Microsoft.Owin.Hosting
-nuget Microsoft.Owin.StaticFiles
-nuget Mono.Cecil 0.10.0
-nuget Owin
-nuget Owin.Compression 1.0.18
-nuget System.ValueTuple
-//nuget System.IO.Compression 4.3.0-preview1-24530-04
-nuget System.IO.Compression
-nuget WebSharper          
-nuget WebSharper.Compiler 
-nuget WebSharper.Data     
-nuget WebSharper.FSharp
-nuget WebSharper.Owin
-nuget WebSharper.Owin.WebSocket
-nuget WebSharper.UI
-nuget WebSharper.Formlets    
-nuget WebSharper.Html
+nuget FSharp.Core        = 4.5.0
 nuget Newtonsoft.Json
-nuget XPlot.Plotly
-nuget SSH.NET
+nuget FSharp.Compiler.Tools
+nuget WebSharper         = 4.5.1.304
+nuget Websharper.FSharp  = 4.5.1.304
+nuget Websharper.UI	     = 4.5.1.141
+nuget Websharper.Owin
+nuget WebSharper.Owin.WebSocket
+nuget Microsoft.Owin
+nuget Microsoft.Owin.StaticFiles
+nuget Microsoft.Owin.FileSystems
+nuget Microsoft.Owin.Hosting
+nuget Microsoft.Owin.Host.HttpListener
+nuget FSharp.Data
 
-nuget FSharpPlus 1.0.0-CI00136
-
-nuget FSharp.Quotations.Evaluator
-
-nuget Fable.Core
-nuget Fable.Import.Browser
-
-nuget NUnit 2.6.4
-nuget Fuchu
-nuget Unquote
-
-nuget CommonServiceLocator 
-
-nuget AWSSDK.Core
-nuget AWSSDK.Lambda
-
-nuget FSharp.ComProvider 1.0.0-pre1
-
-nuget FsCheck
-
-nuget FSharp.Formatting
-
-group ruleeditor
-    framework: net461
+group Testing
+    framework: netstandard2
+//    storage: symlink
+    source https://www.nuget.org/api/v2
+    nuget Fuchu
+    nuget Unquote

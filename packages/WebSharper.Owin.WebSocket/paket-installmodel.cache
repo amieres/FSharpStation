@@ -1,0 +1,16 @@
+D: /lib
+D: /lib/net461
+F: /lib/net461/Owin.WebSocket.dll
+F: /lib/net461/WebSharper.Owin.WebSocket.dll
+F: /lib/net461/WebSharper.Owin.WebSocket.XML
+D: /package
+D: /package/services
+D: /package/services/metadata
+D: /package/services/metadata/core-properties
+F: /package/services/metadata/core-properties/coreProp.psmdcp
+D: /_rels
+F: /_rels/.rels
+F: /.signature.p7s
+F: /websharper.owin.websocket.4.5.0.139.nupkg
+F: /WebSharper.Owin.WebSocket.nuspec
+F: /[Content_Types].xml

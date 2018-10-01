@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>WebSharper.Owin</name></assembly>
+<members>
+<member name="P:WebSharper.Owin.WebSharperOptions`1.UseRemoting(System.Boolean)">
+<summary>
+ Whether to serve WebSharper RPC functions.
+ Default: true.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.WebSharperOptions`1.UrlPrefix(System.String)">
+<summary>
+ The URL prefix under which sitelets are served.
+ Default: empty.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.WebSharperOptions`1.Sitelet(Microsoft.FSharp.Core.FSharpOption{WebSharper.Sitelets.Sitelet{`0}})">
+<summary>
+ The sitelet to serve.
+ Default: None.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.WebSharperOptions`1.ServerRootDirectory(System.String)">
+<summary>
+ Get or set the web application&apos;s root directory.
+ Default: the current working directory.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.WebSharperOptions`1.OnException(Microsoft.FSharp.Core.FSharpFunc{System.Boolean,Microsoft.FSharp.Core.FSharpFunc{Microsoft.Owin.IOwinResponse,Microsoft.FSharp.Core.FSharpFunc{System.Exception,System.Threading.Tasks.Task}}})">
+<summary>
+ What to do when the WebSharper sitelet or remote function throws an exception.
+ The first parameter is equal to this.Debug.
+ Default: set StatusCode to 500 and write the stack trace if Debug is true,
+ or &quot;Internal Server Error&quot; otherwise.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.WebSharperOptions`1.MetadataAndGraph(Microsoft.FSharp.Core.FSharpOption{System.Tuple{WebSharper.Core.Metadata.Info,WebSharper.Core.DependencyGraph.Graph}})">
+<summary>
+ The metadata to use for client code.
+ If None, it will be loaded from BinDirectory.
+ Default: None.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.WebSharperOptions`1.DiscoverSitelet(System.Boolean)">
+<summary>
+ If true and this.Sitelet is None, search the binaries folder for a sitelet assembly.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.WebSharperOptions`1.Debug(System.Boolean)">
+<summary>
+ Whether to serve JavaScript and CSS in debug mode (ie. uncompressed).
+ Default: false.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.WebSharperOptions`1.BinDirectory(System.String)">
+<summary>
+ Get or set the web application&apos;s binary directory.
+ Default: the folder containing WebSharper.Owin.dll.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.WebSharperOptions`1.UseRemoting">
+<summary>
+ Whether to serve WebSharper RPC functions.
+ Default: true.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.WebSharperOptions`1.UrlPrefix">
+<summary>
+ The URL prefix under which sitelets are served.
+ Default: empty.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.WebSharperOptions`1.Sitelet">
+<summary>
+ The sitelet to serve.
+ Default: None.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.WebSharperOptions`1.ServerRootDirectory">
+<summary>
+ Get or set the web application&apos;s root directory.
+ Default: the current working directory.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.WebSharperOptions`1.OnException">
+<summary>
+ What to do when the WebSharper sitelet or remote function throws an exception.
+ The first parameter is equal to this.Debug.
+ Default: set StatusCode to 500 and write the stack trace if Debug is true,
+ or &quot;Internal Server Error&quot; otherwise.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.WebSharperOptions`1.MetadataAndGraph">
+<summary>
+ The metadata to use for client code.
+ If None, it will be loaded from BinDirectory.
+ Default: None.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.WebSharperOptions`1.DiscoverSitelet">
+<summary>
+ If true and this.Sitelet is None, search the binaries folder for a sitelet assembly.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.WebSharperOptions`1.Debug">
+<summary>
+ Whether to serve JavaScript and CSS in debug mode (ie. uncompressed).
+ Default: false.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.WebSharperOptions`1.BinDirectory">
+<summary>
+ Get or set the web application&apos;s binary directory.
+ Default: the folder containing WebSharper.Owin.dll.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.WebSharperOptions`1.WithSitelet(WebSharper.Sitelets.Sitelet{`0})">
+<summary>
+ Set the sitelet to serve.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.WebSharperOptions`1.DefaultOnException(System.Boolean,Microsoft.Owin.IOwinResponse,System.Exception)">
+<summary>
+ The default action taken when an exception is uncaught from a sitelet or remote function:
+ set StatusCode to 500 and write the stack trace if Debug is true,
+ or &quot;Internal Server Error&quot; otherwise.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.WebSharperOptions`1.AsMidFunc">
+<summary>
+ Run WebSharper as an Owin middleware function.
+</summary>
+</member>
+<member name="T:WebSharper.Owin.WebSharperOptions`1">
+<summary>
+ Options to initialize WebSharper.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.SiteletMiddleware`1.UseDiscoveredSitelet(System.String,Microsoft.FSharp.Core.FSharpOption{System.String})">
+<summary>
+ Inspects the binDirectory folder, looking for an assembly that contains
+ a WebSharper Sitelet, and runs this Sitelet with webRoot as the root folder.
+ Also runs the Remoting service using metadata discovered from binDirectory.
+ If binDirectory is not specified, the folder containing WebSharper.Owin.dll is used.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.SiteletMiddleware`1.AsMidFunc(System.String,Microsoft.FSharp.Core.FSharpOption{System.String})">
+<summary>
+ Inspects the binDirectory folder, looking for an assembly that contains
+ a WebSharper Sitelet, and runs this Sitelet with webRoot as the root folder.
+ Also runs the Remoting service using metadata discovered from binDirectory.
+ If binDirectory is not specified, the folder containing WebSharper.Owin.dll is used.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.SiteletMiddleware`1.AsMidFunc(WebSharper.Owin.Options,WebSharper.Sitelets.Sitelet{`0})">
+<summary>
+ Runs the provided Sitelet with the provided options.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.SiteletMiddleware`1.#ctor(System.Func{System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.Tasks.Task},WebSharper.Owin.Options,WebSharper.Sitelets.Sitelet{`0})">
+<summary>
+ Runs the provided Sitelet with the provided options.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.RemotingMiddleware.UseRemoting(System.String,Microsoft.FSharp.Core.FSharpOption{System.String})">
+<summary>
+ Runs the WebSharper Remoting service, allowing WebSharper-compiled
+ client-side code to invoke [&lt;Rpc&gt;]-annotated server-side functions.
+ WebSharper metadata is loaded from binDirectory.
+ If binDirectory is not specified, the folder containing WebSharper.Owin.dll is used.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.RemotingMiddleware.AsMidFunc(System.String,Microsoft.FSharp.Core.FSharpOption{System.String})">
+<summary>
+ Runs the WebSharper Remoting service, allowing WebSharper-compiled
+ client-side code to invoke [&lt;Rpc&gt;]-annotated server-side functions.
+ WebSharper metadata is loaded from binDirectory.
+ If binDirectory is not specified, the folder containing WebSharper.Owin.dll is used.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.RemotingMiddleware.AsMidFunc(WebSharper.Owin.Options)">
+<summary>
+ Runs the WebSharper Remoting service, allowing WebSharper-compiled
+ client-side code to invoke [&lt;Rpc&gt;]-annotated server-side functions.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.RemotingMiddleware.#ctor(System.Func{System.Collections.Generic.IDictionary{System.String,System.Object},System.Threading.Tasks.Task},WebSharper.Owin.Options)">
+<summary>
+ Runs the WebSharper Remoting service, allowing WebSharper-compiled
+ client-side code to invoke [&lt;Rpc&gt;]-annotated server-side functions.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.Options.WithUrlPrefix(System.String)">
+<summary>
+ Sets the URL prefix under which the sitelet is served.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.Options.WithServerRootDirectory(System.String)">
+<summary>
+ Sets the root folder for the application.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.Options.WithRunRemoting(System.Boolean)">
+<summary>
+ Sets whether the WebSharper Remoting service should be run.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.Options.WithOnException(Microsoft.FSharp.Core.FSharpFunc{System.Boolean,Microsoft.FSharp.Core.FSharpFunc{Microsoft.Owin.IOwinResponse,Microsoft.FSharp.Core.FSharpFunc{System.Exception,System.Threading.Tasks.Task}}})">
+<summary>
+ Sets what to do when the WebSharper sitelet or remote function throws an exception.
+ The first parameter is equal to this.Debug.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.Options.WithDebug(System.Boolean)">
+<summary>
+ Enables or disables debugging (including using uncompressed
+ JavaScript files).
+</summary>
+</member>
+<member name="M:WebSharper.Owin.Options.WithDebug">
+<summary>
+ Enables debugging (including using uncompressed JavaScript files).
+</summary>
+</member>
+<member name="M:WebSharper.Owin.Options.DefaultOnException(System.Boolean,Microsoft.Owin.IOwinResponse,System.Exception)">
+<summary>
+ The default action taken when an exception is uncaught from a sitelet or remote function:
+ set StatusCode to 500 and write the stack trace if Debug is true,
+ or &quot;Internal Server Error&quot; otherwise.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.Options.Create(System.String,Microsoft.FSharp.Core.FSharpOption{System.String})">
+<summary>
+ Creates sitelet server options using webRoot as the root folder and
+ loading WebSharper metadata from assemblies in binDirectory.
+ If binDirectory is not specified, the folder containing WebSharper.Owin.dll is used.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.Options.Create(WebSharper.Core.Metadata.Info,WebSharper.Core.DependencyGraph.Graph)">
+<summary>
+ Creates sitelet server options with the given WebSharper metadata.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.Options.Create">
+<summary>
+ Creates empty sitelet server options.
+</summary>
+</member>
+<member name="T:WebSharper.Owin.Options">
+<summary>
+ Options to initialize a sitelet server with IAppBuilder.UseCustomSitelet.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.Extensions.IAppBuilder.UseWebSharperRemoting(Owin.IAppBuilder,System.String,WebSharper.Core.Metadata.Info)">
+<summary>
+ Runs the WebSharper Remoting service, allowing WebSharper-compiled
+ client-side code to invoke [&lt;Rpc&gt;]-annotated server-side functions.
+ Note that the Remoting service is automatically run by the
+ methods UseDiscoveredSitelet and UseSitelet, as well as
+ UseCustomSitelet if options.RunRemoting is set to true.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.Extensions.IAppBuilder.UseWebSharperRemoting(Owin.IAppBuilder,WebSharper.Core.Metadata.Info)">
+<summary>
+ Runs the WebSharper Remoting service, allowing WebSharper-compiled
+ client-side code to invoke [&lt;Rpc&gt;]-annotated server-side functions.
+ The current working directory is used as application root.
+ Note that the Remoting service is automatically run by the
+ methods UseDiscoveredSitelet and UseSitelet, as well as
+ UseCustomSitelet if options.RunRemoting is set to true.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.Extensions.IAppBuilder.UseWebSharperRemotingFromBin(Owin.IAppBuilder,System.String)">
+<summary>
+ Runs the WebSharper Remoting service, allowing WebSharper-compiled
+ client-side code to invoke [&lt;Rpc&gt;]-annotated server-side functions.
+ Note that the Remoting service is automatically run by the
+ methods UseDiscoveredSitelet and UseSitelet, as well as
+ UseCustomSitelet if options.RunRemoting is set to true.
+ WebSharper metadata is loaded from binDirectory.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.Extensions.IAppBuilder.UseWebSharperRemoting(Owin.IAppBuilder,System.String,Microsoft.FSharp.Core.FSharpOption{System.String})">
+<summary>
+ Runs the WebSharper Remoting service, allowing WebSharper-compiled
+ client-side code to invoke [&lt;Rpc&gt;]-annotated server-side functions.
+ Note that the Remoting service is automatically run by the
+ methods UseDiscoveredSitelet and UseSitelet, as well as
+ UseCustomSitelet if options.RunRemoting is set to true.
+ WebSharper metadata is loaded from binDirectory.
+ If binDirectory is not specified, the folder containing WebSharper.Owin.dll is used.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.Extensions.IAppBuilder.UseCustomSitelet``1(Owin.IAppBuilder,WebSharper.Owin.Options,WebSharper.Sitelets.Sitelet{``0})">
+<summary>
+ Runs the provided Sitelet with the provided options.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.Extensions.IAppBuilder.UseSitelet``1(Owin.IAppBuilder,System.String,WebSharper.Sitelets.Sitelet{``0},Microsoft.FSharp.Core.FSharpOption{System.String})">
+<summary>
+ Runs the provided Sitelet with webRoot as the root folder, using
+ WebSharper metadata loaded from assemblies located in binDirectory.
+ Also runs the Remoting service using metadata discovered from binDirectory.
+ If binDirectory is not specified, the folder containing WebSharper.Owin.dll is used.
+</summary>
+</member>
+<member name="M:WebSharper.Owin.Extensions.IAppBuilder.UseDiscoveredSitelet(Owin.IAppBuilder,System.String,Microsoft.FSharp.Core.FSharpOption{System.String})">
+<summary>
+ Inspects the binDirectory folder, looking for an assembly that contains
+ a WebSharper Sitelet, and runs this Sitelet with webRoot as the root folder.
+ Also runs the Remoting service using metadata discovered from binDirectory.
+ If binDirectory is not specified, the folder containing WebSharper.Owin.dll is used.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.EnvKey.HttpContext">
+<summary>
+ The ASP.NET HttpContext, if any.
+ Type: System.Web.HttpContextBase.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.EnvKey.WebSharper.User">
+<summary>
+ The logged-in user principal, if any.
+ Type: option&lt;System.Security.Principal.GenericPrincipal&gt;.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.EnvKey.WebSharper.Context">
+<summary>
+ The WebSharper context.
+ Type: WebSharper.Web.IContext.
+ If the request was recognized by a sitelet, then the concrete type is
+ WebSharper.Sitelets.Context&lt;&apos;Endpoint&gt;.
+</summary>
+</member>
+<member name="P:WebSharper.Owin.EnvKey.WebSharper.Request">
+<summary>
+ The parsed Sitelets request.
+ Type: WebSharper.Sitelets.Http.Request.
+</summary>
+</member>
+<member name="T:WebSharper.Owin.EnvKey">
+<summary>
+ The keys that WebSharper sets in the Owin environment.
+</summary>
+</member>
+</members>
+</doc>

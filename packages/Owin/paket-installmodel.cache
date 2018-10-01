@@ -1,0 +1,13 @@
+D: /lib
+D: /lib/net40
+F: /lib/net40/Owin.dll
+D: /package
+D: /package/services
+D: /package/services/metadata
+D: /package/services/metadata/core-properties
+F: /package/services/metadata/core-properties/a5834977d3d44daba4dce016a4ccc67e.psmdcp
+D: /_rels
+F: /_rels/.rels
+F: /owin.1.0.0.nupkg
+F: /Owin.nuspec
+F: /[Content_Types].xml

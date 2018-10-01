@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+  <metadata>
+    <id>WebSharper.UI</id>
+    <version>4.5.1.141</version>
+    <authors>IntelliFactory</authors>
+    <owners>IntelliFactory</owners>
+    <licenseUrl>http://websharper.com/licensing</licenseUrl>
+    <projectUrl>https://github.com/intellifactory/websharper.ui.next</projectUrl>
+    <description>User interface combinators for WebSharper</description>
+    <tags>Web JavaScript F# C#</tags>
+    <references>
+      <reference file="WebSharper.UI.dll" />
+      <reference file="WebSharper.UI.Templating.Common.dll" />
+      <reference file="WebSharper.UI.Templating.Runtime.dll" />
+      <reference file="WebSharper.UI.Templating.dll" />
+    </references>
+    <dependencies>
+      <dependency id="WebSharper" version="[4.5.1,4.6.0)" />
+      <dependency id="System.Xml.XDocument" version="4.3.0" />
+      <dependency id="HtmlAgilityPack" version="1.7.1" />
+    </dependencies>
+  </metadata>
+</package>
