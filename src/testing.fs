@@ -620,10 +620,30 @@ namespace FsRoot
                         .Doc() 
                 )
             
+                let renderVars() = 
+                    currentPlugInW
+                    |> View.Map (fun plg -> plg.plgVars |> Seq.map (fun v -> plg, v))
+                    |> Doc.BindSeqCachedBy (fun (plg, var) -> plg.plgName, var.varName) (fun (plg, var) -> 
+                        AppFwkTemplate.NameValueInput()
+                            .Name(    var.varName  ) 
+                            .Value(   var.varVar   )
+                            .Doc() 
+                    ) 
+            
+                let renderViews() = 
+                    currentPlugInW
+                    |> View.Map (fun plg -> plg.plgViews |> Seq.map (fun v -> plg, v))
+                    |> Doc.BindSeqCachedBy (fun (plg, viw) -> plg.plgName, viw.viwName) (fun (plg, viw) -> 
+                        AppFwkTemplate.NameValue()
+                            .Name(    viw.viwName  )
+                            .Value(   viw.viwView  )
+                            .Doc() 
+                    ) 
+            
                 let renderDocs() =
                     currentPlugInW
-                    |> View.Map (fun plg -> plg.plgDocs)
-                    |> Doc.BindSeqCachedBy (fun doc ->  doc.docName) (fun doc -> 
+                    |> View.Map (fun plg -> plg.plgDocs |> Seq.map (fun v -> plg, v))
+                    |> Doc.BindSeqCachedBy (fun (plg, doc) -> plg.plgName, doc.docName) (fun (plg, doc) -> 
                         let parms = match doc.docDoc with
                                     | LazyDoc _                          -> ""
                                     | FunDoc1(_, p1                    ) -> [ p1                ] |> String.concat ", " |> sprintf "(%s)"
@@ -637,36 +657,6 @@ namespace FsRoot
                             .Doc() 
                     ) 
             
-                let renderVars() = 
-                    currentPlugInW
-                    |> View.Map (fun plg -> plg.plgVars)
-                    |> Doc.BindSeqCachedBy (fun var ->  var.varName) (fun var -> 
-                        AppFwkTemplate.NameValueInput()
-                            .Name(    var.varName  ) 
-                            .Value(   var.varVar   )
-                            .Doc() 
-                    ) 
-            
-                let renderViews() = 
-                    currentPlugInW
-                    |> View.Map (fun plg -> plg.plgViews)
-                    |> Doc.BindSeqCachedBy (fun viw ->  viw.viwName) (fun viw -> 
-                        AppFwkTemplate.NameValue()
-                            .Name(    viw.viwName  )
-                            .Value(   viw.viwView  )
-                            .Doc() 
-                    ) 
-            
-                let renderQueries() = 
-                    currentPlugInW
-                    |> View.Map (fun plg -> plg.plgQueries)
-                    |> Doc.BindSeqCachedBy (fun qry ->  qry.qryName) (fun qry -> 
-                        AppFwkTemplate.Tile()
-                            .Name(    qry.qryName  )
-                            .Select(   fun _ -> () |> box |> qry.qryFunction |> unbox |> JS.Alert )
-                            .Doc() 
-                    ) 
-            
                 let callFunction p1 p2 actF =
                     match actF with
                     | FunAct0(f      ) -> f ()
@@ -675,8 +665,8 @@ namespace FsRoot
             
                 let renderActions() = 
                     currentPlugInW
-                    |> View.Map (fun plg -> plg.plgActions)
-                    |> Doc.BindSeqCachedBy (fun act ->  act.actName) (fun act -> 
+                    |> View.Map (fun plg -> plg.plgActions |> Seq.map (fun v -> plg, v))
+                    |> Doc.BindSeqCachedBy (fun (plg, act) -> plg.plgName, act.actName) (fun (plg, act) -> 
                         let parms = match act.actFunction with
                                     | FunAct0(_        ) -> ""
                                     | FunAct1(_, p1    ) -> [ p1      ] |> String.concat ", " |> sprintf "(%s)"
@@ -692,6 +682,16 @@ namespace FsRoot
                                         .Click(    fun ev -> act.actFunction |> callFunction ev () )
                                         .Doc() 
                         ) |> Doc.EmbedView
+                    ) 
+            
+                let renderQueries() = 
+                    currentPlugInW
+                    |> View.Map (fun plg -> plg.plgQueries |> Seq.map (fun v -> plg, v))
+                    |> Doc.BindSeqCachedBy (fun (plg, qry) -> plg.plgName, qry.qryName) (fun (plg, qry) -> 
+                        AppFwkTemplate.Tile()
+                            .Name(    qry.qryName  )
+                            .Select(   fun _ -> () |> box |> qry.qryFunction |> unbox |> JS.Alert )
+                            .Doc() 
                     ) 
             
                 let AppFwkClient = 
@@ -765,10 +765,12 @@ namespace FsRoot
                 
                 let newDocF name docF = { docName = name ; docDoc = docF }
             
-                let tryGetVar plgName varName = plugIns.TryFindByKey plgName |> Option.bind (fun plg -> plg.plgVars    |> Array.tryFind (fun var -> var.varName = varName))
-                let tryGetViw plgName viwName = plugIns.TryFindByKey plgName |> Option.bind (fun plg -> plg.plgViews   |> Array.tryFind (fun viw -> viw.viwName = viwName))
-                let tryGetAct plgName actName = plugIns.TryFindByKey plgName |> Option.bind (fun plg -> plg.plgActions |> Array.tryFind (fun act -> act.actName = actName))
-                let tryGetDoc plgName docName = plugIns.TryFindByKey plgName |> Option.bind (fun plg -> plg.plgDocs    |> Array.tryFind (fun doc -> doc.docName = docName))
+                let tryGetPlugIn plgName = plugIns.TryFindByKey plgName
+            
+                let tryGetVar plgName varName = tryGetPlugIn plgName |> Option.bind (fun plg -> plg.plgVars    |> Array.tryFind (fun var -> var.varName = varName))
+                let tryGetViw plgName viwName = tryGetPlugIn plgName |> Option.bind (fun plg -> plg.plgViews   |> Array.tryFind (fun viw -> viw.viwName = viwName))
+                let tryGetAct plgName actName = tryGetPlugIn plgName |> Option.bind (fun plg -> plg.plgActions |> Array.tryFind (fun act -> act.actName = actName))
+                let tryGetDoc plgName docName = tryGetPlugIn plgName |> Option.bind (fun plg -> plg.plgDocs    |> Array.tryFind (fun doc -> doc.docName = docName))
                 let tryGetVoV plgName varName = 
                     tryGetVar plgName varName 
                     |> Option.map (fun var -> Some var.varVar)
@@ -787,22 +789,20 @@ namespace FsRoot
                 let actHello = newAct "Hello"       (fun ()      -> JS.Window.Alert "Hello!")
                 let qryDocs  = newQry "getDocNames" (fun (_:obj) -> plugIns.Value |> Seq.collect (fun plg -> plg.plgDocs |> Seq.map (fun doc -> plg.plgName + "." + doc.docName)) |> Seq.toArray |> box)
             
-                let getMainDoc =
-                  lazy
-                    WcSplitter.init horizontal vertical
-                    WcTabStrip.init.Value
+                if IsClient then
                     plugIns.Add {
                         plgName    = "AppFramework"
                         plgVars    = [| newVar "mainDocV"     mainDocV     |]
                         plgViews   = [|                                    |]
                         plgDocs    = [| newDoc "AppFwkClient" AppFwkClient |]
-                        plgActions = [| actHello
-                                        actHello
-                                        actHello
-                                        actHello
-                                                                            |]
-                        plgQueries = [| qryDocs                                                     |]
+                        plgActions = [| actHello                           |]
+                        plgQueries = [| qryDocs                            |]
                     }
+            
+                let getMainDoc =
+                  lazy
+                    WcSplitter.init horizontal vertical
+                    WcTabStrip.init.Value
                     mainDoc()
             
             
@@ -1151,11 +1151,35 @@ namespace FsRoot
                     lytName       = name
                     lytDefinition = Var.Create lyt
                 }
+            
+                let addNewLayout (name:obj) (layout:obj) = 
+                    (if layout <> null then unbox layout else """
+            split horizontal 0-50-100 AppFramework.AppFwkClient Hello
+            Hello h1 "color:blue; class=btn-primary" "How are you today?" Ask
+            Ask Doc InputLabel "placeholder=Type you answer here..." "Answer:" AppFramework.mainDocV  
+            """     |> String.unindentStr)
+                    |> newLyt (if layout <> null then unbox name else System.Guid.NewGuid() |> string |> fun s -> "Lyt_" + s.Replace("-", ""))
+                    |> addLayout
+            
+                if IsClient then
+                    AF.tryGetPlugIn "AppFramework"
+                    |> Option.iter(fun plg ->
+                        { plg with plgActions = plg.plgActions |> Array.append <| [| AF.newActF "AddLayout" <| AF.FunAct2(addNewLayout, "[Name]", "[Layout]") |]}
+                        |> AF.plugIns.Add
+                    )
+            
     
-    //#define WEBSHARPER
-    
-    
-        module Test =
-            [< SPAEntryPoint >]
-            let main() = AppFramework.getMainDoc.Value |> Doc.Run JS.Window.Document.Body 
+        //#define WEBSHARPER
         
+        [< JavaScript >]
+        module TestingJS =
+        
+            //#define WEBSHARPER
+            
+            
+                [< JavaScript >]
+                module Test =
+                    [< SPAEntryPoint >]
+                    let main() = 
+                        AppFramework.getMainDoc.Value    |> Doc.Run JS.Window.Document.Body 
+                

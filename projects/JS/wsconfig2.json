@@ -1,7 +1,0 @@
-
-                            {
-                              "$schema"         : "https://websharper.com/wsconfig.schema.json",
-                              "javascriptExport": true,
-                              "outputDir"       : "bin"
-                            }
-                        

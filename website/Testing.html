@@ -16,4 +16,8 @@
 <body style="margin: 0px" >
 </body>
 </html>
-<script src="testing.js"></script>
+<script >
+    let elem = document.createElement("script")
+    elem.setAttribute("src", "testing.js?q=" + Date.now())
+    document.head.appendChild(elem);
+</script>
