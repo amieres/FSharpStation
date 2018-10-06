@@ -4811,11 +4811,11 @@
  };
  Nullable.getOrValue=function(x,v)
  {
-  return x==null?v:x;
+  return x===null?v:x;
  };
  Nullable.get=function(x)
  {
-  return x==null?Operators.FailWith("Nullable object must have a value."):x;
+  return x===null?Operators.FailWith("Nullable object must have a value."):x;
  };
  Operators.range=function(min,max)
  {
