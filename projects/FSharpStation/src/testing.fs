@@ -114,27 +114,125 @@ namespace FsRoot
             let print v = printfn "%A" v
             
             /// Extensible type for error messages, warnings and exceptions
-            type ResultMessage<'M> = 
+            type ResultMessage<'M> =
+                | NoMsg
                 | ErrorMsg  of string
                 | Warning   of string
+                | Info      of string
                 | Message   of 'M
                 | ExceptMsg of string * string
+                | RMessages of ResultMessage<'M> []
                 with 
                 override msg.ToString() =
                     match msg with
+                    | NoMsg          ->  ""
                     | ErrorMsg  m    ->  m      |> sprintf "Error    : %s"
                     | Warning   m    ->  m      |> sprintf "Warning  : %s"
+                    | Info      m    ->  m
                     | Message   m    ->  m      |> sprintf "%O"
                     | ExceptMsg(m,p) -> (m, p) ||> sprintf "Exception: %s, %s"
+                    | RMessages ms   ->  ms     |> Seq.filter (function NoMsg -> false |_-> true) |> Seq.map (fun m -> m.ToString()) |> String.concat "\n"
             
             module ResultMessage =
-                let freeMessage msg = 
+            
+                let inline noMsg    msg = msg |> function NoMsg -> true |_-> false
+                let inline exclnoMsg ms = ms |> Seq.filter (noMsg >> not)
+                /// converts Messages to other type of ResultMessage
+                let rec bindMessage f msg = 
                     match msg with
-                    | Message   m    ->  m      |> sprintf "%O" |> ErrorMsg
+                    | NoMsg          ->  NoMsg
+                    | Message   m    ->  f m
                     | ErrorMsg  m    ->  ErrorMsg  m
+                    | Info      m    ->  Info      m
                     | Warning   m    ->  Warning   m
                     | ExceptMsg(m,p) ->  ExceptMsg(m,p)
+                    | RMessages ms   ->  ms     |> Array.map (bindMessage f) |> RMessages
             
+                /// a Message is converted to ErrorMsg
+                let freeMessage  msg = msg |> bindMessage (sprintf "%O" >> ErrorMsg)
+                /// a Message is converted to Warning
+                let freeMessageW msg = msg |> bindMessage (sprintf "%O" >> Warning )
+                /// a Message is converted to Info
+                let freeMessageI msg = msg |> bindMessage (sprintf "%O" >> Info    )
+            
+                let rec isInfoF f msg =
+                    match msg with
+                    | Info      _    ->  true
+                    | Message   m    ->  f m
+                    | RMessages ms   ->  ms |> exclnoMsg |> Seq.forall (isInfoF f)
+                    | _              ->  false
+                /// a Message is not considered Info
+                let isInfo  msg = msg |> isInfoF (fun _ -> false)
+                /// a Message is considered Info
+                let isInfoI msg = msg |> isInfoF (fun _ -> true )
+            
+                let rec isWarningOrInfoF f msg =
+                    match msg with
+                    | Warning   _    ->  true
+                    | Message   m    ->  f m
+                    | RMessages ms   ->  ms |> exclnoMsg |> Seq.forall (fun m -> isWarningOrInfoF f m || isInfoF f m)
+                    | _              ->  false
+                /// a Message is not considered a Warning
+                let isWarningOrInfo  msg = msg |> isWarningOrInfoF (fun _ -> false)
+                /// a Message is considered a Warning
+                let isWarningOrInfoW msg = msg |> isWarningOrInfoF (fun _ -> true )
+            
+                let rec isFatalF f msg =
+                    match msg with
+                    | Info      _    
+                    | Warning   _    ->  false
+                    | Message   m    ->  f m
+                    | RMessages ms   ->  ms |> Seq.exists (isFatalF f)
+                    | _              ->  true
+                /// a Message is considered fatal
+                let isFatal  msg = msg |> isFatalF (fun _ -> true )
+                /// a Message is not considered fatal
+                let isFatalW msg = msg |> isFatalF (fun _ -> false)
+            
+                let rec countF f msg =
+                    match msg with
+                    | Info      _    ->  0, 0, 1
+                    | Warning   _    ->  0, 1, 0
+                    | Message   m    ->  f m
+                    | RMessages ms   ->  ms |> exclnoMsg |> Seq.map (countF f) |> Seq.fold (fun (f, w, i) (fm, wm, im) -> f + fm, w + wm, i + im) (0, 0, 0)
+                    | _              ->  1, 0, 0
+            
+                /// a Message is considered an error
+                let count  msg = msg |> countF (fun _ -> 1, 0, 0)
+                /// a Message is considered a Warning
+                let countW msg = msg |> countF (fun _ -> 0, 1, 0)
+                /// a Message is considered Info
+                let countI msg = msg |> countF (fun _ -> 0, 0, 1)
+                
+                let addMsg a b =
+                    match a, b with
+                    | NoMsg        , c
+                    | c            , NoMsg         ->  c
+                    | RMessages mas, RMessages mbs ->  Array.append    mas      mbs   |> RMessages
+                    |           ma , RMessages mbs ->  Array.append [| ma |]    mbs   |> RMessages
+                    | RMessages mas,           mb  ->  Array.append    mas   [| mb |] |> RMessages
+                    |           ma ,           mb  ->               [| ma   ;   mb |] |> RMessages
+            
+                let addMsgs a ms = ms |> Seq.fold addMsg a
+            
+                let summaryF f msg =        
+                    match countF f msg with
+                    | 0, 0, _
+                    | 1, 0, 0
+                    | 0, 1, 0 -> ""
+                    | e, 0, _ -> sprintf "Errors   : %d\n" e
+                    | 0, w, _ -> sprintf "Warnings : %d\n" w
+                    | e, w, _ -> sprintf "Errors   : %d, Warnings: %d\n" e w
+            
+                /// returns a string with a count of errors and warnings, if more than one
+                let summarizedF f msg = summaryF f msg + msg.ToString()
+                /// a Message is considered an error
+                let summarized  msg = msg |> summarizedF (fun _ -> 1, 0, 0)
+                /// a Message is considered a Warning
+                let summarizedW msg = msg |> summarizedF (fun _ -> 0, 1, 0)
+                /// a Message is considered Info
+                let summarizedI msg = msg |> summarizedF (fun _ -> 0, 0, 1)
+                
             module Memoize =
                 /// creates a Dictionary to store memoized values
                 /// returns 3 functions:
@@ -288,11 +386,98 @@ namespace FsRoot
                         let result = result
                 
                 
+                type ResultM<'v, 'm> = ResultM of Option<'v> * ResultMessage<'m>
+                
+                let inline OkM              v    = ResultM (Some v, NoMsg)
+                let inline OkMWithMsg       v m  = ResultM(Some v, m)
+                let inline OkMWithMsgs      v ms = ms |> ResultMessage.addMsgs NoMsg |> OkMWithMsg v
+                
+                let inline ErrorM             m  = ResultM (None  , m    )
+                let inline ErrorMWithMsgs     ms = ms |> ResultMessage.addMsgs NoMsg |> ErrorM
+                let (|OkM|ErrorM|)             r = match r with
+                                                    | ResultM(Some v, m) -> OkM   (v, m)
+                                                    | ResultM(None  , e) -> ErrorM e
+                module ResultM =
+                
+                    let inline rtn                 v = OkM v
+                    let inline rtnr               vR = vR  |> Result.map OkM          |> Result.defaultWith       ErrorM
+                    let freeMessage                r = r   |> function Ok v -> Ok v   | Error e -> ResultMessage.freeMessage e |> Error
+                    let inline toResult            r = match r with
+                                                       | ResultM(Some v, _) -> Ok     v
+                                                       | ResultM(None  , e) -> Error  e
+                    let inline toResultD           r = match r with
+                                                       | ResultM(Some v, m) -> Ok    (v, m)
+                                                       | ResultM(None  , e) -> Error  e
+                    let toOption                   r = r   |> function ResultM (v,_) -> v
+                    let defaultWith              f r = r   |> toResult |> Result.defaultWith   f
+                    let defaultValue             d r = r   |> toResult |> Result.defaultValue  d
+                    let failIfTrue               m v = if     v then m |> ErrorM else OkM ()
+                    let failIfFalse              m v = if not v then m |> ErrorM else OkM ()
+                    let map         f  (ResultM (v, m)) = ResultM (v |> Option.map f, m)
+                    let mapMessage  fM (ResultM (v, m)) = ResultM (v, fM m)
+                    let bind                  f    r = match r with
+                                                       | ResultM(Some v, m) -> f v |> mapMessage (ResultMessage.addMsg m)
+                                                       | ResultM(None  , e) -> ResultM(None  , e)
+                    /// bind version that protects against exceptions
+                    let bindP                 f    r = match r with
+                                                       | ResultM(Some v, m) -> try f v |> mapMessage (ResultMessage.addMsg m)
+                                                                               with  e -> ExceptMsg (e.Message, e.StackTrace) |> ErrorM
+                                                       | ResultM(None  , e) -> ResultM(None  , e)
+                    /// map version that protects against exceptions
+                    let inline mapP           f    m = bindP (f >> rtn) m
+                    let iter                  fM f r = r   |> mapP f |> function ResultM(Some (), m) | ResultM(None, m) -> fM m  : unit
+                    let get                        r = r   |>          defaultWith (string >> failwith)
+                    let ofOption              f   vO = vO  |> Option.map OkM          |> Option.defaultWith (f >> ErrorM)
+                    let ofResult                  vR = vR  |> rtnr
+                    let insertO                  vRO = vRO |> Option.map(map Some)    |> Option.defaultWith(fun () -> OkM None)
+                    let absorbO               f  vOR = vOR |> bindP (ofOption f)
+                    let addMsg                  m  r = r |> mapMessage (ResultMessage.addMsg m)
+                    let (>>=)                    r f = bind f r
+                    let rec    traverseSeq    f   sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                       Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq        sq = traverseSeq id sq
+                        
+                    
+                    type Builder() =
+                        member inline __.Return          x       = rtn  x
+                        member inline __.ReturnFrom      x       =     (x:Result<_,_>)
+                        member        __.Bind           (w , r ) = bindP  r w
+                        member inline __.Zero           ()       = rtn ()
+                        member inline __.Delay           f       = f
+                        member inline __.Combine        (a, b)   = bind b a
+                        member inline __.Run             f       = OkM () |> bindP f
+                        member __.TryWith   (body, handler     ) = try body() with e -> handler     e
+                        member __.TryFinally(body, compensation) = try body() finally   compensation()
+                        member __.Using     (disposable, body  ) = using (disposable:#System.IDisposable) body
+                        member __.While(guard, body) =
+                            let rec whileLoop guard body =
+                                if guard() then body() |> bind (fun () -> whileLoop guard body)
+                                else rtn   ()
+                            whileLoop guard body
+                        member this.For(sequence:seq<_>, body) =
+                            this.Using(sequence.GetEnumerator(),fun enum -> 
+                                this.While(enum.MoveNext, 
+                                    this.Delay(fun () -> body enum.Current)))
+                                    
+                    [< AutoOpen >]
+                    module AutoOpen =
+                        let resultM = Builder()
+                    
+                    module Operators =
+                        let inline (|>>) v f   = mapP  f v
+                        let inline (>>=) v f   = bindP f v
+                        let inline (>>>) f g v = f v |>> g
+                        let inline (>=>) f g v = f v >>= g
+                        let inline rtn   v     = rtn    v
+                
+                
+                
                 type AsyncResult<'v, 'm> = Async<Result<'v, 'm>>
                 
                 /// A computation expression to build an Async<Result<'ok, 'error>> value
                 module AsyncResult =
-                    let freeMessage v  = v |> Async.map Result.freeMessage
+                    let mapError fE v  = v |> Async.map (Result.mapError fE)
+                    let freeMessage v  = v |> Async.map  Result.freeMessage
                 
                     let rtn        v   = async.Return(Ok v  )
                     let rtnR       vR  = async.Return    vR
@@ -420,6 +605,7 @@ namespace FsRoot
                         let insertSnd (vRm, snd)                   = vRm  |> map (fun v -> v, snd)
                         let absorbR (vvRm)                         = vvRm |> map  Result.get
                         let absorbO f vORm                         = vORm |> map (Result.ofOption  f) |> absorbR
+                        let mapResource                       fR v = wrap ( fR >> (v    |> getFun) )
                         let inline iter                f t         = run t >> (f: _ -> unit)
                         let memoizeRm               getCache fRm p = (fun r -> 
                                                                          let checkO, store = getCache r
@@ -485,6 +671,8 @@ namespace FsRoot
                         let insertSnd (vRm, snd)                   = vRm   |> map (fun v -> v, snd)
                         let absorbR (vvRm)                         = vvRm  |> bind rtnR
                         let absorbO f vORm                         = vORm  |> map (Result.ofOption  f) |> absorbR
+                        let mapError                          fE v = wrap(v |> getFun >> (Result.mapError fE))
+                        let mapResource                       fR v = wrap ( fR >> (v    |> getFun) )
                         let inline iter             fE f t       a = a     |> run t |> Result.iter fE f
                         //let memoizeRm               getCache fRm p = (fun r -> 
                         //                                                 let (checkO:'p->'v option), (store:'p->'v->'v), (clear:unit->unit) = getCache r
@@ -564,6 +752,8 @@ namespace FsRoot
                         let insertSnd (vRm, snd)                   = vRm |> map (fun v -> v, snd)
                         let absorbR (vvRm)                         = vvRm |> bind rtnR
                         let absorbO f vORm                         = vORm |> map (Result.ofOption  f) |> absorbR
+                        let mapError                          fE v = wrap(v |> getFun >> (AsyncResult.mapError fE))
+                        let mapResource                       fR v = wrap ( fR >> (v    |> getFun) )
                         let inline iterA            fE f t         = run t >> AsyncResult.iterA fE f
                         let inline iterS            fE f t         = run t >> AsyncResult.iterS fE f
                         let memoizeRm               getCache fRm p = (fun r -> 
@@ -575,12 +765,10 @@ namespace FsRoot
                             member inline this.Return      x                  = rtn     x
                             member inline this.ReturnFrom  x                  =        (x:ReaderMAsyncResult<_,_,_>)
                             member inline this.ReturnFrom  x                  = rtnR    x
-                            member inline this.ReturnFrom  x                  = rtnA    x
                             member inline this.ReturnFrom  x                  = rtnRA   x
                             member inline this.ReturnFrom  x                  = rtnRmr  x
                             member        this.Bind       (w , r )            = bind    r w
                             member        this.Bind       (w , r )            = bindR   r w
-                            member        this.Bind       (w , r )            = bindA   r w
                             member        this.Bind       (w , r )            = bindRA  r w
                             member        this.Bind       (w , r )            = bindRmr r w
                             member inline this.Zero       ()                  = rtn ()
@@ -599,6 +787,14 @@ namespace FsRoot
                                 this.Using(sequence.GetEnumerator(),fun enum -> 
                                     this.While(enum.MoveNext, 
                                         this.Delay(fun () -> body enum.Current)))
+                    
+                        [< AutoOpen >]
+                        module Extension =
+                    
+                            type Builder with
+                                member inline this.ReturnFrom  x                  = rtnA    x
+                                member        this.Bind       (w , r )            = bindA   r w
+                    
                     
                         let reader = Builder()
                         
@@ -4162,8 +4358,8 @@ namespace FsRoot
         module Monaco =
             open WebSharper.UI
             open WebSharper.UI.Html
-            open Monaco
             open FsAutoComplete
+            open Monaco
             
             let startsV  = Var.Create [||]
             
