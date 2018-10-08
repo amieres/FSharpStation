@@ -111,7 +111,10 @@ namespace FsRoot
             let [<Inline>] inline  (|>!) v f   = f v ; v
             let [<Inline>] inline  (>>!) g f   = g >> fun v -> f v ; v
             
-            let print v = printfn "%A" v
+            let inline print v = 
+                match box v with
+                | :? string as s -> printfn "%s" s
+                | __             -> printfn "%A" v
             
             /// Extensible type for error messages, warnings and exceptions
             type ResultMessage<'M> =
@@ -2022,7 +2025,7 @@ namespace FsRoot
                 let processArgs code assembs nowarns = reader {        
                     let! show      = gB intShowArgs
                     if show      then let! args = argumentsRm (fun _ -> true)
-                                      args |> Seq.iter (printfn "%s")
+                                      args |> Seq.sort |> Seq.iter (printfn "%s")
                     let! workDir   = getStringRm intDirectory
                     let! fileName  = gS intFileName
                     let! output    = gS fscOutput
@@ -2713,6 +2716,12 @@ namespace FsRoot
                     range      : Range
                 }
                 
+                open WebSharper.Core.Resources
+            
+                type MonacoResources() =
+                    inherit BaseResource(@"/EPFileX/monaco/package/min/vs/loader.js")
+            
+                [< Require(typeof<MonacoResources>) >]
                 type Editor() =
                     do ()
                   with
@@ -2779,10 +2788,10 @@ namespace FsRoot
                       options     = null
                       overrides   = null
                     }
-                let includes = [| @"/EPFileX/monaco/package/min/vs/loader.js" |]
+                //let includes = [| @"/EPFileX/monaco/package/min/vs/loader.js" |]
                 let loader = async {
                     if IsClient then
-                        do! LoadFiles.LoadFilesAsync includes
+                        //do! LoadFiles.LoadFilesAsync includes
                         Editor.RequireConfig()
                         do! Async.FromContinuations(fun (success, failed, cancelled) -> Editor.Require(success, failed))
                 }
@@ -3496,7 +3505,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1538598585997"
+                let mutable fsharpStationAddress = Address "FSharpStation1538917967534"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 

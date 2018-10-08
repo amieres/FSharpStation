@@ -923,8 +923,8 @@ namespace FSSGlobal
                     | StartsWith "--out:"            o -> wsArgs := { !wsArgs with AssemblyFile = o       } ; fscArgs.Add a
                     | StartsWith "--doc:"            d -> wsArgs := { !wsArgs with Documentation = Some d } ; fscArgs.Add a
                     | StartsWith "-r:"               r             
-                    | StartsWith "--reference:"      r -> refs.Add      r                                   ; fscArgs.Add a
-                    | StartsWith "--resource:"       r -> resources.Add (resSplit r)                        ; fscArgs.Add a
+                    | StartsWith "--reference:"      r -> refs.Add      (Path.GetFullPath r)                ; fscArgs.Add a
+                    | StartsWith "--resource:"       r -> resources.Add (resSplit         r)                ; fscArgs.Add a
                     | _                                ->                                                     fscArgs.Add a  
                 with e ->
                     failwithf "Parsing argument failed: '%s' - %s" a e.Message
