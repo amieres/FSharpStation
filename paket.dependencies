@@ -17,6 +17,8 @@ nuget Microsoft.Owin.FileSystems
 nuget Microsoft.Owin.Hosting
 nuget Microsoft.Owin.Host.HttpListener
 nuget FSharp.Data
+nuget FSharpPlus 
+nuget FSharp.Data.SqlClient
 
 group Testing
     framework: netstandard2

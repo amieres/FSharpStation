@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>FSharpPlus</id>
+    <version>1.0.0</version>
+    <title>FSharpPlus</title>
+    <authors>Gusty</authors>
+    <owners>Gusty</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <projectUrl>https://github.com/gusty/FSharpPlus</projectUrl>
+    <iconUrl>https://raw.github.com/gusty/FSharpPlus/master/docs/files/img/logo.png</iconUrl>
+    <description>A complete and extensible base library for F#.</description>
+    <tags>f# FSharp Applicative Monad MonadTransformer Arrow Overloading</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="FSharp.Core" version="4.3.4" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="FSharp.Core" version="4.3.4" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
