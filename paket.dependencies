@@ -19,6 +19,9 @@ nuget Microsoft.Owin.Host.HttpListener
 nuget FSharp.Data
 nuget FSharpPlus 
 nuget FSharp.Data.SqlClient
+nuget NETStandard.Library
+nuget canopy
+nuget Microsoft.NETCore.App
 
 group Testing
     framework: netstandard2

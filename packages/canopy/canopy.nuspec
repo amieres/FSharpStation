@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+  <metadata>
+    <id>canopy</id>
+    <version>2.1.0</version>
+    <authors>Chris Holt</authors>
+    <licenseUrl>https://github.com/lefthandedgoat/canopy/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>http://lefthandedgoat.github.io/canopy/</projectUrl>
+    <iconUrl>http://lefthandedgoat.github.io/canopy/canopy_orig.jpg</iconUrl>
+    <description>A simple framework in F# on top of selenium for writing UI automation and tests.</description>
+    <releaseNotes>2.1.0 - September 9 2018
+Fixed some small bugs</releaseNotes>
+    <tags>f# fsharp canopy selenium ui automation tests</tags>
+    <dependencies>
+      <group targetFramework="netstandard2.0">
+        <dependency id="FSharp.Core" version="4.3.4" />
+        <dependency id="Selenium.WebDriver" version="3.14.0" />
+        <dependency id="System.Drawing.Common" version="4.5.0" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
