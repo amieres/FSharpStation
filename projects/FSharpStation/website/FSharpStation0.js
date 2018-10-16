@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,ResultMessage,Monads,Seq,Async,WebSharper,Obj,Result,Builder,Operators,ResultM,Builder$1,AutoOpen,Operators$1,AsyncResult,AsyncResultBuilder,AsyncResultBuilderP,Extensions,ReaderMonads,ReaderMBasic,Builder$2,Operators$2,ReaderMResult,Builder$3,Operators$3,ReaderMAsyncResult,Builder$4,Extension,Operators$4,String,ParseO,MailboxProcessorExt,Mailbox,StateFull,ResourceAgentState,ResourceAgent,AgentReaderM,CommArgRoot,CommArg,CommArgCollection,TypedCommArg,CommArgModule,FsCodeModule,PreproDirective,SnippetId,Snippet,SnippetCollection,SnippetModule,Hole,TreeReader,Node,LibraryJS,Promise,View,Serializer,LoadFiles,REGEX,Hoverable,Hoverable$1,ResizeObserver,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,WcSplitterT,Monaco,Position,Range,Uri,Location,FindMatch,WordAtPosition,Model,MarkDownString,MarkerData,CompletionItem,Hover,Editor,MonacoConfig,Library2,FsiAgent,WebSockets,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ReplyHandler,Handler,WSMessagingClient,FSMessage,FsAutoComplete,CommTypes,ResponseError,Location$1,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,MsgTypes,ParseRequest,DeclarationsRequest,CompletionRequest,PositionRequest,ProjectRequest,LintRequest,HelptextRequest,WorkspacePeekRequest,Calls,FSharpStation,FStation,Snippets,DragDrop,DragInfo,Templating,RenderSnippets,RenderProperties,Monaco$1,HoverProvider,CompletionItemProvider,DefinitionProvider,MonacoOptions,ITextModelService,JumpTo,Serializer$1,Model$1,LoadSave,Importer,MainProgram,Messaging,SC$1,FSharpStation_JsonEncoder,FSharpStation_JsonDecoder,FSharpStation_GeneratedPrintf,FSharpStation_Templates,GeneratedPrintf,IntelliFactory,Runtime,Utils,Strings,Seq$1,Arrays,Concurrency,List,Enumerator,Result$1,Operators$5,Slice,Control,MailboxProcessor,Unchecked,System,Guid,Collections,FSharpSet,Option,CancellationTokenSource,console,UI,View$1,Var$1,FSharpMap,BalancedTree,DomUtility,Doc,AttrModule,AttrProxy,Node$1,Client,Templates,Reflect,Object,Map,JSON,TimeoutException,ClientSideJson,Provider,Owin,WebSocket,Client$1,WithEncoding,Endpoint,location,Remoting,AjaxRemotingProvider,FromView,Templating$1,Runtime$1,Server,ProviderBuilder,Handler$1,TemplateInstance,JavaScript,Promise$1,AppFramework,PlugIn,Lazy,LayoutEngineModule,DateUtil,Numeric,Date,ListModel,Dictionary,LayoutEngine_Templates;
+ var Global,FsRoot,Library,ResultMessage,Monads,Seq,Async,WebSharper,Obj,Result,Builder,Operators,FusionM,Operators$1,Builder$1,Builder$2,FusionAsyncM,Operators$2,Builder$3,Builder$4,AsyncResult,AsyncResultBuilder,AsyncResultBuilderP,Extensions,String,ParseO,MailboxProcessorExt,Mailbox,StateFull,ResourceAgentState,ResourceAgent,AgentReaderM,CommArgRoot,CommArg,CommArgCollection,TypedCommArg,CommArgModule,FsCodeModule,PreproDirective,SnippetId,Snippet,SnippetCollection,SnippetModule,Hole,TreeReader,Node,LibraryJS,Promise,View,Serializer,LoadFiles,REGEX,Hoverable,Hoverable$1,ResizeObserver,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,WcSplitterT,Monaco,Position,Range,Uri,Location,FindMatch,WordAtPosition,Model,MarkDownString,MarkerData,CompletionItem,Hover,Editor,MonacoConfig,Library2,FsiAgent,WebSockets,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ReplyHandler,Handler,WSMessagingClient,FSMessage,FsAutoComplete,CommTypes,ResponseError,Location$1,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,MsgTypes,ParseRequest,DeclarationsRequest,CompletionRequest,PositionRequest,ProjectRequest,LintRequest,HelptextRequest,WorkspacePeekRequest,Calls,FSharpStation,FStation,Snippets,DragDrop,DragInfo,Templating,RenderSnippets,RenderProperties,Monaco$1,HoverProvider,CompletionItemProvider,DefinitionProvider,MonacoOptions,ITextModelService,JumpTo,Serializer$1,Model$1,LoadSave,Importer,MainProgram,Messaging,SC$1,FSharpStation_JsonEncoder,FSharpStation_JsonDecoder,FSharpStation_GeneratedPrintf,FSharpStation_Templates,GeneratedPrintf,IntelliFactory,Runtime,Utils,Strings,Seq$1,Arrays,Concurrency,List,Enumerator,Result$1,Operators$3,Slice,Control,MailboxProcessor,Unchecked,System,Guid,Collections,FSharpSet,Option,CancellationTokenSource,console,UI,View$1,Var$1,FSharpMap,BalancedTree,DomUtility,Doc,AttrModule,AttrProxy,Node$1,Client,Templates,Reflect,Object,Map,JSON,TimeoutException,ClientSideJson,Provider,Owin,WebSocket,Client$1,WithEncoding,Endpoint,location,Remoting,AjaxRemotingProvider,FromView,Templating$1,Runtime$1,Server,ProviderBuilder,Handler$1,TemplateInstance,JavaScript,Promise$1,AppFramework,PlugIn,Lazy,LayoutEngineModule,DateUtil,Numeric,Date,ListModel,Dictionary,LayoutEngine_Templates;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -14,25 +14,18 @@
  Result=Monads.Result=Monads.Result||{};
  Builder=Result.Builder=Result.Builder||{};
  Operators=Result.Operators=Result.Operators||{};
- ResultM=Monads.ResultM=Monads.ResultM||{};
- Builder$1=ResultM.Builder=ResultM.Builder||{};
- AutoOpen=ResultM.AutoOpen=ResultM.AutoOpen||{};
- Operators$1=ResultM.Operators=ResultM.Operators||{};
+ FusionM=Monads.FusionM=Monads.FusionM||{};
+ Operators$1=FusionM.Operators=FusionM.Operators||{};
+ Builder$1=FusionM.Builder=FusionM.Builder||{};
+ Builder$2=Builder$1.Builder=Builder$1.Builder||{};
+ FusionAsyncM=Monads.FusionAsyncM=Monads.FusionAsyncM||{};
+ Operators$2=FusionAsyncM.Operators=FusionAsyncM.Operators||{};
+ Builder$3=FusionAsyncM.Builder=FusionAsyncM.Builder||{};
+ Builder$4=Builder$3.Builder=Builder$3.Builder||{};
  AsyncResult=Monads.AsyncResult=Monads.AsyncResult||{};
  AsyncResultBuilder=Monads.AsyncResultBuilder=Monads.AsyncResultBuilder||{};
  AsyncResultBuilderP=Monads.AsyncResultBuilderP=Monads.AsyncResultBuilderP||{};
  Extensions=Monads.Extensions=Monads.Extensions||{};
- ReaderMonads=Monads.ReaderMonads=Monads.ReaderMonads||{};
- ReaderMBasic=ReaderMonads.ReaderMBasic=ReaderMonads.ReaderMBasic||{};
- Builder$2=ReaderMBasic.Builder=ReaderMBasic.Builder||{};
- Operators$2=ReaderMBasic.Operators=ReaderMBasic.Operators||{};
- ReaderMResult=ReaderMonads.ReaderMResult=ReaderMonads.ReaderMResult||{};
- Builder$3=ReaderMResult.Builder=ReaderMResult.Builder||{};
- Operators$3=ReaderMResult.Operators=ReaderMResult.Operators||{};
- ReaderMAsyncResult=ReaderMonads.ReaderMAsyncResult=ReaderMonads.ReaderMAsyncResult||{};
- Builder$4=ReaderMAsyncResult.Builder=ReaderMAsyncResult.Builder||{};
- Extension=ReaderMAsyncResult.Extension=ReaderMAsyncResult.Extension||{};
- Operators$4=ReaderMAsyncResult.Operators=ReaderMAsyncResult.Operators||{};
  String=Library.String=Library.String||{};
  ParseO=Library.ParseO=Library.ParseO||{};
  MailboxProcessorExt=Library.MailboxProcessorExt=Library.MailboxProcessorExt||{};
@@ -170,7 +163,7 @@
  List=WebSharper&&WebSharper.List;
  Enumerator=WebSharper&&WebSharper.Enumerator;
  Result$1=WebSharper&&WebSharper.Result;
- Operators$5=WebSharper&&WebSharper.Operators;
+ Operators$3=WebSharper&&WebSharper.Operators;
  Slice=WebSharper&&WebSharper.Slice;
  Control=WebSharper&&WebSharper.Control;
  MailboxProcessor=Control&&Control.MailboxProcessor;
@@ -317,9 +310,9 @@
     }))(Global.id))($1[0]))($1[1]);
   }
  };
- ResultMessage.addMsgs=function(a,ms)
+ ResultMessage.reduceMsgs=function(ms)
  {
-  return Seq$1.fold(ResultMessage.addMsg,a,ms);
+  return Seq$1.fold(ResultMessage.addMsg,ResultMessage.NoMsg,ms);
  };
  ResultMessage.addMsg=function(a,b)
  {
@@ -367,7 +360,7 @@
     return[f$2+t[0],w+t[1],i+t[2]];
    };
   }
-  return msg.$==3?[0,0,1]:msg.$==2?[0,1,0]:msg.$==4?f(msg.$0):msg.$==6?Seq$1.fold(function($1,$2)
+  return msg.$==0?[0,0,0]:msg.$==3?[0,0,1]:msg.$==2?[0,1,0]:msg.$==4?f(msg.$0):msg.$==6?Seq$1.fold(function($1,$2)
   {
    return(function($3)
    {
@@ -394,7 +387,7 @@
  };
  ResultMessage.isFatalF=function(f,msg)
  {
-  return msg.$==3?false:msg.$==2?false:msg.$==4?f(msg.$0):msg.$==6?Seq$1.exists(function(m)
+  return msg.$==0?false:msg.$==3?false:msg.$==2?false:msg.$==4?f(msg.$0):msg.$==6?Seq$1.exists(function(m)
   {
    return ResultMessage.isFatalF(f,m);
   },msg.$0):true;
@@ -451,7 +444,7 @@
     $0:a
    });
   }
-  return ResultMessage.bindMessage((f=function($1)
+  return ResultMessage.freeMessageF((f=function($1)
   {
    return function($2)
    {
@@ -472,7 +465,7 @@
     $0:a
    });
   }
-  return ResultMessage.bindMessage((f=function($1)
+  return ResultMessage.freeMessageF((f=function($1)
   {
    return function($2)
    {
@@ -493,7 +486,7 @@
     $0:a
    });
   }
-  return ResultMessage.bindMessage((f=function($1)
+  return ResultMessage.freeMessageF((f=function($1)
   {
    return function($2)
    {
@@ -503,6 +496,10 @@
   {
    return g(f(x));
   }),msg);
+ };
+ ResultMessage.freeMessageF=function(f,msg)
+ {
+  return ResultMessage.bindMessage(f,msg);
  };
  ResultMessage.bindMessage=function(f,msg)
  {
@@ -881,7 +878,7 @@
  {
   return Result.defaultWith(function(x)
   {
-   return Operators$5.FailWith(Global.String(x));
+   return Operators$3.FailWith(Global.String(x));
   },r);
  };
  Result.iter=function(fE,f,r)
@@ -956,7 +953,31 @@
    $0:r.$0
   };
  };
- Builder$1=ResultM.Builder=Runtime.Class({
+ Operators$1.rtn=function(v)
+ {
+  return FusionM.rtn(v);
+ };
+ Operators$1.op_GreaterEqualsGreater=function(f,g,v)
+ {
+  return Operators$1.op_GreaterGreaterEquals(f(v),g);
+ };
+ Operators$1.op_RightShift=function(f,g,v)
+ {
+  return Operators$1.op_BarGreaterGreater(f(v),g);
+ };
+ Operators$1.op_GreaterGreaterEquals=function(v,f)
+ {
+  return FusionM.bind(f,v);
+ };
+ Operators$1.op_BarGreaterGreater=function(v,f)
+ {
+  return FusionM.map(f,v);
+ };
+ Operators$1.op_LessMultiplyGreater=function(f,v)
+ {
+  return FusionM.apply(f,v);
+ };
+ Builder$2=Builder$1.Builder=Runtime.Class({
   For:function(sequence,body)
   {
    var $this;
@@ -972,302 +993,1252 @@
     }));
    });
   },
+  Using:function(disposable,body)
+  {
+   return FusionM.wrap(function(r)
+   {
+    try
+    {
+     return(FusionM.getFun(body(disposable)))(r);
+    }
+    finally
+    {
+     disposable.Dispose();
+    }
+   });
+  },
+  TryFinally:function(body,compensation)
+  {
+   return FusionM.wrap(function(r)
+   {
+    try
+    {
+     return(FusionM.getFun(body()))(r);
+    }
+    finally
+    {
+     compensation();
+    }
+   });
+  },
+  TryWith:function(body,handler)
+  {
+   return FusionM.wrap(function(r)
+   {
+    try
+    {
+     return(FusionM.getFun(body()))(r);
+    }
+    catch(e)
+    {
+     return handler(e);
+    }
+   });
+  },
   While:function(guard,body)
   {
    function whileLoop(guard$1,body$1)
    {
-    return guard$1()?ResultM.bind(function()
+    return guard$1()?FusionM.bind(function()
     {
      return whileLoop(guard$1,body$1);
-    },body$1()):ResultM.rtn();
+    },body$1()):FusionM.rtn();
    }
    return whileLoop(guard,body);
   },
-  Using:function(disposable,body)
-  {
-   try
-   {
-    return body(disposable);
-   }
-   finally
-   {
-    disposable.Dispose();
-   }
-  },
-  TryFinally:function(body,compensation)
-  {
-   try
-   {
-    return body();
-   }
-   finally
-   {
-    compensation();
-   }
-  },
-  TryWith:function(body,handler)
-  {
-   try
-   {
-    return body();
-   }
-   catch(e)
-   {
-    return handler(e);
-   }
-  },
   Run:function(f)
   {
-   return ResultM.bindP(f,Monads.OkM$1());
+   return FusionM.wrap(function(m)
+   {
+    return(FusionM.getFun(f()))(m);
+   });
   },
   Combine:function(a,b)
   {
-   return ResultM.bind(b,a);
+   return FusionM.bind(b,a);
   },
   Delay:Global.id,
   Zero:function()
   {
-   return ResultM.rtn();
+   return FusionM.rtn();
   },
   Bind:function(w,r)
   {
-   return ResultM.bindP(r,w);
+   return FusionM.bind(r,w);
   },
-  ReturnFrom:Global.id,
+  ReturnFrom:function(x)
+  {
+   return FusionM.from(x);
+  },
   Return:function(x)
   {
-   return ResultM.rtn(x);
+   return FusionM.rtn(x);
   }
- },Obj,Builder$1);
- Builder$1.New=Runtime.Ctor(function()
+ },Obj,Builder$2);
+ Builder$2.New=Runtime.Ctor(function()
  {
   Obj.New.call(this);
- },Builder$1);
- AutoOpen.resultM=function()
+ },Builder$2);
+ FusionM.fusion=function()
  {
   SC$1.$cctor();
-  return SC$1.resultM;
+  return SC$1.fusion;
  };
- Operators$1.rtn=function(v)
+ FusionM.absorbO=function(f,vORm)
  {
-  return ResultM.rtn(v);
- };
- Operators$1.op_GreaterEqualsGreater=function(f,g,v)
- {
-  return Operators$1.op_GreaterGreaterEquals(f(v),g);
- };
- Operators$1.op_RightShift=function(f,g,v)
- {
-  return Operators$1.op_BarGreaterGreater(f(v),g);
- };
- Operators$1.op_GreaterGreaterEquals=function(v,f)
- {
-  return ResultM.bindP(f,v);
- };
- Operators$1.op_BarGreaterGreater=function(v,f)
- {
-  return ResultM.mapP(f,v);
- };
- ResultM.sequenceSeq=function(sq)
- {
-  return ResultM.traverseSeq(Global.id,sq);
- };
- ResultM.traverseSeq=function(f,sq)
- {
-  return ResultM.map(Global.id,Arrays.foldBack(function(head,tail)
+  return FusionM.absorbR(FusionM.map(function(v)
   {
-   return ResultM.op_GreaterGreaterEquals(f(head),function(h)
+   return Result.ofOption(f,v);
+  },vORm));
+ };
+ FusionM.absorbR=function(vvRm)
+ {
+  return FusionM.bind(FusionM.ofResultRM,vvRm);
+ };
+ FusionM.insertSnd=function(vRm,snd)
+ {
+  return FusionM.map(function(v)
+  {
+   return[v,snd];
+  },vRm);
+ };
+ FusionM.insertFst=function(fst,vRm)
+ {
+  return FusionM.map(function(v)
+  {
+   return[fst,v];
+  },vRm);
+ };
+ FusionM.insertR=function(vvR)
+ {
+  return vvR.$==0?FusionM.map(function(a)
+  {
+   return{
+    $:0,
+    $0:a
+   };
+  },vvR.$0):FusionM.rtn(Library.Error$1(vvR.$0));
+ };
+ FusionM.insertO=function(vvO)
+ {
+  var o;
+  o=vvO==null?null:{
+   $:1,
+   $0:FusionM.map(function(a)
    {
-    return ResultM.op_GreaterGreaterEquals(tail,function(t)
+    return{
+     $:1,
+     $0:a
+    };
+   },vvO.$0)
+  };
+  return o==null?FusionM.rtn(null):o.$0;
+ };
+ FusionM.iterResult=function(fM,f,m)
+ {
+  FusionM.iterReader(fM,f,null,m);
+ };
+ FusionM.runResult=function(m)
+ {
+  return FusionM.runReader(null,m);
+ };
+ FusionM.runReader=function(v,m)
+ {
+  var t,m$1,o;
+  t=FusionM.run(v,m);
+  m$1=t[2];
+  return Result.ofOption(function()
+  {
+   return m$1;
+  },(o=t[0],o==null?null:{
+   $:1,
+   $0:[o.$0,m$1]
+  }));
+ };
+ FusionM.mapReader=function(v,m)
+ {
+  return FusionM.mapState(function()
+  {
+   return v;
+  },Global.id,m);
+ };
+ FusionM.readerFun=function(f)
+ {
+  return FusionM.map(f,FusionM.getS());
+ };
+ FusionM.sequenceSeq=function(sq)
+ {
+  return FusionM.traverseSeq(Global.id,sq);
+ };
+ FusionM.traverseSeq=function(f,sq)
+ {
+  return FusionM.map(Global.id,Arrays.foldBack(function(head,tail)
+  {
+   return FusionM.op_GreaterGreaterEquals(f(head),function(h)
+   {
+    return FusionM.op_GreaterGreaterEquals(tail,function(t)
     {
-     return ResultM.rtn(new List.T({
+     return FusionM.rtn(new List.T({
       $:1,
       $0:h,
       $1:t
      }));
     });
    });
-  },Arrays.ofSeq(sq),ResultM.rtn(List.T.Empty)));
+  },Arrays.ofSeq(sq),FusionM.rtn(List.T.Empty)));
  };
- ResultM.op_GreaterGreaterEquals=function(r,f)
+ FusionM.op_GreaterGreaterEquals=function(v,f)
  {
-  return ResultM.bind(f,r);
+  return FusionM.bind(f,v);
  };
- ResultM.addMsg=function(m,r)
+ FusionM.apply=function(fR,vR)
  {
-  return ResultM.mapMessage(function(b)
+  return FusionM.bind(function(b)
   {
-   return ResultMessage.addMsg(m,b);
-  },r);
+   return FusionM.map(b,vR);
+  },fR);
  };
- ResultM.absorbO=function(f,vOR)
+ FusionM.memoizeRm=function(getStore,fRm,p)
  {
-  return ResultM.bindP(function(v)
-  {
-   return ResultM.ofOption(f,v);
-  },vOR);
+  return{
+   $:0,
+   $0:function(t)
+   {
+    var r,p$1,getOrAdd,o,o$1;
+    function store(p$2,v)
+    {
+     return(getOrAdd(p$2))(function()
+     {
+      return v;
+     });
+    }
+    r=t[0];
+    p$1=getStore(r);
+    getOrAdd=p$1[1];
+    return FusionM.run(r,(o=(o$1=p$1[0](p),o$1==null?null:{
+     $:1,
+     $0:FusionM.rtn(o$1.$0)
+    }),o==null?FusionM.map(function($1)
+    {
+     return store(p,$1);
+    },fRm(p)):o.$0));
+   }
+  };
  };
- ResultM.insertO=function(vRO)
+ FusionM.iterReader=function(fM,f,v,m)
+ {
+  var t,m$1;
+  t=FusionM.run(v,FusionM.map(f,m));
+  m$1=t[2];
+  t[0]==null?void 0:void 0;
+  m$1.$!==0?fM(m$1):void 0;
+ };
+ FusionM.mapState=function(get,set,m)
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    var s1,p;
+    s1=t[0];
+    p=(FusionM.getFun(m))([get(s1),t[1]]);
+    return[p[0],set(s1,p[1]),p[2]];
+   }
+  };
+ };
+ FusionM.freeMessageW=function(m)
+ {
+  var f;
+  function g(a)
+  {
+   return new ResultMessage({
+    $:2,
+    $0:a
+   });
+  }
+  return FusionM.freeMessageF((f=function($1)
+  {
+   return function($2)
+   {
+    return $1(Global.String($2));
+   };
+  }(Global.id),function(x)
+  {
+   return g(f(x));
+  }),m);
+ };
+ FusionM.freeMessage=function(m)
+ {
+  var f;
+  function g(a)
+  {
+   return new ResultMessage({
+    $:1,
+    $0:a
+   });
+  }
+  return FusionM.freeMessageF((f=function($1)
+  {
+   return function($2)
+   {
+    return $1(Global.String($2));
+   };
+  }(Global.id),function(x)
+  {
+   return g(f(x));
+  }),m);
+ };
+ FusionM.freeMessageF=function(f,m)
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    var s1,m1,p;
+    s1=t[0];
+    m1=t[1];
+    try
+    {
+     p=m.$0([s1,ResultMessage.freeMessage(m1)]);
+     return[p[0],p[1],ResultMessage.freeMessageF(f,p[2])];
+    }
+    catch(e)
+    {
+     return[null,s1,ResultMessage.freeMessage(ResultMessage.addMsg(m1,new ResultMessage({
+      $:5,
+      $0:e.message,
+      $1:e.stack
+     })))];
+    }
+   }
+  };
+ };
+ FusionM.ofFusionM=function(m)
+ {
+  return FusionM.from(m);
+ };
+ FusionM.ofResultMessage=function(m)
+ {
+  return FusionM.OkFMsg(null,m);
+ };
+ FusionM.ofMessage=function(m)
+ {
+  return FusionM.OkFMsg(null,new ResultMessage({
+   $:4,
+   $0:m
+  }));
+ };
+ FusionM.ofOption=function(f,o)
+ {
+  return o==null?FusionM.ErrorF(f()):FusionM.OkF(o.$0);
+ };
+ FusionM.ofResult=function(r)
+ {
+  return r.$==1?FusionM.ErrorF(new ResultMessage({
+   $:1,
+   $0:(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(Global.id))(r.$0)
+  })):FusionM.OkF(r.$0);
+ };
+ FusionM.ofResultS=function(r)
+ {
+  return r.$==1?FusionM.ErrorF(new ResultMessage({
+   $:1,
+   $0:r.$0
+  })):FusionM.OkF(r.$0);
+ };
+ FusionM.ofResultM=function(r)
+ {
+  return r.$==1?FusionM.ErrorF(new ResultMessage({
+   $:4,
+   $0:r.$0
+  })):FusionM.OkF(r.$0);
+ };
+ FusionM.ofResultRM=function(r)
+ {
+  return r.$==1?FusionM.ErrorF(r.$0):FusionM.OkF(r.$0);
+ };
+ FusionM.inling=function(getOption,m)
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    var s1,m1,p;
+    s1=t[0];
+    m1=t[1];
+    try
+    {
+     p=m.$0([s1,m1]);
+     return[{
+      $:1,
+      $0:p[0]
+     },p[1],p[2]];
+    }
+    catch(e)
+    {
+     return[null,s1,ResultMessage.addMsg(m1,new ResultMessage({
+      $:5,
+      $0:e.message,
+      $1:e.stack
+     }))];
+    }
+   }
+  };
+ };
+ FusionM.check=function()
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    return[ResultMessage.isFatal(t[1])?null:{
+     $:1,
+     $0:null
+    },t[0],ResultMessage.NoMsg];
+   }
+  };
+ };
+ FusionM.putS=function(s1)
+ {
+  return{
+   $:0,
+   $0:function()
+   {
+    return[{
+     $:1,
+     $0:null
+    },s1,ResultMessage.NoMsg];
+   }
+  };
+ };
+ FusionM.getR=function()
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    return[{
+     $:1,
+     $0:t[1]
+    },t[0],ResultMessage.NoMsg];
+   }
+  };
+ };
+ FusionM.getS=function()
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    var s;
+    s=t[0];
+    return[{
+     $:1,
+     $0:s
+    },s,ResultMessage.NoMsg];
+   }
+  };
+ };
+ FusionM.ErrorF=function(m)
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    return[null,t[0],m];
+   }
+  };
+ };
+ FusionM.OkFMsg=function(v,m)
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    return[{
+     $:1,
+     $0:v
+    },t[0],m];
+   }
+  };
+ };
+ FusionM.OkF=function(v)
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    return[{
+     $:1,
+     $0:v
+    },t[0],ResultMessage.NoMsg];
+   }
+  };
+ };
+ FusionM.run=function(s,m)
+ {
+  return(FusionM.getFun(m))([s,ResultMessage.NoMsg]);
+ };
+ FusionM.from=Global.id;
+ FusionM.getFun=function(a)
+ {
+  return a.$0;
+ };
+ FusionM.wrap=function(f)
+ {
+  return{
+   $:0,
+   $0:f
+  };
+ };
+ FusionM.map=function(f,m)
+ {
+  return FusionM.bind(function(x)
+  {
+   return FusionM.rtn(f(x));
+  },m);
+ };
+ FusionM.bind=function(f,m)
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    var s1,m1,p,v2O,s2,m2,p$1;
+    s1=t[0];
+    m1=t[1];
+    try
+    {
+     p=m.$0([s1,m1]);
+     v2O=p[0];
+     s2=p[1];
+     m2=p[2];
+     return v2O!=null&&v2O.$==1?(p$1=f(v2O.$0).$0([s2,ResultMessage.addMsg(m1,m2)]),[p$1[0],p$1[1],ResultMessage.addMsg(m2,p$1[2])]):[null,s2,m2];
+    }
+    catch(e)
+    {
+     return[null,s1,ResultMessage.addMsg(m1,new ResultMessage({
+      $:5,
+      $0:e.message,
+      $1:e.stack
+     }))];
+    }
+   }
+  };
+ };
+ FusionM.rtn=function(v)
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    return[{
+     $:1,
+     $0:v
+    },t[0],ResultMessage.NoMsg];
+   }
+  };
+ };
+ Operators$2.rtn=function(v)
+ {
+  return FusionAsyncM.rtn(v);
+ };
+ Operators$2.op_GreaterEqualsGreater=function(f,g,v)
+ {
+  return Operators$2.op_GreaterGreaterEquals(f(v),g);
+ };
+ Operators$2.op_RightShift=function(f,g,v)
+ {
+  return Operators$2.op_BarGreaterGreater(f(v),g);
+ };
+ Operators$2.op_GreaterGreaterEquals=function(v,f)
+ {
+  return FusionAsyncM.bind(f,v);
+ };
+ Operators$2.op_BarGreaterGreater=function(v,f)
+ {
+  return FusionAsyncM.map(f,v);
+ };
+ Operators$2.op_LessMultiplyGreater=function(f,v)
+ {
+  return FusionAsyncM.apply(f,v);
+ };
+ Builder$4=Builder$3.Builder=Runtime.Class({
+  For:function(sequence,body)
+  {
+   var $this;
+   $this=this;
+   return this.Using(Enumerator.Get(sequence),function(_enum)
+   {
+    return $this.While(function()
+    {
+     return _enum.MoveNext();
+    },$this.Delay(function()
+    {
+     return body(_enum.Current());
+    }));
+   });
+  },
+  Using:function(disposable,body)
+  {
+   return FusionAsyncM.wrap(function(r)
+   {
+    try
+    {
+     return(FusionAsyncM.getFun(body(disposable)))(r);
+    }
+    finally
+    {
+     disposable.Dispose();
+    }
+   });
+  },
+  TryFinally:function(body,compensation)
+  {
+   return FusionAsyncM.wrap(function(r)
+   {
+    try
+    {
+     return(FusionAsyncM.getFun(body()))(r);
+    }
+    finally
+    {
+     compensation();
+    }
+   });
+  },
+  TryWith:function(body,handler)
+  {
+   return FusionAsyncM.wrap(function(r)
+   {
+    try
+    {
+     return(FusionAsyncM.getFun(body()))(r);
+    }
+    catch(e)
+    {
+     return handler(e);
+    }
+   });
+  },
+  While:function(guard,body)
+  {
+   function whileLoop(guard$1,body$1)
+   {
+    return guard$1()?FusionAsyncM.bind(function()
+    {
+     return whileLoop(guard$1,body$1);
+    },body$1()):FusionAsyncM.rtn();
+   }
+   return whileLoop(guard,body);
+  },
+  Run:function(f)
+  {
+   return FusionAsyncM.wrap(function(m)
+   {
+    return(FusionAsyncM.getFun(f()))(m);
+   });
+  },
+  Combine:function(a,b)
+  {
+   return FusionAsyncM.bind(b,a);
+  },
+  Delay:Global.id,
+  Zero:function()
+  {
+   return FusionAsyncM.rtn();
+  },
+  Bind:function(w,r)
+  {
+   return FusionAsyncM.bind(r,w);
+  },
+  ReturnFrom:function(x)
+  {
+   return FusionAsyncM.from(x);
+  },
+  Return:function(x)
+  {
+   return FusionAsyncM.rtn(x);
+  }
+ },Obj,Builder$4);
+ Builder$4.New=Runtime.Ctor(function()
+ {
+  Obj.New.call(this);
+ },Builder$4);
+ FusionAsyncM.fusion=function()
+ {
+  SC$1.$cctor();
+  return SC$1.fusion$1;
+ };
+ FusionAsyncM.iterResultA=function(fM,f,m)
+ {
+  FusionAsyncM.iterReaderA(fM,f,null,m);
+ };
+ FusionAsyncM.iterResult=function(fM,f,m)
+ {
+  FusionAsyncM.iterReader(fM,f,null,m);
+ };
+ FusionAsyncM.runResult=function(m)
+ {
+  return FusionAsyncM.runReader(null,m);
+ };
+ FusionAsyncM.runReader=function(v,m)
+ {
+  function f(vO,a,m$1)
+  {
+   return Result.ofOption(function()
+   {
+    return m$1;
+   },vO==null?null:{
+    $:1,
+    $0:[vO.$0,m$1]
+   });
+  }
+  function g(v$1)
+  {
+   return Concurrency.Return(v$1);
+  }
+  return Concurrency.Bind(FusionAsyncM.run(v,m),function(x)
+  {
+   return g(f.apply(null,x));
+  });
+ };
+ FusionAsyncM.mapReader=function(v,m)
+ {
+  return FusionAsyncM.mapState(function()
+  {
+   return v;
+  },Global.id,m);
+ };
+ FusionAsyncM.absorbO=function(f,vORm)
+ {
+  return FusionAsyncM.absorbR(FusionAsyncM.map(function(v)
+  {
+   return Result.ofOption(f,v);
+  },vORm));
+ };
+ FusionAsyncM.absorbR=function(vvRm)
+ {
+  return FusionAsyncM.bind(FusionAsyncM.ofResultRM,vvRm);
+ };
+ FusionAsyncM.insertSnd=function(vRm,snd)
+ {
+  return FusionAsyncM.map(function(v)
+  {
+   return[v,snd];
+  },vRm);
+ };
+ FusionAsyncM.insertFst=function(fst,vRm)
+ {
+  return FusionAsyncM.map(function(v)
+  {
+   return[fst,v];
+  },vRm);
+ };
+ FusionAsyncM.insertR=function(vvR)
+ {
+  return vvR.$==0?FusionAsyncM.map(function(a)
+  {
+   return{
+    $:0,
+    $0:a
+   };
+  },vvR.$0):FusionAsyncM.rtn(Library.Error$1(vvR.$0));
+ };
+ FusionAsyncM.insertO=function(vvO)
  {
   var o;
-  o=vRO==null?null:{
+  o=vvO==null?null:{
    $:1,
-   $0:ResultM.map(function(a)
+   $0:FusionAsyncM.map(function(a)
    {
     return{
      $:1,
      $0:a
     };
-   },vRO.$0)
+   },vvO.$0)
   };
-  return o==null?Monads.OkM$1(null):o.$0;
+  return o==null?FusionAsyncM.rtn(null):o.$0;
  };
- ResultM.ofResult=function(vR)
+ FusionAsyncM.readerFun=function(f)
  {
-  return ResultM.rtnr(vR);
+  return FusionAsyncM.map(f,FusionAsyncM.getS());
  };
- ResultM.ofOption=function(f,vO)
+ FusionAsyncM.freeMessageW=function(m)
  {
-  var o;
-  o=vO==null?null:{
+  var f;
+  function g(a)
+  {
+   return new ResultMessage({
+    $:2,
+    $0:a
+   });
+  }
+  return FusionAsyncM.freeMessageF((f=function($1)
+  {
+   return function($2)
+   {
+    return $1(Global.String($2));
+   };
+  }(Global.id),function(x)
+  {
+   return g(f(x));
+  }),m);
+ };
+ FusionAsyncM.freeMessage=function(m)
+ {
+  var f;
+  function g(a)
+  {
+   return new ResultMessage({
+    $:1,
+    $0:a
+   });
+  }
+  return FusionAsyncM.freeMessageF((f=function($1)
+  {
+   return function($2)
+   {
+    return $1(Global.String($2));
+   };
+  }(Global.id),function(x)
+  {
+   return g(f(x));
+  }),m);
+ };
+ FusionAsyncM.sequenceSeq=function(sq)
+ {
+  return FusionAsyncM.traverseSeq(Global.id,sq);
+ };
+ FusionAsyncM.traverseSeq=function(f,sq)
+ {
+  return FusionAsyncM.map(Global.id,Arrays.foldBack(function(head,tail)
+  {
+   return FusionAsyncM.op_GreaterGreaterEquals(f(head),function(h)
+   {
+    return FusionAsyncM.op_GreaterGreaterEquals(tail,function(t)
+    {
+     return FusionAsyncM.rtn(new List.T({
+      $:1,
+      $0:h,
+      $1:t
+     }));
+    });
+   });
+  },Arrays.ofSeq(sq),FusionAsyncM.rtn(List.T.Empty)));
+ };
+ FusionAsyncM.op_GreaterGreaterEquals=function(v,f)
+ {
+  return FusionAsyncM.bind(f,v);
+ };
+ FusionAsyncM.apply=function(fR,vR)
+ {
+  return FusionAsyncM.bind(function(b)
+  {
+   return FusionAsyncM.map(b,vR);
+  },fR);
+ };
+ FusionAsyncM.memoizeRm=function(getStore,fRm,p)
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    var r,b;
+    r=t[0];
+    b=null;
+    return Concurrency.Delay(function()
+    {
+     var p$1,getOrAdd,o,o$1;
+     function store(p$2,v)
+     {
+      return(getOrAdd(p$2))(function()
+      {
+       return v;
+      });
+     }
+     p$1=getStore(r);
+     getOrAdd=p$1[1];
+     return FusionAsyncM.run(r,(o=(o$1=p$1[0](p),o$1==null?null:{
+      $:1,
+      $0:FusionAsyncM.rtn(o$1.$0)
+     }),o==null?FusionAsyncM.map(function($1)
+     {
+      return store(p,$1);
+     },fRm(p)):o.$0));
+    });
+   }
+  };
+ };
+ FusionAsyncM.iterReaderA=function(fM,f,v,m)
+ {
+  function f$1(vO,a,m$1)
+  {
+   vO==null?void 0:void 0;
+   m$1.$!==0?fM(m$1):void 0;
+  }
+  function g(v$1)
+  {
+   return Concurrency.Return(v$1);
+  }
+  Concurrency.Start(Concurrency.Bind(FusionAsyncM.run(v,FusionAsyncM.map(f,m)),function(x)
+  {
+   return g(f$1.apply(null,x));
+  }),null);
+ };
+ FusionAsyncM.iterReader=function(fM,f,v,m)
+ {
+  var x;
+  x=FusionAsyncM.run(v,FusionAsyncM.map(f,m));
+  throw"iterS cannot be used in JavaScript!";
+ };
+ FusionAsyncM.mapState=function(get,set,m)
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    var s1,r,b;
+    s1=t[0];
+    r=t[1];
+    b=null;
+    return Concurrency.Delay(function()
+    {
+     return Concurrency.Bind((FusionAsyncM.getFun(m))([get(s1),r]),function(a)
+     {
+      return Concurrency.Return([a[0],set(s1,a[1]),a[2]]);
+     });
+    });
+   }
+  };
+ };
+ FusionAsyncM.freeMessageF=function(f,m)
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    var s1,m1,b;
+    s1=t[0];
+    m1=t[1];
+    b=null;
+    return Concurrency.Delay(function()
+    {
+     return Concurrency.TryWith(Concurrency.Delay(function()
+     {
+      return Concurrency.Bind(m.$0([s1,ResultMessage.freeMessage(m1)]),function(a)
+      {
+       return Concurrency.Return([a[0],a[1],ResultMessage.freeMessageF(f,a[2])]);
+      });
+     }),function(a)
+     {
+      return Concurrency.Return([null,s1,ResultMessage.freeMessage(ResultMessage.addMsg(m1,new ResultMessage({
+       $:5,
+       $0:a.message,
+       $1:a.stack
+      })))]);
+     });
+    });
+   }
+  };
+ };
+ FusionAsyncM.ofAsyncResultRM=function(a)
+ {
+  return FusionAsyncM.bind(FusionAsyncM.ofResultRM,FusionAsyncM.ofAsync(a));
+ };
+ FusionAsyncM.ofAsync=function(a)
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    var s;
+    function f(v)
+    {
+     return[{
+      $:1,
+      $0:v
+     },s,ResultMessage.NoMsg];
+    }
+    function g(v)
+    {
+     return Concurrency.Return(v);
+    }
+    s=t[0];
+    return Concurrency.Bind(a,function(x)
+    {
+     return g(f(x));
+    });
+   }
+  };
+ };
+ FusionAsyncM.ofFusionM=function(a)
+ {
+  var fm;
+  fm=a.$0;
+  return{
+   $:0,
+   $0:function(t)
+   {
+    return Concurrency.Return(fm([t[0],t[1]]));
+   }
+  };
+ };
+ FusionAsyncM.ofResultMessage=function(m)
+ {
+  return FusionAsyncM.OkFMsg(null,m);
+ };
+ FusionAsyncM.ofMessage=function(m)
+ {
+  return FusionAsyncM.OkFMsg(null,new ResultMessage({
+   $:4,
+   $0:m
+  }));
+ };
+ FusionAsyncM.ofOption=function(f,o)
+ {
+  var o$1;
+  o$1=o==null?null:{
    $:1,
-   $0:Monads.OkM$1(vO.$0)
+   $0:FusionAsyncM.OkF(o.$0)
   };
-  return o==null?function(x)
+  return o$1==null?function(x)
   {
-   return Monads.ErrorM(f(x));
-  }():o.$0;
+   return FusionAsyncM.ErrorF(f(x));
+  }():o$1.$0;
  };
- ResultM.get=function(r)
+ FusionAsyncM.ofResult=function(r)
  {
-  return ResultM.defaultWith(function(x)
+  return r.$==1?FusionAsyncM.ErrorF(new ResultMessage({
+   $:1,
+   $0:(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(Global.id))(r.$0)
+  })):FusionAsyncM.OkF(r.$0);
+ };
+ FusionAsyncM.ofResultS=function(r)
+ {
+  return r.$==1?FusionAsyncM.ErrorF(new ResultMessage({
+   $:1,
+   $0:r.$0
+  })):FusionAsyncM.OkF(r.$0);
+ };
+ FusionAsyncM.ofResultM=function(r)
+ {
+  return r.$==1?FusionAsyncM.ErrorF(new ResultMessage({
+   $:4,
+   $0:r.$0
+  })):FusionAsyncM.OkF(r.$0);
+ };
+ FusionAsyncM.ofResultRM=function(r)
+ {
+  return r.$==1?FusionAsyncM.ErrorF(r.$0):FusionAsyncM.OkF(r.$0);
+ };
+ FusionAsyncM.getOption=function(m)
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    var s1,m1,b;
+    s1=t[0];
+    m1=t[1];
+    b=null;
+    return Concurrency.Delay(function()
+    {
+     return Concurrency.TryWith(Concurrency.Delay(function()
+     {
+      return Concurrency.Bind(m.$0([s1,m1]),function(a)
+      {
+       return Concurrency.Return([{
+        $:1,
+        $0:a[0]
+       },a[1],a[2]]);
+      });
+     }),function(a)
+     {
+      return Concurrency.Return([null,s1,ResultMessage.addMsg(m1,new ResultMessage({
+       $:5,
+       $0:a.message,
+       $1:a.stack
+      }))]);
+     });
+    });
+   }
+  };
+ };
+ FusionAsyncM.check=function()
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    return Concurrency.Return([ResultMessage.isFatal(t[1])?null:{
+     $:1,
+     $0:null
+    },t[0],ResultMessage.NoMsg]);
+   }
+  };
+ };
+ FusionAsyncM.putS=function(s1)
+ {
+  return{
+   $:0,
+   $0:function()
+   {
+    return Concurrency.Return([{
+     $:1,
+     $0:null
+    },s1,ResultMessage.NoMsg]);
+   }
+  };
+ };
+ FusionAsyncM.getR=function()
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    return Concurrency.Return([{
+     $:1,
+     $0:t[1]
+    },t[0],ResultMessage.NoMsg]);
+   }
+  };
+ };
+ FusionAsyncM.getS=function()
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    var s;
+    s=t[0];
+    return Concurrency.Return([{
+     $:1,
+     $0:s
+    },s,ResultMessage.NoMsg]);
+   }
+  };
+ };
+ FusionAsyncM.ErrorF=function(m)
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    return Concurrency.Return([null,t[0],m]);
+   }
+  };
+ };
+ FusionAsyncM.OkFMsg=function(v,m)
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    return Concurrency.Return([{
+     $:1,
+     $0:v
+    },t[0],m]);
+   }
+  };
+ };
+ FusionAsyncM.OkF=function(v)
+ {
+  return{
+   $:0,
+   $0:function(t)
+   {
+    return Concurrency.Return([{
+     $:1,
+     $0:v
+    },t[0],ResultMessage.NoMsg]);
+   }
+  };
+ };
+ FusionAsyncM.run=function(s,m)
+ {
+  return(FusionAsyncM.getFun(m))([s,ResultMessage.NoMsg]);
+ };
+ FusionAsyncM.from=Global.id;
+ FusionAsyncM.getFun=function(a)
+ {
+  return a.$0;
+ };
+ FusionAsyncM.wrap=function(f)
+ {
+  return{
+   $:0,
+   $0:f
+  };
+ };
+ FusionAsyncM.map=function(f,m)
+ {
+  return FusionAsyncM.bind(function(x)
   {
-   return Operators$5.FailWith(Global.String(x));
-  },r);
- };
- ResultM.iter=function(fM,f,r)
- {
-  var a,$1;
-  a=ResultM.mapP(f,r);
-  a.$0==null?$1=a.$1:$1=a.$1;
-  fM($1);
- };
- ResultM.mapP=function(f,m)
- {
-  return ResultM.bindP(function(x)
-  {
-   return ResultM.rtn(f(x));
+   return FusionAsyncM.rtn(f(x));
   },m);
  };
- ResultM.bindP=function(f,r)
+ FusionAsyncM.bind=function(f,m)
  {
-  var m;
-  if(r.$0==null)
-   return{
-    $:0,
-    $0:null,
-    $1:r.$1
-   };
-  else
+  return{
+   $:0,
+   $0:function(t)
    {
-    m=r.$1;
-    try
+    var s1,m1,b;
+    s1=t[0];
+    m1=t[1];
+    b=null;
+    return Concurrency.Delay(function()
     {
-     return ResultM.mapMessage(function(b)
+     return Concurrency.TryWith(Concurrency.Delay(function()
      {
-      return ResultMessage.addMsg(m,b);
-     },f(r.$0.$0));
-    }
-    catch(e)
-    {
-     return Monads.ErrorM(new ResultMessage({
-      $:5,
-      $0:e.message,
-      $1:e.stack
-     }));
-    }
+      return Concurrency.Bind(m.$0([s1,m1]),function(a)
+      {
+       var v2O,s2,m2;
+       v2O=a[0];
+       s2=a[1];
+       m2=a[2];
+       return v2O!=null&&v2O.$==1?Concurrency.Bind(f(v2O.$0).$0([s2,ResultMessage.addMsg(m1,m2)]),function(a$1)
+       {
+        return Concurrency.Return([a$1[0],a$1[1],ResultMessage.addMsg(m2,a$1[2])]);
+       }):Concurrency.Return([null,s2,m2]);
+      });
+     }),function(a)
+     {
+      return Concurrency.Return([null,s1,ResultMessage.addMsg(m1,new ResultMessage({
+       $:5,
+       $0:a.message,
+       $1:a.stack
+      }))]);
+     });
+    });
    }
+  };
  };
- ResultM.bind=function(f,r)
- {
-  var m;
-  return r.$0==null?{
-   $:0,
-   $0:null,
-   $1:r.$1
-  }:(m=r.$1,ResultM.mapMessage(function(b)
-  {
-   return ResultMessage.addMsg(m,b);
-  },f(r.$0.$0)));
- };
- ResultM.mapMessage=function(fM,a)
+ FusionAsyncM.rtn=function(v)
  {
   return{
    $:0,
-   $0:a.$0,
-   $1:fM(a.$1)
+   $0:function(t)
+   {
+    return Concurrency.Return([{
+     $:1,
+     $0:v
+    },t[0],ResultMessage.NoMsg]);
+   }
   };
- };
- ResultM.map=function(f,a)
- {
-  var o;
-  return{
-   $:0,
-   $0:(o=a.$0,o==null?null:{
-    $:1,
-    $0:f(o.$0)
-   }),
-   $1:a.$1
-  };
- };
- ResultM.failIfFalse=function(m,v)
- {
-  return!v?Monads.ErrorM(m):Monads.OkM$1();
- };
- ResultM.failIfTrue=function(m,v)
- {
-  return v?Monads.ErrorM(m):Monads.OkM$1();
- };
- ResultM.defaultValue=function(d,r)
- {
-  return Result.defaultValue(d,ResultM.toResult(r));
- };
- ResultM.defaultWith=function(f,r)
- {
-  return Result.defaultWith(f,ResultM.toResult(r));
- };
- ResultM.toOption=function(r)
- {
-  return r.$0;
- };
- ResultM.toResultD=function(r)
- {
-  return r.$0==null?Library.Error$1(r.$1):{
-   $:0,
-   $0:[r.$0.$0,r.$1]
-  };
- };
- ResultM.toResult=function(r)
- {
-  return r.$0==null?Library.Error$1(r.$1):{
-   $:0,
-   $0:r.$0.$0
-  };
- };
- ResultM.freeMessage=function(r)
- {
-  return r.$==1?Library.Error$1(ResultMessage.freeMessage(r.$0)):{
-   $:0,
-   $0:r.$0
-  };
- };
- ResultM.rtnr=function(vR)
- {
-  return Result.defaultWith(Monads.ErrorM,Result$1.Map(Monads.OkM$1,vR));
- };
- ResultM.rtn=function(v)
- {
-  return Monads.OkM$1(v);
  };
  AsyncResult.absorbO=function(f,vORA)
  {
@@ -1762,1081 +2733,6 @@
    return g(f(x));
   });
  };
- Builder$2=ReaderMBasic.Builder=Runtime.Class({
-  For:function(sequence,body)
-  {
-   var $this;
-   $this=this;
-   return this.Using(Enumerator.Get(sequence),function(_enum)
-   {
-    return $this.While(function()
-    {
-     return _enum.MoveNext();
-    },$this.Delay(function()
-    {
-     return body(_enum.Current());
-    }));
-   });
-  },
-  Using:function(disposable,body)
-  {
-   return ReaderMBasic.wrap(function(r)
-   {
-    try
-    {
-     return ReaderMBasic.run(r,body(disposable));
-    }
-    finally
-    {
-     disposable.Dispose();
-    }
-   });
-  },
-  TryFinally:function(body,compensation)
-  {
-   return ReaderMBasic.wrap(function(r)
-   {
-    try
-    {
-     return ReaderMBasic.run(r,body());
-    }
-    finally
-    {
-     compensation();
-    }
-   });
-  },
-  TryWith:function(body,handler)
-  {
-   return ReaderMBasic.wrap(function(r)
-   {
-    try
-    {
-     return ReaderMBasic.run(r,body());
-    }
-    catch(e)
-    {
-     return handler(e);
-    }
-   });
-  },
-  While:function(guard,body)
-  {
-   function whileLoop(guard$1,body$1)
-   {
-    return guard$1()?ReaderMBasic.bind(function()
-    {
-     return whileLoop(guard$1,body$1);
-    },body$1()):ReaderMBasic.rtn();
-   }
-   return whileLoop(guard,body);
-  },
-  Run:function(f)
-  {
-   return ReaderMBasic.delayRun(f);
-  },
-  Combine:function(a,b)
-  {
-   return ReaderMBasic.bind(b,a);
-  },
-  Delay:Global.id,
-  Zero:function()
-  {
-   return ReaderMBasic.rtn();
-  },
-  Bind:function(w,r)
-  {
-   return ReaderMBasic.bind(r,w);
-  },
-  ReturnFrom:Global.id,
-  Return:function(x)
-  {
-   return ReaderMBasic.rtn(x);
-  }
- },Obj,Builder$2);
- Builder$2.New=Runtime.Ctor(function()
- {
-  Obj.New.call(this);
- },Builder$2);
- Operators$2.reader=function()
- {
-  SC$1.$cctor();
-  return SC$1.reader$1;
- };
- Operators$2.rtn=function(v)
- {
-  return ReaderMBasic.rtn(v);
- };
- Operators$2.op_GreaterEqualsGreater=function(f,g,v)
- {
-  return Operators$2.op_GreaterGreaterEquals(f(v),g);
- };
- Operators$2.op_RightShift=function(f,g,v)
- {
-  return Operators$2.op_BarGreaterGreater(f(v),g);
- };
- Operators$2.op_GreaterGreaterEquals=function(v,f)
- {
-  return ReaderMBasic.bind(f,v);
- };
- Operators$2.op_BarGreaterGreater=function(v,f)
- {
-  return ReaderMBasic.map(f,v);
- };
- Operators$2.op_LessMultiplyGreater=function(f,v)
- {
-  return ReaderMBasic.apply(f,v);
- };
- ReaderMBasic.reader=function()
- {
-  SC$1.$cctor();
-  return SC$1.reader;
- };
- ReaderMBasic.memoizeRm=function(getCache,fRm,p)
- {
-  return ReaderMBasic.wrap(function(r)
-  {
-   var p$1,o,x;
-   p$1=getCache(r);
-   o=p$1[0](p);
-   return o==null?(x=(ReaderMBasic.getFun(fRm(p)))(r),(p$1[1](p))(x)):o.$0;
-  });
- };
- ReaderMBasic.iter=function(f,t)
- {
-  function f$1(a)
-  {
-   return ReaderMBasic.run(t,a);
-  }
-  return function(x)
-  {
-   return f(f$1(x));
-  };
- };
- ReaderMBasic.mapResource=function(fR,v)
- {
-  var g;
-  return ReaderMBasic.wrap((g=ReaderMBasic.getFun(v),function(x)
-  {
-   return g(fR(x));
-  }));
- };
- ReaderMBasic.absorbO=function(f,vORm)
- {
-  return ReaderMBasic.absorbR(ReaderMBasic.map(function(v)
-  {
-   return Result.ofOption(f,v);
-  },vORm));
- };
- ReaderMBasic.absorbR=function(vvRm)
- {
-  return ReaderMBasic.map(Result.get,vvRm);
- };
- ReaderMBasic.insertSnd=function(vRm,snd)
- {
-  return ReaderMBasic.map(function(v)
-  {
-   return[v,snd];
-  },vRm);
- };
- ReaderMBasic.insertFst=function(fst,vRm)
- {
-  return ReaderMBasic.map(function(v)
-  {
-   return[fst,v];
-  },vRm);
- };
- ReaderMBasic.insertR=function(vvR)
- {
-  return vvR.$==0?ReaderMBasic.map(function(a)
-  {
-   return{
-    $:0,
-    $0:a
-   };
-  },vvR.$0):ReaderMBasic.rtn(Library.Error$1(vvR.$0));
- };
- ReaderMBasic.insertO=function(vvO)
- {
-  var o;
-  o=vvO==null?null:{
-   $:1,
-   $0:ReaderMBasic.map(function(a)
-   {
-    return{
-     $:1,
-     $0:a
-    };
-   },vvO.$0)
-  };
-  return o==null?ReaderMBasic.rtn(null):o.$0;
- };
- ReaderMBasic.sequenceSeq=function(sq)
- {
-  return ReaderMBasic.traverseSeq(Global.id,sq);
- };
- ReaderMBasic.traverseSeq=function(f,sq)
- {
-  return ReaderMBasic.map(Global.id,Arrays.foldBack(function(head,tail)
-  {
-   return ReaderMBasic.op_GreaterGreaterEquals(f(head),function(h)
-   {
-    return ReaderMBasic.op_GreaterGreaterEquals(tail,function(t)
-    {
-     return ReaderMBasic.rtn(new List.T({
-      $:1,
-      $0:h,
-      $1:t
-     }));
-    });
-   });
-  },Arrays.ofSeq(sq),ReaderMBasic.rtn(List.T.Empty)));
- };
- ReaderMBasic.op_GreaterGreaterEquals=function(v,f)
- {
-  return ReaderMBasic.bind(f,v);
- };
- ReaderMBasic.run=function(rsrc,a)
- {
-  return(ReaderMBasic.getFun(a))(rsrc);
- };
- ReaderMBasic.apply=function(fR,vR)
- {
-  return ReaderMBasic.bind(function(b)
-  {
-   return ReaderMBasic.map(b,vR);
-  },fR);
- };
- ReaderMBasic.map=function(f,m)
- {
-  return ReaderMBasic.bind(function(x)
-  {
-   return ReaderMBasic.rtn(f(x));
-  },m);
- };
- ReaderMBasic.delayRun=function(f)
- {
-  return ReaderMBasic.wrap(function(m)
-  {
-   return(ReaderMBasic.getFun(f()))(m);
-  });
- };
- ReaderMBasic.bind=function(f,a)
- {
-  return ReaderMBasic.wrap(function(m)
-  {
-   return(ReaderMBasic.getFun(f((ReaderMBasic.getFun(a))(m))))(m);
-  });
- };
- ReaderMBasic.rtn=function(a)
- {
-  return ReaderMBasic.wrap(function()
-  {
-   return a;
-  });
- };
- ReaderMBasic.ofFun=function(f)
- {
-  return ReaderMBasic.wrap(f);
- };
- ReaderMBasic.getFun=function(f)
- {
-  return f.$0;
- };
- ReaderMBasic.wrap=function(f)
- {
-  return{
-   $:0,
-   $0:f
-  };
- };
- Builder$3=ReaderMResult.Builder=Runtime.Class({
-  For:function(sequence,body)
-  {
-   var $this;
-   $this=this;
-   return this.Using(Enumerator.Get(sequence),function(_enum)
-   {
-    return $this.While(function()
-    {
-     return _enum.MoveNext();
-    },$this.Delay(function()
-    {
-     return body(_enum.Current());
-    }));
-   });
-  },
-  Using:function(disposable,body)
-  {
-   return ReaderMResult.wrap(function(r)
-   {
-    try
-    {
-     return ReaderMResult.run(r,body(disposable));
-    }
-    finally
-    {
-     disposable.Dispose();
-    }
-   });
-  },
-  TryFinally:function(body,compensation)
-  {
-   return ReaderMResult.wrap(function(r)
-   {
-    try
-    {
-     return ReaderMResult.run(r,body());
-    }
-    finally
-    {
-     compensation();
-    }
-   });
-  },
-  TryWith:function(body,handler)
-  {
-   return ReaderMResult.wrap(function(r)
-   {
-    try
-    {
-     return ReaderMResult.run(r,body());
-    }
-    catch(e)
-    {
-     return handler(e);
-    }
-   });
-  },
-  While:function(guard,body)
-  {
-   function whileLoop(guard$1,body$1)
-   {
-    return guard$1()?ReaderMResult.bind(function()
-    {
-     return whileLoop(guard$1,body$1);
-    },body$1()):ReaderMResult.rtn();
-   }
-   return whileLoop(guard,body);
-  },
-  Run:function(f)
-  {
-   return ReaderMResult.delayRun(f);
-  },
-  Combine:function(a,b)
-  {
-   return ReaderMResult.bind(b,a);
-  },
-  Delay:Global.id,
-  Zero:function()
-  {
-   return ReaderMResult.rtn();
-  },
-  Bind:function(w,r)
-  {
-   return ReaderMResult.bind(r,w);
-  },
-  ReturnFrom:function(x)
-  {
-   return ReaderMResult.rtnR(x);
-  },
-  ReturnFrom$1:Global.id,
-  Return:function(x)
-  {
-   return ReaderMResult.rtn(x);
-  }
- },Obj,Builder$3);
- Builder$3.New=Runtime.Ctor(function()
- {
-  Obj.New.call(this);
- },Builder$3);
- Operators$3.reader=function()
- {
-  SC$1.$cctor();
-  return SC$1.reader$3;
- };
- Operators$3.rtn=function(v)
- {
-  return ReaderMResult.rtn(v);
- };
- Operators$3.op_GreaterEqualsGreater=function(f,g,v)
- {
-  return Operators$3.op_GreaterGreaterEquals(f(v),g);
- };
- Operators$3.op_RightShift=function(f,g,v)
- {
-  return Operators$3.op_BarGreaterGreater(f(v),g);
- };
- Operators$3.op_GreaterGreaterEquals=function(v,f)
- {
-  return ReaderMResult.bind(f,v);
- };
- Operators$3.op_BarGreaterGreater=function(v,f)
- {
-  return ReaderMResult.map(f,v);
- };
- Operators$3.op_LessMultiplyGreater=function(f,v)
- {
-  return ReaderMResult.apply(f,v);
- };
- ReaderMResult.reader=function()
- {
-  SC$1.$cctor();
-  return SC$1.reader$2;
- };
- ReaderMResult.memoizeRm=function(getStore,fRm,p)
- {
-  return ReaderMResult.wrap(function(r)
-  {
-   var p$1,o,o$1,x;
-   p$1=getStore(r);
-   return ReaderMResult.run(r,(o=(o$1=p$1[0](p),o$1==null?null:{
-    $:1,
-    $0:ReaderMResult.rtn(o$1.$0)
-   }),o==null?(x=fRm(p),ReaderMResult.map(p$1[1](p),x)):o.$0));
-  });
- };
- ReaderMResult.iter=function(fE,f,t,a)
- {
-  Result.iter(fE,f,ReaderMResult.run(t,a));
- };
- ReaderMResult.mapResource=function(fR,v)
- {
-  var g;
-  return ReaderMResult.wrap((g=ReaderMResult.getFun(v),function(x)
-  {
-   return g(fR(x));
-  }));
- };
- ReaderMResult.mapError=function(fE,v)
- {
-  var f;
-  function g(r)
-  {
-   return Result$1.MapError(fE,r);
-  }
-  return ReaderMResult.wrap((f=ReaderMResult.getFun(v),function(x)
-  {
-   return g(f(x));
-  }));
- };
- ReaderMResult.absorbO=function(f,vORm)
- {
-  return ReaderMResult.absorbR(ReaderMResult.map(function(v)
-  {
-   return Result.ofOption(f,v);
-  },vORm));
- };
- ReaderMResult.absorbR=function(vvRm)
- {
-  return ReaderMResult.bind(ReaderMResult.rtnR,vvRm);
- };
- ReaderMResult.insertSnd=function(vRm,snd)
- {
-  return ReaderMResult.map(function(v)
-  {
-   return[v,snd];
-  },vRm);
- };
- ReaderMResult.insertFst=function(fst,vRm)
- {
-  return ReaderMResult.map(function(v)
-  {
-   return[fst,v];
-  },vRm);
- };
- ReaderMResult.insertR=function(vvR)
- {
-  return vvR.$==0?ReaderMResult.map(function(a)
-  {
-   return{
-    $:0,
-    $0:a
-   };
-  },vvR.$0):ReaderMResult.rtn(Library.Error$1(vvR.$0));
- };
- ReaderMResult.insertO=function(vvO)
- {
-  var o;
-  o=vvO==null?null:{
-   $:1,
-   $0:ReaderMResult.map(function(a)
-   {
-    return{
-     $:1,
-     $0:a
-    };
-   },vvO.$0)
-  };
-  return o==null?ReaderMResult.rtn(null):o.$0;
- };
- ReaderMResult.sequenceSeq=function(sq)
- {
-  return ReaderMResult.traverseSeq(Global.id,sq);
- };
- ReaderMResult.traverseSeq=function(f,sq)
- {
-  return ReaderMResult.map(Global.id,Arrays.foldBack(function(head,tail)
-  {
-   return ReaderMResult.op_GreaterGreaterEquals(f(head),function(h)
-   {
-    return ReaderMResult.op_GreaterGreaterEquals(tail,function(t)
-    {
-     return ReaderMResult.rtn(new List.T({
-      $:1,
-      $0:h,
-      $1:t
-     }));
-    });
-   });
-  },Arrays.ofSeq(sq),ReaderMResult.rtn(List.T.Empty)));
- };
- ReaderMResult.op_GreaterGreaterEquals=function(v,f)
- {
-  return ReaderMResult.bind(f,v);
- };
- ReaderMResult.run=function(rsrc,a)
- {
-  return(ReaderMResult.getFun(a))(rsrc);
- };
- ReaderMResult.getResult2=function(a)
- {
-  return ReaderMResult.map(function(a$1)
-  {
-   return{
-    $:0,
-    $0:a$1
-   };
-  },a);
- };
- ReaderMResult.getResult=function(a)
- {
-  return{
-   $:0,
-   $0:function(m)
-   {
-    return{
-     $:0,
-     $0:(ReaderMResult.getFun(a))(m)
-    };
-   }
-  };
- };
- ReaderMResult.apply=function(fR,vR)
- {
-  return ReaderMResult.bind(function(b)
-  {
-   return ReaderMResult.map(b,vR);
-  },fR);
- };
- ReaderMResult.map=function(f,m)
- {
-  return ReaderMResult.bind(function(x)
-  {
-   return ReaderMResult.rtn(f(x));
-  },m);
- };
- ReaderMResult.delayRun=function(f)
- {
-  return ReaderMResult.wrap(function(m)
-  {
-   return(ReaderMResult.getFun(f()))(m);
-  });
- };
- ReaderMResult.bindR=function(f,a)
- {
-  return ReaderMResult.bind(f,ReaderMResult.rtnR(a));
- };
- ReaderMResult.bind=function(f,a)
- {
-  return ReaderMResult.wrap(function(m)
-  {
-   return Result$1.Bind(function(v)
-   {
-    return(ReaderMResult.getFun(f(v)))(m);
-   },(ReaderMResult.getFun(a))(m));
-  });
- };
- ReaderMResult.rtnR=function(r)
- {
-  return ReaderMResult.wrap(function()
-  {
-   return r;
-  });
- };
- ReaderMResult.rtn=function(a)
- {
-  return ReaderMResult.wrap(function()
-  {
-   return Result.rtn(a);
-  });
- };
- ReaderMResult.ofFun=function(f)
- {
-  return ReaderMResult.wrap(function(x)
-  {
-   return Result.rtn(f(x));
-  });
- };
- ReaderMResult.getFun=function(f)
- {
-  return f.$0;
- };
- ReaderMResult.wrap=function(f)
- {
-  return{
-   $:0,
-   $0:f
-  };
- };
- Builder$4=ReaderMAsyncResult.Builder=Runtime.Class({
-  For:function(sequence,body)
-  {
-   var $this;
-   $this=this;
-   return this.Using(Enumerator.Get(sequence),function(_enum)
-   {
-    return $this.While(function()
-    {
-     return _enum.MoveNext();
-    },$this.Delay(function()
-    {
-     return body(_enum.Current());
-    }));
-   });
-  },
-  Using:function(disposable,body)
-  {
-   return ReaderMAsyncResult.wrap(function(r)
-   {
-    function g(a)
-    {
-     return ReaderMAsyncResult.run(r,a);
-    }
-    return Concurrency.Using(disposable,function(x)
-    {
-     return g(body(x));
-    });
-   });
-  },
-  TryFinally:function(body,compensation)
-  {
-   return ReaderMAsyncResult.wrap(function(r)
-   {
-    return Concurrency.TryFinally(ReaderMAsyncResult.run(r,body()),compensation);
-   });
-  },
-  TryWith:function(body,handler)
-  {
-   return ReaderMAsyncResult.wrap(function(r)
-   {
-    return Concurrency.TryWith(ReaderMAsyncResult.run(r,body()),handler);
-   });
-  },
-  While:function(guard,body)
-  {
-   function whileLoop(guard$1,body$1)
-   {
-    return guard$1()?ReaderMAsyncResult.bind(function()
-    {
-     return whileLoop(guard$1,body$1);
-    },body$1()):ReaderMAsyncResult.rtn();
-   }
-   return whileLoop(guard,body);
-  },
-  Run:function(f)
-  {
-   return ReaderMAsyncResult.delayRun(f);
-  },
-  Combine:function(a,b)
-  {
-   return ReaderMAsyncResult.bind(b,a);
-  },
-  Delay:Global.id,
-  Zero:function()
-  {
-   return ReaderMAsyncResult.rtn();
-  },
-  Bind:function(w,r)
-  {
-   return ReaderMAsyncResult.bindRmr(r,w);
-  },
-  Bind$1:function(w,r)
-  {
-   return ReaderMAsyncResult.bindRA(r,w);
-  },
-  Bind$2:function(w,r)
-  {
-   return ReaderMAsyncResult.bindR(r,w);
-  },
-  Bind$3:function(w,r)
-  {
-   return ReaderMAsyncResult.bind(r,w);
-  },
-  ReturnFrom:function(x)
-  {
-   return ReaderMAsyncResult.rtnRmr(x);
-  },
-  ReturnFrom$1:function(x)
-  {
-   return ReaderMAsyncResult.rtnRA(x);
-  },
-  ReturnFrom$2:function(x)
-  {
-   return ReaderMAsyncResult.rtnR(x);
-  },
-  ReturnFrom$3:Global.id,
-  Return:function(x)
-  {
-   return ReaderMAsyncResult.rtn(x);
-  }
- },Obj,Builder$4);
- Builder$4.New=Runtime.Ctor(function()
- {
-  Obj.New.call(this);
- },Builder$4);
- Extension["Builder.Bind"]=function(_this,w,r)
- {
-  return ReaderMAsyncResult.bindA(r,w);
- };
- Extension["Builder.ReturnFrom"]=function(_this,x)
- {
-  return ReaderMAsyncResult.rtnA(x);
- };
- Operators$4.reader=function()
- {
-  SC$1.$cctor();
-  return SC$1.reader$5;
- };
- Operators$4.rtn=function(v)
- {
-  return ReaderMAsyncResult.rtn(v);
- };
- Operators$4.op_GreaterEqualsGreater=function(f,g,v)
- {
-  return Operators$4.op_GreaterGreaterEquals(f(v),g);
- };
- Operators$4.op_RightShift=function(f,g,v)
- {
-  return Operators$4.op_BarGreaterGreater(f(v),g);
- };
- Operators$4.op_GreaterGreaterEquals=function(v,f)
- {
-  return ReaderMAsyncResult.bind(f,v);
- };
- Operators$4.op_BarGreaterGreater=function(v,f)
- {
-  return ReaderMAsyncResult.map(f,v);
- };
- Operators$4.op_LessMultiplyGreater=function(f,v)
- {
-  return ReaderMAsyncResult.apply(f,v);
- };
- ReaderMAsyncResult.reader=function()
- {
-  SC$1.$cctor();
-  return SC$1.reader$4;
- };
- ReaderMAsyncResult.memoizeRm=function(getCache,fRm,p)
- {
-  return ReaderMAsyncResult.wrap(function(r)
-  {
-   var p$1,o,x;
-   p$1=getCache(r);
-   o=p$1[0](p);
-   return o==null?(x=(ReaderMAsyncResult.getFun(fRm(p)))(r),(p$1[1](p))(x)):o.$0;
-  });
- };
- ReaderMAsyncResult.iterS=function(fE,f,t)
- {
-  function f$1(a)
-  {
-   return ReaderMAsyncResult.run(t,a);
-  }
-  function g(v)
-  {
-   AsyncResult.iterS(fE,f,v);
-  }
-  return function(x)
-  {
-   return g(f$1(x));
-  };
- };
- ReaderMAsyncResult.iterA=function(fE,f,t)
- {
-  function f$1(a)
-  {
-   return ReaderMAsyncResult.run(t,a);
-  }
-  function g(v)
-  {
-   AsyncResult.iterA(fE,f,v);
-  }
-  return function(x)
-  {
-   return g(f$1(x));
-  };
- };
- ReaderMAsyncResult.mapResource=function(fR,v)
- {
-  var g;
-  return ReaderMAsyncResult.wrap((g=ReaderMAsyncResult.getFun(v),function(x)
-  {
-   return g(fR(x));
-  }));
- };
- ReaderMAsyncResult.mapError=function(fE,v)
- {
-  var f;
-  function g(v$1)
-  {
-   return AsyncResult.mapError(fE,v$1);
-  }
-  return ReaderMAsyncResult.wrap((f=ReaderMAsyncResult.getFun(v),function(x)
-  {
-   return g(f(x));
-  }));
- };
- ReaderMAsyncResult.absorbO=function(f,vORm)
- {
-  return ReaderMAsyncResult.absorbR(ReaderMAsyncResult.map(function(v)
-  {
-   return Result.ofOption(f,v);
-  },vORm));
- };
- ReaderMAsyncResult.absorbR=function(vvRm)
- {
-  return ReaderMAsyncResult.bind(ReaderMAsyncResult.rtnR,vvRm);
- };
- ReaderMAsyncResult.insertSnd=function(vRm,snd)
- {
-  return ReaderMAsyncResult.map(function(v)
-  {
-   return[v,snd];
-  },vRm);
- };
- ReaderMAsyncResult.insertFst=function(fst,vRm)
- {
-  return ReaderMAsyncResult.map(function(v)
-  {
-   return[fst,v];
-  },vRm);
- };
- ReaderMAsyncResult.insertR=function(vvR)
- {
-  return vvR.$==0?ReaderMAsyncResult.map(function(a)
-  {
-   return{
-    $:0,
-    $0:a
-   };
-  },vvR.$0):ReaderMAsyncResult.rtn(Library.Error$1(vvR.$0));
- };
- ReaderMAsyncResult.insertO=function(vvO)
- {
-  var o;
-  o=vvO==null?null:{
-   $:1,
-   $0:ReaderMAsyncResult.map(function(a)
-   {
-    return{
-     $:1,
-     $0:a
-    };
-   },vvO.$0)
-  };
-  return o==null?ReaderMAsyncResult.rtn(null):o.$0;
- };
- ReaderMAsyncResult.sequenceSeq=function(sq)
- {
-  return ReaderMAsyncResult.traverseSeq(Global.id,sq);
- };
- ReaderMAsyncResult.traverseSeq=function(f,sq)
- {
-  return ReaderMAsyncResult.map(Global.id,Arrays.foldBack(function(head,tail)
-  {
-   return ReaderMAsyncResult.op_GreaterGreaterEquals(f(head),function(h)
-   {
-    return ReaderMAsyncResult.op_GreaterGreaterEquals(tail,function(t)
-    {
-     return ReaderMAsyncResult.rtn(new List.T({
-      $:1,
-      $0:h,
-      $1:t
-     }));
-    });
-   });
-  },Arrays.ofSeq(sq),ReaderMAsyncResult.rtn(List.T.Empty)));
- };
- ReaderMAsyncResult.op_GreaterGreaterEquals=function(v,f)
- {
-  return ReaderMAsyncResult.bind(f,v);
- };
- ReaderMAsyncResult.run=function(rsrc,a)
- {
-  return(ReaderMAsyncResult.getFun(a))(rsrc);
- };
- ReaderMAsyncResult.getAsyncResult=function(a)
- {
-  return{
-   $:0,
-   $0:function(m)
-   {
-    return AsyncResult.mapP(AsyncResult.rtn,(ReaderMAsyncResult.getFun(a))(m));
-   }
-  };
- };
- ReaderMAsyncResult.getAsync=function(a)
- {
-  return{
-   $:0,
-   $0:function(m)
-   {
-    return AsyncResult.mapP(function(v)
-    {
-     return Concurrency.Return(v);
-    },(ReaderMAsyncResult.getFun(a))(m));
-   }
-  };
- };
- ReaderMAsyncResult.getResult=function(a)
- {
-  return{
-   $:0,
-   $0:function(m)
-   {
-    function f(a$1)
-    {
-     return{
-      $:0,
-      $0:a$1
-     };
-    }
-    function g(v)
-    {
-     return Concurrency.Return(v);
-    }
-    return Concurrency.Bind((ReaderMAsyncResult.getFun(a))(m),function(x)
-    {
-     return g(f(x));
-    });
-   }
-  };
- };
- ReaderMAsyncResult.apply=function(fR,vR)
- {
-  return ReaderMAsyncResult.bind(function(b)
-  {
-   return ReaderMAsyncResult.map(b,vR);
-  },fR);
- };
- ReaderMAsyncResult.map=function(f,m)
- {
-  return ReaderMAsyncResult.bind(function(x)
-  {
-   return ReaderMAsyncResult.rtn(f(x));
-  },m);
- };
- ReaderMAsyncResult.delayRun=function(f)
- {
-  return ReaderMAsyncResult.wrap(function(m)
-  {
-   return(ReaderMAsyncResult.getFun(f()))(m);
-  });
- };
- ReaderMAsyncResult.bindRmr=function(f,a)
- {
-  return ReaderMAsyncResult.bind(f,ReaderMAsyncResult.rtnRmr(a));
- };
- ReaderMAsyncResult.bindRA=function(f,a)
- {
-  return ReaderMAsyncResult.bind(f,ReaderMAsyncResult.rtnRA(a));
- };
- ReaderMAsyncResult.bindA=function(f,a)
- {
-  return ReaderMAsyncResult.bind(f,ReaderMAsyncResult.rtnA(a));
- };
- ReaderMAsyncResult.bindR=function(f,a)
- {
-  return ReaderMAsyncResult.bind(f,ReaderMAsyncResult.rtnR(a));
- };
- ReaderMAsyncResult.bind=function(f,a)
- {
-  return ReaderMAsyncResult.wrap(function(m)
-  {
-   return AsyncResult.bindP(function(v)
-   {
-    return(ReaderMAsyncResult.getFun(f(v)))(m);
-   },(ReaderMAsyncResult.getFun(a))(m));
-  });
- };
- ReaderMAsyncResult.rtnRmr=function(r)
- {
-  return ReaderMAsyncResult.wrap(function(m)
-  {
-   return Concurrency.Return((ReaderMResult.getFun(r))(m));
-  });
- };
- ReaderMAsyncResult.rtnRA=function(r)
- {
-  return ReaderMAsyncResult.wrap(function()
-  {
-   return r;
-  });
- };
- ReaderMAsyncResult.rtnA=function(r)
- {
-  return ReaderMAsyncResult.wrap(function()
-  {
-   function f(a)
-   {
-    return{
-     $:0,
-     $0:a
-    };
-   }
-   function g(v)
-   {
-    return Concurrency.Return(v);
-   }
-   return Concurrency.Bind(r,function(x)
-   {
-    return g(f(x));
-   });
-  });
- };
- ReaderMAsyncResult.rtnR=function(r)
- {
-  return ReaderMAsyncResult.wrap(function()
-  {
-   return Concurrency.Return(r);
-  });
- };
- ReaderMAsyncResult.rtn=function(a)
- {
-  return ReaderMAsyncResult.wrap(function()
-  {
-   return AsyncResult.rtn(a);
-  });
- };
- ReaderMAsyncResult.ofFun=function(f)
- {
-  return ReaderMAsyncResult.wrap(function(x)
-  {
-   return AsyncResult.rtn(f(x));
-  });
- };
- ReaderMAsyncResult.getFun=function(f)
- {
-  return f.$0;
- };
- ReaderMAsyncResult.wrap=function(f)
- {
-  return{
-   $:0,
-   $0:f
-  };
- };
  Monads.asyncResultP=function()
  {
   SC$1.$cctor();
@@ -2846,54 +2742,6 @@
  {
   SC$1.$cctor();
   return SC$1.asyncResult;
- };
- Monads.OkM=function(r)
- {
-  return r.$0==null?{
-   $:1,
-   $0:r.$1
-  }:{
-   $:0,
-   $0:[r.$0.$0,r.$1]
-  };
- };
- Monads.ErrorMWithMsgs=function(ms)
- {
-  return Monads.ErrorM(ResultMessage.addMsgs(ResultMessage.NoMsg,ms));
- };
- Monads.ErrorM=function(m)
- {
-  return{
-   $:0,
-   $0:null,
-   $1:m
-  };
- };
- Monads.OkMWithMsgs=function(v,ms)
- {
-  return Monads.OkMWithMsg(v,ResultMessage.addMsgs(ResultMessage.NoMsg,ms));
- };
- Monads.OkMWithMsg=function(v,m)
- {
-  return{
-   $:0,
-   $0:{
-    $:1,
-    $0:v
-   },
-   $1:m
-  };
- };
- Monads.OkM$1=function(v)
- {
-  return{
-   $:0,
-   $0:{
-    $:1,
-    $0:v
-   },
-   $1:ResultMessage.NoMsg
-  };
  };
  String.EndsWith$1=function(ends,s)
  {
@@ -3445,25 +3293,46 @@
  },ResourceAgent);
  AgentReaderM.runSameConfig=function(agent,m)
  {
-  return ReaderMAsyncResult.run([agent,agent.get_Configuration()],m);
+  return FusionAsyncM.runReader([agent,agent.get_Configuration()],m);
  };
  AgentReaderM.run=function(agent,cfg,m)
  {
-  return ReaderMAsyncResult.run([agent,cfg],m);
+  return FusionAsyncM.runReader([agent,cfg],m);
  };
- AgentReaderM.fromResourceRm=function(f)
+ AgentReaderM.ofResourceRm=function(a)
  {
-  return ReaderMAsyncResult.wrap(function(t)
-  {
-   return t[0].AsyncProcessA(ReaderMAsyncResult.getFun(f),{
-    $:1,
-    $0:t[1]
-   });
-  });
+  var f;
+  f=a.$0;
+  return{
+   $:0,
+   $0:function(t)
+   {
+    var a$1,m,cfg,agent;
+    a$1=t[0];
+    m=t[1];
+    cfg=a$1[1];
+    agent=a$1[0];
+    return agent.AsyncProcessA(function(resource)
+    {
+     var b;
+     b=null;
+     return Concurrency.Delay(function()
+     {
+      return Concurrency.Bind(f([resource,m]),function(a$2)
+      {
+       return Concurrency.Return([a$2[0],[agent,cfg],a$2[2]]);
+      });
+     });
+    },{
+     $:1,
+     $0:cfg
+    });
+   }
+  };
  };
  AgentReaderM.createAgentRm=function(f,v)
  {
-  return ReaderMAsyncResult.ofFun(function(t)
+  return Operators$2.op_GreaterGreaterEquals(FusionAsyncM.readerFun(function(t)
   {
    return t[0].AsyncProcessA(function(resource)
    {
@@ -3472,7 +3341,7 @@
     $:1,
     $0:t[1]
    });
-  });
+  }),FusionAsyncM.ofAsync);
  };
  CommArg.New=function(cargId,name,unique,build)
  {
@@ -3509,15 +3378,15 @@
  },null,TypedCommArg);
  TypedCommArg.op_DivisionAssignment=function(arg,f)
  {
-  return[arg.$0,ReaderMResult.map(Global.id,ReaderMResult.ofFun(f))];
+  return[arg.$0,Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(FusionM.getS(),f),Global.id)];
  };
  TypedCommArg.op_DivisionAssignment$1=function(arg,v)
  {
-  return[arg.$0,ReaderMResult.map(Global.id,v)];
+  return[arg.$0,Operators$1.op_BarGreaterGreater(v,Global.id)];
  };
  TypedCommArg.op_DivisionAssignment$2=function(arg,v)
  {
-  return[arg.$0,ReaderMResult.map(Global.id,ReaderMResult.rtn(v))];
+  return[arg.$0,Operators$1.op_BarGreaterGreater(Operators$1.rtn(v),Global.id)];
  };
  CommArgModule.getFloatR=function(a,o)
  {
@@ -3566,7 +3435,7 @@
  CommArgModule.argumentRm=function(a,vRm)
  {
   var b;
-  b=Operators$3.reader();
+  b=FusionM.fusion();
   return b.Run(b.Delay(function()
   {
    return b.Bind(vRm,function(a$1)
@@ -3672,40 +3541,66 @@
    }:Global.id)(a.$0),List.ofArray([[commArg,vRm]])))
   });
  };
+ CommArgCollection.getBoolR=function(def,targ,args)
+ {
+  var t,m;
+  t=FusionM.run(args,CommArgCollection.getBoolRm(def,targ));
+  m=t[2];
+  return Result.ofOption(function()
+  {
+   return m;
+  },t[0]);
+ };
  CommArgCollection.getBoolRm=function(def,targ)
  {
-  return Operators$3.op_BarGreaterGreater(CommArgCollection.tryGetBoolORm(targ),function(o)
+  return Operators$1.op_BarGreaterGreater(CommArgCollection.tryGetBoolORm(targ),function(o)
   {
    return o==null?def:o.$0;
   });
  };
  CommArgCollection.getFloatRm=function(targ)
  {
-  return ReaderMResult.absorbO(function()
+  function f()
   {
    return CommArgCollection.argumentNotFound(targ,void 0);
-  },CommArgCollection.tryGetFloatORm(targ));
+  }
+  return Operators$1.op_GreaterGreaterEquals(CommArgCollection.tryGetFloatORm(targ),function(o)
+  {
+   return FusionM.ofOption(f,o);
+  });
  };
  CommArgCollection.getStringRm=function(targ)
  {
-  return ReaderMResult.absorbO(function()
+  function f()
   {
    return CommArgCollection.argumentNotFound(targ,void 0);
-  },CommArgCollection.tryGetStringORm(targ));
+  }
+  return Operators$1.op_GreaterGreaterEquals(CommArgCollection.tryGetStringORm(targ),function(o)
+  {
+   return FusionM.ofOption(f,o);
+  });
  };
  CommArgCollection.getIntRm=function(targ)
  {
-  return ReaderMResult.absorbO(function()
+  function f()
   {
    return CommArgCollection.argumentNotFound(targ,void 0);
-  },CommArgCollection.tryGetIntORm(targ));
+  }
+  return Operators$1.op_GreaterGreaterEquals(CommArgCollection.tryGetIntORm(targ),function(o)
+  {
+   return FusionM.ofOption(f,o);
+  });
  };
  CommArgCollection.findArgRm=function(targ)
  {
-  return ReaderMResult.absorbO(function()
+  function f()
   {
    return CommArgCollection.argumentNotFound(targ,void 0);
-  },CommArgCollection.tryFindArgORm(targ));
+  }
+  return Operators$1.op_GreaterGreaterEquals(CommArgCollection.tryFindArgORm(targ),function(o)
+  {
+   return FusionM.ofOption(f,o);
+  });
  };
  CommArgCollection.tryGetFloatORm=function(targ)
  {
@@ -3713,14 +3608,14 @@
   {
    return CommArgModule.getFloatR(targ,o);
   }
-  return ReaderMResult.absorbR(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(CommArgCollection.tryFindArgORm(targ),function(o)
+  return Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(CommArgCollection.tryFindArgORm(targ),function(o)
   {
    var $1;
    return o==null?null:{
     $:1,
     $0:($1=o.$0,m($1[0],$1[1]))
    };
-  }),Result.insertO));
+  }),Result.insertO),FusionM.ofResultRM);
  };
  CommArgCollection.tryGetBoolORm=function(targ)
  {
@@ -3728,14 +3623,14 @@
   {
    return CommArgModule.getBoolR(targ,o);
   }
-  return ReaderMResult.absorbR(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(CommArgCollection.tryFindArgORm(targ),function(o)
+  return Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(CommArgCollection.tryFindArgORm(targ),function(o)
   {
    var $1;
    return o==null?null:{
     $:1,
     $0:($1=o.$0,m($1[0],$1[1]))
    };
-  }),Result.insertO));
+  }),Result.insertO),FusionM.ofResultRM);
  };
  CommArgCollection.tryGetStringORm=function(targ)
  {
@@ -3743,14 +3638,14 @@
   {
    return CommArgModule.getStringR(targ,o);
   }
-  return ReaderMResult.absorbR(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(CommArgCollection.tryFindArgORm(targ),function(o)
+  return Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(CommArgCollection.tryFindArgORm(targ),function(o)
   {
    var $1;
    return o==null?null:{
     $:1,
     $0:($1=o.$0,m($1[0],$1[1]))
    };
-  }),Result.insertO));
+  }),Result.insertO),FusionM.ofResultRM);
  };
  CommArgCollection.tryGetIntORm=function(targ)
  {
@@ -3758,25 +3653,25 @@
   {
    return CommArgModule.getIntR(targ,o);
   }
-  return ReaderMResult.absorbR(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(CommArgCollection.tryFindArgORm(targ),function(o)
+  return Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(CommArgCollection.tryFindArgORm(targ),function(o)
   {
    var $1;
    return o==null?null:{
     $:1,
     $0:($1=o.$0,m($1[0],$1[1]))
    };
-  }),Result.insertO));
+  }),Result.insertO),FusionM.ofResultRM);
  };
  CommArgCollection.tryFindArgORm=function(targ)
  {
-  return ReaderMResult.bind(Global.id,ReaderMResult.ofFun(function(coll)
+  return Operators$1.op_GreaterGreaterEquals(FusionM.readerFun(function(coll)
   {
    var o,$1;
-   return ReaderMResult.insertO((o=CommArgCollection.tryFindArgO(targ,coll),o==null?null:{
+   return FusionM.insertO((o=CommArgCollection.tryFindArgO(targ,coll),o==null?null:{
     $:1,
-    $0:($1=o.$0,ReaderMResult.insertFst($1[0],$1[1]))
+    $0:($1=o.$0,FusionM.insertFst($1[0],$1[1]))
    }));
-  }));
+  }),Global.id);
  };
  CommArgCollection.tryFindArgO=function(a,a$1)
  {
@@ -3802,7 +3697,7 @@
  };
  CommArgCollection.containsAnyOfRm=function(ids)
  {
-  return ReaderMResult.ofFun(function(a)
+  return FusionM.readerFun(function(a)
   {
    function p(a$1,a$2)
    {
@@ -3816,9 +3711,9 @@
  };
  CommArgCollection.argumentsRm=function(filter)
  {
-  return Operators$3.op_GreaterGreaterEquals(CommArgCollection.filterRm(filter),function(s)
+  return Operators$1.op_GreaterGreaterEquals(CommArgCollection.filterRm(filter),function(s)
   {
-   return ReaderMResult.traverseSeq(function($1)
+   return FusionM.traverseSeq(function($1)
    {
     return CommArgModule.argumentTRm($1[0],$1[1]);
    },s);
@@ -3826,21 +3721,21 @@
  };
  CommArgCollection.filterRm=function(p)
  {
-  return ReaderMResult.ofFun(function(a)
+  return FusionM.readerFun(function(a)
   {
    return Seq$1.filter(p,a.$0);
   });
  };
  CommArgCollection.existsRm=function(f)
  {
-  return ReaderMResult.ofFun(function(a)
+  return FusionM.readerFun(function(a)
   {
    return Seq$1.exists(f,a.$0);
   });
  };
  CommArgCollection.argsRm=function()
  {
-  return ReaderMResult.ofFun(function(a)
+  return FusionM.readerFun(function(a)
   {
    return a.$0;
   });
@@ -4070,21 +3965,21 @@
  };
  SnippetModule.codeFsxRm=function(curId)
  {
-  return ReaderMResult.map(function(t)
-  {
-   return t[0];
-  },SnippetModule.fastCodeRm({
+  return Operators$1.op_BarGreaterGreater(SnippetModule.fastCodeRm({
    $:1,
    $0:curId
   },{
    $:1,
    $0:curId
-  }));
+  }),function(t)
+  {
+   return t[0];
+  });
  };
  SnippetModule.fastCodeRm=function(curIdO,lastIdO)
  {
   var b;
-  b=Operators$3.reader();
+  b=FusionM.fusion();
   return b.Run(b.Delay(function()
   {
    return b.Bind(SnippetModule.fastReducedRm(curIdO,lastIdO),function(a)
@@ -4096,15 +3991,15 @@
  SnippetModule.fastReducedRm=function(curIdO,lastIdO)
  {
   var b;
-  b=Operators$3.reader();
+  b=FusionM.fusion();
   return b.Run(b.Delay(function()
   {
-   return b.Bind(ReaderMResult.insertO(curIdO==null?null:{
+   return b.Bind(FusionM.insertO(curIdO==null?null:{
     $:1,
     $0:SnippetModule.snippetORm(curIdO.$0)
    }),function(a)
    {
-    return b.Bind(ReaderMResult.insertO(lastIdO==null?null:{
+    return b.Bind(FusionM.insertO(lastIdO==null?null:{
      $:1,
      $0:SnippetModule.snippetORm(lastIdO.$0)
     }),function(a$1)
@@ -4112,7 +4007,7 @@
      var $1,$2,$3,curSnippet;
      $1=a==null?null:a.$0;
      $2=a$1==null?null:a$1.$0;
-     return($2!=null&&$2.$==1?$1!=null&&$1.$==1?($3=[$1.$0,$2.$0],false):true:true)?b.ReturnFrom$1(SnippetModule.reducedCodeRm([])):(curSnippet=$3[0],b.Bind(SnippetModule.uniquePredsRm($3[1]),function(a$2)
+     return($2!=null&&$2.$==1?$1!=null&&$1.$==1?($3=[$1.$0,$2.$0],false):true:true)?b.ReturnFrom(SnippetModule.reducedCodeRm([])):(curSnippet=$3[0],b.Bind(SnippetModule.uniquePredsRm($3[1]),function(a$2)
      {
       var preds;
       preds=new FSharpSet.New(a$2);
@@ -4155,20 +4050,29 @@
  };
  SnippetModule.reducedOthersORmMemo=function()
  {
-  SC$1.$cctor();
-  return SC$1.reducedOthersORmMemo;
+  function g(c)
+  {
+   return c.reducedCache();
+  }
+  return function(p)
+  {
+   return FusionM.memoizeRm(g,function($1)
+   {
+    return SnippetModule.reducedOthersORm($1[0],$1[1],$1[2]);
+   },p);
+  };
  };
  SnippetModule.reducedOthersORm=function(before,snpId,snpIds)
  {
   var b;
-  b=Operators$3.reader();
+  b=FusionM.fusion();
   return b.Run(b.Delay(function()
   {
    function p(snp)
    {
     return!Unchecked.Equals(snp.snpId,snpId)&&snpIds.Contains(snp.snpId);
    }
-   return b.Bind(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(SnippetModule.orderedRm(),(before?function(p$1)
+   return b.Bind(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(SnippetModule.orderedRm(),(before?function(p$1)
    {
     return function(s)
     {
@@ -4255,10 +4159,10 @@
  SnippetModule.reducedCodeRm=function(snippets)
  {
   var b;
-  b=Operators$3.reader();
+  b=FusionM.fusion();
   return b.Run(b.Delay(function()
   {
-   return b.Bind(ReaderMResult.traverseSeq(SnippetModule.separateCodeRm,snippets),function(a)
+   return b.Bind(FusionM.traverseSeq(SnippetModule.separateCodeRm,snippets),function(a)
    {
     var t;
     return b.Return((t=Seq$1.reduce(function($1,$2)
@@ -4289,7 +4193,7 @@
  SnippetModule.separateCodeRm=function(snp)
  {
   var b;
-  b=Operators$3.reader();
+  b=FusionM.fusion();
   return b.Run(b.Delay(function()
   {
    return b.Bind(SnippetModule.indentRm(snp),function(a)
@@ -4327,13 +4231,13 @@
   function ancestorsRm2(snp$1,lst)
   {
    var b;
-   b=Operators$3.reader();
+   b=FusionM.fusion();
    return b.Run(b.Delay(function()
    {
     return b.Bind(SnippetModule.parentORm(snp$1),function(a)
     {
      var p;
-     return a==null?b.Return(lst):(p=a.$0,b.ReturnFrom$1(ancestorsRm2(p,new List.T({
+     return a==null?b.Return(lst):(p=a.$0,b.ReturnFrom(ancestorsRm2(p,new List.T({
       $:1,
       $0:p,
       $1:lst
@@ -4348,12 +4252,12 @@
   function levelRm2(snp$1,lv)
   {
    var b;
-   b=Operators$3.reader();
+   b=FusionM.fusion();
    return b.Run(b.Delay(function()
    {
     return b.Bind(SnippetModule.parentORm(snp$1),function(a)
     {
-     return a!=null&&a.$==1?b.ReturnFrom$1(levelRm2(a.$0,lv+1)):b.Return(lv);
+     return a!=null&&a.$==1?b.ReturnFrom(levelRm2(a.$0,lv+1)):b.Return(lv);
     });
    }));
   }
@@ -4364,7 +4268,7 @@
   function indentMeChildNextRm(snp$1)
   {
    var b;
-   b=Operators$3.reader();
+   b=FusionM.fusion();
    return b.Run(b.Delay(function()
    {
     var p,a,nextO,currO;
@@ -4383,15 +4287,15 @@
     });
    }));
   }
-  return ReaderMResult.map(function(t)
+  return Operators$1.op_BarGreaterGreater(indentMeChildNextRm(snp),function(t)
   {
    return t[0];
-  },indentMeChildNextRm(snp));
+  });
  };
  SnippetModule.propertyHierORm=function(n,snp)
  {
   var b;
-  b=Operators$3.reader();
+  b=FusionM.fusion();
   return b.Run(b.Delay(function()
   {
    var m,vs;
@@ -4415,16 +4319,16 @@
  SnippetModule.modifiedRecRm=function(snp)
  {
   var b;
-  b=Operators$3.reader();
+  b=FusionM.fusion();
   return b.Run(b.Delay(function()
   {
    return b.Bind(SnippetModule.modifiedRm(snp),function(a)
    {
     return a?b.Return(true):b.Bind(SnippetModule.uniquePredsRm(snp),function(a$1)
     {
-     return b.Bind(ReaderMResult.sequenceSeq(Seq$1.map(SnippetModule.snippetORm,a$1)),function(a$2)
+     return b.Bind(FusionM.sequenceSeq(Seq$1.map(SnippetModule.snippetORm,a$1)),function(a$2)
      {
-      return b.Bind(ReaderMResult.sequenceSeq(Seq$1.map(SnippetModule.modifiedRm,Seq$1.choose(Global.id,a$2))),function(a$3)
+      return b.Bind(FusionM.sequenceSeq(Seq$1.map(SnippetModule.modifiedRm,Seq$1.choose(Global.id,a$2))),function(a$3)
       {
        return b.Return(Seq$1.contains(true,a$3));
       });
@@ -4439,13 +4343,19 @@
  };
  SnippetModule.predsLRmMemo=function()
  {
-  SC$1.$cctor();
-  return SC$1.predsLRmMemo;
+  function g(c)
+  {
+   return c.predecesorsCache();
+  }
+  return function(p)
+  {
+   return FusionM.memoizeRm(g,SnippetModule.predsLRm,p);
+  };
  };
  SnippetModule.predsLRm=function(sid)
  {
   var b;
-  b=Operators$3.reader();
+  b=FusionM.fusion();
   return b.Run(b.Delay(function()
   {
    var ins,outs;
@@ -4484,7 +4394,7 @@
  SnippetModule.snippetFromPathORm=function(pth)
  {
   var b;
-  b=Operators$3.reader();
+  b=FusionM.fusion();
   return b.Run(b.Delay(function()
   {
    return b.Bind(SnippetModule.orderedRm(),function(a)
@@ -4520,7 +4430,7 @@
   var v;
   function m(prn)
   {
-   return Operators$3.op_BarGreaterGreater(SnippetModule.pathRm(prn.snpId),function(rest)
+   return Operators$1.op_BarGreaterGreater(SnippetModule.pathRm(prn.snpId),function(rest)
    {
     return new List.T({
      $:1,
@@ -4529,13 +4439,13 @@
     });
    });
   }
-  return Operators$3.op_BarGreaterGreater(Operators$3.op_GreaterGreaterEquals(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(Operators$3.op_GreaterGreaterEquals(Operators$3.op_BarGreaterGreater(SnippetModule.snippetORm(sid),function(o)
+  return Operators$1.op_BarGreaterGreater(Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(SnippetModule.snippetORm(sid),function(o)
   {
    return o==null?null:{
     $:1,
     $0:SnippetModule.parentORm(o.$0)
    };
-  }),ReaderMResult.insertO),function(o)
+  }),FusionM.insertO),function(o)
   {
    return o==null?null:Global.id(o.$0);
   }),function(o)
@@ -4544,14 +4454,14 @@
     $:1,
     $0:m(o.$0)
    };
-  }),ReaderMResult.insertO),(v=List.T.Empty,function(o)
+  }),FusionM.insertO),(v=List.T.Empty,function(o)
   {
    return o==null?v:o.$0;
   }));
  };
  SnippetModule.snippetRm=function(sid)
  {
-  return ReaderMResult.absorbO(function()
+  return FusionM.absorbO(function()
   {
    return new ResultMessage({
     $:1,
@@ -4567,21 +4477,21 @@
  };
  SnippetModule.prepareCodeRm=function(snp)
  {
-  return ReaderMResult.ofFun(function(a)
+  return FusionM.readerFun(function(a)
   {
    return a.prepCode(snp);
   });
  };
  SnippetModule.orderedRm=function()
  {
-  return ReaderMResult.ofFun(function(a)
+  return FusionM.readerFun(function(a)
   {
    return a.ordered;
   });
  };
  SnippetModule.childrenRm=function(sid)
  {
-  return ReaderMResult.ofFun(function(a)
+  return FusionM.readerFun(function(a)
   {
    return Seq$1.filter(function(s)
    {
@@ -4594,14 +4504,14 @@
  };
  SnippetModule.modifiedRm=function(snp)
  {
-  return ReaderMResult.ofFun(function(a)
+  return FusionM.readerFun(function(a)
   {
    return snp.snpGeneration>a.generation;
   });
  };
  SnippetModule.maxGenerationRm=function()
  {
-  return ReaderMResult.ofFun(function(a)
+  return FusionM.readerFun(function(a)
   {
    return Seq$1.max(Seq$1.map(function(s)
    {
@@ -4611,14 +4521,14 @@
  };
  SnippetModule.predecessorsRm=function(snp)
  {
-  return ReaderMResult.ofFun(function(a)
+  return FusionM.readerFun(function(a)
   {
    return Seq$1.choose(a.fetcher,snp.snpPredIds);
   });
  };
  SnippetModule.parentORm=function(snp)
  {
-  return ReaderMResult.ofFun(function(a)
+  return FusionM.readerFun(function(a)
   {
    var o;
    o=snp.snpParentIdO;
@@ -4627,7 +4537,7 @@
  };
  SnippetModule.snippetORm=function(sid)
  {
-  return ReaderMResult.ofFun(function(a)
+  return FusionM.readerFun(function(a)
   {
    return a.fetcher(sid);
   });
@@ -4714,12 +4624,12 @@
   var s;
   function f(nodes$1,node$1)
   {
-   return Operators$3.op_GreaterGreaterEquals(nodes$1,function(n)
+   return Operators$1.op_GreaterGreaterEquals(nodes$1,function(n)
    {
     return TreeReader.outdentNode(node$1,n);
    });
   }
-  return Operators$3.op_GreaterGreaterEquals(Operators$3.op_GreaterGreaterEquals(Operators$3.op_BarGreaterGreater(node.childrenRm(),Arrays.ofSeq),(s=Operators$3.rtn(nodes),function(s$1)
+  return Operators$1.op_GreaterGreaterEquals(Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(node.childrenRm(),Arrays.ofSeq),(s=Operators$1.rtn(nodes),function(s$1)
   {
    return Seq$1.fold(f,s,s$1);
   })),function(n)
@@ -4734,13 +4644,13 @@
   {
    return TreeReader.moveToSibling(true,node,parent,nodes);
   }
-  return Operators$3.op_GreaterGreaterEquals(Operators$3.op_BarGreaterGreater(node.parentORm(nodes),function(o)
+  return Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(node.parentORm(nodes),function(o)
   {
    return o==null?null:{
     $:1,
     $0:m(o.$0)
    };
-  }),(v=Operators$3.rtn(nodes),function(o)
+  }),(v=Operators$1.rtn(nodes),function(o)
   {
    return o==null?v:o.$0;
   }));
@@ -4754,41 +4664,41 @@
   }
   function f(newParentORm,n)
   {
-   return Operators$3.op_GreaterGreaterEquals(n.canHaveChildrenRm(),function(can)
+   return Operators$1.op_GreaterGreaterEquals(n.canHaveChildrenRm(),function(can)
    {
-    return can?Operators$3.rtn({
+    return can?Operators$1.rtn({
      $:1,
      $0:n
     }):newParentORm;
    });
   }
-  return Operators$3.op_GreaterGreaterEquals(Operators$3.op_GreaterGreaterEquals(Operators$3.op_BarGreaterGreater(Operators$3.op_GreaterGreaterEquals(node.parentORm(nodes),function(a)
+  return Operators$1.op_GreaterGreaterEquals(Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(Operators$1.op_GreaterGreaterEquals(node.parentORm(nodes),function(a)
   {
-   return a!=null&&a.$==1?Operators$3.op_BarGreaterGreater(a.$0.childrenRm(),function(x)
+   return a!=null&&a.$==1?Operators$1.op_BarGreaterGreater(a.$0.childrenRm(),function(x)
    {
     var s$1;
     s$1=Arrays.ofSeq(x);
     return s$1;
-   }):Operators$3.rtn(nodes);
+   }):Operators$1.rtn(nodes);
   }),function(s$1)
   {
    return Seq$1.takeWhile(p,s$1);
-  }),(s=Operators$3.rtn(null),function(s$1)
+  }),(s=Operators$1.rtn(null),function(s$1)
   {
    return Seq$1.fold(f,s,s$1);
   })),function(a)
   {
    var newParent;
-   return a!=null&&a.$==1?(newParent=a.$0,Operators$3.op_GreaterGreaterEquals(TreeReader.removeNode(node,nodes),function(n)
+   return a!=null&&a.$==1?(newParent=a.$0,Operators$1.op_GreaterGreaterEquals(TreeReader.removeNode(node,nodes),function(n)
    {
     return TreeReader.addChild(true,node,newParent,n);
-   })):Operators$3.rtn(nodes);
+   })):Operators$1.rtn(nodes);
   });
  };
  TreeReader.addChild=function(append,node,parentN,nodes)
  {
   var b;
-  b=Operators$3.reader();
+  b=FusionM.fusion();
   return b.Run(b.Delay(function()
   {
    return b.Bind(parentN.pathRm(),function(a)
@@ -4796,25 +4706,25 @@
     function mapAppend(n)
     {
      var a$1,s;
-     return Unchecked.Equals(n.id(),parentN.id())?append?Operators$3.op_GreaterGreaterEquals(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(n.childrenRm(),Arrays.ofSeq),(a$1=List.ofArray([node]),function(b$1)
+     return Unchecked.Equals(n.id(),parentN.id())?append?Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(n.childrenRm(),Arrays.ofSeq),(a$1=List.ofArray([node]),function(b$1)
      {
       return Seq$1.append(b$1,a$1);
-     })),Arrays.ofSeq),n.newChildrenRm):Operators$3.op_GreaterGreaterEquals(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(n.childrenRm(),Arrays.ofSeq),(s=List.ofArray([node]),function(s$1)
+     })),Arrays.ofSeq),n.newChildrenRm):Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(n.childrenRm(),Arrays.ofSeq),(s=List.ofArray([node]),function(s$1)
      {
       return Seq$1.append(s,s$1);
-     })),Arrays.ofSeq),n.newChildrenRm):List.contains(n.id(),a)?Operators$3.op_GreaterGreaterEquals(Operators$3.op_BarGreaterGreater(Operators$3.op_GreaterGreaterEquals(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(n.childrenRm(),Arrays.ofSeq),function(s$1)
+     })),Arrays.ofSeq),n.newChildrenRm):List.contains(n.id(),a)?Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(n.childrenRm(),Arrays.ofSeq),function(s$1)
      {
       return Seq$1.map(mapAppend,s$1);
-     }),ReaderMResult.sequenceSeq),Arrays.ofSeq),n.newChildrenRm):Operators$3.rtn(n);
+     }),FusionM.sequenceSeq),Arrays.ofSeq),n.newChildrenRm):Operators$1.rtn(n);
     }
-    return b.ReturnFrom$1(ReaderMResult.sequenceSeq(Seq$1.map(mapAppend,nodes)));
+    return b.ReturnFrom(FusionM.sequenceSeq(Seq$1.map(mapAppend,nodes)));
    });
   }));
  };
  TreeReader.moveToSibling2=function(after,nodeId,siblingId,nodes)
  {
   var b;
-  b=Operators$3.reader();
+  b=FusionM.fusion();
   return b.Run(b.Delay(function()
   {
    return b.Bind(TreeReader.tryFindId(nodeId,nodes),function(a)
@@ -4822,14 +4732,14 @@
     var node;
     return a!=null&&a.$==1?(node=a.$0,b.Bind(TreeReader.tryFindId(siblingId,nodes),function(a$1)
     {
-     return a$1!=null&&a$1.$==1?b.ReturnFrom$1(TreeReader.moveToSibling(after,node,a$1.$0,nodes)):b.Return(nodes);
+     return a$1!=null&&a$1.$==1?b.ReturnFrom(TreeReader.moveToSibling(after,node,a$1.$0,nodes)):b.Return(nodes);
     })):b.Return(nodes);
    });
   }));
  };
  TreeReader.moveToSibling=function(after,node,sibling,nodes)
  {
-  return Operators$3.op_GreaterGreaterEquals(TreeReader.removeNode(node,nodes),function(n)
+  return Operators$1.op_GreaterGreaterEquals(TreeReader.removeNode(node,nodes),function(n)
   {
    return TreeReader.addSibling(after,node,sibling,n);
   });
@@ -4845,22 +4755,22 @@
  {
   function folder(resRm,node)
   {
-   return Operators$3.op_GreaterGreaterEquals(resRm,function(a)
+   return Operators$1.op_GreaterGreaterEquals(resRm,function(a)
    {
     var s;
-    return a==null?p(node)?Operators$3.rtn({
+    return a==null?p(node)?Operators$1.rtn({
      $:1,
      $0:node
-    }):Operators$3.op_GreaterGreaterEquals(node.childrenRm(),(s=Operators$3.rtn(null),function(s$1)
+    }):Operators$1.op_GreaterGreaterEquals(node.childrenRm(),(s=Operators$1.rtn(null),function(s$1)
     {
      return Seq$1.fold(folder,s,s$1);
-    })):Operators$3.rtn({
+    })):Operators$1.rtn({
      $:1,
      $0:a.$0
     });
    });
   }
-  return Seq$1.fold(folder,Operators$3.rtn(null),nodes);
+  return Seq$1.fold(folder,Operators$1.rtn(null),nodes);
  };
  TreeReader.addSibling=function(after,node,sibling,nodes)
  {
@@ -4868,20 +4778,20 @@
   {
    return Unchecked.Equals(n.id(),sibling.id());
   }
-  return Operators$3.op_GreaterGreaterEquals(sibling.pathRm(),function(a)
+  return Operators$1.op_GreaterGreaterEquals(sibling.pathRm(),function(a)
   {
    var path,parent;
    function mapAdd(n)
    {
-    return Unchecked.Equals(n.id(),parent)?Operators$3.op_GreaterGreaterEquals(Operators$3.op_BarGreaterGreater(n.childrenRm(),Arrays.ofSeq),function(n$1)
+    return Unchecked.Equals(n.id(),parent)?Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(n.childrenRm(),Arrays.ofSeq),function(n$1)
     {
      return TreeReader.addToParent(after,theSibling,node,n,n$1);
-    }):List.contains(n.id(),path)?Operators$3.op_GreaterGreaterEquals(Operators$3.op_BarGreaterGreater(Operators$3.op_GreaterGreaterEquals(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(n.childrenRm(),Arrays.ofSeq),function(s)
+    }):List.contains(n.id(),path)?Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(n.childrenRm(),Arrays.ofSeq),function(s)
     {
      return Seq$1.map(mapAdd,s);
-    }),ReaderMResult.sequenceSeq),Arrays.ofSeq),n.newChildrenRm):Operators$3.rtn(n);
+    }),FusionM.sequenceSeq),Arrays.ofSeq),n.newChildrenRm):Operators$1.rtn(n);
    }
-   return a.$==1?(path=a.$1,(parent=a.$0,ReaderMResult.sequenceSeq(Seq$1.map(mapAdd,nodes)))):Operators$3.rtn(TreeReader.addNodeToSeq(after,theSibling,node,nodes));
+   return a.$==1?(path=a.$1,(parent=a.$0,FusionM.sequenceSeq(Seq$1.map(mapAdd,nodes)))):Operators$1.rtn(TreeReader.addNodeToSeq(after,theSibling,node,nodes));
   });
  };
  TreeReader.addToParent=function(after,p,node,parent,nodes)
@@ -4907,13 +4817,13 @@
  TreeReader.removeNodes=function(p,nodes)
  {
   var b;
-  b=Operators$3.reader();
+  b=FusionM.fusion();
   return b.Run(b.Delay(function()
   {
    function folder(pair,n)
    {
     var b$1;
-    b$1=Operators$3.reader();
+    b$1=FusionM.fusion();
     return b$1.Run(b$1.Delay(function()
     {
      return b$1.Bind(pair,function(a)
@@ -4921,9 +4831,9 @@
       var noparent,children;
       noparent=a[1];
       children=a[0];
-      return b$1.Bind(Operators$3.op_BarGreaterGreater(n.childrenRm(),Arrays.ofSeq),function(a$1)
+      return b$1.Bind(Operators$1.op_BarGreaterGreater(n.childrenRm(),Arrays.ofSeq),function(a$1)
       {
-       return b$1.Bind(Seq$1.fold(folder,Operators$3.rtn([List.T.Empty,noparent]),a$1),function(a$2)
+       return b$1.Bind(Seq$1.fold(folder,Operators$1.rtn([List.T.Empty,noparent]),a$1),function(a$2)
        {
         var np,ch;
         np=a$2[1];
@@ -4941,7 +4851,7 @@
      });
     }));
    }
-   return b.Bind(Seq$1.fold(folder,Operators$3.rtn([List.T.Empty,List.T.Empty]),nodes),function(a)
+   return b.Bind(Seq$1.fold(folder,Operators$1.rtn([List.T.Empty,List.T.Empty]),nodes),function(a)
    {
     return b.Return(List.rev(List.append(a[1],a[0])));
    });
@@ -4950,7 +4860,7 @@
  TreeReader.removeNode=function(node,nodes)
  {
   var b;
-  b=Operators$3.reader();
+  b=FusionM.fusion();
   return b.Run(b.Delay(function()
   {
    return b.Bind(node.pathRm(),function(a)
@@ -4958,13 +4868,13 @@
     function chRemove(n)
     {
      var b$1;
-     b$1=Operators$3.reader();
+     b$1=FusionM.fusion();
      return b$1.Run(b$1.Delay(function()
      {
-      return Unchecked.Equals(n.id(),node.id())?b$1.Return(null):List.contains(n.id(),a)?b$1.ReturnFrom$1(Operators$3.op_BarGreaterGreater(Operators$3.op_GreaterGreaterEquals(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(Operators$3.op_GreaterGreaterEquals(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(n.childrenRm(),Arrays.ofSeq),function(s)
+      return Unchecked.Equals(n.id(),node.id())?b$1.Return(null):List.contains(n.id(),a)?b$1.ReturnFrom(Operators$1.op_BarGreaterGreater(Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(n.childrenRm(),Arrays.ofSeq),function(s)
       {
        return Seq$1.map(chRemove,s);
-      }),ReaderMResult.sequenceSeq),function(s)
+      }),FusionM.sequenceSeq),function(s)
       {
        return Seq$1.choose(Global.id,s);
       }),Arrays.ofSeq),n.newChildrenRm),function(a$1)
@@ -4979,7 +4889,7 @@
       });
      }));
     }
-    return b.ReturnFrom$1(Operators$3.op_BarGreaterGreater(ReaderMResult.sequenceSeq(Seq$1.map(chRemove,nodes)),function(s)
+    return b.ReturnFrom(Operators$1.op_BarGreaterGreater(FusionM.sequenceSeq(Seq$1.map(chRemove,nodes)),function(s)
     {
      return Seq$1.choose(Global.id,s);
     }));
@@ -4988,15 +4898,15 @@
  };
  TreeReader.listNodes=function(level,nodes)
  {
-  return Operators$3.op_BarGreaterGreater(ReaderMResult.sequenceSeq(Seq$1.map(function(node)
+  return Operators$1.op_BarGreaterGreater(FusionM.sequenceSeq(Seq$1.map(function(node)
   {
-   return Operators$3.op_BarGreaterGreater(Operators$3.op_GreaterGreaterEquals(node.isExpandedRm(),function(exp)
+   return Operators$1.op_BarGreaterGreater(Operators$1.op_GreaterGreaterEquals(node.isExpandedRm(),function(exp)
    {
     var l;
-    return exp?Operators$3.op_GreaterGreaterEquals(Operators$3.op_BarGreaterGreater(node.childrenRm(),Arrays.ofSeq),(l=level+1,function(n)
+    return exp?Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(node.childrenRm(),Arrays.ofSeq),(l=level+1,function(n)
     {
      return TreeReader.listNodes(l,n);
-    })):Operators$3.rtn([]);
+    })):Operators$1.rtn([]);
    }),function(nodes$1)
    {
     return Seq$1.append([[node,level]],nodes$1);
@@ -5061,16 +4971,28 @@
  };
  Library.print=function(v)
  {
-  ((function($1)
-  {
-   return function($2)
+  if(typeof v=="string")
+   ((function($1)
    {
-    return $1(Utils.prettyPrint($2));
-   };
-  }(function(s)
-  {
-   console.log(s);
-  }))(v));
+    return function($2)
+    {
+     return $1(Utils.toSafe($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(v));
+  else
+   ((function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(v));
  };
  Library.Error$1=function(a)
  {
@@ -5596,15 +5518,15 @@
  {
   return Hoverable$1.New$3().Content(Doc.Element("div",[AttrProxy.Create("style","flex-flow: column;")],[Doc.TextNode("Hover over me!")]));
  };
- Hoverable$1.Content$2308$81=Runtime.Curried3(function(e,$1,$2)
+ Hoverable$1.Content$2280$81=Runtime.Curried3(function(e,$1,$2)
  {
   return DomUtility.RemoveClass(e.elt,"hovering");
  });
- Hoverable$1.get_Attributes$2304$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$2276$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(false);
  });
- Hoverable$1.get_Attributes$2303$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$2275$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(true);
  });
@@ -5707,7 +5629,7 @@
         return $1("Tab "+Global.String($2));
        };
       }(Global.id))(i),node]]:[];
-     },Operators$5.range(1,el.childNodes.length));
+     },Operators$3.range(1,el.childNodes.length));
     }));
     while(elsh.childNodes.length>0)
      elsh.removeChild(elsh.lastChild);
@@ -5746,7 +5668,7 @@
   SC$1.$cctor();
   return SC$1.init;
  };
- WcTabStrip.tabStrip$2446$64=function(i,selected)
+ WcTabStrip.tabStrip$2418$64=function(i,selected)
  {
   return function()
   {
@@ -6132,7 +6054,7 @@
  {
   return MonacoConfig.New(v,monc.onChange,monc.onRender,monc.editorO,monc.disabled,monc.options,monc.overrides);
  };
- Monaco.render$2796$42=function(monc)
+ Monaco.render$2768$42=function(monc)
  {
   return function(elchild)
   {
@@ -6457,7 +6379,7 @@
         {
          return function($2)
          {
-          return $1(FSharpStation_GeneratedPrintf.p$5($2));
+          return $1(FSharpStation_GeneratedPrintf.p$4($2));
          };
         }(Global.id))(m)
        }
@@ -6491,7 +6413,7 @@
         {
          return function($2)
          {
-          return $1(FSharpStation_GeneratedPrintf.p$5($2));
+          return $1(FSharpStation_GeneratedPrintf.p$4($2));
          };
         }(Global.id))(m)
        }
@@ -6697,7 +6619,7 @@
          {
           (((Runtime.Curried3(function($1,$2,$3)
           {
-           return $1("msg: "+FSharpStation_GeneratedPrintf.p$9($2)+" \nexn:"+Utils.prettyPrint($3));
+           return $1("msg: "+FSharpStation_GeneratedPrintf.p$8($2)+" \nexn:"+Utils.prettyPrint($3));
           }))(function(s)
           {
            console.log(s);
@@ -7456,7 +7378,7 @@
  };
  Snippets.expandParents=function(snpId)
  {
-  Snippets.iterReader(Operators$3.op_BarGreaterGreater(SnippetModule.pathRm(snpId),function(path)
+  Snippets.iterReader(Operators$1.op_BarGreaterGreater(SnippetModule.pathRm(snpId),function(path)
   {
    var a;
    a=FSharpSet.op_Subtraction(Snippets.collapsedV().Get(),new FSharpSet.New(path));
@@ -7485,7 +7407,7 @@
  {
   var snp;
   snp=SnippetModule.New("","",null);
-  Snippets.iterReader(Operators$3.op_BarGreaterGreater(Snippets.addSnippetRm(snp),function()
+  Snippets.iterReader(Operators$1.op_BarGreaterGreater(Snippets.addSnippetRm(snp),function()
   {
    Snippets.currentSnippetIdOV().Set({
     $:1,
@@ -7498,7 +7420,7 @@
   var hier,x,o;
   Snippets.snippets().Append(snp);
   hier=(x=Snippets.hierarchy().Get(),Seq$1.append([Snippets.treenode(snp.snpId)],x));
-  return Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(Operators$3.op_GreaterGreaterEquals(Operators$3.op_BarGreaterGreater(ReaderMResult.insertO((o=Snippets.currentSnippetIdOV().Get(),o==null?null:{
+  return Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(FusionM.insertO((o=Snippets.currentSnippetIdOV().Get(),o==null?null:{
    $:1,
    $0:SnippetModule.snippetORm(o.$0)
   })),function(o$1)
@@ -7506,7 +7428,7 @@
    return o$1==null?null:Global.id(o$1.$0);
   }),function(a)
   {
-   return a!=null&&a.$==1?TreeReader.moveToSibling2(true,snp.snpId,a.$0.snpId,hier):Operators$3.rtn(hier);
+   return a!=null&&a.$==1?TreeReader.moveToSibling2(true,snp.snpId,a.$0.snpId,hier):Operators$1.rtn(hier);
   }),Arrays.ofSeq),function(a)
   {
    Snippets.hierarchy().Set(a);
@@ -7521,9 +7443,9 @@
   Snippets.collapsedV().Set(coll);
   Snippets.snippets().Set(snps);
   Snippets.updateGeneration();
-  Snippets.iterReader(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(ReaderMResult.sequenceSeq(Seq$1.map(function(snp)
+  Snippets.iterReader(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(FusionM.sequenceSeq(Seq$1.map(function(snp)
   {
-   return Operators$3.op_BarGreaterGreater(SnippetModule.parentORm(snp),function(a)
+   return Operators$1.op_BarGreaterGreater(SnippetModule.parentORm(snp),function(a)
    {
     return a==null?{
      $:1,
@@ -7544,7 +7466,7 @@
  Snippets.updateGeneration=function()
  {
   var b;
-  Snippets.iterReader((b=Operators$3.reader(),b.Run(b.Delay(function()
+  Snippets.iterReader((b=FusionM.fusion(),b.Run(b.Delay(function()
   {
    return b.Bind(SnippetModule.maxGenerationRm(),function(a)
    {
@@ -7555,7 +7477,7 @@
  };
  Snippets.moveNode=function(fnid,tnid)
  {
-  Snippets.iterReader(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(TreeReader.moveToSibling2(false,fnid,tnid,Snippets.hierarchy().Get()),Arrays.ofSeq),function(a)
+  Snippets.iterReader(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(TreeReader.moveToSibling2(false,fnid,tnid,Snippets.hierarchy().Get()),Arrays.ofSeq),function(a)
   {
    Snippets.hierarchy().Set(a);
   }));
@@ -7564,7 +7486,7 @@
  {
   var o,x;
   o=Snippets.currentSnippetIdOV().Get();
-  o==null?void 0:Snippets.iterReader(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater((x=Snippets.hierarchy().Get(),TreeReader.outdentNode(Snippets.treenode(o.$0),x)),Arrays.ofSeq),function(a$1)
+  o==null?void 0:Snippets.iterReader(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater((x=Snippets.hierarchy().Get(),TreeReader.outdentNode(Snippets.treenode(o.$0),x)),Arrays.ofSeq),function(a$1)
   {
    Snippets.hierarchy().Set(a$1);
   }));
@@ -7573,7 +7495,7 @@
  {
   var o,x;
   o=Snippets.currentSnippetIdOV().Get();
-  o==null?void 0:Snippets.iterReader(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater((x=Snippets.hierarchy().Get(),TreeReader.indentNode(Snippets.treenode(o.$0),x)),Arrays.ofSeq),function(a$1)
+  o==null?void 0:Snippets.iterReader(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater((x=Snippets.hierarchy().Get(),TreeReader.indentNode(Snippets.treenode(o.$0),x)),Arrays.ofSeq),function(a$1)
   {
    Snippets.hierarchy().Set(a$1);
   }));
@@ -7582,7 +7504,7 @@
  {
   var o,snpId,x;
   o=Snippets.currentSnippetIdOV().Get();
-  o==null?void 0:(snpId=o.$0,Snippets.iterReader(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater((x=Snippets.hierarchy().Get(),TreeReader.removeNodeOutdentChildren(Snippets.treenode(snpId),x)),Arrays.ofSeq),function(a$1)
+  o==null?void 0:(snpId=o.$0,Snippets.iterReader(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater((x=Snippets.hierarchy().Get(),TreeReader.removeNodeOutdentChildren(Snippets.treenode(snpId),x)),Arrays.ofSeq),function(a$1)
   {
    Snippets.hierarchy().Set(a$1);
   }),function()
@@ -7601,9 +7523,9 @@
  };
  Snippets.expandClassRm=function(snpId)
  {
-  return Operators$3.op_GreaterGreaterEquals(SnippetModule.childrenRm(snpId),function(chs)
+  return Operators$1.op_GreaterGreaterEquals(SnippetModule.childrenRm(snpId),function(chs)
   {
-   return Seq$1.isEmpty(chs)?Operators$3.rtn(""):Operators$3.op_BarGreaterGreater(Snippets.treenode(snpId).isExpandedRm(),function(exp)
+   return Seq$1.isEmpty(chs)?Operators$1.rtn(""):Operators$1.op_BarGreaterGreater(Snippets.treenode(snpId).isExpandedRm(),function(exp)
    {
     return exp?"expanded":"collapsed";
    });
@@ -7641,7 +7563,7 @@
    return Snippets.runReader(function()
    {
     return false;
-   },Operators$3.op_BarGreaterGreater(SnippetModule.uniquePredsRm(snp),function(s)
+   },Operators$1.op_BarGreaterGreater(SnippetModule.uniquePredsRm(snp),function(s)
    {
     return Seq$1.contains(snpId,s);
    }));
@@ -7654,7 +7576,7 @@
    return Snippets.runReader(function()
    {
     return false;
-   },Operators$3.op_BarGreaterGreater(SnippetModule.uniquePredsRm(snp),function(s)
+   },Operators$1.op_BarGreaterGreater(SnippetModule.uniquePredsRm(snp),function(s)
    {
     return Seq$1.contains(snpId,s);
    }));
@@ -7667,17 +7589,17 @@
    return snpId;
   },function()
   {
-   return Operators$3.rtn(!Snippets.collapsedV().Get().Contains(snpId));
+   return Operators$1.rtn(!Snippets.collapsedV().Get().Contains(snpId));
   },function()
   {
-   return Operators$3.rtn(true);
+   return Operators$1.rtn(true);
   },function()
   {
    function m(snp)
    {
     return Snippets.treenode(snp.snpId);
    }
-   return Operators$3.op_BarGreaterGreater(SnippetModule.childrenRm(snpId),function(s)
+   return Operators$1.op_BarGreaterGreater(SnippetModule.childrenRm(snpId),function(s)
    {
     return Seq$1.map(m,s);
    });
@@ -7690,7 +7612,7 @@
    {
     return x.snpParentIdO;
    }
-   return Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(SnippetModule.snippetORm(snpId),function(o)
+   return Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(SnippetModule.snippetORm(snpId),function(o)
    {
     return o==null?null:b(o.$0);
    }),function(o)
@@ -7702,7 +7624,7 @@
    });
   },function(ch)
   {
-   return Operators$3.op_BarGreaterGreater(Snippets.setChildrenRm(snpId,ch),function()
+   return Operators$1.op_BarGreaterGreater(Snippets.setChildrenRm(snpId,ch),function()
    {
     return Snippets.treenode(snpId);
    });
@@ -7711,7 +7633,7 @@
  Snippets.setChildrenRm=function(snpId,ch)
  {
   var b;
-  b=Operators$3.reader();
+  b=FusionM.fusion();
   return b.Run(b.Delay(function()
   {
    var chIds,p,others,descendants,index,a;
@@ -7920,11 +7842,14 @@
  };
  Snippets.runReaderResult=function(rm)
  {
-  return ReaderMResult.run(Snippets.snippetsColl(),rm);
+  return Result$1.Map(function(t)
+  {
+   return t[0];
+  },FusionM.runReader(Snippets.snippetsColl(),rm));
  };
  Snippets.iterReader=function(rm)
  {
-  ReaderMResult.iter(function(e)
+  FusionM.iterReader(function(e)
   {
    Snippets.handleError(e);
   },Global.ignore,Snippets.snippetsColl(),rm);
@@ -8061,7 +7986,7 @@
    $1:S
   })),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.snippetlist(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderSnippets.snippets$4244$40=function(snpId)
+ RenderSnippets.snippets$4209$40=function(snpId)
  {
   return function(ev)
   {
@@ -8071,7 +7996,7 @@
    o==null?void 0:Snippets.moveNode(o.$0,snpId);
   };
  };
- RenderSnippets.snippets$4243$40=function(snpId)
+ RenderSnippets.snippets$4208$40=function(snpId)
  {
   return function(ev)
   {
@@ -8079,7 +8004,7 @@
     ev.Event.preventDefault();
   };
  };
- RenderSnippets.snippets$4242$40=function(snpId)
+ RenderSnippets.snippets$4207$40=function(snpId)
  {
   return function(ev)
   {
@@ -8087,21 +8012,21 @@
    ev.Event.stopPropagation();
   };
  };
- RenderSnippets.snippets$4241$40=function(snpId)
+ RenderSnippets.snippets$4206$40=function(snpId)
  {
   return function()
   {
    Snippets.toggleCollapse(snpId);
   };
  };
- RenderSnippets.snippets$4240$40=function(snpId)
+ RenderSnippets.snippets$4205$40=function(snpId)
  {
   return function()
   {
    Snippets.togglePredecessor(snpId);
   };
  };
- RenderSnippets.snippets$4239$40=function(snpId)
+ RenderSnippets.snippets$4204$40=function(snpId)
  {
   var s;
   s=View$1.Map(function(y)
@@ -8113,7 +8038,7 @@
    return RenderSnippets.scrollIntoView(s,e);
   };
  };
- RenderSnippets.snippets$4238$40=function(snpId)
+ RenderSnippets.snippets$4203$40=function(snpId)
  {
   return function()
   {
@@ -8249,7 +8174,7 @@
     e.scrollIntoViewIfNeeded();
   },selW);
  };
- RenderProperties.render$4281$34=function()
+ RenderProperties.render$4246$34=function()
  {
   return function()
   {
@@ -8271,7 +8196,7 @@
    RenderProperties.addProperty();
   }))),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.propertytable(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderProperties.properties$4274$33=function(i)
+ RenderProperties.properties$4239$33=function(i)
  {
   return function()
   {
@@ -8332,7 +8257,7 @@
    }))),(p=Handler$1.CompleteHoles(b.k,b.h,[["name",0],["value",0]]),(i$1=new TemplateInstance.New(p[1],FSharpStation_Templates.property(p[0])),(b.i=i$1,i$1)))).get_Doc();
   },View$1.Map(function($1)
   {
-   return Arrays.ofSeq(Operators$5.range(0,Arrays.length($1)-1));
+   return Arrays.ofSeq(Operators$3.range(0,Arrays.length($1)-1));
   },propsV.get_View()));
  };
  RenderProperties.remProperty=function(i)
@@ -8385,11 +8310,11 @@
    var b;
    function f(a)
    {
-    return a.$==1?Operators$5.FailWith((function($1)
+    return a.$==1?Operators$3.FailWith((function($1)
     {
      return function($2)
      {
-      return $1(FSharpStation_GeneratedPrintf.p$10($2));
+      return $1(FSharpStation_GeneratedPrintf.p$9($2));
      };
     }(Global.id))(a.$0)):a.$0;
    }
@@ -8425,11 +8350,11 @@
    var b;
    function f(a)
    {
-    return a.$==1?Operators$5.FailWith((function($1)
+    return a.$==1?Operators$3.FailWith((function($1)
     {
      return function($2)
      {
-      return $1(FSharpStation_GeneratedPrintf.p$10($2));
+      return $1(FSharpStation_GeneratedPrintf.p$9($2));
      };
     }(Global.id))(a.$0)):a.$0;
    }
@@ -8465,11 +8390,11 @@
    var b;
    function f(a)
    {
-    return a.$==1?Operators$5.FailWith((function($1)
+    return a.$==1?Operators$3.FailWith((function($1)
     {
      return function($2)
      {
-      return $1(FSharpStation_GeneratedPrintf.p$10($2));
+      return $1(FSharpStation_GeneratedPrintf.p$9($2));
      };
     }(Global.id))(a.$0)):a.$0;
    }
@@ -8793,7 +8718,7 @@
    var $1,a$1,t;
    return(a$1=LibraryJS.REGEX$2(rex,"",v),a$1!=null&&a$1.$==1&&((t=a$1.$0,!Unchecked.Equals(t,null)&&t.length===8)&&($1=[Arrays.get(a$1.$0,3),Arrays.get(a$1.$0,2),Arrays.get(a$1.$0,6),Arrays.get(a$1.$0,7),Arrays.get(a$1.$0,5),Arrays.get(a$1.$0,4),Arrays.get(a$1.$0,1)],true)))?{
     $:1,
-    $0:[$1[6],Operators$5.toInt(Global.Number($1[1])),Operators$5.toInt(Global.Number($1[0])),Operators$5.toInt(Global.Number($1[5])),Operators$5.toInt(Global.Number($1[4])),$1[2],$1[3]]
+    $0:[$1[6],Operators$3.toInt(Global.Number($1[1])),Operators$3.toInt(Global.Number($1[0])),Operators$3.toInt(Global.Number($1[5])),Operators$3.toInt(Global.Number($1[4])),$1[2],$1[3]]
    }:null;
   },(a=LibraryJS.REGEX$2(rex,"g",msgs),a!=null&&a.$==1?a.$0:[])));
  };
@@ -8858,7 +8783,7 @@
   x=(_s="snpId:"+(c=sid.get_Id(),Global.String(c)),self.monaco.Uri.parse(_s));
   return Monaco$1.getModelUri(Snippets.runReader(function(x$1)
   {
-   return Operators$5.FailWith(Global.String(x$1));
+   return Operators$3.FailWith(Global.String(x$1));
   },SnippetModule.snippetRm(sid)).snpContent,x);
  };
  Monaco$1.getModelUri=function(txt,uri)
@@ -8946,7 +8871,7 @@
   a$1!=null&&a$1.$==1?(t=a$1.$0,!Unchecked.Equals(t,null)&&t.length===6)?(col=Arrays.get(a$1.$0,2),guid=Arrays.get(a$1.$0,5),line=Arrays.get(a$1.$0,1),Concurrency.Start(Monaco$1["goto"](new SnippetId({
    $:0,
    $0:guid
-  }),Operators$5.toInt(Global.Number(line)),Operators$5.toInt(Global.Number(col))),null)):void 0:void 0;
+  }),Operators$3.toInt(Global.Number(line)),Operators$3.toInt(Global.Number(col))),null)):void 0:void 0;
  };
  JumpTo.rexGuid=function()
  {
@@ -9167,36 +9092,36 @@
    });
   })));
  };
- MainProgram.mainDoc$4879$78=Global.id;
- MainProgram.mainDoc$4871$39=function()
+ MainProgram.mainDoc$4846$78=Global.id;
+ MainProgram.mainDoc$4838$39=function()
  {
   return function(ev)
   {
    JumpTo.jumpToRef(ev.Target);
   };
  };
- MainProgram.mainDoc$4870$39=function()
+ MainProgram.mainDoc$4837$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$4869$39=function()
+ MainProgram.mainDoc$4836$39=function()
  {
   return function(ev)
   {
    Importer.importFile(ev.Target);
   };
  };
- MainProgram.mainDoc$4868$39=function()
+ MainProgram.mainDoc$4835$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$4867$39=function()
+ MainProgram.mainDoc$4834$39=function()
  {
   return function(ev)
   {
@@ -9315,11 +9240,11 @@
   }))))))))))))));
   return(p=Handler$1.CompleteHoles(tmp.k,tmp.h,[["filename",0],["name",0],["output",0],["fscode",0],["parser",0]]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.layout(p[0])),(tmp.i=i,i))).get_Doc();
  };
- MainProgram.buttonsRight$4853$74=Global.id;
- MainProgram.buttonsRight$4852$74=Global.id;
- MainProgram.buttonsRight$4851$74=Global.id;
- MainProgram.buttonsRight$4850$74=Global.id;
- MainProgram.buttonsRight$4849$74=Global.id;
+ MainProgram.buttonsRight$4820$74=Global.id;
+ MainProgram.buttonsRight$4819$74=Global.id;
+ MainProgram.buttonsRight$4818$74=Global.id;
+ MainProgram.buttonsRight$4817$74=Global.id;
+ MainProgram.buttonsRight$4816$74=Global.id;
  MainProgram.buttonsRight=function()
  {
   var tmp,p,i;
@@ -9466,21 +9391,20 @@
    MainProgram.appendMsgs(Strings.Replace(v,"xXxYyYyhH","Done!"));
   }
   o=View$1.TryGet(Snippets.FsCodeW());
-  o==null?void 0:(code=o.$0,x=(b=Monads.asyncResultP(),b.Run(b.Delay(function()
+  o==null?void 0:(code=o.$0,x=(b=FusionAsyncM.fusion(),b.Run(b.Delay(function()
   {
-   var a;
    MainProgram.outputMsgs().Set("Running F#...");
-   return Extensions["AsyncResultBuilderP.Bind"](b,(a=new Address({
+   return b.Bind(FusionAsyncM.ofAsync((new AjaxRemotingProvider.New()).Async("FSharpStation:FsRoot.Library2+FSharpStationClient.setAddress:-574353144",[new Address({
     $:0,
     $0:FStation.id()
-   }),(new AjaxRemotingProvider.New()).Async("FSharpStation:FsRoot.Library2+FSharpStationClient.setAddress:-574353144",[a])),function()
+   })])),function()
    {
-    return b.ReturnFrom$1((new AjaxRemotingProvider.New()).Async("FSharpStation:FsRoot.Library2+FsiAgent.evalCode:-510387286",[FStation.srcDir(),{
+    return b.ReturnFrom(FusionAsyncM.ofAsync((new AjaxRemotingProvider.New()).Async("FSharpStation:FsRoot.Library2+FsiAgent.evalCode:-623788033",[FStation.srcDir(),{
      $:0,
      $0:code
-    }]));
+    }])));
    });
-  }))),AsyncResult.iterA((f=function($1)
+  }))),FusionAsyncM.iterResultA((f=function($1)
   {
    return function($2)
    {
@@ -9508,7 +9432,7 @@
  Messaging.processMessage=function(msg)
  {
   var b;
-  return Concurrency.Return(Snippets.runReaderResult((b=Operators$3.reader(),b.Run(b.Delay(function()
+  return Concurrency.Return(Snippets.runReaderResult((b=FusionM.fusion(),b.Run(b.Delay(function()
   {
    var $1,t;
    switch(msg.$==1?($1=msg.$0,1):msg.$==2?($1=msg.$0,2):msg.$==3?($1=msg.$0,3):msg.$==4?(t=msg.$0,!Unchecked.Equals(t,null)&&t.length===2?Arrays.get(msg.$0,0)==="AddOutput"?($1=Arrays.get(msg.$0,1),4):6:6):msg.$==5?5:0)
@@ -9519,7 +9443,7 @@
       $0:FStation.id()
      });
     case 1:
-     return b.Bind(ReaderMResult.traverseSeq(SnippetModule.snippetFromRefORm,$1),function(a)
+     return b.Bind(FusionM.traverseSeq(SnippetModule.snippetFromRefORm,$1),function(a)
      {
       return b.Return({
        $:1,
@@ -9528,7 +9452,7 @@
      });
     case 2:
      Snippets.clearPredsCache();
-     return b.Bind(ReaderMResult.absorbO(function()
+     return b.Bind(FusionM.absorbO(function()
      {
       return new ResultMessage({
        $:1,
@@ -9536,13 +9460,13 @@
        {
         return function($3)
         {
-         return $2("Snippet not found "+FSharpStation_GeneratedPrintf.p$3($3));
+         return $2("Snippet not found "+FSharpStation_GeneratedPrintf.p$2($3));
         };
        }(Global.id))($1)
       });
      },SnippetModule.snippetFromRefORm($1)),function(a)
      {
-      return b.ReturnFrom$1(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(SnippetModule.fastCodeRm({
+      return b.ReturnFrom(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(SnippetModule.fastCodeRm({
        $:1,
        $0:a.snpId
       },{
@@ -9578,7 +9502,7 @@
      {
       return function($3)
       {
-       return $2("TODO message: "+FSharpStation_GeneratedPrintf.p$4($3));
+       return $2("TODO message: "+FSharpStation_GeneratedPrintf.p$3($3));
       };
      }(Global.id))(msg)]);
    }
@@ -9591,7 +9515,7 @@
  };
  SC$1.$cctor=function()
  {
-  var f,generation,$1,b,b$1,cache,$2,cache$1,$3,cache$2,$4,p,store$3,checkO,v,prior,f$2,f$3,f$4,f$5,x,$5,$6,v$1,s,sQ,x$1,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,x$2,t$9,i,x$3,t$10,t$11,t$12,t$13,t$14,i$1,x$4,t$15,t$16,t$17,t$18,t$19,t$20,t$21,i$2,t$22,x$5,b$2;
+  var f,generation,$1,b,b$1,cache,$2,cache$1,$3,cache$2,$4,getOrAdd$3,v,prior,f$2,f$3,f$4,f$5,x,$5,$6,v$1,s,sQ,x$1,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,x$2,t$9,i,x$3,t$10,t$11,t$12,t$13,t$14,i$1,x$4,t$15,t$16,t$17,t$18,t$19,t$20,t$21,i$2,t$22,x$5,b$2;
   SC$1.$cctor=Global.ignore;
   SC$1.rtn=function(v$2)
   {
@@ -9599,15 +9523,10 @@
   };
   SC$1.result=new Builder.New();
   SC$1.result$1=Result.result();
-  SC$1.resultM=new Builder$1.New();
+  SC$1.fusion=new Builder$2.New();
+  SC$1.fusion$1=new Builder$4.New();
   SC$1.asyncResult=new AsyncResultBuilder.New();
   SC$1.asyncResultP=new AsyncResultBuilderP.New();
-  SC$1.reader=new Builder$2.New();
-  SC$1.reader$1=ReaderMBasic.reader();
-  SC$1.reader$2=new Builder$3.New();
-  SC$1.reader$3=ReaderMResult.reader();
-  SC$1.reader$4=new Builder$4.New();
-  SC$1.reader$5=ReaderMAsyncResult.reader();
   function g(s$1)
   {
    return Strings.concat("\n",s$1);
@@ -9709,30 +9628,11 @@
    $:0,
    $0:"00000000-0000-0000-0000-000000000000"
   }),"","",null,new FSharpSet.New$1(null),[],0);
-  function g$3(c)
-  {
-   return c.predecesorsCache();
-  }
-  SC$1.predsLRmMemo=function(p$1)
-  {
-   return ReaderMResult.memoizeRm(g$3,SnippetModule.predsLRm,p$1);
-  };
-  function g$4(c)
-  {
-   return c.reducedCache();
-  }
-  SC$1.reducedOthersORmMemo=function(p$1)
-  {
-   return ReaderMResult.memoizeRm(g$4,function($7)
-   {
-    return SnippetModule.reducedOthersORm($7[0],$7[1],$7[2]);
-   },p$1);
-  };
   SC$1.deserGuid=function(v$2)
   {
    return Serializer.ifUndef("00000000-0000-0000-0000-000000000000",v$2);
   };
-  function g$5(v$2)
+  function g$3(v$2)
   {
    return Serializer.ifUndef(0,v$2);
   }
@@ -9747,9 +9647,9 @@
    }(Global.id))(v$2);
   },function(x$6)
   {
-   return g$5(Global.id(x$6));
+   return g$3(Global.id(x$6));
   }];
-  function g$6(v$2)
+  function g$4(v$2)
   {
    return Serializer.ifUndef(0,v$2);
   }
@@ -9764,9 +9664,9 @@
    }(Global.id))(v$2);
   },function(x$6)
   {
-   return g$6(Global.id(x$6));
+   return g$4(Global.id(x$6));
   }];
-  function g$7(v$2)
+  function g$5(v$2)
   {
    return Serializer.ifUndef(false,v$2);
   }
@@ -9781,9 +9681,9 @@
    }(Global.id))(v$2);
   },function(x$6)
   {
-   return g$7(Global.id(x$6));
+   return g$5(Global.id(x$6));
   }];
-  function g$8(v$2)
+  function g$6(v$2)
   {
    return Serializer.ifUndef("",v$2);
   }
@@ -9792,7 +9692,7 @@
    return JSON.stringify(((Provider.Id())())(a$2));
   },function(x$6)
   {
-   return g$8(Global.id(x$6));
+   return g$6(Global.id(x$6));
   }];
   SC$1.rexGuid="([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})";
   SC$1.observers=List.T.Empty;
@@ -9866,12 +9766,7 @@
   SC$1.currentSnippetIdOV=Var$1.Create$1(null);
   SC$1.codeSnippetIdOV=Var$1.Create$1(null);
   SC$1.collapsedV=Var$1.Create$1(new FSharpSet.New$1(null));
-  function store(v$2,res)
-  {
-   cache.set_Item(v$2,res);
-   return res;
-  }
-  $2=(cache=new Dictionary.New$5(),[[function(v$2)
+  function checkO(v$2)
   {
    var res;
    res=null;
@@ -9888,11 +9783,23 @@
     $:1,
     $0:res
    }:null;
-  },function($7)
+  }
+  function store(v$2,res)
+  {
+   cache.set_Item(v$2,res);
+   return res;
+  }
+  function getOrAdd(p,f$6)
+  {
+   var o;
+   o=checkO(p);
+   return o==null?store(p,f$6(p)):o.$0;
+  }
+  $2=(cache=new Dictionary.New$5(),[[checkO,function($7)
   {
    return function($8)
    {
-    return store($7,$8);
+    return getOrAdd($7,$8);
    };
   }],function()
   {
@@ -9900,12 +9807,7 @@
   }]);
   SC$1.predsCache=$2[0];
   SC$1.clearPreds=$2[1];
-  function store$1(v$2,res)
-  {
-   cache$1.set_Item(v$2,res);
-   return res;
-  }
-  $3=(cache$1=new Dictionary.New$5(),[[function(v$2)
+  function checkO$1(v$2)
   {
    var res;
    res=null;
@@ -9922,11 +9824,23 @@
     $:1,
     $0:res
    }:null;
-  },function($7)
+  }
+  function store$1(v$2,res)
+  {
+   cache$1.set_Item(v$2,res);
+   return res;
+  }
+  function getOrAdd$1(p,f$6)
+  {
+   var o;
+   o=checkO$1(p);
+   return o==null?store$1(p,f$6(p)):o.$0;
+  }
+  $3=(cache$1=new Dictionary.New$5(),[[checkO$1,function($7)
   {
    return function($8)
    {
-    return store$1($7,$8);
+    return getOrAdd$1($7,$8);
    };
   }],function()
   {
@@ -9934,12 +9848,7 @@
   }]);
   SC$1.reducCache=$3[0];
   SC$1.clearReduc=$3[1];
-  function store$2(v$2,res)
-  {
-   cache$2.set_Item(v$2,res);
-   return res;
-  }
-  $4=(cache$2=new Dictionary.New$5(),[[function(v$2)
+  function checkO$2(v$2)
   {
    var res;
    res=null;
@@ -9956,11 +9865,23 @@
     $:1,
     $0:res
    }:null;
-  },function($7)
+  }
+  function store$2(v$2,res)
+  {
+   cache$2.set_Item(v$2,res);
+   return res;
+  }
+  function getOrAdd$2(p,f$6)
+  {
+   var o;
+   o=checkO$2(p);
+   return o==null?store$2(p,f$6(p)):o.$0;
+  }
+  $4=(cache$2=new Dictionary.New$5(),[[checkO$2,function($7)
   {
    return function($8)
    {
-    return store$2($7,$8);
+    return getOrAdd$2($7,$8);
    };
   }],function()
   {
@@ -9968,12 +9889,10 @@
   }]);
   SC$1.parentCache=$4[0];
   SC$1.clearParent=$4[1];
-  SC$1.getParentIdO=(p=Snippets.parentCache(),(store$3=p[1],(checkO=p[0],function(p$1)
+  SC$1.getParentIdO=(getOrAdd$3=(Snippets.parentCache())[1],function(p)
   {
-   var o,x$6;
-   o=checkO(p$1);
-   return o==null?(x$6=Snippets.getParentIdONotMemo(p$1),(store$3(p$1))(x$6)):o.$0;
-  })));
+   return(getOrAdd$3(p))(Snippets.getParentIdONotMemo);
+  });
   View$1.Sink(function(a$2)
   {
    var curId,m$4;
@@ -9981,13 +9900,13 @@
     {
      curId=a$2.$0;
      m$4=Snippets.codeSnippetIdOV().Get();
-     m$4!=null&&m$4.$==1?(Snippets.iterReader(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(Operators$3.op_BarGreaterGreater(Operators$3.op_GreaterGreaterEquals(Operators$3.op_BarGreaterGreater(SnippetModule.snippetORm(m$4.$0),function(o)
+     m$4!=null&&m$4.$==1?(Snippets.iterReader(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(SnippetModule.snippetORm(m$4.$0),function(o)
      {
       return o==null?null:{
        $:1,
        $0:SnippetModule.uniquePredsRm(o.$0)
       };
-     }),ReaderMResult.insertO),Option.toList),function(l)
+     }),FusionM.insertO),Option.toList),function(l)
      {
       return List.collect(Global.id,l);
      }),function(s$1)
@@ -10044,7 +9963,7 @@
    v$2=SnippetModule.defaultSnippet().snpId;
    return sidO==null?v$2:sidO.$0;
   },Snippets.currentSnippetIdOV().get_View());
-  function g$9(o)
+  function g$7(o)
   {
    var v$2;
    v$2=SnippetModule.defaultSnippet();
@@ -10059,7 +9978,7 @@
    return o==null?null:Global.id(o.$0);
   },function(x$6)
   {
-   return g$9(f$2(x$6));
+   return g$7(f$2(x$6));
   }),View$1.Bind((f$3=function(o)
   {
    return o==null?null:{
@@ -10070,7 +9989,7 @@
   {
    return View.insertWO(f$3(x$6));
   }),Snippets.currentSnippetIdOV().get_View()));
-  function g$10(o)
+  function g$8(o)
   {
    var v$2;
    v$2=SnippetModule.defaultSnippet();
@@ -10085,7 +10004,7 @@
    return o==null?null:Global.id(o.$0);
   },function(x$6)
   {
-   return g$10(f$4(x$6));
+   return g$8(f$4(x$6));
   }),View$1.Bind((f$5=function(o)
   {
    return o==null?null:{
@@ -10110,13 +10029,13 @@
    {
     return TreeReader.listNodes(0,n);
    }
-   function g$11(r)
+   function g$9(r)
    {
     return Snippets.runReader(Snippets.handleError,r);
    }
    return function(x$6)
    {
-    return g$11(f$6(x$6));
+    return g$9(f$6(x$6));
    };
   }
   SC$1.getHierarchyW=View$1.Map(Arrays.ofSeq,View$1.Map(function(s$1)
@@ -10451,7 +10370,7 @@
     {
      return Concurrency.TryWith(Concurrency.Delay(function()
      {
-      var _this,f$6,g$11,f$7,dst,p$1;
+      var _this,f$6,g$9,f$7,dst,p;
       function f$8(a$2)
       {
        return(FSharpStation_JsonDecoder.j$4())(JSON.parse(a$2));
@@ -10460,13 +10379,13 @@
       {
        return JSON.stringify((FSharpStation_JsonEncoder.j$4())(a$2));
       }
-      function g$12(v$2)
+      function g$10(v$2)
       {
        return Concurrency.Return(v$2);
       }
-      function g$13(m$4)
+      function g$11(m$4)
       {
-       Operators$5.FailWith(m$4);
+       Operators$3.FailWith(m$4);
       }
       _this=Messaging.wsStationClient();
       _this.payloadProcessorO={
@@ -10474,24 +10393,24 @@
        $0:(f$6=function(x$6)
        {
         return Messaging.processMessage(f$8(x$6));
-       },(g$11=(f$7=function(x$6)
+       },(g$9=(f$7=function(x$6)
        {
-        return g$12(f$9(x$6));
+        return g$10(f$9(x$6));
        },function(v$2)
        {
         return Concurrency.Bind(v$2,f$7);
        }),function(x$6)
        {
-        return g$11(f$6(x$6));
+        return g$9(f$6(x$6));
        }))
       };
       AsyncResult.iterA(function(x$6)
       {
-       return g$13(Global.String(x$6));
-      },Global.ignore,_this.sendAndForget(WebSockets.msgType(MessageType.MsgInformation,(dst=WebSockets.MessageBrokerAddress(),(p$1=JSON.stringify(((Provider.Id())())("Registering Processor")),MessageGeneric.New(new Address({
+       return g$11(Global.String(x$6));
+      },Global.ignore,_this.sendAndForget(WebSockets.msgType(MessageType.MsgInformation,(dst=WebSockets.MessageBrokerAddress(),(p=JSON.stringify(((Provider.Id())())("Registering Processor")),MessageGeneric.New(new Address({
        $:0,
        $0:""
-      }),dst,MessageType.MsgRequest,"",Guid.NewGuid(),p$1,Replier.NoReply))))));
+      }),dst,MessageType.MsgRequest,"",Guid.NewGuid(),p,Replier.NoReply))))));
       return Concurrency.Bind(Concurrency.Sleep(60000),function()
       {
        return Concurrency.Return(null);
@@ -10608,20 +10527,16 @@
   return $1.$==6?"RMessages "+Utils.printArray(function($2)
   {
    return FSharpStation_GeneratedPrintf.p$1($2);
-  },$1.$0):$1.$==5?"ExceptMsg ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+")":$1.$==4?"Message "+FSharpStation_GeneratedPrintf.p$2($1.$0):$1.$==3?"Info "+Utils.prettyPrint($1.$0):$1.$==2?"Warning "+Utils.prettyPrint($1.$0):$1.$==1?"ErrorMsg "+Utils.prettyPrint($1.$0):"NoMsg";
- };
- FSharpStation_GeneratedPrintf.p$2=function($1)
- {
-  return $1.$==3?"ShellCrashed ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+")":$1.$==2?"ShellNoExit ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+")":$1.$==1?"ShellExit ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+")":"ShellDidNotStart";
- };
- FSharpStation_GeneratedPrintf.p$4=function($1)
- {
-  return $1.$==5?"MsgGetUrl":$1.$==4?"MsgAction "+Utils.printArray(Utils.prettyPrint,$1.$0):$1.$==3?"MsgGetPredecessors "+FSharpStation_GeneratedPrintf.p$3($1.$0):$1.$==2?"MsgGetCode "+FSharpStation_GeneratedPrintf.p$3($1.$0):$1.$==1?"MsgGetSnippets "+Utils.printArray(function($2)
-  {
-   return FSharpStation_GeneratedPrintf.p$3($2);
-  },$1.$0):"MsgGetId";
+  },$1.$0):$1.$==5?"ExceptMsg ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+")":$1.$==4?"Message "+Utils.prettyPrint($1.$0):$1.$==3?"Info "+Utils.prettyPrint($1.$0):$1.$==2?"Warning "+Utils.prettyPrint($1.$0):$1.$==1?"ErrorMsg "+Utils.prettyPrint($1.$0):"NoMsg";
  };
  FSharpStation_GeneratedPrintf.p$3=function($1)
+ {
+  return $1.$==5?"MsgGetUrl":$1.$==4?"MsgAction "+Utils.printArray(Utils.prettyPrint,$1.$0):$1.$==3?"MsgGetPredecessors "+FSharpStation_GeneratedPrintf.p$2($1.$0):$1.$==2?"MsgGetCode "+FSharpStation_GeneratedPrintf.p$2($1.$0):$1.$==1?"MsgGetSnippets "+Utils.printArray(function($2)
+  {
+   return FSharpStation_GeneratedPrintf.p$2($2);
+  },$1.$0):"MsgGetId";
+ };
+ FSharpStation_GeneratedPrintf.p$2=function($1)
  {
   return $1.$==1?"RefSnippetPath "+Utils.printArray(Utils.prettyPrint,$1.$0):"RefSnippetId "+FSharpStation_GeneratedPrintf.p($1.$0);
  };
@@ -10629,7 +10544,7 @@
  {
   return FSharpStation_JsonEncoder._v$9?FSharpStation_JsonEncoder._v$9:FSharpStation_JsonEncoder._v$9=(Provider.EncodeUnion(void 0,"type",[["BRGetConnections",[]],["BRGetProcessId",[]]]))();
  };
- FSharpStation_GeneratedPrintf.p$5=function($1)
+ FSharpStation_GeneratedPrintf.p$4=function($1)
  {
   return $1.$==2?"BRString "+Utils.prettyPrint($1.$0):$1.$==1?"BRPid "+Utils.prettyPrint($1.$0):"BRConnections "+Utils.printArray(Utils.prettyPrint,$1.$0);
  };
@@ -10641,41 +10556,41 @@
  {
   return FSharpStation_JsonDecoder._v$8?FSharpStation_JsonDecoder._v$8:FSharpStation_JsonDecoder._v$8=(Provider.DecodeUnion(void 0,"type",[["BMOk",[]],["BMOnlyBrokerShouldUse",[]],["BMDestinationNotFound",[["$0","Item",FSharpStation_JsonDecoder.j$1,0]]],["BMWebSocketError",[["$0","Item",Provider.Id(),0]]],["BMReceiverCantReply",[]],["BMUnexpectedMsgType",[["$0","Item",FSharpStation_JsonDecoder.j$2,0]]],["BMUnexpectedResponse",[["$0","Item",Provider.Id(),0]]]]))();
  };
- FSharpStation_GeneratedPrintf.p$8=function($1)
+ FSharpStation_GeneratedPrintf.p$7=function($1)
  {
   return $1.$==2?"Receiver":$1.$==1?"Broker":"NoReply";
  };
- FSharpStation_GeneratedPrintf.p$7=function($1)
+ FSharpStation_GeneratedPrintf.p$6=function($1)
  {
   return $1.$==5?"MsgRequestForEcho":$1.$==4?"MsgRequestForId":$1.$==3?"MsgFromBroker":$1.$==2?"MsgReply":$1.$==1?"MsgRequest":"MsgInformation";
  };
  GeneratedPrintf.p=function($1)
  {
-  return"{"+("from = "+FSharpStation_GeneratedPrintf.p$6($1.from))+"; "+("destination = "+FSharpStation_GeneratedPrintf.p$6($1.destination))+"; "+("msgType = "+FSharpStation_GeneratedPrintf.p$7($1.msgType))+"; "+("subtype = "+Utils.prettyPrint($1.subtype))+"; "+("id = "+Utils.prettyPrint($1.id))+"; "+("payload = "+Utils.prettyPrint($1.payload))+"; "+("replier = "+FSharpStation_GeneratedPrintf.p$8($1.replier))+"}";
+  return"{"+("from = "+FSharpStation_GeneratedPrintf.p$5($1.from))+"; "+("destination = "+FSharpStation_GeneratedPrintf.p$5($1.destination))+"; "+("msgType = "+FSharpStation_GeneratedPrintf.p$6($1.msgType))+"; "+("subtype = "+Utils.prettyPrint($1.subtype))+"; "+("id = "+Utils.prettyPrint($1.id))+"; "+("payload = "+Utils.prettyPrint($1.payload))+"; "+("replier = "+FSharpStation_GeneratedPrintf.p$7($1.replier))+"}";
  };
- FSharpStation_GeneratedPrintf.p$6=function($1)
+ FSharpStation_GeneratedPrintf.p$5=function($1)
  {
   return"Address "+Utils.prettyPrint($1.$0);
  };
- FSharpStation_GeneratedPrintf.p$9=function($1)
+ FSharpStation_GeneratedPrintf.p$8=function($1)
  {
   return $1.$==3?"Close":$1.$==2?"Open":$1.$==1?"Error":"Message "+GeneratedPrintf.p($1.$0);
  };
- FSharpStation_GeneratedPrintf.p$10=function($1)
+ FSharpStation_GeneratedPrintf.p$9=function($1)
  {
   return $1.$==6?"RMessages "+Utils.printArray(function($2)
   {
-   return FSharpStation_GeneratedPrintf.p$10($2);
+   return FSharpStation_GeneratedPrintf.p$9($2);
   },$1.$0):$1.$==5?"ExceptMsg ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+")":$1.$==4?"Message "+Utils.printArray(function($2)
   {
-   return FSharpStation_GeneratedPrintf.p$11($2);
+   return FSharpStation_GeneratedPrintf.p$10($2);
   },$1.$0):$1.$==3?"Info "+Utils.prettyPrint($1.$0):$1.$==2?"Warning "+Utils.prettyPrint($1.$0):$1.$==1?"ErrorMsg "+Utils.prettyPrint($1.$0):"NoMsg";
  };
- FSharpStation_GeneratedPrintf.p$11=function($1)
+ FSharpStation_GeneratedPrintf.p$10=function($1)
  {
   return $1.$==17?"KMultiple "+Utils.printArray(function($2)
   {
-   return FSharpStation_GeneratedPrintf.p$11($2);
+   return FSharpStation_GeneratedPrintf.p$10($2);
   },$1.$0):$1.$==16?"KUnionCase "+GeneratedPrintf.p$22($1.$0):$1.$==15?"KNamespaces "+GeneratedPrintf.p$19($1.$0):$1.$==14?"KCompilerLocation "+GeneratedPrintf.p$18($1.$0):$1.$==13?"KSignatureData "+GeneratedPrintf.p$16($1.$0):$1.$==12?"KTypeSig "+Utils.prettyPrint($1.$0):$1.$==11?"KToolTip "+Utils.printArray(function($2)
   {
    return Utils.printArray(function($3)

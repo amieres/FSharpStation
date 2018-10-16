@@ -402,11 +402,11 @@ NUGET
     Zlib.Portable (1.11) - restriction: || (&& (== net461) (< net40)) (== netstandard2.0)
 
 GROUP Testing
-RESTRICTION: == netstandard2.0
+RESTRICTION: || (== net461) (== netstandard2.0)
 NUGET
   remote: https://www.nuget.org/api/v2
     FSharp.Core (4.5.2)
     Fuchu (1.0.3)
       FSharp.Core (>= 3.1.2.1)
     Unquote (4.0)
-      FSharp.Core (>= 4.2.3)
+      FSharp.Core (>= 4.2.3) - restriction: || (&& (== net461) (>= netstandard2.0)) (== netstandard2.0)

@@ -152,11 +152,13 @@ namespace FsRoot
                     | RMessages ms   ->  ms     |> Array.map (bindMessage f) |> RMessages
             
                 /// a Message is converted to ErrorMsg
-                let freeMessage  msg = msg |> bindMessage (sprintf "%O" >> ErrorMsg)
+                let freeMessageF f msg = msg |> bindMessage f
+                /// a Message is converted to ErrorMsg
+                let freeMessage    msg = msg |> freeMessageF (sprintf "%O" >> ErrorMsg)
                 /// a Message is converted to Warning
-                let freeMessageW msg = msg |> bindMessage (sprintf "%O" >> Warning )
+                let freeMessageW   msg = msg |> freeMessageF (sprintf "%O" >> Warning )
                 /// a Message is converted to Info
-                let freeMessageI msg = msg |> bindMessage (sprintf "%O" >> Info    )
+                let freeMessageI   msg = msg |> freeMessageF (sprintf "%O" >> Info    )
             
                 let rec isInfoF f msg =
                     match msg with
@@ -182,11 +184,13 @@ namespace FsRoot
             
                 let rec isFatalF f msg =
                     match msg with
+                    | NoMsg
                     | Info      _    
                     | Warning   _    ->  false
                     | Message   m    ->  f m
                     | RMessages ms   ->  ms |> Seq.exists (isFatalF f)
                     | _              ->  true
+                    //|>! printfn "%A = %A" msg
                 /// a Message is considered fatal
                 let isFatal  msg = msg |> isFatalF (fun _ -> true )
                 /// a Message is not considered fatal
@@ -194,6 +198,7 @@ namespace FsRoot
             
                 let rec countF f msg =
                     match msg with
+                    | NoMsg          ->  0, 0, 0
                     | Info      _    ->  0, 0, 1
                     | Warning   _    ->  0, 1, 0
                     | Message   m    ->  f m
@@ -216,7 +221,7 @@ namespace FsRoot
                     | RMessages mas,           mb  ->  Array.append    mas   [| mb |] |> RMessages
                     |           ma ,           mb  ->               [| ma   ;   mb |] |> RMessages
             
-                let addMsgs a ms = ms |> Seq.fold addMsg a
+                let reduceMsgs ms = ms |> Seq.fold addMsg NoMsg
             
                 let summaryF f msg =        
                     match countF f msg with
@@ -393,16 +398,21 @@ namespace FsRoot
                 
                 let inline OkM              v    = ResultM (Some v, NoMsg)
                 let inline OkMWithMsg       v m  = ResultM(Some v, m)
-                let inline OkMWithMsgs      v ms = ms |> ResultMessage.addMsgs NoMsg |> OkMWithMsg v
+                //let inline OkMWithMsgs      v ms = ms |> ResultMessage.reduceMsgs |> OkMWithMsg v
                 
                 let inline ErrorM             m  = ResultM (None  , m    )
-                let inline ErrorMWithMsgs     ms = ms |> ResultMessage.addMsgs NoMsg |> ErrorM
+                //let inline ErrorMWithMsgs     ms = ms |> ResultMessage.reduceMsgs |> ErrorM
                 let (|OkM|ErrorM|)             r = match r with
                                                     | ResultM(Some v, m) -> OkM   (v, m)
                                                     | ResultM(None  , e) -> ErrorM e
                 module ResultM =
                 
+                    type CheckError<'T> = CheckErrorF of ('T -> bool)
+                    let checkError   () = CheckErrorF (fun _ -> true )
+                    let checkErrorW  () = CheckErrorF (fun _ -> false)
+                
                     let inline rtn                 v = OkM v
+                    let inline rtnM                m = OkMWithMsg () m
                     let inline rtnr               vR = vR  |> Result.map OkM          |> Result.defaultWith       ErrorM
                     let freeMessage                r = r   |> function Ok v -> Ok v   | Error e -> ResultMessage.freeMessage e |> Error
                     let inline toResult            r = match r with
@@ -414,8 +424,6 @@ namespace FsRoot
                     let toOption                   r = r   |> function ResultM (v,_) -> v
                     let defaultWith              f r = r   |> toResult |> Result.defaultWith   f
                     let defaultValue             d r = r   |> toResult |> Result.defaultValue  d
-                    let failIfTrue               m v = if     v then m |> ErrorM else OkM ()
-                    let failIfFalse              m v = if not v then m |> ErrorM else OkM ()
                     let map         f  (ResultM (v, m)) = ResultM (v |> Option.map f, m)
                     let mapMessage  fM (ResultM (v, m)) = ResultM (v, fM m)
                     let bind                  f    r = match r with
@@ -426,6 +434,10 @@ namespace FsRoot
                                                        | ResultM(Some v, m) -> try f v |> mapMessage (ResultMessage.addMsg m)
                                                                                with  e -> ExceptMsg (e.Message, e.StackTrace) |> ErrorM
                                                        | ResultM(None  , e) -> ResultM(None  , e)
+                    let bindM                 f    m = rtnM m |> bindP f
+                
+                    let check (CheckErrorF k) vR = vR |> function ResultM(Some _, m) when ResultMessage.isFatalF k m -> ErrorM m |_-> vR
+                
                     /// map version that protects against exceptions
                     let inline mapP           f    m = bindP (f >> rtn) m
                     let iter                  fM f r = r   |> mapP f |> function ResultM(Some (), m) | ResultM(None, m) -> fM m  : unit
@@ -435,6 +447,9 @@ namespace FsRoot
                     let insertO                  vRO = vRO |> Option.map(map Some)    |> Option.defaultWith(fun () -> OkM None)
                     let absorbO               f  vOR = vOR |> bindP (ofOption f)
                     let addMsg                  m  r = r |> mapMessage (ResultMessage.addMsg m)
+                    let failIfFatalMsgF         f  r = r |> function OkM (v, m) when ResultMessage.isFatalF f m -> ErrorM m |_-> r
+                    let failIfFatalMsg             r = r |> function OkM (v, m) when ResultMessage.isFatal    m -> ErrorM m |_-> r
+                    let failIfFatalMsgW            r = r |> function OkM (v, m) when ResultMessage.isFatalW   m -> ErrorM m |_-> r
                     let (>>=)                    r f = bind f r
                     let rec    traverseSeq    f   sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                        Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
@@ -444,10 +459,12 @@ namespace FsRoot
                     type Builder() =
                         member inline __.Return          x       = rtn  x
                         member inline __.ReturnFrom      x       =     (x:Result<_,_>)
+                        member inline __.ReturnFrom      x       = rtnM x
                         member        __.Bind           (w , r ) = bindP  r w
+                        member        __.Bind           (w , r ) = bindM  r w
                         member inline __.Zero           ()       = rtn ()
                         member inline __.Delay           f       = f
-                        member inline __.Combine        (a, b)   = bind b a
+                        member inline __.Combine        (a, b)   = a |> bind b
                         member inline __.Run             f       = OkM () |> bindP f
                         member __.TryWith   (body, handler     ) = try body() with e -> handler     e
                         member __.TryFinally(body, compensation) = try body() finally   compensation()
@@ -462,10 +479,6 @@ namespace FsRoot
                                 this.While(enum.MoveNext, 
                                     this.Delay(fun () -> body enum.Current)))
                                     
-                    [< AutoOpen >]
-                    module AutoOpen =
-                        let resultM = Builder()
-                    
                     module Operators =
                         let inline (|>>) v f   = mapP  f v
                         let inline (>>=) v f   = bindP f v
@@ -473,6 +486,12 @@ namespace FsRoot
                         let inline (>=>) f g v = f v >>= g
                         let inline rtn   v     = rtn    v
                 
+                [< AutoOpen >]
+                module ResultMAutoOpen =
+                    open ResultM
+                    
+                    let resultM = Builder()
+                    
                 
                 
                 type AsyncResult<'v, 'm> = Async<Result<'v, 'm>>
@@ -3505,7 +3524,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1538917967534"
+                let mutable fsharpStationAddress = Address "FSharpStation1539235548147"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 

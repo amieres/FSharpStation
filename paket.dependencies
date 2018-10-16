@@ -24,7 +24,7 @@ nuget canopy
 nuget Microsoft.NETCore.App
 
 group Testing
-    framework: netstandard2
+    framework: netstandard2, net461
 //    storage: symlink
     source https://www.nuget.org/api/v2
     nuget Fuchu
