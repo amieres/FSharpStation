@@ -18,10 +18,6 @@ nuget Microsoft.Owin.Hosting
 nuget Microsoft.Owin.Host.HttpListener
 nuget FSharp.Data
 nuget FSharpPlus 
-nuget FSharp.Data.SqlClient
-nuget NETStandard.Library
-nuget canopy
-nuget Microsoft.NETCore.App
 
 group Testing
     framework: netstandard2, net461
@@ -29,3 +25,18 @@ group Testing
     source https://www.nuget.org/api/v2
     nuget Fuchu
     nuget Unquote
+nuget canopy
+
+group Other
+    framework: net461
+    source https://www.nuget.org/api/v2
+
+    nuget OpenCvSharp3-AnyCPU
+    nuget FSharp.Data.SqlClient
+
+group Test
+    framework: netstandard2
+    source https://www.nuget.org/api/v2
+    nuget FSharp.Core        = 4.3.4
+    nuget NETStandard.Library
+    nuget canopy
