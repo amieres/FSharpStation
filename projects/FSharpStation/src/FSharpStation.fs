@@ -3276,7 +3276,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/"
+                    "http://localhost:9005/#"
                 #endif
                 
                 let extractEndPoint() = 
@@ -3467,7 +3467,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1539510426735"
+                let mutable fsharpStationAddress = Address "FSharpStation1539664317751"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
