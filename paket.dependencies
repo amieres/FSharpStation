@@ -35,7 +35,7 @@ group Other
     nuget FSharp.Data.SqlClient
 
 group Test
-    framework: netstandard2
+    framework: netstandard2, net461
     source https://www.nuget.org/api/v2
     nuget FSharp.Core        = 4.3.4
     nuget NETStandard.Library
