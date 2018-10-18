@@ -1371,11 +1371,11 @@ namespace FsRoot
                 }
                 let rec propertyHierORm n snp = fusion {
                     match propertyO n snp with
-                    | Some v -> return Some (v.Split([| @"|-|" |], StringSplitOptions.RemoveEmptyEntries) |> fun vs -> vs.[0], if vs.Length > 0 then vs.[1] else vs.[0])
+                    | Some v -> return Some (snp, v.Split([| @"|-|" |], StringSplitOptions.RemoveEmptyEntries) |> fun vs -> vs.[0], if vs.Length > 1 then vs.[1] else vs.[0])
                     | None   -> let! parentO = parentORm   snp
                                 match parentO with
                                 | Some p -> let!   propO = propertyHierORm n p
-                                            return propO |> Option.map(fun (_, next) -> next, next) 
+                                            return propO |> Option.map(fun (sn, (_, next)) -> sn, (next, next) )
                                 | None   -> return None
                 }
                 let indentRm          snp =
@@ -3467,7 +3467,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1539664317751"
+                let mutable fsharpStationAddress = Address "FSharpStation1539766023158"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -3990,6 +3990,11 @@ namespace FsRoot
             let SaveAsClassW                   = View.Map2 (fun snps gen -> if Seq.exists (fun snp -> snp.snpGeneration > gen) snps then "btn-primary" else "") 
                                                     snippets  .View 
                                                     generation.View
+            let currentLayoutDW                =  View.Map (fun snp -> 
+                                                    Snippet.propertyHierORm "Layout" snp 
+                                                    |>> Option.map (fun (sn, (txt, _)) -> "Snp_" + (string sn.snpId.Id).Replace("-", ""), txt)
+                                                    |> runReader (fun _ -> None)
+                                                  ) currentSnippetW
                                                     
             let setChildrenRm snpId ch = fusion {
                 let chIds = ch |> Array.map (fun s -> s.id())
@@ -4885,9 +4890,9 @@ namespace FsRoot
                                     |]
                 }
                 """
-                    double           horizontal  0-50-100 AppFramework.AppFwkClient menuEditor
         
                     menuEditor       horizontal  65       menuLogo                  editorMessages
+                    double           horizontal  0-50-100 AppFramework.AppFwkClient menuEditor
                     menuLogo         vertical    350      logo                      menu
                     logo             span       "margin:0; color:gray; font-size: 55px; font-weight:530" "F# Station"
                     editorMessages   horizontal 10-83-100 editorButtons             messages
@@ -4902,7 +4907,7 @@ namespace FsRoot
                     
                     btnSaveAs        button FSharpStation.SaveAs         "class=btn ${FSharpStation.SaveNeeded}" "Save as...    "
                     btnAddSnippet    button FSharpStation.AddSnippet     ""                  "Add Snippet   "
-                    btnDeleteSnippet button FSharpStation.DeleteSnippet  ""                  "Delete Snippet"
+                    btnDeleteSnippet button FSharpStation.RemoveSnippet  ""                  "Delete Snippet"
                     btnIndentIn      button FSharpStation.IndentIn       ""                  "Indent In  >> "
                     btnIndentOut     button FSharpStation.IndentOut      ""                  "Indent Out << "
                     btnRunFS         button FSharpStation.RunFS          ""                  "Run F#        "
@@ -4921,7 +4926,23 @@ namespace FsRoot
                 |> String.unindentStr
                 |> LayoutEngine.newLyt "FStationLyt"
                 |> LayoutEngine.addLayout
-                AF.mainDocV.Set "FStationLyt.menuEditor"
+        
+                Snippets.currentLayoutDW
+                |> View.consistent
+                |> View.Sink(fun lytO ->
+                    lytO
+                    |> Option.bind (fun (name, txt) ->
+                        txt 
+                        |> LayoutEngine.newLyt    name
+                        |> LayoutEngine.addLayout 
+                        if txt = "" then None else 
+                        Some name
+                    )
+                    |> Option.defaultValue "FStationLyt"
+                    |> AF.mainDocV.Set
+                )
+        
+                
         
                 async {
                   do! Monaco.loader

@@ -4304,15 +4304,15 @@
    {
     return a==null?b.Return(null):b.Bind(SnippetModule.propertyHierORm(n,a.$0),function(a$1)
     {
-     var $1,next;
+     var $1,sn,next;
      return b.Return(a$1==null?null:{
       $:1,
-      $0:($1=a$1.$0,($1[0],next=$1[1],[next,next]))
+      $0:($1=a$1.$0,(sn=$1[0],(next=$1[1][1],[sn,[next,next]])))
      });
     });
    }):b.Return({
     $:1,
-    $0:(vs=Strings.SplitStrings(m.$0,["|-|"],1),[Arrays.get(vs,0),Arrays.length(vs)>0?Arrays.get(vs,1):Arrays.get(vs,0)])
+    $0:[snp,(vs=Strings.SplitStrings(m.$0,["|-|"],1),[Arrays.get(vs,0),Arrays.length(vs)>1?Arrays.get(vs,1):Arrays.get(vs,0)])]
    });
   }));
  };
@@ -7716,6 +7716,11 @@
    return b.Zero();
   }));
  };
+ Snippets.currentLayoutDW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.currentLayoutDW;
+ };
  Snippets.SaveAsClassW=function()
  {
   SC$1.$cctor();
@@ -7986,7 +7991,7 @@
    $1:S
   })),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.snippetlist(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderSnippets.snippets$4209$40=function(snpId)
+ RenderSnippets.snippets$4214$40=function(snpId)
  {
   return function(ev)
   {
@@ -7996,7 +8001,7 @@
    o==null?void 0:Snippets.moveNode(o.$0,snpId);
   };
  };
- RenderSnippets.snippets$4208$40=function(snpId)
+ RenderSnippets.snippets$4213$40=function(snpId)
  {
   return function(ev)
   {
@@ -8004,7 +8009,7 @@
     ev.Event.preventDefault();
   };
  };
- RenderSnippets.snippets$4207$40=function(snpId)
+ RenderSnippets.snippets$4212$40=function(snpId)
  {
   return function(ev)
   {
@@ -8012,21 +8017,21 @@
    ev.Event.stopPropagation();
   };
  };
- RenderSnippets.snippets$4206$40=function(snpId)
+ RenderSnippets.snippets$4211$40=function(snpId)
  {
   return function()
   {
    Snippets.toggleCollapse(snpId);
   };
  };
- RenderSnippets.snippets$4205$40=function(snpId)
+ RenderSnippets.snippets$4210$40=function(snpId)
  {
   return function()
   {
    Snippets.togglePredecessor(snpId);
   };
  };
- RenderSnippets.snippets$4204$40=function(snpId)
+ RenderSnippets.snippets$4209$40=function(snpId)
  {
   var s;
   s=View$1.Map(function(y)
@@ -8038,7 +8043,7 @@
    return RenderSnippets.scrollIntoView(s,e);
   };
  };
- RenderSnippets.snippets$4203$40=function(snpId)
+ RenderSnippets.snippets$4208$40=function(snpId)
  {
   return function()
   {
@@ -8174,7 +8179,7 @@
     e.scrollIntoViewIfNeeded();
   },selW);
  };
- RenderProperties.render$4246$34=function()
+ RenderProperties.render$4251$34=function()
  {
   return function()
   {
@@ -8196,7 +8201,7 @@
    RenderProperties.addProperty();
   }))),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.propertytable(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderProperties.properties$4239$33=function(i)
+ RenderProperties.properties$4244$33=function(i)
  {
   return function()
   {
@@ -9012,7 +9017,7 @@
  };
  MainProgram.mainProgram=function()
  {
-  var b;
+  var v,prior,b;
   AppFramework.plugIns().Append(PlugIn.New("FSharpStation",[AppFramework.newVar("fileName",LoadSave.fileName()),AppFramework.newVar("SnippetName",Var$1.Lens(Snippets.currentSnippetV(),function($1)
   {
    return $1.snpName;
@@ -9027,11 +9032,11 @@
    return Snippet.New($1.snpId,$1.snpName,$2,$1.snpParentIdO,$1.snpPredIds,$1.snpProperties,$1.snpGeneration);
   })),AppFramework.newVar("Output",MainProgram.outputMsgs()),AppFramework.newVar("Parser",FStation.annotationsV())],[AppFramework.newViw("FsCode",Snippets.FsCodeW()),AppFramework.newViw("SaveNeeded",Snippets.SaveAsClassW())],[AppFramework.newDoc("mainDoc",Lazy.Create(MainProgram.mainDoc)),AppFramework.newDoc("editor",Lazy.Create(function()
   {
-   var x,o,v;
+   var x,o,v$1;
    return Doc.Element("div",[],[(x=(o=Monaco$1.getEditorConfigO(),o==null?null:{
     $:1,
     $0:Monaco.render(o.$0)
-   }),(v=Doc.get_Empty(),x==null?v:x.$0))]);
+   }),(v$1=Doc.get_Empty(),x==null?v$1:x.$0))]);
   })),AppFramework.newDoc("Snippets",Lazy.Create(RenderSnippets.render)),AppFramework.newDoc("Properties",Lazy.Create(RenderProperties.render)),AppFramework.newDoc("ButtonsRight",Lazy.Create(MainProgram.buttonsRight))],[AppFramework.newAct("AddSnippet",function()
   {
    Snippets.newSnippet();
@@ -9075,53 +9080,65 @@
    },
    $1:"textarea"
   })],[]));
-  LayoutEngineModule.addLayout(LayoutEngineModule.newLyt("FStationLyt",(String.unindentStr())("\n                    double           horizontal  0-50-100 AppFramework.AppFwkClient menuEditor\n        \n                    menuEditor       horizontal  65       menuLogo                  editorMessages\n                    menuLogo         vertical    350      logo                      menu\n                    logo             span       \"margin:0; color:gray; font-size: 55px; font-weight:530\" \"F# Station\"\n                    editorMessages   horizontal 10-83-100 editorButtons             messages\n                    messages         vertical   0-50-100  messagesLeft              messagesRight\n                    editorButtons    vertical -200 snippetsSnippet buttons\n                    buttons div      \"overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px\" btnSaveAs none x btnAddSnippet btnDeleteSnippet btnIndentIn btnIndentOut none x btnRunFS\n                    snippetsSnippet  vertical   0-20-100  FSharpStation.Snippets    editorProperties\n                    editorProperties vertical   0-100-100 snippet                   properties\n                    properties       div        \"\"        FSharpStation.Properties\n                    snippet          horizontal 35        Name                      FSharpStation.editor\n                    menu             span  \"\" btnLoad btnImport\n                    \n                    btnSaveAs        button FSharpStation.SaveAs         \"class=btn ${FSharpStation.SaveNeeded}\" \"Save as...    \"\n                    btnAddSnippet    button FSharpStation.AddSnippet     \"\"                  \"Add Snippet   \"\n                    btnDeleteSnippet button FSharpStation.DeleteSnippet  \"\"                  \"Delete Snippet\"\n                    btnIndentIn      button FSharpStation.IndentIn       \"\"                  \"Indent In  >> \"\n                    btnIndentOut     button FSharpStation.IndentOut      \"\"                  \"Indent Out << \"\n                    btnRunFS         button FSharpStation.RunFS          \"\"                  \"Run F#        \"\n         \n                    messagesLeft     wcomp-tabstrip                      \"\"                  Output FsCode\n                    messagesRight    wcomp-tabstrip                      \"\"                  Parser\n         \n                    Output           textarea  FSharpStation.Output      \"tabname=Output ; placeholder=Output messages ; spellcheck=false\" \n                    FsCode           textarea  FSharpStation.FsCode      \"tabname=F# Code; placeholder=F# Code         ; spellcheck=false\" \n                    Parser           textarea  FSharpStation.Parser      \"tabname=Parser ; placeholder=Parser messages; dblclick=${FSharpStation.JumpTo} ; spellcheck=false\" \n                    Name             Doc       InputLabel                \"\"     \"Name:\"        FSharpStation.SnippetName\n                    btnLoad          Doc       InputFile                 \"\"     \"Load File...\" FSharpStation.LoadFile  FileName\n                    btnImport        Doc       InputFile                 \"\"     \"Import...\"    FSharpStation.Import    \"\"\n                    FileName         div                                 \"class=form-control\"  FSharpStation.fileName\n                ")));
-  AppFramework.mainDocV().Set("FStationLyt.menuEditor");
+  LayoutEngineModule.addLayout(LayoutEngineModule.newLyt("FStationLyt",(String.unindentStr())("\n        \n                    menuEditor       horizontal  65       menuLogo                  editorMessages\n                    double           horizontal  0-50-100 AppFramework.AppFwkClient menuEditor\n                    menuLogo         vertical    350      logo                      menu\n                    logo             span       \"margin:0; color:gray; font-size: 55px; font-weight:530\" \"F# Station\"\n                    editorMessages   horizontal 10-83-100 editorButtons             messages\n                    messages         vertical   0-50-100  messagesLeft              messagesRight\n                    editorButtons    vertical -200 snippetsSnippet buttons\n                    buttons div      \"overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px\" btnSaveAs none x btnAddSnippet btnDeleteSnippet btnIndentIn btnIndentOut none x btnRunFS\n                    snippetsSnippet  vertical   0-20-100  FSharpStation.Snippets    editorProperties\n                    editorProperties vertical   0-100-100 snippet                   properties\n                    properties       div        \"\"        FSharpStation.Properties\n                    snippet          horizontal 35        Name                      FSharpStation.editor\n                    menu             span  \"\" btnLoad btnImport\n                    \n                    btnSaveAs        button FSharpStation.SaveAs         \"class=btn ${FSharpStation.SaveNeeded}\" \"Save as...    \"\n                    btnAddSnippet    button FSharpStation.AddSnippet     \"\"                  \"Add Snippet   \"\n                    btnDeleteSnippet button FSharpStation.RemoveSnippet  \"\"                  \"Delete Snippet\"\n                    btnIndentIn      button FSharpStation.IndentIn       \"\"                  \"Indent In  >> \"\n                    btnIndentOut     button FSharpStation.IndentOut      \"\"                  \"Indent Out << \"\n                    btnRunFS         button FSharpStation.RunFS          \"\"                  \"Run F#        \"\n         \n                    messagesLeft     wcomp-tabstrip                      \"\"                  Output FsCode\n                    messagesRight    wcomp-tabstrip                      \"\"                  Parser\n         \n                    Output           textarea  FSharpStation.Output      \"tabname=Output ; placeholder=Output messages ; spellcheck=false\" \n                    FsCode           textarea  FSharpStation.FsCode      \"tabname=F# Code; placeholder=F# Code         ; spellcheck=false\" \n                    Parser           textarea  FSharpStation.Parser      \"tabname=Parser ; placeholder=Parser messages; dblclick=${FSharpStation.JumpTo} ; spellcheck=false\" \n                    Name             Doc       InputLabel                \"\"     \"Name:\"        FSharpStation.SnippetName\n                    btnLoad          Doc       InputFile                 \"\"     \"Load File...\" FSharpStation.LoadFile  FileName\n                    btnImport        Doc       InputFile                 \"\"     \"Import...\"    FSharpStation.Import    \"\"\n                    FileName         div                                 \"class=form-control\"  FSharpStation.fileName\n                ")));
+  View$1.Sink(function(lytO)
+  {
+   var a,o,$1,name,txt;
+   a=(o=lytO==null?null:($1=lytO.$0,(name=$1[0],(txt=$1[1],(LayoutEngineModule.addLayout(LayoutEngineModule.newLyt(name,txt)),txt===""?null:{
+    $:1,
+    $0:name
+   })))),o==null?"FStationLyt":o.$0);
+   AppFramework.mainDocV().Set(a);
+  },(v=Snippets.currentLayoutDW(),(prior=[Var$1.Create$1(null)],(View$1.Sink(function(v$1)
+  {
+   if(!Unchecked.Equals(prior[0].Get(),v$1))
+    prior[0].Set(v$1);
+  },v),prior[0].get_View()))));
   return Doc.Async((b=null,Concurrency.Delay(function()
   {
    return Concurrency.Bind(Monaco.loader(),function()
    {
-    var x,o,v;
+    var x,o,v$1;
     x=(o=Monaco$1.getEditorConfigO(),o==null?null:{
      $:1,
      $0:Monaco.render(o.$0)
     });
-    v=Doc.get_Empty();
+    v$1=Doc.get_Empty();
     x==null?void 0:void 0;
     return Concurrency.Return(AppFramework.getMainDoc().f());
    });
   })));
  };
- MainProgram.mainDoc$4846$78=Global.id;
- MainProgram.mainDoc$4838$39=function()
+ MainProgram.mainDoc$4851$78=Global.id;
+ MainProgram.mainDoc$4843$39=function()
  {
   return function(ev)
   {
    JumpTo.jumpToRef(ev.Target);
   };
  };
- MainProgram.mainDoc$4837$39=function()
+ MainProgram.mainDoc$4842$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$4836$39=function()
+ MainProgram.mainDoc$4841$39=function()
  {
   return function(ev)
   {
    Importer.importFile(ev.Target);
   };
  };
- MainProgram.mainDoc$4835$39=function()
+ MainProgram.mainDoc$4840$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$4834$39=function()
+ MainProgram.mainDoc$4839$39=function()
  {
   return function(ev)
   {
@@ -9240,11 +9257,11 @@
   }))))))))))))));
   return(p=Handler$1.CompleteHoles(tmp.k,tmp.h,[["filename",0],["name",0],["output",0],["fscode",0],["parser",0]]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.layout(p[0])),(tmp.i=i,i))).get_Doc();
  };
- MainProgram.buttonsRight$4820$74=Global.id;
- MainProgram.buttonsRight$4819$74=Global.id;
- MainProgram.buttonsRight$4818$74=Global.id;
- MainProgram.buttonsRight$4817$74=Global.id;
- MainProgram.buttonsRight$4816$74=Global.id;
+ MainProgram.buttonsRight$4825$74=Global.id;
+ MainProgram.buttonsRight$4824$74=Global.id;
+ MainProgram.buttonsRight$4823$74=Global.id;
+ MainProgram.buttonsRight$4822$74=Global.id;
+ MainProgram.buttonsRight$4821$74=Global.id;
  MainProgram.buttonsRight=function()
  {
   var tmp,p,i;
@@ -10076,6 +10093,24 @@
     return snp.snpGeneration>gen;
    },snps)?"btn-primary":"";
   },Snippets.snippets().v,Snippets.generation().get_View());
+  SC$1.currentLayoutDW=View$1.Map(function(snp)
+  {
+   function m$4(sn,a$2)
+   {
+    return["Snp_"+Strings.Replace(Global.String(sn.snpId.get_Id()),"-",""),a$2[0]];
+   }
+   return Snippets.runReader(function()
+   {
+    return null;
+   },Operators$1.op_BarGreaterGreater(SnippetModule.propertyHierORm("Layout",snp),function(o)
+   {
+    var $7;
+    return o==null?null:{
+     $:1,
+     $0:($7=o.$0,m$4($7[0],$7[1]))
+    };
+   }));
+  },Snippets.currentSnippetW());
   SC$1.drag=DragInfo.DragNone;
   SC$1.rootdir="..\\website";
   SC$1.TemplatesFileName="..\\website"+"\\Templates.html";

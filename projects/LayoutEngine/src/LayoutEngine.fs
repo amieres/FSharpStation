@@ -78,30 +78,31 @@ namespace FsRoot
         module Library =
             let Error = Result.Error
             module Memoize =
+            
+            
                 /// creates a Dictionary to store memoized values
                 /// returns 3 functions:
-                ///    checkO: ('p->'v option) 
-                ///    store : ('p->'v->'v)
-                ///    clear : (unit->unit)
+                ///    checkO  : ('p->'v option) 
+                ///    getOrAdd: ('p->('p->'v)->'v) 
+                ///    clear   : (unit->unit)
                 [<Inline>]
-                let checkStore() =
+                let getStore() =
                     let cache        = System.Collections.Generic.Dictionary<_, _>()
                     let checkO v     = let mutable res = Unchecked.defaultof<_>
                                        let ok          = cache.TryGetValue(v, &res)
                                        if  ok then Some res else None
                     let store  v res = cache.[v] <- res
                                        res
-                    (checkO, store), cache.Clear
+                    let getOrAdd p f = checkO p |> Option.defaultWith (fun () -> f p |> store p )
+                    (checkO, getOrAdd), cache.Clear
             
-            
-                /// Memoizes function f using the provided data store
-                /// getStore() returns 2 functions:
-                ///     checkO: ('p->'v option)
-                ///     store : ('p->'v->'v)
+                /// Memoizes function f using the provided cache
+                /// getCache() returns 1 function:
+                ///    getOrAdd: ('p->('p->'v)->'v) 
                 [< Inline >]
-                let memoizeStore getStore f =
-                    let (checkO:'p->'v option), (store:'p->'v->'v) = getStore()
-                    fun p -> checkO p |> Option.defaultWith (fun () -> f p |> store p )
+                let memoizeStore (getCache:unit->('key -> ('key -> 'value) -> 'value) ) f =
+                    let getOrAdd = getCache()
+                    fun p -> getOrAdd p f
             
             
                 /// Memoizes the function f using a Dictionary
@@ -109,9 +110,9 @@ namespace FsRoot
                 /// The dictionary can be reset using the clear() function
                 [< Inline >]
                 let memoizeResetable f =
-                    let store, clear = checkStore()
-                    memoizeStore (fun () -> store) f
-                  , clear
+                    let (check, getOrAdd), clear = getStore()
+                    let memoF = memoizeStore (fun () -> getOrAdd) f
+                    memoF, clear
             
                 /// Memoizes the function f using a Dictionary
                 [<Inline>]
@@ -717,7 +718,7 @@ namespace FsRoot
                     plugIns.View
                     |> View.Map2(fun mainDoc plgs -> 
                         plgs |> Seq.tryPick(fun plg ->
-                            plg.plgDocs |> Seq.tryFind(fun doc -> plg.plgName + "." + doc.docName = mainDoc) |> Option.map getLazyDoc
+                            plg.plgDocs |> Seq.tryFind(fun doc -> plg.plgName = mainDoc || plg.plgName + "." + doc.docName = mainDoc) |> Option.map getLazyDoc
                         )
                         |> Option.defaultValue AppFwkClient.Value
                     ) mainDocV.View
@@ -749,10 +750,10 @@ namespace FsRoot
                         .Gap(          gap)
                         .Doc()
             
-                let newVar name var = { varName = name ; varVar      = var }
-                let newViw name viw = { viwName = name ; viwView     = viw }
-                let newDoc name doc = { docName = name ; docDoc      = LazyDoc doc }
-                let newQry name qry = { qryName = name ; qryFunction = qry }
+                let newVar name var = { varName = name ; varVar      = var          }
+                let newViw name viw = { viwName = name ; viwView     = viw          }
+                let newDoc name doc = { docName = name ; docDoc      = LazyDoc doc  }
+                let newQry name qry = { qryName = name ; qryFunction = qry          }
                 let newAct name fnc = {
                     actName        = name
                     actFunction    = FunAct0 fnc
