@@ -226,6 +226,12 @@ namespace FsRoot
                     match line.Substring(ch) with
                     | REGEX @"^([a-zA-Z_]\w*)" "g" [| txt |] -> txt
                     | _                                      -> ""          
+            
+                let (|Identifier|_|) =
+                    function
+                    | REGEX "^[$a-zA-Z_][0-9a-zA-Z_\.\-$]*$" "" [| id |] -> Some id
+                    | _                                                  -> None
+            
             [< JavaScript >]
             module Hoverable =
                 open WebSharper.UI.Html
@@ -1139,7 +1145,7 @@ namespace FsRoot
                             plgName    = lyt.lytName
                             plgVars    = [| AF.newVar "Layout" lyt.lytDefinition  |]
                             plgViews   = [|                                       |]
-                            plgDocs    = [| yield! createDocs lyt.lytName txt
+                            plgDocs    = [| yield! createDocs lyt.lytName txt |> Seq.groupBy (fun d -> d.docName) |> Seq.map (snd >> Seq.last)
                                             yield  AF.newDocF "InputFile"  <| AF.FunDoc4(inputFile  lyt.lytName, "attrs", "Label", "Action", "[Doc]")
                                             yield  AF.newDocF "InputLabel" <| AF.FunDoc3(inputLabel lyt.lytName, "attrs", "Label", "Var"            )
                                             yield  AF.newDocF "none"       <| AF.FunDoc1(none      , "x"                                )

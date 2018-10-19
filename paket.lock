@@ -934,6 +934,7 @@ RESTRICTION: == net461
 NUGET
   remote: https://www.nuget.org/api/v2
     FSharp.Data.SqlClient (1.8.6)
+    Microsoft.Orleans.Core.Abstractions (2.1.2)
     OpenCvSharp3-AnyCPU (3.4.1.20180830)
 
 GROUP Test

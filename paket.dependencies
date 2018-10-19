@@ -34,6 +34,7 @@ group Other
 
     nuget OpenCvSharp3-AnyCPU
     nuget FSharp.Data.SqlClient
+    nuget Microsoft.Orleans.Core.Abstractions
 
 group Test
     framework: netstandard2, net461

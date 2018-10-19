@@ -306,6 +306,23 @@ namespace FsRoot
                     let absorbO  vOS              = vOS |> Seq.choose id
                     let absorbR  vOS              = vOS |> Seq.choose (function Ok v -> Some v |_-> None)
                     
+                module Option =
+                    open Option
+                    
+                    let rtn    = Some
+                    let iter f = map f >> Option.defaultValue ()
+                
+                    /// Same as defaultWith
+                    let mapNone  f o = Option.defaultWith f o
+                    let bindNone f o = match o with | Some v -> Some v |_-> f()
+                    
+                    let (>>=)                              v f = bind f v
+                    let rec    traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                                 Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq                  sq = traverseSeq id sq
+                    let insertR (vOR:Result<_,_>)              = vOR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
+                    let absorbR  vRO                           = vRO |> function Some(Ok v) -> Some v |_-> None
+                    
                 /// Extensions to Async
                 module Async =
                     let [< Inline >] inline rtn   v    = async.Return v
@@ -2264,6 +2281,12 @@ namespace FsRoot
                     match line.Substring(ch) with
                     | REGEX @"^([a-zA-Z_]\w*)" "g" [| txt |] -> txt
                     | _                                      -> ""          
+            
+                let (|Identifier|_|) =
+                    function
+                    | REGEX "^[$a-zA-Z_][0-9a-zA-Z_\.\-$]*$" "" [| id |] -> Some id
+                    | _                                                  -> None
+            
             [< JavaScript >]
             module Hoverable =
                 open WebSharper.UI.Html
@@ -2857,12 +2880,12 @@ namespace FsRoot
                 
             
                 [< Rpc >]
-                let evalCodeWithPresence workDir presenceKey presenceValue presenceCodeF code = 
+                let evalCodeWithPresence workDir presenceKey presenceValue presenceCode code = 
                     let config = extractConfig workDir code
                     fusion {    
                         let! currentValueO = getPresenceRm presenceKey
                         if   currentValueO <> Some presenceValue then
-                            let  presenceCode   = presenceCodeF()
+                            //let  presenceCode   = presenceCodeF()
                             let  presenceConfig = extractConfig workDir presenceCode
                             if  presenceConfig <> config then
                                 do! ErrorF (ErrorMsg <| sprintf "Presence and code configs are different: %A <--> %A" presenceConfig config)
@@ -3889,6 +3912,17 @@ namespace FsRoot
             } |> Async.Start
             
             let annotationsV = Var.Create ""
+            let outputMsgs   = Var.Create ""
+        
+            let appendText (var:Var<string>) msg = 
+                match var.Value, msg with
+                | "", m 
+                | m , "" -> m
+                | v , m  -> v + "\n" + m
+                |> var.Set
+                
+            let inline appendMsgs   msg = appendText outputMsgs msg
+        
         
         module Snippets =
             open TreeReader
@@ -3991,9 +4025,29 @@ namespace FsRoot
                                                     snippets  .View 
                                                     generation.View
             let currentLayoutDW                =  View.Map (fun snp -> 
-                                                    Snippet.propertyHierORm "Layout" snp 
-                                                    |>> Option.map (fun (sn, (txt, _)) -> "Snp_" + (string sn.snpId.Id).Replace("-", ""), txt)
-                                                    |> runReader (fun _ -> None)
+                                                    fusion {
+                                                        let! btnsO = Snippet.propertyHierORm "Buttons" snp
+                                                                     |>> Option.map(fun(snB, (txB, _)) ->
+                                                                        let ss =    txB.Trim().Split('\n')
+                                                                                    |> Seq.filter(fun s -> s.Trim() <> "")
+                                                                                    |> Seq.mapi (fun i btn -> sprintf "btn%d button \"click=${FSharpStation.ButtonClick}\" %A" i btn)
+                                                                        "Snp_" + (string snB.snpId.Id).Replace("-", "")
+                                                                      , [   yield "editorButtons vertical 0-85-100 FStationLyt.menuEditor buttons"
+                                                                            yield! ss
+                                                                            yield [ 0.. Seq.length ss - 1 ] 
+                                                                                    |> Seq.map (sprintf "btn%d") 
+                                                                                    |> String.concat " " 
+                                                                                    |> sprintf "buttons div \"\" %s "
+                                                                        ] |> String.concat "\n"
+                                                                    )
+                                                        return!      Snippet.propertyHierORm "Layout"  snp 
+                                                                     |>> Option.map (fun (snL, (txL, _)) ->
+                                                                        "Snp_" + (string snL.snpId.Id).Replace("-", "")
+                                                                      , btnsO |> Option.map (fun (snB, lyB) -> 
+                                                                            [ txL ; lyB ] |> String.concat "\n")
+                                                                        |> Option.defaultValue txL)
+                                                                     |>> Option.bindNone (fun () -> btnsO)
+                                                    } |> runReader (fun _ -> None)
                                                   ) currentSnippetW
                                                     
             let setChildrenRm snpId ch = fusion {
@@ -4657,6 +4711,51 @@ namespace FsRoot
                 |> fst
                 |> Seq.pick (fun (line, from, to_) -> if s >= from && s < to_ then Some line else None)
                 |> jumpToLine        
+        module CustomAction =
+            open FusionAsyncM
+            open Operators
+            open FStation
+        
+            let propO snp p = snp |> Snippet.propertyHierORm p |> ofFusionM |>> Option.map (function (_, (v, _)) -> v)
+            let [< Inline "Object.constructor('return function(parm) { return `' + $template + '`}')()($p)" >] translateTemplate (template: string) p = ""
+        
+        
+            let getBaseSnippet() = fusion {
+                let     snp     = Snippets.currentSnippetV.Value
+                let!    snpRefO = propO snp "BaseSnippet"
+                return! snpRefO
+                        |>  Option.map(fun ref -> 
+                                SnippetReference.RefSnippetPath (ref.Split '/') 
+                                |> Snippet.snippetFromRefORm
+                                |> ofFusionM)
+                        |>  insertO
+                        |>> Option.flatten
+                        |>> Option.defaultValue snp
+            }
+        
+            let getCode snp name = fusion {
+                let!  openProp  = propO snp "Open" |>> Option.map (__ (+) "\n") |>> Option.defaultValue ""
+                let!  namecodeO = propO snp  name
+                match namecodeO with
+                | Some code -> return openProp + code
+                | None      -> 
+                let! template  = propO snp "action-template" |>> Option.defaultValue "${parm}() |> printfn \"%A\""
+                let  code      = translateTemplate template name
+                return openProp + code
+            }
+        
+            let buttonClickRm (e:Dom.Element) = fusion {
+                let  name      = e.TextContent.Trim()
+                outputMsgs.Set <| sprintf "Action %s ..." name
+                let! snp       = getBaseSnippet()
+                let! code      = getCode snp name
+                do!     ofAsync <| FSharpStationClient.setAddress (WebSockets.Address FStation.id)
+                let! preCode   = Snippet.fastCodeRm (Some snp.snpId) (Some snp.snpId) |> ofFusionM |>> fst 
+                return! ofAsync <| FsiAgent.evalCodeWithPresence FStation.srcDir (sprintf "%A" snp.snpId) (string snp.snpGeneration) (FsCode preCode) (FsCode code)
+            }
+            
+            let buttonClick e = buttonClickRm e |> iterReaderA  print print (Snippets.snippetsColl())
+        
         module Serializer =
             open Serializer
         
@@ -4765,17 +4864,8 @@ namespace FsRoot
             open WebComponent
             open FusionAsyncM
             open Operators
+            open FStation
             
-            let appendText (var:Var<string>) msg = 
-                match var.Value, msg with
-                | "", m 
-                | m , "" -> m
-                | v , m  -> v + "\n" + m
-                |> var.Set
-                
-            let outputMsgs = Var.Create ""
-            let inline appendMsgs   msg = appendText outputMsgs msg
-        
             let runFsCode () = 
                 let out (v:string) = appendMsgs <| v.Replace(FsiEvaluator.endToken, "Done!")
                 Snippets.FsCodeW 
@@ -4882,9 +4972,10 @@ namespace FsRoot
                                        AF.newAct  "AddProperty"     RenderProperties.addProperty
                                        AF.newAct  "SaveAs"          LoadSave.saveAs
                                        AF.newAct  "RunFS"           runFsCode
-                                       AF.newActF "LoadFile"        <| AF.FunAct1 ((fun o -> unbox o |> LoadSave.loadTextFile), "FileElement")
-                                       AF.newActF "Import"          <| AF.FunAct1 ((fun o -> unbox o |> Importer.importFile  ), "FileElement")
-                                       AF.newActF "JumpTo"          <| AF.FunAct1 ((fun o -> unbox o |> JumpTo.jumpToRef     ), "textarea"   )
+                                       AF.newActF "LoadFile"        <| AF.FunAct1 ((fun o -> unbox o |> LoadSave.loadTextFile   ), "FileElement")
+                                       AF.newActF "Import"          <| AF.FunAct1 ((fun o -> unbox o |> Importer.importFile     ), "FileElement")
+                                       AF.newActF "JumpTo"          <| AF.FunAct1 ((fun o -> unbox o |> JumpTo.jumpToRef        ), "textarea"   )
+                                       AF.newActF "ButtonClick"     <| AF.FunAct1 ((fun o -> unbox o |> CustomAction.buttonClick), "button"     )
                                     |]
                     AF.plgQueries = [|                                               
                                     |]
@@ -4954,6 +5045,7 @@ namespace FsRoot
         
         
         module Messaging =
+            open FStation
             open FusionM
             open Operators
         
@@ -4970,7 +5062,7 @@ namespace FsRoot
                                                            return! Snippet.fastCodeRm (Some snp.snpId) (Some snp.snpId) |>> fst |>> RespString
                     | MsgGetPredecessors           snr  -> Snippets.clearPredsCache ()
                                                            return  Hole ? TODO_GetPredecessors
-                    | MsgAction [| "AddOutput" ; txt |] -> MainProgram.appendMsgs txt
+                    | MsgAction [| "AddOutput" ; txt |] -> appendMsgs txt
                                                            return  FSResponse.RespString "Ok"
                     | MsgGetUrl                         -> return  FSResponse.RespString JS.Document.BaseURI
                     | _                                 -> return  Hole ?(sprintf "TODO message: %A" msg)
