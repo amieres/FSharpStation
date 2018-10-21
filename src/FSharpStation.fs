@@ -111,7 +111,10 @@ namespace FsRoot
             let [<Inline>] inline  (|>!) v f   = f v ; v
             let [<Inline>] inline  (>>!) g f   = g >> fun v -> f v ; v
             
-            let print v = printfn "%A" v
+            let inline print v = 
+                match box v with
+                | :? string as s -> printfn "%s" s
+                | __             -> printfn "%A" v
             
             /// Extensible type for error messages, warnings and exceptions
             type ResultMessage<'M> =
@@ -149,11 +152,13 @@ namespace FsRoot
                     | RMessages ms   ->  ms     |> Array.map (bindMessage f) |> RMessages
             
                 /// a Message is converted to ErrorMsg
-                let freeMessage  msg = msg |> bindMessage (sprintf "%O" >> ErrorMsg)
+                let freeMessageF f msg = msg |> bindMessage f
+                /// a Message is converted to ErrorMsg
+                let freeMessage    msg = msg |> freeMessageF (sprintf "%O" >> ErrorMsg)
                 /// a Message is converted to Warning
-                let freeMessageW msg = msg |> bindMessage (sprintf "%O" >> Warning )
+                let freeMessageW   msg = msg |> freeMessageF (sprintf "%O" >> Warning )
                 /// a Message is converted to Info
-                let freeMessageI msg = msg |> bindMessage (sprintf "%O" >> Info    )
+                let freeMessageI   msg = msg |> freeMessageF (sprintf "%O" >> Info    )
             
                 let rec isInfoF f msg =
                     match msg with
@@ -179,11 +184,13 @@ namespace FsRoot
             
                 let rec isFatalF f msg =
                     match msg with
+                    | NoMsg
                     | Info      _    
                     | Warning   _    ->  false
                     | Message   m    ->  f m
                     | RMessages ms   ->  ms |> Seq.exists (isFatalF f)
                     | _              ->  true
+                    //|>! printfn "%A = %A" msg
                 /// a Message is considered fatal
                 let isFatal  msg = msg |> isFatalF (fun _ -> true )
                 /// a Message is not considered fatal
@@ -191,6 +198,7 @@ namespace FsRoot
             
                 let rec countF f msg =
                     match msg with
+                    | NoMsg          ->  0, 0, 0
                     | Info      _    ->  0, 0, 1
                     | Warning   _    ->  0, 1, 0
                     | Message   m    ->  f m
@@ -213,7 +221,7 @@ namespace FsRoot
                     | RMessages mas,           mb  ->  Array.append    mas   [| mb |] |> RMessages
                     |           ma ,           mb  ->               [| ma   ;   mb |] |> RMessages
             
-                let addMsgs a ms = ms |> Seq.fold addMsg a
+                let reduceMsgs ms = ms |> Seq.fold addMsg NoMsg
             
                 let summaryF f msg =        
                     match countF f msg with
@@ -234,30 +242,31 @@ namespace FsRoot
                 let summarizedI msg = msg |> summarizedF (fun _ -> 0, 0, 1)
                 
             module Memoize =
+            
+            
                 /// creates a Dictionary to store memoized values
                 /// returns 3 functions:
-                ///    checkO: ('p->'v option) 
-                ///    store : ('p->'v->'v)
-                ///    clear : (unit->unit)
+                ///    checkO  : ('p->'v option) 
+                ///    getOrAdd: ('p->('p->'v)->'v) 
+                ///    clear   : (unit->unit)
                 [<Inline>]
-                let checkStore() =
+                let getStore() =
                     let cache        = System.Collections.Generic.Dictionary<_, _>()
                     let checkO v     = let mutable res = Unchecked.defaultof<_>
                                        let ok          = cache.TryGetValue(v, &res)
                                        if  ok then Some res else None
                     let store  v res = cache.[v] <- res
                                        res
-                    (checkO, store), cache.Clear
+                    let getOrAdd p f = checkO p |> Option.defaultWith (fun () -> f p |> store p )
+                    (checkO, getOrAdd), cache.Clear
             
-            
-                /// Memoizes function f using the provided data store
-                /// getStore() returns 2 functions:
-                ///     checkO: ('p->'v option)
-                ///     store : ('p->'v->'v)
+                /// Memoizes function f using the provided cache
+                /// getCache() returns 1 function:
+                ///    getOrAdd: ('p->('p->'v)->'v) 
                 [< Inline >]
-                let memoizeStore getStore f =
-                    let (checkO:'p->'v option), (store:'p->'v->'v) = getStore()
-                    fun p -> checkO p |> Option.defaultWith (fun () -> f p |> store p )
+                let memoizeStore (getCache:unit->('key -> ('key -> 'value) -> 'value) ) f =
+                    let getOrAdd = getCache()
+                    fun p -> getOrAdd p f
             
             
                 /// Memoizes the function f using a Dictionary
@@ -265,9 +274,9 @@ namespace FsRoot
                 /// The dictionary can be reset using the clear() function
                 [< Inline >]
                 let memoizeResetable f =
-                    let store, clear = checkStore()
-                    memoizeStore (fun () -> store) f
-                  , clear
+                    let (check, getOrAdd), clear = getStore()
+                    let memoF = memoizeStore (fun () -> getOrAdd) f
+                    memoF, clear
             
                 /// Memoizes the function f using a Dictionary
                 [<Inline>]
@@ -296,6 +305,23 @@ namespace FsRoot
                     let insertR (vSR:Result<_,_>) = vSR |> function | Error m -> rtn (Error m) | Ok v -> Seq.map Ok v
                     let absorbO  vOS              = vOS |> Seq.choose id
                     let absorbR  vOS              = vOS |> Seq.choose (function Ok v -> Some v |_-> None)
+                    
+                module Option =
+                    open Option
+                    
+                    let rtn    = Some
+                    let iter f = map f >> Option.defaultValue ()
+                
+                    /// Same as defaultWith
+                    let mapNone  f o = Option.defaultWith f o
+                    let bindNone f o = match o with | Some v -> Some v |_-> f()
+                    
+                    let (>>=)                              v f = bind f v
+                    let rec    traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                                 Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq                  sq = traverseSeq id sq
+                    let insertR (vOR:Result<_,_>)              = vOR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
+                    let absorbR  vRO                           = vRO |> function Some(Ok v) -> Some v |_-> None
                     
                 /// Extensions to Async
                 module Async =
@@ -386,92 +412,285 @@ namespace FsRoot
                         let result = result
                 
                 
-                type ResultM<'v, 'm> = ResultM of Option<'v> * ResultMessage<'m>
+                type FusionM<'T, 'S, 'M> = FM of ('S * ResultMessage<'M> -> 'T option * 'S * ResultMessage<'M>)
                 
-                let inline OkM              v    = ResultM (Some v, NoMsg)
-                let inline OkMWithMsg       v m  = ResultM(Some v, m)
-                let inline OkMWithMsgs      v ms = ms |> ResultMessage.addMsgs NoMsg |> OkMWithMsg v
+                module FusionM =
+                    let inline rtn               v   = FM(fun (s ,r ) -> Some v, s, NoMsg)
+                    let        bind              f m = FM(fun (s1,m1) -> 
+                                                          try
+                                                              let (FM fm1)  = m
+                                                              let v2O, s2, m2 = fm1 (s1, m1)
+                                                              match v2O with
+                                                              | None    -> None, s2, m2
+                                                              | Some v2 ->
+                                                              let (FM fm2) = f v2
+                                                              let v3O, s3, m3 = fm2 (s2, ResultMessage.addMsg m1 m2)
+                                                              v3O, s3,                       ResultMessage.addMsg m2 m3
+                                                          with e ->
+                                                              let me = ExceptMsg(e.Message, e.StackTrace)
+                                                              None, s1,                      ResultMessage.addMsg m1 me
+                                                       )
+                    let inline map          f     m  = bind (f >> rtn) m
                 
-                let inline ErrorM             m  = ResultM (None  , m    )
-                let inline ErrorMWithMsgs     ms = ms |> ResultMessage.addMsgs NoMsg |> ErrorM
-                let (|OkM|ErrorM|)             r = match r with
-                                                    | ResultM(Some v, m) -> OkM   (v, m)
-                                                    | ResultM(None  , e) -> ErrorM e
-                module ResultM =
+                    let inline wrap               f  = FM f
+                    let inline getFun         (FM f) =    f
+                    let inline from                m = m : FusionM<_, _, _>
                 
-                    let inline rtn                 v = OkM v
-                    let inline rtnr               vR = vR  |> Result.map OkM          |> Result.defaultWith       ErrorM
-                    let freeMessage                r = r   |> function Ok v -> Ok v   | Error e -> ResultMessage.freeMessage e |> Error
-                    let inline toResult            r = match r with
-                                                       | ResultM(Some v, _) -> Ok     v
-                                                       | ResultM(None  , e) -> Error  e
-                    let inline toResultD           r = match r with
-                                                       | ResultM(Some v, m) -> Ok    (v, m)
-                                                       | ResultM(None  , e) -> Error  e
-                    let toOption                   r = r   |> function ResultM (v,_) -> v
-                    let defaultWith              f r = r   |> toResult |> Result.defaultWith   f
-                    let defaultValue             d r = r   |> toResult |> Result.defaultValue  d
-                    let failIfTrue               m v = if     v then m |> ErrorM else OkM ()
-                    let failIfFalse              m v = if not v then m |> ErrorM else OkM ()
-                    let map         f  (ResultM (v, m)) = ResultM (v |> Option.map f, m)
-                    let mapMessage  fM (ResultM (v, m)) = ResultM (v, fM m)
-                    let bind                  f    r = match r with
-                                                       | ResultM(Some v, m) -> f v |> mapMessage (ResultMessage.addMsg m)
-                                                       | ResultM(None  , e) -> ResultM(None  , e)
-                    /// bind version that protects against exceptions
-                    let bindP                 f    r = match r with
-                                                       | ResultM(Some v, m) -> try f v |> mapMessage (ResultMessage.addMsg m)
-                                                                               with  e -> ExceptMsg (e.Message, e.StackTrace) |> ErrorM
-                                                       | ResultM(None  , e) -> ResultM(None  , e)
-                    /// map version that protects against exceptions
-                    let inline mapP           f    m = bindP (f >> rtn) m
-                    let iter                  fM f r = r   |> mapP f |> function ResultM(Some (), m) | ResultM(None, m) -> fM m  : unit
-                    let get                        r = r   |>          defaultWith (string >> failwith)
-                    let ofOption              f   vO = vO  |> Option.map OkM          |> Option.defaultWith (f >> ErrorM)
-                    let ofResult                  vR = vR  |> rtnr
-                    let insertO                  vRO = vRO |> Option.map(map Some)    |> Option.defaultWith(fun () -> OkM None)
-                    let absorbO               f  vOR = vOR |> bindP (ofOption f)
-                    let addMsg                  m  r = r |> mapMessage (ResultMessage.addMsg m)
-                    let (>>=)                    r f = bind f r
-                    let rec    traverseSeq    f   sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
-                                                       Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
-                    let inline sequenceSeq        sq = traverseSeq id sq
-                        
+                    let inline run               s m = getFun m (s, NoMsg)
+                
+                    let inline OkF               v   = FM(fun (s,r) -> Some v , s , NoMsg)
+                    let inline OkFMsg            v m = FM(fun (s,r) -> Some v , s , m    )
+                    let inline ErrorF              m = FM(fun (s,r) -> None   , s , m    )
+                
+                    let inline getS               () = FM(fun (s,r) -> Some s , s , NoMsg)
+                    let inline getR               () = FM(fun (s,r) -> Some r , s , NoMsg)
+                    let inline putS               s1 = FM(fun (s,r) -> Some (), s1, NoMsg)
+                    let inline check              () = FM(fun (s,r) -> (if ResultMessage.isFatal    r then None else Some ())  , s , NoMsg)
+                
+                    let inling getOption          m  = FM(fun (s1,m1) ->
+                                                           try
+                                                               let (FM fm1)  = m
+                                                               let        v2O, s2, m2 = fm1 (s1, m1)
+                                                               Some v2O, s2, m2
+                                                           with e ->
+                                                               let me = ExceptMsg(e.Message, e.StackTrace)
+                                                               None, s1, ResultMessage.addMsg m1 me
+                                                       )
+                
+                
+                    let inline ofResultRM          r = match r with Ok   v -> OkF    v  | Error e -> ErrorF                           e
+                    let inline ofResultM           r = match r with Ok   v -> OkF    v  | Error e -> ErrorF (Message                  e)
+                    let inline ofResultS           r = match r with Ok   v -> OkF    v  | Error e -> ErrorF (ErrorMsg                 e)
+                    let inline ofResult            r = match r with Ok   v -> OkF    v  | Error e -> ErrorF (ErrorMsg <| sprintf "%A" e)
+                    let inline ofOption         f  o = match o with Some v -> OkF    v  | None    -> ErrorF (f()                       )
+                    let inline ofMessage           m =                        OkFMsg ()                     (Message                  m)
+                    let inline ofResultMessage     m =                        OkFMsg ()                                               m
+                    let inline ofFusionM           m = from m
+                
+                    let        freeMessageF     f  m = FM(fun (s1,m1) -> 
+                                                          try
+                                                              let (FM fm1)  = m
+                                                              let v2O, s2, m2 = fm1 (s1, ResultMessage.freeMessage    m1)
+                                                              v2O, s2,                   ResultMessage.freeMessageF f m2
+                                                          with e ->
+                                                              let me = ExceptMsg(e.Message, e.StackTrace)
+                                                              None, s1,                      ResultMessage.addMsg m1 me |> ResultMessage.freeMessage
+                                                       )
+                    let inline freeMessage         m = m |> freeMessageF (sprintf "%O" >> ErrorMsg )
+                    let inline freeMessageW        m = m |> freeMessageF (sprintf "%O" >> Warning  )
+                
+                    let mapState           get set m = FM(fun (s1, r) -> 
+                                                            let vO, s2, r = getFun m (get s1, r)
+                                                            vO, set s1 s2, r
+                                                        )
+                
+                    let iterReader     fM f  v     m  = m |> map f |> run v |> fun (vO, _, m) -> vO |> Option.iter id ; if m <> NoMsg then fM m
+                
+                    let memoizeRm      getStore fRm p = FM(fun (r:'r, m) ->
+                                                            let (checkO:'p->'v option), (getOrAdd:'p->('p->'v)->'v) = getStore r
+                                                            let store p v = getOrAdd p (fun _ -> v)
+                                                            checkO p 
+                                                            |> Option.map rtn 
+                                                            |> Option.defaultWith (fun () -> fRm p |> map (store p) )
+                                                            |> run r
+                                                        )
+                
+                    let inline apply           fR    vR = fR |> bind (swap map  vR)
+                    let (>>=)                       v f = bind f v
+                    let rec    traverseSeq     f     sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                          Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq           sq = traverseSeq id sq
                     
-                    type Builder() =
-                        member inline __.Return          x       = rtn  x
-                        member inline __.ReturnFrom      x       =     (x:Result<_,_>)
-                        member        __.Bind           (w , r ) = bindP  r w
-                        member inline __.Zero           ()       = rtn ()
-                        member inline __.Delay           f       = f
-                        member inline __.Combine        (a, b)   = bind b a
-                        member inline __.Run             f       = OkM () |> bindP f
-                        member __.TryWith   (body, handler     ) = try body() with e -> handler     e
-                        member __.TryFinally(body, compensation) = try body() finally   compensation()
-                        member __.Using     (disposable, body  ) = using (disposable:#System.IDisposable) body
-                        member __.While(guard, body) =
-                            let rec whileLoop guard body =
-                                if guard() then body() |> bind (fun () -> whileLoop guard body)
-                                else rtn   ()
-                            whileLoop guard body
-                        member this.For(sequence:seq<_>, body) =
-                            this.Using(sequence.GetEnumerator(),fun enum -> 
-                                this.While(enum.MoveNext, 
-                                    this.Delay(fun () -> body enum.Current)))
-                                    
-                    [< AutoOpen >]
-                    module AutoOpen =
-                        let resultM = Builder()
+                    let inline readerFun             f  = getS() |> map f
+                    let mapReader           v      m  = m |> mapState (fun _ -> v) (fun s _ -> s)
+                    let runReader           v      m  = m |> run v |> fun (vO, _, m) -> vO |> Option.map(fun v -> v, m) |> Result.ofOption (fun () -> m)
+                    let runResult                  m  = m |> runReader        ()
+                    let iterResult          fM f   m  = m |> iterReader  fM f ()
+                    
+                    let inline insertO  vvO                           = vvO   |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
+                    let inline insertR (vvR:Result<_,_>)              = vvR   |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
+                    let inline insertFst (fst, vRm)                   = vRm   |> map (fun v -> fst, v)
+                    let inline insertSnd (vRm, snd)                   = vRm   |> map (fun v -> v, snd)
+                    let inline absorbR (vvRm)                         = vvRm  |> bind ofResultRM
+                    let inline absorbO f vORm                         = vORm  |> map (Result.ofOption  f) |> absorbR
                     
                     module Operators =
-                        let inline (|>>) v f   = mapP  f v
-                        let inline (>>=) v f   = bindP f v
+                        let inline (<*>) f v   = apply f v
+                        let inline (|>>) v f   = map   f v
+                        let inline (>>=) v f   = bind  f v
                         let inline (>>>) f g v = f v |>> g
                         let inline (>=>) f g v = f v >>= g
                         let inline rtn   v     = rtn    v
+                    
+                    module Builder =
+                        type Builder() =
+                            member inline __.Return      x                  = rtn     x
+                            member inline __.ReturnFrom  x                  = from    x
+                            member        __.Bind       (w , r )            = bind    r w
+                            member inline __.Zero       ()                  = rtn ()
+                            member inline __.Delay       f                  = f
+                            member inline __.Combine    (a, b)              = bind b a
+                            member inline __.Run         f                  = wrap(fun m -> f() |> getFun <|m )
+                            member __.While(guard, body) =
+                                let rec whileLoop guard body =
+                                    if guard() then body() |> bind (fun () -> whileLoop guard body)
+                                    else rtn   ()
+                                whileLoop guard body
+                            member this.TryWith   (body, handler     ) = wrap(fun r -> try body() |> getFun <| r with e -> handler     e            )
+                            member this.TryFinally(body, compensation) = wrap(fun r -> try body() |> getFun <| r finally   compensation()           )
+                            member this.Using     (disposable, body  ) = //wrap(fun r -> using (disposable:#System.IDisposable) (fun u -> body u |> getFun <| r) )
+                                        let body' = fun () -> body disposable
+                                        this.TryFinally(body', fun () -> if disposable :> obj <> null then (disposable:#System.IDisposable).Dispose() )
+                            member this.For(sequence:seq<_>, body) =
+                                this.Using(sequence.GetEnumerator(),fun enum -> 
+                                    this.While(enum.MoveNext, 
+                                        this.Delay(fun () -> body enum.Current)))
+                    
+                    let fusion = Builder.Builder()
+                        
+                    
+                    
+                type FusionAsyncM<'T, 'S, 'M> = FAM of ('S * ResultMessage<'M> -> Async<'T option * 'S * ResultMessage<'M> >)
                 
+                module FusionAsyncM =
+                    let inline rtn               v   = FAM(fun (s ,r ) -> async.Return (Some v, s, NoMsg) )
+                    let        bind              f m = FAM(fun (s1,m1) -> async {
+                                                           try
+                                                               let (FAM fm1)  = m
+                                                               let! v2O, s2, m2 = fm1 (s1, m1)
+                                                               match v2O with
+                                                               | None    -> return None, s2, m2
+                                                               | Some v2 ->
+                                                               let    (FAM fm2) = f v2
+                                                               let! v3O, s3, m3 = fm2 (s2, ResultMessage.addMsg m1 m2)
+                                                               return v3O, s3,            ResultMessage.addMsg m2 m3
+                                                           with e ->
+                                                               let me = ExceptMsg(e.Message, e.StackTrace)
+                                                               return None, s1,           ResultMessage.addMsg m1 me
+                                                        })
+                    let inline map          f     m  = bind (f >> rtn) m
                 
+                    let inline wrap               f  = FAM f
+                    let inline getFun        (FAM f) =    f
+                    let inline from                m = m : FusionAsyncM<_, _, _>
                 
+                    let inline run               s m = getFun m (s, NoMsg)
+                
+                    let inline OkF               v   = FAM(fun (s,r) -> async.Return (Some v , s , NoMsg) )
+                    let inline OkFMsg            v m = FAM(fun (s,r) -> async.Return (Some v , s , m    ) )
+                    let inline ErrorF              m = FAM(fun (s,r) -> async.Return (None   , s , m    ) )
+                
+                    let inline getS               () = FAM(fun (s,r) -> async.Return (Some s , s , NoMsg) )
+                    let inline getR               () = FAM(fun (s,r) -> async.Return (Some r , s , NoMsg) )
+                    let inline putS               s1 = FAM(fun (s,r) -> async.Return (Some (), s1, NoMsg) )
+                    let inline check              () = FAM(fun (s,r) -> async.Return ((if ResultMessage.isFatal    r then None else Some ())  , s , NoMsg) )
+                
+                    let inline getOption          m  = FAM(fun (s1,m1) -> async {
+                                                           try
+                                                               let (FAM fm1)  = m
+                                                               let!        v2O, s2, m2 = fm1 (s1, m1)
+                                                               return Some v2O, s2, m2
+                                                           with e ->
+                                                               let me = ExceptMsg(e.Message, e.StackTrace)
+                                                               return None, s1, ResultMessage.addMsg m1 me
+                                                        })
+                
+                    let inline ofResultRM         r  = match r with Ok   v -> OkF    v  | Error e -> ErrorF                           e
+                    let inline ofResultM          r  = match r with Ok   v -> OkF    v  | Error e -> ErrorF (Message                  e)
+                    let inline ofResultS          r  = match r with Ok   v -> OkF    v  | Error e -> ErrorF (ErrorMsg                 e)
+                    let inline ofResult           r  = match r with Ok   v -> OkF    v  | Error e -> ErrorF (ErrorMsg <| sprintf "%A" e)
+                    let inline ofOption        f  o  = o  |> Option.map OkF |> Option.defaultWith (f >> ErrorF)
+                    let inline ofMessage          m  =                        OkFMsg ()                      (Message                  m)
+                    let inline ofResultMessage    m  =                        OkFMsg ()                                                m
+                    let inline ofFusionM     (FM fm) = FAM(fun (s,r) -> async.Return (fm (s, r)) )
+                    let inline ofAsync            a  = FAM(fun (s ,r ) -> a |> Async.map (fun v -> Some v, s, NoMsg) )
+                    let inline ofAsyncResultRM    a  = a |> ofAsync |> bind ofResultRM
+                
+                    let        freeMessageF     f  m = FAM(fun (s1,m1) -> async {
+                                                          try
+                                                              let   (FAM fm1)  = m
+                                                              let! v2O, s2, m2 = fm1 (s1, ResultMessage.freeMessage    m1)
+                                                              return v2O, s2,             ResultMessage.freeMessageF f m2
+                                                          with e ->
+                                                              let me = ExceptMsg(e.Message, e.StackTrace)
+                                                              return None, s1,            ResultMessage.addMsg m1 me |> ResultMessage.freeMessage
+                                                       })
+                    let mapState           get set m = FAM(fun (s1, r) -> async {
+                                                            let! vO, s2, r = getFun m (get s1, r)
+                                                            return vO, set s1 s2, r
+                                                        })
+                
+                    let iterReader     fM f  v     m  = m |> map f |> run v |> Async.iterS (fun (vO, _, m) -> vO |> Option.iter id ; if m <> NoMsg then fM m)
+                    let iterReaderA    fM f  v     m  = m |> map f |> run v |> Async.iterA (fun (vO, _, m) -> vO |> Option.iter id ; if m <> NoMsg then fM m)
+                
+                    let memoizeRm      getStore fRm p = FAM(fun (r:'r, m) -> async {
+                                                            let (checkO:'p->'v option), (getOrAdd:'p->('p->'v)->'v) = getStore r
+                                                            let store p v = getOrAdd p (fun _ -> v)
+                                                            return! checkO p 
+                                                                    |> Option.map rtn 
+                                                                    |> Option.defaultWith (fun () -> fRm p |> map (store p) )
+                                                                    |> run r
+                                                        })
+                
+                    let inline apply           fR    vR = fR |> bind (swap map  vR)
+                    let (>>=)                       v f = bind f v
+                    let rec    traverseSeq     f     sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                          Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq           sq = traverseSeq id sq
+                    
+                    let inline freeMessage         m = m |> freeMessageF (sprintf "%O" >> ErrorMsg )
+                    let inline freeMessageW        m = m |> freeMessageF (sprintf "%O" >> Warning  )
+                    
+                    let inline readerFun          f  = getS() |> map f
+                    let inline insertO  vvO                           = vvO   |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
+                    let inline insertR (vvR:Result<_,_>)              = vvR   |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
+                    let inline insertFst (fst, vRm)                   = vRm   |> map (fun v -> fst, v)
+                    let inline insertSnd (vRm, snd)                   = vRm   |> map (fun v -> v, snd)
+                    
+                    let inline absorbR (vvRm)                         = vvRm  |> bind ofResultRM
+                    let inline absorbO f vORm                         = vORm  |> map (Result.ofOption  f) |> absorbR
+                    
+                    
+                    let mapReader           v      m  = m |> mapState (fun _ -> v) (fun s _ -> s)
+                    let runReader           v      m  = m |> run v |> Async.map (fun (vO, _, m) -> vO |> Option.map(fun v -> v, m) |> Result.ofOption (fun () -> m))
+                    let runResult                  m  = m |> runReader        ()
+                    let iterResult          fM f   m  = m |> iterReader  fM f ()
+                    let iterResultA         fM f   m  = m |> iterReaderA fM f ()
+                    
+                    module Operators =
+                        let inline (<*>) f v   = apply f v
+                        let inline (|>>) v f   = map   f v
+                        let inline (>>=) v f   = bind  f v
+                        let inline (>>>) f g v = f v |>> g
+                        let inline (>=>) f g v = f v >>= g
+                        let inline rtn   v     = rtn    v
+                    
+                    module Builder =
+                        type Builder() =
+                            member inline __.Return      x                  = rtn     x
+                            member inline __.ReturnFrom  x                  = from    x
+                            member        __.Bind       (w , r )            = bind    r w
+                            member inline __.Zero       ()                  = rtn ()
+                            member inline __.Delay       f                  = f
+                            member inline __.Combine    (a, b)              = bind b a
+                            member inline __.Run         f                  = wrap(fun m -> f() |> getFun <|m )
+                            member __.While(guard, body) =
+                                let rec whileLoop guard body =
+                                    if guard() then body() |> bind (fun () -> whileLoop guard body)
+                                    else rtn   ()
+                                whileLoop guard body
+                            member __.TryWith   (body, handler     ) = (fun (s,m) -> async.TryWith   (body() |> getFun <| (s, m),   handler                ) ) |> wrap
+                            member __.TryFinally(body, compensation) = (fun (s,m) -> async.TryFinally(body() |> getFun <| (s, m),   compensation           ) ) |> wrap
+                            member __.Using     (disposable, body  ) = (fun (s,m) -> async.Using((disposable:#System.IDisposable), fun u -> body u |> getFun <| (s, m)) ) |> wrap
+                            member this.For(sequence:seq<_>, body) =
+                                this.Using(sequence.GetEnumerator(),fun enum -> 
+                                    this.While(enum.MoveNext, 
+                                        this.Delay(fun () -> body enum.Current)))
+                    
+                    let fusion = Builder.Builder()
+                        
+                    
+                    
                 type AsyncResult<'v, 'm> = Async<Result<'v, 'm>>
                 
                 /// A computation expression to build an Async<Result<'ok, 'error>> value
@@ -523,8 +742,8 @@ namespace FsRoot
                     member __.Combine   (vR ,  fRA) : Async<Result<'b  , 'm>> = AsyncResult.bind fRA (vR  |> AsyncResult.rtnR)
                     member __.Delay            fRA                            = fRA
                     member __.Run              fRA                            = fRA ()
-                    member __.TryWith   (fRA , hnd) : Async<Result<'a  , 'm>> = async { return! try fRA() with e -> hnd e  }
-                    member __.TryFinally(fRA , fn ) : Async<Result<'a  , 'm>> = async { return! try fRA() finally   fn  () }
+                    member __.TryWith   (fRA , hnd) : Async<Result<'a  , 'm>> = async { try return! fRA() with e -> return! hnd e  }
+                    member __.TryFinally(fRA , fn ) : Async<Result<'a  , 'm>> = async { try return! fRA() finally   fn  () }
                     member __.Using(resource , fRA) : Async<Result<'a  , 'm>> = async.Using(resource,       fRA)
                     member __.While   (guard , fRA) : Async<Result<unit, 'a>> = AsyncResult.whileLoop guard fRA 
                     member th.For  (s: 'a seq, fRA) : Async<Result<unit, 'b>> = th.Using(s.GetEnumerator (), fun enum ->
@@ -568,246 +787,6 @@ namespace FsRoot
                 
                 
                 
-                [< AutoOpen >]
-                module ReaderMonads =
-                
-                
-                    
-                    type ReaderMBasic<'T, 'R, 'M> = ReaderMB of ('R -> 'T)
-                    
-                    /// There are several versions of the Reader Monads
-                    /// All have at least 2 type parameters: 
-                    /// - the monad type 
-                    /// - the Resource type that is passed when run
-                    /// - the Message or Error type for those that involve Result
-                    /// For ReaderMBasic and ReaderMAsync the third is a dummy type so that all have 3 parameters
-                    /// The purpose of this is to be able to develop generic code that can use any of the 4 Reader types:
-                    /// ReaderMBasic, ReaderMAsync, ReaderMResult, ReaderMAsyncResult.
-                    /// just by referencing the corresponding module
-                    
-                    module ReaderMBasic =
-                        let inline wrap                         f  = ReaderMB f
-                        let inline getFun                       f  =  f |> function ReaderMB g -> g
-                        let inline ofFun                        f  =  f                                           |> wrap
-                        let inline rtn                          a  = (fun _ -> a                                ) |> wrap
-                        let inline bind                       f a  = (fun m -> getFun a m |> f   |> getFun <| m ) |> wrap
-                        let inline delayRun        f               = (fun m ->               f() |> getFun <| m ) |> wrap
-                        let inline map             f            m  = bind (f >> rtn) m                             : ReaderMBasic<_,_,_>
-                        let inline apply           fR           vR = fR |> bind (swap map  vR)                     : ReaderMBasic<_,_,_>
-                        let inline run          rsrc             a = getFun a (rsrc: 'R)                           :             'T
-                        let (>>=)                              v f = bind f v
-                        let rec    traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
-                                                                     Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
-                        let inline sequenceSeq                  sq = traverseSeq id sq
-                        let insertO  vvO                           = vvO  |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
-                        let insertR (vvR:Result<_,_>)              = vvR  |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
-                        let insertFst (fst, vRm)                   = vRm  |> map (fun v -> fst, v)
-                        let insertSnd (vRm, snd)                   = vRm  |> map (fun v -> v, snd)
-                        let absorbR (vvRm)                         = vvRm |> map  Result.get
-                        let absorbO f vORm                         = vORm |> map (Result.ofOption  f) |> absorbR
-                        let mapResource                       fR v = wrap ( fR >> (v    |> getFun) )
-                        let inline iter                f t         = run t >> (f: _ -> unit)
-                        let memoizeRm               getCache fRm p = (fun r -> 
-                                                                         let checkO, store = getCache r
-                                                                         checkO p |> Option.defaultWith(fun () -> (fRm p |> getFun) r |> store p)
-                                                                     ) |> wrap
-                    
-                        type Builder() =
-                            member inline this.Return      x                  = rtn  x
-                            member inline this.ReturnFrom  x                  =     (x:ReaderMBasic<_,_,_>)
-                            member        this.Bind       (w , r )            = bind   r w
-                            member inline this.Zero       ()                  = rtn ()
-                            member inline this.Delay       f                  = f
-                            member inline this.Combine    (a, b)              = bind b a
-                            member inline this.Run         f                  = delayRun f
-                            member this.While(guard, body) =
-                                let rec whileLoop guard body =
-                                    if guard() then body() |> bind (fun () -> whileLoop guard body)
-                                    else rtn   ()
-                                whileLoop guard body
-                            member this.TryWith   (body, handler     ) = (fun r -> try body() |> run r with e -> handler     e            ) |> wrap
-                            member this.TryFinally(body, compensation) = (fun r -> try body() |> run r finally   compensation()           ) |> wrap 
-                            member this.Using     (disposable, body  ) = (fun r -> using (disposable:#System.IDisposable) (body >> run r) ) |> wrap
-                            member this.For(sequence:seq<_>, body) =
-                                this.Using(sequence.GetEnumerator(),fun enum -> 
-                                    this.While(enum.MoveNext, 
-                                        this.Delay(fun () -> body enum.Current)))
-                    
-                        let reader = Builder()
-                        
-                        module Operators =
-                            let inline (<*>) f v   = apply f v
-                            let inline (|>>) v f   = map   f v
-                            let inline (>>=) v f   = bind  f v
-                            let inline (>>>) f g v = f v |>> g
-                            let inline (>=>) f g v = f v >>= g
-                            let inline rtn   v     = rtn    v
-                            let reader = reader
-                            type ReaderM<'T, 'R, 'M> = ReaderMBasic<'T, 'R, 'M>
-                    
-                    type ReaderMResult<'T, 'R, 'M> = ReaderMR of ('R -> Result<'T, 'M>)
-                    
-                    module ReaderMResult =
-                        let inline wrap                         f  = ReaderMR f
-                        let inline getFun                       f  =  f |> function ReaderMR g -> g
-                        let inline ofFun                        f  = (f >> Result.rtn                                              ) |> wrap
-                        let inline rtn                          a  = (fun _ -> a |> Result.rtn                                     ) |> wrap
-                        let inline rtnR                         r  = (fun _ -> r                                                   ) |> wrap
-                        let inline bind            f            a  = (fun m -> getFun a m |> Result.bind (fun v -> getFun (f v) m) ) |> wrap
-                        let inline bindR           f            a  = rtnR a |> bind f                                                 : ReaderMResult<_,_,_>
-                        let inline delayRun        f               = (fun m ->  f() |> getFun <| m                                 ) |> wrap
-                        let inline map             f            m  = bind (f >> rtn) m                                                : ReaderMResult<_,_,_>
-                        let inline apply           fR           vR = fR |> bind (swap map  vR)                                        : ReaderMResult<_,_,_>
-                        let inline getResult                    a  = (fun m -> getFun a m |> Result.Ok )                 |> ReaderMR  : ReaderMResult<Result<_,'m>,_,'m>
-                        let inline getResult2                   a  = map Result.Ok a                                                  : ReaderMResult<Result<_,'m>,_,'m>
-                        let inline run          rsrc             a = getFun a rsrc                                                    :        Result<_,_>
-                        let (>>=)                              v f = bind f v
-                        let rec    traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
-                                                                     Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
-                        let inline sequenceSeq                  sq = traverseSeq id sq
-                        let insertO  vvO                           = vvO   |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
-                        let insertR (vvR:Result<_,_>)              = vvR   |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
-                        let insertFst (fst, vRm)                   = vRm   |> map (fun v -> fst, v)
-                        let insertSnd (vRm, snd)                   = vRm   |> map (fun v -> v, snd)
-                        let absorbR (vvRm)                         = vvRm  |> bind rtnR
-                        let absorbO f vORm                         = vORm  |> map (Result.ofOption  f) |> absorbR
-                        let mapError                          fE v = wrap(v |> getFun >> (Result.mapError fE))
-                        let mapResource                       fR v = wrap ( fR >> (v    |> getFun) )
-                        let inline iter             fE f t       a = a     |> run t |> Result.iter fE f
-                        //let memoizeRm               getCache fRm p = (fun r -> 
-                        //                                                 let (checkO:'p->'v option), (store:'p->'v->'v), (clear:unit->unit) = getCache r
-                        //                                                 checkO p |> Option.defaultWith(fun () -> (fRm p |> getFun) r |> store p)
-                        //                                             ) |> wrap
-                        let memoizeRm               getStore fRm p = (fun (r:'r) ->
-                                                                         let (checkO:'p->'v option), (store:'p->'v->'v) = getStore r
-                                                                         checkO p |> Option.map rtn |> Option.defaultWith (fun () -> fRm p |> map (store p) )
-                                                                         |> run r
-                                                                     ) |> wrap 
-                    
-                        type Builder() =
-                            member inline this.Return      x                  = rtn   x
-                            member inline this.ReturnFrom  x                  =      (x:ReaderMResult<_,_,_>)
-                            member inline this.ReturnFrom  x                  = rtnR  x
-                            member        this.Bind       (w , r )            = bind   r w
-                            //member        this.Bind       (w , r )            = bindR  r w
-                            member inline this.Zero       ()                  = rtn ()
-                            member inline this.Delay       f                  = f
-                            member inline this.Combine    (a, b)              = bind b a
-                            member inline this.Run         f                  = delayRun f
-                            member this.While(guard, body) =
-                                let rec whileLoop guard body =
-                                    if guard() then body() |> bind (fun () -> whileLoop guard body)
-                                    else rtn   ()
-                                whileLoop guard body
-                            member this.TryWith   (body, handler     ) = (fun r -> try body() |> run r with e -> handler     e            ) |> wrap
-                            member this.TryFinally(body, compensation) = (fun r -> try body() |> run r finally   compensation()           ) |> wrap
-                            member this.Using     (disposable, body  ) = (fun r -> using (disposable:#System.IDisposable) (body >> run r) ) |> wrap
-                            member this.For(sequence:seq<_>, body) =
-                                this.Using(sequence.GetEnumerator(),fun enum -> 
-                                    this.While(enum.MoveNext, 
-                                        this.Delay(fun () -> body enum.Current)))
-                    
-                        let reader = Builder()
-                        
-                        module Operators =
-                            let inline (<*>) f v   = apply f v
-                            let inline (|>>) v f   = map   f v
-                            let inline (>>=) v f   = bind  f v
-                            let inline (>>>) f g v = f v |>> g
-                            let inline (>=>) f g v = f v >>= g
-                            let inline rtn   v     = rtn    v
-                            let reader = reader
-                            type ReaderM<'T, 'R, 'M> = ReaderMResult<'T, 'R, 'M>
-                    
-                    type ReaderMAsyncResult<'T, 'R, 'M> = ReaderMAR of ('R -> AsyncResult<'T, 'M>)
-                    
-                    module ReaderMAsyncResult =
-                        let inline wrap                         f  = ReaderMAR f
-                        let inline getFun                       f  =  f |> function ReaderMAR g -> g
-                        let inline ofFun                        f  = (f >> AsyncResult.rtn                                              )  |> wrap 
-                        let inline rtn                          a  = (fun _ -> a |> AsyncResult.rtn                                     )  |> wrap
-                        let inline rtnR                         r  = (fun _ -> r |> Async.rtn                                           )  |> wrap 
-                        let inline rtnA                         r  = (fun _ -> r |> Async.map Ok                                        )  |> wrap 
-                        let inline rtnRA                        r  = (fun _ -> r                                                        )  |> wrap 
-                        let inline rtnRmr                       r  = (fun m -> ReaderMResult.getFun r m |> Async.rtn                    )  |> wrap 
-                        let inline bind            f            a  = (fun m -> getFun a m |> AsyncResult.bindP(fun v -> getFun (f v) m) )  |> wrap 
-                        let inline bindR           f            a  = rtnR   a |> bind f                                                     : ReaderMAsyncResult<_,_,_>
-                        let inline bindA           f            a  = rtnA   a |> bind f                                                     : ReaderMAsyncResult<_,_,_>
-                        let inline bindRA          f            a  = rtnRA  a |> bind f                                                     : ReaderMAsyncResult<_,_,_>
-                        let inline bindRmr         f            a  = rtnRmr a |> bind f                                                     : ReaderMAsyncResult<_,_,_>
-                        let inline delayRun        f               = (fun m -> f() |> getFun <|m                                        )  |> wrap 
-                        let inline map             f            m  = bind (f >> rtn) m                                                      : ReaderMAsyncResult<_,_,_>
-                        let inline apply           fR           vR = fR |> bind (swap map  vR)                                              : ReaderMAsyncResult<_,_,_>
-                        let inline getResult                    a  = (fun m -> getFun a m |> Async      .map  Result     .Ok ) |> ReaderMAR : ReaderMAsyncResult<Result<_,_>     ,_,_>
-                        let inline getAsync                     a  = (fun m -> getFun a m |> AsyncResult.mapP Async.rtn      ) |> ReaderMAR : ReaderMAsyncResult<Async<_>        ,_,_>
-                        let inline getAsyncResult               a  = (fun m -> getFun a m |> AsyncResult.mapP AsyncResult.rtn) |> ReaderMAR : ReaderMAsyncResult<AsyncResult<_,_>,_,_>
-                        let inline run          rsrc            a  = getFun a rsrc                                                          :        AsyncResult<_,_>
-                        let (>>=)                              v f = bind f v
-                        let rec    traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
-                                                                     Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
-                        let inline sequenceSeq                  sq = traverseSeq id sq
-                        let insertO  vvO                           = vvO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
-                        let insertR (vvR:Result<_,_>)              = vvR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
-                        let insertFst (fst, vRm)                   = vRm |> map (fun v -> fst, v)
-                        let insertSnd (vRm, snd)                   = vRm |> map (fun v -> v, snd)
-                        let absorbR (vvRm)                         = vvRm |> bind rtnR
-                        let absorbO f vORm                         = vORm |> map (Result.ofOption  f) |> absorbR
-                        let mapError                          fE v = wrap(v |> getFun >> (AsyncResult.mapError fE))
-                        let mapResource                       fR v = wrap ( fR >> (v    |> getFun) )
-                        let inline iterA            fE f t         = run t >> AsyncResult.iterA fE f
-                        let inline iterS            fE f t         = run t >> AsyncResult.iterS fE f
-                        let memoizeRm               getCache fRm p = (fun r -> 
-                                                                         let checkO, store = getCache r
-                                                                         checkO p |> Option.defaultWith(fun () -> (fRm p |> getFun) r |> store p)
-                                                                     ) |> wrap
-                    
-                        type Builder() =
-                            member inline this.Return      x                  = rtn     x
-                            member inline this.ReturnFrom  x                  =        (x:ReaderMAsyncResult<_,_,_>)
-                            member inline this.ReturnFrom  x                  = rtnR    x
-                            member inline this.ReturnFrom  x                  = rtnRA   x
-                            member inline this.ReturnFrom  x                  = rtnRmr  x
-                            member        this.Bind       (w , r )            = bind    r w
-                            member        this.Bind       (w , r )            = bindR   r w
-                            member        this.Bind       (w , r )            = bindRA  r w
-                            member        this.Bind       (w , r )            = bindRmr r w
-                            member inline this.Zero       ()                  = rtn ()
-                            member inline this.Delay       f                  = f
-                            member inline this.Combine    (a, b)              = bind b a
-                            member inline this.Run         f                  = delayRun f
-                            member this.While(guard, body) =
-                                let rec whileLoop guard body =
-                                    if guard() then body() |> bind (fun () -> whileLoop guard body)
-                                    else rtn   ()
-                                whileLoop guard body
-                            member this.TryWith   (body, handler     ) = (fun r -> async.TryWith   (body() |> run r,   handler                ) ) |> wrap
-                            member this.TryFinally(body, compensation) = (fun r -> async.TryFinally(body() |> run r,   compensation           ) ) |> wrap
-                            member this.Using     (disposable, body  ) = (fun r -> async.Using((disposable:#System.IDisposable), body >> run r) ) |> wrap
-                            member this.For(sequence:seq<_>, body) =
-                                this.Using(sequence.GetEnumerator(),fun enum -> 
-                                    this.While(enum.MoveNext, 
-                                        this.Delay(fun () -> body enum.Current)))
-                    
-                        [< AutoOpen >]
-                        module Extension =
-                    
-                            type Builder with
-                                member inline this.ReturnFrom  x                  = rtnA    x
-                                member        this.Bind       (w , r )            = bindA   r w
-                    
-                    
-                        let reader = Builder()
-                        
-                        module Operators =
-                            let inline (<*>) f v   = apply f v
-                            let inline (|>>) v f   = map   f v
-                            let inline (>>=) v f   = bind  f v
-                            let inline (>>>) f g v = f v |>> g
-                            let inline (>=>) f g v = f v >>= g
-                            let inline rtn   v     = rtn    v
-                            let reader = reader
-                            type ReaderM<'T, 'R, 'M> = ReaderMAsyncResult<'T, 'R, 'M>
-                    
             type System.String with
                 member this.Substring2(from, n) = 
                     if   n    <= 0           then ""
@@ -1061,20 +1040,31 @@ namespace FsRoot
                     member this.Dispose () = try clean this.State.resource with _ -> ()
             
             
-            module AgentReaderM =
-                module ReaderM = ReaderMAsyncResult
-                open ReaderM.Operators
             
-                let createAgentRm           f  v = ReaderM.ofFun(fun (agent:ResourceAgent<_,_>, cfg) -> agent.AsyncProcessA((fun resource -> f resource v), cfg) )
-                let fromResourceRm          f    = ReaderM.wrap (fun (agent:ResourceAgent<_,_>, cfg) -> agent.AsyncProcessA( ReaderM.getFun f             , cfg) ) : ReaderM<_,_,_>
-                let run            agent cfg                 m = ReaderM.run (agent,       cfg          ) m
-                let runSameConfig (agent:ResourceAgent<_,_>) m = ReaderM.run (agent, agent.Configuration) m
+            
+            
+            
+            
+            
+            
+            module AgentReaderM =
+                open FusionAsyncM
+                open Operators
+            
+                let createAgentRm                         f  v = readerFun(fun  (agent:ResourceAgent<_,_>, cfg)     -> agent.AsyncProcessA((fun resource -> f resource v)  , cfg) ) >>= ofAsync
+                let ofResourceRm                     (FAM f)   = FAM      (fun ((agent:ResourceAgent<_,_>, cfg), m) -> 
+                                                                            agent.AsyncProcessA((fun resource -> async {
+                                                                                    let! vO, _, m = f(resource, m) 
+                                                                                    return vO, (agent, cfg), m 
+                                                                                }), cfg) 
+                                                                            )
+                let run            agent cfg                 m = runReader (agent,       cfg          ) m
+                let runSameConfig (agent:ResourceAgent<_,_>) m = runReader (agent, agent.Configuration) m
             
             [< AutoOpen >]
             module CommArgRoot =
-                module ReaderM = ReaderMResult
-            
-                open ReaderM.Operators
+                open FusionM
+                open Operators
             
                 type CommArgId = CommArgId of System.Guid
                 
@@ -1090,7 +1080,7 @@ namespace FsRoot
                     unique : bool
                     build  : CommArgBuild
                 }
-                type CommArgValue<'T,  'M> = ReaderM<'T, CommArgCollection<     'M>, ResultMessage<'M>> 
+                type CommArgValue<'T,  'M> = FusionM<'T, CommArgCollection<     'M>, 'M>
                 and  ArgValueTuple<    'M> = CommArg *   CommArgValue<obj,      'M>
                 and  CommArgCollection<'M> = CommArgCollection of ArgValueTuple<'M> seq
                     with 
@@ -1099,9 +1089,9 @@ namespace FsRoot
                 type TypedCommArg<'T> = TypedCommArg of CommArg
                     with
                     member oo.CommArg = match oo with TypedCommArg v -> v
-                    static member (/=) (arg: TypedCommArg<'T>, v:                        'T    ) : ArgValueTuple<'M> = match arg with TypedCommArg arg -> (arg, ReaderM.rtn v                     |> ReaderM.map box)
-                    static member (/=) (arg: TypedCommArg<'T>, v: CommArgValue<          'T, _>) : ArgValueTuple<'M> = match arg with TypedCommArg arg -> (arg,             v                     |> ReaderM.map box)
-                    static member (/=) (arg: TypedCommArg<'T>, f: CommArgCollection<'M>->'T    ) : ArgValueTuple<'M> = match arg with TypedCommArg arg -> (arg, ReaderM.ofFun(fun coll -> f coll) |> ReaderM.map box)
+                    static member (/=) (arg: TypedCommArg<'T>, v:                        'T    ) : ArgValueTuple<'M> = match arg with TypedCommArg arg -> (arg, rtn v        |>> box)
+                    static member (/=) (arg: TypedCommArg<'T>, v: CommArgValue<          'T, _>) : ArgValueTuple<'M> = match arg with TypedCommArg arg -> (arg,     v        |>> box)
+                    static member (/=) (arg: TypedCommArg<'T>, f: CommArgCollection<'M>->'T    ) : ArgValueTuple<'M> = match arg with TypedCommArg arg -> (arg, getS() |>> f |>> box)
                 
                 module CommArg  =
                     let New0 (name, unique, build) = {
@@ -1114,7 +1104,7 @@ namespace FsRoot
                     let NewString(name, unique, build): TypedCommArg<string> = New0(name, unique, build |> TString) |> TypedCommArg
                     let NewBool  (name, unique, build): TypedCommArg<bool  > = New0(name, unique, build |> TBool  ) |> TypedCommArg
                     let NewFloat (name, unique, build): TypedCommArg<float > = New0(name, unique, build |> TFloat ) |> TypedCommArg
-                    let argumentRm (a:CommArg) (vRm:CommArgValue<obj,_>) = reader {
+                    let argumentRm (a:CommArg) (vRm:CommArgValue<obj,_>) = fusion {
                         let! v = vRm
                         return
                             match a.build with
@@ -1142,31 +1132,30 @@ namespace FsRoot
                         | _         -> Error <| ErrorMsg "expecting TFloat"
                 
                 module CommArgCollection =
-                    open ReaderM.Operators
                 
                     let trueForAll                        _ = true
                     let contains      (TypedCommArg arg) (CommArgCollection args) = args |> Seq.map (fun (a,_) -> a.cargId) |> Seq.contains arg.cargId
-                    let argsRm                           () = ReaderM.ofFun(fun (CommArgCollection args) -> args                 )
-                    let existsRm                          f = ReaderM.ofFun(fun (CommArgCollection args) -> args |> Seq.exists f )
-                    let filterRm                          p = ReaderM.ofFun(fun (CommArgCollection args) -> args |> Seq.filter p )
-                    let argumentsRm                  filter = filterRm filter >>= ReaderM.traverseSeq CommArg.argumentTRm
-                    let containsAnyOfRm (ids:CommArgId Set) = ReaderM.ofFun(fun (CommArgCollection args) -> args |> Seq.exists (fun (a,_) -> Set.contains a.cargId ids) )
+                    let argsRm                           () = readerFun(fun (CommArgCollection args) -> args                 )
+                    let existsRm                          f = readerFun(fun (CommArgCollection args) -> args |> Seq.exists f )
+                    let filterRm                          p = readerFun(fun (CommArgCollection args) -> args |> Seq.filter p )
+                    let argumentsRm                  filter = filterRm filter >>= traverseSeq CommArg.argumentTRm
+                    let containsAnyOfRm (ids:CommArgId Set) = readerFun(fun (CommArgCollection args) -> args |> Seq.exists (fun (a,_) -> Set.contains a.cargId ids) )
                     let argumentNotFound  targ = fun () -> match targ with | TypedCommArg arg -> sprintf "argument not found: %s" arg.name |> ErrorMsg
                     let tryFindArgO   (TypedCommArg arg) (CommArgCollection args) = Seq.tryFind (fun (a,_) -> a.cargId = arg.cargId) args 
-                    let tryFindArgORm     targ = ReaderM.ofFun(fun coll -> tryFindArgO targ coll |> Option.map ReaderM.insertFst |> ReaderM.insertO)|> ReaderM.bind id
-                    let tryGetIntORm      targ = tryFindArgORm   targ |>> (Option.map (fun (_, o) -> CommArg.getIntR    targ o)) |>> Result.insertO |> ReaderM.absorbR
-                    let tryGetStringORm   targ = tryFindArgORm   targ |>> (Option.map (fun (_, o) -> CommArg.getStringR targ o)) |>> Result.insertO |> ReaderM.absorbR
-                    let tryGetBoolORm     targ = tryFindArgORm   targ |>> (Option.map (fun (_, o) -> CommArg.getBoolR   targ o)) |>> Result.insertO |> ReaderM.absorbR
-                    let tryGetFloatORm    targ = tryFindArgORm   targ |>> (Option.map (fun (_, o) -> CommArg.getFloatR  targ o)) |>> Result.insertO |> ReaderM.absorbR
-                    let findArgRm         targ = tryFindArgORm   targ |>  ReaderM.absorbO (argumentNotFound targ)
-                    let getIntRm          targ = tryGetIntORm    targ |>  ReaderM.absorbO (argumentNotFound targ)
-                    let getStringRm       targ = tryGetStringORm targ |>  ReaderM.absorbO (argumentNotFound targ)
-                    let getFloatRm        targ = tryGetFloatORm  targ |>  ReaderM.absorbO (argumentNotFound targ)
+                    let tryFindArgORm     targ = readerFun(fun coll -> tryFindArgO targ coll |> Option.map insertFst |> insertO ) >>= id
+                    let tryGetIntORm      targ = tryFindArgORm   targ |>> (Option.map (fun (_, o) -> CommArg.getIntR    targ o)) |>> Result.insertO >>= ofResultRM
+                    let tryGetStringORm   targ = tryFindArgORm   targ |>> (Option.map (fun (_, o) -> CommArg.getStringR targ o)) |>> Result.insertO >>= ofResultRM
+                    let tryGetBoolORm     targ = tryFindArgORm   targ |>> (Option.map (fun (_, o) -> CommArg.getBoolR   targ o)) |>> Result.insertO >>= ofResultRM
+                    let tryGetFloatORm    targ = tryFindArgORm   targ |>> (Option.map (fun (_, o) -> CommArg.getFloatR  targ o)) |>> Result.insertO >>= ofResultRM
+                    let findArgRm         targ = tryFindArgORm   targ >>= ofOption (argumentNotFound targ)
+                    let getIntRm          targ = tryGetIntORm    targ >>= ofOption (argumentNotFound targ)
+                    let getStringRm       targ = tryGetStringORm targ >>= ofOption (argumentNotFound targ)
+                    let getFloatRm        targ = tryGetFloatORm  targ >>= ofOption (argumentNotFound targ)
                     let getBoolRm   def   targ = tryGetBoolORm   targ |>> Option.defaultValue def
-                    [< Inline "throw 'getBoolR not available in JavaScript'" >]
-                    let getBoolR def targ args = getBoolRm def targ |> ReaderM.run args //|> Async.RunSynchronously //|> Result. Option.defaultValue false
+                    //[< Inline "throw 'getBoolR not available in JavaScript'" >]
+                    let getBoolR def targ args = getBoolRm def targ |> run args |> fun (bO, _, m) -> bO |> Result.ofOption (fun () -> m)   //|> Async.RunSynchronously //|> Result. Option.defaultValue false
                 
-                    let addPair(commArg:CommArg, vRm:ReaderM<obj, CommArgCollection<_>, _>) (CommArgCollection args) =
+                    let addPair(commArg:CommArg, vRm:FusionM<obj, CommArgCollection<_>, _>) (CommArgCollection args) =
                         args
                         |> if commArg.unique then Seq.filter (fun (a,_) -> a.cargId <> commArg.cargId) else id
                         |> Seq.append <| [ commArg, vRm ]
@@ -1281,17 +1270,15 @@ namespace FsRoot
                 generation       : int
                 ordered          : Snippet seq
                 fetcher          : SnippetId -> Snippet Option
-                predecesorsCache : unit -> (SnippetId -> SnippetId list option) 
-                                         * (SnippetId -> SnippetId list -> SnippetId list)
-                reducedCache     : unit -> ((bool * SnippetId * Set<SnippetId>) -> Reduced option) 
-                                         * ((bool * SnippetId * Set<SnippetId>) -> Reduced -> Reduced)
+                predecesorsCache : unit -> ((SnippetId -> SnippetId list option) * (SnippetId -> (SnippetId -> SnippetId list) -> SnippetId list))
+                reducedCache     : unit -> (((bool * SnippetId * Set<SnippetId>) -> Reduced option) * ((bool * SnippetId * Set<SnippetId>) -> ((bool * SnippetId * Set<SnippetId>) -> Reduced) -> Reduced))
                 prepCode         : Snippet -> string                             
             }
             
             module Snippet =
                 open System
-                module ReaderM = ReaderMResult
-                open ReaderM.Operators
+                open FusionM
+                open Operators
             
                 let getNextGeneration, setGeneration = 
                     let mutable generation  = 1
@@ -1334,23 +1321,23 @@ namespace FsRoot
                     |> fun c -> c + " " + snp.snpId.Id.ToString()
                 let propertyO       n snp = snp.snpProperties |> Array.tryPick (fun (name, value) -> if name = n then Some value else None)
                 let propertyPairO   n snp = propertyO n snp |> Option.map(fun v -> v.Split([| @"|-|" |], StringSplitOptions.RemoveEmptyEntries) |> fun vs -> vs.[0], vs |> Array.tryItem 1 |> Option.defaultValue vs.[0])
-                let snippetORm        sid = ReaderM.ofFun (fun { fetcher    = ftch } -> ftch sid                                               )
-                let parentORm         snp = ReaderM.ofFun (fun { fetcher    = ftch } -> snp.snpParentIdO |> Option.bind ftch                   )
-                let predecessorsRm    snp = ReaderM.ofFun (fun { fetcher    = ftch } -> snp.snpPredIds   |> Seq.choose  ftch                   )
-                let maxGenerationRm   ()  = ReaderM.ofFun (fun { ordered    = snps } -> snps |> Seq.map (fun s -> s.snpGeneration) |> Seq.max  )
-                let modifiedRm        snp = ReaderM.ofFun (fun { generation = gen  } -> snp.snpGeneration > gen                                )
-                let childrenRm        sid = ReaderM.ofFun (fun { ordered    = snps } -> snps |> Seq.filter(fun s -> s.snpParentIdO = Some sid) )
-                let orderedRm         ()  = ReaderM.ofFun (fun { ordered    = snps } -> snps                                                   )
-                let prepareCodeRm     snp = ReaderM.ofFun (fun { prepCode   = prep } -> prep snp                                               )
-                let snippetRm         sid = snippetORm sid |> ReaderM.absorbO (fun () -> sprintf "Snippet not found %A" sid |> ErrorMsg)
+                let snippetORm        sid = readerFun (fun { fetcher    = ftch } -> ftch sid                                               )
+                let parentORm         snp = readerFun (fun { fetcher    = ftch } -> snp.snpParentIdO |> Option.bind ftch                   )
+                let predecessorsRm    snp = readerFun (fun { fetcher    = ftch } -> snp.snpPredIds   |> Seq.choose  ftch                   )
+                let maxGenerationRm   ()  = readerFun (fun { ordered    = snps } -> snps |> Seq.map (fun s -> s.snpGeneration) |> Seq.max  )
+                let modifiedRm        snp = readerFun (fun { generation = gen  } -> snp.snpGeneration > gen                                )
+                let childrenRm        sid = readerFun (fun { ordered    = snps } -> snps |> Seq.filter(fun s -> s.snpParentIdO = Some sid) )
+                let orderedRm         ()  = readerFun (fun { ordered    = snps } -> snps                                                   )
+                let prepareCodeRm     snp = readerFun (fun { prepCode   = prep } -> prep snp                                               )
+                let snippetRm         sid = snippetORm sid |> absorbO (fun () -> sprintf "Snippet not found %A" sid |> ErrorMsg)
                 let rec pathRm        sid = snippetORm sid 
                                             |>> Option.map parentORm 
-                                            >>= ReaderM.insertO 
+                                            >>= insertO 
                                             |>> Option.bind id
                                             |>> Option.map (fun prn -> pathRm prn.snpId |>> fun rest -> prn.snpId :: rest ) 
-                                            >>= ReaderM.insertO 
+                                            >>= insertO 
                                             |>> Option.defaultValue []
-                let snippetFromPathORm pth = reader {
+                let snippetFromPathORm pth = fusion {
                     let! snps = orderedRm()
                     return
                         snps
@@ -1369,7 +1356,7 @@ namespace FsRoot
                 let snippetFromRefORm     = function
                                             | RefSnippetId   sid -> snippetORm         sid
                                             | RefSnippetPath pth -> snippetFromPathORm pth
-                let predsLRm (sid : SnippetId) = reader {
+                let predsLRm (sid : SnippetId) = fusion {
                         let mutable ins  = [sid]  
                         let mutable outs = [   ]
                         while not ins.IsEmpty do
@@ -1386,30 +1373,32 @@ namespace FsRoot
                                                 outs <- hd::outs
                         return outs
                     }
-                let predsLRmMemo          = ReaderM.memoizeRm (fun c -> c.predecesorsCache()) predsLRm 
-            #if FIX_GENERIC
-                (predsLRmMemo : (SnippetId -> Monads.ReaderMonads.ReaderMResult<SnippetId list,SnippetCollection,string>) )
-            #endif    
-                let uniquePredsRm     snp = predsLRmMemo snp.snpId
-                let rec modifiedRecRm snp = reader {
+                let predsLRmMemo()        = memoizeRm (fun c -> c.predecesorsCache()) predsLRm 
+            //    let predsLRmMemo<'m>  : SnippetId -> ReaderMResult<SnippetId list,SnippetCollection,'m>        
+            //        = ReaderM.memoizeRm (fun c -> c.predecesorsCache()) predsLRm 
+            //#if FIX_GENERIC
+            //    (predsLRmMemo : (SnippetId -> Monads.ReaderMonads.ReaderMResult<SnippetId list,SnippetCollection,string>) )
+            //#endif    
+                let uniquePredsRm     snp = predsLRmMemo() snp.snpId
+                let rec modifiedRecRm snp = fusion {
                     let! modified         = modifiedRm     snp
                     if modified then return true else
                     let! predIds          = uniquePredsRm  snp
-                    let! predOs           = predIds |> Seq.map snippetORm                  |> ReaderM.sequenceSeq
-                    let! mods             = predOs  |> Seq.choose id |> Seq.map modifiedRm |> ReaderM.sequenceSeq
+                    let! predOs           = predIds |> Seq.map snippetORm                  |> sequenceSeq
+                    let! mods             = predOs  |> Seq.choose id |> Seq.map modifiedRm |> sequenceSeq
                     return Seq.contains true mods
                 }
-                let rec propertyHierORm n snp = reader {
+                let rec propertyHierORm n snp = fusion {
                     match propertyO n snp with
-                    | Some v -> return Some (v.Split([| @"|-|" |], StringSplitOptions.RemoveEmptyEntries) |> fun vs -> vs.[0], if vs.Length > 0 then vs.[1] else vs.[0])
+                    | Some v -> return Some (snp, v.Split([| @"|-|" |], StringSplitOptions.RemoveEmptyEntries) |> fun vs -> vs.[0], if vs.Length > 1 then vs.[1] else vs.[0])
                     | None   -> let! parentO = parentORm   snp
                                 match parentO with
                                 | Some p -> let!   propO = propertyHierORm n p
-                                            return propO |> Option.map(fun (_, next) -> next, next) 
+                                            return propO |> Option.map(fun (sn, (_, next)) -> sn, (next, next) )
                                 | None   -> return None
                 }
                 let indentRm          snp =
-                    let rec indentMeChildNextRm          snp = reader {
+                    let rec indentMeChildNextRm          snp = fusion {
                         let  propIndentChildren = "IndentChildren"
                         let  currO, nextO       = propertyPairO propIndentChildren snp |> function Some (curr, next) ->  ParseO.parseIntO curr, ParseO.parseIntO next | _-> None, None 
                         let! parentO            = parentORm   snp
@@ -1418,9 +1407,9 @@ namespace FsRoot
                                     return me, (me + (currO |> Option.defaultValue next), nextO |> Option.defaultValue next)
                         | None   -> return 0 , (      currO |> Option.defaultValue 4    , nextO |> Option.defaultValue 4   )
                     }
-                    indentMeChildNextRm snp |> ReaderM.map fst
+                    indentMeChildNextRm snp |>> fst
                 let levelRm           snp = 
-                    let rec levelRm2 snp lv = reader {
+                    let rec levelRm2 snp lv = fusion {
                         let!  parentO = parentORm snp
                         match parentO with
                         | None   -> return  lv
@@ -1428,14 +1417,14 @@ namespace FsRoot
                     }
                     levelRm2 snp 0
                 let ancestorsRm   snp = 
-                    let rec  ancestorsRm2 snp lst = reader {
+                    let rec  ancestorsRm2 snp lst = fusion {
                         let! parentO = parentORm snp
                         match parentO with
                         | Some p -> return! ancestorsRm2 p <| p::lst
                         | None   -> return  lst
                     }
                     ancestorsRm2 snp []
-                let separateCodeRm snp = reader {
+                let separateCodeRm snp = fusion {
                     let! indent        = indentRm snp
                     let  indentF, prfx = if indent = 0         then (id, "") else (Array.map    (fun (l, pr) -> String.replicate indent " " + l, pr), sprintf"(%d)" indent)
                     let! code          = prepareCodeRm snp
@@ -1457,8 +1446,8 @@ namespace FsRoot
                   , Seq  .append prepIs1  prepIs2  |> Seq.distinct |> Seq.toArray
                   , Seq  .append nowarns1 nowarns2 |> Seq.distinct |> Seq.toArray
                   , cdO1 |> function None -> cdO2 |_-> cdO1
-                let reducedCodeRm  snippets = reader {
-                    let! parts    = snippets |> ReaderM.traverseSeq separateCodeRm
+                let reducedCodeRm  snippets = fusion {
+                    let! parts    = snippets |> traverseSeq separateCodeRm
                     let  reduced  = parts
                                     |> fun snps -> if snps |> Seq.isEmpty then seq [ [||],  [||],  [||],  [||],  [||],  [||], None ] else snps
                                     |> Seq.reduce addSeps
@@ -1486,34 +1475,36 @@ namespace FsRoot
                 //    return finishCode reduced
                 //}
                 //let codeFsxRm         snippets = codeAndStartsRm snippets |> ReaderM.map fst
-                let reducedOthersORm (before, snpId, snpIds) = reader {
+                let reducedOthersORm (before, snpId, snpIds) = fusion {
                     let  skipTake = if before then Seq.takeWhile else Seq.skipWhile
                     let! snippets = orderedRm() |>> skipTake (fun snp -> snp.snpId <> snpId) |>> Seq.filter(fun snp -> snp.snpId <> snpId && snpIds |> Set.contains snp.snpId) 
                     if snippets |> Seq.isEmpty then return None else
                     let! reduced = reducedCodeRm snippets
                     return Some reduced
                 }
-                let reducedOthersORmMemo = ReaderM.memoizeRm (fun c -> c.reducedCache()) reducedOthersORm 
-                let fastReducedRm  curIdO lastIdO = reader {
-                    let!  curSnippetO  = curIdO  |> Option.map snippetORm |> ReaderM.insertO
-                    let! lastSnippetO  = lastIdO |> Option.map snippetORm |> ReaderM.insertO
+                let reducedOthersORmMemo() = memoizeRm (fun c -> c.reducedCache()) reducedOthersORm 
+            //    let reducedOthersORmMemo<'m> : bool * SnippetId * Set<SnippetId> -> ReaderMResult<Reduced,SnippetCollection,'m> 
+            //        = ReaderM.memoizeRm (fun c -> c.reducedCache()) reducedOthersORm 
+                let fastReducedRm  curIdO lastIdO = fusion {
+                    let!  curSnippetO  = curIdO  |> Option.map snippetORm |> insertO
+                    let! lastSnippetO  = lastIdO |> Option.map snippetORm |> insertO
                     match (Option.bind id curSnippetO, Option.bind id lastSnippetO) with
                     | _              , None
                     | None           , _                -> return! reducedCodeRm Seq.empty
                     | Some curSnippet, Some lastSnippet ->
                     let! preds = uniquePredsRm lastSnippet
                     let  preds = Set preds
-                    let! reducedBeforeO = reducedOthersORmMemo (true , curSnippet.snpId, preds)
-                    let! reducedAfterO  = reducedOthersORmMemo (false, curSnippet.snpId, preds)
+                    let! reducedBeforeO = reducedOthersORmMemo() (true , curSnippet.snpId, preds)
+                    let! reducedAfterO  = reducedOthersORmMemo() (false, curSnippet.snpId, preds)
                     let! currentCode    = separateCodeRm           curSnippet
                     let part1 = reducedBeforeO |> Option.map (swap addSeps currentCode) |> Option.defaultValue currentCode
                     return      reducedAfterO  |> Option.map (     addSeps part1      ) |> Option.defaultValue part1
                 }
-                let fastCodeRm  curIdO lastIdO = reader {
+                let fastCodeRm  curIdO lastIdO = fusion {
                     let! reduced  = fastReducedRm curIdO lastIdO
                     return finishCode reduced
                 }
-                let codeFsxRm    curId = fastCodeRm  (Some curId) (Some curId) |> ReaderM.map fst
+                let codeFsxRm    curId = fastCodeRm  (Some curId) (Some curId) |>> fst
                 
             /// Adapted from here http://fssnip.net/7V5   Usage:
             /// let abs n = if n >= 0 then n else Hole ? TODO_AbsForNegativeValue    
@@ -1530,17 +1521,17 @@ namespace FsRoot
             
             /// Tree structure to implement a hierarchical user interface but using readerMonad
             module TreeReader =
-                module ReaderM = ReaderMResult    
-                open ReaderM.Operators
+                open FusionM
+                open Operators
             
                 type Node<'I, 'R, 'T> = {
                     id                : unit                 -> 'I
-                    isExpandedRm      : unit                 -> ReaderM<bool                   , 'R, 'T>
-                    canHaveChildrenRm : unit                 -> ReaderM<bool                   , 'R, 'T>
-                    childrenRm        : unit                 -> ReaderM<Node<'I, 'R, 'T> seq   , 'R, 'T>
-                    pathRm            : unit                 -> ReaderM<'I list                , 'R, 'T>  // list of parents excluding itself
-                    parentORm         : Node<'I, 'R, 'T> seq -> ReaderM<Node<'I, 'R, 'T> option, 'R, 'T>
-                    newChildrenRm     : Node<'I, 'R, 'T> []  -> ReaderM<Node<'I, 'R, 'T>       , 'R, 'T>  // set new children, make sure to exclude children not listed and maintain the order of the children (if desirable)
+                    isExpandedRm      : unit                 -> FusionM<bool                   , 'R, 'T>
+                    canHaveChildrenRm : unit                 -> FusionM<bool                   , 'R, 'T>
+                    childrenRm        : unit                 -> FusionM<Node<'I, 'R, 'T> seq   , 'R, 'T>
+                    pathRm            : unit                 -> FusionM<'I list                , 'R, 'T>  // list of parents excluding itself
+                    parentORm         : Node<'I, 'R, 'T> seq -> FusionM<Node<'I, 'R, 'T> option, 'R, 'T>
+                    newChildrenRm     : Node<'I, 'R, 'T> []  -> FusionM<Node<'I, 'R, 'T>       , 'R, 'T>  // set new children, make sure to exclude children not listed and maintain the order of the children (if desirable)
                 }
             
                 let [<Inline>] inline toNode    (o: obj) = o :?> Node<_,_,_>
@@ -1553,28 +1544,28 @@ namespace FsRoot
                         >>= (fun exp -> if exp then node.childrenRm() |>> Seq.toArray >>= listNodes (level + 1) else rtn Seq.empty)
                         |>> (fun nodes -> Seq.append [ node, level ] nodes)
                     ) 
-                    |> ReaderM.sequenceSeq
+                    |> sequenceSeq
                     |>> Seq.collect id
             
-                let removeNode (node:Node<_,_,_>) nodes = reader { // better use version removeNode2
+                let removeNode (node:Node<_,_,_>) nodes = fusion { // better use version removeNode2
                     let! path = node.pathRm()
-                    let rec chRemove (n:Node<_,_,_>) = reader {
+                    let rec chRemove (n:Node<_,_,_>) = fusion {
                         if                  n.id() = node.id() then return  None
                         elif List.contains (n.id())  path      then return! n.childrenRm()
                                                                             |>> Seq.toArray
                                                                             |>> Seq.map chRemove 
-                                                                            >>= ReaderM.sequenceSeq 
+                                                                            >>= sequenceSeq 
                                                                             |>> Seq.choose id 
                                                                             |>> Seq.toArray
                                                                             >>= n.newChildrenRm  
                                                                             |>> Some
                         else                                        return  Some n
                     }
-                    return! nodes |> Seq.map chRemove |> ReaderM.sequenceSeq |>> Seq.choose id
+                    return! nodes |> Seq.map chRemove |> sequenceSeq |>> Seq.choose id
                 }
             
-                let removeNodes p nodes = reader {
-                    let rec folder pair (n:Node<_,_,_>) = reader {
+                let removeNodes p nodes = fusion {
+                    let rec folder pair (n:Node<_,_,_>) = fusion {
                         let! children, noparent = pair
                         let! children2 = n.childrenRm() |>> Seq.toArray
                         let! ch, np = children2 |> Seq.fold folder (rtn ([], noparent) )
@@ -1603,9 +1594,9 @@ namespace FsRoot
                     | parent :: path -> 
                     let rec mapAdd (n:Node<_,_,_>) =
                         if                  n.id() = parent then     n.childrenRm() |>> Seq.toArray >>= addToParent after theSibling node n
-                        elif List.contains (n.id()) path    then     n.childrenRm() |>> Seq.toArray |>> Seq.map mapAdd >>= ReaderM.sequenceSeq |>> Seq.toArray >>= n.newChildrenRm 
+                        elif List.contains (n.id()) path    then     n.childrenRm() |>> Seq.toArray |>> Seq.map mapAdd >>= sequenceSeq |>> Seq.toArray >>= n.newChildrenRm 
                         else                                     rtn n
-                    nodes |> Seq.map mapAdd |> ReaderM.sequenceSeq
+                    nodes |> Seq.map mapAdd |> sequenceSeq
             
                 let tryFind p (nodes:Node<_,_,_> seq) = 
                     let rec folder resRm (node:Node<_,_,_>) =
@@ -1623,7 +1614,7 @@ namespace FsRoot
                     |>  removeNode node
                     >>= addSibling after node sibling
             
-                let moveToSibling2 after (nodeId:'I) (siblingId:'I) (nodes:Node<_,_,_> seq) = reader {
+                let moveToSibling2 after (nodeId:'I) (siblingId:'I) (nodes:Node<_,_,_> seq) = fusion {
                     let!  nodeO = nodes |> tryFindId nodeId
                     match nodeO with
                     | None         -> return nodes
@@ -1634,15 +1625,15 @@ namespace FsRoot
                     | Some sibling -> return! moveToSibling after node sibling nodes
                 }
             
-                let addChild append (node:Node<_,_,_>) (parentN:Node<_,_,_>) (nodes:Node<_,_,_> seq) = reader {
+                let addChild append (node:Node<_,_,_>) (parentN:Node<_,_,_>) (nodes:Node<_,_,_> seq) = fusion {
                     let! path = parentN.pathRm()
                     let rec mapAppend (n:Node<_,_,_>) =
                         if   n.id() = parentN.id()       then 
                             if append                    then n.childrenRm() |>> Seq.toArray |>> swap Seq.append [ node ]                         |>> Seq.toArray >>= n.newChildrenRm
                             else                              n.childrenRm() |>> Seq.toArray |>>      Seq.append [ node ]                         |>> Seq.toArray >>= n.newChildrenRm
-                        elif List.contains (n.id()) path then n.childrenRm() |>> Seq.toArray |>>      Seq.map mapAppend   >>= ReaderM.sequenceSeq |>> Seq.toArray >>= n.newChildrenRm
+                        elif List.contains (n.id()) path then n.childrenRm() |>> Seq.toArray |>>      Seq.map mapAppend   >>= sequenceSeq |>> Seq.toArray >>= n.newChildrenRm
                         else                                  rtn n
-                    return! nodes |> Seq.map mapAppend |> ReaderM.sequenceSeq
+                    return! nodes |> Seq.map mapAppend |> sequenceSeq
                 }
             
                 let indentNode (node:Node<_,_,_>) (nodes:Node<_,_,_> seq) = 
@@ -1935,8 +1926,8 @@ namespace FsRoot
                 let exeOptions   () = CommArgCollection [ fscTarget      /= "exe"     ; intCopyAssem /= true ; intCopyConfig /= true ]
                 let winExeOptions() = CommArgCollection [ fscTarget      /= "winexe"  ; intCopyAssem /= true ; intCopyConfig /= true ]
                 
-                module ReaderM = ReaderMResult
-                open ReaderM.Operators
+                open FusionM
+                open Operators
                 
                 let gS v = getStringRm     v
                 let gB v = getBoolRm false v
@@ -2019,10 +2010,10 @@ namespace FsRoot
                             yield! assembs |> Array.map (fun f -> fscStaticLink /= System.IO.Path.GetFileNameWithoutExtension f)
                     ]
                     
-                let processArgs code assembs nowarns = reader {        
+                let processArgs code assembs nowarns = fusion {        
                     let! show      = gB intShowArgs
                     if show      then let! args = argumentsRm (fun _ -> true)
-                                      args |> Seq.iter (printfn "%s")
+                                      args |> Seq.sort |> Seq.iter (printfn "%s")
                     let! workDir   = getStringRm intDirectory
                     let! fileName  = gS intFileName
                     let! output    = gS fscOutput
@@ -2052,11 +2043,11 @@ namespace FsRoot
                 [< Literal >]
                 let endToken = "xXxY" + "yYyhH"
                 type FsiExe(config:string, workingDir, ?outHndl, ?errHndl) =
-                    let mutable silent             = false
+                    let silent                     = ref false
                     let fsiexe                     = @"..\packages\FSharp.Compiler.Tools\tools" +/+ if config.Contains "-d:FSI32BIT" then "fsi.exe" else "fsianycpu.exe"
                     let startInfo                  = ProcessStartInfo(fsiexe, config, WorkingDirectory= workingDir)
-                    let outHndlS                   = outHndl |> Option.map(fun outh v -> if silent then () else outh v)
-                    let errHndlS                   = errHndl |> Option.map(fun errh v -> if silent then () else errh v)
+                    let outHndlS                   = outHndl |> Option.map(fun outh v -> if !silent then () else outh v)
+                    let errHndlS                   = errHndl |> Option.map(fun errh v -> if !silent then () else errh v)
                     let shell                      = new ShellEx(startInfo, ?outHndl = outHndlS, ?errHndl = errHndlS)  // --noninteractive
                     do  startInfo.CreateNoWindow  <- false
                         shell.Start() |> ignore
@@ -2068,23 +2059,23 @@ namespace FsRoot
                     member oo.IsAlive              = not shell.HasExited
                     member oo.Abort()              = shell.Abort()
                     member oo.EvalSilent code      = asyncResult {
-                                                        try     silent <- true
+                                                        try     silent := true
                                                                 return! oo.Eval code
-                                                        finally silent <- false
+                                                        finally silent := false
                                                      }
                     interface System.IDisposable with
                         member this.Dispose ()     = (shell :> System.IDisposable).Dispose()
             
-                module ReaderM = ReaderMAsyncResult
-                open ReaderM.Operators
+                open FusionAsyncM
+                open Operators
             
-                let evaluateRm   code = (fun (fsi:FsiExe) -> fsi.Eval       code) |> ReaderM.wrap : ReaderM<_,_,_>
-                let evalSilentRm code = (fun (fsi:FsiExe) -> fsi.EvalSilent code) |> ReaderM.wrap : ReaderM<_,_,_>
+                let evaluateRm   code = getS() >>= (fun (fsi:FsiExe) -> fsi.Eval       code |> ofAsyncResultRM) 
+                let evalSilentRm code = getS() >>= (fun (fsi:FsiExe) -> fsi.EvalSilent code |> ofAsyncResultRM) 
             
             module FsiCodePresence =
-                module ReaderM = ReaderMAsyncResult
+                open FusionAsyncM
                 open FsiEvaluator
-                open ReaderM.Operators
+                open Operators
             
                 let installPresenceRm() = 
                     """
@@ -2098,27 +2089,28 @@ namespace FsRoot
                     |>  evalSilentRm 
                     |>> ignore
             
-                let addPresenceRm (name:string) (v:string) = reader {
+                let addPresenceRm (name:string) (v:string) = fusion {
                     let  code = sprintf "CodePresence.addPresenceOf %A %A" (name.Replace("\"", "\\\"")) v |> FsCode
-                    let! res  = evalSilentRm code
+                    let! res  = evalSilentRm code |>> String.splitByChar '\n' |>> Seq.head
                     match res with
-                    | "ok" -> ()
-                    | _    -> do! installPresenceRm()
-                              do! evalSilentRm code |>> ignore
+                    | "ok"   -> ()
+                    |_       -> do! installPresenceRm()
+                                do! evalSilentRm code |>> ignore
                 }
                         
-                let getPresenceRm (name:string)   = reader {
+                let getPresenceRm (name:string)   = fusion {
                     let! res = sprintf "CodePresence.presenceOf    %A" (name.Replace("\"", "\\\""))
                                |> FsCode
                                |> evalSilentRm
-                               |> ReaderM.getResult
+                               |>> String.splitByChar '\n' |>> Seq.head
+                               |> getOption
                     match res with
-                    | Error v                -> do! installPresenceRm()
-                                                return None
-                    | Ok v when v = endToken -> do! installPresenceRm()
-                                                return None
-                    | Ok "--"                -> return None
-                    | Ok v                   -> return Some v
+                    | None                     -> do! installPresenceRm()
+                                                  return None
+                    | Some v when v = endToken -> do! installPresenceRm()
+                                                  return None
+                    | Some "--"                -> return None
+                    | Some v                   -> return Some v
                 }
             
         /// Essentials that run in Javascript (WebSharper)
@@ -2292,6 +2284,12 @@ namespace FsRoot
                     match line.Substring(ch) with
                     | REGEX @"^([a-zA-Z_]\w*)" "g" [| txt |] -> txt
                     | _                                      -> ""          
+            
+                let (|Identifier|_|) =
+                    function
+                    | REGEX "^[$a-zA-Z_][0-9a-zA-Z_\.\-$]*$" "" [| id |] -> Some id
+                    | _                                                  -> None
+            
             [< JavaScript >]
             module Hoverable =
                 open WebSharper.UI.Html
@@ -2713,6 +2711,12 @@ namespace FsRoot
                     range      : Range
                 }
                 
+                open WebSharper.Core.Resources
+            
+                type MonacoResources() =
+                    inherit BaseResource(@"/EPFileX/monaco/package/min/vs/loader.js")
+            
+                [< Require(typeof<MonacoResources>) >]
                 type Editor() =
                     do ()
                   with
@@ -2779,10 +2783,10 @@ namespace FsRoot
                       options     = null
                       overrides   = null
                     }
-                let includes = [| @"/EPFileX/monaco/package/min/vs/loader.js" |]
+                //let includes = [| @"/EPFileX/monaco/package/min/vs/loader.js" |]
                 let loader = async {
                     if IsClient then
-                        do! LoadFiles.LoadFilesAsync includes
+                        //do! LoadFiles.LoadFilesAsync includes
                         Editor.RequireConfig()
                         do! Async.FromContinuations(fun (success, failed, cancelled) -> Editor.Require(success, failed))
                 }
@@ -2814,10 +2818,10 @@ namespace FsRoot
         [< AutoOpen >]
         module Library2 =
             module FsiAgent =
-                module ReaderM = ReaderMAsyncResult
+                open FusionAsyncM
                 open FsiEvaluator
                 open FsiCodePresence
-                open ReaderM.Operators
+                open Operators
             
                 [< JavaScript >]
                 type Config = Config of workDir:string * parms:string
@@ -2865,42 +2869,35 @@ namespace FsRoot
                     )
             
                 [< Rpc >]
-                let evalCode workDir code = asyncResult {
-                    let config = extractConfig workDir code
-                    return!
-                        evaluateRm code
-                        //|> (fun vv -> vv)
-                        |> AgentReaderM.fromResourceRm
-                        //|> (fun vv -> vv)
-                        |> AgentReaderM.run fsiExeL.Value config
-                }
+                let evalCode workDir code = 
+                    evaluateRm code
+                    |> AgentReaderM.ofResourceRm
+                    |> AgentReaderM.run fsiExeL.Value (extractConfig workDir code)
+            
             
                 [< Rpc >]
-                let evalCodeSameConfig code = asyncResult {
-                    return!
-                        evaluateRm code
-                        |> AgentReaderM.fromResourceRm
-                        |> AgentReaderM.runSameConfig fsiExeL.Value
-                }
+                let evalCodeSameConfig code = 
+                    evaluateRm code
+                    |> AgentReaderM.ofResourceRm |> id
+                    |> AgentReaderM.runSameConfig fsiExeL.Value
+                
             
                 [< Rpc >]
-                let evalCodeWithPresence workDir presenceKey presenceValue presenceCodeF code = asyncResult {
+                let evalCodeWithPresence workDir presenceKey presenceValue presenceCode code = 
                     let config = extractConfig workDir code
-                    return!
-                        reader {        
-                            let! currentValueO = getPresenceRm presenceKey
-                            if   currentValueO <> Some presenceValue then
-                                let presenceCode   = presenceCodeF()
-                                let presenceConfig = extractConfig workDir presenceCode
-                                if  presenceConfig <> config then
-                                    do! Result.Error (ErrorMsg <| sprintf "Presence and code configs are different: %A <--> %A" presenceConfig config)
-                                do! evaluateRm    presenceCode |>> ignore
-                                do! addPresenceRm presenceKey presenceValue
-                            return! evaluateRm code
-                        }
-                        |> AgentReaderM.fromResourceRm
-                        |> AgentReaderM.run fsiExeL.Value config
-                }
+                    fusion {    
+                        let! currentValueO = getPresenceRm presenceKey
+                        if   currentValueO <> Some presenceValue then
+                            //let  presenceCode   = presenceCodeF()
+                            let  presenceConfig = extractConfig workDir presenceCode
+                            if  presenceConfig <> config then
+                                do! ErrorF (ErrorMsg <| sprintf "Presence and code configs are different: %A <--> %A" presenceConfig config)
+                            do!  evaluateRm    presenceCode |>> ignore
+                            do!  addPresenceRm presenceKey presenceValue
+                        return! evaluateRm code
+                    }
+                    |> AgentReaderM.ofResourceRm
+                    |> AgentReaderM.run fsiExeL.Value config
              
                 [<Rpc>]    
                 let abortFsiExe  () = fsiExeL.Value.Process(fun fsi -> fsi.Abort() )
@@ -3305,7 +3302,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/"
+                    "http://localhost:9005/#"
                 #endif
                 
                 let extractEndPoint() = 
@@ -3496,7 +3493,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1538598585997"
+                let mutable fsharpStationAddress = Address "FSharpStation1539992500272"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -3894,6 +3891,7 @@ namespace FsRoot
     //#define WEBSHARPER
     [< JavaScript >]
     module FSharpStation =
+        //#r "..\..\LayoutEngine\bin\LayoutEngine.dll"
         //#nowarn "1178" "1182" "3180" "52"
         module FStation =
         
@@ -3918,11 +3916,22 @@ namespace FsRoot
             } |> Async.Start
             
             let annotationsV = Var.Create ""
+            let outputMsgs   = Var.Create ""
+        
+            let appendText (var:Var<string>) msg = 
+                match var.Value, msg with
+                | "", m 
+                | m , "" -> m
+                | v , m  -> v + "\n" + m
+                |> var.Set
+                
+            let inline appendMsgs   msg = appendText outputMsgs msg
+        
         
         module Snippets =
             open TreeReader
-            module ReaderM = ReaderMResult
-            open ReaderM.Operators
+            open FusionM
+            open Operators
             
             let private snippets               = ListModel<SnippetId, Snippet> (fun s -> s.snpId)
             let private hierarchy              = Var.Create [||]
@@ -3931,9 +3940,9 @@ namespace FsRoot
             let private codeSnippetIdOV        = Var.Create (None:SnippetId option)
             let private collapsedV             = Var.Create Set.empty
             
-            let predsCache , clearPreds        = Memoize.checkStore()
-            let reducCache , clearReduc        = Memoize.checkStore()
-            let parentCache, clearParent       = Memoize.checkStore()
+            let predsCache , clearPreds        = Memoize.getStore()
+            let reducCache , clearReduc        = Memoize.getStore()
+            let parentCache, clearParent       = Memoize.getStore()
             let clearPredsCache ()             = clearPreds ()
                                                  clearReduc ()
                                                  clearParent()
@@ -3948,16 +3957,16 @@ namespace FsRoot
                                                    prepCode         = prepCode
                                                    }
             let handleError                 er = (er:ResultMessage<string>) |> string |> exn |> raise
-            let iterReader                  rm = rm |> ReaderM.iter  handleError id (snippetsColl())
-            let runReaderResult             rm = rm |> ReaderM.run                  (snippetsColl()) 
-            let runReader            handle rm = rm |> runReaderResult |> Result.defaultWith handle 
+            let iterReader                  rm = rm |> iterReader  handleError id (snippetsColl())
+            let runReaderResult             rm = rm |> runReader                  (snippetsColl()) |> Result.map fst
+            let runReader            handle rm = rm |> runReaderResult |> Result.defaultWith handle
                
             let setCurrentSnippetIdO snpIdO    = currentSnippetIdOV.Set snpIdO
-            let setSnippet                 snp = if snp.snpId.Id <> System.Guid.Empty then snippets.Add { snp with snpGeneration = generation.Value + 1 }
+            let setSnippet                 snp = if snp.snpId.Id <> System.Guid.Empty then snippets.Add { snp with snpGeneration = (runReader (fun e -> print e; 999) <| Snippet.maxGenerationRm()) + 1 }
             let getSnippetsGen              () = snippets.Value, generation.Value, collapsedV.Value
         
             let getParentIdONotMemo      snpId = snippets.TryFindByKey snpId |> Option.bind(fun s -> s.snpParentIdO)
-            let getParentIdO                   = getParentIdONotMemo |> Memoize.memoizeStore (fun () -> parentCache) 
+            let getParentIdO                   = getParentIdONotMemo |> Memoize.memoizeStore (fun () -> snd parentCache) 
             let rec isDescendantOf ancId snpId = if snpId = ancId  then false else
                                                  getParentIdO snpId
                                                  |> Option.map (fun prnId -> prnId = ancId || isDescendantOf ancId prnId)
@@ -3974,7 +3983,7 @@ namespace FsRoot
                     codId
                     |>  Snippet.snippetORm
                     |>> Option.map Snippet.uniquePredsRm 
-                    >>= ReaderM.insertO
+                    >>= insertO
                     |>> Option.toList
                     |>> List.collect  id
                     |>> List.contains curId
@@ -4019,8 +4028,33 @@ namespace FsRoot
             let SaveAsClassW                   = View.Map2 (fun snps gen -> if Seq.exists (fun snp -> snp.snpGeneration > gen) snps then "btn-primary" else "") 
                                                     snippets  .View 
                                                     generation.View
+            let currentLayoutDW                =  View.Map (fun snp -> 
+                                                    fusion {
+                                                        let! btnsO = Snippet.propertyHierORm "Buttons" snp
+                                                                     |>> Option.map(fun(snB, (txB, _)) ->
+                                                                        let ss =    txB.Trim().Split('\n')
+                                                                                    |> Seq.filter(fun s -> s.Trim() <> "")
+                                                                                    |> Seq.mapi (fun i btn -> sprintf "btn%d button \"click=${FSharpStation.ButtonClick}\" %A" i btn)
+                                                                        "Snp_" + (string snB.snpId.Id).Replace("-", "")
+                                                                      , [   yield "editorButtons vertical 0-85-100 FStationLyt.menuEditor buttons"
+                                                                            yield! ss
+                                                                            yield [ 0.. Seq.length ss - 1 ] 
+                                                                                    |> Seq.map (sprintf "btn%d") 
+                                                                                    |> String.concat " " 
+                                                                                    |> sprintf "buttons div \"\" %s "
+                                                                        ] |> String.concat "\n"
+                                                                    )
+                                                        return!      Snippet.propertyHierORm "Layout"  snp 
+                                                                     |>> Option.map (fun (snL, (txL, _)) ->
+                                                                        "Snp_" + (string snL.snpId.Id).Replace("-", "")
+                                                                      , btnsO |> Option.map (fun (snB, lyB) -> 
+                                                                            [ txL ; lyB ] |> String.concat "\n")
+                                                                        |> Option.defaultValue txL)
+                                                                     |>> Option.bindNone (fun () -> btnsO)
+                                                    } |> runReader (fun _ -> None)
+                                                  ) currentSnippetW
                                                     
-            let setChildrenRm snpId ch = reader {
+            let setChildrenRm snpId ch = fusion {
                 let chIds = ch |> Array.map (fun s -> s.id())
                 snippets
                 |> Seq.filter (fun s -> s.snpParentIdO <> Some snpId && (chIds |> Array.contains s.snpId))
@@ -4120,7 +4154,7 @@ namespace FsRoot
                 |>  iterReader
         
             let updateGeneration() =
-                reader {
+                fusion {
                     let! max = Snippet.maxGenerationRm()
                     generation.Set max
                 } |> iterReader
@@ -4131,7 +4165,7 @@ namespace FsRoot
                 updateGeneration()
                 snps 
                 |>  Seq.map(fun snp -> Snippet.parentORm snp |>> function None -> Some snp |_-> None )
-                |>  ReaderM.sequenceSeq
+                |>  sequenceSeq
                 |>> Seq.choose id
                 |>> Seq.map (fun snp -> treenode snp.snpId)
                 |>> Seq.toArray
@@ -4142,7 +4176,7 @@ namespace FsRoot
                 snippets.Add snp
                 let hier = hierarchy.Value |> Seq.append [| treenode snp.snpId |]
                 currentSnippetIdOV.Value
-                |>  Option.map Snippet.snippetORm |> ReaderM.insertO |>> Option.bind id
+                |>  Option.map Snippet.snippetORm |> insertO |>> Option.bind id
                 >>= function
                 | None     -> hier |> rtn
                 | Some sbl -> hier |> TreeReader.moveToSibling2 true snp.snpId sbl.snpId
@@ -4681,6 +4715,68 @@ namespace FsRoot
                 |> fst
                 |> Seq.pick (fun (line, from, to_) -> if s >= from && s < to_ then Some line else None)
                 |> jumpToLine        
+        module CustomAction =
+            open FusionAsyncM
+            open Operators
+            open FStation
+        
+            let propO snp p = snp |> Snippet.propertyHierORm p |> ofFusionM |>> Option.map (function (_, (v, _)) -> v)
+        //    let [< Inline "Object.constructor('return function(parm) { return `' + $template + '`}')()($p)" >] translateTemplate (template: string) p = ""
+        
+            let translateString f (code: string) =
+                let rec translate acc (s: string) =
+                    String.delimitedO "${" "}" s
+                    |> function
+                    | None -> acc + s
+                    | Some (bef, var, aft) ->
+                    translate (acc + bef) (f var + aft)
+                translate "" code
+        
+            let getBaseSnippet() = fusion {
+                let     snp     = Snippets.currentSnippetV.Value
+                let!    snpRefO = propO snp "BaseSnippet"
+                return! snpRefO
+                        |>  Option.map(fun ref -> 
+                                SnippetReference.RefSnippetPath (ref.Split '/') 
+                                |> Snippet.snippetFromRefORm
+                                |> ofFusionM)
+                        |>  insertO
+                        |>> Option.flatten
+                        |>> Option.defaultValue snp
+            }
+        
+            let getCode snp name = fusion {
+                let!  openProp  = propO snp "Open" |>> Option.map (__ (+) "\n") |>> Option.defaultValue ""
+                let!  namecodeO = propO snp  name
+                match namecodeO with
+                | Some code -> return openProp + code
+                | None      -> 
+                let! template  = propO snp "action-template" |>> Option.defaultValue "${parm}() |> printfn \"%A\""
+                return openProp + template
+            }
+        
+            module AF = FsRoot.LibraryJS.AppFramework
+        
+            let fetchValue parm v =
+                if v = "parm" then parm else
+                "Snp_" + (string Snippets.currentSnippetV.Value.snpId.Id).Replace("-", "")
+                |> swap AF.splitName v
+                ||> AF.tryGetWoW
+                |> Option.bind View.TryGet
+                |> Option.defaultWith (fun () -> sprintf "${%s}" v)
+        
+            let buttonClickRm (e:Dom.Element) = fusion {
+                let  name      = e.TextContent.Trim()
+                outputMsgs.Set <| sprintf "Action %s ..." name
+                let! snp       = getBaseSnippet()
+                let! code      = getCode snp name |>> translateString (fetchValue name)
+                do!     ofAsync <| FSharpStationClient.setAddress (WebSockets.Address FStation.id)
+                let! preCode   = Snippet.fastCodeRm (Some snp.snpId) (Some snp.snpId) |> ofFusionM |>> fst 
+                return! ofAsync <| FsiAgent.evalCodeWithPresence FStation.srcDir (sprintf "%A" snp.snpId) (string snp.snpGeneration) (FsCode preCode) (FsCode code)
+            }
+            
+            let buttonClick e = buttonClickRm e |> iterReaderA  print print (Snippets.snippetsColl())
+        
         module Serializer =
             open Serializer
         
@@ -4783,31 +4879,23 @@ namespace FsRoot
                             reader.Onload <- fun e -> e.Target?result |> parseText
                             files.[0] |> reader.ReadAsText
         
-        //#r "..\..\LayoutEngine\bin\LayoutEngine.dll"
         module MainProgram =
             open FsRoot
             open WebComponent
+            open FusionAsyncM
+            open Operators
+            open FStation
             
-            let appendText (var:Var<string>) msg = 
-                match var.Value, msg with
-                | "", m 
-                | m , "" -> m
-                | v , m  -> v + "\n" + m
-                |> var.Set
-                
-            let outputMsgs = Var.Create ""
-            let inline appendMsgs   msg = appendText outputMsgs msg
-        
             let runFsCode () = 
                 let out (v:string) = appendMsgs <| v.Replace(FsiEvaluator.endToken, "Done!")
                 Snippets.FsCodeW 
                 |> View.TryGet 
                 |> Option.iter (fun code ->
-                    asyncResultP {
+                    fusion {
                         outputMsgs.Set "Running F#..."
-                        do!     FSharpStationClient.setAddress <| WebSockets.Address FStation.id
-                        return! FsCode code |> FsiAgent.evalCode FStation.srcDir
-                    } |> AsyncResult.iterA (sprintf "Error:\n%A" >> out) ignore
+                        do!     ofAsync <| FSharpStationClient.setAddress (WebSockets.Address FStation.id)
+                        return! ofAsync <| FsiAgent.evalCode FStation.srcDir (FsCode code)
+                    } |> iterResultA (sprintf "Error:\n%A" >> out) ignore
                 )
         
             let deleteSnippet() =
@@ -4904,17 +4992,18 @@ namespace FsRoot
                                        AF.newAct  "AddProperty"     RenderProperties.addProperty
                                        AF.newAct  "SaveAs"          LoadSave.saveAs
                                        AF.newAct  "RunFS"           runFsCode
-                                       AF.newActF "LoadFile"        <| AF.FunAct1 ((fun o -> unbox o |> LoadSave.loadTextFile), "FileElement")
-                                       AF.newActF "Import"          <| AF.FunAct1 ((fun o -> unbox o |> Importer.importFile  ), "FileElement")
-                                       AF.newActF "JumpTo"          <| AF.FunAct1 ((fun o -> unbox o |> JumpTo.jumpToRef     ), "textarea"   )
+                                       AF.newActF "LoadFile"        <| AF.FunAct1 ((fun o -> unbox o |> LoadSave.loadTextFile   ), "FileElement")
+                                       AF.newActF "Import"          <| AF.FunAct1 ((fun o -> unbox o |> Importer.importFile     ), "FileElement")
+                                       AF.newActF "JumpTo"          <| AF.FunAct1 ((fun o -> unbox o |> JumpTo.jumpToRef        ), "textarea"   )
+                                       AF.newActF "ButtonClick"     <| AF.FunAct1 ((fun o -> unbox o |> CustomAction.buttonClick), "button"     )
                                     |]
                     AF.plgQueries = [|                                               
                                     |]
                 }
                 """
-                    double           horizontal  0-50-100 AppFramework.AppFwkClient menuEditor
         
                     menuEditor       horizontal  65       menuLogo                  editorMessages
+                    double           horizontal  0-50-100 AppFramework.AppFwkClient menuEditor
                     menuLogo         vertical    350      logo                      menu
                     logo             span       "margin:0; color:gray; font-size: 55px; font-weight:530" "F# Station"
                     editorMessages   horizontal 10-83-100 editorButtons             messages
@@ -4929,7 +5018,7 @@ namespace FsRoot
                     
                     btnSaveAs        button FSharpStation.SaveAs         "class=btn ${FSharpStation.SaveNeeded}" "Save as...    "
                     btnAddSnippet    button FSharpStation.AddSnippet     ""                  "Add Snippet   "
-                    btnDeleteSnippet button FSharpStation.DeleteSnippet  ""                  "Delete Snippet"
+                    btnDeleteSnippet button FSharpStation.RemoveSnippet  ""                  "Delete Snippet"
                     btnIndentIn      button FSharpStation.IndentIn       ""                  "Indent In  >> "
                     btnIndentOut     button FSharpStation.IndentOut      ""                  "Indent Out << "
                     btnRunFS         button FSharpStation.RunFS          ""                  "Run F#        "
@@ -4948,7 +5037,23 @@ namespace FsRoot
                 |> String.unindentStr
                 |> LayoutEngine.newLyt "FStationLyt"
                 |> LayoutEngine.addLayout
-                AF.mainDocV.Set "FStationLyt.menuEditor"
+        
+                Snippets.currentLayoutDW
+                |> View.consistent
+                |> View.Sink(fun lytO ->
+                    lytO
+                    |> Option.bind (fun (name, txt) ->
+                        txt 
+                        |> LayoutEngine.newLyt    name
+                        |> LayoutEngine.addLayout 
+                        if txt = "" then None else 
+                        Some name
+                    )
+                    |> Option.defaultValue "FStationLyt"
+                    |> AF.mainDocV.Set
+                )
+        
+                
         
                 async {
                   do! Monaco.loader
@@ -4960,23 +5065,24 @@ namespace FsRoot
         
         
         module Messaging =
-            module ReaderM = ReaderMResult
-            open ReaderM.Operators
+            open FStation
+            open FusionM
+            open Operators
         
             let wsStationClient = if IsClient then new WebSockets.WSMessagingClient(FStation.id) else new WebSockets.WSMessagingClient("FStation.id", WebSockets.FSStation)
         
             let processMessage (msg: FSMessage) : Async<Result<FSResponse,ResultMessage<string>>>= 
-                reader {
+                fusion {
                     match msg with
                     | MsgGetId                          -> return  RespString FStation.id
-                    | MsgGetSnippets               snrs -> let!    snps = snrs |> ReaderM.traverseSeq Snippet.snippetFromRefORm
+                    | MsgGetSnippets               snrs -> let!    snps = snrs |> FusionM.traverseSeq Snippet.snippetFromRefORm
                                                            return  snps |> Seq.choose id |> Seq.toArray |> RespSnippets
                     | MsgGetCode                   snr  -> Snippets.clearPredsCache ()
-                                                           let!    snp  = Snippet.snippetFromRefORm snr |> ReaderM.absorbO (fun () -> ErrorMsg <| sprintf "Snippet not found %A" snr)
+                                                           let!    snp  = Snippet.snippetFromRefORm snr |> absorbO (fun () -> ErrorMsg <| sprintf "Snippet not found %A" snr)
                                                            return! Snippet.fastCodeRm (Some snp.snpId) (Some snp.snpId) |>> fst |>> RespString
                     | MsgGetPredecessors           snr  -> Snippets.clearPredsCache ()
                                                            return  Hole ? TODO_GetPredecessors
-                    | MsgAction [| "AddOutput" ; txt |] -> MainProgram.appendMsgs txt
+                    | MsgAction [| "AddOutput" ; txt |] -> appendMsgs txt
                                                            return  FSResponse.RespString "Ok"
                     | MsgGetUrl                         -> return  FSResponse.RespString JS.Document.BaseURI
                     | _                                 -> return  Hole ?(sprintf "TODO message: %A" msg)

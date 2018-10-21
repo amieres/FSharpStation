@@ -538,7 +538,9 @@ namespace FsRoot
                                 whileLoop guard body
                             member this.TryWith   (body, handler     ) = wrap(fun r -> try body() |> getFun <| r with e -> handler     e            )
                             member this.TryFinally(body, compensation) = wrap(fun r -> try body() |> getFun <| r finally   compensation()           )
-                            member this.Using     (disposable, body  ) = wrap(fun r -> using (disposable:#System.IDisposable) (fun u -> body u |> getFun <| r) )
+                            member this.Using     (disposable, body  ) = //wrap(fun r -> using (disposable:#System.IDisposable) (fun u -> body u |> getFun <| r) )
+                                        let body' = fun () -> body disposable
+                                        this.TryFinally(body', fun () -> if disposable :> obj <> null then (disposable:#System.IDisposable).Dispose() )
                             member this.For(sequence:seq<_>, body) =
                                 this.Using(sequence.GetEnumerator(),fun enum -> 
                                     this.While(enum.MoveNext, 
@@ -677,9 +679,9 @@ namespace FsRoot
                                     if guard() then body() |> bind (fun () -> whileLoop guard body)
                                     else rtn   ()
                                 whileLoop guard body
-                            member this.TryWith   (body, handler     ) = wrap(fun r -> try body() |> getFun <| r with e -> handler     e            )
-                            member this.TryFinally(body, compensation) = wrap(fun r -> try body() |> getFun <| r finally   compensation()           )
-                            member this.Using     (disposable, body  ) = wrap(fun r -> using (disposable:#System.IDisposable) (fun u -> body u |> getFun <| r) )
+                            member __.TryWith   (body, handler     ) = (fun (s,m) -> async.TryWith   (body() |> getFun <| (s, m),   handler                ) ) |> wrap
+                            member __.TryFinally(body, compensation) = (fun (s,m) -> async.TryFinally(body() |> getFun <| (s, m),   compensation           ) ) |> wrap
+                            member __.Using     (disposable, body  ) = (fun (s,m) -> async.Using((disposable:#System.IDisposable), fun u -> body u |> getFun <| (s, m)) ) |> wrap
                             member this.For(sequence:seq<_>, body) =
                                 this.Using(sequence.GetEnumerator(),fun enum -> 
                                     this.While(enum.MoveNext, 
@@ -740,8 +742,8 @@ namespace FsRoot
                     member __.Combine   (vR ,  fRA) : Async<Result<'b  , 'm>> = AsyncResult.bind fRA (vR  |> AsyncResult.rtnR)
                     member __.Delay            fRA                            = fRA
                     member __.Run              fRA                            = fRA ()
-                    member __.TryWith   (fRA , hnd) : Async<Result<'a  , 'm>> = async { return! try fRA() with e -> hnd e  }
-                    member __.TryFinally(fRA , fn ) : Async<Result<'a  , 'm>> = async { return! try fRA() finally   fn  () }
+                    member __.TryWith   (fRA , hnd) : Async<Result<'a  , 'm>> = async { try return! fRA() with e -> return! hnd e  }
+                    member __.TryFinally(fRA , fn ) : Async<Result<'a  , 'm>> = async { try return! fRA() finally   fn  () }
                     member __.Using(resource , fRA) : Async<Result<'a  , 'm>> = async.Using(resource,       fRA)
                     member __.While   (guard , fRA) : Async<Result<unit, 'a>> = AsyncResult.whileLoop guard fRA 
                     member th.For  (s: 'a seq, fRA) : Async<Result<unit, 'b>> = th.Using(s.GetEnumerator (), fun enum ->
@@ -2041,11 +2043,11 @@ namespace FsRoot
                 [< Literal >]
                 let endToken = "xXxY" + "yYyhH"
                 type FsiExe(config:string, workingDir, ?outHndl, ?errHndl) =
-                    let mutable silent             = false
+                    let silent                     = ref false
                     let fsiexe                     = @"..\packages\FSharp.Compiler.Tools\tools" +/+ if config.Contains "-d:FSI32BIT" then "fsi.exe" else "fsianycpu.exe"
                     let startInfo                  = ProcessStartInfo(fsiexe, config, WorkingDirectory= workingDir)
-                    let outHndlS                   = outHndl |> Option.map(fun outh v -> if silent then () else outh v)
-                    let errHndlS                   = errHndl |> Option.map(fun errh v -> if silent then () else errh v)
+                    let outHndlS                   = outHndl |> Option.map(fun outh v -> if !silent then () else outh v)
+                    let errHndlS                   = errHndl |> Option.map(fun errh v -> if !silent then () else errh v)
                     let shell                      = new ShellEx(startInfo, ?outHndl = outHndlS, ?errHndl = errHndlS)  // --noninteractive
                     do  startInfo.CreateNoWindow  <- false
                         shell.Start() |> ignore
@@ -2057,9 +2059,9 @@ namespace FsRoot
                     member oo.IsAlive              = not shell.HasExited
                     member oo.Abort()              = shell.Abort()
                     member oo.EvalSilent code      = asyncResult {
-                                                        try     silent <- true
+                                                        try     silent := true
                                                                 return! oo.Eval code
-                                                        finally silent <- false
+                                                        finally silent := false
                                                      }
                     interface System.IDisposable with
                         member this.Dispose ()     = (shell :> System.IDisposable).Dispose()
@@ -2089,17 +2091,18 @@ namespace FsRoot
             
                 let addPresenceRm (name:string) (v:string) = fusion {
                     let  code = sprintf "CodePresence.addPresenceOf %A %A" (name.Replace("\"", "\\\"")) v |> FsCode
-                    let! res  = evalSilentRm code
+                    let! res  = evalSilentRm code |>> String.splitByChar '\n' |>> Seq.head
                     match res with
-                    | "ok" -> ()
-                    | _    -> do! installPresenceRm()
-                              do! evalSilentRm code |>> ignore
+                    | "ok"   -> ()
+                    |_       -> do! installPresenceRm()
+                                do! evalSilentRm code |>> ignore
                 }
                         
                 let getPresenceRm (name:string)   = fusion {
                     let! res = sprintf "CodePresence.presenceOf    %A" (name.Replace("\"", "\\\""))
                                |> FsCode
                                |> evalSilentRm
+                               |>> String.splitByChar '\n' |>> Seq.head
                                |> getOption
                     match res with
                     | None                     -> do! installPresenceRm()
@@ -3490,7 +3493,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1539766023158"
+                let mutable fsharpStationAddress = Address "FSharpStation1539992500272"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -3888,6 +3891,7 @@ namespace FsRoot
     //#define WEBSHARPER
     [< JavaScript >]
     module FSharpStation =
+        //#r "..\..\LayoutEngine\bin\LayoutEngine.dll"
         //#nowarn "1178" "1182" "3180" "52"
         module FStation =
         
@@ -3958,7 +3962,7 @@ namespace FsRoot
             let runReader            handle rm = rm |> runReaderResult |> Result.defaultWith handle
                
             let setCurrentSnippetIdO snpIdO    = currentSnippetIdOV.Set snpIdO
-            let setSnippet                 snp = if snp.snpId.Id <> System.Guid.Empty then snippets.Add { snp with snpGeneration = generation.Value + 1 }
+            let setSnippet                 snp = if snp.snpId.Id <> System.Guid.Empty then snippets.Add { snp with snpGeneration = (runReader (fun e -> print e; 999) <| Snippet.maxGenerationRm()) + 1 }
             let getSnippetsGen              () = snippets.Value, generation.Value, collapsedV.Value
         
             let getParentIdONotMemo      snpId = snippets.TryFindByKey snpId |> Option.bind(fun s -> s.snpParentIdO)
@@ -4717,8 +4721,16 @@ namespace FsRoot
             open FStation
         
             let propO snp p = snp |> Snippet.propertyHierORm p |> ofFusionM |>> Option.map (function (_, (v, _)) -> v)
-            let [< Inline "Object.constructor('return function(parm) { return `' + $template + '`}')()($p)" >] translateTemplate (template: string) p = ""
+        //    let [< Inline "Object.constructor('return function(parm) { return `' + $template + '`}')()($p)" >] translateTemplate (template: string) p = ""
         
+            let translateString f (code: string) =
+                let rec translate acc (s: string) =
+                    String.delimitedO "${" "}" s
+                    |> function
+                    | None -> acc + s
+                    | Some (bef, var, aft) ->
+                    translate (acc + bef) (f var + aft)
+                translate "" code
         
             let getBaseSnippet() = fusion {
                 let     snp     = Snippets.currentSnippetV.Value
@@ -4740,15 +4752,24 @@ namespace FsRoot
                 | Some code -> return openProp + code
                 | None      -> 
                 let! template  = propO snp "action-template" |>> Option.defaultValue "${parm}() |> printfn \"%A\""
-                let  code      = translateTemplate template name
-                return openProp + code
+                return openProp + template
             }
+        
+            module AF = FsRoot.LibraryJS.AppFramework
+        
+            let fetchValue parm v =
+                if v = "parm" then parm else
+                "Snp_" + (string Snippets.currentSnippetV.Value.snpId.Id).Replace("-", "")
+                |> swap AF.splitName v
+                ||> AF.tryGetWoW
+                |> Option.bind View.TryGet
+                |> Option.defaultWith (fun () -> sprintf "${%s}" v)
         
             let buttonClickRm (e:Dom.Element) = fusion {
                 let  name      = e.TextContent.Trim()
                 outputMsgs.Set <| sprintf "Action %s ..." name
                 let! snp       = getBaseSnippet()
-                let! code      = getCode snp name
+                let! code      = getCode snp name |>> translateString (fetchValue name)
                 do!     ofAsync <| FSharpStationClient.setAddress (WebSockets.Address FStation.id)
                 let! preCode   = Snippet.fastCodeRm (Some snp.snpId) (Some snp.snpId) |> ofFusionM |>> fst 
                 return! ofAsync <| FsiAgent.evalCodeWithPresence FStation.srcDir (sprintf "%A" snp.snpId) (string snp.snpGeneration) (FsCode preCode) (FsCode code)
@@ -4858,7 +4879,6 @@ namespace FsRoot
                             reader.Onload <- fun e -> e.Target?result |> parseText
                             files.[0] |> reader.ReadAsText
         
-        //#r "..\..\LayoutEngine\bin\LayoutEngine.dll"
         module MainProgram =
             open FsRoot
             open WebComponent

@@ -33,6 +33,7 @@ group Other
     source https://www.nuget.org/api/v2
 
     nuget OpenCvSharp3-AnyCPU
+    nuget SSH.NET
     nuget FSharp.Data.SqlClient
     nuget Microsoft.Orleans.Core.Abstractions
 

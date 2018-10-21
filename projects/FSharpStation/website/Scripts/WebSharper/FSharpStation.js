@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,ResultMessage,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,FusionM,Operators$1,Builder$1,Builder$2,FusionAsyncM,Operators$2,Builder$3,Builder$4,AsyncResult,AsyncResultBuilder,AsyncResultBuilderP,Extensions,String,ParseO,MailboxProcessorExt,Mailbox,StateFull,ResourceAgentState,ResourceAgent,AgentReaderM,CommArgRoot,CommArg,CommArgCollection,TypedCommArg,CommArgModule,FsCodeModule,PreproDirective,SnippetId,Snippet,SnippetCollection,SnippetModule,Hole,TreeReader,Node,LibraryJS,Promise,View,Serializer,LoadFiles,REGEX,Hoverable,Hoverable$1,ResizeObserver,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,WcSplitterT,Monaco,Position,Range,Uri,Location,FindMatch,WordAtPosition,Model,MarkDownString,MarkerData,CompletionItem,Hover,Editor,MonacoConfig,Library2,FsiAgent,WebSockets,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ReplyHandler,Handler,WSMessagingClient,FSMessage,FsAutoComplete,CommTypes,ResponseError,Location$1,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,MsgTypes,ParseRequest,DeclarationsRequest,CompletionRequest,PositionRequest,ProjectRequest,LintRequest,HelptextRequest,WorkspacePeekRequest,Calls,FSharpStation,FStation,Snippets,DragDrop,DragInfo,Templating,RenderSnippets,RenderProperties,Monaco$1,HoverProvider,CompletionItemProvider,DefinitionProvider,MonacoOptions,ITextModelService,JumpTo,CustomAction,Serializer$1,Model$1,LoadSave,Importer,MainProgram,Messaging,SC$1,FSharpStation_JsonEncoder,FSharpStation_JsonDecoder,FSharpStation_GeneratedPrintf,FSharpStation_Templates,GeneratedPrintf,IntelliFactory,Runtime,Utils,Strings,Seq$1,Arrays,List,Concurrency,Enumerator,Result$1,Operators$3,Slice,Control,MailboxProcessor,Unchecked,System,Guid,Collections,FSharpSet,Option$1,CancellationTokenSource,console,UI,View$1,Var$1,FSharpMap,BalancedTree,DomUtility,Doc,AttrModule,AttrProxy,Node$1,Client,Templates,Reflect,Object,Map,JSON,TimeoutException,ClientSideJson,Provider,Owin,WebSocket,Client$1,WithEncoding,Endpoint,location,Remoting,AjaxRemotingProvider,FromView,Templating$1,Runtime$1,Server,ProviderBuilder,Handler$1,TemplateInstance,JavaScript,Promise$1,AppFramework,PlugIn,Lazy,LayoutEngineModule,DateUtil,Numeric,Date,ListModel,Dictionary,LayoutEngine_Templates;
+ var Global,FsRoot,Library,ResultMessage,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,FusionM,Operators$1,Builder$1,Builder$2,FusionAsyncM,Operators$2,Builder$3,Builder$4,AsyncResult,AsyncResultBuilder,AsyncResultBuilderP,Extensions,String,ParseO,MailboxProcessorExt,Mailbox,StateFull,ResourceAgentState,ResourceAgent,AgentReaderM,CommArgRoot,CommArg,CommArgCollection,TypedCommArg,CommArgModule,FsCodeModule,PreproDirective,SnippetId,Snippet,SnippetCollection,SnippetModule,Hole,TreeReader,Node,LibraryJS,Promise,View,Serializer,LoadFiles,REGEX,Hoverable,Hoverable$1,ResizeObserver,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,WcSplitterT,Monaco,Position,Range,Uri,Location,FindMatch,WordAtPosition,Model,MarkDownString,MarkerData,CompletionItem,Hover,Editor,MonacoConfig,Library2,FsiAgent,WebSockets,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ReplyHandler,Handler,WSMessagingClient,FSMessage,FsAutoComplete,CommTypes,ResponseError,Location$1,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,MsgTypes,ParseRequest,DeclarationsRequest,CompletionRequest,PositionRequest,ProjectRequest,LintRequest,HelptextRequest,WorkspacePeekRequest,Calls,FSharpStation,FStation,Snippets,DragDrop,DragInfo,Templating,RenderSnippets,RenderProperties,Monaco$1,HoverProvider,CompletionItemProvider,DefinitionProvider,MonacoOptions,ITextModelService,JumpTo,CustomAction,Serializer$1,Model$1,LoadSave,Importer,MainProgram,Messaging,SC$1,FSharpStation_JsonEncoder,FSharpStation_JsonDecoder,FSharpStation_GeneratedPrintf,FSharpStation_Templates,GeneratedPrintf,IntelliFactory,Runtime,Utils,Strings,Seq$1,Arrays,List,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,Slice,Control,MailboxProcessor,System,Guid,Collections,FSharpSet,Option$1,CancellationTokenSource,console,UI,View$1,Var$1,FSharpMap,BalancedTree,DomUtility,Doc,AttrModule,AttrProxy,Node$1,Client,Templates,Reflect,Object,Map,JSON,TimeoutException,ClientSideJson,Provider,Owin,WebSocket,Client$1,WithEncoding,Endpoint,location,Remoting,AjaxRemotingProvider,FromView,Templating$1,Runtime$1,Server,ProviderBuilder,Handler$1,TemplateInstance,JavaScript,Promise$1,AppFramework,PlugIn,Lazy,LayoutEngineModule,DateUtil,Numeric,Date,ListModel,Dictionary,LayoutEngine_Templates;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -166,10 +166,10 @@
  Enumerator=WebSharper&&WebSharper.Enumerator;
  Result$1=WebSharper&&WebSharper.Result;
  Operators$3=WebSharper&&WebSharper.Operators;
+ Unchecked=WebSharper&&WebSharper.Unchecked;
  Slice=WebSharper&&WebSharper.Slice;
  Control=WebSharper&&WebSharper.Control;
  MailboxProcessor=Control&&Control.MailboxProcessor;
- Unchecked=WebSharper&&WebSharper.Unchecked;
  System=Global.System;
  Guid=System&&System.Guid;
  Collections=WebSharper&&WebSharper.Collections;
@@ -1083,16 +1083,13 @@
   },
   Using:function(disposable,body)
   {
-   return FusionM.wrap(function(r)
+   return this.TryFinally(function()
    {
-    try
-    {
-     return(FusionM.getFun(body(disposable)))(r);
-    }
-    finally
-    {
+    return body(disposable);
+   },function()
+   {
+    if(!Unchecked.Equals(disposable,null))
      disposable.Dispose();
-    }
    });
   },
   TryFinally:function(body,compensation)
@@ -1675,44 +1672,38 @@
   },
   Using:function(disposable,body)
   {
-   return FusionAsyncM.wrap(function(r)
+   function x(s,m)
    {
-    try
+    return Concurrency.Using(disposable,function(u)
     {
-     return(FusionAsyncM.getFun(body(disposable)))(r);
-    }
-    finally
-    {
-     disposable.Dispose();
-    }
+     return(FusionAsyncM.getFun(body(u)))([s,m]);
+    });
+   }
+   return FusionAsyncM.wrap(function($1)
+   {
+    return x($1[0],$1[1]);
    });
   },
   TryFinally:function(body,compensation)
   {
-   return FusionAsyncM.wrap(function(r)
+   function x(s,m)
    {
-    try
-    {
-     return(FusionAsyncM.getFun(body()))(r);
-    }
-    finally
-    {
-     compensation();
-    }
+    return Concurrency.TryFinally((FusionAsyncM.getFun(body()))([s,m]),compensation);
+   }
+   return FusionAsyncM.wrap(function($1)
+   {
+    return x($1[0],$1[1]);
    });
   },
   TryWith:function(body,handler)
   {
-   return FusionAsyncM.wrap(function(r)
+   function x(s,m)
    {
-    try
-    {
-     return(FusionAsyncM.getFun(body()))(r);
-    }
-    catch(e)
-    {
-     return handler(e);
-    }
+    return Concurrency.TryWith((FusionAsyncM.getFun(body()))([s,m]),handler);
+   }
+   return FusionAsyncM.wrap(function($1)
+   {
+    return x($1[0],$1[1]);
    });
   },
   While:function(guard,body)
@@ -2553,14 +2544,13 @@
    b=null;
    return Concurrency.Delay(function()
    {
-    try
+    return Concurrency.TryFinally(Concurrency.Delay(function()
     {
      return fRA();
-    }
-    finally
+    }),function()
     {
      fn();
-    }
+    });
    });
   },
   TryWith:function(fRA,hnd)
@@ -2569,14 +2559,13 @@
    b=null;
    return Concurrency.Delay(function()
    {
-    try
+    return Concurrency.TryWith(Concurrency.Delay(function()
     {
      return fRA();
-    }
-    catch(e)
+    }),function(a)
     {
-     return hnd(e);
-    }
+     return hnd(a);
+    });
    });
   },
   Run:function(fRA)
@@ -5614,15 +5603,15 @@
  {
   return Hoverable$1.New$3().Content(Doc.Element("div",[AttrProxy.Create("style","flex-flow: column;")],[Doc.TextNode("Hover over me!")]));
  };
- Hoverable$1.Content$2303$81=Runtime.Curried3(function(e,$1,$2)
+ Hoverable$1.Content$2306$81=Runtime.Curried3(function(e,$1,$2)
  {
   return DomUtility.RemoveClass(e.elt,"hovering");
  });
- Hoverable$1.get_Attributes$2299$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$2302$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(false);
  });
- Hoverable$1.get_Attributes$2298$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$2301$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(true);
  });
@@ -5764,7 +5753,7 @@
   SC$1.$cctor();
   return SC$1.init;
  };
- WcTabStrip.tabStrip$2441$64=function(i,selected)
+ WcTabStrip.tabStrip$2444$64=function(i,selected)
  {
   return function()
   {
@@ -6153,7 +6142,7 @@
  {
   return MonacoConfig.New(v,monc.onChange,monc.onRender,monc.editorO,monc.disabled,monc.options,monc.overrides);
  };
- Monaco.render$2791$42=function(monc)
+ Monaco.render$2794$42=function(monc)
  {
   return function(elchild)
   {
@@ -7973,7 +7962,11 @@
  Snippets.setSnippet=function(snp)
  {
   if(!Unchecked.Equals(snp.snpId.get_Id(),"00000000-0000-0000-0000-000000000000"))
-   Snippets.snippets().Append(Snippet.New(snp.snpId,snp.snpName,snp.snpContent,snp.snpParentIdO,snp.snpPredIds,snp.snpProperties,Snippets.generation().Get()+1));
+   Snippets.snippets().Append(Snippet.New(snp.snpId,snp.snpName,snp.snpContent,snp.snpParentIdO,snp.snpPredIds,snp.snpProperties,Snippets.runReader(function(e)
+   {
+    Library.print(e);
+    return 999;
+   },SnippetModule.maxGenerationRm())+1));
  };
  Snippets.setCurrentSnippetIdO=function(snpIdO)
  {
@@ -8129,7 +8122,7 @@
    $1:S
   })),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.snippetlist(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderSnippets.snippets$4268$40=function(snpId)
+ RenderSnippets.snippets$4272$40=function(snpId)
  {
   return function(ev)
   {
@@ -8142,7 +8135,7 @@
    }))(x);
   };
  };
- RenderSnippets.snippets$4267$40=function(snpId)
+ RenderSnippets.snippets$4271$40=function(snpId)
  {
   return function(ev)
   {
@@ -8150,7 +8143,7 @@
     ev.Event.preventDefault();
   };
  };
- RenderSnippets.snippets$4266$40=function(snpId)
+ RenderSnippets.snippets$4270$40=function(snpId)
  {
   return function(ev)
   {
@@ -8158,21 +8151,21 @@
    ev.Event.stopPropagation();
   };
  };
- RenderSnippets.snippets$4265$40=function(snpId)
+ RenderSnippets.snippets$4269$40=function(snpId)
  {
   return function()
   {
    Snippets.toggleCollapse(snpId);
   };
  };
- RenderSnippets.snippets$4264$40=function(snpId)
+ RenderSnippets.snippets$4268$40=function(snpId)
  {
   return function()
   {
    Snippets.togglePredecessor(snpId);
   };
  };
- RenderSnippets.snippets$4263$40=function(snpId)
+ RenderSnippets.snippets$4267$40=function(snpId)
  {
   var s;
   s=View$1.Map(function(y)
@@ -8184,7 +8177,7 @@
    return RenderSnippets.scrollIntoView(s,e);
   };
  };
- RenderSnippets.snippets$4262$40=function(snpId)
+ RenderSnippets.snippets$4266$40=function(snpId)
  {
   return function()
   {
@@ -8323,7 +8316,7 @@
     e.scrollIntoViewIfNeeded();
   },selW);
  };
- RenderProperties.render$4305$34=function()
+ RenderProperties.render$4309$34=function()
  {
   return function()
   {
@@ -8345,7 +8338,7 @@
    RenderProperties.addProperty();
   }))),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.propertytable(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderProperties.properties$4298$33=function(i)
+ RenderProperties.properties$4302$33=function(i)
  {
   return function()
   {
@@ -9061,7 +9054,14 @@
    FStation.outputMsgs().Set(a);
    return b.Bind(CustomAction.getBaseSnippet(),function(a$1)
    {
-    return b.Bind(CustomAction.getCode(a$1,name),function(a$2)
+    function f(v)
+    {
+     return CustomAction.fetchValue(name,v);
+    }
+    return b.Bind(Operators$2.op_BarGreaterGreater(CustomAction.getCode(a$1,name),function(c)
+    {
+     return CustomAction.translateString(f,c);
+    }),function(a$2)
     {
      return b.Bind(FusionAsyncM.ofAsync((new AjaxRemotingProvider.New()).Async("FSharpStation:FsRoot.Library2+FSharpStationClient.setAddress:-574353144",[new Address({
       $:0,
@@ -9098,6 +9098,17 @@
    });
   }));
  };
+ CustomAction.fetchValue=function(parm,v)
+ {
+  var o,o$1,t;
+  return v==="parm"?parm:(o=(o$1=(t=(AppFramework.splitName("Snp_"+Strings.Replace(Global.String(Snippets.currentSnippetV().Get().snpId.get_Id()),"-","")))(v),AppFramework.tryGetWoW(t[0],t[1])),o$1==null?null:View$1.TryGet(o$1.$0)),o==null?(function($1)
+  {
+   return function($2)
+   {
+    return $1("${"+Utils.toSafe($2)+"}");
+   };
+  }(Global.id))(v):o.$0);
+ };
  CustomAction.getCode=function(snp,name)
  {
   var b;
@@ -9130,7 +9141,7 @@
       return o==null?"${parm}() |> printfn \"%A\"":o.$0;
      }),function(a$2)
      {
-      return b.Return(a+((Object.constructor("return function(parm) { return `"+a$2+"`}"))())(name));
+      return b.Return(a+a$2);
      }):b.Return(a+a$1.$0);
     });
    });
@@ -9161,6 +9172,16 @@
     }));
    });
   }));
+ };
+ CustomAction.translateString=function(f,code)
+ {
+  function translate(acc,s)
+  {
+   var a;
+   a=String.delimitedO$1("${","}",s);
+   return a!=null&&a.$==1?translate(acc+a.$0[0],f(a.$0[1])+a.$0[2]):acc+s;
+  }
+  return translate("",code);
  };
  CustomAction.propO=function(snp,p)
  {
@@ -9410,36 +9431,36 @@
    });
   })));
  };
- MainProgram.mainDoc$4941$78=Global.id;
- MainProgram.mainDoc$4933$39=function()
+ MainProgram.mainDoc$4961$78=Global.id;
+ MainProgram.mainDoc$4953$39=function()
  {
   return function(ev)
   {
    JumpTo.jumpToRef(ev.Target);
   };
  };
- MainProgram.mainDoc$4932$39=function()
+ MainProgram.mainDoc$4952$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$4931$39=function()
+ MainProgram.mainDoc$4951$39=function()
  {
   return function(ev)
   {
    Importer.importFile(ev.Target);
   };
  };
- MainProgram.mainDoc$4930$39=function()
+ MainProgram.mainDoc$4950$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$4929$39=function()
+ MainProgram.mainDoc$4949$39=function()
  {
   return function(ev)
   {
@@ -9558,11 +9579,11 @@
   }))))))))))))));
   return(p=Handler$1.CompleteHoles(tmp.k,tmp.h,[["filename",0],["name",0],["output",0],["fscode",0],["parser",0]]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.layout(p[0])),(tmp.i=i,i))).get_Doc();
  };
- MainProgram.buttonsRight$4915$74=Global.id;
- MainProgram.buttonsRight$4914$74=Global.id;
- MainProgram.buttonsRight$4913$74=Global.id;
- MainProgram.buttonsRight$4912$74=Global.id;
- MainProgram.buttonsRight$4911$74=Global.id;
+ MainProgram.buttonsRight$4935$74=Global.id;
+ MainProgram.buttonsRight$4934$74=Global.id;
+ MainProgram.buttonsRight$4933$74=Global.id;
+ MainProgram.buttonsRight$4932$74=Global.id;
+ MainProgram.buttonsRight$4931$74=Global.id;
  MainProgram.buttonsRight=function()
  {
   var tmp,p,i;

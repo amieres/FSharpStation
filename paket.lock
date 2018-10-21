@@ -936,6 +936,7 @@ NUGET
     FSharp.Data.SqlClient (1.8.6)
     Microsoft.Orleans.Core.Abstractions (2.1.2)
     OpenCvSharp3-AnyCPU (3.4.1.20180830)
+    SSH.NET (2016.1)
 
 GROUP Test
 RESTRICTION: || (== net461) (== netstandard2.0)

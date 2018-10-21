@@ -617,6 +617,8 @@ namespace FsRoot
                         plgQueries = [| |]
                     }
             
+                let splitName lytNm = String.splitByChar '.' >>  (fun a -> if a.Length = 1 then (lytNm, a.[0]) else (a.[0],a.[1]) )
+            
                 let selectionPlugInO = Var.Create <| Some "AppFramework"
                 let currentPlugInW   = selectionPlugInO.View |>  View.Map2(fun _ -> Option.bind plugIns.TryFindByKey >> Option.defaultValue defaultPlugIn ) plugIns.View
                 let currentPlugInV   = Var.Make currentPlugInW plugIns.Add
@@ -826,6 +828,13 @@ namespace FsRoot
                 open WebSharper.UI
                 module AF = AppFramework
             
+                type LayoutEntry =
+                    | EntryVar    of AF.PlugInVar   
+                    | EntryView   of AF.PlugInView  
+                    | EntryDoc    of AF.PlugInDoc   
+                    | EntryAction of AF.PlugInAction
+                    | EntryQuery  of AF.PlugInQuery 
+            
                 let (|Identifier|_|) =
                     function
                     | REGEX "^[$a-zA-Z_][0-9a-zA-Z_\.\-$]*$" "" [| id |] -> Some id
@@ -839,8 +848,9 @@ namespace FsRoot
                     | Identifier id           -> Elem id
                     |                       _ -> Nothing
             
-                let (|Doc|Button|Input|TextArea|Select|Nothing|) =
+                let (|Var|Doc|Button|Input|TextArea|Select|Nothing|) =
                     function
+                    | s when s = "Var"        -> Var
                     | s when s = "Doc"        -> Doc
                     | s when s = "button"     -> Button
                     | s when s = "input"      -> Input
@@ -886,8 +896,6 @@ namespace FsRoot
                     
                 let errDoc txt = Html.div [] [ Html.text txt ]
             
-                let splitName lytNm = String.splitByChar '.' >>  (fun a -> if a.Length = 1 then (lytNm, a.[0]) else (a.[0],a.[1]) )
-            
                 //let getLDoc name =
                 //    splitName name
                 //    ||> AF.tryGetDoc 
@@ -915,6 +923,8 @@ namespace FsRoot
                 | TDPlain of string
                 | TDView  of View<string>
                 | TDAct   of AF.PlugInAction
+            
+                let splitName = AF.splitName
             
                 let rec getTextData lytNm txt =
                     txt
@@ -1022,19 +1032,19 @@ namespace FsRoot
                         | _        -> sprintf "expected exactly 1 element %A" docs |> errDoc
                     ) |> Doc.EmbedView
             
-                let createSplitter(lytNm, vertical, measures, docs) =
+                let createSplitter(lytNm, name, vertical, measures, docs) =
                     let doc1, doc2 = pairOfDocs lytNm docs
                     match measures with
                     | Fixed    (pixel,    first) ->    fixedSplitter vertical pixel first   doc1 doc2
                     | Variable (min, value, max) -> variableSplitter vertical min value max doc1 doc2
             
-                let createElement(lytNm, element, attrs, docs) =
+                let createElement(lytNm, name, element, attrs, docs) =
                     turnToView (fun _ -> getDocs lytNm docs |> Doc.Concat)
                     |> Seq.singleton
                     |> Doc.Element element (getAttrs lytNm attrs) 
                     :> Doc
             
-                let createButton( lytNm, actName, attrs, text) = 
+                let createButton( lytNm, name, actName, attrs, text) = 
                     turnToView <| fun _ ->
                         splitName lytNm actName
                         ||> AF.tryGetAct
@@ -1042,26 +1052,28 @@ namespace FsRoot
                         |>  Option.defaultValue ignore
                         |> Doc.Button text (getAttrs lytNm attrs)
             
-                let createInput( lytNm, varName, attrs ) = 
+                let createInput( lytNm, name, varName, attrs ) = 
                     turnToView <| fun _ ->
                         splitName lytNm varName
                         ||> AF.tryGetVoV
                         |>  Option.map          (           Doc .Input     (getAttrs lytNm attrs)             )
                         |>  Option.defaultWith  (fun ()  -> sprintf "Missing var: %s" varName |> errDoc )
             
-                let createTextArea( lytNm, varName, attrs ) = 
+                let createTextArea( lytNm, name, varName, attrs ) = 
                     turnToView <| fun _ ->
                         splitName lytNm varName
                         ||> AF.tryGetVoV
                         |>  Option.map          (           Doc .InputArea (getAttrs lytNm attrs)             )
                         |>  Option.defaultWith  (fun ()  -> sprintf "Missing var: %s" varName |> errDoc )
             
-                let createDoc( lytNm, docName, parms) =
+                let createDoc( lytNm, name, docName, parms) =
                     turnToView <| fun _ ->
                         let plg, nm = splitName lytNm docName
                         AF.tryGetDoc plg nm
                         |>  Option.map (getDocFinal parms)
                         |>  Option.defaultWith  (fun ()  -> sprintf "Missing doc: %s" docName |> errDoc )
+            
+                let createVar( lytNm, varName, v    ) = Var.Create v
             
                 let createSplitterM = Memoize.memoize createSplitter
                 let createButtonM   = Memoize.memoize createButton
@@ -1069,28 +1081,33 @@ namespace FsRoot
                 let createTextAreaM = Memoize.memoize createTextArea
                 let createElementM  = Memoize.memoize createElement
                 let createDocM      = Memoize.memoize createDoc
+                let createVarM      = Memoize.memoize createVar
             
-                let createDocO lytNm (line:string) =
+                let entryDoc  n doc = AF.newDoc n (lazy doc    ) |> EntryDoc |> Some
+                let entryVar  n v   = AF.newVar n  v             |> EntryVar |> Some
+            
+                let createEntryO lytNm (line:string) =
                     try
                         match splitTokens line with
-                        |   Identifier name :: Vertical   :: Measures measures          :: docs    -> Some <| (name, createSplitterM(lytNm, true , measures, docs) )
-                        |   Identifier name :: Horizontal :: Measures measures          :: docs    -> Some <| (name, createSplitterM(lytNm, false, measures, docs) )
-                        | [ Identifier name ;  Button     ;  Identifier act    ;  attrs ;  text  ] -> Some <| (name, createButtonM(  lytNm, act, attrs, text) )
-                        | [ Identifier name ;  Input      ;  Identifier var    ;  attrs          ] -> Some <| (name, createInputM(   lytNm, var, attrs      ) )
-                        | [ Identifier name ;  TextArea   ;  Identifier var    ;  attrs          ] -> Some <| (name, createTextAreaM(lytNm, var, attrs      ) )
-                        |   Identifier name :: Doc        :: doc                        :: parms   -> Some <| (name, createDocM(     lytNm, doc, parms      ) )
+                        |   Identifier name :: Vertical   :: Measures measures          :: docs    -> entryDoc name <| createSplitterM(lytNm, name, true , measures, docs) 
+                        |   Identifier name :: Horizontal :: Measures measures          :: docs    -> entryDoc name <| createSplitterM(lytNm, name, false, measures, docs) 
+                        | [ Identifier name ;  Button     ;  Identifier act    ;  attrs ;  text  ] -> entryDoc name <| createButtonM(  lytNm, name, act  , attrs   , text) 
+                        | [ Identifier name ;  Input      ;  Identifier var    ;  attrs          ] -> entryDoc name <| createInputM(   lytNm, name, var  , attrs         ) 
+                        | [ Identifier name ;  TextArea   ;  Identifier var    ;  attrs          ] -> entryDoc name <| createTextAreaM(lytNm, name, var  , attrs         ) 
+                        | [ Identifier name ;  Var        ;                       v              ] -> entryVar name <| createVarM(     lytNm, name, v             ) 
+                        |   Identifier name :: Doc        :: doc                        :: parms   -> entryDoc name <| createDocM(     lytNm, name, doc  , parms         ) 
                         |   Identifier name :: Grid       :: cols :: rows      :: attrs :: docs    -> None
-                        |   Identifier name :: Elem elem                       :: attrs :: docs    -> Some <| (name, createElementM(lytNm, elem, attrs, docs) )
+                        |   Identifier name :: Elem elem                       :: attrs :: docs    -> entryDoc name <| createElementM( lytNm, name, elem , attrs   , docs) 
                         | _                                                                        -> None
                     with e -> 
                         printfn "%A" e
                         None
             
-                let createDocs lytNm txt =
+                let createEntries lytNm txt =
                     txt
                     |> String.splitByChar '\n'
-                    |> Seq.choose (createDocO lytNm)
-                    |> Seq.map (fun (a,b) -> AF.newDoc a (lazy b) )
+                    |> Seq.choose (createEntryO lytNm)
+                    |> Seq.toArray
             
                 let getText lytNm txtName =
                     match txtName with
@@ -1102,6 +1119,16 @@ namespace FsRoot
                                        |> Option.map (fun var -> Doc.TextView var.varVar.View)
                                        |> Option.defaultWith (fun () -> Html.text id))
                     | txt           -> Html.text txt
+            
+                let getDocEntries entries =
+                    entries
+                    |> Seq.choose (function | EntryDoc doc -> Some doc |_-> None)
+                    |> Seq.groupBy (fun d -> d.docName) |> Seq.map (snd >> Seq.last)
+            
+                let getVarEntries entries =
+                    entries
+                    |> Seq.choose (function | EntryVar var -> Some var |_-> None)
+                    |> Seq.groupBy (fun v -> v.varName) |> Seq.map (snd >> Seq.last)
             
                 let inputFile lytNm attrs labelName actName doc =
                     splitName lytNm actName
@@ -1141,11 +1168,14 @@ namespace FsRoot
             
                 let addLayout (lyt:LayoutEngine) =
                     lyt.lytDefinition.View |> View.Sink(fun txt ->
+                        let entries = createEntries lyt.lytName txt
                         AF.plugIns.Add { 
                             plgName    = lyt.lytName
-                            plgVars    = [| AF.newVar "Layout" lyt.lytDefinition  |]
+                            plgVars    = [| yield  AF.newVar "Layout" lyt.lytDefinition  
+                                            yield! getVarEntries entries
+                                         |]
                             plgViews   = [|                                       |]
-                            plgDocs    = [| yield! createDocs lyt.lytName txt |> Seq.groupBy (fun d -> d.docName) |> Seq.map (snd >> Seq.last)
+                            plgDocs    = [| yield! getDocEntries entries
                                             yield  AF.newDocF "InputFile"  <| AF.FunDoc4(inputFile  lyt.lytName, "attrs", "Label", "Action", "[Doc]")
                                             yield  AF.newDocF "InputLabel" <| AF.FunDoc3(inputLabel lyt.lytName, "attrs", "Label", "Var"            )
                                             yield  AF.newDocF "none"       <| AF.FunDoc1(none      , "x"                                )
