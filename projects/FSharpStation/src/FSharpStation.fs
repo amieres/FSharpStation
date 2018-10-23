@@ -3493,7 +3493,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1539992500272"
+                let mutable fsharpStationAddress = Address "FSharpStation1540222363068"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -3529,6 +3529,8 @@ namespace FsRoot
                     |> AsyncResult.bind respString
             
                 let getUrl () = sendMessage MsgGetUrl |> AsyncResult.bind respString
+            
+                let execJS js = sendMessage (MsgAction [| "ExecJS" ; js |]) |> AsyncResult.bind respString
             
                 let sendOutput    txt = [| "AddOutput" ; txt |]
                                         |> MsgAction
@@ -4200,6 +4202,13 @@ namespace FsRoot
                 |>> (fun path -> collapsedV.Value - Set path |> collapsedV.Set)
                 |> iterReader
             
+            let setProperty snp prop v =
+                { snp with snpProperties =  snp.snpProperties
+                                            |> Seq.filter(fst >> (<>) prop)
+                                            |> Seq.append <| [ prop, v ]
+                                            |> Seq.toArray
+                }
+                |> setSnippet
         module DragDrop =
         
             type DragInfo = 
@@ -5084,6 +5093,13 @@ namespace FsRoot
                                                            return  Hole ? TODO_GetPredecessors
                     | MsgAction [| "AddOutput" ; txt |] -> appendMsgs txt
                                                            return  FSResponse.RespString "Ok"
+                    | MsgAction [| "ExecJS"    ; js  |] -> let v = JS.Apply JS.Window "eval" [| js |] |> function null -> "" |s->s 
+                                                           return  FSResponse.RespString "Ok"
+                    | MsgAction [| "SetProperty"; path ; prop ; v  |] -> 
+                                                           let! res  = Snippet.snippetFromRefORm (RefSnippetPath <| path.Split '/')
+                                                                       |>> Option.map (fun snp -> Snippets.setProperty snp prop v ; "Ok")
+                                                                       |>  absorbO (fun () -> ErrorMsg <| sprintf "Snippet not found: %s" path)
+                                                           return  FSResponse.RespString res
                     | MsgGetUrl                         -> return  FSResponse.RespString JS.Document.BaseURI
                     | _                                 -> return  Hole ?(sprintf "TODO message: %A" msg)
                 } |> Snippets.runReaderResult |> Async.rtn

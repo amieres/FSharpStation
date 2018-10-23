@@ -1,4 +1,3 @@
-////-d:WEBSHARPER
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
@@ -74,22 +73,34 @@ namespace FsRoot
     
     #endif
     
-        //#define WEBSHARPER
+        //#r "..\projects\LayoutEngine\bin\LayoutEngine.dll"
         
-        [< JavaScript >]
-        module TestingJS =
+        open WebSharper
         
-            //#define WEBSHARPER
-            
-            
-                //#r @"..\projects\LayoutEngine\bin\LayoutEngine.dll"
-                open FsRoot
-                [< JavaScriptExport (typeof<WebComponent.WcSplitter.WcSplitterT>) >]
-                do()
-                
-                [< JavaScript >]
-                module Test =
-                    [< SPAEntryPoint >]
-                    let main() =
-                        AppFramework.getMainDoc.Value |> Doc.Run JS.Window.Document.Body 
-                
+        [< JavaScriptExport >]
+        module TestLayout =
+            open FsRoot
+            open WebSharper.UI
+            open WebSharper.UI.Html
+            module AF = AppFramework
+        
+            let var = Var.Create "test value"
+        
+            let doc = lazy div [] [ h1 [] [ textView var.View ]
+                                    Client.Doc.Input [] var
+                                  ]
+            [< SPAEntryPoint >]
+            let main() =
+                AF.plugIns.Add {
+                    AF.plgName    = "TestPlug"
+                    AF.plgVars    = [| AF.newVar  "testVar"         var
+                                    |]  
+                    AF.plgViews   = [|
+                                    |]  
+                    AF.plgDocs    = [| AF.newDoc  "mainDoc"         doc
+                                    |]  
+                    AF.plgActions = [| AF.newAct  "Hello"           (fun () -> JavaScript.JS.Alert "Hello")
+                                    |]
+                    AF.plgQueries = [|                                               
+                                    |]
+                }

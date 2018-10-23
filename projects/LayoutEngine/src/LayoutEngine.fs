@@ -837,38 +837,39 @@ namespace FsRoot
             
                 let (|Identifier|_|) =
                     function
-                    | REGEX "^[$a-zA-Z_][0-9a-zA-Z_\.\-$]*$" "" [| id |] -> Some id
-                    | _                                                  -> None
+                    | REGEX "^[$a-zA-Z_][0-9a-zA-Z_\.\-$]*$" "" [| id |], false -> Some id
+                    | _                                                         -> None
             
                 let (|Vertical|Horizontal|Grid|Elem|Nothing|) =
                     function
-                    | s when s = "vertical"   -> Vertical
-                    | s when s = "horizontal" -> Horizontal
-                    | s when s = "grid"       -> Grid
-                    | Identifier id           -> Elem id
-                    |                       _ -> Nothing
+                    | s , false when s = "vertical"   -> Vertical
+                    | s , false when s = "horizontal" -> Horizontal
+                    | s , false when s = "grid"       -> Grid
+                    | Identifier id                   -> Elem id
+                    |                               _ -> Nothing
             
                 let (|Var|Doc|Button|Input|TextArea|Select|Nothing|) =
                     function
-                    | s when s = "Var"        -> Var
-                    | s when s = "Doc"        -> Doc
-                    | s when s = "button"     -> Button
-                    | s when s = "input"      -> Input
-                    | s when s = "textarea"   -> TextArea
-                    | s when s = "select"     -> Select
-                    |                       _ -> Nothing
+                    | s, false when s = "Var"        -> Var
+                    | s, false when s = "Doc"        -> Doc
+                    | s, false when s = "button"     -> Button
+                    | s, false when s = "input"      -> Input
+                    | s, false when s = "textarea"   -> TextArea
+                    | s, false when s = "select"     -> Select
+                    |                              _ -> Nothing
             
                 type Measures = 
                 | Fixed    of pixel: float * first: bool
                 | Variable of min:   float * value: float * max: float
             
                 let (|Measures|_|) txt =
-                    String.splitByChar '-' txt
+                    if snd txt then None else
+                    String.splitByChar '-' (fst txt)
                     |> function
-                    | [|                     ParseO.Double v                     |] -> Some <| Fixed    (     v, true )
-                    | [| "";                 ParseO.Double v                     |] -> Some <| Fixed    (     v, false)
-                    | [| ParseO.Double min ; ParseO.Double v ; ParseO.Double max |] -> Some <| Variable (min, v, max  )
-                    | _                                                             -> None
+                       | [|                     ParseO.Double v                     |] -> Some <| Fixed    (     v, true )
+                       | [| "";                 ParseO.Double v                     |] -> Some <| Fixed    (     v, false)
+                       | [| ParseO.Double min ; ParseO.Double v ; ParseO.Double max |] -> Some <| Variable (min, v, max  )
+                       | _                                                             -> None
             
                 let fixedSplitter vertical pixel first (doc1:Doc) (doc2:Doc) =
                     let sizes = sprintf (if first then "%fpx calc(100%% - %fpx)" else "calc(100%% - %fpx) %fpx") pixel pixel
@@ -907,14 +908,16 @@ namespace FsRoot
                 //    | Identifier id -> hookDoc id
                 //    | txt           -> Doc.TextNode txt
             
-                let splitTokens line =
+                type Token = string * bool
+                let splitTokens line : Token list =
                     line
                     |> String.splitByChar '"'
                     |> Seq.mapi(fun i s -> 
-                        if i % 2 = 1 then [| " " + s |] else
+                        if i % 2 = 1 then [| s, true |] else
                         s.Trim()
                         |> fun t -> if t = "" then [||] else
                                     t.Split([| ' ' |], System.StringSplitOptions.RemoveEmptyEntries)
+                                    |> Array.map (fun s -> s, false)
                     )
                     |> Seq.collect id
                     |> Seq.toList
@@ -926,7 +929,7 @@ namespace FsRoot
             
                 let splitName = AF.splitName
             
-                let rec getTextData lytNm txt =
+                let rec getTextData lytNm (txt:string) =
                     txt
                     |> String.delimitedO "${" "}"
                     |> Option.map(fun (bef, name, aft) ->
@@ -947,8 +950,8 @@ namespace FsRoot
                     )
                     |> Option.defaultValue (TDPlain txt)
             
-                let getAttrs lytNm attrs = [
-                    yield!  attrs
+                let getAttrs lytNm (attrs: Token) = [
+                    yield!  fst attrs
                             |> String.splitByChar ';'
                             |> Seq.map(String.splitByChar '=')
                             |> Seq.choose(
@@ -960,7 +963,7 @@ namespace FsRoot
                                         | TDAct   act -> Attr.Handler (name.Trim()) (fun el ev -> act.actFunction |> AF.callFunction el ev )
                                         |> Some
                                 |_      -> None )
-                    yield!  attrs
+                    yield!  fst attrs
                             |> String.splitByChar ';'
                             |> Seq.map(String.splitByChar ':')
                             |> Seq.choose(
@@ -974,14 +977,14 @@ namespace FsRoot
                                 |_      -> None )
                 ] 
             
-                let getDocF parms (doc:AF.PlugInDoc) =
+                let getDocF (parms:Token list) (doc:AF.PlugInDoc) =
                     match doc.docDoc, parms with
-                    | AF.LazyDoc ldoc                  ,                               rest -> ldoc.Value       , rest
-                    | AF.FunDoc1(f1, _                ), p1                         :: rest -> f1 p1            , rest
-                    | AF.FunDoc2(f2, _ , _            ), p1 :: p2                   :: rest -> f2 p1 p2         , rest
-                    | AF.FunDoc3(f3, _ , _ , _        ), p1 :: p2 :: p3             :: rest -> f3 p1 p2 p3      , rest          
-                    | AF.FunDoc4(f4, _ , _ , _ , _    ), p1 :: p2 :: p3 :: p4       :: rest -> f4 p1 p2 p3 p4   , rest     
-                    | AF.FunDoc5(f5, _ , _ , _ , _ , _), p1 :: p2 :: p3 :: p4 :: p5 :: rest -> f5 p1 p2 p3 p4 p5, rest
+                    | AF.LazyDoc ldoc                  ,                                                        rest -> ldoc.Value       , rest
+                    | AF.FunDoc1(f1, _                ), (p1, _)                                             :: rest -> f1 p1            , rest
+                    | AF.FunDoc2(f2, _ , _            ), (p1, _) :: (p2, _)                                  :: rest -> f2 p1 p2         , rest
+                    | AF.FunDoc3(f3, _ , _ , _        ), (p1, _) :: (p2, _) :: (p3, _)                       :: rest -> f3 p1 p2 p3      , rest          
+                    | AF.FunDoc4(f4, _ , _ , _ , _    ), (p1, _) :: (p2, _) :: (p3, _) :: (p4, _)            :: rest -> f4 p1 p2 p3 p4   , rest     
+                    | AF.FunDoc5(f5, _ , _ , _ , _ , _), (p1, _) :: (p2, _) :: (p3, _) :: (p4, _) :: (p5, _) :: rest -> f5 p1 p2 p3 p4 p5, rest
                     | _ -> Html.div [] [ Html.text <| sprintf "Parameters do not coincide with definition %A - %A" doc parms ], []
             
                 let getDocFinal parms doc = 
@@ -1001,7 +1004,9 @@ namespace FsRoot
                                                     |>  Option.map (fun txtW -> Doc.TextView txtW, parms)
                                                     |> fun vv -> vv
                                                     |>  Option.defaultWith  (fun () -> sprintf "Missing doc: %s" id |> errDoc, parms) )
-                    | txt           :: rest  -> match getTextData lytNm txt with
+                    | (txt, _)      :: rest  -> txt
+                                                |> getTextData lytNm
+                                                |> function
                                                 | TDPlain v   -> Doc.TextNode v , rest
                                                 | TDView  vw  -> Doc.TextView vw, rest
                                                 | TDAct   act -> sprintf "Unexpected action: %s" act.actName |> errDoc, rest
@@ -1050,7 +1055,7 @@ namespace FsRoot
                         ||> AF.tryGetAct
                         |>  Option.map          (fun act -> fun () -> act.actFunction |> AF.callFunction () ()  )
                         |>  Option.defaultValue ignore
-                        |> Doc.Button text (getAttrs lytNm attrs)
+                        |> Doc.Button (fst text) (getAttrs lytNm attrs)
             
                 let createInput( lytNm, name, varName, attrs ) = 
                     turnToView <| fun _ ->
@@ -1094,8 +1099,8 @@ namespace FsRoot
                         | [ Identifier name ;  Button     ;  Identifier act    ;  attrs ;  text  ] -> entryDoc name <| createButtonM(  lytNm, name, act  , attrs   , text) 
                         | [ Identifier name ;  Input      ;  Identifier var    ;  attrs          ] -> entryDoc name <| createInputM(   lytNm, name, var  , attrs         ) 
                         | [ Identifier name ;  TextArea   ;  Identifier var    ;  attrs          ] -> entryDoc name <| createTextAreaM(lytNm, name, var  , attrs         ) 
-                        | [ Identifier name ;  Var        ;                       v              ] -> entryVar name <| createVarM(     lytNm, name, v             ) 
-                        |   Identifier name :: Doc        :: doc                        :: parms   -> entryDoc name <| createDocM(     lytNm, name, doc  , parms         ) 
+                        | [ Identifier name ;  Var        ;                       v              ] -> entryVar name <| createVarM(     lytNm, name, fst v             ) 
+                        |   Identifier name :: Doc        :: doc                        :: parms   -> entryDoc name <| createDocM(     lytNm, name, fst doc  , parms         ) 
                         |   Identifier name :: Grid       :: cols :: rows      :: attrs :: docs    -> None
                         |   Identifier name :: Elem elem                       :: attrs :: docs    -> entryDoc name <| createElementM( lytNm, name, elem , attrs   , docs) 
                         | _                                                                        -> None
@@ -1118,7 +1123,7 @@ namespace FsRoot
                                        AF.tryGetVar plg nm
                                        |> Option.map (fun var -> Doc.TextView var.varVar.View)
                                        |> Option.defaultWith (fun () -> Html.text id))
-                    | txt           -> Html.text txt
+                    | (txt, _)      -> Html.text txt
             
                 let getDocEntries entries =
                     entries
@@ -1134,11 +1139,11 @@ namespace FsRoot
                     splitName lytNm actName
                     ||> AF.tryGetAct
                     |> Option.map(fun act -> 
-                        Html.div (getAttrs lytNm attrs) [
+                        Html.div (getAttrs lytNm (attrs, true) ) [
                             Html.div                [ attr.``class`` "input-group"       ] [
                                 Html.span           [ attr.``class`` "input-group-btn"   ] [ 
                                     Html.label      [ attr.``class`` "btn"               ] [ 
-                                        getText lytNm labelName
+                                        getText lytNm (labelName, true)
                                         Html.input  [ attr.``class`` "form-control" 
                                                       attr.``type`` "file" 
                                                       Attr.Style "display" "none" 
@@ -1147,7 +1152,7 @@ namespace FsRoot
                                                       ] []
                                     ]
                                 ]
-                                (if doc <> "" then singleDoc lytNm [ doc ] else Doc.Empty)
+                                (if doc <> "" then singleDoc lytNm [ doc, false ] else Doc.Empty)
                             ]
                         ]
                     ) |> Option.defaultWith(fun () ->  sprintf "Action not found %s" actName |> errDoc )
@@ -1156,9 +1161,9 @@ namespace FsRoot
                     splitName  lytNm varName
                     ||> AF.tryGetVar
                     |> Option.map(fun var -> 
-                        Html.div (getAttrs lytNm attrs) [
+                        Html.div (getAttrs lytNm (attrs, true) ) [
                             Html.div      [ attr.``class`` "input-group"       ] [
-                                Html.span [ attr.``class`` "input-group-addon" ] [ getText lytNm labelName ]
+                                Html.span [ attr.``class`` "input-group-addon" ] [ getText lytNm (labelName, true) ]
                                 Doc.Input [ attr.``class`` "form-control"      ]   var.varVar
                             ]
                         ]

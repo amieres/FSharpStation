@@ -2,7 +2,7 @@
         CIPHERSpaceLoadFile = function (filename, callback) {
             if (filename.slice(-3) == ".js" || filename.slice(-4) == ".fsx" || filename.slice(-3) == ".fs") { //if filename is a external JavaScript file
                 var fileRef = null;
-                var pre = document.querySelector('script[src="' + filename + '"]')
+                var pre = document.querySelector('script[src^="' + filename + '"]')
                 if (!pre) {
                     fileRef = document.createElement('script')
                     fileRef.setAttribute("type", "text/javascript")
@@ -11,7 +11,7 @@
                 else callback();
             }
             else if (filename.slice(-4) == ".css") { //if filename is an external CSS file
-                var pre = document.querySelector('script[src="' + filename + '"]')
+                var pre = document.querySelector('script[src^="' + filename + '"]')
                 if (!pre) {
                     fileRef = document.createElement("link")
                     fileRef.setAttribute("rel", "stylesheet")
@@ -21,7 +21,7 @@
                 else callback();
             }
             else if (filename.slice(-5) == ".html") { //if filename is an external HTML file
-                var pre = document.querySelector('script[src="' + filename + '"]')
+                var pre = document.querySelector('script[src^="' + filename + '"]')
                 if (!pre) {
                     fileRef = document.createElement("link")
                     fileRef.setAttribute("rel", "import")

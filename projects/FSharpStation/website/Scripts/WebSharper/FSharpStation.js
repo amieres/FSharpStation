@@ -7491,6 +7491,21 @@
   SC$1.$cctor();
   return SC$1.id;
  };
+ Snippets.setProperty=function(snp,prop,v)
+ {
+  function f(t)
+  {
+   return t[0];
+  }
+  function g(y)
+  {
+   return prop!==y;
+  }
+  Snippets.setSnippet(Snippet.New(snp.snpId,snp.snpName,snp.snpContent,snp.snpParentIdO,snp.snpPredIds,Arrays.ofSeq(Seq$1.append(Seq$1.filter(function(x)
+  {
+   return g(f(x));
+  },snp.snpProperties),List.ofArray([[prop,v]]))),snp.snpGeneration));
+ };
  Snippets.expandParents=function(snpId)
  {
   Snippets.iterReader(Operators$1.op_BarGreaterGreater(SnippetModule.pathRm(snpId),function(path)
@@ -8122,7 +8137,7 @@
    $1:S
   })),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.snippetlist(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderSnippets.snippets$4272$40=function(snpId)
+ RenderSnippets.snippets$4281$40=function(snpId)
  {
   return function(ev)
   {
@@ -8135,7 +8150,7 @@
    }))(x);
   };
  };
- RenderSnippets.snippets$4271$40=function(snpId)
+ RenderSnippets.snippets$4280$40=function(snpId)
  {
   return function(ev)
   {
@@ -8143,7 +8158,7 @@
     ev.Event.preventDefault();
   };
  };
- RenderSnippets.snippets$4270$40=function(snpId)
+ RenderSnippets.snippets$4279$40=function(snpId)
  {
   return function(ev)
   {
@@ -8151,21 +8166,21 @@
    ev.Event.stopPropagation();
   };
  };
- RenderSnippets.snippets$4269$40=function(snpId)
+ RenderSnippets.snippets$4278$40=function(snpId)
  {
   return function()
   {
    Snippets.toggleCollapse(snpId);
   };
  };
- RenderSnippets.snippets$4268$40=function(snpId)
+ RenderSnippets.snippets$4277$40=function(snpId)
  {
   return function()
   {
    Snippets.togglePredecessor(snpId);
   };
  };
- RenderSnippets.snippets$4267$40=function(snpId)
+ RenderSnippets.snippets$4276$40=function(snpId)
  {
   var s;
   s=View$1.Map(function(y)
@@ -8177,7 +8192,7 @@
    return RenderSnippets.scrollIntoView(s,e);
   };
  };
- RenderSnippets.snippets$4266$40=function(snpId)
+ RenderSnippets.snippets$4275$40=function(snpId)
  {
   return function()
   {
@@ -8316,7 +8331,7 @@
     e.scrollIntoViewIfNeeded();
   },selW);
  };
- RenderProperties.render$4309$34=function()
+ RenderProperties.render$4318$34=function()
  {
   return function()
   {
@@ -8338,7 +8353,7 @@
    RenderProperties.addProperty();
   }))),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.propertytable(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderProperties.properties$4302$33=function(i)
+ RenderProperties.properties$4311$33=function(i)
  {
   return function()
   {
@@ -9431,36 +9446,36 @@
    });
   })));
  };
- MainProgram.mainDoc$4961$78=Global.id;
- MainProgram.mainDoc$4953$39=function()
+ MainProgram.mainDoc$4970$78=Global.id;
+ MainProgram.mainDoc$4962$39=function()
  {
   return function(ev)
   {
    JumpTo.jumpToRef(ev.Target);
   };
  };
- MainProgram.mainDoc$4952$39=function()
+ MainProgram.mainDoc$4961$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$4951$39=function()
+ MainProgram.mainDoc$4960$39=function()
  {
   return function(ev)
   {
    Importer.importFile(ev.Target);
   };
  };
- MainProgram.mainDoc$4950$39=function()
+ MainProgram.mainDoc$4959$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$4949$39=function()
+ MainProgram.mainDoc$4958$39=function()
  {
   return function(ev)
   {
@@ -9579,11 +9594,11 @@
   }))))))))))))));
   return(p=Handler$1.CompleteHoles(tmp.k,tmp.h,[["filename",0],["name",0],["output",0],["fscode",0],["parser",0]]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.layout(p[0])),(tmp.i=i,i))).get_Doc();
  };
- MainProgram.buttonsRight$4935$74=Global.id;
- MainProgram.buttonsRight$4934$74=Global.id;
- MainProgram.buttonsRight$4933$74=Global.id;
- MainProgram.buttonsRight$4932$74=Global.id;
- MainProgram.buttonsRight$4931$74=Global.id;
+ MainProgram.buttonsRight$4944$74=Global.id;
+ MainProgram.buttonsRight$4943$74=Global.id;
+ MainProgram.buttonsRight$4942$74=Global.id;
+ MainProgram.buttonsRight$4941$74=Global.id;
+ MainProgram.buttonsRight$4940$74=Global.id;
  MainProgram.buttonsRight=function()
  {
   var tmp,p,i;
@@ -9764,8 +9779,13 @@
   var b;
   return Concurrency.Return(Snippets.runReaderResult((b=FusionM.fusion(),b.Run(b.Delay(function()
   {
-   var $1,t;
-   switch(msg.$==1?($1=msg.$0,1):msg.$==2?($1=msg.$0,2):msg.$==3?($1=msg.$0,3):msg.$==4?(t=msg.$0,!Unchecked.Equals(t,null)&&t.length===2?Arrays.get(msg.$0,0)==="AddOutput"?($1=Arrays.get(msg.$0,1),4):6:6):msg.$==5?5:0)
+   var $1,t,t$1,a,path,prop,v;
+   function m(snp)
+   {
+    Snippets.setProperty(snp,prop,v);
+    return"Ok";
+   }
+   switch(msg.$==1?($1=msg.$0,1):msg.$==2?($1=msg.$0,2):msg.$==3?($1=msg.$0,3):msg.$==4?(t=msg.$0,!Unchecked.Equals(t,null)&&t.length===2?Arrays.get(msg.$0,0)==="AddOutput"?($1=Arrays.get(msg.$0,1),4):Arrays.get(msg.$0,0)==="ExecJS"?($1=Arrays.get(msg.$0,1),5):8:(t$1=msg.$0,!Unchecked.Equals(t$1,null)&&t$1.length===4?Arrays.get(msg.$0,0)==="SetProperty"?($1=[Arrays.get(msg.$0,1),Arrays.get(msg.$0,2),Arrays.get(msg.$0,3)],6):8:8)):msg.$==5?7:0)
    {
     case 0:
      return b.Return({
@@ -9773,11 +9793,11 @@
       $0:FStation.id()
      });
     case 1:
-     return b.Bind(FusionM.traverseSeq(SnippetModule.snippetFromRefORm,$1),function(a)
+     return b.Bind(FusionM.traverseSeq(SnippetModule.snippetFromRefORm,$1),function(a$1)
      {
       return b.Return({
        $:1,
-       $0:Arrays.ofSeq(Seq$1.choose(Global.id,a))
+       $0:Arrays.ofSeq(Seq$1.choose(Global.id,a$1))
       });
      });
     case 2:
@@ -9794,22 +9814,22 @@
         };
        }(Global.id))($1)
       });
-     },SnippetModule.snippetFromRefORm($1)),function(a)
+     },SnippetModule.snippetFromRefORm($1)),function(a$1)
      {
       return b.ReturnFrom(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(SnippetModule.fastCodeRm({
        $:1,
-       $0:a.snpId
+       $0:a$1.snpId
       },{
        $:1,
-       $0:a.snpId
-      }),function(t$1)
+       $0:a$1.snpId
+      }),function(t$2)
       {
-       return t$1[0];
-      }),function(a$1)
+       return t$2[0];
+      }),function(a$2)
       {
        return{
         $:0,
-        $0:a$1
+        $0:a$2
        };
       }));
      });
@@ -9823,11 +9843,50 @@
       $0:"Ok"
      });
     case 5:
+     a=self["eval"].apply(self,[$1]);
+     a===null?void 0:void 0;
+     return b.Return({
+      $:0,
+      $0:"Ok"
+     });
+    case 6:
+     path=$1[0];
+     prop=$1[1];
+     v=$1[2];
+     return b.Bind(FusionM.absorbO(function()
+     {
+      return new ResultMessage({
+       $:1,
+       $0:(function($2)
+       {
+        return function($3)
+        {
+         return $2("Snippet not found: "+Utils.toSafe($3));
+        };
+       }(Global.id))(path)
+      });
+     },Operators$1.op_BarGreaterGreater(SnippetModule.snippetFromRefORm({
+      $:1,
+      $0:Strings.SplitChars(path,["/"],0)
+     }),function(o)
+     {
+      return o==null?null:{
+       $:1,
+       $0:m(o.$0)
+      };
+     })),function(a$1)
+     {
+      return b.Return({
+       $:0,
+       $0:a$1
+      });
+     });
+    case 7:
      return b.Return({
       $:0,
       $0:self.document.baseURI
      });
-    case 6:
+    case 8:
      return b.Return(Hole.Hole[(function($2)
      {
       return function($3)
