@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,String,ParseO,LibraryJS,REGEX,Hoverable,Hoverable$1,ResizeObserver,WebSharper,Obj,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,WcSplitterT,AppFramework,PlugInVar,PlugInView,PlugInDoc,PlugInAction,PlugInQuery,PlugIn,LayoutEngine,LayoutEngineModule,SC$1,LayoutEngine_Templates,GeneratedPrintf,LayoutEngine_GeneratedPrintf,Strings,Slice,Seq,Unchecked,CancellationTokenSource,Concurrency,Arrays,IntelliFactory,Runtime,UI,DomUtility,Doc,List,View,AttrModule,AttrProxy,Var$1,Node,Operators,Client,Templates,Reflect,console,Utils,Object,FromView,Templating,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,System,Guid,Lazy,DateUtil,Numeric,ListModel,Collections,Dictionary,$;
+ var Global,FsRoot,Library,String,ParseO,LibraryJS,REGEX,Hoverable,Hoverable$1,ResizeObserver,WebSharper,Obj,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,WcSplitterT,AppFramework,PlugInVar,PlugInView,PlugInDoc,PlugInAction,PlugInQuery,PlugIn,LayoutEngine,LayoutEngineModule,SC$1,LayoutEngine_Templates,GeneratedPrintf,LayoutEngine_GeneratedPrintf,Strings,Slice,Seq,Unchecked,CancellationTokenSource,Concurrency,Utils,console,Arrays,IntelliFactory,Runtime,UI,DomUtility,Doc,List,View,AttrModule,AttrProxy,Var$1,Node,Operators,Client,Templates,Reflect,Object,FromView,Templating,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,System,Guid,Lazy,DateUtil,Numeric,ListModel,Collections,Dictionary,$;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -38,6 +38,8 @@
  Unchecked=WebSharper&&WebSharper.Unchecked;
  CancellationTokenSource=WebSharper&&WebSharper.CancellationTokenSource;
  Concurrency=WebSharper&&WebSharper.Concurrency;
+ Utils=WebSharper&&WebSharper.Utils;
+ console=Global.console;
  Arrays=WebSharper&&WebSharper.Arrays;
  IntelliFactory=Global.IntelliFactory;
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
@@ -54,8 +56,6 @@
  Client=UI&&UI.Client;
  Templates=Client&&Client.Templates;
  Reflect=Global.Reflect;
- console=Global.console;
- Utils=WebSharper&&WebSharper.Utils;
  Object=Global.Object;
  FromView=UI&&UI.FromView;
  Templating=UI&&UI.Templating;
@@ -309,6 +309,31 @@
    });
   };
  };
+ Library.print=function(v)
+ {
+  if(typeof v=="string")
+   ((function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.toSafe($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(v));
+  else
+   ((function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(v));
+ };
  Library.Error=function(a)
  {
   return{
@@ -374,15 +399,15 @@
  {
   return Hoverable$1.New$1().Content(Doc.Element("div",[AttrProxy.Create("style","flex-flow: column;")],[Doc.TextNode("Hover over me!")]));
  };
- Hoverable$1.Content$248$81=Runtime.Curried3(function(e,$1,$2)
+ Hoverable$1.Content$264$81=Runtime.Curried3(function(e,$1,$2)
  {
   return DomUtility.RemoveClass(e.elt,"hovering");
  });
- Hoverable$1.get_Attributes$244$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$260$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(false);
  });
- Hoverable$1.get_Attributes$243$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$259$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(true);
  });
@@ -524,7 +549,7 @@
   SC$1.$cctor();
   return SC$1.init;
  };
- WcTabStrip.tabStrip$386$64=function(i,selected)
+ WcTabStrip.tabStrip$402$64=function(i,selected)
  {
   return function()
   {
@@ -807,6 +832,11 @@
    plgQueries:plgQueries
   };
  };
+ AppFramework.addPlugIn=function(p)
+ {
+  AppFramework.plugIns().Append(p);
+  AppFramework.mainDocV().Set(AppFramework.mainDocV().Get());
+ };
  AppFramework.getMainDoc=function()
  {
   SC$1.$cctor();
@@ -926,15 +956,15 @@
  {
   return PlugInVar.New(name,_var);
  };
- AppFramework.vertical$757$39=function(mouseDown)
+ AppFramework.vertical$773$39=function(mouseDown)
  {
   return function(te)
   {
    mouseDown(te.Event);
   };
  };
- AppFramework.vertical$756$39=Global.id;
- AppFramework.vertical$755$39=Global.id;
+ AppFramework.vertical$772$39=Global.id;
+ AppFramework.vertical$771$39=Global.id;
  AppFramework.vertical=function(partSizes,afterRender,afterRenderSp,mouseDown,gap)
  {
   var b,t,p,i;
@@ -962,15 +992,15 @@
    $1:gap
   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.wcompsplitterver(p[0])),(b.i=i,i)))).get_Doc();
  };
- AppFramework.horizontal$749$39=function(mouseDown)
+ AppFramework.horizontal$765$39=function(mouseDown)
  {
   return function(te)
   {
    mouseDown(te.Event);
   };
  };
- AppFramework.horizontal$748$39=Global.id;
- AppFramework.horizontal$747$39=Global.id;
+ AppFramework.horizontal$764$39=Global.id;
+ AppFramework.horizontal$763$39=Global.id;
  AppFramework.horizontal=function(partSizes,afterRender,afterRenderSp,mouseDown,gap)
  {
   var b,t,p,i;
@@ -998,7 +1028,7 @@
    $1:gap
   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.wcompsplitterhor(p[0])),(b.i=i,i)))).get_Doc();
  };
- AppFramework.mainDoc$738$42=function()
+ AppFramework.mainDoc$754$42=function()
  {
   return function()
   {
@@ -1063,7 +1093,7 @@
   SC$1.$cctor();
   return SC$1.AppFwkClient;
  };
- AppFramework.renderQueries$704$39=function(qry)
+ AppFramework.renderQueries$720$39=function(qry)
  {
   return function()
   {
@@ -1105,14 +1135,14 @@
    },plg.plgQueries);
   },AppFramework.currentPlugInW()));
  };
- AppFramework.renderActions$693$51=function(act)
+ AppFramework.renderActions$709$51=function(act)
  {
   return function(ev)
   {
    AppFramework.callFunction(ev,null,act.actFunction);
   };
  };
- AppFramework.renderActions$689$51=function(act)
+ AppFramework.renderActions$705$51=function(act)
  {
   return function(ev)
   {
@@ -1191,7 +1221,7 @@
    else
     actF.$0();
  };
- AppFramework.renderDocs$667$39=function(doc)
+ AppFramework.renderDocs$683$39=function(doc)
  {
   return function()
   {
@@ -1335,7 +1365,7 @@
    },plg.plgVars);
   },AppFramework.currentPlugInW()));
  };
- AppFramework.renderPlugIns$629$35=function(name)
+ AppFramework.renderPlugIns$645$35=function(name)
  {
   return function()
   {
@@ -1448,7 +1478,7 @@
   {
    var entries;
    entries=LayoutEngineModule.createEntries(lyt.lytName,txt);
-   AppFramework.plugIns().Append(PlugIn.New(lyt.lytName,Arrays.ofSeq(Seq.delay(function()
+   AppFramework.addPlugIn(PlugIn.New(lyt.lytName,Arrays.ofSeq(Seq.delay(function()
    {
     return Seq.append([AppFramework.newVar("Layout",lyt.lytDefinition)],Seq.delay(function()
     {
@@ -1508,11 +1538,11 @@
    };
   }(Global.id))(varName)):o.$0;
  };
- LayoutEngineModule.inputFile$1151$69=Runtime.Curried3(function(act,el,$1)
+ LayoutEngineModule.inputFile$1167$69=Runtime.Curried3(function(act,el,$1)
  {
   return AppFramework.callFunction(el,null,act.actFunction);
  });
- LayoutEngineModule.inputFile$1150$69=Runtime.Curried3(function($1,el,$2)
+ LayoutEngineModule.inputFile$1166$69=Runtime.Curried3(function($1,el,$2)
  {
   el.value="";
  });
@@ -1841,20 +1871,20 @@
  };
  LayoutEngineModule.getOneDoc=function(lytNm,docs)
  {
-  var $1,a,t,id,parms,p,plg,nm,o,o$1,o$2,o$3,rest,a$1;
+  var $1,a,t,id,parms,p,plg,nm,o,o$1,o$2,o$3,v,rest,a$1;
   return docs.$==1&&(a=(t=docs.$0,LayoutEngineModule.Identifier(t[0],t[1])),a!=null&&a.$==1&&($1=[a.$0,docs.$1],true))?(id=$1[0],(parms=$1[1],(p=((LayoutEngineModule.splitName())(lytNm))(id),(plg=p[0],(nm=p[1],(o=(o$1=AppFramework.tryGetDoc(plg,nm),o$1==null?null:{
    $:1,
    $0:LayoutEngineModule.getDocF(parms,o$1.$0)
   }),o==null?(o$2=(o$3=AppFramework.tryGetWoW(plg,nm),o$3==null?null:{
    $:1,
    $0:[Doc.TextView(o$3.$0),parms]
-  }),o$2==null?[LayoutEngineModule.errDoc((function($2)
+  }),o$2==null?[LayoutEngineModule.errDoc((v=(function($2)
   {
    return function($3)
    {
     return $2("Missing doc: "+Utils.toSafe($3));
    };
-  }(Global.id))(id)),parms]:o$2.$0):o.$0)))))):docs.$==0?[Doc.get_Empty(),List.T.Empty]:(rest=docs.$1,(a$1=LayoutEngineModule.getTextData(lytNm,docs.$0[0]),a$1.$==1?[Doc.TextView(a$1.$0),rest]:a$1.$==2?[LayoutEngineModule.errDoc((function($2)
+  }(Global.id))(id),(Library.print(v),v))),parms]:o$2.$0):o.$0)))))):docs.$==0?[Doc.get_Empty(),List.T.Empty]:(rest=docs.$1,(a$1=LayoutEngineModule.getTextData(lytNm,docs.$0[0]),a$1.$==1?[Doc.TextView(a$1.$0),rest]:a$1.$==2?[LayoutEngineModule.errDoc((function($2)
   {
    return function($3)
    {
@@ -2190,7 +2220,7 @@
  };
  SC$1.$cctor=function()
  {
-  var f,x,p,cache,getOrAdd,p$1,cache$1,getOrAdd$1,p$2,cache$2,getOrAdd$2,p$3,cache$3,getOrAdd$3,p$4,cache$4,getOrAdd$4,p$5,cache$5,getOrAdd$5,p$6,cache$6,getOrAdd$6,o,plg,a;
+  var f,x,p,cache,getOrAdd,p$1,cache$1,getOrAdd$1,p$2,cache$2,getOrAdd$2,p$3,cache$3,getOrAdd$3,p$4,cache$4,getOrAdd$4,p$5,cache$5,getOrAdd$5,p$6,cache$6,getOrAdd$6,o,plg;
   SC$1.$cctor=Global.ignore;
   function g(s)
   {
@@ -2202,25 +2232,25 @@
   }
   function g$1(s)
   {
-   var a$2,b;
+   var a$1,b;
    return Slice.array(s,{
     $:1,
     $0:0
    },{
     $:1,
-    $0:(a$2=0,(b=Arrays.length(s)-2,Unchecked.Compare(a$2,b)===1?a$2:b))
+    $0:(a$1=0,(b=Arrays.length(s)-2,Unchecked.Compare(a$1,b)===1?a$1:b))
    });
   }
   function g$2(s)
   {
    return Strings.concat("\n",s);
   }
-  function a$1(a$2)
+  function a(a$1)
   {
    var f$2;
-   function b(a$3)
+   function b(a$2)
    {
-    return AppFramework.plugIns().TryFindByKey(a$3);
+    return AppFramework.plugIns().TryFindByKey(a$2);
    }
    function g$3(o$1)
    {
@@ -2451,17 +2481,17 @@
   {
    return g$2(f(x$1));
   });
-  SC$1.parseDateO=ParseO.tryParseWith(function(a$2)
+  SC$1.parseDateO=ParseO.tryParseWith(function(a$1)
   {
    var o$1,m;
    o$1=0;
-   return[(m=DateUtil.TryParse(a$2),m!=null&&m.$==1&&(o$1=m.$0,true)),o$1];
+   return[(m=DateUtil.TryParse(a$1),m!=null&&m.$==1&&(o$1=m.$0,true)),o$1];
   });
-  SC$1.parseIntO=ParseO.tryParseWith(function(a$2)
+  SC$1.parseIntO=ParseO.tryParseWith(function(a$1)
   {
    var o$1;
    o$1=0;
-   return[Numeric.TryParseInt32(a$2,{
+   return[Numeric.TryParseInt32(a$1,{
     get:function()
     {
      return o$1;
@@ -2472,23 +2502,23 @@
     }
    }),o$1];
   });
-  SC$1.parseSingleO=ParseO.tryParseWith(function(a$2)
+  SC$1.parseSingleO=ParseO.tryParseWith(function(a$1)
   {
    var o$1,$1;
    o$1=0;
-   return[($1=Global.Number(a$2),Global.isNaN($1)?false:(o$1=$1,true)),o$1];
+   return[($1=Global.Number(a$1),Global.isNaN($1)?false:(o$1=$1,true)),o$1];
   });
-  SC$1.parseDoubleO=ParseO.tryParseWith(function(a$2)
+  SC$1.parseDoubleO=ParseO.tryParseWith(function(a$1)
   {
    var o$1,$1;
    o$1=0;
-   return[($1=Global.Number(a$2),Global.isNaN($1)?false:(o$1=$1,true)),o$1];
+   return[($1=Global.Number(a$1),Global.isNaN($1)?false:(o$1=$1,true)),o$1];
   });
-  SC$1.parseGuidO=ParseO.tryParseWith(function(a$2)
+  SC$1.parseGuidO=ParseO.tryParseWith(function(a$1)
   {
    var o$1;
    o$1=null;
-   return[Guid.TryParse(a$2,{
+   return[Guid.TryParse(a$1,{
     get:function()
     {
      return o$1;
@@ -2540,11 +2570,11 @@
   });
   SC$1.currentPlugInW=(x=AppFramework.selectionPlugInO().get_View(),View.Map2(function($1,$2)
   {
-   return(a$1($1))($2);
+   return(a($1))($2);
   },AppFramework.plugIns().v,x));
-  SC$1.currentPlugInV=new FromView.New(AppFramework.currentPlugInW(),function(a$2)
+  SC$1.currentPlugInV=new FromView.New(AppFramework.currentPlugInW(),function(a$1)
   {
-   AppFramework.plugIns().Append(a$2);
+   AppFramework.plugIns().Append(a$1);
   });
   SC$1.AppFwkClient=Lazy.Create(function()
   {
@@ -2717,7 +2747,7 @@
    });
   },p$6[1]]))[0];
   o=AppFramework.tryGetPlugIn("AppFramework");
-  o==null?void 0:(plg=o.$0,a=PlugIn.New(plg.plgName,plg.plgVars,plg.plgViews,plg.plgDocs,plg.plgActions.concat([AppFramework.newActF("AddLayout",{
+  o==null?void 0:(plg=o.$0,AppFramework.addPlugIn(PlugIn.New(plg.plgName,plg.plgVars,plg.plgViews,plg.plgDocs,plg.plgActions.concat([AppFramework.newActF("AddLayout",{
    $:2,
    $0:function(n)
    {
@@ -2728,7 +2758,7 @@
    },
    $1:"[Name]",
    $2:"[Layout]"
-  })]),plg.plgQueries),AppFramework.plugIns().Append(a));
+  })]),plg.plgQueries)));
  };
  LayoutEngine_Templates.wcompsplitterver=function(h)
  {

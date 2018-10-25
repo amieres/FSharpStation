@@ -26,6 +26,7 @@ group Testing
     source https://www.nuget.org/api/v2
     nuget Fuchu
     nuget Unquote
+    nuget FsCheck
 nuget canopy
 
 group Other

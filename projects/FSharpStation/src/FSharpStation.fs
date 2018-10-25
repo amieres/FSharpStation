@@ -506,6 +506,7 @@ namespace FsRoot
                     let runReader           v      m  = m |> run v |> fun (vO, _, m) -> vO |> Option.map(fun v -> v, m) |> Result.ofOption (fun () -> m)
                     let runResult                  m  = m |> runReader        ()
                     let iterResult          fM f   m  = m |> iterReader  fM f ()
+                    let iterResultPrint            m  = m |> iterReader  (ResultMessage.summarized >> print) print ()
                     
                     let inline insertO  vvO                           = vvO   |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
                     let inline insertR (vvR:Result<_,_>)              = vvR   |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
@@ -656,6 +657,8 @@ namespace FsRoot
                     let runResult                  m  = m |> runReader        ()
                     let iterResult          fM f   m  = m |> iterReader  fM f ()
                     let iterResultA         fM f   m  = m |> iterReaderA fM f ()
+                    let iterResultPrint            m  = m |> iterReader  (ResultMessage.summarized >> print) print ()
+                    let iterResultPrintA           m  = m |> iterReaderA (ResultMessage.summarized >> print) print ()
                     
                     module Operators =
                         let inline (<*>) f v   = apply f v
@@ -1330,6 +1333,7 @@ namespace FsRoot
                 let orderedRm         ()  = readerFun (fun { ordered    = snps } -> snps                                                   )
                 let prepareCodeRm     snp = readerFun (fun { prepCode   = prep } -> prep snp                                               )
                 let snippetRm         sid = snippetORm sid |> absorbO (fun () -> sprintf "Snippet not found %A" sid |> ErrorMsg)
+                let snippetNameRm     sid = snippetRm  sid |>> (fun snp -> snippetName snp.snpName snp.snpContent)
                 let rec pathRm        sid = snippetORm sid 
                                             |>> Option.map parentORm 
                                             >>= insertO 
@@ -3493,7 +3497,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1540222363068"
+                let mutable fsharpStationAddress = Address "FSharpStation1540373716953"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -3530,11 +3534,9 @@ namespace FsRoot
             
                 let getUrl () = sendMessage MsgGetUrl |> AsyncResult.bind respString
             
-                let execJS js = sendMessage (MsgAction [| "ExecJS" ; js |]) |> AsyncResult.bind respString
-            
-                let sendOutput    txt = [| "AddOutput" ; txt |]
-                                        |> MsgAction
-                                        |> sendMessage
+                let execJS      js          = sendMessage (MsgAction [| "ExecJS"      ; js              |]) |> AsyncResult.bind respString
+                let setProperty path prop v = sendMessage (MsgAction [| "SetProperty" ; path ; prop ; v |]) |> AsyncResult.bind respString
+                let sendOutput  txt         = sendMessage (MsgAction [| "AddOutput"   ; txt             |])
                                         
                 let getBrokerProcessId() = fsharpStationClient.MBProcessId
             module FsAutoComplete =
@@ -4030,31 +4032,47 @@ namespace FsRoot
             let SaveAsClassW                   = View.Map2 (fun snps gen -> if Seq.exists (fun snp -> snp.snpGeneration > gen) snps then "btn-primary" else "") 
                                                     snippets  .View 
                                                     generation.View
-            let currentLayoutDW                =  View.Map (fun snp -> 
-                                                    fusion {
-                                                        let! btnsO = Snippet.propertyHierORm "Buttons" snp
-                                                                     |>> Option.map(fun(snB, (txB, _)) ->
-                                                                        let ss =    txB.Trim().Split('\n')
-                                                                                    |> Seq.filter(fun s -> s.Trim() <> "")
-                                                                                    |> Seq.mapi (fun i btn -> sprintf "btn%d button \"click=${FSharpStation.ButtonClick}\" %A" i btn)
-                                                                        "Snp_" + (string snB.snpId.Id).Replace("-", "")
-                                                                      , [   yield "editorButtons vertical 0-85-100 FStationLyt.menuEditor buttons"
-                                                                            yield! ss
-                                                                            yield [ 0.. Seq.length ss - 1 ] 
-                                                                                    |> Seq.map (sprintf "btn%d") 
-                                                                                    |> String.concat " " 
-                                                                                    |> sprintf "buttons div \"\" %s "
-                                                                        ] |> String.concat "\n"
-                                                                    )
-                                                        return!      Snippet.propertyHierORm "Layout"  snp 
-                                                                     |>> Option.map (fun (snL, (txL, _)) ->
-                                                                        "Snp_" + (string snL.snpId.Id).Replace("-", "")
-                                                                      , btnsO |> Option.map (fun (snB, lyB) -> 
-                                                                            [ txL ; lyB ] |> String.concat "\n")
-                                                                        |> Option.defaultValue txL)
-                                                                     |>> Option.bindNone (fun () -> btnsO)
-                                                    } |> runReader (fun _ -> None)
-                                                  ) currentSnippetW
+            let currentPathW                   = currentSnippetW
+                                                 |> View.Map (fun snp -> 
+                                                        fusion { 
+                                                            let! path  = Snippet.pathRm snp.snpId
+                                                            let! names = snp.snpId :: path |> traverseSeq Snippet.snippetNameRm
+                                                            return names |> Seq.rev |> String.concat "/"
+                                                        } |> runReader (fun _ -> "") )
+            let currentLayoutDW                =  
+                currentSnippetW
+                |> View.Map (fun snp -> 
+                    fusion {
+                        let! btnsO = Snippet.propertyHierORm "Buttons" snp
+                                        |>> Option.map(fun(snB, (txB, _)) ->
+                                        let ss =    txB.Trim().Split('\n')
+                                                    |> Seq.filter(fun s -> s.Trim() <> "")
+                                                    |> Seq.mapi (fun i btn -> sprintf "btn%d button \"click=${FSharpStation.ButtonClick}\" %A" i btn)
+                                        "Snp_" + (string snB.snpId.Id).Replace("-", "")
+                                        , [ yield "editorButtons vertical 0-85-100 FStationLyt.menuEditor buttons"
+                                            yield! ss
+                                            yield [ 0.. Seq.length ss - 1 ] 
+                                                    |> Seq.map (sprintf "btn%d") 
+                                                    |> String.concat " " 
+                                                    |> sprintf "buttons div \"\" %s "
+                                        ] |> String.concat "\n"
+                                    )
+                        return!      Snippet.propertyHierORm "Layout"  snp 
+                                        |>> Option.map (fun (snL, (txL, _)) ->
+                                        "Snp_" + (string snL.snpId.Id).Replace("-", "")
+                                        , btnsO |> Option.map (fun (snB, lyB) -> 
+                                            [ txL ; lyB ] |> String.concat "\n")
+                                        |> Option.defaultValue txL)
+                                        |>> Option.bindNone (fun () -> btnsO)
+                    } |> runReader (fun _ -> None)
+                ) 
+            let currentLayoutJSDW                =  
+                currentSnippetW
+                |> View.Map (fun snp -> 
+                    Snippet.propertyHierORm "LayoutJS"  snp 
+                    |>> Option.map (fun (snL, (txL, _)) -> snL.snpId, txL)
+                    |> runReader (fun _ -> None)
+                )
                                                     
             let setChildrenRm snpId ch = fusion {
                 let chIds = ch |> Array.map (fun s -> s.id())
@@ -4730,7 +4748,7 @@ namespace FsRoot
             open FStation
         
             let propO snp p = snp |> Snippet.propertyHierORm p |> ofFusionM |>> Option.map (function (_, (v, _)) -> v)
-        //    let [< Inline "Object.constructor('return function(parm) { return `' + $template + '`}')()($p)" >] translateTemplate (template: string) p = ""
+        //    let [< Inline "Object.constructor('return function(button) { return `' + $template + '`}')()($p)" >] translateTemplate (template: string) p = ""
         
             let translateString f (code: string) =
                 let rec translate acc (s: string) =
@@ -4760,19 +4778,19 @@ namespace FsRoot
                 match namecodeO with
                 | Some code -> return openProp + code
                 | None      -> 
-                let! template  = propO snp "action-template" |>> Option.defaultValue "${parm}() |> printfn \"%A\""
+                let! template  = propO snp "action-template" |>> Option.defaultValue "${button}() |> printfn \"%A\""
                 return openProp + template
             }
         
             module AF = FsRoot.LibraryJS.AppFramework
         
-            let fetchValue parm v =
-                if v = "parm" then parm else
+            let fetchValue button v =
+                if v = "button" then button else
                 "Snp_" + (string Snippets.currentSnippetV.Value.snpId.Id).Replace("-", "")
                 |> swap AF.splitName v
                 ||> AF.tryGetWoW
                 |> Option.bind View.TryGet
-                |> Option.defaultWith (fun () -> sprintf "${%s}" v)
+                |> Option.defaultWith (fun () -> sprintf "$[not found:%s]" v)
         
             let buttonClickRm (e:Dom.Element) = fusion {
                 let  name      = e.TextContent.Trim()
@@ -4977,7 +4995,7 @@ namespace FsRoot
             
             [< WebSharper.Sitelets.Website >]    
             let mainProgram() =
-                AF.plugIns.Add {
+                AF.addPlugIn {
                     AF.plgName    = "FSharpStation"
                     AF.plgVars    = [| AF.newVar  "fileName"        LoadSave.fileName
                                        AF.newVar  "SnippetName"     (Lens Snippets.currentSnippetV.V.snpName)
@@ -4987,6 +5005,7 @@ namespace FsRoot
                                     |]  
                     AF.plgViews   = [| AF.newViw  "FsCode"          Snippets.FsCodeW
                                        AF.newViw  "SaveNeeded"      Snippets.SaveAsClassW
+                                       AF.newViw  "CurrentPath"     Snippets.currentPathW
                                     |]  
                     AF.plgDocs    = [| AF.newDoc  "mainDoc"         (lazy mainDoc()                 )
                                        AF.newDoc  "editor"          (lazy (WebSharper.UI.Html.div [] [ Monaco.getEditorConfigO() |> Option.map Monaco.render |> Option.defaultValue Doc.Empty ]) )
@@ -5019,7 +5038,8 @@ namespace FsRoot
                     messages         vertical   0-50-100  messagesLeft              messagesRight
                     editorButtons    vertical -200 snippetsSnippet buttons
                     buttons div      "overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px" btnSaveAs none x btnAddSnippet btnDeleteSnippet btnIndentIn btnIndentOut none x btnRunFS
-                    snippetsSnippet  vertical   0-20-100  FSharpStation.Snippets    editorProperties
+                    snippetsSnippet  vertical   0-20-100  snippets                  editorProperties
+                    snippets         horizontal 20        "${FSharpStation.CurrentPath}" FSharpStation.Snippets
                     editorProperties vertical   0-100-100 snippet                   properties
                     properties       div        ""        FSharpStation.Properties
                     snippet          horizontal 35        Name                      FSharpStation.editor
@@ -5047,6 +5067,18 @@ namespace FsRoot
                 |> LayoutEngine.newLyt "FStationLyt"
                 |> LayoutEngine.addLayout
         
+                Snippets.currentLayoutJSDW
+                |> View.consistent
+                |> View.Sink(fun lytO ->
+                    lytO
+                    |> Option.iter (fun (sid, js) ->
+                        try
+                            JavaScript.JS.Apply JavaScript.JS.Window "eval" [| "CIPHERSpaceLoadFilesDoAfter(function(){IntelliFactory.Runtime.Start()})" |]
+                            JavaScript.JS.Apply JavaScript.JS.Window "eval" [| js                                                          |]
+                        with e -> print e
+                    )
+                )
+        
                 Snippets.currentLayoutDW
                 |> View.consistent
                 |> View.Sink(fun lytO ->
@@ -5061,8 +5093,6 @@ namespace FsRoot
                     |> Option.defaultValue "FStationLyt"
                     |> AF.mainDocV.Set
                 )
-        
-                
         
                 async {
                   do! Monaco.loader

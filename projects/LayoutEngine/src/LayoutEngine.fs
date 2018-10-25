@@ -77,6 +77,22 @@ namespace FsRoot
         [< JavaScript ; AutoOpen >]
         module Library =
             let Error = Result.Error
+            /// call a function but return the input value
+            /// for logging, debugging
+            /// use: (5 * 8) |> tee (printfn "value = %d") |> doSomethingElse
+            let [<Inline>] inline tee f v = f v ; v
+            
+            /// tee: call a function but return the input value
+            /// for logging, debugging
+            /// use: (5 * 8) |!> printfn "value = %d" |> doSomethingElse
+            let [<Inline>] inline  (|>!) v f   = f v ; v
+            let [<Inline>] inline  (>>!) g f   = g >> fun v -> f v ; v
+            
+            let inline print v = 
+                match box v with
+                | :? string as s -> printfn "%s" s
+                | __             -> printfn "%A" v
+            
             module Memoize =
             
             
@@ -598,7 +614,7 @@ namespace FsRoot
                     plgQueries     : PlugInQuery []
                 }
             
-                let plugIns = ListModel (fun plg -> plg.plgName)
+                let private plugIns = ListModel (fun plg -> plg.plgName)
             
                 let mainDocV = Var.Create "AppFramework.AppFwkClient"
             
@@ -816,7 +832,7 @@ namespace FsRoot
                     WcTabStrip.init.Value
                     mainDoc()
             
-            
+                let addPlugIn p = plugIns.Add p ; mainDocV.Set mainDocV.Value
             [< JavaScriptExport >]
             type LayoutEngine = {
                 lytName       : string
@@ -1003,7 +1019,7 @@ namespace FsRoot
                                                     AF.tryGetWoW plg nm
                                                     |>  Option.map (fun txtW -> Doc.TextView txtW, parms)
                                                     |> fun vv -> vv
-                                                    |>  Option.defaultWith  (fun () -> sprintf "Missing doc: %s" id |> errDoc, parms) )
+                                                    |>  Option.defaultWith  (fun () -> sprintf "Missing doc: %s" id |>! print |> errDoc, parms) )
                     | (txt, _)      :: rest  -> txt
                                                 |> getTextData lytNm
                                                 |> function
@@ -1174,7 +1190,7 @@ namespace FsRoot
                 let addLayout (lyt:LayoutEngine) =
                     lyt.lytDefinition.View |> View.Sink(fun txt ->
                         let entries = createEntries lyt.lytName txt
-                        AF.plugIns.Add { 
+                        AF.addPlugIn { 
                             plgName    = lyt.lytName
                             plgVars    = [| yield  AF.newVar "Layout" lyt.lytDefinition  
                                             yield! getVarEntries entries
@@ -1209,6 +1225,6 @@ namespace FsRoot
                     AF.tryGetPlugIn "AppFramework"
                     |> Option.iter(fun plg ->
                         { plg with plgActions = plg.plgActions |> Array.append <| [| AF.newActF "AddLayout" <| AF.FunAct2(addNewLayout, "[Name]", "[Layout]") |]}
-                        |> AF.plugIns.Add
+                        |> AF.addPlugIn
                     )
             

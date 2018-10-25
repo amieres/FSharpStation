@@ -73,34 +73,35 @@ namespace FsRoot
     
     #endif
     
-        //#r "..\..\LayoutEngine\bin\LayoutEngine.dll"
         
-        open WebSharper
-        
-        [< JavaScriptExport >]
-        module TestLayout =
-            open FsRoot
-            open WebSharper.UI
-            open WebSharper.UI.Html
-            module AF = AppFramework
-        
-            let var = Var.Create "test value"
-        
-            let doc = lazy div [] [ h1 [] [ textView var.View ]
-                                    Client.Doc.Input [] var
-                                  ]
-            [< SPAEntryPoint >]
-            let main() =
-                AF.plugIns.Add {
-                    AF.plgName    = "TestPlug"
-                    AF.plgVars    = [| AF.newVar  "testVar"         var
-                                    |]  
-                    AF.plgViews   = [|
-                                    |]  
-                    AF.plgDocs    = [| AF.newDoc  "mainDoc"         doc
-                                    |]  
-                    AF.plgActions = [| AF.newAct  "Hello"           (fun () -> JavaScript.JS.Alert "Hello")
-                                    |]
-                    AF.plgQueries = [|                                               
-                                    |]
-                }
+            //#r "..\..\LayoutEngine\bin\LayoutEngine.dll"
+            
+            open WebSharper
+            
+            [< JavaScriptExport >]
+            module TestPlugIn =
+                open FsRoot
+                open WebSharper.UI
+                open WebSharper.UI.Html
+                module AF = AppFramework
+            
+                let var = Var.Create "test value"
+            
+                let doc = lazy div [] [ h1 [] [ textView var.View ]
+                                        Client.Doc.Input [] var
+                                      ]
+                [< SPAEntryPoint >]
+                let main() =
+                    AF.addPlugIn {
+                        AF.plgName    = "TestPlug"
+                        AF.plgVars    = [| AF.newVar  "testVar"         var
+                                        |]  
+                        AF.plgViews   = [|
+                                        |]  
+                        AF.plgDocs    = [| AF.newDoc  "mainDoc"         doc
+                                        |]  
+                        AF.plgActions = [| AF.newAct  "Hello"           (fun () -> JavaScript.JS.Alert "Hello")
+                                        |]
+                        AF.plgQueries = [|                                               
+                                        |]
+                    }
