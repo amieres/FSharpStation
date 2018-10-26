@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1540514876616 -d:WEBSHARPER
 ////#cd @"..\projects\FSharpStation\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -35,6 +35,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
+//#define FSharpStation1540514876616
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -1323,7 +1324,8 @@ namespace FsRoot
                     |> String.filter (fun c -> not <| Array.contains c illegal)
                     |> fun c -> c + " " + snp.snpId.Id.ToString()
                 let propertyO       n snp = snp.snpProperties |> Array.tryPick (fun (name, value) -> if name = n then Some value else None)
-                let propertyPairO   n snp = propertyO n snp |> Option.map(fun v -> v.Split([| @"|-|" |], StringSplitOptions.RemoveEmptyEntries) |> fun vs -> vs.[0], vs |> Array.tryItem 1 |> Option.defaultValue vs.[0])
+                let tieFighter            = "|" + "-" + "|"
+                let propertyPairO   n snp = propertyO n snp |> Option.map(fun v -> v.Split([| tieFighter |], StringSplitOptions.RemoveEmptyEntries) |> fun vs -> vs.[0], vs |> Array.tryItem 1 |> Option.defaultValue vs.[0])
                 let snippetORm        sid = readerFun (fun { fetcher    = ftch } -> ftch sid                                               )
                 let parentORm         snp = readerFun (fun { fetcher    = ftch } -> snp.snpParentIdO |> Option.bind ftch                   )
                 let predecessorsRm    snp = readerFun (fun { fetcher    = ftch } -> snp.snpPredIds   |> Seq.choose  ftch                   )
@@ -1384,6 +1386,10 @@ namespace FsRoot
             //    (predsLRmMemo : (SnippetId -> Monads.ReaderMonads.ReaderMResult<SnippetId list,SnippetCollection,string>) )
             //#endif    
                 let uniquePredsRm     snp = predsLRmMemo() snp.snpId
+                let predsGenerationRm snp = fusion {
+                                                let! preds = uniquePredsRm snp >>= traverseSeq snippetRm
+                                                return preds (* |> Seq.append [ snp ] *) |> Seq.map (fun snp -> snp.snpGeneration) |> Seq.max 
+                                            }
                 let rec modifiedRecRm snp = fusion {
                     let! modified         = modifiedRm     snp
                     if modified then return true else
@@ -2888,20 +2894,16 @@ namespace FsRoot
             
                 [< Rpc >]
                 let evalCodeWithPresence workDir presenceKey presenceValue presenceCode code = 
-                    let config = extractConfig workDir code
+                    let presenceConfig = extractConfig workDir presenceCode
                     fusion {    
-                        let! currentValueO = getPresenceRm presenceKey
+                        let! currentValueO  = getPresenceRm presenceKey
                         if   currentValueO <> Some presenceValue then
-                            //let  presenceCode   = presenceCodeF()
-                            let  presenceConfig = extractConfig workDir presenceCode
-                            if  presenceConfig <> config then
-                                do! ErrorF (ErrorMsg <| sprintf "Presence and code configs are different: %A <--> %A" presenceConfig config)
                             do!  evaluateRm    presenceCode |>> ignore
                             do!  addPresenceRm presenceKey presenceValue
                         return! evaluateRm code
                     }
                     |> AgentReaderM.ofResourceRm
-                    |> AgentReaderM.run fsiExeL.Value config
+                    |> AgentReaderM.run fsiExeL.Value presenceConfig
              
                 [<Rpc>]    
                 let abortFsiExe  () = fsiExeL.Value.Process(fun fsi -> fsi.Abort() )
@@ -3497,7 +3499,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1540373716953"
+                let mutable fsharpStationAddress = Address "FSharpStation1540514876616"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -4779,7 +4781,7 @@ namespace FsRoot
                 | Some code -> return openProp + code
                 | None      -> 
                 let! template  = propO snp "action-template" |>> Option.defaultValue "${button}() |> printfn \"%A\""
-                return openProp + template
+                return openProp + template |> String.indentStr 4 |> sprintf "module Call%s =\n%s" (string <| FStation.now())
             }
         
             module AF = FsRoot.LibraryJS.AppFramework
@@ -4792,17 +4794,18 @@ namespace FsRoot
                 |> Option.bind View.TryGet
                 |> Option.defaultWith (fun () -> sprintf "$[not found:%s]" v)
         
-            let buttonClickRm (e:Dom.Element) = fusion {
-                let  name      = e.TextContent.Trim()
-                outputMsgs.Set <| sprintf "Action %s ..." name
+            let actionClickRm name = fusion {
+                outputMsgs.Set  <| sprintf "Action %s ..." name
                 let! snp       = getBaseSnippet()
                 let! code      = getCode snp name |>> translateString (fetchValue name)
                 do!     ofAsync <| FSharpStationClient.setAddress (WebSockets.Address FStation.id)
-                let! preCode   = Snippet.fastCodeRm (Some snp.snpId) (Some snp.snpId) |> ofFusionM |>> fst 
-                return! ofAsync <| FsiAgent.evalCodeWithPresence FStation.srcDir (sprintf "%A" snp.snpId) (string snp.snpGeneration) (FsCode preCode) (FsCode code)
+                let! preCode   = Snippet.fastCodeRm (Some snp.snpId) (Some snp.snpId) |> ofFusionM |>> fst
+                let! gen       = ofFusionM <| Snippet.predsGenerationRm snp
+                return! ofAsync <| FsiAgent.evalCodeWithPresence FStation.srcDir (sprintf "%A" snp.snpId) (string gen) (FsCode preCode) (FsCode code)
             }
             
-            let buttonClick e = buttonClickRm e |> iterReaderA  print print (Snippets.snippetsColl())
+            let actionClick name            = actionClickRm  name  |> iterReaderA  print print (Snippets.snippetsColl())
+            let buttonClick (e:Dom.Element) = e.TextContent.Trim() |> actionClick
         
         module Serializer =
             open Serializer
@@ -5024,6 +5027,7 @@ namespace FsRoot
                                        AF.newActF "Import"          <| AF.FunAct1 ((fun o -> unbox o |> Importer.importFile     ), "FileElement")
                                        AF.newActF "JumpTo"          <| AF.FunAct1 ((fun o -> unbox o |> JumpTo.jumpToRef        ), "textarea"   )
                                        AF.newActF "ButtonClick"     <| AF.FunAct1 ((fun o -> unbox o |> CustomAction.buttonClick), "button"     )
+                                       AF.newActF "ActionClick"     <| AF.FunAct1 ((fun o -> unbox o |> CustomAction.actionClick), "name"       )
                                     |]
                     AF.plgQueries = [|                                               
                                     |]

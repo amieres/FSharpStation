@@ -1,3 +1,4 @@
+////-d:FSharpStation1540554799580 -d:WEBSHARPER
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#I @"..\packages\Owin\lib\net40"
@@ -23,6 +24,7 @@
 //#r @"..\packages\Owin\lib\net40\Owin.dll"
 //#r @"..\projects\LayoutEngine\bin\LayoutEngine.dll"
 /// Root namespace for all code
+//#define FSharpStation1540554799580
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -103,6 +105,27 @@ namespace FsRoot
                 match box v with
                 | :? string as s -> printfn "%s" s
                 | __             -> printfn "%A" v
+            
+            [< Inline "(function (n) { return n.getFullYear() + '-' + ('0'+(n.getMonth()+1)).slice(-2) + '-' +  ('0'+n.getDay()).slice(-2) + ' '+('0'+n.getHours()).slice(-2)+ ':'+('0'+n.getMinutes()).slice(-2)+ ':'+('0'+n.getSeconds()).slice(-2)+ ':'+('00'+n.getMilliseconds()).slice(-3) })(new Date(Date.now()))" >]
+            let nowStamp() = 
+                let t = System.DateTime.UtcNow // in two steps to avoid Warning: The value has been copied to ensure the original is not mutated
+                t.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
+            
+            let [<Inline>] inline traceT t v = tee (sprintf "%A" >> (fun s -> s.[..100]) >> printfn "%s %s: %A" (nowStamp()) t) v
+            let [<Inline>] inline trace   v = traceT "trace" v
+            let [<Inline>] inline traceI  v = trace          v |> ignore
+            
+            module Log =
+                let [<Inline>] inline In     n f   =      (traceT (sprintf "%s in " n)) >> f
+                let [<Inline>] inline Out    n f   = f >> (traceT (sprintf "%s out" n))
+                let [<Inline>] inline InA    n f p = async { return! In  n f p }
+                let [<Inline>] inline OutA   n f p = async { return! Out n f p }
+                let [<Inline>] inline InOut  n     = In  n >> Out  n
+                let [<Inline>] inline InOutA n f p = async {
+                    let!   r = InA n f  p
+                    do         Out n id r |> ignore
+                    return r 
+                  }
             
             /// Extensible type for error messages, warnings and exceptions
             type ResultMessage<'M> =
@@ -1056,7 +1079,8 @@ namespace FsRoot
                     |> String.filter (fun c -> not <| Array.contains c illegal)
                     |> fun c -> c + " " + snp.snpId.Id.ToString()
                 let propertyO       n snp = snp.snpProperties |> Array.tryPick (fun (name, value) -> if name = n then Some value else None)
-                let propertyPairO   n snp = propertyO n snp |> Option.map(fun v -> v.Split([| @"|-|" |], StringSplitOptions.RemoveEmptyEntries) |> fun vs -> vs.[0], vs |> Array.tryItem 1 |> Option.defaultValue vs.[0])
+                let tieFighter            = "|" + "-" + "|"
+                let propertyPairO   n snp = propertyO n snp |> Option.map(fun v -> v.Split([| tieFighter |], StringSplitOptions.RemoveEmptyEntries) |> fun vs -> vs.[0], vs |> Array.tryItem 1 |> Option.defaultValue vs.[0])
                 let snippetORm        sid = readerFun (fun { fetcher    = ftch } -> ftch sid                                               )
                 let parentORm         snp = readerFun (fun { fetcher    = ftch } -> snp.snpParentIdO |> Option.bind ftch                   )
                 let predecessorsRm    snp = readerFun (fun { fetcher    = ftch } -> snp.snpPredIds   |> Seq.choose  ftch                   )
@@ -1117,6 +1141,10 @@ namespace FsRoot
             //    (predsLRmMemo : (SnippetId -> Monads.ReaderMonads.ReaderMResult<SnippetId list,SnippetCollection,string>) )
             //#endif    
                 let uniquePredsRm     snp = predsLRmMemo() snp.snpId
+                let predsGenerationRm snp = fusion {
+                                                let! preds = uniquePredsRm snp >>= traverseSeq snippetRm
+                                                return preds (* |> Seq.append [ snp ] *) |> Seq.map (fun snp -> snp.snpGeneration) |> Seq.max 
+                                            }
                 let rec modifiedRecRm snp = fusion {
                     let! modified         = modifiedRm     snp
                     if modified then return true else
@@ -1452,12 +1480,13 @@ namespace FsRoot
                 let doCmd client = doCmdF client print
                     
             module Adb =
-                let removeBlankLines (s:string) = 
-                    s.Split '\n'
-                    |> Seq.filter ((<>) "")
-                    |> String.concat "\n"
+                let removeBlankLines (s:string) = s.Replace("\r","")
+                    //s.Split '\n'
+                    //|> Seq.filter ((<>) "")
+                    //|> String.concat "\n"
             //    let mutable path          = @"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe"
-                let mutable path          = @"D:\Abe\Downloads\Android\adb.exe"    
+            //    let mutable path          = @"D:\Abe\Downloads\Android\adb.exe"    
+                let mutable path          = @"C:\Program Files (x86)\AirDroid\IncludeAdb\AirDroid_adb.exe"
                 let call command          = RunProcess.runToFinish     path command  |> removeBlankLines
                 let execOut      file cmd = RunProcess.runOutputToFile path <| sprintf "exec-out %s" cmd <| file
                 let connectIpPort ip port = call   <| sprintf "connect %s:%d" ip  port        
@@ -1948,7 +1977,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1540391188660"
+                let mutable fsharpStationAddress = Address "FSharpStation1540554799580"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -2076,18 +2105,18 @@ namespace FsRoot
         
             let getIpPortUser   c = c.ip.Value, c.sshPort.Value, c.user.Value
         
-            #if WEBSHARPER
-            #else
+            //#if WEBSHARPER
+            //#else
             let OldHtcComputer                       = computer "OldHTC"   |> Option.get
             let AbeRaspi                             = computer "AbeRaspi" |> Option.get
             let OldHtcIp  , OldHtcPort  , OldHtcUser = getIpPortUser OldHtcComputer
             let AbeRaspiIp, AbeRaspiPort, AbeUser    = getIpPortUser AbeRaspi
-            #endif
+            //#endif
         
             let pingOne c = computers |> List.filter (fst >> ((=) c)) |> pingSeveral 
             let All    () = computers |> pingSeveral
         
-        module OpenGarage =
+        module OldHtc =
             open Adb
             open FusionAsyncM
             open Ping
@@ -2344,7 +2373,42 @@ namespace FsRoot
             // To focus: adb shell "input keyevent KEYCODE_FOCUS"
             // To take a photo or start/stop recording: adb shell "input keyevent KEYCODE_CAMERA"
             // 
+        
+            let ls              () = shell "ls -la /data/local/"
+            let flash_On        () = shellSU "'echo 1 > /sys/class/leds/flashlight/brightness'"
+            let cat             () = shellSU "cat /data/local/unlock.sh"
+            let CHECK           () = checkApp "OpenGarage3.OpenGarage3" 
+            let shell_          () = shell "service list" 
+            let Screen_off      () = keyevent 86
+                                     keyevent 26
+            let unlock          () = shell "/data/local/unlock.sh"
+            let Screen_lock     () = keyevent 86
+                                     keyevent 26
+                                     keyevent 26
+                                     
+            let unlockx         () = keyevent 86
+                                     keyevent 26
+        
+            let Screen_unlock   () = mapPhone (fun ph -> ph.unlockScreen() )
+            let flash_Off       () = shellSU "'echo 0 > /sys/class/leds/flashlight/brightness'"
+            let checkScreenOn   () = shell "dumpsys input_method | grep ScreenOn"
+            let BACK            () = keyevent 4
+            let HOME            () = keyevent 3
+            let MENU            () = keyevent 1
+            let Wifi_Keyboard   () = RunProcess.startProcess (sprintf "http://%s:7777" OldHtcIp) ""
+            let supplicantWifi  () = shellSU "cat /data/misc/wifi/wpa_supplicant.conf"
+            let enableWifi      () = shellSU "svc wifi enable"
+        //    let Refresh         () = let [< Fable.Core.Emit "Date.now()" >] now() = 1
+        //                             let screen = Fable.Import.Browser.document.getElementById("PhoneScreen")
+        //                             screen.setAttribute("src", screen.getAttribute("src").Split('=').[0] 
+        //                             |> sprintf "%s=%d" <| now())
+                                     
+            let Camera          () = shellPh "am start -a android.media.action.IMAGE_CAPTURE"
+            let Capture_Screen  () = mapPhone (fun ph -> ph.screenCapture file)
+            let run_OpenGarage3 () = runCheckApp "OpenGarage3.OpenGarage3"
+            let ImageClick      () = click (100, 100)
         //#r "..\projects\LayoutEngine\bin\LayoutEngine.dll"
+        //#define WEBSHARPER
         [< AutoOpen ; JavaScriptExport >]
         module PlugIns =
             open WebSharper
@@ -2353,14 +2417,46 @@ namespace FsRoot
             open WebSharper.UI.Html
             module AF = AppFramework
         
-            module OpenGaragePlugIn =
+            module OldHtcPlugIn =
+                open WebSharper.UI.Client.EltExtensions
             
+                [< Inline "(Date.now())" >]
+                let now() = 0
                 let var = Var.Create "test value"
-            
-                let fileImg = OpenGarage.file |> String.splitInTwoO "website" |> Option.map (fun (_, lnk) -> img [ attr.src lnk ; attr.style "width:100%" ] []) |> Option.defaultValue Doc.Empty
+                let lnk l = l + "?d=" + (string <| now() ) 
+                let actionClick name =  AF.tryGetAct "FSharpStation" "ActionClick"
+                                        |>  Option.map          (fun act -> fun pos -> act.actFunction |> AF.callFunction (sprintf "(fun()->%s (%s))" name pos )()  )
+                                        |>  Option.defaultValue ignore
+                let mutable dragStartCoords = (0, 0)                            
+                let fileImg = 
+                    let click    = actionClick "click"   
+                    let dragDrop = actionClick "dragDrop"
+                    OldHtc.file 
+                    |> String.splitInTwoO "website" 
+                    |> Option.map (fun (_, l) -> 
+                        img [   attr.src (lnk l)
+                                attr.style "width:100%"
+                                on.click (fun em (ev:Dom.MouseEvent) -> 
+                                    (ev?offsetX * em?naturalWidth / em?width, ev?offsetY * em?naturalHeight / em?height) 
+                                    |> string |> click)
+                                on.dragOver (fun _  ev -> ev.PreventDefault() )
+                                on.drag     (fun _  ev -> ev.PreventDefault() )
+                                on.dragStart(fun _  ev -> dragStartCoords <- (ev?offsetX, ev?offsetY))
+                                on.drop     (fun em ev -> 
+                                    ev.PreventDefault() 
+                                    ((fst dragStartCoords * em?naturalWidth / em?width, snd dragStartCoords * em?naturalHeight / em?height) 
+                                    ,(ev?offsetX          * em?naturalWidth / em?width, ev?offsetY          * em?naturalHeight / em?height))
+                                    |> fun t -> sprintf "(%A),(%A)" (fst t) (snd t) |> dragDrop)
+                            ] []) 
+                    |> Option.defaultValue Doc.Empty
             
                 let doc = lazy div [] [ fileImg
-                                        //Client.Doc.Input [] var
+                                        button [ on.click(fun _ _ -> 
+                                            let e = (fileImg :?> Elt).Dom
+                                            e.SetAttribute("src", e.GetAttribute "src" 
+                                                                  |> String.splitByChar '?' 
+                                                                  |> fun l -> lnk l.[0] )
+                                        ) ] [ text "Refresh" ]
                                       ]
                 [< SPAEntryPoint >]
                 let main() =
