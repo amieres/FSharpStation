@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1540514876616 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1540641624973 -d:WEBSHARPER
 ////#cd @"..\projects\FSharpStation\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -35,7 +35,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1540514876616
+//#define FSharpStation1540641624973
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -3499,7 +3499,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1540514876616"
+                let mutable fsharpStationAddress = Address "FSharpStation1540641624973"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -3539,6 +3539,9 @@ namespace FsRoot
                 let execJS      js          = sendMessage (MsgAction [| "ExecJS"      ; js              |]) |> AsyncResult.bind respString
                 let setProperty path prop v = sendMessage (MsgAction [| "SetProperty" ; path ; prop ; v |]) |> AsyncResult.bind respString
                 let sendOutput  txt         = sendMessage (MsgAction [| "AddOutput"   ; txt             |])
+                let actionCall0 act         = sendMessage (MsgAction [|  act                            |])
+                let actionCall1 act p1      = sendMessage (MsgAction [|  act          ; p1              |])
+                let actionCall2 act p1 p2   = sendMessage (MsgAction [|  act          ; p1   ; p2       |])
                                         
                 let getBrokerProcessId() = fsharpStationClient.MBProcessId
             module FsAutoComplete =
@@ -4317,13 +4320,15 @@ namespace FsRoot
                 let propsV = Lens Snippets.currentSnippetV.V.snpProperties
                 let setName  i newName = propsV.Value.[i] <- (newName, snd propsV.Value.[i]) 
                                          propsV.Value |> propsV.Set
-                let setValue i newVal  = propsV.Value.[i] <- (fst propsV.Value.[i], newVal) 
+                let setValue i newVal  = if (snd propsV.Value.[i]).Length > 1000 then () else
+                                         propsV.Value.[i] <- (fst propsV.Value.[i], newVal) 
                                          propsV.Value |> propsV.Set
                 V([| 0.. propsV.V.Length - 1|])
                 |> Doc.BindSeqCached (fun i ->
                     let nameV  = Var.Make <| V( fst propsV.V.[i])
                                           <| setName  i
-                    let valueV = Var.Make <| V( snd propsV.V.[i])
+                    let valueV = Var.Make <| V( let v = snd propsV.V.[i]
+                                                if v.Length > 1000 then sprintf "%s...<%d chars>" v.[0..100] v.Length else v)
                                           <| setValue i
                     TemplateLib.Property()
                         .Name(   nameV                   )
@@ -4910,7 +4915,6 @@ namespace FsRoot
                             files.[0] |> reader.ReadAsText
         
         module MainProgram =
-            open FsRoot
             open WebComponent
             open FusionAsyncM
             open Operators
@@ -4934,7 +4938,10 @@ namespace FsRoot
                 && JS.Confirm (sprintf "Do you want to delete %s?" <| Snippet.snippetName snp.snpName snp.snpContent) then 
                     Snippets.deleteCurrentSnippet()
         
-            module AF = AppFramework
+            open FsRoot
+            module AF = AppFramework 
+        
+            let FStationLyt = "FStationLyt"
         
             let hookVar plug name func obj =
                 AF.tryGetVar plug name
@@ -5068,7 +5075,7 @@ namespace FsRoot
                     FileName         div                                 "class=form-control"  FSharpStation.fileName
                 """
                 |> String.unindentStr
-                |> LayoutEngine.newLyt "FStationLyt"
+                |> LayoutEngine.newLyt FStationLyt
                 |> LayoutEngine.addLayout
         
                 Snippets.currentLayoutJSDW
@@ -5094,7 +5101,7 @@ namespace FsRoot
                         if txt = "" then None else 
                         Some name
                     )
-                    |> Option.defaultValue "FStationLyt"
+                    |> Option.defaultValue FStationLyt
                     |> AF.mainDocV.Set
                 )
         
@@ -5107,12 +5114,25 @@ namespace FsRoot
                 } |> Doc.Async
         
         
+        //#define FSS_SERVER
         module Messaging =
             open FStation
             open FusionM
             open Operators
+            open MainProgram
+        
+            open FsRoot
+            module AF = AppFramework 
         
             let wsStationClient = if IsClient then new WebSockets.WSMessagingClient(FStation.id) else new WebSockets.WSMessagingClient("FStation.id", WebSockets.FSStation)
+        
+            let actionCall actN p1 p2 = fusion {
+                match actN |> AF.splitName FStationLyt ||> AF.tryGetAct with
+                | None     -> return! ofResultRM <| Error (ErrorMsg (sprintf "Action %s not found" actN) )
+                | Some act -> AF.callFunction p1 p2 act.actFunction
+                              return FSResponse.RespString "Ok"
+            }
+        
         
             let processMessage (msg: FSMessage) : Async<Result<FSResponse,ResultMessage<string>>>= 
                 fusion {
@@ -5134,6 +5154,9 @@ namespace FsRoot
                                                                        |>> Option.map (fun snp -> Snippets.setProperty snp prop v ; "Ok")
                                                                        |>  absorbO (fun () -> ErrorMsg <| sprintf "Snippet not found: %s" path)
                                                            return  FSResponse.RespString res
+                    | MsgAction [| actN              |] -> return! actionCall actN () ()
+                    | MsgAction [| actN ; p1         |] -> return! actionCall actN p1 ()
+                    | MsgAction [| actN ; p1 ; p2    |] -> return! actionCall actN p1 p2
                     | MsgGetUrl                         -> return  FSResponse.RespString JS.Document.BaseURI
                     | _                                 -> return  Hole ?(sprintf "TODO message: %A" msg)
                 } |> Snippets.runReaderResult |> Async.rtn
@@ -5161,8 +5184,6 @@ namespace FsRoot
         //#r @"..\packages\WebSharper.Owin\lib\net461\HttpMultipartParser.dll"
         //#r @"..\packages\Microsoft.Owin.StaticFiles\lib\net451\Microsoft.Owin.StaticFiles.dll"
         //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
-        
-        //#define FSS_SERVER
         
         [< JavaScript false >]
         module Server =

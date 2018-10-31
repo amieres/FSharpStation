@@ -1,4 +1,4 @@
-////-d:FSharpStation1540554799580 -d:WEBSHARPER
+////-d:FSharpStation1540640972248 -d:WEBSHARPER
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#I @"..\packages\Owin\lib\net40"
@@ -24,7 +24,7 @@
 //#r @"..\packages\Owin\lib\net40\Owin.dll"
 //#r @"..\projects\LayoutEngine\bin\LayoutEngine.dll"
 /// Root namespace for all code
-//#define FSharpStation1540554799580
+//#define FSharpStation1540640972248
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -1977,7 +1977,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1540554799580"
+                let mutable fsharpStationAddress = Address "FSharpStation1540640972248"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -2017,6 +2017,9 @@ namespace FsRoot
                 let execJS      js          = sendMessage (MsgAction [| "ExecJS"      ; js              |]) |> AsyncResult.bind respString
                 let setProperty path prop v = sendMessage (MsgAction [| "SetProperty" ; path ; prop ; v |]) |> AsyncResult.bind respString
                 let sendOutput  txt         = sendMessage (MsgAction [| "AddOutput"   ; txt             |])
+                let actionCall0 act         = sendMessage (MsgAction [|  act                            |])
+                let actionCall1 act p1      = sendMessage (MsgAction [|  act          ; p1              |])
+                let actionCall2 act p1 p2   = sendMessage (MsgAction [|  act          ; p1   ; p2       |])
                                         
                 let getBrokerProcessId() = fsharpStationClient.MBProcessId
     
@@ -2137,16 +2140,14 @@ namespace FsRoot
         
             let mutable currentPhoneN = None
         
-            //let messaging = new WSMessagingBroker.FStationMessaging("screenCapture")
-        
-            //let refreshCapture() = FSharpStationClient.RunActionCall("Refresh", "actRunFableFs", [| |])
+            let refreshCapture() = FSharpStationClient.actionCall0 "OldHtc.Refresh"
         
             let AbeFi = {
                 connect       = fun () -> currentPhoneN <- Some 2; Adb.connectUSB() |> ignore
                 screenCapture = fun file ->
                     fusion {
                         printfn "%s" <| Adb.captureScreen2 file
-                        //return! refreshCapture()
+                        return! ofAsyncResultRM <| refreshCapture()
                     } |> iterResultPrint
                 unlockScreen  = fun ()     -> keyevent 82 ; keyevent 66
                 click         = fun (x, y) -> shell <| sprintf "input tap %d %d" x y
@@ -2213,7 +2214,7 @@ namespace FsRoot
                 screenCapture = fun file ->
                     fusion {
                         Adb.captureScreen "/data/local/screen.png" file
-                        //return! refreshCapture()
+                        return! ofAsyncResultRM <| refreshCapture()
                     } |> iterResultPrint
                 unlockScreen  = fun () -> shell   "/data/local/unlock.sh"
                 click         = clickHtc
@@ -2446,29 +2447,29 @@ namespace FsRoot
                                     ev.PreventDefault() 
                                     ((fst dragStartCoords * em?naturalWidth / em?width, snd dragStartCoords * em?naturalHeight / em?height) 
                                     ,(ev?offsetX          * em?naturalWidth / em?width, ev?offsetY          * em?naturalHeight / em?height))
-                                    |> fun t -> sprintf "(%A),(%A)" (fst t) (snd t) |> dragDrop)
+                                    |> fun t -> sprintf "%A,%A" (fst t) (snd t) |> dragDrop)
                             ] []) 
                     |> Option.defaultValue Doc.Empty
+                let refresh() = let e = (fileImg :?> Elt).Dom
+                                e.SetAttribute("src", e.GetAttribute "src" 
+                                                        |> String.splitByChar '?' 
+                                                        |> fun l -> lnk l.[0] )
+            
             
                 let doc = lazy div [] [ fileImg
-                                        button [ on.click(fun _ _ -> 
-                                            let e = (fileImg :?> Elt).Dom
-                                            e.SetAttribute("src", e.GetAttribute "src" 
-                                                                  |> String.splitByChar '?' 
-                                                                  |> fun l -> lnk l.[0] )
-                                        ) ] [ text "Refresh" ]
+                                        button [ on.click(fun _ _ -> refresh() ) ] [ text "Refresh" ]
                                       ]
                 [< SPAEntryPoint >]
                 let main() =
                     AF.addPlugIn {
-                        AF.plgName    = "OpenGarage"
+                        AF.plgName    = "OldHtc"
                         AF.plgVars    = [| AF.newVar  "testVar"         var
                                         |]  
                         AF.plgViews   = [|
                                         |]  
                         AF.plgDocs    = [| AF.newDoc  "mainDoc"         doc
                                         |]  
-                        AF.plgActions = [| AF.newAct  "Hello"           (fun () -> JavaScript.JS.Alert "Hello")
+                        AF.plgActions = [| AF.newAct  "Refresh"         refresh
                                         |]
                         AF.plgQueries = [|                                               
                                         |]
