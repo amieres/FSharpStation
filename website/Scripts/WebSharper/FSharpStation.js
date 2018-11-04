@@ -9249,7 +9249,10 @@
    {
     return b.Bind(CustomAction.propO(snp,name),function(a$1)
     {
-     return a$1==null?b.Bind(Operators$2.op_BarGreaterGreater(CustomAction.propO(snp,"action-template"),function(o)
+     return a$1==null?Strings.StartsWith(name,":")?b.Return(a+Slice.string(name,{
+      $:1,
+      $0:1
+     },null)):b.Bind(Operators$2.op_BarGreaterGreater(CustomAction.propO(snp,"action-template"),function(o)
      {
       return o==null?"${button}() |> printfn \"%A\"":o.$0;
      }),function(a$2)
@@ -9574,36 +9577,36 @@
    });
   })));
  };
- MainProgram.mainDoc$4998$78=Global.id;
- MainProgram.mainDoc$4990$39=function()
+ MainProgram.mainDoc$4999$78=Global.id;
+ MainProgram.mainDoc$4991$39=function()
  {
   return function(ev)
   {
    JumpTo.jumpToRef(ev.Target);
   };
  };
- MainProgram.mainDoc$4989$39=function()
+ MainProgram.mainDoc$4990$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$4988$39=function()
+ MainProgram.mainDoc$4989$39=function()
  {
   return function(ev)
   {
    Importer.importFile(ev.Target);
   };
  };
- MainProgram.mainDoc$4987$39=function()
+ MainProgram.mainDoc$4988$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$4986$39=function()
+ MainProgram.mainDoc$4987$39=function()
  {
   return function(ev)
   {
@@ -9722,11 +9725,11 @@
   }))))))))))))));
   return(p=Handler$1.CompleteHoles(tmp.k,tmp.h,[["filename",0],["name",0],["output",0],["fscode",0],["parser",0]]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.layout(p[0])),(tmp.i=i,i))).get_Doc();
  };
+ MainProgram.buttonsRight$4973$74=Global.id;
  MainProgram.buttonsRight$4972$74=Global.id;
  MainProgram.buttonsRight$4971$74=Global.id;
  MainProgram.buttonsRight$4970$74=Global.id;
  MainProgram.buttonsRight$4969$74=Global.id;
- MainProgram.buttonsRight$4968$74=Global.id;
  MainProgram.buttonsRight=function()
  {
   var tmp,p,i;

@@ -1,4 +1,4 @@
-////-d:FSharpStation1540640972248 -d:WEBSHARPER
+////-d:FSharpStation1541324013710 -d:WEBSHARPER
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#I @"..\packages\Owin\lib\net40"
@@ -17,14 +17,14 @@
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
-//#r @"../packages/Other/SSH.NET/lib/net40/Renci.SshNet.dll"
 //#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
 //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
 //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
 //#r @"..\packages\Owin\lib\net40\Owin.dll"
+//#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
 //#r @"..\projects\LayoutEngine\bin\LayoutEngine.dll"
 /// Root namespace for all code
-//#define FSharpStation1540640972248
+//#define FSharpStation1541324013710
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -105,27 +105,6 @@ namespace FsRoot
                 match box v with
                 | :? string as s -> printfn "%s" s
                 | __             -> printfn "%A" v
-            
-            [< Inline "(function (n) { return n.getFullYear() + '-' + ('0'+(n.getMonth()+1)).slice(-2) + '-' +  ('0'+n.getDay()).slice(-2) + ' '+('0'+n.getHours()).slice(-2)+ ':'+('0'+n.getMinutes()).slice(-2)+ ':'+('0'+n.getSeconds()).slice(-2)+ ':'+('00'+n.getMilliseconds()).slice(-3) })(new Date(Date.now()))" >]
-            let nowStamp() = 
-                let t = System.DateTime.UtcNow // in two steps to avoid Warning: The value has been copied to ensure the original is not mutated
-                t.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
-            
-            let [<Inline>] inline traceT t v = tee (sprintf "%A" >> (fun s -> s.[..100]) >> printfn "%s %s: %A" (nowStamp()) t) v
-            let [<Inline>] inline trace   v = traceT "trace" v
-            let [<Inline>] inline traceI  v = trace          v |> ignore
-            
-            module Log =
-                let [<Inline>] inline In     n f   =      (traceT (sprintf "%s in " n)) >> f
-                let [<Inline>] inline Out    n f   = f >> (traceT (sprintf "%s out" n))
-                let [<Inline>] inline InA    n f p = async { return! In  n f p }
-                let [<Inline>] inline OutA   n f p = async { return! Out n f p }
-                let [<Inline>] inline InOut  n     = In  n >> Out  n
-                let [<Inline>] inline InOutA n f p = async {
-                    let!   r = InA n f  p
-                    do         Out n id r |> ignore
-                    return r 
-                  }
             
             /// Extensible type for error messages, warnings and exceptions
             type ResultMessage<'M> =
@@ -283,7 +262,7 @@ namespace FsRoot
                         return f()
                     }
                     let (>>=)                              v f = bind f v
-                    let rec    traverseSeq      f           sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                    let traverseSeq             f           sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                                  Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                     let inline sequenceSeq                  sq = traverseSeq id sq
                     let insertO  vAO                           = vAO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
@@ -313,7 +292,7 @@ namespace FsRoot
                     let insertO                  vRO = vRO |> Option.map(map Some)    |> Option.defaultWith(fun () -> Ok None)
                     let absorbO               f  vOR = vOR |> bindP (ofOption f)
                     let (>>=)                    r f = bind f r
-                    let rec    traverseSeq    f   sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                    let traverseSeq           f   sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                        Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                     let inline sequenceSeq        sq = traverseSeq id sq
                         
@@ -435,7 +414,7 @@ namespace FsRoot
                 
                     let inline apply           fR    vR = fR |> bind (swap map  vR)
                     let (>>=)                       v f = bind f v
-                    let rec    traverseSeq     f     sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                    let traverseSeq            f     sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                           Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                     let inline sequenceSeq           sq = traverseSeq id sq
                     
@@ -573,7 +552,7 @@ namespace FsRoot
                 
                     let inline apply           fR    vR = fR |> bind (swap map  vR)
                     let (>>=)                       v f = bind f v
-                    let rec    traverseSeq     f     sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                    let traverseSeq            f     sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                           Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                     let inline sequenceSeq           sq = traverseSeq id sq
                     
@@ -880,7 +859,7 @@ namespace FsRoot
                 ///          printfn "Async: %s" res
                 ///      } |> Async.RunSynchronously
                 ///      
-                let call hndl f = callA hndl (fun (msg:string) -> async { return f msg } )
+                let call hndl f = callA hndl (fun msg -> async { return f msg } )
                 
                 /// A Mailbox processor that maintains a state
                 let foldA hndl f initState =
@@ -1274,145 +1253,6 @@ namespace FsRoot
         /// Essentials that cannot run in Javascript (WebSharper)
         [< AutoOpen >]
         module LibraryNoJS =
-            module RunProcess =
-                open System.Diagnostics
-                open System.Text
-            
-                let startProcess p ops =
-                    let procStart   = ProcessStartInfo(p, ops)
-                    let proc        = new Process()
-                    proc.StartInfo <- procStart
-                    proc.Start() 
-                
-                let startProcessDir p ops dir =
-                    let procStart   = ProcessStartInfo(p, ops, WorkingDirectory = dir)
-                    let proc        = new Process()
-                    proc.StartInfo <- procStart
-                    proc.Start() 
-                
-                type ShellResponse =
-                    | ShellDidNotStart 
-                    | ShellExit                  of int * stdout: string * stderr:string
-                    | ShellNoExit                of       stdout: string * stderr:string
-                    | ShellCrashed               of       stdout: string * stderr:string
-                    with 
-                    override msg.ToString() = 
-                        match msg with
-                        | ShellDidNotStart                 -> [ "Shell did not start" ]
-                        | ShellExit        (cod, out, err) -> [ if cod <> 0 then yield sprintf "exit(%d)" cod
-                                                                yield                          out ; if err <> "" then yield "ERROR:" ; yield err ]
-                        | ShellCrashed     (     out, err) -> [ yield "Shell crashed!" ; yield out ; if err <> "" then yield "ERROR:" ; yield err ]
-                        | ShellNoExit      (     out, err) -> [ yield                          out ; if err <> "" then yield "ERROR:" ; yield err ]
-                        |> String.concat "\n"
-                
-                type ShellEx(startInfo: ProcessStartInfo, ?outHndl, ?errHndl, ?priorityClass) =
-                    let proc                              = new Process()
-                    let bufferOutput                      = new StringBuilder()
-                    let bufferError                       = new StringBuilder()
-                    let append  (sb: StringBuilder) txt   = sb.Append(txt + "\n")                  |> ignore
-                    let consume (sb: StringBuilder)       = sb.ToString() |>! (fun _ -> sb.Clear() |> ignore)
-                    let dataHandler handler               = DataReceivedEventHandler(fun sender args -> try handler args.Data with _ -> ())
-                    let outputHandler                     = append bufferOutput |> dataHandler
-                    let errorHandler                      = append bufferError  |> dataHandler
-                    do  startInfo.RedirectStandardInput  <- true
-                        startInfo.RedirectStandardOutput <- true
-                        startInfo.RedirectStandardError  <- true
-                        startInfo.UseShellExecute        <- false
-                        proc.StartInfo                   <- startInfo
-                        proc.EnableRaisingEvents         <- true
-                        outputHandler                    |>             proc.OutputDataReceived.AddHandler
-                        errorHandler                     |>             proc.ErrorDataReceived .AddHandler
-                        Option.map dataHandler outHndl   |> Option.iter proc.OutputDataReceived.AddHandler
-                        Option.map dataHandler errHndl   |> Option.iter proc.ErrorDataReceived .AddHandler
-                //        proc.Exited            .AddHandler(System.EventHandler     (fun sender args -> try proc.Close()                                    with _ -> () ))
-                      
-                    new          (program, args, ?priorityClass) = let startInfo                     = new ProcessStartInfo()
-                                                                   do  startInfo.FileName           <- program
-                                                                       startInfo.Arguments          <- args
-                                                                   new ShellEx(startInfo, ?priorityClass = priorityClass)
-                    member ____.Start                         () = let r = proc.Start() 
-                                                                   priorityClass |> Option.iter (fun p -> proc.PriorityClass <- p)
-                                                                   proc.BeginOutputReadLine()
-                                                                   proc.BeginErrorReadLine ()
-                                                                   r
-                    member ____.WaitToFinish                  () = proc.WaitForExit()
-                                                                   let    output  = (consume bufferOutput).Trim()
-                                                                   let    error   = (consume bufferError ).Trim()
-                                                                   ((if proc.HasExited then proc.ExitCode else -99999), output, error)
-                    member ____.WaitForInputIdle              () = proc.WaitForInputIdle()
-                    member this.StartAndWait                  () = let _started = this.Start()
-                                                                   this.WaitToFinish()
-                    member this.StartAndWaitS                 () = this.StartAndWait()
-                                                                   |>! fun _ -> (this :> System.IDisposable).Dispose()
-                                                                   |> ShellExit
-                    member this.stdOutErr2Result exit out errs   = if exit <> 0
-                                                                   then Result.Error <| ErrorMsg(
-                                                                           [| if out  <> ""              then yield "stdout: " + out           
-                                                                              if errs <> ""              then yield errs                       
-                                                                              if errs  = "" || exit <> 1 then yield sprintf "ExitCode: %d" exit
-                                                                           |] |> String.concat "\n")
-                                                                   else Result.Ok (out, errs)
-                    member this.StartAndWaitR                 () = let r = this.StartAndWait()
-                                                                   (this :> System.IDisposable).Dispose()
-                                                                   r |||> this.stdOutErr2Result
-                    member this.RunToFinish                   () = this.StartAndWaitS().ToString()
-                    member this.RunOutputToFileR            file = proc.OutputDataReceived.RemoveHandler outputHandler
-                                                                   use stream  = new System.IO.FileStream(file, System.IO.FileMode.Create)
-                                                                   let _started = proc.Start() 
-                                                                   proc.BeginErrorReadLine ()
-                                                                   proc.StandardOutput.BaseStream.CopyTo stream
-                                                                   this.WaitToFinish()
-                                                                   |> ShellExit
-                    member this.RunOutputToFile             file = this.RunOutputToFileR file
-                                                                   |> fun v -> v.ToString() 
-                    member ____.Send                (txt:string) = proc.StandardInput.WriteLine txt
-                    member ____.Output                        () = consume bufferOutput
-                    member ____.Error                         () = consume bufferError
-                    member ____.Response(out:string, err:string) = match out.Trim(), err.Trim() with
-                                                                   | good, ""  -> Result.Ok    <| good               
-                                                                   | good, bad -> Result.Error <| Message(ShellNoExit(good, bad))
-                    member this.Response                      () = this.Response(this.Output(), this.Error())
-                    member this.SendAndWait (send, wait, ?onErr) =
-                        let waitOnError = defaultArg onErr false
-                        let eventWait   = if waitOnError then proc.ErrorDataReceived else proc.OutputDataReceived
-                                          |> Event.choose (fun evArgs -> try evArgs.Data |> (fun v -> if v.Contains wait then Some <| Result.Ok v else None) with _ -> None)
-                        let eventAll    = Event.merge eventWait  (Event.map (fun _ -> Result.Error <| Message (ShellCrashed(this.Output(), this.Error()))) proc.Exited)
-                        asyncResult {
-                            //do! Result.tryProtection()
-                            async { 
-                                do!    Async.Sleep 20 
-                                this.Send send        } |> Async.Start
-                            let! (waited:string) = Async.AwaitEvent eventAll
-                            do!   Async.Sleep 200
-                            return! if waitOnError
-                                    then this.Response(this.Output(), this.Error() |> fun msg -> msg.Split([| waited |], System.StringSplitOptions.None) |> Array.head)
-                                    else this.Response()
-                        }
-                    member ____.HasExited = try proc.HasExited with _ -> true
-                    member ____.Abort()   = try proc.Kill   () with _ -> ()
-                    interface System.IDisposable with
-                        member ____.Dispose () =
-                            try proc.Kill   () with _ -> ()
-                            try proc.Close  () with _ -> ()
-                            try proc.Dispose() with _ -> ()
-                
-                
-                let runAndWaitS p ops =
-                    let procStart   = ProcessStartInfo(p, ops)
-                    let shell       = new ShellEx(procStart)
-                    shell.StartAndWaitS() 
-                
-                let runToFinish p ops =
-                    let procStart   = ProcessStartInfo(p, ops)
-                    let shell       = new ShellEx(procStart, printfn "%s", eprintfn "%s")
-                    shell.RunToFinish() 
-                
-                let runOutputToFile p ops file =
-                    let procStart   = ProcessStartInfo(p, ops)
-                    let shell       = new ShellEx(procStart)
-                    shell.RunOutputToFile file 
-                
-                
             module Ping =
                 open System.Net.NetworkInformation
             
@@ -1449,85 +1289,6 @@ namespace FsRoot
                     |> Async.RunSynchronously
             
             
-            //#r "../packages/Other/SSH.NET/lib/net40/Renci.SshNet.dll"
-            module SshNet =
-                open FusionAsyncM
-                open Operators
-                open Renci.SshNet
-            
-                let getClient    ip (port:int) user (pwd    : string        ) = new SshClient(ip, port, user, pwd    )
-                let getClientRsa ip (port:int) user (keyfile: PrivateKeyFile) = new SshClient(ip, port, user, keyfile)
-            
-                let doCmdW (client:SshClient) f cmd =
-                    fusion {
-                        if not client.IsConnected then
-                            client.Connect()
-                        use cmnd  = client.CreateCommand cmd
-                        let! res  = Async.FromBeginEnd(cmnd.BeginExecute, cmnd.EndExecute) |> ofAsync
-                        let! res  =
-                            match res, cmnd.Error with
-                            | ""  , ""   -> OkF     ""
-                            | ""  , err  -> ErrorF     <| ErrorMsg err
-                            | res , ""   -> OkF    res
-                            | res , err  -> OkFMsg res <| ErrorMsg err
-                        return f res
-                    }
-                    
-                let doCmdF client f =
-                    doCmdW client f
-                    >> iterResult print print
-                    
-                let doCmd client = doCmdF client print
-                    
-            module Adb =
-                let removeBlankLines (s:string) = s.Replace("\r","")
-                    //s.Split '\n'
-                    //|> Seq.filter ((<>) "")
-                    //|> String.concat "\n"
-            //    let mutable path          = @"C:\Program Files (x86)\Android\android-sdk\platform-tools\adb.exe"
-            //    let mutable path          = @"D:\Abe\Downloads\Android\adb.exe"    
-                let mutable path          = @"C:\Program Files (x86)\AirDroid\IncludeAdb\AirDroid_adb.exe"
-                let call command          = RunProcess.runToFinish     path command  |> removeBlankLines
-                let execOut      file cmd = RunProcess.runOutputToFile path <| sprintf "exec-out %s" cmd <| file
-                let connectIpPort ip port = call   <| sprintf "connect %s:%d" ip  port        
-                let connectIp     ip      = connectIpPort                         ip  5555        
-                let connectUSB         () = call    "usb"
-                let devices            () = call  "devices"
-                let pull      rfile lfile = call  <| sprintf "pull \"%s\" \"%s\"" rfile lfile
-                let shell             cmd = call  <| sprintf "shell %s"           cmd
-                let shellSU           cmd = shell <| sprintf "su -c %s"           cmd
-                let keyevent          key = shell <| sprintf "input keyevent %d"  key
-                let runApp            app = shell <| sprintf "monkey -p %s 1"     app            
-                let checkApp          app = shell <| sprintf "ps | grep %s"       app            
-                let ls                dir = shell <| sprintf "ls -la %s"          dir
-                let version            () = call    "version"
-                let reboot             () = call    "reboot"
-                let rebootByCmd        () = shellSU "am start -a android.intent.action.REBOOT"
-                let killServer         () = call    "kill-server"
-                let connectWifi        ip = printfn "Connecting ADB via Wifi: "; connectIp ip
-                let connectUSBMsg      () = printfn "Connecting ADB via USB: " ; connectUSB()
-                let runCheckApp     app   =
-                    runApp          app |> ignore
-                    let ps        = app |> checkApp
-                    if  ps.Contains app 
-                    then "IS RUNNING!!"
-                    else "is not running at the moment."
-                    |> printfn "%s %s" app
-                
-                let captureScreen local file =
-                    shell <| "screencap -p " + local |> ignore
-                    pull  local  file                |> ignore
-                    //adb.Call <| sprintf "exec-out screencap -p > \"%s\"" file
-                
-                let captureScreen2 file = execOut file "screencap -p" 
-                
-                let activateWifi () =
-                    killServer  ()                                                           |> ignore
-                    connectUSB  ()                                                           |> ignore
-                    shellSU     "setprop service.adb.tcp.port 5555 ; stop adbd ; start adbd" |> ignore
-                    killServer  ()                                                           |> ignore
-                
-                
         /// Essentials that part runs in Javascript and part runs in the server
         [< AutoOpen >]
         module Library2 =
@@ -1977,7 +1738,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1540640972248"
+                let mutable fsharpStationAddress = Address "FSharpStation1541324013710"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -2119,295 +1880,91 @@ namespace FsRoot
             let pingOne c = computers |> List.filter (fst >> ((=) c)) |> pingSeveral 
             let All    () = computers |> pingSeveral
         
-        module OldHtc =
-            open Adb
-            open FusionAsyncM
+        //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+        //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
+        module Thermostats =
+            open System.Net
+            open System.IO
+            open FSharp.Data.HttpRequestHeaders
+            open FSharp.Data.JsonExtensions
+            open FSharp.Data
             open Ping
+            open FusionAsyncM
+            open Operators
+        //    open WSMessagingBroker
         
-            let Adb_Run_OpenGarage3_Present = true
+            [< JavaScript >]
+            type ThermostatMessage = THMData of name:string * values:(string * string) []
         
-            let shell    c = Adb.shell    c |> ignore
-            let shellSU  c = Adb.shellSU  c |> ignore
-            let keyevent k = Adb.keyevent k |> ignore
+            let ThermoAbajoIp  = computer "Thermo-Abajo"  |> Option.get |> fun c -> c.ip.Value
+            let ThermoArribaIp = computer "Thermo-Arriba" |> Option.get |> fun c -> c.ip.Value
         
-            type PhoneCapabilities = {
-                connect       : unit                      -> unit
-                screenCapture : string                    -> unit
-                unlockScreen  : unit                      -> unit
-                click         : (int * int)               -> unit
-                dragDrop      : (int * int) * (int * int) -> unit
-            }
+            type Tstat = JsonProvider<"""{"temp":74.00,"tmode":1,"fmode":0,"override":1,"hold":1,"t_heat":73.00,"tstate":0,"fstate":0,"time":{"day":1,"hour":14,"minute":13},"t_type_post":0}""">
         
-            let mutable currentPhoneN = None
+        //    let messaging = new WSMessagingClient("Thermostats")
+        //    printfn "%A" messaging.EndPoint
         
-            let refreshCapture() = FSharpStationClient.actionCall0 "OldHtc.Refresh"
+            let thermostats =
+                [ "Arriba", ThermoArribaIp
+                  "Abajo" , ThermoAbajoIp
+                ]
         
-            let AbeFi = {
-                connect       = fun () -> currentPhoneN <- Some 2; Adb.connectUSB() |> ignore
-                screenCapture = fun file ->
-                    fusion {
-                        printfn "%s" <| Adb.captureScreen2 file
-                        return! ofAsyncResultRM <| refreshCapture()
-                    } |> iterResultPrint
-                unlockScreen  = fun ()     -> keyevent 82 ; keyevent 66
-                click         = fun (x, y) -> shell <| sprintf "input tap %d %d" x y
-                dragDrop      = fun _ -> printfn "not implemented dragDrop"
-            }
+            let makeUri ip cmd = sprintf "http://%s/%s" ip cmd
         
-            [< Literal >]
-            let file = @"..\website\screen.png"
+            let rec json2props cmd (json: JsonValue) =
+                json.Properties
+                |> Array.collect (fun (p, v) ->
+                    let cmd2 = cmd + "/" + p
+                    if v.Properties.Length > 0 
+                    then json2props cmd2 v
+                    else [| cmd2, v.ToString() |]
+                )
                 
-            let clickHtc (x, y) = 
-                [
-                    "sendevent /dev/input/event2 3 48 58 "
-                    "sendevent /dev/input/event2 3 50 58 "
-                    "sendevent /dev/input/event2 3 58 58 "
-                    sprintf "sendevent /dev/input/event2 3 53 %d " (x * 2)
-                    sprintf "sendevent /dev/input/event2 3 54 %d "  y
-                    "sendevent /dev/input/event2 0 2 0   "
-                    "sendevent /dev/input/event2 1 330 1 "
-                    "sendevent /dev/input/event2 0 0 0   "
-                    "sendevent /dev/input/event2 3 48 58 "
-                    "sendevent /dev/input/event2 3 50 58 "
-                    "sendevent /dev/input/event2 3 58 58 "
-                    sprintf "sendevent /dev/input/event2 3 53 %d " (x * 2)
-                    sprintf "sendevent /dev/input/event2 3 54 %d "  y
-                    "sendevent /dev/input/event2 0 2 0   "
-                    "sendevent /dev/input/event2 0 0 0   "
-                    "usleep 50 "
-                    "sendevent /dev/input/event2 0 2 0   "
-                    "sendevent /dev/input/event2 1 330 0 "
-                    "sendevent /dev/input/event2 0 0 0   "
-                    "usleep 500 "
-                ] |> String.concat " ; "
-                |> shell
+            let forThermostat tname = 
+                thermostats
+                |> Seq.filter (fun (n, _) -> n = tname || tname = "*")
         
-            let dragDropHtc ((x1, y1), (x2,y2)) = 
-                ((x1, y1), (x2,y2)) |> printfn "sending swipe at %A"
-                [
-                    "sendevent /dev/input/event2 3 48 58 "
-                    "sendevent /dev/input/event2 3 50 58 "
-                    "sendevent /dev/input/event2 3 58 58 "
-                    sprintf "sendevent /dev/input/event2 3 53 %d " (x1 * 2)
-                    sprintf "sendevent /dev/input/event2 3 54 %d "  y1
-                    "sendevent /dev/input/event2 0 2 0   "
-                    "sendevent /dev/input/event2 1 330 1 "
-                    "sendevent /dev/input/event2 0 0 0   "
-                    "usleep 500 "
-                    "sendevent /dev/input/event2 3 48 58 "
-                    "sendevent /dev/input/event2 3 50 58 "
-                    "sendevent /dev/input/event2 3 58 58 "
-                    sprintf "sendevent /dev/input/event2 3 53 %d " (x2 * 2)
-                    sprintf "sendevent /dev/input/event2 3 54 %d "  y2
-                    "sendevent /dev/input/event2 0 2 0   "
-                    "sendevent /dev/input/event2 0 0 0   "
-                    "usleep 50 "
-                    "sendevent /dev/input/event2 0 2 0   "
-                    "sendevent /dev/input/event2 1 330 0 "
-                    "sendevent /dev/input/event2 0 0 0   "
-                    "usleep 500 "
-                ] |> String.concat " ; "
-                |> shell
+            let queryThermoStat cmd tname =
+                forThermostat tname
+                |> Seq.map    (fun (n,ip) -> 
+                    makeUri ip cmd
+                    |> Tstat.AsyncLoad 
+                    |> Async.bind (fun m -> 
+                        json2props cmd m.JsonValue
+                        |>  fun data -> THMData(n, data)
+                        |>! print
+                        |>  fun msg -> msg |> Json.Serialize |> FSharpStationClient.actionCall1 "Thermostats.processData" 
+                        //|>  iterResultPrint 
+                    )
+                )
+                |> Async.Parallel
+                |> Async.RunSynchronously
+                |> ignore
         
-            let OldHtc = {
-                connect       = fun () -> currentPhoneN <- Some 1; Adb.connectWifi   OldHtcIp |> ignore
-                screenCapture = fun file ->
-                    fusion {
-                        Adb.captureScreen "/data/local/screen.png" file
-                        return! ofAsyncResultRM <| refreshCapture()
-                    } |> iterResultPrint
-                unlockScreen  = fun () -> shell   "/data/local/unlock.sh"
-                click         = clickHtc
-                dragDrop      = dragDropHtc
-            }
-        
-            let Cyanogen = {
-                connect       = fun () -> currentPhoneN <- Some 3; Adb.connectUSB() |> ignore
-                screenCapture = Adb.captureScreen "/data/local/screen.png"
-                unlockScreen  = fun () -> shell   "/data/local/unlock.sh"
-                click         = clickHtc
-                dragDrop      = dragDropHtc
-            }
-        
-            let mapPhone f =
-                let map fm =
-                    match currentPhoneN with 
-                    //| Some 1 -> Some OldHtc
-                    | Some 2 -> Some AbeFi
-                    | Some 3 -> Some Cyanogen
-                    | _      -> Some OldHtc
-                    |> Option.map fm
-                    |> Option.defaultWith (fun () -> eprintfn "Connect to phone first")
-                if devices().Split('\n').Length < 2 then
-                    map (fun ph -> ph.connect())
-                map f
+            let postThermostat cmd body tname =
+                forThermostat tname
+                |> Seq.iter (fun (n, ip) ->
+                    Http.RequestString( makeUri ip cmd
+                                    , headers = [ ContentType HttpContentTypes.Json ]
+                                    , body    = TextRequest body
+                                    )
+                    |> printfn "%s"
+                    queryThermoStat cmd n       
+                )
                 
-            let shellPh c = 
-                if devices().Split('\n').Length < 2 then
-                    mapPhone (fun ph -> ph.connect())
-                shell c
+            let postTstat parm value tname =
+                sprintf "{%A:%s}" parm value
+                |> postThermostat "tstat"      <| tname
         
-            let click p =
-                async {
-                    mapPhone (fun ph -> printfn "sending click %A" p ; ph.click p)
-                    do! Async.Sleep 1000
-                    mapPhone (fun ph -> ph.screenCapture file)
-                } |> Async.RunSynchronously
+            let setCurrentTime () =
+                System.DateTime.Now
+                |> (fun now -> sprintf "{ %A: %d, %A: %d }" "hour" now.Hour "minute" now.Minute)
+                |> postThermostat "tstat/time" <| "*"
         
-            let dragDrop p =
-                async {
-                    mapPhone (fun ph -> printfn "sending swipe %A" p ; ph.dragDrop p)
-                    do! Async.Sleep 1000
-                    mapPhone (fun ph -> ph.screenCapture file)
-                } |> Async.RunSynchronously
+            let setTmode mode = postTstat "tmode" mode "*"
+            let setFmode mode = postTstat "fmode" mode "*"
+                
         
-            open SshNet
-        
-            let client passphrase = 
-                new Renci.SshNet.PrivateKeyFile(@"D:\Abelardo\Documents\MobaXterm\home\.ssh\id_rsa", passphrase)
-                |> getClientRsa OldHtcIp OldHtcPort OldHtcUser
-        
-            let mutable OldHtcPassword = None
-        
-            let doCmdSsh cmd = 
-                if OldHtcPassword = None then printfn "Passphrase not set" else
-                doCmd (client OldHtcPassword.Value) cmd
-        
-            //let activateWifiSSH() = doCmdSsh "ls -la\n"
-            //let activateWifiSSH() = doCmdSSH "su -c /home/local/airAdb.sh"
-            let activateWifiSSH() = doCmdSsh "su -c 'setprop service.adb.tcp.port 5555 ; stop adbd ; start adbd'"
-        
-            // usage: input [text|keyevent]
-            //   input text <string>
-            //   input keyevent <event_code>
-            // 
-            // 0 -->  "KEYCODE_UNKNOWN" 
-            // 1 -->  "KEYCODE_MENU" 
-            // 2 -->  "KEYCODE_SOFT_RIGHT" 
-            // 3 -->  "KEYCODE_HOME" 
-            // 4 -->  "KEYCODE_BACK" 
-            // 5 -->  "KEYCODE_CALL" 
-            // 6 -->  "KEYCODE_ENDCALL" 
-            // 7 -->  "KEYCODE_0" 
-            // 8 -->  "KEYCODE_1" 
-            // 9 -->  "KEYCODE_2" 
-            // 10 -->  "KEYCODE_3" 
-            // 11 -->  "KEYCODE_4" 
-            // 12 -->  "KEYCODE_5" 
-            // 13 -->  "KEYCODE_6" 
-            // 14 -->  "KEYCODE_7" 
-            // 15 -->  "KEYCODE_8" 
-            // 16 -->  "KEYCODE_9" 
-            // 17 -->  "KEYCODE_STAR" 
-            // 18 -->  "KEYCODE_POUND" 
-            // 19 -->  "KEYCODE_DPAD_UP" 
-            // 20 -->  "KEYCODE_DPAD_DOWN" 
-            // 21 -->  "KEYCODE_DPAD_LEFT" 
-            // 22 -->  "KEYCODE_DPAD_RIGHT" 
-            // 23 -->  "KEYCODE_DPAD_CENTER" 
-            // 24 -->  "KEYCODE_VOLUME_UP" 
-            // 25 -->  "KEYCODE_VOLUME_DOWN" 
-            // 26 -->  "KEYCODE_POWER" 
-            // 27 -->  "KEYCODE_CAMERA" 
-            // 28 -->  "KEYCODE_CLEAR" 
-            // 29 -->  "KEYCODE_A" 
-            // 30 -->  "KEYCODE_B" 
-            // 31 -->  "KEYCODE_C" 
-            // 32 -->  "KEYCODE_D" 
-            // 33 -->  "KEYCODE_E" 
-            // 34 -->  "KEYCODE_F" 
-            // 35 -->  "KEYCODE_G" 
-            // 36 -->  "KEYCODE_H" 
-            // 37 -->  "KEYCODE_I" 
-            // 38 -->  "KEYCODE_J" 
-            // 39 -->  "KEYCODE_K" 
-            // 40 -->  "KEYCODE_L" 
-            // 41 -->  "KEYCODE_M" 
-            // 42 -->  "KEYCODE_N" 
-            // 43 -->  "KEYCODE_O" 
-            // 44 -->  "KEYCODE_P" 
-            // 45 -->  "KEYCODE_Q" 
-            // 46 -->  "KEYCODE_R" 
-            // 47 -->  "KEYCODE_S" 
-            // 48 -->  "KEYCODE_T" 
-            // 49 -->  "KEYCODE_U" 
-            // 50 -->  "KEYCODE_V" 
-            // 51 -->  "KEYCODE_W" 
-            // 52 -->  "KEYCODE_X" 
-            // 53 -->  "KEYCODE_Y" 
-            // 54 -->  "KEYCODE_Z" 
-            // 55 -->  "KEYCODE_COMMA" 
-            // 56 -->  "KEYCODE_PERIOD" 
-            // 57 -->  "KEYCODE_ALT_LEFT" 
-            // 58 -->  "KEYCODE_ALT_RIGHT" 
-            // 59 -->  "KEYCODE_SHIFT_LEFT" 
-            // 60 -->  "KEYCODE_SHIFT_RIGHT" 
-            // 61 -->  "KEYCODE_TAB" 
-            // 62 -->  "KEYCODE_SPACE" 
-            // 63 -->  "KEYCODE_SYM" 
-            // 64 -->  "KEYCODE_EXPLORER" 
-            // 65 -->  "KEYCODE_ENVELOPE" 
-            // 66 -->  "KEYCODE_ENTER" 
-            // 67 -->  "KEYCODE_DEL" 
-            // 68 -->  "KEYCODE_GRAVE" 
-            // 69 -->  "KEYCODE_MINUS" 
-            // 70 -->  "KEYCODE_EQUALS" 
-            // 71 -->  "KEYCODE_LEFT_BRACKET" 
-            // 72 -->  "KEYCODE_RIGHT_BRACKET" 
-            // 73 -->  "KEYCODE_BACKSLASH" 
-            // 74 -->  "KEYCODE_SEMICOLON" 
-            // 75 -->  "KEYCODE_APOSTROPHE" 
-            // 76 -->  "KEYCODE_SLASH" 
-            // 77 -->  "KEYCODE_AT" 
-            // 78 -->  "KEYCODE_NUM" 
-            // 79 -->  "KEYCODE_HEADSETHOOK" 
-            // 80 -->  "KEYCODE_FOCUS" 
-            // 81 -->  "KEYCODE_PLUS" 
-            // 82 -->  "KEYCODE_MENU" 
-            // 83 -->  "KEYCODE_NOTIFICATION" 
-            // 84 -->  "KEYCODE_SEARCH" 
-            // 85 -->  "TAG_LAST_KEYCODE"
-            // 
-            // 
-            // Image capture mode: adb shell "am start -a android.media.action.IMAGE_CAPTURE"
-            // Video capture mode: adb shell "am start -a android.media.action.VIDEO_CAPTURE"
-            // To focus: adb shell "input keyevent KEYCODE_FOCUS"
-            // To take a photo or start/stop recording: adb shell "input keyevent KEYCODE_CAMERA"
-            // 
-        
-            let ls              () = shell "ls -la /data/local/"
-            let flash_On        () = shellSU "'echo 1 > /sys/class/leds/flashlight/brightness'"
-            let cat             () = shellSU "cat /data/local/unlock.sh"
-            let CHECK           () = checkApp "OpenGarage3.OpenGarage3" 
-            let shell_          () = shell "service list" 
-            let Screen_off      () = keyevent 86
-                                     keyevent 26
-            let unlock          () = shell "/data/local/unlock.sh"
-            let Screen_lock     () = keyevent 86
-                                     keyevent 26
-                                     keyevent 26
-                                     
-            let unlockx         () = keyevent 86
-                                     keyevent 26
-        
-            let Screen_unlock   () = mapPhone (fun ph -> ph.unlockScreen() )
-            let flash_Off       () = shellSU "'echo 0 > /sys/class/leds/flashlight/brightness'"
-            let checkScreenOn   () = shell "dumpsys input_method | grep ScreenOn"
-            let BACK            () = keyevent 4
-            let HOME            () = keyevent 3
-            let MENU            () = keyevent 1
-            let Wifi_Keyboard   () = RunProcess.startProcess (sprintf "http://%s:7777" OldHtcIp) ""
-            let supplicantWifi  () = shellSU "cat /data/misc/wifi/wpa_supplicant.conf"
-            let enableWifi      () = shellSU "svc wifi enable"
-        //    let Refresh         () = let [< Fable.Core.Emit "Date.now()" >] now() = 1
-        //                             let screen = Fable.Import.Browser.document.getElementById("PhoneScreen")
-        //                             screen.setAttribute("src", screen.getAttribute("src").Split('=').[0] 
-        //                             |> sprintf "%s=%d" <| now())
-                                     
-            let Camera          () = shellPh "am start -a android.media.action.IMAGE_CAPTURE"
-            let Capture_Screen  () = mapPhone (fun ph -> ph.screenCapture file)
-            let run_OpenGarage3 () = runCheckApp "OpenGarage3.OpenGarage3"
-            let ImageClick      () = click (100, 100)
         //#r "..\projects\LayoutEngine\bin\LayoutEngine.dll"
         //#define WEBSHARPER
         [< AutoOpen ; JavaScriptExport >]
@@ -2418,59 +1975,208 @@ namespace FsRoot
             open WebSharper.UI.Html
             module AF = AppFramework
         
-            module OldHtcPlugIn =
-                open WebSharper.UI.Client.EltExtensions
+            module ThermostatsPlugIn =
+                open Thermostats
+                open FusionAsyncM
+                open Operators
+                module LE = LayoutEngine
+                
+                let weather (snp : Snippet) =
+                    let cityId        = snp.snpProperties |> Seq.tryFind (fst >> (=) "CityId"       ) |> Option.map snd |> Option.defaultValue "4711801"
+                    let openWeatherId = snp.snpProperties |> Seq.tryFind (fst >> (=) "OpenWeatherId") |> Option.map snd |> Option.defaultValue "1b76ef58915a2c784ce5dcb7899b81f2"    
+                    div [] [
+                        div [ attr.style "height: 1em"] []
+                        div [ attr.id "openweathermap-widget" ] []
+                        script [ attr.src "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/d3.min.js" ] []
+                        script [] [ text (sprintf "window.myWidgetParam = [{id: 15,cityid: '%s',appid: '%s',units: 'imperial',containerid: 'openweathermap-widget',  }];" cityId openWeatherId) ]
+                        script [ attr.src "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js" ] []
+                    ]
             
-                [< Inline "(Date.now())" >]
-                let now() = 0
-                let var = Var.Create "test value"
-                let lnk l = l + "?d=" + (string <| now() ) 
-                let actionClick name =  AF.tryGetAct "FSharpStation" "ActionClick"
-                                        |>  Option.map          (fun act -> fun pos -> act.actFunction |> AF.callFunction (sprintf "(fun()->%s (%s))" name pos )()  )
-                                        |>  Option.defaultValue ignore
-                let mutable dragStartCoords = (0, 0)                            
-                let fileImg = 
-                    let click    = actionClick "click"   
-                    let dragDrop = actionClick "dragDrop"
-                    OldHtc.file 
-                    |> String.splitInTwoO "website" 
-                    |> Option.map (fun (_, l) -> 
-                        img [   attr.src (lnk l)
-                                attr.style "width:100%"
-                                on.click (fun em (ev:Dom.MouseEvent) -> 
-                                    (ev?offsetX * em?naturalWidth / em?width, ev?offsetY * em?naturalHeight / em?height) 
-                                    |> string |> click)
-                                on.dragOver (fun _  ev -> ev.PreventDefault() )
-                                on.drag     (fun _  ev -> ev.PreventDefault() )
-                                on.dragStart(fun _  ev -> dragStartCoords <- (ev?offsetX, ev?offsetY))
-                                on.drop     (fun em ev -> 
-                                    ev.PreventDefault() 
-                                    ((fst dragStartCoords * em?naturalWidth / em?width, snd dragStartCoords * em?naturalHeight / em?height) 
-                                    ,(ev?offsetX          * em?naturalWidth / em?width, ev?offsetY          * em?naturalHeight / em?height))
-                                    |> fun t -> sprintf "%A,%A" (fst t) (snd t) |> dragDrop)
-                            ] []) 
-                    |> Option.defaultValue Doc.Empty
-                let refresh() = let e = (fileImg :?> Elt).Dom
-                                e.SetAttribute("src", e.GetAttribute "src" 
-                                                        |> String.splitByChar '?' 
-                                                        |> fun l -> lnk l.[0] )
+                [<NoComparison ; NoEquality>]
+                type ThermostatData = {
+                    name : string 
+                    data : Var<Map<string, Var<string>>>
+                } 
+            
+                let setData k v therm = 
+                    match therm.data.Value |> Map.tryFind k with
+                    | None     -> therm.data.Value <- therm.data.Value |> Map.add k (Var.Create v)
+                    | Some dat -> dat      .Value <- v
+                    
+                let getData key (therm: ThermostatData) =
+                    View.Do {
+                        let!   map   = therm.data.View
+                        let    dataO = map |> Map.tryFind key
+                        match  dataO with 
+                        | None       -> return "" 
+                        | Some dataV -> 
+                        let!   data  = dataV.View
+                        return data
+                    }
+            
+                let time2Str day hour minute =
+                    match day with
+                    | 0 -> "Mon"
+                    | 1 -> "Tue"
+                    | 2 -> "Wed"
+                    | 3 -> "Thu"
+                    | 4 -> "Fri"
+                    | 5 -> "Sat"
+                    | 6 -> "Sun"
+                    | _ -> "---"
+                    |> sprintf "%s, %02d:%02d" <| hour <| minute
+            
+                let postTstat parm value therm =
+                    AF.tryGetAct "FSharpStation" "ActionClick" |> Option.iter (fun pac -> AF.callFunction (sprintf ":postTstat %A %A %A " parm value therm.name) () pac.actFunction)
+                    JS.Alert(sprintf "setting %s = %A" parm value)
+            
+                let setHold v therm = async {
+                    let parm  = "hold"
+                    let value = if v then "1" else "0"
+                    therm |> setData   parm (if v then "1" else "0")
+                    therm |> postTstat parm value
+                }
+            
+                let thermostatDisplay(therm:ThermostatData) =
+                    let setData    k v = setData k v therm
+                    let getData    k   = getData k   therm
+                    let temp           = getData "tstat/temp"        |> View.Map (float >> sprintf "%A°F")
+                    let mode           = getData "tstat/tmode"       |> View.Map (function | "1" -> "Heat"     | "2" -> "Cool"      | _ -> "Off")
+                    let state          = getData "tstat/tstate"      |> View.Map (function | "1" -> "Heating"  | "2" -> "Cooling"   | _ -> ""   )
+                    let fanState       = getData "tstat/fstate"      |> View.Map (function | "1" -> "Fan:On"   |                      _ -> ""   )
+                    let hold           = getData "tstat/hold"
+                    let day            = getData "tstat/time/day"    |> View.Map int
+                    let hour           = getData "tstat/time/hour"   |> View.Map int
+                    let minute         = getData "tstat/time/minute" |> View.Map int
+                    let time           = View.Map3 time2Str day hour minute
+                    let getSettingParm = 
+                        View.Do { 
+                            let!  mode = mode
+                            match mode with
+                            | "Heat" -> return Some "tstat/t_heat"
+                            | "Cool" -> return Some "tstat/t_cool"
+                            | _      -> return None
+                        }
+                    let getSettingVar =
+                        Var.Make
+                           (View.Do {
+                                let!  keyO = getSettingParm
+                                match keyO with
+                                | Some key -> let!   setting = getData key
+                                              return setting
+                                | None     -> return  "--"
+                            })
+                            (fun v -> getSettingParm |> View.Get(Option.iter(fun key -> setData key v)))
+                    let setSetpoint = async {
+                        let!  parmO = getSettingParm |> View.GetAsync
+                        match parmO with
+                        | None -> ()
+                        | Some parm ->
+                        let! value  = getData parm |> View.GetAsync
+                        let parm2 = parm.["tstat/".Length..]
+                        therm |> postTstat parm2 value
+                    }
             
             
-                let doc = lazy div [] [ fileImg
-                                        button [ on.click(fun _ _ -> refresh() ) ] [ text "Refresh" ]
-                                      ]
+                    //let set         = getSettingVar therm
+                    let title       =   div [] [ 
+                                            h2 [] [ text therm.name ]
+                                            text time.V
+                                        ]
+                    let information =   div [] [ 
+                                            h3  [] [          text temp    .V   ]
+                                            h4  [] [ div [] [ text state   .V ] ]
+                                            div [] [          text fanState.V   ]
+                                        ]
+                    let settings    =   div [] [
+                                            div [] [
+                                                button [ on.click (fun _ _ -> setSetpoint |> Async.Start) ] [ text "Set:" ]
+                                                Doc.Input [] getSettingVar
+                                            ]
+                                            label [ attr.``class`` "checkbox-inline" ] [
+                                                Doc.Element "input" 
+                                                    [   attr.``type`` "checkbox"
+                                                        on.click       (fun e _ -> therm |>             setHold e?``checked`` |> Async.Start)
+                                                        on.afterRender (fun e   -> hold  |> View.Sink (fun v -> e?``checked`` <- v = "1")   )
+                                                        attr.style "bottom: 7px ; width: 18px;"
+                                                    ] []
+                                                text "Hold" 
+                                            ]
+                                        ]
+                    div [ attr.style "grid-gap: 0px  ; margin: 10px" 
+                          attr.classDyn <| View.Map (sprintf "shadow panel thermostat Mode%s") mode 
+                      ] [
+                        LE.fixedSplitter    true  50.0 true information settings
+                        |> LE.fixedSplitter false 50.0 true title
+                        Doc.Element "style" [] [ text  """
+                              .thermostat {
+                                  text-align      : center     ; 
+                                  height          : 100px      ;
+                              }
+                              .thermostat h2, .thermostat h3, .thermostat h4  {
+                                  margin-top      : 3px     ; 
+                                  margin-left     : 5px     ; 
+                                  margin-bottom   : 0px     ; 
+                              }
+                              .thermostat input {
+                                  width           : 50px ;
+                              }
+                              .thermostat.ModeCool {
+                                  background-color: blue; 
+                                  color: white;
+                              }
+                              .thermostat.ModeCool button, .thermostat.ModeCool input {
+                                  background-color: navy; 
+                                  color: white;
+                              }
+                              .thermostat.ModeHeat {
+                                  background-color: firebrick; 
+                                  color: white;
+                              }
+                              .thermostat.ModeHeat button, .thermostat.ModeHeat input {
+                                  background-color: darkred; 
+                                  color: white;
+                              }
+                        """ ]
+                    ]
+            
+                let newThermostat n   = { name = n ; data = Var.Create Map.empty }
+            
+                let Thermostats =
+                    [|  newThermostat "Arriba"
+                        newThermostat "Abajo"
+                    |]
+                    
+                let getThermostat nm = Thermostats |> Array.tryFind (fun t -> t.name = nm)
+            
+                let processData (THMData(name, data: (string * string) [])) = 
+                    printfn "Thermostats: %A %A" name data
+                    fusion {
+                        data
+                        |> Array.iter (fun (cmd, dat) ->
+                            let key = sprintf "%s(%s)" name cmd
+                            getThermostat name |> Option.iter (setData cmd  dat)
+                            //currentSnpO        |> Option.iter (fun snp   -> snp.properties |> Dict.add key  dat)
+                        )
+                        return "got it!"
+                    } |> iterResultPrintA
+            
                 [< SPAEntryPoint >]
                 let main() =
                     AF.addPlugIn {
-                        AF.plgName    = "OldHtc"
-                        AF.plgVars    = [| AF.newVar  "testVar"         var
+                        AF.plgName    = "Thermostats"
+                        AF.plgVars    = [| //AF.newVar  "testVar"         var
                                         |]  
                         AF.plgViews   = [|
                                         |]  
-                        AF.plgDocs    = [| AF.newDoc  "mainDoc"         doc
+                        AF.plgDocs    = [| yield  AF.newDoc  "openWeather"                            <| lazy weather (Snippet.New "" "" None)
+                                           yield! Thermostats |> Seq.map (fun th -> AF.newDoc th.name <| lazy thermostatDisplay th)
                                         |]  
-                        AF.plgActions = [| AF.newAct  "Refresh"         refresh
+                        AF.plgActions = [| //AF.newAct  "Refresh"         refresh
+                                           AF.newActF   "processData"      <| AF.FunAct1 ((fun msg -> msg |> unbox |> Json.Deserialize |> processData), "ThermostatMessage")
                                         |]
                         AF.plgQueries = [|                                               
                                         |]
                     }
+                    AF.tryGetAct "FSharpStation" "ActionClick" |> Option.iter (fun pac -> AF.callFunction "Refresh" () pac.actFunction)
+                    

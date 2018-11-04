@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1540641624973 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1540642604214 -d:WEBSHARPER
 ////#cd @"..\projects\FSharpStation\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -35,7 +35,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1540641624973
+//#define FSharpStation1540642604214
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -318,7 +318,7 @@ namespace FsRoot
                     let bindNone f o = match o with | Some v -> Some v |_-> f()
                     
                     let (>>=)                              v f = bind f v
-                    let rec    traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                    let traverseSeq            f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                                  Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                     let inline sequenceSeq                  sq = traverseSeq id sq
                     let insertR (vOR:Result<_,_>)              = vOR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
@@ -346,7 +346,7 @@ namespace FsRoot
                         return f()
                     }
                     let (>>=)                              v f = bind f v
-                    let rec    traverseSeq      f           sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                    let traverseSeq             f           sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                                  Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                     let inline sequenceSeq                  sq = traverseSeq id sq
                     let insertO  vAO                           = vAO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
@@ -376,7 +376,7 @@ namespace FsRoot
                     let insertO                  vRO = vRO |> Option.map(map Some)    |> Option.defaultWith(fun () -> Ok None)
                     let absorbO               f  vOR = vOR |> bindP (ofOption f)
                     let (>>=)                    r f = bind f r
-                    let rec    traverseSeq    f   sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                    let traverseSeq           f   sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                        Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                     let inline sequenceSeq        sq = traverseSeq id sq
                         
@@ -498,7 +498,7 @@ namespace FsRoot
                 
                     let inline apply           fR    vR = fR |> bind (swap map  vR)
                     let (>>=)                       v f = bind f v
-                    let rec    traverseSeq     f     sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                    let traverseSeq            f     sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                           Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                     let inline sequenceSeq           sq = traverseSeq id sq
                     
@@ -636,7 +636,7 @@ namespace FsRoot
                 
                     let inline apply           fR    vR = fR |> bind (swap map  vR)
                     let (>>=)                       v f = bind f v
-                    let rec    traverseSeq     f     sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                    let traverseSeq            f     sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                           Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                     let inline sequenceSeq           sq = traverseSeq id sq
                     
@@ -943,7 +943,7 @@ namespace FsRoot
                 ///          printfn "Async: %s" res
                 ///      } |> Async.RunSynchronously
                 ///      
-                let call hndl f = callA hndl (fun (msg:string) -> async { return f msg } )
+                let call hndl f = callA hndl (fun msg -> async { return f msg } )
                 
                 /// A Mailbox processor that maintains a state
                 let foldA hndl f initState =
@@ -3499,7 +3499,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1540641624973"
+                let mutable fsharpStationAddress = Address "FSharpStation1540642604214"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -4784,7 +4784,8 @@ namespace FsRoot
                 let!  namecodeO = propO snp  name
                 match namecodeO with
                 | Some code -> return openProp + code
-                | None      -> 
+                | None      ->
+                if name.StartsWith ":" then return openProp + name.[1..] else 
                 let! template  = propO snp "action-template" |>> Option.defaultValue "${button}() |> printfn \"%A\""
                 return openProp + template |> String.indentStr 4 |> sprintf "module Call%s =\n%s" (string <| FStation.now())
             }
