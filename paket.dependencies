@@ -17,6 +17,8 @@ nuget Microsoft.Owin.FileSystems
 nuget Microsoft.Owin.Hosting
 nuget Microsoft.Owin.Host.HttpListener
 nuget FSharp.Data
+nuget System.Reactive    = 4.0.0
+nuget FSharp.Control.Reactive
 nuget FSharpPlus 
 nuget Microsoft.NETCore.UniversalWindowsPlatform = 5.2.4
 

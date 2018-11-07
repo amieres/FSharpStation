@@ -1,4 +1,4 @@
-////-d:WEBSHARPER
+////-d:FSharpStation1541588788569 -d:WEBSHARPER
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
@@ -17,6 +17,7 @@
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 /// Root namespace for all code
+//#define FSharpStation1541588788569
 #if INTERACTIVE
 module FsRoot   =
 #else

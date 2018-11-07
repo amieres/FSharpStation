@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1540514876616 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1541473972107 -d:WEBSHARPER
 ////#cd @"..\projects\FSharpStation\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -19,6 +19,8 @@
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+//#r @"..\packages\System.Reactive\lib\net46\System.Reactive.dll"
+//#r @"..\packages\FSharp.Control.Reactive\lib\net46\FSharp.Control.Reactive.dll"
 //#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
 //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
 //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
@@ -35,7 +37,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1540514876616
+//#define FSharpStation1541473972107
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -318,7 +320,7 @@ namespace FsRoot
                     let bindNone f o = match o with | Some v -> Some v |_-> f()
                     
                     let (>>=)                              v f = bind f v
-                    let rec    traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                    let traverseSeq            f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                                  Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                     let inline sequenceSeq                  sq = traverseSeq id sq
                     let insertR (vOR:Result<_,_>)              = vOR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
@@ -346,7 +348,7 @@ namespace FsRoot
                         return f()
                     }
                     let (>>=)                              v f = bind f v
-                    let rec    traverseSeq      f           sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                    let traverseSeq             f           sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                                  Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                     let inline sequenceSeq                  sq = traverseSeq id sq
                     let insertO  vAO                           = vAO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
@@ -376,7 +378,7 @@ namespace FsRoot
                     let insertO                  vRO = vRO |> Option.map(map Some)    |> Option.defaultWith(fun () -> Ok None)
                     let absorbO               f  vOR = vOR |> bindP (ofOption f)
                     let (>>=)                    r f = bind f r
-                    let rec    traverseSeq    f   sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                    let traverseSeq           f   sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                        Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                     let inline sequenceSeq        sq = traverseSeq id sq
                         
@@ -498,7 +500,7 @@ namespace FsRoot
                 
                     let inline apply           fR    vR = fR |> bind (swap map  vR)
                     let (>>=)                       v f = bind f v
-                    let rec    traverseSeq     f     sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                    let traverseSeq            f     sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                           Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                     let inline sequenceSeq           sq = traverseSeq id sq
                     
@@ -636,7 +638,7 @@ namespace FsRoot
                 
                     let inline apply           fR    vR = fR |> bind (swap map  vR)
                     let (>>=)                       v f = bind f v
-                    let rec    traverseSeq     f     sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                    let traverseSeq            f     sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                           Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                     let inline sequenceSeq           sq = traverseSeq id sq
                     
@@ -943,7 +945,7 @@ namespace FsRoot
                 ///          printfn "Async: %s" res
                 ///      } |> Async.RunSynchronously
                 ///      
-                let call hndl f = callA hndl (fun (msg:string) -> async { return f msg } )
+                let call hndl f = callA hndl (fun msg -> async { return f msg } )
                 
                 /// A Mailbox processor that maintains a state
                 let foldA hndl f initState =
@@ -1025,15 +1027,15 @@ namespace FsRoot
                                                             configuration = initConfig
                                                             resource      = ctor initConfig
                                                         }
-                [< Inline "throw 'Process not available in JavaScript'" >]
-                member oo.Process      (work,?cfg) = oo.ProcessA(work, ?cfg=cfg) |> Async.RunSynchronously
-                member oo.ProcessA     (work,?cfg) = oo.AsyncProcessA((fun v -> async { return work v }), ?cfg=cfg)
                 member __.AsyncProcessA(work,?cfg) = agent 
                                                     |> Mailbox.StateFull.applyReplyA(fun st -> async { 
                                                          let  st2 = st |> check (defaultArg cfg st.configuration) 
                                                          let! res = work st2.resource
                                                          return increment st2, res 
                                                      })
+                member oo.ProcessA     (work,?cfg) = oo.AsyncProcessA((fun v -> async { return work v }), ?cfg=cfg)
+                [< Inline "throw 'ResourceAgent.Process not available in JavaScript'" >]
+                member oo.Process      (work,?cfg) = oo.ProcessA(work, ?cfg=cfg) |> Async.RunSynchronously
                 member __.State                    = agent |> Mailbox.StateFull.getState
                 member oo.LimitCount    with get() = oo.State.limitCount
                 member oo.Configuration with get() = oo.State.configuration
@@ -1674,9 +1676,14 @@ namespace FsRoot
         /// Essentials that cannot run in Javascript (WebSharper)
         [< AutoOpen >]
         module LibraryNoJS =
+            //#r @"..\packages\System.Reactive\lib\net46\System.Reactive.dll"
+            //#r @"..\packages\FSharp.Control.Reactive\lib\net46\FSharp.Control.Reactive.dll"
             module RunProcess =
                 open System.Diagnostics
                 open System.Text
+                open FSharp.Control.Reactive
+                open FSharp.Control.Reactive.WaitHandle
+                open FSharp.Control
             
                 let startProcess p ops =
                     let procStart   = ProcessStartInfo(p, ops)
@@ -1774,15 +1781,15 @@ namespace FsRoot
                     member this.Response                      () = this.Response(this.Output(), this.Error())
                     member this.SendAndWait (send, wait, ?onErr) =
                         let waitOnError = defaultArg onErr false
-                        let eventWait   = if waitOnError then proc.ErrorDataReceived else proc.OutputDataReceived
-                                          |> Event.choose (fun evArgs -> try evArgs.Data |> (fun v -> if v.Contains wait then Some <| Result.Ok v else None) with _ -> None)
-                        let eventAll    = Event.merge eventWait  (Event.map (fun _ -> Result.Error <| Message (ShellCrashed(this.Output(), this.Error()))) proc.Exited)
+                        let obsWait   = if waitOnError then proc.ErrorDataReceived else proc.OutputDataReceived
+                                          |> Observable.choose (fun evArgs -> try evArgs.Data |> (fun v -> if v.Contains wait then Some <| Result.Ok v else None) with _ -> None)
+                        let obsAll    = Observable.merge obsWait  (Event.map (fun _ -> Result.Error <| Message (ShellCrashed(this.Output(), this.Error()))) proc.Exited)
                         asyncResult {
                             //do! Result.tryProtection()
                             async { 
                                 do!    Async.Sleep 20 
                                 this.Send send        } |> Async.Start
-                            let! (waited:string) = Async.AwaitEvent eventAll
+                            let!  waited = Observable.wait (obsAll |> Observable.take 1) 
                             do!   Async.Sleep 200
                             return! if waitOnError
                                     then this.Response(this.Output(), this.Error() |> fun msg -> msg.Split([| waited |], System.StringSplitOptions.None) |> Array.head)
@@ -1790,11 +1797,13 @@ namespace FsRoot
                         }
                     member ____.HasExited = try proc.HasExited with _ -> true
                     member ____.Abort()   = try proc.Kill   () with _ -> ()
+                    member ____.Process   = proc
                     interface System.IDisposable with
                         member ____.Dispose () =
-                            try proc.Kill   () with _ -> ()
-                            try proc.Close  () with _ -> ()
-                            try proc.Dispose() with _ -> ()
+                            try proc.Close  ()
+                                proc.Kill   ()
+                                proc.Dispose() 
+                            with _ ->       ()
                 
                 
                 let runAndWaitS p ops =
@@ -2066,8 +2075,9 @@ namespace FsRoot
                                                          shell.Send ";;"
                                                          return! shell.SendAndWait("printfn \"" + endToken + "\";;", endToken)
                                                      }
-                    member oo.IsAlive              = not shell.HasExited
-                    member oo.Abort()              = shell.Abort()
+                    member __.IsAlive              = not shell.HasExited
+                    member __.Abort()              = shell.Abort()
+                    member __.Process              = shell.Process
                     member oo.EvalSilent code      = asyncResult {
                                                         try     silent := true
                                                                 return! oo.Eval code
@@ -2860,8 +2870,16 @@ namespace FsRoot
                     outHndl <-                  queue
                     errHndl <- ((+) "Err: ") >> queue
             
-                let ctor (Config (workDir, config)) = 
-                    new FsiExe(config, workDir, outHndl, errHndl) 
+                let ctor, aborter, disposer, getIdO =
+                    let mutable fsiO = None
+                    let ctor (Config (workDir, config)) =
+                        let fsi = new FsiExe(config, workDir, outHndl, errHndl)
+                        fsiO <- Some fsi
+                        fsi
+                    ctor
+                  , (fun () -> fsiO |> Option.iter (fun fsi ->  fsi                       .Abort  ()  ) )
+                  , (fun () -> fsiO |> Option.iter (fun fsi -> (fsi :> System.IDisposable).Dispose()  ) )
+                  , (fun () -> fsiO |> Option.map  (fun fsi ->  fsi                       .Process.Id ) )
             
                 let fsiExeL = lazy new ResourceAgent<_, _>( 70
                                                          , ctor
@@ -2884,14 +2902,12 @@ namespace FsRoot
                     |> AgentReaderM.ofResourceRm
                     |> AgentReaderM.run fsiExeL.Value (extractConfig workDir code)
             
-            
                 [< Rpc >]
                 let evalCodeSameConfig code = 
                     evaluateRm code
                     |> AgentReaderM.ofResourceRm |> id
                     |> AgentReaderM.runSameConfig fsiExeL.Value
                 
-            
                 [< Rpc >]
                 let evalCodeWithPresence workDir presenceKey presenceValue presenceCode code = 
                     let presenceConfig = extractConfig workDir presenceCode
@@ -2906,11 +2922,11 @@ namespace FsRoot
                     |> AgentReaderM.run fsiExeL.Value presenceConfig
              
                 [<Rpc>]    
-                let abortFsiExe  () = fsiExeL.Value.Process(fun fsi -> fsi.Abort() )
+                let abortFsiExe  () = aborter()
                 
                 [<Rpc>]    
                 /// like abortFsiExe but prevents respawning until next command
-                let disposeFsiExe() = ((fsiExeL.Value.State.resource) :> System.IDisposable).Dispose()
+                let disposeFsiExe() = disposer()
             
             
             [<WebSharper.JavaScript>]
@@ -3499,7 +3515,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1540514876616"
+                let mutable fsharpStationAddress = Address "FSharpStation1541473972107"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -3539,6 +3555,9 @@ namespace FsRoot
                 let execJS      js          = sendMessage (MsgAction [| "ExecJS"      ; js              |]) |> AsyncResult.bind respString
                 let setProperty path prop v = sendMessage (MsgAction [| "SetProperty" ; path ; prop ; v |]) |> AsyncResult.bind respString
                 let sendOutput  txt         = sendMessage (MsgAction [| "AddOutput"   ; txt             |])
+                let actionCall0 act         = sendMessage (MsgAction [|  act                            |])
+                let actionCall1 act p1      = sendMessage (MsgAction [|  act          ; p1              |])
+                let actionCall2 act p1 p2   = sendMessage (MsgAction [|  act          ; p1   ; p2       |])
                                         
                 let getBrokerProcessId() = fsharpStationClient.MBProcessId
             module FsAutoComplete =
@@ -4317,13 +4336,15 @@ namespace FsRoot
                 let propsV = Lens Snippets.currentSnippetV.V.snpProperties
                 let setName  i newName = propsV.Value.[i] <- (newName, snd propsV.Value.[i]) 
                                          propsV.Value |> propsV.Set
-                let setValue i newVal  = propsV.Value.[i] <- (fst propsV.Value.[i], newVal) 
+                let setValue i newVal  = if (snd propsV.Value.[i]).Length > 1000 then () else
+                                         propsV.Value.[i] <- (fst propsV.Value.[i], newVal) 
                                          propsV.Value |> propsV.Set
                 V([| 0.. propsV.V.Length - 1|])
                 |> Doc.BindSeqCached (fun i ->
                     let nameV  = Var.Make <| V( fst propsV.V.[i])
                                           <| setName  i
-                    let valueV = Var.Make <| V( snd propsV.V.[i])
+                    let valueV = Var.Make <| V( let v = snd propsV.V.[i]
+                                                if v.Length > 1000 then sprintf "%s...<%d chars>" v.[0..100] v.Length else v)
                                           <| setValue i
                     TemplateLib.Property()
                         .Name(   nameV                   )
@@ -4779,7 +4800,8 @@ namespace FsRoot
                 let!  namecodeO = propO snp  name
                 match namecodeO with
                 | Some code -> return openProp + code
-                | None      -> 
+                | None      ->
+                if name.StartsWith ":" then return openProp + name.[1..] else 
                 let! template  = propO snp "action-template" |>> Option.defaultValue "${button}() |> printfn \"%A\""
                 return openProp + template |> String.indentStr 4 |> sprintf "module Call%s =\n%s" (string <| FStation.now())
             }
@@ -4910,7 +4932,6 @@ namespace FsRoot
                             files.[0] |> reader.ReadAsText
         
         module MainProgram =
-            open FsRoot
             open WebComponent
             open FusionAsyncM
             open Operators
@@ -4934,7 +4955,10 @@ namespace FsRoot
                 && JS.Confirm (sprintf "Do you want to delete %s?" <| Snippet.snippetName snp.snpName snp.snpContent) then 
                     Snippets.deleteCurrentSnippet()
         
-            module AF = AppFramework
+            open FsRoot
+            module AF = AppFramework 
+        
+            let FStationLyt = "FStationLyt"
         
             let hookVar plug name func obj =
                 AF.tryGetVar plug name
@@ -5023,6 +5047,8 @@ namespace FsRoot
                                        AF.newAct  "AddProperty"     RenderProperties.addProperty
                                        AF.newAct  "SaveAs"          LoadSave.saveAs
                                        AF.newAct  "RunFS"           runFsCode
+                                       AF.newAct  "AbortFsi"        FsiAgent.abortFsiExe
+                                       AF.newAct  "DisposeFsi"      FsiAgent.disposeFsiExe
                                        AF.newActF "LoadFile"        <| AF.FunAct1 ((fun o -> unbox o |> LoadSave.loadTextFile   ), "FileElement")
                                        AF.newActF "Import"          <| AF.FunAct1 ((fun o -> unbox o |> Importer.importFile     ), "FileElement")
                                        AF.newActF "JumpTo"          <| AF.FunAct1 ((fun o -> unbox o |> JumpTo.jumpToRef        ), "textarea"   )
@@ -5033,7 +5059,6 @@ namespace FsRoot
                                     |]
                 }
                 """
-        
                     menuEditor       horizontal  65       menuLogo                  editorMessages
                     double           horizontal  0-50-100 AppFramework.AppFwkClient menuEditor
                     menuLogo         vertical    350      logo                      menu
@@ -5041,24 +5066,25 @@ namespace FsRoot
                     editorMessages   horizontal 10-83-100 editorButtons             messages
                     messages         vertical   0-50-100  messagesLeft              messagesRight
                     editorButtons    vertical -200 snippetsSnippet buttons
-                    buttons div      "overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px" btnSaveAs none x btnAddSnippet btnDeleteSnippet btnIndentIn btnIndentOut none x btnRunFS
+                    buttons div      "overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px" btnSaveAs none x btnAddSnippet btnDeleteSnippet btnIndentIn btnIndentOut none x btnRunFS none x btnAbortFsi
                     snippetsSnippet  vertical   0-20-100  snippets                  editorProperties
                     snippets         horizontal 20        "${FSharpStation.CurrentPath}" FSharpStation.Snippets
                     editorProperties vertical   0-100-100 snippet                   properties
                     properties       div        ""        FSharpStation.Properties
                     snippet          horizontal 35        Name                      FSharpStation.editor
                     menu             span  "" btnLoad btnImport
-                    
+        
                     btnSaveAs        button FSharpStation.SaveAs         "class=btn ${FSharpStation.SaveNeeded}" "Save as...    "
                     btnAddSnippet    button FSharpStation.AddSnippet     ""                  "Add Snippet   "
                     btnDeleteSnippet button FSharpStation.RemoveSnippet  ""                  "Delete Snippet"
                     btnIndentIn      button FSharpStation.IndentIn       ""                  "Indent In  >> "
                     btnIndentOut     button FSharpStation.IndentOut      ""                  "Indent Out << "
                     btnRunFS         button FSharpStation.RunFS          ""                  "Run F#        "
-         
+                    btnAbortFsi      button FSharpStation.AbortFsi       ""                  "Abort Fsi     "
+        
                     messagesLeft     wcomp-tabstrip                      ""                  Output FsCode
                     messagesRight    wcomp-tabstrip                      ""                  Parser
-         
+        
                     Output           textarea  FSharpStation.Output      "tabname=Output ; placeholder=Output messages ; spellcheck=false" 
                     FsCode           textarea  FSharpStation.FsCode      "tabname=F# Code; placeholder=F# Code         ; spellcheck=false" 
                     Parser           textarea  FSharpStation.Parser      "tabname=Parser ; placeholder=Parser messages; dblclick=${FSharpStation.JumpTo} ; spellcheck=false" 
@@ -5068,7 +5094,7 @@ namespace FsRoot
                     FileName         div                                 "class=form-control"  FSharpStation.fileName
                 """
                 |> String.unindentStr
-                |> LayoutEngine.newLyt "FStationLyt"
+                |> LayoutEngine.newLyt FStationLyt
                 |> LayoutEngine.addLayout
         
                 Snippets.currentLayoutJSDW
@@ -5094,7 +5120,7 @@ namespace FsRoot
                         if txt = "" then None else 
                         Some name
                     )
-                    |> Option.defaultValue "FStationLyt"
+                    |> Option.defaultValue FStationLyt
                     |> AF.mainDocV.Set
                 )
         
@@ -5107,12 +5133,25 @@ namespace FsRoot
                 } |> Doc.Async
         
         
+        //#define FSS_SERVER
         module Messaging =
             open FStation
             open FusionM
             open Operators
+            open MainProgram
+        
+            open FsRoot
+            module AF = AppFramework 
         
             let wsStationClient = if IsClient then new WebSockets.WSMessagingClient(FStation.id) else new WebSockets.WSMessagingClient("FStation.id", WebSockets.FSStation)
+        
+            let actionCall actN p1 p2 = fusion {
+                match actN |> AF.splitName FStationLyt ||> AF.tryGetAct with
+                | None     -> return! ofResultRM <| Error (ErrorMsg (sprintf "Action %s not found" actN) )
+                | Some act -> AF.callFunction p1 p2 act.actFunction
+                              return FSResponse.RespString "Ok"
+            }
+        
         
             let processMessage (msg: FSMessage) : Async<Result<FSResponse,ResultMessage<string>>>= 
                 fusion {
@@ -5134,6 +5173,9 @@ namespace FsRoot
                                                                        |>> Option.map (fun snp -> Snippets.setProperty snp prop v ; "Ok")
                                                                        |>  absorbO (fun () -> ErrorMsg <| sprintf "Snippet not found: %s" path)
                                                            return  FSResponse.RespString res
+                    | MsgAction [| actN              |] -> return! actionCall actN () ()
+                    | MsgAction [| actN ; p1         |] -> return! actionCall actN p1 ()
+                    | MsgAction [| actN ; p1 ; p2    |] -> return! actionCall actN p1 p2
                     | MsgGetUrl                         -> return  FSResponse.RespString JS.Document.BaseURI
                     | _                                 -> return  Hole ?(sprintf "TODO message: %A" msg)
                 } |> Snippets.runReaderResult |> Async.rtn
@@ -5161,8 +5203,6 @@ namespace FsRoot
         //#r @"..\packages\WebSharper.Owin\lib\net461\HttpMultipartParser.dll"
         //#r @"..\packages\Microsoft.Owin.StaticFiles\lib\net451\Microsoft.Owin.StaticFiles.dll"
         //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
-        
-        //#define FSS_SERVER
         
         [< JavaScript false >]
         module Server =
