@@ -279,7 +279,6 @@ namespace FsRoot
                                 if changed() then f()
                         } |> Async.Start
                         
-            [< JavaScriptExport >]
             module Monaco =
                 open WebSharper.UI.Html
             
@@ -493,7 +492,7 @@ namespace FsRoot
     
         //#define WEBSHARPER
         
-        [< JavaScriptExport >]
+        [< JavaScript >]
         module TestingJS =
         
             module Monaco =
