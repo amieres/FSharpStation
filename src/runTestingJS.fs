@@ -1,4 +1,8 @@
-////-d:FSharpStation1542289473557
+#nowarn "3180"
+#nowarn "1182"
+#nowarn "52"
+#nowarn "1178"
+////-d:FSharpStation1542595039595
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#I @"..\packages\WebSharper.FSharp\tools\net461\"
@@ -32,8 +36,13 @@
 //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
 //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
 //#r @"..\packages\Owin\lib\net40\Owin.dll"
+//#r @"System.Web"
+//#nowarn "3180"
+//#nowarn "1182"
+//#nowarn "52"
+//#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1542289473557
+//#define FSharpStation1542595039595
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -2556,7 +2565,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1542289473557"
+                let mutable fsharpStationAddress = Address "FSharpStation1542595039595"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -2617,6 +2626,12 @@ namespace FsRoot
                                         
                 let getBrokerProcessId() = fsharpStationClient.MBProcessId
     
+        //#r "System.Web"
+        //#nowarn "3180"
+        //#nowarn "1182"
+        //#nowarn "52"
+        //#nowarn "1178"
+        
         module RunTestingJs =
             open FusionAsyncM
             open FusionAsyncM.Operators
@@ -2629,14 +2644,14 @@ namespace FsRoot
         
             let run () = fusion {
                 let! url      = FSharpStationClient.getUrl()        |> ofAsyncResultRM
-                let  modif    = File.GetLastWriteTime <| testFile() |>! print
+                let  modif    = testFile() |>! print |> File.GetLastWriteTime
                 do   startProcess (sprintf "%stesting/testing.html?q=%A" url.[..url.Length-2] modif)     "" |> ignore
             } 
         
             [< Inline "throw 'runTest is not intended for JavaScript client'" >]
-            let compile name = fusion {
+            let compile show name = fusion {
                 let! code   = FSharpStationClient.getCode <| name |> ofAsyncResultRM
-                let  args   = [ intShowArgs    /= false
+                let  args   = [ intShowArgs    /= (show:bool)
                                 fscGenFSharp2  /= "noframework"
                                 fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
                                 fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
@@ -2647,6 +2662,6 @@ namespace FsRoot
                 do   File.WriteAllText(testFile(), runtimeStart + "\n" + js)
             }
                 
-            let justRun       =             run >> iterResult print id
-            let compileAndRun = compile >=> run >> iterResult print id
+            let justRun            =                  run >> iterResult print id
+            let compileAndRun show = compile show >=> run >> iterResult print id
         

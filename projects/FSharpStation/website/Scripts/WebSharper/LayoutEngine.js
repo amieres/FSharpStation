@@ -399,15 +399,15 @@
  {
   return Hoverable$1.New$1().Content(Doc.Element("div",[AttrProxy.Create("style","flex-flow: column;")],[Doc.TextNode("Hover over me!")]));
  };
- Hoverable$1.Content$264$81=Runtime.Curried3(function(e,$1,$2)
+ Hoverable$1.Content$265$81=Runtime.Curried3(function(e,$1,$2)
  {
   return DomUtility.RemoveClass(e.elt,"hovering");
  });
- Hoverable$1.get_Attributes$260$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$261$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(false);
  });
- Hoverable$1.get_Attributes$259$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$260$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(true);
  });
@@ -549,7 +549,7 @@
   SC$1.$cctor();
   return SC$1.init;
  };
- WcTabStrip.tabStrip$402$64=function(i,selected)
+ WcTabStrip.tabStrip$403$64=function(i,selected)
  {
   return function()
   {
@@ -956,15 +956,15 @@
  {
   return PlugInVar.New(name,_var);
  };
- AppFramework.vertical$773$39=function(mouseDown)
+ AppFramework.vertical$774$39=function(mouseDown)
  {
   return function(te)
   {
    mouseDown(te.Event);
   };
  };
+ AppFramework.vertical$773$39=Global.id;
  AppFramework.vertical$772$39=Global.id;
- AppFramework.vertical$771$39=Global.id;
  AppFramework.vertical=function(partSizes,afterRender,afterRenderSp,mouseDown,gap)
  {
   var b,t,p,i;
@@ -992,15 +992,15 @@
    $1:gap
   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.wcompsplitterver(p[0])),(b.i=i,i)))).get_Doc();
  };
- AppFramework.horizontal$765$39=function(mouseDown)
+ AppFramework.horizontal$766$39=function(mouseDown)
  {
   return function(te)
   {
    mouseDown(te.Event);
   };
  };
+ AppFramework.horizontal$765$39=Global.id;
  AppFramework.horizontal$764$39=Global.id;
- AppFramework.horizontal$763$39=Global.id;
  AppFramework.horizontal=function(partSizes,afterRender,afterRenderSp,mouseDown,gap)
  {
   var b,t,p,i;
@@ -1028,7 +1028,7 @@
    $1:gap
   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.wcompsplitterhor(p[0])),(b.i=i,i)))).get_Doc();
  };
- AppFramework.mainDoc$754$42=function()
+ AppFramework.mainDoc$755$42=function()
  {
   return function()
   {
@@ -1093,7 +1093,7 @@
   SC$1.$cctor();
   return SC$1.AppFwkClient;
  };
- AppFramework.renderQueries$720$39=function(qry)
+ AppFramework.renderQueries$721$39=function(qry)
  {
   return function()
   {
@@ -1135,14 +1135,14 @@
    },plg.plgQueries);
   },AppFramework.currentPlugInW()));
  };
- AppFramework.renderActions$709$51=function(act)
+ AppFramework.renderActions$710$51=function(act)
  {
   return function(ev)
   {
    AppFramework.callFunction(ev,null,act.actFunction);
   };
  };
- AppFramework.renderActions$705$51=function(act)
+ AppFramework.renderActions$706$51=function(act)
  {
   return function(ev)
   {
@@ -1221,7 +1221,7 @@
    else
     actF.$0();
  };
- AppFramework.renderDocs$683$39=function(doc)
+ AppFramework.renderDocs$684$39=function(doc)
  {
   return function()
   {
@@ -1365,7 +1365,7 @@
    },plg.plgVars);
   },AppFramework.currentPlugInW()));
  };
- AppFramework.renderPlugIns$645$35=function(name)
+ AppFramework.renderPlugIns$646$35=function(name)
  {
   return function()
   {
@@ -1538,11 +1538,11 @@
    };
   }(Global.id))(varName)):o.$0;
  };
- LayoutEngineModule.inputFile$1167$69=Runtime.Curried3(function(act,el,$1)
+ LayoutEngineModule.inputFile$1168$69=Runtime.Curried3(function(act,el,$1)
  {
   return AppFramework.callFunction(el,null,act.actFunction);
  });
- LayoutEngineModule.inputFile$1166$69=Runtime.Curried3(function($1,el,$2)
+ LayoutEngineModule.inputFile$1167$69=Runtime.Curried3(function($1,el,$2)
  {
   el.value="";
  });

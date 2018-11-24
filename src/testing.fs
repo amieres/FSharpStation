@@ -1,4 +1,6 @@
-////-d:FSharpStation1542289473557 -d:WEBSHARPER
+#nowarn "1182"
+#nowarn "1178"
+////-d:FSharpStation1542632761675 -d:WEBSHARPER
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
@@ -16,8 +18,10 @@
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+//#nowarn "1182"
+//#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1542289473557
+//#define FSharpStation1542632761675
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -496,6 +500,8 @@ namespace FsRoot
         [< JavaScriptExport >]
         module TestingJS =
         
+            //#nowarn "1182"
+            //#nowarn "1178"
             module Monaco =
                 open WebSharper.UI
                 open WebSharper.UI.Html

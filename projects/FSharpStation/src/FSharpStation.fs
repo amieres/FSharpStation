@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1541586030091 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1542595039595 -d:WEBSHARPER
 ////#cd @"..\projects\FSharpStation\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -37,7 +37,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1541586030091
+//#define FSharpStation1542595039595
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -139,6 +139,12 @@ namespace FsRoot
                     | ExceptMsg(m,p) -> (m, p) ||> sprintf "Exception: %s, %s"
                     | RMessages ms   ->  ms     |> Seq.filter (function NoMsg -> false |_-> true) |> Seq.map (fun m -> m.ToString()) |> String.concat "\n"
             
+            [< AutoOpen >]
+            module ResultMessageHelpers =
+                let errorMsgf fmt = Printf.ksprintf ErrorMsg fmt
+                let warningf  fmt = Printf.ksprintf Warning  fmt
+                let infof     fmt = Printf.ksprintf Info     fmt
+            
             module ResultMessage =
             
                 let inline noMsg    msg = msg |> function NoMsg -> true |_-> false
@@ -147,7 +153,7 @@ namespace FsRoot
                 let rec bindMessage f msg = 
                     match msg with
                     | NoMsg          ->  NoMsg
-                    | Message   m    ->  f m
+                    | Message   m    ->  f         m
                     | ErrorMsg  m    ->  ErrorMsg  m
                     | Info      m    ->  Info      m
                     | Warning   m    ->  Warning   m
@@ -314,6 +320,13 @@ namespace FsRoot
                     
                     let rtn    = Some
                     let iter f = map f >> Option.defaultValue ()
+                
+                    let join o = Option.bind id o
+                    
+                    let apply fO  vO =
+                        match fO, vO with
+                        | Some f, Some v -> f v |> Some
+                        | _     , _      -> None
                 
                     /// Same as defaultWith
                     let mapNone  f o = Option.defaultWith f o
@@ -2624,6 +2637,7 @@ namespace FsRoot
                         layoutVertical   <- layoutV
                         if IsClient then defineWebComponent "wcomp-splitter" WcSplitterT.Constructor WcSplitterT.NewPointer
                     
+            [< JavaScriptExport >]
             module Monaco =
                 open WebSharper.UI.Html
             
@@ -2844,7 +2858,12 @@ namespace FsRoot
                 open Operators
             
                 [< JavaScript >]
-                type Config = Config of workDir:string * parms:string
+                type Config = Config of workDir:string * parms:Set<string>
+            
+                let fuseConfigs workDir a b =
+                    match a, b with
+                    | Config(dirA, parmsA), Config(dirB, parmsB) ->
+                    Config((if dirB <> workDir then dirB else dirA), Set.union parmsA parmsB)
             
                 let queueOutput send =
                     let output        = new System.Text.StringBuilder()
@@ -2873,7 +2892,7 @@ namespace FsRoot
                 let ctor, aborter, disposer, getIdO =
                     let mutable fsiO = None
                     let ctor (Config (workDir, config)) =
-                        let fsi = new FsiExe(config, workDir, outHndl, errHndl)
+                        let fsi = new FsiExe(config |> String.concat " ", workDir, outHndl, errHndl)
                         fsiO <- Some fsi
                         fsi
                     ctor
@@ -2883,7 +2902,7 @@ namespace FsRoot
             
                 let fsiExeL = lazy new ResourceAgent<_, _>( 70
                                                          , ctor
-                                                         , Config (".", "--nologo --quiet")
+                                                         , Config (".", Set ["--nologo" ; "--quiet"])
                                                          , (fun fsi    -> (fsi :> System.IDisposable).Dispose())
                                                          , (fun fsi    ->  fsi.IsAlive                         )
                                                          )
@@ -2893,7 +2912,9 @@ namespace FsRoot
                     Config(
                         FsCode.getSourceDir workDir <| String.splitByChar '\n' fsCode
                       , FsCode.extractDefines (FsCode fsCode)
-                        |> ((+) " --nologo --quiet ")
+                        |> String.splitByChar ' '
+                        |> Set
+                        |> Set.union  (Set[" --nologo" ; "--quiet "])
                     )
             
                 [< Rpc >]
@@ -2909,8 +2930,11 @@ namespace FsRoot
                     |> AgentReaderM.runSameConfig fsiExeL.Value
                 
                 [< Rpc >]
-                let evalCodeWithPresence workDir presenceKey presenceValue presenceCode code = 
-                    let presenceConfig = extractConfig workDir presenceCode
+                let evalCodeWithPresence  workDir presenceKey presenceValue presenceCode code = 
+                    let config = 
+                        fuseConfigs       workDir
+                        <| extractConfig  workDir presenceCode
+                        <| extractConfig  workDir         code
                     fusion {    
                         let! currentValueO  = getPresenceRm presenceKey
                         if   currentValueO <> Some presenceValue then
@@ -2919,7 +2943,7 @@ namespace FsRoot
                         return! evaluateRm code
                     }
                     |> AgentReaderM.ofResourceRm
-                    |> AgentReaderM.run fsiExeL.Value presenceConfig
+                    |> AgentReaderM.run fsiExeL.Value config
              
                 [<Rpc>]    
                 let abortFsiExe  () = aborter()
@@ -3515,7 +3539,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1541586030091"
+                let mutable fsharpStationAddress = Address "FSharpStation1542595039595"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -3542,6 +3566,12 @@ namespace FsRoot
                     | _               -> return! Error <| ErrorMsg (sprintf "Unexpected %A" response)
                 }
             
+                let respSnippet response = asyncResult { 
+                    match response with
+                    | RespSnippets [| snp |] -> return snp
+                    | _                      -> return! Error <| ErrorMsg (sprintf "Unexpected %A" response)
+                }
+            
                 let getCode path = 
                     path
                     |> String.splitByChar '/'
@@ -3549,6 +3579,15 @@ namespace FsRoot
                     |> MsgGetCode
                     |> sendMessage
                     |> AsyncResult.bind respString
+            
+                let getSnippet path = 
+                    path
+                    |> String.splitByChar '/'
+                    |> RefSnippetPath
+                    |> Array.singleton
+                    |> MsgGetSnippets
+                    |> sendMessage
+                    |> AsyncResult.bind respSnippet
             
                 let getUrl () = sendMessage MsgGetUrl |> AsyncResult.bind respString
             
@@ -5043,6 +5082,7 @@ namespace FsRoot
                     AF.plgViews   = [| AF.newViw  "FsCode"          Snippets.FsCodeW
                                        AF.newViw  "SaveNeeded"      Snippets.SaveAsClassW
                                        AF.newViw  "CurrentPath"     Snippets.currentPathW
+                                       AF.newViw  "FStationId"      (View.Const FStation.id)
                                     |]  
                     AF.plgDocs    = [| AF.newDoc  "mainDoc"         (lazy mainDoc()                 )
                                        AF.newDoc  "editor"          (lazy (WebSharper.UI.Html.div [] [ Monaco.getEditorConfigO() |> Option.map Monaco.render |> Option.defaultValue Doc.Empty ]) )

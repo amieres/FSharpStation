@@ -548,7 +548,7 @@ CIPHERSpaceLoadFiles(["/Scripts/WebSharper/WebSharper.Core.JavaScript/Runtime.js
  {
   return MonacoConfig.New(v,monc.onChange,monc.onRender,monc.editorO,monc.disabled,monc.options,monc.overrides);
  };
- Monaco.render$470$42=function(monc)
+ Monaco.render$474$42=function(monc)
  {
   return function(elchild)
   {

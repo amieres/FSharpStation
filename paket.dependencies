@@ -29,7 +29,11 @@ group Testing
     nuget Fuchu
     nuget Unquote
     nuget FsCheck
-nuget canopy
+    nuget Expecto
+    nuget Expecto.BenchmarkDotNet
+    nuget Expecto.FsCheck
+    nuget Logary.Adapters.Facade
+    nuget canopy
 
 group Other
     framework: net461
