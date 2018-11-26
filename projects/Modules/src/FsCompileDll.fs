@@ -1,4 +1,5 @@
 #nowarn "3180"
+#nowarn "1182"
 #nowarn "52"
 #nowarn "1178"
 ////-d:FSharpStation1542632761675
@@ -27,6 +28,7 @@
 //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
 //#r @"..\packages\Owin\lib\net40\Owin.dll"
 //#nowarn "3180"
+//#nowarn "1182"
 //#nowarn "52"
 //#nowarn "1178"
 /// Root namespace for all code
@@ -536,6 +538,10 @@ namespace FsRoot
                         let inline (>=>) f g v = f v >>= g
                         let inline rtn   v     = rtn    v
                     
+                    let traverseSeq            f     sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                          Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq           sq = traverseSeq id sq
+                    
                     
                     type EffBuilder() = 
                         member self.Zero      (                 ) = rtn ()
@@ -578,6 +584,38 @@ namespace FsRoot
                                 | effect               -> effect             |> Eff.unpack loop 
                             Eff (fun doneK             -> eff.Cont Eff.done' |>            loop )
                     
+                    module GenericType =
+                        open Microsoft.FSharp.Quotations
+                        open Microsoft.FSharp.Quotations.Patterns
+                    
+                    //    let ( |GenericType|_| ) =
+                    //        (* methodinfo for typedefof<_> *)
+                    //        let tdo = 
+                    //            let (Call(None,t,[])) = <@ typedefof<_> @>
+                    //            t.GetGenericMethodDefinition()
+                    //        (* match type t against generic def g *)
+                    //        let rec tymatch t (g:Type) =
+                    //            if t = typeof<obj> then None
+                    //            elif g.IsInterface then
+                    //                let ints = if t.IsInterface then [|t|] else t.GetInterfaces()
+                    //                ints |> Seq.tryPick (fun t -> if (t.GetGenericTypeDefinition() = g) then Some(t.GetGenericArguments()) else None)
+                    //            elif t.IsGenericType && t.GetGenericTypeDefinition() = g then
+                    //                Some(t.GetGenericArguments())
+                    //            else
+                    //                tymatch (t.BaseType) g
+                    //        fun (e:Expr<Type>) (t:Type) ->
+                    //            match e with
+                    //            | Call(None,mi,[]) ->
+                    //                if (mi.GetGenericMethodDefinition() = tdo) then
+                    //                    let [|ty|] = mi.GetGenericArguments()
+                    //                    if ty.IsGenericType then
+                    //                        let tydef = ty.GetGenericTypeDefinition()
+                    //                        tymatch t tydef
+                    //                    else None
+                    //                else
+                    //                    None
+                    //            | _ -> None
+                    
                     module Log = 
                         type Log<'S> = inherit Effect
                     
@@ -590,6 +628,8 @@ namespace FsRoot
                         let log<'U, 'S when 'U :> Log<'S>> (s:'S) : Eff<'U, unit> = Eff (fun k -> new LogEntry<'S>(s, k) :> _)
                         let logf fmt = Printf.ksprintf log fmt
                         
+                        open GenericType
+                    
                         let rec pureLogHandler<'U, 'S, 'A when 'U :> Log<'S>> (eff: Eff<'U, 'A>) : Eff<'U, 'A * list<'S>> = 
                             let rec loop (s: list<'S>) (doneK:('A * list<'S>) -> Effect) : Effect -> Effect = function
                                 | :? Done<    'A> as done' -> doneK (done'.Value, s)
@@ -657,6 +697,7 @@ namespace FsRoot
                                 //| v                         -> failwithf "Unhandled effect after asyncHandler %A" v
                             Eff (fun doneK                  -> eff.Cont Eff.done' |>             loop doneK)    
                     
+                    
                 [< AutoOpen >]
                 module EffReadLogRslAsy =
                 
@@ -665,7 +706,7 @@ namespace FsRoot
                     let inline runReaderLRA readV eff = 
                         eff
                         |> Reader.readerHandler readV
-                        |> Log.consoleLogHandler
+                        |> Log.pureLogHandler
                         |> Rsl.RslHandler
                         |> Asy.AsyHandler
                         |>(Eff.run : Eff<ReaderLogRslAsy<_,_,_>,_> -> _)
@@ -674,6 +715,7 @@ namespace FsRoot
                         match mr with
                         | Ok    v    -> return v
                         | Error rmsg ->
+                        
                         match rmsg with
                         | NoMsg          -> do! Rsl.fail <| ErrorMsg "Failed! (no explanation)"
                         | RMessages msgs -> for msg in msgs do do! Log.log msg
@@ -1713,8 +1755,7 @@ namespace FsRoot
                                       |> FSharpChecker.Create().Compile
                                       |> Asy.ofAsync
                     let rms = msgs |> Array.map fSharpError2ResultMessage
-                    for rm in rms do 
-                        do! Log.log rm
+                    do! rms |> Seq.map Log.log |> sequenceSeq |>> Seq.iter id
                     if exit <> 0 then do! Rsl.fail <| ErrorMsg (rms |> ResultMessage.reduceMsgs |> ResultMessage.summaryF (fun _ -> 1, 0, 0))
                 }
             
@@ -2244,7 +2285,7 @@ namespace FsRoot
             [< Inline "throw 'not intended for JavaScript client'" >]
             let compileSnippet show snpName = 
                 eff {
-                    let! codeFs         = FSharpStationClient.getCode snpName |> AsyncResult.freeMessage |> ofAsyncResultRM
+                    let! codeFs         = FSharpStationClient.getCode snpName |> ofAsyncResultRM
                     let  args           = [ intShowArgs    /= (show:bool)
                                             fscGenFSharp2  /= "noframework"
                                             fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
@@ -2258,11 +2299,13 @@ namespace FsRoot
                     let  args1          = compileOptionsDll snpName
                                         + debugOptions()
                                         + args
-                    do! Log.log <| Some "Hello"
                     let  args2          = prepOptions args1 (assembs, defines, prepIs)
-                    do!                   processArgs fs assembs nowarns |> ofFusionReader |> runReaderLRA args2 |> ofResultRM
-                    return!               FsCompilerEff.compileEff()                       |> runReaderLRA args2 |> ofResultRM
+                    let! (), rms        = processArgs fs assembs nowarns |> ofFusionReader |> runReaderLRA args2 |> ofResultRM
+                    do!                   rms |> Seq.map Log.log |> sequenceSeq |>> Seq.iter id
+                    let! (), rms        = FsCompilerEff.compileEff()                       |> runReaderLRA args2 |> ofResultRM
+                    do!                   rms |> Seq.map Log.log |> sequenceSeq |>> Seq.iter id
                 } 
                 |> runReaderLRA ()
-                |> Result.iter print id
+                |> Result.iter print (snd >> ResultMessage.reduceMsgs >> ResultMessage.summarized >> print)
+                    //<| fun (_, ms) -> print ms
                
