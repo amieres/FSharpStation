@@ -12,6 +12,7 @@ nuget Websharper.UI	     = 4.5.1.141
 nuget Websharper.Owin
 nuget WebSharper.Owin.WebSocket
 nuget Microsoft.Owin
+nuget Owin.Compression
 nuget Microsoft.Owin.StaticFiles
 nuget Microsoft.Owin.FileSystems
 nuget Microsoft.Owin.Hosting
