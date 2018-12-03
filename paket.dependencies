@@ -51,3 +51,8 @@ group Test
     nuget FSharp.Core        = 4.3.4
     nuget NETStandard.Library
     nuget canopy
+    nuget Saturn
+    nuget Saturn.Extensions.HttpSys
+    nuget Saturn.Extensions.Turbolinks
+    nuget Giraffe
+    nuget Microsoft.AspNetCore
