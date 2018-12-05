@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1542595039595 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1543956487391 -d:WEBSHARPER
 ////#cd @"..\projects\FSharpStation\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -37,7 +37,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1542595039595
+//#define FSharpStation1543956487391
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -399,7 +399,7 @@ namespace FsRoot
                     type Builder() =
                         member inline this.Return          x       = rtn  x
                         member inline this.ReturnFrom      x       =     (x:Result<_,_>)
-                        member        this.Bind           (w , r ) = bindP  r w
+                        member        this.Bind           (w , r ) = Result.bind  r w
                         member inline this.Zero           ()       = rtn ()
                         member inline this.Delay           f       = f
                         member inline this.Combine        (a, b)   = bind b a
@@ -3348,7 +3348,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#"
+                    "http://localhost:9005/#FsRoot"
                 #endif
                 
                 let extractEndPoint() = 
@@ -3539,7 +3539,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1542595039595"
+                let mutable fsharpStationAddress = Address "FSharpStation1543956487391"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -4000,7 +4000,7 @@ namespace FsRoot
             let private snippets               = ListModel<SnippetId, Snippet> (fun s -> s.snpId)
             let private hierarchy              = Var.Create [||]
             let private generation             = Var.Create 5
-            let private currentSnippetIdOV     = Var.Create (None:SnippetId option)
+            let         currentSnippetIdOV     = Var.Create (None:SnippetId option)
             let private codeSnippetIdOV        = Var.Create (None:SnippetId option)
             let private collapsedV             = Var.Create Set.empty
             
@@ -4014,7 +4014,7 @@ namespace FsRoot
                                                     .Replace("##" + "FSHARPSTATION_ID" + "##"      , FStation.id            )
                                                     .Replace("##" + "FSHARPSTATION_ENDPOINT" + "##", JS.Window.Location.Href)
             let snippetsColl                () = { generation       = generation.Value
-                                                   ordered          = snippets.Value
+                                                   ordered          = Seq.delay(fun () -> snippets.Value)
                                                    fetcher          = snippets.TryFindByKey
                                                    predecesorsCache = fun _ -> predsCache
                                                    reducedCache     = fun _ -> reducCache
@@ -4985,7 +4985,48 @@ namespace FsRoot
             open FusionAsyncM
             open Operators
             open FStation
-            
+        
+            type EndPoint =
+            |                   Snippet   of System.Guid
+            | [< Wildcard    >] Path      of string[]
+            | [< EndPoint "" >] NoSnippet
+        
+            let endPointV = Var.Create NoSnippet
+        
+            open Sitelets.InferRouter
+            if IsClient then
+                Router.Infer()
+                |> Router.InstallHashInto endPointV NoSnippet
+        
+                endPointV.View |> View.Sink (
+                    function
+                    | NoSnippet      -> View.rtn None
+                    | Snippet guid   -> View.rtn (SnippetId guid |> Some)
+                    | Path    pth    -> Snippets.currentPathW 
+                                        |> View.Map (fun p -> 
+                                            if p = String.concat "/" pth then Snippets.currentSnippetIdOV.Value else
+                                            Snippet.snippetFromPathORm pth
+                                            |> FusionM.map (Option.map (fun s -> s.snpId))
+                                            |> Snippets.runReader Snippets.handleError
+                                        )
+                    >> View.Get (fun sidO -> 
+                       if  Snippets.currentSnippetIdOV.Value <> sidO then
+                           Snippets.currentSnippetIdOV.Value <- sidO
+                   ))
+        
+                Snippets.currentSnippetIdOV.View |> View.Sink (
+                    function
+                    | None                 -> View.rtn NoSnippet
+                    | Some(SnippetId guid) -> Snippets.currentPathW
+                                              |> View.Map (fun p ->
+                                                if Path (p.Split '/') = endPointV.Value then endPointV.Value else
+                                                Snippet guid
+                                              )
+                    >> View.Get (fun ep -> 
+                       if  endPointV.Value <> ep then
+                           endPointV.Value <- ep
+                   ))
+        
             let runFsCode () = 
                 let out (v:string) = appendMsgs <| v.Replace(FsiEvaluator.endToken, "Done!")
                 Snippets.FsCodeW 

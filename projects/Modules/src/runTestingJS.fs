@@ -2,7 +2,7 @@
 #nowarn "1182"
 #nowarn "52"
 #nowarn "1178"
-////-d:FSharpStation1542632761675
+////-d:FSharpStation1543956487391
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#I @"..\packages\WebSharper.FSharp\tools\net461\"
@@ -42,7 +42,7 @@
 //#nowarn "52"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1542632761675
+//#define FSharpStation1543956487391
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -324,7 +324,7 @@ namespace FsRoot
                     type Builder() =
                         member inline this.Return          x       = rtn  x
                         member inline this.ReturnFrom      x       =     (x:Result<_,_>)
-                        member        this.Bind           (w , r ) = bindP  r w
+                        member        this.Bind           (w , r ) = Result.bind  r w
                         member inline this.Zero           ()       = rtn ()
                         member inline this.Delay           f       = f
                         member inline this.Combine        (a, b)   = bind b a
@@ -939,6 +939,71 @@ namespace FsRoot
                                                                                                     reply.Reply r
                                                                                                     return st 
                                                                                                 })
+            
+            type ResourceAgentState<'R, 'C> = {
+                useCount      : int
+                limitCount    : int
+                resource      : 'R
+                configuration : 'C
+            }
+            
+            type ResourceAgent<'R, 'C when 'C : equality>(maxUseCount, ctor: 'C -> 'R, configuration, ?cleanup, ?isAlive, ?respawnAfter) =
+                let clean                          = defaultArg cleanup ignore
+                let alive                          = defaultArg isAlive (fun _ -> true)
+                let initConfig                     = configuration
+                let respawnRightAfter              = defaultArg respawnAfter true
+                let respawn                  state = clean state.resource
+                                                     { state with useCount = 0 ; resource = ctor state.configuration }
+                let check                cfg state = if state.useCount < state.limitCount && alive state.resource && cfg = state.configuration
+                                                     then state 
+                                                     else respawn { state with configuration = cfg }
+                let increment                state = { state with useCount = state.useCount + 1 }
+                                                     |> if respawnRightAfter then (check state.configuration) else id
+                let agent                          = Mailbox.stateFull (fun ex st -> print ex ; respawn st)  
+                                                        {   useCount      = 0
+                                                            limitCount    = maxUseCount
+                                                            configuration = initConfig
+                                                            resource      = ctor initConfig
+                                                        }
+                member __.AsyncProcessA(work,?cfg) = agent 
+                                                    |> Mailbox.StateFull.applyReplyA(fun st -> async { 
+                                                         let  st2 = st |> check (defaultArg cfg st.configuration) 
+                                                         let! res = work st2.resource
+                                                         return increment st2, res 
+                                                     })
+                member oo.ProcessA     (work,?cfg) = oo.AsyncProcessA((fun v -> async { return work v }), ?cfg=cfg)
+                [< Inline "throw 'ResourceAgent.Process not available in JavaScript'" >]
+                member oo.Process      (work,?cfg) = oo.ProcessA(work, ?cfg=cfg) |> Async.RunSynchronously
+                member __.State                    = agent |> Mailbox.StateFull.getState
+                member oo.LimitCount    with get() = oo.State.limitCount
+                member oo.Configuration with get() = oo.State.configuration
+                member __.LimitCount    with set n = agent |> Mailbox.StateFull.apply(fun s -> { s with limitCount    = n })
+                member oo.Configuration with set c = if c <> oo.Configuration then agent |> Mailbox.StateFull.apply(fun s -> respawn { s with configuration = c})
+                member __.Respawn               () = agent |> Mailbox.StateFull.apply respawn
+                interface System.IDisposable with
+                    member this.Dispose () = try clean this.State.resource with _ -> ()
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            module AgentReaderM =
+                open FusionAsyncM
+                open Operators
+            
+                let createAgentRm                         f  v = readerFun(fun  (agent:ResourceAgent<_,_>, cfg)     -> agent.AsyncProcessA((fun resource -> f resource v)  , cfg) ) >>= ofAsync
+                let ofResourceRm                     (FAM f)   = FAM      (fun ((agent:ResourceAgent<_,_>, cfg), m) -> 
+                                                                            agent.AsyncProcessA((fun resource -> async {
+                                                                                    let! vO, _, m = f(resource, m) 
+                                                                                    return vO, (agent, cfg), m 
+                                                                                }), cfg) 
+                                                                            )
+                let run            agent cfg                 m = runReader (agent,       cfg          ) m
+                let runSameConfig (agent:ResourceAgent<_,_>) m = runReader (agent, agent.Configuration) m
             
             [< AutoOpen >]
             module CommArgRoot =
@@ -1789,6 +1854,87 @@ namespace FsRoot
                     if copyAssem then assembs |> Array.iter (fun f -> outDir |> CopyIfMust.toDir f)      
                 }
                 
+            module FsiEvaluator =
+                open System.Diagnostics
+                open RunProcess
+                
+                
+                let inline (+/+) a b = System.IO.Path.Combine(a, b)
+            
+                [< Literal >]
+                let endToken = "xXxY" + "yYyhH"
+                type FsiExe(config:string, workingDir, ?outHndl, ?errHndl) =
+                    let silent                     = ref false
+                    let fsiexe                     = @"..\packages\FSharp.Compiler.Tools\tools" +/+ if config.Contains "-d:FSI32BIT" then "fsi.exe" else "fsianycpu.exe"
+                    let startInfo                  = ProcessStartInfo(fsiexe, config, WorkingDirectory= workingDir)
+                    let outHndlS                   = outHndl |> Option.map(fun outh v -> if !silent then () else outh v)
+                    let errHndlS                   = errHndl |> Option.map(fun errh v -> if !silent then () else errh v)
+                    let shell                      = new ShellEx(startInfo, ?outHndl = outHndlS, ?errHndl = errHndlS)  // --noninteractive
+                    do  startInfo.CreateNoWindow  <- false
+                        shell.Start() |> ignore
+                    member __.Eval (FsCode code)   = asyncResult {
+                                                         shell.Send code
+                                                         shell.Send ";;"
+                                                         return! shell.SendAndWait("printfn \"" + endToken + "\";;", endToken)
+                                                     }
+                    member __.IsAlive              = not shell.HasExited
+                    member __.Abort()              = shell.Abort()
+                    member __.Process              = shell.Process
+                    member oo.EvalSilent code      = asyncResult {
+                                                        try     silent := true
+                                                                return! oo.Eval code
+                                                        finally silent := false
+                                                     }
+                    interface System.IDisposable with
+                        member this.Dispose ()     = (shell :> System.IDisposable).Dispose()
+            
+                open FusionAsyncM
+                open Operators
+            
+                let evaluateRm   code = getS() >>= (fun (fsi:FsiExe) -> fsi.Eval       code |> ofAsyncResultRM) 
+                let evalSilentRm code = getS() >>= (fun (fsi:FsiExe) -> fsi.EvalSilent code |> ofAsyncResultRM) 
+            
+            module FsiCodePresence =
+                open FusionAsyncM
+                open FsiEvaluator
+                open Operators
+            
+                let installPresenceRm() = 
+                    """
+                    module CodePresence =
+                        let mutable present : Map<string, string>  = Map.empty
+                        let presenceOf    k   = present |> Map.tryFind k |> Option.defaultValue "--" |> printfn "%s"
+                        let addPresenceOf k v = present <- present |> Map.add k v ; printfn "ok"
+                    """
+                    |>  String.unindentStr
+                    |>  FsCode
+                    |>  evalSilentRm 
+                    |>> ignore
+            
+                let addPresenceRm (name:string) (v:string) = fusion {
+                    let  code = sprintf "CodePresence.addPresenceOf %A %A" (name.Replace("\"", "\\\"")) v |> FsCode
+                    let! res  = evalSilentRm code |>> String.splitByChar '\n' |>> Seq.head
+                    match res with
+                    | "ok"   -> ()
+                    |_       -> do! installPresenceRm()
+                                do! evalSilentRm code |>> ignore
+                }
+                        
+                let getPresenceRm (name:string)   = fusion {
+                    let! res = sprintf "CodePresence.presenceOf    %A" (name.Replace("\"", "\\\""))
+                               |> FsCode
+                               |> evalSilentRm
+                               |>> String.splitByChar '\n' |>> Seq.head
+                               |> getOption
+                    match res with
+                    | None                     -> do! installPresenceRm()
+                                                  return None
+                    | Some v when v = endToken -> do! installPresenceRm()
+                                                  return None
+                    | Some "--"                -> return None
+                    | Some v                   -> return Some v
+                }
+            
             //#I @"..\packages\WebSharper.FSharp\tools\net461\"
             //#r @"..\packages\WebSharper.FSharp\tools\net461\WebSharper.Core.dll"
             //#r @"..\packages\WebSharper.FSharp\tools\net461\WebSharper.Compiler.dll"
@@ -2121,6 +2267,108 @@ namespace FsRoot
         /// Essentials that part runs in Javascript and part runs in the server
         [< AutoOpen >]
         module Library2 =
+            module FsiAgent =
+                open FusionAsyncM
+                open FsiEvaluator
+                open FsiCodePresence
+                open Operators
+            
+                [< JavaScript >]
+                type Config = Config of workDir:string * parms:Set<string>
+            
+                let fuseConfigs workDir a b =
+                    match a, b with
+                    | Config(dirA, parmsA), Config(dirB, parmsB) ->
+                    Config((if dirB <> workDir then dirB else dirA), Set.union parmsA parmsB)
+            
+                let queueOutput send =
+                    let output        = new System.Text.StringBuilder()
+                    let append    txt = output.Append((if output.Length = 0 then "" else "\n") + txt) |> ignore
+                    let consume   ()  = let v = output.ToString()
+                                        output.Clear() |> ignore
+                                        v
+                    let queue         = Mailbox.iter print (fun msg -> 
+                                            match msg with
+                                            | Some txt -> append txt
+                                            | None     -> let txt2send =  consume()
+                                                          if  txt2send <> "" then send txt2send
+                                        )
+                    fun          txt -> txt |> Some |> queue.Post
+                                        async { do! Async.Sleep 100
+                                                queue.Post None } |> Async.Start
+            
+                let mutable outHndl      = ignore
+                let mutable errHndl      = ignore
+            
+                let setQueueHandlers send =
+                    let queue = queueOutput send 
+                    outHndl <-                  queue
+                    errHndl <- ((+) "Err: ") >> queue
+            
+                let ctor, aborter, disposer, getIdO =
+                    let mutable fsiO = None
+                    let ctor (Config (workDir, config)) =
+                        let fsi = new FsiExe(config |> String.concat " ", workDir, outHndl, errHndl)
+                        fsiO <- Some fsi
+                        fsi
+                    ctor
+                  , (fun () -> fsiO |> Option.iter (fun fsi ->  fsi                       .Abort  ()  ) )
+                  , (fun () -> fsiO |> Option.iter (fun fsi -> (fsi :> System.IDisposable).Dispose()  ) )
+                  , (fun () -> fsiO |> Option.map  (fun fsi ->  fsi                       .Process.Id ) )
+            
+                let fsiExeL = lazy new ResourceAgent<_, _>( 70
+                                                         , ctor
+                                                         , Config (".", Set ["--nologo" ; "--quiet"])
+                                                         , (fun fsi    -> (fsi :> System.IDisposable).Dispose())
+                                                         , (fun fsi    ->  fsi.IsAlive                         )
+                                                         )
+            
+                [< JavaScript >]
+                let extractConfig workDir (FsCode fsCode) = 
+                    Config(
+                        FsCode.getSourceDir workDir <| String.splitByChar '\n' fsCode
+                      , FsCode.extractDefines (FsCode fsCode)
+                        |> String.splitByChar ' '
+                        |> Set
+                        |> Set.union  (Set[" --nologo" ; "--quiet "])
+                    )
+            
+                [< Rpc >]
+                let evalCode workDir code = 
+                    evaluateRm code
+                    |> AgentReaderM.ofResourceRm
+                    |> AgentReaderM.run fsiExeL.Value (extractConfig workDir code)
+            
+                [< Rpc >]
+                let evalCodeSameConfig code = 
+                    evaluateRm code
+                    |> AgentReaderM.ofResourceRm |> id
+                    |> AgentReaderM.runSameConfig fsiExeL.Value
+                
+                [< Rpc >]
+                let evalCodeWithPresence  workDir presenceKey presenceValue presenceCode code = 
+                    let config = 
+                        fuseConfigs       workDir
+                        <| extractConfig  workDir presenceCode
+                        <| extractConfig  workDir         code
+                    fusion {    
+                        let! currentValueO  = getPresenceRm presenceKey
+                        if   currentValueO <> Some presenceValue then
+                            do!  evaluateRm    presenceCode |>> ignore
+                            do!  addPresenceRm presenceKey presenceValue
+                        return! evaluateRm code
+                    }
+                    |> AgentReaderM.ofResourceRm
+                    |> AgentReaderM.run fsiExeL.Value config
+             
+                [<Rpc>]    
+                let abortFsiExe  () = aborter()
+                
+                [<Rpc>]    
+                /// like abortFsiExe but prevents respawning until next command
+                let disposeFsiExe() = disposer()
+            
+            
             [<WebSharper.JavaScript>]
             module WebSockets =
                 //#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
@@ -2567,7 +2815,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1542632761675"
+                let mutable fsharpStationAddress = Address "FSharpStation1543956487391"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -2650,6 +2898,11 @@ namespace FsRoot
                 do   startProcess (sprintf "%stesting/testing.html?q=%A" url.[..url.Length-2] modif)     "" |> ignore
             } 
         
+            let checkName (name:string) =
+                if name.EndsWith "/canopy" 
+                then name.[0..name.Length - "/canopy".Length - 1]
+                else name
+        
             [< Inline "throw 'runTest is not intended for JavaScript client'" >]
             let compile show name = fusion {
                 let! code   = FSharpStationClient.getCode <| name |> ofAsyncResultRM
@@ -2663,7 +2916,21 @@ namespace FsRoot
                 let  runtimeStart = "CIPHERSpaceLoadFilesDoAfter(function() { IntelliFactory.Runtime.Start() });"
                 do   File.WriteAllText(testFile(), runtimeStart + "\n" + js)
             }
-                
-            let justRun            =                  run >> iterResult print id
-            let compileAndRun show = compile show >=> run >> iterResult print id
         
+            let justRun                   =                                run >> iterResult print id
+            let compileAndRun        show = checkName >> compile show  >=> run >> iterResult print id
+        
+            open FsiAgent
+        
+            let testSnippet name = fusion {
+                outHndl <- print
+                errHndl <- print
+                let! code   = FSharpStationClient.getCode <| name                    |> ofAsyncResultRM
+                let! out    = FsCode code |> evalCode "." |> AsyncResult.freeMessage |> ofAsyncResultRM
+                abortFsiExe()
+            }
+        
+            let test                           = checkName       >> __ (+) "/canopy" >>             testSnippet
+            let testCanopy                     =                                                    test        >> iterResult print id
+            let compileAndTestCanopy show name = checkName name  |> compile show     >>= (fun () -> test name)  |> iterResult print id
+         

@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,FusionM,Operators$1,Builder$1,Builder$2,FusionAsyncM,Operators$2,Builder$3,Builder$4,AsyncResult,AsyncResultBuilder,AsyncResultBuilderP,Extensions,String,ParseO,MailboxProcessorExt,Mailbox,StateFull,ResourceAgentState,ResourceAgent,AgentReaderM,CommArgRoot,CommArg,CommArgCollection,TypedCommArg,CommArgModule,FsCodeModule,PreproDirective,SnippetId,Snippet,SnippetCollection,SnippetModule,Hole,TreeReader,Node,LibraryJS,Promise,View,Serializer,LoadFiles,REGEX,Hoverable,Hoverable$1,ResizeObserver,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,WcSplitterT,Monaco,Position,Range,Uri,Location,FindMatch,WordAtPosition,Model,MarkDownString,MarkerData,CompletionItem,Hover,Editor,MonacoConfig,Library2,FsiAgent,WebSockets,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ReplyHandler,Handler,WSMessagingClient,FSMessage,FsAutoComplete,CommTypes,ResponseError,Location$1,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,MsgTypes,ParseRequest,DeclarationsRequest,CompletionRequest,PositionRequest,ProjectRequest,LintRequest,HelptextRequest,WorkspacePeekRequest,Calls,FSharpStation,FStation,Snippets,DragDrop,DragInfo,Templating,RenderSnippets,RenderProperties,Monaco$1,HoverProvider,CompletionItemProvider,DefinitionProvider,MonacoOptions,ITextModelService,JumpTo,CustomAction,Serializer$1,Model$1,LoadSave,Importer,MainProgram,Messaging,SC$1,FSharpStation_JsonEncoder,FSharpStation_JsonDecoder,FSharpStation_GeneratedPrintf,FSharpStation_Templates,GeneratedPrintf,IntelliFactory,Runtime,Utils,Strings,Seq$1,Arrays,List,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,Slice,Control,MailboxProcessor,System,Guid,Collections,FSharpSet,Option$1,CancellationTokenSource,console,UI,View$1,Var$1,FSharpMap,BalancedTree,DomUtility,Doc,AttrModule,AttrProxy,Node$1,Client,Templates,Reflect,Object,Map,JSON,TimeoutException,ClientSideJson,Provider,Owin,WebSocket,Client$1,WithEncoding,Endpoint,location,Remoting,AjaxRemotingProvider,FromView,Templating$1,Runtime$1,Server,ProviderBuilder,Handler$1,TemplateInstance,JavaScript,Promise$1,AppFramework,Date,PlugIn,Lazy,LayoutEngineModule,DateUtil,Numeric,ListModel,Dictionary,LayoutEngine_Templates;
+ var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,FusionM,Operators$1,Builder$1,Builder$2,FusionAsyncM,Operators$2,Builder$3,Builder$4,AsyncResult,AsyncResultBuilder,AsyncResultBuilderP,Extensions,String,ParseO,MailboxProcessorExt,Mailbox,StateFull,ResourceAgentState,ResourceAgent,AgentReaderM,CommArgRoot,CommArg,CommArgCollection,TypedCommArg,CommArgModule,FsCodeModule,PreproDirective,SnippetId,Snippet,SnippetCollection,SnippetModule,Hole,TreeReader,Node,LibraryJS,Promise,View,Serializer,LoadFiles,REGEX,Hoverable,Hoverable$1,ResizeObserver,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,WcSplitterT,Monaco,Position,Range,Uri,Location,FindMatch,WordAtPosition,Model,MarkDownString,MarkerData,CompletionItem,Hover,Editor,MonacoConfig,Library2,FsiAgent,WebSockets,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ReplyHandler,Handler,WSMessagingClient,FSMessage,FsAutoComplete,CommTypes,ResponseError,Location$1,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,MsgTypes,ParseRequest,DeclarationsRequest,CompletionRequest,PositionRequest,ProjectRequest,LintRequest,HelptextRequest,WorkspacePeekRequest,Calls,FSharpStation,FStation,Snippets,DragDrop,DragInfo,Templating,RenderSnippets,RenderProperties,Monaco$1,HoverProvider,CompletionItemProvider,DefinitionProvider,MonacoOptions,ITextModelService,JumpTo,CustomAction,Serializer$1,Model$1,LoadSave,Importer,MainProgram,EndPoint,Messaging,SC$1,FSharpStation_JsonEncoder,FSharpStation_JsonDecoder,FSharpStation_GeneratedPrintf,FSharpStation_Router,FSharpStation_Templates,GeneratedPrintf,IntelliFactory,Runtime,Utils,Strings,Seq$1,Arrays,List,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,Slice,Control,MailboxProcessor,System,Guid,Collections,FSharpSet,Option$1,CancellationTokenSource,console,UI,View$1,Var$1,FSharpMap,BalancedTree,DomUtility,Doc,AttrModule,AttrProxy,Node$1,Client,Templates,Reflect,Object,Map,JSON,TimeoutException,ClientSideJson,Provider,Owin,WebSocket,Client$1,WithEncoding,Endpoint,location,Remoting,AjaxRemotingProvider,FromView,Templating$1,Runtime$1,Server,ProviderBuilder,Handler$1,TemplateInstance,JavaScript,Promise$1,AppFramework,Date,PlugIn,Lazy,LayoutEngineModule,DateUtil,Numeric,ListModel,Dictionary,Router,Sitelets,RouterOperators,LayoutEngine_Templates;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -149,11 +149,13 @@
  LoadSave=FSharpStation.LoadSave=FSharpStation.LoadSave||{};
  Importer=FSharpStation.Importer=FSharpStation.Importer||{};
  MainProgram=FSharpStation.MainProgram=FSharpStation.MainProgram||{};
+ EndPoint=MainProgram.EndPoint=MainProgram.EndPoint||{};
  Messaging=FSharpStation.Messaging=FSharpStation.Messaging||{};
  SC$1=Global.StartupCode$FSharpStation$FSharpStation=Global.StartupCode$FSharpStation$FSharpStation||{};
  FSharpStation_JsonEncoder=Global.FSharpStation_JsonEncoder=Global.FSharpStation_JsonEncoder||{};
  FSharpStation_JsonDecoder=Global.FSharpStation_JsonDecoder=Global.FSharpStation_JsonDecoder||{};
  FSharpStation_GeneratedPrintf=Global.FSharpStation_GeneratedPrintf=Global.FSharpStation_GeneratedPrintf||{};
+ FSharpStation_Router=Global.FSharpStation_Router=Global.FSharpStation_Router||{};
  FSharpStation_Templates=Global.FSharpStation_Templates=Global.FSharpStation_Templates||{};
  GeneratedPrintf=Global.GeneratedPrintf=Global.GeneratedPrintf||{};
  IntelliFactory=Global.IntelliFactory;
@@ -223,6 +225,9 @@
  Numeric=WebSharper&&WebSharper.Numeric;
  ListModel=UI&&UI.ListModel;
  Dictionary=Collections&&Collections.Dictionary;
+ Router=UI&&UI.Router;
+ Sitelets=WebSharper&&WebSharper.Sitelets;
+ RouterOperators=Sitelets&&Sitelets.RouterOperators;
  LayoutEngine_Templates=Global.LayoutEngine_Templates;
  ResultMessage=Library.ResultMessage=Runtime.Class({
   toString:function()
@@ -898,7 +903,7 @@
   },
   Bind:function(w,r)
   {
-   return Result.bindP(r,w);
+   return Result$1.Bind(r,w);
   },
   ReturnFrom:Global.id,
   Return:function(x)
@@ -8136,7 +8141,10 @@
  };
  Snippets.snippetsColl=function()
  {
-  return SnippetCollection.New(Snippets.generation().Get(),(Snippets.snippets())["var"].Get(),function(a)
+  return SnippetCollection.New(Snippets.generation().Get(),Seq$1.delay(function()
+  {
+   return(Snippets.snippets())["var"].Get();
+  }),function(a)
   {
    return Snippets.snippets().TryFindByKey(a);
   },Snippets.predsCache,Snippets.reducCache,Snippets.prepCode);
@@ -9493,6 +9501,9 @@
   SC$1.$cctor();
   return SC$1.serSnippetId2;
  };
+ EndPoint.NoSnippet={
+  $:2
+ };
  MainProgram.mainProgram=function()
  {
   var l,v,prior,v$1,prior$1,b;
@@ -9626,36 +9637,36 @@
    });
   })));
  };
- MainProgram.mainDoc$5064$78=Global.id;
- MainProgram.mainDoc$5056$39=function()
+ MainProgram.mainDoc$5105$78=Global.id;
+ MainProgram.mainDoc$5097$39=function()
  {
   return function(ev)
   {
    JumpTo.jumpToRef(ev.Target);
   };
  };
- MainProgram.mainDoc$5055$39=function()
+ MainProgram.mainDoc$5096$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5054$39=function()
+ MainProgram.mainDoc$5095$39=function()
  {
   return function(ev)
   {
    Importer.importFile(ev.Target);
   };
  };
- MainProgram.mainDoc$5053$39=function()
+ MainProgram.mainDoc$5094$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5052$39=function()
+ MainProgram.mainDoc$5093$39=function()
  {
   return function(ev)
   {
@@ -9774,11 +9785,11 @@
   }))))))))))))));
   return(p=Handler$1.CompleteHoles(tmp.k,tmp.h,[["filename",0],["name",0],["output",0],["fscode",0],["parser",0]]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.layout(p[0])),(tmp.i=i,i))).get_Doc();
  };
- MainProgram.buttonsRight$5038$74=Global.id;
- MainProgram.buttonsRight$5037$74=Global.id;
- MainProgram.buttonsRight$5036$74=Global.id;
- MainProgram.buttonsRight$5035$74=Global.id;
- MainProgram.buttonsRight$5034$74=Global.id;
+ MainProgram.buttonsRight$5079$74=Global.id;
+ MainProgram.buttonsRight$5078$74=Global.id;
+ MainProgram.buttonsRight$5077$74=Global.id;
+ MainProgram.buttonsRight$5076$74=Global.id;
+ MainProgram.buttonsRight$5075$74=Global.id;
  MainProgram.buttonsRight=function()
  {
   var tmp,p,i;
@@ -9959,6 +9970,11 @@
    }),Global.ignore,x$1);
   }))(x);
  };
+ MainProgram.endPointV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.endPointV;
+ };
  Messaging.processMessage=function(msg)
  {
   var b;
@@ -10118,7 +10134,7 @@
  };
  SC$1.$cctor=function()
  {
-  var f,generation,$1,b,b$1,cache,$2,cache$1,$3,cache$2,$4,getOrAdd$3,v,prior,f$2,f$3,f$4,f$5,x,$5,$6,v$1,s,sQ,x$1,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,x$2,t$9,i,x$3,t$10,t$11,t$12,t$13,t$14,i$1,x$4,t$15,t$16,t$17,t$18,t$19,t$20,t$21,i$2,t$22,x$5,b$2;
+  var f,generation,$1,b,b$1,cache,$2,cache$1,$3,cache$2,$4,getOrAdd$3,v,prior,f$2,f$3,f$4,f$5,x,$5,$6,v$1,s,sQ,x$1,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,x$2,t$9,i,x$3,t$10,t$11,t$12,t$13,t$14,i$1,x$4,t$15,t$16,t$17,t$18,t$19,t$20,t$21,i$2,t$22,r,g$9,g$10,x$5,b$2;
   SC$1.$cctor=Global.ignore;
   SC$1.rtn=function(v$2)
   {
@@ -10144,13 +10160,13 @@
   }
   function g$1(s$1)
   {
-   var a$2,b$3;
+   var a$4,b$3;
    return Slice.array(s$1,{
     $:1,
     $0:0
    },{
     $:1,
-    $0:(a$2=0,(b$3=Arrays.length(s$1)-2,Unchecked.Compare(a$2,b$3)===1?a$2:b$3))
+    $0:(a$4=0,(b$3=Arrays.length(s$1)-2,Unchecked.Compare(a$4,b$3)===1?a$4:b$3))
    });
   }
   function g$2(s$1)
@@ -10164,17 +10180,17 @@
   {
    return g$2(f(x$6));
   });
-  SC$1.parseDateO=ParseO.tryParseWith$1(function(a$2)
+  SC$1.parseDateO=ParseO.tryParseWith$1(function(a$4)
   {
    var o,m$4;
    o=0;
-   return[(m$4=DateUtil.TryParse(a$2),m$4!=null&&m$4.$==1&&(o=m$4.$0,true)),o];
+   return[(m$4=DateUtil.TryParse(a$4),m$4!=null&&m$4.$==1&&(o=m$4.$0,true)),o];
   });
-  SC$1.parseIntO=ParseO.tryParseWith$1(function(a$2)
+  SC$1.parseIntO=ParseO.tryParseWith$1(function(a$4)
   {
    var o;
    o=0;
-   return[Numeric.TryParseInt32(a$2,{
+   return[Numeric.TryParseInt32(a$4,{
     get:function()
     {
      return o;
@@ -10185,23 +10201,23 @@
     }
    }),o];
   });
-  SC$1.parseSingleO=ParseO.tryParseWith$1(function(a$2)
+  SC$1.parseSingleO=ParseO.tryParseWith$1(function(a$4)
   {
    var o,$7;
    o=0;
-   return[($7=Global.Number(a$2),Global.isNaN($7)?false:(o=$7,true)),o];
+   return[($7=Global.Number(a$4),Global.isNaN($7)?false:(o=$7,true)),o];
   });
-  SC$1.parseDoubleO=ParseO.tryParseWith$1(function(a$2)
+  SC$1.parseDoubleO=ParseO.tryParseWith$1(function(a$4)
   {
    var o,$7;
    o=0;
-   return[($7=Global.Number(a$2),Global.isNaN($7)?false:(o=$7,true)),o];
+   return[($7=Global.Number(a$4),Global.isNaN($7)?false:(o=$7,true)),o];
   });
-  SC$1.parseGuidO=ParseO.tryParseWith$1(function(a$2)
+  SC$1.parseGuidO=ParseO.tryParseWith$1(function(a$4)
   {
    var o;
    o=null;
-   return[Guid.TryParse(a$2,{
+   return[Guid.TryParse(a$4,{
     get:function()
     {
      return o;
@@ -10291,9 +10307,9 @@
   {
    return Serializer.ifUndef("",v$2);
   }
-  SC$1.serString=[function(a$2)
+  SC$1.serString=[function(a$4)
   {
-   return JSON.stringify(((Provider.Id())())(a$2));
+   return JSON.stringify(((Provider.Id())())(a$4));
   },function(x$6)
   {
    return g$6(Global.id(x$6));
@@ -10346,10 +10362,10 @@
   SC$1.srcDir=".";
   Concurrency.Start((b$1=null,Concurrency.Delay(function()
   {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("FSharpStation:FsRoot.FSharpStation+FStation.getRootDir:-447555547",[]),function(a$2)
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("FSharpStation:FsRoot.FSharpStation+FStation.getRootDir:-447555547",[]),function(a$4)
    {
-    FStation.set_rootDir(a$2+"/"+"..");
-    FStation.set_srcDir(a$2+"/"+"..\\src");
+    FStation.set_rootDir(a$4+"/"+"..");
+    FStation.set_srcDir(a$4+"/"+"..\\src");
     (((Runtime.Curried3(function($7,$8,$9)
     {
      return $7("fileName = "+Utils.toSafe($8)+"\\"+Utils.toSafe($9)+".fsx");
@@ -10394,11 +10410,11 @@
    cache.set_Item(v$2,res);
    return res;
   }
-  function getOrAdd(p,f$6)
+  function getOrAdd(p,f$8)
   {
    var o;
    o=checkO(p);
-   return o==null?store(p,f$6(p)):o.$0;
+   return o==null?store(p,f$8(p)):o.$0;
   }
   $2=(cache=new Dictionary.New$5(),[[checkO,function($7)
   {
@@ -10435,11 +10451,11 @@
    cache$1.set_Item(v$2,res);
    return res;
   }
-  function getOrAdd$1(p,f$6)
+  function getOrAdd$1(p,f$8)
   {
    var o;
    o=checkO$1(p);
-   return o==null?store$1(p,f$6(p)):o.$0;
+   return o==null?store$1(p,f$8(p)):o.$0;
   }
   $3=(cache$1=new Dictionary.New$5(),[[checkO$1,function($7)
   {
@@ -10476,11 +10492,11 @@
    cache$2.set_Item(v$2,res);
    return res;
   }
-  function getOrAdd$2(p,f$6)
+  function getOrAdd$2(p,f$8)
   {
    var o;
    o=checkO$2(p);
-   return o==null?store$2(p,f$6(p)):o.$0;
+   return o==null?store$2(p,f$8(p)):o.$0;
   }
   $4=(cache$2=new Dictionary.New$5(),[[checkO$2,function($7)
   {
@@ -10498,12 +10514,12 @@
   {
    return(getOrAdd$3(p))(Snippets.getParentIdONotMemo);
   });
-  View$1.Sink(function(a$2)
+  View$1.Sink(function(a$4)
   {
    var curId,m$4;
-   if(a$2!=null&&a$2.$==1)
+   if(a$4!=null&&a$4.$==1)
     {
-     curId=a$2.$0;
+     curId=a$4.$0;
      m$4=Snippets.codeSnippetIdOV().Get();
      m$4!=null&&m$4.$==1?(Snippets.iterReader(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(Operators$1.op_GreaterGreaterEquals(Operators$1.op_BarGreaterGreater(SnippetModule.snippetORm(m$4.$0),function(o)
      {
@@ -10517,9 +10533,9 @@
      }),function(s$1)
      {
       return List.contains(curId,s$1);
-     }),function(a$3)
+     }),function(a$5)
      {
-      if(a$3)
+      if(a$5)
        ;
       else
        Snippets.codeSnippetIdOV().Set({
@@ -10538,9 +10554,9 @@
   }
   View$1.Sink(function(ids)
   {
-   var a$2;
+   var a$4;
    Snippets.clearPredsCache();
-   a$2=Arrays.ofSeq(Seq$1.delay(function()
+   a$4=Arrays.ofSeq(Seq$1.delay(function()
    {
     return Seq$1.collect(function(sid)
     {
@@ -10553,10 +10569,10 @@
      }));
     },ids);
    }));
-   Snippets.snippets().Set(a$2);
-  },(v=View$1.Map(function(a$2)
+   Snippets.snippets().Set(a$4);
+  },(v=View$1.Map(function(a$4)
   {
-   return Arrays.map(m,a$2);
+   return Arrays.map(m,a$4);
   },Snippets.hierarchy().get_View()),(prior=[Var$1.Create$1(null)],(View$1.Sink(function(v$2)
   {
    if(!Unchecked.Equals(prior[0].Get(),v$2))
@@ -10574,9 +10590,9 @@
    v$2=SnippetModule.defaultSnippet();
    return o==null?v$2:o.$0;
   }
-  function m$1(a$2)
+  function m$1(a$4)
   {
-   return Snippets.snippets().TryFindByKeyAsView(a$2);
+   return Snippets.snippets().TryFindByKeyAsView(a$4);
   }
   SC$1.currentSnippetW=View$1.Map((f$2=function(o)
   {
@@ -10600,9 +10616,9 @@
    v$2=SnippetModule.defaultSnippet();
    return o==null?v$2:o.$0;
   }
-  function m$2(a$2)
+  function m$2(a$4)
   {
-   return Snippets.snippets().TryFindByKeyAsView(a$2);
+   return Snippets.snippets().TryFindByKeyAsView(a$4);
   }
   SC$1.codeSnippetW=View$1.Map((f$4=function(o)
   {
@@ -10628,19 +10644,19 @@
   {
    return[tn.id(),l];
   }
-  function a(a$2)
+  function a(a$4)
   {
-   function f$6(n)
+   function f$8(n)
    {
     return TreeReader.listNodes(0,n);
    }
-   function g$9(r)
+   function g$11(r$1)
    {
-    return Snippets.runReader(Snippets.handleError,r);
+    return Snippets.runReader(Snippets.handleError,r$1);
    }
    return function(x$6)
    {
-    return g$9(f$6(x$6));
+    return g$11(f$8(x$6));
    };
   }
   SC$1.getHierarchyW=View$1.Map(Arrays.ofSeq,View$1.Map(function(s$1)
@@ -10653,7 +10669,7 @@
   {
    return(a($7))($8);
   },Snippets.collapsedV().get_View(),x))));
-  function a$1(a$2,a$3)
+  function a$1(a$4,a$5)
   {
    var b$3;
    b$3=null;
@@ -10689,15 +10705,15 @@
     return"";
    },(b$3=FusionM.fusion(),b$3.Run(b$3.Delay(function()
    {
-    return b$3.Bind(SnippetModule.pathRm(snp.snpId),function(a$2)
+    return b$3.Bind(SnippetModule.pathRm(snp.snpId),function(a$4)
     {
      return b$3.Bind(FusionM.traverseSeq(SnippetModule.snippetNameRm,new List.T({
       $:1,
       $0:snp.snpId,
-      $1:a$2
-     })),function(a$3)
+      $1:a$4
+     })),function(a$5)
      {
-      return b$3.Return(Strings.concat("/",Seq$1.rev(a$3)));
+      return b$3.Return(Strings.concat("/",Seq$1.rev(a$5)));
      });
     });
    }))));
@@ -10710,10 +10726,10 @@
     return null;
    },(b$3=FusionM.fusion(),b$3.Run(b$3.Delay(function()
    {
-    function m$4(snB,a$2)
+    function m$4(snB,a$4)
     {
      var p,ls,ats,ss;
-     p=(ls=Strings.SplitChars(Strings.Trim(a$2[0]),["\n"],0),Strings.StartsWith(Arrays.get(ls,0),"\"")?[Slice.array(ls,{
+     p=(ls=Strings.SplitChars(Strings.Trim(a$4[0]),["\n"],0),Strings.StartsWith(Arrays.get(ls,0),"\"")?[Slice.array(ls,{
       $:1,
       $0:1
      },null),Arrays.get(ls,0)]:[ls,"\"\""]);
@@ -10767,20 +10783,20 @@
       $:1,
       $0:($7=o.$0,m$4($7[0],$7[1]))
      };
-    }),function(a$2)
+    }),function(a$4)
     {
-     function m$5(snL,a$3)
+     function m$5(snL,a$5)
      {
       var txL,o,$7;
-      txL=a$3[0];
-      return["Snp_"+Strings.Replace(Global.String(snL.snpId.get_Id()),"-",""),(o=a$2==null?null:{
+      txL=a$5[0];
+      return["Snp_"+Strings.Replace(Global.String(snL.snpId.get_Id()),"-",""),(o=a$4==null?null:{
        $:1,
-       $0:($7=a$2.$0,($7[0],Strings.concat("\n",List.ofArray([txL,$7[1]]))))
+       $0:($7=a$4.$0,($7[0],Strings.concat("\n",List.ofArray([txL,$7[1]]))))
       },o==null?txL:o.$0)];
      }
-     function f$6()
+     function f$8()
      {
-      return a$2;
+      return a$4;
      }
      return b$3.ReturnFrom(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(SnippetModule.propertyHierORm("Layout",snp),function(o)
      {
@@ -10791,16 +10807,16 @@
       };
      }),function(o)
      {
-      return Option.bindNone(f$6,o);
+      return Option.bindNone(f$8,o);
      }));
     });
    }))));
   },Snippets.currentSnippetW());
   SC$1.currentLayoutJSDW=View$1.Map(function(snp)
   {
-   function m$4(snL,a$2)
+   function m$4(snL,a$4)
    {
-    return[snL.snpId,a$2[0]];
+    return[snL.snpId,a$4[0]];
    }
    return Snippets.runReader(function()
    {
@@ -10852,15 +10868,15 @@
    }
   },Snippets.CurrentSnippetIdW());
   SC$1.rexGuid$1="\\((\\d+)\\,\\s*(\\d+)\\) - \\((\\d+)\\,\\s*(\\d+)\\).*([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})";
-  function get(a$2)
+  function get(a$4)
   {
-   return a$2.$0;
+   return a$4.$0;
   }
-  function set(a$2)
+  function set(a$4)
   {
    return new SnippetId({
     $:0,
-    $0:a$2
+    $0:a$4
    });
   }
   SC$1.serSnippetId=(s=Arrays.head(Strings.SplitChars((function($7)
@@ -11087,6 +11103,71 @@
    },i$2,x$4);
   }]));
   SC$1.serSnippets=(t$22=Importer.serSnippet2(),Serializer.serArr(t$22[0],t$22[1]));
+  SC$1.endPointV=Var$1.Create$1(EndPoint.NoSnippet);
+  function f$6(a$4)
+  {
+   var pth;
+   return a$4.$==0?View.rtn({
+    $:1,
+    $0:new SnippetId({
+     $:0,
+     $0:a$4.$0
+    })
+   }):a$4.$==1?(pth=a$4.$0,View$1.Map(function(p)
+   {
+    function m$4(s$1)
+    {
+     return s$1.snpId;
+    }
+    return p===Strings.concat("/",pth)?Snippets.currentSnippetIdOV().Get():Snippets.runReader(Snippets.handleError,FusionM.map(function(o)
+    {
+     return o==null?null:{
+      $:1,
+      $0:m$4(o.$0)
+     };
+    },SnippetModule.snippetFromPathORm(pth)));
+   },Snippets.currentPathW())):View.rtn(null);
+  }
+  function a$2(sidO)
+  {
+   if(!Unchecked.Equals(Snippets.currentSnippetIdOV().Get(),sidO))
+    Snippets.currentSnippetIdOV().Set(sidO);
+  }
+  function f$7(a$4)
+  {
+   var guid;
+   return a$4!=null&&a$4.$==1?(guid=a$4.$0.$0,View$1.Map(function(p)
+   {
+    return Unchecked.Equals({
+     $:1,
+     $0:Strings.SplitChars(p,["/"],0)
+    },MainProgram.endPointV().Get())?MainProgram.endPointV().Get():{
+     $:0,
+     $0:guid
+    };
+   },Snippets.currentPathW())):View.rtn(EndPoint.NoSnippet);
+  }
+  function a$3(ep)
+  {
+   if(!Unchecked.Equals(MainProgram.endPointV().Get(),ep))
+    MainProgram.endPointV().Set(ep);
+  }
+  r=FSharpStation_Router.r();
+  Router.InstallHashInto(MainProgram.endPointV(),EndPoint.NoSnippet,r);
+  View$1.Sink((g$9=function(a$4)
+  {
+   View$1.Get(a$2,a$4);
+  },function(x$6)
+  {
+   return g$9(f$6(x$6));
+  }),MainProgram.endPointV().get_View());
+  View$1.Sink((g$10=function(a$4)
+  {
+   View$1.Get(a$3,a$4);
+  },function(x$6)
+  {
+   return g$10(f$7(x$6));
+  }),Snippets.currentSnippetIdOV().get_View());
   SC$1.FStationLyt="FStationLyt";
   x$5=Snippets.codeAndStartsW();
   View$1.Sink(Library.delayed(300,function(t$23)
@@ -11112,43 +11193,43 @@
     {
      return Concurrency.TryWith(Concurrency.Delay(function()
      {
-      var _this,f$6,g$9,f$7,dst,p;
-      function f$8(a$2)
+      var _this,f$8,g$11,f$9,dst,p;
+      function f$10(a$4)
       {
-       return(FSharpStation_JsonDecoder.j$4())(JSON.parse(a$2));
+       return(FSharpStation_JsonDecoder.j$4())(JSON.parse(a$4));
       }
-      function f$9(a$2)
+      function f$11(a$4)
       {
-       return JSON.stringify((FSharpStation_JsonEncoder.j$4())(a$2));
+       return JSON.stringify((FSharpStation_JsonEncoder.j$4())(a$4));
       }
-      function g$10(v$2)
+      function g$12(v$2)
       {
        return Concurrency.Return(v$2);
       }
-      function g$11(m$4)
+      function g$13(m$4)
       {
        Operators$3.FailWith(m$4);
       }
       _this=Messaging.wsStationClient();
       _this.payloadProcessorO={
        $:1,
-       $0:(f$6=function(x$6)
+       $0:(f$8=function(x$6)
        {
-        return Messaging.processMessage(f$8(x$6));
-       },(g$9=(f$7=function(x$6)
+        return Messaging.processMessage(f$10(x$6));
+       },(g$11=(f$9=function(x$6)
        {
-        return g$10(f$9(x$6));
+        return g$12(f$11(x$6));
        },function(v$2)
        {
-        return Concurrency.Bind(v$2,f$7);
+        return Concurrency.Bind(v$2,f$9);
        }),function(x$6)
        {
-        return g$9(f$6(x$6));
+        return g$11(f$8(x$6));
        }))
       };
       AsyncResult.iterA(function(x$6)
       {
-       return g$11(Global.String(x$6));
+       return g$13(Global.String(x$6));
       },Global.ignore,_this.sendAndForget(WebSockets.msgType(MessageType.MsgInformation,(dst=WebSockets.MessageBrokerAddress(),(p=JSON.stringify(((Provider.Id())())("Registering Processor")),MessageGeneric.New(new Address({
        $:0,
        $0:""
@@ -11157,7 +11238,7 @@
       {
        return Concurrency.Return(null);
       });
-     }),function(a$2)
+     }),function(a$4)
      {
       ((function($7)
       {
@@ -11168,7 +11249,7 @@
       }(function(s$1)
       {
        console.log(s$1);
-      }))(a$2.message));
+      }))(a$4.message));
       return Concurrency.Bind(Concurrency.Sleep(1000),function()
       {
        return Concurrency.Return(null);
@@ -11178,33 +11259,33 @@
    });
   })),null);
  };
- FSharpStation_JsonEncoder.j$4=function()
+ FSharpStation_JsonEncoder.j$6=function()
  {
-  return FSharpStation_JsonEncoder._v$4?FSharpStation_JsonEncoder._v$4:FSharpStation_JsonEncoder._v$4=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","ResultValue",FSharpStation_JsonEncoder.j$6,0]]],[1,[["$0","ErrorValue",FSharpStation_JsonEncoder.j$5,0]]]]))();
- };
- FSharpStation_JsonDecoder.j$5=function()
- {
-  return FSharpStation_JsonDecoder._v$5?FSharpStation_JsonDecoder._v$5:FSharpStation_JsonDecoder._v$5=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",FSharpStation_JsonDecoder.j$6,0]]],[1,[["$0","Item",Provider.DecodeArray(Provider.Id()),0]]]]))();
- };
- FSharpStation_JsonDecoder.j$4=function()
- {
-  return FSharpStation_JsonDecoder._v$4?FSharpStation_JsonDecoder._v$4:FSharpStation_JsonDecoder._v$4=(Provider.DecodeUnion(void 0,"$",[[0,[]],[1,[["$0","Item",Provider.DecodeArray(FSharpStation_JsonDecoder.j$5),0]]],[2,[["$0","Item",FSharpStation_JsonDecoder.j$5,0]]],[3,[["$0","Item",FSharpStation_JsonDecoder.j$5,0]]],[4,[["$0","Item",Provider.DecodeArray(Provider.Id()),0]]],[5,[]]]))();
+  return FSharpStation_JsonEncoder._v$6?FSharpStation_JsonEncoder._v$6:FSharpStation_JsonEncoder._v$6=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",Provider.Id(),0]]],[1,[["$0","Item",Provider.EncodeArray(FSharpStation_JsonEncoder.j$7),0]]]]))();
  };
  FSharpStation_JsonDecoder.j$6=function()
  {
   return FSharpStation_JsonDecoder._v$6?FSharpStation_JsonDecoder._v$6:FSharpStation_JsonDecoder._v$6=(Provider.DecodeUnion(SnippetId,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
  };
+ FSharpStation_JsonDecoder.j$5=function()
+ {
+  return FSharpStation_JsonDecoder._v$5?FSharpStation_JsonDecoder._v$5:FSharpStation_JsonDecoder._v$5=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",FSharpStation_JsonDecoder.j$6,0]]],[1,[["$0","Item",Provider.DecodeArray(Provider.Id()),0]]]]))();
+ };
+ FSharpStation_JsonEncoder.j$4=function()
+ {
+  return FSharpStation_JsonEncoder._v$4?FSharpStation_JsonEncoder._v$4:FSharpStation_JsonEncoder._v$4=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","ResultValue",FSharpStation_JsonEncoder.j$6,0]]],[1,[["$0","ErrorValue",FSharpStation_JsonEncoder.j$5,0]]]]))();
+ };
  FSharpStation_GeneratedPrintf.p=function($1)
  {
   return"SnippetId "+Utils.prettyPrint($1.$0);
  };
+ FSharpStation_Router.r=function()
+ {
+  return RouterOperators.JSUnion(void 0,[[null,[[null,["Snippet"]]],[RouterOperators.rGuid()]],[null,[[null,["Path"]]],[RouterOperators.rWildcardArray(RouterOperators.rString())]],[null,[[null,[]]],[]]]);
+ };
  FSharpStation_JsonEncoder.j$5=function()
  {
   return FSharpStation_JsonEncoder._v$5?FSharpStation_JsonEncoder._v$5:FSharpStation_JsonEncoder._v$5=(Provider.EncodeUnion(ResultMessage,"$",[[0,[]],[1,[["$0","Item",Provider.Id(),0]]],[2,[["$0","Item",Provider.Id(),0]]],[3,[["$0","Item",Provider.Id(),0]]],[4,[["$0","Item",Provider.Id(),0]]],[5,[["$0","Item1",Provider.Id(),0],["$1","Item2",Provider.Id(),0]]],[6,[["$0","Item",Provider.EncodeArray(FSharpStation_JsonEncoder.j$5),0]]]]))();
- };
- FSharpStation_JsonEncoder.j$6=function()
- {
-  return FSharpStation_JsonEncoder._v$6?FSharpStation_JsonEncoder._v$6:FSharpStation_JsonEncoder._v$6=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",Provider.Id(),0]]],[1,[["$0","Item",Provider.EncodeArray(FSharpStation_JsonEncoder.j$7),0]]]]))();
  };
  FSharpStation_JsonEncoder.j$7=function()
  {
@@ -11271,16 +11352,16 @@
    return FSharpStation_GeneratedPrintf.p$1($2);
   },$1.$0):$1.$==5?"ExceptMsg ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+")":$1.$==4?"Message "+Utils.prettyPrint($1.$0):$1.$==3?"Info "+Utils.prettyPrint($1.$0):$1.$==2?"Warning "+Utils.prettyPrint($1.$0):$1.$==1?"ErrorMsg "+Utils.prettyPrint($1.$0):"NoMsg";
  };
- FSharpStation_GeneratedPrintf.p$2=function($1)
- {
-  return $1.$==1?"RefSnippetPath "+Utils.printArray(Utils.prettyPrint,$1.$0):"RefSnippetId "+FSharpStation_GeneratedPrintf.p($1.$0);
- };
  FSharpStation_GeneratedPrintf.p$3=function($1)
  {
   return $1.$==5?"MsgGetUrl":$1.$==4?"MsgAction "+Utils.printArray(Utils.prettyPrint,$1.$0):$1.$==3?"MsgGetPredecessors "+FSharpStation_GeneratedPrintf.p$2($1.$0):$1.$==2?"MsgGetCode "+FSharpStation_GeneratedPrintf.p$2($1.$0):$1.$==1?"MsgGetSnippets "+Utils.printArray(function($2)
   {
    return FSharpStation_GeneratedPrintf.p$2($2);
   },$1.$0):"MsgGetId";
+ };
+ FSharpStation_GeneratedPrintf.p$2=function($1)
+ {
+  return $1.$==1?"RefSnippetPath "+Utils.printArray(Utils.prettyPrint,$1.$0):"RefSnippetId "+FSharpStation_GeneratedPrintf.p($1.$0);
  };
  FSharpStation_JsonEncoder.j$9=function()
  {
@@ -11508,6 +11589,10 @@
  FSharpStation_JsonDecoder.j=function()
  {
   return FSharpStation_JsonDecoder._v?FSharpStation_JsonDecoder._v:FSharpStation_JsonDecoder._v=(Provider.DecodeRecord(void 0,[["from",FSharpStation_JsonDecoder.j$1,0],["destination",FSharpStation_JsonDecoder.j$1,0],["msgType",FSharpStation_JsonDecoder.j$2,0],["subtype",Provider.Id(),0],["id",Provider.Id(),0],["payload",Provider.Id(),0],["replier",FSharpStation_JsonDecoder.j$3,0]]))();
+ };
+ FSharpStation_JsonDecoder.j$4=function()
+ {
+  return FSharpStation_JsonDecoder._v$4?FSharpStation_JsonDecoder._v$4:FSharpStation_JsonDecoder._v$4=(Provider.DecodeUnion(void 0,"$",[[0,[]],[1,[["$0","Item",Provider.DecodeArray(FSharpStation_JsonDecoder.j$5),0]]],[2,[["$0","Item",FSharpStation_JsonDecoder.j$5,0]]],[3,[["$0","Item",FSharpStation_JsonDecoder.j$5,0]]],[4,[["$0","Item",Provider.DecodeArray(Provider.Id()),0]]],[5,[]]]))();
  };
 }());
 
