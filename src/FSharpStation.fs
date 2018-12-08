@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1543956487391 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1544042654117 -d:WEBSHARPER
 ////#cd @"..\projects\FSharpStation\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -37,7 +37,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1543956487391
+//#define FSharpStation1544042654117
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -2091,6 +2091,7 @@ namespace FsRoot
                     member __.IsAlive              = not shell.HasExited
                     member __.Abort()              = shell.Abort()
                     member __.Process              = shell.Process
+                    member __.Shell                = shell
                     member oo.EvalSilent code      = asyncResult {
                                                         try     silent := true
                                                                 return! oo.Eval code
@@ -2889,16 +2890,17 @@ namespace FsRoot
                     outHndl <-                  queue
                     errHndl <- ((+) "Err: ") >> queue
             
-                let ctor, aborter, disposer, getIdO =
+                let ctor, aborter, disposer, getIdO, sendInput =
                     let mutable fsiO = None
                     let ctor (Config (workDir, config)) =
                         let fsi = new FsiExe(config |> String.concat " ", workDir, outHndl, errHndl)
                         fsiO <- Some fsi
                         fsi
                     ctor
-                  , (fun () -> fsiO |> Option.iter (fun fsi ->  fsi                       .Abort  ()  ) )
-                  , (fun () -> fsiO |> Option.iter (fun fsi -> (fsi :> System.IDisposable).Dispose()  ) )
-                  , (fun () -> fsiO |> Option.map  (fun fsi ->  fsi                       .Process.Id ) )
+                  , (fun ()  -> fsiO |> Option.iter (fun fsi ->  fsi                       .Abort      () ) )
+                  , (fun ()  -> fsiO |> Option.iter (fun fsi -> (fsi :> System.IDisposable).Dispose    () ) )
+                  , (fun ()  -> fsiO |> Option.map  (fun fsi ->  fsi                       .Process.Id    ) )
+                  , (fun txt -> fsiO |> Option.iter (fun fsi ->  fsi                       .Shell.Send txt) )
             
                 let fsiExeL = lazy new ResourceAgent<_, _>( 70
                                                          , ctor
@@ -2952,6 +2954,8 @@ namespace FsRoot
                 /// like abortFsiExe but prevents respawning until next command
                 let disposeFsiExe() = disposer()
             
+                [<Rpc>]
+                let sendFsiInput txt = async { sendInput txt }
             
             [<WebSharper.JavaScript>]
             module WebSockets =
@@ -3348,7 +3352,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#FsRoot"
+                    "http://localhost:9005/#/Snippet/c677b6fd-d833-43ee-a15c-62c60d8572e4"
                 #endif
                 
                 let extractEndPoint() = 
@@ -3539,7 +3543,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1543956487391"
+                let mutable fsharpStationAddress = Address "FSharpStation1544042654117"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -5039,6 +5043,13 @@ namespace FsRoot
                     } |> iterResultA (sprintf "Error:\n%A" >> out) ignore
                 )
         
+            let lastLineToFsi () = 
+                let out (v:string) = appendMsgs <| v.Replace(FsiEvaluator.endToken, "Done!")
+                fusion {
+                    do! FSharpStationClient.setAddress (WebSockets.Address FStation.id)  |> ofAsync
+                    do! outputMsgs.Value.Split '\n' |> Seq.last |> FsiAgent.sendFsiInput |> ofAsync 
+                } |> iterResultA (sprintf "Error:\n%A" >> out) ignore
+        
             let deleteSnippet() =
                 let snp = Snippets.currentSnippetV.Value
                 if  snp.snpId <> SnippetId.Empty 
@@ -5138,6 +5149,7 @@ namespace FsRoot
                                        AF.newAct  "AddProperty"     RenderProperties.addProperty
                                        AF.newAct  "SaveAs"          LoadSave.saveAs
                                        AF.newAct  "RunFS"           runFsCode
+                                       AF.newAct  "LastLineToFsi"   lastLineToFsi
                                        AF.newAct  "AbortFsi"        FsiAgent.abortFsiExe
                                        AF.newAct  "DisposeFsi"      FsiAgent.disposeFsiExe
                                        AF.newActF "LoadFile"        <| AF.FunAct1 ((fun o -> unbox o |> LoadSave.loadTextFile   ), "FileElement")
@@ -5157,7 +5169,7 @@ namespace FsRoot
                     editorMessages   horizontal 10-83-100 editorButtons             messages
                     messages         vertical   0-50-100  messagesLeft              messagesRight
                     editorButtons    vertical -200 snippetsSnippet buttons
-                    buttons div      "overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px" btnSaveAs none x btnAddSnippet btnDeleteSnippet btnIndentIn btnIndentOut none x btnRunFS none x btnAbortFsi
+                    buttons div      "overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px" btnSaveAs none x btnAddSnippet btnDeleteSnippet btnIndentIn btnIndentOut none x btnRunFS btnInputFsi btnAbortFsi
                     snippetsSnippet  vertical   0-20-100  snippets                  editorProperties
                     snippets         horizontal 20        "${FSharpStation.CurrentPath}" FSharpStation.Snippets
                     editorProperties vertical   0-100-100 snippet                   properties
@@ -5171,6 +5183,7 @@ namespace FsRoot
                     btnIndentIn      button FSharpStation.IndentIn       ""                  "Indent In  >> "
                     btnIndentOut     button FSharpStation.IndentOut      ""                  "Indent Out << "
                     btnRunFS         button FSharpStation.RunFS          ""                  "Run F#        "
+                    btnInputFsi      button FSharpStation.LastLineToFsi  ""                  "last line |> Fsi"
                     btnAbortFsi      button FSharpStation.AbortFsi       ""                  "Abort Fsi     "
         
                     messagesLeft     wcomp-tabstrip                      ""                  Output FsCode

@@ -22,6 +22,7 @@ nuget System.Reactive    = 4.0.0
 nuget FSharp.Control.Reactive
 nuget FSharpPlus 
 nuget Microsoft.NETCore.UniversalWindowsPlatform = 5.2.4
+nuget FSharp.Formatting
 
 group Testing
     framework: netstandard2, net461

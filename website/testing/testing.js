@@ -2,13 +2,13 @@ CIPHERSpaceLoadFilesDoAfter(function() { IntelliFactory.Runtime.Start() });
 CIPHERSpaceLoadFiles(["/Scripts/WebSharper/WebSharper.Core.JavaScript/Runtime.js", "/Scripts/WebSharper/WebSharper.Main.js", "/Scripts/WebSharper/WebSharper.Collections.js", "/Scripts/WebSharper/WebSharper.Web.js", "/Scripts/WebSharper/WebSharper.Sitelets.js", "/Scripts/WebSharper/WebSharper.Control.js", "/Scripts/WebSharper/WebSharper.UI.js", "/Scripts/WebSharper/WebSharper.UI.Templating.Runtime.js"], function()
 {
  "use strict";
- var Global,FsRoot,LibraryJS,REGEX,TestingJS,CodeMirror,SC$1,WebSharper,Unchecked,Arrays,Strings,UI,Var$1,Doc,AttrProxy,View,List,Seq,Client,Templates,IntelliFactory,Runtime;
+ var Global,FsRoot,LibraryJS,REGEX,TestingJS,REGEX$1,SC$1,WebSharper,Unchecked,Arrays,Strings,UI,Var$1,Doc,AttrProxy,View,List,Seq,Client,Templates,IntelliFactory,Runtime;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
  REGEX=LibraryJS.REGEX=LibraryJS.REGEX||{};
  TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
- CodeMirror=TestingJS.CodeMirror=TestingJS.CodeMirror||{};
+ REGEX$1=TestingJS.REGEX=TestingJS.REGEX||{};
  SC$1=Global["StartupCode$D:\\Abe\\CIPHERWorkspace\\FSharpStation\\src\\wsconfig_json$testing"]=Global["StartupCode$D:\\Abe\\CIPHERWorkspace\\FSharpStation\\src\\wsconfig_json$testing"]||{};
  WebSharper=Global.WebSharper;
  Unchecked=WebSharper&&WebSharper.Unchecked;
@@ -69,7 +69,7 @@ CIPHERSpaceLoadFiles(["/Scripts/WebSharper/WebSharper.Core.JavaScript/Runtime.js
     return null;
    }
  };
- CodeMirror.main=function()
+ REGEX$1.main=function()
  {
   var rexV,parmsV,inputV,x,a;
   rexV=Var$1.Create$1("(Err|Warn|Info) \\((\\d+)\\,\\s*(\\d+)\\) - \\((\\d+)\\,\\s*(\\d+)\\)\\: \"([^\"]+?)\"\\.");
@@ -117,6 +117,6 @@ CIPHERSpaceLoadFiles(["/Scripts/WebSharper/WebSharper.Core.JavaScript/Runtime.js
  };
  Runtime.OnLoad(function()
  {
-  CodeMirror.main();
+  REGEX$1.main();
  });
 });

@@ -2,7 +2,7 @@
 #nowarn "1182"
 #nowarn "52"
 #nowarn "1178"
-////-d:FSharpStation1543956487391
+////-d:FSharpStation1544042654117
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#I @"..\packages\WebSharper.FSharp\tools\net461\"
@@ -42,7 +42,7 @@
 //#nowarn "52"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1543956487391
+//#define FSharpStation1544042654117
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -2624,7 +2624,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#"
+                    "http://localhost:9005/#/Snippet/d13d1035-6560-4f45-91d1-2703166e5f43"
                 #endif
                 
                 let extractEndPoint() = 
@@ -2815,7 +2815,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1543956487391"
+                let mutable fsharpStationAddress = Address "FSharpStation1544042654117"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -2898,9 +2898,9 @@ namespace FsRoot
                 do   startProcess (sprintf "%stesting/testing.html?q=%A" url.[..url.Length-2] modif)     "" |> ignore
             } 
         
-            let checkName (name:string) =
-                if name.EndsWith "/canopy" 
-                then name.[0..name.Length - "/canopy".Length - 1]
+            let uncanopyName (name:string) =
+                if name.EndsWith ".canopy" 
+                then name.[0..name.Length - ".canopy".Length - 1]
                 else name
         
             [< Inline "throw 'runTest is not intended for JavaScript client'" >]
@@ -2917,8 +2917,8 @@ namespace FsRoot
                 do   File.WriteAllText(testFile(), runtimeStart + "\n" + js)
             }
         
-            let justRun                   =                                run >> iterResult print id
-            let compileAndRun        show = checkName >> compile show  >=> run >> iterResult print id
+            let justRun                   =                                   run >> iterResult print id
+            let compileAndRun        show = uncanopyName >> compile show  >=> run >> iterResult print id
         
             open FsiAgent
         
@@ -2930,7 +2930,7 @@ namespace FsRoot
                 abortFsiExe()
             }
         
-            let test                           = checkName       >> __ (+) "/canopy" >>             testSnippet
+            let test                           = uncanopyName       >> __ (+) ".canopy" >>             testSnippet
             let testCanopy                     =                                                    test        >> iterResult print id
-            let compileAndTestCanopy show name = checkName name  |> compile show     >>= (fun () -> test name)  |> iterResult print id
+            let compileAndTestCanopy show name = uncanopyName name  |> compile show     >>= (fun () -> test name)  |> iterResult print id
          

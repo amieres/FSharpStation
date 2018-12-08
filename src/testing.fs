@@ -1,4 +1,4 @@
-////-d:FSharpStation1543956487391 -d:WEBSHARPER
+////-d:FSharpStation1544042654117 -d:WEBSHARPER
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
@@ -17,7 +17,7 @@
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 /// Root namespace for all code
-//#define FSharpStation1543956487391
+//#define FSharpStation1544042654117
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -112,7 +112,7 @@ namespace FsRoot
         module TestingJS =
         
         
-            module CodeMirror =
+            module REGEX =
                 open WebSharper.UI
                 open WebSharper.UI.Html
             
