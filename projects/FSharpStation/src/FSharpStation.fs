@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1544042654117 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1545002842471 -d:WEBSHARPER
 ////#cd @"..\projects\FSharpStation\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -37,7 +37,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1544042654117
+//#define FSharpStation1545002842471
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -619,9 +619,9 @@ namespace FsRoot
                     let inline ofOption        f  o  = o  |> Option.map OkF |> Option.defaultWith (f >> ErrorF)
                     let inline ofMessage          m  =                        OkFMsg ()                      (Message                  m)
                     let inline ofResultMessage    m  =                        OkFMsg ()                                                m
-                    let inline ofFusionM     (FM fm) = FAM(fun (s,r) -> async.Return (fm (s, r)) )
-                    let inline ofAsync            a  = FAM(fun (s ,r ) -> a |> Async.map (fun v -> Some v, s, NoMsg) )
+                    let inline ofAsync            a  = FAM(fun (s, r) -> a |> Async.map (fun v -> Some v, s, NoMsg) )
                     let inline ofAsyncResultRM    a  = a |> ofAsync |> bind ofResultRM
+                    let inline ofFusionM     (FM fm) = FAM(fun (s, r) -> async.Return (fm (s, r)) )
                 
                     let        freeMessageF     f  m = FAM(fun (s1,m1) -> async {
                                                           try
@@ -851,8 +851,8 @@ namespace FsRoot
                        splitByChar '\n' 
                     >> fun s -> s.[0 .. (max 0 (s.Length - 2)) ]
                     >> String.concat "\n"
-                let (|StartsWith|_|) start (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
-                let (|EndsWith  |_|) ends  (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
+                let (|StartsWith|_|) (start:string) (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
+                let (|EndsWith  |_|) (ends :string) (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
                 
             
             [< Inline "$a + '/' + $b" >]
@@ -3352,7 +3352,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/c677b6fd-d833-43ee-a15c-62c60d8572e4"
+                    "http://localhost:9005/#/Path/FsRoot/Libraries/LibraryJS/LayoutEngine"
                 #endif
                 
                 let extractEndPoint() = 
@@ -3534,6 +3534,7 @@ namespace FsRoot
             | MsgGetPredecessors of SnippetReference
             | MsgAction          of string[]
             | MsgGetUrl
+            | MsgGetValue        of string
             
             [< JavaScript >]
             type FSResponse =
@@ -3543,7 +3544,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1544042654117"
+                let mutable fsharpStationAddress = Address "FSharpStation1545002842471"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -3593,7 +3594,8 @@ namespace FsRoot
                     |> sendMessage
                     |> AsyncResult.bind respSnippet
             
-                let getUrl () = sendMessage MsgGetUrl |> AsyncResult.bind respString
+                let getUrl  () = MsgGetUrl     |> sendMessage |> AsyncResult.bind respString
+                let getValue v = MsgGetValue v |> sendMessage |> AsyncResult.bind respString
             
                 let execJS      js          = sendMessage (MsgAction [| "ExecJS"      ; js              |]) |> AsyncResult.bind respString
                 let setProperty path prop v = sendMessage (MsgAction [| "SetProperty" ; path ; prop ; v |]) |> AsyncResult.bind respString
@@ -4871,16 +4873,29 @@ namespace FsRoot
         
             let actionClickRm name = fusion {
                 outputMsgs.Set  <| sprintf "Action %s ..." name
-                let! snp       = getBaseSnippet()
-                let! code      = getCode snp name |>> translateString (fetchValue name)
+                let! snp         = getBaseSnippet()
+                let! code        = getCode snp name |>> translateString (fetchValue name)
                 do!     ofAsync <| FSharpStationClient.setAddress (WebSockets.Address FStation.id)
-                let! preCode   = Snippet.fastCodeRm (Some snp.snpId) (Some snp.snpId) |> ofFusionM |>> fst
-                let! gen       = ofFusionM <| Snippet.predsGenerationRm snp
+                let! preCode     = Snippet.fastCodeRm (Some snp.snpId) (Some snp.snpId) |> ofFusionM |>> fst
+                let! gen         = ofFusionM <| Snippet.predsGenerationRm snp
+                return! ofAsync <| FsiAgent.evalCodeWithPresence FStation.srcDir (sprintf "%A" snp.snpId) (string gen) (FsCode preCode) (FsCode code)
+            }
+            
+            let actionSnpRm (snpPath:string) name = fusion {
+                let! snpO        = snpPath.Split '/' |> SnippetReference.RefSnippetPath |> Snippet.snippetFromRefORm |> ofFusionM
+                match snpO with
+                | None     -> return! ofResultRM <| Error (ErrorMsg (sprintf "Snippet %s not found" snpPath) )
+                | Some snp ->
+                let! code        = getCode snp name |>> translateString (fetchValue name)
+                do!     ofAsync <| FSharpStationClient.setAddress (WebSockets.Address FStation.id)
+                let! preCode     = Snippet.fastCodeRm (Some snp.snpId) (Some snp.snpId) |> ofFusionM |>> fst
+                let! gen         = ofFusionM <| Snippet.predsGenerationRm snp
                 return! ofAsync <| FsiAgent.evalCodeWithPresence FStation.srcDir (sprintf "%A" snp.snpId) (string gen) (FsCode preCode) (FsCode code)
             }
             
             let actionClick name            = actionClickRm  name  |> iterReaderA  print print (Snippets.snippetsColl())
             let buttonClick (e:Dom.Element) = e.TextContent.Trim() |> actionClick
+            let actionSnp  path name        = actionClickRm  name  |> iterReaderA  print print (Snippets.snippetsColl())
         
         module Serializer =
             open Serializer
@@ -5152,11 +5167,12 @@ namespace FsRoot
                                        AF.newAct  "LastLineToFsi"   lastLineToFsi
                                        AF.newAct  "AbortFsi"        FsiAgent.abortFsiExe
                                        AF.newAct  "DisposeFsi"      FsiAgent.disposeFsiExe
-                                       AF.newActF "LoadFile"        <| AF.FunAct1 ((fun o -> unbox o |> LoadSave.loadTextFile   ), "FileElement")
-                                       AF.newActF "Import"          <| AF.FunAct1 ((fun o -> unbox o |> Importer.importFile     ), "FileElement")
-                                       AF.newActF "JumpTo"          <| AF.FunAct1 ((fun o -> unbox o |> JumpTo.jumpToRef        ), "textarea"   )
-                                       AF.newActF "ButtonClick"     <| AF.FunAct1 ((fun o -> unbox o |> CustomAction.buttonClick), "button"     )
-                                       AF.newActF "ActionClick"     <| AF.FunAct1 ((fun o -> unbox o |> CustomAction.actionClick), "name"       )
+                                       AF.newActF "LoadFile"        <| AF.FunAct1 ((fun o     -> unbox o  |> LoadSave.loadTextFile              ), "FileElement")
+                                       AF.newActF "Import"          <| AF.FunAct1 ((fun o     -> unbox o  |> Importer.importFile                ), "FileElement")
+                                       AF.newActF "JumpTo"          <| AF.FunAct1 ((fun o     -> unbox o  |> JumpTo.jumpToRef                   ), "textarea"   )
+                                       AF.newActF "ButtonClick"     <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.buttonClick           ), "button"     )
+                                       AF.newActF "ActionClick"     <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.actionClick           ), "name"       )
+                                       AF.newActF "ActionSnp"       <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.actionSnp (unbox o1)  ), "snpPath", "name" )
                                     |]
                     AF.plgQueries = [|                                               
                                     |]
@@ -5240,12 +5256,13 @@ namespace FsRoot
         //#define FSS_SERVER
         module Messaging =
             open FStation
-            open FusionM
+            open FusionAsyncM
             open Operators
             open MainProgram
         
             open FsRoot
             module AF = AppFramework 
+            module Fusion = FusionAsyncM
         
             let wsStationClient = if IsClient then new WebSockets.WSMessagingClient(FStation.id) else new WebSockets.WSMessagingClient("FStation.id", WebSockets.FSStation)
         
@@ -5256,33 +5273,41 @@ namespace FsRoot
                               return FSResponse.RespString "Ok"
             }
         
+            let getValue vname = fusion {
+                match vname |> AF.splitName FStationLyt ||> AF.tryGetWoW with
+                | None     -> return! ofResultRM <| Error (ErrorMsg (sprintf "Var or View %s not found" vname) )
+                | Some  vw -> let! v = vw |> View.GetAsync |> ofAsync
+                              return FSResponse.RespString v
+            }
         
             let processMessage (msg: FSMessage) : Async<Result<FSResponse,ResultMessage<string>>>= 
                 fusion {
                     match msg with
                     | MsgGetId                          -> return  RespString FStation.id
-                    | MsgGetSnippets               snrs -> let!    snps = snrs |> FusionM.traverseSeq Snippet.snippetFromRefORm
+                    | MsgGetSnippets               snrs -> let!    snps = snrs |> Fusion.traverseSeq (Snippet.snippetFromRefORm >> ofFusionM)
                                                            return  snps |> Seq.choose id |> Seq.toArray |> RespSnippets
                     | MsgGetCode                   snr  -> Snippets.clearPredsCache ()
-                                                           let!    snp  = Snippet.snippetFromRefORm snr |> absorbO (fun () -> ErrorMsg <| sprintf "Snippet not found %A" snr)
-                                                           return! Snippet.fastCodeRm (Some snp.snpId) (Some snp.snpId) |>> fst |>> RespString
+                                                           let!    snp  = Snippet.snippetFromRefORm snr |> ofFusionM |> absorbO (fun () -> ErrorMsg <| sprintf "Snippet not found %A" snr)
+                                                           return! Snippet.fastCodeRm (Some snp.snpId) (Some snp.snpId) |> ofFusionM |>> fst |>> RespString
                     | MsgGetPredecessors           snr  -> Snippets.clearPredsCache ()
                                                            return  Hole ? TODO_GetPredecessors
                     | MsgAction [| "AddOutput" ; txt |] -> appendMsgs txt
                                                            return  FSResponse.RespString "Ok"
                     | MsgAction [| "ExecJS"    ; js  |] -> let v = JS.Apply JS.Window "eval" [| js |] |> function null -> "" |s->s 
-                                                           return  FSResponse.RespString "Ok"
+                                                           return  FSResponse.RespString v
                     | MsgAction [| "SetProperty"; path ; prop ; v  |] -> 
                                                            let! res  = Snippet.snippetFromRefORm (RefSnippetPath <| path.Split '/')
+                                                                       |>  ofFusionM  
                                                                        |>> Option.map (fun snp -> Snippets.setProperty snp prop v ; "Ok")
                                                                        |>  absorbO (fun () -> ErrorMsg <| sprintf "Snippet not found: %s" path)
                                                            return  FSResponse.RespString res
                     | MsgAction [| actN              |] -> return! actionCall actN () ()
                     | MsgAction [| actN ; p1         |] -> return! actionCall actN p1 ()
                     | MsgAction [| actN ; p1 ; p2    |] -> return! actionCall actN p1 p2
+                    | MsgGetValue                     v -> return! getValue v
                     | MsgGetUrl                         -> return  FSResponse.RespString JS.Document.BaseURI
                     | _                                 -> return  Hole ?(sprintf "TODO message: %A" msg)
-                } |> Snippets.runReaderResult |> Async.rtn
+                } |> runReader (Snippets.snippetsColl()) |> AsyncResult.map fst
             
             if IsClient then
                 async {

@@ -1,4 +1,4 @@
-////-d:FSharpStation1542632761675
+////-d:FSharpStation1544923027663
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#I @"..\packages\Owin\lib\net40"
@@ -22,7 +22,7 @@
 //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
 //#r @"..\packages\Owin\lib\net40\Owin.dll"
 /// Root namespace for all code
-//#define FSharpStation1542632761675
+//#define FSharpStation1544923027663
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -304,7 +304,7 @@ namespace FsRoot
                     type Builder() =
                         member inline this.Return          x       = rtn  x
                         member inline this.ReturnFrom      x       =     (x:Result<_,_>)
-                        member        this.Bind           (w , r ) = bindP  r w
+                        member        this.Bind           (w , r ) = Result.bind  r w
                         member inline this.Zero           ()       = rtn ()
                         member inline this.Delay           f       = f
                         member inline this.Combine        (a, b)   = bind b a
@@ -613,8 +613,8 @@ namespace FsRoot
                        splitByChar '\n' 
                     >> fun s -> s.[0 .. (max 0 (s.Length - 2)) ]
                     >> String.concat "\n"
-                let (|StartsWith|_|) start (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
-                let (|EndsWith  |_|) ends  (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
+                let (|StartsWith|_|) (start:string) (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
+                let (|EndsWith  |_|) (ends :string) (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
                 
             
             [< Inline "$a + '/' + $b" >]
@@ -1369,7 +1369,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#"
+                    "http://localhost:9005/#/Snippet/35f1037c-2785-4017-be73-538eae4d1228"
                 #endif
                 
                 let extractEndPoint() = 
@@ -1551,6 +1551,7 @@ namespace FsRoot
             | MsgGetPredecessors of SnippetReference
             | MsgAction          of string[]
             | MsgGetUrl
+            | MsgGetValue        of string
             
             [< JavaScript >]
             type FSResponse =
@@ -1560,7 +1561,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1542632761675"
+                let mutable fsharpStationAddress = Address "FSharpStation1544923027663"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -1610,7 +1611,8 @@ namespace FsRoot
                     |> sendMessage
                     |> AsyncResult.bind respSnippet
             
-                let getUrl () = sendMessage MsgGetUrl |> AsyncResult.bind respString
+                let getUrl  () = MsgGetUrl     |> sendMessage |> AsyncResult.bind respString
+                let getValue v = MsgGetValue v |> sendMessage |> AsyncResult.bind respString
             
                 let execJS      js          = sendMessage (MsgAction [| "ExecJS"      ; js              |]) |> AsyncResult.bind respString
                 let setProperty path prop v = sendMessage (MsgAction [| "SetProperty" ; path ; prop ; v |]) |> AsyncResult.bind respString

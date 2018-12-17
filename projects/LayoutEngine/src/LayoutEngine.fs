@@ -1,4 +1,4 @@
-////-d:FSharpStation1541588788569 -d:WEBSHARPER
+////-d:FSharpStation1545002842471 -d:WEBSHARPER
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
@@ -17,7 +17,7 @@
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 /// Root namespace for all code
-//#define FSharpStation1541588788569
+//#define FSharpStation1545002842471
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -195,8 +195,8 @@ namespace FsRoot
                        splitByChar '\n' 
                     >> fun s -> s.[0 .. (max 0 (s.Length - 2)) ]
                     >> String.concat "\n"
-                let (|StartsWith|_|) start (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
-                let (|EndsWith  |_|) ends  (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
+                let (|StartsWith|_|) (start:string) (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
+                let (|EndsWith  |_|) (ends :string) (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
                 
             
             module ParseO =
