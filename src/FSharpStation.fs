@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1544923027663 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1545086199099 -d:WEBSHARPER
 ////#cd @"..\projects\FSharpStation\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -37,7 +37,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1544923027663
+//#define FSharpStation1545086199099
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -3352,7 +3352,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/552ec529-0e20-496d-bb6f-2a98d9b1f313"
+                    "http://localhost:9005/#/Snippet/25d741d6-4ff8-4d7b-b4ab-3421eb78bb3c"
                 #endif
                 
                 let extractEndPoint() = 
@@ -3544,7 +3544,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1544923027663"
+                let mutable fsharpStationAddress = Address "FSharpStation1545086199099"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -3594,7 +3594,8 @@ namespace FsRoot
                     |> sendMessage
                     |> AsyncResult.bind respSnippet
             
-                let getUrl () = sendMessage MsgGetUrl |> AsyncResult.bind respString
+                let getUrl  () = MsgGetUrl     |> sendMessage |> AsyncResult.bind respString
+                let getValue v = MsgGetValue v |> sendMessage |> AsyncResult.bind respString
             
                 let execJS      js          = sendMessage (MsgAction [| "ExecJS"      ; js              |]) |> AsyncResult.bind respString
                 let setProperty path prop v = sendMessage (MsgAction [| "SetProperty" ; path ; prop ; v |]) |> AsyncResult.bind respString
@@ -4030,7 +4031,12 @@ namespace FsRoot
             let runReaderResult             rm = rm |> runReader                  (snippetsColl()) |> Result.map fst
             let runReader            handle rm = rm |> runReaderResult |> Result.defaultWith handle
                
-            let setCurrentSnippetIdO snpIdO    = currentSnippetIdOV.Set snpIdO
+            let expandParents            snpId = Snippet.pathRm snpId 
+                                                 |>> (fun path -> collapsedV.Value - Set path |> collapsedV.Set)
+                                                 |> iterReader
+            
+            let setCurrentSnippetIdO snpIdO    = snpIdO |> Option.iter expandParents 
+                                                 currentSnippetIdOV.Set snpIdO
             let setSnippet                 snp = if snp.snpId.Id <> System.Guid.Empty then snippets.Add { snp with snpGeneration = (runReader (fun e -> print e; 999) <| Snippet.maxGenerationRm()) + 1 }
             let getSnippetsGen              () = snippets.Value, generation.Value, collapsedV.Value
         
@@ -4290,12 +4296,8 @@ namespace FsRoot
                 <| collapsedV.Value
                 |> collapsedV.Set
         
-            let expandParents snpId =
-                Snippet.pathRm snpId
-                |>> (fun path -> collapsedV.Value - Set path |> collapsedV.Set)
-                |> iterReader
-            
             let setProperty snp prop v =
+                if Seq.contains (prop, v) snp.snpProperties then () else
                 { snp with snpProperties =  snp.snpProperties
                                             |> Seq.filter(fst >> (<>) prop)
                                             |> Seq.append <| [ prop, v ]
@@ -4657,7 +4659,6 @@ namespace FsRoot
                 pojo
         
             let gotoEditor (ed:Editor) codeId line col = async {
-                Snippets.expandParents codeId
                 Snippets.setCurrentSnippetIdO <| Some codeId
                 do! Async.Sleep 200
                 ed.Focus()
@@ -4892,9 +4893,13 @@ namespace FsRoot
                 return! ofAsync <| FsiAgent.evalCodeWithPresence FStation.srcDir (sprintf "%A" snp.snpId) (string gen) (FsCode preCode) (FsCode code)
             }
             
-            let actionClick name            = actionClickRm  name  |> iterReaderA  print print (Snippets.snippetsColl())
-            let buttonClick (e:Dom.Element) = e.TextContent.Trim() |> actionClick
-            let actionSnp  path name        = actionClickRm  name  |> iterReaderA  print print (Snippets.snippetsColl())
+            let actionClick name            = actionClickRm  name                    |> iterReaderA  print print (Snippets.snippetsColl())
+            let buttonClick (e:Dom.Element) = e.TextContent.Trim()                   |> actionClick
+            let actionSnp  path name        = actionClickRm  name                    |> iterReaderA  print print (Snippets.snippetsColl())
+            let getCurrentProperty        p = propO Snippets.currentSnippetV.Value p |> runReader                (Snippets.snippetsColl()) 
+                                                                                     |> AsyncResult.map fst
+                                                                                     |> AsyncResult.absorbO (fun () -> errorMsgf "Property %s not found" p)
+        
         
         module Serializer =
             open Serializer
@@ -5029,7 +5034,7 @@ namespace FsRoot
                                         )
                     >> View.Get (fun sidO -> 
                        if  Snippets.currentSnippetIdOV.Value <> sidO then
-                           Snippets.currentSnippetIdOV.Value <- sidO
+                           Snippets.setCurrentSnippetIdO sidO
                    ))
         
                 Snippets.currentSnippetIdOV.View |> View.Sink (
@@ -5149,6 +5154,7 @@ namespace FsRoot
                                        AF.newViw  "SaveNeeded"      Snippets.SaveAsClassW
                                        AF.newViw  "CurrentPath"     Snippets.currentPathW
                                        AF.newViw  "FStationId"      (View.Const FStation.id)
+                                       AF.newViw  "CurrentSid"      (Snippets.CurrentSnippetIdW |> View.Map (fun sid -> sid.Id |> string))
                                     |]  
                     AF.plgDocs    = [| AF.newDoc  "mainDoc"         (lazy mainDoc()                 )
                                        AF.newDoc  "editor"          (lazy (WebSharper.UI.Html.div [] [ Monaco.getEditorConfigO() |> Option.map Monaco.render |> Option.defaultValue Doc.Empty ]) )
@@ -5173,7 +5179,7 @@ namespace FsRoot
                                        AF.newActF "ActionClick"     <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.actionClick           ), "name"       )
                                        AF.newActF "ActionSnp"       <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.actionSnp (unbox o1)  ), "snpPath", "name" )
                                     |]
-                    AF.plgQueries = [|                                               
+                    AF.plgQueries = [| AF.newQry  "PropertyRA"      <| (fun p -> unbox<string> p |> CustomAction.getCurrentProperty |> box)
                                     |]
                 }
                 """
@@ -5183,7 +5189,7 @@ namespace FsRoot
                     logo             span       "margin:0; color:gray; font-size: 55px; font-weight:530" "F# Station"
                     editorMessages   horizontal 10-83-100 editorButtons             messages
                     messages         vertical   0-50-100  messagesLeft              messagesRight
-                    editorButtons    vertical -200 snippetsSnippet buttons
+                    editorButtons    vertical -120 snippetsSnippet buttons
                     buttons div      "overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px" btnSaveAs none x btnAddSnippet btnDeleteSnippet btnIndentIn btnIndentOut none x btnRunFS btnInputFsi btnAbortFsi
                     snippetsSnippet  vertical   0-20-100  snippets                  editorProperties
                     snippets         horizontal 20        "${FSharpStation.CurrentPath}" FSharpStation.Snippets

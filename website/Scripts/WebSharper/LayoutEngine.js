@@ -891,6 +891,15 @@
    return doc.docName===docName;
   },o.$0.plgDocs);
  };
+ AppFramework.tryGetQry=function(plgName,qryName)
+ {
+  var o;
+  o=AppFramework.tryGetPlugIn(plgName);
+  return o==null?null:Arrays.tryFind(function(qry)
+  {
+   return qry.qryName===qryName;
+  },o.$0.plgQueries);
+ };
  AppFramework.tryGetAct=function(plgName,actName)
  {
   var o;
@@ -1538,11 +1547,11 @@
    };
   }(Global.id))(varName)):o.$0;
  };
- LayoutEngineModule.inputFile$1168$69=Runtime.Curried3(function(act,el,$1)
+ LayoutEngineModule.inputFile$1169$69=Runtime.Curried3(function(act,el,$1)
  {
   return AppFramework.callFunction(el,null,act.actFunction);
  });
- LayoutEngineModule.inputFile$1167$69=Runtime.Curried3(function($1,el,$2)
+ LayoutEngineModule.inputFile$1168$69=Runtime.Curried3(function($1,el,$2)
  {
   el.value="";
  });

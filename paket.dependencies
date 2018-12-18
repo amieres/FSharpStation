@@ -57,3 +57,4 @@ group Test
     nuget Saturn.Extensions.Turbolinks
     nuget Giraffe
     nuget Microsoft.AspNetCore
+    nuget FSharpx

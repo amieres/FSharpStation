@@ -976,6 +976,7 @@ NUGET
       Selenium.WebDriver (>= 3.14) - restriction: || (&& (== net461) (>= netstandard2.0)) (== netstandard2.0)
       System.Drawing.Common (>= 4.5) - restriction: || (&& (== net461) (>= netstandard2.0)) (== netstandard2.0)
     FSharp.Core (4.3.4)
+    FSharpx (1.2.1.110910)
     Giraffe (1.1)
       FSharp.Core (>= 4.2.3)
       Microsoft.AspNetCore.Authentication (>= 2.0.1)
