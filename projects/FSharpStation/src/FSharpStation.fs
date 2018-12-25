@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1545086199099 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1545494068024 -d:WEBSHARPER
 ////#cd @"..\projects\FSharpStation\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -37,7 +37,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1545086199099
+//#define FSharpStation1545494068024
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -252,15 +252,12 @@ namespace FsRoot
                 
             module Memoize =
             
-            
-                /// creates a Dictionary to store memoized values
                 /// returns 3 functions:
                 ///    checkO  : ('p->'v option) 
                 ///    getOrAdd: ('p->('p->'v)->'v) 
                 ///    clear   : (unit->unit)
                 [<Inline>]
-                let getStore() =
-                    let cache        = System.Collections.Generic.Dictionary<_, _>()
+                let getStoreWithDict (cache: System.Collections.Generic.Dictionary<_, _>) =
                     let checkO v     = let mutable res = Unchecked.defaultof<_>
                                        let ok          = cache.TryGetValue(v, &res)
                                        if  ok then Some res else None
@@ -269,12 +266,19 @@ namespace FsRoot
                     let getOrAdd p f = checkO p |> Option.defaultWith (fun () -> f p |> store p )
                     (checkO, getOrAdd), cache.Clear
             
+                /// creates a Dictionary to store memoized values
+                /// returns 3 functions:
+                ///    checkO  : ('p->'v option) 
+                ///    getOrAdd: ('p->('p->'v)->'v) 
+                ///    clear   : (unit->unit)
+                [<Inline>]
+                let getStore() = getStoreWithDict (System.Collections.Generic.Dictionary<_, _>() )
+            
                 /// Memoizes function f using the provided cache
                 /// getCache() returns 1 function:
                 ///    getOrAdd: ('p->('p->'v)->'v) 
                 [< Inline >]
-                let memoizeStore (getCache:unit->('key -> ('key -> 'value) -> 'value) ) f =
-                    let getOrAdd = getCache()
+                let memoizeStore (getOrAdd:('key -> ('key -> 'value) -> 'value) ) f =
                     fun p -> getOrAdd p f
             
             
@@ -284,8 +288,23 @@ namespace FsRoot
                 [< Inline >]
                 let memoizeResetable f =
                     let (check, getOrAdd), clear = getStore()
-                    let memoF = memoizeStore (fun () -> getOrAdd) f
+                    let memoF = memoizeStore getOrAdd f
                     memoF, clear
+            
+                /// Memoizes the function f using the provided Dictionary
+                [<Inline>]
+                let memoizeWithDict dict f =
+                    let (check, getOrAdd), clear = getStoreWithDict dict
+                    let memoF = memoizeStore getOrAdd f
+                    memoF
+            
+                /// Memoizes the function f and returns Dictionary
+                [<Inline>]
+                let memoizeDict f =
+                    let dict = System.Collections.Generic.Dictionary<_, _>() 
+                    let (check, getOrAdd), clear = getStoreWithDict dict
+                    let memoF = memoizeStore getOrAdd f
+                    memoF, dict
             
                 /// Memoizes the function f using a Dictionary
                 [<Inline>]
@@ -3352,7 +3371,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/25d741d6-4ff8-4d7b-b4ab-3421eb78bb3c"
+                    "http://localhost:9005/#/Snippet/a17730c1-09a7-48f8-bba8-a24ba4c61dd5"
                 #endif
                 
                 let extractEndPoint() = 
@@ -3544,7 +3563,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1545086199099"
+                let mutable fsharpStationAddress = Address "FSharpStation1545494068024"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -4041,7 +4060,7 @@ namespace FsRoot
             let getSnippetsGen              () = snippets.Value, generation.Value, collapsedV.Value
         
             let getParentIdONotMemo      snpId = snippets.TryFindByKey snpId |> Option.bind(fun s -> s.snpParentIdO)
-            let getParentIdO                   = getParentIdONotMemo |> Memoize.memoizeStore (fun () -> snd parentCache) 
+            let getParentIdO                   = getParentIdONotMemo |> Memoize.memoizeStore (snd parentCache) 
             let rec isDescendantOf ancId snpId = if snpId = ancId  then false else
                                                  getParentIdO snpId
                                                  |> Option.map (fun prnId -> prnId = ancId || isDescendantOf ancId prnId)
