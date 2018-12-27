@@ -2,29 +2,65 @@ CIPHERSpaceLoadFilesDoAfter(function() { IntelliFactory.Runtime.Start() });
 CIPHERSpaceLoadFiles(["/Scripts/WebSharper/WebSharper.Core.JavaScript/Runtime.js", "/Scripts/WebSharper/WebSharper.Main.js", "/Scripts/WebSharper/WebSharper.Collections.js", "/Scripts/WebSharper/WebSharper.Web.js", "/Scripts/WebSharper/WebSharper.Sitelets.js", "/Scripts/WebSharper/WebSharper.Control.js", "/Scripts/WebSharper/WebSharper.UI.js", "/Scripts/WebSharper/WebSharper.UI.Templating.Runtime.js"], function()
 {
  "use strict";
- var Global,FsRoot,LibraryJS,REGEX,TestingJS,REGEX$1,SC$1,WebSharper,Unchecked,Arrays,Strings,UI,Var$1,Doc,AttrProxy,View,List,Seq,Client,Templates,IntelliFactory,Runtime;
+ var Global,FsRoot,Library,LibraryJS,REGEX,TestingJS,REGEX$1,SC$1,WebSharper,CancellationTokenSource,Concurrency,Unchecked,Arrays,Strings,UI,Doc,AttrProxy,List,Seq,Var$1,View,Client,Templates,IntelliFactory,Runtime;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
+ Library=FsRoot.Library=FsRoot.Library||{};
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
  REGEX=LibraryJS.REGEX=LibraryJS.REGEX||{};
  TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
  REGEX$1=TestingJS.REGEX=TestingJS.REGEX||{};
  SC$1=Global["StartupCode$D:\\Abe\\CIPHERWorkspace\\FSharpStation\\src\\wsconfig_json$testing"]=Global["StartupCode$D:\\Abe\\CIPHERWorkspace\\FSharpStation\\src\\wsconfig_json$testing"]||{};
  WebSharper=Global.WebSharper;
+ CancellationTokenSource=WebSharper&&WebSharper.CancellationTokenSource;
+ Concurrency=WebSharper&&WebSharper.Concurrency;
  Unchecked=WebSharper&&WebSharper.Unchecked;
  Arrays=WebSharper&&WebSharper.Arrays;
  Strings=WebSharper&&WebSharper.Strings;
  UI=WebSharper&&WebSharper.UI;
- Var$1=UI&&UI.Var$1;
  Doc=UI&&UI.Doc;
  AttrProxy=UI&&UI.AttrProxy;
- View=UI&&UI.View;
  List=WebSharper&&WebSharper.List;
  Seq=WebSharper&&WebSharper.Seq;
+ Var$1=UI&&UI.Var$1;
+ View=UI&&UI.View;
  Client=UI&&UI.Client;
  Templates=Client&&Client.Templates;
  IntelliFactory=Global.IntelliFactory;
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
+ Library.delayed=function(delay,doF)
+ {
+  var cancellationTokenSourceO;
+  cancellationTokenSourceO=[null];
+  return function(parm)
+  {
+   var o,b;
+   o=cancellationTokenSourceO[0];
+   o==null?void 0:o.$0.Cancel$1();
+   cancellationTokenSourceO[0]={
+    $:1,
+    $0:new CancellationTokenSource.New()
+   };
+   Concurrency.Start((b=null,Concurrency.Delay(function()
+   {
+    return Concurrency.Bind(Concurrency.Sleep(delay),function()
+    {
+     doF(parm);
+     return Concurrency.Zero();
+    });
+   })),{
+    $:1,
+    $0:cancellationTokenSourceO[0].$0
+   });
+  };
+ };
+ Library.Error=function(a)
+ {
+  return{
+   $:1,
+   $0:a
+  };
+ };
  REGEX.Identifier=function(a)
  {
   var $1,a$1,t;
@@ -71,11 +107,42 @@ CIPHERSpaceLoadFiles(["/Scripts/WebSharper/WebSharper.Core.JavaScript/Runtime.js
  };
  REGEX$1.main=function()
  {
-  var rexV,parmsV,inputV,x,a;
+  var rexV,parmsV,inputV,inputsV,x,x$1,a;
+  function a$1(inp,rx,opt)
+  {
+   return Doc.Element("ul",[AttrProxy.Create("id","output")],List.ofSeq(Seq.delay(function()
+   {
+    var a$2,f,g,a$3;
+    function g$1(v)
+    {
+     return List.ofArray([v]);
+    }
+    a$2=LibraryJS.REGEX$1(rx,opt,inp);
+    return a$2!=null&&a$2.$==1?Arrays.map((f=function(x$2)
+    {
+     return g$1(Doc.TextNode(x$2));
+    },(g=(a$3=List.T.Empty,function(c)
+    {
+     return Doc.Element("li",a$3,c);
+    }),function(x$2)
+    {
+     return g(f(x$2));
+    })),a$2.$0):[Doc.TextNode("<no match>")];
+   })));
+  }
   rexV=Var$1.Create$1("(Err|Warn|Info) \\((\\d+)\\,\\s*(\\d+)\\) - \\((\\d+)\\,\\s*(\\d+)\\)\\: \"([^\"]+?)\"\\.");
   parmsV=Var$1.Create$1("g");
   inputV=Var$1.Create$1("Err (1, 7) - (1, 12): \"This shows over there as an error\".\nWarn (2, 7) - (2, 12): \"This shows over there as a warning\".\nInfo (3, 7) - (3, 12): \"This shows over there as information\".");
-  x=Doc.Element("div",[],[Doc.Element("div",[],[Doc.Element("div",[],[Doc.TextNode("RegEx:")]),Doc.InputArea([AttrProxy.Create("style","width: 1000px; height:80px "),AttrProxy.Create("id","regex")],Var$1.Lens(rexV,Global.id,function($1,$2)
+  inputsV=Var$1.Create$1(["","",""]);
+  x=View.Map3(function(inp,rx,opt)
+  {
+   return[inp,rx,opt];
+  },inputV.get_View(),rexV.get_View(),parmsV.get_View());
+  View.Sink(Library.delayed(180,function(a$2)
+  {
+   inputsV.Set(a$2);
+  }),x);
+  x$1=Doc.Element("div",[],[Doc.Element("div",[],[Doc.Element("div",[],[Doc.TextNode("RegEx:")]),Doc.InputArea([AttrProxy.Create("style","width: 1000px; height:80px "),AttrProxy.Create("id","regex")],Var$1.Lens(rexV,Global.id,function($1,$2)
   {
    return $2;
   }))]),Doc.Element("div",[],[Doc.TextNode("Options: "),Doc.Input([AttrProxy.Create("style","width: 700px"),AttrProxy.Create("id","parms")],Var$1.Lens(parmsV,Global.id,function($1,$2)
@@ -84,31 +151,13 @@ CIPHERSpaceLoadFiles(["/Scripts/WebSharper/WebSharper.Core.JavaScript/Runtime.js
   }))]),Doc.Element("div",[],[Doc.Element("div",[],[Doc.TextNode("Input:")]),Doc.InputArea([AttrProxy.Create("style","width: 1000px; height:80px "),AttrProxy.Create("id","input")],Var$1.Lens(inputV,Global.id,function($1,$2)
   {
    return $2;
-  }))]),Doc.Element("div",[],[Doc.BindView(Global.id,View.Map3(function(inp,rx,opt)
+  }))]),Doc.Element("div",[],[Doc.BindView(Global.id,View.Map(function($1)
   {
-   return Doc.Element("ul",[],List.ofSeq(Seq.delay(function()
-   {
-    var a$1,f,g,a$2;
-    function g$1(v)
-    {
-     return List.ofArray([v]);
-    }
-    a$1=LibraryJS.REGEX$1(rx,opt,inp);
-    return a$1!=null&&a$1.$==1?Arrays.map((f=function(x$1)
-    {
-     return g$1(Doc.TextNode(x$1));
-    },(g=(a$2=List.T.Empty,function(c)
-    {
-     return Doc.Element("li",a$2,c);
-    }),function(x$1)
-    {
-     return g(f(x$1));
-    })),a$1.$0):[Doc.TextNode("<no match>")];
-   })));
-  },inputV.get_View(),rexV.get_View(),parmsV.get_View()))])]);
+   return a$1($1[0],$1[1],$1[2]);
+  },inputsV.get_View()))])]);
   a=self.document.body;
   Templates.LoadLocalTemplates("");
-  Doc.Run(a,x);
+  Doc.Run(a,x$1);
  };
  SC$1.$cctor=function()
  {

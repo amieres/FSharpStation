@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1545494068024 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1545749998472 -d:WEBSHARPER
 ////#cd @"..\projects\FSharpStation\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -37,7 +37,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1545494068024
+//#define FSharpStation1545749998472
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -3563,7 +3563,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1545494068024"
+                let mutable fsharpStationAddress = Address "FSharpStation1545749998472"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -5391,12 +5391,15 @@ namespace FsRoot
                 let epWebSocket = Endpoint.Create(url, "/ws", JsonEncoding.Readable)
                 let broker = Broker.BrokerAgent epWebSocket
                 Broker.BrokerAgent.FssWebSocketO <- Some broker
+                let staticFileOptions = StaticFileOptions(FileSystem = PhysicalFileSystem(rootDirectory))
+                staticFileOptions.ServeUnknownFileTypes <- true
+                (staticFileOptions.ContentTypeProvider |> unbox<ContentTypes.FileExtensionContentTypeProvider>).Mappings.Add(".wasm", "application/wasm")
                 use server = WebApp.Start(url, fun appB ->
                     appB.UseWebSharper(WebSharperOptions(ServerRootDirectory = rootdir
                                                        , Sitelet             = (Some <| Application.MultiPage content)
                                                        , BinDirectory        = "."
                                                        , Debug               = true))
-                        .UseStaticFiles(StaticFileOptions(FileSystem = PhysicalFileSystem(rootDirectory)))
+                        .UseStaticFiles(staticFileOptions)
                         .UseWebSocket(  epWebSocket, broker.Start, maxMessageSize = max)
                     |> ignore)
                 stdout.WriteLine("Listening on {0}, hit enter to finish", url)
