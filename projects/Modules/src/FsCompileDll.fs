@@ -2,7 +2,7 @@
 #nowarn "1182"
 #nowarn "52"
 #nowarn "1178"
-////-d:FSharpStation1542632761675
+////-d:FSharpStation1546355467253
 ////#cd @"..\projects\Modules\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -32,7 +32,7 @@
 //#nowarn "52"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1542632761675
+//#define FSharpStation1546355467253
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -225,9 +225,9 @@ namespace FsRoot
                     | RMessages mas,           mb  ->  Array.append    mas   [| mb |] |> RMessages
                     |           ma ,           mb  ->               [| ma   ;   mb |] |> RMessages
             
-                let reduceMsgs ms = ms |> Seq.fold addMsg NoMsg
+                let reduceMsgs ms = (NoMsg, ms) ||> Seq.fold addMsg
             
-                let summaryF f msg =        
+                let summaryF f msg =
                     match countF f msg with
                     | 0, 0, _
                     | 1, 0, 0
@@ -237,7 +237,7 @@ namespace FsRoot
                     | e, w, _ -> sprintf "Errors   : %d, Warnings: %d\n" e w
             
                 /// returns a string with a count of errors and warnings, if more than one
-                let summarizedF f msg = summaryF f msg + msg.ToString()
+                let summarizedF f msg = [ msg.ToString() ; summaryF f msg ] |> Seq.filter ((<>) "") |> String.concat "\n"
                 /// a Message is considered an error
                 let summarized  msg = msg |> summarizedF (fun _ -> 1, 0, 0)
                 /// a Message is considered a Warning
@@ -314,7 +314,7 @@ namespace FsRoot
                     type Builder() =
                         member inline this.Return          x       = rtn  x
                         member inline this.ReturnFrom      x       =     (x:Result<_,_>)
-                        member        this.Bind           (w , r ) = bindP  r w
+                        member        this.Bind           (w , r ) = Result.bind  r w
                         member inline this.Zero           ()       = rtn ()
                         member inline this.Delay           f       = f
                         member inline this.Combine        (a, b)   = bind b a
@@ -491,8 +491,7 @@ namespace FsRoot
                     and  Lambda = abstract Invoke<'X> : ('X -> Effect) -> ('X -> Effect)
                 
                     type Eff<'U, 'A when 'U :> Effect> = Eff of (('A -> Effect) -> Effect) 
-                        with  member this.Cont = let (Eff cont) = this
-                                                 cont
+                        with  member this.Cont = match this with Eff cont -> cont
                 
                     type Done<'A>(v : 'A) =
                         member self.Value = v
@@ -509,7 +508,13 @@ namespace FsRoot
                                             )
                 
                     module Eff =
-                        let unpack loop (effect:Effect) = effect.UnPack { new Lambda with member self.Invoke<'X> (k' : 'X -> Effect) =  k' >> loop }
+                //        [< Inline "$effect.FsRoot_Library_Monads_Eff_Effect$UnPack({FsRoot_Library_Monads_Eff_Lambda$Invoke:function(k) { return function(p) { return $loop(k(p)) }; }})" >]
+                //        let unpack loop (effect:Effect) = effect.UnPack { new Lambda with member self.Invoke<'X> (k' : 'X -> Effect) =  k' >> loop }
+                
+                        type LambdaT(loop) =
+                            interface Lambda with
+                                member __.Invoke<'X> (k : 'X -> Effect) : ('X -> Effect) = k >> loop 
+                        let unpack loop (effect:Effect) = effect.UnPack (new LambdaT(loop))
                         let done' (v :  'A) : Effect                           = new Done<'A>(v) :> _ 
                         let return' v  = Eff( fun _ -> done' v )
                         let run<'U, 'A when 'U :> Effect> (eff: Eff<'U, 'A>) : 'A =
@@ -521,7 +526,7 @@ namespace FsRoot
                                 match eff.Cont done' with
                                 | :? Done<'A> as done' -> Ok done'.Value
                                 //| v                    -> box v |> unbox<NoOp<_>> |> fun noop -> noop.K () |> loop
-                                | v                    -> Error <| errorMsgf "Unhandled effect %A expecting %A" v typedefof<'A>
+                                | v                    -> Error <| errorMsgf "Unhandled effect %A expecting" v //typedefof<'A>
                             with e -> 
                                 Error <| ResultMessage.ExceptMsg(e.Message, e.StackTrace)
                 
@@ -542,6 +547,10 @@ namespace FsRoot
                                                           Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                     let inline sequenceSeq           sq = traverseSeq id sq
                     
+                    let inline insertO    vvO               = vvO   |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
+                    let inline insertR   (vvR:Result<_,_>)  = vvR   |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
+                    let inline insertFst (fst, vEf)         = vEf   |> map (fun v -> fst, v)
+                    let inline insertSnd (vEf, snd)         = vEf   |> map (fun v -> v, snd)
                     
                     type EffBuilder() = 
                         member self.Zero      (                 ) = rtn ()
@@ -584,6 +593,11 @@ namespace FsRoot
                                 | effect               -> effect             |> Eff.unpack loop 
                             Eff (fun doneK             -> eff.Cont Eff.done' |>            loop )
                     
+                        type EffReader<'a> = inherit Reader<'a>
+                    
+                        let readerFun f = ask() |> map f 
+                    
+                        
                     module GenericType =
                         open Microsoft.FSharp.Quotations
                         open Microsoft.FSharp.Quotations.Patterns
@@ -626,7 +640,7 @@ namespace FsRoot
                                 member self.UnPack(lambda : Lambda) : Effect = new LogEntry<'S>(v, lambda.Invoke<unit> k) :> _
                     
                         let log<'U, 'S when 'U :> Log<'S>> (s:'S) : Eff<'U, unit> = Eff (fun k -> new LogEntry<'S>(s, k) :> _)
-                        let logf fmt = Printf.ksprintf log fmt
+                        let logf fmt = Printf.ksprintf log<_, string> fmt
                         
                         open GenericType
                     
@@ -644,6 +658,12 @@ namespace FsRoot
                                 | effect                     -> effect             |> Eff.unpack loop
                             Eff (fun _                       -> eff.Cont Eff.done' |>            loop )
                     
+                        let rec ignoreLogHandler<'U, 'S, 'A when 'U :> Log<'S>> (eff: Eff<'U, 'A>) : Eff<'U, 'A> = 
+                            let rec loop : Effect -> Effect = function
+                                | :? LogEntry<'S> as log     -> log.K ()           |>            loop
+                                | effect                     -> effect             |> Eff.unpack loop
+                            Eff (fun _                       -> eff.Cont Eff.done' |>            loop )
+                    
                     module Rsl = 
                         type Rsl<'M> = inherit Effect
                     
@@ -654,12 +674,13 @@ namespace FsRoot
                     
                     
                         let fail<'U, 'M when 'U :> Rsl<'M>> (s:'M) : Eff<'U, unit> = Eff (fun k -> new Fail<    'M>(s, k) :> _)
-                        let inline ofResult res = eff {
+                        let inline ofResult (res:Result<'a,'b>) : Eff<'c,'a> = eff {
                             match res with
                             | Ok    v   -> return v
                             | Error msg -> let! m = fail msg
-                                           return Unchecked.defaultof<_>
+                                           return box () |> unbox
                         }
+                    
                         
                         let rec RslHandler<'U, 'M, 'A when 'U :> Rsl<'M>> (eff: Eff<'U, 'A>) : Eff<'U, _> = 
                             let rec loop (doneK:(Result<'A,'M>) -> Effect) : Effect -> Effect = function
@@ -667,7 +688,10 @@ namespace FsRoot
                                 | :? Fail<    'M> as fail  -> doneK (Error fail .Value)
                                 | effect                   -> effect             |> Eff.unpack (loop doneK)
                             Eff (fun doneK                 -> eff.Cont Eff.done' |>             loop doneK)
-                            
+                    
+                        let inline absorbR     vvEf             = vvEf  |> bind ofResult
+                        let inline absorbO   f vOEf             = vOEf  |> map (Result.ofOption  f) |> absorbR
+                    
                     module Asy = 
                         type Asy = inherit Effect
                     
@@ -714,8 +738,7 @@ namespace FsRoot
                     let inline ofResultRM mr = eff {
                         match mr with
                         | Ok    v    -> return v
-                        | Error rmsg ->
-                        
+                        | Error rmsg ->        
                         match rmsg with
                         | NoMsg          -> do! Rsl.fail <| ErrorMsg "Failed! (no explanation)"
                         | RMessages msgs -> for msg in msgs do do! Log.log msg
@@ -878,8 +901,8 @@ namespace FsRoot
                        splitByChar '\n' 
                     >> fun s -> s.[0 .. (max 0 (s.Length - 2)) ]
                     >> String.concat "\n"
-                let (|StartsWith|_|) start (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
-                let (|EndsWith  |_|) ends  (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
+                let (|StartsWith|_|) (start:string) (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
+                let (|EndsWith  |_|) (ends :string) (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
                 
             
             [< Inline "$a + '/' + $b" >]
@@ -1756,7 +1779,7 @@ namespace FsRoot
                                       |> Asy.ofAsync
                     let rms = msgs |> Array.map fSharpError2ResultMessage
                     do! rms |> Seq.map Log.log |> sequenceSeq |>> Seq.iter id
-                    if exit <> 0 then do! Rsl.fail <| ErrorMsg (rms |> ResultMessage.reduceMsgs |> ResultMessage.summaryF (fun _ -> 1, 0, 0))
+                    if exit <> 0 then do! Rsl.fail <| ErrorMsg (rms |> ResultMessage.reduceMsgs |> ResultMessage.summarizedF (fun _ -> 1, 0, 0))
                 }
             
         /// Essentials that part runs in Javascript and part runs in the server
@@ -2017,7 +2040,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#"
+                    "http://localhost:9005/#/Snippet/0fd4381f-5da6-4ea3-972d-44dde8647a5b"
                 #endif
                 
                 let extractEndPoint() = 
@@ -2199,6 +2222,7 @@ namespace FsRoot
             | MsgGetPredecessors of SnippetReference
             | MsgAction          of string[]
             | MsgGetUrl
+            | MsgGetValue        of string
             
             [< JavaScript >]
             type FSResponse =
@@ -2208,7 +2232,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1542632761675"
+                let mutable fsharpStationAddress = Address "FSharpStation1546355467253"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -2258,7 +2282,8 @@ namespace FsRoot
                     |> sendMessage
                     |> AsyncResult.bind respSnippet
             
-                let getUrl () = sendMessage MsgGetUrl |> AsyncResult.bind respString
+                let getUrl  () = MsgGetUrl     |> sendMessage |> AsyncResult.bind respString
+                let getValue v = MsgGetValue v |> sendMessage |> AsyncResult.bind respString
             
                 let execJS      js          = sendMessage (MsgAction [| "ExecJS"      ; js              |]) |> AsyncResult.bind respString
                 let setProperty path prop v = sendMessage (MsgAction [| "SetProperty" ; path ; prop ; v |]) |> AsyncResult.bind respString

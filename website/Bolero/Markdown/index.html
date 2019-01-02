@@ -5,8 +5,17 @@
     <title>Bolero Application</title>
   </head>
   <body>
-    <h1>A simple counter with Bolero</h1>
+    <h1>Bolero!</h1>
     <div id="main"></div>
     <script src="_framework/blazor.webassembly.js"></script>
-  </body>
+    <script>
+      function storageChange(event) {
+        DotNet.invokeMethod("Markdown.Client", "storageChange", event.key, event.newValue, event.oldValue);
+      }
+      window.addEventListener("storage", storageChange);
+      function setItem(key, value) {
+        localStorage.setItem(key, value);
+      }
+  </script>
+</body>
 </html>

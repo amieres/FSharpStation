@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1545086199099 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1545749998472 -d:WEBSHARPER
 ////#cd @"..\projects\FSharpStation\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -37,7 +37,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1545086199099
+//#define FSharpStation1545749998472
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -252,15 +252,12 @@ namespace FsRoot
                 
             module Memoize =
             
-            
-                /// creates a Dictionary to store memoized values
                 /// returns 3 functions:
                 ///    checkO  : ('p->'v option) 
                 ///    getOrAdd: ('p->('p->'v)->'v) 
                 ///    clear   : (unit->unit)
                 [<Inline>]
-                let getStore() =
-                    let cache        = System.Collections.Generic.Dictionary<_, _>()
+                let getStoreWithDict (cache: System.Collections.Generic.Dictionary<_, _>) =
                     let checkO v     = let mutable res = Unchecked.defaultof<_>
                                        let ok          = cache.TryGetValue(v, &res)
                                        if  ok then Some res else None
@@ -269,12 +266,19 @@ namespace FsRoot
                     let getOrAdd p f = checkO p |> Option.defaultWith (fun () -> f p |> store p )
                     (checkO, getOrAdd), cache.Clear
             
+                /// creates a Dictionary to store memoized values
+                /// returns 3 functions:
+                ///    checkO  : ('p->'v option) 
+                ///    getOrAdd: ('p->('p->'v)->'v) 
+                ///    clear   : (unit->unit)
+                [<Inline>]
+                let getStore() = getStoreWithDict (System.Collections.Generic.Dictionary<_, _>() )
+            
                 /// Memoizes function f using the provided cache
                 /// getCache() returns 1 function:
                 ///    getOrAdd: ('p->('p->'v)->'v) 
                 [< Inline >]
-                let memoizeStore (getCache:unit->('key -> ('key -> 'value) -> 'value) ) f =
-                    let getOrAdd = getCache()
+                let memoizeStore (getOrAdd:('key -> ('key -> 'value) -> 'value) ) f =
                     fun p -> getOrAdd p f
             
             
@@ -284,8 +288,23 @@ namespace FsRoot
                 [< Inline >]
                 let memoizeResetable f =
                     let (check, getOrAdd), clear = getStore()
-                    let memoF = memoizeStore (fun () -> getOrAdd) f
+                    let memoF = memoizeStore getOrAdd f
                     memoF, clear
+            
+                /// Memoizes the function f using the provided Dictionary
+                [<Inline>]
+                let memoizeWithDict dict f =
+                    let (check, getOrAdd), clear = getStoreWithDict dict
+                    let memoF = memoizeStore getOrAdd f
+                    memoF
+            
+                /// Memoizes the function f and returns Dictionary
+                [<Inline>]
+                let memoizeDict f =
+                    let dict = System.Collections.Generic.Dictionary<_, _>() 
+                    let (check, getOrAdd), clear = getStoreWithDict dict
+                    let memoF = memoizeStore getOrAdd f
+                    memoF, dict
             
                 /// Memoizes the function f using a Dictionary
                 [<Inline>]
@@ -3352,7 +3371,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/25d741d6-4ff8-4d7b-b4ab-3421eb78bb3c"
+                    "http://localhost:9005/#/Snippet/c677b6fd-d833-43ee-a15c-62c60d8572e4"
                 #endif
                 
                 let extractEndPoint() = 
@@ -3544,7 +3563,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1545086199099"
+                let mutable fsharpStationAddress = Address "FSharpStation1545749998472"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -4041,7 +4060,7 @@ namespace FsRoot
             let getSnippetsGen              () = snippets.Value, generation.Value, collapsedV.Value
         
             let getParentIdONotMemo      snpId = snippets.TryFindByKey snpId |> Option.bind(fun s -> s.snpParentIdO)
-            let getParentIdO                   = getParentIdONotMemo |> Memoize.memoizeStore (fun () -> snd parentCache) 
+            let getParentIdO                   = getParentIdONotMemo |> Memoize.memoizeStore (snd parentCache) 
             let rec isDescendantOf ancId snpId = if snpId = ancId  then false else
                                                  getParentIdO snpId
                                                  |> Option.map (fun prnId -> prnId = ancId || isDescendantOf ancId prnId)
@@ -4343,7 +4362,7 @@ namespace FsRoot
         module RenderSnippets =
             open Snippets
             
-            let scrollIntoView selW (e:Dom.Element) = selW |> View.Sink (fun s -> if s then e?scrollIntoViewIfNeeded()) 
+            let scrollIntoView selW (e:Dom.Element) = selW |> View.Sink (fun s -> if s then try e?scrollIntoViewIfNeeded() with e -> printfn "%A" e) 
             
             let snippets () = 
                 Snippets.getHierarchyW
@@ -4899,6 +4918,7 @@ namespace FsRoot
             let getCurrentProperty        p = propO Snippets.currentSnippetV.Value p |> runReader                (Snippets.snippetsColl()) 
                                                                                      |> AsyncResult.map fst
                                                                                      |> AsyncResult.absorbO (fun () -> errorMsgf "Property %s not found" p)
+            let setCurrentProperty      p v = Snippets.setProperty Snippets.currentSnippetV.Value p v
         
         
         module Serializer =
@@ -5144,42 +5164,43 @@ namespace FsRoot
             let mainProgram() =
                 AF.addPlugIn {
                     AF.plgName    = "FSharpStation"
-                    AF.plgVars    = [| AF.newVar  "fileName"        LoadSave.fileName
-                                       AF.newVar  "SnippetName"     (Lens Snippets.currentSnippetV.V.snpName)
-                                       AF.newVar  "Content"         (Lens Snippets.currentSnippetV.V.snpContent)
-                                       AF.newVar  "Output"          outputMsgs
-                                       AF.newVar  "Parser"          FStation.annotationsV
+                    AF.plgVars    = [| AF.newVar  "fileName"           LoadSave.fileName
+                                       AF.newVar  "SnippetName"        (Lens Snippets.currentSnippetV.V.snpName)
+                                       AF.newVar  "Content"            (Lens Snippets.currentSnippetV.V.snpContent)
+                                       AF.newVar  "Output"             outputMsgs
+                                       AF.newVar  "Parser"             FStation.annotationsV
                                     |]  
-                    AF.plgViews   = [| AF.newViw  "FsCode"          Snippets.FsCodeW
-                                       AF.newViw  "SaveNeeded"      Snippets.SaveAsClassW
-                                       AF.newViw  "CurrentPath"     Snippets.currentPathW
-                                       AF.newViw  "FStationId"      (View.Const FStation.id)
-                                       AF.newViw  "CurrentSid"      (Snippets.CurrentSnippetIdW |> View.Map (fun sid -> sid.Id |> string))
+                    AF.plgViews   = [| AF.newViw  "FsCode"             Snippets.FsCodeW
+                                       AF.newViw  "SaveNeeded"         Snippets.SaveAsClassW
+                                       AF.newViw  "CurrentPath"        Snippets.currentPathW
+                                       AF.newViw  "FStationId"         (View.Const FStation.id)
+                                       AF.newViw  "CurrentSid"         (Snippets.CurrentSnippetIdW |> View.Map (fun sid -> sid.Id |> string))
                                     |]  
-                    AF.plgDocs    = [| AF.newDoc  "mainDoc"         (lazy mainDoc()                 )
-                                       AF.newDoc  "editor"          (lazy (WebSharper.UI.Html.div [] [ Monaco.getEditorConfigO() |> Option.map Monaco.render |> Option.defaultValue Doc.Empty ]) )
-                                       AF.newDoc  "Snippets"        (lazy RenderSnippets  .render() )
-                                       AF.newDoc  "Properties"      (lazy RenderProperties.render() )
-                                       AF.newDoc  "ButtonsRight"    (lazy buttonsRight           () )
+                    AF.plgDocs    = [| AF.newDoc  "mainDoc"            (lazy mainDoc()                 )
+                                       AF.newDoc  "editor"             (lazy (WebSharper.UI.Html.div [] [ Monaco.getEditorConfigO() |> Option.map Monaco.render |> Option.defaultValue Doc.Empty ]) )
+                                       AF.newDoc  "Snippets"           (lazy RenderSnippets  .render() )
+                                       AF.newDoc  "Properties"         (lazy RenderProperties.render() )
+                                       AF.newDoc  "ButtonsRight"       (lazy buttonsRight           () )
                                     |]  
-                    AF.plgActions = [| AF.newAct  "AddSnippet"      Snippets.newSnippet
-                                       AF.newAct  "RemoveSnippet"   deleteSnippet       
-                                       AF.newAct  "IndentIn"        Snippets.indentIn       
-                                       AF.newAct  "IndentOut"       Snippets.indentOut
-                                       AF.newAct  "AddProperty"     RenderProperties.addProperty
-                                       AF.newAct  "SaveAs"          LoadSave.saveAs
-                                       AF.newAct  "RunFS"           runFsCode
-                                       AF.newAct  "LastLineToFsi"   lastLineToFsi
-                                       AF.newAct  "AbortFsi"        FsiAgent.abortFsiExe
-                                       AF.newAct  "DisposeFsi"      FsiAgent.disposeFsiExe
-                                       AF.newActF "LoadFile"        <| AF.FunAct1 ((fun o     -> unbox o  |> LoadSave.loadTextFile              ), "FileElement")
-                                       AF.newActF "Import"          <| AF.FunAct1 ((fun o     -> unbox o  |> Importer.importFile                ), "FileElement")
-                                       AF.newActF "JumpTo"          <| AF.FunAct1 ((fun o     -> unbox o  |> JumpTo.jumpToRef                   ), "textarea"   )
-                                       AF.newActF "ButtonClick"     <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.buttonClick           ), "button"     )
-                                       AF.newActF "ActionClick"     <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.actionClick           ), "name"       )
-                                       AF.newActF "ActionSnp"       <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.actionSnp (unbox o1)  ), "snpPath", "name" )
+                    AF.plgActions = [| AF.newAct  "AddSnippet"         Snippets.newSnippet
+                                       AF.newAct  "RemoveSnippet"      deleteSnippet       
+                                       AF.newAct  "IndentIn"           Snippets.indentIn       
+                                       AF.newAct  "IndentOut"          Snippets.indentOut
+                                       AF.newAct  "AddProperty"        RenderProperties.addProperty
+                                       AF.newAct  "SaveAs"             LoadSave.saveAs
+                                       AF.newAct  "RunFS"              runFsCode
+                                       AF.newAct  "LastLineToFsi"      lastLineToFsi
+                                       AF.newAct  "AbortFsi"           FsiAgent.abortFsiExe
+                                       AF.newAct  "DisposeFsi"         FsiAgent.disposeFsiExe
+                                       AF.newActF "LoadFile"           <| AF.FunAct1 ((fun o     -> unbox o  |> LoadSave.loadTextFile              ), "FileElement")
+                                       AF.newActF "Import"             <| AF.FunAct1 ((fun o     -> unbox o  |> Importer.importFile                ), "FileElement")
+                                       AF.newActF "JumpTo"             <| AF.FunAct1 ((fun o     -> unbox o  |> JumpTo.jumpToRef                   ), "textarea"   )
+                                       AF.newActF "ButtonClick"        <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.buttonClick           ), "button"     )
+                                       AF.newActF "ActionClick"        <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.actionClick           ), "name"       )
+                                       AF.newActF "ActionSnp"          <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.actionSnp (unbox o1)  ), "snpPath", "name" )
+                                       AF.newActF "setCurrentProperty" <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.setCurrentProperty (unbox o1)  ), "name", "value" )
                                     |]
-                    AF.plgQueries = [| AF.newQry  "PropertyRA"      <| (fun p -> unbox<string> p |> CustomAction.getCurrentProperty |> box)
+                    AF.plgQueries = [| AF.newQry  "PropertyRA"         <| (fun p -> unbox<string> p |> CustomAction.getCurrentProperty |> box)
                                     |]
                 }
                 """
@@ -5372,12 +5393,15 @@ namespace FsRoot
                 let epWebSocket = Endpoint.Create(url, "/ws", JsonEncoding.Readable)
                 let broker = Broker.BrokerAgent epWebSocket
                 Broker.BrokerAgent.FssWebSocketO <- Some broker
+                let staticFileOptions = StaticFileOptions(FileSystem = PhysicalFileSystem(rootDirectory))
+                staticFileOptions.ServeUnknownFileTypes <- true
+                (staticFileOptions.ContentTypeProvider |> unbox<ContentTypes.FileExtensionContentTypeProvider>).Mappings.Add(".wasm", "application/wasm")
                 use server = WebApp.Start(url, fun appB ->
                     appB.UseWebSharper(WebSharperOptions(ServerRootDirectory = rootdir
                                                        , Sitelet             = (Some <| Application.MultiPage content)
                                                        , BinDirectory        = "."
                                                        , Debug               = true))
-                        .UseStaticFiles(StaticFileOptions(FileSystem = PhysicalFileSystem(rootDirectory)))
+                        .UseStaticFiles(staticFileOptions)
                         .UseWebSocket(  epWebSocket, broker.Start, maxMessageSize = max)
                     |> ignore)
                 stdout.WriteLine("Listening on {0}, hit enter to finish", url)

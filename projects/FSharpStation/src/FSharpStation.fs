@@ -3371,7 +3371,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/a17730c1-09a7-48f8-bba8-a24ba4c61dd5"
+                    "http://localhost:9005/#/Snippet/c677b6fd-d833-43ee-a15c-62c60d8572e4"
                 #endif
                 
                 let extractEndPoint() = 
@@ -4362,7 +4362,7 @@ namespace FsRoot
         module RenderSnippets =
             open Snippets
             
-            let scrollIntoView selW (e:Dom.Element) = selW |> View.Sink (fun s -> if s then e?scrollIntoViewIfNeeded()) 
+            let scrollIntoView selW (e:Dom.Element) = selW |> View.Sink (fun s -> if s then try e?scrollIntoViewIfNeeded() with e -> printfn "%A" e) 
             
             let snippets () = 
                 Snippets.getHierarchyW
@@ -4918,6 +4918,7 @@ namespace FsRoot
             let getCurrentProperty        p = propO Snippets.currentSnippetV.Value p |> runReader                (Snippets.snippetsColl()) 
                                                                                      |> AsyncResult.map fst
                                                                                      |> AsyncResult.absorbO (fun () -> errorMsgf "Property %s not found" p)
+            let setCurrentProperty      p v = Snippets.setProperty Snippets.currentSnippetV.Value p v
         
         
         module Serializer =
@@ -5163,42 +5164,43 @@ namespace FsRoot
             let mainProgram() =
                 AF.addPlugIn {
                     AF.plgName    = "FSharpStation"
-                    AF.plgVars    = [| AF.newVar  "fileName"        LoadSave.fileName
-                                       AF.newVar  "SnippetName"     (Lens Snippets.currentSnippetV.V.snpName)
-                                       AF.newVar  "Content"         (Lens Snippets.currentSnippetV.V.snpContent)
-                                       AF.newVar  "Output"          outputMsgs
-                                       AF.newVar  "Parser"          FStation.annotationsV
+                    AF.plgVars    = [| AF.newVar  "fileName"           LoadSave.fileName
+                                       AF.newVar  "SnippetName"        (Lens Snippets.currentSnippetV.V.snpName)
+                                       AF.newVar  "Content"            (Lens Snippets.currentSnippetV.V.snpContent)
+                                       AF.newVar  "Output"             outputMsgs
+                                       AF.newVar  "Parser"             FStation.annotationsV
                                     |]  
-                    AF.plgViews   = [| AF.newViw  "FsCode"          Snippets.FsCodeW
-                                       AF.newViw  "SaveNeeded"      Snippets.SaveAsClassW
-                                       AF.newViw  "CurrentPath"     Snippets.currentPathW
-                                       AF.newViw  "FStationId"      (View.Const FStation.id)
-                                       AF.newViw  "CurrentSid"      (Snippets.CurrentSnippetIdW |> View.Map (fun sid -> sid.Id |> string))
+                    AF.plgViews   = [| AF.newViw  "FsCode"             Snippets.FsCodeW
+                                       AF.newViw  "SaveNeeded"         Snippets.SaveAsClassW
+                                       AF.newViw  "CurrentPath"        Snippets.currentPathW
+                                       AF.newViw  "FStationId"         (View.Const FStation.id)
+                                       AF.newViw  "CurrentSid"         (Snippets.CurrentSnippetIdW |> View.Map (fun sid -> sid.Id |> string))
                                     |]  
-                    AF.plgDocs    = [| AF.newDoc  "mainDoc"         (lazy mainDoc()                 )
-                                       AF.newDoc  "editor"          (lazy (WebSharper.UI.Html.div [] [ Monaco.getEditorConfigO() |> Option.map Monaco.render |> Option.defaultValue Doc.Empty ]) )
-                                       AF.newDoc  "Snippets"        (lazy RenderSnippets  .render() )
-                                       AF.newDoc  "Properties"      (lazy RenderProperties.render() )
-                                       AF.newDoc  "ButtonsRight"    (lazy buttonsRight           () )
+                    AF.plgDocs    = [| AF.newDoc  "mainDoc"            (lazy mainDoc()                 )
+                                       AF.newDoc  "editor"             (lazy (WebSharper.UI.Html.div [] [ Monaco.getEditorConfigO() |> Option.map Monaco.render |> Option.defaultValue Doc.Empty ]) )
+                                       AF.newDoc  "Snippets"           (lazy RenderSnippets  .render() )
+                                       AF.newDoc  "Properties"         (lazy RenderProperties.render() )
+                                       AF.newDoc  "ButtonsRight"       (lazy buttonsRight           () )
                                     |]  
-                    AF.plgActions = [| AF.newAct  "AddSnippet"      Snippets.newSnippet
-                                       AF.newAct  "RemoveSnippet"   deleteSnippet       
-                                       AF.newAct  "IndentIn"        Snippets.indentIn       
-                                       AF.newAct  "IndentOut"       Snippets.indentOut
-                                       AF.newAct  "AddProperty"     RenderProperties.addProperty
-                                       AF.newAct  "SaveAs"          LoadSave.saveAs
-                                       AF.newAct  "RunFS"           runFsCode
-                                       AF.newAct  "LastLineToFsi"   lastLineToFsi
-                                       AF.newAct  "AbortFsi"        FsiAgent.abortFsiExe
-                                       AF.newAct  "DisposeFsi"      FsiAgent.disposeFsiExe
-                                       AF.newActF "LoadFile"        <| AF.FunAct1 ((fun o     -> unbox o  |> LoadSave.loadTextFile              ), "FileElement")
-                                       AF.newActF "Import"          <| AF.FunAct1 ((fun o     -> unbox o  |> Importer.importFile                ), "FileElement")
-                                       AF.newActF "JumpTo"          <| AF.FunAct1 ((fun o     -> unbox o  |> JumpTo.jumpToRef                   ), "textarea"   )
-                                       AF.newActF "ButtonClick"     <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.buttonClick           ), "button"     )
-                                       AF.newActF "ActionClick"     <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.actionClick           ), "name"       )
-                                       AF.newActF "ActionSnp"       <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.actionSnp (unbox o1)  ), "snpPath", "name" )
+                    AF.plgActions = [| AF.newAct  "AddSnippet"         Snippets.newSnippet
+                                       AF.newAct  "RemoveSnippet"      deleteSnippet       
+                                       AF.newAct  "IndentIn"           Snippets.indentIn       
+                                       AF.newAct  "IndentOut"          Snippets.indentOut
+                                       AF.newAct  "AddProperty"        RenderProperties.addProperty
+                                       AF.newAct  "SaveAs"             LoadSave.saveAs
+                                       AF.newAct  "RunFS"              runFsCode
+                                       AF.newAct  "LastLineToFsi"      lastLineToFsi
+                                       AF.newAct  "AbortFsi"           FsiAgent.abortFsiExe
+                                       AF.newAct  "DisposeFsi"         FsiAgent.disposeFsiExe
+                                       AF.newActF "LoadFile"           <| AF.FunAct1 ((fun o     -> unbox o  |> LoadSave.loadTextFile              ), "FileElement")
+                                       AF.newActF "Import"             <| AF.FunAct1 ((fun o     -> unbox o  |> Importer.importFile                ), "FileElement")
+                                       AF.newActF "JumpTo"             <| AF.FunAct1 ((fun o     -> unbox o  |> JumpTo.jumpToRef                   ), "textarea"   )
+                                       AF.newActF "ButtonClick"        <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.buttonClick           ), "button"     )
+                                       AF.newActF "ActionClick"        <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.actionClick           ), "name"       )
+                                       AF.newActF "ActionSnp"          <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.actionSnp (unbox o1)  ), "snpPath", "name" )
+                                       AF.newActF "setCurrentProperty" <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.setCurrentProperty (unbox o1)  ), "name", "value" )
                                     |]
-                    AF.plgQueries = [| AF.newQry  "PropertyRA"      <| (fun p -> unbox<string> p |> CustomAction.getCurrentProperty |> box)
+                    AF.plgQueries = [| AF.newQry  "PropertyRA"         <| (fun p -> unbox<string> p |> CustomAction.getCurrentProperty |> box)
                                     |]
                 }
                 """

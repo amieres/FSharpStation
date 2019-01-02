@@ -8470,7 +8470,23 @@
   View$1.Sink(function(s)
   {
    if(s)
-    e.scrollIntoViewIfNeeded();
+    try
+    {
+     e.scrollIntoViewIfNeeded();
+    }
+    catch(e$1)
+    {
+     ((function($1)
+     {
+      return function($2)
+      {
+       return $1(Utils.prettyPrint($2));
+      };
+     }(function(s$1)
+     {
+      console.log(s$1);
+     }))(e$1));
+    }
   },selW);
  };
  RenderProperties.render$4434$34=function()
@@ -9190,6 +9206,10 @@
   SC$1.$cctor();
   return SC$1.rexGuid$1;
  };
+ CustomAction.setCurrentProperty=function(p,v)
+ {
+  Snippets.setProperty(Snippets.currentSnippetV().Get(),p,v);
+ };
  CustomAction.getCurrentProperty=function(p)
  {
   var x;
@@ -9710,6 +9730,17 @@
    },
    $1:"snpPath",
    $2:"name"
+  }),AppFramework.newActF("setCurrentProperty",{
+   $:2,
+   $0:function(o1)
+   {
+    return function(o2)
+    {
+     return CustomAction.setCurrentProperty(o1,o2);
+    };
+   },
+   $1:"name",
+   $2:"value"
   })],[AppFramework.newQry("PropertyRA",CustomAction.getCurrentProperty)]));
   LayoutEngineModule.addLayout((l=(String.unindentStr())("\n                    menuEditor       horizontal  65       menuLogo                  editorMessages\n                    double           horizontal  0-50-100 AppFramework.AppFwkClient menuEditor\n                    menuLogo         vertical    350      logo                      menu\n                    logo             span       \"margin:0; color:gray; font-size: 55px; font-weight:530\" \"F# Station\"\n                    editorMessages   horizontal 10-83-100 editorButtons             messages\n                    messages         vertical   0-50-100  messagesLeft              messagesRight\n                    editorButtons    vertical -120 snippetsSnippet buttons\n                    buttons div      \"overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px\" btnSaveAs none x btnAddSnippet btnDeleteSnippet btnIndentIn btnIndentOut none x btnRunFS btnInputFsi btnAbortFsi\n                    snippetsSnippet  vertical   0-20-100  snippets                  editorProperties\n                    snippets         horizontal 20        \"${FSharpStation.CurrentPath}\" FSharpStation.Snippets\n                    editorProperties vertical   0-100-100 snippet                   properties\n                    properties       div        \"\"        FSharpStation.Properties\n                    snippet          horizontal 35        Name                      FSharpStation.editor\n                    menu             span  \"\" btnLoad btnImport\n        \n                    btnSaveAs        button FSharpStation.SaveAs         \"class=btn ${FSharpStation.SaveNeeded}\" \"Save as...    \"\n                    btnAddSnippet    button FSharpStation.AddSnippet     \"\"                  \"Add Snippet   \"\n                    btnDeleteSnippet button FSharpStation.RemoveSnippet  \"\"                  \"Delete Snippet\"\n                    btnIndentIn      button FSharpStation.IndentIn       \"\"                  \"Indent In  >> \"\n                    btnIndentOut     button FSharpStation.IndentOut      \"\"                  \"Indent Out << \"\n                    btnRunFS         button FSharpStation.RunFS          \"\"                  \"Run F#        \"\n                    btnInputFsi      button FSharpStation.LastLineToFsi  \"\"                  \"last line |> Fsi\"\n                    btnAbortFsi      button FSharpStation.AbortFsi       \"\"                  \"Abort Fsi     \"\n        \n                    messagesLeft     wcomp-tabstrip                      \"\"                  Output FsCode\n                    messagesRight    wcomp-tabstrip                      \"\"                  Parser\n        \n                    Output           textarea  FSharpStation.Output      \"tabname=Output ; placeholder=Output messages ; spellcheck=false\" \n                    FsCode           textarea  FSharpStation.FsCode      \"tabname=F# Code; placeholder=F# Code         ; spellcheck=false\" \n                    Parser           textarea  FSharpStation.Parser      \"tabname=Parser ; placeholder=Parser messages; dblclick=${FSharpStation.JumpTo} ; spellcheck=false\" \n                    Name             Doc       InputLabel                \"\"     \"Name:\"        FSharpStation.SnippetName\n                    btnLoad          Doc       InputFile                 \"\"     \"Load File...\" FSharpStation.LoadFile  FileName\n                    btnImport        Doc       InputFile                 \"\"     \"Import...\"    FSharpStation.Import    \"\"\n                    FileName         div                                 \"class=form-control\"  FSharpStation.fileName\n                "),LayoutEngineModule.newLyt(MainProgram.FStationLyt(),l)));
   View$1.Sink(function(lytO)
@@ -9759,36 +9790,36 @@
    });
   })));
  };
- MainProgram.mainDoc$5154$78=Global.id;
- MainProgram.mainDoc$5146$39=function()
+ MainProgram.mainDoc$5155$78=Global.id;
+ MainProgram.mainDoc$5147$39=function()
  {
   return function(ev)
   {
    JumpTo.jumpToRef(ev.Target);
   };
  };
- MainProgram.mainDoc$5145$39=function()
+ MainProgram.mainDoc$5146$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5144$39=function()
+ MainProgram.mainDoc$5145$39=function()
  {
   return function(ev)
   {
    Importer.importFile(ev.Target);
   };
  };
- MainProgram.mainDoc$5143$39=function()
+ MainProgram.mainDoc$5144$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5142$39=function()
+ MainProgram.mainDoc$5143$39=function()
  {
   return function(ev)
   {
@@ -9907,11 +9938,11 @@
   }))))))))))))));
   return(p=Handler$1.CompleteHoles(tmp.k,tmp.h,[["filename",0],["name",0],["output",0],["fscode",0],["parser",0]]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.layout(p[0])),(tmp.i=i,i))).get_Doc();
  };
+ MainProgram.buttonsRight$5129$74=Global.id;
  MainProgram.buttonsRight$5128$74=Global.id;
  MainProgram.buttonsRight$5127$74=Global.id;
  MainProgram.buttonsRight$5126$74=Global.id;
  MainProgram.buttonsRight$5125$74=Global.id;
- MainProgram.buttonsRight$5124$74=Global.id;
  MainProgram.buttonsRight=function()
  {
   var tmp,p,i;
