@@ -1,11 +1,12 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,ResultMessage,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,FusionM,Operators$1,Builder$1,Builder$2,FusionAsyncM,Operators$2,Builder$3,Builder$4,ParseO,MailboxProcessorExt,Mailbox,StateFull,LibraryJS,View,Var,ListModel,Library2,WebSockets,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,CalculationModel,CalculationModel$1,DimType,CubeType,AttType,ElmType,ModId,AttId,ElmId,CubId,DimId,CalId,TotId,ForId,RulId,Attribute,Element,Dimension,UnaryOp,Operator,ExpressionText,ExpressionNumber,ExpressionAny,Slice,ForType,Formula,Calculation,Total,RuleKey,Cube,Rule,RuleMsg,Model,HelperTypeN,HelperTypeT,HelperTypeA,Model0,ElementModule,ElmReferenceModule,SliceModule,DimensionModule,CubeModule,CalculationModule,TotalModule,ModelModule,FormulaModule,RuleModule,AttributeModule,RuleEditor,Templating,Version,VersionModule,ModelUI,MsgModel,ModelUIModule,Global$1,TableDimensions,MainProgram,SC$1,RuleEditor_Templates,RuleEditor_GeneratedPrintf,IntelliFactory,Runtime,Utils,Strings,Seq$1,Arrays,List,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,Control,MailboxProcessor,console,UI,View$1,Var$1,FromView,Doc,System,Guid,Collections,FSharpMap,FSharpSet,Set,Slice$1,Map,Date,Var$2,Templating$1,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,AppFramework,PlugIn,Lazy,LayoutEngineModule,String,DateUtil,Numeric,ListModel$1,Client,Templates;
+ var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,FusionM,Operators$1,Builder$1,Builder$2,FusionAsyncM,Operators$2,Builder$3,Builder$4,ParseO,MailboxProcessorExt,Mailbox,StateFull,LibraryJS,View,Var,ListModel,Library2,WebSockets,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,CalculationModel,CalculationModel$1,DimType,CubeType,AttType,ElmType,ModId,AttId,ElmId,CubId,DimId,CalId,TotId,ForId,RulId,Attribute,Element,Dimension,UnaryOp,Operator,ExpressionText,ExpressionNumber,ExpressionAny,Slice,ForType,Formula,Calculation,Total,RuleKey,Cube,Rule,RuleMsg,Model,HelperTypeN,HelperTypeT,HelperTypeA,Model0,ElementModule,ElmReferenceModule,SliceModule,DimensionModule,CubeModule,CalculationModule,TotalModule,ModelModule,FormulaModule,RuleModule,AttributeModule,RuleEditor,Templating,TreeNodeId,Version,VersionModule,ModelUI,MsgModel,ModelUIModule,Global$1,TableDimensions,MainProgram,SC$1,RuleEditor_Templates,RuleEditor_GeneratedPrintf,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,Control,MailboxProcessor,console,UI,View$1,Var$1,FromView,Doc,System,Guid,Collections,FSharpMap,FSharpSet,Set,Slice$1,Map,Date,Var$2,Templating$1,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,AppFramework,PlugIn,Lazy,LayoutEngineModule,String,DateUtil,Numeric,ListModel$1,Client,Templates;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
  ResultMessage=Library.ResultMessage=Library.ResultMessage||{};
+ ResultMessageHelpers=Library.ResultMessageHelpers=Library.ResultMessageHelpers||{};
  Monads=Library.Monads=Library.Monads||{};
  Seq=Monads.Seq=Monads.Seq||{};
  Option=Monads.Option=Monads.Option||{};
@@ -89,6 +90,7 @@
  AttributeModule=CalculationModel$1.AttributeModule=CalculationModel$1.AttributeModule||{};
  RuleEditor=FsRoot.RuleEditor=FsRoot.RuleEditor||{};
  Templating=RuleEditor.Templating=RuleEditor.Templating||{};
+ TreeNodeId=RuleEditor.TreeNodeId=RuleEditor.TreeNodeId||{};
  Version=RuleEditor.Version=RuleEditor.Version||{};
  VersionModule=RuleEditor.VersionModule=RuleEditor.VersionModule||{};
  ModelUI=RuleEditor.ModelUI=RuleEditor.ModelUI||{};
@@ -105,8 +107,8 @@
  Utils=WebSharper&&WebSharper.Utils;
  Strings=WebSharper&&WebSharper.Strings;
  Seq$1=WebSharper&&WebSharper.Seq;
- Arrays=WebSharper&&WebSharper.Arrays;
  List=WebSharper&&WebSharper.List;
+ Arrays=WebSharper&&WebSharper.Arrays;
  Concurrency=WebSharper&&WebSharper.Concurrency;
  Enumerator=WebSharper&&WebSharper.Enumerator;
  Result$1=WebSharper&&WebSharper.Result;
@@ -179,6 +181,36 @@
  ResultMessage.NoMsg=new ResultMessage({
   $:0
  });
+ ResultMessageHelpers.infof=function(fmt)
+ {
+  return fmt(function(a)
+  {
+   return new ResultMessage({
+    $:3,
+    $0:a
+   });
+  });
+ };
+ ResultMessageHelpers.warningf=function(fmt)
+ {
+  return fmt(function(a)
+  {
+   return new ResultMessage({
+    $:2,
+    $0:a
+   });
+  });
+ };
+ ResultMessageHelpers.errorMsgf=function(fmt)
+ {
+  return fmt(function(a)
+  {
+   return new ResultMessage({
+    $:1,
+    $0:a
+   });
+  });
+ };
  ResultMessage.summarizedI=function(msg)
  {
   return ResultMessage.summarizedF(function()
@@ -202,7 +234,10 @@
  };
  ResultMessage.summarizedF=function(f,msg)
  {
-  return ResultMessage.summaryF(f,msg)+Global.String(msg);
+  return Strings.concat("\n",Seq$1.filter(function(y)
+  {
+   return""!==y;
+  },List.ofArray([Global.String(msg),ResultMessage.summaryF(f,msg)])));
  };
  ResultMessage.summaryF=function(f,msg)
  {
@@ -790,7 +825,7 @@
   },
   Bind:function(w,r)
   {
-   return Result.bindP(r,w);
+   return Result$1.Bind(r,w);
   },
   ReturnFrom:Global.id,
   Return:function(x)
@@ -2004,6 +2039,18 @@
    }
   };
  };
+ FusionAsyncM.ofFusionM=function(a)
+ {
+  var fm;
+  fm=a.$0;
+  return{
+   $:0,
+   $0:function(t)
+   {
+    return Concurrency.Return(fm([t[0],t[1]]));
+   }
+  };
+ };
  FusionAsyncM.ofAsyncResultRM=function(a)
  {
   return FusionAsyncM.bind(FusionAsyncM.ofResultRM,FusionAsyncM.ofAsync(a));
@@ -2031,18 +2078,6 @@
     {
      return g(f(x));
     });
-   }
-  };
- };
- FusionAsyncM.ofFusionM=function(a)
- {
-  var fm;
-  fm=a.$0;
-  return{
-   $:0,
-   $0:function(t)
-   {
-    return Concurrency.Return(fm([t[0],t[1]]));
    }
   };
  };
@@ -4225,6 +4260,9 @@
   SC$1.$cctor();
   return SC$1.rootdir;
  };
+ TreeNodeId.TreeNodeId={
+  $:0
+ };
  Version.New=function(major,minor,majorDate,minorDate)
  {
   return{
@@ -4255,7 +4293,7 @@
  {
   return Version.New(0,0,"","");
  };
- ModelUI.New=function(calculations,totals,dimensions,cubes,globalDefs,server,selectedDim,selectedCube,collapsed,cubePrefix,measurePrefix,outputMsgs,codeFS,parserMsgs,fileName,version)
+ ModelUI.New=function(calculations,totals,dimensions,cubes,globalDefs,server,selection,selectedDim,selectedCube,collapsed,cubePrefix,measurePrefix,outputMsgs,codeFS,parserMsgs,fileName,version)
  {
   return{
    calculations:calculations,
@@ -4264,6 +4302,7 @@
    cubes:cubes,
    globalDefs:globalDefs,
    server:server,
+   selection:selection,
    selectedDim:selectedDim,
    selectedCube:selectedCube,
    collapsed:collapsed,
@@ -4277,10 +4316,10 @@
   };
  };
  MsgModel.NoOp={
-  $:21
+  $:22
  };
  MsgModel.AddDimension={
-  $:12
+  $:13
  };
  MsgModel.AddCalculation={
   $:3
@@ -4364,22 +4403,22 @@
   SC$1.$cctor();
   return SC$1.model;
  };
- TableDimensions.tableDimensions$1990$48=function(did)
+ TableDimensions.tableDimensions$2006$48=function(did)
+ {
+  return function()
+  {
+   (Global$1.processor())({
+    $:15,
+    $0:did
+   });
+  };
+ };
+ TableDimensions.tableDimensions$2005$48=function(did)
  {
   return function()
   {
    (Global$1.processor())({
     $:14,
-    $0:did
-   });
-  };
- };
- TableDimensions.tableDimensions$1989$48=function(did)
- {
-  return function()
-  {
-   (Global$1.processor())({
-    $:13,
     $0:did
    });
   };
@@ -4475,7 +4514,7 @@
    },function()
    {
     (Global$1.processor())({
-     $:13,
+     $:14,
      $0:did
     });
    }))),t.WithHole(Handler.EventQ2(t.k,"select",function()
@@ -4484,7 +4523,7 @@
    },function()
    {
     (Global$1.processor())({
-     $:14,
+     $:15,
      $0:did
     });
    }))),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[["name",0],["abbreviation",0],["order",0],["type",0],["excludename",2],["includefreeze",2]]),(i$1=new TemplateInstance.New(p$1[1],RuleEditor_Templates.dimensionrow(p$1[0])),(b$1.i=i$1,i$1)))).get_Doc();
@@ -4678,7 +4717,7 @@
   },[]),ListModel$1.Create(function(v)
   {
    return v.cubId;
-  },[]),Var$2.Create$1(""),Var$2.Create$1(""),Var$2.Create$1(null),Var$2.Create$1(null),ListModel$1.Create(Global.id,[]),Var$2.Create$1("Z"),Var$2.Create$1("M"),Var$2.Create$1(""),Var$2.Create$1(""),Var$2.Create$1(""),Var$2.Create$1("NewFile.json"),Var$2.Create$1(VersionModule.New()));
+  },[]),Var$2.Create$1(""),Var$2.Create$1(""),Var$2.Create$1(null),Var$2.Create$1(null),Var$2.Create$1(null),ListModel$1.Create(Global.id,[]),Var$2.Create$1("Z"),Var$2.Create$1("M"),Var$2.Create$1(""),Var$2.Create$1(""),Var$2.Create$1(""),Var$2.Create$1("NewFile.json"),Var$2.Create$1(VersionModule.New()));
   SC$1.processor=Global.ignore;
   SC$1.dtypes=List.ofArray([DimType.DtDataType,DimType.DtTime,DimType.DtVersion,DimType.DtOther]);
   SC$1.RuleEditorLyt="RuleEditorLyt";

@@ -1,7 +1,7 @@
 #nowarn "3180"
 #nowarn "1178"
 #nowarn "1182"
-////-d:FSharpStation1546345965522 -d:WEBSHARPER
+////-d:FSharpStation1546447678146 -d:WEBSHARPER
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
@@ -24,7 +24,7 @@
 //#nowarn "1178"
 //#nowarn "1182"
 /// Root namespace for all code
-//#define FSharpStation1546345965522
+//#define FSharpStation1546447678146
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -196,9 +196,9 @@ namespace FsRoot
                     | RMessages mas,           mb  ->  Array.append    mas   [| mb |] |> RMessages
                     |           ma ,           mb  ->               [| ma   ;   mb |] |> RMessages
             
-                let reduceMsgs ms = ms |> Seq.fold addMsg NoMsg
+                let reduceMsgs ms = (NoMsg, ms) ||> Seq.fold addMsg
             
-                let summaryF f msg =        
+                let summaryF f msg =
                     match countF f msg with
                     | 0, 0, _
                     | 1, 0, 0
@@ -208,7 +208,7 @@ namespace FsRoot
                     | e, w, _ -> sprintf "Errors   : %d, Warnings: %d\n" e w
             
                 /// returns a string with a count of errors and warnings, if more than one
-                let summarizedF f msg = summaryF f msg + msg.ToString()
+                let summarizedF f msg = [ msg.ToString() ; summaryF f msg ] |> Seq.filter ((<>) "") |> String.concat "\n"
                 /// a Message is considered an error
                 let summarized  msg = msg |> summarizedF (fun _ -> 1, 0, 0)
                 /// a Message is considered a Warning
@@ -298,11 +298,16 @@ namespace FsRoot
                 
                 let htmlV = Var.Create "<h1>Markdown Content</h1>"
             
-                [< Inline "new Worker($file)" >]
-                let webWorker (file:string) : obj = X<_>
-            
-                let ww = webWorker "Bolero/Markdown/_framework/blazor.server.js"
-            
+                type WorkerEvent() =
+                    do ()
+                    [< Inline "$this.data"  >] member evt.Data = evt?data
+                    
+                type WebWorker [< Inline "new Worker($file)" >] (file:string) =
+                    do ()
+                    [< Inline "$this.onmessage = $f"  >] member this.SetOnMessage(f:System.Action<WorkerEvent>) = ()
+                    [< Inline "$this.onerror   = $f"  >] member this.SetOnError  (f:System.Action<WorkerEvent>) = ()
+                    [< Inline "$this.postMessage($m)" >] member this.PostMessage (m:obj                       ) = ()
+                
                 [< SPAEntryPoint >]
                 let main() =
             
@@ -336,7 +341,29 @@ namespace FsRoot
             
                     let cidO() = AF.tryGetWoW "FSharpStation" "CurrentSid" |> Option.bind View.TryGet
             
-                    let setItem k v = JS.Window.LocalStorage.SetItem(k, v)
+                    let ww = new WebWorker("Bolero/publish/worker.js")
+                    printfn "%A" ww
+                    System.Action<WorkerEvent>(fun ev -> 
+                        printfn "%A" ev.Data
+                        printfn "%A" ev.Data?message
+                        match ev.Data?message with
+                        | "markdownHtml" -> if  Some(ev.Data?sid) = cidO() then
+                                                let html = (ev.Data?html)
+                                                htmlV.Set html
+                                                setProperty "htmlMarkdown" html
+                        | _              -> ()
+                    ) |> ww.SetOnMessage
+            
+            
+                    let startMarkdownTranslate (sid:string) (v:string) = 
+                        let o = JSObject()
+                        [ "message", "markdownHtml"
+                          "sid"    , sid
+                          "text"   , v ] 
+                        |> Seq.iter o.Add
+                        ww.PostMessage o
+            
+                                         
                     let callMarkdown txt = 
                         async {
                             let!  htmlR = getPropertyRA "htmlMarkdown"
@@ -345,22 +372,9 @@ namespace FsRoot
                             |_-> ()
                             let!  baseSnippetR = getPropertyRA "BaseSnippet"
                             match baseSnippetR, cidO() with
-                            | Ok b, Some cid when b.Contains "TranslateMarkdown" -> setItem "markdownText"  (cid + txt)
+                            | Ok b, Some cid when b.Contains "TranslateMarkdown" -> startMarkdownTranslate cid txt
                             |_-> ()
                         } |> Async.Start
-                    JS.Window.AddEventListener("storage", System.Action<Dom.Event>(fun ev -> 
-                        match ev?key with
-                        | "markdownHtml" -> setItem   ev?key ""
-                                            let v : string = ev?newValue
-                                            let len = "c2b72ff1-2218-4817-ae1e-0a34003008bd".Length
-                                            if  Some(v.Left len) = cidO() then
-                                                let html = (ev?newValue : string).[len..]
-                                                htmlV.Set html
-                                                setProperty "htmlMarkdown" html
-                                                
-                        | _              -> ()
-                    ))
-            
                     let callMarkdownD  = delayed 200 callMarkdown
             
                     let bindContentDoc() =

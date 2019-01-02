@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1541588788569 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1546409443740 -d:WEBSHARPER
 ////#cd @"..\projects\RuleEditor\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -31,7 +31,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1541588788569
+//#define FSharpStation1546409443740
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -118,7 +118,7 @@ namespace FsRoot
                 let t = System.DateTime.UtcNow // in two steps to avoid Warning: The value has been copied to ensure the original is not mutated
                 t.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
             
-            let [<Inline>] inline traceT t v = tee (sprintf "%A" >> (fun s -> s.[..100]) >> printfn "%s %s: %A" (nowStamp()) t) v
+            let [<Inline>] inline traceT t v = tee (sprintf "%A" >> (fun s -> s.[..min 100 s.Length-1]) >> printfn "%s %s: %A" (nowStamp()) t) v
             let [<Inline>] inline trace   v = traceT "trace" v
             let [<Inline>] inline traceI  v = trace          v |> ignore
             
@@ -133,6 +133,14 @@ namespace FsRoot
                     do         Out n id r |> ignore
                     return r 
                   }
+            
+                let [<Inline>] inline TimeIt n f p =
+                    printfn "Starting %s" n
+                    let start = System.DateTime.UtcNow.Ticks
+                    f p
+                    let elapsedSpan = new System.TimeSpan(System.DateTime.UtcNow.Ticks - start)
+                    print <| elapsedSpan.ToString()
+            
             
             /// Extensible type for error messages, warnings and exceptions
             type ResultMessage<'M> =
@@ -154,6 +162,12 @@ namespace FsRoot
                     | ExceptMsg(m,p) -> (m, p) ||> sprintf "Exception: %s, %s"
                     | RMessages ms   ->  ms     |> Seq.filter (function NoMsg -> false |_-> true) |> Seq.map (fun m -> m.ToString()) |> String.concat "\n"
             
+            [< AutoOpen >]
+            module ResultMessageHelpers =
+                let errorMsgf fmt = Printf.ksprintf ErrorMsg fmt
+                let warningf  fmt = Printf.ksprintf Warning  fmt
+                let infof     fmt = Printf.ksprintf Info     fmt
+            
             module ResultMessage =
             
                 let inline noMsg    msg = msg |> function NoMsg -> true |_-> false
@@ -162,7 +176,7 @@ namespace FsRoot
                 let rec bindMessage f msg = 
                     match msg with
                     | NoMsg          ->  NoMsg
-                    | Message   m    ->  f m
+                    | Message   m    ->  f         m
                     | ErrorMsg  m    ->  ErrorMsg  m
                     | Info      m    ->  Info      m
                     | Warning   m    ->  Warning   m
@@ -239,9 +253,9 @@ namespace FsRoot
                     | RMessages mas,           mb  ->  Array.append    mas   [| mb |] |> RMessages
                     |           ma ,           mb  ->               [| ma   ;   mb |] |> RMessages
             
-                let reduceMsgs ms = ms |> Seq.fold addMsg NoMsg
+                let reduceMsgs ms = (NoMsg, ms) ||> Seq.fold addMsg
             
-                let summaryF f msg =        
+                let summaryF f msg =
                     match countF f msg with
                     | 0, 0, _
                     | 1, 0, 0
@@ -251,7 +265,7 @@ namespace FsRoot
                     | e, w, _ -> sprintf "Errors   : %d, Warnings: %d\n" e w
             
                 /// returns a string with a count of errors and warnings, if more than one
-                let summarizedF f msg = summaryF f msg + msg.ToString()
+                let summarizedF f msg = [ msg.ToString() ; summaryF f msg ] |> Seq.filter ((<>) "") |> String.concat "\n"
                 /// a Message is considered an error
                 let summarized  msg = msg |> summarizedF (fun _ -> 1, 0, 0)
                 /// a Message is considered a Warning
@@ -352,7 +366,7 @@ namespace FsRoot
                     type Builder() =
                         member inline this.Return          x       = rtn  x
                         member inline this.ReturnFrom      x       =     (x:Result<_,_>)
-                        member        this.Bind           (w , r ) = bindP  r w
+                        member        this.Bind           (w , r ) = Result.bind  r w
                         member inline this.Zero           ()       = rtn ()
                         member inline this.Delay           f       = f
                         member inline this.Combine        (a, b)   = bind b a
@@ -572,9 +586,9 @@ namespace FsRoot
                     let inline ofOption        f  o  = o  |> Option.map OkF |> Option.defaultWith (f >> ErrorF)
                     let inline ofMessage          m  =                        OkFMsg ()                      (Message                  m)
                     let inline ofResultMessage    m  =                        OkFMsg ()                                                m
-                    let inline ofFusionM     (FM fm) = FAM(fun (s,r) -> async.Return (fm (s, r)) )
-                    let inline ofAsync            a  = FAM(fun (s ,r ) -> a |> Async.map (fun v -> Some v, s, NoMsg) )
+                    let inline ofAsync            a  = FAM(fun (s, r) -> a |> Async.map (fun v -> Some v, s, NoMsg) )
                     let inline ofAsyncResultRM    a  = a |> ofAsync |> bind ofResultRM
+                    let inline ofFusionM     (FM fm) = FAM(fun (s, r) -> async.Return (fm (s, r)) )
                 
                     let        freeMessageF     f  m = FAM(fun (s1,m1) -> async {
                                                           try
@@ -1831,7 +1845,9 @@ namespace FsRoot
         //#r @"Compiled\CalculationModelDll\CalculationModelDll.dll"
         open CalculationModel.CalculationModel
         
-        //type Selection  = (TreeNodeId * (ForId option)) option
+        type TreeNodeId = TreeNodeId
+        
+        type Selection  = (TreeNodeId * (ForId option)) option
         
         type Version = {
             major     : int
@@ -1859,7 +1875,7 @@ namespace FsRoot
             cubes         : ListModel<CubId        , Cube       >
             globalDefs    : Var<string>
             server        : Var<string>
-            //selection     : Var<Selection>
+            selection     : Var<Selection>
             selectedDim   : Var<DimId option>
             selectedCube  : Var<CubId option>
             collapsed     : ListModel<TotId * TotId list, TotId * TotId list>
@@ -1886,7 +1902,7 @@ namespace FsRoot
         | RemoveFormula     of ForId
         | SelectFormula     of ForId
         //| SelectFormNode    of ForId * TreeNodeId
-        //| SelectNode        of         TreeNodeId
+        | SelectNode        of         TreeNodeId
         //| ExpandNode        of bool  * TreeNodeId
         //| IndentNode        of bool  * TreeNodeId
         //| MoveNode          of bool  * TreeNodeId * TreeNodeId
@@ -1940,7 +1956,7 @@ namespace FsRoot
                 cubes         = ListModel.Create (fun v -> v.cubId) [||]
                 globalDefs    = Var.Create ""
                 server        = Var.Create ""
-                //selection     = Var.Create None
+                selection     = Var.Create None
                 selectedDim   = Var.Create None
                 selectedCube  = Var.Create None
                 collapsed     = ListModel.Create id [||]
@@ -2149,6 +2165,9 @@ namespace FsRoot
             open WebSharper.Owin.WebSocket.Client
             open WebSharper.Owin.WebSocket.Server
             open WebSockets
+        
+            let varInt  = Var.Create 1
+            printfn "varInt %A" varInt.Value
         
             type EndPointServer = | [< EndPoint "/" >] EP
         

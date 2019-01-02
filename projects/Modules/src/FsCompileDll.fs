@@ -2,7 +2,7 @@
 #nowarn "1182"
 #nowarn "52"
 #nowarn "1178"
-////-d:FSharpStation1546355467253
+////-d:FSharpStation1546409443740 -d:NOFRAMEWORK --noframework
 ////#cd @"..\projects\Modules\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -27,12 +27,15 @@
 //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
 //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
 //#r @"..\packages\Owin\lib\net40\Owin.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
 //#nowarn "3180"
 //#nowarn "1182"
 //#nowarn "52"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1546355467253
+//#define FSharpStation1546409443740
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -2232,7 +2235,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1546355467253"
+                let mutable fsharpStationAddress = Address "FSharpStation1546409443740"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -2294,11 +2297,17 @@ namespace FsRoot
                                         
                 let getBrokerProcessId() = fsharpStationClient.MBProcessId
     
+        //#define NOFRAMEWORK --noframework
+        
         //#cd @"..\projects\Modules\src"
         //#nowarn "3180"
         //#nowarn "1182"
         //#nowarn "52"
         //#nowarn "1178"
+        
+        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
         
         module FsCompileDll =
             
@@ -2310,12 +2319,13 @@ namespace FsRoot
             [< Inline "throw 'not intended for JavaScript client'" >]
             let compileSnippet show snpName = 
                 eff {
+                    printfn "Compiling dll %s" snpName
                     let! codeFs         = FSharpStationClient.getCode snpName |> ofAsyncResultRM
                     let  args           = [ intShowArgs    /= (show:bool)
                                             fscGenFSharp2  /= "noframework"
-                                            fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
-                                            fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
-                                            fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+                                            //fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+                                            //fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+                                            //fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
                                           ]
                     let  code           = codeFs.Split '\n'
                     let  defines0       = (FsCode.extractDefines <| FsCode codeFs).Split([| " " ; "-d:" |], StringSplitOptions.RemoveEmptyEntries) 
