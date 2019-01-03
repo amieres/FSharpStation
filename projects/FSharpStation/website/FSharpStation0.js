@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,FusionM,Operators$1,Builder$1,Builder$2,FusionAsyncM,Operators$2,Builder$3,Builder$4,AsyncResult,AsyncResultBuilder,AsyncResultBuilderP,Extensions,String,ParseO,MailboxProcessorExt,Mailbox,StateFull,ResourceAgentState,ResourceAgent,AgentReaderM,CommArgRoot,CommArg,CommArgCollection,TypedCommArg,CommArgModule,FsCodeModule,PreproDirective,SnippetId,Snippet,SnippetCollection,SnippetModule,Hole,TreeReader,Node,LibraryJS,Promise,View,Serializer,LoadFiles,REGEX,Hoverable,Hoverable$1,ResizeObserver,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,WcSplitterT,Monaco,Position,Range,Uri,Location,FindMatch,WordAtPosition,Model,MarkDownString,MarkerData,CompletionItem,Hover,Editor,MonacoConfig,Library2,FsiAgent,WebSockets,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ReplyHandler,Handler,WSMessagingClient,FSMessage,FsAutoComplete,CommTypes,ResponseError,Location$1,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,MsgTypes,ParseRequest,DeclarationsRequest,CompletionRequest,PositionRequest,ProjectRequest,LintRequest,HelptextRequest,WorkspacePeekRequest,Calls,FSharpStation,FStation,Snippets,DragDrop,DragInfo,Templating,RenderSnippets,RenderProperties,Monaco$1,HoverProvider,CompletionItemProvider,DefinitionProvider,MonacoOptions,ITextModelService,JumpTo,CustomAction,Serializer$1,Model$1,LoadSave,Importer,MainProgram,EndPoint,Messaging,SC$1,FSharpStation_JsonEncoder,FSharpStation_JsonDecoder,FSharpStation_GeneratedPrintf,FSharpStation_Router,FSharpStation_Templates,GeneratedPrintf,IntelliFactory,Runtime,Utils,Strings,Seq$1,Arrays,List,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,Slice,Control,MailboxProcessor,System,Guid,Collections,FSharpSet,Option$1,CancellationTokenSource,console,UI,View$1,Var$1,FSharpMap,BalancedTree,DomUtility,Doc,AttrModule,AttrProxy,Node$1,Client,Templates,Reflect,Object,Map,JSON,TimeoutException,ClientSideJson,Provider,Owin,WebSocket,Client$1,WithEncoding,Endpoint,location,Remoting,AjaxRemotingProvider,FromView,Templating$1,Runtime$1,Server,ProviderBuilder,Handler$1,TemplateInstance,JavaScript,Promise$1,AppFramework,Date,PlugIn,Lazy,LayoutEngineModule,DateUtil,Numeric,ListModel,Dictionary,Router,Sitelets,RouterOperators,LayoutEngine_Templates;
+ var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,FusionM,Operators$1,Builder$1,Builder$2,FusionAsyncM,Operators$2,Builder$3,Builder$4,AsyncResult,AsyncResultBuilder,AsyncResultBuilderP,Extensions,String,ParseO,MailboxProcessorExt,Mailbox,StateFull,ResourceAgentState,ResourceAgent,AgentReaderM,CommArgRoot,CommArg,CommArgCollection,TypedCommArg,CommArgModule,FsCodeModule,PreproDirective,SnippetId,Snippet,SnippetCollection,SnippetModule,Hole,TreeReader,Node,LibraryJS,Promise,View,Serializer,LoadFiles,REGEX,Hoverable,Hoverable$1,ResizeObserver,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,WcSplitterT,Monaco,Position,Range,Uri,Location,FindMatch,WordAtPosition,Model,MarkDownString,MarkerData,CompletionItem,Hover,Editor,MonacoConfig,Library2,FsiAgent,WebSockets,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ReplyHandler,Handler,WSMessagingClient,FSMessage,FsAutoComplete,CommTypes,ResponseError,Location$1,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,MsgTypes,ParseRequest,DeclarationsRequest,CompletionRequest,PositionRequest,ProjectRequest,LintRequest,HelptextRequest,WorkspacePeekRequest,Calls,FSharpStation,FStation,Snippets,DragDrop,DragInfo,Templating,RenderSnippets,RenderProperties,Monaco$1,HoverProvider,CompletionItemProvider,DefinitionProvider,MonacoOptions,ITextModelService,JumpTo,CustomAction,Serializer$1,Model$1,LoadSave,Importer,MainProgram,EndPoint,Messaging,SC$1,FSharpStation_JsonEncoder,FSharpStation_JsonDecoder,FSharpStation_GeneratedPrintf,FSharpStation_Router,FSharpStation_Templates,GeneratedPrintf,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,Slice,Control,MailboxProcessor,System,Guid,Collections,FSharpSet,Option$1,CancellationTokenSource,console,UI,View$1,Var$1,FSharpMap,BalancedTree,DomUtility,Doc,AttrModule,AttrProxy,Node$1,Client,Templates,Reflect,Object,Map,JSON,TimeoutException,ClientSideJson,Provider,Owin,WebSocket,Client$1,WithEncoding,Endpoint,location,Remoting,AjaxRemotingProvider,FromView,Templating$1,Runtime$1,Server,ProviderBuilder,Handler$1,TemplateInstance,JavaScript,Promise$1,AppFramework,Date,PlugIn,Lazy,LayoutEngineModule,DateUtil,Numeric,ListModel,Dictionary,Router,Sitelets,RouterOperators,LayoutEngine_Templates;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -163,8 +163,8 @@
  Utils=WebSharper&&WebSharper.Utils;
  Strings=WebSharper&&WebSharper.Strings;
  Seq$1=WebSharper&&WebSharper.Seq;
- Arrays=WebSharper&&WebSharper.Arrays;
  List=WebSharper&&WebSharper.List;
+ Arrays=WebSharper&&WebSharper.Arrays;
  Concurrency=WebSharper&&WebSharper.Concurrency;
  Enumerator=WebSharper&&WebSharper.Enumerator;
  Result$1=WebSharper&&WebSharper.Result;
@@ -315,7 +315,10 @@
  };
  ResultMessage.summarizedF=function(f,msg)
  {
-  return ResultMessage.summaryF(f,msg)+Global.String(msg);
+  return Strings.concat("\n",Seq$1.filter(function(y)
+  {
+   return""!==y;
+  },List.ofArray([Global.String(msg),ResultMessage.summaryF(f,msg)])));
  };
  ResultMessage.summaryF=function(f,msg)
  {
@@ -9631,7 +9634,7 @@
  };
  MainProgram.mainProgram=function()
  {
-  var l,v,prior,v$1,prior$1,b;
+  var l,v,prior,v$1,prior$1,x,b;
   AppFramework.addPlugIn(PlugIn.New("FSharpStation",[AppFramework.newVar("fileName",LoadSave.fileName()),AppFramework.newVar("SnippetName",Var$1.Lens(Snippets.currentSnippetV(),function($1)
   {
    return $1.snpName;
@@ -9649,11 +9652,11 @@
    return Global.String(sid.get_Id());
   },Snippets.CurrentSnippetIdW()))],[AppFramework.newDoc("mainDoc",Lazy.Create(MainProgram.mainDoc)),AppFramework.newDoc("editor",Lazy.Create(function()
   {
-   var x,o,v$2;
-   return Doc.Element("div",[],[(x=(o=Monaco$1.getEditorConfigO(),o==null?null:{
+   var x$1,o,v$2;
+   return Doc.Element("div",[],[(x$1=(o=Monaco$1.getEditorConfigO(),o==null?null:{
     $:1,
     $0:Monaco.render(o.$0)
-   }),(v$2=Doc.get_Empty(),x==null?v$2:x.$0))]);
+   }),(v$2=Doc.get_Empty(),x$1==null?v$2:x$1.$0))]);
   })),AppFramework.newDoc("Snippets",Lazy.Create(RenderSnippets.render)),AppFramework.newDoc("Properties",Lazy.Create(RenderProperties.render)),AppFramework.newDoc("ButtonsRight",Lazy.Create(MainProgram.buttonsRight))],[AppFramework.newAct("AddSnippet",function()
   {
    Snippets.newSnippet();
@@ -9775,17 +9778,22 @@
    if(!Unchecked.Equals(prior$1[0].Get(),v$2))
     prior$1[0].Set(v$2);
   },v$1),prior$1[0].get_View()))));
+  x=AppFramework.tryGetVar("AppFramework","titleV");
+  (Option.iter(function(lvar)
+  {
+   lvar.varVar.Set("FSharpStation.CurrentPath");
+  }))(x);
   return Doc.Async((b=null,Concurrency.Delay(function()
   {
    return Concurrency.Bind(Monaco.loader(),function()
    {
-    var x,o,v$2;
-    x=(o=Monaco$1.getEditorConfigO(),o==null?null:{
+    var x$1,o,v$2;
+    x$1=(o=Monaco$1.getEditorConfigO(),o==null?null:{
      $:1,
      $0:Monaco.render(o.$0)
     });
     v$2=Doc.get_Empty();
-    x==null?void 0:void 0;
+    x$1==null?void 0:void 0;
     return Concurrency.Return(AppFramework.getMainDoc().f());
    });
   })));

@@ -1,4 +1,4 @@
-////-d:FSharpStation1545002842471 -d:WEBSHARPER
+////-d:FSharpStation1546448143305 -d:WEBSHARPER
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
@@ -17,7 +17,7 @@
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 /// Root namespace for all code
-//#define FSharpStation1545002842471
+//#define FSharpStation1546448143305
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -96,15 +96,12 @@ namespace FsRoot
             
             module Memoize =
             
-            
-                /// creates a Dictionary to store memoized values
                 /// returns 3 functions:
                 ///    checkO  : ('p->'v option) 
                 ///    getOrAdd: ('p->('p->'v)->'v) 
                 ///    clear   : (unit->unit)
                 [<Inline>]
-                let getStore() =
-                    let cache        = System.Collections.Generic.Dictionary<_, _>()
+                let getStoreWithDict (cache: System.Collections.Generic.Dictionary<_, _>) =
                     let checkO v     = let mutable res = Unchecked.defaultof<_>
                                        let ok          = cache.TryGetValue(v, &res)
                                        if  ok then Some res else None
@@ -113,12 +110,19 @@ namespace FsRoot
                     let getOrAdd p f = checkO p |> Option.defaultWith (fun () -> f p |> store p )
                     (checkO, getOrAdd), cache.Clear
             
+                /// creates a Dictionary to store memoized values
+                /// returns 3 functions:
+                ///    checkO  : ('p->'v option) 
+                ///    getOrAdd: ('p->('p->'v)->'v) 
+                ///    clear   : (unit->unit)
+                [<Inline>]
+                let getStore() = getStoreWithDict (System.Collections.Generic.Dictionary<_, _>() )
+            
                 /// Memoizes function f using the provided cache
                 /// getCache() returns 1 function:
                 ///    getOrAdd: ('p->('p->'v)->'v) 
                 [< Inline >]
-                let memoizeStore (getCache:unit->('key -> ('key -> 'value) -> 'value) ) f =
-                    let getOrAdd = getCache()
+                let memoizeStore (getOrAdd:('key -> ('key -> 'value) -> 'value) ) f =
                     fun p -> getOrAdd p f
             
             
@@ -128,8 +132,23 @@ namespace FsRoot
                 [< Inline >]
                 let memoizeResetable f =
                     let (check, getOrAdd), clear = getStore()
-                    let memoF = memoizeStore (fun () -> getOrAdd) f
+                    let memoF = memoizeStore getOrAdd f
                     memoF, clear
+            
+                /// Memoizes the function f using the provided Dictionary
+                [<Inline>]
+                let memoizeWithDict dict f =
+                    let (check, getOrAdd), clear = getStoreWithDict dict
+                    let memoF = memoizeStore getOrAdd f
+                    memoF
+            
+                /// Memoizes the function f and returns Dictionary
+                [<Inline>]
+                let memoizeDict f =
+                    let dict = System.Collections.Generic.Dictionary<_, _>() 
+                    let (check, getOrAdd), clear = getStoreWithDict dict
+                    let memoF = memoizeStore getOrAdd f
+                    memoF, dict
             
                 /// Memoizes the function f using a Dictionary
                 [<Inline>]
@@ -618,6 +637,7 @@ namespace FsRoot
                 let private plugIns = ListModel (fun plg -> plg.plgName)
             
                 let mainDocV = Var.Create "AppFramework.AppFwkClient"
+                let titleV   = Var.Create "AppFramework.mainDocV"
             
                 open WebSharper.UI.Templating
             
@@ -821,12 +841,26 @@ namespace FsRoot
                 if IsClient then
                     plugIns.Add {
                         plgName    = "AppFramework"
-                        plgVars    = [| newVar "mainDocV"     mainDocV     |]
+                        plgVars    = [| newVar "mainDocV"     mainDocV     
+                                        newVar "titleV"       titleV       |]
                         plgViews   = [|                                    |]
                         plgDocs    = [| newDoc "AppFwkClient" AppFwkClient |]
                         plgActions = [| actHello                           |]
                         plgQueries = [| qryDocs                            |]
                     }
+            
+                    titleV.View
+                    |> View.Bind(fun nm ->
+                        nm
+                        |> String.splitByChar '.'
+                        |> (function [| a ; b |] -> tryGetWoW a b |_-> None)
+                        |> Option.defaultWith (fun () -> mainDocV.View )
+                    ) |> View.Sink (fun v -> 
+                        async {
+                            do! Async.Sleep 500
+                            JS.Window.Document.Title <- v 
+                        } |> Async.Start
+                    )
             
                 let getMainDoc =
                   lazy
