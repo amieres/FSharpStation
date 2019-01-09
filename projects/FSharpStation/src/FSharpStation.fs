@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1546448143305 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1547005003252 -d:WEBSHARPER
 ////#cd @"..\projects\FSharpStation\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -37,7 +37,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1546448143305
+//#define FSharpStation1547005003252
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -2318,12 +2318,10 @@ namespace FsRoot
                 
             let (|REGEX|_|) (expr: string) (opt: string) (value: string) =
                 if value = null then None else
-                try 
-                    match JavaScript.String(value).Match(RegExp(expr, opt)) with
-                    | null         -> None
-                    | [| |]        -> None
-                    | m            -> Some m
-                with e -> None
+                match JavaScript.String(value).Match(RegExp(expr, opt)) with
+                | null         -> None
+                | [| |]        -> None
+                | m            -> Some m
             
             let rexGuid = """([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})"""
             
@@ -3371,7 +3369,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/d2b2edfb-4b2c-4cd8-984b-801fa86ec69f"
+                    "http://localhost:9005/#/Snippet/8a23262e-cdaf-47e3-a4ac-36a86f112175"
                 #endif
                 
                 let extractEndPoint() = 
@@ -3563,7 +3561,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1546448143305"
+                let mutable fsharpStationAddress = Address "FSharpStation1547005003252"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -5203,7 +5201,10 @@ namespace FsRoot
                     AF.plgQueries = [| AF.newQry  "PropertyRA"         <| (fun p -> unbox<string> p |> CustomAction.getCurrentProperty |> box)
                                     |]
                 }
-                """
+        
+                match JS.Document.GetElementById("GlobalLayout") with
+                | null ->
+                  """
                     menuEditor       horizontal  65       menuLogo                  editorMessages
                     double           horizontal  0-50-100 AppFramework.AppFwkClient menuEditor
                     menuLogo         vertical    350      logo                      menu
@@ -5238,8 +5239,8 @@ namespace FsRoot
                     btnLoad          Doc       InputFile                 ""     "Load File..." FSharpStation.LoadFile  FileName
                     btnImport        Doc       InputFile                 ""     "Import..."    FSharpStation.Import    ""
                     FileName         div                                 "class=form-control"  FSharpStation.fileName
-                """
-                |> String.unindentStr
+                  """
+                | e -> e.TextContent
                 |> LayoutEngine.newLyt FStationLyt
                 |> LayoutEngine.addLayout
         

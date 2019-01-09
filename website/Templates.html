@@ -1,4 +1,54 @@
 <div style="display:none" >
+    <div id="GlobalLayout">menuEditor layout
+                |  logo   |           menu
+                |      350|
+                |------------------------------- 65 ------------------------------------
+                |                                                             |
+                |         path           |        Name           |            |
+                | --------- 20 --------- | ------- 35 ---------- | properties | buttons
+                | FSharpStation.Snippets | FSharpStation.editor  |0 100 100   | 
+                |                0 20 100|                                    |
+                |                                                             |150 
+                | -------------------------- 10 83 100 ----------------------------------
+                |          messagesLeft           |      messagesRight
+            
+            menuEditorX      horizontal  65       menuLogo                  editorMessages
+            double           horizontal  0-50-100 AppFramework.AppFwkClient menuEditor
+            menuLogo         vertical    350      logo                      menu
+            logo             span       "margin:0; color:gray; font-size: 55px; font-weight:530" "F# Station"
+            editorMessages   horizontal 10-83-100 editorButtons             messages
+            messages         vertical   0-50-100  messagesLeft              messagesRight
+            editorButtons    vertical -120 snippetsSnippet buttons
+            buttons div      "overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px" btnSaveAs none x btnAddSnippet btnDeleteSnippet btnIndentIn btnIndentOut none x btnRunFS btnInputFsi btnAbortFsi
+            snippetsSnippet  vertical   0-20-100  snippets                  editorProperties
+            snippets         horizontal 20        "${FSharpStation.CurrentPath}" FSharpStation.Snippets
+            editorProperties vertical   0-100-100 snippet                   properties
+            properties       div        ""        FSharpStation.Properties
+            snippet          horizontal 35        Name                      FSharpStation.editor
+            menu             span  "" btnLoad btnImport
+
+            path             div        "" "${FSharpStation.CurrentPath}"
+
+            btnSaveAs        button FSharpStation.SaveAs         "class=btn ${FSharpStation.SaveNeeded}" "Save as...    "
+            btnAddSnippet    button FSharpStation.AddSnippet     ""                  "Add Snippet   "
+            btnDeleteSnippet button FSharpStation.RemoveSnippet  ""                  "Delete Snippet"
+            btnIndentIn      button FSharpStation.IndentIn       ""                  "Indent In  >> "
+            btnIndentOut     button FSharpStation.IndentOut      ""                  "Indent Out << "
+            btnRunFS         button FSharpStation.RunFS          ""                  "Run F#        "
+            btnInputFsi      button FSharpStation.LastLineToFsi  ""                  "last line |> Fsi"
+            btnAbortFsi      button FSharpStation.AbortFsi       ""                  "Abort Fsi     "
+
+            messagesLeft     wcomp-tabstrip                      ""                  Output FsCode
+            messagesRight    wcomp-tabstrip                      ""                  Parser
+
+            Output           textarea  FSharpStation.Output      "tabname=Output ; placeholder=Output messages ; spellcheck=false" 
+            FsCode           textarea  FSharpStation.FsCode      "tabname=F# Code; placeholder=F# Code         ; spellcheck=false" 
+            Parser           textarea  FSharpStation.Parser      "tabname=Parser ; placeholder=Parser messages; dblclick=${FSharpStation.JumpTo} ; spellcheck=false" 
+            Name             Doc       InputLabel                ""     "Name:"        FSharpStation.SnippetName
+            btnLoad          Doc       InputFile                 ""     "Load File..." FSharpStation.LoadFile  FileName
+            btnImport        Doc       InputFile                 ""     "Import..."    FSharpStation.Import    ""
+            FileName         div                                 "class=form-control"  FSharpStation.fileName
+    </div>
     <div links>
         <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" rel="stylesheet">
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"  type="text/javascript"></script>

@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1546409443740 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1547005003252 -d:WEBSHARPER
 ////#cd @"..\projects\RuleEditor\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -31,7 +31,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1546409443740
+//#define FSharpStation1547005003252
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -1915,6 +1915,8 @@ namespace FsRoot
         | AddCalcDim        of CalId * DimId
         | RemoveForDest     of CalId * ForId * DimId 
         | SetForDest        of CalId * ForId * DimId * string
+        | SaveTextFile      of string
+        | LoadTextFile      of string
         | NoOp
         
         module ModelUI =
@@ -2054,11 +2056,11 @@ namespace FsRoot
             let mainProgram() =
                 AF.addPlugIn {
                     AF.plgName    = "RuleEditor"
-                    AF.plgVars    = [| //AF.newVar  "fileName"        LoadSave.fileName
+                    AF.plgVars    = [| AF.newVar  "fileName"        model.fileName
                                        //AF.newVar  "SnippetName"     (Lens Snippets.currentSnippetV.V.snpName)
                                        //AF.newVar  "Content"         (Lens Snippets.currentSnippetV.V.snpContent)
                                        //AF.newVar  "Output"          outputMsgs
-                                       //AF.newVar  "Parser"          FStation.annotationsV
+                                       AF.newVar  "Server"          model.server
                                     |]  
                     AF.plgViews   = [| //AF.newViw  "FsCode"          Snippets.FsCodeW
                                        //AF.newViw  "SaveNeeded"      Snippets.SaveAsClassW
@@ -2076,11 +2078,11 @@ namespace FsRoot
                                        //AF.newAct  "IndentIn"        Snippets.indentIn       
                                        //AF.newAct  "IndentOut"       Snippets.indentOut
                                        //AF.newAct  "AddProperty"     RenderProperties.addProperty
-                                       //AF.newAct  "SaveAs"          LoadSave.saveAs
                                        //AF.newAct  "RunFS"           runFsCode
                                        //AF.newAct  "AbortFsi"        FsiAgent.abortFsiExe
                                        //AF.newAct  "DisposeFsi"      FsiAgent.disposeFsiExe
-                                       //AF.newActF "LoadFile"        <| AF.FunAct1 ((fun o -> unbox o |> LoadSave.loadTextFile   ), "FileElement")
+                                       AF.newActF "LoadFile"        <| AF.FunAct1 ((fun o -> unbox o |> LoadTextFile |> processor  ), "FileElement")
+                                       AF.newActF  "SaveAs"          <| AF.FunAct1 ((fun o -> unbox o |> SaveTextFile |> processor  ), "FileElement")
                                        //AF.newActF "Import"          <| AF.FunAct1 ((fun o -> unbox o |> Importer.importFile     ), "FileElement")
                                        //AF.newActF "JumpTo"          <| AF.FunAct1 ((fun o -> unbox o |> JumpTo.jumpToRef        ), "textarea"   )
                                        //AF.newActF "ButtonClick"     <| AF.FunAct1 ((fun o -> unbox o |> CustomAction.buttonClick), "button"     )
@@ -2090,7 +2092,9 @@ namespace FsRoot
                     AF.plgQueries = [|                                               
                                     |]
                 }
-                """
+                match JS.Document.GetElementById("GlobalLayout") with
+                | null ->
+                   """
                     menuEditor       horizontal  65       menuLogo                  editorMessages
                     double           horizontal  0-50-100 AppFramework.AppFwkClient menuEditor
                     menuLogo         vertical    350      logo                      menu
@@ -2124,8 +2128,8 @@ namespace FsRoot
                     btnLoad          Doc       InputFile                 ""     "Load File..." FSharpStation.LoadFile  FileName
                     btnImport        Doc       InputFile                 ""     "Import..."    FSharpStation.Import    ""
                     FileName         div                                 "class=form-control"  FSharpStation.fileName
-                """
-                |> String.unindentStr
+                   """
+                | e -> e.TextContent
                 |> LayoutEngine.newLyt RuleEditorLyt
                 |> LayoutEngine.addLayout
         
@@ -2141,6 +2145,126 @@ namespace FsRoot
                   return AF.getMainDoc.Value
                 } |> Doc.Async            
                 
+        module UpdateModelUI =
+                                            
+            let rec updateModelR model msg = 
+                let doForCalc cid f       = model.calculations.TryFindByKey cid |> Option.iter f
+                let doForForm cid fid f   = doForCalc cid <| fun c -> c.calFormulas |> Seq.tryFind(fun f -> f.forId = fid) |> Option.iter (f c)
+                let doForCube cid f       = model.cubes       .TryFindByKey cid |> Option.iter f
+                let setSelection sel      = if model.selection.Value = sel then false else
+                                            model.selection.Value   <- sel
+                                            true
+                let tryFindCalcForm fid   = model.calculations.Value |> Seq.tryFind(fun calc -> calc.calFormulas |> Seq.exists (fun f -> f.forId = fid))
+                match msg with
+            //    | AddCalculation         -> let n = Calculation.New()
+            //                                model.calculations.Add n
+            //                                let nn = TreeNode.newNodeCalc n.calId
+            //                                model.treeHierarchy.Value
+            //                                |> Array.append [| nn |]
+            //                                |> model.treeHierarchy.Set
+            //                                SelectNode  nn.nid |> updateModelR model
+            //    | AddTotal               -> let n = Total.New()
+            //                                model.totals.Add n
+            //                                let nn = TreeNode.newNodeTot  n.totId
+            //                                model.treeHierarchy.Value
+            //                                |> Array.append [| nn |]
+            //                                |> model.treeHierarchy.Set
+            //                                SelectNode  nn.nid |> updateModelR model
+            //    | AddFormula         cid -> if  cid = ModelUI.nonCalculation.calId then false else
+            //                                let n = Formula.New()
+            //                                model.calculations.TryFindByKey cid
+            //                                |> Option.iter(fun calc -> { calc with calFormulas = Array.append calc.calFormulas [| n |] } |> model.calculations.Add)
+            //                                model.treeHierarchy.Value 
+            //                                |> TreeNode.tryFindSelNode model.selection.Value
+            //                                |> Option.map (fun nn -> SelectFormNode (n.forId, nn.nid ) |> updateModelR model)
+            //                                |> Option.defaultValue true
+                | AddDimension           -> let n = Dimension.New ""
+                                            model.dimensions.Add n
+                                            SelectDimension n.dimId |> updateModelR model
+            //    | AddFormDim(fid, did, s)-> model.destinations.Add   { idForm = fid ; idDim = did ; destination = s }
+            //                                true
+            ////    | AddChild(tid, ch, we)  -> model.totals.TryFindByKey tid |> Option.map( fun tot ->
+            ////                                    model.childrenRels.Value <- model.childrenRels.Value |> Map.add (tid, ch) we
+            ////                                    true
+            ////                                ) |> Option.defaultValue false
+            ////    | RemoveChild (tid, ch)  -> model.childrenRels.Value <- model.childrenRels.Value |> Map.remove (tid, ch)
+            ////                                true
+            //    | RemoveTotal        tid -> model.totals.RemoveByKey    tid
+            //                                setSelection None |> ignore
+            //                                model.treeHierarchy.Value 
+            //                                |> TreeNode.removeNodes (TreeNode.forTId ((=) tid)) 
+            //                                |> ModelUI.setHierarchy model
+            //                                true
+            //    | RemoveCalculation  cid -> setSelection None |> ignore
+            //                                model.calculations.RemoveByKey cid
+            //                                model.totals.Value
+            //                                |> Seq.choose (fun t -> 
+            //                                    let eq, ne = t.children |> Array.partition (fun (_, nid) -> nid = Calc cid )
+            //                                    if eq.Length = 0 then None else
+            //                                    Some { t with children = ne }
+            //                                )
+            //                                |> Seq.iter model.totals.Add
+            //                                model.treeHierarchy.Value 
+            //                                |> TreeNode.removeNodes (TreeNode.forCId ((=) cid)) 
+            //                                |> ModelUI.setHierarchy model
+            //                                true
+            //    | RemoveFormula      fid -> tryFindCalcForm fid
+            //                                |> Option.iter(fun calc -> { calc with calFormulas = calc.calFormulas |> Array.filter (fun f -> f.forId <> fid) } 
+            //                                                           |> model.calculations.Add )
+            //                                true
+            //    | RemoveDimension    did -> model.dimensions.RemoveByKey did
+            //                                true
+            ////    | RemoveFormDim(fid, did)-> model.destinations.RemoveByKey(fid, did)
+            ////                                true
+            //    | SelectNode         nid -> (nid, None    ) |> Some |> setSelection
+            //    | ExpandNode    (ex, nid)-> let rec mapper finished (node:TreeNode) =
+            //                                    if finished             then node                       , true
+            //                                    elif node.nid = nid     then { node with expanded = ex }, true
+            //                                    else let ch, dn = node.children |> Seq.mapFold mapper false
+            //                                         { node with children = Seq.toArray ch }            , dn
+            //                                model.treeHierarchy.Value 
+            //                                |> Seq.mapFold mapper false 
+            //                                |> fst
+            //                                |> Seq.toArray
+            //                                |> model.treeHierarchy.Set
+            //                                true
+            //    | IndentNode   (iin, nid)-> let indent = if iin then Tree.indentNode else Tree.outdentNode
+            //                                model.treeHierarchy.Value
+            //                                |> TreeNode.tryFindNode nid
+            //                                |> Option.iter(
+            //                                   Tree.toNode 
+            //                                   >> swap indent (Tree.toSeqNode model.treeHierarchy.Value) 
+            //                                   >> TreeNode.fromSeqNode 
+            //                                   >> ModelUI.setHierarchy model)
+            //                                true
+            //    | MoveNode(aft,fnid,tnid)-> Tree.moveToSibling2 aft fnid tnid (Tree.toSeqNode model.treeHierarchy.Value) 
+            //                                |> TreeNode.fromSeqNode 
+            //                                |> ModelUI.setHierarchy model
+            //                                true
+            //    | SelectFormNode(fid,nid)-> (nid, Some fid) |> Some |> setSelection
+            //    | SelectTotal        tid -> model.treeHierarchy.Value |> TreeNode.tryFindNodeTId tid  |> Option.map (fun n -> n.nid, None    ) |> setSelection
+            //    | SelectCalculation  cid -> model.treeHierarchy.Value |> TreeNode.tryFindNodeCId cid  |> Option.map (fun n -> n.nid, None    ) |> setSelection
+            //    | SelectFormula      fid -> tryFindCalcForm fid       |> Option.map(fun c -> c.calId) |> Option.bind(fun cid -> 
+            //                                model.treeHierarchy.Value |> TreeNode.tryFindNodeCId cid) |> Option.map (fun n -> n.nid, Some fid) |> setSelection
+            //    | SelectDimension    did -> (if did = DimId System.Guid.Empty then None  else Some did)
+            //                                |> (fun s -> if s = model.selectedDim.Value then false else
+            //                                             model.selectedDim.Value    <- s
+            //                                             true)
+            //    | AddCalcDim   (cid, did)-> doForCalc cid <| fun c -> model.calculations.Add { c with calDims = c.calDims |> Set.add    did }
+            //                                false
+            //    | RemoveCalcDim(cid, did)-> doForCalc cid <| fun c -> model.calculations.Add { c with calDims = c.calDims |> Set.remove did }
+            //                                false
+            //    | AddCube      (n, ds)   -> model.cubes.Add <| Cube.newCubeCalc n (ds |> Seq.toArray) None
+            //                                false
+            //    | RemoveCube    cid      -> model.cubes.RemoveByKey cid
+            //                                false
+            //    | RenameCube   (cid, n)  -> doForCube cid <| fun c -> model.cubes.Add { c with cubName = n }
+            //                                false
+            //    | _ -> false
+        
+            
+            let updateModel model msg = if updateModelR model msg then ModelUI.refreshNow()
+            processor <- updateModel model
         //#r @"..\packages\Owin\lib\net40\Owin.dll"
         //#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
         //#r @"..\packages\Microsoft.Owin.Hosting\lib\net451\Microsoft.Owin.Hosting.dll"

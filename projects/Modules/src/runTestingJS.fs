@@ -2,7 +2,7 @@
 #nowarn "1182"
 #nowarn "52"
 #nowarn "1178"
-////-d:FSharpStation1544042654117
+////-d:FSharpStation1546539619997
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#I @"..\packages\WebSharper.FSharp\tools\net461\"
@@ -36,13 +36,16 @@
 //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
 //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
 //#r @"..\packages\Owin\lib\net40\Owin.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
 //#r @"System.Web"
 //#nowarn "3180"
 //#nowarn "1182"
 //#nowarn "52"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1544042654117
+//#define FSharpStation1546539619997
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -235,9 +238,9 @@ namespace FsRoot
                     | RMessages mas,           mb  ->  Array.append    mas   [| mb |] |> RMessages
                     |           ma ,           mb  ->               [| ma   ;   mb |] |> RMessages
             
-                let reduceMsgs ms = ms |> Seq.fold addMsg NoMsg
+                let reduceMsgs ms = (NoMsg, ms) ||> Seq.fold addMsg
             
-                let summaryF f msg =        
+                let summaryF f msg =
                     match countF f msg with
                     | 0, 0, _
                     | 1, 0, 0
@@ -247,7 +250,7 @@ namespace FsRoot
                     | e, w, _ -> sprintf "Errors   : %d, Warnings: %d\n" e w
             
                 /// returns a string with a count of errors and warnings, if more than one
-                let summarizedF f msg = summaryF f msg + msg.ToString()
+                let summarizedF f msg = [ msg.ToString() ; summaryF f msg ] |> Seq.filter ((<>) "") |> String.concat "\n"
                 /// a Message is considered an error
                 let summarized  msg = msg |> summarizedF (fun _ -> 1, 0, 0)
                 /// a Message is considered a Warning
@@ -544,9 +547,9 @@ namespace FsRoot
                     let inline ofOption        f  o  = o  |> Option.map OkF |> Option.defaultWith (f >> ErrorF)
                     let inline ofMessage          m  =                        OkFMsg ()                      (Message                  m)
                     let inline ofResultMessage    m  =                        OkFMsg ()                                                m
-                    let inline ofFusionM     (FM fm) = FAM(fun (s,r) -> async.Return (fm (s, r)) )
-                    let inline ofAsync            a  = FAM(fun (s ,r ) -> a |> Async.map (fun v -> Some v, s, NoMsg) )
+                    let inline ofAsync            a  = FAM(fun (s, r) -> a |> Async.map (fun v -> Some v, s, NoMsg) )
                     let inline ofAsyncResultRM    a  = a |> ofAsync |> bind ofResultRM
+                    let inline ofFusionM     (FM fm) = FAM(fun (s, r) -> async.Return (fm (s, r)) )
                 
                     let        freeMessageF     f  m = FAM(fun (s1,m1) -> async {
                                                           try
@@ -776,8 +779,8 @@ namespace FsRoot
                        splitByChar '\n' 
                     >> fun s -> s.[0 .. (max 0 (s.Length - 2)) ]
                     >> String.concat "\n"
-                let (|StartsWith|_|) start (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
-                let (|EndsWith  |_|) ends  (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
+                let (|StartsWith|_|) (start:string) (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
+                let (|EndsWith  |_|) (ends :string) (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
                 
             
             [< Inline "$a + '/' + $b" >]
@@ -1880,6 +1883,7 @@ namespace FsRoot
                     member __.IsAlive              = not shell.HasExited
                     member __.Abort()              = shell.Abort()
                     member __.Process              = shell.Process
+                    member __.Shell                = shell
                     member oo.EvalSilent code      = asyncResult {
                                                         try     silent := true
                                                                 return! oo.Eval code
@@ -2305,16 +2309,17 @@ namespace FsRoot
                     outHndl <-                  queue
                     errHndl <- ((+) "Err: ") >> queue
             
-                let ctor, aborter, disposer, getIdO =
+                let ctor, aborter, disposer, getIdO, sendInput =
                     let mutable fsiO = None
                     let ctor (Config (workDir, config)) =
                         let fsi = new FsiExe(config |> String.concat " ", workDir, outHndl, errHndl)
                         fsiO <- Some fsi
                         fsi
                     ctor
-                  , (fun () -> fsiO |> Option.iter (fun fsi ->  fsi                       .Abort  ()  ) )
-                  , (fun () -> fsiO |> Option.iter (fun fsi -> (fsi :> System.IDisposable).Dispose()  ) )
-                  , (fun () -> fsiO |> Option.map  (fun fsi ->  fsi                       .Process.Id ) )
+                  , (fun ()  -> fsiO |> Option.iter (fun fsi ->  fsi                       .Abort      () ) )
+                  , (fun ()  -> fsiO |> Option.iter (fun fsi -> (fsi :> System.IDisposable).Dispose    () ) )
+                  , (fun ()  -> fsiO |> Option.map  (fun fsi ->  fsi                       .Process.Id    ) )
+                  , (fun txt -> fsiO |> Option.iter (fun fsi ->  fsi                       .Shell.Send txt) )
             
                 let fsiExeL = lazy new ResourceAgent<_, _>( 70
                                                          , ctor
@@ -2368,6 +2373,8 @@ namespace FsRoot
                 /// like abortFsiExe but prevents respawning until next command
                 let disposeFsiExe() = disposer()
             
+                [<Rpc>]
+                let sendFsiInput txt = async { sendInput txt }
             
             [<WebSharper.JavaScript>]
             module WebSockets =
@@ -2806,6 +2813,7 @@ namespace FsRoot
             | MsgGetPredecessors of SnippetReference
             | MsgAction          of string[]
             | MsgGetUrl
+            | MsgGetValue        of string
             
             [< JavaScript >]
             type FSResponse =
@@ -2815,7 +2823,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1544042654117"
+                let mutable fsharpStationAddress = Address "FSharpStation1546539619997"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -2865,7 +2873,8 @@ namespace FsRoot
                     |> sendMessage
                     |> AsyncResult.bind respSnippet
             
-                let getUrl () = sendMessage MsgGetUrl |> AsyncResult.bind respString
+                let getUrl  () = MsgGetUrl     |> sendMessage |> AsyncResult.bind respString
+                let getValue v = MsgGetValue v |> sendMessage |> AsyncResult.bind respString
             
                 let execJS      js          = sendMessage (MsgAction [| "ExecJS"      ; js              |]) |> AsyncResult.bind respString
                 let setProperty path prop v = sendMessage (MsgAction [| "SetProperty" ; path ; prop ; v |]) |> AsyncResult.bind respString
@@ -2876,6 +2885,9 @@ namespace FsRoot
                                         
                 let getBrokerProcessId() = fsharpStationClient.MBProcessId
     
+        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
         //#r "System.Web"
         //#nowarn "3180"
         //#nowarn "1182"
@@ -2894,8 +2906,9 @@ namespace FsRoot
         
             let run () = fusion {
                 let! url      = FSharpStationClient.getUrl()        |> ofAsyncResultRM
+                let  urlBase  = (url.Split '#').[0]
                 let  modif    = testFile() |>! print |> File.GetLastWriteTime
-                do   startProcess (sprintf "%stesting/testing.html?q=%A" url.[..url.Length-2] modif)     "" |> ignore
+                do   startProcess (sprintf "%stesting/testing.html?q=%A" urlBase modif)     "" |> ignore
             } 
         
             let uncanopyName (name:string) =

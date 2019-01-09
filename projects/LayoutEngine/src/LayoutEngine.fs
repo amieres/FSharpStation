@@ -1,4 +1,4 @@
-////-d:FSharpStation1546448143305 -d:WEBSHARPER
+////-d:FSharpStation1547005003252 -d:WEBSHARPER
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
@@ -17,7 +17,7 @@
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 /// Root namespace for all code
-//#define FSharpStation1546448143305
+//#define FSharpStation1547005003252
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -243,12 +243,10 @@ namespace FsRoot
         module LibraryJS =
             let (|REGEX|_|) (expr: string) (opt: string) (value: string) =
                 if value = null then None else
-                try 
-                    match JavaScript.String(value).Match(RegExp(expr, opt)) with
-                    | null         -> None
-                    | [| |]        -> None
-                    | m            -> Some m
-                with e -> None
+                match JavaScript.String(value).Match(RegExp(expr, opt)) with
+                | null         -> None
+                | [| |]        -> None
+                | m            -> Some m
             
             let rexGuid = """([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})"""
             
@@ -892,10 +890,11 @@ namespace FsRoot
                     | REGEX "^[$a-zA-Z_][0-9a-zA-Z_\.\-$]*$" "" [| id |], false -> Some id
                     | _                                                         -> None
             
-                let (|Vertical|Horizontal|Grid|Elem|Nothing|) =
+                let (|Vertical|Horizontal|Layout|Grid|Elem|Nothing|) =
                     function
                     | s , false when s = "vertical"   -> Vertical
                     | s , false when s = "horizontal" -> Horizontal
+                    | s , false when s = "layout"     -> Layout
                     | s , false when s = "grid"       -> Grid
                     | Identifier id                   -> Elem id
                     |                               _ -> Nothing
@@ -913,6 +912,11 @@ namespace FsRoot
                 type Measures = 
                 | Fixed    of pixel: float * first: bool
                 | Variable of min:   float * value: float * max: float
+                    with override this.ToString() = 
+                            match this with
+                            | Fixed(        v, f  ) -> string (int (if f then v else -v) )
+                            | Variable(min, v, max) -> sprintf "%d-%d-%d" (int min) (int v) (int max)
+            
             
                 let (|Measures|_|) txt =
                     if snd txt then None else
@@ -1160,11 +1164,178 @@ namespace FsRoot
                         printfn "%A" e
                         None
             
+                module Layout =
+                    open ParseO
+            
+                    type Node = 
+                        | Node        of string []
+                        | SubSplitter of Splitter
+            
+                    and Splitter =
+                        Splitter of bool * Measures * Node * Node
+            
+                    let extractMeasuresO (m:string) =
+                        match m.Split([| ' ' |], System.StringSplitOptions.RemoveEmptyEntries) with
+                        | [|           Int v          |] -> Some (Fixed   (           float (abs(v)), v >= 0   ) ) 
+                        | [| Int min ; Int v; Int max |] -> Some (Variable(float min, float      v  , float max) )
+                        | _                              -> None
+            
+                    let horizontalSplit (lines:string[]) =
+                        lines
+                        |> Seq.indexed
+                        |> Seq.choose (fun (i, l) ->
+                            match l with
+                            | REGEX "^ *--+([ ^v0-9]*)-* *$" "" p -> 
+                                let ms    = p 
+                                            |> Seq.tryItem 1 
+                                            |> Option.bind ((fun s -> s.Replace("^", "").Replace("v", "-") ) >> extractMeasuresO) 
+                                            |> Option.defaultValue (Variable(5., 50., 95.))
+                                Some((i, ms), l.IndexOf '-')
+                            | _ -> None
+                        )
+                        |> Seq.sortBy snd
+                        |> Seq.tryHead
+                        |> Option.map fst
+                        |> Option.map (fun (i, ms) ->
+                            lines.[.. i - 1]
+                          , lines.[i + 1.. ]
+                          , ms
+                        )
+            
+                    let transpose (lines:string[]) =
+                        let max   = lines |> Seq.map (fun l -> l.Length) |> Seq.max
+                        [|
+                            for i in 0..max-1 do
+                                yield 
+                                    new System.String( [| for l in lines do yield if l.Length > i then l.[i] else ' ' |])
+                                    
+                        |]
+            
+                    let verticalSplit (lyt:string[]) =
+                        let lines = transpose lyt
+                        lines
+                        |> Seq.indexed
+                        |> Seq.choose (fun (i, l) -> 
+                            match l with
+                            | REGEX @"^ *\|+ *$" "" [| _ |] -> Some(i, l.IndexOf '|')
+                            | _ -> None
+                        )
+                        |> Seq.sortBy snd
+                        |> Seq.tryHead
+                        |> Option.map fst
+                        |> Option.map (fun i -> lines.[.. i - 1] |> transpose
+                                              , lines.[i + 1 ..] |> transpose )
+                        |> Option.map (fun (l,r) ->
+                            l |> Array.filter(extractMeasuresO >> (=) None),
+                            r |> Array.filter(extractMeasuresO >> (=) None),
+                            seq {
+                                yield! l |> Seq.choose(extractMeasuresO)
+                                yield! r |> Seq.choose(extractMeasuresO) |> Seq.map (function Fixed(v, true) -> Fixed(v, false) | m -> m)
+                            } 
+                            |> Seq.tryHead
+                            |> Option.defaultValue (Variable(5., 50., 95.))
+                        )
+            
+                    let cleanSpaces (lyt:string[]) = 
+                        lyt 
+                        |> String.concat " "
+                        |> fun s -> s.Split([| " " |], System.StringSplitOptions.RemoveEmptyEntries)
+                        |> Array.filter(function Int _ -> false |_-> true)
+            
+                    let rec extractNodes lyt =
+                        let checkSplitter dir m one two =
+                            match extractNodes one, extractNodes two with
+                            | Node [||], other
+                            | other    , Node [||] -> other
+                            | nOne     , nTwo      -> Splitter(dir, m, nOne, nTwo) |> SubSplitter
+                        match horizontalSplit lyt with
+                        | None -> 
+                            match verticalSplit lyt with
+                            | None              -> Node (cleanSpaces lyt)
+                            | Some(one, two, m) -> checkSplitter true  m one two
+                        |     Some(one, two, m) -> checkSplitter false m one two
+            
+                    let rec createLayoutDefinitions nameBase node =
+                        match node with
+                        | Node [|      |] -> "___"    , [||]
+                        | Node [| elem |] ->  elem    , [||]
+                        | Node    svrl    ->  nameBase, [| nameBase + " div \"\" " + String.concat " " svrl |]
+                        | SubSplitter(Splitter(dir, meas, one, two)) ->
+                            let name1, def1 = createLayoutDefinitions (nameBase + "_1") one
+                            let name2, def2 = createLayoutDefinitions (nameBase + "_2") two
+                            nameBase, [| yield [ nameBase  ; (if dir then "vertical" else "horizontal") ; meas.ToString() ; name1 ; name2 ] |> String.concat " " 
+                                         yield! def1
+                                         yield! def2 |]
+            
+                let getExtraLines pred (ls: string[]) =
+                    ls 
+                    |> Seq.skip 1 
+                    |> Seq.tryFindIndex (fun l -> l.Trim() <> "" && not(pred l) )
+                    |> Option.map ((+) 1)
+                    |> Option.defaultValue ls.Length
+                    |> fun i -> 
+                        ls.[1..i-1], ls.[i..] 
+            
+                let rec createLines baseName n (names: string[]) (lines: string[]) i (ls:string[]) =
+                    let prefix  = String.replicate n ":"
+                    let prefix2 = ":" + prefix
+                    match Seq.tryHead ls with
+                    | None   -> names, lines
+                    | Some l ->
+                    match l.Trim() with
+                    | String.StartsWith prefix l ->
+                        let children, rest = ls |> getExtraLines(fun (l:string) -> l.Trim().StartsWith prefix2)
+                        let name = sprintf "%s_%d" baseName i
+                        let childNames, childrenLines = createLines name (n+1) [||] [||] 1 children
+                        let names2 = [| yield! names ; yield name |]
+                        let lines2 = [| yield! lines
+                                        yield  name + " " + l + " " + String.concat " " childNames
+                                        yield! childrenLines
+                                     |]
+                        createLines baseName n names2 lines2 (i+1) rest
+                    | _   -> names, lines
+            
+                let processLines f ls =
+                    let rec processLinesR (ls: string[]) =
+                        match Seq.tryHead ls with
+                        | None   -> [||]
+                        | Some l ->
+                        match splitTokens l with
+                        | [ Identifier name ;  Layout ] ->
+                            let lyt, rest = ls |> getExtraLines(fun (l:string) -> l.Trim().StartsWith "|")
+                            lyt
+                            |> Layout.extractNodes
+                            |> Layout.createLayoutDefinitions name
+                            |> snd
+                            |> Array.append <| rest
+                            |> processLinesR
+                        |[] -> processLinesR ls.[1..]
+                        | _ ->
+                            let docs, rest = ls |> getExtraLines(fun (l:string) -> l.Trim().StartsWith ":")
+                            if docs.Length > 0 then
+                                printfn "l = ;%s;" l
+                                let prefix = l.Split([|' '|], System.StringSplitOptions.RemoveEmptyEntries) |> Seq.item 0
+                                let names, ls = createLines prefix 1 [||] [||] 1 docs
+                                [|  yield l + " " + String.concat " " names
+                                    yield! ls
+                                    yield! rest
+                                |]
+                                |> processLinesR
+                            else
+                                [| 
+                                    match f l with
+                                    | Some r -> yield r
+                                    | _ -> ()
+                                    yield! processLinesR rest
+                                |]
+                    processLinesR ls 
+            
                 let createEntries lytNm txt =
                     txt
                     |> String.splitByChar '\n'
-                    |> Seq.choose (createEntryO lytNm)
-                    |> Seq.toArray
+                    |> processLines (createEntryO lytNm)
+                    //|> Seq.choose (createEntryO lytNm)
+                    //|> Seq.toArray
             
                 let getText lytNm txtName =
                     match txtName with

@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,FusionM,Operators$1,Builder$1,Builder$2,FusionAsyncM,Operators$2,Builder$3,Builder$4,ParseO,MailboxProcessorExt,Mailbox,StateFull,LibraryJS,View,Var,ListModel,Library2,WebSockets,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,CalculationModel,CalculationModel$1,DimType,CubeType,AttType,ElmType,ModId,AttId,ElmId,CubId,DimId,CalId,TotId,ForId,RulId,Attribute,Element,Dimension,UnaryOp,Operator,ExpressionText,ExpressionNumber,ExpressionAny,Slice,ForType,Formula,Calculation,Total,RuleKey,Cube,Rule,RuleMsg,Model,HelperTypeN,HelperTypeT,HelperTypeA,Model0,ElementModule,ElmReferenceModule,SliceModule,DimensionModule,CubeModule,CalculationModule,TotalModule,ModelModule,FormulaModule,RuleModule,AttributeModule,RuleEditor,Templating,TreeNodeId,Version,VersionModule,ModelUI,MsgModel,ModelUIModule,Global$1,TableDimensions,MainProgram,SC$1,RuleEditor_Templates,RuleEditor_GeneratedPrintf,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,Control,MailboxProcessor,console,UI,View$1,Var$1,FromView,Doc,System,Guid,Collections,FSharpMap,FSharpSet,Set,Slice$1,Map,Date,Var$2,Templating$1,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,AppFramework,PlugIn,Lazy,LayoutEngineModule,String,DateUtil,Numeric,ListModel$1,Client,Templates;
+ var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,FusionM,Operators$1,Builder$1,Builder$2,FusionAsyncM,Operators$2,Builder$3,Builder$4,ParseO,MailboxProcessorExt,Mailbox,StateFull,LibraryJS,View,Var,ListModel,Library2,WebSockets,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,CalculationModel,CalculationModel$1,DimType,CubeType,AttType,ElmType,ModId,AttId,ElmId,CubId,DimId,CalId,TotId,ForId,RulId,Attribute,Element,Dimension,UnaryOp,Operator,ExpressionText,ExpressionNumber,ExpressionAny,Slice,ForType,Formula,Calculation,Total,RuleKey,Cube,Rule,RuleMsg,Model,HelperTypeN,HelperTypeT,HelperTypeA,Model0,ElementModule,ElmReferenceModule,SliceModule,DimensionModule,CubeModule,CalculationModule,TotalModule,ModelModule,FormulaModule,RuleModule,AttributeModule,RuleEditor,Templating,TreeNodeId,Version,VersionModule,ModelUI,MsgModel,ModelUIModule,Global$1,TableDimensions,MainProgram,UpdateModelUI,SC$1,RuleEditor_Templates,RuleEditor_GeneratedPrintf,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,Control,MailboxProcessor,console,UI,View$1,Var$1,FromView,Doc,System,Guid,Collections,FSharpMap,FSharpSet,Set,Slice$1,Map,Date,Var$2,Templating$1,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,AppFramework,PlugIn,Lazy,LayoutEngineModule,MatchFailureException,DateUtil,Numeric,ListModel$1,Client,Templates;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -99,6 +99,7 @@
  Global$1=RuleEditor.Global=RuleEditor.Global||{};
  TableDimensions=RuleEditor.TableDimensions=RuleEditor.TableDimensions||{};
  MainProgram=RuleEditor.MainProgram=RuleEditor.MainProgram||{};
+ UpdateModelUI=RuleEditor.UpdateModelUI=RuleEditor.UpdateModelUI||{};
  SC$1=Global.StartupCode$RuleEditor$RuleEditor=Global.StartupCode$RuleEditor$RuleEditor||{};
  RuleEditor_Templates=Global.RuleEditor_Templates=Global.RuleEditor_Templates||{};
  RuleEditor_GeneratedPrintf=Global.RuleEditor_GeneratedPrintf=Global.RuleEditor_GeneratedPrintf||{};
@@ -142,7 +143,7 @@
  PlugIn=AppFramework&&AppFramework.PlugIn;
  Lazy=WebSharper&&WebSharper.Lazy;
  LayoutEngineModule=LibraryJS&&LibraryJS.LayoutEngineModule;
- String=Library&&Library.String;
+ MatchFailureException=WebSharper&&WebSharper.MatchFailureException;
  DateUtil=WebSharper&&WebSharper.DateUtil;
  Numeric=WebSharper&&WebSharper.Numeric;
  ListModel$1=UI&&UI.ListModel;
@@ -4316,7 +4317,7 @@
   };
  };
  MsgModel.NoOp={
-  $:22
+  $:24
  };
  MsgModel.AddDimension={
   $:13
@@ -4403,7 +4404,7 @@
   SC$1.$cctor();
   return SC$1.model;
  };
- TableDimensions.tableDimensions$2006$48=function(did)
+ TableDimensions.tableDimensions$2008$48=function(did)
  {
   return function()
   {
@@ -4413,7 +4414,7 @@
    });
   };
  };
- TableDimensions.tableDimensions$2005$48=function(did)
+ TableDimensions.tableDimensions$2007$48=function(did)
  {
   return function()
   {
@@ -4540,12 +4541,32 @@
  };
  MainProgram.mainProgram=function()
  {
-  var l,a,o,v,b;
-  AppFramework.addPlugIn(PlugIn.New("RuleEditor",[],[],[AppFramework.newDoc("Dimensions",Lazy.Create(TableDimensions.tableDimensions))],[AppFramework.newAct("AddDimension",function()
+  var l,m,a,o,v,b;
+  AppFramework.addPlugIn(PlugIn.New("RuleEditor",[AppFramework.newVar("fileName",Global$1.model().fileName),AppFramework.newVar("Server",Global$1.model().server)],[],[AppFramework.newDoc("Dimensions",Lazy.Create(TableDimensions.tableDimensions))],[AppFramework.newActF("LoadFile",{
+   $:1,
+   $0:function(o$1)
+   {
+    (Global$1.processor())({
+     $:23,
+     $0:o$1
+    });
+   },
+   $1:"FileElement"
+  }),AppFramework.newActF("SaveAs",{
+   $:1,
+   $0:function(o$1)
+   {
+    (Global$1.processor())({
+     $:22,
+     $0:o$1
+    });
+   },
+   $1:"FileElement"
+  }),AppFramework.newAct("AddDimension",function()
   {
    (Global$1.processor())(MsgModel.AddDimension);
   })],[]));
-  LayoutEngineModule.addLayout((l=(String.unindentStr())("\r\n                    menuEditor       horizontal  65       menuLogo                  editorMessages\r\n                    double           horizontal  0-50-100 AppFramework.AppFwkClient menuEditor\r\n                    menuLogo         vertical    350      logo                      menu\r\n                    logo             span       \"margin:0; color:gray; font-size: 55px; font-weight:530\" \"F# Station\"\r\n                    editorMessages   horizontal 10-83-100 editorButtons             messages\r\n                    messages         vertical   0-50-100  messagesLeft              messagesRight\r\n                    editorButtons    vertical -200 snippetsSnippet buttons\r\n                    buttons div      \"overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px\" btnSaveAs none x btnAddSnippet btnDeleteSnippet btnIndentIn btnIndentOut none x btnRunFS none x btnAbortFsi\r\n                    snippetsSnippet  vertical   0-20-100  snippets                  editorProperties\r\n                    snippets         horizontal 20        \"${FSharpStation.CurrentPath}\" FSharpStation.Snippets\r\n                    editorProperties vertical   0-100-100 snippet                   properties\r\n                    properties       div        \"\"        FSharpStation.Properties\r\n                    snippet          horizontal 35        Name                      FSharpStation.editor\r\n                    menu             span  \"\" btnLoad btnImport\r\n        \r\n                    btnSaveAs        button FSharpStation.SaveAs         \"class=btn ${FSharpStation.SaveNeeded}\" \"Save as...    \"\r\n                    btnAddDimension  button RuleEditor.AddDimension      \"\"                  \"Add Dimension \"\r\n                    btnDeleteSnippet button FSharpStation.RemoveSnippet  \"\"                  \"Delete Snippet\"\r\n                    btnIndentIn      button FSharpStation.IndentIn       \"\"                  \"Indent In  >> \"\r\n                    btnIndentOut     button FSharpStation.IndentOut      \"\"                  \"Indent Out << \"\r\n                    btnRunFS         button FSharpStation.RunFS          \"\"                  \"Run F#        \"\r\n                    btnAbortFsi      button FSharpStation.AbortFsi       \"\"                  \"Abort Fsi     \"\r\n        \r\n                    messagesLeft     wcomp-tabstrip                      \"\"                  Output FsCode\r\n                    messagesRight    wcomp-tabstrip                      \"\"                  Parser\r\n        \r\n                    Output           textarea  FSharpStation.Output      \"tabname=Output ; placeholder=Output messages ; spellcheck=false\" \r\n                    FsCode           textarea  FSharpStation.FsCode      \"tabname=F# Code; placeholder=F# Code         ; spellcheck=false\" \r\n                    Parser           textarea  FSharpStation.Parser      \"tabname=Parser ; placeholder=Parser messages; dblclick=${FSharpStation.JumpTo} ; spellcheck=false\" \r\n                    Name             Doc       InputLabel                \"\"     \"Name:\"        FSharpStation.SnippetName\r\n                    btnLoad          Doc       InputFile                 \"\"     \"Load File...\" FSharpStation.LoadFile  FileName\r\n                    btnImport        Doc       InputFile                 \"\"     \"Import...\"    FSharpStation.Import    \"\"\r\n                    FileName         div                                 \"class=form-control\"  FSharpStation.fileName\r\n                "),LayoutEngineModule.newLyt(MainProgram.RuleEditorLyt(),l)));
+  LayoutEngineModule.addLayout((l=(m=self.document.getElementById("GlobalLayout"),Unchecked.Equals(m,null)?"\r\n                    menuEditor       horizontal  65       menuLogo                  editorMessages\r\n                    double           horizontal  0-50-100 AppFramework.AppFwkClient menuEditor\r\n                    menuLogo         vertical    350      logo                      menu\r\n                    logo             span       \"margin:0; color:gray; font-size: 55px; font-weight:530\" \"F# Station\"\r\n                    editorMessages   horizontal 10-83-100 editorButtons             messages\r\n                    messages         vertical   0-50-100  messagesLeft              messagesRight\r\n                    editorButtons    vertical -200 snippetsSnippet buttons\r\n                    buttons div      \"overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px\" btnSaveAs none x btnAddSnippet btnDeleteSnippet btnIndentIn btnIndentOut none x btnRunFS none x btnAbortFsi\r\n                    snippetsSnippet  vertical   0-20-100  snippets                  editorProperties\r\n                    snippets         horizontal 20        \"${FSharpStation.CurrentPath}\" FSharpStation.Snippets\r\n                    editorProperties vertical   0-100-100 snippet                   properties\r\n                    properties       div        \"\"        FSharpStation.Properties\r\n                    snippet          horizontal 35        Name                      FSharpStation.editor\r\n                    menu             span  \"\" btnLoad btnImport\r\n        \r\n                    btnSaveAs        button FSharpStation.SaveAs         \"class=btn ${FSharpStation.SaveNeeded}\" \"Save as...    \"\r\n                    btnAddDimension  button RuleEditor.AddDimension      \"\"                  \"Add Dimension \"\r\n                    btnDeleteSnippet button FSharpStation.RemoveSnippet  \"\"                  \"Delete Snippet\"\r\n                    btnIndentIn      button FSharpStation.IndentIn       \"\"                  \"Indent In  >> \"\r\n                    btnIndentOut     button FSharpStation.IndentOut      \"\"                  \"Indent Out << \"\r\n                    btnRunFS         button FSharpStation.RunFS          \"\"                  \"Run F#        \"\r\n                    btnAbortFsi      button FSharpStation.AbortFsi       \"\"                  \"Abort Fsi     \"\r\n        \r\n                    messagesLeft     wcomp-tabstrip                      \"\"                  Output FsCode\r\n                    messagesRight    wcomp-tabstrip                      \"\"                  Parser\r\n        \r\n                    Output           textarea  FSharpStation.Output      \"tabname=Output ; placeholder=Output messages ; spellcheck=false\" \r\n                    FsCode           textarea  FSharpStation.FsCode      \"tabname=F# Code; placeholder=F# Code         ; spellcheck=false\" \r\n                    Parser           textarea  FSharpStation.Parser      \"tabname=Parser ; placeholder=Parser messages; dblclick=${FSharpStation.JumpTo} ; spellcheck=false\" \r\n                    Name             Doc       InputLabel                \"\"     \"Name:\"        FSharpStation.SnippetName\r\n                    btnLoad          Doc       InputFile                 \"\"     \"Load File...\" FSharpStation.LoadFile  FileName\r\n                    btnImport        Doc       InputFile                 \"\"     \"Import...\"    FSharpStation.Import    \"\"\r\n                    FileName         div                                 \"class=form-control\"  FSharpStation.fileName\r\n                   ":m.textContent),LayoutEngineModule.newLyt(MainProgram.RuleEditorLyt(),l)));
   a=(o=null,(v=MainProgram.RuleEditorLyt(),o==null?v:o.$0));
   AppFramework.mainDocV().Set(a);
   return Doc.Async((b=null,Concurrency.Delay(function()
@@ -4569,6 +4590,26 @@
  {
   SC$1.$cctor();
   return SC$1.RuleEditorLyt;
+ };
+ UpdateModelUI.updateModel=function(model,msg)
+ {
+  if(UpdateModelUI.updateModelR(model,msg))
+   (ModelUIModule.refreshNow())();
+ };
+ UpdateModelUI.updateModelR=function(model,msg)
+ {
+  var n;
+  if(msg.$==13)
+   {
+    n=DimensionModule.New("");
+    model.dimensions.Append(n);
+    return UpdateModelUI.updateModelR(model,{
+     $:15,
+     $0:n.dimId
+    });
+   }
+  else
+   throw new MatchFailureException.New("D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\RuleEditor\\src\\RuleEditor.fs",2158,22);
  };
  SC$1.$cctor=function()
  {
@@ -4721,6 +4762,10 @@
   SC$1.processor=Global.ignore;
   SC$1.dtypes=List.ofArray([DimType.DtDataType,DimType.DtTime,DimType.DtVersion,DimType.DtOther]);
   SC$1.RuleEditorLyt="RuleEditorLyt";
+  Global$1.set_processor(function(m)
+  {
+   UpdateModelUI.updateModel(Global$1.model(),m);
+  });
  };
  RuleEditor_Templates.dimensiontable=function(h)
  {

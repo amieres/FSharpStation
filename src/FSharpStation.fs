@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1545749998472 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1547005003252 -d:WEBSHARPER
 ////#cd @"..\projects\FSharpStation\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -37,7 +37,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1545749998472
+//#define FSharpStation1547005003252
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -230,9 +230,9 @@ namespace FsRoot
                     | RMessages mas,           mb  ->  Array.append    mas   [| mb |] |> RMessages
                     |           ma ,           mb  ->               [| ma   ;   mb |] |> RMessages
             
-                let reduceMsgs ms = ms |> Seq.fold addMsg NoMsg
+                let reduceMsgs ms = (NoMsg, ms) ||> Seq.fold addMsg
             
-                let summaryF f msg =        
+                let summaryF f msg =
                     match countF f msg with
                     | 0, 0, _
                     | 1, 0, 0
@@ -242,7 +242,7 @@ namespace FsRoot
                     | e, w, _ -> sprintf "Errors   : %d, Warnings: %d\n" e w
             
                 /// returns a string with a count of errors and warnings, if more than one
-                let summarizedF f msg = summaryF f msg + msg.ToString()
+                let summarizedF f msg = [ msg.ToString() ; summaryF f msg ] |> Seq.filter ((<>) "") |> String.concat "\n"
                 /// a Message is considered an error
                 let summarized  msg = msg |> summarizedF (fun _ -> 1, 0, 0)
                 /// a Message is considered a Warning
@@ -2318,12 +2318,10 @@ namespace FsRoot
                 
             let (|REGEX|_|) (expr: string) (opt: string) (value: string) =
                 if value = null then None else
-                try 
-                    match JavaScript.String(value).Match(RegExp(expr, opt)) with
-                    | null         -> None
-                    | [| |]        -> None
-                    | m            -> Some m
-                with e -> None
+                match JavaScript.String(value).Match(RegExp(expr, opt)) with
+                | null         -> None
+                | [| |]        -> None
+                | m            -> Some m
             
             let rexGuid = """([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})"""
             
@@ -3371,7 +3369,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/c677b6fd-d833-43ee-a15c-62c60d8572e4"
+                    "http://localhost:9005/#/Snippet/8a23262e-cdaf-47e3-a4ac-36a86f112175"
                 #endif
                 
                 let extractEndPoint() = 
@@ -3563,7 +3561,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1545749998472"
+                let mutable fsharpStationAddress = Address "FSharpStation1547005003252"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -5203,7 +5201,10 @@ namespace FsRoot
                     AF.plgQueries = [| AF.newQry  "PropertyRA"         <| (fun p -> unbox<string> p |> CustomAction.getCurrentProperty |> box)
                                     |]
                 }
-                """
+        
+                match JS.Document.GetElementById("GlobalLayout") with
+                | null ->
+                  """
                     menuEditor       horizontal  65       menuLogo                  editorMessages
                     double           horizontal  0-50-100 AppFramework.AppFwkClient menuEditor
                     menuLogo         vertical    350      logo                      menu
@@ -5238,8 +5239,8 @@ namespace FsRoot
                     btnLoad          Doc       InputFile                 ""     "Load File..." FSharpStation.LoadFile  FileName
                     btnImport        Doc       InputFile                 ""     "Import..."    FSharpStation.Import    ""
                     FileName         div                                 "class=form-control"  FSharpStation.fileName
-                """
-                |> String.unindentStr
+                  """
+                | e -> e.TextContent
                 |> LayoutEngine.newLyt FStationLyt
                 |> LayoutEngine.addLayout
         
@@ -5269,6 +5270,9 @@ namespace FsRoot
                     |> Option.defaultValue FStationLyt
                     |> AF.mainDocV.Set
                 )
+        
+                AF.tryGetVar "AppFramework" "titleV"
+                |> Option.iter (fun lvar -> lvar.varVar.Set "FSharpStation.CurrentPath")
         
                 async {
                   do! Monaco.loader

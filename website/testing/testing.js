@@ -2,32 +2,36 @@ CIPHERSpaceLoadFilesDoAfter(function() { IntelliFactory.Runtime.Start() });
 CIPHERSpaceLoadFiles(["/Scripts/WebSharper/WebSharper.Core.JavaScript/Runtime.js", "/Scripts/WebSharper/WebSharper.Main.js", "/Scripts/WebSharper/WebSharper.Collections.js", "/Scripts/WebSharper/WebSharper.Web.js", "/Scripts/WebSharper/WebSharper.Sitelets.js", "/Scripts/WebSharper/WebSharper.Control.js", "/Scripts/WebSharper/WebSharper.UI.js", "/Scripts/WebSharper/WebSharper.UI.Templating.Runtime.js"], function()
 {
  "use strict";
- var Global,FsRoot,Library,LibraryJS,REGEX,TestingJS,REGEX$1,SC$1,WebSharper,CancellationTokenSource,Concurrency,Unchecked,Arrays,Strings,UI,Doc,AttrProxy,List,Seq,Var$1,View,Client,Templates,IntelliFactory,Runtime;
+ var Global,FsRoot,Library,LibraryJS,REGEX,WebSharper,Obj,TestingJS,WasmFscServices,WorkerEvent,SC$1,CancellationTokenSource,Concurrency,Unchecked,Arrays,Strings,IntelliFactory,Runtime,Seq,List,UI,Doc,AttrProxy,Var$1,Utils,console,View,Client,Templates;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
  REGEX=LibraryJS.REGEX=LibraryJS.REGEX||{};
- TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
- REGEX$1=TestingJS.REGEX=TestingJS.REGEX||{};
- SC$1=Global["StartupCode$D:\\Abe\\CIPHERWorkspace\\FSharpStation\\src\\wsconfig_json$testing"]=Global["StartupCode$D:\\Abe\\CIPHERWorkspace\\FSharpStation\\src\\wsconfig_json$testing"]||{};
  WebSharper=Global.WebSharper;
+ Obj=WebSharper&&WebSharper.Obj;
+ TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
+ WasmFscServices=TestingJS.WasmFscServices=TestingJS.WasmFscServices||{};
+ WorkerEvent=WasmFscServices.WorkerEvent=WasmFscServices.WorkerEvent||{};
+ SC$1=Global["StartupCode$D:\\Abe\\CIPHERWorkspace\\FSharpStation\\src\\wsconfig_json$testing"]=Global["StartupCode$D:\\Abe\\CIPHERWorkspace\\FSharpStation\\src\\wsconfig_json$testing"]||{};
  CancellationTokenSource=WebSharper&&WebSharper.CancellationTokenSource;
  Concurrency=WebSharper&&WebSharper.Concurrency;
  Unchecked=WebSharper&&WebSharper.Unchecked;
  Arrays=WebSharper&&WebSharper.Arrays;
  Strings=WebSharper&&WebSharper.Strings;
+ IntelliFactory=Global.IntelliFactory;
+ Runtime=IntelliFactory&&IntelliFactory.Runtime;
+ Seq=WebSharper&&WebSharper.Seq;
+ List=WebSharper&&WebSharper.List;
  UI=WebSharper&&WebSharper.UI;
  Doc=UI&&UI.Doc;
  AttrProxy=UI&&UI.AttrProxy;
- List=WebSharper&&WebSharper.List;
- Seq=WebSharper&&WebSharper.Seq;
  Var$1=UI&&UI.Var$1;
+ Utils=WebSharper&&WebSharper.Utils;
+ console=Global.console;
  View=UI&&UI.View;
  Client=UI&&UI.Client;
  Templates=Client&&Client.Templates;
- IntelliFactory=Global.IntelliFactory;
- Runtime=IntelliFactory&&IntelliFactory.Runtime;
  Library.delayed=function(delay,doF)
  {
   var cancellationTokenSourceO;
@@ -105,9 +109,28 @@ CIPHERSpaceLoadFiles(["/Scripts/WebSharper/WebSharper.Core.JavaScript/Runtime.js
     return null;
    }
  };
- REGEX$1.main=function()
+ WorkerEvent=WasmFscServices.WorkerEvent=Runtime.Class({},Obj,WorkerEvent);
+ WorkerEvent.New=Runtime.Ctor(function()
  {
-  var rexV,parmsV,inputV,inputsV,x,x$1,a;
+  Obj.New.call(this);
+ },WorkerEvent);
+ WasmFscServices.main=function()
+ {
+  var rexV,parmsV,inputV,inputsV,ww,x,x$1,a;
+  function startParseFile(v)
+  {
+   var o;
+   function a$2(a$3,a$4)
+   {
+    o[a$3]=a$4;
+   }
+   o={};
+   Seq.iter(function($1)
+   {
+    return a$2($1[0],$1[1]);
+   },List.ofArray([["message","parseFile"],["text",v]]));
+   ww.postMessage(o);
+  }
   function a$1(inp,rx,opt)
   {
    return Doc.Element("ul",[AttrProxy.Create("id","output")],List.ofSeq(Seq.delay(function()
@@ -134,6 +157,44 @@ CIPHERSpaceLoadFiles(["/Scripts/WebSharper/WebSharper.Core.JavaScript/Runtime.js
   parmsV=Var$1.Create$1("g");
   inputV=Var$1.Create$1("Err (1, 7) - (1, 12): \"This shows over there as an error\".\nWarn (2, 7) - (2, 12): \"This shows over there as a warning\".\nInfo (3, 7) - (3, 12): \"This shows over there as information\".");
   inputsV=Var$1.Create$1(["","",""]);
+  ww=new Global.Worker("/WASM/FscServices/FscServicesWorker.js");
+  ((function($1)
+  {
+   return function($2)
+   {
+    return $1(Utils.prettyPrint($2));
+   };
+  }(function(s)
+  {
+   console.log(s);
+  }))(ww));
+  ww.onmessage=function(ev)
+  {
+   ((function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(ev.data));
+   return ev.data.message==="listDir"?(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(ev.data.dir):null;
+  };
+  View.Sink(function(txt)
+  {
+   startParseFile(txt);
+  },inputV.get_View());
   x=View.Map3(function(inp,rx,opt)
   {
    return[inp,rx,opt];
@@ -166,6 +227,6 @@ CIPHERSpaceLoadFiles(["/Scripts/WebSharper/WebSharper.Core.JavaScript/Runtime.js
  };
  Runtime.OnLoad(function()
  {
-  REGEX$1.main();
+  WasmFscServices.main();
  });
 });
