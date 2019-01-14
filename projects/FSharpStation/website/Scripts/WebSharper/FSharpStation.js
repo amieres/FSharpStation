@@ -6265,53 +6265,45 @@
  {
   return MonacoConfig.New(v,monc.onChange,monc.onRender,monc.editorO,monc.disabled,monc.options,monc.overrides);
  };
- Monaco.render$2846$42=function(monc)
+ Monaco.render$2849$48=function(monc)
  {
   return function(elchild)
   {
-   var b;
-   Concurrency.Start((b=null,Concurrency.Delay(function()
+   var editor,_elt;
+   editor=(_elt=elchild.parentElement,self.monaco.editor.create(_elt,monc.options,monc.overrides));
+   ResizeObserver.addResizeObserver$1(function()
    {
-    return Concurrency.Bind(Monaco.loader(),function()
-    {
-     var editor,_elt;
-     editor=(_elt=elchild.parentElement,self.monaco.editor.create(_elt,monc.options,monc.overrides));
-     ResizeObserver.addResizeObserver$1(function()
-     {
-      editor.layout();
-     },elchild.parentElement);
-     elchild.parentNode.removeChild(elchild);
-     monc.editorO={
-      $:1,
-      $0:editor
-     };
-     (Option.iter(function(onrender)
-     {
-      onrender(editor);
-     }))(monc.onRender);
-     LibraryJS.bindVarEditor(function(a)
-     {
-      editor.onDidChangeModelContent(a);
-     },function()
-     {
-      return editor.getValue();
-     },function(a)
-     {
-      editor.setValue(a);
-     },monc.onChange,monc["var"]);
-     return Concurrency.Zero();
-    });
-   })),null);
+    editor.layout();
+   },elchild.parentElement);
+   elchild.parentNode.removeChild(elchild);
+   monc.editorO={
+    $:1,
+    $0:editor
+   };
+   (Option.iter(function(onrender)
+   {
+    onrender(editor);
+   }))(monc.onRender);
+   LibraryJS.bindVarEditor(function(a)
+   {
+    editor.onDidChangeModelContent(a);
+   },function()
+   {
+    return editor.getValue();
+   },function(a)
+   {
+    editor.setValue(a);
+   },monc.onChange,monc["var"]);
   };
  };
  Monaco.render=function(monc)
  {
-  return Doc.Element("div",[AttrProxy.OnAfterRenderImpl(function(elchild)
+  var b;
+  return Doc.Async((b=null,Concurrency.Delay(function()
   {
-   var b;
-   Concurrency.Start((b=null,Concurrency.Delay(function()
+   return Concurrency.Bind(Monaco.loader(),function()
    {
-    return Concurrency.Bind(Monaco.loader(),function()
+    return Concurrency.Return(Doc.Element("div",[AttrProxy.OnAfterRenderImpl(function(elchild)
     {
      var editor,_elt;
      editor=(_elt=elchild.parentElement,self.monaco.editor.create(_elt,monc.options,monc.overrides));
@@ -6338,10 +6330,9 @@
      {
       editor.setValue(a);
      },monc.onChange,monc["var"]);
-     return Concurrency.Zero();
-    });
-   })),null);
-  })],[]);
+    })],[]));
+   });
+  })));
  };
  Monaco.loader=function()
  {
@@ -8271,7 +8262,7 @@
    $1:S
   })),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.snippetlist(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderSnippets.snippets$4393$40=function(snpId)
+ RenderSnippets.snippets$4394$40=function(snpId)
  {
   return function(ev)
   {
@@ -8284,7 +8275,7 @@
    }))(x);
   };
  };
- RenderSnippets.snippets$4392$40=function(snpId)
+ RenderSnippets.snippets$4393$40=function(snpId)
  {
   return function(ev)
   {
@@ -8292,7 +8283,7 @@
     ev.Event.preventDefault();
   };
  };
- RenderSnippets.snippets$4391$40=function(snpId)
+ RenderSnippets.snippets$4392$40=function(snpId)
  {
   return function(ev)
   {
@@ -8300,21 +8291,21 @@
    ev.Event.stopPropagation();
   };
  };
- RenderSnippets.snippets$4390$40=function(snpId)
+ RenderSnippets.snippets$4391$40=function(snpId)
  {
   return function()
   {
    Snippets.toggleCollapse(snpId);
   };
  };
- RenderSnippets.snippets$4389$40=function(snpId)
+ RenderSnippets.snippets$4390$40=function(snpId)
  {
   return function()
   {
    Snippets.togglePredecessor(snpId);
   };
  };
- RenderSnippets.snippets$4388$40=function(snpId)
+ RenderSnippets.snippets$4389$40=function(snpId)
  {
   var s;
   s=View$1.Map(function(y)
@@ -8326,7 +8317,7 @@
    return RenderSnippets.scrollIntoView(s,e);
   };
  };
- RenderSnippets.snippets$4387$40=function(snpId)
+ RenderSnippets.snippets$4388$40=function(snpId)
  {
   return function()
   {
@@ -8481,7 +8472,7 @@
     }
   },selW);
  };
- RenderProperties.render$4432$34=function()
+ RenderProperties.render$4433$34=function()
  {
   return function()
   {
@@ -8503,7 +8494,7 @@
    RenderProperties.addProperty();
   }))),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.propertytable(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderProperties.properties$4425$33=function(i)
+ RenderProperties.properties$4426$33=function(i)
  {
   return function()
   {
@@ -9623,7 +9614,7 @@
  };
  MainProgram.mainProgram=function()
  {
-  var l,m,v,prior,v$1,prior$1,x,b;
+  var l,m,v,prior,v$1,prior$1,x;
   AppFramework.addPlugIn(PlugIn.New("FSharpStation",[AppFramework.newVar("fileName",LoadSave.fileName()),AppFramework.newVar("SnippetName",Var$1.Lens(Snippets.currentSnippetV(),function($1)
   {
    return $1.snpName;
@@ -9772,51 +9763,38 @@
   {
    lvar.varVar.Set("FSharpStation.CurrentPath");
   }))(x);
-  return Doc.Async((b=null,Concurrency.Delay(function()
-  {
-   return Concurrency.Bind(Monaco.loader(),function()
-   {
-    var x$1,o,v$2;
-    x$1=(o=Monaco$1.getEditorConfigO(),o==null?null:{
-     $:1,
-     $0:Monaco.render(o.$0)
-    });
-    v$2=Doc.get_Empty();
-    x$1==null?void 0:void 0;
-    return Concurrency.Return(AppFramework.getMainDoc().f());
-   });
-  })));
+  return AppFramework.getMainDoc().f();
  };
- MainProgram.mainDoc$5153$78=Global.id;
- MainProgram.mainDoc$5145$39=function()
+ MainProgram.mainDoc$5154$78=Global.id;
+ MainProgram.mainDoc$5146$39=function()
  {
   return function(ev)
   {
    JumpTo.jumpToRef(ev.Target);
   };
  };
- MainProgram.mainDoc$5144$39=function()
+ MainProgram.mainDoc$5145$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5143$39=function()
+ MainProgram.mainDoc$5144$39=function()
  {
   return function(ev)
   {
    Importer.importFile(ev.Target);
   };
  };
- MainProgram.mainDoc$5142$39=function()
+ MainProgram.mainDoc$5143$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5141$39=function()
+ MainProgram.mainDoc$5142$39=function()
  {
   return function(ev)
   {
@@ -9935,11 +9913,11 @@
   }))))))))))))));
   return(p=Handler$1.CompleteHoles(tmp.k,tmp.h,[["filename",0],["name",0],["output",0],["fscode",0],["parser",0]]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.layout(p[0])),(tmp.i=i,i))).get_Doc();
  };
+ MainProgram.buttonsRight$5128$74=Global.id;
  MainProgram.buttonsRight$5127$74=Global.id;
  MainProgram.buttonsRight$5126$74=Global.id;
  MainProgram.buttonsRight$5125$74=Global.id;
  MainProgram.buttonsRight$5124$74=Global.id;
- MainProgram.buttonsRight$5123$74=Global.id;
  MainProgram.buttonsRight=function()
  {
   var tmp,p,i;

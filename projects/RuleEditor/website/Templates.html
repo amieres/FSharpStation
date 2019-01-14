@@ -1,34 +1,39 @@
 <div style="display:none" >
-    <div id="GlobalLayout">
+    <div id="GlobalLayout">menuEditor layout
+        |  logo   |           menu
+        |      350|
+        |------------------------------- 65 ------------------------------------
+        |          |                                                               
+        |          |                         |             
+        |  buttons | RuleEditor.Calculations | severalTabs 
+        |          |                         |0 60 100     
+        |          |                                       
+        |       150|                                                                   
+        | -------------------------- 10 83 100 ----------------------------------
+        |          messagesLeft           |      messagesRight
 
-            menuEditor horizontal 65 menuEditor_1 menuEditor_2
-            menuEditor_1 vertical 350 logo menu
-            menuEditor_2 horizontal 10-83-100 menuEditor_2_1 menuEditor_2_2
-            menuEditor_2_1 vertical -150 menuEditor_2_1_1 buttons
-            menuEditor_2_1_1 vertical 0-20-100 menuEditor_2_1_1_1 menuEditor_2_1_1_2
-            menuEditor_2_1_1_1 horizontal 20 path FSharpStation.Snippets
-            menuEditor_2_1_1_2 vertical 0-100-100 menuEditor_2_1_1_2_1 properties
-            menuEditor_2_1_1_2_1 horizontal 35 Name snippet
-            menuEditor_2_2 vertical 5-50-95 messagesLeft messagesRight  
 
-        menuEditorx       horizontal  65       menuLogo                  editorMessages
-        double           horizontal  0-50-100 AppFramework.AppFwkClient menuEditor
-        menuLogo         vertical    350      logo                      menu
-        logo             span       "margin:0; color:gray; font-size: 55px; font-weight:530" "Rule Editor"
-        logo             span       "margin:0; color:gray; font-size: 55px; font-weight:530" "Rule Editor"
-        editorMessages   horizontal 10-83-100 editorButtons             messages
-        messages         vertical   0-50-100  messagesLeft              messagesRight
-        editorButtons    vertical 150 buttons snippetsSnippet 
-        buttons          div "overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px" btnDeleteSnippet btnIndentIn btnIndentOut none x btnRunFS none x btnAbortFsi
-        snippetsSnippet  vertical   0-20-100  snippets                  editorProperties
-        snippets         horizontal 20        "${FSharpStation.CurrentPath}" tblDimensions2
-        editorProperties vertical   0-100-100 snippet                   properties
-        properties       div        ""        FSharpStation.Properties
-        snippet          horizontal 35        Name                      FSharpStation.editor
-        menu             span       "display: grid; grid-template-columns: 30% 20% 20% 10%; grid-gap: 25px"        inpServer btnLoad btnSaveAs
-        
-        tblDimensions    div "" btnAddDimension RuleEditor.Dimensions
-        tblDimensions2   div "" tblDimensions
+
+        menuEditorx      horizontal  65          menuLogo                  editorMessages
+        double           horizontal  0-50-100    AppFramework.AppFwkClient menuEditor
+        menuLogo         vertical    350         logo                      menu
+        logo             span       "margin:0;   color:gray; font-size: 55px; font-weight:530" "Rule Editor"
+        logo             span       "margin:0;   color:gray; font-size: 55px; font-weight:530" "Rule Editor"
+        editorMessages   horizontal  10-83-100   editorButtons             messages
+        messages         vertical    0-50-100    messagesLeft              messagesRight
+        editorButtons    vertical    150 buttons snippetsSnippet 
+        snippetsSnippet  vertical    0-20-100    snippets                  editorProperties
+        snippets         horizontal  20          "${FSharpStation.CurrentPath}" tblDimensions2
+        editorProperties vertical    0-100-100   snippet                   properties
+        properties       div        ""           FSharpStation.Properties
+        snippet          horizontal  35          Name                      FSharpStation.editor
+        menu             span       "display: grid; grid-template-columns: 30% 20% 20% 10%; grid-gap: 25px; margin:5px; grid-template-rows:50px" inpServer btnLoad btnSaveAs
+         
+        severalTabs      wcomp-tabstrip  "" 
+        :                div "tabname=Dimensions" 
+        ::               div "" btnAddDimension RuleEditor.Dimensions
+        :                div "tabname=Cubes"
+        :                div "tabname=Global Definitions" RuleEditor.globalDefs
 
         btnSaveAs        button RuleEditor.SaveAs         "class=btn ${RuleEditor.SaveNeeded}" "Save as...    "
         btnAddDimension  button RuleEditor.AddDimension      ""                  "new dim..."
@@ -40,6 +45,13 @@
 
         messagesLeft     wcomp-tabstrip                      ""                  Output FsCode
         messagesRight    wcomp-tabstrip                      ""                  Parser
+
+        buttons          div "overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px"
+        :                button RuleEditor.AddCalculation    ""                 "Add Calculation"
+        :                Doc       none x
+        :                button FSharpStation.IndentIn       ""                  "Indent In  >> "
+        :                button FSharpStation.IndentOut      ""                  "Indent Out << "
+
 
         Output           textarea  FSharpStation.Output      "tabname=Output ; placeholder=Output messages ; spellcheck=false" 
         FsCode           textarea  FSharpStation.FsCode      "tabname=F# Code; placeholder=F# Code         ; spellcheck=false" 

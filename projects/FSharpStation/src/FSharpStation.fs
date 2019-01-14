@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1547005003252 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1547097944900 -d:WEBSHARPER
 ////#cd @"..\projects\FSharpStation\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -37,7 +37,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1547005003252
+//#define FSharpStation1547097944900
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -2842,10 +2842,11 @@ namespace FsRoot
                         Editor.RequireConfig()
                         do! Async.FromContinuations(fun (success, failed, cancelled) -> Editor.Require(success, failed))
                 }
-                let render monc             =
-                    div [ on.afterRender (fun elchild ->
-                             async {
-                                 do! loader
+                let render monc             = 
+                    async {
+                      do! loader
+                      return
+                          div [ on.afterRender (fun elchild ->
                                  let editor        = Editor.Create elchild.ParentElement monc.options monc.overrides
                                  ResizeObserver.addResizeObserver editor.Layout elchild.ParentElement
                                  elchild.ParentNode.RemoveChild elchild |> ignore
@@ -2853,9 +2854,9 @@ namespace FsRoot
                                  monc.onRender |> Option.iter (fun onrender -> onrender editor)
                                  monc.var |> bindVarEditor editor.OnDidChangeModelContent editor.GetValue editor.SetValue monc.onChange
                                  //monc.disabled |> View.Sink (fun dis -> editor.SetOption("readOnly", if dis then "nocursor" :> obj else false :> obj) )
-                             } |> Async.Start
                           )    
                         ] []
+                    } |> Doc.Async
                 let inline setVar   v   monc = { monc with var       = v      }
                 let inline onChange f   monc = { monc with onChange  = f      }
                 let inline onRender f   monc = { monc with onRender  = Some f }
@@ -3369,7 +3370,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/8a23262e-cdaf-47e3-a4ac-36a86f112175"
+                    "http://localhost:9005/#/Snippet/c677b6fd-d833-43ee-a15c-62c60d8572e4"
                 #endif
                 
                 let extractEndPoint() = 
@@ -3561,7 +3562,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1547005003252"
+                let mutable fsharpStationAddress = Address "FSharpStation1547097944900"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -5274,13 +5275,13 @@ namespace FsRoot
                 AF.tryGetVar "AppFramework" "titleV"
                 |> Option.iter (fun lvar -> lvar.varVar.Set "FSharpStation.CurrentPath")
         
-                async {
-                  do! Monaco.loader
-                  //WcSplitter.init horizontal vertical
-                  //WcTabStrip.init()
-                  let editor = Monaco.getEditorConfigO() |> Option.map Monaco.render |> Option.defaultValue Doc.Empty
-                  return AF.getMainDoc.Value
-                } |> Doc.Async
+                //async {
+                //  do! Monaco.loader
+                //  //WcSplitter.init horizontal vertical
+                //  //WcTabStrip.init()
+                //  let editor = Monaco.getEditorConfigO() |> Option.map Monaco.render |> Option.defaultValue Doc.Empty
+                AF.getMainDoc.Value
+                //} |> Doc.Async
         
         
         //#define FSS_SERVER

@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1547005003252 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1547097944900 -d:WEBSHARPER
 ////#cd @"..\projects\RuleEditor\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -31,7 +31,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1547005003252
+//#define FSharpStation1547097944900
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -534,6 +534,150 @@ namespace FsRoot
                         
                     
                     
+                /// Taken from Nick Palladino's https://github.com/palladin/Eff
+                [< AutoOpen >]
+                module Eff =
+                    open System
+                
+                    type Effect = abstract UnPack     : Lambda         -> Effect 
+                    and  Lambda = abstract Invoke<'X> : ('X -> Effect) -> ('X -> Effect)
+                
+                    type Eff<'U, 'A when 'U :> Effect> = Eff of (('A -> Effect) -> Effect) 
+                        with  member this.Cont = match this with Eff cont -> cont
+                
+                    type Done<'A>(v : 'A) =
+                        member self.Value = v
+                        interface Effect with member self.UnPack(_ : Lambda) : Effect = self :> _ //new Done<'A>(v) :> _
+                
+                    let inline rtn  v = Eff (fun k -> k v)
+                    let bind  (f: 'a -> Eff<'U, 'b>) (effA: Eff<'U, 'a>) : Eff<'U, 'b> = 
+                                        Eff (fun k -> 
+                                                let (Eff effKa) = effA
+                                                effKa (fun v -> 
+                                                    let (Eff effKb) = f v
+                                                    effKb k
+                                                )
+                                            )
+                
+                    module Eff =
+                //        [< Inline "$effect.FsRoot_Library_Monads_Eff_Effect$UnPack({FsRoot_Library_Monads_Eff_Lambda$Invoke:function(k) { return function(p) { return $loop(k(p)) }; }})" >]
+                //        let unpack loop (effect:Effect) = effect.UnPack { new Lambda with member self.Invoke<'X> (k' : 'X -> Effect) =  k' >> loop }
+                
+                        type LambdaT(loop) =
+                            interface Lambda with
+                                member __.Invoke<'X> (k : 'X -> Effect) : ('X -> Effect) = k >> loop 
+                        let unpack loop (effect:Effect) = effect.UnPack (new LambdaT(loop))
+                        let done' (v :  'A) : Effect                           = new Done<'A>(v) :> _ 
+                        let return' v  = Eff( fun _ -> done' v )
+                        let run<'U, 'A when 'U :> Effect> (eff: Eff<'U, 'A>) : 'A =
+                            match eff.Cont done' with
+                            | :? Done<'A> as done' -> done'.Value
+                            | v                    -> failwithf "Unhandled effect %A" v
+                        let runResult<'U, 'A when 'U :> Effect> (eff: Eff<'U, 'A>) = 
+                            try
+                                match eff.Cont done' with
+                                | :? Done<'A> as done' -> Ok done'.Value
+                                //| v                    -> box v |> unbox<NoOp<_>> |> fun noop -> noop.K () |> loop
+                                | v                    -> Error <| errorMsgf "Unhandled effect %A expecting" v //typedefof<'A>
+                            with e -> 
+                                Error <| ResultMessage.ExceptMsg(e.Message, e.StackTrace)
+                
+                
+                    let inline map   f  m  = bind (f >> rtn) m
+                    let inline apply fR vR = fR |> bind (fun f -> map f vR)
+                    
+                    [< AutoOpen >]
+                    module Operators =
+                        let inline (<*>) f v   = apply f v
+                        let inline (|>>) v f   = map   f v
+                        let inline (>>=) v f   = bind  f v
+                        let inline (>>>) f g v = f v |>> g
+                        let inline (>=>) f g v = f v >>= g
+                        let inline rtn   v     = rtn    v
+                    
+                    let traverseSeq            f     sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                          Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq           sq = traverseSeq id sq
+                    
+                    let inline insertO    vvO               = vvO   |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
+                    let inline insertR   (vvR:Result<_,_>)  = vvR   |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
+                    let inline insertFst (fst, vEf)         = vEf   |> map (fun v -> fst, v)
+                    let inline insertSnd (vEf, snd)         = vEf   |> map (fun v -> v, snd)
+                    
+                    type EffBuilder() = 
+                        member self.Zero      (                 ) = rtn ()
+                        member self.Return    (v   :         'A ) = rtn v
+                        member self.ReturnFrom(eff : Eff<'U, 'A>) = eff
+                        member self.Bind      (eff, f           ) = bind f eff
+                        member self.Combine (first : Eff<'U, unit>, second : Eff<'U, 'B>) : Eff<'U, 'B> =  self.Bind(first, fun () -> second)
+                        member self.Delay (f : unit -> Eff<'U, 'A>) : Eff<'U, 'A> =  Eff (fun k -> let (Eff cont) = f () in cont k)
+                    //    member inline __.Delay       f                  = f
+                        member __.While(guard, body) =
+                            let rec whileLoop guard body =
+                                if guard() then body() |> bind (fun () -> whileLoop guard body)
+                                else rtn   ()
+                            whileLoop guard body
+                        member this.TryWith   (body, handler     ) = Eff(fun k -> try body() |> function Eff(f) -> f k with e -> handler e |> function Eff(f) -> f k)
+                        member this.TryFinally(body, compensation) = Eff(fun k -> try body() |> function Eff(f) -> f k finally   compensation()           )
+                        member this.Using     (disposable, body  ) = //wrap(fun r -> using (disposable:#System.IDisposable) (fun u -> body u |> getFun <| r) )
+                                    let body' = fun () -> body disposable
+                                    this.TryFinally(body', fun () -> if disposable :> obj <> null then (disposable:#System.IDisposable).Dispose() )
+                        member this.For(sequence:seq<_>, body) =
+                            this.Using(sequence.GetEnumerator(),fun enum -> 
+                                this.While(enum.MoveNext, 
+                                    fun () -> this.Delay(fun () -> body enum.Current)))
+                    
+                    
+                    let eff = new EffBuilder()
+                    
+                    module Reader = 
+                        type Reader<'E> = inherit Effect
+                        type Ask<'E>(k : 'E -> Effect) =
+                            member self.K = k
+                            interface Reader<'E> with
+                                member self.UnPack(lambda : Lambda) : Effect = new Ask<'E>(lambda.Invoke<'E> k) :> _
+                    
+                        let ask<'U, 'E when 'U :> Reader<'E>>() : Eff<'U, 'E> = Eff (fun k -> new Ask<'E>(k) :> _)
+                    
+                        let rec readerHandler<'U, 'E, 'A when 'U :> Reader<'E>> (env:'E) (eff: Eff<'U, 'A>) : Eff<'U, 'A> = 
+                            let rec loop : Effect -> Effect = function
+                                | :? Ask< 'E> as ask   -> ask.K env          |>            loop 
+                                | effect               -> effect             |> Eff.unpack loop 
+                            Eff (fun doneK             -> eff.Cont Eff.done' |>            loop )
+                    
+                        type EffReader<'a> = inherit Reader<'a>
+                    
+                        let readerFun f = ask() |> map f 
+                    
+                        
+                    module Rsl = 
+                        type Rsl<'M> = inherit Effect
+                    
+                        type Fail<    'M>(v : 'M, k : unit -> Effect) =
+                            member self.Value = v
+                            member self.K     = k
+                            interface Rsl<'M> with member self.UnPack(lambda : Lambda) : Effect = new Fail<    'M>(v, lambda.Invoke<unit> k) :> _
+                    
+                    
+                        let fail<'U, 'M when 'U :> Rsl<'M>> (s:'M) : Eff<'U, unit> = Eff (fun k -> new Fail<    'M>(s, k) :> _)
+                        let inline ofResult (res:Result<'a,'b>) : Eff<'c,'a> = eff {
+                            match res with
+                            | Ok    v   -> return v
+                            | Error msg -> let! m = fail msg
+                                           return box () |> unbox
+                        }
+                    
+                        
+                        let rec RslHandler<'U, 'M, 'A when 'U :> Rsl<'M>> (eff: Eff<'U, 'A>) : Eff<'U, _> = 
+                            let rec loop (doneK:(Result<'A,'M>) -> Effect) : Effect -> Effect = function
+                                | :? Done<    'A> as done' -> doneK (Ok    done'.Value)
+                                | :? Fail<    'M> as fail  -> doneK (Error fail .Value)
+                                | effect                   -> effect             |> Eff.unpack (loop doneK)
+                            Eff (fun doneK                 -> eff.Cont Eff.done' |>             loop doneK)
+                    
+                        let inline absorbR     vvEf             = vvEf  |> bind ofResult
+                        let inline absorbO   f vOEf             = vOEf  |> map (Result.ofOption  f) |> absorbR
+                    
                 type FusionAsyncM<'T, 'S, 'M> = FAM of ('S * ResultMessage<'M> -> Async<'T option * 'S * ResultMessage<'M> >)
                 
                 module FusionAsyncM =
@@ -677,6 +821,16 @@ namespace FsRoot
                         
                     
                     
+            module Array =
+            
+                /// Non-mutable element replace
+                /// produces a new array with the new element
+                let replace i item (array: _[]) = 
+                    seq {
+                        if i > 0            then yield! array.[.. i - 1]
+                        yield item
+                        if i < array.Length then yield! array.[i + 1 ..]
+                    } |> Seq.toArray
             module ParseO =
                 let tryParseWith tryParseFunc = tryParseFunc >> function
                         | true, v    -> Some v
@@ -834,6 +988,157 @@ namespace FsRoot
                                                                                                     return st 
                                                                                                 })
             
+            /// Adapted from here http://fssnip.net/7V5   Usage:
+            /// let abs n = if n >= 0 then n else Hole ? TODO_AbsForNegativeValue    
+            ///         
+            /// abs  1 |> printfn "%A" // 1
+            /// abs -1 |> printfn "%A" // System.NotImplementedException: Incomplete hole 'TODO_AbsForNegativeValue : System.Int32'
+            type Hole = Hole with
+                [< Inline ; CompilerMessage("Incomplete hole", 130) >]
+                static member inline Incomplete id : 'T = failwithf "Incomplete hole '%s'" id        
+                    
+            
+            /// Tree structure to implement a hierarchical user interface but using Eff Reader and Rsl monad
+            module TreeEff =
+            
+                type Node<'I, 'T, 'Eff when 'Eff :> Effect> = {
+                    id                : unit                   -> 'I
+                    getData           : unit                   -> 'T
+                    isExpandedEf      : unit                   -> Eff<'Eff, bool                     >
+                    canHaveChildrenEf : unit                   -> Eff<'Eff, bool                     >
+                    childrenEf        : unit                   -> Eff<'Eff, Node<'I, 'T, 'Eff> seq   >
+                    pathEf            : unit                   -> Eff<'Eff, 'I list                  >  // list of parents excluding itself
+                    parentOEf         : Node<'I, 'T, 'Eff> seq -> Eff<'Eff, Node<'I, 'T, 'Eff> option>
+                    newChildrenEf     : Node<'I, 'T, 'Eff> []  -> Eff<'Eff, Node<'I, 'T, 'Eff>       >  // set new children, make sure to exclude children not listed and maintain the order of the children (if desirable)
+                }
+            
+                //let [<Inline>] inline toNode    (o: obj) = o :?> Node<_,_,_>
+                //let [<Inline>] inline toSeqNode  os      = os |> Seq.map toNode
+            
+                let rec listNodes level (nodes: Node<_,_,_> seq) =
+                    nodes
+                    |> Seq.map(fun node -> 
+                        node.isExpandedEf() 
+                        >>= (fun exp -> if exp then node.childrenEf() |>> Seq.toArray >>= listNodes (level + 1) else rtn Seq.empty)
+                        |>> (fun nodes -> Seq.append [ node, level ] nodes)
+                    ) 
+                    |> sequenceSeq
+                    |>> Seq.collect id
+            
+                let removeNode (node:Node<_,_,_>) nodes = eff { // better use version removeNode2
+                    let! path = node.pathEf()
+                    printfn "path = %A" path
+                    let rec chRemove (n:Node<_,_,_>) = eff {
+                        if                  n.id() = node.id() then printfn "found it" ; return  None
+                        elif List.contains (n.id())  path      then printfn "deeper" ; return! n.childrenEf()
+                                                                            |>> Seq.toArray
+                                                                            |>> Seq.map chRemove 
+                                                                            >>= sequenceSeq 
+                                                                            |>> Seq.choose id 
+                                                                            |>> Seq.toArray
+                                                                            >>= n.newChildrenEf  
+                                                                            |>> Some
+                        else                                        printfn "not" ;return  Some n
+                    }
+                    return! nodes |> Seq.map chRemove |> sequenceSeq |>> Seq.choose id
+                }
+            
+                let removeNodes p nodes = eff {
+                    let rec folder pair (n:Node<_,_,_>) = eff {
+                        let! children, noparent = pair
+                        let! children2 = n.childrenEf() |>> Seq.toArray
+                        let! ch, np = children2 |> Seq.fold folder (rtn ([], noparent) )
+                        if p n then return (        children, ch @ np)
+                               else let! xxx = n.newChildrenEf (ch |> Seq.rev |> Seq.toArray)
+                                    return ( xxx :: children,      np)
+                    }
+                    let! res, noparent = nodes |> Seq.fold folder (rtn ([], []) )
+                    return noparent @ res |> List.rev
+                }
+            
+                let addNodeToSeq after p node (nodes:Node<_,_,_> seq)  =
+                    seq [ for n in nodes do
+                            if p n then
+                                if after then yield n    ; yield node
+                                else          yield node ; yield n
+                            else              yield n
+                    ]
+                    
+                let addToParent after p (node:Node<_,_,_>) (parent :Node<_,_,_>) (nodes:Node<_,_,_> seq)  = nodes |> addNodeToSeq after p node |> Seq.toArray |> parent.newChildrenEf
+            
+                let addSibling  after   (node:Node<_,_,_>) (sibling:Node<_,_,_>) (nodes:Node<_,_,_> seq) = 
+                    let theSibling (n:Node<_,_,_>) = n.id() = sibling.id()
+                    sibling.pathEf() >>= function
+                    | [   ]          -> rtn <| addNodeToSeq after theSibling node nodes 
+                    | parent :: path -> 
+                    let rec mapAdd (n:Node<_,_,_>) =
+                        if                  n.id() = parent then     n.childrenEf() |>> Seq.toArray >>= addToParent after theSibling node n
+                        elif List.contains (n.id()) path    then     n.childrenEf() |>> Seq.toArray |>> Seq.map mapAdd >>= sequenceSeq |>> Seq.toArray >>= n.newChildrenEf 
+                        else                                     rtn n
+                    nodes |> Seq.map mapAdd |> sequenceSeq
+            
+                let tryFind p (nodes:Node<_,_,_> seq) = 
+                    let rec folder resEf (node:Node<_,_,_>) =
+                        resEf >>= function
+                        | Some v -> rtn (Some v)
+                        | None   ->
+                        if p node then rtn <| Some node else 
+                        node.childrenEf() >>= Seq.fold folder (rtn None)
+                    nodes                 |>  Seq.fold folder (rtn None)
+                    
+                let tryFindId (id:'I) (nodes:Node<_,_,_> seq) = tryFind (fun n -> n.id() = id) nodes
+            
+                let moveToSibling after (node:Node<_,_,_>) (sibling:Node<_,_,_>) (nodes:Node<_,_,_> seq) = 
+                    nodes
+                    |>  removeNode node
+                    >>= addSibling after node sibling
+            
+                let moveToSibling2 after (nodeId:'I) (siblingId:'I) (nodes:Node<_,_,_> seq) = eff {
+                    let!  nodeO = nodes |> tryFindId nodeId
+                    match nodeO with
+                    | None         -> return  nodes
+                    | Some node    ->
+                    let!  siblingO = nodes |> tryFindId siblingId
+                    match siblingO with
+                    | None         -> return  nodes
+                    | Some sibling -> return! moveToSibling after node sibling nodes
+                }
+            
+                let addChild append (node:Node<_,_,_>) (parentN:Node<_,_,_>) (nodes:Node<_,_,_> seq) = eff {
+                    let! path = parentN.pathEf()
+                    let rec mapAppend (n:Node<_,_,_>) =
+                        if   n.id() = parentN.id()       then 
+                            if append                    then n.childrenEf() |>> Seq.toArray |>> swap Seq.append [ node ]                         |>> Seq.toArray >>= n.newChildrenEf
+                            else                              n.childrenEf() |>> Seq.toArray |>>      Seq.append [ node ]                         |>> Seq.toArray >>= n.newChildrenEf
+                        elif List.contains (n.id()) path then n.childrenEf() |>> Seq.toArray |>>      Seq.map mapAppend   >>= sequenceSeq |>> Seq.toArray >>= n.newChildrenEf
+                        else                                  rtn n
+                    return! nodes |> Seq.map mapAppend |> sequenceSeq
+                }
+            
+                let indentNode (node:Node<_,_,_>) (nodes:Node<_,_,_> seq) = 
+                    node.parentOEf nodes >>= function
+                    | None        -> rtn nodes
+                    | Some parent -> parent.childrenEf() |>> (Seq.toArray >> Seq.ofArray)
+                    |>> Seq.takeWhile (fun              n -> node.id() <> n.id())
+                    >>= Seq.fold      (fun newParentOEf n -> n.canHaveChildrenEf() >>= (fun can -> if can then rtn(Some n) else newParentOEf)) (rtn None)
+                    >>= function
+                    | None           -> rtn nodes
+                    | Some newParent ->
+                    nodes
+                    |>  removeNode node 
+                    >>= addChild true node newParent
+            
+                let outdentNode (node:Node<_,_,_>) (nodes:Node<_,_,_> seq) =
+                    node.parentOEf nodes
+                    |>> Option.map          (fun parent -> moveToSibling true node parent nodes )
+                    >>= Option.defaultValue (rtn nodes)
+                    
+                let removeNodeOutdentChildren (node:Node<_,_,_>) (nodes:Node<_,_,_> seq) =
+                    node.childrenEf()
+                    >>= Seq.fold (fun nodes node -> nodes >>= (outdentNode node) ) (rtn nodes)
+                    >>= removeNode node
+                    
+                
         /// Essentials that run in Javascript (WebSharper)
         //#define WEBSHARPER
         [< JavaScript ; AutoOpen >]
@@ -922,6 +1227,348 @@ namespace FsRoot
                     model 
                     |> currentLensUpd' def curr (fun v -> model.UpdateBy (fun _ -> model.TryFindByKey (model.Key v) |> Option.map (fun _ -> v) ) <| model.Key v)
                 
+            
+            /// binds an Editor with a Var<string> to avoid annoying jumps to the end when fast typing
+            /// onChange gets called when the editor changes but not when the var changes
+            let bindVarEditor setEvent getVal setVal onChange (var:Var<string>) =
+                let editorChanged = ref 0L
+                let varChanged    = ref 0L
+                setEvent(fun _ ->
+                    let v = getVal() 
+                    if var.Value <> v then editorChanged := !editorChanged + 1L; var.Value <- v; onChange() 
+                )
+                var.View |> View.Sink (fun _ ->
+                    if  !editorChanged > !varChanged then varChanged := !editorChanged
+                    elif getVal() <> var.Value then setVal var.Value
+                )
+            
+            [< Inline """(!$v)""">]
+            let isUndefined v = v.GetType() = v.GetType()
+                
+            
+            module LoadFiles =
+            
+                let createScript fn =
+                    let fileRef = JS.Document.CreateElement("script")
+                    fileRef.SetAttribute("type", "text/javascript"  )
+                    fileRef.SetAttribute("src" , fn                 )
+                    fileRef
+                
+                let createCss fn =
+                    let fileRef = JS.Document.CreateElement("link")
+                    fileRef.SetAttribute("rel" , "stylesheet"     )
+                    fileRef.SetAttribute("type", "text/css"       )
+                    fileRef.SetAttribute("href", fn               )
+                    fileRef
+                
+                let createHtml fn =
+                    let fileRef = JS.Document.CreateElement("link")
+                    fileRef.SetAttribute("rel" , "import"         )
+                    fileRef.SetAttribute("type", "text/html"      )
+                    fileRef.SetAttribute("href", fn               )
+                    fileRef
+                
+                let LoadFile(file: string) =
+                    let (|EndsWith|_|) s (fn:string) = if fn.EndsWith s then Some() else None
+                    match file with
+                    | EndsWith ".js"   ()
+                    | EndsWith ".fsx"  ()
+                    | EndsWith ".fs"   () when isUndefined <| JS.Document.QuerySelector("script[src='" + file + "']") ->
+                                            createScript file |> Some
+                    | EndsWith ".css"  ()-> createCss    file |> Some
+                    | EndsWith ".html" ()-> createHtml   file |> Some
+                    | _                  -> None
+                    |> Option.map         (fun ref -> 
+                        Async.FromContinuations <| 
+                            fun (cont, econt, _ccont) -> 
+                                try 
+                                    ref?onload <- cont
+                                    JS.Document.Head.AppendChild ref |> ignore
+                                with e -> econt e
+                    )
+                    |> Option.defaultWith (fun ()  -> async { return () })
+                
+                let LoadFilesAsync(files: string []) =
+                    async {
+                        if IsClient then
+                            for file in files do
+                                do! LoadFile file
+                    }
+                
+            let (|REGEX|_|) (expr: string) (opt: string) (value: string) =
+                if value = null then None else
+                match JavaScript.String(value).Match(RegExp(expr, opt)) with
+                | null         -> None
+                | [| |]        -> None
+                | m            -> Some m
+            
+            let rexGuid = """([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})"""
+            
+            module REGEX =
+                let getStartWord (line:string) ch =
+                    match line.Substring(0, ch) with
+                    | REGEX @"([a-zA-Z_]\w*)$" "g" [| txt |] -> txt
+                    | _                                      -> ""          
+                
+                let getEndWord (line:string) ch =
+                    match line.Substring(ch) with
+                    | REGEX @"^([a-zA-Z_]\w*)" "g" [| txt |] -> txt
+                    | _                                      -> ""          
+            
+                let (|Identifier|_|) =
+                    function
+                    | REGEX "^[$a-zA-Z_][0-9a-zA-Z_\.\-$]*$" "" [| id |] -> Some id
+                    | _                                                  -> None
+            
+            [< JavaScript >]
+            module ResizeObserver =
+            
+                [< Inline "try { return !!(ResizeObserver) } catch(e) { return false }" >] 
+                let implementedResizeObserver() = false
+                
+                [< Inline "new ResizeObserver($_f)" >]
+                let newResizeObserver (_f: unit->unit) = X<_> 
+                
+                [< Inline "$_ro.observe($_el)" >]
+                let RObserve _ro (_el:Dom.Element) = X<_> 
+                
+                let mutable observers : obj list = []
+                
+                let domRect2Tuple (r:Dom.DomRect) = (r.Top, r.Left, r.Width, r.Height)
+                
+                let [< Inline "$_el.isConnected" >] isValidElement (_el:Dom.Element) = true
+                
+                let dimsChanged (el:Dom.Element) = 
+                    let dims = ref <| el.GetBoundingClientRect()
+                    fun () ->
+                        let ndims = el.GetBoundingClientRect()
+                        if domRect2Tuple !dims = domRect2Tuple ndims then false
+                        else dims := ndims    ; true
+                
+                let addResizeObserver f el =
+                    if implementedResizeObserver() then
+                        let ro =  newResizeObserver f
+                        observers <- ro::observers
+                        RObserve ro el
+                    else
+                        let changed = dimsChanged el
+                        async {
+                            while isValidElement el do
+                                do! Async.Sleep 110
+                                if changed() then f()
+                        } |> Async.Start
+                        
+            [< JavaScriptExport >]
+            module Monaco =
+                open WebSharper.UI.Html
+            
+                type Position = {
+                    column     : int
+                    lineNumber : int
+                }
+                type Range = {
+                    startColumn     : int
+                    endColumn       : int
+                    startLineNumber : int
+                    endLineNumber   : int
+                }
+                type Uri = {
+                    authority : string
+                    fragment  : string
+                    fsPath    : unit->string
+                    path      : string
+                    query     : string
+                    scheme    : string
+                }  with
+                    [< Inline "$global.monaco.Uri.parse($_s)" >] static member Parse(_s)      : Uri   = X<_>
+                    [< Inline "$global.monaco.Uri.file($_f)"  >] static member File(_f)       : Uri   = X<_>
+                type Location = {
+                    range : Range
+                    uri   : Uri
+                }
+                type FindMatch = {
+                    matches : string []
+                    range   : Range
+                }
+                type WordAtPosition = {
+                    endColumn   : int
+                    startColumn : int
+                    word        : string
+                }
+                type Model = {
+                    uri         : Uri
+                }
+                  with
+                    [< Inline "$mo.findMatches($_s, $_o, $_r, $_c, $_w, $_p, $_l)" >] member mo.FindMatches(_s: string, _o: bool, _r: bool, _c: bool, _w: string, _p: bool, _l: int): FindMatch[] = X<_>
+                    [< Inline "$mo.getWordAtPosition($_p)                        " >] member mo.GetWordAtPosition(_p: Position) : WordAtPosition = X<_>
+                    [< Inline "$mo.getLineContent($_l)                           " >] member mo.GetLineContent(   _l: int     ) : string         = X<_>
+                    [< Inline "$mo.getValue()                                    " >] member mo.GetValue()                      : string         = X<_>
+                    [< Inline "$mo.setValue($_v)                                 " >] member mo.SetValue(_v:string)             : unit           = X<_>
+                    [< Inline "$mo.dispose()                                     " >] member mo.Dispose()                       : unit           = X<_>
+                    
+                type MarkDownString = {
+                    value      : string
+                    isTrusted  : bool
+                }
+                type MarkerSeverity =
+                | Error   = 8
+                | Hint    = 1
+                | Info    = 2
+                | Warning = 4
+                type MarkerData = {
+                    startColumn        : int
+                    endColumn          : int
+                    startLineNumber    : int
+                    endLineNumber      : int
+                    severity           : MarkerSeverity
+                    message            : string
+                    //code : string
+                    //relatedInformation : string
+                    //source             : string
+                    //tags               : MarkerTag[]
+                }
+                type CompletionItemKind =
+                | Class       = 6
+                | Color       = 15
+                | Constructor = 3
+                | Enum        = 12
+                | Field       = 4
+                | File        = 16
+                | Folder      = 18
+                | Function    = 2
+                | Interface   = 7
+                | Keyword     = 13
+                | Method      = 1
+                | Module      = 8
+                | Property    = 9
+                | Reference   = 17
+                | Snippet     = 14
+                | Text        = 0
+                | Unit        = 10
+                | Value       = 11
+                | Variable    = 5
+                type CompletionItem = {
+                    kind                : CompletionItemKind
+                    label               : string
+                    //additionalTextEdits : string
+                    //command             : string
+                    //commitCharacters    : string
+                    detail              : string
+                    //documentation       : string
+                    //filterText          : string
+                    //insertText          : string
+                    //range               : string
+                    //sortText            : string
+                    //textEdit            : string
+                }
+                type Hover = {
+                    contents   : MarkDownString []
+                    range      : Range
+                }
+                
+                open WebSharper.Core.Resources
+            
+                type MonacoResources() =
+                    inherit BaseResource(@"/EPFileX/monaco/package/min/vs/loader.js")
+            
+                [< Require(typeof<MonacoResources>) >]
+                type Editor() =
+                    do ()
+                  with
+                    [< Inline "$global.require.config({ paths: { 'vs': '/EPFileX/monaco/package/min/vs' }});" >] static member RequireConfig ()     : unit    = X<_>
+                    [< Inline "$global.require(['vs/editor/editor.main'], $_s, $_f)"                          >] static member Require(_s, _f)      : unit    = X<_>
+                    [< Inline "$global.monaco.editor.create($_elt, $_op, $_ov)"                               >] static member Create _elt _op _ov  : Editor  = X<_>
+                    [< Inline "$global.monaco.editor.createModel($_t, $_l, $_u)">] static member CreateModel(_t:string, _l:string, _u:Uri)          : Model   = X<_>
+                    [< Inline "$global.monaco.editor.getModel($_u)"             >] static member GetModel(_u:Uri)                                   : Model   = X<_>
+                    [< Inline "$global.monaco.editor.getModels()"               >] static member GetModels()                                        : Model[] = X<_>
+                    [< Inline "$global.monaco.editor.setModelLanguage($_m, $_l)">] static member SetModelLanguage(_m:Model, _l:string)              : unit    = X<_>
+                    [< Inline "$global.monaco.editor.setTheme($_t)"                                           >] static member SetTheme(_t:string)  : unit    = X<_>
+                    [< Inline "$global.monaco.languages.registerHoverProvider($_l, $_p)"          >] static member RegisterHoverProvider         (_l: string, _p: obj): System.IDisposable   = X<_>
+                    [< Inline "$global.monaco.languages.registerDefinitionProvider($_l, $_p)"     >] static member RegisterDefinitionProvider    (_l: string, _p: obj): System.IDisposable   = X<_>
+                    [< Inline "$global.monaco.languages.registerCompletionItemProvider($_l, $_p)" >] static member RegisterCompletionItemProvider(_l: string, _p: obj): System.IDisposable   = X<_>
+                    [< Inline "$global.monaco.editor.setModelMarkers($_m,$_o,$_k)"       >] static member SetModelMarkers(_m:Model, _o:string, _k:MarkerData[]):unit = X<_>
+                    
+                    [< Inline "$monc.getValue()                  " >] member monc.GetValue()                                  : string          = X<_>
+                    [< Inline "$monc.setValue($_v)               " >] member monc.SetValue(_v:string)                         : unit            = X<_>
+                    [< Inline "$monc.onDidChangeModelContent($_f)" >] member monc.OnDidChangeModelContent(_f:obj->unit)       : unit            = X<_>
+                    [< Inline "$monc.getModel()                  " >] member monc.GetModel()                                  : Model           = X<_>  
+                    [< Inline "$monc.setModel($_m)               " >] member monc.SetModel(_m:Model)                          : unit            = X<_>  
+                    [< Inline "$monc.layout()                    " >] member monc.Layout()                                    : unit            = X<_>
+                    [< Inline "$monc.updateOptions($_o)"           >] member monc.UpdateOptions(_o:obj)                       : unit            = X<_>
+                    [< Inline "$monc.setPosition($_p)            " >] member monc.SetPosition(_p:Position)                    : unit            = X<_>
+                    [< Inline "$monc.focus()                     " >] member monc.Focus()                                     : unit            = X<_>
+                    
+            //        [< Inline "$monc.refresh()"                 >] member monc.Refresh()                                   : unit            = X<_>
+            //        [< Inline "$monc.setOption($_o, $_v)"       >] member monc.SetOption(_o:string, _v:obj)                : unit            = X<_>
+            //        [< Inline "$monc.getOption($_o)"            >] member monc.GetOption(_o:string)                        : obj             = X<_>
+            //        //[< Inline "$monc.getCursor()"               >] member monc.GetCursor()                                 : Pos             = X<_>
+            //        [< Inline "$monc.performLint()"             >] member monc.PerformLint()                               : unit            = X<_>
+            //        [< Inline "$monc.focus()"                   >] member monc.Focus()                                     : unit            = X<_>
+            //        [< Inline "$monc.getLine($_l)"              >] member monc.GetLine(_l:int)                             : string          = X<_>
+            //        [< Inline "$monc.getDoc().clearHistory()"   >] member monc.ClearHistory()                              : unit            = X<_>
+            //        [< Inline "$monc.on($_event, $_f)"          >] member monc.On(_event: string, _f:(Editor * obj)->unit) : unit            = X<_>
+            //        [< Inline "$monc.on($_event, $_f)"          >] member monc.On(_event: string, _f: Editor       ->unit) : unit            = X<_>
+            //        [< Inline "$monc.addKeyMap($_keyMap)"       >] member monc.AddKeyMap(_keyMap: obj)                     : unit            = X<_>
+            //        [< Inline "$monc.getWrapperElement()"       >] member monc.GetWrapperElement()                         : Dom.Element     = X<_>
+            //        [< Inline "$monc.replaceSelection($_v, $_s)">] member monc.ReplaceSelection(_v:string, _s:string)                        = ()
+            //        [< Inline "while($monc.getAllMarks().length > 0) { $monc.getAllMarks()[0].clear() }" >] member monc.RemoveMarks() : unit = X<_>
+            //        [< Inline "$monc.getDoc().markText({line:$_fl, ch:$_fc}, {line:$_tl, ch:$_tc}, {className: $_className, title: $_title})" >]
+            //        member monc.MarkText (_fl:int,_fc:int) (_tl:int,_tc:int) (_className: string) (_title: string): unit       = X<_>
+                
+                [<NoComparison ; NoEquality>]
+                type MonacoConfig = {
+                    var             : Var<string>
+                    onChange        : (unit   -> unit)
+                    onRender        : (Editor -> unit) option
+                    mutable editorO :  Editor option
+                    disabled        : View<bool>
+                    options         : obj
+                    overrides       : obj
+                }
+                
+                [< Inline "var m = $global.require('vs/base/common/lifecycle'); return new m.ImmortalReference($_v);" >]
+                let newImmortalReference _v = X<_>
+                
+                let newVar var    = 
+                    { var         = var 
+                      onChange    = ignore
+                      onRender    = None
+                      editorO     = None
+                      disabled    = V false
+                      options     = null
+                      overrides   = null
+                    }
+                //let includes = [| @"/EPFileX/monaco/package/min/vs/loader.js" |]
+                let loader = async {
+                    if IsClient then
+                        //do! LoadFiles.LoadFilesAsync includes
+                        Editor.RequireConfig()
+                        do! Async.FromContinuations(fun (success, failed, cancelled) -> Editor.Require(success, failed))
+                }
+                let render monc             = 
+                    async {
+                      do! loader
+                      return
+                          div [ on.afterRender (fun elchild ->
+                                 let editor        = Editor.Create elchild.ParentElement monc.options monc.overrides
+                                 ResizeObserver.addResizeObserver editor.Layout elchild.ParentElement
+                                 elchild.ParentNode.RemoveChild elchild |> ignore
+                                 monc.editorO     <- Some editor
+                                 monc.onRender |> Option.iter (fun onrender -> onrender editor)
+                                 monc.var |> bindVarEditor editor.OnDidChangeModelContent editor.GetValue editor.SetValue monc.onChange
+                                 //monc.disabled |> View.Sink (fun dis -> editor.SetOption("readOnly", if dis then "nocursor" :> obj else false :> obj) )
+                          )    
+                        ] []
+                    } |> Doc.Async
+                let inline setVar   v   monc = { monc with var       = v      }
+                let inline onChange f   monc = { monc with onChange  = f      }
+                let inline onRender f   monc = { monc with onRender  = Some f }
+                let inline disabled dis monc = { monc with disabled  = dis    }
+                let inline var          monc = monc.var
+                let newText(v:string)             = newVar (Var.Create v)
+                let newVarO(v:Var<string option>) = Var.Lens v (Option.defaultValue "") (fun sO s -> sO |> Option.map (fun _ -> s) )
+                                                    |> newVar
+                                                    |> disabled(V (Option.isNone v.V))
             
         /// Essentials that part runs in Javascript and part runs in the server
         [< AutoOpen >]
@@ -1842,12 +2489,207 @@ namespace FsRoot
             
             if IsClient then printfn "%s" TemplatesFileName
          
+        module Tree =
+            open CalculationModel.CalculationModel
+            open TreeEff
+        //    open FusionM
+            open Operators
+        
+            type TreeNodeId = TreeNodeId of System.Guid
+        
+            type Weight =
+            | Zero
+            | Add
+            | Subtract
+        
+            type TreeNode = {
+                nid      : TreeNodeId
+                expanded : bool
+                element  : NodeId
+                children : TreeNode []
+                weight   : Weight
+            } 
+        
+            type TreeCollection = {
+                getParentO  :                 TreeNodeId -> TreeNode option
+                getNode     :                 TreeNodeId -> TreeNode
+                getPath     :                 TreeNodeId -> TreeNodeId list
+                setChildren : TreeNode seq -> TreeNodeId -> TreeNode
+            }
+        
+            let getParentOEf  nid    = Reader.ask() |>> fun treeC -> treeC.getParentO     nid
+            let getNodeEf     nid    = Reader.ask() |>> fun treeC -> treeC.getNode        nid
+            let getPathEf     nid    = Reader.ask() |>> fun treeC -> treeC.getPath        nid
+            let setChildrenEf nid ch = Reader.ask() |>> fun treeC -> treeC.setChildren ch nid
+        
+        //        static member FromNode (n:Tree.Node<_>) = n :?> TreeNode
+        //        interface Tree.Node<TreeNodeId> with
+        //            member node.Id                 = node.nid
+        //            member node.isExpanded         = node.expanded
+        //            member node.canHaveChildren    = match node.element with | Calc _ -> false | _ -> true
+        //            member node.path               =   
+        //                let rec getPath nid = parents |> Dict.tryGetValue nid |> Option.map Tree.toNode |> Option.map (fun n -> n.Id :: n.path) |> Option.defaultValue []
+        //                getPath node.nid
+        //            member node.children           =   node     .children   |> Tree.toSeqNode
+        //            member node.newChildren     ch = { node with children = ch 
+        //                                                                    |> Seq.map   (fun n -> n :?> TreeNode    ) 
+        //                                                                    |> Seq.filter(fun n -> 
+        //                                                                        parents 
+        //                                                                        |> Dict.tryGetValue n.nid 
+        //                                                                        |> Option.map (fun v -> 
+        //                                                                            if v :?> TreeNode <> node then 
+        //                                                                                parents.Remove n.nid |> ignore
+        //                                                                                parents.Add(n.nid, node)
+        //                                                                        )
+        //                                                                        |> Option.defaultWith(fun () ->
+        //                                                                            parents.Add(n.nid, node)
+        //                                                                        )
+        //                                                                        true)
+        //                                                                    |> Seq.toArray } |> Tree.toNode
+        //            member node.parent          ns = parents |> Dict.tryGetValue node.nid |> Option.map Tree.toNode
+        
+        module TreeNode =
+            open Tree
+            open TreeEff
+            open CalculationModel.CalculationModel
+        
+            let fromNode    n  = n.getData()
+            let rec treenode (node:TreeNode) =
+                {
+                    id                 = fun () -> node.nid
+                    getData            = fun () -> node
+                    isExpandedEf       = fun () -> rtn <| node.expanded
+                    canHaveChildrenEf  = fun () -> rtn <| match node.element with | Calc _ -> false | _ -> true
+                    childrenEf         = fun () -> node.children |> Seq.map treenode |> rtn 
+                    newChildrenEf      = fun ch -> node |> treenode |> rtn// ch |> Seq.map fromNode |> setChildrenEf node.nid |>> treenode      
+                    parentOEf          = fun _ns-> getParentOEf                            node.nid |>> Option.map treenode
+                    pathEf             = fun () -> getPathEf                               node.nid
+                }
+        
+            let fromSeqNode ns = ns |> Seq.map fromNode 
+        
+            let newTreeNode ch = {
+                nid      = TreeNodeId <| System.Guid.NewGuid()
+                expanded = true
+                children = [||]
+                element  = ch
+                weight   = Add
+            }
+            let newNodeCalc cid = newTreeNode <| Calc cid
+            let newNodeTot  tid = newTreeNode <| Tot  tid
+            let removeNodesEf    p   (nodes: TreeNode seq) = nodes |> Seq.map treenode |> TreeEff.removeNodes (fromNode >> p) |>> fromSeqNode
+            let getElement n = n.element
+            let getTId = function | Tot  tid -> Some tid | _ -> None
+            let getCId = function | Calc cid -> Some cid | _ -> None
+            let forTId p = getElement >> getTId >> (Option.map p ) >> Option.defaultValue false
+            let forCId p = getElement >> getCId >> (Option.map p ) >> Option.defaultValue false
+        
+            let tryFindTreeNodeEf  p   (nodes: TreeNode seq) = nodes |> Seq.map treenode |> TreeEff.tryFind     (fromNode >> p) |>> Option.map fromNode
+            let tryFindNodeEf      nid (nodes: TreeNode seq) = nodes |> tryFindTreeNodeEf (fun n -> n.nid = nid)
+            let tryFindSelNodeEf   sel (nodes: TreeNode seq) = sel   |> Option.map fst     |> Option.map (swap tryFindNodeEf nodes) |> insertO |>> Option.bind id
+            let tryFindSelChildEf  sel (nodes: TreeNode seq) = nodes |> tryFindSelNodeEf sel |>> Option.map getElement
+            let tryFindNodeTIdEf   tid (nodes: TreeNode seq) = nodes |> tryFindTreeNodeEf (forTId ((=) tid) )
+            let tryFindNodeCIdEf   cid (nodes: TreeNode seq) = nodes |> tryFindTreeNodeEf (forCId ((=) cid) )    
+        
+        module Monaco =
+            open Monaco
+            type HoverProvider(ed:Editor) =
+                do()
+               with
+                  member __.provideHover(model:Model, pos:Position, token:obj) =
+                      let word = model.GetWordAtPosition pos
+                      if isUndefined word then box null |> unbox else
+                      {
+                          contents = { value = word?word |> sprintf "The word is: %s" ; isTrusted = true } |> Array.singleton
+                          range    = {
+                                        startLineNumber = pos.lineNumber
+                                        endLineNumber   = pos.lineNumber
+                                        startColumn     = word.startColumn
+                                        endColumn       = word.endColumn
+                                     }
+                      }
+        
+            type CompletionItemProvider(ed:Editor) =
+                do()
+               with
+                  member __.provideCompletionItems(model:Model, pos:Position, token:obj, context: obj): CompletionItem[] =
+                      let word = model.GetWordAtPosition pos
+                      if isUndefined word then box null |> unbox else
+                      [|
+                        { kind = CompletionItemKind.Function ; label = "Hello"   ; detail = ""}
+                        { kind = CompletionItemKind.Function ; label = "How"     ; detail = ""}
+                        { kind = CompletionItemKind.Function ; label = "Are"     ; detail = ""}
+                        { kind = CompletionItemKind.Function ; label = "You"     ; detail = ""}
+                        { kind = CompletionItemKind.Function ; label = word?word ; detail = ""}
+        
+                      |]
+                  member __.resolveCompletionItem(item: CompletionItem, token: obj): CompletionItem = { item with detail = "more details" }
+            type DefinitionProvider(ed:Editor) =
+                do()
+               with
+                  member __.provideDefinition(model: Model, pos: Position, token: obj): Location =
+                      let word = model.GetWordAtPosition pos
+                      if isUndefined word then box null |> unbox else
+                      let ms = model.FindMatches(word.word, false, false, true, " <>()+-=.,/#@$%^&*\"", false, 1)
+                      if ms.Length = 0    then box null |> unbox else
+                      { range = ms.[0].range
+                        uri = model.uri
+                      }
+        
+            let annotationsV = Var.Create "Err (1, 7) - (1, 12): \"This shows over there as an error\".\nWarn (2, 7) - (2, 12): \"This shows over there as a warning\".\nInfo (3, 7) - (3, 12): \"This shows over there as information\".\nHint (4, 7) - (4, 12): \"This shows over there as a hint\"."
+            let transformAnnotations msgs =
+                let rex  = """(Err|Warn|Info|Hint) \((\d+)\,\s*(\d+)\) - \((\d+)\,\s*(\d+)\)\: "([^"]+?)"\.""" //"
+                match msgs with
+                | REGEX rex "g" m -> m
+                | _               -> [||]
+                |> Array.choose (fun v ->
+                    match v with
+                    | REGEX rex "" [| _ ; ty ; fl;     fc;     tl;     tc; msg |] 
+                             -> Some (ty, int fl, int fc, int tl, int tc, msg)
+                    | _      -> None
+                )
+                |> Array.map (fun (ty, fl, fc, tl, tc, msg) ->
+                        { message  = msg
+                          severity = match ty with "Err" -> MarkerSeverity.Error | "Warn" -> MarkerSeverity.Warning  | "Hint" -> MarkerSeverity.Hint |_-> MarkerSeverity.Info
+                          startColumn     = fc
+                          endColumn       = tc
+                          startLineNumber = fl
+                          endLineNumber   = tl
+                        }
+                  )        
+                    
+                
+            let monacoNew        (var           : Var<string>                         ) 
+                                 (annotationsWO : View<MarkerData []>           option) 
+                                 (showToolTipO  :(string -> int -> int -> unit) option) 
+                                 (getHintsO     :(((string * string * string) [] -> int * int -> int * int -> unit) 
+                                               -> string -> int -> int -> unit) option) =
+            
+                let setDirtyCond() = ()
+                let getHints    _  = ()
+                                    
+                Monaco.newVar var
+                |> onRender(fun ed -> 
+                    Editor.SetModelLanguage(ed.GetModel(), "fsharp")
+                    Editor.SetTheme("vs-dark")
+                    let hp = new HoverProvider         (ed)
+                    let cp = new CompletionItemProvider(ed)
+                    let dp = new DefinitionProvider    (ed)
+                    hp.provideHover |> print
+                    cp.provideCompletionItems |> print
+                    cp.resolveCompletionItem  |> print
+                    dp.provideDefinition      |> print
+                    Editor.RegisterHoverProvider         ("fsharp", hp ) |> ignore
+                    Editor.RegisterCompletionItemProvider("fsharp", cp ) |> ignore
+                    Editor.RegisterDefinitionProvider    ("fsharp", dp ) |> ignore
+                    annotationsWO
+                    |> Option.iter( View.Sink (fun ms -> Editor.SetModelMarkers(ed.GetModel(), "annotations", ms)) 
+                    )
+                )
         //#r @"Compiled\CalculationModelDll\CalculationModelDll.dll"
         open CalculationModel.CalculationModel
         
-        type TreeNodeId = TreeNodeId
-        
-        type Selection  = (TreeNodeId * (ForId option)) option
+        type Selection  = (Tree.TreeNodeId * (ForId option)) option
         
         type Version = {
             major     : int
@@ -1868,7 +2710,7 @@ namespace FsRoot
                                             minor = 0          ; minorDate = nowStamp() }
         
         type ModelUI = {
-            //treeHierarchy : Var<TreeNode []>
+            treeHierarchy : Var<Tree.TreeNode []>
             calculations  : ListModel<CalId        , Calculation>
             totals        : ListModel<TotId        , Total      >
             dimensions    : ListModel<DimId        , Dimension  >
@@ -1901,11 +2743,11 @@ namespace FsRoot
         | AddFormula        of CalId
         | RemoveFormula     of ForId
         | SelectFormula     of ForId
-        //| SelectFormNode    of ForId * TreeNodeId
-        | SelectNode        of         TreeNodeId
-        //| ExpandNode        of bool  * TreeNodeId
-        //| IndentNode        of bool  * TreeNodeId
-        //| MoveNode          of bool  * TreeNodeId * TreeNodeId
+        | SelectFormNode    of ForId * Tree.TreeNodeId
+        | SelectNode        of         Tree.TreeNodeId
+        | ExpandNode        of bool  * Tree.TreeNodeId
+        | IndentNode        of bool  * Tree.TreeNodeId
+        | MoveNode          of bool  * Tree.TreeNodeId * Tree.TreeNodeId
         | AddDimension
         | RemoveDimension   of DimId
         | SelectDimension   of DimId
@@ -1920,7 +2762,7 @@ namespace FsRoot
         | NoOp
         
         module ModelUI =
-            //let isNodeSelected    nid (sel:Selection) = sel |> Option.map (fst >> ((=) nid) ) |> Option.defaultValue false
+            let isNodeSelected    nid (sel:Selection) = sel |> Option.map (fst >> ((=) nid) ) |> Option.defaultValue false
             let selectedString txt (selectedV:View<bool>) = V(if selectedV.V then txt else "") 
             
             let nonTotal        = { Total      .New()                with totId = TotId System.Guid.Empty }
@@ -1932,26 +2774,27 @@ namespace FsRoot
             let nonCalculationV = Var.Create nonCalculation |> Var.Lens <| id <| (fun v _ -> v)
             let nonFormulaV     = Var.Create nonFormula     |> Var.Lens <| id <| (fun v _ -> v)
             
-            //let isNodeFormSelected fid nid (sel:Selection) = sel = Some(nid, Some fid)
+            let isNodeFormSelected fid nid (sel:Selection) = sel = Some(nid, Some fid)
         
             let refreshView, refreshNow =
                 let refresh = Var.Create ()
                 refresh.View, fun () -> refresh.Value <- ()
-            //let setHierarchy model (nodes: TreeNode seq) =
-            //    nodes
-            //    |> Seq.map (fun n -> parents.Remove n.nid |> ignore ; n)
-            //    |> Seq.toArray
-            //    |> model.treeHierarchy.Set
+            let setHierarchy model (nodes: Tree.TreeNode seq) =
+                //nodes |> Seq.iter (fun n -> parents.Remove n.nid |> ignore)
+                nodes
+                |> Seq.toArray
+                |> model.treeHierarchy.Set
         
             let [<Inline>] inline mapIds f vls = vls |> View.Map (Seq.map f >> Seq.toArray) |> View.consistent
         
             let getDimsCubeO cubes = cubes
-            
+        
+        
             
         [< AutoOpen >]
         module Global =
             let model = {
-                //treeHierarchy = Var.Create [||]
+                treeHierarchy = Var.Create [||]
                 calculations  = ListModel.Create (fun v -> v.calId) [||]
                 totals        = ListModel.Create (fun v -> v.totId) [||]
                 dimensions    = ListModel.Create (fun v -> v.dimId) [||]
@@ -1983,6 +2826,129 @@ namespace FsRoot
             let inline appendMsgs   msg = appendText model.outputMsgs msg
             let inline appendParser msg = appendText model.parserMsgs msg
         
+        module Render =
+            let scrollIntoView selW (e:Dom.Element) = selW |> View.Sink (fun s -> if s then e?scrollIntoViewIfNeeded())
+        
+            //let selTotIdOV = model.treeHierarchy.View |> View.Map2 TreeNode.tryFindSelChild model.selection.View |> View.Map (Option.bind TreeNode.getTId)
+            //let selCalIdOV = model.treeHierarchy.View |> View.Map2 TreeNode.tryFindSelChild model.selection.View |> View.Map (Option.bind TreeNode.getCId)
+            //let selForIdOV =                                                                model.selection.View |> View.Map2 (Option.bind snd            )
+          
+            //let lensForm getF view (calcV:Var<Calculation>) = 
+            //    calcV |> Var.lensView
+            //               (fun c   -> c.calFormulas |> Seq.tryFind      getF |> Option.defaultValue ModelUI.nonFormula)
+            //               (fun c y -> c.calFormulas |> Seq.tryFindIndex getF |> Option.map (fun i -> { c with calFormulas = Array.replace i y c.calFormulas } )
+            //                                                                  |> Option.defaultValue c)
+            //               view
+          
+            let mapDefW def = View.Map (Option.defaultValue def) 
+          
+            let zx = {
+                Tree.nid      = System.Guid.Empty |> Tree.TreeNodeId
+                Tree.expanded = false
+                Tree.element  = System.Guid.Empty |> CalId |> Calc // NodeId
+                Tree.children = [||] // TreeNode []
+                Tree.weight   =  Tree.Add        
+            }
+        
+            let getTreeEffReaderResource() = {
+                Tree.getParentO  = fun _   -> Hole.Incomplete "Tree.getParentO " //                    TreeNodeId -> TreeNode option
+                Tree.getNode     = fun _   -> Hole.Incomplete "Tree.getNode    " //                    TreeNodeId -> TreeNode
+                Tree.getPath     = fun _   -> Hole.Incomplete "Tree.getPath    " //                    TreeNodeId -> TreeNodeId list
+                Tree.setChildren = fun _ i -> Hole.Incomplete "Tree.setChildren" //    TreeNode seq -> TreeNodeId -> TreeNode
+            }
+        
+            type EffReader<'read> = inherit Reader.Reader<'read>
+        
+            let runEff     Ef = Ef |> Reader.readerHandler (getTreeEffReaderResource()) |> (Eff.run : (Eff<EffReader<_>,_> -> _) )
+            let iterEff  f m  = m |> map (f: 'a -> unit) |> runEff |> fun vR -> vR 
+        
+            let tryFindNode nid = TreeNode.tryFindNodeEf nid
+        
+            let currentCalcOW = View.Do {
+                let! nodes = model.treeHierarchy.View
+                let! selO  = model.selection    .View
+                let! calcs = model.calculations .View
+                return
+                    nodes 
+                    |> TreeNode.tryFindSelNodeEf selO
+                    |> runEff 
+                    |> Option.bind (fun node -> match node.element with Calc cid -> Some cid |_-> None)
+                    |> Option.bind (fun cid  -> calcs |> Seq.tryFind (fun c -> c.calId = cid))
+            }
+            let setCurrentCalc v = 
+                async {
+                    let! currCalcO = currentCalcOW |> View.GetAsync 
+                    if   currCalcO.IsNone then () else
+                    model.calculations.Add v
+                } |> Async.Start
+            let currentCalcV  = Var.Make (mapDefW ModelUI.nonCalculation currentCalcOW ) setCurrentCalc
+            
+            //let currentCalcV  = ListModel.currentLens ModelUI.nonCalculation selCalIdOV model.calculations
+            //let currentFormV  = currentCalcV |> lensForm (fun f -> match model.selection.Value with Some(_, Some fid) -> fid = f.forId |_-> false) model.selection.View
+          
+            let lensForm (calcV:Var<Calculation>) getFidO =
+                if not IsClient then ModelUI.nonFormulaV else
+                let calcFormsV = Lens calcV.V.calFormulas
+                let formOW = View.Do {
+                    let! calc = calcV.View
+                    return
+                        getFidO()
+                        |> Option.bind (fun fid -> 
+                            if calc.calId = ModelUI.nonCalculation.calId then None else 
+                            calc.calFormulas |> Seq.tryFind (fun f -> f.forId = fid) )
+                }
+                let setForm v = 
+                    async {
+                        let! formO = formOW |> View.GetAsync 
+                        if   formO.IsNone then () else
+                        calcFormsV.Value 
+                        |> Seq.tryFindIndex (fun f -> f.forId = v.forId)
+                        |> Option.iter(fun i -> calcFormsV.Value <- calcFormsV.Value |> Array.replace i v)
+                    } |> Async.Start
+                Var.Make (mapDefW ModelUI.nonFormula formOW) setForm
+            let currentFormV = lensForm currentCalcV (fun () -> model.selection.Value |> Option.bind snd)
+            
+            let calcTypeV (calcV:Var<Calculation>) = (Lens calcV.V.isInput).Lens (function true->"Input" |_->"Calc") (fun _ s -> match s with |"Calc" -> false | _ -> true) 
+            let formTypeV (formV:Var<Formula    >) = (Lens formV.V.forType).Lens (fun t -> (sprintf "%A" t).[3..]  ) (fun _ s -> match s with |"Base" -> ForBase |"Consolidated" -> ForConsolidated | _ -> ForAll  ) 
+            
+            let dtypes =   [ 
+              DtDataType
+              DtTime
+              DtVersion
+              DtOther    ] 
+          
+        
+            
+        module DragDrop =
+        
+            type DragInfo = 
+                | DragNone
+                | DragNode of Tree.TreeNodeId
+                | DragForm of CalId * Formula
+            
+            let mutable drag        = DragNone
+            let setDragNone ()      = drag <- DragNone
+            let setDragNode tnid    = drag <- DragNode tnid
+            let setDragForm cid frm = drag <- DragForm(cid, frm)
+            
+            let getDragFormO cid fid = match drag with DragForm (dcid, dfor) when fid  <> dfor.forId && dcid = cid -> Some dfor | _ -> None
+            let getDragNIdO  tnId    = match drag with DragNode  dnid        when dnid <>       tnId               -> Some dnid | _ -> None
+            let isDragForm   cid fid = getDragFormO cid fid |> function None -> false | _ -> true
+            
+            let [< Inline >] inline moveItem dropId elems getId item =
+                elems
+                |> Seq.filter (getId >> ((<>) (getId item)) )
+                |> Seq.toArray
+                |> (fun s -> let fst, snd =  s |> Array.splitAt (s |> Array.findIndex (getId >> ((=) dropId)) )
+                             [fst ; [| item |] ; snd])
+                |> Seq.collect id
+                |> Seq.toArray
+            
+            let [< Inline >] inline value (x: ^T)   = (^T : (member Value : #seq<'U>        )  x    )
+            let [< Inline >] inline set   (x: ^T) v = (^T : (member Set   : #seq<'U> -> unit) (x, v))
+            
+            let [< Inline >] inline moveItemInListModel dropId lm getId itemO = itemO |> Option.iter( moveItem dropId (value lm) getId >> (set lm) )
+            
         module TableDimensions =
             open Templating
         
@@ -2010,6 +2976,109 @@ namespace FsRoot
                         )
                     )
                     .Doc()
+        module TableCalculations =
+            let rowFormula (tnId:Tree.TreeNodeId) (calcV : Var<Calculation>) fid =
+                let cid      = calcV.Value.calId
+                let formsV   =        Lens     calcV.V.calFormulas
+                let formV    = Render.lensForm calcV (fun () -> Some fid) 
+                let selFormW = V (ModelUI.isNodeFormSelected fid tnId model.selection.V)
+                let formForW = V (formV.V.forDestDecl 
+                                  |> Seq.map(fun f -> 
+                                      sprintf "%s:%s" 
+                                          (model.dimensions.View.V 
+                                           |> Seq.tryFind(fun d -> d.dimId = f.Key) 
+                                           |> function Some dim -> dim.dimName |_-> "") 
+                                          f.Value) 
+                                  |> String.concat ", ")
+                TemplateLib.FormulaRow()
+                    .SelectedMark( ModelUI.selectedString ">"        selFormW )
+                    .Selected(     ModelUI.selectedString "selected" selFormW )
+                    .FormulaFor(   formForW                                   )
+                    .Formula(      Lens formV.V.forText                       )
+                    .FormType(     Render.formTypeV formV                     )
+                    .Remove(       fun _  -> RemoveFormula  fid        |> processor                               )
+                    .Select(       fun _  -> SelectFormNode(fid, tnId) |> processor                               )
+                    .Drag(         fun ev ->    DragDrop.setDragForm cid formV.Value ; ev.Event.StopPropagation() )
+                    .DragOver(     fun ev -> if DragDrop .isDragForm cid fid then      ev.Event.PreventDefault () )
+                    .Drop(         fun ev -> do                                        ev.Event.PreventDefault ()
+                                             DragDrop.getDragFormO cid fid |> DragDrop.moveItemInListModel fid formsV Formula.forId )
+                    .AfterRender(  Render.scrollIntoView selFormW )
+                    .Doc()
+                    
+            let rowTreeNode (tnId:Tree.TreeNodeId, nid:NodeId, level:int) =
+                let depth             = sprintf "%dem" level
+                let isSelW            = V (ModelUI.isNodeSelected tnId model.selection.V)
+                let rowCalculation (calcV:Var<Calculation>) cid       =
+                    let formsDoc      = V (calcV.V |> fun c -> c.calFormulas |> Seq.map Formula.forId) |> Doc.BindSeqCached (rowFormula tnId calcV)
+                    TemplateLib.CalculationRow()
+                        .SelectedMark( "" )
+                        .Selected(     ModelUI.selectedString "selected" isSelW )
+                        .Indent(       depth                            )
+                        .CalcName(     Lens calcV.V.calName   )
+                        .Format(       Lens calcV.V.format    )
+                        .IsText(       Lens calcV.V.isText    )
+                        .IsBalance(    Lens calcV.V.isBalance )
+                        .OrderCalc(    Lens calcV.V.calOrder  )
+                        .CalcType(     Render.calcTypeV calcV )
+                        .Remove(       fun _ -> RemoveCalculation cid |> processor        )
+                        .Select(       fun _ -> isSelW |> View.Get (fun s -> if not s then SelectNode tnId |> processor)  )
+                        .Formulas(     formsDoc )
+                        .Drag(         fun ev ->     DragDrop.setDragNode tnId            ; ev.Event.StopPropagation() )
+                        .DragOver(     fun ev -> if (DragDrop.getDragNIdO tnId).IsSome then ev.Event.PreventDefault () )
+                        .Drop(         fun ev -> do                                         ev.Event.PreventDefault () 
+                                                 DragDrop.getDragNIdO tnId |> Option.iter(fun fr -> MoveNode(true, fr, tnId) |> processor ) )
+                        .AfterRender(  Render.scrollIntoView isSelW )
+                        .Doc()
+                 
+                let rowTotal (totV:Var<Total>) tid =
+                    let totV         = model.totals |> ListModel.lensDef ModelUI.nonTotal tid
+                    let nodeW        = V (TreeNode.tryFindNodeEf tnId model.treeHierarchy.V |> Render.runEff )
+                    let markW        = V (nodeW.V |> Option.map (fun node -> if node.expanded then "-" else "+") |> Option.defaultValue "*")
+                    TemplateLib.TotalRow()
+                        .SelectedMark( markW                                           )
+                        .Selected(     ModelUI.selectedString "selected" isSelW        )
+                        .Indent(       depth                                           )
+                        .TotName(      Lens totV.V.totName                             )
+                        .Format(       Lens totV.V.totFormat                           )
+                        .OrderTot(     Lens totV.V.totOrder                            )
+                        .Remove(       fun _ -> RemoveTotal tid           |> processor )
+                        .Select(       fun _ -> SelectNode  tnId          |> processor )
+                        .Collapse(     fun _ -> nodeW |> View.Get (Option.iter (fun node -> (not node.expanded, node.nid) |> ExpandNode |> processor)) )
+                        .Drag(         fun ev ->     DragDrop.setDragNode tnId            ; ev.Event.StopPropagation() )
+                        .DragOver(     fun ev -> if (DragDrop.getDragNIdO tnId).IsSome then ev.Event.PreventDefault () )
+                        .Drop(         fun ev -> do                                         ev.Event.PreventDefault () 
+                                                 DragDrop.getDragNIdO tnId |> Option.iter(fun fr -> MoveNode(true, fr, tnId) |> processor ) )
+                        .AfterRender(  Render.scrollIntoView isSelW )
+                        .Doc()
+            
+                match  nid with
+                | Calc cid -> rowCalculation (model.calculations |> ListModel.lensDef ModelUI.nonCalculation cid) cid
+                | Tot  tid -> rowTotal       (model.totals       |> ListModel.lensDef ModelUI.nonTotal       tid) tid
+                
+            let tableCalculations() =
+                TemplateLib.CalculationTable()
+                    .TBody( 
+                        V (model.treeHierarchy.V
+                           |> Seq.map TreeNode.treenode
+                           |> TreeEff.listNodes 0 
+                           |> Render.runEff
+                           |> (Seq.map (fun (tn,l) -> tn.id(), (TreeNode.fromNode tn).element, l) ) 
+                        )
+                        |> Doc.BindSeqCached rowTreeNode
+                     )
+                    .Doc()
+            
+        let globalDefs () =
+            //let getAnnot = V (Monaco.filterGlobal model.parserMsgs.V) |> View.consistent
+            
+            Monaco.monacoNew
+                <| model.globalDefs 
+                <| None //Some getAnnot
+                <| None //Some (ParseFS.showToolTips FSCode.InGlobalDefs)
+                <| None //Some (ParseFS.getHints     FSCode.InGlobalDefs)
+        
+            |> Monaco.render
+        
         module MainProgram =
             open FusionAsyncM
             open Operators
@@ -2071,7 +3140,9 @@ namespace FsRoot
                                        //AF.newDoc  "Snippets"        (lazy RenderSnippets  .render() )
                                        //AF.newDoc  "Properties"      (lazy RenderProperties.render() )
                                        //AF.newDoc  "ButtonsRight"    (lazy buttonsRight           () )
-                                       AF.newDoc  "Dimensions"      (lazy TableDimensions.tableDimensions() )
+                                       AF.newDoc  "globalDefs"      (lazy globalDefs() )
+                                       AF.newDoc  "Dimensions"      (lazy TableDimensions  .tableDimensions  () )
+                                       AF.newDoc  "Calculations"    (lazy TableCalculations.tableCalculations() )
                                     |]  
                     AF.plgActions = [| //AF.newAct  "AddSnippet"      Snippets.newSnippet
                                        //AF.newAct  "RemoveSnippet"   deleteSnippet       
@@ -2087,6 +3158,9 @@ namespace FsRoot
                                        //AF.newActF "JumpTo"          <| AF.FunAct1 ((fun o -> unbox o |> JumpTo.jumpToRef        ), "textarea"   )
                                        //AF.newActF "ButtonClick"     <| AF.FunAct1 ((fun o -> unbox o |> CustomAction.buttonClick), "button"     )
                                        //AF.newActF "ActionClick"     <| AF.FunAct1 ((fun o -> unbox o |> CustomAction.actionClick), "name"       )
+                                       AF.newAct  "AddDimension"    (fun () -> AddDimension   |> processor)
+                                       AF.newAct  "AddCalculation"  (fun () -> AddCalculation |> processor)
+                                       AF.newAct  "AddTotal"        (fun () -> AddTotal       |> processor)
                                        AF.newAct  "AddDimension"    (fun () -> AddDimension   |> processor)
                                     |]
                     AF.plgQueries = [|                                               
@@ -2156,28 +3230,29 @@ namespace FsRoot
                                             true
                 let tryFindCalcForm fid   = model.calculations.Value |> Seq.tryFind(fun calc -> calc.calFormulas |> Seq.exists (fun f -> f.forId = fid))
                 match msg with
-            //    | AddCalculation         -> let n = Calculation.New()
-            //                                model.calculations.Add n
-            //                                let nn = TreeNode.newNodeCalc n.calId
-            //                                model.treeHierarchy.Value
-            //                                |> Array.append [| nn |]
-            //                                |> model.treeHierarchy.Set
-            //                                SelectNode  nn.nid |> updateModelR model
-            //    | AddTotal               -> let n = Total.New()
-            //                                model.totals.Add n
-            //                                let nn = TreeNode.newNodeTot  n.totId
-            //                                model.treeHierarchy.Value
-            //                                |> Array.append [| nn |]
-            //                                |> model.treeHierarchy.Set
-            //                                SelectNode  nn.nid |> updateModelR model
-            //    | AddFormula         cid -> if  cid = ModelUI.nonCalculation.calId then false else
-            //                                let n = Formula.New()
-            //                                model.calculations.TryFindByKey cid
-            //                                |> Option.iter(fun calc -> { calc with calFormulas = Array.append calc.calFormulas [| n |] } |> model.calculations.Add)
-            //                                model.treeHierarchy.Value 
-            //                                |> TreeNode.tryFindSelNode model.selection.Value
-            //                                |> Option.map (fun nn -> SelectFormNode (n.forId, nn.nid ) |> updateModelR model)
-            //                                |> Option.defaultValue true
+                | AddCalculation         -> let n = Calculation.New()
+                                            model.calculations.Add n
+                                            let nn = TreeNode.newNodeCalc n.calId
+                                            model.treeHierarchy.Value
+                                            |> Array.append [| nn |]
+                                            |> model.treeHierarchy.Set
+                                            SelectNode  nn.nid |> updateModelR model
+                | AddTotal               -> let n = Total.New()
+                                            model.totals.Add n
+                                            let nn = TreeNode.newNodeTot  n.totId
+                                            model.treeHierarchy.Value
+                                            |> Array.append [| nn |]
+                                            |> model.treeHierarchy.Set
+                                            SelectNode  nn.nid |> updateModelR model
+                | AddFormula         cid -> if  cid = ModelUI.nonCalculation.calId then false else
+                                            let n = Formula.New()
+                                            model.calculations.TryFindByKey cid
+                                            |> Option.iter(fun calc -> { calc with calFormulas = Array.append calc.calFormulas [| n |] } |> model.calculations.Add)
+                                            model.treeHierarchy.Value 
+                                            |> TreeNode.tryFindSelNodeEf model.selection.Value
+                                            |> Render.runEff
+                                            |> Option.map (fun nn -> SelectFormNode (n.forId, nn.nid ) |> updateModelR model)
+                                            |> Option.defaultValue true
                 | AddDimension           -> let n = Dimension.New ""
                                             model.dimensions.Add n
                                             SelectDimension n.dimId |> updateModelR model
@@ -2195,19 +3270,20 @@ namespace FsRoot
             //                                |> TreeNode.removeNodes (TreeNode.forTId ((=) tid)) 
             //                                |> ModelUI.setHierarchy model
             //                                true
-            //    | RemoveCalculation  cid -> setSelection None |> ignore
-            //                                model.calculations.RemoveByKey cid
-            //                                model.totals.Value
-            //                                |> Seq.choose (fun t -> 
-            //                                    let eq, ne = t.children |> Array.partition (fun (_, nid) -> nid = Calc cid )
-            //                                    if eq.Length = 0 then None else
-            //                                    Some { t with children = ne }
-            //                                )
-            //                                |> Seq.iter model.totals.Add
-            //                                model.treeHierarchy.Value 
-            //                                |> TreeNode.removeNodes (TreeNode.forCId ((=) cid)) 
-            //                                |> ModelUI.setHierarchy model
-            //                                true
+                | RemoveCalculation  cid -> setSelection None |> ignore
+                                            model.calculations.RemoveByKey cid
+                                            model.totals.Value
+                                            |> Seq.choose (fun t -> 
+                                                let eq, ne = t.children |> Array.partition (fun (_, nid) -> nid = Calc cid )
+                                                if eq.Length = 0 then None else
+                                                Some { t with children = ne }
+                                            )
+                                            |> Seq.iter model.totals.Add
+                                            model.treeHierarchy.Value 
+                                            |> TreeNode.removeNodesEf (TreeNode.forCId ((=) cid))
+                                            |> Render.runEff
+                                            |> ModelUI.setHierarchy model
+                                            true
             //    | RemoveFormula      fid -> tryFindCalcForm fid
             //                                |> Option.iter(fun calc -> { calc with calFormulas = calc.calFormulas |> Array.filter (fun f -> f.forId <> fid) } 
             //                                                           |> model.calculations.Add )
@@ -2260,7 +3336,7 @@ namespace FsRoot
             //                                false
             //    | RenameCube   (cid, n)  -> doForCube cid <| fun c -> model.cubes.Add { c with cubName = n }
             //                                false
-            //    | _ -> false
+                  | _ -> printfn "Msg not implemented: %A" msg ; false
         
             
             let updateModel model msg = if updateModelR model msg then ModelUI.refreshNow()
