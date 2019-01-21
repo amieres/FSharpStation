@@ -1,0 +1,1 @@
+#r "../../../../packages/test2/System.Threading.Channels/lib/netcoreapp2.1/System.Threading.Channels.dll" 

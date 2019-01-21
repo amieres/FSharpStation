@@ -25,7 +25,7 @@ D: /package
 D: /package/services
 D: /package/services/metadata
 D: /package/services/metadata/core-properties
-F: /package/services/metadata/core-properties/092043089c0d40daa332e2e7da203c60.psmdcp
+F: /package/services/metadata/core-properties/b73126fd8af945ffa50b2a981912f084.psmdcp
 D: /ref
 D: /ref/monoandroid10
 F: /ref/monoandroid10/_._
@@ -72,7 +72,7 @@ D: /_rels
 F: /_rels/.rels
 F: /.signature.p7s
 F: /dotnet_library_license.txt
-F: /system.net.http.4.3.3.nupkg
+F: /system.net.http.4.3.4.nupkg
 F: /System.Net.Http.nuspec
 F: /ThirdPartyNotices.txt
 F: /[Content_Types].xml

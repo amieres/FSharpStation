@@ -1,0 +1,6 @@
+#load "Microsoft.AspNetCore.Hosting.Abstractions.csx" 
+#load "Microsoft.AspNetCore.Http.Extensions.csx" 
+#load "Microsoft.Extensions.FileProviders.Abstractions.csx" 
+#load "Microsoft.Extensions.Logging.Abstractions.csx" 
+#load "Microsoft.Extensions.WebEncoders.csx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.StaticFiles/lib/netstandard2.0/Microsoft.AspNetCore.StaticFiles.dll" 

@@ -1,0 +1,1 @@
+#r "../../../../packages/test/Microsoft.Win32.SystemEvents/lib/netstandard2.0/Microsoft.Win32.SystemEvents.dll" 

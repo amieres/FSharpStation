@@ -1,0 +1,5 @@
+#load "Microsoft.Extensions.Configuration.Abstractions.fsx" 
+#load "Microsoft.Extensions.Configuration.Binder.fsx" 
+#load "Microsoft.Extensions.DependencyInjection.Abstractions.fsx" 
+#load "Microsoft.Extensions.Options.fsx" 
+#r "../../../../packages/test/Microsoft.Extensions.Options.ConfigurationExtensions/lib/netstandard2.0/Microsoft.Extensions.Options.ConfigurationExtensions.dll" 

@@ -2,18 +2,19 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata minClientVersion="2.12">
     <id>Newtonsoft.Json</id>
-    <version>11.0.2</version>
+    <version>12.0.1</version>
     <title>Json.NET</title>
     <authors>James Newton-King</authors>
     <owners>James Newton-King</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <licenseUrl>https://raw.github.com/JamesNK/Newtonsoft.Json/master/LICENSE.md</licenseUrl>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
     <projectUrl>https://www.newtonsoft.com/json</projectUrl>
     <iconUrl>https://www.newtonsoft.com/content/images/nugeticon.png</iconUrl>
     <description>Json.NET is a popular high-performance JSON framework for .NET</description>
     <copyright>Copyright © James Newton-King 2008</copyright>
     <tags>json</tags>
-    <repository type="git" url="https://github.com/JamesNK/Newtonsoft.Json.git" />
+    <repository type="git" url="https://github.com/JamesNK/Newtonsoft.Json" commit="509643a8952ce731e0207710c429ad6e67dc43db" />
     <dependencies>
       <group targetFramework=".NETFramework2.0" />
       <group targetFramework=".NETFramework3.5" />

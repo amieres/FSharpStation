@@ -4,14 +4,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Testing</title>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js" type="text/javascript" charset="UTF-8"></script>
     <script src="/EPFileX/CIPHERSpaceLoadFiles.js" type="text/javascript" charset="UTF-8"></script>
 </head>
 <body style="margin: 0px" >
 </body>
 </html>
 <script >
-    let elem = document.createElement("script")
-    elem.setAttribute("src", "testing.js?q=" + Date.now())
-    document.head.appendChild(elem);
+    let addLink = function(lnk) {
+        let elem = document.createElement("script")
+        elem.setAttribute("src", lnk + "?q=" + Date.now())
+        document.head.appendChild(elem);
+    }
+    addLink("testing.js");
 </script>

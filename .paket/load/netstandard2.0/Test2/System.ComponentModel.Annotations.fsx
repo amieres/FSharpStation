@@ -1,0 +1,1 @@
+#r "../../../../packages/test2/System.ComponentModel.Annotations/lib/netstandard2.0/System.ComponentModel.Annotations.dll" 

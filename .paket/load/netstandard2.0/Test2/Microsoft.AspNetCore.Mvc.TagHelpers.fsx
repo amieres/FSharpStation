@@ -1,0 +1,7 @@
+#load "Microsoft.AspNetCore.Mvc.Razor.fsx" 
+#load "Microsoft.AspNetCore.Razor.Runtime.fsx" 
+#load "Microsoft.AspNetCore.Routing.Abstractions.fsx" 
+#load "Microsoft.Extensions.Caching.Memory.fsx" 
+#load "Microsoft.Extensions.FileSystemGlobbing.fsx" 
+#load "Microsoft.Extensions.Primitives.fsx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.Mvc.TagHelpers/lib/netstandard2.0/Microsoft.AspNetCore.Mvc.TagHelpers.dll" 

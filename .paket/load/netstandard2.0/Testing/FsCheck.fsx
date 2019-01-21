@@ -1,0 +1,1 @@
+#r "../../../../packages/testing/FsCheck/lib/netstandard2.0/FsCheck.dll" 

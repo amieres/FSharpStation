@@ -1,0 +1,1 @@
+#r "../../../../packages/test/TaskBuilder.fs/lib/netstandard1.6/TaskBuilder.fs.dll" 

@@ -1,0 +1,7 @@
+#load "Microsoft.ApplicationInsights.AspNetCore.fsx" 
+#load "Microsoft.AspNetCore.Hosting.fsx" 
+#load "Microsoft.AspNetCore.Razor.Runtime.fsx" 
+#load "Microsoft.Extensions.Configuration.Json.fsx" 
+#load "Microsoft.Extensions.DiagnosticAdapter.fsx" 
+#load "Microsoft.Extensions.Logging.fsx" 
+#load "Microsoft.Extensions.Logging.Configuration.fsx" 

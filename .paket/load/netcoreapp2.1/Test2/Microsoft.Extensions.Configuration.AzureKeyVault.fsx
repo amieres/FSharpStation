@@ -1,0 +1,5 @@
+#load "Microsoft.Azure.KeyVault.fsx" 
+#load "Microsoft.Azure.Services.AppAuthentication.fsx" 
+#load "Microsoft.Extensions.Configuration.fsx" 
+#load "Microsoft.Extensions.Configuration.FileExtensions.fsx" 
+#r "../../../../packages/test2/Microsoft.Extensions.Configuration.AzureKeyVault/lib/netstandard2.0/Microsoft.Extensions.Configuration.AzureKeyVault.dll" 

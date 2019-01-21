@@ -1,0 +1,6 @@
+#load "Microsoft.AspNetCore.Http.fsx" 
+#load "Microsoft.AspNetCore.Http.Extensions.fsx" 
+#load "Microsoft.AspNetCore.ResponseCaching.Abstractions.fsx" 
+#load "Microsoft.Extensions.Caching.Memory.fsx" 
+#load "Microsoft.Extensions.Logging.Abstractions.fsx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.ResponseCaching/lib/netstandard2.0/Microsoft.AspNetCore.ResponseCaching.dll" 

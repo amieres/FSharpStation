@@ -1,0 +1,2 @@
+#load "Microsoft.AspNetCore.Cryptography.Internal.csx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.Cryptography.KeyDerivation/lib/netstandard2.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll" 

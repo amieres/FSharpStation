@@ -1,0 +1,8 @@
+#load "Microsoft.AspNetCore.Mvc.Razor.Extensions.csx" 
+#load "Microsoft.AspNetCore.Mvc.ViewFeatures.csx" 
+#load "Microsoft.AspNetCore.Razor.Runtime.csx" 
+#load "Microsoft.CodeAnalysis.CSharp.csx" 
+#load "Microsoft.CodeAnalysis.Razor.csx" 
+#load "Microsoft.Extensions.Caching.Memory.csx" 
+#load "Microsoft.Extensions.FileProviders.Composite.csx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.Mvc.Razor/lib/netstandard2.0/Microsoft.AspNetCore.Mvc.Razor.dll" 

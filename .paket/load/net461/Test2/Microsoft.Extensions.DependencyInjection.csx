@@ -1,0 +1,1 @@
+#r "../../../../packages/test2/Microsoft.Extensions.DependencyInjection/lib/net461/Microsoft.Extensions.DependencyInjection.dll" 

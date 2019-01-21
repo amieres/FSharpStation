@@ -1,0 +1,1 @@
+#r "../../../../packages/test2/System.Numerics.Vectors/lib/netstandard2.0/System.Numerics.Vectors.dll" 

@@ -1,0 +1,1 @@
+#r "../../../../packages/test2/System.IO.Pipelines/lib/netstandard2.0/System.IO.Pipelines.dll" 

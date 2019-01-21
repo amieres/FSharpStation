@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata minClientVersion="2.12">
     <id>System.Runtime.CompilerServices.Unsafe</id>
-    <version>4.5.1</version>
+    <version>4.5.2</version>
     <title>System.Runtime.CompilerServices.Unsafe</title>
     <authors>Microsoft</authors>
     <owners>microsoft,dotnetframework</owners>
@@ -15,10 +15,10 @@
 Commonly Used Types:
 System.Runtime.CompilerServices.Unsafe
  
-7ee84596d92e178bce54c986df31ccc52479e772 
+02b11eeee1fbc5f3ef43a1452fe07efd25fa1715 
 When using NuGet 3.x this package requires at least version 3.4.</description>
     <releaseNotes>https://go.microsoft.com/fwlink/?LinkID=799421</releaseNotes>
-    <copyright>© Microsoft Corporation.  All rights reserved.</copyright>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <serviceable>true</serviceable>
     <dependencies>
       <group targetFramework=".NETFramework4.5" />

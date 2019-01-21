@@ -1,0 +1,1 @@
+#r "../../../../packages/other/SSH.NET/lib/netstandard1.3/Renci.SshNet.dll" 

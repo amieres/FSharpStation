@@ -1,0 +1,2 @@
+#load "Microsoft.AspNetCore.Authentication.OAuth.fsx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.Authentication.MicrosoftAccount/lib/netstandard2.0/Microsoft.AspNetCore.Authentication.MicrosoftAccount.dll" 

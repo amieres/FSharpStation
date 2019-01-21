@@ -8,9 +8,6 @@
             <summary>
             OpenCV Functions of C++ I/F (cv::xxx) 
             </summary>
-            <summary>
-            Functions of OpenCV GPU module
-            </summary>
         </member>
         <member name="F:OpenCvSharp.Cv2.PI">
             <summary>
@@ -1034,58 +1031,460 @@
             Values lower than 0.8-0.9 can result in an incorrectly estimated transformation.</param>
             <returns></returns>
         </member>
+        <member name="M:OpenCvSharp.Cv2.SampsonDistance(OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray)">
+            <summary>
+            Calculates the Sampson Distance between two points.
+            </summary>
+            <param name="pt1">first homogeneous 2d point</param>
+            <param name="pt2">second homogeneous 2d point</param>
+            <param name="f">F fundamental matrix</param>
+            <returns>The computed Sampson distance.</returns>
+            <remarks>https://github.com/opencv/opencv/blob/master/modules/calib3d/src/fundam.cpp#L1109</remarks>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.SampsonDistance(OpenCvSharp.Point3d,OpenCvSharp.Point3d,System.Double[0:,0:])">
+            <summary>
+            Calculates the Sampson Distance between two points.
+            </summary>
+            <param name="pt1">first homogeneous 2d point</param>
+            <param name="pt2">second homogeneous 2d point</param>
+            <param name="f">F fundamental matrix</param>
+            <returns>The computed Sampson distance.</returns>
+            <remarks>https://github.com/opencv/opencv/blob/master/modules/calib3d/src/fundam.cpp#L1109</remarks>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.EstimateAffine2D(OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.OutputArray,OpenCvSharp.RobustEstimationAlgorithms,System.Double,System.UInt64,System.Double,System.UInt64)">
+            <summary>
+            Computes an optimal affine transformation between two 2D point sets.
+            </summary>
+            <param name="from">First input 2D point set containing (X,Y).</param>
+            <param name="to">Second input 2D point set containing (x,y).</param>
+            <param name="inliers">Output vector indicating which points are inliers (1-inlier, 0-outlier).</param>
+            <param name="method">Robust method used to compute transformation.</param>
+            <param name="ransacReprojThreshold">Maximum reprojection error in the RANSAC algorithm to consider a point as an inlier.Applies only to RANSAC.</param>
+            <param name="maxIters">The maximum number of robust method iterations.</param>
+            <param name="confidence">Confidence level, between 0 and 1, for the estimated transformation.
+            Anything between 0.95 and 0.99 is usually good enough.Values too close to 1 can slow down the estimation
+            significantly.Values lower than 0.8-0.9 can result in an incorrectly estimated transformation.</param>
+            <param name="refineIters">Maximum number of iterations of refining algorithm (Levenberg-Marquardt).
+            Passing 0 will disable refining, so the output matrix will be output of robust method.</param>
+            <returns>Output 2D affine transformation matrix \f$2 \times 3\f$ or empty matrix if transformation could not be estimated.</returns>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.EstimateAffinePartial2D(OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.OutputArray,OpenCvSharp.RobustEstimationAlgorithms,System.Double,System.UInt64,System.Double,System.UInt64)">
+            <summary>
+            Computes an optimal limited affine transformation with 4 degrees of freedom between two 2D point sets.
+            </summary>
+            <param name="from">First input 2D point set.</param>
+            <param name="to">Second input 2D point set.</param>
+            <param name="inliers">Output vector indicating which points are inliers.</param>
+            <param name="method">Robust method used to compute transformation. </param>
+            <param name="ransacReprojThreshold">Maximum reprojection error in the RANSAC algorithm to consider a point as an inlier.Applies only to RANSAC.</param>
+            <param name="maxIters">The maximum number of robust method iterations.</param>
+            <param name="confidence">Confidence level, between 0 and 1, for the estimated transformation.
+            Anything between 0.95 and 0.99 is usually good enough.Values too close to 1 can slow down the estimation 
+            significantly.Values lower than 0.8-0.9 can result in an incorrectly estimated transformation.</param>
+            <param name="refineIters"></param>
+            <returns>Output 2D affine transformation (4 degrees of freedom) matrix 2x3 or empty matrix if transformation could not be estimated.</returns>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.DecomposeHomographyMat(OpenCvSharp.InputArray,OpenCvSharp.InputArray,System.Collections.Generic.IEnumerable{OpenCvSharp.Mat},System.Collections.Generic.IEnumerable{OpenCvSharp.Mat},System.Collections.Generic.IEnumerable{OpenCvSharp.Mat})">
+            <summary>
+            Decompose a homography matrix to rotation(s), translation(s) and plane normal(s).
+            </summary>
+            <param name="h">The input homography matrix between two images.</param>
+            <param name="k">The input intrinsic camera calibration matrix.</param>
+            <param name="rotations">Array of rotation matrices.</param>
+            <param name="translations">Array of translation matrices.</param>
+            <param name="normals">Array of plane normal matrices.</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.FilterHomographyDecompByVisibleRefpoints(System.Collections.Generic.IEnumerable{OpenCvSharp.Mat},System.Collections.Generic.IEnumerable{OpenCvSharp.Mat},OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.OutputArray,OpenCvSharp.InputArray)">
+            <summary>
+            Filters homography decompositions based on additional information.
+            </summary>
+            <param name="rotations">Vector of rotation matrices.</param>
+            <param name="normals">Vector of plane normal matrices.</param>
+            <param name="beforePoints">Vector of (rectified) visible reference points before the homography is applied</param>
+            <param name="afterPoints">Vector of (rectified) visible reference points after the homography is applied</param>
+            <param name="possibleSolutions">Vector of int indices representing the viable solution set after filtering</param>
+            <param name="pointsMask">optional Mat/Vector of 8u type representing the mask for the inliers as given by the findHomography function</param>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.Undistort(OpenCvSharp.InputArray,OpenCvSharp.OutputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray)">
+            <summary>
+            corrects lens distortion for the given camera matrix and distortion coefficients
+            </summary>
+            <param name="src">Input (distorted) image.</param>
+            <param name="dst">Output (corrected) image that has the same size and type as src .</param>
+            <param name="cameraMatrix"> Input camera matrix</param>
+            <param name="distCoeffs">Input vector of distortion coefficients (k_1, k_2, p_1, p_2[, k_3[, k_4, k_5, k_6]]) of 4, 5, 
+            or 8 elements. If the vector is null, the zero distortion coefficients are assumed.</param>
+            <param name="newCameraMatrix">Camera matrix of the distorted image. 
+            By default, it is the same as cameraMatrix but you may additionally scale 
+            and shift the result by using a different matrix.</param>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.InitUndistortRectifyMap(OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.Size,OpenCvSharp.MatType,OpenCvSharp.OutputArray,OpenCvSharp.OutputArray)">
+            <summary>
+            initializes maps for cv::remap() to correct lens distortion and optionally rectify the image
+            </summary>
+            <param name="cameraMatrix"></param>
+            <param name="distCoeffs"></param>
+            <param name="r"></param>
+            <param name="newCameraMatrix"></param>
+            <param name="size"></param>
+            <param name="m1Type"></param>
+            <param name="map1"></param>
+            <param name="map2"></param>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.InitWideAngleProjMap(OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.Size,System.Int32,OpenCvSharp.MatType,OpenCvSharp.OutputArray,OpenCvSharp.OutputArray,OpenCvSharp.ProjectionType,System.Double)">
+            <summary>
+            initializes maps for cv::remap() for wide-angle
+            </summary>
+            <param name="cameraMatrix"></param>
+            <param name="distCoeffs"></param>
+            <param name="imageSize"></param>
+            <param name="destImageWidth"></param>
+            <param name="m1Type"></param>
+            <param name="map1"></param>
+            <param name="map2"></param>
+            <param name="projType"></param>
+            <param name="alpha"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.GetDefaultNewCameraMatrix(OpenCvSharp.InputArray,System.Nullable{OpenCvSharp.Size},System.Boolean)">
+            <summary>
+            returns the default new camera matrix (by default it is the same as cameraMatrix unless centerPricipalPoint=true)
+            </summary>
+            <param name="cameraMatrix">Input camera matrix.</param>
+            <param name="imgSize">Camera view image size in pixels.</param>
+            <param name="centerPrincipalPoint">Location of the principal point in the new camera matrix. 
+            The parameter indicates whether this location should be at the image center or not.</param>
+            <returns>the camera matrix that is either an exact copy of the input cameraMatrix 
+            (when centerPrinicipalPoint=false), or the modified one (when centerPrincipalPoint=true).</returns>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.UndistortPoints(OpenCvSharp.InputArray,OpenCvSharp.OutputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray)">
+            <summary>
+            Computes the ideal point coordinates from the observed point coordinates.
+            </summary>
+            <param name="src">Observed point coordinates, 1xN or Nx1 2-channel (CV_32FC2 or CV_64FC2).</param>
+            <param name="dst">Output ideal point coordinates after undistortion and reverse perspective transformation. 
+            If matrix P is identity or omitted, dst will contain normalized point coordinates.</param>
+            <param name="cameraMatrix">Camera matrix</param>
+            <param name="distCoeffs">Input vector of distortion coefficients (k_1, k_2, p_1, p_2[, k_3[, k_4, k_5, k_6]]) of 4, 5, or 8 elements. 
+            If the vector is null, the zero distortion coefficients are assumed.</param>
+            <param name="r">Rectification transformation in the object space (3x3 matrix). 
+            R1 or R2 computed by stereoRectify() can be passed here. 
+            If the matrix is empty, the identity transformation is used.</param>
+            <param name="p">New camera matrix (3x3) or new projection matrix (3x4). 
+            P1 or P2 computed by stereoRectify() can be passed here. If the matrix is empty, 
+            the identity new camera matrix is used.</param>
+        </member>
+        <member name="T:OpenCvSharp.Cv2.FishEye">
+            <summary>
+            The methods in this class use a so-called fisheye camera model.
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.FishEye.ProjectPoints(OpenCvSharp.InputArray,OpenCvSharp.OutputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,System.Double,OpenCvSharp.OutputArray)">
+            <summary>
+            Projects points using fisheye model.
+            
+            The function computes projections of 3D points to the image plane given intrinsic and extrinsic 
+            camera parameters.Optionally, the function computes Jacobians - matrices of partial derivatives of 
+            image points coordinates(as functions of all the input parameters) with respect to the particular 
+            parameters, intrinsic and/or extrinsic.
+            </summary>
+            <param name="objectPoints">Array of object points, 1xN/Nx1 3-channel (or vector&lt;Point3f&gt; ), 
+            where N is the number of points in the view.</param>
+            <param name="imagePoints">Output array of image points, 2xN/Nx2 1-channel or 1xN/Nx1 2-channel, 
+            or vector&lt;Point2f&gt;.</param>
+            <param name="rvec"></param>
+            <param name="tvec"></param>
+            <param name="k">Camera matrix</param>
+            <param name="d">Input vector of distortion coefficients</param>
+            <param name="alpha">The skew coefficient.</param>
+            <param name="jacobian">Optional output 2Nx15 jacobian matrix of derivatives of image points with respect 
+            to components of the focal lengths, coordinates of the principal point, distortion coefficients, 
+            rotation vector, translation vector, and the skew.In the old interface different components of 
+            the jacobian are returned via different output parameters.</param>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.FishEye.DistortPoints(OpenCvSharp.InputArray,OpenCvSharp.OutputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,System.Double)">
+            <summary>
+            Distorts 2D points using fisheye model.
+            </summary>
+            <param name="undistorted">Array of object points, 1xN/Nx1 2-channel (or vector&lt;Point2f&gt; ), 
+            where N is the number of points in the view.</param>
+            <param name="distorted">Output array of image points, 1xN/Nx1 2-channel, or vector&lt;Point2f&gt; .</param>
+            <param name="k">Camera matrix</param>
+            <param name="d">Input vector of distortion coefficients</param>
+            <param name="alpha">The skew coefficient.</param>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.FishEye.UndistortPoints(OpenCvSharp.InputArray,OpenCvSharp.OutputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray)">
+            <summary>
+            Undistorts 2D points using fisheye model
+            </summary>
+            <param name="distorted">Array of object points, 1xN/Nx1 2-channel (or vector&lt;Point2f&gt; ), 
+            where N is the number of points in the view.</param>
+            <param name="undistorted">Output array of image points, 1xN/Nx1 2-channel, or vector&gt;Point2f&gt; .</param>
+            <param name="k">Camera matrix</param>
+            <param name="d">Input vector of distortion coefficients (k_1, k_2, k_3, k_4).</param>
+            <param name="r">Rectification transformation in the object space: 3x3 1-channel, or vector: 3x1/1x3 1-channel or 1x1 3-channel</param>
+            <param name="p">New camera matrix (3x3) or new projection matrix (3x4)</param>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.FishEye.InitUndistortRectifyMap(OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.Size,System.Int32,OpenCvSharp.OutputArray,OpenCvSharp.OutputArray)">
+            <summary>
+            Computes undistortion and rectification maps for image transform by cv::remap(). 
+            If D is empty zero distortion is used, if R or P is empty identity matrixes are used.
+            </summary>
+            <param name="k">Camera matrix</param>
+            <param name="d">Input vector of distortion coefficients (k_1, k_2, k_3, k_4).</param>
+            <param name="r">Rectification transformation in the object space: 3x3 1-channel, or vector: 3x1/1x3 1-channel or 1x1 3-channel</param>
+            <param name="p">New camera matrix (3x3) or new projection matrix (3x4)</param>
+            <param name="size">Undistorted image size.</param>
+            <param name="m1type">Type of the first output map that can be CV_32FC1 or CV_16SC2 . See convertMaps() for details.</param>
+            <param name="map1">The first output map.</param>
+            <param name="map2">The second output map.</param>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.FishEye.UndistortImage(OpenCvSharp.InputArray,OpenCvSharp.OutputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.Size)">
+            <summary>
+            Transforms an image to compensate for fisheye lens distortion.
+            </summary>
+            <param name="distorted">image with fisheye lens distortion.</param>
+            <param name="undistorted">Output image with compensated fisheye lens distortion.</param>
+            <param name="k">Camera matrix</param>
+            <param name="d">Input vector of distortion coefficients (k_1, k_2, k_3, k_4).</param>
+            <param name="knew">Camera matrix of the distorted image. By default, it is the identity matrix but you
+            may additionally scale and shift the result by using a different matrix.</param>
+            <param name="newSize"></param>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.FishEye.EstimateNewCameraMatrixForUndistortRectify(OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.Size,OpenCvSharp.InputArray,OpenCvSharp.OutputArray,System.Double,OpenCvSharp.Size,System.Double)">
+            <summary>
+            Estimates new camera matrix for undistortion or rectification.
+            </summary>
+            <param name="k">Camera matrix</param>
+            <param name="d">Input vector of distortion coefficients (k_1, k_2, k_3, k_4).</param>
+            <param name="imageSize"></param>
+            <param name="r">Rectification transformation in the object space: 3x3 1-channel, or vector: 3x1/1x3
+            1-channel or 1x1 3-channel</param>
+            <param name="p">New camera matrix (3x3) or new projection matrix (3x4)</param>
+            <param name="balance">Sets the new focal length in range between the min focal length and the max focal 
+            length.Balance is in range of[0, 1].</param>
+            <param name="newSize"></param>
+            <param name="fovScale">Divisor for new focal length.</param>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.FishEye.Calibrate(System.Collections.Generic.IEnumerable{OpenCvSharp.Mat},System.Collections.Generic.IEnumerable{OpenCvSharp.Mat},OpenCvSharp.Size,OpenCvSharp.InputOutputArray,OpenCvSharp.InputOutputArray,System.Collections.Generic.IEnumerable{OpenCvSharp.Mat}@,System.Collections.Generic.IEnumerable{OpenCvSharp.Mat}@,OpenCvSharp.FishEyeCalibrationFlags,System.Nullable{OpenCvSharp.TermCriteria})">
+            <summary>
+            Performs camera calibaration
+            </summary>
+            <param name="objectPoints">vector of vectors of calibration pattern points in the calibration pattern coordinate space.</param>
+            <param name="imagePoints">vector of vectors of the projections of calibration pattern points. 
+            imagePoints.size() and objectPoints.size() and imagePoints[i].size() must be equal to 
+            objectPoints[i].size() for each i.</param>
+            <param name="imageSize">Size of the image used only to initialize the intrinsic camera matrix.</param>
+            <param name="k">Output 3x3 floating-point camera matrix</param>
+            <param name="d">Output vector of distortion coefficients (k_1, k_2, k_3, k_4).</param>
+            <param name="rvecs">Output vector of rotation vectors (see Rodrigues ) estimated for each pattern view. 
+            That is, each k-th rotation vector together with the corresponding k-th translation vector(see 
+            the next output parameter description) brings the calibration pattern from the model coordinate 
+            space(in which object points are specified) to the world coordinate space, that is, a real 
+            position of the calibration pattern in the k-th pattern view(k= 0.. * M * -1).</param>
+            <param name="tvecs">Output vector of translation vectors estimated for each pattern view.</param>
+            <param name="flags">Different flags that may be zero or a combination of flag values</param>
+            <param name="criteria">Termination criteria for the iterative optimization algorithm.</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.FishEye.StereoRectify(OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.Size,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.OutputArray,OpenCvSharp.OutputArray,OpenCvSharp.OutputArray,OpenCvSharp.OutputArray,OpenCvSharp.OutputArray,OpenCvSharp.FishEyeCalibrationFlags,OpenCvSharp.Size,System.Double,System.Double)">
+            <summary>
+            Stereo rectification for fisheye camera model
+            </summary>
+            <param name="k1">First camera matrix.</param>
+            <param name="d1">First camera distortion parameters.</param>
+            <param name="k2">Second camera matrix.</param>
+            <param name="d2">Second camera distortion parameters.</param>
+            <param name="imageSize">Size of the image used for stereo calibration.</param>
+            <param name="r">Rotation matrix between the coordinate systems of the first and the second cameras.</param>
+            <param name="tvec">Translation vector between coordinate systems of the cameras.</param>
+            <param name="r1">Output 3x3 rectification transform (rotation matrix) for the first camera.</param>
+            <param name="r2">Output 3x3 rectification transform (rotation matrix) for the second camera.</param>
+            <param name="p1">Output 3x4 projection matrix in the new (rectified) coordinate systems for the first camera.</param>
+            <param name="p2">Output 3x4 projection matrix in the new (rectified) coordinate systems for the second camera.</param>
+            <param name="q">Output 4x4 disparity-to-depth mapping matrix (see reprojectImageTo3D ).</param>
+            <param name="flags">Operation flags that may be zero or CALIB_ZERO_DISPARITY . If the flag is set, 
+            the function makes the principal points of each camera have the same pixel coordinates in the 
+            rectified views.And if the flag is not set, the function may still shift the images in the 
+            horizontal or vertical direction(depending on the orientation of epipolar lines) to maximize the 
+            useful image area.</param>
+            <param name="newImageSize">New image resolution after rectification. The same size should be passed to 
+            initUndistortRectifyMap(see the stereo_calib.cpp sample in OpenCV samples directory). When(0,0) 
+            is passed(default), it is set to the original imageSize.Setting it to larger value can help you 
+            preserve details in the original image, especially when there is a big radial distortion.</param>
+            <param name="balance">Sets the new focal length in range between the min focal length and the max focal
+            length.Balance is in range of[0, 1].</param>
+            <param name="fovScale">Divisor for new focal length.</param>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.FishEye.StereoCalibrate(System.Collections.Generic.IEnumerable{OpenCvSharp.Mat},System.Collections.Generic.IEnumerable{OpenCvSharp.Mat},System.Collections.Generic.IEnumerable{OpenCvSharp.Mat},OpenCvSharp.InputOutputArray,OpenCvSharp.InputOutputArray,OpenCvSharp.InputOutputArray,OpenCvSharp.InputOutputArray,OpenCvSharp.Size,OpenCvSharp.OutputArray,OpenCvSharp.OutputArray,OpenCvSharp.FishEyeCalibrationFlags,System.Nullable{OpenCvSharp.TermCriteria})">
+            <summary>
+            Performs stereo calibration
+            </summary>
+            <param name="objectPoints">Vector of vectors of the calibration pattern points.</param>
+            <param name="imagePoints1">Vector of vectors of the projections of the calibration pattern points, 
+            observed by the first camera.</param>
+            <param name="imagePoints2">Vector of vectors of the projections of the calibration pattern points, 
+            observed by the second camera.</param>
+            <param name="k1">Input/output first camera matrix</param>
+            <param name="d1">Input/output vector of distortion coefficients (k_1, k_2, k_3, k_4) of 4 elements.</param>
+            <param name="k2">Input/output second camera matrix. The parameter is similar to K1 .</param>
+            <param name="d2">Input/output lens distortion coefficients for the second camera. The parameter is 
+            similar to D1.</param>
+            <param name="imageSize">Size of the image used only to initialize intrinsic camera matrix.</param>
+            <param name="r">Output rotation matrix between the 1st and the 2nd camera coordinate systems.</param>
+            <param name="t">Output translation vector between the coordinate systems of the cameras.</param>
+            <param name="flags">Different flags that may be zero or a combination of the FishEyeCalibrationFlags values</param>
+            <param name="criteria">Termination criteria for the iterative optimization algorithm.</param>
+            <returns></returns>
+        </member>
         <member name="M:OpenCvSharp.Cv2.SetNumThreads(System.Int32)">
             <summary>
-            
+            OpenCV will try to set the number of threads for the next parallel region.
+            If threads == 0, OpenCV will disable threading optimizations and run all it's functions
+            sequentially.Passing threads &lt; 0 will reset threads number to system default. This function must
+            be called outside of parallel region.
+            OpenCV will try to run its functions with specified threads number, but some behaviour differs from framework:
+            -   `TBB` - User-defined parallel constructions will run with the same threads number, if another is not specified.If later on user creates his own scheduler, OpenCV will use it.
+            -   `OpenMP` - No special defined behaviour.
+            -   `Concurrency` - If threads == 1, OpenCV will disable threading optimizations and run its functions sequentially.
+            -   `GCD` - Supports only values &lt;= 0.
+            -   `C=` - No special defined behaviour.
             </summary>
-            <param name="nthreads"></param>
+            <param name="nThreads">Number of threads used by OpenCV.</param>
         </member>
         <member name="M:OpenCvSharp.Cv2.GetNumThreads">
-            <summary>
+             <summary>
+             Returns the number of threads used by OpenCV for parallel regions.
             
-            </summary>
-            <returns></returns>
+             Always returns 1 if OpenCV is built without threading support.
+             The exact meaning of return value depends on the threading framework used by OpenCV library:
+             - `TBB` - The number of threads, that OpenCV will try to use for parallel regions. If there is
+             any tbb::thread_scheduler_init in user code conflicting with OpenCV, then function returns default
+             number of threads used by TBB library.
+             - `OpenMP` - An upper bound on the number of threads that could be used to form a new team.
+             - `Concurrency` - The number of threads, that OpenCV will try to use for parallel regions.
+             - `GCD` - Unsupported; returns the GCD thread pool limit(512) for compatibility.
+             - `C=` - The number of threads, that OpenCV will try to use for parallel regions, if before
+             called setNumThreads with threads &gt; 0, otherwise returns the number of logical CPUs,
+             available for the process.
+             </summary>
+             <returns></returns>
         </member>
         <member name="M:OpenCvSharp.Cv2.GetThreadNum">
             <summary>
-            
+            Returns the index of the currently executed thread within the current parallel region.
+            Always returns 0 if called outside of parallel region.
+            @deprecated Current implementation doesn't corresponding to this documentation.
+            The exact meaning of the return value depends on the threading framework used by OpenCV library:
+            - `TBB` - Unsupported with current 4.1 TBB release.Maybe will be supported in future.
+            - `OpenMP` - The thread number, within the current team, of the calling thread.
+            - `Concurrency` - An ID for the virtual processor that the current context is executing
+            on(0 for master thread and unique number for others, but not necessary 1,2,3,...).
+            - `GCD` - System calling thread's ID. Never returns 0 inside parallel region.
+            - `C=` - The index of the current parallel task.
             </summary>
             <returns></returns>
         </member>
         <member name="M:OpenCvSharp.Cv2.GetBuildInformation">
-            <summary>
+             <summary>
+             Returns full configuration time cmake output.
             
+             Returned value is raw cmake output including version control system revision, compiler version,
+             compiler flags, enabled modules and third party libraries, etc.Output format depends on target architecture.
+             </summary>
+             <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.GetVersionString">
+            <summary>
+            Returns library version string.
+            For example "3.4.1-dev".
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.GetVersionMajor">
+            <summary>
+            Returns major library version
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.GetVersionMinor">
+            <summary>
+            Returns minor library version
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.GetVersionRevision">
+            <summary>
+            Returns revision field of the library version
             </summary>
             <returns></returns>
         </member>
         <member name="M:OpenCvSharp.Cv2.GetTickCount">
             <summary>
-            
+            Returns the number of ticks.
+            The function returns the number of ticks after the certain event (for example, when the machine was
+            turned on). It can be used to initialize RNG or to measure a function execution time by reading the
+            tick count before and after the function call.
             </summary>
             <returns></returns>
         </member>
         <member name="M:OpenCvSharp.Cv2.GetTickFrequency">
             <summary>
-            
+            Returns the number of ticks per second.
+            The function returns the number of ticks per second.That is, the following code computes the execution time in seconds:
             </summary>
             <returns></returns>
         </member>
         <member name="M:OpenCvSharp.Cv2.GetCpuTickCount">
-            <summary>
+             <summary>
+             Returns the number of CPU ticks.
             
-            </summary>
-            <returns></returns>
+             The function returns the current number of CPU ticks on some architectures(such as x86, x64, PowerPC).
+             On other platforms the function is equivalent to getTickCount.It can also be used for very accurate time
+             measurements, as well as for RNG initialization.Note that in case of multi-CPU systems a thread, from which
+             getCPUTickCount is called, can be suspended and resumed at another CPU with its own counter. So,
+             theoretically (and practically) the subsequent calls to the function do not necessary return the monotonously
+             increasing values. Also, since a modern CPU varies the CPU frequency depending on the load, the number of CPU
+             clocks spent in some code cannot be directly converted to time units.Therefore, getTickCount is generally
+             a preferable solution for measuringexecution time.
+             </summary>
+             <returns></returns>
         </member>
         <member name="M:OpenCvSharp.Cv2.CheckHardwareSupport(OpenCvSharp.CpuFeatures)">
             <summary>
-            
+            Returns true if the specified feature is supported by the host hardware.
+            The function returns true if the host hardware supports the specified feature.When user calls
+            setUseOptimized(false), the subsequent calls to checkHardwareSupport() will return false until
+            setUseOptimized(true) is called.This way user can dynamically switch on and off the optimized code in OpenCV.
+            </summary>
+            <param name="feature">The feature of interest, one of cv::CpuFeatures</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.GetHardwareFeatureName(System.Int32)">
+            <summary>
+            Returns feature name by ID.
+            Returns empty string if feature is not defined
             </summary>
             <param name="feature"></param>
             <returns></returns>
         </member>
+        <member name="M:OpenCvSharp.Cv2.GetCpuFeaturesLine">
+            <summary>
+            Returns list of CPU features enabled during compilation.
+            Returned value is a string containing space separated list of CPU features with following markers:
+            - no markers - baseline features
+            - prefix `*` - features enabled in dispatcher
+            - suffix `?` - features enabled but not available in HW
+            </summary>
+            <example>
+            `SSE SSE2 SSE3* SSE4.1 *SSE4.2 *FP16* AVX *AVX2* AVX512-SKX?`
+            </example>
+            <returns></returns>
+        </member>
         <member name="M:OpenCvSharp.Cv2.GetNumberOfCpus">
             <summary>
-            
+            Returns the number of logical CPUs available for the process.
             </summary>
             <returns></returns>
         </member>
@@ -1125,6 +1524,31 @@
             </summary>
             <param name="sz"></param>
             <param name="n"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.Glob(System.String,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="pattern"></param>
+            <param name="recursive"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.SetBreakOnError(System.Boolean)">
+            <summary>
+            Sets/resets the break-on-error mode.
+            When the break-on-error mode is set, the default error handler issues a hardware exception,
+            which can make debugging more convenient.
+            </summary>
+            <param name="flag"></param>
+            <returns>the previous state</returns>
+        </member>
+        <member name="M:OpenCvSharp.Cv2.Format(OpenCvSharp.InputArray,OpenCvSharp.FormatType)">
+            <summary>
+            
+            </summary>
+            <param name="mtx"></param>
+            <param name="format"></param>
             <returns></returns>
         </member>
         <member name="M:OpenCvSharp.Cv2.Abs(OpenCvSharp.Mat)">
@@ -2539,7 +2963,7 @@
             <param name="type">one of the three neighborhoods as defined in the paper</param>
             <returns>keypoints detected on the image.</returns>
         </member>
-        <member name="M:OpenCvSharp.Cv2.AGAST(OpenCvSharp.InputArray,System.Int32,System.Boolean,OpenCvSharp.AGASTType)">
+        <member name="M:OpenCvSharp.Cv2.AGAST(OpenCvSharp.InputArray,System.Int32,System.Boolean,OpenCvSharp.AgastFeatureDetector.DetectorType)">
             <summary>
             Detects corners using the AGAST algorithm
             </summary>
@@ -2715,12 +3139,13 @@
             <param name="propId">Window property to retrieve.</param>
             <returns></returns>
         </member>
-        <member name="M:OpenCvSharp.Cv2.SetMouseCallback(System.String,OpenCvSharp.CvMouseCallback)">
+        <member name="M:OpenCvSharp.Cv2.SetMouseCallback(System.String,OpenCvSharp.CvMouseCallback,System.IntPtr)">
             <summary>
             Sets the callback function for mouse events occuting within the specified window.
             </summary>
             <param name="windowName">Name of the window. </param>
             <param name="onMouse">Reference to the function to be called every time mouse event occurs in the specified window. </param>
+            <param name="userdata"></param>
         </member>
         <member name="M:OpenCvSharp.Cv2.GetMouseWheelDelta(OpenCvSharp.MouseEvent)">
             <summary>
@@ -2875,14 +3300,6 @@
             <param name="img">The image to be written</param>
             <param name="buf">Output buffer resized to fit the compressed image.</param>
             <param name="prms">Format-specific parameters.</param>
-        </member>
-        <member name="M:OpenCvSharp.Cv2.ConvertImage(OpenCvSharp.Mat,OpenCvSharp.Mat,OpenCvSharp.ConvertImageModes)">
-            <summary>
-            utility function: convert one image to another with optional vertical flip
-            </summary>
-            <param name="src"></param>
-            <param name="dst"></param>
-            <param name="flags"></param>
         </member>
         <member name="M:OpenCvSharp.Cv2.HaveImageReader(System.String)">
             <summary>
@@ -3542,75 +3959,6 @@
             <param name="dst">output image. It has the specified size and the same type as src.</param>
             <param name="dstSize">size of the output image; by default, it is computed as Size(src.cols*2, (src.rows*2)</param>
             <param name="borderType"></param>
-        </member>
-        <member name="M:OpenCvSharp.Cv2.Undistort(OpenCvSharp.InputArray,OpenCvSharp.OutputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray)">
-            <summary>
-            corrects lens distortion for the given camera matrix and distortion coefficients
-            </summary>
-            <param name="src">Input (distorted) image.</param>
-            <param name="dst">Output (corrected) image that has the same size and type as src .</param>
-            <param name="cameraMatrix"> Input camera matrix</param>
-            <param name="distCoeffs">Input vector of distortion coefficients (k_1, k_2, p_1, p_2[, k_3[, k_4, k_5, k_6]]) of 4, 5, 
-            or 8 elements. If the vector is null, the zero distortion coefficients are assumed.</param>
-            <param name="newCameraMatrix">Camera matrix of the distorted image. 
-            By default, it is the same as cameraMatrix but you may additionally scale 
-            and shift the result by using a different matrix.</param>
-        </member>
-        <member name="M:OpenCvSharp.Cv2.InitUndistortRectifyMap(OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.Size,OpenCvSharp.MatType,OpenCvSharp.OutputArray,OpenCvSharp.OutputArray)">
-            <summary>
-            initializes maps for cv::remap() to correct lens distortion and optionally rectify the image
-            </summary>
-            <param name="cameraMatrix"></param>
-            <param name="distCoeffs"></param>
-            <param name="r"></param>
-            <param name="newCameraMatrix"></param>
-            <param name="size"></param>
-            <param name="m1Type"></param>
-            <param name="map1"></param>
-            <param name="map2"></param>
-        </member>
-        <member name="M:OpenCvSharp.Cv2.InitWideAngleProjMap(OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.Size,System.Int32,OpenCvSharp.MatType,OpenCvSharp.OutputArray,OpenCvSharp.OutputArray,OpenCvSharp.ProjectionType,System.Double)">
-            <summary>
-            initializes maps for cv::remap() for wide-angle
-            </summary>
-            <param name="cameraMatrix"></param>
-            <param name="distCoeffs"></param>
-            <param name="imageSize"></param>
-            <param name="destImageWidth"></param>
-            <param name="m1Type"></param>
-            <param name="map1"></param>
-            <param name="map2"></param>
-            <param name="projType"></param>
-            <param name="alpha"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OpenCvSharp.Cv2.GetDefaultNewCameraMatrix(OpenCvSharp.InputArray,System.Nullable{OpenCvSharp.Size},System.Boolean)">
-            <summary>
-            returns the default new camera matrix (by default it is the same as cameraMatrix unless centerPricipalPoint=true)
-            </summary>
-            <param name="cameraMatrix">Input camera matrix.</param>
-            <param name="imgSize">Camera view image size in pixels.</param>
-            <param name="centerPrincipalPoint">Location of the principal point in the new camera matrix. 
-            The parameter indicates whether this location should be at the image center or not.</param>
-            <returns>the camera matrix that is either an exact copy of the input cameraMatrix 
-            (when centerPrinicipalPoint=false), or the modified one (when centerPrincipalPoint=true).</returns>
-        </member>
-        <member name="M:OpenCvSharp.Cv2.UndistortPoints(OpenCvSharp.InputArray,OpenCvSharp.OutputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputArray)">
-            <summary>
-            Computes the ideal point coordinates from the observed point coordinates.
-            </summary>
-            <param name="src">Observed point coordinates, 1xN or Nx1 2-channel (CV_32FC2 or CV_64FC2).</param>
-            <param name="dst">Output ideal point coordinates after undistortion and reverse perspective transformation. 
-            If matrix P is identity or omitted, dst will contain normalized point coordinates.</param>
-            <param name="cameraMatrix">Camera matrix</param>
-            <param name="distCoeffs">Input vector of distortion coefficients (k_1, k_2, p_1, p_2[, k_3[, k_4, k_5, k_6]]) of 4, 5, or 8 elements. 
-            If the vector is null, the zero distortion coefficients are assumed.</param>
-            <param name="r">Rectification transformation in the object space (3x3 matrix). 
-            R1 or R2 computed by stereoRectify() can be passed here. 
-            If the matrix is empty, the identity transformation is used.</param>
-            <param name="p">New camera matrix (3x3) or new projection matrix (3x4). 
-            P1 or P2 computed by stereoRectify() can be passed here. If the matrix is empty, 
-            the identity new camera matrix is used.</param>
         </member>
         <member name="M:OpenCvSharp.Cv2.CalcHist(OpenCvSharp.Mat[],System.Int32[],OpenCvSharp.InputArray,OpenCvSharp.OutputArray,System.Int32,System.Int32[],OpenCvSharp.Rangef[],System.Boolean,System.Boolean)">
             <summary>
@@ -5430,12 +5778,6 @@
             Otherwise, the class of transformations to choose from is limited to combinations of translation, rotation, and uniform scaling (5 degrees of freedom).</param>
             <returns></returns>
         </member>
-        <member name="M:OpenCvSharp.Cv2.CreateOptFlow_DualTVL1">
-            <summary>
-            Implementation of the Zach, Pock and Bischof Dual TV-L1 Optical Flow method
-            </summary>
-            <returns></returns>
-        </member>
         <member name="T:OpenCvSharp.CvObject">
             <summary>
             A class which has a pointer of OpenCV structure
@@ -5651,6 +5993,20 @@
             <param name="fileName">The source file name where error is encountered</param>
             <param name="line">The line number in the souce where error is encountered</param>
         </member>
+        <member name="M:OpenCvSharp.OpenCVException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <inheritdoc />
+            <summary>
+            </summary>
+            <param name="info"></param>
+            <param name="context"></param>
+        </member>
+        <member name="M:OpenCvSharp.OpenCVException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            
+            </summary>
+            <param name="info"></param>
+            <param name="context"></param>
+        </member>
         <member name="T:OpenCvSharp.OpenCvSharpException">
             <summary>
             The exception that is thrown by OpenCvSharp. 
@@ -5852,6 +6208,12 @@
             so that the smaller one is removed.The rate is relative to the smaller perimeter of the two markers(default 0.05).
             </summary>
         </member>
+        <member name="P:OpenCvSharp.Aruco.DetectorParameters.CornerRefinementMethod">
+            <summary>
+            corner refinement method.
+            (CORNER_REFINE_NONE, no refinement. CORNER_REFINE_SUBPIX, do subpixel refinement. CORNER_REFINE_CONTOUR use contour-Points)
+            </summary>
+        </member>
         <member name="P:OpenCvSharp.Aruco.DetectorParameters.CornerRefinementWinSize">
             <summary>
             window size for the corner refinement process (in pixels) (default 5).
@@ -5935,6 +6297,26 @@
         <member name="P:OpenCvSharp.Aruco.Dictionary.MaxCorrectionBits">
             <summary>
             Maximum number of bits that can be corrected.
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.Aruco.CornerRefineMethod">
+            <summary>
+            corner refinement method
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.Aruco.CornerRefineMethod.None">
+            <summary>
+            default corners
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.Aruco.CornerRefineMethod.Subpix">
+            <summary>
+            refine the corners using subpix
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.Aruco.CornerRefineMethod.Contour">
+            <summary>
+            refine the corners using the contour-points
             </summary>
         </member>
         <member name="T:OpenCvSharp.Aruco.PredefinedDictionaryName">
@@ -6258,6 +6640,26 @@
             </summary>
         </member>
         <member name="F:OpenCvSharp.HomographyMethods.Rho">
+            <summary>
+            RHO algorithm
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.RobustEstimationAlgorithms">
+            <summary>
+            type of the robust estimation algorithm
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.RobustEstimationAlgorithms.LMEDS">
+            <summary>
+            least-median of squares algorithm
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.RobustEstimationAlgorithms.RANSAC">
+            <summary>
+            RANSAC algorithm
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.RobustEstimationAlgorithms.RHO">
             <summary>
             RHO algorithm
             </summary>
@@ -6778,46 +7180,6 @@
             Normal or Gaussian distribution
             </summary>
         </member>
-        <member name="T:OpenCvSharp.DumpFormat">
-            <summary>
-            Output string format of Mat.Dump()
-            </summary>
-        </member>
-        <member name="F:OpenCvSharp.DumpFormat.Default">
-            <summary>
-            Default format. 
-            [1, 2, 3, 4, 5, 6; \n
-            7, 8, 9, ... ]
-            </summary>
-        </member>
-        <member name="F:OpenCvSharp.DumpFormat.Python">
-            <summary>
-            Python format. 
-            [[[1, 2, 3], [4, 5, 6]], \n
-            [[7, 8, 9], ... ]
-            </summary>
-        </member>
-        <member name="F:OpenCvSharp.DumpFormat.NumPy">
-            <summary>
-            NumPy format. 
-            array([[[1, 2, 3], [4, 5, 6]], \n
-            [[7, 8, 9], .... ]]], type='uint8');
-            </summary>
-        </member>
-        <member name="F:OpenCvSharp.DumpFormat.Csv">
-            <summary>
-            CSV format. 
-            1, 2, 3, 4, 5, 6\n
-            7, 8, 9, ...
-            </summary>
-        </member>
-        <member name="F:OpenCvSharp.DumpFormat.C">
-            <summary>
-            C language format. 
-            {1, 2, 3, 4, 5, 6, \n
-            7, 8, 9, ...}; 
-            </summary>
-        </member>
         <member name="T:OpenCvSharp.ErrorCode">
             <summary>
             Error status codes
@@ -7056,6 +7418,51 @@
         <member name="F:OpenCvSharp.ErrorCode.StsAssert">
             <summary>
             assertion failed
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.FormatType">
+            <summary>
+            Output string format of Mat.Dump()
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.FormatType.Default">
+            <summary>
+            Default format. 
+            [1, 2, 3, 4, 5, 6; \n
+            7, 8, 9, ... ]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.FormatType.MATLAB">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.FormatType.Csv">
+            <summary>
+            CSV format. 
+            1, 2, 3, 4, 5, 6\n
+            7, 8, 9, ...
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.FormatType.Python">
+            <summary>
+            Python format. 
+            [[[1, 2, 3], [4, 5, 6]], \n
+            [[7, 8, 9], ... ]
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.FormatType.NumPy">
+            <summary>
+            NumPy format. 
+            array([[[1, 2, 3], [4, 5, 6]], \n
+            [[7, 8, 9], .... ]]], type='uint8');
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.FormatType.C">
+            <summary>
+            C language format. 
+            {1, 2, 3, 4, 5, 6, \n
+            7, 8, 9, ...}; 
             </summary>
         </member>
         <member name="T:OpenCvSharp.GemmFlags">
@@ -7488,11 +7895,14 @@
             <param name="vec"></param>
             <param name="len"></param>
         </member>
-        <member name="M:OpenCvSharp.FileNode.ReadObj">
+        <member name="M:OpenCvSharp.FileNode.WriteComment(System.String,System.Boolean)">
             <summary>
-            Reads the registered object and returns pointer to it
+            Writes a comment.
+            The function writes a comment into file storage.The comments are skipped when the storage is read.
             </summary>
-            <returns></returns>
+            <param name="comment">The written comment, single-line or multi-line</param>
+            <param name="append">If true, the function tries to put the comment at the end of current line.
+            Else if the comment is multi-line, or if it does not fit at the end of the current line, the comment starts a new line.</param>
         </member>
         <member name="M:OpenCvSharp.FileNode.ReadInt(System.Int32)">
             <summary>
@@ -7823,12 +8233,6 @@
             synonym for STR
             </summary>
         </member>
-        <member name="F:OpenCvSharp.FileNode.Types.Ref">
-            <summary>
-            integer of size size_t. 
-            Typically used for storing complex dynamic structures where some elements reference the others
-            </summary>
-        </member>
         <member name="F:OpenCvSharp.FileNode.Types.Seq">
             <summary>
             sequence
@@ -7849,9 +8253,10 @@
             compact representation of a sequence or mapping. Used only by YAML writer
             </summary>
         </member>
-        <member name="F:OpenCvSharp.FileNode.Types.User">
+        <member name="F:OpenCvSharp.FileNode.Types.Uniform">
             <summary>
-            a registered object (e.g. a matrix)
+            if set, means that all the collection elements are numbers of the same type (real's or int's).
+            UNIFORM is used only when reading FileStorage; FLOW is used only when writing. So they share the same bit
             </summary>
         </member>
         <member name="F:OpenCvSharp.FileNode.Types.Empty">
@@ -7914,24 +8319,6 @@
             </summary>
             <param name="ofs"></param>
             <returns></returns>
-        </member>
-        <member name="M:OpenCvSharp.FileNodeIterator.MoveBack">
-            <summary>
-            iterator--
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:OpenCvSharp.FileNodeIterator.MoveBack(System.Int32)">
-            <summary>
-            iterator -= ofs
-            </summary>
-            <param name="ofs"></param>
-            <returns></returns>
-        </member>
-        <member name="M:OpenCvSharp.FileNodeIterator.Reset">
-            <summary>
-            iterator -= INT_MAX
-            </summary>
         </member>
         <member name="M:OpenCvSharp.FileNodeIterator.ReadRaw(System.String,System.Byte[],System.Int64)">
             <summary>
@@ -8007,11 +8394,6 @@
             the currently written element
             </summary>
         </member>
-        <member name="P:OpenCvSharp.FileStorage.Structs">
-            <summary>
-            the stack of written structures
-            </summary>
-        </member>
         <member name="P:OpenCvSharp.FileStorage.State">
             <summary>
             the writer state
@@ -8065,12 +8447,18 @@
             <param name="vec"></param>
             <param name="len"></param>
         </member>
-        <member name="M:OpenCvSharp.FileStorage.WriteObj(System.String,System.IntPtr)">
+        <member name="M:OpenCvSharp.FileStorage.StartWriteStruct(System.String,System.Int32,System.String)">
             <summary>
-            Writes the registered C structure (CvMat, CvMatND, CvSeq). See cvWrite()
+            
             </summary>
             <param name="name"></param>
-            <param name="obj"></param>
+            <param name="flags"></param>
+            <param name="typeName"></param>
+        </member>
+        <member name="M:OpenCvSharp.FileStorage.EndWriteStruct">
+            <summary>
+            
+            </summary>
         </member>
         <member name="M:OpenCvSharp.FileStorage.GetDefaultObjectName(System.String)">
             <summary>
@@ -9749,6 +10137,12 @@
             Creates empty Mat
             </summary>
         </member>
+        <member name="M:OpenCvSharp.Mat.#ctor(OpenCvSharp.Mat)">
+            <inheritdoc />
+            <summary>
+            </summary>
+            <param name="m"></param>
+        </member>
         <member name="M:OpenCvSharp.Mat.#ctor(System.String,OpenCvSharp.ImreadModes)">
             <summary>
             Loads an image from a file. (cv::imread)
@@ -10782,7 +11176,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:OpenCvSharp.Mat.Dump(OpenCvSharp.DumpFormat)">
+        <member name="M:OpenCvSharp.Mat.Dump(OpenCvSharp.FormatType)">
             <summary>
             Returns a string that represents each element value of Mat.
             This method corresponds to std::ostream &lt;&lt; Mat
@@ -18435,16 +18829,6 @@
             <param name="s">An optional value to initialize each matrix element with. 
             To set all the matrix elements to the particular value after the construction, use SetTo(Scalar s) method .</param>
         </member>
-        <member name="M:OpenCvSharp.Mat`2.DisposeManaged">
-            <summary>
-            Releases managed resources
-            </summary>
-        </member>
-        <member name="M:OpenCvSharp.Mat`2.DisposeUnmanaged">
-            <summary>
-            Releases unmanaged resources
-            </summary>
-        </member>
         <member name="M:OpenCvSharp.Mat`2.GetIndexer">
             <summary>
             Gets type-specific indexer for accessing each element
@@ -20541,7 +20925,7 @@
             <param name="x"></param>
             <param name="y"></param>
         </member>
-        <member name="M:OpenCvSharp.Point2d.op_Implicit(OpenCvSharp.Point2d)~OpenCvSharp.Point">
+        <member name="M:OpenCvSharp.Point2d.op_Explicit(OpenCvSharp.Point2d)~OpenCvSharp.Point">
             <summary>
             
             </summary>
@@ -20721,7 +21105,7 @@
             <param name="x"></param>
             <param name="y"></param>
         </member>
-        <member name="M:OpenCvSharp.Point2f.op_Implicit(OpenCvSharp.Point2f)~OpenCvSharp.Point">
+        <member name="M:OpenCvSharp.Point2f.op_Explicit(OpenCvSharp.Point2f)~OpenCvSharp.Point">
             <summary>
             
             </summary>
@@ -20907,6 +21291,20 @@
             <param name="y"></param>
             <param name="z"></param>
         </member>
+        <member name="M:OpenCvSharp.Point3d.op_Explicit(OpenCvSharp.Point3d)~OpenCvSharp.Point3i">
+            <summary>
+            
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Point3d.op_Implicit(OpenCvSharp.Point3i)~OpenCvSharp.Point3d">
+            <summary>
+            
+            </summary>
+            <param name="point"></param>
+            <returns></returns>
+        </member>
         <member name="M:OpenCvSharp.Point3d.op_Implicit(OpenCvSharp.Point3d)~OpenCvSharp.Vec3d">
             <summary>
             
@@ -21033,6 +21431,20 @@
             <param name="x"></param>
             <param name="y"></param>
             <param name="z"></param>
+        </member>
+        <member name="M:OpenCvSharp.Point3f.op_Explicit(OpenCvSharp.Point3f)~OpenCvSharp.Point3i">
+            <summary>
+            
+            </summary>
+            <param name="self"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Point3f.op_Implicit(OpenCvSharp.Point3i)~OpenCvSharp.Point3f">
+            <summary>
+            
+            </summary>
+            <param name="point"></param>
+            <returns></returns>
         </member>
         <member name="M:OpenCvSharp.Point3f.op_Implicit(OpenCvSharp.Point3f)~OpenCvSharp.Vec3f">
             <summary>
@@ -22138,6 +22550,11 @@
         <member name="T:OpenCvSharp.RotatedRect">
             <summary>
             
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.RotatedRect.SizeOf">
+            <summary>
+            sizeof(RotatedRect)
             </summary>
         </member>
         <member name="F:OpenCvSharp.RotatedRect.Center">
@@ -23306,6 +23723,11 @@
         <member name="T:OpenCvSharp.Size2f">
             <summary>
             
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.Size2f.SizeOf">
+            <summary>
+            sizeof(Size2f)
             </summary>
         </member>
         <member name="F:OpenCvSharp.Size2f.Width">
@@ -26310,6 +26732,29 @@
             <returns></returns>
             <remarks>This is shortcut consisting from createTorchImporter and Net::populateNet calls.</remarks>
         </member>
+        <member name="M:OpenCvSharp.Dnn.CvDnn.ReadNet(System.String,System.String,System.String)">
+            <summary>
+            Read deep learning network represented in one of the supported formats.
+            
+            This function automatically detects an origin framework of trained model 
+            and calls an appropriate function such @ref readNetFromCaffe, @ref readNetFromTensorflow,
+            </summary>
+            <param name="model">Binary file contains trained weights. The following file
+            *                  extensions are expected for models from different frameworks:
+            *                  * `*.caffemodel` (Caffe, http://caffe.berkeleyvision.org/)
+            *                  * `*.pb` (TensorFlow, https://www.tensorflow.org/)
+            *                  * `*.t7` | `*.net` (Torch, http://torch.ch/)
+            *                  * `*.weights` (Darknet, https://pjreddie.com/darknet/)
+            *                  * `*.bin` (DLDT, https://software.intel.com/openvino-toolkit)</param>
+            <param name="config">Text file contains network configuration. It could be a
+            *                   file with the following extensions:
+            *                  * `*.prototxt` (Caffe, http://caffe.berkeleyvision.org/)
+            *                  * `*.pbtxt` (TensorFlow, https://www.tensorflow.org/)
+            *                  * `*.cfg` (Darknet, https://pjreddie.com/darknet/)
+            *                  * `*.xml` (DLDT, https://software.intel.com/openvino-toolkit)</param>
+            <param name="framework">Explicit framework name tag to determine a format.</param>
+            <returns></returns>
+        </member>
         <member name="M:OpenCvSharp.Dnn.CvDnn.ReadTorchBlob(System.String,System.Boolean)">
             <summary>
             Loads blob which was serialized as torch.Tensor object of Torch7 framework. 
@@ -26320,6 +26765,13 @@
             <remarks>
             This function has the same limitations as createTorchImporter().
             </remarks>
+        </member>
+        <member name="M:OpenCvSharp.Dnn.CvDnn.ReadTensorFromONNX(System.String)">
+            <summary>
+            Creates blob from .pb file.
+            </summary>
+            <param name="path">path to the .pb file with input tensor.</param>
+            <returns></returns>
         </member>
         <member name="M:OpenCvSharp.Dnn.CvDnn.BlobFromImage(OpenCvSharp.Mat,System.Double,OpenCvSharp.Size,OpenCvSharp.Scalar,System.Boolean,System.Boolean)">
             <summary>
@@ -26368,6 +26820,56 @@
             is taken from NVidia's Caffe fork: https://github.com/NVIDIA/caffe.
             So the resulting model may be used there.
             </remarks>
+        </member>
+        <member name="M:OpenCvSharp.Dnn.CvDnn.WriteTextGraph(System.String,System.String)">
+            <summary>
+            Create a text representation for a binary network stored in protocol buffer format.
+            </summary>
+            <param name="model">A path to binary network.</param>
+            <param name="output">A path to output text file to be created.</param>
+        </member>
+        <member name="M:OpenCvSharp.Dnn.CvDnn.NMSBoxes(System.Collections.Generic.IEnumerable{OpenCvSharp.Rect},System.Collections.Generic.IEnumerable{System.Single},System.Single,System.Single,System.Int32[]@,System.Single,System.Int32)">
+            <summary>
+            Performs non maximum suppression given boxes and corresponding scores.
+            </summary>
+            <param name="bboxes">a set of bounding boxes to apply NMS.</param>
+            <param name="scores">a set of corresponding confidences.</param>
+            <param name="scoreThreshold">a threshold used to filter boxes by score.</param>
+            <param name="nmsThreshold">a threshold used in non maximum suppression.</param>
+            <param name="indices">the kept indices of bboxes after NMS.</param>
+            <param name="eta">a coefficient in adaptive threshold formula</param>
+            <param name="topK">if `&gt;0`, keep at most @p top_k picked indices.</param>
+        </member>
+        <member name="M:OpenCvSharp.Dnn.CvDnn.NMSBoxes(System.Collections.Generic.IEnumerable{OpenCvSharp.Rect2d},System.Collections.Generic.IEnumerable{System.Single},System.Single,System.Single,System.Int32[]@,System.Single,System.Int32)">
+            <summary>
+            Performs non maximum suppression given boxes and corresponding scores.
+            </summary>
+            <param name="bboxes">a set of bounding boxes to apply NMS.</param>
+            <param name="scores">a set of corresponding confidences.</param>
+            <param name="scoreThreshold">a threshold used to filter boxes by score.</param>
+            <param name="nmsThreshold">a threshold used in non maximum suppression.</param>
+            <param name="indices">the kept indices of bboxes after NMS.</param>
+            <param name="eta">a coefficient in adaptive threshold formula</param>
+            <param name="topK">if `&gt;0`, keep at most @p top_k picked indices.</param>
+        </member>
+        <member name="M:OpenCvSharp.Dnn.CvDnn.NMSBoxes(System.Collections.Generic.IEnumerable{OpenCvSharp.RotatedRect},System.Collections.Generic.IEnumerable{System.Single},System.Single,System.Single,System.Int32[]@,System.Single,System.Int32)">
+            <summary>
+            Performs non maximum suppression given boxes and corresponding scores.
+            </summary>
+            <param name="bboxes">a set of bounding boxes to apply NMS.</param>
+            <param name="scores">a set of corresponding confidences.</param>
+            <param name="scoreThreshold">a threshold used to filter boxes by score.</param>
+            <param name="nmsThreshold">a threshold used in non maximum suppression.</param>
+            <param name="indices">the kept indices of bboxes after NMS.</param>
+            <param name="eta">a coefficient in adaptive threshold formula</param>
+            <param name="topK">if `&gt;0`, keep at most @p top_k picked indices.</param>
+        </member>
+        <member name="M:OpenCvSharp.Dnn.CvDnn.ResetMyriadDevice">
+            <summary>
+            Release a Myriad device is binded by OpenCV.
+            
+            Single Myriad device cannot be shared across multiple processes which uses Inference Engine's Myriad plugin.
+            </summary>
         </member>
         <member name="T:OpenCvSharp.Dnn.Net">
             <inheritdoc />
@@ -26434,6 +26936,45 @@
             <param name="isBinary"></param>
             <returns></returns>
             <remarks>This is shortcut consisting from createTorchImporter and Net::populateNet calls.</remarks>
+        </member>
+        <member name="M:OpenCvSharp.Dnn.Net.ReadNet(System.String,System.String,System.String)">
+            <summary>
+            Read deep learning network represented in one of the supported formats.
+            
+            This function automatically detects an origin framework of trained model 
+            and calls an appropriate function such @ref readNetFromCaffe, @ref readNetFromTensorflow,
+            </summary>
+            <param name="model">Binary file contains trained weights. The following file
+            *                  extensions are expected for models from different frameworks:
+            *                  * `*.caffemodel` (Caffe, http://caffe.berkeleyvision.org/)
+            *                  * `*.pb` (TensorFlow, https://www.tensorflow.org/)
+            *                  * `*.t7` | `*.net` (Torch, http://torch.ch/)
+            *                  * `*.weights` (Darknet, https://pjreddie.com/darknet/)
+            *                  * `*.bin` (DLDT, https://software.intel.com/openvino-toolkit)</param>
+            <param name="config">Text file contains network configuration. It could be a
+            *                   file with the following extensions:
+            *                  * `*.prototxt` (Caffe, http://caffe.berkeleyvision.org/)
+            *                  * `*.pbtxt` (TensorFlow, https://www.tensorflow.org/)
+            *                  * `*.cfg` (Darknet, https://pjreddie.com/darknet/)
+            *                  * `*.xml` (DLDT, https://software.intel.com/openvino-toolkit)</param>
+            <param name="framework">Explicit framework name tag to determine a format.</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Dnn.Net.ReadNetFromModelOptimizer(System.String,System.String)">
+            <summary>
+            Load a network from Intel's Model Optimizer intermediate representation.
+            Networks imported from Intel's Model Optimizer are launched in Intel's Inference Engine  backend.
+            </summary>
+            <param name="xml">XML configuration file with network's topology.</param>
+            <param name="bin">Binary file with trained weights.</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Dnn.Net.ReadNetFromONNX(System.String)">
+            <summary>
+            Reads a network model ONNX https://onnx.ai/
+            </summary>
+            <param name="onnxFile">path to the .onnx file with text description of the network architecture.</param>
+            <returns>Network object that ready to do forward, throw an exception in failure cases.</returns>
         </member>
         <member name="M:OpenCvSharp.Dnn.Net.Empty">
             <summary>
@@ -26538,6 +27079,18 @@
             because network reshaping is not implemented yet.
             </remarks>
         </member>
+        <member name="M:OpenCvSharp.Dnn.Net.GetUnconnectedOutLayers">
+            <summary>
+            Returns indexes of layers with unconnected outputs.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Dnn.Net.GetUnconnectedOutLayersNames">
+            <summary>
+            Returns names of layers with unconnected outputs.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:OpenCvSharp.Dnn.Net.EnableFusion(System.Boolean)">
             <summary>
             Enables or disables layer fusion in the network.
@@ -26574,22 +27127,6 @@
             </summary>
             <param name="fs"></param>
         </member>
-        <member name="M:OpenCvSharp.Face.Facemark.AddTrainingSample(OpenCvSharp.InputArray,OpenCvSharp.InputArray)">
-            <summary>
-            Add one training sample to the trainer.
-            </summary>
-            <param name="image">Input image.</param>
-            <param name="landmarks">The ground-truth of facial landmarks points corresponds to the image.</param>
-            <returns></returns>
-        </member>
-        <member name="M:OpenCvSharp.Face.Facemark.Training(System.IntPtr)">
-            <summary>
-            Trains a Facemark algorithm using the given dataset.
-            Before the training process, training samples should be added to the trainer 
-            using face::addTrainingSample function.
-            </summary>
-            <param name="parameters">Optional extra parameters (algorithm dependent).</param>
-        </member>
         <member name="M:OpenCvSharp.Face.Facemark.LoadModel(System.String)">
             <summary>
              A function to load the trained model before the fitting process.
@@ -26603,42 +27140,6 @@
             <param name="image">Input image.</param>
             <param name="faces">Output of the function which represent region of interest of the detected faces. Each face is stored in cv::Rect container.</param>
             <param name="landmarks">The detected landmark points for each faces.</param>
-            <returns></returns>
-        </member>
-        <member name="M:OpenCvSharp.Face.Facemark.Fit(OpenCvSharp.InputArray,OpenCvSharp.InputArray,OpenCvSharp.InputOutputArray,System.IntPtr)">
-            <summary>
-            Trains a Facemark algorithm using the given dataset.
-            </summary>
-            <param name="image">Input image.</param>
-            <param name="faces">Output of the function which represent region of interest of the detected faces. Each face is stored in cv::Rect container.</param>
-            <param name="landmarks">The detected landmark points for each faces.</param>
-            <param name="config">Algorithm specific for running time parameters.</param>
-            <returns></returns>
-        </member>
-        <member name="M:OpenCvSharp.Face.Facemark.SetFaceDetector(System.IntPtr,System.IntPtr)">
-            <summary>
-            Set a user defined face detector for the Facemark algorithm.
-            </summary>
-            <param name="detector">The user defined face detector function</param>
-            <param name="userData">Detector parameters</param>
-            <returns></returns>
-        </member>
-        <member name="M:OpenCvSharp.Face.Facemark.GetFaces(OpenCvSharp.InputArray,OpenCvSharp.OutputArray)">
-            <summary>
-            Detect faces from a given image using default or user defined face detector.
-            Some Algorithm might not provide a default face detector.
-            </summary>
-            <param name="image">Input image.</param>
-            <param name="faces">Output of the function which represent region of interest of the detected faces. Each face is stored in cv::Rect container.</param>
-            <returns></returns>
-        </member>
-        <member name="M:OpenCvSharp.Face.Facemark.GetFaces(OpenCvSharp.InputArray,OpenCvSharp.Rect[]@)">
-            <summary>
-            Detect faces from a given image using default or user defined face detector.
-            Some Algorithm might not provide a default face detector.
-            </summary>
-            <param name="image">Input image.</param>
-            <param name="faces">Output of the function which represent region of interest of the detected faces. Each face is stored in cv::Rect container.</param>
             <returns></returns>
         </member>
         <member name="M:OpenCvSharp.Face.Facemark.GetData(System.IntPtr)">
@@ -27275,7 +27776,7 @@
             
             </summary>
         </member>
-        <member name="M:OpenCvSharp.AgastFeatureDetector.Create(System.Int32,System.Boolean,OpenCvSharp.AGASTType)">
+        <member name="M:OpenCvSharp.AgastFeatureDetector.Create(System.Int32,System.Boolean,OpenCvSharp.AgastFeatureDetector.DetectorType)">
             <summary>
             The AgastFeatureDetector constructor
             </summary>
@@ -27304,6 +27805,11 @@
             type one of the four neighborhoods as defined in the paper
             </summary>
         </member>
+        <member name="T:OpenCvSharp.AgastFeatureDetector.DetectorType">
+            <summary>
+            AGAST type one of the four neighborhoods as defined in the paper
+            </summary>
+        </member>
         <member name="T:OpenCvSharp.AKAZE">
             <summary>
             Class implementing the AKAZE keypoint detector and descriptor extractor, 
@@ -27322,7 +27828,7 @@
             
             </summary>
         </member>
-        <member name="M:OpenCvSharp.AKAZE.Create(OpenCvSharp.AKAZEDescriptorType,System.Int32,System.Int32,System.Single,System.Int32,System.Int32,OpenCvSharp.KAZEDiffusivity)">
+        <member name="M:OpenCvSharp.AKAZE.Create(OpenCvSharp.AKAZEDescriptorType,System.Int32,System.Int32,System.Single,System.Int32,System.Int32,OpenCvSharp.KAZEDiffusivityType)">
             <summary>
             The AKAZE constructor
             </summary>
@@ -27369,7 +27875,7 @@
             
             </summary>
         </member>
-        <member name="P:OpenCvSharp.AKAZE.Diffusivity">
+        <member name="P:OpenCvSharp.AKAZE.DiffusivityType">
             <summary>
             
             </summary>
@@ -27765,11 +28271,6 @@
             <param name="compactResult"></param>
             <returns></returns>
         </member>
-        <member name="T:OpenCvSharp.AGASTType">
-            <summary>
-            AGAST type one of the four neighborhoods as defined in the paper
-            </summary>
-        </member>
         <member name="T:OpenCvSharp.AKAZEDescriptorType">
             <summary>
             cv::AKAZE descriptor type
@@ -27831,42 +28332,42 @@
             AGAST type one of the four neighborhoods as defined in the paper
             </summary>
         </member>
-        <member name="T:OpenCvSharp.KAZEDiffusivity">
+        <member name="T:OpenCvSharp.KAZEDiffusivityType">
             <summary>
             cv::KAZE diffusivity type
             </summary>
         </member>
-        <member name="F:OpenCvSharp.KAZEDiffusivity.DiffPmG1">
+        <member name="F:OpenCvSharp.KAZEDiffusivityType.DiffPmG1">
             <summary>
             
             </summary>
         </member>
-        <member name="F:OpenCvSharp.KAZEDiffusivity.DiffPmG2">
+        <member name="F:OpenCvSharp.KAZEDiffusivityType.DiffPmG2">
             <summary>
             
             </summary>
         </member>
-        <member name="F:OpenCvSharp.KAZEDiffusivity.DiffWeickert">
+        <member name="F:OpenCvSharp.KAZEDiffusivityType.DiffWeickert">
             <summary>
             
             </summary>
         </member>
-        <member name="F:OpenCvSharp.KAZEDiffusivity.DiffCharbonnier">
+        <member name="F:OpenCvSharp.KAZEDiffusivityType.DiffCharbonnier">
             <summary>
             
             </summary>
         </member>
-        <member name="T:OpenCvSharp.ORBScore">
+        <member name="T:OpenCvSharp.ORBScoreType">
             <summary>
             cv::ORB score flags
             </summary>
         </member>
-        <member name="F:OpenCvSharp.ORBScore.Fast">
+        <member name="F:OpenCvSharp.ORBScoreType.Fast">
             <summary>
             
             </summary>
         </member>
-        <member name="F:OpenCvSharp.ORBScore.Harris">
+        <member name="F:OpenCvSharp.ORBScoreType.Harris">
             <summary>
             
             </summary>
@@ -28131,7 +28632,7 @@
             
             </summary>
         </member>
-        <member name="M:OpenCvSharp.KAZE.Create(System.Boolean,System.Boolean,System.Single,System.Int32,System.Int32,OpenCvSharp.KAZEDiffusivity)">
+        <member name="M:OpenCvSharp.KAZE.Create(System.Boolean,System.Boolean,System.Single,System.Int32,System.Int32,OpenCvSharp.KAZEDiffusivityType)">
             <summary>
             The KAZE constructor
             </summary>
@@ -28296,7 +28797,7 @@
             
             </summary>
         </member>
-        <member name="M:OpenCvSharp.ORB.Create(System.Int32,System.Single,System.Int32,System.Int32,System.Int32,System.Int32,OpenCvSharp.ORBScore,System.Int32)">
+        <member name="M:OpenCvSharp.ORB.Create(System.Int32,System.Single,System.Int32,System.Int32,System.Int32,System.Int32,OpenCvSharp.ORBScoreType,System.Int32)">
             <summary>
             
             </summary>
@@ -28767,6 +29268,7 @@
             <param name="x">x-coordinates of mouse pointer in image coordinates</param>
             <param name="y">y-coordinates of mouse pointer in image coordinates</param>
             <param name="flags">a combination of CV_EVENT_FLAG</param>
+            <param name="userdata"></param>
         </member>
         <member name="T:OpenCvSharp.CvTrackbar">
             <summary>
@@ -29187,11 +29689,6 @@
             
             </summary>
         </member>
-        <member name="E:OpenCvSharp.Window.OnMouseCallback">
-            <summary>
-            Event handler to be called every time mouse event occurs in the specified window. 
-            </summary>
-        </member>
         <member name="P:OpenCvSharp.Window.HasQt">
             <summary>
             Returns true if the library is compiled with Qt
@@ -29315,6 +29812,15 @@
             <param name="delay">Delay in milliseconds. </param>
             <returns>Key code</returns>
         </member>
+        <member name="M:OpenCvSharp.Window.WaitKeyEx(System.Int32)">
+            <summary>
+            Waits for a pressed key.
+            Similar to #waitKey, but returns full key code. 
+            Key code is implementation specific and depends on used backend: QT/GTK/Win32/etc
+            </summary>
+            <param name="delay">Delay in milliseconds. 0 is the special value that means ”forever”</param>
+            <returns>Returns the code of the pressed key or -1 if no key was pressed before the specified time had elapsed.</returns>
+        </member>
         <member name="M:OpenCvSharp.Window.ShowImages(OpenCvSharp.Mat[])">
             <summary>
             
@@ -29334,6 +29840,13 @@
             </summary>
             <param name="name"></param>
             <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.Window.SetMouseCallback(OpenCvSharp.CvMouseCallback,System.IntPtr)">
+            <summary>
+            Sets the callback function for mouse events occuting within the specified window.
+            </summary>
+            <param name="onMouse">Reference to the function to be called every time mouse event occurs in the specified window. </param>
+            <param name="userdata"></param>
         </member>
         <member name="T:OpenCvSharp.ConvertImageModes">
             <summary>
@@ -29365,7 +29878,7 @@
             If set, return the loaded image as is (with alpha channel, otherwise it gets cropped).
             </summary>
         </member>
-        <member name="F:OpenCvSharp.ImreadModes.GrayScale">
+        <member name="F:OpenCvSharp.ImreadModes.Grayscale">
             <summary>
             If set, always convert image to the single channel grayscale image.
             </summary>
@@ -29388,6 +29901,56 @@
         <member name="F:OpenCvSharp.ImreadModes.LoadGdal">
             <summary>
             If set, use the gdal driver for loading the image.
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.ImreadModes.ReducedGrayscale2">
+            <summary>
+            If set, always convert image to the single channel grayscale image and the image size reduced 1/2.
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.ImreadModes.ReducedColor2">
+            <summary>
+            If set, always convert image to the 3 channel BGR color image and the image size reduced 1/2.
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.ImreadModes.ReducedGrayscale4">
+            <summary>
+            If set, always convert image to the single channel grayscale image and the image size reduced 1/4.
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.ImreadModes.ReducedColor4">
+            <summary>
+            If set, always convert image to the 3 channel BGR color image and the image size reduced 1/4.
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.ImreadModes.ReducedGrayscale8">
+            <summary>
+            If set, always convert image to the single channel grayscale image and the image size reduced 1/8.
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.ImreadModes.ReducedColor8">
+            <summary>
+            If set, always convert image to the 3 channel BGR color image and the image size reduced 1/8.
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.ImreadModes.IgnoreOrientation">
+            <summary>
+            If set, do not rotate the image according to EXIF's orientation flag.
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.ImwriteEXRTypeFlags">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.ImwriteEXRTypeFlags.TypeHalf">
+            <summary>
+            store as HALF (FP16)
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.ImwriteEXRTypeFlags.TypeFloat">
+            <summary>
+            store as FP32 (default)
             </summary>
         </member>
         <member name="T:OpenCvSharp.ImwriteFlags">
@@ -29433,7 +29996,7 @@
         </member>
         <member name="F:OpenCvSharp.ImwriteFlags.PngStrategy">
             <summary>
-            One of cv::ImwritePNGFlags, default is IMWRITE_PNG_STRATEGY_DEFAULT.
+            One of cv::ImwritePNGFlags, default is IMWRITE_PNG_StrategyDEFAULT.
             </summary>
         </member>
         <member name="F:OpenCvSharp.ImwriteFlags.PngBilevel">
@@ -29446,9 +30009,78 @@
             For PPM, PGM, or PBM, it can be a binary format flag, 0 or 1. Default value is 1.
             </summary>
         </member>
+        <member name="F:OpenCvSharp.ImwriteFlags.ExrType">
+            <summary>
+            [48] override EXR storage type (FLOAT (FP32) is default)
+            </summary>
+        </member>
         <member name="F:OpenCvSharp.ImwriteFlags.WebPQuality">
             <summary>
             For WEBP, it can be a quality from 1 to 100 (the higher is the better). By default (without any parameter) and for quality above 100 the lossless compression is used.
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.ImwriteFlags.PamTupleType">
+            <summary>
+            For PAM, sets the TUPLETYPE field to the corresponding string value that is defined for the format
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.ImwriteFlags.TiffResUnit">
+            <summary>
+            For TIFF, use to specify which DPI resolution unit to set; see libtiff documentation for valid values
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.ImwriteFlags.TiffXDpi">
+            <summary>
+            For TIFF, use to specify the X direction DPI
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.ImwriteFlags.TiffYDpi">
+            <summary>
+            For TIFF, use to specify the Y direction DPI
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.ImwritePAMFlags">
+            <summary>
+            Imwrite PAM specific tupletype flags used to define the 'TUPETYPE' field of a PAM file.
+            </summary>
+        </member>
+        <member name="T:OpenCvSharp.ImwritePNGFlags">
+            <summary>
+            Imwrite PNG specific flags used to tune the compression algorithm.
+            
+            These flags will be modify the way of PNG image compression and will be passed to the underlying zlib processing stage.
+            The effect of IMWRITE_PNG_StrategyFILTERED is to force more Huffman coding and less string matching; it is somewhat 
+            intermediate between IMWRITE_PNG_StrategyDEFAULT and IMWRITE_PNG_StrategyHUFFMAN_ONLY.
+            IMWRITE_PNG_StrategyRLE is designed to be almost as fast as IMWRITE_PNG_StrategyHUFFMAN_ONLY, but give better compression for PNG 
+            image data. The strategy parameter only affects the compression ratio but not the correctness of the compressed output even 
+            if it is not set appropriately. IMWRITE_PNG_StrategyFIXED prevents the use of dynamic Huffman codes, allowing for a simpler 
+            decoder for special applications.
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.ImwritePNGFlags.StrategyDefault">
+            <summary>
+            Use this value for normal data.
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.ImwritePNGFlags.StrategyFiltered">
+            <summary>
+            Use this value for data produced by a filter (or predictor).Filtered data consists mostly of small values with a somewhat 
+            random distribution. In this case, the compression algorithm is tuned to compress them better.
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.ImwritePNGFlags.StrategyHuffmanOnly">
+            <summary>
+            Use this value to force Huffman encoding only (no string match).
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.ImwritePNGFlags.StrategyRLE">
+            <summary>
+            Use this value to limit match distances to one (run-length encoding).
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.ImwritePNGFlags.StrategyFixed">
+            <summary>
+            Using this value prevents the use of dynamic Huffman codes, allowing for a simpler decoder for special applications.
             </summary>
         </member>
         <member name="T:OpenCvSharp.ImageEncodingParam">
@@ -33963,20 +34595,14 @@
             <param name="hitThreshold"></param>
             <param name="groupThreshold"></param>
         </member>
-        <member name="M:OpenCvSharp.HOGDescriptor.ReadALTModel(System.String)">
-            <summary>
-            read/parse Dalal's alt model file
-            </summary>
-            <param name="modelFile"></param>
-        </member>
         <member name="M:OpenCvSharp.HOGDescriptor.GroupRectangles(OpenCvSharp.Rect[]@,System.Double[]@,System.Int32,System.Double)">
             <summary>
-            
+            Groups the object candidate rectangles.
             </summary>
-            <param name="rectList"></param>
-            <param name="weights"></param>
-            <param name="groupThreshold"></param>
-            <param name="eps"></param>
+            <param name="rectList">Input/output vector of rectangles. Output vector includes retained and grouped rectangles. (The Python list is not modified in place.)</param>
+            <param name="weights">Input/output vector of weights of rectangles. Output vector includes weights of retained and grouped rectangles. (The Python list is not modified in place.)</param>
+            <param name="groupThreshold">Minimum possible number of rectangles minus 1. The threshold is used in a group of rectangles to retain it.</param>
+            <param name="eps">Relative difference between sides of the rectangles to merge them into a group.</param>
         </member>
         <member name="T:OpenCvSharp.DetectionROI">
             <summary>
@@ -34090,6 +34716,62 @@
             <summary>
             Return a count of loaded models (classes).
             </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OpenCvSharp.QRCodeDetector">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.QRCodeDetector.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.QRCodeDetector.DisposeUnmanaged">
+            <summary>
+            Releases unmanaged resources
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.QRCodeDetector.SetEpsX(System.Double)">
+            <summary>
+            sets the epsilon used during the horizontal scan of QR code stop marker detection.
+            </summary>
+            <param name="epsX">Epsilon neighborhood, which allows you to determine the horizontal pattern 
+            of the scheme 1:1:3:1:1 according to QR code standard.</param>
+        </member>
+        <member name="M:OpenCvSharp.QRCodeDetector.SetEpsY(System.Double)">
+            <summary>
+            sets the epsilon used during the vertical scan of QR code stop marker detection.
+            </summary>
+            <param name="epsY">Epsilon neighborhood, which allows you to determine the vertical pattern
+            of the scheme 1:1:3:1:1 according to QR code standard.</param>
+        </member>
+        <member name="M:OpenCvSharp.QRCodeDetector.Detect(OpenCvSharp.InputArray,OpenCvSharp.Point2f[]@)">
+            <summary>
+            Detects QR code in image and returns the quadrangle containing the code.
+            </summary>
+            <param name="img">grayscale or color (BGR) image containing (or not) QR code.</param>
+            <param name="points">Output vector of vertices of the minimum-area quadrangle containing the code.</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.QRCodeDetector.Decode(OpenCvSharp.InputArray,System.Collections.Generic.IEnumerable{OpenCvSharp.Point2f},OpenCvSharp.OutputArray)">
+            <summary>
+            Decodes QR code in image once it's found by the detect() method.
+            Returns UTF8-encoded output string or empty string if the code cannot be decoded.
+            </summary>
+            <param name="img">grayscale or color (BGR) image containing QR code.</param>
+            <param name="points">Quadrangle vertices found by detect() method (or some other algorithm).</param>
+            <param name="straightQrcode">The optional output image containing rectified and binarized QR code</param>
+            <returns></returns>
+        </member>
+        <member name="M:OpenCvSharp.QRCodeDetector.DetectAndDecode(OpenCvSharp.InputArray,OpenCvSharp.Point2f[]@,OpenCvSharp.OutputArray)">
+            <summary>
+            Both detects and decodes QR code
+            </summary>
+            <param name="img">grayscale or color (BGR) image containing QR code.</param>
+            <param name="points">opiotnal output array of vertices of the found QR code quadrangle. Will be empty if not found.</param>
+            <param name="straightQrcode">The optional output image containing rectified and binarized QR code</param>
             <returns></returns>
         </member>
         <member name="T:OpenCvSharp.SimilarRects">
@@ -34448,25 +35130,30 @@
             Status code
             </summary>
         </member>
+        <member name="F:OpenCvSharp.Stitcher.Mode.Panorama">
+            <summary>
+            Mode for creating photo panoramas. Expects images under perspective
+            transformation and projects resulting pano to sphere.
+            </summary>
+        </member>
+        <member name="F:OpenCvSharp.Stitcher.Mode.Scans">
+            <summary>
+            Mode for composing scans. Expects images under affine transformation does
+            not compensate exposure by default.
+            </summary>
+        </member>
         <member name="M:OpenCvSharp.Stitcher.#ctor(System.IntPtr)">
             <summary>
             Constructor
             </summary>
             <param name="p">cv::Stitcher*</param>
         </member>
-        <member name="M:OpenCvSharp.Stitcher.Create(System.Boolean)">
+        <member name="M:OpenCvSharp.Stitcher.Create(OpenCvSharp.Stitcher.Mode)">
             <summary>
-            Creates a stitcher with the default parameters.
+            Creates a Stitcher configured in one of the stitching modes.
             </summary>
-            <param name="tryUseGpu">Flag indicating whether GPU should be used 
-            whenever it's possible.</param>
-        </member>
-        <member name="M:OpenCvSharp.Stitcher.CreateScans(System.Boolean)">
-            <summary>
-            Creates a stitcher with the default parameters with scan mode
-            </summary>
-            <param name="tryUseGpu">Flag indicating whether GPU should be used 
-            whenever it's possible.</param>
+            <param name="mode">Scenario for stitcher operation. This is usually determined by source of images
+            to stitch and their transformation.Default parameters will be chosen for operation in given scenario.</param>
         </member>
         <member name="M:OpenCvSharp.Stitcher.DisposeManaged">
             <summary>
@@ -37214,12 +37901,6 @@
             
             </summary>
         </member>
-        <member name="M:OpenCvSharp.DenseOpticalFlow.CreateOptFlow_DualTVL1">
-            <summary>
-            
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:OpenCvSharp.DenseOpticalFlow.CollectGarbage">
             <summary>
             Clear all inner buffers.
@@ -39758,50 +40439,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:OpenCvSharp.VectorOfCvString">
-            <summary>
-            std::vector&lt;cv::String&gt;
-            </summary>
-        </member>
-        <member name="M:OpenCvSharp.VectorOfCvString.#ctor">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:OpenCvSharp.VectorOfCvString.#ctor(System.IntPtr)">
-            <inheritdoc />
-            <summary>
-            </summary>
-            <param name="ptr"></param>
-        </member>
-        <member name="M:OpenCvSharp.VectorOfCvString.#ctor(System.Int32)">
-            <inheritdoc />
-            <summary>
-            </summary>
-            <param name="size"></param>
-        </member>
-        <member name="M:OpenCvSharp.VectorOfCvString.DisposeUnmanaged">
-            <inheritdoc />
-            <summary>
-            Releases unmanaged resources
-            </summary>
-        </member>
-        <member name="P:OpenCvSharp.VectorOfCvString.Size">
-            <summary>
-            vector.size()
-            </summary>
-        </member>
-        <member name="P:OpenCvSharp.VectorOfCvString.ElemPtr">
-            <summary>
-            &amp;vector[0]
-            </summary>
-        </member>
-        <member name="M:OpenCvSharp.VectorOfCvString.ToArray">
-            <summary>
-            Converts std::vector to managed array
-            </summary>
-            <returns></returns>
-        </member>
         <member name="T:OpenCvSharp.VectorOfDMatch">
             <summary>
             
@@ -40414,6 +41051,49 @@
             </summary>
         </member>
         <member name="M:OpenCvSharp.VectorOfRect2d.ToArray">
+            <summary>
+            Converts std::vector to managed array
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OpenCvSharp.VectorOfRotatedRect">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.VectorOfRotatedRect.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.VectorOfRotatedRect.#ctor(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="size"></param>
+        </member>
+        <member name="M:OpenCvSharp.VectorOfRotatedRect.#ctor(System.Collections.Generic.IEnumerable{OpenCvSharp.RotatedRect})">
+            <summary>
+            
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:OpenCvSharp.VectorOfRotatedRect.DisposeUnmanaged">
+            <summary>
+            Releases unmanaged resources
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.VectorOfRotatedRect.Size">
+            <summary>
+            vector.size()
+            </summary>
+        </member>
+        <member name="P:OpenCvSharp.VectorOfRotatedRect.ElemPtr">
+            <summary>
+            &amp;vector[0]
+            </summary>
+        </member>
+        <member name="M:OpenCvSharp.VectorOfRotatedRect.ToArray">
             <summary>
             Converts std::vector to managed array
             </summary>

@@ -21,6 +21,12 @@
 //#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
 //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
 //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
+//#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+//#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
+//#r @"..\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
 //#r @"..\..\LayoutEngine\bin\LayoutEngine.dll"
 //#r @"..\packages\Owin\lib\net40\Owin.dll"
 //#r @"..\packages\Microsoft.Owin.Hosting\lib\net451\Microsoft.Owin.Hosting.dll"
@@ -140,6 +146,34 @@ namespace FsRoot
                     f p
                     let elapsedSpan = new System.TimeSpan(System.DateTime.UtcNow.Ticks - start)
                     print <| elapsedSpan.ToString()
+            
+            
+            (* issues with websharper Type not found in JavaScript compilation: System.Collections.Generic.IDictionary`2
+            module IDict =
+            #if WEBSHARPER
+                [< Inline >]
+            #endif
+                let inline tryGetValue key (dict:System.Collections.Generic.IDictionary<_, _>) =
+                    let mutable res = Unchecked.defaultof<_>
+                    if dict.TryGetValue(key, &res)
+                    then Some res 
+                    else None
+                let add          key v (dict:System.Collections.Generic.IDictionary<_, _>) = if dict.ContainsKey key then      dict.[key] <- v else dict.Add(key, v)
+            *)
+            module Dict =
+                let [<Inline>] inline tryGetValue key (dict:System.Collections.Generic. Dictionary<_, _>) =
+                    let mutable res = Unchecked.defaultof<_>
+                    if dict.TryGetValue(key, &res)
+                    then Some res 
+                    else None
+                let add          key v (dict:System.Collections.Generic. Dictionary<_, _>) = if dict.ContainsKey key then      dict.[key] <- v else dict.Add(key, v)
+            
+            module LDict =
+                let [<Inline>] inline containsKey  key  dict = (^a : (member ContainsKey : _ -> bool) (dict, key))
+                //let inline item         key  dict = (^a : (member get_Item    : _ -> _   ) (dict, key))
+                let [<Inline>] inline tryGetValue fitem key  dict =
+                    if containsKey key dict then Some (fitem key)
+                    else None
             
             
             /// Extensible type for error messages, warnings and exceptions
@@ -273,6 +307,20 @@ namespace FsRoot
                 /// a Message is considered Info
                 let summarizedI msg = msg |> summarizedF (fun _ -> 0, 0, 1)
                 
+            /// returns a function that delays its execution
+            /// runs only once even if multiple calls happen before the delay
+            let delayed delay doF =
+                let cancellationTokenSourceO = ref None
+                fun parm -> 
+                    let asy = async {
+                        do! Async.Sleep delay
+                        doF parm
+                    } 
+                    !cancellationTokenSourceO |> Option.iter (fun (tokenSource:System.Threading.CancellationTokenSource) -> tokenSource.Cancel())
+                    cancellationTokenSourceO := Some <| new System.Threading.CancellationTokenSource()
+                    Async.Start(asy, cancellationToken = (!cancellationTokenSourceO).Value.Token)
+            
+            
             [< AutoOpen >]
             module Monads =
                 module Seq =    
@@ -821,6 +869,330 @@ namespace FsRoot
                         
                     
                     
+                type ResultM<'v, 'm> = ResultM of Option<'v> * ResultMessage<'m>
+                
+                let inline OkM              v    = ResultM (Some v, NoMsg)
+                let inline OkMWithMsg       v m  = ResultM(Some v, m)
+                //let inline OkMWithMsgs      v ms = ms |> ResultMessage.reduceMsgs |> OkMWithMsg v
+                
+                let inline ErrorM             m  = ResultM (None  , m    )
+                //let inline ErrorMWithMsgs     ms = ms |> ResultMessage.reduceMsgs |> ErrorM
+                let (|OkM|ErrorM|)             r = match r with
+                                                    | ResultM(Some v, m) -> OkM   (v, m)
+                                                    | ResultM(None  , e) -> ErrorM e
+                module ResultM =
+                
+                    type CheckError<'T> = CheckErrorF of ('T -> bool)
+                    let checkError   () = CheckErrorF (fun _ -> true )
+                    let checkErrorW  () = CheckErrorF (fun _ -> false)
+                
+                    let inline rtn                 v = OkM v
+                    let inline rtnM                m = OkMWithMsg () m
+                    let inline rtnr               vR = vR  |> Result.map OkM          |> Result.defaultWith       ErrorM
+                    let freeMessage                r = r   |> function Ok v -> Ok v   | Error e -> ResultMessage.freeMessage e |> Error
+                    let inline toResult            r = match r with
+                                                       | ResultM(Some v, _) -> Ok     v
+                                                       | ResultM(None  , e) -> Error  e
+                    let inline toResultD           r = match r with
+                                                       | ResultM(Some v, m) -> Ok    (v, m)
+                                                       | ResultM(None  , e) -> Error  e
+                    let toOption                   r = r   |> function ResultM (v,_) -> v
+                    let defaultWith              f r = r   |> toResult |> Result.defaultWith   f
+                    let defaultValue             d r = r   |> toResult |> Result.defaultValue  d
+                    let map         f  (ResultM (v, m)) = ResultM (v |> Option.map f, m)
+                    let mapMessage  fM (ResultM (v, m)) = ResultM (v, fM m)
+                    let bind                  f    r = match r with
+                                                       | ResultM(Some v, m) -> f v |> mapMessage (ResultMessage.addMsg m)
+                                                       | ResultM(None  , e) -> ResultM(None  , e)
+                    /// bind version that protects against exceptions
+                    let bindP                 f    r = match r with
+                                                       | ResultM(Some v, m) -> try f v |> mapMessage (ResultMessage.addMsg m)
+                                                                               with  e -> ExceptMsg (e.Message, e.StackTrace) |> ErrorM
+                                                       | ResultM(None  , e) -> ResultM(None  , e)
+                    let bindM                 f    m = rtnM m |> bindP f
+                
+                    let check (CheckErrorF k) vR = vR |> function ResultM(Some _, m) when ResultMessage.isFatalF k m -> ErrorM m |_-> vR
+                
+                    /// map version that protects against exceptions
+                    let inline mapP           f    m = bindP (f >> rtn) m
+                    let iter                  fM f r = r   |> mapP f |> function ResultM(Some (), m) | ResultM(None, m) -> fM m  : unit
+                    let get                        r = r   |>          defaultWith (string >> failwith)
+                    let ofOption              f   vO = vO  |> Option.map OkM          |> Option.defaultWith (f >> ErrorM)
+                    let ofResult                  vR = vR  |> rtnr
+                    let insertO                  vRO = vRO |> Option.map(map Some)    |> Option.defaultWith(fun () -> OkM None)
+                    let absorbO               f  vOR = vOR |> bindP (ofOption f)
+                    let addMsg                  m  r = r |> mapMessage (ResultMessage.addMsg m)
+                    let failIfFatalMsgF         f  r = r |> function OkM (v, m) when ResultMessage.isFatalF f m -> ErrorM m |_-> r
+                    let failIfFatalMsg             r = r |> function OkM (v, m) when ResultMessage.isFatal    m -> ErrorM m |_-> r
+                    let failIfFatalMsgW            r = r |> function OkM (v, m) when ResultMessage.isFatalW   m -> ErrorM m |_-> r
+                    let (>>=)                    r f = bind f r
+                    let rec    traverseSeq    f   sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                       Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq        sq = traverseSeq id sq
+                        
+                    
+                    type Builder() =
+                        member inline __.Return          x       = rtn  x
+                        member inline __.ReturnFrom      x       =     (x:Result<_,_>)
+                        member inline __.ReturnFrom      x       = rtnM x
+                        member        __.Bind           (w , r ) = bindP  r w
+                        member        __.Bind           (w , r ) = bindM  r w
+                        member inline __.Zero           ()       = rtn ()
+                        member inline __.Delay           f       = f
+                        member inline __.Combine        (a, b)   = a |> bind b
+                        member inline __.Run             f       = OkM () |> bindP f
+                        member __.TryWith   (body, handler     ) = try body() with e -> handler     e
+                        member __.TryFinally(body, compensation) = try body() finally   compensation()
+                        member __.Using     (disposable, body  ) = using (disposable:#System.IDisposable) body
+                        member __.While(guard, body) =
+                            let rec whileLoop guard body =
+                                if guard() then body() |> bind (fun () -> whileLoop guard body)
+                                else rtn   ()
+                            whileLoop guard body
+                        member this.For(sequence:seq<_>, body) =
+                            this.Using(sequence.GetEnumerator(),fun enum -> 
+                                this.While(enum.MoveNext, 
+                                    this.Delay(fun () -> body enum.Current)))
+                                    
+                    module Operators =
+                        let inline (|>>) v f   = mapP  f v
+                        let inline (>>=) v f   = bindP f v
+                        let inline (>>>) f g v = f v |>> g
+                        let inline (>=>) f g v = f v >>= g
+                        let inline rtn   v     = rtn    v
+                
+                [< AutoOpen >]
+                module ResultMAutoOpen =
+                    open ResultM
+                    
+                    let resultM = Builder()
+                    
+                
+                
+                type AsyncResult<'v, 'm> = Async<Result<'v, 'm>>
+                
+                /// A computation expression to build an Async<Result<'ok, 'error>> value
+                module AsyncResult =
+                    let mapError fE v  = v |> Async.map (Result.mapError fE)
+                    let freeMessage v  = v |> Async.map  Result.freeMessage
+                
+                    let rtn        v   = async.Return(Ok v  )
+                    let rtnR       vR  = async.Return    vR
+                    let iterS fE f vRA = Async.iterS (Result.iter fE f) vRA
+                    let iterA fE f vRA = Async.iterA (Result.iter fE f) vRA
+                    let bind  fRA  vRA = async { 
+                        let! vR       = vRA
+                        return! match   vR with
+                                | Ok    v -> fRA v
+                                | Error m -> async { return Error m }
+                    }
+                    let bindP (fRA:'a -> Async<Result<'b,ResultMessage<'c>>>)  (vRA: Async<Result<'a,ResultMessage<'c>>>) : Async<Result<'b,ResultMessage<'c>>>= async {
+                        try 
+                            let!  vR = vRA
+                            match vR with
+                            | Ok    v -> return! fRA   v
+                            | Error m -> return  Error m
+                        with  e -> return  ExceptMsg (e.Message, e.StackTrace) |> Error
+                    }
+                    let inline map  f m = bind  (f >> rtn) m            
+                    let inline mapP f m = bindP (f >> rtn) m            
+                    let rec whileLoop cond fRA =
+                        if   cond () 
+                        then fRA  () |> bind (fun () -> whileLoop cond fRA)
+                        else rtn  ()
+                    let (>>=)                              v f = bind f v
+                    let rec    traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                                 Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq                  sq = traverseSeq id sq
+                    let insertO   vRAO                         = vRAO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
+                    let insertR ( vRAR:Result<_,_>)            = vRAR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
+                    let absorbR   vRRA                         = vRRA |> Async.map (Result.bindP   id)
+                    let absorbO f vORA                         = vORA |> Async.map (Result.absorbO  f)
+                
+                type AsyncResultBuilder() =
+                    member __.ReturnFrom vRA        : Async<Result<'v  , 'm>> =                       vRA
+                    member __.ReturnFrom vR         : Async<Result<'v  , 'm>> = AsyncResult.rtnR      vR
+                    member __.Return     v          : Async<Result<'v  , 'm>> = AsyncResult.rtn       v  
+                    member __.Zero       ()         : Async<Result<unit, 'm>> = AsyncResult.rtn       () 
+                    member __.Bind      (vRA,  fRA) : Async<Result<'b  , 'm>> = AsyncResult.bind fRA  vRA
+                    member __.Bind      (vR ,  fRA) : Async<Result<'b  , 'm>> = AsyncResult.bind fRA (vR  |> AsyncResult.rtnR)
+                    member __.Combine   (vRA,  fRA) : Async<Result<'b  , 'm>> = AsyncResult.bind fRA  vRA
+                    member __.Combine   (vR ,  fRA) : Async<Result<'b  , 'm>> = AsyncResult.bind fRA (vR  |> AsyncResult.rtnR)
+                    member __.Delay            fRA                            = fRA
+                    member __.Run              fRA                            = fRA ()
+                    member __.TryWith   (fRA , hnd) : Async<Result<'a  , 'm>> = async { try return! fRA() with e -> return! hnd e  }
+                    member __.TryFinally(fRA , fn ) : Async<Result<'a  , 'm>> = async { try return! fRA() finally   fn  () }
+                    member __.Using(resource , fRA) : Async<Result<'a  , 'm>> = async.Using(resource,       fRA)
+                    member __.While   (guard , fRA) : Async<Result<unit, 'a>> = AsyncResult.whileLoop guard fRA 
+                    member th.For  (s: 'a seq, fRA) : Async<Result<unit, 'b>> = th.Using(s.GetEnumerator (), fun enum ->
+                                                                                    th.While(enum.MoveNext,
+                                                                                      th.Delay(fun () -> fRA enum.Current)))
+                let asyncResult = AsyncResultBuilder()
+                
+                type AsyncResultBuilderP() =
+                    member __.ReturnFrom vRA        : Async<Result<'v  , ResultMessage<_>>> =                       vRA
+                    member __.ReturnFrom vR         : Async<Result<'v  , ResultMessage<_>>> = AsyncResult.rtnR      vR
+                    member __.Return     v          : Async<Result<'v  , ResultMessage<_>>> = AsyncResult.rtn       v  
+                    member __.Zero       ()         : Async<Result<unit, ResultMessage<_>>> = AsyncResult.rtn       () 
+                    member __.Bind      (vRA,  fRA) : Async<Result<'b  , ResultMessage<_>>> = AsyncResult.bindP fRA  vRA
+                    member __.Bind      (vR ,  fRA) : Async<Result<'b  , ResultMessage<_>>> = AsyncResult.bindP fRA (vR  |> AsyncResult.rtnR)
+                    member __.Combine   (vRA,  fRA) : Async<Result<'b  , ResultMessage<_>>> = AsyncResult.bindP fRA  vRA
+                    member __.Combine   (vR ,  fRA) : Async<Result<'b  , ResultMessage<_>>> = AsyncResult.bindP fRA (vR  |> AsyncResult.rtnR)
+                    member __.Delay            fRA                                          = fRA
+                    member __.Run              fRA                                          = AsyncResult.rtn () |> AsyncResult.bindP fRA
+                    member __.TryWith   (fRA , hnd) : Async<Result<'a  , ResultMessage<_>>> = async { return! try fRA() with e -> hnd e  }
+                    member __.TryFinally(fRA , fn ) : Async<Result<'a  , ResultMessage<_>>> = async { return! try fRA() finally   fn  () }
+                    member __.Using(resource , fRA) : Async<Result<'a  , ResultMessage<_>>> = async.Using(resource,       fRA)
+                    member __.While   (guard , fRA) : Async<Result<unit, ResultMessage<_>>> = AsyncResult.whileLoop guard fRA 
+                    member th.For  (s: 'a seq, fRA) : Async<Result<unit, ResultMessage<_>>> = th.Using(s.GetEnumerator (), fun enum ->
+                                                                                              th.While(enum.MoveNext,
+                                                                                                th.Delay(fun () -> fRA enum.Current)))
+                let asyncResultP = AsyncResultBuilderP()
+                
+                [<AutoOpen>]
+                module Extensions =      
+                    // Having Async<_> members as extensions gives them lower priority in
+                    // overload resolution between Async<_> and Async<Result<_,_>>.
+                    type AsyncResultBuilder with
+                      member __.ReturnFrom (vA: Async<'a>     ) : Async<Result<'a, 'b>> =                       Async.map Ok vA
+                      member __.Bind       (vA: Async<'a>, fRA) : Async<Result<'b, 'c>> = AsyncResult.bind fRA (Async.map Ok vA)
+                      member __.Combine    (vA: Async<'a>, fRA) : Async<Result<'b, 'c>> = AsyncResult.bind fRA (Async.map Ok vA)
+                
+                    type AsyncResultBuilderP with
+                      member __.ReturnFrom (vA: Async<'a>     ) : Async<Result<'a, ResultMessage<_>>> =                        Async.map Ok vA
+                      member __.Bind       (vA: Async<'a>, fRA) : Async<Result<'b, ResultMessage<_>>> = AsyncResult.bindP  fRA (Async.map Ok vA)
+                      member __.Combine    (vA: Async<'a>, fRA) : Async<Result<'b, ResultMessage<_>>> = AsyncResult.bindP fRA (Async.map Ok vA)
+                
+                
+                
+                type AsyncResultM<'v, 'm> = Async<ResultM<'v, 'm>>
+                
+                /// A computation expression to build an Async<Result<'ok, 'error>> value
+                module AsyncResultM =
+                    let mapError fE v  = v |> Async.map (ResultM.mapMessage fE)
+                    let freeMessage v  = v |> Async.map  ResultM.freeMessage
+                
+                    let rtn         v   = async.Return(OkM v  )
+                    let rtnr        vR  = async.Return(ResultM.rtnr vR)
+                    let rtnR        vR  = async.Return    vR
+                    let rtnM        vM  = async.Return(ResultM.rtnM vM)
+                    let rtnrA       vrA = vrA |> Async.map    ResultM.ofResult
+                    let iterS  fE f vRA = Async.iterS (ResultM.iter fE f) vRA
+                    let iterA  fE f vRA = Async.iterA (ResultM.iter fE f) vRA
+                    let iterpS    f vRA = vRA |> iterS (ResultMessage.summarized >> print) f
+                    let iterpA    f vRA = vRA |> iterA (ResultMessage.summarized >> print) f
+                    let bind  (fRA:'a -> Async<ResultM<'b,'c>>)  (vRA: Async<ResultM<'a,'c>>) : Async<ResultM<'b,'c>>= async {
+                        try 
+                            let!  vR = vRA
+                            match vR with
+                            | OkM   (v, m) -> return! fRA   v |> Async.map (ResultM.addMsg m)
+                            | ErrorM    m  -> return  ErrorM m
+                        with  e -> return  ExceptMsg (e.Message, e.StackTrace) |> ErrorM
+                    }
+                    let inline bindr  f a  = rtnr   a |> bind f : AsyncResultM<_,_>
+                    let inline bindM  f a  = rtnM   a |> bind f : AsyncResultM<_,_>
+                    let inline bindrA f a  = rtnrA  a |> bind f : AsyncResultM<_,_>
+                    let inline bindR  f a  = rtnR   a |> bind f : AsyncResultM<_,_>
+                    let inline map    f m = bind  (f >> rtn) m            
+                    let rec whileLoop cond fRA =
+                        if   cond () 
+                        then fRA  () |> bind (fun () -> whileLoop cond fRA)
+                        else rtn  ()
+                    let (>>=)                              v f = bind f v
+                    let rec    traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                                 Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq                  sq = traverseSeq id sq
+                    let insertO   vRAO                         = vRAO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
+                    let insertR ( vRAR:Result<_,_>)            = vRAR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
+                    let absorbR   vRRA                         = vRRA |> Async.map (Result.bindP   id)
+                    let absorbO f vORA                         = vORA |> Async.map (Result.absorbO  f)
+                    type AsyncResultMBuilder() =
+                        member __.ReturnFrom vRA        : Async<ResultM<'v  , 'm>> =           vRA
+                        member __.ReturnFrom vR         : Async<ResultM<'v  , 'm>> = rtnr      vR
+                        member __.ReturnFrom vR         : Async<ResultM<unit, 'm>> = rtnM      vR
+                        member __.ReturnFrom vR         : Async<ResultM<'v  , 'm>> = rtnR      vR
+                        member __.ReturnFrom vR         : Async<ResultM<'v  , 'm>> = rtnrA     vR
+                        member __.Return     v          : Async<ResultM<'v  , 'm>> = rtn       v  
+                        member __.Zero       ()         : Async<ResultM<unit, 'm>> = rtn       () 
+                        member __.Bind      (vRA,  fRA) : Async<ResultM<'b  , 'm>> = bind fRA  vRA
+                        member __.Bind       (w , r )                              = bindr   r w
+                        member __.Bind       (w , r )                              = bindM   r w
+                        member __.Bind       (w , r )                              = bindR   r w
+                        member __.Bind       (w , r )                              = bindrA  r w
+                        member __.Combine   (vRA,  fRA) : Async<ResultM<'b  , 'm>> = bind fRA  vRA
+                        member __.Combine   (vR ,  fRA) : Async<ResultM<'b  , 'm>> = bind fRA (vR  |> rtnR)
+                        member __.Delay            fRA                             = fRA
+                        member __.Run              fRA                             = fRA ()
+                        member __.TryWith   (fRA , hnd) : Async<ResultM<'a  , 'm>> = async { try return! fRA() with e -> return! hnd e  }
+                        member __.TryFinally(fRA , fn ) : Async<ResultM<'a  , 'm>> = async { try return! fRA() finally   fn  () }
+                        member __.Using(resource , fRA) : Async<ResultM<'a  , 'm>> = async.Using(resource,       fRA)
+                        member __.While   (guard , fRA) : Async<ResultM<unit, 'a>> = whileLoop guard fRA 
+                        member th.For  (s: 'a seq, fRA) : Async<ResultM<unit, 'b>> = th.Using(s.GetEnumerator (), fun enum ->
+                                                                                        th.While(enum.MoveNext,
+                                                                                            th.Delay(fun () -> fRA enum.Current)))
+                
+                [<AutoOpen>]
+                module AsyncResultMAutoOpen =
+                    open AsyncResultM
+                
+                    let asyncResultM = AsyncResultMBuilder()
+                
+                    // Having Async<_> members as extensions gives them lower priority in
+                    // overload resolution between Async<_> and Async<Result<_,_>>.
+                    type AsyncResultMBuilder with
+                    member __.ReturnFrom (vA: Async<_>     ) : Async<ResultM<_,_>> =           Async.map OkM vA
+                    member __.Bind       (vA: Async<_>, fRA) : Async<ResultM<_,_>> = bind fRA (Async.map OkM vA)
+                    member __.Combine    (vA: Async<_>, fRA) : Async<ResultM<_,_>> = bind fRA (Async.map OkM vA)
+                
+            type System.String with
+                member this.Substring2(from, n) = 
+                    if   n    <= 0           then ""
+                    elif from <  0           then this.Substring2(0, n + from)
+                    elif from >= this.Length then ""
+                    else this.Substring(from, min n (this.Length - from))
+                member this.Left             n  = this.Substring2(0, n)
+                member this.Right            n  = this.Substring2(max 0 (this.Length - n), this.Length)
+            
+            module String =
+                let splitByChar (c: char) (s: string) = s.Split c
+                let splitInTwoO spl txt = 
+                    let i = (txt:string).IndexOf (spl:string)
+                    if  i = -1 then None else
+                    (txt.Left(i), txt.Substring (i + spl.Length) )
+                    |> Some
+                let delimitedO  op cl txt =
+                    splitInTwoO op txt
+                    |> Option.bind(fun (bef, sec) ->
+                        splitInTwoO cl sec
+                        |> Option.map(fun (mid, aft) -> bef, mid, aft)
+                    )
+                let contains     sub  (whole: string) = whole.Contains sub
+                let trim                  (s: string) = s.Trim()
+                let append     (a: string)(b: string) =  a + b
+                let skipFirstLine (txt:string) = txt.IndexOf '\n' |> fun i -> if i < 0 then "" else txt.[i + 1..]
+                let unindent (s:string) =
+                    let lines = s.Split '\n'
+                    let n     = lines 
+                                |> Seq.tryFind (fun l -> l.Trim() <> "")
+                                |> Option.defaultValue ""
+                                |> Seq.tryFindIndex ((<>) ' ') 
+                                |> Option.defaultValue 0
+                    lines 
+                    |> Seq.map    (fun l -> if l.Length <= n then "" else l.Substring n)
+                    |> Seq.filter (fun s -> s.StartsWith "# 1 " |> not)
+                let indent n (s:string) =
+                    s.Split '\n'
+                    |> Seq.map ((+) (String.replicate n " "))
+                let unindentStr = unindent >> String.concat "\n"
+                let indentStr i = indent i >> String.concat "\n" 
+                let skipLastLine =
+                       splitByChar '\n' 
+                    >> fun s -> s.[0 .. (max 0 (s.Length - 2)) ]
+                    >> String.concat "\n"
+                let (|StartsWith|_|) (start:string) (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
+                let (|EndsWith  |_|) (ends :string) (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
+                
+            
             module Array =
             
                 /// Non-mutable element replace
@@ -1830,8 +2202,381 @@ namespace FsRoot
                 #endif        
                         
                         
+            module FsAutoComplete =
+                [<JavaScript ; AutoOpen >]
+                module CommTypes =
+                    type ResponseError =
+                        {
+                          Code: int
+                          Message: string
+                          //AdditionalData: 'T
+                        }
+                    type Location =
+                      {
+                        File: string
+                        Line: int
+                        Column: int
+                      }
+                    type CompletionResponse =
+                      {
+                        Name: string
+                        ReplacementText: string
+                        Glyph: string
+                        GlyphChar: string
+                      }
+                    //type ProjectResponse =
+                    //  {
+                    //    Project: ProjectFilePath
+                    //    Files: List<SourceFilePath>
+                    //    Output: string
+                    //    References: List<ProjectFilePath>
+                    //    Logs: Map<string, string>
+                    //  }
+                    type OverloadDescription =
+                      {
+                        Signature: string
+                        Comment  : string
+                        Footer   : string
+                      }
+                    type OverloadParameter =
+                      {
+                        Name : string
+                        CanonicalTypeTextForSorting : string
+                        Display : string
+                        Description : string
+                      }
+                    type Overload =
+                      {
+                        Tip : OverloadDescription list list
+                        TypeText : string
+                        Parameters : OverloadParameter list
+                        IsStaticArguments : bool
+                      }
+                    type Parameter = {
+                        Name : string
+                        Type : string
+                      }
+                    type SignatureData = {
+                        OutputType : string
+                        Parameters : Parameter list list
+                      }
+                    type MethodResponse =
+                      {
+                        Name : string
+                        CurrentParameter : int
+                        Overloads : Overload list
+                      }
+                    type SymbolUseRange =
+                      {
+                        FileName: string
+                        StartLine: int
+                        StartColumn: int
+                        EndLine: int
+                        EndColumn: int
+                        IsFromDefinition: bool
+                        IsFromAttribute : bool
+                        IsFromComputationExpression : bool
+                        IsFromDispatchSlotImplementation : bool
+                        IsFromPattern : bool
+                        IsFromType : bool
+                      }
+                    type SymbolUseResponse =
+                      {
+                        Name: string
+                        Uses: SymbolUseRange list
+                      }
+                    type HelpTextResponse =
+                      {
+                        Name: string
+                        Overloads: OverloadDescription list list
+                      }
+                    type CompilerLocationResponse =
+                      {
+                        Fsc: string
+                        Fsi: string
+                        MSBuild: string
+                      }
+                    type FSharpErrorInfo =
+                      {
+                        FileName    : string
+                        StartLine   : int
+                        EndLine     : int
+                        StartColumn : int
+                        EndColumn   : int
+                        Severity    : string
+                        Message     : string
+                        Subcategory : string
+                      }
+                    type ErrorResponse =
+                      {
+                        File: string
+                        Errors: FSharpErrorInfo []
+                      }
+                    type Colorization =
+                      {
+                    //    Range: Range
+                        Kind: string
+                      }
+                    type Declaration =
+                      {
+                        UniqueName: string
+                        Name: string
+                        Glyph: string
+                        GlyphChar: string
+                        IsTopLevel: bool
+                    //  Range     : Utils.Range
+                    //    BodyRange : Utils.Range
+                        File : string
+                        EnclosingEntity: string
+                        IsAbstract: bool
+                      }
+                    type DeclarationResponse = {
+                        Declaration : Declaration;
+                        Nested : Declaration []
+                    }
+                    type OpenNamespace = {
+                      Namespace : string
+                      Name : string
+                      Type : string
+                      Line : int
+                      Column : int
+                      MultipleNames : bool
+                    }
+                    type QualifySymbol = {
+                      Name : string
+                      Qualifier : string
+                    }
+                    type ResolveNamespaceResponse = {
+                      Opens : OpenNamespace []
+                      Qualifies: QualifySymbol []
+                      Word : string
+                    }
+                    type UnionCaseResponse = {
+                      Text : string
+                    //  Position : Pos
+                    }
+                    type Kind = 
+                    | KInfo             of string
+                    | KError            of ResponseError
+                    | KHelpText         of HelpTextResponse
+                    | KCompletion       of CompletionResponse  []
+                    | KSymbolUse        of SymbolUseResponse
+                    | KHelp             of string
+                    | KMethod           of MethodResponse
+                    | KErrors           of ErrorResponse
+                    | KColorizations    of Colorization list
+                    | KFindDecl         of Location
+                    | KDeclarations     of DeclarationResponse []
+                    | KToolTip          of OverloadDescription [][]
+                    | KTypeSig          of string
+                    | KSignatureData    of SignatureData
+                    | KCompilerLocation of CompilerLocationResponse
+                    | KNamespaces       of ResolveNamespaceResponse
+                    | KUnionCase        of UnionCaseResponse
+                    | KMultiple         of Kind                []
+                    
+                //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+                //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
+                //#r @"..\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
+                
+                open System.Net
+                open System.Text
+                open System.IO
+                open FSharp.Data
+                open FSharp.Data.JsonExtensions
+                open Newtonsoft.Json
+                
+                open Utils
+                
+                [<JavaScript ; AutoOpen >]
+                module MsgTypes =
+                
+                    type ParseRequest         = { FileName  : string ; IsAsync    : bool   ; Lines : string[]           ; Version : int                                            }
+                    type DeclarationsRequest  = { FileName  : string ;                       Lines : string[]           ; Version : int                                            }
+                    type CompletionRequest    = { FileName  : string ; SourceLine : string ; Line  : int                ; Column  : int ; Filter : string; IncludeKeywords : bool  }
+                    type PositionRequest      = { FileName  : string ;                       Line  : int                ; Column  : int ; Filter : string                          }
+                    type ProjectRequest       = { FileName  : string                                                                                                               }
+                    type LintRequest          = { FileName  : string                                                                                                               }
+                    type HelptextRequest      = { Symbol    : string                                                                                                               }
+                    type WorkspacePeekRequest = { Directory : string ; Deep       : int    ; ExcludedDirs : string []                                                              }
+                
+                    type FARequest =
+                        | FarParse         of ParseRequest         
+                        | FarDeclarations  of DeclarationsRequest  
+                        | FarCompletion    of CompletionRequest    
+                        | FarPosition      of PositionRequest      
+                        | FarProject       of ProjectRequest       
+                        | FarLint          of LintRequest          
+                        | FarHelptext      of HelptextRequest      
+                        | FarWorkspacePeek of WorkspacePeekRequest    
+                
+                let toJson =
+                    function
+                    | FarParse         data -> JsonConvert.SerializeObject data 
+                    | FarDeclarations  data -> JsonConvert.SerializeObject data 
+                    | FarCompletion    data -> JsonConvert.SerializeObject data 
+                    | FarPosition      data -> JsonConvert.SerializeObject data 
+                    | FarProject       data -> JsonConvert.SerializeObject data 
+                    | FarLint          data -> JsonConvert.SerializeObject data 
+                    | FarHelptext      data -> JsonConvert.SerializeObject data 
+                    | FarWorkspacePeek data -> JsonConvert.SerializeObject data    
+                
+                let fromJson<'a> json = JsonConvert.DeserializeObject(json, typeof<'a>) :?> 'a
+                let jsonData2Obj item = item?Data.ToString() |> fromJson
+                
+                let HttpRequestCall (url:string) (data:string) =
+                    async {
+                        //printfn "RpcCall %s" (extract 100 data)
+                        let req = WebRequest.Create(url) :?> HttpWebRequest 
+                        req.Timeout         <- 300_000
+                        req.ProtocolVersion <- HttpVersion.Version10
+                        req.Method          <- "POST"
+                        req.ContentType     <- "application/json"
+                        let postBytes = Encoding.ASCII.GetBytes(data)
+                        //printfn "<---\n%s\n" data
+                        req.ContentLength <- int64 postBytes.Length
+                        let reqStream = req.GetRequestStream() 
+                        reqStream.Write(postBytes, 0, postBytes.Length);
+                        reqStream.Close()
+                        use resp   = req.GetResponse() 
+                        use stream = resp.GetResponseStream() 
+                        use reader = new StreamReader(stream)
+                        let msg    = reader.ReadToEnd()
+                        //print msg
+                        //printfn "\n----> \n%s\n" (extract 100 msg)
+                        let jsonV  = JsonValue.Parse msg
+                        return       jsonV
+                    }
+                
+                let KindError msg = KError { Code = 0 ; Message = msg }
+                
+                let json2Kind (v:JsonValue) = 
+                    let item =JsonValue.Parse <| v.AsString()
+                    match item?Kind.AsString() with
+                    | "info"             -> jsonData2Obj item |> KInfo
+                    | "error"            -> jsonData2Obj item |> KError
+                    | "errors"           -> jsonData2Obj item |> KErrors
+                    | "tooltip"          -> jsonData2Obj item |> KToolTip
+                    | "typesig"          -> jsonData2Obj item |> KTypeSig
+                    | "completion"       -> jsonData2Obj item |> KCompletion
+                    | "signature"        -> jsonData2Obj item |> KTypeSig
+                    | "signatureData"    -> jsonData2Obj item |> KSignatureData
+                    | "finddecl"         -> jsonData2Obj item |> KFindDecl
+                    | "compilerlocation" -> jsonData2Obj item |> KCompilerLocation
+                    | "helptext"         -> jsonData2Obj item |> KHelpText
+                    | "declarations"     -> jsonData2Obj item |> KDeclarations
+                    | "symboluse"        -> jsonData2Obj item |> KSymbolUse
+                    | _                  -> KindError <| v.ToString()
+                
+                let UrlAddress = "http://localhost:9001/"
+                
+                [< Rpc >]
+                let FSAutocompleteCall0 cmd (req: FARequest) : Async<Result<Kind [],ResultMessage<Kind[]>>> = asyncResult {
+                        let  data          = req |> toJson
+                        let! jsonV         = HttpRequestCall (UrlAddress + cmd) data
+                        return               jsonV.AsArray() |> Array.map json2Kind
+                    } 
+                
+                [<JavaScript ; AutoOpen>]
+                module Calls =
+                    let FSAutocompleteCall cmd f req = asyncResult {
+                            let! several       = FSAutocompleteCall0 cmd req
+                            let  goods, others = several |> Array.partition (f >> Option.isSome)
+                            let! good          = goods   |> Seq.choose f |> Seq.tryHead |> Result.ofOption (fun () -> others |> Message)
+                            return               good, others
+                        } 
+                    
+                    let parseCode        file code asy ver   = FSAutocompleteCall "parse"               (function KErrors        v -> Some v |_-> None)
+                                                                     <| FarParse       { FileName        = file
+                                                                                         IsAsync         = asy   
+                                                                                         Lines           = code           
+                                                                                         Version         = ver
+                                                                                       }
+                    let toolTip          file lin col filter = FSAutocompleteCall "tooltip"             (function KToolTip       v -> Some v |_-> None)
+                                                                     <| FarPosition    { FileName        = file
+                                                                                         Line            = lin         
+                                                                                         Column          = col
+                                                                                         Filter          = filter
+                                                                                       }
+                    let signature        file lin col filter = FSAutocompleteCall "signature"           (function KTypeSig v -> Some v |_-> None)
+                                                                     <| FarPosition    { FileName        = file
+                                                                                         Line            = lin         
+                                                                                         Column          = col
+                                                                                         Filter          = filter
+                                                                                       }
+                    let signatureData    file lin col filter = FSAutocompleteCall "signatureData"       (function KSignatureData v -> Some v |_-> None)
+                                                                     <| FarPosition    { FileName        = file
+                                                                                         Line            = lin         
+                                                                                         Column          = col
+                                                                                         Filter          = filter
+                                                                                       }
+                    let completion  tx kw file ln col filter = FSAutocompleteCall "completion"          (function KCompletion    v -> Some v |_-> None)
+                                                                      <| FarCompletion { FileName        = file
+                                                                                         Line            = ln         
+                                                                                         Column          = col
+                                                                                         Filter          = filter
+                                                                                         SourceLine      = tx
+                                                                                         IncludeKeywords = kw
+                                                                                        }
+                    
+                    let findTypeDecl     file lin col filter = FSAutocompleteCall "findtypedeclaration" (function KFindDecl    v -> Some v |_-> None)
+                                                                      <| FarPosition    { FileName       = file
+                                                                                          Line           = lin         
+                                                                                          Column         = col
+                                                                                          Filter         = filter
+                                                                                        }
+                    let findDeclaration  file lin col filter = FSAutocompleteCall "finddeclaration"     (function KFindDecl    v -> Some v |_-> None)
+                                                                      <| FarPosition    { FileName       = file
+                                                                                          Line           = lin         
+                                                                                          Column         = col
+                                                                                          Filter         = filter
+                                                                                        }
+                    let declarations    file code ver        = FSAutocompleteCall "declarations"       (function KDeclarations v -> Some v |_-> None)
+                                                                      <| FarDeclarations{ FileName       = file
+                                                                                          Lines          = code         
+                                                                                          Version        = ver
+                                                                                        }
+                    let helpText               symbol        = FSAutocompleteCall "helptext"            (function KHelpText     v -> Some v |_-> None)
+                                                                      <| FarHelptext    { Symbol         = symbol
+                                                                                        }
+                    let symbolUse       file lin col filter  = FSAutocompleteCall "symboluse"           (function KSymbolUse     v -> Some v |_-> None)
+                                                                     <| FarPosition    { FileName        = file
+                                                                                         Line            = lin         
+                                                                                         Column          = col
+                                                                                         Filter          = filter
+                                                                                       }
+                    let symbolUseProject file lin col filter = FSAutocompleteCall "symboluseproject"    (function KSymbolUse     v -> Some v |_-> None)
+                                                                     <| FarPosition    { FileName        = file
+                                                                                         Line            = lin         
+                                                                                         Column          = col
+                                                                                         Filter          = filter
+                                                                                       }
+                    
+                    
     
-    module CalculationModel =
+    //#cd @"..\projects\RuleEditor\src"
+    
+    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+    
+    
+    //#define WEBSHARPER
+    [< JavaScript >]
+    module RuleEditor =
+        //#r "..\..\LayoutEngine\bin\LayoutEngine.dll"
+        //#nowarn "1178" "1182" "3180" "52"
+        
+        [< AutoOpen >]
+        module Templating =
+            open WebSharper.UI.Templating
+            let [< Literal >] rootdir = @"..\website"
+        
+            let [< Literal >] TemplatesFileName = rootdir + @"\Templates.html"
+            type TemplateLib  = Template< TemplatesFileName, ClientLoad.FromDocument, ServerLoad.WhenChanged, LegacyMode.New>
+            
+            if IsClient then printfn "%s" TemplatesFileName
+         
         [< JavaScript >]
         module CalculationModel =
             open System
@@ -2472,25 +3217,8 @@ namespace FsRoot
                         attType          = AtString
                     }
             
-    //#cd @"..\projects\RuleEditor\src"
-    //#define WEBSHARPER
-    [< JavaScript >]
-    module RuleEditor =
-        //#r "..\..\LayoutEngine\bin\LayoutEngine.dll"
-        //#nowarn "1178" "1182" "3180" "52"
-        
-        [< AutoOpen >]
-        module Templating =
-            open WebSharper.UI.Templating
-            let [< Literal >] rootdir = @"..\website"
-        
-            let [< Literal >] TemplatesFileName = rootdir + @"\Templates.html"
-            type TemplateLib  = Template< TemplatesFileName, ClientLoad.FromDocument, ServerLoad.WhenChanged, LegacyMode.New>
-            
-            if IsClient then printfn "%s" TemplatesFileName
-         
         module Tree =
-            open CalculationModel.CalculationModel
+            open CalculationModel
             open TreeEff
         //    open FusionM
             open Operators
@@ -2511,16 +3239,16 @@ namespace FsRoot
             } 
         
             type TreeCollection = {
-                getParentO  :                 TreeNodeId -> TreeNode option
-                getNode     :                 TreeNodeId -> TreeNode
-                getPath     :                 TreeNodeId -> TreeNodeId list
-                setChildren : TreeNode seq -> TreeNodeId -> TreeNode
+                getParentO  : TreeNodeId                 -> TreeNode option
+                //getNode     : TreeNodeId                 -> TreeNode
+                getPath     : TreeNodeId                 -> TreeNodeId list
+                setChildren : TreeNode   -> TreeNode seq -> TreeNode
             }
         
-            let getParentOEf  nid    = Reader.ask() |>> fun treeC -> treeC.getParentO     nid
-            let getNodeEf     nid    = Reader.ask() |>> fun treeC -> treeC.getNode        nid
-            let getPathEf     nid    = Reader.ask() |>> fun treeC -> treeC.getPath        nid
-            let setChildrenEf nid ch = Reader.ask() |>> fun treeC -> treeC.setChildren ch nid
+            let getParentOEf  nid     = Reader.ask() |>> fun treeC -> treeC.getParentO  nid
+            //let getNodeEf     nid     = Reader.ask() |>> fun treeC -> treeC.getNode     nid
+            let getPathEf     nid     = Reader.ask() |>> fun treeC -> treeC.getPath     nid
+            let setChildrenEf node ch = Reader.ask() |>> fun treeC -> treeC.setChildren node ch
         
         //        static member FromNode (n:Tree.Node<_>) = n :?> TreeNode
         //        interface Tree.Node<TreeNodeId> with
@@ -2551,9 +3279,9 @@ namespace FsRoot
         module TreeNode =
             open Tree
             open TreeEff
-            open CalculationModel.CalculationModel
+            open CalculationModel
         
-            let fromNode    n  = n.getData()
+            let ofNode    n  = n.getData()
             let rec treenode (node:TreeNode) =
                 {
                     id                 = fun () -> node.nid
@@ -2561,12 +3289,10 @@ namespace FsRoot
                     isExpandedEf       = fun () -> rtn <| node.expanded
                     canHaveChildrenEf  = fun () -> rtn <| match node.element with | Calc _ -> false | _ -> true
                     childrenEf         = fun () -> node.children |> Seq.map treenode |> rtn 
-                    newChildrenEf      = fun ch -> node |> treenode |> rtn// ch |> Seq.map fromNode |> setChildrenEf node.nid |>> treenode      
-                    parentOEf          = fun _ns-> getParentOEf                            node.nid |>> Option.map treenode
-                    pathEf             = fun () -> getPathEf                               node.nid
+                    newChildrenEf      = fun ch -> ch |> Seq.map ofNode |> setChildrenEf node     |>> treenode      
+                    parentOEf          = fun _ns-> getParentOEf        node.nid |>> Option.map treenode
+                    pathEf             = fun () -> getPathEf           node.nid
                 }
-        
-            let fromSeqNode ns = ns |> Seq.map fromNode 
         
             let newTreeNode ch = {
                 nid      = TreeNodeId <| System.Guid.NewGuid()
@@ -2577,14 +3303,14 @@ namespace FsRoot
             }
             let newNodeCalc cid = newTreeNode <| Calc cid
             let newNodeTot  tid = newTreeNode <| Tot  tid
-            let removeNodesEf    p   (nodes: TreeNode seq) = nodes |> Seq.map treenode |> TreeEff.removeNodes (fromNode >> p) |>> fromSeqNode
+            let removeNodesEf    p   (nodes: TreeNode seq) = nodes |> Seq.map treenode |> TreeEff.removeNodes (ofNode >> p) |>> Seq.map ofNode
             let getElement n = n.element
             let getTId = function | Tot  tid -> Some tid | _ -> None
             let getCId = function | Calc cid -> Some cid | _ -> None
             let forTId p = getElement >> getTId >> (Option.map p ) >> Option.defaultValue false
             let forCId p = getElement >> getCId >> (Option.map p ) >> Option.defaultValue false
         
-            let tryFindTreeNodeEf  p   (nodes: TreeNode seq) = nodes |> Seq.map treenode |> TreeEff.tryFind     (fromNode >> p) |>> Option.map fromNode
+            let tryFindTreeNodeEf  p   (nodes: TreeNode seq) = nodes |> Seq.map treenode |> TreeEff.tryFind     (ofNode >> p) |>> Option.map ofNode
             let tryFindNodeEf      nid (nodes: TreeNode seq) = nodes |> tryFindTreeNodeEf (fun n -> n.nid = nid)
             let tryFindSelNodeEf   sel (nodes: TreeNode seq) = sel   |> Option.map fst     |> Option.map (swap tryFindNodeEf nodes) |> insertO |>> Option.bind id
             let tryFindSelChildEf  sel (nodes: TreeNode seq) = nodes |> tryFindSelNodeEf sel |>> Option.map getElement
@@ -2686,8 +3412,10 @@ namespace FsRoot
                     |> Option.iter( View.Sink (fun ms -> Editor.SetModelMarkers(ed.GetModel(), "annotations", ms)) 
                     )
                 )
+        
+                
         //#r @"Compiled\CalculationModelDll\CalculationModelDll.dll"
-        open CalculationModel.CalculationModel
+        open CalculationModel
         
         type Selection  = (Tree.TreeNodeId * (ForId option)) option
         
@@ -2826,6 +3554,405 @@ namespace FsRoot
             let inline appendMsgs   msg = appendText model.outputMsgs msg
             let inline appendParser msg = appendText model.parserMsgs msg
         
+        module FSCode =
+            open CalculationModel
+        
+            let trace = id
+        
+            type LocationDet =
+            | InDimension   of DimId
+            | InCalculation of CalId
+            | InGlobalDefs
+            | InFormula     of ForId
+            | InFormulaDest of ForId
+            | InFsCode
+            
+            type MsgLocation = {
+                lines    : int
+                indent   : int
+                location : LocationDet
+            }
+            
+            let getDimO  did = model.dimensions  .TryFindByKey did
+            let getCalcO cid = model.calculations.TryFindByKey cid
+            let getFormO fid = model.calculations.Value |> Seq.tryPick (fun c -> c.calFormulas |> Seq.tryPick (fun f -> if f.forId = fid then Some(c, f) else None))
+            
+            let fixName (c:string) = c.Trim().Replace(" ", "_").Replace("-","_")
+            
+            let newDimS  d = sprintf "    let %s = newDim (DimId (Guid.Parse %A)) %A %A %A" (fixName d.dimName) d.dimId.Id d.dimName d.dimType (if d.dimExclude then "" else d.dimPrefix) |> trace, InDimension d.dimId 
+            
+        //    let getDims () = model.dimensions.Value |> Seq.sortBy getorder |> Seq.map newDimS
+            
+            let dimMeasureName  cubeName = model.measurePrefix.Value + (cubeName:string).Substring(1)
+            let cubeMeasureName cube     = cube.cubName  |> dimMeasureName
+            let newMeasureDimS  cube     = cube |> cubeMeasureName |> (fun c -> sprintf "    let %s = newDim (DimId (Guid.Parse %A)) %A %A %A" (fixName c) cube.cubId.Id c DtCalc "" ) |> trace
+            
+            let getMeasureDims () =
+                model.cubes.Value
+                |> Seq.map newMeasureDimS
+            
+            let getCubeDims (c:Cube) =
+                c.cubDims
+                |> Seq.choose    (model.dimensions.TryFindByKey)
+                |> Seq.map       (fun d -> d.dimName)
+                |> Seq.append <| [ dimMeasureName c.cubName ]
+                |> String.concat " ; "
+            
+            let newCubeS c = sprintf "    let %s = newCube (CubId (Guid.Parse %A)) %A CtCalc [ %s ] (Some %s)" (fixName c.cubName) c.cubId.Id c.cubName (getCubeDims c) (cubeMeasureName c |> fixName) |> trace
+            //let getCubes () = model.cubes.Value |> Seq.map newCubeS
+            
+            let getCalcCubeNameW cdims = 
+                model.cubes.TryFindAsView (fun cub -> cub.cubDims |> Set = cdims)
+                |> View.Map(
+                   Option.map (fun c -> fixName c.cubName)
+                >> Option.defaultValue "NoCubeYet" >> trace
+                )
+                |> View.consistent
+            let newCalcSW c = V( sprintf "    let %s = newCalc (CalId (Guid.Parse %A)) %s %A %A %A %s" (fixName c.calName) c.calId.Id (if c.isInput then "Input" else "Calc") c.calName c.calOrder c.isText (getCalcCubeNameW c.calDims).V |> trace, InCalculation c.calId) 
+        
+            //let getCalcCubeName calc = 
+            //    model.cubes.TryFind (fun cub -> cub.cubDims |> Set = calc.calDims)
+            //    |> Option.map (fun c -> fixName c.cubName)
+            //    |> Option.defaultValue "NoCubeYet" 
+            //let newCalcS  c = sprintf "    let %s = newCalc (CalId (Guid.Parse %A)) %s %A %A %A %s" (fixName c.calName) c.calId.Id (if c.isInput then "Input" else "Calc") c.calName c.calOrder c.isText (getCalcCubeName c) |> trace, c.calId
+            //let getCalcs () = model.calculations.Value |> Seq.sortBy (fun c -> c.calOrder) |> Seq.map newCalcS
+            
+            let getDest f =
+                f.forDestDecl
+                |> Seq.choose (fun d -> getDimO d.Key |> Option.map (fun dim -> sprintf "%s.[%A]" dim.dimName d.Value ))
+                |> String.concat " ; "
+                |> sprintf "[ %s ]"
+            
+            let prepareFormula (f:string) =
+                f.Replace("@=", "&=").Replace("@<", "&<").Replace("@>", "&>")
+                |> String.unindent
+                |> Seq.map ((+) "    ")
+            
+            let fixText txt = (txt |> Seq.map String.trim |> Seq.map (fun s -> s.Replace("\\", "\\\\").Replace("\"", "\\\"")) |> String.concat " ")
+            
+            let newFormS (c, f) =
+                let txt   = prepareFormula f.forText
+                [ 
+                    yield! txt
+                    yield  sprintf "    |> newForm (ForId (Guid.Parse %A)) %s %s %s %A %A "  
+                                f.forId.Id (fixName c.calName) (sprintf "%A" f.forType)    
+                                (getDest f)  f.forOrder ((fixText txt).Left 495)
+                ] |> String.concat "\n"  |> trace
+              , InFormula f.forId
+            
+            let getForms c = 
+                c.calFormulas
+                |> Seq.sortBy (fun f -> f.forOrder)
+                |> Seq.map    (fun f -> c, f)
+                |> Seq.map newFormS
+                |> Seq.toArray
+            
+            let preface majorVersion server =
+                sprintf """
+                #nowarn "86"
+                #r @"..\CalculationModelDll\CalculationModelDll.dll"
+                module Definition%d =
+                    open FSSGlobal.CalculationModel
+                    open CalculationModel
+                    open CalculationSyntax
+                    open InitModel
+                    open System
+                    
+                    let NoCubeYet = newCube (CubId <| Guid.NewGuid()) "NOCUBEYET" CtCalc [] None
+                    
+                    {
+                        modId           = ModId <| System.Guid.NewGuid()
+                        server          = @%A
+                        actualElem      = "Actual"
+                        modCubes        = [| |]
+                        modDims         = [| |]
+                        modCalculations = [| |]
+                    } |> setInitModel
+                        """ majorVersion server
+                |> trace |> String.unindent 
+            
+            let fsCodeForCalc c =
+                let fsForms = getForms  c |> Seq.map fst |> String.concat "\n"
+                let fsCalc  = newCalcSW c |> View.TryGet |> Option.map fst |> Option.defaultValue "View.TryGet failed for some reason"
+                let header  =
+                    sprintf "
+                        module Formula =
+                            open FSSGlobal.CalculationModel
+                            open CalculationModel
+                            open CalculationSyntax
+                            open InitModel
+                            open System 
+                            open Definition%d\n" model.version.Value.major
+                    |> String.unindentStr
+                header
+                + fsCalc
+                + "\n    addCalcs()\n"
+                + fsForms
+                + "\n    addFrms() " 
+                + "\n    "
+        
+            let mapSeqCached0 map f (lmodel:ListModel<_, _>) =
+                lmodel.View
+                |> View.Map map
+                |> View.MapSeqCachedBy lmodel.Key  (lmodel.Key >> lmodel.TryFindByKeyAsView >> f )
+                
+            /// from 'a -> View<'x>   to:  'a option -> View<'x option>
+            let optviewMerge f = function | None -> View.Const None | Some v -> f v |> View.Map Some 
+            let inline viewSeqChoose v = v |> View.Map View.Sequence |> View.Join |> View.Map (Seq.choose id)
+            let mapSeqCached  map f (model:ListModel<_, _>) = mapSeqCached0 map (View.Map  (Option.map   f)) model   |> viewSeqChoose
+            let mapSeqCachedW map f (model:ListModel<_, _>) = mapSeqCached0 map (View.Bind (optviewMerge f)) model   |> viewSeqChoose
+            let bindSeqCached map f (model:ListModel<_, _>) = mapSeqCached0 map (View.Map  (Option.bind  f)) model   |> viewSeqChoose
+        
+            let loc     lc nl   = { lines = nl ; indent = 4 ; location = lc }
+            let txtLocn lc txts =   txts  |> String.concat "\n", [| loc lc (txts |> Seq.length) |]
+            let txtLoc1 lc txt  = [ txt ] |> txtLocn lc
+        
+            let groupLoc1s cs = cs |> Seq.map fst |> String.concat "\n" , cs |> Seq.map (fun (_, lc) -> loc lc 1                           ) |> Seq.toArray
+            let groupLocns fs = fs |> Seq.map fst |> String.concat "\n" , fs |> Seq.map (fun (t, lc) -> loc lc (t.Split '\n' |> Seq.length)) |> Seq.toArray                         
+            
+            let collectCode v =
+                v |> Seq.filter (fst >> ((<>) ""))
+                  |> Seq.toArray
+                  |> Array.unzip
+                  |> fun (ts, ls) -> ts |> String.concat "\n", Array.collect id ls
+            
+            let fsCode() =
+                let prefaceV   = View.Do {
+                    let! version = model.version.View
+                    let! server  = model.server .View
+                    return preface version.major server |> txtLocn InFsCode
+                }
+                let newDimsV   =    model.dimensions   |> mapSeqCached  Dimension.sort newDimS
+                let newMDimsV  =    model.cubes        |> mapSeqCached  id             newMeasureDimS
+                let newCubesV  =    model.cubes        |> mapSeqCached  id             newCubeS
+                let newCalcsV  =    model.calculations |> mapSeqCachedW id             newCalcSW
+                let newFormsV  =    model.calculations |> mapSeqCached  id             getForms
+                let globalDefV = V( model.globalDefs.V |> (String.indent 4 >> txtLocn InGlobalDefs ) )
+                let newMDimsSV = V( newMDimsV       .V |>                     txtLocn InFsCode       )
+                let newCubesSV = V( newCubesV       .V |>                     txtLocn InFsCode       )
+                let newFormsSV = V( newFormsV       .V |> (Seq.collect id  >> groupLocns        ) )
+                let newDimsSV  = V( newDimsV        .V |>                     groupLoc1s          )
+                let newCalcsSV = V( newCalcsV       .V |>                     groupLoc1s          )
+                [   prefaceV
+                    newDimsSV
+                    newMDimsSV
+                    txtLoc1 InFsCode "    addDims()"  |> View.Const
+                    newCubesSV
+                    txtLoc1 InFsCode "    addCubes()" |> View.Const
+                    newCalcsSV
+                    txtLoc1 InFsCode "    addCalcs()" |> View.Const
+                    globalDefV
+                    newFormsSV
+                    txtLoc1 InFsCode "    addFrms()"  |> View.Const
+                ] 
+                |> View.Sequence
+                |> View.Map collectCode
+        
+            let fsCodeVO = if IsClient then Some <| fsCode() else None
+        
+        
+        module ParseFS =
+            open FSCode
+        
+            let adaptMessage locs (lf:int) (cf:int) (lt:int) (ct:int) msg =
+                locs 
+                |> Seq.mapFold (fun  from  l  -> (from, l ), from + l.lines) 0
+                |> fst
+                |> Seq.tryFind (fun (from, l) -> lf - 1 >= from && lf - 1 < from + l.lines)
+                |> Option.bind (fun (from, l) -> 
+                    match l.location with 
+                    | InDimension   did -> getDimO  did      |> Option.map (fun  dim  -> sprintf "%s: %A. %A"                     dim.dimName                                                                 msg did )
+                    | InCalculation cid -> getCalcO cid      |> Option.map (fun  clc  -> sprintf "%s: %A. %A"                     clc.calName                                                                 msg cid )
+                    | InFormulaDest fid -> getFormO fid      |> Option.map (fun (c,f) -> sprintf "%s: %A. %A"                     c  .calName                                                                 msg fid )
+                    | InFormula     fid -> getFormO fid      |> Option.map (fun (c,f) -> sprintf "%s: (%d,%d) - (%d,%d): %A. %A"  c  .calName (lf - from) (cf - l.indent) (lt - from) (ct - l.indent) msg fid )
+                    | InFsCode          -> Some                            (             sprintf "F# Code (%d,%d) - (%d,%d): %A."              lf          cf              lt          ct             msg     )
+                    | InGlobalDefs      -> Some                            (             sprintf "Global  (%d,%d) - (%d,%d): %A."             (lf - from) (cf - l.indent) (lt - from) (ct - l.indent) msg     )
+                )
+                |> Option.defaultWith (fun () -> sprintf "%d %d - %d %d %s" lf cf lt ct msg)
+        
+            let adaptMessages locs ms =
+                let rex = """.*\((\d+),(\d+)\) - \((\d+),(\d+)\) ([^"]*?)"(?:\n|$)"""
+                match ms with
+                | REGEX rex "g" m ->    m
+                |               m -> [| m |]
+                |> Array.map (
+                    function
+                    | REGEX rex "" [| _ ; lf ; cf ; lt ; ct ; msg |] -> adaptMessage locs (int lf) (int cf) (int lt) (int ct) msg 
+                    | o                                              -> o
+                )
+        
+            let parseFile = "RuleEditor.fsx"
+        
+            open FsAutoComplete.CommTypes
+            //let autoCompleteClient = FSAutoCompleteIntermediary.FSAutoCompleteIntermediaryClient("RuleEditor")//, endPoint = JS.Window.Location.Href)
+        
+            let adaptErrors locs (errs: ErrorResponse) = 
+                errs.Errors
+                |> Seq.map(fun err ->
+                    adaptMessage locs err.StartLine err.StartColumn err.EndLine err.EndColumn err.Message
+                )
+        
+            if IsClient then
+        
+                let parseFsCode _ =
+                    asyncResult {
+                        model.parserMsgs.Value   <- "Parsing...\n" + String.skipFirstLine model.parserMsgs.Value
+                        match FSCode.fsCodeVO with
+                        | None                   -> ()
+                        | Some fsCodeV           ->
+                        let! fs, locs             = fsCodeV |> View.GetAsync
+                        let! errs, _others        = FsAutoComplete.Calls.parseCode parseFile (fs.Split '\n') true 0
+                        let  res                  = adaptErrors locs errs |> String.concat "\n"
+                        //model.outputMsgs.Value   <- locs |> Seq.map (sprintf "%A") |> String.concat "\n"
+                        model.codeFS.Value       <- fs
+                        model.parserMsgs.Value   <- "Parsed!\n" + res
+                    } |> AsyncResult.iterA (ResultMessage.summarized >> print) id
+                    
+                let parseFsCodeD = delayed 1000 parseFsCode 
+                FSCode.fsCodeVO |> Option.iter (View.Sink parseFsCodeD)
+        
+            let sForId = ForId System.Guid.Empty |> sprintf "%A" |> String.splitByChar ' ' |> Seq.head
+            let sCalId = CalId System.Guid.Empty |> sprintf "%A" |> String.splitByChar ' ' |> Seq.head
+            let sTotId = TotId System.Guid.Empty |> sprintf "%A" |> String.splitByChar ' ' |> Seq.head
+            let sDimId = DimId System.Guid.Empty |> sprintf "%A" |> String.splitByChar ' ' |> Seq.head
+        
+            let rexGlobal =      """(Global)  \("""  
+            let rexTotId  = """\"\. (""" + sTotId + ") " + "\"" + rexGuid
+            let rexCalcId = """\"\. (""" + sCalId + ") " + "\"" + rexGuid
+            let rexFormId = """\"\. (""" + sForId + ") " + "\"" + rexGuid
+            let rexDimId  = """\"\. (""" + sDimId + ") " + "\"" + rexGuid
+        
+            let jumpToLine (line:string) = 
+                let rex = [ rexGlobal
+                            rexTotId 
+                            rexCalcId
+                            rexFormId
+                            rexDimId     
+                          ] |> String.concat "|" |> sprintf "(?:%s)"
+                match line with
+                | REGEX rex "" p -> 
+                    p
+                    |> Array.skip 1
+                    |> Array.filter (isUndefined >> not)
+                    |> function
+                       | [| v ; guid |] when v = sForId -> SelectFormula     (System.Guid guid |> ForId) |> processor
+                       | [| v ; guid |] when v = sCalId -> SelectCalculation (System.Guid guid |> CalId) |> processor
+                       | [| v ; guid |] when v = sTotId -> SelectTotal       (System.Guid guid |> TotId) |> processor
+                       | [| v ; guid |] when v = sDimId -> SelectDimension   (System.Guid guid |> DimId) |> processor       
+                       | _ -> ()
+                | _ -> ()
+            
+            let jumpToRef (e:obj) = 
+                let v : string = e?Target?value |> unbox
+                let s : int    = e?Target?selectionStart |> unbox
+                let i = v.[0..s].LastIndexOf '\n'
+                jumpToLine v.[i+1..]
+        
+            let showToolTips lc txt line col =
+                asyncResult {
+                    match FSCode.fsCodeVO with
+                    | None           -> ()
+                    | Some fsv       ->
+                    let! _, locs      = fsv  |> View.GetAsync
+                    let   locsm,  _   = locs |> Seq.mapFold (fun  from  l  -> (from, l ), from + l.lines) 0
+                    match locsm      |> Seq.tryFind (fun (_,l) -> l.location = lc) with
+                    | None           -> () 
+                    | Some(from, loc)->
+                    let  sub          = REGEX.getStartWord txt col |> String.length
+                    let  add0         = REGEX.getEndWord   txt col |> String.length
+                    let  add          = if sub = 0 && add0 = 0 then 2 else add0
+                    let  lf           = line       + 1 + from
+                    let  lt           = line       + 1 + from
+                    let  cf           = col  - sub + 1 + loc.indent
+                    let  ct           = col  + add + 1 + loc.indent
+                    let! tip, others  = FsAutoComplete.Calls.toolTip parseFile lf cf ""
+                    let  tipText      = tip |> Seq.collect id |> Seq.collect (fun (t:OverloadDescription) -> [ t.Signature ; t.Comment ] ) |> String.concat "\n"
+                    let  msg          = adaptMessage locs lf cf lt ct tipText
+                    //let  msg          = sprintf "Global  %A - %A: %A." (line + 1, col - sub + 1) (line + 1, col + add + 1) (tip.Replace("\"","''"))
+                    if not <| model.parserMsgs.Value.Contains msg then 
+                        appendParser msg
+                } |> AsyncResult.iterA (ResultMessage.summarized >> print) id
+        
+            let getSymbolType chr =
+                match chr with
+                | "C"   -> "class"     
+                | "Cn"  -> "Constant"  
+                | "D"   -> "delegate"  
+                | "E"   -> "enum"      
+                | "P"   -> "property"  
+                | "e"   -> "event"     
+                | "X"   -> "exception" 
+                | "F"   -> "field"     
+                | "I"   -> "interface" 
+                | "M"   -> "function"    
+                | "N"   -> "module"    
+                | "S"   -> "struct"    
+                | "T"   -> "type"      
+                | "V"   -> "Variable"  
+                | _     -> chr
+        
+        
+            let getHints lc showHints txt line col =
+                asyncResult {
+                    match FSCode.fsCodeVO with
+                    | None           -> ()
+                    | Some fsv       ->
+                    let! _, locs      = fsv  |> View.GetAsync
+                    let   locsm,  _   = locs |> Seq.mapFold (fun  from  l  -> (from, l ), from + l.lines) 0
+                    match locsm      |> Seq.tryFind (fun (_,l) -> l.location = lc) with
+                    | None           -> () 
+                    | Some(from, loc)->
+                    let  word         = REGEX.getStartWord txt col
+                    printfn "getHints '%s' <= %d :%s => " word col txt
+                    let  lf           = line + 1 + from
+                    let  cf           = col  + 1 + loc.indent
+                    let! crs, others  = FsAutoComplete.Calls.completion (String.replicate loc.indent " " + txt) true parseFile lf cf ""
+                    let  hints        = crs |> Array.map (fun (cr:CompletionResponse) -> cr.ReplacementText, (sprintf "%-40s %20s" cr.Name (getSymbolType cr.GlyphChar)), cr.Glyph)
+                    showHints hints (line, col - word.Length) (line, col)
+                } |> AsyncResult.iterA (ResultMessage.summarized >> print) id
+        
+            
+            //let filterGlobal msgs =
+            //    let rex  = """Global  \((\d+)\,\s*(\d+)\) - \((\d+)\,\s*(\d+)\)\: "([^"]+?)"\.""" //"
+            //    match msgs with
+            //    | REGEX rex "g" m -> m
+            //    | _               -> [||]
+            //    |> Array.choose (fun v ->
+            //        match v with
+            //        | REGEX rex "" [| _ ; fl;     fc;     tl;     tc; msg |] 
+            //                 -> Some (int fl, int fc, int tl, int tc, msg)
+            //        | _      -> None
+            //    )
+            //    |> Array.map (fun (fl, fc, tl, tc, msg) ->
+            //            { Lint.Response.message  = msg
+            //              Lint.Response.severity = "error"
+            //              Lint.Response.from     = cmPos(fl - 1, fc - 1) 
+            //              Lint.Response.``to``   = cmPos(tl - 1, tc - 1)
+            //            }
+            //      )        
+            
+            let rexFormula   = """\((\d+)\,\s*(\d+)\) - \((\d+)\,\s*(\d+)\)\: "([^"]+?)"\. ForId """ + "\"" + rexGuid // "
+            let filterFormula msgs fidO =
+                match msgs with
+                | REGEX rexFormula "g" m -> m
+                | _                 -> [||]
+                |> Array.choose (fun v ->
+                    match v with
+                    | REGEX rexFormula "" [| _ ; fl;     fc;     tl;     tc; msg; guid |] when fidO = Some(guid |> System.Guid |> ForId) 
+                                    -> Some (int fl, int fc, int tl, int tc, msg)
+                    | _             -> None
+                )
+                |> Array.map (fun (fl, fc, tl, tc, msg) ->
+                        { Monaco.MarkerData.message         = msg
+                          Monaco.MarkerData.severity        = Monaco.MarkerSeverity.Error
+                          Monaco.MarkerData.startLineNumber = fl - 1
+                          Monaco.MarkerData.startColumn     = fc - 1
+                          Monaco.MarkerData.endLineNumber   = tl - 1
+                          Monaco.MarkerData.endColumn       = tc - 1
+                        }
+                  )        
+            
+            
         module Render =
             let scrollIntoView selW (e:Dom.Element) = selW |> View.Sink (fun s -> if s then e?scrollIntoViewIfNeeded())
         
@@ -2850,11 +3977,28 @@ namespace FsRoot
                 Tree.weight   =  Tree.Add        
             }
         
+            open Tree
+        
+            let parents = new System.Collections.Generic.Dictionary<TreeNodeId, TreeNode>()
+        
+            let setChildren (node:TreeNode) (ch: TreeNode seq) : TreeNode =
+                let toIdSet ns = ns |> Seq.map (fun n -> n.nid) |> Set
+                toIdSet  node.children - toIdSet ch |> Seq.iter (parents.Remove >> ignore)
+                ch |> Seq.iter (fun chn -> Dict.add chn.nid node parents)
+                { node with children = Seq.toArray ch }
+        
+            let getParentO  nid = Dict.tryGetValue nid parents        
+        
+            let rec getPath     nid =
+                match getParentO nid with
+                | Some node -> node.nid :: getPath node.nid
+                | None      -> []
+        
             let getTreeEffReaderResource() = {
-                Tree.getParentO  = fun _   -> Hole.Incomplete "Tree.getParentO " //                    TreeNodeId -> TreeNode option
-                Tree.getNode     = fun _   -> Hole.Incomplete "Tree.getNode    " //                    TreeNodeId -> TreeNode
-                Tree.getPath     = fun _   -> Hole.Incomplete "Tree.getPath    " //                    TreeNodeId -> TreeNodeId list
-                Tree.setChildren = fun _ i -> Hole.Incomplete "Tree.setChildren" //    TreeNode seq -> TreeNodeId -> TreeNode
+                Tree.getParentO  = getParentO
+                //Tree.getNode     = fun _   -> Hole.Incomplete "Tree.getNode    " //    TreeNodeId ->                 TreeNode
+                Tree.getPath     = getPath
+                Tree.setChildren = setChildren
             }
         
             type EffReader<'read> = inherit Reader.Reader<'read>
@@ -3062,12 +4206,119 @@ namespace FsRoot
                            |> Seq.map TreeNode.treenode
                            |> TreeEff.listNodes 0 
                            |> Render.runEff
-                           |> (Seq.map (fun (tn,l) -> tn.id(), (TreeNode.fromNode tn).element, l) ) 
+                           |> (Seq.map (fun (tn,l) -> tn.id(), (TreeNode.ofNode tn).element, l) ) 
                         )
                         |> Doc.BindSeqCached rowTreeNode
                      )
                     .Doc()
             
+        let details () =
+            let noCalcAttr             () = attr.disabledDynPred (V "") (V (Render.currentCalcV.V.calId = ModelUI.nonCalculation.calId))
+            let noFormAttr             () = attr.disabledDynPred (V "") (V (Render.currentFormV.V.forId = ModelUI.nonFormula    .forId))
+            let getAnnot                  = V (model.selection.V |> Option.bind snd |> ParseFS.filterFormula model.parserMsgs.V) |> View.consistent
+            let showToolTips txt line col = Render.currentFormV.View |> View.Get (fun frm -> ParseFS.showToolTips (FSCode.InFormula frm.forId)   txt line col)
+            let getHints   f txt line col = Render.currentFormV.View |> View.Get (fun frm -> ParseFS.getHints     (FSCode.InFormula frm.forId) f txt line col)
+            let editor                    =
+                Monaco.monacoNew 
+                    <| Lens Render.currentFormV.V.forText
+                    <| Some getAnnot
+                    <| Some showToolTips
+                    <| Some getHints
+                |> Monaco.render
+            
+            TemplateLib.FormulaDetail()
+                .CalcName(    Lens Render.currentCalcV.V.calName   )
+                .Format(      Lens Render.currentCalcV.V.format    )
+                .IsText(      Lens Render.currentCalcV.V.isText    )
+                .IsBalance(   Lens Render.currentCalcV.V.isBalance )
+                //.AlsoActual(  Lens Render.currentFormV.V.alsoActual)
+                .CalcType(    Render.calcTypeV Render.currentCalcV        )
+                .FormType(    Render.formTypeV Render.currentFormV        )
+                .Formula(     editor                        )
+                .DisableCalc1(noCalcAttr())
+                .DisableCalc2(noCalcAttr())
+                .DisableCalc3(noCalcAttr())
+                .DisableCalc4(noCalcAttr())
+                .DisableCalc5(noCalcAttr())
+                .DisableCalc6(noCalcAttr())
+                .DisableCalc7(noCalcAttr())
+                .DisableForm1(noFormAttr())
+                .DisableForm2(noFormAttr())
+                .AddFormula(  fun _ -> (V Render.currentCalcV.V.calId) |> View.Get (AddFormula >> processor) )
+                //.UpdateCalc(  fun _ -> UpdateAlea.updateCalc()  )
+                .Doc()
+            
+        
+        let dimsSelected () =
+            let destV = Lens Render.currentFormV.V.forDestDecl
+        
+            let cubeBaseNameW  = View.Do {
+                let! prefix    = model.cubePrefix.View
+                let! dims      = model.dimensions.View
+                let  dimsSort  = dims     |> Dimension.filterSort Render.dtypes
+                let  dimPrxs   = dimsSort |> Seq.map(fun d -> d.dimId, if d.dimExclude then "" else d.dimPrefix) |> Seq.toArray
+                let  dimIds    = dimPrxs  |> Array.map fst
+                let! cubes     = model.cubes     .View
+                let  cubeDims  = cubes    |> Seq.filter (fun c -> c.cubType = CtCalc) |> Seq.map(fun c -> c.cubDims |> Array.filter (swap Array.contains dimIds) |> Set , c) |> Seq.toArray
+                let! currCalc  = Render.currentCalcV    .View
+                let  currDims  = currCalc.calDims
+                let  currCubeO = cubeDims |> Seq.tryFind(fst >> ((=) currDims)) |> Option.map snd
+                let  baseName  = if currCubeO.IsSome then "" else
+                                 dimPrxs  |> Seq.choose (fun (did, pr) -> if Set.contains did currDims then Some pr else None)
+                                          |> String.concat "" |> ((+) prefix)
+                return currCubeO, baseName
+            }
+            let currCubeOW       = cubeBaseNameW |> View.Map  fst
+            let cubePlaceholderW = cubeBaseNameW |> View.Map  snd
+            let cubeNameW        = currCubeOW    |> View.Map (function Some cub -> cub.cubName |_-> "")
+            let setCubeName   (n:string) =
+                async { 
+                    let  nm = n.Trim()
+                    let! currCubeO = currCubeOW |> View.GetAsync
+                    match currCubeO with
+                    | Some cube -> if nm = "" 
+                                   then RemoveCube  cube.cubId 
+                                   else RenameCube (cube.cubId , nm)
+                    | None      -> if nm = ""
+                                   then NoOp
+                                   else AddCube    (nm, Render.currentCalcV.Value.calDims)
+                    |> processor
+                } |> Async.Start
+            TemplateLib.DimsSelected()
+                .CubeName(        Var.Make cubeNameW setCubeName)
+                .PossibleCubeName(cubePlaceholderW)
+                .TBody(
+                    model.dimensions |> ListModel.docLensMapView (Dimension.filterSort Render.dtypes) (fun did dimV ->
+                        let destW     = View.Do {
+                            let!  currForm  = Render.currentFormV.View
+                            match currForm.forDestDecl.TryFind did with
+                            | Some txt -> return txt
+                            | None     -> return ""
+                        }
+                        let setDest (v:string) =
+                            let t = v.Trim()
+                            if Render.currentFormV.Value.forId = ModelUI.nonFormula.forId then () else
+                            destV.Value <- 
+                                if  t = "" 
+                                then destV.Value |> Map.remove did
+                                else destV.Value |> Map.add    did t
+                        let dimCheckW = V (Render.currentCalcV.V.calDims |> Seq.contains did)
+                        let setCheck v = 
+                            if v 
+                            then    AddCalcDim(Render.currentCalcV.Value.calId, did)
+                            else RemoveCalcDim(Render.currentCalcV.Value.calId, did)
+                            |> processor
+                        let visibFor = V(if Render.currentFormV.V.forId <> ModelUI.nonFormula.forId && dimCheckW.V then "" else "Hidden")
+                        TemplateLib.DimSelectedRow()
+                            .Dimension(      V dimV.V.dimName           )
+                            .DimensionCheck( Var.Make dimCheckW setCheck)
+                            .Destination(    Var.Make destW     setDest )
+                            .Hidden(         visibFor                   )
+                            .Doc()
+                    )
+                )
+                .Doc()    
+        
         let globalDefs () =
             //let getAnnot = V (Monaco.filterGlobal model.parserMsgs.V) |> View.consistent
             
@@ -3126,10 +4377,11 @@ namespace FsRoot
                 AF.addPlugIn {
                     AF.plgName    = "RuleEditor"
                     AF.plgVars    = [| AF.newVar  "fileName"        model.fileName
-                                       //AF.newVar  "SnippetName"     (Lens Snippets.currentSnippetV.V.snpName)
-                                       //AF.newVar  "Content"         (Lens Snippets.currentSnippetV.V.snpContent)
-                                       //AF.newVar  "Output"          outputMsgs
+                                       AF.newVar  "CodeFS"          model.codeFS
+                                       AF.newVar  "Output"          model.outputMsgs
+                                       AF.newVar  "Parser"          model.parserMsgs
                                        AF.newVar  "Server"          model.server
+                                       AF.newVar  "GlobalDefs"      model.globalDefs
                                     |]  
                     AF.plgViews   = [| //AF.newViw  "FsCode"          Snippets.FsCodeW
                                        //AF.newViw  "SaveNeeded"      Snippets.SaveAsClassW
@@ -3140,14 +4392,16 @@ namespace FsRoot
                                        //AF.newDoc  "Snippets"        (lazy RenderSnippets  .render() )
                                        //AF.newDoc  "Properties"      (lazy RenderProperties.render() )
                                        //AF.newDoc  "ButtonsRight"    (lazy buttonsRight           () )
-                                       AF.newDoc  "globalDefs"      (lazy globalDefs() )
+                                       AF.newDoc  "globalDefs"      (lazy globalDefs                         () )
                                        AF.newDoc  "Dimensions"      (lazy TableDimensions  .tableDimensions  () )
                                        AF.newDoc  "Calculations"    (lazy TableCalculations.tableCalculations() )
+                                       AF.newDoc  "details"         (lazy details                            () )
+                                       AF.newDoc  "dimsSelected"    (lazy dimsSelected                       () )
                                     |]  
                     AF.plgActions = [| //AF.newAct  "AddSnippet"      Snippets.newSnippet
                                        //AF.newAct  "RemoveSnippet"   deleteSnippet       
-                                       //AF.newAct  "IndentIn"        Snippets.indentIn       
-                                       //AF.newAct  "IndentOut"       Snippets.indentOut
+                                       AF.newAct  "IndentIn"        <| fun () -> model.selection.Value |> Option.map fst |> Option.iter (fun nid -> IndentNode(true , nid) |> processor)
+                                       AF.newAct  "IndentOut"       <| fun () -> model.selection.Value |> Option.map fst |> Option.iter (fun nid -> IndentNode(false, nid) |> processor)
                                        //AF.newAct  "AddProperty"     RenderProperties.addProperty
                                        //AF.newAct  "RunFS"           runFsCode
                                        //AF.newAct  "AbortFsi"        FsiAgent.abortFsiExe
@@ -3158,7 +4412,6 @@ namespace FsRoot
                                        //AF.newActF "JumpTo"          <| AF.FunAct1 ((fun o -> unbox o |> JumpTo.jumpToRef        ), "textarea"   )
                                        //AF.newActF "ButtonClick"     <| AF.FunAct1 ((fun o -> unbox o |> CustomAction.buttonClick), "button"     )
                                        //AF.newActF "ActionClick"     <| AF.FunAct1 ((fun o -> unbox o |> CustomAction.actionClick), "name"       )
-                                       AF.newAct  "AddDimension"    (fun () -> AddDimension   |> processor)
                                        AF.newAct  "AddCalculation"  (fun () -> AddCalculation |> processor)
                                        AF.newAct  "AddTotal"        (fun () -> AddTotal       |> processor)
                                        AF.newAct  "AddDimension"    (fun () -> AddDimension   |> processor)
@@ -3256,20 +4509,21 @@ namespace FsRoot
                 | AddDimension           -> let n = Dimension.New ""
                                             model.dimensions.Add n
                                             SelectDimension n.dimId |> updateModelR model
-            //    | AddFormDim(fid, did, s)-> model.destinations.Add   { idForm = fid ; idDim = did ; destination = s }
-            //                                true
+                //| AddFormDim(fid, did, s)-> model.destinations.Add   { idForm = fid ; idDim = did ; destination = s }
+                //                            true
             ////    | AddChild(tid, ch, we)  -> model.totals.TryFindByKey tid |> Option.map( fun tot ->
             ////                                    model.childrenRels.Value <- model.childrenRels.Value |> Map.add (tid, ch) we
             ////                                    true
             ////                                ) |> Option.defaultValue false
             ////    | RemoveChild (tid, ch)  -> model.childrenRels.Value <- model.childrenRels.Value |> Map.remove (tid, ch)
             ////                                true
-            //    | RemoveTotal        tid -> model.totals.RemoveByKey    tid
-            //                                setSelection None |> ignore
-            //                                model.treeHierarchy.Value 
-            //                                |> TreeNode.removeNodes (TreeNode.forTId ((=) tid)) 
-            //                                |> ModelUI.setHierarchy model
-            //                                true
+                | RemoveTotal        tid -> model.totals.RemoveByKey    tid
+                                            setSelection None |> ignore
+                                            model.treeHierarchy.Value 
+                                            |> TreeNode.removeNodesEf (TreeNode.forTId ((=) tid))
+                                            |> Render.runEff
+                                            |> ModelUI.setHierarchy model
+                                            true
                 | RemoveCalculation  cid -> setSelection None |> ignore
                                             model.calculations.RemoveByKey cid
                                             model.totals.Value
@@ -3284,59 +4538,64 @@ namespace FsRoot
                                             |> Render.runEff
                                             |> ModelUI.setHierarchy model
                                             true
-            //    | RemoveFormula      fid -> tryFindCalcForm fid
-            //                                |> Option.iter(fun calc -> { calc with calFormulas = calc.calFormulas |> Array.filter (fun f -> f.forId <> fid) } 
-            //                                                           |> model.calculations.Add )
-            //                                true
-            //    | RemoveDimension    did -> model.dimensions.RemoveByKey did
-            //                                true
+                | RemoveFormula      fid -> tryFindCalcForm fid
+                                            |> Option.iter(fun calc -> { calc with calFormulas = calc.calFormulas |> Array.filter (fun f -> f.forId <> fid) } 
+                                                                       |> model.calculations.Add )
+                                            true
+                | RemoveDimension    did -> model.dimensions.RemoveByKey did
+                                            true
             ////    | RemoveFormDim(fid, did)-> model.destinations.RemoveByKey(fid, did)
             ////                                true
-            //    | SelectNode         nid -> (nid, None    ) |> Some |> setSelection
-            //    | ExpandNode    (ex, nid)-> let rec mapper finished (node:TreeNode) =
-            //                                    if finished             then node                       , true
-            //                                    elif node.nid = nid     then { node with expanded = ex }, true
-            //                                    else let ch, dn = node.children |> Seq.mapFold mapper false
-            //                                         { node with children = Seq.toArray ch }            , dn
-            //                                model.treeHierarchy.Value 
-            //                                |> Seq.mapFold mapper false 
-            //                                |> fst
-            //                                |> Seq.toArray
-            //                                |> model.treeHierarchy.Set
-            //                                true
-            //    | IndentNode   (iin, nid)-> let indent = if iin then Tree.indentNode else Tree.outdentNode
-            //                                model.treeHierarchy.Value
-            //                                |> TreeNode.tryFindNode nid
-            //                                |> Option.iter(
-            //                                   Tree.toNode 
-            //                                   >> swap indent (Tree.toSeqNode model.treeHierarchy.Value) 
-            //                                   >> TreeNode.fromSeqNode 
-            //                                   >> ModelUI.setHierarchy model)
-            //                                true
-            //    | MoveNode(aft,fnid,tnid)-> Tree.moveToSibling2 aft fnid tnid (Tree.toSeqNode model.treeHierarchy.Value) 
-            //                                |> TreeNode.fromSeqNode 
-            //                                |> ModelUI.setHierarchy model
-            //                                true
-            //    | SelectFormNode(fid,nid)-> (nid, Some fid) |> Some |> setSelection
-            //    | SelectTotal        tid -> model.treeHierarchy.Value |> TreeNode.tryFindNodeTId tid  |> Option.map (fun n -> n.nid, None    ) |> setSelection
-            //    | SelectCalculation  cid -> model.treeHierarchy.Value |> TreeNode.tryFindNodeCId cid  |> Option.map (fun n -> n.nid, None    ) |> setSelection
-            //    | SelectFormula      fid -> tryFindCalcForm fid       |> Option.map(fun c -> c.calId) |> Option.bind(fun cid -> 
-            //                                model.treeHierarchy.Value |> TreeNode.tryFindNodeCId cid) |> Option.map (fun n -> n.nid, Some fid) |> setSelection
-            //    | SelectDimension    did -> (if did = DimId System.Guid.Empty then None  else Some did)
-            //                                |> (fun s -> if s = model.selectedDim.Value then false else
-            //                                             model.selectedDim.Value    <- s
-            //                                             true)
-            //    | AddCalcDim   (cid, did)-> doForCalc cid <| fun c -> model.calculations.Add { c with calDims = c.calDims |> Set.add    did }
-            //                                false
-            //    | RemoveCalcDim(cid, did)-> doForCalc cid <| fun c -> model.calculations.Add { c with calDims = c.calDims |> Set.remove did }
-            //                                false
-            //    | AddCube      (n, ds)   -> model.cubes.Add <| Cube.newCubeCalc n (ds |> Seq.toArray) None
-            //                                false
-            //    | RemoveCube    cid      -> model.cubes.RemoveByKey cid
-            //                                false
-            //    | RenameCube   (cid, n)  -> doForCube cid <| fun c -> model.cubes.Add { c with cubName = n }
-            //                                false
-                  | _ -> printfn "Msg not implemented: %A" msg ; false
+                | SelectNode         nid -> (nid, None    ) |> Some |> setSelection
+                | ExpandNode    (ex, nid)-> let rec mapper finished (node:Tree.TreeNode) =
+                                                if finished             then node                       , true
+                                                elif node.nid = nid     then { node with expanded = ex }, true
+                                                else let ch, dn = node.children |> Seq.mapFold mapper false
+                                                     { node with children = Seq.toArray ch }            , dn
+                                            model.treeHierarchy.Value 
+                                            |> Seq.mapFold mapper false 
+                                            |> fst
+                                            |> Seq.toArray
+                                            |> model.treeHierarchy.Set
+                                            true
+                | IndentNode   (iin, nid)-> let indent = if iin then TreeEff.indentNode else TreeEff.outdentNode
+                                            eff {
+                                                let! nodeO = model.treeHierarchy.Value |> TreeNode.tryFindNodeEf nid
+                                                match nodeO with
+                                                | None      -> ()
+                                                | Some node ->
+                                                    let! nodes = TreeNode.treenode node
+                                                              |> swap indent (Seq.map TreeNode.treenode model.treeHierarchy.Value) 
+                                                    nodes 
+                                                    |> Seq.map TreeNode.ofNode
+                                                    |> ModelUI.setHierarchy model
+                                            } |> Render.iterEff id
+                                            true
+                | MoveNode(aft,fnid,tnid)-> TreeEff.moveToSibling2 aft fnid tnid (Seq.map TreeNode.treenode model.treeHierarchy.Value)
+                                            |>> Seq.map TreeNode.ofNode
+                                            |>> ModelUI.setHierarchy model
+                                            |> Render.iterEff id
+                                            true
+                | SelectFormNode(fid,nid)-> (nid, Some fid) |> Some |> setSelection
+                | SelectTotal        tid -> model.treeHierarchy.Value |> TreeNode.tryFindNodeTIdEf tid  |>> Option.map (fun n -> n.nid, None    ) |>> setSelection |> Render.runEff
+                | SelectCalculation  cid -> model.treeHierarchy.Value |> TreeNode.tryFindNodeCIdEf cid  |>> Option.map (fun n -> n.nid, None    ) |>> setSelection |> Render.runEff
+                | SelectFormula      fid -> tryFindCalcForm fid       |> Option.map(fun c -> c.calId)   |>  Option.map (fun cid -> model.treeHierarchy.Value |> TreeNode.tryFindNodeCIdEf cid)
+                                                                         |> insertO |>> Option.bind id |>>  Option.map (fun n -> n.nid, Some fid) |>> setSelection |> Render.runEff
+                | SelectDimension    did -> (if did = DimId System.Guid.Empty then None  else Some did)
+                                            |> (fun s -> if s = model.selectedDim.Value then false else
+                                                         model.selectedDim.Value    <- s
+                                                         true)
+                | AddCalcDim   (cid, did)-> doForCalc cid <| fun c -> model.calculations.Add { c with calDims = c.calDims |> Set.add    did }
+                                            false
+                | RemoveCalcDim(cid, did)-> doForCalc cid <| fun c -> model.calculations.Add { c with calDims = c.calDims |> Set.remove did }
+                                            false
+                | AddCube      (n, ds)   -> model.cubes.Add <| Cube.newCubeCalc n (ds |> Seq.toArray) None
+                                            false
+                | RemoveCube    cid      -> model.cubes.RemoveByKey cid
+                                            false
+                | RenameCube   (cid, n)  -> doForCube cid <| fun c -> model.cubes.Add { c with cubName = n }
+                                            false
+                | _ -> printfn "Msg not implemented: %A" msg ; false
         
             
             let updateModel model msg = if updateModelR model msg then ModelUI.refreshNow()

@@ -1,0 +1,5 @@
+#r "Microsoft.CSharp" 
+#r "System" 
+#r "System.Numerics" 
+#r "System.Xml" 
+#r "../../../../packages/testing/NodaTime/lib/net45/NodaTime.dll" 

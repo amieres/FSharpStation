@@ -1,0 +1,6 @@
+#load "Microsoft.Win32.Primitives.fsx" 
+#load "System.Resources.ResourceManager.fsx" 
+#load "System.Runtime.fsx" 
+#load "System.Threading.Tasks.fsx" 
+#r "System" 
+#r "../../../packages/System.Net.WebSockets/lib/net46/System.Net.WebSockets.dll" 

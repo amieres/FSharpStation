@@ -1,0 +1,1 @@
+#load "Microsoft.AspNetCore.Authentication.csx" 

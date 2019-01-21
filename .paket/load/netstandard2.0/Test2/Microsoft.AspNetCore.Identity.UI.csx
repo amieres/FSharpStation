@@ -1,0 +1,8 @@
+#load "Microsoft.AspNetCore.Identity.csx" 
+#load "Microsoft.AspNetCore.Mvc.csx" 
+#load "Microsoft.AspNetCore.StaticFiles.csx" 
+#load "Microsoft.Extensions.FileProviders.Embedded.csx" 
+#load "Microsoft.Extensions.Identity.Stores.csx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.Identity.UI/lib/netstandard2.0/Microsoft.AspNetCore.Identity.UI.dll" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.Identity.UI/lib/netstandard2.0/Microsoft.AspNetCore.Identity.UI.Views.V4.dll" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.Identity.UI/lib/netstandard2.0/Microsoft.AspNetCore.Identity.UI.Views.V3.dll" 

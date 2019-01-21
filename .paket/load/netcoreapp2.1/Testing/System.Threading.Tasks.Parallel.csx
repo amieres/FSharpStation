@@ -1,0 +1,1 @@
+#r "../../../../packages/testing/System.Threading.Tasks.Parallel/lib/netstandard1.3/System.Threading.Tasks.Parallel.dll" 

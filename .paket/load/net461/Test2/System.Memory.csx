@@ -1,0 +1,1 @@
+#r "../../../../packages/test2/System.Memory/lib/netstandard1.1/System.Memory.dll" 

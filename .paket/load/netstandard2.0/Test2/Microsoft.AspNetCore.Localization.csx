@@ -1,0 +1,5 @@
+#load "Microsoft.AspNetCore.Http.Extensions.csx" 
+#load "Microsoft.Extensions.Localization.Abstractions.csx" 
+#load "Microsoft.Extensions.Logging.Abstractions.csx" 
+#load "Microsoft.Extensions.Options.csx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.Localization/lib/netstandard2.0/Microsoft.AspNetCore.Localization.dll" 

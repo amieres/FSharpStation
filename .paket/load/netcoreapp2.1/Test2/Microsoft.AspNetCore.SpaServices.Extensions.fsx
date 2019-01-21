@@ -1,0 +1,5 @@
+#load "Microsoft.AspNetCore.SpaServices.fsx" 
+#load "Microsoft.AspNetCore.StaticFiles.fsx" 
+#load "Microsoft.AspNetCore.WebSockets.fsx" 
+#load "Microsoft.Extensions.FileProviders.Physical.fsx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.SpaServices.Extensions/lib/netstandard2.0/Microsoft.AspNetCore.SpaServices.Extensions.dll" 

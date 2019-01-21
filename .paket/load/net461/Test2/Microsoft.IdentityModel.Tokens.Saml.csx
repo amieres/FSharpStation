@@ -1,0 +1,7 @@
+#load "Microsoft.IdentityModel.Tokens.csx" 
+#load "Microsoft.IdentityModel.Xml.csx" 
+#r "Microsoft.CSharp" 
+#r "System" 
+#r "System.Net.Http" 
+#r "System.Runtime.Serialization" 
+#r "../../../../packages/test2/Microsoft.IdentityModel.Tokens.Saml/lib/net461/Microsoft.IdentityModel.Tokens.Saml.dll" 

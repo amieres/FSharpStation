@@ -1,0 +1,5 @@
+#load "Microsoft.AspNetCore.Hosting.fsx" 
+#load "Microsoft.AspNetCore.Server.Kestrel.Core.fsx" 
+#load "Microsoft.AspNetCore.Server.Kestrel.Https.fsx" 
+#load "Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.fsx" 
+#r "../../../../packages/test/Microsoft.AspNetCore.Server.Kestrel/lib/netstandard2.0/Microsoft.AspNetCore.Server.Kestrel.dll" 

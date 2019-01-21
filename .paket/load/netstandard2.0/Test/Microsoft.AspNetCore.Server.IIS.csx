@@ -1,0 +1,6 @@
+#load "Microsoft.AspNetCore.Authentication.Core.csx" 
+#load "Microsoft.AspNetCore.Connections.Abstractions.csx" 
+#load "Microsoft.AspNetCore.Hosting.Abstractions.csx" 
+#load "System.IO.Pipelines.csx" 
+#load "System.Security.Principal.Windows.csx" 
+#r "../../../../packages/test/Microsoft.AspNetCore.Server.IIS/lib/netstandard2.0/Microsoft.AspNetCore.Server.IIS.dll" 

@@ -1,0 +1,8 @@
+#load "Microsoft.ApplicationInsights.AspNetCore.csx" 
+#load "Microsoft.AspNetCore.Hosting.csx" 
+#load "Microsoft.AspNetCore.Razor.Runtime.csx" 
+#load "Microsoft.Extensions.Configuration.Json.csx" 
+#load "Microsoft.Extensions.DiagnosticAdapter.csx" 
+#load "Microsoft.Extensions.Logging.csx" 
+#load "Microsoft.Extensions.Logging.Configuration.csx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.ApplicationInsights.HostingStartup/lib/net461/Microsoft.AspNetCore.ApplicationInsights.HostingStartup.dll" 

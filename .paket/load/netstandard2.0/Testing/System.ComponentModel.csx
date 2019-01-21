@@ -1,0 +1,1 @@
+#r "../../../../packages/testing/System.ComponentModel/lib/netstandard1.3/System.ComponentModel.dll" 

@@ -1,0 +1,2 @@
+#load "Microsoft.Extensions.DependencyInjection.Abstractions.csx" 
+#r "../../../../packages/test/Microsoft.Extensions.DependencyInjection/lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.dll" 

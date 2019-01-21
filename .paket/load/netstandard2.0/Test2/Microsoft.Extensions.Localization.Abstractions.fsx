@@ -1,0 +1,1 @@
+#r "../../../../packages/test2/Microsoft.Extensions.Localization.Abstractions/lib/netstandard2.0/Microsoft.Extensions.Localization.Abstractions.dll" 

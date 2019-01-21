@@ -1,0 +1,7 @@
+#load "HtmlAgilityPack.csx" 
+#load "System.Xml.XDocument.csx" 
+#load "WebSharper.csx" 
+#r "../../../packages/WebSharper.UI/lib/netstandard2.0/WebSharper.UI.Templating.Common.dll" 
+#r "../../../packages/WebSharper.UI/lib/netstandard2.0/WebSharper.UI.dll" 
+#r "../../../packages/WebSharper.UI/lib/netstandard2.0/WebSharper.UI.Templating.Runtime.dll" 
+#r "../../../packages/WebSharper.UI/lib/netstandard2.0/WebSharper.UI.Templating.dll" 

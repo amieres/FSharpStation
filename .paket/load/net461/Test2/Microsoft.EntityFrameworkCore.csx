@@ -1,0 +1,8 @@
+#load "Microsoft.Extensions.Caching.Memory.csx" 
+#load "Microsoft.Extensions.DependencyInjection.csx" 
+#load "Microsoft.Extensions.Logging.csx" 
+#load "Remotion.Linq.csx" 
+#load "System.Collections.Immutable.csx" 
+#load "System.ComponentModel.Annotations.csx" 
+#load "System.Diagnostics.DiagnosticSource.csx" 
+#load "System.Interactive.Async.csx" 

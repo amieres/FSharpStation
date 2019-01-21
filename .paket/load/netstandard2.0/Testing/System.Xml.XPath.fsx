@@ -1,0 +1,1 @@
+#r "../../../../packages/testing/System.Xml.XPath/lib/netstandard1.3/System.Xml.XPath.dll" 

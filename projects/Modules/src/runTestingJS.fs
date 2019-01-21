@@ -2,10 +2,9 @@
 #nowarn "1182"
 #nowarn "52"
 #nowarn "1178"
-////-d:FSharpStation1546539619997
+////-d:FSharpStation1547097944900
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
-//#I @"..\packages\WebSharper.FSharp\tools\net461\"
 //#I @"..\packages\Owin\lib\net40"
 //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
 //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
@@ -24,28 +23,20 @@
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#r @"..\packages\System.Reactive\lib\net46\System.Reactive.dll"
 //#r @"..\packages\FSharp.Control.Reactive\lib\net46\FSharp.Control.Reactive.dll"
-//#r @"..\packages\WebSharper.FSharp\tools\net461\WebSharper.Core.dll"
-//#r @"..\packages\WebSharper.FSharp\tools\net461\WebSharper.Compiler.dll"
-//#r @"..\packages\WebSharper.FSharp\tools\net461\WebSharper.Compiler.FSharp.dll"
-//#r @"..\packages\WebSharper.FSharp\tools\net461\System.Reflection.Metadata.dll"
-//#r @"..\packages\WebSharper.FSharp\tools\net461\FSharp.Compiler.Service.dll"
-//#r @"..\packages\WebSharper.FSharp\tools\net461\Mono.Cecil.dll"
-//#r @"..\packages\WebSharper.FSharp\tools\net461\Mono.Cecil.Pdb.dll"
-//#r @"..\packages\WebSharper.FSharp\tools\net461\Mono.Cecil.Mdb.dll"
 //#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
 //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
 //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
 //#r @"..\packages\Owin\lib\net40\Owin.dll"
+//#r @"System.Web"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
-//#r @"System.Web"
 //#nowarn "3180"
 //#nowarn "1182"
 //#nowarn "52"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1546539619997
+//#define FSharpStation1547097944900
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -1462,25 +1453,6 @@ namespace FsRoot
         /// Essentials that cannot run in Javascript (WebSharper)
         [< AutoOpen >]
         module LibraryNoJS =
-            [< AutoOpen >]
-            module Regex =
-                open System.Text.RegularExpressions
-            
-                let (|Regex|_|) pattern input =
-                    if input = null then None else
-                    try 
-                        let m = Regex.Match(input, pattern)
-                        if m.Success then Some(List.tail [ for g in m.Groups -> g.Value ])
-                        else None
-                    with e -> None
-            
-                let (|Regexs|) pattern input =
-                    if input = null then [| |] else
-                    try 
-                        let ms = Regex.Matches(input, pattern)
-                        [| for m in ms do yield m.Value |] 
-                    with e -> [| |]
-            
             //#r @"..\packages\System.Reactive\lib\net46\System.Reactive.dll"
             //#r @"..\packages\FSharp.Control.Reactive\lib\net46\FSharp.Control.Reactive.dll"
             module RunProcess =
@@ -1650,6 +1622,15 @@ namespace FsRoot
                     let dest = Path.Combine(destDir, Path.GetFileName(from))
                     toFile from dest
                 
+            type TempFileName(fn) =
+                new () = new TempFileName(System.IO.Path.GetTempFileName())
+                member __.Name = fn
+                interface System.IDisposable with
+                    member __.Dispose() = 
+                        //printfn "trying to delete %s"  fn
+                        if System.IO.File.Exists fn then (*printfn "deleting %s"  fn ;*) System.IO.File.Delete fn 
+                    
+                    
             module FsCode =
                 open CommArg
                 open CommArgCollection
@@ -1718,7 +1699,7 @@ namespace FsRoot
                 ] 
                 
                 let wscWebSite      = NewString("Website"     , true , sprintf "--wsoutput:%A"              )
-                let wscProjectPath  = NewString("WsProject"   , true , sprintf "--project:%A"               )
+                let wscProjectFile  = NewString("WsProject"   , true , sprintf "--project:%A"               )
                 let wscProjectType  = NewString("ProjectType" , true , sprintf "--ws:%s"                    )
                 let wscGenWSharper  = NewString("GenWSharper" , false, sprintf "--%s"                       )
                 let wscJSMap        = NewBool  ("JSMap"       , false, flagpm  "--jsmap"                    )
@@ -1733,7 +1714,7 @@ namespace FsRoot
                 let WebSharpArgs = 
                     Set [
                           wscWebSite     .CommArg.cargId
-                          wscProjectPath .CommArg.cargId
+                          wscProjectFile .CommArg.cargId
                           wscProjectType .CommArg.cargId
                           wscGenWSharper .CommArg.cargId
                           wscJSMap       .CommArg.cargId
@@ -1777,7 +1758,7 @@ namespace FsRoot
                     [|
                        wscProjectType /=       "Site"
                        wscWebSite     /= (rtn (fun d -> d +/+ "website" ) <*> gS intDirectory )
-                       wscProjectPath /=       gS intName
+                       wscProjectFile /=       gS intName
                        wscJSMap       /=       true
                        wscJsOutput    /= (rtn (fun d n   -> d +/+ n + "0.js" ) <*> gS wscWebSite    <*> gS intName                     )
                     |] 
@@ -1785,7 +1766,7 @@ namespace FsRoot
                 let wsProjectOptions ()=
                   CommArgCollection
                     [|
-                       wscProjectPath /= gS intName
+                       wscProjectFile /= gS intName
                     |] 
                  
                 let debugOptions() = 
@@ -1939,318 +1920,40 @@ namespace FsRoot
                     | Some v                   -> return Some v
                 }
             
-            //#I @"..\packages\WebSharper.FSharp\tools\net461\"
-            //#r @"..\packages\WebSharper.FSharp\tools\net461\WebSharper.Core.dll"
-            //#r @"..\packages\WebSharper.FSharp\tools\net461\WebSharper.Compiler.dll"
-            //#r @"..\packages\WebSharper.FSharp\tools\net461\WebSharper.Compiler.FSharp.dll"
-            //#r @"..\packages\WebSharper.FSharp\tools\net461\System.Reflection.Metadata.dll"
-            //#r @"..\packages\WebSharper.FSharp\tools\net461\FSharp.Compiler.Service.dll"
-            //#r @"..\packages\WebSharper.FSharp\tools\net461\Mono.Cecil.dll"
-            //#r @"..\packages\WebSharper.FSharp\tools\net461\Mono.Cecil.Pdb.dll"
-            //#r @"..\packages\WebSharper.FSharp\tools\net461\Mono.Cecil.Mdb.dll"
-            //#r @"System.Reflection.Metadata.dll"
-            
-            module WsTranslate2 =
-                open System
-                open System.IO
-                open System.Reflection
-                
-                module Re = WebSharper.Core.Resources
-                module P  = WebSharper.PathConventions
-                open WebSharper.Compiler
-                open WebSharper.Compiler.FrontEnd
-                open WebSharper.Core
-                open WebSharper.Core.Resources
-                open WebSharper.Compiler.CommandTools
-                open Microsoft.FSharp.Compiler.SourceCodeServices
-                open Microsoft.FSharp.Compiler
-            
-                let getIndentFile input =
-                    match input with
-                    | Regex "^\\((\\d+)\\)\\s(.*)$" [_ ; indent ; file] -> int indent, file
-                    | _                                                 -> 0         , input    
-                        
-                type WebSharperError   = AST.SourcePos option * CompilationError
-                type WebSharperWarning = AST.SourcePos option * CompilationWarning
-                type TranslatorError =
-                    | MustProvideAssemblyOutputPath
-                    | MustProvideProjectPath
-                    | NothingToTranslateToJavaScript
-                    | WebSharperCompilerReturnedNone
-                    | OutputAssemblyNotFound         of string
-                    | FSharpError                    of string
-                    | FSharpWarning                  of string
-                    | WebSharperError                of string
-                    | WebSharperWarning              of string
-            
-                let TranslatorError2ResultMessage =
-                    function
-                    | FSharpWarning     m
-                    | WebSharperWarning m -> Warning  <|              m
-                    |                   m -> ErrorMsg <| sprintf "%A" m
-            
-                let countTranslatorError =
-                    function
-                    | FSharpWarning     _
-                    | WebSharperWarning _ -> 0, 1, 0
-                    |                   _ -> 1, 0, 0
-            
-                let fSharpError2TranslatorError (error : FSharpErrorInfo) =
-                    let indent, file = System.IO.Path.GetFileNameWithoutExtension error.FileName |> getIndentFile  
-                    sprintf "%s (%d,%d) - (%d,%d) %s %d: %s" 
-                        file 
-                        error.StartLineAlternate (error.StartColumn - indent) 
-                        error.EndLineAlternate   (error.EndColumn   - indent) 
-                        error.Subcategory error.ErrorNumber error.Message
-                    |> (if   error.Severity = FSharpErrorSeverity.Error  
-                        then FSharpError
-                        else FSharpWarning
-                    )
-                    |> Message
-                    
-                let webSharperError2TranslatorError: WebSharperError -> ResultMessage<_> =
-                    fun                              (posO, error)   ->
-                        posO 
-                        |> Option.map (fun pos -> sprintf "%s %A - %A " pos.FileName pos.Start pos.End )
-                        |> Option.defaultValue ""
-                        |> sprintf "%s%s" <| error.ToString()
-                        |> WebSharperError
-                        |> Message
-                        
-                let webSharperWarning2TranslatorError: WebSharperWarning -> ResultMessage<_> =
-                    fun                                (posO, error)     ->
-                        posO 
-                        |> Option.map (fun pos -> sprintf "%s %A - %A " pos.FileName pos.Start pos.End )
-                        |> Option.defaultValue ""
-                        |> sprintf "%s%s" <| error.ToString()
-                        |> WebSharperWarning
-                        |> Message
-                        
-                let PrintGlobalError err = eprintfn "WebSharper error FS9001: %s" (ErrorPrinting.NormalizeErrorString err)
-            
+            module WsCompiler =
                 open FusionAsyncM
-                open Operators
-            
-                let CompileToJsW: WsConfig -> FusionAsyncM<string, _,  TranslatorError> =
-                    fun           config   -> fusion {
-                        if config.ProjectFile  = null then do! ofMessage <| MustProvideProjectPath
-                        if config.AssemblyFile = null then do! ofMessage <| MustProvideAssemblyOutputPath
-                        do!  check()
-                        let  fsharpChecker       = FSharpChecker.Create( keepAssemblyContents = true)
-                        let! errors, exitCode    = ofAsync <| fsharpChecker.Compile(config.CompilerArgs |> Array.append [| "fsc.exe" |] )
-                        do!  ofResultMessage<| (errors |> Seq.map fSharpError2TranslatorError |> ResultMessage.reduceMsgs)
-                        if exitCode <> 0 then do! ErrorF NoMsg
-                        if File.Exists config.AssemblyFile |> not then do! ofMessage <| OutputAssemblyNotFound config.AssemblyFile
-                        let  assemblyBytes       = File.ReadAllBytes config.AssemblyFile
-                        do   System.IO.File.Delete config.AssemblyFile
-                        let  paths               = [   for r in config.References -> 
-                                                           Path.GetFullPath r
-                                                       yield Path.GetFullPath config.AssemblyFile
-                                                   ]        
-                        let  aR                  = AssemblyResolver.Create().SearchPaths(paths)
-                        let  loader              = Loader.Create aR (printfn "%s")
-                        let  refs                = [ for r in config.References -> loader.LoadFile(r, false) ]
-                        let wsRefsMeta =
-                            System.Threading.Tasks.Task.Run(fun () ->
-                                let mutable refError = false
-                                let wsRefs, metas = 
-                                    refs |> List.choose (fun r -> 
-                                        match TryReadFromAssembly FullMetadata r with
-                                        | None -> None
-                                        | Some (Ok m) -> Some (r, m)
-                                        | Some (Error e) ->
-                                            refError <- true
-                                            PrintGlobalError e
-                                            None
-                                    ) |> List.unzip
-                                if refError then None
-                                elif List.isEmpty metas then Some ([], [], WebSharper.Core.Metadata.Info.Empty) 
-                                else
-                                    try
-                                        Some (
-                                            wsRefs, metas,
-                                            { 
-                                                WebSharper.Core.Metadata.Info.UnionWithoutDependencies metas with
-                                                    Dependencies = WebSharper.Core.DependencyGraph.Graph.NewWithDependencyAssemblies(metas |> Seq.map (fun m -> m.Dependencies)).GetData()
-                                            }
-                                        )
-                                    with e ->
-                                        refError <- true
-                                        PrintGlobalError ("Error merging WebSharper metadata: " + e.Message)
-                                        None
-                            )
-                        let  refMeta = wsRefsMeta.ContinueWith(fun (t: System.Threading.Tasks.Task<_>) -> 
-                                            match t.Result with 
-                                            | Some (_, _, m) -> Some m 
-                                            | _ -> None )
-                        let  referencedAsmNames     = paths
-                                                      |> Seq.map (fun i -> 
-                                                          let n = Path.GetFileNameWithoutExtension(i)
-                                                          n, i
-                                                      ) |> Map.ofSeq
-                        let  thisName               = Path.GetFileNameWithoutExtension config.AssemblyFile
-                        let  assemblyResolveHandler = ResolveEventHandler(fun _ e ->
-                                //printfn "assemblyResolveHandler %s" e.Name
-                                let assemblyName    = AssemblyName(e.Name).Name
-                                match Map.tryFind assemblyName referencedAsmNames with
-                                | Some p when assemblyName = "FSharp.Core" -> typeof<option<_>>.Assembly
-                                | Some p when assemblyName = thisName      -> Assembly.Load assemblyBytes
-                                | Some p                                   -> Assembly.LoadFrom(p)
-                                | _                                        -> null
-                            )
-                        System.AppDomain.CurrentDomain.add_AssemblyResolve(assemblyResolveHandler)
-                        let! comp        = WebSharper.Compiler.FSharp.WebSharperFSharpCompiler(printfn "%s", fsharpChecker)
-                                                    .Compile(refMeta, config.CompilerArgs, config, config.ProjectFile) 
-                                            |> ofOption (fun () -> Message WebSharperCompilerReturnedNone )
-                        do!  ofResultMessage<| (comp.Errors   |> Seq.map webSharperError2TranslatorError   |> ResultMessage.reduceMsgs)
-                        do!  ofResultMessage<| (comp.Warnings |> Seq.map webSharperWarning2TranslatorError |> ResultMessage.reduceMsgs)
-                        if comp.Errors   |> Seq.isEmpty |> not then do! ErrorF NoMsg
-                        let  assem       = loader.LoadRaw assemblyBytes None
-                        let  getRefMeta()= match wsRefsMeta.Result with | Some (_, _, m) -> m | _ -> WebSharper.Core.Metadata.Info.Empty
-                        let jsO, currentMeta, sources = ModifyAssembly (Some comp) 
-                                                          (getRefMeta()) 
-                                                          (comp.ToCurrentMetadata(config.WarnOnly)) 
-                                                          config.SourceMap config.AnalyzeClosures assem
-                        let! js, jsMin   = jsO |> ofOption (fun () -> Message NothingToTranslateToJavaScript)
-                        let  thisProject = Path.GetFileNameWithoutExtension config.ProjectFile
-                        use  stringW     = new System.IO.StringWriter()
-                        use  writer      = new HtmlTextWriter(stringW)
-                        let  pu          = P.PathUtility.VirtualPaths("/")
-                        let ctx : Resources.Context =
-                            {
-                                WebRoot                 = ""
-                                DebuggingEnabled        = true
-                                DefaultToHttp           = false
-                                GetSetting              = fun (name: string) -> None //printfn "GetSetting %s" name ; None
-            
-                                GetAssemblyRendering    = fun name ->
-                                    //printfn "GetAssemblyRendering %s" name
-                                    if name = thisProject || name = config.ProjectFile
-                                    then WebSharper.Core.Resources.Rendering.Skip else
-                                    name
-                                    |> P.AssemblyId.Create
-                                    |> pu.JavaScriptPath 
-                                    |> Re.RenderLink
-                                GetWebResourceRendering = fun ty resource ->
-                                    //printfn "GetWebResourceRendering %A" ty
-                                    let id = P.AssemblyId.Create(ty)
-                                    let kind =
-                                        if resource.EndsWith(".js") || resource.EndsWith(".ts")
-                                            then P.ResourceKind.Script
-                                            else P.ResourceKind.Content
-                                    P.EmbeddedResource.Create(kind, id, resource)
-                                    |> pu.EmbeddedPath
-                                    |> Re.RenderLink
-                                RenderingCache          = System.Collections.Concurrent.ConcurrentDictionary()
-                                ResourceDependencyCache = System.Collections.Concurrent.ConcurrentDictionary()
-                                ScriptBaseUrl = None
-                            }            
-                        //comp.Graph.Nodes |> comp.Graph.GetDependencies |> comp.Graph.GetResources |> Seq.iter(fun r -> r.Render ctx (fun _ -> writer) )
-                        let res = comp.Graph.Nodes |> comp.Graph.GetDependencies |> comp.Graph.GetResources |> Seq.toArray
-                        res |> Seq.iter(fun r -> r.Render ctx (fun _ -> writer) )
-                        //js.RenderDependencies(ctx, writer)
-                        let  includes = stringW.ToString()
-                        let  incs     = includes.Split([| "src="; "href=" ; "<" ; ">" |], System.StringSplitOptions.RemoveEmptyEntries)
-                                        |> Seq.choose(fun v -> if v.[0] = '"' then v.Split([| '"' |], System.StringSplitOptions.RemoveEmptyEntries).[0] |> sprintf "%A" |> Some else None)
-                                        |> String.concat ", "
-                        let  f        = js.[1..js.Length - 7] 
-                        return          (sprintf "CIPHERSpaceLoadFiles([%s], %s);" incs f)
-                    }
-                
-                let compileMainW: string[] -> FusionAsyncM<_,_,_> =
-                  fun             argv     ->
-                    let resSplit (r:string) = 
-                        match r.Split(',') with 
-                        | [| res           |] -> (res, None         )
-                        | [| res; fullName |] -> (res, Some fullName)
-                        | _ -> argError ("Unexpected value --resource:" + r)
-                    let wsArgs    = ref WsConfig.Empty
-                    let refs      = ResizeArray()
-                    let resources = ResizeArray()
-                    let fscArgs   = ResizeArray()
-                    let cArgv     =
-                        [|
-                            let isRNext = ref false
-                            for a in argv do
-                                match a.Replace("\"", "") with
-                                | "-r"   -> isRNext := true
-                                | v      -> if !isRNext then
-                                                isRNext := false   
-                                                yield "-r:" + v
-                                            else
-                                                yield v
-                        |]
-                    for a in cArgv do
-                        let setProjectType t = wsArgs := { !wsArgs with ProjectType = Some t }
-                        try
-                            match a with
-                            | "--wig"                          -> setProjectType WIG
-                            | "--bundle"                       -> setProjectType Bundle
-                            | "--bundleonly"                   -> setProjectType BundleOnly
-                            | "--html"                         -> setProjectType Html
-                            | "--site"                         -> setProjectType Website
-                            | StartsWith "--ws:" wsProjectType ->
-                                match wsProjectType.ToLower() with
-                                | "site" 
-                                | "web" 
-                                | "website" 
-                                | "export"                     -> setProjectType Website
-                                | "extension"                  
-                                | "interfacegenerator"         -> setProjectType WIG
-                                | "bundle"                     -> setProjectType Bundle
-                                | "html"                       -> setProjectType Html
-                                | "ignore"                     -> ()
-                                | "library"                    -> ()
-                                | _                            -> invalidArg "type" ("Invalid project type: " + wsProjectType)
-                            | StartsWith "--project:"        p -> wsArgs := { !wsArgs with ProjectFile   = p      } //Path.Combine(Directory.GetCurrentDirectory(), p) }
-                            | StartsWith "--wsoutput:"       o -> wsArgs := { !wsArgs with OutputDir     = Some o }
-                            | StartsWith "--jsoutput:"       j -> wsArgs := { !wsArgs with JSOutputPath  = Some j }
-                            | StartsWith "--keyfile:"        k -> wsArgs := { !wsArgs with KeyFile       = Some k }
-                            | "--jsmap+"
-                            | "--jsmap"                        -> wsArgs := { !wsArgs with SourceMap     = true   } 
-                            | "--dts"                          -> wsArgs := { !wsArgs with TypeScript    = true   } 
-                            | "--wswarnonly"                   -> wsArgs := { !wsArgs with WarnOnly      = true   } 
-                            | "--printjs"                      -> wsArgs := { !wsArgs with PrintJS       = true   }
-                            | "--debug"                      
-                            | "--debug+"                     
-                            | "--debug:full"                 
-                            | "-g"                           
-                            | "-g+"                          
-                            | "-g:full"                        -> wsArgs := { !wsArgs with IsDebug       = true   } ; fscArgs.Add a
-                            | "--vserrors"                     -> wsArgs := { !wsArgs with VSStyleErrors = true   } ; fscArgs.Add a
-                            | StartsWith "-o:"               o 
-                            | StartsWith "--out:"            o -> wsArgs := { !wsArgs with AssemblyFile  = o      } ; fscArgs.Add a
-                            | StartsWith "--doc:"            d -> wsArgs := { !wsArgs with Documentation = Some d } ; fscArgs.Add a
-                            | StartsWith "-r:"               r             
-                            | StartsWith "--reference:"      r -> refs     .Add (Path.GetFullPath r)                ; fscArgs.Add a
-                            | StartsWith "--resource:"       r -> resources.Add (resSplit         r)                ; fscArgs.Add a
-                            | _                                ->                                                     fscArgs.Add a  
-                        with e ->
-                            failwithf "Parsing argument failed: '%s' - %s" a e.Message
-                    fscArgs.Add "--define:FSHARP41"
-                    wsArgs := 
-                        { !wsArgs with 
-                            References   = refs |> Seq.map (fun s -> s.ToLower()) |> Seq.distinct |> Array.ofSeq
-                            Resources    = resources.ToArray()
-                            CompilerArgs = fscArgs  .ToArray() 
-                        }
-                    CompileToJsW !wsArgs
-            
+                open System.IO
                 open CommArg
                 open FsCode
                 open CommArgCollection
-            
-                let translateRm() = fusion {
+                
+                let compileRm() = fusion {
                     let  allArgIds  = Set.union WebSharpArgs FSharpArgs 
-                    let! args       = ofFusionM <| argumentsRm (fun (arg,_) -> Set.contains arg.cargId allArgIds)
+                    let! args       = ofFusionM <| argumentsRm (fun (arg,_) -> Set.contains arg.cargId allArgIds )
                     let! createDir  = ofFusionM <| getBoolRm false intCreateDir
                     if createDir then let! site = ofFusionM <| getStringRm wscWebSite
                                       Directory.CreateDirectory(site) |> ignore
-                    let! js         = args |> Seq.toArray |> compileMainW  |> freeMessageF TranslatorError2ResultMessage
-                    return js
-                } 
+                    let! out, err   = args
+                                      |> String.concat "  "
+                                      |> fun ops -> (new RunProcess.ShellEx(@"..\packages\WebSharper.FSharp\tools\net461\wsfsc.exe", ops, priorityClass = System.Diagnostics.ProcessPriorityClass.RealTime)).StartAndWaitR()
+                                      |> ofResult
+                    return if out = "" then "Compiled!" else out + err
+                }
+                let compile args = 
+                    compileRm() 
+                    |> runReader args
+                    |> Async.RunSynchronously
+                    //|> fun (sO, _, m) -> sO |> Option.defaultValue "" + m
                 
-                let translate args (FsCode codeFs)  = 
+            module WsTranslate =
+                open FusionAsyncM
+                open Operators
+                open System
+                open System.IO
+                open FsCode
+                open CommArgCollection
+                
+                let translateJs (CommArgCollection args) (FsCode codeFs) = fusion {
                     let  code           = codeFs.Split '\n'
                     let  defines0       = (FsCode.extractDefines <| FsCode codeFs).Split([| " " ; "-d:" |], StringSplitOptions.RemoveEmptyEntries) 
                     let  fs, assembs, defines1, prepIs, nowarns, _ = separatePrepros code |> separateDirectives
@@ -2258,15 +1961,55 @@ namespace FsRoot
                     let  name           = "testing"
                     let  args1          = compileOptionsDll name
                                           + siteOptions()
-                                          + wscProjectType /= "site"
-                                          + wscWebSite     /= Path.GetFullPath @"..\website\testing"
-                                          + wscProjectPath /= (getStringRm intFileName |> FusionM.map (fun f -> Path.GetDirectoryName f +/+ @"wsconfig.json"))
+                                          + wscProjectType /= "bundle"
+                                          + wscWebSite     /= @"..\website\testing"
+                                          + wscProjectFile /= (getStringRm intFileName |> FusionM.map (fun f -> Path.GetDirectoryName f +/+ name + ".json"))
                                           + args
                     let  args2          = prepOptions args1 (assembs, defines, prepIs)
-                    fusion { 
+                    return! fusion {
+                        let! source     = ofFusionM <| getStringRm fscSource
+                        let! outputJs0  = ofFusionM <| getStringRm wscJsOutput
+                        let! output     = ofFusionM <| getStringRm fscOutput
+                        let! website    = ofFusionM <| getStringRm wscWebSite
+                        let! directory  = ofFusionM <| getStringRm intDirectory
+                        let! wsconfig   = ofFusionM <| getStringRm wscProjectFile
+                        //use temp1 = new TempFileName(source            )
+                        //use temp2 = new TempFileName(outputJs          )
+                        use temp3 = new TempFileName(output            )
+                        use temp4 = new TempFileName(output + ".failed")
+                        use temp5 = new TempFileName(wsconfig          )
+                        //use temp6 = new TempFileName(Path.ChangeExtension(outputJs, "min.js"   ) )
+                        //use temp7 = new TempFileName(Path.ChangeExtension(outputJs, "head.js"  ) )
+                        //use temp8 = new TempFileName(Path.ChangeExtension(outputJs, "head.html") )
+                        //use temp9 = new TempFileName(Path.ChangeExtension(outputJs, "css"      ) )
+                        File.WriteAllText(wsconfig, sprintf """
+                            {
+                              "$schema"         : "https://websharper.com/wsconfig.schema.json",
+                              "outputDir"       : "%s"
+                            }
+                        """  <| Path.GetDirectoryName(outputJs0).Replace(@"\", @"\\") )
                         do!  ofFusionM <| processArgs fs assembs nowarns
-                        return! translateRm() 
-                    } |> mapReader args2 
+                        let! res      = WsCompiler.compileRm()
+                        let  jsFile   = website +/+ name + ".js"
+                        let  js0      = File.ReadAllText outputJs0
+                        let  js       = File.ReadAllText jsFile
+                        let  includes = File.ReadAllText (website +/+ name + ".head.html") 
+                        let  incs     = includes.Split([| "src="; "href=" ; "<" ; ">" |], System.StringSplitOptions.RemoveEmptyEntries)
+                                        |> Seq.choose(fun v -> if v.[0] = '"' then v.Split([| '"' |], System.StringSplitOptions.RemoveEmptyEntries).[0] |> sprintf "%A" |> Some else None)
+                                        |> String.concat ", "
+                        do              File.WriteAllText (jsFile,  sprintf "CIPHERSpaceLoadFiles([%s], function () { IntelliFactory.Runtime.Start() }); %s" incs <| js.Replace("IntelliFactory.Runtime.Start();", "") )
+                        let  js2      = js0.[1..js0.Length - 7] |> (sprintf "CIPHERSpaceLoadFiles([%s], %s);" incs   )
+                        return res, js2
+                      } |> runReader args2 |> ofAsyncResultRM
+                }
+            //                  "jsOutput": %A
+                
+                let translate args code = fusion {
+                    let! (out, js), msgs = translateJs args code
+                    printfn "%s" out
+                    printfn "%s" <| ResultMessage.summarized msgs
+                    return js
+                }
             
         /// Essentials that part runs in Javascript and part runs in the server
         [< AutoOpen >]
@@ -2823,7 +2566,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1546539619997"
+                let mutable fsharpStationAddress = Address "FSharpStation1547097944900"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -2885,30 +2628,31 @@ namespace FsRoot
                                         
                 let getBrokerProcessId() = fsharpStationClient.MBProcessId
     
-        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
-        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
-        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
         //#r "System.Web"
         //#nowarn "3180"
         //#nowarn "1182"
         //#nowarn "52"
         //#nowarn "1178"
         
+        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+        
         module RunTestingJs =
             open FusionAsyncM
             open FusionAsyncM.Operators
             open System.IO
             open RunProcess
-            open WsTranslate2
+            open WsTranslate
             open FsCode
         
-            let testFile() = Path.GetFullPath @"..\website\testing\testing.js"
+            let testFile() = Path.GetFullPath @"..\website\testing\testing0.js"
         
             let run () = fusion {
                 let! url      = FSharpStationClient.getUrl()        |> ofAsyncResultRM
-                let  urlBase  = (url.Split '#').[0]
+                let  uri      = System.Uri url
                 let  modif    = testFile() |>! print |> File.GetLastWriteTime
-                do   startProcess (sprintf "%stesting/testing.html?q=%A" urlBase modif)     "" |> ignore
+                do   startProcess (sprintf "http://%s:%d/testing/testing.html?q=%A" uri.Host uri.Port modif)     "" |> ignore
             } 
         
             let uncanopyName (name:string) =

@@ -1,0 +1,1 @@
+#r "../../../../packages/test2/Microsoft.EntityFrameworkCore.Abstractions/lib/netstandard2.0/Microsoft.EntityFrameworkCore.Abstractions.dll" 

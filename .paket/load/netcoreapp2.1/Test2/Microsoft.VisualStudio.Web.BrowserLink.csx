@@ -1,0 +1,5 @@
+#load "Microsoft.AspNetCore.Hosting.Abstractions.csx" 
+#load "Microsoft.AspNetCore.Http.Abstractions.csx" 
+#load "Microsoft.AspNetCore.Http.Extensions.csx" 
+#load "Microsoft.Extensions.FileProviders.Physical.csx" 
+#r "../../../../packages/test2/Microsoft.VisualStudio.Web.BrowserLink/lib/netstandard2.0/Microsoft.VisualStudio.Web.BrowserLink.dll" 

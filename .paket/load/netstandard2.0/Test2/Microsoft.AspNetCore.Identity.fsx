@@ -1,0 +1,5 @@
+#load "Microsoft.AspNetCore.Authentication.Cookies.fsx" 
+#load "Microsoft.AspNetCore.Cryptography.KeyDerivation.fsx" 
+#load "Microsoft.AspNetCore.Hosting.Abstractions.fsx" 
+#load "Microsoft.Extensions.Identity.Core.fsx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.Identity/lib/netstandard2.0/Microsoft.AspNetCore.Identity.dll" 

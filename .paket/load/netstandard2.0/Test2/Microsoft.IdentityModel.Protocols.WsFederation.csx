@@ -1,0 +1,5 @@
+#load "Microsoft.IdentityModel.Protocols.csx" 
+#load "Microsoft.IdentityModel.Tokens.Saml.csx" 
+#load "Microsoft.IdentityModel.Xml.csx" 
+#load "System.Xml.XmlDocument.csx" 
+#r "../../../../packages/test2/Microsoft.IdentityModel.Protocols.WsFederation/lib/netstandard2.0/Microsoft.IdentityModel.Protocols.WsFederation.dll" 

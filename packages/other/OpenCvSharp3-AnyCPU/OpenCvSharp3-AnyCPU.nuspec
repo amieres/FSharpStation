@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>OpenCvSharp3-AnyCPU</id>
-    <version>3.4.1.20180830</version>
+    <version>4.0.0.20181129</version>
     <title>OpenCvSharp3</title>
     <authors>shimat</authors>
     <owners>shimat</owners>
@@ -11,14 +11,14 @@
     <projectUrl>https://github.com/shimat/opencvsharp</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/shimat/opencvsharp/master/nuget/icon/mandrill-ico.png</iconUrl>
     <description>OpenCV wrapper for .NET Framework</description>
-    <summary>OpenCV 3.x wrapper</summary>
+    <summary>OpenCV 4.x wrapper</summary>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2008-2018</copyright>
-    <tags>Image Processing OpenCV Wrapper FFI</tags>
+    <tags>Image Processing OpenCV Wrapper FFI opencvsharp</tags>
     <dependencies>
       <group targetFramework=".NETFramework2.0" />
       <group targetFramework=".NETFramework4.0" />
-      <group targetFramework=".NETFramework4.6" />
+      <group targetFramework=".NETFramework4.6.1" />
       <group targetFramework=".NETStandard2.0">
         <dependency id="System.Drawing.Common" version="4.5.0" />
       </group>

@@ -1,0 +1,1 @@
+#r "../../../../packages/testing/Unquote/lib/netstandard2.0/Unquote.dll" 

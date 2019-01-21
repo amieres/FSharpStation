@@ -1,0 +1,1 @@
+#r "../../../../packages/test2/Microsoft.CSharp/lib/netstandard2.0/Microsoft.CSharp.dll" 

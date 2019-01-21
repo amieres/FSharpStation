@@ -1,0 +1,1 @@
+#r "../../../../packages/test2/Microsoft.AspNetCore.Razor.Language/lib/netstandard2.0/Microsoft.AspNetCore.Razor.Language.dll" 

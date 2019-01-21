@@ -1,0 +1,6 @@
+#load "Microsoft.AspNetCore.Authentication.Abstractions.fsx" 
+#load "Microsoft.AspNetCore.Hosting.Abstractions.fsx" 
+#load "Microsoft.AspNetCore.Http.Abstractions.fsx" 
+#load "Microsoft.Extensions.Configuration.Abstractions.fsx" 
+#load "WebSharper.fsx" 
+#r "../../../../packages/test2/WebSharper.AspNetCore/lib/netstandard2.0/WebSharper.AspNetCore.dll" 

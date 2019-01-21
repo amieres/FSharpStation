@@ -1,0 +1,1 @@
+#r "../../../../packages/testing/System.Xml.XmlSerializer/lib/netstandard1.3/System.Xml.XmlSerializer.dll" 

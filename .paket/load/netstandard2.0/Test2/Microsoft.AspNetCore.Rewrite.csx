@@ -1,0 +1,7 @@
+#load "Microsoft.AspNetCore.Hosting.Abstractions.csx" 
+#load "Microsoft.AspNetCore.Http.Extensions.csx" 
+#load "Microsoft.Extensions.Configuration.Abstractions.csx" 
+#load "Microsoft.Extensions.FileProviders.Abstractions.csx" 
+#load "Microsoft.Extensions.Logging.Abstractions.csx" 
+#load "Microsoft.Extensions.Options.csx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.Rewrite/lib/netstandard2.0/Microsoft.AspNetCore.Rewrite.dll" 

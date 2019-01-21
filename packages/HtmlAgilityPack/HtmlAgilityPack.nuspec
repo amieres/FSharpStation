@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>HtmlAgilityPack</id>
-    <version>1.8.8</version>
+    <version>1.8.12</version>
     <authors>ZZZ Projects,Simon Mourrier,Jeff Klawiter,Stephan Grell</authors>
     <owners>ZZZ Projects Inc.</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

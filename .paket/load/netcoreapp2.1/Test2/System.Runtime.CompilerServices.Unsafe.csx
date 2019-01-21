@@ -1,0 +1,1 @@
+#r "../../../../packages/test2/System.Runtime.CompilerServices.Unsafe/lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll" 

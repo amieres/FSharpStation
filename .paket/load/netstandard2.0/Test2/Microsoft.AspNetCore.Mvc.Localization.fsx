@@ -1,0 +1,5 @@
+#load "Microsoft.AspNetCore.Localization.fsx" 
+#load "Microsoft.AspNetCore.Mvc.Razor.fsx" 
+#load "Microsoft.Extensions.DependencyInjection.fsx" 
+#load "Microsoft.Extensions.Localization.fsx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.Mvc.Localization/lib/netstandard2.0/Microsoft.AspNetCore.Mvc.Localization.dll" 

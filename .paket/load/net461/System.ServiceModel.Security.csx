@@ -1,0 +1,6 @@
+#load "System.Private.ServiceModel.csx" 
+#load "System.ServiceModel.Primitives.csx" 
+#r "System.ServiceModel" 
+#r "System.Runtime.Serialization" 
+#r "mscorlib" 
+#r "../../../packages/System.ServiceModel.Security/lib/net461/System.ServiceModel.Security.dll" 

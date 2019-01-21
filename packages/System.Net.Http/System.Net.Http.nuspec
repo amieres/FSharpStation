@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata minClientVersion="2.12">
     <id>System.Net.Http</id>
-    <version>4.3.3</version>
+    <version>4.3.4</version>
     <title>System.Net.Http</title>
     <authors>Microsoft</authors>
     <owners>microsoft,dotnetframework</owners>
@@ -26,7 +26,7 @@ System.Net.Http.HttpMessageHandler
  
 When using NuGet 3.x this package requires at least version 3.4.</description>
     <releaseNotes>https://go.microsoft.com/fwlink/?LinkID=799421</releaseNotes>
-    <copyright>© Microsoft Corporation.  All rights reserved.</copyright>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <serviceable>true</serviceable>
     <dependencies>
       <group targetFramework="MonoAndroid1.0" />
@@ -36,7 +36,7 @@ When using NuGet 3.x this package requires at least version 3.4.</description>
         <dependency id="System.Security.Cryptography.X509Certificates" version="4.3.0" />
       </group>
       <group targetFramework=".NETCore5.0">
-        <dependency id="Microsoft.NETCore.Platforms" version="1.1.0" />
+        <dependency id="Microsoft.NETCore.Platforms" version="1.1.1" />
         <dependency id="System.Collections" version="4.3.0" exclude="Compile" />
         <dependency id="System.Diagnostics.Debug" version="4.3.0" exclude="Compile" />
         <dependency id="System.Diagnostics.DiagnosticSource" version="4.3.0" exclude="Compile" />
@@ -63,7 +63,7 @@ When using NuGet 3.x this package requires at least version 3.4.</description>
         <dependency id="System.Threading.Tasks" version="4.3.0" />
       </group>
       <group targetFramework=".NETStandard1.3">
-        <dependency id="Microsoft.NETCore.Platforms" version="1.1.0" />
+        <dependency id="Microsoft.NETCore.Platforms" version="1.1.1" />
         <dependency id="Microsoft.Win32.Primitives" version="4.3.0" exclude="Compile" />
         <dependency id="System.Collections" version="4.3.0" exclude="Compile" />
         <dependency id="System.Diagnostics.Debug" version="4.3.0" exclude="Compile" />
@@ -85,7 +85,7 @@ When using NuGet 3.x this package requires at least version 3.4.</description>
         <dependency id="System.Threading.Tasks" version="4.3.0" />
       </group>
       <group targetFramework=".NETStandard1.6">
-        <dependency id="Microsoft.NETCore.Platforms" version="1.1.0" />
+        <dependency id="Microsoft.NETCore.Platforms" version="1.1.1" />
         <dependency id="runtime.native.System" version="4.3.0" exclude="Compile" />
         <dependency id="runtime.native.System.Net.Http" version="4.3.0" exclude="Compile" />
         <dependency id="runtime.native.System.Security.Cryptography.OpenSsl" version="4.3.2" exclude="Compile" />

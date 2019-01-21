@@ -1,0 +1,8 @@
+#load "Microsoft.IdentityModel.Protocols.csx" 
+#load "Newtonsoft.Json.csx" 
+#load "System.Dynamic.Runtime.csx" 
+#load "System.IdentityModel.Tokens.Jwt.csx" 
+#r "Microsoft.CSharp" 
+#r "System" 
+#r "System.Net.Http" 
+#r "../../../../packages/test/Microsoft.IdentityModel.Protocols.OpenIdConnect/lib/net461/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll" 

@@ -1,0 +1,6 @@
+#load "System.Xml.XmlDocument.csx" 
+#load "System.Xml.XPath.csx" 
+#r "System" 
+#r "System.Xml" 
+#r "mscorlib" 
+#r "../../../../packages/testing/System.Xml.XPath.XmlDocument/lib/net46/System.Xml.XPath.XmlDocument.dll" 

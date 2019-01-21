@@ -1,0 +1,5 @@
+#load "Microsoft.AspNetCore.Hosting.Abstractions.fsx" 
+#load "Microsoft.Extensions.Options.fsx" 
+#load "Microsoft.Win32.Registry.fsx" 
+#load "System.Security.Cryptography.Xml.fsx" 
+#load "System.Security.Principal.Windows.fsx" 

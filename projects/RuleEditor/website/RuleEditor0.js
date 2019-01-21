@@ -1,10 +1,11 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,FusionM,Operators$1,Builder$1,Builder$2,Eff,Eff$1,Done,LambdaT,Operators$2,EffBuilder,Reader,Ask,Rsl,Fail,FusionAsyncM,Operators$3,Builder$3,Builder$4,Array,ParseO,MailboxProcessorExt,Mailbox,StateFull,Hole,TreeEff,Node,LibraryJS,View,Var,ListModel,LoadFiles,REGEX,ResizeObserver,Monaco,Position,Range,Uri,Location,FindMatch,WordAtPosition,Model,MarkDownString,MarkerData,CompletionItem,Hover,Editor,MonacoConfig,Library2,WebSockets,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,CalculationModel,CalculationModel$1,DimType,CubeType,AttType,ElmType,ModId,AttId,ElmId,CubId,DimId,CalId,TotId,ForId,RulId,Attribute,Element,Dimension,UnaryOp,Operator,ExpressionText,ExpressionNumber,ExpressionAny,Slice,ForType,Formula,Calculation,Total,RuleKey,Cube,Rule,RuleMsg,Model$1,HelperTypeN,HelperTypeT,HelperTypeA,Model0,ElementModule,ElmReferenceModule,SliceModule,DimensionModule,CubeModule,CalculationModule,TotalModule,ModelModule,FormulaModule,RuleModule,AttributeModule,RuleEditor,Templating,Tree,Weight,TreeNode,TreeCollection,TreeNode$1,Monaco$1,HoverProvider,CompletionItemProvider,DefinitionProvider,Version,VersionModule,ModelUI,MsgModel,ModelUIModule,Global$1,Render,DragDrop,DragInfo,TableDimensions,TableCalculations,MainProgram,UpdateModelUI,SC$1,RuleEditor_GeneratedPrintf,RuleEditor_Templates,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$4,Unchecked,Slice$1,Control,MailboxProcessor,console,UI,View$1,Var$1,FromView,Doc,Var$2,AttrProxy,System,Guid,Collections,FSharpMap,FSharpSet,Set,Map,Date,Templating$1,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,AppFramework,PlugIn,Lazy,LayoutEngineModule,DateUtil,Numeric,ListModel$1,Client,Templates;
+ var Global,FsRoot,Library,Dict,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,FusionM,Operators$1,Builder$1,Builder$2,Eff,Eff$1,Done,LambdaT,Operators$2,EffBuilder,Reader,Ask,Rsl,Fail,FusionAsyncM,Operators$3,Builder$3,Builder$4,ResultM,Builder$5,Operators$4,ResultMAutoOpen,AsyncResult,AsyncResultBuilder,AsyncResultBuilderP,Extensions,AsyncResultM,AsyncResultMBuilder,AsyncResultMAutoOpen,String,Array,ParseO,MailboxProcessorExt,Mailbox,StateFull,Hole,TreeEff,Node,LibraryJS,View,Var,ListModel,LoadFiles,REGEX,ResizeObserver,Monaco,Position,Range,Uri,Location,FindMatch,WordAtPosition,Model,MarkDownString,MarkerData,CompletionItem,Hover,Editor,MonacoConfig,Library2,WebSockets,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,FsAutoComplete,CommTypes,ResponseError,Location$1,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,MsgTypes,ParseRequest,DeclarationsRequest,CompletionRequest,PositionRequest,ProjectRequest,LintRequest,HelptextRequest,WorkspacePeekRequest,Calls,RuleEditor,Templating,CalculationModel,DimType,CubeType,AttType,ElmType,ModId,AttId,ElmId,CubId,DimId,CalId,TotId,ForId,RulId,Attribute,Element,Dimension,UnaryOp,Operator,ExpressionText,ExpressionNumber,ExpressionAny,Slice,ForType,Formula,Calculation,Total,RuleKey,Cube,Rule,RuleMsg,Model$1,HelperTypeN,HelperTypeT,HelperTypeA,Model0,ElementModule,ElmReferenceModule,SliceModule,DimensionModule,CubeModule,CalculationModule,TotalModule,ModelModule,FormulaModule,RuleModule,AttributeModule,Tree,Weight,TreeNode,TreeCollection,TreeNode$1,Monaco$1,HoverProvider,CompletionItemProvider,DefinitionProvider,Version,VersionModule,ModelUI,MsgModel,ModelUIModule,Global$1,FSCode,LocationDet,MsgLocation,ParseFS,Render,DragDrop,DragInfo,TableDimensions,TableCalculations,MainProgram,UpdateModelUI,SC$1,RuleEditor_GeneratedPrintf,RuleEditor_Templates,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$5,Unchecked,Slice$1,Control,MailboxProcessor,console,CancellationTokenSource,UI,View$1,Var$1,FromView,Doc,Var$2,AttrProxy,Remoting,AjaxRemotingProvider,System,Guid,Collections,FSharpMap,FSharpSet,Set,Map,Date,Templating$1,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,AppFramework,PlugIn,Lazy,LayoutEngineModule,AttrModule,DateUtil,Numeric,ListModel$1,Dictionary,Client,Templates;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
+ Dict=Library.Dict=Library.Dict||{};
  ResultMessage=Library.ResultMessage=Library.ResultMessage||{};
  ResultMessageHelpers=Library.ResultMessageHelpers=Library.ResultMessageHelpers||{};
  Monads=Library.Monads=Library.Monads||{};
@@ -34,6 +35,18 @@
  Operators$3=FusionAsyncM.Operators=FusionAsyncM.Operators||{};
  Builder$3=FusionAsyncM.Builder=FusionAsyncM.Builder||{};
  Builder$4=Builder$3.Builder=Builder$3.Builder||{};
+ ResultM=Monads.ResultM=Monads.ResultM||{};
+ Builder$5=ResultM.Builder=ResultM.Builder||{};
+ Operators$4=ResultM.Operators=ResultM.Operators||{};
+ ResultMAutoOpen=Monads.ResultMAutoOpen=Monads.ResultMAutoOpen||{};
+ AsyncResult=Monads.AsyncResult=Monads.AsyncResult||{};
+ AsyncResultBuilder=Monads.AsyncResultBuilder=Monads.AsyncResultBuilder||{};
+ AsyncResultBuilderP=Monads.AsyncResultBuilderP=Monads.AsyncResultBuilderP||{};
+ Extensions=Monads.Extensions=Monads.Extensions||{};
+ AsyncResultM=Monads.AsyncResultM=Monads.AsyncResultM||{};
+ AsyncResultMBuilder=AsyncResultM.AsyncResultMBuilder=AsyncResultM.AsyncResultMBuilder||{};
+ AsyncResultMAutoOpen=Monads.AsyncResultMAutoOpen=Monads.AsyncResultMAutoOpen||{};
+ String=Library.String=Library.String||{};
  Array=Library.Array=Library.Array||{};
  ParseO=Library.ParseO=Library.ParseO||{};
  MailboxProcessorExt=Library.MailboxProcessorExt=Library.MailboxProcessorExt||{};
@@ -71,56 +84,89 @@
  BrokerMessage=WebSockets.BrokerMessage=WebSockets.BrokerMessage||{};
  Replier=WebSockets.Replier=WebSockets.Replier||{};
  MessageGeneric=WebSockets.MessageGeneric=WebSockets.MessageGeneric||{};
- CalculationModel=FsRoot.CalculationModel=FsRoot.CalculationModel||{};
- CalculationModel$1=CalculationModel.CalculationModel=CalculationModel.CalculationModel||{};
- DimType=CalculationModel$1.DimType=CalculationModel$1.DimType||{};
- CubeType=CalculationModel$1.CubeType=CalculationModel$1.CubeType||{};
- AttType=CalculationModel$1.AttType=CalculationModel$1.AttType||{};
- ElmType=CalculationModel$1.ElmType=CalculationModel$1.ElmType||{};
- ModId=CalculationModel$1.ModId=CalculationModel$1.ModId||{};
- AttId=CalculationModel$1.AttId=CalculationModel$1.AttId||{};
- ElmId=CalculationModel$1.ElmId=CalculationModel$1.ElmId||{};
- CubId=CalculationModel$1.CubId=CalculationModel$1.CubId||{};
- DimId=CalculationModel$1.DimId=CalculationModel$1.DimId||{};
- CalId=CalculationModel$1.CalId=CalculationModel$1.CalId||{};
- TotId=CalculationModel$1.TotId=CalculationModel$1.TotId||{};
- ForId=CalculationModel$1.ForId=CalculationModel$1.ForId||{};
- RulId=CalculationModel$1.RulId=CalculationModel$1.RulId||{};
- Attribute=CalculationModel$1.Attribute=CalculationModel$1.Attribute||{};
- Element=CalculationModel$1.Element=CalculationModel$1.Element||{};
- Dimension=CalculationModel$1.Dimension=CalculationModel$1.Dimension||{};
- UnaryOp=CalculationModel$1.UnaryOp=CalculationModel$1.UnaryOp||{};
- Operator=CalculationModel$1.Operator=CalculationModel$1.Operator||{};
- ExpressionText=CalculationModel$1.ExpressionText=CalculationModel$1.ExpressionText||{};
- ExpressionNumber=CalculationModel$1.ExpressionNumber=CalculationModel$1.ExpressionNumber||{};
- ExpressionAny=CalculationModel$1.ExpressionAny=CalculationModel$1.ExpressionAny||{};
- Slice=CalculationModel$1.Slice=CalculationModel$1.Slice||{};
- ForType=CalculationModel$1.ForType=CalculationModel$1.ForType||{};
- Formula=CalculationModel$1.Formula=CalculationModel$1.Formula||{};
- Calculation=CalculationModel$1.Calculation=CalculationModel$1.Calculation||{};
- Total=CalculationModel$1.Total=CalculationModel$1.Total||{};
- RuleKey=CalculationModel$1.RuleKey=CalculationModel$1.RuleKey||{};
- Cube=CalculationModel$1.Cube=CalculationModel$1.Cube||{};
- Rule=CalculationModel$1.Rule=CalculationModel$1.Rule||{};
- RuleMsg=CalculationModel$1.RuleMsg=CalculationModel$1.RuleMsg||{};
- Model$1=CalculationModel$1.Model=CalculationModel$1.Model||{};
- HelperTypeN=CalculationModel$1.HelperTypeN=CalculationModel$1.HelperTypeN||{};
- HelperTypeT=CalculationModel$1.HelperTypeT=CalculationModel$1.HelperTypeT||{};
- HelperTypeA=CalculationModel$1.HelperTypeA=CalculationModel$1.HelperTypeA||{};
- Model0=CalculationModel$1.Model0=CalculationModel$1.Model0||{};
- ElementModule=CalculationModel$1.ElementModule=CalculationModel$1.ElementModule||{};
- ElmReferenceModule=CalculationModel$1.ElmReferenceModule=CalculationModel$1.ElmReferenceModule||{};
- SliceModule=CalculationModel$1.SliceModule=CalculationModel$1.SliceModule||{};
- DimensionModule=CalculationModel$1.DimensionModule=CalculationModel$1.DimensionModule||{};
- CubeModule=CalculationModel$1.CubeModule=CalculationModel$1.CubeModule||{};
- CalculationModule=CalculationModel$1.CalculationModule=CalculationModel$1.CalculationModule||{};
- TotalModule=CalculationModel$1.TotalModule=CalculationModel$1.TotalModule||{};
- ModelModule=CalculationModel$1.ModelModule=CalculationModel$1.ModelModule||{};
- FormulaModule=CalculationModel$1.FormulaModule=CalculationModel$1.FormulaModule||{};
- RuleModule=CalculationModel$1.RuleModule=CalculationModel$1.RuleModule||{};
- AttributeModule=CalculationModel$1.AttributeModule=CalculationModel$1.AttributeModule||{};
+ FsAutoComplete=Library2.FsAutoComplete=Library2.FsAutoComplete||{};
+ CommTypes=FsAutoComplete.CommTypes=FsAutoComplete.CommTypes||{};
+ ResponseError=CommTypes.ResponseError=CommTypes.ResponseError||{};
+ Location$1=CommTypes.Location=CommTypes.Location||{};
+ CompletionResponse=CommTypes.CompletionResponse=CommTypes.CompletionResponse||{};
+ OverloadDescription=CommTypes.OverloadDescription=CommTypes.OverloadDescription||{};
+ OverloadParameter=CommTypes.OverloadParameter=CommTypes.OverloadParameter||{};
+ Overload=CommTypes.Overload=CommTypes.Overload||{};
+ Parameter=CommTypes.Parameter=CommTypes.Parameter||{};
+ SignatureData=CommTypes.SignatureData=CommTypes.SignatureData||{};
+ MethodResponse=CommTypes.MethodResponse=CommTypes.MethodResponse||{};
+ SymbolUseRange=CommTypes.SymbolUseRange=CommTypes.SymbolUseRange||{};
+ SymbolUseResponse=CommTypes.SymbolUseResponse=CommTypes.SymbolUseResponse||{};
+ HelpTextResponse=CommTypes.HelpTextResponse=CommTypes.HelpTextResponse||{};
+ CompilerLocationResponse=CommTypes.CompilerLocationResponse=CommTypes.CompilerLocationResponse||{};
+ FSharpErrorInfo=CommTypes.FSharpErrorInfo=CommTypes.FSharpErrorInfo||{};
+ ErrorResponse=CommTypes.ErrorResponse=CommTypes.ErrorResponse||{};
+ Colorization=CommTypes.Colorization=CommTypes.Colorization||{};
+ Declaration=CommTypes.Declaration=CommTypes.Declaration||{};
+ DeclarationResponse=CommTypes.DeclarationResponse=CommTypes.DeclarationResponse||{};
+ OpenNamespace=CommTypes.OpenNamespace=CommTypes.OpenNamespace||{};
+ QualifySymbol=CommTypes.QualifySymbol=CommTypes.QualifySymbol||{};
+ ResolveNamespaceResponse=CommTypes.ResolveNamespaceResponse=CommTypes.ResolveNamespaceResponse||{};
+ UnionCaseResponse=CommTypes.UnionCaseResponse=CommTypes.UnionCaseResponse||{};
+ MsgTypes=FsAutoComplete.MsgTypes=FsAutoComplete.MsgTypes||{};
+ ParseRequest=MsgTypes.ParseRequest=MsgTypes.ParseRequest||{};
+ DeclarationsRequest=MsgTypes.DeclarationsRequest=MsgTypes.DeclarationsRequest||{};
+ CompletionRequest=MsgTypes.CompletionRequest=MsgTypes.CompletionRequest||{};
+ PositionRequest=MsgTypes.PositionRequest=MsgTypes.PositionRequest||{};
+ ProjectRequest=MsgTypes.ProjectRequest=MsgTypes.ProjectRequest||{};
+ LintRequest=MsgTypes.LintRequest=MsgTypes.LintRequest||{};
+ HelptextRequest=MsgTypes.HelptextRequest=MsgTypes.HelptextRequest||{};
+ WorkspacePeekRequest=MsgTypes.WorkspacePeekRequest=MsgTypes.WorkspacePeekRequest||{};
+ Calls=FsAutoComplete.Calls=FsAutoComplete.Calls||{};
  RuleEditor=FsRoot.RuleEditor=FsRoot.RuleEditor||{};
  Templating=RuleEditor.Templating=RuleEditor.Templating||{};
+ CalculationModel=RuleEditor.CalculationModel=RuleEditor.CalculationModel||{};
+ DimType=CalculationModel.DimType=CalculationModel.DimType||{};
+ CubeType=CalculationModel.CubeType=CalculationModel.CubeType||{};
+ AttType=CalculationModel.AttType=CalculationModel.AttType||{};
+ ElmType=CalculationModel.ElmType=CalculationModel.ElmType||{};
+ ModId=CalculationModel.ModId=CalculationModel.ModId||{};
+ AttId=CalculationModel.AttId=CalculationModel.AttId||{};
+ ElmId=CalculationModel.ElmId=CalculationModel.ElmId||{};
+ CubId=CalculationModel.CubId=CalculationModel.CubId||{};
+ DimId=CalculationModel.DimId=CalculationModel.DimId||{};
+ CalId=CalculationModel.CalId=CalculationModel.CalId||{};
+ TotId=CalculationModel.TotId=CalculationModel.TotId||{};
+ ForId=CalculationModel.ForId=CalculationModel.ForId||{};
+ RulId=CalculationModel.RulId=CalculationModel.RulId||{};
+ Attribute=CalculationModel.Attribute=CalculationModel.Attribute||{};
+ Element=CalculationModel.Element=CalculationModel.Element||{};
+ Dimension=CalculationModel.Dimension=CalculationModel.Dimension||{};
+ UnaryOp=CalculationModel.UnaryOp=CalculationModel.UnaryOp||{};
+ Operator=CalculationModel.Operator=CalculationModel.Operator||{};
+ ExpressionText=CalculationModel.ExpressionText=CalculationModel.ExpressionText||{};
+ ExpressionNumber=CalculationModel.ExpressionNumber=CalculationModel.ExpressionNumber||{};
+ ExpressionAny=CalculationModel.ExpressionAny=CalculationModel.ExpressionAny||{};
+ Slice=CalculationModel.Slice=CalculationModel.Slice||{};
+ ForType=CalculationModel.ForType=CalculationModel.ForType||{};
+ Formula=CalculationModel.Formula=CalculationModel.Formula||{};
+ Calculation=CalculationModel.Calculation=CalculationModel.Calculation||{};
+ Total=CalculationModel.Total=CalculationModel.Total||{};
+ RuleKey=CalculationModel.RuleKey=CalculationModel.RuleKey||{};
+ Cube=CalculationModel.Cube=CalculationModel.Cube||{};
+ Rule=CalculationModel.Rule=CalculationModel.Rule||{};
+ RuleMsg=CalculationModel.RuleMsg=CalculationModel.RuleMsg||{};
+ Model$1=CalculationModel.Model=CalculationModel.Model||{};
+ HelperTypeN=CalculationModel.HelperTypeN=CalculationModel.HelperTypeN||{};
+ HelperTypeT=CalculationModel.HelperTypeT=CalculationModel.HelperTypeT||{};
+ HelperTypeA=CalculationModel.HelperTypeA=CalculationModel.HelperTypeA||{};
+ Model0=CalculationModel.Model0=CalculationModel.Model0||{};
+ ElementModule=CalculationModel.ElementModule=CalculationModel.ElementModule||{};
+ ElmReferenceModule=CalculationModel.ElmReferenceModule=CalculationModel.ElmReferenceModule||{};
+ SliceModule=CalculationModel.SliceModule=CalculationModel.SliceModule||{};
+ DimensionModule=CalculationModel.DimensionModule=CalculationModel.DimensionModule||{};
+ CubeModule=CalculationModel.CubeModule=CalculationModel.CubeModule||{};
+ CalculationModule=CalculationModel.CalculationModule=CalculationModel.CalculationModule||{};
+ TotalModule=CalculationModel.TotalModule=CalculationModel.TotalModule||{};
+ ModelModule=CalculationModel.ModelModule=CalculationModel.ModelModule||{};
+ FormulaModule=CalculationModel.FormulaModule=CalculationModel.FormulaModule||{};
+ RuleModule=CalculationModel.RuleModule=CalculationModel.RuleModule||{};
+ AttributeModule=CalculationModel.AttributeModule=CalculationModel.AttributeModule||{};
  Tree=RuleEditor.Tree=RuleEditor.Tree||{};
  Weight=Tree.Weight=Tree.Weight||{};
  TreeNode=Tree.TreeNode=Tree.TreeNode||{};
@@ -136,6 +182,10 @@
  MsgModel=RuleEditor.MsgModel=RuleEditor.MsgModel||{};
  ModelUIModule=RuleEditor.ModelUIModule=RuleEditor.ModelUIModule||{};
  Global$1=RuleEditor.Global=RuleEditor.Global||{};
+ FSCode=RuleEditor.FSCode=RuleEditor.FSCode||{};
+ LocationDet=FSCode.LocationDet=FSCode.LocationDet||{};
+ MsgLocation=FSCode.MsgLocation=FSCode.MsgLocation||{};
+ ParseFS=RuleEditor.ParseFS=RuleEditor.ParseFS||{};
  Render=RuleEditor.Render=RuleEditor.Render||{};
  DragDrop=RuleEditor.DragDrop=RuleEditor.DragDrop||{};
  DragInfo=DragDrop.DragInfo=DragDrop.DragInfo||{};
@@ -156,12 +206,13 @@
  Concurrency=WebSharper&&WebSharper.Concurrency;
  Enumerator=WebSharper&&WebSharper.Enumerator;
  Result$1=WebSharper&&WebSharper.Result;
- Operators$4=WebSharper&&WebSharper.Operators;
+ Operators$5=WebSharper&&WebSharper.Operators;
  Unchecked=WebSharper&&WebSharper.Unchecked;
  Slice$1=WebSharper&&WebSharper.Slice;
  Control=WebSharper&&WebSharper.Control;
  MailboxProcessor=Control&&Control.MailboxProcessor;
  console=Global.console;
+ CancellationTokenSource=WebSharper&&WebSharper.CancellationTokenSource;
  UI=WebSharper&&WebSharper.UI;
  View$1=UI&&UI.View;
  Var$1=UI&&UI.Var;
@@ -169,6 +220,8 @@
  Doc=UI&&UI.Doc;
  Var$2=UI&&UI.Var$1;
  AttrProxy=UI&&UI.AttrProxy;
+ Remoting=WebSharper&&WebSharper.Remoting;
+ AjaxRemotingProvider=Remoting&&Remoting.AjaxRemotingProvider;
  System=Global.System;
  Guid=System&&System.Guid;
  Collections=WebSharper&&WebSharper.Collections;
@@ -187,11 +240,20 @@
  PlugIn=AppFramework&&AppFramework.PlugIn;
  Lazy=WebSharper&&WebSharper.Lazy;
  LayoutEngineModule=LibraryJS&&LibraryJS.LayoutEngineModule;
+ AttrModule=UI&&UI.AttrModule;
  DateUtil=WebSharper&&WebSharper.DateUtil;
  Numeric=WebSharper&&WebSharper.Numeric;
  ListModel$1=UI&&UI.ListModel;
+ Dictionary=Collections&&Collections.Dictionary;
  Client=UI&&UI.Client;
  Templates=Client&&Client.Templates;
+ Dict.add=function(key,v,dict)
+ {
+  if(dict.ContainsKey(key))
+   dict.set_Item(key,v);
+  else
+   dict.Add(key,v);
+ };
  ResultMessage=Library.ResultMessage=Runtime.Class({
   toString:function()
   {
@@ -980,7 +1042,7 @@
  {
   return Result.defaultWith(function(x)
   {
-   return Operators$4.FailWith(Global.String(x));
+   return Operators$5.FailWith(Global.String(x));
   },r);
  };
  Result.iter=function(fE,f,r)
@@ -1731,7 +1793,7 @@
    {
     return $1("Unhandled effect "+Utils.prettyPrint($2));
    };
-  }(Operators$4.FailWith))(m);
+  }(Operators$5.FailWith))(m);
  };
  Eff$1["return'"]=function(v)
  {
@@ -2820,6 +2882,1424 @@
    }
   };
  };
+ Builder$5=ResultM.Builder=Runtime.Class({
+  For:function(sequence,body)
+  {
+   var $this;
+   $this=this;
+   return this.Using(Enumerator.Get(sequence),function(_enum)
+   {
+    return $this.While(function()
+    {
+     return _enum.MoveNext();
+    },$this.Delay(function()
+    {
+     return body(_enum.Current());
+    }));
+   });
+  },
+  While:function(guard,body)
+  {
+   function whileLoop(guard$1,body$1)
+   {
+    return guard$1()?ResultM.bind(function()
+    {
+     return whileLoop(guard$1,body$1);
+    },body$1()):ResultM.rtn();
+   }
+   return whileLoop(guard,body);
+  },
+  Using:function(disposable,body)
+  {
+   try
+   {
+    return body(disposable);
+   }
+   finally
+   {
+    disposable.Dispose();
+   }
+  },
+  TryFinally:function(body,compensation)
+  {
+   try
+   {
+    return body();
+   }
+   finally
+   {
+    compensation();
+   }
+  },
+  TryWith:function(body,handler)
+  {
+   try
+   {
+    return body();
+   }
+   catch(e)
+   {
+    return handler(e);
+   }
+  },
+  Run:function(f)
+  {
+   return ResultM.bindP(f,Monads.OkM$1());
+  },
+  Combine:function(a,b)
+  {
+   return ResultM.bind(b,a);
+  },
+  Delay:Global.id,
+  Zero:function()
+  {
+   return ResultM.rtn();
+  },
+  Bind:function(w,r)
+  {
+   return ResultM.bindM(r,w);
+  },
+  Bind$1:function(w,r)
+  {
+   return ResultM.bindP(r,w);
+  },
+  ReturnFrom:function(x)
+  {
+   return ResultM.rtnM(x);
+  },
+  ReturnFrom$1:Global.id,
+  Return:function(x)
+  {
+   return ResultM.rtn(x);
+  }
+ },Obj,Builder$5);
+ Builder$5.New=Runtime.Ctor(function()
+ {
+  Obj.New.call(this);
+ },Builder$5);
+ Operators$4.rtn=function(v)
+ {
+  return ResultM.rtn(v);
+ };
+ Operators$4.op_GreaterEqualsGreater=function(f,g,v)
+ {
+  return Operators$4.op_GreaterGreaterEquals(f(v),g);
+ };
+ Operators$4.op_RightShift=function(f,g,v)
+ {
+  return Operators$4.op_BarGreaterGreater(f(v),g);
+ };
+ Operators$4.op_GreaterGreaterEquals=function(v,f)
+ {
+  return ResultM.bindP(f,v);
+ };
+ Operators$4.op_BarGreaterGreater=function(v,f)
+ {
+  return ResultM.mapP(f,v);
+ };
+ ResultM.sequenceSeq=function(sq)
+ {
+  return ResultM.traverseSeq(Global.id,sq);
+ };
+ ResultM.traverseSeq=function(f,sq)
+ {
+  return ResultM.map(Global.id,Arrays.foldBack(function(head,tail)
+  {
+   return ResultM.op_GreaterGreaterEquals(f(head),function(h)
+   {
+    return ResultM.op_GreaterGreaterEquals(tail,function(t)
+    {
+     return ResultM.rtn(new List.T({
+      $:1,
+      $0:h,
+      $1:t
+     }));
+    });
+   });
+  },Arrays.ofSeq(sq),ResultM.rtn(List.T.Empty)));
+ };
+ ResultM.op_GreaterGreaterEquals=function(r,f)
+ {
+  return ResultM.bind(f,r);
+ };
+ ResultM.failIfFatalMsgW=function(r)
+ {
+  var a;
+  a=Monads.OkM(r);
+  return a.$==0?ResultMessage.isFatalW(a.$0[1])?Monads.ErrorM(a.$0[1]):r:r;
+ };
+ ResultM.failIfFatalMsg=function(r)
+ {
+  var a;
+  a=Monads.OkM(r);
+  return a.$==0?ResultMessage.isFatal(a.$0[1])?Monads.ErrorM(a.$0[1]):r:r;
+ };
+ ResultM.failIfFatalMsgF=function(f,r)
+ {
+  var a;
+  a=Monads.OkM(r);
+  return a.$==0?ResultMessage.isFatalF(f,a.$0[1])?Monads.ErrorM(a.$0[1]):r:r;
+ };
+ ResultM.addMsg=function(m,r)
+ {
+  return ResultM.mapMessage(function(b)
+  {
+   return ResultMessage.addMsg(m,b);
+  },r);
+ };
+ ResultM.absorbO=function(f,vOR)
+ {
+  return ResultM.bindP(function(v)
+  {
+   return ResultM.ofOption(f,v);
+  },vOR);
+ };
+ ResultM.insertO=function(vRO)
+ {
+  var o;
+  o=vRO==null?null:{
+   $:1,
+   $0:ResultM.map(function(a)
+   {
+    return{
+     $:1,
+     $0:a
+    };
+   },vRO.$0)
+  };
+  return o==null?Monads.OkM$1(null):o.$0;
+ };
+ ResultM.ofResult=function(vR)
+ {
+  return ResultM.rtnr(vR);
+ };
+ ResultM.ofOption=function(f,vO)
+ {
+  var o;
+  o=vO==null?null:{
+   $:1,
+   $0:Monads.OkM$1(vO.$0)
+  };
+  return o==null?function(x)
+  {
+   return Monads.ErrorM(f(x));
+  }():o.$0;
+ };
+ ResultM.get=function(r)
+ {
+  return ResultM.defaultWith(function(x)
+  {
+   return Operators$5.FailWith(Global.String(x));
+  },r);
+ };
+ ResultM.iter=function(fM,f,r)
+ {
+  var a,$1;
+  a=ResultM.mapP(f,r);
+  a.$0==null?$1=a.$1:$1=a.$1;
+  fM($1);
+ };
+ ResultM.mapP=function(f,m)
+ {
+  return ResultM.bindP(function(x)
+  {
+   return ResultM.rtn(f(x));
+  },m);
+ };
+ ResultM.check=function(a,vR)
+ {
+  var $1;
+  return($1=vR.$0,$1!=null&&$1.$==1)?ResultMessage.isFatalF(a.$0,vR.$1)?Monads.ErrorM(vR.$1):vR:vR;
+ };
+ ResultM.bindM=function(f,m)
+ {
+  return ResultM.bindP(f,ResultM.rtnM(m));
+ };
+ ResultM.bindP=function(f,r)
+ {
+  var m;
+  if(r.$0==null)
+   return{
+    $:0,
+    $0:null,
+    $1:r.$1
+   };
+  else
+   {
+    m=r.$1;
+    try
+    {
+     return ResultM.mapMessage(function(b)
+     {
+      return ResultMessage.addMsg(m,b);
+     },f(r.$0.$0));
+    }
+    catch(e)
+    {
+     return Monads.ErrorM(new ResultMessage({
+      $:5,
+      $0:e.message,
+      $1:e.stack
+     }));
+    }
+   }
+ };
+ ResultM.bind=function(f,r)
+ {
+  var m;
+  return r.$0==null?{
+   $:0,
+   $0:null,
+   $1:r.$1
+  }:(m=r.$1,ResultM.mapMessage(function(b)
+  {
+   return ResultMessage.addMsg(m,b);
+  },f(r.$0.$0)));
+ };
+ ResultM.mapMessage=function(fM,a)
+ {
+  return{
+   $:0,
+   $0:a.$0,
+   $1:fM(a.$1)
+  };
+ };
+ ResultM.map=function(f,a)
+ {
+  var o;
+  return{
+   $:0,
+   $0:(o=a.$0,o==null?null:{
+    $:1,
+    $0:f(o.$0)
+   }),
+   $1:a.$1
+  };
+ };
+ ResultM.defaultValue=function(d,r)
+ {
+  return Result.defaultValue(d,ResultM.toResult(r));
+ };
+ ResultM.defaultWith=function(f,r)
+ {
+  return Result.defaultWith(f,ResultM.toResult(r));
+ };
+ ResultM.toOption=function(r)
+ {
+  return r.$0;
+ };
+ ResultM.toResultD=function(r)
+ {
+  return r.$0==null?Library.Error$1(r.$1):{
+   $:0,
+   $0:[r.$0.$0,r.$1]
+  };
+ };
+ ResultM.toResult=function(r)
+ {
+  return r.$0==null?Library.Error$1(r.$1):{
+   $:0,
+   $0:r.$0.$0
+  };
+ };
+ ResultM.freeMessage=function(r)
+ {
+  return r.$==1?Library.Error$1(ResultMessage.freeMessage(r.$0)):{
+   $:0,
+   $0:r.$0
+  };
+ };
+ ResultM.rtnr=function(vR)
+ {
+  return Result.defaultWith(Monads.ErrorM,Result$1.Map(Monads.OkM$1,vR));
+ };
+ ResultM.rtnM=function(m)
+ {
+  return Monads.OkMWithMsg(null,m);
+ };
+ ResultM.rtn=function(v)
+ {
+  return Monads.OkM$1(v);
+ };
+ ResultM.checkErrorW=function()
+ {
+  return{
+   $:0,
+   $0:function()
+   {
+    return false;
+   }
+  };
+ };
+ ResultM.checkError=function()
+ {
+  return{
+   $:0,
+   $0:function()
+   {
+    return true;
+   }
+  };
+ };
+ ResultMAutoOpen.resultM=function()
+ {
+  SC$1.$cctor();
+  return SC$1.resultM;
+ };
+ AsyncResult.absorbO=function(f,vORA)
+ {
+  function f$1(v)
+  {
+   return Result.absorbO(f,v);
+  }
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return Concurrency.Bind(vORA,function(x)
+  {
+   return g(f$1(x));
+  });
+ };
+ AsyncResult.absorbR=function(vRRA)
+ {
+  var f;
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return Concurrency.Bind(vRRA,(f=function(r)
+  {
+   return Result.bindP(Global.id,r);
+  },function(x)
+  {
+   return g(f(x));
+  }));
+ };
+ AsyncResult.insertR=function(vRAR)
+ {
+  return vRAR.$==0?AsyncResult.map(function(a)
+  {
+   return{
+    $:0,
+    $0:a
+   };
+  },vRAR.$0):AsyncResult.rtn(Library.Error$1(vRAR.$0));
+ };
+ AsyncResult.insertO=function(vRAO)
+ {
+  var o;
+  o=vRAO==null?null:{
+   $:1,
+   $0:AsyncResult.map(function(a)
+   {
+    return{
+     $:1,
+     $0:a
+    };
+   },vRAO.$0)
+  };
+  return o==null?AsyncResult.rtn(null):o.$0;
+ };
+ AsyncResult.sequenceSeq=function(sq)
+ {
+  return AsyncResult.traverseSeq(Global.id,sq);
+ };
+ AsyncResult.traverseSeq=function(f,sq)
+ {
+  return AsyncResult.map(Global.id,Arrays.foldBack(function(head,tail)
+  {
+   return AsyncResult.op_GreaterGreaterEquals(f(head),function(h)
+   {
+    return AsyncResult.op_GreaterGreaterEquals(tail,function(t)
+    {
+     return AsyncResult.rtn(new List.T({
+      $:1,
+      $0:h,
+      $1:t
+     }));
+    });
+   });
+  },Arrays.ofSeq(sq),AsyncResult.rtn(List.T.Empty)));
+ };
+ AsyncResult.op_GreaterGreaterEquals=function(v,f)
+ {
+  return AsyncResult.bind(f,v);
+ };
+ AsyncResult.whileLoop=function(cond,fRA)
+ {
+  return cond()?AsyncResult.bind(function()
+  {
+   return AsyncResult.whileLoop(cond,fRA);
+  },fRA()):AsyncResult.rtn();
+ };
+ AsyncResult.mapP=function(f,m)
+ {
+  return AsyncResult.bindP(function(x)
+  {
+   return AsyncResult.rtn(f(x));
+  },m);
+ };
+ AsyncResult.map=function(f,m)
+ {
+  return AsyncResult.bind(function(x)
+  {
+   return AsyncResult.rtn(f(x));
+  },m);
+ };
+ AsyncResult.bindP=function(fRA,vRA)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.TryWith(Concurrency.Delay(function()
+   {
+    return Concurrency.Bind(vRA,function(a)
+    {
+     return a.$==1?Concurrency.Return(Library.Error$1(a.$0)):fRA(a.$0);
+    });
+   }),function(a)
+   {
+    return Concurrency.Return(Library.Error$1(new ResultMessage({
+     $:5,
+     $0:a.message,
+     $1:a.stack
+    })));
+   });
+  });
+ };
+ AsyncResult.bind=function(fRA,vRA)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind(vRA,function(a)
+   {
+    var m,b$1;
+    return a.$==1?(m=a.$0,(b$1=null,Concurrency.Delay(function()
+    {
+     return Concurrency.Return(Library.Error$1(m));
+    }))):fRA(a.$0);
+   });
+  });
+ };
+ AsyncResult.iterA=function(fE,f,vRA)
+ {
+  function f$1(r)
+  {
+   Result.iter(fE,f,r);
+  }
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  Concurrency.Start(Concurrency.Bind(vRA,function(x)
+  {
+   return g(f$1(x));
+  }),null);
+ };
+ AsyncResult.iterS=function(fE,f,vRA)
+ {
+  throw"iterS cannot be used in JavaScript!";
+ };
+ AsyncResult.rtnR=function(vR)
+ {
+  return Concurrency.Return(vR);
+ };
+ AsyncResult.rtn=function(v)
+ {
+  return Concurrency.Return({
+   $:0,
+   $0:v
+  });
+ };
+ AsyncResult.freeMessage=function(v)
+ {
+  function g(v$1)
+  {
+   return Concurrency.Return(v$1);
+  }
+  return Concurrency.Bind(v,function(x)
+  {
+   return g(Result.freeMessage(x));
+  });
+ };
+ AsyncResult.mapError=function(fE,v)
+ {
+  function f(r)
+  {
+   return Result$1.MapError(fE,r);
+  }
+  function g(v$1)
+  {
+   return Concurrency.Return(v$1);
+  }
+  return Concurrency.Bind(v,function(x)
+  {
+   return g(f(x));
+  });
+ };
+ AsyncResultBuilder=Monads.AsyncResultBuilder=Runtime.Class({
+  For:function(s,fRA)
+  {
+   var $this;
+   $this=this;
+   return this.Using(Enumerator.Get(s),function(_enum)
+   {
+    return $this.While(function()
+    {
+     return _enum.MoveNext();
+    },$this.Delay(function()
+    {
+     return fRA(_enum.Current());
+    }));
+   });
+  },
+  While:function(guard,fRA)
+  {
+   return AsyncResult.whileLoop(guard,fRA);
+  },
+  Using:function(resource,fRA)
+  {
+   return Concurrency.Using(resource,fRA);
+  },
+  TryFinally:function(fRA,fn)
+  {
+   var b;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    return Concurrency.TryFinally(Concurrency.Delay(function()
+    {
+     return fRA();
+    }),function()
+    {
+     fn();
+    });
+   });
+  },
+  TryWith:function(fRA,hnd)
+  {
+   var b;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    return Concurrency.TryWith(Concurrency.Delay(function()
+    {
+     return fRA();
+    }),function(a)
+    {
+     return hnd(a);
+    });
+   });
+  },
+  Run:function(fRA)
+  {
+   return fRA();
+  },
+  Delay:Global.id,
+  Combine:function(vR,fRA)
+  {
+   return AsyncResult.bind(fRA,AsyncResult.rtnR(vR));
+  },
+  Combine$1:function(vRA,fRA)
+  {
+   return AsyncResult.bind(fRA,vRA);
+  },
+  Bind:function(vR,fRA)
+  {
+   return AsyncResult.bind(fRA,AsyncResult.rtnR(vR));
+  },
+  Bind$1:function(vRA,fRA)
+  {
+   return AsyncResult.bind(fRA,vRA);
+  },
+  Zero:function()
+  {
+   return AsyncResult.rtn();
+  },
+  Return:function(v)
+  {
+   return AsyncResult.rtn(v);
+  },
+  ReturnFrom:function(vR)
+  {
+   return AsyncResult.rtnR(vR);
+  },
+  ReturnFrom$1:Global.id
+ },Obj,AsyncResultBuilder);
+ AsyncResultBuilder.New=Runtime.Ctor(function()
+ {
+  Obj.New.call(this);
+ },AsyncResultBuilder);
+ AsyncResultBuilderP=Monads.AsyncResultBuilderP=Runtime.Class({
+  For:function(s,fRA)
+  {
+   var $this;
+   $this=this;
+   return this.Using(Enumerator.Get(s),function(_enum)
+   {
+    return $this.While(function()
+    {
+     return _enum.MoveNext();
+    },$this.Delay(function()
+    {
+     return fRA(_enum.Current());
+    }));
+   });
+  },
+  While:function(guard,fRA)
+  {
+   return AsyncResult.whileLoop(guard,fRA);
+  },
+  Using:function(resource,fRA)
+  {
+   return Concurrency.Using(resource,fRA);
+  },
+  TryFinally:function(fRA,fn)
+  {
+   var b;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    try
+    {
+     return fRA();
+    }
+    finally
+    {
+     fn();
+    }
+   });
+  },
+  TryWith:function(fRA,hnd)
+  {
+   var b;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    try
+    {
+     return fRA();
+    }
+    catch(e)
+    {
+     return hnd(e);
+    }
+   });
+  },
+  Run:function(fRA)
+  {
+   return AsyncResult.bindP(fRA,AsyncResult.rtn());
+  },
+  Delay:Global.id,
+  Combine:function(vR,fRA)
+  {
+   return AsyncResult.bindP(fRA,AsyncResult.rtnR(vR));
+  },
+  Combine$1:function(vRA,fRA)
+  {
+   return AsyncResult.bindP(fRA,vRA);
+  },
+  Bind:function(vR,fRA)
+  {
+   return AsyncResult.bindP(fRA,AsyncResult.rtnR(vR));
+  },
+  Bind$1:function(vRA,fRA)
+  {
+   return AsyncResult.bindP(fRA,vRA);
+  },
+  Zero:function()
+  {
+   return AsyncResult.rtn();
+  },
+  Return:function(v)
+  {
+   return AsyncResult.rtn(v);
+  },
+  ReturnFrom:function(vR)
+  {
+   return AsyncResult.rtnR(vR);
+  },
+  ReturnFrom$1:Global.id
+ },Obj,AsyncResultBuilderP);
+ AsyncResultBuilderP.New=Runtime.Ctor(function()
+ {
+  Obj.New.call(this);
+ },AsyncResultBuilderP);
+ Extensions["AsyncResultBuilderP.Combine"]=function(__,vA,fRA)
+ {
+  function f(a)
+  {
+   return{
+    $:0,
+    $0:a
+   };
+  }
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return AsyncResult.bindP(fRA,Concurrency.Bind(vA,function(x)
+  {
+   return g(f(x));
+  }));
+ };
+ Extensions["AsyncResultBuilderP.Bind"]=function(__,vA,fRA)
+ {
+  function f(a)
+  {
+   return{
+    $:0,
+    $0:a
+   };
+  }
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return AsyncResult.bindP(fRA,Concurrency.Bind(vA,function(x)
+  {
+   return g(f(x));
+  }));
+ };
+ Extensions["AsyncResultBuilderP.ReturnFrom"]=function(__,vA)
+ {
+  function f(a)
+  {
+   return{
+    $:0,
+    $0:a
+   };
+  }
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return Concurrency.Bind(vA,function(x)
+  {
+   return g(f(x));
+  });
+ };
+ Extensions["AsyncResultBuilder.Combine"]=function(__,vA,fRA)
+ {
+  function f(a)
+  {
+   return{
+    $:0,
+    $0:a
+   };
+  }
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return AsyncResult.bind(fRA,Concurrency.Bind(vA,function(x)
+  {
+   return g(f(x));
+  }));
+ };
+ Extensions["AsyncResultBuilder.Bind"]=function(__,vA,fRA)
+ {
+  function f(a)
+  {
+   return{
+    $:0,
+    $0:a
+   };
+  }
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return AsyncResult.bind(fRA,Concurrency.Bind(vA,function(x)
+  {
+   return g(f(x));
+  }));
+ };
+ Extensions["AsyncResultBuilder.ReturnFrom"]=function(__,vA)
+ {
+  function f(a)
+  {
+   return{
+    $:0,
+    $0:a
+   };
+  }
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return Concurrency.Bind(vA,function(x)
+  {
+   return g(f(x));
+  });
+ };
+ AsyncResultMBuilder=AsyncResultM.AsyncResultMBuilder=Runtime.Class({
+  For:function(s,fRA)
+  {
+   var $this;
+   $this=this;
+   return this.Using(Enumerator.Get(s),function(_enum)
+   {
+    return $this.While(function()
+    {
+     return _enum.MoveNext();
+    },$this.Delay(function()
+    {
+     return fRA(_enum.Current());
+    }));
+   });
+  },
+  While:function(guard,fRA)
+  {
+   return AsyncResultM.whileLoop(guard,fRA);
+  },
+  Using:function(resource,fRA)
+  {
+   return Concurrency.Using(resource,fRA);
+  },
+  TryFinally:function(fRA,fn)
+  {
+   var b;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    return Concurrency.TryFinally(Concurrency.Delay(function()
+    {
+     return fRA();
+    }),function()
+    {
+     fn();
+    });
+   });
+  },
+  TryWith:function(fRA,hnd)
+  {
+   var b;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    return Concurrency.TryWith(Concurrency.Delay(function()
+    {
+     return fRA();
+    }),function(a)
+    {
+     return hnd(a);
+    });
+   });
+  },
+  Run:function(fRA)
+  {
+   return fRA();
+  },
+  Delay:Global.id,
+  Combine:function(vR,fRA)
+  {
+   return AsyncResultM.bind(fRA,AsyncResultM.rtnR(vR));
+  },
+  Combine$1:function(vRA,fRA)
+  {
+   return AsyncResultM.bind(fRA,vRA);
+  },
+  Bind:function(w,r)
+  {
+   return AsyncResultM.bindrA(r,w);
+  },
+  Bind$1:function(w,r)
+  {
+   return AsyncResultM.bindR(r,w);
+  },
+  Bind$2:function(w,r)
+  {
+   return AsyncResultM.bindM(r,w);
+  },
+  Bind$3:function(w,r)
+  {
+   return AsyncResultM.bindr(r,w);
+  },
+  Bind$4:function(vRA,fRA)
+  {
+   return AsyncResultM.bind(fRA,vRA);
+  },
+  Zero:function()
+  {
+   return AsyncResultM.rtn();
+  },
+  Return:function(v)
+  {
+   return AsyncResultM.rtn(v);
+  },
+  ReturnFrom:function(vR)
+  {
+   return AsyncResultM.rtnrA(vR);
+  },
+  ReturnFrom$1:function(vR)
+  {
+   return AsyncResultM.rtnR(vR);
+  },
+  ReturnFrom$2:function(vR)
+  {
+   return AsyncResultM.rtnM(vR);
+  },
+  ReturnFrom$3:function(vR)
+  {
+   return AsyncResultM.rtnr(vR);
+  },
+  ReturnFrom$4:Global.id
+ },Obj,AsyncResultMBuilder);
+ AsyncResultMBuilder.New=Runtime.Ctor(function()
+ {
+  Obj.New.call(this);
+ },AsyncResultMBuilder);
+ AsyncResultM.absorbO=function(f,vORA)
+ {
+  function f$1(v)
+  {
+   return Result.absorbO(f,v);
+  }
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return Concurrency.Bind(vORA,function(x)
+  {
+   return g(f$1(x));
+  });
+ };
+ AsyncResultM.absorbR=function(vRRA)
+ {
+  var f;
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return Concurrency.Bind(vRRA,(f=function(r)
+  {
+   return Result.bindP(Global.id,r);
+  },function(x)
+  {
+   return g(f(x));
+  }));
+ };
+ AsyncResultM.insertR=function(vRAR)
+ {
+  return vRAR.$==0?AsyncResultM.map(function(a)
+  {
+   return{
+    $:0,
+    $0:a
+   };
+  },vRAR.$0):AsyncResultM.rtn(Library.Error$1(vRAR.$0));
+ };
+ AsyncResultM.insertO=function(vRAO)
+ {
+  var o;
+  o=vRAO==null?null:{
+   $:1,
+   $0:AsyncResultM.map(function(a)
+   {
+    return{
+     $:1,
+     $0:a
+    };
+   },vRAO.$0)
+  };
+  return o==null?AsyncResultM.rtn(null):o.$0;
+ };
+ AsyncResultM.sequenceSeq=function(sq)
+ {
+  return AsyncResultM.traverseSeq(Global.id,sq);
+ };
+ AsyncResultM.traverseSeq=function(f,sq)
+ {
+  return AsyncResultM.map(Global.id,Arrays.foldBack(function(head,tail)
+  {
+   return AsyncResultM.op_GreaterGreaterEquals(f(head),function(h)
+   {
+    return AsyncResultM.op_GreaterGreaterEquals(tail,function(t)
+    {
+     return AsyncResultM.rtn(new List.T({
+      $:1,
+      $0:h,
+      $1:t
+     }));
+    });
+   });
+  },Arrays.ofSeq(sq),AsyncResultM.rtn(List.T.Empty)));
+ };
+ AsyncResultM.op_GreaterGreaterEquals=function(v,f)
+ {
+  return AsyncResultM.bind(f,v);
+ };
+ AsyncResultM.whileLoop=function(cond,fRA)
+ {
+  return cond()?AsyncResultM.bind(function()
+  {
+   return AsyncResultM.whileLoop(cond,fRA);
+  },fRA()):AsyncResultM.rtn();
+ };
+ AsyncResultM.map=function(f,m)
+ {
+  return AsyncResultM.bind(function(x)
+  {
+   return AsyncResultM.rtn(f(x));
+  },m);
+ };
+ AsyncResultM.bindR=function(f,a)
+ {
+  return AsyncResultM.bind(f,AsyncResultM.rtnR(a));
+ };
+ AsyncResultM.bindrA=function(f,a)
+ {
+  return AsyncResultM.bind(f,AsyncResultM.rtnrA(a));
+ };
+ AsyncResultM.bindM=function(f,a)
+ {
+  return AsyncResultM.bind(f,AsyncResultM.rtnM(a));
+ };
+ AsyncResultM.bindr=function(f,a)
+ {
+  return AsyncResultM.bind(f,AsyncResultM.rtnr(a));
+ };
+ AsyncResultM.bind=function(fRA,vRA)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.TryWith(Concurrency.Delay(function()
+   {
+    return Concurrency.Bind(vRA,function(a)
+    {
+     var a$1,m;
+     function f(r)
+     {
+      return ResultM.addMsg(m,r);
+     }
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     a$1=Monads.OkM(a);
+     return a$1.$==1?Concurrency.Return(Monads.ErrorM(a$1.$0)):(m=a$1.$0[1],Concurrency.Bind(fRA(a$1.$0[0]),function(x)
+     {
+      return g(f(x));
+     }));
+    });
+   }),function(a)
+   {
+    return Concurrency.Return(Monads.ErrorM(new ResultMessage({
+     $:5,
+     $0:a.message,
+     $1:a.stack
+    })));
+   });
+  });
+ };
+ AsyncResultM.iterpA=function(f,vRA)
+ {
+  function g(v)
+  {
+   Library.print$1(v);
+  }
+  AsyncResultM.iterA(function(x)
+  {
+   return g(ResultMessage.summarized(x));
+  },f,vRA);
+ };
+ AsyncResultM.iterpS=function(f,vRA)
+ {
+  function g(v)
+  {
+   Library.print$1(v);
+  }
+  AsyncResultM.iterS(function(x)
+  {
+   return g(ResultMessage.summarized(x));
+  },f,vRA);
+ };
+ AsyncResultM.iterA=function(fE,f,vRA)
+ {
+  function f$1(r)
+  {
+   ResultM.iter(fE,f,r);
+  }
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  Concurrency.Start(Concurrency.Bind(vRA,function(x)
+  {
+   return g(f$1(x));
+  }),null);
+ };
+ AsyncResultM.iterS=function(fE,f,vRA)
+ {
+  throw"iterS cannot be used in JavaScript!";
+ };
+ AsyncResultM.rtnrA=function(vrA)
+ {
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return Concurrency.Bind(vrA,function(x)
+  {
+   return g(ResultM.ofResult(x));
+  });
+ };
+ AsyncResultM.rtnM=function(vM)
+ {
+  return Concurrency.Return(ResultM.rtnM(vM));
+ };
+ AsyncResultM.rtnR=function(vR)
+ {
+  return Concurrency.Return(vR);
+ };
+ AsyncResultM.rtnr=function(vR)
+ {
+  return Concurrency.Return(ResultM.rtnr(vR));
+ };
+ AsyncResultM.rtn=function(v)
+ {
+  return Concurrency.Return(Monads.OkM$1(v));
+ };
+ AsyncResultM.freeMessage=function(v)
+ {
+  function g(v$1)
+  {
+   return Concurrency.Return(v$1);
+  }
+  return Concurrency.Bind(v,function(x)
+  {
+   return g(ResultM.freeMessage(x));
+  });
+ };
+ AsyncResultM.mapError=function(fE,v)
+ {
+  function f(a)
+  {
+   return ResultM.mapMessage(fE,a);
+  }
+  function g(v$1)
+  {
+   return Concurrency.Return(v$1);
+  }
+  return Concurrency.Bind(v,function(x)
+  {
+   return g(f(x));
+  });
+ };
+ AsyncResultMAutoOpen["AsyncResultMBuilder.Combine"]=function(__,vA,fRA)
+ {
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return AsyncResultM.bind(fRA,Concurrency.Bind(vA,function(x)
+  {
+   return g(Monads.OkM$1(x));
+  }));
+ };
+ AsyncResultMAutoOpen["AsyncResultMBuilder.Bind"]=function(__,vA,fRA)
+ {
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return AsyncResultM.bind(fRA,Concurrency.Bind(vA,function(x)
+  {
+   return g(Monads.OkM$1(x));
+  }));
+ };
+ AsyncResultMAutoOpen["AsyncResultMBuilder.ReturnFrom"]=function(__,vA)
+ {
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return Concurrency.Bind(vA,function(x)
+  {
+   return g(Monads.OkM$1(x));
+  });
+ };
+ AsyncResultMAutoOpen.asyncResultM=function()
+ {
+  SC$1.$cctor();
+  return SC$1.asyncResultM;
+ };
+ Monads.asyncResultP=function()
+ {
+  SC$1.$cctor();
+  return SC$1.asyncResultP;
+ };
+ Monads.asyncResult=function()
+ {
+  SC$1.$cctor();
+  return SC$1.asyncResult;
+ };
+ Monads.OkM=function(r)
+ {
+  return r.$0==null?{
+   $:1,
+   $0:r.$1
+  }:{
+   $:0,
+   $0:[r.$0.$0,r.$1]
+  };
+ };
+ Monads.ErrorM=function(m)
+ {
+  return{
+   $:0,
+   $0:null,
+   $1:m
+  };
+ };
+ Monads.OkMWithMsg=function(v,m)
+ {
+  return{
+   $:0,
+   $0:{
+    $:1,
+    $0:v
+   },
+   $1:m
+  };
+ };
+ Monads.OkM$1=function(v)
+ {
+  return{
+   $:0,
+   $0:{
+    $:1,
+    $0:v
+   },
+   $1:ResultMessage.NoMsg
+  };
+ };
+ String.EndsWith$1=function(ends,s)
+ {
+  return Strings.EndsWith(s,ends)?{
+   $:1,
+   $0:Slice$1.string(s,{
+    $:1,
+    $0:0
+   },{
+    $:1,
+    $0:s.length-ends.length-1
+   })
+  }:null;
+ };
+ String.StartsWith$1=function(start,s)
+ {
+  return Strings.StartsWith(s,start)?{
+   $:1,
+   $0:Slice$1.string(s,{
+    $:1,
+    $0:start.length
+   },null)
+  }:null;
+ };
+ String.skipLastLine$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.skipLastLine;
+ };
+ String.indentStr$1=function(i)
+ {
+  function f(s)
+  {
+   return String.indent$1(i,s);
+  }
+  function g(s)
+  {
+   return Strings.concat("\n",s);
+  }
+  return function(x)
+  {
+   return g(f(x));
+  };
+ };
+ String.unindentStr$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.unindentStr;
+ };
+ String.indent$1=function(n,s)
+ {
+  var x,x$1;
+  x=Strings.SplitChars(s,["\n"],0);
+  return Seq$1.map((x$1=Strings.replicate(n," "),function(y)
+  {
+   return x$1+y;
+  }),x);
+ };
+ String.unindent$1=function(s)
+ {
+  var lines,n,o,o$1;
+  lines=Strings.SplitChars(s,["\n"],0);
+  n=(o=Seq$1.tryFindIndex(function(y)
+  {
+   return" "!==y;
+  },(o$1=Seq$1.tryFind(function(l)
+  {
+   return Strings.Trim(l)!=="";
+  },lines),o$1==null?"":o$1.$0)),o==null?0:o.$0);
+  return Seq$1.filter(function(s$1)
+  {
+   return!Strings.StartsWith(s$1,"# 1 ");
+  },Seq$1.map(function(l)
+  {
+   return l.length<=n?"":l.substring(n);
+  },lines));
+ };
+ String.skipFirstLine$1=function(txt)
+ {
+  var i;
+  i=txt.indexOf("\n");
+  return i<0?"":Slice$1.string(txt,{
+   $:1,
+   $0:i+1
+  },null);
+ };
+ String.append$1=function(a,b)
+ {
+  return a+b;
+ };
+ String.trim$1=function(s)
+ {
+  return Strings.Trim(s);
+ };
+ String.contains$1=function(sub,whole)
+ {
+  return whole.indexOf(sub)!=-1;
+ };
+ String.delimitedO$1=function(op,cl,txt)
+ {
+  var o,$1,bef,o$1,$2;
+  o=String.splitInTwoO$1(op,txt);
+  return o==null?null:($1=o.$0,(bef=$1[0],(o$1=String.splitInTwoO$1(cl,$1[1]),o$1==null?null:{
+   $:1,
+   $0:($2=o$1.$0,[bef,$2[0],$2[1]])
+  })));
+ };
+ String.splitInTwoO$1=function(spl,txt)
+ {
+  var i;
+  i=txt.indexOf(spl);
+  return i===-1?null:{
+   $:1,
+   $0:[Library["String.Left$1"](txt,i),txt.substring(i+spl.length)]
+  };
+ };
+ String.splitByChar$1=function(c,s)
+ {
+  return Strings.SplitChars(s,[c],0);
+ };
  Array.replace=function(i,item,array)
  {
   return Arrays.ofSeq(Seq$1.delay(function()
@@ -3482,6 +4962,59 @@
   {
    return Seq$1.collect(Global.id,s);
   });
+ };
+ Library["String.Right$1"]=function(_this,n)
+ {
+  var a,b;
+  return Library["String.Substring2$1"](_this,(a=0,(b=_this.length-n,Unchecked.Compare(a,b)===1?a:b)),_this.length);
+ };
+ Library["String.Left$1"]=function(_this,n)
+ {
+  return Library["String.Substring2$1"](_this,0,n);
+ };
+ Library["String.Substring2$1"]=function(_this,from,n)
+ {
+  var from$1,b;
+  while(true)
+   {
+    if(n<=0)
+     return"";
+    else
+     if(from<0)
+      {
+       from$1=from;
+       from=0;
+       n=n+from$1;
+      }
+     else
+      return from>=_this.length?"":Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
+   }
+ };
+ Library.delayed$1=function(delay,doF)
+ {
+  var cancellationTokenSourceO;
+  cancellationTokenSourceO=[null];
+  return function(parm)
+  {
+   var o,b;
+   o=cancellationTokenSourceO[0];
+   o==null?void 0:o.$0.Cancel$1();
+   cancellationTokenSourceO[0]={
+    $:1,
+    $0:new CancellationTokenSource.New()
+   };
+   Concurrency.Start((b=null,Concurrency.Delay(function()
+   {
+    return Concurrency.Bind(Concurrency.Sleep(delay),function()
+    {
+     doF(parm);
+     return Concurrency.Zero();
+    });
+   })),{
+    $:1,
+    $0:cancellationTokenSourceO[0].$0
+   });
+  };
  };
  Library.print$1=function(v)
  {
@@ -4167,7 +5700,7 @@
  {
   return MonacoConfig.New(v,monc.onChange,monc.onRender,monc.editorO,monc.disabled,monc.options,monc.overrides);
  };
- Monaco.render$1552$48=function(monc)
+ Monaco.render$1924$48=function(monc)
  {
   return function(elchild)
   {
@@ -4380,6 +5913,441 @@
   SC$1.$cctor();
   return SC$1.MessageBrokerId;
  };
+ ResponseError.New=function(Code,Message)
+ {
+  return{
+   Code:Code,
+   Message:Message
+  };
+ };
+ Location$1.New=function(File,Line,Column)
+ {
+  return{
+   File:File,
+   Line:Line,
+   Column:Column
+  };
+ };
+ CompletionResponse.New=function(Name,ReplacementText,Glyph,GlyphChar)
+ {
+  return{
+   Name:Name,
+   ReplacementText:ReplacementText,
+   Glyph:Glyph,
+   GlyphChar:GlyphChar
+  };
+ };
+ OverloadDescription.New=function(Signature,Comment,Footer)
+ {
+  return{
+   Signature:Signature,
+   Comment:Comment,
+   Footer:Footer
+  };
+ };
+ OverloadParameter.New=function(Name,CanonicalTypeTextForSorting,Display,Description)
+ {
+  return{
+   Name:Name,
+   CanonicalTypeTextForSorting:CanonicalTypeTextForSorting,
+   Display:Display,
+   Description:Description
+  };
+ };
+ Overload.New=function(Tip,TypeText,Parameters,IsStaticArguments)
+ {
+  return{
+   Tip:Tip,
+   TypeText:TypeText,
+   Parameters:Parameters,
+   IsStaticArguments:IsStaticArguments
+  };
+ };
+ Parameter.New=function(Name,Type)
+ {
+  return{
+   Name:Name,
+   Type:Type
+  };
+ };
+ SignatureData.New=function(OutputType,Parameters)
+ {
+  return{
+   OutputType:OutputType,
+   Parameters:Parameters
+  };
+ };
+ MethodResponse.New=function(Name,CurrentParameter,Overloads)
+ {
+  return{
+   Name:Name,
+   CurrentParameter:CurrentParameter,
+   Overloads:Overloads
+  };
+ };
+ SymbolUseRange.New=function(FileName,StartLine,StartColumn,EndLine,EndColumn,IsFromDefinition,IsFromAttribute,IsFromComputationExpression,IsFromDispatchSlotImplementation,IsFromPattern,IsFromType)
+ {
+  return{
+   FileName:FileName,
+   StartLine:StartLine,
+   StartColumn:StartColumn,
+   EndLine:EndLine,
+   EndColumn:EndColumn,
+   IsFromDefinition:IsFromDefinition,
+   IsFromAttribute:IsFromAttribute,
+   IsFromComputationExpression:IsFromComputationExpression,
+   IsFromDispatchSlotImplementation:IsFromDispatchSlotImplementation,
+   IsFromPattern:IsFromPattern,
+   IsFromType:IsFromType
+  };
+ };
+ SymbolUseResponse.New=function(Name,Uses)
+ {
+  return{
+   Name:Name,
+   Uses:Uses
+  };
+ };
+ HelpTextResponse.New=function(Name,Overloads)
+ {
+  return{
+   Name:Name,
+   Overloads:Overloads
+  };
+ };
+ CompilerLocationResponse.New=function(Fsc,Fsi,MSBuild)
+ {
+  return{
+   Fsc:Fsc,
+   Fsi:Fsi,
+   MSBuild:MSBuild
+  };
+ };
+ FSharpErrorInfo.New=function(FileName,StartLine,EndLine,StartColumn,EndColumn,Severity,Message,Subcategory)
+ {
+  return{
+   FileName:FileName,
+   StartLine:StartLine,
+   EndLine:EndLine,
+   StartColumn:StartColumn,
+   EndColumn:EndColumn,
+   Severity:Severity,
+   Message:Message,
+   Subcategory:Subcategory
+  };
+ };
+ ErrorResponse.New=function(File,Errors)
+ {
+  return{
+   File:File,
+   Errors:Errors
+  };
+ };
+ Colorization.New=function(Kind)
+ {
+  return{
+   Kind:Kind
+  };
+ };
+ Declaration.New=function(UniqueName,Name,Glyph,GlyphChar,IsTopLevel,File,EnclosingEntity,IsAbstract)
+ {
+  return{
+   UniqueName:UniqueName,
+   Name:Name,
+   Glyph:Glyph,
+   GlyphChar:GlyphChar,
+   IsTopLevel:IsTopLevel,
+   File:File,
+   EnclosingEntity:EnclosingEntity,
+   IsAbstract:IsAbstract
+  };
+ };
+ DeclarationResponse.New=function(Declaration$1,Nested)
+ {
+  return{
+   Declaration:Declaration$1,
+   Nested:Nested
+  };
+ };
+ OpenNamespace.New=function(Namespace,Name,Type,Line,Column,MultipleNames)
+ {
+  return{
+   Namespace:Namespace,
+   Name:Name,
+   Type:Type,
+   Line:Line,
+   Column:Column,
+   MultipleNames:MultipleNames
+  };
+ };
+ QualifySymbol.New=function(Name,Qualifier)
+ {
+  return{
+   Name:Name,
+   Qualifier:Qualifier
+  };
+ };
+ ResolveNamespaceResponse.New=function(Opens,Qualifies,Word)
+ {
+  return{
+   Opens:Opens,
+   Qualifies:Qualifies,
+   Word:Word
+  };
+ };
+ UnionCaseResponse.New=function(Text)
+ {
+  return{
+   Text:Text
+  };
+ };
+ ParseRequest.New=function(FileName,IsAsync,Lines,Version$1)
+ {
+  return{
+   FileName:FileName,
+   IsAsync:IsAsync,
+   Lines:Lines,
+   Version:Version$1
+  };
+ };
+ DeclarationsRequest.New=function(FileName,Lines,Version$1)
+ {
+  return{
+   FileName:FileName,
+   Lines:Lines,
+   Version:Version$1
+  };
+ };
+ CompletionRequest.New=function(FileName,SourceLine,Line,Column,Filter,IncludeKeywords)
+ {
+  return{
+   FileName:FileName,
+   SourceLine:SourceLine,
+   Line:Line,
+   Column:Column,
+   Filter:Filter,
+   IncludeKeywords:IncludeKeywords
+  };
+ };
+ PositionRequest.New=function(FileName,Line,Column,Filter)
+ {
+  return{
+   FileName:FileName,
+   Line:Line,
+   Column:Column,
+   Filter:Filter
+  };
+ };
+ ProjectRequest.New=function(FileName)
+ {
+  return{
+   FileName:FileName
+  };
+ };
+ LintRequest.New=function(FileName)
+ {
+  return{
+   FileName:FileName
+  };
+ };
+ HelptextRequest.New=function(Symbol)
+ {
+  return{
+   Symbol:Symbol
+  };
+ };
+ WorkspacePeekRequest.New=function(Directory,Deep,ExcludedDirs)
+ {
+  return{
+   Directory:Directory,
+   Deep:Deep,
+   ExcludedDirs:ExcludedDirs
+  };
+ };
+ Calls.symbolUseProject=function(file,lin,col,filter)
+ {
+  return Calls.FSAutocompleteCall("symboluseproject",function(a)
+  {
+   return a.$==4?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },{
+   $:3,
+   $0:PositionRequest.New(file,lin,col,filter)
+  });
+ };
+ Calls.symbolUse=function(file,lin,col,filter)
+ {
+  return Calls.FSAutocompleteCall("symboluse",function(a)
+  {
+   return a.$==4?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },{
+   $:3,
+   $0:PositionRequest.New(file,lin,col,filter)
+  });
+ };
+ Calls.helpText=function(symbol)
+ {
+  return Calls.FSAutocompleteCall("helptext",function(a)
+  {
+   return a.$==2?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },{
+   $:6,
+   $0:HelptextRequest.New(symbol)
+  });
+ };
+ Calls.declarations=function(file,code,ver)
+ {
+  return Calls.FSAutocompleteCall("declarations",function(a)
+  {
+   return a.$==10?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },{
+   $:1,
+   $0:DeclarationsRequest.New(file,code,ver)
+  });
+ };
+ Calls.findDeclaration=function(file,lin,col,filter)
+ {
+  return Calls.FSAutocompleteCall("finddeclaration",function(a)
+  {
+   return a.$==9?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },{
+   $:3,
+   $0:PositionRequest.New(file,lin,col,filter)
+  });
+ };
+ Calls.findTypeDecl=function(file,lin,col,filter)
+ {
+  return Calls.FSAutocompleteCall("findtypedeclaration",function(a)
+  {
+   return a.$==9?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },{
+   $:3,
+   $0:PositionRequest.New(file,lin,col,filter)
+  });
+ };
+ Calls.completion=function(tx,kw,file,ln,col,filter)
+ {
+  return Calls.FSAutocompleteCall("completion",function(a)
+  {
+   return a.$==3?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },{
+   $:2,
+   $0:CompletionRequest.New(file,tx,ln,col,filter,kw)
+  });
+ };
+ Calls.signatureData=function(file,lin,col,filter)
+ {
+  return Calls.FSAutocompleteCall("signatureData",function(a)
+  {
+   return a.$==13?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },{
+   $:3,
+   $0:PositionRequest.New(file,lin,col,filter)
+  });
+ };
+ Calls.signature=function(file,lin,col,filter)
+ {
+  return Calls.FSAutocompleteCall("signature",function(a)
+  {
+   return a.$==12?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },{
+   $:3,
+   $0:PositionRequest.New(file,lin,col,filter)
+  });
+ };
+ Calls.toolTip=function(file,lin,col,filter)
+ {
+  return Calls.FSAutocompleteCall("tooltip",function(a)
+  {
+   return a.$==11?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },{
+   $:3,
+   $0:PositionRequest.New(file,lin,col,filter)
+  });
+ };
+ Calls.parseCode=function(file,code,asy,ver)
+ {
+  return Calls.FSAutocompleteCall("parse",function(a)
+  {
+   return a.$==7?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },{
+   $:0,
+   $0:ParseRequest.New(file,asy,code,ver)
+  });
+ };
+ Calls.FSAutocompleteCall=function(cmd,f,req)
+ {
+  var b;
+  b=Monads.asyncResult();
+  return b.Run(b.Delay(function()
+  {
+   return b.Bind$1((new AjaxRemotingProvider.New()).Async("RuleEditor:FsRoot.Library2+FsAutoComplete.FSAutocompleteCall0:-662505047",[cmd,req]),function(a)
+   {
+    var p,others;
+    function g(o)
+    {
+     return o!=null;
+    }
+    p=Arrays.partition(function(x)
+    {
+     return g(f(x));
+    },a);
+    others=p[1];
+    return b.Bind(Result.ofOption(function()
+    {
+     return new ResultMessage({
+      $:4,
+      $0:others
+     });
+    },Seq$1.tryHead(Seq$1.choose(f,p[0]))),function(a$1)
+    {
+     return b.Return([a$1,others]);
+    });
+   });
+  }));
+ };
+ Templating.TemplatesFileName=function()
+ {
+  SC$1.$cctor();
+  return SC$1.TemplatesFileName;
+ };
+ Templating.rootdir=function()
+ {
+  SC$1.$cctor();
+  return SC$1.rootdir;
+ };
  DimType.DtOther={
   $:6
  };
@@ -4422,55 +6390,55 @@
  ElmType.EtString={
   $:0
  };
- ModId=CalculationModel$1.ModId=Runtime.Class({
+ ModId=CalculationModel.ModId=Runtime.Class({
   get_Id:function()
   {
    return this.$0;
   }
  },null,ModId);
- AttId=CalculationModel$1.AttId=Runtime.Class({
+ AttId=CalculationModel.AttId=Runtime.Class({
   get_Id:function()
   {
    return this.$0;
   }
  },null,AttId);
- ElmId=CalculationModel$1.ElmId=Runtime.Class({
+ ElmId=CalculationModel.ElmId=Runtime.Class({
   get_Id:function()
   {
    return this.$0;
   }
  },null,ElmId);
- CubId=CalculationModel$1.CubId=Runtime.Class({
+ CubId=CalculationModel.CubId=Runtime.Class({
   get_Id:function()
   {
    return this.$0;
   }
  },null,CubId);
- DimId=CalculationModel$1.DimId=Runtime.Class({
+ DimId=CalculationModel.DimId=Runtime.Class({
   get_Id:function()
   {
    return this.$0;
   }
  },null,DimId);
- CalId=CalculationModel$1.CalId=Runtime.Class({
+ CalId=CalculationModel.CalId=Runtime.Class({
   get_Id:function()
   {
    return this.$0;
   }
  },null,CalId);
- TotId=CalculationModel$1.TotId=Runtime.Class({
+ TotId=CalculationModel.TotId=Runtime.Class({
   get_Id:function()
   {
    return this.$0;
   }
  },null,TotId);
- ForId=CalculationModel$1.ForId=Runtime.Class({
+ ForId=CalculationModel.ForId=Runtime.Class({
   get_Id:function()
   {
    return this.$0;
   }
  },null,ForId);
- RulId=CalculationModel$1.RulId=Runtime.Class({
+ RulId=CalculationModel.RulId=Runtime.Class({
   get_Id:function()
   {
    return this.$0;
@@ -4689,7 +6657,7 @@
  {
   return{
    $:2,
-   $0:CalculationModel$1.calcSlice(a)
+   $0:CalculationModel.calcSlice(a)
   };
  };
  HelperTypeN.op_AmpPercentGreater$2=function(_arg4,a)
@@ -4731,7 +6699,7 @@
  {
   return{
    $:2,
-   $0:CalculationModel$1.calcSlice(a)
+   $0:CalculationModel.calcSlice(a)
   };
  };
  HelperTypeT.op_AmpAmpGreater$2=function(_arg3,a)
@@ -4933,7 +6901,7 @@
  {
   var i;
   i=CubeModule.slice(cub);
-  return Slice.New(CalculationModel$1.Map_adds(List.map(function(e)
+  return Slice.New(CalculationModel.Map_adds(List.map(function(e)
   {
    return[ElmReferenceModule.dimId(e),e];
   },es),CubeModule.slice(cub).sliDims),i.calculation,i.cube);
@@ -5001,7 +6969,7 @@
  };
  CalculationModule.cubeR=function(c)
  {
-  return(CalculationModel$1.ofOptF(function()
+  return(CalculationModel.ofOptF(function()
   {
    return(function($1)
    {
@@ -5026,7 +6994,7 @@
  {
   var i;
   i=CalculationModule.slice(calc);
-  return Slice.New(CalculationModel$1.Map_adds(List.map(function(e)
+  return Slice.New(CalculationModel.Map_adds(List.map(function(e)
   {
    return[ElmReferenceModule.dimId(e),e];
   },es),CalculationModule.slice(calc).sliDims),i.calculation,i.cube);
@@ -5070,7 +7038,7 @@
  };
  CalculationModule.slice=function(calc)
  {
-  return CalculationModel$1.calcSlice(calc);
+  return CalculationModel.calcSlice(calc);
  };
  TotalModule.New=function()
  {
@@ -5484,7 +7452,7 @@
    $0:Guid.NewGuid()
   }),"",AttType.AtString,1);
  };
- CalculationModel$1.ofOptS=function(s)
+ CalculationModel.ofOptS=function(s)
  {
   function f()
   {
@@ -5498,7 +7466,7 @@
    return Result.ofOption(f,v);
   };
  };
- CalculationModel$1.ofOptF=function(f)
+ CalculationModel.ofOptF=function(f)
  {
   function f$1()
   {
@@ -5512,31 +7480,21 @@
    return Result.ofOption(f$1,v);
   };
  };
- CalculationModel$1.calcSlice=function(calc)
+ CalculationModel.calcSlice=function(calc)
  {
   return Slice.New(new FSharpMap.New([]),{
    $:1,
    $0:calc.calId
   },null);
  };
- CalculationModel$1.Map_adds=function(kvs,map)
+ CalculationModel.Map_adds=function(kvs,map)
  {
   return new FSharpMap.New(Seq$1.append(Map.ToSeq(map),kvs));
  };
- CalculationModel$1.Xmodel=function()
+ CalculationModel.Xmodel=function()
  {
   SC$1.$cctor();
   return SC$1.Xmodel;
- };
- Templating.TemplatesFileName=function()
- {
-  SC$1.$cctor();
-  return SC$1.TemplatesFileName;
- };
- Templating.rootdir=function()
- {
-  SC$1.$cctor();
-  return SC$1.rootdir;
  };
  Weight.Subtract={
   $:2
@@ -5557,20 +7515,19 @@
    weight:weight
   };
  };
- TreeCollection.New=function(getParentO,getNode,getPath,setChildren)
+ TreeCollection.New=function(getParentO,getPath,setChildren)
  {
   return{
    getParentO:getParentO,
-   getNode:getNode,
    getPath:getPath,
    setChildren:setChildren
   };
  };
- Tree.setChildrenEf=function(nid,ch)
+ Tree.setChildrenEf=function(node,ch)
  {
   return Operators$2.op_BarGreaterGreater(Reader.ask(),function(treeC)
   {
-   return(treeC.setChildren(ch))(nid);
+   return(treeC.setChildren(node))(ch);
   });
  };
  Tree.getPathEf=function(nid)
@@ -5578,13 +7535,6 @@
   return Operators$2.op_BarGreaterGreater(Reader.ask(),function(treeC)
   {
    return treeC.getPath(nid);
-  });
- };
- Tree.getNodeEf=function(nid)
- {
-  return Operators$2.op_BarGreaterGreater(Reader.ask(),function(treeC)
-  {
-   return treeC.getNode(nid);
   });
  };
  Tree.getParentOEf=function(nid)
@@ -5643,12 +7593,12 @@
  {
   return Operators$2.op_BarGreaterGreater(TreeEff.tryFind(function(x)
   {
-   return p(TreeNode$1.fromNode(x));
+   return p(TreeNode$1.ofNode(x));
   },Seq$1.map(TreeNode$1.treenode,nodes)),function(o)
   {
    return o==null?null:{
     $:1,
-    $0:TreeNode$1.fromNode(o.$0)
+    $0:TreeNode$1.ofNode(o.$0)
    };
   });
  };
@@ -5726,8 +7676,11 @@
  {
   return Operators$2.op_BarGreaterGreater(TreeEff.removeNodes(function(x)
   {
-   return p(TreeNode$1.fromNode(x));
-  },Seq$1.map(TreeNode$1.treenode,nodes)),TreeNode$1.fromSeqNode);
+   return p(TreeNode$1.ofNode(x));
+  },Seq$1.map(TreeNode$1.treenode,nodes)),function(s)
+  {
+   return Seq$1.map(TreeNode$1.ofNode,s);
+  });
  };
  TreeNode$1.newNodeTot=function(tid)
  {
@@ -5749,10 +7702,6 @@
    $:0,
    $0:Guid.NewGuid()
   },true,ch,[],Weight.Add);
- };
- TreeNode$1.fromSeqNode=function(ns)
- {
-  return Seq$1.map(TreeNode$1.fromNode,ns);
  };
  TreeNode$1.treenode=function(node)
  {
@@ -5783,12 +7732,12 @@
      $0:TreeNode$1.treenode(o.$0)
     };
    });
-  },function()
+  },function(ch)
   {
-   return Operators$2.rtn(TreeNode$1.treenode(node));
+   return Operators$2.op_BarGreaterGreater(Tree.setChildrenEf(node,Seq$1.map(TreeNode$1.ofNode,ch)),TreeNode$1.treenode);
   });
  };
- TreeNode$1.fromNode=function(n)
+ TreeNode$1.ofNode=function(n)
  {
   return n.getData();
  };
@@ -5912,7 +7861,7 @@
    var $1,a$1,t;
    return(a$1=LibraryJS.REGEX$2(rex,"",v),a$1!=null&&a$1.$==1&&((t=a$1.$0,!Unchecked.Equals(t,null)&&t.length===7)&&($1=[Arrays.get(a$1.$0,3),Arrays.get(a$1.$0,2),Arrays.get(a$1.$0,6),Arrays.get(a$1.$0,5),Arrays.get(a$1.$0,4),Arrays.get(a$1.$0,1)],true)))?{
     $:1,
-    $0:[$1[5],Operators$4.toInt(Global.Number($1[1])),Operators$4.toInt(Global.Number($1[0])),Operators$4.toInt(Global.Number($1[4])),Operators$4.toInt(Global.Number($1[3])),$1[2]]
+    $0:[$1[5],Operators$5.toInt(Global.Number($1[1])),Operators$5.toInt(Global.Number($1[0])),Operators$5.toInt(Global.Number($1[4])),Operators$5.toInt(Global.Number($1[3])),$1[2]]
    }:null;
   },(a=LibraryJS.REGEX$2(rex,"g",msgs),a!=null&&a.$==1?a.$0:[])));
  };
@@ -6085,6 +8034,722 @@
   SC$1.$cctor();
   return SC$1.model;
  };
+ LocationDet.InFsCode={
+  $:5
+ };
+ LocationDet.InGlobalDefs={
+  $:2
+ };
+ MsgLocation.New=function(lines,indent,location)
+ {
+  return{
+   lines:lines,
+   indent:indent,
+   location:location
+  };
+ };
+ FSCode.fsCodeVO=function()
+ {
+  SC$1.$cctor();
+  return SC$1.fsCodeVO;
+ };
+ FSCode.fsCode=function()
+ {
+  var prefaceV,b,newDimsV,newMDimsV,newCubesV,newCalcsV,newFormsV,globalDefV,newMDimsSV,newCubesSV,newFormsSV,newDimsSV,newCalcsSV;
+  prefaceV=(b=View$1.get_Do(),View$1.Bind(function(a)
+  {
+   return View$1.Bind(function(a$1)
+   {
+    return View$1.Const(FSCode.txtLocn(LocationDet.InFsCode,FSCode.preface(a.major,a$1)));
+   },Global$1.model().server.get_View());
+  },Global$1.model().version.get_View()));
+  newDimsV=FSCode.mapSeqCached(DimensionModule.sort,FSCode.newDimS,Global$1.model().dimensions);
+  newMDimsV=FSCode.mapSeqCached(Global.id,FSCode.newMeasureDimS,Global$1.model().cubes);
+  newCubesV=FSCode.mapSeqCached(Global.id,FSCode.newCubeS,Global$1.model().cubes);
+  newCalcsV=FSCode.mapSeqCachedW(Global.id,FSCode.newCalcSW,Global$1.model().calculations);
+  newFormsV=FSCode.mapSeqCached(Global.id,FSCode.getForms,Global$1.model().calculations);
+  globalDefV=View$1.Map(function($1)
+  {
+   return FSCode.txtLocn(LocationDet.InGlobalDefs,String.indent$1(4,$1));
+  },Global$1.model().globalDefs.get_View());
+  newMDimsSV=View$1.Map(function($1)
+  {
+   return FSCode.txtLocn(LocationDet.InFsCode,$1);
+  },newMDimsV);
+  newCubesSV=View$1.Map(function($1)
+  {
+   return FSCode.txtLocn(LocationDet.InFsCode,$1);
+  },newCubesV);
+  newFormsSV=View$1.Map(function($1)
+  {
+   return FSCode.groupLocns(Seq$1.collect(Global.id,$1));
+  },newFormsV);
+  newDimsSV=View$1.Map(FSCode.groupLoc1s,newDimsV);
+  newCalcsSV=View$1.Map(FSCode.groupLoc1s,newCalcsV);
+  return View$1.Map(FSCode.collectCode,View$1.Sequence(List.ofArray([prefaceV,newDimsSV,newMDimsSV,View$1.Const(FSCode.txtLoc1(LocationDet.InFsCode,"    addDims()")),newCubesSV,View$1.Const(FSCode.txtLoc1(LocationDet.InFsCode,"    addCubes()")),newCalcsSV,View$1.Const(FSCode.txtLoc1(LocationDet.InFsCode,"    addCalcs()")),globalDefV,newFormsSV,View$1.Const(FSCode.txtLoc1(LocationDet.InFsCode,"    addFrms()"))])));
+ };
+ FSCode.collectCode=function(v)
+ {
+  var t;
+  function f(t$1)
+  {
+   return t$1[0];
+  }
+  function g(y)
+  {
+   return""!==y;
+  }
+  t=Arrays.unzip(Arrays.ofSeq(Seq$1.filter(function(x)
+  {
+   return g(f(x));
+  },v)));
+  return[Strings.concat("\n",t[0]),Arrays.collect(Global.id,t[1])];
+ };
+ FSCode.groupLocns=function(fs)
+ {
+  function m(t,lc)
+  {
+   return FSCode.loc(lc,Seq$1.length(Strings.SplitChars(t,["\n"],0)));
+  }
+  return[Strings.concat("\n",Seq$1.map(function(t)
+  {
+   return t[0];
+  },fs)),Arrays.ofSeq(Seq$1.map(function($1)
+  {
+   return m($1[0],$1[1]);
+  },fs))];
+ };
+ FSCode.groupLoc1s=function(cs)
+ {
+  function m(a,lc)
+  {
+   return FSCode.loc(lc,1);
+  }
+  return[Strings.concat("\n",Seq$1.map(function(t)
+  {
+   return t[0];
+  },cs)),Arrays.ofSeq(Seq$1.map(function($1)
+  {
+   return m($1[0],$1[1]);
+  },cs))];
+ };
+ FSCode.txtLoc1=function(lc,txt)
+ {
+  return FSCode.txtLocn(lc,List.ofArray([txt]));
+ };
+ FSCode.txtLocn=function(lc,txts)
+ {
+  return[Strings.concat("\n",txts),[FSCode.loc(lc,Seq$1.length(txts))]];
+ };
+ FSCode.loc=function(lc,nl)
+ {
+  return MsgLocation.New(nl,4,lc);
+ };
+ FSCode.bindSeqCached=function(map,f,model)
+ {
+  function a(o)
+  {
+   return o==null?null:f(o.$0);
+  }
+  return FSCode.viewSeqChoose(FSCode.mapSeqCached0(map,function(a$1)
+  {
+   return View$1.Map(a,a$1);
+  },model));
+ };
+ FSCode.mapSeqCachedW=function(map,f,model)
+ {
+  function a(a$1)
+  {
+   return FSCode.optviewMerge(f,a$1);
+  }
+  return FSCode.viewSeqChoose(FSCode.mapSeqCached0(map,function(a$1)
+  {
+   return View$1.Bind(a,a$1);
+  },model));
+ };
+ FSCode.mapSeqCached=function(map,f,model)
+ {
+  function a(o)
+  {
+   return o==null?null:{
+    $:1,
+    $0:f(o.$0)
+   };
+  }
+  return FSCode.viewSeqChoose(FSCode.mapSeqCached0(map,function(a$1)
+  {
+   return View$1.Map(a,a$1);
+  },model));
+ };
+ FSCode.viewSeqChoose=function(v)
+ {
+  return View$1.Map(function(s)
+  {
+   return Seq$1.choose(Global.id,s);
+  },View$1.Join(View$1.Map(View$1.Sequence,v)));
+ };
+ FSCode.optviewMerge=function(f,a)
+ {
+  return a!=null&&a.$==1?View$1.Map(function(a$1)
+  {
+   return{
+    $:1,
+    $0:a$1
+   };
+  },f(a.$0)):View$1.Const(null);
+ };
+ FSCode.mapSeqCached0=function(map,f,lmodel)
+ {
+  var f$1,f$2;
+  function g(a)
+  {
+   return lmodel.TryFindByKeyAsView(a);
+  }
+  return View$1.MapSeqCachedBy(lmodel.key,(f$1=(f$2=lmodel.key,function(x)
+  {
+   return g(f$2(x));
+  }),function(x)
+  {
+   return f(f$1(x));
+  }),View$1.Map(map,lmodel.v));
+ };
+ FSCode.fsCodeForCalc=function(c)
+ {
+  var fsForms,fsCalc,o,o$1,x;
+  fsForms=Strings.concat("\n",Seq$1.map(function(t)
+  {
+   return t[0];
+  },FSCode.getForms(c)));
+  fsCalc=(o=(o$1=View$1.TryGet(FSCode.newCalcSW(c)),o$1==null?null:{
+   $:1,
+   $0:o$1.$0[0]
+  }),o==null?"View.TryGet failed for some reason":o.$0);
+  return(x=(function($1)
+  {
+   return function($2)
+   {
+    return $1("\r\n                        module Formula =\r\n                            open FSSGlobal.CalculationModel\r\n                            open CalculationModel\r\n                            open CalculationSyntax\r\n                            open InitModel\r\n                            open System \r\n                            open Definition"+Global.String($2)+"\n");
+   };
+  }(Global.id))(Global$1.model().version.Get().major),(String.unindentStr$1())(x))+fsCalc+"\n    addCalcs()\n"+fsForms+"\n    addFrms() "+"\n    ";
+ };
+ FSCode.preface=function(majorVersion,server)
+ {
+  var x;
+  return String.unindent$1((x=(((Runtime.Curried3(function($1,$2,$3)
+  {
+   return $1("\r\n                #nowarn \"86\"\r\n                #r @\"..\\CalculationModelDll\\CalculationModelDll.dll\"\r\n                module Definition"+Global.String($2)+" =\r\n                    open FSSGlobal.CalculationModel\r\n                    open CalculationModel\r\n                    open CalculationSyntax\r\n                    open InitModel\r\n                    open System\r\n                    \r\n                    let NoCubeYet = newCube (CubId <| Guid.NewGuid()) \"NOCUBEYET\" CtCalc [] None\r\n                    \r\n                    {\r\n                        modId           = ModId <| System.Guid.NewGuid()\r\n                        server          = @"+Utils.prettyPrint($3)+"\r\n                        actualElem      = \"Actual\"\r\n                        modCubes        = [| |]\r\n                        modDims         = [| |]\r\n                        modCalculations = [| |]\r\n                    } |> setInitModel\r\n                        ");
+  }))(Global.id))(majorVersion))(server),(FSCode.trace())(x)));
+ };
+ FSCode.getForms=function(c)
+ {
+  return Arrays.ofSeq(Seq$1.map(function(t)
+  {
+   return FSCode.newFormS(t[0],t[1]);
+  },Seq$1.map(function(f)
+  {
+   return[c,f];
+  },Seq$1.sortBy(function(f)
+  {
+   return f.forOrder;
+  },c.calFormulas))));
+ };
+ FSCode.newFormS=function(c,f)
+ {
+  var txt,x;
+  txt=FSCode.prepareFormula(f.forText);
+  return[(x=Strings.concat("\n",List.ofSeq(Seq$1.delay(function()
+  {
+   return Seq$1.append(txt,Seq$1.delay(function()
+   {
+    return[(((((((Runtime.Curried(function($1,$2,$3,$4,$5,$6,$7)
+    {
+     return $1("    |> newForm (ForId (Guid.Parse "+Utils.prettyPrint($2)+")) "+Utils.toSafe($3)+" "+Utils.toSafe($4)+" "+Utils.toSafe($5)+" "+Utils.prettyPrint($6)+" "+Utils.prettyPrint($7)+" ");
+    },7))(Global.id))(f.forId.get_Id()))(FSCode.fixName(c.calName)))((function($1)
+    {
+     return function($2)
+     {
+      return $1(RuleEditor_GeneratedPrintf.p$4($2));
+     };
+    }(Global.id))(f.forType)))(FSCode.getDest(f)))(f.forOrder))(Library["String.Left$1"](FSCode.fixText(txt),495))];
+   }));
+  }))),(FSCode.trace())(x)),{
+   $:3,
+   $0:f.forId
+  }];
+ };
+ FSCode.fixText=function(txt)
+ {
+  return Strings.concat(" ",Seq$1.map(function(s)
+  {
+   return Strings.Replace(Strings.Replace(s,"\\","\\\\"),"\"","\\\"");
+  },Seq$1.map(String.trim$1,txt)));
+ };
+ FSCode.prepareFormula=function(f)
+ {
+  return Seq$1.map(function(y)
+  {
+   return"    "+y;
+  },String.unindent$1(Strings.Replace(Strings.Replace(Strings.Replace(f,"@=","&="),"@<","&<"),"@>","&>")));
+ };
+ FSCode.getDest=function(f)
+ {
+  var x;
+  x=Strings.concat(" ; ",Seq$1.choose(function(d)
+  {
+   var o;
+   o=FSCode.getDimO(d.K);
+   return o==null?null:{
+    $:1,
+    $0:(((Runtime.Curried3(function($1,$2,$3)
+    {
+     return $1(Utils.toSafe($2)+".["+Utils.prettyPrint($3)+"]");
+    }))(Global.id))(o.$0.dimName))(d.V)
+   };
+  },f.forDestDecl));
+  return(function($1)
+  {
+   return function($2)
+   {
+    return $1("[ "+Utils.toSafe($2)+" ]");
+   };
+  }(Global.id))(x);
+ };
+ FSCode.newCalcSW=function(c)
+ {
+  return View$1.Map(function($1)
+  {
+   var x;
+   return[(x=((((((((Runtime.Curried(function($2,$3,$4,$5,$6,$7,$8,$9)
+   {
+    return $2("    let "+Utils.toSafe($3)+" = newCalc (CalId (Guid.Parse "+Utils.prettyPrint($4)+")) "+Utils.toSafe($5)+" "+Utils.prettyPrint($6)+" "+Utils.prettyPrint($7)+" "+Utils.prettyPrint($8)+" "+Utils.toSafe($9));
+   },8))(Global.id))(FSCode.fixName(c.calName)))(c.calId.get_Id()))(c.isInput?"Input":"Calc"))(c.calName))(c.calOrder))(c.isText))($1),(FSCode.trace())(x)),{
+    $:1,
+    $0:c.calId
+   }];
+  },FSCode.getCalcCubeNameW(c.calDims));
+ };
+ FSCode.getCalcCubeNameW=function(cdims)
+ {
+  var v,x,f,f$1,g,prior;
+  function m(c)
+  {
+   return FSCode.fixName(c.cubName);
+  }
+  function g$1(o)
+  {
+   return o==null?"NoCubeYet":o.$0;
+  }
+  v=(x=Global$1.model().cubes.TryFindAsView(function(cub)
+  {
+   return Unchecked.Equals(new FSharpSet.New(cub.cubDims),cdims);
+  }),View$1.Map((f=(f$1=function(o)
+  {
+   return o==null?null:{
+    $:1,
+    $0:m(o.$0)
+   };
+  },function(x$1)
+  {
+   return g$1(f$1(x$1));
+  }),(g=FSCode.trace(),function(x$1)
+  {
+   return g(f(x$1));
+  })),x));
+  prior=[Var$2.Create$1(null)];
+  View$1.Sink(function(v$1)
+  {
+   if(!Unchecked.Equals(prior[0].Get(),v$1))
+    prior[0].Set(v$1);
+  },v);
+  return prior[0].get_View();
+ };
+ FSCode.newCubeS=function(c)
+ {
+  var x;
+  x=((((((Runtime.Curried(function($1,$2,$3,$4,$5,$6)
+  {
+   return $1("    let "+Utils.toSafe($2)+" = newCube (CubId (Guid.Parse "+Utils.prettyPrint($3)+")) "+Utils.prettyPrint($4)+" CtCalc [ "+Utils.toSafe($5)+" ] (Some "+Utils.toSafe($6)+")");
+  },6))(Global.id))(FSCode.fixName(c.cubName)))(c.cubId.get_Id()))(c.cubName))(FSCode.getCubeDims(c)))(FSCode.fixName(FSCode.cubeMeasureName(c)));
+  return(FSCode.trace())(x);
+ };
+ FSCode.getCubeDims=function(c)
+ {
+  var o;
+  return Strings.concat(" ; ",Seq$1.append(Seq$1.map(function(d)
+  {
+   return d.dimName;
+  },Seq$1.choose((o=Global$1.model().dimensions,function(a)
+  {
+   return o.TryFindByKey(a);
+  }),c.cubDims)),List.ofArray([FSCode.dimMeasureName(c.cubName)])));
+ };
+ FSCode.getMeasureDims=function()
+ {
+  return Seq$1.map(FSCode.newMeasureDimS,Global$1.model().cubes["var"].Get());
+ };
+ FSCode.newMeasureDimS=function(cube)
+ {
+  var x,c;
+  x=(c=FSCode.cubeMeasureName(cube),((((((Runtime.Curried(function($1,$2,$3,$4,$5,$6)
+  {
+   return $1("    let "+Utils.toSafe($2)+" = newDim (DimId (Guid.Parse "+Utils.prettyPrint($3)+")) "+Utils.prettyPrint($4)+" "+RuleEditor_GeneratedPrintf.p$5($5)+" "+Utils.prettyPrint($6));
+  },6))(Global.id))(FSCode.fixName(c)))(cube.cubId.get_Id()))(c))(DimType.DtCalc))(""));
+  return(FSCode.trace())(x);
+ };
+ FSCode.cubeMeasureName=function(cube)
+ {
+  return FSCode.dimMeasureName(cube.cubName);
+ };
+ FSCode.dimMeasureName=function(cubeName)
+ {
+  return Global$1.model().measurePrefix.Get()+cubeName.substring(1);
+ };
+ FSCode.newDimS=function(d)
+ {
+  var x;
+  return[(x=((((((Runtime.Curried(function($1,$2,$3,$4,$5,$6)
+  {
+   return $1("    let "+Utils.toSafe($2)+" = newDim (DimId (Guid.Parse "+Utils.prettyPrint($3)+")) "+Utils.prettyPrint($4)+" "+RuleEditor_GeneratedPrintf.p$5($5)+" "+Utils.prettyPrint($6));
+  },6))(Global.id))(FSCode.fixName(d.dimName)))(d.dimId.get_Id()))(d.dimName))(d.dimType))(d.dimExclude?"":d.dimPrefix),(FSCode.trace())(x)),{
+   $:0,
+   $0:d.dimId
+  }];
+ };
+ FSCode.fixName=function(c)
+ {
+  return Strings.Replace(Strings.Replace(Strings.Trim(c)," ","_"),"-","_");
+ };
+ FSCode.getFormO=function(fid)
+ {
+  return Seq$1.tryPick(function(c)
+  {
+   return Seq$1.tryPick(function(f)
+   {
+    return Unchecked.Equals(f.forId,fid)?{
+     $:1,
+     $0:[c,f]
+    }:null;
+   },c.calFormulas);
+  },Global$1.model().calculations["var"].Get());
+ };
+ FSCode.getCalcO=function(cid)
+ {
+  return Global$1.model().calculations.TryFindByKey(cid);
+ };
+ FSCode.getDimO=function(did)
+ {
+  return Global$1.model().dimensions.TryFindByKey(did);
+ };
+ FSCode.trace=function()
+ {
+  SC$1.$cctor();
+  return SC$1.trace;
+ };
+ ParseFS.filterFormula=function(msgs,fidO)
+ {
+  var a;
+  function m(fl,fc,tl,tc,msg)
+  {
+   return MarkerData.New(fc-1,tc-1,fl-1,tl-1,8,msg);
+  }
+  return Arrays.map(function($1)
+  {
+   return m($1[0],$1[1],$1[2],$1[3],$1[4]);
+  },Arrays.choose(function(v)
+  {
+   var $1,a$1,t,guid;
+   return(a$1=LibraryJS.REGEX$2(ParseFS.rexFormula(),"",v),a$1!=null&&a$1.$==1&&((t=a$1.$0,!Unchecked.Equals(t,null)&&t.length===7)&&(Arrays.get(a$1.$0,3),Arrays.get(a$1.$0,4),Arrays.get(a$1.$0,5),(guid=Arrays.get(a$1.$0,6),(Arrays.get(a$1.$0,1),Arrays.get(a$1.$0,2),Unchecked.Equals(fidO,{
+    $:1,
+    $0:new ForId({
+     $:0,
+     $0:guid
+    })
+   })))&&($1=[Arrays.get(a$1.$0,2),Arrays.get(a$1.$0,1),Arrays.get(a$1.$0,6),Arrays.get(a$1.$0,5),Arrays.get(a$1.$0,4),Arrays.get(a$1.$0,3)],true))))?{
+    $:1,
+    $0:[Operators$5.toInt(Global.Number($1[1])),Operators$5.toInt(Global.Number($1[0])),Operators$5.toInt(Global.Number($1[5])),Operators$5.toInt(Global.Number($1[4])),$1[3]]
+   }:null;
+  },(a=LibraryJS.REGEX$2(ParseFS.rexFormula(),"g",msgs),a!=null&&a.$==1?a.$0:[])));
+ };
+ ParseFS.rexFormula=function()
+ {
+  SC$1.$cctor();
+  return SC$1.rexFormula;
+ };
+ ParseFS.getHints=function(lc,showHints,txt,line,col)
+ {
+  var b;
+  function g(v)
+  {
+   Library.print$1(v);
+  }
+  AsyncResult.iterA(function(x)
+  {
+   return g(ResultMessage.summarized(x));
+  },Global.ignore,(b=Monads.asyncResult(),b.Run(b.Delay(function()
+  {
+   var $1;
+   return($1=FSCode.fsCodeVO(),$1!=null&&$1.$==1)?Extensions["AsyncResultBuilder.Bind"](b,View$1.GetAsync(FSCode.fsCodeVO().$0),function(a)
+   {
+    var m,loc,word;
+    function p(a$1,l)
+    {
+     return Unchecked.Equals(l.location,lc);
+    }
+    m=Seq$1.tryFind(function($2)
+    {
+     return p($2[0],$2[1]);
+    },(Seq$1.mapFold(function(from,l)
+    {
+     return[[from,l],from+l.lines];
+    },0,a[1]))[0]);
+    return m!=null&&m.$==1?(loc=m.$0[1],(word=REGEX.getStartWord$1(txt,col),(((((Runtime.Curried(function($2,$3,$4,$5)
+    {
+     return $2("getHints '"+Utils.toSafe($3)+"' <= "+Global.String($4)+" :"+Utils.toSafe($5)+" => ");
+    },4))(function(s)
+    {
+     console.log(s);
+    }))(word))(col))(txt),b.Bind$1(Calls.completion(Strings.replicate(loc.indent," ")+txt,true,ParseFS.parseFile(),line+1+m.$0[0],col+1+loc.indent,""),function(a$1)
+    {
+     showHints(Arrays.map(function(cr)
+     {
+      return[cr.ReplacementText,(((Runtime.Curried3(function($2,$3,$4)
+      {
+       return $2(Strings.PadRight(Utils.toSafe($3),40)+" "+Strings.PadLeft(Utils.toSafe($4),20));
+      }))(Global.id))(cr.Name))(ParseFS.getSymbolType(cr.GlyphChar)),cr.Glyph];
+     },a$1[0]),[line,col-word.length],[line,col]);
+     return b.Zero();
+    })))):b.Zero();
+   }):b.Zero();
+  }))));
+ };
+ ParseFS.getSymbolType=function(chr)
+ {
+  return chr==="C"?"class":chr==="Cn"?"Constant":chr==="D"?"delegate":chr==="E"?"enum":chr==="P"?"property":chr==="e"?"event":chr==="X"?"exception":chr==="F"?"field":chr==="I"?"interface":chr==="M"?"function":chr==="N"?"module":chr==="S"?"struct":chr==="T"?"type":chr==="V"?"Variable":chr;
+ };
+ ParseFS.showToolTips=function(lc,txt,line,col)
+ {
+  var b;
+  function g(v)
+  {
+   Library.print$1(v);
+  }
+  AsyncResult.iterA(function(x)
+  {
+   return g(ResultMessage.summarized(x));
+  },Global.ignore,(b=Monads.asyncResult(),b.Run(b.Delay(function()
+  {
+   var $1;
+   return($1=FSCode.fsCodeVO(),$1!=null&&$1.$==1)?Extensions["AsyncResultBuilder.Bind"](b,View$1.GetAsync(FSCode.fsCodeVO().$0),function(a)
+   {
+    var locs,m,loc,from,sub,add0,lf,lt,cf,ct;
+    function p(a$1,l)
+    {
+     return Unchecked.Equals(l.location,lc);
+    }
+    locs=a[1];
+    m=Seq$1.tryFind(function($2)
+    {
+     return p($2[0],$2[1]);
+    },(Seq$1.mapFold(function(from$1,l)
+    {
+     return[[from$1,l],from$1+l.lines];
+    },0,locs))[0]);
+    return m!=null&&m.$==1?(loc=m.$0[1],(from=m.$0[0],(sub=Strings.length(REGEX.getStartWord$1(txt,col)),(add0=Strings.length(REGEX.getEndWord$1(txt,col)),(lf=line+1+from,(lt=line+1+from,(cf=col-sub+1+loc.indent,(ct=col+(sub===0&&add0===0?2:add0)+1+loc.indent,b.Bind$1(Calls.toolTip(ParseFS.parseFile(),lf,cf,""),function(a$1)
+    {
+     var msg;
+     msg=ParseFS.adaptMessage(locs,lf,cf,lt,ct,Strings.concat("\n",Seq$1.collect(function(t)
+     {
+      return List.ofArray([t.Signature,t.Comment]);
+     },Seq$1.collect(Global.id,a$1[0]))));
+     return!(Global$1.model().parserMsgs.Get().indexOf(msg)!=-1)?(Global$1.appendParser(msg),b.Zero()):b.Zero();
+    }))))))))):b.Zero();
+   }):b.Zero();
+  }))));
+ };
+ ParseFS.jumpToRef=function(e)
+ {
+  var v;
+  v=e.Target.value;
+  ParseFS.jumpToLine(Slice$1.string(v,{
+   $:1,
+   $0:Slice$1.string(v,{
+    $:1,
+    $0:0
+   },{
+    $:1,
+    $0:e.Target.selectionStart
+   }).lastIndexOf("\n")+1
+  },null));
+ };
+ ParseFS.jumpToLine=function(line)
+ {
+  var a,x,a$1,$1,v,x$1,$2,v$1,x$2,$3,v$2,x$3,v$3,x$4;
+  function f(v$4)
+  {
+   return!v$4;
+  }
+  function g(v$4)
+  {
+   return!v$4;
+  }
+  a=LibraryJS.REGEX$2((x=Strings.concat("|",List.ofArray([ParseFS.rexGlobal(),ParseFS.rexTotId(),ParseFS.rexCalcId(),ParseFS.rexFormId(),ParseFS.rexDimId()])),(function($4)
+  {
+   return function($5)
+   {
+    return $4("(?:"+Utils.toSafe($5)+")");
+   };
+  }(Global.id))(x)),"",line);
+  a!=null&&a.$==1?(a$1=Arrays.filter(function(x$5)
+  {
+   return g(f(x$5));
+  },Arrays.skip(1,a.$0)),!Unchecked.Equals(a$1,null)&&a$1.length===2&&(v=Arrays.get(a$1,0),(Arrays.get(a$1,1),v===ParseFS.sForId()))?(Arrays.get(a$1,0),x$1={
+   $:11,
+   $0:new ForId({
+    $:0,
+    $0:Arrays.get(a$1,1)
+   })
+  },(Global$1.processor())(x$1)):!Unchecked.Equals(a$1,null)&&a$1.length===2&&(v$1=Arrays.get(a$1,0),(Arrays.get(a$1,1),v$1===ParseFS.sCalId()))?(Arrays.get(a$1,0),x$2={
+   $:8,
+   $0:new CalId({
+    $:0,
+    $0:Arrays.get(a$1,1)
+   })
+  },(Global$1.processor())(x$2)):!Unchecked.Equals(a$1,null)&&a$1.length===2&&(v$2=Arrays.get(a$1,0),(Arrays.get(a$1,1),v$2===ParseFS.sTotId()))?(Arrays.get(a$1,0),x$3={
+   $:1,
+   $0:new TotId({
+    $:0,
+    $0:Arrays.get(a$1,1)
+   })
+  },(Global$1.processor())(x$3)):!Unchecked.Equals(a$1,null)&&a$1.length===2?(v$3=Arrays.get(a$1,0),(Arrays.get(a$1,1),v$3===ParseFS.sDimId()))?(Arrays.get(a$1,0),x$4={
+   $:19,
+   $0:new DimId({
+    $:0,
+    $0:Arrays.get(a$1,1)
+   })
+  },(Global$1.processor())(x$4)):void 0:void 0):void 0;
+ };
+ ParseFS.rexDimId=function()
+ {
+  SC$1.$cctor();
+  return SC$1.rexDimId;
+ };
+ ParseFS.rexFormId=function()
+ {
+  SC$1.$cctor();
+  return SC$1.rexFormId;
+ };
+ ParseFS.rexCalcId=function()
+ {
+  SC$1.$cctor();
+  return SC$1.rexCalcId;
+ };
+ ParseFS.rexTotId=function()
+ {
+  SC$1.$cctor();
+  return SC$1.rexTotId;
+ };
+ ParseFS.rexGlobal=function()
+ {
+  SC$1.$cctor();
+  return SC$1.rexGlobal;
+ };
+ ParseFS.sDimId=function()
+ {
+  SC$1.$cctor();
+  return SC$1.sDimId;
+ };
+ ParseFS.sTotId=function()
+ {
+  SC$1.$cctor();
+  return SC$1.sTotId;
+ };
+ ParseFS.sCalId=function()
+ {
+  SC$1.$cctor();
+  return SC$1.sCalId;
+ };
+ ParseFS.sForId=function()
+ {
+  SC$1.$cctor();
+  return SC$1.sForId;
+ };
+ ParseFS.adaptErrors=function(locs,errs)
+ {
+  return Seq$1.map(function(err)
+  {
+   return ParseFS.adaptMessage(locs,err.StartLine,err.StartColumn,err.EndLine,err.EndColumn,err.Message);
+  },errs.Errors);
+ };
+ ParseFS.parseFile=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseFile;
+ };
+ ParseFS.adaptMessages=function(locs,ms)
+ {
+  var rex,a;
+  rex=".*\\((\\d+),(\\d+)\\) - \\((\\d+),(\\d+)\\) ([^\"]*?)\"(?:\\n|$)";
+  return Arrays.map(function(a$1)
+  {
+   var $1,a$2,t;
+   return(a$2=LibraryJS.REGEX$2(rex,"",a$1),a$2!=null&&a$2.$==1&&((t=a$2.$0,!Unchecked.Equals(t,null)&&t.length===6)&&($1=[Arrays.get(a$2.$0,2),Arrays.get(a$2.$0,4),Arrays.get(a$2.$0,1),Arrays.get(a$2.$0,3),Arrays.get(a$2.$0,5)],true)))?ParseFS.adaptMessage(locs,Operators$5.toInt(Global.Number($1[2])),Operators$5.toInt(Global.Number($1[0])),Operators$5.toInt(Global.Number($1[3])),Operators$5.toInt(Global.Number($1[1])),$1[4]):a$1;
+  },(a=LibraryJS.REGEX$2(rex,"g",ms),a!=null&&a.$==1?a.$0:[ms]));
+ };
+ ParseFS.adaptMessage=function(locs,lf,cf,lt,ct,msg)
+ {
+  var o,o$1,$1,from,l,m,cid,o$2,fid,o$3,$2,c,fid$1,o$4,$3,c$1,did,o$5;
+  function p(from$1,l$1)
+  {
+   return lf-1>=from$1&&lf-1<from$1+l$1.lines;
+  }
+  o=(o$1=Seq$1.tryFind(function($4)
+  {
+   return p($4[0],$4[1]);
+  },(Seq$1.mapFold(function(from$1,l$1)
+  {
+   return[[from$1,l$1],from$1+l$1.lines];
+  },0,locs))[0]),o$1==null?null:($1=o$1.$0,(from=$1[0],(l=$1[1],(m=l.location,m.$==1?(cid=m.$0,(o$2=FSCode.getCalcO(cid),o$2==null?null:{
+   $:1,
+   $0:((((Runtime.Curried(function($4,$5,$6,$7)
+   {
+    return $4(Utils.toSafe($5)+": "+Utils.prettyPrint($6)+". "+RuleEditor_GeneratedPrintf.p$1($7));
+   },4))(Global.id))(o$2.$0.calName))(msg))(cid)
+  })):m.$==4?(fid=m.$0,(o$3=FSCode.getFormO(fid),o$3==null?null:{
+   $:1,
+   $0:($2=o$3.$0,(c=$2[0],($2[1],((((Runtime.Curried(function($4,$5,$6,$7)
+   {
+    return $4(Utils.toSafe($5)+": "+Utils.prettyPrint($6)+". "+RuleEditor_GeneratedPrintf.p($7));
+   },4))(Global.id))(c.calName))(msg))(fid))))
+  })):m.$==3?(fid$1=m.$0,(o$4=FSCode.getFormO(fid$1),o$4==null?null:{
+   $:1,
+   $0:($3=o$4.$0,(c$1=$3[0],($3[1],((((((((Runtime.Curried(function($4,$5,$6,$7,$8,$9,$10,$11)
+   {
+    return $4(Utils.toSafe($5)+": ("+Global.String($6)+","+Global.String($7)+") - ("+Global.String($8)+","+Global.String($9)+"): "+Utils.prettyPrint($10)+". "+RuleEditor_GeneratedPrintf.p($11));
+   },8))(Global.id))(c$1.calName))(lf-from))(cf-l.indent))(lt-from))(ct-l.indent))(msg))(fid$1))))
+  })):m.$==5?{
+   $:1,
+   $0:((((((Runtime.Curried(function($4,$5,$6,$7,$8,$9)
+   {
+    return $4("F# Code ("+Global.String($5)+","+Global.String($6)+") - ("+Global.String($7)+","+Global.String($8)+"): "+Utils.prettyPrint($9)+".");
+   },6))(Global.id))(lf))(cf))(lt))(ct))(msg)
+  }:m.$==2?{
+   $:1,
+   $0:((((((Runtime.Curried(function($4,$5,$6,$7,$8,$9)
+   {
+    return $4("Global  ("+Global.String($5)+","+Global.String($6)+") - ("+Global.String($7)+","+Global.String($8)+"): "+Utils.prettyPrint($9)+".");
+   },6))(Global.id))(lf-from))(cf-l.indent))(lt-from))(ct-l.indent))(msg)
+  }:(did=m.$0,(o$5=FSCode.getDimO(did),o$5==null?null:{
+   $:1,
+   $0:((((Runtime.Curried(function($4,$5,$6,$7)
+   {
+    return $4(Utils.toSafe($5)+": "+Utils.prettyPrint($6)+". "+RuleEditor_GeneratedPrintf.p$3($7));
+   },4))(Global.id))(o$5.$0.dimName))(msg))(did)
+  })))))));
+  return o==null?((((((Runtime.Curried(function($4,$5,$6,$7,$8,$9)
+  {
+   return $4(Global.String($5)+" "+Global.String($6)+" - "+Global.String($7)+" "+Global.String($8)+" "+Utils.toSafe($9));
+  },6))(Global.id))(lf))(cf))(lt))(ct))(msg):o.$0;
+ };
  Render.dtypes=function()
  {
   SC$1.$cctor();
@@ -6104,7 +8769,7 @@
    {
     return function($2)
     {
-     return $1(RuleEditor_GeneratedPrintf.p($2));
+     return $1(RuleEditor_GeneratedPrintf.p$4($2));
     };
    }(Global.id))(t),{
     $:1,
@@ -6211,46 +8876,72 @@
  };
  Render.getTreeEffReaderResource=function()
  {
-  return TreeCollection.New(function()
+  return TreeCollection.New(Render.getParentO,Render.getPath,function(n)
   {
-   return(function($1)
+   return function(c)
    {
-    return function($2)
-    {
-     return $1("Incomplete hole '"+Utils.toSafe($2)+"'");
-    };
-   }(Operators$4.FailWith))("Tree.getParentO ");
-  },function()
-  {
-   return(function($1)
-   {
-    return function($2)
-    {
-     return $1("Incomplete hole '"+Utils.toSafe($2)+"'");
-    };
-   }(Operators$4.FailWith))("Tree.getNode    ");
-  },function()
-  {
-   return(function($1)
-   {
-    return function($2)
-    {
-     return $1("Incomplete hole '"+Utils.toSafe($2)+"'");
-    };
-   }(Operators$4.FailWith))("Tree.getPath    ");
-  },function()
-  {
-   return function()
-   {
-    return(function($1)
-    {
-     return function($2)
-     {
-      return $1("Incomplete hole '"+Utils.toSafe($2)+"'");
-     };
-    }(Operators$4.FailWith))("Tree.setChildren");
+    return Render.setChildren(n,c);
    };
   });
+ };
+ Render.getPath=function(nid)
+ {
+  var m,node;
+  m=Render.getParentO(nid);
+  return m==null?List.T.Empty:(node=m.$0,new List.T({
+   $:1,
+   $0:node.nid,
+   $1:Render.getPath(node.nid)
+  }));
+ };
+ Render.getParentO=function(nid)
+ {
+  var res;
+  res=null;
+  return Render.parents().TryGetValue(nid,{
+   get:function()
+   {
+    return res;
+   },
+   set:function(v)
+   {
+    res=v;
+   }
+  })?{
+   $:1,
+   $0:res
+  }:null;
+ };
+ Render.setChildren=function(node,ch)
+ {
+  function toIdSet(ns)
+  {
+   return new FSharpSet.New(Seq$1.map(function(n)
+   {
+    return n.nid;
+   },ns));
+  }
+  function f(a)
+  {
+   return Render.parents().Remove(a);
+  }
+  function g(v)
+  {
+  }
+  Seq$1.iter(function(x)
+  {
+   return g(f(x));
+  },FSharpSet.op_Subtraction(toIdSet(node.children),toIdSet(ch)));
+  Seq$1.iter(function(chn)
+  {
+   Dict.add(chn.nid,node,Render.parents());
+  },ch);
+  return TreeNode.New(node.nid,node.expanded,node.element,Arrays.ofSeq(ch),node.weight);
+ };
+ Render.parents=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parents;
  };
  Render.zx=function()
  {
@@ -6328,7 +9019,7 @@
   SC$1.$cctor();
   SC$1.drag=$1;
  };
- TableDimensions.tableDimensions$2974$48=function(did)
+ TableDimensions.tableDimensions$4118$48=function(did)
  {
   return function()
   {
@@ -6338,7 +9029,7 @@
    });
   };
  };
- TableDimensions.tableDimensions$2973$48=function(did)
+ TableDimensions.tableDimensions$4117$48=function(did)
  {
   return function()
   {
@@ -6383,7 +9074,7 @@
    {
     return function($2)
     {
-     return $1(RuleEditor_GeneratedPrintf.p$1($2));
+     return $1(RuleEditor_GeneratedPrintf.p$5($2));
     };
    }(Global.id),function(x$1)
    {
@@ -6473,7 +9164,7 @@
   {
    function m(tn,l)
    {
-    return[tn.id(),TreeNode$1.fromNode(tn).element,l];
+    return[tn.id(),TreeNode$1.ofNode(tn).element,l];
    }
    return Seq$1.map(function($2)
    {
@@ -6485,14 +9176,14 @@
    $1:T
   })),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],RuleEditor_Templates.calculationtable(p[0])),(b.i=i,i)))).get_Doc();
  };
- TableCalculations.rowTreeNode$3051$39=function(isSelW)
+ TableCalculations.rowTreeNode$4195$39=function(isSelW)
  {
   return function(e)
   {
    Render.scrollIntoView(isSelW,e);
   };
  };
- TableCalculations.rowTreeNode$3049$39=function(tnId)
+ TableCalculations.rowTreeNode$4193$39=function(tnId)
  {
   return function(ev)
   {
@@ -6510,7 +9201,7 @@
    }))(x);
   };
  };
- TableCalculations.rowTreeNode$3048$39=function(tnId)
+ TableCalculations.rowTreeNode$4192$39=function(tnId)
  {
   return function(ev)
   {
@@ -6518,7 +9209,7 @@
     ev.Event.preventDefault();
   };
  };
- TableCalculations.rowTreeNode$3047$39=function(tnId)
+ TableCalculations.rowTreeNode$4191$39=function(tnId)
  {
   return function(ev)
   {
@@ -6526,7 +9217,7 @@
    ev.Event.stopPropagation();
   };
  };
- TableCalculations.rowTreeNode$3046$39=function(nodeW)
+ TableCalculations.rowTreeNode$4190$39=function(nodeW)
  {
   return function()
   {
@@ -6540,7 +9231,7 @@
    }),nodeW);
   };
  };
- TableCalculations.rowTreeNode$3045$39=function(tnId)
+ TableCalculations.rowTreeNode$4189$39=function(tnId)
  {
   return function()
   {
@@ -6550,7 +9241,7 @@
    });
   };
  };
- TableCalculations.rowTreeNode$3044$39=function(tid)
+ TableCalculations.rowTreeNode$4188$39=function(tid)
  {
   return function()
   {
@@ -6560,14 +9251,14 @@
    });
   };
  };
- TableCalculations.rowTreeNode$3030$39=function(isSelW)
+ TableCalculations.rowTreeNode$4174$39=function(isSelW)
  {
   return function(e)
   {
    Render.scrollIntoView(isSelW,e);
   };
  };
- TableCalculations.rowTreeNode$3028$39=function(tnId)
+ TableCalculations.rowTreeNode$4172$39=function(tnId)
  {
   return function(ev)
   {
@@ -6585,7 +9276,7 @@
    }))(x);
   };
  };
- TableCalculations.rowTreeNode$3027$39=function(tnId)
+ TableCalculations.rowTreeNode$4171$39=function(tnId)
  {
   return function(ev)
   {
@@ -6593,7 +9284,7 @@
     ev.Event.preventDefault();
   };
  };
- TableCalculations.rowTreeNode$3026$39=function(tnId)
+ TableCalculations.rowTreeNode$4170$39=function(tnId)
  {
   return function(ev)
   {
@@ -6601,7 +9292,7 @@
    ev.Event.stopPropagation();
   };
  };
- TableCalculations.rowTreeNode$3024$39=function(isSelW,tnId)
+ TableCalculations.rowTreeNode$4168$39=function(isSelW,tnId)
  {
   return function()
   {
@@ -6615,7 +9306,7 @@
    },isSelW);
   };
  };
- TableCalculations.rowTreeNode$3023$39=function(cid)
+ TableCalculations.rowTreeNode$4167$39=function(cid)
  {
   return function()
   {
@@ -6902,14 +9593,14 @@
    }
   }),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[["calcname",0],["calctype",0],["ordercalc",0],["format",0],["istext",2],["isbalance",2]]),(i$1=new TemplateInstance.New(p$1[1],RuleEditor_Templates.calculationrow(p$1[0])),(b$1.i=i$1,i$1)))).get_Doc())));
  };
- TableCalculations.rowFormula$3005$35=function(selFormW)
+ TableCalculations.rowFormula$4149$35=function(selFormW)
  {
   return function(e)
   {
    Render.scrollIntoView(selFormW,e);
   };
  };
- TableCalculations.rowFormula$3003$35=function(cid,fid,formsV)
+ TableCalculations.rowFormula$4147$35=function(cid,fid,formsV)
  {
   return function(ev)
   {
@@ -6947,7 +9638,7 @@
    })))(i);
   };
  };
- TableCalculations.rowFormula$3002$35=function(cid,fid)
+ TableCalculations.rowFormula$4146$35=function(cid,fid)
  {
   return function(ev)
   {
@@ -6955,7 +9646,7 @@
     ev.Event.preventDefault();
   };
  };
- TableCalculations.rowFormula$3001$35=function(cid,formV)
+ TableCalculations.rowFormula$4145$35=function(cid,formV)
  {
   return function(ev)
   {
@@ -6963,7 +9654,7 @@
    ev.Event.stopPropagation();
   };
  };
- TableCalculations.rowFormula$3000$35=function(fid,tnId)
+ TableCalculations.rowFormula$4144$35=function(fid,tnId)
  {
   return function()
   {
@@ -6974,7 +9665,7 @@
    });
   };
  };
- TableCalculations.rowFormula$2999$35=function(fid)
+ TableCalculations.rowFormula$4143$35=function(fid)
  {
   return function()
   {
@@ -7128,7 +9819,37 @@
  MainProgram.mainProgram=function()
  {
   var l,m,a,o,v,b;
-  AppFramework.addPlugIn(PlugIn.New("RuleEditor",[AppFramework.newVar("fileName",Global$1.model().fileName),AppFramework.newVar("Server",Global$1.model().server)],[],[AppFramework.newDoc("globalDefs",Lazy.Create(RuleEditor.globalDefs)),AppFramework.newDoc("Dimensions",Lazy.Create(TableDimensions.tableDimensions)),AppFramework.newDoc("Calculations",Lazy.Create(TableCalculations.tableCalculations))],[AppFramework.newActF("LoadFile",{
+  AppFramework.addPlugIn(PlugIn.New("RuleEditor",[AppFramework.newVar("fileName",Global$1.model().fileName),AppFramework.newVar("CodeFS",Global$1.model().codeFS),AppFramework.newVar("Output",Global$1.model().outputMsgs),AppFramework.newVar("Parser",Global$1.model().parserMsgs),AppFramework.newVar("Server",Global$1.model().server),AppFramework.newVar("GlobalDefs",Global$1.model().globalDefs)],[],[AppFramework.newDoc("globalDefs",Lazy.Create(RuleEditor.globalDefs)),AppFramework.newDoc("Dimensions",Lazy.Create(TableDimensions.tableDimensions)),AppFramework.newDoc("Calculations",Lazy.Create(TableCalculations.tableCalculations)),AppFramework.newDoc("details",Lazy.Create(RuleEditor.details)),AppFramework.newDoc("dimsSelected",Lazy.Create(RuleEditor.dimsSelected))],[AppFramework.newAct("IndentIn",function()
+  {
+   var x,o$1;
+   x=(o$1=Global$1.model().selection.Get(),o$1==null?null:{
+    $:1,
+    $0:o$1.$0[0]
+   });
+   (Option.iter(function(nid)
+   {
+    (Global$1.processor())({
+     $:15,
+     $0:true,
+     $1:nid
+    });
+   }))(x);
+  }),AppFramework.newAct("IndentOut",function()
+  {
+   var x,o$1;
+   x=(o$1=Global$1.model().selection.Get(),o$1==null?null:{
+    $:1,
+    $0:o$1.$0[0]
+   });
+   (Option.iter(function(nid)
+   {
+    (Global$1.processor())({
+     $:15,
+     $0:false,
+     $1:nid
+    });
+   }))(x);
+  }),AppFramework.newActF("LoadFile",{
    $:1,
    $0:function(o$1)
    {
@@ -7148,9 +9869,6 @@
     });
    },
    $1:"FileElement"
-  }),AppFramework.newAct("AddDimension",function()
-  {
-   (Global$1.processor())(MsgModel.AddDimension);
   }),AppFramework.newAct("AddCalculation",function()
   {
    (Global$1.processor())(MsgModel.AddCalculation);
@@ -7193,7 +9911,47 @@
  };
  UpdateModelUI.updateModelR=function(model,msg)
  {
-  var n,nn,n$1,nn$1,cid,n$2,x,o,o$1,x$1,n$3,cid$1,sel,o$2,x$2;
+  var n,nn,n$1,nn$1,cid,n$2,x,o,o$1,x$1,n$3,tid,x$2,cid$1,o$2,x$3,fid,x$4,nid,ex,nid$1,indent,b,fid$1,o$3,o$4,did,s,did$1,did$2,n$4,x$5;
+  function doForCalc(cid$2,f)
+  {
+   var x$6;
+   x$6=model.calculations.TryFindByKey(cid$2);
+   return(Option.iter(f))(x$6);
+  }
+  function setSelection(sel)
+  {
+   return Unchecked.Equals(model.selection.Get(),sel)?false:(model.selection.Set(sel),true);
+  }
+  function tryFindCalcForm(fid$2)
+  {
+   return Seq$1.tryFind(function(calc)
+   {
+    return Seq$1.exists(function(f)
+    {
+     return Unchecked.Equals(f.forId,fid$2);
+    },calc.calFormulas);
+   },model.calculations["var"].Get());
+  }
+  function mapper(finished,node)
+  {
+   var p;
+   return finished?[node,true]:Unchecked.Equals(node.nid,nid)?[TreeNode.New(node.nid,ex,node.element,node.children,node.weight),true]:(p=Seq$1.mapFold(mapper,false,node.children),[TreeNode.New(node.nid,node.expanded,node.element,Arrays.ofSeq(p[0]),node.weight),p[1]]);
+  }
+  function m(n$5)
+  {
+   return[n$5.nid,null];
+  }
+  function m$1(n$5)
+  {
+   return[n$5.nid,null];
+  }
+  function m$2(n$5)
+  {
+   return[n$5.nid,{
+    $:1,
+    $0:fid$1
+   }];
+  }
   return msg.$==3?(n=CalculationModule.New(),(model.calculations.Append(n),nn=TreeNode$1.newNodeCalc(n.calId),model.treeHierarchy.Set([nn].concat(model.treeHierarchy.Get())),UpdateModelUI.updateModelR(model,{
    $:13,
    $0:nn.nid
@@ -7216,15 +9974,18 @@
   }),o==null||o.$0))):msg.$==17?(n$3=DimensionModule.New(""),(model.dimensions.Append(n$3),UpdateModelUI.updateModelR(model,{
    $:19,
    $0:n$3.dimId
-  }))):msg.$==7?(cid$1=msg.$0,(sel=null,Unchecked.Equals(model.selection.Get(),sel)?void 0:model.selection.Set(sel),model.calculations.RemoveByKey(cid$1),Seq$1.iter((o$2=model.totals,function(a)
+  }))):msg.$==2?(tid=msg.$0,(model.totals.RemoveByKey(tid),setSelection(null),ModelUIModule.setHierarchy(model,Render.runEff((x$2=model.treeHierarchy.Get(),TreeNode$1.removeNodesEf(TreeNode$1.forTId(function(y)
+  {
+   return Unchecked.Equals(tid,y);
+  }),x$2)))),true)):msg.$==7?(cid$1=msg.$0,(setSelection(null),model.calculations.RemoveByKey(cid$1),Seq$1.iter((o$2=model.totals,function(a)
   {
    o$2.Append(a);
   }),Seq$1.choose(function(t)
   {
    var p;
-   function p$1(a,nid)
+   function p$1(a,nid$2)
    {
-    return Unchecked.Equals(nid,{
+    return Unchecked.Equals(nid$2,{
      $:0,
      $0:cid$1
     });
@@ -7237,27 +9998,491 @@
     $:1,
     $0:Total.New(t.totId,t.totName,t.totOrder,t.totFormat,p[1])
    };
-  },model.totals["var"].Get())),ModelUIModule.setHierarchy(model,Render.runEff((x$2=model.treeHierarchy.Get(),TreeNode$1.removeNodesEf(TreeNode$1.forCId(function(y)
+  },model.totals["var"].Get())),ModelUIModule.setHierarchy(model,Render.runEff((x$3=model.treeHierarchy.Get(),TreeNode$1.removeNodesEf(TreeNode$1.forCId(function(y)
   {
    return Unchecked.Equals(cid$1,y);
-  }),x$2)))),true)):((function($1)
+  }),x$3)))),true)):msg.$==10?(fid=msg.$0,(x$4=tryFindCalcForm(fid),(Option.iter(function(calc)
+  {
+   model.calculations.Append(Calculation.New(calc.calId,calc.calName,calc.calDescription,calc.calOrder,calc.format,calc.isText,calc.isInput,calc.isBalance,calc.calDims,Arrays.filter(function(f)
+   {
+    return!Unchecked.Equals(f.forId,fid);
+   },calc.calFormulas),calc.cubIdO,calc.properties));
+  }))(x$4),true)):msg.$==18?(model.dimensions.RemoveByKey(msg.$0),true):msg.$==13?setSelection({
+   $:1,
+   $0:[msg.$0,null]
+  }):msg.$==14?(nid=msg.$1,(ex=msg.$0,(model.treeHierarchy.Set(Arrays.ofSeq((Seq$1.mapFold(mapper,false,model.treeHierarchy.Get()))[0])),true))):msg.$==15?(nid$1=msg.$1,(indent=msg.$0?function(n$5)
+  {
+   return function(n$6)
+   {
+    return TreeEff.indentNode(n$5,n$6);
+   };
+  }:function(n$5)
+  {
+   return function(n$6)
+   {
+    return TreeEff.outdentNode(n$5,n$6);
+   };
+  },(Render.iterEff(Global.ignore,(b=Eff.eff(),b.Delay(function()
+  {
+   return b.Bind(TreeNode$1.tryFindNodeEf(nid$1,model.treeHierarchy.Get()),function(a)
+   {
+    var a$1;
+    return a!=null&&a.$==1?b.Bind((a$1=Seq$1.map(TreeNode$1.treenode,model.treeHierarchy.Get()),(indent(TreeNode$1.treenode(a.$0)))(a$1)),function(a$2)
+    {
+     ModelUIModule.setHierarchy(model,Seq$1.map(TreeNode$1.ofNode,a$2));
+     return b.Zero();
+    }):b.Zero();
+   });
+  }))),true))):msg.$==16?(Render.iterEff(Global.ignore,Operators$2.op_BarGreaterGreater(Operators$2.op_BarGreaterGreater(TreeEff.moveToSibling2(msg.$0,msg.$1,msg.$2,Seq$1.map(TreeNode$1.treenode,model.treeHierarchy.Get())),function(s$1)
+  {
+   return Seq$1.map(TreeNode$1.ofNode,s$1);
+  }),function(n$5)
+  {
+   ModelUIModule.setHierarchy(model,n$5);
+  })),true):msg.$==12?setSelection({
+   $:1,
+   $0:[msg.$1,{
+    $:1,
+    $0:msg.$0
+   }]
+  }):msg.$==1?Render.runEff(Operators$2.op_BarGreaterGreater(Operators$2.op_BarGreaterGreater(TreeNode$1.tryFindNodeTIdEf(msg.$0,model.treeHierarchy.Get()),function(o$5)
+  {
+   return o$5==null?null:{
+    $:1,
+    $0:m(o$5.$0)
+   };
+  }),setSelection)):msg.$==8?Render.runEff(Operators$2.op_BarGreaterGreater(Operators$2.op_BarGreaterGreater(TreeNode$1.tryFindNodeCIdEf(msg.$0,model.treeHierarchy.Get()),function(o$5)
+  {
+   return o$5==null?null:{
+    $:1,
+    $0:m$1(o$5.$0)
+   };
+  }),setSelection)):msg.$==11?(fid$1=msg.$0,Render.runEff(Operators$2.op_BarGreaterGreater(Operators$2.op_BarGreaterGreater(Operators$2.op_BarGreaterGreater(Eff.insertO((o$3=(o$4=tryFindCalcForm(fid$1),o$4==null?null:{
+   $:1,
+   $0:o$4.$0.calId
+  }),o$3==null?null:{
+   $:1,
+   $0:TreeNode$1.tryFindNodeCIdEf(o$3.$0,model.treeHierarchy.Get())
+  })),function(o$5)
+  {
+   return o$5==null?null:Global.id(o$5.$0);
+  }),function(o$5)
+  {
+   return o$5==null?null:{
+    $:1,
+    $0:m$2(o$5.$0)
+   };
+  }),setSelection))):msg.$==19?(did=msg.$0,(s=Unchecked.Equals(did,new DimId({
+   $:0,
+   $0:"00000000-0000-0000-0000-000000000000"
+  }))?null:{
+   $:1,
+   $0:did
+  },Unchecked.Equals(s,model.selectedDim.Get())?false:(model.selectedDim.Set(s),true))):msg.$==23?(did$1=msg.$1,(doForCalc(msg.$0,function(c)
+  {
+   model.calculations.Append(Calculation.New(c.calId,c.calName,c.calDescription,c.calOrder,c.format,c.isText,c.isInput,c.isBalance,c.calDims.Add(did$1),c.calFormulas,c.cubIdO,c.properties));
+  }),false)):msg.$==22?(did$2=msg.$1,(doForCalc(msg.$0,function(c)
+  {
+   model.calculations.Append(Calculation.New(c.calId,c.calName,c.calDescription,c.calOrder,c.format,c.isText,c.isInput,c.isBalance,c.calDims.Remove(did$2),c.calFormulas,c.cubIdO,c.properties));
+  }),false)):msg.$==6?(model.cubes.Append(CubeModule.newCubeCalc(msg.$0,Arrays.ofSeq(msg.$1),null)),false):msg.$==4?(model.cubes.RemoveByKey(msg.$0),false):msg.$==5?(n$4=msg.$1,(x$5=model.cubes.TryFindByKey(msg.$0),(Option.iter(function(c)
+  {
+   model.cubes.Append(Cube.New(c.cubId,n$4,c.cubRules,c.cubRuleXmls,c.cubDims,c.measureDim,c.cubType));
+  }))(x$5),false)):((function($1)
   {
    return function($2)
    {
-    return $1("Msg not implemented: "+RuleEditor_GeneratedPrintf.p$2($2));
+    return $1("Msg not implemented: "+RuleEditor_GeneratedPrintf.p$6($2));
    };
-  }(function(s)
+  }(function(s$1)
   {
-   console.log(s);
+   console.log(s$1);
   }))(msg),false);
  };
  RuleEditor.globalDefs=function()
  {
   return Monaco.render(Monaco$1.monacoNew(Global$1.model().globalDefs,null,null,null));
  };
+ RuleEditor.dimsSelected=function()
+ {
+  var destV,cubeBaseNameW,b,currCubeOW,cubePlaceholderW,cubeNameW,b$1,T,x,C,p,i;
+  destV=Var$2.Lens(Render.currentFormV(),function($1)
+  {
+   return $1.forDestDecl;
+  },function($1,$2)
+  {
+   return Formula.New($1.forId,$2,$1.forDestination,$1.forDescription,$1.forText,$1.forExpression,$1.forType,$1.forOrder);
+  });
+  cubeBaseNameW=(b=View$1.get_Do(),View$1.Bind(function(a)
+  {
+   return View$1.Bind(function(a$1)
+   {
+    var dimPrxs,dimIds;
+    dimPrxs=Arrays.ofSeq(Seq$1.map(function(d)
+    {
+     return[d.dimId,d.dimExclude?"":d.dimPrefix];
+    },(DimensionModule.filterSort(Render.dtypes()))(a$1)));
+    dimIds=Arrays.map(function(t)
+    {
+     return t[0];
+    },dimPrxs);
+    return View$1.Bind(function(a$2)
+    {
+     var cubeDims;
+     cubeDims=Arrays.ofSeq(Seq$1.map(function(c)
+     {
+      return[new FSharpSet.New(Arrays.filter(function(b$2)
+      {
+       return Arrays.contains(b$2,dimIds);
+      },c.cubDims)),c];
+     },Seq$1.filter(function(c)
+     {
+      return c.cubType.$===1;
+     },a$2)));
+     return View$1.Bind(function(a$3)
+     {
+      var currDims,currCubeO,o;
+      function f(t)
+      {
+       return t[0];
+      }
+      function g(y)
+      {
+       return Unchecked.Equals(currDims,y);
+      }
+      function c(did,pr)
+      {
+       return currDims.Contains(did)?{
+        $:1,
+        $0:pr
+       }:null;
+      }
+      currDims=a$3.calDims;
+      currCubeO=(o=Seq$1.tryFind(function(x$1)
+      {
+       return g(f(x$1));
+      },cubeDims),o==null?null:{
+       $:1,
+       $0:o.$0[1]
+      });
+      return View$1.Const([currCubeO,currCubeO!=null?"":a+Strings.concat("",Seq$1.choose(function($1)
+      {
+       return c($1[0],$1[1]);
+      },dimPrxs))]);
+     },Render.currentCalcV().get_View());
+    },Global$1.model().cubes.v);
+   },Global$1.model().dimensions.v);
+  },Global$1.model().cubePrefix.get_View()));
+  currCubeOW=View$1.Map(function(t)
+  {
+   return t[0];
+  },cubeBaseNameW);
+  cubePlaceholderW=View$1.Map(function(t)
+  {
+   return t[1];
+  },cubeBaseNameW);
+  cubeNameW=View$1.Map(function(a)
+  {
+   return a!=null&&a.$==1?a.$0.cubName:"";
+  },currCubeOW);
+  return(b$1=(T=(x=Global$1.model().dimensions,ListModel.docLensMapView(DimensionModule.filterSort(Render.dtypes()),function(did,dimV)
+  {
+   var destW,b$2,dimCheckW,visibFor,b$3,D,D$1,D$2,p$1,i$1;
+   destW=(b$2=View$1.get_Do(),View$1.Bind(function(a)
+   {
+    var m;
+    m=a.forDestDecl.TryFind(did);
+    return m==null?View$1.Const(""):View$1.Const(m.$0);
+   },Render.currentFormV().get_View()));
+   dimCheckW=View$1.Map(function($1)
+   {
+    return Seq$1.contains(did,$1.calDims);
+   },Render.currentCalcV().get_View());
+   visibFor=View$1.Map2(function($1,$2)
+   {
+    return!Unchecked.Equals($1.forId,ModelUIModule.nonFormula().forId)&&$2?"":"Hidden";
+   },Render.currentFormV().get_View(),dimCheckW);
+   return(b$3=(D=new FromView.New(destW,function(v)
+   {
+    var t;
+    t=Strings.Trim(v);
+    Unchecked.Equals(Render.currentFormV().Get().forId,ModelUIModule.nonFormula().forId)?void 0:destV.Set(t===""?destV.Get().Remove(did):destV.Get().Add(did,t));
+   }),(D$1=new FromView.New(dimCheckW,function(v)
+   {
+    var x$1;
+    x$1=v?{
+     $:23,
+     $0:Render.currentCalcV().Get().calId,
+     $1:did
+    }:{
+     $:22,
+     $0:Render.currentCalcV().Get().calId,
+     $1:did
+    };
+    (Global$1.processor())(x$1);
+   }),(D$2=View$1.Map(function($1)
+   {
+    return $1.dimName;
+   },dimV.get_View()),ProviderBuilder.Make().WithHole({
+    $:2,
+    $0:"dimension",
+    $1:D$2
+   })).WithHole({
+    $:9,
+    $0:"dimensioncheck",
+    $1:D$1
+   })).WithHole({
+    $:8,
+    $0:"destination",
+    $1:D
+   })).WithHole({
+    $:2,
+    $0:"hidden",
+    $1:visibFor
+   }),(p$1=Handler.CompleteHoles(b$3.k,b$3.h,[["dimensioncheck",2],["destination",0]]),(i$1=new TemplateInstance.New(p$1[1],RuleEditor_Templates.dimselectedrow(p$1[0])),(b$3.i=i$1,i$1)))).get_Doc();
+  },x)),(C=new FromView.New(cubeNameW,function(n)
+  {
+   var b$2;
+   Concurrency.Start((b$2=null,Concurrency.Delay(function()
+   {
+    var nm;
+    nm=Strings.Trim(n);
+    return Concurrency.Bind(View$1.GetAsync(currCubeOW),function(a)
+    {
+     var x$1;
+     x$1=a==null?nm===""?MsgModel.NoOp:{
+      $:6,
+      $0:nm,
+      $1:Render.currentCalcV().Get().calDims
+     }:nm===""?{
+      $:4,
+      $0:a.$0.cubId
+     }:{
+      $:5,
+      $0:a.$0.cubId,
+      $1:nm
+     };
+     (Global$1.processor())(x$1);
+     return Concurrency.Zero();
+    });
+   })),null);
+  }),ProviderBuilder.Make().WithHole({
+   $:8,
+   $0:"cubename",
+   $1:C
+  })).WithHole({
+   $:2,
+   $0:"possiblecubename",
+   $1:cubePlaceholderW
+  }).WithHole({
+   $:0,
+   $0:"tbody",
+   $1:T
+  })),(p=Handler.CompleteHoles(b$1.k,b$1.h,[["cubename",0]]),(i=new TemplateInstance.New(p[1],RuleEditor_Templates.dimsselected(p[0])),(b$1.i=i,i)))).get_Doc();
+ };
+ RuleEditor.details$4247$30=function()
+ {
+  return function()
+  {
+   var x,g;
+   function f(a)
+   {
+    return{
+     $:9,
+     $0:a
+    };
+   }
+   x=View$1.Map(function($1)
+   {
+    return $1.calId;
+   },Render.currentCalcV().get_View());
+   View$1.Get((g=Global$1.processor(),function(x$1)
+   {
+    return g(f(x$1));
+   }),x);
+  };
+ };
+ RuleEditor.details=function()
+ {
+  var getAnnot,v,prior,editor,b,t,D,D$1,D$2,D$3,D$4,D$5,D$6,D$7,D$8,F,C,I,I$1,F$1,C$1,p,i;
+  function noCalcAttr()
+  {
+   var view;
+   view=View$1.Const("");
+   return AttrModule.DynamicPred("disabled",View$1.Map(function($1)
+   {
+    return Unchecked.Equals($1.calId,ModelUIModule.nonCalculation().calId);
+   },Render.currentCalcV().get_View()),view);
+  }
+  function noFormAttr()
+  {
+   var view;
+   view=View$1.Const("");
+   return AttrModule.DynamicPred("disabled",View$1.Map(function($1)
+   {
+    return Unchecked.Equals($1.forId,ModelUIModule.nonFormula().forId);
+   },Render.currentFormV().get_View()),view);
+  }
+  function showToolTips(txt,line,col)
+  {
+   return View$1.Get(function(frm)
+   {
+    ParseFS.showToolTips({
+     $:3,
+     $0:frm.forId
+    },txt,line,col);
+   },Render.currentFormV().get_View());
+  }
+  function getHints(f,txt,line,col)
+  {
+   return View$1.Get(function(frm)
+   {
+    ParseFS.getHints({
+     $:3,
+     $0:frm.forId
+    },function($1,$2,$3)
+    {
+     return((f($1))($2))($3);
+    },txt,line,col);
+   },Render.currentFormV().get_View());
+  }
+  getAnnot=(v=View$1.Map2(function($1,$2)
+  {
+   return ParseFS.filterFormula($2,$1==null?null:$1.$0[1]);
+  },Global$1.model().selection.get_View(),Global$1.model().parserMsgs.get_View()),(prior=[Var$2.Create$1(null)],(View$1.Sink(function(v$1)
+  {
+   if(!Unchecked.Equals(prior[0].Get(),v$1))
+    prior[0].Set(v$1);
+  },v),prior[0].get_View())));
+  editor=Monaco.render(Monaco$1.monacoNew(Var$2.Lens(Render.currentFormV(),function($1)
+  {
+   return $1.forText;
+  },function($1,$2)
+  {
+   return Formula.New($1.forId,$1.forDestDecl,$1.forDestination,$1.forDescription,$2,$1.forExpression,$1.forType,$1.forOrder);
+  }),{
+   $:1,
+   $0:getAnnot
+  },{
+   $:1,
+   $0:Runtime.Curried3(showToolTips)
+  },{
+   $:1,
+   $0:Runtime.Curried(getHints,4)
+  }));
+  return(b=(t=(D=noFormAttr(),(D$1=noFormAttr(),(D$2=noCalcAttr(),(D$3=noCalcAttr(),(D$4=noCalcAttr(),(D$5=noCalcAttr(),(D$6=noCalcAttr(),(D$7=noCalcAttr(),(D$8=noCalcAttr(),(F=Render.formTypeV(Render.currentFormV()),(C=Render.calcTypeV(Render.currentCalcV()),(I=Var$2.Lens(Render.currentCalcV(),function($1)
+  {
+   return $1.isBalance;
+  },function($1,$2)
+  {
+   return Calculation.New($1.calId,$1.calName,$1.calDescription,$1.calOrder,$1.format,$1.isText,$1.isInput,$2,$1.calDims,$1.calFormulas,$1.cubIdO,$1.properties);
+  }),(I$1=Var$2.Lens(Render.currentCalcV(),function($1)
+  {
+   return $1.isText;
+  },function($1,$2)
+  {
+   return Calculation.New($1.calId,$1.calName,$1.calDescription,$1.calOrder,$1.format,$2,$1.isInput,$1.isBalance,$1.calDims,$1.calFormulas,$1.cubIdO,$1.properties);
+  }),(F$1=Var$2.Lens(Render.currentCalcV(),function($1)
+  {
+   return $1.format;
+  },function($1,$2)
+  {
+   return Calculation.New($1.calId,$1.calName,$1.calDescription,$1.calOrder,$2,$1.isText,$1.isInput,$1.isBalance,$1.calDims,$1.calFormulas,$1.cubIdO,$1.properties);
+  }),(C$1=Var$2.Lens(Render.currentCalcV(),function($1)
+  {
+   return $1.calName;
+  },function($1,$2)
+  {
+   return Calculation.New($1.calId,$2,$1.calDescription,$1.calOrder,$1.format,$1.isText,$1.isInput,$1.isBalance,$1.calDims,$1.calFormulas,$1.cubIdO,$1.properties);
+  }),ProviderBuilder.Make().WithHole({
+   $:8,
+   $0:"calcname",
+   $1:C$1
+  })).WithHole({
+   $:8,
+   $0:"format",
+   $1:F$1
+  })).WithHole({
+   $:9,
+   $0:"istext",
+   $1:I$1
+  })).WithHole({
+   $:9,
+   $0:"isbalance",
+   $1:I
+  })).WithHole({
+   $:8,
+   $0:"calctype",
+   $1:C
+  })).WithHole({
+   $:8,
+   $0:"formtype",
+   $1:F
+  })).WithHole({
+   $:0,
+   $0:"formula",
+   $1:editor
+  }).WithHole({
+   $:3,
+   $0:"disablecalc1",
+   $1:D$8
+  })).WithHole({
+   $:3,
+   $0:"disablecalc2",
+   $1:D$7
+  })).WithHole({
+   $:3,
+   $0:"disablecalc3",
+   $1:D$6
+  })).WithHole({
+   $:3,
+   $0:"disablecalc4",
+   $1:D$5
+  })).WithHole({
+   $:3,
+   $0:"disablecalc5",
+   $1:D$4
+  })).WithHole({
+   $:3,
+   $0:"disablecalc6",
+   $1:D$3
+  })).WithHole({
+   $:3,
+   $0:"disablecalc7",
+   $1:D$2
+  })).WithHole({
+   $:3,
+   $0:"disableform1",
+   $1:D$1
+  })).WithHole({
+   $:3,
+   $0:"disableform2",
+   $1:D
+  })),t.WithHole(Handler.EventQ2(t.k,"addformula",function()
+  {
+   return t.i;
+  },function()
+  {
+   var x,g;
+   function f(a)
+   {
+    return{
+     $:9,
+     $0:a
+    };
+   }
+   x=View$1.Map(function($1)
+   {
+    return $1.calId;
+   },Render.currentCalcV().get_View());
+   View$1.Get((g=Global$1.processor(),function(x$1)
+   {
+    return g(f(x$1));
+   }),x);
+  }))),(p=Handler.CompleteHoles(b.k,b.h,[["calcname",0],["format",0],["calctype",0],["formtype",0],["istext",2],["isbalance",2],["alsoactual",2]]),(i=new TemplateInstance.New(p[1],RuleEditor_Templates.formuladetail(p[0])),(b.i=i,i)))).get_Doc();
+ };
  SC$1.$cctor=function()
  {
-  var b,i,i$1,i$2,refresh,$1,b$1;
+  var f,b,i,i$1,i$2,refresh,$1,parseFsCodeD,x,x$1,x$2,x$3,x$4,b$1;
   SC$1.$cctor=Global.ignore;
   SC$1.rtn=function(v)
   {
@@ -7268,6 +10493,44 @@
   SC$1.fusion=new Builder$2.New();
   SC$1.eff=new EffBuilder.New();
   SC$1.fusion$1=new Builder$4.New();
+  SC$1.resultM=new Builder$5.New();
+  SC$1.asyncResult=new AsyncResultBuilder.New();
+  SC$1.asyncResultP=new AsyncResultBuilderP.New();
+  SC$1.asyncResultM=new AsyncResultMBuilder.New();
+  function g(s)
+  {
+   return Strings.concat("\n",s);
+  }
+  SC$1.unindentStr=function(x$5)
+  {
+   return g(String.unindent$1(x$5));
+  };
+  function f$1(s)
+  {
+   return String.splitByChar$1("\n",s);
+  }
+  function g$1(s)
+  {
+   var a,b$2;
+   return Slice$1.array(s,{
+    $:1,
+    $0:0
+   },{
+    $:1,
+    $0:(a=0,(b$2=Arrays.length(s)-2,Unchecked.Compare(a,b$2)===1?a:b$2))
+   });
+  }
+  function g$2(s)
+  {
+   return Strings.concat("\n",s);
+  }
+  SC$1.skipLastLine=(f=function(x$5)
+  {
+   return g$1(f$1(x$5));
+  },function(x$5)
+  {
+   return g$2(f(x$5));
+  });
   SC$1.parseDateO=ParseO.tryParseWith$1(function(a)
   {
    var o,m;
@@ -7344,6 +10607,18 @@
    $:0,
    $0:WebSockets.MessageBrokerId()
   });
+  SC$1.rootdir="..\\website";
+  SC$1.TemplatesFileName="..\\website"+"\\Templates.html";
+  ((function($2)
+  {
+   return function($3)
+   {
+    return $2(Utils.toSafe($3));
+   };
+  }(function(s)
+  {
+   console.log(s);
+  }))("..\\website\\Templates.html"));
   SC$1.Xmodel=Model$1.New(new ModId({
    $:0,
    $0:Guid.NewGuid()
@@ -7372,18 +10647,6 @@
   };
   SC$1.cubePrefix="Z";
   SC$1.measurePrefix="M";
-  SC$1.rootdir="..\\website";
-  SC$1.TemplatesFileName="..\\website"+"\\Templates.html";
-  ((function($2)
-  {
-   return function($3)
-   {
-    return $2(Utils.toSafe($3));
-   };
-  }(function(s)
-  {
-   console.log(s);
-  }))("..\\website\\Templates.html"));
   SC$1.annotationsV=Var$2.Create$1("Err (1, 7) - (1, 12): \"This shows over there as an error\".\nWarn (2, 7) - (2, 12): \"This shows over there as a warning\".\nInfo (3, 7) - (3, 12): \"This shows over there as information\".\nHint (4, 7) - (4, 12): \"This shows over there as a hint\".");
   SC$1.nonTotal=(i=TotalModule.New(),Total.New(new TotId({
    $:0,
@@ -7423,6 +10686,93 @@
    return v.cubId;
   },[]),Var$2.Create$1(""),Var$2.Create$1(""),Var$2.Create$1(null),Var$2.Create$1(null),Var$2.Create$1(null),ListModel$1.Create(Global.id,[]),Var$2.Create$1("Z"),Var$2.Create$1("M"),Var$2.Create$1(""),Var$2.Create$1(""),Var$2.Create$1(""),Var$2.Create$1("NewFile.json"),Var$2.Create$1(VersionModule.New()));
   SC$1.processor=Global.ignore;
+  SC$1.trace=Global.id;
+  SC$1.fsCodeVO={
+   $:1,
+   $0:FSCode.fsCode()
+  };
+  SC$1.parseFile="RuleEditor.fsx";
+  parseFsCodeD=Library.delayed$1(1000,function()
+  {
+   var b$2;
+   function g$3(v)
+   {
+    Library.print$1(v);
+   }
+   AsyncResult.iterA(function(x$5)
+   {
+    return g$3(ResultMessage.summarized(x$5));
+   },Global.ignore,(b$2=Monads.asyncResult(),b$2.Run(b$2.Delay(function()
+   {
+    var $2;
+    Global$1.model().parserMsgs.Set("Parsing...\n"+String.skipFirstLine$1(Global$1.model().parserMsgs.Get()));
+    return($2=FSCode.fsCodeVO(),$2!=null&&$2.$==1)?Extensions["AsyncResultBuilder.Bind"](b$2,View$1.GetAsync(FSCode.fsCodeVO().$0),function(a)
+    {
+     var locs,fs;
+     locs=a[1];
+     fs=a[0];
+     return b$2.Bind$1(Calls.parseCode(ParseFS.parseFile(),Strings.SplitChars(fs,["\n"],0),true,0),function(a$1)
+     {
+      var res;
+      res=Strings.concat("\n",ParseFS.adaptErrors(locs,a$1[0]));
+      Global$1.model().codeFS.Set(fs);
+      Global$1.model().parserMsgs.Set("Parsed!\n"+res);
+      return b$2.Zero();
+     });
+    }):b$2.Zero();
+   }))));
+  });
+  x=FSCode.fsCodeVO();
+  (Option.iter(function(a)
+  {
+   View$1.Sink(parseFsCodeD,a);
+  }))(x);
+  SC$1.sForId=Seq$1.head(String.splitByChar$1(" ",(x$1=new ForId({
+   $:0,
+   $0:"00000000-0000-0000-0000-000000000000"
+  }),(function($2)
+  {
+   return function($3)
+   {
+    return $2(RuleEditor_GeneratedPrintf.p($3));
+   };
+  }(Global.id))(x$1))));
+  SC$1.sCalId=Seq$1.head(String.splitByChar$1(" ",(x$2=new CalId({
+   $:0,
+   $0:"00000000-0000-0000-0000-000000000000"
+  }),(function($2)
+  {
+   return function($3)
+   {
+    return $2(RuleEditor_GeneratedPrintf.p$1($3));
+   };
+  }(Global.id))(x$2))));
+  SC$1.sTotId=Seq$1.head(String.splitByChar$1(" ",(x$3=new TotId({
+   $:0,
+   $0:"00000000-0000-0000-0000-000000000000"
+  }),(function($2)
+  {
+   return function($3)
+   {
+    return $2(RuleEditor_GeneratedPrintf.p$2($3));
+   };
+  }(Global.id))(x$3))));
+  SC$1.sDimId=Seq$1.head(String.splitByChar$1(" ",(x$4=new DimId({
+   $:0,
+   $0:"00000000-0000-0000-0000-000000000000"
+  }),(function($2)
+  {
+   return function($3)
+   {
+    return $2(RuleEditor_GeneratedPrintf.p$3($3));
+   };
+  }(Global.id))(x$4))));
+  SC$1.rexGlobal="(Global)  \\(";
+  SC$1.rexTotId="\\\"\\. ("+ParseFS.sTotId()+") "+"\""+LibraryJS.rexGuid$1();
+  SC$1.rexCalcId="\\\"\\. ("+ParseFS.sCalId()+") "+"\""+LibraryJS.rexGuid$1();
+  SC$1.rexFormId="\\\"\\. ("+ParseFS.sForId()+") "+"\""+LibraryJS.rexGuid$1();
+  SC$1.rexDimId="\\\"\\. ("+ParseFS.sDimId()+") "+"\""+LibraryJS.rexGuid$1();
+  SC$1.rexFormula="\\((\\d+)\\,\\s*(\\d+)\\) - \\((\\d+)\\,\\s*(\\d+)\\)\\: \"([^\"]+?)\"\\. ForId "+"\""+LibraryJS.rexGuid$1();
   SC$1.zx=TreeNode.New({
    $:0,
    $0:"00000000-0000-0000-0000-000000000000"
@@ -7433,6 +10783,7 @@
     $0:"00000000-0000-0000-0000-000000000000"
    })
   },[],Weight.Add);
+  SC$1.parents=new Dictionary.New$5();
   SC$1.currentCalcOW=(b$1=View$1.get_Do(),View$1.Bind(function(a)
   {
    return View$1.Bind(function(a$1)
@@ -7469,9 +10820,21 @@
    UpdateModelUI.updateModel(Global$1.model(),m);
   });
  };
+ RuleEditor_GeneratedPrintf.p$1=function($1)
+ {
+  return"CalId "+Utils.prettyPrint($1.$0);
+ };
  RuleEditor_GeneratedPrintf.p=function($1)
  {
+  return"ForId "+Utils.prettyPrint($1.$0);
+ };
+ RuleEditor_GeneratedPrintf.p$4=function($1)
+ {
   return $1.$==2?"ForAll":$1.$==1?"ForConsolidated":"ForBase";
+ };
+ RuleEditor_GeneratedPrintf.p$5=function($1)
+ {
+  return $1.$==6?"DtOther":$1.$==5?"DtMeasure":$1.$==4?"DtCalc":$1.$==3?"DtTCalc":$1.$==2?"DtVersion":$1.$==1?"DtTime":"DtDataType";
  };
  RuleEditor_Templates.dimensiontable=function(h)
  {
@@ -7488,10 +10851,6 @@
    $:1,
    $0:"dimensionrow"
   },h):void 0;
- };
- RuleEditor_GeneratedPrintf.p$1=function($1)
- {
-  return $1.$==6?"DtOther":$1.$==5?"DtMeasure":$1.$==4?"DtCalc":$1.$==3?"DtTCalc":$1.$==2?"DtVersion":$1.$==1?"DtTime":"DtDataType";
  };
  RuleEditor_Templates.calculationtable=function(h)
  {
@@ -7525,32 +10884,48 @@
    $0:"formularow"
   },h):void 0;
  };
- RuleEditor_GeneratedPrintf.p$2=function($1)
+ RuleEditor_GeneratedPrintf.p$6=function($1)
  {
-  return $1.$==28?"NoOp":$1.$==27?"LoadTextFile "+Utils.prettyPrint($1.$0):$1.$==26?"SaveTextFile "+Utils.prettyPrint($1.$0):$1.$==25?"SetForDest ("+RuleEditor_GeneratedPrintf.p$5($1.$0)+", "+RuleEditor_GeneratedPrintf.p$6($1.$1)+", "+RuleEditor_GeneratedPrintf.p$8($1.$2)+", "+Utils.prettyPrint($1.$3)+")":$1.$==24?"RemoveForDest ("+RuleEditor_GeneratedPrintf.p$5($1.$0)+", "+RuleEditor_GeneratedPrintf.p$6($1.$1)+", "+RuleEditor_GeneratedPrintf.p$8($1.$2)+")":$1.$==23?"AddCalcDim ("+RuleEditor_GeneratedPrintf.p$5($1.$0)+", "+RuleEditor_GeneratedPrintf.p$8($1.$1)+")":$1.$==22?"RemoveCalcDim ("+RuleEditor_GeneratedPrintf.p$5($1.$0)+", "+RuleEditor_GeneratedPrintf.p$8($1.$1)+")":$1.$==21?"RemoveFormDim ("+RuleEditor_GeneratedPrintf.p$6($1.$0)+", "+RuleEditor_GeneratedPrintf.p$8($1.$1)+")":$1.$==20?"AddFormDim ("+RuleEditor_GeneratedPrintf.p$6($1.$0)+", "+RuleEditor_GeneratedPrintf.p$8($1.$1)+", "+Utils.prettyPrint($1.$2)+")":$1.$==19?"SelectDimension "+RuleEditor_GeneratedPrintf.p$8($1.$0):$1.$==18?"RemoveDimension "+RuleEditor_GeneratedPrintf.p$8($1.$0):$1.$==17?"AddDimension":$1.$==16?"MoveNode ("+Utils.prettyPrint($1.$0)+", "+RuleEditor_GeneratedPrintf.p$7($1.$1)+", "+RuleEditor_GeneratedPrintf.p$7($1.$2)+")":$1.$==15?"IndentNode ("+Utils.prettyPrint($1.$0)+", "+RuleEditor_GeneratedPrintf.p$7($1.$1)+")":$1.$==14?"ExpandNode ("+Utils.prettyPrint($1.$0)+", "+RuleEditor_GeneratedPrintf.p$7($1.$1)+")":$1.$==13?"SelectNode "+RuleEditor_GeneratedPrintf.p$7($1.$0):$1.$==12?"SelectFormNode ("+RuleEditor_GeneratedPrintf.p$6($1.$0)+", "+RuleEditor_GeneratedPrintf.p$7($1.$1)+")":$1.$==11?"SelectFormula "+RuleEditor_GeneratedPrintf.p$6($1.$0):$1.$==10?"RemoveFormula "+RuleEditor_GeneratedPrintf.p$6($1.$0):$1.$==9?"AddFormula "+RuleEditor_GeneratedPrintf.p$5($1.$0):$1.$==8?"SelectCalculation "+RuleEditor_GeneratedPrintf.p$5($1.$0):$1.$==7?"RemoveCalculation "+RuleEditor_GeneratedPrintf.p$5($1.$0):$1.$==6?"AddCube ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+")":$1.$==5?"RenameCube ("+RuleEditor_GeneratedPrintf.p$4($1.$0)+", "+Utils.prettyPrint($1.$1)+")":$1.$==4?"RemoveCube "+RuleEditor_GeneratedPrintf.p$4($1.$0):$1.$==3?"AddCalculation":$1.$==2?"RemoveTotal "+RuleEditor_GeneratedPrintf.p$3($1.$0):$1.$==1?"SelectTotal "+RuleEditor_GeneratedPrintf.p$3($1.$0):"AddTotal";
- };
- RuleEditor_GeneratedPrintf.p$7=function($1)
- {
-  return"TreeNodeId "+Utils.prettyPrint($1.$0);
+  return $1.$==28?"NoOp":$1.$==27?"LoadTextFile "+Utils.prettyPrint($1.$0):$1.$==26?"SaveTextFile "+Utils.prettyPrint($1.$0):$1.$==25?"SetForDest ("+RuleEditor_GeneratedPrintf.p$1($1.$0)+", "+RuleEditor_GeneratedPrintf.p($1.$1)+", "+RuleEditor_GeneratedPrintf.p$3($1.$2)+", "+Utils.prettyPrint($1.$3)+")":$1.$==24?"RemoveForDest ("+RuleEditor_GeneratedPrintf.p$1($1.$0)+", "+RuleEditor_GeneratedPrintf.p($1.$1)+", "+RuleEditor_GeneratedPrintf.p$3($1.$2)+")":$1.$==23?"AddCalcDim ("+RuleEditor_GeneratedPrintf.p$1($1.$0)+", "+RuleEditor_GeneratedPrintf.p$3($1.$1)+")":$1.$==22?"RemoveCalcDim ("+RuleEditor_GeneratedPrintf.p$1($1.$0)+", "+RuleEditor_GeneratedPrintf.p$3($1.$1)+")":$1.$==21?"RemoveFormDim ("+RuleEditor_GeneratedPrintf.p($1.$0)+", "+RuleEditor_GeneratedPrintf.p$3($1.$1)+")":$1.$==20?"AddFormDim ("+RuleEditor_GeneratedPrintf.p($1.$0)+", "+RuleEditor_GeneratedPrintf.p$3($1.$1)+", "+Utils.prettyPrint($1.$2)+")":$1.$==19?"SelectDimension "+RuleEditor_GeneratedPrintf.p$3($1.$0):$1.$==18?"RemoveDimension "+RuleEditor_GeneratedPrintf.p$3($1.$0):$1.$==17?"AddDimension":$1.$==16?"MoveNode ("+Utils.prettyPrint($1.$0)+", "+RuleEditor_GeneratedPrintf.p$8($1.$1)+", "+RuleEditor_GeneratedPrintf.p$8($1.$2)+")":$1.$==15?"IndentNode ("+Utils.prettyPrint($1.$0)+", "+RuleEditor_GeneratedPrintf.p$8($1.$1)+")":$1.$==14?"ExpandNode ("+Utils.prettyPrint($1.$0)+", "+RuleEditor_GeneratedPrintf.p$8($1.$1)+")":$1.$==13?"SelectNode "+RuleEditor_GeneratedPrintf.p$8($1.$0):$1.$==12?"SelectFormNode ("+RuleEditor_GeneratedPrintf.p($1.$0)+", "+RuleEditor_GeneratedPrintf.p$8($1.$1)+")":$1.$==11?"SelectFormula "+RuleEditor_GeneratedPrintf.p($1.$0):$1.$==10?"RemoveFormula "+RuleEditor_GeneratedPrintf.p($1.$0):$1.$==9?"AddFormula "+RuleEditor_GeneratedPrintf.p$1($1.$0):$1.$==8?"SelectCalculation "+RuleEditor_GeneratedPrintf.p$1($1.$0):$1.$==7?"RemoveCalculation "+RuleEditor_GeneratedPrintf.p$1($1.$0):$1.$==6?"AddCube ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+")":$1.$==5?"RenameCube ("+RuleEditor_GeneratedPrintf.p$7($1.$0)+", "+Utils.prettyPrint($1.$1)+")":$1.$==4?"RemoveCube "+RuleEditor_GeneratedPrintf.p$7($1.$0):$1.$==3?"AddCalculation":$1.$==2?"RemoveTotal "+RuleEditor_GeneratedPrintf.p$2($1.$0):$1.$==1?"SelectTotal "+RuleEditor_GeneratedPrintf.p$2($1.$0):"AddTotal";
  };
  RuleEditor_GeneratedPrintf.p$8=function($1)
  {
-  return"DimId "+Utils.prettyPrint($1.$0);
+  return"TreeNodeId "+Utils.prettyPrint($1.$0);
  };
- RuleEditor_GeneratedPrintf.p$6=function($1)
- {
-  return"ForId "+Utils.prettyPrint($1.$0);
- };
- RuleEditor_GeneratedPrintf.p$5=function($1)
- {
-  return"CalId "+Utils.prettyPrint($1.$0);
- };
- RuleEditor_GeneratedPrintf.p$4=function($1)
+ RuleEditor_GeneratedPrintf.p$7=function($1)
  {
   return"CubId "+Utils.prettyPrint($1.$0);
  };
- RuleEditor_GeneratedPrintf.p$3=function($1)
+ RuleEditor_Templates.dimsselected=function(h)
+ {
+  Templates.LoadLocalTemplates("templates");
+  return h?Templates.NamedTemplate("templates",{
+   $:1,
+   $0:"dimsselected"
+  },h):void 0;
+ };
+ RuleEditor_Templates.dimselectedrow=function(h)
+ {
+  Templates.LoadLocalTemplates("templates");
+  return h?Templates.NamedTemplate("templates",{
+   $:1,
+   $0:"dimselectedrow"
+  },h):void 0;
+ };
+ RuleEditor_Templates.formuladetail=function(h)
+ {
+  Templates.LoadLocalTemplates("templates");
+  return h?Templates.NamedTemplate("templates",{
+   $:1,
+   $0:"formuladetail"
+  },h):void 0;
+ };
+ RuleEditor_GeneratedPrintf.p$2=function($1)
  {
   return"TotId "+Utils.prettyPrint($1.$0);
+ };
+ RuleEditor_GeneratedPrintf.p$3=function($1)
+ {
+  return"DimId "+Utils.prettyPrint($1.$0);
  };
 }());

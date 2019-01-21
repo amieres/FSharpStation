@@ -1,0 +1,1 @@
+#r "../../../../packages/testing/System.Management/lib/netstandard2.0/System.Management.dll" 

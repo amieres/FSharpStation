@@ -1,0 +1,5 @@
+#load "System.Net.Http.fsx" 
+#load "System.Xml.XmlDocument.fsx" 
+#load "System.Xml.XPath.fsx" 
+#load "System.Xml.XPath.XmlDocument.fsx" 
+#r "../../../../packages/test2/HtmlAgilityPack/lib/netstandard2.0/HtmlAgilityPack.dll" 

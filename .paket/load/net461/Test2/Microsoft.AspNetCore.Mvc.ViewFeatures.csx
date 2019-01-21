@@ -1,0 +1,7 @@
+#load "Microsoft.AspNetCore.Antiforgery.csx" 
+#load "Microsoft.AspNetCore.Html.Abstractions.csx" 
+#load "Microsoft.AspNetCore.Mvc.Core.csx" 
+#load "Microsoft.AspNetCore.Mvc.DataAnnotations.csx" 
+#load "Microsoft.AspNetCore.Mvc.Formatters.Json.csx" 
+#load "Microsoft.Extensions.WebEncoders.csx" 
+#load "Newtonsoft.Json.Bson.csx" 

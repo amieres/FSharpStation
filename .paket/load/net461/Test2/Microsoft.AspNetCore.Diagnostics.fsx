@@ -1,0 +1,7 @@
+#load "Microsoft.AspNetCore.Hosting.Abstractions.fsx" 
+#load "Microsoft.AspNetCore.Http.Extensions.fsx" 
+#load "Microsoft.AspNetCore.WebUtilities.fsx" 
+#load "Microsoft.Extensions.FileProviders.Physical.fsx" 
+#load "Microsoft.Extensions.Options.fsx" 
+#load "System.Diagnostics.DiagnosticSource.fsx" 
+#load "System.Reflection.Metadata.fsx" 

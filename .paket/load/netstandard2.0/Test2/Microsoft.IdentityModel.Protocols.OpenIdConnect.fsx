@@ -1,0 +1,5 @@
+#load "Microsoft.IdentityModel.Protocols.fsx" 
+#load "Newtonsoft.Json.fsx" 
+#load "System.Dynamic.Runtime.fsx" 
+#load "System.IdentityModel.Tokens.Jwt.fsx" 
+#r "../../../../packages/test2/Microsoft.IdentityModel.Protocols.OpenIdConnect/lib/netstandard2.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll" 

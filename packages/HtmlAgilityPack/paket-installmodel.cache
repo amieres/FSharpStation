@@ -51,10 +51,10 @@ D: /package
 D: /package/services
 D: /package/services/metadata
 D: /package/services/metadata/core-properties
-F: /package/services/metadata/core-properties/5c9cc6ef953943a480fb644428864d6b.psmdcp
+F: /package/services/metadata/core-properties/47348589bbb44232b83e57ec51f78a5c.psmdcp
 D: /_rels
 F: /_rels/.rels
 F: /.signature.p7s
-F: /htmlagilitypack.1.8.8.nupkg
+F: /htmlagilitypack.1.8.12.nupkg
 F: /HtmlAgilityPack.nuspec
 F: /[Content_Types].xml

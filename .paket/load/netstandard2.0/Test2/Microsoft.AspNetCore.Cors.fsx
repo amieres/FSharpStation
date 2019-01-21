@@ -1,0 +1,6 @@
+#load "Microsoft.AspNetCore.Http.Extensions.fsx" 
+#load "Microsoft.Extensions.Configuration.Abstractions.fsx" 
+#load "Microsoft.Extensions.DependencyInjection.Abstractions.fsx" 
+#load "Microsoft.Extensions.Logging.Abstractions.fsx" 
+#load "Microsoft.Extensions.Options.fsx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.Cors/lib/netstandard2.0/Microsoft.AspNetCore.Cors.dll" 

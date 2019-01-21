@@ -47,7 +47,7 @@ group Other
     nuget Microsoft.Orleans.Core.Abstractions
 
 group Test
-    framework: netstandard2, net461
+    framework: netstandard2.0, netcoreapp2.1
     source https://www.nuget.org/api/v2
     nuget FSharp.Core        = 4.3.4
     nuget NETStandard.Library
@@ -58,3 +58,13 @@ group Test
     nuget Giraffe
     nuget Microsoft.AspNetCore
     nuget FSharpx
+
+group Test2
+    framework: netstandard2.0, netcoreapp2.1
+    source https://www.nuget.org/api/v2
+    nuget FSharp.Core
+    nuget WebSharper
+    nuget WebSharper.AspNetCore
+    nuget WebSharper.UI
+    nuget WebSharper.FSharp
+    nuget Microsoft.AspNetCore.All <= 2.1

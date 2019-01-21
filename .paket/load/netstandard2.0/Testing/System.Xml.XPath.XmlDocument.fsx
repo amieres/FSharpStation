@@ -1,0 +1,3 @@
+#load "System.Xml.XmlDocument.fsx" 
+#load "System.Xml.XPath.fsx" 
+#r "../../../../packages/testing/System.Xml.XPath.XmlDocument/lib/netstandard1.3/System.Xml.XPath.XmlDocument.dll" 

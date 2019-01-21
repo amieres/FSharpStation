@@ -1,0 +1,2 @@
+#load "Microsoft.Extensions.FileProviders.Abstractions.fsx" 
+#r "../../../../packages/test2/Microsoft.Extensions.FileProviders.Composite/lib/netstandard2.0/Microsoft.Extensions.FileProviders.Composite.dll" 

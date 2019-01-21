@@ -1,0 +1,1 @@
+#r "../../../../packages/test2/Microsoft.Extensions.ObjectPool/lib/netstandard2.0/Microsoft.Extensions.ObjectPool.dll" 

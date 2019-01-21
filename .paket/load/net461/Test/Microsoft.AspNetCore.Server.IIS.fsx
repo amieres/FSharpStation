@@ -1,0 +1,5 @@
+#load "Microsoft.AspNetCore.Authentication.Core.fsx" 
+#load "Microsoft.AspNetCore.Connections.Abstractions.fsx" 
+#load "Microsoft.AspNetCore.Hosting.Abstractions.fsx" 
+#load "System.IO.Pipelines.fsx" 
+#load "System.Security.Principal.Windows.fsx" 

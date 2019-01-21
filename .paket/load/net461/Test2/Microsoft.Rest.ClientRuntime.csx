@@ -1,0 +1,7 @@
+#load "Newtonsoft.Json.csx" 
+#r "System.Net" 
+#r "System.Net.Http" 
+#r "System.Net.Http.WebRequest" 
+#r "System.Runtime" 
+#r "System.Runtime.Serialization" 
+#r "../../../../packages/test2/Microsoft.Rest.ClientRuntime/lib/net452/Microsoft.Rest.ClientRuntime.dll" 

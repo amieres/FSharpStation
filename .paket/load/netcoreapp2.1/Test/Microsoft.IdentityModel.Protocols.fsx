@@ -1,0 +1,6 @@
+#load "Microsoft.IdentityModel.Logging.fsx" 
+#load "Microsoft.IdentityModel.Tokens.fsx" 
+#load "System.Collections.Specialized.fsx" 
+#load "System.Diagnostics.Contracts.fsx" 
+#load "System.Net.Http.fsx" 
+#r "../../../../packages/test/Microsoft.IdentityModel.Protocols/lib/netstandard2.0/Microsoft.IdentityModel.Protocols.dll" 

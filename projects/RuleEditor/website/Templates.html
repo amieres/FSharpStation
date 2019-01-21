@@ -7,8 +7,8 @@
         |          |                         |             
         |  buttons | RuleEditor.Calculations | severalTabs 
         |          |                         |0 60 100     
-        |          |                                       
-        |       150|                                                                   
+        |          | ------------------10 80 95 --------------------------------
+        |       150|                 RuleEditor.details       
         | -------------------------- 10 83 100 ----------------------------------
         |          messagesLeft           |      messagesRight
 
@@ -48,14 +48,15 @@
 
         buttons          div "overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px"
         :                button RuleEditor.AddCalculation    ""                 "Add Calculation"
+        :                button RuleEditor.AddTotal          ""                 "Add Total"
         :                Doc       none x
-        :                button FSharpStation.IndentIn       ""                  "Indent In  >> "
-        :                button FSharpStation.IndentOut      ""                  "Indent Out << "
+        :                button RuleEditor.IndentIn          ""                  "Indent In  >> "
+        :                button RuleEditor.IndentOut         ""                  "Indent Out << "
 
 
-        Output           textarea  FSharpStation.Output      "tabname=Output ; placeholder=Output messages ; spellcheck=false" 
-        FsCode           textarea  FSharpStation.FsCode      "tabname=F# Code; placeholder=F# Code         ; spellcheck=false" 
-        Parser           textarea  FSharpStation.Parser      "tabname=Parser ; placeholder=Parser messages; dblclick=${FSharpStation.JumpTo} ; spellcheck=false" 
+        Output           textarea  RuleEditor.Output         "tabname=Output ; placeholder=Output messages ; spellcheck=false" 
+        FsCode           textarea  RuleEditor.CodeFS         "tabname=F# Code; placeholder=F# Code         ; spellcheck=false" 
+        Parser           textarea  RuleEditor.Parser         "tabname=Parser ; placeholder=Parser messages; dblclick=${FSharpStation.JumpTo} ; spellcheck=false" 
         Name             Doc       InputLabel                ""     "Name:"        FSharpStation.SnippetName
         inpServer        Doc       InputLabel                ""     "Server:"      RuleEditor.Server
         btnLoad          Doc       InputFile                 ""     "Load File..." RuleEditor.LoadFile  FileName

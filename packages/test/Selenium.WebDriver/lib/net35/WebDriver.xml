@@ -7236,17 +7236,18 @@
             <param name="actionsToAdd">The set actions to add to the existing set of actions.</param>
             <returns>A self reference.</returns>
         </member>
+        <member name="M:OpenQA.Selenium.Interactions.ActionBuilder.ToActionSequenceList">
+            <summary>
+            Converts the set of actions in this <see cref="T:OpenQA.Selenium.Interactions.ActionBuilder" /> to a <see cref="T:System.Collections.Generic.List`1" />.
+            </summary>
+            <returns>A <see cref="T:System.Collections.Generic.IList`1" /> suitable for transmission across the wire.
+            The collection returned is read-only.</returns>
+        </member>
         <member name="M:OpenQA.Selenium.Interactions.ActionBuilder.ToString">
             <summary>
             Returns a string that represents the current <see cref="T:OpenQA.Selenium.Interactions.ActionBuilder" />.
             </summary>
             <returns>A string that represents the current <see cref="T:OpenQA.Selenium.Interactions.ActionBuilder" />.</returns>
-        </member>
-        <member name="M:OpenQA.Selenium.Interactions.ActionBuilder.ToActionSequenceList">
-            <summary>
-            Converts the set of actions in this <see cref="T:OpenQA.Selenium.Interactions.ActionBuilder" /> to a <see cref="T:System.Collections.Generic.List`1" />.
-            </summary>
-            <returns>A <see cref="T:System.Collections.Generic.List`1" /> suitable for transmission across the wire.</returns>
         </member>
         <member name="T:OpenQA.Selenium.Interactions.MoveToElementOffsetOrigin">
             <summary>
@@ -7480,6 +7481,12 @@
             <summary>
             Represents a sequence of actions to be performed in the target browser.
             </summary>
+        </member>
+        <member name="M:OpenQA.Selenium.Interactions.ActionSequence.#ctor(OpenQA.Selenium.Interactions.InputDevice)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenQA.Selenium.Interactions.ActionSequence" /> class.
+            </summary>
+            <param name="device">The input device that executes this sequence of actions.</param>
         </member>
         <member name="M:OpenQA.Selenium.Interactions.ActionSequence.#ctor(OpenQA.Selenium.Interactions.InputDevice,System.Int32)">
             <summary>
@@ -7840,6 +7847,21 @@
             Returns a value for this input device that can be transmitted across the wire to a remote end.
             </summary>
             <returns>A <see cref="T:System.Collections.Generic.Dictionary`2" /> representing this action.</returns>
+        </member>
+        <member name="M:OpenQA.Selenium.Interactions.InputDevice.CreatePause">
+            <summary>
+            Creates a pause action for synchronization with other action sequences.
+            </summary>
+            <returns>The <see cref="T:OpenQA.Selenium.Interactions.Interaction" /> representing the action.</returns>
+        </member>
+        <member name="M:OpenQA.Selenium.Interactions.InputDevice.CreatePause(System.TimeSpan)">
+            <summary>
+            Creates a pause action for synchronization with other action sequences.
+            </summary>
+            <param name="duration">A <see cref="T:System.TimeSpan" /> representing the duration
+            of the pause. Note that <see cref="F:System.TimeSpan.Zero" /> pauses to synchronize
+            with other action sequences for other devices.</param>
+            <returns>The <see cref="T:OpenQA.Selenium.Interactions.Interaction" /> representing the action.</returns>
         </member>
         <member name="M:OpenQA.Selenium.Interactions.InputDevice.GetHashCode">
             <summary>
@@ -10829,6 +10851,21 @@
             Creates a new instance of the <see cref="T:OpenQA.Selenium.RemoteSessionSettings" /> class.
             </summary>
         </member>
+        <member name="M:OpenQA.Selenium.RemoteSessionSettings.#ctor(OpenQA.Selenium.DriverOptions,OpenQA.Selenium.DriverOptions[])">
+            <summary>
+            Creates a new instance of the <see cref="T:OpenQA.Selenium.RemoteSessionSettings" /> class,
+            containing the specified <see cref="T:OpenQA.Selenium.DriverOptions" /> to use in the remote
+            session.
+            </summary>
+            <param name="mustMatchDriverOptions">
+            A <see cref="T:OpenQA.Selenium.DriverOptions" /> object that contains values that must be matched
+            by the remote end to create the remote session.
+            </param>
+            <param name="firstMatchDriverOptions">
+            A list of <see cref="T:OpenQA.Selenium.DriverOptions" /> objects that contain values that may be matched
+            by the remote end to create the remote session.
+            </param>
+        </member>
         <member name="P:OpenQA.Selenium.RemoteSessionSettings.MustMatchDriverOptions">
             <summary>
             Gets a value indicating the options that must be matched by the remote end to create a session.
@@ -10848,21 +10885,6 @@
             <exception cref="T:System.ArgumentException">
             The specified capability name is not in the set of capabilities.
             </exception>
-        </member>
-        <member name="M:OpenQA.Selenium.RemoteSessionSettings.#ctor(OpenQA.Selenium.DriverOptions,OpenQA.Selenium.DriverOptions[])">
-            <summary>
-            Creates a new instance of the <see cref="T:OpenQA.Selenium.RemoteSessionSettings" /> class,
-            containing the specified <see cref="T:OpenQA.Selenium.DriverOptions" /> to use in the remote
-            session.
-            </summary>
-            <param name="mustMatchDriverOptions">
-            A <see cref="T:OpenQA.Selenium.DriverOptions" /> object that contains values that must be matched
-            by the remote end to create the remote session.
-            </param>
-            <param name="firstMatchDriverOptions">
-            A list of <see cref="T:OpenQA.Selenium.DriverOptions" /> objects that contain values that may be matched
-            by the remote end to create the remote session.
-            </param>
         </member>
         <member name="M:OpenQA.Selenium.RemoteSessionSettings.AddMetadataSetting(System.String,System.Object)">
             <summary>

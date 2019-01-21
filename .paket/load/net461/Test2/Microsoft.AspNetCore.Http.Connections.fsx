@@ -1,0 +1,8 @@
+#load "Microsoft.AspNetCore.Authorization.Policy.fsx" 
+#load "Microsoft.AspNetCore.Hosting.Abstractions.fsx" 
+#load "Microsoft.AspNetCore.Http.fsx" 
+#load "Microsoft.AspNetCore.Http.Connections.Common.fsx" 
+#load "Microsoft.AspNetCore.Routing.fsx" 
+#load "Microsoft.AspNetCore.WebSockets.fsx" 
+#load "Newtonsoft.Json.fsx" 
+#load "System.Security.Principal.Windows.fsx" 

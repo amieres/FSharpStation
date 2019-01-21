@@ -1,0 +1,1 @@
+#r "../../../../packages/test2/System.Net.WebHeaderCollection/lib/netstandard1.3/System.Net.WebHeaderCollection.dll" 

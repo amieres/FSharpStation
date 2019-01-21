@@ -1,0 +1,5 @@
+#load "Microsoft.Extensions.DependencyInjection.Abstractions.csx" 
+#load "Microsoft.Extensions.Localization.Abstractions.csx" 
+#load "Microsoft.Extensions.Logging.Abstractions.csx" 
+#load "Microsoft.Extensions.Options.csx" 
+#r "../../../../packages/test2/Microsoft.Extensions.Localization/lib/netstandard2.0/Microsoft.Extensions.Localization.dll" 

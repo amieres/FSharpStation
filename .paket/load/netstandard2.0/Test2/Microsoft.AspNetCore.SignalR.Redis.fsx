@@ -1,0 +1,5 @@
+#load "MessagePack.fsx" 
+#load "Microsoft.AspNetCore.SignalR.Core.fsx" 
+#load "Microsoft.Extensions.Options.fsx" 
+#load "StackExchange.Redis.StrongName.fsx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.SignalR.Redis/lib/netstandard2.0/Microsoft.AspNetCore.SignalR.Redis.dll" 

@@ -1,0 +1,5 @@
+#load "Microsoft.AspNetCore.Hosting.csx" 
+#load "Microsoft.AspNetCore.Server.Kestrel.Core.csx" 
+#load "Microsoft.AspNetCore.Server.Kestrel.Https.csx" 
+#load "Microsoft.AspNetCore.Server.Kestrel.Transport.Sockets.csx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.Server.Kestrel/lib/netstandard2.0/Microsoft.AspNetCore.Server.Kestrel.dll" 

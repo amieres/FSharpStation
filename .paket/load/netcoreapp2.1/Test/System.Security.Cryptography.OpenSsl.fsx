@@ -1,0 +1,1 @@
+#r "../../../../packages/test/System.Security.Cryptography.OpenSsl/lib/netcoreapp2.1/System.Security.Cryptography.OpenSsl.dll" 

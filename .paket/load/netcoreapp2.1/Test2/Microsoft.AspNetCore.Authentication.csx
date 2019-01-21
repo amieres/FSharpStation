@@ -1,0 +1,8 @@
+#load "Microsoft.AspNetCore.Authentication.Core.csx" 
+#load "Microsoft.AspNetCore.DataProtection.csx" 
+#load "Microsoft.AspNetCore.Http.csx" 
+#load "Microsoft.AspNetCore.Http.Extensions.csx" 
+#load "Microsoft.Extensions.Logging.Abstractions.csx" 
+#load "Microsoft.Extensions.Options.csx" 
+#load "Microsoft.Extensions.WebEncoders.csx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.Authentication/lib/netstandard2.0/Microsoft.AspNetCore.Authentication.dll" 

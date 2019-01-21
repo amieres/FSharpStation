@@ -1,0 +1,6 @@
+#load "System.Runtime.Serialization.Json.csx" 
+#load "System.Runtime.Serialization.Primitives.csx" 
+#load "System.Security.Cryptography.X509Certificates.csx" 
+#load "System.Security.SecureString.csx" 
+#load "System.Xml.XDocument.csx" 
+#r "../../../../packages/test2/Microsoft.IdentityModel.Clients.ActiveDirectory/lib/netstandard1.3/Microsoft.IdentityModel.Clients.ActiveDirectory.dll" 

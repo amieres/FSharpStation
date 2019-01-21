@@ -1,0 +1,8 @@
+#load "Microsoft.AspNetCore.Authentication.csx" 
+#load "Microsoft.AspNetCore.Diagnostics.csx" 
+#load "Microsoft.AspNetCore.Hosting.Abstractions.csx" 
+#load "Newtonsoft.Json.csx" 
+#load "System.Text.RegularExpressions.csx" 
+#load "System.Xml.XmlSerializer.csx" 
+#load "TaskBuilder.fs.csx" 
+#r "../../../../packages/test/Giraffe/lib/net461/Giraffe.dll" 

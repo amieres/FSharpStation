@@ -1,0 +1,1 @@
+#r "../../../../packages/test2/SQLitePCLRaw.core/lib/net45/SQLitePCLRaw.core.dll" 

@@ -1,0 +1,5 @@
+#load "Microsoft.Extensions.Configuration.EnvironmentVariables.csx" 
+#load "Microsoft.Extensions.Configuration.Json.csx" 
+#load "Microsoft.Extensions.Logging.csx" 
+#load "Microsoft.Extensions.Logging.Configuration.csx" 
+#load "System.ValueTuple.csx" 

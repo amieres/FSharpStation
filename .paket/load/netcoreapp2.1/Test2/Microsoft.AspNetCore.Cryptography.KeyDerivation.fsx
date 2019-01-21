@@ -1,0 +1,2 @@
+#load "Microsoft.AspNetCore.Cryptography.Internal.fsx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.Cryptography.KeyDerivation/lib/netcoreapp2.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll" 

@@ -1,0 +1,1 @@
+#r "../../../../packages/testing/CommandLineParser/lib/netstandard2.0/CommandLine.dll" 

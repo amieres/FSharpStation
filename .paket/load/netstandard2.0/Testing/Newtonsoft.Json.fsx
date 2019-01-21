@@ -1,0 +1,1 @@
+#r "../../../../packages/testing/Newtonsoft.Json/lib/netstandard2.0/Newtonsoft.Json.dll" 

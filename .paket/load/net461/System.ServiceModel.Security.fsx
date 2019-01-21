@@ -1,0 +1,5 @@
+#load "System.Private.ServiceModel.fsx" 
+#load "System.ServiceModel.Primitives.fsx" 
+#r "System.ServiceModel" 
+#r "System.Runtime.Serialization" 
+#r "../../../packages/System.ServiceModel.Security/lib/net461/System.ServiceModel.Security.dll" 

@@ -1,0 +1,1 @@
+#r "../../../../packages/test2/System.Security.Principal.Windows/lib/netstandard2.0/System.Security.Principal.Windows.dll" 

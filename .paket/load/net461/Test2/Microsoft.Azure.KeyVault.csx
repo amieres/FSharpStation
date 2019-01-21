@@ -1,0 +1,6 @@
+#load "Microsoft.Azure.KeyVault.WebKey.csx" 
+#load "Microsoft.Rest.ClientRuntime.csx" 
+#load "Microsoft.Rest.ClientRuntime.Azure.csx" 
+#load "Newtonsoft.Json.csx" 
+#load "System.Net.Http.csx" 
+#r "../../../../packages/test2/Microsoft.Azure.KeyVault/lib/net452/Microsoft.Azure.KeyVault.dll" 

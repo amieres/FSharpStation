@@ -1,0 +1,6 @@
+#load "Microsoft.AspNetCore.DataProtection.csx" 
+#load "Microsoft.AspNetCore.Http.Abstractions.csx" 
+#load "Microsoft.AspNetCore.Http.Extensions.csx" 
+#load "Microsoft.AspNetCore.WebUtilities.csx" 
+#load "Microsoft.Extensions.ObjectPool.csx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.Antiforgery/lib/netstandard2.0/Microsoft.AspNetCore.Antiforgery.dll" 

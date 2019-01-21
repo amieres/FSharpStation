@@ -1,0 +1,1 @@
+#r "../../../../packages/testing/System.Reflection.TypeExtensions/lib/net461/System.Reflection.TypeExtensions.dll" 

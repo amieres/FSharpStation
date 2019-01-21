@@ -1,0 +1,5 @@
+#load "System.Security.Cryptography.Algorithms.fsx" 
+#load "System.Security.Cryptography.Encoding.fsx" 
+#r "System" 
+#r "System.Core" 
+#r "../../../../packages/testing/System.Security.Cryptography.X509Certificates/lib/net461/System.Security.Cryptography.X509Certificates.dll" 

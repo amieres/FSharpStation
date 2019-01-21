@@ -1,0 +1,6 @@
+#load "Microsoft.AspNetCore.Authentication.Core.csx" 
+#load "Microsoft.AspNetCore.Hosting.csx" 
+#load "Microsoft.Net.Http.Headers.csx" 
+#load "Microsoft.Win32.Registry.csx" 
+#load "System.Security.Principal.Windows.csx" 
+#r "../../../../packages/test/Microsoft.AspNetCore.Server.HttpSys/lib/netstandard2.0/Microsoft.AspNetCore.Server.HttpSys.dll" 

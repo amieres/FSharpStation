@@ -1,0 +1,1 @@
+#r "../../../packages/System.Net.WebSockets/lib/netstandard1.3/System.Net.WebSockets.dll" 

@@ -1,0 +1,2 @@
+#load "Microsoft.AspNetCore.Connections.Abstractions.csx" 
+#r "../../../../packages/test/Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions/lib/netstandard2.0/Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions.dll" 

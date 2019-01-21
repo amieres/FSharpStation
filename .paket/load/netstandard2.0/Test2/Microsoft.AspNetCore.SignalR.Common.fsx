@@ -1,0 +1,5 @@
+#load "Microsoft.AspNetCore.Connections.Abstractions.fsx" 
+#load "Microsoft.Extensions.Options.fsx" 
+#load "Newtonsoft.Json.fsx" 
+#load "System.Buffers.fsx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.SignalR.Common/lib/netstandard2.0/Microsoft.AspNetCore.SignalR.Common.dll" 

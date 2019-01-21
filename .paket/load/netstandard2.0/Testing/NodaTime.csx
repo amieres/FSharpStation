@@ -1,0 +1,1 @@
+#r "../../../../packages/testing/NodaTime/lib/netstandard2.0/NodaTime.dll" 

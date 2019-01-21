@@ -1,0 +1,1 @@
+#r "../../../../packages/test/Microsoft.AspNetCore.DataProtection.Abstractions/lib/netstandard2.0/Microsoft.AspNetCore.DataProtection.Abstractions.dll" 

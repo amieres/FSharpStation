@@ -1,0 +1,1 @@
+#r "../../../../packages/test2/System.Reflection.Metadata/lib/netstandard2.0/System.Reflection.Metadata.dll" 

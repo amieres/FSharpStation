@@ -1,0 +1,5 @@
+#load "Microsoft.AspNetCore.Http.Extensions.fsx" 
+#load "Microsoft.Extensions.Logging.Abstractions.fsx" 
+#load "Microsoft.Extensions.Options.fsx" 
+#load "System.Net.WebSockets.WebSocketProtocol.fsx" 
+#r "../../../../packages/test2/Microsoft.AspNetCore.WebSockets/lib/netstandard2.0/Microsoft.AspNetCore.WebSockets.dll" 

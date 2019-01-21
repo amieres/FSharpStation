@@ -1,0 +1,5 @@
+#load "Microsoft.ApplicationInsights.fsx" 
+#load "Microsoft.Extensions.PlatformAbstractions.fsx" 
+#load "System.Runtime.Serialization.Json.fsx" 
+#load "System.Runtime.Serialization.Primitives.fsx" 
+#r "../../../../packages/test2/Microsoft.ApplicationInsights.PerfCounterCollector/lib/netstandard1.6/Microsoft.AI.PerfCounterCollector.dll" 

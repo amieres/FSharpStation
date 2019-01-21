@@ -1,0 +1,8 @@
+#load "Microsoft.Extensions.Caching.Memory.fsx" 
+#load "Microsoft.Extensions.DependencyInjection.fsx" 
+#load "Microsoft.Extensions.Logging.fsx" 
+#load "Remotion.Linq.fsx" 
+#load "System.Collections.Immutable.fsx" 
+#load "System.ComponentModel.Annotations.fsx" 
+#load "System.Diagnostics.DiagnosticSource.fsx" 
+#load "System.Interactive.Async.fsx" 
