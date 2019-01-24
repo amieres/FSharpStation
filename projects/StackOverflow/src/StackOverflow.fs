@@ -1,3 +1,4 @@
+#nowarn "52"
 ////-d:FSS_SERVER -d:FSharpStation1547097944900 -d:WEBSHARPER
 ////#cd @"..\projects\StackOverflow\src"
 //#I @"..\packages\WebSharper\lib\net461"
@@ -20,6 +21,7 @@
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+//#r @"..\..\LayoutEngine\bin\LayoutEngine.dll"
 //#r @"..\packages\Owin\lib\net40\Owin.dll"
 //#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
 //#r @"..\packages\Microsoft.Owin.Hosting\lib\net451\Microsoft.Owin.Hosting.dll"
@@ -28,6 +30,7 @@
 //#r @"..\packages\WebSharper.Owin\lib\net461\HttpMultipartParser.dll"
 //#r @"..\packages\Microsoft.Owin.StaticFiles\lib\net451\Microsoft.Owin.StaticFiles.dll"
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
+//#nowarn "52"
 /// Root namespace for all code
 //#define FSharpStation1547097944900
 #if INTERACTIVE
@@ -96,6 +99,19 @@ namespace FsRoot
     
     [< JavaScript >]
     module StackOverflow =
+        //#r "..\..\LayoutEngine\bin\LayoutEngine.dll"
+        //#nowarn "1178" "1182" "3180" "52"
+        
+        [< AutoOpen >]
+        module Templating =
+            open WebSharper.UI.Templating
+            let [< Literal >] rootdir = @"..\website"
+        
+            let [< Literal >] TemplatesFileName = rootdir + @"\Templates.html"
+            type TemplateLib  = Template< TemplatesFileName, ClientLoad.FromDocument, ServerLoad.WhenChanged, LegacyMode.New>
+            
+            if IsClient then printfn "%s" TemplatesFileName
+         
         open WebSharper
         open WebSharper.JavaScript
         open WebSharper.UI
@@ -152,69 +168,147 @@ namespace FsRoot
                 let m = ClientCode.fixMap m
                 m.[docName].Doc(m)
         
-        open WebSharper
-        open WebSharper.Sitelets
-        open WebSharper.JavaScript
-        open WebSharper.UI
-        open WebSharper.UI.Client
-        open WebSharper.UI.Html
-        open WebSharper.UI.Server
         
-        type EndPoint =
-            | [<EndPoint "/">] Home
         
-        [< JavaScript false >]
-        module Templating =
-            type MainTemplate = Templating.Template< @"..\website\Main.html">
+        module MainProgram =
+            open Templating
         
-            // Compute a menubar where the menu item for the given endpoint is active
-            let MenuBar (ctx: Context<EndPoint>) endpoint : Doc list =
-                let ( => ) txt act =
-                     li [if endpoint = act then yield attr.``class`` "active"] [
-                        a [attr.href (ctx.Link act)] [text txt]
-                     ]
-                [
-                    "Home" => EndPoint.Home
-                ]
+            open FsRoot
+            module AF = AppFramework 
         
-            let Main ctx action (title: string) (body: Doc list) =
-                Content.Page(
-                    MainTemplate()
-                        .Title(title)
-                        .MenuBar(MenuBar ctx action)
-                        .Body(body)
-                        .Doc()
-                )
+            let layoutName = "ProzperLyt"
         
-        [< JavaScript false >]
-        module Site =
-            open WebSharper.UI.Html
+            let scrollToBottom (e:Dom.Element) (_:obj) = 
+                async { 
+                    do! Async.Sleep 100
+                    do  e.ScrollTop <- e.ScrollHeight
+                } |> Async.Start
         
-            let HomePage _map ctx =
-                Templating.Main ctx EndPoint.Home "Home" [
-                    Doc.ClientSide <@  Client.getDoc _map "C" @>
-                ]
+        //    let mainLayout() =
+        //        TemplateLib.Layout()
+        //            .CalculationTable( tableCalculations()                  )
+        //            .FormulaDetail(    details          ()                  )
+        //            .DimsSelected(     dimsSelected     ()                  )
+        //            .DimensionTable(   tableDimensions  ()                  )
+        //            .GlobalText(       globalDefs       ()                  )
+        //            .Server(           model.server                         )
+        //            .Output(           model.outputMsgs                     )
+        //            .FSCode(           model.codeFS                         )
+        //            .Parser(           model.parserMsgs                     )
+        //            .Filename(         model.fileName                       )
+        //            .AddCalculation(   fun _ -> AddCalculation |> processor )
+        //            .AddTotal(         fun _ -> AddTotal       |> processor )
+        //            .NewDimension(     fun _ -> AddDimension   |> processor )
+        //            .SaveAs(           fun _ -> SaveLoad.saveAsFile()       )
+        //            .LoadFileChanged(  fun e -> SaveLoad.loadFile e.Target  )
+        //            .LoadFileClear(    fun e -> e.Target?value <- ""        )
+        //            .UpdateRules(      fun _ -> UpdateAlea.updateModel()    )        
+        //            .IndentIn(         fun _ -> model.selection.Value |> Option.map fst |> Option.iter (fun nid -> IndentNode(true , nid) |> processor) )
+        //            .IndentOut(        fun _ -> model.selection.Value |> Option.map fst |> Option.iter (fun nid -> IndentNode(false, nid) |> processor) )
+        //        //    .Reorder(          fun _ -> reorder()                                    )
+        //            .JumpRef(ParseFS.jumpToRef)
+        //            .OutputAfterRender(fun e -> model.outputMsgs.View |> View.Sink (scrollToBottom e))
+        //            .Doc()
         
-            let mutable _map : Map<string, string> = Map.empty
+            let titleV = Var.Create "Prozper"
         
-            let addMapping<'T> name = 
-                match ClientCode.types.TryGetValue (typedefof<'T>.FullName) with
-                | false,_         -> printfn "Could not map %s to type %s. It is not registered" name (typedefof<'T>.FullName)
-                | true ,(line, a) -> 
-                _map <- _map |> Map.add name line
+            [< WebSharper.Sitelets.Website >]    
+            let mainProgram() =
+                AF.addPlugIn {
+                    AF.plgName    = "Prozper"
+                    AF.plgVars    = [| AF.newVar  "title"        titleV
+                                       //AF.newVar  "CodeFS"          model.codeFS
+                                       //AF.newVar  "Output"          model.outputMsgs
+                                       //AF.newVar  "Parser"          model.parserMsgs
+                                       //AF.newVar  "Server"          model.server
+                                       //AF.newVar  "GlobalDefs"      model.globalDefs
+                                    |]  
+                    AF.plgViews   = [| //AF.newViw  "FsCode"          Snippets.FsCodeW
+                                       //AF.newViw  "SaveNeeded"      Snippets.SaveAsClassW
+                                       //AF.newViw  "CurrentPath"     Snippets.currentPathW
+                                    |]  
+                    AF.plgDocs    = [| //AF.newDoc  "mainDoc"         (lazy mainDoc()                 )
+                                       //AF.newDoc  "editor"          (lazy (WebSharper.UI.Html.div [] [ Monaco.getEditorConfigO() |> Option.map Monaco.render |> Option.defaultValue Doc.Empty ]) )
+                                       //AF.newDoc  "Snippets"        (lazy RenderSnippets  .render() )
+                                       //AF.newDoc  "Properties"      (lazy RenderProperties.render() )
+                                       //AF.newDoc  "ButtonsRight"    (lazy buttonsRight           () )
+                                       //AF.newDoc  "globalDefs"      (lazy globalDefs                         () )
+                                       //AF.newDoc  "Dimensions"      (lazy TableDimensions  .tableDimensions  () )
+                                       //AF.newDoc  "Calculations"    (lazy TableCalculations.tableCalculations() )
+                                       //AF.newDoc  "details"         (lazy details                            () )
+                                       //AF.newDoc  "dimsSelected"    (lazy dimsSelected                       () )
+                                    |]  
+                    AF.plgActions = [| //AF.newAct  "AddSnippet"      Snippets.newSnippet
+                                       //AF.newAct  "RemoveSnippet"   deleteSnippet       
+                                       //AF.newAct  "IndentIn"        <| fun () -> model.selection.Value |> Option.map fst |> Option.iter (fun nid -> IndentNode(true , nid) |> processor)
+                                       //AF.newAct  "IndentOut"       <| fun () -> model.selection.Value |> Option.map fst |> Option.iter (fun nid -> IndentNode(false, nid) |> processor)
+                                       //AF.newAct  "AddProperty"     RenderProperties.addProperty
+                                       //AF.newAct  "RunFS"           runFsCode
+                                       //AF.newAct  "AbortFsi"        FsiAgent.abortFsiExe
+                                       //AF.newAct  "DisposeFsi"      FsiAgent.disposeFsiExe
+                                       //AF.newActF "LoadFile"        <| AF.FunAct1 ((fun o -> unbox o |> LoadTextFile |> processor  ), "FileElement")
+                                       //AF.newActF  "SaveAs"          <| AF.FunAct1 ((fun o -> unbox o |> SaveTextFile |> processor  ), "FileElement")
+                                       //AF.newActF "Import"          <| AF.FunAct1 ((fun o -> unbox o |> Importer.importFile     ), "FileElement")
+                                       //AF.newActF "JumpTo"          <| AF.FunAct1 ((fun o -> unbox o |> JumpTo.jumpToRef        ), "textarea"   )
+                                       //AF.newActF "ButtonClick"     <| AF.FunAct1 ((fun o -> unbox o |> CustomAction.buttonClick), "button"     )
+                                       //AF.newActF "ActionClick"     <| AF.FunAct1 ((fun o -> unbox o |> CustomAction.actionClick), "name"       )
+                                       //AF.newAct  "AddCalculation"  (fun () -> AddCalculation |> processor)
+                                       //AF.newAct  "AddTotal"        (fun () -> AddTotal       |> processor)
+                                       //AF.newAct  "AddDimension"    (fun () -> AddDimension   |> processor)
+                                    |]
+                    AF.plgQueries = [|                                               
+                                    |]
+                }
+                match JS.Document.GetElementById("GlobalLayout") with
+                | null ->
+                   """
+                    menuEditor       horizontal  65       menuLogo                  editorMessages
+                    double           horizontal  0-50-100 AppFramework.AppFwkClient menuEditor
+                    menuLogo         vertical    350      logo                      menu
+                    logo             span       "margin:0; color:gray; font-size: 55px; font-weight:530" "F# Station"
+                    editorMessages   horizontal 10-83-100 editorButtons             messages
+                    messages         vertical   0-50-100  messagesLeft              messagesRight
+                    editorButtons    vertical -200 snippetsSnippet buttons
+                    buttons div      "overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px" btnSaveAs none x btnAddSnippet btnDeleteSnippet btnIndentIn btnIndentOut none x btnRunFS none x btnAbortFsi
+                    snippetsSnippet  vertical   0-20-100  snippets                  editorProperties
+                    snippets         horizontal 20        "${FSharpStation.CurrentPath}" FSharpStation.Snippets
+                    editorProperties vertical   0-100-100 snippet                   properties
+                    properties       div        ""        FSharpStation.Properties
+                    snippet          horizontal 35        Name                      FSharpStation.editor
+                    menu             span  "" btnLoad btnImport
         
-            addMapping<ClientCode.A> "A"
-            addMapping<ClientCode.C> "C"
-            addMapping<ClientCode.D> "D"
+                    btnSaveAs        button FSharpStation.SaveAs         "class=btn ${FSharpStation.SaveNeeded}" "Save as...    "
+                    btnAddDimension  button RuleEditor.AddDimension      ""                  "Add Dimension "
+                    btnDeleteSnippet button FSharpStation.RemoveSnippet  ""                  "Delete Snippet"
+                    btnIndentIn      button FSharpStation.IndentIn       ""                  "Indent In  >> "
+                    btnIndentOut     button FSharpStation.IndentOut      ""                  "Indent Out << "
+                    btnRunFS         button FSharpStation.RunFS          ""                  "Run F#        "
+                    btnAbortFsi      button FSharpStation.AbortFsi       ""                  "Abort Fsi     "
+        
+                    messagesLeft     wcomp-tabstrip                      ""                  Output FsCode
+                    messagesRight    wcomp-tabstrip                      ""                  Parser
+        
+                    Output           textarea  FSharpStation.Output      "tabname=Output ; placeholder=Output messages ; spellcheck=false" 
+                    FsCode           textarea  FSharpStation.FsCode      "tabname=F# Code; placeholder=F# Code         ; spellcheck=false" 
+                    Parser           textarea  FSharpStation.Parser      "tabname=Parser ; placeholder=Parser messages; dblclick=${FSharpStation.JumpTo} ; spellcheck=false" 
+                    Name             Doc       InputLabel                ""     "Name:"        FSharpStation.SnippetName
+                    btnLoad          Doc       InputFile                 ""     "Load File..." FSharpStation.LoadFile  FileName
+                    btnImport        Doc       InputFile                 ""     "Import..."    FSharpStation.Import    ""
+                    FileName         div                                 "class=form-control"  FSharpStation.fileName
+                   """
+                | e -> e.TextContent
+                |> LayoutEngine.newLyt layoutName
+                |> LayoutEngine.addLayout
+        
+                None
+                |> Option.defaultValue layoutName
+                |> AF.mainDocV.Set
+        
+                TemplateLib()
+                    .MainContent( AF.getMainDoc.Value )
+                    .Bind()
+                titleV.View |> View.Sink (fun t -> JS.Document.Title <- t)
                 
-        
-            [<Website>]
-            let Main =
-                Application.MultiPage (fun ctx endpoint ->
-                    match endpoint with
-                    | EndPoint.Home -> HomePage _map ctx
-                )
-        
         //#r @"..\packages\Owin\lib\net40\Owin.dll"
         //#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
         //#r @"..\packages\Microsoft.Owin.Hosting\lib\net451\Microsoft.Owin.Hosting.dll"
@@ -236,23 +330,33 @@ namespace FsRoot
             open WebSharper.UI.Templating
             open WebSharper.UI.Html
         
-            let [< Literal >] rootdir = @"..\website"
+            type EndPointServer = | [< EndPoint "/" >] EP
+        
+            let content (ctx:Context<EndPointServer>) (endpoint:EndPointServer) : Async<Content<EndPointServer>> =
+                Content.Page(
+                    TemplateLib()
+                        .Initializer( Html.client <@  MainProgram.mainProgram(); Doc.TextNode "Initialized" @> )
+                        .Elt(keepUnfilled = true)
+                )
         
             [< EntryPoint >]
             let Main args =
                 printfn "Usage: FSharpStation URL ROOT_DIRECTORY MaxMessageSize"
-                let url           = args |> Seq.tryItem 0 |>                   Option.defaultValue "http://localhost:9007/"
+                let url           = args |> Seq.tryItem 0 |>                   Option.defaultValue "http://localhost:9005/"
                 let rootDirectory = args |> Seq.tryItem 1 |>                   Option.defaultValue @"..\website"
                 let max           = args |> Seq.tryItem 2 |> Option.map int |> Option.defaultValue 1_000_000
+                //let epWebSocket = Endpoint.Create(url, "/ws", JsonEncoding.Readable)
+                //let broker = Broker.BrokerAgent epWebSocket
+                //Broker.BrokerAgent.FssWebSocketO <- Some broker
                 use server = WebApp.Start(url, fun appB ->
                     appB.UseWebSharper(WebSharperOptions(ServerRootDirectory = rootdir
-                                                       , Sitelet             = (Some <| Site.Main)
+                                                       , Sitelet             = (Some <| Application.MultiPage content)
                                                        , BinDirectory        = "."
                                                        , Debug               = true))
                         .UseStaticFiles(StaticFileOptions(FileSystem = PhysicalFileSystem(rootDirectory)))
+                        //.UseWebSocket(  epWebSocket, broker.Start, maxMessageSize = max)
                     |> ignore)
                 stdout.WriteLine("Listening on {0}, hit enter to finish", url)
                 stdin.ReadLine() |> ignore
                 0
-        
         

@@ -1,4 +1,4 @@
-////-d:FSharpStation1547005003252 -d:WEBSHARPER
+////-d:FSharpStation1547097944900 -d:WEBSHARPER
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
@@ -17,7 +17,7 @@
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 /// Root namespace for all code
-//#define FSharpStation1547005003252
+//#define FSharpStation1547097944900
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -635,13 +635,13 @@ namespace FsRoot
                 let private plugIns = ListModel (fun plg -> plg.plgName)
             
                 let mainDocV = Var.Create "AppFramework.AppFwkClient"
-                let titleV   = Var.Create "AppFramework.mainDocV"
+                //let titleV   = Var.Create "AppFramework.mainDocV"
             
                 open WebSharper.UI.Templating
             
                 let [< Literal >] TemplateFileName =  @"..\website\AppFramework.html" 
             
-                type AppFwkTemplate = Templating.Template<TemplateFileName, ClientLoad.Inline, ServerLoad.WhenChanged, LegacyMode.New>
+                type AppFwkTemplate = Templating.Template<TemplateFileName, ClientLoad.FromDocument, ServerLoad.WhenChanged, LegacyMode.New>
             
                 let defaultPlugIn = {
                         plgName    = ""
@@ -839,26 +839,25 @@ namespace FsRoot
                 if IsClient then
                     plugIns.Add {
                         plgName    = "AppFramework"
-                        plgVars    = [| newVar "mainDocV"     mainDocV     
-                                        newVar "titleV"       titleV       |]
+                        plgVars    = [| newVar "mainDocV"     mainDocV     |]
                         plgViews   = [|                                    |]
                         plgDocs    = [| newDoc "AppFwkClient" AppFwkClient |]
                         plgActions = [| actHello                           |]
                         plgQueries = [| qryDocs                            |]
                     }
             
-                    titleV.View
-                    |> View.Bind(fun nm ->
-                        nm
-                        |> String.splitByChar '.'
-                        |> (function [| a ; b |] -> tryGetWoW a b |_-> None)
-                        |> Option.defaultWith (fun () -> mainDocV.View )
-                    ) |> View.Sink (fun v -> 
-                        async {
-                            do! Async.Sleep 500
-                            JS.Window.Document.Title <- v 
-                        } |> Async.Start
-                    )
+                    //titleV.View
+                    //|> View.Bind(fun nm ->
+                    //    nm
+                    //    |> String.splitByChar '.'
+                    //    |> (function [| a ; b |] -> tryGetWoW a b |_-> None)
+                    //    |> Option.defaultWith (fun () -> mainDocV.View )
+                    //) |> View.Sink (fun v -> 
+                    //    async {
+                    //        do! Async.Sleep 500
+                    //        JS.Window.Document.Title <- v 
+                    //    } |> Async.Start
+                    //)
             
                 let getMainDoc =
                   lazy
@@ -878,6 +877,8 @@ namespace FsRoot
                 open WebSharper.UI
                 module AF = AppFramework
             
+                open WebSharper.UI.Client
+            
                 type LayoutEntry =
                     | EntryVar    of AF.PlugInVar   
                     | EntryView   of AF.PlugInView  
@@ -890,12 +891,13 @@ namespace FsRoot
                     | REGEX "^[$a-zA-Z_][0-9a-zA-Z_\.\-$]*$" "" [| id |], false -> Some id
                     | _                                                         -> None
             
-                let (|Vertical|Horizontal|Layout|Grid|Elem|Nothing|) =
+                let (|Vertical|Horizontal|Layout|Grid|Template|Elem|Nothing|) =
                     function
                     | s , false when s = "vertical"   -> Vertical
                     | s , false when s = "horizontal" -> Horizontal
                     | s , false when s = "layout"     -> Layout
                     | s , false when s = "grid"       -> Grid
+                    | s , false when s = "template"   -> Template
                     | Identifier id                   -> Elem id
                     |                               _ -> Nothing
             
@@ -987,7 +989,7 @@ namespace FsRoot
             
                 let rec getTextData lytNm (txt:string) =
                     txt
-                    |> String.delimitedO "${" "}"
+                    |> String.delimitedO "@{" "}"
                     |> Option.map(fun (bef, name, aft) ->
                         let plg, n = splitName lytNm name
                         AF.tryGetWoW plg n
@@ -1134,6 +1136,35 @@ namespace FsRoot
                         |>  Option.map (getDocFinal parms)
                         |>  Option.defaultWith  (fun ()  -> sprintf "Missing doc: %s" docName |> errDoc )
             
+                let createTemplate( lytNm, name, tempName, attrs, holes) =
+                    turnToView <| fun _ ->
+                        let attrs = getAttrs lytNm attrs
+                        Client.Doc.LoadLocalTemplates "local"
+                        try
+                            holes 
+                            |> Seq.pairwise
+                            |> Seq.indexed
+                            |> Seq.filter(fun (i, _) -> i % 2 = 0)
+                            |> Seq.map  snd
+                            |> Seq.map( function
+                                | (nm, _), Identifier id -> AF    .tryGetDoc lytNm id |> Option.map (fun doc -> TemplateHole.Elt(   nm, getDocF [] doc |> fst) )
+                                                            |> Option.orElseWith (fun () ->
+                                                                AF.tryGetVar lytNm id |> Option.map (fun var -> TemplateHole.VarStr(nm, var.varVar) )
+                                                            )
+                                                            |> Option.defaultWith(fun () -> TemplateHole.Elt(nm, sprintf "Missing element: %s" id |> errDoc) )
+                                | (nm, _), (txt, _)      -> match getTextData lytNm txt with
+                                                            | TDPlain v   -> TemplateHole.Text(    nm, v )
+                                                            | TDView  vw  -> TemplateHole.TextView(nm, vw)
+                                                            | TDAct   act -> TemplateHole.Event(   nm, (fun el ev -> act.actFunction |> AF.callFunction el ev ))
+                            )
+                            |> (if Seq.isEmpty attrs then id else TemplateHole.Attribute("attrs", Attr.Concat attrs) |> Seq.singleton |> Seq.append)
+                            |> Client.Doc.NamedTemplate "local" (Some <| fst tempName)
+                            |> Some
+                        with _ -> None
+                        |>  Option.defaultWith  (fun ()  -> sprintf "Missing template: %s" (fst tempName) |> errDoc )
+            
+            
+            
                 let createVar( lytNm, varName, v    ) = Var.Create v
             
                 let createSplitterM = Memoize.memoize createSplitter
@@ -1142,6 +1173,7 @@ namespace FsRoot
                 let createTextAreaM = Memoize.memoize createTextArea
                 let createElementM  = Memoize.memoize createElement
                 let createDocM      = Memoize.memoize createDoc
+                let createTemplateM = Memoize.memoize createTemplate
                 let createVarM      = Memoize.memoize createVar
             
                 let entryDoc  n doc = AF.newDoc n (lazy doc    ) |> EntryDoc |> Some
@@ -1150,15 +1182,16 @@ namespace FsRoot
                 let createEntryO lytNm (line:string) =
                     try
                         match splitTokens line with
-                        |   Identifier name :: Vertical   :: Measures measures          :: docs    -> entryDoc name <| createSplitterM(lytNm, name, true , measures, docs) 
-                        |   Identifier name :: Horizontal :: Measures measures          :: docs    -> entryDoc name <| createSplitterM(lytNm, name, false, measures, docs) 
-                        | [ Identifier name ;  Button     ;  Identifier act    ;  attrs ;  text  ] -> entryDoc name <| createButtonM(  lytNm, name, act  , attrs   , text) 
-                        | [ Identifier name ;  Input      ;  Identifier var    ;  attrs          ] -> entryDoc name <| createInputM(   lytNm, name, var  , attrs         ) 
-                        | [ Identifier name ;  TextArea   ;  Identifier var    ;  attrs          ] -> entryDoc name <| createTextAreaM(lytNm, name, var  , attrs         ) 
-                        | [ Identifier name ;  Var        ;                       v              ] -> entryVar name <| createVarM(     lytNm, name, fst v             ) 
-                        |   Identifier name :: Doc        :: doc                        :: parms   -> entryDoc name <| createDocM(     lytNm, name, fst doc  , parms         ) 
+                        |   Identifier name :: Vertical   :: Measures measures          :: docs    -> entryDoc name <| createSplitterM(lytNm, name, true , measures, docs ) 
+                        |   Identifier name :: Horizontal :: Measures measures          :: docs    -> entryDoc name <| createSplitterM(lytNm, name, false, measures, docs ) 
+                        | [ Identifier name ;  Button     ;  Identifier act    ;  attrs ;  text  ] -> entryDoc name <| createButtonM(  lytNm, name, act  , attrs   , text ) 
+                        | [ Identifier name ;  Input      ;  Identifier var    ;  attrs          ] -> entryDoc name <| createInputM(   lytNm, name, var  , attrs          ) 
+                        | [ Identifier name ;  TextArea   ;  Identifier var    ;  attrs          ] -> entryDoc name <| createTextAreaM(lytNm, name, var  , attrs          ) 
+                        | [ Identifier name ;  Var        ;                       v              ] -> entryVar name <| createVarM(     lytNm, name, fst v                 ) 
+                        |   Identifier name :: Doc        :: doc                        :: parms   -> entryDoc name <| createDocM(     lytNm, name, fst doc  , parms      ) 
+                        |   Identifier name :: Template   :: temp              :: attrs :: holes   -> entryDoc name <| createTemplateM(lytNm, name, temp , attrs   , holes)
                         |   Identifier name :: Grid       :: cols :: rows      :: attrs :: docs    -> None
-                        |   Identifier name :: Elem elem                       :: attrs :: docs    -> entryDoc name <| createElementM( lytNm, name, elem , attrs   , docs) 
+                        |   Identifier name :: Elem elem                       :: attrs :: docs    -> entryDoc name <| createElementM( lytNm, name, elem , attrs   , docs ) 
                         | _                                                                        -> None
                     with e -> 
                         printfn "%A" e
@@ -1406,7 +1439,7 @@ namespace FsRoot
                             plgDocs    = [| yield! getDocEntries entries
                                             yield  AF.newDocF "InputFile"  <| AF.FunDoc4(inputFile  lyt.lytName, "attrs", "Label", "Action", "[Doc]")
                                             yield  AF.newDocF "InputLabel" <| AF.FunDoc3(inputLabel lyt.lytName, "attrs", "Label", "Var"            )
-                                            yield  AF.newDocF "none"       <| AF.FunDoc1(none      , "x"                                )
+                                            yield  AF.newDocF "none"       <| AF.FunDoc1(none                  , "x"                                )
                                          |]
                             plgActions = [|                                       |]
                             plgQueries = [|                                       |]
