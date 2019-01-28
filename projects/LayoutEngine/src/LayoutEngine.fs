@@ -1,4 +1,4 @@
-////-d:FSharpStation1547097944900 -d:WEBSHARPER
+////-d:FSharpStation1548386943976 -d:WEBSHARPER
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
@@ -17,7 +17,7 @@
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 /// Root namespace for all code
-//#define FSharpStation1547097944900
+//#define FSharpStation1548386943976
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -334,7 +334,11 @@ namespace FsRoot
                             Object.setPrototypeOf($_c, $global.HTMLElement);
                             Object.setPrototypeOf($_o.prototype, $_c.prototype);
                             $global.customElements.define($_nm, $_o)""" >]
-                let defineWebComponent _nm _o _c = X<_>
+                let defineWebComponent_ _nm _o _c = X<_>
+            
+                let defineWebComponent _nm _o _c = 
+                    try defineWebComponent_ _nm _o _c
+                    with _ -> printfn "Failed to define WebComponent. Not supported."
             
                 module WcTabStrip =
                     open WebSharper.UI.Html
@@ -893,11 +897,11 @@ namespace FsRoot
             
                 let (|Vertical|Horizontal|Layout|Grid|Template|Elem|Nothing|) =
                     function
-                    | s , false when s = "vertical"   -> Vertical
-                    | s , false when s = "horizontal" -> Horizontal
-                    | s , false when s = "layout"     -> Layout
-                    | s , false when s = "grid"       -> Grid
-                    | s , false when s = "template"   -> Template
+                    | s, false when s = "vertical"   -> Vertical
+                    | s, false when s = "horizontal" -> Horizontal
+                    | s, false when s = "layout"     -> Layout
+                    | s, false when s = "grid"       -> Grid
+                    | s, false when s = "template"   -> Template
                     | Identifier id                   -> Elem id
                     |                               _ -> Nothing
             
@@ -909,6 +913,11 @@ namespace FsRoot
                     | s, false when s = "input"      -> Input
                     | s, false when s = "textarea"   -> TextArea
                     | s, false when s = "select"     -> Select
+                    |                              _ -> Nothing
+            
+                let (|Concat|Nothing|) =
+                    function
+                    | s, false when s = "concat"     -> Concat
                     |                              _ -> Nothing
             
                 type Measures = 
@@ -1163,7 +1172,8 @@ namespace FsRoot
                         with _ -> None
                         |>  Option.defaultWith  (fun ()  -> sprintf "Missing template: %s" (fst tempName) |> errDoc )
             
-            
+                let createConcat(lytNm, name, docs) =
+                    turnToView (fun _ -> getDocs lytNm docs |> Doc.Concat)
             
                 let createVar( lytNm, varName, v    ) = Var.Create v
             
@@ -1174,6 +1184,7 @@ namespace FsRoot
                 let createElementM  = Memoize.memoize createElement
                 let createDocM      = Memoize.memoize createDoc
                 let createTemplateM = Memoize.memoize createTemplate
+                let createConcatM   = Memoize.memoize createConcat
                 let createVarM      = Memoize.memoize createVar
             
                 let entryDoc  n doc = AF.newDoc n (lazy doc    ) |> EntryDoc |> Some
@@ -1190,6 +1201,7 @@ namespace FsRoot
                         | [ Identifier name ;  Var        ;                       v              ] -> entryVar name <| createVarM(     lytNm, name, fst v                 ) 
                         |   Identifier name :: Doc        :: doc                        :: parms   -> entryDoc name <| createDocM(     lytNm, name, fst doc  , parms      ) 
                         |   Identifier name :: Template   :: temp              :: attrs :: holes   -> entryDoc name <| createTemplateM(lytNm, name, temp , attrs   , holes)
+                        |   Identifier name :: Concat                                   :: docs    -> entryDoc name <| createConcatM(  lytNm, name,                  docs )
                         |   Identifier name :: Grid       :: cols :: rows      :: attrs :: docs    -> None
                         |   Identifier name :: Elem elem                       :: attrs :: docs    -> entryDoc name <| createElementM( lytNm, name, elem , attrs   , docs ) 
                         | _                                                                        -> None

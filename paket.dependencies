@@ -44,6 +44,7 @@ group Other
     nuget OpenCvSharp3-AnyCPU
     nuget SSH.NET
     nuget FSharp.Data.SqlClient
+    nuget FSharp.Data.TypeProviders
     nuget Microsoft.Orleans.Core.Abstractions
 
 group Test

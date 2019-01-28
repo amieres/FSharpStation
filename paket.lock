@@ -965,6 +965,8 @@ NUGET
     FSharp.Core (4.5.4)
     FSharp.Data.SqlClient (2.0.1)
       FSharp.Core (>= 4.1.18)
+    FSharp.Data.TypeProviders (5.0.0.6)
+      FSharp.Core (>= 3.1.2.5)
     Microsoft.Orleans.Core.Abstractions (2.2)
     OpenCvSharp3-AnyCPU (4.0.0.20181129)
     SSH.NET (2016.1)
