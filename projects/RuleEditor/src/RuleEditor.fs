@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1547097944900 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1548758124776 -d:WEBSHARPER
 ////#cd @"..\projects\RuleEditor\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -37,7 +37,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1547097944900
+//#define FSharpStation1548758124776
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -915,7 +915,7 @@ namespace FsRoot
                 
                     /// map version that protects against exceptions
                     let inline mapP           f    m = bindP (f >> rtn) m
-                    let iter                  fM f r = r   |> mapP f |> function ResultM(Some (), m) | ResultM(None, m) -> fM m  : unit
+                    let iter                  fM f r = r   |> mapP f |> function | ResultM(Some (), m) -> () | ResultM(None, m) -> fM m  : unit
                     let get                        r = r   |>          defaultWith (string >> failwith)
                     let ofOption              f   vO = vO  |> Option.map OkM          |> Option.defaultWith (f >> ErrorM)
                     let ofResult                  vR = vR  |> rtnr
@@ -1019,7 +1019,7 @@ namespace FsRoot
                     member __.Combine   (vRA,  fRA) : Async<Result<'b  , 'm>> = AsyncResult.bind fRA  vRA
                     member __.Combine   (vR ,  fRA) : Async<Result<'b  , 'm>> = AsyncResult.bind fRA (vR  |> AsyncResult.rtnR)
                     member __.Delay            fRA                            = fRA
-                    member __.Run              fRA                            = fRA ()
+                    member __.Run              fRA                            = AsyncResult.rtn () |> AsyncResult.bind fRA
                     member __.TryWith   (fRA , hnd) : Async<Result<'a  , 'm>> = async { try return! fRA() with e -> return! hnd e  }
                     member __.TryFinally(fRA , fn ) : Async<Result<'a  , 'm>> = async { try return! fRA() finally   fn  () }
                     member __.Using(resource , fRA) : Async<Result<'a  , 'm>> = async.Using(resource,       fRA)
@@ -1087,7 +1087,7 @@ namespace FsRoot
                             match vR with
                             | OkM   (v, m) -> return! fRA   v |> Async.map (ResultM.addMsg m)
                             | ErrorM    m  -> return  ErrorM m
-                        with  e -> return  ExceptMsg (e.Message, e.StackTrace) |> ErrorM
+                        with  e -> return ExceptMsg (e.Message, e.StackTrace) |> ErrorM
                     }
                     let inline bindr  f a  = rtnr   a |> bind f : AsyncResultM<_,_>
                     let inline bindM  f a  = rtnM   a |> bind f : AsyncResultM<_,_>
@@ -1122,7 +1122,7 @@ namespace FsRoot
                         member __.Combine   (vRA,  fRA) : Async<ResultM<'b  , 'm>> = bind fRA  vRA
                         member __.Combine   (vR ,  fRA) : Async<ResultM<'b  , 'm>> = bind fRA (vR  |> rtnR)
                         member __.Delay            fRA                             = fRA
-                        member __.Run              fRA                             = fRA ()
+                        member __.Run              fRA                             = rtn () |> bind fRA
                         member __.TryWith   (fRA , hnd) : Async<ResultM<'a  , 'm>> = async { try return! fRA() with e -> return! hnd e  }
                         member __.TryFinally(fRA , fn ) : Async<ResultM<'a  , 'm>> = async { try return! fRA() finally   fn  () }
                         member __.Using(resource , fRA) : Async<ResultM<'a  , 'm>> = async.Using(resource,       fRA)
@@ -1150,7 +1150,9 @@ namespace FsRoot
                     elif from <  0           then this.Substring2(0, n + from)
                     elif from >= this.Length then ""
                     else this.Substring(from, min n (this.Length - from))
-                member this.Left             n  = this.Substring2(0, n)
+                member this.Left             n  = if n < 0 
+                                                  then this.Substring2(0, this.Length + n)
+                                                  else this.Substring2(0, n              )
                 member this.Right            n  = this.Substring2(max 0 (this.Length - n), this.Length)
             
             module String =
@@ -1600,73 +1602,120 @@ namespace FsRoot
                     |> currentLensUpd' def curr (fun v -> model.UpdateBy (fun _ -> model.TryFindByKey (model.Key v) |> Option.map (fun _ -> v) ) <| model.Key v)
                 
             
-            /// binds an Editor with a Var<string> to avoid annoying jumps to the end when fast typing
-            /// onChange gets called when the editor changes but not when the var changes
-            let bindVarEditor setEvent getVal setVal onChange (var:Var<string>) =
-                let editorChanged = ref 0L
-                let varChanged    = ref 0L
-                setEvent(fun _ ->
-                    let v = getVal() 
-                    if var.Value <> v then editorChanged := !editorChanged + 1L; var.Value <- v; onChange() 
-                )
-                var.View |> View.Sink (fun _ ->
-                    if  !editorChanged > !varChanged then varChanged := !editorChanged
-                    elif getVal() <> var.Value then setVal var.Value
-                )
+            module GenEditor =
+                open WebSharper.UI.Html
+            
+                type Position = {
+                    line : int
+                    col  : int
+                }
+            
+                type AnnotationType =
+                | Error   
+                | Warning 
+                | Info    
+                | Hint
+                | Other of string
+            
+                type Annotation = {
+                    startP        : Position
+                    endP          : Position
+                    severity      : AnnotationType
+                    message       : string
+                }
+            
+                type Completion = {
+                    kind                : string
+                    label               : string
+                    detail              : string
+                    replace             : Position * Position
+                }
+            
+                type GenEditorHook<'T> = {
+                    generateDoc       :  unit                              -> Doc
+                    getValue          :  unit                              -> string
+                    setValue          :  string                            -> unit
+                    setDisabled       :  bool                              -> unit
+                    showAnnotations   :  Annotation seq                    -> unit
+                    hookOnRender      : ('T       -> unit)                 -> unit
+                    hookOnChange      : (string   -> unit)                 -> unit
+                    hookCompletion    : (Position -> Async<Completion []>) -> unit
+                    hookToolTip       : (Position -> Async<string       >) -> unit
+                    hookDeclaration   : (Position -> Async<Position     >) -> unit
+                }
+            
+                [<NoComparison ; NoEquality>]
+                type GenEditor<'T> = {
+                    var             : Var< string        >
+                    disabled        : View<bool          >
+                    annotations     : View<Annotation seq>
+                    onChange        : (string      -> unit                )
+                    onRender        : ('T          -> unit                )
+                    autoCompletion  : (Position    -> Async<Completion []>) option
+                    toolTip         : (Position    -> Async<string       >) option
+                    declaration     : (Position    -> Async<Position     >) option
+                    mutable editorO :  'T option
+            
+                    editorHook      : GenEditorHook<'T>
+                }
+                
+                let inline setVar   v   genE = { genE with var      = v   }
+                let inline onChange f   genE = { genE with onChange = f   }
+                let inline onRender f   genE = { genE with onRender = f   }
+                let inline disabled dis genE = { genE with disabled = dis }
+            
+                let inline var          genE = genE.var
+            
+                let newVar edh var = {
+                    var            = var 
+                    disabled       = V false
+                    annotations    = V Seq.empty
+                    onChange       = ignore
+                    onRender       = ignore
+                    editorHook     = edh
+                    autoCompletion = None
+                    toolTip        = None
+                    declaration    = None
+                    editorO        = None
+                }
+            
+                let newText edh (v:string)             = newVar edh (Var.Create v)
+                let newVarO edh (v:Var<string option>) = 
+                    Var.Lens v (Option.defaultValue "") (fun sO s -> sO |> Option.map (fun _ -> s) )
+                    |> newVar edh
+                    |> disabled(V (Option.isNone v.V))
+            
+                /// binds an Editor with a Var<string> to avoid annoying jumps to the end when fast typing
+                /// onChange gets called when the editor changes but not when the var changes
+                let bindVarEditor setEvent getVal setVal onChange (var:Var<_>) =
+                    let editorChanged = ref 0L
+                    let varChanged    = ref 0L
+                    setEvent(fun _ ->
+                        let v = getVal() 
+                        if var.Value <> v then editorChanged := !editorChanged + 1L; var.Value <- v; onChange v 
+                    )
+                    var.View |> View.Sink (fun _ ->
+                        if  !editorChanged > !varChanged then varChanged := !editorChanged
+                        elif getVal() <> var.Value then setVal var.Value
+                    )
+            
+                let generateDoc genE = 
+                    genE                                         .editorHook.hookOnRender (fun ed ->
+                        genE.editorO        <- Some ed
+                        genE.var            |> bindVarEditor genE.editorHook.hookOnChange    
+                                                             genE.editorHook.getValue 
+                                                             genE.editorHook.setValue 
+                                                             genE.onChange
+                        genE.annotations    |> View.Sink     genE.editorHook.showAnnotations
+                        genE.disabled       |> View.Sink     genE.editorHook.setDisabled
+                        genE.onRender ed
+                    )
+                    genE                                         .editorHook.generateDoc()
             
             [< Inline """(!$v)""">]
             let isUndefined v = v.GetType() = v.GetType()
                 
             
-            module LoadFiles =
-            
-                let createScript fn =
-                    let fileRef = JS.Document.CreateElement("script")
-                    fileRef.SetAttribute("type", "text/javascript"  )
-                    fileRef.SetAttribute("src" , fn                 )
-                    fileRef
-                
-                let createCss fn =
-                    let fileRef = JS.Document.CreateElement("link")
-                    fileRef.SetAttribute("rel" , "stylesheet"     )
-                    fileRef.SetAttribute("type", "text/css"       )
-                    fileRef.SetAttribute("href", fn               )
-                    fileRef
-                
-                let createHtml fn =
-                    let fileRef = JS.Document.CreateElement("link")
-                    fileRef.SetAttribute("rel" , "import"         )
-                    fileRef.SetAttribute("type", "text/html"      )
-                    fileRef.SetAttribute("href", fn               )
-                    fileRef
-                
-                let LoadFile(file: string) =
-                    let (|EndsWith|_|) s (fn:string) = if fn.EndsWith s then Some() else None
-                    match file with
-                    | EndsWith ".js"   ()
-                    | EndsWith ".fsx"  ()
-                    | EndsWith ".fs"   () when isUndefined <| JS.Document.QuerySelector("script[src='" + file + "']") ->
-                                            createScript file |> Some
-                    | EndsWith ".css"  ()-> createCss    file |> Some
-                    | EndsWith ".html" ()-> createHtml   file |> Some
-                    | _                  -> None
-                    |> Option.map         (fun ref -> 
-                        Async.FromContinuations <| 
-                            fun (cont, econt, _ccont) -> 
-                                try 
-                                    ref?onload <- cont
-                                    JS.Document.Head.AppendChild ref |> ignore
-                                with e -> econt e
-                    )
-                    |> Option.defaultWith (fun ()  -> async { return () })
-                
-                let LoadFilesAsync(files: string []) =
-                    async {
-                        if IsClient then
-                            for file in files do
-                                do! LoadFile file
-                    }
-                
             let (|REGEX|_|) (expr: string) (opt: string) (value: string) =
                 if value = null then None else
                 match JavaScript.String(value).Match(RegExp(expr, opt)) with
@@ -1890,7 +1939,7 @@ namespace FsRoot
                 [<NoComparison ; NoEquality>]
                 type MonacoConfig = {
                     var             : Var<string>
-                    onChange        : (unit   -> unit)
+                    onChange        : (string -> unit)
                     onRender        : (Editor -> unit) option
                     mutable editorO :  Editor option
                     disabled        : View<bool>
@@ -1927,7 +1976,7 @@ namespace FsRoot
                                  elchild.ParentNode.RemoveChild elchild |> ignore
                                  monc.editorO     <- Some editor
                                  monc.onRender |> Option.iter (fun onrender -> onrender editor)
-                                 monc.var |> bindVarEditor editor.OnDidChangeModelContent editor.GetValue editor.SetValue monc.onChange
+                                 monc.var |> GenEditor.bindVarEditor editor.OnDidChangeModelContent editor.GetValue editor.SetValue monc.onChange
                                  //monc.disabled |> View.Sink (fun dis -> editor.SetOption("readOnly", if dis then "nocursor" :> obj else false :> obj) )
                           )    
                         ] []
@@ -1941,6 +1990,149 @@ namespace FsRoot
                 let newVarO(v:Var<string option>) = Var.Lens v (Option.defaultValue "") (fun sO s -> sO |> Option.map (fun _ -> s) )
                                                     |> newVar
                                                     |> disabled(V (Option.isNone v.V))
+            
+            module MonacoGenAdapter =
+                open GenEditor
+                open Monaco
+                open WebSharper.UI.Html
+            
+                type MonacoRT = {
+                    mutable editorO     : Monaco.Editor option
+                    mutable onRender    : Monaco.Editor -> unit
+                    mutable onChange    : obj -> unit
+                    mutable completion  : (Position -> Async<Completion []>) option
+                    mutable toolTip     : (Position -> Async<string       >) option
+                    mutable declaration : (Position -> Async<Position     >) option
+                    options             : obj
+                    overrides           : obj
+                }
+            
+                type CompletionItemProvider(ed:Editor, f) =
+                    do()
+                   with
+                      member __.provideCompletionItems(model:Model, pos:Position, token:obj, context: obj): CompletionItem[] =
+                        asyncResult {
+                          let indent, first = getIndentAndFirst()
+                          let txt = String.replicate indent " " + model.GetLineContent(pos.lineNumber)
+                          let! comps, other = completion txt true fileName (pos.lineNumber + first) (pos.column + indent) "Contains"
+                          return comps 
+                                 |> Array.map(fun (comp:CommTypes.CompletionResponse) -> 
+                                     { kind   = convertGlyphChar comp.GlyphChar
+                                       label  = comp.Name
+                                       detail = ""
+                                     } )
+                        } |> Async.map (function Ok v -> v | Error m -> failwith <| sprintf "%A" m ) |> Promise.OfAsync
+                      member __.resolveCompletionItem(item: CompletionItem, token: obj): CompletionItem = { item with detail = "more details" }
+            
+                type HoverProvider(ed:Editor) =
+                    do()
+                   with
+                      member __.provideHover(model:Model, pos:Position, token:obj) =
+                          let word = model.GetWordAtPosition pos
+                          if isUndefined word then box null |> unbox else
+                          {
+                              contents = { value = word?word |> sprintf "The word is: %s" ; isTrusted = true } |> Array.singleton
+                              range    = {
+                                            startLineNumber = pos.lineNumber
+                                            endLineNumber   = pos.lineNumber
+                                            startColumn     = word.startColumn
+                                            endColumn       = word.endColumn
+                                         }
+                          }
+            
+                type DefinitionProvider(ed:Editor) =
+                    do()
+                   with
+                      member __.provideDefinition(model: Model, pos: Position, token: obj): Location =
+                          let word = model.GetWordAtPosition pos
+                          if isUndefined word then box null |> unbox else
+                          let ms = model.FindMatches(word.word, false, false, true, " <>()+-=.,/#@$%^&*\"", false, 1)
+                          if ms.Length = 0    then box null |> unbox else
+                          { range = ms.[0].range
+                            uri = model.uri
+                          }
+            
+            
+                let generateDoc monRT =
+                    async {
+                      do! Monaco.loader
+                      return
+                          div [ on.afterRender (fun elchild ->
+                                let editor        = Monaco.Editor.Create elchild.ParentElement monRT.options monRT.overrides
+                                ResizeObserver.addResizeObserver editor.Layout elchild.ParentElement
+                                elchild.ParentNode.RemoveChild elchild |> ignore
+                                monRT.editorO     <- Some editor
+                                monRT.onRender    <| unbox (box editor)
+                                editor.OnDidChangeModelContent monRT.onChange
+                                monRT.completion |> Option.iter (fun f -> Editor.RegisterCompletionItemProvider("fsharp", new CompletionItemProvider(editor, f) ) |> ignore )
+                        //let 
+                        //let hp = new HoverProvider         (ed)
+                        //let dp = new DefinitionProvider    (ed)
+                        //hp.provideHover |> print
+                        //cp.provideCompletionItems |> print
+                        //cp.resolveCompletionItem  |> print
+                        //dp.provideDefinition      |> print
+                        //Editor.RegisterHoverProvider         ("fsharp", hp ) |> ignore
+                        //Editor.RegisterCompletionItemProvider("fsharp", cp ) |> ignore
+                        //Editor.RegisterDefinitionProvider    ("fsharp", dp ) |> ignore
+                          )    
+                        ] []
+                    } |> Doc.Async
+            
+                let getValue monRT     = monRT.editorO |> Option.map( fun ed -> ed.GetValue()   ) |> Option.defaultValue "" 
+                let setValue monRT txt = monRT.editorO |> Option.iter(fun ed -> ed.SetValue txt )
+            
+                let showAnnotations monRT ans =
+                    match monRT.editorO with
+                    | None    -> ()
+                    | Some ed ->
+                    let ms =
+                        ans
+                        |> Seq.map (fun (an:Annotation) ->
+                            {   message         = an.message
+                                severity        = match an.severity with 
+                                                  | Error   -> MarkerSeverity.Error 
+                                                  | Warning -> MarkerSeverity.Warning  
+                                                  | Hint    -> MarkerSeverity.Hint 
+                                                  | _       -> MarkerSeverity.Info
+                                startColumn     = an.startP.col
+                                startLineNumber = an.startP.line
+                                endColumn       = an.endP  .col
+                                endLineNumber   = an.endP  .line
+                            }
+                        )
+                        |> Seq.toArray
+                    Editor.SetModelMarkers(ed.GetModel(), "annotations", ms)
+            
+                let newHook monRT = {
+                    generateDoc       = fun ()  -> generateDoc monRT 
+                    getValue          = fun ()  -> getValue    monRT
+                    setValue          =            setValue    monRT
+                    showAnnotations   = showAnnotations        monRT
+                    setDisabled       = ignore //  bool                              -> unit
+                    hookOnRender      = fun f   -> monRT.onRender <- f
+                    hookOnChange      = fun f   -> monRT.onChange <- (fun _ -> f <| getValue monRT)
+                    hookCompletion    = ignore //: (Position -> Async<Completion []>) -> unit
+                    hookToolTip       = ignore //: (Position -> Async<string       >) -> unit
+                    hookDeclaration   = ignore //: (Position -> Async<Position     >) -> unit
+            
+                }
+            
+                let newRT options overrides = {
+                    editorO     = None
+                    onRender    = ignore
+                    onChange    = ignore
+                    completion  = None
+                    toolTip     = None
+                    declaration = None
+                    options     = options   
+                    overrides   = overrides 
+                }
+            
+                let newVar options overrides v =
+                    newRT options overrides
+                    |> newHook
+                    |> GenEditor.newVar <| v
             
         /// Essentials that part runs in Javascript and part runs in the server
         [< AutoOpen >]
@@ -3397,7 +3589,7 @@ namespace FsRoot
                 Monaco.newVar var
                 |> onRender(fun ed -> 
                     Editor.SetModelLanguage(ed.GetModel(), "fsharp")
-                    Editor.SetTheme("vs-dark")
+                    //Editor.SetTheme("vs-dark")
                     let hp = new HoverProvider         (ed)
                     let cp = new CompletionItemProvider(ed)
                     let dp = new DefinitionProvider    (ed)
@@ -4338,7 +4530,7 @@ namespace FsRoot
             open FsRoot
             module AF = AppFramework 
         
-            let RuleEditorLyt = "RuleEditorLyt"
+            let layoutName = "RuleEditorLyt"
         
             let scrollToBottom (e:Dom.Element) (_:obj) = 
                 async { 
@@ -4457,11 +4649,11 @@ namespace FsRoot
                     FileName         div                                 "class=form-control"  FSharpStation.fileName
                    """
                 | e -> e.TextContent
-                |> LayoutEngine.newLyt RuleEditorLyt
+                |> LayoutEngine.newLyt layoutName
                 |> LayoutEngine.addLayout
         
                 None
-                |> Option.defaultValue RuleEditorLyt
+                |> Option.defaultValue layoutName
                 |> AF.mainDocV.Set
         
                 async {

@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Async,WebSharper,Obj,Result,Builder,Operators,Eff,Eff$1,Done,LambdaT,Operators$1,EffBuilder,State,Put,Get,Log,LogEntry,Rsl,Fail,ResultM,Builder$1,Operators$2,ResultMAutoOpen,AsyncResultM,AsyncResultMBuilder,AsyncResultMAutoOpen,String,SortWith,StackOverflow,Templating,TipoAliado,Pais,State$1,Identificacion,TipoCuenta,CuentaBancaria,StatusAliado,ConceptoPago,Transaccion,TipoDireccion,Direccion,TipoTelefono,Telefono,Genero,DatosPersonales,TipoMensaje,Remitente,Mensaje,Aliado,PremisasCalculo,Modelo,AliadoModule,Rpc,ModeloUI,RenderAliados,RenderAliado,MainProgram,Server,SC$1,StackOverflow_GeneratedPrintf,StackOverflow_Templates,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,console,Slice,Date,Collections,FSharpMap,Dictionary,Map,UI,View,FSharpSet,Templating$1,Runtime$1,Server$1,ProviderBuilder,Handler,TemplateInstance,Var$1,Doc,LibraryJS,AppFramework,PlugIn,Lazy,LayoutEngineModule,Remoting,AjaxRemotingProvider,Client,Templates;
+ var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Async,WebSharper,Obj,Result,Builder,Operators,Eff,Eff$1,Done,LambdaT,Operators$1,EffBuilder,State,Put,Get,Log,LogEntry,Rsl,Fail,ResultM,Builder$1,Operators$2,ResultMAutoOpen,AsyncResultM,AsyncResultMBuilder,AsyncResultMAutoOpen,String,SortWith,StackOverflow,Templating,TipoAliado,Pais,State$1,Identificacion,TipoCuenta,CuentaBancaria,StatusAliado,ConceptoPago,Transaccion,TipoDireccion,Direccion,TipoTelefono,Telefono,Genero,DatosPersonales,TipoMensaje,Remitente,Mensaje,Aliado,PremisasCalculo,Modelo,AliadoModule,Buscar,Rpc,ModeloUI,RenderAliados,RenderAliado,MainProgram,Server,SC$1,StackOverflow_GeneratedPrintf,StackOverflow_Templates,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,console,Slice,Date,Collections,Dictionary,FSharpMap,UI,View,FSharpSet,Templating$1,Runtime$1,Server$1,ProviderBuilder,Handler,TemplateInstance,Var$1,Doc,LibraryJS,AppFramework,PlugIn,Lazy,LayoutEngineModule,Remoting,AjaxRemotingProvider,Client,Templates;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -61,6 +61,7 @@
  PremisasCalculo=StackOverflow.PremisasCalculo=StackOverflow.PremisasCalculo||{};
  Modelo=StackOverflow.Modelo=StackOverflow.Modelo||{};
  AliadoModule=StackOverflow.AliadoModule=StackOverflow.AliadoModule||{};
+ Buscar=AliadoModule.Buscar=AliadoModule.Buscar||{};
  Rpc=StackOverflow.Rpc=StackOverflow.Rpc||{};
  ModeloUI=StackOverflow.ModeloUI=StackOverflow.ModeloUI||{};
  RenderAliados=StackOverflow.RenderAliados=StackOverflow.RenderAliados||{};
@@ -86,9 +87,8 @@
  Slice=WebSharper&&WebSharper.Slice;
  Date=Global.Date;
  Collections=WebSharper&&WebSharper.Collections;
- FSharpMap=Collections&&Collections.FSharpMap;
  Dictionary=Collections&&Collections.Dictionary;
- Map=Collections&&Collections.Map;
+ FSharpMap=Collections&&Collections.FSharpMap;
  UI=WebSharper&&WebSharper.UI;
  View=UI&&UI.View;
  FSharpSet=Collections&&Collections.FSharpSet;
@@ -2664,91 +2664,25 @@
    premisas:premisas
   };
  };
- AliadoModule.actualizarModelEf=function()
+ Buscar.New=function(hijosDe,nivelDe,aliado,aliadoO,hijos,descendientes)
  {
-  var b;
-  b=Eff.eff();
-  return b.Delay(function()
-  {
-   return b.Bind(State.get(),function(a)
-   {
-    return b.Bind(State.put(Modelo.New(a.idAliado,AliadoModule.actualizarAliados(a),a.anoActual,a.periodoActual,a.premisas)),function()
-    {
-     return b.Zero();
-    });
-   });
-  });
+  return{
+   hijosDe:hijosDe,
+   nivelDe:nivelDe,
+   aliado:aliado,
+   aliadoO:aliadoO,
+   hijos:hijos,
+   descendientes:descendientes
+  };
  };
  AliadoModule.actualizarAliados=function(modelo)
  {
-  var aliadoActualizadoM,p,cache,getOrAdd,pre,aliados,padresHijos;
-  function buscarAliadoO(id)
-  {
-   var m,o;
-   m=(o=null,[aliados.TryGetValue(id,{
-    get:function()
-    {
-     return o;
-    },
-    set:function(v)
-    {
-     o=v;
-    }
-   }),o]);
-   return m[0]?{
-    $:1,
-    $0:m[1]
-   }:null;
-  }
-  function buscarAliado(id)
-  {
-   try
-   {
-    return aliados.get_Item(id);
-   }
-   catch(e)
-   {
-    return(function($1)
-    {
-     return function($2)
-     {
-      return $1("buscarAliado failed: "+StackOverflow_GeneratedPrintf.p($2));
-     };
-    }(Operators$3.FailWith))(id);
-   }
-  }
-  function hijosDe(idO)
-  {
-   var m,o;
-   m=(o=null,[padresHijos.TryGetValue({
-    $:1,
-    $0:idO
-   },{
-    get:function()
-    {
-     return o;
-    },
-    set:function(v)
-    {
-     o=v;
-    }
-   }),o]);
-   return m[0]?m[1]:[];
-  }
-  function nivelDe(idO)
-  {
-   var o,o$1;
-   o=(o$1=idO==null?null:buscarAliadoO(idO.$0),o$1==null?null:{
-    $:1,
-    $0:1+nivelDe(o$1.$0.idPadreO)
-   });
-   return o==null?0:o.$0;
-  }
+  var aliadoActualizadoM,p,cache,getOrAdd,buscar,pre;
   function aliadoActualizado(alid)
   {
    var al,hijos,nReferidos,nRefActivos,nDescendientes,nDescActivos,nivel,_al,p$1;
-   al=buscarAliado(alid);
-   hijos=Seq$1.cache(Seq$1.map(aliadoActualizadoM,hijosDe(al.id)));
+   al=buscar.aliado(alid);
+   hijos=Seq$1.cache(Seq$1.map(aliadoActualizadoM,buscar.hijosDe(al.id)));
    nReferidos=Seq$1.length(hijos);
    nRefActivos=Seq$1.length(Seq$1.filter(function(al$1)
    {
@@ -2762,7 +2696,7 @@
    {
     return al$1.nDescActivos+al$1.nRefActivos;
    },hijos);
-   nivel=1+nivelDe(al.idPadreO);
+   nivel=1+buscar.nivelDe(al.idPadreO);
    _al=Aliado.New(al.id,al.idPadreO,al.identificacion,al.datosPersonales,al.formasPago,al.transacciones,al.mensajes,al.isInternal,al.status,nRefActivos>=pre.numeroReferidosMaster?TipoAliado.Master:TipoAliado.Regular,al.fechaRegistro,Date.now(),nReferidos,nRefActivos,nDescendientes,nDescActivos,al.comision,nivel);
    p$1=AliadoModule.comision(pre,_al);
    return Aliado.New(_al.id,_al.idPadreO,_al.identificacion,_al.datosPersonales,_al.formasPago,_al.transacciones,_al.mensajes,_al.isInternal,_al.status,_al.tipo,_al.fechaRegistro,_al.fechaStatus,_al.nReferidos,_al.nRefActivos,_al.nDescendientes,_al.nDescActivos,p$1[0]+p$1[1],_al.nivel);
@@ -2796,12 +2730,8 @@
    o=checkO(p$1);
    return o==null?store(p$1,f(p$1)):o.$0;
   }
+  buscar=AliadoModule.busqueda(modelo.aliados);
   pre=modelo.premisas;
-  aliados=new FSharpMap.New(Seq$1.map(function(al)
-  {
-   return[al.id,al];
-  },modelo.aliados));
-  padresHijos=AliadoModule.padresHijos(modelo.aliados);
   aliadoActualizadoM=(p=(cache=new Dictionary.New$5(),[[checkO,function($1)
   {
    return function($2)
@@ -2815,10 +2745,114 @@
   {
    return(getOrAdd(p$1))(aliadoActualizado);
   },p[1]]))[0];
-  return Arrays.ofSeq(Seq$1.map(aliadoActualizadoM,Seq$1.map(function(kvp)
+  return Arrays.ofSeq(Seq$1.map(aliadoActualizadoM,Seq$1.map(function(al)
   {
-   return kvp.K;
-  },aliados)));
+   return al.id;
+  },modelo.aliados)));
+ };
+ AliadoModule.busqueda=function(aliados)
+ {
+  var padres,aliadosMap;
+  function m(pO,ch)
+  {
+   return[pO,Arrays.ofSeq(Seq$1.map(function(t)
+   {
+    return t[1];
+   },ch))];
+  }
+  function aliadoO(id)
+  {
+   var m$1,o;
+   m$1=(o=null,[aliadosMap.TryGetValue(id,{
+    get:function()
+    {
+     return o;
+    },
+    set:function(v)
+    {
+     o=v;
+    }
+   }),o]);
+   return m$1[0]?{
+    $:1,
+    $0:m$1[1]
+   }:null;
+  }
+  function hijosDe(idO)
+  {
+   var m$1,o;
+   m$1=(o=null,[padres.TryGetValue({
+    $:1,
+    $0:idO
+   },{
+    get:function()
+    {
+     return o;
+    },
+    set:function(v)
+    {
+     o=v;
+    }
+   }),o]);
+   return m$1[0]?m$1[1]:[];
+  }
+  function nivelDe(idO)
+  {
+   var o,o$1;
+   o=(o$1=idO==null?null:aliadoO(idO.$0),o$1==null?null:{
+    $:1,
+    $0:1+nivelDe(o$1.$0.idPadreO)
+   });
+   return o==null?0:o.$0;
+  }
+  function hijos(al)
+  {
+   return Arrays.choose(aliadoO,hijosDe(al.id));
+  }
+  function descendientes(al)
+  {
+   return Arrays.ofSeq(Seq$1.delay(function()
+   {
+    return Seq$1.collect(function(h)
+    {
+     return Seq$1.append([h],Seq$1.delay(function()
+     {
+      return descendientes(h);
+     }));
+    },hijos(al));
+   }));
+  }
+  padres=new FSharpMap.New(Seq$1.map(function($1)
+  {
+   return m($1[0],$1[1]);
+  },Seq$1.groupBy(function(t)
+  {
+   return t[0];
+  },Seq$1.map(function(al)
+  {
+   return[al.idPadreO,al.id];
+  },aliados))));
+  aliadosMap=new FSharpMap.New(Seq$1.map(function(al)
+  {
+   return[al.id,al];
+  },aliados));
+  return Buscar.New(hijosDe,nivelDe,function(id)
+  {
+   try
+   {
+    return aliadosMap.get_Item(id);
+   }
+   catch(e)
+   {
+    return(function($1)
+    {
+     return function($2)
+     {
+      return $1("buscarAliado failed: "+StackOverflow_GeneratedPrintf.p($2));
+     };
+    }(Operators$3.FailWith))(id);
+   }
+  },aliadoO,hijos,descendientes);
  };
  AliadoModule.comision=function(pre,al)
  {
@@ -2831,26 +2865,6 @@
   var p;
   p=al.tipo.$==0?[pre.comisionReferidosMaster,pre.comisionDescendientesMaster]:[pre.comisionReferidosRegular,pre.comisionDescendientesRegular];
   return al.status.$==0?[p[0],p[1]]:[0,0];
- };
- AliadoModule.padresHijos=function(als)
- {
-  function m(pO,ch)
-  {
-   return[pO,Arrays.ofSeq(Seq$1.map(function(t)
-   {
-    return t[1];
-   },ch))];
-  }
-  return new FSharpMap.New(Seq$1.map(function($1)
-  {
-   return m($1[0],$1[1]);
-  },Seq$1.groupBy(function(t)
-  {
-   return t[0];
-  },Seq$1.map(function(al)
-  {
-   return[al.idPadreO,al.id];
-  },als))));
  };
  AliadoModule.statusActual=function(ano,mes,al)
  {
@@ -2933,14 +2947,14 @@
   SC$1.$cctor();
   return SC$1.modeloV;
  };
- RenderAliados.aliados$4051$45=function(seleccionar,alid)
+ RenderAliados.aliados$4076$45=function(seleccionar,alid)
  {
   return function()
   {
    seleccionar(alid);
   };
  };
- RenderAliados.aliados$4049$45=function(expandir,alid)
+ RenderAliados.aliados$4074$45=function(expandir,alid)
  {
   return function()
   {
@@ -2949,14 +2963,14 @@
  };
  RenderAliados.aliados=function()
  {
-  var expandidos,padres,b,T,x,p,i;
-  function hijosDe(padres$1,id)
+  var expandidos,hijosDeO,b,T,x,p,i;
+  function hijosDe(id)
   {
-   var o;
-   o=Map.TryFind({
+   var o,o$1;
+   o=(o$1=hijosDeO.Get(),o$1==null?null:{
     $:1,
-    $0:id
-   },padres$1);
+    $0:o$1.$0(id)
+   });
    return o==null?[]:o.$0;
   }
   function nombre(dp)
@@ -2987,16 +3001,16 @@
   }
   function expandido(id)
   {
-   return View.Map2(function(exp,padres$1)
+   return View.Map(function(exp)
    {
-    return Seq$1.isEmpty(hijosDe(padres$1,id))?"":Unchecked.Equals(exp==null?null:{
+    return Seq$1.isEmpty(hijosDe(id))?"":Unchecked.Equals(exp==null?null:{
      $:1,
      $0:exp.$0.Contains(id)
     },{
      $:1,
      $0:true
     })?"Expandido":"Colapsado";
-   },expandidos.get_View(),padres.get_View());
+   },expandidos.get_View());
   }
   function expandir(id)
   {
@@ -3032,7 +3046,7 @@
   }
   function sortAliados(als)
   {
-   var c,c$1,c$2,c$3,c$4,c$5,c$6,c$7,c$8,$1,nivel,raiz,o,als$1,aliados;
+   var c,c$1,c$2,c$3,c$4,c$5,c$6,c$7,c$8,$1,nivel,raiz,o,als$1,buscar;
    function f(al)
    {
     return al.comision;
@@ -3053,16 +3067,17 @@
    {
     return nombre(al.datosPersonales);
    }
-   function hijos(al)
+   function buscarExpandidos(al)
    {
     return Seq$1.delay(function()
     {
      return Seq$1.append([al],Seq$1.delay(function()
      {
-      return expandidos.Get().$0.Contains(al.id)?Seq$1.collect(hijos,Seq$1.map(function(id)
-      {
-       return aliados.get_Item(id);
-      },hijosDe(padres.Get(),al.id))):[];
+      var o$1,o$2;
+      return(o$1=(o$2=expandidos.Get(),o$2==null?null:{
+       $:1,
+       $0:o$2.$0.Contains(al.id)
+      }),o$1==null?false:o$1.$0)?Seq$1.collect(buscarExpandidos,buscar.hijos(al)):[];
      }));
     });
    }
@@ -3094,11 +3109,11 @@
    {
     return(c($2))($3);
    },als));
-   padres.Set(AliadoModule.padresHijos(als$1));
-   aliados=new FSharpMap.New(Seq$1.map(function(al)
-   {
-    return[al.id,al];
-   },als$1));
+   buscar=AliadoModule.busqueda(als$1);
+   hijosDeO.Set({
+    $:1,
+    $0:buscar.hijosDe
+   });
    try
    {
     nivel=Seq$1.min(Seq$1.map(function(al)
@@ -3126,7 +3141,7 @@
    },raiz)),o==null?void 0:seleccionar(o.$0)):void 0;
    return Seq$1.delay(function()
    {
-    return Seq$1.collect(hijos,raiz);
+    return Seq$1.collect(buscarExpandidos,raiz);
    });
   }
   function a(alid,alv)
@@ -3213,7 +3228,7 @@
    }))),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i$1=new TemplateInstance.New(p$1[1],StackOverflow_Templates.filaaliado(p$1[0])),(b$1.i=i$1,i$1)))).get_Doc();
   }
   expandidos=Var$1.Create$1(null);
-  padres=Var$1.Create$1(new FSharpMap.New([]));
+  hijosDeO=Var$1.Create$1(null);
   return(b=(T=Doc.ConvertSeqBy(function(al)
   {
    return al.id;
@@ -3458,7 +3473,10 @@
   },ModeloUI.modeloV().get_View())),AppFramework.newViw("anoActual",View.Map(function($1)
   {
    return Global.String($1.anoActual);
-  },ModeloUI.modeloV().get_View()))],[AppFramework.newDoc("Aliados",Lazy.Create(RenderAliados.aliados)),AppFramework.newDoc("Aliado",Lazy.Create(RenderAliado.aliado)),AppFramework.newDoc("Calculo",Lazy.Create(RenderAliado.calculo))],[],[]));
+  },ModeloUI.modeloV().get_View()))],[AppFramework.newDoc("Aliados",Lazy.Create(RenderAliados.aliados)),AppFramework.newDoc("Aliado",Lazy.Create(RenderAliado.aliado)),AppFramework.newDoc("Calculo",Lazy.Create(RenderAliado.calculo))],[AppFramework.newAct("Logout",function()
+  {
+   MainProgram.logout();
+  })],[]));
   LayoutEngineModule.addLayout((l=(m=self.document.getElementById("GlobalLayout"),Unchecked.Equals(m,null)?"\r\n                    menuEditor       horizontal  65       menuLogo                  editorMessages\r\n                    double           horizontal  0-50-100 AppFramework.AppFwkClient menuEditor\r\n                    menuLogo         vertical    350      logo                      menu\r\n                    logo             span       \"margin:0; color:gray; font-size: 55px; font-weight:530\" \"F# Station\"\r\n                    editorMessages   horizontal 10-83-100 editorButtons             messages\r\n                    messages         vertical   0-50-100  messagesLeft              messagesRight\r\n                    editorButtons    vertical -200 snippetsSnippet buttons\r\n                    buttons div      \"overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px\" btnSaveAs none x btnAddSnippet btnDeleteSnippet btnIndentIn btnIndentOut none x btnRunFS none x btnAbortFsi\r\n                    snippetsSnippet  vertical   0-20-100  snippets                  editorProperties\r\n                    snippets         horizontal 20        \"${FSharpStation.CurrentPath}\" FSharpStation.Snippets\r\n                    editorProperties vertical   0-100-100 snippet                   properties\r\n                    properties       div        \"\"        FSharpStation.Properties\r\n                    snippet          horizontal 35        Name                      FSharpStation.editor\r\n                    menu             span  \"\" btnLoad btnImport\r\n        \r\n                    btnSaveAs        button FSharpStation.SaveAs         \"class=btn ${FSharpStation.SaveNeeded}\" \"Save as...    \"\r\n                    btnAddDimension  button RuleEditor.AddDimension      \"\"                  \"Add Dimension \"\r\n                    btnDeleteSnippet button FSharpStation.RemoveSnippet  \"\"                  \"Delete Snippet\"\r\n                    btnIndentIn      button FSharpStation.IndentIn       \"\"                  \"Indent In  >> \"\r\n                    btnIndentOut     button FSharpStation.IndentOut      \"\"                  \"Indent Out << \"\r\n                    btnRunFS         button FSharpStation.RunFS          \"\"                  \"Run F#        \"\r\n                    btnAbortFsi      button FSharpStation.AbortFsi       \"\"                  \"Abort Fsi     \"\r\n        \r\n                    messagesLeft     wcomp-tabstrip                      \"\"                  Output FsCode\r\n                    messagesRight    wcomp-tabstrip                      \"\"                  Parser\r\n        \r\n                    Output           textarea  FSharpStation.Output      \"tabname=Output ; placeholder=Output messages ; spellcheck=false\" \r\n                    FsCode           textarea  FSharpStation.FsCode      \"tabname=F# Code; placeholder=F# Code         ; spellcheck=false\" \r\n                    Parser           textarea  FSharpStation.Parser      \"tabname=Parser ; placeholder=Parser messages; dblclick=${FSharpStation.JumpTo} ; spellcheck=false\" \r\n                    Name             Doc       InputLabel                \"\"     \"Name:\"        FSharpStation.SnippetName\r\n                    btnLoad          Doc       InputFile                 \"\"     \"Load File...\" FSharpStation.LoadFile  FileName\r\n                    btnImport        Doc       InputFile                 \"\"     \"Import...\"    FSharpStation.Import    \"\"\r\n                    FileName         div                                 \"class=form-control\"  FSharpStation.fileName\r\n                   ":m.textContent),LayoutEngineModule.newLyt(MainProgram.layoutName(),l)));
   a=(o=null,(v=MainProgram.layoutName(),o==null?v:o.$0));
   AppFramework.mainDocV().Set(a);
@@ -3482,6 +3500,18 @@
    self.document.title=t;
   },titleV.get_View());
  };
+ MainProgram.logout=function()
+ {
+  var b;
+  Rpc.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+  {
+   return b.Bind$4((new AjaxRemotingProvider.New()).Async("StackOverflow:FsRoot.StackOverflow+Rpc.logoutUser:933851348",[]),function()
+   {
+    self.location.reload();
+    return b.Zero();
+   });
+  }))));
+ };
  MainProgram.mesToString=function(a)
  {
   return a===1?"Ene":a===2?"Feb":a===3?"Mar":a===4?"Abr":a===5?"May":a===6?"Jun":a===7?"Jul":a===8?"Ago":a===9?"Sep":a===10?"Oct":a===11?"Nov":a===12?"Dic":"---";
@@ -3503,7 +3533,7 @@
   SC$1.$cctor();
   return SC$1.layoutName;
  };
- Server.content$4305$35=function()
+ Server.content$4342$35=function()
  {
   return function(e)
   {
@@ -3521,7 +3551,7 @@
     }
   };
  };
- Server.content$4298$58=function()
+ Server.content$4332$58=function()
  {
   MainProgram.mainProgram();
   return Doc.TextNode("Initialized");

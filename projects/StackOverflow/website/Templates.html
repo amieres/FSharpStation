@@ -164,7 +164,7 @@
                 |          main
 
                 main div ""
-                :                template  header     "id=header"           brand  brandV 
+                :                template  header     "id=header"           brand  brandV   logout "@{Prozper.Logout}"
                 :                template  content    "id=content-wrapper"  brand  brandV   content aliados fecha "@{Prozper.mesActual} @{Prozper.anoActual}"
                 :                template  sidedrawer "id=sidedrawer"       brand  brandV 
                 :                template  footer     "id=footer"           brand  brandV   madeby "CIPHER Bsc" madebylink "www.cipherbsc.com"
@@ -179,7 +179,7 @@
                 Aliado           div       "class=mui-col-md-8"
                 :                Doc Prozper.Aliado
 
-                Comisiones       template    tablacomisiones "class=mui-col-md-4"  tbody filasComisiones
+                Comisiones       template    tablacomisiones "class=mui-col-md-3"  tbody filasComisiones
                 filasComisiones  concat      ""
                 :                template    filacomision    ""  periodo "Ene 2018" comision "$1,000"
                 :                template    filacomision    ""  periodo "Feb 2018" comision "$1,000"
@@ -357,16 +357,16 @@
         </div>
 
         <header ws-attr="attrs" ws-template="header">
-            <div class="mui-appbar mui--appbar-line-height">
+            <div class="mui-appbar mui--appbar-line-height" >
                 <div class="mui-container-fluid">
                     <a class="sidedrawer-toggle mui--visible-xs-inline-block mui--visible-sm-inline-block js-show-sidedrawer" onclick="showSidedrawer()">☰</a>
                     <a class="sidedrawer-toggle mui--hidden-xs mui--hidden-sm js-hide-sidedrawer" onclick="hideSidedrawer()">☰</a>
                     <span class="mui--text-title mui--visible-xs-inline-block">${Brand}</span>
                     <td class="mui--text-right">
                             <ul class="mui-list--inline mui--text-body2">
-                              <li><a href="#">About</a></li>
-                              <li><a href="#">Pricing</a></li>
-                              <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i> Login</a></li>
+                              <li><a href="#" style="color:white">About</a></li>
+                              <li><a href="#" style="color:white">Pricing</a></li>
+                              <li><a  style="color:white" ws-onclick="Logout"><i class="fa fa-user" aria-hidden="true"></i> Logout</a></li>
                             </ul>
                           </td>
                       </div>

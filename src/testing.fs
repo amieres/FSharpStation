@@ -1,6 +1,4 @@
-#nowarn "1182"
-#nowarn "1178"
-////-d:FSharpStation1547097944900 -d:WEBSHARPER
+////-d:FSharpStation1548758124776 -d:WEBSHARPER
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
@@ -18,10 +16,8 @@
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
-//#nowarn "1182"
-//#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1547097944900
+//#define FSharpStation1548758124776
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -82,6 +78,11 @@ namespace FsRoot
         [< JavaScript ; AutoOpen >]
         module Library =
             let Error = Result.Error
+            let [<Inline>] inline swap f a b = f b a
+            
+            /// swap: for use with operators: [1..5] |> List.map (__ (/) 2)
+            let [<Inline>] inline __   f a b = f b a
+            
             /// call a function but return the input value
             /// for logging, debugging
             /// use: (5 * 8) |> tee (printfn "value = %d") |> doSomethingElse
@@ -98,59 +99,19 @@ namespace FsRoot
                 | :? string as s -> printfn "%s" s
                 | __             -> printfn "%A" v
             
-            type System.String with
-                member this.Substring2(from, n) = 
-                    if   n    <= 0           then ""
-                    elif from <  0           then this.Substring2(0, n + from)
-                    elif from >= this.Length then ""
-                    else this.Substring(from, min n (this.Length - from))
-                member this.Left             n  = this.Substring2(0, n)
-                member this.Right            n  = this.Substring2(max 0 (this.Length - n), this.Length)
-            
-            module String =
-                let splitByChar (c: char) (s: string) = s.Split c
-                let splitInTwoO spl txt = 
-                    let i = (txt:string).IndexOf (spl:string)
-                    if  i = -1 then None else
-                    (txt.Left(i), txt.Substring (i + spl.Length) )
-                    |> Some
-                let delimitedO  op cl txt =
-                    splitInTwoO op txt
-                    |> Option.bind(fun (bef, sec) ->
-                        splitInTwoO cl sec
-                        |> Option.map(fun (mid, aft) -> bef, mid, aft)
-                    )
-                let contains     sub  (whole: string) = whole.Contains sub
-                let trim                  (s: string) = s.Trim()
-                let append     (a: string)(b: string) =  a + b
-                let skipFirstLine (txt:string) = txt.IndexOf '\n' |> fun i -> if i < 0 then "" else txt.[i + 1..]
-                let unindent (s:string) =
-                    let lines = s.Split '\n'
-                    let n     = lines 
-                                |> Seq.tryFind (fun l -> l.Trim() <> "")
-                                |> Option.defaultValue ""
-                                |> Seq.tryFindIndex ((<>) ' ') 
-                                |> Option.defaultValue 0
-                    lines 
-                    |> Seq.map    (fun l -> if l.Length <= n then "" else l.Substring n)
-                    |> Seq.filter (fun s -> s.StartsWith "# 1 " |> not)
-                let indent n (s:string) =
-                    s.Split '\n'
-                    |> Seq.map ((+) (String.replicate n " "))
-                let unindentStr = unindent >> String.concat "\n"
-                let indentStr i = indent i >> String.concat "\n" 
-                let skipLastLine =
-                       splitByChar '\n' 
-                    >> fun s -> s.[0 .. (max 0 (s.Length - 2)) ]
-                    >> String.concat "\n"
-                let (|StartsWith|_|) (start:string) (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
-                let (|EndsWith  |_|) (ends :string) (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
-                
-            
         /// Essentials that run in Javascript (WebSharper)
         //#define WEBSHARPER
         [< JavaScript ; AutoOpen >]
         module LibraryJS =
+            module Pojo =
+                let addProp prop (pojo:JSObject) = pojo.Add prop ; pojo
+                
+                let newPojo props =
+                    let pojo = JSObject()
+                    if IsClient then
+                        props |> Seq.iter (swap addProp pojo >> ignore)
+                    pojo
+            
             module GenEditor =
                 open WebSharper.UI.Html
             
@@ -180,26 +141,30 @@ namespace FsRoot
                     replace             : Position * Position
                 }
             
+                [<NoComparison ; NoEquality>]
                 type GenEditorHook<'T> = {
-                    generateDoc       :  unit            -> Doc
-                    getValue          :  unit            -> string
-                    setValue          :  string          -> unit
-                    setDisabled       :  bool            -> unit
-                    hookOnRender      : ('T     -> unit) -> unit
-                    hookOnChange      : (string -> unit) -> unit
-                    showAnnotations   :  Annotation seq  -> unit
+                    generateDoc       :  GenEditor<'T> -> ('T -> unit)     -> Doc
+                    getValue          :  unit                              -> string
+                    setValue          :  string                            -> unit
+                    setDisabled       :  bool                              -> unit
+                    showAnnotations   :  Annotation seq                    -> unit
+                    posFromIndex      :  int                               -> Position
+                    indexFromPos      :  Position                          -> int
+                    getWordAt         :  Position                          -> (string * Position) option
+                    getUri            :  unit                              -> string
+                    setUri            :  string                            -> unit
+                    hookOnChange      : (obj           -> unit           ) -> unit
                 }
             
-                [<NoComparison ; NoEquality>]
-                type GenEditor<'T> = {
-                    var             : Var< string        >
-                    disabled        : View<bool          >
-                    annotations     : View<Annotation seq>
-                    onChange        : (string      -> unit                )
-                    onRender        : ('T          -> unit                )
-                    autoCompletion  : (Position    -> Async<Completion []>) option
-                    toolTip         : (Position    -> Async<string       >) option
-                    declaration     : (Position    -> Async<Position     >) option
+                and GenEditor<'T> = {
+                    var             :  Var< string        >
+                    disabled        :  View<bool          >
+                    annotations     :  View<Annotation seq>
+                    onChange        : (GenEditor<'T> -> string      -> unit                              ) option
+                    onRender        : (GenEditor<'T>                -> unit                              )
+                    autoCompletion  : (GenEditor<'T> -> Position    -> Async<Completion []>              ) option
+                    toolTip         : (GenEditor<'T> -> Position    -> Async<string              option >) option
+                    declaration     : (GenEditor<'T> -> Position    -> Async<(Position * string) option >) option
                     mutable editorO :  'T option
             
                     editorHook      : GenEditorHook<'T>
@@ -216,7 +181,7 @@ namespace FsRoot
                     var            = var 
                     disabled       = V false
                     annotations    = V Seq.empty
-                    onChange       = ignore
+                    onChange       = None
                     onRender       = ignore
                     editorHook     = edh
                     autoCompletion = None
@@ -246,22 +211,31 @@ namespace FsRoot
                     )
             
                 let generateDoc genE = 
-                    genE                                         .editorHook.hookOnRender (fun ed ->
+                    let onChange = genE.onChange |> Option.map(fun f -> f genE) |> Option.defaultValue ignore
+                    genE.editorHook.generateDoc genE (fun ed ->
                         genE.editorO        <- Some ed
-                        genE.var            |> bindVarEditor genE.editorHook.hookOnChange    
-                                                             genE.editorHook.getValue 
-                                                             genE.editorHook.setValue 
-                                                             genE.onChange
-                        genE.annotations    |> View.Sink     genE.editorHook.showAnnotations
-                        genE.disabled       |> View.Sink     genE.editorHook.setDisabled
-                        genE.onRender ed
+                        genE.var            |> bindVarEditor  genE.editorHook.hookOnChange    
+                                                              genE.editorHook.getValue 
+                                                              genE.editorHook.setValue 
+                                                              onChange
+                        genE.annotations    |> View.Sink      genE.editorHook.showAnnotations
+                        genE.disabled       |> View.Sink      genE.editorHook.setDisabled
+                        genE.onRender genE
                     )
-                    genE                                         .editorHook.generateDoc()
+            
             
             [< Inline """(!$v)""">]
             let isUndefined v = v.GetType() = v.GetType()
                 
             
+            module Element =
+                let  findRootElement (e:Dom.Element) =
+                    if isUndefined e.GetRootNode then JS.Document.Body
+                    else
+                        let root = e.GetRootNode()
+                        if isUndefined root?body 
+                        then root.FirstChild :?> Dom.Element
+                        else root?body  |> unbox<Dom.Element>
             module LoadFiles =
             
                 let createScript fn =
@@ -336,332 +310,365 @@ namespace FsRoot
                     | REGEX "^[$a-zA-Z_][0-9a-zA-Z_\.\-$]*$" "" [| id |] -> Some id
                     | _                                                  -> None
             
-            [< JavaScript >]
-            module ResizeObserver =
-            
-                [< Inline "try { return !!(ResizeObserver) } catch(e) { return false }" >] 
-                let implementedResizeObserver() = false
-                
-                [< Inline "new ResizeObserver($_f)" >]
-                let newResizeObserver (_f: unit->unit) = X<_> 
-                
-                [< Inline "$_ro.observe($_el)" >]
-                let RObserve _ro (_el:Dom.Element) = X<_> 
-                
-                let mutable observers : obj list = []
-                
-                let domRect2Tuple (r:Dom.DomRect) = (r.Top, r.Left, r.Width, r.Height)
-                
-                let [< Inline "$_el.isConnected" >] isValidElement (_el:Dom.Element) = true
-                
-                let dimsChanged (el:Dom.Element) = 
-                    let dims = ref <| el.GetBoundingClientRect()
-                    fun () ->
-                        let ndims = el.GetBoundingClientRect()
-                        if domRect2Tuple !dims = domRect2Tuple ndims then false
-                        else dims := ndims    ; true
-                
-                let addResizeObserver f el =
-                    if implementedResizeObserver() then
-                        let ro =  newResizeObserver f
-                        observers <- ro::observers
-                        RObserve ro el
-                    else
-                        let changed = dimsChanged el
-                        async {
-                            while isValidElement el do
-                                do! Async.Sleep 110
-                                if changed() then f()
-                        } |> Async.Start
-                        
-            [< JavaScriptExport >]
-            module Monaco =
+            module CodeMirror =
                 open WebSharper.UI.Html
             
-                type Position = {
-                    column     : int
-                    lineNumber : int
-                }
-                type Range = {
-                    startColumn     : int
-                    endColumn       : int
-                    startLineNumber : int
-                    endLineNumber   : int
-                }
-                type Uri = {
-                    authority : string
-                    fragment  : string
-                    fsPath    : unit->string
-                    path      : string
-                    query     : string
-                    scheme    : string
-                }  with
-                    [< Inline "$global.monaco.Uri.parse($_s)" >] static member Parse(_s)      : Uri   = X<_>
-                    [< Inline "$global.monaco.Uri.file($_f)"  >] static member File(_f)       : Uri   = X<_>
-                type Location = {
-                    range : Range
-                    uri   : Uri
-                }
-                type FindMatch = {
-                    matches : string []
-                    range   : Range
-                }
-                type WordAtPosition = {
-                    endColumn   : int
-                    startColumn : int
-                    word        : string
-                }
-                type Model = {
-                    uri         : Uri
-                }
-                  with
-                    [< Inline "$mo.findMatches($_s, $_o, $_r, $_c, $_w, $_p, $_l)" >] member mo.FindMatches(_s: string, _o: bool, _r: bool, _c: bool, _w: string, _p: bool, _l: int): FindMatch[] = X<_>
-                    [< Inline "$mo.getWordAtPosition($_p)                        " >] member mo.GetWordAtPosition(_p: Position) : WordAtPosition = X<_>
-                    [< Inline "$mo.getLineContent($_l)                           " >] member mo.GetLineContent(   _l: int     ) : string         = X<_>
-                    [< Inline "$mo.getValue()                                    " >] member mo.GetValue()                      : string         = X<_>
-                    [< Inline "$mo.setValue($_v)                                 " >] member mo.SetValue(_v:string)             : unit           = X<_>
-                    [< Inline "$mo.dispose()                                     " >] member mo.Dispose()                       : unit           = X<_>
-                    
-                type MarkDownString = {
-                    value      : string
-                    isTrusted  : bool
-                }
-                type MarkerSeverity =
-                | Error   = 8
-                | Hint    = 1
-                | Info    = 2
-                | Warning = 4
-                type MarkerData = {
-                    startColumn        : int
-                    endColumn          : int
-                    startLineNumber    : int
-                    endLineNumber      : int
-                    severity           : MarkerSeverity
-                    message            : string
-                    //code : string
-                    //relatedInformation : string
-                    //source             : string
-                    //tags               : MarkerTag[]
-                }
-                type CompletionItemKind =
-                | Class       = 6
-                | Color       = 15
-                | Constructor = 3
-                | Enum        = 12
-                | Field       = 4
-                | File        = 16
-                | Folder      = 18
-                | Function    = 2
-                | Interface   = 7
-                | Keyword     = 13
-                | Method      = 1
-                | Module      = 8
-                | Property    = 9
-                | Reference   = 17
-                | Snippet     = 14
-                | Text        = 0
-                | Unit        = 10
-                | Value       = 11
-                | Variable    = 5
-                type CompletionItem = {
-                    kind                : CompletionItemKind
-                    label               : string
-                    //additionalTextEdits : string
-                    //command             : string
-                    //commitCharacters    : string
-                    detail              : string
-                    //documentation       : string
-                    //filterText          : string
-                    //insertText          : string
-                    //range               : string
-                    //sortText            : string
-                    //textEdit            : string
-                }
-                type Hover = {
-                    contents   : MarkDownString []
-                    range      : Range
-                }
+                type Pos               = { line : int ; ch  : int }
+                let inline cmPos(l, c) = { line = l   ; ch  = c   }
                 
-                open WebSharper.Core.Resources
+                type AnchorHead = { anchor: Pos ; head : Pos }
             
-                type MonacoResources() =
-                    inherit BaseResource(@"/EPFileX/monaco/package/min/vs/loader.js")
-            
-                [< Require(typeof<MonacoResources>) >]
                 type Editor() =
                     do ()
                   with
-                    [< Inline "$global.require.config({ paths: { 'vs': '/EPFileX/monaco/package/min/vs' }});" >] static member RequireConfig ()     : unit    = X<_>
-                    [< Inline "$global.require(['vs/editor/editor.main'], $_s, $_f)"                          >] static member Require(_s, _f)      : unit    = X<_>
-                    [< Inline "$global.monaco.editor.create($_elt, $_op, $_ov)"                               >] static member Create _elt _op _ov  : Editor  = X<_>
-                    [< Inline "$global.monaco.editor.createModel($_t, $_l, $_u)">] static member CreateModel(_t:string, _l:string, _u:Uri)          : Model   = X<_>
-                    [< Inline "$global.monaco.editor.getModel($_u)"             >] static member GetModel(_u:Uri)                                   : Model   = X<_>
-                    [< Inline "$global.monaco.editor.getModels()"               >] static member GetModels()                                        : Model[] = X<_>
-                    [< Inline "$global.monaco.editor.setModelLanguage($_m, $_l)">] static member SetModelLanguage(_m:Model, _l:string)              : unit    = X<_>
-                    [< Inline "$global.monaco.editor.setTheme($_t)"                                           >] static member SetTheme(_t:string)  : unit    = X<_>
-                    [< Inline "$global.monaco.languages.registerHoverProvider($_l, $_p)"          >] static member RegisterHoverProvider         (_l: string, _p: obj): System.IDisposable   = X<_>
-                    [< Inline "$global.monaco.languages.registerDefinitionProvider($_l, $_p)"     >] static member RegisterDefinitionProvider    (_l: string, _p: obj): System.IDisposable   = X<_>
-                    [< Inline "$global.monaco.languages.registerCompletionItemProvider($_l, $_p)" >] static member RegisterCompletionItemProvider(_l: string, _p: obj): System.IDisposable   = X<_>
-                    [< Inline "$global.monaco.editor.setModelMarkers($_m,$_o,$_k)"       >] static member SetModelMarkers(_m:Model, _o:string, _k:MarkerData[]):unit = X<_>
-                    
-                    [< Inline "$monc.getValue()                  " >] member monc.GetValue()                                  : string          = X<_>
-                    [< Inline "$monc.setValue($_v)               " >] member monc.SetValue(_v:string)                         : unit            = X<_>
-                    [< Inline "$monc.onDidChangeModelContent($_f)" >] member monc.OnDidChangeModelContent(_f:obj->unit)       : unit            = X<_>
-                    [< Inline "$monc.getModel()                  " >] member monc.GetModel()                                  : Model           = X<_>  
-                    [< Inline "$monc.setModel($_m)               " >] member monc.SetModel(_m:Model)                          : unit            = X<_>  
-                    [< Inline "$monc.layout()                    " >] member monc.Layout()                                    : unit            = X<_>
-                    [< Inline "$monc.updateOptions($_o)"           >] member monc.UpdateOptions(_o:obj)                       : unit            = X<_>
-                    [< Inline "$monc.setPosition($_p)            " >] member monc.SetPosition(_p:Position)                    : unit            = X<_>
-                    [< Inline "$monc.focus()                     " >] member monc.Focus()                                     : unit            = X<_>
-                    
-            //        [< Inline "$monc.refresh()"                 >] member monc.Refresh()                                   : unit            = X<_>
-            //        [< Inline "$monc.setOption($_o, $_v)"       >] member monc.SetOption(_o:string, _v:obj)                : unit            = X<_>
-            //        [< Inline "$monc.getOption($_o)"            >] member monc.GetOption(_o:string)                        : obj             = X<_>
-            //        //[< Inline "$monc.getCursor()"               >] member monc.GetCursor()                                 : Pos             = X<_>
-            //        [< Inline "$monc.performLint()"             >] member monc.PerformLint()                               : unit            = X<_>
-            //        [< Inline "$monc.focus()"                   >] member monc.Focus()                                     : unit            = X<_>
-            //        [< Inline "$monc.getLine($_l)"              >] member monc.GetLine(_l:int)                             : string          = X<_>
-            //        [< Inline "$monc.getDoc().clearHistory()"   >] member monc.ClearHistory()                              : unit            = X<_>
-            //        [< Inline "$monc.on($_event, $_f)"          >] member monc.On(_event: string, _f:(Editor * obj)->unit) : unit            = X<_>
-            //        [< Inline "$monc.on($_event, $_f)"          >] member monc.On(_event: string, _f: Editor       ->unit) : unit            = X<_>
-            //        [< Inline "$monc.addKeyMap($_keyMap)"       >] member monc.AddKeyMap(_keyMap: obj)                     : unit            = X<_>
-            //        [< Inline "$monc.getWrapperElement()"       >] member monc.GetWrapperElement()                         : Dom.Element     = X<_>
-            //        [< Inline "$monc.replaceSelection($_v, $_s)">] member monc.ReplaceSelection(_v:string, _s:string)                        = ()
-            //        [< Inline "while($monc.getAllMarks().length > 0) { $monc.getAllMarks()[0].clear() }" >] member monc.RemoveMarks() : unit = X<_>
-            //        [< Inline "$monc.getDoc().markText({line:$_fl, ch:$_fc}, {line:$_tl, ch:$_tc}, {className: $_className, title: $_title})" >]
-            //        member monc.MarkText (_fl:int,_fc:int) (_tl:int,_tc:int) (_className: string) (_title: string): unit       = X<_>
+                    [< Inline "$global.CodeMirror($_elt, $_ops)">] static member SetupEditor _elt _ops                     : Editor          = X<_>
+                    [< Inline "$cdmr.getValue()"                >] member cdmr.GetValue()                                  : string          = X<_>
+                    [< Inline "$cdmr.setValue($_v)"             >] member cdmr.SetValue(_v:string)                         : unit            = X<_>
+                    [< Inline "$cdmr.refresh()"                 >] member cdmr.Refresh()                                   : unit            = X<_>
+                    [< Inline "$cdmr.setOption($_o, $_v)"       >] member cdmr.SetOption(_o:string, _v:obj)                : unit            = X<_>
+                    [< Inline "$cdmr.getOption($_o)"            >] member cdmr.GetOption(_o:string)                        : obj             = X<_>
+                    [< Inline "$cdmr.getCursor()"               >] member cdmr.GetCursor()                                 : Pos             = X<_>
+                    [< Inline "$cdmr.setCursor($_line, $_col)"  >] member cdmr.SetCursor(_line:int, _col:int)              : unit            = X<_>
+                    [< Inline "$cdmr.performLint()"             >] member cdmr.PerformLint()                               : unit            = X<_>
+                    [< Inline "$cdmr.focus()"                   >] member cdmr.Focus()                                     : unit            = X<_>
+                    [< Inline "$cdmr.getLine($_l)"              >] member cdmr.GetLine(_l:int)                             : string          = X<_>
+                    [< Inline "$cdmr.getDoc().clearHistory()"   >] member cdmr.ClearHistory()                              : unit            = X<_>
+                    [< Inline "$cdmr.on($_event, $_f)"          >] member cdmr.On(_event: string, _f:(Editor * obj)->unit) : unit            = X<_>
+                    [< Inline "$cdmr.on($_event, $_f)"          >] member cdmr.On(_event: string, _f: Editor       ->unit) : unit            = X<_>
+                    [< Inline "$cdmr.addKeyMap($_keyMap)"       >] member cdmr.AddKeyMap(_keyMap: obj)                     : unit            = X<_>
+                    [< Inline "$cdmr.getWrapperElement()"       >] member cdmr.GetWrapperElement()                         : Dom.Element     = X<_>
+                    [< Inline "$cdmr.somethingSelected()"       >] member cdmr.SomethingSelected()                         : bool            = X<_>
+                    [< Inline "$cdmr.getSelection()"            >] member cdmr.GetSelection()                              : string          = X<_>
+                    [< Inline "$cdmr.listSelections()"          >] member cdmr.ListSelections()                            : AnchorHead[]    = X<_>
+                    [< Inline "$cdmr.findWordAt($_p)"           >] member cdmr.FindWordAt(_p:Pos)                          : AnchorHead      = X<_>
+                    [< Inline "$cdmr.findTokenAt($_p)"          >] member cdmr.FindTokenAt(_p:Pos)                         : AnchorHead      = X<_>
+                    [< Inline "$cdmr.posFromIndex($_i)"         >] member cdmr.PosFromIndex(_i:int)                        : Pos             = X<_>
+                    [< Inline "$cdmr.indexFromPos($_p)"         >] member cdmr.IndexFromPos(_p:Pos)                        : int             = X<_>
+                    [< Inline "$cdmr.getRange($_f, $_t)"        >] member cdmr.GetRange(_f, _t)                            : string          = X<_>
+                    [< Inline "$cdmr.replaceSelection($_v, $_s)">] member cdmr.ReplaceSelection(_v:string, _s:string)                        = ()
+                    [< Inline "while($cdmr.getAllMarks().length > 0) { $cdmr.getAllMarks()[0].clear() }" >] member cdmr.RemoveMarks() : unit = X<_>
+                    [< Inline "$cdmr.getDoc().markText({line:$_fl, ch:$_fc}, {line:$_tl, ch:$_tc}, {className: $_className, title: $_title})" >]
+                    member cdmr.MarkText (_fl:int,_fc:int) (_tl:int,_tc:int) (_className: string) (_title: string): unit       = X<_>
                 
                 [<NoComparison ; NoEquality>]
-                type MonacoConfig = {
+                type CodeMirror = {
                     var             : Var<string>
                     onChange        : (string -> unit)
                     onRender        : (Editor -> unit) option
                     mutable editorO :  Editor option
                     disabled        : View<bool>
-                    options         : obj
-                    overrides       : obj
                 }
                 
-                [< Inline "var m = $global.require('vs/base/common/lifecycle'); return new m.ImmortalReference($_v);" >]
-                let newImmortalReference _v = X<_>
-                
-                let newVar var    = 
-                    { var         = var 
-                      onChange    = ignore
-                      onRender    = None
-                      editorO     = None
-                      disabled    = V false
-                      options     = null
-                      overrides   = null
+                let newVar var = 
+                    { var      = var 
+                      onChange = ignore
+                      onRender = None
+                      editorO  = None
+                      disabled = V false
                     }
-                //let includes = [| @"/EPFileX/monaco/package/min/vs/loader.js" |]
-                let loader = async {
-                    if IsClient then
-                        //do! LoadFiles.LoadFilesAsync includes
-                        Editor.RequireConfig()
-                        do! Async.FromContinuations(fun (success, failed, cancelled) -> Editor.Require(success, failed))
-                }
-                let render monc             = 
-                    async {
-                      do! loader
-                      return
-                          div [ on.afterRender (fun elchild ->
-                                 let editor        = Editor.Create elchild.ParentElement monc.options monc.overrides
-                                 ResizeObserver.addResizeObserver editor.Layout elchild.ParentElement
-                                 elchild.ParentNode.RemoveChild elchild |> ignore
-                                 monc.editorO     <- Some editor
-                                 monc.onRender |> Option.iter (fun onrender -> onrender editor)
-                                 monc.var |> GenEditor.bindVarEditor editor.OnDidChangeModelContent editor.GetValue editor.SetValue monc.onChange
-                                 //monc.disabled |> View.Sink (fun dis -> editor.SetOption("readOnly", if dis then "nocursor" :> obj else false :> obj) )
-                          )    
+                let includes =
+                   [| "/EPFileX/codemirror/scripts/codemirror/codemirror.js"             
+                      //"/EPFileX/codemirror/scripts/intellisense.js"                      
+                      "/EPFileX/codemirror/scripts/codemirror/codemirror-intellisense.js"
+                      "/EPFileX/codemirror/scripts/codemirror/codemirror-compiler.js"    
+                      "/EPFileX/codemirror/scripts/codemirror/mode/none.js"            
+                      "/EPFileX/codemirror/scripts/codemirror/mode/fsharp.js"            
+                      "/EPFileX/codemirror/scripts/codemirror/mode/css.js"            
+                      "/EPFileX/codemirror/scripts/codemirror/mode/javascript.js"            
+                      "/EPFileX/codemirror/scripts/codemirror/mode/markdown.js"            
+                      "/EPFileX/codemirror/scripts/addon/search/searchcursor.js"          
+                      "/EPFileX/codemirror/scripts/addon/search/search.js"          
+                      "/EPFileX/codemirror/scripts/addon/search/jump-to-line.js"          
+                      "/EPFileX/codemirror/scripts/addon/dialog/dialog.js"          
+                      "/EPFileX/codemirror/scripts/addon/edit/matchbrackets.js"          
+                      "/EPFileX/codemirror/scripts/addon/selection/active-line.js"       
+                      "/EPFileX/codemirror/scripts/addon/display/fullscreen.js"          
+                      "/EPFileX/codemirror/scripts/addon/hint/show-hint.js"          
+                      "/EPFileX/codemirror/scripts/addon/lint/lint.js"          
+                   |]        
+                let render cdmr             =
+                    div [ on.afterRender (fun elchild ->
+                                 async {
+                                     do! LoadFiles.LoadFilesAsync includes
+                                     let editor        = Editor.SetupEditor elchild.ParentElement (JSObject())
+                                     elchild.ParentNode.RemoveChild elchild |> ignore
+                                     cdmr.editorO     <- Some editor 
+                                     cdmr.onRender |> Option.iter (fun onrender -> onrender editor)
+                                     cdmr.var      |> GenEditor.bindVarEditor (fun f -> editor.On("changes",(f:Editor * obj -> unit)) )  editor.GetValue (fun v -> editor.SetValue v ; editor.ClearHistory() ) cdmr.onChange
+                                     cdmr.disabled |> View.Sink (fun dis -> editor.SetOption("readOnly", if dis then "nocursor" :> obj else false :> obj) )
+                                 } |> Async.Start
+                              )    
                         ] []
-                    } |> Doc.Async
-                let inline setVar   v   monc = { monc with var       = v      }
-                let inline onChange f   monc = { monc with onChange  = f      }
-                let inline onRender f   monc = { monc with onRender  = Some f }
-                let inline disabled dis monc = { monc with disabled  = dis    }
-                let inline var          monc = monc.var
+                let inline setVar   v   cdmr = { cdmr with var       = v      }
+                let inline onChange f   cdmr = { cdmr with onChange  = f      }
+                let inline onRender f   cdmr = { cdmr with onRender  = Some f }
+                let inline disabled dis cdmr = { cdmr with disabled  = dis    }
+                let inline var          cdmr = cdmr.var
                 let newText(v:string)             = newVar (Var.Create v)
                 let newVarO(v:Var<string option>) = Var.Lens v (Option.defaultValue "") (fun sO s -> sO |> Option.map (fun _ -> s) )
                                                     |> newVar
                                                     |> disabled(V (Option.isNone v.V))
             
-            module MonacoGenAdapter =
+                module Hint =
+                    type Hint = {
+                        text        : string
+                        displayText : string
+                        className   : string
+                    }
+                    
+                    type Response  = {
+                        list           : Hint []
+                        from           : Pos   
+                        ``to``         : Pos   
+                    }
+                    
+                    type Func      = FuncWithArgs<Editor * (Response -> unit) * obj,  unit>
+                    
+                    type Options   = {
+                        hint           : Func
+                        completeSingle : bool   
+                        container      : Dom.Element
+                    }
+                    
+                    [< Inline "($_v.hint.async = 1, $_ed.showHint($_v))"          >]
+                    let showHint_ (_ed:Editor) _v : unit       = X<_>
+                    let showHints ( ed:Editor) getHints completeSingle _ =
+                        showHint_   ed
+                            {  completeSingle = completeSingle
+                               hint           = Func getHints
+                               container      = ed.GetWrapperElement() |> Element.findRootElement
+                            }
+            
+                module Lint =
+                    type Response  = {
+                        message        : string
+                        severity       : string
+                        from           : Pos   
+                        ``to``         : Pos   
+                    }
+                    
+                    type Func      = FuncWithArgs<string * (Response[] -> unit) * obj * Editor,  unit>
+                    
+                    [< Inline "($_ed.setOption('lint', { async: 1, getAnnotations: $_f, container: $_elm }))"          >]
+                    let setLint_(_ed:Editor) (_f:Func) (_elm:Dom.Element)  : unit = X<_>
+                    let setLint ( ed:Editor)   getAnnotations       = 
+                        setLint_  ed (Func getAnnotations) (ed.GetWrapperElement() |> Element.findRootElement)
+                    
+                                    
+            [< JavaScriptExport >]
+            module CodeMirrorGenAdapter =
+                open CodeMirror
                 open GenEditor
-                open Monaco
                 open WebSharper.UI.Html
             
-                type MonacoRT = {
-                    mutable editorO  : Monaco.Editor option
-                    mutable onRender : Monaco.Editor -> unit
-                    mutable onChange : obj -> unit
-                    options          : obj
-                    overrides        : obj
+                type CodeMirrorRT = {
+                    mutable editorO     : CodeMirror.Editor option
+                    mutable onChange    : obj -> unit
+                    mutable uri         : string
+                    options             : obj
+                    overrides           : obj
                 }
             
-                let generateDoc monRT =
+                let iterEditor cdmRT f =
+                    match cdmRT.editorO with
+                    | None    -> ()
+                    | Some ed -> f ed
+            
+                let mapEditor cdmRT f =
+                    match cdmRT.editorO with
+                    | None    -> None
+                    | Some ed -> Some (f ed)
+            
+                let bindEditor cdmRT f =
+                    match cdmRT.editorO with
+                    | None    -> None
+                    | Some ed -> f ed
+            
+                let posGen2Ed (p:GenEditor.Position) : Pos = 
+                    {
+                        ch   = p.col  - 1
+                        line = p.line - 1
+                    }
+            
+                let posEd2Gen (p:Pos) : GenEditor.Position = 
+                    {
+                        col  = p.ch   + 1
+                        line = p.line + 1
+                    }
+            
+                //let convertGlyphChar =
+                //    function
+                //    | "C" -> CompletionItemKind.Class
+                //    | "E" -> CompletionItemKind.Enum
+                //    | "S" -> CompletionItemKind.Value
+                //    | "I" -> CompletionItemKind.Interface
+                //    | "N" -> CompletionItemKind.Module
+                //    | "M" -> CompletionItemKind.Method
+                //    | "P" -> CompletionItemKind.Property
+                //    | "F" -> CompletionItemKind.Field
+                //    | "T" -> CompletionItemKind.Class
+                //    | "K" -> CompletionItemKind.Keyword
+                //    | _   -> 0 |> unbox
+            //
+                //type CompletionItemProvider(autoComplete: GenEditor.Position -> Async<Completion[]>) =
+                //    do()
+                //   with
+                //      member __.provideCompletionItems(model:Model, pos:CodeMirror.Position, token:obj, context: obj) =
+                //        asyncResultM {
+                //            let! comps = autoComplete  { col = pos.column ; line = pos.lineNumber }
+                //            return comps 
+                //                    |> Array.map(fun (comp:Completion) -> 
+                //                        { 
+                //                            kind   = convertGlyphChar comp.kind
+                //                            label  = comp.label
+                //                            detail = comp.detail
+                //                        } )
+                //        } |> Promise.ofAsyncResultM
+                //      member __.resolveCompletionItem(item: CompletionItem, token: obj): CompletionItem = { item with detail = "more details" }
+            //
+            //
+                //type HoverProvider(toolTip: GenEditor.Position -> Async<string option> ) =
+                //    do()
+                //   with
+                //      member __.provideHover(model:Model, pos:CodeMirror.Position, token:obj) =
+                //        asyncResultM {
+                //            let! desc = toolTip { col = pos.column ; line = pos.lineNumber }
+                //            match desc with
+                //            | None      -> return (box null |> unbox)
+                //            | Some desc ->
+                //            return {
+                //                    contents = [| { value = desc ; isTrusted = true } |]
+                //                    range    = (box null |> unbox)
+                //                }
+                //        } |> Promise.ofAsyncResultM
+            //
+                //type DefinitionProvider(declaration: GenEditor.Position -> Async<(Position * string) option> ) =
+                //    do()
+                //   with
+                //        member __.provideDefinition(model: Model, pos: CodeMirror.Position, token: obj) =
+                //            asyncResultM {
+                //                let! declO =  declaration { col = pos.column ; line = pos.lineNumber }
+                //                match declO with
+                //                | None             -> return box null |> unbox
+                //                | Some (pos, file) ->
+                //                return {
+                //                    range = {
+                //                                startColumn     = pos.col
+                //                                endColumn       = pos.col
+                //                                startLineNumber = pos.line
+                //                                endLineNumber   = pos.line
+                //                    }
+                //                    uri   = Uri.Parse file
+                //                }
+                //            } |> Promise.ofAsyncResultM
+            
+                let getToolTipFunction genE showToolTip =
+                    genE.toolTip |> Option.map (fun getToolTip ->
+                        let getWordO p = genE.editorHook.getWordAt p |> Option.bind ( fun (w, p) -> if w.Trim() = "" then None else Some (w, p)) 
+                        fun (ed:Editor) -> 
+                            async {
+                                let p1, p2 =    if ed.SomethingSelected() then 
+                                                    let sels = ed.ListSelections()
+                                                    (sels.[0].anchor |> posEd2Gen, sels.[0].head |> posEd2Gen) else
+                                                let p      = ed.GetCursor() |> posEd2Gen
+                                                getWordO p
+                                                |> Option.orElseWith ( fun ()     -> getWordO { p with col = p.col - 1 } ) 
+                                                |> Option.map        ( fun (w, p) -> p, { p with col = p.col + w.Length }) 
+                                                |> Option.defaultWith( fun ()     -> p, { p with col = p.col + 2        })
+                                let! tipO = getToolTip genE p1
+                                tipO |> Option.iter (fun tip -> showToolTip(p1, p2, tip))
+                            } |> Async.Start
+                    ) |> Option.defaultValue ignore
+            
+                let generateDoc cdmRT genE onRender =
                     async {
-                      do! Monaco.loader
-                      return
-                          div [ on.afterRender (fun elchild ->
-                                let editor        = Monaco.Editor.Create elchild.ParentElement monRT.options monRT.overrides
-                                ResizeObserver.addResizeObserver editor.Layout elchild.ParentElement
-                                elchild.ParentNode.RemoveChild elchild |> ignore
-                                monRT.editorO     <- Some editor
-                                monRT.onRender    <| unbox (box editor)
-                                editor.OnDidChangeModelContent monRT.onChange
-                          )    
-                        ] []
+                        //do! CodeMirror.loader
+                        return
+                            div [ on.afterRender (fun elchild  ->
+                                async {
+                                    do! LoadFiles.LoadFilesAsync includes
+                                    let editor        = Editor.SetupEditor elchild.ParentElement cdmRT.options
+                                    elchild.ParentNode.RemoveChild elchild |> ignore
+                                    cdmRT.editorO     <- Some editor
+                                    onRender                  editor
+                                    editor.On("changes", fun (ed: Editor, changes) -> cdmRT.onChange (box (ed, changes)) )
+                                    //genE.declaration    |> Option.iter (fun f -> Editor.RegisterDefinitionProvider    ("fsharp", new DefinitionProvider    (f genE) ) |> ignore )
+                                    //genE.autoCompletion |> Option.iter (fun f -> Editor.RegisterCompletionItemProvider("fsharp", new CompletionItemProvider(f genE) ) |> ignore )
+                                } |> Async.Start
+                            )    
+                          ] []
                     } |> Doc.Async
             
-                let getValue monRT     = monRT.editorO |> Option.map( fun ed -> ed.GetValue()   ) |> Option.defaultValue "" 
-                let setValue monRT txt = monRT.editorO |> Option.iter(fun ed -> ed.SetValue txt )
+                let getValue  cdmRT     = mapEditor  cdmRT <| (fun ed -> ed.GetValue()   ) |> Option.defaultValue "" 
+                let setValue  cdmRT txt = iterEditor cdmRT <|  fun ed -> ed.SetValue txt 
+                let getWordAt cdmRT pos = bindEditor cdmRT <|  fun ed -> 
+                    let anchorHead = ed.FindWordAt (posGen2Ed pos)
+                    if isUndefined anchorHead || anchorHead.anchor = anchorHead.head then None else        
+                    (ed.GetRange(anchorHead.anchor, anchorHead.head)
+                   , posEd2Gen anchorHead.anchor)
+                    |> Some
             
-                let showAnnotations monRT ans =
-                    match monRT.editorO with
-                    | None    -> ()
-                    | Some ed ->
-                    let ms =
-                        ans
-                        |> Seq.map (fun (an:Annotation) ->
-                            {   message         = an.message
-                                severity        = match an.severity with 
-                                                  | Error   -> MarkerSeverity.Error 
-                                                  | Warning -> MarkerSeverity.Warning  
-                                                  | Hint    -> MarkerSeverity.Hint 
-                                                  | _       -> MarkerSeverity.Info
-                                startColumn     = an.startP.col
-                                startLineNumber = an.startP.line
-                                endColumn       = an.endP  .col
-                                endLineNumber   = an.endP  .line
-                            }
-                        )
-                        |> Seq.toArray
-                    Editor.SetModelMarkers(ed.GetModel(), "annotations", ms)
+                let showAnnotations cdmRT ans =
+                    iterEditor cdmRT <| fun ed ->
+                        let ms =
+                            ans
+                            |> Seq.map (fun (an:Annotation) ->
+                                {
+                                    Lint.Response.message   = an.message
+                                    Lint.Response.severity  = match an.severity with 
+                                                                | Error   -> "error"
+                                                                | Warning -> "warning"
+                                                                | _       -> "info"
+                                    Lint.Response.from      = posGen2Ed an.startP
+                                    Lint.Response.``to``    = posGen2Ed an.endP
+                                }
+                            )
+                            |> Seq.toArray
+                        Lint.setLint ed (fun (_t, send, _o, _ed) -> send ms)
             
-                let newHook monRT = {
-                    generateDoc       = fun ()  -> generateDoc monRT 
-                    getValue          = fun ()  -> getValue    monRT
-                    setValue          =            setValue    monRT
-                    showAnnotations   = showAnnotations        monRT
-                    setDisabled       = ignore //  bool                              -> unit
-                    hookOnRender      = fun f   -> monRT.onRender <- f
-                    hookOnChange      = fun f   -> monRT.onChange <- (fun _ -> f <| getValue monRT)
+                let setDisabled cdmRT dis =
+                    iterEditor cdmRT <| fun ed ->
+                        ed.SetOption("readOnly", if dis then "nocursor" :> obj else false :> obj) 
+            
+                let indexFromPos cdmRT p =
+                    mapEditor cdmRT <| fun ed ->
+                        posGen2Ed p
+                        |> ed.IndexFromPos
+                    |> Option.defaultValue -1
+            
+                let posFromIndex cdmRT i =
+                    mapEditor cdmRT <| fun ed ->
+                        ed.PosFromIndex i
+                        |> posEd2Gen
+                    |> Option.defaultValue { col = 1 ; line = 1 }
+            
+                let newHook cdmRT = {
+                    generateDoc     =            generateDoc     cdmRT 
+                    getValue        = fun ()  -> getValue        cdmRT
+                    setValue        =            setValue        cdmRT
+                    getWordAt       =            getWordAt       cdmRT
+                    indexFromPos    =            indexFromPos    cdmRT
+                    posFromIndex    =            posFromIndex    cdmRT
+                    showAnnotations =            showAnnotations cdmRT
+                    setDisabled     =            setDisabled     cdmRT
+                    getUri          = fun ()  -> cdmRT.uri
+                    setUri          = fun uri -> cdmRT.uri <- uri
+                    hookOnChange    = fun f   -> cdmRT.onChange <- f
                 }
             
                 let newRT options overrides = {
-                    editorO   = None
-                    onRender  = ignore
-                    onChange  = ignore
-                    options   = options   
-                    overrides = overrides 
+                    editorO      = None
+                    onChange     = ignore
+                    options      = options   
+                    overrides    = overrides 
+                    uri          = ""
                 }
             
                 let newVar options overrides v =
-                    newRT options overrides
+                    newRT  options overrides 
                     |> newHook
-                    |> GenEditor.newVar <| v
-            
+                    |> GenEditor.newVar <|   v
+                            
     
         //#define WEBSHARPER
         
@@ -669,56 +676,102 @@ namespace FsRoot
         module TestingJS =
         
         
-            //#nowarn "1182"
-            //#nowarn "1178"
-            module Monaco =
+            module CodeMirror =
                 open WebSharper.UI
                 open WebSharper.UI.Html
-                open Monaco
+                open CodeMirror
+            
+                // let codeMirrorNew    (var           : Var<string>                         ) 
+                //                      (annotationsWO : View<Lint.Response []>        option) 
+                //                      (showToolTipO  :(string -> int -> int -> unit) option) 
+                //                      (getHintsO     :(((string * string * string) [] -> int * int -> int * int -> unit) 
+                //                                    -> string -> int -> int -> unit) option) =
                 
-                type HoverProvider(ed:Editor) =
-                    do()
-                   with
-                      member __.provideHover(model:Model, pos:Position, token:obj) =
-                          let word = model.GetWordAtPosition pos
-                          if isUndefined word then box null |> unbox else
-                          {
-                              contents = { value = word?word |> sprintf "The word is: %s" ; isTrusted = true } |> Array.singleton
-                              range    = {
-                                            startLineNumber = pos.lineNumber
-                                            endLineNumber   = pos.lineNumber
-                                            startColumn     = word.startColumn
-                                            endColumn       = word.endColumn
-                                         }
-                          }
+                //     let setDirtyCond() = ()
+                //     let getHints    _  = ()
             
-                type CompletionItemProvider(ed:Editor) =
-                    do()
-                   with
-                      member __.provideCompletionItems(model:Model, pos:Position, token:obj, context: obj): CompletionItem[] =
-                          let word = model.GetWordAtPosition pos
-                          if isUndefined word then box null |> unbox else
-                          [|
-                            { kind = CompletionItemKind.Function ; label = "Hello"   ; detail = ""}
-                            { kind = CompletionItemKind.Function ; label = "How"     ; detail = ""}
-                            { kind = CompletionItemKind.Function ; label = "Are"     ; detail = ""}
-                            { kind = CompletionItemKind.Function ; label = "You"     ; detail = ""}
-                            { kind = CompletionItemKind.Function ; label = word?word ; detail = ""}
-            
-                          |]
-                      member __.resolveCompletionItem(item: CompletionItem, token: obj): CompletionItem = { item with detail = "more details" }
-                type DefinitionProvider(ed:Editor) =
-                    do()
-                   with
-                      member __.provideDefinition(model: Model, pos: Position, token: obj): Location =
-                          let word = model.GetWordAtPosition pos
-                          if isUndefined word then box null |> unbox else
-                          let ms = model.FindMatches(word.word, false, false, true, " <>()+-=.,/#@$%^&*\"", false, 1)
-                          if ms.Length = 0    then box null |> unbox else
-                          { range = ms.[0].range
-                            uri = model.uri
-                          }
-            
+                //     let showToolTip (ed:CodeMirror.Editor) =
+                //         showToolTipO |> Option.iter(fun showToolTipF ->
+                //             let  pos   = ed.GetCursor()
+                //             let  l     = ed.GetLine pos.line
+                //             showToolTipF l pos.line pos.ch
+                //         )
+                        
+                //     let getHints    (ed:CodeMirror.Editor, callback, _) =
+                //         getHintsO |> Option.iter(fun getHintsF ->
+                //             let  pos   = ed.GetCursor()
+                //             let  l     = ed.GetLine pos.line
+                //             let showHints hints posFrom posTo =
+                //                 let hs = hints
+                //                          |> Array.map(fun (txt, dsp, cls) -> 
+                //                             {
+                //                                 Hint.Hint.text        = txt
+                //                                 Hint.Hint.displayText = dsp
+                //                                 Hint.Hint.className   = cls
+                //                             })
+                //                 callback {
+                //                     Hint.Response.list   = hs
+                //                     Hint.Response.from   = cmPos posFrom
+                //                     Hint.Response.``to`` = cmPos posTo
+                //                 }
+                //             getHintsF showHints l pos.line pos.ch
+                //         )
+                        
+                //     CodeMirror.newVar var
+                //     |> onRender(fun ed ->
+                //           ed.AddKeyMap({  F2              = showToolTip
+                //                           F11             = fun ed -> ed.SetOption("fullScreen", ed.GetOption("fullScreen") |> unbox |> not) 
+                //                           Tab             = fun ed -> ed.ReplaceSelection("    ", "end")
+                //                           ``Ctrl-Space``  =                                               Hint.showHints ed getHints false
+                //                           ``.``           = (fun _ -> ed.ReplaceSelection(".", "end")) >> Hint.showHints ed getHints false
+                //                        })
+                //           ed.SetOption("mode"         , "fsharp"  )
+                //           ed.SetOption("theme"        , "rubyblue")
+                //           ed.SetOption("lineNumbers"  , true      )
+                //           ed.SetOption("matchBrackets", true      )
+                //           ed.SetOption("gutters"      , [| "CodeMirror-lint-markers" |])
+                //           ed.On("dblclick", showToolTip)
+                //           annotationsWO
+                //           |> Option.iter(fun annotationsW ->
+                //               View.Sink       (fun _ -> ed.PerformLint() |> ignore) annotationsW
+                //               Lint.setLint ed (fun (_t, send, _o, _ed) -> annotationsW |> View.Get send)
+                //           )
+                //     )
+                    
+                // let transformAnnotations msgs =
+                //     let rex  = """(Err|Warn|Info) \((\d+)\,\s*(\d+)\) - \((\d+)\,\s*(\d+)\)\: "([^"]+?)"\.""" //"
+                //     match msgs with
+                //     | REGEX rex "g" m -> m
+                //     | _               -> [||]
+                //     |> Array.choose (fun v ->
+                //         match v with
+                //         | REGEX rex "" [| _ ; ty ; fl;     fc;     tl;     tc; msg |] 
+                //                  -> Some (ty, int fl, int fc, int tl, int tc, msg)
+                //         | _      -> None
+                //     )
+                //     |> Array.map (fun (ty, fl, fc, tl, tc, msg) ->
+                //             { Lint.Response.message  = msg
+                //               Lint.Response.severity = match ty with "Err" -> "error" | "Warn" -> "warning" |_-> "info"
+                //               Lint.Response.from     = cmPos(fl - 1, fc - 1) 
+                //               Lint.Response.``to``   = cmPos(tl - 1, tc - 1)
+                //             }
+                //       )        
+                        
+                // [< SPAEntryPoint >]
+                // let main() =
+                //     let annotationsV = Var.Create "Err (1, 7) - (1, 12): \"This shows over there as an error\".\nWarn (2, 7) - (2, 12): \"This shows over there as a warning\".\nInfo (3, 7) - (3, 12): \"This shows over there as information\"."
+                //     let codeMirror = codeMirrorNew  <| Var.Create "Hello there.\nHello there.\nHello there.\n"
+                //                                     <| Some (V(transformAnnotations annotationsV.V))
+                //                                     <| None
+                //                                     <| None
+                //     div [] [
+                //         div [] [ codeMirror |> CodeMirror.render ]
+                //         div [] [ text codeMirror.var.V           ]
+                //         text "These are the annotations that create tooltips, warnings and errors:"
+                //         Doc.InputAreaV [] annotationsV.V
+                //     ]
+                //     |> Doc.Run JS.Document.Body
+                    
                 open GenEditor
             
                 let annotationsV = Var.Create "Err (1, 7) - (1, 12): \"This shows over there as an error\".\nWarn (2, 7) - (2, 12): \"This shows over there as a warning\".\nInfo (3, 7) - (3, 12): \"This shows over there as information\".\nHint (4, 7) - (4, 12): \"This shows over there as a hint\"."
@@ -740,33 +793,96 @@ namespace FsRoot
                               endP     = { col = tc ; line = tl }
                             }
                       )
+            
+                let showToolTip (p1,p2,str) =
+                    annotationsV.Value
+                  + sprintf "\nInfo (%d, %d) - (%d, %d): %A." p1.line p1.col p2.line p2.col str
+                    |> annotationsV.Set
                     
-                let monacoNew (var : Var<string> ) =
-                    MonacoGenAdapter.newVar JSObject JSObject var
-                    |> GenEditor.onRender(fun ed ->
-                        Editor.SetModelLanguage(ed.GetModel(), "fsharp")
-                        Editor.SetTheme("vs-dark")
-                        //let hp = new HoverProvider         (ed)
-                        //let cp = new CompletionItemProvider(ed)
-                        //let dp = new DefinitionProvider    (ed)
-                        //hp.provideHover |> print
-                        //cp.provideCompletionItems |> print
-                        //cp.resolveCompletionItem  |> print
-                        //dp.provideDefinition      |> print
-                        //Editor.RegisterHoverProvider         ("fsharp", hp ) |> ignore
-                        //Editor.RegisterCompletionItemProvider("fsharp", cp ) |> ignore
-                        //Editor.RegisterDefinitionProvider    ("fsharp", dp ) |> ignore
-                    )
+                let codeMirrorNew (var : Var<string> ) =
+                    CodeMirrorGenAdapter.newVar
+                        (Pojo.newPojo
+                            [
+                                "mode"          => "fsharp"  
+                                "theme"         => "rubyblue"
+                                "lineNumbers"   => true      
+                                "matchBrackets" => true      
+                                "gutters"       => [| "CodeMirror-lint-markers" |]
+                            ]
+                        )
+                        null
+                        var
+            
+                let getToolTip (ged: GenEditor.GenEditor<_>) (pos:GenEditor.Position) = async {
+                    match ged.editorHook.getWordAt pos with
+                    | None           -> return None
+                    | Some (word, _) -> 
+                    return word |> sprintf "The word is: %s" |> Some
+                }
+            
+                let declaration (ged: GenEditor.GenEditor<CodeMirror.Editor>) (pos:GenEditor.Position) = async {
+                    match ged.editorHook.getWordAt pos with
+                    | None           -> return None
+                    | Some (word, _) -> 
+                    let text = ged.editorHook.getValue()
+                    let i    = text.IndexOf word
+                    if i < 0 then return None else
+                    let p    = ged.editorHook.posFromIndex i
+                    return Some(p, ged.editorHook.getUri())
+                }
+            
+                let autoCompletion (ged: GenEditor.GenEditor<CodeMirror.Editor>) (pos:GenEditor.Position) = async {
+                    return
+                        [|
+                            { kind = "F" ; label = "Hello"   ; detail = "" ; replace = (pos, pos) }
+                            { kind = "F" ; label = "How"     ; detail = "" ; replace = (pos, pos) }
+                            { kind = "F" ; label = "Are"     ; detail = "" ; replace = (pos, pos) }
+                            { kind = "F" ; label = "You"     ; detail = "" ; replace = (pos, pos) }
+                        |]
+                }
             
                 [< SPAEntryPoint >]
                 let main() =
-                    let var    = Var.Create "Hello there.\nHello there.\nHello there.\nHello there.\n"
-                    let monaco = { monacoNew var with annotations = V (transformAnnotations annotationsV.V) }
-                    div [] [
-                        div [ attr.style "height: 400px; width: 800px" ] [ monaco |> GenEditor.generateDoc ]
-                        div [] [ text "These are the annotations that create tooltips, warnings and errors:" ]
-                        Doc.InputAreaV [ attr.style "height: 100px; width: 600px" ] annotationsV.V
-                        div [] [ text var.V           ]
-                    ]
+                    let var        = Var.Create "Hello there.\nHello there.\nHello there.\nHello there.\n"
+                    let codeMirror = { codeMirrorNew var with 
+                                        annotations    = V (transformAnnotations annotationsV.V)
+                                        toolTip        = Some getToolTip
+                                        declaration    = Some declaration
+                                        autoCompletion = Some autoCompletion
+                                     }
+                                     |> GenEditor.onRender (fun ged ->
+                                        ged.editorO
+                                        |> Option.iter (fun ed ->
+                                            let toolTips = CodeMirrorGenAdapter.getToolTipFunction ged showToolTip
+                                            ed.AddKeyMap(
+                                              Pojo.newPojo [  
+                                                "F2"         =>  toolTips
+                                                "F11"        =>  fun _ -> ed.SetOption("fullScreen", ed.GetOption("fullScreen") |> unbox |> not) 
+                                                "Tab"        =>  fun _ -> ed.ReplaceSelection("    ", "end")
+                                                //"Ctrl-Space" =>                                               Hint.showHints ed getHints false
+                                                //"."          => (fun _ -> ed.ReplaceSelection(".", "end")) >> Hint.showHints ed getHints false
+                                            ])
+                                            ed.On("dblclick", toolTips)
+                                        )
+                                     )
+                    async {
+                        do! [|
+                                "/EPFileX/codemirror/content/editor.css"                   
+                                "/EPFileX/codemirror/content/codemirror.css"               
+                                "/EPFileX/codemirror/scripts/addon/display/fullscreen.css" 
+                                "/EPFileX/codemirror/scripts/addon/dialog/dialog.css"      
+                                "/EPFileX/codemirror/scripts/addon/hint/show-hint.css"     
+                                "/EPFileX/codemirror/scripts/addon/lint/lint.css"          
+                                "/EPFileX/codemirror/content/theme/rubyblue.css"                   
+                            |] |> LoadFiles.LoadFilesAsync
+                        return
+                            div [] [
+                                div [ attr.style "height: 400px; width: 800px" ] [ codeMirror |> GenEditor.generateDoc ]
+                                div [] [ text "These are the annotations that create tooltips, warnings and errors:" ]
+                                Doc.InputAreaV [ attr.style "height: 100px; width: 600px" ] annotationsV.V
+                                div [] [ text var.V ]
+                            ]
+                    }
+                    |> Doc.Async
                     |> Doc.Run JS.Document.Body
-                    
+                            

@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1548386943976 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1548758124776 -d:WEBSHARPER
 ////#cd @"..\projects\StackOverflow\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -32,7 +32,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1548386943976
+//#define FSharpStation1548758124776
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -1083,8 +1083,8 @@ namespace FsRoot
         }
         
         type Modelo = {
-            idAliado    : IdAliado
-            aliados     : Aliado []
+            idAliado      : IdAliado
+            aliados       : Aliado []
             anoActual     : int
             periodoActual : int
             premisas      : PremisasCalculo
@@ -1111,11 +1111,6 @@ namespace FsRoot
         
             open System.Collections.Generic
         
-            let padresHijos als =   als 
-                                    |> Seq.map(fun al -> al.idPadreO, al.id) 
-                                    |> Seq.groupBy fst 
-                                    |> Seq.map(fun (pO, ch) -> pO, ch |> Seq.map snd |> Seq.toArray) |> Map
-        
             let premisas pre al =
                 let comRef, comDes = match al.tipo  with
                                      | Regular -> pre.comisionReferidosRegular, pre.comisionDescendientesRegular
@@ -1128,28 +1123,59 @@ namespace FsRoot
                 let comRef, comDes = premisas pre al
                 al.nRefActivos * comRef, al.nDescActivos * comDes
         
+            type Buscar = {
+                hijosDe        : (IdAliado -> IdAliado [])
+                nivelDe        : (IdAliado option -> int)
+                aliado         : (IdAliado -> Aliado)
+                aliadoO        : (IdAliado -> Aliado option)
+                hijos          : (Aliado -> Aliado [])
+                descendientes  : (Aliado -> Aliado [])
+            }
+        
+            let busqueda aliados =
+                let padres               = aliados 
+                                           |> Seq.map(fun al -> al.idPadreO, al.id) 
+                                           |> Seq.groupBy fst 
+                                           |> Seq.map(fun (pO, ch) -> pO, ch |> Seq.map snd |> Seq.toArray) |> Map
+                let aliadosMap           = aliados |> Seq.map (fun al -> al.id, al) |> Map
+                let aliadoO          id  = match aliadosMap.TryGetValue id with
+                                           | true, al -> Some al
+                                           | _        -> None
+                let aliado           id  = try aliadosMap.[id] with e -> failwithf "buscarAliado failed: %A" id
+                let hijosDe          idO = match padres.TryGetValue (Some idO) with
+                                           | true, hijos -> hijos
+                                           | _           -> [||]
+                let rec nivelDe      idO = idO |> Option.bind aliadoO |> Option.map (fun al -> 1 + nivelDe al.idPadreO) |> Option.defaultValue 0
+                let hijos             al = hijosDe al.id |> Array.choose aliadoO
+                let rec descendientes al =
+                    [|
+                        for h in hijos al do
+                            yield                      h
+                            yield! descendientes h
+                    |]
+                {
+                    hijosDe       = hijosDe       
+                    nivelDe       = nivelDe       
+                    aliado        = aliado        
+                    aliadoO       = aliadoO       
+                    hijos         = hijos         
+                    descendientes = descendientes 
+                }
+        
+        
             let actualizarAliados modelo =
-                let pre               = modelo.premisas
-                let aliados           = modelo.aliados |> Seq.map (fun al -> al.id, al) |> Map
-                let padresHijos       = padresHijos modelo.aliados 
-                let buscarAliadoO id  = match aliados.TryGetValue id with
-                                        | true, al -> Some al
-                                        | _        -> None
-                let buscarAliado  id  = try aliados.[id] with e -> failwithf "buscarAliado failed: %A" id
-                let hijosDe       idO = match padresHijos.TryGetValue (Some idO) with
-                                        | true, hijos -> hijos
-                                        | _           -> [||]
-                let rec nivelDe   idO = idO |> Option.bind buscarAliadoO |> Option.map (fun al -> 1 + nivelDe al.idPadreO) |> Option.defaultValue 0
+                let  buscar            = busqueda modelo.aliados
+                let pre                = modelo.premisas
                 let rec aliadoActualizado alid =
-                    let al             = buscarAliado alid
-                    let hijos          = hijosDe al.id |> Seq.map aliadoActualizadoM |> Seq.cache
+                    let al             = buscar.aliado alid
+                    let hijos          = buscar.hijosDe al.id |> Seq.map aliadoActualizadoM |> Seq.cache
                     let status         = al.status //statusActual modelo.anoActual modelo.periodoActual al
                     let nReferidos     = hijos |> Seq.length
                     let nRefActivos    = hijos |> Seq.filter (fun al -> al.status = Activo && al.tipo = Regular) |> Seq.length
                     let nDescendientes = hijos |> Seq.sumBy  (fun al -> al.nDescendientes + al.nReferidos )
                     let nDescActivos   = hijos |> Seq.sumBy  (fun al -> al.nDescActivos   + al.nRefActivos)
                     let tipo           = if nRefActivos >= pre.numeroReferidosMaster then Master else Regular
-                    let nivel          = 1 + nivelDe al.idPadreO
+                    let nivel          = 1 + buscar.nivelDe al.idPadreO
                     let al' =
                         { al with
                             status         = status
@@ -1165,16 +1191,16 @@ namespace FsRoot
                     { al' with comision = comRef + comDes}
                 and aliadoActualizadoM = Memoize.memoize aliadoActualizado
         
-                aliados 
-                |> Seq.map (fun kvp -> kvp.Key)
+                modelo.aliados 
+                |> Seq.map (fun al -> al.id)
                 |> Seq.map aliadoActualizadoM
                 |> Seq.toArray
         
-            let actualizarModelEf () = eff {
-                let! modelo     = State.get()
-                do! State.put { modelo with aliados = actualizarAliados modelo }
-                ()
-            }
+            //let actualizarModelEf () = eff {
+            //    let! modelo     = State.get()
+            //    do! State.put { modelo with aliados = actualizarAliados modelo }
+            //    ()
+            //}
         
         
         [< JavaScript false >]
@@ -3853,8 +3879,8 @@ namespace FsRoot
                 |> Seq.map (fun (sta, p1, p2) ->
                     let apellido, nombre, genero = 
                         match p1.Split ',' with
-                        | [| ap ; nm |] -> ap, nm, Femenino
-                        | _             -> "", p1, Empresa
+                        | [| ap ; nm |] -> ap.Trim(), nm.Trim(), Femenino
+                        | _             -> ""       , p1.Trim(), Empresa
                     {
                         id              = IdAliado p1
                         idPadreO        = IdAliado p2 |> Some
@@ -3922,35 +3948,34 @@ namespace FsRoot
         
             [< Rpc >]
             let loginUser (user:string) (password:string) : AsyncResultM<unit, string> = 
+                let ctx = Web.Remoting.GetContext()
                 asyncResultM {
-                    let ctx = Web.Remoting.GetContext()
                     if checkUserPwd user password then
                         do! ctx.UserSession.LoginUser user
                 } (**)|> printResult "loginUser"
         
             [< Rpc >]
             let logoutUser ()  : AsyncResultM<unit, string> = 
+                let ctx = Web.Remoting.GetContext()
                 asyncResultM {
-                    let ctx = Web.Remoting.GetContext()
                     do! ctx.UserSession.Logout()
                 } (**)|> printResult "logoutUser"
         
             [< Rpc >]
             let leerDataModelo() : AsyncResultM<Modelo, string> = 
+                let  ctx  = Web.Remoting.GetContext()
                 asyncResultM {
-                    let  ctx  = Web.Remoting.GetContext()
                     let! userO = ctx.UserSession.GetLoggedInUser()
                     match userO with
                     | None      ->  do! Error(ErrorMsg "User not logged in.")
                                     return Sample.modelo
                     | Some user ->
                     let aliados = Sample.modelo |> Aliado.actualizarAliados
+                    let buscar = Aliado.busqueda aliados
                     if user = "admin" then return { Sample.modelo with aliados = aliados } else
                     let al = aliados |> Seq.find (userIsAliado user)
-                    let subAliados = 
-                        if al.tipo = Master then aliados else 
-                            aliados |> Array.filter (fun alc -> alc.id = al.id || alc.idPadreO = Some alc.id)
-                    return { Sample.modelo with aliados = subAliados }
+                    let subAliados = (if al.tipo = Master then buscar.descendientes else buscar.hijos) al
+                    return { Sample.modelo with aliados = Array.append [| al |] subAliados }
                 }
         
             [< JavaScript >]
@@ -3977,9 +4002,9 @@ namespace FsRoot
         
             let aliados() =
                 let expandidos = Var.Create None
-                let padres     = Var.Create Map.empty
+                let hijosDeO   = Var.Create None
         
-                let hijosDe padres id = padres |> Map.tryFind (Some id) |> Option.defaultValue [||]
+                let hijosDe id = hijosDeO.Value |> Option.map (fun f -> f id) |> Option.defaultValue [||]
         
                 let nombre dp = 
                     let titulo   = dp.titulo |> Option.map ((+) " ") |> Option.defaultValue ""
@@ -3994,9 +4019,9 @@ namespace FsRoot
                 let comision v = if v = 0 then "-" else ModeloUI.money v 
                 let expandido id =
                     expandidos.View
-                    |> View.Map2 (fun exp padres -> 
-                        if hijosDe padres id |> Seq.isEmpty then "" else
-                        if exp |> Option.map (Set.contains id) = Some true then "Expandido" else "Colapsado") <| padres.View
+                    |> View.Map (fun exp -> 
+                        if hijosDe id |> Seq.isEmpty then "" else
+                        if exp |> Option.map (Set.contains id) = Some true then "Expandido" else "Colapsado") 
                 let expandir  id =
                     if expandidos.Value |> Option.map (Set.contains id) = Some true then Set.remove else Set.add
                         <| id 
@@ -4012,24 +4037,24 @@ namespace FsRoot
                                                 &> desc (fun al -> al.nRefActivos , al.nReferidos    )
                                                 &> desc (fun al -> al.nDescActivos, al.nDescendientes)
                                                 &>  asc (fun al -> nombre al.datosPersonales         ) )
-                    padres.Value         <- Aliado.padresHijos als
-                    let aliados           = als |> Seq.map (fun al -> al.id, al) |> Map
+                    let buscar = Aliado.busqueda als
+                    hijosDeO.Set <| Some buscar.hijosDe
                     let nivel = try als |> Seq.map (fun al -> al.nivel) |> Seq.min with _ -> 1
-                    let rec hijos al = seq {
-                        yield  al
-                        if expandidos.Value.Value.Contains al.id then
-                            for hijo in hijosDe padres.Value al.id |> Seq.map (fun id -> aliados.[id]) do
-                                yield! hijos hijo
-                        }
                     let raiz = als |> Seq.filter (fun al -> al.nivel = nivel)
                     if raiz |> Seq.isEmpty then
                         expandidos.Set None
                     elif expandidos.Value.IsNone then
                         raiz |> Seq.map (fun al -> al.id) |> Set |> Some |> expandidos.Set
                         raiz |> Seq.map (fun al -> al.id) |> Seq.tryHead |> Option.iter seleccionar
+                    let rec buscarExpandidos al = seq {
+                        yield al
+                        if expandidos.Value |> Option.map (Set.contains al.id) |> Option.defaultValue false then
+                            for hijo in buscar.hijos al do
+                                yield! buscarExpandidos hijo
+                    }
                     seq {
                         for al in raiz do
-                            yield! hijos al
+                            yield! buscarExpandidos al
                     }
                 
                 TemplateLib.TablaAliados()
@@ -4172,6 +4197,12 @@ namespace FsRoot
                 | 12 -> "Dic"
                 | _  -> "---"
         
+            let logout () = 
+                asyncResultM {
+                    do! Rpc.logoutUser()
+                    JS.Window.Location.Reload()
+                } |> Rpc.iterA 
+        
             [< WebSharper.Sitelets.Website >]    
             let mainProgram() =
                 let titleV     = Var.Create "Prozper"
@@ -4189,7 +4220,7 @@ namespace FsRoot
                                        AF.newDoc  "Aliado"         (lazy RenderAliado .aliado () )
                                        AF.newDoc  "Calculo"        (lazy RenderAliado .calculo() )
                                     |]  
-                    AF.plgActions = [| //AF.newAct  "AddSnippet"      Snippets.newSnippet
+                    AF.plgActions = [| AF.newAct  "Logout"      logout
                                        //AF.newAct  "RemoveSnippet"   deleteSnippet       
                                        //AF.newAct  "IndentIn"        <| fun () -> model.selection.Value |> Option.map fst |> Option.iter (fun nid -> IndentNode(true , nid) |> processor)
                                        //AF.newAct  "IndentOut"       <| fun () -> model.selection.Value |> Option.map fst |> Option.iter (fun nid -> IndentNode(false, nid) |> processor)
@@ -4286,10 +4317,13 @@ namespace FsRoot
             open WebSharper.UI.Templating
             open WebSharper.UI.Html
         
-            type EndPointServer = | [< EndPoint "/" >] EP
+            type Data = { Usuario: string ;  Password:string }
+        
+            type EndPointServer =  | [< EndPoint "/" >] EP
+                                   | [< EndPoint "POST /demo" ; FormData >] DATA of Data
         
             let content (ctx:Context<EndPointServer>) (endpoint:EndPointServer) : Async<Content<EndPointServer>> =
-        
+                printfn "%A" endpoint
                 match ctx.UserSession.GetLoggedInUser() |> Async.RunSynchronously with
                 | Some user ->
                 (**)printfn "Serving Main page: %s" user
@@ -4302,13 +4336,16 @@ namespace FsRoot
                 (**)printfn "Serving Login page"
                     Content.Page(
                         TemplateLogin()
+                            .Brand("Prozper") 
+                            .madeby(    "CIPHERBsc")
+                            .madebylink("cipherbsc.com")
                             .Login(fun e -> 
                                 if e.Vars.Username.Value <> "" && e.Vars.Password.Value <> "" 
                                 then asyncResultM {
                                         do! Rpc.loginUser e.Vars.Username.Value e.Vars.Password.Value
                                         JS.Window.Location.Reload()
                                      } |> Rpc.iterA 
-                            )
+                            ) 
                             .Doc()
                     )
         
