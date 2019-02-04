@@ -943,6 +943,8 @@ NUGET
     WebSharper (4.5.1.304)
     WebSharper.FSharp (4.5.1.304)
       WebSharper (4.5.1.304)
+    WebSharper.Moment (4.5.0.124)
+      WebSharper (>= 4.5.1 < 4.6)
     WebSharper.Owin (4.5.0.135)
       Microsoft.Owin (>= 3.0)
       Owin (>= 1.0 < 1.1)

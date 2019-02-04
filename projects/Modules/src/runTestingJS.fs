@@ -2,7 +2,7 @@
 #nowarn "1182"
 #nowarn "52"
 #nowarn "1178"
-////-d:FSharpStation1547097944900
+////-d:FSharpStation1548758124776 -d:WEBSHARPER
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#I @"..\packages\Owin\lib\net40"
@@ -36,7 +36,7 @@
 //#nowarn "52"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1547097944900
+//#define FSharpStation1548758124776
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -629,6 +629,106 @@ namespace FsRoot
                         
                     
                     
+                type ResultM<'v, 'm> = ResultM of Option<'v> * ResultMessage<'m>
+                
+                let inline OkM              v    = ResultM (Some v, NoMsg)
+                let inline OkMWithMsg       v m  = ResultM(Some v, m)
+                //let inline OkMWithMsgs      v ms = ms |> ResultMessage.reduceMsgs |> OkMWithMsg v
+                
+                let inline ErrorM             m  = ResultM (None  , m    )
+                //let inline ErrorMWithMsgs     ms = ms |> ResultMessage.reduceMsgs |> ErrorM
+                let (|OkM|ErrorM|)             r = match r with
+                                                    | ResultM(Some v, m) -> OkM   (v, m)
+                                                    | ResultM(None  , e) -> ErrorM e
+                module ResultM =
+                
+                    type CheckError<'T> = CheckErrorF of ('T -> bool)
+                    let checkError   () = CheckErrorF (fun _ -> true )
+                    let checkErrorW  () = CheckErrorF (fun _ -> false)
+                
+                    let inline rtn                 v = OkM v
+                    let inline rtnM                m = OkMWithMsg () m
+                    let inline rtnr               vR = vR  |> Result.map OkM          |> Result.defaultWith       ErrorM
+                    let freeMessage                r = r   |> function Ok v -> Ok v   | Error e -> ResultMessage.freeMessage e |> Error
+                    let inline toResult            r = match r with
+                                                       | ResultM(Some v, _) -> Ok     v
+                                                       | ResultM(None  , e) -> Error  e
+                    let inline toResultD           r = match r with
+                                                       | ResultM(Some v, m) -> Ok    (v, m)
+                                                       | ResultM(None  , e) -> Error  e
+                    let toOption                   r = r   |> function ResultM (v,_) -> v
+                    let defaultWith              f r = r   |> toResult |> Result.defaultWith   f
+                    let defaultValue             d r = r   |> toResult |> Result.defaultValue  d
+                    let map         f  (ResultM (v, m)) = ResultM (v |> Option.map f, m)
+                    let mapMessage  fM (ResultM (v, m)) = ResultM (v, fM m)
+                    let bind                  f    r = match r with
+                                                       | ResultM(Some v, m) -> f v |> mapMessage (ResultMessage.addMsg m)
+                                                       | ResultM(None  , e) -> ResultM(None  , e)
+                    /// bind version that protects against exceptions
+                    let bindP                 f    r = match r with
+                                                       | ResultM(Some v, m) -> try f v |> mapMessage (ResultMessage.addMsg m)
+                                                                               with  e -> ExceptMsg (e.Message, e.StackTrace) |> ErrorM
+                                                       | ResultM(None  , e) -> ResultM(None  , e)
+                    let bindM                 f    m = rtnM m |> bindP f
+                
+                    let check (CheckErrorF k) vR = vR |> function ResultM(Some _, m) when ResultMessage.isFatalF k m -> ErrorM m |_-> vR
+                
+                    /// map version that protects against exceptions
+                    let inline mapP           f    m = bindP (f >> rtn) m
+                    let iter                  fM f r = r   |> mapP f |> function | ResultM(Some (), m) -> () | ResultM(None, m) -> fM m  : unit
+                    let get                        r = r   |>          defaultWith (string >> failwith)
+                    let ofOption              f   vO = vO  |> Option.map OkM          |> Option.defaultWith (f >> ErrorM)
+                    let ofResult                  vR = vR  |> rtnr
+                    let insertO                  vRO = vRO |> Option.map(map Some)    |> Option.defaultWith(fun () -> OkM None)
+                    let absorbO               f  vOR = vOR |> bindP (ofOption f)
+                    let addMsg                  m  r = r |> mapMessage (ResultMessage.addMsg m)
+                    let failIfFatalMsgF         f  r = r |> function OkM (v, m) when ResultMessage.isFatalF f m -> ErrorM m |_-> r
+                    let failIfFatalMsg             r = r |> function OkM (v, m) when ResultMessage.isFatal    m -> ErrorM m |_-> r
+                    let failIfFatalMsgW            r = r |> function OkM (v, m) when ResultMessage.isFatalW   m -> ErrorM m |_-> r
+                    let (>>=)                    r f = bind f r
+                    let rec    traverseSeq    f   sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                       Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq        sq = traverseSeq id sq
+                        
+                    
+                    type Builder() =
+                        member inline __.Return          x       = rtn  x
+                        member inline __.ReturnFrom      x       =     (x:Result<_,_>)
+                        member inline __.ReturnFrom      x       = rtnM x
+                        member        __.Bind           (w , r ) = bindP  r w
+                        member        __.Bind           (w , r ) = bindM  r w
+                        member inline __.Zero           ()       = rtn ()
+                        member inline __.Delay           f       = f
+                        member inline __.Combine        (a, b)   = a |> bind b
+                        member inline __.Run             f       = OkM () |> bindP f
+                        member __.TryWith   (body, handler     ) = try body() with e -> handler     e
+                        member __.TryFinally(body, compensation) = try body() finally   compensation()
+                        member __.Using     (disposable, body  ) = using (disposable:#System.IDisposable) body
+                        member __.While(guard, body) =
+                            let rec whileLoop guard body =
+                                if guard() then body() |> bind (fun () -> whileLoop guard body)
+                                else rtn   ()
+                            whileLoop guard body
+                        member this.For(sequence:seq<_>, body) =
+                            this.Using(sequence.GetEnumerator(),fun enum -> 
+                                this.While(enum.MoveNext, 
+                                    this.Delay(fun () -> body enum.Current)))
+                                    
+                    module Operators =
+                        let inline (|>>) v f   = mapP  f v
+                        let inline (>>=) v f   = bindP f v
+                        let inline (>>>) f g v = f v |>> g
+                        let inline (>=>) f g v = f v >>= g
+                        let inline rtn   v     = rtn    v
+                
+                [< AutoOpen >]
+                module ResultMAutoOpen =
+                    open ResultM
+                    
+                    let resultM = Builder()
+                    
+                
+                
                 type AsyncResult<'v, 'm> = Async<Result<'v, 'm>>
                 
                 /// A computation expression to build an Async<Result<'ok, 'error>> value
@@ -679,7 +779,7 @@ namespace FsRoot
                     member __.Combine   (vRA,  fRA) : Async<Result<'b  , 'm>> = AsyncResult.bind fRA  vRA
                     member __.Combine   (vR ,  fRA) : Async<Result<'b  , 'm>> = AsyncResult.bind fRA (vR  |> AsyncResult.rtnR)
                     member __.Delay            fRA                            = fRA
-                    member __.Run              fRA                            = fRA ()
+                    member __.Run              fRA                            = AsyncResult.rtn () |> AsyncResult.bind fRA
                     member __.TryWith   (fRA , hnd) : Async<Result<'a  , 'm>> = async { try return! fRA() with e -> return! hnd e  }
                     member __.TryFinally(fRA , fn ) : Async<Result<'a  , 'm>> = async { try return! fRA() finally   fn  () }
                     member __.Using(resource , fRA) : Async<Result<'a  , 'm>> = async.Using(resource,       fRA)
@@ -725,13 +825,94 @@ namespace FsRoot
                 
                 
                 
+                type AsyncResultM<'v, 'm> = Async<ResultM<'v, 'm>>
+                
+                /// A computation expression to build an Async<Result<'ok, 'error>> value
+                module AsyncResultM =
+                    let mapError fE v  = v |> Async.map (ResultM.mapMessage fE)
+                    let freeMessage v  = v |> Async.map  ResultM.freeMessage
+                
+                    let rtn         v   = async.Return(OkM v  )
+                    let rtnr        vR  = async.Return(ResultM.rtnr vR)
+                    let rtnR        vR  = async.Return    vR
+                    let rtnM        vM  = async.Return(ResultM.rtnM vM)
+                    let rtnrA       vrA = vrA |> Async.map    ResultM.ofResult
+                    let iterS  fE f vRA = Async.iterS (ResultM.iter fE f) vRA
+                    let iterA  fE f vRA = Async.iterA (ResultM.iter fE f) vRA
+                    let iterpS    f vRA = vRA |> iterS (ResultMessage.summarized >> print) f
+                    let iterpA    f vRA = vRA |> iterA (ResultMessage.summarized >> print) f
+                    let bind  (fRA:'a -> Async<ResultM<'b,'c>>)  (vRA: Async<ResultM<'a,'c>>) : Async<ResultM<'b,'c>>= async {
+                        try 
+                            let!  vR = vRA
+                            match vR with
+                            | OkM   (v, m) -> return! fRA   v |> Async.map (ResultM.addMsg m)
+                            | ErrorM    m  -> return  ErrorM m
+                        with  e -> return ExceptMsg (e.Message, e.StackTrace) |> ErrorM
+                    }
+                    let inline bindr  f a  = rtnr   a |> bind f : AsyncResultM<_,_>
+                    let inline bindM  f a  = rtnM   a |> bind f : AsyncResultM<_,_>
+                    let inline bindrA f a  = rtnrA  a |> bind f : AsyncResultM<_,_>
+                    let inline bindR  f a  = rtnR   a |> bind f : AsyncResultM<_,_>
+                    let inline map    f m = bind  (f >> rtn) m            
+                    let rec whileLoop cond fRA =
+                        if   cond () 
+                        then fRA  () |> bind (fun () -> whileLoop cond fRA)
+                        else rtn  ()
+                    let (>>=)                              v f = bind f v
+                    let rec    traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                                 Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq                  sq = traverseSeq id sq
+                    let insertO   vRAO                         = vRAO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
+                    let insertR ( vRAR:Result<_,_>)            = vRAR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
+                    let absorbR   vRRA                         = vRRA |> Async.map (Result.bindP   id)
+                    let absorbO f vORA                         = vORA |> Async.map (Result.absorbO  f)
+                    type AsyncResultMBuilder() =
+                        member __.ReturnFrom vRA        : Async<ResultM<'v  , 'm>> =           vRA
+                        member __.ReturnFrom vR         : Async<ResultM<'v  , 'm>> = rtnr      vR
+                        member __.ReturnFrom vR         : Async<ResultM<unit, 'm>> = rtnM      vR
+                        member __.ReturnFrom vR         : Async<ResultM<'v  , 'm>> = rtnR      vR
+                        member __.ReturnFrom vR         : Async<ResultM<'v  , 'm>> = rtnrA     vR
+                        member __.Return     v          : Async<ResultM<'v  , 'm>> = rtn       v  
+                        member __.Zero       ()         : Async<ResultM<unit, 'm>> = rtn       () 
+                        member __.Bind      (vRA,  fRA) : Async<ResultM<'b  , 'm>> = bind fRA  vRA
+                        member __.Bind       (w , r )                              = bindr   r w
+                        member __.Bind       (w , r )                              = bindM   r w
+                        member __.Bind       (w , r )                              = bindR   r w
+                        member __.Bind       (w , r )                              = bindrA  r w
+                        member __.Combine   (vRA,  fRA) : Async<ResultM<'b  , 'm>> = bind fRA  vRA
+                        member __.Combine   (vR ,  fRA) : Async<ResultM<'b  , 'm>> = bind fRA (vR  |> rtnR)
+                        member __.Delay            fRA                             = fRA
+                        member __.Run              fRA                             = rtn () |> bind fRA
+                        member __.TryWith   (fRA , hnd) : Async<ResultM<'a  , 'm>> = async { try return! fRA() with e -> return! hnd e  }
+                        member __.TryFinally(fRA , fn ) : Async<ResultM<'a  , 'm>> = async { try return! fRA() finally   fn  () }
+                        member __.Using(resource , fRA) : Async<ResultM<'a  , 'm>> = async.Using(resource,       fRA)
+                        member __.While   (guard , fRA) : Async<ResultM<unit, 'a>> = whileLoop guard fRA 
+                        member th.For  (s: 'a seq, fRA) : Async<ResultM<unit, 'b>> = th.Using(s.GetEnumerator (), fun enum ->
+                                                                                        th.While(enum.MoveNext,
+                                                                                            th.Delay(fun () -> fRA enum.Current)))
+                
+                [<AutoOpen>]
+                module AsyncResultMAutoOpen =
+                    open AsyncResultM
+                
+                    let asyncResultM = AsyncResultMBuilder()
+                
+                    // Having Async<_> members as extensions gives them lower priority in
+                    // overload resolution between Async<_> and Async<Result<_,_>>.
+                    type AsyncResultMBuilder with
+                    member __.ReturnFrom (vA: Async<_>     ) : Async<ResultM<_,_>> =           Async.map OkM vA
+                    member __.Bind       (vA: Async<_>, fRA) : Async<ResultM<_,_>> = bind fRA (Async.map OkM vA)
+                    member __.Combine    (vA: Async<_>, fRA) : Async<ResultM<_,_>> = bind fRA (Async.map OkM vA)
+                
             type System.String with
                 member this.Substring2(from, n) = 
                     if   n    <= 0           then ""
                     elif from <  0           then this.Substring2(0, n + from)
                     elif from >= this.Length then ""
                     else this.Substring(from, min n (this.Length - from))
-                member this.Left             n  = this.Substring2(0, n)
+                member this.Left             n  = if n < 0 
+                                                  then this.Substring2(0, this.Length + n)
+                                                  else this.Substring2(0, n              )
                 member this.Right            n  = this.Substring2(max 0 (this.Length - n), this.Length)
             
             module String =
@@ -1464,14 +1645,12 @@ namespace FsRoot
             
                 let startProcess p ops =
                     let procStart   = ProcessStartInfo(p, ops)
-                    let proc        = new Process()
-                    proc.StartInfo <- procStart
+                    let proc        = new Process(StartInfo = procStart)
                     proc.Start() 
                 
                 let startProcessDir p ops dir =
                     let procStart   = ProcessStartInfo(p, ops, WorkingDirectory = dir)
-                    let proc        = new Process()
-                    proc.StartInfo <- procStart
+                    let proc        = new Process(StartInfo = procStart)
                     proc.Start() 
                 
                 type ShellResponse =
@@ -1490,11 +1669,10 @@ namespace FsRoot
                         |> String.concat "\n"
                 
                 type ShellEx(startInfo: ProcessStartInfo, ?outHndl, ?errHndl, ?priorityClass) =
-                    let proc                              = new Process()
                     let bufferOutput                      = new StringBuilder()
                     let bufferError                       = new StringBuilder()
-                    let append  (sb: StringBuilder) txt   = sb.Append(txt + "\n")                  |> ignore
-                    let consume (sb: StringBuilder)       = sb.ToString() |>! (fun _ -> sb.Clear() |> ignore)
+                    let append  (sb: StringBuilder) txt   = sb.Append(txt + System.Environment.NewLine) |> ignore
+                    let consume (sb: StringBuilder)       = sb.ToString() |>! (fun _ -> sb.Clear()      |> ignore)
                     let dataHandler handler               = DataReceivedEventHandler(fun sender args -> try handler args.Data with _ -> ())
                     let outputHandler                     = append bufferOutput |> dataHandler
                     let errorHandler                      = append bufferError  |> dataHandler
@@ -1502,9 +1680,10 @@ namespace FsRoot
                         startInfo.RedirectStandardOutput <- true
                         startInfo.RedirectStandardError  <- true
                         startInfo.UseShellExecute        <- false
-                        proc.StartInfo                   <- startInfo
-                        proc.EnableRaisingEvents         <- true
-                        outputHandler                    |>             proc.OutputDataReceived.AddHandler
+                    let proc                              = new Process(
+                                                                StartInfo           = startInfo
+                                                              , EnableRaisingEvents = true     )
+                    do  outputHandler                    |>             proc.OutputDataReceived.AddHandler
                         errorHandler                     |>             proc.ErrorDataReceived .AddHandler
                         Option.map dataHandler outHndl   |> Option.iter proc.OutputDataReceived.AddHandler
                         Option.map dataHandler errHndl   |> Option.iter proc.ErrorDataReceived .AddHandler
@@ -1990,27 +2169,37 @@ namespace FsRoot
                         """  <| Path.GetDirectoryName(outputJs0).Replace(@"\", @"\\") )
                         do!  ofFusionM <| processArgs fs assembs nowarns
                         let! res      = WsCompiler.compileRm()
-                        let  jsFile   = website +/+ name + ".js"
                         let  js0      = File.ReadAllText outputJs0
-                        let  js       = File.ReadAllText jsFile
                         let  includes = File.ReadAllText (website +/+ name + ".head.html") 
                         let  incs     = includes.Split([| "src="; "href=" ; "<" ; ">" |], System.StringSplitOptions.RemoveEmptyEntries)
                                         |> Seq.choose(fun v -> if v.[0] = '"' then v.Split([| '"' |], System.StringSplitOptions.RemoveEmptyEntries).[0] |> sprintf "%A" |> Some else None)
-                                        |> String.concat ", "
-                        do              File.WriteAllText (jsFile,  sprintf "CIPHERSpaceLoadFiles([%s], function () { IntelliFactory.Runtime.Start() }); %s" incs <| js.Replace("IntelliFactory.Runtime.Start();", "") )
-                        let  js2      = js0.[1..js0.Length - 7] |> (sprintf "CIPHERSpaceLoadFiles([%s], %s);" incs   )
-                        return res, js2
+                        let  js2      = js0.[1..js0.Length - 7] |> (sprintf "CIPHERSpaceLoadFiles([%s], %s);" (incs |> String.concat ", ")  )
+                        return res, (js0, incs)
                       } |> runReader args2 |> ofAsyncResultRM
                 }
             //                  "jsOutput": %A
                 
                 let translate args code = fusion {
-                    let! (out, js), msgs = translateJs args code
+                    let! (out, js0Incs), msgs = translateJs args code
                     printfn "%s" out
                     printfn "%s" <| ResultMessage.summarized msgs
-                    return js
+                    return js0Incs 
                 }
             
+        /// Essentials that run in Javascript (WebSharper)
+        //#define WEBSHARPER
+        [< JavaScript ; AutoOpen >]
+        module LibraryJS =
+            module Promise =
+                let ofAsyncResult (v: Async<Result<'a,'b>>) : Promise<'a> =
+                    new Promise<'a>(fun (resolve, reject) ->
+                        Async.StartWithContinuations(v, (function Ok ok -> resolve ok | Error er -> reject <| sprintf "%A" er), reject, reject)
+                    )
+            
+                let ofAsyncResultM (v: Async<ResultM<'a,'b>>) : Promise<'a> =
+                    new Promise<'a>(fun (resolve, reject) ->
+                        Async.StartWithContinuations(v, (function OkM(ok, _) -> resolve ok | ErrorM er -> reject <| ResultMessage.summarized er), reject, reject)
+                    )        
         /// Essentials that part runs in Javascript and part runs in the server
         [< AutoOpen >]
         module Library2 =
@@ -2566,7 +2755,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1547097944900"
+                let mutable fsharpStationAddress = Address "FSharpStation1548758124776"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -2646,12 +2835,12 @@ namespace FsRoot
             open WsTranslate
             open FsCode
         
-            let testFile() = Path.GetFullPath @"..\website\testing\testing0.js"
+            let testLoadFile() = Path.GetFullPath @"..\website\testing\testingLoad.js"
         
             let run () = fusion {
                 let! url      = FSharpStationClient.getUrl()        |> ofAsyncResultRM
                 let  uri      = System.Uri url
-                let  modif    = testFile() |>! print |> File.GetLastWriteTime
+                let  modif    = testLoadFile() |>! print |> File.GetLastWriteTime
                 do   startProcess (sprintf "http://%s:%d/testing/testing.html?q=%A" uri.Host uri.Port modif)     "" |> ignore
             } 
         
@@ -2662,16 +2851,16 @@ namespace FsRoot
         
             [< Inline "throw 'runTest is not intended for JavaScript client'" >]
             let compile show name = fusion {
-                let! code   = FSharpStationClient.getCode <| name |> ofAsyncResultRM
-                let  args   = [ intShowArgs    /= (show:bool)
-                                fscGenFSharp2  /= "noframework"
-                                fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
-                                fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
-                                fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
-                                ]
-                let! js = FsCode code |> translate (CommArgCollection args)
-                let  runtimeStart = "CIPHERSpaceLoadFilesDoAfter(function() { IntelliFactory.Runtime.Start() });"
-                do   File.WriteAllText(testFile(), runtimeStart + "\n" + js)
+                let! code         = FSharpStationClient.getCode <| name |> ofAsyncResultRM
+                let  args         = [ intShowArgs    /= (show:bool)
+                                      fscGenFSharp2  /= "noframework"
+                                      fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+                                      fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+                                      fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+                                      ]
+                let! (_, incs)   = FsCode code |> translate (CommArgCollection args)
+                let  incs2       = sprintf "\"testing.js?q=%A\"" System.DateTime.Now |> Seq.singleton |> Seq.append incs |> String.concat ", "
+                do                 File.WriteAllText(testLoadFile(),  sprintf "CIPHERSpaceLoadFiles([%s], function() {})" incs2)
             }
         
             let justRun                   =                                   run >> iterResult print id

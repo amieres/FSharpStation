@@ -1,281 +1,496 @@
-CIPHERSpaceLoadFilesDoAfter(function() { IntelliFactory.Runtime.Start() });
-CIPHERSpaceLoadFiles(["https://code.jquery.com/jquery-3.1.1.min.js"], function()
+(function()
 {
  "use strict";
- var Global,FsRoot,Library,LibraryJS,Pojo,GenEditor,Position,AnnotationType,Annotation,Completion,GenEditorHook,GenEditor$1,Element,LoadFiles,REGEX,CodeMirror,Pos,AnchorHead,WebSharper,Obj,Editor,CodeMirror$1,Hint,Hint$1,Response,Options,Lint,Response$1,CodeMirrorGenAdapter,CodeMirrorRT,TestingJS,CodeMirror$2,SC$1,Utils,console,Seq,UI,View,Unchecked,Var$1,Concurrency,Strings,Arrays,IntelliFactory,Runtime,Doc,AttrProxy,Client,Templates,Operators;
+ var Global,FsRoot,Library,String,LibraryJS,Var,ListModel,LoadFiles,TestingJS,Comment,Sort,SC$1,testing_Templates,WebSharper,Strings,Slice,Seq,Unchecked,UI,View,Var$1,FromView,Doc,Concurrency,Remoting,BirstComment,Rpc,Var$2,Templating,Runtime,Server,ProviderBuilder,Handler,TemplateInstance,Client,Templates,Monads,AsyncResultMAutoOpen,AjaxRemotingProvider,IntelliFactory,Runtime$1,Utils,System,Guid,Arrays,Date,ListModel$1,$;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
+ String=Library.String=Library.String||{};
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
- Pojo=LibraryJS.Pojo=LibraryJS.Pojo||{};
- GenEditor=LibraryJS.GenEditor=LibraryJS.GenEditor||{};
- Position=GenEditor.Position=GenEditor.Position||{};
- AnnotationType=GenEditor.AnnotationType=GenEditor.AnnotationType||{};
- Annotation=GenEditor.Annotation=GenEditor.Annotation||{};
- Completion=GenEditor.Completion=GenEditor.Completion||{};
- GenEditorHook=GenEditor.GenEditorHook=GenEditor.GenEditorHook||{};
- GenEditor$1=GenEditor.GenEditor=GenEditor.GenEditor||{};
- Element=LibraryJS.Element=LibraryJS.Element||{};
+ Var=LibraryJS.Var=LibraryJS.Var||{};
+ ListModel=LibraryJS.ListModel=LibraryJS.ListModel||{};
  LoadFiles=LibraryJS.LoadFiles=LibraryJS.LoadFiles||{};
- REGEX=LibraryJS.REGEX=LibraryJS.REGEX||{};
- CodeMirror=LibraryJS.CodeMirror=LibraryJS.CodeMirror||{};
- Pos=CodeMirror.Pos=CodeMirror.Pos||{};
- AnchorHead=CodeMirror.AnchorHead=CodeMirror.AnchorHead||{};
- WebSharper=Global.WebSharper;
- Obj=WebSharper&&WebSharper.Obj;
- Editor=CodeMirror.Editor=CodeMirror.Editor||{};
- CodeMirror$1=CodeMirror.CodeMirror=CodeMirror.CodeMirror||{};
- Hint=CodeMirror.Hint=CodeMirror.Hint||{};
- Hint$1=Hint.Hint=Hint.Hint||{};
- Response=Hint.Response=Hint.Response||{};
- Options=Hint.Options=Hint.Options||{};
- Lint=CodeMirror.Lint=CodeMirror.Lint||{};
- Response$1=Lint.Response=Lint.Response||{};
- CodeMirrorGenAdapter=LibraryJS.CodeMirrorGenAdapter=LibraryJS.CodeMirrorGenAdapter||{};
- CodeMirrorRT=CodeMirrorGenAdapter.CodeMirrorRT=CodeMirrorGenAdapter.CodeMirrorRT||{};
  TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
- CodeMirror$2=TestingJS.CodeMirror=TestingJS.CodeMirror||{};
+ Comment=TestingJS.Comment=TestingJS.Comment||{};
+ Sort=Comment.Sort=Comment.Sort||{};
  SC$1=Global.StartupCode$testing$testing=Global.StartupCode$testing$testing||{};
- Utils=WebSharper&&WebSharper.Utils;
- console=Global.console;
+ testing_Templates=Global.testing_Templates=Global.testing_Templates||{};
+ WebSharper=Global.WebSharper;
+ Strings=WebSharper&&WebSharper.Strings;
+ Slice=WebSharper&&WebSharper.Slice;
  Seq=WebSharper&&WebSharper.Seq;
+ Unchecked=WebSharper&&WebSharper.Unchecked;
  UI=WebSharper&&WebSharper.UI;
  View=UI&&UI.View;
- Unchecked=WebSharper&&WebSharper.Unchecked;
- Var$1=UI&&UI.Var$1;
- Concurrency=WebSharper&&WebSharper.Concurrency;
- Strings=WebSharper&&WebSharper.Strings;
- Arrays=WebSharper&&WebSharper.Arrays;
- IntelliFactory=Global.IntelliFactory;
- Runtime=IntelliFactory&&IntelliFactory.Runtime;
+ Var$1=UI&&UI.Var;
+ FromView=UI&&UI.FromView;
  Doc=UI&&UI.Doc;
- AttrProxy=UI&&UI.AttrProxy;
+ Concurrency=WebSharper&&WebSharper.Concurrency;
+ Remoting=WebSharper&&WebSharper.Remoting;
+ BirstComment=FsRoot&&FsRoot.BirstComment;
+ Rpc=BirstComment&&BirstComment.Rpc;
+ Var$2=UI&&UI.Var$1;
+ Templating=UI&&UI.Templating;
+ Runtime=Templating&&Templating.Runtime;
+ Server=Runtime&&Runtime.Server;
+ ProviderBuilder=Server&&Server.ProviderBuilder;
+ Handler=Server&&Server.Handler;
+ TemplateInstance=Server&&Server.TemplateInstance;
  Client=UI&&UI.Client;
  Templates=Client&&Client.Templates;
- Operators=WebSharper&&WebSharper.Operators;
- Library.print=function(v)
+ Monads=Library&&Library.Monads;
+ AsyncResultMAutoOpen=Monads&&Monads.AsyncResultMAutoOpen;
+ AjaxRemotingProvider=Remoting&&Remoting.AjaxRemotingProvider;
+ IntelliFactory=Global.IntelliFactory;
+ Runtime$1=IntelliFactory&&IntelliFactory.Runtime;
+ Utils=WebSharper&&WebSharper.Utils;
+ System=Global.System;
+ Guid=System&&System.Guid;
+ Arrays=WebSharper&&WebSharper.Arrays;
+ Date=Global.Date;
+ ListModel$1=UI&&UI.ListModel;
+ $=Global.jQuery;
+ String.EndsWith=function(ends,s)
  {
-  if(typeof v=="string")
-   ((function($1)
-   {
-    return function($2)
-    {
-     return $1(Utils.toSafe($2));
-    };
-   }(function(s)
-   {
-    console.log(s);
-   }))(v));
-  else
-   ((function($1)
-   {
-    return function($2)
-    {
-     return $1(Utils.prettyPrint($2));
-    };
-   }(function(s)
-   {
-    console.log(s);
-   }))(v));
+  return Strings.EndsWith(s,ends)?{
+   $:1,
+   $0:Slice.string(s,{
+    $:1,
+    $0:0
+   },{
+    $:1,
+    $0:s.length-ends.length-1
+   })
+  }:null;
  };
- Library.Error=function(a)
+ String.StartsWith=function(start,s)
+ {
+  return Strings.StartsWith(s,start)?{
+   $:1,
+   $0:Slice.string(s,{
+    $:1,
+    $0:start.length
+   },null)
+  }:null;
+ };
+ String.skipLastLine=function()
+ {
+  SC$1.$cctor();
+  return SC$1.skipLastLine;
+ };
+ String.indentStr=function(i)
+ {
+  function f(s)
+  {
+   return String.indent(i,s);
+  }
+  function g(s)
+  {
+   return Strings.concat("\n",s);
+  }
+  return function(x)
+  {
+   return g(f(x));
+  };
+ };
+ String.unindentStr=function()
+ {
+  SC$1.$cctor();
+  return SC$1.unindentStr;
+ };
+ String.indent=function(n,s)
+ {
+  var x,x$1;
+  x=Strings.SplitChars(s,["\n"],0);
+  return Seq.map((x$1=Strings.replicate(n," "),function(y)
+  {
+   return x$1+y;
+  }),x);
+ };
+ String.unindent=function(s)
+ {
+  var lines,n,o,o$1;
+  lines=Strings.SplitChars(s,["\n"],0);
+  n=(o=Seq.tryFindIndex(function(y)
+  {
+   return" "!==y;
+  },(o$1=Seq.tryFind(function(l)
+  {
+   return Strings.Trim(l)!=="";
+  },lines),o$1==null?"":o$1.$0)),o==null?0:o.$0);
+  return Seq.filter(function(s$1)
+  {
+   return!Strings.StartsWith(s$1,"# 1 ");
+  },Seq.map(function(l)
+  {
+   return l.length<=n?"":l.substring(n);
+  },lines));
+ };
+ String.skipFirstLine=function(txt)
+ {
+  var i;
+  i=txt.indexOf("\n");
+  return i<0?"":Slice.string(txt,{
+   $:1,
+   $0:i+1
+  },null);
+ };
+ String.append=function(a,b)
+ {
+  return a+b;
+ };
+ String.trim=function(s)
+ {
+  return Strings.Trim(s);
+ };
+ String.contains=function(sub,whole)
+ {
+  return whole.indexOf(sub)!=-1;
+ };
+ String.delimitedO=function(op,cl,txt)
+ {
+  var o,$1,bef,o$1,$2;
+  o=String.splitInTwoO(op,txt);
+  return o==null?null:($1=o.$0,(bef=$1[0],(o$1=String.splitInTwoO(cl,$1[1]),o$1==null?null:{
+   $:1,
+   $0:($2=o$1.$0,[bef,$2[0],$2[1]])
+  })));
+ };
+ String.splitInTwoO=function(spl,txt)
+ {
+  var i;
+  i=txt.indexOf(spl);
+  return i===-1?null:{
+   $:1,
+   $0:[Library["String.Left"](txt,i),txt.substring(i+spl.length)]
+  };
+ };
+ String.splitByChar=function(c,s)
+ {
+  return Strings.SplitChars(s,[c],0);
+ };
+ Library["String.Right"]=function(_this,n)
+ {
+  var a,b;
+  return Library["String.Substring2"](_this,(a=0,(b=_this.length-n,Unchecked.Compare(a,b)===1?a:b)),_this.length);
+ };
+ Library["String.Left"]=function(_this,n)
+ {
+  return n<0?Library["String.Substring2"](_this,0,_this.length+n):Library["String.Substring2"](_this,0,n);
+ };
+ Library["String.Substring2"]=function(_this,from,n)
+ {
+  var from$1,b;
+  while(true)
+   {
+    if(n<=0)
+     return"";
+    else
+     if(from<0)
+      {
+       from$1=from;
+       from=0;
+       n=n+from$1;
+      }
+     else
+      return from>=_this.length?"":Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
+   }
+ };
+ Library.Error$1=function(a)
  {
   return{
    $:1,
    $0:a
   };
  };
- Pojo.newPojo=function(props)
+ Var.lensView=function(get,update,view0,_var)
  {
-  var pojo,f;
-  function f$1(a,a$1)
+  var id,view,$1;
+  id=Var.freshId();
+  view=View.Map2(function(v)
   {
-   return function(p)
+   return get(v);
+  },_var.get_View(),view0);
+  $1=new UI.Var({
+   Get:function()
    {
-    return Pojo.addProp(a,a$1,p);
-   };
-  }
-  function g(v)
-  {
-  }
-  pojo={};
-  Seq.iter((f=function(b)
-  {
-   return(function($1)
+    return get(_var.Get());
+   },
+   Set:function(v)
    {
-    return f$1($1[0],$1[1]);
-   }(b))(pojo);
+    return _var.Update(function(t)
+    {
+     return update(t,v);
+    });
+   },
+   SetFinal:function(v)
+   {
+    return this.Set(v);
+   },
+   Update:function(f)
+   {
+    return _var.Update(function(t)
+    {
+     return update(t,f(get(t)));
+    });
+   },
+   UpdateMaybe:function(f)
+   {
+    return _var.UpdateMaybe(function(t)
+    {
+     var x;
+     x=f(get(t));
+     return x==null?null:{
+      $:1,
+      $0:update(t,x.$0)
+     };
+    });
+   },
+   get_View:function()
+   {
+    return view;
+   },
+   get_Id:function()
+   {
+    return id;
+   }
+  });
+  Var$1.New.call($1);
+  return $1;
+ };
+ Var.freshId=function()
+ {
+  Var.set_counter(Var.counter()+1);
+  return"varuid"+Global.String(Var.counter());
+ };
+ Var.counter=function()
+ {
+  SC$1.$cctor();
+  return SC$1.counter;
+ };
+ Var.set_counter=function($1)
+ {
+  SC$1.$cctor();
+  SC$1.counter=$1;
+ };
+ ListModel.currentLens=function(def,curr,model)
+ {
+  return ListModel["currentLensUpd'"](def,curr,function(v)
+  {
+   model.UpdateBy(function()
+   {
+    return model.TryFindByKey(model.key(v))==null?null:{
+     $:1,
+     $0:v
+    };
+   },model.key(v));
+  },model);
+ };
+ ListModel["currentLensUpd'"]=function(def,curr,upd,model)
+ {
+  return new FromView.New(View.Map2(function(_mdl,kO)
+  {
+   var o;
+   o=kO==null?null:model.TryFindByKey(kO.$0);
+   return o==null?def:o.$0;
+  },model.v,curr),upd);
+ };
+ ListModel.currentLensUpd=function(def,curr,upd,model)
+ {
+  var f;
+  function b(a)
+  {
+   return model.TryFindByKey(a);
+  }
+  function g(o)
+  {
+   return o==null?def:o.$0;
+  }
+  return Var.lensView((f=function(o)
+  {
+   return o==null?null:b(o.$0);
   },function(x)
   {
    return g(f(x));
-  }),props);
-  return pojo;
- };
- Pojo.addProp=function(p,p$1,pojo)
- {
-  pojo[p]=p$1;
-  return pojo;
- };
- Position.New=function(line,col)
- {
-  return{
-   line:line,
-   col:col
-  };
- };
- AnnotationType.Hint={
-  $:3
- };
- AnnotationType.Info={
-  $:2
- };
- AnnotationType.Warning={
-  $:1
- };
- AnnotationType.Error={
-  $:0
- };
- Annotation.New=function(startP,endP,severity,message)
- {
-  return{
-   startP:startP,
-   endP:endP,
-   severity:severity,
-   message:message
-  };
- };
- Completion.New=function(kind,label,detail,replace)
- {
-  return{
-   kind:kind,
-   label:label,
-   detail:detail,
-   replace:replace
-  };
- };
- GenEditorHook.New=function(generateDoc,getValue,setValue,setDisabled,showAnnotations,posFromIndex,indexFromPos,getWordAt,getUri,setUri,hookOnChange)
- {
-  return{
-   generateDoc:generateDoc,
-   getValue:getValue,
-   setValue:setValue,
-   setDisabled:setDisabled,
-   showAnnotations:showAnnotations,
-   posFromIndex:posFromIndex,
-   indexFromPos:indexFromPos,
-   getWordAt:getWordAt,
-   getUri:getUri,
-   setUri:setUri,
-   hookOnChange:hookOnChange
-  };
- };
- GenEditor$1.New=function(_var,disabled,annotations,onChange,onRender,autoCompletion,toolTip,declaration,editorO,editorHook)
- {
-  return{
-   "var":_var,
-   disabled:disabled,
-   annotations:annotations,
-   onChange:onChange,
-   onRender:onRender,
-   autoCompletion:autoCompletion,
-   toolTip:toolTip,
-   declaration:declaration,
-   editorO:editorO,
-   editorHook:editorHook
-  };
- };
- GenEditor.generateDoc=function(genE)
- {
-  var onChange,o,o$1;
-  onChange=(o=(o$1=genE.onChange,o$1==null?null:{
-   $:1,
-   $0:o$1.$0(genE)
-  }),o==null?Global.ignore:o.$0);
-  return(genE.editorHook.generateDoc(genE))(function(ed)
+  }),function(kO,v)
   {
-   genE.editorO={
-    $:1,
-    $0:ed
+   var a;
+   a=upd(v);
+   kO==null?void 0:a(kO.$0);
+   return kO;
+  },model.v,curr);
+ };
+ ListModel.lensDef=function(def,k,m)
+ {
+  function get(o)
+  {
+   return o==null?def:o.$0;
+  }
+  return ListModel["lensIntoO'"](m,get,function()
+  {
+   return Global.id;
+  },k,View.Map(get,m.TryFindByKeyAsView(k)));
+ };
+ ListModel.docLensMapViewO=function(def,mapView,f,m)
+ {
+  function get(k,v)
+  {
+   return f(k,ListModel["lensIntoO'"](m,function(o)
+   {
+    return o==null?def:o.$0;
+   },function()
+   {
+    return Global.id;
+   },k,v));
+  }
+  return Doc.ConvertSeqBy(m.key,function($1)
+  {
+   return function($2)
+   {
+    return get($1,$2);
    };
-   GenEditor.bindVarEditor(genE.editorHook.hookOnChange,genE.editorHook.getValue,genE.editorHook.setValue,onChange,genE["var"]);
-   View.Sink(genE.editorHook.showAnnotations,genE.annotations);
-   View.Sink(genE.editorHook.setDisabled,genE.disabled);
-   genE.onRender(genE);
-  });
+  },View.Map(mapView,m.v));
  };
- GenEditor.bindVarEditor=function(setEvent,getVal,setVal,onChange,_var)
+ ListModel.docLensMapView=function(mapView,f,m)
  {
-  var editorChanged,varChanged;
-  editorChanged=[0];
-  varChanged=[0];
-  setEvent(function()
+  function get(k,v)
   {
-   var v;
-   v=getVal();
-   !Unchecked.Equals(_var.Get(),v)?(editorChanged[0]=editorChanged[0]+1,_var.Set(v),onChange(v)):void 0;
-  });
-  View.Sink(function()
+   return f(k,ListModel["lensInto'"](m,Global.id,function()
+   {
+    return Global.id;
+   },k,v));
+  }
+  return Doc.ConvertSeqBy(m.key,function($1)
   {
-   if(editorChanged[0]>varChanged[0])
-    varChanged[0]=editorChanged[0];
-   else
-    if(!Unchecked.Equals(getVal(),_var.Get()))
-     setVal(_var.Get());
-  },_var.get_View());
- };
- GenEditor.newVarO=function(edh,v)
- {
-  var x;
-  x=GenEditor.newVar(edh,Var$1.Lens(v,function(o)
-  {
-   return o==null?"":o.$0;
-  },function(sO,s)
-  {
-   return sO==null?null:{
-    $:1,
-    $0:s
+   return function($2)
+   {
+    return get($1,$2);
    };
-  }));
-  return GenEditor.disabled(View.Map(function($1)
-  {
-   return $1==null;
-  },v.get_View()),x);
+  },View.Map(mapView,m.v));
  };
- GenEditor.newText=function(edh,v)
+ ListModel["lensIntoO'"]=function(m,get,update,key,view)
  {
-  return GenEditor.newVar(edh,Var$1.Create$1(v));
+  var id,$1;
+  id=Var.freshId();
+  $1=new Var$1({
+   Get:function()
+   {
+    return get(m.TryFindByKey(key));
+   },
+   Set:function(v)
+   {
+    return m.UpdateBy(function(i)
+    {
+     return{
+      $:1,
+      $0:(update(i))(v)
+     };
+    },key);
+   },
+   Update:function(f)
+   {
+    return m.UpdateBy(function(i)
+    {
+     var x;
+     return{
+      $:1,
+      $0:(x=f(get({
+       $:1,
+       $0:i
+      })),(update(i))(x))
+     };
+    },key);
+   },
+   UpdateMaybe:function(f)
+   {
+    return m.UpdateBy(function(i)
+    {
+     var x,m$1;
+     x=f(get({
+      $:1,
+      $0:i
+     }));
+     m$1=update(i);
+     return x==null?null:{
+      $:1,
+      $0:m$1(x.$0)
+     };
+    },key);
+   },
+   SetFinal:function(v)
+   {
+    return this.Set(v);
+   },
+   get_View:function()
+   {
+    return view;
+   },
+   get_Id:function()
+   {
+    return id;
+   }
+  });
+  Var$1.New.call($1);
+  return $1;
  };
- GenEditor.newVar=function(edh,_var)
+ ListModel["lensInto'"]=function(m,get,update,key,view)
  {
-  return GenEditor$1.New(_var,View.Const(false),View.Const([]),null,Global.ignore,null,null,null,null,edh);
- };
- GenEditor["var"]=function(genE)
- {
-  return genE["var"];
- };
- GenEditor.disabled=function(dis,genE)
- {
-  return GenEditor$1.New(genE["var"],dis,genE.annotations,genE.onChange,genE.onRender,genE.autoCompletion,genE.toolTip,genE.declaration,genE.editorO,genE.editorHook);
- };
- GenEditor.onRender=function(f,genE)
- {
-  return GenEditor$1.New(genE["var"],genE.disabled,genE.annotations,genE.onChange,f,genE.autoCompletion,genE.toolTip,genE.declaration,genE.editorO,genE.editorHook);
- };
- GenEditor.onChange=function(f,genE)
- {
-  return GenEditor$1.New(genE["var"],genE.disabled,genE.annotations,f,genE.onRender,genE.autoCompletion,genE.toolTip,genE.declaration,genE.editorO,genE.editorHook);
- };
- GenEditor.setVar=function(v,genE)
- {
-  return GenEditor$1.New(v,genE.disabled,genE.annotations,genE.onChange,genE.onRender,genE.autoCompletion,genE.toolTip,genE.declaration,genE.editorO,genE.editorHook);
- };
- Element.findRootElement=function(e)
- {
-  var root;
-  return!function(a)
-  {
-   return e.getRootNode(a);
-  }?self.document.body:(root=e.getRootNode(),!root.body?root.firstChild:root.body);
+  var id,$1;
+  id=Var.freshId();
+  $1=new Var$1({
+   Get:function()
+   {
+    return get(m.FindByKey(key));
+   },
+   Set:function(v)
+   {
+    return m.UpdateBy(function(i)
+    {
+     return{
+      $:1,
+      $0:(update(i))(v)
+     };
+    },key);
+   },
+   Update:function(f)
+   {
+    return m.UpdateBy(function(i)
+    {
+     var x;
+     return{
+      $:1,
+      $0:(x=f(get(i)),(update(i))(x))
+     };
+    },key);
+   },
+   UpdateMaybe:function(f)
+   {
+    return m.UpdateBy(function(i)
+    {
+     var x,m$1;
+     x=f(get(i));
+     m$1=update(i);
+     return x==null?null:{
+      $:1,
+      $0:m$1(x.$0)
+     };
+    },key);
+   },
+   SetFinal:function(v)
+   {
+    return this.Set(v);
+   },
+   get_View:function()
+   {
+    return view;
+   },
+   get_Id:function()
+   {
+    return id;
+   }
+  });
+  Var$1.New.call($1);
+  return $1;
  };
  LoadFiles.LoadFilesAsync=function(files)
  {
@@ -361,652 +576,397 @@ CIPHERSpaceLoadFiles(["https://code.jquery.com/jquery-3.1.1.min.js"], function()
   fileRef.setAttribute("src",fn);
   return fileRef;
  };
- REGEX.Identifier=function(a)
- {
-  var $1,a$1,t;
-  return(a$1=LibraryJS.REGEX$1("^[$a-zA-Z_][0-9a-zA-Z_\\.\\-$]*$","",a),a$1!=null&&a$1.$==1&&((t=a$1.$0,!Unchecked.Equals(t,null)&&t.length===1)&&($1=Arrays.get(a$1.$0,0),true)))?{
-   $:1,
-   $0:$1
-  }:null;
+ Sort.Oldest={
+  $:1
  };
- REGEX.getEndWord=function(line,ch)
- {
-  var a,t;
-  a=LibraryJS.REGEX$1("^([a-zA-Z_]\\w*)","g",line.substring(ch));
-  return a!=null&&a.$==1?(t=a.$0,!Unchecked.Equals(t,null)&&t.length===1)?Arrays.get(a.$0,0):"":"";
+ Sort.Newest={
+  $:0
  };
- REGEX.getStartWord=function(line,ch)
+ Comment.main$327$33=function()
  {
-  var a,t;
-  a=LibraryJS.REGEX$1("([a-zA-Z_]\\w*)$","g",Strings.Substring(line,0,ch));
-  return a!=null&&a.$==1?(t=a.$0,!Unchecked.Equals(t,null)&&t.length===1)?Arrays.get(a.$0,0):"":"";
- };
- Pos.New=function(line,ch)
- {
-  return{
-   line:line,
-   ch:ch
+  return function()
+  {
+   Comment.addComment(Library["String.Left"](Comment.newCommentV().Get(),40),Comment.newCommentV().Get());
   };
  };
- AnchorHead.New=function(anchor,head)
+ Comment.main$342$65=function(cid)
  {
-  return{
-   anchor:anchor,
-   head:head
+  return function()
+  {
+   Comment.editingIdV().Set(cid);
   };
  };
- Editor=CodeMirror.Editor=Runtime.Class({},Obj,Editor);
- Editor.New=Runtime.Ctor(function()
+ Comment.main$341$65=function(cid)
  {
-  Obj.New.call(this);
- },Editor);
- CodeMirror$1.New=function(_var,onChange,onRender,editorO,disabled)
- {
-  return{
-   "var":_var,
-   onChange:onChange,
-   onRender:onRender,
-   editorO:editorO,
-   disabled:disabled
+  return function()
+  {
+   Comment.deleteComment(cid);
   };
  };
- Hint$1.New=function(text,displayText,className)
+ Comment.main$352$65=function()
  {
-  return{
-   text:text,
-   displayText:displayText,
-   className:className
+  return function()
+  {
+   Comment.editingIdV().Set("");
   };
  };
- Response.New=function(list,from,to)
+ Comment.main$351$65=function(comment)
  {
-  return{
-   list:list,
-   from:from,
-   to:to
+  return function()
+  {
+   Comment.editingIdV().Set("");
+   comment.Set(Comment.editCommentV().Get());
   };
  };
- Options.New=function(hint,completeSingle,container)
- {
-  return{
-   hint:hint,
-   completeSingle:completeSingle,
-   container:container
-  };
- };
- Hint.showHints=function(ed,getHints,completeSingle,a)
- {
-  var _v;
-  _v=Options.New(Runtime.CreateFuncWithArgs(getHints),completeSingle,Element.findRootElement(ed.getWrapperElement()));
-  _v.hint.async=1;
-  ed.showHint(_v);
- };
- Response$1.New=function(message,severity,from,to)
- {
-  return{
-   message:message,
-   severity:severity,
-   from:from,
-   to:to
-  };
- };
- Lint.setLint=function(ed,getAnnotations)
- {
-  ed.setOption("lint",{
-   async:1,
-   getAnnotations:Runtime.CreateFuncWithArgs(getAnnotations),
-   container:Element.findRootElement(ed.getWrapperElement())
-  });
- };
- CodeMirror.newVarO=function(v)
- {
-  var x;
-  x=CodeMirror.newVar(Var$1.Lens(v,function(o)
-  {
-   return o==null?"":o.$0;
-  },function(sO,s)
-  {
-   return sO==null?null:{
-    $:1,
-    $0:s
-   };
-  }));
-  return CodeMirror.disabled(View.Map(function($1)
-  {
-   return $1==null;
-  },v.get_View()),x);
- };
- CodeMirror.newText=function(v)
- {
-  return CodeMirror.newVar(Var$1.Create$1(v));
- };
- CodeMirror["var"]=function(cdmr)
- {
-  return cdmr["var"];
- };
- CodeMirror.disabled=function(dis,cdmr)
- {
-  return CodeMirror$1.New(cdmr["var"],cdmr.onChange,cdmr.onRender,cdmr.editorO,dis);
- };
- CodeMirror.onRender=function(f,cdmr)
- {
-  return CodeMirror$1.New(cdmr["var"],cdmr.onChange,{
-   $:1,
-   $0:f
-  },cdmr.editorO,cdmr.disabled);
- };
- CodeMirror.onChange=function(f,cdmr)
- {
-  return CodeMirror$1.New(cdmr["var"],f,cdmr.onRender,cdmr.editorO,cdmr.disabled);
- };
- CodeMirror.setVar=function(v,cdmr)
- {
-  return CodeMirror$1.New(v,cdmr.onChange,cdmr.onRender,cdmr.editorO,cdmr.disabled);
- };
- CodeMirror.render$390$42=function(cdmr)
- {
-  return function(elchild)
-  {
-   var b;
-   Concurrency.Start((b=null,Concurrency.Delay(function()
-   {
-    return Concurrency.Bind(LoadFiles.LoadFilesAsync(CodeMirror.includes()),function()
-    {
-     var editor,o;
-     editor=self.CodeMirror(elchild.parentElement,{});
-     elchild.parentNode.removeChild(elchild);
-     cdmr.editorO={
-      $:1,
-      $0:editor
-     };
-     o=cdmr.onRender;
-     o==null?void 0:o.$0(editor);
-     GenEditor.bindVarEditor(function(f)
-     {
-      editor.on("changes",f);
-     },function()
-     {
-      return editor.getValue();
-     },function(v)
-     {
-      editor.setValue(v);
-      editor.getDoc().clearHistory();
-     },cdmr.onChange,cdmr["var"]);
-     View.Sink(function(dis)
-     {
-      editor.setOption("readOnly",dis&&"nocursor");
-     },cdmr.disabled);
-     return Concurrency.Zero();
-    });
-   })),null);
-  };
- };
- CodeMirror.render=function(cdmr)
- {
-  return Doc.Element("div",[AttrProxy.OnAfterRenderImpl(function(elchild)
-  {
-   var b;
-   Concurrency.Start((b=null,Concurrency.Delay(function()
-   {
-    return Concurrency.Bind(LoadFiles.LoadFilesAsync(CodeMirror.includes()),function()
-    {
-     var editor,o;
-     editor=self.CodeMirror(elchild.parentElement,{});
-     elchild.parentNode.removeChild(elchild);
-     cdmr.editorO={
-      $:1,
-      $0:editor
-     };
-     o=cdmr.onRender;
-     o==null?void 0:o.$0(editor);
-     GenEditor.bindVarEditor(function(f)
-     {
-      editor.on("changes",f);
-     },function()
-     {
-      return editor.getValue();
-     },function(v)
-     {
-      editor.setValue(v);
-      editor.getDoc().clearHistory();
-     },cdmr.onChange,cdmr["var"]);
-     View.Sink(function(dis)
-     {
-      editor.setOption("readOnly",dis&&"nocursor");
-     },cdmr.disabled);
-     return Concurrency.Zero();
-    });
-   })),null);
-  })],[]);
- };
- CodeMirror.includes=function()
- {
-  SC$1.$cctor();
-  return SC$1.includes;
- };
- CodeMirror.newVar=function(_var)
- {
-  return CodeMirror$1.New(_var,Global.ignore,null,null,View.Const(false));
- };
- CodeMirror.cmPos=function(l,c)
- {
-  return Pos.New(l,c);
- };
- CodeMirrorRT.New=function(editorO,onChange,uri,options,overrides)
- {
-  return{
-   editorO:editorO,
-   onChange:onChange,
-   uri:uri,
-   options:options,
-   overrides:overrides
-  };
- };
- CodeMirrorGenAdapter.newVar=function(options,overrides,v)
- {
-  return GenEditor.newVar(CodeMirrorGenAdapter.newHook(CodeMirrorGenAdapter.newRT(options,overrides)),v);
- };
- CodeMirrorGenAdapter.newRT=function(options,overrides)
- {
-  return CodeMirrorRT.New(null,Global.ignore,"",options,overrides);
- };
- CodeMirrorGenAdapter.newHook=function(cdmRT)
- {
-  function g(g$1,o)
-  {
-   return CodeMirrorGenAdapter.generateDoc(cdmRT,g$1,o);
-  }
-  return GenEditorHook.New(function($1)
-  {
-   return function($2)
-   {
-    return g($1,$2);
-   };
-  },function()
-  {
-   return CodeMirrorGenAdapter.getValue(cdmRT);
-  },function(t)
-  {
-   CodeMirrorGenAdapter.setValue(cdmRT,t);
-  },function(d)
-  {
-   CodeMirrorGenAdapter.setDisabled(cdmRT,d);
-  },function(a)
-  {
-   CodeMirrorGenAdapter.showAnnotations(cdmRT,a);
-  },function(i)
-  {
-   return CodeMirrorGenAdapter.posFromIndex(cdmRT,i);
-  },function(p)
-  {
-   return CodeMirrorGenAdapter.indexFromPos(cdmRT,p);
-  },function(p)
-  {
-   return CodeMirrorGenAdapter.getWordAt(cdmRT,p);
-  },function()
-  {
-   return cdmRT.uri;
-  },function(uri)
-  {
-   cdmRT.uri=uri;
-  },function(f)
-  {
-   cdmRT.onChange=f;
-  });
- };
- CodeMirrorGenAdapter.posFromIndex=function(cdmRT,i)
- {
-  var o;
-  o=CodeMirrorGenAdapter.mapEditor(cdmRT,function(ed)
-  {
-   return CodeMirrorGenAdapter.posEd2Gen(ed.posFromIndex(i));
-  });
-  return o==null?Position.New(1,1):o.$0;
- };
- CodeMirrorGenAdapter.indexFromPos=function(cdmRT,p)
- {
-  var o;
-  o=CodeMirrorGenAdapter.mapEditor(cdmRT,function(ed)
-  {
-   return ed.indexFromPos(CodeMirrorGenAdapter.posGen2Ed(p));
-  });
-  return o==null?-1:o.$0;
- };
- CodeMirrorGenAdapter.setDisabled=function(cdmRT,dis)
- {
-  CodeMirrorGenAdapter.iterEditor(cdmRT,function(ed)
-  {
-   ed.setOption("readOnly",dis&&"nocursor");
-  });
- };
- CodeMirrorGenAdapter.showAnnotations=function(cdmRT,ans)
- {
-  CodeMirrorGenAdapter.iterEditor(cdmRT,function(ed)
-  {
-   var ms;
-   ms=Arrays.ofSeq(Seq.map(function(an)
-   {
-    var m;
-    return Response$1.New(an.message,(m=an.severity,m.$==0?"error":m.$==1?"warning":"info"),CodeMirrorGenAdapter.posGen2Ed(an.startP),CodeMirrorGenAdapter.posGen2Ed(an.endP));
-   },ans));
-   Lint.setLint(ed,function(t)
-   {
-    t[1](ms);
-   });
-  });
- };
- CodeMirrorGenAdapter.getWordAt=function(cdmRT,pos)
- {
-  return CodeMirrorGenAdapter.bindEditor(cdmRT,function(ed)
-  {
-   var anchorHead;
-   anchorHead=ed.findWordAt(CodeMirrorGenAdapter.posGen2Ed(pos));
-   return!anchorHead||Unchecked.Equals(anchorHead.anchor,anchorHead.head)?null:{
-    $:1,
-    $0:[ed.getRange(anchorHead.anchor,anchorHead.head),CodeMirrorGenAdapter.posEd2Gen(anchorHead.anchor)]
-   };
-  });
- };
- CodeMirrorGenAdapter.setValue=function(cdmRT,txt)
- {
-  CodeMirrorGenAdapter.iterEditor(cdmRT,function(ed)
-  {
-   ed.setValue(txt);
-  });
- };
- CodeMirrorGenAdapter.getValue=function(cdmRT)
- {
-  var o;
-  o=CodeMirrorGenAdapter.mapEditor(cdmRT,function(ed)
-  {
-   return ed.getValue();
-  });
-  return o==null?"":o.$0;
- };
- CodeMirrorGenAdapter.generateDoc$587$50=function(cdmRT,onRender)
- {
-  return function(elchild)
-  {
-   var b;
-   Concurrency.Start((b=null,Concurrency.Delay(function()
-   {
-    return Concurrency.Bind(LoadFiles.LoadFilesAsync(CodeMirror.includes()),function()
-    {
-     var editor;
-     editor=self.CodeMirror(elchild.parentElement,cdmRT.options);
-     elchild.parentNode.removeChild(elchild);
-     cdmRT.editorO={
-      $:1,
-      $0:editor
-     };
-     onRender(editor);
-     editor.on("changes",function(t)
-     {
-      cdmRT.onChange([t[0],t[1]]);
-     });
-     return Concurrency.Zero();
-    });
-   })),null);
-  };
- };
- CodeMirrorGenAdapter.generateDoc=function(cdmRT,genE,onRender)
+ Comment.main=function()
  {
   var b;
-  return Doc.Async((b=null,Concurrency.Delay(function()
+  Remoting.set_EndPoint("http://localhost:9006");
+  Rpc.iterA(Comment.getComments());
+  Concurrency.Start((b=null,Concurrency.Delay(function()
   {
-   return Concurrency.Return(Doc.Element("div",[AttrProxy.OnAfterRenderImpl(function(elchild)
+   return Concurrency.Bind(LoadFiles.LoadFilesAsync(["//cdn.muicss.com/mui-0.9.41/extra/mui-combined.js","//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"]),function()
    {
-    var b$1;
-    Concurrency.Start((b$1=null,Concurrency.Delay(function()
+    var x,b$1,T,t,p,i,a;
+    x=(b$1=(T=ListModel.docLensMapView(Global.id,function(cid,cV)
     {
-     return Concurrency.Bind(LoadFiles.LoadFilesAsync(CodeMirror.includes()),function()
+     var comment,b$2,E,E$1,f,p$1,i$1;
+     comment=Var$2.Lens(cV,function($1)
      {
-      var editor;
-      editor=self.CodeMirror(elchild.parentElement,cdmRT.options);
-      elchild.parentNode.removeChild(elchild);
-      cdmRT.editorO={
-       $:1,
-       $0:editor
+      return $1.comment;
+     },function($1,$2)
+     {
+      return{
+       commentId:$1.commentId,
+       title:$1.title,
+       comment:$2,
+       created:$1.created,
+       modified:$1.modified,
+       userName:$1.userName,
+       order:$1.order
       };
-      onRender(editor);
-      editor.on("changes",function(t)
+     });
+     return(b$2=(E=Doc.BindView(Global.id,View.Map(function($1)
+     {
+      var b$3,t$1,t$2,p$2,i$2;
+      return cid===$1?(b$3=(t$1=(t$2=ProviderBuilder.Make().WithHole({
+       $:8,
+       $0:"editcomment",
+       $1:Comment.editCommentV()
+      }),t$2.WithHole(Handler.EventQ2(t$2.k,"edit",function()
       {
-       cdmRT.onChange([t[0],t[1]]);
-      });
-      return Concurrency.Zero();
-     });
-    })),null);
-   })],[]));
-  })));
- };
- CodeMirrorGenAdapter.getToolTipFunction=function(genE,showToolTip)
- {
-  var o,o$1,getToolTip;
-  function getWordO(p)
-  {
-   var o$2,$1,w,p$1;
-   o$2=genE.editorHook.getWordAt(p);
-   return o$2==null?null:($1=o$2.$0,(w=$1[0],(p$1=$1[1],Strings.Trim(w)===""?null:{
-    $:1,
-    $0:[w,p$1]
-   })));
-  }
-  o=(o$1=genE.toolTip,o$1==null?null:{
-   $:1,
-   $0:(getToolTip=o$1.$0,function(ed)
-   {
-    var b;
-    Concurrency.Start((b=null,Concurrency.Delay(function()
-    {
-     var p,sels,p$1,o$2,o$3,o$4,$1,w,p$2,p2,p1;
-     p=ed.somethingSelected()?(sels=ed.listSelections(),[CodeMirrorGenAdapter.posEd2Gen(Arrays.get(sels,0).anchor),CodeMirrorGenAdapter.posEd2Gen(Arrays.get(sels,0).head)]):(p$1=CodeMirrorGenAdapter.posEd2Gen(ed.getCursor()),(o$2=(o$3=(o$4=getWordO(p$1),o$4==null?getWordO(Position.New(p$1.line,p$1.col-1)):o$4),o$3==null?null:{
-      $:1,
-      $0:($1=o$3.$0,(w=$1[0],(p$2=$1[1],[p$2,Position.New(p$2.line,p$2.col+w.length)])))
-     }),o$2==null?[p$1,Position.New(p$1.line,p$1.col+2)]:o$2.$0));
-     p2=p[1];
-     p1=p[0];
-     return Concurrency.Bind((getToolTip(genE))(p1),function(a)
+       return t$2.i;
+      },function()
+      {
+       Comment.editingIdV().Set("");
+       comment.Set(Comment.editCommentV().Get());
+      }))),t$1.WithHole(Handler.EventQ2(t$1.k,"cancel",function()
+      {
+       return t$1.i;
+      },function()
+      {
+       Comment.editingIdV().Set("");
+      }))),(p$2=Handler.CompleteHoles(b$3.k,b$3.h,[["editcomment",0]]),(i$2=new TemplateInstance.New(p$2[1],testing_Templates.editing(p$2[0])),(b$3.i=i$2,i$2)))).get_Doc():Doc.get_Empty();
+     },Comment.editingIdV().get_View())),(E$1=Doc.BindView(Global.id,View.Map2(function($1,$2)
      {
-      a==null?void 0:showToolTip(p1,p2,a.$0);
-      return Concurrency.Zero();
-     });
-    })),null);
-   })
-  });
-  return o==null?Global.ignore:o.$0;
- };
- CodeMirrorGenAdapter.posEd2Gen=function(p)
- {
-  return Position.New(p.line+1,p.ch+1);
- };
- CodeMirrorGenAdapter.posGen2Ed=function(p)
- {
-  return Pos.New(p.line-1,p.col-1);
- };
- CodeMirrorGenAdapter.bindEditor=function(cdmRT,f)
- {
-  var m;
-  m=cdmRT.editorO;
-  return m!=null&&m.$==1?f(m.$0):null;
- };
- CodeMirrorGenAdapter.mapEditor=function(cdmRT,f)
- {
-  var m;
-  m=cdmRT.editorO;
-  return m!=null&&m.$==1?{
-   $:1,
-   $0:f(m.$0)
-  }:null;
- };
- CodeMirrorGenAdapter.iterEditor=function(cdmRT,f)
- {
-  var m;
-  m=cdmRT.editorO;
-  m!=null&&m.$==1?f(m.$0):void 0;
- };
- LibraryJS.rexGuid=function()
- {
-  SC$1.$cctor();
-  return SC$1.rexGuid;
- };
- LibraryJS.REGEX$1=function(expr,opt,value)
- {
-  var m;
-  return value===null?null:(m=(new Global.String(value)).match(new Global.RegExp(expr,opt)),Unchecked.Equals(m,null)?null:!Unchecked.Equals(m,null)&&m.length===0?null:{
-   $:1,
-   $0:m
-  });
- };
- CodeMirror$2.main=function()
- {
-  var _var,codeMirror,i,x,b,a;
-  _var=Var$1.Create$1("Hello there.\nHello there.\nHello there.\nHello there.\n");
-  codeMirror=GenEditor.onRender(function(ged)
-  {
-   var o,ed,toolTips;
-   o=ged.editorO;
-   o==null?void 0:(ed=o.$0,toolTips=CodeMirrorGenAdapter.getToolTipFunction(ged,CodeMirror$2.showToolTip),ed.addKeyMap(Pojo.newPojo([["F2",toolTips],["F11",function()
-   {
-    ed.setOption("fullScreen",!ed.getOption("fullScreen"));
-   }],["Tab",function()
-   {
-    ed.replaceSelection("    ","end");
-   }]])),ed.on("dblclick",toolTips));
-  },(i=CodeMirror$2.codeMirrorNew(_var),GenEditor$1.New(i["var"],i.disabled,View.Map(CodeMirror$2.transformAnnotations,CodeMirror$2.annotationsV().get_View()),i.onChange,i.onRender,{
-   $:1,
-   $0:function(g)
-   {
-    return function(p)
+      var b$3,t$1,t$2,p$2,i$2;
+      return $1.userName===$2?(b$3=(t$1=(t$2=ProviderBuilder.Make(),t$2.WithHole(Handler.EventQ2(t$2.k,"delete",function()
+      {
+       return t$2.i;
+      },function()
+      {
+       Comment.deleteComment(cid);
+      }))),t$1.WithHole(Handler.EventQ2(t$1.k,"edit",function()
+      {
+       return t$1.i;
+      },function()
+      {
+       Comment.editingIdV().Set(cid);
+      }))),(p$2=Handler.CompleteHoles(b$3.k,b$3.h,[]),(i$2=new TemplateInstance.New(p$2[1],testing_Templates.editable(p$2[0])),(b$3.i=i$2,i$2)))).get_Doc():Doc.get_Empty();
+     },cV.get_View(),Comment.userV().get_View())),(f=Comment.fromNowW(cV.Get().modified),ProviderBuilder.Make().WithHole({
+      $:2,
+      $0:"user",
+      $1:View.Map(function($1)
+      {
+       return $1.userName;
+      },cV.get_View())
+     }).WithHole({
+      $:2,
+      $0:"comment",
+      $1:comment.get_View()
+     }).WithHole({
+      $:2,
+      $0:"fromnow",
+      $1:f
+     })).WithHole({
+      $:0,
+      $0:"editable",
+      $1:E$1
+     })).WithHole({
+      $:0,
+      $0:"editing",
+      $1:E
+     })),(p$1=Handler.CompleteHoles(b$2.k,b$2.h,[]),(i$1=new TemplateInstance.New(p$1[1],testing_Templates.commentx(p$1[0])),(b$2.i=i$1,i$1)))).get_Doc();
+    },Comment.commentsV()),(t=ProviderBuilder.Make(),t.WithHole(Handler.EventQ2(t.k,"add",function()
     {
-     return CodeMirror$2.autoCompletion(g,p);
-    };
-   }
-  },{
-   $:1,
-   $0:function(g)
-   {
-    return function(p)
+     return t.i;
+    },function()
     {
-     return CodeMirror$2.getToolTip(g,p);
-    };
-   }
-  },{
-   $:1,
-   $0:function(g)
-   {
-    return function(p)
-    {
-     return CodeMirror$2.declaration(g,p);
-    };
-   }
-  },i.editorO,i.editorHook)));
-  x=Doc.Async((b=null,Concurrency.Delay(function()
-  {
-   return Concurrency.Bind(LoadFiles.LoadFilesAsync(["/EPFileX/codemirror/content/editor.css","/EPFileX/codemirror/content/codemirror.css","/EPFileX/codemirror/scripts/addon/display/fullscreen.css","/EPFileX/codemirror/scripts/addon/dialog/dialog.css","/EPFileX/codemirror/scripts/addon/hint/show-hint.css","/EPFileX/codemirror/scripts/addon/lint/lint.css","/EPFileX/codemirror/content/theme/rubyblue.css"]),function()
-   {
-    return Concurrency.Return(Doc.Element("div",[],[Doc.Element("div",[AttrProxy.Create("style","height: 400px; width: 800px")],[GenEditor.generateDoc(codeMirror)]),Doc.Element("div",[],[Doc.TextNode("These are the annotations that create tooltips, warnings and errors:")]),Doc.InputArea([AttrProxy.Create("style","height: 100px; width: 600px")],Var$1.Lens(CodeMirror$2.annotationsV(),Global.id,function($1,$2)
-    {
-     return $2;
-    })),Doc.Element("div",[],[Doc.TextView(_var.get_View())])]));
+     Comment.addComment(Library["String.Left"](Comment.newCommentV().Get(),40),Comment.newCommentV().Get());
+    }))).WithHole({
+     $:2,
+     $0:"addclass",
+     $1:View.Map(function($1)
+     {
+      return $1===""?"NoComment":"Comment";
+     },Comment.newCommentV().get_View())
+    }).WithHole({
+     $:8,
+     $0:"newcomment",
+     $1:Comment.newCommentV()
+    }).WithHole({
+     $:0,
+     $0:"tbody",
+     $1:T
+    })),(p=Handler.CompleteHoles(b$1.k,b$1.h,[["newcomment",0]]),(i=new TemplateInstance.New(p[1],testing_Templates.comments(p[0])),(b$1.i=i,i)))).get_Doc();
+    a=self.document.body;
+    Templates.LoadLocalTemplates("");
+    Doc.Run(a,x);
+    return Concurrency.Zero();
    });
-  })));
-  a=self.document.body;
-  Templates.LoadLocalTemplates("");
-  Doc.Run(a,x);
+  })),null);
  };
- CodeMirror$2.autoCompletion=function(ged,pos)
+ Comment.fromNowW=function(d)
+ {
+  return View.Map(function($1)
+  {
+   return Global.moment(d).fromNow();
+  },Comment.nowV().get_View());
+ };
+ Comment.updateComment=function(key,title,comment)
  {
   var b;
-  b=null;
-  return Concurrency.Delay(function()
+  Rpc.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
   {
-   return Concurrency.Return([Completion.New("F","Hello","",[pos,pos]),Completion.New("F","How","",[pos,pos]),Completion.New("F","Are","",[pos,pos]),Completion.New("F","You","",[pos,pos])]);
-  });
- };
- CodeMirror$2.declaration=function(ged,pos)
- {
-  var b;
-  b=null;
-  return Concurrency.Delay(function()
-  {
-   var m,i;
-   m=ged.editorHook.getWordAt(pos);
-   return m!=null&&m.$==1?(i=ged.editorHook.getValue().indexOf(m.$0[0]),i<0?Concurrency.Return(null):Concurrency.Return({
-    $:1,
-    $0:[ged.editorHook.posFromIndex(i),ged.editorHook.getUri()]
-   })):Concurrency.Return(null);
-  });
- };
- CodeMirror$2.getToolTip=function(ged,pos)
- {
-  var b;
-  b=null;
-  return Concurrency.Delay(function()
-  {
-   var m;
-   m=ged.editorHook.getWordAt(pos);
-   return m!=null&&m.$==1?Concurrency.Return({
-    $:1,
-    $0:(function($1)
+   return b.Bind$4((new AjaxRemotingProvider.New()).Async("BirstComment:FsRoot.BirstComment+Rpc.updateComment:-1768176827",[key,title,comment]),function()
+   {
+    return b.Bind$4(Comment.getComments(),function()
     {
-     return function($2)
-     {
-      return $1("The word is: "+Utils.toSafe($2));
-     };
-    }(Global.id))(m.$0[0])
-   }):Concurrency.Return(null);
-  });
+     return b.Return();
+    });
+   });
+  }))));
  };
- CodeMirror$2.codeMirrorNew=function(_var)
+ Comment.deleteComment=function(key)
  {
-  return CodeMirrorGenAdapter.newVar(Pojo.newPojo([["mode","fsharp"],["theme","rubyblue"],["lineNumbers",true],["matchBrackets",true],["gutters",["CodeMirror-lint-markers"]]]),null,_var);
+  var b;
+  Rpc.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+  {
+   return b.Bind$4((new AjaxRemotingProvider.New()).Async("BirstComment:FsRoot.BirstComment+Rpc.deleteComment:-1324353239",[key]),function()
+   {
+    return b.Bind$4(Comment.getComments(),function()
+    {
+     return b.Return();
+    });
+   });
+  }))));
  };
- CodeMirror$2.showToolTip=function(p1,p2,str)
+ Comment.addComment=function(title,comment)
  {
-  var a;
-  a=CodeMirror$2.annotationsV().Get()+((((((Runtime.Curried(function($1,$2,$3,$4,$5,$6)
+  var b;
+  Rpc.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
   {
-   return $1("\nInfo ("+Global.String($2)+", "+Global.String($3)+") - ("+Global.String($4)+", "+Global.String($5)+"): "+Utils.prettyPrint($6)+".");
-  },6))(Global.id))(p1.line))(p1.col))(p2.line))(p2.col))(str);
-  CodeMirror$2.annotationsV().Set(a);
+   var key;
+   key=(((Runtime$1.Curried3(function($1,$2,$3)
+   {
+    return $1(Utils.toSafe($2)+"-"+Utils.prettyPrint($3));
+   }))(Global.id))(Comment.keyPrefixV().Get()))(Guid.NewGuid());
+   return b.Bind$4((new AjaxRemotingProvider.New()).Async("BirstComment:FsRoot.BirstComment+Rpc.addComment:-1474170970",[key,title,comment,Comment.userV().Get()]),function()
+   {
+    return b.Bind$4(Comment.getComments(),function()
+    {
+     Comment.newCommentV().Set("");
+     return b.Zero();
+    });
+   });
+  }))));
  };
- CodeMirror$2.transformAnnotations=function(msgs)
+ Comment.getComments=function()
  {
-  var rex,a;
-  function m(ty,fl,fc,tl,tc,msg)
+  var b;
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
   {
-   return Annotation.New(Position.New(fl,fc),Position.New(tl,tc),ty==="Err"?AnnotationType.Error:ty==="Warn"?AnnotationType.Warning:ty==="Hint"?AnnotationType.Hint:{
-    $:4,
-    $0:ty
-   },msg);
-  }
-  rex="(Err|Warn|Info|Hint) \\((\\d+)\\,\\s*(\\d+)\\) - \\((\\d+)\\,\\s*(\\d+)\\)\\: \"([^\"]+?)\"\\.";
-  return Seq.map(function($1)
-  {
-   return m($1[0],$1[1],$1[2],$1[3],$1[4],$1[5]);
-  },Seq.choose(function(v)
-  {
-   var $1,a$1,t;
-   return(a$1=LibraryJS.REGEX$1(rex,"",v),a$1!=null&&a$1.$==1&&((t=a$1.$0,!Unchecked.Equals(t,null)&&t.length===7)&&($1=[Arrays.get(a$1.$0,3),Arrays.get(a$1.$0,2),Arrays.get(a$1.$0,6),Arrays.get(a$1.$0,5),Arrays.get(a$1.$0,4),Arrays.get(a$1.$0,1)],true)))?{
-    $:1,
-    $0:[$1[5],Operators.toInt(Global.Number($1[1])),Operators.toInt(Global.Number($1[0])),Operators.toInt(Global.Number($1[4])),Operators.toInt(Global.Number($1[3])),$1[2]]
-   }:null;
-  },(a=LibraryJS.REGEX$1(rex,"g",msgs),a!=null&&a.$==1?a.$0:[])));
+   return b.Bind$4((new AjaxRemotingProvider.New()).Async("BirstComment:FsRoot.BirstComment+Rpc.getComments:797728594",[Comment.topNV().Get(),Comment.keyPrefixV().Get()+"%"]),function(a)
+   {
+    Comment.commentsV().Set(a);
+    return b.Zero();
+   });
+  }));
  };
- CodeMirror$2.annotationsV=function()
+ Comment.commentsV=function()
  {
   SC$1.$cctor();
-  return SC$1.annotationsV;
+  return SC$1.commentsV;
+ };
+ Comment.editingIdV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.editingIdV;
+ };
+ Comment.editCommentV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.editCommentV;
+ };
+ Comment.newCommentV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.newCommentV;
+ };
+ Comment.keyPrefixV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.keyPrefixV;
+ };
+ Comment.topNV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.topNV;
+ };
+ Comment.ascendingV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.ascendingV;
+ };
+ Comment.userV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.userV;
+ };
+ Comment.nowV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.nowV;
  };
  SC$1.$cctor=function()
  {
+  var f;
   SC$1.$cctor=Global.ignore;
-  SC$1.rexGuid="([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})";
-  SC$1.includes=["/EPFileX/codemirror/scripts/codemirror/codemirror.js","/EPFileX/codemirror/scripts/codemirror/codemirror-intellisense.js","/EPFileX/codemirror/scripts/codemirror/codemirror-compiler.js","/EPFileX/codemirror/scripts/codemirror/mode/none.js","/EPFileX/codemirror/scripts/codemirror/mode/fsharp.js","/EPFileX/codemirror/scripts/codemirror/mode/css.js","/EPFileX/codemirror/scripts/codemirror/mode/javascript.js","/EPFileX/codemirror/scripts/codemirror/mode/markdown.js","/EPFileX/codemirror/scripts/addon/search/searchcursor.js","/EPFileX/codemirror/scripts/addon/search/search.js","/EPFileX/codemirror/scripts/addon/search/jump-to-line.js","/EPFileX/codemirror/scripts/addon/dialog/dialog.js","/EPFileX/codemirror/scripts/addon/edit/matchbrackets.js","/EPFileX/codemirror/scripts/addon/selection/active-line.js","/EPFileX/codemirror/scripts/addon/display/fullscreen.js","/EPFileX/codemirror/scripts/addon/hint/show-hint.js","/EPFileX/codemirror/scripts/addon/lint/lint.js"];
-  SC$1.annotationsV=Var$1.Create$1("Err (1, 7) - (1, 12): \"This shows over there as an error\".\nWarn (2, 7) - (2, 12): \"This shows over there as a warning\".\nInfo (3, 7) - (3, 12): \"This shows over there as information\".\nHint (4, 7) - (4, 12): \"This shows over there as a hint\".");
+  function g(s)
+  {
+   return Strings.concat("\n",s);
+  }
+  function f$1(s)
+  {
+   return String.splitByChar("\n",s);
+  }
+  function g$1(s)
+  {
+   var a,b;
+   return Slice.array(s,{
+    $:1,
+    $0:0
+   },{
+    $:1,
+    $0:(a=0,(b=Arrays.length(s)-2,Unchecked.Compare(a,b)===1?a:b))
+   });
+  }
+  function g$2(s)
+  {
+   return Strings.concat("\n",s);
+  }
+  SC$1.unindentStr=function(x)
+  {
+   return g(String.unindent(x));
+  };
+  SC$1.skipLastLine=(f=function(x)
+  {
+   return g$1(f$1(x));
+  },function(x)
+  {
+   return g$2(f(x));
+  });
+  SC$1.counter=1;
+  SC$1.nowV=Var$2.Create$1(Date.now());
+  SC$1.userV=Var$2.Create$1("hguerra");
+  SC$1.ascendingV=Var$2.Create$1(Sort.Newest);
+  SC$1.topNV=Var$2.Create$1(20);
+  SC$1.keyPrefixV=Var$2.Create$1("Demo1");
+  SC$1.newCommentV=Var$2.Create$1("");
+  SC$1.editCommentV=Var$2.Create$1("");
+  SC$1.editingIdV=Var$2.Create$1("");
+  SC$1.commentsV=ListModel$1.Create(function(l)
+  {
+   return l.commentId;
+  },[]);
  };
- Runtime.OnLoad(function()
+ testing_Templates.comments=function(h)
  {
-  CodeMirror$2.main();
+  return h?Templates.GetOrLoadTemplate("birstcomments",{
+   $:1,
+   $0:"comments"
+  },function()
+  {
+   return $.parseHTML("<div>\r\n    <div>\r\n      <div class=\"mui-textfield\">\r\n        <input ws-var=\"newComment\" placeholder=\"Enter new comment:\">\r\n      </div>\r\n      <button ws-onclick=\"add\" class=\"${addClass} mui-btn mui-btn--raised mui-btn--small\">Add</button>\r\n    </div>\r\n    <style>\r\n      li:hover i.mui--invisible { visibility: visible }\r\n    </style>\r\n    Comments:\r\n    <ul ws-hole=\"TBody\"></ul>    \r\n  </div>");
+  },h):Templates.PrepareTemplate("birstcomments",{
+   $:1,
+   $0:"comments"
+  },function()
+  {
+   return $.parseHTML("<div>\r\n    <div>\r\n      <div class=\"mui-textfield\">\r\n        <input ws-var=\"newComment\" placeholder=\"Enter new comment:\">\r\n      </div>\r\n      <button ws-onclick=\"add\" class=\"${addClass} mui-btn mui-btn--raised mui-btn--small\">Add</button>\r\n    </div>\r\n    <style>\r\n      li:hover i.mui--invisible { visibility: visible }\r\n    </style>\r\n    Comments:\r\n    <ul ws-hole=\"TBody\"></ul>    \r\n  </div>");
+  });
+ };
+ testing_Templates.commentx=function(h)
+ {
+  return h?Templates.GetOrLoadTemplate("birstcomments",{
+   $:1,
+   $0:"commentx"
+  },function()
+  {
+   return $.parseHTML("\r\n        <li>\r\n          ${comment}\r\n          <div ws-replace=\"Editing\"></div>\r\n          <a> <i class=\"fa fa-user\"></i> ${user} </a><span>${fromNow}</span>\r\n          <div ws-replace=\"Editable\"></div>\r\n        </li>\r\n    ");
+  },h):Templates.PrepareTemplate("birstcomments",{
+   $:1,
+   $0:"commentx"
+  },function()
+  {
+   return $.parseHTML("\r\n        <li>\r\n          ${comment}\r\n          <div ws-replace=\"Editing\"></div>\r\n          <a> <i class=\"fa fa-user\"></i> ${user} </a><span>${fromNow}</span>\r\n          <div ws-replace=\"Editable\"></div>\r\n        </li>\r\n    ");
+  });
+ };
+ testing_Templates.editing=function(h)
+ {
+  return h?Templates.GetOrLoadTemplate("birstcomments",{
+   $:1,
+   $0:"editing"
+  },function()
+  {
+   return $.parseHTML("<div>\r\n            <div class=\"mui-textfield\">\r\n              <input ws-var=\"editComment\" placeholder=\"Enter comment:\">\r\n            </div>          \r\n            <button ws-onclick=\"edit\" class=\"mui-btn mui-btn--raised mui-btn--small\">Add   </button>\r\n            <button ws-onclick=\"cancel\" class=\"mui-btn mui-btn--raised mui-btn--small\">Cancel</button>\r\n          </div>");
+  },h):Templates.PrepareTemplate("birstcomments",{
+   $:1,
+   $0:"editing"
+  },function()
+  {
+   return $.parseHTML("<div>\r\n            <div class=\"mui-textfield\">\r\n              <input ws-var=\"editComment\" placeholder=\"Enter comment:\">\r\n            </div>          \r\n            <button ws-onclick=\"edit\" class=\"mui-btn mui-btn--raised mui-btn--small\">Add   </button>\r\n            <button ws-onclick=\"cancel\" class=\"mui-btn mui-btn--raised mui-btn--small\">Cancel</button>\r\n          </div>");
+  });
+ };
+ testing_Templates.editable=function(h)
+ {
+  return h?Templates.GetOrLoadTemplate("birstcomments",{
+   $:1,
+   $0:"editable"
+  },function()
+  {
+   return $.parseHTML("\r\n            <i ws-onclick=\"delete\" title=\"remove\" style=\"cursor: pointer;\" class=\"fa fa-minus-circle mui--invisible\"></i>\r\n            <i ws-onclick=\"edit\" title=\"edit\" style=\"cursor: pointer;\" class=\"fa fa-pencil mui--invisible\"></i>\r\n          ");
+  },h):Templates.PrepareTemplate("birstcomments",{
+   $:1,
+   $0:"editable"
+  },function()
+  {
+   return $.parseHTML("\r\n            <i ws-onclick=\"delete\" title=\"remove\" style=\"cursor: pointer;\" class=\"fa fa-minus-circle mui--invisible\"></i>\r\n            <i ws-onclick=\"edit\" title=\"edit\" style=\"cursor: pointer;\" class=\"fa fa-pencil mui--invisible\"></i>\r\n          ");
+  });
+ };
+ Runtime$1.OnLoad(function()
+ {
+  Comment.main();
  });
-});
+}());

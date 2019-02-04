@@ -1,0 +1,47 @@
+<html>
+  <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link  href="//cdn.muicss.com/mui-0.9.41/css/mui.min.css" rel="stylesheet" type="text/css" />
+        <script src="//cdn.muicss.com/mui-0.9.41/js/mui.min.js"></script>
+        <script ws-replace="scripts"></script>
+
+    <title>${Title}</title>
+  </head>
+  <body class="scrollbar">
+        <input type="text" ws-var="Comment">
+        <button ws-onclick="SubmitComment">Submit</button>
+  </body>
+
+  <div ws-template="Comments">
+    <div>
+      <div class="mui-textfield">
+        <input ws-var="newComment" placeholder="Enter new comment:" >
+      </div>
+      <button ws-onclick="add" class="${addClass} mui-btn mui-btn--raised mui-btn--small">Add</button>
+    </div>
+    <style>
+      li:hover i.mui--invisible { visibility: visible }
+    </style>
+    Comments:
+    <ul ws-hole="TBody" ws-children-template="CommentX">
+        <li>
+          ${comment}
+          <div ws-replace="Editing" ws-template="Editing">
+            <div class="mui-textfield">
+              <input ws-var="editComment" placeholder="Enter comment:" >
+            </div>          
+            <button ws-onclick="edit"   class="mui-btn mui-btn--raised mui-btn--small">Add   </button>
+            <button ws-onclick="cancel" class="mui-btn mui-btn--raised mui-btn--small">Cancel</button>
+          </div>
+          <a> <i class="fa fa-user" ></i> ${user} </a><span>${fromNow}</span>
+          <div ws-replace="Editable" ws-children-template="Editable">
+            <i ws-onclick="delete" title="remove" style="cursor: pointer;" class="fa fa-minus-circle mui--invisible" ></i>
+            <i ws-onclick="edit" title="edit" style="cursor: pointer;" class="fa fa-pencil mui--invisible"></i>
+          </div>
+        </li>
+    </ul>    
+  </div>
+ 
+</html>

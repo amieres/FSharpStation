@@ -11,6 +11,7 @@ nuget Websharper.FSharp  = 4.5.1.304
 nuget Websharper.UI	     = 4.5.1.141
 nuget Websharper.Owin
 nuget WebSharper.Owin.WebSocket
+nuget WebSharper.Moment
 nuget Microsoft.Owin
 nuget Owin.Compression
 nuget Microsoft.Owin.StaticFiles
