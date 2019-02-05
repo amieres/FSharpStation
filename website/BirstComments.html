@@ -15,29 +15,36 @@
   </body>
 
   <div ws-template="Comments">
+    <ul>
+      <div ws-hole="Recent"></div>
+    </ul>
     <div>
-      <div class="mui-textfield">
-        <input ws-var="newComment" placeholder="Enter new comment:" >
+      <div class="mui-textfield" style="padding-top:2px; margin-bottom:5px;">
+        <input ws-var="newComment" ws-onkeyup="keyup" placeholder="Enter new comment:" >
       </div>
       <button ws-onclick="add" class="${addClass} mui-btn mui-btn--raised mui-btn--small">Add</button>
     </div>
     <style>
       li:hover i.mui--invisible { visibility: visible }
+      .NoComment { display: none }
     </style>
     Comments:
-    <ul ws-hole="TBody" ws-children-template="CommentX">
+    <ul ws-hole="List" ws-children-template="CommentX">
         <li>
-          ${comment}
+          <div ws-children-template="CommentC">${comment}</div>
           <div ws-replace="Editing" ws-template="Editing">
             <div class="mui-textfield">
               <input ws-var="editComment" placeholder="Enter comment:" >
             </div>          
-            <button ws-onclick="edit"   class="mui-btn mui-btn--raised mui-btn--small">Add   </button>
+            <button ws-onclick="save"   class="mui-btn mui-btn--raised mui-btn--small">Save  </button>
             <button ws-onclick="cancel" class="mui-btn mui-btn--raised mui-btn--small">Cancel</button>
           </div>
-          <a> <i class="fa fa-user" ></i> ${user} </a><span>${fromNow}</span>
-          <div ws-replace="Editable" ws-children-template="Editable">
-            <i ws-onclick="delete" title="remove" style="cursor: pointer;" class="fa fa-minus-circle mui--invisible" ></i>
+          <a> <i class="fa fa-user" ></i> ${user} </a>
+          <div ws-replace="Editable1" ws-children-template="Editable1">
+              <i ws-onclick="delete" title="remove" style="cursor: pointer;" class="fa fa-minus-circle mui--invisible" ></i>
+          </div>
+          <span class="mui--text-caption mui--text-accent-secondary">${fromNow}</span>
+          <div ws-replace="Editable2" ws-children-template="Editable2">
             <i ws-onclick="edit" title="edit" style="cursor: pointer;" class="fa fa-pencil mui--invisible"></i>
           </div>
         </li>

@@ -605,15 +605,13 @@ namespace FsRoot
         
             [< Rpc >]
             let updateComment key title comment : AsyncResultM<_, string> = asyncResultM {
-                use cmd = new SqlCommandProvider<"SELECT * FROM BirstComment WHERE CommentId = @commentId", conn, ResultType.DataReader>(conn)
+                use cmd = new SqlCommandProvider<"UPDATE BirstComment SET Title = @title, Comment = @comment, Modified = @modified WHERE CommentId = @commentId", conn>(conn)
                 let tbl = new BirstCommentDB.dbo.Tables.BirstComment()
-                cmd.Execute(commentId = key) |> tbl.Load
-                tbl.PrimaryKey <- [| tbl.Columns.["CommentId"] |]
-                for row in tbl.Rows do
-                    row.Title    <- title
-                    row.Comment  <- comment
-                    row.Modified <- System.DateTime.Now
-                return tbl.Update()
+                return cmd.Execute(
+                    commentId  = key
+                    , title    = title
+                    , comment  = comment
+                    , modified = System.DateTime.Now)
             }
         
             [< Rpc >]

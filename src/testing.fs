@@ -80,6 +80,19 @@ namespace FsRoot
         [< JavaScript ; AutoOpen >]
         module Library =
             let Error = Result.Error
+            [< AutoOpen >]
+            module Monads =
+                module Seq =    
+                    let rtn = Seq.singleton
+                    let insertO  vSO              = vSO |> Option.map(Seq.map Some) |> Option.defaultWith(fun () -> rtn None)
+                    let insertR (vSR:Result<_,_>) = vSR |> function | Error m -> rtn (Error m) | Ok v -> Seq.map Ok v
+                    let absorbO  vOS              = vOS |> Seq.choose id
+                    let absorbR  vOS              = vOS |> Seq.choose (function Ok v -> Some v |_-> None)
+                    let ofOption vO = 
+                        match vO with
+                        | Some v -> Seq.singleton v
+                        | None   -> Seq.empty
+                
             type System.String with
                 member this.Substring2(from, n) = 
                     if   n    <= 0           then ""
@@ -288,74 +301,109 @@ namespace FsRoot
                         commentsV.Set response
                     }
             
-                let addComment title comment =
-                    asyncResultM {
-                        let  key = sprintf "%s-%A" keyPrefixV.Value (System.Guid.NewGuid())
-                        let! _   = addComment key title comment userV.Value
-                        do!        getComments()
-                        newCommentV.Set ""
-                    } |> iterA
+                let addComment (comment:string) =
+                    if comment.Trim() <> "" then
+                        asyncResultM {
+                            let  title = comment.Left 40
+                            let  key   = sprintf "%s-%A" keyPrefixV.Value (System.Guid.NewGuid())
+                            let  order = commentsV.Value
+                                         |> fun cs -> (if Seq.isEmpty cs then 0 else cs |> Seq.map (fun c -> c.order) |> Seq.max) + 1
+                            let  now   = System.DateTime.Now
+                            let  newC = { 
+                                comment   = comment  
+                                commentId = key
+                                created   = now
+                                modified  = now
+                                order     = order
+                                title     = title    
+                                userName  = userV.Value 
+                            }
+                            commentsV.Add newC
+                            let! _   = addComment newC.commentId newC.title newC.comment newC.userName
+                            do!        getComments()
+                            newCommentV.Set ""
+                        } |> iterA
             
                 let deleteComment key =
                     asyncResultM {
+                        commentsV.RemoveByKey  key
                         let! _ = deleteComment key
                         do!      getComments()
                     } |> iterA
             
-                let updateComment key title comment =
-                    asyncResultM {
-                        let! _ = updateComment key title comment
-                        do!      getComments()
-                    } |> iterA
+                let updateComment key (comment:string) =
+                    if comment.Trim() <> "" then
+                        asyncResultM {
+                            let! _ = updateComment key (comment.Left 40) comment
+                            do!      getComments()
+                        } |> iterA
             
                 open WebSharper.UI.Templating
                 type TemplateLib  = Template< "..\website\BirstComments.html", ClientLoad.Inline, ServerLoad.WhenChanged>
             
                 let fromNowW d = V (nowV.V |> ignore ; WebSharper.Moment.Moment(d:System.DateTime).FromNow() )
             
+                let renderComment cid (cV:Var<Comment>) =
+                    let comment = Lens cV.V.comment
+                    TemplateLib.CommentX()
+                        .user(    cV.V.userName                         )
+                        .fromNow( V cV.V.modified |> View.Bind fromNowW )
+                        .Editable1(
+                            V(  if cV.V.userName = userV.V then
+                                    TemplateLib.Editable1()
+                                        .delete( fun _ -> if JS.Confirm "Remove this comment?" then deleteComment  cid )
+                                        .Doc()
+                                else Doc.Empty
+                            ) |> Doc.BindView id
+                        )
+                        .Editable2(
+                            V(  if cV.V.userName = userV.V then
+                                    TemplateLib.Editable2()
+                                        .edit(   fun _ -> editingIdV.Set cid ; editCommentV.Set comment.Value)
+                                        .Doc()
+                                else Doc.Empty
+                            ) |> Doc.BindView id
+                        )
+                        .Editing(
+                            V(  if cid = editingIdV.V then
+                                    TemplateLib.Editing()
+                                        .editComment( editCommentV )
+                                        .cancel( fun _ ->   editingIdV.Set ""   )
+                                        .save(   fun _ ->   editingIdV.Set ""
+                                                            comment.Set editCommentV.Value
+                                                            updateComment cid editCommentV.Value  
+                                                            )
+                                        .Doc()
+                                else 
+                                    TemplateLib.CommentC()
+                                        .comment( cV.V.comment )
+                                        .Doc()
+                            ) |> Doc.BindView id
+                        )
+                        .Doc()
+            
                 [< SPAEntryPoint >]
                 let main() =
-                    WebSharper.Remoting.EndPoint <- @"http://localhost:9006"
-                    getComments() |> iterA
+                    WebSharper.Remoting.EndPoint <- @"http://localhost:9009"
+                    async {
+                        while true do
+                            nowV.Set System.DateTime.Now
+                            getComments() |> iterA
+                            do! Async.Sleep 60_000
+                    } |> Async.Start 
                     async {
                         do! [|
                                 "//cdn.muicss.com/mui-0.9.41/extra/mui-combined.js"
                                 "//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
                             |] |> LoadFiles.LoadFilesAsync
-            
+                        
                         TemplateLib.Comments()
-                            .add(fun _ -> addComment (newCommentV.Value.Left 40) newCommentV.Value)
-                            .addClass( if newCommentV.V = "" then "NoComment" else "Comment"      )
+                            .keyup(fun ev -> if ev.Event.KeyCode = 13 then addComment newCommentV.Value)
+                            .add(  fun _  ->                               addComment newCommentV.Value)
+                            .addClass( if newCommentV.V.Trim() = "" then "NoComment" else "Comment"      )
                             .newComment(newCommentV)
-                            .TBody(
-                                commentsV
-                                |> ListModel.docLensMapView id (fun cid cV ->
-                                    let comment = Lens cV.V.comment
-                                    TemplateLib.CommentX()
-                                        .user(    cV.V.userName                )
-                                        .comment( cV.V.comment                 )
-                                        .fromNow( fromNowW cV.Value.modified   )
-                                        .Editable(
-                                            V(  if cV.V.userName = userV.V then
-                                                    TemplateLib.Editable()
-                                                        .delete( fun _ -> deleteComment  cid )
-                                                        .edit(   fun _ -> editingIdV.Set cid ; editCommentV.Set comment.Value)
-                                                        .Doc()
-                                                else Doc.Empty
-                                            ) |> Doc.BindView id
-                                        )
-                                        .Editing(
-                                            V(  if cid = editingIdV.V then
-                                                    TemplateLib.Editing()
-                                                        .editComment( editCommentV )
-                                                        .edit(   fun _ -> editingIdV.Set "" ; comment.Set editCommentV.Value )
-                                                        .cancel( fun _ -> editingIdV.Set ""                                              )
-                                                        .Doc()
-                                                else Doc.Empty
-                                            ) |> Doc.BindView id
-                                        )
-                                        .Doc()
-                                )
-                            ).Doc()
+                            .Recent( commentsV |> ListModel.docLensMapView (Seq.tryLast >> Seq.ofOption) renderComment )
+                            .List(   commentsV |> ListModel.docLensMapView  id                           renderComment )
+                            .Doc()
                         |> Doc.Run JS.Document.Body
                     } |> Async.Start

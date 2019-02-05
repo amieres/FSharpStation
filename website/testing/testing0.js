@@ -1,10 +1,12 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,String,LibraryJS,Var,ListModel,LoadFiles,TestingJS,Comment,Sort,SC$1,testing_Templates,WebSharper,Strings,Slice,Seq,Unchecked,UI,View,Var$1,FromView,Doc,Concurrency,Remoting,BirstComment,Rpc,Var$2,Templating,Runtime,Server,ProviderBuilder,Handler,TemplateInstance,Client,Templates,Monads,AsyncResultMAutoOpen,AjaxRemotingProvider,IntelliFactory,Runtime$1,Utils,System,Guid,Arrays,Date,ListModel$1,$;
+ var Global,FsRoot,Library,Monads,Seq,String,LibraryJS,Var,ListModel,LoadFiles,TestingJS,Comment,Sort,SC$1,testing_Templates,WebSharper,Seq$1,Strings,Slice,Unchecked,UI,View,Var$1,FromView,Doc,Concurrency,Remoting,Date,BirstComment,Rpc,Templating,Runtime,Server,ProviderBuilder,Handler,TemplateInstance,Client,Templates,Var$2,AsyncResultMAutoOpen,AjaxRemotingProvider,IntelliFactory,Runtime$1,Utils,System,Guid,Arrays,ListModel$1,$;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
+ Monads=Library.Monads=Library.Monads||{};
+ Seq=Monads.Seq=Monads.Seq||{};
  String=Library.String=Library.String||{};
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
  Var=LibraryJS.Var=LibraryJS.Var||{};
@@ -16,9 +18,9 @@
  SC$1=Global.StartupCode$testing$testing=Global.StartupCode$testing$testing||{};
  testing_Templates=Global.testing_Templates=Global.testing_Templates||{};
  WebSharper=Global.WebSharper;
+ Seq$1=WebSharper&&WebSharper.Seq;
  Strings=WebSharper&&WebSharper.Strings;
  Slice=WebSharper&&WebSharper.Slice;
- Seq=WebSharper&&WebSharper.Seq;
  Unchecked=WebSharper&&WebSharper.Unchecked;
  UI=WebSharper&&WebSharper.UI;
  View=UI&&UI.View;
@@ -27,9 +29,9 @@
  Doc=UI&&UI.Doc;
  Concurrency=WebSharper&&WebSharper.Concurrency;
  Remoting=WebSharper&&WebSharper.Remoting;
+ Date=Global.Date;
  BirstComment=FsRoot&&FsRoot.BirstComment;
  Rpc=BirstComment&&BirstComment.Rpc;
- Var$2=UI&&UI.Var$1;
  Templating=UI&&UI.Templating;
  Runtime=Templating&&Templating.Runtime;
  Server=Runtime&&Runtime.Server;
@@ -38,7 +40,7 @@
  TemplateInstance=Server&&Server.TemplateInstance;
  Client=UI&&UI.Client;
  Templates=Client&&Client.Templates;
- Monads=Library&&Library.Monads;
+ Var$2=UI&&UI.Var$1;
  AsyncResultMAutoOpen=Monads&&Monads.AsyncResultMAutoOpen;
  AjaxRemotingProvider=Remoting&&Remoting.AjaxRemotingProvider;
  IntelliFactory=Global.IntelliFactory;
@@ -47,9 +49,56 @@
  System=Global.System;
  Guid=System&&System.Guid;
  Arrays=WebSharper&&WebSharper.Arrays;
- Date=Global.Date;
  ListModel$1=UI&&UI.ListModel;
  $=Global.jQuery;
+ Seq.ofOption=function(vO)
+ {
+  return vO==null?[]:[vO.$0];
+ };
+ Seq.absorbR$1=function(vOS)
+ {
+  return Seq$1.choose(function(a)
+  {
+   return a.$==0?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },vOS);
+ };
+ Seq.absorbO$1=function(vOS)
+ {
+  return Seq$1.choose(Global.id,vOS);
+ };
+ Seq.insertR$1=function(vSR)
+ {
+  return vSR.$==0?Seq$1.map(function(a)
+  {
+   return{
+    $:0,
+    $0:a
+   };
+  },vSR.$0):(Seq.rtn$1())(Library.Error$1(vSR.$0));
+ };
+ Seq.insertO$1=function(vSO)
+ {
+  var o;
+  o=vSO==null?null:{
+   $:1,
+   $0:Seq$1.map(function(a)
+   {
+    return{
+     $:1,
+     $0:a
+    };
+   },vSO.$0)
+  };
+  return o==null?(Seq.rtn$1())(null):o.$0;
+ };
+ Seq.rtn$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.rtn;
+ };
  String.EndsWith=function(ends,s)
  {
   return Strings.EndsWith(s,ends)?{
@@ -102,7 +151,7 @@
  {
   var x,x$1;
   x=Strings.SplitChars(s,["\n"],0);
-  return Seq.map((x$1=Strings.replicate(n," "),function(y)
+  return Seq$1.map((x$1=Strings.replicate(n," "),function(y)
   {
    return x$1+y;
   }),x);
@@ -111,17 +160,17 @@
  {
   var lines,n,o,o$1;
   lines=Strings.SplitChars(s,["\n"],0);
-  n=(o=Seq.tryFindIndex(function(y)
+  n=(o=Seq$1.tryFindIndex(function(y)
   {
    return" "!==y;
-  },(o$1=Seq.tryFind(function(l)
+  },(o$1=Seq$1.tryFind(function(l)
   {
    return Strings.Trim(l)!=="";
   },lines),o$1==null?"":o$1.$0)),o==null?0:o.$0);
-  return Seq.filter(function(s$1)
+  return Seq$1.filter(function(s$1)
   {
    return!Strings.StartsWith(s$1,"# 1 ");
-  },Seq.map(function(l)
+  },Seq$1.map(function(l)
   {
    return l.length<=n?"":l.substring(n);
   },lines));
@@ -582,143 +631,67 @@
  Sort.Newest={
   $:0
  };
- Comment.main$327$33=function()
+ Comment.main$402$35=function()
  {
   return function()
   {
-   Comment.addComment(Library["String.Left"](Comment.newCommentV().Get(),40),Comment.newCommentV().Get());
+   Comment.addComment(Comment.newCommentV().Get());
   };
  };
- Comment.main$342$65=function(cid)
+ Comment.main$401$35=function()
  {
-  return function()
+  return function(ev)
   {
-   Comment.editingIdV().Set(cid);
-  };
- };
- Comment.main$341$65=function(cid)
- {
-  return function()
-  {
-   Comment.deleteComment(cid);
-  };
- };
- Comment.main$352$65=function()
- {
-  return function()
-  {
-   Comment.editingIdV().Set("");
-  };
- };
- Comment.main$351$65=function(comment)
- {
-  return function()
-  {
-   Comment.editingIdV().Set("");
-   comment.Set(Comment.editCommentV().Get());
+   if(ev.Event.keyCode===13)
+    Comment.addComment(Comment.newCommentV().Get());
   };
  };
  Comment.main=function()
  {
-  var b;
-  Remoting.set_EndPoint("http://localhost:9006");
-  Rpc.iterA(Comment.getComments());
+  var b,b$1;
+  Remoting.set_EndPoint("http://localhost:9009");
   Concurrency.Start((b=null,Concurrency.Delay(function()
+  {
+   return Concurrency.While(function()
+   {
+    return true;
+   },Concurrency.Delay(function()
+   {
+    Comment.nowV().Set(Date.now());
+    Rpc.iterA(Comment.getComments());
+    return Concurrency.Bind(Concurrency.Sleep(60000),function()
+    {
+     return Concurrency.Return(null);
+    });
+   }));
+  })),null);
+  Concurrency.Start((b$1=null,Concurrency.Delay(function()
   {
    return Concurrency.Bind(LoadFiles.LoadFilesAsync(["//cdn.muicss.com/mui-0.9.41/extra/mui-combined.js","//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"]),function()
    {
-    var x,b$1,T,t,p,i,a;
-    x=(b$1=(T=ListModel.docLensMapView(Global.id,function(cid,cV)
+    var x,b$2,L,R,t,t$1,p,i,a;
+    x=(b$2=(L=ListModel.docLensMapView(Global.id,Comment.renderComment,Comment.commentsV()),(R=ListModel.docLensMapView(function(x$1)
     {
-     var comment,b$2,E,E$1,f,p$1,i$1;
-     comment=Var$2.Lens(cV,function($1)
-     {
-      return $1.comment;
-     },function($1,$2)
-     {
-      return{
-       commentId:$1.commentId,
-       title:$1.title,
-       comment:$2,
-       created:$1.created,
-       modified:$1.modified,
-       userName:$1.userName,
-       order:$1.order
-      };
-     });
-     return(b$2=(E=Doc.BindView(Global.id,View.Map(function($1)
-     {
-      var b$3,t$1,t$2,p$2,i$2;
-      return cid===$1?(b$3=(t$1=(t$2=ProviderBuilder.Make().WithHole({
-       $:8,
-       $0:"editcomment",
-       $1:Comment.editCommentV()
-      }),t$2.WithHole(Handler.EventQ2(t$2.k,"edit",function()
-      {
-       return t$2.i;
-      },function()
-      {
-       Comment.editingIdV().Set("");
-       comment.Set(Comment.editCommentV().Get());
-      }))),t$1.WithHole(Handler.EventQ2(t$1.k,"cancel",function()
-      {
-       return t$1.i;
-      },function()
-      {
-       Comment.editingIdV().Set("");
-      }))),(p$2=Handler.CompleteHoles(b$3.k,b$3.h,[["editcomment",0]]),(i$2=new TemplateInstance.New(p$2[1],testing_Templates.editing(p$2[0])),(b$3.i=i$2,i$2)))).get_Doc():Doc.get_Empty();
-     },Comment.editingIdV().get_View())),(E$1=Doc.BindView(Global.id,View.Map2(function($1,$2)
-     {
-      var b$3,t$1,t$2,p$2,i$2;
-      return $1.userName===$2?(b$3=(t$1=(t$2=ProviderBuilder.Make(),t$2.WithHole(Handler.EventQ2(t$2.k,"delete",function()
-      {
-       return t$2.i;
-      },function()
-      {
-       Comment.deleteComment(cid);
-      }))),t$1.WithHole(Handler.EventQ2(t$1.k,"edit",function()
-      {
-       return t$1.i;
-      },function()
-      {
-       Comment.editingIdV().Set(cid);
-      }))),(p$2=Handler.CompleteHoles(b$3.k,b$3.h,[]),(i$2=new TemplateInstance.New(p$2[1],testing_Templates.editable(p$2[0])),(b$3.i=i$2,i$2)))).get_Doc():Doc.get_Empty();
-     },cV.get_View(),Comment.userV().get_View())),(f=Comment.fromNowW(cV.Get().modified),ProviderBuilder.Make().WithHole({
-      $:2,
-      $0:"user",
-      $1:View.Map(function($1)
-      {
-       return $1.userName;
-      },cV.get_View())
-     }).WithHole({
-      $:2,
-      $0:"comment",
-      $1:comment.get_View()
-     }).WithHole({
-      $:2,
-      $0:"fromnow",
-      $1:f
-     })).WithHole({
-      $:0,
-      $0:"editable",
-      $1:E$1
-     })).WithHole({
-      $:0,
-      $0:"editing",
-      $1:E
-     })),(p$1=Handler.CompleteHoles(b$2.k,b$2.h,[]),(i$1=new TemplateInstance.New(p$1[1],testing_Templates.commentx(p$1[0])),(b$2.i=i$1,i$1)))).get_Doc();
-    },Comment.commentsV()),(t=ProviderBuilder.Make(),t.WithHole(Handler.EventQ2(t.k,"add",function()
+     return Seq.ofOption(Seq$1.tryLast(x$1));
+    },Comment.renderComment,Comment.commentsV()),(t=(t$1=ProviderBuilder.Make(),t$1.WithHole(Handler.EventQ2(t$1.k,"keyup",function()
+    {
+     return t$1.i;
+    },function(ev)
+    {
+     if(ev.Event.keyCode===13)
+      Comment.addComment(Comment.newCommentV().Get());
+    }))),t.WithHole(Handler.EventQ2(t.k,"add",function()
     {
      return t.i;
     },function()
     {
-     Comment.addComment(Library["String.Left"](Comment.newCommentV().Get(),40),Comment.newCommentV().Get());
+     Comment.addComment(Comment.newCommentV().Get());
     }))).WithHole({
      $:2,
      $0:"addclass",
      $1:View.Map(function($1)
      {
-      return $1===""?"NoComment":"Comment";
+      return Strings.Trim($1)===""?"NoComment":"Comment";
      },Comment.newCommentV().get_View())
     }).WithHole({
      $:8,
@@ -726,15 +699,145 @@
      $1:Comment.newCommentV()
     }).WithHole({
      $:0,
-     $0:"tbody",
-     $1:T
-    })),(p=Handler.CompleteHoles(b$1.k,b$1.h,[["newcomment",0]]),(i=new TemplateInstance.New(p[1],testing_Templates.comments(p[0])),(b$1.i=i,i)))).get_Doc();
+     $0:"recent",
+     $1:R
+    })).WithHole({
+     $:0,
+     $0:"list",
+     $1:L
+    })),(p=Handler.CompleteHoles(b$2.k,b$2.h,[["newcomment",0]]),(i=new TemplateInstance.New(p[1],testing_Templates.comments(p[0])),(b$2.i=i,i)))).get_Doc();
     a=self.document.body;
     Templates.LoadLocalTemplates("");
     Doc.Run(a,x);
     return Concurrency.Zero();
    });
   })),null);
+ };
+ Comment.renderComment$354$49=function(cid)
+ {
+  return function()
+  {
+   if(Global.confirm("Remove this comment?"))
+    Comment.deleteComment(cid);
+  };
+ };
+ Comment.renderComment$362$49=function(cid,comment)
+ {
+  return function()
+  {
+   Comment.editingIdV().Set(cid);
+   Comment.editCommentV().Set(comment.Get());
+  };
+ };
+ Comment.renderComment$372$49=function(comment,cid)
+ {
+  return function()
+  {
+   Comment.editingIdV().Set("");
+   comment.Set(Comment.editCommentV().Get());
+   Comment.updateComment(cid,Comment.editCommentV().Get());
+  };
+ };
+ Comment.renderComment$371$49=function()
+ {
+  return function()
+  {
+   Comment.editingIdV().Set("");
+  };
+ };
+ Comment.renderComment=function(cid,cV)
+ {
+  var comment,b,E,E$1,E$2,f,p,i;
+  comment=Var$2.Lens(cV,function($1)
+  {
+   return $1.comment;
+  },function($1,$2)
+  {
+   return{
+    commentId:$1.commentId,
+    title:$1.title,
+    comment:$2,
+    created:$1.created,
+    modified:$1.modified,
+    userName:$1.userName,
+    order:$1.order
+   };
+  });
+  return(b=(E=Doc.BindView(Global.id,View.Map2(function($1,$2)
+  {
+   var b$1,t,t$1,p$1,i$1,b$2,p$2,i$2;
+   return cid===$1?(b$1=(t=(t$1=ProviderBuilder.Make().WithHole({
+    $:8,
+    $0:"editcomment",
+    $1:Comment.editCommentV()
+   }),t$1.WithHole(Handler.EventQ2(t$1.k,"cancel",function()
+   {
+    return t$1.i;
+   },function()
+   {
+    Comment.editingIdV().Set("");
+   }))),t.WithHole(Handler.EventQ2(t.k,"save",function()
+   {
+    return t.i;
+   },function()
+   {
+    Comment.editingIdV().Set("");
+    comment.Set(Comment.editCommentV().Get());
+    Comment.updateComment(cid,Comment.editCommentV().Get());
+   }))),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[["editcomment",0]]),(i$1=new TemplateInstance.New(p$1[1],testing_Templates.editing(p$1[0])),(b$1.i=i$1,i$1)))).get_Doc():(b$2=ProviderBuilder.Make().WithHole({
+    $:1,
+    $0:"comment",
+    $1:$2.comment
+   }),(p$2=Handler.CompleteHoles(b$2.k,b$2.h,[]),(i$2=new TemplateInstance.New(p$2[1],testing_Templates.commentc(p$2[0])),(b$2.i=i$2,i$2)))).get_Doc();
+  },Comment.editingIdV().get_View(),cV.get_View())),(E$1=Doc.BindView(Global.id,View.Map2(function($1,$2)
+  {
+   var b$1,t,p$1,i$1;
+   return $1.userName===$2?(b$1=(t=ProviderBuilder.Make(),t.WithHole(Handler.EventQ2(t.k,"edit",function()
+   {
+    return t.i;
+   },function()
+   {
+    Comment.editingIdV().Set(cid);
+    Comment.editCommentV().Set(comment.Get());
+   }))),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i$1=new TemplateInstance.New(p$1[1],testing_Templates.editable2(p$1[0])),(b$1.i=i$1,i$1)))).get_Doc():Doc.get_Empty();
+  },cV.get_View(),Comment.userV().get_View())),(E$2=Doc.BindView(Global.id,View.Map2(function($1,$2)
+  {
+   var b$1,t,p$1,i$1;
+   return $1.userName===$2?(b$1=(t=ProviderBuilder.Make(),t.WithHole(Handler.EventQ2(t.k,"delete",function()
+   {
+    return t.i;
+   },function()
+   {
+    if(Global.confirm("Remove this comment?"))
+     Comment.deleteComment(cid);
+   }))),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i$1=new TemplateInstance.New(p$1[1],testing_Templates.editable1(p$1[0])),(b$1.i=i$1,i$1)))).get_Doc():Doc.get_Empty();
+  },cV.get_View(),Comment.userV().get_View())),(f=View.Bind(Comment.fromNowW,View.Map(function($1)
+  {
+   return $1.modified;
+  },cV.get_View())),ProviderBuilder.Make().WithHole({
+   $:2,
+   $0:"user",
+   $1:View.Map(function($1)
+   {
+    return $1.userName;
+   },cV.get_View())
+  }).WithHole({
+   $:2,
+   $0:"fromnow",
+   $1:f
+  })).WithHole({
+   $:0,
+   $0:"editable1",
+   $1:E$2
+  })).WithHole({
+   $:0,
+   $0:"editable2",
+   $1:E$1
+  })).WithHole({
+   $:0,
+   $0:"editing",
+   $1:E
+  })),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],testing_Templates.commentx(p[0])),(b.i=i,i)))).get_Doc();
  };
  Comment.fromNowW=function(d)
  {
@@ -743,25 +846,29 @@
    return Global.moment(d).fromNow();
   },Comment.nowV().get_View());
  };
- Comment.updateComment=function(key,title,comment)
+ Comment.updateComment=function(key,comment)
  {
   var b;
-  Rpc.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
-  {
-   return b.Bind$4((new AjaxRemotingProvider.New()).Async("BirstComment:FsRoot.BirstComment+Rpc.updateComment:-1768176827",[key,title,comment]),function()
+  if(Strings.Trim(comment)!=="")
    {
-    return b.Bind$4(Comment.getComments(),function()
+    Rpc.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
     {
-     return b.Return();
-    });
-   });
-  }))));
+     return b.Bind$4((new AjaxRemotingProvider.New()).Async("BirstComment:FsRoot.BirstComment+Rpc.updateComment:-1768176827",[key,Library["String.Left"](comment,40),comment]),function()
+     {
+      return b.Bind$4(Comment.getComments(),function()
+      {
+       return b.Return();
+      });
+     });
+    }))));
+   }
  };
  Comment.deleteComment=function(key)
  {
   var b;
   Rpc.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
   {
+   Comment.commentsV().RemoveByKey(key);
    return b.Bind$4((new AjaxRemotingProvider.New()).Async("BirstComment:FsRoot.BirstComment+Rpc.deleteComment:-1324353239",[key]),function()
    {
     return b.Bind$4(Comment.getComments(),function()
@@ -771,25 +878,44 @@
    });
   }))));
  };
- Comment.addComment=function(title,comment)
+ Comment.addComment=function(comment)
  {
   var b;
-  Rpc.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
-  {
-   var key;
-   key=(((Runtime$1.Curried3(function($1,$2,$3)
+  if(Strings.Trim(comment)!=="")
    {
-    return $1(Utils.toSafe($2)+"-"+Utils.prettyPrint($3));
-   }))(Global.id))(Comment.keyPrefixV().Get()))(Guid.NewGuid());
-   return b.Bind$4((new AjaxRemotingProvider.New()).Async("BirstComment:FsRoot.BirstComment+Rpc.addComment:-1474170970",[key,title,comment,Comment.userV().Get()]),function()
-   {
-    return b.Bind$4(Comment.getComments(),function()
+    Rpc.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
     {
-     Comment.newCommentV().Set("");
-     return b.Zero();
-    });
-   });
-  }))));
+     var title,key,order,cs,now,newC;
+     title=Library["String.Left"](comment,40);
+     key=(((Runtime$1.Curried3(function($1,$2,$3)
+     {
+      return $1(Utils.toSafe($2)+"-"+Utils.prettyPrint($3));
+     }))(Global.id))(Comment.keyPrefixV().Get()))(Guid.NewGuid());
+     order=(cs=(Comment.commentsV())["var"].Get(),(Seq$1.isEmpty(cs)?0:Seq$1.max(Seq$1.map(function(c)
+     {
+      return c.order;
+     },cs)))+1);
+     now=Date.now();
+     newC={
+      commentId:key,
+      title:title,
+      comment:comment,
+      created:now,
+      modified:now,
+      userName:Comment.userV().Get(),
+      order:order
+     };
+     Comment.commentsV().Append(newC);
+     return b.Bind$4((new AjaxRemotingProvider.New()).Async("BirstComment:FsRoot.BirstComment+Rpc.addComment:-1474170970",[newC.commentId,newC.title,newC.comment,newC.userName]),function()
+     {
+      return b.Bind$4(Comment.getComments(),function()
+      {
+       Comment.newCommentV().Set("");
+       return b.Zero();
+      });
+     });
+    }))));
+   }
  };
  Comment.getComments=function()
  {
@@ -876,6 +1002,10 @@
   {
    return Strings.concat("\n",s);
   }
+  SC$1.rtn=function(v)
+  {
+   return[v];
+  };
   SC$1.unindentStr=function(x)
   {
    return g(String.unindent(x));
@@ -908,13 +1038,13 @@
    $0:"comments"
   },function()
   {
-   return $.parseHTML("<div>\r\n    <div>\r\n      <div class=\"mui-textfield\">\r\n        <input ws-var=\"newComment\" placeholder=\"Enter new comment:\">\r\n      </div>\r\n      <button ws-onclick=\"add\" class=\"${addClass} mui-btn mui-btn--raised mui-btn--small\">Add</button>\r\n    </div>\r\n    <style>\r\n      li:hover i.mui--invisible { visibility: visible }\r\n    </style>\r\n    Comments:\r\n    <ul ws-hole=\"TBody\"></ul>    \r\n  </div>");
+   return $.parseHTML("<div>\r\n    <ul>\r\n      <div ws-hole=\"Recent\"></div>\r\n    </ul>\r\n    <div>\r\n      <div class=\"mui-textfield\" style=\"padding-top:2px; margin-bottom:5px;\">\r\n        <input ws-var=\"newComment\" ws-onkeyup=\"keyup\" placeholder=\"Enter new comment:\">\r\n      </div>\r\n      <button ws-onclick=\"add\" class=\"${addClass} mui-btn mui-btn--raised mui-btn--small\">Add</button>\r\n    </div>\r\n    <style>\r\n      li:hover i.mui--invisible { visibility: visible }\r\n      .NoComment { display: none }\r\n    </style>\r\n    Comments:\r\n    <ul ws-hole=\"List\"></ul>    \r\n  </div>");
   },h):Templates.PrepareTemplate("birstcomments",{
    $:1,
    $0:"comments"
   },function()
   {
-   return $.parseHTML("<div>\r\n    <div>\r\n      <div class=\"mui-textfield\">\r\n        <input ws-var=\"newComment\" placeholder=\"Enter new comment:\">\r\n      </div>\r\n      <button ws-onclick=\"add\" class=\"${addClass} mui-btn mui-btn--raised mui-btn--small\">Add</button>\r\n    </div>\r\n    <style>\r\n      li:hover i.mui--invisible { visibility: visible }\r\n    </style>\r\n    Comments:\r\n    <ul ws-hole=\"TBody\"></ul>    \r\n  </div>");
+   return $.parseHTML("<div>\r\n    <ul>\r\n      <div ws-hole=\"Recent\"></div>\r\n    </ul>\r\n    <div>\r\n      <div class=\"mui-textfield\" style=\"padding-top:2px; margin-bottom:5px;\">\r\n        <input ws-var=\"newComment\" ws-onkeyup=\"keyup\" placeholder=\"Enter new comment:\">\r\n      </div>\r\n      <button ws-onclick=\"add\" class=\"${addClass} mui-btn mui-btn--raised mui-btn--small\">Add</button>\r\n    </div>\r\n    <style>\r\n      li:hover i.mui--invisible { visibility: visible }\r\n      .NoComment { display: none }\r\n    </style>\r\n    Comments:\r\n    <ul ws-hole=\"List\"></ul>    \r\n  </div>");
   });
  };
  testing_Templates.commentx=function(h)
@@ -924,13 +1054,29 @@
    $0:"commentx"
   },function()
   {
-   return $.parseHTML("\r\n        <li>\r\n          ${comment}\r\n          <div ws-replace=\"Editing\"></div>\r\n          <a> <i class=\"fa fa-user\"></i> ${user} </a><span>${fromNow}</span>\r\n          <div ws-replace=\"Editable\"></div>\r\n        </li>\r\n    ");
+   return $.parseHTML("\r\n        <li>\r\n          <div></div>\r\n          <div ws-replace=\"Editing\"></div>\r\n          <a> <i class=\"fa fa-user\"></i> ${user} </a>\r\n          <div ws-replace=\"Editable1\"></div>\r\n          <span class=\"mui--text-caption mui--text-accent-secondary\">${fromNow}</span>\r\n          <div ws-replace=\"Editable2\"></div>\r\n        </li>\r\n    ");
   },h):Templates.PrepareTemplate("birstcomments",{
    $:1,
    $0:"commentx"
   },function()
   {
-   return $.parseHTML("\r\n        <li>\r\n          ${comment}\r\n          <div ws-replace=\"Editing\"></div>\r\n          <a> <i class=\"fa fa-user\"></i> ${user} </a><span>${fromNow}</span>\r\n          <div ws-replace=\"Editable\"></div>\r\n        </li>\r\n    ");
+   return $.parseHTML("\r\n        <li>\r\n          <div></div>\r\n          <div ws-replace=\"Editing\"></div>\r\n          <a> <i class=\"fa fa-user\"></i> ${user} </a>\r\n          <div ws-replace=\"Editable1\"></div>\r\n          <span class=\"mui--text-caption mui--text-accent-secondary\">${fromNow}</span>\r\n          <div ws-replace=\"Editable2\"></div>\r\n        </li>\r\n    ");
+  });
+ };
+ testing_Templates.commentc=function(h)
+ {
+  return h?Templates.GetOrLoadTemplate("birstcomments",{
+   $:1,
+   $0:"commentc"
+  },function()
+  {
+   return $.parseHTML("${comment}");
+  },h):Templates.PrepareTemplate("birstcomments",{
+   $:1,
+   $0:"commentc"
+  },function()
+  {
+   return $.parseHTML("${comment}");
   });
  };
  testing_Templates.editing=function(h)
@@ -940,29 +1086,45 @@
    $0:"editing"
   },function()
   {
-   return $.parseHTML("<div>\r\n            <div class=\"mui-textfield\">\r\n              <input ws-var=\"editComment\" placeholder=\"Enter comment:\">\r\n            </div>          \r\n            <button ws-onclick=\"edit\" class=\"mui-btn mui-btn--raised mui-btn--small\">Add   </button>\r\n            <button ws-onclick=\"cancel\" class=\"mui-btn mui-btn--raised mui-btn--small\">Cancel</button>\r\n          </div>");
+   return $.parseHTML("<div>\r\n            <div class=\"mui-textfield\">\r\n              <input ws-var=\"editComment\" placeholder=\"Enter comment:\">\r\n            </div>          \r\n            <button ws-onclick=\"save\" class=\"mui-btn mui-btn--raised mui-btn--small\">Save  </button>\r\n            <button ws-onclick=\"cancel\" class=\"mui-btn mui-btn--raised mui-btn--small\">Cancel</button>\r\n          </div>");
   },h):Templates.PrepareTemplate("birstcomments",{
    $:1,
    $0:"editing"
   },function()
   {
-   return $.parseHTML("<div>\r\n            <div class=\"mui-textfield\">\r\n              <input ws-var=\"editComment\" placeholder=\"Enter comment:\">\r\n            </div>          \r\n            <button ws-onclick=\"edit\" class=\"mui-btn mui-btn--raised mui-btn--small\">Add   </button>\r\n            <button ws-onclick=\"cancel\" class=\"mui-btn mui-btn--raised mui-btn--small\">Cancel</button>\r\n          </div>");
+   return $.parseHTML("<div>\r\n            <div class=\"mui-textfield\">\r\n              <input ws-var=\"editComment\" placeholder=\"Enter comment:\">\r\n            </div>          \r\n            <button ws-onclick=\"save\" class=\"mui-btn mui-btn--raised mui-btn--small\">Save  </button>\r\n            <button ws-onclick=\"cancel\" class=\"mui-btn mui-btn--raised mui-btn--small\">Cancel</button>\r\n          </div>");
   });
  };
- testing_Templates.editable=function(h)
+ testing_Templates.editable2=function(h)
  {
   return h?Templates.GetOrLoadTemplate("birstcomments",{
    $:1,
-   $0:"editable"
+   $0:"editable2"
   },function()
   {
-   return $.parseHTML("\r\n            <i ws-onclick=\"delete\" title=\"remove\" style=\"cursor: pointer;\" class=\"fa fa-minus-circle mui--invisible\"></i>\r\n            <i ws-onclick=\"edit\" title=\"edit\" style=\"cursor: pointer;\" class=\"fa fa-pencil mui--invisible\"></i>\r\n          ");
+   return $.parseHTML("\r\n            <i ws-onclick=\"edit\" title=\"edit\" style=\"cursor: pointer;\" class=\"fa fa-pencil mui--invisible\"></i>\r\n          ");
   },h):Templates.PrepareTemplate("birstcomments",{
    $:1,
-   $0:"editable"
+   $0:"editable2"
   },function()
   {
-   return $.parseHTML("\r\n            <i ws-onclick=\"delete\" title=\"remove\" style=\"cursor: pointer;\" class=\"fa fa-minus-circle mui--invisible\"></i>\r\n            <i ws-onclick=\"edit\" title=\"edit\" style=\"cursor: pointer;\" class=\"fa fa-pencil mui--invisible\"></i>\r\n          ");
+   return $.parseHTML("\r\n            <i ws-onclick=\"edit\" title=\"edit\" style=\"cursor: pointer;\" class=\"fa fa-pencil mui--invisible\"></i>\r\n          ");
+  });
+ };
+ testing_Templates.editable1=function(h)
+ {
+  return h?Templates.GetOrLoadTemplate("birstcomments",{
+   $:1,
+   $0:"editable1"
+  },function()
+  {
+   return $.parseHTML("\r\n              <i ws-onclick=\"delete\" title=\"remove\" style=\"cursor: pointer;\" class=\"fa fa-minus-circle mui--invisible\"></i>\r\n          ");
+  },h):Templates.PrepareTemplate("birstcomments",{
+   $:1,
+   $0:"editable1"
+  },function()
+  {
+   return $.parseHTML("\r\n              <i ws-onclick=\"delete\" title=\"remove\" style=\"cursor: pointer;\" class=\"fa fa-minus-circle mui--invisible\"></i>\r\n          ");
   });
  };
  Runtime$1.OnLoad(function()
