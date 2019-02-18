@@ -444,7 +444,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 (function()
 {
  "use strict";
- var Global,FsRoot,TestingJS,Comment,Sort,SC$1,Library,Monads,AsyncResultMAutoOpen,WebSharper,Obj,AsyncResultM,AsyncResultMBuilder,BirstComment,Rpc,Remoting,AjaxRemotingProvider,UI,Var,Operators,ListModel,Numeric,Seq,Utils,System,Guid,View,Var$1,Templating,Runtime,Server,TemplateInstance,Arrays,ProviderBuilder,Handler,JavaScript,JS,testing_Templates,Doc,LibraryJS,LoadFiles,Event,UIEvent,ListModel$1,Seq$1,EventTarget,Node,String,Strings,Slice,SC$2,ResultMessage,Pervasives,Enumerator,T,Unchecked,Snap,Abbrev,Fresh,Collections,List,Dictionary,HashSet,Client,SC$3,Concurrency,Client$1,Templates,WindowOrWorkerGlobalScope,ConcreteVar,Storage,Result,Builder,ResultM,Builder$1,Object,AttrProxy,CheckedInput,DictionaryUtil,XhrProvider,AsyncBody,CT,Var$2,Docs,SC$4,ArrayStorage,List$1,SC$5,DocElemNode,CharacterData,Scheduler,Error,OperationCanceledException,SC$6,DomUtility,An,Settings,Mailbox,CancellationTokenSource,Json,T$1,Prepare,Attrs,Dyn,Array,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$7,HashSetUtil,Queue,Elt,Attrs$1,SC$8,AppendList,AttrModule,Updates,SC$9,Easing,HashSet$1,String$1,DomNodes,Char,DynamicAttrNode,Lazy,SC$10,SC$11,LazyExtensionsProxy,LazyRecord,IntelliFactory,Runtime$1,Date,JSON,Math,$,console;
+ var Global,FsRoot,TestingJS,Comment,Sort,SC$1,Library,Monads,AsyncResultM,WebSharper,Operators,AsyncResultMAutoOpen,Obj,AsyncResultMBuilder,Remoting,AjaxRemotingProvider,UI,Var,ListModel,Numeric,Seq,Utils,System,Guid,View,Var$1,Templating,Runtime,Server,TemplateInstance,Arrays,ProviderBuilder,Handler,JavaScript,JS,testing_Templates,Doc,EventTarget,WindowOrWorkerGlobalScope,LibraryJS,LoadFiles,Event,UIEvent,ListModel$1,Seq$1,Node,String,Strings,Slice,ResultM,SC$2,ResultMessage,Pervasives,Enumerator,T,Unchecked,Snap,Abbrev,Fresh,Collections,List,Dictionary,HashSet,Client,SC$3,Concurrency,Client$1,Templates,ConcreteVar,Storage,Result,Builder,Builder$1,Object,AttrProxy,CheckedInput,DictionaryUtil,XhrProvider,AsyncBody,CT,Var$2,Docs,SC$4,ArrayStorage,SC$5,DocElemNode,CharacterData,Scheduler,Error,OperationCanceledException,SC$6,DomUtility,An,Settings,Mailbox,CancellationTokenSource,Json,List$1,T$1,Prepare,Attrs,Dyn,Array,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$7,HashSetUtil,Queue,Elt,Attrs$1,SC$8,AppendList,AttrModule,Updates,SC$9,Easing,HashSet$1,String$1,DomNodes,Char,DynamicAttrNode,Lazy,SC$10,SC$11,LazyExtensionsProxy,LazyRecord,IntelliFactory,Runtime$1,Date,JSON,Math,$,console;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
@@ -453,18 +453,16 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  SC$1=Global.StartupCode$testing$testing=Global.StartupCode$testing$testing||{};
  Library=FsRoot.Library=FsRoot.Library||{};
  Monads=Library.Monads=Library.Monads||{};
- AsyncResultMAutoOpen=Monads.AsyncResultMAutoOpen=Monads.AsyncResultMAutoOpen||{};
- WebSharper=Global.WebSharper=Global.WebSharper||{};
- Obj=WebSharper.Obj=WebSharper.Obj||{};
  AsyncResultM=Monads.AsyncResultM=Monads.AsyncResultM||{};
+ WebSharper=Global.WebSharper=Global.WebSharper||{};
+ Operators=WebSharper.Operators=WebSharper.Operators||{};
+ AsyncResultMAutoOpen=Monads.AsyncResultMAutoOpen=Monads.AsyncResultMAutoOpen||{};
+ Obj=WebSharper.Obj=WebSharper.Obj||{};
  AsyncResultMBuilder=AsyncResultM.AsyncResultMBuilder=AsyncResultM.AsyncResultMBuilder||{};
- BirstComment=FsRoot.BirstComment=FsRoot.BirstComment||{};
- Rpc=BirstComment.Rpc=BirstComment.Rpc||{};
  Remoting=WebSharper.Remoting=WebSharper.Remoting||{};
  AjaxRemotingProvider=Remoting.AjaxRemotingProvider=Remoting.AjaxRemotingProvider||{};
  UI=WebSharper.UI=WebSharper.UI||{};
  Var=UI.Var=UI.Var||{};
- Operators=WebSharper.Operators=WebSharper.Operators||{};
  ListModel=UI.ListModel=UI.ListModel||{};
  Numeric=WebSharper.Numeric=WebSharper.Numeric||{};
  Seq=WebSharper.Seq=WebSharper.Seq||{};
@@ -484,17 +482,19 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  JS=JavaScript.JS=JavaScript.JS||{};
  testing_Templates=Global.testing_Templates=Global.testing_Templates||{};
  Doc=UI.Doc=UI.Doc||{};
+ EventTarget=Global.EventTarget;
+ WindowOrWorkerGlobalScope=Global.WindowOrWorkerGlobalScope;
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
  LoadFiles=LibraryJS.LoadFiles=LibraryJS.LoadFiles||{};
  Event=Global.Event;
  UIEvent=Global.UIEvent;
  ListModel$1=LibraryJS.ListModel=LibraryJS.ListModel||{};
  Seq$1=Monads.Seq=Monads.Seq||{};
- EventTarget=Global.EventTarget;
  Node=Global.Node;
  String=Library.String=Library.String||{};
  Strings=WebSharper.Strings=WebSharper.Strings||{};
  Slice=WebSharper.Slice=WebSharper.Slice||{};
+ ResultM=Monads.ResultM=Monads.ResultM||{};
  SC$2=Global.StartupCode$BirstComment$BirstComment=Global.StartupCode$BirstComment$BirstComment||{};
  ResultMessage=Library.ResultMessage=Library.ResultMessage||{};
  Pervasives=JavaScript.Pervasives=JavaScript.Pervasives||{};
@@ -513,12 +513,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Concurrency=WebSharper.Concurrency=WebSharper.Concurrency||{};
  Client$1=UI.Client=UI.Client||{};
  Templates=Client$1.Templates=Client$1.Templates||{};
- WindowOrWorkerGlobalScope=Global.WindowOrWorkerGlobalScope;
  ConcreteVar=UI.ConcreteVar=UI.ConcreteVar||{};
  Storage=UI.Storage=UI.Storage||{};
  Result=Monads.Result=Monads.Result||{};
  Builder=Result.Builder=Result.Builder||{};
- ResultM=Monads.ResultM=Monads.ResultM||{};
  Builder$1=ResultM.Builder=ResultM.Builder||{};
  Object=Global.Object;
  AttrProxy=UI.AttrProxy=UI.AttrProxy||{};
@@ -531,7 +529,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Docs=UI.Docs=UI.Docs||{};
  SC$4=Global.StartupCode$WebSharper_Main$Concurrency=Global.StartupCode$WebSharper_Main$Concurrency||{};
  ArrayStorage=Storage.ArrayStorage=Storage.ArrayStorage||{};
- List$1=WebSharper.List=WebSharper.List||{};
  SC$5=Global.StartupCode$WebSharper_UI$Abbrev=Global.StartupCode$WebSharper_UI$Abbrev||{};
  DocElemNode=UI.DocElemNode=UI.DocElemNode||{};
  CharacterData=Global.CharacterData;
@@ -545,6 +542,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Mailbox=Abbrev.Mailbox=Abbrev.Mailbox||{};
  CancellationTokenSource=WebSharper.CancellationTokenSource=WebSharper.CancellationTokenSource||{};
  Json=WebSharper.Json=WebSharper.Json||{};
+ List$1=WebSharper.List=WebSharper.List||{};
  T$1=List$1.T=List$1.T||{};
  Prepare=Templates.Prepare=Templates.Prepare||{};
  Attrs=Client$1.Attrs=Client$1.Attrs||{};
@@ -628,6 +626,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$1.$cctor();
   return SC$1.commentsV;
  };
+ Comment.iterA=function(v)
+ {
+  AsyncResultM.iterA(Global.ignore,Global.ignore,v);
+ };
  Comment.getComments=function()
  {
   var b;
@@ -646,7 +648,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var b;
   if(Strings.Trim(comment)!=="")
    {
-    Rpc.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+    Comment.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
     {
      var title,key,order,cs,now,newC;
      title=Library["String.Left"](comment,40);
@@ -683,7 +685,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Comment.deleteComment=function(key)
  {
   var b;
-  Rpc.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+  Comment.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
   {
    Comment.commentsV().RemoveByKey(key);
    return b.Bind$4((new AjaxRemotingProvider.New()).Async("BirstComment:FsRoot.BirstComment+Rpc.deleteComment:-1324353239",[key]),function()
@@ -700,7 +702,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var b;
   if(Strings.Trim(comment)!=="")
    {
-    Rpc.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+    Comment.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
     {
      return b.Bind$4((new AjaxRemotingProvider.New()).Async("BirstComment:FsRoot.BirstComment+Rpc.updateComment:-1768176827",[key,Library["String.Left"](comment,40),comment]),function()
      {
@@ -816,7 +818,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Comment.main=function()
  {
   var b,b$1;
-  Remoting.set_EndPoint("http://localhost:9009");
+  Remoting.set_EndPoint("https://ff0slls3w4.execute-api.us-east-1.amazonaws.com/test/fsharpstation9009/rpc");
   Concurrency.Start((b=null,Concurrency.Delay(function()
   {
    return Concurrency.While(function()
@@ -825,7 +827,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    },Concurrency.Delay(function()
    {
     Comment.nowV().Set(Date.now());
-    Rpc.iterA(Comment.getComments());
+    Comment.iterA(Comment.getComments());
     return Concurrency.Bind(Concurrency.Sleep(60000),function()
     {
      return Concurrency.Return(null);
@@ -939,6 +941,68 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return l.commentId;
   },[]);
  };
+ AsyncResultM.iterA=function(fE,f,vRA)
+ {
+  function f$1(r)
+  {
+   ResultM.iter(fE,f,r);
+  }
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  Concurrency.Start(Concurrency.Bind(vRA,function(x)
+  {
+   return g(f$1(x));
+  }),null);
+ };
+ AsyncResultM.rtn=function(v)
+ {
+  return Concurrency.Return(Monads.OkM$1(v));
+ };
+ AsyncResultM.bind=function(fRA,vRA)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.TryWith(Concurrency.Delay(function()
+   {
+    return Concurrency.Bind(vRA,function(a)
+    {
+     var a$1,m;
+     function f(r)
+     {
+      return ResultM.addMsg(m,r);
+     }
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     a$1=Monads.OkM(a);
+     return a$1.$==1?Concurrency.Return(Monads.ErrorM(a$1.$0)):(m=a$1.$0[1],Concurrency.Bind(fRA(a$1.$0[0]),function(x)
+     {
+      return g(f(x));
+     }));
+    });
+   }),function(a)
+   {
+    return Concurrency.Return(Monads.ErrorM(new ResultMessage({
+     $:5,
+     $0:a.message,
+     $1:a.stack
+    })));
+   });
+  });
+ };
+ Operators.FailWith=function(msg)
+ {
+  throw new Error(msg);
+ };
+ Operators.KeyValue=function(kvp)
+ {
+  return[kvp.K,kvp.V];
+ };
  AsyncResultMAutoOpen.asyncResultM=function()
  {
   SC$2.$cctor();
@@ -980,17 +1044,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   Obj.New.call(this);
  },AsyncResultMBuilder);
- Rpc.iterA=function(arm)
- {
-  function g(a)
-  {
-   Global.alert(a);
-  }
-  AsyncResultM.iterA(function(x)
-  {
-   return g(ResultMessage.summarized(x));
-  },Global.ignore,arm);
- };
  AjaxRemotingProvider=Remoting.AjaxRemotingProvider=Runtime$1.Class({
   AsyncBase:function(m,data)
   {
@@ -1056,14 +1109,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   Obj.New.call(this);
  },Var);
- Operators.FailWith=function(msg)
- {
-  throw new Error(msg);
- };
- Operators.KeyValue=function(kvp)
- {
-  return[kvp.K,kvp.V];
- };
  ListModel=UI.ListModel=Runtime$1.Class({
   Set:function(lst)
   {
@@ -2234,13 +2279,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return s.replace(new Global.RegExp("^\\s+"),"").replace(new Global.RegExp("\\s+$"),"");
  };
- Strings.SplitChars=function(s,sep,opts)
- {
-  return Strings.Split(s,new Global.RegExp("["+Strings.RegexEscape(sep.join(""))+"]"),opts);
- };
  Strings.StartsWith=function(t,s)
  {
   return t.substring(0,s.length)==s;
+ };
+ Strings.SplitChars=function(s,sep,opts)
+ {
+  return Strings.Split(s,new Global.RegExp("["+Strings.RegexEscape(sep.join(""))+"]"),opts);
  };
  Strings.Substring=function(s,ix,ct)
  {
@@ -2289,6 +2334,67 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return new ListModel.New(key,storage);
  };
+ ResultM.iter=function(fM,f,r)
+ {
+  var a;
+  a=ResultM.mapP(f,r);
+  a.$0==null?fM(a.$1):void 0;
+ };
+ ResultM.mapP=function(f,m)
+ {
+  return ResultM.bindP(function(x)
+  {
+   return ResultM.rtn(f(x));
+  },m);
+ };
+ ResultM.addMsg=function(m,r)
+ {
+  return ResultM.mapMessage(function(b)
+  {
+   return ResultMessage.addMsg(m,b);
+  },r);
+ };
+ ResultM.bindP=function(f,r)
+ {
+  var m;
+  if(r.$0==null)
+   return{
+    $:0,
+    $0:null,
+    $1:r.$1
+   };
+  else
+   {
+    m=r.$1;
+    try
+    {
+     return ResultM.mapMessage(function(b)
+     {
+      return ResultMessage.addMsg(m,b);
+     },f(r.$0.$0));
+    }
+    catch(e)
+    {
+     return Monads.ErrorM(new ResultMessage({
+      $:5,
+      $0:e.message,
+      $1:e.stack
+     }));
+    }
+   }
+ };
+ ResultM.rtn=function(v)
+ {
+  return Monads.OkM$1(v);
+ };
+ ResultM.mapMessage=function(fM,a)
+ {
+  return{
+   $:0,
+   $0:a.$0,
+   $1:fM(a.$1)
+  };
+ };
  SC$2.$cctor=function()
  {
   SC$2.$cctor=Global.ignore;
@@ -2302,60 +2408,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$2.asyncResultM=new AsyncResultMBuilder.New();
   SC$2.rootdir="..\\website";
   SC$2.TemplatesFileName="..\\website"+"\\BirstComments.html";
- };
- AsyncResultM.rtn=function(v)
- {
-  return Concurrency.Return(Monads.OkM$1(v));
- };
- AsyncResultM.bind=function(fRA,vRA)
- {
-  var b;
-  b=null;
-  return Concurrency.Delay(function()
-  {
-   return Concurrency.TryWith(Concurrency.Delay(function()
-   {
-    return Concurrency.Bind(vRA,function(a)
-    {
-     var a$1,m;
-     function f(r)
-     {
-      return ResultM.addMsg(m,r);
-     }
-     function g(v)
-     {
-      return Concurrency.Return(v);
-     }
-     a$1=Monads.OkM(a);
-     return a$1.$==1?Concurrency.Return(Monads.ErrorM(a$1.$0)):(m=a$1.$0[1],Concurrency.Bind(fRA(a$1.$0[0]),function(x)
-     {
-      return g(f(x));
-     }));
-    });
-   }),function(a)
-   {
-    return Concurrency.Return(Monads.ErrorM(new ResultMessage({
-     $:5,
-     $0:a.message,
-     $1:a.stack
-    })));
-   });
-  });
- };
- AsyncResultM.iterA=function(fE,f,vRA)
- {
-  function f$1(r)
-  {
-   ResultM.iter(fE,f,r);
-  }
-  function g(v)
-  {
-   return Concurrency.Return(v);
-  }
-  Concurrency.Start(Concurrency.Bind(vRA,function(x)
-  {
-   return g(f$1(x));
-  }),null);
  };
  ResultMessage=Library.ResultMessage=Runtime$1.Class({
   toString:function()
@@ -2826,102 +2878,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   r=new Global.Array(size);
   for(i=0,$1=size-1;i<=$1;i++)r[i]=f(i);
   return r;
- };
- ResultMessage.summarized=function(msg)
- {
-  return ResultMessage.summarizedF(function()
-  {
-   return[1,0,0];
-  },msg);
- };
- ResultMessage.summarizedF=function(f,msg)
- {
-  return Strings.concat("\n",Seq.filter(function(y)
-  {
-   return""!==y;
-  },List$1.ofArray([Global.String(msg),ResultMessage.summaryF(f,msg)])));
- };
- ResultMessage.addMsg=function(a,b)
- {
-  return a.$==0?b:a.$==6?b.$==0?a:b.$==6?new ResultMessage({
-   $:6,
-   $0:a.$0.concat(b.$0)
-  }):new ResultMessage({
-   $:6,
-   $0:a.$0.concat([b])
-  }):b.$==0?a:b.$==6?new ResultMessage({
-   $:6,
-   $0:[a].concat(b.$0)
-  }):new ResultMessage({
-   $:6,
-   $0:[a,b]
-  });
- };
- ResultMessage.summaryF=function(f,msg)
- {
-  var $1,m;
-  m=ResultMessage.countF(f,msg);
-  switch(m[0]===0?m[1]===0?0:m[1]===1?m[2]===0?0:($1=m[1],2):($1=m[1],2):m[0]===1?m[1]===0?m[2]===0?0:($1=m[0],1):($1=[m[0],m[1]],3):m[1]===0?($1=m[0],1):($1=[m[0],m[1]],3))
-  {
-   case 0:
-    return"";
-   case 1:
-    return(function($2)
-    {
-     return function($3)
-     {
-      return $2("Errors   : "+Global.String($3)+"\n");
-     };
-    }(Global.id))($1);
-   case 2:
-    return(function($2)
-    {
-     return function($3)
-     {
-      return $2("Warnings : "+Global.String($3)+"\n");
-     };
-    }(Global.id))($1);
-   case 3:
-    return(((Runtime$1.Curried3(function($2,$3,$4)
-    {
-     return $2("Errors   : "+Global.String($3)+", Warnings: "+Global.String($4)+"\n");
-    }))(Global.id))($1[0]))($1[1]);
-  }
- };
- ResultMessage.countF=function(f,msg)
- {
-  function f$1(f$2,w,i)
-  {
-   return function(t)
-   {
-    return[f$2+t[0],w+t[1],i+t[2]];
-   };
-  }
-  return msg.$==0?[0,0,0]:msg.$==3?[0,0,1]:msg.$==2?[0,1,0]:msg.$==4?f(msg.$0):msg.$==6?Seq.fold(function($1,$2)
-  {
-   return(function($3)
-   {
-    return f$1($3[0],$3[1],$3[2]);
-   }($1))($2);
-  },[0,0,0],Seq.map(function(m)
-  {
-   return ResultMessage.countF(f,m);
-  },ResultMessage.exclnoMsg(msg.$0))):[1,0,0];
- };
- ResultMessage.exclnoMsg=function(ms)
- {
-  function g(v)
-  {
-   return!v;
-  }
-  return Seq.filter(function(x)
-  {
-   return g(ResultMessage.noMsg(x));
-  },ms);
- };
- ResultMessage.noMsg=function(msg)
- {
-  return msg.$==0;
  };
  Snap.Map=function(fn,sn)
  {
@@ -4636,67 +4592,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $1:m
   };
  };
- ResultM.addMsg=function(m,r)
- {
-  return ResultM.mapMessage(function(b)
-  {
-   return ResultMessage.addMsg(m,b);
-  },r);
- };
- ResultM.iter=function(fM,f,r)
- {
-  var a;
-  a=ResultM.mapP(f,r);
-  a.$0==null?fM(a.$1):void 0;
- };
- ResultM.mapMessage=function(fM,a)
- {
-  return{
-   $:0,
-   $0:a.$0,
-   $1:fM(a.$1)
-  };
- };
- ResultM.mapP=function(f,m)
- {
-  return ResultM.bindP(function(x)
-  {
-   return ResultM.rtn(f(x));
-  },m);
- };
- ResultM.bindP=function(f,r)
- {
-  var m;
-  if(r.$0==null)
-   return{
-    $:0,
-    $0:null,
-    $1:r.$1
-   };
-  else
-   {
-    m=r.$1;
-    try
-    {
-     return ResultM.mapMessage(function(b)
-     {
-      return ResultMessage.addMsg(m,b);
-     },f(r.$0.$0));
-    }
-    catch(e)
-    {
-     return Monads.ErrorM(new ResultMessage({
-      $:5,
-      $0:e.message,
-      $1:e.stack
-     }));
-    }
-   }
- };
- ResultM.rtn=function(v)
- {
-  return Monads.OkM$1(v);
- };
  View=UI.View=Runtime$1.Class({},null,View);
  Snap.Obsolete=function(sn)
  {
@@ -5083,28 +4978,21 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   Obj.New.call(this);
   this.init=init;
  },ArrayStorage);
- List$1.ofArray=function(arr)
+ ResultMessage.addMsg=function(a,b)
  {
-  var r,i,$1;
-  r=T$1.Empty;
-  for(i=Arrays.length(arr)-1,$1=0;i>=$1;i--)r=new T$1({
-   $:1,
-   $0:Arrays.get(arr,i),
-   $1:r
+  return a.$==0?b:a.$==6?b.$==0?a:b.$==6?new ResultMessage({
+   $:6,
+   $0:a.$0.concat(b.$0)
+  }):new ResultMessage({
+   $:6,
+   $0:a.$0.concat([b])
+  }):b.$==0?a:b.$==6?new ResultMessage({
+   $:6,
+   $0:[a].concat(b.$0)
+  }):new ResultMessage({
+   $:6,
+   $0:[a,b]
   });
-  return r;
- };
- List$1.head=function(l)
- {
-  return l.$==1?l.$0:List$1.listEmpty();
- };
- List$1.tail=function(l)
- {
-  return l.$==1?l.$1:List$1.listEmpty();
- };
- List$1.listEmpty=function()
- {
-  return Operators.FailWith("The input list was empty.");
  };
  SC$5.$cctor=function()
  {
@@ -5901,6 +5789,29 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   SC$7.$cctor=Global.ignore;
   SC$7.BatchUpdatesEnabled=true;
+ };
+ List$1.ofArray=function(arr)
+ {
+  var r,i,$1;
+  r=T$1.Empty;
+  for(i=Arrays.length(arr)-1,$1=0;i>=$1;i--)r=new T$1({
+   $:1,
+   $0:Arrays.get(arr,i),
+   $1:r
+  });
+  return r;
+ };
+ List$1.head=function(l)
+ {
+  return l.$==1?l.$0:List$1.listEmpty();
+ };
+ List$1.tail=function(l)
+ {
+  return l.$==1?l.$1:List$1.listEmpty();
+ };
+ List$1.listEmpty=function()
+ {
+  return Operators.FailWith("The input list was empty.");
  };
  HashSetUtil.concat=function(o)
  {

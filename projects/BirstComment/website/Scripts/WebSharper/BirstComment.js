@@ -389,6 +389,10 @@
  {
   return msg.$==0;
  };
+ Seq.ofOption=function(vO)
+ {
+  return vO==null?[]:[vO.$0];
+ };
  Seq.absorbR=function(vOS)
  {
   return Seq$1.choose(function(a)

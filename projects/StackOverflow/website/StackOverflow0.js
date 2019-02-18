@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Async,WebSharper,Obj,Result,Builder,Operators,Eff,Eff$1,Done,LambdaT,Operators$1,EffBuilder,State,Put,Get,Log,LogEntry,Rsl,Fail,ResultM,Builder$1,Operators$2,ResultMAutoOpen,AsyncResultM,AsyncResultMBuilder,AsyncResultMAutoOpen,String,SortWith,StackOverflow,Templating,TipoAliado,Pais,State$1,Identificacion,TipoCuenta,CuentaBancaria,StatusAliado,ConceptoPago,Transaccion,TipoDireccion,Direccion,TipoTelefono,Telefono,Genero,DatosPersonales,TipoMensaje,Remitente,Mensaje,Aliado,PremisasCalculo,Modelo,AliadoModule,Buscar,Rpc,ModeloUI,RenderAliados,RenderAliado,MainProgram,Server,SC$1,StackOverflow_GeneratedPrintf,StackOverflow_Templates,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,console,Slice,Date,Collections,Dictionary,FSharpMap,UI,View,FSharpSet,Templating$1,Runtime$1,Server$1,ProviderBuilder,Handler,TemplateInstance,Var$1,Doc,LibraryJS,AppFramework,PlugIn,Lazy,LayoutEngineModule,Remoting,AjaxRemotingProvider,Client,Templates;
+ var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Async,WebSharper,Obj,Result,Builder,Operators,Eff,Eff$1,Done,LambdaT,Operators$1,EffBuilder,State,Put,Get,Log,LogEntry,Rsl,Fail,ResultM,Builder$1,Operators$2,ResultMAutoOpen,AsyncResultM,AsyncResultMBuilder,AsyncResultMAutoOpen,String,SortWith,StackOverflow,Templating,TipoAliado,Pais,State$1,Identificacion,TipoCuenta,CuentaBancaria,StatusAliado,ConceptoPago,Transaccion,TipoDireccion,Direccion,TipoTelefono,Telefono,Genero,DatosPersonales,TipoMensaje,Remitente,Mensaje,Aliado,PremisasCalculo,Modelo,AliadoModule,Buscar,ModeloUI,RenderAliados,RenderAliado,Rpc,MainProgram,Server,SC$1,StackOverflow_GeneratedPrintf,StackOverflow_Templates,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,console,Slice,Date,Collections,Dictionary,FSharpMap,UI,View,FSharpSet,Templating$1,Runtime$1,Server$1,ProviderBuilder,Handler,TemplateInstance,Var$1,Doc,LibraryJS,AppFramework,PlugIn,Lazy,LayoutEngineModule,Remoting,AjaxRemotingProvider,Client,Templates;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -62,10 +62,10 @@
  Modelo=StackOverflow.Modelo=StackOverflow.Modelo||{};
  AliadoModule=StackOverflow.AliadoModule=StackOverflow.AliadoModule||{};
  Buscar=AliadoModule.Buscar=AliadoModule.Buscar||{};
- Rpc=StackOverflow.Rpc=StackOverflow.Rpc||{};
  ModeloUI=StackOverflow.ModeloUI=StackOverflow.ModeloUI||{};
  RenderAliados=StackOverflow.RenderAliados=StackOverflow.RenderAliados||{};
  RenderAliado=StackOverflow.RenderAliado=StackOverflow.RenderAliado||{};
+ Rpc=StackOverflow.Rpc=StackOverflow.Rpc||{};
  MainProgram=StackOverflow.MainProgram=StackOverflow.MainProgram||{};
  Server=StackOverflow.Server=StackOverflow.Server||{};
  SC$1=Global.StartupCode$StackOverflow$StackOverflow=Global.StartupCode$StackOverflow$StackOverflow||{};
@@ -459,6 +459,10 @@
  ResultMessage.noMsg=function(msg)
  {
   return msg.$==0;
+ };
+ Seq.ofOption=function(vO)
+ {
+  return vO==null?[]:[vO.$0];
  };
  Seq.absorbR=function(vOS)
  {
@@ -2904,17 +2908,6 @@
    return[modelo.anoActual,modelo.periodoActual];
   });
  };
- Rpc.iterA=function(arm)
- {
-  function g(a)
-  {
-   Global.alert(a);
-  }
-  AsyncResultM.iterA(function(x)
-  {
-   return g(ResultMessage.summarized(x));
-  },Global.ignore,arm);
- };
  ModeloUI.money=function(m)
  {
   return"$"+ModeloUI.separate(Global.String(m),List.T.Empty);
@@ -2947,14 +2940,14 @@
   SC$1.$cctor();
   return SC$1.modeloV;
  };
- RenderAliados.aliados$4076$45=function(seleccionar,alid)
+ RenderAliados.aliados$4027$45=function(seleccionar,alid)
  {
   return function()
   {
    seleccionar(alid);
   };
  };
- RenderAliados.aliados$4074$45=function(expandir,alid)
+ RenderAliados.aliados$4025$45=function(expandir,alid)
  {
   return function()
   {
@@ -3463,6 +3456,17 @@
   SC$1.$cctor();
   return SC$1.alvO;
  };
+ Rpc.iterA=function(arm)
+ {
+  function g(a)
+  {
+   Global.alert(a);
+  }
+  AsyncResultM.iterA(function(x)
+  {
+   return g(ResultMessage.summarized(x));
+  },Global.ignore,arm);
+ };
  MainProgram.mainProgram=function()
  {
   var titleV,l,m,a,o,v,b,b$1,M,p;
@@ -3533,7 +3537,7 @@
   SC$1.$cctor();
   return SC$1.layoutName;
  };
- Server.content$4342$35=function()
+ Server.content$4346$35=function()
  {
   return function(e)
   {
@@ -3551,7 +3555,7 @@
     }
   };
  };
- Server.content$4332$58=function()
+ Server.content$4336$58=function()
  {
   MainProgram.mainProgram();
   return Doc.TextNode("Initialized");

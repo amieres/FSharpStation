@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,Monads,Seq,String,LibraryJS,Var,ListModel,LoadFiles,TestingJS,Comment,Sort,SC$1,testing_Templates,WebSharper,Seq$1,Strings,Slice,Unchecked,UI,View,Var$1,FromView,Doc,Concurrency,Remoting,Date,BirstComment,Rpc,Templating,Runtime,Server,ProviderBuilder,Handler,TemplateInstance,Client,Templates,Var$2,AsyncResultMAutoOpen,AjaxRemotingProvider,IntelliFactory,Runtime$1,Utils,System,Guid,Arrays,ListModel$1,$;
+ var Global,FsRoot,Library,Monads,Seq,String,LibraryJS,Var,ListModel,LoadFiles,TestingJS,Comment,Sort,SC$1,testing_Templates,WebSharper,Seq$1,Strings,Slice,Unchecked,UI,View,Var$1,FromView,Doc,Concurrency,Remoting,Date,Templating,Runtime,Server,ProviderBuilder,Handler,TemplateInstance,Client,Templates,Var$2,AsyncResultMAutoOpen,AjaxRemotingProvider,IntelliFactory,Runtime$1,Utils,System,Guid,AsyncResultM,Arrays,ListModel$1,$;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -30,8 +30,6 @@
  Concurrency=WebSharper&&WebSharper.Concurrency;
  Remoting=WebSharper&&WebSharper.Remoting;
  Date=Global.Date;
- BirstComment=FsRoot&&FsRoot.BirstComment;
- Rpc=BirstComment&&BirstComment.Rpc;
  Templating=UI&&UI.Templating;
  Runtime=Templating&&Templating.Runtime;
  Server=Runtime&&Runtime.Server;
@@ -48,10 +46,11 @@
  Utils=WebSharper&&WebSharper.Utils;
  System=Global.System;
  Guid=System&&System.Guid;
+ AsyncResultM=Monads&&Monads.AsyncResultM;
  Arrays=WebSharper&&WebSharper.Arrays;
  ListModel$1=UI&&UI.ListModel;
  $=Global.jQuery;
- Seq.ofOption=function(vO)
+ Seq.ofOption$1=function(vO)
  {
   return vO==null?[]:[vO.$0];
  };
@@ -631,14 +630,14 @@
  Sort.Newest={
   $:0
  };
- Comment.main$402$35=function()
+ Comment.main$405$35=function()
  {
   return function()
   {
    Comment.addComment(Comment.newCommentV().Get());
   };
  };
- Comment.main$401$35=function()
+ Comment.main$404$35=function()
  {
   return function(ev)
   {
@@ -649,7 +648,7 @@
  Comment.main=function()
  {
   var b,b$1;
-  Remoting.set_EndPoint("http://localhost:9009");
+  !Strings.StartsWith(self.location.port,"900")?Remoting.set_EndPoint("https://ff0slls3w4.execute-api.us-east-1.amazonaws.com/test/fsharpstation9009/rpc"):void 0;
   Concurrency.Start((b=null,Concurrency.Delay(function()
   {
    return Concurrency.While(function()
@@ -658,7 +657,7 @@
    },Concurrency.Delay(function()
    {
     Comment.nowV().Set(Date.now());
-    Rpc.iterA(Comment.getComments());
+    Comment.iterA(Comment.getComments());
     return Concurrency.Bind(Concurrency.Sleep(60000),function()
     {
      return Concurrency.Return(null);
@@ -713,7 +712,7 @@
    });
   })),null);
  };
- Comment.renderComment$354$49=function(cid)
+ Comment.renderComment$356$49=function(cid)
  {
   return function()
   {
@@ -721,7 +720,7 @@
     Comment.deleteComment(cid);
   };
  };
- Comment.renderComment$362$49=function(cid,comment)
+ Comment.renderComment$364$49=function(cid,comment)
  {
   return function()
   {
@@ -729,7 +728,7 @@
    Comment.editCommentV().Set(comment.Get());
   };
  };
- Comment.renderComment$372$49=function(comment,cid)
+ Comment.renderComment$374$49=function(comment,cid)
  {
   return function()
   {
@@ -738,7 +737,7 @@
    Comment.updateComment(cid,Comment.editCommentV().Get());
   };
  };
- Comment.renderComment$371$49=function()
+ Comment.renderComment$373$49=function()
  {
   return function()
   {
@@ -851,7 +850,7 @@
   var b;
   if(Strings.Trim(comment)!=="")
    {
-    Rpc.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+    Comment.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
     {
      return b.Bind$4((new AjaxRemotingProvider.New()).Async("BirstComment:FsRoot.BirstComment+Rpc.updateComment:-1768176827",[key,Library["String.Left"](comment,40),comment]),function()
      {
@@ -866,7 +865,7 @@
  Comment.deleteComment=function(key)
  {
   var b;
-  Rpc.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+  Comment.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
   {
    Comment.commentsV().RemoveByKey(key);
    return b.Bind$4((new AjaxRemotingProvider.New()).Async("BirstComment:FsRoot.BirstComment+Rpc.deleteComment:-1324353239",[key]),function()
@@ -883,7 +882,7 @@
   var b;
   if(Strings.Trim(comment)!=="")
    {
-    Rpc.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+    Comment.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
     {
      var title,key,order,cs,now,newC;
      title=Library["String.Left"](comment,40);
@@ -929,6 +928,10 @@
     return b.Zero();
    });
   }));
+ };
+ Comment.iterA=function(v)
+ {
+  AsyncResultM.iterA(Global.ignore,Global.ignore,v);
  };
  Comment.commentsV=function()
  {

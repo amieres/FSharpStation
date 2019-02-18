@@ -444,7 +444,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 (function()
 {
  "use strict";
- var Global,FsRoot,TestingJS,Comment,Sort,SC$1,Library,Monads,AsyncResultMAutoOpen,WebSharper,Obj,AsyncResultM,AsyncResultMBuilder,BirstComment,Rpc,Remoting,AjaxRemotingProvider,UI,Var,Operators,ListModel,Numeric,Seq,Utils,System,Guid,View,Var$1,Templating,Runtime,Server,TemplateInstance,Arrays,ProviderBuilder,Handler,JavaScript,JS,testing_Templates,Doc,LibraryJS,LoadFiles,Event,UIEvent,ListModel$1,Seq$1,EventTarget,Node,String,Strings,Slice,SC$2,ResultMessage,Pervasives,Enumerator,T,Unchecked,Snap,Abbrev,Fresh,Collections,List,Dictionary,HashSet,Client,SC$3,Concurrency,Client$1,Templates,WindowOrWorkerGlobalScope,ConcreteVar,Storage,Result,Builder,ResultM,Builder$1,Object,AttrProxy,CheckedInput,DictionaryUtil,XhrProvider,AsyncBody,CT,Var$2,Docs,SC$4,ArrayStorage,List$1,SC$5,DocElemNode,CharacterData,Scheduler,Error,OperationCanceledException,SC$6,DomUtility,An,Settings,Mailbox,CancellationTokenSource,Json,T$1,Prepare,Attrs,Dyn,Array,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$7,HashSetUtil,Queue,Elt,Attrs$1,SC$8,AppendList,AttrModule,Updates,SC$9,Easing,HashSet$1,String$1,DomNodes,Char,DynamicAttrNode,Lazy,SC$10,SC$11,LazyExtensionsProxy,LazyRecord,IntelliFactory,Runtime$1,Date,JSON,Math,$,console;
+ var Global,FsRoot,TestingJS,Comment,Sort,SC$1,Library,Monads,AsyncResultMAutoOpen,WebSharper,Obj,AsyncResultM,AsyncResultMBuilder,BirstComment,Rpc,Remoting,AjaxRemotingProvider,UI,Var,Operators,ListModel,Numeric,Seq,Utils,System,Guid,View,Var$1,Templating,Runtime,Server,TemplateInstance,Arrays,ProviderBuilder,Handler,JavaScript,JS,testing_Templates,Doc,EventTarget,WindowOrWorkerGlobalScope,LibraryJS,LoadFiles,Event,UIEvent,ListModel$1,Seq$1,Node,String,Strings,Slice,SC$2,ResultMessage,Pervasives,Enumerator,T,Unchecked,Snap,Abbrev,Fresh,Collections,List,Dictionary,HashSet,Client,SC$3,Concurrency,Client$1,Templates,ConcreteVar,Storage,Result,Builder,ResultM,Builder$1,Object,AttrProxy,CheckedInput,DictionaryUtil,XhrProvider,AsyncBody,CT,Var$2,Docs,SC$4,ArrayStorage,List$1,SC$5,DocElemNode,CharacterData,Scheduler,Error,OperationCanceledException,SC$6,DomUtility,An,Settings,Mailbox,CancellationTokenSource,Json,T$1,Prepare,Attrs,Dyn,Array,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$7,HashSetUtil,Queue,Elt,Attrs$1,SC$8,AppendList,AttrModule,Updates,SC$9,Easing,HashSet$1,String$1,DomNodes,Char,DynamicAttrNode,Lazy,SC$10,SC$11,LazyExtensionsProxy,LazyRecord,IntelliFactory,Runtime$1,Date,JSON,Math,$,console;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
@@ -484,13 +484,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  JS=JavaScript.JS=JavaScript.JS||{};
  testing_Templates=Global.testing_Templates=Global.testing_Templates||{};
  Doc=UI.Doc=UI.Doc||{};
+ EventTarget=Global.EventTarget;
+ WindowOrWorkerGlobalScope=Global.WindowOrWorkerGlobalScope;
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
  LoadFiles=LibraryJS.LoadFiles=LibraryJS.LoadFiles||{};
  Event=Global.Event;
  UIEvent=Global.UIEvent;
  ListModel$1=LibraryJS.ListModel=LibraryJS.ListModel||{};
  Seq$1=Monads.Seq=Monads.Seq||{};
- EventTarget=Global.EventTarget;
  Node=Global.Node;
  String=Library.String=Library.String||{};
  Strings=WebSharper.Strings=WebSharper.Strings||{};
@@ -513,7 +514,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Concurrency=WebSharper.Concurrency=WebSharper.Concurrency||{};
  Client$1=UI.Client=UI.Client||{};
  Templates=Client$1.Templates=Client$1.Templates||{};
- WindowOrWorkerGlobalScope=Global.WindowOrWorkerGlobalScope;
  ConcreteVar=UI.ConcreteVar=UI.ConcreteVar||{};
  Storage=UI.Storage=UI.Storage||{};
  Result=Monads.Result=Monads.Result||{};
@@ -816,7 +816,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Comment.main=function()
  {
   var b,b$1;
-  Remoting.set_EndPoint("http://localhost:9009");
+  !Strings.StartsWith(self.location.port,"900")?Remoting.set_EndPoint("https://ff0slls3w4.execute-api.us-east-1.amazonaws.com/test/serverlessrepo-WebSharperRp-cloudfronthttpredirect-1OTYTBSOIB6MP"):void 0;
   Concurrency.Start((b=null,Concurrency.Delay(function()
   {
    return Concurrency.While(function()
@@ -2234,13 +2234,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return s.replace(new Global.RegExp("^\\s+"),"").replace(new Global.RegExp("\\s+$"),"");
  };
- Strings.SplitChars=function(s,sep,opts)
- {
-  return Strings.Split(s,new Global.RegExp("["+Strings.RegexEscape(sep.join(""))+"]"),opts);
- };
  Strings.StartsWith=function(t,s)
  {
   return t.substring(0,s.length)==s;
+ };
+ Strings.SplitChars=function(s,sep,opts)
+ {
+  return Strings.Split(s,new Global.RegExp("["+Strings.RegexEscape(sep.join(""))+"]"),opts);
  };
  Strings.Substring=function(s,ix,ct)
  {

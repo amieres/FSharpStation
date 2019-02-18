@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1548758124776 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1550031799969 -d:WEBSHARPER
 ////#cd @"..\projects\StackOverflow\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -32,7 +32,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1548758124776
+//#define FSharpStation1550031799969
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -309,7 +309,11 @@ namespace FsRoot
                     let insertR (vSR:Result<_,_>) = vSR |> function | Error m -> rtn (Error m) | Ok v -> Seq.map Ok v
                     let absorbO  vOS              = vOS |> Seq.choose id
                     let absorbR  vOS              = vOS |> Seq.choose (function Ok v -> Some v |_-> None)
-                    
+                    let ofOption vO = 
+                        match vO with
+                        | Some v -> Seq.singleton v
+                        | None   -> Seq.empty
+                
                 /// Extensions to Async
                 module Async =
                     let [< Inline >] inline rtn   v    = async.Return v
@@ -3927,59 +3931,6 @@ namespace FsRoot
         
         
         //#define NOFMK --noframework
-        [< JavaScript false >]
-        module Rpc =
-        
-            let printResult operation arm = async {
-                let! rm = arm
-                printfn "%s %A" operation rm
-                return! arm
-            }
-        
-            let userIsAliado user al =
-                al.datosPersonales.apellido1 = user
-             || al.datosPersonales.nombre1   = user
-        
-            let checkUserPwd user password =
-                if user <> password then false else
-                if user = ""        then false else
-                if user = "admin"   then true  else
-                Sample.aliados |> Seq.exists (userIsAliado user)
-        
-            [< Rpc >]
-            let loginUser (user:string) (password:string) : AsyncResultM<unit, string> = 
-                let ctx = Web.Remoting.GetContext()
-                asyncResultM {
-                    if checkUserPwd user password then
-                        do! ctx.UserSession.LoginUser user
-                } (**)|> printResult "loginUser"
-        
-            [< Rpc >]
-            let logoutUser ()  : AsyncResultM<unit, string> = 
-                let ctx = Web.Remoting.GetContext()
-                asyncResultM {
-                    do! ctx.UserSession.Logout()
-                } (**)|> printResult "logoutUser"
-        
-            [< Rpc >]
-            let leerDataModelo() : AsyncResultM<Modelo, string> = 
-                let  ctx  = Web.Remoting.GetContext()
-                asyncResultM {
-                    let! userO = ctx.UserSession.GetLoggedInUser()
-                    match userO with
-                    | None      ->  do! Error(ErrorMsg "User not logged in.")
-                                    return Sample.modelo
-                    | Some user ->
-                    let aliados = Sample.modelo |> Aliado.actualizarAliados
-                    let buscar = Aliado.busqueda aliados
-                    if user = "admin" then return { Sample.modelo with aliados = aliados } else
-                    let al = aliados |> Seq.find (userIsAliado user)
-                    let subAliados = (if al.tipo = Master then buscar.descendientes else buscar.hijos) al
-                    return { Sample.modelo with aliados = Array.append [| al |] subAliados }
-                }
-        
-            [< JavaScript >]
-            let iterA arm = AsyncResultM.iterA (ResultMessage.summarized >> JS.Alert) id arm
         module ModeloUI =
             let modeloV = Var.Create {
                 idAliado      = IdAliado ":"
@@ -4141,6 +4092,59 @@ namespace FsRoot
                 ) |> Doc.BindView id
         
         
+        [< JavaScript false >]
+        module Rpc =
+        
+            let printResult operation arm = async {
+                let! rm = arm
+                printfn "%s %A" operation rm
+                return! arm
+            }
+        
+            let userIsAliado user al =
+                al.datosPersonales.apellido1 = user
+             || al.datosPersonales.nombre1   = user
+        
+            let checkUserPwd user password =
+                if user <> password then false else
+                if user = ""        then false else
+                if user = "admin"   then true  else
+                Sample.aliados |> Seq.exists (userIsAliado user)
+        
+            [< Rpc >]
+            let loginUser (user:string) (password:string) : AsyncResultM<unit, string> = 
+                let ctx = Web.Remoting.GetContext()
+                asyncResultM {
+                    if checkUserPwd user password then
+                        do! ctx.UserSession.LoginUser user
+                } (**)|> printResult "loginUser"
+        
+            [< Rpc >]
+            let logoutUser ()  : AsyncResultM<unit, string> = 
+                let ctx = Web.Remoting.GetContext()
+                asyncResultM {
+                    do! ctx.UserSession.Logout()
+                } (**)|> printResult "logoutUser"
+        
+            [< Rpc >]
+            let leerDataModelo() : AsyncResultM<Modelo, string> = 
+                let  ctx  = Web.Remoting.GetContext()
+                asyncResultM {
+                    let! userO = ctx.UserSession.GetLoggedInUser()
+                    match userO with
+                    | None      ->  do! Error(ErrorMsg "User not logged in.")
+                                    return Sample.modelo
+                    | Some user ->
+                    let aliados = Sample.modelo |> Aliado.actualizarAliados
+                    let buscar = Aliado.busqueda aliados
+                    if user = "admin" then return { Sample.modelo with aliados = aliados } else
+                    let al = aliados |> Seq.find (userIsAliado user)
+                    let subAliados = (if al.tipo = Master then buscar.descendientes else buscar.hijos) al
+                    return { Sample.modelo with aliados = Array.append [| al |] subAliados }
+                }
+        
+            [< JavaScript >]
+            let iterA arm = AsyncResultM.iterA (ResultMessage.summarized >> JS.Alert) id arm
         module MainProgram =
             open Templating
         

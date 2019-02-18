@@ -247,7 +247,11 @@ namespace FsRoot
                     let insertR (vSR:Result<_,_>) = vSR |> function | Error m -> rtn (Error m) | Ok v -> Seq.map Ok v
                     let absorbO  vOS              = vOS |> Seq.choose id
                     let absorbR  vOS              = vOS |> Seq.choose (function Ok v -> Some v |_-> None)
-                    
+                    let ofOption vO = 
+                        match vO with
+                        | Some v -> Seq.singleton v
+                        | None   -> Seq.empty
+                
                 /// Extensions to Async
                 module Async =
                     let [< Inline >] inline rtn   v    = async.Return v
@@ -644,7 +648,10 @@ namespace FsRoot
             open WebSharper.UI.Html
         
             [   "http://localhost:9005"
+                "http://FSharpstation.hopto.org:9009"
                 "https://login.bws.birst.com"
+                "http://*"
+                "https://*"
             ] |> WebSharper.Web.Remoting.SetAllowedOrigins
         
             type Data = { Usuario: string ;  Password:string }
