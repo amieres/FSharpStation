@@ -1100,8 +1100,9 @@ namespace FsRoot
                         table  [] [
                             yield! results |> Seq.mapi (fun i (name, r) -> 
                                 tr [] [
-                                    td [] [ text <| string (i + 1)                                       ]
+                                    td [] [ text <| sprintf "%d.- " (i + 1)                                       ]
                                     td [] [ text name                                                    ]
+                                    td [] [ text ":"                                                     ]
                                     td [] [ text <| match r with Ok b -> string b | Error e -> e.Message ]
                                 ]
                             )

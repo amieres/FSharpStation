@@ -607,15 +607,19 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    var c;
    c=a$1[1];
    return c.$==0?c.$0?1:0:0;
-  },results)))(Seq.length(results)))]),Doc.Element("ol",[],List.ofSeq(Seq.delay(function()
+  },results)))(Seq.length(results)))]),Doc.Element("table",[],List.ofSeq(Seq.delay(function()
   {
-   function m$1(name,r)
+   return Seq.mapi(function(i,t)
    {
-    return Doc.Element("li",[],[Doc.Element("span",[],[Doc.TextNode(name),Doc.TextNode(": "),Doc.TextNode(r.$==1?r.$0.message:Global.String(r.$0))])]);
-   }
-   return Seq.map(function($1)
-   {
-    return m$1($1[0],$1[1]);
+    var r;
+    r=t[1];
+    return Doc.Element("tr",[],[Doc.Element("td",[],[Doc.TextNode((function($1)
+    {
+     return function($2)
+     {
+      return $1(Global.String($2)+".- ");
+     };
+    }(Global.id))(i+1))]),Doc.Element("td",[],[Doc.TextNode(t[0])]),Doc.Element("td",[],[Doc.TextNode(":")]),Doc.Element("td",[],[Doc.TextNode(r.$==1?r.$0.message:Global.String(r.$0))])]);
    },results);
   })))]);
   a=self.document.body;
@@ -1194,6 +1198,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
   };
  };
+ Seq.mapi=function(f,s)
+ {
+  return Seq.map2(f,Seq.initInfinite(Global.id),s);
+ };
  Seq.fold=function(f,x,s)
  {
   var r,e;
@@ -1210,6 +1218,39 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    if(typeof e=="object"&&"Dispose"in e)
     e.Dispose();
   }
+ };
+ Seq.map2=function(f,s1,s2)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    var e1,e2;
+    e1=Enumerator.Get(s1);
+    e2=Enumerator.Get(s2);
+    return new T.New(null,null,function(e)
+    {
+     return e1.MoveNext()&&e2.MoveNext()&&(e.c=f(e1.Current(),e2.Current()),true);
+    },function()
+    {
+     e1.Dispose();
+     e2.Dispose();
+    });
+   }
+  };
+ };
+ Seq.initInfinite=function(f)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    return new T.New(0,null,function(e)
+    {
+     e.c=f(e.s);
+     e.s=e.s+1;
+     return true;
+    },void 0);
+   }
+  };
  };
  Seq.tryFind=function(ok,s)
  {

@@ -3117,15 +3117,19 @@
    var c;
    c=a$1[1];
    return c.$==0?c.$0?1:0:0;
-  },results)))(Seq$1.length(results)))]),Doc.Element("ol",[],List.ofSeq(Seq$1.delay(function()
+  },results)))(Seq$1.length(results)))]),Doc.Element("table",[],List.ofSeq(Seq$1.delay(function()
   {
-   function m$1(name,r)
+   return Seq$1.mapi(function(i,t)
    {
-    return Doc.Element("li",[],[Doc.Element("span",[],[Doc.TextNode(name),Doc.TextNode(": "),Doc.TextNode(r.$==1?r.$0.message:Global.String(r.$0))])]);
-   }
-   return Seq$1.map(function($1)
-   {
-    return m$1($1[0],$1[1]);
+    var r;
+    r=t[1];
+    return Doc.Element("tr",[],[Doc.Element("td",[],[Doc.TextNode((function($1)
+    {
+     return function($2)
+     {
+      return $1(Global.String($2)+".- ");
+     };
+    }(Global.id))(i+1))]),Doc.Element("td",[],[Doc.TextNode(t[0])]),Doc.Element("td",[],[Doc.TextNode(":")]),Doc.Element("td",[],[Doc.TextNode(r.$==1?r.$0.message:Global.String(r.$0))])]);
    },results);
   })))]);
   a=self.document.body;
