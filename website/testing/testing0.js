@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,WebSharper,Obj,Result,Builder,Operators,FusionM,Operators$1,Builder$1,Builder$2,String,ParseO,Serializer,JsonIntermediate,FsCodeModule,PreproDirective,SnippetId,Snippet,SnippetCollection,SnippetModule,LibraryJS,Serializer$1,TestingJS,Serializer$2,Model,SC$1,testing_GeneratedPrintf,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Enumerator,Result$1,Operators$2,Unchecked,Slice,Collections,FSharpMap,FSharpSet,BalancedTree,Option$1,System,Guid,console,JSON,UI,Var$1,Doc,Client,Templates,DateUtil,Numeric,ClientSideJson,Provider;
+ var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,WebSharper,Obj,Result,Builder,Operators,FusionM,Operators$1,Builder$1,Builder$2,String,ParseO,Serializer,JsonIntermediate,FsCodeModule,PreproDirective,SnippetId,Snippet,SnippetCollection,SnippetModule,LibraryJS,Serializer$1,TestingJS,Serializer$2,Model,SC$1,testing_GeneratedPrintf,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Enumerator,Result$1,Operators$2,Unchecked,Slice,Collections,FSharpMap,FSharpSet,BalancedTree,Option$1,System,Guid,console,JSON,UI,Var$1,Doc,Client,Templates,DateUtil,Numeric;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -64,8 +64,6 @@
  Templates=Client&&Client.Templates;
  DateUtil=WebSharper&&WebSharper.DateUtil;
  Numeric=WebSharper&&WebSharper.Numeric;
- ClientSideJson=WebSharper&&WebSharper.ClientSideJson;
- Provider=ClientSideJson&&ClientSideJson.Provider;
  ResultMessage=Library.ResultMessage=Runtime.Class({
   toString:function()
   {
@@ -1849,11 +1847,6 @@
   SC$1.$cctor();
   return SC$1.serBool;
  };
- Serializer.serString=function()
- {
-  SC$1.$cctor();
-  return SC$1.serString;
- };
  Serializer.serInt=function()
  {
   SC$1.$cctor();
@@ -1863,6 +1856,36 @@
  {
   SC$1.$cctor();
   return SC$1.serFloat;
+ };
+ Serializer.serString=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serString;
+ };
+ Serializer.toJsonString=function(v)
+ {
+  return Arrays.ofSeq(Seq$1.delay(function()
+  {
+   return Seq$1.append(["\""],Seq$1.delay(function()
+   {
+    return Seq$1.append(!Strings.IsNullOrEmpty(v)?Seq$1.collect(function(i)
+    {
+     var c,ci;
+     c=v[i];
+     ci=c.charCodeAt();
+     return ci>=0&&ci<=7||ci===11||ci>=14&&ci<=31?(function($1)
+     {
+      return function($2)
+      {
+       return $1("\\u"+Utils.padNumLeft($2.toString(16),4));
+      };
+     }(Global.id))(ci):c==="\u0008"?"\\b":c==="\u0009"?"\\t":c==="\n"?"\\n":c==="\u000c"?"\\f":c==="\r"?"\\r":c==="\""?"\\\"":c==="\\"?"\\\\":[c];
+    },Operators$2.range(0,v.length-1)):[],Seq$1.delay(function()
+    {
+     return["\""];
+    }));
+   }));
+  })).join("");
  };
  Serializer.sprintA=function(v)
  {
@@ -1875,6 +1898,10 @@
     return $1("["+Utils.toSafe($2)+"]");
    };
   }(Global.id))(x);
+ };
+ Serializer.Field=function(field,j)
+ {
+  return j.tryField(field);
  };
  Serializer.serialize=function(s,s$1,v)
  {
@@ -2820,16 +2847,6 @@
  };
  Serializer$1.deserializeWithFail=function(s,s$1)
  {
-  function d(j,f)
-  {
-   return(function($1)
-   {
-    return function($2)
-    {
-     return $1("field not found: "+Utils.toSafe($2));
-    };
-   }(Operators$2.FailWith))(f);
-  }
   return Serializer$1.deserialize(function()
   {
    return Operators$2.FailWith("Error expecting float");
@@ -2845,20 +2862,10 @@
   },function()
   {
    return Operators$2.FailWith("Error expecting array");
-  },function($1)
-  {
-   return function($2)
-   {
-    return d($1,$2);
-   };
   },s,s$1);
  };
  Serializer$1.deserializeWithDefs=function(s,s$1)
  {
-  function d(j,a)
-  {
-   return null;
-  }
   return Serializer$1.deserialize(function()
   {
    return{
@@ -2889,20 +2896,10 @@
     $:1,
     $0:[]
    };
-  },function($1)
-  {
-   return function($2)
-   {
-    return d($1,$2);
-   };
   },s,s$1);
  };
  Serializer$1.tryDeserialize=function(s,s$1)
  {
-  function d(a,a$1)
-  {
-   return null;
-  }
   return Serializer$1.deserialize(function()
   {
    return null;
@@ -2918,15 +2915,9 @@
   },function()
   {
    return null;
-  },function($1)
-  {
-   return function($2)
-   {
-    return d($1,$2);
-   };
   },s,s$1);
  };
- Serializer$1.deserialize=function(df,di,ds,db,da,dFl,s,s$1)
+ Serializer$1.deserialize=function(df,di,ds,db,da,s,s$1)
  {
   var f,g;
   function f$1(a)
@@ -2935,7 +2926,7 @@
   }
   function g$1(o)
   {
-   return Serializer$1.getJsonIntermediate(df,di,ds,db,da,dFl,o);
+   return Serializer$1.getJsonIntermediate(df,di,ds,db,da,o);
   }
   f=function(x)
   {
@@ -2947,11 +2938,11 @@
    return g(f(x));
   };
  };
- Serializer$1.getJsonIntermediate=function(df,di,ds,db,da,dFl,o)
+ Serializer$1.getJsonIntermediate=function(df,di,ds,db,da,o)
  {
   function jsonInt(o$1)
   {
-   return Serializer$1.getJsonIntermediate(df,di,ds,db,da,dFl,o$1);
+   return Serializer$1.getJsonIntermediate(df,di,ds,db,da,o$1);
   }
   return JsonIntermediate.New(function()
   {
@@ -2995,15 +2986,14 @@
    return o$1==null?da(jsonInt):o$1;
   },function(fl)
   {
-   var o$1,m;
-   o$1=!o?null:(m=o[fl],Unchecked.Equals(m,null)?{
+   var m;
+   return!o?null:(m=o[fl],Unchecked.Equals(m,null)?{
     $:1,
     $0:jsonInt(null)
    }:!m?null:{
     $:1,
     $0:jsonInt(m)
    });
-   return o$1==null?(dFl(jsonInt))(fl):o$1;
   },function()
   {
    return Unchecked.Equals(typeof o,"object")&&!Unchecked.Equals(o,null);
@@ -3109,7 +3099,7 @@
   {
    return m($1[0],$1[1]);
   },Serializer$2.testCases());
-  x=Doc.Element("div",[],[Doc.Element("h3",[],[Doc.TextNode("Test Cases")]),Doc.Element("h4",[],[Doc.TextNode((((Runtime.Curried3(function($1,$2,$3)
+  x=Doc.Element("div",[],[Doc.Element("h1",[],[Doc.TextNode("Serializer")]),Doc.Element("h3",[],[Doc.TextNode("Test Cases")]),Doc.Element("h4",[],[Doc.TextNode((((Runtime.Curried3(function($1,$2,$3)
   {
    return $1("Passed: "+Global.String($2)+"/"+Global.String($3));
   }))(Global.id))(Seq$1.sumBy(function(a$1)
@@ -3165,7 +3155,7 @@
  };
  Serializer$2.jsonBad=function()
  {
-  return Strings.Replace(Serializer$2.json(),"snpGeneration","snpGenerationX");
+  return Strings.Replace(Serializer$2.json(),"\"snpGeneration\": 2","\"snpGeneration\":\"2\"");
  };
  Serializer$2.json=function()
  {
@@ -3226,7 +3216,7 @@
  };
  SC$1.$cctor=function()
  {
-  var f,generation,$1,i,i$1,i$2,s,sQ,x,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,t$9,i$3,i$4,x$1,t$10,t$11,t$12,t$13,t$14,i$5,t$15,a,a$1,t$16,a$2,a$3;
+  var f,generation,$1,i,i$1,i$2,s,sQ,f$2,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,t$9,init,x,t$10,t$11,t$12,t$13,t$14,i$3,t$15,a,a$1,t$16,a$2,a$3;
   SC$1.$cctor=Global.ignore;
   SC$1.rtn=function(v)
   {
@@ -3239,9 +3229,9 @@
   {
    return Strings.concat("\n",s$1);
   }
-  SC$1.unindentStr=function(x$2)
+  SC$1.unindentStr=function(x$1)
   {
-   return g(String.unindent(x$2));
+   return g(String.unindent(x$1));
   };
   function f$1(s$1)
   {
@@ -3262,12 +3252,12 @@
   {
    return Strings.concat("\n",s$1);
   }
-  SC$1.skipLastLine=(f=function(x$2)
+  SC$1.skipLastLine=(f=function(x$1)
   {
-   return g$1(f$1(x$2));
-  },function(x$2)
+   return g$1(f$1(x$1));
+  },function(x$1)
   {
-   return g$2(f(x$2));
+   return g$2(f(x$1));
   });
   SC$1.parseDateO=ParseO.tryParseWith(function(a$4)
   {
@@ -3322,6 +3312,10 @@
   SC$1["|Single|_|"]=ParseO.parseSingleO();
   SC$1["|Double|_|"]=ParseO.parseDoubleO();
   SC$1["|Guid|_|"]=ParseO.parseGuidO();
+  SC$1.serString=[Serializer.toJsonString,function(j)
+  {
+   return j.tryString();
+  }];
   SC$1.serFloat=[function(v)
   {
    return(function($2)
@@ -3347,13 +3341,6 @@
   },function(j)
   {
    return j.tryInt();
-  }];
-  SC$1.serString=[function(a$4)
-  {
-   return JSON.stringify(((Provider.Id())())(a$4));
-  },function(j)
-  {
-   return j.tryString();
   }];
   SC$1.serBool=[function(v)
   {
@@ -3424,22 +3411,22 @@
    };
   }(Global.id))(s),[function(gid)
   {
-   var x$2;
-   x$2=Global.String(get(gid));
+   var x$1;
+   x$1=Global.String(get(gid));
    return(((Runtime.Curried3(function($2,$3,$4)
    {
     return $2("{"+Strings.PadLeft(Utils.toSafe($3),10)+" :"+Utils.prettyPrint($4)+"}");
-   }))(Global.id))(sQ))(x$2);
+   }))(Global.id))(sQ))(x$1);
   },function(j)
   {
-   var o,o$1,o$2,f$2;
-   o=(o$1=(o$2=j.tryField(s),o$2==null?null:o$2.$0.tryString()),(f$2=ParseO.parseGuidO(),o$1==null?null:f$2(o$1.$0)));
+   var o,o$1,o$2,f$3;
+   o=(o$1=(o$2=j.tryField(s),o$2==null?null:o$2.$0.tryString()),(f$3=ParseO.parseGuidO(),o$1==null?null:f$3(o$1.$0)));
    return o==null?null:{
     $:1,
     $0:set(o.$0)
    };
   }]));
-  SC$1.serSnippet=(x=[(t=Serializer$2.serSnippetId(),Serializer.serField("snpId",function(s$1)
+  SC$1.serSnippet=(f$2=[(t=Serializer$2.serSnippetId(),Serializer.serField("snpId",function(s$1)
   {
    return s$1.snpId;
   },function(v,s$1)
@@ -3481,9 +3468,9 @@
   },function(v,s$1)
   {
    return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,v);
-  },t$9[0],t$9[1]))],(i$3=(i$4=SnippetModule.New("","",null),Snippet.New(i$4.snpId,i$4.snpName,i$4.snpContent,i$4.snpParentIdO,i$4.snpPredIds,i$4.snpProperties,-1)),[function(dim)
+  },t$9[0],t$9[1]))],(init=null,(init==null?Operators$2.FailWith("Initial record is null"):void 0,[function(dim)
   {
-   var x$2;
+   var x$1;
    function m(n,ser,_deser)
    {
     return(((Runtime.Curried3(function($2,$3,$4)
@@ -3491,30 +3478,30 @@
      return $2(Utils.prettyPrint($3)+": "+Utils.toSafe($4));
     }))(Global.id))(n))(ser(dim));
    }
-   x$2=Strings.concat(", ",Seq$1.map(function($2)
+   x$1=Strings.concat(", ",Seq$1.map(function($2)
    {
     return m($2[0],$2[1],$2[2]);
-   },x));
+   },f$2));
    return(function($2)
    {
     return function($3)
     {
      return $2("{"+Utils.toSafe($3)+"}");
     };
-   }(Global.id))(x$2);
+   }(Global.id))(x$1);
   },function(j)
   {
    return{
     $:1,
     $0:Seq$1.fold(function(dim,t$17)
     {
-     var x$2,x$3,b;
-     x$2=(x$3=j.tryField(t$17[0]),(b=t$17[2](dim),x$3==null?null:b(x$3.$0)));
-     return x$2==null?dim:x$2.$0;
-    },i$3,x)
+     var x$1,x$2,b;
+     x$1=(x$2=j.tryField(t$17[0]),(b=t$17[2](dim),x$2==null?null:b(x$2.$0)));
+     return x$1==null?dim:x$1.$0;
+    },init,f$2)
    };
-  }]));
-  SC$1.serModel=(x$1=[(t$10=(t$11=Serializer$2.serSnippet(),Serializer.serArr(t$11[0],t$11[1])),Serializer.serField("snippets",function(m)
+  }])));
+  SC$1.serModel=(x=[(t$10=(t$11=Serializer$2.serSnippet(),Serializer.serArr(t$11[0],t$11[1])),Serializer.serField("snippets",function(m)
   {
    return m.snippets;
   },function(v,m)
@@ -3532,9 +3519,9 @@
   },function(v,m)
   {
    return Model.New(m.snippets,m.generation,v);
-  },t$13[0],t$13[1]))],(i$5=Model.New([],0,new FSharpSet.New$1(null)),[function(dim)
+  },t$13[0],t$13[1]))],(i$3=Model.New([],0,new FSharpSet.New$1(null)),(i$3==null?Operators$2.FailWith("Initial record is null"):void 0,[function(dim)
   {
-   var x$2;
+   var x$1;
    function m(n,ser,_deser)
    {
     return(((Runtime.Curried3(function($2,$3,$4)
@@ -3542,29 +3529,29 @@
      return $2(Utils.prettyPrint($3)+": "+Utils.toSafe($4));
     }))(Global.id))(n))(ser(dim));
    }
-   x$2=Strings.concat(", ",Seq$1.map(function($2)
+   x$1=Strings.concat(", ",Seq$1.map(function($2)
    {
     return m($2[0],$2[1],$2[2]);
-   },x$1));
+   },x));
    return(function($2)
    {
     return function($3)
     {
      return $2("{"+Utils.toSafe($3)+"}");
     };
-   }(Global.id))(x$2);
+   }(Global.id))(x$1);
   },function(j)
   {
    return{
     $:1,
     $0:Seq$1.fold(function(dim,t$17)
     {
-     var x$2,x$3,b;
-     x$2=(x$3=j.tryField(t$17[0]),(b=t$17[2](dim),x$3==null?null:b(x$3.$0)));
-     return x$2==null?dim:x$2.$0;
-    },i$5,x$1)
+     var x$1,x$2,b;
+     x$1=(x$2=j.tryField(t$17[0]),(b=t$17[2](dim),x$2==null?null:b(x$2.$0)));
+     return x$1==null?dim:x$1.$0;
+    },i$3,x)
    };
-  }]));
+  }])));
   SC$1.model=Serializer$2.getModel(Serializer$2.snps(),33,new FSharpSet.New(List.ofArray([Serializer$2.snippet1().snpId,Serializer$2.snippet2().snpId])));
   SC$1.dupOptFloatOptString1=(t$15=Serializer.serDup(Serializer.serOpt((Serializer.serFloat())[0],(Serializer.serFloat())[1]),Serializer.serOpt((Serializer.serString())[0],(Serializer.serString())[1])),(a=t$15[0],(a$1=t$15[1],function(v)
   {
@@ -3637,7 +3624,7 @@
     $:1,
     $0:Model.New(Arrays.map(function(s$1)
     {
-     return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,-1);
+     return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpGeneration===2?0:s$1.snpGeneration);
     },Serializer$2.model().snippets),Serializer$2.model().generation,Serializer$2.model().collapsed)
    });
   }],["jsonAndBackFail",function()
@@ -3647,9 +3634,9 @@
    }
    try
    {
-    (function(x$2)
+    (function(x$1)
     {
-     return g$3(Serializer$2.ofJsonFail(x$2));
+     return g$3(Serializer$2.ofJsonFail(x$1));
     }());
     return false;
    }

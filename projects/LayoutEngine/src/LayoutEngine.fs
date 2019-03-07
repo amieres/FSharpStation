@@ -1,4 +1,4 @@
-////-d:FSharpStation1548386943976 -d:WEBSHARPER
+////-d:FSharpStation1551060122175 -d:WEBSHARPER
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
@@ -17,7 +17,7 @@
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 /// Root namespace for all code
-//#define FSharpStation1548386943976
+//#define FSharpStation1551060122175
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -175,7 +175,9 @@ namespace FsRoot
                     elif from <  0           then this.Substring2(0, n + from)
                     elif from >= this.Length then ""
                     else this.Substring(from, min n (this.Length - from))
-                member this.Left             n  = this.Substring2(0, n)
+                member this.Left             n  = if n < 0 
+                                                  then this.Substring2(0, this.Length + n)
+                                                  else this.Substring2(0, n              )
                 member this.Right            n  = this.Substring2(max 0 (this.Length - n), this.Length)
             
             module String =
@@ -1156,9 +1158,9 @@ namespace FsRoot
                             |> Seq.filter(fun (i, _) -> i % 2 = 0)
                             |> Seq.map  snd
                             |> Seq.map( function
-                                | (nm, _), Identifier id -> AF    .tryGetDoc lytNm id |> Option.map (fun doc -> TemplateHole.Elt(   nm, getDocF [] doc |> fst) )
+                                | (nm, _), Identifier id -> splitName     lytNm id ||> AF.tryGetDoc |> Option.map (fun doc -> TemplateHole.Elt(   nm, getDocF [] doc |> fst) )
                                                             |> Option.orElseWith (fun () ->
-                                                                AF.tryGetVar lytNm id |> Option.map (fun var -> TemplateHole.VarStr(nm, var.varVar) )
+                                                                splitName lytNm id ||> AF.tryGetVar |> Option.map (fun var -> TemplateHole.VarStr(nm, var.varVar) )
                                                             )
                                                             |> Option.defaultWith(fun () -> TemplateHole.Elt(nm, sprintf "Missing element: %s" id |> errDoc) )
                                 | (nm, _), (txt, _)      -> match getTextData lytNm txt with

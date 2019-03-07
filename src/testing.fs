@@ -560,15 +560,38 @@ namespace FsRoot
                 type Ser< 'T> = SerS<'T> * SerD<'T>                      // both Serialization functions
             
                 let serialize (ser: Ser<_>) v = fst ser v
+                let (|Field|_|) field j = j.tryField field
             
                 let [< Inline >] inline sprintU v = sprintf "%A"       v
                 let [< Inline >] inline sprintQ v = sprintf "\"%A\""   v
                 let              inline sprintA v = String.concat ", " v |> sprintf "[%s]"
-                
-                let serFloat  : Ser<float > = sprintU        , (fun j -> j.tryFloat () )
-                let serInt    : Ser<int   > = sprintU        , (fun j -> j.tryInt   () )
-                let serString : Ser<string> = Json.Serialize , (fun j -> j.tryString() )
-                let serBool   : Ser<bool  > = sprintU        , (fun j -> j.tryBool  () )
+            
+                let toJsonString (v:string) =
+                    seq {
+                        yield '"'
+                        if String.IsNullOrEmpty v |> not then
+                            for i = 0 to v.Length - 1 do
+                                let c = v.[i]
+                                let ci = int c
+                                if ci >= 0 && ci <= 7 || ci = 11 || ci >= 14 && ci <= 31 then
+                                    yield! sprintf "\\u%04x" ci
+                                else 
+                                match c with
+                                | '\b' -> yield! "\\b"
+                                | '\t' -> yield! "\\t"
+                                | '\n' -> yield! "\\n"
+                                | '\f' -> yield! "\\f"
+                                | '\r' -> yield! "\\r"
+                                | '"'  -> yield! "\\\""
+                                | '\\' -> yield! "\\\\"
+                                | _    -> yield c
+                        yield '"'
+                    } |> Seq.toArray|> String
+            
+                let serString : Ser<string> = toJsonString , (fun j -> j.tryString() )
+                let serFloat  : Ser<float > = sprintU      , (fun j -> j.tryFloat () )
+                let serInt    : Ser<int   > = sprintU      , (fun j -> j.tryInt   () )
+                let serBool   : Ser<bool  > = sprintU      , (fun j -> j.tryBool  () )
             
                 let [< Inline >] inline serId  (get: 'a -> System.Guid) (set:System.Guid -> 'a) (print: 'a->string) : Ser<'a> =
                     let s               = System.Guid.Empty |> set |> print |> fun (s:string) -> s.Split ' ' |> Array.head
@@ -584,6 +607,7 @@ namespace FsRoot
                     serFuncs |> fun (ser, deser) -> name, get >> ser, (fun rc j -> deser j |> Option.map (fun v -> set v rc) ) 
                     
                 let [< Inline >] serRecord init (fields: #seq<(string * SerS<'D> * ('D -> SerD<'D>))>) : Ser<'D> =
+                    if isNull (init :> obj) then failwith "Initial record is null"
                     let serialize   dim = fields |> Seq.map  (fun     (n,  ser, _deser) -> sprintf "%A: %s" n (ser dim)) |> String.concat ", " |> sprintf "{%s}"
                     let deserialize j   = fields |> Seq.fold (fun dim (n, _ser,  deser) -> j.tryField n |> Option.bind (deser dim) |> Option.defaultValue dim)   init |> Some
                     serialize, deserialize
@@ -598,14 +622,15 @@ namespace FsRoot
                                                                                                                                                 | Some [| j1 ; j2 |] -> match snd serFst j1, snd serSnd j2 with
                                                                                                                                                                         | Some f, Some s -> Some(f, s) |_->None
                                                                                                                                                 | _ -> None )
-                let serTrp(sF,sS,sT)      : Ser<'a *'b* 'c > = (fun (f,s,t) -> sprintf "[%s, %s, %s]" (fst sF f) (fst sS s)  (fst sT t)) , (fun j -> j.tryArray () 
+                let serTrp(sF,sS,sT)      : Ser<'a *'b*'c > = (fun (f,s,t) -> sprintf "[%s, %s, %s]" (fst sF f) (fst sS s)  (fst sT t)) , (fun j -> j.tryArray () 
                                                                                                                                                     |> function 
-                                                                                                                                                        | Some [| j1 ;j2; j3|]  -> match snd sF j1, snd sS j2, snd sT j3 with
+                                                                                                                                                        | Some [| j1 ;j2; j3|]   -> match snd sF j1, snd sS j2, snd sT j3 with
                                                                                                                                                                                     | Some f, Some s, Some t -> Some(f, s, t) |_-> None
                                                                                                                                                         | _ -> None ) 
                 let serMap serKey serElm : Ser<Map<'k, 'e>> =   serDup(serKey, serElm)
                                                                 |> serSeq 
                                                                 |> (fun serKVPs -> (Seq.map (fun kvp -> kvp.Key, kvp.Value) >> fst serKVPs) , (snd serKVPs >> Option.map Map) )
+            
             
             type FsCode = FsCode of string
             
@@ -964,23 +989,23 @@ namespace FsRoot
                   , lmd >> (fun lm -> lm.Value) >> fst serS
                   , (fun rc b -> snd serS b |>! Option.iter (lmd rc).Set |> Option.map (fun _ -> rc) )
             
-                let rec getJsonIntermediate df di ds db da dFl (o:obj) : JsonIntermediate =
-                    let jsonInt = getJsonIntermediate df di ds db da (dFl: (obj -> JsonIntermediate) -> string -> JsonIntermediate option)
+                let rec getJsonIntermediate df di ds db da (o:obj) : JsonIntermediate =
+                    let jsonInt = getJsonIntermediate df di ds db da 
                     {
                         tryFloat    = fun () -> (if isUndefined o then None else match o with | :? float   as v -> Some v                      |_-> None) |> Option.orElseWith df
                         tryInt      = fun () -> (if isUndefined o then None else match o with | :? int     as v -> Some v                      |_-> None) |> Option.orElseWith di
                         tryString   = fun () -> (if isUndefined o then None else match o with | :? string  as v -> Some v                      |_-> None) |> Option.orElseWith ds
                         tryBool     = fun () -> (if isUndefined o then None else match o with | :? bool    as v -> Some v                      |_-> None) |> Option.orElseWith db
                         tryArray    = fun () -> (if isUndefined o then None else match o with | :? System.Array as a -> Array.map jsonInt (unbox o) |> Some |_-> None) |> Option.orElseWith (fun () -> da  jsonInt   )
-                        tryField    = fun fl -> (if isUndefined o then None else match o?(fl) with null -> Some(jsonInt null) | f when isUndefined f -> None | v -> Some(jsonInt v) ) |> Option.orElseWith (fun () -> dFl jsonInt fl)
+                        tryField    = fun fl -> (if isUndefined o then None else match o?(fl) with null -> Some(jsonInt null) | f when isUndefined f -> None | v -> Some(jsonInt v) )
                         isObject    = fun () -> JS.TypeOf o = JS.Kind.Object && o <> null 
                         isNull      = fun () -> o = null 
                     }
             
             
-                let deserialize df di ds db da dFl (ser: Serializer.Ser<_>) = 
+                let deserialize df di ds db da (ser: Serializer.Ser<_>) = 
                     Json.Parse
-                    >> getJsonIntermediate df di ds db da dFl
+                    >> getJsonIntermediate df di ds db da
                     >> snd ser
             
                 let tryDeserialize ser = 
@@ -990,7 +1015,6 @@ namespace FsRoot
                         (fun _   -> None)
                         (fun _   -> None)
                         (fun _   -> None)
-                        (fun _ _ -> None)
                         ser
             
                 let deserializeWithDefs ser = 
@@ -1000,7 +1024,6 @@ namespace FsRoot
                         (fun _   -> Some ""                )
                         (fun _   -> Some false             )
                         (fun _   -> Some [||]              )
-                        (fun j _ -> None                   )
                         ser
             
                 let deserializeWithFail ser = 
@@ -1010,7 +1033,6 @@ namespace FsRoot
                         (fun _   -> failwith  "Error expecting string"   )
                         (fun _   -> failwith  "Error expecting bool"     )
                         (fun _   -> failwith  "Error expecting array"    )
-                        (fun j f -> failwithf "field not found: %s"    f )
                         ser
             
             
@@ -1044,7 +1066,7 @@ namespace FsRoot
                         serSnippetId                     |> serSet           |> serField "snpPredIds"    (fun s -> s.snpPredIds   ) (fun v s -> { s with snpPredIds    = v } )
                         serDup(serString, serString)     |> serArr           |> serField "snpProperties" (fun s -> s.snpProperties) (fun v s -> { s with snpProperties = v } )
                         serInt                                               |> serField "snpGeneration" (fun s -> s.snpGeneration) (fun v s -> { s with snpGeneration = v } )
-                    |] |> serRecord { Snippet.New "" "" None with snpGeneration = -1 }
+                    |] |> serRecord Unchecked.defaultof<_> //{ Snippet.New "" "" None with snpGeneration = -1 }
                 
                 type Model = {
                     snippets   : Snippet []
@@ -1066,7 +1088,7 @@ namespace FsRoot
                 let roundTrip des ser v = serialize ser v |> des ser
             
                 let json        () = model     |> serialize serModel
-                let jsonBad     () = json   () |> (fun s -> s.Replace("snpGeneration", "snpGenerationX") )
+                let jsonBad     () = json   () |> (fun s -> s.Replace("\"snpGeneration\": 2", "\"snpGeneration\":\"2\"") )
                 let ofJsonDefs  () = jsonBad() |> deserializeWithDefs serModel
                 let ofJsonFail  () = jsonBad() |> deserializeWithFail serModel
                 let dupOptFloatOptString1 = roundTrip tryDeserialize      (serDup (serOpt serFloat, serOpt serString)) 
@@ -1079,7 +1101,7 @@ namespace FsRoot
                     "roundTripFail"         , fun()-> roundTrip deserializeWithFail serModel model = Some model
                     "(float opt, str opt)1" , fun()-> dupOptFloatOptString1 (Some 67.4, None     ) = Some (Some 67.4, None)
                     "(int      , str opt)2" , fun()-> dupFloatOptString2    (     67  , Some "67") = Some (     67  , Some "67")
-                    "jsonAndBackDefs"       , fun()-> ofJsonDefs  () = Some { model with snippets = model.snippets |> Array.map (fun s -> { s with snpGeneration = -1 }) }
+                    "jsonAndBackDefs"       , fun()-> ofJsonDefs  () = Some { model with snippets       = model.snippets |> Array.map (fun s -> { s with snpGeneration = if s.snpGeneration = 2 then 0 else s.snpGeneration }) }
                     "jsonAndBackFail"       , fun()-> try  (ofJsonFail >> ignore)() ; false
                                                         with e -> true
                     ]
@@ -1093,6 +1115,7 @@ namespace FsRoot
                         testCases
                         |> Seq.map (fun (name, f) -> name, try f() |> Ok with e -> printfn "%A" e ; Error e)
                     div [] [
+                        h1  [] [ text "Serializer" ]
                         h3  [] [ text "Test Cases" ]
                         h4 [] [
                             text <| sprintf "Passed: %d/%d" (Seq.sumBy (function _, Ok true -> 1 |_-> 0 ) results) (Seq.length results)
@@ -1100,7 +1123,7 @@ namespace FsRoot
                         table  [] [
                             yield! results |> Seq.mapi (fun i (name, r) -> 
                                 tr [] [
-                                    td [] [ text <| sprintf "%d.- " (i + 1)                                       ]
+                                    td [] [ text <| sprintf "%d.- " (i + 1)                              ]
                                     td [] [ text name                                                    ]
                                     td [] [ text ":"                                                     ]
                                     td [] [ text <| match r with Ok b -> string b | Error e -> e.Message ]

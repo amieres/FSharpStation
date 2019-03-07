@@ -265,7 +265,7 @@
  };
  Library["String.Left"]=function(_this,n)
  {
-  return Library["String.Substring2"](_this,0,n);
+  return n<0?Library["String.Substring2"](_this,0,_this.length+n):Library["String.Substring2"](_this,0,n);
  };
  Library["String.Substring2"]=function(_this,from,n)
  {
@@ -401,15 +401,15 @@
  {
   return Hoverable$1.New$1().Content(Doc.Element("div",[AttrProxy.Create("style","flex-flow: column;")],[Doc.TextNode("Hover over me!")]));
  };
- Hoverable$1.Content$282$81=Runtime.Curried3(function(e,$1,$2)
+ Hoverable$1.Content$284$81=Runtime.Curried3(function(e,$1,$2)
  {
   return DomUtility.RemoveClass(e.elt,"hovering");
  });
- Hoverable$1.get_Attributes$278$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$280$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(false);
  });
- Hoverable$1.get_Attributes$277$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$279$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(true);
  });
@@ -551,7 +551,7 @@
   SC$1.$cctor();
   return SC$1.init;
  };
- WcTabStrip.tabStrip$424$64=function(i,selected)
+ WcTabStrip.tabStrip$426$64=function(i,selected)
  {
   return function()
   {
@@ -982,15 +982,15 @@
  {
   return PlugInVar.New(name,_var);
  };
- AppFramework.vertical$796$39=function(mouseDown)
+ AppFramework.vertical$798$39=function(mouseDown)
  {
   return function(te)
   {
    mouseDown(te.Event);
   };
  };
- AppFramework.vertical$795$39=Global.id;
- AppFramework.vertical$794$39=Global.id;
+ AppFramework.vertical$797$39=Global.id;
+ AppFramework.vertical$796$39=Global.id;
  AppFramework.vertical=function(partSizes,afterRender,afterRenderSp,mouseDown,gap)
  {
   var b,t,p,i;
@@ -1018,15 +1018,15 @@
    $1:gap
   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.wcompsplitterver(p[0])),(b.i=i,i)))).get_Doc();
  };
- AppFramework.horizontal$788$39=function(mouseDown)
+ AppFramework.horizontal$790$39=function(mouseDown)
  {
   return function(te)
   {
    mouseDown(te.Event);
   };
  };
- AppFramework.horizontal$787$39=Global.id;
- AppFramework.horizontal$786$39=Global.id;
+ AppFramework.horizontal$789$39=Global.id;
+ AppFramework.horizontal$788$39=Global.id;
  AppFramework.horizontal=function(partSizes,afterRender,afterRenderSp,mouseDown,gap)
  {
   var b,t,p,i;
@@ -1054,7 +1054,7 @@
    $1:gap
   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.wcompsplitterhor(p[0])),(b.i=i,i)))).get_Doc();
  };
- AppFramework.mainDoc$777$42=function()
+ AppFramework.mainDoc$779$42=function()
  {
   return function()
   {
@@ -1119,7 +1119,7 @@
   SC$1.$cctor();
   return SC$1.AppFwkClient;
  };
- AppFramework.renderQueries$743$39=function(qry)
+ AppFramework.renderQueries$745$39=function(qry)
  {
   return function()
   {
@@ -1161,14 +1161,14 @@
    },plg.plgQueries);
   },AppFramework.currentPlugInW()));
  };
- AppFramework.renderActions$732$51=function(act)
+ AppFramework.renderActions$734$51=function(act)
  {
   return function(ev)
   {
    AppFramework.callFunction(ev,null,act.actFunction);
   };
  };
- AppFramework.renderActions$728$51=function(act)
+ AppFramework.renderActions$730$51=function(act)
  {
   return function(ev)
   {
@@ -1247,7 +1247,7 @@
    else
     actF.$0();
  };
- AppFramework.renderDocs$706$39=function(doc)
+ AppFramework.renderDocs$708$39=function(doc)
  {
   return function()
   {
@@ -1391,7 +1391,7 @@
    },plg.plgVars);
   },AppFramework.currentPlugInW()));
  };
- AppFramework.renderPlugIns$668$35=function(name)
+ AppFramework.renderPlugIns$670$35=function(name)
  {
   return function()
   {
@@ -1768,11 +1768,11 @@
    };
   }(Global.id))(varName)):o.$0;
  };
- LayoutEngineModule.inputFile$1419$69=Runtime.Curried3(function(act,el,$1)
+ LayoutEngineModule.inputFile$1421$69=Runtime.Curried3(function(act,el,$1)
  {
   return AppFramework.callFunction(el,null,act.actFunction);
  });
- LayoutEngineModule.inputFile$1418$69=Runtime.Curried3(function($1,el,$2)
+ LayoutEngineModule.inputFile$1420$69=Runtime.Curried3(function($1,el,$2)
  {
   el.value="";
  });
@@ -2067,16 +2067,16 @@
    Templates.LoadLocalTemplates("local");
    function m($2,$3)
    {
-    var a,id,nm,o$1,o$2,o$3,o$4,nm$1,m$1,act;
+    var a,id,nm,o$1,o$2,o$3,t,o$4,t$1,nm$1,m$1,act;
     a=LayoutEngineModule.Identifier($3[0],$3[1]);
-    return a!=null&&a.$==1?(id=a.$0,nm=$2[0],o$1=(o$2=(o$3=AppFramework.tryGetDoc(lytNm,id),o$3==null?null:{
+    return a!=null&&a.$==1?(id=a.$0,nm=$2[0],o$1=(o$2=(o$3=(t=((LayoutEngineModule.splitName())(lytNm))(id),AppFramework.tryGetDoc(t[0],t[1])),o$3==null?null:{
      $:1,
      $0:{
       $:0,
       $0:nm,
       $1:(LayoutEngineModule.getDocF(List.T.Empty,o$3.$0))[0]
      }
-    }),o$2==null?(o$4=AppFramework.tryGetVar(lytNm,id),o$4==null?null:{
+    }),o$2==null?(o$4=(t$1=((LayoutEngineModule.splitName())(lytNm))(id),AppFramework.tryGetVar(t$1[0],t$1[1])),o$4==null?null:{
      $:1,
      $0:{
       $:8,

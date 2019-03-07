@@ -362,7 +362,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 (function()
 {
  "use strict";
- var Global,FsRoot,TestingJS,Serializer,Model,SC$1,Library,Snippet,WebSharper,Numeric,Obj,Collections,FSharpSet,SnippetId,Operators,Seq,Serializer$1,LibraryJS,Serializer$2,Utils,EventTarget,Node,JavaScript,JS,Monads,Result,Builder,FusionM,Builder$1,Builder$2,String,Strings,Slice,ParseO,Unchecked,System,Guid,JsonIntermediate,ClientSideJson,Provider,SnippetModule,Arrays,List,testing_GeneratedPrintf,BalancedTree,Tree,Pervasives,Enumerator,T,UI,Doc,Client,Templates,WindowOrWorkerGlobalScope,DateUtil,T$1,Object,View,DomUtility,Dictionary,Docs,AttrProxy,Snap,SC$2,HashSet,An,Settings,Abbrev,Mailbox,Error,FormatException,Elt,Array,DocElemNode,CharacterData,SC$3,DictionaryUtil,Prepare,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$4,Updates,Attrs,Attrs$1,Dyn,Fresh,SC$5,Concurrency,AppendList,SC$6,Easing,AsyncBody,SC$7,CT,HashSet$1,HashSetUtil,SC$8,Scheduler,CancellationTokenSource,DomNodes,OperationCanceledException,Lazy,SC$9,LazyExtensionsProxy,LazyRecord,Queue,console,IntelliFactory,Runtime,JSON,Math,$,Date;
+ var Global,FsRoot,TestingJS,Serializer,Model,SC$1,Library,Snippet,WebSharper,Numeric,Obj,Collections,FSharpSet,SnippetId,Operators,Seq,Serializer$1,LibraryJS,Serializer$2,Utils,EventTarget,Node,JavaScript,JS,Monads,Result,Builder,FusionM,Builder$1,Builder$2,String,Strings,Slice,ParseO,Unchecked,System,Guid,JsonIntermediate,SnippetModule,Arrays,List,testing_GeneratedPrintf,BalancedTree,Tree,Pervasives,Enumerator,T,UI,Doc,Client,Templates,WindowOrWorkerGlobalScope,DateUtil,T$1,Object,View,DomUtility,Dictionary,Docs,AttrProxy,Snap,SC$2,HashSet,An,Settings,Abbrev,Mailbox,Error,FormatException,Elt,Array,DocElemNode,CharacterData,SC$3,DictionaryUtil,Prepare,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$4,Updates,Attrs,Attrs$1,Dyn,Fresh,SC$5,Concurrency,AppendList,SC$6,Easing,AsyncBody,SC$7,CT,HashSet$1,HashSetUtil,SC$8,Scheduler,CancellationTokenSource,DomNodes,OperationCanceledException,Lazy,SC$9,LazyExtensionsProxy,LazyRecord,Queue,console,IntelliFactory,Runtime,JSON,Math,$,Date;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
@@ -401,8 +401,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  System=Global.System=Global.System||{};
  Guid=System.Guid=System.Guid||{};
  JsonIntermediate=Serializer$1.JsonIntermediate=Serializer$1.JsonIntermediate||{};
- ClientSideJson=WebSharper.ClientSideJson=WebSharper.ClientSideJson||{};
- Provider=ClientSideJson.Provider=ClientSideJson.Provider||{};
  SnippetModule=Library.SnippetModule=Library.SnippetModule||{};
  Arrays=WebSharper.Arrays=WebSharper.Arrays||{};
  List=WebSharper.List=WebSharper.List||{};
@@ -538,7 +536,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Serializer.jsonBad=function()
  {
-  return Strings.Replace(Serializer.json(),"snpGeneration","snpGenerationX");
+  return Strings.Replace(Serializer.json(),"\"snpGeneration\": 2","\"snpGeneration\":\"2\"");
  };
  Serializer.ofJsonDefs=function()
  {
@@ -599,7 +597,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return m($1[0],$1[1]);
   },Serializer.testCases());
-  x=Doc.Element("div",[],[Doc.Element("h3",[],[Doc.TextNode("Test Cases")]),Doc.Element("h4",[],[Doc.TextNode((((Runtime.Curried3(function($1,$2,$3)
+  x=Doc.Element("div",[],[Doc.Element("h1",[],[Doc.TextNode("Serializer")]),Doc.Element("h3",[],[Doc.TextNode("Test Cases")]),Doc.Element("h4",[],[Doc.TextNode((((Runtime.Curried3(function($1,$2,$3)
   {
    return $1("Passed: "+Global.String($2)+"/"+Global.String($3));
   }))(Global.id))(Seq.sumBy(function(a$1)
@@ -636,7 +634,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  SC$1.$cctor=function()
  {
-  var f,generation,$1,i,i$1,i$2,s,sQ,x,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,t$9,i$3,i$4,x$1,t$10,t$11,t$12,t$13,t$14,i$5,t$15,a,a$1,t$16,a$2,a$3;
+  var f,generation,$1,i,i$1,i$2,s,sQ,f$2,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,t$9,init,x,t$10,t$11,t$12,t$13,t$14,i$3,t$15,a,a$1,t$16,a$2,a$3;
   SC$1.$cctor=Global.ignore;
   SC$1.rtn=function(v)
   {
@@ -649,9 +647,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return Strings.concat("\n",s$1);
   }
-  SC$1.unindentStr=function(x$2)
+  SC$1.unindentStr=function(x$1)
   {
-   return g(String.unindent(x$2));
+   return g(String.unindent(x$1));
   };
   function f$1(s$1)
   {
@@ -672,12 +670,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return Strings.concat("\n",s$1);
   }
-  SC$1.skipLastLine=(f=function(x$2)
+  SC$1.skipLastLine=(f=function(x$1)
   {
-   return g$1(f$1(x$2));
-  },function(x$2)
+   return g$1(f$1(x$1));
+  },function(x$1)
   {
-   return g$2(f(x$2));
+   return g$2(f(x$1));
   });
   SC$1.parseDateO=ParseO.tryParseWith(function(a$4)
   {
@@ -732,6 +730,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$1["|Single|_|"]=ParseO.parseSingleO();
   SC$1["|Double|_|"]=ParseO.parseDoubleO();
   SC$1["|Guid|_|"]=ParseO.parseGuidO();
+  SC$1.serString=[Serializer$1.toJsonString,function(j)
+  {
+   return j.tryString();
+  }];
   SC$1.serFloat=[function(v)
   {
    return(function($2)
@@ -757,13 +759,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   },function(j)
   {
    return j.tryInt();
-  }];
-  SC$1.serString=[function(a$4)
-  {
-   return JSON.stringify(((Provider.Id())())(a$4));
-  },function(j)
-  {
-   return j.tryString();
   }];
   SC$1.serBool=[function(v)
   {
@@ -834,22 +829,22 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    };
   }(Global.id))(s),[function(gid)
   {
-   var x$2;
-   x$2=Global.String(get(gid));
+   var x$1;
+   x$1=Global.String(get(gid));
    return(((Runtime.Curried3(function($2,$3,$4)
    {
     return $2("{"+Strings.PadLeft(Utils.toSafe($3),10)+" :"+Utils.prettyPrint($4)+"}");
-   }))(Global.id))(sQ))(x$2);
+   }))(Global.id))(sQ))(x$1);
   },function(j)
   {
-   var o,o$1,o$2,f$2;
-   o=(o$1=(o$2=j.tryField(s),o$2==null?null:o$2.$0.tryString()),(f$2=ParseO.parseGuidO(),o$1==null?null:f$2(o$1.$0)));
+   var o,o$1,o$2,f$3;
+   o=(o$1=(o$2=j.tryField(s),o$2==null?null:o$2.$0.tryString()),(f$3=ParseO.parseGuidO(),o$1==null?null:f$3(o$1.$0)));
    return o==null?null:{
     $:1,
     $0:set(o.$0)
    };
   }]));
-  SC$1.serSnippet=(x=[(t=Serializer.serSnippetId(),Serializer$1.serField("snpId",function(s$1)
+  SC$1.serSnippet=(f$2=[(t=Serializer.serSnippetId(),Serializer$1.serField("snpId",function(s$1)
   {
    return s$1.snpId;
   },function(v,s$1)
@@ -891,9 +886,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   },function(v,s$1)
   {
    return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,v);
-  },t$9[0],t$9[1]))],(i$3=(i$4=SnippetModule.New("","",null),Snippet.New(i$4.snpId,i$4.snpName,i$4.snpContent,i$4.snpParentIdO,i$4.snpPredIds,i$4.snpProperties,-1)),[function(dim)
+  },t$9[0],t$9[1]))],(init=null,(init==null?Operators.FailWith("Initial record is null"):void 0,[function(dim)
   {
-   var x$2;
+   var x$1;
    function m(n,ser,_deser)
    {
     return(((Runtime.Curried3(function($2,$3,$4)
@@ -901,30 +896,30 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      return $2(Utils.prettyPrint($3)+": "+Utils.toSafe($4));
     }))(Global.id))(n))(ser(dim));
    }
-   x$2=Strings.concat(", ",Seq.map(function($2)
+   x$1=Strings.concat(", ",Seq.map(function($2)
    {
     return m($2[0],$2[1],$2[2]);
-   },x));
+   },f$2));
    return(function($2)
    {
     return function($3)
     {
      return $2("{"+Utils.toSafe($3)+"}");
     };
-   }(Global.id))(x$2);
+   }(Global.id))(x$1);
   },function(j)
   {
    return{
     $:1,
     $0:Seq.fold(function(dim,t$17)
     {
-     var x$2,x$3,b;
-     x$2=(x$3=j.tryField(t$17[0]),(b=t$17[2](dim),x$3==null?null:b(x$3.$0)));
-     return x$2==null?dim:x$2.$0;
-    },i$3,x)
+     var x$1,x$2,b;
+     x$1=(x$2=j.tryField(t$17[0]),(b=t$17[2](dim),x$2==null?null:b(x$2.$0)));
+     return x$1==null?dim:x$1.$0;
+    },init,f$2)
    };
-  }]));
-  SC$1.serModel=(x$1=[(t$10=(t$11=Serializer.serSnippet(),Serializer$1.serArr(t$11[0],t$11[1])),Serializer$1.serField("snippets",function(m)
+  }])));
+  SC$1.serModel=(x=[(t$10=(t$11=Serializer.serSnippet(),Serializer$1.serArr(t$11[0],t$11[1])),Serializer$1.serField("snippets",function(m)
   {
    return m.snippets;
   },function(v,m)
@@ -942,9 +937,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   },function(v,m)
   {
    return Model.New(m.snippets,m.generation,v);
-  },t$13[0],t$13[1]))],(i$5=Model.New([],0,new FSharpSet.New$1(null)),[function(dim)
+  },t$13[0],t$13[1]))],(i$3=Model.New([],0,new FSharpSet.New$1(null)),(i$3==null?Operators.FailWith("Initial record is null"):void 0,[function(dim)
   {
-   var x$2;
+   var x$1;
    function m(n,ser,_deser)
    {
     return(((Runtime.Curried3(function($2,$3,$4)
@@ -952,29 +947,29 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      return $2(Utils.prettyPrint($3)+": "+Utils.toSafe($4));
     }))(Global.id))(n))(ser(dim));
    }
-   x$2=Strings.concat(", ",Seq.map(function($2)
+   x$1=Strings.concat(", ",Seq.map(function($2)
    {
     return m($2[0],$2[1],$2[2]);
-   },x$1));
+   },x));
    return(function($2)
    {
     return function($3)
     {
      return $2("{"+Utils.toSafe($3)+"}");
     };
-   }(Global.id))(x$2);
+   }(Global.id))(x$1);
   },function(j)
   {
    return{
     $:1,
     $0:Seq.fold(function(dim,t$17)
     {
-     var x$2,x$3,b;
-     x$2=(x$3=j.tryField(t$17[0]),(b=t$17[2](dim),x$3==null?null:b(x$3.$0)));
-     return x$2==null?dim:x$2.$0;
-    },i$5,x$1)
+     var x$1,x$2,b;
+     x$1=(x$2=j.tryField(t$17[0]),(b=t$17[2](dim),x$2==null?null:b(x$2.$0)));
+     return x$1==null?dim:x$1.$0;
+    },i$3,x)
    };
-  }]));
+  }])));
   SC$1.model=Serializer.getModel(Serializer.snps(),33,new FSharpSet.New(List.ofArray([Serializer.snippet1().snpId,Serializer.snippet2().snpId])));
   SC$1.dupOptFloatOptString1=(t$15=Serializer$1.serDup(Serializer$1.serOpt((Serializer$1.serFloat())[0],(Serializer$1.serFloat())[1]),Serializer$1.serOpt((Serializer$1.serString())[0],(Serializer$1.serString())[1])),(a=t$15[0],(a$1=t$15[1],function(v)
   {
@@ -1047,7 +1042,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $:1,
     $0:Model.New(Arrays.map(function(s$1)
     {
-     return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,-1);
+     return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpGeneration===2?0:s$1.snpGeneration);
     },Serializer.model().snippets),Serializer.model().generation,Serializer.model().collapsed)
    });
   }],["jsonAndBackFail",function()
@@ -1057,9 +1052,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
    try
    {
-    (function(x$2)
+    (function(x$1)
     {
-     return g$3(Serializer.ofJsonFail(x$2));
+     return g$3(Serializer.ofJsonFail(x$1));
     }());
     return false;
    }
@@ -1143,6 +1138,15 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Operators.FailWith=function(msg)
  {
   throw new Error(msg);
+ };
+ Operators.range=function(min,max)
+ {
+  var count;
+  count=1+max-min;
+  return count<=0?[]:Seq.init(count,function(x)
+  {
+   return x+min;
+  });
  };
  Operators.KeyValue=function(kvp)
  {
@@ -1332,6 +1336,84 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
   };
  };
+ Seq.append=function(s1,s2)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    var e1,first;
+    e1=Enumerator.Get(s1);
+    first=[true];
+    return new T.New(e1,null,function(x)
+    {
+     var x$1;
+     return x.s.MoveNext()?(x.c=x.s.Current(),true):(x$1=x.s,!Unchecked.Equals(x$1,null)?x$1.Dispose():void 0,x.s=null,first[0]&&(first[0]=false,x.s=Enumerator.Get(s2),x.s.MoveNext()?(x.c=x.s.Current(),true):(x.s.Dispose(),x.s=null,false)));
+    },function(x)
+    {
+     var x$1;
+     x$1=x.s;
+     !Unchecked.Equals(x$1,null)?x$1.Dispose():void 0;
+    });
+   }
+  };
+ };
+ Seq.collect=function(f,s)
+ {
+  return Seq.concat(Seq.map(f,s));
+ };
+ Seq.concat=function(ss)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    var outerE;
+    outerE=Enumerator.Get(ss);
+    return new T.New(null,null,function(st)
+    {
+     var m;
+     while(true)
+      {
+       m=st.s;
+       if(Unchecked.Equals(m,null))
+       {
+        if(outerE.MoveNext())
+         {
+          st.s=Enumerator.Get(outerE.Current());
+          st=st;
+         }
+        else
+         {
+          outerE.Dispose();
+          return false;
+         }
+       }
+       else
+        if(m.MoveNext())
+         {
+          st.c=m.Current();
+          return true;
+         }
+        else
+         {
+          st.Dispose();
+          st.s=null;
+          st=st;
+         }
+      }
+    },function(st)
+    {
+     var x;
+     x=st.s;
+     !Unchecked.Equals(x,null)?x.Dispose():void 0;
+     !Unchecked.Equals(outerE,null)?outerE.Dispose():void 0;
+    });
+   }
+  };
+ };
+ Seq.init=function(n,f)
+ {
+  return Seq.take(n,Seq.initInfinite(f));
+ };
  Seq.distinct=function(s)
  {
   return Seq.distinctBy(Global.id,s);
@@ -1349,6 +1431,28 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    if(typeof e=="object"&&"Dispose"in e)
     e.Dispose();
   }
+ };
+ Seq.take=function(n,s)
+ {
+  n<0?Seq.nonNegative():void 0;
+  return{
+   GetEnumerator:function()
+   {
+    var e;
+    e=[Enumerator.Get(s)];
+    return new T.New(0,null,function(o)
+    {
+     var en;
+     o.s=o.s+1;
+     return o.s>n?false:(en=e[0],Unchecked.Equals(en,null)?Seq.insufficient():en.MoveNext()?(o.c=en.Current(),o.s===n?(en.Dispose(),e[0]=null):void 0,true):(en.Dispose(),e[0]=null,Seq.insufficient()));
+    },function()
+    {
+     var x;
+     x=e[0];
+     !Unchecked.Equals(x,null)?x.Dispose():void 0;
+    });
+   }
+  };
  };
  Seq.distinctBy=function(f,s)
  {
@@ -1508,6 +1612,31 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return[s,s$1][0](v);
  };
+ Serializer$1.toJsonString=function(v)
+ {
+  return Arrays.ofSeq(Seq.delay(function()
+  {
+   return Seq.append(["\""],Seq.delay(function()
+   {
+    return Seq.append(!Strings.IsNullOrEmpty(v)?Seq.collect(function(i)
+    {
+     var c,ci;
+     c=v[i];
+     ci=c.charCodeAt();
+     return ci>=0&&ci<=7||ci===11||ci>=14&&ci<=31?(function($1)
+     {
+      return function($2)
+      {
+       return $1("\\u"+Utils.padNumLeft($2.toString(16),4));
+      };
+     }(Global.id))(ci):c==="\u0008"?"\\b":c==="\u0009"?"\\t":c==="\n"?"\\n":c==="\u000c"?"\\f":c==="\r"?"\\r":c==="\""?"\\\"":c==="\\"?"\\\\":[c];
+    },Operators.range(0,v.length-1)):[],Seq.delay(function()
+    {
+     return["\""];
+    }));
+   }));
+  })).join("");
+ };
  Serializer$1.serField=function(name,get,set,s,s$1)
  {
   return[name,function(x)
@@ -1648,10 +1777,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Serializer$2.deserializeWithDefs=function(s,s$1)
  {
-  function d(j,a)
-  {
-   return null;
-  }
   return Serializer$2.deserialize(function()
   {
    return{
@@ -1682,26 +1807,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $:1,
     $0:[]
    };
-  },function($1)
-  {
-   return function($2)
-   {
-    return d($1,$2);
-   };
   },s,s$1);
  };
  Serializer$2.deserializeWithFail=function(s,s$1)
  {
-  function d(j,f)
-  {
-   return(function($1)
-   {
-    return function($2)
-    {
-     return $1("field not found: "+Utils.toSafe($2));
-    };
-   }(Operators.FailWith))(f);
-  }
   return Serializer$2.deserialize(function()
   {
    return Operators.FailWith("Error expecting float");
@@ -1717,20 +1826,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   },function()
   {
    return Operators.FailWith("Error expecting array");
-  },function($1)
-  {
-   return function($2)
-   {
-    return d($1,$2);
-   };
   },s,s$1);
  };
  Serializer$2.tryDeserialize=function(s,s$1)
  {
-  function d(a,a$1)
-  {
-   return null;
-  }
   return Serializer$2.deserialize(function()
   {
    return null;
@@ -1746,15 +1845,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   },function()
   {
    return null;
-  },function($1)
-  {
-   return function($2)
-   {
-    return d($1,$2);
-   };
   },s,s$1);
  };
- Serializer$2.deserialize=function(df,di,ds,db,da,dFl,s,s$1)
+ Serializer$2.deserialize=function(df,di,ds,db,da,s,s$1)
  {
   var f,g;
   function f$1(a)
@@ -1763,7 +1856,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   }
   function g$1(o)
   {
-   return Serializer$2.getJsonIntermediate(df,di,ds,db,da,dFl,o);
+   return Serializer$2.getJsonIntermediate(df,di,ds,db,da,o);
   }
   f=function(x)
   {
@@ -1775,11 +1868,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return g(f(x));
   };
  };
- Serializer$2.getJsonIntermediate=function(df,di,ds,db,da,dFl,o)
+ Serializer$2.getJsonIntermediate=function(df,di,ds,db,da,o)
  {
   function jsonInt(o$1)
   {
-   return Serializer$2.getJsonIntermediate(df,di,ds,db,da,dFl,o$1);
+   return Serializer$2.getJsonIntermediate(df,di,ds,db,da,o$1);
   }
   return JsonIntermediate.New(function()
   {
@@ -1823,15 +1916,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return o$1==null?da(jsonInt):o$1;
   },function(fl)
   {
-   var o$1,m;
-   o$1=!o?null:(m=o[fl],Unchecked.Equals(m,null)?{
+   var m;
+   return!o?null:(m=o[fl],Unchecked.Equals(m,null)?{
     $:1,
     $0:jsonInt(null)
    }:!m?null:{
     $:1,
     $0:jsonInt(m)
    });
-   return o$1==null?(dFl(jsonInt))(fl):o$1;
   },function()
   {
    return Unchecked.Equals(typeof o,"object")&&!Unchecked.Equals(o,null);
@@ -1851,6 +1943,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return m($1[0],$1[1]);
   },JS.GetFields(o)))+"}":s):Global.String(o));
+ };
+ Utils.padNumLeft=function(s,l)
+ {
+  var f;
+  f=Arrays.get(s,0);
+  return f===" "||f==="+"||f==="-"?f+Strings.PadLeftWith(s.substr(1),l-1,"0"):Strings.PadLeftWith(s,l,"0");
  };
  Utils.toSafe=function(s)
  {
@@ -1948,6 +2046,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Strings.StartsWith=function(t,s)
  {
   return t.substring(0,s.length)==s;
+ };
+ Strings.IsNullOrEmpty=function(x)
+ {
+  return x==null||x=="";
  };
  Strings.PadLeftWith=function(s,n,c)
  {
@@ -2406,10 +2508,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    isNull:isNull
   };
  };
- Provider.Id=Runtime.Curried3(function($1,$2,x)
- {
-  return x;
- });
  SnippetModule.New=function(name,content,parentO)
  {
   return Snippet.New(new SnippetId({
@@ -4022,6 +4120,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Seq.insufficient=function()
  {
   return Operators.FailWith("The input sequence has an insufficient number of elements.");
+ };
+ Seq.nonNegative=function()
+ {
+  return Operators.FailWith("The input must be non-negative.");
  };
  Elt=UI.Elt=Runtime.Class({},Doc,Elt);
  Elt.New=function(el,attr,children)
