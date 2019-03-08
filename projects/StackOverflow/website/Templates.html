@@ -168,13 +168,15 @@
                 |          main
 
                 main div ""
-                :                template  header     "id=header"           brand  brandV   logout "@{Prozper.Logout}"
-                :                Doc       Prozper.contentDoc
-                :                template  sidedrawer "id=sidedrawer"       brand  brandV 
-                :                template  footer     "id=footer"           brand  brandV   madeby "CIPHER Bsc" madebylink "www.cipherbsc.com"
-
-                mainContent      template  content    "id=content-wrapper"  brand  brandV   content aliados fecha "@{Prozper.mesActual} @{Prozper.anoActual}"
-                cntFormaRegistro template  content    "id=content-wrapper"                  content Prozper.FormaRegistro
+                :                 template  header     "id=header"           brand  brandV   logout "@{Prozper.Logout}" afiliado "@{Prozper.aliado}"
+                :                 Doc       Prozper.contentDoc
+                :                 template  sidedrawer "id=sidedrawer"       brand  brandV 
+                :                 template  footer     "id=footer"           brand  brandV   madeby "CIPHER Bsc" madebylink "www.cipherbsc.com"
+ 
+                mainContent       template  content    "id=content-wrapper"  content aliados                fecha "@{Prozper.mesActual} @{Prozper.anoActual}"
+                cntFormaRegistro  template  content    "id=content-wrapper"  content Prozper.FormaRegistro  titulo "Forma de Afiliación (1)"  
+                cntFormaDatos     template  content    "id=content-wrapper"  content Prozper.FormaDatos     titulo " "  
+                cntFormaContactos template  content    "id=content-wrapper"  content Prozper.FormaContactos titulo " "  
 
                 aliados          div       "class=row"
                 :                div       "class=mui-col-md-6"
@@ -250,30 +252,48 @@
 
         </div>
 
+        <div ws-children-template="Correo">
+            <div class="mui-textfield mui-textfield--float-label">
+                <input type="email" name="Correo" ws-var="Correo" required>
+                <label>Correo Electronico</label>
+            </div>
+            <div class="mui-textfield mui-textfield--float-label">
+                <input type="email" name="ConfirmarCorreo" ws-var="ConfirmarCorreo" required>
+                <label>Confirmar Correo Electronico</label>
+            </div>
+            <div style="color:red">${Mensaje}</div>
+        </div>
+
         <div ws-children-template="Telefono">
+            <div class="mui-select">
+                <label>Tipo de Teléfono</label>
+                <select ws-var="TipoTelefono" ws-hole="Tipos" required>
+                </select>
+            </div>            
             <div class="mui-textfield mui-textfield--float-label">
                 <input type="tel" name="CodigoPais" ws-var="CodigoPais" required style="width:90px">
-                <label>Codigo Pais</label>
+                <label>Código Pais</label>
             </div>
             <div class="mui-textfield mui-textfield--float-label">
                 <input type="tel" name="CodigoArea" ws-var="CodigoArea" style="width:90px" >
-                <label>Codigo Área</label>
+                <label>Código Área</label>
             </div>    
             <div class="mui-textfield mui-textfield--float-label">
                 <input type="tel" name="Telefono" ws-var="Telefono" required>
                 <label>Teléfono</label>
             </div>
-            <div class="mui-select">
-                <label>Tipo de Teléfono</label>
-                <select ws-var="TipoTelefono" required>
-                    <option value="Movil"       > Movil       </option>
-                    <option value="Habitacion"  > Habitacion  </option>
-                    <option value="Oficina"     > Oficina     </option>
-                </select>
+            <div class="mui-textfield mui-textfield--float-label">
+                <input type="tel" name="Extension" ws-var="Extension"  style="width:90px" >
+                <label>Extensión</label>
             </div>    
         </div>
 
         <div ws-children-template="Direccion">
+            <div class="mui-select">
+                <label>Tipo de Dirección</label>
+                <select ws-var="TipoDireccion" ws-hole="Tipos" required>
+                </select>
+            </div>            
             <div class="mui-textfield mui-textfield--float-label" style="display:block">
                 <input type="text" name="Direccion1" ws-var="Direccion1" required>
                 <label>Direccion1</label>
@@ -288,67 +308,53 @@
                 <label>Ciudad</label>
             </div>                
             <div class="mui-textfield mui-textfield--float-label">
-                <input type="text" name="Estado" ws-var="Estado" required>
+                <input type="text" name="Estado" ws-var="Estado" list="Estados" required>
                 <label>Estado</label>
+                <datalist id="Estados" ws-hole="Estados" >
+                </datalist>
             </div>                
             <div class="mui-textfield mui-textfield--float-label">
                 <input type="text" name="CodigoPostal" ws-var="CodigoPostal" required>
                 <label>Codigo Postal</label>
             </div>                
-            <div class="mui-select">
+            <div class="mui-textfield mui-textfield--float-label">
+                <input type="text" name="Pais" ws-var="Pais" list="Paises" required>
                 <label>País</label>
-                <select ws-var="Pais" required>
-                    <option value="USA"      >USA      </option>
-                    <option value="Argentina">Argentina</option>
-                    <option value="Venezuela">Venezuela</option>
-                </select>
+                <datalist id="Paises" ws-hole="Paises" >
+                </datalist>
             </div>
-            <div class="mui-select">
-                <label>Tipo de Dirección</label>
-                <select ws-var="TipoDireccion" required>
-                    <option value="Movil"       > Movil       </option>
-                    <option value="Habitacion"  > Habitacion  </option>
-                    <option value="Oficina"     > Oficina     </option>
-                </select>
-            </div>    
         </div>
 
+        <div ws-template=DatosPersonales >
+            <div style="color:red">${Mensajes}</div>
+            <div class="mui-textfield mui-textfield--float-label" style="display:block">
+              <input type="text" name="Nombres" ws-var="Nombres" required>
+              <label>Nombres</label>
+            </div>
+            <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                <input type="text" name="Apellidos" ws-var="Apellidos" required>
+                <label>Apellidos</label>
+            </div>
+            <legend></legend>
+            <div class="mui-textfield">
+                <label>Fecha de Nacimiento</label>
+                <input type="date" name="FechaNacimiento" ws-var="FechaNacimiento" required>
+            </div>                
+            <div class="mui-select">
+                <label>Genero</label>
+                <select ws-var="Genero" ws-hole="Generos" required>
+                </select>
+            </div>
+            <legend style="color:transparent">.</legend>
+        </div>
+    
         <div ws-template=FormaRegistro class="mui-col-md-8 mui-col-md-offset-1">
             <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
                 <legend>Datos Personales</legend>
-                <div class="mui-textfield mui-textfield--float-label" style="display:block">
-                  <input type="text" name="Nombres" ws-var="Nombres" required>
-                  <label>Nombres</label>
-                </div>
-                <div class="mui-textfield mui-textfield--float-label" style="display:block">
-                    <input type="text" name="Apellidos" ws-var="Apellidos" required>
-                    <label>Apellidos</label>
-                </div>
-                <legend></legend>
-                <div class="mui-textfield">
-                    <label>Fecha de Nacimiento</label>
-                    <input type="date" name="FechaNacimiento" ws-var="FechaNacimiento" required>
-                </div>                
-                <div class="mui-select">
-                    <label>Genero</label>
-                    <select ws-var="Genero" required>
-                        <option value="Masculino">Masculino</option>
-                        <option value="Femenino">Femenino</option>
-                        <option value="Empresa">Empresa</option>
-                    </select>
-                </div>
-                <legend style="color:transparent">.</legend>
-                <div class="mui-divider"></div>
+                <div ws-replace="DatosPersonales"></div>
+                <legend></legend>    
                 <legend>Contacto</legend>
-                <div class="mui-textfield mui-textfield--float-label">
-                    <input type="email" name="Correo" ws-var="Correo" required>
-                    <label>Correo Electronico</label>
-                </div>
-                <div class="mui-textfield mui-textfield--float-label">
-                    <input type="email" name="ConfirmarCorreo" ws-var="ConfirmarCorreo" required>
-                    <label>Confirmar Correo Electronico</label>
-                </div>
-                <div style="color:red">${MensajeCorreo}</div>
+                <div ws-replace="Correo"></div>
                 <legend></legend>
                 <div ws-replace="Telefono"></div>
                 <legend></legend>
@@ -360,6 +366,32 @@
             </form>
         </div>
 
+        <div ws-template=FormaDatosPersonales class="mui-col-md-8 mui-col-md-offset-1">
+            <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
+                <legend>Datos Personales</legend>
+                <div ws-replace="DatosPersonales"></div>
+                <legend></legend>    
+                <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar" >Guardar</button>
+                <button style="display: none;" type="submit" >Hidden button</button>
+                <div style="color:red">${Mensajes}</div>
+            </form>
+        </div>
+    
+        <div ws-template=FormaContactos class="mui-col-md-8 mui-col-md-offset-1">
+            <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
+                <legend>Contactos</legend>
+                <div ws-replace="Correos"></div>
+                <legend></legend>
+                <div ws-replace="Telefonos"></div>
+                <legend></legend>
+                <div ws-replace="Direcciones"></div>
+                <legend></legend>
+                <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar" >Guardar</button>
+                <button style="display: none;" type="submit" >Hidden button</button>
+                <div style="color:red">${Mensajes}</div>
+            </form>
+        </div>
+    
         <div ws-template=TablaAliados>
             <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
                 <thead>
@@ -434,7 +466,7 @@
                 <li>
                     <strong onclick="$(this).next().slideToggle(200)">Category 1</strong>
                     <ul style="display: none;">
-                        <li><a href="#/Content/ProzperLyt.cntFormaRegistro">Forma Registro</a></li>
+                        <li><a href="#/Content/ProzperLyt.cntFormaRegistro">Afiliación a Prozper</a></li>
                         <li><a href="#">Item 2</a></li>
                         <li><a href="#">Item 3</a></li>
                     </ul>
@@ -448,12 +480,11 @@
                     </ul>
                 </li>
                 <li>
-                    <strong onclick="$(this).next().slideToggle(200)">Category 3</strong>
+                    <strong onclick="$(this).next().slideToggle(200)">Actualizar Informacion</strong>
                     <ul style="display: none;">
-                        <li><a href="#">Item 1</a></li>
-                        <li><a href="#">Item 2</a></li>
-                        <li><a href="#">Item 3</a></li>
-                    </ul>
+                            <li><a href="#/Content/ProzperLyt.cntFormaDatos"    >Datos Personales</a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaContactos">Contactos       </a></li>
+                        </ul>
                 </li>
             </ul>
         </div>
@@ -481,13 +512,20 @@
                         <a class="sidedrawer-toggle mui--hidden-xs mui--hidden-sm js-hide-sidedrawer" onclick="hideSidedrawer()">☰</a>
                         <span class="mui--text-title mui--visible-xs-inline-block">${Brand}</span>
                     </td>
+                    <td >
+                        <ul class="mui-list--inline mui--text-body2">
+                          <li class="mui--text-light mui--text-display1">${Afiliado}</li>
+                          <li><a href="#" style="color:white">${Status}</a></li>
+                          <li><a href="#" style="color:white">${Comision}</a></li>
+                        </ul>
+                    </td>
                     <td class="mui--text-right">
-                    <ul class="mui-list--inline mui--text-body2">
-                      <li><a href="#" style="color:white">About</a></li>
-                      <li><a href="#" style="color:white">Pricing</a></li>
-                      <li><a  style="color:white" ws-onclick="Logout"><i class="fa fa-user" aria-hidden="true"></i> Logout</a></li>
-                    </ul>
-                  </td>
+                        <ul class="mui-list--inline mui--text-body2">
+                          <li><a href="#" style="color:white">About</a></li>
+                          <li><a href="#" style="color:white">Pricing</a></li>
+                          <li><a  style="color:white" ws-onclick="Logout"><i class="fa fa-user" aria-hidden="true"></i> Logout</a></li>
+                        </ul>
+                    </td>
                 </tr>
             </tbody></table>
         </nav></header>
@@ -496,22 +534,12 @@
             <div class="mui--appbar-height"></div>
             <div class="mui-container-fluid">
                 <br>
-                <br>
                 <div>
-                    <span class="mui--pull-left  mui--text-dark-secondary mui--text-display1">${Brand}</span>
+                    <span class="mui--pull-left  mui--text-dark-secondary mui--text-display1">${Titulo}</span>
                     <span class="mui--pull-right mui--text-dark-secondary mui--text-display1">${fecha}</span>
                     <div class="mui--clearfix"></div>
                 </div>
                 <div ws-replace="content"/>
-                <p>
-                    Quisque interdum facilisis consectetur. Nam eu purus purus. Curabitur in
-                    ligula quam. Nam euismod ligula eu tellus pellentesque laoreet. Aliquam
-                    erat volutpat. Curabitur eu bibendum velit. Cum sociis natoque penatibus
-                    et magnis dis parturient montes, nascetur ridiculus mus. Nunc efficitur
-                    lorem sit amet quam porta pharetra. Cras ultricies pellentesque eros sit
-                    amet semper.
-                </p>
-                <input ws-var="Brand" />
             </div>
         </div>
 

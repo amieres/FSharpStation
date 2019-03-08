@@ -879,6 +879,16 @@ namespace FsRoot
                 let (|EndsWith  |_|) (ends :string) (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
                 
             
+            module Array =
+            
+                /// Non-mutable element replace
+                /// produces a new array with the new element
+                let replace i item (array: _[]) = 
+                    seq {
+                        if i > 0            then yield! array.[.. i - 1]
+                        yield item
+                        if i < array.Length then yield! array.[i + 1 ..]
+                    } |> Seq.toArray
             ///    let ls = [ "d1d"; "a"; "b"; "c"; "a3a"; "b2b"; "c1c"]
             ///    
             ///    ls |> List.sortWith ( asc Seq.length)            |> print // ["a"; "b"; "c"; "dd"; "aa"; "bb"; "cc"]
@@ -893,7 +903,10 @@ namespace FsRoot
                 let tryParseWith tryParseFunc = tryParseFunc >> function
                         | true, v    -> Some v
                         | false, _   -> None
-                
+            
+            
+                /// Javascript adds time zone information when parsing a date and that can change the result
+                let parseDateO2  = (fun s -> s + "T00:00:00") >> tryParseWith System.DateTime.TryParse
                 let parseDateO   = tryParseWith System.DateTime.TryParse
                 let parseIntO    = tryParseWith System.Int32   .TryParse
                 let parseSingleO = tryParseWith System.Single  .TryParse
@@ -1140,6 +1153,15 @@ namespace FsRoot
         /// Essentials that cannot run in Javascript (WebSharper)
         [< AutoOpen >]
         module LibraryNoJS =
+            module UnionValues =
+                open FSharp.Reflection
+            
+                let simple<'U> =
+                    FSharpType.GetUnionCases typeof<'U>
+                    |> Seq.filter (fun c -> c.GetFields() |> Seq.isEmpty )
+                    |> Seq.map (fun c -> c.Name)
+                    |> Seq.toArray
+            
             //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
             module Serializer =
                 open Serializer
@@ -1193,7 +1215,7 @@ namespace FsRoot
             
                 open FSharp.Reflection
             
-                let inline serObj ((ser, deser):Ser<'T>) : string * Ser<obj> = typedefof<'T>.FullName, (unbox >> ser, deser >> Option.map box)
+                let inline serObj ((ser, deser):Ser<'T>) : string * Ser<obj> = typeof<'T>.FullName, (unbox >> ser, deser >> Option.map box)
             
                 let serDU<'DU when 'DU : equality> (sers : (string * Ser<obj>) seq) =
                     let cases  = FSharpType.GetUnionCases             typeof<'DU>
@@ -1292,6 +1314,12 @@ namespace FsRoot
                 let inline value<'T> : 'T = typeof<'T> |> defaultValue defs |> unbox
             
             
+        /// Essentials that run in Javascript (WebSharper)
+        //#define WEBSHARPER
+        [< JavaScript ; AutoOpen >]
+        module LibraryJS =
+            module Date =
+                let toYYYYMMDD sep (date:System.DateTime) = sprintf "%d%s%02d%s%02d" date.Year sep  date.Month sep date.Day
     
     //#cd @"..\projects\StackOverflow\src"
     
@@ -1352,6 +1380,8 @@ namespace FsRoot
         type TipoAliado =
         | Master
         | Regular
+            with
+                override this.ToString() = sprintf "%A" this
         
         type Pais =
         | USA
@@ -1360,12 +1390,14 @@ namespace FsRoot
         | OtroP of string
             with 
                 static member tryParse (s:string) = 
-                    match s.Trim() with
+                    match s.Trim().ToUpper() with
                     | ""               -> None    
+                    | "EEUU" | "UNITED STATES" | "UNITED STATES OF AMERICA" | "US" | "E.E.U.U." | "AMERICA"
                     | "USA"            -> Some <| USA
-                    | "Venezuela"      -> Some <| Venezuela
-                    | "Argentina"      -> Some <| Argentina
-                    | s                -> Some <| OtroP s
+                    | "VENEZUELA"      -> Some <| Venezuela
+                    | "ARGENTINA"      -> Some <| Argentina
+                    | _                -> Some <| (OtroP <| s.Trim() )
+                override this.ToString() = match this with OtroP s -> s | v -> sprintf "%A" v
         
         type Estado =
         | Texas
@@ -1373,11 +1405,14 @@ namespace FsRoot
         | OtroS of string
             with 
                 static member tryParse (s:string) = 
-                    match s.Trim() with
+                    match s.Trim().ToUpper() with
                     | ""               -> None    
-                    | "Texas"          -> Some <| Texas
-                    | "Florida"        -> Some <| Florida
-                    | s                -> Some <| OtroS s
+                    | "TX"
+                    | "TEXAS"          -> Some <| Texas
+                    | "FL"
+                    | "FLORIDA"        -> Some <| Florida
+                    | _                -> Some <| (OtroS <| s.Trim() )
+                override this.ToString() = match this with OtroS s -> s | v -> sprintf "%A" v
         
         type Territorio =
         | Estado of Estado
@@ -1415,11 +1450,15 @@ namespace FsRoot
         type StatusAliado =
         |   Activo
         | Inactivo
+            with
+                override this.ToString() = sprintf "%A" this
         
         type ConceptoPago =
         | PagoAfiliacion
         | PagoComision
         | Otro of string
+            with
+                override this.ToString() = match this with Otro s -> s | v -> sprintf "%A" v
         
         type Transaccion = {
             fechaPago      : System.DateTime
@@ -1444,6 +1483,7 @@ namespace FsRoot
                     | "Oficina"        -> Some <| Oficina
                     | "ServicioPostal" -> Some <| ServicioPostal
                     | s                -> Some <| Otro s
+                override this.ToString() = match this with Otro s -> s | v -> sprintf "%A" v
         
         type ZonaPostal = ZonaPostal of string
             with 
@@ -1461,6 +1501,8 @@ namespace FsRoot
         }
         
         type CorreoElectronico = EMail    of string
+            with override this.ToString() = match this with EMail c -> c
+            
         type TipoTelefono =
         | Movil
         | Oficina
@@ -1472,12 +1514,14 @@ namespace FsRoot
                     | "Oficina"    -> Some Oficina
                     | "Habitacion" -> Some Habitacion
                     | _            -> None    
+                override this.ToString() = sprintf "%A" this
         
         type Telefono          = {
             tipoTelefono : TipoTelefono
             codigoPais   : string
             codigoArea   : string
             numero       : string
+            extension    : string
             mensajes     : bool
         }
         
@@ -1510,7 +1554,6 @@ namespace FsRoot
             nacionalidad    : Pais
             genero          : Genero
             fechaNacimiento : System.DateTime
-            contactos       : Contacto[]
         }
         
         type FormaPago =
@@ -1538,11 +1581,12 @@ namespace FsRoot
         type Aliado = {
             id              : IdAliado
             idPadreO        : IdAliado option
-            identificacion  : Identificacion []
             datosPersonales : DatosPersonales
-            formasPago      : FormaPago []
-            transacciones   : Transaccion []
-            mensajes        : Mensaje     []
+            contactos       : Contacto       []
+            identificacion  : Identificacion []
+            formasPago      : FormaPago      []
+            transacciones   : Transaccion    []
+            mensajes        : Mensaje        []
             isInternal      : bool
             status          : StatusAliado
             tipo            : TipoAliado
@@ -1699,11 +1743,52 @@ namespace FsRoot
             //    ()
             //}
         
+            let empty = {
+                datosPersonales = {
+                                        titulo          = None
+                                        nombre1         = ""
+                                        nombre2         = ""
+                                        apellido1       = ""
+                                        apellido2       = ""
+                                        nacionalidad    = USA
+                                        genero          = Masculino
+                                        fechaNacimiento = System.DateTime(2000, 1, 1)
+                                    }
+                id              =  IdAliado ""
+                idPadreO        =  None
+                contactos       =  [||]
+                identificacion  =  [||]
+                formasPago      =  [||]
+                transacciones   =  [||]
+                mensajes        =  [||]
+                isInternal      =  false
+                status          =  Inactivo
+                tipo            =  Regular
+                fechaRegistro   =  System.DateTime(2000, 1, 1)
+                fechaStatus     =  System.DateTime(2000, 1, 1)
+                nReferidos      =  0
+                nRefActivos     =  0
+                nDescendientes  =  0
+                nDescActivos    =  0
+                comision        =  0
+                nivel           =  0
+            }
+        
+            let nombre dp = 
+                let titulo   = dp.titulo |> Option.map ((+) " ") |> Option.defaultValue ""
+                let apellido = if dp.apellido1 = "" then "" else (dp.apellido1 + " " + dp.apellido2).Trim() + ", "
+                titulo + apellido + dp.nombre1 + " " + dp.nombre2
+        
+            let nombre2 dp = 
+                let titulo   = dp.titulo |> Option.map ((+) " ") |> Option.defaultValue ""
+                titulo + (dp.nombre1 + " " + dp.nombre2).Trim() + " " + (dp.apellido1 + " " + dp.apellido2).Trim()
         
         type DataEvento =
-        | AgregarAliados of Aliado[]
-        | AgregarAliado  of Aliado
-        | RegistroNuevo  of DatosPersonales
+        | AgregarAliados            of Aliado[]
+        | AgregarAliado             of Aliado
+        | RegistroNuevo             of IdAliado * DatosPersonales * IdAliado option * Contacto []
+        | ActualizarDatosPersonales of IdAliado * DatosPersonales
+        | ActualizarContactos       of IdAliado * Contacto []
         
         type Evento = {
             nevento : int64
@@ -1713,28 +1798,34 @@ namespace FsRoot
         type Respuesta =
         | ROk
         | NuevoRegistro of string
+        | Mensaje       of string
         
         module Eventos =
         
             let addNewAliados (als1: Aliado []) (als2: Aliado []) : Aliado [] =
                 als1 |> Seq.filter(fun a -> als2 |> Seq.exists (fun b -> a.id = b.id ) |> not ) |> Seq.append als2 |> Seq.toArray
         
-            let registroNuevo (datos:DatosPersonales) (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
-                match   datos.contactos
+            let registroNuevo idA (datos:DatosPersonales) padre contactos (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
+                match   contactos
                         |> Seq.tryPick(function CorreoElectronico email -> Some email |_-> None ) with
                 | None        -> return! errorMsgf "No se encontro Correo Electronico: %A" datos |> ErrorM
                 | Some correo ->
                 if  modelo.aliados
                     |> Seq.exists(fun al ->
-                        al.datosPersonales.contactos
+                        al.contactos
                         |> Seq.exists(function CorreoElectronico correo2 -> correo = correo2 |_-> false ) 
-                    )       then return! errorMsgf "Correo Electronico ya esta registrado: %A" correo |> ErrorM
+                    )       
+                    then return! errorMsgf "Correo Electronico ya esta registrado: %A" correo |> ErrorM
+                else
+                if modelo.aliados |> Seq.exists (fun al -> al.id = idA) 
+                    then return! errorMsgf "Id ya esta en uso: %A" idA                        |> ErrorM
                 else
                 let now = System.DateTime.Now
                 let aliado = {
-                    datosPersonales = datos
-                    id              =  IdAliado <| System.Guid.NewGuid.ToString()
-                    idPadreO        =  None
+                    datosPersonales =  datos
+                    id              =  idA
+                    idPadreO        =  padre
+                    contactos       =  contactos
                     identificacion  =  [||]
                     formasPago      =  [||]
                     transacciones   =  [||]
@@ -1758,13 +1849,45 @@ namespace FsRoot
                     |> NuevoRegistro  
             }
         
+            let actualizarDatosPersonales idA (datos:DatosPersonales) (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
+                let! aliado = modelo.aliados |> Seq.tryFind (fun a -> a.id = idA) |> ResultM.ofOption (fun () -> errorMsgf "Aliado no encontrado %A" idA)
+                return
+                    { modelo 
+                        with aliados = 
+                                modelo.aliados 
+                                |> Array.map(fun al -> 
+                                    if al.id = aliado.id 
+                                    then { al with datosPersonales = datos }
+                                    else al 
+                                ) 
+                    }
+                ,  Mensaje <| "Datos personales actualizados!" 
+            }
+        
+            let actualizarContactos idA (contactos:Contacto[]) (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
+                let! aliado = modelo.aliados |> Seq.tryFind (fun a -> a.id = idA) |> ResultM.ofOption (fun () -> errorMsgf "Aliado no encontrado %A" idA)
+                return
+                    { modelo 
+                        with aliados = 
+                                modelo.aliados 
+                                |> Array.map(fun al -> 
+                                    if al.id = aliado.id 
+                                    then { al with contactos = contactos }
+                                    else al 
+                                ) 
+                    }
+                ,  Mensaje <| "Contactos actualizados!" 
+            }
+        
             let actualizarEstado (evento: Evento) (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
                 if modelo.nevento <> -1L && modelo.nevento + 1L <> evento.nevento then 
                     failwithf "Evento fuera de secuencia: %d %d" modelo.nevento evento.nevento
                 match evento.data with
-                | AgregarAliado  aliado  -> return  { modelo with aliados = addNewAliados [| aliado  |] modelo.aliados }, ROk
-                | AgregarAliados aliados -> return  { modelo with aliados = addNewAliados    aliados    modelo.aliados }, ROk
-                | RegistroNuevo  datos   -> return! modelo |> registroNuevo datos
+                | AgregarAliado             aliado       -> return  { modelo with aliados = addNewAliados [| aliado  |] modelo.aliados }, ROk
+                | AgregarAliados            aliados      -> return  { modelo with aliados = addNewAliados    aliados    modelo.aliados }, ROk
+                | RegistroNuevo         (idA,datos,p,cs) -> return! modelo |> registroNuevo             idA datos p cs
+                | ActualizarDatosPersonales(idA,datos  ) -> return! modelo |> actualizarDatosPersonales idA datos
+                | ActualizarContactos      (idA,cs     ) -> return! modelo |> actualizarContactos       idA cs
             }
         
         
@@ -1840,6 +1963,7 @@ namespace FsRoot
                     serString       |> serField "codigoPais"   (fun s -> s.codigoPais  ) (fun v s -> { s with codigoPais   = v } )
                     serString       |> serField "codigoArea"   (fun s -> s.codigoArea  ) (fun v s -> { s with codigoArea   = v } )
                     serString       |> serField "numero"       (fun s -> s.numero      ) (fun v s -> { s with numero       = v } )
+                    serString       |> serField "extension"    (fun s -> s.extension   ) (fun v s -> { s with extension    = v } )
                     serBool         |> serField "mensajes"     (fun s -> s.mensajes    ) (fun v s -> { s with mensajes     = v } )
                 |] |> serRecord LibraryNoJS.Default.value<_>
         
@@ -1862,7 +1986,6 @@ namespace FsRoot
                     serPais                     |> serField "nacionalidad"    (fun s -> s.nacionalidad   ) (fun v s -> { s with nacionalidad    = v } )
                     serGenero                   |> serField "genero"          (fun s -> s.genero         ) (fun v s -> { s with genero          = v } )
                     serDate                     |> serField "fechaNacimiento" (fun s -> s.fechaNacimiento) (fun v s -> { s with fechaNacimiento = v } )
-                    serContacto      |> serArr  |> serField "contactos"       (fun s -> s.contactos      ) (fun v s -> { s with contactos       = v } )
                 |] |> serRecord LibraryNoJS.Default.value<_>
         
             let serMensaje : Ser<Mensaje> =
@@ -1880,6 +2003,7 @@ namespace FsRoot
                     serIdAliado         |> serOpt  |> serField "idPadreO"        (fun s -> s.idPadreO       ) (fun v s -> { s with idPadreO        = v } )
                     serIdentificacion   |> serArr  |> serField "identificacion"  (fun s -> s.identificacion ) (fun v s -> { s with identificacion  = v } )
                     serDatosPersonales             |> serField "datosPersonales" (fun s -> s.datosPersonales) (fun v s -> { s with datosPersonales = v } )
+                    serContacto         |> serArr  |> serField "contactos"       (fun s -> s.contactos      ) (fun v s -> { s with contactos       = v } )
                     serFormaPago        |> serArr  |> serField "formasPago"      (fun s -> s.formasPago     ) (fun v s -> { s with formasPago      = v } )
                     serTransaccion      |> serArr  |> serField "transacciones"   (fun s -> s.transacciones  ) (fun v s -> { s with transacciones   = v } )
                     serMensaje          |> serArr  |> serField "mensajes"        (fun s -> s.mensajes       ) (fun v s -> { s with mensajes        = v } )
@@ -1920,7 +2044,10 @@ namespace FsRoot
             let serDataEvento = 
                 serDU<DataEvento> [ 
                     serObj serAliado
-                    serObj (serArr serAliado)
+                    serObj serIdAliado
+                    serObj (serOpt serIdAliado)
+                    serObj (serArr serContacto)
+                    serObj (serArr serAliado  )
                     serObj serDatosPersonales
                 ]
         [< JavaScript false >]
@@ -2037,7 +2164,10 @@ namespace FsRoot
                     if user = "admin" then return { EstadoActual.estado() with aliados = aliados } else
                     let al = aliados |> Seq.find (userIsAliado user)
                     let subAliados = (if al.tipo = Master then buscar.descendientes else buscar.hijos) al
-                    return { EstadoActual.estado() with aliados = Array.append [| al |] subAliados }
+                    return { EstadoActual.estado() with 
+                                idAliado = al.id
+                                aliados  = Array.append [| al |] subAliados 
+                            }
                 }
         
             [< Rpc >]
@@ -2053,8 +2183,18 @@ namespace FsRoot
                 return resp
             }
         
+            [< Rpc >]
+            let obtenerUnions() = async {
+                return UnionValues.simple<Pais          >
+                     , UnionValues.simple<Estado        >
+                     , UnionValues.simple<TipoDireccion >
+                     , UnionValues.simple<TipoTelefono  >
+                     , UnionValues.simple<Genero        >
+            }
+        
             [< JavaScript >]
             let iterA arm = AsyncResultM.iterA (ResultMessage.summarized >> JS.Alert) id arm
+        
         
         [< JavaScript false >]
         module Sample =
@@ -4747,9 +4887,9 @@ namespace FsRoot
                                             nacionalidad    = Venezuela
                                             genero          = genero
                                             fechaNacimiento = System.DateTime.Now
-                                            contactos       = [||]
         
                         }
+                        contactos       = [||]
                         formasPago      = [||]
                         transacciones   = [||]
                         mensajes        = [||]
@@ -4790,6 +4930,8 @@ namespace FsRoot
                 premisas      = premisasCalculo
                 nevento       = -2L
             }
+        
+            let selAliadoIdOV = Var.Create None
         
             let rec separate s parts =
                 match s with
@@ -4832,11 +4974,79 @@ namespace FsRoot
                         endPointV.Value <- ep
                 )
         
+            let aliadoIdDoc fDoc =
+                View.Do {
+                    let! modelo   = modeloV      .View
+                    let  aid      = modelo.idAliado
+                    let  aliadoO  = modelo.aliados |> Seq.tryFind (fun al -> al.id = aid)
+                    return 
+                        match aliadoO with
+                        | None    -> Doc.Empty
+                        | Some al -> View.Const al |> fDoc
+                } |> Doc.BindView id
+        
+            let aliadoW =
+                View.Do {
+                    let! modelo   = modeloV      .View
+                    let  aid      = modelo.idAliado
+                    let  aliadoO  = modelo.aliados |> Seq.tryFind (fun al -> al.id = aid)
+                    return 
+                        match aliadoO with
+                        | None    -> Aliado.empty
+                        | Some al -> al
+                }
+        
+            let selAliadoIdDoc fDoc =
+                View.Do {
+                    let! modelo   = modeloV      .View
+                    let! selAlIdO = selAliadoIdOV.View
+                    let  aliadoO  = selAlIdO |> Option.bind (fun aid -> modelo.aliados |> Seq.tryFind (fun al -> al.id = aid) )
+                    return 
+                        match aliadoO with
+                        | None    -> Doc.Empty
+                        | Some al -> View.Const al |> fDoc
+                } |> Doc.BindView id
+        
+            let refrescarData() =
+                asyncResultM {
+                    let! data = Rpc.leerDataModelo()
+                    modeloV.Set data
+                } |> Rpc.iterA
+        
+        
+        module VariousUI = 
+        
+            let alertIfNone name vO f = 
+                match vO with
+                | None   -> JS.Alert ("Error not caught: " + name)
+                            None
+                | Some v -> f v
+        
+            let paises   = Var.Create [||]
+            let estados  = Var.Create [||]
+            let tiposDir = Var.Create [||]
+            let tiposTel = Var.Create [||]
+            let generos  = Var.Create [||]
+        
+            async {
+                let! p, e, td, tl, g = Rpc.obtenerUnions()
+                paises  .Set p
+                estados .Set e
+                tiposDir.Set td
+                tiposTel.Set tl
+                generos .Set g
+            } |> Async.Start
+        
+            let crearOption  n  = Html.Elt.option [] [ Html.text n] :> Doc
+            let crearOptions ns = ns |> Seq.map crearOption |> Doc.Concat
         module Telefono =
+            open VariousUI
         
             let formaDoc (telV : Var<Telefono option>) = 
-                
-                let forma = TemplateLib.Telefono().Create()
+                let forma =
+                    TemplateLib.Telefono()
+                        .Tipos(    V( crearOptions tiposTel.V ).V )
+                        .Create()
         
                 telV.View 
                 |> View.Sink (function
@@ -4845,7 +5055,7 @@ namespace FsRoot
                     forma.Vars.CodigoArea  .Set <| tel.codigoArea  
                     forma.Vars.CodigoPais  .Set <| tel.codigoPais  
                     forma.Vars.Telefono    .Set <| tel.numero    
-                    forma.Vars.TipoTelefono.Set <| sprintf "%A" tel.tipoTelefono
+                    forma.Vars.TipoTelefono.Set <| sprintf "%O" tel.tipoTelefono
                 )
                 let requeridosW =
                     V(  [   forma.Vars.CodigoPais  .V.Trim() = "" , "CodigoPais"
@@ -4857,30 +5067,69 @@ namespace FsRoot
                     )
                 V (
                     if not (Seq.isEmpty requeridosW.V)  then None else
-                    match forma.Vars.TipoTelefono.V.Trim() |> TipoTelefono.tryParse with
-                    | None      -> JS.Alert "Error not caught: TipoTelefono" ; None
-                    | Some tipo ->                
+                    forma.Vars.TipoTelefono.V.Trim() |> TipoTelefono.tryParse |> alertIfNone "TipoTelefono" <| fun tipo ->                
                     Some {
                         codigoArea   = forma.Vars.CodigoArea  .Value.Trim()
                         codigoPais   = forma.Vars.CodigoPais  .Value.Trim()
                         numero       = forma.Vars.Telefono    .Value.Trim()
+                        extension    = forma.Vars.Extension   .Value.Trim()
                         tipoTelefono = tipo
                         mensajes     = false
                     }
                 ) |> View.Sink (fun v -> if telV.Value <> v then telV.Set v)
                 requeridosW, forma.Doc
+         
+        module CorreoElectronico =
+            open VariousUI
+        
+            let formaDoc (corV : Var<CorreoElectronico option>) =
+                let mensaje = Var.Create ""
+        
+                let forma =
+                    TemplateLib.Correo()
+                        .Mensaje( mensaje.V )
+                        .Create()
+                match corV.Value with | None -> () | Some v -> forma.Vars.ConfirmarCorreo.Set <| v.ToString()
+                V (
+                    if     forma.Vars.Correo         .V.Trim() = "" 
+                        || forma.Vars.ConfirmarCorreo.V.Trim() = ""
+                        || forma.Vars.Correo         .V.Trim()
+                         = forma.Vars.ConfirmarCorreo.V.Trim() 
+                        then "" 
+                        else "Correos no son iguales"
+                ) |> View.Sink mensaje.Set
+                corV.View 
+                |> View.Sink (function
+                    | None     -> ()
+                    | Some cor -> 
+                    forma.Vars.Correo         .Set <| cor.ToString()
+                    //forma.Vars.ConfirmarCorreo.Set <| cor.ToString()
+                )
+                let requeridosW =
+                    V(  [   forma.Vars.Correo         .V.Trim() =  "" , "Correo"
+                            forma.Vars.ConfirmarCorreo.V.Trim() =  "" , "ConfirmarCorreo"
+                            mensaje                   .V        <> "" , mensaje.V
+                        ]
+                        |> Seq.filter fst
+                        |> Seq.map    snd
+                    )
+                V (
+                    if not (Seq.isEmpty requeridosW.V)  then None else
+                    Some (EMail forma.Vars.Correo.V)
+                ) |> View.Sink (fun v -> if corV.Value <> v then corV.Set v)
+                requeridosW, forma.Doc
+        
         
         module Direccion =
+            open VariousUI
         
-            let alertIfNone name vO f = 
-                match vO with
-                | None   -> JS.Alert ("Error not caught: " + name)
-                            None
-                | Some v -> f v
-        
-            let formaDoc (dirV : Var<Direccion option>) = 
-                
-                let forma = TemplateLib.Direccion().Create()
+            let formaDoc (dirV : Var<Direccion option>) =
+                let forma =
+                    TemplateLib.Direccion()
+                        .Paises(   V( crearOptions paises  .V ).V )
+                        .Estados(  V( crearOptions estados .V ).V )
+                        .Tipos(    V( crearOptions tiposDir.V ).V )
+                        .Create()
         
                 dirV.View 
                 |> View.Sink (function
@@ -4889,10 +5138,10 @@ namespace FsRoot
                     forma.Vars.Direccion1   .Set <| dir.linea1  
                     forma.Vars.Direccion2   .Set <| dir.linea2  
                     forma.Vars.Ciudad       .Set <| dir.ciudad    
-                    forma.Vars.Estado       .Set <| sprintf "%A" dir.estado
-                    forma.Vars.Pais         .Set <| sprintf "%A" dir.pais
+                    forma.Vars.Estado       .Set <| sprintf "%O" dir.estado
+                    forma.Vars.Pais         .Set <| sprintf "%O" dir.pais
                     forma.Vars.CodigoPostal .Set <| sprintf "%O" dir.zonaPostal
-                    forma.Vars.TipoDireccion.Set <| sprintf "%A" dir.tipoDireccion
+                    forma.Vars.TipoDireccion.Set <| sprintf "%O" dir.tipoDireccion
                 )
                 let requeridosW = 
                     V( 
@@ -4921,79 +5170,198 @@ namespace FsRoot
                         pais          = pais
                         zonaPostal    = codigo
                         tipoDireccion = tipo
-                    }
-                    
+                    }            
                 ) |> View.Sink (fun v -> if dirV.Value <> v then dirV.Set v)
                 requeridosW, forma.Doc
         
-        module FormaRegistro =
+        module DatosPersonales =
+            open VariousUI
         
-            let mensajes      = Var.Create ""
-            let mensajeCorreo = Var.Create ""
-            let mostrar       = Var.Create false
-            let telefonoOV    = Var.Create None
-            let direccionOV   = Var.Create None
+            let formaDoc (datosV : Var<DatosPersonales option>) =
+                let forma    = 
+                    TemplateLib.DatosPersonales()
+                        .Generos(        V( crearOptions generos.V ).V            )
+                        .Create()
+                datosV.View
+                |> View.Sink (function
+                    | None     -> ()
+                    | Some dat -> 
+                    forma.Vars.Nombres        .Set <| (dat.nombre1   + " " + dat.nombre2   ).Trim()
+                    forma.Vars.Apellidos      .Set <| (dat.apellido1 + " " + dat.apellido2 ).Trim()
+                    forma.Vars.FechaNacimiento.Set <| Date.toYYYYMMDD "-"   dat.fechaNacimiento
+                    forma.Vars.Genero         .Set <| sprintf "%A" dat.genero
+                )                
+                let requeridosW =
+                    V(  [   forma.Vars.Nombres        .V.Trim() = "" , "Nombres"
+                            forma.Vars.Apellidos      .V.Trim() = "" , "Apellidos"
+                            forma.Vars.FechaNacimiento.V.Trim() = "" , "Fecha de Nacimiento"
+                            forma.Vars.Genero         .V.Trim() = "" , "Genero"
+                        ]
+                        |> Seq.filter fst
+                        |> Seq.map    snd
+                    ) 
+                V (
+                    if not (Seq.isEmpty requeridosW.V)  then None else
+                    forma.Vars.Genero         .Value |> Genero.tryParse    |> alertIfNone "Genero"           <| fun genero ->
+                    forma.Vars.FechaNacimiento.Value |> ParseO.parseDateO2 |> alertIfNone "Fecha incorrecta" <| fun fecha  ->
+                    Some {
+                        titulo          = None
+                        nombre1         = forma.Vars.Nombres  .Value.Trim().Split(' ').[0  ]
+                        nombre2         = forma.Vars.Nombres  .Value.Trim().Split(' ').[1..] |> String.concat " "
+                        apellido1       = forma.Vars.Apellidos.Value.Trim().Split(' ').[0  ]
+                        apellido2       = forma.Vars.Apellidos.Value.Trim().Split(' ').[1..] |> String.concat " "
+                        nacionalidad    = OtroP ""
+                        genero          = genero
+                        fechaNacimiento = fecha
+                    }            
+                ) |> View.Sink (fun v -> if datosV.Value <> v then datosV.Set v)
+        
+                requeridosW, forma.Doc
+        
+        
+        module FormaRegistro = 
         
             let formaDoc() =
-                let telReqsW, telefonoDoc  = Telefono.formaDoc  telefonoOV
-                let dirReqsW, direccionDoc = Direccion.formaDoc direccionOV
-                let forma    = 
+                let mensajes      = Var.Create ""
+                let mostrar       = Var.Create false
+                let datosOV       = Var.Create None
+                let correoOV      = Var.Create None
+                let telefonoOV    = Var.Create None
+                let direccionOV   = Var.Create None
+        
+                let datReqsW, datosDoc     = DatosPersonales  .formaDoc datosOV
+                let corReqsW, correoDoc    = CorreoElectronico.formaDoc correoOV
+                let telReqsW, telefonoDoc  = Telefono         .formaDoc telefonoOV
+                let dirReqsW, direccionDoc = Direccion        .formaDoc direccionOV
+                let forma    =
                     TemplateLib.FormaRegistro()
                         .Mensajes(       if mostrar.V then mensajes     .V else "")
-                        .MensajeCorreo(  if mostrar.V then mensajeCorreo.V else "")
+                        .DatosPersonales(datosDoc                                 )
+                        .Correo(         correoDoc                                )
                         .Telefono(       telefonoDoc                              )
                         .Direccion(      direccionDoc                             )
                         .Registrarse(fun ev ->
                             mostrar.Set true
-                            let m =  mensajes.Value + " " + mensajeCorreo.Value
+                            let m =  mensajes.Value
                             if m.Trim() <> "" then JS.Alert m else 
-                                match telefonoOV .Value
+                                match datosOV    .Value
+                                    , correoOV   .Value
+                                    , telefonoOV .Value
                                     , direccionOV.Value
-                                    , ev.Vars.Genero         .Value |> Genero.tryParse
-                                    , ev.Vars.FechaNacimiento.Value |> ParseO.parseDateO
                                         with
-                                | Some telefono, Some direccion, Some genero, Some fecha ->
+                                | Some datos, Some correo, Some telefono, Some direccion ->
                                     asyncResultM {
-                                        let correo          = EMail ev.Vars.Correo.Value 
-                                        let datos           = {
-                                            titulo          = None
-                                            nombre1         = ev.Vars.Nombres       .Value.Trim().Split(' ').[0]
-                                            nombre2         = ev.Vars.Nombres       .Value.Trim().Split(' ').[1..] |> String.concat " "
-                                            apellido1       = ev.Vars.Apellidos     .Value.Trim().Split(' ').[0]
-                                            apellido2       = ev.Vars.Apellidos     .Value.Trim().Split(' ').[1..] |> String.concat " "
-                                            nacionalidad    = OtroP ""
-                                            genero          = genero
-                                            fechaNacimiento = fecha
-                                            contactos       = [|    CorreoElectronico correo
-                                                                    Telefono          telefono
-                                                                    Direccion         direccion 
-                                                                |]
-                                        }
-                                        let! resp = RegistroNuevo datos |> Rpc.ejecutarEvento
+                                        let contactos = [|    
+                                            CorreoElectronico correo
+                                            Telefono          telefono
+                                            Direccion         direccion 
+                                        |]
+                                        let  nid  = System.Guid.NewGuid().ToString() |> IdAliado
+                                        let! resp = (nid, datos, Some ModeloUI.modeloV.Value.idAliado, contactos) |> RegistroNuevo |> Rpc.ejecutarEvento
+                                        ModeloUI.refrescarData()
                                         sprintf "%A" resp|> JS.Alert
                                     } |> AsyncResultM.iterA (ResultMessage.summarized >> JS.Alert) id
                                 | _ -> JS.Alert "Error not caught FormaRegistro"
                         )
                         .Create()
-                V(  [   forma.Vars.Nombres        .V.Trim() = "" , "Nombres"
-                        forma.Vars.Apellidos      .V.Trim() = "" , "Apellidos"
-                        forma.Vars.FechaNacimiento.V.Trim() = "" , "Fecha de Nacimiento"
-                        forma.Vars.Genero         .V.Trim() = "" , "Genero"
-                        forma.Vars.Correo         .V.Trim() = "" , "Correo"
-                        forma.Vars.ConfirmarCorreo.V.Trim() = "" , "Confirmar Correo"
-                    ]
-                    |> Seq.filter fst
-                    |> Seq.map    snd
-                    |> Seq.append <| telReqsW.V
-                    |> Seq.append <| dirReqsW.V
+                V(  seq {
+                        yield! datReqsW.V
+                        yield! corReqsW.V
+                        yield! telReqsW.V
+                        yield! dirReqsW.V
+                    }
                     |> String.concat ", "
                     |> fun es -> if es <> "" then "Campos requeridos: " + es else ""
                 )   |> View.Sink mensajes.Set
-                V(  if forma.Vars.Correo.V.Trim() <> forma.Vars.ConfirmarCorreo.V.Trim() 
-                    then "El Correo Electronico no es el mismo"
-                    else ""
-                )   |> View.Sink mensajeCorreo.Set
                 forma.Doc
+        
+        
+        module FormaDatos =
+        
+            let formaAliado (aliadoW: View<Aliado>) =
+                let mensajes      = Var.Create ""
+                let mostrar       = Var.Create false
+                let datosOV       = Var.Create None
+                
+                aliadoW
+                |> View.Map  (fun a -> a.datosPersonales )
+                |> View.Sink (Some >> datosOV.Set)
+        
+                let datReqsW, datosDoc     = DatosPersonales.formaDoc datosOV
+                let forma =
+                    TemplateLib.FormaDatosPersonales()
+                        .Mensajes(       if mostrar.V then mensajes     .V else ""                                     )
+                        .Changed(        if Some aliadoW.V.datosPersonales = datosOV.V then "" else "mui-btn--primary" )
+                        .DatosPersonales(datosDoc                                                                      )
+                        .Salvar(fun ev ->
+                            mostrar.Set true
+                            let m =  mensajes.Value
+                            if m.Trim() <> "" then JS.Alert m else 
+                                match datosOV.Value, View.TryGet aliadoW with
+                                | Some datos, Some al ->
+                                    asyncResultM {
+                                        let! resp = ActualizarDatosPersonales (al.id, datos) |> Rpc.ejecutarEvento
+                                        ModeloUI.refrescarData()
+                                        sprintf "%A" resp|> JS.Alert
+                                    } |> AsyncResultM.iterA (ResultMessage.summarized >> JS.Alert) id
+                                | _ -> JS.Alert "Error not caught FormaDatos"
+                        )
+                        .Create()
+        
+                V(  seq {
+                        yield! datReqsW.V
+                    }
+                    |> String.concat ", "
+                    |> fun es -> if es <> "" then "Campos requeridos: " + es else ""
+                )   |> View.Sink mensajes.Set
+                forma.Doc
+        
+            let formaDoc() = ModeloUI.aliadoIdDoc formaAliado
+        
+        module FormaContactos =
+        
+            let formaContactos (aliadoW: View<Aliado>) =
+                let mensajes      = Var.Create ""
+                let mostrar       = Var.Create false
+                let contactosV    = Var.Create [||]
+                
+                aliadoW
+                |> View.Map  (fun a -> a.contactos)
+                |> View.Sink contactosV.Set
+        
+                let contactosIV = V( contactosV.V |> Seq.indexed )
+        
+                let makeVar f i v = Some(i, Var.Make (View.Const <| Some v) (function Some nv -> Array.replace i (f nv) contactosV.Value |> contactosV.Set |_->() ) )
+                
+                let tels = V( contactosIV.V |> Seq.choose (function i, Telefono          tel -> makeVar Telefono          i tel |_-> None) )
+                let cors = V( contactosIV.V |> Seq.choose (function i, CorreoElectronico cor -> makeVar CorreoElectronico i cor |_-> None) )
+                let dirs = V( contactosIV.V |> Seq.choose (function i, Direccion         dir -> makeVar Direccion         i dir |_-> None) )
+        
+                let ftels = tels |> Doc.BindSeqCachedBy fst (fun (_, tV) -> Telefono.formaDoc tV |> snd )
+        
+                let forma =
+                    TemplateLib.FormaContactos()
+                        .Mensajes(       if mostrar.V then mensajes     .V else ""                             )
+                        .Changed(        if aliadoW.V.contactos = contactosV.V then "" else "mui-btn--primary" )
+                        .Telefonos(      ftels              ) 
+                        .Salvar(fun ev ->
+                            mostrar.Set true
+                            let m =  mensajes.Value
+                            if m.Trim() <> "" then JS.Alert m else 
+                                match View.TryGet aliadoW with
+                                | Some al ->
+                                    asyncResultM {
+                                        let! resp = ActualizarContactos (al.id, contactosV.Value) |> Rpc.ejecutarEvento
+                                        ModeloUI.refrescarData()
+                                        sprintf "%A" resp|> JS.Alert
+                                    } |> AsyncResultM.iterA (ResultMessage.summarized >> JS.Alert) id
+                                | _ -> JS.Alert "Error not caught FormaDatos"
+                        )
+                        .Create()
+        
+                forma.Doc
+        
+            let formaDoc() = ModeloUI.aliadoIdDoc formaContactos
         
         module RenderAliados =
             open SortWith
@@ -5004,10 +5372,6 @@ namespace FsRoot
         
                 let hijosDe id = hijosDeO.Value |> Option.map (fun f -> f id) |> Option.defaultValue [||]
         
-                let nombre dp = 
-                    let titulo   = dp.titulo |> Option.map ((+) " ") |> Option.defaultValue ""
-                    let apellido = if dp.apellido1 = "" then "" else dp.apellido1 + ", "
-                    titulo + apellido + dp.nombre1 
                 let referidos al =
                     if al.nReferidos = 0 then "-" else
                     sprintf "%d/%d" al.nRefActivos al.nReferidos
@@ -5026,15 +5390,13 @@ namespace FsRoot
                         <| (expandidos.Value |> Option.defaultValue Set.empty)
                     |> Some
                     |> expandidos.Set
-                let seleccionar id = 
-                    { ModeloUI.modeloV.Value with idAliado = id }
-                    |> ModeloUI.modeloV.Set
+                let seleccionar id =  Some id |> ModeloUI.selAliadoIdOV.Set
                 let sortAliados als =
                     let als = als |> Seq.sortWith (desc (fun al -> al.comision                       )
                                                 &>  asc (fun al -> al.status                         )
                                                 &> desc (fun al -> al.nRefActivos , al.nReferidos    )
                                                 &> desc (fun al -> al.nDescActivos, al.nDescendientes)
-                                                &>  asc (fun al -> nombre al.datosPersonales         ) )
+                                                &>  asc (fun al -> Aliado.nombre al.datosPersonales  ) )
                     let buscar = Aliado.busqueda als
                     hijosDeO.Set <| Some buscar.hijosDe
                     let nivel = try als |> Seq.map (fun al -> al.nivel) |> Seq.min with _ -> 1
@@ -5061,7 +5423,7 @@ namespace FsRoot
                         |> View.Map2 (fun _ -> sortAliados) expandidos.View
                         |> Doc.BindSeqCachedViewBy (fun al -> al.id) (fun alid alv ->
                             TemplateLib.FilaAliado()
-                                .nombre(              nombre        alv.V.datosPersonales)
+                                .nombre(              Aliado.nombre alv.V.datosPersonales)
                                 .status(              sprintf "%A"  alv.V.status         )
                                 .tipo(                sprintf "%A"  alv.V.tipo           )
                                 .nivel(               string        alv.V.nivel          )
@@ -5070,25 +5432,17 @@ namespace FsRoot
                                 .comision(            comision      alv.V.comision       )
                                 .expandido(           expandido     alid                 )
                                 .expandir(   fun _ -> expandir      alid                 )
-                                .seleccionado( if alid = ModeloUI.modeloV.V.idAliado then "seleccionado" else "" )
+                                .seleccionado( if Some alid = ModeloUI.selAliadoIdOV.V then "seleccionado" else "" )
                                 .seleccionar(fun _ -> seleccionar   alid                 )
                                 .Doc()
                         )
                     ).Doc()
         module RenderAliado =
         
-            let alvO = View.Do {
-                let! modelo = ModeloUI.modeloV.View
-                return modelo.aliados |> Seq.tryFind (fun al -> al.id = modelo.idAliado )
-            }
-        
             let calculo() =
         
                 let prem = V ModeloUI.modeloV.V.premisas
         
-                let nombre dp = 
-                    let titulo   = dp.titulo |> Option.map ((+) " ") |> Option.defaultValue ""
-                    titulo + dp.nombre1 + " " + dp.apellido1
                 let comision v = if v = 0 then "-" else sprintf "%5d$" v
                 
                 let alvO = 
@@ -5112,31 +5466,27 @@ namespace FsRoot
                         .porDescendiente(  ModeloUI.money (snd premisasV.V                   ) )
                         .Doc() 
         
-                alvO |> View.Map ( function
-                    | Some al -> V (Option.get alvO.V) |> calculoDoc
-                    | None    -> Doc.Empty
-                ) |> Doc.BindView id
+                ModeloUI.selAliadoIdDoc calculoDoc
         
             let aliado() =
         
-                let nombre dp = 
-                    let titulo   = dp.titulo |> Option.map ((+) " ") |> Option.defaultValue ""
-                    titulo + dp.nombre1 + " " + dp.apellido1
                 let comision v = if v = 0 then "-" else sprintf "%5d$" v
+        
+                let correo al = 
+                    al.contactos
+                    |> Seq.tryPick (function CorreoElectronico(EMail c) -> Some c |_-> None)
+                    |> Option.defaultValue "correo no encontrado!"
                 
                 let aliadoDoc (alv: View<Aliado>) =
                     TemplateLib.Aliado()
-                        .nombre(           nombre        alv.V.datosPersonales)
-                        .status(           sprintf "%A"  alv.V.status         )
-                        .tipo(             sprintf "%A"  alv.V.tipo           )
-                        .contacto(         sprintf "%s@hotmail.com"  alv.V.datosPersonales.apellido1)
-                        .Calculo(          calculo()                          )
+                        .nombre(           Aliado.nombre2 alv.V.datosPersonales)
+                        .status(           sprintf "%A"   alv.V.status         )
+                        .tipo(             sprintf "%A"   alv.V.tipo           )
+                        .contacto(         correo         alv.V                )
+                        .Calculo(          calculo()                           )
                         .Doc() 
         
-                alvO |> View.Map ( function
-                    | Some al -> V (Option.get alvO.V) |> aliadoDoc
-                    | None    -> Doc.Empty
-                ) |> Doc.BindView id
+                ModeloUI.selAliadoIdDoc aliadoDoc
         
         
         module MainProgram =
@@ -5213,9 +5563,13 @@ namespace FsRoot
         
             [< WebSharper.Sitelets.Website >]    
             let mainProgram() =
-                let titleV     = Var.Create "Prozper"
-                let mesActualW = V (mesToString ModeloUI.modeloV.V.periodoActual )
-                let anoActualW = V (string      ModeloUI.modeloV.V.anoActual     )
+                let titleV          = Var.Create "Prozper"
+                let mesActualW      = V (mesToString    ModeloUI.modeloV.V.periodoActual  )
+                let anoActualW      = V (string         ModeloUI.modeloV.V.anoActual      )
+                let nombreAliadoW   = V (Aliado.nombre2 ModeloUI.aliadoW.V.datosPersonales)
+                let statusAliadoW   = V (string         ModeloUI.aliadoW.V.status         )
+                let comisionAliadoW = V (string         ModeloUI.aliadoW.V.comision       )
+                let datosAliadoW    = V (string         ModeloUI.aliadoW.V.nReferidos     )
         
                 AF.addPlugIn {
                     AF.plgName    = "Prozper"
@@ -5224,12 +5578,18 @@ namespace FsRoot
                                     |]  
                     AF.plgViews   = [| AF.newViw  "mesActual"          mesActualW
                                        AF.newViw  "anoActual"          anoActualW
+                                       AF.newViw  "aliado"             nombreAliadoW
+                                       AF.newViw  "status"             statusAliadoW
+                                       AF.newViw  "comision"           comisionAliadoW
+                                       AF.newViw  "datos"              datosAliadoW
                                     |]  
-                    AF.plgDocs    = [| AF.newDoc  "Aliados"        (lazy RenderAliados.aliados () )
-                                       AF.newDoc  "Aliado"         (lazy RenderAliado .aliado  () )
-                                       AF.newDoc  "Calculo"        (lazy RenderAliado .calculo () )
-                                       AF.newDoc  "FormaRegistro"  (lazy FormaRegistro.formaDoc() )
-                                       AF.newDoc  "contentDoc"     (lazy getContentDoc         () )
+                    AF.plgDocs    = [| AF.newDoc  "Aliados"        (lazy RenderAliados .aliados () )
+                                       AF.newDoc  "Aliado"         (lazy RenderAliado  .aliado  () )
+                                       AF.newDoc  "Calculo"        (lazy RenderAliado  .calculo () )
+                                       AF.newDoc  "FormaRegistro"  (lazy FormaRegistro .formaDoc() )
+                                       AF.newDoc  "FormaDatos"     (lazy FormaDatos    .formaDoc() )
+                                       AF.newDoc  "FormaContactos" (lazy FormaContactos.formaDoc() )
+                                       AF.newDoc  "contentDoc"     (lazy getContentDoc          () )
                                     |]  
                     AF.plgActions = [| AF.newAct  "Logout"      logout
                                        //AF.newAct  "RemoveSnippet"   deleteSnippet       
@@ -5297,10 +5657,7 @@ namespace FsRoot
                 |> Option.defaultValue layoutName
                 |> AF.mainDocV.Set
         
-                asyncResultM {
-                    let! data = Rpc.leerDataModelo()
-                    ModeloUI.modeloV.Set data
-                } |> Rpc.iterA
+                ModeloUI.refrescarData()
         
                 TemplateLib()
                     .MainContent( AF.getMainDoc.Value )

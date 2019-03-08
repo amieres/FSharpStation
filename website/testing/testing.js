@@ -333,7 +333,6 @@ if (!console) {
         warn: ignore
     }
 };
-var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n:n}function f(n){return o.lastIndex=0,o.test(n)?'"'+n.replace(o,function(n){var t=s[n];return typeof t=="string"?t:"\\u"+("0000"+n.charCodeAt(0).toString(16)).slice(-4)})+'"':'"'+n+'"'}function r(i,e){var s,l,h,a,v=n,c,o=e[i];o&&typeof o=="object"&&typeof o.toJSON=="function"&&(o=o.toJSON(i)),typeof t=="function"&&(o=t.call(e,i,o));switch(typeof o){case"string":return f(o);case"number":return isFinite(o)?String(o):"null";case"boolean":case"null":return String(o);case"object":if(!o)return"null";if(n+=u,c=[],Object.prototype.toString.apply(o)==="[object Array]"){for(a=o.length,s=0;s<a;s+=1)c[s]=r(s,o)||"null";return h=c.length===0?"[]":n?"[\n"+n+c.join(",\n"+n)+"\n"+v+"]":"["+c.join(",")+"]",n=v,h}if(t&&typeof t=="object")for(a=t.length,s=0;s<a;s+=1)typeof t[s]=="string"&&(l=t[s],h=r(l,o),h&&c.push(f(l)+(n?": ":":")+h));else for(l in o)Object.prototype.hasOwnProperty.call(o,l)&&(h=r(l,o),h&&c.push(f(l)+(n?": ":":")+h));return h=c.length===0?"{}":n?"{\n"+n+c.join(",\n"+n)+"\n"+v+"}":"{"+c.join(",")+"}",n=v,h}}typeof Date.prototype.toJSON!="function"&&(Date.prototype.toJSON=function(){return isFinite(this.valueOf())?this.getUTCFullYear()+"-"+i(this.getUTCMonth()+1)+"-"+i(this.getUTCDate())+"T"+i(this.getUTCHours())+":"+i(this.getUTCMinutes())+":"+i(this.getUTCSeconds())+"Z":null},String.prototype.toJSON=Number.prototype.toJSON=Boolean.prototype.toJSON=function(){return this.valueOf()});var e=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,o=/[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,n,u,s={"\b":"\\b","\t":"\\t","\n":"\\n","\f":"\\f","\r":"\\r",'"':'\\"',"\\":"\\\\"},t;typeof JSON.stringify!="function"&&(JSON.stringify=function(i,f,e){var o;if(n="",u="",typeof e=="number")for(o=0;o<e;o+=1)u+=" ";else typeof e=="string"&&(u=e);if(t=f,f&&typeof f!="function"&&(typeof f!="object"||typeof f.length!="number"))throw new Error("JSON.stringify");return r("",{"":i})}),typeof JSON.parse!="function"&&(JSON.parse=function(n,t){function r(n,i){var f,e,u=n[i];if(u&&typeof u=="object")for(f in u)Object.prototype.hasOwnProperty.call(u,f)&&(e=r(u,f),e!==undefined?u[f]=e:delete u[f]);return t.call(n,i,u)}var i;if(n=String(n),e.lastIndex=0,e.test(n)&&(n=n.replace(e,function(n){return"\\u"+("0000"+n.charCodeAt(0).toString(16)).slice(-4)})),/^[\],:{}\s]*$/.test(n.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,"@").replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,"]").replace(/(?:^|:|,)(?:\s*\[)+/g,"")))return i=eval("("+n+")"),typeof t=="function"?r({"":i},""):i;throw new SyntaxError("JSON.parse");})}();;
 (function () {
     var lastTime = 0;
     var vendors = ['webkit', 'moz'];
@@ -362,54 +361,35 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 (function()
 {
  "use strict";
- var Global,FsRoot,TestingJS,Serializer,Model,SC$1,Library,Snippet,WebSharper,Numeric,Obj,Collections,FSharpSet,SnippetId,Operators,Seq,Serializer$1,LibraryJS,Serializer$2,Utils,EventTarget,Node,JavaScript,JS,Monads,Result,Builder,FusionM,Builder$1,Builder$2,String,Strings,Slice,ParseO,Unchecked,System,Guid,JsonIntermediate,SnippetModule,Arrays,List,testing_GeneratedPrintf,BalancedTree,Tree,Pervasives,Enumerator,T,UI,Doc,Client,Templates,WindowOrWorkerGlobalScope,DateUtil,T$1,Object,View,DomUtility,Dictionary,Docs,AttrProxy,Snap,SC$2,HashSet,An,Settings,Abbrev,Mailbox,Error,FormatException,Elt,Array,DocElemNode,CharacterData,SC$3,DictionaryUtil,Prepare,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$4,Updates,Attrs,Attrs$1,Dyn,Fresh,SC$5,Concurrency,AppendList,SC$6,Easing,AsyncBody,SC$7,CT,HashSet$1,HashSetUtil,SC$8,Scheduler,CancellationTokenSource,DomNodes,OperationCanceledException,Lazy,SC$9,LazyExtensionsProxy,LazyRecord,Queue,console,IntelliFactory,Runtime,JSON,Math,$,Date;
+ var Global,FsRoot,TestingJS,Date,SC$1,WebSharper,Operators,Seq,Utils,EventTarget,Node,JavaScript,JS,Library,ParseO,Unchecked,Numeric,System,Guid,List,LibraryJS,Date$1,Enumerator,Obj,T,Pervasives,Arrays,Strings,UI,Doc,Client,Templates,WindowOrWorkerGlobalScope,DateUtil,T$1,Object,View,DomUtility,Collections,Dictionary,Docs,AttrProxy,Snap,SC$2,HashSet,An,Settings,Abbrev,Mailbox,Elt,Array,DocElemNode,CharacterData,SC$3,DictionaryUtil,Prepare,Slice,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$4,Error,FormatException,Updates,Attrs,Attrs$1,Dyn,Fresh,SC$5,Concurrency,AppendList,SC$6,Easing,AsyncBody,SC$7,CT,HashSet$1,HashSetUtil,SC$8,Scheduler,CancellationTokenSource,DomNodes,OperationCanceledException,Lazy,SC$9,LazyExtensionsProxy,LazyRecord,Queue,console,IntelliFactory,Runtime,$,Date$2;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
- Serializer=TestingJS.Serializer=TestingJS.Serializer||{};
- Model=Serializer.Model=Serializer.Model||{};
+ Date=TestingJS.Date=TestingJS.Date||{};
  SC$1=Global.StartupCode$testing$testing=Global.StartupCode$testing$testing||{};
- Library=FsRoot.Library=FsRoot.Library||{};
- Snippet=Library.Snippet=Library.Snippet||{};
  WebSharper=Global.WebSharper=Global.WebSharper||{};
- Numeric=WebSharper.Numeric=WebSharper.Numeric||{};
- Obj=WebSharper.Obj=WebSharper.Obj||{};
- Collections=WebSharper.Collections=WebSharper.Collections||{};
- FSharpSet=Collections.FSharpSet=Collections.FSharpSet||{};
- SnippetId=Library.SnippetId=Library.SnippetId||{};
  Operators=WebSharper.Operators=WebSharper.Operators||{};
  Seq=WebSharper.Seq=WebSharper.Seq||{};
- Serializer$1=Library.Serializer=Library.Serializer||{};
- LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
- Serializer$2=LibraryJS.Serializer=LibraryJS.Serializer||{};
  Utils=WebSharper.Utils=WebSharper.Utils||{};
  EventTarget=Global.EventTarget;
  Node=Global.Node;
  JavaScript=WebSharper.JavaScript=WebSharper.JavaScript||{};
  JS=JavaScript.JS=JavaScript.JS||{};
- Monads=Library.Monads=Library.Monads||{};
- Result=Monads.Result=Monads.Result||{};
- Builder=Result.Builder=Result.Builder||{};
- FusionM=Monads.FusionM=Monads.FusionM||{};
- Builder$1=FusionM.Builder=FusionM.Builder||{};
- Builder$2=Builder$1.Builder=Builder$1.Builder||{};
- String=Library.String=Library.String||{};
- Strings=WebSharper.Strings=WebSharper.Strings||{};
- Slice=WebSharper.Slice=WebSharper.Slice||{};
+ Library=FsRoot.Library=FsRoot.Library||{};
  ParseO=Library.ParseO=Library.ParseO||{};
  Unchecked=WebSharper.Unchecked=WebSharper.Unchecked||{};
+ Numeric=WebSharper.Numeric=WebSharper.Numeric||{};
  System=Global.System=Global.System||{};
  Guid=System.Guid=System.Guid||{};
- JsonIntermediate=Serializer$1.JsonIntermediate=Serializer$1.JsonIntermediate||{};
- SnippetModule=Library.SnippetModule=Library.SnippetModule||{};
- Arrays=WebSharper.Arrays=WebSharper.Arrays||{};
  List=WebSharper.List=WebSharper.List||{};
- testing_GeneratedPrintf=Global.testing_GeneratedPrintf=Global.testing_GeneratedPrintf||{};
- BalancedTree=Collections.BalancedTree=Collections.BalancedTree||{};
- Tree=BalancedTree.Tree=BalancedTree.Tree||{};
- Pervasives=JavaScript.Pervasives=JavaScript.Pervasives||{};
+ LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
+ Date$1=LibraryJS.Date=LibraryJS.Date||{};
  Enumerator=WebSharper.Enumerator=WebSharper.Enumerator||{};
+ Obj=WebSharper.Obj=WebSharper.Obj||{};
  T=Enumerator.T=Enumerator.T||{};
+ Pervasives=JavaScript.Pervasives=JavaScript.Pervasives||{};
+ Arrays=WebSharper.Arrays=WebSharper.Arrays||{};
+ Strings=WebSharper.Strings=WebSharper.Strings||{};
  UI=WebSharper.UI=WebSharper.UI||{};
  Doc=UI.Doc=UI.Doc||{};
  Client=UI.Client=UI.Client||{};
@@ -420,6 +400,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Object=Global.Object;
  View=UI.View=UI.View||{};
  DomUtility=UI.DomUtility=UI.DomUtility||{};
+ Collections=WebSharper.Collections=WebSharper.Collections||{};
  Dictionary=Collections.Dictionary=Collections.Dictionary||{};
  Docs=UI.Docs=UI.Docs||{};
  AttrProxy=UI.AttrProxy=UI.AttrProxy||{};
@@ -430,8 +411,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Settings=Client.Settings=Client.Settings||{};
  Abbrev=UI.Abbrev=UI.Abbrev||{};
  Mailbox=Abbrev.Mailbox=Abbrev.Mailbox||{};
- Error=Global.Error;
- FormatException=WebSharper.FormatException=WebSharper.FormatException||{};
  Elt=UI.Elt=UI.Elt||{};
  Array=UI.Array=UI.Array||{};
  DocElemNode=UI.DocElemNode=UI.DocElemNode||{};
@@ -439,12 +418,15 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  SC$3=Global.StartupCode$WebSharper_UI$DomUtility=Global.StartupCode$WebSharper_UI$DomUtility||{};
  DictionaryUtil=Collections.DictionaryUtil=Collections.DictionaryUtil||{};
  Prepare=Templates.Prepare=Templates.Prepare||{};
+ Slice=WebSharper.Slice=WebSharper.Slice||{};
  KeyCollection=Collections.KeyCollection=Collections.KeyCollection||{};
  Docs$1=Client.Docs=Client.Docs||{};
  RunState=Docs$1.RunState=Docs$1.RunState||{};
  NodeSet=Docs$1.NodeSet=Docs$1.NodeSet||{};
  Anims=UI.Anims=UI.Anims||{};
  SC$4=Global.StartupCode$WebSharper_UI$Doc_Proxy=Global.StartupCode$WebSharper_UI$Doc_Proxy||{};
+ Error=Global.Error;
+ FormatException=WebSharper.FormatException=WebSharper.FormatException||{};
  Updates=UI.Updates=UI.Updates||{};
  Attrs=UI.Attrs=UI.Attrs||{};
  Attrs$1=Client.Attrs=Client.Attrs||{};
@@ -473,99 +455,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  console=Global.console;
  IntelliFactory=Global.IntelliFactory;
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
- JSON=Global.JSON;
- Math=Global.Math;
  $=Global.jQuery;
- Date=Global.Date;
- Serializer.snippet0=function()
- {
-  SC$1.$cctor();
-  return SC$1.snippet0;
- };
- Serializer.snippet1=function()
- {
-  SC$1.$cctor();
-  return SC$1.snippet1;
- };
- Serializer.snippet2=function()
- {
-  SC$1.$cctor();
-  return SC$1.snippet2;
- };
- Serializer.snps=function()
- {
-  SC$1.$cctor();
-  return SC$1.snps;
- };
- Serializer.serSnippetId=function()
- {
-  SC$1.$cctor();
-  return SC$1.serSnippetId;
- };
- Serializer.serSnippet=function()
- {
-  SC$1.$cctor();
-  return SC$1.serSnippet;
- };
- Serializer.getModel=function(snippets,gen,coll)
- {
-  return Model.New(Arrays.ofSeq(snippets),gen,coll);
- };
- Serializer.serModel=function()
- {
-  SC$1.$cctor();
-  return SC$1.serModel;
- };
- Serializer.model=function()
- {
-  SC$1.$cctor();
-  return SC$1.model;
- };
- Serializer.roundTrip=function(des,s,s$1,v)
- {
-  var ser,x;
-  ser=[s,s$1];
-  x=Serializer$1.serialize(ser[0],ser[1],v);
-  return(des(ser))(x);
- };
- Serializer.json=function()
- {
-  var x;
-  x=Serializer.model();
-  return Serializer$1.serialize((Serializer.serModel())[0],(Serializer.serModel())[1],x);
- };
- Serializer.jsonBad=function()
- {
-  return Strings.Replace(Serializer.json(),"\"snpGeneration\": 2","\"snpGeneration\":\"2\"");
- };
- Serializer.ofJsonDefs=function()
- {
-  var x;
-  x=Serializer.jsonBad();
-  return(Serializer$2.deserializeWithDefs((Serializer.serModel())[0],(Serializer.serModel())[1]))(x);
- };
- Serializer.ofJsonFail=function()
- {
-  var x;
-  x=Serializer.jsonBad();
-  return(Serializer$2.deserializeWithFail((Serializer.serModel())[0],(Serializer.serModel())[1]))(x);
- };
- Serializer.dupOptFloatOptString1=function()
- {
-  SC$1.$cctor();
-  return SC$1.dupOptFloatOptString1;
- };
- Serializer.dupFloatOptString2=function()
- {
-  SC$1.$cctor();
-  return SC$1.dupFloatOptString2;
- };
- Serializer.testCases=function()
+ Date$2=Global.Date;
+ Date.testCases=function()
  {
   SC$1.$cctor();
   return SC$1.testCases;
  };
- Serializer.main=function()
+ Date.main=function()
  {
   var results,x,a;
   function m(name,f)
@@ -589,15 +486,18 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     }(function(s)
     {
      console.log(s);
-    }))(e),Library.Error(e));
+    }))(e),{
+     $:1,
+     $0:e
+    });
    }
    return[name,$1];
   }
   results=Seq.map(function($1)
   {
    return m($1[0],$1[1]);
-  },Serializer.testCases());
-  x=Doc.Element("div",[],[Doc.Element("h1",[],[Doc.TextNode("Serializer")]),Doc.Element("h3",[],[Doc.TextNode("Test Cases")]),Doc.Element("h4",[],[Doc.TextNode((((Runtime.Curried3(function($1,$2,$3)
+  },Date.testCases());
+  x=Doc.Element("div",[],[Doc.Element("h1",[],[Doc.TextNode("parseDateO2")]),Doc.Element("h3",[],[Doc.TextNode("Test Cases")]),Doc.Element("h4",[],[Doc.TextNode((((Runtime.Curried3(function($1,$2,$3)
   {
    return $1("Passed: "+Global.String($2)+"/"+Global.String($3));
   }))(Global.id))(Seq.sumBy(function(a$1)
@@ -624,70 +524,34 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   Templates.LoadLocalTemplates("");
   Doc.Run(a,x);
  };
- Model.New=function(snippets,generation,collapsed)
- {
-  return{
-   snippets:snippets,
-   generation:generation,
-   collapsed:collapsed
-  };
- };
  SC$1.$cctor=function()
  {
-  var f,generation,$1,i,i$1,i$2,s,sQ,f$2,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,t$9,init,x,t$10,t$11,t$12,t$13,t$14,i$3,t$15,a,a$1,t$16,a$2,a$3;
+  var g;
   SC$1.$cctor=Global.ignore;
-  SC$1.rtn=function(v)
+  function f(s)
   {
-   return[v];
-  };
-  SC$1.result=new Builder.New();
-  SC$1.result$1=Result.result();
-  SC$1.fusion=new Builder$2.New();
-  function g(s$1)
-  {
-   return Strings.concat("\n",s$1);
+   return s+"T00:00:00";
   }
-  SC$1.unindentStr=function(x$1)
-  {
-   return g(String.unindent(x$1));
-  };
-  function f$1(s$1)
-  {
-   return String.splitByChar("\n",s$1);
-  }
-  function g$1(s$1)
-  {
-   var a$4,b;
-   return Slice.array(s$1,{
-    $:1,
-    $0:0
-   },{
-    $:1,
-    $0:(a$4=0,(b=Arrays.length(s$1)-2,Unchecked.Compare(a$4,b)===1?a$4:b))
-   });
-  }
-  function g$2(s$1)
-  {
-   return Strings.concat("\n",s$1);
-  }
-  SC$1.skipLastLine=(f=function(x$1)
-  {
-   return g$1(f$1(x$1));
-  },function(x$1)
-  {
-   return g$2(f(x$1));
-  });
-  SC$1.parseDateO=ParseO.tryParseWith(function(a$4)
+  SC$1.parseDateO2=(g=ParseO.tryParseWith(function(a)
   {
    var o,m;
    o=0;
-   return[(m=DateUtil.TryParse(a$4),m!=null&&m.$==1&&(o=m.$0,true)),o];
+   return[(m=DateUtil.TryParse(a),m!=null&&m.$==1&&(o=m.$0,true)),o];
+  }),function(x)
+  {
+   return g(f(x));
   });
-  SC$1.parseIntO=ParseO.tryParseWith(function(a$4)
+  SC$1.parseDateO=ParseO.tryParseWith(function(a)
+  {
+   var o,m;
+   o=0;
+   return[(m=DateUtil.TryParse(a),m!=null&&m.$==1&&(o=m.$0,true)),o];
+  });
+  SC$1.parseIntO=ParseO.tryParseWith(function(a)
   {
    var o;
    o=0;
-   return[Numeric.TryParseInt32(a$4,{
+   return[Numeric.TryParseInt32(a,{
     get:function()
     {
      return o;
@@ -698,23 +562,23 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     }
    }),o];
   });
-  SC$1.parseSingleO=ParseO.tryParseWith(function(a$4)
+  SC$1.parseSingleO=ParseO.tryParseWith(function(a)
   {
-   var o,$2;
+   var o,$1;
    o=0;
-   return[($2=Global.Number(a$4),Global.isNaN($2)?false:(o=$2,true)),o];
+   return[($1=Global.Number(a),Global.isNaN($1)?false:(o=$1,true)),o];
   });
-  SC$1.parseDoubleO=ParseO.tryParseWith(function(a$4)
+  SC$1.parseDoubleO=ParseO.tryParseWith(function(a)
   {
-   var o,$2;
+   var o,$1;
    o=0;
-   return[($2=Global.Number(a$4),Global.isNaN($2)?false:(o=$2,true)),o];
+   return[($1=Global.Number(a),Global.isNaN($1)?false:(o=$1,true)),o];
   });
-  SC$1.parseGuidO=ParseO.tryParseWith(function(a$4)
+  SC$1.parseGuidO=ParseO.tryParseWith(function(a)
   {
    var o;
    o=null;
-   return[Guid.TryParse(a$4,{
+   return[Guid.TryParse(a,{
     get:function()
     {
      return o;
@@ -730,423 +594,28 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$1["|Single|_|"]=ParseO.parseSingleO();
   SC$1["|Double|_|"]=ParseO.parseDoubleO();
   SC$1["|Guid|_|"]=ParseO.parseGuidO();
-  SC$1.serString=[Serializer$1.toJsonString,function(j)
+  SC$1.testCases=List.ofArray([["DateTime(Y,M,D)",function()
   {
-   return j.tryString();
-  }];
-  SC$1.serFloat=[function(v)
-  {
-   return(function($2)
-   {
-    return function($3)
-    {
-     return $2(Utils.prettyPrint($3));
-    };
-   }(Global.id))(v);
-  },function(j)
-  {
-   return j.tryFloat();
-  }];
-  SC$1.serInt=[function(v)
-  {
-   return(function($2)
-   {
-    return function($3)
-    {
-     return $2(Utils.prettyPrint($3));
-    };
-   }(Global.id))(v);
-  },function(j)
-  {
-   return j.tryInt();
-  }];
-  SC$1.serBool=[function(v)
-  {
-   return(function($2)
-   {
-    return function($3)
-    {
-     return $2(Utils.prettyPrint($3));
-    };
-   }(Global.id))(v);
-  },function(j)
-  {
-   return j.tryBool();
-  }];
-  $1=(generation=1,[function()
-  {
-   generation=generation+1;
-   return generation;
-  },function(n)
-  {
-   generation=n;
-  }]);
-  SC$1.setGeneration=$1[1];
-  SC$1.getNextGeneration=$1[0];
-  SC$1.defaultSnippet=Snippet.New(new SnippetId({
-   $:0,
-   $0:"00000000-0000-0000-0000-000000000000"
-  }),"","",null,new FSharpSet.New$1(null),[],0);
-  SC$1.tieFighter="|"+"-"+"|";
-  SC$1.snippet0=(i=SnippetModule.New("test0","module Hello =",null),Snippet.New(new SnippetId({
-   $:0,
-   $0:Guid.Parse("10000000-0000-0000-0000-000000000001")
-  }),i.snpName,i.snpContent,i.snpParentIdO,i.snpPredIds,i.snpProperties,i.snpGeneration));
-  SC$1.snippet1=(i$1=SnippetModule.New("test1","let hello world = sprintf \"Hello, %s!\" ",{
-   $:1,
-   $0:Serializer.snippet0().snpId
-  }),Snippet.New(new SnippetId({
-   $:0,
-   $0:Guid.Parse("20000000-0000-0000-0000-000000000002")
-  }),i$1.snpName,i$1.snpContent,i$1.snpParentIdO,i$1.snpPredIds,i$1.snpProperties,i$1.snpGeneration));
-  SC$1.snippet2=(i$2=SnippetModule.New("test2","Hello.hello \"World\" ",null),Snippet.New(new SnippetId({
-   $:0,
-   $0:Guid.Parse("30000000-0000-0000-0000-000000000003")
-  }),i$2.snpName,i$2.snpContent,i$2.snpParentIdO,new FSharpSet.New(List.ofArray([Serializer.snippet1().snpId])),i$2.snpProperties,i$2.snpGeneration));
-  SC$1.snps=List.ofArray([Serializer.snippet0(),Serializer.snippet1(),Serializer.snippet2()]);
-  function get(a$4)
-  {
-   return a$4.$0;
-  }
-  function set(a$4)
-  {
-   return new SnippetId({
-    $:0,
-    $0:a$4
+   var v,v$1;
+   return Unchecked.Equals((v=(ParseO.parseDateO2())("2019-03-08"),(Library.print(v),v)),{
+    $:1,
+    $0:(v$1=(new Global.Date(2019,3-1,8)).getTime(),(Library.print(v$1),v$1))
    });
-  }
-  SC$1.serSnippetId=(s=Arrays.head(Strings.SplitChars((function($2)
+  }],["toYYYYMMDD roundtrip",function()
   {
-   return function($3)
-   {
-    return $2(testing_GeneratedPrintf.p($3));
-   };
-  }(Global.id))(set("00000000-0000-0000-0000-000000000000")),[" "],0)),(sQ=(function($2)
-  {
-   return function($3)
-   {
-    return $2(Utils.prettyPrint($3));
-   };
-  }(Global.id))(s),[function(gid)
-  {
-   var x$1;
-   x$1=Global.String(get(gid));
-   return(((Runtime.Curried3(function($2,$3,$4)
-   {
-    return $2("{"+Strings.PadLeft(Utils.toSafe($3),10)+" :"+Utils.prettyPrint($4)+"}");
-   }))(Global.id))(sQ))(x$1);
-  },function(j)
-  {
-   var o,o$1,o$2,f$3;
-   o=(o$1=(o$2=j.tryField(s),o$2==null?null:o$2.$0.tryString()),(f$3=ParseO.parseGuidO(),o$1==null?null:f$3(o$1.$0)));
-   return o==null?null:{
+   var v,o,v$1;
+   return Unchecked.Equals((v=(o=(v$1=(ParseO.parseDateO2())("2019-03-08"),(Library.print(v$1),v$1)),o==null?null:{
     $:1,
-    $0:set(o.$0)
-   };
-  }]));
-  SC$1.serSnippet=(f$2=[(t=Serializer.serSnippetId(),Serializer$1.serField("snpId",function(s$1)
-  {
-   return s$1.snpId;
-  },function(v,s$1)
-  {
-   return Snippet.New(v,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpGeneration);
-  },t[0],t[1])),(t$1=Serializer$1.serString(),Serializer$1.serField("snpName",function(s$1)
-  {
-   return s$1.snpName;
-  },function(v,s$1)
-  {
-   return Snippet.New(s$1.snpId,v,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpGeneration);
-  },t$1[0],t$1[1])),(t$2=Serializer$1.serString(),Serializer$1.serField("snpContent",function(s$1)
-  {
-   return s$1.snpContent;
-  },function(v,s$1)
-  {
-   return Snippet.New(s$1.snpId,s$1.snpName,v,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpGeneration);
-  },t$2[0],t$2[1])),(t$3=(t$4=Serializer.serSnippetId(),Serializer$1.serOpt(t$4[0],t$4[1])),Serializer$1.serField("snpParentIdO",function(s$1)
-  {
-   return s$1.snpParentIdO;
-  },function(v,s$1)
-  {
-   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,v,s$1.snpPredIds,s$1.snpProperties,s$1.snpGeneration);
-  },t$3[0],t$3[1])),(t$5=(t$6=Serializer.serSnippetId(),Serializer$1.serSet(t$6[0],t$6[1])),Serializer$1.serField("snpPredIds",function(s$1)
-  {
-   return s$1.snpPredIds;
-  },function(v,s$1)
-  {
-   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,v,s$1.snpProperties,s$1.snpGeneration);
-  },t$5[0],t$5[1])),(t$7=(t$8=Serializer$1.serDup(Serializer$1.serString(),Serializer$1.serString()),Serializer$1.serArr(t$8[0],t$8[1])),Serializer$1.serField("snpProperties",function(s$1)
-  {
-   return s$1.snpProperties;
-  },function(v,s$1)
-  {
-   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,v,s$1.snpGeneration);
-  },t$7[0],t$7[1])),(t$9=Serializer$1.serInt(),Serializer$1.serField("snpGeneration",function(s$1)
-  {
-   return s$1.snpGeneration;
-  },function(v,s$1)
-  {
-   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,v);
-  },t$9[0],t$9[1]))],(init=null,(init==null?Operators.FailWith("Initial record is null"):void 0,[function(dim)
-  {
-   var x$1;
-   function m(n,ser,_deser)
-   {
-    return(((Runtime.Curried3(function($2,$3,$4)
-    {
-     return $2(Utils.prettyPrint($3)+": "+Utils.toSafe($4));
-    }))(Global.id))(n))(ser(dim));
-   }
-   x$1=Strings.concat(", ",Seq.map(function($2)
-   {
-    return m($2[0],$2[1],$2[2]);
-   },f$2));
-   return(function($2)
-   {
-    return function($3)
-    {
-     return $2("{"+Utils.toSafe($3)+"}");
-    };
-   }(Global.id))(x$1);
-  },function(j)
-  {
-   return{
+    $0:Date$1.toYYYYMMDD("-",o.$0)
+   }),(Library.print(v),v)),{
     $:1,
-    $0:Seq.fold(function(dim,t$17)
-    {
-     var x$1,x$2,b;
-     x$1=(x$2=j.tryField(t$17[0]),(b=t$17[2](dim),x$2==null?null:b(x$2.$0)));
-     return x$1==null?dim:x$1.$0;
-    },init,f$2)
-   };
-  }])));
-  SC$1.serModel=(x=[(t$10=(t$11=Serializer.serSnippet(),Serializer$1.serArr(t$11[0],t$11[1])),Serializer$1.serField("snippets",function(m)
-  {
-   return m.snippets;
-  },function(v,m)
-  {
-   return Model.New(v,m.generation,m.collapsed);
-  },t$10[0],t$10[1])),(t$12=Serializer$1.serInt(),Serializer$1.serField("generation",function(m)
-  {
-   return m.generation;
-  },function(v,m)
-  {
-   return Model.New(m.snippets,v,m.collapsed);
-  },t$12[0],t$12[1])),(t$13=(t$14=Serializer.serSnippetId(),Serializer$1.serSet(t$14[0],t$14[1])),Serializer$1.serField("collapsed",function(m)
-  {
-   return m.collapsed;
-  },function(v,m)
-  {
-   return Model.New(m.snippets,m.generation,v);
-  },t$13[0],t$13[1]))],(i$3=Model.New([],0,new FSharpSet.New$1(null)),(i$3==null?Operators.FailWith("Initial record is null"):void 0,[function(dim)
-  {
-   var x$1;
-   function m(n,ser,_deser)
-   {
-    return(((Runtime.Curried3(function($2,$3,$4)
-    {
-     return $2(Utils.prettyPrint($3)+": "+Utils.toSafe($4));
-    }))(Global.id))(n))(ser(dim));
-   }
-   x$1=Strings.concat(", ",Seq.map(function($2)
-   {
-    return m($2[0],$2[1],$2[2]);
-   },x));
-   return(function($2)
-   {
-    return function($3)
-    {
-     return $2("{"+Utils.toSafe($3)+"}");
-    };
-   }(Global.id))(x$1);
-  },function(j)
-  {
-   return{
-    $:1,
-    $0:Seq.fold(function(dim,t$17)
-    {
-     var x$1,x$2,b;
-     x$1=(x$2=j.tryField(t$17[0]),(b=t$17[2](dim),x$2==null?null:b(x$2.$0)));
-     return x$1==null?dim:x$1.$0;
-    },i$3,x)
-   };
-  }])));
-  SC$1.model=Serializer.getModel(Serializer.snps(),33,new FSharpSet.New(List.ofArray([Serializer.snippet1().snpId,Serializer.snippet2().snpId])));
-  SC$1.dupOptFloatOptString1=(t$15=Serializer$1.serDup(Serializer$1.serOpt((Serializer$1.serFloat())[0],(Serializer$1.serFloat())[1]),Serializer$1.serOpt((Serializer$1.serString())[0],(Serializer$1.serString())[1])),(a=t$15[0],(a$1=t$15[1],function(v)
-  {
-   return Serializer.roundTrip(function($2)
-   {
-    return Serializer$2.tryDeserialize($2[0],$2[1]);
-   },a,a$1,v);
-  })));
-  SC$1.dupFloatOptString2=(t$16=Serializer$1.serDup(Serializer$1.serInt(),Serializer$1.serOpt((Serializer$1.serString())[0],(Serializer$1.serString())[1])),(a$2=t$16[0],(a$3=t$16[1],function(v)
-  {
-   return Serializer.roundTrip(function($2)
-   {
-    return Serializer$2.deserializeWithDefs($2[0],$2[1]);
-   },a$2,a$3,v);
-  })));
-  SC$1.testCases=List.ofArray([["roundTripTry",function()
-  {
-   return Unchecked.Equals(Serializer.roundTrip(function($2)
-   {
-    return Serializer$2.tryDeserialize($2[0],$2[1]);
-   },(Serializer.serModel())[0],(Serializer.serModel())[1],Serializer.model()),{
-    $:1,
-    $0:Serializer.model()
+    $0:"2019-03-08"
    });
-  }],["roundTripDefs",function()
-  {
-   return Unchecked.Equals(Serializer.roundTrip(function($2)
-   {
-    return Serializer$2.deserializeWithDefs($2[0],$2[1]);
-   },(Serializer.serModel())[0],(Serializer.serModel())[1],Serializer.model()),{
-    $:1,
-    $0:Serializer.model()
-   });
-  }],["roundTripFail",function()
-  {
-   return Unchecked.Equals(Serializer.roundTrip(function($2)
-   {
-    return Serializer$2.deserializeWithFail($2[0],$2[1]);
-   },(Serializer.serModel())[0],(Serializer.serModel())[1],Serializer.model()),{
-    $:1,
-    $0:Serializer.model()
-   });
-  }],["(float opt, str opt)1",function()
-  {
-   return Unchecked.Equals((Serializer.dupOptFloatOptString1())([{
-    $:1,
-    $0:67.4
-   },null]),{
-    $:1,
-    $0:[{
-     $:1,
-     $0:67.4
-    },null]
-   });
-  }],["(int      , str opt)2",function()
-  {
-   return Unchecked.Equals((Serializer.dupFloatOptString2())([67,{
-    $:1,
-    $0:"67"
-   }]),{
-    $:1,
-    $0:[67,{
-     $:1,
-     $0:"67"
-    }]
-   });
-  }],["jsonAndBackDefs",function()
-  {
-   return Unchecked.Equals(Serializer.ofJsonDefs(),{
-    $:1,
-    $0:Model.New(Arrays.map(function(s$1)
-    {
-     return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpGeneration===2?0:s$1.snpGeneration);
-    },Serializer.model().snippets),Serializer.model().generation,Serializer.model().collapsed)
-   });
-  }],["jsonAndBackFail",function()
-  {
-   function g$3(v)
-   {
-   }
-   try
-   {
-    (function(x$1)
-    {
-     return g$3(Serializer.ofJsonFail(x$1));
-    }());
-    return false;
-   }
-   catch(e)
-   {
-    return true;
-   }
   }]]);
  };
- Snippet.New=function(snpId,snpName,snpContent,snpParentIdO,snpPredIds,snpProperties,snpGeneration)
- {
-  return{
-   snpId:snpId,
-   snpName:snpName,
-   snpContent:snpContent,
-   snpParentIdO:snpParentIdO,
-   snpPredIds:snpPredIds,
-   snpProperties:snpProperties,
-   snpGeneration:snpGeneration
-  };
- };
- Numeric.TryParseInt32=function(s,r)
- {
-  return Numeric.TryParse(s,-2147483648,2147483647,r);
- };
- Obj=WebSharper.Obj=Runtime.Class({
-  Equals:function(obj)
-  {
-   return this===obj;
-  },
-  GetHashCode:function()
-  {
-   return -1;
-  }
- },null,Obj);
- Obj.New=Runtime.Ctor(function()
- {
- },Obj);
- FSharpSet=Collections.FSharpSet=Runtime.Class({
-  Equals:function(other)
-  {
-   return this.get_Count()===other.get_Count()&&Seq.forall2(Unchecked.Equals,this,other);
-  },
-  get_Count:function()
-  {
-   var tree;
-   tree=this.tree;
-   return tree==null?0:tree.Count;
-  },
-  GetEnumerator$1:function()
-  {
-   return Enumerator.Get(BalancedTree.Enumerate(false,this.tree));
-  },
-  GetHashCode:function()
-  {
-   return -1741749453+Unchecked.Hash(Arrays.ofSeq(this));
-  },
-  CompareTo0:function(other)
-  {
-   return Seq.compareWith(Unchecked.Compare,this,other);
-  },
-  GetEnumerator:function()
-  {
-   return this.GetEnumerator$1();
-  },
-  GetEnumerator0:function()
-  {
-   return this.GetEnumerator$1();
-  }
- },Obj,FSharpSet);
- FSharpSet.New=Runtime.Ctor(function(s)
- {
-  FSharpSet.New$1.call(this,BalancedTree.OfSeq(s));
- },FSharpSet);
- FSharpSet.New$1=Runtime.Ctor(function(tree)
- {
-  Obj.New.call(this);
-  this.tree=tree;
- },FSharpSet);
- SnippetId=Library.SnippetId=Runtime.Class({},null,SnippetId);
  Operators.FailWith=function(msg)
  {
   throw new Error(msg);
- };
- Operators.range=function(min,max)
- {
-  var count;
-  count=1+max-min;
-  return count<=0?[]:Seq.init(count,function(x)
-  {
-   return x+min;
-  });
  };
  Operators.KeyValue=function(kvp)
  {
@@ -1256,168 +725,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
   };
  };
- Seq.tryFind=function(ok,s)
- {
-  var e,r,x;
-  e=Enumerator.Get(s);
-  try
-  {
-   r=null;
-   while(r==null&&e.MoveNext())
-    {
-     x=e.Current();
-     ok(x)?r={
-      $:1,
-      $0:x
-     }:void 0;
-    }
-   return r;
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
- Seq.tryFindIndex=function(ok,s)
- {
-  var e,loop,i;
-  e=Enumerator.Get(s);
-  try
-  {
-   loop=true;
-   i=0;
-   while(loop&&e.MoveNext())
-    if(ok(e.Current()))
-     loop=false;
-    else
-     i=i+1;
-   return loop?null:{
-    $:1,
-    $0:i
-   };
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
- Seq.filter=function(f,s)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var o;
-    o=Enumerator.Get(s);
-    return new T.New(null,null,function(e)
-    {
-     var loop,c,res;
-     loop=o.MoveNext();
-     c=o.Current();
-     res=false;
-     while(loop)
-      if(f(c))
-       {
-        e.c=c;
-        res=true;
-        loop=false;
-       }
-      else
-       if(o.MoveNext())
-        c=o.Current();
-       else
-        loop=false;
-     return res;
-    },function()
-    {
-     o.Dispose();
-    });
-   }
-  };
- };
- Seq.append=function(s1,s2)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var e1,first;
-    e1=Enumerator.Get(s1);
-    first=[true];
-    return new T.New(e1,null,function(x)
-    {
-     var x$1;
-     return x.s.MoveNext()?(x.c=x.s.Current(),true):(x$1=x.s,!Unchecked.Equals(x$1,null)?x$1.Dispose():void 0,x.s=null,first[0]&&(first[0]=false,x.s=Enumerator.Get(s2),x.s.MoveNext()?(x.c=x.s.Current(),true):(x.s.Dispose(),x.s=null,false)));
-    },function(x)
-    {
-     var x$1;
-     x$1=x.s;
-     !Unchecked.Equals(x$1,null)?x$1.Dispose():void 0;
-    });
-   }
-  };
- };
- Seq.collect=function(f,s)
- {
-  return Seq.concat(Seq.map(f,s));
- };
- Seq.concat=function(ss)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var outerE;
-    outerE=Enumerator.Get(ss);
-    return new T.New(null,null,function(st)
-    {
-     var m;
-     while(true)
-      {
-       m=st.s;
-       if(Unchecked.Equals(m,null))
-       {
-        if(outerE.MoveNext())
-         {
-          st.s=Enumerator.Get(outerE.Current());
-          st=st;
-         }
-        else
-         {
-          outerE.Dispose();
-          return false;
-         }
-       }
-       else
-        if(m.MoveNext())
-         {
-          st.c=m.Current();
-          return true;
-         }
-        else
-         {
-          st.Dispose();
-          st.s=null;
-          st=st;
-         }
-      }
-    },function(st)
-    {
-     var x;
-     x=st.s;
-     !Unchecked.Equals(x,null)?x.Dispose():void 0;
-     !Unchecked.Equals(outerE,null)?outerE.Dispose():void 0;
-    });
-   }
-  };
- };
- Seq.init=function(n,f)
- {
-  return Seq.take(n,Seq.initInfinite(f));
- };
- Seq.distinct=function(s)
- {
-  return Seq.distinctBy(Global.id,s);
- };
  Seq.head=function(s)
  {
   var e;
@@ -1430,127 +737,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    if(typeof e=="object"&&"Dispose"in e)
     e.Dispose();
-  }
- };
- Seq.take=function(n,s)
- {
-  n<0?Seq.nonNegative():void 0;
-  return{
-   GetEnumerator:function()
-   {
-    var e;
-    e=[Enumerator.Get(s)];
-    return new T.New(0,null,function(o)
-    {
-     var en;
-     o.s=o.s+1;
-     return o.s>n?false:(en=e[0],Unchecked.Equals(en,null)?Seq.insufficient():en.MoveNext()?(o.c=en.Current(),o.s===n?(en.Dispose(),e[0]=null):void 0,true):(en.Dispose(),e[0]=null,Seq.insufficient()));
-    },function()
-    {
-     var x;
-     x=e[0];
-     !Unchecked.Equals(x,null)?x.Dispose():void 0;
-    });
-   }
-  };
- };
- Seq.distinctBy=function(f,s)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var o,seen;
-    o=Enumerator.Get(s);
-    seen=new HashSet.New$3();
-    return new T.New(null,null,function(e)
-    {
-     var cur,has;
-     if(o.MoveNext())
-      {
-       cur=o.Current();
-       has=seen.Add(f(cur));
-       while(!has&&o.MoveNext())
-        {
-         cur=o.Current();
-         has=seen.Add(f(cur));
-        }
-       return has&&(e.c=cur,true);
-      }
-     else
-      return false;
-    },function()
-    {
-     o.Dispose();
-    });
-   }
-  };
- };
- Seq.compareWith=function(f,s1,s2)
- {
-  var e1,$1,e2,r,loop;
-  e1=Enumerator.Get(s1);
-  try
-  {
-   e2=Enumerator.Get(s2);
-   try
-   {
-    r=0;
-    loop=true;
-    while(loop&&r===0)
-     if(e1.MoveNext())
-      r=e2.MoveNext()?f(e1.Current(),e2.Current()):1;
-     else
-      if(e2.MoveNext())
-       r=-1;
-      else
-       loop=false;
-    $1=r;
-   }
-   finally
-   {
-    if(typeof e2=="object"&&"Dispose"in e2)
-     e2.Dispose();
-   }
-   return $1;
-  }
-  finally
-  {
-   if(typeof e1=="object"&&"Dispose"in e1)
-    e1.Dispose();
-  }
- };
- Seq.forall2=function(p,s1,s2)
- {
-  return!Seq.exists2(function($1,$2)
-  {
-   return!p($1,$2);
-  },s1,s2);
- };
- Seq.exists2=function(p,s1,s2)
- {
-  var e1,$1,e2,r;
-  e1=Enumerator.Get(s1);
-  try
-  {
-   e2=Enumerator.Get(s2);
-   try
-   {
-    r=false;
-    while(!r&&e1.MoveNext()&&e2.MoveNext())
-     r=p(e1.Current(),e2.Current());
-    $1=r;
-   }
-   finally
-   {
-    if(typeof e2=="object"&&"Dispose"in e2)
-     e2.Dispose();
-   }
-   return $1;
-  }
-  finally
-  {
-   if(typeof e1=="object"&&"Dispose"in e1)
-    e1.Dispose();
   }
  };
  Seq.iter=function(p,s)
@@ -1594,344 +780,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return Operators.FailWith("The input sequence was empty.");
  };
- Seq.unfold=function(f,s)
- {
-  return{
-   GetEnumerator:function()
-   {
-    return new T.New(s,null,function(e)
-    {
-     var m;
-     m=f(e.s);
-     return m==null?false:(e.c=m.$0[0],e.s=m.$0[1],true);
-    },void 0);
-   }
-  };
- };
- Serializer$1.serialize=function(s,s$1,v)
- {
-  return[s,s$1][0](v);
- };
- Serializer$1.toJsonString=function(v)
- {
-  return Arrays.ofSeq(Seq.delay(function()
-  {
-   return Seq.append(["\""],Seq.delay(function()
-   {
-    return Seq.append(!Strings.IsNullOrEmpty(v)?Seq.collect(function(i)
-    {
-     var c,ci;
-     c=v[i];
-     ci=c.charCodeAt();
-     return ci>=0&&ci<=7||ci===11||ci>=14&&ci<=31?(function($1)
-     {
-      return function($2)
-      {
-       return $1("\\u"+Utils.padNumLeft($2.toString(16),4));
-      };
-     }(Global.id))(ci):c==="\u0008"?"\\b":c==="\u0009"?"\\t":c==="\n"?"\\n":c==="\u000c"?"\\f":c==="\r"?"\\r":c==="\""?"\\\"":c==="\\"?"\\\\":[c];
-    },Operators.range(0,v.length-1)):[],Seq.delay(function()
-    {
-     return["\""];
-    }));
-   }));
-  })).join("");
- };
- Serializer$1.serField=function(name,get,set,s,s$1)
- {
-  return[name,function(x)
-  {
-   return s(get(x));
-  },function(rc)
-  {
-   return function(j)
-   {
-    var o;
-    o=s$1(j);
-    return o==null?null:{
-     $:1,
-     $0:set(o.$0,rc)
-    };
-   };
-  }];
- };
- Serializer$1.serString=function()
- {
-  SC$1.$cctor();
-  return SC$1.serString;
- };
- Serializer$1.serOpt=function(s,s$1)
- {
-  var ser,f,m;
-  function g(o)
-  {
-   return o==null?"null":o.$0;
-  }
-  ser=[s,s$1];
-  return[(f=(m=ser[0],function(o)
-  {
-   return o==null?null:{
-    $:1,
-    $0:m(o.$0)
-   };
-  }),function(x)
-  {
-   return g(f(x));
-  }),function(j)
-  {
-   return{
-    $:1,
-    $0:j.isNull()?null:ser[1](j)
-   };
-  }];
- };
- Serializer$1.serSet=function(s,s$1)
- {
-  var ser,f,m;
-  ser=[s,s$1];
-  return[(f=(m=ser[0],function(s$2)
-  {
-   return new FSharpSet.New$1(BalancedTree.OfSeq(Seq.map(m,s$2)));
-  }),function(x)
-  {
-   return Serializer$1.sprintA(f(x));
-  }),function(j)
-  {
-   var o,x,m$1,c;
-   o=(x=j.tryArray(),(m$1=(c=ser[1],function(a)
-   {
-    return Arrays.choose(c,a);
-   }),x==null?null:{
-    $:1,
-    $0:m$1(x.$0)
-   }));
-   return o==null?null:{
-    $:1,
-    $0:new FSharpSet.New(o.$0)
-   };
-  }];
- };
- Serializer$1.serDup=function(serFst,serSnd)
- {
-  return[function(t)
-  {
-   return(((Runtime.Curried3(function($1,$2,$3)
-   {
-    return $1("["+Utils.toSafe($2)+", "+Utils.toSafe($3)+"]");
-   }))(Global.id))(serFst[0](t[0])))(serSnd[0](t[1]));
-  },function(j)
-  {
-   var a,$1,t,$2,$3,$4;
-   a=j.tryArray();
-   return a!=null&&a.$==1&&((t=a.$0,!Unchecked.Equals(t,null)&&t.length===2)&&($1=[Arrays.get(a.$0,0),Arrays.get(a.$0,1)],true))?($2=serFst[1]($1[0]),($3=serSnd[1]($1[1]),$2!=null&&$2.$==1&&($3!=null&&$3.$==1&&($4=[$2.$0,$3.$0],true))?{
-    $:1,
-    $0:[$4[0],$4[1]]
-   }:null)):null;
-  }];
- };
- Serializer$1.serArr=function(s,s$1)
- {
-  var ser,f,m;
-  ser=[s,s$1];
-  return[(f=(m=ser[0],function(a)
-  {
-   return Arrays.map(m,a);
-  }),function(x)
-  {
-   return Serializer$1.sprintA(f(x));
-  }),function(j)
-  {
-   var x,m$1,c;
-   x=j.tryArray();
-   m$1=(c=ser[1],function(a)
-   {
-    return Arrays.choose(c,a);
-   });
-   return x==null?null:{
-    $:1,
-    $0:m$1(x.$0)
-   };
-  }];
- };
- Serializer$1.serInt=function()
- {
-  SC$1.$cctor();
-  return SC$1.serInt;
- };
- Serializer$1.serFloat=function()
- {
-  SC$1.$cctor();
-  return SC$1.serFloat;
- };
- Serializer$1.sprintA=function(v)
- {
-  var x;
-  x=Strings.concat(", ",v);
-  return(function($1)
-  {
-   return function($2)
-   {
-    return $1("["+Utils.toSafe($2)+"]");
-   };
-  }(Global.id))(x);
- };
- Serializer$2.deserializeWithDefs=function(s,s$1)
- {
-  return Serializer$2.deserialize(function()
-  {
-   return{
-    $:1,
-    $0:0
-   };
-  },function()
-  {
-   return{
-    $:1,
-    $0:0
-   };
-  },function()
-  {
-   return{
-    $:1,
-    $0:""
-   };
-  },function()
-  {
-   return{
-    $:1,
-    $0:false
-   };
-  },function()
-  {
-   return{
-    $:1,
-    $0:[]
-   };
-  },s,s$1);
- };
- Serializer$2.deserializeWithFail=function(s,s$1)
- {
-  return Serializer$2.deserialize(function()
-  {
-   return Operators.FailWith("Error expecting float");
-  },function()
-  {
-   return Operators.FailWith("Error expecting int");
-  },function()
-  {
-   return Operators.FailWith("Error expecting string");
-  },function()
-  {
-   return Operators.FailWith("Error expecting bool");
-  },function()
-  {
-   return Operators.FailWith("Error expecting array");
-  },s,s$1);
- };
- Serializer$2.tryDeserialize=function(s,s$1)
- {
-  return Serializer$2.deserialize(function()
-  {
-   return null;
-  },function()
-  {
-   return null;
-  },function()
-  {
-   return null;
-  },function()
-  {
-   return null;
-  },function()
-  {
-   return null;
-  },s,s$1);
- };
- Serializer$2.deserialize=function(df,di,ds,db,da,s,s$1)
- {
-  var f,g;
-  function f$1(a)
-  {
-   return JSON.parse(a);
-  }
-  function g$1(o)
-  {
-   return Serializer$2.getJsonIntermediate(df,di,ds,db,da,o);
-  }
-  f=function(x)
-  {
-   return g$1(f$1(x));
-  };
-  g=[s,s$1][1];
-  return function(x)
-  {
-   return g(f(x));
-  };
- };
- Serializer$2.getJsonIntermediate=function(df,di,ds,db,da,o)
- {
-  function jsonInt(o$1)
-  {
-   return Serializer$2.getJsonIntermediate(df,di,ds,db,da,o$1);
-  }
-  return JsonIntermediate.New(function()
-  {
-   var o$1;
-   o$1=!o?null:typeof o=="number"?{
-    $:1,
-    $0:o
-   }:null;
-   return o$1==null?df():o$1;
-  },function()
-  {
-   var o$1;
-   o$1=!o?null:typeof o=="number"?{
-    $:1,
-    $0:o
-   }:null;
-   return o$1==null?di():o$1;
-  },function()
-  {
-   var o$1;
-   o$1=!o?null:typeof o=="string"?{
-    $:1,
-    $0:o
-   }:null;
-   return o$1==null?ds():o$1;
-  },function()
-  {
-   var o$1;
-   o$1=!o?null:typeof o=="boolean"?{
-    $:1,
-    $0:o
-   }:null;
-   return o$1==null?db():o$1;
-  },function()
-  {
-   var o$1;
-   o$1=!o?null:o instanceof Global.Array?{
-    $:1,
-    $0:Arrays.map(jsonInt,o)
-   }:null;
-   return o$1==null?da(jsonInt):o$1;
-  },function(fl)
-  {
-   var m;
-   return!o?null:(m=o[fl],Unchecked.Equals(m,null)?{
-    $:1,
-    $0:jsonInt(null)
-   }:!m?null:{
-    $:1,
-    $0:jsonInt(m)
-   });
-  },function()
-  {
-   return Unchecked.Equals(typeof o,"object")&&!Unchecked.Equals(o,null);
-  },function()
-  {
-   return Unchecked.Equals(o,null);
-  });
- };
  Utils.prettyPrint=function(o)
  {
   var t,s;
@@ -1944,22 +792,15 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return m($1[0],$1[1]);
   },JS.GetFields(o)))+"}":s):Global.String(o));
  };
+ Utils.toSafe=function(s)
+ {
+  return s==null?"":s;
+ };
  Utils.padNumLeft=function(s,l)
  {
   var f;
   f=Arrays.get(s,0);
   return f===" "||f==="+"||f==="-"?f+Strings.PadLeftWith(s.substr(1),l-1,"0"):Strings.PadLeftWith(s,l,"0");
- };
- Utils.toSafe=function(s)
- {
-  return s==null?"":s;
- };
- Library.Error=function(a)
- {
-  return{
-   $:1,
-   $0:a
-  };
  };
  JS.GetFields=function(o)
  {
@@ -1974,113 +815,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   r=[];
   for(var k$1 in o)r.push(o[k$1]);
   return r;
- };
- Builder=Result.Builder=Runtime.Class({},Obj,Builder);
- Builder.New=Runtime.Ctor(function()
- {
-  Obj.New.call(this);
- },Builder);
- Result.result=function()
- {
-  SC$1.$cctor();
-  return SC$1.result;
- };
- Builder$2=Builder$1.Builder=Runtime.Class({},Obj,Builder$2);
- Builder$2.New=Runtime.Ctor(function()
- {
-  Obj.New.call(this);
- },Builder$2);
- String.unindent=function(s)
- {
-  var lines,n,o,o$1;
-  lines=Strings.SplitChars(s,["\n"],0);
-  n=(o=Seq.tryFindIndex(function(y)
-  {
-   return" "!==y;
-  },(o$1=Seq.tryFind(function(l)
-  {
-   return Strings.Trim(l)!=="";
-  },lines),o$1==null?"":o$1.$0)),o==null?0:o.$0);
-  return Seq.filter(function(s$1)
-  {
-   return!Strings.StartsWith(s$1,"# 1 ");
-  },Seq.map(function(l)
-  {
-   return l.length<=n?"":l.substring(n);
-  },lines));
- };
- String.splitByChar=function(c,s)
- {
-  return Strings.SplitChars(s,[c],0);
- };
- Strings.concat=function(separator,strings)
- {
-  return Arrays.ofSeq(strings).join(separator);
- };
- Strings.Replace=function(subject,search,replace)
- {
-  function replaceLoop(subj)
-  {
-   var index,replaced,nextStartIndex;
-   index=subj.indexOf(search);
-   return index!==-1?(replaced=Strings.ReplaceOnce(subj,search,replace),(nextStartIndex=index+replace.length,Strings.Substring(replaced,0,index+replace.length)+replaceLoop(replaced.substring(nextStartIndex)))):subj;
-  }
-  return replaceLoop(subject);
- };
- Strings.PadLeft=function(s,n)
- {
-  return Strings.PadLeftWith(s,n," ");
- };
- Strings.ReplaceOnce=function(string,search,replace)
- {
-  return string.replace(search,replace);
- };
- Strings.SplitChars=function(s,sep,opts)
- {
-  return Strings.Split(s,new Global.RegExp("["+Strings.RegexEscape(sep.join(""))+"]"),opts);
- };
- Strings.Trim=function(s)
- {
-  return s.replace(new Global.RegExp("^\\s+"),"").replace(new Global.RegExp("\\s+$"),"");
- };
- Strings.StartsWith=function(t,s)
- {
-  return t.substring(0,s.length)==s;
- };
- Strings.IsNullOrEmpty=function(x)
- {
-  return x==null||x=="";
- };
- Strings.PadLeftWith=function(s,n,c)
- {
-  return n>s.length?Global.Array(n-s.length+1).join(c)+s:s;
- };
- Strings.Substring=function(s,ix,ct)
- {
-  return s.substr(ix,ct);
- };
- Strings.Split=function(s,pat,opts)
- {
-  return opts===1?Arrays.filter(function(x)
-  {
-   return x!=="";
-  },Strings.SplitWith(s,pat)):Strings.SplitWith(s,pat);
- };
- Strings.RegexEscape=function(s)
- {
-  return s.replace(new Global.RegExp("[-\\/\\\\^$*+?.()|[\\]{}]","g"),"\\$&");
- };
- Strings.SplitWith=function(str,pat)
- {
-  return str.split(pat);
- };
- Slice.array=function(source,start,finish)
- {
-  return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):[]:finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
- };
- Slice.string=function(source,start,finish)
- {
-  return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):"":finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
  };
  ParseO.tryParseWith=function(tryParseFunc)
  {
@@ -2120,6 +854,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   SC$1.$cctor();
   return SC$1.parseGuidO;
+ };
+ ParseO.parseDateO2=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseDateO2;
  };
  Unchecked.Equals=function(a,b)
  {
@@ -2166,6 +905,73 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     else
      return m=="function"&&("$Func"in a?a.$Func===b.$Func&&a.$Target===b.$Target:"$Invokes"in a&&"$Invokes"in b&&Unchecked.arrayEquals(a.$Invokes,b.$Invokes));
    }
+ };
+ Unchecked.arrayEquals=function(a,b)
+ {
+  var eq,i;
+  if(Arrays.length(a)===Arrays.length(b))
+   {
+    eq=true;
+    i=0;
+    while(eq&&i<Arrays.length(a))
+     {
+      !Unchecked.Equals(Arrays.get(a,i),Arrays.get(b,i))?eq=false:void 0;
+      i=i+1;
+     }
+    return eq;
+   }
+  else
+   return false;
+ };
+ Unchecked.dateEquals=function(a,b)
+ {
+  return a.getTime()===b.getTime();
+ };
+ Unchecked.Hash=function(o)
+ {
+  var m;
+  m=typeof o;
+  return m=="function"?0:m=="boolean"?o?1:0:m=="number"?o:m=="string"?Unchecked.hashString(o):m=="object"?o==null?0:o instanceof Global.Array?Unchecked.hashArray(o):Unchecked.hashObject(o):0;
+ };
+ Unchecked.hashString=function(s)
+ {
+  var hash,i,$1;
+  if(s===null)
+   return 0;
+  else
+   {
+    hash=5381;
+    for(i=0,$1=s.length-1;i<=$1;i++)hash=Unchecked.hashMix(hash,s[i].charCodeAt());
+    return hash;
+   }
+ };
+ Unchecked.hashArray=function(o)
+ {
+  var h,i,$1;
+  h=-34948909;
+  for(i=0,$1=Arrays.length(o)-1;i<=$1;i++)h=Unchecked.hashMix(h,Unchecked.Hash(Arrays.get(o,i)));
+  return h;
+ };
+ Unchecked.hashObject=function(o)
+ {
+  var h,k;
+  if("GetHashCode"in o)
+   return o.GetHashCode();
+  else
+   {
+    h=[0];
+    for(var k$1 in o)if(function(key)
+    {
+     h[0]=Unchecked.hashMix(Unchecked.hashMix(h[0],Unchecked.hashString(key)),Unchecked.Hash(o[key]));
+     return false;
+    }(k$1))
+     break;
+    return h[0];
+   }
+ };
+ Unchecked.hashMix=function(x,y)
+ {
+  return(x<<5)+x+y;
  };
  Unchecked.Compare=function(a,b)
  {
@@ -2223,27 +1029,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     }
    }
  };
- Unchecked.arrayEquals=function(a,b)
- {
-  var eq,i;
-  if(Arrays.length(a)===Arrays.length(b))
-   {
-    eq=true;
-    i=0;
-    while(eq&&i<Arrays.length(a))
-     {
-      !Unchecked.Equals(Arrays.get(a,i),Arrays.get(b,i))?eq=false:void 0;
-      i=i+1;
-     }
-    return eq;
-   }
-  else
-   return false;
- };
- Unchecked.dateEquals=function(a,b)
- {
-  return a.getTime()===b.getTime();
- };
  Unchecked.compareArrays=function(a,b)
  {
   var cmp,i;
@@ -2268,51 +1053,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return Unchecked.Compare(a.getTime(),b.getTime());
  };
- Unchecked.Hash=function(o)
+ Numeric.TryParseInt32=function(s,r)
  {
-  var m;
-  m=typeof o;
-  return m=="function"?0:m=="boolean"?o?1:0:m=="number"?o:m=="string"?Unchecked.hashString(o):m=="object"?o==null?0:o instanceof Global.Array?Unchecked.hashArray(o):Unchecked.hashObject(o):0;
- };
- Unchecked.hashString=function(s)
- {
-  var hash,i,$1;
-  if(s===null)
-   return 0;
-  else
-   {
-    hash=5381;
-    for(i=0,$1=s.length-1;i<=$1;i++)hash=Unchecked.hashMix(hash,s[i].charCodeAt());
-    return hash;
-   }
- };
- Unchecked.hashArray=function(o)
- {
-  var h,i,$1;
-  h=-34948909;
-  for(i=0,$1=Arrays.length(o)-1;i<=$1;i++)h=Unchecked.hashMix(h,Unchecked.Hash(Arrays.get(o,i)));
-  return h;
- };
- Unchecked.hashObject=function(o)
- {
-  var h,k;
-  if("GetHashCode"in o)
-   return o.GetHashCode();
-  else
-   {
-    h=[0];
-    for(var k$1 in o)if(function(key)
-    {
-     h[0]=Unchecked.hashMix(Unchecked.hashMix(h[0],Unchecked.hashString(key)),Unchecked.Hash(o[key]));
-     return false;
-    }(k$1))
-     break;
-    return h[0];
-   }
- };
- Unchecked.hashMix=function(x,y)
- {
-  return(x<<5)+x+y;
+  return Numeric.TryParse(s,-2147483648,2147483647,r);
  };
  Guid.TryParse=function(input,output)
  {
@@ -2361,16 +1104,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
    return $1;
   }
- };
- Guid.NewGuid=function()
- {
-  return"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(new Global.RegExp("[xy]","g"),function(c)
-  {
-   var r,v;
-   r=Math.random()*16|0;
-   v=c=="x"?r:r&3|8;
-   return v.toString(16);
-  });
  };
  Guid.ParseExact=function(input,format)
  {
@@ -2495,30 +1228,202 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   throw new FormatException.New$1("Format String can be only \"D\", \"d\", \"N\", \"n\", \"P\", \"p\", \"B\", \"b\", \"X\" or \"x\".");
  };
- JsonIntermediate.New=function(tryFloat,tryInt,tryString,tryBool,tryArray,tryField,isObject,isNull)
+ List.ofArray=function(arr)
  {
-  return{
-   tryFloat:tryFloat,
-   tryInt:tryInt,
-   tryString:tryString,
-   tryBool:tryBool,
-   tryArray:tryArray,
-   tryField:tryField,
-   isObject:isObject,
-   isNull:isNull
-  };
+  var r,i,$1;
+  r=T$1.Empty;
+  for(i=Arrays.length(arr)-1,$1=0;i>=$1;i--)r=new T$1({
+   $:1,
+   $0:Arrays.get(arr,i),
+   $1:r
+  });
+  return r;
  };
- SnippetModule.New=function(name,content,parentO)
+ List.ofSeq=function(s)
  {
-  return Snippet.New(new SnippetId({
-   $:0,
-   $0:Guid.NewGuid()
-  }),name,content,parentO,new FSharpSet.New$1(null),[],(SnippetModule.getNextGeneration())());
+  var e,$1,go,r,res,t;
+  if(s instanceof T$1)
+   return s;
+  else
+   if(s instanceof Global.Array)
+    return List.ofArray(s);
+   else
+    {
+     e=Enumerator.Get(s);
+     try
+     {
+      go=e.MoveNext();
+      if(!go)
+       $1=T$1.Empty;
+      else
+       {
+        res=new T$1({
+         $:1
+        });
+        r=res;
+        while(go)
+         {
+          r.$0=e.Current();
+          e.MoveNext()?r=(t=new T$1({
+           $:1
+          }),r.$1=t,t):go=false;
+         }
+        r.$1=T$1.Empty;
+        $1=res;
+       }
+      return $1;
+     }
+     finally
+     {
+      if(typeof e=="object"&&"Dispose"in e)
+       e.Dispose();
+     }
+    }
  };
- SnippetModule.getNextGeneration=function()
+ List.head=function(l)
  {
-  SC$1.$cctor();
-  return SC$1.getNextGeneration;
+  return l.$==1?l.$0:List.listEmpty();
+ };
+ List.tail=function(l)
+ {
+  return l.$==1?l.$1:List.listEmpty();
+ };
+ List.listEmpty=function()
+ {
+  return Operators.FailWith("The input list was empty.");
+ };
+ Library.print=function(v)
+ {
+  if(typeof v=="string")
+   ((function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.toSafe($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(v));
+  else
+   ((function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(v));
+ };
+ Date$1.toYYYYMMDD=function(sep,date)
+ {
+  return((((((Runtime.Curried(function($1,$2,$3,$4,$5,$6)
+  {
+   return $1(Global.String($2)+Utils.toSafe($3)+Utils.padNumLeft(Global.String($4),2)+Utils.toSafe($5)+Utils.padNumLeft(Global.String($6),2));
+  },6))(Global.id))((new Global.Date(date)).getFullYear()))(sep))((new Global.Date(date)).getMonth()+1))(sep))((new Global.Date(date)).getDate());
+ };
+ Enumerator.Get=function(x)
+ {
+  return x instanceof Global.Array?Enumerator.ArrayEnumerator(x):Unchecked.Equals(typeof x,"string")?Enumerator.StringEnumerator(x):x.GetEnumerator();
+ };
+ Enumerator.ArrayEnumerator=function(s)
+ {
+  return new T.New(0,null,function(e)
+  {
+   var i;
+   i=e.s;
+   return i<Arrays.length(s)&&(e.c=Arrays.get(s,i),e.s=i+1,true);
+  },void 0);
+ };
+ Enumerator.StringEnumerator=function(s)
+ {
+  return new T.New(0,null,function(e)
+  {
+   var i;
+   i=e.s;
+   return i<s.length&&(e.c=s[i],e.s=i+1,true);
+  },void 0);
+ };
+ Enumerator.Get0=function(x)
+ {
+  return x instanceof Global.Array?Enumerator.ArrayEnumerator(x):Unchecked.Equals(typeof x,"string")?Enumerator.StringEnumerator(x):"GetEnumerator0"in x?x.GetEnumerator0():x.GetEnumerator();
+ };
+ Obj=WebSharper.Obj=Runtime.Class({
+  Equals:function(obj)
+  {
+   return this===obj;
+  },
+  GetHashCode:function()
+  {
+   return -1;
+  }
+ },null,Obj);
+ Obj.New=Runtime.Ctor(function()
+ {
+ },Obj);
+ T=Enumerator.T=Runtime.Class({
+  Dispose:function()
+  {
+   if(this.d)
+    this.d(this);
+  },
+  MoveNext:function()
+  {
+   return this.n(this);
+  },
+  Current:function()
+  {
+   return this.c;
+  }
+ },Obj,T);
+ T.New=Runtime.Ctor(function(s,c,n,d)
+ {
+  Obj.New.call(this);
+  this.s=s;
+  this.c=c;
+  this.n=n;
+  this.d=d;
+ },T);
+ Pervasives.NewFromSeq=function(fields)
+ {
+  var r,e,f;
+  r={};
+  e=Enumerator.Get(fields);
+  try
+  {
+   while(e.MoveNext())
+    {
+     f=e.Current();
+     r[f[0]]=f[1];
+    }
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+  return r;
+ };
+ Arrays.get=function(arr,n)
+ {
+  Arrays.checkBounds(arr,n);
+  return arr[n];
+ };
+ Arrays.length=function(arr)
+ {
+  return arr.dims===2?arr.length*arr.length:arr.length;
+ };
+ Arrays.checkBounds=function(arr,n)
+ {
+  if(n<0||n>=arr.length)
+   Operators.FailWith("Index was outside the bounds of the array.");
+ };
+ Arrays.set=function(arr,n,x)
+ {
+  Arrays.checkBounds(arr,n);
+  arr[n]=x;
  };
  Arrays.map=function(f,arr)
  {
@@ -2552,21 +1457,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      }
     }
  };
- Arrays.head=function(arr)
- {
-  Arrays.nonEmpty(arr);
-  return arr[0];
- };
- Arrays.choose=function(f,arr)
- {
-  var q,i,$1,m;
-  q=[];
-  for(i=0,$1=arr.length-1;i<=$1;i++){
-   m=f(arr[i]);
-   m==null?void 0:q.push(m.$0);
-  }
-  return q;
- };
  Arrays.ofList=function(xs)
  {
   var l,q;
@@ -2578,21 +1468,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     l=List.tail(l);
    }
   return q;
- };
- Arrays.sortInPlace=function(arr)
- {
-  Arrays.mapInPlace(function(t)
-  {
-   return t[0];
-  },Arrays.mapiInPlace(function($1,$2)
-  {
-   return[$2,$1];
-  },arr).sort(Unchecked.Compare));
- };
- Arrays.nonEmpty=function(arr)
- {
-  if(arr.length===0)
-   Operators.FailWith("The input array was empty.");
  };
  Arrays.exists=function(f,x)
  {
@@ -2662,6 +1537,16 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   m=Arrays.tryPick(f,arr);
   return m==null?Operators.FailWith("KeyNotFoundException"):m.$0;
  };
+ Arrays.choose=function(f,arr)
+ {
+  var q,i,$1,m;
+  q=[];
+  for(i=0,$1=arr.length-1;i<=$1;i++){
+   m=f(arr[i]);
+   m==null?void 0:q.push(m.$0);
+  }
+  return q;
+ };
  Arrays.concat=function(xs)
  {
   return Global.Array.prototype.concat.apply([],Arrays.ofSeq(xs));
@@ -2694,171 +1579,44 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     a=false;
   return a;
  };
- List.ofArray=function(arr)
+ Strings.concat=function(separator,strings)
  {
-  var r,i,$1;
-  r=T$1.Empty;
-  for(i=Arrays.length(arr)-1,$1=0;i>=$1;i--)r=new T$1({
-   $:1,
-   $0:Arrays.get(arr,i),
-   $1:r
-  });
-  return r;
+  return Arrays.ofSeq(strings).join(separator);
  };
- List.ofSeq=function(s)
+ Strings.PadLeftWith=function(s,n,c)
  {
-  var e,$1,go,r,res,t;
-  if(s instanceof T$1)
-   return s;
-  else
-   if(s instanceof Global.Array)
-    return List.ofArray(s);
-   else
-    {
-     e=Enumerator.Get(s);
-     try
-     {
-      go=e.MoveNext();
-      if(!go)
-       $1=T$1.Empty;
-      else
-       {
-        res=new T$1({
-         $:1
-        });
-        r=res;
-        while(go)
-         {
-          r.$0=e.Current();
-          e.MoveNext()?r=(t=new T$1({
-           $:1
-          }),r.$1=t,t):go=false;
-         }
-        r.$1=T$1.Empty;
-        $1=res;
-       }
-      return $1;
-     }
-     finally
-     {
-      if(typeof e=="object"&&"Dispose"in e)
-       e.Dispose();
-     }
-    }
+  return n>s.length?Global.Array(n-s.length+1).join(c)+s:s;
  };
- List.head=function(l)
+ Strings.Trim=function(s)
  {
-  return l.$==1?l.$0:List.listEmpty();
+  return s.replace(new Global.RegExp("^\\s+"),"").replace(new Global.RegExp("\\s+$"),"");
  };
- List.tail=function(l)
+ Strings.Substring=function(s,ix,ct)
  {
-  return l.$==1?l.$1:List.listEmpty();
+  return s.substr(ix,ct);
  };
- List.listEmpty=function()
+ Strings.SplitChars=function(s,sep,opts)
  {
-  return Operators.FailWith("The input list was empty.");
+  return Strings.Split(s,new Global.RegExp("["+Strings.RegexEscape(sep.join(""))+"]"),opts);
  };
- testing_GeneratedPrintf.p=function($1)
+ Strings.StartsWith=function(t,s)
  {
-  return"SnippetId "+Utils.prettyPrint($1.$0);
+  return t.substring(0,s.length)==s;
  };
- Tree.New=function(Node$1,Left,Right,Height,Count)
+ Strings.Split=function(s,pat,opts)
  {
-  return{
-   Node:Node$1,
-   Left:Left,
-   Right:Right,
-   Height:Height,
-   Count:Count
-  };
- };
- Pervasives.NewFromSeq=function(fields)
- {
-  var r,e,f;
-  r={};
-  e=Enumerator.Get(fields);
-  try
+  return opts===1?Arrays.filter(function(x)
   {
-   while(e.MoveNext())
-    {
-     f=e.Current();
-     r[f[0]]=f[1];
-    }
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
-  return r;
+   return x!=="";
+  },Strings.SplitWith(s,pat)):Strings.SplitWith(s,pat);
  };
- Enumerator.Get=function(x)
+ Strings.RegexEscape=function(s)
  {
-  return x instanceof Global.Array?Enumerator.ArrayEnumerator(x):Unchecked.Equals(typeof x,"string")?Enumerator.StringEnumerator(x):x.GetEnumerator();
+  return s.replace(new Global.RegExp("[-\\/\\\\^$*+?.()|[\\]{}]","g"),"\\$&");
  };
- Enumerator.ArrayEnumerator=function(s)
+ Strings.SplitWith=function(str,pat)
  {
-  return new T.New(0,null,function(e)
-  {
-   var i;
-   i=e.s;
-   return i<Arrays.length(s)&&(e.c=Arrays.get(s,i),e.s=i+1,true);
-  },void 0);
- };
- Enumerator.StringEnumerator=function(s)
- {
-  return new T.New(0,null,function(e)
-  {
-   var i;
-   i=e.s;
-   return i<s.length&&(e.c=s[i],e.s=i+1,true);
-  },void 0);
- };
- Enumerator.Get0=function(x)
- {
-  return x instanceof Global.Array?Enumerator.ArrayEnumerator(x):Unchecked.Equals(typeof x,"string")?Enumerator.StringEnumerator(x):"GetEnumerator0"in x?x.GetEnumerator0():x.GetEnumerator();
- };
- T=Enumerator.T=Runtime.Class({
-  Dispose:function()
-  {
-   if(this.d)
-    this.d(this);
-  },
-  MoveNext:function()
-  {
-   return this.n(this);
-  },
-  Current:function()
-  {
-   return this.c;
-  }
- },Obj,T);
- T.New=Runtime.Ctor(function(s,c,n,d)
- {
-  Obj.New.call(this);
-  this.s=s;
-  this.c=c;
-  this.n=n;
-  this.d=d;
- },T);
- Arrays.length=function(arr)
- {
-  return arr.dims===2?arr.length*arr.length:arr.length;
- };
- Arrays.get=function(arr,n)
- {
-  Arrays.checkBounds(arr,n);
-  return arr[n];
- };
- Arrays.checkBounds=function(arr,n)
- {
-  if(n<0||n>=arr.length)
-   Operators.FailWith("Index was outside the bounds of the array.");
- };
- Arrays.set=function(arr,n,x)
- {
-  Arrays.checkBounds(arr,n);
-  arr[n]=x;
+  return str.split(pat);
  };
  Doc=UI.Doc=Runtime.Class({},Obj,Doc);
  Doc.TextNode=function(v)
@@ -3239,7 +1997,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  DateUtil.TryParse=function(s)
  {
   var d;
-  d=Date.parse(s);
+  d=Date$2.parse(s);
   return Global.isNaN(d)?null:{
    $:1,
    $0:d
@@ -3252,61 +2010,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   ok=x===x-x%1&&x>=min&&x<=max;
   ok?r.set(x):void 0;
   return ok;
- };
- BalancedTree.OfSeq=function(data)
- {
-  var a;
-  a=Arrays.ofSeq(Seq.distinct(data));
-  Arrays.sortInPlace(a);
-  return BalancedTree.Build(a,0,a.length-1);
- };
- BalancedTree.Build=function(data,min,max)
- {
-  var center,left,right;
-  return max-min+1<=0?null:(center=(min+max)/2>>0,(left=BalancedTree.Build(data,min,center-1),(right=BalancedTree.Build(data,center+1,max),BalancedTree.Branch(Arrays.get(data,center),left,right))));
- };
- BalancedTree.Branch=function(node,left,right)
- {
-  var a,b;
-  return Tree.New(node,left,right,1+(a=left==null?0:left.Height,(b=right==null?0:right.Height,Unchecked.Compare(a,b)===1?a:b)),1+(left==null?0:left.Count)+(right==null?0:right.Count));
- };
- BalancedTree.Enumerate=function(flip,t)
- {
-  function gen(t$1,spine)
-  {
-   var t$2;
-   while(true)
-    if(t$1==null)
-     return spine.$==1?{
-      $:1,
-      $0:[spine.$0[0],[spine.$0[1],spine.$1]]
-     }:null;
-    else
-     if(flip)
-      {
-       t$2=t$1;
-       t$1=t$2.Right;
-       spine=new T$1({
-        $:1,
-        $0:[t$2.Node,t$2.Left],
-        $1:spine
-       });
-      }
-     else
-      {
-       t$2=t$1;
-       t$1=t$2.Left;
-       spine=new T$1({
-        $:1,
-        $0:[t$2.Node,t$2.Right],
-        $1:spine
-       });
-      }
-  }
-  return Seq.unfold(function($1)
-  {
-   return gen($1[0],$1[1]);
-  },[t,T$1.Empty]);
  };
  T$1=List.T=Runtime.Class({
   GetEnumerator:function()
@@ -4100,31 +2803,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    m===0?(st[0]=1,Concurrency.Start(work(),null)):m===1?st[0]=2:void 0;
   };
  };
- FormatException=WebSharper.FormatException=Runtime.Class({},Error,FormatException);
- FormatException.New$1=Runtime.Ctor(function(message)
- {
-  this.message=message;
-  Object.setPrototypeOf(this,FormatException.prototype);
- },FormatException);
- Arrays.mapiInPlace=function(f,arr)
- {
-  var i,$1;
-  for(i=0,$1=arr.length-1;i<=$1;i++)arr[i]=f(i,arr[i]);
-  return arr;
- };
- Arrays.mapInPlace=function(f,arr)
- {
-  var i,$1;
-  for(i=0,$1=arr.length-1;i<=$1;i++)arr[i]=f(arr[i]);
- };
- Seq.insufficient=function()
- {
-  return Operators.FailWith("The input sequence has an insufficient number of elements.");
- };
- Seq.nonNegative=function()
- {
-  return Operators.FailWith("The input must be non-negative.");
- };
  Elt=UI.Elt=Runtime.Class({},Doc,Elt);
  Elt.New=function(el,attr,children)
  {
@@ -4432,6 +3110,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    el.removeAttribute(a$1);
   },toRemove);
  };
+ Slice.string=function(source,start,finish)
+ {
+  return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):"":finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
+ };
+ Seq.insufficient=function()
+ {
+  return Operators.FailWith("The input sequence has an insufficient number of elements.");
+ };
  KeyCollection=Collections.KeyCollection=Runtime.Class({
   GetEnumerator$1:function()
   {
@@ -4607,6 +3293,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$4.$cctor=Global.ignore;
   SC$4.BatchUpdatesEnabled=true;
  };
+ FormatException=WebSharper.FormatException=Runtime.Class({},Error,FormatException);
+ FormatException.New$1=Runtime.Ctor(function(message)
+ {
+  this.message=message;
+  Object.setPrototypeOf(this,FormatException.prototype);
+ },FormatException);
  Updates=UI.Updates=Runtime.Class({},null,Updates);
  Updates.Create=function(v)
  {
@@ -5105,7 +3797,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    var loop,$this,t;
    $this=this;
-   t=Date.now();
+   t=Date$2.now();
    loop=true;
    while(loop)
     if(this.robin.length===0)
@@ -5116,7 +3808,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     else
      {
       (this.robin.shift())();
-      Date.now()-t>40?(Global.setTimeout(function()
+      Date$2.now()-t>40?(Global.setTimeout(function()
       {
        $this.tick();
       },0),loop=false):void 0;
@@ -5274,7 +3966,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Runtime.OnLoad(function()
  {
-  Serializer.main();
+  Date.main();
  });
 }());
 
