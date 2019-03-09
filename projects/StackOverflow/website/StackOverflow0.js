@@ -5675,7 +5675,7 @@
   {
    return b.Bind$4((new AjaxRemotingProvider.New()).Async("StackOverflow:FsRoot.StackOverflow+Rpc.logoutUser:933851348",[]),function()
    {
-    self.location.reload();
+    self.location.replace("/");
     return b.Zero();
    });
   }))));

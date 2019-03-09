@@ -5905,7 +5905,7 @@ namespace FsRoot
             let logout () = 
                 asyncResultM {
                     do! Rpc.logoutUser()
-                    JS.Window.Location.Reload()
+                    JS.Window.Location.Replace "/" |> ignore
                 } |> Rpc.iterA 
         
             let getContentDoc() =
