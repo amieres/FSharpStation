@@ -173,10 +173,12 @@
                 :                 template  sidedrawer "id=sidedrawer"       brand  brandV 
                 :                 template  footer     "id=footer"           brand  brandV   madeby "CIPHER Bsc" madebylink "www.cipherbsc.com"
  
-                mainContent       template  content    "id=content-wrapper"  content aliados                fecha "@{Prozper.mesActual} @{Prozper.anoActual}"
-                cntFormaRegistro  template  content    "id=content-wrapper"  content Prozper.FormaRegistro  titulo "Forma de Afiliación (1)"  
-                cntFormaDatos     template  content    "id=content-wrapper"  content Prozper.FormaDatos     titulo " "  
-                cntFormaContactos template  content    "id=content-wrapper"  content Prozper.FormaContactos titulo " "  
+                mainContent        template  content    "id=content-wrapper"  content aliados                 fecha "@{Prozper.mesActual} @{Prozper.anoActual}"
+                cntFormaRegistro   template  content    "id=content-wrapper"  content Prozper.FormaRegistro   titulo "Referido por: @{Prozper.aliado}"  
+                cntFormaDatos      template  content    "id=content-wrapper"  content Prozper.FormaDatos      titulo " "  
+                cntFormaContactos  template  content    "id=content-wrapper"  content Prozper.FormaContactos  titulo " "  
+                cntFormaCuentas    template  content    "id=content-wrapper"  content ProzperLyt.FormaCuentas    titulo " "  
+                cntFormaDocumentos template  content    "id=content-wrapper"  content Prozper.FormaDocumentos titulo " "  
 
                 aliados          div       "class=row"
                 :                div       "class=mui-col-md-6"
@@ -253,6 +255,8 @@
         </div>
 
         <div ws-children-template="Correo">
+            <br>
+            <div style="color:red">${Mensaje}</div>
             <div class="mui-textfield mui-textfield--float-label">
                 <input type="email" name="Correo" ws-var="Correo" required>
                 <label>Correo Electronico</label>
@@ -261,34 +265,35 @@
                 <input type="email" name="ConfirmarCorreo" ws-var="ConfirmarCorreo" required>
                 <label>Confirmar Correo Electronico</label>
             </div>
-            <div style="color:red">${Mensaje}</div>
         </div>
 
         <div ws-children-template="Telefono">
+            <br>
             <div class="mui-select">
                 <label>Tipo de Teléfono</label>
                 <select ws-var="TipoTelefono" ws-hole="Tipos" required>
                 </select>
             </div>            
             <div class="mui-textfield mui-textfield--float-label">
-                <input type="tel" name="CodigoPais" ws-var="CodigoPais" required style="width:90px">
+                <input type="text" name="CodigoPais" ws-var="CodigoPais" required style="width:90px; text-align: center">
                 <label>Código Pais</label>
             </div>
             <div class="mui-textfield mui-textfield--float-label">
-                <input type="tel" name="CodigoArea" ws-var="CodigoArea" style="width:90px" >
+                <input type="text" name="CodigoArea" ws-var="CodigoArea" style="width:90px; text-align: center" >
                 <label>Código Área</label>
             </div>    
             <div class="mui-textfield mui-textfield--float-label">
-                <input type="tel" name="Telefono" ws-var="Telefono" required>
+                <input type="tel" name="Telefono" ws-var="Telefono" required style="text-align: center">
                 <label>Teléfono</label>
             </div>
             <div class="mui-textfield mui-textfield--float-label">
-                <input type="tel" name="Extension" ws-var="Extension"  style="width:90px" >
+                <input type="tel" name="Extension" ws-var="Extension"  style="width:90px; text-align: center" >
                 <label>Extensión</label>
             </div>    
         </div>
 
         <div ws-children-template="Direccion">
+            <br>
             <div class="mui-select">
                 <label>Tipo de Dirección</label>
                 <select ws-var="TipoDireccion" ws-hole="Tipos" required>
@@ -348,7 +353,45 @@
             <legend style="color:transparent">.</legend>
         </div>
     
-        <div ws-template=FormaRegistro class="mui-col-md-8 mui-col-md-offset-1">
+        <div ws-children-template="Cuenta">
+                <br>
+                <div class="mui-select">
+                    <label>Tipo de Dirección</label>
+                    <select ws-var="TipoDireccion" ws-hole="Tipos" required>
+                    </select>
+                </div>            
+                <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                    <input type="text" name="Direccion1" ws-var="Direccion1" required>
+                    <label>Direccion1</label>
+                </div>
+                <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                    <input type="text" name="Direccion2" ws-var="Direccion2" >
+                    <label>Direccion2</label>
+                </div>                
+                <legend></legend>
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="text" name="Ciudad" ws-var="Ciudad" required>
+                    <label>Ciudad</label>
+                </div>                
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="text" name="Estado" ws-var="Estado" list="Estados" required>
+                    <label>Estado</label>
+                    <datalist id="Estados" ws-hole="Estados" >
+                    </datalist>
+                </div>                
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="text" name="CodigoPostal" ws-var="CodigoPostal" required>
+                    <label>Codigo Postal</label>
+                </div>                
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="text" name="Pais" ws-var="Pais" list="Paises" required>
+                    <label>País</label>
+                    <datalist id="Paises" ws-hole="Paises" >
+                    </datalist>
+                </div>
+            </div>
+    
+            <div ws-template=FormaRegistro class="mui-col-md-8 mui-col-md-offset-1">
             <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
                 <legend>Datos Personales</legend>
                 <div ws-replace="DatosPersonales"></div>
@@ -379,12 +422,25 @@
     
         <div ws-template=FormaContactos class="mui-col-md-8 mui-col-md-offset-1">
             <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
-                <legend>Contactos</legend>
-                <div ws-replace="Correos"></div>
+                <div class="mui-panel">
+                    <legend>Correos</legend>
+                    <div ws-replace="Correos"></div>
+                    <button title="agregar correo" ws-onclick="MasCorreo" type="button" class="mui-btn mui-btn--small mui-btn--fab mui-btn--accent">+</button>
+                </div>    
                 <legend></legend>
-                <div ws-replace="Telefonos"></div>
+                <div class="mui-panel">
+                    <legend>Telefonos</legend>
+                    <div ws-replace="Telefonos"></div>
+                    <button title="agregar telefono" ws-onclick="MasTelefono" type="button" class="mui-btn mui-btn--small mui-btn--fab mui-btn--accent">+</button>
+                </div>    
                 <legend></legend>
-                <div ws-replace="Direcciones"></div>
+                <div class="mui-panel">
+                    <legend>Direcciones</legend>
+                    <legend></legend>
+                    <div ws-replace="Direcciones"></div>
+                    <button title="agregar direccion" ws-onclick="MasDireccion" type="button" class="mui-btn mui-btn--small mui-btn--fab mui-btn--accent">+</button>
+                </div>    
+                <legend></legend>
                 <legend></legend>
                 <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar" >Guardar</button>
                 <button style="display: none;" type="submit" >Hidden button</button>
@@ -392,6 +448,17 @@
             </form>
         </div>
     
+        <div ws-template=FormaGenerica class="mui-col-md-8 mui-col-md-offset-1">
+            <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
+                <legend>${Titulo}</legend>
+                <div ws-replace="Content"></div>
+                <legend></legend>
+                <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar" >Guardar</button>
+                <button style="display: none;" type="submit" >Hidden button</button>
+                <div style="color:red">${Mensajes}</div>
+            </form>
+        </div>
+        
         <div ws-template=TablaAliados>
             <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
                 <thead>
@@ -463,27 +530,33 @@
             </div>
             <div class="mui-divider"></div>
             <ul>
+                <strong onclick="$(this).next().slideToggle(200)">Menu</strong>
+                <ul >
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Mensajes</a></li>
+                </ul>
                 <li>
-                    <strong onclick="$(this).next().slideToggle(200)">Category 1</strong>
+                    <strong onclick="$(this).next().slideToggle(200)">Referir</strong>
                     <ul style="display: none;">
-                        <li><a href="#/Content/ProzperLyt.cntFormaRegistro">Afiliación a Prozper</a></li>
-                        <li><a href="#">Item 2</a></li>
-                        <li><a href="#">Item 3</a></li>
+                        <li><a href="#/Content/ProzperLyt.cntFormaRegistro">Llenar Afiliación</a></li>
+                        <li><a href="#">Enviar Invitaciones</a></li>
                     </ul>
                 </li>
                 <li>
-                    <strong onclick="$(this).next().slideToggle(200)">Category 2</strong>
+                    <strong onclick="$(this).next().slideToggle(200)">Reportes</strong>
                     <ul style="display: none;">
-                        <li><a href="#">Item 1</a></li>
-                        <li><a href="#">Item 2</a></li>
-                        <li><a href="#">Item 3</a></li>
+                        <li><a href="#">Mes Actual</a></li>
+                        <li><a href="#">Historial de Transacciones</a></li>
                     </ul>
                 </li>
                 <li>
                     <strong onclick="$(this).next().slideToggle(200)">Actualizar Informacion</strong>
                     <ul style="display: none;">
-                            <li><a href="#/Content/ProzperLyt.cntFormaDatos"    >Datos Personales</a></li>
-                            <li><a href="#/Content/ProzperLyt.cntFormaContactos">Contactos       </a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaDatos"         >Datos Personales</a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaIdentificacion">Identificación  </a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaContactos"     >Contactos       </a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaCuentas"       >Cuentas Bancarias</a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaDocumentos"    >Documentos      </a></li>
                         </ul>
                 </li>
             </ul>
@@ -521,9 +594,8 @@
                     </td>
                     <td class="mui--text-right">
                         <ul class="mui-list--inline mui--text-body2">
-                          <li><a href="#" style="color:white">About</a></li>
-                          <li><a href="#" style="color:white">Pricing</a></li>
-                          <li><a  style="color:white" ws-onclick="Logout"><i class="fa fa-user" aria-hidden="true"></i> Logout</a></li>
+                          <li><a href="#" style="color:white">Acerca</a></li>
+                          <li><a href="/" style="color:white" ws-onclick="Logout"><i class="fa fa-user" aria-hidden="true"></i> Salir</a></li>
                         </ul>
                     </td>
                 </tr>

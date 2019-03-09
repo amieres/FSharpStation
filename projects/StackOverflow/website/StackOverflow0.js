@@ -1,10 +1,11 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Async,WebSharper,Obj,Result,Builder,Operators,Eff,Eff$1,Done,LambdaT,Operators$1,EffBuilder,State,Put,Get,Log,LogEntry,Rsl,Fail,ResultM,Builder$1,Operators$2,ResultMAutoOpen,AsyncResultM,AsyncResultMBuilder,AsyncResultMAutoOpen,String,SortWith,ParseO,Serializer,JsonIntermediate,MailboxProcessorExt,Mailbox,StateFull,LibraryJS,Date,StackOverflow,Templating,TipoAliado,Pais,Estado,Identificacion,TipoCuenta,CuentaBancaria,StatusAliado,ConceptoPago,Transaccion,TipoDireccion,ZonaPostal,Direccion,CorreoElectronico,TipoTelefono,Telefono,Genero,DatosPersonales,TipoMensaje,Remitente,Mensaje,Aliado,PremisasCalculo,Modelo,AliadoModule,Buscar,Evento,Respuesta,Eventos,Rpc,ModeloUI,EndPoint,VariousUI,TelefonoModule,CorreoElectronicoModule,DireccionModule,DatosPersonalesModule,FormaRegistro,FormaDatos,FormaContactos,RenderAliados,RenderAliado,MainProgram,Server,SC$1,StackOverflow_Router,StackOverflow_GeneratedPrintf,GeneratedPrintf,StackOverflow_Templates,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,console,Slice,Collections,FSharpMap,FSharpSet,BalancedTree,Control,MailboxProcessor,CancellationTokenSource,Dictionary,Date$1,Remoting,AjaxRemotingProvider,UI,Doc,View,Templating$1,Runtime$1,Server$1,ProviderBuilder,Handler,TemplateInstance,Var$1,System,Guid,FromView,AppFramework,PlugIn,Lazy,LayoutEngineModule,Client,Templates,DateUtil,Numeric,Router,Sitelets,RouterOperators;
+ var Global,FsRoot,Library,Dict,ResultMessage,ResultMessageHelpers,Monads,Seq,Async,WebSharper,Obj,Result,Builder,Operators,Eff,Eff$1,Done,LambdaT,Operators$1,EffBuilder,State,Put,Get,Log,LogEntry,Rsl,Fail,ResultM,Builder$1,Operators$2,ResultMAutoOpen,AsyncResultM,AsyncResultMBuilder,AsyncResultMAutoOpen,String,Array,SortWith,ParseO,Serializer,JsonIntermediate,MailboxProcessorExt,Mailbox,StateFull,LibraryJS,Date,StackOverflow,Templating,TipoAliado,Pais,Estado,Identificacion,TipoCuenta,CuentaBancaria,StatusAliado,ConceptoPago,Transaccion,TipoDireccion,ZonaPostal,Direccion,CorreoElectronico,TipoTelefono,Telefono,Genero,DatosPersonales,TipoMensaje,Remitente,Mensaje,Aliado,PremisasCalculo,Modelo,AliadoModule,Buscar,Evento,Respuesta,Rpc,ModeloUI,EndPoint,VariousUI,Telefono$1,CorreoElectronico$1,Direccion$1,DatosPersonales$1,FormaRegistro,FormaDatos,FormaGenerica,FormaContactos,RenderAliados,RenderAliado,MainProgram,Server,SC$1,StackOverflow_Router,StackOverflow_GeneratedPrintf,StackOverflow_Templates,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,console,Slice,Collections,FSharpMap,FSharpSet,BalancedTree,Control,MailboxProcessor,CancellationTokenSource,Dictionary,UI,Doc,View,Templating$1,Runtime$1,Server$1,ProviderBuilder,Handler,TemplateInstance,Var$1,System,Guid,Remoting,AjaxRemotingProvider,FromView,AttrProxy,AppFramework,PlugIn,Lazy,LayoutEngineModule,Client,Templates,DateUtil,Numeric,Date$1,Router,Sitelets,RouterOperators;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
+ Dict=Library.Dict=Library.Dict||{};
  ResultMessage=Library.ResultMessage=Library.ResultMessage||{};
  ResultMessageHelpers=Library.ResultMessageHelpers=Library.ResultMessageHelpers||{};
  Monads=Library.Monads=Library.Monads||{};
@@ -36,6 +37,7 @@
  AsyncResultMBuilder=AsyncResultM.AsyncResultMBuilder=AsyncResultM.AsyncResultMBuilder||{};
  AsyncResultMAutoOpen=Monads.AsyncResultMAutoOpen=Monads.AsyncResultMAutoOpen||{};
  String=Library.String=Library.String||{};
+ Array=Library.Array=Library.Array||{};
  SortWith=Library.SortWith=Library.SortWith||{};
  ParseO=Library.ParseO=Library.ParseO||{};
  Serializer=Library.Serializer=Library.Serializer||{};
@@ -74,26 +76,25 @@
  Buscar=AliadoModule.Buscar=AliadoModule.Buscar||{};
  Evento=StackOverflow.Evento=StackOverflow.Evento||{};
  Respuesta=StackOverflow.Respuesta=StackOverflow.Respuesta||{};
- Eventos=StackOverflow.Eventos=StackOverflow.Eventos||{};
  Rpc=StackOverflow.Rpc=StackOverflow.Rpc||{};
  ModeloUI=StackOverflow.ModeloUI=StackOverflow.ModeloUI||{};
  EndPoint=ModeloUI.EndPoint=ModeloUI.EndPoint||{};
- VariousUI=StackOverflow.VariousUI=StackOverflow.VariousUI||{};
- TelefonoModule=StackOverflow.TelefonoModule=StackOverflow.TelefonoModule||{};
- CorreoElectronicoModule=StackOverflow.CorreoElectronicoModule=StackOverflow.CorreoElectronicoModule||{};
- DireccionModule=StackOverflow.DireccionModule=StackOverflow.DireccionModule||{};
- DatosPersonalesModule=StackOverflow.DatosPersonalesModule=StackOverflow.DatosPersonalesModule||{};
- FormaRegistro=StackOverflow.FormaRegistro=StackOverflow.FormaRegistro||{};
- FormaDatos=StackOverflow.FormaDatos=StackOverflow.FormaDatos||{};
- FormaContactos=StackOverflow.FormaContactos=StackOverflow.FormaContactos||{};
- RenderAliados=StackOverflow.RenderAliados=StackOverflow.RenderAliados||{};
- RenderAliado=StackOverflow.RenderAliado=StackOverflow.RenderAliado||{};
+ VariousUI=ModeloUI.VariousUI=ModeloUI.VariousUI||{};
+ Telefono$1=ModeloUI.Telefono=ModeloUI.Telefono||{};
+ CorreoElectronico$1=ModeloUI.CorreoElectronico=ModeloUI.CorreoElectronico||{};
+ Direccion$1=ModeloUI.Direccion=ModeloUI.Direccion||{};
+ DatosPersonales$1=ModeloUI.DatosPersonales=ModeloUI.DatosPersonales||{};
+ FormaRegistro=ModeloUI.FormaRegistro=ModeloUI.FormaRegistro||{};
+ FormaDatos=ModeloUI.FormaDatos=ModeloUI.FormaDatos||{};
+ FormaGenerica=ModeloUI.FormaGenerica=ModeloUI.FormaGenerica||{};
+ FormaContactos=ModeloUI.FormaContactos=ModeloUI.FormaContactos||{};
+ RenderAliados=ModeloUI.RenderAliados=ModeloUI.RenderAliados||{};
+ RenderAliado=ModeloUI.RenderAliado=ModeloUI.RenderAliado||{};
  MainProgram=StackOverflow.MainProgram=StackOverflow.MainProgram||{};
  Server=StackOverflow.Server=StackOverflow.Server||{};
  SC$1=Global.StartupCode$StackOverflow$StackOverflow=Global.StartupCode$StackOverflow$StackOverflow||{};
  StackOverflow_Router=Global.StackOverflow_Router=Global.StackOverflow_Router||{};
  StackOverflow_GeneratedPrintf=Global.StackOverflow_GeneratedPrintf=Global.StackOverflow_GeneratedPrintf||{};
- GeneratedPrintf=Global.GeneratedPrintf=Global.GeneratedPrintf||{};
  StackOverflow_Templates=Global.StackOverflow_Templates=Global.StackOverflow_Templates||{};
  IntelliFactory=Global.IntelliFactory;
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
@@ -117,9 +118,6 @@
  MailboxProcessor=Control&&Control.MailboxProcessor;
  CancellationTokenSource=WebSharper&&WebSharper.CancellationTokenSource;
  Dictionary=Collections&&Collections.Dictionary;
- Date$1=Global.Date;
- Remoting=WebSharper&&WebSharper.Remoting;
- AjaxRemotingProvider=Remoting&&Remoting.AjaxRemotingProvider;
  UI=WebSharper&&WebSharper.UI;
  Doc=UI&&UI.Doc;
  View=UI&&UI.View;
@@ -132,7 +130,10 @@
  Var$1=UI&&UI.Var$1;
  System=Global.System;
  Guid=System&&System.Guid;
+ Remoting=WebSharper&&WebSharper.Remoting;
+ AjaxRemotingProvider=Remoting&&Remoting.AjaxRemotingProvider;
  FromView=UI&&UI.FromView;
+ AttrProxy=UI&&UI.AttrProxy;
  AppFramework=LibraryJS&&LibraryJS.AppFramework;
  PlugIn=AppFramework&&AppFramework.PlugIn;
  Lazy=WebSharper&&WebSharper.Lazy;
@@ -141,9 +142,17 @@
  Templates=Client&&Client.Templates;
  DateUtil=WebSharper&&WebSharper.DateUtil;
  Numeric=WebSharper&&WebSharper.Numeric;
+ Date$1=Global.Date;
  Router=UI&&UI.Router;
  Sitelets=WebSharper&&WebSharper.Sitelets;
  RouterOperators=Sitelets&&Sitelets.RouterOperators;
+ Dict.add=function(key,v,dict)
+ {
+  if(dict.ContainsKey(key))
+   dict.set_Item(key,v);
+  else
+   dict.Add(key,v);
+ };
  ResultMessage=Library.ResultMessage=Runtime.Class({
   toString:function()
   {
@@ -2426,6 +2435,41 @@
  {
   return Strings.SplitChars(s,[c],0);
  };
+ Array.remove=function(i,array)
+ {
+  return Arrays.ofSeq(Seq$1.delay(function()
+  {
+   return Seq$1.append(i>0?Slice.array(array,null,{
+    $:1,
+    $0:i-1
+   }):[],Seq$1.delay(function()
+   {
+    return i<Arrays.length(array)?Slice.array(array,{
+     $:1,
+     $0:i+1
+    },null):[];
+   }));
+  }));
+ };
+ Array.replace=function(i,item,array)
+ {
+  return Arrays.ofSeq(Seq$1.delay(function()
+  {
+   return Seq$1.append(i>0?Slice.array(array,null,{
+    $:1,
+    $0:i-1
+   }):[],Seq$1.delay(function()
+   {
+    return Seq$1.append([item],Seq$1.delay(function()
+    {
+     return i<Arrays.length(array)?Slice.array(array,{
+      $:1,
+      $0:i+1
+     },null):[];
+    }));
+   }));
+  }));
+ };
  SortWith.op_AmpGreater=function(c1,c2,a,b)
  {
   var m;
@@ -3284,9 +3328,10 @@
  TipoCuenta.Ahorro={
   $:0
  };
- CuentaBancaria.New=function(banco,tipo,numero,routing)
+ CuentaBancaria.New=function(titular,banco,tipo,numero,routing)
  {
   return{
+   titular:titular,
    banco:banco,
    tipo:tipo,
    numero:numero,
@@ -3833,149 +3878,16 @@
    return[modelo.anoActual,modelo.periodoActual];
   });
  };
- Evento.New=function(nevento,data)
+ Evento.New=function(nevento,aliadoO,data)
  {
   return{
    nevento:nevento,
+   aliadoO:aliadoO,
    data:data
   };
  };
  Respuesta.ROk={
   $:0
- };
- Eventos.actualizarEstado=function(evento,modelo)
- {
-  var b;
-  b=ResultMAutoOpen.resultM();
-  return b.Run(b.Delay(function()
-  {
-   return b.Combine(modelo.nevento!==-1&&modelo.nevento+1!==evento.nevento?((((Runtime.Curried3(function($1,$2,$3)
-   {
-    return $1("Evento fuera de secuencia: "+Global.String($2)+" "+Global.String($3));
-   }))(Operators$3.FailWith))(modelo.nevento))(evento.nevento),b.Zero()):b.Zero(),b.Delay(function()
-   {
-    var m;
-    m=evento.data;
-    return m.$==0?b.Return([Modelo.New(modelo.idAliado,Eventos.addNewAliados(m.$0,modelo.aliados),modelo.anoActual,modelo.periodoActual,modelo.premisas,modelo.nevento),Respuesta.ROk]):m.$==2?b.ReturnFrom$2(Eventos.registroNuevo(m.$0,m.$1,m.$2,m.$3,modelo)):m.$==3?b.ReturnFrom$2(Eventos.actualizarDatosPersonales(m.$0,m.$1,modelo)):m.$==4?b.ReturnFrom$2(Eventos.actualizarContactos(m.$0,m.$1,modelo)):b.Return([Modelo.New(modelo.idAliado,Eventos.addNewAliados([m.$0],modelo.aliados),modelo.anoActual,modelo.periodoActual,modelo.premisas,modelo.nevento),Respuesta.ROk]);
-   }));
-  }));
- };
- Eventos.actualizarContactos=function(idA,contactos,modelo)
- {
-  var b;
-  b=ResultMAutoOpen.resultM();
-  return b.Run(b.Delay(function()
-  {
-   return b.Bind$1(ResultM.ofOption(function()
-   {
-    return(ResultMessageHelpers.errorMsgf(function($1)
-    {
-     return function($2)
-     {
-      return $1("Aliado no encontrado "+StackOverflow_GeneratedPrintf.p$7($2));
-     };
-    }))(idA);
-   },Seq$1.tryFind(function(a)
-   {
-    return Unchecked.Equals(a.id,idA);
-   },modelo.aliados)),function(a)
-   {
-    return b.Return([Modelo.New(modelo.idAliado,Arrays.map(function(al)
-    {
-     return Unchecked.Equals(al.id,a.id)?Aliado.New(al.id,al.idPadreO,al.datosPersonales,contactos,al.identificacion,al.formasPago,al.transacciones,al.mensajes,al.isInternal,al.status,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel):al;
-    },modelo.aliados),modelo.anoActual,modelo.periodoActual,modelo.premisas,modelo.nevento),{
-     $:2,
-     $0:"Contactos actualizados!"
-    }]);
-   });
-  }));
- };
- Eventos.actualizarDatosPersonales=function(idA,datos,modelo)
- {
-  var b;
-  b=ResultMAutoOpen.resultM();
-  return b.Run(b.Delay(function()
-  {
-   return b.Bind$1(ResultM.ofOption(function()
-   {
-    return(ResultMessageHelpers.errorMsgf(function($1)
-    {
-     return function($2)
-     {
-      return $1("Aliado no encontrado "+StackOverflow_GeneratedPrintf.p$7($2));
-     };
-    }))(idA);
-   },Seq$1.tryFind(function(a)
-   {
-    return Unchecked.Equals(a.id,idA);
-   },modelo.aliados)),function(a)
-   {
-    return b.Return([Modelo.New(modelo.idAliado,Arrays.map(function(al)
-    {
-     return Unchecked.Equals(al.id,a.id)?Aliado.New(al.id,al.idPadreO,datos,al.contactos,al.identificacion,al.formasPago,al.transacciones,al.mensajes,al.isInternal,al.status,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel):al;
-    },modelo.aliados),modelo.anoActual,modelo.periodoActual,modelo.premisas,modelo.nevento),{
-     $:2,
-     $0:"Datos personales actualizados!"
-    }]);
-   });
-  }));
- };
- Eventos.registroNuevo=function(idA,datos,padre,contactos,modelo)
- {
-  var b;
-  b=ResultMAutoOpen.resultM();
-  return b.Run(b.Delay(function()
-  {
-   var m,correo,now;
-   m=Seq$1.tryPick(function(a)
-   {
-    return a.$==1?{
-     $:1,
-     $0:a.$0
-    }:null;
-   },contactos);
-   return m!=null&&m.$==1?(correo=m.$0,Seq$1.exists(function(al)
-   {
-    return Seq$1.exists(function(a)
-    {
-     return a.$==1&&Unchecked.Equals(correo,a.$0);
-    },al.contactos);
-   },modelo.aliados)?b.ReturnFrom$2(Monads.ErrorM((ResultMessageHelpers.errorMsgf(function($1)
-   {
-    return function($2)
-    {
-     return $1("Correo Electronico ya esta registrado: "+StackOverflow_GeneratedPrintf.p$8($2));
-    };
-   }))(correo))):Seq$1.exists(function(al)
-   {
-    return Unchecked.Equals(al.id,idA);
-   },modelo.aliados)?b.ReturnFrom$2(Monads.ErrorM((ResultMessageHelpers.errorMsgf(function($1)
-   {
-    return function($2)
-    {
-     return $1("Id ya esta en uso: "+StackOverflow_GeneratedPrintf.p$7($2));
-    };
-   }))(idA))):(now=Date$1.now(),b.Return([Modelo.New(modelo.idAliado,modelo.aliados.concat([Aliado.New(idA,padre,datos,contactos,[],[],[],[],false,StatusAliado.Inactivo,TipoAliado.Regular,now,now,0,0,0,0,0,0)]),modelo.anoActual,modelo.periodoActual,modelo.premisas,modelo.nevento),{
-    $:1,
-    $0:Strings.concat(" ",List.ofArray([datos.nombre1,datos.nombre2,datos.apellido1,datos.apellido2]))
-   }]))):b.ReturnFrom$2(Monads.ErrorM((ResultMessageHelpers.errorMsgf(function($1)
-   {
-    return function($2)
-    {
-     return $1("No se encontro Correo Electronico: "+GeneratedPrintf.p($2));
-    };
-   }))(datos)));
-  }));
- };
- Eventos.addNewAliados=function(als1,als2)
- {
-  return Arrays.ofSeq(Seq$1.append(als2,Seq$1.filter(function(a)
-  {
-   return!Seq$1.exists(function(b)
-   {
-    return Unchecked.Equals(a.id,b.id);
-   },als2);
-  },als1)));
  };
  Rpc.iterA=function(arm)
  {
@@ -3990,100 +3902,6 @@
  };
  EndPoint.DefaultEP={
   $:0
- };
- ModeloUI.refrescarData=function()
- {
-  var b;
-  Rpc.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
-  {
-   return b.Bind$4((new AjaxRemotingProvider.New()).Async("StackOverflow:FsRoot.StackOverflow+Rpc.leerDataModelo:1546275073",[]),function(a)
-   {
-    ModeloUI.modeloV().Set(a);
-    return b.Zero();
-   });
-  }))));
- };
- ModeloUI.selAliadoIdDoc=function(fDoc)
- {
-  var b;
-  return Doc.BindView(Global.id,(b=View.get_Do(),View.Bind(function(a)
-  {
-   return View.Bind(function(a$1)
-   {
-    var aliadoO,aid;
-    aliadoO=a$1==null?null:(aid=a$1.$0,Seq$1.tryFind(function(al)
-    {
-     return Unchecked.Equals(al.id,aid);
-    },a.aliados));
-    return View.Const(aliadoO!=null&&aliadoO.$==1?fDoc(View.Const(aliadoO.$0)):Doc.get_Empty());
-   },ModeloUI.selAliadoIdOV().get_View());
-  },ModeloUI.modeloV().get_View())));
- };
- ModeloUI.aliadoW=function()
- {
-  SC$1.$cctor();
-  return SC$1.aliadoW;
- };
- ModeloUI.aliadoIdDoc=function(fDoc)
- {
-  var b;
-  return Doc.BindView(Global.id,(b=View.get_Do(),View.Bind(function(a)
-  {
-   var aid,aliadoO;
-   aid=a.idAliado;
-   aliadoO=Seq$1.tryFind(function(al)
-   {
-    return Unchecked.Equals(al.id,aid);
-   },a.aliados);
-   return View.Const(aliadoO!=null&&aliadoO.$==1?fDoc(View.Const(aliadoO.$0)):Doc.get_Empty());
-  },ModeloUI.modeloV().get_View())));
- };
- ModeloUI.contentVar=function()
- {
-  SC$1.$cctor();
-  return SC$1.contentVar;
- };
- ModeloUI.endPointV=function()
- {
-  SC$1.$cctor();
-  return SC$1.endPointV;
- };
- ModeloUI.money=function(m)
- {
-  return"$"+ModeloUI.separate(Global.String(m),List.T.Empty);
- };
- ModeloUI.separate=function(s,parts)
- {
-  var s$1;
-  while(true)
-   if(s==="")
-    return(function(s$2)
-    {
-     return function(s$3)
-     {
-      return Strings.concat(s$2,s$3);
-     };
-    }(","))(parts);
-   else
-    {
-     s$1=s;
-     s=Library["String.Left$1"](s$1,-3);
-     parts=new List.T({
-      $:1,
-      $0:Library["String.Right$1"](s$1,3),
-      $1:parts
-     });
-    }
- };
- ModeloUI.selAliadoIdOV=function()
- {
-  SC$1.$cctor();
-  return SC$1.selAliadoIdOV;
- };
- ModeloUI.modeloV=function()
- {
-  SC$1.$cctor();
-  return SC$1.modeloV;
  };
  VariousUI.crearOptions=function(ns)
  {
@@ -4122,7 +3940,7 @@
  {
   return vO!=null&&vO.$==1?f(vO.$0):(Global.alert("Error not caught: "+name),null);
  };
- TelefonoModule.formaDoc=function(telV)
+ Telefono$1.formaDoc=function(telOV)
  {
   var forma,b,T,p,i,requeridosW;
   forma=(b=(T=Doc.EmbedView(View.Map(VariousUI.crearOptions,VariousUI.tiposTel().get_View())),ProviderBuilder.Make().WithHole({
@@ -4139,6 +3957,7 @@
      forma.Hole("codigoarea").Set(tel.codigoArea);
      forma.Hole("codigopais").Set(tel.codigoPais);
      forma.Hole("telefono").Set(tel.numero);
+     forma.Hole("extension").Set(tel.extension);
      forma.Hole("tipotelefono").Set((function($1)
      {
       return function($2)
@@ -4147,7 +3966,7 @@
       };
      }(Global.id))(tel.tipoTelefono));
     }
-  },telV.get_View());
+  },telOV.get_View());
   requeridosW=View.Apply(View.Map2(function($1,$2)
   {
    return function($3)
@@ -4163,22 +3982,25 @@
   },forma.Hole("codigopais").get_View(),forma.Hole("telefono").get_View()),forma.Hole("tipotelefono").get_View());
   View.Sink(function(v)
   {
-   if(!Unchecked.Equals(telV.Get(),v))
-    telV.Set(v);
-  },View.Map2(function($1,$2)
+   if(!Unchecked.Equals(telOV.Get(),v))
+    telOV.Set(v);
+  },View.Apply(View.Apply(View.Apply(View.Apply(View.Map2(function($1,$2)
   {
-   return!Seq$1.isEmpty($1)?null:VariousUI.alertIfNone("TipoTelefono",(TipoTelefono.get_tryParse())(Strings.Trim($2)),function(tipo)
+   return Runtime.Curried(function($3,$4,$5,$6)
    {
-    var c;
-    return{
-     $:1,
-     $0:(c=Strings.Trim(forma.Hole("codigoarea").Get()),Telefono.New(tipo,Strings.Trim(forma.Hole("codigopais").Get()),c,Strings.Trim(forma.Hole("telefono").Get()),Strings.Trim(forma.Hole("extension").Get()),false))
-    };
-   });
-  },requeridosW,forma.Hole("tipotelefono").get_View()));
+    return!Seq$1.isEmpty($1)?null:VariousUI.alertIfNone("TipoTelefono",(TipoTelefono.get_tryParse())(Strings.Trim($2)),function(tipo)
+    {
+     var c;
+     return{
+      $:1,
+      $0:(c=Strings.Trim($3),Telefono.New(tipo,Strings.Trim($4),c,Strings.Trim($5),Strings.Trim($6),false))
+     };
+    });
+   },4);
+  },requeridosW,forma.Hole("tipotelefono").get_View()),forma.Hole("codigoarea").get_View()),forma.Hole("codigopais").get_View()),forma.Hole("telefono").get_View()),forma.Hole("extension").get_View()));
   return[requeridosW,forma.get_Doc()];
  };
- CorreoElectronicoModule.formaDoc=function(corV)
+ CorreoElectronico$1.formaDoc=function(corV)
  {
   var mensaje,forma,b,p,i,m,requeridosW;
   mensaje=Var$1.Create$1("");
@@ -4239,7 +4061,7 @@
   },requeridosW,forma.Hole("correo").get_View()));
   return[requeridosW,forma.get_Doc()];
  };
- DireccionModule.formaDoc=function(dirV)
+ Direccion$1.formaDoc=function(dirV)
  {
   var forma,b,T,E,P,p,i,requeridosW;
   forma=(b=(T=Doc.EmbedView(View.Map(VariousUI.crearOptions,VariousUI.tiposDir().get_View())),(E=Doc.EmbedView(View.Map(VariousUI.crearOptions,VariousUI.estados().get_View())),(P=Doc.EmbedView(View.Map(VariousUI.crearOptions,VariousUI.paises().get_View())),ProviderBuilder.Make().WithHole({
@@ -4311,9 +4133,9 @@
   {
    if(!Unchecked.Equals(dirV.Get(),v))
     dirV.Set(v);
-  },View.Apply(View.Apply(View.Apply(View.Map2(function($1,$2)
+  },View.Apply(View.Apply(View.Apply(View.Apply(View.Apply(View.Apply(View.Map2(function($1,$2)
   {
-   return Runtime.Curried3(function($3,$4,$5)
+   return Runtime.Curried(function($3,$4,$5,$6,$7,$8)
    {
     return!Seq$1.isEmpty($1)?null:VariousUI.alertIfNone("TipoDireccion",TipoDireccion.tryParse(Strings.Trim($2)),function(tipo)
     {
@@ -4325,17 +4147,17 @@
        {
         return{
          $:1,
-         $0:Direccion.New(tipo,Strings.Trim(forma.Hole("direccion1").Get()),Strings.Trim(forma.Hole("direccion2").Get()),Strings.Trim(forma.Hole("ciudad").Get()),estado,pais,codigo)
+         $0:Direccion.New(tipo,Strings.Trim($6),Strings.Trim($7),Strings.Trim($8),estado,pais,codigo)
         };
        });
       });
      });
     });
-   });
-  },requeridosW,forma.Hole("tipodireccion").get_View()),forma.Hole("estado").get_View()),forma.Hole("pais").get_View()),forma.Hole("codigopostal").get_View()));
+   },6);
+  },requeridosW,forma.Hole("tipodireccion").get_View()),forma.Hole("estado").get_View()),forma.Hole("pais").get_View()),forma.Hole("codigopostal").get_View()),forma.Hole("direccion1").get_View()),forma.Hole("direccion2").get_View()),forma.Hole("ciudad").get_View()));
   return[requeridosW,forma.get_Doc()];
  };
- DatosPersonalesModule.formaDoc=function(datosV)
+ DatosPersonales$1.formaDoc=function(datosV)
  {
   var forma,b,G,p,i,requeridosW;
   forma=(b=(G=Doc.EmbedView(View.Map(VariousUI.crearOptions,VariousUI.generos().get_View())),ProviderBuilder.Make().WithHole({
@@ -4356,7 +4178,7 @@
      {
       return function($2)
       {
-       return $1(StackOverflow_GeneratedPrintf.p$10($2));
+       return $1(StackOverflow_GeneratedPrintf.p$8($2));
       };
      }(Global.id))(dat.genero));
     }
@@ -4381,32 +4203,34 @@
   {
    if(!Unchecked.Equals(datosV.Get(),v))
     datosV.Set(v);
-  },View.Map(function($1)
+  },View.Apply(View.Apply(View.Apply(View.Apply(View.Apply(View.Map2(function($1,$2)
   {
-   return!Seq$1.isEmpty($1)?null:VariousUI.alertIfNone("Genero",Genero.tryParse(forma.Hole("genero").Get()),function(genero)
+   return Runtime.Curried(function($3,$4,$5,$6,$7)
    {
-    var x;
-    return VariousUI.alertIfNone("Fecha incorrecta",(x=forma.Hole("fechanacimiento").Get(),(ParseO.parseDateO2())(x)),function(fecha)
+    return!Seq$1.isEmpty($1)?null:VariousUI.alertIfNone("Genero",Genero.tryParse($2),function(genero)
     {
-     return{
-      $:1,
-      $0:DatosPersonales.New(null,Arrays.get(Strings.SplitChars(Strings.Trim(forma.Hole("nombres").Get()),[" "],0),0),Strings.concat(" ",Slice.array(Strings.SplitChars(Strings.Trim(forma.Hole("nombres").Get()),[" "],0),{
+     return VariousUI.alertIfNone("Fecha incorrecta",(ParseO.parseDateO2())($3),function(fecha)
+     {
+      return{
        $:1,
-       $0:1
-      },null)),Arrays.get(Strings.SplitChars(Strings.Trim(forma.Hole("apellidos").Get()),[" "],0),0),Strings.concat(" ",Slice.array(Strings.SplitChars(Strings.Trim(forma.Hole("apellidos").Get()),[" "],0),{
-       $:1,
-       $0:1
-      },null)),new Pais({
-       $:3,
-       $0:""
-      }),genero,fecha)
-     };
+       $0:DatosPersonales.New(null,Arrays.get(Strings.SplitChars(Strings.Trim($4),[" "],0),0),Strings.concat(" ",Slice.array(Strings.SplitChars(Strings.Trim($5),[" "],0),{
+        $:1,
+        $0:1
+       },null)),Arrays.get(Strings.SplitChars(Strings.Trim($6),[" "],0),0),Strings.concat(" ",Slice.array(Strings.SplitChars(Strings.Trim($7),[" "],0),{
+        $:1,
+        $0:1
+       },null)),new Pais({
+        $:3,
+        $0:""
+       }),genero,fecha)
+      };
+     });
     });
-   });
-  },requeridosW));
+   },5);
+  },requeridosW,forma.Hole("genero").get_View()),forma.Hole("fechanacimiento").get_View()),forma.Hole("nombres").get_View()),forma.Hole("nombres").get_View()),forma.Hole("apellidos").get_View()),forma.Hole("apellidos").get_View()));
   return[requeridosW,forma.get_Doc()];
  };
- FormaRegistro.formaDoc$5233$37=function(mostrar,mensajes,datosOV,correoOV,telefonoOV,direccionOV)
+ FormaRegistro.formaDoc$5516$41=function(mostrar,mensajes,datosOV,correoOV,telefonoOV,direccionOV)
  {
   return function()
   {
@@ -4451,7 +4275,7 @@
      {
       return function($7)
       {
-       return $6(StackOverflow_GeneratedPrintf.p$11($7));
+       return $6(StackOverflow_GeneratedPrintf.p$9($7));
       };
      }(Global.id))(a));
      return b.Zero();
@@ -4468,10 +4292,10 @@
   correoOV=Var$1.Create$1(null);
   telefonoOV=Var$1.Create$1(null);
   direccionOV=Var$1.Create$1(null);
-  p=DatosPersonalesModule.formaDoc(datosOV);
-  p$1=CorreoElectronicoModule.formaDoc(correoOV);
-  p$2=TelefonoModule.formaDoc(telefonoOV);
-  p$3=DireccionModule.formaDoc(direccionOV);
+  p=DatosPersonales$1.formaDoc(datosOV);
+  p$1=CorreoElectronico$1.formaDoc(correoOV);
+  p$2=Telefono$1.formaDoc(telefonoOV);
+  p$3=Direccion$1.formaDoc(direccionOV);
   forma=(b=(t=ProviderBuilder.Make().WithHole({
    $:2,
    $0:"mensajes",
@@ -4541,7 +4365,7 @@
      {
       return function($7)
       {
-       return $6(StackOverflow_GeneratedPrintf.p$11($7));
+       return $6(StackOverflow_GeneratedPrintf.p$9($7));
       };
      }(Global.id))(a));
      return b$1.Zero();
@@ -4581,7 +4405,7 @@
  {
   return ModeloUI.aliadoIdDoc(FormaDatos.formaAliado);
  };
- FormaDatos.formaAliado$5286$32=function(mostrar,mensajes,datosOV,aliadoW)
+ FormaDatos.formaAliado$5569$36=function(mostrar,mensajes,datosOV,aliadoW)
  {
   return function()
   {
@@ -4608,7 +4432,7 @@
      {
       return function($5)
       {
-       return $4(StackOverflow_GeneratedPrintf.p$11($5));
+       return $4(StackOverflow_GeneratedPrintf.p$9($5));
       };
      }(Global.id))(a));
      return b.Zero();
@@ -4640,7 +4464,7 @@
   {
    return a.datosPersonales;
   },aliadoW));
-  p=DatosPersonalesModule.formaDoc(datosOV);
+  p=DatosPersonales$1.formaDoc(datosOV);
   forma=(b=(t=ProviderBuilder.Make().WithHole({
    $:2,
    $0:"mensajes",
@@ -4690,7 +4514,7 @@
      {
       return function($5)
       {
-       return $4(StackOverflow_GeneratedPrintf.p$11($5));
+       return $4(StackOverflow_GeneratedPrintf.p$9($5));
       };
      }(Global.id))(a));
      return b$1.Zero();
@@ -4711,11 +4535,49 @@
   },p[0]));
   return forma.get_Doc();
  };
+ FormaGenerica.forma$5605$38=function(salvar)
+ {
+  return function()
+  {
+   salvar();
+  };
+ };
+ FormaGenerica.forma=function(mensajeW,cambioW,contenido,salvar)
+ {
+  var mostrar,b,t,p,i;
+  Var$1.Create$1("");
+  mostrar=Var$1.Create$1(false);
+  return(b=(t=ProviderBuilder.Make().WithHole({
+   $:2,
+   $0:"mensajes",
+   $1:View.Map2(function($1,$2)
+   {
+    return $1?$2:"";
+   },mostrar.get_View(),mensajeW)
+  }).WithHole({
+   $:2,
+   $0:"changed",
+   $1:View.Map(function($1)
+   {
+    return $1?"":"mui-btn--primary";
+   },cambioW)
+  }).WithHole({
+   $:0,
+   $0:"content",
+   $1:contenido
+  }),t.WithHole(Handler.EventQ2(t.k,"salvar",function()
+  {
+   return t.i;
+  },function()
+  {
+   salvar();
+  }))),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],StackOverflow_Templates.formagenerica(p[0])),(b.i=i,i)))).get_Doc();
+ };
  FormaContactos.formaDoc=function()
  {
   return ModeloUI.aliadoIdDoc(FormaContactos.formaContactos);
  };
- FormaContactos.formaContactos$5333$32=function(mostrar,mensajes,aliadoW,contactosV)
+ FormaContactos.formaContactos$5703$36=function(mostrar,mensajes,aliadoW,contactosV)
  {
   return function()
   {
@@ -4743,7 +4605,7 @@
      {
       return function($2)
       {
-       return $1(StackOverflow_GeneratedPrintf.p$11($2));
+       return $1(StackOverflow_GeneratedPrintf.p$9($2));
       };
      }(Global.id))(a));
      return b.Zero();
@@ -4751,90 +4613,190 @@
    }))))):Global.alert("Error not caught FormaDatos"));
   };
  };
+ FormaContactos.formaContactos$5702$42=function(contactosV,dirEmpty)
+ {
+  return function()
+  {
+   contactosV.Set(contactosV.Get().concat([{
+    $:0,
+    $0:dirEmpty
+   }]));
+  };
+ };
+ FormaContactos.formaContactos$5701$42=function(contactosV)
+ {
+  return function()
+  {
+   contactosV.Set(contactosV.Get().concat([{
+    $:1,
+    $0:new CorreoElectronico({
+     $:0,
+     $0:""
+    })
+   }]));
+  };
+ };
+ FormaContactos.formaContactos$5700$42=function(contactosV,telEmpty)
+ {
+  return function()
+  {
+   contactosV.Set(contactosV.Get().concat([{
+    $:2,
+    $0:telEmpty
+   }]));
+  };
+ };
  FormaContactos.formaContactos=function(aliadoW)
  {
-  var mensajes,mostrar,contactosV,tels,ftels,b,t,p,i;
-  function a(i$1,tV)
+  var mensajes,mostrar,contactosV,contactosIV,ftel,fcor,fdir,tels,cors,dirs,telDocs,corDocs,dirDocs,telEmpty,dirEmpty,b,t,t$1,t$2,t$3,p,i;
+  function makeVar(f,fr)
   {
-   function f(t$1)
+   return function(i$1)
    {
-    return t$1[1];
-   }
-   function g(a$1)
+    return new FromView.New(View.Map(function($1)
+    {
+     var o;
+     o=Seq$1.tryItem(i$1,$1);
+     return o==null?null:f(o.$0);
+    },contactosV.get_View()),function(a)
+    {
+     if(a!=null&&a.$==1)
+      contactosV.Set(Array.replace(i$1,fr(a.$0),contactosV.Get()));
+    });
+   };
+  }
+  function removeButton(i$1,doc)
+  {
+   return Doc.Element("form",[],[doc,Doc.Button("-",[AttrProxy.Create("title","borrar")],function()
    {
-    return{
-     $:1,
-     $0:a$1
-    };
-   }
-   return(TelefonoModule.formaDoc(new FromView.New(View.Map(function(x)
-   {
-    return g(f(x));
-   },tV),Global.ignore)))[1];
+    contactosV.Set(Array.remove(i$1,contactosV.Get()));
+   })]);
   }
   mensajes=Var$1.Create$1("");
   mostrar=Var$1.Create$1(false);
   contactosV=Var$1.Create$1([]);
-  View.Sink(function(a$1)
+  View.Sink(function(a)
   {
-   contactosV.Set(a$1);
-  },View.Map(function(a$1)
+   contactosV.Set(a);
+  },View.Map(function(a)
   {
-   return a$1.contactos;
+   return a.contactos;
   },aliadoW));
+  contactosIV=View.Map(Seq$1.indexed,contactosV.get_View());
+  ftel=[function(a)
+  {
+   return a.$==2?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },function(a)
+  {
+   return{
+    $:2,
+    $0:a
+   };
+  }];
+  fcor=[function(a)
+  {
+   return a.$==1?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },function(a)
+  {
+   return{
+    $:1,
+    $0:a
+   };
+  }];
+  fdir=[function(a)
+  {
+   return a.$==0?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },function(a)
+  {
+   return{
+    $:0,
+    $0:a
+   };
+  }];
   tels=View.Map(function($1)
   {
-   function c($2,$3)
+   function c(i$1,c$1)
    {
-    return $3.$==2?{
+    return ftel[0](c$1)==null?null:{
      $:1,
-     $0:[$2,$3.$0]
-    }:null;
+     $0:i$1
+    };
    }
    return Seq$1.choose(function($2)
    {
     return c($2[0],$2[1]);
-   },Seq$1.indexed($1));
-  },contactosV.get_View());
-  View.Map(function($1)
+   },$1);
+  },contactosIV);
+  cors=View.Map(function($1)
   {
-   function c($2,$3)
+   function c(i$1,c$1)
    {
-    return $3.$==1?{
+    return fcor[0](c$1)==null?null:{
      $:1,
-     $0:[$2,$3.$0]
-    }:null;
+     $0:i$1
+    };
    }
    return Seq$1.choose(function($2)
    {
     return c($2[0],$2[1]);
-   },Seq$1.indexed($1));
-  },contactosV.get_View());
-  View.Map(function($1)
+   },$1);
+  },contactosIV);
+  dirs=View.Map(function($1)
   {
-   function c($2,$3)
+   function c(i$1,c$1)
    {
-    return $3.$==0?{
+    return fdir[0](c$1)==null?null:{
      $:1,
-     $0:[$2,$3.$0]
-    }:null;
+     $0:i$1
+    };
    }
    return Seq$1.choose(function($2)
    {
     return c($2[0],$2[1]);
-   },Seq$1.indexed($1));
-  },contactosV.get_View());
-  ftels=Doc.ConvertSeqBy(function(t$1)
+   },$1);
+  },contactosIV);
+  telDocs=Doc.ConvertBy(Global.id,function(i$1)
   {
-   return t$1[0];
-  },function($1)
-  {
-   return function($2)
+   return removeButton(i$1,(Telefono$1.formaDoc((function($1)
    {
-    return a($1,$2);
-   };
+    return makeVar($1[0],$1[1]);
+   }(ftel))(i$1)))[1]);
   },tels);
-  return(b=(t=ProviderBuilder.Make().WithHole({
+  corDocs=Doc.ConvertBy(Global.id,function(i$1)
+  {
+   return removeButton(i$1,(CorreoElectronico$1.formaDoc((function($1)
+   {
+    return makeVar($1[0],$1[1]);
+   }(fcor))(i$1)))[1]);
+  },cors);
+  dirDocs=Doc.ConvertBy(Global.id,function(i$1)
+  {
+   return removeButton(i$1,(Direccion$1.formaDoc((function($1)
+   {
+    return makeVar($1[0],$1[1]);
+   }(fdir))(i$1)))[1]);
+  },dirs);
+  telEmpty=Telefono.New(TipoTelefono.Movil,"","","","",false);
+  dirEmpty=Direccion.New(TipoDireccion.Habitacion,"","","",new Estado({
+   $:2,
+   $0:""
+  }),new Pais({
+   $:3,
+   $0:""
+  }),new ZonaPostal({
+   $:0,
+   $0:""
+  }));
+  return(b=(t=(t$1=(t$2=(t$3=ProviderBuilder.Make().WithHole({
    $:2,
    $0:"mensajes",
    $1:View.Map2(function($1,$2)
@@ -4851,16 +4813,54 @@
   }).WithHole({
    $:0,
    $0:"telefonos",
-   $1:ftels
-  }),t.WithHole(Handler.EventQ2(t.k,"salvar",function()
+   $1:telDocs
+  }).WithHole({
+   $:0,
+   $0:"correos",
+   $1:corDocs
+  }).WithHole({
+   $:0,
+   $0:"direcciones",
+   $1:dirDocs
+  }),t$3.WithHole(Handler.EventQ2(t$3.k,"mastelefono",function()
+  {
+   return t$3.i;
+  },function()
+  {
+   contactosV.Set(contactosV.Get().concat([{
+    $:2,
+    $0:telEmpty
+   }]));
+  }))),t$2.WithHole(Handler.EventQ2(t$2.k,"mascorreo",function()
+  {
+   return t$2.i;
+  },function()
+  {
+   contactosV.Set(contactosV.Get().concat([{
+    $:1,
+    $0:new CorreoElectronico({
+     $:0,
+     $0:""
+    })
+   }]));
+  }))),t$1.WithHole(Handler.EventQ2(t$1.k,"masdireccion",function()
+  {
+   return t$1.i;
+  },function()
+  {
+   contactosV.Set(contactosV.Get().concat([{
+    $:0,
+    $0:dirEmpty
+   }]));
+  }))),t.WithHole(Handler.EventQ2(t.k,"salvar",function()
   {
    return t.i;
   },function()
   {
    var m,m$1,al,b$1;
-   function g(a$1)
+   function g(a)
    {
-    Global.alert(a$1);
+    Global.alert(a);
    }
    mostrar.Set(true);
    m=mensajes.Get();
@@ -4874,29 +4874,149 @@
      $:4,
      $0:al.id,
      $1:contactosV.Get()
-    },(new AjaxRemotingProvider.New()).Async("StackOverflow:FsRoot.StackOverflow+Rpc.ejecutarEvento:-1486622886",[e])),function(a$1)
+    },(new AjaxRemotingProvider.New()).Async("StackOverflow:FsRoot.StackOverflow+Rpc.ejecutarEvento:-1486622886",[e])),function(a)
     {
      ModeloUI.refrescarData();
      Global.alert((function($1)
      {
       return function($2)
       {
-       return $1(StackOverflow_GeneratedPrintf.p$11($2));
+       return $1(StackOverflow_GeneratedPrintf.p$9($2));
       };
-     }(Global.id))(a$1));
+     }(Global.id))(a));
      return b$1.Zero();
     });
    }))))):Global.alert("Error not caught FormaDatos"));
   }))),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],StackOverflow_Templates.formacontactos(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderAliados.aliados$5422$45=function(seleccionar,alid)
+ FormaContactos.formaTelefonos=function(aliadoW)
+ {
+  var contactosV,contactosIV,tels,cors,dirs,f,f$1,f$2,f$3,f$4,f$5;
+  function makeVar(f$6,fr)
+  {
+   return function(i)
+   {
+    return new FromView.New(View.Map(function($1)
+    {
+     var o;
+     o=Seq$1.tryItem(i,$1);
+     return o==null?null:f$6(o.$0);
+    },contactosV.get_View()),function(a)
+    {
+     if(a!=null&&a.$==1)
+      contactosV.Set(Array.replace(i,fr(a.$0),contactosV.Get()));
+    });
+   };
+  }
+  function g(t)
+  {
+   return t[1];
+  }
+  function g$1(t)
+  {
+   return t[1];
+  }
+  function g$2(t)
+  {
+   return t[1];
+  }
+  contactosV=Var$1.Create$1([]);
+  View.Sink(function(a)
+  {
+   contactosV.Set(a);
+  },View.Map(function(a)
+  {
+   return a.contactos;
+  },aliadoW));
+  contactosIV=View.Map(Seq$1.indexed,contactosV.get_View());
+  tels=View.Map(function($1)
+  {
+   function c(i,c$1)
+   {
+    return(FormaContactos.ftel())[0](c$1)==null?null:{
+     $:1,
+     $0:i
+    };
+   }
+   return Seq$1.choose(function($2)
+   {
+    return c($2[0],$2[1]);
+   },$1);
+  },contactosIV);
+  cors=View.Map(function($1)
+  {
+   function c(i,c$1)
+   {
+    return(FormaContactos.fcor())[0](c$1)==null?null:{
+     $:1,
+     $0:i
+    };
+   }
+   return Seq$1.choose(function($2)
+   {
+    return c($2[0],$2[1]);
+   },$1);
+  },contactosIV);
+  dirs=View.Map(function($1)
+  {
+   function c(i,c$1)
+   {
+    return(FormaContactos.fdir())[0](c$1)==null?null:{
+     $:1,
+     $0:i
+    };
+   }
+   return Seq$1.choose(function($2)
+   {
+    return c($2[0],$2[1]);
+   },$1);
+  },contactosIV);
+  Doc.ConvertBy(Global.id,(f=(f$1=makeVar.apply(null,FormaContactos.ftel()),function(x)
+  {
+   return Telefono$1.formaDoc(f$1(x));
+  }),function(x)
+  {
+   return g(f(x));
+  }),tels);
+  Doc.ConvertBy(Global.id,(f$2=(f$3=makeVar.apply(null,FormaContactos.fcor()),function(x)
+  {
+   return CorreoElectronico$1.formaDoc(f$3(x));
+  }),function(x)
+  {
+   return g$1(f$2(x));
+  }),cors);
+  Doc.ConvertBy(Global.id,(f$4=(f$5=makeVar.apply(null,FormaContactos.fdir()),function(x)
+  {
+   return Direccion$1.formaDoc(f$5(x));
+  }),function(x)
+  {
+   return g$2(f$4(x));
+  }),dirs);
+  return Runtime.Curried(FormaGenerica.forma,4);
+ };
+ FormaContactos.fdir=function()
+ {
+  SC$1.$cctor();
+  return SC$1.fdir;
+ };
+ FormaContactos.fcor=function()
+ {
+  SC$1.$cctor();
+  return SC$1.fcor;
+ };
+ FormaContactos.ftel=function()
+ {
+  SC$1.$cctor();
+  return SC$1.ftel;
+ };
+ RenderAliados.aliados$5792$49=function(seleccionar,alid)
  {
   return function()
   {
    seleccionar(alid);
   };
  };
- RenderAliados.aliados$5420$45=function(expandir,alid)
+ RenderAliados.aliados$5790$49=function(expandir,alid)
  {
   return function()
   {
@@ -5378,6 +5498,110 @@
    }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],StackOverflow_Templates.calculo(p[0])),(b.i=i,i)))).get_Doc();
   });
  };
+ ModeloUI.refrescarData=function()
+ {
+  var b;
+  Rpc.iterA((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+  {
+   return b.Bind$4((new AjaxRemotingProvider.New()).Async("StackOverflow:FsRoot.StackOverflow+Rpc.leerDataModelo:-200611402",[ModeloUI.refAliadoIdOV().Get()]),function(a)
+   {
+    ModeloUI.modeloV().Set(a);
+    return b.Zero();
+   });
+  }))));
+ };
+ ModeloUI.selAliadoIdDoc=function(fDoc)
+ {
+  var b;
+  return Doc.BindView(Global.id,(b=View.get_Do(),View.Bind(function(a)
+  {
+   return View.Bind(function(a$1)
+   {
+    var aliadoO,aid;
+    aliadoO=a$1==null?null:(aid=a$1.$0,Seq$1.tryFind(function(al)
+    {
+     return Unchecked.Equals(al.id,aid);
+    },a.aliados));
+    return View.Const(aliadoO!=null&&aliadoO.$==1?fDoc(View.Const(aliadoO.$0)):Doc.get_Empty());
+   },ModeloUI.selAliadoIdOV().get_View());
+  },ModeloUI.modeloV().get_View())));
+ };
+ ModeloUI.aliadoW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.aliadoW;
+ };
+ ModeloUI.aliadoIdDoc=function(fDoc)
+ {
+  var b;
+  return Doc.BindView(Global.id,(b=View.get_Do(),View.Bind(function(a)
+  {
+   var aid,aliadoO;
+   aid=a.idAliado;
+   aliadoO=Seq$1.tryFind(function(al)
+   {
+    return Unchecked.Equals(al.id,aid);
+   },a.aliados);
+   return View.Const(aliadoO!=null&&aliadoO.$==1?fDoc(View.Const(aliadoO.$0)):Doc.get_Empty());
+  },ModeloUI.modeloV().get_View())));
+ };
+ ModeloUI.contentVar=function()
+ {
+  SC$1.$cctor();
+  return SC$1.contentVar;
+ };
+ ModeloUI.endPointV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.endPointV;
+ };
+ ModeloUI.money=function(m)
+ {
+  return"$"+ModeloUI.separate(Global.String(m),List.T.Empty);
+ };
+ ModeloUI.separate=function(s,parts)
+ {
+  var s$1;
+  while(true)
+   if(s==="")
+    return(function(s$2)
+    {
+     return function(s$3)
+     {
+      return Strings.concat(s$2,s$3);
+     };
+    }(","))(parts);
+   else
+    {
+     s$1=s;
+     s=Library["String.Left$1"](s$1,-3);
+     parts=new List.T({
+      $:1,
+      $0:Library["String.Right$1"](s$1,3),
+      $1:parts
+     });
+    }
+ };
+ ModeloUI.refAliadoIdOV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.refAliadoIdOV;
+ };
+ ModeloUI.selAliadoIdOV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.selAliadoIdOV;
+ };
+ ModeloUI.modeloV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.modeloV;
+ };
+ MainProgram.mainProgramLoggedOff=function(refIdO)
+ {
+  ModeloUI.refAliadoIdOV().Set(refIdO);
+  MainProgram.mainProgram();
+ };
  MainProgram.mainProgram=function()
  {
   var titleV,mesActualW,anoActualW,nombreAliadoW,statusAliadoW,comisionAliadoW,datosAliadoW,l,m,a,o,v,b,M,p;
@@ -5477,7 +5701,7 @@
   SC$1.$cctor();
   return SC$1.layoutName;
  };
- Server.content$5696$35=function()
+ Server.content$6081$35=function()
  {
   return function(e)
   {
@@ -5495,9 +5719,14 @@
     }
   };
  };
- Server.content$5686$58=function()
+ Server.content$6071$62=function()
  {
   MainProgram.mainProgram();
+  return Doc.TextNode("Initialized");
+ };
+ Server.content$6062$58=function(idO)
+ {
+  MainProgram.mainProgramLoggedOff(idO);
   return Doc.TextNode("Initialized");
  };
  StackOverflow.premisasCalculo=function()
@@ -5678,20 +5907,22 @@
   SC$1.empty=Aliado.New({
    $:0,
    $0:""
-  },null,DatosPersonales.New(null,"","","","",Pais.USA,Genero.Masculino,(new Date$1(2000,1-1,1)).getTime()),[],[],[],[],[],false,StatusAliado.Inactivo,TipoAliado.Regular,(new Date$1(2000,1-1,1)).getTime(),(new Date$1(2000,1-1,1)).getTime(),0,0,0,0,0,0);
+  },null,DatosPersonales.New(null,"","","","",Pais.USA,Genero.Masculino,(new Global.Date(2000,1-1,1)).getTime()),[],[],[],[],[],false,StatusAliado.Inactivo,TipoAliado.Regular,(new Global.Date(2000,1-1,1)).getTime(),(new Global.Date(2000,1-1,1)).getTime(),0,0,0,0,0,0);
   SC$1.modeloV=Var$1.Create$1(Modelo.New({
    $:0,
    $0:":"
   },[],(c=Date$1.now(),(new Date$1(c)).getFullYear()),(c$1=Date$1.now(),(new Date$1(c$1)).getMonth()+1),StackOverflow.premisasCalculo(),-2));
   SC$1.selAliadoIdOV=Var$1.Create$1(null);
+  SC$1.refAliadoIdOV=Var$1.Create$1(null);
   SC$1.endPointV=Var$1.Create$1(EndPoint.DefaultEP);
   SC$1.contentVar=Var$1.Create$1("ProzperLyt.mainContent");
   r=StackOverflow_Router.r();
   Router.InstallHashInto(ModeloUI.endPointV(),EndPoint.DefaultEP,r);
   View.Sink(function(lyt)
   {
-   if(ModeloUI.contentVar().Get()!==lyt)
-    ModeloUI.contentVar().Set(lyt);
+   var lyt$1;
+   lyt$1=Unchecked.Equals(ModeloUI.refAliadoIdOV().Get(),null)?lyt:"ProzperLyt.cntFormaRegistro";
+   ModeloUI.contentVar().Get()!==lyt$1?ModeloUI.contentVar().Set(lyt$1):void 0;
   },View.Map(function(a)
   {
    return a.$==1?a.$0:"ProzperLyt.mainContent";
@@ -5734,6 +5965,45 @@
     return Concurrency.Zero();
    });
   })),null);
+  SC$1.ftel=[function(a)
+  {
+   return a.$==2?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },function(a)
+  {
+   return{
+    $:2,
+    $0:a
+   };
+  }];
+  SC$1.fcor=[function(a)
+  {
+   return a.$==1?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },function(a)
+  {
+   return{
+    $:1,
+    $0:a
+   };
+  }];
+  SC$1.fdir=[function(a)
+  {
+   return a.$==0?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },function(a)
+  {
+   return{
+    $:0,
+    $0:a
+   };
+  }];
   SC$1.layoutName="ProzperLyt";
  };
  StackOverflow_Router.r=function()
@@ -5772,22 +6042,6 @@
  {
   return"IdAliado "+Utils.prettyPrint($1.$0);
  };
- GeneratedPrintf.p=function($1)
- {
-  return"{"+("titulo = "+StackOverflow_GeneratedPrintf.p$9($1.titulo))+"; "+("nombre1 = "+Utils.prettyPrint($1.nombre1))+"; "+("nombre2 = "+Utils.prettyPrint($1.nombre2))+"; "+("apellido1 = "+Utils.prettyPrint($1.apellido1))+"; "+("apellido2 = "+Utils.prettyPrint($1.apellido2))+"; "+("nacionalidad = "+StackOverflow_GeneratedPrintf.p$1($1.nacionalidad))+"; "+("genero = "+StackOverflow_GeneratedPrintf.p$10($1.genero))+"; "+("fechaNacimiento = "+Utils.prettyPrint($1.fechaNacimiento))+"}";
- };
- StackOverflow_GeneratedPrintf.p$10=function($1)
- {
-  return $1.$==2?"Empresa":$1.$==1?"Femenino":"Masculino";
- };
- StackOverflow_GeneratedPrintf.p$9=function($1)
- {
-  return $1==null?"null":"Some "+Utils.prettyPrint($1.$0);
- };
- StackOverflow_GeneratedPrintf.p$8=function($1)
- {
-  return"EMail "+Utils.prettyPrint($1.$0);
- };
  StackOverflow_Templates.telefono=function(h)
  {
   Templates.LoadLocalTemplates("templates");
@@ -5820,7 +6074,11 @@
    $0:"datospersonales"
   },h):void 0;
  };
- StackOverflow_GeneratedPrintf.p$11=function($1)
+ StackOverflow_GeneratedPrintf.p$8=function($1)
+ {
+  return $1.$==2?"Empresa":$1.$==1?"Femenino":"Masculino";
+ };
+ StackOverflow_GeneratedPrintf.p$9=function($1)
  {
   return $1.$==2?"Mensaje "+Utils.prettyPrint($1.$0):$1.$==1?"NuevoRegistro "+Utils.prettyPrint($1.$0):"ROk";
  };
@@ -5838,6 +6096,14 @@
   return h?Templates.NamedTemplate("templates",{
    $:1,
    $0:"formadatospersonales"
+  },h):void 0;
+ };
+ StackOverflow_Templates.formagenerica=function(h)
+ {
+  Templates.LoadLocalTemplates("templates");
+  return h?Templates.NamedTemplate("templates",{
+   $:1,
+   $0:"formagenerica"
   },h):void 0;
  };
  StackOverflow_Templates.formacontactos=function(h)
