@@ -25,6 +25,7 @@
 //#r @"..\..\LayoutEngine\bin\LayoutEngine.dll"
 //#r @"..\packages\other\FSharp.Data.SqlClient\lib\net40\FSharp.Data.SqlClient.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Data.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
 //#r @"..\packages\Owin\lib\net40\Owin.dll"
 //#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
 //#r @"..\packages\Microsoft.Owin.Hosting\lib\net451\Microsoft.Owin.Hosting.dll"
@@ -359,6 +360,30 @@ namespace FsRoot
                         | Some v -> Seq.singleton v
                         | None   -> Seq.empty
                 
+                module Option =
+                    open Option
+                    
+                    let rtn    = Some
+                    let iter f = map f >> Option.defaultValue ()
+                
+                    let join o = Option.bind id o
+                    
+                    let apply fO  vO =
+                        match fO, vO with
+                        | Some f, Some v -> f v |> Some
+                        | _     , _      -> None
+                
+                    /// Same as defaultWith
+                    let mapNone  f o = Option.defaultWith f o
+                    let bindNone f o = match o with | Some v -> Some v |_-> f()
+                    
+                    let (>>=)                              v f = bind f v
+                    let traverseSeq            f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                                 Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq                  sq = traverseSeq id sq
+                    let insertR (vOR:Result<_,_>)              = vOR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
+                    let absorbR  vRO                           = vRO |> function Some(Ok v) -> Some v |_-> None
+                    
                 /// Extensions to Async
                 module Async =
                     let [< Inline >] inline rtn   v    = async.Return v
@@ -1442,7 +1467,8 @@ namespace FsRoot
             type TemplateLogin  = Template< LoginFileName, ClientLoad.FromDocument, ServerLoad.WhenChanged, LegacyMode.New>
         
             if IsClient then printfn "%s" TemplatesFileName
-         
+        
+            let mutable someContext = None
         //#r @"..\packages\other\FSharp.Data.SqlClient\lib\net40\FSharp.Data.SqlClient.dll"
         //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Data.dll"
         
@@ -1472,263 +1498,357 @@ namespace FsRoot
                 use  qry = new SqlCommandProvider<"""SELECT * FROM Prozper.EventStore WHERE EventSeq > @NumEvento ORDER BY EventSeq""", conn, ResultType = ResultType.Tuples>(conn)
                 let  r   = qry.Execute(nevento) |> Seq.toArray
                 return r
-            } 
-        type IdAliado = IdAliado of string
+            }
         
-        type TipoAliado =
-        | Master
-        | Regular
-            with
-                override this.ToString() = sprintf "%A" this
+            let leerTipos () =
+                use  qry = new SqlCommandProvider<"""SELECT DISTINCT TypeOfEvent FROM Prozper.EventStore""", conn, ResultType = ResultType.Tuples>(conn)
+                qry.Execute() |> Seq.toArray
         
-        type Pais =
-        | USA
-        | Venezuela 
-        | Argentina
-        | OtroP of string
-            with 
-                static member tryParse (s:string) = 
-                    match s.Trim().ToUpper() with
-                    | ""               -> None    
-                    | "EEUU" | "UNITED STATES"  | "UNITED STATES OF AMERICA" | "US" | "E.E.U.U." | "AMERICA"
-                    | "USA"            -> Some <| USA
-                    | "VENEZUELA"      -> Some <| Venezuela
-                    | "ARGENTINA"      -> Some <| Argentina
-                    | _                -> Some <| (OtroP <| s.Trim() )
-                override this.ToString() = match this with OtroP s -> s | v -> sprintf "%A" v
+            let leerEventosTipos () =
+                use  qry = new SqlCommandProvider<"""SELECT DISTINCT NameEvent, TypeOfEvent FROM Prozper.EventStore""", conn, ResultType = ResultType.Tuples>(conn)
+                qry.Execute() |> Seq.toArray
         
-        type Estado =
-        | Texas
-        | Florida
-        | OtroS of string
-            with 
-                static member tryParse (s:string) = 
-                    match s.Trim().ToUpper() with
-                    | ""               -> None    
-                    | "TX"
-                    | "TEXAS"          -> Some <| Texas
-                    | "FL"
-                    | "FLORIDA"        -> Some <| Florida
-                    | _                -> Some <| (OtroS <| s.Trim() )
-                override this.ToString() = match this with OtroS s -> s | v -> sprintf "%A" v
+        [< AutoOpen >]
+        module TypesV0 =
+            type LatestType = TypeV0
         
-        type Territorio =
-        | Estado of Estado
+            type IdAliado = IdAliado of string
         
-        type Emisor =
-        | Pais       of Pais
-        | Territorio of Territorio
+            type TipoAliado =
+            | Master
+            | Regular
+                with
+                    override this.ToString() = sprintf "%A" this
         
-        type Documento =
-        | Pasaporte        of string
-        | Cedula           of string
-        | LicenciaConducir of string
+            type Pais =
+            | USA
+            | Venezuela 
+            | Argentina
+            | OtroP of string
+                with 
+                    static member tryParse (s:string) = 
+                        match s.Trim().ToUpper() with
+                        | ""               -> None    
+                        | "EEUU" | "UNITED STATES"  | "UNITED STATES OF AMERICA" | "US" | "E.E.U.U." | "AMERICA"
+                        | "USA"            -> Some <| USA
+                        | "VENEZUELA"      -> Some <| Venezuela
+                        | "ARGENTINA"      -> Some <| Argentina
+                        | _                -> Some <| (OtroP <| s.Trim() )
+                    override this.ToString() = match this with OtroP s -> s | v -> sprintf "%A" v
         
-        type Identificacion = {
-            emisor    : Emisor
-            documento : Documento
-            emision   : System.DateTime
-            vence     : System.DateTime
-        }
+            type Estado =
+            | Texas
+            | Florida
+            | OtroS of string
+                with 
+                    static member tryParse (s:string) = 
+                        match s.Trim().ToUpper() with
+                        | ""               -> None    
+                        | "TX"
+                        | "TEXAS"          -> Some <| Texas
+                        | "FL"
+                        | "FLORIDA"        -> Some <| Florida
+                        | _                -> Some <| (OtroS <| s.Trim() )
+                    override this.ToString() = match this with OtroS s -> s | v -> sprintf "%A" v
         
-        type Banco          = Banco of string
-        type NumeroCuenta   = NumeroCuenta of string
-        type RoutingNumber  = RoutingNumber of string
-        type TipoCuenta     = 
-        | Ahorro
-        | Corriente
-        | Otra of string
-        type CuentaBancaria = {
-            titular : string
-            banco   : Banco
-            tipo    : TipoCuenta
-            numero  : NumeroCuenta
-            routing : RoutingNumber
-        }
+            type Territorio =
+            | Estado of Estado
         
-        type StatusAliado =
-        |   Activo
-        | Inactivo
-            with
-                override this.ToString() = sprintf "%A" this
+            type Emisor =
+            | Pais       of Pais
+            | Territorio of Territorio
         
-        type ConceptoPago =
-        | PagoAfiliacion
-        | PagoComision
-        | Otro of string
-            with
-                override this.ToString() = match this with Otro s -> s | v -> sprintf "%A" v
+            type Documento =
+            | Pasaporte        of string
+            | Cedula           of string
+            | LicenciaConducir of string
         
-        type Transaccion = {
-            fechaPago      : System.DateTime
-            ano            : int
-            periodo        : int
-            monto          : int
-            idAliado       : IdAliado
-            concepto       : ConceptoPago
-            transaccion    : string
-        }
+            type Identificacion = {
+                emisor    : Emisor
+                documento : Documento
+                emision   : System.DateTime
+                vence     : System.DateTime
+            }
         
-        type TipoDireccion = 
-        | Habitacion
-        | Oficina
-        | ServicioPostal
-        | Otro of string
-            with 
-                static member tryParse (s:string) = 
-                    match s.Trim() with
-                    | ""               -> None    
-                    | "Habitacion"     -> Some <| Habitacion
-                    | "Oficina"        -> Some <| Oficina
-                    | "ServicioPostal" -> Some <| ServicioPostal
-                    | s                -> Some <| Otro s
-                override this.ToString() = match this with Otro s -> s | v -> sprintf "%A" v
+            type Banco          = Banco of string
+            type NumeroCuenta   = NumeroCuenta of string
+            type RoutingNumber  = RoutingNumber of string
+            type TipoCuenta     = 
+            | Ahorro
+            | Corriente
+            | Otra of string
+            type CuentaBancaria = {
+                titular : string
+                banco   : Banco
+                tipo    : TipoCuenta
+                numero  : NumeroCuenta
+                routing : RoutingNumber
+            }
         
-        type ZonaPostal = ZonaPostal of string
-            with 
-                static member tryParse (s:string) = if s.Trim() <> "" then Some (ZonaPostal <| s.Trim()) else None
-                override this.ToString() = match this with ZonaPostal s -> s
+            type StatusAliado =
+            |   Activo
+            | Inactivo
+                with
+                    override this.ToString() = sprintf "%A" this
         
-        type Direccion = {
-            tipoDireccion : TipoDireccion
-            linea1        : string
-            linea2        : string
-            ciudad        : string
-            estado        : Estado
-            pais          : Pais
-            zonaPostal    : ZonaPostal
-        }
+            type ConceptoPago =
+            | PagoAfiliacion
+            | PagoComision
+            | Otro of string
+                with
+                    override this.ToString() = match this with Otro s -> s | v -> sprintf "%A" v
         
-        type CorreoElectronico = EMail    of string
-            with override this.ToString() = match this with EMail c -> c
-            
-        type TipoTelefono =
-        | Movil
-        | Oficina
-        | Habitacion
-        | Voip
-            with 
-                static member tryParse = function
-                    | "Movil"      -> Some Movil
-                    | "Oficina"    -> Some Oficina
-                    | "Habitacion" -> Some Habitacion
-                    | _            -> None    
-                override this.ToString() = sprintf "%A" this
+            type Transaccion = {
+                fechaPago      : System.DateTime
+                ano            : int
+                periodo        : int
+                monto          : int
+                idAliado       : IdAliado
+                concepto       : ConceptoPago
+                transaccion    : string
+            }
         
-        type Telefono          = {
-            tipoTelefono : TipoTelefono
-            codigoPais   : string
-            codigoArea   : string
-            numero       : string
-            extension    : string
-            mensajes     : bool
-        }
+            type TipoDireccion = 
+            | Habitacion
+            | Oficina
+            | ServicioPostal
+            | Otro of string
+                with 
+                    static member tryParse (s:string) = 
+                        match s.Trim() with
+                        | ""               -> None    
+                        | "Habitacion"     -> Some <| Habitacion
+                        | "Oficina"        -> Some <| Oficina
+                        | "ServicioPostal" -> Some <| ServicioPostal
+                        | s                -> Some <| Otro s
+                    override this.ToString() = match this with Otro s -> s | v -> sprintf "%A" v
         
-        type Contacto =
-        | Direccion         of Direccion
-        | CorreoElectronico of CorreoElectronico
-        | Telefono          of Telefono
-        | Mensajeria        of string
-        | PaginaWeb         of string
-        | SocialMedia       of string
+            type ZonaPostal = ZonaPostal of string
+                with 
+                    static member tryParse (s:string) = if s.Trim() <> "" then Some (ZonaPostal <| s.Trim()) else None
+                    override this.ToString() = match this with ZonaPostal s -> s
         
-        type Genero =
-        | Masculino
-        | Femenino
-        | Empresa
-            with 
-                static member tryParse (s:string) = 
-                    match s.Trim() with
-                    | "Masculino"      -> Some <| Masculino
-                    | "Femenino"       -> Some <| Femenino
-                    | "Empresa"        -> Some <| Empresa
-                    | _                -> None    
+            type Direccion = {
+                tipoDireccion : TipoDireccion
+                linea1        : string
+                linea2        : string
+                ciudad        : string
+                estado        : Estado
+                pais          : Pais
+                zonaPostal    : ZonaPostal
+            }
         
-        type DatosPersonales = {
-            titulo          : string option
-            nombre1         : string
-            nombre2         : string
-            apellido1       : string
-            apellido2       : string
-            nacionalidad    : Pais
-            genero          : Genero
-            fechaNacimiento : System.DateTime
-        }
+            type CorreoElectronico = EMail    of string
+                with override this.ToString() = match this with EMail c -> c
+                
+            type TipoTelefono =
+            | Movil
+            | Oficina
+            | Habitacion
+            | Voip
+                with 
+                    static member tryParse = function
+                        | "Movil"      -> Some Movil
+                        | "Oficina"    -> Some Oficina
+                        | "Habitacion" -> Some Habitacion
+                        | _            -> None    
+                    override this.ToString() = sprintf "%A" this
         
-        type FormaPago =
-        | CuentaBancaria of CuentaBancaria
-        | TransferenciaElectronica of string
+            type Telefono          = {
+                tipoTelefono : TipoTelefono
+                codigoPais   : string
+                codigoArea   : string
+                numero       : string
+                extension    : string
+                mensajes     : bool
+            }
         
-        type TipoMensaje = 
-        | Alerta
-        | Informacion
-        | Saludo
+            type Contacto =
+            | Direccion         of Direccion
+            | CorreoElectronico of CorreoElectronico
+            | Telefono          of Telefono
+            | Mensajeria        of string
+            | PaginaWeb         of string
+            | SocialMedia       of string
         
-        type Remitente =
-        | Prozper
-        | Aliado of IdAliado
-        | OtroR  of string
+            type Genero =
+            | Masculino
+            | Femenino
+            | Empresa
+                with 
+                    static member tryParse (s:string) = 
+                        match s.Trim() with
+                        | "Masculino"      -> Some <| Masculino
+                        | "Femenino"       -> Some <| Femenino
+                        | "Empresa"        -> Some <| Empresa
+                        | _                -> None    
         
-        type Mensaje ={
-            tipo      : TipoMensaje
-            leido     : System.DateTime option
-            fecha     : System.DateTime
-            texto     : string
-            remitente : Remitente
-        }
+            type DatosPersonales = {
+                titulo          : string option
+                nombre1         : string
+                nombre2         : string
+                apellido1       : string
+                apellido2       : string
+                nacionalidad    : Pais
+                genero          : Genero
+                fechaNacimiento : System.DateTime
+            }
         
-        type Aliado = {
-            id              : IdAliado
-            idPadreO        : IdAliado option
-            datosPersonales : DatosPersonales
-            contactos       : Contacto       []
-            identificacion  : Identificacion []
-            formasPago      : FormaPago      []
-            transacciones   : Transaccion    []
-            mensajes        : Mensaje        []
-            isInternal      : bool
-            status          : StatusAliado
-            tipo            : TipoAliado
-            fechaRegistro   : System.DateTime
-            fechaStatus     : System.DateTime
-            nReferidos      : int
-            nRefActivos     : int
-            nDescendientes  : int
-            nDescActivos    : int
-            comision        : int
-            nivel           : int
-        }
+            type FormaPago =
+            | CuentaBancaria of CuentaBancaria
+            | TransferenciaElectronica of string
         
-        type PremisasCalculo = {
-            comisionReferidosRegular     : int
-            comisionReferidosMaster      : int
-            comisionDescendientesMaster  : int
-            comisionDescendientesRegular : int
-            montoAliliacion              : int
-            numeroReferidosMaster        : int
-            diaCorte1                    : int
-            diaCorte2                    : int
-        }
+            type TipoMensaje = 
+            | Alerta
+            | Informacion
+            | Saludo
         
-        let premisasCalculo = {
-            comisionReferidosRegular     = 15
-            comisionReferidosMaster      = 25
-            comisionDescendientesMaster  = 25
-            comisionDescendientesRegular =  0
-            montoAliliacion              = 75
-            numeroReferidosMaster        = 31
-            diaCorte1                    = 15
-            diaCorte2                    = 22
-        }
+            type Remitente =
+            | Prozper
+            | Aliado of IdAliado
+            | OtroR  of string
         
-        type Modelo = {
-            idAliado      : IdAliado
-            aliados       : Aliado []
-            anoActual     : int
-            periodoActual : int
-            premisas      : PremisasCalculo
-            nevento       : int64
-        }
+            type Mensaje ={
+                tipo      : TipoMensaje
+                leido     : System.DateTime option
+                fecha     : System.DateTime
+                texto     : string
+                remitente : Remitente
+            }
+        
+            type Aliado = {
+                id              : IdAliado
+                idPadreO        : IdAliado option
+                datosPersonales : DatosPersonales
+                contactos       : Contacto       []
+                identificacion  : Identificacion []
+                formasPago      : FormaPago      []
+                transacciones   : Transaccion    []
+                mensajes        : Mensaje        []
+                isInternal      : bool
+                status          : StatusAliado
+                tipo            : TipoAliado
+                fechaRegistro   : System.DateTime
+                fechaStatus     : System.DateTime
+                nReferidos      : int
+                nRefActivos     : int
+                nDescendientes  : int
+                nDescActivos    : int
+                comision        : int
+                nivel           : int
+            }
+        
+            type PremisasCalculo = {
+                comisionReferidosRegular     : int
+                comisionReferidosMaster      : int
+                comisionDescendientesMaster  : int
+                comisionDescendientesRegular : int
+                montoAliliacion              : int
+                numeroReferidosMaster        : int
+                diaCorte1                    : int
+                diaCorte2                    : int
+            }
+        
+            let premisasCalculo = {
+                comisionReferidosRegular     = 15
+                comisionReferidosMaster      = 25
+                comisionDescendientesMaster  = 25
+                comisionDescendientesRegular =  0
+                montoAliliacion              = 75
+                numeroReferidosMaster        = 31
+                diaCorte1                    = 15
+                diaCorte2                    = 22
+            }
+        
+            type Modelo = {
+                idAliado      : IdAliado
+                aliados       : Aliado []
+                anoActual     : int
+                periodoActual : int
+                premisas      : PremisasCalculo
+                nevento       : int64
+            }
+        
+            let telVacio = {            
+                tipoTelefono = Movil
+                codigoPais   = ""
+                codigoArea   = ""
+                numero       = ""
+                extension    = ""
+                mensajes     = false
+            }
+        
+            let dirVacio = {
+                tipoDireccion = TipoDireccion.Habitacion
+                linea1        = ""
+                linea2        = ""
+                ciudad        = ""
+                estado        = OtroS ""
+                pais          = OtroP ""
+                zonaPostal    = ZonaPostal ""
+            }
+        
+        
+        [< AutoOpen >]
+        module TypesV1 =
+            type LatestType = TypeV1
+        
+            type CorreoElectronico = {
+                email                : string
+                deshabilitado        : bool
+                requiereVerificacion : bool
+                verificacionEnviada  : System.DateTime option
+                verificado           : System.DateTime option
+            }
+                with override this.ToString() = this.email
+        
+            type Contacto =
+            | Direccion         of Direccion
+            | CorreoElectronico of CorreoElectronico
+            | Telefono          of Telefono
+            | Mensajeria        of string
+            | PaginaWeb         of string
+            | SocialMedia       of string
+        
+            type Aliado = {
+                id              : IdAliado
+                idPadreO        : IdAliado option
+                datosPersonales : DatosPersonales
+                contactos       : Contacto       []
+                identificacion  : Identificacion []
+                formasPago      : FormaPago      []
+                transacciones   : Transaccion    []
+                mensajes        : Mensaje        []
+                isInternal      : bool
+                status          : StatusAliado
+                tipo            : TipoAliado
+                fechaRegistro   : System.DateTime
+                fechaStatus     : System.DateTime
+                nReferidos      : int
+                nRefActivos     : int
+                nDescendientes  : int
+                nDescActivos    : int
+                comision        : int
+                nivel           : int
+            }
+        
+            type Modelo = {
+                idAliado      : IdAliado
+                aliados       : Aliado []
+                anoActual     : int
+                periodoActual : int
+                premisas      : PremisasCalculo
+                nevento       : int64
+            }
+        
+            let correoVacio = {
+                email                = ""
+                deshabilitado        = true
+                requiereVerificacion = true
+                verificacionEnviada  = None
+                verificado           = None
+            }
+        
         
         module Aliado =
             open Eff
@@ -1900,6 +2020,7 @@ namespace FsRoot
         | NuevoRegistro of string
         | Mensaje       of string
         
+        
         [< JavaScript false >]
         module Eventos =
         
@@ -2016,8 +2137,8 @@ namespace FsRoot
                 ,  Mensaje <| "Contactos actualizados!" 
             }
         
-            let agregarAliado                   aliado  modelo = resultM { return { modelo with aliados = addNewAliados [| aliado  |] modelo.aliados }, ROk }
-            let agregarAliados                  aliados modelo = resultM { return { modelo with aliados = addNewAliados    aliados    modelo.aliados }, ROk }
+            let agregarAliado                   aliado  modelo = resultM { return { modelo with Modelo.aliados = addNewAliados [| aliado  |] modelo.aliados }, ROk }
+            let agregarAliados                  aliados modelo = resultM { return { modelo with Modelo.aliados = addNewAliados    aliados    modelo.aliados }, ROk }
         
             let actualizarEstado (evento: Evento) (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
                 if modelo.nevento <> -1L && modelo.nevento + 1L <> evento.nevento then 
@@ -2042,176 +2163,221 @@ namespace FsRoot
         module Serializador =
             open Serializer
             open System
+        
+            [< AutoOpen >]
+            module TypesV0 =
+                open TypesV0
             
-            let serDate : Ser<System.DateTime> = 
-                (fun (d:System.DateTime ) -> d.ToString("u") |> sprintf "%A"                )
-              , (fun (j:JsonIntermediate) -> j.tryString() |> Option.bind ParseO.parseDateO )
+                let serDate : Ser<System.DateTime> = 
+                    (  fun (d:System.DateTime ) -> d.ToString("u") |> sprintf "%A"                )
+                    , (fun (j:JsonIntermediate) -> j.tryString() |> Option.bind ParseO.parseDateO )
         
-            let serIdAliado          = serDU<IdAliado         > [ serObj serString            ]    
-            let serTipoAliado        = serDU<TipoAliado       > [ serObj serString            ]    
-            let serPais              = serDU<Pais             > [ serObj serString            ]    
-            let serEstado            = serDU<Estado           > [ serObj serString            ]    
-            let serTerritorio        = serDU<Territorio       > [ serObj serEstado            ]   
-            let serEmisor            = serDU<Emisor           > [ serObj serPais
-                                                                  serObj serTerritorio        ]
-            let serDocumento         = serDU<Documento        > [ serObj serString            ]    
-            let serBanco             = serDU<Banco            > [ serObj serString            ]    
-            let serNumeroCuenta      = serDU<NumeroCuenta     > [ serObj serString            ]    
-            let serRoutingNumber     = serDU<RoutingNumber    > [ serObj serString            ]    
-            let serTipoCuenta        = serDU<TipoCuenta       > [ serObj serString            ]    
-            let serStatusAliado      = serDU<StatusAliado     > [ serObj serString            ]    
-            let serConceptoPago      = serDU<ConceptoPago     > [ serObj serString            ]    
-            let serTipoDireccion     = serDU<TipoDireccion    > [ serObj serString            ]    
-            let serZonaPostal        = serDU<ZonaPostal       > [ serObj serString            ]    
-            let serCorreoElectronico = serDU<CorreoElectronico> [ serObj serString            ]    
-            let serTipoTelefono      = serDU<TipoTelefono     > [ serObj serString            ]    
-            let serGenero            = serDU<Genero           > [ serObj serString            ]    
-            let serTipoMensaje       = serDU<TipoMensaje      > [ serObj serString            ]
-            let serIdentificacion : Ser<Identificacion> = 
-                [|
-                    serEmisor    |> serField "emisor"    (fun s -> s.emisor    ) (fun v s -> { s with emisor    = v } )
-                    serDocumento |> serField "documento" (fun s -> s.documento ) (fun v s -> { s with documento = v } )
-                    serDate      |> serField "emision"   (fun s -> s.emision   ) (fun v s -> { s with emision   = v } )
-                    serDate      |> serField "vence"     (fun s -> s.vence     ) (fun v s -> { s with vence     = v } )
-                |] |> serRecord LibraryNoJS.Default.value<_>
+                let serIdAliado          = serDU<IdAliado         > [   serObj serString            ]    
+                let serTipoAliado        = serDU<TipoAliado       > [   serObj serString            ]    
+                let serPais              = serDU<Pais             > [   serObj serString            ]    
+                let serEstado            = serDU<Estado           > [   serObj serString            ]    
+                let serTerritorio        = serDU<Territorio       > [   serObj serEstado            ]   
+                let serEmisor            = serDU<Emisor           > [   serObj serPais
+                                                                        serObj serTerritorio        ]
+                let serDocumento         = serDU<Documento        > [   serObj serString            ]    
+                let serBanco             = serDU<Banco            > [   serObj serString            ]    
+                let serNumeroCuenta      = serDU<NumeroCuenta     > [   serObj serString            ]    
+                let serRoutingNumber     = serDU<RoutingNumber    > [   serObj serString            ]    
+                let serTipoCuenta        = serDU<TipoCuenta       > [   serObj serString            ]    
+                let serStatusAliado      = serDU<StatusAliado     > [   serObj serString            ]    
+                let serConceptoPago      = serDU<ConceptoPago     > [   serObj serString            ]    
+                let serTipoDireccion     = serDU<TipoDireccion    > [   serObj serString            ]    
+                let serZonaPostal        = serDU<ZonaPostal       > [   serObj serString            ]    
+                let serCorreoElectronico = serDU<CorreoElectronico> [   serObj serString            ]    
+                let serTipoTelefono      = serDU<TipoTelefono     > [   serObj serString            ]    
+                let serGenero            = serDU<Genero           > [   serObj serString            ]    
+                let serTipoMensaje       = serDU<TipoMensaje      > [   serObj serString            ]
+                let serIdentificacion : Ser<Identificacion> = 
+                    [|
+                        serEmisor    |> serField "emisor"    (fun s -> s.emisor    ) (fun v s -> { s with emisor    = v } )
+                        serDocumento |> serField "documento" (fun s -> s.documento ) (fun v s -> { s with documento = v } )
+                        serDate      |> serField "emision"   (fun s -> s.emision   ) (fun v s -> { s with emision   = v } )
+                        serDate      |> serField "vence"     (fun s -> s.vence     ) (fun v s -> { s with vence     = v } )
+                    |] |> serRecord LibraryNoJS.Default.value<_>
         
-            let serCuentaBancaria : Ser<CuentaBancaria> = 
-                [|
-                    serString        |> serField "titular" (fun s -> s.titular) (fun v s -> { s with titular = v } )   
-                    serBanco         |> serField "banco"   (fun s -> s.banco  ) (fun v s -> { s with banco   = v } )   
-                    serTipoCuenta    |> serField "tipo"    (fun s -> s.tipo   ) (fun v s -> { s with tipo    = v } )        
-                    serNumeroCuenta  |> serField "numero"  (fun s -> s.numero ) (fun v s -> { s with numero  = v } )          
-                    serRoutingNumber |> serField "routing" (fun s -> s.routing) (fun v s -> { s with routing = v } )           
-                |] |> serRecord LibraryNoJS.Default.value<_>
+                let serCuentaBancaria : Ser<CuentaBancaria> = 
+                    [|
+                        serString        |> serField "titular" (fun s -> s.titular) (fun v s -> { s with titular = v } )   
+                        serBanco         |> serField "banco"   (fun s -> s.banco  ) (fun v s -> { s with banco   = v } )   
+                        serTipoCuenta    |> serField "tipo"    (fun s -> s.tipo   ) (fun v s -> { s with tipo    = v } )        
+                        serNumeroCuenta  |> serField "numero"  (fun s -> s.numero ) (fun v s -> { s with numero  = v } )          
+                        serRoutingNumber |> serField "routing" (fun s -> s.routing) (fun v s -> { s with routing = v } )           
+                    |] |> serRecord LibraryNoJS.Default.value<_>
         
-            let serTransaccion : Ser<Transaccion> = 
-                [|
-                    serDate          |> serField "fechaPago"   (fun s -> s.fechaPago  ) (fun v s -> { s with fechaPago   = v } ) 
-                    serInt           |> serField "ano"         (fun s -> s.ano        ) (fun v s -> { s with ano         = v } )
-                    serInt           |> serField "periodo"     (fun s -> s.periodo    ) (fun v s -> { s with periodo     = v } )
-                    serInt           |> serField "monto"       (fun s -> s.monto      ) (fun v s -> { s with monto       = v } )
-                    serIdAliado      |> serField "idAliado"    (fun s -> s.idAliado   ) (fun v s -> { s with idAliado    = v } )     
-                    serConceptoPago  |> serField "concepto"    (fun s -> s.concepto   ) (fun v s -> { s with concepto    = v } )         
-                    serString        |> serField "transaccion" (fun s -> s.transaccion) (fun v s -> { s with transaccion = v } )   
-                |] |> serRecord LibraryNoJS.Default.value<_>
+                let serTransaccion : Ser<Transaccion> = 
+                    [|
+                        serDate          |> serField "fechaPago"   (fun s -> s.fechaPago  ) (fun v s -> { s with fechaPago   = v } ) 
+                        serInt           |> serField "ano"         (fun s -> s.ano        ) (fun v s -> { s with ano         = v } )
+                        serInt           |> serField "periodo"     (fun s -> s.periodo    ) (fun v s -> { s with periodo     = v } )
+                        serInt           |> serField "monto"       (fun s -> s.monto      ) (fun v s -> { s with monto       = v } )
+                        serIdAliado      |> serField "idAliado"    (fun s -> s.idAliado   ) (fun v s -> { s with idAliado    = v } )     
+                        serConceptoPago  |> serField "concepto"    (fun s -> s.concepto   ) (fun v s -> { s with concepto    = v } )         
+                        serString        |> serField "transaccion" (fun s -> s.transaccion) (fun v s -> { s with transaccion = v } )   
+                    |] |> serRecord LibraryNoJS.Default.value<_>
         
-            let serDireccion : Ser<Direccion> = 
-                [|
-                    serTipoDireccion |> serField "tipoDireccion" (fun s -> s.tipoDireccion) (fun v s -> { s with tipoDireccion = v } )
-                    serString        |> serField "linea1"        (fun s -> s.linea1       ) (fun v s -> { s with linea1        = v } )
-                    serString        |> serField "linea2"        (fun s -> s.linea2       ) (fun v s -> { s with linea2        = v } )
-                    serString        |> serField "ciudad"        (fun s -> s.ciudad       ) (fun v s -> { s with ciudad        = v } )
-                    serPais          |> serField "pais"          (fun s -> s.pais         ) (fun v s -> { s with pais          = v } )
-                    serZonaPostal    |> serField "zonaPostal"    (fun s -> s.zonaPostal   ) (fun v s -> { s with zonaPostal    = v } )
-                |] |> serRecord LibraryNoJS.Default.value<_>
+                let serDireccion : Ser<Direccion> = 
+                    [|
+                        serTipoDireccion |> serField "tipoDireccion" (fun s -> s.tipoDireccion) (fun v s -> { s with tipoDireccion = v } )
+                        serString        |> serField "linea1"        (fun s -> s.linea1       ) (fun v s -> { s with linea1        = v } )
+                        serString        |> serField "linea2"        (fun s -> s.linea2       ) (fun v s -> { s with linea2        = v } )
+                        serString        |> serField "ciudad"        (fun s -> s.ciudad       ) (fun v s -> { s with ciudad        = v } )
+                        serPais          |> serField "pais"          (fun s -> s.pais         ) (fun v s -> { s with pais          = v } )
+                        serZonaPostal    |> serField "zonaPostal"    (fun s -> s.zonaPostal   ) (fun v s -> { s with zonaPostal    = v } )
+                    |] |> serRecord LibraryNoJS.Default.value<_>
         
-            let serTelefono : Ser<Telefono> =
-                [|
-                    serTipoTelefono |> serField "tipoTelefono" (fun s -> s.tipoTelefono) (fun v s -> { s with tipoTelefono = v } )
-                    serString       |> serField "codigoPais"   (fun s -> s.codigoPais  ) (fun v s -> { s with codigoPais   = v } )
-                    serString       |> serField "codigoArea"   (fun s -> s.codigoArea  ) (fun v s -> { s with codigoArea   = v } )
-                    serString       |> serField "numero"       (fun s -> s.numero      ) (fun v s -> { s with numero       = v } )
-                    serString       |> serField "extension"    (fun s -> s.extension   ) (fun v s -> { s with extension    = v } )
-                    serBool         |> serField "mensajes"     (fun s -> s.mensajes    ) (fun v s -> { s with mensajes     = v } )
-                |] |> serRecord LibraryNoJS.Default.value<_>
+                let serTelefono : Ser<Telefono> =
+                    [|
+                        serTipoTelefono |> serField "tipoTelefono" (fun s -> s.tipoTelefono) (fun v s -> { s with tipoTelefono = v } )
+                        serString       |> serField "codigoPais"   (fun s -> s.codigoPais  ) (fun v s -> { s with codigoPais   = v } )
+                        serString       |> serField "codigoArea"   (fun s -> s.codigoArea  ) (fun v s -> { s with codigoArea   = v } )
+                        serString       |> serField "numero"       (fun s -> s.numero      ) (fun v s -> { s with numero       = v } )
+                        serString       |> serField "extension"    (fun s -> s.extension   ) (fun v s -> { s with extension    = v } )
+                        serBool         |> serField "mensajes"     (fun s -> s.mensajes    ) (fun v s -> { s with mensajes     = v } )
+                    |] |> serRecord LibraryNoJS.Default.value<_>
         
-            let serContacto          = serDU<Contacto         > [ serObj serString     
-                                                                  serObj serTelefono
-                                                                  serObj serCorreoElectronico
-                                                                  serObj serDireccion         ]
-            let serFormaPago         = serDU<FormaPago        > [ serObj serString              
-                                                                  serObj serCuentaBancaria    ]
-            let serRemitente         = serDU<Remitente        > [ serObj serIdAliado
-                                                                  serObj serString            ]
+                let serContacto          = serDU<Contacto         > [   serObj serString     
+                                                                        serObj serTelefono
+                                                                        serObj serCorreoElectronico
+                                                                        serObj serDireccion         ]
+                let serFormaPago         = serDU<FormaPago        > [   serObj serString              
+                                                                        serObj serCuentaBancaria    ]
+                let serRemitente         = serDU<Remitente        > [   serObj serIdAliado
+                                                                        serObj serString            ]
         
-            let serDatosPersonales : Ser<DatosPersonales> =
-                [|
-                    serString        |> serOpt  |> serField "titulo"          (fun s -> s.titulo         ) (fun v s -> { s with titulo          = v } )
-                    serString                   |> serField "nombre1"         (fun s -> s.nombre1        ) (fun v s -> { s with nombre1         = v } )
-                    serString                   |> serField "nombre2"         (fun s -> s.nombre2        ) (fun v s -> { s with nombre2         = v } )
-                    serString                   |> serField "apellido1"       (fun s -> s.apellido1      ) (fun v s -> { s with apellido1       = v } )
-                    serString                   |> serField "apellido2"       (fun s -> s.apellido2      ) (fun v s -> { s with apellido2       = v } )
-                    serPais                     |> serField "nacionalidad"    (fun s -> s.nacionalidad   ) (fun v s -> { s with nacionalidad    = v } )
-                    serGenero                   |> serField "genero"          (fun s -> s.genero         ) (fun v s -> { s with genero          = v } )
-                    serDate                     |> serField "fechaNacimiento" (fun s -> s.fechaNacimiento) (fun v s -> { s with fechaNacimiento = v } )
-                |] |> serRecord LibraryNoJS.Default.value<_>
+                let serDatosPersonales : Ser<DatosPersonales> =
+                    [|
+                        serString        |> serOpt  |> serField "titulo"          (fun s -> s.titulo         ) (fun v s -> { s with titulo          = v } )
+                        serString                   |> serField "nombre1"         (fun s -> s.nombre1        ) (fun v s -> { s with nombre1         = v } )
+                        serString                   |> serField "nombre2"         (fun s -> s.nombre2        ) (fun v s -> { s with nombre2         = v } )
+                        serString                   |> serField "apellido1"       (fun s -> s.apellido1      ) (fun v s -> { s with apellido1       = v } )
+                        serString                   |> serField "apellido2"       (fun s -> s.apellido2      ) (fun v s -> { s with apellido2       = v } )
+                        serPais                     |> serField "nacionalidad"    (fun s -> s.nacionalidad   ) (fun v s -> { s with nacionalidad    = v } )
+                        serGenero                   |> serField "genero"          (fun s -> s.genero         ) (fun v s -> { s with genero          = v } )
+                        serDate                     |> serField "fechaNacimiento" (fun s -> s.fechaNacimiento) (fun v s -> { s with fechaNacimiento = v } )
+                    |] |> serRecord LibraryNoJS.Default.value<_>
         
-            let serMensaje : Ser<Mensaje> =
-                [|
-                    serTipoMensaje           |> serField "tipo"      (fun (s:Mensaje) -> s.tipo     ) (fun v s -> { s with tipo      = v } )
-                    serDate        |> serOpt |> serField "leido"     (fun (s:Mensaje) -> s.leido    ) (fun v s -> { s with leido     = v } )
-                    serDate                  |> serField "fecha"     (fun (s:Mensaje) -> s.fecha    ) (fun v s -> { s with fecha     = v } )
-                    serString                |> serField "texto"     (fun (s:Mensaje) -> s.texto    ) (fun v s -> { s with texto     = v } )
-                    serRemitente             |> serField "remitente" (fun (s:Mensaje) -> s.remitente) (fun v s -> { s with remitente = v } )
-                |] |> serRecord LibraryNoJS.Default.value<_>
+                let serMensaje : Ser<Mensaje> =
+                    [|
+                        serTipoMensaje           |> serField "tipo"      (fun (s:Mensaje) -> s.tipo     ) (fun v s -> { s with tipo      = v } )
+                        serDate        |> serOpt |> serField "leido"     (fun (s:Mensaje) -> s.leido    ) (fun v s -> { s with leido     = v } )
+                        serDate                  |> serField "fecha"     (fun (s:Mensaje) -> s.fecha    ) (fun v s -> { s with fecha     = v } )
+                        serString                |> serField "texto"     (fun (s:Mensaje) -> s.texto    ) (fun v s -> { s with texto     = v } )
+                        serRemitente             |> serField "remitente" (fun (s:Mensaje) -> s.remitente) (fun v s -> { s with remitente = v } )
+                    |] |> serRecord LibraryNoJS.Default.value<_>
         
-            let serAliado : Ser<Aliado> =
-                [|
-                    serIdAliado                    |> serField "id"              (fun s -> s.id             ) (fun v s -> { s with id              = v } )
-                    serIdAliado         |> serOpt  |> serField "idPadreO"        (fun s -> s.idPadreO       ) (fun v s -> { s with idPadreO        = v } )
-                    serIdentificacion   |> serArr  |> serField "identificacion"  (fun s -> s.identificacion ) (fun v s -> { s with identificacion  = v } )
-                    serDatosPersonales             |> serField "datosPersonales" (fun s -> s.datosPersonales) (fun v s -> { s with datosPersonales = v } )
-                    serContacto         |> serArr  |> serField "contactos"       (fun s -> s.contactos      ) (fun v s -> { s with contactos       = v } )
-                    serFormaPago        |> serArr  |> serField "formasPago"      (fun s -> s.formasPago     ) (fun v s -> { s with formasPago      = v } )
-                    serTransaccion      |> serArr  |> serField "transacciones"   (fun s -> s.transacciones  ) (fun v s -> { s with transacciones   = v } )
-                    serMensaje          |> serArr  |> serField "mensajes"        (fun s -> s.mensajes       ) (fun v s -> { s with mensajes        = v } )
-                    serBool                        |> serField "isInternal"      (fun s -> s.isInternal     ) (fun v s -> { s with isInternal      = v } )
-                    serStatusAliado                |> serField "status"          (fun s -> s.status         ) (fun v s -> { s with status          = v } )
-                    serTipoAliado                  |> serField "tipo"            (fun s -> s.tipo           ) (fun v s -> { s with tipo            = v } )
-                    serDate                        |> serField "fechaRegistro"   (fun s -> s.fechaRegistro  ) (fun v s -> { s with fechaRegistro   = v } )
-                    serDate                        |> serField "fechaStatus"     (fun s -> s.fechaStatus    ) (fun v s -> { s with fechaStatus     = v } )
-                    serInt                         |> serField "nReferidos"      (fun s -> s.nReferidos     ) (fun v s -> { s with nReferidos      = v } )
-                    serInt                         |> serField "nRefActivos"     (fun s -> s.nRefActivos    ) (fun v s -> { s with nRefActivos     = v } )
-                    serInt                         |> serField "nDescendientes"  (fun s -> s.nDescendientes ) (fun v s -> { s with nDescendientes  = v } )
-                    serInt                         |> serField "nDescActivos"    (fun s -> s.nDescActivos   ) (fun v s -> { s with nDescActivos    = v } )
-                    serInt                         |> serField "comision"        (fun s -> s.comision       ) (fun v s -> { s with comision        = v } )
-                    serInt                         |> serField "nivel"           (fun s -> s.nivel          ) (fun v s -> { s with nivel           = v } )
-                |] |> serRecord LibraryNoJS.Default.value<_>
+                let serAliado : Ser<Aliado> =
+                    [|
+                        serIdAliado                    |> serField "id"              (fun s -> s.id             ) (fun v s -> { s with id              = v } )
+                        serIdAliado         |> serOpt  |> serField "idPadreO"        (fun s -> s.idPadreO       ) (fun v s -> { s with idPadreO        = v } )
+                        serIdentificacion   |> serArr  |> serField "identificacion"  (fun s -> s.identificacion ) (fun v s -> { s with identificacion  = v } )
+                        serDatosPersonales             |> serField "datosPersonales" (fun s -> s.datosPersonales) (fun v s -> { s with datosPersonales = v } )
+                        serContacto         |> serArr  |> serField "contactos"       (fun s -> s.contactos      ) (fun v s -> { s with contactos       = v } )
+                        serFormaPago        |> serArr  |> serField "formasPago"      (fun s -> s.formasPago     ) (fun v s -> { s with formasPago      = v } )
+                        serTransaccion      |> serArr  |> serField "transacciones"   (fun s -> s.transacciones  ) (fun v s -> { s with transacciones   = v } )
+                        serMensaje          |> serArr  |> serField "mensajes"        (fun s -> s.mensajes       ) (fun v s -> { s with mensajes        = v } )
+                        serBool                        |> serField "isInternal"      (fun s -> s.isInternal     ) (fun v s -> { s with isInternal      = v } )
+                        serStatusAliado                |> serField "status"          (fun s -> s.status         ) (fun v s -> { s with status          = v } )
+                        serTipoAliado                  |> serField "tipo"            (fun s -> s.tipo           ) (fun v s -> { s with tipo            = v } )
+                        serDate                        |> serField "fechaRegistro"   (fun s -> s.fechaRegistro  ) (fun v s -> { s with fechaRegistro   = v } )
+                        serDate                        |> serField "fechaStatus"     (fun s -> s.fechaStatus    ) (fun v s -> { s with fechaStatus     = v } )
+                        serInt                         |> serField "nReferidos"      (fun s -> s.nReferidos     ) (fun v s -> { s with nReferidos      = v } )
+                        serInt                         |> serField "nRefActivos"     (fun s -> s.nRefActivos    ) (fun v s -> { s with nRefActivos     = v } )
+                        serInt                         |> serField "nDescendientes"  (fun s -> s.nDescendientes ) (fun v s -> { s with nDescendientes  = v } )
+                        serInt                         |> serField "nDescActivos"    (fun s -> s.nDescActivos   ) (fun v s -> { s with nDescActivos    = v } )
+                        serInt                         |> serField "comision"        (fun s -> s.comision       ) (fun v s -> { s with comision        = v } )
+                        serInt                         |> serField "nivel"           (fun s -> s.nivel          ) (fun v s -> { s with nivel           = v } )
+                    |] |> serRecord LibraryNoJS.Default.value<_>
         
-            let serPremisasCalculo : Ser<PremisasCalculo> =
-                [|
-                    serInt  |> serField "comisionReferidosRegular"     (fun s -> s.comisionReferidosRegular    ) (fun v s -> { s with comisionReferidosRegular     = v } )
-                    serInt  |> serField "comisionReferidosMaster"      (fun s -> s.comisionReferidosMaster     ) (fun v s -> { s with comisionReferidosMaster      = v } )
-                    serInt  |> serField "comisionDescendientesMaster"  (fun s -> s.comisionDescendientesMaster ) (fun v s -> { s with comisionDescendientesMaster  = v } )
-                    serInt  |> serField "comisionDescendientesRegular" (fun s -> s.comisionDescendientesRegular) (fun v s -> { s with comisionDescendientesRegular = v } )
-                    serInt  |> serField "montoAliliacion"              (fun s -> s.montoAliliacion             ) (fun v s -> { s with montoAliliacion              = v } )
-                    serInt  |> serField "numeroReferidosMaster"        (fun s -> s.numeroReferidosMaster       ) (fun v s -> { s with numeroReferidosMaster        = v } )
-                    serInt  |> serField "diaCorte1"                    (fun s -> s.diaCorte1                   ) (fun v s -> { s with diaCorte1                    = v } )
-                    serInt  |> serField "diaCorte2"                    (fun s -> s.diaCorte2                   ) (fun v s -> { s with diaCorte2                    = v } )
-                |] |> serRecord LibraryNoJS.Default.value<_>
+                let serPremisasCalculo : Ser<PremisasCalculo> =
+                    [|
+                        serInt  |> serField "comisionReferidosRegular"     (fun s -> s.comisionReferidosRegular    ) (fun v s -> { s with comisionReferidosRegular     = v } )
+                        serInt  |> serField "comisionReferidosMaster"      (fun s -> s.comisionReferidosMaster     ) (fun v s -> { s with comisionReferidosMaster      = v } )
+                        serInt  |> serField "comisionDescendientesMaster"  (fun s -> s.comisionDescendientesMaster ) (fun v s -> { s with comisionDescendientesMaster  = v } )
+                        serInt  |> serField "comisionDescendientesRegular" (fun s -> s.comisionDescendientesRegular) (fun v s -> { s with comisionDescendientesRegular = v } )
+                        serInt  |> serField "montoAliliacion"              (fun s -> s.montoAliliacion             ) (fun v s -> { s with montoAliliacion              = v } )
+                        serInt  |> serField "numeroReferidosMaster"        (fun s -> s.numeroReferidosMaster       ) (fun v s -> { s with numeroReferidosMaster        = v } )
+                        serInt  |> serField "diaCorte1"                    (fun s -> s.diaCorte1                   ) (fun v s -> { s with diaCorte1                    = v } )
+                        serInt  |> serField "diaCorte2"                    (fun s -> s.diaCorte2                   ) (fun v s -> { s with diaCorte2                    = v } )
+                    |] |> serRecord LibraryNoJS.Default.value<_>
         
-            let serModelo : Ser<Modelo> = 
-                [|
-                    serIdAliado                   |> serField "idAliado"      (fun s -> s.idAliado      ) (fun v s -> { s with idAliado      = v } )
-                    serAliado           |> serArr |> serField "aliados"       (fun s -> s.aliados       ) (fun v s -> { s with aliados       = v } )
-                    serInt                        |> serField "anoActual"     (fun s -> s.anoActual     ) (fun v s -> { s with anoActual     = v } )
-                    serInt                        |> serField "periodoActual" (fun s -> s.periodoActual ) (fun v s -> { s with periodoActual = v } )
-                    serPremisasCalculo            |> serField "premisas"      (fun s -> s.premisas      ) (fun v s -> { s with premisas      = v } )
-                |] |> serRecord LibraryNoJS.Default.value<_>
+                let serModelo : Ser<Modelo> = 
+                    [|
+                        serIdAliado                   |> serField "idAliado"      (fun s -> s.idAliado      ) (fun v s -> { s with idAliado      = v } )
+                        serAliado           |> serArr |> serField "aliados"       (fun s -> s.aliados       ) (fun v s -> { s with aliados       = v } )
+                        serInt                        |> serField "anoActual"     (fun s -> s.anoActual     ) (fun v s -> { s with anoActual     = v } )
+                        serInt                        |> serField "periodoActual" (fun s -> s.periodoActual ) (fun v s -> { s with periodoActual = v } )
+                        serPremisasCalculo            |> serField "premisas"      (fun s -> s.premisas      ) (fun v s -> { s with premisas      = v } )
+                    |] |> serRecord LibraryNoJS.Default.value<_>
         
-            let serDataEventoX = 
-                serDU<DataEvento> [ 
-                    serObj serAliado
-                    serObj serIdAliado
-                    serObj (serOpt serIdAliado)
-                    serObj (serArr serContacto)
-                    serObj (serArr serAliado  )
-                    serObj serDatosPersonales
-                ]
+            [< AutoOpen >]
+            module TypesV1 =
+                open TypesV0
+                open TypesV1
+        
+                let serCorreoElectronico : Ser<CorreoElectronico> = 
+                    [|
+                        serString         |> serField "email"                (fun s -> s.email               ) (fun v s -> { s with email                = v } )
+                        serBool           |> serField "deshabilitado"        (fun s -> s.deshabilitado       ) (fun v s -> { s with deshabilitado        = v } )
+                        serBool           |> serField "requiereVerificacion" (fun s -> s.requiereVerificacion) (fun v s -> { s with requiereVerificacion = v } )
+                        serDate |> serOpt |> serField "verificacionEnviada"  (fun s -> s.verificacionEnviada ) (fun v s -> { s with verificacionEnviada  = v } )
+                        serDate |> serOpt |> serField "verificado"           (fun s -> s.verificado          ) (fun v s -> { s with verificado           = v } )
+                    |] |> serRecord LibraryNoJS.Default.value<_>
+        
+                let serContacto          = serDU<Contacto         > [   serObj serString     
+                                                                        serObj serTelefono
+                                                                        serObj serCorreoElectronico
+                                                                        serObj serDireccion         ] 
+        
+                let serAliado : Ser<Aliado> =
+                    [|
+                        serIdAliado                    |> serField "id"              (fun s -> s.id             ) (fun v s -> { s with id              = v } )
+                        serIdAliado         |> serOpt  |> serField "idPadreO"        (fun s -> s.idPadreO       ) (fun v s -> { s with idPadreO        = v } )
+                        serIdentificacion   |> serArr  |> serField "identificacion"  (fun s -> s.identificacion ) (fun v s -> { s with identificacion  = v } )
+                        serDatosPersonales             |> serField "datosPersonales" (fun s -> s.datosPersonales) (fun v s -> { s with datosPersonales = v } )
+                        serContacto         |> serArr  |> serField "contactos"       (fun s -> s.contactos      ) (fun v s -> { s with contactos       = v } )
+                        serFormaPago        |> serArr  |> serField "formasPago"      (fun s -> s.formasPago     ) (fun v s -> { s with formasPago      = v } )
+                        serTransaccion      |> serArr  |> serField "transacciones"   (fun s -> s.transacciones  ) (fun v s -> { s with transacciones   = v } )
+                        serMensaje          |> serArr  |> serField "mensajes"        (fun s -> s.mensajes       ) (fun v s -> { s with mensajes        = v } )
+                        serBool                        |> serField "isInternal"      (fun s -> s.isInternal     ) (fun v s -> { s with isInternal      = v } )
+                        serStatusAliado                |> serField "status"          (fun s -> s.status         ) (fun v s -> { s with status          = v } )
+                        serTipoAliado                  |> serField "tipo"            (fun s -> s.tipo           ) (fun v s -> { s with tipo            = v } )
+                        serDate                        |> serField "fechaRegistro"   (fun s -> s.fechaRegistro  ) (fun v s -> { s with fechaRegistro   = v } )
+                        serDate                        |> serField "fechaStatus"     (fun s -> s.fechaStatus    ) (fun v s -> { s with fechaStatus     = v } )
+                        serInt                         |> serField "nReferidos"      (fun s -> s.nReferidos     ) (fun v s -> { s with nReferidos      = v } )
+                        serInt                         |> serField "nRefActivos"     (fun s -> s.nRefActivos    ) (fun v s -> { s with nRefActivos     = v } )
+                        serInt                         |> serField "nDescendientes"  (fun s -> s.nDescendientes ) (fun v s -> { s with nDescendientes  = v } )
+                        serInt                         |> serField "nDescActivos"    (fun s -> s.nDescActivos   ) (fun v s -> { s with nDescActivos    = v } )
+                        serInt                         |> serField "comision"        (fun s -> s.comision       ) (fun v s -> { s with comision        = v } )
+                        serInt                         |> serField "nivel"           (fun s -> s.nivel          ) (fun v s -> { s with nivel           = v } )
+                    |] |> serRecord LibraryNoJS.Default.value<_>
+        
+                let serModelo : Ser<Modelo> = 
+                    [|
+                        serIdAliado                   |> serField "idAliado"      (fun s -> s.idAliado      ) (fun v s -> { s with idAliado      = v } )
+                        serAliado           |> serArr |> serField "aliados"       (fun s -> s.aliados       ) (fun v s -> { s with aliados       = v } )
+                        serInt                        |> serField "anoActual"     (fun s -> s.anoActual     ) (fun v s -> { s with anoActual     = v } )
+                        serInt                        |> serField "periodoActual" (fun s -> s.periodoActual ) (fun v s -> { s with periodoActual = v } )
+                        serPremisasCalculo            |> serField "premisas"      (fun s -> s.premisas      ) (fun v s -> { s with premisas      = v } )
+                    |] |> serRecord LibraryNoJS.Default.value<_>
+        
+            open FSharp.Reflection
         
             let serSerializadoresEventos =
                 let sers = System.Collections.Generic.Dictionary<_,_>()
                 [
-                    serObj serAliado
-                    serObj serIdAliado
+                    serObj         serAliado
+                    serObj         serIdAliado
                     serObj (serOpt serIdAliado)
                     serObj (serArr serContacto)
                     serObj (serArr serAliado  )
-                    serObj serDatosPersonales
+                    serObj         serDatosPersonales
                 ] |> Seq.iter sers.Add
                 sers
-        
-            open FSharp.Reflection
         
             let rec registrarSerializadorParaTipos (ts:System.Type []) =
                 if Seq.length ts <= 1 then () else
@@ -2276,6 +2442,20 @@ namespace FsRoot
         
             print "serializers:"
             serSerializadoresEventos.Keys |> Seq.iter print
+        
+            SQLServer.leerTipos()
+            |> Seq.iter (fun t ->
+                if serSerializadoresEventos.ContainsKey t |> not then
+                    failwithf "Serializador no encontrado para tipo %s" t
+            )
+        
+            SQLServer.leerEventosTipos()
+                |> Seq.iter (fun t ->
+                if Eventos.TipoDatos t |> Eventos.Manejadores.ContainsKey |> not then
+                    failwithf "Manejador para evento no encontrado para evento %A" t
+            )
+        
+        
         [< JavaScript false >]
         module EstadoActual =
             
@@ -2348,6 +2528,42 @@ namespace FsRoot
             async {
                 leerEventos.Post None
                 do! Async.Sleep 60000
+            } |> Async.Start
+        
+        
+        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
+        
+        [< JavaScript false >]
+        module Correo =
+            open System.Net.Mail
+            open System.IO
+            open WebSharper.UI.Server
+        
+            let sendTestEmail recipiente tema html =
+                use msg = new MailMessage(recipiente, "no-reply@prozper.com", tema, html)
+                msg.IsBodyHtml <- true
+                use client = new SmtpClient(@"localhost")
+                client.DeliveryMethod <- SmtpDeliveryMethod.Network        
+                client.Send msg
+        
+            let prepareHtml ctx (IdAliado aid) =
+                use tw  = new StringWriter()
+                use w   = new Core.Resources.HtmlTextWriter(tw, " ")        
+                TemplateLib.CorreoNuevaAfiliacion()
+                        .NombreAfiliado( "Hello" )
+                        .IdAliado(aid)
+                        .Doc()
+                        .Write(ctx, w, false)
+                tw.ToString()
+        
+            async {
+                while Templating.someContext = None do
+                    do! Async.Sleep 4000
+                match Templating.someContext with
+                | None     -> ()
+                | Some ctx ->
+                prepareHtml ctx (IdAliado "HELLO")
+                |> sendTestEmail "amieres@gmail.com" "Invitación a Prozper"
             } |> Async.Start
         
         
@@ -2425,17 +2641,21 @@ namespace FsRoot
         
             [< Rpc >]
             let ejecutarEvento (evento:DataEvento) = 
-                let usuarioO =
+                let ctxO =             
                     try 
-                        let ctx  = Web.Remoting.GetContext()
-                        ctx.UserSession.GetLoggedInUser() |> Async.RunSynchronously
+                        Some <| Web.Remoting.GetContext()
                     with e when e.Message = "No remoting context available." ->
-                        Some "Server"
+                        None
+                let usuarioO = 
+                    match ctxO with
+                    | None     -> Some "Server"
+                    | Some ctx -> ctx.UserSession.GetLoggedInUser() |> Async.RunSynchronously
                 asyncResultM {
                     let  estado   = EstadoActual.estado()
+                    let  aliadoO  = usuarioO |> Option.map IdAliado
                     let _, respR  = 
                         EstadoActual.actualizarModelo {
-                            aliadoO = usuarioO |> Option.map IdAliado
+                            aliadoO = aliadoO
                             nevento = estado.nevento + 1L
                             data    = evento 
                         } estado
@@ -5375,7 +5595,7 @@ namespace FsRoot
                     |> View.Sink (function
                         | None     -> ()
                         | Some cor -> 
-                        forma.Vars.Correo         .Set <| cor.ToString()
+                        forma.Vars.Correo.Set <| cor.email
                         //forma.Vars.ConfirmarCorreo.Set <| cor.ToString()
                     )
                     let requeridosW =
@@ -5388,7 +5608,9 @@ namespace FsRoot
                         )
                     V (
                         if not (Seq.isEmpty requeridosW.V)  then None else
-                        Some (EMail forma.Vars.Correo.V)
+                        corV.Value
+                        |> Option.orElse (Some correoVacio)
+                        |> Option.map    (fun v -> { v with email = forma.Vars.Correo.V } )
                     ) |> View.Sink (fun v -> if corV.Value <> v then corV.Set v)
                     requeridosW, forma.Doc
             
@@ -5671,25 +5893,6 @@ namespace FsRoot
                     let corDocs = cors |> Doc.BindSeqCachedBy id (fun i -> makeVar fcor i |> CorreoElectronico.formaDoc |> snd |> removeButton i )
                     let dirDocs = dirs |> Doc.BindSeqCachedBy id (fun i -> makeVar fdir i |> Direccion        .formaDoc |> snd |> removeButton i )
             
-                    let telEmpty = {            
-                        tipoTelefono = Movil
-                        codigoPais   = ""
-                        codigoArea   = ""
-                        numero       = ""
-                        extension    = ""
-                        mensajes     = false
-                    }
-            
-                    let dirEmpty = {
-                        tipoDireccion = TipoDireccion.Habitacion
-                        linea1        = ""
-                        linea2        = ""
-                        ciudad        = ""
-                        estado        = OtroS ""
-                        pais          = OtroP ""
-                        zonaPostal    = ZonaPostal ""
-                    }
-            
                     let forma =
                         TemplateLib.FormaContactos()
                             .Mensajes(       if mostrar.V then mensajes     .V else ""                             )
@@ -5697,9 +5900,9 @@ namespace FsRoot
                             .Telefonos(      telDocs              ) 
                             .Correos(        corDocs              ) 
                             .Direcciones(    dirDocs              ) 
-                            .MasTelefono( fun _ -> contactosV.Value |> Array.append <| [| Telefono          telEmpty   |] |> contactosV.Set)
-                            .MasCorreo(   fun _ -> contactosV.Value |> Array.append <| [| CorreoElectronico (EMail "") |] |> contactosV.Set)
-                            .MasDireccion(fun _ -> contactosV.Value |> Array.append <| [| Direccion         dirEmpty   |] |> contactosV.Set)
+                            .MasTelefono( fun _ -> contactosV.Value |> Array.append <| [| Telefono          telVacio    |] |> contactosV.Set)
+                            .MasCorreo(   fun _ -> contactosV.Value |> Array.append <| [| CorreoElectronico correoVacio |] |> contactosV.Set)
+                            .MasDireccion(fun _ -> contactosV.Value |> Array.append <| [| Direccion         dirVacio    |] |> contactosV.Set)
                             .Salvar(fun ev ->
                                 mostrar.Set true
                                 let m =  mensajes.Value
@@ -5830,7 +6033,7 @@ namespace FsRoot
             
                     let correo al = 
                         al.contactos
-                        |> Seq.tryPick (function CorreoElectronico(EMail c) -> Some c |_-> None)
+                        |> Seq.tryPick (function CorreoElectronico{ email = c } -> Some c |_-> None)
                         |> Option.defaultValue "correo no encontrado!"
                     
                     let aliadoDoc (alv: View<Aliado>) =
@@ -6021,48 +6224,40 @@ namespace FsRoot
                     .Bind()
                 titleV.View |> View.Sink (fun t -> JS.Document.Title <- t)
         
-            let mainProgramLoggedOff refIdO =
-                ModeloUI.refAliadoIdOV.Set refIdO
+            let mainProgramLoggedOff refId =
+                ModeloUI.refAliadoIdOV.Set <| Some refId
                 mainProgram()        
-        //#r @"..\packages\Owin\lib\net40\Owin.dll"
-        //#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
-        //#r @"..\packages\Microsoft.Owin.Hosting\lib\net451\Microsoft.Owin.Hosting.dll"
-        //#r @"..\packages\Microsoft.Owin.Host.HttpListener\lib\net451\Microsoft.Owin.Host.HttpListener.dll"
-        //#r @"..\packages\WebSharper.Owin\lib\net461\WebSharper.Owin.dll"
-        //#r @"..\packages\WebSharper.Owin\lib\net461\HttpMultipartParser.dll"
-        //#r @"..\packages\Microsoft.Owin.StaticFiles\lib\net451\Microsoft.Owin.StaticFiles.dll"
-        //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
-        //#define FSS_SERVER
         [< JavaScript false >]
-        module Server =
-            open global.Owin
-            open Microsoft.Owin.Hosting
-            open Microsoft.Owin.StaticFiles
-            open Microsoft.Owin.FileSystems
-            open WebSharper.Owin
+        module EndPoints =
             open WebSharper.Sitelets
             open WebSharper.UI.Server
             open WebSharper.UI.Templating
             open WebSharper.UI.Html
         
-            type Data = { Usuario: string ;  Password:string }
+            //type Data = { Usuario: string ;  Password:string }
         
             type EndPointServer =  | [< EndPoint "/" >] EP
-                                   | [< EndPoint "/" >] Registro of aliado:string
-                                   | Canal    of canal:string
-                                   | [< EndPoint "POST /demo" ; FormData >] DATA of Data
+                                   | Registro  of aliado:string
+                                   | Verificar of System.Guid
+                                   | [< EndPoint "/" >] Canal    of canal:string
+                                   //| [< EndPoint "POST /demo" ; FormData >] DATA of Data
         
             let content (ctx:Context<EndPointServer>) (endpoint:EndPointServer) : Async<Content<EndPointServer>> =
+                Templating.someContext <-  Context.Map (fun () -> EP) ctx |> Some
                 printfn "%A" endpoint
+                let existsAliado aid = EstadoActual.estado() |> fun m -> m.aliados |> Seq.exists (fun a -> a.id = IdAliado aid)
                 match endpoint with
-                | Registro padre ->
-                    let idO = if padre = "" then None else Some(IdAliado <| System.Net.WebUtility.UrlDecode padre)
+                | Registro padre when System.Net.WebUtility.UrlDecode padre |> existsAliado ->
+                    let id = IdAliado <| System.Net.WebUtility.UrlDecode padre
                     Content.Page(
                         TemplateLib()
-                            .Initializer( Html.client <@  MainProgram.mainProgramLoggedOff idO; Doc.TextNode "Initialized" @> )
+                            .Initializer( Html.client <@  MainProgram.mainProgramLoggedOff id; Doc.TextNode "Initialized" @> )
                             .Elt(keepUnfilled = true)
                     )
-                |_->
+                | Verificar desconocido -> Content.Text <| sprintf "WebPage Verificar = %A" desconocido
+                | Registro  desconocido -> Content.Text <| sprintf "WebPage Registro = %s"  desconocido
+                | Canal     canal       -> Content.Text <| sprintf "WebPage Canal = %s"     canal
+                | EP ->
                     match ctx.UserSession.GetLoggedInUser() |> Async.RunSynchronously with
                     | Some user ->
                     (**)printfn "Serving Main page: %s" user
@@ -6088,6 +6283,25 @@ namespace FsRoot
                             .Doc()
                     )
         
+        
+        //#r @"..\packages\Owin\lib\net40\Owin.dll"
+        //#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
+        //#r @"..\packages\Microsoft.Owin.Hosting\lib\net451\Microsoft.Owin.Hosting.dll"
+        //#r @"..\packages\Microsoft.Owin.Host.HttpListener\lib\net451\Microsoft.Owin.Host.HttpListener.dll"
+        //#r @"..\packages\WebSharper.Owin\lib\net461\WebSharper.Owin.dll"
+        //#r @"..\packages\WebSharper.Owin\lib\net461\HttpMultipartParser.dll"
+        //#r @"..\packages\Microsoft.Owin.StaticFiles\lib\net451\Microsoft.Owin.StaticFiles.dll"
+        //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
+        //#define FSS_SERVER
+        [< JavaScript false >]
+        module Server =
+            open global.Owin
+            open Microsoft.Owin.Hosting
+            open Microsoft.Owin.StaticFiles
+            open Microsoft.Owin.FileSystems
+            open WebSharper.Owin
+            open EndPoints
+            
             [< EntryPoint >]
             let Main args =
                 //Sample.aliados |> Seq.iter (DataEvento.AgregarAliado >> Rpc.ejecutarEvento >> AsyncResultM.iterS print print)

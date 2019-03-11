@@ -522,7 +522,16 @@
                 </table>
             </div>
             <div class="mui--text-headline mui--text-center ${status}" >${status} -  <span class="${tipo}">${tipo}</span></div>
-        </div>    
+        </div>
+
+        <div ws-template="CorreoNuevaAfiliacion">
+            Felicitaciones usted ha sido recomendado para afiliarse a <b>Prozper</b>. 
+            <br>${NombreAfiliado}
+            <br>
+            Inicie su afiliación dando click aquí: <a href="http://localhost:9006/Registro/${IdAliado}">Forma de Afiliación</a>
+            <br>
+            Tambien puede usar el enlace: http://localhost:9006/Registro/${IdAliado}
+        </div>
 
         <div ws-attr="attrs" ws-template="sidedrawer" class="mui--no-user-select">
             <div id="sidedrawer-brand" class="mui--appbar-line-height">
