@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1551903608592 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1552390017943 -d:WEBSHARPER
 ////#cd @"..\projects\StackOverflow\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -19,9 +19,9 @@
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
-//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
 //#r @"..\..\LayoutEngine\bin\LayoutEngine.dll"
 //#r @"..\packages\other\FSharp.Data.SqlClient\lib\net40\FSharp.Data.SqlClient.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Data.dll"
@@ -36,7 +36,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1551903608592
+//#define FSharpStation1552390017943
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -1213,6 +1213,23 @@ namespace FsRoot
         /// Essentials that cannot run in Javascript (WebSharper)
         [< AutoOpen >]
         module LibraryNoJS =
+            let rec getNamespace (t:System.Type) =
+                match t.DeclaringType with
+                | null -> match t.Namespace with null -> "" | ns -> ns + "."
+                | dt   -> getNamespace dt + dt.Name + "."
+            
+            let rec getTypeName (t:System.Type) =
+                if t.IsArray then getTypeName (t.GetElementType()) + "[]" else
+                let ns    = getNamespace t
+                let name  = if   t.Name = "FSharpOption`1"                then "Option"
+                            elif t.Name = "FSharpList`1"                  then "List"
+                            elif ns     = "Microsoft.FSharp.Core."
+                              || ns     = "Microsoft.FSharp.Collections." then t.Name   
+                            else  ns + t.Name
+                let name2 = name.Split('`').[0]
+                let parms = t.GenericTypeArguments |> Seq.map getTypeName |> String.concat ","
+                if parms = "" then name2 else sprintf "%s<%s>" name2 parms
+            
             module DiscUnion =
                 open FSharp.Reflection
             
@@ -1225,9 +1242,9 @@ namespace FsRoot
                 let caseTuple (v:'T) = 
                     let c, vs = FSharpValue.GetUnionFields(v, typeof<'T>)
                     let types = c.GetFields() |> Array.map (fun p -> p.PropertyType)
-                    if types.Length = 1 then c.Name, types.[0].FullName, vs.[0] else
+                    if types.Length = 1 then c.Name, types.[0], vs.[0] else
                     let ttype = FSharpType.MakeTupleType(types)
-                    c.Name, ttype.FullName, FSharpValue.MakeTuple(vs, ttype)
+                    c.Name, ttype, FSharpValue.MakeTuple(vs, ttype)
             
                 let caseArray (v:'T) = 
                     let c, vs = FSharpValue.GetUnionFields(v, typeof<'T>)
@@ -1290,7 +1307,7 @@ namespace FsRoot
             
                 open FSharp.Reflection
             
-                let inline serObj ((ser, deser):Ser<'T>) : string * Ser<obj> = typeof<'T>.FullName, (unbox >> ser, deser >> Option.map box)
+                let inline serObj ((ser, deser):Ser<'T>) : string * Ser<obj> = typeof<'T> |> getTypeName, (unbox >> ser, deser >> Option.map box)
             
                 let serDU<'DU when 'DU : equality> (sers : (string * Ser<obj>) seq) =
                     let cases  = FSharpType.GetUnionCases             typeof<'DU>
@@ -1304,12 +1321,12 @@ namespace FsRoot
                             else
                                 let sers2 =
                                     case.GetFields() |> Array.map(fun fld ->
-                                        let tn = fld.PropertyType.FullName
+                                        let tn = fld.PropertyType  |> getTypeName
                                         sers 
                                         |> Seq.tryPick(fun (nm, ser) -> if nm = tn then Some ser else None)
                                         |> Option.defaultWith (fun () -> 
                                             sers |> Seq.map fst |> String.concat ", "
-                                            |> failwithf "serDU: Could not find Ser<%s> for %s. Provided: %s" tn typeof<'DU>.FullName 
+                                            |> failwithf "serDU: Could not find Ser<%s> for %s. Provided: %s" tn (typeof<'DU> |> getTypeName) 
                                         )
                                     ) 
                                 let getValues      = box<'DU> >> FSharpValue.PreComputeUnionReader case 
@@ -1351,12 +1368,12 @@ namespace FsRoot
                             else
                                 let sers2 =
                                     case.GetFields() |> Array.map(fun fld ->
-                                        let tn = fld.PropertyType.FullName
+                                        let tn = fld.PropertyType |> getTypeName
                                         sers 
                                         |> Seq.tryPick(fun (nm, ser) -> if nm = tn then Some ser else None)
                                         |> Option.defaultWith (fun () -> 
                                             sers |> Seq.map fst |> String.concat ", "
-                                            |> failwithf "serDU: Could not find Ser<%s> for %s. Provided: %s" tn ttype.FullName 
+                                            |> failwithf "serDU: Could not find Ser<%s> for %s. Provided: %s" tn (ttype |> getTypeName) 
                                         )
                                     ) 
                                 let getValues      = FSharpValue.PreComputeUnionReader case 
@@ -1444,7 +1461,6 @@ namespace FsRoot
     
     //#cd @"..\projects\StackOverflow\src"
     
-    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
     
@@ -1452,6 +1468,7 @@ namespace FsRoot
     
     [< JavaScript >]
     module StackOverflow =
+        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
         //#r "..\..\LayoutEngine\bin\LayoutEngine.dll"
         //#nowarn "1178" "1182" "3180" "52"
         
@@ -1468,7 +1485,6 @@ namespace FsRoot
         
             if IsClient then printfn "%s" TemplatesFileName
         
-            let mutable someContext = None
         //#r @"..\packages\other\FSharp.Data.SqlClient\lib\net40\FSharp.Data.SqlClient.dll"
         //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Data.dll"
         
@@ -1477,7 +1493,7 @@ namespace FsRoot
             open FSharp.Data
             open FSharp.Data.SqlClient
         
-            let [< Literal >] conn = @"Data Source=abehome;Initial Catalog=CIPHERSpaceDB;UID=sa;PWD=memc52   "
+            let [< Literal >] conn = @"Data Source=abehome;Initial Catalog=CIPHERSpaceDB;UID=sa;PWD=memc52"
         
             type EventDB = SqlProgrammabilityProvider<conn>
             
@@ -1500,13 +1516,14 @@ namespace FsRoot
                 return r
             }
         
-            let leerTipos () =
-                use  qry = new SqlCommandProvider<"""SELECT DISTINCT TypeOfEvent FROM Prozper.EventStore""", conn, ResultType = ResultType.Tuples>(conn)
+            let leerTipos() =
+                use  qry = new SqlCommandProvider<"""SELECT DISTINCT TypeOfEvent FROM Prozper.EventStore """, conn, ResultType = ResultType.Tuples>(conn)
                 qry.Execute() |> Seq.toArray
-        
-            let leerEventosTipos () =
-                use  qry = new SqlCommandProvider<"""SELECT DISTINCT NameEvent, TypeOfEvent FROM Prozper.EventStore""", conn, ResultType = ResultType.Tuples>(conn)
+                
+            let leerEventosTipos() =
+                use  qry = new SqlCommandProvider<"""SELECT DISTINCT NameEvent, TypeOfEvent FROM Prozper.EventStore """, conn, ResultType = ResultType.Tuples>(conn)
                 qry.Execute() |> Seq.toArray
+                
         
         [< AutoOpen >]
         module TypesV0 =
@@ -1586,7 +1603,8 @@ namespace FsRoot
             }
         
             type StatusAliado =
-            |   Activo
+            | Nuevo
+            | Activo
             | Inactivo
                 with
                     override this.ToString() = sprintf "%A" this
@@ -1793,12 +1811,18 @@ namespace FsRoot
         module TypesV1 =
             type LatestType = TypeV1
         
+            type StatusContacto =
+            | RequiereVerificacion
+            | VerificacionEnviada
+            | Deshabilitado
+            | Habilitado
+        
             type CorreoElectronico = {
-                email                : string
-                deshabilitado        : bool
-                requiereVerificacion : bool
-                verificacionEnviada  : System.DateTime option
-                verificado           : System.DateTime option
+                email       : string
+                status      : StatusContacto
+                enviado     : System.DateTime option
+                recibido    : System.DateTime option
+                enlace      : System.DateTime option
             }
                 with override this.ToString() = this.email
         
@@ -1842,11 +1866,11 @@ namespace FsRoot
             }
         
             let correoVacio = {
-                email                = ""
-                deshabilitado        = true
-                requiereVerificacion = true
-                verificacionEnviada  = None
-                verificado           = None
+                email       = ""
+                status      = RequiereVerificacion
+                enviado     = None
+                recibido    = None
+                enlace      = None
             }
         
         
@@ -2047,7 +2071,7 @@ namespace FsRoot
         
             let registrarManejador nombre (manejadorF:ObjetoDatos<'T> -> ResultadoManejador) =
                 let manejador  = {
-                    tipoDatos  = TipoDatos (nombre, typeof<'T>.FullName) |>! print
+                    tipoDatos  = TipoDatos (nombre, typeof<'T> |> getTypeName) |>! print
                     manejadorF = deDatosGen >> manejadorF
                 }
                 Manejadores.Add(manejador.tipoDatos, manejador )
@@ -2145,7 +2169,7 @@ namespace FsRoot
                     failwithf "Evento fuera de secuencia: %d %d" modelo.nevento evento.nevento
                 let case, tuple, data = DiscUnion.caseTuple evento.data
                 let objData           = {
-                    tipoDatos         = TipoDatos(case, tuple)
+                    tipoDatos         = TipoDatos(case, tuple |> getTypeName)
                     datos             = data
                 }
                 return! manejadorGenerico objData modelo
@@ -2159,6 +2183,13 @@ namespace FsRoot
         
         
             
+        [< JavaScript false >]
+        module CodigoGenerado =
+            type EventoTipos = 
+            | ActualizarDatosPersonales_V0 of System.Tuple<TypesV0.IdAliado,TypesV0.DatosPersonales>
+            | AgregarAliado_V1 of TypesV1.Aliado
+            | RegistroNuevo_V1 of System.Tuple<TypesV0.IdAliado,TypesV0.DatosPersonales,Option<TypesV0.IdAliado>,TypesV1.Contacto[]>
+        
         [< JavaScript false >]
         module Serializador =
             open Serializer
@@ -2319,13 +2350,15 @@ namespace FsRoot
                 open TypesV0
                 open TypesV1
         
+                let serStatusContacto = serDU<StatusContacto> []
+          
                 let serCorreoElectronico : Ser<CorreoElectronico> = 
                     [|
-                        serString         |> serField "email"                (fun s -> s.email               ) (fun v s -> { s with email                = v } )
-                        serBool           |> serField "deshabilitado"        (fun s -> s.deshabilitado       ) (fun v s -> { s with deshabilitado        = v } )
-                        serBool           |> serField "requiereVerificacion" (fun s -> s.requiereVerificacion) (fun v s -> { s with requiereVerificacion = v } )
-                        serDate |> serOpt |> serField "verificacionEnviada"  (fun s -> s.verificacionEnviada ) (fun v s -> { s with verificacionEnviada  = v } )
-                        serDate |> serOpt |> serField "verificado"           (fun s -> s.verificado          ) (fun v s -> { s with verificado           = v } )
+                        serString         |> serField "email"    (fun s -> s.email    ) (fun v s -> { s with email    = v } )
+                        serStatusContacto |> serField "status"   (fun s -> s.status   ) (fun v s -> { s with status   = v } )
+                        serDate |> serOpt |> serField "enviado"  (fun s -> s.enviado  ) (fun v s -> { s with enviado  = v } )
+                        serDate |> serOpt |> serField "recibido" (fun s -> s.recibido ) (fun v s -> { s with recibido = v } )
+                        serDate |> serOpt |> serField "enlace"   (fun s -> s.enlace   ) (fun v s -> { s with enlace   = v } )
                     |] |> serRecord LibraryNoJS.Default.value<_>
         
                 let serContacto          = serDU<Contacto         > [   serObj serString     
@@ -2382,9 +2415,9 @@ namespace FsRoot
             let rec registrarSerializadorParaTipos (ts:System.Type []) =
                 if Seq.length ts <= 1 then () else
                 let tupleType = FSharpType.MakeTupleType ts
-                let tname     = tupleType.FullName
+                let tname     = getTypeName tupleType
                 if serSerializadoresEventos.ContainsKey tname then () else
-                let sers      = ts |> Array.map (fun t -> serSerializadoresEventos.[t.FullName])
+                let sers      = ts |> Array.map (fun t -> serSerializadoresEventos.[getTypeName  t])
                 let getValues = FSharpValue.PreComputeTupleReader      tupleType
                 let setValues = FSharpValue.PreComputeTupleConstructor tupleType
                 let serC    v = Seq.zip (getValues v) sers
@@ -2408,7 +2441,7 @@ namespace FsRoot
                 )
         
             and registrarSerializadorPara (ttype:System.Type) =
-                let tname = ttype.FullName
+                let tname = getTypeName ttype
                 if serSerializadoresEventos.ContainsKey tname then () else
                 if   FSharpType.IsUnion ttype then 
                     registrarSerializadoresParaDU ttype
@@ -2455,6 +2488,14 @@ namespace FsRoot
                     failwithf "Manejador para evento no encontrado para evento %A" t
             )
         
+            open CodigoGenerado
+        
+            let chequearEventosExistentes et =
+                match et with
+                | ActualizarDatosPersonales_V0  v -> Eventos.actualizarDatosPersonales  v
+                | AgregarAliado_V1              v -> Eventos.agregarAliado              v
+                | RegistroNuevo_V1              v -> Eventos.registroNuevo              v
+        
         
         [< JavaScript false >]
         module EstadoActual =
@@ -2495,39 +2536,56 @@ namespace FsRoot
         
             type ContRespuesta = (ResultM<Respuesta,unit> -> unit) * (exn -> unit) * (System.OperationCanceledException -> unit)
         
-            let leerEventos = 
+            let llamarEvento, agregarEvento, leerTodosLosEventosAsync, leerTodosLosEventos = 
                 let eventosEspera = new System.Collections.Generic.Dictionary<int64, ContRespuesta>()
-                Mailbox.iter print (fun (respEventoO : (int64 * ContRespuesta) option) ->
-                    asyncResultM {
-                        respEventoO |> Option.iter (fun (esperaN, cnts) -> eventosEspera.Add(esperaN, cnts) )
-                        let! eventosJson = SQLServer.leerEventos (estado()).nevento
-                        for (nevento, usuarioO, name:string, data:string, tipoEvento, _) in eventosJson do
-                            let cnt, cnte, cntc = 
-                                match eventosEspera.TryGetValue nevento with
-                                | false, _    -> ResultM.iter print print, print, print
-                                | true , cnts -> cnts
-                            try 
-                                let ser = Serializador.obtenerSerializador tipoEvento
-                                match Serializer.deserializeWithDefs ser data with
-                                | Some data ->
-                                    let objData = {
-                                        Eventos.tipoDatos = Eventos.TipoDatos(name, tipoEvento)
-                                        Eventos.datos     = data
-                                    }
-                                    let respM = procesarGenerico(nevento, usuarioO |> Option.map IdAliado, objData)
-                                                |> Async.RunSynchronously
-                                    cnt respM
-                                | None -> failwithf "No se pudo deserializar el Evento: %A" (nevento, name, data)
-                            with 
-                            | :? System.OperationCanceledException as e -> cntc e
-                            |                                         e -> cnte e
-                        do!  Async.Sleep 50//00 
-                        return ()
-                    } |> AsyncResultM.iterpS id )
+                let nuevoEvento (usuario, evento:DataEvento, cntsO) =
+                    let  name, ttype, obj = DiscUnion.caseTuple evento
+                    let  tname            = ttype |> getTypeName
+                    let  ser              = Serializador.obtenerSerializador tname
+                    let  json             = fst ser obj
+                    SQLServer.nuevoEvento usuario name json tname
+                    |>  match cntsO with
+                        | None           -> AsyncResultM.iterpS ignore
+                        | Some(ca,ce,cc) -> AsyncResultM.iterS  (ErrorM >> ca) (fun n -> eventosEspera.Add(n, (ca,ce,cc) ) )
+        
+                let agente =
+                    Mailbox.call print (fun dataEventoO ->
+                        asyncResultM {
+                            dataEventoO |> Option.iter nuevoEvento
+                            let! eventosJson = SQLServer.leerEventos (estado()).nevento
+                            for (nevento, usuario, name:string, data:string, tipoEvento, _) in eventosJson do
+                                let cnt, cnte, cntc = 
+                                    match eventosEspera.TryGetValue nevento with
+                                    | false, _       -> (ResultM.iter print print), print, print
+                                    | true , cnts    -> eventosEspera.Remove nevento |> ignore
+                                                        cnts
+                                try 
+                                    let ser = Serializador.obtenerSerializador tipoEvento
+                                    match Serializer.deserializeWithDefs ser data with
+                                    | Some data ->
+                                        let objData = {
+                                            Eventos.tipoDatos = Eventos.TipoDatos(name, tipoEvento)
+                                            Eventos.datos     = data
+                                        }
+                                        let respM = procesarGenerico(nevento, IdAliado usuario, objData)
+                                                    |> Async.RunSynchronously
+                                        cnt respM
+                                    | None -> failwithf "No se pudo deserializar el Evento: %A" (nevento, name, data)
+                                with 
+                                | :? System.OperationCanceledException as e -> cntc e
+                                |                                         e -> cnte e
+                            do!  Async.Sleep 50  //00 
+                            return ()
+                        } |> AsyncResultM.iterpS id )
+                (  fun us ev  -> Async.FromContinuations(fun (cnts:ContRespuesta)-> agente.PostAndReply      (Some (us, ev, Some cnts))              ) )
+                , (fun us ev  ->                                                    agente.PostAndAsyncReply (Some (us, ev, None     )) |> Async.Start ) 
+                , (fun ()     ->                                                    agente.PostAndAsyncReply  None)
+                , (fun ()     ->                                                    agente.PostAndReply       None)
         
             async {
-                leerEventos.Post None
-                do! Async.Sleep 60000
+                while true do
+                    leerTodosLosEventos()
+                    do! Async.Sleep 60000
             } |> Async.Start
         
         
@@ -2556,15 +2614,20 @@ namespace FsRoot
                         .Write(ctx, w, false)
                 tw.ToString()
         
-            async {
-                while Templating.someContext = None do
-                    do! Async.Sleep 4000
-                match Templating.someContext with
-                | None     -> ()
-                | Some ctx ->
-                prepareHtml ctx (IdAliado "HELLO")
-                |> sendTestEmail "amieres@gmail.com" "Invitación a Prozper"
-            } |> Async.Start
+            let dummyCtx =
+                { new WebSharper.Web.Context() with
+                    member this.RootFolder = Templating.rootdir
+                    member this.RequestUri = failwith "Unsupported"
+                    member this.UserSession = failwith "Unsupported"
+                    member this.Environment = failwith "Unsupported"
+                    member this.Json = failwith "Unsupported"
+                    member this.Metadata = failwith "Unsupported"
+                    member this.Dependencies = failwith "Unsupported"
+                    member this.ApplicationPath = failwith "Unsupported"
+                    member this.ResourceContext = failwith "Unsupported" }
+        
+            prepareHtml dummyCtx (IdAliado "HELLO")
+            |> sendTestEmail "amieres@gmail.com" "Invitación a Prozper"
         
         
         [< JavaScript false >]
@@ -2659,16 +2722,8 @@ namespace FsRoot
                             nevento = estado.nevento + 1L
                             data    = evento 
                         } estado
-                    let! resp      = respR
-                    let name, tname, obj = DiscUnion.caseTuple evento
-                    let ser   = Serializador.obtenerSerializador tname
-                    let json  = fst ser obj
-                    let! eventoN = SQLServer.nuevoEvento  usuarioO name json tname
-                    let! resp = Async.FromContinuations(fun (cnts:EstadoActual.ContRespuesta) ->
-                        Some (eventoN, cnts)
-                        |> EstadoActual.leerEventos.Post
-                    )
-                    return resp
+                    let! resp             = respR
+                    return!                 EstadoActual.llamarEvento (usuarioO |> Option.defaultValue "") evento
                 }
         
             [< Rpc >]
@@ -6243,7 +6298,6 @@ namespace FsRoot
                                    //| [< EndPoint "POST /demo" ; FormData >] DATA of Data
         
             let content (ctx:Context<EndPointServer>) (endpoint:EndPointServer) : Async<Content<EndPointServer>> =
-                Templating.someContext <-  Context.Map (fun () -> EP) ctx |> Some
                 printfn "%A" endpoint
                 let existsAliado aid = EstadoActual.estado() |> fun m -> m.aliados |> Seq.exists (fun a -> a.id = IdAliado aid)
                 match endpoint with
@@ -6304,7 +6358,7 @@ namespace FsRoot
             
             [< EntryPoint >]
             let Main args =
-                //Sample.aliados |> Seq.iter (DataEvento.AgregarAliado >> Rpc.ejecutarEvento >> AsyncResultM.iterS print print)
+                //Sample.aliados |> Seq.iter (DataEvento.AgregarAliado >> EstadoActual.agregarEvento "Server")
                 printfn "Usage: FSharpStation URL ROOT_DIRECTORY MaxMessageSize"
                 let url           = args |> Seq.tryItem 0 |>                   Option.defaultValue "http://localhost:9005/"
                 let rootDirectory = args |> Seq.tryItem 1 |>                   Option.defaultValue @"..\website"

@@ -220,11 +220,10 @@
         </ws-FixedSplitterHor>
     </div>
     <div ws-template="AppFramework" style="height: calc(100vh - 4px); width: calc(100vw - 4px) " class="relative" >
-        <wcomp-splitter value="0" min="0" max="100" >
-            <div ><button ws-onclick="GoClient">${MainDoc}</button></div>
             <div ws-hole="MainClient"></div>
-        </wcomp-splitter>
-        <style style="display: none">
+            <div ><button ws-onclick="GoClient">${MainDoc}</button></div>
+    </div>
+    <style style="display: none">
             .Hidden     { display   : none         }
             table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }
             td input.form-control { 
@@ -383,5 +382,4 @@
             .Error   { text-decoration: underline red       } 
             
         </style>
-    </div>
 </div>

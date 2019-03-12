@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,String,ParseO,LibraryJS,REGEX,Hoverable,Hoverable$1,ResizeObserver,WebSharper,Obj,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,WcSplitterT,AppFramework,PlugInVar,PlugInView,PlugInDoc,PlugInAction,PlugInQuery,PlugIn,LayoutEngine,LayoutEngineModule,Measures,Layout,SC$1,LayoutEngine_Templates,GeneratedPrintf,LayoutEngine_GeneratedPrintf,Strings,Slice,Seq,Unchecked,CancellationTokenSource,Concurrency,Utils,console,Arrays,IntelliFactory,Runtime,UI,DomUtility,Doc,List,View,AttrModule,AttrProxy,Var$1,Node,Operators,Client,Templates,Reflect,Object,FromView,Templating,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,Math,System,Guid,Lazy,DateUtil,Numeric,ListModel,Collections,Dictionary,$;
+ var Global,FsRoot,Library,String,ParseO,LibraryJS,REGEX,Hoverable,Hoverable$1,ResizeObserver,WebSharper,Obj,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,WcSplitterT,AppFramework,PlugInVar,PlugInView,PlugInDoc,PlugInAction,PlugInQuery,PlugIn,LayoutEngine,LayoutEngineModule,Measures,Layout,SC$1,LayoutEngine_Templates,GeneratedPrintf,LayoutEngine_GeneratedPrintf,Strings,Slice,Seq,Unchecked,CancellationTokenSource,Concurrency,Utils,console,Arrays,IntelliFactory,Runtime,UI,DomUtility,Doc,List,View,AttrModule,AttrProxy,Var$1,Node,Operators,Client,Templates,Reflect,Object,FromView,Templating,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,Math,System,Guid,Lazy,DateUtil,Numeric,ListModel,Collections,Dictionary;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -75,7 +75,6 @@
  ListModel=UI&&UI.ListModel;
  Collections=WebSharper&&WebSharper.Collections;
  Dictionary=Collections&&Collections.Dictionary;
- $=Global.jQuery;
  String.EndsWith=function(ends,s)
  {
   return Strings.EndsWith(s,ends)?{
@@ -266,7 +265,7 @@
  };
  Library["String.Left"]=function(_this,n)
  {
-  return Library["String.Substring2"](_this,0,n);
+  return n<0?Library["String.Substring2"](_this,0,_this.length+n):Library["String.Substring2"](_this,0,n);
  };
  Library["String.Substring2"]=function(_this,from,n)
  {
@@ -402,15 +401,15 @@
  {
   return Hoverable$1.New$1().Content(Doc.Element("div",[AttrProxy.Create("style","flex-flow: column;")],[Doc.TextNode("Hover over me!")]));
  };
- Hoverable$1.Content$282$81=Runtime.Curried3(function(e,$1,$2)
+ Hoverable$1.Content$284$81=Runtime.Curried3(function(e,$1,$2)
  {
   return DomUtility.RemoveClass(e.elt,"hovering");
  });
- Hoverable$1.get_Attributes$278$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$280$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(false);
  });
- Hoverable$1.get_Attributes$277$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$279$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(true);
  });
@@ -552,7 +551,7 @@
   SC$1.$cctor();
   return SC$1.init;
  };
- WcTabStrip.tabStrip$420$64=function(i,selected)
+ WcTabStrip.tabStrip$426$64=function(i,selected)
  {
   return function()
   {
@@ -756,17 +755,11 @@
  },WcSplitterT);
  WcSplitter.init=function(layoutH,layoutV)
  {
-  var o,_nm,_c;
+  var o;
   o=new WcSplitterT.New();
   WcSplitter.set_layoutHorizontal(layoutH);
   WcSplitter.set_layoutVertical(layoutV);
-  _nm="wcomp-splitter";
-  _c=self.FsRoot.LibraryJS.WebComponent.WcSplitter.WcSplitterT.New;
-  console.log("defineWebComponent: "+_nm);
-  Object.setPrototypeOf(_c.prototype,self.HTMLElement.prototype);
-  Object.setPrototypeOf(_c,self.HTMLElement);
-  Object.setPrototypeOf(WcSplitterT.Constructor.prototype,_c.prototype);
-  self.customElements.define(_nm,WcSplitterT.Constructor);
+  WebComponent.defineWebComponent("wcomp-splitter",WcSplitterT.Constructor,self.FsRoot.LibraryJS.WebComponent.WcSplitter.WcSplitterT.New);
  };
  WcSplitter.layoutVertical=function()
  {
@@ -787,6 +780,27 @@
  {
   SC$1.$cctor();
   SC$1.layoutHorizontal=$1;
+ };
+ WebComponent.defineWebComponent=function(_nm,_o,_c)
+ {
+  try
+  {
+   console.log("defineWebComponent: "+_nm);
+   Object.setPrototypeOf(_c.prototype,self.HTMLElement.prototype);
+   Object.setPrototypeOf(_c,self.HTMLElement);
+   Object.setPrototypeOf(_o.prototype,_c.prototype);
+   self.customElements.define(_nm,_o);
+  }
+  catch(m)
+  {
+   (function($1)
+   {
+    return $1("Failed to define WebComponent. Not supported.");
+   }(function(s)
+   {
+    console.log(s);
+   }));
+  }
  };
  PlugInVar.New=function(varName,varVar)
  {
@@ -968,15 +982,15 @@
  {
   return PlugInVar.New(name,_var);
  };
- AppFramework.vertical$792$39=function(mouseDown)
+ AppFramework.vertical$798$39=function(mouseDown)
  {
   return function(te)
   {
    mouseDown(te.Event);
   };
  };
- AppFramework.vertical$791$39=Global.id;
- AppFramework.vertical$790$39=Global.id;
+ AppFramework.vertical$797$39=Global.id;
+ AppFramework.vertical$796$39=Global.id;
  AppFramework.vertical=function(partSizes,afterRender,afterRenderSp,mouseDown,gap)
  {
   var b,t,p,i;
@@ -1004,15 +1018,15 @@
    $1:gap
   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.wcompsplitterver(p[0])),(b.i=i,i)))).get_Doc();
  };
- AppFramework.horizontal$784$39=function(mouseDown)
+ AppFramework.horizontal$790$39=function(mouseDown)
  {
   return function(te)
   {
    mouseDown(te.Event);
   };
  };
- AppFramework.horizontal$783$39=Global.id;
- AppFramework.horizontal$782$39=Global.id;
+ AppFramework.horizontal$789$39=Global.id;
+ AppFramework.horizontal$788$39=Global.id;
  AppFramework.horizontal=function(partSizes,afterRender,afterRenderSp,mouseDown,gap)
  {
   var b,t,p,i;
@@ -1040,7 +1054,7 @@
    $1:gap
   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.wcompsplitterhor(p[0])),(b.i=i,i)))).get_Doc();
  };
- AppFramework.mainDoc$773$42=function()
+ AppFramework.mainDoc$779$42=function()
  {
   return function()
   {
@@ -1105,7 +1119,7 @@
   SC$1.$cctor();
   return SC$1.AppFwkClient;
  };
- AppFramework.renderQueries$739$39=function(qry)
+ AppFramework.renderQueries$745$39=function(qry)
  {
   return function()
   {
@@ -1147,14 +1161,14 @@
    },plg.plgQueries);
   },AppFramework.currentPlugInW()));
  };
- AppFramework.renderActions$728$51=function(act)
+ AppFramework.renderActions$734$51=function(act)
  {
   return function(ev)
   {
    AppFramework.callFunction(ev,null,act.actFunction);
   };
  };
- AppFramework.renderActions$724$51=function(act)
+ AppFramework.renderActions$730$51=function(act)
  {
   return function(ev)
   {
@@ -1233,7 +1247,7 @@
    else
     actF.$0();
  };
- AppFramework.renderDocs$702$39=function(doc)
+ AppFramework.renderDocs$708$39=function(doc)
  {
   return function()
   {
@@ -1377,7 +1391,7 @@
    },plg.plgVars);
   },AppFramework.currentPlugInW()));
  };
- AppFramework.renderPlugIns$664$35=function(name)
+ AppFramework.renderPlugIns$670$35=function(name)
  {
   return function()
   {
@@ -1457,11 +1471,6 @@
  {
   SC$1.$cctor();
   return SC$1.TemplateFileName;
- };
- AppFramework.titleV=function()
- {
-  SC$1.$cctor();
-  return SC$1.titleV;
  };
  AppFramework.mainDocV=function()
  {
@@ -1759,11 +1768,11 @@
    };
   }(Global.id))(varName)):o.$0;
  };
- LayoutEngineModule.inputFile$1374$69=Runtime.Curried3(function(act,el,$1)
+ LayoutEngineModule.inputFile$1421$69=Runtime.Curried3(function(act,el,$1)
  {
   return AppFramework.callFunction(el,null,act.actFunction);
  });
- LayoutEngineModule.inputFile$1373$69=Runtime.Curried3(function($1,el,$2)
+ LayoutEngineModule.inputFile$1420$69=Runtime.Curried3(function($1,el,$2)
  {
   el.value="";
  });
@@ -1949,19 +1958,19 @@
  };
  LayoutEngineModule.createEntryO=function(lytNm,line)
  {
-  var m,$1,a,t,t$1,a$1,t$2,name,$2,a$2,t$3,t$4,a$3,t$5,name$1,$3,a$4,t$6,t$7,a$5,t$8,name$2,$4,a$6,t$9,t$10,a$7,t$11,name$3,$5,a$8,t$12,t$13,a$9,t$14,name$4,$6,a$10,t$15,t$16,name$5,$7,a$11,t$17,t$18,name$6,$8,a$12,t$19,t$20,$9,a$13,t$21,a$14,t$22,name$7;
+  var m,$1,a,t,t$1,a$1,t$2,name,$2,a$2,t$3,t$4,a$3,t$5,name$1,$3,a$4,t$6,t$7,a$5,t$8,name$2,$4,a$6,t$9,t$10,a$7,t$11,name$3,$5,a$8,t$12,t$13,a$9,t$14,name$4,$6,a$10,t$15,t$16,name$5,$7,a$11,t$17,t$18,name$6,$8,a$12,t$19,t$20,name$7,$9,a$13,t$21,t$22,name$8,$10,a$14,t$23,t$24,$11,a$15,t$25,a$16,t$26,name$9;
   try
   {
    m=LayoutEngineModule.splitTokens(line);
-   return m.$==1&&(a=(t=m.$0,LayoutEngineModule.Identifier(t[0],t[1])),a!=null&&a.$==1&&(m.$1.$==1&&((t$1=m.$1.$0,LayoutEngineModule.Vertical(t$1[0],t$1[1])).$==0&&(m.$1.$1.$==1&&(a$1=(t$2=m.$1.$1.$0,LayoutEngineModule.Measures$1(t$2[0],t$2[1])),a$1!=null&&a$1.$==1&&($1=[m.$1.$1.$1,a$1.$0,a.$0],true))))))?(name=$1[2],LayoutEngineModule.entryDoc(name,(LayoutEngineModule.createSplitterM())([lytNm,name,true,$1[1],$1[0]]))):m.$==1&&(a$2=(t$3=m.$0,LayoutEngineModule.Identifier(t$3[0],t$3[1])),a$2!=null&&a$2.$==1&&(m.$1.$==1&&((t$4=m.$1.$0,LayoutEngineModule.Vertical(t$4[0],t$4[1])).$==1&&(m.$1.$1.$==1&&(a$3=(t$5=m.$1.$1.$0,LayoutEngineModule.Measures$1(t$5[0],t$5[1])),a$3!=null&&a$3.$==1&&($2=[m.$1.$1.$1,a$3.$0,a$2.$0],true))))))?(name$1=$2[2],LayoutEngineModule.entryDoc(name$1,(LayoutEngineModule.createSplitterM())([lytNm,name$1,false,$2[1],$2[0]]))):m.$==1&&(a$4=(t$6=m.$0,LayoutEngineModule.Identifier(t$6[0],t$6[1])),a$4!=null&&a$4.$==1&&(m.$1.$==1&&((t$7=m.$1.$0,LayoutEngineModule.Var(t$7[0],t$7[1])).$==2&&(m.$1.$1.$==1&&(a$5=(t$8=m.$1.$1.$0,LayoutEngineModule.Identifier(t$8[0],t$8[1])),a$5!=null&&a$5.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$1.$==0&&($3=[a$5.$0,m.$1.$1.$1.$0,a$4.$0,m.$1.$1.$1.$1.$0],true)))))))))?(name$2=$3[2],LayoutEngineModule.entryDoc(name$2,(LayoutEngineModule.createButtonM())([lytNm,name$2,$3[0],$3[1],$3[3]]))):m.$==1&&(a$6=(t$9=m.$0,LayoutEngineModule.Identifier(t$9[0],t$9[1])),a$6!=null&&a$6.$==1&&(m.$1.$==1&&((t$10=m.$1.$0,LayoutEngineModule.Var(t$10[0],t$10[1])).$==3&&(m.$1.$1.$==1&&(a$7=(t$11=m.$1.$1.$0,LayoutEngineModule.Identifier(t$11[0],t$11[1])),a$7!=null&&a$7.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==0&&($4=[m.$1.$1.$1.$0,a$6.$0,a$7.$0],true))))))))?(name$3=$4[1],LayoutEngineModule.entryDoc(name$3,(LayoutEngineModule.createInputM())([lytNm,name$3,$4[2],$4[0]]))):m.$==1&&(a$8=(t$12=m.$0,LayoutEngineModule.Identifier(t$12[0],t$12[1])),a$8!=null&&a$8.$==1&&(m.$1.$==1&&((t$13=m.$1.$0,LayoutEngineModule.Var(t$13[0],t$13[1])).$==4&&(m.$1.$1.$==1&&(a$9=(t$14=m.$1.$1.$0,LayoutEngineModule.Identifier(t$14[0],t$14[1])),a$9!=null&&a$9.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==0&&($5=[m.$1.$1.$1.$0,a$8.$0,a$9.$0],true))))))))?(name$4=$5[1],LayoutEngineModule.entryDoc(name$4,(LayoutEngineModule.createTextAreaM())([lytNm,name$4,$5[2],$5[0]]))):m.$==1&&(a$10=(t$15=m.$0,LayoutEngineModule.Identifier(t$15[0],t$15[1])),a$10!=null&&a$10.$==1&&(m.$1.$==1&&((t$16=m.$1.$0,LayoutEngineModule.Var(t$16[0],t$16[1])).$==0&&(m.$1.$1.$==1&&(m.$1.$1.$1.$==0&&($6=[a$10.$0,m.$1.$1.$0],true))))))?(name$5=$6[0],LayoutEngineModule.entryVar(name$5,(LayoutEngineModule.createVarM())([lytNm,name$5,$6[1][0]]))):m.$==1&&(a$11=(t$17=m.$0,LayoutEngineModule.Identifier(t$17[0],t$17[1])),a$11!=null&&a$11.$==1&&(m.$1.$==1&&((t$18=m.$1.$0,LayoutEngineModule.Var(t$18[0],t$18[1])).$==1&&(m.$1.$1.$==1&&($7=[m.$1.$1.$0,a$11.$0,m.$1.$1.$1],true)))))?(name$6=$7[1],LayoutEngineModule.entryDoc(name$6,(LayoutEngineModule.createDocM())([lytNm,name$6,$7[0][0],$7[2]]))):m.$==1&&(a$12=(t$19=m.$0,LayoutEngineModule.Identifier(t$19[0],t$19[1])),a$12!=null&&a$12.$==1&&(m.$1.$==1&&((t$20=m.$1.$0,LayoutEngineModule.Vertical(t$20[0],t$20[1])).$==3&&(m.$1.$1.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==1&&($8=[m.$1.$1.$1.$1.$0,m.$1.$1.$0,m.$1.$1.$1.$1.$1,a$12.$0,m.$1.$1.$1.$0],true)))))))?null:m.$==1&&(a$13=(t$21=m.$0,LayoutEngineModule.Identifier(t$21[0],t$21[1])),a$13!=null&&a$13.$==1&&(m.$1.$==1&&(a$14=(t$22=m.$1.$0,LayoutEngineModule.Vertical(t$22[0],t$22[1])),a$14.$==4&&(m.$1.$1.$==1&&($9=[m.$1.$1.$0,m.$1.$1.$1,a$14.$0,a$13.$0],true)))))?(name$7=$9[3],LayoutEngineModule.entryDoc(name$7,(LayoutEngineModule.createElementM())([lytNm,name$7,$9[2],$9[0],$9[1]]))):null;
+   return m.$==1&&(a=(t=m.$0,LayoutEngineModule.Identifier(t[0],t[1])),a!=null&&a.$==1&&(m.$1.$==1&&((t$1=m.$1.$0,LayoutEngineModule.Vertical(t$1[0],t$1[1])).$==0&&(m.$1.$1.$==1&&(a$1=(t$2=m.$1.$1.$0,LayoutEngineModule.Measures$1(t$2[0],t$2[1])),a$1!=null&&a$1.$==1&&($1=[m.$1.$1.$1,a$1.$0,a.$0],true))))))?(name=$1[2],LayoutEngineModule.entryDoc(name,(LayoutEngineModule.createSplitterM())([lytNm,name,true,$1[1],$1[0]]))):m.$==1&&(a$2=(t$3=m.$0,LayoutEngineModule.Identifier(t$3[0],t$3[1])),a$2!=null&&a$2.$==1&&(m.$1.$==1&&((t$4=m.$1.$0,LayoutEngineModule.Vertical(t$4[0],t$4[1])).$==1&&(m.$1.$1.$==1&&(a$3=(t$5=m.$1.$1.$0,LayoutEngineModule.Measures$1(t$5[0],t$5[1])),a$3!=null&&a$3.$==1&&($2=[m.$1.$1.$1,a$3.$0,a$2.$0],true))))))?(name$1=$2[2],LayoutEngineModule.entryDoc(name$1,(LayoutEngineModule.createSplitterM())([lytNm,name$1,false,$2[1],$2[0]]))):m.$==1&&(a$4=(t$6=m.$0,LayoutEngineModule.Identifier(t$6[0],t$6[1])),a$4!=null&&a$4.$==1&&(m.$1.$==1&&((t$7=m.$1.$0,LayoutEngineModule.Var(t$7[0],t$7[1])).$==2&&(m.$1.$1.$==1&&(a$5=(t$8=m.$1.$1.$0,LayoutEngineModule.Identifier(t$8[0],t$8[1])),a$5!=null&&a$5.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$1.$==0&&($3=[a$5.$0,m.$1.$1.$1.$0,a$4.$0,m.$1.$1.$1.$1.$0],true)))))))))?(name$2=$3[2],LayoutEngineModule.entryDoc(name$2,(LayoutEngineModule.createButtonM())([lytNm,name$2,$3[0],$3[1],$3[3]]))):m.$==1&&(a$6=(t$9=m.$0,LayoutEngineModule.Identifier(t$9[0],t$9[1])),a$6!=null&&a$6.$==1&&(m.$1.$==1&&((t$10=m.$1.$0,LayoutEngineModule.Var(t$10[0],t$10[1])).$==3&&(m.$1.$1.$==1&&(a$7=(t$11=m.$1.$1.$0,LayoutEngineModule.Identifier(t$11[0],t$11[1])),a$7!=null&&a$7.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==0&&($4=[m.$1.$1.$1.$0,a$6.$0,a$7.$0],true))))))))?(name$3=$4[1],LayoutEngineModule.entryDoc(name$3,(LayoutEngineModule.createInputM())([lytNm,name$3,$4[2],$4[0]]))):m.$==1&&(a$8=(t$12=m.$0,LayoutEngineModule.Identifier(t$12[0],t$12[1])),a$8!=null&&a$8.$==1&&(m.$1.$==1&&((t$13=m.$1.$0,LayoutEngineModule.Var(t$13[0],t$13[1])).$==4&&(m.$1.$1.$==1&&(a$9=(t$14=m.$1.$1.$0,LayoutEngineModule.Identifier(t$14[0],t$14[1])),a$9!=null&&a$9.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==0&&($5=[m.$1.$1.$1.$0,a$8.$0,a$9.$0],true))))))))?(name$4=$5[1],LayoutEngineModule.entryDoc(name$4,(LayoutEngineModule.createTextAreaM())([lytNm,name$4,$5[2],$5[0]]))):m.$==1&&(a$10=(t$15=m.$0,LayoutEngineModule.Identifier(t$15[0],t$15[1])),a$10!=null&&a$10.$==1&&(m.$1.$==1&&((t$16=m.$1.$0,LayoutEngineModule.Var(t$16[0],t$16[1])).$==0&&(m.$1.$1.$==1&&(m.$1.$1.$1.$==0&&($6=[a$10.$0,m.$1.$1.$0],true))))))?(name$5=$6[0],LayoutEngineModule.entryVar(name$5,(LayoutEngineModule.createVarM())([lytNm,name$5,$6[1][0]]))):m.$==1&&(a$11=(t$17=m.$0,LayoutEngineModule.Identifier(t$17[0],t$17[1])),a$11!=null&&a$11.$==1&&(m.$1.$==1&&((t$18=m.$1.$0,LayoutEngineModule.Var(t$18[0],t$18[1])).$==1&&(m.$1.$1.$==1&&($7=[m.$1.$1.$0,a$11.$0,m.$1.$1.$1],true)))))?(name$6=$7[1],LayoutEngineModule.entryDoc(name$6,(LayoutEngineModule.createDocM())([lytNm,name$6,$7[0][0],$7[2]]))):m.$==1&&(a$12=(t$19=m.$0,LayoutEngineModule.Identifier(t$19[0],t$19[1])),a$12!=null&&a$12.$==1&&(m.$1.$==1&&((t$20=m.$1.$0,LayoutEngineModule.Vertical(t$20[0],t$20[1])).$==4&&(m.$1.$1.$==1&&(m.$1.$1.$1.$==1&&($8=[m.$1.$1.$1.$0,m.$1.$1.$1.$1,a$12.$0,m.$1.$1.$0],true))))))?(name$7=$8[2],LayoutEngineModule.entryDoc(name$7,(LayoutEngineModule.createTemplateM())([lytNm,name$7,$8[3],$8[0],$8[1]]))):m.$==1&&(a$13=(t$21=m.$0,LayoutEngineModule.Identifier(t$21[0],t$21[1])),a$13!=null&&a$13.$==1&&(m.$1.$==1&&((t$22=m.$1.$0,LayoutEngineModule.Concat(t$22[0],t$22[1])).$==0&&($9=[m.$1.$1,a$13.$0],true))))?(name$8=$9[1],LayoutEngineModule.entryDoc(name$8,(LayoutEngineModule.createConcatM())([lytNm,name$8,$9[0]]))):m.$==1&&(a$14=(t$23=m.$0,LayoutEngineModule.Identifier(t$23[0],t$23[1])),a$14!=null&&a$14.$==1&&(m.$1.$==1&&((t$24=m.$1.$0,LayoutEngineModule.Vertical(t$24[0],t$24[1])).$==3&&(m.$1.$1.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==1&&($10=[m.$1.$1.$1.$1.$0,m.$1.$1.$0,m.$1.$1.$1.$1.$1,a$14.$0,m.$1.$1.$1.$0],true)))))))?null:m.$==1&&(a$15=(t$25=m.$0,LayoutEngineModule.Identifier(t$25[0],t$25[1])),a$15!=null&&a$15.$==1&&(m.$1.$==1&&(a$16=(t$26=m.$1.$0,LayoutEngineModule.Vertical(t$26[0],t$26[1])),a$16.$==5&&(m.$1.$1.$==1&&($11=[m.$1.$1.$0,m.$1.$1.$1,a$16.$0,a$15.$0],true)))))?(name$9=$11[3],LayoutEngineModule.entryDoc(name$9,(LayoutEngineModule.createElementM())([lytNm,name$9,$11[2],$11[0],$11[1]]))):null;
   }
   catch(e)
   {
-   ((function($10)
+   ((function($12)
    {
-    return function($11)
+    return function($13)
     {
-     return $10(Utils.prettyPrint($11));
+     return $12(Utils.prettyPrint($13));
     };
    }(function(s)
    {
@@ -1998,6 +2007,16 @@
   SC$1.$cctor();
   return SC$1.createVarM;
  };
+ LayoutEngineModule.createConcatM=function()
+ {
+  SC$1.$cctor();
+  return SC$1.createConcatM;
+ };
+ LayoutEngineModule.createTemplateM=function()
+ {
+  SC$1.$cctor();
+  return SC$1.createTemplateM;
+ };
  LayoutEngineModule.createDocM=function()
  {
   SC$1.$cctor();
@@ -2031,6 +2050,111 @@
  LayoutEngineModule.createVar=function(lytNm,varName,v)
  {
   return Var$1.Create$1(v);
+ };
+ LayoutEngineModule.createConcat=function(lytNm,name,docs)
+ {
+  return LayoutEngineModule.turnToView(function()
+  {
+   return Doc.Concat(LayoutEngineModule.getDocs(lytNm,docs));
+  });
+ };
+ LayoutEngineModule.createTemplate=function(lytNm,name,tempName,attrs,holes)
+ {
+  return LayoutEngineModule.turnToView(function()
+  {
+   var $1,o,attrs$1,x,x$1,s;
+   attrs$1=LayoutEngineModule.getAttrs(lytNm,attrs[0],attrs[1]);
+   Templates.LoadLocalTemplates("local");
+   function m($2,$3)
+   {
+    var a,id,nm,o$1,o$2,o$3,t,o$4,t$1,nm$1,m$1,act;
+    a=LayoutEngineModule.Identifier($3[0],$3[1]);
+    return a!=null&&a.$==1?(id=a.$0,nm=$2[0],o$1=(o$2=(o$3=(t=((LayoutEngineModule.splitName())(lytNm))(id),AppFramework.tryGetDoc(t[0],t[1])),o$3==null?null:{
+     $:1,
+     $0:{
+      $:0,
+      $0:nm,
+      $1:(LayoutEngineModule.getDocF(List.T.Empty,o$3.$0))[0]
+     }
+    }),o$2==null?(o$4=(t$1=((LayoutEngineModule.splitName())(lytNm))(id),AppFramework.tryGetVar(t$1[0],t$1[1])),o$4==null?null:{
+     $:1,
+     $0:{
+      $:8,
+      $0:nm,
+      $1:o$4.$0.varVar
+     }
+    }):o$2),o$1==null?{
+     $:0,
+     $0:nm,
+     $1:LayoutEngineModule.errDoc((function($4)
+     {
+      return function($5)
+      {
+       return $4("Missing element: "+Utils.toSafe($5));
+      };
+     }(Global.id))(id))
+    }:o$1.$0):(nm$1=$2[0],m$1=LayoutEngineModule.getTextData(lytNm,$3[0]),m$1.$==1?{
+     $:2,
+     $0:nm$1,
+     $1:m$1.$0
+    }:m$1.$==2?(act=m$1.$0,{
+     $:4,
+     $0:nm$1,
+     $1:function(el)
+     {
+      return function(ev)
+      {
+       return AppFramework.callFunction(el,ev,act.actFunction);
+      };
+     }
+    }):{
+     $:1,
+     $0:nm$1,
+     $1:m$1.$0
+    });
+   }
+   function p(i,a)
+   {
+    return i%2===0;
+   }
+   try
+   {
+    o={
+     $:1,
+     $0:(x=(x$1=Seq.map(function($2)
+     {
+      return m($2[0],$2[1]);
+     },Seq.map(function(t)
+     {
+      return t[1];
+     },Seq.filter(function($2)
+     {
+      return p($2[0],$2[1]);
+     },Seq.indexed(Seq.pairwise(holes))))),(Seq.isEmpty(attrs$1)?Global.id:(s=[{
+      $:3,
+      $0:"attrs",
+      $1:AttrProxy.Concat(attrs$1)
+     }],function(s$1)
+     {
+      return Seq.append(s,s$1);
+     }))(x$1)),Templates.NamedTemplate("local",{
+      $:1,
+      $0:tempName[0]
+     },x))
+    };
+   }
+   catch(m$1)
+   {
+    o=null;
+   }
+   return o==null?LayoutEngineModule.errDoc((function($2)
+   {
+    return function($3)
+    {
+     return $2("Missing template: "+Utils.toSafe($3));
+    };
+   }(Global.id))(tempName[0])):o.$0;
+  });
  };
  LayoutEngineModule.createDoc=function(lytNm,name,docName,parms)
  {
@@ -2298,7 +2422,7 @@
  LayoutEngineModule.getTextData=function(lytNm,txt)
  {
   var o,o$1,$1,bef,name,aft,p,plg,n,o$2,o$3,o$4,o$5;
-  o=(o$1=String.delimitedO("${","}",txt),o$1==null?null:{
+  o=(o$1=String.delimitedO("@{","}",txt),o$1==null?null:{
    $:1,
    $0:($1=o$1.$0,(bef=$1[0],(name=$1[1],(aft=$1[2],(p=((LayoutEngineModule.splitName())(lytNm))(name),(plg=p[0],(n=p[1],(o$2=(o$3=AppFramework.tryGetWoW(plg,n),o$3==null?null:{
     $:1,
@@ -2455,6 +2579,17 @@
    })
   }:null);
  };
+ LayoutEngineModule.Concat=function(a,a$1)
+ {
+  var $1;
+  return(a$1?false:a==="concat")?{
+   $:0,
+   $0:null
+  }:{
+   $:1,
+   $0:null
+  };
+ };
  LayoutEngineModule.Var=function(a,a$1)
  {
   var $1,$2,$3,$4,$5,$6;
@@ -2483,7 +2618,7 @@
  };
  LayoutEngineModule.Vertical=function(a,a$1)
  {
-  var $1,$2,$3,$4,a$2;
+  var $1,$2,$3,$4,$5,a$2;
   return(a$1?false:a==="vertical")?{
    $:0,
    $0:null
@@ -2496,11 +2631,14 @@
   }:(a$1?false:a==="grid")?{
    $:3,
    $0:null
-  }:(a$2=LayoutEngineModule.Identifier(a,a$1),a$2!=null&&a$2.$==1?{
+  }:(a$1?false:a==="template")?{
    $:4,
+   $0:null
+  }:(a$2=LayoutEngineModule.Identifier(a,a$1),a$2!=null&&a$2.$==1?{
+   $:5,
    $0:a$2.$0
   }:{
-   $:5,
+   $:6,
    $0:null
   });
  };
@@ -2527,7 +2665,7 @@
  };
  SC$1.$cctor=function()
  {
-  var f,x,p,cache,getOrAdd,p$1,cache$1,getOrAdd$1,p$2,cache$2,getOrAdd$2,p$3,cache$3,getOrAdd$3,p$4,cache$4,getOrAdd$4,p$5,cache$5,getOrAdd$5,p$6,cache$6,getOrAdd$6,o,plg;
+  var f,x,p,cache,getOrAdd,p$1,cache$1,getOrAdd$1,p$2,cache$2,getOrAdd$2,p$3,cache$3,getOrAdd$3,p$4,cache$4,getOrAdd$4,p$5,cache$5,getOrAdd$5,p$6,cache$6,getOrAdd$6,p$7,cache$7,getOrAdd$7,p$8,cache$8,getOrAdd$8,o,plg;
   SC$1.$cctor=Global.ignore;
   function g(s)
   {
@@ -2597,11 +2735,11 @@
    cache.set_Item(v,res);
    return res;
   }
-  function getOrAdd$7(p$7,f$2)
+  function getOrAdd$9(p$9,f$2)
   {
    var o$1;
-   o$1=checkO(p$7);
-   return o$1==null?store(p$7,f$2(p$7)):o$1.$0;
+   o$1=checkO(p$9);
+   return o$1==null?store(p$9,f$2(p$9)):o$1.$0;
   }
   function checkO$1(v)
   {
@@ -2626,11 +2764,11 @@
    cache$1.set_Item(v,res);
    return res;
   }
-  function getOrAdd$8(p$7,f$2)
+  function getOrAdd$10(p$9,f$2)
   {
    var o$1;
-   o$1=checkO$1(p$7);
-   return o$1==null?store$1(p$7,f$2(p$7)):o$1.$0;
+   o$1=checkO$1(p$9);
+   return o$1==null?store$1(p$9,f$2(p$9)):o$1.$0;
   }
   function checkO$2(v)
   {
@@ -2655,11 +2793,11 @@
    cache$2.set_Item(v,res);
    return res;
   }
-  function getOrAdd$9(p$7,f$2)
+  function getOrAdd$11(p$9,f$2)
   {
    var o$1;
-   o$1=checkO$2(p$7);
-   return o$1==null?store$2(p$7,f$2(p$7)):o$1.$0;
+   o$1=checkO$2(p$9);
+   return o$1==null?store$2(p$9,f$2(p$9)):o$1.$0;
   }
   function checkO$3(v)
   {
@@ -2684,11 +2822,11 @@
    cache$3.set_Item(v,res);
    return res;
   }
-  function getOrAdd$10(p$7,f$2)
+  function getOrAdd$12(p$9,f$2)
   {
    var o$1;
-   o$1=checkO$3(p$7);
-   return o$1==null?store$3(p$7,f$2(p$7)):o$1.$0;
+   o$1=checkO$3(p$9);
+   return o$1==null?store$3(p$9,f$2(p$9)):o$1.$0;
   }
   function checkO$4(v)
   {
@@ -2713,11 +2851,11 @@
    cache$4.set_Item(v,res);
    return res;
   }
-  function getOrAdd$11(p$7,f$2)
+  function getOrAdd$13(p$9,f$2)
   {
    var o$1;
-   o$1=checkO$4(p$7);
-   return o$1==null?store$4(p$7,f$2(p$7)):o$1.$0;
+   o$1=checkO$4(p$9);
+   return o$1==null?store$4(p$9,f$2(p$9)):o$1.$0;
   }
   function checkO$5(v)
   {
@@ -2742,11 +2880,11 @@
    cache$5.set_Item(v,res);
    return res;
   }
-  function getOrAdd$12(p$7,f$2)
+  function getOrAdd$14(p$9,f$2)
   {
    var o$1;
-   o$1=checkO$5(p$7);
-   return o$1==null?store$5(p$7,f$2(p$7)):o$1.$0;
+   o$1=checkO$5(p$9);
+   return o$1==null?store$5(p$9,f$2(p$9)):o$1.$0;
   }
   function checkO$6(v)
   {
@@ -2771,11 +2909,69 @@
    cache$6.set_Item(v,res);
    return res;
   }
-  function getOrAdd$13(p$7,f$2)
+  function getOrAdd$15(p$9,f$2)
   {
    var o$1;
-   o$1=checkO$6(p$7);
-   return o$1==null?store$6(p$7,f$2(p$7)):o$1.$0;
+   o$1=checkO$6(p$9);
+   return o$1==null?store$6(p$9,f$2(p$9)):o$1.$0;
+  }
+  function checkO$7(v)
+  {
+   var res;
+   res=null;
+   return cache$7.TryGetValue(v,{
+    get:function()
+    {
+     return res;
+    },
+    set:function(v$1)
+    {
+     res=v$1;
+    }
+   })?{
+    $:1,
+    $0:res
+   }:null;
+  }
+  function store$7(v,res)
+  {
+   cache$7.set_Item(v,res);
+   return res;
+  }
+  function getOrAdd$16(p$9,f$2)
+  {
+   var o$1;
+   o$1=checkO$7(p$9);
+   return o$1==null?store$7(p$9,f$2(p$9)):o$1.$0;
+  }
+  function checkO$8(v)
+  {
+   var res;
+   res=null;
+   return cache$8.TryGetValue(v,{
+    get:function()
+    {
+     return res;
+    },
+    set:function(v$1)
+    {
+     res=v$1;
+    }
+   })?{
+    $:1,
+    $0:res
+   }:null;
+  }
+  function store$8(v,res)
+  {
+   cache$8.set_Item(v,res);
+   return res;
+  }
+  function getOrAdd$17(p$9,f$2)
+  {
+   var o$1;
+   o$1=checkO$8(p$9);
+   return o$1==null?store$8(p$9,f$2(p$9)):o$1.$0;
   }
   SC$1.unindentStr=function(x$1)
   {
@@ -2846,15 +3042,9 @@
   SC$1.css="\r\n                .tab-panel {\r\n                 overflow  : hidden   ;\r\n                 display   : flex     ;\r\n                 flex-flow : column   ;\r\n                 background: lightgray;\r\n                 height    : 100%    ;\r\n                 width     : 100%    ;\r\n                }\r\n                .tab-content {\r\n                 flex      : 1 1     ;\r\n                 overflow  : auto    ;\r\n                 position  : relative;\r\n                }\r\n                .tab-children {\r\n                 height    : 100%    ;\r\n                 width     : 100%    ;\r\n                 position  : absolute;\r\n                 display   : grid    ;\r\n                }\r\n                .tab-strip {\r\n                 padding   : 0pt     ;\r\n                 flex      : 0 0     ;\r\n                }\r\n                .tab {\r\n                 border     : 0.2pt solid transparent;\r\n                 padding    : 0pt 4pt;\r\n                 display    : inline-block;\r\n                 font-family: sans-serif;\r\n                 font-weight: 200;\r\n                 font-size  : small;\r\n                 color      : #666;\r\n                 cursor     : pointer;\r\n                }\r\n                .top>.tab {\r\n                 border-radius: 2pt 2pt 0pt 0pt;\r\n                 border-bottom-width: 0pt;\r\n                 vertical-align: bottom;\r\n                }\r\n                .bottom>.tab {\r\n                 border-top-width: 0pt;\r\n                 border-radius: 0pt 0pt 2pt 2pt;\r\n                 vertical-align: top;\r\n                }\r\n                .horizontal>.tab:not(:first-child) {\r\n                 border-left-width: 0pt;\r\n                }\r\n                .tab.hovering {\r\n                 background: red;\r\n                }\r\n                .tab.selected {\r\n                 background: white;\r\n                 border-left-width: 0.2pt;\r\n                 color: black;\r\n                 font-weight: 500;\r\n                 border-color: black;\r\n                }\r\n                .horizontal>.tab.selected {\r\n                 border-left-width: 0.2pt;\r\n                }\r\n                ::slotted(*              ) { \r\n                 width : 100%;\r\n                 height: 100%;\r\n                }\r\n                        ";
   SC$1.init=Lazy.Create(function()
   {
-   var o$1,_nm,_c;
+   var o$1;
    o$1=new WcTabStripT.New();
-   _nm="wcomp-tabstrip";
-   _c=self.FsRoot.LibraryJS.WebComponent.WcTabStrip.WcTabStripT.New;
-   console.log("defineWebComponent: "+_nm);
-   Object.setPrototypeOf(_c.prototype,self.HTMLElement.prototype);
-   Object.setPrototypeOf(_c,self.HTMLElement);
-   Object.setPrototypeOf(WcTabStripT.Constructor.prototype,_c.prototype);
-   self.customElements.define(_nm,WcTabStripT.Constructor);
+   WebComponent.defineWebComponent("wcomp-tabstrip",WcTabStripT.Constructor,self.FsRoot.LibraryJS.WebComponent.WcTabStrip.WcTabStripT.New);
   });
   SC$1.layoutHorizontal=Runtime.Curried(function($1,$2,$3,$4,$5)
   {
@@ -2869,7 +3059,6 @@
    return plg$1.plgName;
   });
   SC$1.mainDocV=Var$1.Create$1("AppFramework.AppFwkClient");
-  SC$1.titleV=Var$1.Create$1("AppFramework.mainDocV");
   SC$1.TemplateFileName="..\\website\\AppFramework.html";
   SC$1.defaultPlugIn=PlugIn.New("",[],[],[],[],[]);
   SC$1.selectionPlugInO=Var$1.Create$1({
@@ -2886,7 +3075,7 @@
   });
   SC$1.AppFwkClient=Lazy.Create(function()
   {
-   var b,Q,A,D,V,V$1,P,p$7,i;
+   var b,Q,A,D,V,V$1,P,p$9,i;
    return(b=(Q=AppFramework.renderQueries(),(A=AppFramework.renderActions(),(D=AppFramework.renderDocs(),(V=AppFramework.renderViews(),(V$1=AppFramework.renderVars(),(P=AppFramework.renderPlugIns(),ProviderBuilder.Make().WithHole({
     $:0,
     $0:"plugins",
@@ -2918,7 +3107,7 @@
     $:0,
     $0:"queries",
     $1:Q
-   })),(p$7=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p$7[1],LayoutEngine_Templates.appfwkclient(p$7[0])),(b.i=i,i)))).get_Doc();
+   })),(p$9=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p$9[1],LayoutEngine_Templates.appfwkclient(p$9[0])),(b.i=i,i)))).get_Doc();
   });
   SC$1.actHello=AppFramework.newAct("Hello",function()
   {
@@ -2934,24 +3123,7 @@
     },plg$1.plgDocs);
    },(AppFramework.plugIns())["var"].Get()));
   });
-  AppFramework.plugIns().Append(PlugIn.New("AppFramework",[AppFramework.newVar("mainDocV",AppFramework.mainDocV()),AppFramework.newVar("titleV",AppFramework.titleV())],[],[AppFramework.newDoc("AppFwkClient",AppFramework.AppFwkClient())],[AppFramework.actHello()],[AppFramework.qryDocs()]));
-  View.Sink(function(v)
-  {
-   var b;
-   Concurrency.Start((b=null,Concurrency.Delay(function()
-   {
-    return Concurrency.Bind(Concurrency.Sleep(500),function()
-    {
-     self.document.title=v;
-     return Concurrency.Zero();
-    });
-   })),null);
-  },View.Bind(function(nm)
-  {
-   var o$1,a$1,b;
-   o$1=(a$1=String.splitByChar(".",nm),!Unchecked.Equals(a$1,null)&&a$1.length===2?(b=Arrays.get(a$1,1),AppFramework.tryGetWoW(Arrays.get(a$1,0),b)):null);
-   return o$1==null?AppFramework.mainDocV().get_View():o$1.$0;
-  },AppFramework.titleV().get_View()));
+  AppFramework.plugIns().Append(PlugIn.New("AppFramework",[AppFramework.newVar("mainDocV",AppFramework.mainDocV())],[],[AppFramework.newDoc("AppFwkClient",AppFramework.AppFwkClient())],[AppFramework.actHello()],[AppFramework.qryDocs()]));
   SC$1.getMainDoc=Lazy.Create(function()
   {
    WcSplitter.init(Runtime.Curried(AppFramework.horizontal,5),Runtime.Curried(AppFramework.vertical,5));
@@ -2963,14 +3135,14 @@
   {
    return function($2)
    {
-    return getOrAdd$7($1,$2);
+    return getOrAdd$9($1,$2);
    };
   }],function()
   {
    cache.Clear();
-  }]),(getOrAdd=p[0][1],[function(p$7)
+  }]),(getOrAdd=p[0][1],[function(p$9)
   {
-   return(getOrAdd(p$7))(function($1)
+   return(getOrAdd(p$9))(function($1)
    {
     return LayoutEngineModule.createSplitter($1[0],$1[1],$1[2],$1[3],$1[4]);
    });
@@ -2979,14 +3151,14 @@
   {
    return function($2)
    {
-    return getOrAdd$8($1,$2);
+    return getOrAdd$10($1,$2);
    };
   }],function()
   {
    cache$1.Clear();
-  }]),(getOrAdd$1=p$1[0][1],[function(p$7)
+  }]),(getOrAdd$1=p$1[0][1],[function(p$9)
   {
-   return(getOrAdd$1(p$7))(function($1)
+   return(getOrAdd$1(p$9))(function($1)
    {
     return LayoutEngineModule.createButton($1[0],$1[1],$1[2],$1[3],$1[4]);
    });
@@ -2995,14 +3167,14 @@
   {
    return function($2)
    {
-    return getOrAdd$9($1,$2);
+    return getOrAdd$11($1,$2);
    };
   }],function()
   {
    cache$2.Clear();
-  }]),(getOrAdd$2=p$2[0][1],[function(p$7)
+  }]),(getOrAdd$2=p$2[0][1],[function(p$9)
   {
-   return(getOrAdd$2(p$7))(function($1)
+   return(getOrAdd$2(p$9))(function($1)
    {
     return LayoutEngineModule.createInput($1[0],$1[1],$1[2],$1[3]);
    });
@@ -3011,14 +3183,14 @@
   {
    return function($2)
    {
-    return getOrAdd$10($1,$2);
+    return getOrAdd$12($1,$2);
    };
   }],function()
   {
    cache$3.Clear();
-  }]),(getOrAdd$3=p$3[0][1],[function(p$7)
+  }]),(getOrAdd$3=p$3[0][1],[function(p$9)
   {
-   return(getOrAdd$3(p$7))(function($1)
+   return(getOrAdd$3(p$9))(function($1)
    {
     return LayoutEngineModule.createTextArea($1[0],$1[1],$1[2],$1[3]);
    });
@@ -3027,14 +3199,14 @@
   {
    return function($2)
    {
-    return getOrAdd$11($1,$2);
+    return getOrAdd$13($1,$2);
    };
   }],function()
   {
    cache$4.Clear();
-  }]),(getOrAdd$4=p$4[0][1],[function(p$7)
+  }]),(getOrAdd$4=p$4[0][1],[function(p$9)
   {
-   return(getOrAdd$4(p$7))(function($1)
+   return(getOrAdd$4(p$9))(function($1)
    {
     return LayoutEngineModule.createElement($1[0],$1[1],$1[2],$1[3],$1[4]);
    });
@@ -3043,34 +3215,66 @@
   {
    return function($2)
    {
-    return getOrAdd$12($1,$2);
+    return getOrAdd$14($1,$2);
    };
   }],function()
   {
    cache$5.Clear();
-  }]),(getOrAdd$5=p$5[0][1],[function(p$7)
+  }]),(getOrAdd$5=p$5[0][1],[function(p$9)
   {
-   return(getOrAdd$5(p$7))(function($1)
+   return(getOrAdd$5(p$9))(function($1)
    {
     return LayoutEngineModule.createDoc($1[0],$1[1],$1[2],$1[3]);
    });
   },p$5[1]]))[0];
-  SC$1.createVarM=(p$6=(cache$6=new Dictionary.New$5(),[[checkO$6,function($1)
+  SC$1.createTemplateM=(p$6=(cache$6=new Dictionary.New$5(),[[checkO$6,function($1)
   {
    return function($2)
    {
-    return getOrAdd$13($1,$2);
+    return getOrAdd$15($1,$2);
    };
   }],function()
   {
    cache$6.Clear();
-  }]),(getOrAdd$6=p$6[0][1],[function(p$7)
+  }]),(getOrAdd$6=p$6[0][1],[function(p$9)
   {
-   return(getOrAdd$6(p$7))(function($1)
+   return(getOrAdd$6(p$9))(function($1)
+   {
+    return LayoutEngineModule.createTemplate($1[0],$1[1],$1[2],$1[3],$1[4]);
+   });
+  },p$6[1]]))[0];
+  SC$1.createConcatM=(p$7=(cache$7=new Dictionary.New$5(),[[checkO$7,function($1)
+  {
+   return function($2)
+   {
+    return getOrAdd$16($1,$2);
+   };
+  }],function()
+  {
+   cache$7.Clear();
+  }]),(getOrAdd$7=p$7[0][1],[function(p$9)
+  {
+   return(getOrAdd$7(p$9))(function($1)
+   {
+    return LayoutEngineModule.createConcat($1[0],$1[1],$1[2]);
+   });
+  },p$7[1]]))[0];
+  SC$1.createVarM=(p$8=(cache$8=new Dictionary.New$5(),[[checkO$8,function($1)
+  {
+   return function($2)
+   {
+    return getOrAdd$17($1,$2);
+   };
+  }],function()
+  {
+   cache$8.Clear();
+  }]),(getOrAdd$8=p$8[0][1],[function(p$9)
+  {
+   return(getOrAdd$8(p$9))(function($1)
    {
     return LayoutEngineModule.createVar($1[0],$1[1],$1[2]);
    });
-  },p$6[1]]))[0];
+  },p$8[1]]))[0];
   o=AppFramework.tryGetPlugIn("AppFramework");
   o==null?void 0:(plg=o.$0,AppFramework.addPlugIn(PlugIn.New(plg.plgName,plg.plgVars,plg.plgViews,plg.plgDocs,plg.plgActions.concat([AppFramework.newActF("AddLayout",{
    $:2,
@@ -3087,51 +3291,27 @@
  };
  LayoutEngine_Templates.wcompsplitterver=function(h)
  {
-  return h?Templates.GetOrLoadTemplate("appframework",{
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
    $:1,
    $0:"wcompsplitterver"
-  },function()
-  {
-   return $.parseHTML("<div ws-onafterrender=\"AfterRender\" style=\"display: grid; \r\n                grid-gap: 5px; \r\n                box-sizing: border-box; \r\n                grid-template-areas: 'one two'; \r\n                grid-template-rows   :100%; \r\n                overflow: hidden; \r\n                grid-template-columns: ${PartSizes}\">\r\n        <slot></slot>\r\n        <slot name=\"splitter\"> <div style=\"grid-column:2; grid-row:1 / 1 ; cursor: col-resize; z-index: 3; background-color: #eef ; width: ${Gap}; margin-left :-${Gap}\" ws-onmousedown=\"MouseDown\" ws-onafterrender=\"AfterRenderSp\"></div> </slot>\r\n        <style>\r\n            ::slotted(*) {\r\n                display: grid;\r\n                height : 100%;\r\n                width  : 100%;\r\n                overflow: hidden;\r\n            }\r\n            ::slotted(*:nth-child(2)) {\r\n                grid-area: two;\r\n            }\r\n            ::slotted(*[slot=\"splitter\"]) {\r\n                grid-column:2; grid-row:1 / 1\r\n                cursor: column-resize; \r\n                z-index: 3; \r\n                background-color: #eef ; \r\n                width: ${Gap}; \r\n                margin-left:-${Gap}\r\n            }\r\n        </style>\r\n    </div>");
-  },h):Templates.PrepareTemplate("appframework",{
-   $:1,
-   $0:"wcompsplitterver"
-  },function()
-  {
-   return $.parseHTML("<div ws-onafterrender=\"AfterRender\" style=\"display: grid; \r\n                grid-gap: 5px; \r\n                box-sizing: border-box; \r\n                grid-template-areas: 'one two'; \r\n                grid-template-rows   :100%; \r\n                overflow: hidden; \r\n                grid-template-columns: ${PartSizes}\">\r\n        <slot></slot>\r\n        <slot name=\"splitter\"> <div style=\"grid-column:2; grid-row:1 / 1 ; cursor: col-resize; z-index: 3; background-color: #eef ; width: ${Gap}; margin-left :-${Gap}\" ws-onmousedown=\"MouseDown\" ws-onafterrender=\"AfterRenderSp\"></div> </slot>\r\n        <style>\r\n            ::slotted(*) {\r\n                display: grid;\r\n                height : 100%;\r\n                width  : 100%;\r\n                overflow: hidden;\r\n            }\r\n            ::slotted(*:nth-child(2)) {\r\n                grid-area: two;\r\n            }\r\n            ::slotted(*[slot=\"splitter\"]) {\r\n                grid-column:2; grid-row:1 / 1\r\n                cursor: column-resize; \r\n                z-index: 3; \r\n                background-color: #eef ; \r\n                width: ${Gap}; \r\n                margin-left:-${Gap}\r\n            }\r\n        </style>\r\n    </div>");
-  });
+  },h):void 0;
  };
  LayoutEngine_Templates.wcompsplitterhor=function(h)
  {
-  return h?Templates.GetOrLoadTemplate("appframework",{
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
    $:1,
    $0:"wcompsplitterhor"
-  },function()
-  {
-   return $.parseHTML("<div ws-onafterrender=\"AfterRender\" style=\"display: grid;\r\n                grid-gap: 5px; \r\n                box-sizing: border-box; \r\n                grid-template-areas: 'one' 'two'; \r\n                grid-template-columns:100%; \r\n                overflow: hidden; \r\n                grid-template-rows   : ${PartSizes}\">\r\n         <slot></slot>\r\n        <slot name=\"splitter\">  <div style=\"grid-row:2; grid-column:1 / 1 ; cursor: row-resize; z-index: 3; background-color: #eef ; height: ${Gap}; margin-top :-${Gap}\" ws-onmousedown=\"MouseDown\" ws-onafterrender=\"AfterRenderSp\"></div> </slot>\r\n        <style>\r\n            ::slotted(*) {\r\n                display: grid;\r\n                height : 100%;\r\n                width  : 100%;\r\n                overflow: hidden;\r\n            }\r\n            ::slotted(*:nth-child(2)) {\r\n                grid-area: two;\r\n            }\r\n            ::slotted(*[slot=\"splitter\"]) {\r\n                grid-row:2; grid-column:1 / 1 ; \r\n                cursor: row-resize; \r\n                z-index: 3; \r\n                background-color: #eef ; \r\n                height: ${Gap}; \r\n                margin-top :-${Gap}\r\n            }\r\n        </style>\r\n    </div>");
-  },h):Templates.PrepareTemplate("appframework",{
-   $:1,
-   $0:"wcompsplitterhor"
-  },function()
-  {
-   return $.parseHTML("<div ws-onafterrender=\"AfterRender\" style=\"display: grid;\r\n                grid-gap: 5px; \r\n                box-sizing: border-box; \r\n                grid-template-areas: 'one' 'two'; \r\n                grid-template-columns:100%; \r\n                overflow: hidden; \r\n                grid-template-rows   : ${PartSizes}\">\r\n         <slot></slot>\r\n        <slot name=\"splitter\">  <div style=\"grid-row:2; grid-column:1 / 1 ; cursor: row-resize; z-index: 3; background-color: #eef ; height: ${Gap}; margin-top :-${Gap}\" ws-onmousedown=\"MouseDown\" ws-onafterrender=\"AfterRenderSp\"></div> </slot>\r\n        <style>\r\n            ::slotted(*) {\r\n                display: grid;\r\n                height : 100%;\r\n                width  : 100%;\r\n                overflow: hidden;\r\n            }\r\n            ::slotted(*:nth-child(2)) {\r\n                grid-area: two;\r\n            }\r\n            ::slotted(*[slot=\"splitter\"]) {\r\n                grid-row:2; grid-column:1 / 1 ; \r\n                cursor: row-resize; \r\n                z-index: 3; \r\n                background-color: #eef ; \r\n                height: ${Gap}; \r\n                margin-top :-${Gap}\r\n            }\r\n        </style>\r\n    </div>");
-  });
+  },h):void 0;
  };
  LayoutEngine_Templates.appframework=function(h)
  {
-  return h?Templates.GetOrLoadTemplate("appframework",{
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
    $:1,
    $0:"appframework"
-  },function()
-  {
-   return $.parseHTML("<div style=\"height: calc(100vh - 4px); width: calc(100vw - 4px) \" class=\"relative\">\r\n        <wcomp-splitter value=\"0\" min=\"0\" max=\"100\">\r\n            <div><button ws-onclick=\"GoClient\">${MainDoc}</button></div>\r\n            <div ws-hole=\"MainClient\"></div>\r\n        </wcomp-splitter>\r\n        <style style=\"display: none\">\r\n            .Hidden     { display   : none         }\r\n            table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }\r\n            td input.form-control { \r\n                padding    : 0px; \r\n                font-family: monospace;\r\n                font-size  :   small;\r\n                margin-top :   0px;\r\n                margin-left: -2px;\r\n                width      : 100%\r\n            }\r\n            td select {\r\n                font-size : smaller;\r\n                max-width : 8ch;\r\n            }\r\n            xtextarea {\r\n               resize : none;\r\n            }\r\n            .tab-content {\r\n                overflow: hidden\r\n            }\r\n            .tab-children {\r\n                position:relative;\r\n            }\r\n            .tab-children>div>* {\r\n                position:absolute;\r\n                height: 100%;\r\n                width:  100%;\r\n                display: grid;\r\n            }\r\n            .relative {\r\n                position:relative;\r\n            }\r\n            .relative>* {\r\n                position:absolute;\r\n                height: 100%;\r\n                width:  100%;\r\n                display: grid;\r\n            }\r\n            table.table-striped    tbody tr:nth-child(even) { background: #EEE  }\r\n            table.table-striped    tbody tr:nth-child(odd ) { background: #FFF  }\r\n            table.table-striped    tbody input              { background: transparent; border: none}\r\n            table.table-striped    tbody select             { background: transparent; border: none}\r\n            table.table-nonstriped tbody tr:nth-child(even) { background: inherit }\r\n            table.table-nonstriped tbody tr:nth-child(odd ) { background: inherit }\r\n            table.table            tbody tr.hover           { border    : solid thin transparent; } \r\n            table.table            tbody tr.hover:hover     { border    : solid thin blue     ; } \r\n            table.table            tbody th:hover           { background: gray; cursor: pointer }\r\n            table.table            tbody tr.hover:hover>td  { border-top: solid thin blue     ; \r\n                                                       border-bottom: solid thin blue     ; } \r\n            table.table            tbody tr.selected { background   : #b9eeff             ; }\r\n            table.table            tbody tr.formula.selected { background: #20f7f7             ; }\r\n            thead { color: gray }\r\n            h3 { \r\n                color: gray;\r\n                line-height: 1em;\r\n            }\r\n            button       { border: solid thin transparent ; border-radius: 3px; }\r\n            button:hover { border: solid thin blue }\r\n            .indenter { position  : absolute; \r\n                        top:0px; bottom:0px; left:0px; \r\n                        background: white; color:white;\r\n                        border-right: gray thin dotted;\r\n                        }\r\n            body {\r\n                color      : #333;\r\n                font-size  : small;\r\n                font-family: monospace;\r\n                line-height: 1.2;\r\n            }\r\n            .mainTitle {  \r\n                font-size: 48px;\r\n                font-weight: 500;\r\n                color: gray;\r\n                margin-top: -12px;\r\n            }\r\n            .CodeMirror {\r\n                height: 100%;\r\n            }\r\n            \r\n          \r\n            body { margin: 0px }     \r\n                 \r\n            div textarea {\r\n                font-family     : monospace;\r\n            }\r\n            .code-editor-list-tile {\r\n                white-space     : nowrap; \r\n                border-style    : solid none none;\r\n                border-color    : white;\r\n                border-width    : 1px;\r\n                background-color: #D8D8D8;\r\n                display         : flex;\r\n            }\r\n            .code-editor-list-text{\r\n                padding         : 1px 10px 1px 5px;\r\n                overflow        : hidden;\r\n                text-overflow   : ellipsis;\r\n                white-space     : nowrap;\r\n                flex            : 1;\r\n            }\r\n            \r\n            .code-editor-list-tile span.node.ErrorMsg {\r\n                background-color: red\r\n            }\r\n            .code-editor-list-tile span.node.expanded::before {\r\n                content: \"-\"\r\n            }\r\n            .code-editor-list-tile span.node.collapsed::before {\r\n                content: \"+\"\r\n            }\r\n            .code-editor-list-tile.direct-predecessor {\r\n                font-weight     : bold;\r\n                color           : blue;\r\n            }\r\n            .code-editor-list-tile.indirect-predecessor {\r\n                color           : blue;\r\n            }\r\n            .code-editor-list-tile.included-predecessor {\r\n                color           : chocolate;\r\n            }\r\n            .code-editor-list-tile.selected {\r\n                background-color: #77F;\r\n                color           : white;\r\n            }\r\n            .code-editor-list-tile.codeSnippet {\r\n                text-decoration: underline\r\n            }\r\n            .code-editor-list-tile:hover {\r\n                background      : lightgray;\r\n            }\r\n            .code-editor-list-tile.selected:hover {\r\n                background      : blue;\r\n            }\r\n            .code-editor-list-tile>.predecessor {\r\n                font-weight     : bold;\r\n                border-style    : inset;\r\n                border-width    : 1px;\r\n                text-align      : center;\r\n                color           : transparent;\r\n            }\r\n            .code-editor-list-tile.direct-predecessor>.predecessor {\r\n                color           : blue;\r\n            }\r\n            \r\n            .CodeMirror { height: 100%; }\r\n            \r\n            .node {\r\n                background-color: white; \r\n                width           : 2ch; \r\n                color           : #A03; \r\n                font-weight     : bold; \r\n                text-align      : center;\r\n                font-family     : arial;\r\n            }\r\n            .Warning { text-decoration: underline lightblue } \r\n            .Error   { text-decoration: underline red       } \r\n            \r\n        </style>\r\n    </div>");
-  },h):Templates.PrepareTemplate("appframework",{
-   $:1,
-   $0:"appframework"
-  },function()
-  {
-   return $.parseHTML("<div style=\"height: calc(100vh - 4px); width: calc(100vw - 4px) \" class=\"relative\">\r\n        <wcomp-splitter value=\"0\" min=\"0\" max=\"100\">\r\n            <div><button ws-onclick=\"GoClient\">${MainDoc}</button></div>\r\n            <div ws-hole=\"MainClient\"></div>\r\n        </wcomp-splitter>\r\n        <style style=\"display: none\">\r\n            .Hidden     { display   : none         }\r\n            table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }\r\n            td input.form-control { \r\n                padding    : 0px; \r\n                font-family: monospace;\r\n                font-size  :   small;\r\n                margin-top :   0px;\r\n                margin-left: -2px;\r\n                width      : 100%\r\n            }\r\n            td select {\r\n                font-size : smaller;\r\n                max-width : 8ch;\r\n            }\r\n            xtextarea {\r\n               resize : none;\r\n            }\r\n            .tab-content {\r\n                overflow: hidden\r\n            }\r\n            .tab-children {\r\n                position:relative;\r\n            }\r\n            .tab-children>div>* {\r\n                position:absolute;\r\n                height: 100%;\r\n                width:  100%;\r\n                display: grid;\r\n            }\r\n            .relative {\r\n                position:relative;\r\n            }\r\n            .relative>* {\r\n                position:absolute;\r\n                height: 100%;\r\n                width:  100%;\r\n                display: grid;\r\n            }\r\n            table.table-striped    tbody tr:nth-child(even) { background: #EEE  }\r\n            table.table-striped    tbody tr:nth-child(odd ) { background: #FFF  }\r\n            table.table-striped    tbody input              { background: transparent; border: none}\r\n            table.table-striped    tbody select             { background: transparent; border: none}\r\n            table.table-nonstriped tbody tr:nth-child(even) { background: inherit }\r\n            table.table-nonstriped tbody tr:nth-child(odd ) { background: inherit }\r\n            table.table            tbody tr.hover           { border    : solid thin transparent; } \r\n            table.table            tbody tr.hover:hover     { border    : solid thin blue     ; } \r\n            table.table            tbody th:hover           { background: gray; cursor: pointer }\r\n            table.table            tbody tr.hover:hover>td  { border-top: solid thin blue     ; \r\n                                                       border-bottom: solid thin blue     ; } \r\n            table.table            tbody tr.selected { background   : #b9eeff             ; }\r\n            table.table            tbody tr.formula.selected { background: #20f7f7             ; }\r\n            thead { color: gray }\r\n            h3 { \r\n                color: gray;\r\n                line-height: 1em;\r\n            }\r\n            button       { border: solid thin transparent ; border-radius: 3px; }\r\n            button:hover { border: solid thin blue }\r\n            .indenter { position  : absolute; \r\n                        top:0px; bottom:0px; left:0px; \r\n                        background: white; color:white;\r\n                        border-right: gray thin dotted;\r\n                        }\r\n            body {\r\n                color      : #333;\r\n                font-size  : small;\r\n                font-family: monospace;\r\n                line-height: 1.2;\r\n            }\r\n            .mainTitle {  \r\n                font-size: 48px;\r\n                font-weight: 500;\r\n                color: gray;\r\n                margin-top: -12px;\r\n            }\r\n            .CodeMirror {\r\n                height: 100%;\r\n            }\r\n            \r\n          \r\n            body { margin: 0px }     \r\n                 \r\n            div textarea {\r\n                font-family     : monospace;\r\n            }\r\n            .code-editor-list-tile {\r\n                white-space     : nowrap; \r\n                border-style    : solid none none;\r\n                border-color    : white;\r\n                border-width    : 1px;\r\n                background-color: #D8D8D8;\r\n                display         : flex;\r\n            }\r\n            .code-editor-list-text{\r\n                padding         : 1px 10px 1px 5px;\r\n                overflow        : hidden;\r\n                text-overflow   : ellipsis;\r\n                white-space     : nowrap;\r\n                flex            : 1;\r\n            }\r\n            \r\n            .code-editor-list-tile span.node.ErrorMsg {\r\n                background-color: red\r\n            }\r\n            .code-editor-list-tile span.node.expanded::before {\r\n                content: \"-\"\r\n            }\r\n            .code-editor-list-tile span.node.collapsed::before {\r\n                content: \"+\"\r\n            }\r\n            .code-editor-list-tile.direct-predecessor {\r\n                font-weight     : bold;\r\n                color           : blue;\r\n            }\r\n            .code-editor-list-tile.indirect-predecessor {\r\n                color           : blue;\r\n            }\r\n            .code-editor-list-tile.included-predecessor {\r\n                color           : chocolate;\r\n            }\r\n            .code-editor-list-tile.selected {\r\n                background-color: #77F;\r\n                color           : white;\r\n            }\r\n            .code-editor-list-tile.codeSnippet {\r\n                text-decoration: underline\r\n            }\r\n            .code-editor-list-tile:hover {\r\n                background      : lightgray;\r\n            }\r\n            .code-editor-list-tile.selected:hover {\r\n                background      : blue;\r\n            }\r\n            .code-editor-list-tile>.predecessor {\r\n                font-weight     : bold;\r\n                border-style    : inset;\r\n                border-width    : 1px;\r\n                text-align      : center;\r\n                color           : transparent;\r\n            }\r\n            .code-editor-list-tile.direct-predecessor>.predecessor {\r\n                color           : blue;\r\n            }\r\n            \r\n            .CodeMirror { height: 100%; }\r\n            \r\n            .node {\r\n                background-color: white; \r\n                width           : 2ch; \r\n                color           : #A03; \r\n                font-weight     : bold; \r\n                text-align      : center;\r\n                font-family     : arial;\r\n            }\r\n            .Warning { text-decoration: underline lightblue } \r\n            .Error   { text-decoration: underline red       } \r\n            \r\n        </style>\r\n    </div>");
-  });
+  },h):void 0;
  };
  GeneratedPrintf.p=function($1)
  {
@@ -3143,131 +3323,68 @@
  };
  LayoutEngine_Templates.tile=function(h)
  {
-  return h?Templates.GetOrLoadTemplate("appframework",{
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
    $:1,
    $0:"tile"
-  },function()
-  {
-   return $.parseHTML("<div>\r\n                                        <div draggable=\"true\" class=\"code-editor-list-tile ${Predecessor} ${Selected}\" ws-ondrag=\"Drag\" ws-ondragover=\"DragOver\" ws-ondrop=\"Drop\">\r\n                                       <span class=\"node ${Parent} ${ErrorMsg}\" title=\"expand\" ws-onclick=\"ToggleCollapse\"></span>\r\n                                       <div class=\"code-editor-list-text\" style=\"text-indent:${Indent}em; white-space: pre\" ws-onclick=\"Select\" ws-onafterrender=\"AfterRender\">${Name}</div>\r\n                                       <span class=\"predecessor\" title=\"toggle predecessor\" ws-onclick=\"TogglePred\">X</span>\r\n                                   </div>\r\n                           \r\n                                    </div>");
-  },h):Templates.PrepareTemplate("appframework",{
-   $:1,
-   $0:"tile"
-  },function()
-  {
-   return $.parseHTML("<div>\r\n                                        <div draggable=\"true\" class=\"code-editor-list-tile ${Predecessor} ${Selected}\" ws-ondrag=\"Drag\" ws-ondragover=\"DragOver\" ws-ondrop=\"Drop\">\r\n                                       <span class=\"node ${Parent} ${ErrorMsg}\" title=\"expand\" ws-onclick=\"ToggleCollapse\"></span>\r\n                                       <div class=\"code-editor-list-text\" style=\"text-indent:${Indent}em; white-space: pre\" ws-onclick=\"Select\" ws-onafterrender=\"AfterRender\">${Name}</div>\r\n                                       <span class=\"predecessor\" title=\"toggle predecessor\" ws-onclick=\"TogglePred\">X</span>\r\n                                   </div>\r\n                           \r\n                                    </div>");
-  });
+  },h):void 0;
  };
  LayoutEngine_Templates.actiondisabled=function(h)
  {
-  return h?Templates.GetOrLoadTemplate("appframework",{
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
    $:1,
    $0:"actiondisabled"
-  },function()
-  {
-   return $.parseHTML("<button ws-onclick=\"Click\" class=\"btn\" type=\"button\" id=\"\" disabled=\"\">${Name}</button>");
-  },h):Templates.PrepareTemplate("appframework",{
-   $:1,
-   $0:"actiondisabled"
-  },function()
-  {
-   return $.parseHTML("<button ws-onclick=\"Click\" class=\"btn\" type=\"button\" id=\"\" disabled=\"\">${Name}</button>");
-  });
+  },h):void 0;
  };
  LayoutEngine_Templates.action=function(h)
  {
-  return h?Templates.GetOrLoadTemplate("appframework",{
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
    $:1,
    $0:"action"
-  },function()
-  {
-   return $.parseHTML("<button ws-onclick=\"Click\" class=\"btn\" type=\"button\" id=\"\">${Name}</button>");
-  },h):Templates.PrepareTemplate("appframework",{
-   $:1,
-   $0:"action"
-  },function()
-  {
-   return $.parseHTML("<button ws-onclick=\"Click\" class=\"btn\" type=\"button\" id=\"\">${Name}</button>");
-  });
+  },h):void 0;
  };
  LayoutEngine_Templates.namevalue=function(h)
  {
-  return h?Templates.GetOrLoadTemplate("appframework",{
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
    $:1,
    $0:"namevalue"
-  },function()
-  {
-   return $.parseHTML("<div class=\"input-group\">\r\n                                                            <span class=\"input-group-addon\">${Name}:</span>\r\n                                                            <span class=\"input-group-addon\">${Value}</span>\r\n                                                        </div>");
-  },h):Templates.PrepareTemplate("appframework",{
-   $:1,
-   $0:"namevalue"
-  },function()
-  {
-   return $.parseHTML("<div class=\"input-group\">\r\n                                                            <span class=\"input-group-addon\">${Name}:</span>\r\n                                                            <span class=\"input-group-addon\">${Value}</span>\r\n                                                        </div>");
-  });
+  },h):void 0;
  };
  LayoutEngine_Templates.namevalueinput=function(h)
  {
-  return h?Templates.GetOrLoadTemplate("appframework",{
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
    $:1,
    $0:"namevalueinput"
-  },function()
-  {
-   return $.parseHTML("<div class=\"input-group\">\r\n                                                            <span class=\"input-group-addon\">${Name}:</span>\r\n                                                            <textarea class=\"form-control\" id=\"\" placeholder=\"Value...\" ws-var=\"Value\" spellcheck=\"false\">\r\n                                                        </textarea></div>");
-  },h):Templates.PrepareTemplate("appframework",{
-   $:1,
-   $0:"namevalueinput"
-  },function()
-  {
-   return $.parseHTML("<div class=\"input-group\">\r\n                                                            <span class=\"input-group-addon\">${Name}:</span>\r\n                                                            <textarea class=\"form-control\" id=\"\" placeholder=\"Value...\" ws-var=\"Value\" spellcheck=\"false\">\r\n                                                        </textarea></div>");
-  });
+  },h):void 0;
  };
  LayoutEngine_Templates.fixedsplitterhor=function(h)
  {
-  return h?Templates.GetOrLoadTemplate("appframework",{
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
    $:1,
    $0:"fixedsplitterhor"
-  },function()
-  {
-   return $.parseHTML("<div style=\"display: grid; \r\n          grid-gap: 0px; \r\n          box-sizing: border-box; \r\n          height: 100%;\r\n          width : 100%;\r\n          grid-template-areas: 'one' 'two'; \r\n          grid-template-columns:100%; \r\n          overflow: hidden; \r\n          grid-template-rows   : ${PartSizes}\">\r\n  <div ws-hole=\"First\" style=\"grid-area: one; \" class=\"relative\"></div>\r\n  <div ws-hole=\"Second\" style=\"grid-area: two; \" class=\"relative\"></div>\r\n    </div>");
-  },h):Templates.PrepareTemplate("appframework",{
-   $:1,
-   $0:"fixedsplitterhor"
-  },function()
-  {
-   return $.parseHTML("<div style=\"display: grid; \r\n          grid-gap: 0px; \r\n          box-sizing: border-box; \r\n          height: 100%;\r\n          width : 100%;\r\n          grid-template-areas: 'one' 'two'; \r\n          grid-template-columns:100%; \r\n          overflow: hidden; \r\n          grid-template-rows   : ${PartSizes}\">\r\n  <div ws-hole=\"First\" style=\"grid-area: one; \" class=\"relative\"></div>\r\n  <div ws-hole=\"Second\" style=\"grid-area: two; \" class=\"relative\"></div>\r\n    </div>");
-  });
+  },h):void 0;
  };
  LayoutEngine_Templates.fixedsplitterver=function(h)
  {
-  return h?Templates.GetOrLoadTemplate("appframework",{
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
    $:1,
    $0:"fixedsplitterver"
-  },function()
-  {
-   return $.parseHTML("<div style=\"display: grid; \r\n               grid-gap: 0px; \r\n               box-sizing: border-box; \r\n               height: 100%;\r\n               width : 100%;\r\n               grid-template-areas: 'one two'; \r\n               grid-template-rows   :100%; \r\n               overflow: hidden; \r\n               grid-template-columns: ${PartSizes}\">\r\n       <div ws-hole=\"First\" style=\"grid-area: one; \" class=\"relative\"></div>\r\n       <div ws-hole=\"Second\" style=\"grid-area: two; \" class=\"relative\"></div>\r\n    </div>");
-  },h):Templates.PrepareTemplate("appframework",{
-   $:1,
-   $0:"fixedsplitterver"
-  },function()
-  {
-   return $.parseHTML("<div style=\"display: grid; \r\n               grid-gap: 0px; \r\n               box-sizing: border-box; \r\n               height: 100%;\r\n               width : 100%;\r\n               grid-template-areas: 'one two'; \r\n               grid-template-rows   :100%; \r\n               overflow: hidden; \r\n               grid-template-columns: ${PartSizes}\">\r\n       <div ws-hole=\"First\" style=\"grid-area: one; \" class=\"relative\"></div>\r\n       <div ws-hole=\"Second\" style=\"grid-area: two; \" class=\"relative\"></div>\r\n    </div>");
-  });
+  },h):void 0;
  };
  LayoutEngine_Templates.appfwkclient=function(h)
  {
-  var n;
-  n={
-   $:1,
-   $0:"appfwkclient"
-  };
   LayoutEngine_Templates.fixedsplitterhor();
   LayoutEngine_Templates.fixedsplitterver();
-  return h?Templates.GetOrLoadTemplate("appframework",n,function()
-  {
-   return $.parseHTML("<div>\r\n        <ws-fixedsplitterhor>\r\n            <partsizes>55px calc(100% - 55px)</partsizes>\r\n            <first>\r\n                <span style=\"display: grid;\r\n                      grid-template-columns: 30% 20% 20% 10%;\r\n                      grid-gap: 25px;\r\n                    \">\r\n                    <div class=\"mainTitle\">AppFramework</div>\r\n                </span>\r\n            </first>\r\n            <second>\r\n                    <ws-fixedsplitterver>\r\n                        <partsizes>calc(100% - 150px) 150px</partsizes>\r\n                        <first>\r\n                            <wcomp-splitter vertical=\"\" value=\"18\" max=\"100\">\r\n                                <div><div ws-hole=\"PlugIns\" style=\"overflow:auto\">\r\n                                    \r\n                                </div></div>\r\n                                <wcomp-splitter vertical=\"\" value=\"100\" min=\"30\" max=\"100\">\r\n                                    <ws-fixedsplitterhor>\r\n                                        <partsizes>32px calc(100% - 32px)</partsizes>\r\n                                        <first>\r\n                                            <div>\r\n                                                <div class=\"input-group\">\r\n                                                    <span class=\"input-group-addon\">name:</span>\r\n                                                    <span class=\"input-group-addon\">${PlugInName}</span>\r\n                                                </div>\r\n                                            </div>\r\n                                        </first>\r\n                                        <second>\r\n                                            <div style=\"overflow:auto\">\r\n                                                <div>\r\n                                                    <div>Docs:</div>\r\n                                                    <div ws-hole=\"Docs\" style=\"overflow:auto\"></div>\r\n                                                </div>\r\n                                                <div>\r\n                                                    <div>Vars:</div>\r\n                                                    <div ws-hole=\"Vars\" style=\"overflow:auto\">\r\n                                                            \r\n                                                    </div>\r\n                                                </div>\r\n                                                <div>\r\n                                                    <div>Views:</div>\r\n                                                    <div ws-hole=\"Views\" style=\"overflow:auto\">\r\n                                                        \r\n                                                    </div>\r\n                                                </div>\r\n                                                <div>\r\n                                                    <div>Queries:</div>\r\n                                                    <div ws-hole=\"Queries\" style=\"overflow:auto\"></div>\r\n                                                </div>\r\n                                            </div>\r\n                                        </second>\r\n                                    </ws-fixedsplitterhor>\r\n                                    <wcomp-tabstrip>\r\n                                        <div tabname=\"Properties\">\r\n                                            <div>\r\n                                                <table style=\"border-spacing:0px\">\r\n                                                    <thead>\r\n                                                        <th style=\"width: 30%  \">Name</th>\r\n                                                        <th style=\"width: 70% \">Value</th>\r\n                                                    </thead>\r\n                                                    <tbody ws-hole=\"Properties\"></tbody>\r\n                                                </table>\r\n                                                <button ws-onclick=\"AddProperty\" class=\"add is-small\">add ...</button>\r\n                                            </div>\r\n                                        </div>\r\n                                    </wcomp-tabstrip>\r\n                                </wcomp-splitter>\r\n                            </wcomp-splitter>\r\n                        </first>\r\n                        <second>\r\n                            <div style=\"\r\n                                overflow: hidden;\r\n                                display: grid;\r\n                                grid-template-columns: 100%;\r\n                                grid-template-rows: repeat(15, calc(100% / 15));\r\n                                bxackground-color: #eee;\r\n                                box-sizing: border-box;\r\n                                padding : 5px;\r\n                                grid-gap: 5px;\r\n                                margin-right: 21px;\r\n                           \" class=\"absolute\" ws-hole=\"Actions\">\r\n                                \r\n                                \r\n                            </div>\r\n                        </second>\r\n                    </ws-fixedsplitterver>\r\n            </second>\r\n        </ws-fixedsplitterhor>\r\n    </div>");
-  },h):Templates.PrepareTemplate("appframework",n,function()
-  {
-   return $.parseHTML("<div>\r\n        <ws-fixedsplitterhor>\r\n            <partsizes>55px calc(100% - 55px)</partsizes>\r\n            <first>\r\n                <span style=\"display: grid;\r\n                      grid-template-columns: 30% 20% 20% 10%;\r\n                      grid-gap: 25px;\r\n                    \">\r\n                    <div class=\"mainTitle\">AppFramework</div>\r\n                </span>\r\n            </first>\r\n            <second>\r\n                    <ws-fixedsplitterver>\r\n                        <partsizes>calc(100% - 150px) 150px</partsizes>\r\n                        <first>\r\n                            <wcomp-splitter vertical=\"\" value=\"18\" max=\"100\">\r\n                                <div><div ws-hole=\"PlugIns\" style=\"overflow:auto\">\r\n                                    \r\n                                </div></div>\r\n                                <wcomp-splitter vertical=\"\" value=\"100\" min=\"30\" max=\"100\">\r\n                                    <ws-fixedsplitterhor>\r\n                                        <partsizes>32px calc(100% - 32px)</partsizes>\r\n                                        <first>\r\n                                            <div>\r\n                                                <div class=\"input-group\">\r\n                                                    <span class=\"input-group-addon\">name:</span>\r\n                                                    <span class=\"input-group-addon\">${PlugInName}</span>\r\n                                                </div>\r\n                                            </div>\r\n                                        </first>\r\n                                        <second>\r\n                                            <div style=\"overflow:auto\">\r\n                                                <div>\r\n                                                    <div>Docs:</div>\r\n                                                    <div ws-hole=\"Docs\" style=\"overflow:auto\"></div>\r\n                                                </div>\r\n                                                <div>\r\n                                                    <div>Vars:</div>\r\n                                                    <div ws-hole=\"Vars\" style=\"overflow:auto\">\r\n                                                            \r\n                                                    </div>\r\n                                                </div>\r\n                                                <div>\r\n                                                    <div>Views:</div>\r\n                                                    <div ws-hole=\"Views\" style=\"overflow:auto\">\r\n                                                        \r\n                                                    </div>\r\n                                                </div>\r\n                                                <div>\r\n                                                    <div>Queries:</div>\r\n                                                    <div ws-hole=\"Queries\" style=\"overflow:auto\"></div>\r\n                                                </div>\r\n                                            </div>\r\n                                        </second>\r\n                                    </ws-fixedsplitterhor>\r\n                                    <wcomp-tabstrip>\r\n                                        <div tabname=\"Properties\">\r\n                                            <div>\r\n                                                <table style=\"border-spacing:0px\">\r\n                                                    <thead>\r\n                                                        <th style=\"width: 30%  \">Name</th>\r\n                                                        <th style=\"width: 70% \">Value</th>\r\n                                                    </thead>\r\n                                                    <tbody ws-hole=\"Properties\"></tbody>\r\n                                                </table>\r\n                                                <button ws-onclick=\"AddProperty\" class=\"add is-small\">add ...</button>\r\n                                            </div>\r\n                                        </div>\r\n                                    </wcomp-tabstrip>\r\n                                </wcomp-splitter>\r\n                            </wcomp-splitter>\r\n                        </first>\r\n                        <second>\r\n                            <div style=\"\r\n                                overflow: hidden;\r\n                                display: grid;\r\n                                grid-template-columns: 100%;\r\n                                grid-template-rows: repeat(15, calc(100% / 15));\r\n                                bxackground-color: #eee;\r\n                                box-sizing: border-box;\r\n                                padding : 5px;\r\n                                grid-gap: 5px;\r\n                                margin-right: 21px;\r\n                           \" class=\"absolute\" ws-hole=\"Actions\">\r\n                                \r\n                                \r\n                            </div>\r\n                        </second>\r\n                    </ws-fixedsplitterver>\r\n            </second>\r\n        </ws-fixedsplitterhor>\r\n    </div>");
-  });
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"appfwkclient"
+  },h):void 0;
  };
 }());

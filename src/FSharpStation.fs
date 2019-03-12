@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1547005003252 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1552317489911 -d:WEBSHARPER
 ////#cd @"..\projects\FSharpStation\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -28,6 +28,9 @@
 //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
 //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
 //#r @"..\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
 //#r @"..\..\LayoutEngine\bin\LayoutEngine.dll"
 //#r @"..\packages\Microsoft.Owin.Hosting\lib\net451\Microsoft.Owin.Hosting.dll"
 //#r @"..\packages\Microsoft.Owin.Host.HttpListener\lib\net451\Microsoft.Owin.Host.HttpListener.dll"
@@ -37,7 +40,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1547005003252
+//#define FSharpStation1552317489911
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -141,9 +144,9 @@ namespace FsRoot
             
             [< AutoOpen >]
             module ResultMessageHelpers =
-                let errorMsgf fmt = Printf.ksprintf ErrorMsg fmt
-                let warningf  fmt = Printf.ksprintf Warning  fmt
-                let infof     fmt = Printf.ksprintf Info     fmt
+                let inline errorMsgf fmt = Printf.ksprintf ErrorMsg fmt
+                let inline warningf  fmt = Printf.ksprintf Warning  fmt
+                let inline infof     fmt = Printf.ksprintf Info     fmt
             
             module ResultMessage =
             
@@ -333,7 +336,11 @@ namespace FsRoot
                     let insertR (vSR:Result<_,_>) = vSR |> function | Error m -> rtn (Error m) | Ok v -> Seq.map Ok v
                     let absorbO  vOS              = vOS |> Seq.choose id
                     let absorbR  vOS              = vOS |> Seq.choose (function Ok v -> Some v |_-> None)
-                    
+                    let ofOption vO = 
+                        match vO with
+                        | Some v -> Seq.singleton v
+                        | None   -> Seq.empty
+                
                 module Option =
                     open Option
                     
@@ -390,8 +397,12 @@ namespace FsRoot
                 module Result =
                     open Result
                 
+                    let errorf fmt = Printf.ksprintf Error fmt
+                
                     let freeMessage                r = r   |> function Ok v -> Ok v   | Error e -> ResultMessage.freeMessage e |> Error
                     let rtn                          = Ok
+                    let join                       r = Result.bind id r
+                    let flatten                    r = Result.bind id r
                     let toOption                   r = r   |> function Ok v -> Some v |       _ -> None
                     let defaultWith              f r = r   |> function Ok v ->      v | Error e -> f e
                     let defaultValue             d r = r   |> function Ok v ->      v | Error _ -> d
@@ -729,6 +740,107 @@ namespace FsRoot
                         
                     
                     
+                type ResultM<'v, 'm> = ResultM of Option<'v> * ResultMessage<'m>
+                
+                let inline OkM              v    = ResultM (Some v, NoMsg)
+                let inline OkMWithMsg       v m  = ResultM(Some v, m)
+                //let inline OkMWithMsgs      v ms = ms |> ResultMessage.reduceMsgs |> OkMWithMsg v
+                
+                let inline ErrorM             m  = ResultM (None  , m    )
+                //let inline ErrorMWithMsgs     ms = ms |> ResultMessage.reduceMsgs |> ErrorM
+                let (|OkM|ErrorM|)             r = match r with
+                                                    | ResultM(Some v, m) -> OkM   (v, m)
+                                                    | ResultM(None  , e) -> ErrorM e
+                module ResultM =
+                
+                    type CheckError<'T> = CheckErrorF of ('T -> bool)
+                    let checkError   () = CheckErrorF (fun _ -> true )
+                    let checkErrorW  () = CheckErrorF (fun _ -> false)
+                
+                    let inline rtn                 v = OkM v
+                    let inline rtnM                m = OkMWithMsg () m
+                    let inline rtnr               vR = vR  |> Result.map OkM          |> Result.defaultWith       ErrorM
+                    let freeMessage                r = r   |> function Ok v -> Ok v   | Error e -> ResultMessage.freeMessage e |> Error
+                    let inline toResult            r = match r with
+                                                       | ResultM(Some v, _) -> Ok     v
+                                                       | ResultM(None  , e) -> Error  e
+                    let inline toResultD           r = match r with
+                                                       | ResultM(Some v, m) -> Ok    (v, m)
+                                                       | ResultM(None  , e) -> Error  e
+                    let toOption                   r = r   |> function ResultM (v,_) -> v
+                    let defaultWith              f r = r   |> toResult |> Result.defaultWith   f
+                    let defaultValue             d r = r   |> toResult |> Result.defaultValue  d
+                    let map         f  (ResultM (v, m)) = ResultM (v |> Option.map f, m)
+                    let mapMessage  fM (ResultM (v, m)) = ResultM (v, fM m)
+                    let bind                  f    r = match r with
+                                                       | ResultM(Some v, m) -> f v |> mapMessage (ResultMessage.addMsg m)
+                                                       | ResultM(None  , e) -> ResultM(None  , e)
+                    /// bind version that protects against exceptions
+                    let bindP                 f    r = match r with
+                                                       | ResultM(Some v, m) -> try f v |> mapMessage (ResultMessage.addMsg m)
+                                                                               with  e -> ExceptMsg (e.Message, e.StackTrace) |> ErrorM
+                                                       | ResultM(None  , e) -> ResultM(None  , e)
+                    let bindM                 f    m = rtnM m |> bindP f
+                
+                    let check (CheckErrorF k) vR = vR |> function ResultM(Some _, m) when ResultMessage.isFatalF k m -> ErrorM m |_-> vR
+                
+                    /// map version that protects against exceptions
+                    let inline mapP           f    m = bindP (f >> rtn) m
+                    let iter                  fM f r = r   |> mapP f |> function | ResultM(Some (), m) -> () | ResultM(None, m) -> fM m  : unit
+                    let get                        r = r   |>          defaultWith (string >> failwith)
+                    let ofOption              f   vO = vO  |> Option.map OkM          |> Option.defaultWith (f >> ErrorM)
+                    let ofResult                  vR = vR  |> rtnr
+                    let insertO                  vRO = vRO |> Option.map(map Some)    |> Option.defaultWith(fun () -> OkM None)
+                    let absorbO               f  vOR = vOR |> bindP (ofOption f)
+                    let addMsg                  m  r = r |> mapMessage (ResultMessage.addMsg m)
+                    let failIfFatalMsgF         f  r = r |> function OkM (v, m) when ResultMessage.isFatalF f m -> ErrorM m |_-> r
+                    let failIfFatalMsg             r = r |> function OkM (v, m) when ResultMessage.isFatal    m -> ErrorM m |_-> r
+                    let failIfFatalMsgW            r = r |> function OkM (v, m) when ResultMessage.isFatalW   m -> ErrorM m |_-> r
+                    let (>>=)                    r f = bind f r
+                    let rec    traverseSeq    f   sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                       Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq        sq = traverseSeq id sq
+                        
+                    
+                    type Builder() =
+                        member inline __.Return          x       = rtn  x
+                        member inline __.ReturnFrom      x       =     (x:ResultM<_,_>)
+                        member inline __.ReturnFrom      x       =     (x:Result< _,_>)
+                        member inline __.ReturnFrom      x       = rtnM x
+                        member        __.Bind           (w , r ) = bindP  r w
+                        member        __.Bind           (w , r ) = bindM  r w
+                        member inline __.Zero           ()       = rtn ()
+                        member inline __.Delay           f       = f
+                        member inline __.Combine        (a, b)   = a |> bind b
+                        member inline __.Run             f       = OkM () |> bindP f
+                        member __.TryWith   (body, handler     ) = try body() with e -> handler     e
+                        member __.TryFinally(body, compensation) = try body() finally   compensation()
+                        member __.Using     (disposable, body  ) = using (disposable:#System.IDisposable) body
+                        member __.While(guard, body) =
+                            let rec whileLoop guard body =
+                                if guard() then body() |> bind (fun () -> whileLoop guard body)
+                                else rtn   ()
+                            whileLoop guard body
+                        member this.For(sequence:seq<_>, body) =
+                            this.Using(sequence.GetEnumerator(),fun enum -> 
+                                this.While(enum.MoveNext, 
+                                    this.Delay(fun () -> body enum.Current)))
+                                    
+                    module Operators =
+                        let inline (|>>) v f   = mapP  f v
+                        let inline (>>=) v f   = bindP f v
+                        let inline (>>>) f g v = f v |>> g
+                        let inline (>=>) f g v = f v >>= g
+                        let inline rtn   v     = rtn    v
+                
+                [< AutoOpen >]
+                module ResultMAutoOpen =
+                    open ResultM
+                    
+                    let resultM = Builder()
+                    
+                
+                
                 type AsyncResult<'v, 'm> = Async<Result<'v, 'm>>
                 
                 /// A computation expression to build an Async<Result<'ok, 'error>> value
@@ -742,9 +854,9 @@ namespace FsRoot
                     let iterA fE f vRA = Async.iterA (Result.iter fE f) vRA
                     let bind  fRA  vRA = async { 
                         let! vR       = vRA
-                        return! match   vR with
-                                | Ok    v -> fRA v
-                                | Error m -> async { return Error m }
+                        match   vR with
+                        | Ok    v -> return! fRA v
+                        | Error m -> return  Error m 
                     }
                     let bindP (fRA:'a -> Async<Result<'b,ResultMessage<'c>>>)  (vRA: Async<Result<'a,ResultMessage<'c>>>) : Async<Result<'b,ResultMessage<'c>>>= async {
                         try 
@@ -766,7 +878,7 @@ namespace FsRoot
                     let inline sequenceSeq                  sq = traverseSeq id sq
                     let insertO   vRAO                         = vRAO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
                     let insertR ( vRAR:Result<_,_>)            = vRAR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
-                    let absorbR   vRRA                         = vRRA |> Async.map (Result.bindP   id)
+                    let absorbR   vRRA                         = vRRA |> Async.map  Result.join
                     let absorbO f vORA                         = vORA |> Async.map (Result.absorbO  f)
                 
                 type AsyncResultBuilder() =
@@ -779,7 +891,7 @@ namespace FsRoot
                     member __.Combine   (vRA,  fRA) : Async<Result<'b  , 'm>> = AsyncResult.bind fRA  vRA
                     member __.Combine   (vR ,  fRA) : Async<Result<'b  , 'm>> = AsyncResult.bind fRA (vR  |> AsyncResult.rtnR)
                     member __.Delay            fRA                            = fRA
-                    member __.Run              fRA                            = fRA ()
+                    member __.Run              fRA                            = AsyncResult.rtn () |> AsyncResult.bind fRA
                     member __.TryWith   (fRA , hnd) : Async<Result<'a  , 'm>> = async { try return! fRA() with e -> return! hnd e  }
                     member __.TryFinally(fRA , fn ) : Async<Result<'a  , 'm>> = async { try return! fRA() finally   fn  () }
                     member __.Using(resource , fRA) : Async<Result<'a  , 'm>> = async.Using(resource,       fRA)
@@ -825,13 +937,94 @@ namespace FsRoot
                 
                 
                 
+                type AsyncResultM<'v, 'm> = Async<ResultM<'v, 'm>>
+                
+                /// A computation expression to build an Async<Result<'ok, 'error>> value
+                module AsyncResultM =
+                    let mapError fE v  = v |> Async.map (ResultM.mapMessage fE)
+                    let freeMessage v  = v |> Async.map  ResultM.freeMessage
+                
+                    let rtn         v   = async.Return(OkM v  )
+                    let rtnr        vR  = async.Return(ResultM.rtnr vR)
+                    let rtnR        vR  = async.Return    vR
+                    let rtnM        vM  = async.Return(ResultM.rtnM vM)
+                    let rtnrA       vrA = vrA |> Async.map    ResultM.ofResult
+                    let iterS  fE f vRA = Async.iterS (ResultM.iter fE f) vRA
+                    let iterA  fE f vRA = Async.iterA (ResultM.iter fE f) vRA
+                    let iterpS    f vRA = vRA |> iterS (ResultMessage.summarized >> print) f
+                    let iterpA    f vRA = vRA |> iterA (ResultMessage.summarized >> print) f
+                    let bind  (fRA:'a -> Async<ResultM<'b,'c>>)  (vRA: Async<ResultM<'a,'c>>) : Async<ResultM<'b,'c>>= async {
+                        try 
+                            let!  vR = vRA
+                            match vR with
+                            | OkM   (v, m) -> return! fRA   v |> Async.map (ResultM.addMsg m)
+                            | ErrorM    m  -> return  ErrorM m
+                        with  e -> return ExceptMsg (e.Message, e.StackTrace) |> ErrorM
+                    }
+                    let inline bindr  f a  = rtnr   a |> bind f : AsyncResultM<_,_>
+                    let inline bindM  f a  = rtnM   a |> bind f : AsyncResultM<_,_>
+                    let inline bindrA f a  = rtnrA  a |> bind f : AsyncResultM<_,_>
+                    let inline bindR  f a  = rtnR   a |> bind f : AsyncResultM<_,_>
+                    let inline map    f m = bind  (f >> rtn) m            
+                    let rec whileLoop cond fRA =
+                        if   cond () 
+                        then fRA  () |> bind (fun () -> whileLoop cond fRA)
+                        else rtn  ()
+                    let (>>=)                              v f = bind f v
+                    let rec    traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                                 Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq                  sq = traverseSeq id sq
+                    let insertO   vRAO                         = vRAO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
+                    let insertR ( vRAR:Result<_,_>)            = vRAR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
+                    let absorbR   vRRA                         = vRRA |> Async.map (Result.bindP   id)
+                    let absorbO f vORA                         = vORA |> Async.map (Result.absorbO  f)
+                    type AsyncResultMBuilder() =
+                        member __.ReturnFrom vRA        : Async<ResultM<'v  , 'm>> =           vRA
+                        member __.ReturnFrom vR         : Async<ResultM<'v  , 'm>> = rtnr      vR
+                        member __.ReturnFrom vR         : Async<ResultM<unit, 'm>> = rtnM      vR
+                        member __.ReturnFrom vR         : Async<ResultM<'v  , 'm>> = rtnR      vR
+                        member __.ReturnFrom vR         : Async<ResultM<'v  , 'm>> = rtnrA     vR
+                        member __.Return     v          : Async<ResultM<'v  , 'm>> = rtn       v  
+                        member __.Zero       ()         : Async<ResultM<unit, 'm>> = rtn       () 
+                        member __.Bind      (vRA,  fRA) : Async<ResultM<'b  , 'm>> = bind fRA  vRA
+                        member __.Bind       (w , r )                              = bindr   r w
+                        member __.Bind       (w , r )                              = bindM   r w
+                        member __.Bind       (w , r )                              = bindR   r w
+                        member __.Bind       (w , r )                              = bindrA  r w
+                        member __.Combine   (vRA,  fRA) : Async<ResultM<'b  , 'm>> = bind fRA  vRA
+                        member __.Combine   (vR ,  fRA) : Async<ResultM<'b  , 'm>> = bind fRA (vR  |> rtnR)
+                        member __.Delay            fRA                             = fRA
+                        member __.Run              fRA                             = rtn () |> bind fRA
+                        member __.TryWith   (fRA , hnd) : Async<ResultM<'a  , 'm>> = async { try return! fRA() with e -> return! hnd e  }
+                        member __.TryFinally(fRA , fn ) : Async<ResultM<'a  , 'm>> = async { try return! fRA() finally   fn  () }
+                        member __.Using(resource , fRA) : Async<ResultM<'a  , 'm>> = async.Using(resource,       fRA)
+                        member __.While   (guard , fRA) : Async<ResultM<unit, 'a>> = whileLoop guard fRA 
+                        member th.For  (s: 'a seq, fRA) : Async<ResultM<unit, 'b>> = th.Using(s.GetEnumerator (), fun enum ->
+                                                                                        th.While(enum.MoveNext,
+                                                                                            th.Delay(fun () -> fRA enum.Current)))
+                
+                [<AutoOpen>]
+                module AsyncResultMAutoOpen =
+                    open AsyncResultM
+                
+                    let asyncResultM = AsyncResultMBuilder()
+                
+                    // Having Async<_> members as extensions gives them lower priority in
+                    // overload resolution between Async<_> and Async<Result<_,_>>.
+                    type AsyncResultMBuilder with
+                    member __.ReturnFrom (vA: Async<_>     ) : Async<ResultM<_,_>> =           Async.map OkM vA
+                    member __.Bind       (vA: Async<_>, fRA) : Async<ResultM<_,_>> = bind fRA (Async.map OkM vA)
+                    member __.Combine    (vA: Async<_>, fRA) : Async<ResultM<_,_>> = bind fRA (Async.map OkM vA)
+                
             type System.String with
                 member this.Substring2(from, n) = 
                     if   n    <= 0           then ""
                     elif from <  0           then this.Substring2(0, n + from)
                     elif from >= this.Length then ""
                     else this.Substring(from, min n (this.Length - from))
-                member this.Left             n  = this.Substring2(0, n)
+                member this.Left             n  = if n < 0 
+                                                  then this.Substring2(0, this.Length + n)
+                                                  else this.Substring2(0, n              )
                 member this.Right            n  = this.Substring2(max 0 (this.Length - n), this.Length)
             
             module String =
@@ -881,7 +1074,10 @@ namespace FsRoot
                 let tryParseWith tryParseFunc = tryParseFunc >> function
                         | true, v    -> Some v
                         | false, _   -> None
-                
+            
+            
+                /// Javascript adds time zone information when parsing a date and that can change the result
+                let parseDateO2  = (fun s -> s + "T00:00:00") >> tryParseWith System.DateTime.TryParse
                 let parseDateO   = tryParseWith System.DateTime.TryParse
                 let parseIntO    = tryParseWith System.Int32   .TryParse
                 let parseSingleO = tryParseWith System.Single  .TryParse
@@ -1557,10 +1753,7 @@ namespace FsRoot
             /// abs -1 |> printfn "%A" // System.NotImplementedException: Incomplete hole 'TODO_AbsForNegativeValue : System.Int32'
             type Hole = Hole with
                 [< Inline ; CompilerMessage("Incomplete hole", 130) >]
-                static member inline (?) (Hole, id) : 'T = 
-                    sprintf "Incomplete hole '%s'" id        
-                    |> exn
-                    |> raise
+                static member inline Incomplete id : 'T = failwithf "Incomplete hole '%s'" id        
                     
             
             /// Tree structure to implement a hierarchical user interface but using readerMonad
@@ -1719,14 +1912,12 @@ namespace FsRoot
             
                 let startProcess p ops =
                     let procStart   = ProcessStartInfo(p, ops)
-                    let proc        = new Process()
-                    proc.StartInfo <- procStart
+                    let proc        = new Process(StartInfo = procStart)
                     proc.Start() 
                 
                 let startProcessDir p ops dir =
                     let procStart   = ProcessStartInfo(p, ops, WorkingDirectory = dir)
-                    let proc        = new Process()
-                    proc.StartInfo <- procStart
+                    let proc        = new Process(StartInfo = procStart)
                     proc.Start() 
                 
                 type ShellResponse =
@@ -1745,11 +1936,10 @@ namespace FsRoot
                         |> String.concat "\n"
                 
                 type ShellEx(startInfo: ProcessStartInfo, ?outHndl, ?errHndl, ?priorityClass) =
-                    let proc                              = new Process()
                     let bufferOutput                      = new StringBuilder()
                     let bufferError                       = new StringBuilder()
-                    let append  (sb: StringBuilder) txt   = sb.Append(txt + "\n")                  |> ignore
-                    let consume (sb: StringBuilder)       = sb.ToString() |>! (fun _ -> sb.Clear() |> ignore)
+                    let append  (sb: StringBuilder) txt   = sb.Append(txt + System.Environment.NewLine) |> ignore
+                    let consume (sb: StringBuilder)       = sb.ToString() |>! (fun _ -> sb.Clear()      |> ignore)
                     let dataHandler handler               = DataReceivedEventHandler(fun sender args -> try handler args.Data with _ -> ())
                     let outputHandler                     = append bufferOutput |> dataHandler
                     let errorHandler                      = append bufferError  |> dataHandler
@@ -1757,9 +1947,10 @@ namespace FsRoot
                         startInfo.RedirectStandardOutput <- true
                         startInfo.RedirectStandardError  <- true
                         startInfo.UseShellExecute        <- false
-                        proc.StartInfo                   <- startInfo
-                        proc.EnableRaisingEvents         <- true
-                        outputHandler                    |>             proc.OutputDataReceived.AddHandler
+                    let proc                              = new Process(
+                                                                StartInfo           = startInfo
+                                                              , EnableRaisingEvents = true     )
+                    do  outputHandler                    |>             proc.OutputDataReceived.AddHandler
                         errorHandler                     |>             proc.ErrorDataReceived .AddHandler
                         Option.map dataHandler outHndl   |> Option.iter proc.OutputDataReceived.AddHandler
                         Option.map dataHandler errHndl   |> Option.iter proc.ErrorDataReceived .AddHandler
@@ -1945,7 +2136,7 @@ namespace FsRoot
                 ] 
                 
                 let wscWebSite      = NewString("Website"     , true , sprintf "--wsoutput:%A"              )
-                let wscProjectPath  = NewString("WsProject"   , true , sprintf "--project:%A"               )
+                let wscProjectFile  = NewString("WsProject"   , true , sprintf "--project:%A"               )
                 let wscProjectType  = NewString("ProjectType" , true , sprintf "--ws:%s"                    )
                 let wscGenWSharper  = NewString("GenWSharper" , false, sprintf "--%s"                       )
                 let wscJSMap        = NewBool  ("JSMap"       , false, flagpm  "--jsmap"                    )
@@ -1960,7 +2151,7 @@ namespace FsRoot
                 let WebSharpArgs = 
                     Set [
                           wscWebSite     .CommArg.cargId
-                          wscProjectPath .CommArg.cargId
+                          wscProjectFile .CommArg.cargId
                           wscProjectType .CommArg.cargId
                           wscGenWSharper .CommArg.cargId
                           wscJSMap       .CommArg.cargId
@@ -2004,7 +2195,7 @@ namespace FsRoot
                     [|
                        wscProjectType /=       "Site"
                        wscWebSite     /= (rtn (fun d -> d +/+ "website" ) <*> gS intDirectory )
-                       wscProjectPath /=       gS intName
+                       wscProjectFile /=       gS intName
                        wscJSMap       /=       true
                        wscJsOutput    /= (rtn (fun d n   -> d +/+ n + "0.js" ) <*> gS wscWebSite    <*> gS intName                     )
                     |] 
@@ -2012,7 +2203,7 @@ namespace FsRoot
                 let wsProjectOptions ()=
                   CommArgCollection
                     [|
-                       wscProjectPath /= gS intName
+                       wscProjectFile /= gS intName
                     |] 
                  
                 let debugOptions() = 
@@ -2175,6 +2366,11 @@ namespace FsRoot
                     new Promise<'a>(fun (resolve, reject) ->
                         Async.StartWithContinuations(v, (function Ok ok -> resolve ok | Error er -> reject <| sprintf "%A" er), reject, reject)
                     )
+            
+                let ofAsyncResultM (v: Async<ResultM<'a,'b>>) : Promise<'a> =
+                    new Promise<'a>(fun (resolve, reject) ->
+                        Async.StartWithContinuations(v, (function OkM(ok, _) -> resolve ok | ErrorM er -> reject <| ResultMessage.summarized er), reject, reject)
+                    )        
             module View =
                 let insertWO = 
                     function
@@ -2195,19 +2391,126 @@ namespace FsRoot
                                                              Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                 let inline sequenceSeq                  sq = traverseSeq id sq
             
-            /// binds an Editor with a Var<string> to avoid annoying jumps to the end when fast typing
-            /// onChange gets called when the editor changes but not when the var changes
-            let bindVarEditor setEvent getVal setVal onChange (var:Var<string>) =
-                let editorChanged = ref 0L
-                let varChanged    = ref 0L
-                setEvent(fun _ ->
-                    let v = getVal() 
-                    if var.Value <> v then editorChanged := !editorChanged + 1L; var.Value <- v; onChange() 
-                )
-                var.View |> View.Sink (fun _ ->
-                    if  !editorChanged > !varChanged then varChanged := !editorChanged
-                    elif getVal() <> var.Value then setVal var.Value
-                )
+            module Pojo =
+                let addProp prop (pojo:JSObject) = pojo.Add prop ; pojo
+                
+                let newPojo props =
+                    let pojo = JSObject()
+                    if IsClient then
+                        props |> Seq.iter (swap addProp pojo >> ignore)
+                    pojo
+            
+            module GenEditor =
+                open WebSharper.UI.Html
+            
+                type Position = {
+                    line : int
+                    col  : int
+                }
+            
+                type AnnotationType =
+                | Error   
+                | Warning 
+                | Info    
+                | Hint
+                | Other of string
+            
+                type Annotation = {
+                    startP        : Position
+                    endP          : Position
+                    severity      : AnnotationType
+                    message       : string
+                }
+            
+                type Completion = {
+                    kind                : string
+                    label               : string
+                    detail              : string
+                    replace             : Position * Position
+                }
+            
+                [<NoComparison ; NoEquality>]
+                type GenEditorHook<'T> = {
+                    generateDoc       :  GenEditor<'T> -> ('T -> unit)     -> Doc
+                    getValue          :  unit                              -> string
+                    setValue          :  string                            -> unit
+                    setDisabled       :  bool                              -> unit
+                    showAnnotations   :  Annotation seq                    -> unit
+                    posFromIndex      :  int                               -> Position
+                    indexFromPos      :  Position                          -> int
+                    getWordAt         :  Position                          -> (string * Position) option
+                    getUri            :  unit                              -> string
+                    setUri            :  string                            -> unit
+                    hookOnChange      : (obj           -> unit           ) -> unit
+                }
+            
+                and GenEditor<'T> = {
+                    var             :  Var< string        >
+                    disabled        :  View<bool          >
+                    annotations     :  View<Annotation seq>
+                    onChange        : (GenEditor<'T> -> string      -> unit                              ) option
+                    onRender        : (GenEditor<'T>                -> unit                              )
+                    autoCompletion  : (GenEditor<'T> -> Position    -> Async<Completion []>              ) option
+                    toolTip         : (GenEditor<'T> -> Position    -> Async<string              option >) option
+                    declaration     : (GenEditor<'T> -> Position    -> Async<(Position * string) option >) option
+                    mutable editorO :  'T option
+            
+                    editorHook      : GenEditorHook<'T>
+                }
+                
+                let inline setVar   v   genE = { genE with var      = v   }
+                let inline onChange f   genE = { genE with onChange = f   }
+                let inline onRender f   genE = { genE with onRender = f   }
+                let inline disabled dis genE = { genE with disabled = dis }
+            
+                let inline var          genE = genE.var
+            
+                let newVar edh var = {
+                    var            = var 
+                    disabled       = V false
+                    annotations    = V Seq.empty
+                    onChange       = None
+                    onRender       = ignore
+                    editorHook     = edh
+                    autoCompletion = None
+                    toolTip        = None
+                    declaration    = None
+                    editorO        = None
+                }
+            
+                let newText edh (v:string)             = newVar edh (Var.Create v)
+                let newVarO edh (v:Var<string option>) = 
+                    Var.Lens v (Option.defaultValue "") (fun sO s -> sO |> Option.map (fun _ -> s) )
+                    |> newVar edh
+                    |> disabled(V (Option.isNone v.V))
+            
+                /// binds an Editor with a Var<string> to avoid annoying jumps to the end when fast typing
+                /// onChange gets called when the editor changes but not when the var changes
+                let bindVarEditor setEvent getVal setVal onChange (var:Var<_>) =
+                    let editorChanged = ref 0L
+                    let varChanged    = ref 0L
+                    setEvent(fun _ ->
+                        let v = getVal() 
+                        if var.Value <> v then editorChanged := !editorChanged + 1L; var.Value <- v; onChange v 
+                    )
+                    var.View |> View.Sink (fun _ ->
+                        if  !editorChanged > !varChanged then varChanged := !editorChanged
+                        elif getVal() <> var.Value then setVal var.Value
+                    )
+            
+                let generateDoc genE = 
+                    let onChange = genE.onChange |> Option.map(fun f -> f genE) |> Option.defaultValue ignore
+                    genE.editorHook.generateDoc genE (fun ed ->
+                        genE.editorO        <- Some ed
+                        genE.var            |> bindVarEditor  genE.editorHook.hookOnChange    
+                                                              genE.editorHook.getValue 
+                                                              genE.editorHook.setValue 
+                                                              onChange
+                        genE.annotations    |> View.Sink      genE.editorHook.showAnnotations
+                        genE.disabled       |> View.Sink      genE.editorHook.setDisabled
+                        genE.onRender genE
+                    )
+            
             
             [< Inline """(!$v)""">]
             let isUndefined v = v.GetType() = v.GetType()
@@ -2267,55 +2570,6 @@ namespace FsRoot
                     let deserializer rc b = lmd rc |> (fun lm -> lm.Set  ) <| snd serS b ; rc
                     name, serializer, deserializer
             
-            module LoadFiles =
-            
-                let createScript fn =
-                    let fileRef = JS.Document.CreateElement("script")
-                    fileRef.SetAttribute("type", "text/javascript"  )
-                    fileRef.SetAttribute("src" , fn                 )
-                    fileRef
-                
-                let createCss fn =
-                    let fileRef = JS.Document.CreateElement("link")
-                    fileRef.SetAttribute("rel" , "stylesheet"     )
-                    fileRef.SetAttribute("type", "text/css"       )
-                    fileRef.SetAttribute("href", fn               )
-                    fileRef
-                
-                let createHtml fn =
-                    let fileRef = JS.Document.CreateElement("link")
-                    fileRef.SetAttribute("rel" , "import"         )
-                    fileRef.SetAttribute("type", "text/html"      )
-                    fileRef.SetAttribute("href", fn               )
-                    fileRef
-                
-                let LoadFile(file: string) =
-                    let (|EndsWith|_|) s (fn:string) = if fn.EndsWith s then Some() else None
-                    match file with
-                    | EndsWith ".js"   ()
-                    | EndsWith ".fsx"  ()
-                    | EndsWith ".fs"   () when isUndefined <| JS.Document.QuerySelector("script[src='" + file + "']") ->
-                                            createScript file |> Some
-                    | EndsWith ".css"  ()-> createCss    file |> Some
-                    | EndsWith ".html" ()-> createHtml   file |> Some
-                    | _                  -> None
-                    |> Option.map         (fun ref -> 
-                        Async.FromContinuations <| 
-                            fun (cont, econt, _ccont) -> 
-                                try 
-                                    ref?onload <- cont
-                                    JS.Document.Head.AppendChild ref |> ignore
-                                with e -> econt e
-                    )
-                    |> Option.defaultWith (fun ()  -> async { return () })
-                
-                let LoadFilesAsync(files: string []) =
-                    async {
-                        if IsClient then
-                            for file in files do
-                                do! LoadFile file
-                    }
-                
             let (|REGEX|_|) (expr: string) (opt: string) (value: string) =
                 if value = null then None else
                 match JavaScript.String(value).Match(RegExp(expr, opt)) with
@@ -2409,7 +2663,11 @@ namespace FsRoot
                             Object.setPrototypeOf($_c, $global.HTMLElement);
                             Object.setPrototypeOf($_o.prototype, $_c.prototype);
                             $global.customElements.define($_nm, $_o)""" >]
-                let defineWebComponent _nm _o _c = X<_>
+                let defineWebComponent_ _nm _o _c = X<_>
+            
+                let defineWebComponent _nm _o _c = 
+                    try defineWebComponent_ _nm _o _c
+                    with _ -> printfn "Failed to define WebComponent. Not supported."
             
                 module WcTabStrip =
                     open WebSharper.UI.Html
@@ -2677,8 +2935,9 @@ namespace FsRoot
                     query     : string
                     scheme    : string
                 }  with
-                    [< Inline "$global.monaco.Uri.parse($_s)" >] static member Parse(_s)      : Uri   = X<_>
-                    [< Inline "$global.monaco.Uri.file($_f)"  >] static member File(_f)       : Uri   = X<_>
+                    [< Inline "$global.monaco.Uri.parse($_s)" >] static member Parse(_s)      : Uri    = X<_>
+                    [< Inline "$global.monaco.Uri.file($_f) " >] static member File(_f)       : Uri    = X<_>
+                    [< Inline "$this.toString()             " >] override this.ToString()     : string = X<_>
                 type Location = {
                     range : Range
                     uri   : Uri
@@ -2699,8 +2958,12 @@ namespace FsRoot
                     [< Inline "$mo.findMatches($_s, $_o, $_r, $_c, $_w, $_p, $_l)" >] member mo.FindMatches(_s: string, _o: bool, _r: bool, _c: bool, _w: string, _p: bool, _l: int): FindMatch[] = X<_>
                     [< Inline "$mo.getWordAtPosition($_p)                        " >] member mo.GetWordAtPosition(_p: Position) : WordAtPosition = X<_>
                     [< Inline "$mo.getLineContent($_l)                           " >] member mo.GetLineContent(   _l: int     ) : string         = X<_>
+                    [< Inline "$mo.uri                                           " >] member mo.GetUri()                        : Uri            = X<_>
+                    [< Inline "$mo.uri = $_v                                     " >] member mo.SetUri(_v:Uri)                  : unit           = X<_>
                     [< Inline "$mo.getValue()                                    " >] member mo.GetValue()                      : string         = X<_>
                     [< Inline "$mo.setValue($_v)                                 " >] member mo.SetValue(_v:string)             : unit           = X<_>
+                    [< Inline "$mo.getPositionAt($_i)                            " >] member mo.GetPositionAt(_i: int     )     : Position       = X<_>
+                    [< Inline "$mo.getOffsetAt($_p)                              " >] member mo.GetOffsetAt(  _p: Position)     : int            = X<_>
                     [< Inline "$mo.dispose()                                     " >] member mo.Dispose()                       : unit           = X<_>
                     
                 type MarkDownString = {
@@ -2708,7 +2971,7 @@ namespace FsRoot
                     isTrusted  : bool
                 }
                 type MarkerSeverity =
-                | Error   = 8
+                | Error   = 8 
                 | Hint    = 1
                 | Info    = 2
                 | Warning = 4
@@ -2764,7 +3027,6 @@ namespace FsRoot
                 }
                 
                 open WebSharper.Core.Resources
-            
                 type MonacoResources() =
                     inherit BaseResource(@"/EPFileX/monaco/package/min/vs/loader.js")
             
@@ -2815,7 +3077,7 @@ namespace FsRoot
                 [<NoComparison ; NoEquality>]
                 type MonacoConfig = {
                     var             : Var<string>
-                    onChange        : (unit   -> unit)
+                    onChange        : (string -> unit)
                     onRender        : (Editor -> unit) option
                     mutable editorO :  Editor option
                     disabled        : View<bool>
@@ -2842,20 +3104,21 @@ namespace FsRoot
                         Editor.RequireConfig()
                         do! Async.FromContinuations(fun (success, failed, cancelled) -> Editor.Require(success, failed))
                 }
-                let render monc             =
-                    div [ on.afterRender (fun elchild ->
-                             async {
-                                 do! loader
+                let render monc             = 
+                    async {
+                      do! loader
+                      return
+                          div [ on.afterRender (fun elchild ->
                                  let editor        = Editor.Create elchild.ParentElement monc.options monc.overrides
                                  ResizeObserver.addResizeObserver editor.Layout elchild.ParentElement
                                  elchild.ParentNode.RemoveChild elchild |> ignore
                                  monc.editorO     <- Some editor
                                  monc.onRender |> Option.iter (fun onrender -> onrender editor)
-                                 monc.var |> bindVarEditor editor.OnDidChangeModelContent editor.GetValue editor.SetValue monc.onChange
+                                 monc.var |> GenEditor.bindVarEditor editor.OnDidChangeModelContent editor.GetValue editor.SetValue monc.onChange
                                  //monc.disabled |> View.Sink (fun dis -> editor.SetOption("readOnly", if dis then "nocursor" :> obj else false :> obj) )
-                             } |> Async.Start
                           )    
                         ] []
+                    } |> Doc.Async
                 let inline setVar   v   monc = { monc with var       = v      }
                 let inline onChange f   monc = { monc with onChange  = f      }
                 let inline onRender f   monc = { monc with onRender  = Some f }
@@ -2865,6 +3128,199 @@ namespace FsRoot
                 let newVarO(v:Var<string option>) = Var.Lens v (Option.defaultValue "") (fun sO s -> sO |> Option.map (fun _ -> s) )
                                                     |> newVar
                                                     |> disabled(V (Option.isNone v.V))
+            
+            [< JavaScriptExport >]
+            module MonacoGenAdapter =
+                open Monaco
+                open GenEditor
+                open WebSharper.UI.Html
+            
+                type MonacoRT = {
+                    mutable editorO     : Monaco.Editor option
+                    mutable onChange    : obj -> unit
+                    options             : obj
+                    overrides           : obj
+                }
+            
+                let iterEditor monRT f =
+                    match monRT.editorO with
+                    | None    -> ()
+                    | Some ed -> f ed
+            
+                let mapEditor monRT f =
+                    match monRT.editorO with
+                    | None    -> None
+                    | Some ed -> Some (f ed)
+            
+                let bindEditor monRT f =
+                    match monRT.editorO with
+                    | None    -> None
+                    | Some ed -> f ed
+            
+                let posGen2Ed (p:GenEditor.Position) : Monaco.Position = 
+                    {
+                        column     = p.col 
+                        lineNumber = p.line
+                    }
+            
+                let posEd2Gen (p:Monaco.Position) : GenEditor.Position = 
+                    {
+                        col  = p.column    
+                        line = p.lineNumber
+                    }
+            
+                let indexFromPos monRT p =
+                    mapEditor monRT <| fun ed ->
+                        ed.GetModel().GetOffsetAt(posGen2Ed p)            
+                    |> Option.defaultValue -1
+            
+                let posFromIndex monRT i =
+                    mapEditor monRT <| fun ed ->
+                        ed.GetModel().GetPositionAt i
+                        |> posEd2Gen
+                    |> Option.defaultValue { col = 1 ; line = 1 }
+            
+                let convertGlyphChar =
+                    function
+                    | "C" -> CompletionItemKind.Class
+                    | "E" -> CompletionItemKind.Enum
+                    | "S" -> CompletionItemKind.Value
+                    | "I" -> CompletionItemKind.Interface
+                    | "N" -> CompletionItemKind.Module
+                    | "M" -> CompletionItemKind.Method
+                    | "P" -> CompletionItemKind.Property
+                    | "F" -> CompletionItemKind.Field
+                    | "T" -> CompletionItemKind.Class
+                    | "K" -> CompletionItemKind.Keyword
+                    | _   -> 0 |> unbox
+            
+                type CompletionItemProvider(autoComplete: GenEditor.Position -> Async<Completion[]>) =
+                    do()
+                   with
+                      member __.provideCompletionItems(model:Model, pos:Monaco.Position, token:obj, context: obj) =
+                        asyncResultM {
+                            let! comps = autoComplete  { col = pos.column ; line = pos.lineNumber }
+                            return comps 
+                                    |> Array.map(fun (comp:Completion) -> 
+                                        { 
+                                            kind   = convertGlyphChar comp.kind
+                                            label  = comp.label
+                                            detail = comp.detail
+                                        } )
+                        } |> Promise.ofAsyncResultM
+                      member __.resolveCompletionItem(item: CompletionItem, token: obj): CompletionItem = { item with detail = "more details" }
+            
+            
+                type HoverProvider(toolTip: GenEditor.Position -> Async<string option> ) =
+                    do()
+                   with
+                      member __.provideHover(model:Model, pos:Monaco.Position, token:obj) =
+                        asyncResultM {
+                            let! desc = toolTip { col = pos.column ; line = pos.lineNumber }
+                            match desc with
+                            | None      -> return (box null |> unbox)
+                            | Some desc ->
+                            return {
+                                    contents = [| { value = desc ; isTrusted = true } |]
+                                    range    = (box null |> unbox)
+                                }
+                        } |> Promise.ofAsyncResultM
+            
+                type DefinitionProvider(declaration: GenEditor.Position -> Async<(Position * string) option> ) =
+                    do()
+                   with
+                        member __.provideDefinition(model: Model, pos: Monaco.Position, token: obj) =
+                            asyncResultM {
+                                let! declO =  declaration { col = pos.column ; line = pos.lineNumber }
+                                match declO with
+                                | None             -> return box null |> unbox
+                                | Some (pos, file) ->
+                                return {
+                                    range = {
+                                                startColumn     = pos.col
+                                                endColumn       = pos.col
+                                                startLineNumber = pos.line
+                                                endLineNumber   = pos.line
+                                    }
+                                    uri   = Uri.Parse file
+                                }
+                            } |> Promise.ofAsyncResultM
+            
+                let generateDoc monRT genE onRender =
+                    async {
+                      do! Monaco.loader
+                      return
+                          div [ on.afterRender (fun elchild  ->
+                                    let editor        = Monaco.Editor.Create elchild.ParentElement monRT.options monRT.overrides
+                                    ResizeObserver.addResizeObserver editor.Layout elchild.ParentElement
+                                    elchild.ParentNode.RemoveChild elchild |> ignore
+                                    monRT.editorO     <- Some editor
+                                    onRender                  editor
+                                    editor.OnDidChangeModelContent monRT.onChange
+                                    genE.toolTip        |> Option.iter (fun f -> Editor.RegisterHoverProvider         ("fsharp", new HoverProvider         (f genE) ) |> ignore )
+                                    genE.declaration    |> Option.iter (fun f -> Editor.RegisterDefinitionProvider    ("fsharp", new DefinitionProvider    (f genE) ) |> ignore )
+                                    genE.autoCompletion |> Option.iter (fun f -> Editor.RegisterCompletionItemProvider("fsharp", new CompletionItemProvider(f genE) ) |> ignore )
+                          )    
+                        ] []
+                    } |> Doc.Async
+            
+                let getUri    monRT     = mapEditor  monRT    <| (fun ed -> ed.GetModel().GetUri().ToString() ) |> Option.defaultValue "" 
+                let setUri    monRT uri = iterEditor monRT    <|  fun ed -> ed.GetModel().SetUri(Uri.Parse uri) 
+                let getValue  monRT     = mapEditor  monRT    <| (fun ed -> ed.GetValue()   ) |> Option.defaultValue "" 
+                let setValue  monRT txt = iterEditor monRT    <|  fun ed -> ed.SetValue txt 
+                let getWordAt monRT pos = bindEditor monRT    <|  fun ed -> let word = ed.GetModel().GetWordAtPosition {    
+                                                                                column     = (pos:GenEditor.Position).col
+                                                                                lineNumber = pos.line }
+                                                                            if isUndefined word then None else 
+                                                                            (word.word, {   col  = word.startColumn
+                                                                                            line = pos.line })
+                                                                            |> Some
+            
+                let showAnnotations monRT ans =
+                    iterEditor monRT <| fun ed ->
+                        let ms =
+                            ans
+                            |> Seq.map (fun (an:Annotation) ->
+                                {   message           = an.message
+                                    severity          = match an.severity with 
+                                                        | Error   -> MarkerSeverity.Error 
+                                                        | Warning -> MarkerSeverity.Warning  
+                                                        | Hint    -> MarkerSeverity.Hint 
+                                                        | _       -> MarkerSeverity.Info
+                                    startColumn       = an.startP.col
+                                    startLineNumber   = an.startP.line
+                                    endColumn         = an.endP  .col
+                                    endLineNumber     = an.endP  .line
+                                }
+                            )
+                            |> Seq.toArray
+                        Editor.SetModelMarkers(ed.GetModel(), "annotations", ms)
+            
+                let newHook monRT = {
+                    generateDoc     =            generateDoc  monRT 
+                    getValue        = fun ()  -> getValue     monRT
+                    setValue        =            setValue     monRT
+                    getWordAt       =            getWordAt    monRT
+                    showAnnotations = showAnnotations         monRT
+                    setDisabled     = ignore //  bool                              -> unit
+                    hookOnChange    = fun f   -> monRT.onChange <- f 
+                    posFromIndex    =            posFromIndex monRT
+                    indexFromPos    =            indexFromPos monRT
+                    getUri          = fun ()  -> getUri       monRT
+                    setUri          =            setUri       monRT
+                }
+            
+                let newRT options overrides = {
+                    editorO     = None
+                    onChange    = ignore
+                    options     = options   
+                    overrides   = overrides 
+                }
+            
+                let newVar options overrides v =
+                    newRT options overrides
+                    |> newHook
+                    |> GenEditor.newVar <| v
             
         /// Essentials that part runs in Javascript and part runs in the server
         [< AutoOpen >]
@@ -3369,7 +3825,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/8a23262e-cdaf-47e3-a4ac-36a86f112175"
+                    "http://localhost:9005/#/Snippet/a817abcc-6cb2-42cf-843c-f1525420c0d4"
                 #endif
                 
                 let extractEndPoint() = 
@@ -3561,7 +4017,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1547005003252"
+                let mutable fsharpStationAddress = Address "FSharpStation1552317489911"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -3975,6 +4431,11 @@ namespace FsRoot
                     
     
     //#cd @"..\projects\FSharpStation\src"
+    
+    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+    
     //#define WEBSHARPER
     [< JavaScript >]
     module FSharpStation =
@@ -4143,7 +4604,7 @@ namespace FsRoot
                                                       |> Seq.mapi (fun i btn -> 
                                                             if btn.StartsWith ":" 
                                                             then btn.[1..]
-                                                            else sprintf "button \"click=${FSharpStation.ButtonClick}\" %A" btn
+                                                            else sprintf "button \"click=@{FSharpStation.ButtonClick}\" %A" btn
                                                             |> sprintf "btn%d %s" i
                                                         )
                                         "Snp_" + (string snB.snpId.Id).Replace("-", "")
@@ -4551,13 +5012,13 @@ namespace FsRoot
                 |> String.concat "\n\n"
                 
             let overDescriptions descs =
-                                  descs 
-                                  |> Seq.collect id 
-                                  |> Seq.collect (fun (d:CommTypes.OverloadDescription) ->
-                                      [ if d.Signature |> isUndefined |> not then yield "```\n" + d.Signature + "\n```" |> Async.rtn
-                                        if d.Comment   |> isUndefined |> not then yield Markdown.createCommentBlock d.Comment |> Async.map fixMarkDown
-                                        if d.Footer    |> isUndefined |> not then yield d.Footer |> fixMarkDown |> Async.rtn] )
-                                  |> Async.sequenceSeq
+                descs 
+                |> Seq.collect id 
+                |> Seq.collect (fun (d:CommTypes.OverloadDescription) ->
+                    [ if d.Signature |> isUndefined |> not then yield "```\n" + d.Signature + "\n```" |> Async.rtn
+                      if d.Comment   |> isUndefined |> not then yield Markdown.createCommentBlock d.Comment |> Async.map fixMarkDown
+                      if d.Footer    |> isUndefined |> not then yield d.Footer |> fixMarkDown |> Async.rtn] )
+                |> Async.sequenceSeq
             
             let mutable fileName = "none.fsx"
         
@@ -4667,14 +5128,6 @@ namespace FsRoot
                 lineHeight : int
             }
             
-            let addProp prop (pojo:JSObject) = pojo.Add prop ; pojo
-            
-            let newPojo props =
-                let pojo = JSObject()
-                if IsClient then
-                    props |> Seq.iter (swap addProp pojo >> ignore)
-                pojo
-        
             let gotoEditor (ed:Editor) codeId line col = async {
                 Snippets.setCurrentSnippetIdO <| Some codeId
                 do! Async.Sleep 200
@@ -4723,37 +5176,41 @@ namespace FsRoot
             
                 let setDirtyCond() = ()
                 let getHints    _  = ()
-                
-                Monaco.newVar var
-                |> fun config -> 
-                    { config with options   = 
-                                      newPojo [   "fontSize"   => 12
-                                                  "lineHeight" => 14 
-                                              ] 
-                                  //overrides = 0 
-                                  overrides = 
-                                      newPojo [ 
-                                          "codeEditorService"        => getCodeEditorServiceImpl()
-                                          "textModelResolverService" => textModelResolverService()
-                                          ]
-                    }
-                |> onRender(fun ed -> 
-                    Editor.SetModelLanguage(ed.GetModel(), "fsharp")
-                    Editor.SetTheme("vs")
-                    //ed.UpdateOptions { fontSize   = 12 ; lineHeight = 14 }        
-                    let hp = new HoverProvider         (ed)
-                    let cp = new CompletionItemProvider(ed)
-                    let dp = new DefinitionProvider    (ed)
-                    hp.provideHover |> print
-                    cp.provideCompletionItems |> print
-                    cp.resolveCompletionItem  |> print
-                    dp.provideDefinition      |> print
-                    Editor.RegisterHoverProvider         ("fsharp", hp ) |> ignore
-                    Editor.RegisterCompletionItemProvider("fsharp", cp ) |> ignore
-                    Editor.RegisterDefinitionProvider    ("fsharp", dp ) |> ignore
-                    annotationsWO
-                    |> Option.iter( View.Sink (fun ms -> Editor.SetModelMarkers(ed.GetModel(), "annotations", ms)) )
-                )
+        
+                async {
+                    return
+                        Monaco.newVar var
+                        |> fun config -> 
+                            { config with   options   = 
+                                                Pojo.newPojo [   
+                                                    "fontSize"   => 12
+                                                    "lineHeight" => 14 
+                                                ] 
+                                        //overrides = 0 
+                                            overrides = 
+                                                Pojo.newPojo [ 
+                                                    "codeEditorService"        => getCodeEditorServiceImpl()
+                                                    "textModelResolverService" => textModelResolverService()
+                                                ]
+                            }
+                        |> onRender(fun ed -> 
+                            Editor.SetModelLanguage(ed.GetModel(), "fsharp")
+                            Editor.SetTheme("vs")
+                            //ed.UpdateOptions { fontSize   = 12 ; lineHeight = 14 }        
+                            let hp = new HoverProvider         (ed)
+                            let cp = new CompletionItemProvider(ed)
+                            let dp = new DefinitionProvider    (ed)
+                            hp.provideHover |> print
+                            cp.provideCompletionItems |> print
+                            cp.resolveCompletionItem  |> print
+                            dp.provideDefinition      |> print
+                            Editor.RegisterHoverProvider         ("fsharp", hp ) |> ignore
+                            Editor.RegisterCompletionItemProvider("fsharp", cp ) |> ignore
+                            Editor.RegisterDefinitionProvider    ("fsharp", dp ) |> ignore
+                            annotationsWO
+                            |> Option.iter( View.Sink (fun ms -> Editor.SetModelMarkers(ed.GetModel(), "annotations", ms)) )
+                        )
+                }
         
             let parse (code: string, starts: ((SnippetId * string) * (int * int * int)) []) =
               asyncResult {
@@ -4788,16 +5245,18 @@ namespace FsRoot
         
             let mutable editorConfigO : MonacoConfig option = None
             
-            let getEditorConfigO () =
-                if IsClient 
-                then monacoNew <| Lens Snippets.currentSnippetV.V.snpContent
-                               <| Some ( (Snippets.currentSnippetW, FStation.annotationsV.View) ||> View.Map2 transformAnnotations )
-                               <| None
-                               <| None
-                     |> Some
-                else None
-                |>! fun edO -> editorConfigO <- edO
-        
+            let editorDoc() = 
+                async {
+                    do! Monaco.loader
+                    let! cfg = monacoNew <| Lens Snippets.currentSnippetV.V.snpContent
+                            <| Some ( (Snippets.currentSnippetW, FStation.annotationsV.View) ||> View.Map2 transformAnnotations )
+                            <| None
+                            <| None
+                    editorConfigO <- Some cfg
+                    return Monaco.render cfg
+                } |> Doc.Async
+                
+         
             if IsClient then
                 Snippets.CurrentSnippetIdW |> View.Sink(fun sid ->
                     try
@@ -4897,7 +5356,18 @@ namespace FsRoot
                 let! gen         = ofFusionM <| Snippet.predsGenerationRm snp
                 return! ofAsync <| FsiAgent.evalCodeWithPresence FStation.srcDir (sprintf "%A" snp.snpId) (string gen) (FsCode preCode) (FsCode code)
             }
-            
+        
+            let setSnippetContent (snpPath:string) content     = 
+                fusion {
+                    let!  snpO  = snpPath.Split '/' |> SnippetReference.RefSnippetPath |> Snippet.snippetFromRefORm |> ofFusionM
+                    match snpO with
+                    | None     -> return! ofResultRM <| Error (ErrorMsg (sprintf "Snippet %s not found" snpPath) )
+                    | Some snp ->
+                    { snp with snpContent = content }
+                    |> Snippets.setSnippet
+                } |> iterReaderA  print print (Snippets.snippetsColl())
+        
+        
             let actionSnpRm (snpPath:string) name = fusion {
                 let! snpO        = snpPath.Split '/' |> SnippetReference.RefSnippetPath |> Snippet.snippetFromRefORm |> ofFusionM
                 match snpO with
@@ -4910,9 +5380,9 @@ namespace FsRoot
                 return! ofAsync <| FsiAgent.evalCodeWithPresence FStation.srcDir (sprintf "%A" snp.snpId) (string gen) (FsCode preCode) (FsCode code)
             }
             
-            let actionClick name            = actionClickRm  name                    |> iterReaderA  print print (Snippets.snippetsColl())
+            let actionSnp  path name        = actionSnpRm    path  name              |> iterReaderA  print print (Snippets.snippetsColl())
+            let actionClick name            = actionClickRm        name              |> iterReaderA  print print (Snippets.snippetsColl())
             let buttonClick (e:Dom.Element) = e.TextContent.Trim()                   |> actionClick
-            let actionSnp  path name        = actionClickRm  name                    |> iterReaderA  print print (Snippets.snippetsColl())
             let getCurrentProperty        p = propO Snippets.currentSnippetV.Value p |> runReader                (Snippets.snippetsColl()) 
                                                                                      |> AsyncResult.map fst
                                                                                      |> AsyncResult.absorbO (fun () -> errorMsgf "Property %s not found" p)
@@ -5175,7 +5645,7 @@ namespace FsRoot
                                        AF.newViw  "CurrentSid"         (Snippets.CurrentSnippetIdW |> View.Map (fun sid -> sid.Id |> string))
                                     |]  
                     AF.plgDocs    = [| AF.newDoc  "mainDoc"            (lazy mainDoc()                 )
-                                       AF.newDoc  "editor"             (lazy (WebSharper.UI.Html.div [] [ Monaco.getEditorConfigO() |> Option.map Monaco.render |> Option.defaultValue Doc.Empty ]) )
+                                       AF.newDoc  "editor"             (lazy (WebSharper.UI.Html.div [] [ Monaco.editorDoc() ]) )
                                        AF.newDoc  "Snippets"           (lazy RenderSnippets  .render() )
                                        AF.newDoc  "Properties"         (lazy RenderProperties.render() )
                                        AF.newDoc  "ButtonsRight"       (lazy buttonsRight           () )
@@ -5197,6 +5667,7 @@ namespace FsRoot
                                        AF.newActF "ActionClick"        <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.actionClick           ), "name"       )
                                        AF.newActF "ActionSnp"          <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.actionSnp (unbox o1)  ), "snpPath", "name" )
                                        AF.newActF "setCurrentProperty" <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.setCurrentProperty (unbox o1)  ), "name", "value" )
+                                       AF.newActF "setSnippetContent"  <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.setSnippetContent  (unbox o1)  ), "path", "value" )
                                     |]
                     AF.plgQueries = [| AF.newQry  "PropertyRA"         <| (fun p -> unbox<string> p |> CustomAction.getCurrentProperty |> box)
                                     |]
@@ -5271,16 +5742,24 @@ namespace FsRoot
                     |> AF.mainDocV.Set
                 )
         
-                AF.tryGetVar "AppFramework" "titleV"
-                |> Option.iter (fun lvar -> lvar.varVar.Set "FSharpStation.CurrentPath")
+                Snippets.currentPathW
+                |> View.Sink (fun v -> 
+                    async {
+                        do! Async.Sleep 500
+                        JS.Window.Document.Title <- v 
+                    } |> Async.Start
+                )        
         
-                async {
-                  do! Monaco.loader
-                  //WcSplitter.init horizontal vertical
-                  //WcTabStrip.init()
-                  let editor = Monaco.getEditorConfigO() |> Option.map Monaco.render |> Option.defaultValue Doc.Empty
-                  return AF.getMainDoc.Value
-                } |> Doc.Async
+                //async {
+                //  do! Monaco.loader
+                //  //WcSplitter.init horizontal vertical
+                //  //WcTabStrip.init()
+                //  let editor = Monaco.getEditorConfigO() |> Option.map Monaco.render |> Option.defaultValue Doc.Empty
+        
+                //} |> Doc.Async
+                TemplateLib()
+                    .MainContent( AF.getMainDoc.Value )
+                    .Bind()
         
         
         //#define FSS_SERVER
@@ -5382,11 +5861,16 @@ namespace FsRoot
             type EndPointServer = | [< EndPoint "/" >] EP
         
             let content (ctx:Context<EndPointServer>) (endpoint:EndPointServer) : Async<Content<EndPointServer>> =
-                Content.Page(Title = "Main Page" 
-                           , Body  = [
-                                Html.client <@ MainProgram.mainProgram() @>
-                                Doc.Verbatim (System.IO.File.ReadAllText TemplatesFileName)
-                             ])
+        //        Content.Page(Title = "Main Page" 
+        //                   , Body  = [
+        //                        Html.client <@ MainProgram.mainProgram() @>
+        //                        Doc.Verbatim (System.IO.File.ReadAllText TemplatesFileName)
+        //                     ])
+                Content.Page( 
+                    TemplateLib()
+                        .Initializer( Html.client <@  MainProgram.mainProgram(); Doc.TextNode "Initialized" @> )
+                        .Elt(keepUnfilled = true) 
+                )
         
             [< EntryPoint >]
             let Main args =

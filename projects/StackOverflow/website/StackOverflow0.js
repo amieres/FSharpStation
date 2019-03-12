@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,Dict,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,Eff,Eff$1,Done,LambdaT,Operators$1,EffBuilder,State,Put,Get,Log,LogEntry,Rsl,Fail,ResultM,Builder$1,Operators$2,ResultMAutoOpen,AsyncResultM,AsyncResultMBuilder,AsyncResultMAutoOpen,String,Array,SortWith,ParseO,Serializer,JsonIntermediate,MailboxProcessorExt,Mailbox,StateFull,LibraryJS,Date,StackOverflow,Templating,TypesV0,LatestType,TipoAliado,Pais,Estado,Identificacion,TipoCuenta,CuentaBancaria,StatusAliado,ConceptoPago,Transaccion,TipoDireccion,ZonaPostal,Direccion,CorreoElectronico,TipoTelefono,Telefono,Genero,DatosPersonales,TipoMensaje,Remitente,Mensaje,Aliado,PremisasCalculo,Modelo,TypesV1,LatestType$1,CorreoElectronico$1,Aliado$1,Modelo$1,Aliado$2,Buscar,Evento,Respuesta,Rpc,ModeloUI,EndPoint,VariousUI,Telefono$1,CorreoElectronico$2,Direccion$1,DatosPersonales$1,FormaRegistro,FormaDatos,FormaGenerica,FormaContactos,RenderAliados,RenderAliado,MainProgram,EndPoints,SC$1,StackOverflow_Router,StackOverflow_GeneratedPrintf,StackOverflow_Templates,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,console,Slice,Collections,FSharpMap,FSharpSet,BalancedTree,Control,MailboxProcessor,CancellationTokenSource,Dictionary,UI,Doc,View,Templating$1,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,Var$1,System,Guid,Remoting,AjaxRemotingProvider,FromView,AttrProxy,AppFramework,PlugIn,Lazy,LayoutEngineModule,Client,Templates,DateUtil,Numeric,Date$1,Router,Sitelets,RouterOperators;
+ var Global,FsRoot,Library,Dict,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,Eff,Eff$1,Done,LambdaT,Operators$1,EffBuilder,State,Put,Get,Log,LogEntry,Rsl,Fail,ResultM,Builder$1,Operators$2,ResultMAutoOpen,AsyncResultM,AsyncResultMBuilder,AsyncResultMAutoOpen,String,Array,SortWith,ParseO,Serializer,JsonIntermediate,MailboxProcessorExt,Mailbox,StateFull,LibraryJS,Date,StackOverflow,Templating,TypesV0,LatestType,TipoAliado,Pais,Estado,Identificacion,TipoCuenta,CuentaBancaria,StatusAliado,ConceptoPago,Transaccion,TipoDireccion,ZonaPostal,Direccion,CorreoElectronico,TipoTelefono,Telefono,Genero,DatosPersonales,TipoMensaje,Remitente,Mensaje,Aliado,PremisasCalculo,Modelo,TypesV1,LatestType$1,StatusContacto,CorreoElectronico$1,Aliado$1,Modelo$1,Aliado$2,Buscar,Evento,Respuesta,Rpc,ModeloUI,EndPoint,VariousUI,Telefono$1,CorreoElectronico$2,Direccion$1,DatosPersonales$1,FormaRegistro,FormaDatos,FormaGenerica,FormaContactos,RenderAliados,RenderAliado,MainProgram,EndPoints,SC$1,StackOverflow_Router,StackOverflow_GeneratedPrintf,StackOverflow_Templates,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,console,Slice,Collections,FSharpMap,FSharpSet,BalancedTree,Control,MailboxProcessor,CancellationTokenSource,Dictionary,UI,Doc,View,Templating$1,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,Var$1,System,Guid,Remoting,AjaxRemotingProvider,FromView,AttrProxy,AppFramework,PlugIn,Lazy,LayoutEngineModule,Client,Templates,DateUtil,Numeric,Date$1,Router,Sitelets,RouterOperators;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -77,6 +77,7 @@
  Modelo=TypesV0.Modelo=TypesV0.Modelo||{};
  TypesV1=StackOverflow.TypesV1=StackOverflow.TypesV1||{};
  LatestType$1=TypesV1.LatestType=TypesV1.LatestType||{};
+ StatusContacto=TypesV1.StatusContacto=TypesV1.StatusContacto||{};
  CorreoElectronico$1=TypesV1.CorreoElectronico=TypesV1.CorreoElectronico||{};
  Aliado$1=TypesV1.Aliado=TypesV1.Aliado||{};
  Modelo$1=TypesV1.Modelo=TypesV1.Modelo||{};
@@ -3278,16 +3279,6 @@
    return $1(Global.String($2)+Utils.toSafe($3)+Utils.padNumLeft(Global.String($4),2)+Utils.toSafe($5)+Utils.padNumLeft(Global.String($6),2));
   },6))(Global.id))((new Global.Date(date)).getFullYear()))(sep))((new Global.Date(date)).getMonth()+1))(sep))((new Global.Date(date)).getDate());
  };
- Templating.someContext=function()
- {
-  SC$1.$cctor();
-  return SC$1.someContext;
- };
- Templating.set_someContext=function($1)
- {
-  SC$1.$cctor();
-  SC$1.someContext=$1;
- };
  Templating.LoginFileName=function()
  {
   SC$1.$cctor();
@@ -3470,9 +3461,12 @@
   }
  },null,StatusAliado);
  StatusAliado.Inactivo=new StatusAliado({
-  $:1
+  $:2
  });
  StatusAliado.Activo=new StatusAliado({
+  $:1
+ });
+ StatusAliado.Nuevo=new StatusAliado({
   $:0
  });
  ConceptoPago=TypesV0.ConceptoPago=Runtime.Class({
@@ -3757,20 +3751,32 @@
  LatestType$1.TypeV1={
   $:0
  };
+ StatusContacto.Habilitado={
+  $:3
+ };
+ StatusContacto.Deshabilitado={
+  $:2
+ };
+ StatusContacto.VerificacionEnviada={
+  $:1
+ };
+ StatusContacto.RequiereVerificacion={
+  $:0
+ };
  CorreoElectronico$1=TypesV1.CorreoElectronico=Runtime.Class({
   toString:function()
   {
    return this.email;
   }
  },null,CorreoElectronico$1);
- CorreoElectronico$1.New=function(email,deshabilitado,requiereVerificacion,verificacionEnviada,verificado)
+ CorreoElectronico$1.New=function(email,status,enviado,recibido,enlace)
  {
   return new CorreoElectronico$1({
    email:email,
-   deshabilitado:deshabilitado,
-   requiereVerificacion:requiereVerificacion,
-   verificacionEnviada:verificacionEnviada,
-   verificado:verificado
+   status:status,
+   enviado:enviado,
+   recibido:recibido,
+   enlace:enlace
   });
  };
  Aliado$1.New=function(id,idPadreO,datosPersonales,contactos,identificacion,formasPago,transacciones,mensajes,isInternal,status,tipo,fechaRegistro,fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,comision,nivel)
@@ -3856,7 +3862,7 @@
    nReferidos=Seq$1.length(hijos);
    nRefActivos=Seq$1.length(Seq$1.filter(function(al$1)
    {
-    return al$1.status.$===0&&al$1.tipo.$===1;
+    return al$1.status.$===1&&al$1.tipo.$===1;
    },hijos));
    _al=Aliado$1.New(al.id,al.idPadreO,al.datosPersonales,al.contactos,al.identificacion,al.formasPago,al.transacciones,al.mensajes,al.isInternal,al.status,nRefActivos>=pre.numeroReferidosMaster?TipoAliado.Master:TipoAliado.Regular,al.fechaRegistro,0,nReferidos,nRefActivos,Seq$1.sumBy(function(al$1)
    {
@@ -4031,7 +4037,7 @@
  {
   var p;
   p=al.tipo.$==0?[pre.comisionReferidosMaster,pre.comisionDescendientesMaster]:[pre.comisionReferidosRegular,pre.comisionDescendientesRegular];
-  return al.status.$==0?[p[0],p[1]]:[0,0];
+  return al.status.$==1?[p[0],p[1]]:[0,0];
  };
  Aliado$2.statusActual=function(ano,mes,al)
  {
@@ -4250,7 +4256,7 @@
     $0:TypesV1.correoVacio()
    },x==null?i$1:x)),o==null?null:{
     $:1,
-    $0:(v=o.$0,CorreoElectronico$1.New($2,v.deshabilitado,v.requiereVerificacion,v.verificacionEnviada,v.verificado))
+    $0:(v=o.$0,CorreoElectronico$1.New($2,v.status,v.enviado,v.recibido,v.enlace))
    });
   },requeridosW,forma.Hole("correo").get_View()));
   return[requeridosW,forma.get_Doc()];
@@ -4424,7 +4430,7 @@
   },requeridosW,forma.Hole("genero").get_View()),forma.Hole("fechanacimiento").get_View()),forma.Hole("nombres").get_View()),forma.Hole("nombres").get_View()),forma.Hole("apellidos").get_View()),forma.Hole("apellidos").get_View()));
   return[requeridosW,forma.get_Doc()];
  };
- FormaRegistro.formaDoc$5738$41=function(mostrar,mensajes,datosOV,correoOV,telefonoOV,direccionOV)
+ FormaRegistro.formaDoc$5793$41=function(mostrar,mensajes,datosOV,correoOV,telefonoOV,direccionOV)
  {
   return function()
   {
@@ -4599,7 +4605,7 @@
  {
   return ModeloUI.aliadoIdDoc(FormaDatos.formaAliado);
  };
- FormaDatos.formaAliado$5791$36=function(mostrar,mensajes,datosOV,aliadoW)
+ FormaDatos.formaAliado$5846$36=function(mostrar,mensajes,datosOV,aliadoW)
  {
   return function()
   {
@@ -4729,7 +4735,7 @@
   },p[0]));
   return forma.get_Doc();
  };
- FormaGenerica.forma$5827$38=function(salvar)
+ FormaGenerica.forma$5882$38=function(salvar)
  {
   return function()
   {
@@ -4771,7 +4777,7 @@
  {
   return ModeloUI.aliadoIdDoc(FormaContactos.formaContactos);
  };
- FormaContactos.formaContactos$5906$36=function(mostrar,mensajes,aliadoW,contactosV)
+ FormaContactos.formaContactos$5961$36=function(mostrar,mensajes,aliadoW,contactosV)
  {
   return function()
   {
@@ -4807,7 +4813,7 @@
    }))))):Global.alert("Error not caught FormaDatos"));
   };
  };
- FormaContactos.formaContactos$5905$42=function(contactosV)
+ FormaContactos.formaContactos$5960$42=function(contactosV)
  {
   return function()
   {
@@ -4817,7 +4823,7 @@
    }]));
   };
  };
- FormaContactos.formaContactos$5904$42=function(contactosV)
+ FormaContactos.formaContactos$5959$42=function(contactosV)
  {
   return function()
   {
@@ -4827,7 +4833,7 @@
    }]));
   };
  };
- FormaContactos.formaContactos$5903$42=function(contactosV)
+ FormaContactos.formaContactos$5958$42=function(contactosV)
  {
   return function()
   {
@@ -5186,14 +5192,14 @@
   SC$1.$cctor();
   return SC$1.ftel;
  };
- RenderAliados.aliados$5995$49=function(seleccionar,alid)
+ RenderAliados.aliados$6050$49=function(seleccionar,alid)
  {
   return function()
   {
    seleccionar(alid);
   };
  };
- RenderAliados.aliados$5993$49=function(expandir,alid)
+ RenderAliados.aliados$6048$49=function(expandir,alid)
  {
   return function()
   {
@@ -5881,7 +5887,7 @@
   SC$1.$cctor();
   return SC$1.layoutName;
  };
- EndPoints.content$6276$35=function()
+ EndPoints.content$6330$35=function()
  {
   return function(e)
   {
@@ -5899,12 +5905,12 @@
     }
   };
  };
- EndPoints.content$6266$62=function()
+ EndPoints.content$6320$62=function()
  {
   MainProgram.mainProgram();
   return Doc.TextNode("Initialized");
  };
- EndPoints.content$6254$58=function(id)
+ EndPoints.content$6308$58=function(id)
  {
   MainProgram.mainProgramLoggedOff(id);
   return Doc.TextNode("Initialized");
@@ -6078,7 +6084,6 @@
   {
    console.log(s);
   }))("..\\website\\Templates.html"));
-  SC$1.someContext=null;
   SC$1.premisasCalculo=PremisasCalculo.New(15,25,25,0,75,31,15,22);
   SC$1.telVacio=Telefono.New(TipoTelefono.Movil,"","","","",false);
   SC$1.dirVacio=Direccion.New(TipoDireccion.Habitacion,"","","",new Estado({
@@ -6091,7 +6096,7 @@
    $:0,
    $0:""
   }));
-  SC$1.correoVacio=CorreoElectronico$1.New("",true,true,null,null);
+  SC$1.correoVacio=CorreoElectronico$1.New("",StatusContacto.RequiereVerificacion,null,null,null);
   SC$1.empty=Aliado$1.New({
    $:0,
    $0:""
@@ -6212,7 +6217,7 @@
  };
  StackOverflow_GeneratedPrintf.p$3=function($1)
  {
-  return $1.$==1?"Inactivo":"Activo";
+  return $1.$==2?"Inactivo":$1.$==1?"Activo":"Nuevo";
  };
  StackOverflow_GeneratedPrintf.p$4=function($1)
  {
