@@ -1,0 +1,53 @@
+<div style="display:none" >
+
+        <div ws-template="Logo">
+            <div class="ui menu fixed" style="background: white; margin-bottom:0px;">
+                <div class="header left item">
+                    <div class="logoHolder logoHolderLeft">
+                        <img class="logo" src="http://prozper.com/images/logos/pro.png" alt="Logo">
+                    </div>
+                </div>
+            </div>            
+        </div>
+
+        <div ws-template="Invitacion">
+            <div ws-hole="Logo"></div>
+            Felicitaciones, 
+            <br>
+            ha sido invitado a afiliarse a <b>Prozper</b>. 
+            <br>
+            Inicie su afiliación dando click aquí: <a href="${Enlace}">Forma de Afiliación</a>
+            <br>
+            En caso de que el enlace no funcione puede copiar la siguiente dirección en su browser: 
+            <br>
+            ${Enlace}
+        </div>
+
+        <div ws-template="Bienvenida">
+            <div ws-hole="Logo"></div>
+            Estimad${Sufijo} ${NombreAfiliado},
+            <br>
+            Bienvenid${Sufijo} a <b>Prozper</b>, su nueva cuenta de afiliad${Sufijo} ha sido creada.
+            <br>
+            Continúe el proceso de afiliación dando click aquí: <a href="${Enlace}">Forma de Afiliación</a>
+            <br>
+            <br>
+            En caso de que el enlace no funcione puede copiar la siguiente dirección en su browser: 
+            <br>
+            <br>
+            ${Enlace}
+        </div>
+
+        <div ws-template="VerificacionCorreo">
+            <div ws-hole="Logo"></div>             
+            Por favor <b>Prozper</b>. 
+            <br>${NombreAfiliado}
+            <br>
+            Verifique su correo dando click aquí: <a href="${Enlace}">Verificar Correo</a>
+            <br>
+            En caso de que el enlace no funcione puede copiar la siguiente dirección en su browser: 
+            <br>
+            ${Enlace}
+        </div>
+
+</div>

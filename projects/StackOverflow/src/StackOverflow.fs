@@ -1,5 +1,6 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1552390017943 -d:WEBSHARPER
+#nowarn "40"
+////-d:FSS_SERVER -d:FSharpStation1552522263490 -d:WEBSHARPER
 ////#cd @"..\projects\StackOverflow\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -35,8 +36,9 @@
 //#r @"..\packages\Microsoft.Owin.StaticFiles\lib\net451\Microsoft.Owin.StaticFiles.dll"
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
+//#nowarn "40"
 /// Root namespace for all code
-//#define FSharpStation1552390017943
+//#define FSharpStation1552522263490
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -1529,7 +1531,16 @@ namespace FsRoot
         module TypesV0 =
             type LatestType = TypeV0
         
-            type IdAliado = IdAliado of string
+            type IdAliado     = IdAliado     of string
+            type IdAuthorized = IdAuthorized of string
+        
+            type StatusAliado =
+            | CuentaCreada
+            | DatosBancariosIngresados
+            | Activo
+            | Inactivo
+                with
+                    override this.ToString() = sprintf "%A" this
         
             type TipoAliado =
             | Master
@@ -1601,13 +1612,6 @@ namespace FsRoot
                 numero  : NumeroCuenta
                 routing : RoutingNumber
             }
-        
-            type StatusAliado =
-            | Nuevo
-            | Activo
-            | Inactivo
-                with
-                    override this.ToString() = sprintf "%A" this
         
             type ConceptoPago =
             | PagoAfiliacion
@@ -1761,7 +1765,7 @@ namespace FsRoot
                 comisionReferidosMaster      : int
                 comisionDescendientesMaster  : int
                 comisionDescendientesRegular : int
-                montoAliliacion              : int
+                montoAfiliacion              : int
                 numeroReferidosMaster        : int
                 diaCorte1                    : int
                 diaCorte2                    : int
@@ -1772,7 +1776,7 @@ namespace FsRoot
                 comisionReferidosMaster      = 25
                 comisionDescendientesMaster  = 25
                 comisionDescendientesRegular =  0
-                montoAliliacion              = 75
+                montoAfiliacion              = 75
                 numeroReferidosMaster        = 31
                 diaCorte1                    = 15
                 diaCorte2                    = 22
@@ -1836,7 +1840,8 @@ namespace FsRoot
         
             type Aliado = {
                 id              : IdAliado
-                idPadreO        : IdAliado option
+                idAuthorizedO   : IdAuthorized option
+                idPadreO        : IdAliado     option
                 datosPersonales : DatosPersonales
                 contactos       : Contacto       []
                 identificacion  : Identificacion []
@@ -1998,6 +2003,7 @@ namespace FsRoot
                                         fechaNacimiento = System.DateTime(2000, 1, 1)
                                     }
                 id              =  IdAliado ""
+                idAuthorizedO   =  None
                 idPadreO        =  None
                 contactos       =  [||]
                 identificacion  =  [||]
@@ -2027,11 +2033,14 @@ namespace FsRoot
                 titulo + (dp.nombre1 + " " + dp.nombre2).Trim() + " " + (dp.apellido1 + " " + dp.apellido2).Trim()
         
         type DataEvento =
-        | AgregarAliados            of Aliado[]
-        | AgregarAliado             of Aliado
-        | RegistroNuevo             of IdAliado * DatosPersonales * IdAliado option * Contacto []
-        | ActualizarDatosPersonales of IdAliado * DatosPersonales
-        | ActualizarContactos       of IdAliado * Contacto []
+        | AgregarAliados            of (Aliado[]                                                   )
+        | AgregarAliado             of (Aliado                                                     )
+        | InvitarPotencialesAliados of (IdAliado * string []                                       )
+        | RegistroNuevo             of (IdAliado * DatosPersonales * IdAliado option * Contacto [] )
+        | ActualizarDatosPersonales of (IdAliado * DatosPersonales                                 )
+        | ActualizarContactos       of (IdAliado * Contacto []                                     )
+        | CorreoVerificacionEnviado of (IdAliado * string                                          )
+        | CorreoVerificado          of (IdAliado * string                                          )
         
         type Evento = {
             nevento : int64
@@ -2041,8 +2050,8 @@ namespace FsRoot
         
         type Respuesta =
         | ROk
-        | NuevoRegistro of string
-        | Mensaje       of string
+        | NuevoRegistro        of string
+        | Mensaje              of string
         
         
         [< JavaScript false >]
@@ -2087,6 +2096,11 @@ namespace FsRoot
             let addNewAliados (als1: Aliado []) (als2: Aliado []) : Aliado [] =
                 als1 |> Seq.filter(fun a -> als2 |> Seq.exists (fun b -> a.id = b.id ) |> not ) |> Seq.append als2 |> Seq.toArray
         
+            let correoNuevo =
+                function
+                | CorreoElectronico correo -> CorreoElectronico { correo with status = RequiereVerificacion }
+                | c -> c
+        
             let registroNuevo (idA, datos:DatosPersonales, padre, contactos) (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
                 match   contactos
                         |> Seq.tryPick(function CorreoElectronico email -> Some email |_-> None ) with
@@ -2096,7 +2110,7 @@ namespace FsRoot
                     |> Seq.exists(fun al ->
                         al.contactos
                         |> Seq.exists(function CorreoElectronico correo2 -> correo = correo2 |_-> false ) 
-                    )       
+                    )
                     then return! errorMsgf "Correo Electronico ya esta registrado: %A" correo |> ErrorM
                 else
                 if modelo.aliados |> Seq.exists (fun al -> al.id = idA) 
@@ -2106,14 +2120,15 @@ namespace FsRoot
                 let aliado = {
                     datosPersonales =  datos
                     id              =  idA
+                    idAuthorizedO   =  None
                     idPadreO        =  padre
-                    contactos       =  contactos
+                    contactos       =  contactos |> Array.map correoNuevo
                     identificacion  =  [||]
                     formasPago      =  [||]
                     transacciones   =  [||]
                     mensajes        =  [||]
                     isInternal      =  false
-                    status          =  Inactivo
+                    status          =  CuentaCreada
                     tipo            =  Regular
                     fechaRegistro   =  now
                     fechaStatus     =  now
@@ -2161,8 +2176,24 @@ namespace FsRoot
                 ,  Mensaje <| "Contactos actualizados!" 
             }
         
-            let agregarAliado                   aliado  modelo = resultM { return { modelo with Modelo.aliados = addNewAliados [| aliado  |] modelo.aliados }, ROk }
-            let agregarAliados                  aliados modelo = resultM { return { modelo with Modelo.aliados = addNewAliados    aliados    modelo.aliados }, ROk }
+            let agregarAliado  aliado  modelo = resultM { return { modelo with Modelo.aliados = addNewAliados [| aliado  |] modelo.aliados }, ROk }
+            let agregarAliados aliados modelo = resultM { return { modelo with Modelo.aliados = addNewAliados    aliados    modelo.aliados }, ROk }
+        
+            let cambiaAliado ida   f (modelo:Modelo) = { modelo with aliados   = modelo.aliados   |> Array.map (fun al -> if al.id = ida then f al else al )}
+            let cambiaCorreo email f (aliado:Aliado) = { aliado with contactos = aliado.contactos |> Array.map (function CorreoElectronico c when c.email = email -> f c |> CorreoElectronico | co -> co )}
+            let cambiaStatusCorreo ida email f = cambiaAliado ida (cambiaCorreo email  (fun c -> { c with status = f c } ) )
+        
+            let correoVerificacionEnviado (ida, correo)  (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
+                return
+                    cambiaStatusCorreo ida correo (fun _ -> VerificacionEnviada) modelo
+                ,   ROk
+            }
+        
+            let correoVerificado          (ida, correo)  (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
+                return
+                    cambiaStatusCorreo ida correo (fun _ -> Habilitado) modelo
+                ,   ROk
+            }
         
             let actualizarEstado (evento: Evento) (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
                 if modelo.nevento <> -1L && modelo.nevento + 1L <> evento.nevento then 
@@ -2177,12 +2208,15 @@ namespace FsRoot
         
             let actualizarGenerico (nevento, aliadoO, objData) (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
                 if modelo.nevento <> -1L && modelo.nevento + 1L <> nevento then 
-                    failwithf "Evento fuera de secuencia: %d %d" modelo.nevento nevento
+                    printfn "Evento fuera de secuencia: %d %d" modelo.nevento nevento
                 return! manejadorGenerico objData modelo
             }
         
+            let eventoNoImplementado ev (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
+                return! errorMsgf "Evento no Implementado: %A" ev |> ErrorM
+            } 
         
-            
+            let invitarPotencialesAliados ev = eventoNoImplementado ev
         [< JavaScript false >]
         module CodigoGenerado =
             type EventoTipos = 
@@ -2204,6 +2238,7 @@ namespace FsRoot
                     , (fun (j:JsonIntermediate) -> j.tryString() |> Option.bind ParseO.parseDateO )
         
                 let serIdAliado          = serDU<IdAliado         > [   serObj serString            ]    
+                let serIdAuthorized      = serDU<IdAuthorized     > [   serObj serString            ]    
                 let serTipoAliado        = serDU<TipoAliado       > [   serObj serString            ]    
                 let serPais              = serDU<Pais             > [   serObj serString            ]    
                 let serEstado            = serDU<Estado           > [   serObj serString            ]    
@@ -2330,7 +2365,7 @@ namespace FsRoot
                         serInt  |> serField "comisionReferidosMaster"      (fun s -> s.comisionReferidosMaster     ) (fun v s -> { s with comisionReferidosMaster      = v } )
                         serInt  |> serField "comisionDescendientesMaster"  (fun s -> s.comisionDescendientesMaster ) (fun v s -> { s with comisionDescendientesMaster  = v } )
                         serInt  |> serField "comisionDescendientesRegular" (fun s -> s.comisionDescendientesRegular) (fun v s -> { s with comisionDescendientesRegular = v } )
-                        serInt  |> serField "montoAliliacion"              (fun s -> s.montoAliliacion             ) (fun v s -> { s with montoAliliacion              = v } )
+                        serInt  |> serField "montoAfiliacion"              (fun s -> s.montoAfiliacion             ) (fun v s -> { s with montoAfiliacion              = v } )
                         serInt  |> serField "numeroReferidosMaster"        (fun s -> s.numeroReferidosMaster       ) (fun v s -> { s with numeroReferidosMaster        = v } )
                         serInt  |> serField "diaCorte1"                    (fun s -> s.diaCorte1                   ) (fun v s -> { s with diaCorte1                    = v } )
                         serInt  |> serField "diaCorte2"                    (fun s -> s.diaCorte2                   ) (fun v s -> { s with diaCorte2                    = v } )
@@ -2369,6 +2404,7 @@ namespace FsRoot
                 let serAliado : Ser<Aliado> =
                     [|
                         serIdAliado                    |> serField "id"              (fun s -> s.id             ) (fun v s -> { s with id              = v } )
+                        serIdAuthorized     |> serOpt  |> serField "idAuthorized"    (fun s -> s.idAuthorizedO  ) (fun v s -> { s with idAuthorizedO   = v } )
                         serIdAliado         |> serOpt  |> serField "idPadreO"        (fun s -> s.idPadreO       ) (fun v s -> { s with idPadreO        = v } )
                         serIdentificacion   |> serArr  |> serField "identificacion"  (fun s -> s.identificacion ) (fun v s -> { s with identificacion  = v } )
                         serDatosPersonales             |> serField "datosPersonales" (fun s -> s.datosPersonales) (fun v s -> { s with datosPersonales = v } )
@@ -2400,14 +2436,20 @@ namespace FsRoot
         
             open FSharp.Reflection
         
+            let serObject : Ser<obj> = (fun o -> o.GetType().ToString() |> sprintf "%A"), (fun _ -> None)
+        
             let serSerializadoresEventos =
                 let sers = System.Collections.Generic.Dictionary<_,_>()
                 [
+                    serObj         serObject
+                    serObj         serString
                     serObj         serAliado
                     serObj         serIdAliado
+                    serObj         serIdAuthorized
                     serObj (serOpt serIdAliado)
                     serObj (serArr serContacto)
                     serObj (serArr serAliado  )
+                    serObj (serArr serString  )
                     serObj         serDatosPersonales
                 ] |> Seq.iter sers.Add
                 sers
@@ -2417,7 +2459,10 @@ namespace FsRoot
                 let tupleType = FSharpType.MakeTupleType ts
                 let tname     = getTypeName tupleType
                 if serSerializadoresEventos.ContainsKey tname then () else
-                let sers      = ts |> Array.map (fun t -> serSerializadoresEventos.[getTypeName  t])
+                let sers      = ts |> Array.map (fun t ->   let tname = getTypeName  t
+                                                            serSerializadoresEventos 
+                                                            |> Dict.tryGetValue tname 
+                                                            |> Option.defaultWith (fun () -> failwithf "Serializador no encontrado: %s" tname) )
                 let getValues = FSharpValue.PreComputeTupleReader      tupleType
                 let setValues = FSharpValue.PreComputeTupleConstructor tupleType
                 let serC    v = Seq.zip (getValues v) sers
@@ -2437,7 +2482,9 @@ namespace FsRoot
             and registrarSerializadoresParaDU (ttype:System.Type) =
                 FSharpType.GetUnionCases ttype
                 |> Seq.iter(fun case ->
-                    case.GetFields() |> Array.map(fun p -> p.PropertyType) |> registrarSerializadorParaTipos
+                    let ts = case.GetFields() |> Array.map(fun p -> p.PropertyType) 
+                    ts |> Seq.iter registrarSerializadorPara 
+                    ts |> registrarSerializadorParaTipos
                 )
         
             and registrarSerializadorPara (ttype:System.Type) =
@@ -2472,6 +2519,9 @@ namespace FsRoot
             registrarF "RegistroNuevo"             Eventos.registroNuevo
             registrarF "ActualizarDatosPersonales" Eventos.actualizarDatosPersonales
             registrarF "ActualizarContactos"       Eventos.actualizarContactos
+            registrarF "CorreoVerificacionEnviado" Eventos.correoVerificacionEnviado
+            registrarF "CorreoVerificado"          Eventos.correoVerificado
+            registrarF "InvitarPotencialesAliados" Eventos.invitarPotencialesAliados
         
             print "serializers:"
             serSerializadoresEventos.Keys |> Seq.iter print
@@ -2490,12 +2540,22 @@ namespace FsRoot
         
             open CodigoGenerado
         
-            let chequearEventosExistentes et =
+            let chequearEventosEnBD et =
                 match et with
                 | ActualizarDatosPersonales_V0  v -> Eventos.actualizarDatosPersonales  v
                 | AgregarAliado_V1              v -> Eventos.agregarAliado              v
                 | RegistroNuevo_V1              v -> Eventos.registroNuevo              v
         
+            let chequearEventos ev =
+                match ev with
+                | AgregarAliado                 v -> Eventos.agregarAliado              v
+                | AgregarAliados                v -> Eventos.agregarAliados             v
+                | RegistroNuevo                 v -> Eventos.registroNuevo              v
+                | ActualizarDatosPersonales     v -> Eventos.actualizarDatosPersonales  v
+                | ActualizarContactos           v -> Eventos.actualizarContactos        v
+                | CorreoVerificacionEnviado     v -> Eventos.correoVerificacionEnviado  v
+                | CorreoVerificado              v -> Eventos.correoVerificado           v
+                | InvitarPotencialesAliados     v -> Eventos.invitarPotencialesAliados  v
         
         [< JavaScript false >]
         module EstadoActual =
@@ -2510,7 +2570,7 @@ namespace FsRoot
                                         comisionReferidosMaster      = 25
                                         comisionDescendientesMaster  = 25
                                         comisionDescendientesRegular =  0
-                                        montoAliliacion              = 75
+                                        montoAfiliacion              = 75
                                         numeroReferidosMaster        = 31
                                         diaCorte1                    = 15
                                         diaCorte2                    = 22
@@ -2536,7 +2596,10 @@ namespace FsRoot
         
             type ContRespuesta = (ResultM<Respuesta,unit> -> unit) * (exn -> unit) * (System.OperationCanceledException -> unit)
         
+            let mutable ejecutarEventosO = None
+        
             let llamarEvento, agregarEvento, leerTodosLosEventosAsync, leerTodosLosEventos = 
+                let mutable reprocesar = false
                 let eventosEspera = new System.Collections.Generic.Dictionary<int64, ContRespuesta>()
                 let nuevoEvento (usuario, evento:DataEvento, cntsO) =
                     let  name, ttype, obj = DiscUnion.caseTuple evento
@@ -2547,13 +2610,14 @@ namespace FsRoot
                     |>  match cntsO with
                         | None           -> AsyncResultM.iterpS ignore
                         | Some(ca,ce,cc) -> AsyncResultM.iterS  (ErrorM >> ca) (fun n -> eventosEspera.Add(n, (ca,ce,cc) ) )
-        
-                let agente =
+        //#nowarn "40"
+                let rec agente =
                     Mailbox.call print (fun dataEventoO ->
                         asyncResultM {
                             dataEventoO |> Option.iter nuevoEvento
                             let! eventosJson = SQLServer.leerEventos (estado()).nevento
                             for (nevento, usuario, name:string, data:string, tipoEvento, _) in eventosJson do
+                                reprocesar <- true
                                 let cnt, cnte, cntc = 
                                     match eventosEspera.TryGetValue nevento with
                                     | false, _       -> (ResultM.iter print print), print, print
@@ -2575,12 +2639,19 @@ namespace FsRoot
                                 | :? System.OperationCanceledException as e -> cntc e
                                 |                                         e -> cnte e
                             do!  Async.Sleep 50  //00 
+                            if agente.CurrentQueueLength = 0 && reprocesar then 
+                                ejecutarEventosO
+                                |> Option.iter (fun ejecutarEventos -> 
+                                    reprocesar <- false
+                                    async { ejecutarEventos() } |> Async.Start)
                             return ()
                         } |> AsyncResultM.iterpS id )
                 (  fun us ev  -> Async.FromContinuations(fun (cnts:ContRespuesta)-> agente.PostAndReply      (Some (us, ev, Some cnts))              ) )
                 , (fun us ev  ->                                                    agente.PostAndAsyncReply (Some (us, ev, None     )) |> Async.Start ) 
                 , (fun ()     ->                                                    agente.PostAndAsyncReply  None)
                 , (fun ()     ->                                                    agente.PostAndReply       None)
+        
+            let agregarEventoServer ev = agregarEvento "Server" ev
         
             async {
                 while true do
@@ -2597,22 +2668,15 @@ namespace FsRoot
             open System.IO
             open WebSharper.UI.Server
         
-            let sendTestEmail recipiente tema html =
-                use msg = new MailMessage(recipiente, "no-reply@prozper.com", tema, html)
-                msg.IsBodyHtml <- true
-                use client = new SmtpClient(@"localhost")
-                client.DeliveryMethod <- SmtpDeliveryMethod.Network        
-                client.Send msg
-        
-            let prepareHtml ctx (IdAliado aid) =
-                use tw  = new StringWriter()
-                use w   = new Core.Resources.HtmlTextWriter(tw, " ")        
-                TemplateLib.CorreoNuevaAfiliacion()
-                        .NombreAfiliado( "Hello" )
-                        .IdAliado(aid)
-                        .Doc()
-                        .Write(ctx, w, false)
-                tw.ToString()
+            let sendTestEmail recipiente tema contenido =
+                resultM {
+                    use msg = new MailMessage(recipiente, "no-reply@prozper.com", tema, contenido)
+                    msg.IsBodyHtml <- true
+                    use client = new SmtpClient(@"localhost")
+                    client.DeliveryMethod <- SmtpDeliveryMethod.Network        
+                    client.Send msg
+                    printfn "Enviando correo %s" recipiente
+                }
         
             let dummyCtx =
                 { new WebSharper.Web.Context() with
@@ -2626,10 +2690,88 @@ namespace FsRoot
                     member this.ApplicationPath = failwith "Unsupported"
                     member this.ResourceContext = failwith "Unsupported" }
         
-            prepareHtml dummyCtx (IdAliado "HELLO")
-            |> sendTestEmail "amieres@gmail.com" "Invitación a Prozper"
+            let prepareHtml (doc:Doc) =
+                use tw  = new StringWriter()
+                use w   = new Core.Resources.HtmlTextWriter(tw, " ")        
+                doc.Write(dummyCtx, w, false)
+                tw.ToString()
+        
+            open WebSharper.UI.Templating
+        
+            let [< Literal >] TemplatesCorreos = rootdir + @"\Correos.html"
+            type TemplateCorreo = Template<TemplatesCorreos, serverLoad = ServerLoad.WhenChanged>
+        
+            let host = "http://localhost:9006"
+         
+            let enviarCorreoInvitacion (correo:CorreoElectronico) (IdAliado idPadre) tema mensaje = 
+                TemplateCorreo.Invitacion()
+                    .Logo(   TemplateCorreo.Logo().Doc())
+                    .Enlace( sprintf "%s/Registro/%s" host idPadre )
+                    .Doc()
+                |> prepareHtml
+                |> sendTestEmail correo.email tema
+        
+            let enviarBienvenida (aliado:Aliado) (correo:CorreoElectronico) =
+                resultM {
+                    let sufijo = match aliado.datosPersonales.genero with Femenino -> "a" |_-> "o"
+                    let nombre = Aliado.nombre2 aliado.datosPersonales
+                    let tema   = sprintf "Bienvenid%s a Prozper" sufijo
+                    do! TemplateCorreo.Bienvenida()
+                            .Logo(   TemplateCorreo.Logo().Doc())
+                            .Enlace(        sprintf "%s/#/Content/ProzperLyt.cntFormaDatos" host )
+                            .Sufijo(        sufijo                                               )
+                            .NombreAfiliado(nombre                                               )
+                            .Doc()
+                        |> prepareHtml
+                        |> sendTestEmail correo.email tema
+                    CorreoVerificacionEnviado (aliado.id, correo.email)
+                    |> EstadoActual.agregarEventoServer
+                } |> ResultM.iter print id
+        
+            let enviarVerificacionCorreo (aliado:Aliado) (correo:CorreoElectronico) = 
+                resultM {
+                    do! WebSharper.UI.Html.div [] [ WebSharper.UI.Html.text "CORREO CONTENIDO" ]
+                        |> prepareHtml
+                        |> sendTestEmail correo.email "Verificacion de Correo"
+                    CorreoVerificacionEnviado (aliado.id, correo.email)
+                    |> EstadoActual.agregarEventoServer
+                } |> ResultM.iter print id
         
         
+        [< JavaScript false >]
+        module Acciones =
+        
+            let enviarCorreosBienvenida (estado: Modelo) =
+                for aliado in estado.aliados do
+                    if aliado.status = CuentaCreada then
+                        for contacto in aliado.contactos do
+                            match contacto with
+                            | CorreoElectronico correo -> 
+                                match correo.status with
+                                | RequiereVerificacion -> Correo.enviarBienvenida aliado correo
+                                |_-> ()
+                            | _ -> ()
+        
+            let enviarCorreosVerificacion (estado: Modelo) =
+                for aliado in estado.aliados do
+                    for contacto in aliado.contactos do
+                        match contacto with
+                        | CorreoElectronico correo -> 
+                            match correo.status with
+                            | RequiereVerificacion -> Correo.enviarVerificacionCorreo aliado correo
+                            |_-> ()
+                        | _ -> ()
+        
+            let rec enviarCorreos () =
+                print "enviarCorreos"
+                EstadoActual.ejecutarEventosO <- None
+                EstadoActual.leerTodosLosEventos()
+                EstadoActual.estado() |> enviarCorreosBienvenida
+                EstadoActual.leerTodosLosEventos()
+                EstadoActual.estado() |> enviarCorreosVerificacion
+                EstadoActual.ejecutarEventosO <- Some enviarCorreos
+                EstadoActual.leerTodosLosEventosAsync() |> Async.Start
+            EstadoActual    .ejecutarEventosO <- Some enviarCorreos
         [< JavaScript false >]
         module Rpc =
         
@@ -5419,6 +5561,7 @@ namespace FsRoot
                         | _             -> ""       , p1.Trim(), Empresa
                     {
                         id              = IdAliado p1
+                        idAuthorizedO   = None
                         idPadreO        = IdAliado p2 |> Some
                         identificacion  = [||]
                         datosPersonales = {
@@ -5430,7 +5573,6 @@ namespace FsRoot
                                             nacionalidad    = Venezuela
                                             genero          = genero
                                             fechaNacimiento = System.DateTime.Now
-        
                         }
                         contactos       = [||]
                         formasPago      = [||]
@@ -5438,7 +5580,7 @@ namespace FsRoot
                         mensajes        = [||]
                         isInternal      = false
                         status          = if sta = "ACTIVO" then Activo else Inactivo
-                        tipo           = Regular
+                        tipo            = Regular
                         fechaRegistro   = System.DateTime.Now
                         fechaStatus     = System.DateTime.Now
                         nReferidos      = 0
@@ -5490,36 +5632,20 @@ namespace FsRoot
             | [< EndPoint "" >] DefaultEP
             |                   Content of string
         
-            let endPointV = Var.Create DefaultEP
-        
             open Sitelets.InferRouter
             open FsRoot
             module AF = AppFramework 
         
-            let contentVar = Var.Create "ProzperLyt.mainContent"
+            let endPointV = if IsClient then Router.Infer() |> Router.InstallHash DefaultEP else Var.Create DefaultEP
         
-            if IsClient then
-                Router.Infer()
-                |> Router.InstallHashInto endPointV DefaultEP
-        
-                endPointV.View |> View.Map (
-                    function
+            let contentVar =
+                Var.Lens endPointV 
+                    (function
                     | DefaultEP          -> "ProzperLyt.mainContent"
                     | Content     lyt    -> lyt)
-                |> View.Sink (fun lyt    -> 
-                    let lyt = if refAliadoIdOV.Value = None then lyt else "ProzperLyt.cntFormaRegistro"
-                    if  contentVar.Value <> lyt then
-                        contentVar.Set      lyt
-                )
-        
-                contentVar.View |> View.Map (
-                    function
+                    (fun _ -> function
                     | "ProzperLyt.mainContent"  -> DefaultEP
                     | lyt                       -> Content lyt)
-                |> View.Sink (fun ep -> 
-                    if  endPointV.Value <> ep then
-                        endPointV.Value <- ep
-                )
         
             let aliadoIdDoc fDoc =
                 View.Do {
@@ -6358,7 +6484,7 @@ namespace FsRoot
             
             [< EntryPoint >]
             let Main args =
-                //Sample.aliados |> Seq.iter (DataEvento.AgregarAliado >> EstadoActual.agregarEvento "Server")
+                //Sample.aliados |> Seq.iter (DataEvento.AgregarAliado >> EstadoActual.agregarEventoServer)
                 printfn "Usage: FSharpStation URL ROOT_DIRECTORY MaxMessageSize"
                 let url           = args |> Seq.tryItem 0 |>                   Option.defaultValue "http://localhost:9005/"
                 let rootDirectory = args |> Seq.tryItem 1 |>                   Option.defaultValue @"..\website"
