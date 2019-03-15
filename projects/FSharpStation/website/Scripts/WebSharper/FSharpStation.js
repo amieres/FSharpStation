@@ -11055,36 +11055,36 @@
   p=Handler$1.CompleteHoles(b.k,b.h,[]);
   b.i=new TemplateInstance.New(p[1],Templates.RunFullDocTemplate(p[0]));
  };
- MainProgram.mainDoc$5623$78=Global.id;
- MainProgram.mainDoc$5615$39=function()
+ MainProgram.mainDoc$5620$78=Global.id;
+ MainProgram.mainDoc$5612$39=function()
  {
   return function(ev)
   {
    JumpTo.jumpToRef(ev.Target);
   };
  };
- MainProgram.mainDoc$5614$39=function()
+ MainProgram.mainDoc$5611$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5613$39=function()
+ MainProgram.mainDoc$5610$39=function()
  {
   return function(ev)
   {
    Importer.importFile(ev.Target);
   };
  };
- MainProgram.mainDoc$5612$39=function()
+ MainProgram.mainDoc$5609$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5611$39=function()
+ MainProgram.mainDoc$5608$39=function()
  {
   return function(ev)
   {
@@ -11203,11 +11203,11 @@
   }))))))))))))));
   return(p=Handler$1.CompleteHoles(tmp.k,tmp.h,[["filename",0],["name",0],["output",0],["fscode",0],["parser",0]]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.layout(p[0])),(tmp.i=i,i))).get_Doc();
  };
- MainProgram.buttonsRight$5597$74=Global.id;
- MainProgram.buttonsRight$5596$74=Global.id;
- MainProgram.buttonsRight$5595$74=Global.id;
  MainProgram.buttonsRight$5594$74=Global.id;
  MainProgram.buttonsRight$5593$74=Global.id;
+ MainProgram.buttonsRight$5592$74=Global.id;
+ MainProgram.buttonsRight$5591$74=Global.id;
+ MainProgram.buttonsRight$5590$74=Global.id;
  MainProgram.buttonsRight=function()
  {
   var tmp,p,i;
@@ -11614,14 +11614,14 @@
   SC$1.$cctor();
   return SC$1.wsStationClient;
  };
- Server.content$5871$54=function()
+ Server.content$5868$54=function()
  {
   MainProgram.mainProgram();
   return Doc.TextNode("Initialized");
  };
  SC$1.$cctor=function()
  {
-  var f,g$3,generation,$1,b,b$1,cache,$2,cache$1,$3,cache$2,$4,g$8,v,prior,f$3,f$4,f$5,f$6,x,$5,$6,v$1,s,sQ,x$1,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,x$2,t$9,i,x$3,t$10,t$11,t$12,t$13,t$14,i$1,x$4,t$15,t$16,t$17,t$18,t$19,t$20,t$21,i$2,t$22,r,g$11,g$12,x$5,b$2;
+  var f,g$3,generation,$1,b,b$1,cache,$2,cache$1,$3,cache$2,$4,g$8,v,prior,f$3,f$4,f$5,f$6,x,$5,$6,v$1,s,sQ,x$1,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,x$2,t$9,i,x$3,t$10,t$11,t$12,t$13,t$14,i$1,x$4,t$15,t$16,t$17,t$18,t$19,t$20,t$21,i$2,t$22,g$11,g$12,x$5,b$2;
   SC$1.$cctor=Global.ignore;
   SC$1.rtn=function(v$2)
   {
@@ -12146,9 +12146,9 @@
    {
     return TreeReader.listNodes(0,n);
    }
-   function g$13(r$1)
+   function g$13(r)
    {
-    return Snippets.runReader(Snippets.handleError,r$1);
+    return Snippets.runReader(Snippets.handleError,r);
    }
    return function(x$6)
    {
@@ -12599,7 +12599,7 @@
    },i$2,x$4);
   }]));
   SC$1.serSnippets=(t$22=Importer.serSnippet2(),Serializer.serArr(t$22[0],t$22[1]));
-  SC$1.endPointV=Var$1.Create$1(EndPoint.NoSnippet);
+  SC$1.endPointV=Router.InstallHash(EndPoint.NoSnippet,FSharpStation_Router.r());
   function f$7(a$4)
   {
    var pth;
@@ -12648,8 +12648,6 @@
    if(!Unchecked.Equals(MainProgram.endPointV().Get(),ep))
     MainProgram.endPointV().Set(ep);
   }
-  r=FSharpStation_Router.r();
-  Router.InstallHashInto(MainProgram.endPointV(),EndPoint.NoSnippet,r);
   View$1.Sink((g$11=function(a$4)
   {
    View$1.Get(a$2,a$4);

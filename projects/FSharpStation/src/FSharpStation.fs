@@ -1,5 +1,5 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1552348121496 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1552522263490 -d:WEBSHARPER
 ////#cd @"..\projects\FSharpStation\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -40,7 +40,7 @@
 //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1552348121496
+//#define FSharpStation1552522263490
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -3825,7 +3825,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/0e1136b7-bd01-4116-9274-ed1082b673bd"
+                    "http://localhost:9005/#/Snippet/c677b6fd-d833-43ee-a15c-62c60d8572e4"
                 #endif
                 
                 let extractEndPoint() = 
@@ -4017,7 +4017,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1552348121496"
+                let mutable fsharpStationAddress = Address "FSharpStation1552522263490"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -5502,13 +5502,10 @@ namespace FsRoot
             | [< Wildcard    >] Path      of string[]
             | [< EndPoint "" >] NoSnippet
         
-            let endPointV = Var.Create NoSnippet
-        
             open Sitelets.InferRouter
-            if IsClient then
-                Router.Infer()
-                |> Router.InstallHashInto endPointV NoSnippet
+            let endPointV = if IsClient then Router.Infer() |> Router.InstallHash NoSnippet else Var.Create NoSnippet
         
+            if IsClient then
                 endPointV.View |> View.Sink (
                     function
                     | NoSnippet      -> View.rtn None

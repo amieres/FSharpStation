@@ -22,10 +22,13 @@
 //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+//#r @"..\packages\FSharp.Configuration\lib\net45\FSharp.Configuration.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
 //#r @"..\..\LayoutEngine\bin\LayoutEngine.dll"
 //#r @"..\packages\other\FSharp.Data.SqlClient\lib\net40\FSharp.Data.SqlClient.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Data.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Configuration.dll"
+//#r @"..\packages\other\AuthorizeNet\lib\AuthorizeNet.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
 //#r @"..\packages\Owin\lib\net40\Owin.dll"
 //#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
@@ -1354,7 +1357,7 @@ namespace FsRoot
                     let readTag   = box<'DU> >> FSharpValue.PreComputeUnionTagReader typeof<'DU> >> fun i -> dCases.[i]
                     let serDU   v = (readTag v |> fst) v
                     let deserDU j =
-                        let case =  cases |> Seq.pick(fun case -> match j with Field case.Name _ -> Some case |_-> None)
+                        let case =  cases |> Seq.tryPick(fun case -> match j with Field case.Name _ -> Some case |_-> None) |> Option.defaultWith (fun () -> failwithf "Could not find DU element %A" j)
                         snd dCases.[case.Tag] j
                     serDU, deserDU
             
@@ -1470,6 +1473,17 @@ namespace FsRoot
     
     [< JavaScript >]
     module StackOverflow =
+        //#r @"..\packages\FSharp.Configuration\lib\net45\FSharp.Configuration.dll"
+        
+        module Config =
+            open FSharp.Configuration
+        
+            let [<Literal>] appConfig    = @"C:\Users\Abelardo\OneDrive - Cipher Business Solutions\Clientes\Prozper\app.config"
+            let [<Literal>] authorizeIni = @"C:\Users\Abelardo\OneDrive - Cipher Business Solutions\Clientes\Prozper\authorize.ini"
+        
+            type Settings      = AppSettings<appConfig>
+            type AuthorizeKeys = IniFile<authorizeIni>
+        
         //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
         //#r "..\..\LayoutEngine\bin\LayoutEngine.dll"
         //#nowarn "1178" "1182" "3180" "52"
@@ -1489,15 +1503,17 @@ namespace FsRoot
         
         //#r @"..\packages\other\FSharp.Data.SqlClient\lib\net40\FSharp.Data.SqlClient.dll"
         //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Data.dll"
+        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Configuration.dll"
         
         [< JavaScript false >]
         module SQLServer =
             open FSharp.Data
             open FSharp.Data.SqlClient
         
-            let [< Literal >] conn = @"Data Source=abehome;Initial Catalog=CIPHERSpaceDB;UID=sa;PWD=memc52"
+            let connExe = Config.Settings.ConnectionStrings.ProzperDb
+            let [< Literal >] conn = @"name=ProzperDb"
         
-            type EventDB = SqlProgrammabilityProvider<conn>
+            type EventDB = SqlProgrammabilityProvider<conn, ConfigFile=Config.appConfig>
             
             let nuevoEvento usuario name evento tipo : AsyncResultM<_, unit> = asyncResultM {
                 let tbl = new EventDB.Prozper.Tables.EventStore()
@@ -1513,17 +1529,17 @@ namespace FsRoot
             }
         
             let leerEventos nevento : AsyncResultM<_, unit> = asyncResultM {
-                use  qry = new SqlCommandProvider<"""SELECT * FROM Prozper.EventStore WHERE EventSeq > @NumEvento ORDER BY EventSeq""", conn, ResultType = ResultType.Tuples>(conn)
+                use  qry = new SqlCommandProvider<"""SELECT * FROM Prozper.EventStore WHERE EventSeq > @NumEvento ORDER BY EventSeq""", conn, ConfigFile=Config.appConfig, ResultType = ResultType.Tuples>()
                 let  r   = qry.Execute(nevento) |> Seq.toArray
                 return r
             }
         
             let leerTipos() =
-                use  qry = new SqlCommandProvider<"""SELECT DISTINCT TypeOfEvent FROM Prozper.EventStore """, conn, ResultType = ResultType.Tuples>(conn)
+                use  qry = new SqlCommandProvider<"""SELECT DISTINCT TypeOfEvent FROM Prozper.EventStore """, conn, ConfigFile=Config.appConfig, ResultType = ResultType.Tuples>(connExe)
                 qry.Execute() |> Seq.toArray
                 
             let leerEventosTipos() =
-                use  qry = new SqlCommandProvider<"""SELECT DISTINCT NameEvent, TypeOfEvent FROM Prozper.EventStore """, conn, ResultType = ResultType.Tuples>(conn)
+                use  qry = new SqlCommandProvider<"""SELECT DISTINCT NameEvent, TypeOfEvent FROM Prozper.EventStore """, conn, ConfigFile=Config.appConfig, ResultType = ResultType.Tuples>(connExe)
                 qry.Execute() |> Seq.toArray
                 
         
@@ -1531,8 +1547,10 @@ namespace FsRoot
         module TypesV0 =
             type LatestType = TypeV0
         
-            type IdAliado     = IdAliado     of string
-            type IdAuthorized = IdAuthorized of string
+            type IdAliado     = IdAliado     of string          with member this.Id = match this with IdAliado    id -> id
+            type IdAuthorize  = IdAuthorize  of string          with member this.Id = match this with IdAuthorize id -> id
+            type IdAddress    = IdAddress    of string          with member this.Id = match this with IdAddress   id -> id
+            type IdPayment    = IdPayment    of string          with member this.Id = match this with IdPayment   id -> id
         
             type StatusAliado =
             | CuentaCreada
@@ -1598,19 +1616,55 @@ namespace FsRoot
                 vence     : System.DateTime
             }
         
-            type Banco          = Banco of string
-            type NumeroCuenta   = NumeroCuenta of string
-            type RoutingNumber  = RoutingNumber of string
+            type NumeroCuenta   = NumeroCuenta  of string       with member this.Id = match this with NumeroCuenta  id -> id
+            type NumeroTarjeta  = NumeroTarjeta of string       with member this.Id = match this with NumeroTarjeta id -> id
+            type Expiracion     = Expiracion    of string       with member this.Id = match this with Expiracion    id -> id
+            type RoutingNumber  = RoutingNumber of string       with member this.Id = match this with RoutingNumber id -> id 
+        
+            type TipoTarjeta     = 
+            | Visa
+            | MasterCard
+            | Amex
+            | Otra of string
+                with 
+                    static member tryParse (s:string) = 
+                        match s.Trim().ToUpper() with
+                        | ""                 -> None    
+                        | "VISA"             -> Some <| Visa
+                        | "MASTERCARD"       -> Some <| MasterCard
+                        | "AMEX"
+                        | "AMERICAN EXPRESS" -> Some <| Amex
+                        | _                  -> Some <| (Otra <| s.Trim() )
+                    override this.ToString() = match this with Otra s -> s | v -> sprintf "%A" v
+        
             type TipoCuenta     = 
             | Ahorro
             | Corriente
             | Otra of string
+                with 
+                    static member tryParse (s:string) = 
+                        match s.Trim().ToUpper() with
+                        | ""               -> None    
+                        | "SAVINGS"
+                        | "AHORRO"         -> Some <| Ahorro
+                        | "CHECKING"
+                        | "CORRIENTE"      -> Some <| Corriente
+                        | _                -> Some <| (Otra <| s.Trim() )
+                    override this.ToString() = match this with Otra s -> s | v -> sprintf "%A" v
+        
             type CuentaBancaria = {
-                titular : string
-                banco   : Banco
-                tipo    : TipoCuenta
-                numero  : NumeroCuenta
-                routing : RoutingNumber
+                titular     : string
+                banco       : string
+                tipo        : TipoCuenta
+                numero      : NumeroCuenta
+                routing     : RoutingNumber
+            }
+        
+            type TarjetaCredito = {
+                titular     : string
+                tipoTarjeta : TipoTarjeta
+                numero      : NumeroTarjeta
+                expiracion  : Expiracion
             }
         
             type ConceptoPago =
@@ -1651,6 +1705,7 @@ namespace FsRoot
                     override this.ToString() = match this with ZonaPostal s -> s
         
             type Direccion = {
+                authorizeIdR  : Result<IdAddress, string>
                 tipoDireccion : TipoDireccion
                 linea1        : string
                 linea2        : string
@@ -1716,9 +1771,21 @@ namespace FsRoot
                 fechaNacimiento : System.DateTime
             }
         
-            type FormaPago =
-            | CuentaBancaria of CuentaBancaria
-            | TransferenciaElectronica of string
+            type CuentaPago =
+            | CuentaBancaria            of CuentaBancaria
+            | TarjetaCredito            of TarjetaCredito
+            | TransferenciaElectronica  of string
+        
+            type StatusFormaPago =
+            | NuevaFormaPago
+            | Registrada      of          System.DateTime option
+            | RegistroFallido of string * System.DateTime option
+        
+            type FormaPago = {
+                nombre          : string
+                authorizeIdR    : Result<IdPayment, string>
+                cuentaPago      : CuentaPago
+            }
         
             type TipoMensaje = 
             | Alerta
@@ -1730,7 +1797,7 @@ namespace FsRoot
             | Aliado of IdAliado
             | OtroR  of string
         
-            type Mensaje ={
+            type Mensaje = {
                 tipo      : TipoMensaje
                 leido     : System.DateTime option
                 fecha     : System.DateTime
@@ -1801,6 +1868,7 @@ namespace FsRoot
             }
         
             let dirVacio = {
+                authorizeIdR  = Error ""
                 tipoDireccion = TipoDireccion.Habitacion
                 linea1        = ""
                 linea2        = ""
@@ -1810,23 +1878,29 @@ namespace FsRoot
                 zonaPostal    = ZonaPostal ""
             }
         
+            let tarVacio = {            
+                tipoTarjeta  = Visa
+                numero       = NumeroTarjeta ""
+                expiracion   = Expiracion    ""
+                titular      = ""
+            }
+        
+            let ctaVacio = {            
+                banco        = ""
+                numero       = NumeroCuenta ""
+                tipo         = Ahorro
+                titular      = ""
+                routing      = RoutingNumber ""
+            }
         
         [< AutoOpen >]
         module TypesV1 =
             type LatestType = TypeV1
         
-            type StatusContacto =
-            | RequiereVerificacion
-            | VerificacionEnviada
-            | Deshabilitado
-            | Habilitado
-        
             type CorreoElectronico = {
                 email       : string
-                status      : StatusContacto
                 enviado     : System.DateTime option
                 recibido    : System.DateTime option
-                enlace      : System.DateTime option
             }
                 with override this.ToString() = this.email
         
@@ -1840,7 +1914,7 @@ namespace FsRoot
         
             type Aliado = {
                 id              : IdAliado
-                idAuthorizedO   : IdAuthorized option
+                authorizeIdR    : Result<IdAuthorize, string>
                 idPadreO        : IdAliado     option
                 datosPersonales : DatosPersonales
                 contactos       : Contacto       []
@@ -1872,10 +1946,8 @@ namespace FsRoot
         
             let correoVacio = {
                 email       = ""
-                status      = RequiereVerificacion
                 enviado     = None
                 recibido    = None
-                enlace      = None
             }
         
         
@@ -2003,7 +2075,7 @@ namespace FsRoot
                                         fechaNacimiento = System.DateTime(2000, 1, 1)
                                     }
                 id              =  IdAliado ""
-                idAuthorizedO   =  None
+                authorizeIdR    =  Error ""
                 idPadreO        =  None
                 contactos       =  [||]
                 identificacion  =  [||]
@@ -2038,9 +2110,12 @@ namespace FsRoot
         | InvitarPotencialesAliados of (IdAliado * string []                                       )
         | RegistroNuevo             of (IdAliado * DatosPersonales * IdAliado option * Contacto [] )
         | ActualizarDatosPersonales of (IdAliado * DatosPersonales                                 )
-        | ActualizarContactos       of (IdAliado * Contacto []                                     )
+        | ActualizarContactos       of (IdAliado * Contacto  []                                    )
+        | ActualizarFormasPago      of (IdAliado * FormaPago []                                    )
         | CorreoVerificacionEnviado of (IdAliado * string                                          )
         | CorreoVerificado          of (IdAliado * string                                          )
+        | ActualizarAuthorizeId     of (IdAliado * Result<IdAuthorize, string>                     )
+        | ActualizarPagoAuthorizeId of (IdAliado * CuentaPago * Result<IdPayment, string>          )
         
         type Evento = {
             nevento : int64
@@ -2096,11 +2171,6 @@ namespace FsRoot
             let addNewAliados (als1: Aliado []) (als2: Aliado []) : Aliado [] =
                 als1 |> Seq.filter(fun a -> als2 |> Seq.exists (fun b -> a.id = b.id ) |> not ) |> Seq.append als2 |> Seq.toArray
         
-            let correoNuevo =
-                function
-                | CorreoElectronico correo -> CorreoElectronico { correo with status = RequiereVerificacion }
-                | c -> c
-        
             let registroNuevo (idA, datos:DatosPersonales, padre, contactos) (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
                 match   contactos
                         |> Seq.tryPick(function CorreoElectronico email -> Some email |_-> None ) with
@@ -2120,9 +2190,9 @@ namespace FsRoot
                 let aliado = {
                     datosPersonales =  datos
                     id              =  idA
-                    idAuthorizedO   =  None
+                    authorizeIdR    =  Error ""
                     idPadreO        =  padre
-                    contactos       =  contactos |> Array.map correoNuevo
+                    contactos       =  contactos
                     identificacion  =  [||]
                     formasPago      =  [||]
                     transacciones   =  [||]
@@ -2146,52 +2216,53 @@ namespace FsRoot
                     |> NuevoRegistro  
             }
         
+            let cambiaAliado ida   f (modelo:Modelo) = { modelo with aliados    = modelo.aliados    |> Array.map (fun al -> if al.id = ida then f al else al )}
+            let cambiaCorreo email f (aliado:Aliado) = { aliado with contactos  = aliado.contactos  |> Array.map (function CorreoElectronico c when c.email = email -> f c |> CorreoElectronico | co -> co )}
+            let cambiaFormaPago cp f (aliado:Aliado) = { aliado with formasPago = aliado.formasPago |> Array.map (fun fp -> if fp.cuentaPago = cp then f fp else fp ) }
+            let cambiaStatusCorreo ida email f = cambiaAliado ida (cambiaCorreo email  f)
+        
             let actualizarDatosPersonales (idA, datos:DatosPersonales) (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
-                let! aliado = modelo.aliados |> Seq.tryFind (fun a -> a.id = idA) |> ResultM.ofOption (fun () -> errorMsgf "Aliado no encontrado %A" idA)
                 return
-                    { modelo 
-                        with aliados = 
-                                modelo.aliados 
-                                |> Array.map(fun al -> 
-                                    if al.id = aliado.id 
-                                    then { al with datosPersonales = datos }
-                                    else al 
-                                ) 
-                    }
-                ,  Mensaje <| "Datos personales actualizados!" 
+                    cambiaAliado idA (fun al -> { al with datosPersonales = datos }) modelo
+                ,   Mensaje <| "Datos personales actualizados!" 
+            }
+        
+            let actualizarAuthorizeId   (idA, authorizeIdR) (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
+                return
+                    cambiaAliado idA (fun al -> { al with authorizeIdR = authorizeIdR }) modelo
+                ,   Mensaje <| "AuthorizeId actualizada" 
+            }
+        
+            let actualizarPagoAuthorizeId (idA, cuenta, paymentIdR : Result<IdPayment, string> )  (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
+                return
+                    cambiaAliado idA (cambiaFormaPago cuenta (fun fp -> { fp with authorizeIdR = paymentIdR }) ) modelo
+                ,   Mensaje <| "AuthorizeId actualizada" 
             }
         
             let actualizarContactos (idA, contactos:Contacto[]) (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
-                let! aliado = modelo.aliados |> Seq.tryFind (fun a -> a.id = idA) |> ResultM.ofOption (fun () -> errorMsgf "Aliado no encontrado %A" idA)
                 return
-                    { modelo 
-                        with aliados = 
-                                modelo.aliados 
-                                |> Array.map(fun al -> 
-                                    if al.id = aliado.id 
-                                    then { al with contactos = contactos }
-                                    else al 
-                                ) 
-                    }
+                    cambiaAliado idA (fun al -> { al with contactos = contactos }) modelo
                 ,  Mensaje <| "Contactos actualizados!" 
+            }
+        
+            let actualizarFormasPago (idA, formasPago:FormaPago[]) (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
+                return
+                    cambiaAliado idA (fun al -> { al with formasPago = formasPago }) modelo
+                ,  Mensaje <| "Formas de pago actualizadas!" 
             }
         
             let agregarAliado  aliado  modelo = resultM { return { modelo with Modelo.aliados = addNewAliados [| aliado  |] modelo.aliados }, ROk }
             let agregarAliados aliados modelo = resultM { return { modelo with Modelo.aliados = addNewAliados    aliados    modelo.aliados }, ROk }
         
-            let cambiaAliado ida   f (modelo:Modelo) = { modelo with aliados   = modelo.aliados   |> Array.map (fun al -> if al.id = ida then f al else al )}
-            let cambiaCorreo email f (aliado:Aliado) = { aliado with contactos = aliado.contactos |> Array.map (function CorreoElectronico c when c.email = email -> f c |> CorreoElectronico | co -> co )}
-            let cambiaStatusCorreo ida email f = cambiaAliado ida (cambiaCorreo email  (fun c -> { c with status = f c } ) )
-        
             let correoVerificacionEnviado (ida, correo)  (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
                 return
-                    cambiaStatusCorreo ida correo (fun _ -> VerificacionEnviada) modelo
+                    cambiaStatusCorreo ida correo (fun c -> { c with enviado = Some System.DateTime.Now }) modelo
                 ,   ROk
             }
         
             let correoVerificado          (ida, correo)  (modelo: Modelo) : ResultM<Modelo * Respuesta, unit> = resultM {
                 return
-                    cambiaStatusCorreo ida correo (fun _ -> Habilitado) modelo
+                    cambiaStatusCorreo ida correo (fun c -> { c with recibido = Some System.DateTime.Now }) modelo
                 ,   ROk
             }
         
@@ -2220,8 +2291,10 @@ namespace FsRoot
         [< JavaScript false >]
         module CodigoGenerado =
             type EventoTipos = 
-            | ActualizarDatosPersonales_V0 of System.Tuple<TypesV0.IdAliado,TypesV0.DatosPersonales>
+            | ActualizarDatosPersonales_V0  of (IdAliado * DatosPersonales)
+            | ActualizarFormasPago_V0 of System.Tuple<TypesV0.IdAliado,TypesV0.FormaPago[]>
             | AgregarAliado_V1 of TypesV1.Aliado
+            | CorreoVerificacionEnviado_V0 of System.Tuple<TypesV0.IdAliado,System.String>
             | RegistroNuevo_V1 of System.Tuple<TypesV0.IdAliado,TypesV0.DatosPersonales,Option<TypesV0.IdAliado>,TypesV1.Contacto[]>
         
         [< JavaScript false >]
@@ -2238,16 +2311,19 @@ namespace FsRoot
                     , (fun (j:JsonIntermediate) -> j.tryString() |> Option.bind ParseO.parseDateO )
         
                 let serIdAliado          = serDU<IdAliado         > [   serObj serString            ]    
-                let serIdAuthorized      = serDU<IdAuthorized     > [   serObj serString            ]    
-                let serTipoAliado        = serDU<TipoAliado       > [   serObj serString            ]    
+                let serIdAuthorized      = serDU<IdAuthorize      > [   serObj serString            ]    
+                let serIdPayment         = serDU<IdPayment        > [   serObj serString            ]    
+                let serIdAddress         = serDU<IdAddress        > [   serObj serString            ]    
+                let serTipoAliado        = serDU<TipoAliado       > [   serObj serString            ]
                 let serPais              = serDU<Pais             > [   serObj serString            ]    
                 let serEstado            = serDU<Estado           > [   serObj serString            ]    
                 let serTerritorio        = serDU<Territorio       > [   serObj serEstado            ]   
                 let serEmisor            = serDU<Emisor           > [   serObj serPais
                                                                         serObj serTerritorio        ]
                 let serDocumento         = serDU<Documento        > [   serObj serString            ]    
-                let serBanco             = serDU<Banco            > [   serObj serString            ]    
                 let serNumeroCuenta      = serDU<NumeroCuenta     > [   serObj serString            ]    
+                let serNumeroTarjeta     = serDU<NumeroTarjeta    > [   serObj serString            ]
+                let serExpiracion        = serDU<Expiracion       > [   serObj serString            ]
                 let serRoutingNumber     = serDU<RoutingNumber    > [   serObj serString            ]    
                 let serTipoCuenta        = serDU<TipoCuenta       > [   serObj serString            ]    
                 let serStatusAliado      = serDU<StatusAliado     > [   serObj serString            ]    
@@ -2258,6 +2334,11 @@ namespace FsRoot
                 let serTipoTelefono      = serDU<TipoTelefono     > [   serObj serString            ]    
                 let serGenero            = serDU<Genero           > [   serObj serString            ]    
                 let serTipoMensaje       = serDU<TipoMensaje      > [   serObj serString            ]
+        
+                let serIdAuthorizedR     = serDU<Result<IdAuthorize, string>> [   serObj serString ; serObj serIdAuthorized ]    
+                let serIdPaymentR        = serDU<Result<IdPayment  , string>> [   serObj serString ; serObj serIdPayment    ]    
+                let serIdAddressR        = serDU<Result<IdAddress  , string>> [   serObj serString ; serObj serIdAddress    ]    
+        
                 let serIdentificacion : Ser<Identificacion> = 
                     [|
                         serEmisor    |> serField "emisor"    (fun s -> s.emisor    ) (fun v s -> { s with emisor    = v } )
@@ -2266,13 +2347,20 @@ namespace FsRoot
                         serDate      |> serField "vence"     (fun s -> s.vence     ) (fun v s -> { s with vence     = v } )
                     |] |> serRecord LibraryNoJS.Default.value<_>
         
-                let serCuentaBancaria : Ser<CuentaBancaria> = 
+                let serCuentaBancaria : Ser<CuentaBancaria> =
                     [|
-                        serString        |> serField "titular" (fun s -> s.titular) (fun v s -> { s with titular = v } )   
-                        serBanco         |> serField "banco"   (fun s -> s.banco  ) (fun v s -> { s with banco   = v } )   
-                        serTipoCuenta    |> serField "tipo"    (fun s -> s.tipo   ) (fun v s -> { s with tipo    = v } )        
-                        serNumeroCuenta  |> serField "numero"  (fun s -> s.numero ) (fun v s -> { s with numero  = v } )          
-                        serRoutingNumber |> serField "routing" (fun s -> s.routing) (fun v s -> { s with routing = v } )           
+                        serString        |> serField "titular" (fun (s:CuentaBancaria) -> s.titular) (fun v s -> { s with titular = v } )   
+                        serString        |> serField "banco"   (fun  s                 -> s.banco  ) (fun v s -> { s with banco   = v } )   
+                        serTipoCuenta    |> serField "tipo"    (fun  s                 -> s.tipo   ) (fun v s -> { s with tipo    = v } )        
+                        serNumeroCuenta  |> serField "numero"  (fun  s                 -> s.numero ) (fun v s -> { s with numero  = v } )          
+                        serRoutingNumber |> serField "routing" (fun  s                 -> s.routing) (fun v s -> { s with routing = v } )           
+                    |] |> serRecord LibraryNoJS.Default.value<_>
+        
+                let serTarjetaCredito : Ser<TarjetaCredito> =
+                    [|
+                        serExpiracion    |> serField "expiracion" (fun s -> s.expiracion) (fun v s -> { s with expiracion = v } )   
+                        serString        |> serField "titular"    (fun s -> s.titular   ) (fun v s -> { s with titular    = v } )   
+                        serNumeroTarjeta |> serField "numero"     (fun s -> s.numero    ) (fun v s -> { s with numero     = v } )          
                     |] |> serRecord LibraryNoJS.Default.value<_>
         
                 let serTransaccion : Ser<Transaccion> = 
@@ -2310,10 +2398,18 @@ namespace FsRoot
                                                                         serObj serTelefono
                                                                         serObj serCorreoElectronico
                                                                         serObj serDireccion         ]
-                let serFormaPago         = serDU<FormaPago        > [   serObj serString              
+                let serCuentaPago        = serDU<CuentaPago       > [   serObj serString              
+                                                                        serObj serTarjetaCredito
                                                                         serObj serCuentaBancaria    ]
                 let serRemitente         = serDU<Remitente        > [   serObj serIdAliado
                                                                         serObj serString            ]
+        
+                let serFormaPago : Ser<FormaPago> =
+                    [|
+                        serCuentaPago            |> serField "cuentaPago"  (fun s -> s.cuentaPago   ) (fun v s -> { s with cuentaPago   = v } )
+                        serString                |> serField "nombre"      (fun s -> s.nombre       ) (fun v s -> { s with nombre       = v } )
+                        serIdPaymentR            |> serField "authorizeId" (fun s -> s.authorizeIdR ) (fun v s -> { s with authorizeIdR = v } )
+                    |] |> serRecord LibraryNoJS.Default.value<_>
         
                 let serDatosPersonales : Ser<DatosPersonales> =
                     [|
@@ -2385,15 +2481,11 @@ namespace FsRoot
                 open TypesV0
                 open TypesV1
         
-                let serStatusContacto = serDU<StatusContacto> []
-          
                 let serCorreoElectronico : Ser<CorreoElectronico> = 
                     [|
                         serString         |> serField "email"    (fun s -> s.email    ) (fun v s -> { s with email    = v } )
-                        serStatusContacto |> serField "status"   (fun s -> s.status   ) (fun v s -> { s with status   = v } )
                         serDate |> serOpt |> serField "enviado"  (fun s -> s.enviado  ) (fun v s -> { s with enviado  = v } )
                         serDate |> serOpt |> serField "recibido" (fun s -> s.recibido ) (fun v s -> { s with recibido = v } )
-                        serDate |> serOpt |> serField "enlace"   (fun s -> s.enlace   ) (fun v s -> { s with enlace   = v } )
                     |] |> serRecord LibraryNoJS.Default.value<_>
         
                 let serContacto          = serDU<Contacto         > [   serObj serString     
@@ -2404,7 +2496,7 @@ namespace FsRoot
                 let serAliado : Ser<Aliado> =
                     [|
                         serIdAliado                    |> serField "id"              (fun s -> s.id             ) (fun v s -> { s with id              = v } )
-                        serIdAuthorized     |> serOpt  |> serField "idAuthorized"    (fun s -> s.idAuthorizedO  ) (fun v s -> { s with idAuthorizedO   = v } )
+                        serIdAuthorizedR               |> serField "idAuthorized"    (fun s -> s.authorizeIdR   ) (fun v s -> { s with authorizeIdR    = v } )
                         serIdAliado         |> serOpt  |> serField "idPadreO"        (fun s -> s.idPadreO       ) (fun v s -> { s with idPadreO        = v } )
                         serIdentificacion   |> serArr  |> serField "identificacion"  (fun s -> s.identificacion ) (fun v s -> { s with identificacion  = v } )
                         serDatosPersonales             |> serField "datosPersonales" (fun s -> s.datosPersonales) (fun v s -> { s with datosPersonales = v } )
@@ -2446,11 +2538,15 @@ namespace FsRoot
                     serObj         serAliado
                     serObj         serIdAliado
                     serObj         serIdAuthorized
-                    serObj (serOpt serIdAliado)
-                    serObj (serArr serContacto)
-                    serObj (serArr serAliado  )
-                    serObj (serArr serString  )
+                    serObj (serOpt serIdAliado )
+                    serObj (serArr serContacto )
+                    serObj (serArr serFormaPago)
+                    serObj (serArr serAliado   )
+                    serObj (serArr serString   )
                     serObj         serDatosPersonales
+                    serObj         serIdAuthorizedR
+                    serObj         serCuentaPago
+                    serObj         serIdPaymentR
                 ] |> Seq.iter sers.Add
                 sers
         
@@ -2514,17 +2610,44 @@ namespace FsRoot
                 Eventos.registrarManejadorf evento f
                 registrarSerializadorPara typeof<'T>
         
+            print "serializers:"
+            serSerializadoresEventos.Keys |> Seq.iter print
+        
+            open CodigoGenerado
+        
+            let chequearEventosEnBD et =
+                match et with
+                | ActualizarDatosPersonales_V0  v -> Eventos.actualizarDatosPersonales  v
+                | ActualizarFormasPago_V0       v -> Eventos.actualizarFormasPago       v
+                | AgregarAliado_V1              v -> Eventos.agregarAliado              v
+                | RegistroNuevo_V1              v -> Eventos.registroNuevo              v
+                | CorreoVerificacionEnviado_V0  v -> Eventos.correoVerificacionEnviado  v
+        
+            let chequearEventos ev =
+                match ev with
+                | AgregarAliado                 v -> Eventos.agregarAliado              v
+                | AgregarAliados                v -> Eventos.agregarAliados             v
+                | RegistroNuevo                 v -> Eventos.registroNuevo              v
+                | ActualizarDatosPersonales     v -> Eventos.actualizarDatosPersonales  v
+                | ActualizarContactos           v -> Eventos.actualizarContactos        v
+                | ActualizarFormasPago          v -> Eventos.actualizarFormasPago       v
+                | CorreoVerificacionEnviado     v -> Eventos.correoVerificacionEnviado  v
+                | CorreoVerificado              v -> Eventos.correoVerificado           v
+                | InvitarPotencialesAliados     v -> Eventos.invitarPotencialesAliados  v
+                | ActualizarAuthorizeId         v -> Eventos.actualizarAuthorizeId      v
+                | ActualizarPagoAuthorizeId     v -> Eventos.actualizarPagoAuthorizeId  v
+        
             registrarF "AgregarAliado"             Eventos.agregarAliado
             registrarF "AgregarAliados"            Eventos.agregarAliados
             registrarF "RegistroNuevo"             Eventos.registroNuevo
             registrarF "ActualizarDatosPersonales" Eventos.actualizarDatosPersonales
             registrarF "ActualizarContactos"       Eventos.actualizarContactos
+            registrarF "ActualizarFormasPago"      Eventos.actualizarFormasPago
             registrarF "CorreoVerificacionEnviado" Eventos.correoVerificacionEnviado
             registrarF "CorreoVerificado"          Eventos.correoVerificado
             registrarF "InvitarPotencialesAliados" Eventos.invitarPotencialesAliados
-        
-            print "serializers:"
-            serSerializadoresEventos.Keys |> Seq.iter print
+            registrarF "ActualizarAuthorizeId"     Eventos.actualizarAuthorizeId
+            registrarF "ActualizarPagoAuthorizeId" Eventos.actualizarPagoAuthorizeId
         
             SQLServer.leerTipos()
             |> Seq.iter (fun t ->
@@ -2535,27 +2658,9 @@ namespace FsRoot
             SQLServer.leerEventosTipos()
                 |> Seq.iter (fun t ->
                 if Eventos.TipoDatos t |> Eventos.Manejadores.ContainsKey |> not then
-                    failwithf "Manejador para evento no encontrado para evento %A" t
+                    failwithf "Manejador no encontrado para evento %A" t
             )
         
-            open CodigoGenerado
-        
-            let chequearEventosEnBD et =
-                match et with
-                | ActualizarDatosPersonales_V0  v -> Eventos.actualizarDatosPersonales  v
-                | AgregarAliado_V1              v -> Eventos.agregarAliado              v
-                | RegistroNuevo_V1              v -> Eventos.registroNuevo              v
-        
-            let chequearEventos ev =
-                match ev with
-                | AgregarAliado                 v -> Eventos.agregarAliado              v
-                | AgregarAliados                v -> Eventos.agregarAliados             v
-                | RegistroNuevo                 v -> Eventos.registroNuevo              v
-                | ActualizarDatosPersonales     v -> Eventos.actualizarDatosPersonales  v
-                | ActualizarContactos           v -> Eventos.actualizarContactos        v
-                | CorreoVerificacionEnviado     v -> Eventos.correoVerificacionEnviado  v
-                | CorreoVerificado              v -> Eventos.correoVerificado           v
-                | InvitarPotencialesAliados     v -> Eventos.invitarPotencialesAliados  v
         
         [< JavaScript false >]
         module EstadoActual =
@@ -2660,6 +2765,149 @@ namespace FsRoot
             } |> Async.Start
         
         
+        //#r @"..\packages\other\AuthorizeNet\lib\AuthorizeNet.dll"
+        
+        [< JavaScript false >]
+        module Authorize =
+            open System
+            open AuthorizeNet
+            open AuthorizeNet.Api.Controllers
+            open AuthorizeNet.Api.Contracts.V1
+            open AuthorizeNet.Api.Controllers.Bases
+        
+            let CreateCustomerProfile merchantCustomerId emailId =
+                print "CreateCustomerProfile Sample"
+                ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment <- AuthorizeNet.Environment.SANDBOX
+                ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication <- 
+                    new merchantAuthenticationType(     name            = Config.AuthorizeKeys.Authorize.Id
+                                                    ,   ItemElementName = ItemChoiceType.transactionKey
+                                                    ,   Item            = Config.AuthorizeKeys.Authorize.Transaction )
+        
+                let creditCard  = new creditCardType(   cardNumber      = "4111111111111111", expirationDate  = "0718")
+                let bankAccount = new bankAccountType(  accountNumber   = "231323342"
+                                                    ,   routingNumber   = "000000224"
+                                                    ,   accountType     = bankAccountTypeEnum.checking
+                                                    ,   echeckType      = echeckTypeEnum.WEB
+                                                    ,   nameOnAccount   = "test"
+                                                    ,   bankName        = "Bank Of America")
+                let paymentProfileList = [|
+                    new customerPaymentProfileType(     payment         = new paymentType( Item = creditCard  ))    
+                    new customerPaymentProfileType(     payment         = new paymentType( Item = bankAccount ))
+                |]
+                let addressInfoList = [|
+                    new customerAddressType(    address = "10900 NE 8th St"  , city = "Seattle"  , zip = "98006")
+                    new customerAddressType(    address = "1200 148th AVE NE", city = "NorthBend", zip = "92101")
+                |]
+                let customerProfile = new customerProfileType(  merchantCustomerId  = merchantCustomerId
+                                                            ,   email               = emailId
+                                                            ,   paymentProfiles     = paymentProfileList
+                                                            ,   shipToList          = addressInfoList )
+                let response = 
+                    let request    = new createCustomerProfileRequest( profile = customerProfile, validationMode = validationModeEnum.none)
+                    let controller = new createCustomerProfileController(request) 
+                    controller.Execute()
+                    controller.GetApiResponse()
+                if response = null then failwith "Failed, Response = null"
+                if response.messages.resultCode = messageTypeEnum.Ok then
+                    Console.WriteLine("Success, CustomerProfileID : " + response.customerProfileId)
+                    Console.WriteLine("Success, CustomerPaymentProfileID : " + response.customerPaymentProfileIdList.[0])
+                    Console.WriteLine("Success, CustomerShippingProfileID : " + response.customerShippingAddressIdList.[0])
+                elif response.messages.message <> null then
+                    Console.WriteLine("Error: " + response.messages.message.[0].code + "  " + response.messages.message.[0].text)
+                else
+                    printfn "Error: resultCode = %A, no messages" response.messages.resultCode
+                response
+        
+            let registrarAliado (aliado:Aliado) =
+                ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment <- AuthorizeNet.Environment.SANDBOX
+                ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication <- 
+                    new merchantAuthenticationType(     name            = Config.AuthorizeKeys.Authorize.Id
+                                                    ,   ItemElementName = ItemChoiceType.transactionKey
+                                                    ,   Item            = Config.AuthorizeKeys.Authorize.Transaction )
+                let creditCard  = new creditCardType(   cardNumber      = "4111111111111111", expirationDate  = "0718")
+                let paymentProfileList = [|
+                    new customerPaymentProfileType(     payment         = new paymentType( Item = creditCard  ))    
+                |]
+                let addressInfoList = [|
+                    //aliado.contactos.
+                    new customerAddressType(    address = "10900 NE 8th St"  , city = "Seattle"  , zip = "98006")
+                    //new customerAddressType(    address = "1200 148th AVE NE", city = "NorthBend", zip = "92101")
+                                        |]
+                let email = aliado.contactos |> Seq.choose(function CorreoElectronico cor -> Some cor.email |_-> None) |> Seq.tryHead |> Option.defaultValue ""
+                let customerProfile = new customerProfileType(  merchantCustomerId  = aliado.id.Id
+                                                            ,   email               = email
+                                                            ,   paymentProfiles     = paymentProfileList
+                                                            ,   shipToList          = addressInfoList )
+                let response = 
+                    let request    = new createCustomerProfileRequest( profile = customerProfile, validationMode = validationModeEnum.none)
+                    let controller = new createCustomerProfileController(request) 
+                    controller.Execute()
+                    controller.GetApiResponse()
+                let authorizeIdR =
+                    if response = null then Error "Failed, Response = null"
+                    elif response.messages.resultCode = messageTypeEnum.Ok then
+                        Ok(IdAuthorize response.customerProfileId)
+                    elif response.messages.message <> null then
+                        Error("Error: " + response.messages.message.[0].code + "  " + response.messages.message.[0].text)
+                    else
+                        Error( sprintf "Error: resultCode = %A, no messages" response.messages.resultCode)
+                ActualizarAuthorizeId(aliado.id, authorizeIdR)        
+                |> EstadoActual.agregarEventoServer
+        
+            let registrarTarjeta (aliado:Aliado) (authorizeId: IdAuthorize) (tar:TarjetaCredito) =
+                ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment <- AuthorizeNet.Environment.SANDBOX
+                ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication <- 
+                    new merchantAuthenticationType(     name            = Config.AuthorizeKeys.Authorize.Id
+                                                    ,   ItemElementName = ItemChoiceType.transactionKey
+                                                    ,   Item            = Config.AuthorizeKeys.Authorize.Transaction )
+                let creditCard = new creditCardType(    cardNumber      = tar.numero.Id, expirationDate  = tar.expiracion.Id)
+                let pp         = new customerPaymentProfileType(payment = new paymentType( Item = creditCard  ))    
+                let response = 
+                    let request    = new createCustomerPaymentProfileRequest(clientId = authorizeId.Id, paymentProfile = pp, validationMode = validationModeEnum.none)
+                    let controller = new createCustomerPaymentProfileController(request)
+                    controller.Execute()
+                    controller.GetApiResponse()
+                let authorizeIdR =
+                    if response = null then Error "Failed, Response = null"
+                    elif response.messages.resultCode = messageTypeEnum.Ok then
+                        Ok(IdPayment response.customerPaymentProfileId)
+                    elif response.messages.message <> null then
+                        Error("Error: " + response.messages.message.[0].code + "  " + response.messages.message.[0].text)
+                    else
+                        Error( sprintf "Error: resultCode = %A, no messages" response.messages.resultCode)
+                ActualizarPagoAuthorizeId(aliado.id, TarjetaCredito tar, authorizeIdR)        
+                |> EstadoActual.agregarEventoServer
+        
+            let registrarCuenta  (aliado:Aliado) (authorizeId: IdAuthorize) (cta:CuentaBancaria) =
+                ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment <- AuthorizeNet.Environment.SANDBOX
+                ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication <- 
+                    new merchantAuthenticationType(     name            = Config.AuthorizeKeys.Authorize.Id
+                                                    ,   ItemElementName = ItemChoiceType.transactionKey
+                                                    ,   Item            = Config.AuthorizeKeys.Authorize.Transaction )
+                let bankAccount = new bankAccountType(  accountNumber   = cta.numero .Id
+                                                    ,   routingNumber   = cta.routing.Id
+                                                    //,   accountType     = bankAccountTypeEnum.checking
+                                                    //,   echeckType      = echeckTypeEnum.WEB
+                                                    ,   nameOnAccount   = cta.titular
+                                                    ,   bankName        = cta.banco)
+                let pp         = new customerPaymentProfileType(payment = new paymentType( Item = bankAccount  ))    
+                let response = 
+                    let request    = new createCustomerPaymentProfileRequest(clientId = authorizeId.Id, paymentProfile = pp, validationMode = validationModeEnum.none)
+                    let controller = new createCustomerPaymentProfileController(request)
+                    controller.Execute()
+                    controller.GetApiResponse()
+                let authorizeIdR =
+                    if response = null then Error "Failed, Response = null"
+                    elif response.messages.resultCode = messageTypeEnum.Ok then
+                        Ok(IdPayment response.customerPaymentProfileId)
+                    elif response.messages.message <> null then
+                        Error("Error: " + response.messages.message.[0].code + "  " + response.messages.message.[0].text)
+                    else
+                        Error( sprintf "Error: resultCode = %A, no messages" response.messages.resultCode)
+                ActualizarPagoAuthorizeId(aliado.id, CuentaBancaria cta, authorizeIdR)        
+                |> EstadoActual.agregarEventoServer
+        
+        
         //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
         
         [< JavaScript false >]
@@ -2718,7 +2966,7 @@ namespace FsRoot
                     let tema   = sprintf "Bienvenid%s a Prozper" sufijo
                     do! TemplateCorreo.Bienvenida()
                             .Logo(   TemplateCorreo.Logo().Doc())
-                            .Enlace(        sprintf "%s/#/Content/ProzperLyt.cntFormaDatos" host )
+                            .Enlace(        sprintf "%s/#/Content/ProzperLyt.cntFormaFormasPago" host )
                             .Sufijo(        sufijo                                               )
                             .NombreAfiliado(nombre                                               )
                             .Doc()
@@ -2742,36 +2990,67 @@ namespace FsRoot
         module Acciones =
         
             let enviarCorreosBienvenida (estado: Modelo) =
+                let mutable enviado = false
                 for aliado in estado.aliados do
                     if aliado.status = CuentaCreada then
                         for contacto in aliado.contactos do
                             match contacto with
                             | CorreoElectronico correo -> 
-                                match correo.status with
-                                | RequiereVerificacion -> Correo.enviarBienvenida aliado correo
+                                match correo.enviado with
+                                | None -> enviado <- true; Correo.enviarBienvenida aliado correo
                                 |_-> ()
                             | _ -> ()
+                enviado
         
             let enviarCorreosVerificacion (estado: Modelo) =
+                let mutable enviado = false
                 for aliado in estado.aliados do
                     for contacto in aliado.contactos do
                         match contacto with
                         | CorreoElectronico correo -> 
-                            match correo.status with
-                            | RequiereVerificacion -> Correo.enviarVerificacionCorreo aliado correo
+                            match correo.enviado with
+                            | None -> enviado <- true; Correo.enviarVerificacionCorreo aliado correo
                             |_-> ()
                         | _ -> ()
+                enviado
         
-            let rec enviarCorreos () =
-                print "enviarCorreos"
+            let registrarAliados (estado: Modelo) =
+                let mutable enviado = false
+                for aliado in estado.aliados do
+                    if aliado.formasPago.Length > 0 && aliado.authorizeIdR = Error "" then
+                        enviado <- true
+                        Authorize.registrarAliado aliado
+                enviado
+        
+            let registrarCuentas (estado: Modelo) =
+                let mutable enviado = false
+                for aliado in estado.aliados do
+                    match aliado.authorizeIdR with
+                    | Ok authorizeId ->
+                        for formaPago in aliado.formasPago do
+                            match formaPago.authorizeIdR with
+                            | Error "" ->
+                                match formaPago.cuentaPago with
+                                | TarjetaCredito tar -> enviado <- true; Authorize.registrarTarjeta aliado authorizeId tar
+                                | CuentaBancaria cta -> enviado <- true; Authorize.registrarCuenta  aliado authorizeId cta
+                                |_-> ()
+                            |_-> ()
+                    |_-> ()
+                enviado
+        
+            let rec ejecutarAcciones () =
+                print "ejecutarAcciones"
                 EstadoActual.ejecutarEventosO <- None
-                EstadoActual.leerTodosLosEventos()
-                EstadoActual.estado() |> enviarCorreosBienvenida
-                EstadoActual.leerTodosLosEventos()
-                EstadoActual.estado() |> enviarCorreosVerificacion
-                EstadoActual.ejecutarEventosO <- Some enviarCorreos
+        
+                if   EstadoActual.estado() |> enviarCorreosBienvenida   then ()
+                elif EstadoActual.estado() |> enviarCorreosVerificacion then ()
+                elif EstadoActual.estado() |> registrarAliados then ()
+                elif EstadoActual.estado() |> registrarCuentas then ()
+        
+                EstadoActual.ejecutarEventosO <- Some ejecutarAcciones
                 EstadoActual.leerTodosLosEventosAsync() |> Async.Start
-            EstadoActual    .ejecutarEventosO <- Some enviarCorreos
+            EstadoActual    .ejecutarEventosO <- Some ejecutarAcciones
+        
         [< JavaScript false >]
         module Rpc =
         
@@ -2875,6 +3154,8 @@ namespace FsRoot
                      , DiscUnion.simple<TipoDireccion >
                      , DiscUnion.simple<TipoTelefono  >
                      , DiscUnion.simple<Genero        >
+                     , DiscUnion.simple<TipoCuenta    >
+                     , DiscUnion.simple<TipoTarjeta   >
             }
         
             [< JavaScript >]
@@ -5561,7 +5842,7 @@ namespace FsRoot
                         | _             -> ""       , p1.Trim(), Empresa
                     {
                         id              = IdAliado p1
-                        idAuthorizedO   = None
+                        authorizeIdR    = Error ""
                         idPadreO        = IdAliado p2 |> Some
                         identificacion  = [||]
                         datosPersonales = {
@@ -5700,18 +5981,30 @@ namespace FsRoot
                 let tiposDir = Var.Create [||]
                 let tiposTel = Var.Create [||]
                 let generos  = Var.Create [||]
+                let tiposCta = Var.Create [||]
+                let tiposTar = Var.Create [||]
             
                 async {
-                    let! p, e, td, tl, g = Rpc.obtenerUnions()
+                    let! p, e, td, tl, g, tc, tt = Rpc.obtenerUnions()
                     paises  .Set p
                     estados .Set e
                     tiposDir.Set td
                     tiposTel.Set tl
                     generos .Set g
+                    tiposCta.Set tc
+                    tiposTar.Set tt
                 } |> Async.Start
             
                 let crearOption  n  = Html.Elt.option [] [ Html.text n] :> Doc
                 let crearOptions ns = ns |> Seq.map crearOption |> Doc.Concat
+            
+                let removeButton f doc = 
+                    Html.form [] 
+                        [   doc 
+                            Doc.Button "-" [ Html.attr.title "borrar" ] f
+                        ]
+            
+            
             module Telefono =
                 open VariousUI
             
@@ -5725,10 +6018,10 @@ namespace FsRoot
                     |> View.Sink (function
                         | None     -> ()
                         | Some tel -> 
-                        forma.Vars.CodigoArea  .Set <| tel.codigoArea  
-                        forma.Vars.CodigoPais  .Set <| tel.codigoPais
-                        forma.Vars.Telefono    .Set <| tel.numero    
-                        forma.Vars.Extension   .Set <| tel.extension
+                        forma.Vars.CodigoArea  .Set <|              tel.codigoArea  
+                        forma.Vars.CodigoPais  .Set <|              tel.codigoPais
+                        forma.Vars.Telefono    .Set <|              tel.numero    
+                        forma.Vars.Extension   .Set <|              tel.extension
                         forma.Vars.TipoTelefono.Set <| sprintf "%O" tel.tipoTelefono
                     )
                     let requeridosW =
@@ -5837,18 +6130,107 @@ namespace FsRoot
                         forma.Vars.TipoDireccion.V.Trim() |> TipoDireccion.tryParse |> alertIfNone "TipoDireccion" <| fun tipo   ->                
                         forma.Vars.Estado       .V.Trim() |> Estado       .tryParse |> alertIfNone "Estado"        <| fun estado -> 
                         forma.Vars.Pais         .V.Trim() |> Pais         .tryParse |> alertIfNone "Pais"          <| fun pais   -> 
-                        forma.Vars.CodigoPostal .V.Trim() |> ZonaPostal   .tryParse |> alertIfNone "CodgoPostal"   <| fun codigo -> 
+                        forma.Vars.CodigoPostal .V.Trim() |> ZonaPostal   .tryParse |> alertIfNone "CodigoPostal"  <| fun codigo -> 
                         Some {
+                            tipoDireccion = tipo
                             linea1        = forma.Vars.Direccion1.V.Trim()
                             linea2        = forma.Vars.Direccion2.V.Trim()
                             ciudad        = forma.Vars.Ciudad    .V.Trim()
                             estado        = estado
                             pais          = pais
                             zonaPostal    = codigo
-                            tipoDireccion = tipo
+                            Direccion.authorizeIdR  = dirV.V |> Option.map (fun dir -> dir.authorizeIdR) |> Option.defaultValue (Error "")
                         }            
                     ) |> View.Sink (fun v -> if dirV.Value <> v then dirV.Set v)
                     requeridosW, forma.Doc
+            
+            module CuentaBancaria =
+                open VariousUI
+            
+                let formaDoc (ctaV  : Var<CuentaBancaria * string>) =
+                    let forma =
+                        TemplateLib.CuentaBancaria()
+                            .TiposCuenta( V( crearOptions tiposCta.V ).V )
+                            .Mensaje(     V( snd          ctaV    .V ).V ) 
+                            .Create()
+            
+                    ctaV .View 
+                    |> View.Sink (fun (cta, _) -> 
+                        forma.Vars.Titular      .Set <| cta.titular
+                        forma.Vars.Banco        .Set <| cta.banco
+                        forma.Vars.TipoCuenta   .Set <| sprintf "%O" cta.tipo
+                        forma.Vars.Numero       .Set <| match cta.numero  with NumeroCuenta  s -> s
+                        forma.Vars.Routing      .Set <| match cta.routing with RoutingNumber s -> s
+                    )
+                    let requeridosW = 
+                        V( 
+                            [
+                                forma.Vars.Titular      .V.Trim() = "" , "Titular"
+                                forma.Vars.Banco        .V.Trim() = "" , "Banco"
+                                forma.Vars.Numero       .V.Trim() = "" , "Numero de Cuenta"
+                                forma.Vars.Routing      .V.Trim() = "" , "ABA/Routing Number"
+                            ]
+                            |> Seq.filter fst
+                            |> Seq.map    snd
+                        )
+                    V (
+                        if not (Seq.isEmpty requeridosW.V)  then None else
+                        forma.Vars.TipoCuenta   .V.Trim() |> TipoCuenta   .tryParse |> alertIfNone "TipoCuenta"   <| fun tipoCta ->
+                        Some {
+                            banco         = forma.Vars.Banco  .V.Trim()
+                            titular       = forma.Vars.Titular.V.Trim()
+                            numero        = forma.Vars.Numero .V.Trim() |> NumeroCuenta
+                            routing       = forma.Vars.Routing.V.Trim() |> RoutingNumber
+                            tipo          = tipoCta
+                        }            
+                    ) |> View.Sink (function |None -> () | Some v -> if fst ctaV .Value <> v then ctaV .Set (v, "") )
+                    requeridosW, forma.Doc
+            
+                let formaDocO (ctaOV  : Var<(CuentaBancaria * string) option>) =
+                    formaDoc (Var.Lens ctaOV (Option.defaultValue (ctaVacio, "") ) (fun _ v -> Some v ))
+            
+            module TarjetaCredito =
+                open VariousUI
+            
+                let formaDoc (tarV  : Var<(TarjetaCredito * string)>) =
+                    let forma =
+                        TemplateLib.TarjetaCredito()
+                            .TiposTarjeta( V( crearOptions tiposTar.V ).V )
+                            .Mensaje(      V( snd          tarV    .V ).V )
+                            .Create()
+            
+                    tarV .View 
+                    |> View.Sink (fun (tar, mensaje) -> 
+                        forma.Vars.Titular      .Set <| tar.titular
+                        forma.Vars.TipoTarjeta  .Set <| sprintf "%O" tar.tipoTarjeta
+                        forma.Vars.Numero       .Set <| match tar.numero     with NumeroTarjeta s -> s
+                        forma.Vars.Expiracion   .Set <| match tar.expiracion with Expiracion    s -> s
+                    )
+                    let requeridosW = 
+                        V( 
+                            [
+                                forma.Vars.Titular      .V.Trim() = "" , "Titular"
+                                forma.Vars.TipoTarjeta  .V.Trim() = "" , "TipoTarjeta"
+                                forma.Vars.Numero       .V.Trim() = "" , "Numero"
+                                forma.Vars.Expiracion   .V.Trim() = "" , "Expiracion"
+                            ]
+                            |> Seq.filter fst
+                            |> Seq.map    snd
+                        )
+                    V (
+                        if not (Seq.isEmpty requeridosW.V)  then None else
+                        forma.Vars.TipoTarjeta.V.Trim() |> TipoTarjeta.tryParse |> alertIfNone "Tipo Tarjeta" <| fun tipoTar ->
+                        Some {
+                            tipoTarjeta   = tipoTar
+                            titular       = forma.Vars.Titular   .V.Trim()
+                            numero        = forma.Vars.Numero    .V.Trim() |> NumeroTarjeta
+                            expiracion    = forma.Vars.Expiracion.V.Trim() |> Expiracion
+                        }            
+                    ) |> View.Sink (function |None -> () | Some v -> if fst tarV .Value <> v then tarV .Set (v, "") ) 
+                    requeridosW, forma.Doc
+            
+                let formaDocO (tarOV  : Var<(TarjetaCredito * string) option>) =
+                    formaDoc (Var.Lens tarOV (Option.defaultValue (tarVacio, "") ) (fun _ v -> Some v ))
             
             module DatosPersonales =
                 open VariousUI
@@ -5932,7 +6314,7 @@ namespace FsRoot
                                                 Telefono          telefono
                                                 Direccion         direccion 
                                             |]
-                                            let  nid  = System.Guid.NewGuid().ToString() |> IdAliado
+                                            let  nid  = System.Guid.NewGuid().ToString().Replace("-", "").Substring(0,20) |> IdAliado
                                             let! resp = (nid, datos, Some modeloV.Value.idAliado, contactos) |> RegistroNuevo |> Rpc.ejecutarEvento
                                             refrescarData()
                                             sprintf "%A" resp|> JS.Alert
@@ -6011,6 +6393,7 @@ namespace FsRoot
                     forma.Doc
             
             module FormaContactos =
+                open VariousUI
             
                 let ftel = (function Telefono          tel -> Some tel |_-> None), Telefono
                 let fcor = (function CorreoElectronico cor -> Some cor |_-> None), CorreoElectronico
@@ -6063,24 +6446,17 @@ namespace FsRoot
                     let cors = V( contactosIV.V |> Seq.choose (fun (i, c) -> fst fcor c |> Option.map (fun _ -> i) ) )
                     let dirs = V( contactosIV.V |> Seq.choose (fun (i, c) -> fst fdir c |> Option.map (fun _ -> i) ) )
             
-                    let removeButton i doc = 
-                        Html.form 
-                            [] 
-                            [   doc 
-                                Doc.Button "-" [ Html.attr.title "borrar" ] (fun _ -> contactosV.Value |> Array.remove i |> contactosV.Set )
-                            ]
-            
-                    let telDocs = tels |> Doc.BindSeqCachedBy id (fun i -> makeVar ftel i |> Telefono         .formaDoc |> snd |> removeButton i )
-                    let corDocs = cors |> Doc.BindSeqCachedBy id (fun i -> makeVar fcor i |> CorreoElectronico.formaDoc |> snd |> removeButton i )
-                    let dirDocs = dirs |> Doc.BindSeqCachedBy id (fun i -> makeVar fdir i |> Direccion        .formaDoc |> snd |> removeButton i )
+                    let telDocs = tels |> Doc.BindSeqCachedBy id (fun i -> makeVar ftel i |> Telefono         .formaDoc |> snd |> removeButton (fun _ -> contactosV.Value |> Array.remove i |> contactosV.Set ) )
+                    let corDocs = cors |> Doc.BindSeqCachedBy id (fun i -> makeVar fcor i |> CorreoElectronico.formaDoc |> snd |> removeButton (fun _ -> contactosV.Value |> Array.remove i |> contactosV.Set ) )
+                    let dirDocs = dirs |> Doc.BindSeqCachedBy id (fun i -> makeVar fdir i |> Direccion        .formaDoc |> snd |> removeButton (fun _ -> contactosV.Value |> Array.remove i |> contactosV.Set ) )
             
                     let forma =
                         TemplateLib.FormaContactos()
-                            .Mensajes(       if mostrar.V then mensajes     .V else ""                             )
-                            .Changed(        if aliadoW.V.contactos = contactosV.V then "" else "mui-btn--primary" )
-                            .Telefonos(      telDocs              ) 
-                            .Correos(        corDocs              ) 
-                            .Direcciones(    dirDocs              ) 
+                            .Mensajes(    if mostrar.V then mensajes     .V else ""                             )
+                            .Changed(     if aliadoW.V.contactos = contactosV.V then "" else "mui-btn--primary" )
+                            .Telefonos(   telDocs              ) 
+                            .Correos(     corDocs              ) 
+                            .Direcciones( dirDocs              ) 
                             .MasTelefono( fun _ -> contactosV.Value |> Array.append <| [| Telefono          telVacio    |] |> contactosV.Set)
                             .MasCorreo(   fun _ -> contactosV.Value |> Array.append <| [| CorreoElectronico correoVacio |] |> contactosV.Set)
                             .MasDireccion(fun _ -> contactosV.Value |> Array.append <| [| Direccion         dirVacio    |] |> contactosV.Set)
@@ -6102,6 +6478,72 @@ namespace FsRoot
                     forma.Doc
             
                 let formaDoc() = aliadoIdDoc formaContactos
+            
+            module FormaFormasPago =
+                open VariousUI
+            
+            
+            
+            
+            
+                let msg ({ FormaPago.authorizeIdR = idR }) = match idR with | Error m -> m | Ok _ -> "" 
+            
+                let ftar = (fun cp -> match cp.cuentaPago with TarjetaCredito tar -> Some (tar, msg cp) |_-> None), fun fp v -> { fp with cuentaPago = TarjetaCredito v }
+                let fcta = (fun cp -> match cp.cuentaPago with CuentaBancaria cta -> Some (cta, msg cp) |_-> None), fun fp v -> { fp with cuentaPago = CuentaBancaria v }
+            
+                let formaFormasPago (aliadoW: View<Aliado>) =
+                    let mensajes      = Var.Create ""
+                    let mostrar       = Var.Create false
+                    let formasPagoV   = Var.Create [||]
+                    
+                    aliadoW
+                    |> View.Map  (fun a -> a.formasPago)
+                    |> View.Sink formasPagoV.Set
+            
+                    let formasPagoIV = V( formasPagoV.V |> Seq.indexed )
+            
+                    let makeVar (f: (FormaPago -> ('a * string) option) , fr : (FormaPago -> 'a -> FormaPago)) i = 
+                        Var.Make (V(formasPagoV.V |> Seq.tryItem i |> Option.bind f )) 
+                                (function Some nv -> Array.replace i (fr formasPagoV.Value.[i] (fst nv) ) formasPagoV.Value |> formasPagoV.Set |_-> () )
+                    
+                    let tars = V( formasPagoIV.V |> Seq.choose (fun (i, c) -> fst ftar c |> Option.map (fun _ -> i) ) )
+                    let ctas = V( formasPagoIV.V |> Seq.choose (fun (i, c) -> fst fcta c |> Option.map (fun _ -> i) ) )
+            
+                    let tarDocs = tars |> Doc.BindSeqCachedBy id (fun i -> makeVar ftar i |> TarjetaCredito.formaDocO |> snd |> removeButton (fun _ -> formasPagoV.Value |> Array.remove i |> formasPagoV.Set ) )
+                    let ctaDocs = ctas |> Doc.BindSeqCachedBy id (fun i -> makeVar fcta i |> CuentaBancaria.formaDocO |> snd |> removeButton (fun _ -> formasPagoV.Value |> Array.remove i |> formasPagoV.Set ) )
+            
+                    let fp cp = {
+                        cuentaPago   = cp
+                        authorizeIdR = Error ""
+                        nombre       = ""
+                    }
+            
+                    let forma =
+                        TemplateLib.FormaCuentas()
+                            .Mensajes(    if mostrar.V then mensajes.V else ""                                    )
+                            .Changed(     if aliadoW.V.formasPago = formasPagoV.V then "" else "mui-btn--primary" )
+                            .Tarjetas(    tarDocs              ) 
+                            .Cuentas(     ctaDocs              ) 
+                            .MasTarjeta(  fun _ -> formasPagoV.Value |> Array.append <| [| TarjetaCredito tarVacio |> fp |] |> formasPagoV.Set)
+                            .MasCuenta(   fun _ -> formasPagoV.Value |> Array.append <| [| CuentaBancaria ctaVacio |> fp |] |> formasPagoV.Set)
+                            .Salvar(fun ev ->
+                                mostrar.Set true
+                                let m =  mensajes.Value
+                                if m.Trim() <> "" then JS.Alert m else 
+                                    match View.TryGet aliadoW with
+                                    | Some al ->
+                                        asyncResultM {
+                                            let! resp = ActualizarFormasPago (al.id, formasPagoV.Value) |> Rpc.ejecutarEvento
+                                            refrescarData()
+                                            sprintf "%A" resp|> JS.Alert
+                                        } |> AsyncResultM.iterA (ResultMessage.summarized >> JS.Alert) id
+                                    | _ -> JS.Alert "Error not caught FormaDatos"
+                            )
+                            .Create()
+            
+                    forma.Doc
+            
+                let formaDoc() = aliadoIdDoc formaFormasPago
             
             module RenderAliados =
                 open SortWith
@@ -6244,32 +6686,6 @@ namespace FsRoot
                     do  e.ScrollTop <- e.ScrollHeight
                 } |> Async.Start
         
-        //    let mainLayout() =
-        //        TemplateLib.Layout()
-        //            .CalculationTable( tableCalculations()                  )
-        //            .FormulaDetail(    details          ()                  )
-        //            .DimsSelected(     dimsSelected     ()                  )
-        //            .DimensionTable(   tableDimensions  ()                  )
-        //            .GlobalText(       globalDefs       ()                  )
-        //            .Server(           model.server                         )
-        //            .Output(           model.outputMsgs                     )
-        //            .FSCode(           model.codeFS                         )
-        //            .Parser(           model.parserMsgs                     )
-        //            .Filename(         model.fileName                       )
-        //            .AddCalculation(   fun _ -> AddCalculation |> processor )
-        //            .AddTotal(         fun _ -> AddTotal       |> processor )
-        //            .NewDimension(     fun _ -> AddDimension   |> processor )
-        //            .SaveAs(           fun _ -> SaveLoad.saveAsFile()       )
-        //            .LoadFileChanged(  fun e -> SaveLoad.loadFile e.Target  )
-        //            .LoadFileClear(    fun e -> e.Target?value <- ""        )
-        //            .UpdateRules(      fun _ -> UpdateAlea.updateModel()    )        
-        //            .IndentIn(         fun _ -> model.selection.Value |> Option.map fst |> Option.iter (fun nid -> IndentNode(true , nid) |> processor) )
-        //            .IndentOut(        fun _ -> model.selection.Value |> Option.map fst |> Option.iter (fun nid -> IndentNode(false, nid) |> processor) )
-        //        //    .Reorder(          fun _ -> reorder()                                    )
-        //            .JumpRef(ParseFS.jumpToRef)
-        //            .OutputAfterRender(fun e -> model.outputMsgs.View |> View.Sink (scrollToBottom e))
-        //            .Doc()
-        
             let mesToString =
                 function
                 |  1 -> "Ene"            
@@ -6324,31 +6740,16 @@ namespace FsRoot
                                        AF.newViw  "comision"           comisionAliadoW
                                        AF.newViw  "datos"              datosAliadoW
                                     |]  
-                    AF.plgDocs    = [| AF.newDoc  "Aliados"        (lazy RenderAliados .aliados () )
-                                       AF.newDoc  "Aliado"         (lazy RenderAliado  .aliado  () )
-                                       AF.newDoc  "Calculo"        (lazy RenderAliado  .calculo () )
-                                       AF.newDoc  "FormaRegistro"  (lazy FormaRegistro .formaDoc() )
-                                       AF.newDoc  "FormaDatos"     (lazy FormaDatos    .formaDoc() )
-                                       AF.newDoc  "FormaContactos" (lazy FormaContactos.formaDoc() )
-                                       AF.newDoc  "contentDoc"     (lazy getContentDoc          () )
+                    AF.plgDocs    = [| AF.newDoc  "Aliados"         (lazy RenderAliados  .aliados () )
+                                       AF.newDoc  "Aliado"          (lazy RenderAliado   .aliado  () )
+                                       AF.newDoc  "Calculo"         (lazy RenderAliado   .calculo () )
+                                       AF.newDoc  "FormaRegistro"   (lazy FormaRegistro  .formaDoc() )
+                                       AF.newDoc  "FormaDatos"      (lazy FormaDatos     .formaDoc() )
+                                       AF.newDoc  "FormaContactos"  (lazy FormaContactos .formaDoc() )
+                                       AF.newDoc  "FormaFormasPago" (lazy FormaFormasPago.formaDoc() )
+                                       AF.newDoc  "contentDoc"      (lazy getContentDoc           () )
                                     |]  
                     AF.plgActions = [| AF.newAct  "Logout"      logout
-                                       //AF.newAct  "RemoveSnippet"   deleteSnippet       
-                                       //AF.newAct  "IndentIn"        <| fun () -> model.selection.Value |> Option.map fst |> Option.iter (fun nid -> IndentNode(true , nid) |> processor)
-                                       //AF.newAct  "IndentOut"       <| fun () -> model.selection.Value |> Option.map fst |> Option.iter (fun nid -> IndentNode(false, nid) |> processor)
-                                       //AF.newAct  "AddProperty"     RenderProperties.addProperty
-                                       //AF.newAct  "RunFS"           runFsCode
-                                       //AF.newAct  "AbortFsi"        FsiAgent.abortFsiExe
-                                       //AF.newAct  "DisposeFsi"      FsiAgent.disposeFsiExe
-                                       //AF.newActF "LoadFile"        <| AF.FunAct1 ((fun o -> unbox o |> LoadTextFile |> processor  ), "FileElement")
-                                       //AF.newActF  "SaveAs"          <| AF.FunAct1 ((fun o -> unbox o |> SaveTextFile |> processor  ), "FileElement")
-                                       //AF.newActF "Import"          <| AF.FunAct1 ((fun o -> unbox o |> Importer.importFile     ), "FileElement")
-                                       //AF.newActF "JumpTo"          <| AF.FunAct1 ((fun o -> unbox o |> JumpTo.jumpToRef        ), "textarea"   )
-                                       //AF.newActF "ButtonClick"     <| AF.FunAct1 ((fun o -> unbox o |> CustomAction.buttonClick), "button"     )
-                                       //AF.newActF "ActionClick"     <| AF.FunAct1 ((fun o -> unbox o |> CustomAction.actionClick), "name"       )
-                                       //AF.newAct  "AddCalculation"  (fun () -> AddCalculation |> processor)
-                                       //AF.newAct  "AddTotal"        (fun () -> AddTotal       |> processor)
-                                       //AF.newAct  "AddDimension"    (fun () -> AddDimension   |> processor)
                                     |]
                     AF.plgQueries = [|                                               
                                     |]
@@ -6484,7 +6885,7 @@ namespace FsRoot
             
             [< EntryPoint >]
             let Main args =
-                //Sample.aliados |> Seq.iter (DataEvento.AgregarAliado >> EstadoActual.agregarEventoServer)
+                Sample.aliados |> Seq.iter (DataEvento.AgregarAliado >> EstadoActual.agregarEventoServer)
                 printfn "Usage: FSharpStation URL ROOT_DIRECTORY MaxMessageSize"
                 let url           = args |> Seq.tryItem 0 |>                   Option.defaultValue "http://localhost:9005/"
                 let rootDirectory = args |> Seq.tryItem 1 |>                   Option.defaultValue @"..\website"

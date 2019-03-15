@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,Dict,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,Eff,Eff$1,Done,LambdaT,Operators$1,EffBuilder,State,Put,Get,Log,LogEntry,Rsl,Fail,ResultM,Builder$1,Operators$2,ResultMAutoOpen,AsyncResultM,AsyncResultMBuilder,AsyncResultMAutoOpen,String,Array,SortWith,ParseO,Serializer,JsonIntermediate,MailboxProcessorExt,Mailbox,StateFull,LibraryJS,Date,StackOverflow,Templating,TypesV0,LatestType,StatusAliado,TipoAliado,Pais,Estado,Identificacion,TipoCuenta,CuentaBancaria,ConceptoPago,Transaccion,TipoDireccion,ZonaPostal,Direccion,CorreoElectronico,TipoTelefono,Telefono,Genero,DatosPersonales,TipoMensaje,Remitente,Mensaje,Aliado,PremisasCalculo,Modelo,TypesV1,LatestType$1,StatusContacto,CorreoElectronico$1,Aliado$1,Modelo$1,Aliado$2,Buscar,Evento,Respuesta,Rpc,ModeloUI,EndPoint,VariousUI,Telefono$1,CorreoElectronico$2,Direccion$1,DatosPersonales$1,FormaRegistro,FormaDatos,FormaGenerica,FormaContactos,RenderAliados,RenderAliado,MainProgram,EndPoints,SC$1,StackOverflow_Router,StackOverflow_GeneratedPrintf,StackOverflow_Templates,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,console,Slice,Collections,FSharpMap,FSharpSet,BalancedTree,Control,MailboxProcessor,CancellationTokenSource,Dictionary,UI,Doc,View,Templating$1,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,Var$1,System,Guid,Remoting,AjaxRemotingProvider,FromView,AttrProxy,AppFramework,PlugIn,Lazy,LayoutEngineModule,Client,Templates,DateUtil,Numeric,Date$1,Router,Sitelets,RouterOperators;
+ var Global,FsRoot,Library,Dict,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,Eff,Eff$1,Done,LambdaT,Operators$1,EffBuilder,State,Put,Get,Log,LogEntry,Rsl,Fail,ResultM,Builder$1,Operators$2,ResultMAutoOpen,AsyncResultM,AsyncResultMBuilder,AsyncResultMAutoOpen,String,Array,SortWith,ParseO,Serializer,JsonIntermediate,MailboxProcessorExt,Mailbox,StateFull,LibraryJS,Date,StackOverflow,Config,Templating,TypesV0,LatestType,IdAliado,IdAuthorize,IdAddress,IdPayment,StatusAliado,TipoAliado,Pais,Estado,Identificacion,NumeroCuenta,NumeroTarjeta,Expiracion,RoutingNumber,TipoTarjeta,TipoCuenta,CuentaBancaria,TarjetaCredito,ConceptoPago,Transaccion,TipoDireccion,ZonaPostal,Direccion,CorreoElectronico,TipoTelefono,Telefono,Genero,DatosPersonales,StatusFormaPago,FormaPago,TipoMensaje,Remitente,Mensaje,Aliado,PremisasCalculo,Modelo,TypesV1,LatestType$1,CorreoElectronico$1,Aliado$1,Modelo$1,Aliado$2,Buscar,Evento,Respuesta,Rpc,ModeloUI,EndPoint,VariousUI,Telefono$1,CorreoElectronico$2,Direccion$1,CuentaBancaria$1,TarjetaCredito$1,DatosPersonales$1,FormaRegistro,FormaDatos,FormaGenerica,FormaContactos,FormaFormasPago,RenderAliados,RenderAliado,MainProgram,EndPoints,SC$1,StackOverflow_Router,StackOverflow_GeneratedPrintf,StackOverflow_Templates,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$3,Unchecked,console,Slice,Collections,FSharpMap,FSharpSet,BalancedTree,Control,MailboxProcessor,CancellationTokenSource,Dictionary,UI,Doc,AttrProxy,View,Templating$1,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,Var$1,System,Guid,Remoting,AjaxRemotingProvider,FromView,AppFramework,PlugIn,Lazy,LayoutEngineModule,Client,Templates,DateUtil,Numeric,Date$1,Router,Sitelets,RouterOperators;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -49,16 +49,27 @@
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
  Date=LibraryJS.Date=LibraryJS.Date||{};
  StackOverflow=FsRoot.StackOverflow=FsRoot.StackOverflow||{};
+ Config=StackOverflow.Config=StackOverflow.Config||{};
  Templating=StackOverflow.Templating=StackOverflow.Templating||{};
  TypesV0=StackOverflow.TypesV0=StackOverflow.TypesV0||{};
  LatestType=TypesV0.LatestType=TypesV0.LatestType||{};
+ IdAliado=TypesV0.IdAliado=TypesV0.IdAliado||{};
+ IdAuthorize=TypesV0.IdAuthorize=TypesV0.IdAuthorize||{};
+ IdAddress=TypesV0.IdAddress=TypesV0.IdAddress||{};
+ IdPayment=TypesV0.IdPayment=TypesV0.IdPayment||{};
  StatusAliado=TypesV0.StatusAliado=TypesV0.StatusAliado||{};
  TipoAliado=TypesV0.TipoAliado=TypesV0.TipoAliado||{};
  Pais=TypesV0.Pais=TypesV0.Pais||{};
  Estado=TypesV0.Estado=TypesV0.Estado||{};
  Identificacion=TypesV0.Identificacion=TypesV0.Identificacion||{};
+ NumeroCuenta=TypesV0.NumeroCuenta=TypesV0.NumeroCuenta||{};
+ NumeroTarjeta=TypesV0.NumeroTarjeta=TypesV0.NumeroTarjeta||{};
+ Expiracion=TypesV0.Expiracion=TypesV0.Expiracion||{};
+ RoutingNumber=TypesV0.RoutingNumber=TypesV0.RoutingNumber||{};
+ TipoTarjeta=TypesV0.TipoTarjeta=TypesV0.TipoTarjeta||{};
  TipoCuenta=TypesV0.TipoCuenta=TypesV0.TipoCuenta||{};
  CuentaBancaria=TypesV0.CuentaBancaria=TypesV0.CuentaBancaria||{};
+ TarjetaCredito=TypesV0.TarjetaCredito=TypesV0.TarjetaCredito||{};
  ConceptoPago=TypesV0.ConceptoPago=TypesV0.ConceptoPago||{};
  Transaccion=TypesV0.Transaccion=TypesV0.Transaccion||{};
  TipoDireccion=TypesV0.TipoDireccion=TypesV0.TipoDireccion||{};
@@ -69,6 +80,8 @@
  Telefono=TypesV0.Telefono=TypesV0.Telefono||{};
  Genero=TypesV0.Genero=TypesV0.Genero||{};
  DatosPersonales=TypesV0.DatosPersonales=TypesV0.DatosPersonales||{};
+ StatusFormaPago=TypesV0.StatusFormaPago=TypesV0.StatusFormaPago||{};
+ FormaPago=TypesV0.FormaPago=TypesV0.FormaPago||{};
  TipoMensaje=TypesV0.TipoMensaje=TypesV0.TipoMensaje||{};
  Remitente=TypesV0.Remitente=TypesV0.Remitente||{};
  Mensaje=TypesV0.Mensaje=TypesV0.Mensaje||{};
@@ -77,7 +90,6 @@
  Modelo=TypesV0.Modelo=TypesV0.Modelo||{};
  TypesV1=StackOverflow.TypesV1=StackOverflow.TypesV1||{};
  LatestType$1=TypesV1.LatestType=TypesV1.LatestType||{};
- StatusContacto=TypesV1.StatusContacto=TypesV1.StatusContacto||{};
  CorreoElectronico$1=TypesV1.CorreoElectronico=TypesV1.CorreoElectronico||{};
  Aliado$1=TypesV1.Aliado=TypesV1.Aliado||{};
  Modelo$1=TypesV1.Modelo=TypesV1.Modelo||{};
@@ -92,11 +104,14 @@
  Telefono$1=ModeloUI.Telefono=ModeloUI.Telefono||{};
  CorreoElectronico$2=ModeloUI.CorreoElectronico=ModeloUI.CorreoElectronico||{};
  Direccion$1=ModeloUI.Direccion=ModeloUI.Direccion||{};
+ CuentaBancaria$1=ModeloUI.CuentaBancaria=ModeloUI.CuentaBancaria||{};
+ TarjetaCredito$1=ModeloUI.TarjetaCredito=ModeloUI.TarjetaCredito||{};
  DatosPersonales$1=ModeloUI.DatosPersonales=ModeloUI.DatosPersonales||{};
  FormaRegistro=ModeloUI.FormaRegistro=ModeloUI.FormaRegistro||{};
  FormaDatos=ModeloUI.FormaDatos=ModeloUI.FormaDatos||{};
  FormaGenerica=ModeloUI.FormaGenerica=ModeloUI.FormaGenerica||{};
  FormaContactos=ModeloUI.FormaContactos=ModeloUI.FormaContactos||{};
+ FormaFormasPago=ModeloUI.FormaFormasPago=ModeloUI.FormaFormasPago||{};
  RenderAliados=ModeloUI.RenderAliados=ModeloUI.RenderAliados||{};
  RenderAliado=ModeloUI.RenderAliado=ModeloUI.RenderAliado||{};
  MainProgram=StackOverflow.MainProgram=StackOverflow.MainProgram||{};
@@ -129,6 +144,7 @@
  Dictionary=Collections&&Collections.Dictionary;
  UI=WebSharper&&WebSharper.UI;
  Doc=UI&&UI.Doc;
+ AttrProxy=UI&&UI.AttrProxy;
  View=UI&&UI.View;
  Templating$1=UI&&UI.Templating;
  Runtime$1=Templating$1&&Templating$1.Runtime;
@@ -142,7 +158,6 @@
  Remoting=WebSharper&&WebSharper.Remoting;
  AjaxRemotingProvider=Remoting&&Remoting.AjaxRemotingProvider;
  FromView=UI&&UI.FromView;
- AttrProxy=UI&&UI.AttrProxy;
  AppFramework=LibraryJS&&LibraryJS.AppFramework;
  PlugIn=AppFramework&&AppFramework.PlugIn;
  Lazy=WebSharper&&WebSharper.Lazy;
@@ -3279,6 +3294,16 @@
    return $1(Global.String($2)+Utils.toSafe($3)+Utils.padNumLeft(Global.String($4),2)+Utils.toSafe($5)+Utils.padNumLeft(Global.String($6),2));
   },6))(Global.id))((new Global.Date(date)).getFullYear()))(sep))((new Global.Date(date)).getMonth()+1))(sep))((new Global.Date(date)).getDate());
  };
+ Config.authorizeIni=function()
+ {
+  SC$1.$cctor();
+  return SC$1.authorizeIni;
+ };
+ Config.appConfig=function()
+ {
+  SC$1.$cctor();
+  return SC$1.appConfig;
+ };
  Templating.LoginFileName=function()
  {
   SC$1.$cctor();
@@ -3297,6 +3322,30 @@
  LatestType.TypeV0={
   $:0
  };
+ IdAliado=TypesV0.IdAliado=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,IdAliado);
+ IdAuthorize=TypesV0.IdAuthorize=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,IdAuthorize);
+ IdAddress=TypesV0.IdAddress=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,IdAddress);
+ IdPayment=TypesV0.IdPayment=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,IdPayment);
  StatusAliado=TypesV0.StatusAliado=Runtime.Class({
   toString:function()
   {
@@ -3456,11 +3505,132 @@
    vence:vence
   };
  };
- TipoCuenta.Corriente={
+ NumeroCuenta=TypesV0.NumeroCuenta=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,NumeroCuenta);
+ NumeroTarjeta=TypesV0.NumeroTarjeta=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,NumeroTarjeta);
+ Expiracion=TypesV0.Expiracion=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,Expiracion);
+ RoutingNumber=TypesV0.RoutingNumber=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,RoutingNumber);
+ TipoTarjeta=TypesV0.TipoTarjeta=Runtime.Class({
+  toString:function()
+  {
+   return this.$==3?this.$0:(function($1)
+   {
+    return function($2)
+    {
+     return $1(StackOverflow_GeneratedPrintf.p$4($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,TipoTarjeta);
+ TipoTarjeta.Amex=new TipoTarjeta({
+  $:2
+ });
+ TipoTarjeta.MasterCard=new TipoTarjeta({
   $:1
- };
- TipoCuenta.Ahorro={
+ });
+ TipoTarjeta.Visa=new TipoTarjeta({
   $:0
+ });
+ TipoTarjeta.tryParse=function(s)
+ {
+  var $1,m;
+  m=Strings.Trim(s).toUpperCase();
+  switch(m)
+  {
+   case"":
+    return null;
+   case"VISA":
+    return{
+     $:1,
+     $0:TipoTarjeta.Visa
+    };
+   case"MASTERCARD":
+    return{
+     $:1,
+     $0:TipoTarjeta.MasterCard
+    };
+   case"AMERICAN EXPRESS":
+   case"AMEX":
+    return{
+     $:1,
+     $0:TipoTarjeta.Amex
+    };
+   default:
+    return{
+     $:1,
+     $0:new TipoTarjeta({
+      $:3,
+      $0:Strings.Trim(s)
+     })
+    };
+  }
+ };
+ TipoCuenta=TypesV0.TipoCuenta=Runtime.Class({
+  toString:function()
+  {
+   return this.$==2?this.$0:(function($1)
+   {
+    return function($2)
+    {
+     return $1(StackOverflow_GeneratedPrintf.p$5($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,TipoCuenta);
+ TipoCuenta.Corriente=new TipoCuenta({
+  $:1
+ });
+ TipoCuenta.Ahorro=new TipoCuenta({
+  $:0
+ });
+ TipoCuenta.tryParse=function(s)
+ {
+  var $1,m;
+  m=Strings.Trim(s).toUpperCase();
+  switch(m)
+  {
+   case"":
+    return null;
+   case"AHORRO":
+   case"SAVINGS":
+    return{
+     $:1,
+     $0:TipoCuenta.Ahorro
+    };
+   case"CORRIENTE":
+   case"CHECKING":
+    return{
+     $:1,
+     $0:TipoCuenta.Corriente
+    };
+   default:
+    return{
+     $:1,
+     $0:new TipoCuenta({
+      $:2,
+      $0:Strings.Trim(s)
+     })
+    };
+  }
  };
  CuentaBancaria.New=function(titular,banco,tipo,numero,routing)
  {
@@ -3472,6 +3642,15 @@
    routing:routing
   };
  };
+ TarjetaCredito.New=function(titular,tipoTarjeta,numero,expiracion)
+ {
+  return{
+   titular:titular,
+   tipoTarjeta:tipoTarjeta,
+   numero:numero,
+   expiracion:expiracion
+  };
+ };
  ConceptoPago=TypesV0.ConceptoPago=Runtime.Class({
   toString:function()
   {
@@ -3479,7 +3658,7 @@
    {
     return function($2)
     {
-     return $1(StackOverflow_GeneratedPrintf.p$4($2));
+     return $1(StackOverflow_GeneratedPrintf.p$6($2));
     };
    }(Global.id))(this);
   }
@@ -3509,7 +3688,7 @@
    {
     return function($2)
     {
-     return $1(StackOverflow_GeneratedPrintf.p$5($2));
+     return $1(StackOverflow_GeneratedPrintf.p$7($2));
     };
    }(Global.id))(this);
   }
@@ -3560,9 +3739,10 @@
    })
   }:null;
  };
- Direccion.New=function(tipoDireccion,linea1,linea2,ciudad,estado,pais,zonaPostal)
+ Direccion.New=function(authorizeIdR,tipoDireccion,linea1,linea2,ciudad,estado,pais,zonaPostal)
  {
   return{
+   authorizeIdR:authorizeIdR,
    tipoDireccion:tipoDireccion,
    linea1:linea1,
    linea2:linea2,
@@ -3585,7 +3765,7 @@
    {
     return function($2)
     {
-     return $1(StackOverflow_GeneratedPrintf.p$6($2));
+     return $1(StackOverflow_GeneratedPrintf.p$8($2));
     };
    }(Global.id))(this);
   }
@@ -3666,6 +3846,17 @@
    fechaNacimiento:fechaNacimiento
   };
  };
+ StatusFormaPago.NuevaFormaPago={
+  $:0
+ };
+ FormaPago.New=function(nombre,authorizeIdR,cuentaPago)
+ {
+  return{
+   nombre:nombre,
+   authorizeIdR:authorizeIdR,
+   cuentaPago:cuentaPago
+  };
+ };
  TipoMensaje.Saludo={
   $:2
  };
@@ -3736,6 +3927,16 @@
    nevento:nevento
   };
  };
+ TypesV0.ctaVacio=function()
+ {
+  SC$1.$cctor();
+  return SC$1.ctaVacio;
+ };
+ TypesV0.tarVacio=function()
+ {
+  SC$1.$cctor();
+  return SC$1.tarVacio;
+ };
  TypesV0.dirVacio=function()
  {
   SC$1.$cctor();
@@ -3754,39 +3955,25 @@
  LatestType$1.TypeV1={
   $:0
  };
- StatusContacto.Habilitado={
-  $:3
- };
- StatusContacto.Deshabilitado={
-  $:2
- };
- StatusContacto.VerificacionEnviada={
-  $:1
- };
- StatusContacto.RequiereVerificacion={
-  $:0
- };
  CorreoElectronico$1=TypesV1.CorreoElectronico=Runtime.Class({
   toString:function()
   {
    return this.email;
   }
  },null,CorreoElectronico$1);
- CorreoElectronico$1.New=function(email,status,enviado,recibido,enlace)
+ CorreoElectronico$1.New=function(email,enviado,recibido)
  {
   return new CorreoElectronico$1({
    email:email,
-   status:status,
    enviado:enviado,
-   recibido:recibido,
-   enlace:enlace
+   recibido:recibido
   });
  };
- Aliado$1.New=function(id,idAuthorizedO,idPadreO,datosPersonales,contactos,identificacion,formasPago,transacciones,mensajes,isInternal,status,tipo,fechaRegistro,fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,comision,nivel)
+ Aliado$1.New=function(id,authorizeIdR,idPadreO,datosPersonales,contactos,identificacion,formasPago,transacciones,mensajes,isInternal,status,tipo,fechaRegistro,fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,comision,nivel)
  {
   return{
    id:id,
-   idAuthorizedO:idAuthorizedO,
+   authorizeIdR:authorizeIdR,
    idPadreO:idPadreO,
    datosPersonales:datosPersonales,
    contactos:contactos,
@@ -3868,7 +4055,7 @@
    {
     return al$1.status.$===2&&al$1.tipo.$===1;
    },hijos));
-   _al=Aliado$1.New(al.id,al.idAuthorizedO,al.idPadreO,al.datosPersonales,al.contactos,al.identificacion,al.formasPago,al.transacciones,al.mensajes,al.isInternal,al.status,nRefActivos>=pre.numeroReferidosMaster?TipoAliado.Master:TipoAliado.Regular,al.fechaRegistro,0,nReferidos,nRefActivos,Seq$1.sumBy(function(al$1)
+   _al=Aliado$1.New(al.id,al.authorizeIdR,al.idPadreO,al.datosPersonales,al.contactos,al.identificacion,al.formasPago,al.transacciones,al.mensajes,al.isInternal,al.status,nRefActivos>=pre.numeroReferidosMaster?TipoAliado.Master:TipoAliado.Regular,al.fechaRegistro,0,nReferidos,nRefActivos,Seq$1.sumBy(function(al$1)
    {
     return al$1.nDescendientes+al$1.nReferidos;
    },hijos),Seq$1.sumBy(function(al$1)
@@ -3876,7 +4063,7 @@
     return al$1.nDescActivos+al$1.nRefActivos;
    },hijos),al.comision,1+buscar.nivelDe(al.idPadreO));
    p$1=Aliado$2.comision(pre,_al);
-   return Aliado$1.New(_al.id,_al.idAuthorizedO,_al.idPadreO,_al.datosPersonales,_al.contactos,_al.identificacion,_al.formasPago,_al.transacciones,_al.mensajes,_al.isInternal,_al.status,_al.tipo,_al.fechaRegistro,_al.fechaStatus,_al.nReferidos,_al.nRefActivos,_al.nDescendientes,_al.nDescActivos,p$1[0]+p$1[1],_al.nivel);
+   return Aliado$1.New(_al.id,_al.authorizeIdR,_al.idPadreO,_al.datosPersonales,_al.contactos,_al.identificacion,_al.formasPago,_al.transacciones,_al.mensajes,_al.isInternal,_al.status,_al.tipo,_al.fechaRegistro,_al.fechaStatus,_al.nReferidos,_al.nRefActivos,_al.nDescendientes,_al.nDescActivos,p$1[0]+p$1[1],_al.nivel);
   }
   function checkO(v)
   {
@@ -4025,7 +4212,7 @@
     {
      return function($2)
      {
-      return $1("buscarAliado failed: "+StackOverflow_GeneratedPrintf.p$7($2));
+      return $1("buscarAliado failed: "+StackOverflow_GeneratedPrintf.p$9($2));
      };
     }(Operators$3.FailWith))(id);
    }
@@ -4065,7 +4252,7 @@
     {
      return function($2)
      {
-      return $1("Cannot find aliado "+StackOverflow_GeneratedPrintf.p$7($2));
+      return $1("Cannot find aliado "+StackOverflow_GeneratedPrintf.p$9($2));
      };
     }(Global.id))(modelo.idAliado);
    },Arrays.tryFind(function(al)
@@ -4106,6 +4293,10 @@
  EndPoint.DefaultEP={
   $:0
  };
+ VariousUI.removeButton=function(f,doc)
+ {
+  return Doc.Element("form",[],[doc,Doc.Button("-",[AttrProxy.Create("title","borrar")],f)]);
+ };
  VariousUI.crearOptions=function(ns)
  {
   return Doc.Concat(Seq$1.map(VariousUI.crearOption,ns));
@@ -4113,6 +4304,16 @@
  VariousUI.crearOption=function(n)
  {
   return Doc.Element("option",[],[Doc.TextNode(n)]);
+ };
+ VariousUI.tiposTar=function()
+ {
+  SC$1.$cctor();
+  return SC$1.tiposTar;
+ };
+ VariousUI.tiposCta=function()
+ {
+  SC$1.$cctor();
+  return SC$1.tiposCta;
  };
  VariousUI.generos=function()
  {
@@ -4260,7 +4461,7 @@
     $0:TypesV1.correoVacio()
    },x==null?i$1:x)),o==null?null:{
     $:1,
-    $0:(v=o.$0,CorreoElectronico$1.New($2,v.status,v.enviado,v.recibido,v.enlace))
+    $0:(v=o.$0,CorreoElectronico$1.New($2,v.enviado,v.recibido))
    });
   },requeridosW,forma.Hole("correo").get_View()));
   return[requeridosW,forma.get_Doc()];
@@ -4337,9 +4538,9 @@
   {
    if(!Unchecked.Equals(dirV.Get(),v))
     dirV.Set(v);
-  },View.Apply(View.Apply(View.Apply(View.Apply(View.Apply(View.Apply(View.Map2(function($1,$2)
+  },View.Apply(View.Apply(View.Apply(View.Apply(View.Apply(View.Apply(View.Apply(View.Map2(function($1,$2)
   {
-   return Runtime.Curried(function($3,$4,$5,$6,$7,$8)
+   return Runtime.Curried(function($3,$4,$5,$6,$7,$8,$9)
    {
     return!Seq$1.isEmpty($1)?null:VariousUI.alertIfNone("TipoDireccion",TipoDireccion.tryParse(Strings.Trim($2)),function(tipo)
     {
@@ -4347,18 +4548,206 @@
      {
       return VariousUI.alertIfNone("Pais",Pais.tryParse(Strings.Trim($4)),function(pais)
       {
-       return VariousUI.alertIfNone("CodgoPostal",ZonaPostal.tryParse(Strings.Trim($5)),function(codigo)
+       return VariousUI.alertIfNone("CodigoPostal",ZonaPostal.tryParse(Strings.Trim($5)),function(codigo)
        {
+        var o;
         return{
          $:1,
-         $0:Direccion.New(tipo,Strings.Trim($6),Strings.Trim($7),Strings.Trim($8),estado,pais,codigo)
+         $0:Direccion.New((o=$9==null?null:{
+          $:1,
+          $0:$9.$0.authorizeIdR
+         },o==null?Library.Error(""):o.$0),tipo,Strings.Trim($6),Strings.Trim($7),Strings.Trim($8),estado,pais,codigo)
         };
        });
       });
      });
     });
-   },6);
-  },requeridosW,forma.Hole("tipodireccion").get_View()),forma.Hole("estado").get_View()),forma.Hole("pais").get_View()),forma.Hole("codigopostal").get_View()),forma.Hole("direccion1").get_View()),forma.Hole("direccion2").get_View()),forma.Hole("ciudad").get_View()));
+   },7);
+  },requeridosW,forma.Hole("tipodireccion").get_View()),forma.Hole("estado").get_View()),forma.Hole("pais").get_View()),forma.Hole("codigopostal").get_View()),forma.Hole("direccion1").get_View()),forma.Hole("direccion2").get_View()),forma.Hole("ciudad").get_View()),dirV.get_View()));
+  return[requeridosW,forma.get_Doc()];
+ };
+ CuentaBancaria$1.formaDocO=function(ctaOV)
+ {
+  var v;
+  return CuentaBancaria$1.formaDoc(Var$1.Lens(ctaOV,(v=[TypesV0.ctaVacio(),""],function(o)
+  {
+   return o==null?v:o.$0;
+  }),function(a,v$1)
+  {
+   return{
+    $:1,
+    $0:v$1
+   };
+  }));
+ };
+ CuentaBancaria$1.formaDoc=function(ctaV)
+ {
+  var forma,b,T,p,i,requeridosW;
+  function a(cta,a$1)
+  {
+   forma.Hole("titular").Set(cta.titular);
+   forma.Hole("banco").Set(cta.banco);
+   forma.Hole("tipocuenta").Set((function($1)
+   {
+    return function($2)
+    {
+     return $1(Global.String($2));
+    };
+   }(Global.id))(cta.tipo));
+   forma.Hole("numero").Set(cta.numero.$0);
+   forma.Hole("routing").Set(cta.routing.$0);
+  }
+  forma=(b=(T=Doc.EmbedView(View.Map(VariousUI.crearOptions,VariousUI.tiposCta().get_View())),ProviderBuilder.Make().WithHole({
+   $:0,
+   $0:"tiposcuenta",
+   $1:T
+  })).WithHole({
+   $:2,
+   $0:"mensaje",
+   $1:View.Map(function($1)
+   {
+    return $1[1];
+   },ctaV.get_View())
+  }),(p=Handler.CompleteHoles(b.k,b.h,[["tipocuenta",0],["titular",0],["banco",0],["numero",0],["routing",0]]),(i=new TemplateInstance.New(p[1],StackOverflow_Templates.cuentabancaria(p[0])),(b.i=i,i))));
+  View.Sink(function($1)
+  {
+   return a($1[0],$1[1]);
+  },ctaV.get_View());
+  requeridosW=View.Apply(View.Apply(View.Map2(function($1,$2)
+  {
+   return function($3)
+   {
+    return function($4)
+    {
+     return Seq$1.map(function(t)
+     {
+      return t[1];
+     },Seq$1.filter(function(t)
+     {
+      return t[0];
+     },List.ofArray([[Strings.Trim($1)==="","Titular"],[Strings.Trim($2)==="","Banco"],[Strings.Trim($3)==="","Numero de Cuenta"],[Strings.Trim($4)==="","ABA/Routing Number"]])));
+    };
+   };
+  },forma.Hole("titular").get_View(),forma.Hole("banco").get_View()),forma.Hole("numero").get_View()),forma.Hole("routing").get_View());
+  View.Sink(function(a$1)
+  {
+   var v;
+   if(a$1!=null&&a$1.$==1)
+    {
+     v=a$1.$0;
+     !Unchecked.Equals((ctaV.Get())[0],v)?ctaV.Set([v,""]):void 0;
+    }
+  },View.Apply(View.Apply(View.Apply(View.Apply(View.Map2(function($1,$2)
+  {
+   return Runtime.Curried(function($3,$4,$5,$6)
+   {
+    return!Seq$1.isEmpty($1)?null:VariousUI.alertIfNone("TipoCuenta",TipoCuenta.tryParse(Strings.Trim($2)),function(tipoCta)
+    {
+     var b$1;
+     return{
+      $:1,
+      $0:(b$1=Strings.Trim($3),CuentaBancaria.New(Strings.Trim($4),b$1,tipoCta,new NumeroCuenta({
+       $:0,
+       $0:Strings.Trim($5)
+      }),new RoutingNumber({
+       $:0,
+       $0:Strings.Trim($6)
+      })))
+     };
+    });
+   },4);
+  },requeridosW,forma.Hole("tipocuenta").get_View()),forma.Hole("banco").get_View()),forma.Hole("titular").get_View()),forma.Hole("numero").get_View()),forma.Hole("routing").get_View()));
+  return[requeridosW,forma.get_Doc()];
+ };
+ TarjetaCredito$1.formaDocO=function(tarOV)
+ {
+  var v;
+  return TarjetaCredito$1.formaDoc(Var$1.Lens(tarOV,(v=[TypesV0.tarVacio(),""],function(o)
+  {
+   return o==null?v:o.$0;
+  }),function(a,v$1)
+  {
+   return{
+    $:1,
+    $0:v$1
+   };
+  }));
+ };
+ TarjetaCredito$1.formaDoc=function(tarV)
+ {
+  var forma,b,T,p,i,requeridosW;
+  function a(tar,mensaje)
+  {
+   forma.Hole("titular").Set(tar.titular);
+   forma.Hole("tipotarjeta").Set((function($1)
+   {
+    return function($2)
+    {
+     return $1(Global.String($2));
+    };
+   }(Global.id))(tar.tipoTarjeta));
+   forma.Hole("numero").Set(tar.numero.$0);
+   forma.Hole("expiracion").Set(tar.expiracion.$0);
+  }
+  forma=(b=(T=Doc.EmbedView(View.Map(VariousUI.crearOptions,VariousUI.tiposTar().get_View())),ProviderBuilder.Make().WithHole({
+   $:0,
+   $0:"tipostarjeta",
+   $1:T
+  })).WithHole({
+   $:2,
+   $0:"mensaje",
+   $1:View.Map(function($1)
+   {
+    return $1[1];
+   },tarV.get_View())
+  }),(p=Handler.CompleteHoles(b.k,b.h,[["tipotarjeta",0],["titular",0],["numero",0],["expiracion",0]]),(i=new TemplateInstance.New(p[1],StackOverflow_Templates.tarjetacredito(p[0])),(b.i=i,i))));
+  View.Sink(function($1)
+  {
+   return a($1[0],$1[1]);
+  },tarV.get_View());
+  requeridosW=View.Apply(View.Apply(View.Map2(function($1,$2)
+  {
+   return function($3)
+   {
+    return function($4)
+    {
+     return Seq$1.map(function(t)
+     {
+      return t[1];
+     },Seq$1.filter(function(t)
+     {
+      return t[0];
+     },List.ofArray([[Strings.Trim($1)==="","Titular"],[Strings.Trim($2)==="","TipoTarjeta"],[Strings.Trim($3)==="","Numero"],[Strings.Trim($4)==="","Expiracion"]])));
+    };
+   };
+  },forma.Hole("titular").get_View(),forma.Hole("tipotarjeta").get_View()),forma.Hole("numero").get_View()),forma.Hole("expiracion").get_View());
+  View.Sink(function(a$1)
+  {
+   var v;
+   if(a$1!=null&&a$1.$==1)
+    {
+     v=a$1.$0;
+     !Unchecked.Equals((tarV.Get())[0],v)?tarV.Set([v,""]):void 0;
+    }
+  },View.Apply(View.Apply(View.Apply(View.Map2(function($1,$2)
+  {
+   return Runtime.Curried3(function($3,$4,$5)
+   {
+    return!Seq$1.isEmpty($1)?null:VariousUI.alertIfNone("Tipo Tarjeta",TipoTarjeta.tryParse(Strings.Trim($2)),function(tipoTar)
+    {
+     return{
+      $:1,
+      $0:TarjetaCredito.New(Strings.Trim($3),tipoTar,new NumeroTarjeta({
+       $:0,
+       $0:Strings.Trim($4)
+      }),new Expiracion({
+       $:0,
+       $0:Strings.Trim($5)
+      }))
+     };
+    });
+   });
+  },requeridosW,forma.Hole("tipotarjeta").get_View()),forma.Hole("titular").get_View()),forma.Hole("numero").get_View()),forma.Hole("expiracion").get_View()));
   return[requeridosW,forma.get_Doc()];
  };
  DatosPersonales$1.formaDoc=function(datosV)
@@ -4382,7 +4771,7 @@
      {
       return function($2)
       {
-       return $1(StackOverflow_GeneratedPrintf.p$8($2));
+       return $1(StackOverflow_GeneratedPrintf.p$10($2));
       };
      }(Global.id))(dat.genero));
     }
@@ -4434,7 +4823,7 @@
   },requeridosW,forma.Hole("genero").get_View()),forma.Hole("fechanacimiento").get_View()),forma.Hole("nombres").get_View()),forma.Hole("nombres").get_View()),forma.Hole("apellidos").get_View()),forma.Hole("apellidos").get_View()));
   return[requeridosW,forma.get_Doc()];
  };
- FormaRegistro.formaDoc$5919$41=function(mostrar,mensajes,datosOV,correoOV,telefonoOV,direccionOV)
+ FormaRegistro.formaDoc$6301$41=function(mostrar,mensajes,datosOV,correoOV,telefonoOV,direccionOV)
  {
   return function()
   {
@@ -4453,10 +4842,10 @@
     var e,c;
     return b.Bind$4((e={
      $:3,
-     $0:[{
+     $0:[new IdAliado({
       $:0,
       $0:(c=Guid.NewGuid(),Global.String(c))
-     },datos,{
+     }),datos,{
       $:1,
       $0:ModeloUI.modeloV().Get().idAliado
      },[{
@@ -4476,7 +4865,7 @@
      {
       return function($7)
       {
-       return $6(StackOverflow_GeneratedPrintf.p$9($7));
+       return $6(StackOverflow_GeneratedPrintf.p$11($7));
       };
      }(Global.id))(a));
      return b.Zero();
@@ -4540,10 +4929,10 @@
     var e,c;
     return b$1.Bind$4((e={
      $:3,
-     $0:[{
+     $0:[new IdAliado({
       $:0,
       $0:(c=Guid.NewGuid(),Global.String(c))
-     },datos,{
+     }),datos,{
       $:1,
       $0:ModeloUI.modeloV().Get().idAliado
      },[{
@@ -4563,7 +4952,7 @@
      {
       return function($7)
       {
-       return $6(StackOverflow_GeneratedPrintf.p$9($7));
+       return $6(StackOverflow_GeneratedPrintf.p$11($7));
       };
      }(Global.id))(a));
      return b$1.Zero();
@@ -4603,7 +4992,7 @@
  {
   return ModeloUI.aliadoIdDoc(FormaDatos.formaAliado);
  };
- FormaDatos.formaAliado$5972$36=function(mostrar,mensajes,datosOV,aliadoW)
+ FormaDatos.formaAliado$6354$36=function(mostrar,mensajes,datosOV,aliadoW)
  {
   return function()
   {
@@ -4629,7 +5018,7 @@
      {
       return function($5)
       {
-       return $4(StackOverflow_GeneratedPrintf.p$9($5));
+       return $4(StackOverflow_GeneratedPrintf.p$11($5));
       };
      }(Global.id))(a));
      return b.Zero();
@@ -4710,7 +5099,7 @@
      {
       return function($5)
       {
-       return $4(StackOverflow_GeneratedPrintf.p$9($5));
+       return $4(StackOverflow_GeneratedPrintf.p$11($5));
       };
      }(Global.id))(a));
      return b$1.Zero();
@@ -4731,7 +5120,7 @@
   },p[0]));
   return forma.get_Doc();
  };
- FormaGenerica.forma$6008$38=function(salvar)
+ FormaGenerica.forma$6390$38=function(salvar)
  {
   return function()
   {
@@ -4773,7 +5162,7 @@
  {
   return ModeloUI.aliadoIdDoc(FormaContactos.formaContactos);
  };
- FormaContactos.formaContactos$6087$36=function(mostrar,mensajes,aliadoW,contactosV)
+ FormaContactos.formaContactos$6463$36=function(mostrar,mensajes,aliadoW,contactosV)
  {
   return function()
   {
@@ -4800,7 +5189,7 @@
      {
       return function($2)
       {
-       return $1(StackOverflow_GeneratedPrintf.p$9($2));
+       return $1(StackOverflow_GeneratedPrintf.p$11($2));
       };
      }(Global.id))(a));
      return b.Zero();
@@ -4808,7 +5197,7 @@
    }))))):Global.alert("Error not caught FormaDatos"));
   };
  };
- FormaContactos.formaContactos$6086$42=function(contactosV)
+ FormaContactos.formaContactos$6462$42=function(contactosV)
  {
   return function()
   {
@@ -4818,7 +5207,7 @@
    }]));
   };
  };
- FormaContactos.formaContactos$6085$42=function(contactosV)
+ FormaContactos.formaContactos$6461$42=function(contactosV)
  {
   return function()
   {
@@ -4828,7 +5217,7 @@
    }]));
   };
  };
- FormaContactos.formaContactos$6084$42=function(contactosV)
+ FormaContactos.formaContactos$6460$42=function(contactosV)
  {
   return function()
   {
@@ -4856,13 +5245,6 @@
       contactosV.Set(Array.replace(i$1,fr(a.$0),contactosV.Get()));
     });
    };
-  }
-  function removeButton(i$1,doc)
-  {
-   return Doc.Element("form",[],[doc,Doc.Button("-",[AttrProxy.Create("title","borrar")],function()
-   {
-    contactosV.Set(Array.remove(i$1,contactosV.Get()));
-   })]);
   }
   mensajes=Var$1.Create$1("");
   mostrar=Var$1.Create$1(false);
@@ -4958,21 +5340,30 @@
   },contactosIV);
   telDocs=Doc.ConvertBy(Global.id,function(i$1)
   {
-   return removeButton(i$1,(Telefono$1.formaDoc((function($1)
+   return VariousUI.removeButton(function()
+   {
+    contactosV.Set(Array.remove(i$1,contactosV.Get()));
+   },(Telefono$1.formaDoc((function($1)
    {
     return makeVar($1[0],$1[1]);
    }(ftel))(i$1)))[1]);
   },tels);
   corDocs=Doc.ConvertBy(Global.id,function(i$1)
   {
-   return removeButton(i$1,(CorreoElectronico$2.formaDoc((function($1)
+   return VariousUI.removeButton(function()
+   {
+    contactosV.Set(Array.remove(i$1,contactosV.Get()));
+   },(CorreoElectronico$2.formaDoc((function($1)
    {
     return makeVar($1[0],$1[1]);
    }(fcor))(i$1)))[1]);
   },cors);
   dirDocs=Doc.ConvertBy(Global.id,function(i$1)
   {
-   return removeButton(i$1,(Direccion$1.formaDoc((function($1)
+   return VariousUI.removeButton(function()
+   {
+    contactosV.Set(Array.remove(i$1,contactosV.Get()));
+   },(Direccion$1.formaDoc((function($1)
    {
     return makeVar($1[0],$1[1]);
    }(fdir))(i$1)))[1]);
@@ -5058,7 +5449,7 @@
      {
       return function($2)
       {
-       return $1(StackOverflow_GeneratedPrintf.p$9($2));
+       return $1(StackOverflow_GeneratedPrintf.p$11($2));
       };
      }(Global.id))(a));
      return b$1.Zero();
@@ -5186,14 +5577,247 @@
   SC$1.$cctor();
   return SC$1.ftel;
  };
- RenderAliados.aliados$6176$49=function(seleccionar,alid)
+ FormaFormasPago.formaDoc=function()
+ {
+  return ModeloUI.aliadoIdDoc(FormaFormasPago.formaFormasPago);
+ };
+ FormaFormasPago.formaFormasPago$6529$36=function(mostrar,mensajes,aliadoW,formasPagoV)
+ {
+  return function()
+  {
+   var m,m$1,al,b;
+   function g(a)
+   {
+    Global.alert(a);
+   }
+   mostrar.Set(true);
+   m=mensajes.Get();
+   Strings.Trim(m)!==""?Global.alert(m):(m$1=View.TryGet(aliadoW),m$1!=null&&m$1.$==1?(al=m$1.$0,AsyncResultM.iterA(function(x)
+   {
+    return g(ResultMessage.summarized(x));
+   },Global.ignore,(b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+   {
+    var e;
+    return b.Bind$4((e={
+     $:6,
+     $0:[al.id,formasPagoV.Get()]
+    },(new AjaxRemotingProvider.New()).Async("StackOverflow:FsRoot.StackOverflow+Rpc.ejecutarEvento:-1486622886",[e])),function(a)
+    {
+     ModeloUI.refrescarData();
+     Global.alert((function($1)
+     {
+      return function($2)
+      {
+       return $1(StackOverflow_GeneratedPrintf.p$11($2));
+      };
+     }(Global.id))(a));
+     return b.Zero();
+    });
+   }))))):Global.alert("Error not caught FormaDatos"));
+  };
+ };
+ FormaFormasPago.formaFormasPago$6528$42=function(formasPagoV,fp)
+ {
+  return function()
+  {
+   formasPagoV.Set(formasPagoV.Get().concat([fp({
+    $:0,
+    $0:TypesV0.ctaVacio()
+   })]));
+  };
+ };
+ FormaFormasPago.formaFormasPago$6527$42=function(formasPagoV,fp)
+ {
+  return function()
+  {
+   formasPagoV.Set(formasPagoV.Get().concat([fp({
+    $:1,
+    $0:TypesV0.tarVacio()
+   })]));
+  };
+ };
+ FormaFormasPago.formaFormasPago=function(aliadoW)
+ {
+  var mensajes,mostrar,formasPagoV,formasPagoIV,tars,ctas,tarDocs,ctaDocs,b,t,t$1,t$2,p,i;
+  function makeVar(f,fr)
+  {
+   return function(i$1)
+   {
+    return new FromView.New(View.Map(function($1)
+    {
+     var o;
+     o=Seq$1.tryItem(i$1,$1);
+     return o==null?null:f(o.$0);
+    },formasPagoV.get_View()),function(a)
+    {
+     if(a!=null&&a.$==1)
+      formasPagoV.Set(Array.replace(i$1,(fr(Arrays.get(formasPagoV.Get(),i$1)))(a.$0[0]),formasPagoV.Get()));
+    });
+   };
+  }
+  function fp(cp)
+  {
+   return FormaPago.New("",Library.Error(""),cp);
+  }
+  mensajes=Var$1.Create$1("");
+  mostrar=Var$1.Create$1(false);
+  formasPagoV=Var$1.Create$1([]);
+  View.Sink(function(a)
+  {
+   formasPagoV.Set(a);
+  },View.Map(function(a)
+  {
+   return a.formasPago;
+  },aliadoW));
+  formasPagoIV=View.Map(Seq$1.indexed,formasPagoV.get_View());
+  tars=View.Map(function($1)
+  {
+   function c(i$1,c$1)
+   {
+    return(FormaFormasPago.ftar())[0](c$1)==null?null:{
+     $:1,
+     $0:i$1
+    };
+   }
+   return Seq$1.choose(function($2)
+   {
+    return c($2[0],$2[1]);
+   },$1);
+  },formasPagoIV);
+  ctas=View.Map(function($1)
+  {
+   function c(i$1,c$1)
+   {
+    return(FormaFormasPago.fcta())[0](c$1)==null?null:{
+     $:1,
+     $0:i$1
+    };
+   }
+   return Seq$1.choose(function($2)
+   {
+    return c($2[0],$2[1]);
+   },$1);
+  },formasPagoIV);
+  tarDocs=Doc.ConvertBy(Global.id,function(i$1)
+  {
+   return VariousUI.removeButton(function()
+   {
+    formasPagoV.Set(Array.remove(i$1,formasPagoV.Get()));
+   },(TarjetaCredito$1.formaDocO((function($1)
+   {
+    return makeVar($1[0],$1[1]);
+   }(FormaFormasPago.ftar()))(i$1)))[1]);
+  },tars);
+  ctaDocs=Doc.ConvertBy(Global.id,function(i$1)
+  {
+   return VariousUI.removeButton(function()
+   {
+    formasPagoV.Set(Array.remove(i$1,formasPagoV.Get()));
+   },(CuentaBancaria$1.formaDocO((function($1)
+   {
+    return makeVar($1[0],$1[1]);
+   }(FormaFormasPago.fcta()))(i$1)))[1]);
+  },ctas);
+  return(b=(t=(t$1=(t$2=ProviderBuilder.Make().WithHole({
+   $:2,
+   $0:"mensajes",
+   $1:View.Map2(function($1,$2)
+   {
+    return $1?$2:"";
+   },mostrar.get_View(),mensajes.get_View())
+  }).WithHole({
+   $:2,
+   $0:"changed",
+   $1:View.Map2(function($1,$2)
+   {
+    return Unchecked.Equals($1.formasPago,$2)?"":"mui-btn--primary";
+   },aliadoW,formasPagoV.get_View())
+  }).WithHole({
+   $:0,
+   $0:"tarjetas",
+   $1:tarDocs
+  }).WithHole({
+   $:0,
+   $0:"cuentas",
+   $1:ctaDocs
+  }),t$2.WithHole(Handler.EventQ2(t$2.k,"mastarjeta",function()
+  {
+   return t$2.i;
+  },function()
+  {
+   formasPagoV.Set(formasPagoV.Get().concat([fp({
+    $:1,
+    $0:TypesV0.tarVacio()
+   })]));
+  }))),t$1.WithHole(Handler.EventQ2(t$1.k,"mascuenta",function()
+  {
+   return t$1.i;
+  },function()
+  {
+   formasPagoV.Set(formasPagoV.Get().concat([fp({
+    $:0,
+    $0:TypesV0.ctaVacio()
+   })]));
+  }))),t.WithHole(Handler.EventQ2(t.k,"salvar",function()
+  {
+   return t.i;
+  },function()
+  {
+   var m,m$1,al,b$1;
+   function g(a)
+   {
+    Global.alert(a);
+   }
+   mostrar.Set(true);
+   m=mensajes.Get();
+   Strings.Trim(m)!==""?Global.alert(m):(m$1=View.TryGet(aliadoW),m$1!=null&&m$1.$==1?(al=m$1.$0,AsyncResultM.iterA(function(x)
+   {
+    return g(ResultMessage.summarized(x));
+   },Global.ignore,(b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+   {
+    var e;
+    return b$1.Bind$4((e={
+     $:6,
+     $0:[al.id,formasPagoV.Get()]
+    },(new AjaxRemotingProvider.New()).Async("StackOverflow:FsRoot.StackOverflow+Rpc.ejecutarEvento:-1486622886",[e])),function(a)
+    {
+     ModeloUI.refrescarData();
+     Global.alert((function($1)
+     {
+      return function($2)
+      {
+       return $1(StackOverflow_GeneratedPrintf.p$11($2));
+      };
+     }(Global.id))(a));
+     return b$1.Zero();
+    });
+   }))))):Global.alert("Error not caught FormaDatos"));
+  }))),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],StackOverflow_Templates.formacuentas(p[0])),(b.i=i,i)))).get_Doc();
+ };
+ FormaFormasPago.fcta=function()
+ {
+  SC$1.$cctor();
+  return SC$1.fcta;
+ };
+ FormaFormasPago.ftar=function()
+ {
+  SC$1.$cctor();
+  return SC$1.ftar;
+ };
+ FormaFormasPago.msg=function(a)
+ {
+  var idR;
+  idR=a.authorizeIdR;
+  return idR.$==0?"":idR.$0;
+ };
+ RenderAliados.aliados$6618$49=function(seleccionar,alid)
  {
   return function()
   {
    seleccionar(alid);
   };
  };
- RenderAliados.aliados$6174$49=function(expandir,alid)
+ RenderAliados.aliados$6616$49=function(expandir,alid)
  {
   return function()
   {
@@ -5810,7 +6434,7 @@
   {
    return Global.String($1.nReferidos);
   },ModeloUI.aliadoW());
-  AppFramework.addPlugIn(PlugIn.New("Prozper",[AppFramework.newVar("title",titleV),AppFramework.newVar("contentVar",ModeloUI.contentVar())],[AppFramework.newViw("mesActual",mesActualW),AppFramework.newViw("anoActual",anoActualW),AppFramework.newViw("aliado",nombreAliadoW),AppFramework.newViw("status",statusAliadoW),AppFramework.newViw("comision",comisionAliadoW),AppFramework.newViw("datos",datosAliadoW)],[AppFramework.newDoc("Aliados",Lazy.Create(RenderAliados.aliados)),AppFramework.newDoc("Aliado",Lazy.Create(RenderAliado.aliado)),AppFramework.newDoc("Calculo",Lazy.Create(RenderAliado.calculo)),AppFramework.newDoc("FormaRegistro",Lazy.Create(FormaRegistro.formaDoc)),AppFramework.newDoc("FormaDatos",Lazy.Create(FormaDatos.formaDoc)),AppFramework.newDoc("FormaContactos",Lazy.Create(FormaContactos.formaDoc)),AppFramework.newDoc("contentDoc",Lazy.Create(MainProgram.getContentDoc))],[AppFramework.newAct("Logout",function()
+  AppFramework.addPlugIn(PlugIn.New("Prozper",[AppFramework.newVar("title",titleV),AppFramework.newVar("contentVar",ModeloUI.contentVar())],[AppFramework.newViw("mesActual",mesActualW),AppFramework.newViw("anoActual",anoActualW),AppFramework.newViw("aliado",nombreAliadoW),AppFramework.newViw("status",statusAliadoW),AppFramework.newViw("comision",comisionAliadoW),AppFramework.newViw("datos",datosAliadoW)],[AppFramework.newDoc("Aliados",Lazy.Create(RenderAliados.aliados)),AppFramework.newDoc("Aliado",Lazy.Create(RenderAliado.aliado)),AppFramework.newDoc("Calculo",Lazy.Create(RenderAliado.calculo)),AppFramework.newDoc("FormaRegistro",Lazy.Create(FormaRegistro.formaDoc)),AppFramework.newDoc("FormaDatos",Lazy.Create(FormaDatos.formaDoc)),AppFramework.newDoc("FormaContactos",Lazy.Create(FormaContactos.formaDoc)),AppFramework.newDoc("FormaFormasPago",Lazy.Create(FormaFormasPago.formaDoc)),AppFramework.newDoc("contentDoc",Lazy.Create(MainProgram.getContentDoc))],[AppFramework.newAct("Logout",function()
   {
    MainProgram.logout();
   })],[]));
@@ -5881,7 +6505,7 @@
   SC$1.$cctor();
   return SC$1.layoutName;
  };
- EndPoints.content$6456$35=function()
+ EndPoints.content$6857$35=function()
  {
   return function(e)
   {
@@ -5899,19 +6523,19 @@
     }
   };
  };
- EndPoints.content$6446$62=function()
+ EndPoints.content$6847$62=function()
  {
   MainProgram.mainProgram();
   return Doc.TextNode("Initialized");
  };
- EndPoints.content$6434$58=function(id)
+ EndPoints.content$6835$58=function(id)
  {
   MainProgram.mainProgramLoggedOff(id);
   return Doc.TextNode("Initialized");
  };
  SC$1.$cctor=function()
  {
-  var f,g,c,c$1,b,b$1;
+  var f,g,d,c,c$1,b,b$1;
   SC$1.$cctor=Global.ignore;
   function g$1(s)
   {
@@ -6065,6 +6689,8 @@
   {
    return j.tryBool();
   }];
+  SC$1.appConfig="C:\\Users\\Abelardo\\OneDrive - Cipher Business Solutions\\Clientes\\Prozper\\app.config";
+  SC$1.authorizeIni="C:\\Users\\Abelardo\\OneDrive - Cipher Business Solutions\\Clientes\\Prozper\\authorize.ini";
   SC$1.rootdir="..\\website";
   SC$1.TemplatesFileName="..\\website"+"\\Templates.html";
   SC$1.LoginFileName="..\\website"+"\\Login.html";
@@ -6080,7 +6706,7 @@
   }))("..\\website\\Templates.html"));
   SC$1.premisasCalculo=PremisasCalculo.New(15,25,25,0,75,31,15,22);
   SC$1.telVacio=Telefono.New(TipoTelefono.Movil,"","","","",false);
-  SC$1.dirVacio=Direccion.New(TipoDireccion.Habitacion,"","","",new Estado({
+  SC$1.dirVacio=Direccion.New(Library.Error$1(""),TipoDireccion.Habitacion,"","","",new Estado({
    $:2,
    $0:""
   }),new Pais({
@@ -6090,15 +6716,29 @@
    $:0,
    $0:""
   }));
-  SC$1.correoVacio=CorreoElectronico$1.New("",StatusContacto.RequiereVerificacion,null,null,null);
-  SC$1.empty=Aliado$1.New({
+  SC$1.tarVacio=TarjetaCredito.New("",TipoTarjeta.Visa,new NumeroTarjeta({
    $:0,
    $0:""
-  },null,null,DatosPersonales.New(null,"","","","",Pais.USA,Genero.Masculino,(new Global.Date(2000,1-1,1)).getTime()),[],[],[],[],[],false,StatusAliado.Inactivo,TipoAliado.Regular,(new Global.Date(2000,1-1,1)).getTime(),(new Global.Date(2000,1-1,1)).getTime(),0,0,0,0,0,0);
-  SC$1.modeloV=Var$1.Create$1(Modelo$1.New({
+  }),new Expiracion({
+   $:0,
+   $0:""
+  }));
+  SC$1.ctaVacio=CuentaBancaria.New("","",TipoCuenta.Ahorro,new NumeroCuenta({
+   $:0,
+   $0:""
+  }),new RoutingNumber({
+   $:0,
+   $0:""
+  }));
+  SC$1.correoVacio=CorreoElectronico$1.New("",null,null);
+  SC$1.empty=(d=DatosPersonales.New(null,"","","","",Pais.USA,Genero.Masculino,(new Global.Date(2000,1-1,1)).getTime()),Aliado$1.New(new IdAliado({
+   $:0,
+   $0:""
+  }),Library.Error$1(""),null,d,[],[],[],[],[],false,StatusAliado.Inactivo,TipoAliado.Regular,(new Global.Date(2000,1-1,1)).getTime(),(new Global.Date(2000,1-1,1)).getTime(),0,0,0,0,0,0));
+  SC$1.modeloV=Var$1.Create$1(Modelo$1.New(new IdAliado({
    $:0,
    $0:":"
-  },[],(c=Date$1.now(),(new Date$1(c)).getFullYear()),(c$1=Date$1.now(),(new Date$1(c$1)).getMonth()+1),TypesV0.premisasCalculo(),-2));
+  }),[],(c=Date$1.now(),(new Date$1(c)).getFullYear()),(c$1=Date$1.now(),(new Date$1(c$1)).getMonth()+1),TypesV0.premisasCalculo(),-2));
   SC$1.selAliadoIdOV=Var$1.Create$1(null);
   SC$1.refAliadoIdOV=Var$1.Create$1(null);
   SC$1.endPointV=Router.InstallHash(EndPoint.DefaultEP,StackOverflow_Router.r());
@@ -6127,15 +6767,19 @@
   SC$1.tiposDir=Var$1.Create$1([]);
   SC$1.tiposTel=Var$1.Create$1([]);
   SC$1.generos=Var$1.Create$1([]);
+  SC$1.tiposCta=Var$1.Create$1([]);
+  SC$1.tiposTar=Var$1.Create$1([]);
   Concurrency.Start((b$1=null,Concurrency.Delay(function()
   {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("StackOverflow:FsRoot.StackOverflow+Rpc.obtenerUnions:1415050208",[]),function(a)
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("StackOverflow:FsRoot.StackOverflow+Rpc.obtenerUnions:-277165293",[]),function(a)
    {
     VariousUI.paises().Set(a[0]);
     VariousUI.estados().Set(a[1]);
     VariousUI.tiposDir().Set(a[2]);
     VariousUI.tiposTel().Set(a[3]);
     VariousUI.generos().Set(a[4]);
+    VariousUI.tiposCta().Set(a[5]);
+    VariousUI.tiposTar().Set(a[6]);
     return Concurrency.Zero();
    });
   })),null);
@@ -6178,6 +6822,42 @@
     $0:a
    };
   }];
+  SC$1.ftar=[function(cp)
+  {
+   var m;
+   m=cp.cuentaPago;
+   return m.$==1?{
+    $:1,
+    $0:[m.$0,FormaFormasPago.msg(cp)]
+   }:null;
+  },function(fp)
+  {
+   return function(v)
+   {
+    return FormaPago.New(fp.nombre,fp.authorizeIdR,{
+     $:1,
+     $0:v
+    });
+   };
+  }];
+  SC$1.fcta=[function(cp)
+  {
+   var m;
+   m=cp.cuentaPago;
+   return m.$==0?{
+    $:1,
+    $0:[m.$0,FormaFormasPago.msg(cp)]
+   }:null;
+  },function(fp)
+  {
+   return function(v)
+   {
+    return FormaPago.New(fp.nombre,fp.authorizeIdR,{
+     $:0,
+     $0:v
+    });
+   };
+  }];
   SC$1.layoutName="ProzperLyt";
  };
  StackOverflow_Router.r=function()
@@ -6202,17 +6882,25 @@
  };
  StackOverflow_GeneratedPrintf.p$4=function($1)
  {
-  return $1.$==2?"Otro "+Utils.prettyPrint($1.$0):$1.$==1?"PagoComision":"PagoAfiliacion";
+  return $1.$==3?"Otra "+Utils.prettyPrint($1.$0):$1.$==2?"Amex":$1.$==1?"MasterCard":"Visa";
  };
  StackOverflow_GeneratedPrintf.p$5=function($1)
  {
-  return $1.$==3?"Otro "+Utils.prettyPrint($1.$0):$1.$==2?"ServicioPostal":$1.$==1?"Oficina":"Habitacion";
+  return $1.$==2?"Otra "+Utils.prettyPrint($1.$0):$1.$==1?"Corriente":"Ahorro";
  };
  StackOverflow_GeneratedPrintf.p$6=function($1)
  {
-  return $1.$==3?"Voip":$1.$==2?"Habitacion":$1.$==1?"Oficina":"Movil";
+  return $1.$==2?"Otro "+Utils.prettyPrint($1.$0):$1.$==1?"PagoComision":"PagoAfiliacion";
  };
  StackOverflow_GeneratedPrintf.p$7=function($1)
+ {
+  return $1.$==3?"Otro "+Utils.prettyPrint($1.$0):$1.$==2?"ServicioPostal":$1.$==1?"Oficina":"Habitacion";
+ };
+ StackOverflow_GeneratedPrintf.p$8=function($1)
+ {
+  return $1.$==3?"Voip":$1.$==2?"Habitacion":$1.$==1?"Oficina":"Movil";
+ };
+ StackOverflow_GeneratedPrintf.p$9=function($1)
  {
   return"IdAliado "+Utils.prettyPrint($1.$0);
  };
@@ -6240,6 +6928,22 @@
    $0:"direccion"
   },h):void 0;
  };
+ StackOverflow_Templates.cuentabancaria=function(h)
+ {
+  Templates.LoadLocalTemplates("templates");
+  return h?Templates.NamedTemplate("templates",{
+   $:1,
+   $0:"cuentabancaria"
+  },h):void 0;
+ };
+ StackOverflow_Templates.tarjetacredito=function(h)
+ {
+  Templates.LoadLocalTemplates("templates");
+  return h?Templates.NamedTemplate("templates",{
+   $:1,
+   $0:"tarjetacredito"
+  },h):void 0;
+ };
  StackOverflow_Templates.datospersonales=function(h)
  {
   Templates.LoadLocalTemplates("templates");
@@ -6248,11 +6952,11 @@
    $0:"datospersonales"
   },h):void 0;
  };
- StackOverflow_GeneratedPrintf.p$8=function($1)
+ StackOverflow_GeneratedPrintf.p$10=function($1)
  {
   return $1.$==2?"Empresa":$1.$==1?"Femenino":"Masculino";
  };
- StackOverflow_GeneratedPrintf.p$9=function($1)
+ StackOverflow_GeneratedPrintf.p$11=function($1)
  {
   return $1.$==2?"Mensaje "+Utils.prettyPrint($1.$0):$1.$==1?"NuevoRegistro "+Utils.prettyPrint($1.$0):"ROk";
  };
@@ -6286,6 +6990,14 @@
   return h?Templates.NamedTemplate("templates",{
    $:1,
    $0:"formacontactos"
+  },h):void 0;
+ };
+ StackOverflow_Templates.formacuentas=function(h)
+ {
+  Templates.LoadLocalTemplates("templates");
+  return h?Templates.NamedTemplate("templates",{
+   $:1,
+   $0:"formacuentas"
   },h):void 0;
  };
  StackOverflow_Templates.tablaaliados=function(h)

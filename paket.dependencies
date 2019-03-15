@@ -19,6 +19,7 @@ nuget Microsoft.Owin.FileSystems
 nuget Microsoft.Owin.Hosting
 nuget Microsoft.Owin.Host.HttpListener
 nuget FSharp.Data
+nuget FSharp.Configuration
 nuget System.Reactive    = 4.0.0
 nuget FSharp.Control.Reactive
 nuget FSharpPlus 
@@ -47,6 +48,7 @@ group Other
     nuget FSharp.Data.SqlClient
     nuget FSharp.Data.TypeProviders
     nuget Microsoft.Orleans.Core.Abstractions
+    nuget AuthorizeNet
 
 group Test
     framework: netstandard2.0, netcoreapp2.1

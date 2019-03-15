@@ -4,6 +4,8 @@ NUGET
     CommonServiceLocator (1.3)
     FSharp.Compiler.Service (2.0.0.6)
     FSharp.Compiler.Tools (10.2.1)
+    FSharp.Configuration (1.5)
+      FSharp.Core (>= 4.0.0.1)
     FSharp.Control.Reactive (4.1)
       FSharp.Core (>= 4.2.3)
       System.Reactive (>= 4.0)
@@ -964,6 +966,7 @@ GROUP Other
 RESTRICTION: == net461
 NUGET
   remote: https://www.nuget.org/api/v2
+    AuthorizeNet (2.0)
     FSharp.Core (4.5.4)
     FSharp.Data.SqlClient (2.0.1)
       FSharp.Core (>= 4.1.18)

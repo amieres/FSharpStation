@@ -176,8 +176,9 @@
                 mainContent        template  content    "id=content-wrapper"  content aliados                 fecha "@{Prozper.mesActual} @{Prozper.anoActual}"
                 cntFormaRegistro   template  content    "id=content-wrapper"  content Prozper.FormaRegistro   titulo "Referido por: @{Prozper.aliado}"  
                 cntFormaDatos      template  content    "id=content-wrapper"  content Prozper.FormaDatos      titulo " "  
-                cntFormaContactos  template  content    "id=content-wrapper"  content Prozper.FormaContactos  titulo " "  
-                cntFormaCuentas    template  content    "id=content-wrapper"  content ProzperLyt.FormaCuentas    titulo " "  
+                cntFormaContactos  template  content    "id=content-wrapper"  content Prozper.FormaContactos  titulo " " 
+                cntFormaFormasPago template  content    "id=content-wrapper"  content Prozper.FormaFormasPago titulo " " 
+                cntFormaCuentas    template  content    "id=content-wrapper"  content ProzperLyt.FormaCuentas titulo " "  
                 cntFormaDocumentos template  content    "id=content-wrapper"  content Prozper.FormaDocumentos titulo " "  
 
                 aliados          div       "class=row"
@@ -252,6 +253,7 @@
                 btnImport        Doc       InputFile                 ""     "Import..."    FSharpStation.Import    ""
                 FileName         div                                 "class=form-control"  RuleEditor.fileName
 
+            </div>
         </div>
 
         <div ws-children-template="Correo">
@@ -294,6 +296,7 @@
 
         <div ws-children-template="Direccion">
             <br>
+            <div style="color:red">${Mensaje}</div>
             <div class="mui-select">
                 <label>Tipo de Dirección</label>
                 <select ws-var="TipoDireccion" ws-hole="Tipos" required>
@@ -353,45 +356,57 @@
             <legend style="color:transparent">.</legend>
         </div>
     
-        <div ws-children-template="Cuenta">
-                <br>
-                <div class="mui-select">
-                    <label>Tipo de Dirección</label>
-                    <select ws-var="TipoDireccion" ws-hole="Tipos" required>
-                    </select>
-                </div>            
-                <div class="mui-textfield mui-textfield--float-label" style="display:block">
-                    <input type="text" name="Direccion1" ws-var="Direccion1" required>
-                    <label>Direccion1</label>
-                </div>
-                <div class="mui-textfield mui-textfield--float-label" style="display:block">
-                    <input type="text" name="Direccion2" ws-var="Direccion2" >
-                    <label>Direccion2</label>
-                </div>                
-                <legend></legend>
-                <div class="mui-textfield mui-textfield--float-label">
-                    <input type="text" name="Ciudad" ws-var="Ciudad" required>
-                    <label>Ciudad</label>
-                </div>                
-                <div class="mui-textfield mui-textfield--float-label">
-                    <input type="text" name="Estado" ws-var="Estado" list="Estados" required>
-                    <label>Estado</label>
-                    <datalist id="Estados" ws-hole="Estados" >
-                    </datalist>
-                </div>                
-                <div class="mui-textfield mui-textfield--float-label">
-                    <input type="text" name="CodigoPostal" ws-var="CodigoPostal" required>
-                    <label>Codigo Postal</label>
-                </div>                
-                <div class="mui-textfield mui-textfield--float-label">
-                    <input type="text" name="Pais" ws-var="Pais" list="Paises" required>
-                    <label>País</label>
-                    <datalist id="Paises" ws-hole="Paises" >
-                    </datalist>
-                </div>
+        <div ws-children-template="CuentaBancaria">
+            <br>
+            <div style="color:red">${Mensaje}</div>
+            <div class="mui-select">
+                <label>Tipo de Cuenta</label>
+                <select ws-var="TipoCuenta" ws-hole="TiposCuenta" >
+                </select>
+            </div>            
+            <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                <input type="text" name="Titular" ws-var="Titular" required>
+                <label>Titular</label>
             </div>
-    
-            <div ws-template=FormaRegistro class="mui-col-md-8 mui-col-md-offset-1">
+            <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                <input type="text" name="Banco" ws-var="Banco" >
+                <label>Banco</label>
+            </div>
+            <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                <input type="text" name="NumeroCuenta" ws-var="Numero" >
+                <label>Numero de Cuenta</label>
+            </div>                
+            <legend></legend>
+            <div class="mui-textfield mui-textfield--float-label">
+                <input type="text" name="RoutingNumber" ws-var="Routing" required>
+                <label>ABA/RoutingNumber</label>
+            </div>
+        </div>
+
+        <div ws-children-template="TarjetaCredito">
+            <br>
+            <div style="color:red">${Mensaje}</div>
+            <div class="mui-select">
+                <label>Tipo de Tarjeta</label>
+                <select ws-var="TipoTarjeta" ws-hole="TiposTarjeta" >
+                </select>
+            </div>            
+            <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                <input type="text" name="Titular" ws-var="Titular" required>
+                <label>Titular</label>
+            </div>
+            <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                <input type="text" name="NumeroTarjeta" ws-var="Numero" >
+                <label>Numero de Tarjeta</label>
+            </div>                
+            <legend></legend>
+            <div class="mui-textfield mui-textfield--float-label">
+                <input type="text" name="Expiracion" ws-var="Expiracion" required>
+                <label>Vencimiento(YYMM)</label>
+            </div>
+        </div>
+            
+        <div ws-template=FormaRegistro class="mui-col-md-8 mui-col-md-offset-1">
             <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
                 <legend>Datos Personales</legend>
                 <div ws-replace="DatosPersonales"></div>
@@ -447,6 +462,29 @@
                 <div style="color:red">${Mensajes}</div>
             </form>
         </div>
+
+        <div ws-template=FormaCuentas class="mui-col-md-8 mui-col-md-offset-1">
+            Aqui puede introducir una forma de pago. Puede usar su tarjeta de credito o una cuenta bancaria:
+            <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
+                <div class="mui-panel">
+                    <legend>Tarjetas de Credito</legend>
+                    <div ws-replace="Tarjetas"></div>
+                    <button title="agregar tarjeta" ws-onclick="MasTarjeta" type="button" class="mui-btn mui-btn--small mui-btn--fab mui-btn--accent">+</button>
+                </div>    
+                <legend></legend>
+                <div class="mui-panel">
+                    <legend>Cuentas Bancarias</legend>
+                    <legend></legend>
+                    <div ws-replace="Cuentas"></div>
+                    <button title="agregar cuenta" ws-onclick="MasCuenta" type="button" class="mui-btn mui-btn--small mui-btn--fab mui-btn--accent">+</button>
+                </div>    
+                <legend></legend>
+                <legend></legend>
+                <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar" >Guardar</button>
+                <button style="display: none;" type="submit" >Hidden button</button>
+                <div style="color:red">${Mensajes}</div>
+            </form>
+        </div>    
     
         <div ws-template=FormaGenerica class="mui-col-md-8 mui-col-md-offset-1">
             <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
@@ -564,7 +602,7 @@
                             <li><a href="#/Content/ProzperLyt.cntFormaDatos"         >Datos Personales</a></li>
                             <li><a href="#/Content/ProzperLyt.cntFormaIdentificacion">Identificación  </a></li>
                             <li><a href="#/Content/ProzperLyt.cntFormaContactos"     >Contactos       </a></li>
-                            <li><a href="#/Content/ProzperLyt.cntFormaCuentas"       >Cuentas Bancarias</a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaFormasPago"    >Cuentas Bancarias</a></li>
                             <li><a href="#/Content/ProzperLyt.cntFormaDocumentos"    >Documentos      </a></li>
                         </ul>
                 </li>
@@ -631,7 +669,6 @@
             </div>
         </footer>
 
-        </div>
         <style>
             .Inactivo          { font-weight: 100 ; color: rgba(179, 177, 177, 0.644) }
             .Master            { font-weight: 800 }
