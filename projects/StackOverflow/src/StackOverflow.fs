@@ -1,6 +1,6 @@
 #nowarn "52"
 #nowarn "40"
-////-d:FSS_SERVER -d:FSharpStation1552522263490 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1553156972976 -d:WEBSHARPER
 ////#cd @"..\projects\StackOverflow\src"
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
@@ -24,7 +24,7 @@
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
 //#r @"..\packages\FSharp.Configuration\lib\net45\FSharp.Configuration.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
-//#r @"..\..\LayoutEngine\bin\LayoutEngine.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\LayoutEngine\bin\LayoutEngine.dll"
 //#r @"..\packages\other\FSharp.Data.SqlClient\lib\net40\FSharp.Data.SqlClient.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Data.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Configuration.dll"
@@ -41,7 +41,7 @@
 //#nowarn "52"
 //#nowarn "40"
 /// Root namespace for all code
-//#define FSharpStation1552522263490
+//#define FSharpStation1553156972976
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -1485,13 +1485,13 @@ namespace FsRoot
             type AuthorizeKeys = IniFile<authorizeIni>
         
         //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
-        //#r "..\..\LayoutEngine\bin\LayoutEngine.dll"
+        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\projects\LayoutEngine\bin\LayoutEngine.dll"
         //#nowarn "1178" "1182" "3180" "52"
         
         [< AutoOpen >]
         module Templating =
             open WebSharper.UI.Templating
-            let [< Literal >] rootdir = @"..\website"
+            let [< Literal >] rootdir = @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\StackOverflow\website"
         
             let [< Literal >] TemplatesFileName = rootdir + @"\Templates.html"
             type TemplateLib  = Template< TemplatesFileName, ClientLoad.FromDocument, ServerLoad.WhenChanged, LegacyMode.New>
@@ -2803,7 +2803,7 @@ namespace FsRoot
                                                             ,   paymentProfiles     = paymentProfileList
                                                             ,   shipToList          = addressInfoList )
                 let response = 
-                    let request    = new createCustomerProfileRequest( profile = customerProfile, validationMode = validationModeEnum.none)
+                    let request    = new createCustomerProfileRequest( profile = customerProfile, validationMode = validationModeEnum.testMode)
                     let controller = new createCustomerProfileController(request) 
                     controller.Execute()
                     controller.GetApiResponse()
@@ -2824,20 +2824,9 @@ namespace FsRoot
                     new merchantAuthenticationType(     name            = Config.AuthorizeKeys.Authorize.Id
                                                     ,   ItemElementName = ItemChoiceType.transactionKey
                                                     ,   Item            = Config.AuthorizeKeys.Authorize.Transaction )
-                let creditCard  = new creditCardType(   cardNumber      = "4111111111111111", expirationDate  = "0718")
-                let paymentProfileList = [|
-                    new customerPaymentProfileType(     payment         = new paymentType( Item = creditCard  ))    
-                |]
-                let addressInfoList = [|
-                    //aliado.contactos.
-                    new customerAddressType(    address = "10900 NE 8th St"  , city = "Seattle"  , zip = "98006")
-                    //new customerAddressType(    address = "1200 148th AVE NE", city = "NorthBend", zip = "92101")
-                                        |]
                 let email = aliado.contactos |> Seq.choose(function CorreoElectronico cor -> Some cor.email |_-> None) |> Seq.tryHead |> Option.defaultValue ""
                 let customerProfile = new customerProfileType(  merchantCustomerId  = aliado.id.Id
-                                                            ,   email               = email
-                                                            ,   paymentProfiles     = paymentProfileList
-                                                            ,   shipToList          = addressInfoList )
+                                                            ,   email               = email )
                 let response = 
                     let request    = new createCustomerProfileRequest( profile = customerProfile, validationMode = validationModeEnum.none)
                     let controller = new createCustomerProfileController(request) 
@@ -2863,7 +2852,7 @@ namespace FsRoot
                 let creditCard = new creditCardType(    cardNumber      = tar.numero.Id, expirationDate  = tar.expiracion.Id)
                 let pp         = new customerPaymentProfileType(payment = new paymentType( Item = creditCard  ))    
                 let response = 
-                    let request    = new createCustomerPaymentProfileRequest(clientId = authorizeId.Id, paymentProfile = pp, validationMode = validationModeEnum.none)
+                    let request    = new createCustomerPaymentProfileRequest(customerProfileId  = authorizeId.Id, paymentProfile = pp, validationMode = validationModeEnum.testMode)
                     let controller = new createCustomerPaymentProfileController(request)
                     controller.Execute()
                     controller.GetApiResponse()
@@ -2892,7 +2881,7 @@ namespace FsRoot
                                                     ,   bankName        = cta.banco)
                 let pp         = new customerPaymentProfileType(payment = new paymentType( Item = bankAccount  ))    
                 let response = 
-                    let request    = new createCustomerPaymentProfileRequest(clientId = authorizeId.Id, paymentProfile = pp, validationMode = validationModeEnum.none)
+                    let request    = new createCustomerPaymentProfileRequest(customerProfileId  = authorizeId.Id, paymentProfile = pp, validationMode = validationModeEnum.testMode)
                     let controller = new createCustomerPaymentProfileController(request)
                     controller.Execute()
                     controller.GetApiResponse()
@@ -3051,118 +3040,7 @@ namespace FsRoot
                 EstadoActual.leerTodosLosEventosAsync() |> Async.Start
             EstadoActual    .ejecutarEventosO <- Some ejecutarAcciones
         
-        [< JavaScript false >]
-        module Rpc =
-        
-            let printResult operation arm = async {
-                let! rm = arm
-                printfn "%s %A" operation rm
-                return! arm
-            }
-        
-            let userIsAliado user al =
-                al.datosPersonales.apellido1 = user
-             || al.datosPersonales.nombre1   = user
-        
-            let checkUserPwd user password =
-                if user <> password then None       else
-                if user = ""        then None       else
-                if user = "admin"   then Some user  else
-                (EstadoActual.estado()).aliados 
-                |> Seq.tryFind (userIsAliado user) 
-                |> Option.map (fun al -> match al.id with | IdAliado s -> s)
-        
-            [< Rpc >]
-            let loginUser (user:string) (password:string) : AsyncResultM<unit, string> = 
-                let ctx = Web.Remoting.GetContext()
-                asyncResultM {
-                    match checkUserPwd user password with
-                    | Some aid -> do! ctx.UserSession.LoginUser aid
-                    | None -> ()
-                } (**)|> printResult "loginUser"
-        
-            [< Rpc >]
-            let logoutUser ()  : AsyncResultM<unit, string> = 
-                let ctx = Web.Remoting.GetContext()
-                asyncResultM {
-                    do! ctx.UserSession.Logout()
-                } (**)|> printResult "logoutUser"
-        
-            [< Rpc >]
-            let leerDataModelo (idO : IdAliado option) : AsyncResultM<Modelo, string> = 
-                let  ctx  = Web.Remoting.GetContext()
-                asyncResultM {
-                    let! userO = ctx.UserSession.GetLoggedInUser()
-                    match userO, idO with
-                    | None, None -> do! Error(ErrorMsg "User not logged in.")
-                                    return { 
-                                        EstadoActual.estado() with 
-                                            aliados  = [| |]
-                                    }
-                    | None, Some ida -> 
-                        let al = EstadoActual.estado().aliados |> Seq.tryFind (fun al -> al.id = ida) |> Option.defaultValue {
-                            Aliado.empty with id = IdAliado "Prozper" ; datosPersonales = { Aliado.empty.datosPersonales with nombre1 = "Prozper" }
-                        }
-                        return {
-                            EstadoActual.estado() with 
-                                idAliado = al.id
-                                aliados  = [| { Aliado.empty with
-                                                    id = al.id
-                                                    datosPersonales = al.datosPersonales } 
-                                            |]
-                        }
-                    | Some user, _ ->
-                    let aliados = EstadoActual.estado() |> Aliado.actualizarAliados
-                    let buscar = Aliado.busqueda aliados
-                    if user = "admin" then return { EstadoActual.estado() with aliados = aliados } else
-                    let al = aliados |> Seq.find (fun al -> al.id = IdAliado user)
-                    let subAliados = (if al.tipo = Master then buscar.descendientes else buscar.hijos) al
-                    return { EstadoActual.estado() with 
-                                idAliado = al.id
-                                aliados  = Array.append [| al |] subAliados 
-                            }
-                }
-        
-            [< Rpc >]
-            let ejecutarEvento (evento:DataEvento) = 
-                let ctxO =             
-                    try 
-                        Some <| Web.Remoting.GetContext()
-                    with e when e.Message = "No remoting context available." ->
-                        None
-                let usuarioO = 
-                    match ctxO with
-                    | None     -> Some "Server"
-                    | Some ctx -> ctx.UserSession.GetLoggedInUser() |> Async.RunSynchronously
-                asyncResultM {
-                    let  estado   = EstadoActual.estado()
-                    let  aliadoO  = usuarioO |> Option.map IdAliado
-                    let _, respR  = 
-                        EstadoActual.actualizarModelo {
-                            aliadoO = aliadoO
-                            nevento = estado.nevento + 1L
-                            data    = evento 
-                        } estado
-                    let! resp             = respR
-                    return!                 EstadoActual.llamarEvento (usuarioO |> Option.defaultValue "") evento
-                }
-        
-            [< Rpc >]
-            let obtenerUnions() = async {
-                return DiscUnion.simple<Pais          >
-                     , DiscUnion.simple<Estado        >
-                     , DiscUnion.simple<TipoDireccion >
-                     , DiscUnion.simple<TipoTelefono  >
-                     , DiscUnion.simple<Genero        >
-                     , DiscUnion.simple<TipoCuenta    >
-                     , DiscUnion.simple<TipoTarjeta   >
-            }
-        
-            [< JavaScript >]
-            let iterA arm = AsyncResultM.iterA (ResultMessage.summarized >> JS.Alert) id arm
-        
-        
-        [< JavaScript false >]
+        //[< JavaScript false >]
         module Sample =
             let data = """
         Alvarado, Rossana	Interview Group
@@ -5874,7 +5752,7 @@ namespace FsRoot
                 )
         
             let modelo = {
-                idAliado      = IdAliado ":"
+                idAliado      = IdAliado "admin"
                 aliados       = aliados |> Seq.toArray
                 anoActual     = 2019
                 periodoActual = 1
@@ -5887,6 +5765,133 @@ namespace FsRoot
         
         
         //#define NOFMK --noframework
+        module EstadoActual =
+            open WebSharper
+            open WebSharper.JavaScript
+            open WebSharper.Sitelets
+        
+            let estado() = async {
+                let! resp = JS.Fetch "http://localhost:7071/api/hello" |> Promise.AsAsync
+                let! text = resp.Text() |> Promise.AsAsync
+                return Json.Deserialize<Modelo> text
+            }
+        
+        module Rpc =
+        
+            let printResult operation arm = async {
+                let! rm = arm
+                printfn "%s %A" operation rm
+                return! arm
+            }
+        
+            let userIsAliado user al =
+                al.datosPersonales.apellido1 = user
+             || al.datosPersonales.nombre1   = user
+        
+            //let checkUserPwd user password =
+            //    if user <> password then None       else
+            //    if user = ""        then None       else
+            //    if user = "admin"   then Some user  else
+            //    (EstadoActual.estado()).aliados 
+            //    |> Seq.tryFind (userIsAliado user) 
+            //    |> Option.map (fun al -> match al.id with | IdAliado s -> s)
+        
+            //[< Rpc >]
+            let loginUser (user:string) (password:string) : AsyncResultM<unit, string> =  AsyncResultM.rtn ()
+            //    let ctx = Web.Remoting.GetContext()
+            //    asyncResultM {
+            //        match checkUserPwd user password with
+            //        | Some aid -> do! ctx.UserSession.LoginUser aid
+            //        | None -> ()
+            //    } (**)|> printResult "loginUser"
+        
+            //[< Rpc >]
+            let logoutUser ()  : AsyncResultM<unit, string> =  AsyncResultM.rtn ()
+            //    let ctx = Web.Remoting.GetContext()
+            //    asyncResultM {
+            //        do! ctx.UserSession.Logout()
+            //    } (**)|> printResult "logoutUser"
+        
+        
+            //[< Rpc >]
+            let leerDataModelo (idO : IdAliado option) : AsyncResultM<Modelo, string> = 
+                //let  ctx  = Web.Remoting.GetContext()
+                asyncResultM {
+                    //let! userO = ctx.UserSession.GetLoggedInUser()
+                    let userO = Some "admin"
+                    match userO, idO with
+                    | None, None -> do! Error(ErrorMsg "User not logged in.")
+                                    let! modelo = EstadoActual.estado()
+                                    return { 
+                                        modelo with 
+                                            aliados  = [| |]
+                                    }
+                    | None, Some ida -> 
+                        let! modelo = EstadoActual.estado()
+                        let al = modelo.aliados |> Seq.tryFind (fun al -> al.id = ida) |> Option.defaultValue {
+                            Aliado.empty with id = IdAliado "Prozper" ; datosPersonales = { Aliado.empty.datosPersonales with nombre1 = "Prozper" }
+                        }
+                        let! modelo = EstadoActual.estado()
+                        return {
+                            modelo with 
+                                idAliado = al.id
+                                aliados  = [| { Aliado.empty with
+                                                    id = al.id
+                                                    datosPersonales = al.datosPersonales } 
+                                            |]
+                        }
+                    | Some user, _ ->
+                    let! modelo = EstadoActual.estado()
+                    let aliados = modelo |> Aliado.actualizarAliados
+                    let buscar = Aliado.busqueda aliados
+                    if user = "admin" then return { modelo with aliados = aliados } else
+                    let al = aliados |> Seq.find (fun al -> al.id = IdAliado user)
+                    let subAliados = (if al.tipo = Master then buscar.descendientes else buscar.hijos) al
+                    return { modelo with 
+                                idAliado = al.id
+                                aliados  = Array.append [| al |] subAliados 
+                            }
+                }
+        
+            //[< Rpc >]
+            let ejecutarEvento (evento:DataEvento) = AsyncResultM.rtn (ROk )
+                //let ctxO =             
+                //    try 
+                //        Some <| Web.Remoting.GetContext()
+                //    with e when e.Message = "No remoting context available." ->
+                //        None
+                //let usuarioO = 
+                //    match ctxO with
+                //    | None     -> Some "Server"
+                //    | Some ctx -> ctx.UserSession.GetLoggedInUser() |> Async.RunSynchronously
+                //asyncResultM {
+                //    let  estado   = EstadoActual.estado()
+                //    let  aliadoO  = usuarioO |> Option.map IdAliado
+                //    let _, respR  = 
+                //        EstadoActual.actualizarModelo {
+                //            aliadoO = aliadoO
+                //            nevento = estado.nevento + 1L
+                //            data    = evento 
+                //        } estado
+                //    let! resp             = respR
+                //    return!                 EstadoActual.llamarEvento (usuarioO |> Option.defaultValue "") evento
+                //}
+        
+            //[< Rpc >]
+            let obtenerUnions() = async {
+                return [||] //DiscUnion.simple<Pais          >
+                     , [||] //DiscUnion.simple<Estado        >
+                     , [||] //DiscUnion.simple<TipoDireccion >
+                     , [||] //DiscUnion.simple<TipoTelefono  >
+                     , [||] //DiscUnion.simple<Genero        >
+                     , [||] //DiscUnion.simple<TipoCuenta    >
+                     , [||] //DiscUnion.simple<TipoTarjeta   >
+            }
+        
+            [< JavaScript >]
+            let iterA arm = AsyncResultM.iterA (ResultMessage.summarized >> JS.Alert) id arm
+        
+        
         
         module ModeloUI =
             let modeloV = Var.Create {
@@ -6488,8 +6493,8 @@ namespace FsRoot
             
                 let msg ({ FormaPago.authorizeIdR = idR }) = match idR with | Error m -> m | Ok _ -> "" 
             
-                let ftar = (fun cp -> match cp.cuentaPago with TarjetaCredito tar -> Some (tar, msg cp) |_-> None), fun fp v -> { fp with cuentaPago = TarjetaCredito v }
-                let fcta = (fun cp -> match cp.cuentaPago with CuentaBancaria cta -> Some (cta, msg cp) |_-> None), fun fp v -> { fp with cuentaPago = CuentaBancaria v }
+                let ftar = (fun cp -> match cp.cuentaPago with TarjetaCredito tar -> Some (tar, msg cp) |_-> None), fun fp v -> { fp with cuentaPago = TarjetaCredito v ; authorizeIdR = Error "" }
+                let fcta = (fun cp -> match cp.cuentaPago with CuentaBancaria cta -> Some (cta, msg cp) |_-> None), fun fp v -> { fp with cuentaPago = CuentaBancaria v ; authorizeIdR = Error "" }
             
                 let formaFormasPago (aliadoW: View<Aliado>) =
                     let mensajes      = Var.Create ""
@@ -6718,7 +6723,7 @@ namespace FsRoot
                 )
                 |> Doc.EmbedView
         
-            [< WebSharper.Sitelets.Website >]    
+            [< SPAEntryPoint >]    
             let mainProgram() =
                 let titleV          = Var.Create "Prozper"
                 let mesActualW      = V (mesToString    ModeloUI.modeloV.V.periodoActual  )
@@ -6808,7 +6813,9 @@ namespace FsRoot
         
             let mainProgramLoggedOff refId =
                 ModeloUI.refAliadoIdOV.Set <| Some refId
-                mainProgram()        
+                mainProgram()
+        
+        
         [< JavaScript false >]
         module EndPoints =
             open WebSharper.Sitelets
@@ -6885,8 +6892,12 @@ namespace FsRoot
             
             [< EntryPoint >]
             let Main args =
-                Sample.aliados |> Seq.iter (DataEvento.AgregarAliado >> EstadoActual.agregarEventoServer)
-                printfn "Usage: FSharpStation URL ROOT_DIRECTORY MaxMessageSize"
+                let args = 
+                    if Seq.tryItem 0 args = Some "x" then 
+                        Sample.aliados |> Seq.iter (DataEvento.AgregarAliado >> EstadoActual.agregarEventoServer)
+                        args.[1..]
+                    else args
+                printfn "Usage: ProzperServer [x] URL ROOT_DIRECTORY MaxMessageSize"
                 let url           = args |> Seq.tryItem 0 |>                   Option.defaultValue "http://localhost:9005/"
                 let rootDirectory = args |> Seq.tryItem 1 |>                   Option.defaultValue @"..\website"
                 let max           = args |> Seq.tryItem 2 |> Option.map int |> Option.defaultValue 1_000_000

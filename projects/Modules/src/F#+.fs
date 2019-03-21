@@ -1,6 +1,6 @@
-////-d:FSharpStation1543377169543
+////-d:FSharpStation1552522263490
 /// Root namespace for all code
-//#define FSharpStation1543377169543
+//#define FSharpStation1552522263490
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -11,15 +11,25 @@ namespace FsRoot
         /// Essentials that cannot run in Javascript (WebSharper)
         [< AutoOpen >]
         module LibraryNoJS =
-            /// returns (milliseconds / order)
-            let timeMe order round f p =
-                let before = System.DateTime.UtcNow
-                let r = f p
-                let dur = System.DateTime.UtcNow - before
-                let rnd = if round then order / 2 else 0
-                (dur.Hours * 3_600_000 + dur.Minutes * 60_000 + dur.Seconds * 1000 + dur.Milliseconds + rnd ) / order, r
-//#define FSharpStation1543377169543
-let inline tee f v = f v ; v
+            let rec getNamespace (t:System.Type) =
+                match t.DeclaringType with
+                | null -> match t.Namespace with null -> "" | ns -> ns + "."
+                | dt   -> getNamespace dt + dt.Name + "."
+            
+            let rec getTypeName (t:System.Type) =
+                if t.IsArray then getTypeName (t.GetElementType()) + "[]" else
+                let ns    = getNamespace t
+                let name  = if   t.Name = "FSharpOption`1"                then "Option"
+                            elif t.Name = "FSharpList`1"                  then "List"
+                            elif ns     = "Microsoft.FSharp.Core."
+                              || ns     = "Microsoft.FSharp.Collections." then t.Name   
+                            else  ns + t.Name
+                let name2 = name.Split('`').[0]
+                let parms = t.GenericTypeArguments |> Seq.map getTypeName |> String.concat ","
+                if parms = "" then name2 else sprintf "%s<%s>" name2 parms
+            
+//#define FSharpStation1552522263490
+let inline tee    f v   = f v ; v
 let inline  (|>!) v f   = f v ; v
 let inline  (>>!) g f   = g >> fun v -> f v ; v
 
@@ -27,106 +37,60 @@ let inline print v =
     match box v with
     | :? string as s -> printfn "%s" s
     | __             -> printfn "%A" v
+open FsRoot
+
+module Aaaa =
+    [< AutoOpen >]
+    module Bbbb =
+        type CCC = CCCa
+        type DDD = {
+            a : int
+        }
+    module Eeee =
+        type Pair(n:int) =
+            let b = 1
+            with member __.a = 3 
+
+let show (v:_) = 
+    let t = v.GetType()
+
+    (getTypeName t , t.FullName, t.Namespace, t.Name, t.DeclaringType, t.IsNested
+    )
+    |> print
+
+{ Aaaa.Bbbb.a = 3}     |> show
+[| Aaaa.Bbbb.CCCa  |]  |> show
+[ Aaaa.Eeee.Pair(1) ]  |> show
+
+({ Aaaa.Bbbb.a = 3}
+, Aaaa.Bbbb.CCCa     
+, Aaaa.Eeee.Pair 1)   |> show
+
+open System
+
+let reverseString (myStr: string) = myStr|>Seq.toList|>List.rev |> Array.ofList |> String
+
+"reverseString"
+|> Seq.toList|>List.rev |> Array.ofList
+|> print
+
+"reverseString"
+|> Seq.toList |>List.rev |> Array.ofList |> string
+|> print
+
 module Answer =
-    let update (x : array<double>) : array<double> = 
-        let xSum = (x |> Array.sum) - x.[0]
+    open System
 
-        let xSumN = 
-            [|
-                1.0 * x.[1] // A
-                1.0 * x.[2] // a
-                2.0 * x.[3] // AA
-                2.0 * x.[4] // Aa
-                2.0 * x.[5] // aA
-                2.0 * x.[6] // aa
-            |]
-            |> Array.sum
+    [| 'a'; 'b'; 'c'|] |> string  |> printfn "%A" //   "System.Char[]"
+    [| 'a'; 'b'; 'c'|].ToString() |> printfn "%A" //   "System.Char[]"
+    [| 'a'; 'b'; 'c'|] |> String  |> printfn "%A" //   "abc" 
 
-        let xSumSquaredN = 
-            [|
-                1.0 * x.[1] * x.[1] // A
-                1.0 * x.[2] * x.[2] // a
-                2.0 * x.[3] * x.[3] // AA
-                2.0 * x.[4] * x.[4] // Aa
-                2.0 * x.[5] * x.[5] // aA
-                2.0 * x.[6] * x.[6] // aa
-            |]
-            |> Array.sum
+    6                  |> string  |> printfn "%A" //   "6"
+    6                 .ToString() |> printfn "%A" //   "6"
+    6                  |> String  |> printfn "%A" //  error: no overloads for int
 
-        [|
+    "abc"              |> string  |> printfn "%A" //   "abc"
+    "abc"             .ToString() |> printfn "%A" //   "abc"
+    "abc"              |> String  |> printfn "%A" //   Strangelly enough gives error too
 
-            // 0 - Y
-            [|
-
-                0.0001 * x.[2] // a | SynthesisName: Y <-> a
-                -0.001 * x.[0] // Y | SynthesisName: Y <-> a
-                0.0001 * x.[1] // A | SynthesisName: Y <-> A
-                -0.001 * x.[0] // Y | SynthesisName: Y <-> A
-            |]
-            |> Array.sum
-
-            // 1 - A
-            [|
-
-                0.0001 * x.[5] // aA | LigationName: a + A <-> aA
-                -0.001 * x.[2] * x.[1] // a + A | LigationName: a + A <-> aA
-                0.0001 * x.[4] // Aa | LigationName: A + a <-> Aa
-                -0.001 * x.[1] * x.[2] // A + a | LigationName: A + a <-> Aa
-                0.0001 * x.[3] // AA | LigationName: A + A <-> AA
-                0.0001 * x.[3] // AA | LigationName: A + A <-> AA
-                -0.001 * x.[1] * x.[1] // A + A | LigationName: A + A <-> AA
-                -0.001 * x.[1] * x.[1] // A + A | LigationName: A + A <-> AA
-                -0.0001 * x.[1] // A | SynthesisName: Y <-> A
-                0.001 * x.[0] // Y | SynthesisName: Y <-> A
-            |]
-            |> Array.sum
-
-            // 2 - a
-            [|
-
-                0.0001 * x.[5] // aA | LigationName: a + A <-> aA
-                -0.001 * x.[2] * x.[1] // a + A | LigationName: a + A <-> aA
-                0.0001 * x.[4] // Aa | LigationName: A + a <-> Aa
-                -0.001 * x.[1] * x.[2] // A + a | LigationName: A + a <-> Aa
-                0.0001 * x.[6] // aa | LigationName: a + a <-> aa
-                0.0001 * x.[6] // aa | LigationName: a + a <-> aa
-                -0.001 * x.[2] * x.[2] // a + a | LigationName: a + a <-> aa
-                -0.001 * x.[2] * x.[2] // a + a | LigationName: a + a <-> aa
-                -0.0001 * x.[2] // a | SynthesisName: Y <-> a
-                0.001 * x.[0] // Y | SynthesisName: Y <-> a
-            |]
-            |> Array.sum
-
-            // 3 - AA
-            [|
-
-                -0.0001 * x.[3] // AA | LigationName: A + A <-> AA
-                0.001 * x.[1] * x.[1] // A + A | LigationName: A + A <-> AA
-            |]
-            |> Array.sum
-
-            // 4 - Aa
-            [|
-
-                -0.0001 * x.[4] // Aa | LigationName: A + a <-> Aa
-                0.001 * x.[1] * x.[2] // A + a | LigationName: A + a <-> Aa
-            |]
-            |> Array.sum
-
-            // 5 - aA
-            [|
-
-                -0.0001 * x.[5] // aA | LigationName: a + A <-> aA
-                0.001 * x.[2] * x.[1] // a + A | LigationName: a + A <-> aA
-            |]
-            |> Array.sum
-
-            // 6 - aa
-            [|
-
-                -0.0001 * x.[6] // aa | LigationName: a + a <-> aa
-                0.001 * x.[2] * x.[2] // a + a | LigationName: a + a <-> aa
-            |]
-            |> Array.sum
-
-        |]
+    "abc"              |> Core.string  |> printfn "%A"

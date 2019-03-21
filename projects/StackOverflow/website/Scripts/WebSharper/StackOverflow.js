@@ -4823,7 +4823,7 @@
   },requeridosW,forma.Hole("genero").get_View()),forma.Hole("fechanacimiento").get_View()),forma.Hole("nombres").get_View()),forma.Hole("nombres").get_View()),forma.Hole("apellidos").get_View()),forma.Hole("apellidos").get_View()));
   return[requeridosW,forma.get_Doc()];
  };
- FormaRegistro.formaDoc$6301$41=function(mostrar,mensajes,datosOV,correoOV,telefonoOV,direccionOV)
+ FormaRegistro.formaDoc$6290$41=function(mostrar,mensajes,datosOV,correoOV,telefonoOV,direccionOV)
  {
   return function()
   {
@@ -4844,7 +4844,7 @@
      $:3,
      $0:[new IdAliado({
       $:0,
-      $0:(c=Guid.NewGuid(),Global.String(c))
+      $0:Strings.Substring(Strings.Replace((c=Guid.NewGuid(),Global.String(c)),"-",""),0,20)
      }),datos,{
       $:1,
       $0:ModeloUI.modeloV().Get().idAliado
@@ -4931,7 +4931,7 @@
      $:3,
      $0:[new IdAliado({
       $:0,
-      $0:(c=Guid.NewGuid(),Global.String(c))
+      $0:Strings.Substring(Strings.Replace((c=Guid.NewGuid(),Global.String(c)),"-",""),0,20)
      }),datos,{
       $:1,
       $0:ModeloUI.modeloV().Get().idAliado
@@ -4992,7 +4992,7 @@
  {
   return ModeloUI.aliadoIdDoc(FormaDatos.formaAliado);
  };
- FormaDatos.formaAliado$6354$36=function(mostrar,mensajes,datosOV,aliadoW)
+ FormaDatos.formaAliado$6343$36=function(mostrar,mensajes,datosOV,aliadoW)
  {
   return function()
   {
@@ -5120,7 +5120,7 @@
   },p[0]));
   return forma.get_Doc();
  };
- FormaGenerica.forma$6390$38=function(salvar)
+ FormaGenerica.forma$6379$38=function(salvar)
  {
   return function()
   {
@@ -5162,7 +5162,7 @@
  {
   return ModeloUI.aliadoIdDoc(FormaContactos.formaContactos);
  };
- FormaContactos.formaContactos$6463$36=function(mostrar,mensajes,aliadoW,contactosV)
+ FormaContactos.formaContactos$6452$36=function(mostrar,mensajes,aliadoW,contactosV)
  {
   return function()
   {
@@ -5197,7 +5197,7 @@
    }))))):Global.alert("Error not caught FormaDatos"));
   };
  };
- FormaContactos.formaContactos$6462$42=function(contactosV)
+ FormaContactos.formaContactos$6451$42=function(contactosV)
  {
   return function()
   {
@@ -5207,7 +5207,7 @@
    }]));
   };
  };
- FormaContactos.formaContactos$6461$42=function(contactosV)
+ FormaContactos.formaContactos$6450$42=function(contactosV)
  {
   return function()
   {
@@ -5217,7 +5217,7 @@
    }]));
   };
  };
- FormaContactos.formaContactos$6460$42=function(contactosV)
+ FormaContactos.formaContactos$6449$42=function(contactosV)
  {
   return function()
   {
@@ -5581,7 +5581,7 @@
  {
   return ModeloUI.aliadoIdDoc(FormaFormasPago.formaFormasPago);
  };
- FormaFormasPago.formaFormasPago$6529$36=function(mostrar,mensajes,aliadoW,formasPagoV)
+ FormaFormasPago.formaFormasPago$6518$36=function(mostrar,mensajes,aliadoW,formasPagoV)
  {
   return function()
   {
@@ -5616,7 +5616,7 @@
    }))))):Global.alert("Error not caught FormaDatos"));
   };
  };
- FormaFormasPago.formaFormasPago$6528$42=function(formasPagoV,fp)
+ FormaFormasPago.formaFormasPago$6517$42=function(formasPagoV,fp)
  {
   return function()
   {
@@ -5626,7 +5626,7 @@
    })]));
   };
  };
- FormaFormasPago.formaFormasPago$6527$42=function(formasPagoV,fp)
+ FormaFormasPago.formaFormasPago$6516$42=function(formasPagoV,fp)
  {
   return function()
   {
@@ -5810,14 +5810,14 @@
   idR=a.authorizeIdR;
   return idR.$==0?"":idR.$0;
  };
- RenderAliados.aliados$6618$49=function(seleccionar,alid)
+ RenderAliados.aliados$6607$49=function(seleccionar,alid)
  {
   return function()
   {
    seleccionar(alid);
   };
  };
- RenderAliados.aliados$6616$49=function(expandir,alid)
+ RenderAliados.aliados$6605$49=function(expandir,alid)
  {
   return function()
   {
@@ -6505,7 +6505,7 @@
   SC$1.$cctor();
   return SC$1.layoutName;
  };
- EndPoints.content$6857$35=function()
+ EndPoints.content$6846$35=function()
  {
   return function(e)
   {
@@ -6523,12 +6523,12 @@
     }
   };
  };
- EndPoints.content$6847$62=function()
+ EndPoints.content$6836$62=function()
  {
   MainProgram.mainProgram();
   return Doc.TextNode("Initialized");
  };
- EndPoints.content$6835$58=function(id)
+ EndPoints.content$6824$58=function(id)
  {
   MainProgram.mainProgramLoggedOff(id);
   return Doc.TextNode("Initialized");
@@ -6834,7 +6834,7 @@
   {
    return function(v)
    {
-    return FormaPago.New(fp.nombre,fp.authorizeIdR,{
+    return FormaPago.New(fp.nombre,Library.Error(""),{
      $:1,
      $0:v
     });
@@ -6852,7 +6852,7 @@
   {
    return function(v)
    {
-    return FormaPago.New(fp.nombre,fp.authorizeIdR,{
+    return FormaPago.New(fp.nombre,Library.Error(""),{
      $:0,
      $0:v
     });

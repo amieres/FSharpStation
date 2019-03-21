@@ -6,6 +6,7 @@ source https://www.nuget.org/api/v2
 nuget FSharp.Core        = 4.5.0
 nuget Newtonsoft.Json
 nuget FSharp.Compiler.Tools
+nuget FSharp.Interop.Dynamic
 nuget WebSharper         = 4.5.1.304
 nuget Websharper.FSharp  = 4.5.1.304
 nuget Websharper.UI	     = 4.5.1.141
@@ -14,6 +15,8 @@ nuget WebSharper.Owin.WebSocket
 nuget WebSharper.Moment
 nuget Microsoft.Owin
 nuget Owin.Compression
+nuget Microsoft.AspNet.SignalR.SelfHost
+nuget Microsoft.Owin.Cors
 nuget Microsoft.Owin.StaticFiles
 nuget Microsoft.Owin.FileSystems
 nuget Microsoft.Owin.Hosting
@@ -40,7 +43,7 @@ group Testing
     nuget canopy
 
 group Other
-    framework: net461
+    framework: net461, net46
     source https://www.nuget.org/api/v2
 
     nuget OpenCvSharp3-AnyCPU
@@ -49,6 +52,8 @@ group Other
     nuget FSharp.Data.TypeProviders
     nuget Microsoft.Orleans.Core.Abstractions
     nuget AuthorizeNet
+    nuget Microsoft.Azure.WebJobs
+    nuget Microsoft.Azure.WebJobs.Core
 
 group Test
     framework: netstandard2.0, netcoreapp2.1
