@@ -3708,7 +3708,9 @@
   b=null;
   return Concurrency.Delay(function()
   {
-   return Concurrency.Bind(Promise.AsAsync(self.fetch("http://localhost:7071/api/hello")),function(a)
+   return Concurrency.Bind(Promise.AsAsync(self.fetch("http://localhost:7071/api/hello",{
+    mode:"cors"
+   })),function(a)
    {
     return Concurrency.Bind(Promise.AsAsync(a.text()),function(a$1)
     {
@@ -4354,7 +4356,7 @@
   },requeridosW,forma.Hole("genero").get_View()),forma.Hole("fechanacimiento").get_View()),forma.Hole("nombres").get_View()),forma.Hole("nombres").get_View()),forma.Hole("apellidos").get_View()),forma.Hole("apellidos").get_View()));
   return[requeridosW,forma.get_Doc()];
  };
- FormaRegistro.formaDoc$2290$41=function(mostrar,mensajes,datosOV,correoOV,telefonoOV,direccionOV)
+ FormaRegistro.formaDoc$2293$41=function(mostrar,mensajes,datosOV,correoOV,telefonoOV,direccionOV)
  {
   return function()
   {
@@ -4523,7 +4525,7 @@
  {
   return ModeloUI.aliadoIdDoc(FormaDatos.formaAliado);
  };
- FormaDatos.formaAliado$2343$36=function(mostrar,mensajes,datosOV,aliadoW)
+ FormaDatos.formaAliado$2346$36=function(mostrar,mensajes,datosOV,aliadoW)
  {
   return function()
   {
@@ -4651,7 +4653,7 @@
   },p[0]));
   return forma.get_Doc();
  };
- FormaGenerica.forma$2379$38=function(salvar)
+ FormaGenerica.forma$2382$38=function(salvar)
  {
   return function()
   {
@@ -4693,7 +4695,7 @@
  {
   return ModeloUI.aliadoIdDoc(FormaContactos.formaContactos);
  };
- FormaContactos.formaContactos$2452$36=function(mostrar,mensajes,aliadoW,contactosV)
+ FormaContactos.formaContactos$2455$36=function(mostrar,mensajes,aliadoW,contactosV)
  {
   return function()
   {
@@ -4727,7 +4729,7 @@
    }))))):Global.alert("Error not caught FormaDatos"));
   };
  };
- FormaContactos.formaContactos$2451$42=function(contactosV)
+ FormaContactos.formaContactos$2454$42=function(contactosV)
  {
   return function()
   {
@@ -4737,7 +4739,7 @@
    }]));
   };
  };
- FormaContactos.formaContactos$2450$42=function(contactosV)
+ FormaContactos.formaContactos$2453$42=function(contactosV)
  {
   return function()
   {
@@ -4747,7 +4749,7 @@
    }]));
   };
  };
- FormaContactos.formaContactos$2449$42=function(contactosV)
+ FormaContactos.formaContactos$2452$42=function(contactosV)
  {
   return function()
   {
@@ -5110,7 +5112,7 @@
  {
   return ModeloUI.aliadoIdDoc(FormaFormasPago.formaFormasPago);
  };
- FormaFormasPago.formaFormasPago$2518$36=function(mostrar,mensajes,aliadoW,formasPagoV)
+ FormaFormasPago.formaFormasPago$2521$36=function(mostrar,mensajes,aliadoW,formasPagoV)
  {
   return function()
   {
@@ -5144,7 +5146,7 @@
    }))))):Global.alert("Error not caught FormaDatos"));
   };
  };
- FormaFormasPago.formaFormasPago$2517$42=function(formasPagoV,fp)
+ FormaFormasPago.formaFormasPago$2520$42=function(formasPagoV,fp)
  {
   return function()
   {
@@ -5154,7 +5156,7 @@
    })]));
   };
  };
- FormaFormasPago.formaFormasPago$2516$42=function(formasPagoV,fp)
+ FormaFormasPago.formaFormasPago$2519$42=function(formasPagoV,fp)
  {
   return function()
   {
@@ -5337,14 +5339,14 @@
   idR=a.authorizeIdR;
   return idR.$==0?"":idR.$0;
  };
- RenderAliados.aliados$2607$49=function(seleccionar,alid)
+ RenderAliados.aliados$2610$49=function(seleccionar,alid)
  {
   return function()
   {
    seleccionar(alid);
   };
  };
- RenderAliados.aliados$2605$49=function(expandir,alid)
+ RenderAliados.aliados$2608$49=function(expandir,alid)
  {
   return function()
   {

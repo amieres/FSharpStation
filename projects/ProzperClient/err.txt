@@ -1,0 +1,35 @@
+eol in element name crashes OLAP with error 1020
+
+bug with Dept dimension
+
+0.- Release notes
+0.5 - Software required:
+- Excel
+- Link to Drivers AS400
+- timeline
+
+Client requirements:
+
+.Net
+
+
+
+1.- Download latest version of Infor dEPM 391 or 392
+    - Application Studio 11.0.0.366 in KB 1637505
+    - Self-service       11.0.0.103 in KB 1668242
+    - Dashboards         11.0.0.224 in KB 1637509
+
+2.- Install in a new server Webex
+3.- Copy SQL Server Repository DBs
+4.- SQL Server database
+4.- Upgrade of Repository DBs
+5.- Copy model Infor BI DB and all the files to new server
+6.- Convert reports
+7.- Test
+8.- Upgrade 1 client to new version
+9.- Test compatibility
+10.- Upgrade clients to new version
+
+Timeline:
+
+- 

@@ -1756,7 +1756,8 @@ namespace FsRoot
         
             let estado() = async {
                 let x : RequestOptions = RequestOptions()
-                x.Mode <- RequestMode.No_cors
+                x.Mode        <- RequestMode.Cors
+        //        x.Credentials <- RequestCredentials.Include
                 let! resp = JS.Fetch("http://localhost:7071/api/hello", x) |> Promise.AsAsync
                 let! text = resp.Text() |> Promise.AsAsync
                 return Json.Deserialize<Modelo> text

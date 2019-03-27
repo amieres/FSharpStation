@@ -10687,7 +10687,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   b=null;
   return Concurrency.Delay(function()
   {
-   return Concurrency.Bind(Promise.AsAsync(self.fetch("http://localhost:7071/api/hello")),function(a)
+   return Concurrency.Bind(Promise.AsAsync(self.fetch("http://localhost:7071/api/hello",{
+    mode:"cors"
+   })),function(a)
    {
     return Concurrency.Bind(Promise.AsAsync(a.text()),function(a$1)
     {
