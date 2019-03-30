@@ -1,46 +1,46 @@
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1552522263490 -d:WEBSHARPER
-////#cd @"..\projects\FSharpStation\src"
-//#I @"..\packages\WebSharper\lib\net461"
-//#I @"..\packages\WebSharper.UI\lib\net461"
-//#I @"..\packages\Owin\lib\net40"
-//#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
-//#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
-//#r @"..\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
-//#r @"..\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
-//#r @"..\packages\WebSharper\lib\net461\WebSharper.Main.dll"
-//#r @"..\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
-//#r @"..\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
-//#r @"..\packages\WebSharper\lib\net461\WebSharper.Web.dll"
-//#r @"..\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
-//#r @"..\packages\WebSharper\lib\net461\WebSharper.Control.dll"
-//#r @"..\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
-//#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
-//#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
-//#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
-//#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
-//#r @"..\packages\System.Reactive\lib\net46\System.Reactive.dll"
-//#r @"..\packages\FSharp.Control.Reactive\lib\net46\FSharp.Control.Reactive.dll"
-//#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
-//#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
-//#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
-//#r @"..\packages\Owin\lib\net40\Owin.dll"
-//#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
-//#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
-//#r @"..\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
+////-d:FSS_SERVER -d:FSharpStation1553869678348 -d:WEBSHARPER
+////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\FSharpStation\src"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Reactive\lib\net46\System.Reactive.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Control.Reactive\lib\net46\FSharp.Control.Reactive.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40\Owin.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
-//#r @"..\..\LayoutEngine\bin\LayoutEngine.dll"
-//#r @"..\packages\Microsoft.Owin.Hosting\lib\net451\Microsoft.Owin.Hosting.dll"
-//#r @"..\packages\Microsoft.Owin.Host.HttpListener\lib\net451\Microsoft.Owin.Host.HttpListener.dll"
-//#r @"..\packages\WebSharper.Owin\lib\net461\WebSharper.Owin.dll"
-//#r @"..\packages\WebSharper.Owin\lib\net461\HttpMultipartParser.dll"
-//#r @"..\packages\Microsoft.Owin.StaticFiles\lib\net451\Microsoft.Owin.StaticFiles.dll"
-//#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\LayoutEngine\bin\LayoutEngine.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.Hosting\lib\net451\Microsoft.Owin.Hosting.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.Host.HttpListener\lib\net451\Microsoft.Owin.Host.HttpListener.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin\lib\net461\WebSharper.Owin.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin\lib\net461\HttpMultipartParser.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.StaticFiles\lib\net451\Microsoft.Owin.StaticFiles.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1552522263490
+//#define FSharpStation1553869678348
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -54,24 +54,24 @@ namespace FsRoot
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
     
-    //#I @"..\packages\WebSharper\lib\net461"
-    //#I @"..\packages\WebSharper.UI\lib\net461"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
     
-    //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
-    //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
-    //#r @"..\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
-    //#r @"..\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
-    //#r @"..\packages\WebSharper\lib\net461\WebSharper.Main.dll"
-    //#r @"..\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
-    //#r @"..\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
-    //#r @"..\packages\WebSharper\lib\net461\WebSharper.Web.dll"
-    //#r @"..\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
-    //#r @"..\packages\WebSharper\lib\net461\WebSharper.Control.dll"
-    //#r @"..\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
-    //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
-    //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
-    //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
-    //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
     
     open WebSharper
     open WebSharper.JavaScript
@@ -949,6 +949,7 @@ namespace FsRoot
                     let rtnR        vR  = async.Return    vR
                     let rtnM        vM  = async.Return(ResultM.rtnM vM)
                     let rtnrA       vrA = vrA |> Async.map    ResultM.ofResult
+                    let errorMsgf   v   = async.Return(errorMsgf v |> ErrorM )
                     let iterS  fE f vRA = Async.iterS (ResultM.iter fE f) vRA
                     let iterA  fE f vRA = Async.iterA (ResultM.iter fE f) vRA
                     let iterpS    f vRA = vRA |> iterS (ResultMessage.summarized >> print) f
@@ -976,8 +977,9 @@ namespace FsRoot
                     let inline sequenceSeq                  sq = traverseSeq id sq
                     let insertO   vRAO                         = vRAO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
                     let insertR ( vRAR:Result<_,_>)            = vRAR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
-                    let absorbR   vRRA                         = vRRA |> Async.map (Result.bindP   id)
-                    let absorbO f vORA                         = vORA |> Async.map (Result.absorbO  f)
+                    let absorbR   vRRA                         = vRRA |> Async.map (ResultM.bindP   id)
+                    let absorbO f vORA                         = vORA |> Async.map (ResultM.absorbO  f)
+                    let getResultM       (a:AsyncResultM<_,_>) = a    |> Async.map  OkM   
                     type AsyncResultMBuilder() =
                         member __.ReturnFrom vRA        : Async<ResultM<'v  , 'm>> =           vRA
                         member __.ReturnFrom vR         : Async<ResultM<'v  , 'm>> = rtnr      vR
@@ -1080,6 +1082,7 @@ namespace FsRoot
                 let parseDateO2  = (fun s -> s + "T00:00:00") >> tryParseWith System.DateTime.TryParse
                 let parseDateO   = tryParseWith System.DateTime.TryParse
                 let parseIntO    = tryParseWith System.Int32   .TryParse
+                let parseInt64O  = tryParseWith System.Int64   .TryParse
                 let parseSingleO = tryParseWith System.Single  .TryParse
                 let parseDoubleO = tryParseWith System.Double  .TryParse
                 let parseGuidO   = tryParseWith System.Guid    .TryParse
@@ -1088,6 +1091,7 @@ namespace FsRoot
                 // active patterns for try-parsing strings
                 let (|Date  |_|) = parseDateO
                 let (|Int   |_|) = parseIntO
+                let (|Int64 |_|) = parseInt64O
                 let (|Single|_|) = parseSingleO
                 let (|Double|_|) = parseDoubleO
                 let (|Guid  |_|) = parseGuidO
@@ -1901,8 +1905,8 @@ namespace FsRoot
         /// Essentials that cannot run in Javascript (WebSharper)
         [< AutoOpen >]
         module LibraryNoJS =
-            //#r @"..\packages\System.Reactive\lib\net46\System.Reactive.dll"
-            //#r @"..\packages\FSharp.Control.Reactive\lib\net46\FSharp.Control.Reactive.dll"
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Reactive\lib\net46\System.Reactive.dll"
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Control.Reactive\lib\net46\FSharp.Control.Reactive.dll"
             module RunProcess =
                 open System.Diagnostics
                 open System.Text
@@ -2286,7 +2290,7 @@ namespace FsRoot
                 let endToken = "xXxY" + "yYyhH"
                 type FsiExe(config:string, workingDir, ?outHndl, ?errHndl) =
                     let silent                     = ref false
-                    let fsiexe                     = @"..\packages\FSharp.Compiler.Tools\tools" +/+ if config.Contains "-d:FSI32BIT" then "fsi.exe" else "fsianycpu.exe"
+                    let fsiexe                     = @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Compiler.Tools\tools" +/+ if config.Contains "-d:FSI32BIT" then "fsi.exe" else "fsianycpu.exe"
                     let startInfo                  = ProcessStartInfo(fsiexe, config, WorkingDirectory= workingDir)
                     let outHndlS                   = outHndl |> Option.map(fun outh v -> if !silent then () else outh v)
                     let errHndlS                   = errHndl |> Option.map(fun errh v -> if !silent then () else errh v)
@@ -3378,8 +3382,8 @@ namespace FsRoot
                 let fsiExeL = lazy new ResourceAgent<_, _>( 70
                                                          , ctor
                                                          , Config (".", Set ["--nologo" ; "--quiet"])
-                                                         , (fun fsi    -> (fsi :> System.IDisposable).Dispose())
-                                                         , (fun fsi    ->  fsi.IsAlive                         )
+                                                         , (fun fsi    -> fsi.Abort()               ) 
+                                                         , (fun fsi    -> fsi.IsAlive               )
                                                          )
             
                 [< JavaScript >]
@@ -3432,9 +3436,9 @@ namespace FsRoot
             
             [<WebSharper.JavaScript>]
             module WebSockets =
-                //#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
-                //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
-                //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
+                //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
+                //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
+                //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
                 
                 open WebSharper
                 
@@ -3764,11 +3768,11 @@ namespace FsRoot
                         ConnectStateful uri2 func
                         |> Async.map ignore
                         
-                //#I @"..\packages\Owin\lib\net40"
-                //#r @"..\packages\Owin\lib\net40\Owin.dll"
-                //#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
-                //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
-                //#r @"..\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
+                //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40"
+                //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40\Owin.dll"
+                //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
+                //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
+                //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
                 
                 open System
                 open WebSharper.Owin.WebSocket
@@ -3825,7 +3829,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/c677b6fd-d833-43ee-a15c-62c60d8572e4"
+                    "http://localhost:9005/#/Snippet/a817abcc-6cb2-42cf-843c-f1525420c0d4"
                 #endif
                 
                 let extractEndPoint() = 
@@ -4017,7 +4021,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1552522263490"
+                let mutable fsharpStationAddress = Address "FSharpStation1553869678348"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -4251,9 +4255,9 @@ namespace FsRoot
                     | KUnionCase        of UnionCaseResponse
                     | KMultiple         of Kind                []
                     
-                //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
-                //#r @"..\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
-                //#r @"..\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
+                //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+                //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
+                //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
                 
                 open System.Net
                 open System.Text
@@ -4430,7 +4434,7 @@ namespace FsRoot
                     
                     
     
-    //#cd @"..\projects\FSharpStation\src"
+    //#cd @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\FSharpStation\src"
     
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
@@ -4439,15 +4443,16 @@ namespace FsRoot
     //#define WEBSHARPER
     [< JavaScript >]
     module FSharpStation =
-        //#r "..\..\LayoutEngine\bin\LayoutEngine.dll"
+        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\projects\LayoutEngine\bin\LayoutEngine.dll"
         //#nowarn "1178" "1182" "3180" "52"
         module FStation =
         
-            let [< Rpc >] getRootDir() = async {
+            let [< Rpc >] getRootDirs() = async {
                 //let res = let dir = System.Environment.CurrentDirectory
                           //if dir.EndsWith @"\bin" |> not then dir else
                           //dir.[0..dir.Length - 5] |>! fun set -> System.Environment.CurrentDirectory <- set
-                return System.Environment.CurrentDirectory //res
+                let dir = System.Environment.CurrentDirectory
+                return dir, System.IO.Path.GetFullPath(dir +/+ ".."     ), System.IO.Path.GetFullPath(dir +/+ "..\\src")
             }
         
             [< Inline "(Date.now())" >]
@@ -4457,9 +4462,9 @@ namespace FsRoot
             let mutable rootDir  = "."
             let mutable srcDir   = "."
             async {
-                let! dir = getRootDir()
-                rootDir   <- dir +/+ ".."
-                srcDir    <- dir +/+ "..\\src"
+                let! dir, root, src = getRootDirs()
+                rootDir   <- root
+                srcDir    <- src
                 printfn "fileName = %s\\%s.fsx" srcDir id
             } |> Async.Start
             
@@ -4494,9 +4499,10 @@ namespace FsRoot
             let clearPredsCache ()             = clearPreds ()
                                                  clearReduc ()
                                                  clearParent()
-            let prepCode                   snp = snp.snpContent
-                                                    .Replace("##" + "FSHARPSTATION_ID" + "##"      , FStation.id            )
+            let prepAnyCode       (cod:string) = cod.Replace("##" + "FSHARPSTATION_ID"       + "##", FStation.id            )
                                                     .Replace("##" + "FSHARPSTATION_ENDPOINT" + "##", JS.Window.Location.Href)
+                                                    .Replace("##" + "FSHOME"                 + "##" , FStation.rootDir)
+            let prepCode                   snp = prepAnyCode snp.snpContent                                         
             let snippetsColl                () = { generation       = generation.Value
                                                    ordered          = Seq.delay(fun () -> snippets.Value)
                                                    fetcher          = snippets.TryFindByKey
@@ -5326,16 +5332,17 @@ namespace FsRoot
                         |>> Option.defaultValue snp
             }
         
-            let getCode snp name = fusion {
-                let!  openProp  = propO snp "Open" |>> Option.map (__ (+) "\n") |>> Option.defaultValue ""
-                let!  namecodeO = propO snp  name
-                match namecodeO with
-                | Some code -> return openProp + code
-                | None      ->
-                if name.StartsWith ":" then return openProp + name.[1..] else 
-                let! template  = propO snp "action-template" |>> Option.defaultValue "${button}() |> printfn \"%A\""
-                return openProp + template |> String.indentStr 4 |> sprintf "module Call%s =\n%s" (string <| FStation.now())
-            }
+            let getCode snp name = 
+                fusion {
+                    let!  openProp  = propO snp "Open" |>> Option.map (__ (+) "\n") |>> Option.defaultValue ""
+                    let!  namecodeO = propO snp  name
+                    match namecodeO with
+                    | Some code -> return openProp + code
+                    | None      ->
+                    if name.StartsWith ":" then return openProp + name.[1..] else 
+                    let! template  = propO snp "action-template" |>> Option.defaultValue "${button}() |> printfn \"%A\""
+                    return openProp + template |> String.indentStr 4 |> sprintf "module Call%s =\n%s" (string <| FStation.now())
+                } |>> Snippets.prepAnyCode
         
             module AF = FsRoot.LibraryJS.AppFramework
         
@@ -5830,14 +5837,14 @@ namespace FsRoot
                 FsiAgent.setQueueHandlers (fun (txt:string)  -> txt.Replace(FsiEvaluator.endToken, "Done!") 
                                                                 |> FSharpStationClient.sendOutput 
                                                                 |> AsyncResult.iterS print print)
-        //#r @"..\packages\Owin\lib\net40\Owin.dll"
-        //#r @"..\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
-        //#r @"..\packages\Microsoft.Owin.Hosting\lib\net451\Microsoft.Owin.Hosting.dll"
-        //#r @"..\packages\Microsoft.Owin.Host.HttpListener\lib\net451\Microsoft.Owin.Host.HttpListener.dll"
-        //#r @"..\packages\WebSharper.Owin\lib\net461\WebSharper.Owin.dll"
-        //#r @"..\packages\WebSharper.Owin\lib\net461\HttpMultipartParser.dll"
-        //#r @"..\packages\Microsoft.Owin.StaticFiles\lib\net451\Microsoft.Owin.StaticFiles.dll"
-        //#r @"..\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40\Owin.dll"
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.Hosting\lib\net451\Microsoft.Owin.Hosting.dll"
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.Host.HttpListener\lib\net451\Microsoft.Owin.Host.HttpListener.dll"
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin\lib\net461\WebSharper.Owin.dll"
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin\lib\net461\HttpMultipartParser.dll"
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.StaticFiles\lib\net451\Microsoft.Owin.StaticFiles.dll"
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
         
         [< JavaScript false >]
         module Server =

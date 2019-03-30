@@ -1,4 +1,4 @@
-////-d:FSharpStation1551060122175 -d:WEBSHARPER
+////-d:FSharpStation1553473485001 -d:WEBSHARPER
 //#I @"..\packages\WebSharper\lib\net461"
 //#I @"..\packages\WebSharper.UI\lib\net461"
 //#r @"..\packages\WebSharper\lib\net461\WebSharper.Core.dll"
@@ -17,7 +17,7 @@
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"..\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 /// Root namespace for all code
-//#define FSharpStation1551060122175
+//#define FSharpStation1553473485001
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -224,9 +224,13 @@ namespace FsRoot
                 let tryParseWith tryParseFunc = tryParseFunc >> function
                         | true, v    -> Some v
                         | false, _   -> None
-                
+            
+            
+                /// Javascript adds time zone information when parsing a date and that can change the result
+                let parseDateO2  = (fun s -> s + "T00:00:00") >> tryParseWith System.DateTime.TryParse
                 let parseDateO   = tryParseWith System.DateTime.TryParse
                 let parseIntO    = tryParseWith System.Int32   .TryParse
+                let parseInt64O  = tryParseWith System.Int64   .TryParse
                 let parseSingleO = tryParseWith System.Single  .TryParse
                 let parseDoubleO = tryParseWith System.Double  .TryParse
                 let parseGuidO   = tryParseWith System.Guid    .TryParse
@@ -235,6 +239,7 @@ namespace FsRoot
                 // active patterns for try-parsing strings
                 let (|Date  |_|) = parseDateO
                 let (|Int   |_|) = parseIntO
+                let (|Int64 |_|) = parseInt64O
                 let (|Single|_|) = parseSingleO
                 let (|Double|_|) = parseDoubleO
                 let (|Guid  |_|) = parseGuidO
@@ -646,16 +651,17 @@ namespace FsRoot
                 open WebSharper.UI.Templating
             
                 let [< Literal >] TemplateFileName =  @"..\website\AppFramework.html" 
+                //let [< Literal >] TemplateFileName =  @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\FSharpStation\website\Templates.html"
             
                 type AppFwkTemplate = Templating.Template<TemplateFileName, ClientLoad.FromDocument, ServerLoad.WhenChanged, LegacyMode.New>
             
                 let defaultPlugIn = {
                         plgName    = ""
-                        plgVars    = [| |]
+                        plgVars    = [| |] 
                         plgViews   = [| |]
                         plgDocs    = [| |]
                         plgActions = [| |]
-                        plgQueries = [| |]
+                        plgQueries = [| |] 
                     }
             
                 let splitName lytNm = String.splitByChar '.' >>  (fun a -> if a.Length = 1 then (lytNm, a.[0]) else (a.[0],a.[1]) )
@@ -1142,8 +1148,8 @@ namespace FsRoot
             
                 let createDoc( lytNm, name, docName, parms) =
                     turnToView <| fun _ ->
-                        let plg, nm = splitName lytNm docName
-                        AF.tryGetDoc plg nm
+                        splitName lytNm docName
+                        ||> AF.tryGetDoc
                         |>  Option.map (getDocFinal parms)
                         |>  Option.defaultWith  (fun ()  -> sprintf "Missing doc: %s" docName |> errDoc )
             

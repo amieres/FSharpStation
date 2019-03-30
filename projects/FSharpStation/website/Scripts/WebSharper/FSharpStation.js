@@ -3411,11 +3411,22 @@
  {
   Obj.New.call(this);
  },AsyncResultMBuilder);
+ AsyncResultM.getResultM=function(a)
+ {
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return Concurrency.Bind(a,function(x)
+  {
+   return g(Monads.OkM$1(x));
+  });
+ };
  AsyncResultM.absorbO=function(f,vORA)
  {
   function f$1(v)
   {
-   return Result.absorbO(f,v);
+   return ResultM.absorbO(f,v);
   }
   function g(v)
   {
@@ -3435,7 +3446,7 @@
   }
   return Concurrency.Bind(vRRA,(f=function(r)
   {
-   return Result.bindP(Global.id,r);
+   return ResultM.bindP(Global.id,r);
   },function(x)
   {
    return g(f(x));
@@ -3596,6 +3607,10 @@
  AsyncResultM.iterS=function(fE,f,vRA)
  {
   throw"iterS cannot be used in JavaScript!";
+ };
+ AsyncResultM.errorMsgf=function(v)
+ {
+  return Concurrency.Return(Monads.ErrorM(ResultMessageHelpers.errorMsgf(v)));
  };
  AsyncResultM.rtnrA=function(vrA)
  {
@@ -3872,6 +3887,11 @@
   SC$1.$cctor();
   return SC$1["|Single|_|"];
  };
+ ParseO.Int64$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1["|Int64|_|"];
+ };
  ParseO.Int$1=function()
  {
   SC$1.$cctor();
@@ -3897,6 +3917,11 @@
   SC$1.$cctor();
   return SC$1.parseSingleO;
  };
+ ParseO.parseInt64O$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseInt64O;
+ };
  ParseO.parseIntO$1=function()
  {
   SC$1.$cctor();
@@ -3907,7 +3932,7 @@
   SC$1.$cctor();
   return SC$1.parseDateO;
  };
- ParseO.parseDateO2=function()
+ ParseO.parseDateO2$1=function()
  {
   SC$1.$cctor();
   return SC$1.parseDateO2;
@@ -6674,15 +6699,15 @@
  {
   return Hoverable$1.New$3().Content(Doc.Element("div",[AttrProxy.Create("style","flex-flow: column;")],[Doc.TextNode("Hover over me!")]));
  };
- Hoverable$1.Content$2611$81=Runtime.Curried3(function(e,$1,$2)
+ Hoverable$1.Content$2615$81=Runtime.Curried3(function(e,$1,$2)
  {
   return DomUtility.RemoveClass(e.elt,"hovering");
  });
- Hoverable$1.get_Attributes$2607$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$2611$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(false);
  });
- Hoverable$1.get_Attributes$2606$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$2610$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(true);
  });
@@ -6824,7 +6849,7 @@
   SC$1.$cctor();
   return SC$1.init;
  };
- WcTabStrip.tabStrip$2753$64=function(i,selected)
+ WcTabStrip.tabStrip$2757$64=function(i,selected)
  {
   return function()
   {
@@ -7228,7 +7253,7 @@
  {
   return MonacoConfig.New(v,monc.onChange,monc.onRender,monc.editorO,monc.disabled,monc.options,monc.overrides);
  };
- Monaco.render$3111$48=function(monc)
+ Monaco.render$3115$48=function(monc)
  {
   return function(elchild)
   {
@@ -7487,7 +7512,7 @@
   });
   return o==null?"":o.$0;
  };
- MonacoGenAdapter.generateDoc$3253$48=function(monRT,onRender,genE)
+ MonacoGenAdapter.generateDoc$3257$48=function(monRT,onRender,genE)
  {
   return function(elchild)
   {
@@ -9399,7 +9424,11 @@
  };
  Snippets.prepCode=function(snp)
  {
-  return Strings.Replace(Strings.Replace(snp.snpContent,"##"+"FSHARPSTATION_ID"+"##",FStation.id()),"##"+"FSHARPSTATION_ENDPOINT"+"##",self.location.href);
+  return Snippets.prepAnyCode(snp.snpContent);
+ };
+ Snippets.prepAnyCode=function(cod)
+ {
+  return Strings.Replace(Strings.Replace(Strings.Replace(cod,"##"+"FSHARPSTATION_ID"+"##",FStation.id()),"##"+"FSHARPSTATION_ENDPOINT"+"##",self.location.href),"##"+"FSHOME"+"##",FStation.rootDir());
  };
  Snippets.clearPredsCache=function()
  {
@@ -9518,7 +9547,7 @@
    $1:S
   })),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.snippetlist(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderSnippets.snippets$4854$40=function(snpId)
+ RenderSnippets.snippets$4860$40=function(snpId)
  {
   return function(ev)
   {
@@ -9531,7 +9560,7 @@
    }))(x);
   };
  };
- RenderSnippets.snippets$4853$40=function(snpId)
+ RenderSnippets.snippets$4859$40=function(snpId)
  {
   return function(ev)
   {
@@ -9539,7 +9568,7 @@
     ev.Event.preventDefault();
   };
  };
- RenderSnippets.snippets$4852$40=function(snpId)
+ RenderSnippets.snippets$4858$40=function(snpId)
  {
   return function(ev)
   {
@@ -9547,21 +9576,21 @@
    ev.Event.stopPropagation();
   };
  };
- RenderSnippets.snippets$4851$40=function(snpId)
+ RenderSnippets.snippets$4857$40=function(snpId)
  {
   return function()
   {
    Snippets.toggleCollapse(snpId);
   };
  };
- RenderSnippets.snippets$4850$40=function(snpId)
+ RenderSnippets.snippets$4856$40=function(snpId)
  {
   return function()
   {
    Snippets.togglePredecessor(snpId);
   };
  };
- RenderSnippets.snippets$4849$40=function(snpId)
+ RenderSnippets.snippets$4855$40=function(snpId)
  {
   var s;
   s=View$1.Map(function(y)
@@ -9573,7 +9602,7 @@
    return RenderSnippets.scrollIntoView(s,e);
   };
  };
- RenderSnippets.snippets$4848$40=function(snpId)
+ RenderSnippets.snippets$4854$40=function(snpId)
  {
   return function()
   {
@@ -9728,7 +9757,7 @@
     }
   },selW);
  };
- RenderProperties.render$4893$34=function()
+ RenderProperties.render$4899$34=function()
  {
   return function()
   {
@@ -9750,7 +9779,7 @@
    RenderProperties.addProperty();
   }))),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.propertytable(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderProperties.properties$4886$33=function(i)
+ RenderProperties.properties$4892$33=function(i)
  {
   return function()
   {
@@ -10654,8 +10683,7 @@
  CustomAction.getCode=function(snp,name)
  {
   var b;
-  b=FusionAsyncM.fusion();
-  return b.Run(b.Delay(function()
+  return Operators$2.op_BarGreaterGreater((b=FusionAsyncM.fusion(),b.Run(b.Delay(function()
   {
    var m;
    function f(x,y)
@@ -10694,7 +10722,7 @@
      }):b.Return(a+a$1.$0);
     });
    });
-  }));
+  }))),Snippets.prepAnyCode);
  };
  CustomAction.getBaseSnippet=function()
  {
@@ -11055,36 +11083,36 @@
   p=Handler$1.CompleteHoles(b.k,b.h,[]);
   b.i=new TemplateInstance.New(p[1],Templates.RunFullDocTemplate(p[0]));
  };
- MainProgram.mainDoc$5620$78=Global.id;
- MainProgram.mainDoc$5612$39=function()
+ MainProgram.mainDoc$5627$78=Global.id;
+ MainProgram.mainDoc$5619$39=function()
  {
   return function(ev)
   {
    JumpTo.jumpToRef(ev.Target);
   };
  };
- MainProgram.mainDoc$5611$39=function()
+ MainProgram.mainDoc$5618$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5610$39=function()
+ MainProgram.mainDoc$5617$39=function()
  {
   return function(ev)
   {
    Importer.importFile(ev.Target);
   };
  };
- MainProgram.mainDoc$5609$39=function()
+ MainProgram.mainDoc$5616$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5608$39=function()
+ MainProgram.mainDoc$5615$39=function()
  {
   return function(ev)
   {
@@ -11203,11 +11231,11 @@
   }))))))))))))));
   return(p=Handler$1.CompleteHoles(tmp.k,tmp.h,[["filename",0],["name",0],["output",0],["fscode",0],["parser",0]]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.layout(p[0])),(tmp.i=i,i))).get_Doc();
  };
- MainProgram.buttonsRight$5594$74=Global.id;
- MainProgram.buttonsRight$5593$74=Global.id;
- MainProgram.buttonsRight$5592$74=Global.id;
- MainProgram.buttonsRight$5591$74=Global.id;
- MainProgram.buttonsRight$5590$74=Global.id;
+ MainProgram.buttonsRight$5601$74=Global.id;
+ MainProgram.buttonsRight$5600$74=Global.id;
+ MainProgram.buttonsRight$5599$74=Global.id;
+ MainProgram.buttonsRight$5598$74=Global.id;
+ MainProgram.buttonsRight$5597$74=Global.id;
  MainProgram.buttonsRight=function()
  {
   var tmp,p,i;
@@ -11614,7 +11642,7 @@
   SC$1.$cctor();
   return SC$1.wsStationClient;
  };
- Server.content$5868$54=function()
+ Server.content$5875$54=function()
  {
   MainProgram.mainProgram();
   return Doc.TextNode("Initialized");
@@ -11703,6 +11731,21 @@
     }
    }),o];
   });
+  SC$1.parseInt64O=ParseO.tryParseWith$1(function(a$4)
+  {
+   var o;
+   o=0;
+   return[Numeric.TryParseInt64(a$4,{
+    get:function()
+    {
+     return o;
+    },
+    set:function(v$2)
+    {
+     o=v$2;
+    }
+   }),o];
+  });
   SC$1.parseSingleO=ParseO.tryParseWith$1(function(a$4)
   {
    var o,$7;
@@ -11732,6 +11775,7 @@
   });
   SC$1["|Date|_|"]=ParseO.parseDateO$1();
   SC$1["|Int|_|"]=ParseO.parseIntO$1();
+  SC$1["|Int64|_|"]=ParseO.parseInt64O$1();
   SC$1["|Single|_|"]=ParseO.parseSingleO$1();
   SC$1["|Double|_|"]=ParseO.parseDoubleO$1();
   SC$1["|Guid|_|"]=ParseO.parseGuidO$1();
@@ -11858,10 +11902,10 @@
   SC$1.srcDir=".";
   Concurrency.Start((b$1=null,Concurrency.Delay(function()
   {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("FSharpStation:FsRoot.FSharpStation+FStation.getRootDir:-447555547",[]),function(a$4)
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("FSharpStation:FsRoot.FSharpStation+FStation.getRootDirs:-589054433",[]),function(a$4)
    {
-    FStation.set_rootDir(a$4+"/"+"..");
-    FStation.set_srcDir(a$4+"/"+"..\\src");
+    FStation.set_rootDir(a$4[1]);
+    FStation.set_srcDir(a$4[2]);
     (((Runtime.Curried3(function($7,$8,$9)
     {
      return $7("fileName = "+Utils.toSafe($8)+"\\"+Utils.toSafe($9)+".fsx");

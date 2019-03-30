@@ -209,6 +209,11 @@
   SC$1.$cctor();
   return SC$1["|Single|_|"];
  };
+ ParseO.Int64=function()
+ {
+  SC$1.$cctor();
+  return SC$1["|Int64|_|"];
+ };
  ParseO.Int=function()
  {
   SC$1.$cctor();
@@ -234,6 +239,11 @@
   SC$1.$cctor();
   return SC$1.parseSingleO;
  };
+ ParseO.parseInt64O=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseInt64O;
+ };
  ParseO.parseIntO=function()
  {
   SC$1.$cctor();
@@ -243,6 +253,11 @@
  {
   SC$1.$cctor();
   return SC$1.parseDateO;
+ };
+ ParseO.parseDateO2=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseDateO2;
  };
  ParseO.tryParseWith=function(tryParseFunc)
  {
@@ -401,15 +416,15 @@
  {
   return Hoverable$1.New$1().Content(Doc.Element("div",[AttrProxy.Create("style","flex-flow: column;")],[Doc.TextNode("Hover over me!")]));
  };
- Hoverable$1.Content$284$81=Runtime.Curried3(function(e,$1,$2)
+ Hoverable$1.Content$289$81=Runtime.Curried3(function(e,$1,$2)
  {
   return DomUtility.RemoveClass(e.elt,"hovering");
  });
- Hoverable$1.get_Attributes$280$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$285$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(false);
  });
- Hoverable$1.get_Attributes$279$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$284$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(true);
  });
@@ -551,7 +566,7 @@
   SC$1.$cctor();
   return SC$1.init;
  };
- WcTabStrip.tabStrip$426$64=function(i,selected)
+ WcTabStrip.tabStrip$431$64=function(i,selected)
  {
   return function()
   {
@@ -982,15 +997,15 @@
  {
   return PlugInVar.New(name,_var);
  };
- AppFramework.vertical$798$39=function(mouseDown)
+ AppFramework.vertical$804$39=function(mouseDown)
  {
   return function(te)
   {
    mouseDown(te.Event);
   };
  };
- AppFramework.vertical$797$39=Global.id;
- AppFramework.vertical$796$39=Global.id;
+ AppFramework.vertical$803$39=Global.id;
+ AppFramework.vertical$802$39=Global.id;
  AppFramework.vertical=function(partSizes,afterRender,afterRenderSp,mouseDown,gap)
  {
   var b,t,p,i;
@@ -1018,15 +1033,15 @@
    $1:gap
   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.wcompsplitterver(p[0])),(b.i=i,i)))).get_Doc();
  };
- AppFramework.horizontal$790$39=function(mouseDown)
+ AppFramework.horizontal$796$39=function(mouseDown)
  {
   return function(te)
   {
    mouseDown(te.Event);
   };
  };
- AppFramework.horizontal$789$39=Global.id;
- AppFramework.horizontal$788$39=Global.id;
+ AppFramework.horizontal$795$39=Global.id;
+ AppFramework.horizontal$794$39=Global.id;
  AppFramework.horizontal=function(partSizes,afterRender,afterRenderSp,mouseDown,gap)
  {
   var b,t,p,i;
@@ -1054,7 +1069,7 @@
    $1:gap
   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.wcompsplitterhor(p[0])),(b.i=i,i)))).get_Doc();
  };
- AppFramework.mainDoc$779$42=function()
+ AppFramework.mainDoc$785$42=function()
  {
   return function()
   {
@@ -1119,7 +1134,7 @@
   SC$1.$cctor();
   return SC$1.AppFwkClient;
  };
- AppFramework.renderQueries$745$39=function(qry)
+ AppFramework.renderQueries$751$39=function(qry)
  {
   return function()
   {
@@ -1161,14 +1176,14 @@
    },plg.plgQueries);
   },AppFramework.currentPlugInW()));
  };
- AppFramework.renderActions$734$51=function(act)
+ AppFramework.renderActions$740$51=function(act)
  {
   return function(ev)
   {
    AppFramework.callFunction(ev,null,act.actFunction);
   };
  };
- AppFramework.renderActions$730$51=function(act)
+ AppFramework.renderActions$736$51=function(act)
  {
   return function(ev)
   {
@@ -1247,7 +1262,7 @@
    else
     actF.$0();
  };
- AppFramework.renderDocs$708$39=function(doc)
+ AppFramework.renderDocs$714$39=function(doc)
  {
   return function()
   {
@@ -1391,7 +1406,7 @@
    },plg.plgVars);
   },AppFramework.currentPlugInW()));
  };
- AppFramework.renderPlugIns$670$35=function(name)
+ AppFramework.renderPlugIns$676$35=function(name)
  {
   return function()
   {
@@ -1768,11 +1783,11 @@
    };
   }(Global.id))(varName)):o.$0;
  };
- LayoutEngineModule.inputFile$1421$69=Runtime.Curried3(function(act,el,$1)
+ LayoutEngineModule.inputFile$1427$69=Runtime.Curried3(function(act,el,$1)
  {
   return AppFramework.callFunction(el,null,act.actFunction);
  });
- LayoutEngineModule.inputFile$1420$69=Runtime.Curried3(function($1,el,$2)
+ LayoutEngineModule.inputFile$1426$69=Runtime.Curried3(function($1,el,$2)
  {
   el.value="";
  });
@@ -2160,9 +2175,8 @@
  {
   return LayoutEngineModule.turnToView(function()
   {
-   var p,o,o$1;
-   p=((LayoutEngineModule.splitName())(lytNm))(docName);
-   o=(o$1=AppFramework.tryGetDoc(p[0],p[1]),o$1==null?null:{
+   var o,o$1,t;
+   o=(o$1=(t=((LayoutEngineModule.splitName())(lytNm))(docName),AppFramework.tryGetDoc(t[0],t[1])),o$1==null?null:{
     $:1,
     $0:LayoutEngineModule.getDocFinal(parms,o$1.$0)
    });
@@ -2665,9 +2679,9 @@
  };
  SC$1.$cctor=function()
  {
-  var f,x,p,cache,getOrAdd,p$1,cache$1,getOrAdd$1,p$2,cache$2,getOrAdd$2,p$3,cache$3,getOrAdd$3,p$4,cache$4,getOrAdd$4,p$5,cache$5,getOrAdd$5,p$6,cache$6,getOrAdd$6,p$7,cache$7,getOrAdd$7,p$8,cache$8,getOrAdd$8,o,plg;
+  var f,g,x,p,cache,getOrAdd,p$1,cache$1,getOrAdd$1,p$2,cache$2,getOrAdd$2,p$3,cache$3,getOrAdd$3,p$4,cache$4,getOrAdd$4,p$5,cache$5,getOrAdd$5,p$6,cache$6,getOrAdd$6,p$7,cache$7,getOrAdd$7,p$8,cache$8,getOrAdd$8,o,plg;
   SC$1.$cctor=Global.ignore;
-  function g(s)
+  function g$1(s)
   {
    return Strings.concat("\n",s);
   }
@@ -2675,7 +2689,7 @@
   {
    return String.splitByChar("\n",s);
   }
-  function g$1(s)
+  function g$2(s)
   {
    var a$1,b;
    return Slice.array(s,{
@@ -2686,30 +2700,34 @@
     $0:(a$1=0,(b=Arrays.length(s)-2,Unchecked.Compare(a$1,b)===1?a$1:b))
    });
   }
-  function g$2(s)
+  function g$3(s)
   {
    return Strings.concat("\n",s);
   }
+  function f$2(s)
+  {
+   return s+"T00:00:00";
+  }
   function a(a$1)
   {
-   var f$2;
+   var f$3;
    function b(a$2)
    {
     return AppFramework.plugIns().TryFindByKey(a$2);
    }
-   function g$3(o$1)
+   function g$4(o$1)
    {
     var v;
     v=AppFramework.defaultPlugIn();
     return o$1==null?v:o$1.$0;
    }
-   f$2=function(o$1)
+   f$3=function(o$1)
    {
     return o$1==null?null:b(o$1.$0);
    };
    return function(x$1)
    {
-    return g$3(f$2(x$1));
+    return g$4(f$3(x$1));
    };
   }
   function checkO(v)
@@ -2735,11 +2753,11 @@
    cache.set_Item(v,res);
    return res;
   }
-  function getOrAdd$9(p$9,f$2)
+  function getOrAdd$9(p$9,f$3)
   {
    var o$1;
    o$1=checkO(p$9);
-   return o$1==null?store(p$9,f$2(p$9)):o$1.$0;
+   return o$1==null?store(p$9,f$3(p$9)):o$1.$0;
   }
   function checkO$1(v)
   {
@@ -2764,11 +2782,11 @@
    cache$1.set_Item(v,res);
    return res;
   }
-  function getOrAdd$10(p$9,f$2)
+  function getOrAdd$10(p$9,f$3)
   {
    var o$1;
    o$1=checkO$1(p$9);
-   return o$1==null?store$1(p$9,f$2(p$9)):o$1.$0;
+   return o$1==null?store$1(p$9,f$3(p$9)):o$1.$0;
   }
   function checkO$2(v)
   {
@@ -2793,11 +2811,11 @@
    cache$2.set_Item(v,res);
    return res;
   }
-  function getOrAdd$11(p$9,f$2)
+  function getOrAdd$11(p$9,f$3)
   {
    var o$1;
    o$1=checkO$2(p$9);
-   return o$1==null?store$2(p$9,f$2(p$9)):o$1.$0;
+   return o$1==null?store$2(p$9,f$3(p$9)):o$1.$0;
   }
   function checkO$3(v)
   {
@@ -2822,11 +2840,11 @@
    cache$3.set_Item(v,res);
    return res;
   }
-  function getOrAdd$12(p$9,f$2)
+  function getOrAdd$12(p$9,f$3)
   {
    var o$1;
    o$1=checkO$3(p$9);
-   return o$1==null?store$3(p$9,f$2(p$9)):o$1.$0;
+   return o$1==null?store$3(p$9,f$3(p$9)):o$1.$0;
   }
   function checkO$4(v)
   {
@@ -2851,11 +2869,11 @@
    cache$4.set_Item(v,res);
    return res;
   }
-  function getOrAdd$13(p$9,f$2)
+  function getOrAdd$13(p$9,f$3)
   {
    var o$1;
    o$1=checkO$4(p$9);
-   return o$1==null?store$4(p$9,f$2(p$9)):o$1.$0;
+   return o$1==null?store$4(p$9,f$3(p$9)):o$1.$0;
   }
   function checkO$5(v)
   {
@@ -2880,11 +2898,11 @@
    cache$5.set_Item(v,res);
    return res;
   }
-  function getOrAdd$14(p$9,f$2)
+  function getOrAdd$14(p$9,f$3)
   {
    var o$1;
    o$1=checkO$5(p$9);
-   return o$1==null?store$5(p$9,f$2(p$9)):o$1.$0;
+   return o$1==null?store$5(p$9,f$3(p$9)):o$1.$0;
   }
   function checkO$6(v)
   {
@@ -2909,11 +2927,11 @@
    cache$6.set_Item(v,res);
    return res;
   }
-  function getOrAdd$15(p$9,f$2)
+  function getOrAdd$15(p$9,f$3)
   {
    var o$1;
    o$1=checkO$6(p$9);
-   return o$1==null?store$6(p$9,f$2(p$9)):o$1.$0;
+   return o$1==null?store$6(p$9,f$3(p$9)):o$1.$0;
   }
   function checkO$7(v)
   {
@@ -2938,11 +2956,11 @@
    cache$7.set_Item(v,res);
    return res;
   }
-  function getOrAdd$16(p$9,f$2)
+  function getOrAdd$16(p$9,f$3)
   {
    var o$1;
    o$1=checkO$7(p$9);
-   return o$1==null?store$7(p$9,f$2(p$9)):o$1.$0;
+   return o$1==null?store$7(p$9,f$3(p$9)):o$1.$0;
   }
   function checkO$8(v)
   {
@@ -2967,22 +2985,31 @@
    cache$8.set_Item(v,res);
    return res;
   }
-  function getOrAdd$17(p$9,f$2)
+  function getOrAdd$17(p$9,f$3)
   {
    var o$1;
    o$1=checkO$8(p$9);
-   return o$1==null?store$8(p$9,f$2(p$9)):o$1.$0;
+   return o$1==null?store$8(p$9,f$3(p$9)):o$1.$0;
   }
   SC$1.unindentStr=function(x$1)
   {
-   return g(String.unindent(x$1));
+   return g$1(String.unindent(x$1));
   };
   SC$1.skipLastLine=(f=function(x$1)
   {
-   return g$1(f$1(x$1));
+   return g$2(f$1(x$1));
   },function(x$1)
   {
-   return g$2(f(x$1));
+   return g$3(f(x$1));
+  });
+  SC$1.parseDateO2=(g=ParseO.tryParseWith(function(a$1)
+  {
+   var o$1,m;
+   o$1=0;
+   return[(m=DateUtil.TryParse(a$1),m!=null&&m.$==1&&(o$1=m.$0,true)),o$1];
+  }),function(x$1)
+  {
+   return g(f$2(x$1));
   });
   SC$1.parseDateO=ParseO.tryParseWith(function(a$1)
   {
@@ -2995,6 +3022,21 @@
    var o$1;
    o$1=0;
    return[Numeric.TryParseInt32(a$1,{
+    get:function()
+    {
+     return o$1;
+    },
+    set:function(v)
+    {
+     o$1=v;
+    }
+   }),o$1];
+  });
+  SC$1.parseInt64O=ParseO.tryParseWith(function(a$1)
+  {
+   var o$1;
+   o$1=0;
+   return[Numeric.TryParseInt64(a$1,{
     get:function()
     {
      return o$1;
@@ -3034,6 +3076,7 @@
   });
   SC$1["|Date|_|"]=ParseO.parseDateO();
   SC$1["|Int|_|"]=ParseO.parseIntO();
+  SC$1["|Int64|_|"]=ParseO.parseInt64O();
   SC$1["|Single|_|"]=ParseO.parseSingleO();
   SC$1["|Double|_|"]=ParseO.parseDoubleO();
   SC$1["|Guid|_|"]=ParseO.parseGuidO();
