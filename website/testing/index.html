@@ -6,6 +6,10 @@
         <link href="//cdn.muicss.com/mui-0.9.41/css/mui.min.css" rel="stylesheet" type="text/css" />
         <script src="//cdn.muicss.com/mui-0.9.41/js/mui.min.js"></script>
         <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://secure.aadcdn.microsoftonline-p.com/lib/0.2.4/js/msal.min.js"></script>
+        <!-- IE support: add promises polyfill before msal.js  -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js" class="pre"></script>
         <script ws-replace="scripts"></script>
         <script>
                 function doNothing(e){
@@ -159,7 +163,108 @@
     <title>Prozper</title>
   </head>
   <body class="scrollbar">
-    <div ws-replace="MainContent"></div>
+    <div ws-replace="MainContent">
+        <div ws-attr="attrs"  class="mui--no-user-select">
+            <div id="sidedrawer-brand" class="mui--appbar-line-height">
+                <a href="#" class="mui--text-title"><img class="logo" src="https://prozper.com/images/logos/pro.png" alt="Logo"></a>
+            </div>
+            <div class="mui-divider"></div>
+            <ul>
+                <strong onclick="$(this).next().slideToggle(200)">Menu</strong>
+                <ul >
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Mensajes</a></li>
+                </ul>
+                <li>
+                    <strong onclick="$(this).next().slideToggle(200)">Referir</strong>
+                    <ul style="display: none;">
+                        <!-- li><a href="#/Content/ProzperLyt.cntFormaRegistro">Llenar Afiliación</a></li -->
+                        <li><a href="https://prozper.b2clogin.com/prozper.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1_Registrarse&client_id=70ad4f9b-9a2b-409e-9c1e-d04dbb2e7cf2&nonce=defaultNonce&redirect_uri=https%3A%2F%2Fprozper.azurewebsites.net%2F.auth%2Flogin%2Faad%2Fcallback&scope=openid&response_type=id_token&prompt=login&ui_locales=es">Llenar Afiliación</a></li>
+                        <li><a href="#">Enviar Invitaciones</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <strong onclick="$(this).next().slideToggle(200)">Reportes</strong>
+                    <ul style="display: none;">
+                        <li><a href="#">Mes Actual</a></li>
+                        <li><a href="#">Historial de Transacciones</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <strong onclick="$(this).next().slideToggle(200)">Actualizar Información</strong>
+                    <ul style="display: none;">
+                            <li><a href="/Profile"                                   >Cuenta           </a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaDatos"         >Datos Personales </a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaIdentificacion">Identificación   </a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaContactos"     >Contactos        </a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaFormasPago"    >Cuentas Bancarias</a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaDocumentos"    >Documentos       </a></li>
+                        </ul>
+                </li>
+                <li>
+                    <strong onclick="$(this).next().slideToggle(200)">Kit de Inscripción</strong>
+                    <ol style="display: none;">
+                            <li><a target="_blank" href="/blob/Inscripcion/01 Instructivo de Afiliacion.pdf"                   >Instructivo de Afiliación</a></li>
+                            <li><a target="_blank" href="/blob/Inscripcion/02 Carta de Bienvenida.pdf"                         >Carta de Bienvenida      </a></li>
+                            <li><a target="_blank" href="/blob/Inscripcion/03 Presentacion Prozper.pdf"                        >Presentación Prozper     </a></li>
+                            <li><a target="_blank" href="/blob/Inscripcion/04 Contrato de Afiliacion Aliados Prozper Rev.3.pdf">Contrato de Afiliación   </a></li>
+                            <li><a target="_blank" href="/blob/Inscripcion/05 Form W-8BEN.pdf"                                 >Forma W-8BEN             </a></li>
+                            <li><a target="_blank" href="/blob/Inscripcion/06 Form W-8BEN-E.pdf"                               >Forma W-8BEN-E           </a></li>
+                            <li><a target="_blank" href="/blob/Inscripcion/07 Form W-9.pdf"                                    >Forma W-9                </a></li>
+                            <li><a target="_blank" href="/blob/Inscripcion/08 Cancelacion de Contratos.pdf"                    >Cancelación de Contratos </a></li>
+                        </ol>
+                </li>
+            </ul>
+        </div>
+
+        <header ws-attr="attrs" ><nav class="mui-container-fluid">
+            <table width="100%" cellspacing="0"><tbody>
+                <tr class="mui-appbar mui--appbar-line-height" >
+                    <td class="mui-container-fluid">
+                        <a class="sidedrawer-toggle mui--visible-xs-inline-block mui--visible-sm-inline-block js-show-sidedrawer" onclick="showSidedrawer()">☰</a>
+                        <a class="sidedrawer-toggle mui--hidden-xs mui--hidden-sm js-hide-sidedrawer" onclick="hideSidedrawer()">☰</a>
+                        <span class="mui--text-title mui--visible-xs-inline-block">${Brand}</span>
+                    </td>
+                    <td >
+                        <ul class="mui-list--inline mui--text-body2">
+                          <li class="mui--text-light mui--text-display1">${Afiliado}</li>
+                          <li><a href="#" style="color:white">${Status}</a></li>
+                          <li><a href="#" style="color:white">${Comision}</a></li>
+                        </ul>
+                    </td>
+                    <td class="mui--text-right">
+                        <ul class="mui-list--inline mui--text-body2">
+                          <li><a href="#" style="color:white">Acerca</a></li>
+                          <li><a href="/Logout" style="color:white" ws-onclick="Logout"><i class="fa fa-user" aria-hidden="true"></i> Salir</a></li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody></table>
+        </nav></header>
+
+        <div ws-attr="attrs">
+            <div class="mui--appbar-height"></div>
+            <div class="mui-container-fluid">
+                <br>
+                <div>
+                    <span class="mui--pull-left  mui--text-dark-secondary mui--text-display1">${Titulo}</span>
+                    <span class="mui--pull-right mui--text-dark-secondary mui--text-display1">${fecha}</span>
+                    <div class="mui--clearfix"></div>
+                </div>
+                <div ws-replace="content"/>
+            </div>
+        </div>
+
+        <footer ws-attr="attrs" >
+            <div class="mui-container-fluid">
+                <br>
+                Made with ♥ by <a href="https://${madebylink}">CIPHER</a>
+            </div>
+        </footer>
+
+
+        </div>
+
     <div style="display:none" >
         <div ws-replace="Initializer"></div>
         <div id="GlobalLayout" >menuEditor layout
@@ -253,6 +358,105 @@
 
             </div>
         </div>
+
+        <div ws-attr="attrs" ws-template="sidedrawer" class="mui--no-user-select">
+            <div id="sidedrawer-brand" class="mui--appbar-line-height">
+                <a href="#" class="mui--text-title"><img class="logo" src="https://prozper.com/images/logos/pro.png" alt="Logo"></a>
+            </div>
+            <div class="mui-divider"></div>
+            <ul>
+                <strong onclick="$(this).next().slideToggle(200)">Menu</strong>
+                <ul >
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Mensajes</a></li>
+                </ul>
+                <li>
+                    <strong onclick="$(this).next().slideToggle(200)">Referir</strong>
+                    <ul style="display: none;">
+                        <!-- li><a href="#/Content/ProzperLyt.cntFormaRegistro">Llenar Afiliación</a></li -->
+                        <li><a href="https://prozper.b2clogin.com/prozper.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1_Registrarse&client_id=70ad4f9b-9a2b-409e-9c1e-d04dbb2e7cf2&nonce=defaultNonce&redirect_uri=https%3A%2F%2Fprozper.azurewebsites.net%2F.auth%2Flogin%2Faad%2Fcallback&scope=openid&response_type=id_token&prompt=login&ui_locales=es">Llenar Afiliación</a></li>
+                        <li><a href="#">Enviar Invitaciones</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <strong onclick="$(this).next().slideToggle(200)">Reportes</strong>
+                    <ul style="display: none;">
+                        <li><a href="#">Mes Actual</a></li>
+                        <li><a href="#">Historial de Transacciones</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <strong onclick="$(this).next().slideToggle(200)">Actualizar Información</strong>
+                    <ul style="display: none;">
+                            <li><a href="/Profile"                                   >Cuenta           </a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaDatos"         >Datos Personales </a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaIdentificacion">Identificación   </a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaContactos"     >Contactos        </a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaFormasPago"    >Cuentas Bancarias</a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaDocumentos"    >Documentos       </a></li>
+                        </ul>
+                </li>
+                <li>
+                    <strong onclick="$(this).next().slideToggle(200)">Kit de Inscripción</strong>
+                    <ol style="display: none;">
+                            <li><a target="_blank" href="/blob/Inscripcion/01 Instructivo de Afiliacion.pdf"                   >Instructivo de Afiliación</a></li>
+                            <li><a target="_blank" href="/blob/Inscripcion/02 Carta de Bienvenida.pdf"                         >Carta de Bienvenida      </a></li>
+                            <li><a target="_blank" href="/blob/Inscripcion/03 Presentacion Prozper.pdf"                        >Presentación Prozper     </a></li>
+                            <li><a target="_blank" href="/blob/Inscripcion/04 Contrato de Afiliacion Aliados Prozper Rev.3.pdf">Contrato de Afiliación   </a></li>
+                            <li><a target="_blank" href="/blob/Inscripcion/05 Form W-8BEN.pdf"                                 >Forma W-8BEN             </a></li>
+                            <li><a target="_blank" href="/blob/Inscripcion/06 Form W-8BEN-E.pdf"                               >Forma W-8BEN-E           </a></li>
+                            <li><a target="_blank" href="/blob/Inscripcion/07 Form W-9.pdf"                                    >Forma W-9                </a></li>
+                            <li><a target="_blank" href="/blob/Inscripcion/08 Cancelacion de Contratos.pdf"                    >Cancelación de Contratos </a></li>
+                        </ol>
+                </li>
+            </ul>
+        </div>
+
+        <header ws-attr="attrs" ws-template="header"><nav class="mui-container-fluid">
+            <table width="100%" cellspacing="0"><tbody>
+                <tr class="mui-appbar mui--appbar-line-height" >
+                    <td class="mui-container-fluid">
+                        <a class="sidedrawer-toggle mui--visible-xs-inline-block mui--visible-sm-inline-block js-show-sidedrawer" onclick="showSidedrawer()">☰</a>
+                        <a class="sidedrawer-toggle mui--hidden-xs mui--hidden-sm js-hide-sidedrawer" onclick="hideSidedrawer()">☰</a>
+                        <span class="mui--text-title mui--visible-xs-inline-block">${Brand}</span>
+                    </td>
+                    <td >
+                        <ul class="mui-list--inline mui--text-body2">
+                          <li class="mui--text-light mui--text-display1">${Afiliado}</li>
+                          <li><a href="#" style="color:white">${Status}</a></li>
+                          <li><a href="#" style="color:white">${Comision}</a></li>
+                        </ul>
+                    </td>
+                    <td class="mui--text-right">
+                        <ul class="mui-list--inline mui--text-body2">
+                          <li><a href="#" style="color:white">Acerca</a></li>
+                          <li><a href="#" style="color:white" ws-onclick="Logout"><i class="fa fa-user" aria-hidden="true"></i> Salir</a></li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody></table>
+        </nav></header>
+
+        <div ws-attr="attrs" ws-template="content">
+            <div class="mui--appbar-height"></div>
+            <div class="mui-container-fluid">
+                <br>
+                <div>
+                    <span class="mui--pull-left  mui--text-dark-secondary mui--text-display1">${Titulo}</span>
+                    <span class="mui--pull-right mui--text-dark-secondary mui--text-display1">${fecha}</span>
+                    <div class="mui--clearfix"></div>
+                </div>
+                <div ws-replace="content"/>
+            </div>
+        </div>
+
+        <footer ws-attr="attrs" ws-template="Footer">
+            <div class="mui-container-fluid">
+                <br>
+                Made with ♥ by <a href="https://${madebylink}">${madeby}</a>
+            </div>
+        </footer>
+
 
         <div ws-children-template="Correo">
             <br>
@@ -569,58 +773,6 @@
             Tambien puede usar el enlace: https://localhost:9006/Registro/${IdAliado}
         </div>
 
-        <div ws-attr="attrs" ws-template="sidedrawer" class="mui--no-user-select">
-            <div id="sidedrawer-brand" class="mui--appbar-line-height">
-                <a href="#" class="mui--text-title"><img class="logo" src="https://prozper.com/images/logos/pro.png" alt="Logo"></a>
-            </div>
-            <div class="mui-divider"></div>
-            <ul>
-                <strong onclick="$(this).next().slideToggle(200)">Menu</strong>
-                <ul >
-                    <li><a href="#">Inicio</a></li>
-                    <li><a href="#">Mensajes</a></li>
-                </ul>
-                <li>
-                    <strong onclick="$(this).next().slideToggle(200)">Referir</strong>
-                    <ul style="display: none;">
-                        <!-- li><a href="#/Content/ProzperLyt.cntFormaRegistro">Llenar Afiliación</a></li -->
-                        <li><a href="https://prozper.b2clogin.com/prozper.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1_Registrarse&client_id=8526da9e-883b-46a4-a0a0-68ffd2e8cb84&nonce=defaultNonce&redirect_uri=https%3A%2F%2Fprozper2.azurewebsites.net%2F.auth%2Flogin%2Faad%2Fcallback&scope=openid&response_type=id_token&prompt=login&ui_locales=es">Llenar Afiliación</a></li>
-                        <li><a href="#">Enviar Invitaciones</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <strong onclick="$(this).next().slideToggle(200)">Reportes</strong>
-                    <ul style="display: none;">
-                        <li><a href="#">Mes Actual</a></li>
-                        <li><a href="#">Historial de Transacciones</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <strong onclick="$(this).next().slideToggle(200)">Actualizar Información</strong>
-                    <ul style="display: none;">
-                            <li><a href="#/Content/ProzperLyt.cntFormaDatos"         >Datos Personales</a></li>
-                            <li><a href="#/Content/ProzperLyt.cntFormaIdentificacion">Identificación  </a></li>
-                            <li><a href="#/Content/ProzperLyt.cntFormaContactos"     >Contactos       </a></li>
-                            <li><a href="#/Content/ProzperLyt.cntFormaFormasPago"    >Cuentas Bancarias</a></li>
-                            <li><a href="#/Content/ProzperLyt.cntFormaDocumentos"    >Documentos      </a></li>
-                        </ul>
-                </li>
-                <li>
-                    <strong onclick="$(this).next().slideToggle(200)">Kit de Inscripción</strong>
-                    <ol style="display: none;">
-                            <li><a target="_blank" href="/Inscripcion/01 Instructivo de Afiliacion.pdf"                   >Instructivo de Afiliación</a></li>
-                            <li><a target="_blank" href="/Inscripcion/02 Carta de Bienvenida.pdf"                         >Carta de Bienvenida      </a></li>
-                            <li><a target="_blank" href="/Inscripcion/03 Presentacion Prozper.pdf"                        >Presentación Prozper     </a></li>
-                            <li><a target="_blank" href="/Inscripcion/04 Contrato de Afiliacion Aliados Prozper Rev.3.pdf">Contrato de Afiliación   </a></li>
-                            <li><a target="_blank" href="/Inscripcion/05 Form W-8BEN.pdf"                                 >Forma W-8BEN             </a></li>
-                            <li><a target="_blank" href="/Inscripcion/06 Form W-8BEN-E.pdf"                               >Forma W-8BEN-E           </a></li>
-                            <li><a target="_blank" href="/Inscripcion/07 Form W-9.pdf"                                    >Forma W-9                </a></li>
-                            <li><a target="_blank" href="/Inscripcion/08 Cancelacion de Contratos.pdf"                    >Cancelación de Contratos </a></li>
-                        </ol>
-                </li>
-            </ul>
-        </div>
-
         <div class="mui-container" ws-attr="attrs" ws-template="header2">
                 <table>
                   <tr class="mui--appbar-height">
@@ -635,51 +787,6 @@
                   </tr>
                 </table>
         </div>
-
-        <header ws-attr="attrs" ws-template="header"><nav class="mui-container-fluid">
-            <table width="100%" cellspacing="0"><tbody>
-                <tr class="mui-appbar mui--appbar-line-height" >
-                    <td class="mui-container-fluid">
-                        <a class="sidedrawer-toggle mui--visible-xs-inline-block mui--visible-sm-inline-block js-show-sidedrawer" onclick="showSidedrawer()">☰</a>
-                        <a class="sidedrawer-toggle mui--hidden-xs mui--hidden-sm js-hide-sidedrawer" onclick="hideSidedrawer()">☰</a>
-                        <span class="mui--text-title mui--visible-xs-inline-block">${Brand}</span>
-                    </td>
-                    <td >
-                        <ul class="mui-list--inline mui--text-body2">
-                          <li class="mui--text-light mui--text-display1">${Afiliado}</li>
-                          <li><a href="#" style="color:white">${Status}</a></li>
-                          <li><a href="#" style="color:white">${Comision}</a></li>
-                        </ul>
-                    </td>
-                    <td class="mui--text-right">
-                        <ul class="mui-list--inline mui--text-body2">
-                          <li><a href="#" style="color:white">Acerca</a></li>
-                          <li><a href="https://prozper.b2clogin.com/prozper.onmicrosoft.com/oauth2/v2.0/logout?p=b2c_1_signupsignin&post_logout_redirect_uri=https://prozper2.azurewebsites.net/Logout" style="color:white" ws-onclick="Logout"><i class="fa fa-user" aria-hidden="true"></i> Salir</a></li>
-                        </ul>
-                    </td>
-                </tr>
-            </tbody></table>
-        </nav></header>
-
-        <div ws-attr="attrs" ws-template="content">
-            <div class="mui--appbar-height"></div>
-            <div class="mui-container-fluid">
-                <br>
-                <div>
-                    <span class="mui--pull-left  mui--text-dark-secondary mui--text-display1">${Titulo}</span>
-                    <span class="mui--pull-right mui--text-dark-secondary mui--text-display1">${fecha}</span>
-                    <div class="mui--clearfix"></div>
-                </div>
-                <div ws-replace="content"/>
-            </div>
-        </div>
-
-        <footer ws-attr="attrs" ws-template="Footer">
-            <div class="mui-container-fluid">
-                <br>
-                Made with ♥ by <a href="https://${madebylink}">${madeby}</a>
-            </div>
-        </footer>
 
         <style>
             .Inactivo          { font-weight: 100 ; color: rgba(179, 177, 177, 0.644) }
@@ -1259,5 +1366,5 @@
             </style>
     </div>
   </body>
-  <script src="/testing/testing.js"></script>
+  <script src="testing.js"></script>
 </html>

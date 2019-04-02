@@ -4,27 +4,11 @@
 #nowarn "1178"
 ////-d:FSharpStation1553872630655 -d:NOFRAMEWORK --noframework -d:WEBSHARPER
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\\packages\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\netstandard.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\mscorlib.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Globalization.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.dll"
@@ -37,6 +21,22 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Runtime.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.IO.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.Tasks.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Core.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Core.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Collections.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.InterfaceGenerator.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Main.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.JQuery.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Web.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Sitelets.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Control.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\HtmlAgilityPack.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Runtime.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Common.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
 //#nowarn "3242"
 //#nowarn "52"
 //#nowarn "1182"
@@ -51,36 +51,6 @@ namespace FsRoot
 
     #if WEBSHARPER
     //#nowarn "3242" 
-    
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\\packages\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll"
-    
-    //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
-    //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
-    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
-    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
-    
-    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\netstandard.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\mscorlib.dll"
-    
-    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
-    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
-    
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
     
     open WebSharper
     open WebSharper.JavaScript
@@ -105,6 +75,43 @@ namespace FsRoot
     open WebSharper
     
     #endif
+    //#define NOFRAMEWORK --noframework
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\\packages\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\netstandard.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\mscorlib.dll"
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Globalization.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Reflection.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Numerics.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Core.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.Linq.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Net.Http.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Runtime.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.IO.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.Tasks.dll"  
+    
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0"
+    
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Core.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Collections.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.InterfaceGenerator.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Main.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.JQuery.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Web.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Sitelets.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Control.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\HtmlAgilityPack.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Runtime.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Common.dll"
+    
     
         /// Essentials that can be converted to JavaScript with WebSharper
         [< JavaScript ; AutoOpen >]
@@ -1053,8 +1060,27 @@ namespace FsRoot
                 
             
     
-    
+    //#define NOFRAMEWORK --noframework
     //#define WEBSHARPER
+    
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\\packages\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\netstandard.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\mscorlib.dll"
+    
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Globalization.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Reflection.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Numerics.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Core.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.Linq.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Net.Http.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Runtime.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.IO.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.Tasks.dll"  
+    
     module Prozper =
         [< AutoOpen ; JavaScript >]
         module TypesV0 =
@@ -2207,10 +2233,12 @@ namespace FsRoot
             let mapBoth    f (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > = fun i -> i |> mapOutput (f i) aa
             let bindInput (f: AsyncArrow<_, _>)  (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > = f  >> (AsyncResultM.bind  aa                     )
             let bindOutput(f: AsyncArrow<_, _>)  (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > = aa >> (AsyncResultM.bind  f                      )
-            let bindBoth   f (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > = mapBoth f aa |> bindOutput id
-            let getResultM   (aa: AsyncArrow<_,'r>) : AsyncArrow<_, ResultM<'r,_>> = aa >> AsyncResultM.getResultM
-            let absorbO    m (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > = aa >> AsyncResultM.absorbO m
-            let absorbR      (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > = aa >> AsyncResultM.absorbR  
+            let bindBoth   f (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > = mapBoth f  aa |> bindOutput id
+            let getResultM   (aa: AsyncArrow<_,'r>) : AsyncArrow<_, ResultM<'r,_>> =            aa >> AsyncResultM.getResultM
+            let absorbO    m (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > =            aa >> AsyncResultM.absorbO m
+            let absorbR      (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > =            aa >> AsyncResultM.absorbR  
+        
+            let mapO         (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > = Option.map aa >> AsyncResultM.insertO
         
             let mapFst     f (a, b) = (f a,   b)
             let mapSnd     f (a, b) = (  a, f b)
@@ -2218,6 +2246,11 @@ namespace FsRoot
             let (>=>) = bindInput
             let map f = f >> AsyncResultM.rtn
             let tee (f: AsyncArrow<_, _>) (aa: AsyncArrow<'a, 'b>) : AsyncArrow<'a, 'b> = aa >=> (fun v -> f v |> AsyncResultM.map (fun () -> v) )
+        
+        // AsyncArrow<a,        b       >      :   a        -> Async<ResultM<b       >>
+        // AsyncArrow<a option, b option>      :   a option -> Async<ResultM<b option>>
+        
+        
         
         module ManejadorEventos =
             open AsyncArrow
@@ -2239,37 +2272,6 @@ namespace FsRoot
                 serEventoU : SerialEventoU
             }
         
-            let serializarEvento (evento : DataEvento) =
-                let  name, ttype, obj = DiscUnion.caseTuple evento
-                let  tname            = ttype |> getTypeName
-                let  ser              = Serializador.obtenerSerializador tname
-                {   nombre            = name
-                    tipo              = tname
-                    json              = fst ser obj
-                    data              = obj
-                }
-        
-            let guardarSerialEventoU (serEventoU :  SerialEventoU) = 
-                ambiente.nuevoEvento
-                    serEventoU.usuario
-                    serEventoU.serEvento.nombre
-                    serEventoU.serEvento.json
-                    serEventoU.serEvento.tipo
-        
-        
-            let guardarEvento =
-                    map (fun (evento:Evento) -> evento.data)
-                >=> map serializarEvento
-                 |> mapBoth (fun (evento:Evento) serEvento -> 
-                        evento.aliadoO 
-                        |> Option.map(fun (IdAliado usuario) -> { usuario = usuario ; serEvento  = serEvento })
-                        |> ResultM.ofOption (fun () -> errorMsgf "Aliado es Nulo para evento %A" evento)
-                    )
-                 |> absorbR
-                >=> (   guardarSerialEventoU
-                    |>  mapBoth (fun serEventoU nevento  -> { nevento = nevento ; serEventoU = serEventoU } )
-                    )
-        
             let deserializarEvento (serEvento : SerialEvento) =
                 let ser = Serializador.obtenerSerializador serEvento.tipo
                 match Serializer.deserializeWithDefs ser serEvento.json with
@@ -2280,10 +2282,12 @@ namespace FsRoot
             let guardarEstado0    (nevento, serialModelo) = ambiente.guardarEstado     nevento serialModelo
             let obtenerEstado0    ()                      = ambiente.obtenerEstado     ()
         
-            let serial2TipoDatos (serEventoN: SerialEventoN) =
+            let serialN2serialU (serEventoN: SerialEventoN) = serEventoN.serEventoU
+        
+            let serialU2TipoDatos (serEventoU: SerialEventoU) =
                 {
-                    Eventos.tipoDatos = Eventos.TipoDatos(serEventoN.serEventoU.serEvento.nombre, serEventoN.serEventoU.serEvento.tipo)
-                    Eventos.datos     = serEventoN.serEventoU.serEvento.data
+                    Eventos.tipoDatos = Eventos.TipoDatos(serEventoU.serEvento.nombre, serEventoU.serEvento.tipo)
+                    Eventos.datos     = serEventoU.serEvento.data
                 }
         
             let evento2TipoDatos (evento:Evento) =
@@ -2300,7 +2304,7 @@ namespace FsRoot
                 >=> map (fun (modelo:Modelo) -> modelo.nevento, modelo |> Serializer.serialize serModelo )
                 >=> guardarEstado0
         
-            let obtenerEstado  =
+            let obtenerEstado =
                     obtenerEstado0
                 >=> map (Option.map snd                                         )
                 >=> map (Option.map (Serializer.deserializeWithDefs serModelo)  )
@@ -2321,7 +2325,7 @@ namespace FsRoot
         
             let ejecutarEventoSerial =
                     pairEstado
-                >=> (   map (mapSnd serial2TipoDatos)
+                >=> (   map (mapSnd (serialN2serialU >> serialU2TipoDatos) )
                     >=> manejadorGenerico
                      |> getResultM
                      |> mapBoth separarEstado
@@ -2330,18 +2334,112 @@ namespace FsRoot
                 >=> map  snd
                  |> absorbR
         
+            let guardarEventoSerialU (serEventoU :  SerialEventoU) = 
+                ambiente.nuevoEvento
+                    serEventoU.usuario
+                    serEventoU.serEvento.nombre
+                    serEventoU.serEvento.json
+                    serEventoU.serEvento.tipo
+        
+            let serializarDataEvento (evento : DataEvento) =
+                let  name, ttype, obj = DiscUnion.caseTuple evento
+                let  tname            = ttype |> getTypeName
+                let  ser              = Serializador.obtenerSerializador tname
+                {   nombre            = name
+                    tipo              = tname
+                    json              = fst ser obj
+                    data              = obj
+                }
+        
+            let guardarEventoSerial =
+                guardarEventoSerialU
+                |>  mapBoth (fun serEventoU nevento  -> { nevento = nevento ; serEventoU = serEventoU } )
+        
+            let serializarEvento =
+                    map (fun (evento:Evento) -> evento.data)
+                >=> map serializarDataEvento
+                 |> mapBoth (fun (evento:Evento) serEvento -> 
+                        evento.aliadoO 
+                        |> Option.map(fun (IdAliado usuario) -> { usuario = usuario ; serEvento  = serEvento })
+                        |> ResultM.ofOption (fun () -> errorMsgf "Aliado es Nulo para evento %A" evento)
+                    )
+                 |> absorbR
+        
+            let intentarEventoSerial =
+                pairEstado
+                >=> map (mapSnd serialU2TipoDatos)
+                >=> manejadorGenerico
+                >=> map  ignore
+        
             let ejecutarEventoNuevo =
-                    guardarEvento
+                serializarEvento
+                |>  tee intentarEventoSerial
+                >=> guardarEventoSerial
                 >=> ejecutarEventoSerial
         
-            let ejecutarDataEventoNuevo de =
+            let obtenerUsuario (claims: (_*_) []) : string = 
+                claims 
+                |>  Seq.tryFind(fun (n,v) -> n = "http://schemas.microsoft.com/identity/claims/objectidentifier") 
+                |>  Option.map snd
+                |>  Option.defaultWith (fun () -> failwith "Usuario no autenticado")
+        
+            let ejecutarDataEventoNuevo claims de =
                 {
-                    Evento.nevento = 0L
-                    Evento.aliadoO = Some <| IdAliado ""
-                    data           = de
+                        Evento.nevento = 0L
+                        Evento.aliadoO = Some <| IdAliado (obtenerUsuario claims)
+                        data           = de
                 } |> ejecutarEventoNuevo
         
+            let obtenerSubModelo usuario (modelo:Modelo) = 
+                let buscar = Aliado.busqueda modelo.aliados
+                if usuario = "admin" then modelo else
+                let al = modelo.aliados |> Seq.find (fun al -> al.id = IdAliado usuario)
+                let subAliados = (if al.tipo = Master then buscar.descendientes else buscar.hijos) al
+                { modelo with 
+                    idAliado = al.id
+                    aliados  = Array.append [| al |] subAliados 
+                }
         
+            let obtenerEstadoParaUsuario claims =
+                obtenerEstado
+                >=> map (obtenerSubModelo (obtenerUsuario claims))
+        
+            let obtenerClaim claim claims =
+                claims 
+                |>  Array.tryFind(fun (n,v) -> n = claim) 
+                |>  Option.map snd
+        
+            let crearRegistroNuevo claims1 (modelo:Modelo, claims) =
+                let usuario   = obtenerUsuario claims1
+                if  usuario   = "admin" || (modelo.aliados |> Array.exists (fun al -> al.id = IdAliado usuario)) then None else
+                let datos     = 
+                    { Default.value<DatosPersonales> with 
+                        nombre1         = claims |> obtenerClaim "given_name"                                               |> Option.defaultValue ""
+                        apellido1       = claims |> obtenerClaim "family_name"                                                 |> Option.defaultValue ""
+                        fechaNacimiento = claims |> obtenerClaim "extension_DateOfBirth" |> Option.bind ParseO.parseDateO2 |> Option.defaultValue System.DateTime.MinValue
+                    }
+                let correo    = 
+                    { Default.value<CorreoElectronico> with 
+                        email           = claims |> obtenerClaim "emails" |> Option.defaultValue ""
+                    }
+                let direccion    = 
+                    { Default.value<Direccion> with 
+                        linea1          = claims |> obtenerClaim "streetAddress" |> Option.defaultValue ""
+                        ciudad          = claims |> obtenerClaim "city"          |> Option.defaultValue ""
+                        estado          = claims |> obtenerClaim "state"         |> Option.bind Estado    .tryParse |> Option.defaultValue (OtroS      "")
+                        zonaPostal      = claims |> obtenerClaim "postalCode"    |> Option.bind ZonaPostal.tryParse |> Option.defaultValue (ZonaPostal "")
+                        pais            = claims |> obtenerClaim "country"       |> Option.bind Pais      .tryParse |> Option.defaultValue (OtroP      "")
+                        authorizeIdR    = Error "Direccion no registrada con Authorize"
+                    }
+                let contactos = [| CorreoElectronico correo ; Direccion direccion |]
+                DataEvento.RegistroNuevo(IdAliado usuario, datos, None, contactos)
+                |> Some
+                
+            let agregarUsuarioSiEsNuevo claims1 =
+                pairEstado
+                >=> map  (crearRegistroNuevo      claims1)
+                >=> mapO (ejecutarDataEventoNuevo claims1)
+                >=> map  (Option.iter             print  )
         
         module Rpc =
             open WebSharper
@@ -2357,11 +2455,12 @@ namespace FsRoot
                 else     "https://prozper.azurewebsites.net/api/"
         
             [< JavaScript >]
-            let invoke (fname:string) (p:string) = asyncResultM {
+            let invoke (fname:string) idAliado (p:string) = asyncResultM {
                 do!  async.Return ()
                 let p = if isUndefined p then "null" else p
                 let  headers = Headers()
                 headers.Append("Content-Type", "application/json")
+                headers.Append("IdAliado"    , idAliado          )
                 let  req  = RequestOptions( 
                                 Mode = RequestMode.Cors
                                 , Credentials = RequestCredentials.Include
@@ -2369,24 +2468,30 @@ namespace FsRoot
                                 , Headers     = headers
                                 , Body        = p)
                 let! resp = JS.Fetch(serverEndPoint + fname, req ) |> Promise.AsAsync
-                printfn "invoke resp = %A" resp
                 let! text = resp.Text() |> Promise.AsAsync
+                printfn "invoke resp = %A" text
                 return text
             }
         
             [< JavaScript >]
-            let registroRpcs = System.Collections.Generic.Dictionary<_, _>()
+            let registroRpcs = System.Collections.Generic.Dictionary<string, (string*string)[]-> string -> Async<string> >()
         
             [< JavaScript ; Inline >]
             let inline doRpc<'P, 'R> fname =
-                let serializeP   (p:        'P            ) : string            = Json.Serialize p
-                let serializeR   (p:ResultM<'R    , unit> ) : string            = Json.Serialize p
+                let serializeP   (p:        'P            ) : string            = Json.Serialize   p
+                let serializeR   (p:ResultM<'R    , unit> ) : string            = Json.Serialize   p
                 let deserializeP (s:        string        ) : 'P                = Json.Deserialize s
                 let deserializeR (s:        string        ) : ResultM<'R, unit> = Json.Deserialize s
-                (serializeP >> invoke fname >> Async.map (ResultM.bind deserializeR))
-              , (fun (f: AsyncArrow<'P, 'R>) -> registroRpcs.Add(fname, deserializeP >> f >> Async.map serializeR) )
+                (fun idAliado -> serializeP >> invoke fname idAliado >> Async.map (ResultM.bind deserializeR))
+              , (fun (f: (string*string)[] -> AsyncArrow<'P, 'R>) -> registroRpcs.Add(fname, (fun c js -> 
+                                asyncResultM {
+                                    let  p = deserializeP js
+                                    let! r = f c p
+                                    return r
+                                } |> Async.map serializeR
+                     ) ) )
         
-            let obtenerUnions0() = asyncResultM {
+            let obtenerUnions0 _claims () = asyncResultM {
                 return DiscUnion.simple<Pais          >
                      , DiscUnion.simple<Estado        >
                      , DiscUnion.simple<TipoDireccion >
@@ -2396,22 +2501,26 @@ namespace FsRoot
                      , DiscUnion.simple<TipoTarjeta   >
             }
         
-            let logoutUser0() : AsyncResultM<unit, unit> = AsyncResultM.errorMsgf "not implemented"
+            let logoutUser0 _claims () : AsyncResultM<unit, unit> = AsyncResultM.errorMsgf "not implemented"
         
             let [< Inline >] d1 = doRpc "ejecutarDataEventoNuevo" 
-            let [< Inline >] d2 = doRpc "obtenerEstado"          
-            let [< Inline >] d3 = doRpc "obtenerUnions"          
+            let [< Inline >] d2 = doRpc "obtenerEstadoParaUsuario"
+            let [< Inline >] d3 = doRpc "obtenerUnions"
             let [< Inline >] d4 = doRpc "logoutUser"
+            let [< Inline >] d5 = doRpc "agregarUsuarioSiEsNuevo"
+            
         
-            let [< Inline >] ejecutarDataEventoNuevo =  fst d1
-            let [< Inline >] obtenerEstado           =  fst d2
-            let [< Inline >] obtenerUnions           =  fst d3
-            let [< Inline >] logoutUser              =  fst d4
+            let [< Inline >] ejecutarDataEventoNuevo  =  fst d1
+            let [< Inline >] obtenerEstadoParaUsuario =  fst d2
+            let [< Inline >] obtenerUnions            =  fst d3
+            let [< Inline >] logoutUser               =  fst d4
+            let [< Inline >] agregarUsuarioSiEsNuevo  =  fst d5
         
-            ManejadorEventos.ejecutarDataEventoNuevo |> snd d1 //|> fun (fname, deserializeP, serializeR, f) -> registroRpcs.Add(fname, deserializeP >> f >> Async.map serializeR)
-            ManejadorEventos.obtenerEstado           |> snd d2 //|> fun (fname, deserializeP, serializeR, f) -> registroRpcs.Add(fname, deserializeP >> f >> Async.map serializeR)
-            obtenerUnions0                           |> snd d3 //|> fun (fname, deserializeP, serializeR, f) -> registroRpcs.Add(fname, deserializeP >> f >> Async.map serializeR)
-            logoutUser0                              |> snd d4 //|> fun (fname, deserializeP, serializeR, f) -> registroRpcs.Add(fname, deserializeP >> f >> Async.map serializeR)
+            ManejadorEventos.ejecutarDataEventoNuevo  |> snd d1 
+            ManejadorEventos.obtenerEstadoParaUsuario |> snd d2 
+            obtenerUnions0                            |> snd d3 
+            logoutUser0                               |> snd d4 
+            ManejadorEventos.agregarUsuarioSiEsNuevo  |> snd d5
         
         //// when using pattern matching to separate the tuple we get error:
         ////                 WebSharper error FS9001: 
@@ -5357,20 +5466,6 @@ namespace FsRoot
         //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
         //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
         
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Globalization.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Reflection.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Numerics.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Core.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.Linq.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Net.Http.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Runtime.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.IO.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.Tasks.dll"  
-        
-        //#define NOFRAMEWORK --noframework
         module AddSamples =
         
             let addSamples() =
