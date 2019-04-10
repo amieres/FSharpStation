@@ -54,6 +54,7 @@ group Other
     nuget AuthorizeNet
     nuget Microsoft.Azure.WebJobs
     nuget Microsoft.Azure.WebJobs.Core
+    nuget SendGrid
 
 group Test
     framework: netstandard2.0, netcoreapp2.1

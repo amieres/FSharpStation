@@ -1,0 +1,33 @@
+{
+    "customerProfileId": null,
+    "customerPaymentProfileId": "1506610481",
+    "defaultPaymentProfileSpecified": false,
+    "payment": {
+        "Item": {
+            "cardNumber": "XXXX0766",
+            "expirationDate": "XXXX",
+            "cardType": "MasterCard",
+            "cardArt": null,
+            "issuerNumber": null,
+            "isPaymentTokenSpecified": false
+        }
+    },
+    "driversLicense": null,
+    "taxId": null,
+    "subscriptionIds": null,
+    "customerType": 0,
+    "customerTypeSpecified": true,
+    "billTo": {
+        "phoneNumber": "8322010273",
+        "faxNumber": null,
+        "email": null,
+        "firstName": "Abelardo",
+        "lastName": "Mieres",
+        "company": "1964",
+        "address": "6815 Spanish Bay Ct",
+        "city": "Missouri City",
+        "state": "TX",
+        "zip": "77459",
+        "country": "United States"
+    }
+}
