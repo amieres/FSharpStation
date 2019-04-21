@@ -362,7 +362,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 (function()
 {
  "use strict";
- var Global,FsRoot,ProzperClient,MainProgram,WebSharper,Obj,UI,Var$1,LibraryJS,AppFramework,PlugIn,ModeloUI,Aliado,Lazy,RenderAliados,RenderAliado,FormaRegistro,FormaDatos,FormaContactos,FormaFormasPago,Operators,EventTarget,Node,JavaScript,JS,Unchecked,LayoutEngineModule,Option,Var,Arrays,Templating,Runtime,Server,ProviderBuilder,View,Rpc,Handler,TemplateInstance,Prozper,TypesV0,Aliado$1,IdAliado,Aliado$2,Modelo,ConcreteVar,Snap,SC$1,ListModel,PlugInVar,PlugInView,PlugInDoc,Pervasives,LazyExtensionsProxy,LazyRecord,ProzperServer_GeneratedPrintf,ProzperServer_JsonDecoder,ProzperServer_JsonEncoder,testing_Templates,testing_GeneratedPrintf,testing_Router,Seq,Library,SortWith,Buscar,Collections,FSharpSet,Strings,CorreoElectronico,DatosPersonales,CorreoElectronico$1,Telefono,Direccion,Monads,AsyncResultMAutoOpen,AsyncResultM,AsyncResultMBuilder,Refresh,System,Guid,ResultMessage,Msal,List,T,Utils,PlugInAction,WindowOrWorkerGlobalScope,LayoutEngine,SC$2,List$1,Dictionary,HashSet,Client,IdAuthorize,DatosPersonales$1,StatusAliado,TipoAliado,Numeric,PremisasCalculo,Abbrev,Fresh,String,Slice,Msal$1,Policy,UserAgentApplication,EndPoint,Router,ViewBuilder,VariousUI,FormaPago,PlugInQuery,Doc,FSharpMap,Enumerator,T$1,BalancedTree,Date,Genero,ParseO,Pais,Telefono$1,TipoTelefono,Direccion$1,TipoDireccion,Estado,ZonaPostal,SC$3,Rpc$1,ResultM,Array,NumeroTarjeta,TarjetaCredito,NumeroCuenta,CuentaBancaria,CuentaBancaria$1,TarjetaCredito$1,GeneratedPrintf,LayoutEngine_Templates,LayoutEngine_GeneratedPrintf,Object,HtmlModule,attr,AttrModule,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,AttrProxy,CheckedInput,DictionaryUtil,Client$1,Templates,Pojo,Sitelets,RouterOperators,RouterModule,Route,Concurrency,IdPayment,MapUtil,Tree,IdAddress,Result,Builder,Builder$1,Serializer,Expiracion,TipoTarjeta,RoutingNumber,TipoCuenta,FromView,Docs,Layout,Attrs,DomUtility,DateUtil,WcSplitterT,SC$4,Router$1,List$2,AsyncBody,SC$5,CT,Array$1,Pair,ClientSideJson,Provider,Measures,Hoverable,Hoverable$1,CancellationTokenSource,Storage,Event,UIEvent,ResizeObserver,DocElemNode,CharacterData,Prepare,Elt,An,Settings,Mailbox,HashSetUtil,SC$6,Map,Scheduler,Error,OperationCanceledException,SC$7,DynamicAttrNode,AggregateException,ArrayStorage,Attrs$1,Dyn,Queue,Updates,Docs$1,RunState,NodeSet,Anims,SC$8,Char,StringEncoding,KeyCollection,Promise,SC$9,FormatException,SC$10,String$1,SC$11,AppendList,PathUtil,Easing,HashSet$1,NonStandardPromiseRejectionException,DomNodes,SC$12,IntelliFactory,Runtime$1,Math,console,JSON,Date$1,Reflect,$,String$2;
+ var Global,FsRoot,ProzperClient,MainProgram,WebSharper,Obj,UI,Var$1,View,Prozper,TypesV0,IdAliado,Aliado,ModeloUI,Aliado$1,LibraryJS,AppFramework,PlugIn,Lazy,RenderAliados,RenderAliado,FormaRegistro,FormaDatos,FormaContactos,FormaFormasPago,ReporteConsolidado,TablaPagos,Operators,EventTarget,Node,JavaScript,JS,Unchecked,LayoutEngineModule,Option,Var,Arrays,Templating,Runtime,Server,ProviderBuilder,Rpc,Handler,TemplateInstance,Aliado$2,testing_Templates,testing_GeneratedPrintf,testing_Router,Doc,Modelo,ConcreteVar,Snap,SC$1,DatosPersonales,StatusAliado,DiaPago,TipoAliado,Numeric,ListModel,PlugInVar,PlugInView,PlugInDoc,Pervasives,LazyExtensionsProxy,LazyRecord,ProzperServer_GeneratedPrintf,ProzperServer_JsonDecoder,ProzperServer_JsonEncoder,Seq,Library,SortWith,Buscar,Collections,FSharpSet,Set,Strings,CorreoElectronico,DatosPersonales$1,CorreoElectronico$1,Telefono,Direccion,Monads,AsyncResultMAutoOpen,AsyncResultM,AsyncResultMBuilder,Refresh,System,Guid,ResultMessage,Msal,Fila,VariousUI,Utils,Date,CuentaBancaria,RoutingNumber,NumeroCuenta,FormaPago,ResultM,PlugInAction,WindowOrWorkerGlobalScope,LayoutEngine,SC$2,List,Dictionary,HashSet,Client,Abbrev,Async,SC$3,PremisasCalculo,Fresh,String,Slice,List$1,Msal$1,Policy,UserAgentApplication,EndPoint,Router,ViewBuilder,Pais,Genero,Direccion$1,Telefono$1,PlugInQuery,FSharpMap,Enumerator,T,BalancedTree,T$1,ParseO,TipoTelefono,TipoDireccion,Estado,ZonaPostal,Rpc$1,Array,HtmlModule,attr,NumeroTarjeta,TarjetaCredito,CuentaBancaria$1,TarjetaCredito$1,Result,Object,FromView,TipoCuenta,Concurrency,IdPayment,Result$1,AttrModule,WebComponent,WcTabStrip,WcTabStripT,LayoutEngine_Templates,GeneratedPrintf,LayoutEngine_GeneratedPrintf,WcSplitter,AttrProxy,CheckedInput,DictionaryUtil,Client$1,Templates,Builder,Builder$1,Serializer,Expiracion,TipoTarjeta,Pojo,Sitelets,RouterOperators,RouterModule,Route,IdAddress,MapUtil,Tree,Array$1,Docs,AsyncBody,SC$4,CT,Layout,Attrs,DomUtility,DateUtil,WcSplitterT,DocElemNode,CharacterData,SC$5,Router$1,List$2,Pair,Scheduler,CancellationTokenSource,ClientSideJson,Provider,Measures,Hoverable,Hoverable$1,Storage,Event,UIEvent,ResizeObserver,Prepare,Elt,An,Settings,Mailbox,SC$6,Attrs$1,Dyn,HashSetUtil,SC$7,Map,Error,OperationCanceledException,Queue,DynamicAttrNode,AggregateException,ArrayStorage,Updates,Docs$1,RunState,NodeSet,Anims,SC$8,KeyCollection,Char,StringEncoding,Promise,FormatException,SC$9,SC$10,String$1,SC$11,AppendList,PathUtil,Easing,HashSet$1,NonStandardPromiseRejectionException,DomNodes,SC$12,IntelliFactory,Runtime$1,Math,console,JSON,Date$1,Reflect,$,String$2;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  ProzperClient=FsRoot.ProzperClient=FsRoot.ProzperClient||{};
@@ -371,11 +371,16 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Obj=WebSharper.Obj=WebSharper.Obj||{};
  UI=WebSharper.UI=WebSharper.UI||{};
  Var$1=UI.Var$1=UI.Var$1||{};
+ View=UI.View=UI.View||{};
+ Prozper=FsRoot.Prozper=FsRoot.Prozper||{};
+ TypesV0=Prozper.TypesV0=Prozper.TypesV0||{};
+ IdAliado=TypesV0.IdAliado=TypesV0.IdAliado||{};
+ Aliado=TypesV0.Aliado=TypesV0.Aliado||{};
+ ModeloUI=ProzperClient.ModeloUI=ProzperClient.ModeloUI||{};
+ Aliado$1=ModeloUI.Aliado=ModeloUI.Aliado||{};
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
  AppFramework=LibraryJS.AppFramework=LibraryJS.AppFramework||{};
  PlugIn=AppFramework.PlugIn=AppFramework.PlugIn||{};
- ModeloUI=ProzperClient.ModeloUI=ProzperClient.ModeloUI||{};
- Aliado=ModeloUI.Aliado=ModeloUI.Aliado||{};
  Lazy=WebSharper.Lazy=WebSharper.Lazy||{};
  RenderAliados=ModeloUI.RenderAliados=ModeloUI.RenderAliados||{};
  RenderAliado=ModeloUI.RenderAliado=ModeloUI.RenderAliado||{};
@@ -383,6 +388,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  FormaDatos=ModeloUI.FormaDatos=ModeloUI.FormaDatos||{};
  FormaContactos=ModeloUI.FormaContactos=ModeloUI.FormaContactos||{};
  FormaFormasPago=ModeloUI.FormaFormasPago=ModeloUI.FormaFormasPago||{};
+ ReporteConsolidado=ModeloUI.ReporteConsolidado=ModeloUI.ReporteConsolidado||{};
+ TablaPagos=ModeloUI.TablaPagos=ModeloUI.TablaPagos||{};
  Operators=WebSharper.Operators=WebSharper.Operators||{};
  EventTarget=Global.EventTarget;
  Node=Global.Node;
@@ -397,19 +404,23 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Runtime=Templating.Runtime=Templating.Runtime||{};
  Server=Runtime.Server=Runtime.Server||{};
  ProviderBuilder=Server.ProviderBuilder=Server.ProviderBuilder||{};
- View=UI.View=UI.View||{};
  Rpc=ModeloUI.Rpc=ModeloUI.Rpc||{};
  Handler=Server.Handler=Server.Handler||{};
  TemplateInstance=Server.TemplateInstance=Server.TemplateInstance||{};
- Prozper=FsRoot.Prozper=FsRoot.Prozper||{};
- TypesV0=Prozper.TypesV0=Prozper.TypesV0||{};
- Aliado$1=TypesV0.Aliado=TypesV0.Aliado||{};
- IdAliado=TypesV0.IdAliado=TypesV0.IdAliado||{};
  Aliado$2=Prozper.Aliado=Prozper.Aliado||{};
+ testing_Templates=Global.testing_Templates=Global.testing_Templates||{};
+ testing_GeneratedPrintf=Global.testing_GeneratedPrintf=Global.testing_GeneratedPrintf||{};
+ testing_Router=Global.testing_Router=Global.testing_Router||{};
+ Doc=UI.Doc=UI.Doc||{};
  Modelo=TypesV0.Modelo=TypesV0.Modelo||{};
  ConcreteVar=UI.ConcreteVar=UI.ConcreteVar||{};
  Snap=UI.Snap=UI.Snap||{};
  SC$1=Global.StartupCode$testing$testing=Global.StartupCode$testing$testing||{};
+ DatosPersonales=TypesV0.DatosPersonales=TypesV0.DatosPersonales||{};
+ StatusAliado=TypesV0.StatusAliado=TypesV0.StatusAliado||{};
+ DiaPago=TypesV0.DiaPago=TypesV0.DiaPago||{};
+ TipoAliado=TypesV0.TipoAliado=TypesV0.TipoAliado||{};
+ Numeric=WebSharper.Numeric=WebSharper.Numeric||{};
  ListModel=UI.ListModel=UI.ListModel||{};
  PlugInVar=AppFramework.PlugInVar=AppFramework.PlugInVar||{};
  PlugInView=AppFramework.PlugInView=AppFramework.PlugInView||{};
@@ -420,18 +431,16 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  ProzperServer_GeneratedPrintf=Global.ProzperServer_GeneratedPrintf=Global.ProzperServer_GeneratedPrintf||{};
  ProzperServer_JsonDecoder=Global.ProzperServer_JsonDecoder=Global.ProzperServer_JsonDecoder||{};
  ProzperServer_JsonEncoder=Global.ProzperServer_JsonEncoder=Global.ProzperServer_JsonEncoder||{};
- testing_Templates=Global.testing_Templates=Global.testing_Templates||{};
- testing_GeneratedPrintf=Global.testing_GeneratedPrintf=Global.testing_GeneratedPrintf||{};
- testing_Router=Global.testing_Router=Global.testing_Router||{};
  Seq=WebSharper.Seq=WebSharper.Seq||{};
  Library=FsRoot.Library=FsRoot.Library||{};
  SortWith=Library.SortWith=Library.SortWith||{};
  Buscar=Aliado$2.Buscar=Aliado$2.Buscar||{};
  Collections=WebSharper.Collections=WebSharper.Collections||{};
  FSharpSet=Collections.FSharpSet=Collections.FSharpSet||{};
+ Set=Collections.Set=Collections.Set||{};
  Strings=WebSharper.Strings=WebSharper.Strings||{};
  CorreoElectronico=TypesV0.CorreoElectronico=TypesV0.CorreoElectronico||{};
- DatosPersonales=ModeloUI.DatosPersonales=ModeloUI.DatosPersonales||{};
+ DatosPersonales$1=ModeloUI.DatosPersonales=ModeloUI.DatosPersonales||{};
  CorreoElectronico$1=ModeloUI.CorreoElectronico=ModeloUI.CorreoElectronico||{};
  Telefono=ModeloUI.Telefono=ModeloUI.Telefono||{};
  Direccion=ModeloUI.Direccion=ModeloUI.Direccion||{};
@@ -444,152 +453,149 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Guid=System.Guid=System.Guid||{};
  ResultMessage=Library.ResultMessage=Library.ResultMessage||{};
  Msal=ProzperClient.Msal=ProzperClient.Msal||{};
- List=WebSharper.List=WebSharper.List||{};
- T=List.T=List.T||{};
+ Fila=ReporteConsolidado.Fila=ReporteConsolidado.Fila||{};
+ VariousUI=ModeloUI.VariousUI=ModeloUI.VariousUI||{};
  Utils=WebSharper.Utils=WebSharper.Utils||{};
+ Date=LibraryJS.Date=LibraryJS.Date||{};
+ CuentaBancaria=TypesV0.CuentaBancaria=TypesV0.CuentaBancaria||{};
+ RoutingNumber=TypesV0.RoutingNumber=TypesV0.RoutingNumber||{};
+ NumeroCuenta=TypesV0.NumeroCuenta=TypesV0.NumeroCuenta||{};
+ FormaPago=TypesV0.FormaPago=TypesV0.FormaPago||{};
+ ResultM=Monads.ResultM=Monads.ResultM||{};
  PlugInAction=AppFramework.PlugInAction=AppFramework.PlugInAction||{};
  WindowOrWorkerGlobalScope=Global.WindowOrWorkerGlobalScope;
  LayoutEngine=LibraryJS.LayoutEngine=LibraryJS.LayoutEngine||{};
  SC$2=Global.StartupCode$LayoutEngine$LayoutEngine=Global.StartupCode$LayoutEngine$LayoutEngine||{};
- List$1=Collections.List=Collections.List||{};
+ List=Collections.List=Collections.List||{};
  Dictionary=Collections.Dictionary=Collections.Dictionary||{};
  HashSet=Collections.HashSet=Collections.HashSet||{};
  Client=Runtime.Client=Runtime.Client||{};
- IdAuthorize=TypesV0.IdAuthorize=TypesV0.IdAuthorize||{};
- DatosPersonales$1=TypesV0.DatosPersonales=TypesV0.DatosPersonales||{};
- StatusAliado=TypesV0.StatusAliado=TypesV0.StatusAliado||{};
- TipoAliado=TypesV0.TipoAliado=TypesV0.TipoAliado||{};
- Numeric=WebSharper.Numeric=WebSharper.Numeric||{};
- PremisasCalculo=TypesV0.PremisasCalculo=TypesV0.PremisasCalculo||{};
  Abbrev=UI.Abbrev=UI.Abbrev||{};
+ Async=Abbrev.Async=Abbrev.Async||{};
+ SC$3=Global.StartupCode$ProzperServer$ProzperServer=Global.StartupCode$ProzperServer$ProzperServer||{};
+ PremisasCalculo=TypesV0.PremisasCalculo=TypesV0.PremisasCalculo||{};
  Fresh=Abbrev.Fresh=Abbrev.Fresh||{};
  String=Library.String=Library.String||{};
  Slice=WebSharper.Slice=WebSharper.Slice||{};
+ List$1=WebSharper.List=WebSharper.List||{};
  Msal$1=LibraryJS.Msal=LibraryJS.Msal||{};
  Policy=Msal$1.Policy=Msal$1.Policy||{};
  UserAgentApplication=Msal$1.UserAgentApplication=Msal$1.UserAgentApplication||{};
  EndPoint=ModeloUI.EndPoint=ModeloUI.EndPoint||{};
  Router=UI.Router=UI.Router||{};
  ViewBuilder=UI.ViewBuilder=UI.ViewBuilder||{};
- VariousUI=ModeloUI.VariousUI=ModeloUI.VariousUI||{};
- FormaPago=TypesV0.FormaPago=TypesV0.FormaPago||{};
+ Pais=TypesV0.Pais=TypesV0.Pais||{};
+ Genero=TypesV0.Genero=TypesV0.Genero||{};
+ Direccion$1=TypesV0.Direccion=TypesV0.Direccion||{};
+ Telefono$1=TypesV0.Telefono=TypesV0.Telefono||{};
  PlugInQuery=AppFramework.PlugInQuery=AppFramework.PlugInQuery||{};
- Doc=UI.Doc=UI.Doc||{};
  FSharpMap=Collections.FSharpMap=Collections.FSharpMap||{};
  Enumerator=WebSharper.Enumerator=WebSharper.Enumerator||{};
- T$1=Enumerator.T=Enumerator.T||{};
+ T=Enumerator.T=Enumerator.T||{};
  BalancedTree=Collections.BalancedTree=Collections.BalancedTree||{};
- Date=LibraryJS.Date=LibraryJS.Date||{};
- Genero=TypesV0.Genero=TypesV0.Genero||{};
+ T$1=List$1.T=List$1.T||{};
  ParseO=Library.ParseO=Library.ParseO||{};
- Pais=TypesV0.Pais=TypesV0.Pais||{};
- Telefono$1=TypesV0.Telefono=TypesV0.Telefono||{};
  TipoTelefono=TypesV0.TipoTelefono=TypesV0.TipoTelefono||{};
- Direccion$1=TypesV0.Direccion=TypesV0.Direccion||{};
  TipoDireccion=TypesV0.TipoDireccion=TypesV0.TipoDireccion||{};
  Estado=TypesV0.Estado=TypesV0.Estado||{};
  ZonaPostal=TypesV0.ZonaPostal=TypesV0.ZonaPostal||{};
- SC$3=Global.StartupCode$ProzperServer$ProzperServer=Global.StartupCode$ProzperServer$ProzperServer||{};
  Rpc$1=Prozper.Rpc=Prozper.Rpc||{};
- ResultM=Monads.ResultM=Monads.ResultM||{};
  Array=Library.Array=Library.Array||{};
- NumeroTarjeta=TypesV0.NumeroTarjeta=TypesV0.NumeroTarjeta||{};
- TarjetaCredito=TypesV0.TarjetaCredito=TypesV0.TarjetaCredito||{};
- NumeroCuenta=TypesV0.NumeroCuenta=TypesV0.NumeroCuenta||{};
- CuentaBancaria=TypesV0.CuentaBancaria=TypesV0.CuentaBancaria||{};
- CuentaBancaria$1=ModeloUI.CuentaBancaria=ModeloUI.CuentaBancaria||{};
- TarjetaCredito$1=ModeloUI.TarjetaCredito=ModeloUI.TarjetaCredito||{};
- GeneratedPrintf=Global.GeneratedPrintf=Global.GeneratedPrintf||{};
- LayoutEngine_Templates=Global.LayoutEngine_Templates=Global.LayoutEngine_Templates||{};
- LayoutEngine_GeneratedPrintf=Global.LayoutEngine_GeneratedPrintf=Global.LayoutEngine_GeneratedPrintf||{};
- Object=Global.Object;
  HtmlModule=UI.HtmlModule=UI.HtmlModule||{};
  attr=HtmlModule.attr=HtmlModule.attr||{};
+ NumeroTarjeta=TypesV0.NumeroTarjeta=TypesV0.NumeroTarjeta||{};
+ TarjetaCredito=TypesV0.TarjetaCredito=TypesV0.TarjetaCredito||{};
+ CuentaBancaria$1=ModeloUI.CuentaBancaria=ModeloUI.CuentaBancaria||{};
+ TarjetaCredito$1=ModeloUI.TarjetaCredito=ModeloUI.TarjetaCredito||{};
+ Result=WebSharper.Result=WebSharper.Result||{};
+ Object=Global.Object;
+ FromView=UI.FromView=UI.FromView||{};
+ TipoCuenta=TypesV0.TipoCuenta=TypesV0.TipoCuenta||{};
+ Concurrency=WebSharper.Concurrency=WebSharper.Concurrency||{};
+ IdPayment=TypesV0.IdPayment=TypesV0.IdPayment||{};
+ Result$1=Monads.Result=Monads.Result||{};
  AttrModule=UI.AttrModule=UI.AttrModule||{};
  WebComponent=LibraryJS.WebComponent=LibraryJS.WebComponent||{};
  WcTabStrip=WebComponent.WcTabStrip=WebComponent.WcTabStrip||{};
  WcTabStripT=WcTabStrip.WcTabStripT=WcTabStrip.WcTabStripT||{};
+ LayoutEngine_Templates=Global.LayoutEngine_Templates=Global.LayoutEngine_Templates||{};
+ GeneratedPrintf=Global.GeneratedPrintf=Global.GeneratedPrintf||{};
+ LayoutEngine_GeneratedPrintf=Global.LayoutEngine_GeneratedPrintf=Global.LayoutEngine_GeneratedPrintf||{};
  WcSplitter=WebComponent.WcSplitter=WebComponent.WcSplitter||{};
  AttrProxy=UI.AttrProxy=UI.AttrProxy||{};
  CheckedInput=UI.CheckedInput=UI.CheckedInput||{};
  DictionaryUtil=Collections.DictionaryUtil=Collections.DictionaryUtil||{};
  Client$1=UI.Client=UI.Client||{};
  Templates=Client$1.Templates=Client$1.Templates||{};
+ Builder=Result$1.Builder=Result$1.Builder||{};
+ Builder$1=ResultM.Builder=ResultM.Builder||{};
+ Serializer=Library.Serializer=Library.Serializer||{};
+ Expiracion=TypesV0.Expiracion=TypesV0.Expiracion||{};
+ TipoTarjeta=TypesV0.TipoTarjeta=TypesV0.TipoTarjeta||{};
  Pojo=LibraryJS.Pojo=LibraryJS.Pojo||{};
  Sitelets=WebSharper.Sitelets=WebSharper.Sitelets||{};
  RouterOperators=Sitelets.RouterOperators=Sitelets.RouterOperators||{};
  RouterModule=Sitelets.RouterModule=Sitelets.RouterModule||{};
  Route=Sitelets.Route=Sitelets.Route||{};
- Concurrency=WebSharper.Concurrency=WebSharper.Concurrency||{};
- IdPayment=TypesV0.IdPayment=TypesV0.IdPayment||{};
+ IdAddress=TypesV0.IdAddress=TypesV0.IdAddress||{};
  MapUtil=Collections.MapUtil=Collections.MapUtil||{};
  Tree=BalancedTree.Tree=BalancedTree.Tree||{};
- IdAddress=TypesV0.IdAddress=TypesV0.IdAddress||{};
- Result=Monads.Result=Monads.Result||{};
- Builder=Result.Builder=Result.Builder||{};
- Builder$1=ResultM.Builder=ResultM.Builder||{};
- Serializer=Library.Serializer=Library.Serializer||{};
- Expiracion=TypesV0.Expiracion=TypesV0.Expiracion||{};
- TipoTarjeta=TypesV0.TipoTarjeta=TypesV0.TipoTarjeta||{};
- RoutingNumber=TypesV0.RoutingNumber=TypesV0.RoutingNumber||{};
- TipoCuenta=TypesV0.TipoCuenta=TypesV0.TipoCuenta||{};
- FromView=UI.FromView=UI.FromView||{};
+ Array$1=UI.Array=UI.Array||{};
  Docs=UI.Docs=UI.Docs||{};
+ AsyncBody=Concurrency.AsyncBody=Concurrency.AsyncBody||{};
+ SC$4=Global.StartupCode$WebSharper_Main$Concurrency=Global.StartupCode$WebSharper_Main$Concurrency||{};
+ CT=Concurrency.CT=Concurrency.CT||{};
  Layout=LayoutEngineModule.Layout=LayoutEngineModule.Layout||{};
  Attrs=UI.Attrs=UI.Attrs||{};
  DomUtility=UI.DomUtility=UI.DomUtility||{};
  DateUtil=WebSharper.DateUtil=WebSharper.DateUtil||{};
  WcSplitterT=WcSplitter.WcSplitterT=WcSplitter.WcSplitterT||{};
- SC$4=Global.StartupCode$WebSharper_UI$Abbrev=Global.StartupCode$WebSharper_UI$Abbrev||{};
+ DocElemNode=UI.DocElemNode=UI.DocElemNode||{};
+ CharacterData=Global.CharacterData;
+ SC$5=Global.StartupCode$WebSharper_UI$Abbrev=Global.StartupCode$WebSharper_UI$Abbrev||{};
  Router$1=Sitelets.Router=Sitelets.Router||{};
  List$2=Sitelets.List=Sitelets.List||{};
- AsyncBody=Concurrency.AsyncBody=Concurrency.AsyncBody||{};
- SC$5=Global.StartupCode$WebSharper_Main$Concurrency=Global.StartupCode$WebSharper_Main$Concurrency||{};
- CT=Concurrency.CT=Concurrency.CT||{};
- Array$1=UI.Array=UI.Array||{};
  Pair=Collections.Pair=Collections.Pair||{};
+ Scheduler=Concurrency.Scheduler=Concurrency.Scheduler||{};
+ CancellationTokenSource=WebSharper.CancellationTokenSource=WebSharper.CancellationTokenSource||{};
  ClientSideJson=WebSharper.ClientSideJson=WebSharper.ClientSideJson||{};
  Provider=ClientSideJson.Provider=ClientSideJson.Provider||{};
  Measures=LayoutEngineModule.Measures=LayoutEngineModule.Measures||{};
  Hoverable=LibraryJS.Hoverable=LibraryJS.Hoverable||{};
  Hoverable$1=Hoverable.Hoverable=Hoverable.Hoverable||{};
- CancellationTokenSource=WebSharper.CancellationTokenSource=WebSharper.CancellationTokenSource||{};
  Storage=UI.Storage=UI.Storage||{};
  Event=Global.Event;
  UIEvent=Global.UIEvent;
  ResizeObserver=LibraryJS.ResizeObserver=LibraryJS.ResizeObserver||{};
- DocElemNode=UI.DocElemNode=UI.DocElemNode||{};
- CharacterData=Global.CharacterData;
  Prepare=Templates.Prepare=Templates.Prepare||{};
  Elt=UI.Elt=UI.Elt||{};
  An=UI.An=UI.An||{};
  Settings=Client$1.Settings=Client$1.Settings||{};
  Mailbox=Abbrev.Mailbox=Abbrev.Mailbox||{};
+ SC$6=Global.StartupCode$WebSharper_UI$Templates=Global.StartupCode$WebSharper_UI$Templates||{};
+ Attrs$1=Client$1.Attrs=Client$1.Attrs||{};
+ Dyn=Attrs$1.Dyn=Attrs$1.Dyn||{};
  HashSetUtil=Collections.HashSetUtil=Collections.HashSetUtil||{};
- SC$6=Global.StartupCode$WebSharper_Sitelets$Router=Global.StartupCode$WebSharper_Sitelets$Router||{};
+ SC$7=Global.StartupCode$WebSharper_Sitelets$Router=Global.StartupCode$WebSharper_Sitelets$Router||{};
  Map=Collections.Map=Collections.Map||{};
- Scheduler=Concurrency.Scheduler=Concurrency.Scheduler||{};
  Error=Global.Error;
  OperationCanceledException=WebSharper.OperationCanceledException=WebSharper.OperationCanceledException||{};
- SC$7=Global.StartupCode$WebSharper_UI$Templates=Global.StartupCode$WebSharper_UI$Templates||{};
+ Queue=WebSharper.Queue=WebSharper.Queue||{};
  DynamicAttrNode=UI.DynamicAttrNode=UI.DynamicAttrNode||{};
  AggregateException=WebSharper.AggregateException=WebSharper.AggregateException||{};
  ArrayStorage=Storage.ArrayStorage=Storage.ArrayStorage||{};
- Attrs$1=Client$1.Attrs=Client$1.Attrs||{};
- Dyn=Attrs$1.Dyn=Attrs$1.Dyn||{};
- Queue=WebSharper.Queue=WebSharper.Queue||{};
  Updates=UI.Updates=UI.Updates||{};
  Docs$1=Client$1.Docs=Client$1.Docs||{};
  RunState=Docs$1.RunState=Docs$1.RunState||{};
  NodeSet=Docs$1.NodeSet=Docs$1.NodeSet||{};
  Anims=UI.Anims=UI.Anims||{};
  SC$8=Global.StartupCode$WebSharper_UI$Doc_Proxy=Global.StartupCode$WebSharper_UI$Doc_Proxy||{};
+ KeyCollection=Collections.KeyCollection=Collections.KeyCollection||{};
  Char=WebSharper.Char=WebSharper.Char||{};
  StringEncoding=Sitelets.StringEncoding=Sitelets.StringEncoding||{};
- KeyCollection=Collections.KeyCollection=Collections.KeyCollection||{};
  Promise=JavaScript.Promise=JavaScript.Promise||{};
- SC$9=Global.StartupCode$WebSharper_UI$DomUtility=Global.StartupCode$WebSharper_UI$DomUtility||{};
  FormatException=WebSharper.FormatException=WebSharper.FormatException||{};
+ SC$9=Global.StartupCode$WebSharper_UI$DomUtility=Global.StartupCode$WebSharper_UI$DomUtility||{};
  SC$10=Global.StartupCode$WebSharper_UI$Attr_Client=Global.StartupCode$WebSharper_UI$Attr_Client||{};
  String$1=UI.String=UI.String||{};
  SC$11=Global.StartupCode$WebSharper_UI$Animation=Global.StartupCode$WebSharper_UI$Animation||{};
@@ -611,7 +617,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  String$2=Global.String;
  MainProgram.mainProgram=function()
  {
-  var titleV,mesActualW,anoActualW,nombreAliadoW,idAliadoW,statusAliadoW,comisionAliadoW,datosAliadoW,l,m,a,o,v,b,M,p;
+  var titleV,mesActualW,anoActualW,nombreAliadoW,idAliadoW,statusAliadoW,comisionAliadoW,datosAliadoW,l,m,a,o,v,getExtraMenu,b,t,h,M,p;
   titleV=Var$1.Create$1(MainProgram.appName());
   mesActualW=View.Map(function($1)
   {
@@ -641,7 +647,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return Global.String($1.nReferidos);
   },ModeloUI.aliadoW());
-  AppFramework.addPlugIn(PlugIn.New(MainProgram.appName(),[AppFramework.newVar("title",titleV),AppFramework.newVar("contentVar",ModeloUI.contentVar()),AppFramework.newVar("invitaciones",ModeloUI.invitacionesV())],[AppFramework.newViw("mesActual",mesActualW),AppFramework.newViw("anoActual",anoActualW),AppFramework.newViw("aliado",nombreAliadoW),AppFramework.newViw("idAliado",idAliadoW),AppFramework.newViw("status",statusAliadoW),AppFramework.newViw("comision",comisionAliadoW),AppFramework.newViw("datos",datosAliadoW),AppFramework.newViw("emailsInvitar",ModeloUI.emailsInvitarW()),AppFramework.newViw("invitacionesDisabled",ModeloUI.invitacionesDisabledW())],[AppFramework.newDoc("Aliados",Lazy.Create(RenderAliados.aliados)),AppFramework.newDoc("Aliado",Lazy.Create(RenderAliado.aliado)),AppFramework.newDoc("Calculo",Lazy.Create(RenderAliado.calculo)),AppFramework.newDoc("FormaRegistro",Lazy.Create(FormaRegistro.formaDoc)),AppFramework.newDoc("FormaDatos",Lazy.Create(FormaDatos.formaDoc)),AppFramework.newDoc("FormaContactos",Lazy.Create(FormaContactos.formaDoc)),AppFramework.newDoc("FormaFormasPago",Lazy.Create(FormaFormasPago.formaDoc)),AppFramework.newDoc("contentDoc",Lazy.Create(MainProgram.getContentDoc))],[AppFramework.newAct("Logout",function()
+  AppFramework.addPlugIn(PlugIn.New(MainProgram.appName(),[AppFramework.newVar("title",titleV),AppFramework.newVar("contentVar",ModeloUI.contentVar()),AppFramework.newVar("invitaciones",ModeloUI.invitacionesV())],[AppFramework.newViw("mesActual",mesActualW),AppFramework.newViw("anoActual",anoActualW),AppFramework.newViw("aliado",nombreAliadoW),AppFramework.newViw("idAliado",idAliadoW),AppFramework.newViw("status",statusAliadoW),AppFramework.newViw("comision",comisionAliadoW),AppFramework.newViw("datos",datosAliadoW),AppFramework.newViw("emailsInvitar",ModeloUI.emailsInvitarW()),AppFramework.newViw("invitacionesDisabled",ModeloUI.invitacionesDisabledW())],[AppFramework.newDoc("Aliados",Lazy.Create(RenderAliados.aliados)),AppFramework.newDoc("Aliado",Lazy.Create(RenderAliado.aliado)),AppFramework.newDoc("Calculo",Lazy.Create(RenderAliado.calculo)),AppFramework.newDoc("FormaRegistro",Lazy.Create(FormaRegistro.formaDoc)),AppFramework.newDoc("FormaDatos",Lazy.Create(FormaDatos.formaDoc)),AppFramework.newDoc("FormaContactos",Lazy.Create(FormaContactos.formaDoc)),AppFramework.newDoc("FormaFormasPago",Lazy.Create(FormaFormasPago.formaDoc)),AppFramework.newDoc("contentDoc",Lazy.Create(MainProgram.getContentDoc)),AppFramework.newDoc("ReporteConsolidado",Lazy.Create(ReporteConsolidado.consolidado)),AppFramework.newDoc("TablaPagos",Lazy.Create(TablaPagos.comisiones))],[AppFramework.newAct("Logout",function()
   {
    MainProgram.logout();
   }),AppFramework.newAct("LogIn",function()
@@ -654,11 +660,34 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   LayoutEngineModule.addLayout((l=(m=self.document.getElementById("GlobalLayout"),Unchecked.Equals(m,null)?"\r\n                        menuEditor layout\r\n                        |          main\r\n        \r\n                        main div \"\"\r\n                        :                 template  header     \"id=header\"           brand  brandV   logout \"@{Prozper.Logout}\" afiliado \"@{Prozper.aliado}\"\r\n                        :                 Doc       Prozper.contentDoc\r\n                        :                 template  sidedrawer \"id=sidedrawer\"       brand  brandV   idaliado \"@{Prozper.idAliado}\" \r\n                        :                 template  footer     \"id=footer\"           brand  brandV   madeby \"CIPHER Bsc\" madebylink \"www.cipherbsc.com\"\r\n         \r\n                        mainContent          template  content    \"id=content-wrapper\"  content aliados                  fecha \"@{Prozper.mesActual} @{Prozper.anoActual}\" idaliado \"@{Prozper.aliado}\"\r\n                        cntFormaRegistro     template  content    \"id=content-wrapper\"  content Prozper.FormaRegistro    titulo \"Referido por: @{Prozper.aliado}\"  \r\n                        cntFormaDatos        template  content    \"id=content-wrapper\"  content Prozper.FormaDatos       titulo \" \"\r\n                        cntFormaContactos    template  content    \"id=content-wrapper\"  content Prozper.FormaContactos   titulo \" \" \r\n                        cntFormaFormasPago   template  content    \"id=content-wrapper\"  content Prozper.FormaFormasPago  titulo \" \" \r\n                        cntFormaCuentas      template  content    \"id=content-wrapper\"  content ProzperLyt.FormaCuentas  titulo \" \"  \r\n                        cntFormaDocumentos   template  content    \"id=content-wrapper\"  content Prozper.FormaDocumentos  titulo \" \"  \r\n                        cntFormaNoUser       template  content    \"id=content-wrapper\"  content botonLogin               titulo \" \"  \r\n                        cntFormaInvitaciones template  content    \"id=content-wrapper\"  content invitaciones             titulo \" \"  \r\n        \r\n                        aliados          div       \"class=row\"\r\n                        :                div       \"class=mui-col-md-6\"\r\n                        ::               div       \"class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto\" Prozper.Aliados\r\n                        :                div       \"class=mui-col-md-6\"\r\n                        ::               div       \"class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto\" Aliado Comisiones\r\n                        brandV           Var       \"Prozper\"\r\n        \r\n                        botonLogin       div       \"class=row\"\r\n                        :                div       \"class=mui-col-md-6\"\r\n                        ::               div       \"class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto\" \r\n                        :::              button    Prozper.LogIn \"class=mui-btn mui-btn--primary\" \"Ingresar al Sistema\"\r\n        \r\n                        invitaciones     div       \"class=row\"\r\n                        :                div       \"class=mui-col-md-6 mui-col-md-offset-1\"\r\n                        ::               div       \"class=mui-panel mui--z5 scrollbar; max-height:550px ; overflow:auto\" \r\n                        :::              h1        \"\" \"Enviar Invitaciones\"\r\n                        :::              textarea  Prozper.invitaciones  \"width:100% ; height:30rem; placeholder=Copie aqui las direcciones de correo electronico\" \r\n                        :                div       \"white-space: pre-wrap\" \"@{Prozper.emailsInvitar}\"\r\n                        :                button    Prozper.enviarInvitaciones \"class=mui-btn mui-btn--raised mui-btn--primary;@{Prozper.invitacionesDisabled}\" \"Enviar\"\r\n        \r\n                        Aliado           div       \"class=mui-col-md-8\"\r\n                        :                Doc Prozper.Aliado\r\n        \r\n                        Comisiones       template    tablacomisiones \"class=mui-col-md-3\"  tbody filasComisiones\r\n                        filasComisiones  concat      \"\"\r\n                        :                template    filacomision    \"\"  periodo \"Ene 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Feb 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Mar 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Abr 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"May 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Jun 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Jul 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Ago 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Sep 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Oct 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Nov 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Dec 2018\" comision \"$1,000\"\r\n                \r\n                        menuEditorx      horizontal  65          menuLogo                  editorMessages\r\n                        double           horizontal  0-50-100    AppFramework.AppFwkClient menuEditor\r\n                        menuLogo         vertical    350         logo                      menu\r\n                        logo             span       \"margin:0;   color:gray; font-size: 55px; font-weight:530\" \"StackOverflow\"\r\n                        editorMessages   horizontal  10-83-100   editorButtons             messages\r\n                        messages         vertical    0-50-100    messagesLeft              messagesRight\r\n                        editorButtons    vertical    150 buttons snippetsSnippet \r\n                        snippetsSnippet  vertical    0-20-100    snippets                  editorProperties\r\n                        snippets         horizontal  20          \"@{FSharpStation.CurrentPath}\" tblDimensions2\r\n                        editorProperties vertical    0-100-100   snippet                   properties\r\n                        properties       div        \"\"           FSharpStation.Properties\r\n                        snippet          horizontal  35          Name                      FSharpStation.editor\r\n                        menu             span       \"display: grid; grid-template-columns: 30% 20% 20% 10%; grid-gap: 25px; margin:5px; grid-template-rows:50px\" inpServer btnLoad btnSaveAs\r\n                         \r\n                        severalTabs      wcomp-tabstrip  \"\" \r\n                        :                div \"tabname=Dimensions\" \r\n                        ::               div \"\" btnAddDimension RuleEditor.Dimensions\r\n                        :                div \"tabname=Cubes\"\r\n                        :                div \"tabname=Global Definitions\" RuleEditor.globalDefs\r\n                \r\n                        btnSaveAs        button RuleEditor.SaveAs         \"class=btn @{RuleEditor.SaveNeeded}\" \"Save as...    \"\r\n                        btnAddDimension  button RuleEditor.AddDimension      \"\"                  \"new dim...\"\r\n                        btnDeleteSnippet button FSharpStation.RemoveSnippet  \"\"                  \"Delete Snippet\"\r\n                        btnIndentIn      button FSharpStation.IndentIn       \"\"                  \"Indent In  >> \"\r\n                        btnIndentOut     button FSharpStation.IndentOut      \"\"                  \"Indent Out << \"\r\n                        btnRunFS         button FSharpStation.RunFS          \"\"                  \"Run F#        \"\r\n                        btnAbortFsi      button FSharpStation.AbortFsi       \"\"                  \"Abort Fsi     \"\r\n                \r\n                        messagesLeft     wcomp-tabstrip                      \"\"                  Output FsCode\r\n                        messagesRight    wcomp-tabstrip                      \"\"                  Parser\r\n                \r\n                        buttons          div \"overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px\"\r\n                        :                button RuleEditor.AddCalculation    \"\"                 \"Add Calculation\"\r\n                        :                button RuleEditor.AddTotal          \"\"                 \"Add Total\"\r\n                        :                Doc       none x\r\n                        :                button RuleEditor.IndentIn          \"\"                  \"Indent In  >> \"\r\n                        :                button RuleEditor.IndentOut         \"\"                  \"Indent Out << \"\r\n                \r\n                        Output           textarea  RuleEditor.Output         \"tabname=Output ; placeholder=Output messages ; spellcheck=false\" \r\n                        FsCode           textarea  RuleEditor.CodeFS         \"tabname=F# Code; placeholder=F# Code         ; spellcheck=false\" \r\n                        Parser           textarea  RuleEditor.Parser         \"tabname=Parser ; placeholder=Parser messages; dblclick=@{FSharpStation.JumpTo} ; spellcheck=false\" \r\n                        Name             Doc       InputLabel                \"\"     \"Name:\"        FSharpStation.SnippetName\r\n                        inpServer        Doc       InputLabel                \"\"     \"Server:\"      RuleEditor.Server\r\n                        btnLoad          Doc       InputFile                 \"\"     \"Load File...\" RuleEditor.LoadFile  FileName\r\n                        btnImport        Doc       InputFile                 \"\"     \"Import...\"    FSharpStation.Import    \"\"\r\n                        FileName         div                                 \"class=form-control\"  RuleEditor.fileName\r\n        \r\n                   ":m.textContent),LayoutEngineModule.newLyt(MainProgram.layoutName(),l)));
   a=(o=null,(v=MainProgram.layoutName(),o==null?v:o.$0));
   AppFramework.mainDocV().Set(a);
-  b=(M=AppFramework.getMainDoc().f(),ProviderBuilder.Make().WithHole({
+  getExtraMenu=Doc.BindView(function(al)
+  {
+   var b$1,p$1,i;
+   return Unchecked.Equals(al.id,Aliado$2.empty().id)?(b$1=ProviderBuilder.Make(),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i=new TemplateInstance.New(p$1[1],testing_Templates.opcionesadministrador(p$1[0])),(b$1.i=i,i)))).get_Doc():Doc.get_Empty();
+  },ModeloUI.aliadoW());
+  b=(t=(h=MainProgram.getDocView(MainProgram.layoutName(),"headerCenter"),(M=MainProgram.getContentDoc(),ProviderBuilder.Make().WithHole({
    $:0,
    $0:"maincontent",
    $1:M
   })).WithHole({
+   $:0,
+   $0:"headercenter",
+   $1:h
+  })).WithHole({
+   $:2,
+   $0:"idaliado",
+   $1:idAliadoW
+  }),t.WithHole(Handler.EventQ2(t.k,"logout",function()
+  {
+   return t.i;
+  },function()
+  {
+   MainProgram.logout();
+  }))).WithHole({
+   $:0,
+   $0:"extramenu",
+   $1:getExtraMenu
+  }).WithHole({
    $:2,
    $0:"cortina",
    $1:View.Map(function($1)
@@ -668,9 +697,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   });
   p=Handler.CompleteHoles(b.k,b.h,[]);
   b.i=new TemplateInstance.New(p[1],Templates.RunFullDocTemplate(p[0]));
-  View.Sink(function(t)
+  View.Sink(function(t$1)
   {
-   self.document.title=t;
+   self.document.title=t$1;
   },titleV.get_View());
  };
  MainProgram.appName=function()
@@ -683,19 +712,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var $1,$2;
   function a(content,userO)
   {
-   var content$1,o,o$1,t;
+   var content$1;
    content$1=userO!=null&&userO.$==1?content:MainProgram.layoutName()+".cntFormaNoUser";
-   o=(o$1=(t=((LayoutEngineModule.splitName())(MainProgram.appName()))(content$1),AppFramework.tryGetDoc(t[0],t[1])),o$1==null?null:{
-    $:1,
-    $0:LayoutEngineModule.getDocFinal(T.Empty,o$1.$0)
-   });
-   return o==null?LayoutEngineModule.errDoc((function($3)
-   {
-    return function($4)
-    {
-     return $3("Doc not found "+Utils.toSafe($4));
-    };
-   }(Global.id))(content$1)):o.$0;
+   return MainProgram.getDoc(MainProgram.appName(),content$1);
   }
   return Doc.EmbedView(($1=ModeloUI.contentVar().get_View(),($2=Msal.userO().get_View(),(((Runtime$1.Curried3(View.Map2))(a))($1))($2))));
  };
@@ -745,9 +764,31 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$1.$cctor();
   return SC$1.layoutName;
  };
+ MainProgram.getDocView=function(appName,docName)
+ {
+  return LayoutEngineModule.turnToView(function()
+  {
+   return MainProgram.getDoc(appName,docName);
+  });
+ };
  MainProgram.mesToString=function(a)
  {
   return a===1?"Ene":a===2?"Feb":a===3?"Mar":a===4?"Abr":a===5?"May":a===6?"Jun":a===7?"Jul":a===8?"Ago":a===9?"Sep":a===10?"Oct":a===11?"Nov":a===12?"Dic":"---";
+ };
+ MainProgram.getDoc=function(appName,docName)
+ {
+  var o,o$1,t;
+  o=(o$1=(t=((LayoutEngineModule.splitName())(appName))(docName),AppFramework.tryGetDoc(t[0],t[1])),o$1==null?null:{
+   $:1,
+   $0:LayoutEngineModule.getDocFinal(T$1.Empty,o$1.$0)
+  });
+  return o==null?LayoutEngineModule.errDoc((function($1)
+  {
+   return function($2)
+   {
+    return $1("Doc not found "+Utils.toSafe($2));
+   };
+  }(Global.id))(docName)):o.$0;
  };
  Obj=WebSharper.Obj=Runtime$1.Class({
   Equals:function(obj)
@@ -827,6 +868,340 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   _var.Set(value);
  };
+ View.Map=function(fn,a)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.Map(fn,a());
+  });
+ };
+ View.Sink=function(act,a)
+ {
+  function loop()
+  {
+   Snap.WhenRun(a(),act,function()
+   {
+    Concurrency.scheduler().Fork(loop);
+   });
+  }
+  Concurrency.scheduler().Fork(loop);
+ };
+ View.CreateLazy=function(observe)
+ {
+  var lv;
+  lv={
+   c:null,
+   o:observe
+  };
+  return function()
+  {
+   var c,$1;
+   c=lv.c;
+   return c===null?(c=lv.o(),lv.c=c,($1=c.s,$1!=null&&$1.$==0)?lv.o=null:Snap.WhenObsoleteRun(c,function()
+   {
+    lv.c=null;
+   }),c):c;
+  };
+ };
+ View.Map2=function(fn,a,a$1)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.Map2(fn,a(),a$1());
+  });
+ };
+ View.Apply=function(fn,view)
+ {
+  return View.Map2(function(f,x)
+  {
+   return f(x);
+  },fn,view);
+ };
+ View.Map3=function(fn,a,a$1,a$2)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.Map3(fn,a(),a$1(),a$2());
+  });
+ };
+ View.MapAsync=function(fn,a)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.MapAsync(fn,a());
+  });
+ };
+ View.GetAsync=function(v)
+ {
+  return Concurrency.FromContinuations(function(ok)
+  {
+   return View.Get(ok,v);
+  });
+ };
+ View.Const=function(x)
+ {
+  var o;
+  o=Snap.New({
+   $:0,
+   $0:x
+  });
+  return function()
+  {
+   return o;
+  };
+ };
+ View.get_Do=function()
+ {
+  return ViewBuilder.B;
+ };
+ View.TryGet=function(a)
+ {
+  return Snap.TryGet(a());
+ };
+ View.Get=function(f,a)
+ {
+  var ok;
+  function obs()
+  {
+   Snap.WhenRun(a(),function(v)
+   {
+    if(!ok[0])
+     {
+      ok[0]=true;
+      f(v);
+     }
+   },function()
+   {
+    if(!ok[0])
+     obs();
+   });
+  }
+  ok=[false];
+  obs();
+ };
+ View.Bind=function(fn,view)
+ {
+  return View.Join(View.Map(fn,view));
+ };
+ View.MapSeqCachedViewBy=function(key,conv,view)
+ {
+  var state;
+  state=[new Dictionary.New$5()];
+  return View.Map(function(xs)
+  {
+   var prevState,newState,result;
+   prevState=state[0];
+   newState=new Dictionary.New$5();
+   result=Array$1.mapInPlace(function(x)
+   {
+    var k,node,n;
+    k=key(x);
+    node=prevState.ContainsKey(k)?(n=prevState.get_Item(k),(Var$1.Set(n.r,x),n)):View.ConvertSeqNode(function(v)
+    {
+     return conv(k,v);
+    },x);
+    newState.set_Item(k,node);
+    return node.e;
+   },Arrays.ofSeq(xs));
+   state[0]=newState;
+   return result;
+  },view);
+ };
+ View.Join=function(a)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.Join(a());
+  });
+ };
+ View.ConvertSeqNode=function(conv,value)
+ {
+  var _var,view;
+  _var=Var$1.Create$1(value);
+  view=_var.get_View();
+  return{
+   e:conv(view),
+   r:_var,
+   w:view
+  };
+ };
+ View.MapSeqCachedBy=function(key,conv,view)
+ {
+  var state;
+  state=[new Dictionary.New$5()];
+  return View.Map(function(xs)
+  {
+   var prevState,newState,result;
+   prevState=state[0];
+   newState=new Dictionary.New$5();
+   result=Array$1.mapInPlace(function(x)
+   {
+    var k,res;
+    k=key(x);
+    res=prevState.ContainsKey(k)?prevState.get_Item(k):conv(x);
+    newState.set_Item(k,res);
+    return res;
+   },Arrays.ofSeq(xs));
+   state[0]=newState;
+   return result;
+  },view);
+ };
+ View.Map2Unit=function(a,a$1)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.Map2Unit(a(),a$1());
+  });
+ };
+ View.Sequence=function(views)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.Sequence(Seq.map(function(a)
+   {
+    return a();
+   },views));
+  });
+ };
+ IdAliado=TypesV0.IdAliado=Runtime$1.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,IdAliado);
+ Aliado.New=function(id,idPadreO,datosPersonales,contactos,identificacion,isInternal,status,diaPago,tipo,fechaRegistro,fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,comision,nivel)
+ {
+  return{
+   id:id,
+   idPadreO:idPadreO,
+   datosPersonales:datosPersonales,
+   contactos:contactos,
+   identificacion:identificacion,
+   isInternal:isInternal,
+   status:status,
+   diaPago:diaPago,
+   tipo:tipo,
+   fechaRegistro:fechaRegistro,
+   fechaStatus:fechaStatus,
+   nReferidos:nReferidos,
+   nRefActivos:nRefActivos,
+   nDescendientes:nDescendientes,
+   nDescActivos:nDescActivos,
+   comision:comision,
+   nivel:nivel
+  };
+ };
+ ModeloUI.aliadoW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.aliadoW;
+ };
+ ModeloUI.contentVar=function()
+ {
+  SC$1.$cctor();
+  return SC$1.contentVar;
+ };
+ ModeloUI.invitacionesV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.invitacionesV;
+ };
+ ModeloUI.emailsInvitarW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.emailsInvitarW;
+ };
+ ModeloUI.invitacionesDisabledW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.invitacionesDisabledW;
+ };
+ ModeloUI.modeloV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.modeloV;
+ };
+ ModeloUI.selAliadoIdOV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.selAliadoIdOV;
+ };
+ ModeloUI.money=function(m)
+ {
+  return"$"+ModeloUI.separate(Global.String(m),T$1.Empty);
+ };
+ ModeloUI.selAliadoIdDoc=function(fDoc)
+ {
+  var b;
+  return Doc.BindView(Global.id,(b=View.get_Do(),View.Bind(function(a)
+  {
+   return View.Bind(function(a$1)
+   {
+    var aliadoO,aid;
+    aliadoO=a$1==null?null:(aid=a$1.$0,Seq.tryFind(function(al)
+    {
+     return Unchecked.Equals(al.id,aid);
+    },a.aliados));
+    return View.Const(aliadoO!=null&&aliadoO.$==1?fDoc(View.Const(aliadoO.$0)):Doc.get_Empty());
+   },ModeloUI.selAliadoIdOV().get_View());
+  },ModeloUI.modeloV().get_View())));
+ };
+ ModeloUI.aliadoIdDoc=function(fDoc)
+ {
+  var b;
+  return Doc.BindView(Global.id,(b=View.get_Do(),View.Bind(function(a)
+  {
+   var aid,aliadoO;
+   aid=a.idAliado;
+   aliadoO=Seq.tryFind(function(al)
+   {
+    return Unchecked.Equals(al.id,aid);
+   },a.aliados);
+   return View.Const(aliadoO!=null&&aliadoO.$==1?fDoc(View.Const(aliadoO.$0)):Doc.get_Empty());
+  },ModeloUI.modeloV().get_View())));
+ };
+ ModeloUI.endPointV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.endPointV;
+ };
+ ModeloUI.separate=function(s,parts)
+ {
+  var s$1;
+  while(true)
+   if(s==="")
+    return(function(s$2)
+    {
+     return function(s$3)
+     {
+      return Strings.concat(s$2,s$3);
+     };
+    }(","))(parts);
+   else
+    {
+     s$1=s;
+     s=Library["String.Left"](s$1,-3);
+     parts=new T$1({
+      $:1,
+      $0:Library["String.Right"](s$1,3),
+      $1:parts
+     });
+    }
+ };
+ Aliado$1.get_LoggedId=function()
+ {
+  var o,o$1;
+  o=(o$1=Msal.userO().Get(),o$1==null?null:{
+   $:1,
+   $0:o$1.$0.idToken.oid
+  });
+  return o==null?"":o.$0;
+ };
+ ModeloUI.formasPagoAliadoV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.formasPagoAliadoV;
+ };
  AppFramework.addPlugIn=function(p)
  {
   AppFramework.plugIns().Append(p);
@@ -859,15 +1234,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$2.$cctor();
   return SC$2.mainDocV;
  };
- AppFramework.getMainDoc=function()
- {
-  SC$2.$cctor();
-  return SC$2.getMainDoc;
- };
  AppFramework.plugIns=function()
  {
   SC$2.$cctor();
   return SC$2.plugIns;
+ };
+ AppFramework.newDocF=function(name,docF)
+ {
+  return PlugInDoc.New(name,docF);
  };
  AppFramework.tryGetDoc=function(plgName,docName)
  {
@@ -877,14 +1251,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return doc.docName===docName;
   },o.$0.plgDocs);
- };
- AppFramework.newDocF=function(name,docF)
- {
-  return PlugInDoc.New(name,docF);
- };
- AppFramework.tryGetPlugIn=function(plgName)
- {
-  return AppFramework.plugIns().TryFindByKey(plgName);
  };
  AppFramework.tryGetAct=function(plgName,actName)
  {
@@ -1035,31 +1401,31 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   function a$1(plg,doc)
   {
    var b,t,N,m,x,x$1,x$2,x$3,x$4,p,i;
-   return(b=(t=(N=doc.docName+(m=doc.docDoc,m.$==1?(x=Strings.concat(", ",List.ofArray([m.$1])),(function($1)
+   return(b=(t=(N=doc.docName+(m=doc.docDoc,m.$==1?(x=Strings.concat(", ",List$1.ofArray([m.$1])),(function($1)
    {
     return function($2)
     {
      return $1("("+Utils.toSafe($2)+")");
     };
-   }(Global.id))(x)):m.$==2?(x$1=Strings.concat(", ",List.ofArray([m.$1,m.$2])),(function($1)
+   }(Global.id))(x)):m.$==2?(x$1=Strings.concat(", ",List$1.ofArray([m.$1,m.$2])),(function($1)
    {
     return function($2)
     {
      return $1("("+Utils.toSafe($2)+")");
     };
-   }(Global.id))(x$1)):m.$==3?(x$2=Strings.concat(", ",List.ofArray([m.$1,m.$2,m.$3])),(function($1)
+   }(Global.id))(x$1)):m.$==3?(x$2=Strings.concat(", ",List$1.ofArray([m.$1,m.$2,m.$3])),(function($1)
    {
     return function($2)
     {
      return $1("("+Utils.toSafe($2)+")");
     };
-   }(Global.id))(x$2)):m.$==4?(x$3=Strings.concat(", ",List.ofArray([m.$1,m.$2,m.$3,m.$4])),(function($1)
+   }(Global.id))(x$2)):m.$==4?(x$3=Strings.concat(", ",List$1.ofArray([m.$1,m.$2,m.$3,m.$4])),(function($1)
    {
     return function($2)
     {
      return $1("("+Utils.toSafe($2)+")");
     };
-   }(Global.id))(x$3)):m.$==5?(x$4=Strings.concat(", ",List.ofArray([m.$1,m.$2,m.$3,m.$4,m.$5])),(function($1)
+   }(Global.id))(x$3)):m.$==5?(x$4=Strings.concat(", ",List$1.ofArray([m.$1,m.$2,m.$3,m.$4,m.$5])),(function($1)
    {
     return function($2)
     {
@@ -1103,13 +1469,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   function a$1(plg,act)
   {
    var parms,m,x,x$1;
-   parms=(m=act.actFunction,m.$==1?(x=Strings.concat(", ",List.ofArray([m.$1])),(function($1)
+   parms=(m=act.actFunction,m.$==1?(x=Strings.concat(", ",List$1.ofArray([m.$1])),(function($1)
    {
     return function($2)
     {
      return $1("("+Utils.toSafe($2)+")");
     };
-   }(Global.id))(x)):m.$==2?(x$1=Strings.concat(", ",List.ofArray([m.$1,m.$2])),(function($1)
+   }(Global.id))(x)):m.$==2?(x$1=Strings.concat(", ",List$1.ofArray([m.$1,m.$2])),(function($1)
    {
     return function($2)
     {
@@ -1298,6 +1664,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return g(f(x));
   };
  };
+ AppFramework.tryGetPlugIn=function(plgName)
+ {
+  return AppFramework.plugIns().TryFindByKey(plgName);
+ };
  AppFramework.newActF=function(name,fncF)
  {
   return PlugInAction.New(name,fncF,View.Const(true));
@@ -1385,117 +1755,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    plgActions:plgActions,
    plgQueries:plgQueries
   };
- };
- ModeloUI.contentVar=function()
- {
-  SC$1.$cctor();
-  return SC$1.contentVar;
- };
- ModeloUI.invitacionesV=function()
- {
-  SC$1.$cctor();
-  return SC$1.invitacionesV;
- };
- ModeloUI.emailsInvitarW=function()
- {
-  SC$1.$cctor();
-  return SC$1.emailsInvitarW;
- };
- ModeloUI.invitacionesDisabledW=function()
- {
-  SC$1.$cctor();
-  return SC$1.invitacionesDisabledW;
- };
- ModeloUI.aliadoW=function()
- {
-  SC$1.$cctor();
-  return SC$1.aliadoW;
- };
- ModeloUI.modeloV=function()
- {
-  SC$1.$cctor();
-  return SC$1.modeloV;
- };
- ModeloUI.selAliadoIdOV=function()
- {
-  SC$1.$cctor();
-  return SC$1.selAliadoIdOV;
- };
- ModeloUI.money=function(m)
- {
-  return"$"+ModeloUI.separate(Global.String(m),T.Empty);
- };
- ModeloUI.selAliadoIdDoc=function(fDoc)
- {
-  var b;
-  return Doc.BindView(Global.id,(b=View.get_Do(),View.Bind(function(a)
-  {
-   return View.Bind(function(a$1)
-   {
-    var aliadoO,aid;
-    aliadoO=a$1==null?null:(aid=a$1.$0,Seq.tryFind(function(al)
-    {
-     return Unchecked.Equals(al.id,aid);
-    },a.aliados));
-    return View.Const(aliadoO!=null&&aliadoO.$==1?fDoc(View.Const(aliadoO.$0)):Doc.get_Empty());
-   },ModeloUI.selAliadoIdOV().get_View());
-  },ModeloUI.modeloV().get_View())));
- };
- ModeloUI.aliadoIdDoc=function(fDoc)
- {
-  var b;
-  return Doc.BindView(Global.id,(b=View.get_Do(),View.Bind(function(a)
-  {
-   var aid,aliadoO;
-   aid=a.idAliado;
-   aliadoO=Seq.tryFind(function(al)
-   {
-    return Unchecked.Equals(al.id,aid);
-   },a.aliados);
-   return View.Const(aliadoO!=null&&aliadoO.$==1?fDoc(View.Const(aliadoO.$0)):Doc.get_Empty());
-  },ModeloUI.modeloV().get_View())));
- };
- ModeloUI.endPointV=function()
- {
-  SC$1.$cctor();
-  return SC$1.endPointV;
- };
- ModeloUI.separate=function(s,parts)
- {
-  var s$1;
-  while(true)
-   if(s==="")
-    return(function(s$2)
-    {
-     return function(s$3)
-     {
-      return Strings.concat(s$2,s$3);
-     };
-    }(","))(parts);
-   else
-    {
-     s$1=s;
-     s=Library["String.Left"](s$1,-3);
-     parts=new T({
-      $:1,
-      $0:Library["String.Right"](s$1,3),
-      $1:parts
-     });
-    }
- };
- Aliado.get_LoggedId=function()
- {
-  var o,o$1;
-  o=(o$1=Msal.userO().Get(),o$1==null?null:{
-   $:1,
-   $0:o$1.$0.idToken.oid
-  });
-  return o==null?"":o.$0;
- };
- ModeloUI.formasPagoAliadoV=function()
- {
-  SC$1.$cctor();
-  return SC$1.formasPagoAliadoV;
  };
  Lazy.Create=function(f)
  {
@@ -2002,7 +2261,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   correoOV=Var$1.Create$1(null);
   telefonoOV=Var$1.Create$1(null);
   direccionOV=Var$1.Create$1(null);
-  p=DatosPersonales.formaDoc(datosOV);
+  p=DatosPersonales$1.formaDoc(datosOV);
   p$1=CorreoElectronico$1.formaDoc(correoOV);
   p$2=Telefono.formaDoc(telefonoOV);
   p$3=Direccion.formaDoc(direccionOV);
@@ -2136,7 +2395,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return a.datosPersonales;
   },aliadoW));
-  p=DatosPersonales.formaDoc(datosOV);
+  p=DatosPersonales$1.formaDoc(datosOV);
   forma=(b=(t=ProviderBuilder.Make().WithHole({
    $:2,
    $0:"mensajes",
@@ -2457,14 +2716,79 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      return o==null?null:f(o.$0);
     },formasPagoV.get_View()),function(a)
     {
+     var nv;
      if(a!=null&&a.$==1)
-      formasPagoV.Set(Array.replace(i$1,(fr(Arrays.get(formasPagoV.Get(),i$1)))(a.$0[0]),formasPagoV.Get()));
+      {
+       nv=a.$0;
+       formasPagoV.Set(Array.replace(i$1,(fr(Arrays.get(formasPagoV.Get(),i$1)))(VariousUI.fst3(nv[0],nv[1],nv[2])),formasPagoV.Get()));
+      }
     });
    };
+  }
+  function validar(fp$1)
+  {
+   var b$1;
+   function g(a)
+   {
+    Global.alert(a);
+   }
+   AsyncResultM.iterA(function(x)
+   {
+    return g(ResultMessage.summarized(x));
+   },function(a)
+   {
+    Global.alert(a);
+   },(b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+   {
+    return b$1.Bind$1(ResultM.ofResult(Result.MapError(function(a)
+    {
+     return new ResultMessage({
+      $:1,
+      $0:a
+     });
+    },fp$1.authorizeIdR)),function(a)
+    {
+     return b$1.Bind$4(Rpc.validarFormaPago(a),function(a$1)
+     {
+      return b$1.Return(a$1);
+     });
+    });
+   }))));
+  }
+  function otherButtons(i$1,doc)
+  {
+   return VariousUI.removeButton(function()
+   {
+    formasPagoV.Set(Array.remove(i$1,formasPagoV.Get()));
+   },Doc.Concat(List$1.ofSeq(Seq.delay(function()
+   {
+    return Seq.append([doc],Seq.delay(function()
+    {
+     return[Doc.Button("validar",[AttrProxy.Create("title","validar forma de pago"),AttrModule.Dynamic("style",View.Map(function($1)
+     {
+      return Arrays.get($1,i$1).authorizeIdR.$==0?"":"display:None";
+     },formasPagoV.get_View()))],function()
+     {
+      validar(Arrays.get(formasPagoV.Get(),i$1));
+     })];
+    }));
+   }))));
   }
   function fp(cp)
   {
    return FormaPago.New("",Library.Error(""),cp);
+  }
+  function fpIds(fps)
+  {
+   return new FSharpSet.New(Seq.choose(function(fp$1)
+   {
+    var m;
+    m=fp$1.authorizeIdR;
+    return m.$==0?{
+     $:1,
+     $0:m.$0
+    }:null;
+   },fps));
   }
   mensajes=Var$1.Create$1("");
   mostrar=Var$1.Create$1(false);
@@ -2505,20 +2829,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   },formasPagoIW);
   tarDocs=Doc.ConvertBy(Global.id,function(i$1)
   {
-   return VariousUI.removeButton(function()
-   {
-    formasPagoV.Set(Array.remove(i$1,formasPagoV.Get()));
-   },(TarjetaCredito$1.formaDocO((function($1)
+   return otherButtons(i$1,(TarjetaCredito$1.formaDocO((function($1)
    {
     return makeVar($1[0],$1[1]);
    }(FormaFormasPago.ftar()))(i$1)))[1]);
   },tars);
   ctaDocs=Doc.ConvertBy(Global.id,function(i$1)
   {
-   return VariousUI.removeButton(function()
-   {
-    formasPagoV.Set(Array.remove(i$1,formasPagoV.Get()));
-   },(CuentaBancaria$1.formaDocO((function($1)
+   return otherButtons(i$1,(CuentaBancaria$1.formaDocO((function($1)
    {
     return makeVar($1[0],$1[1]);
    }(FormaFormasPago.fcta()))(i$1)))[1]);
@@ -2580,25 +2898,45 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     return g(ResultMessage.summarized(x));
    },Global.ignore,(b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
    {
-    return b$1.Combine$1(b$1.For(formasPagoV.Get(),function(a)
+    return b$1.Combine$1(b$1.For(FSharpSet.op_Subtraction(fpIds(ModeloUI.formasPagoAliadoV().Get()),fpIds(formasPagoV.Get())),function(a)
     {
-     var callO,m$2,$1,$2;
-     callO=(m$2=a.cuentaPago,m$2.$==1&&(!(m$2.$0.numero.get_Id().indexOf("X")!=-1)&&($1=m$2.$0,true))?{
-      $:1,
-      $0:Rpc.registrarTarjeta($1)
-     }:m$2.$==0&&(!(m$2.$0.numero.get_Id().indexOf("X")!=-1)&&($2=m$2.$0,true))?{
-      $:1,
-      $0:Rpc.registrarCuenta($2)
-     }:null);
-     return callO!=null&&callO.$==1?b$1.Bind$4(callO.$0,function(a$1)
+     return b$1.Bind$4(Rpc.borrarFormaPago(a),function(a$1)
      {
-      Global.alert(Global.String(a$1));
-      return b$1.Zero();
-     }):b$1.Zero();
+      return b$1.Bind$2(new ResultMessage({
+       $:3,
+       $0:a$1
+      }),function()
+      {
+       return b$1.Return();
+      });
+     });
     }),b$1.Delay(function()
     {
-     FormaFormasPago.refrescarFormasPago();
-     return b$1.Zero();
+     return b$1.Combine$1(b$1.For(formasPagoV.Get(),function(a)
+     {
+      var callO,m$2,$1,$2;
+      callO=(m$2=a.cuentaPago,m$2.$==1&&(!(m$2.$0.numero.get_Id().indexOf("X")!=-1)&&($1=m$2.$0,true))?{
+       $:1,
+       $0:Rpc.registrarTarjeta($1)
+      }:m$2.$==0&&(!(m$2.$0.numero.get_Id().indexOf("X")!=-1)&&($2=m$2.$0,true))?{
+       $:1,
+       $0:Rpc.registrarCuenta($2)
+      }:null);
+      return callO!=null&&callO.$==1?b$1.Bind$4(callO.$0,function(a$1)
+      {
+       return b$1.Bind$2(new ResultMessage({
+        $:3,
+        $0:a$1
+       }),function()
+       {
+        return b$1.Return();
+       });
+      }):b$1.Zero();
+     }),b$1.Delay(function()
+     {
+      FormaFormasPago.refrescarFormasPago();
+      return b$1.Zero();
+     }));
     }));
    })))):Global.alert("Error not caught FormaDatos"));
   }))),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],testing_Templates.formacuentas(p[0])),(b.i=i,i)))).get_Doc();
@@ -2631,6 +2969,698 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   SC$1.$cctor();
   return SC$1.ftar;
+ };
+ ReporteConsolidado.consolidado=function()
+ {
+  var aliadosV,ordenV,filtroV,referidores,b,T$2,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,t$9,t$10,S,t$11,t$12,p,i;
+  function referidos(al)
+  {
+   return al.nReferidos===0?"-":(((Runtime$1.Curried3(function($1,$2,$3)
+   {
+    return $1(Global.String($2)+"/"+Global.String($3));
+   }))(Global.id))(al.nRefActivos))(al.nReferidos);
+  }
+  function descendientes(al)
+  {
+   return al.nDescendientes===0?"-":(((Runtime$1.Curried3(function($1,$2,$3)
+   {
+    return $1(Global.String($2)+"/"+Global.String($3));
+   }))(Global.id))(al.nDescActivos))(al.nDescendientes);
+  }
+  function comision(v)
+  {
+   return v===0?"-":ModeloUI.money(v);
+  }
+  function nombreReferidor(idO)
+  {
+   var o,o$1,id;
+   o=(o$1=idO==null?null:(id=idO.$0,Seq.tryFind(function(al)
+   {
+    return Unchecked.Equals(al.id,id);
+   },ModeloUI.modeloV().Get().aliados)),o$1==null?null:{
+    $:1,
+    $0:Aliado$2.nombre(o$1.$0.datosPersonales)
+   });
+   return o==null?"-":o.$0;
+  }
+  function aliado2Fila(al)
+  {
+   return Fila.New(Aliado$2.nombre(al.datosPersonales),(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p($2));
+    };
+   }(Global.id))(al.status),(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$1($2));
+    };
+   }(Global.id))(al.tipo),nombreReferidor(al.idPadreO),(function($1)
+   {
+    return function($2)
+    {
+     return $1(Strings.PadRight(Global.String($2),9));
+    };
+   }(Global.id))(al.nivel),(function($1)
+   {
+    return function($2)
+    {
+     return $1(Strings.PadRight(Utils.toSafe($2),9));
+    };
+   }(Global.id))(referidos(al)),(function($1)
+   {
+    return function($2)
+    {
+     return $1(Strings.PadRight(Utils.toSafe($2),9));
+    };
+   }(Global.id))(descendientes(al)),(function($1)
+   {
+    return function($2)
+    {
+     return $1(Strings.PadRight(Utils.toSafe($2),9));
+    };
+   }(Global.id))(comision(al.comision)),Library["String.Right"]((function($1)
+   {
+    return function($2)
+    {
+     return $1(testing_GeneratedPrintf.p$4($2));
+    };
+   }(Global.id))(al.diaPago),2),Date.toYYYYMMDD("-",al.fechaRegistro),(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.toSafe($2));
+    };
+   }(Global.id))(al.id.get_Id()));
+  }
+  function campos(orden)
+  {
+   return[orden.nombre,orden.status,orden.tipo,orden.referido,orden.nivel,orden.referidos,orden.descendientes,orden.comision,orden.diaPago,orden.desde,orden.Id];
+  }
+  function newOrden(n,v,f)
+  {
+   return function(t$13)
+   {
+    var no;
+    no=t$13[0];
+    return[n===no?1:no<n?no+1:no,n===1?!v:v,t$13[2]];
+   };
+  }
+  function toggle(v)
+  {
+   ordenV.Set(Fila.New((function($1)
+   {
+    return newOrden($1[0],$1[1],$1[2]);
+   }(v))(ordenV.Get().nombre),(function($1)
+   {
+    return newOrden($1[0],$1[1],$1[2]);
+   }(v))(ordenV.Get().status),(function($1)
+   {
+    return newOrden($1[0],$1[1],$1[2]);
+   }(v))(ordenV.Get().tipo),(function($1)
+   {
+    return newOrden($1[0],$1[1],$1[2]);
+   }(v))(ordenV.Get().referido),(function($1)
+   {
+    return newOrden($1[0],$1[1],$1[2]);
+   }(v))(ordenV.Get().nivel),(function($1)
+   {
+    return newOrden($1[0],$1[1],$1[2]);
+   }(v))(ordenV.Get().referidos),(function($1)
+   {
+    return newOrden($1[0],$1[1],$1[2]);
+   }(v))(ordenV.Get().descendientes),(function($1)
+   {
+    return newOrden($1[0],$1[1],$1[2]);
+   }(v))(ordenV.Get().comision),(function($1)
+   {
+    return newOrden($1[0],$1[1],$1[2]);
+   }(v))(ordenV.Get().diaPago),(function($1)
+   {
+    return newOrden($1[0],$1[1],$1[2]);
+   }(v))(ordenV.Get().desde),(function($1)
+   {
+    return newOrden($1[0],$1[1],$1[2]);
+   }(v))(ordenV.Get().Id)));
+  }
+  function setAliado(id,f)
+  {
+   return aliadosV.Set(Arrays.map(function(al)
+   {
+    return Unchecked.Equals(al.id,id)?f(al):al;
+   },aliadosV.Get()));
+  }
+  function setStatus(id,v)
+  {
+   return setAliado(id,function(al)
+   {
+    return Aliado.New(al.id,al.idPadreO,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,StatusAliado.tryParse(v),al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel);
+   });
+  }
+  function setPadre(id,v)
+  {
+   var padre;
+   padre=v===""?null:{
+    $:1,
+    $0:new IdAliado({
+     $:0,
+     $0:v
+    })
+   };
+   return setAliado(id,function(al)
+   {
+    return Aliado.New(al.id,padre,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,al.status,al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel);
+   });
+  }
+  function obtenerAliado(alid)
+  {
+   return Seq.tryFind(function(al)
+   {
+    return Unchecked.Equals(al.id,alid);
+   },ModeloUI.modeloV().Get().aliados);
+  }
+  function salvar()
+  {
+   var b$1;
+   function g(a$1)
+   {
+    Global.alert(a$1);
+   }
+   AsyncResultM.iterA(function(x)
+   {
+    return g(ResultMessage.summarized(x));
+   },Global.ignore,(b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+   {
+    return b$1.Combine$1(b$1.For(aliadosV.Get(),function(a$1)
+    {
+     var m,al2;
+     m=obtenerAliado(a$1.id);
+     return m!=null&&m.$==1?(al2=m.$0,!Unchecked.Equals(a$1.status,al2.status)||!Unchecked.Equals(a$1.idPadreO,al2.idPadreO)?b$1.Bind$4(Rpc.ejecutarDataEventoNuevo({
+      $:8,
+      $0:[a$1.id,a$1.status,a$1.idPadreO]
+     }),function(a$2)
+     {
+      return b$1.Bind$2(new ResultMessage({
+       $:3,
+       $0:(function($1)
+       {
+        return function($2)
+        {
+         return $1(testing_GeneratedPrintf.p$2($2));
+        };
+       }(Global.id))(a$2)
+      }),function()
+      {
+       return b$1.Return();
+      });
+     }):b$1.Zero()):b$1.Zero();
+    }),b$1.Delay(function()
+    {
+     Refresh.refrescarData(true);
+     return b$1.Zero();
+    }));
+   }))));
+  }
+  function a(alid,fW)
+  {
+   var b$1,r,$1,s,$2,p$1,i$1;
+   return(b$1=(r=new FromView.New(View.Map(function($3)
+   {
+    return $3.referido;
+   },fW),($1=new IdAliado({
+    $:0,
+    $0:alid
+   }),function($3)
+   {
+    return setPadre($1,$3);
+   })),(s=new FromView.New(View.Map(function($3)
+   {
+    return $3.status;
+   },fW),($2=new IdAliado({
+    $:0,
+    $0:alid
+   }),function($3)
+   {
+    return setStatus($2,$3);
+   })),ProviderBuilder.Make().WithHole({
+    $:2,
+    $0:"nombre",
+    $1:View.Map(function($3)
+    {
+     return $3.nombre;
+    },fW)
+   }).WithHole({
+    $:2,
+    $0:"tipo",
+    $1:View.Map(function($3)
+    {
+     return $3.tipo;
+    },fW)
+   }).WithHole({
+    $:8,
+    $0:"status",
+    $1:s
+   })).WithHole({
+    $:8,
+    $0:"referido",
+    $1:r
+   })).WithHole({
+    $:2,
+    $0:"nivel",
+    $1:View.Map(function($3)
+    {
+     return $3.nivel;
+    },fW)
+   }).WithHole({
+    $:2,
+    $0:"referidos",
+    $1:View.Map(function($3)
+    {
+     return $3.referidos;
+    },fW)
+   }).WithHole({
+    $:2,
+    $0:"descendientes",
+    $1:View.Map(function($3)
+    {
+     return $3.descendientes;
+    },fW)
+   }).WithHole({
+    $:2,
+    $0:"comision",
+    $1:View.Map(function($3)
+    {
+     return $3.comision;
+    },fW)
+   }).WithHole({
+    $:2,
+    $0:"diapago",
+    $1:View.Map(function($3)
+    {
+     return $3.diaPago;
+    },fW)
+   }).WithHole({
+    $:2,
+    $0:"desde",
+    $1:View.Map(function($3)
+    {
+     return $3.desde;
+    },fW)
+   }).WithHole({
+    $:2,
+    $0:"id",
+    $1:View.Map(function($3)
+    {
+     return $3.Id;
+    },fW)
+   }),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[["status",0],["referido",0]]),(i$1=new TemplateInstance.New(p$1[1],testing_Templates.filaconsolidado(p$1[0])),(b$1.i=i$1,i$1)))).get_Doc();
+  }
+  aliadosV=Var$1.Create$1([]);
+  View.Sink(function(a$1)
+  {
+   aliadosV.Set(a$1);
+  },View.Map(function($1)
+  {
+   return $1.aliados;
+  },ModeloUI.modeloV().get_View()));
+  ordenV=Var$1.Create$1(Fila.New([2,true,function(d)
+  {
+   return d.nombre.toUpperCase();
+  }],[3,true,function(d)
+  {
+   return d.status.toUpperCase();
+  }],[4,true,function(d)
+  {
+   return d.tipo.toUpperCase();
+  }],[5,true,function(d)
+  {
+   return d.referido.toUpperCase();
+  }],[6,true,function(d)
+  {
+   return d.nivel.toUpperCase();
+  }],[7,true,function(d)
+  {
+   return d.referidos.toUpperCase();
+  }],[8,false,function(d)
+  {
+   return d.descendientes.toUpperCase();
+  }],[1,true,function(d)
+  {
+   return d.comision.toUpperCase();
+  }],[9,true,function(d)
+  {
+   return d.diaPago.toUpperCase();
+  }],[10,true,function(d)
+  {
+   return d.desde.toUpperCase();
+  }],[11,true,function(d)
+  {
+   return d.Id.toUpperCase();
+  }]));
+  filtroV=Var$1.Create$1("");
+  referidores=Doc.BindView(function(m)
+  {
+   return VariousUI.crearOptions2(Seq.map(function(al)
+   {
+    return[Aliado$2.nombre2(al.datosPersonales),al.id.get_Id()];
+   },m.aliados));
+  },ModeloUI.modeloV().get_View());
+  return(b=(T$2=Doc.ConvertSeqBy(function(al)
+  {
+   return al.Id;
+  },function($1)
+  {
+   return function($2)
+   {
+    return a($1,$2);
+   };
+  },View.Map3(function(als,orden,filtro)
+  {
+   var vt,filtros,comparar;
+   function m(a$1,a$2,f)
+   {
+    return f;
+   }
+   function r(c,c$1,a$1,b$1)
+   {
+    return SortWith.op_AmpGreater(function($1,$2)
+    {
+     return(c($1))($2);
+    },function($1,$2)
+    {
+     return(c$1($1))($2);
+    },a$1,b$1);
+   }
+   function m$1(n,a$1,f)
+   {
+    return(a$1?Runtime$1.Curried3(SortWith.asc):Runtime$1.Curried3(SortWith.desc))(f);
+   }
+   vt=Strings.Trim(filtro).toUpperCase();
+   filtros=Arrays.map(function($1)
+   {
+    return m($1[0],$1[1],$1[2]);
+   },campos(orden));
+   comparar=Arrays.reduce(function($1,$2)
+   {
+    return Runtime$1.Curried(r,2,[$1,$2]);
+   },Arrays.map(function($1)
+   {
+    return m$1($1[0],$1[1],$1[2]);
+   },Arrays.sortBy(function($1)
+   {
+    return Global.id($1[0],$1[1],$1[2]);
+   },campos(orden))));
+   return Seq.sortWith(function($1,$2)
+   {
+    return(comparar($1))($2);
+   },Seq.filter(function(fila)
+   {
+    return vt===""||Seq.exists(function(f)
+    {
+     return f(fila).indexOf(vt)!=-1;
+    },filtros);
+   },Seq.map(aliado2Fila,als)));
+  },View.Map(function($1)
+  {
+   return $1.aliados;
+  },ModeloUI.modeloV().get_View()),ordenV.get_View(),filtroV.get_View())),(t=(t$1=(t$2=(t$3=(t$4=(t$5=(t$6=(t$7=(t$8=(t$9=(t$10=(S=Doc.BindView(VariousUI.crearOptions,VariousUI.statuses().get_View()),(t$11=(t$12=ProviderBuilder.Make(),t$12.WithHole(Handler.EventQ2(t$12.k,"salvar",function()
+  {
+   return t$12.i;
+  },function()
+  {
+   salvar();
+  }))),t$11.WithHole(Handler.EventQ2(t$11.k,"cancelar",function()
+  {
+   return t$11.i;
+  },function()
+  {
+   aliadosV.Set(ModeloUI.modeloV().Get().aliados);
+  }))).WithHole({
+   $:2,
+   $0:"changed",
+   $1:View.Map2(function($1,$2)
+   {
+    return Unchecked.Equals($1.aliados,$2)?"":"mui-btn--primary";
+   },ModeloUI.modeloV().get_View(),aliadosV.get_View())
+  }).WithHole({
+   $:8,
+   $0:"filtro",
+   $1:filtroV
+  }).WithHole({
+   $:0,
+   $0:"statuses",
+   $1:S
+  })).WithHole({
+   $:0,
+   $0:"referidores",
+   $1:referidores
+  }),t$10.WithHole(Handler.EventQ2(t$10.k,"sort_nombre",function()
+  {
+   return t$10.i;
+  },function()
+  {
+   toggle(ordenV.Get().nombre);
+  }))),t$9.WithHole(Handler.EventQ2(t$9.k,"sort_status",function()
+  {
+   return t$9.i;
+  },function()
+  {
+   toggle(ordenV.Get().status);
+  }))),t$8.WithHole(Handler.EventQ2(t$8.k,"sort_tipo",function()
+  {
+   return t$8.i;
+  },function()
+  {
+   toggle(ordenV.Get().tipo);
+  }))),t$7.WithHole(Handler.EventQ2(t$7.k,"sort_referido",function()
+  {
+   return t$7.i;
+  },function()
+  {
+   toggle(ordenV.Get().referido);
+  }))),t$6.WithHole(Handler.EventQ2(t$6.k,"sort_nivel",function()
+  {
+   return t$6.i;
+  },function()
+  {
+   toggle(ordenV.Get().nivel);
+  }))),t$5.WithHole(Handler.EventQ2(t$5.k,"sort_referidos",function()
+  {
+   return t$5.i;
+  },function()
+  {
+   toggle(ordenV.Get().referidos);
+  }))),t$4.WithHole(Handler.EventQ2(t$4.k,"sort_descendientes",function()
+  {
+   return t$4.i;
+  },function()
+  {
+   toggle(ordenV.Get().descendientes);
+  }))),t$3.WithHole(Handler.EventQ2(t$3.k,"sort_comision",function()
+  {
+   return t$3.i;
+  },function()
+  {
+   toggle(ordenV.Get().comision);
+  }))),t$2.WithHole(Handler.EventQ2(t$2.k,"sort_diapago",function()
+  {
+   return t$2.i;
+  },function()
+  {
+   toggle(ordenV.Get().diaPago);
+  }))),t$1.WithHole(Handler.EventQ2(t$1.k,"sort_desde",function()
+  {
+   return t$1.i;
+  },function()
+  {
+   toggle(ordenV.Get().desde);
+  }))),t.WithHole(Handler.EventQ2(t.k,"sort_id",function()
+  {
+   return t.i;
+  },function()
+  {
+   toggle(ordenV.Get().Id);
+  }))).WithHole({
+   $:0,
+   $0:"tbody",
+   $1:T$2
+  })),(p=Handler.CompleteHoles(b.k,b.h,[["filtro",0]]),(i=new TemplateInstance.New(p[1],testing_Templates.consolidado(p[0])),(b.i=i,i)))).get_Doc();
+ };
+ TablaPagos.comisiones=function()
+ {
+  var pagosW,b,T$2,t,p,i;
+  function def(d,v)
+  {
+   return v===""?d:v;
+  }
+  function saveAs()
+  {
+   var b$1;
+   Concurrency.Start((b$1=null,Concurrency.Delay(function()
+   {
+    return Concurrency.Bind(View.GetAsync(pagosW),function(a$2)
+    {
+     Global.saveAs(new Global.Blob([Strings.concat("\r\n",Seq.map(function(alfpW)
+     {
+      var alW,ctaW;
+      alW=alfpW[0];
+      ctaW=alfpW[1];
+      return(((((((Runtime$1.Curried(function($1,$2,$3,$4,$5,$6,$7)
+      {
+       return $1(Utils.toSafe($2)+","+Utils.toSafe($3)+","+Utils.toSafe($4)+","+Utils.toSafe($5)+","+Utils.prettyPrint($6)+","+Utils.prettyPrint($7));
+      },7))(Global.id))("22"))(def("----------",ctaW.numero.get_Id())))(def("----------",ctaW.routing.get_Id())))((function($1)
+      {
+       return function($2)
+       {
+        return $1(Global.String($2)+".00");
+       };
+      }(Global.id))(alW.comision)))("----------"))(ctaW.titular===""?Aliado$2.nombre2(alW.datosPersonales):ctaW.titular);
+     },a$2))],{
+      type:"text/plain;charset=utf-8"
+     }),"pagos.csv");
+     return Concurrency.Zero();
+    });
+   })),null);
+  }
+  function a(al,a$2)
+  {
+   return al.id;
+  }
+  function a$1(alid,alfpW)
+  {
+   var alW,ctaW,b$1,p$1,i$1;
+   alW=View.Map(function($1)
+   {
+    return $1[0];
+   },alfpW);
+   ctaW=View.Map(function($1)
+   {
+    return $1[1];
+   },alfpW);
+   return(b$1=ProviderBuilder.Make().WithHole({
+    $:1,
+    $0:"codigo",
+    $1:"22"
+   }).WithHole({
+    $:2,
+    $0:"cuenta",
+    $1:View.Map(function($1)
+    {
+     return def("----------",$1.numero.get_Id());
+    },ctaW)
+   }).WithHole({
+    $:2,
+    $0:"aba",
+    $1:View.Map(function($1)
+    {
+     return def("----------",$1.routing.get_Id());
+    },ctaW)
+   }).WithHole({
+    $:2,
+    $0:"monto",
+    $1:View.Map(function($1)
+    {
+     return(function($2)
+     {
+      return function($3)
+      {
+       return $2(Global.String($3)+".00");
+      };
+     }(Global.id))($1.comision);
+    },alW)
+   }).WithHole({
+    $:1,
+    $0:"identificacion",
+    $1:"---------"
+   }).WithHole({
+    $:2,
+    $0:"nombre",
+    $1:View.Map2(function($1,$2)
+    {
+     return def(Aliado$2.nombre2($1.datosPersonales),$2.titular);
+    },alW,ctaW)
+   }),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i$1=new TemplateInstance.New(p$1[1],testing_Templates.filapago(p$1[0])),(b$1.i=i$1,i$1)))).get_Doc();
+  }
+  pagosW=View.MapAsync(function(als)
+  {
+   var b$1,f,d;
+   function g(v)
+   {
+    return Concurrency.Return(v);
+   }
+   return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+   {
+    var alsf;
+    alsf=Seq.filter(function(al)
+    {
+     return al.comision>0;
+    },als);
+    return b$1.Bind$4(Rpc.obtenerFormasDePagoPara(Arrays.ofSeq(Seq.map(function(al)
+    {
+     return al.id;
+    },alsf))),function(a$2)
+    {
+     function c(al,a$3)
+     {
+      return Unchecked.Equals(al.id,a$3[0])?{
+       $:1,
+       $0:[al,a$3[1]]
+      }:null;
+     }
+     function m(id,fps)
+     {
+      var o,v;
+      return[id,(o=Seq.tryPick(function(fp)
+      {
+       var m$1;
+       m$1=fp.cuentaPago;
+       return m$1.$==0?{
+        $:1,
+        $0:m$1.$0
+       }:null;
+      },fps),(v=TypesV0.ctaVacio(),o==null?v:o.$0))];
+     }
+     return b$1.Return(Seq.choose(function($1)
+     {
+      return c($1[0],$1[1]);
+     },Seq.zip(alsf,Seq.map(function($1)
+     {
+      return m($1[0],$1[1]);
+     },a$2))));
+    });
+   }))),(f=(d=[],function(r)
+   {
+    return ResultM.defaultValue(d,r);
+   }),function(x)
+   {
+    return g(f(x));
+   }));
+  },View.Map(function($1)
+  {
+   return $1.aliados;
+  },ModeloUI.modeloV().get_View()));
+  return(b=(T$2=Doc.ConvertSeqBy(function($1)
+  {
+   return a($1[0],$1[1]);
+  },function($1)
+  {
+   return function($2)
+   {
+    return a$1($1,$2);
+   };
+  },pagosW),(t=ProviderBuilder.Make(),t.WithHole(Handler.EventQ2(t.k,"exportar",function()
+  {
+   return t.i;
+  },function()
+  {
+   saveAs();
+  }))).WithHole({
+   $:0,
+   $0:"tbody",
+   $1:T$2
+  })),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],testing_Templates.tablapagos(p[0])),(b.i=i,i)))).get_Doc();
  };
  Operators.FailWith=function(msg)
  {
@@ -2917,27 +3947,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    AppFramework.mainDocV().Set(AppFramework.mainDocV().Get());
   },lyt.lytDefinition.get_View());
  };
- LayoutEngineModule.splitName=function()
- {
-  SC$2.$cctor();
-  return SC$2.splitName;
- };
- LayoutEngineModule.getDocFinal=function(parms,doc)
- {
-  var m;
-  m=LayoutEngineModule.getDocF(parms,doc);
-  return m[1].$==0?m[0]:LayoutEngineModule.errDoc((((Runtime$1.Curried3(function($1,$2,$3)
-  {
-   return $1("Too many parameters "+GeneratedPrintf.p($2)+" "+Utils.printList(function($4)
-   {
-    return"("+Utils.prettyPrint($4[0])+", "+Utils.prettyPrint($4[1])+")";
-   },$3));
-  }))(Global.id))(doc))(parms));
- };
- LayoutEngineModule.errDoc=function(txt)
- {
-  return Doc.Element("div",[],[Doc.TextNode(txt)]);
- };
  LayoutEngineModule.createEntries=function(lytNm,txt)
  {
   return LayoutEngineModule.processLines(function(l)
@@ -3002,7 +4011,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     {
      return AppFramework.callFunction(el,null,act.actFunction);
     };
-   })],[])])]),doc!==""?LayoutEngineModule.singleDoc(lytNm,List.ofArray([[doc,false]])):Doc.get_Empty()])]))
+   })],[])])]),doc!==""?LayoutEngineModule.singleDoc(lytNm,List$1.ofArray([[doc,false]])):Doc.get_Empty()])]))
   });
   return o==null?LayoutEngineModule.errDoc((function($1)
   {
@@ -3031,33 +4040,30 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return Doc.Element("span",[],[]);
  };
- LayoutEngineModule.getDocF=function(parms,doc)
+ LayoutEngineModule.turnToView=function(f)
  {
-  var $1,$2;
-  $2=doc.docDoc;
-  switch($2.$==1?parms.$==1?($1=[$2.$0,parms.$0[0],parms.$1],1):6:$2.$==2?parms.$==1?parms.$1.$==1?($1=[$2.$0,parms.$0[0],parms.$1.$0[0],parms.$1.$1],2):6:6:$2.$==3?parms.$==1?parms.$1.$==1?parms.$1.$1.$==1?($1=[$2.$0,parms.$0[0],parms.$1.$0[0],parms.$1.$1.$0[0],parms.$1.$1.$1],3):6:6:6:$2.$==4?parms.$==1?parms.$1.$==1?parms.$1.$1.$==1?parms.$1.$1.$1.$==1?($1=[$2.$0,parms.$0[0],parms.$1.$0[0],parms.$1.$1.$0[0],parms.$1.$1.$1.$0[0],parms.$1.$1.$1.$1],4):6:6:6:6:$2.$==5?parms.$==1?parms.$1.$==1?parms.$1.$1.$==1?parms.$1.$1.$1.$==1?parms.$1.$1.$1.$1.$==1?($1=[$2.$0,parms.$0[0],parms.$1.$0[0],parms.$1.$1.$0[0],parms.$1.$1.$1.$0[0],parms.$1.$1.$1.$1.$0[0],parms.$1.$1.$1.$1.$1],5):6:6:6:6:6:($1=[$2.$0,parms],0))
+  return Doc.EmbedView(View.Map(f,AppFramework.mainDocV().get_View()));
+ };
+ LayoutEngineModule.splitName=function()
+ {
+  SC$2.$cctor();
+  return SC$2.splitName;
+ };
+ LayoutEngineModule.getDocFinal=function(parms,doc)
+ {
+  var m;
+  m=LayoutEngineModule.getDocF(parms,doc);
+  return m[1].$==0?m[0]:LayoutEngineModule.errDoc((((Runtime$1.Curried3(function($1,$2,$3)
   {
-   case 0:
-    return[$1[0].f(),$1[1]];
-   case 1:
-    return[$1[0]($1[1]),$1[2]];
-   case 2:
-    return[($1[0]($1[1]))($1[2]),$1[3]];
-   case 3:
-    return[(($1[0]($1[1]))($1[2]))($1[3]),$1[4]];
-   case 4:
-    return[((($1[0]($1[1]))($1[2]))($1[3]))($1[4]),$1[5]];
-   case 5:
-    return[(((($1[0]($1[1]))($1[2]))($1[3]))($1[4]))($1[5]),$1[6]];
-   case 6:
-    return[Doc.Element("div",[],[Doc.TextNode((((Runtime$1.Curried3(function($3,$4,$5)
-    {
-     return $3("Parameters do not coincide with definition "+GeneratedPrintf.p($4)+" - "+Utils.printList(function($6)
-     {
-      return"("+Utils.prettyPrint($6[0])+", "+Utils.prettyPrint($6[1])+")";
-     },$5));
-    }))(Global.id))(doc))(parms))]),T.Empty];
-  }
+   return $1("Too many parameters "+GeneratedPrintf.p($2)+" "+Utils.printList(function($4)
+   {
+    return"("+Utils.prettyPrint($4[0])+", "+Utils.prettyPrint($4[1])+")";
+   },$3));
+  }))(Global.id))(doc))(parms));
+ };
+ LayoutEngineModule.errDoc=function(txt)
+ {
+  return Doc.Element("div",[],[Doc.TextNode(txt)]);
  };
  LayoutEngineModule.processLines=function(f,ls)
  {
@@ -3130,7 +4136,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   var attrs;
   attrs=[a,a$1];
-  return List.ofSeq(Seq.delay(function()
+  return List$1.ofSeq(Seq.delay(function()
   {
    return Seq.append(Seq.choose(function(a$2)
    {
@@ -3312,7 +4318,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      $0:{
       $:0,
       $0:nm,
-      $1:(LayoutEngineModule.getDocF(T.Empty,o$3.$0))[0]
+      $1:(LayoutEngineModule.getDocF(T$1.Empty,o$3.$0))[0]
      }
     }),o$2==null?(o$4=(t$1=((LayoutEngineModule.splitName())(lytNm))(id),AppFramework.tryGetVar(t$1[0],t$1[1])),o$4==null?null:{
      $:1,
@@ -3410,9 +4416,37 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var x,x$1;
   LayoutEngineModule.addLayout((x=(x$1=!Unchecked.Equals(layout,null)?layout:"\r\n            split horizontal 0-50-100 AppFramework.AppFwkClient Hello\r\n            Hello h1 \"color:blue; class=btn-primary\" \"How are you today?\" Ask\r\n            Ask Doc InputLabel \"placeholder=Type you answer here...\" \"Answer:\" AppFramework.mainDocV  \r\n            ",(String.unindentStr())(x$1)),LayoutEngineModule.newLyt(!Unchecked.Equals(layout,null)?name:"Lyt_"+Strings.Replace(Global.String(Guid.NewGuid()),"-",""),x)));
  };
+ LayoutEngineModule.getDocF=function(parms,doc)
+ {
+  var $1,$2;
+  $2=doc.docDoc;
+  switch($2.$==1?parms.$==1?($1=[$2.$0,parms.$0[0],parms.$1],1):6:$2.$==2?parms.$==1?parms.$1.$==1?($1=[$2.$0,parms.$0[0],parms.$1.$0[0],parms.$1.$1],2):6:6:$2.$==3?parms.$==1?parms.$1.$==1?parms.$1.$1.$==1?($1=[$2.$0,parms.$0[0],parms.$1.$0[0],parms.$1.$1.$0[0],parms.$1.$1.$1],3):6:6:6:$2.$==4?parms.$==1?parms.$1.$==1?parms.$1.$1.$==1?parms.$1.$1.$1.$==1?($1=[$2.$0,parms.$0[0],parms.$1.$0[0],parms.$1.$1.$0[0],parms.$1.$1.$1.$0[0],parms.$1.$1.$1.$1],4):6:6:6:6:$2.$==5?parms.$==1?parms.$1.$==1?parms.$1.$1.$==1?parms.$1.$1.$1.$==1?parms.$1.$1.$1.$1.$==1?($1=[$2.$0,parms.$0[0],parms.$1.$0[0],parms.$1.$1.$0[0],parms.$1.$1.$1.$0[0],parms.$1.$1.$1.$1.$0[0],parms.$1.$1.$1.$1.$1],5):6:6:6:6:6:($1=[$2.$0,parms],0))
+  {
+   case 0:
+    return[$1[0].f(),$1[1]];
+   case 1:
+    return[$1[0]($1[1]),$1[2]];
+   case 2:
+    return[($1[0]($1[1]))($1[2]),$1[3]];
+   case 3:
+    return[(($1[0]($1[1]))($1[2]))($1[3]),$1[4]];
+   case 4:
+    return[((($1[0]($1[1]))($1[2]))($1[3]))($1[4]),$1[5]];
+   case 5:
+    return[(((($1[0]($1[1]))($1[2]))($1[3]))($1[4]))($1[5]),$1[6]];
+   case 6:
+    return[Doc.Element("div",[],[Doc.TextNode((((Runtime$1.Curried3(function($3,$4,$5)
+    {
+     return $3("Parameters do not coincide with definition "+GeneratedPrintf.p($4)+" - "+Utils.printList(function($6)
+     {
+      return"("+Utils.prettyPrint($6[0])+", "+Utils.prettyPrint($6[1])+")";
+     },$5));
+    }))(Global.id))(doc))(parms))]),T$1.Empty];
+  }
+ };
  LayoutEngineModule.splitTokens=function(line)
  {
-  return List.ofSeq(Seq.collect(Global.id,Seq.mapi(function(i,s)
+  return List$1.ofSeq(Seq.collect(Global.id,Seq.mapi(function(i,s)
   {
    var t;
    return i%2===1?[[s,true]]:(t=Strings.Trim(s),t===""?[]:Arrays.map(function(s$1)
@@ -3701,7 +4735,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  LayoutEngineModule.getDocs=function(lytNm,docs)
  {
   var m;
-  return docs.$==0?T.Empty:(m=LayoutEngineModule.getOneDoc(lytNm,docs),new T({
+  return docs.$==0?T$1.Empty:(m=LayoutEngineModule.getOneDoc(lytNm,docs),new T$1({
    $:1,
    $0:m[0],
    $1:LayoutEngineModule.getDocs(lytNm,m[1])
@@ -3737,7 +4771,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  LayoutEngineModule.variableSplitter=function(vertical,min,value,max,doc1,doc2)
  {
-  return Doc.Element("wcomp-splitter",List.ofSeq(Seq.delay(function()
+  return Doc.Element("wcomp-splitter",List$1.ofSeq(Seq.delay(function()
   {
    return Seq.append(vertical?[AttrProxy.Create("vertical","")]:[],Seq.delay(function()
    {
@@ -3749,7 +4783,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      }));
     }));
    }));
-  })),List.ofArray([doc1,doc2]));
+  })),List$1.ofArray([doc1,doc2]));
  };
  LayoutEngineModule.fixedSplitter=function(vertical,pixel,first,doc1,doc2)
  {
@@ -3787,10 +4821,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $1:doc2
   }),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i$1=new TemplateInstance.New(p$1[1],LayoutEngine_Templates.fixedsplitterhor(p$1[0])),(b$1.i=i$1,i$1)))).get_Doc();
  };
- LayoutEngineModule.turnToView=function(f)
- {
-  return Doc.EmbedView(View.Map(f,AppFramework.mainDocV().get_View()));
- };
  LayoutEngineModule.getOneDoc=function(lytNm,docs)
  {
   var $1,a,t,id,parms,p,plg,nm,o,o$1,o$2,o$3,v,rest,a$1;
@@ -3806,7 +4836,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return $2("Missing doc: "+Utils.toSafe($3));
    };
-  }(Global.id))(id),(Library.print(v),v))),parms]:o$2.$0):o.$0)))))):docs.$==0?[Doc.get_Empty(),T.Empty]:(rest=docs.$1,(a$1=LayoutEngineModule.getTextData(lytNm,docs.$0[0]),a$1.$==1?[Doc.TextView(a$1.$0),rest]:a$1.$==2?[LayoutEngineModule.errDoc((function($2)
+  }(Global.id))(id),(Library.print(v),v))),parms]:o$2.$0):o.$0)))))):docs.$==0?[Doc.get_Empty(),T$1.Empty]:(rest=docs.$1,(a$1=LayoutEngineModule.getTextData(lytNm,docs.$0[0]),a$1.$==1?[Doc.TextView(a$1.$0),rest]:a$1.$==2?[LayoutEngineModule.errDoc((function($2)
   {
    return function($3)
    {
@@ -3863,194 +4893,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    i:Instance,
    k:Key,
    h:Holes
-  });
- };
- View.Map=function(fn,a)
- {
-  return View.CreateLazy(function()
-  {
-   return Snap.Map(fn,a());
-  });
- };
- View.Sink=function(act,a)
- {
-  function loop()
-  {
-   Snap.WhenRun(a(),act,function()
-   {
-    Concurrency.scheduler().Fork(loop);
-   });
-  }
-  Concurrency.scheduler().Fork(loop);
- };
- View.Map2=function(fn,a,a$1)
- {
-  return View.CreateLazy(function()
-  {
-   return Snap.Map2(fn,a(),a$1());
-  });
- };
- View.Apply=function(fn,view)
- {
-  return View.Map2(function(f,x)
-  {
-   return f(x);
-  },fn,view);
- };
- View.Const=function(x)
- {
-  var o;
-  o=Snap.New({
-   $:0,
-   $0:x
-  });
-  return function()
-  {
-   return o;
-  };
- };
- View.GetAsync=function(v)
- {
-  return Concurrency.FromContinuations(function(ok)
-  {
-   return View.Get(ok,v);
-  });
- };
- View.CreateLazy=function(observe)
- {
-  var lv;
-  lv={
-   c:null,
-   o:observe
-  };
-  return function()
-  {
-   var c,$1;
-   c=lv.c;
-   return c===null?(c=lv.o(),lv.c=c,($1=c.s,$1!=null&&$1.$==0)?lv.o=null:Snap.WhenObsoleteRun(c,function()
-   {
-    lv.c=null;
-   }),c):c;
-  };
- };
- View.get_Do=function()
- {
-  return ViewBuilder.B;
- };
- View.TryGet=function(a)
- {
-  return Snap.TryGet(a());
- };
- View.Get=function(f,a)
- {
-  var ok;
-  function obs()
-  {
-   Snap.WhenRun(a(),function(v)
-   {
-    if(!ok[0])
-     {
-      ok[0]=true;
-      f(v);
-     }
-   },function()
-   {
-    if(!ok[0])
-     obs();
-   });
-  }
-  ok=[false];
-  obs();
- };
- View.Bind=function(fn,view)
- {
-  return View.Join(View.Map(fn,view));
- };
- View.MapSeqCachedViewBy=function(key,conv,view)
- {
-  var state;
-  state=[new Dictionary.New$5()];
-  return View.Map(function(xs)
-  {
-   var prevState,newState,result;
-   prevState=state[0];
-   newState=new Dictionary.New$5();
-   result=Array$1.mapInPlace(function(x)
-   {
-    var k,node,n;
-    k=key(x);
-    node=prevState.ContainsKey(k)?(n=prevState.get_Item(k),(Var$1.Set(n.r,x),n)):View.ConvertSeqNode(function(v)
-    {
-     return conv(k,v);
-    },x);
-    newState.set_Item(k,node);
-    return node.e;
-   },Arrays.ofSeq(xs));
-   state[0]=newState;
-   return result;
-  },view);
- };
- View.Join=function(a)
- {
-  return View.CreateLazy(function()
-  {
-   return Snap.Join(a());
-  });
- };
- View.ConvertSeqNode=function(conv,value)
- {
-  var _var,view;
-  _var=Var$1.Create$1(value);
-  view=_var.get_View();
-  return{
-   e:conv(view),
-   r:_var,
-   w:view
-  };
- };
- View.MapSeqCachedBy=function(key,conv,view)
- {
-  var state;
-  state=[new Dictionary.New$5()];
-  return View.Map(function(xs)
-  {
-   var prevState,newState,result;
-   prevState=state[0];
-   newState=new Dictionary.New$5();
-   result=Array$1.mapInPlace(function(x)
-   {
-    var k,res;
-    k=key(x);
-    res=prevState.ContainsKey(k)?prevState.get_Item(k):conv(x);
-    newState.set_Item(k,res);
-    return res;
-   },Arrays.ofSeq(xs));
-   state[0]=newState;
-   return result;
-  },view);
- };
- View.Map2Unit=function(a,a$1)
- {
-  return View.CreateLazy(function()
-  {
-   return Snap.Map2Unit(a(),a$1());
-  });
- };
- View.Map3=function(fn,a,a$1,a$2)
- {
-  return View.CreateLazy(function()
-  {
-   return Snap.Map3(fn,a(),a$1(),a$2());
-  });
- };
- View.Sequence=function(views)
- {
-  return View.CreateLazy(function()
-  {
-   return Snap.Sequence(Seq.map(function(a)
-   {
-    return a();
-   },views));
   });
  };
  Rpc.llamadas=function()
@@ -4137,7 +4979,109 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     });
    }])[0]($1))($2);
   }
-  p1=Aliado.get_LoggedId();
+  p1=Aliado$1.get_LoggedId();
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   function f$1(v)
+   {
+    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
+    return v;
+   }
+   function g(v)
+   {
+    return Concurrency.Return(v);
+   }
+   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
+   return b.Bind$4(Concurrency.Bind(f(p1,p),function(x)
+   {
+    return g(f$1(x));
+   }),function(a)
+   {
+    return b.Return(a);
+   });
+  }));
+ };
+ Rpc.obtenerFormasDePagoPara=function(p)
+ {
+  var p1,b;
+  function f($1,$2)
+  {
+   var fname;
+   function serializeP(p$1)
+   {
+    return JSON.stringify(((Provider.EncodeArray(ProzperServer_JsonEncoder.j$6))())(p$1));
+   }
+   function serializeR(p$1)
+   {
+    return JSON.stringify((ProzperServer_JsonEncoder.j$48())(p$1));
+   }
+   function deserializeP(s)
+   {
+    return((Provider.DecodeArray(ProzperServer_JsonDecoder.j$6))())(JSON.parse(s));
+   }
+   function deserializeR(s)
+   {
+    return(ProzperServer_JsonDecoder.j$48())(JSON.parse(s));
+   }
+   return((fname="obtenerFormasDePagoPara",[function(idAliado)
+   {
+    var f$1,g,f$2;
+    function g$1(p$1)
+    {
+     return Rpc$1.invoke(fname,idAliado,p$1);
+    }
+    function f$3(r)
+    {
+     return ResultM.bind(deserializeR,r);
+    }
+    function g$2(v)
+    {
+     return Concurrency.Return(v);
+    }
+    f$1=function(x)
+    {
+     return g$1(serializeP(x));
+    };
+    g=(f$2=function(x)
+    {
+     return g$2(f$3(x));
+    },function(v)
+    {
+     return Concurrency.Bind(v,f$2);
+    });
+    return function(x)
+    {
+     return g(f$1(x));
+    };
+   },function(f$1)
+   {
+    Rpc$1.registroRpcs().Add(fname,function(c)
+    {
+     return function(js)
+     {
+      var b$1;
+      function g(v)
+      {
+       return Concurrency.Return(v);
+      }
+      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+      {
+       var p$1;
+       p$1=deserializeP(js);
+       return b$1.Bind$4((f$1(c))(p$1),function(a)
+       {
+        return b$1.Return(a);
+       });
+      }))),function(x)
+      {
+       return g(serializeR(x));
+      });
+     };
+    });
+   }])[0]($1))($2);
+  }
+  p1=Aliado$1.get_LoggedId();
   b=AsyncResultMAutoOpen.asyncResultM();
   return b.Run(b.Delay(function()
   {
@@ -4168,19 +5112,19 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    var fname;
    function serializeP(p$3)
    {
-    return JSON.stringify(((Provider.EncodeTuple([Provider.Id(),ProzperServer_JsonEncoder.j$5,Provider.EncodeArray(Provider.Id())]))())(p$3));
+    return JSON.stringify(((Provider.EncodeTuple([Provider.Id(),ProzperServer_JsonEncoder.j$6,Provider.EncodeArray(Provider.Id())]))())(p$3));
    }
    function serializeR(p$3)
    {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$33())(p$3));
+    return JSON.stringify((ProzperServer_JsonEncoder.j$32())(p$3));
    }
    function deserializeP(s)
    {
-    return((Provider.DecodeTuple([Provider.Id(),ProzperServer_JsonDecoder.j$5,Provider.DecodeArray(Provider.Id())]))())(JSON.parse(s));
+    return((Provider.DecodeTuple([Provider.Id(),ProzperServer_JsonDecoder.j$6,Provider.DecodeArray(Provider.Id())]))())(JSON.parse(s));
    }
    function deserializeR(s)
    {
-    return(ProzperServer_JsonDecoder.j$33())(JSON.parse(s));
+    return(ProzperServer_JsonDecoder.j$32())(JSON.parse(s));
    }
    return((fname="enviarCorreosInvitacion",[function(idAliado)
    {
@@ -4239,7 +5183,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     });
    }])[0]($1))($2);
   }
-  p1=Aliado.get_LoggedId();
+  p1=Aliado$1.get_LoggedId();
   p2=[p,p$1,p$2];
   b=AsyncResultMAutoOpen.asyncResultM();
   return b.Run(b.Delay(function()
@@ -4275,7 +5219,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
    function serializeR(p)
    {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$32())(p));
+    return JSON.stringify((ProzperServer_JsonEncoder.j$31())(p));
    }
    function deserializeP(s)
    {
@@ -4283,7 +5227,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
    function deserializeR(s)
    {
-    return(ProzperServer_JsonDecoder.j$32())(JSON.parse(s));
+    return(ProzperServer_JsonDecoder.j$31())(JSON.parse(s));
    }
    return((fname="obtenerUnions",[function(idAliado)
    {
@@ -4342,7 +5286,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     });
    }])[0]($1))($2);
   }
-  p1=Aliado.get_LoggedId();
+  p1=Aliado$1.get_LoggedId();
   b=AsyncResultMAutoOpen.asyncResultM();
   return b.Run(b.Delay(function()
   {
@@ -4388,7 +5332,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
    function serializeR(p$1)
    {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$33())(p$1));
+    return JSON.stringify((ProzperServer_JsonEncoder.j$32())(p$1));
    }
    function deserializeP(s)
    {
@@ -4396,7 +5340,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
    function deserializeR(s)
    {
-    return(ProzperServer_JsonDecoder.j$33())(JSON.parse(s));
+    return(ProzperServer_JsonDecoder.j$32())(JSON.parse(s));
    }
    return((fname="agregarUsuarioSiEsNuevo",[function(idAliado)
    {
@@ -4455,7 +5399,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     });
    }])[0]($1))($2);
   }
-  p1=Aliado.get_LoggedId();
+  p1=Aliado$1.get_LoggedId();
   b=AsyncResultMAutoOpen.asyncResultM();
   return b.Run(b.Delay(function()
   {
@@ -4490,7 +5434,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
    function serializeR(p)
    {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$29())(p));
+    return JSON.stringify((ProzperServer_JsonEncoder.j$28())(p));
    }
    function deserializeP(s)
    {
@@ -4498,7 +5442,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
    function deserializeR(s)
    {
-    return(ProzperServer_JsonDecoder.j$29())(JSON.parse(s));
+    return(ProzperServer_JsonDecoder.j$28())(JSON.parse(s));
    }
    return((fname="obtenerEstadoParaUsuario",[function(idAliado)
    {
@@ -4557,7 +5501,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     });
    }])[0]($1))($2);
   }
-  p1=Aliado.get_LoggedId();
+  p1=Aliado$1.get_LoggedId();
   b=AsyncResultMAutoOpen.asyncResultM();
   return b.Run(b.Delay(function()
   {
@@ -4580,6 +5524,108 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    });
   }));
  };
+ Rpc.borrarFormaPago=function(p)
+ {
+  var p1,b;
+  function f($1,$2)
+  {
+   var fname;
+   function serializeP(p$1)
+   {
+    return JSON.stringify((ProzperServer_JsonEncoder.j$36())(p$1));
+   }
+   function serializeR(p$1)
+   {
+    return JSON.stringify((ProzperServer_JsonEncoder.j$47())(p$1));
+   }
+   function deserializeP(s)
+   {
+    return(ProzperServer_JsonDecoder.j$36())(JSON.parse(s));
+   }
+   function deserializeR(s)
+   {
+    return(ProzperServer_JsonDecoder.j$47())(JSON.parse(s));
+   }
+   return((fname="borrarFormaPago",[function(idAliado)
+   {
+    var f$1,g,f$2;
+    function g$1(p$1)
+    {
+     return Rpc$1.invoke(fname,idAliado,p$1);
+    }
+    function f$3(r)
+    {
+     return ResultM.bind(deserializeR,r);
+    }
+    function g$2(v)
+    {
+     return Concurrency.Return(v);
+    }
+    f$1=function(x)
+    {
+     return g$1(serializeP(x));
+    };
+    g=(f$2=function(x)
+    {
+     return g$2(f$3(x));
+    },function(v)
+    {
+     return Concurrency.Bind(v,f$2);
+    });
+    return function(x)
+    {
+     return g(f$1(x));
+    };
+   },function(f$1)
+   {
+    Rpc$1.registroRpcs().Add(fname,function(c)
+    {
+     return function(js)
+     {
+      var b$1;
+      function g(v)
+      {
+       return Concurrency.Return(v);
+      }
+      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+      {
+       var p$1;
+       p$1=deserializeP(js);
+       return b$1.Bind$4((f$1(c))(p$1),function(a)
+       {
+        return b$1.Return(a);
+       });
+      }))),function(x)
+      {
+       return g(serializeR(x));
+      });
+     };
+    });
+   }])[0]($1))($2);
+  }
+  p1=Aliado$1.get_LoggedId();
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   function f$1(v)
+   {
+    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
+    return v;
+   }
+   function g(v)
+   {
+    return Concurrency.Return(v);
+   }
+   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
+   return b.Bind$4(Concurrency.Bind(f(p1,p),function(x)
+   {
+    return g(f$1(x));
+   }),function(a)
+   {
+    return b.Return(a);
+   });
+  }));
+ };
  Rpc.registrarTarjeta=function(p)
  {
   var p1,b;
@@ -4588,19 +5634,19 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    var fname;
    function serializeP(p$1)
    {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$39())(p$1));
+    return JSON.stringify((ProzperServer_JsonEncoder.j$38())(p$1));
    }
    function serializeR(p$1)
    {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$1())(p$1));
+    return JSON.stringify((ProzperServer_JsonEncoder.j$47())(p$1));
    }
    function deserializeP(s)
    {
-    return(ProzperServer_JsonDecoder.j$39())(JSON.parse(s));
+    return(ProzperServer_JsonDecoder.j$38())(JSON.parse(s));
    }
    function deserializeR(s)
    {
-    return(ProzperServer_JsonDecoder.j$1())(JSON.parse(s));
+    return(ProzperServer_JsonDecoder.j$47())(JSON.parse(s));
    }
    return((fname="registrarTarjeta",[function(idAliado)
    {
@@ -4659,7 +5705,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     });
    }])[0]($1))($2);
   }
-  p1=Aliado.get_LoggedId();
+  p1=Aliado$1.get_LoggedId();
   b=AsyncResultMAutoOpen.asyncResultM();
   return b.Run(b.Delay(function()
   {
@@ -4690,19 +5736,19 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    var fname;
    function serializeP(p$1)
    {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$44())(p$1));
+    return JSON.stringify((ProzperServer_JsonEncoder.j$43())(p$1));
    }
    function serializeR(p$1)
    {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$1())(p$1));
+    return JSON.stringify((ProzperServer_JsonEncoder.j$47())(p$1));
    }
    function deserializeP(s)
    {
-    return(ProzperServer_JsonDecoder.j$44())(JSON.parse(s));
+    return(ProzperServer_JsonDecoder.j$43())(JSON.parse(s));
    }
    function deserializeR(s)
    {
-    return(ProzperServer_JsonDecoder.j$1())(JSON.parse(s));
+    return(ProzperServer_JsonDecoder.j$47())(JSON.parse(s));
    }
    return((fname="registrarCuenta",[function(idAliado)
    {
@@ -4761,7 +5807,109 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     });
    }])[0]($1))($2);
   }
-  p1=Aliado.get_LoggedId();
+  p1=Aliado$1.get_LoggedId();
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   function f$1(v)
+   {
+    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
+    return v;
+   }
+   function g(v)
+   {
+    return Concurrency.Return(v);
+   }
+   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
+   return b.Bind$4(Concurrency.Bind(f(p1,p),function(x)
+   {
+    return g(f$1(x));
+   }),function(a)
+   {
+    return b.Return(a);
+   });
+  }));
+ };
+ Rpc.validarFormaPago=function(p)
+ {
+  var p1,b;
+  function f($1,$2)
+  {
+   var fname;
+   function serializeP(p$1)
+   {
+    return JSON.stringify((ProzperServer_JsonEncoder.j$36())(p$1));
+   }
+   function serializeR(p$1)
+   {
+    return JSON.stringify((ProzperServer_JsonEncoder.j$47())(p$1));
+   }
+   function deserializeP(s)
+   {
+    return(ProzperServer_JsonDecoder.j$36())(JSON.parse(s));
+   }
+   function deserializeR(s)
+   {
+    return(ProzperServer_JsonDecoder.j$47())(JSON.parse(s));
+   }
+   return((fname="validarFormaPago",[function(idAliado)
+   {
+    var f$1,g,f$2;
+    function g$1(p$1)
+    {
+     return Rpc$1.invoke(fname,idAliado,p$1);
+    }
+    function f$3(r)
+    {
+     return ResultM.bind(deserializeR,r);
+    }
+    function g$2(v)
+    {
+     return Concurrency.Return(v);
+    }
+    f$1=function(x)
+    {
+     return g$1(serializeP(x));
+    };
+    g=(f$2=function(x)
+    {
+     return g$2(f$3(x));
+    },function(v)
+    {
+     return Concurrency.Bind(v,f$2);
+    });
+    return function(x)
+    {
+     return g(f$1(x));
+    };
+   },function(f$1)
+   {
+    Rpc$1.registroRpcs().Add(fname,function(c)
+    {
+     return function(js)
+     {
+      var b$1;
+      function g(v)
+      {
+       return Concurrency.Return(v);
+      }
+      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+      {
+       var p$1;
+       p$1=deserializeP(js);
+       return b$1.Bind$4((f$1(c))(p$1),function(a)
+       {
+        return b$1.Return(a);
+       });
+      }))),function(x)
+      {
+       return g(serializeR(x));
+      });
+     };
+    });
+   }])[0]($1))($2);
+  }
+  p1=Aliado$1.get_LoggedId();
   b=AsyncResultMAutoOpen.asyncResultM();
   return b.Run(b.Delay(function()
   {
@@ -4800,7 +5948,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
    function serializeR(p)
    {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$34())(p));
+    return JSON.stringify((ProzperServer_JsonEncoder.j$33())(p));
    }
    function deserializeP(s)
    {
@@ -4808,7 +5956,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
    function deserializeR(s)
    {
-    return(ProzperServer_JsonDecoder.j$34())(JSON.parse(s));
+    return(ProzperServer_JsonDecoder.j$33())(JSON.parse(s));
    }
    return((fname="obtenerFormasDePago",[function(idAliado)
    {
@@ -4867,7 +6015,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     });
    }])[0]($1))($2);
   }
-  p1=Aliado.get_LoggedId();
+  p1=Aliado$1.get_LoggedId();
   b=AsyncResultMAutoOpen.asyncResultM();
   return b.Run(b.Delay(function()
   {
@@ -4889,6 +6037,25 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     return b.Return(a);
    });
   }));
+ };
+ Handler.EventQ2=function(key,holeName,ti,f)
+ {
+  return{
+   $:5,
+   $0:holeName,
+   $1:true,
+   $2:function(el)
+   {
+    return function(ev)
+    {
+     return f({
+      Vars:ti(),
+      Target:el,
+      Event:ev
+     });
+    };
+   }
+  };
  };
  Handler.CompleteHoles=function(a,filledHoles,vars)
  {
@@ -4937,25 +6104,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:allVars
   }];
  };
- Handler.EventQ2=function(key,holeName,ti,f)
- {
-  return{
-   $:5,
-   $0:holeName,
-   $1:true,
-   $2:function(el)
-   {
-    return function(ev)
-    {
-     return f({
-      Vars:ti(),
-      Target:el,
-      Event:ev
-     });
-    };
-   }
-  };
- };
  TemplateInstance=Server.TemplateInstance=Runtime$1.Class({
   get_Doc:function()
   {
@@ -4972,34 +6120,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   this.doc=doc;
   this.allVars=c.$==0?c.$0:Operators.FailWith("Should not happen");
  },TemplateInstance);
- Aliado$1.New=function(id,authorizeIdR,idPadreO,datosPersonales,contactos,identificacion,isInternal,status,tipo,fechaRegistro,fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,comision,nivel)
+ Aliado$2.empty=function()
  {
-  return{
-   id:id,
-   authorizeIdR:authorizeIdR,
-   idPadreO:idPadreO,
-   datosPersonales:datosPersonales,
-   contactos:contactos,
-   identificacion:identificacion,
-   isInternal:isInternal,
-   status:status,
-   tipo:tipo,
-   fechaRegistro:fechaRegistro,
-   fechaStatus:fechaStatus,
-   nReferidos:nReferidos,
-   nRefActivos:nRefActivos,
-   nDescendientes:nDescendientes,
-   nDescActivos:nDescActivos,
-   comision:comision,
-   nivel:nivel
-  };
+  SC$3.$cctor();
+  return SC$3.empty;
  };
- IdAliado=TypesV0.IdAliado=Runtime$1.Class({
-  get_Id:function()
-  {
-   return this.$0;
-  }
- },null,IdAliado);
  Aliado$2.nombre2=function(dp)
  {
   var o,o$1;
@@ -5132,11 +6257,320 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   p=al.tipo.$==0?[pre.comisionReferidosMaster,pre.comisionDescendientesMaster]:[pre.comisionReferidosRegular,pre.comisionDescendientesRegular];
   return al.status.$==2?[p[0],p[1]]:[0,0];
  };
- Aliado$2.empty=function()
+ testing_Templates.opcionesadministrador=function(h)
  {
-  SC$3.$cctor();
-  return SC$3.empty;
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"opcionesadministrador"
+  },h):void 0;
  };
+ testing_Templates.filaaliado=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"filaaliado"
+  },h):void 0;
+ };
+ testing_Templates.tablaaliados=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"tablaaliados"
+  },h):void 0;
+ };
+ testing_Templates.aliado=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"aliado"
+  },h):void 0;
+ };
+ testing_Templates.calculo=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"calculo"
+  },h):void 0;
+ };
+ testing_GeneratedPrintf.p$2=function($1)
+ {
+  return $1.$==2?"Mensaje "+Utils.prettyPrint($1.$0):$1.$==1?"NuevoRegistro "+Utils.prettyPrint($1.$0):"ROk";
+ };
+ testing_Templates.formaregistro=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"formaregistro"
+  },h):void 0;
+ };
+ testing_Templates.filaconsolidado=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"filaconsolidado"
+  },h):void 0;
+ };
+ testing_Templates.consolidado=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"consolidado"
+  },h):void 0;
+ };
+ testing_GeneratedPrintf.p$4=function($1)
+ {
+  return $1.$==5?"Dia25":$1.$==4?"Dia20":$1.$==3?"Dia15":$1.$==2?"Dia10":$1.$==1?"Dia05":"Dia01";
+ };
+ testing_Templates.filapago=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"filapago"
+  },h):void 0;
+ };
+ testing_Templates.tablapagos=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"tablapagos"
+  },h):void 0;
+ };
+ testing_Router.r=function()
+ {
+  return RouterOperators.JSUnion(void 0,[[null,[[null,[]]],[]],[null,[[null,["Content"]]],[RouterOperators.rString()]]]);
+ };
+ testing_Templates.datospersonales=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"datospersonales"
+  },h):void 0;
+ };
+ testing_GeneratedPrintf.p$1=function($1)
+ {
+  return $1.$==2?"Empresa":$1.$==1?"Femenino":"Masculino";
+ };
+ testing_Templates.correo=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"correo"
+  },h):void 0;
+ };
+ testing_Templates.telefono=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"telefono"
+  },h):void 0;
+ };
+ testing_Templates.direccion=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"direccion"
+  },h):void 0;
+ };
+ testing_Templates.formadatospersonales=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"formadatospersonales"
+  },h):void 0;
+ };
+ testing_Templates.formacontactos=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"formacontactos"
+  },h):void 0;
+ };
+ testing_Templates.formacuentas=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"formacuentas"
+  },h):void 0;
+ };
+ testing_GeneratedPrintf.p$3=function($1)
+ {
+  return"IdPayment "+Utils.prettyPrint($1.$0);
+ };
+ testing_Templates.cuentabancaria=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"cuentabancaria"
+  },h):void 0;
+ };
+ testing_Templates.tarjetacredito=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"tarjetacredito"
+  },h):void 0;
+ };
+ testing_GeneratedPrintf.p=function($1)
+ {
+  return $1.$==3?"ResetPassword":$1.$==2?"EditProfile":$1.$==1?"SignUp":"SignIn";
+ };
+ Doc=UI.Doc=Runtime$1.Class({},Obj,Doc);
+ Doc.get_Empty=function()
+ {
+  return Doc.Mk(null,View.Const());
+ };
+ Doc.BindView=function(f,view)
+ {
+  return Doc.EmbedView(View.Map(f,view));
+ };
+ Doc.Mk=function(node,updates)
+ {
+  return new Doc.New(node,updates);
+ };
+ Doc.ConvertSeqBy=function(key,render,view)
+ {
+  return Doc.Flatten(View.MapSeqCachedViewBy(key,function($1,$2)
+  {
+   return(render($1))($2);
+  },view));
+ };
+ Doc.Concat=function(xs)
+ {
+  var x;
+  x=Array$1.ofSeqNonCopying(xs);
+  return Array$1.TreeReduce(Doc.get_Empty(),Doc.Append,x);
+ };
+ Doc.EmbedView=function(view)
+ {
+  var node;
+  node=Docs.CreateEmbedNode();
+  return Doc.Mk({
+   $:2,
+   $0:node
+  },View.Map(Global.ignore,View.Bind(function(doc)
+  {
+   Docs.UpdateEmbedNode(node,doc.docNode);
+   return doc.updates;
+  },view)));
+ };
+ Doc.Flatten=function(view)
+ {
+  return Doc.EmbedView(View.Map(Doc.Concat,view));
+ };
+ Doc.ConvertBy=function(key,render,view)
+ {
+  return Doc.Flatten(View.MapSeqCachedBy(key,render,view));
+ };
+ Doc.Button=function(caption,attrs,action)
+ {
+  var attrs$1;
+  attrs$1=AttrProxy.Concat(attrs);
+  return Elt.New(Doc.Clickable("button",action),attrs$1,Doc.TextNode(caption));
+ };
+ Doc.Append=function(a,b)
+ {
+  return Doc.Mk({
+   $:0,
+   $0:a.docNode,
+   $1:b.docNode
+  },View.Map2Unit(a.updates,b.updates));
+ };
+ Doc.Input=function(attr$1,_var)
+ {
+  return Doc.InputInternal("input",function()
+  {
+   return Seq.append(attr$1,[AttrModule.Value(_var)]);
+  });
+ };
+ Doc.Element=function(name,attr$1,children)
+ {
+  var a,a$1;
+  a=AttrProxy.Concat(attr$1);
+  a$1=Doc.Concat(children);
+  return Elt.New(DomUtility.CreateElement(name),a,a$1);
+ };
+ Doc.RunInPlace=function(childrenOnly,parent,doc)
+ {
+  var st;
+  st=Docs.CreateRunState(parent,doc.docNode);
+  View.Sink(An.get_UseAnimations()||Settings.BatchUpdatesEnabled()?Mailbox.StartProcessor(Docs.PerformAnimatedUpdate(childrenOnly,st,doc.docNode)):function()
+  {
+   Docs.PerformSyncUpdate(childrenOnly,st,doc.docNode);
+  },doc.updates);
+ };
+ Doc.TextNode=function(v)
+ {
+  return Doc.Mk({
+   $:5,
+   $0:DomUtility.CreateText(v)
+  },View.Const());
+ };
+ Doc.Clickable=function(elem,action)
+ {
+  var el;
+  el=DomUtility.CreateElement(elem);
+  el.addEventListener("click",function(ev)
+  {
+   ev.preventDefault();
+   return action();
+  },false);
+  return el;
+ };
+ Doc.TextView=function(txt)
+ {
+  var node;
+  node=Docs.CreateTextNode();
+  return Doc.Mk({
+   $:4,
+   $0:node
+  },View.Map(function(t)
+  {
+   Docs.UpdateTextNode(node,t);
+  },txt));
+ };
+ Doc.InputInternal=function(elemTy,attr$1)
+ {
+  var el;
+  el=DomUtility.CreateElement(elemTy);
+  return Elt.New(el,AttrProxy.Concat(attr$1(el)),Doc.get_Empty());
+ };
+ Doc.Run=function(parent,doc)
+ {
+  Docs.LinkElement(parent,doc.docNode);
+  Doc.RunInPlace(false,parent,doc);
+ };
+ Doc.InputArea=function(attr$1,_var)
+ {
+  return Doc.InputInternal("textarea",function()
+  {
+   return Seq.append(attr$1,[AttrModule.Value(_var)]);
+  });
+ };
+ Doc.New=Runtime$1.Ctor(function(docNode,updates)
+ {
+  Obj.New.call(this);
+  this.docNode=docNode;
+  this.updates=updates;
+ },Doc);
  Modelo.New=function(idAliado,aliados,anoActual,periodoActual,premisas,nevento)
  {
   return{
@@ -5225,6 +6659,26 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   m=snap.s;
   m==null?obs():m!=null&&m.$==2?(m.$1.push(obs),avail(m.$0)):m!=null&&m.$==3?(m.$0.push(avail),m.$1.push(obs)):avail(m.$0);
  };
+ Snap.WhenObsoleteRun=function(snap,obs)
+ {
+  var m;
+  m=snap.s;
+  m==null?obs():m!=null&&m.$==2?m.$1.push(obs):m!=null&&m.$==3?m.$1.push(obs):void 0;
+ };
+ Snap.When=function(snap,avail,obs)
+ {
+  var m;
+  m=snap.s;
+  m==null?Snap.Obsolete(obs):m!=null&&m.$==2?(Snap.EnqueueSafe(m.$1,obs),avail(m.$0)):m!=null&&m.$==3?(m.$0.push(avail),Snap.EnqueueSafe(m.$1,obs)):avail(m.$0);
+ };
+ Snap.MarkDone=function(res,sn,v)
+ {
+  var $1;
+  if($1=sn.s,$1!=null&&$1.$==0)
+   Snap.MarkForever(res,v);
+  else
+   Snap.MarkReady(res,v);
+ };
  Snap.Map2=function(fn,sn1,sn2)
  {
   var $1,$2,res;
@@ -5249,51 +6703,71 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $1:[]
   }),(Snap.When(sn1,cont,res),Snap.When(sn2,cont,res),res));
  };
- Snap.WhenObsoleteRun=function(snap,obs)
+ Snap.Map3=function(fn,sn1,sn2,sn3)
  {
-  var m;
-  m=snap.s;
-  m==null?obs():m!=null&&m.$==2?m.$1.push(obs):m!=null&&m.$==3?m.$1.push(obs):void 0;
+  var $1,$2,$3,res;
+  function cont(a)
+  {
+   var m,$4,$5,$6;
+   if(!(m=res.s,m!=null&&m.$==0||m!=null&&m.$==2))
+    {
+     $4=Snap.ValueAndForever(sn1);
+     $5=Snap.ValueAndForever(sn2);
+     $6=Snap.ValueAndForever(sn3);
+     $4!=null&&$4.$==1?$5!=null&&$5.$==1?$6!=null&&$6.$==1?$4.$0[1]&&$5.$0[1]&&$6.$0[1]?Snap.MarkForever(res,fn($4.$0[0],$5.$0[0],$6.$0[0])):Snap.MarkReady(res,fn($4.$0[0],$5.$0[0],$6.$0[0])):void 0:void 0:void 0;
+    }
+  }
+  $1=sn1.s;
+  $2=sn2.s;
+  $3=sn3.s;
+  return $1!=null&&$1.$==0?$2!=null&&$2.$==0?$3!=null&&$3.$==0?Snap.New({
+   $:0,
+   $0:fn($1.$0,$2.$0,$3.$0)
+  }):Snap.Map3Opt1(fn,$1.$0,$2.$0,sn3):$3!=null&&$3.$==0?Snap.Map3Opt2(fn,$1.$0,$3.$0,sn2):Snap.Map3Opt3(fn,$1.$0,sn2,sn3):$2!=null&&$2.$==0?$3!=null&&$3.$==0?Snap.Map3Opt4(fn,$2.$0,$3.$0,sn1):Snap.Map3Opt5(fn,$2.$0,sn1,sn3):$3!=null&&$3.$==0?Snap.Map3Opt6(fn,$3.$0,sn1,sn2):(res=Snap.New({
+   $:3,
+   $0:[],
+   $1:[]
+  }),(Snap.When(sn1,cont,res),Snap.When(sn2,cont,res),Snap.When(sn3,cont,res),res));
  };
- Snap.When=function(snap,avail,obs)
+ Snap.MapAsync=function(fn,snap)
  {
-  var m;
-  m=snap.s;
-  m==null?Snap.Obsolete(obs):m!=null&&m.$==2?(Snap.EnqueueSafe(m.$1,obs),avail(m.$0)):m!=null&&m.$==3?(m.$0.push(avail),Snap.EnqueueSafe(m.$1,obs)):avail(m.$0);
+  var res;
+  res=Snap.New({
+   $:3,
+   $0:[],
+   $1:[]
+  });
+  Snap.When(snap,function(v)
+  {
+   Async.StartTo(fn(v),function(v$1)
+   {
+    Snap.MarkDone(res,snap,v$1);
+   });
+  },res);
+  return res;
  };
- Snap.MarkDone=function(res,sn,v)
+ Snap.EnqueueSafe=function(q,x)
  {
-  var $1;
-  if($1=sn.s,$1!=null&&$1.$==0)
-   Snap.MarkForever(res,v);
+  var qcopy,i,$1,o;
+  q.push(x);
+  if(q.length%20===0)
+   {
+    qcopy=q.slice(0);
+    Queue.Clear(q);
+    for(i=0,$1=Arrays.length(qcopy)-1;i<=$1;i++){
+     o=Arrays.get(qcopy,i);
+     typeof o=="object"?function(sn)
+     {
+      if(sn.s)
+       q.push(sn);
+     }(o):function(f)
+     {
+      q.push(f);
+     }(o);
+    }
+   }
   else
-   Snap.MarkReady(res,v);
- };
- Snap.Map2Opt1=function(fn,x,sn2)
- {
-  return Snap.Map(function(y)
-  {
-   return fn(x,y);
-  },sn2);
- };
- Snap.Map2Opt2=function(fn,y,sn1)
- {
-  return Snap.Map(function(x)
-  {
-   return fn(x,y);
-  },sn1);
- };
- Snap.ValueAndForever=function(snap)
- {
-  var m;
-  m=snap.s;
-  return m!=null&&m.$==0?{
-   $:1,
-   $0:[m.$0,true]
-  }:m!=null&&m.$==2?{
-   $:1,
-   $0:[m.$0,false]
-  }:null;
+   void 0;
  };
  Snap.MarkForever=function(sn,v)
  {
@@ -5328,6 +6802,32 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   else
    void 0;
  };
+ Snap.Map2Opt1=function(fn,x,sn2)
+ {
+  return Snap.Map(function(y)
+  {
+   return fn(x,y);
+  },sn2);
+ };
+ Snap.Map2Opt2=function(fn,y,sn1)
+ {
+  return Snap.Map(function(x)
+  {
+   return fn(x,y);
+  },sn1);
+ };
+ Snap.ValueAndForever=function(snap)
+ {
+  var m;
+  m=snap.s;
+  return m!=null&&m.$==0?{
+   $:1,
+   $0:[m.$0,true]
+  }:m!=null&&m.$==2?{
+   $:1,
+   $0:[m.$0,false]
+  }:null;
+ };
  Snap.TryGet=function(snap)
  {
   var m,$1;
@@ -5337,28 +6837,47 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:$1
   }:null;
  };
- Snap.EnqueueSafe=function(q,x)
+ Snap.Map3Opt1=function(fn,x,y,sn3)
  {
-  var qcopy,i,$1,o;
-  q.push(x);
-  if(q.length%20===0)
-   {
-    qcopy=q.slice(0);
-    Queue.Clear(q);
-    for(i=0,$1=Arrays.length(qcopy)-1;i<=$1;i++){
-     o=Arrays.get(qcopy,i);
-     typeof o=="object"?function(sn)
-     {
-      if(sn.s)
-       q.push(sn);
-     }(o):function(f)
-     {
-      q.push(f);
-     }(o);
-    }
-   }
-  else
-   void 0;
+  return Snap.Map(function(z)
+  {
+   return fn(x,y,z);
+  },sn3);
+ };
+ Snap.Map3Opt2=function(fn,x,z,sn2)
+ {
+  return Snap.Map(function(y)
+  {
+   return fn(x,y,z);
+  },sn2);
+ };
+ Snap.Map3Opt3=function(fn,x,sn2,sn3)
+ {
+  return Snap.Map2(function($1,$2)
+  {
+   return fn(x,$1,$2);
+  },sn2,sn3);
+ };
+ Snap.Map3Opt4=function(fn,y,z,sn1)
+ {
+  return Snap.Map(function(x)
+  {
+   return fn(x,y,z);
+  },sn1);
+ };
+ Snap.Map3Opt5=function(fn,y,sn1,sn3)
+ {
+  return Snap.Map2(function($1,$2)
+  {
+   return fn($1,y,$2);
+  },sn1,sn3);
+ };
+ Snap.Map3Opt6=function(fn,z,sn1,sn2)
+ {
+  return Snap.Map2(function($1,$2)
+  {
+   return fn($1,$2,z);
+  },sn1,sn2);
  };
  Snap.Join=function(snap)
  {
@@ -5406,32 +6925,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:[],
    $1:[]
   }),(Snap.When(sn1,cont,res),Snap.When(sn2,cont,res),res));
- };
- Snap.Map3=function(fn,sn1,sn2,sn3)
- {
-  var $1,$2,$3,res;
-  function cont(a)
-  {
-   var m,$4,$5,$6;
-   if(!(m=res.s,m!=null&&m.$==0||m!=null&&m.$==2))
-    {
-     $4=Snap.ValueAndForever(sn1);
-     $5=Snap.ValueAndForever(sn2);
-     $6=Snap.ValueAndForever(sn3);
-     $4!=null&&$4.$==1?$5!=null&&$5.$==1?$6!=null&&$6.$==1?$4.$0[1]&&$5.$0[1]&&$6.$0[1]?Snap.MarkForever(res,fn($4.$0[0],$5.$0[0],$6.$0[0])):Snap.MarkReady(res,fn($4.$0[0],$5.$0[0],$6.$0[0])):void 0:void 0:void 0;
-    }
-  }
-  $1=sn1.s;
-  $2=sn2.s;
-  $3=sn3.s;
-  return $1!=null&&$1.$==0?$2!=null&&$2.$==0?$3!=null&&$3.$==0?Snap.New({
-   $:0,
-   $0:fn($1.$0,$2.$0,$3.$0)
-  }):Snap.Map3Opt1(fn,$1.$0,$2.$0,sn3):$3!=null&&$3.$==0?Snap.Map3Opt2(fn,$1.$0,$3.$0,sn2):Snap.Map3Opt3(fn,$1.$0,sn2,sn3):$2!=null&&$2.$==0?$3!=null&&$3.$==0?Snap.Map3Opt4(fn,$2.$0,$3.$0,sn1):Snap.Map3Opt5(fn,$2.$0,sn1,sn3):$3!=null&&$3.$==0?Snap.Map3Opt6(fn,$3.$0,sn1,sn2):(res=Snap.New({
-   $:3,
-   $0:[],
-   $1:[]
-  }),(Snap.When(sn1,cont,res),Snap.When(sn2,cont,res),Snap.When(sn3,cont,res),res));
  };
  Snap.Sequence=function(snaps)
  {
@@ -5487,48 +6980,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    Snap.MarkDone(res$1,sn,v);
   },res$1),res$1)):sn;
  };
- Snap.Map3Opt1=function(fn,x,y,sn3)
- {
-  return Snap.Map(function(z)
-  {
-   return fn(x,y,z);
-  },sn3);
- };
- Snap.Map3Opt2=function(fn,x,z,sn2)
- {
-  return Snap.Map(function(y)
-  {
-   return fn(x,y,z);
-  },sn2);
- };
- Snap.Map3Opt3=function(fn,x,sn2,sn3)
- {
-  return Snap.Map2(function($1,$2)
-  {
-   return fn(x,$1,$2);
-  },sn2,sn3);
- };
- Snap.Map3Opt4=function(fn,y,z,sn1)
- {
-  return Snap.Map(function(x)
-  {
-   return fn(x,y,z);
-  },sn1);
- };
- Snap.Map3Opt5=function(fn,y,sn1,sn3)
- {
-  return Snap.Map2(function($1,$2)
-  {
-   return fn($1,y,$2);
-  },sn1,sn3);
- };
- Snap.Map3Opt6=function(fn,z,sn1,sn2)
- {
-  return Snap.Map2(function($1,$2)
-  {
-   return fn($1,$2,z);
-  },sn1,sn2);
- };
  Snap.WhenObsolete=function(snap,obs)
  {
   var m;
@@ -5579,7 +7030,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   });
   SC$1.rexGuid="([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})";
   SC$1.rexEmail="(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@[*[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+]*";
-  SC$1.policies=List.ofArray([Policy.SignIn,Policy.SignUp,Policy.EditProfile,Policy.ResetPassword]);
+  SC$1.policies=List$1.ofArray([Policy.SignIn,Policy.SignUp,Policy.EditProfile,Policy.ResetPassword]);
   SC$1.rootdir="D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperClient\\website";
   SC$1.TemplatesFileName="D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperClient\\website"+"\\index.html";
   SC$1.LoginFileName="D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperClient\\website"+"\\Login.html";
@@ -5696,6 +7147,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$1.generos=Var$1.Create$1([]);
   SC$1.tiposCta=Var$1.Create$1([]);
   SC$1.tiposTar=Var$1.Create$1([]);
+  SC$1.statuses=Var$1.Create$1([]);
   SC$1.aniosV=Var$1.Create$1([]);
   SC$1.mesesV=Var$1.Create$1([]);
   Rpc.iterA((b$2=AsyncResultMAutoOpen.asyncResultM(),b$2.Run(b$2.Delay(function()
@@ -5709,8 +7161,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     VariousUI.generos().Set(a[4]);
     VariousUI.tiposCta().Set(a[5]);
     VariousUI.tiposTar().Set(a[6]);
-    VariousUI.aniosV().Set(a[8]);
-    VariousUI.mesesV().Set(a[7]);
+    VariousUI.statuses().Set(a[7]);
+    VariousUI.aniosV().Set(a[9]);
+    VariousUI.mesesV().Set(a[8]);
     return b$2.Zero();
    });
   }))));
@@ -5759,7 +7212,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    m$1=cp.cuentaPago;
    return m$1.$==1?{
     $:1,
-    $0:[m$1.$0,FormaFormasPago.msg(cp)]
+    $0:[m$1.$0,FormaFormasPago.msg(cp),cp.authorizeIdR.$==0]
    }:null;
   },function(fp)
   {
@@ -5777,7 +7230,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    m$1=cp.cuentaPago;
    return m$1.$==0?{
     $:1,
-    $0:[m$1.$0,FormaFormasPago.msg(cp)]
+    $0:[m$1.$0,FormaFormasPago.msg(cp),cp.authorizeIdR.$==0]
    }:null;
   },function(fp)
   {
@@ -5791,6 +7244,74 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   }];
   SC$1.layoutName="ProzperLyt";
   SC$1.appName="Prozper";
+ };
+ DatosPersonales.New=function(titulo,nombre1,nombre2,apellido1,apellido2,nacionalidad,genero,fechaNacimiento)
+ {
+  return{
+   titulo:titulo,
+   nombre1:nombre1,
+   nombre2:nombre2,
+   apellido1:apellido1,
+   apellido2:apellido2,
+   nacionalidad:nacionalidad,
+   genero:genero,
+   fechaNacimiento:fechaNacimiento
+  };
+ };
+ StatusAliado=TypesV0.StatusAliado=Runtime$1.Class({
+  toString:function()
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,StatusAliado);
+ StatusAliado.tryParse=function(s)
+ {
+  var m;
+  m=Strings.Trim(s).toUpperCase();
+  return m==="CUENTACREADA"?StatusAliado.CuentaCreada:m==="DATOSBANCARIOSINGRESADOS"?StatusAliado.DatosBancariosIngresados:m==="ACTIVO"?StatusAliado.Activo:m==="CANCELADO"?StatusAliado.Cancelado:StatusAliado.Inactivo;
+ };
+ StatusAliado.CuentaCreada=new StatusAliado({
+  $:0
+ });
+ StatusAliado.DatosBancariosIngresados=new StatusAliado({
+  $:1
+ });
+ StatusAliado.Activo=new StatusAliado({
+  $:2
+ });
+ StatusAliado.Cancelado=new StatusAliado({
+  $:4
+ });
+ StatusAliado.Inactivo=new StatusAliado({
+  $:3
+ });
+ DiaPago.Dia01={
+  $:0
+ };
+ TipoAliado=TypesV0.TipoAliado=Runtime$1.Class({
+  toString:function()
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$1($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,TipoAliado);
+ TipoAliado.Regular=new TipoAliado({
+  $:1
+ });
+ Numeric.TryParseInt32=function(s,r)
+ {
+  return Numeric.TryParse(s,-2147483648,2147483647,r);
  };
  ListModel=UI.ListModel=Runtime$1.Class({
   Append:function(item)
@@ -6006,7 +7527,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  ProzperServer_GeneratedPrintf.p=function($1)
  {
-  return $1.$==3?"Inactivo":$1.$==2?"Activo":$1.$==1?"DatosBancariosIngresados":"CuentaCreada";
+  return $1.$==4?"Cancelado":$1.$==3?"Inactivo":$1.$==2?"Activo":$1.$==1?"DatosBancariosIngresados":"CuentaCreada";
  };
  ProzperServer_GeneratedPrintf.p$9=function($1)
  {
@@ -6016,13 +7537,21 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return $1.$==3?"OtroP "+Utils.prettyPrint($1.$0):$1.$==2?"Argentina":$1.$==1?"Venezuela":"USA";
  };
+ ProzperServer_GeneratedPrintf.p$5=function($1)
+ {
+  return $1.$==2?"Otra "+Utils.prettyPrint($1.$0):$1.$==1?"Corriente":"Ahorro";
+ };
+ ProzperServer_GeneratedPrintf.p$3=function($1)
+ {
+  return $1.$==2?"OtroS "+Utils.prettyPrint($1.$0):$1.$==1?"Florida":"Texas";
+ };
  ProzperServer_JsonDecoder.j$1=function()
  {
   return ProzperServer_JsonDecoder._v$1?ProzperServer_JsonDecoder._v$1:ProzperServer_JsonDecoder._v$1=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",ProzperServer_JsonDecoder.j$2,1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
  };
  ProzperServer_JsonDecoder.j$4=function()
  {
-  return ProzperServer_JsonDecoder._v$4?ProzperServer_JsonDecoder._v$4:ProzperServer_JsonDecoder._v$4=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",Provider.DecodeArray(ProzperServer_JsonDecoder.j$20),0]]],[1,[[null,null,ProzperServer_JsonDecoder.j$20]]],[2,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$5,Provider.DecodeArray(Provider.Id())]),0]]],[3,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$5,ProzperServer_JsonDecoder.j$17,ProzperServer_JsonDecoder.j$19,Provider.DecodeArray(ProzperServer_JsonDecoder.j$6)]),0]]],[4,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$5,ProzperServer_JsonDecoder.j$17]),0]]],[5,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$5,Provider.DecodeArray(ProzperServer_JsonDecoder.j$6)]),0]]],[6,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$5,Provider.Id()]),0]]],[7,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$5,Provider.Id()]),0]]]]))();
+  return ProzperServer_JsonDecoder._v$4?ProzperServer_JsonDecoder._v$4:ProzperServer_JsonDecoder._v$4=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",Provider.DecodeArray(ProzperServer_JsonDecoder.j$21),0]]],[1,[[null,null,ProzperServer_JsonDecoder.j$21]]],[2,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$6,Provider.DecodeArray(Provider.Id())]),0]]],[3,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$6,ProzperServer_JsonDecoder.j$19,ProzperServer_JsonDecoder.j$5,Provider.DecodeArray(ProzperServer_JsonDecoder.j$8)]),0]]],[4,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$6,ProzperServer_JsonDecoder.j$19]),0]]],[5,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$6,Provider.DecodeArray(ProzperServer_JsonDecoder.j$8)]),0]]],[6,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$6,Provider.Id()]),0]]],[7,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$6,Provider.Id()]),0]]],[8,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$6,ProzperServer_JsonDecoder.j$7,ProzperServer_JsonDecoder.j$5]),0]]]]))();
  };
  ProzperServer_JsonEncoder.j$1=function()
  {
@@ -6030,51 +7559,51 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  ProzperServer_JsonEncoder.j$4=function()
  {
-  return ProzperServer_JsonEncoder._v$4?ProzperServer_JsonEncoder._v$4:ProzperServer_JsonEncoder._v$4=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",Provider.EncodeArray(ProzperServer_JsonEncoder.j$20),0]]],[1,[[null,null,ProzperServer_JsonEncoder.j$20]]],[2,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$5,Provider.EncodeArray(Provider.Id())]),0]]],[3,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$5,ProzperServer_JsonEncoder.j$17,ProzperServer_JsonEncoder.j$19,Provider.EncodeArray(ProzperServer_JsonEncoder.j$6)]),0]]],[4,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$5,ProzperServer_JsonEncoder.j$17]),0]]],[5,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$5,Provider.EncodeArray(ProzperServer_JsonEncoder.j$6)]),0]]],[6,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$5,Provider.Id()]),0]]],[7,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$5,Provider.Id()]),0]]]]))();
+  return ProzperServer_JsonEncoder._v$4?ProzperServer_JsonEncoder._v$4:ProzperServer_JsonEncoder._v$4=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",Provider.EncodeArray(ProzperServer_JsonEncoder.j$21),0]]],[1,[[null,null,ProzperServer_JsonEncoder.j$21]]],[2,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$6,Provider.EncodeArray(Provider.Id())]),0]]],[3,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$6,ProzperServer_JsonEncoder.j$19,ProzperServer_JsonEncoder.j$5,Provider.EncodeArray(ProzperServer_JsonEncoder.j$8)]),0]]],[4,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$6,ProzperServer_JsonEncoder.j$19]),0]]],[5,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$6,Provider.EncodeArray(ProzperServer_JsonEncoder.j$8)]),0]]],[6,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$6,Provider.Id()]),0]]],[7,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$6,Provider.Id()]),0]]],[8,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$6,ProzperServer_JsonEncoder.j$7,ProzperServer_JsonEncoder.j$5]),0]]]]))();
  };
- ProzperServer_JsonDecoder.j$33=function()
+ ProzperServer_JsonDecoder.j$48=function()
  {
-  return ProzperServer_JsonDecoder._v$33?ProzperServer_JsonDecoder._v$33:ProzperServer_JsonDecoder._v$33=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.Id(),1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
+  return ProzperServer_JsonDecoder._v$48?ProzperServer_JsonDecoder._v$48:ProzperServer_JsonDecoder._v$48=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.DecodeArray(Provider.DecodeTuple([ProzperServer_JsonDecoder.j$6,Provider.DecodeArray(ProzperServer_JsonDecoder.j$34)])),1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
  };
- ProzperServer_JsonDecoder.j$5=function()
+ ProzperServer_JsonDecoder.j$6=function()
  {
-  return ProzperServer_JsonDecoder._v$5?ProzperServer_JsonDecoder._v$5:ProzperServer_JsonDecoder._v$5=(Provider.DecodeUnion(IdAliado,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonDecoder._v$6?ProzperServer_JsonDecoder._v$6:ProzperServer_JsonDecoder._v$6=(Provider.DecodeUnion(IdAliado,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
  };
- ProzperServer_JsonEncoder.j$33=function()
+ ProzperServer_JsonEncoder.j$48=function()
  {
-  return ProzperServer_JsonEncoder._v$33?ProzperServer_JsonEncoder._v$33:ProzperServer_JsonEncoder._v$33=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.Id(),1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
+  return ProzperServer_JsonEncoder._v$48?ProzperServer_JsonEncoder._v$48:ProzperServer_JsonEncoder._v$48=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.EncodeArray(Provider.EncodeTuple([ProzperServer_JsonEncoder.j$6,Provider.EncodeArray(ProzperServer_JsonEncoder.j$34)])),1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
  };
- ProzperServer_JsonEncoder.j$5=function()
+ ProzperServer_JsonEncoder.j$6=function()
  {
-  return ProzperServer_JsonEncoder._v$5?ProzperServer_JsonEncoder._v$5:ProzperServer_JsonEncoder._v$5=(Provider.EncodeUnion(IdAliado,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonEncoder._v$6?ProzperServer_JsonEncoder._v$6:ProzperServer_JsonEncoder._v$6=(Provider.EncodeUnion(IdAliado,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
  };
- ProzperServer_GeneratedPrintf.p$8=function($1)
+ ProzperServer_JsonDecoder.j$32=function()
  {
-  return $1.$==3?"Voip":$1.$==2?"Habitacion":$1.$==1?"Oficina":"Movil";
+  return ProzperServer_JsonDecoder._v$32?ProzperServer_JsonDecoder._v$32:ProzperServer_JsonDecoder._v$32=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.Id(),1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$32=function()
+ {
+  return ProzperServer_JsonEncoder._v$32?ProzperServer_JsonEncoder._v$32:ProzperServer_JsonEncoder._v$32=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.Id(),1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
  };
  ProzperServer_GeneratedPrintf.p$7=function($1)
  {
   return $1.$==3?"Otro "+Utils.prettyPrint($1.$0):$1.$==2?"ServicioPostal":$1.$==1?"Oficina":"Habitacion";
  };
- ProzperServer_GeneratedPrintf.p$3=function($1)
+ ProzperServer_GeneratedPrintf.p$8=function($1)
  {
-  return $1.$==2?"OtroS "+Utils.prettyPrint($1.$0):$1.$==1?"Florida":"Texas";
+  return $1.$==3?"Voip":$1.$==2?"Habitacion":$1.$==1?"Oficina":"Movil";
  };
  ProzperServer_GeneratedPrintf.p$4=function($1)
  {
   return $1.$==3?"Otra "+Utils.prettyPrint($1.$0):$1.$==2?"Amex":$1.$==1?"MasterCard":"Visa";
  };
- ProzperServer_GeneratedPrintf.p$5=function($1)
+ ProzperServer_JsonDecoder.j$31=function()
  {
-  return $1.$==2?"Otra "+Utils.prettyPrint($1.$0):$1.$==1?"Corriente":"Ahorro";
+  return ProzperServer_JsonDecoder._v$31?ProzperServer_JsonDecoder._v$31:ProzperServer_JsonDecoder._v$31=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.DecodeTuple([Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id())]),1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
  };
- ProzperServer_JsonDecoder.j$32=function()
+ ProzperServer_JsonEncoder.j$31=function()
  {
-  return ProzperServer_JsonDecoder._v$32?ProzperServer_JsonDecoder._v$32:ProzperServer_JsonDecoder._v$32=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.DecodeTuple([Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id())]),1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
- };
- ProzperServer_JsonEncoder.j$32=function()
- {
-  return ProzperServer_JsonEncoder._v$32?ProzperServer_JsonEncoder._v$32:ProzperServer_JsonEncoder._v$32=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.EncodeTuple([Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id())]),1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
+  return ProzperServer_JsonEncoder._v$31?ProzperServer_JsonEncoder._v$31:ProzperServer_JsonEncoder._v$31=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.EncodeTuple([Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id())]),1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
  };
  ProzperServer_JsonDecoder.j$2=function()
  {
@@ -6084,21 +7613,25 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return ProzperServer_JsonDecoder._v$3?ProzperServer_JsonDecoder._v$3:ProzperServer_JsonDecoder._v$3=(Provider.DecodeUnion(ResultMessage,"$",[[0,[]],[1,[["$0","Item",Provider.Id(),0]]],[2,[["$0","Item",Provider.Id(),0]]],[3,[["$0","Item",Provider.Id(),0]]],[4,[["$0","Item",Provider.Id(),0]]],[5,[["$0","Item1",Provider.Id(),0],["$1","Item2",Provider.Id(),0]]],[6,[["$0","Item",Provider.DecodeArray(ProzperServer_JsonDecoder.j$3),0]]]]))();
  };
- ProzperServer_JsonDecoder.j$20=function()
+ ProzperServer_JsonDecoder.j$21=function()
  {
-  return ProzperServer_JsonDecoder._v$20?ProzperServer_JsonDecoder._v$20:ProzperServer_JsonDecoder._v$20=(Provider.DecodeRecord(void 0,[["id",ProzperServer_JsonDecoder.j$5,0],["authorizeIdR",ProzperServer_JsonDecoder.j$21,0],["idPadreO",ProzperServer_JsonDecoder.j$5,1],["datosPersonales",ProzperServer_JsonDecoder.j$17,0],["contactos",Provider.DecodeArray(ProzperServer_JsonDecoder.j$6),0],["identificacion",Provider.DecodeArray(ProzperServer_JsonDecoder.j$23),0],["isInternal",Provider.Id(),0],["status",ProzperServer_JsonDecoder.j$27,0],["tipo",ProzperServer_JsonDecoder.j$28,0],["fechaRegistro",Provider.DecodeDateTime(),0],["fechaStatus",Provider.DecodeDateTime(),0],["nReferidos",Provider.Id(),0],["nRefActivos",Provider.Id(),0],["nDescendientes",Provider.Id(),0],["nDescActivos",Provider.Id(),0],["comision",Provider.Id(),0],["nivel",Provider.Id(),0]]))();
- };
- ProzperServer_JsonDecoder.j$17=function()
- {
-  return ProzperServer_JsonDecoder._v$17?ProzperServer_JsonDecoder._v$17:ProzperServer_JsonDecoder._v$17=(Provider.DecodeRecord(void 0,[["titulo",Provider.Id(),1],["nombre1",Provider.Id(),0],["nombre2",Provider.Id(),0],["apellido1",Provider.Id(),0],["apellido2",Provider.Id(),0],["nacionalidad",ProzperServer_JsonDecoder.j$15,0],["genero",ProzperServer_JsonDecoder.j$18,0],["fechaNacimiento",Provider.DecodeDateTime(),0]]))();
+  return ProzperServer_JsonDecoder._v$21?ProzperServer_JsonDecoder._v$21:ProzperServer_JsonDecoder._v$21=(Provider.DecodeRecord(void 0,[["id",ProzperServer_JsonDecoder.j$6,0],["idPadreO",ProzperServer_JsonDecoder.j$6,1],["datosPersonales",ProzperServer_JsonDecoder.j$19,0],["contactos",Provider.DecodeArray(ProzperServer_JsonDecoder.j$8),0],["identificacion",Provider.DecodeArray(ProzperServer_JsonDecoder.j$22),0],["isInternal",Provider.Id(),0],["status",ProzperServer_JsonDecoder.j$7,0],["diaPago",ProzperServer_JsonDecoder.j$26,0],["tipo",ProzperServer_JsonDecoder.j$27,0],["fechaRegistro",Provider.DecodeDateTime(),0],["fechaStatus",Provider.DecodeDateTime(),0],["nReferidos",Provider.Id(),0],["nRefActivos",Provider.Id(),0],["nDescendientes",Provider.Id(),0],["nDescActivos",Provider.Id(),0],["comision",Provider.Id(),0],["nivel",Provider.Id(),0]]))();
  };
  ProzperServer_JsonDecoder.j$19=function()
  {
-  return ProzperServer_JsonDecoder._v$19?ProzperServer_JsonDecoder._v$19:ProzperServer_JsonDecoder._v$19=(Provider.DecodeUnion(void 0,"$",[null,[1,[["$0","Value",ProzperServer_JsonDecoder.j$5,0]]]]))();
+  return ProzperServer_JsonDecoder._v$19?ProzperServer_JsonDecoder._v$19:ProzperServer_JsonDecoder._v$19=(Provider.DecodeRecord(void 0,[["titulo",Provider.Id(),1],["nombre1",Provider.Id(),0],["nombre2",Provider.Id(),0],["apellido1",Provider.Id(),0],["apellido2",Provider.Id(),0],["nacionalidad",ProzperServer_JsonDecoder.j$17,0],["genero",ProzperServer_JsonDecoder.j$20,0],["fechaNacimiento",Provider.DecodeDateTime(),0]]))();
  };
- ProzperServer_JsonDecoder.j$6=function()
+ ProzperServer_JsonDecoder.j$5=function()
  {
-  return ProzperServer_JsonDecoder._v$6?ProzperServer_JsonDecoder._v$6:ProzperServer_JsonDecoder._v$6=(Provider.DecodeUnion(void 0,"$",[[0,[[null,null,ProzperServer_JsonDecoder.j$10]]],[1,[[null,null,ProzperServer_JsonDecoder.j$9]]],[2,[[null,null,ProzperServer_JsonDecoder.j$7]]],[3,[["$0","Item",Provider.Id(),0]]],[4,[["$0","Item",Provider.Id(),0]]],[5,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonDecoder._v$5?ProzperServer_JsonDecoder._v$5:ProzperServer_JsonDecoder._v$5=(Provider.DecodeUnion(void 0,"$",[null,[1,[["$0","Value",ProzperServer_JsonDecoder.j$6,0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$8=function()
+ {
+  return ProzperServer_JsonDecoder._v$8?ProzperServer_JsonDecoder._v$8:ProzperServer_JsonDecoder._v$8=(Provider.DecodeUnion(void 0,"$",[[0,[[null,null,ProzperServer_JsonDecoder.j$12]]],[1,[[null,null,ProzperServer_JsonDecoder.j$11]]],[2,[[null,null,ProzperServer_JsonDecoder.j$9]]],[3,[["$0","Item",Provider.Id(),0]]],[4,[["$0","Item",Provider.Id(),0]]],[5,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$7=function()
+ {
+  return ProzperServer_JsonDecoder._v$7?ProzperServer_JsonDecoder._v$7:ProzperServer_JsonDecoder._v$7=(Provider.DecodeUnion(StatusAliado,"$",[[0,[]],[1,[]],[2,[]],[3,[]],[4,[]]]))();
  };
  ProzperServer_JsonEncoder.j$2=function()
  {
@@ -6108,425 +7641,289 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return ProzperServer_JsonEncoder._v$3?ProzperServer_JsonEncoder._v$3:ProzperServer_JsonEncoder._v$3=(Provider.EncodeUnion(ResultMessage,"$",[[0,[]],[1,[["$0","Item",Provider.Id(),0]]],[2,[["$0","Item",Provider.Id(),0]]],[3,[["$0","Item",Provider.Id(),0]]],[4,[["$0","Item",Provider.Id(),0]]],[5,[["$0","Item1",Provider.Id(),0],["$1","Item2",Provider.Id(),0]]],[6,[["$0","Item",Provider.EncodeArray(ProzperServer_JsonEncoder.j$3),0]]]]))();
  };
- ProzperServer_JsonEncoder.j$20=function()
+ ProzperServer_JsonEncoder.j$21=function()
  {
-  return ProzperServer_JsonEncoder._v$20?ProzperServer_JsonEncoder._v$20:ProzperServer_JsonEncoder._v$20=(Provider.EncodeRecord(void 0,[["id",ProzperServer_JsonEncoder.j$5,0],["authorizeIdR",ProzperServer_JsonEncoder.j$21,0],["idPadreO",ProzperServer_JsonEncoder.j$5,1],["datosPersonales",ProzperServer_JsonEncoder.j$17,0],["contactos",Provider.EncodeArray(ProzperServer_JsonEncoder.j$6),0],["identificacion",Provider.EncodeArray(ProzperServer_JsonEncoder.j$23),0],["isInternal",Provider.Id(),0],["status",ProzperServer_JsonEncoder.j$27,0],["tipo",ProzperServer_JsonEncoder.j$28,0],["fechaRegistro",Provider.EncodeDateTime(),0],["fechaStatus",Provider.EncodeDateTime(),0],["nReferidos",Provider.Id(),0],["nRefActivos",Provider.Id(),0],["nDescendientes",Provider.Id(),0],["nDescActivos",Provider.Id(),0],["comision",Provider.Id(),0],["nivel",Provider.Id(),0]]))();
- };
- ProzperServer_JsonEncoder.j$17=function()
- {
-  return ProzperServer_JsonEncoder._v$17?ProzperServer_JsonEncoder._v$17:ProzperServer_JsonEncoder._v$17=(Provider.EncodeRecord(void 0,[["titulo",Provider.Id(),1],["nombre1",Provider.Id(),0],["nombre2",Provider.Id(),0],["apellido1",Provider.Id(),0],["apellido2",Provider.Id(),0],["nacionalidad",ProzperServer_JsonEncoder.j$15,0],["genero",ProzperServer_JsonEncoder.j$18,0],["fechaNacimiento",Provider.EncodeDateTime(),0]]))();
+  return ProzperServer_JsonEncoder._v$21?ProzperServer_JsonEncoder._v$21:ProzperServer_JsonEncoder._v$21=(Provider.EncodeRecord(void 0,[["id",ProzperServer_JsonEncoder.j$6,0],["idPadreO",ProzperServer_JsonEncoder.j$6,1],["datosPersonales",ProzperServer_JsonEncoder.j$19,0],["contactos",Provider.EncodeArray(ProzperServer_JsonEncoder.j$8),0],["identificacion",Provider.EncodeArray(ProzperServer_JsonEncoder.j$22),0],["isInternal",Provider.Id(),0],["status",ProzperServer_JsonEncoder.j$7,0],["diaPago",ProzperServer_JsonEncoder.j$26,0],["tipo",ProzperServer_JsonEncoder.j$27,0],["fechaRegistro",Provider.EncodeDateTime(),0],["fechaStatus",Provider.EncodeDateTime(),0],["nReferidos",Provider.Id(),0],["nRefActivos",Provider.Id(),0],["nDescendientes",Provider.Id(),0],["nDescActivos",Provider.Id(),0],["comision",Provider.Id(),0],["nivel",Provider.Id(),0]]))();
  };
  ProzperServer_JsonEncoder.j$19=function()
  {
-  return ProzperServer_JsonEncoder._v$19?ProzperServer_JsonEncoder._v$19:ProzperServer_JsonEncoder._v$19=(Provider.EncodeUnion(void 0,"$",[null,[1,[["$0","Value",ProzperServer_JsonEncoder.j$5,0]]]]))();
+  return ProzperServer_JsonEncoder._v$19?ProzperServer_JsonEncoder._v$19:ProzperServer_JsonEncoder._v$19=(Provider.EncodeRecord(void 0,[["titulo",Provider.Id(),1],["nombre1",Provider.Id(),0],["nombre2",Provider.Id(),0],["apellido1",Provider.Id(),0],["apellido2",Provider.Id(),0],["nacionalidad",ProzperServer_JsonEncoder.j$17,0],["genero",ProzperServer_JsonEncoder.j$20,0],["fechaNacimiento",Provider.EncodeDateTime(),0]]))();
  };
- ProzperServer_JsonEncoder.j$6=function()
+ ProzperServer_JsonEncoder.j$5=function()
  {
-  return ProzperServer_JsonEncoder._v$6?ProzperServer_JsonEncoder._v$6:ProzperServer_JsonEncoder._v$6=(Provider.EncodeUnion(void 0,"$",[[0,[[null,null,ProzperServer_JsonEncoder.j$10]]],[1,[[null,null,ProzperServer_JsonEncoder.j$9]]],[2,[[null,null,ProzperServer_JsonEncoder.j$7]]],[3,[["$0","Item",Provider.Id(),0]]],[4,[["$0","Item",Provider.Id(),0]]],[5,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$29=function()
- {
-  return ProzperServer_JsonDecoder._v$29?ProzperServer_JsonDecoder._v$29:ProzperServer_JsonDecoder._v$29=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",ProzperServer_JsonDecoder.j$30,1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
- };
- ProzperServer_JsonEncoder.j$29=function()
- {
-  return ProzperServer_JsonEncoder._v$29?ProzperServer_JsonEncoder._v$29:ProzperServer_JsonEncoder._v$29=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",ProzperServer_JsonEncoder.j$30,1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
- };
- ProzperServer_JsonDecoder.j$39=function()
- {
-  return ProzperServer_JsonDecoder._v$39?ProzperServer_JsonDecoder._v$39:ProzperServer_JsonDecoder._v$39=(Provider.DecodeRecord(void 0,[["titular",Provider.Id(),0],["tipoTarjeta",ProzperServer_JsonDecoder.j$40,0],["numero",ProzperServer_JsonDecoder.j$41,0],["expiracion",ProzperServer_JsonDecoder.j$42,0]]))();
- };
- ProzperServer_JsonEncoder.j$39=function()
- {
-  return ProzperServer_JsonEncoder._v$39?ProzperServer_JsonEncoder._v$39:ProzperServer_JsonEncoder._v$39=(Provider.EncodeRecord(void 0,[["titular",Provider.Id(),0],["tipoTarjeta",ProzperServer_JsonEncoder.j$40,0],["numero",ProzperServer_JsonEncoder.j$41,0],["expiracion",ProzperServer_JsonEncoder.j$42,0]]))();
- };
- ProzperServer_JsonDecoder.j$44=function()
- {
-  return ProzperServer_JsonDecoder._v$44?ProzperServer_JsonDecoder._v$44:ProzperServer_JsonDecoder._v$44=(Provider.DecodeRecord(void 0,[["titular",Provider.Id(),0],["banco",Provider.Id(),0],["tipo",ProzperServer_JsonDecoder.j$45,0],["numero",ProzperServer_JsonDecoder.j$46,0],["routing",ProzperServer_JsonDecoder.j$47,0]]))();
- };
- ProzperServer_JsonEncoder.j$44=function()
- {
-  return ProzperServer_JsonEncoder._v$44?ProzperServer_JsonEncoder._v$44:ProzperServer_JsonEncoder._v$44=(Provider.EncodeRecord(void 0,[["titular",Provider.Id(),0],["banco",Provider.Id(),0],["tipo",ProzperServer_JsonEncoder.j$45,0],["numero",ProzperServer_JsonEncoder.j$46,0],["routing",ProzperServer_JsonEncoder.j$47,0]]))();
- };
- ProzperServer_JsonDecoder.j$21=function()
- {
-  return ProzperServer_JsonDecoder._v$21?ProzperServer_JsonDecoder._v$21:ProzperServer_JsonDecoder._v$21=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","ResultValue",ProzperServer_JsonDecoder.j$22,0]]],[1,[["$0","ErrorValue",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$23=function()
- {
-  return ProzperServer_JsonDecoder._v$23?ProzperServer_JsonDecoder._v$23:ProzperServer_JsonDecoder._v$23=(Provider.DecodeRecord(void 0,[["emisor",ProzperServer_JsonDecoder.j$24,0],["documento",ProzperServer_JsonDecoder.j$26,0],["emision",Provider.DecodeDateTime(),0],["vence",Provider.DecodeDateTime(),0]]))();
- };
- ProzperServer_JsonDecoder.j$27=function()
- {
-  return ProzperServer_JsonDecoder._v$27?ProzperServer_JsonDecoder._v$27:ProzperServer_JsonDecoder._v$27=(Provider.DecodeUnion(StatusAliado,"$",[[0,[]],[1,[]],[2,[]],[3,[]]]))();
- };
- ProzperServer_JsonDecoder.j$28=function()
- {
-  return ProzperServer_JsonDecoder._v$28?ProzperServer_JsonDecoder._v$28:ProzperServer_JsonDecoder._v$28=(Provider.DecodeUnion(TipoAliado,"$",[[0,[]],[1,[]]]))();
- };
- ProzperServer_JsonDecoder.j$15=function()
- {
-  return ProzperServer_JsonDecoder._v$15?ProzperServer_JsonDecoder._v$15:ProzperServer_JsonDecoder._v$15=(Provider.DecodeUnion(Pais,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$18=function()
- {
-  return ProzperServer_JsonDecoder._v$18?ProzperServer_JsonDecoder._v$18:ProzperServer_JsonDecoder._v$18=(Provider.DecodeUnion(void 0,"$",[[0,[]],[1,[]],[2,[]]]))();
- };
- ProzperServer_JsonDecoder.j$10=function()
- {
-  return ProzperServer_JsonDecoder._v$10?ProzperServer_JsonDecoder._v$10:ProzperServer_JsonDecoder._v$10=(Provider.DecodeRecord(void 0,[["authorizeIdR",ProzperServer_JsonDecoder.j$11,0],["tipoDireccion",ProzperServer_JsonDecoder.j$13,0],["linea1",Provider.Id(),0],["linea2",Provider.Id(),0],["ciudad",Provider.Id(),0],["estado",ProzperServer_JsonDecoder.j$14,0],["pais",ProzperServer_JsonDecoder.j$15,0],["zonaPostal",ProzperServer_JsonDecoder.j$16,0]]))();
- };
- ProzperServer_JsonDecoder.j$9=function()
- {
-  return ProzperServer_JsonDecoder._v$9?ProzperServer_JsonDecoder._v$9:ProzperServer_JsonDecoder._v$9=(Provider.DecodeRecord(CorreoElectronico,[["email",Provider.Id(),0],["enviado",Provider.DecodeDateTime(),1],["recibido",Provider.DecodeDateTime(),1]]))();
- };
- ProzperServer_JsonDecoder.j$7=function()
- {
-  return ProzperServer_JsonDecoder._v$7?ProzperServer_JsonDecoder._v$7:ProzperServer_JsonDecoder._v$7=(Provider.DecodeRecord(void 0,[["tipoTelefono",ProzperServer_JsonDecoder.j$8,0],["codigoPais",Provider.Id(),0],["codigoArea",Provider.Id(),0],["numero",Provider.Id(),0],["extension",Provider.Id(),0],["mensajes",Provider.Id(),0]]))();
- };
- ProzperServer_JsonEncoder.j$21=function()
- {
-  return ProzperServer_JsonEncoder._v$21?ProzperServer_JsonEncoder._v$21:ProzperServer_JsonEncoder._v$21=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","ResultValue",ProzperServer_JsonEncoder.j$22,0]]],[1,[["$0","ErrorValue",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$23=function()
- {
-  return ProzperServer_JsonEncoder._v$23?ProzperServer_JsonEncoder._v$23:ProzperServer_JsonEncoder._v$23=(Provider.EncodeRecord(void 0,[["emisor",ProzperServer_JsonEncoder.j$24,0],["documento",ProzperServer_JsonEncoder.j$26,0],["emision",Provider.EncodeDateTime(),0],["vence",Provider.EncodeDateTime(),0]]))();
- };
- ProzperServer_JsonEncoder.j$27=function()
- {
-  return ProzperServer_JsonEncoder._v$27?ProzperServer_JsonEncoder._v$27:ProzperServer_JsonEncoder._v$27=(Provider.EncodeUnion(StatusAliado,"$",[[0,[]],[1,[]],[2,[]],[3,[]]]))();
- };
- ProzperServer_JsonEncoder.j$28=function()
- {
-  return ProzperServer_JsonEncoder._v$28?ProzperServer_JsonEncoder._v$28:ProzperServer_JsonEncoder._v$28=(Provider.EncodeUnion(TipoAliado,"$",[[0,[]],[1,[]]]))();
- };
- ProzperServer_JsonEncoder.j$15=function()
- {
-  return ProzperServer_JsonEncoder._v$15?ProzperServer_JsonEncoder._v$15:ProzperServer_JsonEncoder._v$15=(Provider.EncodeUnion(Pais,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$18=function()
- {
-  return ProzperServer_JsonEncoder._v$18?ProzperServer_JsonEncoder._v$18:ProzperServer_JsonEncoder._v$18=(Provider.EncodeUnion(void 0,"$",[[0,[]],[1,[]],[2,[]]]))();
- };
- ProzperServer_JsonEncoder.j$10=function()
- {
-  return ProzperServer_JsonEncoder._v$10?ProzperServer_JsonEncoder._v$10:ProzperServer_JsonEncoder._v$10=(Provider.EncodeRecord(void 0,[["authorizeIdR",ProzperServer_JsonEncoder.j$11,0],["tipoDireccion",ProzperServer_JsonEncoder.j$13,0],["linea1",Provider.Id(),0],["linea2",Provider.Id(),0],["ciudad",Provider.Id(),0],["estado",ProzperServer_JsonEncoder.j$14,0],["pais",ProzperServer_JsonEncoder.j$15,0],["zonaPostal",ProzperServer_JsonEncoder.j$16,0]]))();
- };
- ProzperServer_JsonEncoder.j$9=function()
- {
-  return ProzperServer_JsonEncoder._v$9?ProzperServer_JsonEncoder._v$9:ProzperServer_JsonEncoder._v$9=(Provider.EncodeRecord(CorreoElectronico,[["email",Provider.Id(),0],["enviado",Provider.EncodeDateTime(),1],["recibido",Provider.EncodeDateTime(),1]]))();
- };
- ProzperServer_JsonEncoder.j$7=function()
- {
-  return ProzperServer_JsonEncoder._v$7?ProzperServer_JsonEncoder._v$7:ProzperServer_JsonEncoder._v$7=(Provider.EncodeRecord(void 0,[["tipoTelefono",ProzperServer_JsonEncoder.j$8,0],["codigoPais",Provider.Id(),0],["codigoArea",Provider.Id(),0],["numero",Provider.Id(),0],["extension",Provider.Id(),0],["mensajes",Provider.Id(),0]]))();
- };
- ProzperServer_JsonDecoder.j$30=function()
- {
-  return ProzperServer_JsonDecoder._v$30?ProzperServer_JsonDecoder._v$30:ProzperServer_JsonDecoder._v$30=(Provider.DecodeRecord(void 0,[["idAliado",ProzperServer_JsonDecoder.j$5,0],["aliados",Provider.DecodeArray(ProzperServer_JsonDecoder.j$20),0],["anoActual",Provider.Id(),0],["periodoActual",Provider.Id(),0],["premisas",Provider.Id(),0],["nevento",Provider.Id(),0]]))();
- };
- ProzperServer_JsonEncoder.j$30=function()
- {
-  return ProzperServer_JsonEncoder._v$30?ProzperServer_JsonEncoder._v$30:ProzperServer_JsonEncoder._v$30=(Provider.EncodeRecord(void 0,[["idAliado",ProzperServer_JsonEncoder.j$5,0],["aliados",Provider.EncodeArray(ProzperServer_JsonEncoder.j$20),0],["anoActual",Provider.Id(),0],["periodoActual",Provider.Id(),0],["premisas",Provider.Id(),0],["nevento",Provider.Id(),0]]))();
- };
- ProzperServer_JsonDecoder.j$34=function()
- {
-  return ProzperServer_JsonDecoder._v$34?ProzperServer_JsonDecoder._v$34:ProzperServer_JsonDecoder._v$34=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.DecodeArray(ProzperServer_JsonDecoder.j$35),1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
- };
- ProzperServer_JsonEncoder.j$34=function()
- {
-  return ProzperServer_JsonEncoder._v$34?ProzperServer_JsonEncoder._v$34:ProzperServer_JsonEncoder._v$34=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.EncodeArray(ProzperServer_JsonEncoder.j$35),1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
- };
- ProzperServer_JsonDecoder.j$40=function()
- {
-  return ProzperServer_JsonDecoder._v$40?ProzperServer_JsonDecoder._v$40:ProzperServer_JsonDecoder._v$40=(Provider.DecodeUnion(TipoTarjeta,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$41=function()
- {
-  return ProzperServer_JsonDecoder._v$41?ProzperServer_JsonDecoder._v$41:ProzperServer_JsonDecoder._v$41=(Provider.DecodeUnion(NumeroTarjeta,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$42=function()
- {
-  return ProzperServer_JsonDecoder._v$42?ProzperServer_JsonDecoder._v$42:ProzperServer_JsonDecoder._v$42=(Provider.DecodeRecord(Expiracion,[["anio",Provider.Id(),0],["mes",Provider.Id(),0]]))();
- };
- ProzperServer_JsonEncoder.j$40=function()
- {
-  return ProzperServer_JsonEncoder._v$40?ProzperServer_JsonEncoder._v$40:ProzperServer_JsonEncoder._v$40=(Provider.EncodeUnion(TipoTarjeta,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$41=function()
- {
-  return ProzperServer_JsonEncoder._v$41?ProzperServer_JsonEncoder._v$41:ProzperServer_JsonEncoder._v$41=(Provider.EncodeUnion(NumeroTarjeta,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$42=function()
- {
-  return ProzperServer_JsonEncoder._v$42?ProzperServer_JsonEncoder._v$42:ProzperServer_JsonEncoder._v$42=(Provider.EncodeRecord(Expiracion,[["anio",Provider.Id(),0],["mes",Provider.Id(),0]]))();
- };
- ProzperServer_JsonDecoder.j$45=function()
- {
-  return ProzperServer_JsonDecoder._v$45?ProzperServer_JsonDecoder._v$45:ProzperServer_JsonDecoder._v$45=(Provider.DecodeUnion(TipoCuenta,"$",[[0,[]],[1,[]],[2,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$46=function()
- {
-  return ProzperServer_JsonDecoder._v$46?ProzperServer_JsonDecoder._v$46:ProzperServer_JsonDecoder._v$46=(Provider.DecodeUnion(NumeroCuenta,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$47=function()
- {
-  return ProzperServer_JsonDecoder._v$47?ProzperServer_JsonDecoder._v$47:ProzperServer_JsonDecoder._v$47=(Provider.DecodeUnion(RoutingNumber,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$45=function()
- {
-  return ProzperServer_JsonEncoder._v$45?ProzperServer_JsonEncoder._v$45:ProzperServer_JsonEncoder._v$45=(Provider.EncodeUnion(TipoCuenta,"$",[[0,[]],[1,[]],[2,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$46=function()
- {
-  return ProzperServer_JsonEncoder._v$46?ProzperServer_JsonEncoder._v$46:ProzperServer_JsonEncoder._v$46=(Provider.EncodeUnion(NumeroCuenta,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$47=function()
- {
-  return ProzperServer_JsonEncoder._v$47?ProzperServer_JsonEncoder._v$47:ProzperServer_JsonEncoder._v$47=(Provider.EncodeUnion(RoutingNumber,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$22=function()
- {
-  return ProzperServer_JsonDecoder._v$22?ProzperServer_JsonDecoder._v$22:ProzperServer_JsonDecoder._v$22=(Provider.DecodeUnion(IdAuthorize,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$24=function()
- {
-  return ProzperServer_JsonDecoder._v$24?ProzperServer_JsonDecoder._v$24:ProzperServer_JsonDecoder._v$24=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",ProzperServer_JsonDecoder.j$15,0]]],[1,[["$0","Item",ProzperServer_JsonDecoder.j$25,0]]]]))();
- };
- ProzperServer_JsonDecoder.j$26=function()
- {
-  return ProzperServer_JsonDecoder._v$26?ProzperServer_JsonDecoder._v$26:ProzperServer_JsonDecoder._v$26=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",Provider.Id(),0]]],[1,[["$0","Item",Provider.Id(),0]]],[2,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$11=function()
- {
-  return ProzperServer_JsonDecoder._v$11?ProzperServer_JsonDecoder._v$11:ProzperServer_JsonDecoder._v$11=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","ResultValue",ProzperServer_JsonDecoder.j$12,0]]],[1,[["$0","ErrorValue",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$13=function()
- {
-  return ProzperServer_JsonDecoder._v$13?ProzperServer_JsonDecoder._v$13:ProzperServer_JsonDecoder._v$13=(Provider.DecodeUnion(TipoDireccion,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$14=function()
- {
-  return ProzperServer_JsonDecoder._v$14?ProzperServer_JsonDecoder._v$14:ProzperServer_JsonDecoder._v$14=(Provider.DecodeUnion(Estado,"$",[[0,[]],[1,[]],[2,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$16=function()
- {
-  return ProzperServer_JsonDecoder._v$16?ProzperServer_JsonDecoder._v$16:ProzperServer_JsonDecoder._v$16=(Provider.DecodeUnion(ZonaPostal,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$8=function()
- {
-  return ProzperServer_JsonDecoder._v$8?ProzperServer_JsonDecoder._v$8:ProzperServer_JsonDecoder._v$8=(Provider.DecodeUnion(TipoTelefono,"$",[[0,[]],[1,[]],[2,[]],[3,[]]]))();
- };
- ProzperServer_JsonEncoder.j$22=function()
- {
-  return ProzperServer_JsonEncoder._v$22?ProzperServer_JsonEncoder._v$22:ProzperServer_JsonEncoder._v$22=(Provider.EncodeUnion(IdAuthorize,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$24=function()
- {
-  return ProzperServer_JsonEncoder._v$24?ProzperServer_JsonEncoder._v$24:ProzperServer_JsonEncoder._v$24=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",ProzperServer_JsonEncoder.j$15,0]]],[1,[["$0","Item",ProzperServer_JsonEncoder.j$25,0]]]]))();
- };
- ProzperServer_JsonEncoder.j$26=function()
- {
-  return ProzperServer_JsonEncoder._v$26?ProzperServer_JsonEncoder._v$26:ProzperServer_JsonEncoder._v$26=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",Provider.Id(),0]]],[1,[["$0","Item",Provider.Id(),0]]],[2,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$11=function()
- {
-  return ProzperServer_JsonEncoder._v$11?ProzperServer_JsonEncoder._v$11:ProzperServer_JsonEncoder._v$11=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","ResultValue",ProzperServer_JsonEncoder.j$12,0]]],[1,[["$0","ErrorValue",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$13=function()
- {
-  return ProzperServer_JsonEncoder._v$13?ProzperServer_JsonEncoder._v$13:ProzperServer_JsonEncoder._v$13=(Provider.EncodeUnion(TipoDireccion,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$14=function()
- {
-  return ProzperServer_JsonEncoder._v$14?ProzperServer_JsonEncoder._v$14:ProzperServer_JsonEncoder._v$14=(Provider.EncodeUnion(Estado,"$",[[0,[]],[1,[]],[2,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$16=function()
- {
-  return ProzperServer_JsonEncoder._v$16?ProzperServer_JsonEncoder._v$16:ProzperServer_JsonEncoder._v$16=(Provider.EncodeUnion(ZonaPostal,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonEncoder._v$5?ProzperServer_JsonEncoder._v$5:ProzperServer_JsonEncoder._v$5=(Provider.EncodeUnion(void 0,"$",[null,[1,[["$0","Value",ProzperServer_JsonEncoder.j$6,0]]]]))();
  };
  ProzperServer_JsonEncoder.j$8=function()
  {
-  return ProzperServer_JsonEncoder._v$8?ProzperServer_JsonEncoder._v$8:ProzperServer_JsonEncoder._v$8=(Provider.EncodeUnion(TipoTelefono,"$",[[0,[]],[1,[]],[2,[]],[3,[]]]))();
+  return ProzperServer_JsonEncoder._v$8?ProzperServer_JsonEncoder._v$8:ProzperServer_JsonEncoder._v$8=(Provider.EncodeUnion(void 0,"$",[[0,[[null,null,ProzperServer_JsonEncoder.j$12]]],[1,[[null,null,ProzperServer_JsonEncoder.j$11]]],[2,[[null,null,ProzperServer_JsonEncoder.j$9]]],[3,[["$0","Item",Provider.Id(),0]]],[4,[["$0","Item",Provider.Id(),0]]],[5,[["$0","Item",Provider.Id(),0]]]]))();
  };
- ProzperServer_JsonDecoder.j$35=function()
+ ProzperServer_JsonEncoder.j$7=function()
  {
-  return ProzperServer_JsonDecoder._v$35?ProzperServer_JsonDecoder._v$35:ProzperServer_JsonDecoder._v$35=(Provider.DecodeRecord(void 0,[["nombre",Provider.Id(),0],["authorizeIdR",ProzperServer_JsonDecoder.j$36,0],["cuentaPago",ProzperServer_JsonDecoder.j$38,0]]))();
+  return ProzperServer_JsonEncoder._v$7?ProzperServer_JsonEncoder._v$7:ProzperServer_JsonEncoder._v$7=(Provider.EncodeUnion(StatusAliado,"$",[[0,[]],[1,[]],[2,[]],[3,[]],[4,[]]]))();
  };
- ProzperServer_JsonEncoder.j$35=function()
+ ProzperServer_JsonDecoder.j$28=function()
  {
-  return ProzperServer_JsonEncoder._v$35?ProzperServer_JsonEncoder._v$35:ProzperServer_JsonEncoder._v$35=(Provider.EncodeRecord(void 0,[["nombre",Provider.Id(),0],["authorizeIdR",ProzperServer_JsonEncoder.j$36,0],["cuentaPago",ProzperServer_JsonEncoder.j$38,0]]))();
+  return ProzperServer_JsonDecoder._v$28?ProzperServer_JsonDecoder._v$28:ProzperServer_JsonDecoder._v$28=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",ProzperServer_JsonDecoder.j$29,1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
  };
- ProzperServer_JsonDecoder.j$25=function()
+ ProzperServer_JsonEncoder.j$28=function()
  {
-  return ProzperServer_JsonDecoder._v$25?ProzperServer_JsonDecoder._v$25:ProzperServer_JsonDecoder._v$25=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",ProzperServer_JsonDecoder.j$14,0]]]]))();
+  return ProzperServer_JsonEncoder._v$28?ProzperServer_JsonEncoder._v$28:ProzperServer_JsonEncoder._v$28=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",ProzperServer_JsonEncoder.j$29,1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
  };
- ProzperServer_JsonDecoder.j$12=function()
+ ProzperServer_JsonDecoder.j$47=function()
  {
-  return ProzperServer_JsonDecoder._v$12?ProzperServer_JsonDecoder._v$12:ProzperServer_JsonDecoder._v$12=(Provider.DecodeUnion(IdAddress,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$25=function()
- {
-  return ProzperServer_JsonEncoder._v$25?ProzperServer_JsonEncoder._v$25:ProzperServer_JsonEncoder._v$25=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",ProzperServer_JsonEncoder.j$14,0]]]]))();
- };
- ProzperServer_JsonEncoder.j$12=function()
- {
-  return ProzperServer_JsonEncoder._v$12?ProzperServer_JsonEncoder._v$12:ProzperServer_JsonEncoder._v$12=(Provider.EncodeUnion(IdAddress,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonDecoder._v$47?ProzperServer_JsonDecoder._v$47:ProzperServer_JsonDecoder._v$47=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.Id(),1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
  };
  ProzperServer_JsonDecoder.j$36=function()
  {
-  return ProzperServer_JsonDecoder._v$36?ProzperServer_JsonDecoder._v$36:ProzperServer_JsonDecoder._v$36=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","ResultValue",ProzperServer_JsonDecoder.j$37,0]]],[1,[["$0","ErrorValue",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonDecoder._v$36?ProzperServer_JsonDecoder._v$36:ProzperServer_JsonDecoder._v$36=(Provider.DecodeUnion(IdPayment,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
  };
- ProzperServer_JsonDecoder.j$38=function()
+ ProzperServer_JsonEncoder.j$47=function()
  {
-  return ProzperServer_JsonDecoder._v$38?ProzperServer_JsonDecoder._v$38:ProzperServer_JsonDecoder._v$38=(Provider.DecodeUnion(void 0,"$",[[0,[[null,null,ProzperServer_JsonDecoder.j$44]]],[1,[[null,null,ProzperServer_JsonDecoder.j$39]]],[2,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonEncoder._v$47?ProzperServer_JsonEncoder._v$47:ProzperServer_JsonEncoder._v$47=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.Id(),1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
  };
  ProzperServer_JsonEncoder.j$36=function()
  {
-  return ProzperServer_JsonEncoder._v$36?ProzperServer_JsonEncoder._v$36:ProzperServer_JsonEncoder._v$36=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","ResultValue",ProzperServer_JsonEncoder.j$37,0]]],[1,[["$0","ErrorValue",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonEncoder._v$36?ProzperServer_JsonEncoder._v$36:ProzperServer_JsonEncoder._v$36=(Provider.EncodeUnion(IdPayment,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$38=function()
+ {
+  return ProzperServer_JsonDecoder._v$38?ProzperServer_JsonDecoder._v$38:ProzperServer_JsonDecoder._v$38=(Provider.DecodeRecord(void 0,[["titular",Provider.Id(),0],["tipoTarjeta",ProzperServer_JsonDecoder.j$39,0],["numero",ProzperServer_JsonDecoder.j$40,0],["expiracion",ProzperServer_JsonDecoder.j$41,0]]))();
  };
  ProzperServer_JsonEncoder.j$38=function()
  {
-  return ProzperServer_JsonEncoder._v$38?ProzperServer_JsonEncoder._v$38:ProzperServer_JsonEncoder._v$38=(Provider.EncodeUnion(void 0,"$",[[0,[[null,null,ProzperServer_JsonEncoder.j$44]]],[1,[[null,null,ProzperServer_JsonEncoder.j$39]]],[2,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonEncoder._v$38?ProzperServer_JsonEncoder._v$38:ProzperServer_JsonEncoder._v$38=(Provider.EncodeRecord(void 0,[["titular",Provider.Id(),0],["tipoTarjeta",ProzperServer_JsonEncoder.j$39,0],["numero",ProzperServer_JsonEncoder.j$40,0],["expiracion",ProzperServer_JsonEncoder.j$41,0]]))();
+ };
+ ProzperServer_JsonDecoder.j$43=function()
+ {
+  return ProzperServer_JsonDecoder._v$43?ProzperServer_JsonDecoder._v$43:ProzperServer_JsonDecoder._v$43=(Provider.DecodeRecord(void 0,[["titular",Provider.Id(),0],["banco",Provider.Id(),0],["tipo",ProzperServer_JsonDecoder.j$44,0],["numero",ProzperServer_JsonDecoder.j$45,0],["routing",ProzperServer_JsonDecoder.j$46,0]]))();
+ };
+ ProzperServer_JsonEncoder.j$43=function()
+ {
+  return ProzperServer_JsonEncoder._v$43?ProzperServer_JsonEncoder._v$43:ProzperServer_JsonEncoder._v$43=(Provider.EncodeRecord(void 0,[["titular",Provider.Id(),0],["banco",Provider.Id(),0],["tipo",ProzperServer_JsonEncoder.j$44,0],["numero",ProzperServer_JsonEncoder.j$45,0],["routing",ProzperServer_JsonEncoder.j$46,0]]))();
+ };
+ ProzperServer_JsonDecoder.j$34=function()
+ {
+  return ProzperServer_JsonDecoder._v$34?ProzperServer_JsonDecoder._v$34:ProzperServer_JsonDecoder._v$34=(Provider.DecodeRecord(void 0,[["nombre",Provider.Id(),0],["authorizeIdR",ProzperServer_JsonDecoder.j$35,0],["cuentaPago",ProzperServer_JsonDecoder.j$37,0]]))();
+ };
+ ProzperServer_JsonEncoder.j$34=function()
+ {
+  return ProzperServer_JsonEncoder._v$34?ProzperServer_JsonEncoder._v$34:ProzperServer_JsonEncoder._v$34=(Provider.EncodeRecord(void 0,[["nombre",Provider.Id(),0],["authorizeIdR",ProzperServer_JsonEncoder.j$35,0],["cuentaPago",ProzperServer_JsonEncoder.j$37,0]]))();
+ };
+ ProzperServer_JsonDecoder.j$22=function()
+ {
+  return ProzperServer_JsonDecoder._v$22?ProzperServer_JsonDecoder._v$22:ProzperServer_JsonDecoder._v$22=(Provider.DecodeRecord(void 0,[["emisor",ProzperServer_JsonDecoder.j$23,0],["documento",ProzperServer_JsonDecoder.j$25,0],["emision",Provider.DecodeDateTime(),0],["vence",Provider.DecodeDateTime(),0]]))();
+ };
+ ProzperServer_JsonDecoder.j$26=function()
+ {
+  return ProzperServer_JsonDecoder._v$26?ProzperServer_JsonDecoder._v$26:ProzperServer_JsonDecoder._v$26=(Provider.DecodeUnion(void 0,"$",[[0,[]],[1,[]],[2,[]],[3,[]],[4,[]],[5,[]]]))();
+ };
+ ProzperServer_JsonDecoder.j$27=function()
+ {
+  return ProzperServer_JsonDecoder._v$27?ProzperServer_JsonDecoder._v$27:ProzperServer_JsonDecoder._v$27=(Provider.DecodeUnion(TipoAliado,"$",[[0,[]],[1,[]]]))();
+ };
+ ProzperServer_JsonDecoder.j$17=function()
+ {
+  return ProzperServer_JsonDecoder._v$17?ProzperServer_JsonDecoder._v$17:ProzperServer_JsonDecoder._v$17=(Provider.DecodeUnion(Pais,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$20=function()
+ {
+  return ProzperServer_JsonDecoder._v$20?ProzperServer_JsonDecoder._v$20:ProzperServer_JsonDecoder._v$20=(Provider.DecodeUnion(void 0,"$",[[0,[]],[1,[]],[2,[]]]))();
+ };
+ ProzperServer_JsonDecoder.j$12=function()
+ {
+  return ProzperServer_JsonDecoder._v$12?ProzperServer_JsonDecoder._v$12:ProzperServer_JsonDecoder._v$12=(Provider.DecodeRecord(void 0,[["authorizeIdR",ProzperServer_JsonDecoder.j$13,0],["tipoDireccion",ProzperServer_JsonDecoder.j$15,0],["linea1",Provider.Id(),0],["linea2",Provider.Id(),0],["ciudad",Provider.Id(),0],["estado",ProzperServer_JsonDecoder.j$16,0],["pais",ProzperServer_JsonDecoder.j$17,0],["zonaPostal",ProzperServer_JsonDecoder.j$18,0]]))();
+ };
+ ProzperServer_JsonDecoder.j$11=function()
+ {
+  return ProzperServer_JsonDecoder._v$11?ProzperServer_JsonDecoder._v$11:ProzperServer_JsonDecoder._v$11=(Provider.DecodeRecord(CorreoElectronico,[["email",Provider.Id(),0],["enviado",Provider.DecodeDateTime(),1],["recibido",Provider.DecodeDateTime(),1]]))();
+ };
+ ProzperServer_JsonDecoder.j$9=function()
+ {
+  return ProzperServer_JsonDecoder._v$9?ProzperServer_JsonDecoder._v$9:ProzperServer_JsonDecoder._v$9=(Provider.DecodeRecord(void 0,[["tipoTelefono",ProzperServer_JsonDecoder.j$10,0],["codigoPais",Provider.Id(),0],["codigoArea",Provider.Id(),0],["numero",Provider.Id(),0],["extension",Provider.Id(),0],["mensajes",Provider.Id(),0]]))();
+ };
+ ProzperServer_JsonEncoder.j$22=function()
+ {
+  return ProzperServer_JsonEncoder._v$22?ProzperServer_JsonEncoder._v$22:ProzperServer_JsonEncoder._v$22=(Provider.EncodeRecord(void 0,[["emisor",ProzperServer_JsonEncoder.j$23,0],["documento",ProzperServer_JsonEncoder.j$25,0],["emision",Provider.EncodeDateTime(),0],["vence",Provider.EncodeDateTime(),0]]))();
+ };
+ ProzperServer_JsonEncoder.j$26=function()
+ {
+  return ProzperServer_JsonEncoder._v$26?ProzperServer_JsonEncoder._v$26:ProzperServer_JsonEncoder._v$26=(Provider.EncodeUnion(void 0,"$",[[0,[]],[1,[]],[2,[]],[3,[]],[4,[]],[5,[]]]))();
+ };
+ ProzperServer_JsonEncoder.j$27=function()
+ {
+  return ProzperServer_JsonEncoder._v$27?ProzperServer_JsonEncoder._v$27:ProzperServer_JsonEncoder._v$27=(Provider.EncodeUnion(TipoAliado,"$",[[0,[]],[1,[]]]))();
+ };
+ ProzperServer_JsonEncoder.j$17=function()
+ {
+  return ProzperServer_JsonEncoder._v$17?ProzperServer_JsonEncoder._v$17:ProzperServer_JsonEncoder._v$17=(Provider.EncodeUnion(Pais,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$20=function()
+ {
+  return ProzperServer_JsonEncoder._v$20?ProzperServer_JsonEncoder._v$20:ProzperServer_JsonEncoder._v$20=(Provider.EncodeUnion(void 0,"$",[[0,[]],[1,[]],[2,[]]]))();
+ };
+ ProzperServer_JsonEncoder.j$12=function()
+ {
+  return ProzperServer_JsonEncoder._v$12?ProzperServer_JsonEncoder._v$12:ProzperServer_JsonEncoder._v$12=(Provider.EncodeRecord(void 0,[["authorizeIdR",ProzperServer_JsonEncoder.j$13,0],["tipoDireccion",ProzperServer_JsonEncoder.j$15,0],["linea1",Provider.Id(),0],["linea2",Provider.Id(),0],["ciudad",Provider.Id(),0],["estado",ProzperServer_JsonEncoder.j$16,0],["pais",ProzperServer_JsonEncoder.j$17,0],["zonaPostal",ProzperServer_JsonEncoder.j$18,0]]))();
+ };
+ ProzperServer_JsonEncoder.j$11=function()
+ {
+  return ProzperServer_JsonEncoder._v$11?ProzperServer_JsonEncoder._v$11:ProzperServer_JsonEncoder._v$11=(Provider.EncodeRecord(CorreoElectronico,[["email",Provider.Id(),0],["enviado",Provider.EncodeDateTime(),1],["recibido",Provider.EncodeDateTime(),1]]))();
+ };
+ ProzperServer_JsonEncoder.j$9=function()
+ {
+  return ProzperServer_JsonEncoder._v$9?ProzperServer_JsonEncoder._v$9:ProzperServer_JsonEncoder._v$9=(Provider.EncodeRecord(void 0,[["tipoTelefono",ProzperServer_JsonEncoder.j$10,0],["codigoPais",Provider.Id(),0],["codigoArea",Provider.Id(),0],["numero",Provider.Id(),0],["extension",Provider.Id(),0],["mensajes",Provider.Id(),0]]))();
+ };
+ ProzperServer_JsonDecoder.j$29=function()
+ {
+  return ProzperServer_JsonDecoder._v$29?ProzperServer_JsonDecoder._v$29:ProzperServer_JsonDecoder._v$29=(Provider.DecodeRecord(void 0,[["idAliado",ProzperServer_JsonDecoder.j$6,0],["aliados",Provider.DecodeArray(ProzperServer_JsonDecoder.j$21),0],["anoActual",Provider.Id(),0],["periodoActual",Provider.Id(),0],["premisas",Provider.Id(),0],["nevento",Provider.Id(),0]]))();
+ };
+ ProzperServer_JsonEncoder.j$29=function()
+ {
+  return ProzperServer_JsonEncoder._v$29?ProzperServer_JsonEncoder._v$29:ProzperServer_JsonEncoder._v$29=(Provider.EncodeRecord(void 0,[["idAliado",ProzperServer_JsonEncoder.j$6,0],["aliados",Provider.EncodeArray(ProzperServer_JsonEncoder.j$21),0],["anoActual",Provider.Id(),0],["periodoActual",Provider.Id(),0],["premisas",Provider.Id(),0],["nevento",Provider.Id(),0]]))();
+ };
+ ProzperServer_JsonDecoder.j$33=function()
+ {
+  return ProzperServer_JsonDecoder._v$33?ProzperServer_JsonDecoder._v$33:ProzperServer_JsonDecoder._v$33=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.DecodeArray(ProzperServer_JsonDecoder.j$34),1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$33=function()
+ {
+  return ProzperServer_JsonEncoder._v$33?ProzperServer_JsonEncoder._v$33:ProzperServer_JsonEncoder._v$33=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.EncodeArray(ProzperServer_JsonEncoder.j$34),1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$39=function()
+ {
+  return ProzperServer_JsonDecoder._v$39?ProzperServer_JsonDecoder._v$39:ProzperServer_JsonDecoder._v$39=(Provider.DecodeUnion(TipoTarjeta,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$40=function()
+ {
+  return ProzperServer_JsonDecoder._v$40?ProzperServer_JsonDecoder._v$40:ProzperServer_JsonDecoder._v$40=(Provider.DecodeUnion(NumeroTarjeta,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$41=function()
+ {
+  return ProzperServer_JsonDecoder._v$41?ProzperServer_JsonDecoder._v$41:ProzperServer_JsonDecoder._v$41=(Provider.DecodeRecord(Expiracion,[["anio",Provider.Id(),0],["mes",Provider.Id(),0]]))();
+ };
+ ProzperServer_JsonEncoder.j$39=function()
+ {
+  return ProzperServer_JsonEncoder._v$39?ProzperServer_JsonEncoder._v$39:ProzperServer_JsonEncoder._v$39=(Provider.EncodeUnion(TipoTarjeta,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$40=function()
+ {
+  return ProzperServer_JsonEncoder._v$40?ProzperServer_JsonEncoder._v$40:ProzperServer_JsonEncoder._v$40=(Provider.EncodeUnion(NumeroTarjeta,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$41=function()
+ {
+  return ProzperServer_JsonEncoder._v$41?ProzperServer_JsonEncoder._v$41:ProzperServer_JsonEncoder._v$41=(Provider.EncodeRecord(Expiracion,[["anio",Provider.Id(),0],["mes",Provider.Id(),0]]))();
+ };
+ ProzperServer_JsonDecoder.j$44=function()
+ {
+  return ProzperServer_JsonDecoder._v$44?ProzperServer_JsonDecoder._v$44:ProzperServer_JsonDecoder._v$44=(Provider.DecodeUnion(TipoCuenta,"$",[[0,[]],[1,[]],[2,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$45=function()
+ {
+  return ProzperServer_JsonDecoder._v$45?ProzperServer_JsonDecoder._v$45:ProzperServer_JsonDecoder._v$45=(Provider.DecodeUnion(NumeroCuenta,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$46=function()
+ {
+  return ProzperServer_JsonDecoder._v$46?ProzperServer_JsonDecoder._v$46:ProzperServer_JsonDecoder._v$46=(Provider.DecodeUnion(RoutingNumber,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$44=function()
+ {
+  return ProzperServer_JsonEncoder._v$44?ProzperServer_JsonEncoder._v$44:ProzperServer_JsonEncoder._v$44=(Provider.EncodeUnion(TipoCuenta,"$",[[0,[]],[1,[]],[2,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$45=function()
+ {
+  return ProzperServer_JsonEncoder._v$45?ProzperServer_JsonEncoder._v$45:ProzperServer_JsonEncoder._v$45=(Provider.EncodeUnion(NumeroCuenta,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$46=function()
+ {
+  return ProzperServer_JsonEncoder._v$46?ProzperServer_JsonEncoder._v$46:ProzperServer_JsonEncoder._v$46=(Provider.EncodeUnion(RoutingNumber,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$35=function()
+ {
+  return ProzperServer_JsonDecoder._v$35?ProzperServer_JsonDecoder._v$35:ProzperServer_JsonDecoder._v$35=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","ResultValue",ProzperServer_JsonDecoder.j$36,0]]],[1,[["$0","ErrorValue",Provider.Id(),0]]]]))();
  };
  ProzperServer_JsonDecoder.j$37=function()
  {
-  return ProzperServer_JsonDecoder._v$37?ProzperServer_JsonDecoder._v$37:ProzperServer_JsonDecoder._v$37=(Provider.DecodeUnion(IdPayment,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonDecoder._v$37?ProzperServer_JsonDecoder._v$37:ProzperServer_JsonDecoder._v$37=(Provider.DecodeUnion(void 0,"$",[[0,[[null,null,ProzperServer_JsonDecoder.j$43]]],[1,[[null,null,ProzperServer_JsonDecoder.j$38]]],[2,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$35=function()
+ {
+  return ProzperServer_JsonEncoder._v$35?ProzperServer_JsonEncoder._v$35:ProzperServer_JsonEncoder._v$35=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","ResultValue",ProzperServer_JsonEncoder.j$36,0]]],[1,[["$0","ErrorValue",Provider.Id(),0]]]]))();
  };
  ProzperServer_JsonEncoder.j$37=function()
  {
-  return ProzperServer_JsonEncoder._v$37?ProzperServer_JsonEncoder._v$37:ProzperServer_JsonEncoder._v$37=(Provider.EncodeUnion(IdPayment,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonEncoder._v$37?ProzperServer_JsonEncoder._v$37:ProzperServer_JsonEncoder._v$37=(Provider.EncodeUnion(void 0,"$",[[0,[[null,null,ProzperServer_JsonEncoder.j$43]]],[1,[[null,null,ProzperServer_JsonEncoder.j$38]]],[2,[["$0","Item",Provider.Id(),0]]]]))();
  };
- testing_Templates.filaaliado=function(h)
+ ProzperServer_JsonDecoder.j$23=function()
  {
-  Templates.LoadLocalTemplates("index");
-  return h?Templates.NamedTemplate("index",{
-   $:1,
-   $0:"filaaliado"
-  },h):void 0;
+  return ProzperServer_JsonDecoder._v$23?ProzperServer_JsonDecoder._v$23:ProzperServer_JsonDecoder._v$23=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",ProzperServer_JsonDecoder.j$17,0]]],[1,[["$0","Item",ProzperServer_JsonDecoder.j$24,0]]]]))();
  };
- testing_Templates.tablaaliados=function(h)
+ ProzperServer_JsonDecoder.j$25=function()
  {
-  Templates.LoadLocalTemplates("index");
-  return h?Templates.NamedTemplate("index",{
-   $:1,
-   $0:"tablaaliados"
-  },h):void 0;
+  return ProzperServer_JsonDecoder._v$25?ProzperServer_JsonDecoder._v$25:ProzperServer_JsonDecoder._v$25=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",Provider.Id(),0]]],[1,[["$0","Item",Provider.Id(),0]]],[2,[["$0","Item",Provider.Id(),0]]]]))();
  };
- testing_Templates.aliado=function(h)
+ ProzperServer_JsonDecoder.j$13=function()
  {
-  Templates.LoadLocalTemplates("index");
-  return h?Templates.NamedTemplate("index",{
-   $:1,
-   $0:"aliado"
-  },h):void 0;
+  return ProzperServer_JsonDecoder._v$13?ProzperServer_JsonDecoder._v$13:ProzperServer_JsonDecoder._v$13=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","ResultValue",ProzperServer_JsonDecoder.j$14,0]]],[1,[["$0","ErrorValue",Provider.Id(),0]]]]))();
  };
- testing_Templates.calculo=function(h)
+ ProzperServer_JsonDecoder.j$15=function()
  {
-  Templates.LoadLocalTemplates("index");
-  return h?Templates.NamedTemplate("index",{
-   $:1,
-   $0:"calculo"
-  },h):void 0;
+  return ProzperServer_JsonDecoder._v$15?ProzperServer_JsonDecoder._v$15:ProzperServer_JsonDecoder._v$15=(Provider.DecodeUnion(TipoDireccion,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
  };
- testing_GeneratedPrintf.p$2=function($1)
+ ProzperServer_JsonDecoder.j$16=function()
  {
-  return $1.$==2?"Mensaje "+Utils.prettyPrint($1.$0):$1.$==1?"NuevoRegistro "+Utils.prettyPrint($1.$0):"ROk";
+  return ProzperServer_JsonDecoder._v$16?ProzperServer_JsonDecoder._v$16:ProzperServer_JsonDecoder._v$16=(Provider.DecodeUnion(Estado,"$",[[0,[]],[1,[]],[2,[["$0","Item",Provider.Id(),0]]]]))();
  };
- testing_Templates.formaregistro=function(h)
+ ProzperServer_JsonDecoder.j$18=function()
  {
-  Templates.LoadLocalTemplates("index");
-  return h?Templates.NamedTemplate("index",{
-   $:1,
-   $0:"formaregistro"
-  },h):void 0;
+  return ProzperServer_JsonDecoder._v$18?ProzperServer_JsonDecoder._v$18:ProzperServer_JsonDecoder._v$18=(Provider.DecodeUnion(ZonaPostal,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
  };
- testing_Router.r=function()
+ ProzperServer_JsonDecoder.j$10=function()
  {
-  return RouterOperators.JSUnion(void 0,[[null,[[null,[]]],[]],[null,[[null,["Content"]]],[RouterOperators.rString()]]]);
+  return ProzperServer_JsonDecoder._v$10?ProzperServer_JsonDecoder._v$10:ProzperServer_JsonDecoder._v$10=(Provider.DecodeUnion(TipoTelefono,"$",[[0,[]],[1,[]],[2,[]],[3,[]]]))();
  };
- testing_Templates.datospersonales=function(h)
+ ProzperServer_JsonEncoder.j$23=function()
  {
-  Templates.LoadLocalTemplates("index");
-  return h?Templates.NamedTemplate("index",{
-   $:1,
-   $0:"datospersonales"
-  },h):void 0;
+  return ProzperServer_JsonEncoder._v$23?ProzperServer_JsonEncoder._v$23:ProzperServer_JsonEncoder._v$23=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",ProzperServer_JsonEncoder.j$17,0]]],[1,[["$0","Item",ProzperServer_JsonEncoder.j$24,0]]]]))();
  };
- testing_GeneratedPrintf.p$1=function($1)
+ ProzperServer_JsonEncoder.j$25=function()
  {
-  return $1.$==2?"Empresa":$1.$==1?"Femenino":"Masculino";
+  return ProzperServer_JsonEncoder._v$25?ProzperServer_JsonEncoder._v$25:ProzperServer_JsonEncoder._v$25=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",Provider.Id(),0]]],[1,[["$0","Item",Provider.Id(),0]]],[2,[["$0","Item",Provider.Id(),0]]]]))();
  };
- testing_Templates.correo=function(h)
+ ProzperServer_JsonEncoder.j$13=function()
  {
-  Templates.LoadLocalTemplates("index");
-  return h?Templates.NamedTemplate("index",{
-   $:1,
-   $0:"correo"
-  },h):void 0;
+  return ProzperServer_JsonEncoder._v$13?ProzperServer_JsonEncoder._v$13:ProzperServer_JsonEncoder._v$13=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","ResultValue",ProzperServer_JsonEncoder.j$14,0]]],[1,[["$0","ErrorValue",Provider.Id(),0]]]]))();
  };
- testing_Templates.telefono=function(h)
+ ProzperServer_JsonEncoder.j$15=function()
  {
-  Templates.LoadLocalTemplates("index");
-  return h?Templates.NamedTemplate("index",{
-   $:1,
-   $0:"telefono"
-  },h):void 0;
+  return ProzperServer_JsonEncoder._v$15?ProzperServer_JsonEncoder._v$15:ProzperServer_JsonEncoder._v$15=(Provider.EncodeUnion(TipoDireccion,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
  };
- testing_Templates.direccion=function(h)
+ ProzperServer_JsonEncoder.j$16=function()
  {
-  Templates.LoadLocalTemplates("index");
-  return h?Templates.NamedTemplate("index",{
-   $:1,
-   $0:"direccion"
-  },h):void 0;
+  return ProzperServer_JsonEncoder._v$16?ProzperServer_JsonEncoder._v$16:ProzperServer_JsonEncoder._v$16=(Provider.EncodeUnion(Estado,"$",[[0,[]],[1,[]],[2,[["$0","Item",Provider.Id(),0]]]]))();
  };
- testing_Templates.formadatospersonales=function(h)
+ ProzperServer_JsonEncoder.j$18=function()
  {
-  Templates.LoadLocalTemplates("index");
-  return h?Templates.NamedTemplate("index",{
-   $:1,
-   $0:"formadatospersonales"
-  },h):void 0;
+  return ProzperServer_JsonEncoder._v$18?ProzperServer_JsonEncoder._v$18:ProzperServer_JsonEncoder._v$18=(Provider.EncodeUnion(ZonaPostal,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
  };
- testing_Templates.formacontactos=function(h)
+ ProzperServer_JsonEncoder.j$10=function()
  {
-  Templates.LoadLocalTemplates("index");
-  return h?Templates.NamedTemplate("index",{
-   $:1,
-   $0:"formacontactos"
-  },h):void 0;
+  return ProzperServer_JsonEncoder._v$10?ProzperServer_JsonEncoder._v$10:ProzperServer_JsonEncoder._v$10=(Provider.EncodeUnion(TipoTelefono,"$",[[0,[]],[1,[]],[2,[]],[3,[]]]))();
  };
- testing_Templates.formacuentas=function(h)
+ ProzperServer_JsonDecoder.j$24=function()
  {
-  Templates.LoadLocalTemplates("index");
-  return h?Templates.NamedTemplate("index",{
-   $:1,
-   $0:"formacuentas"
-  },h):void 0;
+  return ProzperServer_JsonDecoder._v$24?ProzperServer_JsonDecoder._v$24:ProzperServer_JsonDecoder._v$24=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",ProzperServer_JsonDecoder.j$16,0]]]]))();
  };
- testing_GeneratedPrintf.p$3=function($1)
+ ProzperServer_JsonDecoder.j$14=function()
  {
-  return"IdPayment "+Utils.prettyPrint($1.$0);
+  return ProzperServer_JsonDecoder._v$14?ProzperServer_JsonDecoder._v$14:ProzperServer_JsonDecoder._v$14=(Provider.DecodeUnion(IdAddress,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
  };
- testing_Templates.cuentabancaria=function(h)
+ ProzperServer_JsonEncoder.j$24=function()
  {
-  Templates.LoadLocalTemplates("index");
-  return h?Templates.NamedTemplate("index",{
-   $:1,
-   $0:"cuentabancaria"
-  },h):void 0;
+  return ProzperServer_JsonEncoder._v$24?ProzperServer_JsonEncoder._v$24:ProzperServer_JsonEncoder._v$24=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",ProzperServer_JsonEncoder.j$16,0]]]]))();
  };
- testing_Templates.tarjetacredito=function(h)
+ ProzperServer_JsonEncoder.j$14=function()
  {
-  Templates.LoadLocalTemplates("index");
-  return h?Templates.NamedTemplate("index",{
-   $:1,
-   $0:"tarjetacredito"
-  },h):void 0;
- };
- testing_GeneratedPrintf.p=function($1)
- {
-  return $1.$==3?"ResetPassword":$1.$==2?"EditProfile":$1.$==1?"SignUp":"SignIn";
+  return ProzperServer_JsonEncoder._v$14?ProzperServer_JsonEncoder._v$14:ProzperServer_JsonEncoder._v$14=(Provider.EncodeUnion(IdAddress,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
  };
  Seq.sortWith=function(f,s)
  {
@@ -6545,7 +7942,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     var o;
     o=Enumerator.Get(s);
-    return new T$1.New(null,null,function(e)
+    return new T.New(null,null,function(e)
     {
      var loop,c,res;
      loop=o.MoveNext();
@@ -6592,7 +7989,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     var en;
     en=Enumerator.Get(s);
-    return new T$1.New(null,null,function(e)
+    return new T.New(null,null,function(e)
     {
      return en.MoveNext()&&(e.c=f(en.Current()),true);
     },function()
@@ -6619,7 +8016,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     var e1,first;
     e1=Enumerator.Get(s1);
     first=[true];
-    return new T$1.New(e1,null,function(x)
+    return new T.New(e1,null,function(x)
     {
      var x$1;
      return x.s.MoveNext()?(x.c=x.s.Current(),true):(x$1=x.s,!Unchecked.Equals(x$1,null)?x$1.Dispose():void 0,x.s=null,first[0]&&(first[0]=false,x.s=Enumerator.Get(s2),x.s.MoveNext()?(x.c=x.s.Current(),true):(x.s.Dispose(),x.s=null,false)));
@@ -6698,6 +8095,39 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     e.Dispose();
   }
  };
+ Seq.exists=function(p,s)
+ {
+  var e,r;
+  e=Enumerator.Get(s);
+  try
+  {
+   r=false;
+   while(!r&&e.MoveNext())
+    r=p(e.Current());
+   return r;
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ Seq.zip=function(s1,s2)
+ {
+  return Seq.map2(function($1,$2)
+  {
+   return[$1,$2];
+  },s1,s2);
+ };
+ Seq.choose=function(f,s)
+ {
+  return Seq.collect(function(x)
+  {
+   var m;
+   m=f(x);
+   return m==null?T$1.Empty:List$1.ofArray([m.$0]);
+  },s);
+ };
  Seq.distinct=function(s)
  {
   return Seq.distinctBy(Global.id,s);
@@ -6720,7 +8150,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     var outerE;
     outerE=Enumerator.Get(ss);
-    return new T$1.New(null,null,function(st)
+    return new T.New(null,null,function(st)
     {
      var m;
      while(true)
@@ -6773,14 +8203,24 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return[$1,$2];
   },s);
  };
- Seq.choose=function(f,s)
+ Seq.map2=function(f,s1,s2)
  {
-  return Seq.collect(function(x)
-  {
-   var m;
-   m=f(x);
-   return m==null?T.Empty:List.ofArray([m.$0]);
-  },s);
+  return{
+   GetEnumerator:function()
+   {
+    var e1,e2;
+    e1=Enumerator.Get(s1);
+    e2=Enumerator.Get(s2);
+    return new T.New(null,null,function(e)
+    {
+     return e1.MoveNext()&&e2.MoveNext()&&(e.c=f(e1.Current(),e2.Current()),true);
+    },function()
+    {
+     e1.Dispose();
+     e2.Dispose();
+    });
+   }
+  };
  };
  Seq.tryFindIndex=function(ok,s)
  {
@@ -6814,7 +8254,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     var o,seen;
     o=Enumerator.Get(s);
     seen=new HashSet.New$3();
-    return new T$1.New(null,null,function(e)
+    return new T.New(null,null,function(e)
     {
      var cur,has;
      if(o.MoveNext())
@@ -6884,31 +8324,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     e.Dispose();
   }
  };
- Seq.map2=function(f,s1,s2)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var e1,e2;
-    e1=Enumerator.Get(s1);
-    e2=Enumerator.Get(s2);
-    return new T$1.New(null,null,function(e)
-    {
-     return e1.MoveNext()&&e2.MoveNext()&&(e.c=f(e1.Current(),e2.Current()),true);
-    },function()
-    {
-     e1.Dispose();
-     e2.Dispose();
-    });
-   }
-  };
- };
  Seq.initInfinite=function(f)
  {
   return{
    GetEnumerator:function()
    {
-    return new T$1.New(0,null,function(e)
+    return new T.New(0,null,function(e)
     {
      e.c=f(e.s);
      e.s=e.s+1;
@@ -6924,7 +8345,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     var o;
     o=Enumerator.Get(s);
-    return new T$1.New(true,null,function(e)
+    return new T.New(true,null,function(e)
     {
      var i,$1;
      if(e.s)
@@ -7003,6 +8424,20 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    });
   });
  };
+ Seq.head=function(s)
+ {
+  var e;
+  e=Enumerator.Get(s);
+  try
+  {
+   return e.MoveNext()?e.Current():Seq.insufficient();
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
  Seq.exists2=function(p,s1,s2)
  {
   var e1,$1,e2,r;
@@ -7079,20 +8514,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     e.Dispose();
   }
  };
- Seq.head=function(s)
- {
-  var e;
-  e=Enumerator.Get(s);
-  try
-  {
-   return e.MoveNext()?e.Current():Seq.insufficient();
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
  Seq.fold=function(f,x,s)
  {
   var r,e;
@@ -7118,7 +8539,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     var e;
     e=[Enumerator.Get(s)];
-    return new T$1.New(0,null,function(o)
+    return new T.New(0,null,function(o)
     {
      var en;
      o.s=o.s+1;
@@ -7137,7 +8558,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   return{
    GetEnumerator:function()
    {
-    return new T$1.New(s,null,function(e)
+    return new T.New(s,null,function(e)
     {
      var m;
      m=f(e.s);
@@ -7174,23 +8595,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return!p(x);
   },s);
- };
- Seq.exists=function(p,s)
- {
-  var e,r;
-  e=Enumerator.Get(s);
-  try
-  {
-   r=false;
-   while(!r&&e.MoveNext())
-    r=p(e.Current());
-   return r;
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
  };
  SortWith.op_AmpGreater=function(c1,c2,a,b)
  {
@@ -7261,6 +8665,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return this.GetEnumerator$1();
   }
  },Obj,FSharpSet);
+ FSharpSet.op_Subtraction=function(x,y)
+ {
+  return Set.Filter(function(x$1)
+  {
+   return!y.Contains(x$1);
+  },x);
+ };
  FSharpSet.New=Runtime$1.Ctor(function(s)
  {
   FSharpSet.New$1.call(this,BalancedTree.OfSeq(s));
@@ -7270,6 +8681,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   Obj.New.call(this);
   this.tree=tree;
  },FSharpSet);
+ Set.Filter=function(f,s)
+ {
+  var data;
+  return new FSharpSet.New$1((data=Arrays.ofSeq(Seq.filter(f,s)),BalancedTree.Build(data,0,data.length-1)));
+ };
  Strings.PadLeft=function(s,n)
  {
   return Strings.PadLeftWith(s,n," ");
@@ -7277,6 +8693,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Strings.concat=function(separator,strings)
  {
   return Arrays.ofSeq(strings).join(separator);
+ };
+ Strings.PadRight=function(s,n)
+ {
+  return Strings.PadRightWith(s,n," ");
  };
  Strings.PadLeftWith=function(s,n,c)
  {
@@ -7299,6 +8719,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return index!==-1?(replaced=Strings.ReplaceOnce(subj,search,replace),(nextStartIndex=index+replace.length,Strings.Substring(replaced,0,index+replace.length)+replaceLoop(replaced.substring(nextStartIndex)))):subj;
   }
   return replaceLoop(subject);
+ };
+ Strings.PadRightWith=function(s,n,c)
+ {
+  return n>s.length?s+Global.Array(n-s.length+1).join(c):s;
  };
  Strings.SplitChars=function(s,sep,opts)
  {
@@ -7369,7 +8793,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    recibido:recibido
   });
  };
- DatosPersonales.formaDoc=function(datosV)
+ DatosPersonales$1.formaDoc=function(datosV)
  {
   var forma,b,G,p,i,requeridosW;
   forma=(b=(G=Doc.EmbedView(View.Map(VariousUI.crearOptions,VariousUI.generos().get_View())),ProviderBuilder.Make().WithHole({
@@ -7407,7 +8831,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      },Seq.filter(function(t)
      {
       return t[0];
-     },List.ofArray([[Strings.Trim($1)==="","Nombres"],[Strings.Trim($2)==="","Apellidos"],[Strings.Trim($3)==="","Fecha de Nacimiento"],[Strings.Trim($4)==="","Genero"]])));
+     },List$1.ofArray([[Strings.Trim($1)==="","Nombres"],[Strings.Trim($2)==="","Apellidos"],[Strings.Trim($3)==="","Fecha de Nacimiento"],[Strings.Trim($4)==="","Genero"]])));
     };
    };
   },forma.Hole("nombres").get_View(),forma.Hole("apellidos").get_View()),forma.Hole("fechanacimiento").get_View()),forma.Hole("genero").get_View());
@@ -7425,7 +8849,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      {
       return{
        $:1,
-       $0:DatosPersonales$1.New(null,Arrays.get(Strings.SplitChars(Strings.Trim($4),[" "],0),0),Strings.concat(" ",Slice.array(Strings.SplitChars(Strings.Trim($5),[" "],0),{
+       $0:DatosPersonales.New(null,Arrays.get(Strings.SplitChars(Strings.Trim($4),[" "],0),0),Strings.concat(" ",Slice.array(Strings.SplitChars(Strings.Trim($5),[" "],0),{
         $:1,
         $0:1
        },null)),Arrays.get(Strings.SplitChars(Strings.Trim($6),[" "],0),0),Strings.concat(" ",Slice.array(Strings.SplitChars(Strings.Trim($7),[" "],0),{
@@ -7483,7 +8907,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      },Seq.filter(function(t)
      {
       return t[0];
-     },List.ofArray([[Strings.Trim($1)==="","Correo"],[Strings.Trim($2)==="","ConfirmarCorreo"],[$3!=="",$4]])));
+     },List$1.ofArray([[Strings.Trim($1)==="","Correo"],[Strings.Trim($2)==="","ConfirmarCorreo"],[$3!=="",$4]])));
     };
    };
   },forma.Hole("correo").get_View(),forma.Hole("confirmarcorreo").get_View()),mensaje.get_View()),mensaje.get_View());
@@ -7541,7 +8965,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     },Seq.filter(function(t)
     {
      return t[0];
-    },List.ofArray([[Strings.Trim($1)==="","CodigoPais"],[Strings.Trim($2)==="","Telefono"],[Strings.Trim($3)==="","TipoTelefono"]])));
+    },List$1.ofArray([[Strings.Trim($1)==="","CodigoPais"],[Strings.Trim($2)==="","Telefono"],[Strings.Trim($3)==="","TipoTelefono"]])));
    };
   },forma.Hole("codigopais").get_View(),forma.Hole("telefono").get_View()),forma.Hole("tipotelefono").get_View());
   View.Sink(function(v)
@@ -7629,7 +9053,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     },Seq.filter(function(t)
     {
      return t[0];
-    },List.ofArray([[Strings.Trim($1)==="","Direccion1"],[Strings.Trim($2)==="","Ciudad"],[Strings.Trim($3)==="","Estado"],[Strings.Trim($4)==="","Pais"],[Strings.Trim($5)==="","CodigoPostal"],[Strings.Trim($6)==="","TipoDireccion"]])));
+    },List$1.ofArray([[Strings.Trim($1)==="","Direccion1"],[Strings.Trim($2)==="","Ciudad"],[Strings.Trim($3)==="","Estado"],[Strings.Trim($4)==="","Pais"],[Strings.Trim($5)==="","CodigoPostal"],[Strings.Trim($6)==="","TipoDireccion"]])));
    },4);
   },forma.Hole("direccion1").get_View(),forma.Hole("ciudad").get_View()),forma.Hole("estado").get_View()),forma.Hole("pais").get_View()),forma.Hole("codigopostal").get_View()),forma.Hole("tipodireccion").get_View());
   View.Sink(function(v)
@@ -7698,10 +9122,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return AsyncResultM.bind(fRA,vRA);
   },
-  Return:function(v)
-  {
-   return AsyncResultM.rtn(v);
-  },
   For:function(s,fRA)
   {
    var $this;
@@ -7716,6 +9136,18 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      return fRA(_enum.Current());
     }));
    });
+  },
+  Bind$2:function(w,r)
+  {
+   return AsyncResultM.bindM(r,w);
+  },
+  Return:function(v)
+  {
+   return AsyncResultM.rtn(v);
+  },
+  Bind$1:function(w,r)
+  {
+   return AsyncResultM.bindR(r,w);
   },
   Using:function(resource,fRA)
   {
@@ -7995,6 +9427,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    });
   });
  };
+ AsyncResultM.bindM=function(f,a)
+ {
+  return AsyncResultM.bind(f,AsyncResultM.rtnM(a));
+ };
  AsyncResultM.iterpA=function(f,vRA)
  {
   function g(v)
@@ -8006,12 +9442,24 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return g(ResultMessage.summarized(x));
   },f,vRA);
  };
+ AsyncResultM.bindR=function(f,a)
+ {
+  return AsyncResultM.bind(f,AsyncResultM.rtnR(a));
+ };
  AsyncResultM.whileLoop=function(cond,fRA)
  {
   return cond()?AsyncResultM.bind(function()
   {
    return AsyncResultM.whileLoop(cond,fRA);
   },fRA()):AsyncResultM.rtn();
+ };
+ AsyncResultM.rtnM=function(vM)
+ {
+  return Concurrency.Return(ResultM.rtnM(vM));
+ };
+ AsyncResultM.rtnR=function(vR)
+ {
+  return Concurrency.Return(vR);
  };
  ResultMessage.summarized=function(msg)
  {
@@ -8025,7 +9473,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   return Strings.concat("\n",Seq.filter(function(y)
   {
    return""!==y;
-  },List.ofArray([Global.String(msg),ResultMessage.summaryF(f,msg)])));
+  },List$1.ofArray([Global.String(msg),ResultMessage.summaryF(f,msg)])));
  };
  ResultMessage.summaryF=function(f,msg)
  {
@@ -8236,57 +9684,49 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$1.$cctor();
   return SC$1.localStorage;
  };
- T=List.T=Runtime$1.Class({
-  GetEnumerator:function()
-  {
-   return new T$1.New(this,null,function(e)
-   {
-    var m;
-    m=e.s;
-    return m.$==0?false:(e.c=m.$0,e.s=m.$1,true);
-   },void 0);
-  },
-  GetEnumerator0:function()
-  {
-   return Enumerator.Get(this);
-  }
- },null,T);
- T.Empty=new T({
-  $:0
- });
- Utils.toSafe=function(s)
- {
-  return s==null?"":s;
- };
- Utils.prettyPrint=function(o)
- {
-  var t,s;
-  function m(k,v)
-  {
-   return k+" = "+Utils.prettyPrint(v);
-  }
-  return o===null?"null":(t=typeof o,t=="string"?"\""+o+"\"":t=="object"?o instanceof Global.Array?"[|"+Strings.concat("; ",Arrays.map(Utils.prettyPrint,o))+"|]":(s=Global.String(o),s==="[object Object]"?"{"+Strings.concat("; ",Arrays.map(function($1)
-  {
-   return m($1[0],$1[1]);
-  },JS.GetFields(o)))+"}":s):Global.String(o));
- };
- Utils.printList=function(p,o)
- {
-  return"["+Strings.concat("; ",Seq.map(p,o))+"]";
- };
- Utils.padNumLeft=function(s,l)
- {
-  var f;
-  f=Arrays.get(s,0);
-  return f===" "||f==="+"||f==="-"?f+Strings.PadLeftWith(s.substr(1),l-1,"0"):Strings.PadLeftWith(s,l,"0");
- };
- PlugInAction.New=function(actName,actFunction,actEnabled)
+ Fila.New=function(nombre,status,tipo,referido,nivel,referidos,descendientes,comision,diaPago,desde,Id)
  {
   return{
-   actName:actName,
-   actFunction:actFunction,
-   actEnabled:actEnabled
+   nombre:nombre,
+   status:status,
+   tipo:tipo,
+   referido:referido,
+   nivel:nivel,
+   referidos:referidos,
+   descendientes:descendientes,
+   comision:comision,
+   diaPago:diaPago,
+   desde:desde,
+   Id:Id
   };
+ };
+ Arrays.map=function(f,arr)
+ {
+  var r,i,$1;
+  r=new Global.Array(arr.length);
+  for(i=0,$1=arr.length-1;i<=$1;i++)r[i]=f(arr[i]);
+  return r;
+ };
+ Arrays.sortBy=function(f,arr)
+ {
+  return Arrays.map(function(t)
+  {
+   return t[0];
+  },Arrays.mapi(function($1,$2)
+  {
+   return[$2,[f($2),$1]];
+  },arr).sort(function($1,$2)
+  {
+   return Unchecked.Compare($1[1],$2[1]);
+  }));
+ };
+ Arrays.reduce=function(f,arr)
+ {
+  var acc,i,$1;
+  Arrays.nonEmpty(arr);
+  acc=arr[0];
+  for(i=1,$1=arr.length-1;i<=$1;i++)acc=f(acc,arr[i]);
+  return acc;
  };
  Arrays.filter=function(f,arr)
  {
@@ -8312,7 +9752,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   if(xs instanceof Global.Array)
    return xs.slice();
   else
-   if(xs instanceof T)
+   if(xs instanceof T$1)
     return Arrays.ofList(xs);
    else
     {
@@ -8335,20 +9775,17 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   arr.sort(comparer);
  };
- Arrays.tryFind=function(f,arr)
+ Arrays.mapi=function(f,arr)
  {
-  var res,i;
-  res=null;
-  i=0;
-  while(i<arr.length&&res==null)
-   {
-    f(arr[i])?res={
-     $:1,
-     $0:arr[i]
-    }:void 0;
-    i=i+1;
-   }
-  return res;
+  var y,i,$1;
+  y=new Global.Array(arr.length);
+  for(i=0,$1=arr.length-1;i<=$1;i++)y[i]=f(i,arr[i]);
+  return y;
+ };
+ Arrays.nonEmpty=function(arr)
+ {
+  if(arr.length===0)
+   Operators.FailWith("The input array was empty.");
  };
  Arrays.tryFindIndex=function(f,arr)
  {
@@ -8372,8 +9809,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   l=xs;
   while(!(l.$==0))
    {
-    q.push(List.head(l));
-    l=List.tail(l);
+    q.push(List$1.head(l));
+    l=List$1.tail(l);
    }
   return q;
  };
@@ -8387,12 +9824,20 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return[$2,$1];
   },arr).sort(Unchecked.Compare));
  };
- Arrays.map=function(f,arr)
+ Arrays.tryFind=function(f,arr)
  {
-  var r,i,$1;
-  r=new Global.Array(arr.length);
-  for(i=0,$1=arr.length-1;i<=$1;i++)r[i]=f(arr[i]);
-  return r;
+  var res,i;
+  res=null;
+  i=0;
+  while(i<arr.length&&res==null)
+   {
+    f(arr[i])?res={
+     $:1,
+     $0:arr[i]
+    }:void 0;
+    i=i+1;
+   }
+  return res;
  };
  Arrays.sortInPlaceBy=function(f,arr)
  {
@@ -8436,15 +9881,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   for(i=0,$1=size-1;i<=$1;i++)r[i]=f(i);
   return r;
  };
- Arrays.concat=function(xs)
- {
-  return Global.Array.prototype.concat.apply([],Arrays.ofSeq(xs));
- };
- Arrays.checkLength=function(arr1,arr2)
- {
-  if(arr1.length!==arr2.length)
-   Operators.FailWith("The arrays have different lengths.");
- };
  Arrays.tryPick=function(f,arr)
  {
   var res,i,m;
@@ -8457,6 +9893,15 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     i=i+1;
    }
   return res;
+ };
+ Arrays.concat=function(xs)
+ {
+  return Global.Array.prototype.concat.apply([],Arrays.ofSeq(xs));
+ };
+ Arrays.checkLength=function(arr1,arr2)
+ {
+  if(arr1.length!==arr2.length)
+   Operators.FailWith("The arrays have different lengths.");
  };
  Arrays.exists=function(f,x)
  {
@@ -8509,6 +9954,156 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   m=Arrays.tryFind(f,arr);
   return m==null?Operators.FailWith("KeyNotFoundException"):m.$0;
  };
+ VariousUI.statuses=function()
+ {
+  SC$1.$cctor();
+  return SC$1.statuses;
+ };
+ VariousUI.crearOptions=function(ns)
+ {
+  return Doc.Concat(Seq.map(VariousUI.crearOption,ns));
+ };
+ VariousUI.crearOptions2=function(nvs)
+ {
+  return Doc.Concat(Seq.map(function($1)
+  {
+   return VariousUI.crearOption2($1[0],$1[1]);
+  },nvs));
+ };
+ VariousUI.paises=function()
+ {
+  SC$1.$cctor();
+  return SC$1.paises;
+ };
+ VariousUI.estados=function()
+ {
+  SC$1.$cctor();
+  return SC$1.estados;
+ };
+ VariousUI.tiposDir=function()
+ {
+  SC$1.$cctor();
+  return SC$1.tiposDir;
+ };
+ VariousUI.tiposTel=function()
+ {
+  SC$1.$cctor();
+  return SC$1.tiposTel;
+ };
+ VariousUI.generos=function()
+ {
+  SC$1.$cctor();
+  return SC$1.generos;
+ };
+ VariousUI.tiposCta=function()
+ {
+  SC$1.$cctor();
+  return SC$1.tiposCta;
+ };
+ VariousUI.tiposTar=function()
+ {
+  SC$1.$cctor();
+  return SC$1.tiposTar;
+ };
+ VariousUI.aniosV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.aniosV;
+ };
+ VariousUI.mesesV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.mesesV;
+ };
+ VariousUI.alertIfNone=function(name,vO,f)
+ {
+  return vO!=null&&vO.$==1?f(vO.$0):(Global.alert("Error not caught: "+name),null);
+ };
+ VariousUI.removeButton=function(f,doc)
+ {
+  return Doc.Element("form",[AttrProxy.Create("class","mui-panel")],[doc,Doc.Button("borrar",[AttrProxy.Create("title","borrar")],f)]);
+ };
+ VariousUI.fst3=Global.id;
+ VariousUI.crearOption=function(n)
+ {
+  return Doc.Element("option",[],[Doc.TextNode(n)]);
+ };
+ VariousUI.crearOption2=function(n,v)
+ {
+  return Doc.Element("option",[AttrProxy.Create("value",v)],[Doc.TextNode(n)]);
+ };
+ VariousUI.thr3=function(a,a$1,v)
+ {
+  return v;
+ };
+ VariousUI.snd3=function(a,v,a$1)
+ {
+  return v;
+ };
+ ResultMessage=Library.ResultMessage=Runtime$1.Class({
+  toString:function()
+  {
+   return this.$==1?(function($1)
+   {
+    return function($2)
+    {
+     return $1("Error    : "+Utils.toSafe($2));
+    };
+   }(Global.id))(this.$0):this.$==2?(function($1)
+   {
+    return function($2)
+    {
+     return $1("Warning  : "+Utils.toSafe($2));
+    };
+   }(Global.id))(this.$0):this.$==3?this.$0:this.$==4?(function($1)
+   {
+    return function($2)
+    {
+     return $1(Global.String($2));
+    };
+   }(Global.id))(this.$0):this.$==5?(((Runtime$1.Curried3(function($1,$2,$3)
+   {
+    return $1("Exception: "+Utils.toSafe($2)+", "+Utils.toSafe($3));
+   }))(Global.id))(this.$0))(this.$1):this.$==6?Strings.concat("\n",Seq.map(Global.String,Seq.filter(function(a)
+   {
+    return a.$!=0;
+   },this.$0))):"";
+  }
+ },null,ResultMessage);
+ ResultMessage.NoMsg=new ResultMessage({
+  $:0
+ });
+ Utils.toSafe=function(s)
+ {
+  return s==null?"":s;
+ };
+ Utils.prettyPrint=function(o)
+ {
+  var t,s;
+  function m(k,v)
+  {
+   return k+" = "+Utils.prettyPrint(v);
+  }
+  return o===null?"null":(t=typeof o,t=="string"?"\""+o+"\"":t=="object"?o instanceof Global.Array?"[|"+Strings.concat("; ",Arrays.map(Utils.prettyPrint,o))+"|]":(s=Global.String(o),s==="[object Object]"?"{"+Strings.concat("; ",Arrays.map(function($1)
+  {
+   return m($1[0],$1[1]);
+  },JS.GetFields(o)))+"}":s):Global.String(o));
+ };
+ Utils.padNumLeft=function(s,l)
+ {
+  var f;
+  f=Arrays.get(s,0);
+  return f===" "||f==="+"||f==="-"?f+Strings.PadLeftWith(s.substr(1),l-1,"0"):Strings.PadLeftWith(s,l,"0");
+ };
+ Utils.printList=function(p,o)
+ {
+  return"["+Strings.concat("; ",Seq.map(p,o))+"]";
+ };
+ Library["String.Right"]=function(_this,n)
+ {
+  var a,b;
+  return Library["String.Substring2"](_this,(a=0,(b=_this.length-n,Unchecked.Compare(a,b)===1?a:b)),_this.length);
+ };
  Library.print=function(v)
  {
   if(typeof v=="string")
@@ -8541,14 +10136,27 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:a
   };
  };
+ Library["String.Substring2"]=function(_this,from,n)
+ {
+  var from$1,b;
+  while(true)
+   {
+    if(n<=0)
+     return"";
+    else
+     if(from<0)
+      {
+       from$1=from;
+       from=0;
+       n=n+from$1;
+      }
+     else
+      return from>=_this.length?"":Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
+   }
+ };
  Library["String.Left"]=function(_this,n)
  {
   return n<0?Library["String.Substring2"](_this,0,_this.length+n):Library["String.Substring2"](_this,0,n);
- };
- Library["String.Right"]=function(_this,n)
- {
-  var a,b;
-  return Library["String.Substring2"](_this,(a=0,(b=_this.length-n,Unchecked.Compare(a,b)===1?a:b)),_this.length);
  };
  Library.delayed=function(delay,doF)
  {
@@ -8576,23 +10184,181 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    });
   };
  };
- Library["String.Substring2"]=function(_this,from,n)
+ Date.toYYYYMMDD=function(sep,date)
  {
-  var from$1,b;
-  while(true)
+  return((((((Runtime$1.Curried(function($1,$2,$3,$4,$5,$6)
+  {
+   return $1(Global.String($2)+Utils.toSafe($3)+Utils.padNumLeft(Global.String($4),2)+Utils.toSafe($5)+Utils.padNumLeft(Global.String($6),2));
+  },6))(Global.id))((new Date$1(date)).getFullYear()))(sep))((new Date$1(date)).getMonth()+1))(sep))((new Date$1(date)).getDate());
+ };
+ CuentaBancaria.New=function(titular,banco,tipo,numero,routing)
+ {
+  return{
+   titular:titular,
+   banco:banco,
+   tipo:tipo,
+   numero:numero,
+   routing:routing
+  };
+ };
+ RoutingNumber=TypesV0.RoutingNumber=Runtime$1.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,RoutingNumber);
+ NumeroCuenta=TypesV0.NumeroCuenta=Runtime$1.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,NumeroCuenta);
+ FormaPago.New=function(nombre,authorizeIdR,cuentaPago)
+ {
+  return{
+   nombre:nombre,
+   authorizeIdR:authorizeIdR,
+   cuentaPago:cuentaPago
+  };
+ };
+ TypesV0.ctaVacio=function()
+ {
+  SC$3.$cctor();
+  return SC$3.ctaVacio;
+ };
+ TypesV0.premisasCalculo=function()
+ {
+  SC$3.$cctor();
+  return SC$3.premisasCalculo;
+ };
+ TypesV0.correoVacio=function()
+ {
+  SC$3.$cctor();
+  return SC$3.correoVacio;
+ };
+ TypesV0.modeloVacio=function()
+ {
+  SC$3.$cctor();
+  return SC$3.modeloVacio;
+ };
+ TypesV0.telVacio=function()
+ {
+  SC$3.$cctor();
+  return SC$3.telVacio;
+ };
+ TypesV0.dirVacio=function()
+ {
+  SC$3.$cctor();
+  return SC$3.dirVacio;
+ };
+ TypesV0.tarVacio=function()
+ {
+  SC$3.$cctor();
+  return SC$3.tarVacio;
+ };
+ ResultM.defaultValue=function(d,r)
+ {
+  return Result$1.defaultValue(d,ResultM.toResult(r));
+ };
+ ResultM.iter=function(fM,f,r)
+ {
+  var a;
+  a=ResultM.mapP(f,r);
+  a.$0==null?fM(a.$1):void 0;
+ };
+ ResultM.ofResult=function(vR)
+ {
+  return ResultM.rtnr(vR);
+ };
+ ResultM.toResult=function(r)
+ {
+  return r.$0==null?Library.Error(r.$1):{
+   $:0,
+   $0:r.$0.$0
+  };
+ };
+ ResultM.addMsg=function(m,r)
+ {
+  return ResultM.mapMessage(function(b)
+  {
+   return ResultMessage.addMsg(m,b);
+  },r);
+ };
+ ResultM.mapP=function(f,m)
+ {
+  return ResultM.bindP(function(x)
+  {
+   return ResultM.rtn(f(x));
+  },m);
+ };
+ ResultM.rtnr=function(vR)
+ {
+  return Result$1.defaultWith(Monads.ErrorM,Result.Map(Monads.OkM$1,vR));
+ };
+ ResultM.mapMessage=function(fM,a)
+ {
+  return{
+   $:0,
+   $0:a.$0,
+   $1:fM(a.$1)
+  };
+ };
+ ResultM.bindP=function(f,r)
+ {
+  var m;
+  if(r.$0==null)
+   return{
+    $:0,
+    $0:null,
+    $1:r.$1
+   };
+  else
    {
-    if(n<=0)
-     return"";
-    else
-     if(from<0)
-      {
-       from$1=from;
-       from=0;
-       n=n+from$1;
-      }
-     else
-      return from>=_this.length?"":Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
+    m=r.$1;
+    try
+    {
+     return ResultM.mapMessage(function(b)
+     {
+      return ResultMessage.addMsg(m,b);
+     },f(r.$0.$0));
+    }
+    catch(e)
+    {
+     return Monads.ErrorM(new ResultMessage({
+      $:5,
+      $0:e.message,
+      $1:e.stack
+     }));
+    }
    }
+ };
+ ResultM.rtn=function(v)
+ {
+  return Monads.OkM$1(v);
+ };
+ ResultM.rtnM=function(m)
+ {
+  return Monads.OkMWithMsg(null,m);
+ };
+ ResultM.bind=function(f,r)
+ {
+  var m;
+  return r.$0==null?{
+   $:0,
+   $0:null,
+   $1:r.$1
+  }:(m=r.$1,ResultM.mapMessage(function(b)
+  {
+   return ResultMessage.addMsg(m,b);
+  },f(r.$0.$0)));
+ };
+ PlugInAction.New=function(actName,actFunction,actEnabled)
+ {
+  return{
+   actName:actName,
+   actFunction:actFunction,
+   actEnabled:actEnabled
+  };
  };
  LayoutEngine.New=function(lytName,lytDefinition)
  {
@@ -9005,7 +10771,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$2["|Double|_|"]=ParseO.parseDoubleO();
   SC$2["|Guid|_|"]=ParseO.parseGuidO();
   SC$2.rexGuid="([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})";
-  SC$2.observers=T.Empty;
+  SC$2.observers=T$1.Empty;
   SC$2.css="\r\n                .tab-panel {\r\n                 overflow  : hidden   ;\r\n                 display   : flex     ;\r\n                 flex-flow : column   ;\r\n                 background: lightgray;\r\n                 height    : 100%    ;\r\n                 width     : 100%    ;\r\n                }\r\n                .tab-content {\r\n                 flex      : 1 1     ;\r\n                 overflow  : auto    ;\r\n                 position  : relative;\r\n                }\r\n                .tab-children {\r\n                 height    : 100%    ;\r\n                 width     : 100%    ;\r\n                 position  : absolute;\r\n                 display   : grid    ;\r\n                }\r\n                .tab-strip {\r\n                 padding   : 0pt     ;\r\n                 flex      : 0 0     ;\r\n                }\r\n                .tab {\r\n                 border     : 0.2pt solid transparent;\r\n                 padding    : 0pt 4pt;\r\n                 display    : inline-block;\r\n                 font-family: sans-serif;\r\n                 font-weight: 200;\r\n                 font-size  : small;\r\n                 color      : #666;\r\n                 cursor     : pointer;\r\n                }\r\n                .top>.tab {\r\n                 border-radius: 2pt 2pt 0pt 0pt;\r\n                 border-bottom-width: 0pt;\r\n                 vertical-align: bottom;\r\n                }\r\n                .bottom>.tab {\r\n                 border-top-width: 0pt;\r\n                 border-radius: 0pt 0pt 2pt 2pt;\r\n                 vertical-align: top;\r\n                }\r\n                .horizontal>.tab:not(:first-child) {\r\n                 border-left-width: 0pt;\r\n                }\r\n                .tab.hovering {\r\n                 background: red;\r\n                }\r\n                .tab.selected {\r\n                 background: white;\r\n                 border-left-width: 0.2pt;\r\n                 color: black;\r\n                 font-weight: 500;\r\n                 border-color: black;\r\n                }\r\n                .horizontal>.tab.selected {\r\n                 border-left-width: 0.2pt;\r\n                }\r\n                ::slotted(*              ) { \r\n                 width : 100%;\r\n                 height: 100%;\r\n                }\r\n                        ";
   SC$2.init=Lazy.Create(function()
   {
@@ -9256,7 +11022,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $2:"[Layout]"
   })]),plg.plgQueries)));
  };
- List$1=Collections.List=Runtime$1.Class({
+ List=Collections.List=Runtime$1.Class({
   GetEnumerator:function()
   {
    return Enumerator.Get(this);
@@ -9265,7 +11031,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return Enumerator.Get0(this);
   }
- },null,List$1);
+ },null,List);
  Dictionary=Collections.Dictionary=Runtime$1.Class({
   set_Item:function(k,v)
   {
@@ -9343,6 +11109,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     }:null;
    },d);
   },
+  get_Keys:function()
+  {
+   return new KeyCollection.New(this);
+  },
   remove:function(k)
   {
    var $this,h,d,r;
@@ -9353,10 +11123,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return!$this.equals.apply(null,[(Operators.KeyValue(a))[0],k]);
    },d),Arrays.length(r)<d.length&&(this.count=this.count-1,this.data[h]=r,true));
-  },
-  get_Keys:function()
-  {
-   return new KeyCollection.New(this);
   },
   add:function(k,v)
   {
@@ -9543,1263 +11309,16 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   HashSet.New$4.call(this,init,Unchecked.Equals,Unchecked.Hash);
  },HashSet);
  Client.Box=Global.id;
- IdAuthorize=TypesV0.IdAuthorize=Runtime$1.Class({},null,IdAuthorize);
- DatosPersonales$1.New=function(titulo,nombre1,nombre2,apellido1,apellido2,nacionalidad,genero,fechaNacimiento)
+ Async.StartTo=function(comp,k)
  {
-  return{
-   titulo:titulo,
-   nombre1:nombre1,
-   nombre2:nombre2,
-   apellido1:apellido1,
-   apellido2:apellido2,
-   nacionalidad:nacionalidad,
-   genero:genero,
-   fechaNacimiento:fechaNacimiento
-  };
- };
- StatusAliado=TypesV0.StatusAliado=Runtime$1.Class({
-  toString:function()
+  Concurrency.StartWithContinuations(comp,k,function(e)
   {
-   return(function($1)
-   {
-    return function($2)
-    {
-     return $1(ProzperServer_GeneratedPrintf.p($2));
-    };
-   }(Global.id))(this);
-  }
- },null,StatusAliado);
- StatusAliado.Inactivo=new StatusAliado({
-  $:3
- });
- TipoAliado=TypesV0.TipoAliado=Runtime$1.Class({
-  toString:function()
-  {
-   return(function($1)
-   {
-    return function($2)
-    {
-     return $1(ProzperServer_GeneratedPrintf.p$1($2));
-    };
-   }(Global.id))(this);
-  }
- },null,TipoAliado);
- TipoAliado.Regular=new TipoAliado({
-  $:1
- });
- Numeric.TryParseInt32=function(s,r)
- {
-  return Numeric.TryParse(s,-2147483648,2147483647,r);
- };
- PremisasCalculo.New=function(comisionReferidosRegular,comisionReferidosMaster,comisionDescendientesMaster,comisionDescendientesRegular,montoAfiliacion,numeroReferidosMaster,diaCorte1,diaCorte2)
- {
-  return{
-   comisionReferidosRegular:comisionReferidosRegular,
-   comisionReferidosMaster:comisionReferidosMaster,
-   comisionDescendientesMaster:comisionDescendientesMaster,
-   comisionDescendientesRegular:comisionDescendientesRegular,
-   montoAfiliacion:montoAfiliacion,
-   numeroReferidosMaster:numeroReferidosMaster,
-   diaCorte1:diaCorte1,
-   diaCorte2:diaCorte2
-  };
- };
- Numeric.TryParseInt64=function(s,r)
- {
-  return Numeric.TryParse(s,-9223372036854775808,9223372036854775807,r);
- };
- Fresh.Int=function()
- {
-  Fresh.set_counter(Fresh.counter()+1);
-  return Fresh.counter();
- };
- Fresh.set_counter=function($1)
- {
-  SC$4.$cctor();
-  SC$4.counter=$1;
- };
- Fresh.counter=function()
- {
-  SC$4.$cctor();
-  return SC$4.counter;
- };
- Fresh.Id=function()
- {
-  Fresh.set_counter(Fresh.counter()+1);
-  return"uid"+Global.String(Fresh.counter());
- };
- String.unindent$1=function(s)
- {
-  var lines,n,o,o$1;
-  lines=Strings.SplitChars(s,["\n"],0);
-  n=(o=Seq.tryFindIndex(function(y)
-  {
-   return" "!==y;
-  },(o$1=Seq.tryFind(function(l)
-  {
-   return Strings.Trim(l)!=="";
-  },lines),o$1==null?"":o$1.$0)),o==null?0:o.$0);
-  return Seq.filter(function(s$1)
-  {
-   return!Strings.StartsWith(s$1,"# 1 ");
-  },Seq.map(function(l)
-  {
-   return l.length<=n?"":l.substring(n);
-  },lines));
- };
- String.splitByChar$1=function(c,s)
- {
-  return Strings.SplitChars(s,[c],0);
- };
- Slice.array=function(source,start,finish)
- {
-  return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):[]:finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
- };
- Slice.string=function(source,start,finish)
- {
-  return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):"":finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
- };
- List.ofArray=function(arr)
- {
-  var r,i,$1;
-  r=T.Empty;
-  for(i=Arrays.length(arr)-1,$1=0;i>=$1;i--)r=new T({
-   $:1,
-   $0:Arrays.get(arr,i),
-   $1:r
-  });
-  return r;
- };
- List.rev=function(l)
- {
-  var res,r;
-  res=T.Empty;
-  r=l;
-  while(r.$==1)
-   {
-    res=new T({
-     $:1,
-     $0:r.$0,
-     $1:res
-    });
-    r=r.$1;
-   }
-  return res;
- };
- List.ofSeq=function(s)
- {
-  var e,$1,go,r,res,t;
-  if(s instanceof T)
-   return s;
-  else
-   if(s instanceof Global.Array)
-    return List.ofArray(s);
-   else
-    {
-     e=Enumerator.Get(s);
-     try
-     {
-      go=e.MoveNext();
-      if(!go)
-       $1=T.Empty;
-      else
-       {
-        res=new T({
-         $:1
-        });
-        r=res;
-        while(go)
-         {
-          r.$0=e.Current();
-          e.MoveNext()?r=(t=new T({
-           $:1
-          }),r.$1=t,t):go=false;
-         }
-        r.$1=T.Empty;
-        $1=res;
-       }
-      return $1;
-     }
-     finally
-     {
-      if(typeof e=="object"&&"Dispose"in e)
-       e.Dispose();
-     }
-    }
- };
- List.head=function(l)
- {
-  return l.$==1?l.$0:List.listEmpty();
- };
- List.tail=function(l)
- {
-  return l.$==1?l.$1:List.listEmpty();
- };
- List.listEmpty=function()
- {
-  return Operators.FailWith("The input list was empty.");
- };
- List.iter=function(f,l)
- {
-  var r;
-  r=l;
-  while(r.$==1)
-   {
-    f(List.head(r));
-    r=List.tail(r);
-   }
- };
- Policy=Msal$1.Policy=Runtime$1.Class({
-  toString:function()
-  {
-   return Strings.ReplaceChar(Library["String.get_toUnderscore$1"]((function($1)
-   {
-    return function($2)
-    {
-     return $1(testing_GeneratedPrintf.p($2));
-    };
-   }(Global.id))(this)),"_"," ");
-  }
- },null,Policy);
- Policy.SignIn=new Policy({
-  $:0
- });
- Policy.SignUp=new Policy({
-  $:1
- });
- Policy.EditProfile=new Policy({
-  $:2
- });
- Policy.ResetPassword=new Policy({
-  $:3
- });
- UserAgentApplication.Options=function(cacheLocation,isAngular,loadFrameTimeout,logger,navigateToLoginRequestUrl,postLogoutRedirectUri,protectedResourceMap,redirectUri,state,storeAuthStateInCookie,unprotectedResources,validateAuthority)
- {
-  return Pojo.newPojoOpt([Msal$1.op_EqualsEqualsGreater("cacheLocation",cacheLocation),Msal$1.op_EqualsEqualsGreater("isAngular",isAngular),Msal$1.op_EqualsEqualsGreater("loadFrameTimeout",loadFrameTimeout),Msal$1.op_EqualsEqualsGreater("logger",logger),Msal$1.op_EqualsEqualsGreater("navigateToLoginRequestUrl",navigateToLoginRequestUrl),Msal$1.op_EqualsEqualsGreater("postLogoutRedirectUri",postLogoutRedirectUri),Msal$1.op_EqualsEqualsGreater("protectedResourceMap",protectedResourceMap),Msal$1.op_EqualsEqualsGreater("redirectUri",redirectUri),Msal$1.op_EqualsEqualsGreater("state",state),Msal$1.op_EqualsEqualsGreater("storeAuthStateInCookie",storeAuthStateInCookie),Msal$1.op_EqualsEqualsGreater("unprotectedResources",unprotectedResources),Msal$1.op_EqualsEqualsGreater("validateAuthority",validateAuthority)]);
- };
- TypesV0.premisasCalculo=function()
- {
-  SC$3.$cctor();
-  return SC$3.premisasCalculo;
- };
- TypesV0.correoVacio=function()
- {
-  SC$3.$cctor();
-  return SC$3.correoVacio;
- };
- TypesV0.modeloVacio=function()
- {
-  SC$3.$cctor();
-  return SC$3.modeloVacio;
- };
- TypesV0.telVacio=function()
- {
-  SC$3.$cctor();
-  return SC$3.telVacio;
- };
- TypesV0.dirVacio=function()
- {
-  SC$3.$cctor();
-  return SC$3.dirVacio;
- };
- TypesV0.tarVacio=function()
- {
-  SC$3.$cctor();
-  return SC$3.tarVacio;
- };
- TypesV0.ctaVacio=function()
- {
-  SC$3.$cctor();
-  return SC$3.ctaVacio;
- };
- LibraryJS.REGEX$1=function(expr,opt,value)
- {
-  var m;
-  return value===null?null:(m=(new Global.String(value)).match(new Global.RegExp(expr,opt)),Unchecked.Equals(m,null)?null:!Unchecked.Equals(m,null)&&m.length===0?null:{
-   $:1,
-   $0:m
-  });
- };
- LibraryJS.rexEmail=function()
- {
-  SC$1.$cctor();
-  return SC$1.rexEmail;
- };
- EndPoint.DefaultEP={
-  $:0
- };
- Router.InstallHash=function(onParseError,router)
- {
-  var _var;
-  _var=Var$1.Create$1(Router.getCurrentHash(function(h)
-  {
-   return RouterModule.Parse(router,Route.FromHash(h,{
-    $:1,
-    $0:true
-   }));
-  },onParseError));
-  Router.InstallHashInto(_var,onParseError,router);
-  return _var;
- };
- Router.InstallHashInto=function(_var,onParseError,router)
- {
-  function parse(h)
-  {
-   return RouterModule.Parse(router,Route.FromHash(h,{
-    $:1,
-    $0:true
-   }));
-  }
-  function cur()
-  {
-   return Router.getCurrentHash(parse,onParseError);
-  }
-  function set(value)
-  {
-   if(!Unchecked.Equals(_var.Get(),value))
-    _var.Set(value);
-  }
-  self.addEventListener("popstate",function()
-  {
-   return set(cur());
-  },false);
-  self.addEventListener("hashchange",function()
-  {
-   return set(cur());
-  },false);
-  self.document.body.addEventListener("click",function(ev)
-  {
-   var o,o$1,href;
-   o=(o$1=Router.findLinkHref(ev.target),o$1==null?null:(href=o$1.$0,Strings.StartsWith(href,"#")?parse(href):null));
-   return o==null?null:(set(o.$0),ev.preventDefault());
-  },false);
-  View.Sink(function(value)
-  {
-   var url;
-   if(!Unchecked.Equals(value,cur()))
-    {
-     url=RouterModule.HashLink(router,value);
-     self.history.pushState(null,null,url);
-    }
-  },_var.get_View());
- };
- Router.getCurrentHash=function(parse,onParseError)
- {
-  var h,m;
-  h=self.location.hash;
-  m=parse(h);
-  return m==null?((function($1)
-  {
-   return function($2)
-   {
-    return $1("Failed to parse route: "+Utils.toSafe($2));
-   };
-  }(function(s)
-  {
-   console.log(s);
-  }))(h),onParseError):m.$0;
- };
- Router.findLinkHref=function(n)
- {
-  while(true)
-   if(n.tagName==="A")
-    return Option.ofObj(n.getAttribute("href"));
-   else
-    if(n===self.document.body)
-     return null;
-    else
-     n=n.parentNode;
- };
- ViewBuilder.B={
-  $:0
- };
- VariousUI.paises=function()
- {
-  SC$1.$cctor();
-  return SC$1.paises;
- };
- VariousUI.estados=function()
- {
-  SC$1.$cctor();
-  return SC$1.estados;
- };
- VariousUI.tiposDir=function()
- {
-  SC$1.$cctor();
-  return SC$1.tiposDir;
- };
- VariousUI.tiposTel=function()
- {
-  SC$1.$cctor();
-  return SC$1.tiposTel;
- };
- VariousUI.generos=function()
- {
-  SC$1.$cctor();
-  return SC$1.generos;
- };
- VariousUI.tiposCta=function()
- {
-  SC$1.$cctor();
-  return SC$1.tiposCta;
- };
- VariousUI.tiposTar=function()
- {
-  SC$1.$cctor();
-  return SC$1.tiposTar;
- };
- VariousUI.aniosV=function()
- {
-  SC$1.$cctor();
-  return SC$1.aniosV;
- };
- VariousUI.mesesV=function()
- {
-  SC$1.$cctor();
-  return SC$1.mesesV;
- };
- VariousUI.crearOptions=function(ns)
- {
-  return Doc.Concat(Seq.map(VariousUI.crearOption,ns));
- };
- VariousUI.alertIfNone=function(name,vO,f)
- {
-  return vO!=null&&vO.$==1?f(vO.$0):(Global.alert("Error not caught: "+name),null);
- };
- VariousUI.removeButton=function(f,doc)
- {
-  return Doc.Element("form",[],[doc,Doc.Button("x",[AttrProxy.Create("title","borrar")],f)]);
- };
- VariousUI.crearOption=function(n)
- {
-  return Doc.Element("option",[],[Doc.TextNode(n)]);
- };
- FormaPago.New=function(nombre,authorizeIdR,cuentaPago)
- {
-  return{
-   nombre:nombre,
-   authorizeIdR:authorizeIdR,
-   cuentaPago:cuentaPago
-  };
- };
- PlugInQuery.New=function(qryName,qryFunction)
- {
-  return{
-   qryName:qryName,
-   qryFunction:qryFunction
-  };
- };
- Doc=UI.Doc=Runtime$1.Class({},Obj,Doc);
- Doc.ConvertSeqBy=function(key,render,view)
- {
-  return Doc.Flatten(View.MapSeqCachedViewBy(key,function($1,$2)
-  {
-   return(render($1))($2);
-  },view));
- };
- Doc.get_Empty=function()
- {
-  return Doc.Mk(null,View.Const());
- };
- Doc.EmbedView=function(view)
- {
-  var node;
-  node=Docs.CreateEmbedNode();
-  return Doc.Mk({
-   $:2,
-   $0:node
-  },View.Map(Global.ignore,View.Bind(function(doc)
-  {
-   Docs.UpdateEmbedNode(node,doc.docNode);
-   return doc.updates;
-  },view)));
- };
- Doc.Flatten=function(view)
- {
-  return Doc.EmbedView(View.Map(Doc.Concat,view));
- };
- Doc.Mk=function(node,updates)
- {
-  return new Doc.New(node,updates);
- };
- Doc.BindView=function(f,view)
- {
-  return Doc.EmbedView(View.Map(f,view));
- };
- Doc.Concat=function(xs)
- {
-  var x;
-  x=Array$1.ofSeqNonCopying(xs);
-  return Array$1.TreeReduce(Doc.get_Empty(),Doc.Append,x);
- };
- Doc.ConvertBy=function(key,render,view)
- {
-  return Doc.Flatten(View.MapSeqCachedBy(key,render,view));
- };
- Doc.TextNode=function(v)
- {
-  return Doc.Mk({
-   $:5,
-   $0:DomUtility.CreateText(v)
-  },View.Const());
- };
- Doc.Input=function(attr$1,_var)
- {
-  return Doc.InputInternal("input",function()
-  {
-   return Seq.append(attr$1,[AttrModule.Value(_var)]);
-  });
- };
- Doc.Element=function(name,attr$1,children)
- {
-  var a,a$1;
-  a=AttrProxy.Concat(attr$1);
-  a$1=Doc.Concat(children);
-  return Elt.New(DomUtility.CreateElement(name),a,a$1);
- };
- Doc.RunInPlace=function(childrenOnly,parent,doc)
- {
-  var st;
-  st=Docs.CreateRunState(parent,doc.docNode);
-  View.Sink(An.get_UseAnimations()||Settings.BatchUpdatesEnabled()?Mailbox.StartProcessor(Docs.PerformAnimatedUpdate(childrenOnly,st,doc.docNode)):function()
-  {
-   Docs.PerformSyncUpdate(childrenOnly,st,doc.docNode);
-  },doc.updates);
- };
- Doc.Append=function(a,b)
- {
-  return Doc.Mk({
-   $:0,
-   $0:a.docNode,
-   $1:b.docNode
-  },View.Map2Unit(a.updates,b.updates));
- };
- Doc.Button=function(caption,attrs,action)
- {
-  var attrs$1;
-  attrs$1=AttrProxy.Concat(attrs);
-  return Elt.New(Doc.Clickable("button",action),attrs$1,Doc.TextNode(caption));
- };
- Doc.TextView=function(txt)
- {
-  var node;
-  node=Docs.CreateTextNode();
-  return Doc.Mk({
-   $:4,
-   $0:node
-  },View.Map(function(t)
-  {
-   Docs.UpdateTextNode(node,t);
-  },txt));
- };
- Doc.InputInternal=function(elemTy,attr$1)
- {
-  var el;
-  el=DomUtility.CreateElement(elemTy);
-  return Elt.New(el,AttrProxy.Concat(attr$1(el)),Doc.get_Empty());
- };
- Doc.Run=function(parent,doc)
- {
-  Docs.LinkElement(parent,doc.docNode);
-  Doc.RunInPlace(false,parent,doc);
- };
- Doc.InputArea=function(attr$1,_var)
- {
-  return Doc.InputInternal("textarea",function()
-  {
-   return Seq.append(attr$1,[AttrModule.Value(_var)]);
-  });
- };
- Doc.Clickable=function(elem,action)
- {
-  var el;
-  el=DomUtility.CreateElement(elem);
-  el.addEventListener("click",function(ev)
-  {
-   ev.preventDefault();
-   return action();
-  },false);
-  return el;
- };
- Doc.New=Runtime$1.Ctor(function(docNode,updates)
- {
-  Obj.New.call(this);
-  this.docNode=docNode;
-  this.updates=updates;
- },Doc);
- FSharpMap=Collections.FSharpMap=Runtime$1.Class({
-  TryGetValue:function(k,r)
-  {
-   var m;
-   m=this.TryFind(k);
-   return m!=null&&m.$==1&&(r.set(m.$0),true);
-  },
-  get_Item:function(k)
-  {
-   var m;
-   m=this.TryFind(k);
-   return m==null?Operators.FailWith("The given key was not present in the dictionary."):m.$0;
-  },
-  TryFind:function(k)
-  {
-   var o;
-   o=BalancedTree.TryFind(Pair.New(k,void 0),this.tree);
-   return o==null?null:{
-    $:1,
-    $0:o.$0.Value
-   };
-  },
-  Equals:function(other)
-  {
-   return this.get_Count()===other.get_Count()&&Seq.forall2(Unchecked.Equals,this,other);
-  },
-  GetEnumerator$1:function()
-  {
-   return Enumerator.Get(Seq.map(function(kv)
-   {
-    return{
-     K:kv.Key,
-     V:kv.Value
-    };
-   },BalancedTree.Enumerate(false,this.tree)));
-  },
-  get_Count:function()
-  {
-   var tree;
-   tree=this.tree;
-   return tree==null?0:tree.Count;
-  },
-  GetHashCode:function()
-  {
-   return Unchecked.Hash(Arrays.ofSeq(this));
-  },
-  Add:function(k,v)
-  {
-   return new FSharpMap.New$1(BalancedTree.Add(Pair.New(k,v),this.tree));
-  },
-  get_IsEmpty:function()
-  {
-   return this.tree==null;
-  },
-  get_Tree:function()
-  {
-   return this.tree;
-  },
-  GetEnumerator:function()
-  {
-   return this.GetEnumerator$1();
-  },
-  CompareTo0:function(other)
-  {
-   return Seq.compareWith(Unchecked.Compare,this,other);
-  },
-  GetEnumerator0:function()
-  {
-   return this.GetEnumerator$1();
-  }
- },Obj,FSharpMap);
- FSharpMap.New=Runtime$1.Ctor(function(s)
- {
-  FSharpMap.New$1.call(this,MapUtil.fromSeq(s));
- },FSharpMap);
- FSharpMap.New$1=Runtime$1.Ctor(function(tree)
- {
-  Obj.New.call(this);
-  this.tree=tree;
- },FSharpMap);
- Enumerator.Get=function(x)
- {
-  return x instanceof Global.Array?Enumerator.ArrayEnumerator(x):Unchecked.Equals(typeof x,"string")?Enumerator.StringEnumerator(x):x.GetEnumerator();
- };
- Enumerator.ArrayEnumerator=function(s)
- {
-  return new T$1.New(0,null,function(e)
-  {
-   var i;
-   i=e.s;
-   return i<Arrays.length(s)&&(e.c=Arrays.get(s,i),e.s=i+1,true);
-  },void 0);
- };
- Enumerator.StringEnumerator=function(s)
- {
-  return new T$1.New(0,null,function(e)
-  {
-   var i;
-   i=e.s;
-   return i<s.length&&(e.c=s[i],e.s=i+1,true);
-  },void 0);
- };
- Enumerator.Get0=function(x)
- {
-  return x instanceof Global.Array?Enumerator.ArrayEnumerator(x):Unchecked.Equals(typeof x,"string")?Enumerator.StringEnumerator(x):"GetEnumerator0"in x?x.GetEnumerator0():x.GetEnumerator();
- };
- T$1=Enumerator.T=Runtime$1.Class({
-  MoveNext:function()
-  {
-   return this.n(this);
-  },
-  Current:function()
-  {
-   return this.c;
-  },
-  Dispose:function()
-  {
-   if(this.d)
-    this.d(this);
-  }
- },Obj,T$1);
- T$1.New=Runtime$1.Ctor(function(s,c,n,d)
- {
-  Obj.New.call(this);
-  this.s=s;
-  this.c=c;
-  this.n=n;
-  this.d=d;
- },T$1);
- BalancedTree.OfSeq=function(data)
- {
-  var a;
-  a=Arrays.ofSeq(Seq.distinct(data));
-  Arrays.sortInPlace(a);
-  return BalancedTree.Build(a,0,a.length-1);
- };
- BalancedTree.Contains=function(v,t)
- {
-  return!((BalancedTree.Lookup(v,t))[0]==null);
- };
- BalancedTree.Remove=function(k,src)
- {
-  var p,t,spine,d;
-  p=BalancedTree.Lookup(k,src);
-  t=p[0];
-  spine=p[1];
-  return t==null?src:t.Right==null?BalancedTree.Rebuild(spine,t.Left):t.Left==null?BalancedTree.Rebuild(spine,t.Right):BalancedTree.Rebuild(spine,(d=Arrays.ofSeq(Seq.append(BalancedTree.Enumerate(false,t.Left),BalancedTree.Enumerate(false,t.Right))),BalancedTree.Build(d,0,d.length-1)));
- };
- BalancedTree.Add=function(x,t)
- {
-  return BalancedTree.Put(function($1,$2)
-  {
-   return $2;
-  },x,t);
- };
- BalancedTree.TryFind=function(v,t)
- {
-  var x;
-  x=(BalancedTree.Lookup(v,t))[0];
-  return x==null?null:{
-   $:1,
-   $0:x.Node
-  };
- };
- BalancedTree.Build=function(data,min,max)
- {
-  var center,left,right;
-  return max-min+1<=0?null:(center=(min+max)/2>>0,(left=BalancedTree.Build(data,min,center-1),(right=BalancedTree.Build(data,center+1,max),BalancedTree.Branch(Arrays.get(data,center),left,right))));
- };
- BalancedTree.Lookup=function(k,t)
- {
-  var spine,t$1,loop,m;
-  spine=[];
-  t$1=t;
-  loop=true;
-  while(loop)
-   if(t$1==null)
-    loop=false;
-   else
-    {
-     m=Unchecked.Compare(k,t$1.Node);
-     m===0?loop=false:m===1?(spine.unshift([true,t$1.Node,t$1.Left]),t$1=t$1.Right):(spine.unshift([false,t$1.Node,t$1.Right]),t$1=t$1.Left);
-    }
-  return[t$1,spine];
- };
- BalancedTree.Rebuild=function(spine,t)
- {
-  var t$1,i,$1,m,x,l,m$1,x$1,r,m$2;
-  function h(x$2)
-  {
-   return x$2==null?0:x$2.Height;
-  }
-  t$1=t;
-  for(i=0,$1=Arrays.length(spine)-1;i<=$1;i++){
-   t$1=(m=Arrays.get(spine,i),m[0]?(x=m[1],(l=m[2],h(t$1)>h(l)+1?h(t$1.Left)===h(t$1.Right)+1?(m$1=t$1.Left,BalancedTree.Branch(m$1.Node,BalancedTree.Branch(x,l,m$1.Left),BalancedTree.Branch(t$1.Node,m$1.Right,t$1.Right))):BalancedTree.Branch(t$1.Node,BalancedTree.Branch(x,l,t$1.Left),t$1.Right):BalancedTree.Branch(x,l,t$1))):(x$1=m[1],(r=m[2],h(t$1)>h(r)+1?h(t$1.Right)===h(t$1.Left)+1?(m$2=t$1.Right,BalancedTree.Branch(m$2.Node,BalancedTree.Branch(t$1.Node,t$1.Left,m$2.Left),BalancedTree.Branch(x$1,m$2.Right,r))):BalancedTree.Branch(t$1.Node,t$1.Left,BalancedTree.Branch(x$1,t$1.Right,r)):BalancedTree.Branch(x$1,t$1,r))));
-  }
-  return t$1;
- };
- BalancedTree.Put=function(combine,k,t)
- {
-  var p,t$1;
-  p=BalancedTree.Lookup(k,t);
-  t$1=p[0];
-  return t$1==null?BalancedTree.Rebuild(p[1],BalancedTree.Branch(k,null,null)):BalancedTree.Rebuild(p[1],BalancedTree.Branch(combine(t$1.Node,k),t$1.Left,t$1.Right));
- };
- BalancedTree.Branch=function(node,left,right)
- {
-  var a,b;
-  return Tree.New(node,left,right,1+(a=left==null?0:left.Height,(b=right==null?0:right.Height,Unchecked.Compare(a,b)===1?a:b)),1+(left==null?0:left.Count)+(right==null?0:right.Count));
- };
- BalancedTree.Enumerate=function(flip,t)
- {
-  function gen(t$1,spine)
-  {
-   var t$2;
-   while(true)
-    if(t$1==null)
-     return spine.$==1?{
-      $:1,
-      $0:[spine.$0[0],[spine.$0[1],spine.$1]]
-     }:null;
-    else
-     if(flip)
-      {
-       t$2=t$1;
-       t$1=t$2.Right;
-       spine=new T({
-        $:1,
-        $0:[t$2.Node,t$2.Left],
-        $1:spine
-       });
-      }
-     else
-      {
-       t$2=t$1;
-       t$1=t$2.Left;
-       spine=new T({
-        $:1,
-        $0:[t$2.Node,t$2.Right],
-        $1:spine
-       });
-      }
-  }
-  return Seq.unfold(function($1)
-  {
-   return gen($1[0],$1[1]);
-  },[t,T.Empty]);
- };
- Seq.tryHead=function(s)
- {
-  var e;
-  e=Enumerator.Get(s);
-  try
-  {
-   return e.MoveNext()?{
-    $:1,
-    $0:e.Current()
-   }:null;
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
- Arrays.groupBy=function(f,a)
- {
-  var d,keys,i,$1,c,k;
-  d=new Dictionary.New$5();
-  keys=[];
-  for(i=0,$1=Arrays.length(a)-1;i<=$1;i++){
-   c=a[i];
-   k=f(c);
-   d.ContainsKey(k)?d.get_Item(k).push(c):(keys.push(k),d.Add(k,[c]));
-  }
-  Arrays.mapInPlace(function(k$1)
-  {
-   return[k$1,d.get_Item(k$1)];
-  },keys);
-  return keys;
- };
- Seq.tryItem=function(i,s)
- {
-  var j,e,go;
-  if(i<0)
-   return null;
-  else
-   {
-    j=0;
-    e=Enumerator.Get(s);
-    try
-    {
-     go=true;
-     while(go&&j<=i)
-      if(e.MoveNext())
-       j=j+1;
-      else
-       go=false;
-     return go?{
-      $:1,
-      $0:e.Current()
-     }:null;
-    }
-    finally
-    {
-     if(typeof e=="object"&&"Dispose"in e)
-      e.Dispose();
-    }
-   }
- };
- Seq.last=function(s)
- {
-  var e,$1;
-  e=Enumerator.Get(s);
-  try
-  {
-   if(!e.MoveNext())
-    $1=Seq.insufficient();
-   else
-    {
-     while(e.MoveNext())
-      ;
-     $1=e.Current();
-    }
-   return $1;
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
- Arrays.mapInPlace=function(f,arr)
- {
-  var i,$1;
-  for(i=0,$1=arr.length-1;i<=$1;i++)arr[i]=f(arr[i]);
- };
- Arrays.mapiInPlace=function(f,arr)
- {
-  var i,$1;
-  for(i=0,$1=arr.length-1;i<=$1;i++)arr[i]=f(i,arr[i]);
-  return arr;
- };
- Seq.insufficient=function()
- {
-  return Operators.FailWith("The input sequence has an insufficient number of elements.");
- };
- Seq.nonNegative=function()
- {
-  return Operators.FailWith("The input must be non-negative.");
- };
- View=UI.View=Runtime$1.Class({
-  get_V:function()
-  {
-   return Operators.FailWith("View<'T>.V can only be called in an argument to a V-enabled function or if 'T = Doc.");
-  }
- },null,View);
- Date.toYYYYMMDD=function(sep,date)
- {
-  return((((((Runtime$1.Curried(function($1,$2,$3,$4,$5,$6)
-  {
-   return $1(Global.String($2)+Utils.toSafe($3)+Utils.padNumLeft(Global.String($4),2)+Utils.toSafe($5)+Utils.padNumLeft(Global.String($6),2));
-  },6))(Global.id))((new Date$1(date)).getFullYear()))(sep))((new Date$1(date)).getMonth()+1))(sep))((new Date$1(date)).getDate());
- };
- Genero.tryParse=function(s)
- {
-  var m;
-  m=Strings.Trim(s);
-  return m==="Masculino"?{
-   $:1,
-   $0:Genero.Masculino
-  }:m==="Femenino"?{
-   $:1,
-   $0:Genero.Femenino
-  }:m==="Empresa"?{
-   $:1,
-   $0:Genero.Empresa
-  }:null;
- };
- Genero.Masculino={
-  $:0
- };
- Genero.Femenino={
-  $:1
- };
- Genero.Empresa={
-  $:2
- };
- ParseO.parseDateO2=function()
- {
-  SC$2.$cctor();
-  return SC$2.parseDateO2;
- };
- ParseO.tryParseWith=function(tryParseFunc)
- {
-  function g($1,$2)
-  {
-   return $1?{
-    $:1,
-    $0:$2
-   }:null;
-  }
-  return function(x)
-  {
-   return g.apply(null,tryParseFunc(x));
-  };
- };
- ParseO.parseDateO=function()
- {
-  SC$2.$cctor();
-  return SC$2.parseDateO;
- };
- ParseO.parseIntO=function()
- {
-  SC$2.$cctor();
-  return SC$2.parseIntO;
- };
- ParseO.parseInt64O=function()
- {
-  SC$2.$cctor();
-  return SC$2.parseInt64O;
- };
- ParseO.parseSingleO=function()
- {
-  SC$2.$cctor();
-  return SC$2.parseSingleO;
- };
- ParseO.parseDoubleO=function()
- {
-  SC$2.$cctor();
-  return SC$2.parseDoubleO;
- };
- ParseO.parseGuidO=function()
- {
-  SC$2.$cctor();
-  return SC$2.parseGuidO;
- };
- ParseO.Double=function()
- {
-  SC$2.$cctor();
-  return SC$2["|Double|_|"];
- };
- ParseO.Int=function()
- {
-  SC$2.$cctor();
-  return SC$2["|Int|_|"];
- };
- Pais=TypesV0.Pais=Runtime$1.Class({
-  toString:function()
-  {
-   return this.$==3?this.$0:(function($1)
-   {
-    return function($2)
-    {
-     return $1(ProzperServer_GeneratedPrintf.p$2($2));
-    };
-   }(Global.id))(this);
-  }
- },null,Pais);
- Pais.tryParse=function(s)
- {
-  var $1,m;
-  m=Strings.Trim(s).toUpperCase();
-  switch(m)
-  {
-   case"":
-    return null;
-   case"USA":
-   case"AMERICA":
-   case"E.E.U.U.":
-   case"US":
-   case"UNITED STATES OF AMERICA":
-   case"UNITED STATES":
-   case"EEUU":
-    return{
-     $:1,
-     $0:Pais.USA
-    };
-   case"VENEZUELA":
-    return{
-     $:1,
-     $0:Pais.Venezuela
-    };
-   case"ARGENTINA":
-    return{
-     $:1,
-     $0:Pais.Argentina
-    };
-   default:
-    return{
-     $:1,
-     $0:new Pais({
-      $:3,
-      $0:Strings.Trim(s)
-     })
-    };
-  }
- };
- Pais.USA=new Pais({
-  $:0
- });
- Pais.Venezuela=new Pais({
-  $:1
- });
- Pais.Argentina=new Pais({
-  $:2
- });
- Telefono$1.New=function(tipoTelefono,codigoPais,codigoArea,numero,extension,mensajes)
- {
-  return{
-   tipoTelefono:tipoTelefono,
-   codigoPais:codigoPais,
-   codigoArea:codigoArea,
-   numero:numero,
-   extension:extension,
-   mensajes:mensajes
-  };
- };
- TipoTelefono=TypesV0.TipoTelefono=Runtime$1.Class({
-  toString:function()
-  {
-   return(function($1)
-   {
-    return function($2)
-    {
-     return $1(ProzperServer_GeneratedPrintf.p$8($2));
-    };
-   }(Global.id))(this);
-  }
- },null,TipoTelefono);
- TipoTelefono.get_tryParse=function()
- {
-  return function(a)
-  {
-   return a==="Movil"?{
-    $:1,
-    $0:TipoTelefono.Movil
-   }:a==="Oficina"?{
-    $:1,
-    $0:TipoTelefono.Oficina
-   }:a==="Habitacion"?{
-    $:1,
-    $0:TipoTelefono.Habitacion
-   }:null;
-  };
- };
- TipoTelefono.Movil=new TipoTelefono({
-  $:0
- });
- TipoTelefono.Oficina=new TipoTelefono({
-  $:1
- });
- TipoTelefono.Habitacion=new TipoTelefono({
-  $:2
- });
- Direccion$1.New=function(authorizeIdR,tipoDireccion,linea1,linea2,ciudad,estado,pais,zonaPostal)
- {
-  return{
-   authorizeIdR:authorizeIdR,
-   tipoDireccion:tipoDireccion,
-   linea1:linea1,
-   linea2:linea2,
-   ciudad:ciudad,
-   estado:estado,
-   pais:pais,
-   zonaPostal:zonaPostal
-  };
- };
- TipoDireccion=TypesV0.TipoDireccion=Runtime$1.Class({
-  toString:function()
-  {
-   return this.$==3?this.$0:(function($1)
-   {
-    return function($2)
-    {
-     return $1(ProzperServer_GeneratedPrintf.p$7($2));
-    };
-   }(Global.id))(this);
-  }
- },null,TipoDireccion);
- TipoDireccion.tryParse=function(s)
- {
-  var m;
-  m=Strings.Trim(s);
-  return m===""?null:m==="Habitacion"?{
-   $:1,
-   $0:TipoDireccion.Habitacion
-  }:m==="Oficina"?{
-   $:1,
-   $0:TipoDireccion.Oficina
-  }:m==="ServicioPostal"?{
-   $:1,
-   $0:TipoDireccion.ServicioPostal
-  }:{
-   $:1,
-   $0:new TipoDireccion({
-    $:3,
-    $0:m
-   })
-  };
- };
- TipoDireccion.Habitacion=new TipoDireccion({
-  $:0
- });
- TipoDireccion.Oficina=new TipoDireccion({
-  $:1
- });
- TipoDireccion.ServicioPostal=new TipoDireccion({
-  $:2
- });
- Estado=TypesV0.Estado=Runtime$1.Class({
-  toString:function()
-  {
-   return this.$==2?this.$0:(function($1)
-   {
-    return function($2)
-    {
-     return $1(ProzperServer_GeneratedPrintf.p$3($2));
-    };
-   }(Global.id))(this);
-  }
- },null,Estado);
- Estado.tryParse=function(s)
- {
-  var $1,m;
-  m=Strings.Trim(s).toUpperCase();
-  switch(m)
-  {
-   case"":
-    return null;
-   case"TEXAS":
-   case"TX":
-    return{
-     $:1,
-     $0:Estado.Texas
-    };
-   case"FLORIDA":
-   case"FL":
-    return{
-     $:1,
-     $0:Estado.Florida
-    };
-   default:
-    return{
-     $:1,
-     $0:new Estado({
-      $:2,
-      $0:Strings.Trim(s)
-     })
-    };
-  }
+   Async.OnError(e);
+  },Global.ignore,null);
  };
- Estado.Texas=new Estado({
-  $:0
- });
- Estado.Florida=new Estado({
-  $:1
- });
- ZonaPostal=TypesV0.ZonaPostal=Runtime$1.Class({
-  toString:function()
-  {
-   return this.$0;
-  }
- },null,ZonaPostal);
- ZonaPostal.tryParse=function(s)
+ Async.OnError=function(e)
  {
-  return Strings.Trim(s)!==""?{
-   $:1,
-   $0:new ZonaPostal({
-    $:0,
-    $0:Strings.Trim(s)
-   })
-  }:null;
+  return console.log("WebSharper UI: Uncaught asynchronous exception",e);
  };
  SC$3.$cctor=function()
  {
@@ -10837,7 +11356,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return[v];
   };
   SC$3.result=new Builder.New();
-  SC$3.result$1=Result.result();
+  SC$3.result$1=Result$1.result();
   SC$3.resultM=new Builder$1.New();
   SC$3.asyncResultM=new AsyncResultMBuilder.New();
   SC$3.unindentStr=function(x)
@@ -10987,7 +11506,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return j.tryBool();
   }];
-  SC$3.premisasCalculo=PremisasCalculo.New(15,25,25,0,75,31,15,22);
+  SC$3.premisasCalculo=PremisasCalculo.New(15,25,25,0,75,31,26,28);
   SC$3.telVacio=Telefono$1.New(TipoTelefono.Movil,"","","","",false);
   SC$3.dirVacio=Direccion$1.New(Library.Error(""),TipoDireccion.Habitacion,"","","",new Estado({
    $:2,
@@ -11015,11 +11534,1014 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:""
   }),[],(c=Date$1.now(),(new Date$1(c)).getFullYear()),(c$1=Date$1.now(),(new Date$1(c$1)).getMonth()+1),TypesV0.premisasCalculo(),0);
   SC$3.correoVacio=CorreoElectronico.New("",null,null);
-  SC$3.empty=(d=DatosPersonales$1.New(null,"","","","",Pais.USA,Genero.Masculino,(new Date$1(2000,1-1,1)).getTime()),Aliado$1.New(new IdAliado({
+  SC$3.empty=(d=DatosPersonales.New(null,"","","","",Pais.USA,Genero.Masculino,(new Date$1(2000,1-1,1)).getTime()),Aliado.New(new IdAliado({
    $:0,
    $0:""
-  }),Library.Error(""),null,d,[],[],false,StatusAliado.Inactivo,TipoAliado.Regular,(new Date$1(2000,1-1,1)).getTime(),(new Date$1(2000,1-1,1)).getTime(),0,0,0,0,0,0));
+  }),null,d,[],[],false,StatusAliado.Inactivo,DiaPago.Dia01,TipoAliado.Regular,(new Date$1(2000,1-1,1)).getTime(),(new Date$1(2000,1-1,1)).getTime(),0,0,0,0,0,0));
   SC$3.registroRpcs=new Dictionary.New$5();
+ };
+ PremisasCalculo.New=function(comisionReferidosRegular,comisionReferidosMaster,comisionDescendientesMaster,comisionDescendientesRegular,montoAfiliacion,numeroReferidosMaster,diaCorte1,diaCorte2)
+ {
+  return{
+   comisionReferidosRegular:comisionReferidosRegular,
+   comisionReferidosMaster:comisionReferidosMaster,
+   comisionDescendientesMaster:comisionDescendientesMaster,
+   comisionDescendientesRegular:comisionDescendientesRegular,
+   montoAfiliacion:montoAfiliacion,
+   numeroReferidosMaster:numeroReferidosMaster,
+   diaCorte1:diaCorte1,
+   diaCorte2:diaCorte2
+  };
+ };
+ Numeric.TryParseInt64=function(s,r)
+ {
+  return Numeric.TryParse(s,-9223372036854775808,9223372036854775807,r);
+ };
+ Fresh.Int=function()
+ {
+  Fresh.set_counter(Fresh.counter()+1);
+  return Fresh.counter();
+ };
+ Fresh.set_counter=function($1)
+ {
+  SC$5.$cctor();
+  SC$5.counter=$1;
+ };
+ Fresh.counter=function()
+ {
+  SC$5.$cctor();
+  return SC$5.counter;
+ };
+ Fresh.Id=function()
+ {
+  Fresh.set_counter(Fresh.counter()+1);
+  return"uid"+Global.String(Fresh.counter());
+ };
+ String.unindent$1=function(s)
+ {
+  var lines,n,o,o$1;
+  lines=Strings.SplitChars(s,["\n"],0);
+  n=(o=Seq.tryFindIndex(function(y)
+  {
+   return" "!==y;
+  },(o$1=Seq.tryFind(function(l)
+  {
+   return Strings.Trim(l)!=="";
+  },lines),o$1==null?"":o$1.$0)),o==null?0:o.$0);
+  return Seq.filter(function(s$1)
+  {
+   return!Strings.StartsWith(s$1,"# 1 ");
+  },Seq.map(function(l)
+  {
+   return l.length<=n?"":l.substring(n);
+  },lines));
+ };
+ String.splitByChar$1=function(c,s)
+ {
+  return Strings.SplitChars(s,[c],0);
+ };
+ Slice.array=function(source,start,finish)
+ {
+  return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):[]:finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
+ };
+ Slice.string=function(source,start,finish)
+ {
+  return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):"":finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
+ };
+ List$1.ofArray=function(arr)
+ {
+  var r,i,$1;
+  r=T$1.Empty;
+  for(i=Arrays.length(arr)-1,$1=0;i>=$1;i--)r=new T$1({
+   $:1,
+   $0:Arrays.get(arr,i),
+   $1:r
+  });
+  return r;
+ };
+ List$1.ofSeq=function(s)
+ {
+  var e,$1,go,r,res,t;
+  if(s instanceof T$1)
+   return s;
+  else
+   if(s instanceof Global.Array)
+    return List$1.ofArray(s);
+   else
+    {
+     e=Enumerator.Get(s);
+     try
+     {
+      go=e.MoveNext();
+      if(!go)
+       $1=T$1.Empty;
+      else
+       {
+        res=new T$1({
+         $:1
+        });
+        r=res;
+        while(go)
+         {
+          r.$0=e.Current();
+          e.MoveNext()?r=(t=new T$1({
+           $:1
+          }),r.$1=t,t):go=false;
+         }
+        r.$1=T$1.Empty;
+        $1=res;
+       }
+      return $1;
+     }
+     finally
+     {
+      if(typeof e=="object"&&"Dispose"in e)
+       e.Dispose();
+     }
+    }
+ };
+ List$1.rev=function(l)
+ {
+  var res,r;
+  res=T$1.Empty;
+  r=l;
+  while(r.$==1)
+   {
+    res=new T$1({
+     $:1,
+     $0:r.$0,
+     $1:res
+    });
+    r=r.$1;
+   }
+  return res;
+ };
+ List$1.head=function(l)
+ {
+  return l.$==1?l.$0:List$1.listEmpty();
+ };
+ List$1.tail=function(l)
+ {
+  return l.$==1?l.$1:List$1.listEmpty();
+ };
+ List$1.listEmpty=function()
+ {
+  return Operators.FailWith("The input list was empty.");
+ };
+ List$1.iter=function(f,l)
+ {
+  var r;
+  r=l;
+  while(r.$==1)
+   {
+    f(List$1.head(r));
+    r=List$1.tail(r);
+   }
+ };
+ Policy=Msal$1.Policy=Runtime$1.Class({
+  toString:function()
+  {
+   return Strings.ReplaceChar(Library["String.get_toUnderscore$1"]((function($1)
+   {
+    return function($2)
+    {
+     return $1(testing_GeneratedPrintf.p($2));
+    };
+   }(Global.id))(this)),"_"," ");
+  }
+ },null,Policy);
+ Policy.SignIn=new Policy({
+  $:0
+ });
+ Policy.SignUp=new Policy({
+  $:1
+ });
+ Policy.EditProfile=new Policy({
+  $:2
+ });
+ Policy.ResetPassword=new Policy({
+  $:3
+ });
+ UserAgentApplication.Options=function(cacheLocation,isAngular,loadFrameTimeout,logger,navigateToLoginRequestUrl,postLogoutRedirectUri,protectedResourceMap,redirectUri,state,storeAuthStateInCookie,unprotectedResources,validateAuthority)
+ {
+  return Pojo.newPojoOpt([Msal$1.op_EqualsEqualsGreater("cacheLocation",cacheLocation),Msal$1.op_EqualsEqualsGreater("isAngular",isAngular),Msal$1.op_EqualsEqualsGreater("loadFrameTimeout",loadFrameTimeout),Msal$1.op_EqualsEqualsGreater("logger",logger),Msal$1.op_EqualsEqualsGreater("navigateToLoginRequestUrl",navigateToLoginRequestUrl),Msal$1.op_EqualsEqualsGreater("postLogoutRedirectUri",postLogoutRedirectUri),Msal$1.op_EqualsEqualsGreater("protectedResourceMap",protectedResourceMap),Msal$1.op_EqualsEqualsGreater("redirectUri",redirectUri),Msal$1.op_EqualsEqualsGreater("state",state),Msal$1.op_EqualsEqualsGreater("storeAuthStateInCookie",storeAuthStateInCookie),Msal$1.op_EqualsEqualsGreater("unprotectedResources",unprotectedResources),Msal$1.op_EqualsEqualsGreater("validateAuthority",validateAuthority)]);
+ };
+ LibraryJS.REGEX$1=function(expr,opt,value)
+ {
+  var m;
+  return value===null?null:(m=(new Global.String(value)).match(new Global.RegExp(expr,opt)),Unchecked.Equals(m,null)?null:!Unchecked.Equals(m,null)&&m.length===0?null:{
+   $:1,
+   $0:m
+  });
+ };
+ LibraryJS.rexEmail=function()
+ {
+  SC$1.$cctor();
+  return SC$1.rexEmail;
+ };
+ EndPoint.DefaultEP={
+  $:0
+ };
+ Router.InstallHash=function(onParseError,router)
+ {
+  var _var;
+  _var=Var$1.Create$1(Router.getCurrentHash(function(h)
+  {
+   return RouterModule.Parse(router,Route.FromHash(h,{
+    $:1,
+    $0:true
+   }));
+  },onParseError));
+  Router.InstallHashInto(_var,onParseError,router);
+  return _var;
+ };
+ Router.InstallHashInto=function(_var,onParseError,router)
+ {
+  function parse(h)
+  {
+   return RouterModule.Parse(router,Route.FromHash(h,{
+    $:1,
+    $0:true
+   }));
+  }
+  function cur()
+  {
+   return Router.getCurrentHash(parse,onParseError);
+  }
+  function set(value)
+  {
+   if(!Unchecked.Equals(_var.Get(),value))
+    _var.Set(value);
+  }
+  self.addEventListener("popstate",function()
+  {
+   return set(cur());
+  },false);
+  self.addEventListener("hashchange",function()
+  {
+   return set(cur());
+  },false);
+  self.document.body.addEventListener("click",function(ev)
+  {
+   var o,o$1,href;
+   o=(o$1=Router.findLinkHref(ev.target),o$1==null?null:(href=o$1.$0,Strings.StartsWith(href,"#")?parse(href):null));
+   return o==null?null:(set(o.$0),ev.preventDefault());
+  },false);
+  View.Sink(function(value)
+  {
+   var url;
+   if(!Unchecked.Equals(value,cur()))
+    {
+     url=RouterModule.HashLink(router,value);
+     self.history.pushState(null,null,url);
+    }
+  },_var.get_View());
+ };
+ Router.getCurrentHash=function(parse,onParseError)
+ {
+  var h,m;
+  h=self.location.hash;
+  m=parse(h);
+  return m==null?((function($1)
+  {
+   return function($2)
+   {
+    return $1("Failed to parse route: "+Utils.toSafe($2));
+   };
+  }(function(s)
+  {
+   console.log(s);
+  }))(h),onParseError):m.$0;
+ };
+ Router.findLinkHref=function(n)
+ {
+  while(true)
+   if(n.tagName==="A")
+    return Option.ofObj(n.getAttribute("href"));
+   else
+    if(n===self.document.body)
+     return null;
+    else
+     n=n.parentNode;
+ };
+ ViewBuilder.B={
+  $:0
+ };
+ Snap.Obsolete=function(sn)
+ {
+  var $1,m,i,$2,o;
+  m=sn.s;
+  if(m==null||(m!=null&&m.$==2?($1=m.$1,false):m!=null&&m.$==3?($1=m.$1,false):true))
+   void 0;
+  else
+   {
+    sn.s=null;
+    for(i=0,$2=Arrays.length($1)-1;i<=$2;i++){
+     o=Arrays.get($1,i);
+     typeof o=="object"?function(sn$1)
+     {
+      Snap.Obsolete(sn$1);
+     }(o):o();
+    }
+   }
+ };
+ Snap.New=function(State)
+ {
+  return{
+   s:State
+  };
+ };
+ Pais=TypesV0.Pais=Runtime$1.Class({
+  toString:function()
+  {
+   return this.$==3?this.$0:(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$2($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,Pais);
+ Pais.tryParse=function(s)
+ {
+  var $1,m;
+  m=Strings.Trim(s).toUpperCase();
+  switch(m)
+  {
+   case"":
+    return null;
+   case"USA":
+   case"AMERICA":
+   case"E.E.U.U.":
+   case"US":
+   case"UNITED STATES OF AMERICA":
+   case"UNITED STATES":
+   case"EEUU":
+    return{
+     $:1,
+     $0:Pais.USA
+    };
+   case"VENEZUELA":
+    return{
+     $:1,
+     $0:Pais.Venezuela
+    };
+   case"ARGENTINA":
+    return{
+     $:1,
+     $0:Pais.Argentina
+    };
+   default:
+    return{
+     $:1,
+     $0:new Pais({
+      $:3,
+      $0:Strings.Trim(s)
+     })
+    };
+  }
+ };
+ Pais.USA=new Pais({
+  $:0
+ });
+ Pais.Venezuela=new Pais({
+  $:1
+ });
+ Pais.Argentina=new Pais({
+  $:2
+ });
+ Genero.tryParse=function(s)
+ {
+  var m;
+  m=Strings.Trim(s);
+  return m==="Masculino"?{
+   $:1,
+   $0:Genero.Masculino
+  }:m==="Femenino"?{
+   $:1,
+   $0:Genero.Femenino
+  }:m==="Empresa"?{
+   $:1,
+   $0:Genero.Empresa
+  }:null;
+ };
+ Genero.Masculino={
+  $:0
+ };
+ Genero.Femenino={
+  $:1
+ };
+ Genero.Empresa={
+  $:2
+ };
+ Direccion$1.New=function(authorizeIdR,tipoDireccion,linea1,linea2,ciudad,estado,pais,zonaPostal)
+ {
+  return{
+   authorizeIdR:authorizeIdR,
+   tipoDireccion:tipoDireccion,
+   linea1:linea1,
+   linea2:linea2,
+   ciudad:ciudad,
+   estado:estado,
+   pais:pais,
+   zonaPostal:zonaPostal
+  };
+ };
+ Telefono$1.New=function(tipoTelefono,codigoPais,codigoArea,numero,extension,mensajes)
+ {
+  return{
+   tipoTelefono:tipoTelefono,
+   codigoPais:codigoPais,
+   codigoArea:codigoArea,
+   numero:numero,
+   extension:extension,
+   mensajes:mensajes
+  };
+ };
+ PlugInQuery.New=function(qryName,qryFunction)
+ {
+  return{
+   qryName:qryName,
+   qryFunction:qryFunction
+  };
+ };
+ FSharpMap=Collections.FSharpMap=Runtime$1.Class({
+  TryGetValue:function(k,r)
+  {
+   var m;
+   m=this.TryFind(k);
+   return m!=null&&m.$==1&&(r.set(m.$0),true);
+  },
+  get_Item:function(k)
+  {
+   var m;
+   m=this.TryFind(k);
+   return m==null?Operators.FailWith("The given key was not present in the dictionary."):m.$0;
+  },
+  TryFind:function(k)
+  {
+   var o;
+   o=BalancedTree.TryFind(Pair.New(k,void 0),this.tree);
+   return o==null?null:{
+    $:1,
+    $0:o.$0.Value
+   };
+  },
+  Equals:function(other)
+  {
+   return this.get_Count()===other.get_Count()&&Seq.forall2(Unchecked.Equals,this,other);
+  },
+  GetEnumerator$1:function()
+  {
+   return Enumerator.Get(Seq.map(function(kv)
+   {
+    return{
+     K:kv.Key,
+     V:kv.Value
+    };
+   },BalancedTree.Enumerate(false,this.tree)));
+  },
+  get_Count:function()
+  {
+   var tree;
+   tree=this.tree;
+   return tree==null?0:tree.Count;
+  },
+  GetHashCode:function()
+  {
+   return Unchecked.Hash(Arrays.ofSeq(this));
+  },
+  Add:function(k,v)
+  {
+   return new FSharpMap.New$1(BalancedTree.Add(Pair.New(k,v),this.tree));
+  },
+  get_IsEmpty:function()
+  {
+   return this.tree==null;
+  },
+  get_Tree:function()
+  {
+   return this.tree;
+  },
+  GetEnumerator:function()
+  {
+   return this.GetEnumerator$1();
+  },
+  CompareTo0:function(other)
+  {
+   return Seq.compareWith(Unchecked.Compare,this,other);
+  },
+  GetEnumerator0:function()
+  {
+   return this.GetEnumerator$1();
+  }
+ },Obj,FSharpMap);
+ FSharpMap.New=Runtime$1.Ctor(function(s)
+ {
+  FSharpMap.New$1.call(this,MapUtil.fromSeq(s));
+ },FSharpMap);
+ FSharpMap.New$1=Runtime$1.Ctor(function(tree)
+ {
+  Obj.New.call(this);
+  this.tree=tree;
+ },FSharpMap);
+ Enumerator.Get=function(x)
+ {
+  return x instanceof Global.Array?Enumerator.ArrayEnumerator(x):Unchecked.Equals(typeof x,"string")?Enumerator.StringEnumerator(x):x.GetEnumerator();
+ };
+ Enumerator.ArrayEnumerator=function(s)
+ {
+  return new T.New(0,null,function(e)
+  {
+   var i;
+   i=e.s;
+   return i<Arrays.length(s)&&(e.c=Arrays.get(s,i),e.s=i+1,true);
+  },void 0);
+ };
+ Enumerator.StringEnumerator=function(s)
+ {
+  return new T.New(0,null,function(e)
+  {
+   var i;
+   i=e.s;
+   return i<s.length&&(e.c=s[i],e.s=i+1,true);
+  },void 0);
+ };
+ Enumerator.Get0=function(x)
+ {
+  return x instanceof Global.Array?Enumerator.ArrayEnumerator(x):Unchecked.Equals(typeof x,"string")?Enumerator.StringEnumerator(x):"GetEnumerator0"in x?x.GetEnumerator0():x.GetEnumerator();
+ };
+ T=Enumerator.T=Runtime$1.Class({
+  MoveNext:function()
+  {
+   return this.n(this);
+  },
+  Current:function()
+  {
+   return this.c;
+  },
+  Dispose:function()
+  {
+   if(this.d)
+    this.d(this);
+  }
+ },Obj,T);
+ T.New=Runtime$1.Ctor(function(s,c,n,d)
+ {
+  Obj.New.call(this);
+  this.s=s;
+  this.c=c;
+  this.n=n;
+  this.d=d;
+ },T);
+ BalancedTree.OfSeq=function(data)
+ {
+  var a;
+  a=Arrays.ofSeq(Seq.distinct(data));
+  Arrays.sortInPlace(a);
+  return BalancedTree.Build(a,0,a.length-1);
+ };
+ BalancedTree.Contains=function(v,t)
+ {
+  return!((BalancedTree.Lookup(v,t))[0]==null);
+ };
+ BalancedTree.Remove=function(k,src)
+ {
+  var p,t,spine,d;
+  p=BalancedTree.Lookup(k,src);
+  t=p[0];
+  spine=p[1];
+  return t==null?src:t.Right==null?BalancedTree.Rebuild(spine,t.Left):t.Left==null?BalancedTree.Rebuild(spine,t.Right):BalancedTree.Rebuild(spine,(d=Arrays.ofSeq(Seq.append(BalancedTree.Enumerate(false,t.Left),BalancedTree.Enumerate(false,t.Right))),BalancedTree.Build(d,0,d.length-1)));
+ };
+ BalancedTree.Add=function(x,t)
+ {
+  return BalancedTree.Put(function($1,$2)
+  {
+   return $2;
+  },x,t);
+ };
+ BalancedTree.TryFind=function(v,t)
+ {
+  var x;
+  x=(BalancedTree.Lookup(v,t))[0];
+  return x==null?null:{
+   $:1,
+   $0:x.Node
+  };
+ };
+ BalancedTree.Build=function(data,min,max)
+ {
+  var center,left,right;
+  return max-min+1<=0?null:(center=(min+max)/2>>0,(left=BalancedTree.Build(data,min,center-1),(right=BalancedTree.Build(data,center+1,max),BalancedTree.Branch(Arrays.get(data,center),left,right))));
+ };
+ BalancedTree.Lookup=function(k,t)
+ {
+  var spine,t$1,loop,m;
+  spine=[];
+  t$1=t;
+  loop=true;
+  while(loop)
+   if(t$1==null)
+    loop=false;
+   else
+    {
+     m=Unchecked.Compare(k,t$1.Node);
+     m===0?loop=false:m===1?(spine.unshift([true,t$1.Node,t$1.Left]),t$1=t$1.Right):(spine.unshift([false,t$1.Node,t$1.Right]),t$1=t$1.Left);
+    }
+  return[t$1,spine];
+ };
+ BalancedTree.Rebuild=function(spine,t)
+ {
+  var t$1,i,$1,m,x,l,m$1,x$1,r,m$2;
+  function h(x$2)
+  {
+   return x$2==null?0:x$2.Height;
+  }
+  t$1=t;
+  for(i=0,$1=Arrays.length(spine)-1;i<=$1;i++){
+   t$1=(m=Arrays.get(spine,i),m[0]?(x=m[1],(l=m[2],h(t$1)>h(l)+1?h(t$1.Left)===h(t$1.Right)+1?(m$1=t$1.Left,BalancedTree.Branch(m$1.Node,BalancedTree.Branch(x,l,m$1.Left),BalancedTree.Branch(t$1.Node,m$1.Right,t$1.Right))):BalancedTree.Branch(t$1.Node,BalancedTree.Branch(x,l,t$1.Left),t$1.Right):BalancedTree.Branch(x,l,t$1))):(x$1=m[1],(r=m[2],h(t$1)>h(r)+1?h(t$1.Right)===h(t$1.Left)+1?(m$2=t$1.Right,BalancedTree.Branch(m$2.Node,BalancedTree.Branch(t$1.Node,t$1.Left,m$2.Left),BalancedTree.Branch(x$1,m$2.Right,r))):BalancedTree.Branch(t$1.Node,t$1.Left,BalancedTree.Branch(x$1,t$1.Right,r)):BalancedTree.Branch(x$1,t$1,r))));
+  }
+  return t$1;
+ };
+ BalancedTree.Put=function(combine,k,t)
+ {
+  var p,t$1;
+  p=BalancedTree.Lookup(k,t);
+  t$1=p[0];
+  return t$1==null?BalancedTree.Rebuild(p[1],BalancedTree.Branch(k,null,null)):BalancedTree.Rebuild(p[1],BalancedTree.Branch(combine(t$1.Node,k),t$1.Left,t$1.Right));
+ };
+ BalancedTree.Branch=function(node,left,right)
+ {
+  var a,b;
+  return Tree.New(node,left,right,1+(a=left==null?0:left.Height,(b=right==null?0:right.Height,Unchecked.Compare(a,b)===1?a:b)),1+(left==null?0:left.Count)+(right==null?0:right.Count));
+ };
+ BalancedTree.Enumerate=function(flip,t)
+ {
+  function gen(t$1,spine)
+  {
+   var t$2;
+   while(true)
+    if(t$1==null)
+     return spine.$==1?{
+      $:1,
+      $0:[spine.$0[0],[spine.$0[1],spine.$1]]
+     }:null;
+    else
+     if(flip)
+      {
+       t$2=t$1;
+       t$1=t$2.Right;
+       spine=new T$1({
+        $:1,
+        $0:[t$2.Node,t$2.Left],
+        $1:spine
+       });
+      }
+     else
+      {
+       t$2=t$1;
+       t$1=t$2.Left;
+       spine=new T$1({
+        $:1,
+        $0:[t$2.Node,t$2.Right],
+        $1:spine
+       });
+      }
+  }
+  return Seq.unfold(function($1)
+  {
+   return gen($1[0],$1[1]);
+  },[t,T$1.Empty]);
+ };
+ Seq.tryHead=function(s)
+ {
+  var e;
+  e=Enumerator.Get(s);
+  try
+  {
+   return e.MoveNext()?{
+    $:1,
+    $0:e.Current()
+   }:null;
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ Arrays.groupBy=function(f,a)
+ {
+  var d,keys,i,$1,c,k;
+  d=new Dictionary.New$5();
+  keys=[];
+  for(i=0,$1=Arrays.length(a)-1;i<=$1;i++){
+   c=a[i];
+   k=f(c);
+   d.ContainsKey(k)?d.get_Item(k).push(c):(keys.push(k),d.Add(k,[c]));
+  }
+  Arrays.mapInPlace(function(k$1)
+  {
+   return[k$1,d.get_Item(k$1)];
+  },keys);
+  return keys;
+ };
+ Seq.tryItem=function(i,s)
+ {
+  var j,e,go;
+  if(i<0)
+   return null;
+  else
+   {
+    j=0;
+    e=Enumerator.Get(s);
+    try
+    {
+     go=true;
+     while(go&&j<=i)
+      if(e.MoveNext())
+       j=j+1;
+      else
+       go=false;
+     return go?{
+      $:1,
+      $0:e.Current()
+     }:null;
+    }
+    finally
+    {
+     if(typeof e=="object"&&"Dispose"in e)
+      e.Dispose();
+    }
+   }
+ };
+ Seq.last=function(s)
+ {
+  var e,$1;
+  e=Enumerator.Get(s);
+  try
+  {
+   if(!e.MoveNext())
+    $1=Seq.insufficient();
+   else
+    {
+     while(e.MoveNext())
+      ;
+     $1=e.Current();
+    }
+   return $1;
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ Arrays.mapInPlace=function(f,arr)
+ {
+  var i,$1;
+  for(i=0,$1=arr.length-1;i<=$1;i++)arr[i]=f(arr[i]);
+ };
+ Arrays.mapiInPlace=function(f,arr)
+ {
+  var i,$1;
+  for(i=0,$1=arr.length-1;i<=$1;i++)arr[i]=f(i,arr[i]);
+  return arr;
+ };
+ Seq.insufficient=function()
+ {
+  return Operators.FailWith("The input sequence has an insufficient number of elements.");
+ };
+ Seq.nonNegative=function()
+ {
+  return Operators.FailWith("The input must be non-negative.");
+ };
+ T$1=List$1.T=Runtime$1.Class({
+  GetEnumerator:function()
+  {
+   return new T.New(this,null,function(e)
+   {
+    var m;
+    m=e.s;
+    return m.$==0?false:(e.c=m.$0,e.s=m.$1,true);
+   },void 0);
+  },
+  GetEnumerator0:function()
+  {
+   return Enumerator.Get(this);
+  }
+ },null,T$1);
+ T$1.Empty=new T$1({
+  $:0
+ });
+ View=UI.View=Runtime$1.Class({
+  get_V:function()
+  {
+   return Operators.FailWith("View<'T>.V can only be called in an argument to a V-enabled function or if 'T = Doc.");
+  }
+ },null,View);
+ ParseO.parseDateO2=function()
+ {
+  SC$2.$cctor();
+  return SC$2.parseDateO2;
+ };
+ ParseO.tryParseWith=function(tryParseFunc)
+ {
+  function g($1,$2)
+  {
+   return $1?{
+    $:1,
+    $0:$2
+   }:null;
+  }
+  return function(x)
+  {
+   return g.apply(null,tryParseFunc(x));
+  };
+ };
+ ParseO.parseDateO=function()
+ {
+  SC$2.$cctor();
+  return SC$2.parseDateO;
+ };
+ ParseO.parseIntO=function()
+ {
+  SC$2.$cctor();
+  return SC$2.parseIntO;
+ };
+ ParseO.parseInt64O=function()
+ {
+  SC$2.$cctor();
+  return SC$2.parseInt64O;
+ };
+ ParseO.parseSingleO=function()
+ {
+  SC$2.$cctor();
+  return SC$2.parseSingleO;
+ };
+ ParseO.parseDoubleO=function()
+ {
+  SC$2.$cctor();
+  return SC$2.parseDoubleO;
+ };
+ ParseO.parseGuidO=function()
+ {
+  SC$2.$cctor();
+  return SC$2.parseGuidO;
+ };
+ ParseO.Double=function()
+ {
+  SC$2.$cctor();
+  return SC$2["|Double|_|"];
+ };
+ ParseO.Int=function()
+ {
+  SC$2.$cctor();
+  return SC$2["|Int|_|"];
+ };
+ TipoTelefono=TypesV0.TipoTelefono=Runtime$1.Class({
+  toString:function()
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$8($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,TipoTelefono);
+ TipoTelefono.get_tryParse=function()
+ {
+  return function(a)
+  {
+   return a==="Movil"?{
+    $:1,
+    $0:TipoTelefono.Movil
+   }:a==="Oficina"?{
+    $:1,
+    $0:TipoTelefono.Oficina
+   }:a==="Habitacion"?{
+    $:1,
+    $0:TipoTelefono.Habitacion
+   }:null;
+  };
+ };
+ TipoTelefono.Movil=new TipoTelefono({
+  $:0
+ });
+ TipoTelefono.Oficina=new TipoTelefono({
+  $:1
+ });
+ TipoTelefono.Habitacion=new TipoTelefono({
+  $:2
+ });
+ TipoDireccion=TypesV0.TipoDireccion=Runtime$1.Class({
+  toString:function()
+  {
+   return this.$==3?this.$0:(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$7($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,TipoDireccion);
+ TipoDireccion.tryParse=function(s)
+ {
+  var m;
+  m=Strings.Trim(s);
+  return m===""?null:m==="Habitacion"?{
+   $:1,
+   $0:TipoDireccion.Habitacion
+  }:m==="Oficina"?{
+   $:1,
+   $0:TipoDireccion.Oficina
+  }:m==="ServicioPostal"?{
+   $:1,
+   $0:TipoDireccion.ServicioPostal
+  }:{
+   $:1,
+   $0:new TipoDireccion({
+    $:3,
+    $0:m
+   })
+  };
+ };
+ TipoDireccion.Habitacion=new TipoDireccion({
+  $:0
+ });
+ TipoDireccion.Oficina=new TipoDireccion({
+  $:1
+ });
+ TipoDireccion.ServicioPostal=new TipoDireccion({
+  $:2
+ });
+ Estado=TypesV0.Estado=Runtime$1.Class({
+  toString:function()
+  {
+   return this.$==2?this.$0:(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$3($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,Estado);
+ Estado.tryParse=function(s)
+ {
+  var $1,m;
+  m=Strings.Trim(s).toUpperCase();
+  switch(m)
+  {
+   case"":
+    return null;
+   case"TEXAS":
+   case"TX":
+    return{
+     $:1,
+     $0:Estado.Texas
+    };
+   case"FLORIDA":
+   case"FL":
+    return{
+     $:1,
+     $0:Estado.Florida
+    };
+   default:
+    return{
+     $:1,
+     $0:new Estado({
+      $:2,
+      $0:Strings.Trim(s)
+     })
+    };
+  }
+ };
+ Estado.Texas=new Estado({
+  $:0
+ });
+ Estado.Florida=new Estado({
+  $:1
+ });
+ ZonaPostal=TypesV0.ZonaPostal=Runtime$1.Class({
+  toString:function()
+  {
+   return this.$0;
+  }
+ },null,ZonaPostal);
+ ZonaPostal.tryParse=function(s)
+ {
+  return Strings.Trim(s)!==""?{
+   $:1,
+   $0:new ZonaPostal({
+    $:0,
+    $0:Strings.Trim(s)
+   })
+  }:null;
  };
  Rpc$1.invoke=function(fname,idAliado,p)
  {
@@ -11059,79 +12581,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$3.$cctor();
   return SC$3.registroRpcs;
  };
- ResultM.iter=function(fM,f,r)
- {
-  var a;
-  a=ResultM.mapP(f,r);
-  a.$0==null?fM(a.$1):void 0;
- };
- ResultM.addMsg=function(m,r)
- {
-  return ResultM.mapMessage(function(b)
-  {
-   return ResultMessage.addMsg(m,b);
-  },r);
- };
- ResultM.mapP=function(f,m)
- {
-  return ResultM.bindP(function(x)
-  {
-   return ResultM.rtn(f(x));
-  },m);
- };
- ResultM.mapMessage=function(fM,a)
- {
-  return{
-   $:0,
-   $0:a.$0,
-   $1:fM(a.$1)
-  };
- };
- ResultM.bindP=function(f,r)
- {
-  var m;
-  if(r.$0==null)
-   return{
-    $:0,
-    $0:null,
-    $1:r.$1
-   };
-  else
-   {
-    m=r.$1;
-    try
-    {
-     return ResultM.mapMessage(function(b)
-     {
-      return ResultMessage.addMsg(m,b);
-     },f(r.$0.$0));
-    }
-    catch(e)
-    {
-     return Monads.ErrorM(new ResultMessage({
-      $:5,
-      $0:e.message,
-      $1:e.stack
-     }));
-    }
-   }
- };
- ResultM.rtn=function(v)
- {
-  return Monads.OkM$1(v);
- };
- ResultM.bind=function(f,r)
- {
-  var m;
-  return r.$0==null?{
-   $:0,
-   $0:null,
-   $1:r.$1
-  }:(m=r.$1,ResultM.mapMessage(function(b)
-  {
-   return ResultMessage.addMsg(m,b);
-  },f(r.$0.$0)));
- };
  Array.replace=function(i,item,array)
  {
   return Arrays.ofSeq(Seq.delay(function()
@@ -11167,6 +12616,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }));
   }));
  };
+ attr=HtmlModule.attr=Runtime$1.Class({},Obj,attr);
  NumeroTarjeta=TypesV0.NumeroTarjeta=Runtime$1.Class({
   get_Id:function()
   {
@@ -11182,26 +12632,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    expiracion:expiracion
   };
  };
- NumeroCuenta=TypesV0.NumeroCuenta=Runtime$1.Class({
-  get_Id:function()
-  {
-   return this.$0;
-  }
- },null,NumeroCuenta);
- CuentaBancaria.New=function(titular,banco,tipo,numero,routing)
- {
-  return{
-   titular:titular,
-   banco:banco,
-   tipo:tipo,
-   numero:numero,
-   routing:routing
-  };
- };
  CuentaBancaria$1.formaDocO=function(ctaOV)
  {
   var v;
-  return CuentaBancaria$1.formaDoc(Var$1.Lens(ctaOV,(v=[TypesV0.ctaVacio(),""],function(o)
+  return CuentaBancaria$1.formaDoc(Var$1.Lens(ctaOV,(v=[TypesV0.ctaVacio(),"",false],function(o)
   {
    return o==null?v:o.$0;
   }),function(a,v$1)
@@ -11214,8 +12648,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  CuentaBancaria$1.formaDoc=function(ctaV)
  {
-  var forma,b,T$2,p,i,requeridosW;
-  function a(cta,a$1)
+  var disabledW,forma,b,D,D$1,D$2,D$3,D$4,T$2,p,i,requeridosW;
+  function a(cta,a$1,a$2)
   {
    forma.Hole("titular").Set(cta.titular);
    forma.Hole("banco").Set(cta.banco);
@@ -11229,7 +12663,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    forma.Hole("numero").Set(cta.numero.$0);
    forma.Hole("routing").Set(cta.routing.$0);
   }
-  forma=(b=(T$2=Doc.EmbedView(View.Map(VariousUI.crearOptions,VariousUI.tiposCta().get_View())),ProviderBuilder.Make().WithHole({
+  disabledW=View.Map(function($1)
+  {
+   return VariousUI.thr3($1[0],$1[1],$1[2]);
+  },ctaV.get_View());
+  forma=(b=(D=AttrModule.DynamicPred("disabled",disabledW,View.Const("")),(D$1=AttrModule.DynamicPred("disabled",disabledW,View.Const("")),(D$2=AttrModule.DynamicPred("disabled",disabledW,View.Const("")),(D$3=AttrModule.DynamicPred("disabled",disabledW,View.Const("")),(D$4=AttrModule.DynamicPred("disabled",disabledW,View.Const("")),(T$2=Doc.EmbedView(View.Map(VariousUI.crearOptions,VariousUI.tiposCta().get_View())),ProviderBuilder.Make().WithHole({
    $:0,
    $0:"tiposcuenta",
    $1:T$2
@@ -11238,12 +12676,32 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:"mensaje",
    $1:View.Map(function($1)
    {
-    return $1[1];
+    return VariousUI.snd3($1[0],$1[1],$1[2]);
    },ctaV.get_View())
-  }),(p=Handler.CompleteHoles(b.k,b.h,[["tipocuenta",0],["titular",0],["banco",0],["numero",0],["routing",0]]),(i=new TemplateInstance.New(p[1],testing_Templates.cuentabancaria(p[0])),(b.i=i,i))));
+  }).WithHole({
+   $:3,
+   $0:"disabled1",
+   $1:D$4
+  })).WithHole({
+   $:3,
+   $0:"disabled2",
+   $1:D$3
+  })).WithHole({
+   $:3,
+   $0:"disabled3",
+   $1:D$2
+  })).WithHole({
+   $:3,
+   $0:"disabled4",
+   $1:D$1
+  })).WithHole({
+   $:3,
+   $0:"disabled5",
+   $1:D
+  })),(p=Handler.CompleteHoles(b.k,b.h,[["tipocuenta",0],["titular",0],["numero",0],["banco",0],["routing",0]]),(i=new TemplateInstance.New(p[1],testing_Templates.cuentabancaria(p[0])),(b.i=i,i))));
   View.Sink(function($1)
   {
-   return a($1[0],$1[1]);
+   return a($1[0],$1[1],$1[2]);
   },ctaV.get_View());
   requeridosW=View.Apply(View.Apply(View.Map2(function($1,$2)
   {
@@ -11257,17 +12715,17 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      },Seq.filter(function(t)
      {
       return t[0];
-     },List.ofArray([[Strings.Trim($1)==="","Titular"],[Strings.Trim($2)==="","Banco"],[Strings.Trim($3)==="","Numero de Cuenta"],[Strings.Trim($4)==="","ABA/Routing Number"]])));
+     },List$1.ofArray([[Strings.Trim($1)==="","Titular"],[Strings.Trim($2)==="","Banco"],[Strings.Trim($3)==="","Numero de Cuenta"],[Strings.Trim($4)==="","ABA/Routing Number"]])));
     };
    };
   },forma.Hole("titular").get_View(),forma.Hole("banco").get_View()),forma.Hole("numero").get_View()),forma.Hole("routing").get_View());
   View.Sink(function(a$1)
   {
-   var v;
+   var v,t;
    if(a$1!=null&&a$1.$==1)
     {
      v=a$1.$0;
-     !Unchecked.Equals((ctaV.Get())[0],v)?ctaV.Set([v,""]):void 0;
+     !Unchecked.Equals((t=ctaV.Get(),VariousUI.fst3(t[0],t[1],t[2])),v)?ctaV.Set([v,"",false]):void 0;
     }
   },View.Apply(View.Apply(View.Apply(View.Apply(View.Map2(function($1,$2)
   {
@@ -11294,7 +12752,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  TarjetaCredito$1.formaDocO=function(tarOV)
  {
   var v;
-  return TarjetaCredito$1.formaDoc(Var$1.Lens(tarOV,(v=[TypesV0.tarVacio(),""],function(o)
+  return TarjetaCredito$1.formaDoc(Var$1.Lens(tarOV,(v=[TypesV0.tarVacio(),"",false],function(o)
   {
    return o==null?v:o.$0;
   }),function(a,v$1)
@@ -11307,9 +12765,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  TarjetaCredito$1.formaDoc=function(tarV)
  {
-  var forma,b,M,A,T$2,p,i,requeridosW;
-  function a(tar,mensaje)
+  var disabledW,forma,b,D,D$1,D$2,D$3,D$4,M,A,T$2,p,i,requeridosW;
+  function a(tar,mensaje,validated)
   {
+   var m;
    forma.Hole("titular").Set(tar.titular);
    forma.Hole("tipotarjeta").Set((function($1)
    {
@@ -11326,15 +12785,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      return $1(Utils.padNumLeft(Global.String($2),4));
     };
    }(Global.id))(tar.expiracion.anio));
-   forma.Hole("mesvenc").Set((function($1)
-   {
-    return function($2)
-    {
-     return $1(Utils.prettyPrint($2));
-    };
-   }(Global.id))(tar.expiracion.mes));
+   forma.Hole("mesvenc").Set((m=tar.expiracion.mes,m===1?"Enero":m===2?"Febrero":m===3?"Marzo":m===4?"Abril":m===5?"Mayo":m===6?"Junio":m===7?"Julio":m===8?"Agosto":m===9?"Septiembre":m===10?"Octubre":m===11?"Noviembre":m===12?"Diciembre":"XX"));
   }
-  forma=(b=(M=Doc.EmbedView(View.Map(function($1)
+  disabledW=View.Map(function($1)
+  {
+   return VariousUI.thr3($1[0],$1[1],$1[2]);
+  },tarV.get_View());
+  forma=(b=(D=AttrModule.DynamicPred("disabled",disabledW,View.Const("")),(D$1=AttrModule.DynamicPred("disabled",disabledW,View.Const("")),(D$2=AttrModule.DynamicPred("disabled",disabledW,View.Const("")),(D$3=AttrModule.DynamicPred("disabled",disabledW,View.Const("")),(D$4=AttrModule.DynamicPred("disabled",disabledW,View.Const("")),(M=Doc.EmbedView(View.Map(function($1)
   {
    return VariousUI.crearOptions(Seq.map(Global.String,$1));
   },VariousUI.mesesV().get_View())),(A=Doc.EmbedView(View.Map(function($1)
@@ -11349,7 +12806,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:"mensaje",
    $1:View.Map(function($1)
    {
-    return $1[1];
+    return VariousUI.snd3($1[0],$1[1],$1[2]);
    },tarV.get_View())
   }).WithHole({
    $:0,
@@ -11359,10 +12816,30 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $:0,
    $0:"meses",
    $1:M
+  })).WithHole({
+   $:3,
+   $0:"disabled1",
+   $1:D$4
+  })).WithHole({
+   $:3,
+   $0:"disabled2",
+   $1:D$3
+  })).WithHole({
+   $:3,
+   $0:"disabled3",
+   $1:D$2
+  })).WithHole({
+   $:3,
+   $0:"disabled4",
+   $1:D$1
+  })).WithHole({
+   $:3,
+   $0:"disabled5",
+   $1:D
   })),(p=Handler.CompleteHoles(b.k,b.h,[["tipotarjeta",0],["titular",0],["numero",0],["aniovenc",0],["mesvenc",0]]),(i=new TemplateInstance.New(p[1],testing_Templates.tarjetacredito(p[0])),(b.i=i,i))));
   View.Sink(function($1)
   {
-   return a($1[0],$1[1]);
+   return a($1[0],$1[1],$1[2]);
   },tarV.get_View());
   requeridosW=View.Apply(View.Apply(View.Apply(View.Map2(function($1,$2)
   {
@@ -11374,16 +12851,16 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     },Seq.filter(function(t)
     {
      return t[0];
-    },List.ofArray([[Strings.Trim($1)==="","Titular"],[Strings.Trim($2)==="","TipoTarjeta"],[Strings.Trim($3)==="","Numero"],[Strings.Trim($4)==="","Ano de Vencimiento"],[Strings.Trim($5)==="","Mes de Vencimiento"]])));
+    },List$1.ofArray([[Strings.Trim($1)==="","Titular"],[Strings.Trim($2)==="","TipoTarjeta"],[Strings.Trim($3)==="","Numero"],[Strings.Trim($4)==="","Ano de Vencimiento"],[Strings.Trim($5)==="","Mes de Vencimiento"]])));
    });
   },forma.Hole("titular").get_View(),forma.Hole("tipotarjeta").get_View()),forma.Hole("numero").get_View()),forma.Hole("aniovenc").get_View()),forma.Hole("mesvenc").get_View());
   View.Sink(function(a$1)
   {
-   var v;
+   var v,t;
    if(a$1!=null&&a$1.$==1)
     {
      v=a$1.$0;
-     !Unchecked.Equals((tarV.Get())[0],v)?tarV.Set([v,""]):void 0;
+     !Unchecked.Equals((t=tarV.Get(),VariousUI.fst3(t[0],t[1],t[2])),v)?tarV.Set([v,"",false]):void 0;
     }
   },View.Apply(View.Apply(View.Apply(View.Apply(View.Map2(function($1,$2)
   {
@@ -11404,103 +12881,421 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   },requeridosW,forma.Hole("tipotarjeta").get_View()),forma.Hole("titular").get_View()),forma.Hole("numero").get_View()),forma.Hole("aniovenc").get_View()),forma.Hole("mesvenc").get_View()));
   return[requeridosW,forma.get_Doc()];
  };
- GeneratedPrintf.p=function($1)
+ Result.MapError=function(f,r)
  {
-  return"{"+("docName = "+Utils.prettyPrint($1.docName))+"; "+("docDoc = "+LayoutEngine_GeneratedPrintf.p($1.docDoc))+"}";
- };
- LayoutEngine_Templates.appfwkclient=function(h)
- {
-  LayoutEngine_Templates.fixedsplitterhor();
-  LayoutEngine_Templates.fixedsplitterver();
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
+  return r.$==1?{
    $:1,
-   $0:"appfwkclient"
-  },h):void 0;
+   $0:f(r.$0)
+  }:{
+   $:0,
+   $0:r.$0
+  };
  };
- LayoutEngine_GeneratedPrintf.p=function($1)
+ Result.Map=function(f,r)
  {
-  return $1.$==5?"FunDoc5 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+", "+Utils.prettyPrint($1.$3)+", "+Utils.prettyPrint($1.$4)+", "+Utils.prettyPrint($1.$5)+")":$1.$==4?"FunDoc4 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+", "+Utils.prettyPrint($1.$3)+", "+Utils.prettyPrint($1.$4)+")":$1.$==3?"FunDoc3 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+", "+Utils.prettyPrint($1.$3)+")":$1.$==2?"FunDoc2 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+")":$1.$==1?"FunDoc1 (<fun>, "+Utils.prettyPrint($1.$1)+")":"LazyDoc "+Utils.prettyPrint($1.$0);
- };
- LayoutEngine_Templates.tile=function(h)
- {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
+  return r.$==1?{
    $:1,
-   $0:"tile"
-  },h):void 0;
+   $0:r.$0
+  }:{
+   $:0,
+   $0:f(r.$0)
+  };
  };
- LayoutEngine_Templates.namevalueinput=function(h)
+ FromView=UI.FromView=Runtime$1.Class({
+  Set:function(x)
+  {
+   this.set(x);
+  },
+  get_View:function()
+  {
+   return this.view;
+  },
+  Get:function()
+  {
+   return this.current;
+  },
+  Update:function(f)
+  {
+   var g;
+   View.Get((g=this.set,function(x)
+   {
+    return g(f(x));
+   }),this.view);
+  },
+  UpdateMaybe:function(f)
+  {
+   var $this;
+   $this=this;
+   View.Get(function(x)
+   {
+    var m;
+    m=f(x);
+    m!=null&&m.$==1?$this.set(m.$0):void 0;
+   },this.view);
+  }
+ },Var,FromView);
+ FromView.New=Runtime$1.Ctor(function(view,set)
  {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
-   $:1,
-   $0:"namevalueinput"
-  },h):void 0;
+  var $this,m;
+  $this=this;
+  Var.New.call(this);
+  this.set=set;
+  this.id=Fresh.Int();
+  this.current=(m=View.TryGet(view),m==null?null:m.$0);
+  this.view=View.Map(function(x)
+  {
+   $this.current=x;
+   return x;
+  },view);
+ },FromView);
+ TipoCuenta=TypesV0.TipoCuenta=Runtime$1.Class({
+  toString:function()
+  {
+   return this.$==2?this.$0:(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$5($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,TipoCuenta);
+ TipoCuenta.Ahorro=new TipoCuenta({
+  $:0
+ });
+ TipoCuenta.tryParse=function(s)
+ {
+  var $1,m;
+  m=Strings.Trim(s).toUpperCase();
+  switch(m)
+  {
+   case"":
+    return null;
+   case"AHORRO":
+   case"SAVINGS":
+    return{
+     $:1,
+     $0:TipoCuenta.Ahorro
+    };
+   case"CORRIENTE":
+   case"CHECKING":
+    return{
+     $:1,
+     $0:TipoCuenta.Corriente
+    };
+   default:
+    return{
+     $:1,
+     $0:new TipoCuenta({
+      $:2,
+      $0:Strings.Trim(s)
+     })
+    };
+  }
  };
- LayoutEngine_Templates.namevalue=function(h)
+ TipoCuenta.Corriente=new TipoCuenta({
+  $:1
+ });
+ Concurrency.Delay=function(mk)
  {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
-   $:1,
-   $0:"namevalue"
-  },h):void 0;
+  return function(c)
+  {
+   try
+   {
+    (mk(null))(c);
+   }
+   catch(e)
+   {
+    c.k({
+     $:1,
+     $0:e
+    });
+   }
+  };
  };
- LayoutEngine_Templates.action=function(h)
+ Concurrency.Bind=function(r,f)
  {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
-   $:1,
-   $0:"action"
-  },h):void 0;
+  return Concurrency.checkCancel(function(c)
+  {
+   r(AsyncBody.New(function(a)
+   {
+    var x;
+    if(a.$==0)
+     {
+      x=a.$0;
+      Concurrency.scheduler().Fork(function()
+      {
+       try
+       {
+        (f(x))(c);
+       }
+       catch(e)
+       {
+        c.k({
+         $:1,
+         $0:e
+        });
+       }
+      });
+     }
+    else
+     Concurrency.scheduler().Fork(function()
+     {
+      c.k(a);
+     });
+   },c.ct));
+  });
  };
- LayoutEngine_Templates.actiondisabled=function(h)
+ Concurrency.Zero=function()
  {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
-   $:1,
-   $0:"actiondisabled"
-  },h):void 0;
+  SC$4.$cctor();
+  return SC$4.Zero;
  };
- LayoutEngine_Templates.fixedsplitterhor=function(h)
+ Concurrency.Start=function(c,ctOpt)
  {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
-   $:1,
-   $0:"fixedsplitterhor"
-  },h):void 0;
+  var ct,d;
+  ct=(d=(Concurrency.defCTS())[0],ctOpt==null?d:ctOpt.$0);
+  Concurrency.scheduler().Fork(function()
+  {
+   if(!ct.c)
+    c(AsyncBody.New(function(a)
+    {
+     if(a.$==1)
+      Concurrency.UncaughtAsyncError(a.$0);
+    },ct));
+  });
  };
- LayoutEngine_Templates.fixedsplitterver=function(h)
+ Concurrency.While=function(g,c)
  {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
-   $:1,
-   $0:"fixedsplitterver"
-  },h):void 0;
+  return g()?Concurrency.Bind(c,function()
+  {
+   return Concurrency.While(g,c);
+  }):Concurrency.Return();
  };
- LayoutEngine_Templates.wcompsplitterhor=function(h)
+ Concurrency.Sleep=function(ms)
  {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
-   $:1,
-   $0:"wcompsplitterhor"
-  },h):void 0;
+  return function(c)
+  {
+   var pending,creg;
+   pending=void 0;
+   creg=void 0;
+   pending=Global.setTimeout(function()
+   {
+    creg.Dispose();
+    Concurrency.scheduler().Fork(function()
+    {
+     c.k({
+      $:0,
+      $0:null
+     });
+    });
+   },ms);
+   creg=Concurrency.Register(c.ct,function()
+   {
+    Global.clearTimeout(pending);
+    Concurrency.scheduler().Fork(function()
+    {
+     Concurrency.cancel(c);
+    });
+   });
+  };
  };
- LayoutEngine_Templates.wcompsplitterver=function(h)
+ Concurrency.checkCancel=function(r)
  {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
-   $:1,
-   $0:"wcompsplitterver"
-  },h):void 0;
+  return function(c)
+  {
+   if(c.ct.c)
+    Concurrency.cancel(c);
+   else
+    r(c);
+  };
  };
- LayoutEngine_Templates.appframework=function(h)
+ Concurrency.FromContinuations=function(subscribe)
  {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
-   $:1,
-   $0:"appframework"
-  },h):void 0;
+  return function(c)
+  {
+   var continued;
+   function once(cont)
+   {
+    if(continued[0])
+     Operators.FailWith("A continuation provided by Async.FromContinuations was invoked multiple times");
+    else
+     {
+      continued[0]=true;
+      Concurrency.scheduler().Fork(cont);
+     }
+   }
+   continued=[false];
+   subscribe(function(a)
+   {
+    once(function()
+    {
+     c.k({
+      $:0,
+      $0:a
+     });
+    });
+   },function(e)
+   {
+    once(function()
+    {
+     c.k({
+      $:1,
+      $0:e
+     });
+    });
+   },function(e)
+   {
+    once(function()
+    {
+     c.k({
+      $:2,
+      $0:e
+     });
+    });
+   });
+  };
+ };
+ Concurrency.defCTS=function()
+ {
+  SC$4.$cctor();
+  return SC$4.defCTS;
+ };
+ Concurrency.UncaughtAsyncError=function(e)
+ {
+  console.log("WebSharper: Uncaught asynchronous exception",e);
+ };
+ Concurrency.Combine=function(a,b)
+ {
+  return Concurrency.Bind(a,function()
+  {
+   return b;
+  });
+ };
+ Concurrency.Return=function(x)
+ {
+  return function(c)
+  {
+   c.k({
+    $:0,
+    $0:x
+   });
+  };
+ };
+ Concurrency.Register=function(ct,callback)
+ {
+  var i;
+  return ct===Concurrency.noneCT()?{
+   Dispose:function()
+   {
+    return null;
+   }
+  }:(i=ct.r.push(callback)-1,{
+   Dispose:function()
+   {
+    return Arrays.set(ct.r,i,Global.ignore);
+   }
+  });
+ };
+ Concurrency.cancel=function(c)
+ {
+  c.k({
+   $:2,
+   $0:new OperationCanceledException.New(c.ct)
+  });
+ };
+ Concurrency.TryWith=function(r,f)
+ {
+  return function(c)
+  {
+   r(AsyncBody.New(function(a)
+   {
+    if(a.$==0)
+     c.k({
+      $:0,
+      $0:a.$0
+     });
+    else
+     if(a.$==1)
+      try
+      {
+       (f(a.$0))(c);
+      }
+      catch(e)
+      {
+       c.k(a);
+      }
+     else
+      c.k(a);
+   },c.ct));
+  };
+ };
+ Concurrency.Using=function(x,f)
+ {
+  return Concurrency.TryFinally(f(x),function()
+  {
+   x.Dispose();
+  });
+ };
+ Concurrency.scheduler=function()
+ {
+  SC$4.$cctor();
+  return SC$4.scheduler;
+ };
+ Concurrency.noneCT=function()
+ {
+  SC$4.$cctor();
+  return SC$4.noneCT;
+ };
+ Concurrency.TryFinally=function(run,f)
+ {
+  return function(c)
+  {
+   run(AsyncBody.New(function(r)
+   {
+    try
+    {
+     f();
+     c.k(r);
+    }
+    catch(e)
+    {
+     c.k({
+      $:1,
+      $0:e
+     });
+    }
+   },c.ct));
+  };
+ };
+ Concurrency.StartWithContinuations=function(c,s,f,cc,ctOpt)
+ {
+  var ct,d;
+  ct=(d=(Concurrency.defCTS())[0],ctOpt==null?d:ctOpt.$0);
+  !ct.c?c(AsyncBody.New(function(a)
+  {
+   if(a.$==1)
+    f(a.$0);
+   else
+    if(a.$==2)
+     cc(a.$0);
+    else
+     s(a.$0);
+  },ct)):void 0;
+ };
+ IdPayment=TypesV0.IdPayment=Runtime$1.Class({},null,IdPayment);
+ Result$1.defaultValue=function(d,r)
+ {
+  return r.$==1?d:r.$0;
+ };
+ Result$1.result=function()
+ {
+  SC$3.$cctor();
+  return SC$3.result;
+ };
+ Result$1.defaultWith=function(f,r)
+ {
+  return r.$==1?f(r.$0):r.$0;
  };
  Monads.OkM$1=function(v)
  {
@@ -11528,6 +13323,17 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   return{
    $:0,
    $0:null,
+   $1:m
+  };
+ };
+ Monads.OkMWithMsg=function(v,m)
+ {
+  return{
+   $:0,
+   $0:{
+    $:1,
+    $0:v
+   },
    $1:m
   };
  };
@@ -11587,7 +13393,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:[Library["String.Left"](txt,i),txt.substring(i+spl.length)]
   };
  };
- attr=HtmlModule.attr=Runtime$1.Class({},Obj,attr);
  AttrModule.Style=function(name,value)
  {
   return Attrs.Static(function(el)
@@ -11637,6 +13442,23 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   return AttrModule.CustomValue(_var,Global.id,function(x)
   {
    return g(Global.id(x));
+  });
+ };
+ AttrModule.DynamicPred=function(name,predView,valView)
+ {
+  function viewFn(el,t)
+  {
+   return t[0]?DomUtility.SetAttr(el,name,t[1]):DomUtility.RemoveAttr(el,name);
+  }
+  return Attrs.Dynamic(View.Map2(function(pred,value)
+  {
+   return[pred,value];
+  },predView,valView),function($1)
+  {
+   return function($2)
+   {
+    return viewFn($1,$2);
+   };
   });
  };
  AttrModule.CustomValue=function(_var,toString,fromString)
@@ -11832,7 +13654,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     var a,top,tabs;
     top=!el.hasAttribute("bottom");
-    tabs=List.ofSeq(Seq.delay(function()
+    tabs=List$1.ofSeq(Seq.delay(function()
     {
      return Seq.collect(function(i)
      {
@@ -11849,7 +13671,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     }));
     while(elsh.childNodes.length>0)
      elsh.removeChild(elsh.lastChild);
-    a=WcTabStrip.tabStrip($this.selected,top,true,tabs,Doc.Element("slot",T.Empty,T.Empty));
+    a=WcTabStrip.tabStrip($this.selected,top,true,tabs,Doc.Element("slot",T$1.Empty,T$1.Empty));
     Templates.LoadLocalTemplates("");
     Doc.Run(elsh,a);
    }
@@ -11900,6 +13722,104 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }));
   }
  };
+ LayoutEngine_Templates.appfwkclient=function(h)
+ {
+  LayoutEngine_Templates.fixedsplitterhor();
+  LayoutEngine_Templates.fixedsplitterver();
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"appfwkclient"
+  },h):void 0;
+ };
+ GeneratedPrintf.p=function($1)
+ {
+  return"{"+("docName = "+Utils.prettyPrint($1.docName))+"; "+("docDoc = "+LayoutEngine_GeneratedPrintf.p($1.docDoc))+"}";
+ };
+ LayoutEngine_Templates.tile=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"tile"
+  },h):void 0;
+ };
+ LayoutEngine_Templates.namevalueinput=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"namevalueinput"
+  },h):void 0;
+ };
+ LayoutEngine_Templates.namevalue=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"namevalue"
+  },h):void 0;
+ };
+ LayoutEngine_Templates.action=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"action"
+  },h):void 0;
+ };
+ LayoutEngine_Templates.actiondisabled=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"actiondisabled"
+  },h):void 0;
+ };
+ LayoutEngine_Templates.fixedsplitterhor=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"fixedsplitterhor"
+  },h):void 0;
+ };
+ LayoutEngine_Templates.fixedsplitterver=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"fixedsplitterver"
+  },h):void 0;
+ };
+ LayoutEngine_Templates.wcompsplitterhor=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"wcompsplitterhor"
+  },h):void 0;
+ };
+ LayoutEngine_Templates.wcompsplitterver=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"wcompsplitterver"
+  },h):void 0;
+ };
+ LayoutEngine_Templates.appframework=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"appframework"
+  },h):void 0;
+ };
+ LayoutEngine_GeneratedPrintf.p=function($1)
+ {
+  return $1.$==5?"FunDoc5 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+", "+Utils.prettyPrint($1.$3)+", "+Utils.prettyPrint($1.$4)+", "+Utils.prettyPrint($1.$5)+")":$1.$==4?"FunDoc4 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+", "+Utils.prettyPrint($1.$3)+", "+Utils.prettyPrint($1.$4)+")":$1.$==3?"FunDoc3 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+", "+Utils.prettyPrint($1.$3)+")":$1.$==2?"FunDoc2 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+")":$1.$==1?"FunDoc1 (<fun>, "+Utils.prettyPrint($1.$1)+")":"LazyDoc "+Utils.prettyPrint($1.$0);
+ };
  WcSplitter.init=function(layoutH,layoutV)
  {
   var o;
@@ -11939,7 +13859,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   strip=Doc.Element("div",[AttrProxy.Create("class",(((Runtime$1.Curried3(function($1,$2,$3)
   {
    return $1("tab-strip "+Utils.toSafe($2)+" "+Utils.toSafe($3));
-  }))(Global.id))(top?"top":"bottom"))(horizontal?"horizontal":"vertical"))],List.ofSeq(Seq.delay(function()
+  }))(Global.id))(top?"top":"bottom"))(horizontal?"horizontal":"vertical"))],List$1.ofSeq(Seq.delay(function()
   {
    return Seq.collect(function(m)
    {
@@ -11957,7 +13877,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     })],[Doc.TextNode(m[1][0])]))];
    },Seq.indexed(tabs));
   })));
-  return Doc.Element("div",[AttrProxy.Create("class","tab-panel")],List.ofSeq(Seq.delay(function()
+  return Doc.Element("div",[AttrProxy.Create("class","tab-panel")],List$1.ofSeq(Seq.delay(function()
   {
    return Seq.append(top?[strip]:[],Seq.delay(function()
    {
@@ -11965,9 +13885,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     {
      return Seq.append(!top?[strip]:[],Seq.delay(function()
      {
-      return Seq.append([Doc.Element("style",T.Empty,List.ofArray([Doc.TextNode(WcTabStrip.css())]))],Seq.delay(function()
+      return Seq.append([Doc.Element("style",T$1.Empty,List$1.ofArray([Doc.TextNode(WcTabStrip.css())]))],Seq.delay(function()
       {
-       return[Doc.Element("style",T.Empty,List.ofArray([Doc.TextView(View.Map(function($1)
+       return[Doc.Element("style",T$1.Empty,List$1.ofArray([Doc.TextView(View.Map(function($1)
        {
         return function($2)
         {
@@ -12023,30 +13943,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return this.$==1?this.$0:this.$==2?this.$0:this.$1;
   }
  },null,CheckedInput);
- Snap.Obsolete=function(sn)
- {
-  var $1,m,i,$2,o;
-  m=sn.s;
-  if(m==null||(m!=null&&m.$==2?($1=m.$1,false):m!=null&&m.$==3?($1=m.$1,false):true))
-   void 0;
-  else
-   {
-    sn.s=null;
-    for(i=0,$2=Arrays.length($1)-1;i<=$2;i++){
-     o=Arrays.get($1,i);
-     typeof o=="object"?function(sn$1)
-     {
-      Snap.Obsolete(sn$1);
-     }(o):o();
-    }
-   }
- };
- Snap.New=function(State)
- {
-  return{
-   s:State
-  };
- };
  DictionaryUtil.notPresent=function()
  {
   return Operators.FailWith("The given key was not present in the dictionary.");
@@ -12305,13 +14201,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Templates.LocalTemplatesLoaded=function()
  {
-  SC$7.$cctor();
-  return SC$7.LocalTemplatesLoaded;
+  SC$6.$cctor();
+  return SC$6.LocalTemplatesLoaded;
  };
  Templates.set_LocalTemplatesLoaded=function($1)
  {
-  SC$7.$cctor();
-  SC$7.LocalTemplatesLoaded=$1;
+  SC$6.$cctor();
+  SC$6.LocalTemplatesLoaded=$1;
  };
  Templates.LoadNestedTemplates=function(root,baseName)
  {
@@ -12365,8 +14261,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Templates.LoadedTemplates=function()
  {
-  SC$7.$cctor();
-  return SC$7.LoadedTemplates;
+  SC$6.$cctor();
+  return SC$6.LoadedTemplates;
  };
  Templates.LoadedTemplateFile=function(name)
  {
@@ -12674,7 +14570,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         $:0,
         $0:""
        });
-       return holeContent.$==1?[textBefore$1,new T({
+       return holeContent.$==1?[textBefore$1,new T$1({
         $:1,
         $0:textAfter===""?holeContent.$0:View.Map(function(s$5)
         {
@@ -12684,7 +14580,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        })]:[textBefore$1+holeContent.$0+textAfter,views];
       };
      }($6))($7);
-    },res,[finalText,T.Empty]);
+    },res,[finalText,T$1.Empty]);
     return addAttr(e$1,value[1].$==1?value[1].$1.$==1?value[1].$1.$1.$==1?value[1].$1.$1.$1.$==0?(s=value[0],AttrModule.Dynamic(attrName,View.Map3(function(v1,v2,v3)
     {
      return s+v1+v2+v3;
@@ -12731,634 +14627,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Templates.TextHoleRE=function()
  {
-  SC$7.$cctor();
-  return SC$7.TextHoleRE;
- };
- Pojo.newPojoOpt=function(propOs)
- {
-  function c(n,vO)
-  {
-   return vO==null?null:{
-    $:1,
-    $0:[n,vO.$0]
-   };
-  }
-  return Pojo.newPojo(Seq.choose(function($1)
-  {
-   return c($1[0],$1[1]);
-  },propOs));
- };
- Pojo.newPojo=function(props)
- {
-  var pojo,f;
-  function f$1(a,a$1)
-  {
-   return function(p)
-   {
-    return Pojo.addProp(a,a$1,p);
-   };
-  }
-  function g(v)
-  {
-  }
-  pojo={};
-  Seq.iter((f=function(b)
-  {
-   return(function($1)
-   {
-    return f$1($1[0],$1[1]);
-   }(b))(pojo);
-  },function(x)
-  {
-   return g(f(x));
-  }),props);
-  return pojo;
- };
- Pojo.addProp=function(p,p$1,pojo)
- {
-  pojo[p]=p$1;
-  return pojo;
- };
- Msal$1.op_EqualsEqualsGreater=function(n,vO)
- {
-  return[n,vO==null?null:{
-   $:1,
-   $0:vO.$0
-  }];
- };
- RouterOperators.JSUnion=function(t,cases)
- {
-  var parseCases;
-  function getTag(value)
-  {
-   var constIndex;
-   function p($1)
-   {
-    return $1!=null&&$1.$==1&&Unchecked.Equals(value,$1.$0);
-   }
-   constIndex=Seq.tryFindIndex(function($1)
-   {
-    return p($1[0]);
-   },cases);
-   return constIndex!=null&&constIndex.$==1?constIndex.$0:value.$;
-  }
-  function readFields(tag,value)
-  {
-   return Arrays.init(Arrays.length((Arrays.get(cases,tag))[2]),function(i)
-   {
-    return value["$"+Global.String(i)];
-   });
-  }
-  function createCase(tag,fieldValues)
-  {
-   var o,m$1,$1;
-   o=t==null?{}:new t();
-   m$1=Arrays.get(cases,tag);
-   return($1=m$1[0],$1!=null&&$1.$==1)?m$1[0].$0:(o.$=tag,Seq.iteri(function(i,v)
-   {
-    o["$"+Global.String(i)]=v;
-   },fieldValues),o);
-  }
-  function m(i,a)
-  {
-   var fields;
-   function m$1(m$2,p)
-   {
-    return[i,m$2,p,fields];
-   }
-   fields=a[2];
-   return Seq.map(function($1)
-   {
-    return m$1($1[0],$1[1]);
-   },a[1]);
-  }
-  parseCases=Seq.collect(function($1)
-  {
-   return m($1[0],$1[1]);
-  },Seq.indexed(cases));
-  return Router$1.New$1(function(path)
-  {
-   function m$1(i,m$2,s,fields)
-   {
-    var m$3,p,m$4;
-    function collect(fields$1,path$1,acc)
-    {
-     var t$1;
-     function m$5(p$1,a)
-     {
-      return collect(t$1,p$1,new T({
-       $:1,
-       $0:a,
-       $1:acc
-      }));
-     }
-     return fields$1.$==1?(t$1=fields$1.$1,Seq.collect(function($1)
-     {
-      return m$5($1[0],$1[1]);
-     },fields$1.$0.Parse(path$1))):[[path$1,createCase(i,Arrays.ofList(List.rev(acc)))]];
-    }
-    return RouterOperators.isCorrectMethod(m$2,path.Method)?(m$3=List$2.startsWith(List.ofArray(s),path.Segments),m$3==null?[]:(p=m$3.$0,(m$4=List.ofArray(fields),m$4.$==0?[[Route.New(p,path.QueryArgs,path.FormData,path.Method,path.Body),createCase(i,[])]]:collect(m$4,Route.New(p,path.QueryArgs,path.FormData,path.Method,path.Body),T.Empty)))):[];
-   }
-   return Seq.collect(function($1)
-   {
-    return m$1($1[0],$1[1],$1[2],$1[3]);
-   },parseCases);
-  },function(value)
-  {
-   var tag,p,fields,p$1,casePath,fieldParts;
-   function m$1(v,f)
-   {
-    return f.Write(v);
-   }
-   tag=getTag(value);
-   p=Arrays.get(cases,tag);
-   fields=p[2];
-   p$1=Arrays.get(p[1],0);
-   casePath=[Route.Segment(List.ofArray(p$1[1]),p$1[0])];
-   return!Unchecked.Equals(fields,null)&&fields.length===0?{
-    $:1,
-    $0:casePath
-   }:(fieldParts=(((Runtime$1.Curried3(Arrays.map2))(m$1))(readFields(tag,value)))(fields),Arrays.forall(function(o)
-   {
-    return o!=null;
-   },fieldParts)?{
-    $:1,
-    $0:Seq.append(casePath,Seq.collect(function(o)
-    {
-     return o.$0;
-    },fieldParts))
-   }:null);
-  });
- };
- RouterOperators.isCorrectMethod=function(m,p)
- {
-  return p!=null&&p.$==1?m!=null&&m.$==1?Unchecked.Equals(p.$0,m.$0):true:!(m!=null&&m.$==1);
- };
- RouterOperators.rString=function()
- {
   SC$6.$cctor();
-  return SC$6.rString;
+  return SC$6.TextHoleRE;
  };
- RouterModule.Parse=function(router,path)
- {
-  function c(path$1,value)
-  {
-   return path$1.Segments.$==0?{
-    $:1,
-    $0:value
-   }:null;
-  }
-  return Seq.tryPick(function($1)
-  {
-   return c($1[0],$1[1]);
-  },router.Parse(path));
- };
- RouterModule.HashLink=function(router,endpoint)
- {
-  return"#"+RouterModule.Link(router,endpoint);
- };
- RouterModule.Link=function(router,endpoint)
- {
-  var m;
-  m=RouterModule.Write(router,endpoint);
-  return m==null?"":m.$0.ToLink();
- };
- RouterModule.Write=function(router,endpoint)
- {
-  var o;
-  o=router.Write(endpoint);
-  return o==null?null:{
-   $:1,
-   $0:Route.Combine(o.$0)
-  };
- };
- Route=Sitelets.Route=Runtime$1.Class({
-  ToLink:function()
-  {
-   return PathUtil.WriteLink(this.Segments,this.QueryArgs);
-  }
- },null,Route);
- Route.FromHash=function(path,strict)
- {
-  var m,h;
-  m=path.indexOf("#");
-  return m===-1?Route.get_Empty():(h=path.substring(m+1),strict!=null&&strict.$0?h===""||h==="/"?Route.get_Empty():Strings.StartsWith(h,"/")?Route.FromUrl(h.substring(1),{
-   $:1,
-   $0:true
-  }):Route.Segment$2(h):Route.FromUrl(path.substring(m),{
-   $:1,
-   $0:false
-  }));
- };
- Route.Segment=function(s,m)
- {
-  var i;
-  i=Route.get_Empty();
-  return Route.New(s,i.QueryArgs,i.FormData,m,i.Body);
- };
- Route.get_Empty=function()
- {
-  return Route.New(T.Empty,new FSharpMap.New([]),new FSharpMap.New([]),null,Lazy.CreateFromValue(null));
- };
- Route.FromUrl=function(path,strict)
- {
-  var p,m,i;
-  p=(m=path.indexOf("?"),m===-1?[path,new FSharpMap.New([])]:[Strings.Substring(path,0,m),Route.ParseQuery(path.substring(m+1))]);
-  i=Route.get_Empty();
-  return Route.New(List.ofArray(Strings.SplitChars(p[0],["/"],strict!=null&&strict.$0?0:1)),p[1],i.FormData,i.Method,i.Body);
- };
- Route.Segment$2=function(s)
- {
-  var i;
-  i=Route.get_Empty();
-  return Route.New(List.ofArray([s]),i.QueryArgs,i.FormData,i.Method,i.Body);
- };
- Route.ParseQuery=function(q)
- {
-  return Map.OfArray(Arrays.ofSeq(Arrays.choose(function(kv)
-  {
-   var m,v;
-   m=Strings.SplitChars(kv,["="],0);
-   return!Unchecked.Equals(m,null)&&m.length===2?(v=Arrays.get(m,1),{
-    $:1,
-    $0:[Arrays.get(m,0),v]
-   }):((function($1)
-   {
-    return function($2)
-    {
-     return $1("wrong format for query argument: "+Utils.toSafe($2));
-    };
-   }(function(s)
-   {
-    console.log(s);
-   }))(kv),null);
-  },Strings.SplitChars(q,["&"],0))));
- };
- Route.Combine=function(paths)
- {
-  var method,body,queryArgs,formData,i,$1,paths$1,m,segments,l;
-  paths$1=Arrays.ofSeq(paths);
-  m=Arrays.length(paths$1);
-  if(m===0)
-   return Route.get_Empty();
-  else
-   if(m===1)
-    return Arrays.get(paths$1,0);
-   else
-    {
-     method=null;
-     body=null;
-     segments=[];
-     queryArgs=new FSharpMap.New([]);
-     formData=new FSharpMap.New([]);
-     i=0;
-     l=Arrays.length(paths$1);
-     while(i<l)
-      (function()
-      {
-       var p,m$1,m$2;
-       p=Arrays.get(paths$1,i);
-       m$1=p.Method;
-       m$1!=null&&m$1.$==1?method=m$1:void 0;
-       m$2=p.Body.f();
-       m$2===null?void 0:body=m$2;
-       queryArgs=Map.FoldBack(function(k,v,t)
-       {
-        return t.Add(k,v);
-       },queryArgs,p.QueryArgs);
-       formData=Map.FoldBack(function(k,v,t)
-       {
-        return t.Add(k,v);
-       },formData,p.FormData);
-       List.iter(function(a)
-       {
-        segments.push(a);
-       },p.Segments);
-       i=i+1;
-      }());
-     return Route.New(List.ofSeq(segments),queryArgs,formData,method,Lazy.CreateFromValue(body));
-    }
- };
- Route.New=function(Segments,QueryArgs,FormData,Method,Body)
- {
-  return new Route({
-   Segments:Segments,
-   QueryArgs:QueryArgs,
-   FormData:FormData,
-   Method:Method,
-   Body:Body
-  });
- };
- Concurrency.Delay=function(mk)
- {
-  return function(c)
-  {
-   try
-   {
-    (mk(null))(c);
-   }
-   catch(e)
-   {
-    c.k({
-     $:1,
-     $0:e
-    });
-   }
-  };
- };
- Concurrency.While=function(g,c)
- {
-  return g()?Concurrency.Bind(c,function()
-  {
-   return Concurrency.While(g,c);
-  }):Concurrency.Return();
- };
- Concurrency.Bind=function(r,f)
- {
-  return Concurrency.checkCancel(function(c)
-  {
-   r(AsyncBody.New(function(a)
-   {
-    var x;
-    if(a.$==0)
-     {
-      x=a.$0;
-      Concurrency.scheduler().Fork(function()
-      {
-       try
-       {
-        (f(x))(c);
-       }
-       catch(e)
-       {
-        c.k({
-         $:1,
-         $0:e
-        });
-       }
-      });
-     }
-    else
-     Concurrency.scheduler().Fork(function()
-     {
-      c.k(a);
-     });
-   },c.ct));
-  });
- };
- Concurrency.Sleep=function(ms)
- {
-  return function(c)
-  {
-   var pending,creg;
-   pending=void 0;
-   creg=void 0;
-   pending=Global.setTimeout(function()
-   {
-    creg.Dispose();
-    Concurrency.scheduler().Fork(function()
-    {
-     c.k({
-      $:0,
-      $0:null
-     });
-    });
-   },ms);
-   creg=Concurrency.Register(c.ct,function()
-   {
-    Global.clearTimeout(pending);
-    Concurrency.scheduler().Fork(function()
-    {
-     Concurrency.cancel(c);
-    });
-   });
-  };
- };
- Concurrency.Zero=function()
- {
-  SC$5.$cctor();
-  return SC$5.Zero;
- };
- Concurrency.Start=function(c,ctOpt)
- {
-  var ct,d;
-  ct=(d=(Concurrency.defCTS())[0],ctOpt==null?d:ctOpt.$0);
-  Concurrency.scheduler().Fork(function()
-  {
-   if(!ct.c)
-    c(AsyncBody.New(function(a)
-    {
-     if(a.$==1)
-      Concurrency.UncaughtAsyncError(a.$0);
-    },ct));
-  });
- };
- Concurrency.FromContinuations=function(subscribe)
- {
-  return function(c)
-  {
-   var continued;
-   function once(cont)
-   {
-    if(continued[0])
-     Operators.FailWith("A continuation provided by Async.FromContinuations was invoked multiple times");
-    else
-     {
-      continued[0]=true;
-      Concurrency.scheduler().Fork(cont);
-     }
-   }
-   continued=[false];
-   subscribe(function(a)
-   {
-    once(function()
-    {
-     c.k({
-      $:0,
-      $0:a
-     });
-    });
-   },function(e)
-   {
-    once(function()
-    {
-     c.k({
-      $:1,
-      $0:e
-     });
-    });
-   },function(e)
-   {
-    once(function()
-    {
-     c.k({
-      $:2,
-      $0:e
-     });
-    });
-   });
-  };
- };
- Concurrency.Combine=function(a,b)
- {
-  return Concurrency.Bind(a,function()
-  {
-   return b;
-  });
- };
- Concurrency.Return=function(x)
- {
-  return function(c)
-  {
-   c.k({
-    $:0,
-    $0:x
-   });
-  };
- };
- Concurrency.checkCancel=function(r)
- {
-  return function(c)
-  {
-   if(c.ct.c)
-    Concurrency.cancel(c);
-   else
-    r(c);
-  };
- };
- Concurrency.Register=function(ct,callback)
- {
-  var i;
-  return ct===Concurrency.noneCT()?{
-   Dispose:function()
-   {
-    return null;
-   }
-  }:(i=ct.r.push(callback)-1,{
-   Dispose:function()
-   {
-    return Arrays.set(ct.r,i,Global.ignore);
-   }
-  });
- };
- Concurrency.cancel=function(c)
- {
-  c.k({
-   $:2,
-   $0:new OperationCanceledException.New(c.ct)
-  });
- };
- Concurrency.defCTS=function()
- {
-  SC$5.$cctor();
-  return SC$5.defCTS;
- };
- Concurrency.UncaughtAsyncError=function(e)
- {
-  console.log("WebSharper: Uncaught asynchronous exception",e);
- };
- Concurrency.TryWith=function(r,f)
- {
-  return function(c)
-  {
-   r(AsyncBody.New(function(a)
-   {
-    if(a.$==0)
-     c.k({
-      $:0,
-      $0:a.$0
-     });
-    else
-     if(a.$==1)
-      try
-      {
-       (f(a.$0))(c);
-      }
-      catch(e)
-      {
-       c.k(a);
-      }
-     else
-      c.k(a);
-   },c.ct));
-  };
- };
- Concurrency.scheduler=function()
- {
-  SC$5.$cctor();
-  return SC$5.scheduler;
- };
- Concurrency.noneCT=function()
- {
-  SC$5.$cctor();
-  return SC$5.noneCT;
- };
- Concurrency.Using=function(x,f)
- {
-  return Concurrency.TryFinally(f(x),function()
-  {
-   x.Dispose();
-  });
- };
- Concurrency.TryFinally=function(run,f)
- {
-  return function(c)
-  {
-   run(AsyncBody.New(function(r)
-   {
-    try
-    {
-     f();
-     c.k(r);
-    }
-    catch(e)
-    {
-     c.k({
-      $:1,
-      $0:e
-     });
-    }
-   },c.ct));
-  };
- };
- IdPayment=TypesV0.IdPayment=Runtime$1.Class({},null,IdPayment);
- MapUtil.fromSeq=function(s)
- {
-  var a;
-  a=Arrays.ofSeq(Seq.delay(function()
-  {
-   return Seq.collect(function(m)
-   {
-    return[Pair.New(m[0],m[1])];
-   },Seq.distinctBy(function(t)
-   {
-    return t[0];
-   },s));
-  }));
-  Arrays.sortInPlace(a);
-  return BalancedTree.Build(a,0,a.length-1);
- };
- Tree.New=function(Node$1,Left,Right,Height,Count)
- {
-  return{
-   Node:Node$1,
-   Left:Left,
-   Right:Right,
-   Height:Height,
-   Count:Count
-  };
- };
- IdAddress=TypesV0.IdAddress=Runtime$1.Class({},null,IdAddress);
- Builder=Result.Builder=Runtime$1.Class({},Obj,Builder);
+ Builder=Result$1.Builder=Runtime$1.Class({},Obj,Builder);
  Builder.New=Runtime$1.Ctor(function()
  {
   Obj.New.call(this);
  },Builder);
- Result.result=function()
- {
-  SC$3.$cctor();
-  return SC$3.result;
- };
  Builder$1=ResultM.Builder=Runtime$1.Class({},Obj,Builder$1);
  Builder$1.New=Runtime$1.Ctor(function()
  {
@@ -13551,135 +14827,404 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  TipoTarjeta.Amex=new TipoTarjeta({
   $:2
  });
- RoutingNumber=TypesV0.RoutingNumber=Runtime$1.Class({},null,RoutingNumber);
- TipoCuenta=TypesV0.TipoCuenta=Runtime$1.Class({
-  toString:function()
-  {
-   return this.$==2?this.$0:(function($1)
-   {
-    return function($2)
-    {
-     return $1(ProzperServer_GeneratedPrintf.p$5($2));
-    };
-   }(Global.id))(this);
-  }
- },null,TipoCuenta);
- TipoCuenta.Ahorro=new TipoCuenta({
-  $:0
- });
- TipoCuenta.tryParse=function(s)
+ Pojo.newPojoOpt=function(propOs)
  {
-  var $1,m;
-  m=Strings.Trim(s).toUpperCase();
-  switch(m)
+  function c(n,vO)
   {
-   case"":
-    return null;
-   case"AHORRO":
-   case"SAVINGS":
-    return{
-     $:1,
-     $0:TipoCuenta.Ahorro
-    };
-   case"CORRIENTE":
-   case"CHECKING":
-    return{
-     $:1,
-     $0:TipoCuenta.Corriente
-    };
-   default:
-    return{
-     $:1,
-     $0:new TipoCuenta({
-      $:2,
-      $0:Strings.Trim(s)
-     })
-    };
+   return vO==null?null:{
+    $:1,
+    $0:[n,vO.$0]
+   };
   }
+  return Pojo.newPojo(Seq.choose(function($1)
+  {
+   return c($1[0],$1[1]);
+  },propOs));
  };
- TipoCuenta.Corriente=new TipoCuenta({
-  $:1
- });
- ResultMessage=Library.ResultMessage=Runtime$1.Class({
-  toString:function()
-  {
-   return this.$==1?(function($1)
-   {
-    return function($2)
-    {
-     return $1("Error    : "+Utils.toSafe($2));
-    };
-   }(Global.id))(this.$0):this.$==2?(function($1)
-   {
-    return function($2)
-    {
-     return $1("Warning  : "+Utils.toSafe($2));
-    };
-   }(Global.id))(this.$0):this.$==3?this.$0:this.$==4?(function($1)
-   {
-    return function($2)
-    {
-     return $1(Global.String($2));
-    };
-   }(Global.id))(this.$0):this.$==5?(((Runtime$1.Curried3(function($1,$2,$3)
-   {
-    return $1("Exception: "+Utils.toSafe($2)+", "+Utils.toSafe($3));
-   }))(Global.id))(this.$0))(this.$1):this.$==6?Strings.concat("\n",Seq.map(Global.String,Seq.filter(function(a)
-   {
-    return a.$!=0;
-   },this.$0))):"";
-  }
- },null,ResultMessage);
- ResultMessage.NoMsg=new ResultMessage({
-  $:0
- });
- FromView=UI.FromView=Runtime$1.Class({
-  Set:function(x)
-  {
-   this.set(x);
-  },
-  get_View:function()
-  {
-   return this.view;
-  },
-  Get:function()
-  {
-   return this.current;
-  },
-  Update:function(f)
-  {
-   var g;
-   View.Get((g=this.set,function(x)
-   {
-    return g(f(x));
-   }),this.view);
-  },
-  UpdateMaybe:function(f)
-  {
-   var $this;
-   $this=this;
-   View.Get(function(x)
-   {
-    var m;
-    m=f(x);
-    m!=null&&m.$==1?$this.set(m.$0):void 0;
-   },this.view);
-  }
- },Var,FromView);
- FromView.New=Runtime$1.Ctor(function(view,set)
+ Pojo.newPojo=function(props)
  {
-  var $this,m;
-  $this=this;
-  Var.New.call(this);
-  this.set=set;
-  this.id=Fresh.Int();
-  this.current=(m=View.TryGet(view),m==null?null:m.$0);
-  this.view=View.Map(function(x)
+  var pojo,f;
+  function f$1(a,a$1)
   {
-   $this.current=x;
-   return x;
-  },view);
- },FromView);
+   return function(p)
+   {
+    return Pojo.addProp(a,a$1,p);
+   };
+  }
+  function g(v)
+  {
+  }
+  pojo={};
+  Seq.iter((f=function(b)
+  {
+   return(function($1)
+   {
+    return f$1($1[0],$1[1]);
+   }(b))(pojo);
+  },function(x)
+  {
+   return g(f(x));
+  }),props);
+  return pojo;
+ };
+ Pojo.addProp=function(p,p$1,pojo)
+ {
+  pojo[p]=p$1;
+  return pojo;
+ };
+ Msal$1.op_EqualsEqualsGreater=function(n,vO)
+ {
+  return[n,vO==null?null:{
+   $:1,
+   $0:vO.$0
+  }];
+ };
+ RouterOperators.JSUnion=function(t,cases)
+ {
+  var parseCases;
+  function getTag(value)
+  {
+   var constIndex;
+   function p($1)
+   {
+    return $1!=null&&$1.$==1&&Unchecked.Equals(value,$1.$0);
+   }
+   constIndex=Seq.tryFindIndex(function($1)
+   {
+    return p($1[0]);
+   },cases);
+   return constIndex!=null&&constIndex.$==1?constIndex.$0:value.$;
+  }
+  function readFields(tag,value)
+  {
+   return Arrays.init(Arrays.length((Arrays.get(cases,tag))[2]),function(i)
+   {
+    return value["$"+Global.String(i)];
+   });
+  }
+  function createCase(tag,fieldValues)
+  {
+   var o,m$1,$1;
+   o=t==null?{}:new t();
+   m$1=Arrays.get(cases,tag);
+   return($1=m$1[0],$1!=null&&$1.$==1)?m$1[0].$0:(o.$=tag,Seq.iteri(function(i,v)
+   {
+    o["$"+Global.String(i)]=v;
+   },fieldValues),o);
+  }
+  function m(i,a)
+  {
+   var fields;
+   function m$1(m$2,p)
+   {
+    return[i,m$2,p,fields];
+   }
+   fields=a[2];
+   return Seq.map(function($1)
+   {
+    return m$1($1[0],$1[1]);
+   },a[1]);
+  }
+  parseCases=Seq.collect(function($1)
+  {
+   return m($1[0],$1[1]);
+  },Seq.indexed(cases));
+  return Router$1.New$1(function(path)
+  {
+   function m$1(i,m$2,s,fields)
+   {
+    var m$3,p,m$4;
+    function collect(fields$1,path$1,acc)
+    {
+     var t$1;
+     function m$5(p$1,a)
+     {
+      return collect(t$1,p$1,new T$1({
+       $:1,
+       $0:a,
+       $1:acc
+      }));
+     }
+     return fields$1.$==1?(t$1=fields$1.$1,Seq.collect(function($1)
+     {
+      return m$5($1[0],$1[1]);
+     },fields$1.$0.Parse(path$1))):[[path$1,createCase(i,Arrays.ofList(List$1.rev(acc)))]];
+    }
+    return RouterOperators.isCorrectMethod(m$2,path.Method)?(m$3=List$2.startsWith(List$1.ofArray(s),path.Segments),m$3==null?[]:(p=m$3.$0,(m$4=List$1.ofArray(fields),m$4.$==0?[[Route.New(p,path.QueryArgs,path.FormData,path.Method,path.Body),createCase(i,[])]]:collect(m$4,Route.New(p,path.QueryArgs,path.FormData,path.Method,path.Body),T$1.Empty)))):[];
+   }
+   return Seq.collect(function($1)
+   {
+    return m$1($1[0],$1[1],$1[2],$1[3]);
+   },parseCases);
+  },function(value)
+  {
+   var tag,p,fields,p$1,casePath,fieldParts;
+   function m$1(v,f)
+   {
+    return f.Write(v);
+   }
+   tag=getTag(value);
+   p=Arrays.get(cases,tag);
+   fields=p[2];
+   p$1=Arrays.get(p[1],0);
+   casePath=[Route.Segment(List$1.ofArray(p$1[1]),p$1[0])];
+   return!Unchecked.Equals(fields,null)&&fields.length===0?{
+    $:1,
+    $0:casePath
+   }:(fieldParts=(((Runtime$1.Curried3(Arrays.map2))(m$1))(readFields(tag,value)))(fields),Arrays.forall(function(o)
+   {
+    return o!=null;
+   },fieldParts)?{
+    $:1,
+    $0:Seq.append(casePath,Seq.collect(function(o)
+    {
+     return o.$0;
+    },fieldParts))
+   }:null);
+  });
+ };
+ RouterOperators.isCorrectMethod=function(m,p)
+ {
+  return p!=null&&p.$==1?m!=null&&m.$==1?Unchecked.Equals(p.$0,m.$0):true:!(m!=null&&m.$==1);
+ };
+ RouterOperators.rString=function()
+ {
+  SC$7.$cctor();
+  return SC$7.rString;
+ };
+ RouterModule.Parse=function(router,path)
+ {
+  function c(path$1,value)
+  {
+   return path$1.Segments.$==0?{
+    $:1,
+    $0:value
+   }:null;
+  }
+  return Seq.tryPick(function($1)
+  {
+   return c($1[0],$1[1]);
+  },router.Parse(path));
+ };
+ RouterModule.HashLink=function(router,endpoint)
+ {
+  return"#"+RouterModule.Link(router,endpoint);
+ };
+ RouterModule.Link=function(router,endpoint)
+ {
+  var m;
+  m=RouterModule.Write(router,endpoint);
+  return m==null?"":m.$0.ToLink();
+ };
+ RouterModule.Write=function(router,endpoint)
+ {
+  var o;
+  o=router.Write(endpoint);
+  return o==null?null:{
+   $:1,
+   $0:Route.Combine(o.$0)
+  };
+ };
+ Route=Sitelets.Route=Runtime$1.Class({
+  ToLink:function()
+  {
+   return PathUtil.WriteLink(this.Segments,this.QueryArgs);
+  }
+ },null,Route);
+ Route.FromHash=function(path,strict)
+ {
+  var m,h;
+  m=path.indexOf("#");
+  return m===-1?Route.get_Empty():(h=path.substring(m+1),strict!=null&&strict.$0?h===""||h==="/"?Route.get_Empty():Strings.StartsWith(h,"/")?Route.FromUrl(h.substring(1),{
+   $:1,
+   $0:true
+  }):Route.Segment$2(h):Route.FromUrl(path.substring(m),{
+   $:1,
+   $0:false
+  }));
+ };
+ Route.Segment=function(s,m)
+ {
+  var i;
+  i=Route.get_Empty();
+  return Route.New(s,i.QueryArgs,i.FormData,m,i.Body);
+ };
+ Route.get_Empty=function()
+ {
+  return Route.New(T$1.Empty,new FSharpMap.New([]),new FSharpMap.New([]),null,Lazy.CreateFromValue(null));
+ };
+ Route.FromUrl=function(path,strict)
+ {
+  var p,m,i;
+  p=(m=path.indexOf("?"),m===-1?[path,new FSharpMap.New([])]:[Strings.Substring(path,0,m),Route.ParseQuery(path.substring(m+1))]);
+  i=Route.get_Empty();
+  return Route.New(List$1.ofArray(Strings.SplitChars(p[0],["/"],strict!=null&&strict.$0?0:1)),p[1],i.FormData,i.Method,i.Body);
+ };
+ Route.Segment$2=function(s)
+ {
+  var i;
+  i=Route.get_Empty();
+  return Route.New(List$1.ofArray([s]),i.QueryArgs,i.FormData,i.Method,i.Body);
+ };
+ Route.ParseQuery=function(q)
+ {
+  return Map.OfArray(Arrays.ofSeq(Arrays.choose(function(kv)
+  {
+   var m,v;
+   m=Strings.SplitChars(kv,["="],0);
+   return!Unchecked.Equals(m,null)&&m.length===2?(v=Arrays.get(m,1),{
+    $:1,
+    $0:[Arrays.get(m,0),v]
+   }):((function($1)
+   {
+    return function($2)
+    {
+     return $1("wrong format for query argument: "+Utils.toSafe($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(kv),null);
+  },Strings.SplitChars(q,["&"],0))));
+ };
+ Route.Combine=function(paths)
+ {
+  var method,body,queryArgs,formData,i,$1,paths$1,m,segments,l;
+  paths$1=Arrays.ofSeq(paths);
+  m=Arrays.length(paths$1);
+  if(m===0)
+   return Route.get_Empty();
+  else
+   if(m===1)
+    return Arrays.get(paths$1,0);
+   else
+    {
+     method=null;
+     body=null;
+     segments=[];
+     queryArgs=new FSharpMap.New([]);
+     formData=new FSharpMap.New([]);
+     i=0;
+     l=Arrays.length(paths$1);
+     while(i<l)
+      (function()
+      {
+       var p,m$1,m$2;
+       p=Arrays.get(paths$1,i);
+       m$1=p.Method;
+       m$1!=null&&m$1.$==1?method=m$1:void 0;
+       m$2=p.Body.f();
+       m$2===null?void 0:body=m$2;
+       queryArgs=Map.FoldBack(function(k,v,t)
+       {
+        return t.Add(k,v);
+       },queryArgs,p.QueryArgs);
+       formData=Map.FoldBack(function(k,v,t)
+       {
+        return t.Add(k,v);
+       },formData,p.FormData);
+       List$1.iter(function(a)
+       {
+        segments.push(a);
+       },p.Segments);
+       i=i+1;
+      }());
+     return Route.New(List$1.ofSeq(segments),queryArgs,formData,method,Lazy.CreateFromValue(body));
+    }
+ };
+ Route.New=function(Segments,QueryArgs,FormData,Method,Body)
+ {
+  return new Route({
+   Segments:Segments,
+   QueryArgs:QueryArgs,
+   FormData:FormData,
+   Method:Method,
+   Body:Body
+  });
+ };
+ IdAddress=TypesV0.IdAddress=Runtime$1.Class({},null,IdAddress);
+ MapUtil.fromSeq=function(s)
+ {
+  var a;
+  a=Arrays.ofSeq(Seq.delay(function()
+  {
+   return Seq.collect(function(m)
+   {
+    return[Pair.New(m[0],m[1])];
+   },Seq.distinctBy(function(t)
+   {
+    return t[0];
+   },s));
+  }));
+  Arrays.sortInPlace(a);
+  return BalancedTree.Build(a,0,a.length-1);
+ };
+ Tree.New=function(Node$1,Left,Right,Height,Count)
+ {
+  return{
+   Node:Node$1,
+   Left:Left,
+   Right:Right,
+   Height:Height,
+   Count:Count
+  };
+ };
+ Array$1.ofSeqNonCopying=function(xs)
+ {
+  var q,o;
+  if(xs instanceof Global.Array)
+   return xs;
+  else
+   if(xs instanceof T$1)
+    return Arrays.ofList(xs);
+   else
+    if(xs===null)
+     return[];
+    else
+     {
+      q=[];
+      o=Enumerator.Get(xs);
+      try
+      {
+       while(o.MoveNext())
+        q.push(o.Current());
+       return q;
+      }
+      finally
+      {
+       if(typeof o=="object"&&"Dispose"in o)
+        o.Dispose();
+      }
+     }
+ };
+ Array$1.TreeReduce=function(defaultValue,reduction,array)
+ {
+  var l;
+  function loop(off,len)
+  {
+   var $1,l2;
+   return len<=0?defaultValue:len===1&&(off>=0&&off<l)?Arrays.get(array,off):(l2=len/2>>0,reduction(loop(off,l2),loop(off+l2,len-l2)));
+  }
+  l=Arrays.length(array);
+  return loop(0,l);
+ };
+ Array$1.mapInPlace=function(f,arr)
+ {
+  var i,$1;
+  for(i=0,$1=arr.length-1;i<=$1;i++)arr[i]=f(arr[i]);
+  return arr;
+ };
+ Array$1.MapTreeReduce=function(mapping,defaultValue,reduction,array)
+ {
+  var l;
+  function loop(off,len)
+  {
+   var $1,l2;
+   return len<=0?defaultValue:len===1&&(off>=0&&off<l)?mapping(Arrays.get(array,off)):(l2=len/2>>0,reduction(loop(off,l2),loop(off+l2,len-l2)));
+  }
+  l=Arrays.length(array);
+  return loop(0,l);
+ };
  Docs.CreateEmbedNode=function()
  {
   return{
@@ -13910,6 +15455,35 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   }),DomNodes.Except(DomNodes.DocChildren(el),DomNodes.Children(el.El,Runtime$1.GetOptional(el.Delimiters))));
   ins(el.Children,(m=Runtime$1.GetOptional(el.Delimiters),m!=null&&m.$==1?m.$0[1]:null));
  };
+ AsyncBody.New=function(k,ct)
+ {
+  return{
+   k:k,
+   ct:ct
+  };
+ };
+ SC$4.$cctor=function()
+ {
+  SC$4.$cctor=Global.ignore;
+  SC$4.noneCT=CT.New(false,[]);
+  SC$4.scheduler=new Scheduler.New();
+  SC$4.defCTS=[new CancellationTokenSource.New()];
+  SC$4.Zero=Concurrency.Return();
+  SC$4.GetCT=function(c)
+  {
+   c.k({
+    $:0,
+    $0:c.ct
+   });
+  };
+ };
+ CT.New=function(IsCancellationRequested,Registrations)
+ {
+  return{
+   c:IsCancellationRequested,
+   r:Registrations
+  };
+ };
  Layout.extractNodes=function(lyt)
  {
   var m,m$1;
@@ -13940,7 +15514,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var dir,meas,p,name1,def1,p$1,name2,def2,t,t$1;
   return node.$==1?(dir=node.$0.$0,(meas=node.$0.$1,(p=Layout.createLayoutDefinitions(nameBase+"_1",node.$0.$2),(name1=p[0],(def1=p[1],(p$1=Layout.createLayoutDefinitions(nameBase+"_2",node.$0.$3),(name2=p$1[0],(def2=p$1[1],[nameBase,Arrays.ofSeq(Seq.delay(function()
   {
-   return Seq.append([Strings.concat(" ",List.ofArray([nameBase,dir?"vertical":"horizontal",Global.String(meas),name1,name2]))],Seq.delay(function()
+   return Seq.append([Strings.concat(" ",List$1.ofArray([nameBase,dir?"vertical":"horizontal",Global.String(meas),name1,name2]))],Seq.delay(function()
    {
     return Seq.append(def1,Seq.delay(function()
     {
@@ -14252,10 +15826,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   for(i=0,$1=element.childNodes.length-1;i<=$1;i++)a.push(element.childNodes[i]);
   return a;
  };
- DomUtility.CreateText=function(s)
- {
-  return DomUtility.Doc().createTextNode(s);
- };
  DomUtility.SetAttr=function(el,name,value)
  {
   el.setAttribute(name,value);
@@ -14274,10 +15844,18 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   l=el.querySelectorAll(selector);
   for(i=0,$1=l.length-1;i<=$1;i++)f(l[i]);
  };
+ DomUtility.CreateText=function(s)
+ {
+  return DomUtility.Doc().createTextNode(s);
+ };
  DomUtility.Doc=function()
  {
   SC$9.$cctor();
   return SC$9.Doc;
+ };
+ DomUtility.RemoveAttr=function(el,attrName)
+ {
+  el.removeAttribute(attrName);
  };
  DomUtility.RemoveClass=function(element,cl)
  {
@@ -14482,10 +16060,30 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    console.log(s);
   }));
  },WcSplitterT);
- SC$4.$cctor=function()
+ DocElemNode=UI.DocElemNode=Runtime$1.Class({
+  Equals:function(o)
+  {
+   return this.ElKey===o.ElKey;
+  },
+  GetHashCode:function()
+  {
+   return this.ElKey;
+  }
+ },null,DocElemNode);
+ DocElemNode.New=function(Attr,Children,Delimiters,El,ElKey,Render)
  {
-  SC$4.$cctor=Global.ignore;
-  SC$4.counter=0;
+  var $1;
+  return new DocElemNode(($1={
+   Attr:Attr,
+   Children:Children,
+   El:El,
+   ElKey:ElKey
+  },(Runtime$1.SetOptional($1,"Delimiters",Delimiters),Runtime$1.SetOptional($1,"Render",Render),$1)));
+ };
+ SC$5.$cctor=function()
+ {
+  SC$5.$cctor=Global.ignore;
+  SC$5.counter=0;
  };
  Router$1.New$1=function(Parse,Write)
  {
@@ -14510,91 +16108,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     return null;
   }
  };
- AsyncBody.New=function(k,ct)
- {
-  return{
-   k:k,
-   ct:ct
-  };
- };
- SC$5.$cctor=function()
- {
-  SC$5.$cctor=Global.ignore;
-  SC$5.noneCT=CT.New(false,[]);
-  SC$5.scheduler=new Scheduler.New();
-  SC$5.defCTS=[new CancellationTokenSource.New()];
-  SC$5.Zero=Concurrency.Return();
-  SC$5.GetCT=function(c)
-  {
-   c.k({
-    $:0,
-    $0:c.ct
-   });
-  };
- };
- CT.New=function(IsCancellationRequested,Registrations)
- {
-  return{
-   c:IsCancellationRequested,
-   r:Registrations
-  };
- };
- Array$1.mapInPlace=function(f,arr)
- {
-  var i,$1;
-  for(i=0,$1=arr.length-1;i<=$1;i++)arr[i]=f(arr[i]);
-  return arr;
- };
- Array$1.ofSeqNonCopying=function(xs)
- {
-  var q,o;
-  if(xs instanceof Global.Array)
-   return xs;
-  else
-   if(xs instanceof T)
-    return Arrays.ofList(xs);
-   else
-    if(xs===null)
-     return[];
-    else
-     {
-      q=[];
-      o=Enumerator.Get(xs);
-      try
-      {
-       while(o.MoveNext())
-        q.push(o.Current());
-       return q;
-      }
-      finally
-      {
-       if(typeof o=="object"&&"Dispose"in o)
-        o.Dispose();
-      }
-     }
- };
- Array$1.TreeReduce=function(defaultValue,reduction,array)
- {
-  var l;
-  function loop(off,len)
-  {
-   var $1,l2;
-   return len<=0?defaultValue:len===1&&(off>=0&&off<l)?Arrays.get(array,off):(l2=len/2>>0,reduction(loop(off,l2),loop(off+l2,len-l2)));
-  }
-  l=Arrays.length(array);
-  return loop(0,l);
- };
- Array$1.MapTreeReduce=function(mapping,defaultValue,reduction,array)
- {
-  var l;
-  function loop(off,len)
-  {
-   var $1,l2;
-   return len<=0?defaultValue:len===1&&(off>=0&&off<l)?mapping(Arrays.get(array,off)):(l2=len/2>>0,reduction(loop(off,l2),loop(off+l2,len-l2)));
-  }
-  l=Arrays.length(array);
-  return loop(0,l);
- };
  Pair=Collections.Pair=Runtime$1.Class({
   Equals:function(other)
   {
@@ -14616,6 +16129,90 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    Value:Value
   });
  };
+ Scheduler=Concurrency.Scheduler=Runtime$1.Class({
+  Fork:function(action)
+  {
+   var $this;
+   $this=this;
+   this.robin.push(action);
+   this.idle?(this.idle=false,Global.setTimeout(function()
+   {
+    $this.tick();
+   },0)):void 0;
+  },
+  tick:function()
+  {
+   var loop,$this,t;
+   $this=this;
+   t=Date$1.now();
+   loop=true;
+   while(loop)
+    if(this.robin.length===0)
+     {
+      this.idle=true;
+      loop=false;
+     }
+    else
+     {
+      (this.robin.shift())();
+      Date$1.now()-t>40?(Global.setTimeout(function()
+      {
+       $this.tick();
+      },0),loop=false):void 0;
+     }
+  }
+ },Obj,Scheduler);
+ Scheduler.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+  this.idle=true;
+  this.robin=[];
+ },Scheduler);
+ CancellationTokenSource=WebSharper.CancellationTokenSource=Runtime$1.Class({
+  Cancel$1:function()
+  {
+   var errors;
+   if(!this.c)
+    {
+     this.c=true;
+     errors=Arrays.choose(function(a)
+     {
+      try
+      {
+       a();
+       return null;
+      }
+      catch(e)
+      {
+       return{
+        $:1,
+        $0:e
+       };
+      }
+     },this.r);
+     if(Arrays.length(errors)>0)
+      throw new AggregateException.New$3(errors);
+     else
+      void 0;
+    }
+  }
+ },Obj,CancellationTokenSource);
+ CancellationTokenSource.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+  this.c=false;
+  this.pending=null;
+  this.r=[];
+  this.init=1;
+ },CancellationTokenSource);
+ Provider.DecodeArray=function(decEl)
+ {
+  return Provider.EncodeArray(decEl);
+ };
+ Provider.EncodeArray=Runtime$1.Curried3(function(encEl,$1,a)
+ {
+  return Arrays.map(encEl(),a);
+ });
  Provider.DecodeTuple=function(decs)
  {
   return Provider.EncodeTuple(decs);
@@ -14624,20 +16221,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return x;
  });
- Provider.DecodeArray=function(decEl)
- {
-  return Provider.EncodeArray(decEl);
- };
  Provider.EncodeTuple=Runtime$1.Curried3(function(encs,$1,args)
  {
   return Arrays.map2(function($2,$3)
   {
    return($2(null))($3);
   },encs,args);
- });
- Provider.EncodeArray=Runtime$1.Curried3(function(encEl,$1,a)
- {
-  return Arrays.map(encEl(),a);
  });
  Provider.DecodeUnion=function(t,discr,cases)
  {
@@ -14867,43 +16456,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    hover:hover
   });
  };
- CancellationTokenSource=WebSharper.CancellationTokenSource=Runtime$1.Class({
-  Cancel$1:function()
-  {
-   var errors;
-   if(!this.c)
-    {
-     this.c=true;
-     errors=Arrays.choose(function(a)
-     {
-      try
-      {
-       a();
-       return null;
-      }
-      catch(e)
-      {
-       return{
-        $:1,
-        $0:e
-       };
-      }
-     },this.r);
-     if(Arrays.length(errors)>0)
-      throw new AggregateException.New$3(errors);
-     else
-      void 0;
-    }
-  }
- },Obj,CancellationTokenSource);
- CancellationTokenSource.New=Runtime$1.Ctor(function()
- {
-  Obj.New.call(this);
-  this.c=false;
-  this.pending=null;
-  this.r=[];
-  this.init=1;
- },CancellationTokenSource);
  Storage.InMemory=function(init)
  {
   return new ArrayStorage.New(init);
@@ -14922,7 +16474,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   if(r)
    {
     ro=new Global.ResizeObserver(f);
-    ResizeObserver.set_observers(new T({
+    ResizeObserver.set_observers(new T$1({
      $:1,
      $0:ro,
      $1:ResizeObserver.observers()
@@ -14971,26 +16523,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  ResizeObserver.domRect2Tuple=function(r)
  {
   return[r.top,r.left,r.width,r.height];
- };
- DocElemNode=UI.DocElemNode=Runtime$1.Class({
-  Equals:function(o)
-  {
-   return this.ElKey===o.ElKey;
-  },
-  GetHashCode:function()
-  {
-   return this.ElKey;
-  }
- },null,DocElemNode);
- DocElemNode.New=function(Attr,Children,Delimiters,El,ElKey,Render)
- {
-  var $1;
-  return new DocElemNode(($1={
-   Attr:Attr,
-   Children:Children,
-   El:El,
-   ElKey:ElKey
-  },(Runtime$1.SetOptional($1,"Delimiters",Delimiters),Runtime$1.SetOptional($1,"Render",Render),$1)));
  };
  Prepare.convertTextNode=function(n)
  {
@@ -15342,6 +16874,24 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    m===0?(st[0]=1,Concurrency.Start(work(),null)):m===1?st[0]=2:void 0;
   };
  };
+ SC$6.$cctor=function()
+ {
+  SC$6.$cctor=Global.ignore;
+  SC$6.LoadedTemplates=new Dictionary.New$5();
+  SC$6.LocalTemplatesLoaded=false;
+  SC$6.TextHoleRE="\\${([^}]+)}";
+ };
+ Dyn.New=function(DynElem,DynFlags,DynNodes,OnAfterRender)
+ {
+  var $1;
+  $1={
+   DynElem:DynElem,
+   DynFlags:DynFlags,
+   DynNodes:DynNodes
+  };
+  Runtime$1.SetOptional($1,"OnAfterRender",OnAfterRender);
+  return $1;
+ };
  HashSetUtil.concat=function(o)
  {
   var r,k;
@@ -15353,12 +16903,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return Arrays.ofSeq(Seq.collect(Global.id,Seq.mapi(function(i,c)
   {
-   return i>0&&Char.IsUpper(c)?List.ofArray(["_",c]):List.ofArray([c]);
+   return i>0&&Char.IsUpper(c)?List$1.ofArray(["_",c]):List$1.ofArray([c]);
   },_this))).join("");
  };
- SC$6.$cctor=function()
+ SC$7.$cctor=function()
  {
-  SC$6.$cctor=Global.ignore;
+  SC$7.$cctor=Global.ignore;
   function pInt(x)
   {
    var m,o;
@@ -15377,18 +16927,18 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:m[1]
    }:null;
   }
-  SC$6.Empty=Router$1.New$1(function()
+  SC$7.Empty=Router$1.New$1(function()
   {
    return[];
   },function()
   {
    return null;
   });
-  SC$6.rRoot=Router$1.New(function(path)
+  SC$7.rRoot=Router$1.New(function(path)
   {
    return[path];
   },[]);
-  SC$6.rString=Router$1.New$1(function(path)
+  SC$7.rString=Router$1.New$1(function(path)
   {
    var m,m$1;
    m=path.Segments;
@@ -15400,7 +16950,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(value==null?"null":StringEncoding.write(value))]
    };
   });
-  SC$6.rChar=Router$1.New$1(function(path)
+  SC$7.rChar=Router$1.New$1(function(path)
   {
    var m,m$1,$1;
    m=path.Segments;
@@ -15412,7 +16962,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(value)]
    };
   });
-  SC$6.rGuid=Router$1.New$1(function(path)
+  SC$7.rGuid=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -15433,7 +16983,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$6.rInt=Router$1.New$1(function(path)
+  SC$7.rInt=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -15454,7 +17004,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$6.rDouble=Router$1.New$1(function(path)
+  SC$7.rDouble=Router$1.New$1(function(path)
   {
    var m,res,$1;
    m=path.Segments;
@@ -15466,7 +17016,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$6.rSByte=Router$1.New$1(function(path)
+  SC$7.rSByte=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -15487,7 +17037,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$6.rByte=Router$1.New$1(function(path)
+  SC$7.rByte=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -15508,7 +17058,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$6.rInt16=Router$1.New$1(function(path)
+  SC$7.rInt16=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -15529,7 +17079,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$6.rUInt16=Router$1.New$1(function(path)
+  SC$7.rUInt16=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -15550,7 +17100,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$6.rUInt=Router$1.New$1(function(path)
+  SC$7.rUInt=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -15571,7 +17121,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$6.rInt64=Router$1.New$1(function(path)
+  SC$7.rInt64=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -15592,7 +17142,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$6.rUInt64=Router$1.New$1(function(path)
+  SC$7.rUInt64=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -15613,7 +17163,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$6.rSingle=Router$1.New$1(function(path)
+  SC$7.rSingle=Router$1.New$1(function(path)
   {
    var m,res,$1;
    m=path.Segments;
@@ -15625,7 +17175,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$6.rBool=Router$1.New$1(function(path)
+  SC$7.rBool=Router$1.New$1(function(path)
   {
    var m,m$1,o;
    m=path.Segments;
@@ -15646,9 +17196,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(value?"True":"False")]
    };
   });
-  SC$6.rWildcard=Router$1.New$1(function(path)
+  SC$7.rWildcard=Router$1.New$1(function(path)
   {
-   return[[Route.New(T.Empty,path.QueryArgs,path.FormData,path.Method,path.Body),Strings.concat("/",path.Segments)]];
+   return[[Route.New(T$1.Empty,path.QueryArgs,path.FormData,path.Method,path.Body),Strings.concat("/",path.Segments)]];
   },function(value)
   {
    return{
@@ -15656,7 +17206,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(value)]
    };
   });
-  SC$6.rDateTime=Router$1.New$1(function(path)
+  SC$7.rDateTime=Router$1.New$1(function(path)
   {
    var m,h,$1,$2,$3,$4,$5,$6,$7;
    m=path.Segments;
@@ -15733,45 +17283,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return[kv.Key,kv.Value];
   },BalancedTree.Enumerate(false,m.get_Tree()));
  };
- Scheduler=Concurrency.Scheduler=Runtime$1.Class({
-  Fork:function(action)
-  {
-   var $this;
-   $this=this;
-   this.robin.push(action);
-   this.idle?(this.idle=false,Global.setTimeout(function()
-   {
-    $this.tick();
-   },0)):void 0;
-  },
-  tick:function()
-  {
-   var loop,$this,t;
-   $this=this;
-   t=Date$1.now();
-   loop=true;
-   while(loop)
-    if(this.robin.length===0)
-     {
-      this.idle=true;
-      loop=false;
-     }
-    else
-     {
-      (this.robin.shift())();
-      Date$1.now()-t>40?(Global.setTimeout(function()
-      {
-       $this.tick();
-      },0),loop=false):void 0;
-     }
-  }
- },Obj,Scheduler);
- Scheduler.New=Runtime$1.Ctor(function()
- {
-  Obj.New.call(this);
-  this.idle=true;
-  this.robin=[];
- },Scheduler);
  OperationCanceledException=WebSharper.OperationCanceledException=Runtime$1.Class({},Error,OperationCanceledException);
  OperationCanceledException.New=Runtime$1.Ctor(function(ct)
  {
@@ -15784,12 +17295,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   Object.setPrototypeOf(this,OperationCanceledException.prototype);
   this.ct=ct;
  },OperationCanceledException);
- SC$7.$cctor=function()
+ Queue.Clear=function(a)
  {
-  SC$7.$cctor=Global.ignore;
-  SC$7.LoadedTemplates=new Dictionary.New$5();
-  SC$7.LocalTemplatesLoaded=false;
-  SC$7.TextHoleRE="\\${([^}]+)}";
+  a.splice(0,Arrays.length(a));
  };
  DynamicAttrNode=UI.DynamicAttrNode=Runtime$1.Class({
   NChanged:function()
@@ -15874,7 +17382,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      x.Dispose();
      throw e;
     }
-    return new T$1.New(null,null,function(e$1)
+    return new T.New(null,null,function(e$1)
     {
      return _enum.MoveNext()&&(e$1.c=_enum.Current(),true);
     },function()
@@ -15890,7 +17398,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   return{
    GetEnumerator:function()
    {
-    return new T$1.New(null,null,function(en)
+    return new T.New(null,null,function(en)
     {
      var m;
      while(true)
@@ -15927,21 +17435,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     });
    }
   };
- };
- Dyn.New=function(DynElem,DynFlags,DynNodes,OnAfterRender)
- {
-  var $1;
-  $1={
-   DynElem:DynElem,
-   DynFlags:DynFlags,
-   DynNodes:DynNodes
-  };
-  Runtime$1.SetOptional($1,"OnAfterRender",OnAfterRender);
-  return $1;
- };
- Queue.Clear=function(a)
- {
-  a.splice(0,Arrays.length(a));
  };
  Updates=UI.Updates=Runtime$1.Class({},null,Updates);
  Updates.Create=function(v)
@@ -16120,6 +17613,28 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$8.$cctor=Global.ignore;
   SC$8.BatchUpdatesEnabled=true;
  };
+ KeyCollection=Collections.KeyCollection=Runtime$1.Class({
+  GetEnumerator$1:function()
+  {
+   return Enumerator.Get(Seq.map(function(kvp)
+   {
+    return kvp.K;
+   },this.d));
+  },
+  GetEnumerator:function()
+  {
+   return this.GetEnumerator$1();
+  },
+  GetEnumerator0:function()
+  {
+   return this.GetEnumerator$1();
+  }
+ },Obj,KeyCollection);
+ KeyCollection.New=Runtime$1.Ctor(function(d)
+ {
+  Obj.New.call(this);
+  this.d=d;
+ },KeyCollection);
  Char.IsUpper=function(c)
  {
   return c>="A"&&c<="Z";
@@ -16169,7 +17684,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         chars=m[1];
        }
     }
-  }(List.ofSeq(Seq.map(function(v)
+  }(List$1.ofSeq(Seq.map(function(v)
   {
    return v.charCodeAt();
   },s)));
@@ -16234,28 +17749,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return Numeric.TryParse(s,0,18446744073709551615,r);
  };
- KeyCollection=Collections.KeyCollection=Runtime$1.Class({
-  GetEnumerator$1:function()
-  {
-   return Enumerator.Get(Seq.map(function(kvp)
-   {
-    return kvp.K;
-   },this.d));
-  },
-  GetEnumerator:function()
-  {
-   return this.GetEnumerator$1();
-  },
-  GetEnumerator0:function()
-  {
-   return this.GetEnumerator$1();
-  }
- },Obj,KeyCollection);
- KeyCollection.New=Runtime$1.Ctor(function(d)
- {
-  Obj.New.call(this);
-  this.d=d;
- },KeyCollection);
  Promise.AsAsync=function(p)
  {
   return Concurrency.FromContinuations(function(ok,ko)
@@ -16270,17 +17763,17 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return x instanceof Error?x:new NonStandardPromiseRejectionException.New(x);
  };
- SC$9.$cctor=function()
- {
-  SC$9.$cctor=Global.ignore;
-  SC$9.Doc=self.document;
- };
  FormatException=WebSharper.FormatException=Runtime$1.Class({},Error,FormatException);
  FormatException.New$1=Runtime$1.Ctor(function(message)
  {
   this.message=message;
   Object.setPrototypeOf(this,FormatException.prototype);
  },FormatException);
+ SC$9.$cctor=function()
+ {
+  SC$9.$cctor=Global.ignore;
+  SC$9.Doc=self.document;
+ };
  SC$10.$cctor=function()
  {
   SC$10.$cctor=Global.ignore;
@@ -16355,7 +17848,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var sb,start;
   sb=[];
   start=true;
-  List.iter(function(x)
+  List$1.iter(function(x)
   {
    if(!Strings.IsNullOrEmpty(x))
     {

@@ -3,7 +3,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="//cdn.muicss.com/mui-0.9.41/css/mui.min.css" rel="stylesheet" type="text/css" />
+        <link href="//cdn.muicss.com/mui-0.9.41/css/mui.min.css" rel="stylesheet" type="text/css" >
         <script src="//cdn.muicss.com/mui-0.9.41/js/mui.min.js"></script>
         <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
         <!-- Latest compiled and minified JavaScript -->
@@ -163,35 +163,120 @@
     <title>Prozper</title>
   </head>
   <body class="scrollbar">
-    <div ws-replace="MainContent"></div>
-    <div class="${Cortina}"></div>
+
+    <div id="sidedrawer" class="mui--no-user-select">
+        <div id="sidedrawer-brand" class="mui--appbar-line-height">
+            <a href="#" class="mui--text-title"><img class="logo" src="/blob/images/prozper.png" alt="Logo"></a>
+        </div>
+        <div class="mui-divider"></div>
+        <ul>
+            <strong onclick="$(this).next().slideToggle(200)">Menú</strong>
+            <ul >
+                <li><a href="#">Inicio</a></li>
+                <!-- li><a href="#">Mensajes</a></li -->
+            </ul>
+            <li>
+                <strong onclick="$(this).next().slideToggle(200)">Referir</strong>
+                <ul style="display: none;">
+                    <li><a href="#/Content/ProzperLyt.cntFormaInvitaciones">Enviar Invitaciones</a></li>
+                    <li><a href="/Register/${IdAliado}">Llenar Afiliación</a></li>
+                    <!-- li><a href="#/Content/ProzperLyt.cntFormaRegistro">Llenar Afiliación</a></li -->
+                </ul>
+            </li>
+            <li>
+                <strong onclick="$(this).next().slideToggle(200)">Actualizar Información</strong>
+                <ul style="display: none;">
+                    <li><a href="#/Content/ProzperLyt.cntFormaFormasPago"    >Formas de Pago   </a></li>
+                    <li><a href="#/Content/ProzperLyt.cntFormaDatos"         >Datos Personales </a></li>
+                    <li><a href="#/Content/ProzperLyt.cntFormaContactos"     >Contactos        </a></li>
+                    <li><a href="/Profile"                                   >Cuenta           </a></li>
+                    <!-- li><a href="#/Content/ProzperLyt.cntFormaIdentificacion">Identificación   </a></li -->
+                    <li><a href="#/Content/ProzperLyt.cntSubirDocumentos"    >Documentos       </a></li>
+                </ul>
+            </li>
+            <li>
+                <strong onclick="$(this).next().slideToggle(200)">Kit de Inscripción</strong>
+                <ol style="display: none;">
+                    <li><a target="_blank" href="/blob/Inscripcion/01 Instructivo de Afiliacion.pdf"                   >Instructivo de Afiliación</a></li>
+                    <li><a target="_blank" href="/blob/Inscripcion/02 Carta de Bienvenida.pdf"                         >Carta de Bienvenida      </a></li>
+                    <li><a target="_blank" href="/blob/Inscripcion/03 Presentacion Prozper.pdf"                        >Presentación Prozper     </a></li>
+                    <li><a target="_blank" href="/blob/Inscripcion/04 Contrato de Afiliacion Aliados Prozper Rev.3.pdf">Contrato de Afiliación   </a></li>
+                    <li><a target="_blank" href="/blob/Inscripcion/05 Form W-8BEN.pdf"                                 >Forma W-8BEN             </a></li>
+                    <li><a target="_blank" href="/blob/Inscripcion/06 Form W-8BEN-E.pdf"                               >Forma W-8BEN-E           </a></li>
+                    <li><a target="_blank" href="/blob/Inscripcion/07 Form W-9.pdf"                                    >Forma W-9                </a></li>
+                    <li><a target="_blank" href="/blob/Inscripcion/08 Cancelacion de contratos.pdf"                    >Cancelación de Contratos </a></li>
+                </ol>
+            </li>
+            <li ws-replace="ExtraMenu"></li>
+        </ul>
+    </div>
+
+    <header id="header" ><nav class="mui-container-fluid">
+        <table width="100%" cellspacing="0"><tbody>
+            <tr class="mui-appbar mui--appbar-line-height" >
+                <td class="mui-container-fluid">
+                    <a class="sidedrawer-toggle mui--visible-xs-inline-block mui--visible-sm-inline-block js-show-sidedrawer" onclick="showSidedrawer()">☰</a>
+                    <a class="sidedrawer-toggle mui--hidden-xs mui--hidden-sm js-hide-sidedrawer" onclick="hideSidedrawer()">☰</a>
+                    <span class="mui--text-title mui--visible-xs-inline-block">${Brand}</span>
+                </td>
+                <td ws-hole = "headerCenter">
+                </td>
+                <td class="mui--text-right">
+                    <ul class="mui-list--inline mui--text-body2">
+                      <li><a href="#" style="color:white">Acerca</a></li>
+                      <li><a href="/Logout" style="color:white" ws-onclick="Logout"><i class="fa fa-user" aria-hidden="true"></i> Salir</a></li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody></table>
+    </nav></header>
+    
+    <div id="content-wrapper" >
+        <div class="mui--appbar-height"></div>
+        <div class="mui-container-fluid">
+            <br>
+            <div ws-replace="MainContent"></div>
+        </div>
+    </div>
+
+    <footer id="footer" >
+        <div class="mui-container-fluid">
+            <br>
+            Made with ♥ by <a href="https://www.cipherbsc.com">CIPHER Bsc</a>
+        </div>
+    </footer>
+
+    <div id="${Cortina}"><img src="blob/images/loading-prozper.gif" style=" display: block; margin-top: calc(50vh - 32px); margin-left: calc(50vw - 32px); position:fixed"></img></div>
+
     <div style="display:none" >
         <div ws-replace="Initializer"></div>
         <div id="GlobalLayout" >
                 menuEditor layout
-                |          main
+                |          Prozper.contentDoc
 
-                main div ""
-                :                 template  header     "id=header"           brand  brandV   logout "@{Prozper.Logout}" afiliado "@{Prozper.aliado}"
-                :                 Doc       Prozper.contentDoc
-                :                 template  sidedrawer "id=sidedrawer"       brand  brandV   idaliado "@{Prozper.idAliado}" 
-                :                 template  footer     "id=footer"           brand  brandV   madeby "CIPHER Bsc" madebylink "www.cipherbsc.com"
- 
-                mainContent          template  content    "id=content-wrapper"  content aliados                  fecha "@{Prozper.mesActual} @{Prozper.anoActual}" idaliado "@{Prozper.aliado}"
-                cntFormaRegistro     template  content    "id=content-wrapper"  content Prozper.FormaRegistro    titulo "Referido por: @{Prozper.aliado}"  
-                cntFormaDatos        template  content    "id=content-wrapper"  content Prozper.FormaDatos       titulo " "
-                cntFormaContactos    template  content    "id=content-wrapper"  content Prozper.FormaContactos   titulo " " 
-                cntFormaFormasPago   template  content    "id=content-wrapper"  content Prozper.FormaFormasPago  titulo " " 
-                cntFormaCuentas      template  content    "id=content-wrapper"  content ProzperLyt.FormaCuentas  titulo " "  
-                cntFormaDocumentos   template  content    "id=content-wrapper"  content Prozper.FormaDocumentos  titulo " "  
-                cntFormaNoUser       template  content    "id=content-wrapper"  content botonLogin               titulo " "  
-                cntFormaInvitaciones template  content    "id=content-wrapper"  content invitaciones             titulo " "  
+                mainContent           Doc aliados
+                cntFormaRegistro      Doc Prozper.FormaRegistro
+                cntFormaDatos         Doc Prozper.FormaDatos
+                cntFormaContactos     Doc Prozper.FormaContactos
+                cntFormaFormasPago    Doc Prozper.FormaFormasPago
+                cntFormaCuentas       Doc ProzperLyt.FormaCuentas
+                cntFormaDocumentos    Doc Prozper.FormaDocumentos
+                cntFormaNoUser        Doc botonLogin
+                cntFormaInvitaciones  Doc invitaciones
+                cntReporteConsolidado Doc Prozper.ReporteConsolidado
+                cntTablaPagos         Doc Prozper.TablaPagos
+                cntSubirDocumentos    template subirdocumentos "" id "@{Prozper.idAliado}"
+
+                headerCenter ul "class=mui-list--inline mui--text-body2"
+                :            li "class=mui--text-light mui--text-display1"                          "@{Prozper.aliado}"
+                :            li "class=mui--text-light mui--text-body1"                             "@{Prozper.status}"
+                :            li "class=mui--text-light mui--text-body1 comision@{Prozper.comision}" "$@{Prozper.comision}"
 
                 aliados          div       "class=row"
                 :                div       "class=mui-col-md-6"
                 ::               div       "class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto" Prozper.Aliados
-                :                div       "class=mui-col-md-6"
-                ::               div       "class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto" Aliado Comisiones
+                :                div       "class=mui-col-md-5"
+                ::               div       "class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto" Aliado
                 brandV           Var       "Prozper"
 
                 botonLogin       div       "class=row"
@@ -207,8 +292,8 @@
                 :                div       "white-space: pre-wrap" "@{Prozper.emailsInvitar}"
                 :                button    Prozper.enviarInvitaciones "class=mui-btn mui-btn--raised mui-btn--primary;@{Prozper.invitacionesDisabled}" "Enviar"
 
-                Aliado           div       "class=mui-col-md-8"
-                :                Doc Prozper.Aliado
+                Aliado           div       "class=mui-col-md-12"
+                :                Doc        Prozper.Aliado
 
                 Comisiones       template    tablacomisiones "class=mui-col-md-3"  tbody filasComisiones
                 filasComisiones  concat      ""
@@ -275,104 +360,13 @@
             </div>
         </div>
 
-        <div ws-attr="attrs" ws-template="sidedrawer" class="mui--no-user-select">
-            <div id="sidedrawer-brand" class="mui--appbar-line-height">
-                <a href="#" class="mui--text-title"><img class="logo" src="https://prozper.com/images/logos/pro.png" alt="Logo"></a>
-            </div>
-            <div class="mui-divider"></div>
-            <ul>
-                <strong onclick="$(this).next().slideToggle(200)">Menu</strong>
-                <ul >
-                    <li><a href="#">Inicio</a></li>
-                    <li><a href="#">Mensajes</a></li>
-                </ul>
-                <li>
-                    <strong onclick="$(this).next().slideToggle(200)">Referir</strong>
-                    <ul style="display: none;">
-                        <!-- li><a href="#/Content/ProzperLyt.cntFormaRegistro">Llenar Afiliación</a></li -->
-                        <li><a href="/Register/${IdAliado}">Llenar Afiliación</a></li>
-                        <li><a href="#/Content/ProzperLyt.cntFormaInvitaciones">Enviar Invitaciones</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <strong onclick="$(this).next().slideToggle(200)">Reportes</strong>
-                    <ul style="display: none;">
-                        <li><a href="#">Mes Actual</a></li>
-                        <li><a href="#">Historial de Transacciones</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <strong onclick="$(this).next().slideToggle(200)">Actualizar Información</strong>
-                    <ul style="display: none;">
-                            <li><a href="/Profile"                                   >Cuenta           </a></li>
-                            <li><a href="#/Content/ProzperLyt.cntFormaDatos"         >Datos Personales </a></li>
-                            <li><a href="#/Content/ProzperLyt.cntFormaIdentificacion">Identificación   </a></li>
-                            <li><a href="#/Content/ProzperLyt.cntFormaContactos"     >Contactos        </a></li>
-                            <li><a href="#/Content/ProzperLyt.cntFormaFormasPago"    >Cuentas Bancarias</a></li>
-                            <li><a href="#/Content/ProzperLyt.cntFormaDocumentos"    >Documentos       </a></li>
-                        </ul>
-                </li>
-                <li>
-                    <strong onclick="$(this).next().slideToggle(200)">Kit de Inscripción</strong>
-                    <ol style="display: none;">
-                            <li><a target="_blank" href="/blob/Inscripcion/01 Instructivo de Afiliacion.pdf"                   >Instructivo de Afiliación</a></li>
-                            <li><a target="_blank" href="/blob/Inscripcion/02 Carta de Bienvenida.pdf"                         >Carta de Bienvenida      </a></li>
-                            <li><a target="_blank" href="/blob/Inscripcion/03 Presentacion Prozper.pdf"                        >Presentación Prozper     </a></li>
-                            <li><a target="_blank" href="/blob/Inscripcion/04 Contrato de Afiliacion Aliados Prozper Rev.3.pdf">Contrato de Afiliación   </a></li>
-                            <li><a target="_blank" href="/blob/Inscripcion/05 Form W-8BEN.pdf"                                 >Forma W-8BEN             </a></li>
-                            <li><a target="_blank" href="/blob/Inscripcion/06 Form W-8BEN-E.pdf"                               >Forma W-8BEN-E           </a></li>
-                            <li><a target="_blank" href="/blob/Inscripcion/07 Form W-9.pdf"                                    >Forma W-9                </a></li>
-                            <li><a target="_blank" href="/blob/Inscripcion/08 Cancelacion de Contratos.pdf"                    >Cancelación de Contratos </a></li>
-                        </ol>
-                </li>
-            </ul>
+        <div ws-template="SubirDocumentos">
+            <form id="SubirDocumentos" class="mui-panel">
+                <label>Seleccione archivo a subir:</label>
+                <input type="file" name="some-file" />
+                <button onclick="subirDocumentos(event,'${id}')">Subir</button>
+            </form>
         </div>
-
-        <header ws-attr="attrs" ws-template="header"><nav class="mui-container-fluid">
-            <table width="100%" cellspacing="0"><tbody>
-                <tr class="mui-appbar mui--appbar-line-height" >
-                    <td class="mui-container-fluid">
-                        <a class="sidedrawer-toggle mui--visible-xs-inline-block mui--visible-sm-inline-block js-show-sidedrawer" onclick="showSidedrawer()">☰</a>
-                        <a class="sidedrawer-toggle mui--hidden-xs mui--hidden-sm js-hide-sidedrawer" onclick="hideSidedrawer()">☰</a>
-                        <span class="mui--text-title mui--visible-xs-inline-block">${Brand}</span>
-                    </td>
-                    <td >
-                        <ul class="mui-list--inline mui--text-body2">
-                          <li class="mui--text-light mui--text-display1">${Afiliado}</li>
-                          <li><a href="#" style="color:white">${Status}</a></li>
-                          <li><a href="#" style="color:white">${Comision}</a></li>
-                        </ul>
-                    </td>
-                    <td class="mui--text-right">
-                        <ul class="mui-list--inline mui--text-body2">
-                          <li><a href="#" style="color:white">Acerca</a></li>
-                          <li><a href="/Logout" style="color:white" ws-onclick="Logout"><i class="fa fa-user" aria-hidden="true"></i> Salir</a></li>
-                        </ul>
-                    </td>
-                </tr>
-            </tbody></table>
-        </nav></header>
-
-        <div ws-attr="attrs" ws-template="content">
-            <div class="mui--appbar-height"></div>
-            <div class="mui-container-fluid">
-                <br>
-                <div>
-                    <span class="mui--pull-left  mui--text-dark-secondary mui--text-display1">${Titulo}</span>
-                    <span class="mui--pull-right mui--text-dark-secondary mui--text-display1">${fecha}</span>
-                    <div class="mui--clearfix"></div>
-                </div>
-                <div ws-replace="content"/>
-            </div>
-        </div>
-
-        <footer ws-attr="attrs" ws-template="Footer">
-            <div class="mui-container-fluid">
-                <br>
-                Made with ♥ by <a href="https://${madebylink}">${madeby}</a>
-            </div>
-        </footer>
-
 
         <div ws-children-template="Correo">
             <br>
@@ -475,56 +469,57 @@
         </div>
     
         <div ws-children-template="CuentaBancaria">
-            <br>
-            <div style="color:red">${Mensaje}</div>
             <div class="mui-select">
                 <label>Tipo de Cuenta</label>
-                <select ws-var="TipoCuenta" ws-hole="TiposCuenta" >
+                <select ws-var="TipoCuenta" ws-hole="TiposCuenta" ws-attr="Disabled1" >
                 </select>
             </div>            
-            <div class="mui-textfield mui-textfield--float-label" style="display:block">
-                <input type="text" name="Titular" ws-var="Titular" required>
+            <div class="mui-textfield mui-textfield--float-label" style="display:inline-block" >
+                <input type="text" name="Titular" ws-var="Titular" required ws-attr="Disabled2" >
                 <label>Titular</label>
             </div>
-            <div class="mui-textfield mui-textfield--float-label" style="display:block">
-                <input type="text" name="Banco" ws-var="Banco" >
-                <label>Banco</label>
-            </div>
-            <div class="mui-textfield mui-textfield--float-label" style="display:block">
-                <input type="text" name="NumeroCuenta" ws-var="Numero" >
+            <div class="mui-textfield mui-textfield--float-label" style="display:inline-block">
+                <input type="text" name="NumeroCuenta" ws-var="Numero" ws-attr="Disabled3" >
                 <label>Numero de Cuenta</label>
             </div>                
             <legend></legend>
-            <div class="mui-textfield mui-textfield--float-label">
-                <input type="text" name="RoutingNumber" ws-var="Routing" required>
+            <div class="mui-textfield mui-textfield--float-label" style="display:inline-block">
+                    <input type="text" name="Banco" ws-var="Banco" ws-attr="Disabled4" >
+                    <label>Banco</label>
+                </div>
+                <div class="mui-textfield mui-textfield--float-label">
+                <input type="text" name="RoutingNumber" ws-var="Routing" required ws-attr="Disabled5" >
                 <label>ABA/RoutingNumber</label>
             </div>
-        </div>
-
-        <div ws-children-template="TarjetaCredito">
             <br>
             <div style="color:red">${Mensaje}</div>
+        </div>
+
+        <div ws-children-template="TarjetaCredito" >
             <div class="mui-select">
-                <label>Tipo de Tarjeta</label>
-                <select ws-var="TipoTarjeta" ws-hole="TiposTarjeta" >
+                <label >Tipo de Tarjeta</label>
+                <select ws-var="TipoTarjeta" ws-hole="TiposTarjeta" ws-attr="Disabled1" >
                 </select>
             </div>            
-            <div class="mui-textfield mui-textfield--float-label" style="display:block">
-                <input type="text" name="Titular" ws-var="Titular" required>
+            <div class="mui-textfield mui-textfield--float-label" style="display:inline-block" >
+                <input type="text" name="Titular" ws-var="Titular" required ws-attr="Disabled2" >
                 <label>Titular</label>
             </div>
-            <div class="mui-textfield mui-textfield--float-label" style="display:block">
-                <input type="text" name="NumeroTarjeta" ws-var="Numero" >
+            <div class="mui-textfield mui-textfield--float-label" style="display:inline-block">
+                <input type="text" pattern="dddddddddddddddd" size="16" name="NumeroTarjeta" ws-var="Numero" ws-attr="Disabled3" >
                 <label>Numero de Tarjeta</label>
             </div>                
-            <legend></legend>
+            <label>Venc.</label>
             <div class="mui-textfield mui-textfield--float-label">
-                <label>Vencimiento</label>
-                <select ws-var="AnioVenc" ws-hole="Anios" >
-                </select>
-                <select ws-var="MesVenc"  ws-hole="Meses" >
-                </select>
+                <div class="mui-select">
+                    <select type="number" ws-var="AnioVenc" ws-hole="Anios" ws-attr="Disabled4" ></select>
+                </div>
+                <div class="mui-select">
+                    <select  ws-var="MesVenc"  ws-hole="Meses"              ws-attr="Disabled5" ></select>
+                </div>
             </div>
+            <br>
+            <div style="color:red">${Mensaje}</div>
         </div>
             
         <div ws-template=FormaRegistro class="mui-col-md-8 mui-col-md-offset-1">
@@ -558,19 +553,19 @@
     
         <div ws-template=FormaContactos class="mui-col-md-8 mui-col-md-offset-1">
             <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
-                <div class="mui-panel">
+                <div class="xmui-panel">
                     <legend>Correos</legend>
                     <div ws-replace="Correos"></div>
                     <button title="agregar correo" ws-onclick="MasCorreo" type="button" class="mui-btn mui-btn--small mui-btn--fab mui-btn--accent">+</button>
                 </div>    
                 <legend></legend>
-                <div class="mui-panel">
+                <div class="xmui-panel">
                     <legend>Telefonos</legend>
                     <div ws-replace="Telefonos"></div>
                     <button title="agregar telefono" ws-onclick="MasTelefono" type="button" class="mui-btn mui-btn--small mui-btn--fab mui-btn--accent">+</button>
                 </div>    
                 <legend></legend>
-                <div class="mui-panel">
+                <div class="xmui-panel">
                     <legend>Direcciones</legend>
                     <legend></legend>
                     <div ws-replace="Direcciones"></div>
@@ -585,15 +580,15 @@
         </div>
 
         <div ws-template=FormaCuentas class="mui-col-md-8 mui-col-md-offset-1">
-            Aqui puede introducir una forma de pago. Puede usar su tarjeta de credito o una cuenta bancaria:
+            Aquí puede introducir una forma de pago. Use su tarjeta de crédito o una cuenta bancaria:
             <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
-                <div class="mui-panel">
-                    <legend>Tarjetas de Credito</legend>
+                <div ">
+                    <legend>Tarjetas de Crédito</legend>
                     <div ws-replace="Tarjetas"></div>
                     <button title="agregar tarjeta" ws-onclick="MasTarjeta" type="button" class="mui-btn mui-btn--small mui-btn--fab mui-btn--accent">+</button>
                 </div>    
                 <legend></legend>
-                <div class="mui-panel">
+                <div >
                     <legend>Cuentas Bancarias</legend>
                     <legend></legend>
                     <div ws-replace="Cuentas"></div>
@@ -617,8 +612,101 @@
                 <div style="color:red">${Mensajes}</div>
             </form>
         </div>
-        
-        <div ws-template=TablaAliados>
+
+        <li ws-template="OpcionesAdministrador">
+            <strong onclick="$(this).next().slideToggle(200)">Reportes</strong>
+            <ul style="display: none;">
+                <li><a href="#/Content/ProzperLyt.cntReporteConsolidado"    >Consolidado</a></li>
+                <li><a href="#/Content/ProzperLyt.cntTablaPagos"            >Pagos      </a></li>
+            </ul>
+        </li>
+
+        <div ws-template="Consolidado" class="mui-panel">
+            <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar"   >Guardar</button>
+            <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Cancelar" >Cancelar</button>
+            <br>
+            <div class="mui-textfield mui-textfield--float-label" style="display:inline-block" >
+                <input type="text" name="Filtro" ws-var="Filtro" >
+                <label>Filtro</label>
+            </div>
+            <datalist id="Referidores" ws-hole="Referidores" ></datalist>
+            <datalist id="Statuses"    ws-hole="Statuses"    ></datalist>
+            <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
+                <thead>
+                    <th ws-onclick="sort_nombre"        style="width:5%; text-align:center">Nombre       </th>
+                    <th ws-onclick="sort_tipo"          style="width:1%; text-align:center">Tipo         </th>
+                    <th ws-onclick="sort_status"        style="width:1%; text-align:center">Status       </th>
+                    <th ws-onclick="sort_referido"      style="width:1%; text-align:center; font-size: x-small">Referido por </th>
+                    <th ws-onclick="sort_nivel"         style="width:1%; text-align:center">nivel        </th>
+                    <th ws-onclick="sort_referidos"     style="width:1%; text-align:center">refs.        </th>
+                    <th ws-onclick="sort_descendientes" style="width:1%; text-align:center">descs.       </th>
+                    <th ws-onclick="sort_comision"      style="width:1%; text-align:center">comision     </th>
+                    <th ws-onclick="sort_diaPago"       style="width:1%; text-align:center">dia pago     </th>
+                    <th ws-onclick="sort_desde"         style="width:1%; text-align:center">desde        </th>
+                    <th ws-onclick="sort_Id"            style="width:1%; text-align:center">Id           </th>
+                    <th                                 style="width:  1%; text-align: center">...          </th>
+                </thead>
+                <tbody ws-hole="TBody" ws-children-template="FilaConsolidado">
+                    <tr style="">
+                        <td> <div style="text-align: center                     ">${nombre}        </div> </td>
+                        <td> <div style="text-align: center                     ">${tipo}          </div> </td>
+                        <td> <div style="text-align: center; font-size: x-small ">
+                            <input type="text" name="Referido" ws-var="status" list="Statuses" >
+                        </div> </td>
+                        <td> <div style="text-align: center; font-size: x-small ">
+                            <input type="text" name="Referido" ws-var="referido" list="Referidores" >
+                        </div> </td>
+                        <td> <div style="text-align: center                     ">${nivel}         </div> </td>
+                        <td> <div style="text-align: center                     ">${referidos}     </div> </td>
+                        <td> <div style="text-align: center                     ">${descendientes} </div> </td>
+                        <td> <div style="text-align: center                     ">${comision}      </div> </td>
+                        <td> <div style="text-align: center                     ">${diaPago}       </div> </td>
+                        <td> <div style="text-align: center; font-size:   small ">${desde}         </div> </td>
+                        <td> <div style="text-align: right; font-size: xx-small ">${Id}            </div> </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div ws-template=TablaPagos class="mui-panel">
+            <button type="button" class="mui-btn mui-btn--raised mui-btn--primary" ws-onclick="Exportar"   >Exportar</button>
+            <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
+                <thead>
+                    <th style="width:  1%; text-align: center">Codigo</th>
+                    <th style="width:  1%; text-align: center">Cuenta</th>
+                    <th style="width:  1%; text-align: center">ABA</th>
+                    <th style="width:  1%; text-align: center">Monto</th>
+                    <th style="width:  1%; text-align: center">Identificacion</th>
+                    <th style="width:  1%; text-align: center">Nombre</th>
+                </thead>
+                <tbody ws-hole="TBody" ws-children-template="FilaPago">
+                    <tr>
+                        <td> <div style="text-align: center"    >${codigo}        </div> </td>
+                        <td> <div style="text-align: center"    >${cuenta}        </div> </td>
+                        <td> <div style="text-align: center"    >${ABA}           </div> </td>
+                        <td> <div style="text-align: center"    >${monto}         </div> </td>
+                        <td> <div style="text-align: center"    >${identificacion}</div> </td>
+                        <td> <div style="text-align: right"     >${nombre}        </div> </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div ws-template=ListaDocs class="mui-panel">
+                <!--button type="button" class="mui-btn mui-btn--raised mui-btn--primary" ws-onclick="Exportar"   >Exportar</button-->
+                <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
+                    <thead>
+                        <th style="width:  1%; text-align: center">Nombre</th>
+                    </thead>
+                    <tbody ws-hole="TBody" ws-children-template="FilaDocs">
+                        <tr>
+                            <td> <div style="text-align: right"     >${nombre}        </div> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    
+            <div ws-template=TablaAliados>
             <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
                 <thead>
                     <th style="width:  20%; text-align: center">Aliado</th>
@@ -710,6 +798,7 @@
         <style>
             .Inactivo          { font-weight: 100 ; color: rgba(179, 177, 177, 0.644) }
             .Master            { font-weight: 800 }
+            li.comision0       { display: none; }
             .Expandido::before { content: "-" }
             .Colapsado::before { content: "+" }
             .nodo              { display: inline-block; cursor: pointer; }
@@ -1136,6 +1225,9 @@
                 xtextarea {
                    resize : none;
                 }
+                button {
+                    margin-right: 2ch;
+                }
                 .tab-content {
                     overflow: hidden
                 }
@@ -1285,5 +1377,30 @@
             </style>
     </div>
   </body>
+  <script src="/blob/Scripts/FileSaver.js"></script>
   <script src="/blob/Scripts/testing.js"></script>
+  <script>
+    function subirDocumentos(e, id) {
+        console.log("subirDocumentos", e);
+        e.preventDefault();
+
+        var form = $("#SubirDocumentos");
+        var fd = new FormData();
+        $.each(form.serializeArray(), function (index, val) {
+            fd.append(val.name, val.value)
+        });
+        var file     = form.children('input[type=file]')[0].files[0];
+        var filename = file.name;
+        fd.append('file', file);
+
+        $.ajax({
+            type       : "post"
+          , url        : "/api/subir/" + id + "/" + filename
+          , data       : fd
+          , contentType: false
+          , processData: false
+          , success: function (data) { alert(data + ":" + filename); }
+        });
+    }
+  </script>
 </html>

@@ -2,11 +2,11 @@
 #nowarn "52"
 #nowarn "1182"
 #nowarn "1178"
-////-d:FSharpStation1554685138318 -d:NOFRAMEWORK --noframework -d:WEBSHARPER
+////-d:FSharpStation1554890919685 -d:NOFRAMEWORK --noframework -d:WEBSHARPER
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\\packages\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\netstandard.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\mscorlib.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.dll"
@@ -37,13 +37,14 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Runtime.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Common.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
-//#r @"..\packages\other\AuthorizeNet\lib\AuthorizeNet.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\other\AuthorizeNet\lib\AuthorizeNet.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll"
 //#nowarn "3242"
 //#nowarn "52"
 //#nowarn "1182"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1554685138318
+//#define FSharpStation1554890919685
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -77,7 +78,7 @@ namespace FsRoot
     
     #endif
     //#define NOFRAMEWORK --noframework
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\\packages\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\netstandard.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\mscorlib.dll"
@@ -1067,50 +1068,45 @@ namespace FsRoot
     //#define NOFRAMEWORK --noframework
     //#define WEBSHARPER
     
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\\packages\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll"
-    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\netstandard.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\mscorlib.dll"
-    
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Globalization.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Reflection.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Numerics.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Core.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.Linq.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Net.Http.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Runtime.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.IO.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.Tasks.dll"  
-    
     module Prozper =
-        module AsyncArrow =
+        module AA =
         
-            type AsyncArrow<'a, 'b> = 'a -> AsyncResultM<'b, unit>
+            type AA<'a, 'b> = 'a -> AsyncResultM<'b, unit>
         
-            let mapInput   f (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > = f >> aa
-            let mapOutput  f (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > = aa >> (AsyncResultM.bind (f >> AsyncResultM.rtn) )
-            let mapBoth    f (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > = fun i -> i |> mapOutput (f i) aa
-            let bindInput (f: AsyncArrow<_, _>)  (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > = f  >> (AsyncResultM.bind  aa                     )
-            let bindOutput(f: AsyncArrow<_, _>)  (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > = aa >> (AsyncResultM.bind  f                      )
-            let bindBoth   f (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > = mapBoth f  aa |> bindOutput id
-            let getResultM   (aa: AsyncArrow<_,'r>) : AsyncArrow<_, ResultM<'r,_>> =            aa >> AsyncResultM.getResultM
-            let absorbO    m (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > =            aa >> AsyncResultM.absorbO m
-            let absorbR      (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > =            aa >> AsyncResultM.absorbR  
+            let mapInput   f (aa: AA<_, _>) : AA<_,          _   > = f >> aa
+            let mapOutput  f (aa: AA<_, _>) : AA<_,          _   > = aa >> (AsyncResultM.bind (f >> AsyncResultM.rtn) )
+            let mapBoth    f (aa: AA<_, _>) : AA<_,          _   > = fun i -> i |> mapOutput (f i) aa
+            let bindInput (f: AA<_, _>) (aa: AA<_, _>) : AA<_, _> = f  >> (AsyncResultM.bind  aa )
+            let bindOutput(f: AA<_, _>) (aa: AA<_, _>) : AA<_, _> = aa >> (AsyncResultM.bind  f  )
+            let bindBoth   f (aa: AA<_, _>) : AA<_,          _   > = mapBoth f  aa |> bindOutput id
+            let getResultM   (aa: AA<_,'r>) : AA<_, ResultM<'r,_>> =            aa >> AsyncResultM.getResultM
+            let absorbO    m (aa: AA<_, _>) : AA<_,          _   > =            aa >> AsyncResultM.absorbO m
+            let absorbR      (aa: AA<_, _>) : AA<_,          _   > =            aa >> AsyncResultM.absorbR  
         
-            let mapO         (aa: AsyncArrow<_, _>) : AsyncArrow<_,          _   > = Option.map aa >> AsyncResultM.insertO
+            let mapO         (aa: AA<_, _>) : AA<_,          _   > = Option.map aa >> AsyncResultM.insertO
         
             let mapFst     f (a, b) = (f a,   b)
             let mapSnd     f (a, b) = (  a, f b)
         
-            let (>=>) = bindInput
-            let map f = f >> AsyncResultM.rtn
-            let tee (f: AsyncArrow<'b, unit>) : AsyncArrow<'b, 'b> = (fun v -> f v |> AsyncResultM.map (fun () -> v) )
+            let bindFst    (f:AA<_,_>) (a, b) = asyncResultM {
+                let! fa = f a
+                return (fa, b)
+            }
         
-        // AsyncArrow<a,        b       >      :   a        -> Async<ResultM<b       >>
-        // AsyncArrow<a option, b option>      :   a option -> Async<ResultM<b option>>
+            let bindSnd    (f:AA<_,_>) (a, b) = asyncResultM {
+                let! fb = f b
+                return (a, fb)
+            }
+        
+            let  map    f = f >> AsyncResultM.rtn
+            let (>=>)     = bindInput
+            let (>->) a b = a >=> map b
+            let (>*>)     = (|>)
+            let  tee (f: AA<'b, unit>) : AA<'b, 'b> = (fun v -> f v |> AsyncResultM.map (fun () -> v) )
+        
+        
+        // AA<a,        b       >      :   a        -> Async<ResultM<b       >>
+        // AA<a option, b option>      :   a option -> Async<ResultM<b option>>
         
         
         
@@ -1128,8 +1124,16 @@ namespace FsRoot
             | DatosBancariosIngresados
             | Activo
             | Inactivo
+            | Cancelado
                 with
                     override this.ToString() = sprintf "%A" this
+                    static member tryParse (s:string) = 
+                        match s.Trim().ToUpper() with
+                        | "CUENTACREADA"             -> CuentaCreada
+                        | "DATOSBANCARIOSINGRESADOS" -> DatosBancariosIngresados
+                        | "ACTIVO"                   -> Activo
+                        | "CANCELADO"                -> Cancelado
+                        | _                          -> Inactivo
         
             type TipoAliado =
             | Master
@@ -1433,8 +1437,8 @@ namespace FsRoot
                 comisionDescendientesRegular =  0
                 montoAfiliacion              = 75
                 numeroReferidosMaster        = 31
-                diaCorte1                    = 15
-                diaCorte2                    = 22
+                diaCorte1                    = 26
+                diaCorte2                    = 28
             }
         
             let telVacio = {            
@@ -1472,15 +1476,23 @@ namespace FsRoot
                 routing      = RoutingNumber ""
             }
         
+            type DiaPago =
+            |   Dia01
+            |   Dia05
+            |   Dia10
+            |   Dia15
+            |   Dia20
+            |   Dia25
+        
             type Aliado = {
                 id              :      IdAliado
-                authorizeIdR    :      Result<IdAuthorize, string>
                 idPadreO        :      IdAliado     option
                 datosPersonales :      DatosPersonales
                 contactos       :      Contacto       []
                 identificacion  :      Identificacion []
                 isInternal      :      bool
                 status          :      StatusAliado
+                diaPago         :      DiaPago
                 tipo            :      TipoAliado
                 fechaRegistro   :      System.DateTime
                 fechaStatus     :      System.DateTime
@@ -1570,7 +1582,7 @@ namespace FsRoot
                 let rec descendientes al =
                     [|
                         for h in hijos al do
-                            yield                      h
+                            yield                h
                             yield! descendientes h
                     |]
                 {
@@ -1633,7 +1645,6 @@ namespace FsRoot
                                         fechaNacimiento = System.DateTime(2000, 1, 1)
                                     }
                 id              =  IdAliado ""
-                authorizeIdR    =  Error ""
                 idPadreO        =  None
                 contactos       =  [||]
                 identificacion  =  [||]
@@ -1642,6 +1653,7 @@ namespace FsRoot
                 tipo            =  Regular
                 fechaRegistro   =  System.DateTime(2000, 1, 1)
                 fechaStatus     =  System.DateTime(2000, 1, 1)
+                diaPago         =  Dia01
                 nReferidos      =  0
                 nRefActivos     =  0
                 nDescendientes  =  0
@@ -1678,9 +1690,9 @@ namespace FsRoot
                     abstract member CarpetaRaiz          : unit     -> string
                     abstract member EnviarCorreo         : string   -> string -> string           -> AsyncResultM<unit, unit>
                     abstract member EnviarMensaje        : string   -> string -> string -> string -> AsyncResultM<unit, unit>
-                    abstract member ObtenerFormasPago    : IdAliado -> AsyncResultM<FormaPago   [], unit>
                     abstract member ObtenerTransacciones : IdAliado -> AsyncResultM<Transaccion [], unit>
                     abstract member ObtenerMensajes      : IdAliado -> AsyncResultM<Mensaje     [], unit>
+                    abstract member ObtenerListaDocs     : IdAliado -> AsyncResultM<string      [], unit>
                 end
         
         
@@ -1700,9 +1712,9 @@ namespace FsRoot
                     member __.CarpetaRaiz              ()  = "."
                     member __.EnviarCorreo           r t c = AsyncResultM.errorMsgf "Ambiente.EnviarCorreo: not implemented"
                     member __.EnviarMensaje        d r t c = AsyncResultM.errorMsgf "Ambiente.EnviarMensaje: not implemented" 
-                    member __.ObtenerFormasPago         id = AsyncResultM.errorMsgf "Ambiente.ObtenerFormasPago: not implemented"
                     member __.ObtenerTransacciones      id = AsyncResultM.errorMsgf "Ambiente.ObtenerTransacciones: not implemented"
                     member __.ObtenerMensajes           id = AsyncResultM.errorMsgf "Ambiente.ObtenerMensajes: not implemented"
+                    member __.ObtenerListaDocs          id = AsyncResultM.errorMsgf "Ambiente.ObtenerListaDocs: not implemented"
                 }
         
         
@@ -1719,6 +1731,7 @@ namespace FsRoot
         | CorreoVerificado          of (IdAliado * string                                          )
         //| ActualizarAuthorizeId     of (IdAliado * Result<IdAuthorize, string>                     )
         //| ActualizarPagoAuthorizeId of (IdAliado * CuentaPago * Result<IdPayment, string>          )
+        | ActualizarStatusPadre     of (IdAliado * StatusAliado * (IdAliado option))
         
         [< JavaScript >]
         type Evento = {
@@ -1794,7 +1807,6 @@ namespace FsRoot
                 let aliado = {
                     datosPersonales =  datos
                     id              =  idA
-                    authorizeIdR    =  Error ""
                     idPadreO        =  padre
                     contactos       =  contactos
                     identificacion  =  [||]
@@ -1803,6 +1815,7 @@ namespace FsRoot
                     tipo            =  Regular
                     fechaRegistro   =  now
                     fechaStatus     =  now
+                    diaPago         =  Dia01
                     nReferidos      =  0
                     nRefActivos     =  0
                     nDescendientes  =  0
@@ -1828,11 +1841,11 @@ namespace FsRoot
                 ,   Mensaje <| "Datos personales actualizados!" 
             }
         
-            let actualizarAuthorizeId   (idA, authorizeIdR) (modelo: Modelo) : AsyncResultM<Modelo * Respuesta, unit> = asyncResultM {
-                return
-                    cambiaAliado idA (fun al -> { al with authorizeIdR = authorizeIdR }) modelo
-                ,   Mensaje <| "AuthorizeId actualizada" 
-            }
+            //let actualizarAuthorizeId   (idA, authorizeIdR) (modelo: Modelo) : AsyncResultM<Modelo * Respuesta, unit> = asyncResultM {
+            //    return
+            //        cambiaAliado idA (fun al -> { al with authorizeIdR = authorizeIdR }) modelo
+            //    ,   Mensaje <| "AuthorizeId actualizada" 
+            //}
         
             //let actualizarPagoAuthorizeId (idA, cuenta, paymentIdR : Result<IdPayment, string> )  (modelo: Modelo) : AsyncResultM<Modelo * Respuesta, unit> = asyncResultM {
             //    return
@@ -1844,6 +1857,12 @@ namespace FsRoot
                 return
                     cambiaAliado idA (fun al -> { al with contactos = contactos }) modelo
                 ,   Mensaje <| "Contactos actualizados!" 
+            }
+        
+            let actualizarStatusPadre (idA, status:StatusAliado, padreO:IdAliado option) (modelo: Modelo) : AsyncResultM<Modelo * Respuesta, unit> = asyncResultM {
+                return
+                    cambiaAliado idA (fun al -> { al with status = status ; idPadreO = padreO }) modelo
+                ,   Mensaje <| "status actualizados!" 
             }
         
             //let actualizarFormasPago (idA, formasPago:FormaPago[]) (modelo: Modelo) : AsyncResultM<Modelo * Respuesta, unit> = asyncResultM {
@@ -1925,6 +1944,7 @@ namespace FsRoot
                 let serTipoTelefono      = serDU<TipoTelefono     > [   serObj serString            ]    
                 let serGenero            = serDU<Genero           > [   serObj serString            ]    
                 let serTipoMensaje       = serDU<TipoMensaje      > [   serObj serString            ]
+                let serDiaPago           = serDU<DiaPago          > [                               ]
         
                 let serMes : Ser<Mes>    = (int >> fst serInt), (snd serInt >> Option.map enum<_> )
         
@@ -2056,7 +2076,7 @@ namespace FsRoot
                 let serAliado : Ser<Aliado> =
                     [|
                         serIdAliado                    |> serField "id"              (fun s -> s.id             ) (fun v s -> { s with id              = v } )
-                        serIdAuthorizedR               |> serField "idAuthorized"    (fun s -> s.authorizeIdR   ) (fun v s -> { s with authorizeIdR    = v } )
+                        //serIdAuthorizedR               |> serField "idAuthorized"    (fun s -> s.authorizeIdR   ) (fun v s -> { s with authorizeIdR    = v } )
                         serIdAliado         |> serOpt  |> serField "idPadreO"        (fun s -> s.idPadreO       ) (fun v s -> { s with idPadreO        = v } )
                         serIdentificacion   |> serArr  |> serField "identificacion"  (fun s -> s.identificacion ) (fun v s -> { s with identificacion  = v } )
                         serDatosPersonales             |> serField "datosPersonales" (fun s -> s.datosPersonales) (fun v s -> { s with datosPersonales = v } )
@@ -2069,6 +2089,7 @@ namespace FsRoot
                         serTipoAliado                  |> serField "tipo"            (fun s -> s.tipo           ) (fun v s -> { s with tipo            = v } )
                         serDate                        |> serField "fechaRegistro"   (fun s -> s.fechaRegistro  ) (fun v s -> { s with fechaRegistro   = v } )
                         serDate                        |> serField "fechaStatus"     (fun s -> s.fechaStatus    ) (fun v s -> { s with fechaStatus     = v } )
+                        serDiaPago                     |> serField "diaPago"         (fun s -> s.diaPago        ) (fun v s -> { s with diaPago         = v } )
                         serInt                         |> serField "nReferidos"      (fun s -> s.nReferidos     ) (fun v s -> { s with nReferidos      = v } )
                         serInt                         |> serField "nRefActivos"     (fun s -> s.nRefActivos    ) (fun v s -> { s with nRefActivos     = v } )
                         serInt                         |> serField "nDescendientes"  (fun s -> s.nDescendientes ) (fun v s -> { s with nDescendientes  = v } )
@@ -2197,6 +2218,7 @@ namespace FsRoot
                 | InvitarPotencialesAliados     v -> Eventos.invitarPotencialesAliados  v
                 //| ActualizarAuthorizeId         v -> Eventos.actualizarAuthorizeId      v
                 //| ActualizarPagoAuthorizeId     v -> Eventos.actualizarPagoAuthorizeId  v
+                | ActualizarStatusPadre         v -> Eventos.actualizarStatusPadre      v
         
             registrarF "AgregarAliado"             Eventos.agregarAliado
             registrarF "AgregarAliados"            Eventos.agregarAliados
@@ -2207,8 +2229,9 @@ namespace FsRoot
             registrarF "CorreoVerificacionEnviado" Eventos.correoVerificacionEnviado
             registrarF "CorreoVerificado"          Eventos.correoVerificado
             registrarF "InvitarPotencialesAliados" Eventos.invitarPotencialesAliados
-            registrarF "ActualizarAuthorizeId"     Eventos.actualizarAuthorizeId
+            //registrarF "ActualizarAuthorizeId"     Eventos.actualizarAuthorizeId
             //registrarF "ActualizarPagoAuthorizeId" Eventos.actualizarPagoAuthorizeId
+            registrarF "ActualizarStatusPadre"     Eventos.actualizarStatusPadre
         
             //SQLServer.leerTipos()
             //|> Seq.iter (fun t ->
@@ -2298,7 +2321,7 @@ namespace FsRoot
         
         module ObtenerEstado =
             open Serializador
-            open AsyncArrow
+            open AA
         
             let guardarEstado0     (nevento, serialModelo) = ambiente.GuardarEstado      nevento serialModelo
             let obtenerEstado00    ()                      = ambiente.ObtenerEstado      ()
@@ -2339,7 +2362,7 @@ namespace FsRoot
                 return { modelo with aliados = aliados}
             }
         
-            let salvarEstado (aa: AsyncArrow<_,Modelo>) : AsyncArrow<_,Modelo> =
+            let salvarEstado (aa: AA<_,Modelo>) : AA<_,Modelo> =
                 let mutable estadoActual : Modelo option = None
                 fun ()   -> match ultimoEstado(), estadoActual with
                             | Some n, Some e when n = e.nevento -> AsyncResultM.rtn e
@@ -2372,6 +2395,10 @@ namespace FsRoot
                 >=> map(fun (modelo, usuario) -> modelo.aliados |> Array.tryFind (fun al -> al.id = IdAliado usuario) |> Option.map (fun v -> v, modelo) )
                  |> absorbO (fun () -> ResultMessage.ErrorMsg "Aliado no fue encontrado")
         
+            let obtenerAliado =
+                obtenerAliadoEstado
+                >-> fst
+        
             let pairAliadoEstado claims ev =
                 obtenerAliadoEstado
                 >=> map (fun s -> s, ev)
@@ -2384,7 +2411,7 @@ namespace FsRoot
         
         module ManejadorEventos =
             //open ObtenerEstado
-            open AsyncArrow
+            open AA
         
             type SerialEvento = {
                 nombre  : string
@@ -2512,7 +2539,7 @@ namespace FsRoot
                     }
             }
         
-            let obtenerEstadoParaUsuario claims : AsyncArrow<unit, _> =
+            let obtenerEstadoParaUsuario claims : AA<unit, _> =
                 ObtenerEstado.pairAliadoEstado claims
                 >=> map fst
                 >=> obtenerSubModelo
@@ -2566,24 +2593,29 @@ namespace FsRoot
                     |> Option.map  (fun padre -> padre.id)
                 do! Info <| sprintf "referidoPor = %A" referidoPor
                 //Correo.enviarBienvenida aliado // (**) mover afuera
-                return DataEvento.RegistroNuevo(IdAliado usuario, datos, referidoPor, contactos) |> Some
+                return Some
+                    {
+                        Evento.nevento = 0L
+                        Evento.aliadoO = Some (IdAliado usuario)
+                        data           = DataEvento.RegistroNuevo(IdAliado usuario, datos, referidoPor, contactos)
+                    }
             }
         
             let agregarUsuarioSiEsNuevo claims1 =
                 ObtenerEstado.pairEstado
                 >=>       crearRegistroNuevo      claims1
-                >=> mapO (ejecutarDataEventoNuevo claims1)
+                >=> mapO ejecutarEventoNuevo
                 >=> mapO (enviarBienvenida        claims1)
                 >=> map  (Option.iter             print  )
         
-        //#r @"..\packages\other\AuthorizeNet\lib\AuthorizeNet.dll"
+            let obtenerListaDocs claims : AA<unit, _> =
+                ObtenerEstado.pairAliado claims
+                >=> map (fun (al, _) -> al.id)
+                >=> ambiente.ObtenerListaDocs
         
-        module Config =
         
-            module AuthorizeKeys =
-                let Id          = "7J82qmC8"
-                let Transaction = "5aLzr654TG5Zw55G"
-                let Key         = "Simon"
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\other\AuthorizeNet\lib\AuthorizeNet.dll"
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll"
         
         module Authorize =
             open System
@@ -2591,14 +2623,42 @@ namespace FsRoot
             open AuthorizeNet.Api.Controllers
             open AuthorizeNet.Api.Contracts.V1
             open AuthorizeNet.Api.Controllers.Bases
-            open AsyncArrow
+            open AA
+        
+            module AuthorizeKeys =
+                let Environment, EnvironmentName, Id, Transaction =
+                    match System.Environment.GetEnvironmentVariable("Authorize_Environment").ToUpper() with
+                    | "P" ->(   AuthorizeNet.Environment.PRODUCTION
+                            ,   "PRODUCTION"
+                            ,   System.Environment.GetEnvironmentVariable "Authorize_Id_Production"          
+                            ,   System.Environment.GetEnvironmentVariable "Authorize_Transaction_Production" 
+                            )
+                    |_->    (   AuthorizeNet.Environment.SANDBOX
+                            ,   "SANDBOX"
+                            ,   System.Environment.GetEnvironmentVariable "Authorize_Id_Sandbox"          
+                            ,   System.Environment.GetEnvironmentVariable "Authorize_Transaction_Sandbox" 
+                            )
+                let Key = System.Environment.GetEnvironmentVariable "Authorize_Key"     //??
+        
+            let prepareAuthorizeNetEnvironment() =
+                ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment <- AuthorizeKeys.Environment
+                ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication <- 
+                    new merchantAuthenticationType( name            = AuthorizeKeys.Id
+                                                ,   ItemElementName = ItemChoiceType.transactionKey
+                                                ,   Item            = AuthorizeKeys.Transaction )
+            prepareAuthorizeNetEnvironment()
         
             let authorizeMerchantId (idAliado:IdAliado) = idAliado.Id.Replace("-","").Left(20)
-            let inline parseResponse (controller: AuthorizeNet.Api.Controllers.Bases.IApiOperation<_,_> ) : Async<ResultM<'b, unit>> = asyncResultM {
-                let response =
-                    controller.Execute()
-                    controller.GetApiResponse()
-                if response = null then return! AsyncResultM.errorMsgf "%s Failed, Response = null" ( controller.GetType().Name )
+        
+            let inline execute (controller: IApiOperation<_,_> ) = 
+                controller.Execute()
+                controller.GetApiResponse()
+        
+            let inline executeGetResponse controller : AsyncResultM<'b, unit> = asyncResultM {
+                do! ResultMessage.Info <|  sprintf "Authorize: %s" AuthorizeKeys.EnvironmentName
+                let response = execute controller
+                if response = null then 
+                    return! AsyncResultM.errorMsgf "%s Failed, Response = null" ( controller.GetType().Name )
                 elif response.messages.resultCode = messageTypeEnum.Ok then
                     return response
                 elif response.messages.message <> null then
@@ -2607,102 +2667,53 @@ namespace FsRoot
                     return! AsyncResultM.errorMsgf "%s Error: resultCode = %A, no messages" ( controller.GetType().Name ) response.messages.resultCode
             }
         
-            let prepareAuthorizeNetEnvironment() =
-                ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment <- AuthorizeNet.Environment.SANDBOX
-                ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication <- 
-                    new merchantAuthenticationType(     name            = Config.AuthorizeKeys.Id
-                                                    ,   ItemElementName = ItemChoiceType.transactionKey
-                                                    ,   Item            = Config.AuthorizeKeys.Transaction )
-            prepareAuthorizeNetEnvironment()
+            let (>>>) = (>>)
+            let (@->) controllerF responseF =
+                controllerF
+                >>> executeGetResponse
+                >-> responseF
         
-            let CreateCustomerProfile merchantCustomerId emailId =
-                print "CreateCustomerProfile Sample"
-                ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment <- AuthorizeNet.Environment.SANDBOX
-                ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication <- 
-                    new merchantAuthenticationType(     name            = Config.AuthorizeKeys.Id
-                                                    ,   ItemElementName = ItemChoiceType.transactionKey
-                                                    ,   Item            = Config.AuthorizeKeys.Transaction )
+            let buscarPerfil :AA<_,_> =
+                (fun idAliado -> getCustomerProfileRequest( merchantCustomerId  = authorizeMerchantId idAliado ) )
+                >>> getCustomerProfileController
+                @-> fun response -> response.profile
+                >=> (fun v -> asyncResultM { return v } )
         
-                let creditCard  = new creditCardType(   cardNumber      = "4111111111111111", expirationDate  = "0718")
-                let bankAccount = new bankAccountType(  accountNumber   = "231323342"
-                                                    ,   routingNumber   = "000000224"
-                                                    ,   accountType     = bankAccountTypeEnum.checking
-                                                    ,   echeckType      = echeckTypeEnum.WEB
-                                                    ,   nameOnAccount   = "test"
-                                                    ,   bankName        = "Bank Of America")
-                let paymentProfileList = [|
-                    new customerPaymentProfileType(     payment         = new paymentType( Item = creditCard  ))    
-                    new customerPaymentProfileType(     payment         = new paymentType( Item = bankAccount ))
-                |]
-                let addressInfoList = [|
-                    new customerAddressType(    address = "10900 NE 8th St"  , city = "Seattle"  , zip = "98006")
-                    new customerAddressType(    address = "1200 148th AVE NE", city = "NorthBend", zip = "92101")
-                |]
-                let customerProfile = new customerProfileType(  merchantCustomerId  = merchantCustomerId
-                                                            ,   email               = emailId
-                                                            ,   paymentProfiles     = paymentProfileList
-                                                            ,   shipToList          = addressInfoList )
-                let response = 
-                    let request    = new createCustomerProfileRequest( profile = customerProfile, validationMode = validationModeEnum.testMode)
-                    let controller = new createCustomerProfileController(request) 
-                    controller.Execute()
-                    controller.GetApiResponse()
-                if response = null then failwith "Failed, Response = null"
-                if response.messages.resultCode = messageTypeEnum.Ok then
-                    Console.WriteLine("Success, CustomerProfileID : " + response.customerProfileId)
-                    Console.WriteLine("Success, CustomerPaymentProfileID : " + response.customerPaymentProfileIdList.[0])
-                    Console.WriteLine("Success, CustomerShippingProfileID : " + response.customerShippingAddressIdList.[0])
-                elif response.messages.message <> null then
-                    Console.WriteLine("Error: " + response.messages.message.[0].code + "  " + response.messages.message.[0].text)
-                else
-                    printfn "Error: resultCode = %A, no messages" response.messages.resultCode
-                response
+            let buscarIdAuthorize = 
+                buscarPerfil 
+                >-> fun p -> IdAuthorize p.customerProfileId
         
-            let buscarPerfil (idAliado:IdAliado) = asyncResultM {
-                let! (response : getCustomerProfileResponse)  = 
-                    getCustomerProfileRequest( merchantCustomerId  = authorizeMerchantId idAliado )
-                    |> getCustomerProfileController 
-                    |> parseResponse
-                return response.profile
-            }
+            let registrarAliadoNuevo :AA<_,_> =
+                (fun (aliado:Aliado, paymentProfile : customerPaymentProfileType) ->
+                    let email = aliado.contactos 
+                                |> Seq.choose(function CorreoElectronico cor -> Some cor.email |_-> None) 
+                                |> Seq.tryHead |> Option.defaultValue ""
+                    let customerProfile = 
+                        customerProfileType(        merchantCustomerId  = authorizeMerchantId aliado.id
+                                                ,   email               = email 
+                                                ,   paymentProfiles     = [| paymentProfile |] )
+                    createCustomerProfileRequest(   profile             = customerProfile
+                                                ,   validationMode      = validationModeEnum.liveMode )
+                )
+        //        >=> tee (fun inp -> asyncResultM { 
+        //                do! Newtonsoft.Json.JsonConvert.SerializeObject inp |> ResultMessage.Info
+        //                })
+                >>> createCustomerProfileController 
+                @-> (fun response -> response.customerPaymentProfileIdList.[0] )
         
-            let buscarIdAuthorize aliado = buscarPerfil aliado |> AsyncResultM.map (fun p -> IdAuthorize p.customerProfileId)
-        
-            let registrarAliadoNuevo(aliado:Aliado, paymentProfile : customerPaymentProfileType) = asyncResultM {
-                let  email = aliado.contactos |> Seq.choose(function CorreoElectronico cor -> Some cor.email |_-> None) |> Seq.tryHead |> Option.defaultValue ""
-                do!  ResultMessage.Info <| sprintf "registrarAliado: %A" email
-                let  customerProfile = customerProfileType(  merchantCustomerId  = authorizeMerchantId aliado.id
-                                                         ,   email               = email 
-                                                         ,   paymentProfiles     = [| paymentProfile |] )
-                let! (response: createCustomerProfileResponse) = 
-                    createCustomerProfileRequest( profile = customerProfile, validationMode = validationModeEnum.liveMode)
-                    |> createCustomerProfileController
-                    |> parseResponse
-                return response.customerPaymentProfileIdList.[0]
-            }
-        
-            let registrarPagoNuevo (IdAuthorize id) (aliado:Aliado, pp : customerPaymentProfileType) = asyncResultM {
-                let! (response: createCustomerPaymentProfileResponse) = 
-                    createCustomerPaymentProfileRequest(customerProfileId  = id, paymentProfile = pp, validationMode = validationModeEnum.liveMode)
-                    |> createCustomerPaymentProfileController
-                    |> parseResponse
-                return response.customerPaymentProfileId
-            }
+            let registrarPagoNuevo :AA<_,_> =
+                (fun (IdAuthorize id, pp : customerPaymentProfileType) ->  
+                    createCustomerPaymentProfileRequest(customerProfileId = id
+                                                    ,   paymentProfile    = pp
+                                                    ,   validationMode    = validationModeEnum.liveMode)
+                )
+                >>> createCustomerPaymentProfileController
+                @-> fun response -> response.customerPaymentProfileId
         
             let pagoTipoTarjeta (tar:TarjetaCredito) =
                 let creditCard = creditCardType(cardNumber      = tar.numero.Id
                                             ,   expirationDate  = tar.expiracion.Id               )
                 paymentType( Item = creditCard ), tar.titular
-        
-            //let registrarTarjeta0 (aliado:Aliado, tar:TarjetaCredito) = asyncResultM {
-            //    let  creditCard = creditCardType(    cardNumber      = tar.numero.Id, expirationDate  = tar.expiracion.Id)
-            //    let  pp         = customerPaymentProfileType(payment = new paymentType( Item = creditCard  ))    
-            //    let! (response:createCustomerPaymentProfileResponse) = 
-            //        createCustomerPaymentProfileRequest(customerProfileId  = authorizeId.Id, paymentProfile = pp, validationMode = validationModeEnum.liveMode)
-            //        |> createCustomerPaymentProfileController
-            //        |> parseResponse
-            //    return IdPayment response.customerPaymentProfileId
-            //}
         
             let pagoTipoCuenta  (cta:CuentaBancaria) =
                 let  bankAccount = bankAccountType(  accountNumber   = cta.numero .Id
@@ -2727,66 +2738,118 @@ namespace FsRoot
                                     )
                 )
         
-            let perfilPago(aliado:Aliado, (tipoPago: paymentType, titular: string)) =
+            let perfilPago (tipoPago: paymentType, titular: string) (aliado:Aliado) =
                 datosTitularO aliado titular
                 |> Option.map (fun datosTitular ->
                     aliado,
                     customerPaymentProfileType( payment = tipoPago
-                                            ,   billTo  = datosTitular
-                                        )
+                                            ,   billTo  = datosTitular )
                 )
         
-            //let registrarCuenta  (aliado:Aliado) (authorizeId: IdAuthorize) (cta:CuentaBancaria) = asyncResultM {
-            //    let  bankAccount = bankAccountType(  accountNumber   = cta.numero .Id
-            //                                     ,   routingNumber   = cta.routing.Id
-            //                                   //,   accountType     = bankAccountTypeEnum.checking
-            //                                   //,   echeckType      = echeckTypeEnum.WEB
-            //                                     ,   nameOnAccount   = cta.titular
-            //                                     ,   bankName        = cta.banco)
-            //    let  pp          = customerPaymentProfileType(payment = new paymentType( Item = bankAccount  ))    
-            //    let! (response:createCustomerPaymentProfileResponse) = 
-            //        createCustomerPaymentProfileRequest(customerProfileId  = authorizeId.Id, paymentProfile = pp, validationMode = validationModeEnum.liveMode)
-            //        |> createCustomerPaymentProfileController 
-            //        |> parseResponse
-            //    return IdPayment response.customerPaymentProfileId
-            //}
+            let obtenerFormasDePagoId =
+                buscarPerfil
+                >-> (fun perfil ->
+                    perfil.paymentProfiles
+                    |> Array.choose (fun pago ->
+                        match pago.payment.Item with
+                        | :? AuthorizeNet.Api.Contracts.V1.creditCardMaskedType as cc -> 
+                            TarjetaCredito {
+                                titular       = pago.billTo.firstName + " " + pago.billTo.lastName
+                                tipoTarjeta   = TipoTarjeta.tryParse cc.cardType |> Option.defaultValue Visa
+                                numero        = NumeroTarjeta cc.cardNumber
+                                expiracion    = { anio = 0 ; mes = Mes.Enero}
+                            } |> Some
+                        | :? AuthorizeNet.Api.Contracts.V1.bankAccountMaskedType as ba -> 
+                            CuentaBancaria {
+                                titular     = ba.nameOnAccount
+                                banco       = ba.bankName
+                                tipo        = match ba.accountType with
+                                                | AuthorizeNet.Api.Contracts.V1.bankAccountTypeEnum.businessChecking
+                                                | AuthorizeNet.Api.Contracts.V1.bankAccountTypeEnum.checking          -> Corriente
+                                                |_-> Ahorro
+                                numero      = NumeroCuenta  ba.accountNumber
+                                routing     = RoutingNumber ba.routingNumber
+                            } |> Some
+                        |_-> None
+                        |> Option.map (fun cta ->
+                            {
+                                nombre       = ""
+                                authorizeIdR = pago.customerPaymentProfileId |> IdPayment |> Ok
+                                cuentaPago   = cta
+                            }
+                        )
+                    )
+                )
+                >*> getResultM
+                >-> ResultM.defaultValue [||]
         
-            let obtenerFormasDePago      claims =
-                ObtenerEstado.pairAliado claims
-                >=> map (fun (al, ()) -> al.id)
-                >=> ambiente.ObtenerFormasPago
-                 |> getResultM
-                >=> map (ResultM.defaultValue [||])
+            let obtenerFormasDePago claims =
+                fun () -> ObtenerEstado.obtenerAliado claims
+                >-> fun al -> al.id
+                >=> obtenerFormasDePagoId
         
-            let registrarAliado =
-                (fst >> fun al -> buscarIdAuthorize al.id)
-                 |> getResultM
-                 |> bindBoth (fun inp ->
+            let obtenerFormasDePagoPara claims (alIds:_[]) = asyncResultM {
+                let! fps =
+                    alIds 
+                    |> AsyncResultM.traverseSeq (fun id -> asyncResultM {
+                        let! fp = obtenerFormasDePagoId id
+                        return id, fp
+                    })
+                return fps |> Seq.toArray 
+            }
+        
+            let registrarFormaPago =
+                fst 
+                >>> fun al -> buscarIdAuthorize al.id
+                >*> getResultM
+                >*> bindBoth (fun (al, pp) ->
                     function
-                    | OkM(p, _) -> registrarPagoNuevo   p inp
-                    |_          -> registrarAliadoNuevo   inp
+                    | OkM(p, _) -> registrarPagoNuevo   (p , pp)
+                    |_          -> registrarAliadoNuevo (al, pp)
                 )        
+            let crearFormaPago claims =
+                fun _ -> ObtenerEstado.obtenerAliado claims
+                >*> mapBoth perfilPago
+                >*> absorbO (fun () -> ResultMessage.ErrorMsg "No se encontro direccion")
+                >=> registrarFormaPago
         
             let registrarTarjeta         claims =
-                ObtenerEstado.pairAliado claims
-                >=> map ( mapSnd pagoTipoTarjeta )
-                >=> map perfilPago
-                 |> absorbO (fun () -> ResultMessage.ErrorMsg "No se encontro direccion")
-                >=> registrarAliado
-                >=> map (fun _ -> Respuesta.Mensaje "Tarjeta registrada.")
+                pagoTipoTarjeta 
+                >>> crearFormaPago claims
+                >-> fun _ -> "Tarjeta registrada."
         
             let registrarCuenta          claims =
-                ObtenerEstado.pairAliado claims
-                >=> map ( mapSnd pagoTipoCuenta )
-                >=> map perfilPago
-                 |> absorbO (fun () -> ResultMessage.ErrorMsg "No se encontro direccion")
-                >=> registrarAliado
-                >=> map (fun _ -> Respuesta.Mensaje "Cuenta registrada.")
+                pagoTipoCuenta 
+                >>> crearFormaPago claims
+                >-> fun _ -> "Cuenta registrada."
+        
+            let validarFormaPago         claims =
+                fun _ -> ObtenerEstado.obtenerAliado claims
+                >-> fun aliado -> aliado.id
+                >=> buscarIdAuthorize
+                >*> mapBoth (fun (IdPayment idp) (IdAuthorize idm)  ->
+                        validateCustomerPaymentProfileRequest(  customerProfileId        = idm
+                                                            ,   customerPaymentProfileId = idp
+                                                            ,   validationMode           = validationModeEnum.liveMode
+                        ))
+                >=> validateCustomerPaymentProfileController
+                @-> fun response -> response.directResponse
+        
+            let borrarFormaPago claims =
+                fun _ -> ObtenerEstado.obtenerAliado claims
+                >-> fun aliado -> aliado.id
+                >=> buscarIdAuthorize
+                >*> mapBoth (fun (IdPayment idp) (IdAuthorize idm)  ->
+                        deleteCustomerPaymentProfileRequest(customerProfileId        = idm
+                                                        ,   customerPaymentProfileId = idp
+                        ))
+                >=> deleteCustomerPaymentProfileController
+                @-> fun response -> "Forma de pago borrada."
         
         
         module Acciones =
             open ObtenerEstado
-            open AsyncArrow
+            open AA
             open AuthorizeNet.Api.Contracts.V1
         
             //let enviarCorreosVerificacion (estado: Modelo) =
@@ -2853,7 +2916,7 @@ namespace FsRoot
             //    return enviado
             //}
         
-            let bindBoth f aa : AsyncArrow<_, _> = fun inp -> inp |> (aa >=>  (f inp) )
+            let bindBoth f aa : AA<_, _> = fun inp -> inp |> (aa >=>  (f inp) )
             let mapIfFalse f aa = aa |> bindBoth (fun estado enviado -> if enviado then AsyncResultM.rtn true else f estado ) 
         
             //let ejecutarAcciones = 
@@ -2866,7 +2929,7 @@ namespace FsRoot
         module Rpc =
             open WebSharper
             open WebSharper.JavaScript
-            open AsyncArrow
+            open AA
         
             [< JavaScript ; Inline >]
             let serverEndPoint = 
@@ -2905,7 +2968,7 @@ namespace FsRoot
                 let deserializeP (s:        string        ) : 'P                = Json.Deserialize s
                 let deserializeR (s:        string        ) : ResultM<'R, unit> = Json.Deserialize s
                 (fun idAliado -> serializeP >> invoke fname idAliado >> Async.map (ResultM.bind deserializeR))
-              , (fun (f: (string*string)[] -> AsyncArrow<'P, 'R>) -> registroRpcs.Add(fname, (fun c js -> 
+              , (fun (f: (string*string)[] -> AA<'P, 'R>) -> registroRpcs.Add(fname, (fun c js -> 
                                 asyncResultM {
                                     let  p = deserializeP js
                                     let! r = f c p
@@ -2922,41 +2985,54 @@ namespace FsRoot
                      , DiscUnion.simple<Genero        >
                      , DiscUnion.simple<TipoCuenta    >
                      , DiscUnion.simple<TipoTarjeta   >
+                     , DiscUnion.simple<StatusAliado  >
                      , [| for m in System.Enum.GetValues(typeof<Mes>)                       do yield string m |]
                      , [| for i in System.DateTime.Now.Year..System.DateTime.Now.Year + 15  do yield        i |]
             }
         
             let logoutUser0 _claims () : AsyncResultM<unit, unit> = AsyncResultM.errorMsgf "logoutUser0: not implemented"
         
-            let [< Inline >] d1 = doRpc "ejecutarDataEventoNuevo" 
-            let [< Inline >] d2 = doRpc "obtenerEstadoParaUsuario"
-            let [< Inline >] d3 = doRpc "obtenerUnions"
-            let [< Inline >] d4 = doRpc "logoutUser"
-            let [< Inline >] d5 = doRpc "agregarUsuarioSiEsNuevo"
-            let [< Inline >] d6 = doRpc "enviarCorreosInvitacion"
-            let [< Inline >] d7 = doRpc "obtenerFormasDePago"
-            let [< Inline >] d8 = doRpc "registrarTarjeta"
-            let [< Inline >] d9 = doRpc "registrarCuenta"
+            let [< Inline >] d01 = doRpc "ejecutarDataEventoNuevo" 
+            let [< Inline >] d02 = doRpc "obtenerEstadoParaUsuario"
+            let [< Inline >] d03 = doRpc "obtenerUnions"
+            let [< Inline >] d04 = doRpc "logoutUser"
+            let [< Inline >] d05 = doRpc "agregarUsuarioSiEsNuevo"
+            let [< Inline >] d06 = doRpc "enviarCorreosInvitacion"
+            let [< Inline >] d07 = doRpc "obtenerFormasDePago"
+            let [< Inline >] d08 = doRpc "registrarTarjeta"
+            let [< Inline >] d09 = doRpc "registrarCuenta"
+            let [< Inline >] d10 = doRpc "validarFormaPago"
+            let [< Inline >] d11 = doRpc "borrarFormaPago"
+            let [< Inline >] d12 = doRpc "obtenerFormasDePagoPara"
+            let [< Inline >] d13 = doRpc "obtenerListaDocs"
         
-            let [< Inline >] ejecutarDataEventoNuevo  =  fst d1
-            let [< Inline >] obtenerEstadoParaUsuario =  fst d2
-            let [< Inline >] obtenerUnions            =  fst d3
-            let [< Inline >] logoutUser               =  fst d4
-            let [< Inline >] agregarUsuarioSiEsNuevo  =  fst d5
-            let [< Inline >] enviarCorreosInvitacion  =  fst d6
-            let [< Inline >] obtenerFormasDePago      =  fst d7
-            let [< Inline >] registrarTarjeta         =  fst d8
-            let [< Inline >] registrarCuenta          =  fst d9
+            let [< Inline >] ejecutarDataEventoNuevo  =  fst d01
+            let [< Inline >] obtenerEstadoParaUsuario =  fst d02
+            let [< Inline >] obtenerUnions            =  fst d03
+            let [< Inline >] logoutUser               =  fst d04
+            let [< Inline >] agregarUsuarioSiEsNuevo  =  fst d05
+            let [< Inline >] enviarCorreosInvitacion  =  fst d06
+            let [< Inline >] obtenerFormasDePago      =  fst d07
+            let [< Inline >] registrarTarjeta         =  fst d08
+            let [< Inline >] registrarCuenta          =  fst d09
+            let [< Inline >] validarFormaPago         =  fst d10
+            let [< Inline >] borrarFormaPago          =  fst d11
+            let [< Inline >] obtenerFormasDePagoPara  =  fst d12
+            let [< Inline >] obtenerListaDocs         =  fst d13
         
-            ManejadorEventos.ejecutarDataEventoNuevo  |> snd d1 
-            ManejadorEventos.obtenerEstadoParaUsuario |> snd d2 
-            obtenerUnions0                            |> snd d3 
-            logoutUser0                               |> snd d4 
-            ManejadorEventos.agregarUsuarioSiEsNuevo  |> snd d5
-            Correo.enviarCorreosInvitacion            |> snd d6
-            Authorize.obtenerFormasDePago             |> snd d7
-            Authorize.registrarTarjeta                |> snd d8
-            Authorize.registrarCuenta                 |> snd d9
+            ManejadorEventos.ejecutarDataEventoNuevo  |> snd d01 
+            ManejadorEventos.obtenerEstadoParaUsuario |> snd d02 
+            obtenerUnions0                            |> snd d03 
+            logoutUser0                               |> snd d04 
+            ManejadorEventos.agregarUsuarioSiEsNuevo  |> snd d05
+            Correo.enviarCorreosInvitacion            |> snd d06
+            Authorize.obtenerFormasDePago             |> snd d07
+            Authorize.registrarTarjeta                |> snd d08
+            Authorize.registrarCuenta                 |> snd d09
+            Authorize.validarFormaPago                |> snd d10
+            Authorize.borrarFormaPago                 |> snd d11
+            Authorize.obtenerFormasDePagoPara         |> snd d12
+            ManejadorEventos.obtenerListaDocs         |> snd d13
         
         
         //// when using pattern matching to separate the tuple we get error:
@@ -2978,7 +3054,7 @@ namespace FsRoot
         
         module AmbienteMemoria =
             open System.Net.Mail
-            open AsyncArrow
+            open AA
         
             let mutable ultimoEvento  = 0L
             let mutable eventos       = [| |]
@@ -2994,41 +3070,6 @@ namespace FsRoot
                 client.Send msg
                 do! ResultMessage.Info <| sprintf "Enviando correo %s" recipiente
             }
-        
-            let obtenerFormasPago = 
-                Authorize.buscarPerfil
-                >=> map (fun perfil ->
-                    perfil.paymentProfiles
-                    |> Array.choose (fun pago ->
-                        match pago.payment.Item with
-                        | :? AuthorizeNet.Api.Contracts.V1.creditCardMaskedType as cc -> 
-                            TarjetaCredito {
-                                titular       = pago.billTo.firstName + " " + pago.billTo.lastName
-                                tipoTarjeta   = TipoTarjeta.tryParse cc.cardType |> Option.defaultValue Visa
-                                numero        = NumeroTarjeta cc.cardNumber
-                                expiracion    = { anio = 0 ; mes = Mes.Enero}
-                            } |> Some
-                        | :? AuthorizeNet.Api.Contracts.V1.bankAccountMaskedType as ba -> 
-                            CuentaBancaria {
-                                titular     = ba.nameOnAccount
-                                banco       = ba.bankName
-                                tipo        = match ba.accountType with
-                                                | AuthorizeNet.Api.Contracts.V1.bankAccountTypeEnum.businessChecking
-                                                | AuthorizeNet.Api.Contracts.V1.bankAccountTypeEnum.checking          -> Corriente
-                                                |_-> Ahorro
-                                numero      = NumeroCuenta  ba.accountNumber
-                                routing     = RoutingNumber ba.routingNumber
-                            } |> Some
-                        |_-> None
-                        |> Option.map (fun cta ->
-                            {
-                                nombre       = ""
-                                authorizeIdR = pago.customerPaymentProfileId |> IdPayment |> Ok
-                                cuentaPago   = cta
-                            }
-                        )
-                    )
-                )
         
             let setAmbiente() =
                 ambiente <- {
@@ -3063,2694 +3104,47 @@ namespace FsRoot
                     member __.CarpetaRaiz              ()  = "..\src"
                     member __.EnviarCorreo           r t c = enviarCorreo r t c
                     member __.EnviarMensaje        d r t c = AsyncResultM.errorMsgf "AmbienteMemoria.EnviarMensaje: not implemented"
-                    member __.ObtenerFormasPago         id = obtenerFormasPago id
                     member __.ObtenerTransacciones      id = AsyncResultM.errorMsgf "Ambiente.ObtenerTransacciones: not implemented"
                     member __.ObtenerMensajes           id = AsyncResultM.errorMsgf "Ambiente.ObtenerMensajes: not implemented"
+                    member __.ObtenerListaDocs          id = AsyncResultM.errorMsgf "Ambiente.ObtenerListaDocs: not implemented"
                 }
-                
-        
                 
         //[< JavaScript false >]
         module Sample =
             let data = """
-        Alvarado, Rossana	Interview Group
-        Andreac	Interview Group
-        Bustamante, Patricia	Interview Group
-        Calderon, Ailyn	Interview Group
-        De Copello, Isbelia	Interview Group
-        Life Beyond Borders	Interview Group
-        Moya, Adelaida	Interview Group
-        Nava, Jeylin	Interview Group
-        Villarreal, Lola	Ocanto, Blas
-        Zapata, Martha Liliana	Ocanto, Blas
-        Ocanto, Blas	Interview Group
-        Rendiles, Geline	Interview Group
-        Abou Asaff, Amir	Segovia, Liseth
-        Alejandra Espinoza, Maria	Segovia, Liseth
-        Aleman, Robert	Segovia, Liseth
-        ., Mabelis	Barreto, Bianeys
-        Barreto, Bianeys	Segovia, Liseth
-        Bracho, Julio	Segovia, Liseth
-        Bukowitz, Silvia	Segovia, Liseth
-        Ciccolella, Enzo	Segovia, Liseth
-        Colmenares, Oscar	Segovia, Liseth
-        Cortese, Enza	Segovia, Liseth
-        Cristina Petrill, Maria	Segovia, Liseth
-        De Los Angeles Pache, Maria	Segovia, Liseth
-        Enrique Leal Jimenez, Walfredo	Segovia, Liseth
-        Fernanda Pirela, Maria	Esperanza Rubiano, Maria
-        Esperanza Rubiano, Maria	Segovia, Liseth
-        Espina, Marien	Segovia, Liseth
-        Espina, Sagrario	Segovia, Liseth
-        Estrada, Sorena	Segovia, Liseth
-        Fernanda Molero, Maria	Segovia, Liseth
-        Fernandez, Lidiana	Segovia, Liseth
-        Acosta, Francis	Garcia, Javier
-        Eduardo Garcia, Javier	Garcia, Javier
-        Orozco, David	Garcia, Javier
-        Virginia Mago Beaufo, Maria	Garcia, Javier
-        Garcia, Javier	Segovia, Liseth
-        Glenn, Estepfanny	Segovia, Liseth
-        Hans Rojas, Otto	Segovia, Liseth
-        Leonarduzzi, Gianluca	Segovia, Liseth
-        Martinez Noguera, Rossy	Segovia, Liseth
-        Molleda, Marilyn	Segovia, Liseth
-        Nardelli, Claudia	Molleda, Rosalyn
-        Urdaneta, Dayana	Molleda, Rosalyn
-        Villalobos, Andreus	Molleda, Rosalyn
-        Molleda, Rosalyn	Segovia, Liseth
-        Nayvely	Segovia, Liseth
-        Olivieri, Giuseppe	Segovia, Liseth
-        Pachano, Maria	Segovia, Liseth
-        Paez, Endrys	Segovia, Liseth
-        Paz, Misleny	Segovia, Liseth
-        Pedroza, Manuel	Segovia, Liseth
-        Perozo Romero, Liz	Segovia, Liseth
-        Pina, Yanetsy	Segovia, Liseth
-        Representaciones Continental Internacional 	Segovia, Liseth
-        Romero, Roman	Segovia, Liseth
-        Roo, Leonardo	Segovia, Liseth
-        Soto, Ileana	Segovia, Liseth
-        Suarez, Veronica	Segovia, Liseth
-        Tepeyac Travel C.a	Segovia, Liseth
-        Ucros, Luz	Segovia, Liseth
-        Valbuena, Hilda	Segovia, Liseth
-        Vasquez, Irvanis	Segovia, Liseth
-        Segovia, Liseth	Interview Group
-        A Menegaldo, Jose	V Boscan, Gretha
-        Adolfo Velasquez De, Gustavo	V Boscan, Gretha
-        Al Aaias, Feras	V Boscan, Gretha
-        America Beck	V Boscan, Gretha
-        Antunez, Victor	V Boscan, Gretha
-        Arraiz, Jenniffer	V Boscan, Gretha
-        Arribas, Francisco	V Boscan, Gretha
-        Aseca Internacional 	V Boscan, Gretha
-        Bastidas, Genesis	V Boscan, Gretha
-        Alfredo Ocando, Luis	Belloso, Linaura
-        Matos Villalobos, Sofia	Avila, Naivelin
-        Avila, Naivelin	Belloso, Linaura
-        Delgado, Rodolfo	Belloso, Linaura
-        Herrera, Omar	Belloso, Linaura
-        Martinez, Marielina	Belloso, Linaura
-        Montiel, Mercedes	Belloso, Linaura
-        Petit, Bianca	Belloso, Linaura
-        Romero, Ana	Belloso, Linaura
-        Belloso, Linaura	V Boscan, Gretha
-        Belloso, Lizbecth	V Boscan, Gretha
-        Boscan, Gretha	V Boscan, Gretha
-        Briceno, Guido	V Boscan, Gretha
-        Camacho, Clara	V Boscan, Gretha
-        Cecilia Araguainamo, Maria	V Boscan, Gretha
-        Cesar Tabares Ramire, Paulo	V Boscan, Gretha
-        Dagnino, Patricia	V Boscan, Gretha
-        David Rincon, Jose	V Boscan, Gretha
-        Garces, Militza	V Boscan, Gretha
-        Garcia, Andreina	V Boscan, Gretha
-        Gonzalez, Maria	V Boscan, Gretha
-        Guerrero, Karttier	V Boscan, Gretha
-        Bracho, Monica	Hernandez, Alejandro
-        Paz, Vanessa	Hernandez, Alejandro
-        Hernandez, Alejandro	V Boscan, Gretha
-        Hernandez, Valentina	V Boscan, Gretha
-        Inciarte, Martin	V Boscan, Gretha
-        Inciarte, Milagros	V Boscan, Gretha
-        Iragorry, Eduardo	V Boscan, Gretha
-        Jimenez, Graciela	V Boscan, Gretha
-        Jose Gonzalez, Maria	V Boscan, Gretha
-        Jose Negron Briceno, Egdo	V Boscan, Gretha
-        Leal, Edith	V Boscan, Gretha
-        Linares, Marcos	V Boscan, Gretha
-        Machado, Mairim	V Boscan, Gretha
-        Marina Sideregts, Luz	V Boscan, Gretha
-        Martinez, Edgar	V Boscan, Gretha
-        Martinez, Fernando	V Boscan, Gretha
-        Matos, Humberto	V Boscan, Gretha
-        Acosta, Patricia	Ocando, Ricardo
-        Leon, Andres	Ocando, Ricardo
-        Ocando, Andres	Ocando, Ricardo
-        Perez, Alirio	Ocando, Ricardo
-        Ocando, Ricardo	V Boscan, Gretha
-        Osorio Tudares, Elizabeth	V Boscan, Gretha
-        Ozuna, Marilen	V Boscan, Gretha
-        Alvarado Leal, Yuneira	Requena, Franklin
-        Andrea Avila, Maria	Requena, Franklin
-        Castellanos, Jorge	Requena, Franklin
-        Cruz, Ligmari	Requena, Franklin
-        Monroy, Cindy	Requena, Franklin
-        Sanchez, Anamaria	Requena, Franklin
-        Requena, Franklin	V Boscan, Gretha
-        Reyes, Gabriel	V Boscan, Gretha
-        Veneturismo C.a	Romero, Anasofia
-        Romero, Anasofia	V Boscan, Gretha
-        Socorro, Elena	V Boscan, Gretha
-        Soto, Gelinotte	V Boscan, Gretha
-        Urdaneta, Fernando	V Boscan, Gretha
-        Montiel, Maria	Zambrano, Aliana
-        Zambrano, Aliana	Velasquez, Daniel
-        Velasquez, Daniel	V Boscan, Gretha
-        Velasquez, Elizabeth	V Boscan, Gretha
-        Vicente Matos, Jose	V Boscan, Gretha
-        Xiomara Morillo, Yris	V Boscan, Gretha
-        Zerpa, Maiher	V Boscan, Gretha
-        V Boscan, Gretha	Interview Group
-        Interview Group	Prozper
-            """
-        
-            let keys = """
-        212 Universal Group
-        America Travel Inc.
-        Asegura International
-        Barreto, Cesar
-        Bianchi, Isabel
-        Bracho, Willian
-        Buloz Asesores De Se, Gamez
-        Caribbean Life
-        Caribbean Vacations By Cbinc
-        Castro, Lizber
-        Cma Global Partners
-        Crown Consulting Av
-        Crown Consulting Group
-        Dream Of Liberty Llc
-        Echeverria Seguros
-        Erasmus Travel Assistance
-        Everest International Group
-        Family Global Care
-        Global Axis 3000 Llc 
-        Global Group
-        Global Latinoamerica
-        Global Solutions Services Llc
-        Globalsi
-        Guanchez, Kelly
-        Guatemala Best Assurance
-        Imna International Group
-        Inprofis Group
-        Interview Group
-        Itp Travel
-        Jaimes, ManuelDavid
-        Jose Jimenez M, Maria
-        Joubert, Johann
-        Leonardo Colmenares, Jose
-        Life And Health Global Group Lp
-        Manzini, Flor
-        Mas Ota
-        Melian, Jennifer
-        Orange Ta
-        Orange Travel Assist Co
-        Paez, Amaryllis
-        Paseo Vacations
-        Producers Financial Group 
-        Protector Plan
-        Quorum Corretaje De Seguros
-        Rivas, Mireya
-        Silva, Vaneska
-        Stg Travel
-        Suarez, Margarita
-        Todo Seguros
-        Uno, AgenteDe Prueba
-        Unsiter
-        Vega Corp
-        Vitality Insurance
-        Weston Travel Services
-        Yv Travels
-        305 Venezuela
-        360 Travelers
-        360 Travelers
-        A Gonzalez R, JesÚs
-        A Ocando, Ricardo
-        A Rodriguez, Jesus
-        A. Gomez, Pedro
-        Abbate, Anibal
-        Abc Travel
-        Abilahoud, Luis
-        Abiros Corp.
-        Abp Advisors Llc
-        Advanced Financial Partners
-        Afredo Kretschmar Ri, Carlos
-        Agencia Macs - Mauricio Alfonso
-        Agencias Carlos Zapata
-        Aguiar, Milagros
-        Aguirre, Luisana
-        Alargentina
-        Alba Tours
-        Alberto Bello Quijad, Julio
-        Alejandra Arcay Corr, Maria
-        Alexis Torres, Yury
-        Alfonzo, Raquel
-        Alpe Viajes
-        Alse Group
-        Alvarado, Lisbeth
-        Alvarado, Rossana
-        Alvarez, Elimar
-        Alvarez, Luz
-        Alvarez, Manuel
-        Alzolay, Rossana
-        Amena Corp
-        Anais Delnardo International Group
-        Andina Tour Ltda.
-        Andrade, Mario
-        Andrade, Reinardo
-        Andreac
-        Andreina Lopez, Maria
-        Angelica Materan B., Ma.
-        Angelicam
-        Angulo, Fabiola
-        Antares Viajes Y Turismo 
-        Antonieta Zapata Rot, Maria
-        Antonini, Victor
-        Antonio Joseph Furia, Jose
-        Antonio Urbina Ceden, Edgar
-        Aredondo Seguros
-        Arguinzones, Michell
-        Ariza, Hilda
-        Armando Garcia Perez, Adner
-        Arturo Osorio Torne, Noel
-        Aserfin Alliance
-        Asesores Profesionales Del Turismo
-        Asociacion De Golfistas Senior De Colombia
-        Av1
-        Av11
-        Av19
-        Av2
-        Av21
-        Av33
-        Av34
-        Av43 
-        Av44
-        Av56
-        Av59
-        Av69
-        Av70
-        Av75
-        Av78
-        Av81
-        Av82
-        Av83
-        Av90
-        Av94
-        Av98
-        Av99
-        Aves Tours Ltda
-        Azuaje, Daniel
-        Barcha Trails Ltda
-        Barrondo, Edurne
-        Bart Travel, Vip
-        Bautista, Ervis
-        Bautista, Valeria
-        Beacon Travel
-        Belisa Traveling
-        Benic, Yoris
-        Bethke, Hildegard
-        Bianchi Insurance Group
-        Blanco, Alberto
-        Blanco, Nadeska
-        Blasioli Tedeschi, Antonionicolas
-        Blaya Corredores De Seguros 
-        Bolivia, Julio
-        Booking Assistance
-        Boos, Brent
-        Boscan O, Maribel
-        Boscan, Isabel
-        Boscan, Katherine
-        Boscan, Maribel
-        Botello, Marco
-        Bracamonte, Anais
-        Bravo Alvarez, JoseRafael
-        Briceno, Migdalia
-        Buen Viento &amp; Buena Mar
-        Buompatre, Judith
-        Bustamante, Patricia
-        C. Hadjian, Keny
-        C.a .asesores De Seguros Y Riesgos
-        Ca, Yo Soy Tu Asesor
-        Cabrera Mesa, Antoniojose
-        Calderon, Ailyn
-        Camacho Parra, Alexisabraham
-        Camacho, Victor
-        Capital Assurance
-        Caraballo, Miroslaba
-        Cardenas, Maribel
-        Caribbean Life No
-        Carlos Venegas, Juan
-        Carlosvgr
-        Carrion, Marlene
-        Casiero, Miguel
-        Centro De Cruceros Sas
-        Cerpa, Erika
-        Chang, Jean
-        Chim Lam, Gricel
-        Choconta, Maryory
-        Chuao Corp
-        Cobo, Adonai
-        Comparaonline Colombia
-        Consorcio Isic
-        Constanza Alvarado G, Ilse
-        Contreras, Karen
-        Coplan Salud
-        Corban, Daniella
-        Corona, Carlos
-        Coronado &amp; Corporation 
-        Corp Travel Colombia S.a.s
-        Cristina Molina Caru, Yoseph
-        Cruceros Selectos Internacionales Bog
-        Cruceros Selectos Internacionales Sas
-        Cruzando Fronteras
-        Ctm - S.a.s
-        Cvecuador
-        D Rubio Blanco, Jessica
-        D&amp;f International
-        Daniel Aular Malave, Jorge
-        Dario Montes Sanchez, Ruben
-        Dary Duran Florez, Luz
-        Davila S., Judith
-        De Copello, Isbelia
-        De Vida, Pan
-        Del Nardo, Gracia
-        Del Pilar Camargo, Maria
-        Del Valle, Luathany
-        Deluxe Reps Sas
-        Diaz, Francia
-        Dominguez, Elainer
-        Doral Travel
-        Dreams Travel, Ca
-        Duxan&#039;s
-        E Diaz, Omaira
-        E Gonzalez S, Mercedes
-        Edval Seguros
-        Elias Flores Zerpa, Campo
-        Elvira Lucena Colmen, Maria
-        Enrique Gil Gutierre, Jorge
-        Enrique Villegas Jim, Gonzalo
-        Enterprise, Katsil
-        Entrenamiento Colombia
-        Envoys
-        Esis, Omer
-        Espino, Yajilke
-        Espinoza, Marlene
-        Estrada, Carmeneugenia
-        Eugenia Altuve Brice, Maria
-        Express Turismo &amp; Marketing
-        Extravaganza Viajes Y Turismo
-        Fenix Eventos Viajes Y Turismo
-        Fernandez, Virginia
-        Fernando Ortiz B., David
-        Filice, MariaTeresa
-        Florida Insurance Usa
-        Fontana, Maria
-        Fossi, Luis
-        Francia Chile
-        Franco, Pancho
-        Frascione, Enza
-        Fuenmayor, Eduardo
-        G&amp;b Corredores De Seguros
-        Gabriela Benezra, Maria
-        Gabriela Sanguinetti, Maria
-        Gannem, Omar
-        Garces Jaramillo, JoseJaime
-        Gaviria L., Liliana
-        Gcali
-        Gerencia Patrimonial
-        Gilberto Roche Marqu, Daniel
-        Global Advisors
-        Global De Seguros
-        Global Protection Advisers Ldt
-        Globalsi Barquisimeto
-        Globalsi Caracas
-        Globalsi Maracaibo
-        Globalsi Oriente
-        Globalsi Valencia
-        Godoy, Griset
-        Goldman, Mauricio
-        Gonzalez Coll, Francisco
-        Gonzalez, Jimmy
-        Gonzalez, Wissleyla
-        Graciela Alzuru, Maria
-        Gsc Asesoria Corporativa De Seguros
-        Guanchez Col, Kelly
-        Guanchez, Luis
-        Guateasistencias
-        Guerrero, Alianaamarilis
-        Gustavo Espinoza Bos, Pedro
-        Gutierrez Solano, Gerardo
-        Gutierrez, Margarita
-        Gutierrez, Nestor
-        Guzman G., Suleyma
-        Harmony Travels
-        Hc Seguros
-        Heras, Carlos
-        Hernandez Bozo, Iria
-        Hernandez Mederos, DouglasAntonio
-        Hernandez, Cesar
-        Herrera, Mauricio
-        Herrera, Veronica
-        Hidalgo, Gabriela
-        Horizons Insurance And Financial Services Inc
-        Hugo Morales Garcia, Victor
-        Hung, Azael
-        Idealtour Ltda
-        Indaloasesores C,a
-        Ines Luna, Maria
-        Integra Mayorista
-        Integral Group Solution Sas
-        Integro AsesorÍas Y Servicios
-        Inversiones Emenco Inc
-        Isaac Fernandez, Anamercedes
-        Isabel Bejarano, Maria
-        It Representaciones Turisticas
-        Javier Bracho, Eli
-        Jesus, Romero
-        Jimenez, Pedro
-        Jiron, Carlos
-        Jl Camejo Asesores De Seguros
-        Joania Tours
-        Jose Gomez Velasquez, Miguel
-        Jose Gonzalez, Gustavo
-        Jose Jimenez, Maria
-        Jose Torrealba Ramir, Wilmer
-        Jpg Associates
-        Kristina Antonorsi Asegurate
-        Kubler, Erika
-        Kugler, Mariluz
-        L&amp;m International
-        Lairet, Santos
-        Larrazabal, Andreina
-        Leader Life
-        Lechin Associates
-        Leon, Evencio
-        Lets Go Travel
-        Levip
-        Life Beyond Borders
-        Lillys Travel Assist
-        Lilue, Cynthia
-        Lodeiro De Dopazo, Susana
-        Lon, Martin
-        Lopez Corredor De Se, Gustavo
-        Lopez, Sherllys
-        Loreto, Jorge
-        Lugo, Julio
-        Luis Chambuco, Jose
-        Luis Della Sala, Jorge
-        Luis Pena Agencia
-        Luis Perez Pena, Pedro
-        M Anton R, Jindy
-        Madrugale.com
-        Magallanes, Ana
-        Malave, Yelitza
-        Manuela Goncalves, Maria
-        Maria Angarita C, Olga
-        Maribel Ortiz Perez, Fulvia
-        Marmol, Ninoska
-        Martinez De Oropeza, Yanna
-        Martinez, Eglee
-        Martinez, JoseRaul
-        Martinez, Rachel
-        Mata Asesores, Machado
-        Mata, Alejandro
-        Mater Dei
-        Medigases S.a.s
-        Medina, Luis
-        Megatiquete.com
-        Melo, Fridel
-        Melul, Salomon
-        Mena, Lisbeth
-        Meneses, Karina
-        Mikkelson &amp; Gomez
-        Milagros Pastran, Maria
-        Minaya, Luissana
-        Mjpp Vzla
-        Mjs &amp; Asociados
-        Mm Insurance 
-        Molina Lovera, Rita
-        Molina, Hania
-        Molina, Janette
-        Morales, Mariela
-        Moya, Adelaida
-        Mujica, Velis
-        Mundial De Asistencias S.a.s
-        Mundial De Cruceros 
-        Nava, Jeylin
-        Net Insurance Inc
-        Netbrokers
-        New Port Sas
-        Now Insured
-        Nunez Gonzalez, Isabel
-        NuÑez, Oscar
-        O&amp;j Agencia De Viaje Virtual 
-        Ocanto, Blas
-        Olivares Gil, AngelicaMaria
-        Operando Viajes &amp; Turismo Ltda
-        Orangereps
-        Orangetravelcol
-        Ordaz, Douglas
-        Organizacion Park Way Viajes Y Turismo Sas
-        Ortiz Corredor De Se, Eduardo
-        Ospina Y., Elizabeth
-        Otaiza Ferrer, Phyllys
-        Pablo Hernandez Fons, Juan
-        Pacheco, Ivory
-        Padilla, Gustavo
-        Panama, Evelyn
-        Panamericana De Viajes
-        Paqarina Go Travel S.a.s
-        Paris Travel C.a
-        Pelaez, Adriana
-        Pena, Luis
-        Penuela, Natalia
-        Perez De Castillo, Eglee
-        Peru, Karla
-        Pina, Andreina
-        Pirela, Lara
-        Planchart, Celia
-        Planes Turisticos.com
-        Plazas, Sol
-        Polanco, Oswaldo
-        Prado, Marcel
-        Preferred International&amp;associates
-        Price Agencies
-        Prius Reinsurance Brokers, N. V.
-        Promotora Neptuno
-        Protector Plan Av
-        Quispe Vargas, Raul
-        Rada, Gabriela
-        Rahn, Kathleen
-        Ramirez Sanchez, Carlosarturo
-        Ramirez, Zuday
-        Ramos, Emil
-        Rangel, NaylethYoconda
-        Ranuarez, Griselda
-        Rendiles, Geline
-        Representur Ltda
-        Reserveya.com
-        Resguarda Usa
-        Reyes, Gladys
-        Reyes, Oswaldo
-        Rhino Travel Assist
-        Rivas, Merly
-        Rivero, Enania
-        Rodil Sojo, Rosa
-        Rodriguez Casado, Alonso
-        Rodriguez, Fernando
-        Rodriguez, Pavell
-        Rojas, Deisy
-        Rojas, R
-        Rojas, Ricardo
-        Rojask
-        Romano, Filomena
-        Romero Fajardo, Narmary
-        Ros Diaz, Cristina
-        Rosa Rodriguez, Maria
-        Rosa Segovia Seg.
-        Rosas, Monica
-        Rosmarca Corp
-        Rtravel
-        Rubio, German
-        Ruiz, Anamaria
-        Ruta Gay Colombia S.a.s
-        Saavedra Salcedo, Guillermo
-        Saez, Carladaniela
-        Sagarzazu Rodriguez, Carlosrafael
-        Salazar Vergel, Marlon
-        San Telmo Tours
-        Sanchez, Alirio
-        Sanchez, Williams
-        Santa Cruz, Elisa
-        Santana, Pablo
-        Sarmiento Polo, Juliana
-        Sat Mayorista
-        Segovia, Liseth
-        Segovia, Rosa
-        Segura Arias, Carolina
-        Seguros Chiapas
-        Siempreco
-        Sierra Barrios, Johan
-        Sigma International Insurance Brokers
-        Simon Hernandez Bozo, Luis
-        Simon Ricardo, Lic
-        Sira, Carlos
-        Smm - Col
-        Sol Travel Services
-        Solorzano, Simon
-        Soluciones Integrales Jtf
-        Spg Travel S.a.s
-        Stagno, Franchesca
-        Stella Maris Turismo
-        Stelluti, Enza
-        T Corrente, Claudia
-        Tarcisio Silva L, Darwin
-        Ten Assist, Ten Assist
-        The Gallery Travel 
-        Tibari, Edmundo
-        Tickets And Travel
-        Tours Travel And Business Ltda
-        Travel Alliances
-        Travel Coach By Sa
-        Travel Link S.a.s
-        Treasure Viajes
-        Triana, Alvaro
-        Trip Ya, Orlando
-        Trujillo, Patricia
-        Tu Agente De Viajes Pzo
-        Tu Agente Online
-        Tudela, Andrea
-        Turishuila S.a.s
-        Turistas.com
-        Tutiquete Express
-        Umanchuk, Jorge
-        V Boscan, Gretha
-        Vacaciones Por El Mundo
-        Valderrama, Natalia
-        Valero, Yuraima
-        Valles, Luis
-        Vargas, Marbelys
-        Vasquez, Karla
-        Vc World Wide Group
-        Velazco, Justiniano
-        Velez Tours Sas
-        Velice Financial Services Ltd
-        Venesolution Corp.
-        Venezuela Travel Assist
-        Vespa, Luis
-        Viaja Seguro
-        Viajando Representaciones
-        Viajes Country S.a.s
-        Viajes Horizonte
-        Viajes Meridiano Ltda
-        Viajes Mora
-        Viajes Oneresglobe Ca
-        Viajes Y Eventos 360
-        Vialibre
-        Vieras, Mirtha
-        Villaroel, Ricardo
-        Villas Multiservices
-        Villegas, Angelo
-        Villegas, Enrique
-        Villegas, JulioCesar
-        Villegas, Mauricio
-        Wheeler, Linda
-        Yajure, Daniella
-        Yaniris Gil Centeno, Ennys
-        Yepez, Carlos
-        Yisbel Torres Rodrig, Oneida
-        Zambrano, Evelin
-        Zapata Rotundo, Carlosfrancisco
-        Zoturvenca
-        Zubillaga Jimenez, Antoniojose
-        ., Luzmary
-        ., Montezelba
-        A Menegaldo, Jose
-        Abetancourt Seguros
-        Abou Asaff, Amir
-        Acevedo, Rosangely
-        Acurero Mudafar, Elvis
-        Adolfo Velasquez De, Gustavo
-        Agencia, YouTravel
-        Aguilar, Julio
-        Aguilera, Patricia
-        Aguilera, Syl
-        Agutierrez Seguros
-        Al Aaias, Feras
-        Alacayo, Abigail
-        Alejandra Espinoza, Maria
-        Alejandra Tovar L., Maria
-        Aleman, Robert
-        Alfredo Matos, Jose
-        Aliendres Ortega, RicciVinicia
-        Almao, Marion
-        Almao, Vanessa
-        Alvarez, Margy
-        Amado, Douglas
-        Amador, Silvia
-        Ambato Travel
-        America Beck
-        Angel, Fuentes
-        Angelica PiÑero, Maria
-        Antonio Zuloaga Yane, Ramon
-        Antunez, Victor
-        Araujo, Rolando
-        Arc Seguros
-        Arce Gomez, DouglasEulises
-        Arguinzones, Alfredo
-        Arias, Douglas
-        Armas, Laura
-        Arraiz, Jenniffer
-        Arribas, Francisco
-        Arroyo, Xioeli
-        Artico Travel C.a 
-        Arvelo, Haydi
-        Aseca Internacional 
-        Aurelis, Zamora
-        Avilan, Marbelys
-        Avilan, Oswaldo
-        Avioteles
-        Awak, Georges
-        Aymerich 
-        Baena, Andrea
-        Baena, Silvia
-        Bandres, Gloria
-        Barreto, Bianeys
-        Barrondo S., Maite
-        Bastidas, Genesis
-        Bello, Mariadela
-        Belloso, Linaura
-        Belloso, Lizbecth
-        Belmonte, JoseGabriel
-        Bermudez, Daniela
-        Bermudez, Ligia
-        Biztravel
-        Blanco G, Mili
-        Bonnefil L, Dominique
-        Borges Insurance Ser, Bermudez
-        Boscan, Gretha
-        Bracho, Julio
-        Brandt, Nerwill
-        Brea Borges, Irving
-        Briceno, Guido
-        BriceÑo, Lorena
-        Briceno, Marianela
-        Briceno, Maribel
-        Brito, Luis
-        Buchin Insurance
-        Bukowitz, Silvia
-        Bulhosen, Yaccutt
-        Burkert, Carmen
-        Calima, Over
-        Calvo, Luis
-        Camacho, Clara
-        Cantabriatur
-        Cantunez Seguros
-        Canualka Travel C.a
-        Capobianco, Maria
-        Caraballo, Mayerlin
-        Carballido, Diego
-        Cardona, Vivian
-        Carolina Mendoza, Haydee
-        Carrillo, Marlit
-        Carrillo, Yesica
-        Cartagena Travel &amp; Tours
-        Castaneda De Daniel., Ana
-        Castillo Travel
-        Castillo, Alexandra
-        Cecilia Araguainamo, Maria
-        Cedeno, Karina
-        Celi, JorgeL
-        Centeno, Daniela
-        Cesar Tabares Ramire, Paulo
-        Christianm
-        Ciccolella, Enzo
-        Clarity
-        Colmenares, Oscar
-        Colon Travel
-        Concepcion Hilders, Maria
-        Concord Travel
-        Contrataciones Turisticas
-        Contreras, Daisy
-        Coronado, Claudia
-        Coronel
-        Correa, Marianela
-        Cortese, Enza
-        Corti Guerrero, Carolina
-        Credondo Seguros
-        Cristina Pantoja
-        Cristina Petrill, Maria
-        Cundancin, Rubjuly
-        Dagnino, Patricia
-        Dao, Maria
-        David Rincon, Jose
-        De La Cruz, Sergio
-        De La Rosa, Silvia
-        De Los Angeles Pache, Maria
-        De Olival, Diana
-        De Oliveira, Maikel
-        De Paz, Sabrina
-        Delgado, Jessica
-        Diaz
-        Dib, Sheila
-        Digitravel
-        Dominguez, Monica
-        Duarte, David
-        Duque, Luz
-        Duran, MarcosAgoturismo
-        E, Maria
-        Ecua Explorer
-        Edg Mentors
-        Eduardom
-        Ee Seguros De Viaje
-        El Principito Travel &amp; Services C.a
-        Elatravel
-        Elena Lilue, Maria
-        Elena Villalobos Riv, Daisy
-        Enrique Leal Jimenez, Walfredo
-        Escalante, Annie
-        Escobar, Angela
-        Esperanza Rubiano, Maria
-        Espina, Marien
-        Espina, Sagrario
-        Espinoza, Lisbeth
-        Esther Andrade, Maria
-        Estrada, Sorena
-        Evasquez Seguros
-        Fantasy Vacations Club, C.a.
-        Febres, Jesus
-        Fernanda Molero, Maria
-        Fernandez, Frank
-        Fernandez, Leonel
-        Fernandez, Lidiana
-        Fernandez, Zoraida
-        Fernando Alizo, Luis
-        Ferrer, Kathie
-        Fineworld 
-        Frias, Luis
-        Frivas Seguros
-        Gabriela Delgado, Maria
-        Galem Travel
-        Gallardo, Ana
-        Gamboa, Dubraska
-        Garces, Militza
-        Garcia, Andreina
-        Garcia, Antonio
-        Garcia, German
-        Garcia, Hermes
-        Garcia, Jaime
-        Garcia, Javier
-        Garcia, Luis
-        Garcia, Sebastian
-        Garcia, Yaribet
-        Garrido, Vaneska
-        Gelves, Adrian
-        Geronimo Perez, Luis
-        Gerstel, Irma
-        Ggonzalez Seguros
-        Gil, Ana
-        Ginestra, Noel
-        Glenn, Estepfanny
-        Gold Vip
-        Golden Tours
-        Goldman, David
-        Gonzalez, Adriana
-        Gonzalez, Auristela
-        Gonzalez, Carlos
-        Gonzalez, Maria
-        Gonzalez, Yaneth
-        Gregorio Silva Alvar, Jorge
-        Grima, Marjorie
-        Grupo Peru Viajes
-        Guerra, Auristela
-        Guerrero, Karttier
-        Hans Rojas, Otto
-        Hb Viajes
-        He, WenlianWen
-        Hernandez, Alejandro
-        Hernandez, Lourdes
-        Hernandez, Valentina
-        Hernandez, Wilkerman
-        Herrera, Bertha
-        Hilario Gomez, Luis
-        Hugo Santamaria Mila, Victor
-        Huncrisr
-        Hurtado, Domingo
-        Idarraga, Isabel
-        Iglesias, Miguel
-        Ilumina Travel
-        Imaginate Viajes
-        Inciarte, Martin
-        Inciarte, Milagros
-        Invierta Seguros Corp
-        Iragorry, Eduardo
-        Iriarte, Joselyn
-        Isasis, Emily
-        Iturbe, Carlos
-        Iventurella Seguros
-        Izaguirre, Alex
-        Jbarrington Seguros
-        Jcaceres Seguros
-        Jcastillo Seguros
-        Jcermeno Seguros
-        Jenny, Perozo
-        Jhernandez Seguros
-        Jimenez, Graciela
-        Jimenez, Moises
-        Jnc Tours
-        Jose Gonzalez, Maria
-        Jose Negron Briceno, Egdo
-        Landaeta, Sonia
-        Larez, Alcirelis
-        Lbg Insurance
-        Leal, Edith
-        Leben Insurance Brokers
-        Leon, Benny
-        Leonarduzzi, Gianluca
-        Lewisjime
-        Lgil Seguros
-        Linares, Marcos
-        Lmartinez Seguros
-        Lopez Zamora, Omar
-        Lopez, Belkis
-        Loyo, German
-        Lozano, Desire
-        Lozano, Marco
-        Lsanchez
-        Lsarmiento Seguros
-        Machado, Mairim
-        Manuel
-        Marbel Travel Assist
-        Maria, Suarez
-        Marielba
-        Marin Moncada, Nattaly
-        Marin, Sandra
-        Marina Sideregts, Luz
-        Maritere
-        Marliseth8aa
-        Marmol, Victor
-        Marquez Teran, Yolimar
-        Martin Fakes &amp; Asociados
-        Martin, Virginia
-        Martinez Noguera, Rossy
-        Martinez, Ambar
-        Martinez, Edgar
-        Martinez, Fernando
-        Martinez, Javier
-        Martinez, Yuly
-        Marve Renta Car
-        Marychinchilla
-        Marzo C, Damian
-        Massiani, Gustavo
-        Master One
-        Matilde Martin, Ester
-        Matos, Humberto
-        Maurera, Yanira
-        Mauricio, Luis
-        Maxi Tours
-        Maxi Travel Assist
-        Mcupare Seguros
-        Medina, Alexis
-        Medinas
-        Melean, Mariela
-        Mendez Corretaje
-        Mercys Tours Ca
-        Michelle Travel Assist
-        Migueltravel
-        Miki Travel
-        Millan, Yusbeth
-        Miranda, Alberto
-        Mk Agencia De Viaje
-        Mmarquez Seguros
-        Mmillan
-        Mmundarain Seguros
-        Molleda, Marilyn
-        Molleda, Rosalyn
-        Monica Travel
-        Montes, Carolina
-        Monteverde, Mercedes
-        Montoya, Patricia
-        Morales, Alexandra
-        Moraos, Anamercedes
-        Moreno Asesor De Vid, Luis
-        Mota, Luzmary
-        Mpacheco
-        Mujica, Damaris
-        Mujica, Gabriela
-        Mundirama
-        Mundo Viajes
-        Naser, Lilian
-        Nass, Carlos ReneVillasmil
-        Nayvely
-        Nc Ferrer Seguros
-        Newage Promotion
-        Nievesa Tours S.a.c 
-        Noguera, Angela
-        Notaria
-        Nucete, Rafael
-        Nunez, Dulce
-        Nunez, Ninoska
-        Obrett Seguros
-        Ocando, Ricardo
-        Oceanic Travel
-        Odriozola, Nekane
-        Ojeda, Iranell
-        Okarinac
-        Olivieri, Giuseppe
-        Ordaz, Andreina
-        Oronoz, Yelitza
-        Orta, Ailiva
-        Osorio Tudares, Elizabeth
-        Osuna Lopez, Sergio
-        Ozuna, Marilen
-        Pachano, Maria
-        Padovan, Kathiuska
-        Paez, Endrys
-        Paez, Yasibit
-        Pages, Jaime
-        Palacios, Raquel
-        Palma, Carlos
-        Parraga, Rebeca
-        Pascal, Tibisay
-        Pasquale, Kenia
-        Paul Ginestra, Jean
-        Paula Esis, Maria
-        Paulina Travel Assist
-        Paz, Heliangelus
-        Paz, Josie
-        Paz, Misleny
-        Pedroza Casas, Alfredo
-        Pedroza, Manuel
-        Pelaez, Josandra
-        Peraza, Rebeca
-        Perez Von Seggern, Ernesto
-        Perez, Gustavo
-        Perez, Mariluz
-        Perez, Rebeca
-        Perez, Urquia
-        Perozo Romero, Liz
-        Perozo, Jenny
-        Pimentel, Isabel
-        Pina, Yanetsy
-        Pineda, Gledys GregoriaGutierrez
-        Platinium Travel Llc
-        Plaza, Isabela
-        Ponte, Asia
-        Portillo, Petra
-        Prieto, Adolfo
-        Princeturismo C.a.
-        Qsuarez
-        Quijada, Omary
-        Quintanar, Ana
-        Quovadis
-        Rada, Desiree
-        Rafael Gamus, Jose
-        Ramirez, Angela
-        Ramon Hernandez D, Orasil
-        Ramos
-        Rams Motors
-        Regueiro Ignasi, Andreina
-        Representaciones Continental Internacional 
-        Requena, Franklin
-        Reyes, Gabriel
-        Reyna, Dubraska
-        Rincon, Milagros
-        Rios, Orangel
-        Rivas, Rebeca
-        Roble, Maria
-        Robledo, Raquel
-        Roblex Group
-        Rodriguez, Alvaro
-        Rodriguez, Eduardo
-        Rodriguez, Ernesto
-        Rodriguez, Jeannette
-        Rojas, Carlos
-        Rojas, Henry
-        Rojas, Jose
-        Rojas, Rosa
-        Rojas, Roxana
-        Roldan, Carolina
-        Romero Zaffaroni, Carlos
-        Romero, Adriannys
-        Romero, Anasofia
-        Romero, Roman
-        Rondon, Virginia
-        Roo, Leonardo
-        Rovero, Sandra
-        Roymar Viajes Y Turismo
-        Rubio, CristinaDe
-        Salamia, Lis
-        Salazar, Ana
-        Salazar, Gustavo
-        Salazar, Lissett
-        Salcedoc
-        Salinas, MariaAmericana
-        Salomon, Mauricio
-        Samantha Farias
-        Sanchez J, Ilcia
-        Sanchez, Felix
-        Sanchez, Juan
-        Sanchez, Karem
-        Sandra Del Valle Marin Int.
-        Sanguino, Gregori
-        Santa Paula Travel
-        Santos, RicardoYagual
-        Secura Group
-        Serrano, Gabriela
-        Shoda, Michelle
-        Sibada, Marianny
-        Siso, Susan
-        Skyline Tours
-        Socorro, Elena
-        Solano, Madeleine
-        Solutions Life
-        Soto, Gelinotte
-        Soto, Ileana
-        Stella Berlingeri, Maris
-        Suarez, Veronica
-        Sue, Rafael
-        Super Nice Renta Car
-        Tepeyac Travel C.a
-        Thamt
-        The Dream Maker
-        Time To Travel
-        Tinoco Y Asociados
-        Toro, Marisabel
-        Torres, MiguelA
-        Torres, RobertoGuarin
-        Tovar, Ismael
-        Tovar, Luirene
-        Travel Kruiz
-        Travel Live
-        Ucros, Luz
-        Ugarit
-        Urbina, JuanCarlos
-        Urdaneta, Fernando
-        Urdaneta, Tahiry
-        Valbuena, Hilda
-        Valderrama Rosales, Nelly
-        Vasquez, Irvanis
-        Velasquez, Daniel
-        Velasquez, Elizabeth
-        Venezia Travel
-        Viajes Royal Global
-        Viaxum Travel Peru
-        Vicente Matos, Jose
-        Villamizar, Jonathan
-        Villarreal, Lola
-        Villegas, Laura
-        Virginia Gonzalez, Maria
-        Wilkermanp
-        Xiomara Morillo, Yris
-        Y. Brandt, Nerwill
-        Yagual, ReynaAsesor
-        Yaisi
-        Yanes, Carmen
-        Yanira Linares Marti, Karem
-        Yelitzaoro
-        Yvelice Silva Aguirr, Josefina
-        Zadra, Juan
-        Zamora, Aureliz
-        Zapata, Martha Liliana
-        Zdelgado Seguros
-        Zerpa, Maiher
-        Zhen, Shengquan
-        Zulimart
-        , Nelson
-        ., Johana
-        ., Mabelis
-        ., Nuriluz
-        Acero, Nicolay
-        Acl Soluciones, C.a
-        Acosta, Francis
-        Acosta, Patricia
-        Aerotravel
-        Aeroworld Peru
-        Afreites Seguros
-        Agencia Esther Paez
-        Alfonzo, Laura
-        Alfredo Ocando, Luis
-        Alvarado Leal, Yuneira
-        Andrea Avila, Maria
-        Andreina Dominguez R, Samantha
-        Ann Shaw, Mery
-        Arianysa
-        Atencio, Carlos
-        Avila, Naivelin
-        Azuaje, Joselyn
-        Barillas, Morena
-        Bcd Travel - Turvisa Zona 10
-        Bello, Pablo
-        Beltran, Yolanda
-        Benitez, Benjamina
-        Black Miles
-        Bob Travel 1 Inc
-        Bonadies, Rafael
-        Boscan, Ada
-        Bracho, Monica
-        Briceno &amp; Asociados
-        Brivas Seguros
-        C. Morello, Carmen
-        Cabrera, Hector
-        Campos, Oskarina
-        Capo, Alonso
-        Caraco, Cristina
-        Carrero, Raul
-        Castellanos, Jorge
-        Castillejo, Andrew
-        Cedeno, Joseluis
-        Ceibal Tours
-        Cespinoza Seguros
-        Cianci, Assunta
-        City Travel
-        Cmoessati Seguros
-        Colina, Karina
-        Cordoba, Alejandro
-        CorporaciÓn Cyl 22
-        Costa Del Mar Travel And Services
-        Cruz, Ligmari
-        Da Costa, Mariela
-        Davila, Sandra
-        De Aguiar, Cesarina
-        De Los Angeles Baden, Maria
-        Delgado, Rodolfo
-        Devora&#039;s Travel
-        Diaz Otero &amp; Asociados
-        Dmendez Seguros
-        Eduardo Garcia, Javier
-        Erodriguez Seguros
-        Escalona, Carlos
-        Estrada, Andres
-        Exchange, Friendly
-        Express Tours
-        Falen Travel Agency
-        Felipe Rodriguez, Ramon
-        Fernanda Pirela, Maria
-        Fertur Travel
-        Galindez, Gilmerth
-        Gdemma Seguros
-        Gil, Dusady
-        Gmalave Seguros
-        Godoy, Gustavo
-        Gonzalez, Raul
-        Granes, Katty
-        Guatemala Nature
-        Gutierrez, Breddy
-        Gutierrez, Emiro
-        Halvarez Seguros
-        Hernandez, Andrea
-        Hernandez, Marisela
-        Hernandez, Miguel
-        Herrera, Omar
-        Ibarra, Eduardo
-        Inamet
-        Insurance Agency Llc, Svalencia
-        Jarace Seguros
-        Jbrea &amp; Asociados
-        Jimenez, Andreina
-        Jimenez, Leomary
-        JordoÑez Seguros
-        Jose Amado, Douglas
-        Jsalazar Seguros
-        Karina Rojas, Karla
-        Kenny Travel
-        La Nusta
-        Laneve, Rosa
-        Latin Spirit Travel
-        Leal, Alvaro
-        Leal, Anauris
-        Lebran 
-        Leon, Andres
-        Lguzman Seguros
-        Lopez, Iscarel
-        Lopez, Lignery
-        Lores, Lis
-        Los Campitos Tours
-        Lpacheco
-        Machado, Carlos
-        Marquez, Angelica
-        Marquis, Oscar
-        Marte&#039;s Tax Services
-        Martinez, Cris
-        Martinez, Kisbel
-        Martinez, Marielina
-        Matos, Luis
-        Maxima Travel
-        Mendez, Deborah
-        Meneses, Laura
-        Merida Travel Services Llc
-        Mluces Seguros
-        Moncada, Carlos
-        Monroy, Cindy
-        Montiel, Mercedes
-        Montiel, Veronica
-        Morales, Mayra
-        Morales, Nilfida
-        Multidestinos
-        Mundo Turismo
-        Nancy´s Travel
-        Nardelli, Claudia
-        Natera, Zullyra
-        Netcomtravel
-        Norelikac
-        Noriega &amp; Asociados
-        Ocando, Andres
-        Ochoa, Cesar
-        Ochoa, Marianela
-        Orozco, David
-        Ortega, Erika
-        Ortega, Marianella
-        Pacheco, Mireya
-        Palacios, Anamaria
-        Paz, Vanessa
-        Perdomo, Yanny
-        Pereira &amp; Asociados
-        Perez, Alberto
-        Perez, Alirio
-        Petit, Bianca
-        Pinango, Olga
-        Ponce, Ericson
-        Prisko Tours
-        Punto Ecuador
-        Punto Multiservices
-        Quinones, Nataly
-        Regardiz, Eleumarys
-        Renatours
-        Renwick, Rafael
-        Reyes, Jolbelys
-        Rlengua
-        Rodriguez, Ángel
-        Rodriguez, Aura
-        Rodriguez, Katia
-        Rodriguez, Katiana
-        Rodriguez, Leonardo
-        Rojas, Morela
-        Romero, Ana
-        Romero, Sonia
-        Ronel Tours
-        Ruiz, Joe
-        Rumbos Tours
-        Salazar Alcala, Daniella
-        Salcedo, Carmenvictoria
-        Samara Tours
-        Sanchez &amp; Asociados
-        Sanchez, Anamaria
-        Sanchez, Jim
-        Seguros Krmaura
-        Seguros, Lrivera
-        Silva, Mariangela
-        Soles, Lorena
-        Suarez, Eoliberth
-        Suarez, Neyma
-        Surga, Jeannette
-        Surga, Yelizta
-        T&amp;h Multiservices
-        Tours Y Eventos Vip
-        Turismo Inkaiko
-        Urdaneta, Dayana
-        Utrera, Friendherlyn
-        Vanegash, Robinson
-        Vasquez, Cristobal
-        Velasquez, Santiago
-        Veneturismo C.a
-        Viajes Panamericana
-        Viajes Primavera
-        Viajesjf
-        Vicente Gonzalez Gar, Jose
-        Villalobos, Andreus
-        Villasmil, Ruthmary
-        Virginia Mago Beaufo, Maria
-        Viva Operador
-        Volare
-        Vuela Club
-        Wilsons Travel And Services
-        Zambrano, Aliana
-        Alejandra Figueira, Maria
-        Aracay Tours
-        Campitos Tours
-        Carolines Travel
-        Matos Villalobos, Sofia
-        Matos, Deyanira
-        Montiel, Maria
-        Pianezzola, Sandra
-        Pineda, Marianyeli
-        Rivero, Iskra
-        Ruta Carlucci, Guiseppe
-        Terrone Ruta, Nunzio
-        Visbal, Debora
-        Prozper
+        Prozper (PRZ)|Asociados, Ghm (PRZ000106)|(58) 4141548555|garnierhernandez.operaciones@gmail.cm
+        Prozper (PRZ)|Cabanillas, Manuel Agustin (PRZ000065)|(34) 637898023|info@donpoliza.es
+        Prozper (PRZ)|Mattei, Jose Florencio (PRZ000082)|(506) 72945345|asesordeseguros@gmail.com
+        Prozper (PRZ)|Nicolicchia, Paolo (PRZ000095)|(1) 305216-3091|paolo@pninsure.com
+        Prozper (PRZ)|Quiroz, Yamir (PRZ000073)|(58) 424224-5531|yv.travels360@gmail.com
+        Prozper (PRZ)|Rodriguez, Limbergt (PRZ000093)|(1) 7542143154|limbergt@rolial.com
+        Prozper (PRZ)|Sebastiani, Maria Alejandra (PRZ000064)|(1) 6465524749|alejandra.sebastiani@yahoo.com
+        Prozper (PRZ)|Taing, . (PRZ000109)|(1) 9542261501|nitantarde@gmail.com
         """
         
-            let statuss = """
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        INACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        INACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        ACTIVO
-        """
         
             let getLines = String.splitByChar '\n'
                         >> Seq.map String.trim
                         >> Seq.filter ((<>) "")
         
-            let statuses =
-                Seq.zip (getLines keys) (getLines statuss) |> Map
+            let extraerCodigo nm =
+                nm
+                |> String.splitByChar ','
+                |> function | [| apellido ; nombre |] -> Some (apellido, nombre) |_-> None
+                |> Option.bind (fun (a,nm) -> String.delimitedO "(" ")" nm |> Option.bind (fun (nm, cd, _) -> Some (a.Trim(), nm.Trim(), cd.Trim() )) )
         
             let aliados =
                 getLines data
-                |> Seq.map (String.splitByChar '\t')
-                |> Seq.map (fun p -> p.[0], Seq.last p)
-                |> Seq.map (fun (p1, p2) -> 
-                    try statuses.[p1]
-                    with e -> printfn "not found %A" p1 ; "INACTIVO"
-                    , p1, p2)
-                |> Seq.map (fun (sta, p1, p2) ->
-                    let apellido, nombre, genero = 
-                        match p1.Split ',' with
-                        | [| ap ; nm |] -> ap.Trim(), nm.Trim(), Femenino
-                        | _             -> ""       , p1.Trim(), Empresa
+                |> Seq.map (String.splitByChar '|')
+                |> Seq.choose (function [| padre ; aliado ; tel ; email |] -> Some (padre, aliado, tel, email) |_-> None)
+                |> Seq.choose (fun (p,al, tel, email) -> 
+                    match extraerCodigo p, extraerCodigo al with
+                    | Some(_,_,p), Some(ap, nm, cd) -> Some( p, ap, nm, cd, tel, email)
+                    | _-> None
+                )
+                |> Seq.map (fun (p2, apellido, nombre, p1, tel, email) ->
                     {
                         id              = IdAliado p1
-                        authorizeIdR    = Error ""
                         idPadreO        = IdAliado p2 |> Some
                         identificacion  = [||]
                         datosPersonales = {
@@ -5760,15 +3154,19 @@ namespace FsRoot
                                             apellido1       = apellido
                                             apellido2       = ""
                                             nacionalidad    = Venezuela
-                                            genero          = genero
+                                            genero          = Masculino
                                             fechaNacimiento = System.DateTime.Now
                         }
-                        contactos       = [||]
-                        isInternal      = false
-                        status          = if sta = "ACTIVO" then Activo else Inactivo
+                        contactos       = [|
+                                                Telefono { telVacio with numero = tel }
+                                                CorreoElectronico {correoVacio with email = email }
+                        |]
+                        isInternal      = p1 = "PRZ"
+                        status          = Activo
                         tipo            = Regular
                         fechaRegistro   = System.DateTime.Now
                         fechaStatus     = System.DateTime.Now
+                        diaPago         = Dia01
                         nReferidos      = 0
                         nRefActivos     = 0
                         nDescendientes  = 0
@@ -5778,16 +3176,62 @@ namespace FsRoot
                     }
                 )
         
+        
+            aliados |> Seq.iter (printfn "%A" )
+        
+            //let aliados =
+            //    getLines data
+            //    |> Seq.map (String.splitByChar '|')
+            //    |> Seq.map (fun p -> p.[0], Seq.last p)
+            //    |> Seq.map (fun (p1, p2) -> 
+            //        try statuses.[p1]
+            //        with e -> printfn "not found %A" p1 ; "INACTIVO"
+            //        , p1, p2)
+            //    |> Seq.map (fun (sta, p1, p2) ->
+            //        let apellido, nombre, genero = 
+            //            match p1.Split ',' with
+            //            | [| ap ; nm |] -> ap.Trim(), nm.Trim(), Femenino
+            //            | _             -> ""       , p1.Trim(), Empresa
+            //        {
+            //            id              = IdAliado p1
+            //            //authorizeIdR    = Error ""
+            //            idPadreO        = IdAliado p2 |> Some
+            //            identificacion  = [||]
+            //            datosPersonales = {
+            //                                titulo          = None
+            //                                nombre1         = nombre
+            //                                nombre2         = ""
+            //                                apellido1       = apellido
+            //                                apellido2       = ""
+            //                                nacionalidad    = Venezuela
+            //                                genero          = genero
+            //                                fechaNacimiento = System.DateTime.Now
+            //            }
+            //            contactos       = [||]
+            //            isInternal      = false
+            //            status          = if sta = "ACTIVO" then Activo else Inactivo
+            //            tipo            = Regular
+            //            fechaRegistro   = System.DateTime.Now
+            //            fechaStatus     = System.DateTime.Now
+            //            diaPago         = Dia01
+            //            nReferidos      = 0
+            //            nRefActivos     = 0
+            //            nDescendientes  = 0
+            //            nDescActivos    = 0
+            //            comision        = 0
+            //            nivel           = 0
+            //        }
+            //    )
+        
             let modelo = {
-                idAliado      = IdAliado "admin"
+                idAliado      = IdAliado "PRZ"
                 aliados       = aliados |> Seq.toArray
                 anoActual     = 2019
                 periodoActual = 1
                 premisas      = premisasCalculo
                 nevento       = -2L
             }
-        
-            //Aliado.actualizarAliados modelo
+           //Aliado.actualizarAliados modelo
             //|> Seq.iter print
         
         
