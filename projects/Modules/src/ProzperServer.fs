@@ -2,7 +2,7 @@
 #nowarn "52"
 #nowarn "1182"
 #nowarn "1178"
-////-d:FSharpStation1554890919685 -d:NOFRAMEWORK --noframework -d:WEBSHARPER
+////-d:FSharpStation1556565204816 -d:NOFRAMEWORK --noframework -d:WEBSHARPER
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0"
@@ -44,7 +44,7 @@
 //#nowarn "1182"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1554890919685
+//#define FSharpStation1556565204816
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -1065,9 +1065,6 @@ namespace FsRoot
                 
             
     
-    //#define NOFRAMEWORK --noframework
-    //#define WEBSHARPER
-    
     module Prozper =
         module AA =
         
@@ -1484,9 +1481,13 @@ namespace FsRoot
             |   Dia20
             |   Dia25
         
+            type IdForAuthorize = IdForAuthorize of string  with member this.Id = match this with IdForAuthorize id -> id
+        
             type Aliado = {
                 id              :      IdAliado
-                idPadreO        :      IdAliado     option
+                idPadreO        :      IdAliado       option
+                idForAuthorize  :      IdForAuthorize option
+                influyente      :      string         option
                 datosPersonales :      DatosPersonales
                 contactos       :      Contacto       []
                 identificacion  :      Identificacion []
@@ -1594,6 +1595,16 @@ namespace FsRoot
                     descendientes = descendientes 
                 }
         
+            let diaPago (registro:System.DateTime) =
+                let diaMes = registro.Day
+                if diaMes    =  1 then Dia01
+                elif diaMes <=  5 then Dia05
+                elif diaMes <= 10 then Dia10
+                elif diaMes <= 15 then Dia15
+                elif diaMes <= 20 then Dia20
+                elif diaMes <= 25 then Dia25
+                else                   Dia01
+        
             let actualizarAliados modelo =
                 let  buscar            = busqueda modelo.aliados
                 let pre                = modelo.premisas
@@ -1615,6 +1626,7 @@ namespace FsRoot
                             nRefActivos    = nRefActivos   
                             nDescendientes = nDescendientes
                             nDescActivos   = nDescActivos  
+                            diaPago        = diaPago al.fechaRegistro
                             //fechaStatus    = System.DateTime()
                             nivel          = nivel
                         }
@@ -1646,6 +1658,8 @@ namespace FsRoot
                                     }
                 id              =  IdAliado ""
                 idPadreO        =  None
+                idForAuthorize  =  None
+                influyente      =  None
                 contactos       =  [||]
                 identificacion  =  [||]
                 isInternal      =  false
@@ -1671,6 +1685,9 @@ namespace FsRoot
                 let titulo   = dp.titulo |> Option.map ((+) " ") |> Option.defaultValue ""
                 titulo + (dp.nombre1 + " " + dp.nombre2).Trim() + " " + (dp.apellido1 + " " + dp.apellido2).Trim()
         
+        //#define NOFRAMEWORK --noframework
+        //#define WEBSHARPER
+        
         [< AutoOpen >]
         module Ambiente =
             type IAmbiente = 
@@ -1693,6 +1710,8 @@ namespace FsRoot
                     abstract member ObtenerTransacciones : IdAliado -> AsyncResultM<Transaccion [], unit>
                     abstract member ObtenerMensajes      : IdAliado -> AsyncResultM<Mensaje     [], unit>
                     abstract member ObtenerListaDocs     : IdAliado -> AsyncResultM<string      [], unit>
+                    abstract member VariableAmbiente     : string   -> string
+                    abstract member Prepare              : unit     -> unit
                 end
         
         
@@ -1715,6 +1734,8 @@ namespace FsRoot
                     member __.ObtenerTransacciones      id = AsyncResultM.errorMsgf "Ambiente.ObtenerTransacciones: not implemented"
                     member __.ObtenerMensajes           id = AsyncResultM.errorMsgf "Ambiente.ObtenerMensajes: not implemented"
                     member __.ObtenerListaDocs          id = AsyncResultM.errorMsgf "Ambiente.ObtenerListaDocs: not implemented"
+                    member __.VariableAmbiente           v = failwithf "Ambiente.VariableAmbiente: not implemented"
+                    member __.Prepare                   () = ()
                 }
         
         
@@ -1731,7 +1752,7 @@ namespace FsRoot
         | CorreoVerificado          of (IdAliado * string                                          )
         //| ActualizarAuthorizeId     of (IdAliado * Result<IdAuthorize, string>                     )
         //| ActualizarPagoAuthorizeId of (IdAliado * CuentaPago * Result<IdPayment, string>          )
-        | ActualizarStatusPadre     of (IdAliado * StatusAliado * (IdAliado option))
+        | ActualizarStatusPadre     of (IdAliado * StatusAliado * (IdAliado option) * string option)
         
         [< JavaScript >]
         type Evento = {
@@ -1808,6 +1829,8 @@ namespace FsRoot
                     datosPersonales =  datos
                     id              =  idA
                     idPadreO        =  padre
+                    idForAuthorize  =  None
+                    influyente      =  None
                     contactos       =  contactos
                     identificacion  =  [||]
                     isInternal      =  false
@@ -1859,9 +1882,9 @@ namespace FsRoot
                 ,   Mensaje <| "Contactos actualizados!" 
             }
         
-            let actualizarStatusPadre (idA, status:StatusAliado, padreO:IdAliado option) (modelo: Modelo) : AsyncResultM<Modelo * Respuesta, unit> = asyncResultM {
+            let actualizarStatusPadre (idA, status:StatusAliado, padreO:IdAliado option, inflO :  string option) (modelo: Modelo) : AsyncResultM<Modelo * Respuesta, unit> = asyncResultM {
                 return
-                    cambiaAliado idA (fun al -> { al with status = status ; idPadreO = padreO }) modelo
+                    cambiaAliado idA (fun al -> { al with status = status ; idPadreO = padreO ; influyente = inflO }) modelo
                 ,   Mensaje <| "status actualizados!" 
             }
         
@@ -1924,6 +1947,7 @@ namespace FsRoot
         
                 let serIdAliado          = serDU<IdAliado         > [   serObj serString            ]    
                 let serIdAuthorized      = serDU<IdAuthorize      > [   serObj serString            ]    
+                let serIdForAuthorize    = serDU<IdForAuthorize   > [   serObj serString            ]    
                 let serIdPayment         = serDU<IdPayment        > [   serObj serString            ]    
                 let serIdAddress         = serDU<IdAddress        > [   serObj serString            ]    
                 let serTipoAliado        = serDU<TipoAliado       > [   serObj serString            ]
@@ -2076,9 +2100,10 @@ namespace FsRoot
                 let serAliado : Ser<Aliado> =
                     [|
                         serIdAliado                    |> serField "id"              (fun s -> s.id             ) (fun v s -> { s with id              = v } )
-                        //serIdAuthorizedR               |> serField "idAuthorized"    (fun s -> s.authorizeIdR   ) (fun v s -> { s with authorizeIdR    = v } )
+                        serIdForAuthorize   |> serOpt  |> serField "idForAuthorize"  (fun s -> s.idForAuthorize ) (fun v s -> { s with idForAuthorize  = v } )
                         serIdAliado         |> serOpt  |> serField "idPadreO"        (fun s -> s.idPadreO       ) (fun v s -> { s with idPadreO        = v } )
                         serIdentificacion   |> serArr  |> serField "identificacion"  (fun s -> s.identificacion ) (fun v s -> { s with identificacion  = v } )
+                        serString           |> serOpt  |> serField "influyente"      (fun s -> s.influyente     ) (fun v s -> { s with influyente      = v } )
                         serDatosPersonales             |> serField "datosPersonales" (fun s -> s.datosPersonales) (fun v s -> { s with datosPersonales = v } )
                         serContacto         |> serArr  |> serField "contactos"       (fun s -> s.contactos      ) (fun v s -> { s with contactos       = v } )
                         //serFormaPago        |> serArr  |> serField "formasPago"      (fun s -> s.formasPago     ) (fun v s -> { s with formasPago      = v } )
@@ -2389,11 +2414,14 @@ namespace FsRoot
                 |>  Option.map snd
                 |>  Option.defaultWith (fun () -> failwith "Usuario no autenticado")
         
-            let obtenerAliadoEstado = 
-                map obtenerUsuario
-                >=> pairEstado
+            let obtenerAliadoEstado0 = 
+                pairEstado
                 >=> map(fun (modelo, usuario) -> modelo.aliados |> Array.tryFind (fun al -> al.id = IdAliado usuario) |> Option.map (fun v -> v, modelo) )
                  |> absorbO (fun () -> ResultMessage.ErrorMsg "Aliado no fue encontrado")
+        
+            let obtenerAliadoEstado =
+                map obtenerUsuario
+                >=> obtenerAliadoEstado0
         
             let obtenerAliado =
                 obtenerAliadoEstado
@@ -2539,9 +2567,8 @@ namespace FsRoot
                     }
             }
         
-            let obtenerEstadoParaUsuario claims : AA<unit, _> =
-                ObtenerEstado.pairAliadoEstado claims
-                >=> map fst
+            let obtenerEstadoParaUsuario : AA<string, _> =
+                ObtenerEstado.obtenerAliadoEstado0
                 >=> obtenerSubModelo
         
             let obtenerClaim claim claims =
@@ -2625,37 +2652,40 @@ namespace FsRoot
             open AuthorizeNet.Api.Controllers.Bases
             open AA
         
-            module AuthorizeKeys =
+            let mutable environmentName = "NoEnvironmentSet"
+        
+            let prepareAuthorizeNetEnvironment() =
                 let Environment, EnvironmentName, Id, Transaction =
-                    match System.Environment.GetEnvironmentVariable("Authorize_Environment").ToUpper() with
+                    match ambiente.VariableAmbiente("Authorize_Environment").ToUpper() with
                     | "P" ->(   AuthorizeNet.Environment.PRODUCTION
                             ,   "PRODUCTION"
-                            ,   System.Environment.GetEnvironmentVariable "Authorize_Id_Production"          
-                            ,   System.Environment.GetEnvironmentVariable "Authorize_Transaction_Production" 
+                            ,   ambiente.VariableAmbiente "Authorize_Id_Production"          
+                            ,   ambiente.VariableAmbiente "Authorize_Transaction_Production" 
                             )
                     |_->    (   AuthorizeNet.Environment.SANDBOX
                             ,   "SANDBOX"
-                            ,   System.Environment.GetEnvironmentVariable "Authorize_Id_Sandbox"          
-                            ,   System.Environment.GetEnvironmentVariable "Authorize_Transaction_Sandbox" 
+                            ,   ambiente.VariableAmbiente "Authorize_Id_Sandbox"          
+                            ,   ambiente.VariableAmbiente "Authorize_Transaction_Sandbox" 
                             )
-                let Key = System.Environment.GetEnvironmentVariable "Authorize_Key"     //??
-        
-            let prepareAuthorizeNetEnvironment() =
-                ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment <- AuthorizeKeys.Environment
+                let Key = ambiente.VariableAmbiente "Authorize_Key"     //??
+                environmentName <- EnvironmentName
+                ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment <- Environment
                 ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication <- 
-                    new merchantAuthenticationType( name            = AuthorizeKeys.Id
+                    new merchantAuthenticationType( name            = Id
                                                 ,   ItemElementName = ItemChoiceType.transactionKey
-                                                ,   Item            = AuthorizeKeys.Transaction )
-            prepareAuthorizeNetEnvironment()
-        
-            let authorizeMerchantId (idAliado:IdAliado) = idAliado.Id.Replace("-","").Left(20)
+                                                ,   Item            = Transaction )
+            //prepareAuthorizeNetEnvironment()
+            let authorizeMerchantId (aliado:Aliado) =
+                match aliado.idForAuthorize with
+                | Some v ->        v .Id                .Left(20)
+                | None   -> aliado.id.Id.Replace("-","").Left(20)
         
             let inline execute (controller: IApiOperation<_,_> ) = 
                 controller.Execute()
                 controller.GetApiResponse()
         
             let inline executeGetResponse controller : AsyncResultM<'b, unit> = asyncResultM {
-                do! ResultMessage.Info <|  sprintf "Authorize: %s" AuthorizeKeys.EnvironmentName
+                do! ResultMessage.Info <|  sprintf "Authorize: %s" environmentName
                 let response = execute controller
                 if response = null then 
                     return! AsyncResultM.errorMsgf "%s Failed, Response = null" ( controller.GetType().Name )
@@ -2674,7 +2704,7 @@ namespace FsRoot
                 >-> responseF
         
             let buscarPerfil :AA<_,_> =
-                (fun idAliado -> getCustomerProfileRequest( merchantCustomerId  = authorizeMerchantId idAliado ) )
+                (fun (aliado : Aliado) -> getCustomerProfileRequest( merchantCustomerId  = authorizeMerchantId aliado ) )
                 >>> getCustomerProfileController
                 @-> fun response -> response.profile
                 >=> (fun v -> asyncResultM { return v } )
@@ -2689,7 +2719,7 @@ namespace FsRoot
                                 |> Seq.choose(function CorreoElectronico cor -> Some cor.email |_-> None) 
                                 |> Seq.tryHead |> Option.defaultValue ""
                     let customerProfile = 
-                        customerProfileType(        merchantCustomerId  = authorizeMerchantId aliado.id
+                        customerProfileType(        merchantCustomerId  = authorizeMerchantId aliado
                                                 ,   email               = email 
                                                 ,   paymentProfiles     = [| paymentProfile |] )
                     createCustomerProfileRequest(   profile             = customerProfile
@@ -2785,7 +2815,6 @@ namespace FsRoot
         
             let obtenerFormasDePago claims =
                 fun () -> ObtenerEstado.obtenerAliado claims
-                >-> fun al -> al.id
                 >=> obtenerFormasDePagoId
         
             let obtenerFormasDePagoPara claims (alIds:_[]) = asyncResultM {
@@ -2800,7 +2829,7 @@ namespace FsRoot
         
             let registrarFormaPago =
                 fst 
-                >>> fun al -> buscarIdAuthorize al.id
+                >>> buscarIdAuthorize
                 >*> getResultM
                 >*> bindBoth (fun (al, pp) ->
                     function
@@ -2825,7 +2854,6 @@ namespace FsRoot
         
             let validarFormaPago         claims =
                 fun _ -> ObtenerEstado.obtenerAliado claims
-                >-> fun aliado -> aliado.id
                 >=> buscarIdAuthorize
                 >*> mapBoth (fun (IdPayment idp) (IdAuthorize idm)  ->
                         validateCustomerPaymentProfileRequest(  customerProfileId        = idm
@@ -2837,7 +2865,6 @@ namespace FsRoot
         
             let borrarFormaPago claims =
                 fun _ -> ObtenerEstado.obtenerAliado claims
-                >-> fun aliado -> aliado.id
                 >=> buscarIdAuthorize
                 >*> mapBoth (fun (IdPayment idp) (IdAuthorize idm)  ->
                         deleteCustomerPaymentProfileRequest(customerProfileId        = idm
@@ -2845,7 +2872,6 @@ namespace FsRoot
                         ))
                 >=> deleteCustomerPaymentProfileController
                 @-> fun response -> "Forma de pago borrada."
-        
         
         module Acciones =
             open ObtenerEstado
@@ -2947,7 +2973,7 @@ namespace FsRoot
                 headers.Append("Content-Type", "application/json")
                 headers.Append("IdAliado"    , idAliado          )
                 let  req  = RequestOptions( 
-                                Mode = RequestMode.Cors
+                                  Mode        = RequestMode.Cors
                                 , Credentials = RequestCredentials.Include
                                 , Method      = "POST"
                                 , Headers     = headers
@@ -2972,12 +2998,11 @@ namespace FsRoot
                                 asyncResultM {
                                     let  p = deserializeP js
                                     let! r = f c p
-                                    //do!  Acciones.ejecutarAcciones()
                                     return r
                                 } |> Async.map serializeR
                      ) ) )
         
-            let obtenerUnions0 _claims () = asyncResultM {
+            let obtenerUnions0 () = asyncResultM {
                 return DiscUnion.simple<Pais          >
                      , DiscUnion.simple<Estado        >
                      , DiscUnion.simple<TipoDireccion >
@@ -2993,8 +3018,8 @@ namespace FsRoot
             let logoutUser0 _claims () : AsyncResultM<unit, unit> = AsyncResultM.errorMsgf "logoutUser0: not implemented"
         
             let [< Inline >] d01 = doRpc "ejecutarDataEventoNuevo" 
-            let [< Inline >] d02 = doRpc "obtenerEstadoParaUsuario"
-            let [< Inline >] d03 = doRpc "obtenerUnions"
+            //let [< Inline >] d02 = doRpc "obtenerEstadoParaUsuario"
+            //let [< Inline >] d03 = doRpc "obtenerUnions"
             let [< Inline >] d04 = doRpc "logoutUser"
             let [< Inline >] d05 = doRpc "agregarUsuarioSiEsNuevo"
             let [< Inline >] d06 = doRpc "enviarCorreosInvitacion"
@@ -3007,8 +3032,8 @@ namespace FsRoot
             let [< Inline >] d13 = doRpc "obtenerListaDocs"
         
             let [< Inline >] ejecutarDataEventoNuevo  =  fst d01
-            let [< Inline >] obtenerEstadoParaUsuario =  fst d02
-            let [< Inline >] obtenerUnions            =  fst d03
+            //let [< Inline >] obtenerEstadoParaUsuario =  fst d02
+            //let [< Inline >] obtenerUnions            =  fst d03
             let [< Inline >] logoutUser               =  fst d04
             let [< Inline >] agregarUsuarioSiEsNuevo  =  fst d05
             let [< Inline >] enviarCorreosInvitacion  =  fst d06
@@ -3021,8 +3046,8 @@ namespace FsRoot
             let [< Inline >] obtenerListaDocs         =  fst d13
         
             ManejadorEventos.ejecutarDataEventoNuevo  |> snd d01 
-            ManejadorEventos.obtenerEstadoParaUsuario |> snd d02 
-            obtenerUnions0                            |> snd d03 
+            //ManejadorEventos.obtenerEstadoParaUsuario |> snd d02 
+            //obtenerUnions0                            |> snd d03 
             logoutUser0                               |> snd d04 
             ManejadorEventos.agregarUsuarioSiEsNuevo  |> snd d05
             Correo.enviarCorreosInvitacion            |> snd d06
@@ -3050,7 +3075,10 @@ namespace FsRoot
             //do               obtenerUnions0          |> d3
             //do               logoutUser0             |> d4 
         
-            
+            type AR<'T> = AsyncResultM<'T, unit>
+        
+            let [< Rpc >] obtenerUnions                       () : AR<_> = obtenerUnions0 ()
+            let [< Rpc >] obtenerEstadoParaUsuario (id:IdAliado) : AR<_> = ManejadorEventos.obtenerEstadoParaUsuario id.Id
         
         module AmbienteMemoria =
             open System.Net.Mail
@@ -3107,19 +3135,13 @@ namespace FsRoot
                     member __.ObtenerTransacciones      id = AsyncResultM.errorMsgf "Ambiente.ObtenerTransacciones: not implemented"
                     member __.ObtenerMensajes           id = AsyncResultM.errorMsgf "Ambiente.ObtenerMensajes: not implemented"
                     member __.ObtenerListaDocs          id = AsyncResultM.errorMsgf "Ambiente.ObtenerListaDocs: not implemented"
+                    member __.VariableAmbiente           v = failwithf "Ambiente.VariableAmbiente: not implemented"
+                    member __.Prepare                   () = Authorize.prepareAuthorizeNetEnvironment()
                 }
                 
         //[< JavaScript false >]
         module Sample =
             let data = """
-        Prozper (PRZ)|Asociados, Ghm (PRZ000106)|(58) 4141548555|garnierhernandez.operaciones@gmail.cm
-        Prozper (PRZ)|Cabanillas, Manuel Agustin (PRZ000065)|(34) 637898023|info@donpoliza.es
-        Prozper (PRZ)|Mattei, Jose Florencio (PRZ000082)|(506) 72945345|asesordeseguros@gmail.com
-        Prozper (PRZ)|Nicolicchia, Paolo (PRZ000095)|(1) 305216-3091|paolo@pninsure.com
-        Prozper (PRZ)|Quiroz, Yamir (PRZ000073)|(58) 424224-5531|yv.travels360@gmail.com
-        Prozper (PRZ)|Rodriguez, Limbergt (PRZ000093)|(1) 7542143154|limbergt@rolial.com
-        Prozper (PRZ)|Sebastiani, Maria Alejandra (PRZ000064)|(1) 6465524749|alejandra.sebastiani@yahoo.com
-        Prozper (PRZ)|Taing, . (PRZ000109)|(1) 9542261501|nitantarde@gmail.com
         """
         
         
@@ -3146,6 +3168,8 @@ namespace FsRoot
                     {
                         id              = IdAliado p1
                         idPadreO        = IdAliado p2 |> Some
+                        idForAuthorize  = None
+                        influyente      = None
                         identificacion  = [||]
                         datosPersonales = {
                                             titulo          = None

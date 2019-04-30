@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1554890919685 -d:NOFRAMEWORK --noframework -d:WEBSHARPER
+////-d:FSharpStation1556565204816 -d:NOFRAMEWORK --noframework -d:WEBSHARPER
 ////#cd @"##FSCODE##\projects\ProzperClient\src"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
@@ -38,7 +38,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\LayoutEngine\bin\LayoutEngine.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1554890919685
+//#define FSharpStation1556565204816
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -421,8 +421,6 @@ namespace FsRoot
                         do! Async.Sleep 9000
                 } |> Async.Start
         
-            checkUser()
-        
             let logout          () = executePolicy true SignIn
         
         [< JavaScript >]
@@ -464,22 +462,51 @@ namespace FsRoot
         
             type EndPoint =
             | [< EndPoint "" >] DefaultEP
+            |                   NoUser
+            |                   PreRegister
             |                   Content of string
+            | [<Wildcard>]      Pdf     of string
+            | [<Wildcard>]      Video   of string
         
             open Sitelets.InferRouter
             open FsRoot
             module AF = AppFramework 
         
-            let endPointV = if IsClient then Router.Infer() |> Router.InstallHash DefaultEP else Var.Create DefaultEP
+            let endPointV   = if IsClient then Router.Infer() |> Router.InstallHash DefaultEP else Var.Create DefaultEP
+        
+        
+            [< Inline "showPDF($f)" >]
+            let showPdf (f:string) : unit = X<_>
+        
+            [< Inline "playVideo()" >]
+            let playVideo () : unit = X<_>
+        
+            endPointV.View |> View.Sink(
+                function
+                | NoUser 
+                | PreRegister   -> ()
+                | Pdf   f       -> showPdf f
+                | Video _       -> playVideo()
+                |_-> Msal.checkUser()
+            )
         
             let contentVar =
-                Var.Lens endPointV 
+                Var.Make 
+                    (View.Map2 
+                        (fun _ -> function
+                        | DefaultEP       when Msal.userO.Value <> None -> "ProzperLyt.mainContent"
+                        | Content     lyt when Msal.userO.Value <> None -> lyt
+                        | PreRegister                                   -> "ProzperLyt.cntPreRegister"
+                        | Pdf         _                                 -> "ProzperLyt.cntPDF"
+                        | Video       _                                 -> "ProzperLyt.cntVideo"
+                        | _                                             -> "ProzperLyt.cntFormaNoUser"
+                        )
+                        Msal.userO.View endPointV.View )
                     (function
-                    | DefaultEP          -> "ProzperLyt.mainContent"
-                    | Content     lyt    -> lyt)
-                    (fun _ -> function
                     | "ProzperLyt.mainContent"  -> DefaultEP
-                    | lyt                       -> Content lyt)
+                    | lyt                       -> Content lyt
+                    >> (fun v -> if endPointV.Value <> v then endPointV.Set v)
+                    )
         
             let aliadoIdDoc fDoc =
                 View.Do {
@@ -519,25 +546,26 @@ namespace FsRoot
         
             module Rpc =
                 let llamadas = Var.Create 0
-                let setLlamadas v = llamadas.Set v
                 let iterA arm = AsyncResultM.iterA (ResultMessage.summarized >> JS.Alert) id arm
-                let [< Inline >] inline llamar (f : string -> _ -> AsyncResultM<_,unit>) p1 p2  = asyncResultM {
-                    setLlamadas <| llamadas.Value + 1
-                    let! r = f p1 p2 |> Async.map (fun v -> setLlamadas <| llamadas.Value - 1 ; v)
-                    return r
+                let [< Inline >] inline llamar (f : _ -> AsyncResultM<_,unit>) p  = asyncResultM {
+                    do      llamadas.Set <| llamadas.Value + 1
+                    try return! f p
+                    finally llamadas.Set <| llamadas.Value - 1
                 }
-                let agregarUsuarioSiEsNuevo  p = llamar Rpc.agregarUsuarioSiEsNuevo  Aliado.LoggedId p
-                let obtenerEstadoParaUsuario p = llamar Rpc.obtenerEstadoParaUsuario Aliado.LoggedId p
-                let obtenerUnions            p = llamar Rpc.obtenerUnions            Aliado.LoggedId p
-                let ejecutarDataEventoNuevo  p = llamar Rpc.ejecutarDataEventoNuevo  Aliado.LoggedId p
-                let enviarCorreosInvitacion  p = llamar Rpc.enviarCorreosInvitacion  Aliado.LoggedId p
-                let obtenerFormasDePago      p = llamar Rpc.obtenerFormasDePago      Aliado.LoggedId p
-                let registrarTarjeta         p = llamar Rpc.registrarTarjeta         Aliado.LoggedId p
-                let registrarCuenta          p = llamar Rpc.registrarCuenta          Aliado.LoggedId p
-                let validarFormaPago         p = llamar Rpc.validarFormaPago         Aliado.LoggedId p
-                let borrarFormaPago          p = llamar Rpc.borrarFormaPago          Aliado.LoggedId p
-                let obtenerFormasDePagoPara  p = llamar Rpc.obtenerFormasDePagoPara  Aliado.LoggedId p
+                let agregarUsuarioSiEsNuevo  p = llamar (Rpc.agregarUsuarioSiEsNuevo              Aliado.LoggedId) p
+                let obtenerEstadoParaUsuario p = llamar  Rpc.obtenerEstadoParaUsuario <| IdAliado Aliado.LoggedId
+                let obtenerUnions            p = llamar  Rpc.obtenerUnions                                         p
+                let ejecutarDataEventoNuevo  p = llamar (Rpc.ejecutarDataEventoNuevo              Aliado.LoggedId) p
+                let enviarCorreosInvitacion  p = llamar (Rpc.enviarCorreosInvitacion              Aliado.LoggedId) p
+                let obtenerFormasDePago      p = llamar (Rpc.obtenerFormasDePago                  Aliado.LoggedId) p
+                let registrarTarjeta         p = llamar (Rpc.registrarTarjeta                     Aliado.LoggedId) p
+                let registrarCuenta          p = llamar (Rpc.registrarCuenta                      Aliado.LoggedId) p
+                let validarFormaPago         p = llamar (Rpc.validarFormaPago                     Aliado.LoggedId) p
+                let borrarFormaPago          p = llamar (Rpc.borrarFormaPago                      Aliado.LoggedId) p
+                let obtenerFormasDePagoPara  p = llamar (Rpc.obtenerFormasDePagoPara              Aliado.LoggedId) p
+                let obtenerListaDocs         p = llamar (Rpc.obtenerListaDocs                     Aliado.LoggedId) p
         
+                WebSharper.Remoting.EndPoint <- Rpc.serverEndPoint + "rpc/rpc"
             [< AutoOpen >]
             module Refresh =
                 let mutable shouldRefresh = true
@@ -562,11 +590,11 @@ namespace FsRoot
                 async {
                     while true do
                         do! Async.Sleep (5 * 60 * 1000)
-                        refrescarData true
-                } |> Async.Start
+                        //refrescarData true
+                } |> Async.StartImmediateAsTask
             
                 try 
-                    JS.Document.AddEventListener("visibilityChange", (fun () -> refrescarData false), false)
+                    JS.Document.AddEventListener("visibilityChange", (fun () -> (*refrescarData false*)() ), false)
                 with _ -> ()
             
                 
@@ -606,7 +634,6 @@ namespace FsRoot
                     aniosV  .Set yy
                     mesesV  .Set mm
                 } |> Rpc.iterA 
-            
             
                 let crearOption   n   = Html.Elt.option [             ] [ Html.text n] :> Doc
                 let crearOption2  n v = Html.Elt.option [ attr.value v] [ Html.text n] :> Doc
@@ -1373,6 +1400,7 @@ namespace FsRoot
                 type Fila<'T> = {
                     nombre        : 'T
                     status        : 'T
+                    influyente    : 'T
                     tipo          : 'T
                     referido      : 'T
                     nivel         : 'T
@@ -1411,12 +1439,13 @@ namespace FsRoot
                     let aliado2Fila al = {
                         nombre        =      Aliado.nombre       al.datosPersonales 
                         status        =      sprintf "%A"        al.status          
+                        influyente    =      al.influyente |> Option.defaultValue ""
                         tipo          =      sprintf "%A"        al.tipo            
                         referido      =      nombreReferidor     al.idPadreO        
-                        nivel         =      sprintf "%-9d"      al.nivel           
-                        referidos     =      sprintf "%-9s" <| referidos           al                 
-                        descendientes =      sprintf "%-9s" <| descendientes       al                 
-                        comision      =      sprintf "%-9s" <| comision            al.comision        
+                        nivel         =      sprintf "%9d"      al.nivel           
+                        referidos     =      sprintf "%9s" <| referidos           al                 
+                        descendientes =      sprintf "%9s" <| descendientes       al                 
+                        comision      =      sprintf "%9s" <| comision            al.comision        
                         diaPago       =     (sprintf "%A"        al.diaPago).Right 2
                         desde         =      Date.toYYYYMMDD "-" al.fechaRegistro   
                         Id            =      sprintf "%s"        al.id.Id           
@@ -1426,20 +1455,22 @@ namespace FsRoot
                         Var.Create {
                             nombre        =   2, true , (fun (d:Fila<string>) -> d.nombre       .ToUpper() )
                             status        =   3, true , (fun (d:Fila<string>) -> d.status       .ToUpper() )
-                            tipo          =   4, true , (fun (d:Fila<string>) -> d.tipo         .ToUpper() )
-                            referido      =   5, true , (fun (d:Fila<string>) -> d.referido     .ToUpper() )
-                            nivel         =   6, true , (fun (d:Fila<string>) -> d.nivel        .ToUpper() )
-                            referidos     =   7, true , (fun (d:Fila<string>) -> d.referidos    .ToUpper() )
-                            descendientes =   8, false, (fun (d:Fila<string>) -> d.descendientes.ToUpper() )
-                            comision      =   1, true , (fun (d:Fila<string>) -> d.comision     .ToUpper() )
-                            diaPago       =   9, true , (fun (d:Fila<string>) -> d.diaPago      .ToUpper() )
-                            desde         =  10, true , (fun (d:Fila<string>) -> d.desde        .ToUpper() )
-                            Id            =  11, true , (fun (d:Fila<string>) -> d.Id           .ToUpper() )
+                            influyente    =   4, false, (fun (d:Fila<string>) -> d.influyente   .ToUpper() )
+                            tipo          =   5, true , (fun (d:Fila<string>) -> d.tipo         .ToUpper() )
+                            referido      =   6, true , (fun (d:Fila<string>) -> d.referido     .ToUpper() )
+                            nivel         =   7, true , (fun (d:Fila<string>) -> d.nivel        .ToUpper() )
+                            referidos     =   8, true , (fun (d:Fila<string>) -> d.referidos    .ToUpper() )
+                            descendientes =   1, false, (fun (d:Fila<string>) -> d.descendientes.ToUpper() )
+                            comision      =   9, true , (fun (d:Fila<string>) -> d.comision     .ToUpper() )
+                            diaPago       =  10, true , (fun (d:Fila<string>) -> d.diaPago      .ToUpper() )
+                            desde         =  11, true , (fun (d:Fila<string>) -> d.desde        .ToUpper() )
+                            Id            =  12, true , (fun (d:Fila<string>) -> d.Id           .ToUpper() )
                         }
             
                     let campos (orden:Fila<_*_*_>) = [|
                         orden.nombre       
                         orden.status       
+                        orden.influyente
                         orden.tipo         
                         orden.referido     
                         orden.nivel        
@@ -1451,17 +1482,18 @@ namespace FsRoot
                         orden.Id           
                     |] 
             
-                    let newOrden (n, v, f) (no, vo, fo) =
-                       (if n = no then 1
-                        elif no < n then no + 1
-                        else no)
-                      , (if n = 1 then not v else v)
-                      , fo
+                    let newOrden (n, _, _) (no, vo, fo) =
+                          ( if   no = n then      1
+                            elif no < n then no + 1
+                            else no)
+                        , (if n = no && n = 1 then not vo else vo)
+                        , fo
             
                     let toggle (v:int * bool * (Fila<string> -> string) ) = 
                         {
                             nombre        = newOrden v ordenV.Value.nombre       
                             status        = newOrden v ordenV.Value.status       
+                            influyente    = newOrden v ordenV.Value.influyente
                             tipo          = newOrden v ordenV.Value.tipo         
                             referido      = newOrden v ordenV.Value.referido     
                             nivel         = newOrden v ordenV.Value.nivel        
@@ -1499,6 +1531,9 @@ namespace FsRoot
                     let setStatus id (v:string) = 
                         setAliado id (fun al -> { al with status = StatusAliado.tryParse v } ) 
             
+                    let setInfluyente id (v:string) = 
+                        setAliado id (fun al -> { al with influyente = if v.Trim() = "" then None else Some <| v.Trim() } ) 
+            
                     let setPadre id (v:string) =
                         let padre = if v = "" then None else Some (IdAliado v)
                         setAliado id (fun al -> { al with idPadreO = padre } )
@@ -1518,8 +1553,8 @@ namespace FsRoot
                                 match obtenerAliado al.id with
                                 | None -> ()
                                 | Some al2 ->
-                                if al.status <> al2.status || al.idPadreO <> al2.idPadreO then
-                                    let! res = ActualizarStatusPadre(al.id, al.status, al.idPadreO) |> Rpc.ejecutarDataEventoNuevo
+                                if al.status <> al2.status || al.idPadreO <> al2.idPadreO || al.influyente <> al2.influyente then
+                                    let! res = ActualizarStatusPadre(al.id, al.status, al.idPadreO, al.influyente) |> Rpc.ejecutarDataEventoNuevo
                                     do! ResultMessage.Info (sprintf "%A" res)
                             refrescarData true
                         } |> AsyncResultM.iterA (ResultMessage.summarized >> JS.Alert) id
@@ -1529,10 +1564,10 @@ namespace FsRoot
                         .Cancelar(           fun _ -> aliadosV.Set   modeloV.Value.aliados   )
                         .Changed(            if modeloV.V.aliados = aliadosV.V then "" else "mui-btn--primary" )
                         .Filtro(             filtroV                                   )
-                        .Statuses(           statuses.View |> Doc.BindView crearOptions)
                         .Referidores(        referidores                               )
                         .sort_nombre(        fun _ -> toggle ordenV.Value.nombre       )
                         .sort_status(        fun _ -> toggle ordenV.Value.status       ) 
+                        .sort_influyente(    fun _ -> toggle ordenV.Value.influyente   ) 
                         .sort_tipo(          fun _ -> toggle ordenV.Value.tipo         )
                         .sort_referido(      fun _ -> toggle ordenV.Value.referido     )
                         .sort_nivel(         fun _ -> toggle ordenV.Value.nivel        )
@@ -1549,8 +1584,10 @@ namespace FsRoot
                                 TemplateLib.FilaConsolidado() 
                                     .nombre(        fW.V.nombre       )
                                     .tipo(          fW.V.tipo         )
-                                    .status(        Var.Make (V fW.V.status  ) (setStatus <| IdAliado alid)      )
-                                    .referido(      Var.Make (V fW.V.referido) (setPadre  <| IdAliado alid)      )
+                                    .referido(      Var.Make (V fW.V.referido  ) (setPadre      <| IdAliado alid) )
+                                    .status(        Var.Make (V fW.V.status    ) (setStatus     <| IdAliado alid) )
+                                    .influyente(    Var.Make (V fW.V.influyente) (setInfluyente <| IdAliado alid) )
+                                    .Statuses(      statuses.View |> Doc.BindView crearOptions                    )
                                     .nivel(         fW.V.nivel        )
                                     .referidos(     fW.V.referidos    )
                                     .descendientes( fW.V.descendientes)
@@ -1587,10 +1624,10 @@ namespace FsRoot
                     let pagos (als:Aliado[]) = 
                         asyncResultM {
                             let  alsf   = als  |> Seq.filter (fun al -> al.comision > 0) 
-                            let  alIds  = alsf |> Seq.map (fun al -> al.id ) |> Seq.toArray
+                            let  alIds  = alsf |> Seq.toArray
                             let! fpss   = Rpc.obtenerFormasDePagoPara alIds
-                            let  ctas   = (fpss:(IdAliado * FormaPago []) []) |> Seq.map (fun (id, fps)-> id, fps |> Seq.tryPick (fun fp -> match fp.cuentaPago with | CuentaBancaria cta -> Some cta |_-> None) |> Option.defaultValue ctaVacio )
-                            let  alfps  = Seq.zip alsf ctas |> Seq.choose(fun (al, (id, cta) ) -> if al.id = id then Some(al, cta) else None)
+                            let  ctas   = (fpss:(Aliado * FormaPago []) []) |> Seq.map (fun (id, fps)-> id, fps |> Seq.tryPick (fun fp -> match fp.cuentaPago with | CuentaBancaria cta -> Some cta |_-> None) |> Option.defaultValue ctaVacio )
+                            let  alfps  = Seq.zip alsf ctas |> Seq.choose(fun (al, (al2, cta) ) -> if al.id = al2.id then Some(al, cta) else None)
                             return alfps
                         } |> Async.map (ResultM.defaultValue Seq.empty)
             
@@ -1609,11 +1646,11 @@ namespace FsRoot
                                             let alW  = fst alfpW
                                             let ctaW = snd alfpW
                                             sprintf "%s,%s,%s,%s,%A,%A" 
-                                                ("22"                          )
-                                                (def "----------" ctaW.numero.Id            )
-                                                (def "----------" ctaW.routing.Id            )
-                                                (sprintf "%d.00" alW.comision)
-                                                ("----------"                         )
+                                                ("22"                               )
+                                                (def "----------" ctaW.numero .Id   )
+                                                (def "----------" ctaW.routing.Id   )
+                                                (sprintf "%d.00" alW.comision       )
+                                                ("----------"                       )
                                                 (if ctaW.titular = "" then Aliado.nombre2 alW.datosPersonales else ctaW.titular)                    
                                             ) |> String.concat "\r\n"
                             csv |> saveAsJavaScript name
@@ -1623,20 +1660,88 @@ namespace FsRoot
                     TemplateLib.TablaPagos()
                         .Exportar(   fun _ -> saveAs() )
                         .TBody(
-                            pagosW
-                            |> Doc.BindSeqCachedViewBy (fun (al, _) -> al.id) (fun alid alfpW ->
-                                let alW  = V( fst alfpW.V)
-                                let ctaW = V( snd alfpW.V)
+                            [
                                 TemplateLib.FilaPago()
-                                    .codigo(              "22"                          )
-                                    .cuenta(              def "----------" ctaW.V.numero.Id              )
-                                    .ABA(                 def "----------" ctaW.V.routing.Id      )
-                                    .monto(               sprintf "%d.00" alW.V.comision)
-                                    .identificacion(      "---------"                     )
-                                    .nombre(              def (Aliado.nombre2 alW.V.datosPersonales) ctaW.V.titular)
+                                    .codigo(              sprintf "%d" ( pagosW.V |> Seq.length ) ) 
+                                    .cuenta(              ""                                  )
+                                    .ABA(                 ""                                  )
+                                    .monto(               sprintf "%d.00" ( pagosW.V |> Seq.sumBy(fun (pg, _) -> pg.comision ) ) ) 
+                                    .identificacion(      ""                                  )
+                                    .nombre(              ""                                  )
+                                    .Doc()
+                                TemplateLib.FilaPago()
+                                    .codigo(              ""                                  )
+                                    .cuenta(              ""                                  )
+                                    .ABA(                 ""                                  )
+                                    .monto(               "--------------------"              )
+                                    .identificacion(      ""                                  )
+                                    .nombre(              ""                                  )
+                                    .Doc()
+                                pagosW
+                                |> Doc.BindSeqCachedViewBy (fun (al, _) -> al.id) (fun alid alfpW ->
+                                    let alW  = V( fst alfpW.V)
+                                    let ctaW = V( snd alfpW.V)
+                                    TemplateLib.FilaPago()
+                                        .codigo(              "22"                                  )
+                                        .cuenta(              def "----------" ctaW.V.numero .Id    )
+                                        .ABA(                 def "----------" ctaW.V.routing.Id    )
+                                        .monto(               sprintf "%d.00" alW.V.comision        )
+                                        .identificacion(      "---------"                           )
+                                        .nombre(              def (Aliado.nombre2 alW.V.datosPersonales) ctaW.V.titular)
+                                        .Doc()
+                                )
+                            ]
+                        ).Doc()
+            module ListaDocs =
+            
+                let docsV = Var.Create [||]
+                //let docSeleccionadoV = Var.Create None
+            
+                let refrescarListaDocs() = Rpc.obtenerListaDocs() |> AsyncResultM.iterpA docsV.Set
+            
+                let uploaded : System.Action<obj,string,JQuery.JqXHR> =
+                    System.Action<_,_,_>(fun a b c -> 
+                        refrescarListaDocs()
+                        JS.Alert b 
+                    )
+            
+                let subir (e:Dom.MouseEvent) id =
+                    e.PreventDefault()
+                    let form = JQuery.JQuery("#SubirDocumentos")
+                    let fd = FormData()
+                    for x in form.SerializeArray() do
+                        fd.Append(x?name, (x?value : string) )
+                    let files = FileList.OfElement <| form.Children("input[type=file]").First().Get(0)
+                    let file  = files.[0]
+                    let filename = file.Name
+                    fd.Append("file", file)
+                    JQuery.AjaxSettings(   Type          = JQuery.RequestType.POST
+                                         , Url           = "/api/subir/" + id + "/" + filename
+                                         , Data          = fd
+                                         , ContentType   = Union1Of2 false
+                                         , ProcessData   =           false
+                                         , Success       = uploaded
+                                     )
+                    |> JQuery.JQuery.Ajax |> ignore
+            
+                let listaDocs() =
+            
+                    refrescarListaDocs()
+            
+                    let seleccionar id =  Some id |> selAliadoIdOV.Set
+                    
+                    TemplateLib.SubirDocumentos()
+                        .TBody(
+                            docsV.View
+                            |> Doc.BindSeqCachedViewBy (id) (fun docName docNameW ->
+                                TemplateLib.FilaDocs()
+                                    .nombre(       docNameW                )
+                                    .idAliado( V ( aliadoW.V.id.Id ) )
                                     .Doc()
                             )
-                        ).Doc()
+                        )
+                        .Subir( fun e -> View.TryGet aliadoW |> Option.iter (fun al -> subir e.Event al.id.Id) )
+                        .Doc()
         module MainProgram =
             open Prozper
             open Templating
@@ -1693,15 +1798,22 @@ namespace FsRoot
             let getDocView appName docName = LayoutEngine.turnToView (fun _ ->  getDoc appName docName)
         
             let getContentDoc() =
-                (ModeloUI.contentVar.View, Msal.userO.View)
-                ||> View.Map2(fun content userO ->
-                    let content =
-                        match userO with
-                        | None   -> layoutName + ".cntFormaNoUser"
-                        | Some _ -> content
-                    getDoc appName content
+                ModeloUI.contentVar.View
+                |> View.Map (getDoc appName )
+                |> Doc.EmbedView
+        
+            let getMenuDoc() =
+                V(  match (Msal.userO.V, ModeloUI.aliadoW.V.id) with
+                    | None  , _                             -> "ProzperLyt.mnuNoUsuario"
+                    | Some _, id when id = Aliado.empty.id  -> "ProzperLyt.mnuAdministrador"
+                    | _                                     -> "ProzperLyt.mnuUsuario"
+                    |> getDoc appName 
                 )
                 |> Doc.EmbedView
+        
+            let influencerV       = Var.Create ""
+            let influencerClassW  = View.Const ""
+            //let gotoInfluencer () = Window.Location.Href <- influencerV.Value
         
             [< SPAEntryPoint >]    
             let mainProgram() =
@@ -1719,16 +1831,19 @@ namespace FsRoot
                     AF.plgVars    = [| AF.newVar  "title"        titleV
                                        AF.newVar  "contentVar"   ModeloUI.contentVar
                                        AF.newVar  "invitaciones" ModeloUI.invitacionesV
+                                       AF.newVar  "influencer"   influencerV
                                     |]  
-                    AF.plgViews   = [| AF.newViw  "mesActual"            mesActualW
-                                       AF.newViw  "anoActual"            anoActualW
-                                       AF.newViw  "aliado"               nombreAliadoW
-                                       AF.newViw  "idAliado"             idAliadoW
-                                       AF.newViw  "status"               statusAliadoW
-                                       AF.newViw  "comision"             comisionAliadoW
-                                       AF.newViw  "datos"                datosAliadoW
-                                       AF.newViw  "emailsInvitar"        ModeloUI.emailsInvitarW
-                                       AF.newViw  "invitacionesDisabled" ModeloUI.invitacionesDisabledW
+                    AF.plgViews   = [| AF.newViw  "mesActual"               mesActualW
+                                       AF.newViw  "anoActual"               anoActualW
+                                       AF.newViw  "aliado"                  nombreAliadoW
+                                       AF.newViw  "idAliado"                idAliadoW
+                                       AF.newViw  "status"                  statusAliadoW
+                                       AF.newViw  "comision"                comisionAliadoW
+                                       AF.newViw  "datos"                   datosAliadoW
+                                       AF.newViw  "emailsInvitar"           ModeloUI.emailsInvitarW
+                                       AF.newViw  "invitacionesDisabled"    ModeloUI.invitacionesDisabledW
+                                       AF.newViw  "VideoW"               <| V(endPointV.V |> function Video v -> v |_-> "")
+                                       AF.newViw  "influencerW"             influencerClassW
                                     |]  
                     AF.plgDocs    = [| AF.newDoc  "Aliados"            (lazy RenderAliados     .aliados    () )
                                        AF.newDoc  "Aliado"             (lazy RenderAliado      .aliado     () )
@@ -1740,6 +1855,7 @@ namespace FsRoot
                                        AF.newDoc  "contentDoc"         (lazy getContentDoc                 () )
                                        AF.newDoc  "ReporteConsolidado" (lazy ReporteConsolidado.consolidado() )
                                        AF.newDoc  "TablaPagos"         (lazy TablaPagos        .comisiones () )
+                                       AF.newDoc  "ListaDocs"          (lazy ListaDocs         .listaDocs  () )
                                     |]  
                     AF.plgActions = [| AF.newAct  "Logout"      logout
                                        AF.newAct  "LogIn"       login
@@ -1875,10 +1991,9 @@ namespace FsRoot
                 TemplateLib()
                     //.MainContent( AF.getMainDoc.Value )
                     .MainContent(   getContentDoc()                     )
+                    .Menu(          getMenuDoc()                        )
                     .headerCenter(  getDocView layoutName "headerCenter")
-                    .IdAliado(      idAliadoW                           )
                     .Logout(        fun _-> logout()                    )
-                    .ExtraMenu(     getExtraMenu                        )
                     .Cortina(       if Rpc.llamadas.V > 0 then "mui-overlay" else "not-mui-overlay")
                     .Bind()
                 titleV.View |> View.Sink (fun t -> JS.Document.Title <- t)

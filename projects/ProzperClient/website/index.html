@@ -10,8 +10,13 @@
         <script src="https://secure.aadcdn.microsoftonline-p.com/lib/0.2.4/js/msal.min.js"></script>
         <!-- IE support: add promises polyfill before msal.js  -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js" class="pre"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js" class="pre"></script>
         <script ws-replace="scripts"></script>
         <script>
+                function gotoTaing() { 
+                    if (document.getElementById("refer").value == "taing") 
+                        window.location.href = "taing"; 
+                }
                 function doNothing(e){
                     console.log("donothing");
                     e.preventDefault();
@@ -169,46 +174,7 @@
             <a href="#" class="mui--text-title"><img class="logo" src="/blob/images/prozper.png" alt="Logo"></a>
         </div>
         <div class="mui-divider"></div>
-        <ul>
-            <strong onclick="$(this).next().slideToggle(200)">Menú</strong>
-            <ul >
-                <li><a href="#">Inicio</a></li>
-                <!-- li><a href="#">Mensajes</a></li -->
-            </ul>
-            <li>
-                <strong onclick="$(this).next().slideToggle(200)">Referir</strong>
-                <ul style="display: none;">
-                    <li><a href="#/Content/ProzperLyt.cntFormaInvitaciones">Enviar Invitaciones</a></li>
-                    <li><a href="/Register/${IdAliado}">Llenar Afiliación</a></li>
-                    <!-- li><a href="#/Content/ProzperLyt.cntFormaRegistro">Llenar Afiliación</a></li -->
-                </ul>
-            </li>
-            <li>
-                <strong onclick="$(this).next().slideToggle(200)">Actualizar Información</strong>
-                <ul style="display: none;">
-                    <li><a href="#/Content/ProzperLyt.cntFormaFormasPago"    >Formas de Pago   </a></li>
-                    <li><a href="#/Content/ProzperLyt.cntFormaDatos"         >Datos Personales </a></li>
-                    <li><a href="#/Content/ProzperLyt.cntFormaContactos"     >Contactos        </a></li>
-                    <li><a href="/Profile"                                   >Cuenta           </a></li>
-                    <!-- li><a href="#/Content/ProzperLyt.cntFormaIdentificacion">Identificación   </a></li -->
-                    <li><a href="#/Content/ProzperLyt.cntSubirDocumentos"    >Documentos       </a></li>
-                </ul>
-            </li>
-            <li>
-                <strong onclick="$(this).next().slideToggle(200)">Kit de Inscripción</strong>
-                <ol style="display: none;">
-                    <li><a target="_blank" href="/blob/Inscripcion/01 Instructivo de Afiliacion.pdf"                   >Instructivo de Afiliación</a></li>
-                    <li><a target="_blank" href="/blob/Inscripcion/02 Carta de Bienvenida.pdf"                         >Carta de Bienvenida      </a></li>
-                    <li><a target="_blank" href="/blob/Inscripcion/03 Presentacion Prozper.pdf"                        >Presentación Prozper     </a></li>
-                    <li><a target="_blank" href="/blob/Inscripcion/04 Contrato de Afiliacion Aliados Prozper Rev.3.pdf">Contrato de Afiliación   </a></li>
-                    <li><a target="_blank" href="/blob/Inscripcion/05 Form W-8BEN.pdf"                                 >Forma W-8BEN             </a></li>
-                    <li><a target="_blank" href="/blob/Inscripcion/06 Form W-8BEN-E.pdf"                               >Forma W-8BEN-E           </a></li>
-                    <li><a target="_blank" href="/blob/Inscripcion/07 Form W-9.pdf"                                    >Forma W-9                </a></li>
-                    <li><a target="_blank" href="/blob/Inscripcion/08 Cancelacion de contratos.pdf"                    >Cancelación de Contratos </a></li>
-                </ol>
-            </li>
-            <li ws-replace="ExtraMenu"></li>
-        </ul>
+        <div ws-replace="Menu"  ></div>
     </div>
 
     <header id="header" ><nav class="mui-container-fluid">
@@ -234,7 +200,6 @@
     <div id="content-wrapper" >
         <div class="mui--appbar-height"></div>
         <div class="mui-container-fluid">
-            <br>
             <div ws-replace="MainContent"></div>
         </div>
     </div>
@@ -265,12 +230,35 @@
                 cntFormaInvitaciones  Doc invitaciones
                 cntReporteConsolidado Doc Prozper.ReporteConsolidado
                 cntTablaPagos         Doc Prozper.TablaPagos
-                cntSubirDocumentos    template subirdocumentos "" id "@{Prozper.idAliado}"
+                cntPDF                div   "id=pdfViewer  ;max-height:calc(100% - 68px)"
+                cntVideo              video "id=videoViewer;max-height:calc(100% - 68px); max-width:100%; height:calc(100% - 68px); width:100%;poster=blob/images/loading-prozper.gif"
+                :                     source "src=@{Prozper.VideoW};type=video/mp4"
+                cntSubirDocumentos    div "class=mui-panel"
+                :                     Doc Prozper.ListaDocs  
+                cntPreRegister        div "class=mui-panel"
+                :                     h3 "" "Para registrarse en Prozper necesita recibir una invitación por email o tener un código de referencia."
+                :                     br ""
+                :                     Doc InputLabel "" "Código de referencia:" Influencer
+                :                     br ""
+                :                     button "id=refer;class=mui-btn mui-btn--primary;onclick=gotoTaing(this)" "Registrarse"
+
+                Influencer            Var ""
+
+                mnuNoUsuario          ul ""
+                :                     template MenuNoUsuario ""
+                :                     template MenuTodos "" display "inherit"
+                mnuUsuario            ul ""
+                :                     template MenuUsuario "" IdAliado "@{Prozper.idAliado}"
+                :                     template MenuTodos "" display "none"
+                mnuAdministrador      ul "" 
+                :                     template MenuUsuario "" IdAliado "@{Prozper.idAliado}"
+                :                     template OpcionesAdministrador ""
+                :                     template MenuTodos "" display "none"
 
                 headerCenter ul "class=mui-list--inline mui--text-body2"
-                :            li "class=mui--text-light mui--text-display1"                          "@{Prozper.aliado}"
-                :            li "class=mui--text-light mui--text-body1"                             "@{Prozper.status}"
-                :            li "class=mui--text-light mui--text-body1 comision@{Prozper.comision}" "$@{Prozper.comision}"
+                :            li "class=mui--text-light  mui--text-display1"                          "@{Prozper.aliado}"
+                :            li "class=mui--text-light  mui--text-body1"                             "@{Prozper.status}"
+                :            li "class=mui--text-light  mui--text-body1 comision@{Prozper.comision}" "$@{Prozper.comision}"
 
                 aliados          div       "class=row"
                 :                div       "class=mui-col-md-6"
@@ -360,13 +348,89 @@
             </div>
         </div>
 
-        <div ws-template="SubirDocumentos">
-            <form id="SubirDocumentos" class="mui-panel">
-                <label>Seleccione archivo a subir:</label>
-                <input type="file" name="some-file" />
-                <button onclick="subirDocumentos(event,'${id}')">Subir</button>
-            </form>
-        </div>
+        <ul ws-children-template="MenuNoUsuario">
+            <strong onclick="$(this).next().slideToggle(200)">Menú</strong>
+            <ul >
+                <li><a href="#/PreRegister">Me quiero registrar!</a></li>
+                <!-- li><a href="#">Mensajes</a></li -->
+            </ul>
+        </ul>
+
+        <ul ws-children-template="MenuUsuario">
+            <strong onclick="$(this).next().slideToggle(200)">Menú</strong>
+            <ul >
+                <li><a href="#">Inicio</a></li>
+                <!-- li><a href="#">Mensajes</a></li -->
+            </ul>
+            <li>
+                <strong onclick="$(this).next().slideToggle(200)">Referir</strong>
+                <ul style="display: none;">
+                    <li><a href="#/Content/ProzperLyt.cntFormaInvitaciones">Enviar Invitaciones</a></li>
+                    <li><a href="/Register/${IdAliado}">Llenar Afiliación</a></li>
+                    <!-- li><a href="#/Content/ProzperLyt.cntFormaRegistro">Llenar Afiliación</a></li -->
+                </ul>
+            </li>
+            <li>
+                <strong onclick="$(this).next().slideToggle(200)">Actualizar Información</strong>
+                <ul style="display: none;">
+                    <li><a href="#/Content/ProzperLyt.cntFormaFormasPago"    >Formas de Pago   </a></li>
+                    <li><a href="#/Content/ProzperLyt.cntFormaDatos"         >Datos Personales </a></li>
+                    <li><a href="#/Content/ProzperLyt.cntFormaContactos"     >Contactos        </a></li>
+                    <li><a href="/Profile"                                   >Cuenta           </a></li>
+                    <!-- li><a href="#/Content/ProzperLyt.cntFormaIdentificacion">Identificación   </a></li -->
+                    <li><a href="#/Content/ProzperLyt.cntSubirDocumentos"    >Documentos       </a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <ul ws-children-template="MenuTodos">
+            <li>
+                <strong onclick="$(this).next().slideToggle(200)">Kit de Inscripción</strong>
+                <ol style="display: ${display};">
+                    <li><a href="#/Pdf/blob/Inscripcion/01 Instructivo de Afiliacion.pdf"                   >Instructivo de Afiliación    </a></li>
+                    <li><a href="#/Pdf/blob/Inscripcion/02 Carta de Bienvenida.pdf"                         >Carta de Bienvenida          </a></li>
+                    <li><a href="#/Pdf/blob/Inscripcion/03 Presentacion Prozper.pdf"                        >Presentación Prozper         </a></li>
+                    <li><a href="#/Pdf/blob/Inscripcion/04 Contrato de Afiliacion Aliados Prozper Rev.3.pdf">Contrato de Afiliación       </a></li>
+                    <li><a href="#/Pdf/blob/Inscripcion/05 Form W-8BEN.pdf"                                 >Forma W-8BEN                 </a></li>
+                    <li><a href="#/Pdf/blob/Inscripcion/06 Form W-8BEN-E.pdf"                               >Forma W-8BEN-E               </a></li>
+                    <li><a href="#/Pdf/blob/Inscripcion/07 Form W-9.pdf"                                    >Forma W-9                    </a></li>
+                    <li><a href="#/Pdf/blob/Inscripcion/08 Cancelacion de contratos.pdf"                    >Cancelación de Contratos     </a></li>
+                    <li><a href="#/Pdf/blob/Inscripcion/09 Instructivo Cotizador Prozper.pdf"               >Instructivo Cotizador Prozper</a></li>
+                    <li><a href="#/Pdf/blob/Inscripcion/10 Anexo C - Ctas. Terceros.pdf"                    >Anexo C - Ctas. Terceros     </a></li>
+                </ol>
+                <script>
+                    function playVideo() {
+                        setTimeout(function(){
+                            var video = document.getElementById("videoViewer")
+                            try { video.pause(); } catch (e) {}
+                            try { video.load();  } catch (e) {}
+                            video.play(); 
+                        }, 200);
+                    }
+                    function showPDF(pdfURL) {
+                        var options = {
+                            pdfOpenParams: {
+                                navpanes : 1,
+                                toolbar  : 1,
+                                statusbar: 1,
+                                view: "FitV"
+                            }
+                        };
+                        if (document.getElementById("pdfViewer") == null)
+                            setTimeout(function () { showPDF(pdfURL) }, 100);
+                        else PDFObject.embed(pdfURL, "#pdfViewer", options);;
+                    }
+                </script>
+            </li>
+            <li>
+                <strong onclick="$(this).next().slideToggle(200)">Videos</strong>
+                <ul style="display: ${display};">
+                    <li><a href="#/Video/blob/Inscripcion/VIDEO PROMO PROZPER_001.mp4">Promoción Prozper   </a></li>
+                    <li><a href="#/Video/blob/Inscripcion/Esp_Prozper_002.mp4"            >Video en Español    </a></li>
+                    <li><a href="#/Video/blob/Inscripcion/Ing_Prozper_002.mp4"            >Video in English    </a></li>
+                </ul>
+            </li>
+        </ul>
 
         <div ws-children-template="Correo">
             <br>
@@ -630,10 +694,10 @@
                 <label>Filtro</label>
             </div>
             <datalist id="Referidores" ws-hole="Referidores" ></datalist>
-            <datalist id="Statuses"    ws-hole="Statuses"    ></datalist>
             <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
                 <thead>
                     <th ws-onclick="sort_nombre"        style="width:5%; text-align:center">Nombre       </th>
+                    <th ws-onclick="sort_influyente"    style="width:1%; text-align:center">Influ.       </th>
                     <th ws-onclick="sort_tipo"          style="width:1%; text-align:center">Tipo         </th>
                     <th ws-onclick="sort_status"        style="width:1%; text-align:center">Status       </th>
                     <th ws-onclick="sort_referido"      style="width:1%; text-align:center; font-size: x-small">Referido por </th>
@@ -649,9 +713,12 @@
                 <tbody ws-hole="TBody" ws-children-template="FilaConsolidado">
                     <tr style="">
                         <td> <div style="text-align: center                     ">${nombre}        </div> </td>
+                        <td> <div style="text-align: center; font-size: small ">
+                            <input type="text" name="Influyente" ws-var="influyente" " >
+                        </div> </td>
                         <td> <div style="text-align: center                     ">${tipo}          </div> </td>
-                        <td> <div style="text-align: center; font-size: x-small ">
-                            <input type="text" name="Referido" ws-var="status" list="Statuses" >
+                        <td> <div style="text-align: center; font-size: small ">
+                            <select type="text" name="Status" ws-var="status" ws-hole="Statuses" ></select>
                         </div> </td>
                         <td> <div style="text-align: center; font-size: x-small ">
                             <input type="text" name="Referido" ws-var="referido" list="Referidores" >
@@ -692,21 +759,26 @@
             </table>
         </div>
 
-        <div ws-template=ListaDocs class="mui-panel">
-                <!--button type="button" class="mui-btn mui-btn--raised mui-btn--primary" ws-onclick="Exportar"   >Exportar</button-->
-                <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
-                    <thead>
-                        <th style="width:  1%; text-align: center">Nombre</th>
-                    </thead>
-                    <tbody ws-hole="TBody" ws-children-template="FilaDocs">
-                        <tr>
-                            <td> <div style="text-align: right"     >${nombre}        </div> </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div ws-template="SubirDocumentos">
+            <form id="SubirDocumentos">
+                <label>Seleccione archivo a subir:</label>
+                <input type="file" name="some-file" />
+                <button ws-onclick="Subir">Subir</button>
+            </form>
+            <!--button type="button" class="mui-btn mui-btn--raised mui-btn--primary" ws-onclick="Exportar"   >Exportar</button-->
+            <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
+                <thead>
+                    <th style="width:  1%; text-align: center">Nombre</th>
+                </thead>
+                <tbody ws-hole="TBody" ws-children-template="FilaDocs">
+                    <tr>
+                        <td> <a href="/documentos/${idAliado}/${nombre}" style="text-align: left" target="_blank"    >${nombre}        </a> </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     
-            <div ws-template=TablaAliados>
+        <div ws-template=TablaAliados>
             <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
                 <thead>
                     <th style="width:  20%; text-align: center">Aliado</th>
@@ -1379,28 +1451,4 @@
   </body>
   <script src="/blob/Scripts/FileSaver.js"></script>
   <script src="/blob/Scripts/testing.js"></script>
-  <script>
-    function subirDocumentos(e, id) {
-        console.log("subirDocumentos", e);
-        e.preventDefault();
-
-        var form = $("#SubirDocumentos");
-        var fd = new FormData();
-        $.each(form.serializeArray(), function (index, val) {
-            fd.append(val.name, val.value)
-        });
-        var file     = form.children('input[type=file]')[0].files[0];
-        var filename = file.name;
-        fd.append('file', file);
-
-        $.ajax({
-            type       : "post"
-          , url        : "/api/subir/" + id + "/" + filename
-          , data       : fd
-          , contentType: false
-          , processData: false
-          , success: function (data) { alert(data + ":" + filename); }
-        });
-    }
-  </script>
 </html>

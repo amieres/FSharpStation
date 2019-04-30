@@ -362,7 +362,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 (function()
 {
  "use strict";
- var Global,FsRoot,ProzperClient,MainProgram,WebSharper,Obj,UI,Var$1,View,Prozper,TypesV0,IdAliado,Aliado,ModeloUI,Aliado$1,LibraryJS,AppFramework,PlugIn,Lazy,RenderAliados,RenderAliado,FormaRegistro,FormaDatos,FormaContactos,FormaFormasPago,ReporteConsolidado,TablaPagos,Operators,EventTarget,Node,JavaScript,JS,Unchecked,LayoutEngineModule,Option,Var,Arrays,Templating,Runtime,Server,ProviderBuilder,Rpc,Handler,TemplateInstance,Aliado$2,testing_Templates,testing_GeneratedPrintf,testing_Router,Doc,Modelo,ConcreteVar,Snap,SC$1,DatosPersonales,StatusAliado,DiaPago,TipoAliado,Numeric,ListModel,PlugInVar,PlugInView,PlugInDoc,Pervasives,LazyExtensionsProxy,LazyRecord,ProzperServer_GeneratedPrintf,ProzperServer_JsonDecoder,ProzperServer_JsonEncoder,Seq,Library,SortWith,Buscar,Collections,FSharpSet,Set,Strings,CorreoElectronico,DatosPersonales$1,CorreoElectronico$1,Telefono,Direccion,Monads,AsyncResultMAutoOpen,AsyncResultM,AsyncResultMBuilder,Refresh,System,Guid,ResultMessage,Msal,Fila,VariousUI,Utils,Date,CuentaBancaria,RoutingNumber,NumeroCuenta,FormaPago,ResultM,PlugInAction,WindowOrWorkerGlobalScope,LayoutEngine,SC$2,List,Dictionary,HashSet,Client,Abbrev,Async,SC$3,PremisasCalculo,Fresh,String,Slice,List$1,Msal$1,Policy,UserAgentApplication,EndPoint,Router,ViewBuilder,Pais,Genero,Direccion$1,Telefono$1,PlugInQuery,FSharpMap,Enumerator,T,BalancedTree,T$1,ParseO,TipoTelefono,TipoDireccion,Estado,ZonaPostal,Rpc$1,Array,HtmlModule,attr,NumeroTarjeta,TarjetaCredito,CuentaBancaria$1,TarjetaCredito$1,Result,Object,FromView,TipoCuenta,Concurrency,IdPayment,Result$1,AttrModule,WebComponent,WcTabStrip,WcTabStripT,LayoutEngine_Templates,GeneratedPrintf,LayoutEngine_GeneratedPrintf,WcSplitter,AttrProxy,CheckedInput,DictionaryUtil,Client$1,Templates,Builder,Builder$1,Serializer,Expiracion,TipoTarjeta,Pojo,Sitelets,RouterOperators,RouterModule,Route,IdAddress,MapUtil,Tree,Array$1,Docs,AsyncBody,SC$4,CT,Layout,Attrs,DomUtility,DateUtil,WcSplitterT,DocElemNode,CharacterData,SC$5,Router$1,List$2,Pair,Scheduler,CancellationTokenSource,ClientSideJson,Provider,Measures,Hoverable,Hoverable$1,Storage,Event,UIEvent,ResizeObserver,Prepare,Elt,An,Settings,Mailbox,SC$6,Attrs$1,Dyn,HashSetUtil,SC$7,Map,Error,OperationCanceledException,Queue,DynamicAttrNode,AggregateException,ArrayStorage,Updates,Docs$1,RunState,NodeSet,Anims,SC$8,KeyCollection,Char,StringEncoding,Promise,FormatException,SC$9,SC$10,String$1,SC$11,AppendList,PathUtil,Easing,HashSet$1,NonStandardPromiseRejectionException,DomNodes,SC$12,IntelliFactory,Runtime$1,Math,console,JSON,Date$1,Reflect,$,String$2;
+ var Global,FsRoot,ProzperClient,MainProgram,WebSharper,Obj,UI,Var$1,LibraryJS,AppFramework,PlugIn,ModeloUI,Aliado,Operators,View,Var,Lazy,RenderAliados,RenderAliado,FormaRegistro,FormaDatos,FormaContactos,FormaFormasPago,ReporteConsolidado,TablaPagos,ListaDocs,EventTarget,Node,JavaScript,JS,Unchecked,LayoutEngineModule,Option,Prozper,TypesV0,Aliado$1,Aliado$2,Templating,Runtime,Server,TemplateInstance,Arrays,ProviderBuilder,Handler,testing_Templates,testing_GeneratedPrintf,testing_Router,Doc,Rpc,IdAliado,Modelo,ConcreteVar,Snap,SC$1,ListModel,PlugInVar,PlugInView,PlugInDoc,Pervasives,LazyExtensionsProxy,LazyRecord,ProzperServer_GeneratedPrintf,ProzperServer_JsonDecoder,ProzperServer_JsonEncoder,Seq,Library,SortWith,Buscar,Collections,FSharpSet,Set,Strings,CorreoElectronico,DatosPersonales,CorreoElectronico$1,Telefono,Direccion,Monads,AsyncResultMAutoOpen,AsyncResultM,AsyncResultMBuilder,Refresh,System,Guid,ResultMessage,Fila,VariousUI,StatusAliado,Utils,Date,List,CuentaBancaria,RoutingNumber,NumeroCuenta,FormaPago,ResultM,PlugInAction,Msal,WindowOrWorkerGlobalScope,LayoutEngine,SC$2,IdForAuthorize,DatosPersonales$1,DiaPago,TipoAliado,Numeric,SC$3,List$1,Dictionary,HashSet,Client,Abbrev,Async,PremisasCalculo,Fresh,String,Slice,Msal$1,Policy,UserAgentApplication,EndPoint,Router,ViewBuilder,Remoting,Rpc$1,PlugInQuery,FSharpMap,Enumerator,T,BalancedTree,T$1,Genero,ParseO,Pais,Telefono$1,TipoTelefono,Direccion$1,TipoDireccion,Estado,ZonaPostal,Array,HtmlModule,attr,NumeroTarjeta,TarjetaCredito,CuentaBancaria$1,TarjetaCredito$1,Result,Object,FromView,Array$1,TipoCuenta,Concurrency,IdPayment,Result$1,Blob,AttrModule,WebComponent,WcTabStrip,WcTabStripT,LayoutEngine_Templates,GeneratedPrintf,LayoutEngine_GeneratedPrintf,WcSplitter,Builder,Builder$1,Serializer,Expiracion,TipoTarjeta,DictionaryUtil,AttrProxy,CheckedInput,Client$1,Templates,Pojo,Sitelets,RouterOperators,RouterModule,Route,SC$4,AjaxRemotingProvider,MapUtil,Tree,IdAddress,Docs,AsyncBody,SC$5,CT,Layout,Attrs,DomUtility,DateUtil,WcSplitterT,DocElemNode,CharacterData,SC$6,Router$1,List$2,XhrProvider,TaskCompletionSource,Pair,Json,Scheduler,CancellationTokenSource,ClientSideJson,Provider,Measures,Hoverable,Hoverable$1,Storage,Event,UIEvent,ResizeObserver,SC$7,Elt,Attrs$1,Dyn,Prepare,An,Settings,Mailbox,HashSetUtil,SC$8,Map,Error,OperationCanceledException,Task,Task1,AggregateException,Queue,DynamicAttrNode,ArrayStorage,KeyCollection,Updates,Docs$1,RunState,NodeSet,Anims,SC$9,Char,StringEncoding,Promise,FormatException,SC$10,SC$11,String$1,SC$12,AppendList,PathUtil,Easing,HashSet$1,NonStandardPromiseRejectionException,DomNodes,SC$13,IntelliFactory,Runtime$1,Math,$,console,JSON,Date$1,Reflect,String$2;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  ProzperClient=FsRoot.ProzperClient=FsRoot.ProzperClient||{};
@@ -371,16 +371,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Obj=WebSharper.Obj=WebSharper.Obj||{};
  UI=WebSharper.UI=WebSharper.UI||{};
  Var$1=UI.Var$1=UI.Var$1||{};
- View=UI.View=UI.View||{};
- Prozper=FsRoot.Prozper=FsRoot.Prozper||{};
- TypesV0=Prozper.TypesV0=Prozper.TypesV0||{};
- IdAliado=TypesV0.IdAliado=TypesV0.IdAliado||{};
- Aliado=TypesV0.Aliado=TypesV0.Aliado||{};
- ModeloUI=ProzperClient.ModeloUI=ProzperClient.ModeloUI||{};
- Aliado$1=ModeloUI.Aliado=ModeloUI.Aliado||{};
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
  AppFramework=LibraryJS.AppFramework=LibraryJS.AppFramework||{};
  PlugIn=AppFramework.PlugIn=AppFramework.PlugIn||{};
+ ModeloUI=ProzperClient.ModeloUI=ProzperClient.ModeloUI||{};
+ Aliado=ModeloUI.Aliado=ModeloUI.Aliado||{};
+ Operators=WebSharper.Operators=WebSharper.Operators||{};
+ View=UI.View=UI.View||{};
+ Var=UI.Var=UI.Var||{};
  Lazy=WebSharper.Lazy=WebSharper.Lazy||{};
  RenderAliados=ModeloUI.RenderAliados=ModeloUI.RenderAliados||{};
  RenderAliado=ModeloUI.RenderAliado=ModeloUI.RenderAliado||{};
@@ -390,7 +388,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  FormaFormasPago=ModeloUI.FormaFormasPago=ModeloUI.FormaFormasPago||{};
  ReporteConsolidado=ModeloUI.ReporteConsolidado=ModeloUI.ReporteConsolidado||{};
  TablaPagos=ModeloUI.TablaPagos=ModeloUI.TablaPagos||{};
- Operators=WebSharper.Operators=WebSharper.Operators||{};
+ ListaDocs=ModeloUI.ListaDocs=ModeloUI.ListaDocs||{};
  EventTarget=Global.EventTarget;
  Node=Global.Node;
  JavaScript=WebSharper.JavaScript=WebSharper.JavaScript||{};
@@ -398,29 +396,27 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Unchecked=WebSharper.Unchecked=WebSharper.Unchecked||{};
  LayoutEngineModule=LibraryJS.LayoutEngineModule=LibraryJS.LayoutEngineModule||{};
  Option=WebSharper.Option=WebSharper.Option||{};
- Var=UI.Var=UI.Var||{};
- Arrays=WebSharper.Arrays=WebSharper.Arrays||{};
+ Prozper=FsRoot.Prozper=FsRoot.Prozper||{};
+ TypesV0=Prozper.TypesV0=Prozper.TypesV0||{};
+ Aliado$1=TypesV0.Aliado=TypesV0.Aliado||{};
+ Aliado$2=Prozper.Aliado=Prozper.Aliado||{};
  Templating=UI.Templating=UI.Templating||{};
  Runtime=Templating.Runtime=Templating.Runtime||{};
  Server=Runtime.Server=Runtime.Server||{};
- ProviderBuilder=Server.ProviderBuilder=Server.ProviderBuilder||{};
- Rpc=ModeloUI.Rpc=ModeloUI.Rpc||{};
- Handler=Server.Handler=Server.Handler||{};
  TemplateInstance=Server.TemplateInstance=Server.TemplateInstance||{};
- Aliado$2=Prozper.Aliado=Prozper.Aliado||{};
+ Arrays=WebSharper.Arrays=WebSharper.Arrays||{};
+ ProviderBuilder=Server.ProviderBuilder=Server.ProviderBuilder||{};
+ Handler=Server.Handler=Server.Handler||{};
  testing_Templates=Global.testing_Templates=Global.testing_Templates||{};
  testing_GeneratedPrintf=Global.testing_GeneratedPrintf=Global.testing_GeneratedPrintf||{};
  testing_Router=Global.testing_Router=Global.testing_Router||{};
  Doc=UI.Doc=UI.Doc||{};
+ Rpc=ModeloUI.Rpc=ModeloUI.Rpc||{};
+ IdAliado=TypesV0.IdAliado=TypesV0.IdAliado||{};
  Modelo=TypesV0.Modelo=TypesV0.Modelo||{};
  ConcreteVar=UI.ConcreteVar=UI.ConcreteVar||{};
  Snap=UI.Snap=UI.Snap||{};
  SC$1=Global.StartupCode$testing$testing=Global.StartupCode$testing$testing||{};
- DatosPersonales=TypesV0.DatosPersonales=TypesV0.DatosPersonales||{};
- StatusAliado=TypesV0.StatusAliado=TypesV0.StatusAliado||{};
- DiaPago=TypesV0.DiaPago=TypesV0.DiaPago||{};
- TipoAliado=TypesV0.TipoAliado=TypesV0.TipoAliado||{};
- Numeric=WebSharper.Numeric=WebSharper.Numeric||{};
  ListModel=UI.ListModel=UI.ListModel||{};
  PlugInVar=AppFramework.PlugInVar=AppFramework.PlugInVar||{};
  PlugInView=AppFramework.PlugInView=AppFramework.PlugInView||{};
@@ -440,7 +436,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Set=Collections.Set=Collections.Set||{};
  Strings=WebSharper.Strings=WebSharper.Strings||{};
  CorreoElectronico=TypesV0.CorreoElectronico=TypesV0.CorreoElectronico||{};
- DatosPersonales$1=ModeloUI.DatosPersonales=ModeloUI.DatosPersonales||{};
+ DatosPersonales=ModeloUI.DatosPersonales=ModeloUI.DatosPersonales||{};
  CorreoElectronico$1=ModeloUI.CorreoElectronico=ModeloUI.CorreoElectronico||{};
  Telefono=ModeloUI.Telefono=ModeloUI.Telefono||{};
  Direccion=ModeloUI.Direccion=ModeloUI.Direccion||{};
@@ -452,54 +448,61 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  System=Global.System=Global.System||{};
  Guid=System.Guid=System.Guid||{};
  ResultMessage=Library.ResultMessage=Library.ResultMessage||{};
- Msal=ProzperClient.Msal=ProzperClient.Msal||{};
  Fila=ReporteConsolidado.Fila=ReporteConsolidado.Fila||{};
  VariousUI=ModeloUI.VariousUI=ModeloUI.VariousUI||{};
+ StatusAliado=TypesV0.StatusAliado=TypesV0.StatusAliado||{};
  Utils=WebSharper.Utils=WebSharper.Utils||{};
  Date=LibraryJS.Date=LibraryJS.Date||{};
+ List=WebSharper.List=WebSharper.List||{};
  CuentaBancaria=TypesV0.CuentaBancaria=TypesV0.CuentaBancaria||{};
  RoutingNumber=TypesV0.RoutingNumber=TypesV0.RoutingNumber||{};
  NumeroCuenta=TypesV0.NumeroCuenta=TypesV0.NumeroCuenta||{};
  FormaPago=TypesV0.FormaPago=TypesV0.FormaPago||{};
  ResultM=Monads.ResultM=Monads.ResultM||{};
  PlugInAction=AppFramework.PlugInAction=AppFramework.PlugInAction||{};
+ Msal=ProzperClient.Msal=ProzperClient.Msal||{};
  WindowOrWorkerGlobalScope=Global.WindowOrWorkerGlobalScope;
  LayoutEngine=LibraryJS.LayoutEngine=LibraryJS.LayoutEngine||{};
  SC$2=Global.StartupCode$LayoutEngine$LayoutEngine=Global.StartupCode$LayoutEngine$LayoutEngine||{};
- List=Collections.List=Collections.List||{};
+ IdForAuthorize=TypesV0.IdForAuthorize=TypesV0.IdForAuthorize||{};
+ DatosPersonales$1=TypesV0.DatosPersonales=TypesV0.DatosPersonales||{};
+ DiaPago=TypesV0.DiaPago=TypesV0.DiaPago||{};
+ TipoAliado=TypesV0.TipoAliado=TypesV0.TipoAliado||{};
+ Numeric=WebSharper.Numeric=WebSharper.Numeric||{};
+ SC$3=Global.StartupCode$ProzperServer$ProzperServer=Global.StartupCode$ProzperServer$ProzperServer||{};
+ List$1=Collections.List=Collections.List||{};
  Dictionary=Collections.Dictionary=Collections.Dictionary||{};
  HashSet=Collections.HashSet=Collections.HashSet||{};
  Client=Runtime.Client=Runtime.Client||{};
  Abbrev=UI.Abbrev=UI.Abbrev||{};
  Async=Abbrev.Async=Abbrev.Async||{};
- SC$3=Global.StartupCode$ProzperServer$ProzperServer=Global.StartupCode$ProzperServer$ProzperServer||{};
  PremisasCalculo=TypesV0.PremisasCalculo=TypesV0.PremisasCalculo||{};
  Fresh=Abbrev.Fresh=Abbrev.Fresh||{};
  String=Library.String=Library.String||{};
  Slice=WebSharper.Slice=WebSharper.Slice||{};
- List$1=WebSharper.List=WebSharper.List||{};
  Msal$1=LibraryJS.Msal=LibraryJS.Msal||{};
  Policy=Msal$1.Policy=Msal$1.Policy||{};
  UserAgentApplication=Msal$1.UserAgentApplication=Msal$1.UserAgentApplication||{};
  EndPoint=ModeloUI.EndPoint=ModeloUI.EndPoint||{};
  Router=UI.Router=UI.Router||{};
  ViewBuilder=UI.ViewBuilder=UI.ViewBuilder||{};
- Pais=TypesV0.Pais=TypesV0.Pais||{};
- Genero=TypesV0.Genero=TypesV0.Genero||{};
- Direccion$1=TypesV0.Direccion=TypesV0.Direccion||{};
- Telefono$1=TypesV0.Telefono=TypesV0.Telefono||{};
+ Remoting=WebSharper.Remoting=WebSharper.Remoting||{};
+ Rpc$1=Prozper.Rpc=Prozper.Rpc||{};
  PlugInQuery=AppFramework.PlugInQuery=AppFramework.PlugInQuery||{};
  FSharpMap=Collections.FSharpMap=Collections.FSharpMap||{};
  Enumerator=WebSharper.Enumerator=WebSharper.Enumerator||{};
  T=Enumerator.T=Enumerator.T||{};
  BalancedTree=Collections.BalancedTree=Collections.BalancedTree||{};
- T$1=List$1.T=List$1.T||{};
+ T$1=List.T=List.T||{};
+ Genero=TypesV0.Genero=TypesV0.Genero||{};
  ParseO=Library.ParseO=Library.ParseO||{};
+ Pais=TypesV0.Pais=TypesV0.Pais||{};
+ Telefono$1=TypesV0.Telefono=TypesV0.Telefono||{};
  TipoTelefono=TypesV0.TipoTelefono=TypesV0.TipoTelefono||{};
+ Direccion$1=TypesV0.Direccion=TypesV0.Direccion||{};
  TipoDireccion=TypesV0.TipoDireccion=TypesV0.TipoDireccion||{};
  Estado=TypesV0.Estado=TypesV0.Estado||{};
  ZonaPostal=TypesV0.ZonaPostal=TypesV0.ZonaPostal||{};
- Rpc$1=Prozper.Rpc=Prozper.Rpc||{};
  Array=Library.Array=Library.Array||{};
  HtmlModule=UI.HtmlModule=UI.HtmlModule||{};
  attr=HtmlModule.attr=HtmlModule.attr||{};
@@ -510,10 +513,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Result=WebSharper.Result=WebSharper.Result||{};
  Object=Global.Object;
  FromView=UI.FromView=UI.FromView||{};
+ Array$1=UI.Array=UI.Array||{};
  TipoCuenta=TypesV0.TipoCuenta=TypesV0.TipoCuenta||{};
  Concurrency=WebSharper.Concurrency=WebSharper.Concurrency||{};
  IdPayment=TypesV0.IdPayment=TypesV0.IdPayment||{};
  Result$1=Monads.Result=Monads.Result||{};
+ Blob=Global.Blob;
  AttrModule=UI.AttrModule=UI.AttrModule||{};
  WebComponent=LibraryJS.WebComponent=LibraryJS.WebComponent||{};
  WcTabStrip=WebComponent.WcTabStrip=WebComponent.WcTabStrip||{};
@@ -522,28 +527,29 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  GeneratedPrintf=Global.GeneratedPrintf=Global.GeneratedPrintf||{};
  LayoutEngine_GeneratedPrintf=Global.LayoutEngine_GeneratedPrintf=Global.LayoutEngine_GeneratedPrintf||{};
  WcSplitter=WebComponent.WcSplitter=WebComponent.WcSplitter||{};
- AttrProxy=UI.AttrProxy=UI.AttrProxy||{};
- CheckedInput=UI.CheckedInput=UI.CheckedInput||{};
- DictionaryUtil=Collections.DictionaryUtil=Collections.DictionaryUtil||{};
- Client$1=UI.Client=UI.Client||{};
- Templates=Client$1.Templates=Client$1.Templates||{};
  Builder=Result$1.Builder=Result$1.Builder||{};
  Builder$1=ResultM.Builder=ResultM.Builder||{};
  Serializer=Library.Serializer=Library.Serializer||{};
  Expiracion=TypesV0.Expiracion=TypesV0.Expiracion||{};
  TipoTarjeta=TypesV0.TipoTarjeta=TypesV0.TipoTarjeta||{};
+ DictionaryUtil=Collections.DictionaryUtil=Collections.DictionaryUtil||{};
+ AttrProxy=UI.AttrProxy=UI.AttrProxy||{};
+ CheckedInput=UI.CheckedInput=UI.CheckedInput||{};
+ Client$1=UI.Client=UI.Client||{};
+ Templates=Client$1.Templates=Client$1.Templates||{};
  Pojo=LibraryJS.Pojo=LibraryJS.Pojo||{};
  Sitelets=WebSharper.Sitelets=WebSharper.Sitelets||{};
  RouterOperators=Sitelets.RouterOperators=Sitelets.RouterOperators||{};
  RouterModule=Sitelets.RouterModule=Sitelets.RouterModule||{};
  Route=Sitelets.Route=Sitelets.Route||{};
- IdAddress=TypesV0.IdAddress=TypesV0.IdAddress||{};
+ SC$4=Global.StartupCode$WebSharper_Main$Remoting=Global.StartupCode$WebSharper_Main$Remoting||{};
+ AjaxRemotingProvider=Remoting.AjaxRemotingProvider=Remoting.AjaxRemotingProvider||{};
  MapUtil=Collections.MapUtil=Collections.MapUtil||{};
  Tree=BalancedTree.Tree=BalancedTree.Tree||{};
- Array$1=UI.Array=UI.Array||{};
+ IdAddress=TypesV0.IdAddress=TypesV0.IdAddress||{};
  Docs=UI.Docs=UI.Docs||{};
  AsyncBody=Concurrency.AsyncBody=Concurrency.AsyncBody||{};
- SC$4=Global.StartupCode$WebSharper_Main$Concurrency=Global.StartupCode$WebSharper_Main$Concurrency||{};
+ SC$5=Global.StartupCode$WebSharper_Main$Concurrency=Global.StartupCode$WebSharper_Main$Concurrency||{};
  CT=Concurrency.CT=Concurrency.CT||{};
  Layout=LayoutEngineModule.Layout=LayoutEngineModule.Layout||{};
  Attrs=UI.Attrs=UI.Attrs||{};
@@ -552,10 +558,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  WcSplitterT=WcSplitter.WcSplitterT=WcSplitter.WcSplitterT||{};
  DocElemNode=UI.DocElemNode=UI.DocElemNode||{};
  CharacterData=Global.CharacterData;
- SC$5=Global.StartupCode$WebSharper_UI$Abbrev=Global.StartupCode$WebSharper_UI$Abbrev||{};
+ SC$6=Global.StartupCode$WebSharper_UI$Abbrev=Global.StartupCode$WebSharper_UI$Abbrev||{};
  Router$1=Sitelets.Router=Sitelets.Router||{};
  List$2=Sitelets.List=Sitelets.List||{};
+ XhrProvider=Remoting.XhrProvider=Remoting.XhrProvider||{};
+ TaskCompletionSource=WebSharper.TaskCompletionSource=WebSharper.TaskCompletionSource||{};
  Pair=Collections.Pair=Collections.Pair||{};
+ Json=WebSharper.Json=WebSharper.Json||{};
  Scheduler=Concurrency.Scheduler=Concurrency.Scheduler||{};
  CancellationTokenSource=WebSharper.CancellationTokenSource=WebSharper.CancellationTokenSource||{};
  ClientSideJson=WebSharper.ClientSideJson=WebSharper.ClientSideJson||{};
@@ -567,57 +576,59 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Event=Global.Event;
  UIEvent=Global.UIEvent;
  ResizeObserver=LibraryJS.ResizeObserver=LibraryJS.ResizeObserver||{};
- Prepare=Templates.Prepare=Templates.Prepare||{};
+ SC$7=Global.StartupCode$WebSharper_UI$Templates=Global.StartupCode$WebSharper_UI$Templates||{};
  Elt=UI.Elt=UI.Elt||{};
+ Attrs$1=Client$1.Attrs=Client$1.Attrs||{};
+ Dyn=Attrs$1.Dyn=Attrs$1.Dyn||{};
+ Prepare=Templates.Prepare=Templates.Prepare||{};
  An=UI.An=UI.An||{};
  Settings=Client$1.Settings=Client$1.Settings||{};
  Mailbox=Abbrev.Mailbox=Abbrev.Mailbox||{};
- SC$6=Global.StartupCode$WebSharper_UI$Templates=Global.StartupCode$WebSharper_UI$Templates||{};
- Attrs$1=Client$1.Attrs=Client$1.Attrs||{};
- Dyn=Attrs$1.Dyn=Attrs$1.Dyn||{};
  HashSetUtil=Collections.HashSetUtil=Collections.HashSetUtil||{};
- SC$7=Global.StartupCode$WebSharper_Sitelets$Router=Global.StartupCode$WebSharper_Sitelets$Router||{};
+ SC$8=Global.StartupCode$WebSharper_Sitelets$Router=Global.StartupCode$WebSharper_Sitelets$Router||{};
  Map=Collections.Map=Collections.Map||{};
  Error=Global.Error;
  OperationCanceledException=WebSharper.OperationCanceledException=WebSharper.OperationCanceledException||{};
+ Task=WebSharper.Task=WebSharper.Task||{};
+ Task1=WebSharper.Task1=WebSharper.Task1||{};
+ AggregateException=WebSharper.AggregateException=WebSharper.AggregateException||{};
  Queue=WebSharper.Queue=WebSharper.Queue||{};
  DynamicAttrNode=UI.DynamicAttrNode=UI.DynamicAttrNode||{};
- AggregateException=WebSharper.AggregateException=WebSharper.AggregateException||{};
  ArrayStorage=Storage.ArrayStorage=Storage.ArrayStorage||{};
+ KeyCollection=Collections.KeyCollection=Collections.KeyCollection||{};
  Updates=UI.Updates=UI.Updates||{};
  Docs$1=Client$1.Docs=Client$1.Docs||{};
  RunState=Docs$1.RunState=Docs$1.RunState||{};
  NodeSet=Docs$1.NodeSet=Docs$1.NodeSet||{};
  Anims=UI.Anims=UI.Anims||{};
- SC$8=Global.StartupCode$WebSharper_UI$Doc_Proxy=Global.StartupCode$WebSharper_UI$Doc_Proxy||{};
- KeyCollection=Collections.KeyCollection=Collections.KeyCollection||{};
+ SC$9=Global.StartupCode$WebSharper_UI$Doc_Proxy=Global.StartupCode$WebSharper_UI$Doc_Proxy||{};
  Char=WebSharper.Char=WebSharper.Char||{};
  StringEncoding=Sitelets.StringEncoding=Sitelets.StringEncoding||{};
  Promise=JavaScript.Promise=JavaScript.Promise||{};
  FormatException=WebSharper.FormatException=WebSharper.FormatException||{};
- SC$9=Global.StartupCode$WebSharper_UI$DomUtility=Global.StartupCode$WebSharper_UI$DomUtility||{};
- SC$10=Global.StartupCode$WebSharper_UI$Attr_Client=Global.StartupCode$WebSharper_UI$Attr_Client||{};
+ SC$10=Global.StartupCode$WebSharper_UI$DomUtility=Global.StartupCode$WebSharper_UI$DomUtility||{};
+ SC$11=Global.StartupCode$WebSharper_UI$Attr_Client=Global.StartupCode$WebSharper_UI$Attr_Client||{};
  String$1=UI.String=UI.String||{};
- SC$11=Global.StartupCode$WebSharper_UI$Animation=Global.StartupCode$WebSharper_UI$Animation||{};
+ SC$12=Global.StartupCode$WebSharper_UI$Animation=Global.StartupCode$WebSharper_UI$Animation||{};
  AppendList=UI.AppendList=UI.AppendList||{};
  PathUtil=Sitelets.PathUtil=Sitelets.PathUtil||{};
  Easing=UI.Easing=UI.Easing||{};
  HashSet$1=Abbrev.HashSet=Abbrev.HashSet||{};
  NonStandardPromiseRejectionException=JavaScript.NonStandardPromiseRejectionException=JavaScript.NonStandardPromiseRejectionException||{};
  DomNodes=Docs$1.DomNodes=Docs$1.DomNodes||{};
- SC$12=Global.StartupCode$WebSharper_UI$AppendList=Global.StartupCode$WebSharper_UI$AppendList||{};
+ SC$13=Global.StartupCode$WebSharper_UI$AppendList=Global.StartupCode$WebSharper_UI$AppendList||{};
  IntelliFactory=Global.IntelliFactory;
  Runtime$1=IntelliFactory&&IntelliFactory.Runtime;
  Math=Global.Math;
+ $=Global.jQuery;
  console=Global.console;
  JSON=Global.JSON;
  Date$1=Global.Date;
  Reflect=Global.Reflect;
- $=Global.jQuery;
  String$2=Global.String;
  MainProgram.mainProgram=function()
  {
-  var titleV,mesActualW,anoActualW,nombreAliadoW,idAliadoW,statusAliadoW,comisionAliadoW,datosAliadoW,l,m,a,o,v,getExtraMenu,b,t,h,M,p;
+  var titleV,mesActualW,anoActualW,nombreAliadoW,idAliadoW,statusAliadoW,comisionAliadoW,datosAliadoW,l,m,a,o,v,b,t,h,M,M$1,p;
   titleV=Var$1.Create$1(MainProgram.appName());
   mesActualW=View.Map(function($1)
   {
@@ -647,7 +658,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return Global.String($1.nReferidos);
   },ModeloUI.aliadoW());
-  AppFramework.addPlugIn(PlugIn.New(MainProgram.appName(),[AppFramework.newVar("title",titleV),AppFramework.newVar("contentVar",ModeloUI.contentVar()),AppFramework.newVar("invitaciones",ModeloUI.invitacionesV())],[AppFramework.newViw("mesActual",mesActualW),AppFramework.newViw("anoActual",anoActualW),AppFramework.newViw("aliado",nombreAliadoW),AppFramework.newViw("idAliado",idAliadoW),AppFramework.newViw("status",statusAliadoW),AppFramework.newViw("comision",comisionAliadoW),AppFramework.newViw("datos",datosAliadoW),AppFramework.newViw("emailsInvitar",ModeloUI.emailsInvitarW()),AppFramework.newViw("invitacionesDisabled",ModeloUI.invitacionesDisabledW())],[AppFramework.newDoc("Aliados",Lazy.Create(RenderAliados.aliados)),AppFramework.newDoc("Aliado",Lazy.Create(RenderAliado.aliado)),AppFramework.newDoc("Calculo",Lazy.Create(RenderAliado.calculo)),AppFramework.newDoc("FormaRegistro",Lazy.Create(FormaRegistro.formaDoc)),AppFramework.newDoc("FormaDatos",Lazy.Create(FormaDatos.formaDoc)),AppFramework.newDoc("FormaContactos",Lazy.Create(FormaContactos.formaDoc)),AppFramework.newDoc("FormaFormasPago",Lazy.Create(FormaFormasPago.formaDoc)),AppFramework.newDoc("contentDoc",Lazy.Create(MainProgram.getContentDoc)),AppFramework.newDoc("ReporteConsolidado",Lazy.Create(ReporteConsolidado.consolidado)),AppFramework.newDoc("TablaPagos",Lazy.Create(TablaPagos.comisiones))],[AppFramework.newAct("Logout",function()
+  AppFramework.addPlugIn(PlugIn.New(MainProgram.appName(),[AppFramework.newVar("title",titleV),AppFramework.newVar("contentVar",ModeloUI.contentVar()),AppFramework.newVar("invitaciones",ModeloUI.invitacionesV()),AppFramework.newVar("influencer",MainProgram.influencerV())],[AppFramework.newViw("mesActual",mesActualW),AppFramework.newViw("anoActual",anoActualW),AppFramework.newViw("aliado",nombreAliadoW),AppFramework.newViw("idAliado",idAliadoW),AppFramework.newViw("status",statusAliadoW),AppFramework.newViw("comision",comisionAliadoW),AppFramework.newViw("datos",datosAliadoW),AppFramework.newViw("emailsInvitar",ModeloUI.emailsInvitarW()),AppFramework.newViw("invitacionesDisabled",ModeloUI.invitacionesDisabledW()),AppFramework.newViw("VideoW",View.Map(function($1)
+  {
+   return $1.$==5?$1.$0:"";
+  },ModeloUI.endPointV().get_View())),AppFramework.newViw("influencerW",MainProgram.influencerClassW())],[AppFramework.newDoc("Aliados",Lazy.Create(RenderAliados.aliados)),AppFramework.newDoc("Aliado",Lazy.Create(RenderAliado.aliado)),AppFramework.newDoc("Calculo",Lazy.Create(RenderAliado.calculo)),AppFramework.newDoc("FormaRegistro",Lazy.Create(FormaRegistro.formaDoc)),AppFramework.newDoc("FormaDatos",Lazy.Create(FormaDatos.formaDoc)),AppFramework.newDoc("FormaContactos",Lazy.Create(FormaContactos.formaDoc)),AppFramework.newDoc("FormaFormasPago",Lazy.Create(FormaFormasPago.formaDoc)),AppFramework.newDoc("contentDoc",Lazy.Create(MainProgram.getContentDoc)),AppFramework.newDoc("ReporteConsolidado",Lazy.Create(ReporteConsolidado.consolidado)),AppFramework.newDoc("TablaPagos",Lazy.Create(TablaPagos.comisiones)),AppFramework.newDoc("ListaDocs",Lazy.Create(ListaDocs.listaDocs))],[AppFramework.newAct("Logout",function()
   {
    MainProgram.logout();
   }),AppFramework.newAct("LogIn",function()
@@ -660,34 +674,30 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   LayoutEngineModule.addLayout((l=(m=self.document.getElementById("GlobalLayout"),Unchecked.Equals(m,null)?"\r\n                        menuEditor layout\r\n                        |          main\r\n        \r\n                        main div \"\"\r\n                        :                 template  header     \"id=header\"           brand  brandV   logout \"@{Prozper.Logout}\" afiliado \"@{Prozper.aliado}\"\r\n                        :                 Doc       Prozper.contentDoc\r\n                        :                 template  sidedrawer \"id=sidedrawer\"       brand  brandV   idaliado \"@{Prozper.idAliado}\" \r\n                        :                 template  footer     \"id=footer\"           brand  brandV   madeby \"CIPHER Bsc\" madebylink \"www.cipherbsc.com\"\r\n         \r\n                        mainContent          template  content    \"id=content-wrapper\"  content aliados                  fecha \"@{Prozper.mesActual} @{Prozper.anoActual}\" idaliado \"@{Prozper.aliado}\"\r\n                        cntFormaRegistro     template  content    \"id=content-wrapper\"  content Prozper.FormaRegistro    titulo \"Referido por: @{Prozper.aliado}\"  \r\n                        cntFormaDatos        template  content    \"id=content-wrapper\"  content Prozper.FormaDatos       titulo \" \"\r\n                        cntFormaContactos    template  content    \"id=content-wrapper\"  content Prozper.FormaContactos   titulo \" \" \r\n                        cntFormaFormasPago   template  content    \"id=content-wrapper\"  content Prozper.FormaFormasPago  titulo \" \" \r\n                        cntFormaCuentas      template  content    \"id=content-wrapper\"  content ProzperLyt.FormaCuentas  titulo \" \"  \r\n                        cntFormaDocumentos   template  content    \"id=content-wrapper\"  content Prozper.FormaDocumentos  titulo \" \"  \r\n                        cntFormaNoUser       template  content    \"id=content-wrapper\"  content botonLogin               titulo \" \"  \r\n                        cntFormaInvitaciones template  content    \"id=content-wrapper\"  content invitaciones             titulo \" \"  \r\n        \r\n                        aliados          div       \"class=row\"\r\n                        :                div       \"class=mui-col-md-6\"\r\n                        ::               div       \"class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto\" Prozper.Aliados\r\n                        :                div       \"class=mui-col-md-6\"\r\n                        ::               div       \"class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto\" Aliado Comisiones\r\n                        brandV           Var       \"Prozper\"\r\n        \r\n                        botonLogin       div       \"class=row\"\r\n                        :                div       \"class=mui-col-md-6\"\r\n                        ::               div       \"class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto\" \r\n                        :::              button    Prozper.LogIn \"class=mui-btn mui-btn--primary\" \"Ingresar al Sistema\"\r\n        \r\n                        invitaciones     div       \"class=row\"\r\n                        :                div       \"class=mui-col-md-6 mui-col-md-offset-1\"\r\n                        ::               div       \"class=mui-panel mui--z5 scrollbar; max-height:550px ; overflow:auto\" \r\n                        :::              h1        \"\" \"Enviar Invitaciones\"\r\n                        :::              textarea  Prozper.invitaciones  \"width:100% ; height:30rem; placeholder=Copie aqui las direcciones de correo electronico\" \r\n                        :                div       \"white-space: pre-wrap\" \"@{Prozper.emailsInvitar}\"\r\n                        :                button    Prozper.enviarInvitaciones \"class=mui-btn mui-btn--raised mui-btn--primary;@{Prozper.invitacionesDisabled}\" \"Enviar\"\r\n        \r\n                        Aliado           div       \"class=mui-col-md-8\"\r\n                        :                Doc Prozper.Aliado\r\n        \r\n                        Comisiones       template    tablacomisiones \"class=mui-col-md-3\"  tbody filasComisiones\r\n                        filasComisiones  concat      \"\"\r\n                        :                template    filacomision    \"\"  periodo \"Ene 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Feb 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Mar 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Abr 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"May 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Jun 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Jul 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Ago 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Sep 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Oct 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Nov 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Dec 2018\" comision \"$1,000\"\r\n                \r\n                        menuEditorx      horizontal  65          menuLogo                  editorMessages\r\n                        double           horizontal  0-50-100    AppFramework.AppFwkClient menuEditor\r\n                        menuLogo         vertical    350         logo                      menu\r\n                        logo             span       \"margin:0;   color:gray; font-size: 55px; font-weight:530\" \"StackOverflow\"\r\n                        editorMessages   horizontal  10-83-100   editorButtons             messages\r\n                        messages         vertical    0-50-100    messagesLeft              messagesRight\r\n                        editorButtons    vertical    150 buttons snippetsSnippet \r\n                        snippetsSnippet  vertical    0-20-100    snippets                  editorProperties\r\n                        snippets         horizontal  20          \"@{FSharpStation.CurrentPath}\" tblDimensions2\r\n                        editorProperties vertical    0-100-100   snippet                   properties\r\n                        properties       div        \"\"           FSharpStation.Properties\r\n                        snippet          horizontal  35          Name                      FSharpStation.editor\r\n                        menu             span       \"display: grid; grid-template-columns: 30% 20% 20% 10%; grid-gap: 25px; margin:5px; grid-template-rows:50px\" inpServer btnLoad btnSaveAs\r\n                         \r\n                        severalTabs      wcomp-tabstrip  \"\" \r\n                        :                div \"tabname=Dimensions\" \r\n                        ::               div \"\" btnAddDimension RuleEditor.Dimensions\r\n                        :                div \"tabname=Cubes\"\r\n                        :                div \"tabname=Global Definitions\" RuleEditor.globalDefs\r\n                \r\n                        btnSaveAs        button RuleEditor.SaveAs         \"class=btn @{RuleEditor.SaveNeeded}\" \"Save as...    \"\r\n                        btnAddDimension  button RuleEditor.AddDimension      \"\"                  \"new dim...\"\r\n                        btnDeleteSnippet button FSharpStation.RemoveSnippet  \"\"                  \"Delete Snippet\"\r\n                        btnIndentIn      button FSharpStation.IndentIn       \"\"                  \"Indent In  >> \"\r\n                        btnIndentOut     button FSharpStation.IndentOut      \"\"                  \"Indent Out << \"\r\n                        btnRunFS         button FSharpStation.RunFS          \"\"                  \"Run F#        \"\r\n                        btnAbortFsi      button FSharpStation.AbortFsi       \"\"                  \"Abort Fsi     \"\r\n                \r\n                        messagesLeft     wcomp-tabstrip                      \"\"                  Output FsCode\r\n                        messagesRight    wcomp-tabstrip                      \"\"                  Parser\r\n                \r\n                        buttons          div \"overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px\"\r\n                        :                button RuleEditor.AddCalculation    \"\"                 \"Add Calculation\"\r\n                        :                button RuleEditor.AddTotal          \"\"                 \"Add Total\"\r\n                        :                Doc       none x\r\n                        :                button RuleEditor.IndentIn          \"\"                  \"Indent In  >> \"\r\n                        :                button RuleEditor.IndentOut         \"\"                  \"Indent Out << \"\r\n                \r\n                        Output           textarea  RuleEditor.Output         \"tabname=Output ; placeholder=Output messages ; spellcheck=false\" \r\n                        FsCode           textarea  RuleEditor.CodeFS         \"tabname=F# Code; placeholder=F# Code         ; spellcheck=false\" \r\n                        Parser           textarea  RuleEditor.Parser         \"tabname=Parser ; placeholder=Parser messages; dblclick=@{FSharpStation.JumpTo} ; spellcheck=false\" \r\n                        Name             Doc       InputLabel                \"\"     \"Name:\"        FSharpStation.SnippetName\r\n                        inpServer        Doc       InputLabel                \"\"     \"Server:\"      RuleEditor.Server\r\n                        btnLoad          Doc       InputFile                 \"\"     \"Load File...\" RuleEditor.LoadFile  FileName\r\n                        btnImport        Doc       InputFile                 \"\"     \"Import...\"    FSharpStation.Import    \"\"\r\n                        FileName         div                                 \"class=form-control\"  RuleEditor.fileName\r\n        \r\n                   ":m.textContent),LayoutEngineModule.newLyt(MainProgram.layoutName(),l)));
   a=(o=null,(v=MainProgram.layoutName(),o==null?v:o.$0));
   AppFramework.mainDocV().Set(a);
-  getExtraMenu=Doc.BindView(function(al)
+  Doc.BindView(function(al)
   {
    var b$1,p$1,i;
    return Unchecked.Equals(al.id,Aliado$2.empty().id)?(b$1=ProviderBuilder.Make(),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i=new TemplateInstance.New(p$1[1],testing_Templates.opcionesadministrador(p$1[0])),(b$1.i=i,i)))).get_Doc():Doc.get_Empty();
   },ModeloUI.aliadoW());
-  b=(t=(h=MainProgram.getDocView(MainProgram.layoutName(),"headerCenter"),(M=MainProgram.getContentDoc(),ProviderBuilder.Make().WithHole({
+  b=(t=(h=MainProgram.getDocView(MainProgram.layoutName(),"headerCenter"),(M=MainProgram.getMenuDoc(),(M$1=MainProgram.getContentDoc(),ProviderBuilder.Make().WithHole({
    $:0,
    $0:"maincontent",
+   $1:M$1
+  })).WithHole({
+   $:0,
+   $0:"menu",
    $1:M
   })).WithHole({
    $:0,
    $0:"headercenter",
    $1:h
-  })).WithHole({
-   $:2,
-   $0:"idaliado",
-   $1:idAliadoW
-  }),t.WithHole(Handler.EventQ2(t.k,"logout",function()
+  })),t.WithHole(Handler.EventQ2(t.k,"logout",function()
   {
    return t.i;
   },function()
   {
    MainProgram.logout();
   }))).WithHole({
-   $:0,
-   $0:"extramenu",
-   $1:getExtraMenu
-  }).WithHole({
    $:2,
    $0:"cortina",
    $1:View.Map(function($1)
@@ -707,16 +717,22 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$1.$cctor();
   return SC$1.appName;
  };
+ MainProgram.influencerV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.influencerV;
+ };
+ MainProgram.influencerClassW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.influencerClassW;
+ };
  MainProgram.getContentDoc=function()
  {
-  var $1,$2;
-  function a(content,userO)
+  return Doc.EmbedView(View.Map(function(d)
   {
-   var content$1;
-   content$1=userO!=null&&userO.$==1?content:MainProgram.layoutName()+".cntFormaNoUser";
-   return MainProgram.getDoc(MainProgram.appName(),content$1);
-  }
-  return Doc.EmbedView(($1=ModeloUI.contentVar().get_View(),($2=Msal.userO().get_View(),(((Runtime$1.Curried3(View.Map2))(a))($1))($2))));
+   return MainProgram.getDoc(MainProgram.appName(),d);
+  },ModeloUI.contentVar().get_View()));
  };
  MainProgram.logout=function()
  {
@@ -763,6 +779,15 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   SC$1.$cctor();
   return SC$1.layoutName;
+ };
+ MainProgram.getMenuDoc=function()
+ {
+  return Doc.EmbedView(View.Map2(function($1,$2)
+  {
+   var d;
+   d=$1!=null&&$1.$==1?Unchecked.Equals($2.id,Aliado$2.empty().id)?"ProzperLyt.mnuAdministrador":"ProzperLyt.mnuUsuario":"ProzperLyt.mnuNoUsuario";
+   return MainProgram.getDoc(MainProgram.appName(),d);
+  },Msal.userO().get_View(),ModeloUI.aliadoW()));
  };
  MainProgram.getDocView=function(appName,docName)
  {
@@ -867,340 +892,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Var$1.Set=function(_var,value)
  {
   _var.Set(value);
- };
- View.Map=function(fn,a)
- {
-  return View.CreateLazy(function()
-  {
-   return Snap.Map(fn,a());
-  });
- };
- View.Sink=function(act,a)
- {
-  function loop()
-  {
-   Snap.WhenRun(a(),act,function()
-   {
-    Concurrency.scheduler().Fork(loop);
-   });
-  }
-  Concurrency.scheduler().Fork(loop);
- };
- View.CreateLazy=function(observe)
- {
-  var lv;
-  lv={
-   c:null,
-   o:observe
-  };
-  return function()
-  {
-   var c,$1;
-   c=lv.c;
-   return c===null?(c=lv.o(),lv.c=c,($1=c.s,$1!=null&&$1.$==0)?lv.o=null:Snap.WhenObsoleteRun(c,function()
-   {
-    lv.c=null;
-   }),c):c;
-  };
- };
- View.Map2=function(fn,a,a$1)
- {
-  return View.CreateLazy(function()
-  {
-   return Snap.Map2(fn,a(),a$1());
-  });
- };
- View.Apply=function(fn,view)
- {
-  return View.Map2(function(f,x)
-  {
-   return f(x);
-  },fn,view);
- };
- View.Map3=function(fn,a,a$1,a$2)
- {
-  return View.CreateLazy(function()
-  {
-   return Snap.Map3(fn,a(),a$1(),a$2());
-  });
- };
- View.MapAsync=function(fn,a)
- {
-  return View.CreateLazy(function()
-  {
-   return Snap.MapAsync(fn,a());
-  });
- };
- View.GetAsync=function(v)
- {
-  return Concurrency.FromContinuations(function(ok)
-  {
-   return View.Get(ok,v);
-  });
- };
- View.Const=function(x)
- {
-  var o;
-  o=Snap.New({
-   $:0,
-   $0:x
-  });
-  return function()
-  {
-   return o;
-  };
- };
- View.get_Do=function()
- {
-  return ViewBuilder.B;
- };
- View.TryGet=function(a)
- {
-  return Snap.TryGet(a());
- };
- View.Get=function(f,a)
- {
-  var ok;
-  function obs()
-  {
-   Snap.WhenRun(a(),function(v)
-   {
-    if(!ok[0])
-     {
-      ok[0]=true;
-      f(v);
-     }
-   },function()
-   {
-    if(!ok[0])
-     obs();
-   });
-  }
-  ok=[false];
-  obs();
- };
- View.Bind=function(fn,view)
- {
-  return View.Join(View.Map(fn,view));
- };
- View.MapSeqCachedViewBy=function(key,conv,view)
- {
-  var state;
-  state=[new Dictionary.New$5()];
-  return View.Map(function(xs)
-  {
-   var prevState,newState,result;
-   prevState=state[0];
-   newState=new Dictionary.New$5();
-   result=Array$1.mapInPlace(function(x)
-   {
-    var k,node,n;
-    k=key(x);
-    node=prevState.ContainsKey(k)?(n=prevState.get_Item(k),(Var$1.Set(n.r,x),n)):View.ConvertSeqNode(function(v)
-    {
-     return conv(k,v);
-    },x);
-    newState.set_Item(k,node);
-    return node.e;
-   },Arrays.ofSeq(xs));
-   state[0]=newState;
-   return result;
-  },view);
- };
- View.Join=function(a)
- {
-  return View.CreateLazy(function()
-  {
-   return Snap.Join(a());
-  });
- };
- View.ConvertSeqNode=function(conv,value)
- {
-  var _var,view;
-  _var=Var$1.Create$1(value);
-  view=_var.get_View();
-  return{
-   e:conv(view),
-   r:_var,
-   w:view
-  };
- };
- View.MapSeqCachedBy=function(key,conv,view)
- {
-  var state;
-  state=[new Dictionary.New$5()];
-  return View.Map(function(xs)
-  {
-   var prevState,newState,result;
-   prevState=state[0];
-   newState=new Dictionary.New$5();
-   result=Array$1.mapInPlace(function(x)
-   {
-    var k,res;
-    k=key(x);
-    res=prevState.ContainsKey(k)?prevState.get_Item(k):conv(x);
-    newState.set_Item(k,res);
-    return res;
-   },Arrays.ofSeq(xs));
-   state[0]=newState;
-   return result;
-  },view);
- };
- View.Map2Unit=function(a,a$1)
- {
-  return View.CreateLazy(function()
-  {
-   return Snap.Map2Unit(a(),a$1());
-  });
- };
- View.Sequence=function(views)
- {
-  return View.CreateLazy(function()
-  {
-   return Snap.Sequence(Seq.map(function(a)
-   {
-    return a();
-   },views));
-  });
- };
- IdAliado=TypesV0.IdAliado=Runtime$1.Class({
-  get_Id:function()
-  {
-   return this.$0;
-  }
- },null,IdAliado);
- Aliado.New=function(id,idPadreO,datosPersonales,contactos,identificacion,isInternal,status,diaPago,tipo,fechaRegistro,fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,comision,nivel)
- {
-  return{
-   id:id,
-   idPadreO:idPadreO,
-   datosPersonales:datosPersonales,
-   contactos:contactos,
-   identificacion:identificacion,
-   isInternal:isInternal,
-   status:status,
-   diaPago:diaPago,
-   tipo:tipo,
-   fechaRegistro:fechaRegistro,
-   fechaStatus:fechaStatus,
-   nReferidos:nReferidos,
-   nRefActivos:nRefActivos,
-   nDescendientes:nDescendientes,
-   nDescActivos:nDescActivos,
-   comision:comision,
-   nivel:nivel
-  };
- };
- ModeloUI.aliadoW=function()
- {
-  SC$1.$cctor();
-  return SC$1.aliadoW;
- };
- ModeloUI.contentVar=function()
- {
-  SC$1.$cctor();
-  return SC$1.contentVar;
- };
- ModeloUI.invitacionesV=function()
- {
-  SC$1.$cctor();
-  return SC$1.invitacionesV;
- };
- ModeloUI.emailsInvitarW=function()
- {
-  SC$1.$cctor();
-  return SC$1.emailsInvitarW;
- };
- ModeloUI.invitacionesDisabledW=function()
- {
-  SC$1.$cctor();
-  return SC$1.invitacionesDisabledW;
- };
- ModeloUI.modeloV=function()
- {
-  SC$1.$cctor();
-  return SC$1.modeloV;
- };
- ModeloUI.selAliadoIdOV=function()
- {
-  SC$1.$cctor();
-  return SC$1.selAliadoIdOV;
- };
- ModeloUI.money=function(m)
- {
-  return"$"+ModeloUI.separate(Global.String(m),T$1.Empty);
- };
- ModeloUI.selAliadoIdDoc=function(fDoc)
- {
-  var b;
-  return Doc.BindView(Global.id,(b=View.get_Do(),View.Bind(function(a)
-  {
-   return View.Bind(function(a$1)
-   {
-    var aliadoO,aid;
-    aliadoO=a$1==null?null:(aid=a$1.$0,Seq.tryFind(function(al)
-    {
-     return Unchecked.Equals(al.id,aid);
-    },a.aliados));
-    return View.Const(aliadoO!=null&&aliadoO.$==1?fDoc(View.Const(aliadoO.$0)):Doc.get_Empty());
-   },ModeloUI.selAliadoIdOV().get_View());
-  },ModeloUI.modeloV().get_View())));
- };
- ModeloUI.aliadoIdDoc=function(fDoc)
- {
-  var b;
-  return Doc.BindView(Global.id,(b=View.get_Do(),View.Bind(function(a)
-  {
-   var aid,aliadoO;
-   aid=a.idAliado;
-   aliadoO=Seq.tryFind(function(al)
-   {
-    return Unchecked.Equals(al.id,aid);
-   },a.aliados);
-   return View.Const(aliadoO!=null&&aliadoO.$==1?fDoc(View.Const(aliadoO.$0)):Doc.get_Empty());
-  },ModeloUI.modeloV().get_View())));
- };
- ModeloUI.endPointV=function()
- {
-  SC$1.$cctor();
-  return SC$1.endPointV;
- };
- ModeloUI.separate=function(s,parts)
- {
-  var s$1;
-  while(true)
-   if(s==="")
-    return(function(s$2)
-    {
-     return function(s$3)
-     {
-      return Strings.concat(s$2,s$3);
-     };
-    }(","))(parts);
-   else
-    {
-     s$1=s;
-     s=Library["String.Left"](s$1,-3);
-     parts=new T$1({
-      $:1,
-      $0:Library["String.Right"](s$1,3),
-      $1:parts
-     });
-    }
- };
- Aliado$1.get_LoggedId=function()
- {
-  var o,o$1;
-  o=(o$1=Msal.userO().Get(),o$1==null?null:{
-   $:1,
-   $0:o$1.$0.idToken.oid
-  });
-  return o==null?"":o.$0;
- };
- ModeloUI.formasPagoAliadoV=function()
- {
-  SC$1.$cctor();
-  return SC$1.formasPagoAliadoV;
  };
  AppFramework.addPlugIn=function(p)
  {
@@ -1401,31 +1092,31 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   function a$1(plg,doc)
   {
    var b,t,N,m,x,x$1,x$2,x$3,x$4,p,i;
-   return(b=(t=(N=doc.docName+(m=doc.docDoc,m.$==1?(x=Strings.concat(", ",List$1.ofArray([m.$1])),(function($1)
+   return(b=(t=(N=doc.docName+(m=doc.docDoc,m.$==1?(x=Strings.concat(", ",List.ofArray([m.$1])),(function($1)
    {
     return function($2)
     {
      return $1("("+Utils.toSafe($2)+")");
     };
-   }(Global.id))(x)):m.$==2?(x$1=Strings.concat(", ",List$1.ofArray([m.$1,m.$2])),(function($1)
+   }(Global.id))(x)):m.$==2?(x$1=Strings.concat(", ",List.ofArray([m.$1,m.$2])),(function($1)
    {
     return function($2)
     {
      return $1("("+Utils.toSafe($2)+")");
     };
-   }(Global.id))(x$1)):m.$==3?(x$2=Strings.concat(", ",List$1.ofArray([m.$1,m.$2,m.$3])),(function($1)
+   }(Global.id))(x$1)):m.$==3?(x$2=Strings.concat(", ",List.ofArray([m.$1,m.$2,m.$3])),(function($1)
    {
     return function($2)
     {
      return $1("("+Utils.toSafe($2)+")");
     };
-   }(Global.id))(x$2)):m.$==4?(x$3=Strings.concat(", ",List$1.ofArray([m.$1,m.$2,m.$3,m.$4])),(function($1)
+   }(Global.id))(x$2)):m.$==4?(x$3=Strings.concat(", ",List.ofArray([m.$1,m.$2,m.$3,m.$4])),(function($1)
    {
     return function($2)
     {
      return $1("("+Utils.toSafe($2)+")");
     };
-   }(Global.id))(x$3)):m.$==5?(x$4=Strings.concat(", ",List$1.ofArray([m.$1,m.$2,m.$3,m.$4,m.$5])),(function($1)
+   }(Global.id))(x$3)):m.$==5?(x$4=Strings.concat(", ",List.ofArray([m.$1,m.$2,m.$3,m.$4,m.$5])),(function($1)
    {
     return function($2)
     {
@@ -1469,13 +1160,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   function a$1(plg,act)
   {
    var parms,m,x,x$1;
-   parms=(m=act.actFunction,m.$==1?(x=Strings.concat(", ",List$1.ofArray([m.$1])),(function($1)
+   parms=(m=act.actFunction,m.$==1?(x=Strings.concat(", ",List.ofArray([m.$1])),(function($1)
    {
     return function($2)
     {
      return $1("("+Utils.toSafe($2)+")");
     };
-   }(Global.id))(x)):m.$==2?(x$1=Strings.concat(", ",List$1.ofArray([m.$1,m.$2])),(function($1)
+   }(Global.id))(x)):m.$==2?(x$1=Strings.concat(", ",List.ofArray([m.$1,m.$2])),(function($1)
    {
     return function($2)
     {
@@ -1756,6 +1447,344 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    plgQueries:plgQueries
   };
  };
+ ModeloUI.contentVar=function()
+ {
+  SC$1.$cctor();
+  return SC$1.contentVar;
+ };
+ ModeloUI.invitacionesV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.invitacionesV;
+ };
+ ModeloUI.emailsInvitarW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.emailsInvitarW;
+ };
+ ModeloUI.invitacionesDisabledW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.invitacionesDisabledW;
+ };
+ ModeloUI.endPointV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.endPointV;
+ };
+ ModeloUI.aliadoW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.aliadoW;
+ };
+ ModeloUI.modeloV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.modeloV;
+ };
+ ModeloUI.selAliadoIdOV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.selAliadoIdOV;
+ };
+ ModeloUI.money=function(m)
+ {
+  return"$"+ModeloUI.separate(Global.String(m),T$1.Empty);
+ };
+ ModeloUI.selAliadoIdDoc=function(fDoc)
+ {
+  var b;
+  return Doc.BindView(Global.id,(b=View.get_Do(),View.Bind(function(a)
+  {
+   return View.Bind(function(a$1)
+   {
+    var aliadoO,aid;
+    aliadoO=a$1==null?null:(aid=a$1.$0,Seq.tryFind(function(al)
+    {
+     return Unchecked.Equals(al.id,aid);
+    },a.aliados));
+    return View.Const(aliadoO!=null&&aliadoO.$==1?fDoc(View.Const(aliadoO.$0)):Doc.get_Empty());
+   },ModeloUI.selAliadoIdOV().get_View());
+  },ModeloUI.modeloV().get_View())));
+ };
+ ModeloUI.aliadoIdDoc=function(fDoc)
+ {
+  var b;
+  return Doc.BindView(Global.id,(b=View.get_Do(),View.Bind(function(a)
+  {
+   var aid,aliadoO;
+   aid=a.idAliado;
+   aliadoO=Seq.tryFind(function(al)
+   {
+    return Unchecked.Equals(al.id,aid);
+   },a.aliados);
+   return View.Const(aliadoO!=null&&aliadoO.$==1?fDoc(View.Const(aliadoO.$0)):Doc.get_Empty());
+  },ModeloUI.modeloV().get_View())));
+ };
+ ModeloUI.separate=function(s,parts)
+ {
+  var s$1;
+  while(true)
+   if(s==="")
+    return(function(s$2)
+    {
+     return function(s$3)
+     {
+      return Strings.concat(s$2,s$3);
+     };
+    }(","))(parts);
+   else
+    {
+     s$1=s;
+     s=Library["String.Left"](s$1,-3);
+     parts=new T$1({
+      $:1,
+      $0:Library["String.Right"](s$1,3),
+      $1:parts
+     });
+    }
+ };
+ Aliado.get_LoggedId=function()
+ {
+  var o,o$1;
+  o=(o$1=Msal.userO().Get(),o$1==null?null:{
+   $:1,
+   $0:o$1.$0.idToken.oid
+  });
+  return o==null?"":o.$0;
+ };
+ ModeloUI.formasPagoAliadoV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.formasPagoAliadoV;
+ };
+ Operators.FailWith=function(msg)
+ {
+  throw new Error(msg);
+ };
+ Operators.toInt=function(x)
+ {
+  var u;
+  u=Operators.toUInt(x);
+  return u>=2147483648?u-4294967296:u;
+ };
+ Operators.range=function(min,max)
+ {
+  var count;
+  count=1+max-min;
+  return count<=0?[]:Seq.init(count,function(x)
+  {
+   return x+min;
+  });
+ };
+ Operators.toUInt=function(x)
+ {
+  return(x<0?Math.ceil(x):Math.floor(x))>>>0;
+ };
+ Operators.KeyValue=function(kvp)
+ {
+  return[kvp.K,kvp.V];
+ };
+ View.Map=function(fn,a)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.Map(fn,a());
+  });
+ };
+ View.Sink=function(act,a)
+ {
+  function loop()
+  {
+   Snap.WhenRun(a(),act,function()
+   {
+    Concurrency.scheduler().Fork(loop);
+   });
+  }
+  Concurrency.scheduler().Fork(loop);
+ };
+ View.CreateLazy=function(observe)
+ {
+  var lv;
+  lv={
+   c:null,
+   o:observe
+  };
+  return function()
+  {
+   var c,$1;
+   c=lv.c;
+   return c===null?(c=lv.o(),lv.c=c,($1=c.s,$1!=null&&$1.$==0)?lv.o=null:Snap.WhenObsoleteRun(c,function()
+   {
+    lv.c=null;
+   }),c):c;
+  };
+ };
+ View.Map2=function(fn,a,a$1)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.Map2(fn,a(),a$1());
+  });
+ };
+ View.Apply=function(fn,view)
+ {
+  return View.Map2(function(f,x)
+  {
+   return f(x);
+  },fn,view);
+ };
+ View.Map3=function(fn,a,a$1,a$2)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.Map3(fn,a(),a$1(),a$2());
+  });
+ };
+ View.MapAsync=function(fn,a)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.MapAsync(fn,a());
+  });
+ };
+ View.GetAsync=function(v)
+ {
+  return Concurrency.FromContinuations(function(ok)
+  {
+   return View.Get(ok,v);
+  });
+ };
+ View.TryGet=function(a)
+ {
+  return Snap.TryGet(a());
+ };
+ View.Const=function(x)
+ {
+  var o;
+  o=Snap.New({
+   $:0,
+   $0:x
+  });
+  return function()
+  {
+   return o;
+  };
+ };
+ View.get_Do=function()
+ {
+  return ViewBuilder.B;
+ };
+ View.Get=function(f,a)
+ {
+  var ok;
+  function obs()
+  {
+   Snap.WhenRun(a(),function(v)
+   {
+    if(!ok[0])
+     {
+      ok[0]=true;
+      f(v);
+     }
+   },function()
+   {
+    if(!ok[0])
+     obs();
+   });
+  }
+  ok=[false];
+  obs();
+ };
+ View.Bind=function(fn,view)
+ {
+  return View.Join(View.Map(fn,view));
+ };
+ View.MapSeqCachedViewBy=function(key,conv,view)
+ {
+  var state;
+  state=[new Dictionary.New$5()];
+  return View.Map(function(xs)
+  {
+   var prevState,newState,result;
+   prevState=state[0];
+   newState=new Dictionary.New$5();
+   result=Array$1.mapInPlace(function(x)
+   {
+    var k,node,n;
+    k=key(x);
+    node=prevState.ContainsKey(k)?(n=prevState.get_Item(k),(Var$1.Set(n.r,x),n)):View.ConvertSeqNode(function(v)
+    {
+     return conv(k,v);
+    },x);
+    newState.set_Item(k,node);
+    return node.e;
+   },Arrays.ofSeq(xs));
+   state[0]=newState;
+   return result;
+  },view);
+ };
+ View.Map2Unit=function(a,a$1)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.Map2Unit(a(),a$1());
+  });
+ };
+ View.Join=function(a)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.Join(a());
+  });
+ };
+ View.ConvertSeqNode=function(conv,value)
+ {
+  var _var,view;
+  _var=Var$1.Create$1(value);
+  view=_var.get_View();
+  return{
+   e:conv(view),
+   r:_var,
+   w:view
+  };
+ };
+ View.MapSeqCachedBy=function(key,conv,view)
+ {
+  var state;
+  state=[new Dictionary.New$5()];
+  return View.Map(function(xs)
+  {
+   var prevState,newState,result;
+   prevState=state[0];
+   newState=new Dictionary.New$5();
+   result=Array$1.mapInPlace(function(x)
+   {
+    var k,res;
+    k=key(x);
+    res=prevState.ContainsKey(k)?prevState.get_Item(k):conv(x);
+    newState.set_Item(k,res);
+    return res;
+   },Arrays.ofSeq(xs));
+   state[0]=newState;
+   return result;
+  },view);
+ };
+ View.Sequence=function(views)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.Sequence(Seq.map(function(a)
+   {
+    return a();
+   },views));
+  });
+ };
+ Var=UI.Var=Runtime$1.Class({},Obj,Var);
+ Var.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+ },Var);
  Lazy.Create=function(f)
  {
   return LazyRecord.New(false,f,Lazy.forceLazy);
@@ -2261,7 +2290,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   correoOV=Var$1.Create$1(null);
   telefonoOV=Var$1.Create$1(null);
   direccionOV=Var$1.Create$1(null);
-  p=DatosPersonales$1.formaDoc(datosOV);
+  p=DatosPersonales.formaDoc(datosOV);
   p$1=CorreoElectronico$1.formaDoc(correoOV);
   p$2=Telefono.formaDoc(telefonoOV);
   p$3=Direccion.formaDoc(direccionOV);
@@ -2395,7 +2424,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return a.datosPersonales;
   },aliadoW));
-  p=DatosPersonales$1.formaDoc(datosOV);
+  p=DatosPersonales.formaDoc(datosOV);
   forma=(b=(t=ProviderBuilder.Make().WithHole({
    $:2,
    $0:"mensajes",
@@ -2760,7 +2789,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return VariousUI.removeButton(function()
    {
     formasPagoV.Set(Array.remove(i$1,formasPagoV.Get()));
-   },Doc.Concat(List$1.ofSeq(Seq.delay(function()
+   },Doc.Concat(List.ofSeq(Seq.delay(function()
    {
     return Seq.append([doc],Seq.delay(function()
     {
@@ -2972,7 +3001,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  ReporteConsolidado.consolidado=function()
  {
-  var aliadosV,ordenV,filtroV,referidores,b,T$2,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,t$9,t$10,S,t$11,t$12,p,i;
+  var aliadosV,ordenV,filtroV,referidores,b,T$2,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,t$9,t$10,t$11,t$12,t$13,p,i;
   function referidos(al)
   {
    return al.nReferidos===0?"-":(((Runtime$1.Curried3(function($1,$2,$3)
@@ -3005,13 +3034,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   }
   function aliado2Fila(al)
   {
+   var o;
    return Fila.New(Aliado$2.nombre(al.datosPersonales),(function($1)
    {
     return function($2)
     {
      return $1(ProzperServer_GeneratedPrintf.p($2));
     };
-   }(Global.id))(al.status),(function($1)
+   }(Global.id))(al.status),(o=al.influyente,o==null?"":o.$0),(function($1)
    {
     return function($2)
     {
@@ -3021,25 +3051,25 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return function($2)
     {
-     return $1(Strings.PadRight(Global.String($2),9));
+     return $1(Strings.PadLeft(Global.String($2),9));
     };
    }(Global.id))(al.nivel),(function($1)
    {
     return function($2)
     {
-     return $1(Strings.PadRight(Utils.toSafe($2),9));
+     return $1(Strings.PadLeft(Utils.toSafe($2),9));
     };
    }(Global.id))(referidos(al)),(function($1)
    {
     return function($2)
     {
-     return $1(Strings.PadRight(Utils.toSafe($2),9));
+     return $1(Strings.PadLeft(Utils.toSafe($2),9));
     };
    }(Global.id))(descendientes(al)),(function($1)
    {
     return function($2)
     {
-     return $1(Strings.PadRight(Utils.toSafe($2),9));
+     return $1(Strings.PadLeft(Utils.toSafe($2),9));
     };
    }(Global.id))(comision(al.comision)),Library["String.Right"]((function($1)
    {
@@ -3057,15 +3087,15 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   }
   function campos(orden)
   {
-   return[orden.nombre,orden.status,orden.tipo,orden.referido,orden.nivel,orden.referidos,orden.descendientes,orden.comision,orden.diaPago,orden.desde,orden.Id];
+   return[orden.nombre,orden.status,orden.influyente,orden.tipo,orden.referido,orden.nivel,orden.referidos,orden.descendientes,orden.comision,orden.diaPago,orden.desde,orden.Id];
   }
-  function newOrden(n,v,f)
+  function newOrden(n,a$1,a$2)
   {
-   return function(t$13)
+   return function(t$14)
    {
     var no;
-    no=t$13[0];
-    return[n===no?1:no<n?no+1:no,n===1?!v:v,t$13[2]];
+    no=t$14[0];
+    return[no===n?1:no<n?no+1:no,n===no&&n===1?!t$14[1]:t$14[1],t$14[2]];
    };
   }
   function toggle(v)
@@ -3077,6 +3107,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return newOrden($1[0],$1[1],$1[2]);
    }(v))(ordenV.Get().status),(function($1)
+   {
+    return newOrden($1[0],$1[1],$1[2]);
+   }(v))(ordenV.Get().influyente),(function($1)
    {
     return newOrden($1[0],$1[1],$1[2]);
    }(v))(ordenV.Get().tipo),(function($1)
@@ -3116,7 +3149,17 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return setAliado(id,function(al)
    {
-    return Aliado.New(al.id,al.idPadreO,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,StatusAliado.tryParse(v),al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel);
+    return Aliado$1.New(al.id,al.idPadreO,al.idForAuthorize,al.influyente,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,StatusAliado.tryParse(v),al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel);
+   });
+  }
+  function setInfluyente(id,v)
+  {
+   return setAliado(id,function(al)
+   {
+    return Aliado$1.New(al.id,al.idPadreO,al.idForAuthorize,Strings.Trim(v)===""?null:{
+     $:1,
+     $0:Strings.Trim(v)
+    },al.datosPersonales,al.contactos,al.identificacion,al.isInternal,al.status,al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel);
    });
   }
   function setPadre(id,v)
@@ -3131,7 +3174,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    };
    return setAliado(id,function(al)
    {
-    return Aliado.New(al.id,padre,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,al.status,al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel);
+    return Aliado$1.New(al.id,padre,al.idForAuthorize,al.influyente,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,al.status,al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel);
    });
   }
   function obtenerAliado(alid)
@@ -3157,9 +3200,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     {
      var m,al2;
      m=obtenerAliado(a$1.id);
-     return m!=null&&m.$==1?(al2=m.$0,!Unchecked.Equals(a$1.status,al2.status)||!Unchecked.Equals(a$1.idPadreO,al2.idPadreO)?b$1.Bind$4(Rpc.ejecutarDataEventoNuevo({
+     return m!=null&&m.$==1?(al2=m.$0,!Unchecked.Equals(a$1.status,al2.status)||!Unchecked.Equals(a$1.idPadreO,al2.idPadreO)||!Unchecked.Equals(a$1.influyente,al2.influyente)?b$1.Bind$4(Rpc.ejecutarDataEventoNuevo({
       $:8,
-      $0:[a$1.id,a$1.status,a$1.idPadreO]
+      $0:[a$1.id,a$1.status,a$1.idPadreO,a$1.influyente]
      }),function(a$2)
      {
       return b$1.Bind$2(new ResultMessage({
@@ -3185,97 +3228,114 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   }
   function a(alid,fW)
   {
-   var b$1,r,$1,s,$2,p$1,i$1;
-   return(b$1=(r=new FromView.New(View.Map(function($3)
+   var b$1,S,i$1,$1,s,$2,r,$3,p$1,i$2;
+   return(b$1=(S=Doc.BindView(VariousUI.crearOptions,VariousUI.statuses().get_View()),(i$1=new FromView.New(View.Map(function($4)
    {
-    return $3.referido;
+    return $4.influyente;
    },fW),($1=new IdAliado({
     $:0,
     $0:alid
-   }),function($3)
+   }),function($4)
    {
-    return setPadre($1,$3);
-   })),(s=new FromView.New(View.Map(function($3)
+    return setInfluyente($1,$4);
+   })),(s=new FromView.New(View.Map(function($4)
    {
-    return $3.status;
+    return $4.status;
    },fW),($2=new IdAliado({
     $:0,
     $0:alid
-   }),function($3)
+   }),function($4)
    {
-    return setStatus($2,$3);
+    return setStatus($2,$4);
+   })),(r=new FromView.New(View.Map(function($4)
+   {
+    return $4.referido;
+   },fW),($3=new IdAliado({
+    $:0,
+    $0:alid
+   }),function($4)
+   {
+    return setPadre($3,$4);
    })),ProviderBuilder.Make().WithHole({
     $:2,
     $0:"nombre",
-    $1:View.Map(function($3)
+    $1:View.Map(function($4)
     {
-     return $3.nombre;
+     return $4.nombre;
     },fW)
    }).WithHole({
     $:2,
     $0:"tipo",
-    $1:View.Map(function($3)
+    $1:View.Map(function($4)
     {
-     return $3.tipo;
+     return $4.tipo;
     },fW)
    }).WithHole({
+    $:8,
+    $0:"referido",
+    $1:r
+   })).WithHole({
     $:8,
     $0:"status",
     $1:s
    })).WithHole({
     $:8,
-    $0:"referido",
-    $1:r
+    $0:"influyente",
+    $1:i$1
+   })).WithHole({
+    $:0,
+    $0:"statuses",
+    $1:S
    })).WithHole({
     $:2,
     $0:"nivel",
-    $1:View.Map(function($3)
+    $1:View.Map(function($4)
     {
-     return $3.nivel;
+     return $4.nivel;
     },fW)
    }).WithHole({
     $:2,
     $0:"referidos",
-    $1:View.Map(function($3)
+    $1:View.Map(function($4)
     {
-     return $3.referidos;
+     return $4.referidos;
     },fW)
    }).WithHole({
     $:2,
     $0:"descendientes",
-    $1:View.Map(function($3)
+    $1:View.Map(function($4)
     {
-     return $3.descendientes;
+     return $4.descendientes;
     },fW)
    }).WithHole({
     $:2,
     $0:"comision",
-    $1:View.Map(function($3)
+    $1:View.Map(function($4)
     {
-     return $3.comision;
+     return $4.comision;
     },fW)
    }).WithHole({
     $:2,
     $0:"diapago",
-    $1:View.Map(function($3)
+    $1:View.Map(function($4)
     {
-     return $3.diaPago;
+     return $4.diaPago;
     },fW)
    }).WithHole({
     $:2,
     $0:"desde",
-    $1:View.Map(function($3)
+    $1:View.Map(function($4)
     {
-     return $3.desde;
+     return $4.desde;
     },fW)
    }).WithHole({
     $:2,
     $0:"id",
-    $1:View.Map(function($3)
+    $1:View.Map(function($4)
     {
-     return $3.Id;
+     return $4.Id;
     },fW)
-   }),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[["status",0],["referido",0]]),(i$1=new TemplateInstance.New(p$1[1],testing_Templates.filaconsolidado(p$1[0])),(b$1.i=i$1,i$1)))).get_Doc();
+   }),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[["influyente",0],["status",0],["referido",0]]),(i$2=new TemplateInstance.New(p$1[1],testing_Templates.filaconsolidado(p$1[0])),(b$1.i=i$2,i$2)))).get_Doc();
   }
   aliadosV=Var$1.Create$1([]);
   View.Sink(function(a$1)
@@ -3291,31 +3351,34 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   }],[3,true,function(d)
   {
    return d.status.toUpperCase();
-  }],[4,true,function(d)
+  }],[4,false,function(d)
   {
-   return d.tipo.toUpperCase();
+   return d.influyente.toUpperCase();
   }],[5,true,function(d)
   {
-   return d.referido.toUpperCase();
+   return d.tipo.toUpperCase();
   }],[6,true,function(d)
   {
-   return d.nivel.toUpperCase();
+   return d.referido.toUpperCase();
   }],[7,true,function(d)
   {
+   return d.nivel.toUpperCase();
+  }],[8,true,function(d)
+  {
    return d.referidos.toUpperCase();
-  }],[8,false,function(d)
+  }],[1,false,function(d)
   {
    return d.descendientes.toUpperCase();
-  }],[1,true,function(d)
-  {
-   return d.comision.toUpperCase();
   }],[9,true,function(d)
   {
-   return d.diaPago.toUpperCase();
+   return d.comision.toUpperCase();
   }],[10,true,function(d)
   {
-   return d.desde.toUpperCase();
+   return d.diaPago.toUpperCase();
   }],[11,true,function(d)
+  {
+   return d.desde.toUpperCase();
+  }],[12,true,function(d)
   {
    return d.Id.toUpperCase();
   }]));
@@ -3385,15 +3448,15 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   },View.Map(function($1)
   {
    return $1.aliados;
-  },ModeloUI.modeloV().get_View()),ordenV.get_View(),filtroV.get_View())),(t=(t$1=(t$2=(t$3=(t$4=(t$5=(t$6=(t$7=(t$8=(t$9=(t$10=(S=Doc.BindView(VariousUI.crearOptions,VariousUI.statuses().get_View()),(t$11=(t$12=ProviderBuilder.Make(),t$12.WithHole(Handler.EventQ2(t$12.k,"salvar",function()
+  },ModeloUI.modeloV().get_View()),ordenV.get_View(),filtroV.get_View())),(t=(t$1=(t$2=(t$3=(t$4=(t$5=(t$6=(t$7=(t$8=(t$9=(t$10=(t$11=(t$12=(t$13=ProviderBuilder.Make(),t$13.WithHole(Handler.EventQ2(t$13.k,"salvar",function()
   {
-   return t$12.i;
+   return t$13.i;
   },function()
   {
    salvar();
-  }))),t$11.WithHole(Handler.EventQ2(t$11.k,"cancelar",function()
+  }))),t$12.WithHole(Handler.EventQ2(t$12.k,"cancelar",function()
   {
-   return t$11.i;
+   return t$12.i;
   },function()
   {
    aliadosV.Set(ModeloUI.modeloV().Get().aliados);
@@ -3410,24 +3473,26 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $1:filtroV
   }).WithHole({
    $:0,
-   $0:"statuses",
-   $1:S
-  })).WithHole({
-   $:0,
    $0:"referidores",
    $1:referidores
-  }),t$10.WithHole(Handler.EventQ2(t$10.k,"sort_nombre",function()
+  }),t$11.WithHole(Handler.EventQ2(t$11.k,"sort_nombre",function()
+  {
+   return t$11.i;
+  },function()
+  {
+   toggle(ordenV.Get().nombre);
+  }))),t$10.WithHole(Handler.EventQ2(t$10.k,"sort_status",function()
   {
    return t$10.i;
   },function()
   {
-   toggle(ordenV.Get().nombre);
-  }))),t$9.WithHole(Handler.EventQ2(t$9.k,"sort_status",function()
+   toggle(ordenV.Get().status);
+  }))),t$9.WithHole(Handler.EventQ2(t$9.k,"sort_influyente",function()
   {
    return t$9.i;
   },function()
   {
-   toggle(ordenV.Get().status);
+   toggle(ordenV.Get().influyente);
   }))),t$8.WithHole(Handler.EventQ2(t$8.k,"sort_tipo",function()
   {
    return t$8.i;
@@ -3490,19 +3555,19 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  TablaPagos.comisiones=function()
  {
-  var pagosW,b,T$2,t,p,i;
+  var pagosW,b,T$2,b$1,p,i,b$2,p$1,i$1,t,p$2,i$2;
   function def(d,v)
   {
    return v===""?d:v;
   }
   function saveAs()
   {
-   var b$1;
-   Concurrency.Start((b$1=null,Concurrency.Delay(function()
+   var b$3;
+   Concurrency.Start((b$3=null,Concurrency.Delay(function()
    {
     return Concurrency.Bind(View.GetAsync(pagosW),function(a$2)
     {
-     Global.saveAs(new Global.Blob([Strings.concat("\r\n",Seq.map(function(alfpW)
+     Global.saveAs(new Blob([Strings.concat("\r\n",Seq.map(function(alfpW)
      {
       var alW,ctaW;
       alW=alfpW[0];
@@ -3530,7 +3595,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   }
   function a$1(alid,alfpW)
   {
-   var alW,ctaW,b$1,p$1,i$1;
+   var alW,ctaW,b$3,p$3,i$3;
    alW=View.Map(function($1)
    {
     return $1[0];
@@ -3539,7 +3604,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return $1[1];
    },alfpW);
-   return(b$1=ProviderBuilder.Make().WithHole({
+   return(b$3=ProviderBuilder.Make().WithHole({
     $:1,
     $0:"codigo",
     $1:"22"
@@ -3581,30 +3646,27 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     {
      return def(Aliado$2.nombre2($1.datosPersonales),$2.titular);
     },alW,ctaW)
-   }),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i$1=new TemplateInstance.New(p$1[1],testing_Templates.filapago(p$1[0])),(b$1.i=i$1,i$1)))).get_Doc();
+   }),(p$3=Handler.CompleteHoles(b$3.k,b$3.h,[]),(i$3=new TemplateInstance.New(p$3[1],testing_Templates.filapago(p$3[0])),(b$3.i=i$3,i$3)))).get_Doc();
   }
   pagosW=View.MapAsync(function(als)
   {
-   var b$1,f,d;
+   var b$3,f,d;
    function g(v)
    {
     return Concurrency.Return(v);
    }
-   return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+   return Concurrency.Bind((b$3=AsyncResultMAutoOpen.asyncResultM(),b$3.Run(b$3.Delay(function()
    {
     var alsf;
     alsf=Seq.filter(function(al)
     {
      return al.comision>0;
     },als);
-    return b$1.Bind$4(Rpc.obtenerFormasDePagoPara(Arrays.ofSeq(Seq.map(function(al)
-    {
-     return al.id;
-    },alsf))),function(a$2)
+    return b$3.Bind$4(Rpc.obtenerFormasDePagoPara(Arrays.ofSeq(alsf)),function(a$2)
     {
      function c(al,a$3)
      {
-      return Unchecked.Equals(al.id,a$3[0])?{
+      return Unchecked.Equals(al.id,a$3[0].id)?{
        $:1,
        $0:[al,a$3[1]]
       }:null;
@@ -3622,7 +3684,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        }:null;
       },fps),(v=TypesV0.ctaVacio(),o==null?v:o.$0))];
      }
-     return b$1.Return(Seq.choose(function($1)
+     return b$3.Return(Seq.choose(function($1)
      {
       return c($1[0],$1[1]);
      },Seq.zip(alsf,Seq.map(function($1)
@@ -3641,7 +3703,80 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return $1.aliados;
   },ModeloUI.modeloV().get_View()));
-  return(b=(T$2=Doc.ConvertSeqBy(function($1)
+  return(b=(T$2=List.ofArray([(b$1=ProviderBuilder.Make().WithHole({
+   $:2,
+   $0:"codigo",
+   $1:View.Map(function($1)
+   {
+    return(function($2)
+    {
+     return function($3)
+     {
+      return $2(Global.String($3));
+     };
+    }(Global.id))(Seq.length($1));
+   },pagosW)
+  }).WithHole({
+   $:1,
+   $0:"cuenta",
+   $1:""
+  }).WithHole({
+   $:1,
+   $0:"aba",
+   $1:""
+  }).WithHole({
+   $:2,
+   $0:"monto",
+   $1:View.Map(function($1)
+   {
+    function p$3(pg,a$2)
+    {
+     return pg.comision;
+    }
+    return(function($2)
+    {
+     return function($3)
+     {
+      return $2(Global.String($3)+".00");
+     };
+    }(Global.id))(Seq.sumBy(function($2)
+    {
+     return p$3($2[0],$2[1]);
+    },$1));
+   },pagosW)
+  }).WithHole({
+   $:1,
+   $0:"identificacion",
+   $1:""
+  }).WithHole({
+   $:1,
+   $0:"nombre",
+   $1:""
+  }),(p=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i=new TemplateInstance.New(p[1],testing_Templates.filapago(p[0])),(b$1.i=i,i)))).get_Doc(),(b$2=ProviderBuilder.Make().WithHole({
+   $:1,
+   $0:"codigo",
+   $1:""
+  }).WithHole({
+   $:1,
+   $0:"cuenta",
+   $1:""
+  }).WithHole({
+   $:1,
+   $0:"aba",
+   $1:""
+  }).WithHole({
+   $:1,
+   $0:"monto",
+   $1:"--------------------"
+  }).WithHole({
+   $:1,
+   $0:"identificacion",
+   $1:""
+  }).WithHole({
+   $:1,
+   $0:"nombre",
+   $1:""
+  }),(p$1=Handler.CompleteHoles(b$2.k,b$2.h,[]),(i$1=new TemplateInstance.New(p$1[1],testing_Templates.filapago(p$1[0])),(b$2.i=i$1,i$1)))).get_Doc(),Doc.ConvertSeqBy(function($1)
   {
    return a($1[0],$1[1]);
   },function($1)
@@ -3650,7 +3785,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return a$1($1,$2);
    };
-  },pagosW),(t=ProviderBuilder.Make(),t.WithHole(Handler.EventQ2(t.k,"exportar",function()
+  },pagosW)]),(t=ProviderBuilder.Make(),t.WithHole(Handler.EventQ2(t.k,"exportar",function()
   {
    return t.i;
   },function()
@@ -3659,35 +3794,81 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   }))).WithHole({
    $:0,
    $0:"tbody",
-   $1:T$2
-  })),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],testing_Templates.tablapagos(p[0])),(b.i=i,i)))).get_Doc();
+   $1:Doc.Concat(T$2)
+  })),(p$2=Handler.CompleteHoles(b.k,b.h,[]),(i$2=new TemplateInstance.New(p$2[1],testing_Templates.tablapagos(p$2[0])),(b.i=i$2,i$2)))).get_Doc();
  };
- Operators.FailWith=function(msg)
+ ListaDocs.listaDocs=function()
  {
-  throw new Error(msg);
- };
- Operators.toInt=function(x)
- {
-  var u;
-  u=Operators.toUInt(x);
-  return u>=2147483648?u-4294967296:u;
- };
- Operators.range=function(min,max)
- {
-  var count;
-  count=1+max-min;
-  return count<=0?[]:Seq.init(count,function(x)
+  var b,t,T$2,p,i;
+  function a(docName,docNameW)
   {
-   return x+min;
-  });
+   var b$1,i$1,p$1,i$2;
+   return(b$1=(i$1=View.Map(function($1)
+   {
+    return $1.id.get_Id();
+   },ModeloUI.aliadoW()),ProviderBuilder.Make().WithHole({
+    $:2,
+    $0:"nombre",
+    $1:docNameW
+   }).WithHole({
+    $:2,
+    $0:"idaliado",
+    $1:i$1
+   })),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i$2=new TemplateInstance.New(p$1[1],testing_Templates.filadocs(p$1[0])),(b$1.i=i$2,i$2)))).get_Doc();
+  }
+  ListaDocs.refrescarListaDocs();
+  return(b=(t=(T$2=Doc.ConvertSeqBy(Global.id,function($1)
+  {
+   return function($2)
+   {
+    return a($1,$2);
+   };
+  },ListaDocs.docsV().get_View()),ProviderBuilder.Make().WithHole({
+   $:0,
+   $0:"tbody",
+   $1:T$2
+  })),t.WithHole(Handler.EventQ2(t.k,"subir",function()
+  {
+   return t.i;
+  },function(e)
+  {
+   var o;
+   o=View.TryGet(ModeloUI.aliadoW());
+   o==null?void 0:ListaDocs.subir(e.Event,o.$0.id.get_Id());
+  }))),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],testing_Templates.subirdocumentos(p[0])),(b.i=i,i)))).get_Doc();
  };
- Operators.KeyValue=function(kvp)
+ ListaDocs.refrescarListaDocs=function()
  {
-  return[kvp.K,kvp.V];
+  AsyncResultM.iterpA(function(a)
+  {
+   ListaDocs.docsV().Set(a);
+  },Rpc.obtenerListaDocs());
  };
- Operators.toUInt=function(x)
+ ListaDocs.docsV=function()
  {
-  return(x<0?Math.ceil(x):Math.floor(x))>>>0;
+  SC$1.$cctor();
+  return SC$1.docsV;
+ };
+ ListaDocs.subir=function(e,id)
+ {
+  var $1,file,filename,r,form,fd,a,i,$2,x;
+  e.preventDefault();
+  form=Global.jQuery("#SubirDocumentos");
+  fd=new Global.FormData();
+  a=form.serializeArray();
+  for(i=0,$2=a.length-1;i<=$2;i++){
+   x=Arrays.get(a,i);
+   fd.append(x.name,x.value);
+  }
+  file=form.children("input[type=file]").first().get(0).files.item(0);
+  filename=file.name;
+  fd.append("file",file);
+  $.ajax((r={},r.type="POST",r.url="/api/subir/"+id+"/"+filename,r.data=fd,r.contentType=false,r.processData=false,r.success=ListaDocs.uploaded(),r));
+ };
+ ListaDocs.uploaded=function()
+ {
+  SC$1.$cctor();
+  return SC$1.uploaded;
  };
  JS.GetFields=function(o)
  {
@@ -4011,7 +4192,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     {
      return AppFramework.callFunction(el,null,act.actFunction);
     };
-   })],[])])]),doc!==""?LayoutEngineModule.singleDoc(lytNm,List$1.ofArray([[doc,false]])):Doc.get_Empty()])]))
+   })],[])])]),doc!==""?LayoutEngineModule.singleDoc(lytNm,List.ofArray([[doc,false]])):Doc.get_Empty()])]))
   });
   return o==null?LayoutEngineModule.errDoc((function($1)
   {
@@ -4136,7 +4317,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   var attrs;
   attrs=[a,a$1];
-  return List$1.ofSeq(Seq.delay(function()
+  return List.ofSeq(Seq.delay(function()
   {
    return Seq.append(Seq.choose(function(a$2)
    {
@@ -4383,7 +4564,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return Seq.append(s,s$1);
      }))(x$1)),Templates.NamedTemplate("local",{
       $:1,
-      $0:tempName[0]
+      $0:tempName[0].toLowerCase()
      },x))
     };
    }
@@ -4446,7 +4627,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  LayoutEngineModule.splitTokens=function(line)
  {
-  return List$1.ofSeq(Seq.collect(Global.id,Seq.mapi(function(i,s)
+  return List.ofSeq(Seq.collect(Global.id,Seq.mapi(function(i,s)
   {
    var t;
    return i%2===1?[[s,true]]:(t=Strings.Trim(s),t===""?[]:Arrays.map(function(s$1)
@@ -4771,7 +4952,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  LayoutEngineModule.variableSplitter=function(vertical,min,value,max,doc1,doc2)
  {
-  return Doc.Element("wcomp-splitter",List$1.ofSeq(Seq.delay(function()
+  return Doc.Element("wcomp-splitter",List.ofSeq(Seq.delay(function()
   {
    return Seq.append(vertical?[AttrProxy.Create("vertical","")]:[],Seq.delay(function()
    {
@@ -4783,7 +4964,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      }));
     }));
    }));
-  })),List$1.ofArray([doc1,doc2]));
+  })),List.ofArray([doc1,doc2]));
  };
  LayoutEngineModule.fixedSplitter=function(vertical,pixel,first,doc1,doc2)
  {
@@ -4851,1275 +5032,30 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:o
   };
  };
- Var=UI.Var=Runtime$1.Class({},Obj,Var);
- Var.New=Runtime$1.Ctor(function()
- {
-  Obj.New.call(this);
- },Var);
- Arrays.get=function(arr,n)
- {
-  Arrays.checkBounds(arr,n);
-  return arr[n];
- };
- Arrays.length=function(arr)
- {
-  return arr.dims===2?arr.length*arr.length:arr.length;
- };
- Arrays.checkBounds=function(arr,n)
- {
-  if(n<0||n>=arr.length)
-   Operators.FailWith("Index was outside the bounds of the array.");
- };
- Arrays.set=function(arr,n,x)
- {
-  Arrays.checkBounds(arr,n);
-  arr[n]=x;
- };
- ProviderBuilder=Server.ProviderBuilder=Runtime$1.Class({
-  WithHole:function(h)
-  {
-   this.h.push(h);
-   return this;
-  }
- },null,ProviderBuilder);
- ProviderBuilder.Make=function()
- {
-  var c;
-  return ProviderBuilder.New(null,(c=Guid.NewGuid(),Global.String(c)),[]);
- };
- ProviderBuilder.New=function(Instance,Key,Holes)
- {
-  return new ProviderBuilder({
-   i:Instance,
-   k:Key,
-   h:Holes
-  });
- };
- Rpc.llamadas=function()
- {
-  SC$1.$cctor();
-  return SC$1.llamadas;
- };
- Rpc.ejecutarDataEventoNuevo=function(p)
- {
-  var p1,b;
-  function f($1,$2)
-  {
-   var fname;
-   function serializeP(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$4())(p$1));
-   }
-   function serializeR(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$1())(p$1));
-   }
-   function deserializeP(s)
-   {
-    return(ProzperServer_JsonDecoder.j$4())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$1())(JSON.parse(s));
-   }
-   return((fname="ejecutarDataEventoNuevo",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p$1)
-    {
-     return Rpc$1.invoke(fname,idAliado,p$1);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p$1;
-       p$1=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p$1),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
-  }
-  p1=Aliado$1.get_LoggedId();
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
-  {
-   function f$1(v)
-   {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
-   }
-   function g(v)
-   {
-    return Concurrency.Return(v);
-   }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,p),function(x)
-   {
-    return g(f$1(x));
-   }),function(a)
-   {
-    return b.Return(a);
-   });
-  }));
- };
- Rpc.obtenerFormasDePagoPara=function(p)
- {
-  var p1,b;
-  function f($1,$2)
-  {
-   var fname;
-   function serializeP(p$1)
-   {
-    return JSON.stringify(((Provider.EncodeArray(ProzperServer_JsonEncoder.j$6))())(p$1));
-   }
-   function serializeR(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$48())(p$1));
-   }
-   function deserializeP(s)
-   {
-    return((Provider.DecodeArray(ProzperServer_JsonDecoder.j$6))())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$48())(JSON.parse(s));
-   }
-   return((fname="obtenerFormasDePagoPara",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p$1)
-    {
-     return Rpc$1.invoke(fname,idAliado,p$1);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p$1;
-       p$1=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p$1),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
-  }
-  p1=Aliado$1.get_LoggedId();
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
-  {
-   function f$1(v)
-   {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
-   }
-   function g(v)
-   {
-    return Concurrency.Return(v);
-   }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,p),function(x)
-   {
-    return g(f$1(x));
-   }),function(a)
-   {
-    return b.Return(a);
-   });
-  }));
- };
- Rpc.enviarCorreosInvitacion=function(p,p$1,p$2)
- {
-  var p1,p2,b;
-  function f($1,$2)
-  {
-   var fname;
-   function serializeP(p$3)
-   {
-    return JSON.stringify(((Provider.EncodeTuple([Provider.Id(),ProzperServer_JsonEncoder.j$6,Provider.EncodeArray(Provider.Id())]))())(p$3));
-   }
-   function serializeR(p$3)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$32())(p$3));
-   }
-   function deserializeP(s)
-   {
-    return((Provider.DecodeTuple([Provider.Id(),ProzperServer_JsonDecoder.j$6,Provider.DecodeArray(Provider.Id())]))())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$32())(JSON.parse(s));
-   }
-   return((fname="enviarCorreosInvitacion",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p$3)
-    {
-     return Rpc$1.invoke(fname,idAliado,p$3);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p$3;
-       p$3=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p$3),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
-  }
-  p1=Aliado$1.get_LoggedId();
-  p2=[p,p$1,p$2];
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
-  {
-   function f$1(v)
-   {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
-   }
-   function g(v)
-   {
-    return Concurrency.Return(v);
-   }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,p2),function(x)
-   {
-    return g(f$1(x));
-   }),function(a)
-   {
-    return b.Return(a);
-   });
-  }));
- };
- Rpc.obtenerUnions=function()
- {
-  var p1,b;
-  function f($1,$2)
-  {
-   var fname;
-   function serializeP(p)
-   {
-    return JSON.stringify(((Provider.Id())())(p));
-   }
-   function serializeR(p)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$31())(p));
-   }
-   function deserializeP(s)
-   {
-    return((Provider.Id())())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$31())(JSON.parse(s));
-   }
-   return((fname="obtenerUnions",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p)
-    {
-     return Rpc$1.invoke(fname,idAliado,p);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p;
-       p=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
-  }
-  p1=Aliado$1.get_LoggedId();
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
-  {
-   function f$1(v)
-   {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
-   }
-   function g(v)
-   {
-    return Concurrency.Return(v);
-   }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,void 0),function(x)
-   {
-    return g(f$1(x));
-   }),function(a)
-   {
-    return b.Return(a);
-   });
-  }));
- };
- Rpc.iterA=function(arm)
- {
-  function g(a)
-  {
-   Global.alert(a);
-  }
-  AsyncResultM.iterA(function(x)
-  {
-   return g(ResultMessage.summarized(x));
-  },Global.ignore,arm);
- };
- Rpc.agregarUsuarioSiEsNuevo=function(p)
- {
-  var p1,b;
-  function f($1,$2)
-  {
-   var fname;
-   function serializeP(p$1)
-   {
-    return JSON.stringify(((Provider.EncodeArray(Provider.EncodeTuple([Provider.Id(),Provider.Id()])))())(p$1));
-   }
-   function serializeR(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$32())(p$1));
-   }
-   function deserializeP(s)
-   {
-    return((Provider.DecodeArray(Provider.DecodeTuple([Provider.Id(),Provider.Id()])))())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$32())(JSON.parse(s));
-   }
-   return((fname="agregarUsuarioSiEsNuevo",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p$1)
-    {
-     return Rpc$1.invoke(fname,idAliado,p$1);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p$1;
-       p$1=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p$1),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
-  }
-  p1=Aliado$1.get_LoggedId();
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
-  {
-   function f$1(v)
-   {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
-   }
-   function g(v)
-   {
-    return Concurrency.Return(v);
-   }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,p),function(x)
-   {
-    return g(f$1(x));
-   }),function(a)
-   {
-    return b.Return(a);
-   });
-  }));
- };
- Rpc.obtenerEstadoParaUsuario=function()
- {
-  var p1,b;
-  function f($1,$2)
-  {
-   var fname;
-   function serializeP(p)
-   {
-    return JSON.stringify(((Provider.Id())())(p));
-   }
-   function serializeR(p)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$28())(p));
-   }
-   function deserializeP(s)
-   {
-    return((Provider.Id())())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$28())(JSON.parse(s));
-   }
-   return((fname="obtenerEstadoParaUsuario",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p)
-    {
-     return Rpc$1.invoke(fname,idAliado,p);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p;
-       p=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
-  }
-  p1=Aliado$1.get_LoggedId();
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
-  {
-   function f$1(v)
-   {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
-   }
-   function g(v)
-   {
-    return Concurrency.Return(v);
-   }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,void 0),function(x)
-   {
-    return g(f$1(x));
-   }),function(a)
-   {
-    return b.Return(a);
-   });
-  }));
- };
- Rpc.borrarFormaPago=function(p)
- {
-  var p1,b;
-  function f($1,$2)
-  {
-   var fname;
-   function serializeP(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$36())(p$1));
-   }
-   function serializeR(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$47())(p$1));
-   }
-   function deserializeP(s)
-   {
-    return(ProzperServer_JsonDecoder.j$36())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$47())(JSON.parse(s));
-   }
-   return((fname="borrarFormaPago",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p$1)
-    {
-     return Rpc$1.invoke(fname,idAliado,p$1);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p$1;
-       p$1=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p$1),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
-  }
-  p1=Aliado$1.get_LoggedId();
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
-  {
-   function f$1(v)
-   {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
-   }
-   function g(v)
-   {
-    return Concurrency.Return(v);
-   }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,p),function(x)
-   {
-    return g(f$1(x));
-   }),function(a)
-   {
-    return b.Return(a);
-   });
-  }));
- };
- Rpc.registrarTarjeta=function(p)
- {
-  var p1,b;
-  function f($1,$2)
-  {
-   var fname;
-   function serializeP(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$38())(p$1));
-   }
-   function serializeR(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$47())(p$1));
-   }
-   function deserializeP(s)
-   {
-    return(ProzperServer_JsonDecoder.j$38())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$47())(JSON.parse(s));
-   }
-   return((fname="registrarTarjeta",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p$1)
-    {
-     return Rpc$1.invoke(fname,idAliado,p$1);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p$1;
-       p$1=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p$1),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
-  }
-  p1=Aliado$1.get_LoggedId();
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
-  {
-   function f$1(v)
-   {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
-   }
-   function g(v)
-   {
-    return Concurrency.Return(v);
-   }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,p),function(x)
-   {
-    return g(f$1(x));
-   }),function(a)
-   {
-    return b.Return(a);
-   });
-  }));
- };
- Rpc.registrarCuenta=function(p)
- {
-  var p1,b;
-  function f($1,$2)
-  {
-   var fname;
-   function serializeP(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$43())(p$1));
-   }
-   function serializeR(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$47())(p$1));
-   }
-   function deserializeP(s)
-   {
-    return(ProzperServer_JsonDecoder.j$43())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$47())(JSON.parse(s));
-   }
-   return((fname="registrarCuenta",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p$1)
-    {
-     return Rpc$1.invoke(fname,idAliado,p$1);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p$1;
-       p$1=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p$1),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
-  }
-  p1=Aliado$1.get_LoggedId();
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
-  {
-   function f$1(v)
-   {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
-   }
-   function g(v)
-   {
-    return Concurrency.Return(v);
-   }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,p),function(x)
-   {
-    return g(f$1(x));
-   }),function(a)
-   {
-    return b.Return(a);
-   });
-  }));
- };
- Rpc.validarFormaPago=function(p)
- {
-  var p1,b;
-  function f($1,$2)
-  {
-   var fname;
-   function serializeP(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$36())(p$1));
-   }
-   function serializeR(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$47())(p$1));
-   }
-   function deserializeP(s)
-   {
-    return(ProzperServer_JsonDecoder.j$36())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$47())(JSON.parse(s));
-   }
-   return((fname="validarFormaPago",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p$1)
-    {
-     return Rpc$1.invoke(fname,idAliado,p$1);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p$1;
-       p$1=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p$1),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
-  }
-  p1=Aliado$1.get_LoggedId();
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
-  {
-   function f$1(v)
-   {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
-   }
-   function g(v)
-   {
-    return Concurrency.Return(v);
-   }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,p),function(x)
-   {
-    return g(f$1(x));
-   }),function(a)
-   {
-    return b.Return(a);
-   });
-  }));
- };
- Rpc.setLlamadas=function(v)
- {
-  Rpc.llamadas().Set(v);
- };
- Rpc.obtenerFormasDePago=function()
- {
-  var p1,b;
-  function f($1,$2)
-  {
-   var fname;
-   function serializeP(p)
-   {
-    return JSON.stringify(((Provider.Id())())(p));
-   }
-   function serializeR(p)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$33())(p));
-   }
-   function deserializeP(s)
-   {
-    return((Provider.Id())())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$33())(JSON.parse(s));
-   }
-   return((fname="obtenerFormasDePago",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p)
-    {
-     return Rpc$1.invoke(fname,idAliado,p);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p;
-       p=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
-  }
-  p1=Aliado$1.get_LoggedId();
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
-  {
-   function f$1(v)
-   {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
-   }
-   function g(v)
-   {
-    return Concurrency.Return(v);
-   }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,void 0),function(x)
-   {
-    return g(f$1(x));
-   }),function(a)
-   {
-    return b.Return(a);
-   });
-  }));
- };
- Handler.EventQ2=function(key,holeName,ti,f)
+ Aliado$1.New=function(id,idPadreO,idForAuthorize,influyente,datosPersonales,contactos,identificacion,isInternal,status,diaPago,tipo,fechaRegistro,fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,comision,nivel)
  {
   return{
-   $:5,
-   $0:holeName,
-   $1:true,
-   $2:function(el)
-   {
-    return function(ev)
-    {
-     return f({
-      Vars:ti(),
-      Target:el,
-      Event:ev
-     });
-    };
-   }
+   id:id,
+   idPadreO:idPadreO,
+   idForAuthorize:idForAuthorize,
+   influyente:influyente,
+   datosPersonales:datosPersonales,
+   contactos:contactos,
+   identificacion:identificacion,
+   isInternal:isInternal,
+   status:status,
+   diaPago:diaPago,
+   tipo:tipo,
+   fechaRegistro:fechaRegistro,
+   fechaStatus:fechaStatus,
+   nReferidos:nReferidos,
+   nRefActivos:nRefActivos,
+   nDescendientes:nDescendientes,
+   nDescActivos:nDescActivos,
+   comision:comision,
+   nivel:nivel
   };
  };
- Handler.CompleteHoles=function(a,filledHoles,vars)
- {
-  var allVars,filledVars,e,h,$1,n;
-  function c(name,ty)
-  {
-   var p,r,r$1,r$2;
-   return filledVars.Contains(name)?null:(p=ty===0?(r=Var$1.Create$1(""),[{
-    $:8,
-    $0:name,
-    $1:r
-   },r]):ty===1?(r$1=Var$1.Create$1(0),[{
-    $:13,
-    $0:name,
-    $1:r$1
-   },r$1]):ty===2?(r$2=Var$1.Create$1(false),[{
-    $:9,
-    $0:name,
-    $1:r$2
-   },r$2]):Operators.FailWith("Invalid value type"),(allVars.set_Item(name,p[1]),{
-    $:1,
-    $0:p[0]
-   }));
-  }
-  allVars=new Dictionary.New$5();
-  filledVars=new HashSet.New$3();
-  e=Enumerator.Get(filledHoles);
-  try
-  {
-   while(e.MoveNext())
-    {
-     h=e.Current();
-     (h.$==8?($1=[h.$0,Client.Box(h.$1)],true):h.$==11?($1=[h.$0,Client.Box(h.$1)],true):h.$==10?($1=[h.$0,Client.Box(h.$1)],true):h.$==13?($1=[h.$0,Client.Box(h.$1)],true):h.$==12?($1=[h.$0,Client.Box(h.$1)],true):h.$==9&&($1=[h.$0,Client.Box(h.$1)],true))?(n=$1[0],filledVars.Add(n),allVars.set_Item(n,$1[1])):void 0;
-    }
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
-  return[Seq.append(filledHoles,Arrays.choose(function($2)
-  {
-   return c($2[0],$2[1]);
-  },vars)),{
-   $:0,
-   $0:allVars
-  }];
- };
- TemplateInstance=Server.TemplateInstance=Runtime$1.Class({
-  get_Doc:function()
-  {
-   return this.doc;
-  },
-  Hole:function(name)
-  {
-   return this.allVars.get_Item(name);
-  }
- },Obj,TemplateInstance);
- TemplateInstance.New=Runtime$1.Ctor(function(c,doc)
- {
-  Obj.New.call(this);
-  this.doc=doc;
-  this.allVars=c.$==0?c.$0:Operators.FailWith("Should not happen");
- },TemplateInstance);
  Aliado$2.empty=function()
  {
   SC$3.$cctor();
@@ -6257,6 +5193,127 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   p=al.tipo.$==0?[pre.comisionReferidosMaster,pre.comisionDescendientesMaster]:[pre.comisionReferidosRegular,pre.comisionDescendientesRegular];
   return al.status.$==2?[p[0],p[1]]:[0,0];
  };
+ TemplateInstance=Server.TemplateInstance=Runtime$1.Class({
+  get_Doc:function()
+  {
+   return this.doc;
+  },
+  Hole:function(name)
+  {
+   return this.allVars.get_Item(name);
+  }
+ },Obj,TemplateInstance);
+ TemplateInstance.New=Runtime$1.Ctor(function(c,doc)
+ {
+  Obj.New.call(this);
+  this.doc=doc;
+  this.allVars=c.$==0?c.$0:Operators.FailWith("Should not happen");
+ },TemplateInstance);
+ Arrays.get=function(arr,n)
+ {
+  Arrays.checkBounds(arr,n);
+  return arr[n];
+ };
+ Arrays.length=function(arr)
+ {
+  return arr.dims===2?arr.length*arr.length:arr.length;
+ };
+ Arrays.checkBounds=function(arr,n)
+ {
+  if(n<0||n>=arr.length)
+   Operators.FailWith("Index was outside the bounds of the array.");
+ };
+ Arrays.set=function(arr,n,x)
+ {
+  Arrays.checkBounds(arr,n);
+  arr[n]=x;
+ };
+ ProviderBuilder=Server.ProviderBuilder=Runtime$1.Class({
+  WithHole:function(h)
+  {
+   this.h.push(h);
+   return this;
+  }
+ },null,ProviderBuilder);
+ ProviderBuilder.Make=function()
+ {
+  var c;
+  return ProviderBuilder.New(null,(c=Guid.NewGuid(),Global.String(c)),[]);
+ };
+ ProviderBuilder.New=function(Instance,Key,Holes)
+ {
+  return new ProviderBuilder({
+   i:Instance,
+   k:Key,
+   h:Holes
+  });
+ };
+ Handler.CompleteHoles=function(a,filledHoles,vars)
+ {
+  var allVars,filledVars,e,h,$1,n;
+  function c(name,ty)
+  {
+   var p,r,r$1,r$2;
+   return filledVars.Contains(name)?null:(p=ty===0?(r=Var$1.Create$1(""),[{
+    $:8,
+    $0:name,
+    $1:r
+   },r]):ty===1?(r$1=Var$1.Create$1(0),[{
+    $:13,
+    $0:name,
+    $1:r$1
+   },r$1]):ty===2?(r$2=Var$1.Create$1(false),[{
+    $:9,
+    $0:name,
+    $1:r$2
+   },r$2]):Operators.FailWith("Invalid value type"),(allVars.set_Item(name,p[1]),{
+    $:1,
+    $0:p[0]
+   }));
+  }
+  allVars=new Dictionary.New$5();
+  filledVars=new HashSet.New$3();
+  e=Enumerator.Get(filledHoles);
+  try
+  {
+   while(e.MoveNext())
+    {
+     h=e.Current();
+     (h.$==8?($1=[h.$0,Client.Box(h.$1)],true):h.$==11?($1=[h.$0,Client.Box(h.$1)],true):h.$==10?($1=[h.$0,Client.Box(h.$1)],true):h.$==13?($1=[h.$0,Client.Box(h.$1)],true):h.$==12?($1=[h.$0,Client.Box(h.$1)],true):h.$==9&&($1=[h.$0,Client.Box(h.$1)],true))?(n=$1[0],filledVars.Add(n),allVars.set_Item(n,$1[1])):void 0;
+    }
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+  return[Seq.append(filledHoles,Arrays.choose(function($2)
+  {
+   return c($2[0],$2[1]);
+  },vars)),{
+   $:0,
+   $0:allVars
+  }];
+ };
+ Handler.EventQ2=function(key,holeName,ti,f)
+ {
+  return{
+   $:5,
+   $0:holeName,
+   $1:true,
+   $2:function(el)
+   {
+    return function(ev)
+    {
+     return f({
+      Vars:ti(),
+      Target:el,
+      Event:ev
+     });
+    };
+   }
+  };
+ };
  testing_Templates.opcionesadministrador=function(h)
  {
   Templates.LoadLocalTemplates("index");
@@ -6345,9 +5402,25 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:"tablapagos"
   },h):void 0;
  };
+ testing_Templates.filadocs=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"filadocs"
+  },h):void 0;
+ };
+ testing_Templates.subirdocumentos=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"subirdocumentos"
+  },h):void 0;
+ };
  testing_Router.r=function()
  {
-  return RouterOperators.JSUnion(void 0,[[null,[[null,[]]],[]],[null,[[null,["Content"]]],[RouterOperators.rString()]]]);
+  return RouterOperators.JSUnion(void 0,[[null,[[null,[]]],[]],[null,[[null,["NoUser"]]],[]],[null,[[null,["PreRegister"]]],[]],[null,[[null,["Content"]]],[RouterOperators.rString()]],[null,[[null,["Pdf"]]],[RouterOperators.rWildcard()]],[null,[[null,["Video"]]],[RouterOperators.rWildcard()]]]);
  };
  testing_Templates.datospersonales=function(h)
  {
@@ -6438,6 +5511,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return Doc.Mk(null,View.Const());
  };
+ Doc.Concat=function(xs)
+ {
+  var x;
+  x=Array$1.ofSeqNonCopying(xs);
+  return Array$1.TreeReduce(Doc.get_Empty(),Doc.Append,x);
+ };
  Doc.BindView=function(f,view)
  {
   return Doc.EmbedView(View.Map(f,view));
@@ -6453,12 +5532,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return(render($1))($2);
   },view));
  };
- Doc.Concat=function(xs)
- {
-  var x;
-  x=Array$1.ofSeqNonCopying(xs);
-  return Array$1.TreeReduce(Doc.get_Empty(),Doc.Append,x);
- };
  Doc.EmbedView=function(view)
  {
   var node;
@@ -6471,6 +5544,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    Docs.UpdateEmbedNode(node,doc.docNode);
    return doc.updates;
   },view)));
+ };
+ Doc.Append=function(a,b)
+ {
+  return Doc.Mk({
+   $:0,
+   $0:a.docNode,
+   $1:b.docNode
+  },View.Map2Unit(a.updates,b.updates));
  };
  Doc.Flatten=function(view)
  {
@@ -6485,14 +5566,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var attrs$1;
   attrs$1=AttrProxy.Concat(attrs);
   return Elt.New(Doc.Clickable("button",action),attrs$1,Doc.TextNode(caption));
- };
- Doc.Append=function(a,b)
- {
-  return Doc.Mk({
-   $:0,
-   $0:a.docNode,
-   $1:b.docNode
-  },View.Map2Unit(a.updates,b.updates));
  };
  Doc.Input=function(attr$1,_var)
  {
@@ -6571,6 +5644,1001 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   this.docNode=docNode;
   this.updates=updates;
  },Doc);
+ Rpc.llamadas=function()
+ {
+  SC$1.$cctor();
+  return SC$1.llamadas;
+ };
+ Rpc.ejecutarDataEventoNuevo=function(p)
+ {
+  var f,fname,b;
+  function serializeP(p$1)
+  {
+   return JSON.stringify((ProzperServer_JsonEncoder.j$4())(p$1));
+  }
+  function serializeR(p$1)
+  {
+   return JSON.stringify((ProzperServer_JsonEncoder.j$1())(p$1));
+  }
+  function deserializeP(s)
+  {
+   return(ProzperServer_JsonDecoder.j$4())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$1())(JSON.parse(s));
+  }
+  f=(fname="ejecutarDataEventoNuevo",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p$1)
+   {
+    return Rpc$1.invoke(fname,idAliado,p$1);
+   }
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
+   {
+    return Concurrency.Return(v);
+   }
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
+   {
+    return g(f$1(x));
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
+   {
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p$1;
+      p$1=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p$1),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
+   });
+  }));
+ };
+ Rpc.obtenerFormasDePagoPara=function(p)
+ {
+  var f,fname,b;
+  function serializeP(p$1)
+  {
+   return JSON.stringify(((Provider.EncodeArray(ProzperServer_JsonEncoder.j$22))())(p$1));
+  }
+  function serializeR(p$1)
+  {
+   return JSON.stringify((ProzperServer_JsonEncoder.j$46())(p$1));
+  }
+  function deserializeP(s)
+  {
+   return((Provider.DecodeArray(ProzperServer_JsonDecoder.j$22))())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$46())(JSON.parse(s));
+  }
+  f=(fname="obtenerFormasDePagoPara",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p$1)
+   {
+    return Rpc$1.invoke(fname,idAliado,p$1);
+   }
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
+   {
+    return Concurrency.Return(v);
+   }
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
+   {
+    return g(f$1(x));
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
+   {
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p$1;
+      p$1=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p$1),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
+   });
+  }));
+ };
+ Rpc.enviarCorreosInvitacion=function(p,p$1,p$2)
+ {
+  var f,fname,p$3,b;
+  function serializeP(p$4)
+  {
+   return JSON.stringify(((Provider.EncodeTuple([Provider.Id(),ProzperServer_JsonEncoder.j$7,Provider.EncodeArray(Provider.Id())]))())(p$4));
+  }
+  function serializeR(p$4)
+  {
+   return JSON.stringify((ProzperServer_JsonEncoder.j$30())(p$4));
+  }
+  function deserializeP(s)
+  {
+   return((Provider.DecodeTuple([Provider.Id(),ProzperServer_JsonDecoder.j$7,Provider.DecodeArray(Provider.Id())]))())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$30())(JSON.parse(s));
+  }
+  f=(fname="enviarCorreosInvitacion",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p$4)
+   {
+    return Rpc$1.invoke(fname,idAliado,p$4);
+   }
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
+   {
+    return Concurrency.Return(v);
+   }
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
+   {
+    return g(f$1(x));
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
+   {
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p$4;
+      p$4=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p$4),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  p$3=[p,p$1,p$2];
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p$3));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
+   });
+  }));
+ };
+ Rpc.obtenerUnions=function()
+ {
+  var b;
+  function f()
+  {
+   return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.Prozper+Rpc.obtenerUnions:1790054391",[]);
+  }
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(void 0));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
+   });
+  }));
+ };
+ Rpc.iterA=function(arm)
+ {
+  function g(a)
+  {
+   Global.alert(a);
+  }
+  AsyncResultM.iterA(function(x)
+  {
+   return g(ResultMessage.summarized(x));
+  },Global.ignore,arm);
+ };
+ Rpc.agregarUsuarioSiEsNuevo=function(p)
+ {
+  var f,fname,b;
+  function serializeP(p$1)
+  {
+   return JSON.stringify(((Provider.EncodeArray(Provider.EncodeTuple([Provider.Id(),Provider.Id()])))())(p$1));
+  }
+  function serializeR(p$1)
+  {
+   return JSON.stringify((ProzperServer_JsonEncoder.j$30())(p$1));
+  }
+  function deserializeP(s)
+  {
+   return((Provider.DecodeArray(Provider.DecodeTuple([Provider.Id(),Provider.Id()])))())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$30())(JSON.parse(s));
+  }
+  f=(fname="agregarUsuarioSiEsNuevo",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p$1)
+   {
+    return Rpc$1.invoke(fname,idAliado,p$1);
+   }
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
+   {
+    return Concurrency.Return(v);
+   }
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
+   {
+    return g(f$1(x));
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
+   {
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p$1;
+      p$1=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p$1),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
+   });
+  }));
+ };
+ Rpc.obtenerEstadoParaUsuario=function(p)
+ {
+  var p$1,b;
+  function f(i)
+  {
+   return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.Prozper+Rpc.obtenerEstadoParaUsuario:-1569835008",[i]);
+  }
+  p$1=new IdAliado({
+   $:0,
+   $0:Aliado.get_LoggedId()
+  });
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p$1));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
+   });
+  }));
+ };
+ Rpc.borrarFormaPago=function(p)
+ {
+  var f,fname,b;
+  function serializeP(p$1)
+  {
+   return JSON.stringify((ProzperServer_JsonEncoder.j$34())(p$1));
+  }
+  function serializeR(p$1)
+  {
+   return JSON.stringify((ProzperServer_JsonEncoder.j$45())(p$1));
+  }
+  function deserializeP(s)
+  {
+   return(ProzperServer_JsonDecoder.j$34())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$45())(JSON.parse(s));
+  }
+  f=(fname="borrarFormaPago",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p$1)
+   {
+    return Rpc$1.invoke(fname,idAliado,p$1);
+   }
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
+   {
+    return Concurrency.Return(v);
+   }
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
+   {
+    return g(f$1(x));
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
+   {
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p$1;
+      p$1=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p$1),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
+   });
+  }));
+ };
+ Rpc.registrarTarjeta=function(p)
+ {
+  var f,fname,b;
+  function serializeP(p$1)
+  {
+   return JSON.stringify((ProzperServer_JsonEncoder.j$36())(p$1));
+  }
+  function serializeR(p$1)
+  {
+   return JSON.stringify((ProzperServer_JsonEncoder.j$45())(p$1));
+  }
+  function deserializeP(s)
+  {
+   return(ProzperServer_JsonDecoder.j$36())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$45())(JSON.parse(s));
+  }
+  f=(fname="registrarTarjeta",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p$1)
+   {
+    return Rpc$1.invoke(fname,idAliado,p$1);
+   }
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
+   {
+    return Concurrency.Return(v);
+   }
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
+   {
+    return g(f$1(x));
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
+   {
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p$1;
+      p$1=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p$1),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
+   });
+  }));
+ };
+ Rpc.registrarCuenta=function(p)
+ {
+  var f,fname,b;
+  function serializeP(p$1)
+  {
+   return JSON.stringify((ProzperServer_JsonEncoder.j$41())(p$1));
+  }
+  function serializeR(p$1)
+  {
+   return JSON.stringify((ProzperServer_JsonEncoder.j$45())(p$1));
+  }
+  function deserializeP(s)
+  {
+   return(ProzperServer_JsonDecoder.j$41())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$45())(JSON.parse(s));
+  }
+  f=(fname="registrarCuenta",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p$1)
+   {
+    return Rpc$1.invoke(fname,idAliado,p$1);
+   }
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
+   {
+    return Concurrency.Return(v);
+   }
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
+   {
+    return g(f$1(x));
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
+   {
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p$1;
+      p$1=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p$1),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
+   });
+  }));
+ };
+ Rpc.validarFormaPago=function(p)
+ {
+  var f,fname,b;
+  function serializeP(p$1)
+  {
+   return JSON.stringify((ProzperServer_JsonEncoder.j$34())(p$1));
+  }
+  function serializeR(p$1)
+  {
+   return JSON.stringify((ProzperServer_JsonEncoder.j$45())(p$1));
+  }
+  function deserializeP(s)
+  {
+   return(ProzperServer_JsonDecoder.j$34())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$45())(JSON.parse(s));
+  }
+  f=(fname="validarFormaPago",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p$1)
+   {
+    return Rpc$1.invoke(fname,idAliado,p$1);
+   }
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
+   {
+    return Concurrency.Return(v);
+   }
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
+   {
+    return g(f$1(x));
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
+   {
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p$1;
+      p$1=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p$1),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
+   });
+  }));
+ };
+ Rpc.obtenerListaDocs=function()
+ {
+  var f,fname,b;
+  function serializeP(p)
+  {
+   return JSON.stringify(((Provider.Id())())(p));
+  }
+  function serializeR(p)
+  {
+   return JSON.stringify((ProzperServer_JsonEncoder.j$47())(p));
+  }
+  function deserializeP(s)
+  {
+   return((Provider.Id())())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$47())(JSON.parse(s));
+  }
+  f=(fname="obtenerListaDocs",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p)
+   {
+    return Rpc$1.invoke(fname,idAliado,p);
+   }
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
+   {
+    return Concurrency.Return(v);
+   }
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
+   {
+    return g(f$1(x));
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
+   {
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p;
+      p=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(void 0));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
+   });
+  }));
+ };
+ Rpc.obtenerFormasDePago=function()
+ {
+  var f,fname,b;
+  function serializeP(p)
+  {
+   return JSON.stringify(((Provider.Id())())(p));
+  }
+  function serializeR(p)
+  {
+   return JSON.stringify((ProzperServer_JsonEncoder.j$31())(p));
+  }
+  function deserializeP(s)
+  {
+   return((Provider.Id())())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$31())(JSON.parse(s));
+  }
+  f=(fname="obtenerFormasDePago",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p)
+   {
+    return Rpc$1.invoke(fname,idAliado,p);
+   }
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
+   {
+    return Concurrency.Return(v);
+   }
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
+   {
+    return g(f$1(x));
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
+   {
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p;
+      p=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(void 0));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
+   });
+  }));
+ };
+ IdAliado=TypesV0.IdAliado=Runtime$1.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,IdAliado);
  Modelo.New=function(idAliado,aliados,anoActual,periodoActual,premisas,nevento)
  {
   return{
@@ -6583,6 +6651,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   };
  };
  ConcreteVar=UI.ConcreteVar=Runtime$1.Class({
+  get_View:function()
+  {
+   return this.view;
+  },
   Set:function(v)
   {
    if(this.isConst)
@@ -6603,10 +6675,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       $1:[]
      });
     }
-  },
-  get_View:function()
-  {
-   return this.view;
   },
   Get:function()
   {
@@ -6746,6 +6814,15 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   },res);
   return res;
  };
+ Snap.TryGet=function(snap)
+ {
+  var m,$1;
+  m=snap.s;
+  return(m!=null&&m.$==0?($1=m.$0,true):m!=null&&m.$==2&&($1=m.$0,true))?{
+   $:1,
+   $0:$1
+  }:null;
+ };
  Snap.EnqueueSafe=function(q,x)
  {
   var qcopy,i,$1,o;
@@ -6828,15 +6905,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:[m.$0,false]
   }:null;
  };
- Snap.TryGet=function(snap)
- {
-  var m,$1;
-  m=snap.s;
-  return(m!=null&&m.$==0?($1=m.$0,true):m!=null&&m.$==2&&($1=m.$0,true))?{
-   $:1,
-   $0:$1
-  }:null;
- };
  Snap.Map3Opt1=function(fn,x,y,sn3)
  {
   return Snap.Map(function(z)
@@ -6879,29 +6947,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return fn($1,$2,z);
   },sn1,sn2);
  };
- Snap.Join=function(snap)
- {
-  var res;
-  res=Snap.New({
-   $:3,
-   $0:[],
-   $1:[]
-  });
-  Snap.When(snap,function(x)
-  {
-   var y;
-   y=x();
-   Snap.When(y,function(v)
-   {
-    var $1,$2;
-    if(($1=y.s,$1!=null&&$1.$==0)&&($2=snap.s,$2!=null&&$2.$==0))
-     Snap.MarkForever(res,v);
-    else
-     Snap.MarkReady(res,v);
-   },res);
-  },res);
-  return res;
- };
  Snap.Map2Unit=function(sn1,sn2)
  {
   var $1,$2,res;
@@ -6925,6 +6970,29 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:[],
    $1:[]
   }),(Snap.When(sn1,cont,res),Snap.When(sn2,cont,res),res));
+ };
+ Snap.Join=function(snap)
+ {
+  var res;
+  res=Snap.New({
+   $:3,
+   $0:[],
+   $1:[]
+  });
+  Snap.When(snap,function(x)
+  {
+   var y;
+   y=x();
+   Snap.When(y,function(v)
+   {
+    var $1,$2;
+    if(($1=y.s,$1!=null&&$1.$==0)&&($2=snap.s,$2!=null&&$2.$==0))
+     Snap.MarkForever(res,v);
+    else
+     Snap.MarkReady(res,v);
+   },res);
+  },res);
+  return res;
  };
  Snap.Sequence=function(snaps)
  {
@@ -7017,6 +7085,18 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    Msal.callback(e,t,e$1,t$1,s);
   }
+  function f$2(a)
+  {
+   return a==="ProzperLyt.mainContent"?EndPoint.DefaultEP:{
+    $:3,
+    $0:a
+   };
+  }
+  function g$3(v)
+  {
+   if(!Unchecked.Equals(ModeloUI.endPointV().Get(),v))
+    ModeloUI.endPointV().Set(v);
+  }
   SC$1.unindentStr=function(x)
   {
    return g(String.unindent$1(x));
@@ -7030,7 +7110,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   });
   SC$1.rexGuid="([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})";
   SC$1.rexEmail="(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@[*[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+]*";
-  SC$1.policies=List$1.ofArray([Policy.SignIn,Policy.SignUp,Policy.EditProfile,Policy.ResetPassword]);
+  SC$1.policies=List.ofArray([Policy.SignIn,Policy.SignUp,Policy.EditProfile,Policy.ResetPassword]);
   SC$1.rootdir="D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperClient\\website";
   SC$1.TemplatesFileName="D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperClient\\website"+"\\index.html";
   SC$1.LoginFileName="D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperClient\\website"+"\\Login.html";
@@ -7070,7 +7150,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return tokenReceivedCallback($1[0],$1[1],$1[2],$1[3],$1[4]);
   },options))));
   SC$1.localStorage=self.localStorage;
-  Msal.checkUser();
   SC$1.modeloV=Var$1.Create$1(Modelo.New(new IdAliado({
    $:0,
    $0:":"
@@ -7089,15 +7168,29 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$1.selAliadoIdOV=Var$1.Create$1(null);
   SC$1.refAliadoIdOV=Var$1.Create$1(null);
   SC$1.endPointV=Router.InstallHash(EndPoint.DefaultEP,testing_Router.r());
-  SC$1.contentVar=Var$1.Lens(ModeloUI.endPointV(),function(a)
+  View.Sink(function(a)
   {
-   return a.$==1?a.$0:"ProzperLyt.mainContent";
-  },function(a,a$1)
+   if(a.$==1)
+    ;
+   else
+    if(a.$==2)
+     ;
+    else
+     if(a.$==4)
+      Global.showPDF(a.$0);
+     else
+      if(a.$==5)
+       Global.playVideo();
+      else
+       Msal.checkUser();
+  },ModeloUI.endPointV().get_View());
+  SC$1.contentVar=new FromView.New(View.Map2(function(a,a$1)
   {
-   return a$1==="ProzperLyt.mainContent"?EndPoint.DefaultEP:{
-    $:1,
-    $0:a$1
-   };
+   var $1,$2;
+   return a$1.$==0&&!Unchecked.Equals(Msal.userO().Get(),null)?"ProzperLyt.mainContent":a$1.$==3&&(!Unchecked.Equals(Msal.userO().Get(),null)&&($2=a$1.$0,true))?$2:a$1.$==2?"ProzperLyt.cntPreRegister":a$1.$==4?"ProzperLyt.cntPDF":a$1.$==5?"ProzperLyt.cntVideo":"ProzperLyt.cntFormaNoUser";
+  },Msal.userO().get_View(),ModeloUI.endPointV().get_View()),function(x)
+  {
+   return g$3(f$2(x));
   });
   SC$1.aliadoW=(b=View.get_Do(),View.Bind(function(a)
   {
@@ -7110,12 +7203,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return View.Const(aliadoO!=null&&aliadoO.$==1?aliadoO.$0:Aliado$2.empty());
   },ModeloUI.modeloV().get_View()));
   SC$1.llamadas=Var$1.Create$1(0);
+  Remoting.set_EndPoint((self.location.protocol==="http:"?"http://localhost:7071/api/":"https://prozper.azurewebsites.net/api/")+"rpc/rpc");
   SC$1.shouldRefresh=true;
   View.Sink(function()
   {
    Refresh.refrescarData(true);
   },Msal.userO().get_View());
-  Concurrency.Start((b$1=null,Concurrency.Delay(function()
+  Concurrency.StartImmediateAsTask((b$1=null,Concurrency.Delay(function()
   {
    return Concurrency.While(function()
    {
@@ -7124,8 +7218,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return Concurrency.Bind(Concurrency.Sleep(5*60*1000),function()
     {
-     Refresh.refrescarData(true);
-     return Concurrency.Zero();
+     return Concurrency.Return(null);
     });
    }));
   })),null);
@@ -7133,7 +7226,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    self.document.addEventListener("visibilityChange",function()
    {
-    return Refresh.refrescarData(false);
+    return null;
    },false);
   }
   catch(m)
@@ -7242,76 +7335,16 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     });
    };
   }];
+  SC$1.docsV=Var$1.Create$1([]);
+  SC$1.uploaded=function(a,b$3)
+  {
+   ListaDocs.refrescarListaDocs();
+   return Global.alert(b$3);
+  };
   SC$1.layoutName="ProzperLyt";
   SC$1.appName="Prozper";
- };
- DatosPersonales.New=function(titulo,nombre1,nombre2,apellido1,apellido2,nacionalidad,genero,fechaNacimiento)
- {
-  return{
-   titulo:titulo,
-   nombre1:nombre1,
-   nombre2:nombre2,
-   apellido1:apellido1,
-   apellido2:apellido2,
-   nacionalidad:nacionalidad,
-   genero:genero,
-   fechaNacimiento:fechaNacimiento
-  };
- };
- StatusAliado=TypesV0.StatusAliado=Runtime$1.Class({
-  toString:function()
-  {
-   return(function($1)
-   {
-    return function($2)
-    {
-     return $1(ProzperServer_GeneratedPrintf.p($2));
-    };
-   }(Global.id))(this);
-  }
- },null,StatusAliado);
- StatusAliado.tryParse=function(s)
- {
-  var m;
-  m=Strings.Trim(s).toUpperCase();
-  return m==="CUENTACREADA"?StatusAliado.CuentaCreada:m==="DATOSBANCARIOSINGRESADOS"?StatusAliado.DatosBancariosIngresados:m==="ACTIVO"?StatusAliado.Activo:m==="CANCELADO"?StatusAliado.Cancelado:StatusAliado.Inactivo;
- };
- StatusAliado.CuentaCreada=new StatusAliado({
-  $:0
- });
- StatusAliado.DatosBancariosIngresados=new StatusAliado({
-  $:1
- });
- StatusAliado.Activo=new StatusAliado({
-  $:2
- });
- StatusAliado.Cancelado=new StatusAliado({
-  $:4
- });
- StatusAliado.Inactivo=new StatusAliado({
-  $:3
- });
- DiaPago.Dia01={
-  $:0
- };
- TipoAliado=TypesV0.TipoAliado=Runtime$1.Class({
-  toString:function()
-  {
-   return(function($1)
-   {
-    return function($2)
-    {
-     return $1(ProzperServer_GeneratedPrintf.p$1($2));
-    };
-   }(Global.id))(this);
-  }
- },null,TipoAliado);
- TipoAliado.Regular=new TipoAliado({
-  $:1
- });
- Numeric.TryParseInt32=function(s,r)
- {
-  return Numeric.TryParse(s,-2147483648,2147483647,r);
+  SC$1.influencerV=Var$1.Create$1("");
+  SC$1.influencerClassW=View.Const("");
  };
  ListModel=UI.ListModel=Runtime$1.Class({
   Append:function(item)
@@ -7551,7 +7584,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  ProzperServer_JsonDecoder.j$4=function()
  {
-  return ProzperServer_JsonDecoder._v$4?ProzperServer_JsonDecoder._v$4:ProzperServer_JsonDecoder._v$4=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",Provider.DecodeArray(ProzperServer_JsonDecoder.j$21),0]]],[1,[[null,null,ProzperServer_JsonDecoder.j$21]]],[2,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$6,Provider.DecodeArray(Provider.Id())]),0]]],[3,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$6,ProzperServer_JsonDecoder.j$19,ProzperServer_JsonDecoder.j$5,Provider.DecodeArray(ProzperServer_JsonDecoder.j$8)]),0]]],[4,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$6,ProzperServer_JsonDecoder.j$19]),0]]],[5,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$6,Provider.DecodeArray(ProzperServer_JsonDecoder.j$8)]),0]]],[6,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$6,Provider.Id()]),0]]],[7,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$6,Provider.Id()]),0]]],[8,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$6,ProzperServer_JsonDecoder.j$7,ProzperServer_JsonDecoder.j$5]),0]]]]))();
+  return ProzperServer_JsonDecoder._v$4?ProzperServer_JsonDecoder._v$4:ProzperServer_JsonDecoder._v$4=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",Provider.DecodeArray(ProzperServer_JsonDecoder.j$22),0]]],[1,[[null,null,ProzperServer_JsonDecoder.j$22]]],[2,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$7,Provider.DecodeArray(Provider.Id())]),0]]],[3,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$7,ProzperServer_JsonDecoder.j$20,ProzperServer_JsonDecoder.j$6,Provider.DecodeArray(ProzperServer_JsonDecoder.j$9)]),0]]],[4,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$7,ProzperServer_JsonDecoder.j$20]),0]]],[5,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$7,Provider.DecodeArray(ProzperServer_JsonDecoder.j$9)]),0]]],[6,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$7,Provider.Id()]),0]]],[7,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$7,Provider.Id()]),0]]],[8,[["$0","Item",Provider.DecodeTuple([ProzperServer_JsonDecoder.j$7,ProzperServer_JsonDecoder.j$8,ProzperServer_JsonDecoder.j$6,ProzperServer_JsonDecoder.j$5]),0]]]]))();
  };
  ProzperServer_JsonEncoder.j$1=function()
  {
@@ -7559,51 +7592,51 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  ProzperServer_JsonEncoder.j$4=function()
  {
-  return ProzperServer_JsonEncoder._v$4?ProzperServer_JsonEncoder._v$4:ProzperServer_JsonEncoder._v$4=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",Provider.EncodeArray(ProzperServer_JsonEncoder.j$21),0]]],[1,[[null,null,ProzperServer_JsonEncoder.j$21]]],[2,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$6,Provider.EncodeArray(Provider.Id())]),0]]],[3,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$6,ProzperServer_JsonEncoder.j$19,ProzperServer_JsonEncoder.j$5,Provider.EncodeArray(ProzperServer_JsonEncoder.j$8)]),0]]],[4,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$6,ProzperServer_JsonEncoder.j$19]),0]]],[5,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$6,Provider.EncodeArray(ProzperServer_JsonEncoder.j$8)]),0]]],[6,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$6,Provider.Id()]),0]]],[7,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$6,Provider.Id()]),0]]],[8,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$6,ProzperServer_JsonEncoder.j$7,ProzperServer_JsonEncoder.j$5]),0]]]]))();
+  return ProzperServer_JsonEncoder._v$4?ProzperServer_JsonEncoder._v$4:ProzperServer_JsonEncoder._v$4=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",Provider.EncodeArray(ProzperServer_JsonEncoder.j$22),0]]],[1,[[null,null,ProzperServer_JsonEncoder.j$22]]],[2,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$7,Provider.EncodeArray(Provider.Id())]),0]]],[3,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$7,ProzperServer_JsonEncoder.j$20,ProzperServer_JsonEncoder.j$6,Provider.EncodeArray(ProzperServer_JsonEncoder.j$9)]),0]]],[4,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$7,ProzperServer_JsonEncoder.j$20]),0]]],[5,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$7,Provider.EncodeArray(ProzperServer_JsonEncoder.j$9)]),0]]],[6,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$7,Provider.Id()]),0]]],[7,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$7,Provider.Id()]),0]]],[8,[["$0","Item",Provider.EncodeTuple([ProzperServer_JsonEncoder.j$7,ProzperServer_JsonEncoder.j$8,ProzperServer_JsonEncoder.j$6,ProzperServer_JsonEncoder.j$5]),0]]]]))();
  };
- ProzperServer_JsonDecoder.j$48=function()
+ ProzperServer_JsonDecoder.j$46=function()
  {
-  return ProzperServer_JsonDecoder._v$48?ProzperServer_JsonDecoder._v$48:ProzperServer_JsonDecoder._v$48=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.DecodeArray(Provider.DecodeTuple([ProzperServer_JsonDecoder.j$6,Provider.DecodeArray(ProzperServer_JsonDecoder.j$34)])),1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
+  return ProzperServer_JsonDecoder._v$46?ProzperServer_JsonDecoder._v$46:ProzperServer_JsonDecoder._v$46=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.DecodeArray(Provider.DecodeTuple([ProzperServer_JsonDecoder.j$22,Provider.DecodeArray(ProzperServer_JsonDecoder.j$32)])),1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
  };
- ProzperServer_JsonDecoder.j$6=function()
+ ProzperServer_JsonDecoder.j$22=function()
  {
-  return ProzperServer_JsonDecoder._v$6?ProzperServer_JsonDecoder._v$6:ProzperServer_JsonDecoder._v$6=(Provider.DecodeUnion(IdAliado,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonDecoder._v$22?ProzperServer_JsonDecoder._v$22:ProzperServer_JsonDecoder._v$22=(Provider.DecodeRecord(void 0,[["id",ProzperServer_JsonDecoder.j$7,0],["idPadreO",ProzperServer_JsonDecoder.j$7,1],["idForAuthorize",ProzperServer_JsonDecoder.j$23,1],["influyente",Provider.Id(),1],["datosPersonales",ProzperServer_JsonDecoder.j$20,0],["contactos",Provider.DecodeArray(ProzperServer_JsonDecoder.j$9),0],["identificacion",Provider.DecodeArray(ProzperServer_JsonDecoder.j$24),0],["isInternal",Provider.Id(),0],["status",ProzperServer_JsonDecoder.j$8,0],["diaPago",ProzperServer_JsonDecoder.j$28,0],["tipo",ProzperServer_JsonDecoder.j$29,0],["fechaRegistro",Provider.DecodeDateTime(),0],["fechaStatus",Provider.DecodeDateTime(),0],["nReferidos",Provider.Id(),0],["nRefActivos",Provider.Id(),0],["nDescendientes",Provider.Id(),0],["nDescActivos",Provider.Id(),0],["comision",Provider.Id(),0],["nivel",Provider.Id(),0]]))();
  };
- ProzperServer_JsonEncoder.j$48=function()
+ ProzperServer_JsonEncoder.j$46=function()
  {
-  return ProzperServer_JsonEncoder._v$48?ProzperServer_JsonEncoder._v$48:ProzperServer_JsonEncoder._v$48=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.EncodeArray(Provider.EncodeTuple([ProzperServer_JsonEncoder.j$6,Provider.EncodeArray(ProzperServer_JsonEncoder.j$34)])),1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
+  return ProzperServer_JsonEncoder._v$46?ProzperServer_JsonEncoder._v$46:ProzperServer_JsonEncoder._v$46=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.EncodeArray(Provider.EncodeTuple([ProzperServer_JsonEncoder.j$22,Provider.EncodeArray(ProzperServer_JsonEncoder.j$32)])),1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
  };
- ProzperServer_JsonEncoder.j$6=function()
+ ProzperServer_JsonEncoder.j$22=function()
  {
-  return ProzperServer_JsonEncoder._v$6?ProzperServer_JsonEncoder._v$6:ProzperServer_JsonEncoder._v$6=(Provider.EncodeUnion(IdAliado,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonEncoder._v$22?ProzperServer_JsonEncoder._v$22:ProzperServer_JsonEncoder._v$22=(Provider.EncodeRecord(void 0,[["id",ProzperServer_JsonEncoder.j$7,0],["idPadreO",ProzperServer_JsonEncoder.j$7,1],["idForAuthorize",ProzperServer_JsonEncoder.j$23,1],["influyente",Provider.Id(),1],["datosPersonales",ProzperServer_JsonEncoder.j$20,0],["contactos",Provider.EncodeArray(ProzperServer_JsonEncoder.j$9),0],["identificacion",Provider.EncodeArray(ProzperServer_JsonEncoder.j$24),0],["isInternal",Provider.Id(),0],["status",ProzperServer_JsonEncoder.j$8,0],["diaPago",ProzperServer_JsonEncoder.j$28,0],["tipo",ProzperServer_JsonEncoder.j$29,0],["fechaRegistro",Provider.EncodeDateTime(),0],["fechaStatus",Provider.EncodeDateTime(),0],["nReferidos",Provider.Id(),0],["nRefActivos",Provider.Id(),0],["nDescendientes",Provider.Id(),0],["nDescActivos",Provider.Id(),0],["comision",Provider.Id(),0],["nivel",Provider.Id(),0]]))();
  };
- ProzperServer_JsonDecoder.j$32=function()
+ ProzperServer_JsonDecoder.j$30=function()
  {
-  return ProzperServer_JsonDecoder._v$32?ProzperServer_JsonDecoder._v$32:ProzperServer_JsonDecoder._v$32=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.Id(),1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
+  return ProzperServer_JsonDecoder._v$30?ProzperServer_JsonDecoder._v$30:ProzperServer_JsonDecoder._v$30=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.Id(),1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
  };
- ProzperServer_JsonEncoder.j$32=function()
+ ProzperServer_JsonDecoder.j$7=function()
  {
-  return ProzperServer_JsonEncoder._v$32?ProzperServer_JsonEncoder._v$32:ProzperServer_JsonEncoder._v$32=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.Id(),1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
+  return ProzperServer_JsonDecoder._v$7?ProzperServer_JsonDecoder._v$7:ProzperServer_JsonDecoder._v$7=(Provider.DecodeUnion(IdAliado,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
  };
- ProzperServer_GeneratedPrintf.p$7=function($1)
+ ProzperServer_JsonEncoder.j$30=function()
  {
-  return $1.$==3?"Otro "+Utils.prettyPrint($1.$0):$1.$==2?"ServicioPostal":$1.$==1?"Oficina":"Habitacion";
+  return ProzperServer_JsonEncoder._v$30?ProzperServer_JsonEncoder._v$30:ProzperServer_JsonEncoder._v$30=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.Id(),1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$7=function()
+ {
+  return ProzperServer_JsonEncoder._v$7?ProzperServer_JsonEncoder._v$7:ProzperServer_JsonEncoder._v$7=(Provider.EncodeUnion(IdAliado,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
  };
  ProzperServer_GeneratedPrintf.p$8=function($1)
  {
   return $1.$==3?"Voip":$1.$==2?"Habitacion":$1.$==1?"Oficina":"Movil";
  };
+ ProzperServer_GeneratedPrintf.p$7=function($1)
+ {
+  return $1.$==3?"Otro "+Utils.prettyPrint($1.$0):$1.$==2?"ServicioPostal":$1.$==1?"Oficina":"Habitacion";
+ };
  ProzperServer_GeneratedPrintf.p$4=function($1)
  {
   return $1.$==3?"Otra "+Utils.prettyPrint($1.$0):$1.$==2?"Amex":$1.$==1?"MasterCard":"Visa";
- };
- ProzperServer_JsonDecoder.j$31=function()
- {
-  return ProzperServer_JsonDecoder._v$31?ProzperServer_JsonDecoder._v$31:ProzperServer_JsonDecoder._v$31=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.DecodeTuple([Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id()),Provider.DecodeArray(Provider.Id())]),1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
- };
- ProzperServer_JsonEncoder.j$31=function()
- {
-  return ProzperServer_JsonEncoder._v$31?ProzperServer_JsonEncoder._v$31:ProzperServer_JsonEncoder._v$31=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.EncodeTuple([Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id()),Provider.EncodeArray(Provider.Id())]),1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
  };
  ProzperServer_JsonDecoder.j$2=function()
  {
@@ -7613,25 +7646,25 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return ProzperServer_JsonDecoder._v$3?ProzperServer_JsonDecoder._v$3:ProzperServer_JsonDecoder._v$3=(Provider.DecodeUnion(ResultMessage,"$",[[0,[]],[1,[["$0","Item",Provider.Id(),0]]],[2,[["$0","Item",Provider.Id(),0]]],[3,[["$0","Item",Provider.Id(),0]]],[4,[["$0","Item",Provider.Id(),0]]],[5,[["$0","Item1",Provider.Id(),0],["$1","Item2",Provider.Id(),0]]],[6,[["$0","Item",Provider.DecodeArray(ProzperServer_JsonDecoder.j$3),0]]]]))();
  };
- ProzperServer_JsonDecoder.j$21=function()
+ ProzperServer_JsonDecoder.j$20=function()
  {
-  return ProzperServer_JsonDecoder._v$21?ProzperServer_JsonDecoder._v$21:ProzperServer_JsonDecoder._v$21=(Provider.DecodeRecord(void 0,[["id",ProzperServer_JsonDecoder.j$6,0],["idPadreO",ProzperServer_JsonDecoder.j$6,1],["datosPersonales",ProzperServer_JsonDecoder.j$19,0],["contactos",Provider.DecodeArray(ProzperServer_JsonDecoder.j$8),0],["identificacion",Provider.DecodeArray(ProzperServer_JsonDecoder.j$22),0],["isInternal",Provider.Id(),0],["status",ProzperServer_JsonDecoder.j$7,0],["diaPago",ProzperServer_JsonDecoder.j$26,0],["tipo",ProzperServer_JsonDecoder.j$27,0],["fechaRegistro",Provider.DecodeDateTime(),0],["fechaStatus",Provider.DecodeDateTime(),0],["nReferidos",Provider.Id(),0],["nRefActivos",Provider.Id(),0],["nDescendientes",Provider.Id(),0],["nDescActivos",Provider.Id(),0],["comision",Provider.Id(),0],["nivel",Provider.Id(),0]]))();
+  return ProzperServer_JsonDecoder._v$20?ProzperServer_JsonDecoder._v$20:ProzperServer_JsonDecoder._v$20=(Provider.DecodeRecord(void 0,[["titulo",Provider.Id(),1],["nombre1",Provider.Id(),0],["nombre2",Provider.Id(),0],["apellido1",Provider.Id(),0],["apellido2",Provider.Id(),0],["nacionalidad",ProzperServer_JsonDecoder.j$18,0],["genero",ProzperServer_JsonDecoder.j$21,0],["fechaNacimiento",Provider.DecodeDateTime(),0]]))();
  };
- ProzperServer_JsonDecoder.j$19=function()
+ ProzperServer_JsonDecoder.j$6=function()
  {
-  return ProzperServer_JsonDecoder._v$19?ProzperServer_JsonDecoder._v$19:ProzperServer_JsonDecoder._v$19=(Provider.DecodeRecord(void 0,[["titulo",Provider.Id(),1],["nombre1",Provider.Id(),0],["nombre2",Provider.Id(),0],["apellido1",Provider.Id(),0],["apellido2",Provider.Id(),0],["nacionalidad",ProzperServer_JsonDecoder.j$17,0],["genero",ProzperServer_JsonDecoder.j$20,0],["fechaNacimiento",Provider.DecodeDateTime(),0]]))();
+  return ProzperServer_JsonDecoder._v$6?ProzperServer_JsonDecoder._v$6:ProzperServer_JsonDecoder._v$6=(Provider.DecodeUnion(void 0,"$",[null,[1,[["$0","Value",ProzperServer_JsonDecoder.j$7,0]]]]))();
  };
- ProzperServer_JsonDecoder.j$5=function()
+ ProzperServer_JsonDecoder.j$9=function()
  {
-  return ProzperServer_JsonDecoder._v$5?ProzperServer_JsonDecoder._v$5:ProzperServer_JsonDecoder._v$5=(Provider.DecodeUnion(void 0,"$",[null,[1,[["$0","Value",ProzperServer_JsonDecoder.j$6,0]]]]))();
+  return ProzperServer_JsonDecoder._v$9?ProzperServer_JsonDecoder._v$9:ProzperServer_JsonDecoder._v$9=(Provider.DecodeUnion(void 0,"$",[[0,[[null,null,ProzperServer_JsonDecoder.j$13]]],[1,[[null,null,ProzperServer_JsonDecoder.j$12]]],[2,[[null,null,ProzperServer_JsonDecoder.j$10]]],[3,[["$0","Item",Provider.Id(),0]]],[4,[["$0","Item",Provider.Id(),0]]],[5,[["$0","Item",Provider.Id(),0]]]]))();
  };
  ProzperServer_JsonDecoder.j$8=function()
  {
-  return ProzperServer_JsonDecoder._v$8?ProzperServer_JsonDecoder._v$8:ProzperServer_JsonDecoder._v$8=(Provider.DecodeUnion(void 0,"$",[[0,[[null,null,ProzperServer_JsonDecoder.j$12]]],[1,[[null,null,ProzperServer_JsonDecoder.j$11]]],[2,[[null,null,ProzperServer_JsonDecoder.j$9]]],[3,[["$0","Item",Provider.Id(),0]]],[4,[["$0","Item",Provider.Id(),0]]],[5,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonDecoder._v$8?ProzperServer_JsonDecoder._v$8:ProzperServer_JsonDecoder._v$8=(Provider.DecodeUnion(StatusAliado,"$",[[0,[]],[1,[]],[2,[]],[3,[]],[4,[]]]))();
  };
- ProzperServer_JsonDecoder.j$7=function()
+ ProzperServer_JsonDecoder.j$5=function()
  {
-  return ProzperServer_JsonDecoder._v$7?ProzperServer_JsonDecoder._v$7:ProzperServer_JsonDecoder._v$7=(Provider.DecodeUnion(StatusAliado,"$",[[0,[]],[1,[]],[2,[]],[3,[]],[4,[]]]))();
+  return ProzperServer_JsonDecoder._v$5?ProzperServer_JsonDecoder._v$5:ProzperServer_JsonDecoder._v$5=(Provider.DecodeUnion(void 0,"$",[null,[1,[["$0","Value",Provider.Id(),0]]]]))();
  };
  ProzperServer_JsonEncoder.j$2=function()
  {
@@ -7641,289 +7674,289 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return ProzperServer_JsonEncoder._v$3?ProzperServer_JsonEncoder._v$3:ProzperServer_JsonEncoder._v$3=(Provider.EncodeUnion(ResultMessage,"$",[[0,[]],[1,[["$0","Item",Provider.Id(),0]]],[2,[["$0","Item",Provider.Id(),0]]],[3,[["$0","Item",Provider.Id(),0]]],[4,[["$0","Item",Provider.Id(),0]]],[5,[["$0","Item1",Provider.Id(),0],["$1","Item2",Provider.Id(),0]]],[6,[["$0","Item",Provider.EncodeArray(ProzperServer_JsonEncoder.j$3),0]]]]))();
  };
- ProzperServer_JsonEncoder.j$21=function()
- {
-  return ProzperServer_JsonEncoder._v$21?ProzperServer_JsonEncoder._v$21:ProzperServer_JsonEncoder._v$21=(Provider.EncodeRecord(void 0,[["id",ProzperServer_JsonEncoder.j$6,0],["idPadreO",ProzperServer_JsonEncoder.j$6,1],["datosPersonales",ProzperServer_JsonEncoder.j$19,0],["contactos",Provider.EncodeArray(ProzperServer_JsonEncoder.j$8),0],["identificacion",Provider.EncodeArray(ProzperServer_JsonEncoder.j$22),0],["isInternal",Provider.Id(),0],["status",ProzperServer_JsonEncoder.j$7,0],["diaPago",ProzperServer_JsonEncoder.j$26,0],["tipo",ProzperServer_JsonEncoder.j$27,0],["fechaRegistro",Provider.EncodeDateTime(),0],["fechaStatus",Provider.EncodeDateTime(),0],["nReferidos",Provider.Id(),0],["nRefActivos",Provider.Id(),0],["nDescendientes",Provider.Id(),0],["nDescActivos",Provider.Id(),0],["comision",Provider.Id(),0],["nivel",Provider.Id(),0]]))();
- };
- ProzperServer_JsonEncoder.j$19=function()
- {
-  return ProzperServer_JsonEncoder._v$19?ProzperServer_JsonEncoder._v$19:ProzperServer_JsonEncoder._v$19=(Provider.EncodeRecord(void 0,[["titulo",Provider.Id(),1],["nombre1",Provider.Id(),0],["nombre2",Provider.Id(),0],["apellido1",Provider.Id(),0],["apellido2",Provider.Id(),0],["nacionalidad",ProzperServer_JsonEncoder.j$17,0],["genero",ProzperServer_JsonEncoder.j$20,0],["fechaNacimiento",Provider.EncodeDateTime(),0]]))();
- };
- ProzperServer_JsonEncoder.j$5=function()
- {
-  return ProzperServer_JsonEncoder._v$5?ProzperServer_JsonEncoder._v$5:ProzperServer_JsonEncoder._v$5=(Provider.EncodeUnion(void 0,"$",[null,[1,[["$0","Value",ProzperServer_JsonEncoder.j$6,0]]]]))();
- };
- ProzperServer_JsonEncoder.j$8=function()
- {
-  return ProzperServer_JsonEncoder._v$8?ProzperServer_JsonEncoder._v$8:ProzperServer_JsonEncoder._v$8=(Provider.EncodeUnion(void 0,"$",[[0,[[null,null,ProzperServer_JsonEncoder.j$12]]],[1,[[null,null,ProzperServer_JsonEncoder.j$11]]],[2,[[null,null,ProzperServer_JsonEncoder.j$9]]],[3,[["$0","Item",Provider.Id(),0]]],[4,[["$0","Item",Provider.Id(),0]]],[5,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$7=function()
- {
-  return ProzperServer_JsonEncoder._v$7?ProzperServer_JsonEncoder._v$7:ProzperServer_JsonEncoder._v$7=(Provider.EncodeUnion(StatusAliado,"$",[[0,[]],[1,[]],[2,[]],[3,[]],[4,[]]]))();
- };
- ProzperServer_JsonDecoder.j$28=function()
- {
-  return ProzperServer_JsonDecoder._v$28?ProzperServer_JsonDecoder._v$28:ProzperServer_JsonDecoder._v$28=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",ProzperServer_JsonDecoder.j$29,1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
- };
- ProzperServer_JsonEncoder.j$28=function()
- {
-  return ProzperServer_JsonEncoder._v$28?ProzperServer_JsonEncoder._v$28:ProzperServer_JsonEncoder._v$28=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",ProzperServer_JsonEncoder.j$29,1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
- };
- ProzperServer_JsonDecoder.j$47=function()
- {
-  return ProzperServer_JsonDecoder._v$47?ProzperServer_JsonDecoder._v$47:ProzperServer_JsonDecoder._v$47=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.Id(),1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
- };
- ProzperServer_JsonDecoder.j$36=function()
- {
-  return ProzperServer_JsonDecoder._v$36?ProzperServer_JsonDecoder._v$36:ProzperServer_JsonDecoder._v$36=(Provider.DecodeUnion(IdPayment,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$47=function()
- {
-  return ProzperServer_JsonEncoder._v$47?ProzperServer_JsonEncoder._v$47:ProzperServer_JsonEncoder._v$47=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.Id(),1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
- };
- ProzperServer_JsonEncoder.j$36=function()
- {
-  return ProzperServer_JsonEncoder._v$36?ProzperServer_JsonEncoder._v$36:ProzperServer_JsonEncoder._v$36=(Provider.EncodeUnion(IdPayment,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$38=function()
- {
-  return ProzperServer_JsonDecoder._v$38?ProzperServer_JsonDecoder._v$38:ProzperServer_JsonDecoder._v$38=(Provider.DecodeRecord(void 0,[["titular",Provider.Id(),0],["tipoTarjeta",ProzperServer_JsonDecoder.j$39,0],["numero",ProzperServer_JsonDecoder.j$40,0],["expiracion",ProzperServer_JsonDecoder.j$41,0]]))();
- };
- ProzperServer_JsonEncoder.j$38=function()
- {
-  return ProzperServer_JsonEncoder._v$38?ProzperServer_JsonEncoder._v$38:ProzperServer_JsonEncoder._v$38=(Provider.EncodeRecord(void 0,[["titular",Provider.Id(),0],["tipoTarjeta",ProzperServer_JsonEncoder.j$39,0],["numero",ProzperServer_JsonEncoder.j$40,0],["expiracion",ProzperServer_JsonEncoder.j$41,0]]))();
- };
- ProzperServer_JsonDecoder.j$43=function()
- {
-  return ProzperServer_JsonDecoder._v$43?ProzperServer_JsonDecoder._v$43:ProzperServer_JsonDecoder._v$43=(Provider.DecodeRecord(void 0,[["titular",Provider.Id(),0],["banco",Provider.Id(),0],["tipo",ProzperServer_JsonDecoder.j$44,0],["numero",ProzperServer_JsonDecoder.j$45,0],["routing",ProzperServer_JsonDecoder.j$46,0]]))();
- };
- ProzperServer_JsonEncoder.j$43=function()
- {
-  return ProzperServer_JsonEncoder._v$43?ProzperServer_JsonEncoder._v$43:ProzperServer_JsonEncoder._v$43=(Provider.EncodeRecord(void 0,[["titular",Provider.Id(),0],["banco",Provider.Id(),0],["tipo",ProzperServer_JsonEncoder.j$44,0],["numero",ProzperServer_JsonEncoder.j$45,0],["routing",ProzperServer_JsonEncoder.j$46,0]]))();
- };
- ProzperServer_JsonDecoder.j$34=function()
- {
-  return ProzperServer_JsonDecoder._v$34?ProzperServer_JsonDecoder._v$34:ProzperServer_JsonDecoder._v$34=(Provider.DecodeRecord(void 0,[["nombre",Provider.Id(),0],["authorizeIdR",ProzperServer_JsonDecoder.j$35,0],["cuentaPago",ProzperServer_JsonDecoder.j$37,0]]))();
- };
- ProzperServer_JsonEncoder.j$34=function()
- {
-  return ProzperServer_JsonEncoder._v$34?ProzperServer_JsonEncoder._v$34:ProzperServer_JsonEncoder._v$34=(Provider.EncodeRecord(void 0,[["nombre",Provider.Id(),0],["authorizeIdR",ProzperServer_JsonEncoder.j$35,0],["cuentaPago",ProzperServer_JsonEncoder.j$37,0]]))();
- };
- ProzperServer_JsonDecoder.j$22=function()
- {
-  return ProzperServer_JsonDecoder._v$22?ProzperServer_JsonDecoder._v$22:ProzperServer_JsonDecoder._v$22=(Provider.DecodeRecord(void 0,[["emisor",ProzperServer_JsonDecoder.j$23,0],["documento",ProzperServer_JsonDecoder.j$25,0],["emision",Provider.DecodeDateTime(),0],["vence",Provider.DecodeDateTime(),0]]))();
- };
- ProzperServer_JsonDecoder.j$26=function()
- {
-  return ProzperServer_JsonDecoder._v$26?ProzperServer_JsonDecoder._v$26:ProzperServer_JsonDecoder._v$26=(Provider.DecodeUnion(void 0,"$",[[0,[]],[1,[]],[2,[]],[3,[]],[4,[]],[5,[]]]))();
- };
- ProzperServer_JsonDecoder.j$27=function()
- {
-  return ProzperServer_JsonDecoder._v$27?ProzperServer_JsonDecoder._v$27:ProzperServer_JsonDecoder._v$27=(Provider.DecodeUnion(TipoAliado,"$",[[0,[]],[1,[]]]))();
- };
- ProzperServer_JsonDecoder.j$17=function()
- {
-  return ProzperServer_JsonDecoder._v$17?ProzperServer_JsonDecoder._v$17:ProzperServer_JsonDecoder._v$17=(Provider.DecodeUnion(Pais,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$20=function()
- {
-  return ProzperServer_JsonDecoder._v$20?ProzperServer_JsonDecoder._v$20:ProzperServer_JsonDecoder._v$20=(Provider.DecodeUnion(void 0,"$",[[0,[]],[1,[]],[2,[]]]))();
- };
- ProzperServer_JsonDecoder.j$12=function()
- {
-  return ProzperServer_JsonDecoder._v$12?ProzperServer_JsonDecoder._v$12:ProzperServer_JsonDecoder._v$12=(Provider.DecodeRecord(void 0,[["authorizeIdR",ProzperServer_JsonDecoder.j$13,0],["tipoDireccion",ProzperServer_JsonDecoder.j$15,0],["linea1",Provider.Id(),0],["linea2",Provider.Id(),0],["ciudad",Provider.Id(),0],["estado",ProzperServer_JsonDecoder.j$16,0],["pais",ProzperServer_JsonDecoder.j$17,0],["zonaPostal",ProzperServer_JsonDecoder.j$18,0]]))();
- };
- ProzperServer_JsonDecoder.j$11=function()
- {
-  return ProzperServer_JsonDecoder._v$11?ProzperServer_JsonDecoder._v$11:ProzperServer_JsonDecoder._v$11=(Provider.DecodeRecord(CorreoElectronico,[["email",Provider.Id(),0],["enviado",Provider.DecodeDateTime(),1],["recibido",Provider.DecodeDateTime(),1]]))();
- };
- ProzperServer_JsonDecoder.j$9=function()
- {
-  return ProzperServer_JsonDecoder._v$9?ProzperServer_JsonDecoder._v$9:ProzperServer_JsonDecoder._v$9=(Provider.DecodeRecord(void 0,[["tipoTelefono",ProzperServer_JsonDecoder.j$10,0],["codigoPais",Provider.Id(),0],["codigoArea",Provider.Id(),0],["numero",Provider.Id(),0],["extension",Provider.Id(),0],["mensajes",Provider.Id(),0]]))();
- };
- ProzperServer_JsonEncoder.j$22=function()
- {
-  return ProzperServer_JsonEncoder._v$22?ProzperServer_JsonEncoder._v$22:ProzperServer_JsonEncoder._v$22=(Provider.EncodeRecord(void 0,[["emisor",ProzperServer_JsonEncoder.j$23,0],["documento",ProzperServer_JsonEncoder.j$25,0],["emision",Provider.EncodeDateTime(),0],["vence",Provider.EncodeDateTime(),0]]))();
- };
- ProzperServer_JsonEncoder.j$26=function()
- {
-  return ProzperServer_JsonEncoder._v$26?ProzperServer_JsonEncoder._v$26:ProzperServer_JsonEncoder._v$26=(Provider.EncodeUnion(void 0,"$",[[0,[]],[1,[]],[2,[]],[3,[]],[4,[]],[5,[]]]))();
- };
- ProzperServer_JsonEncoder.j$27=function()
- {
-  return ProzperServer_JsonEncoder._v$27?ProzperServer_JsonEncoder._v$27:ProzperServer_JsonEncoder._v$27=(Provider.EncodeUnion(TipoAliado,"$",[[0,[]],[1,[]]]))();
- };
- ProzperServer_JsonEncoder.j$17=function()
- {
-  return ProzperServer_JsonEncoder._v$17?ProzperServer_JsonEncoder._v$17:ProzperServer_JsonEncoder._v$17=(Provider.EncodeUnion(Pais,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
- };
  ProzperServer_JsonEncoder.j$20=function()
  {
-  return ProzperServer_JsonEncoder._v$20?ProzperServer_JsonEncoder._v$20:ProzperServer_JsonEncoder._v$20=(Provider.EncodeUnion(void 0,"$",[[0,[]],[1,[]],[2,[]]]))();
+  return ProzperServer_JsonEncoder._v$20?ProzperServer_JsonEncoder._v$20:ProzperServer_JsonEncoder._v$20=(Provider.EncodeRecord(void 0,[["titulo",Provider.Id(),1],["nombre1",Provider.Id(),0],["nombre2",Provider.Id(),0],["apellido1",Provider.Id(),0],["apellido2",Provider.Id(),0],["nacionalidad",ProzperServer_JsonEncoder.j$18,0],["genero",ProzperServer_JsonEncoder.j$21,0],["fechaNacimiento",Provider.EncodeDateTime(),0]]))();
  };
- ProzperServer_JsonEncoder.j$12=function()
+ ProzperServer_JsonEncoder.j$6=function()
  {
-  return ProzperServer_JsonEncoder._v$12?ProzperServer_JsonEncoder._v$12:ProzperServer_JsonEncoder._v$12=(Provider.EncodeRecord(void 0,[["authorizeIdR",ProzperServer_JsonEncoder.j$13,0],["tipoDireccion",ProzperServer_JsonEncoder.j$15,0],["linea1",Provider.Id(),0],["linea2",Provider.Id(),0],["ciudad",Provider.Id(),0],["estado",ProzperServer_JsonEncoder.j$16,0],["pais",ProzperServer_JsonEncoder.j$17,0],["zonaPostal",ProzperServer_JsonEncoder.j$18,0]]))();
- };
- ProzperServer_JsonEncoder.j$11=function()
- {
-  return ProzperServer_JsonEncoder._v$11?ProzperServer_JsonEncoder._v$11:ProzperServer_JsonEncoder._v$11=(Provider.EncodeRecord(CorreoElectronico,[["email",Provider.Id(),0],["enviado",Provider.EncodeDateTime(),1],["recibido",Provider.EncodeDateTime(),1]]))();
+  return ProzperServer_JsonEncoder._v$6?ProzperServer_JsonEncoder._v$6:ProzperServer_JsonEncoder._v$6=(Provider.EncodeUnion(void 0,"$",[null,[1,[["$0","Value",ProzperServer_JsonEncoder.j$7,0]]]]))();
  };
  ProzperServer_JsonEncoder.j$9=function()
  {
-  return ProzperServer_JsonEncoder._v$9?ProzperServer_JsonEncoder._v$9:ProzperServer_JsonEncoder._v$9=(Provider.EncodeRecord(void 0,[["tipoTelefono",ProzperServer_JsonEncoder.j$10,0],["codigoPais",Provider.Id(),0],["codigoArea",Provider.Id(),0],["numero",Provider.Id(),0],["extension",Provider.Id(),0],["mensajes",Provider.Id(),0]]))();
+  return ProzperServer_JsonEncoder._v$9?ProzperServer_JsonEncoder._v$9:ProzperServer_JsonEncoder._v$9=(Provider.EncodeUnion(void 0,"$",[[0,[[null,null,ProzperServer_JsonEncoder.j$13]]],[1,[[null,null,ProzperServer_JsonEncoder.j$12]]],[2,[[null,null,ProzperServer_JsonEncoder.j$10]]],[3,[["$0","Item",Provider.Id(),0]]],[4,[["$0","Item",Provider.Id(),0]]],[5,[["$0","Item",Provider.Id(),0]]]]))();
  };
- ProzperServer_JsonDecoder.j$29=function()
+ ProzperServer_JsonEncoder.j$8=function()
  {
-  return ProzperServer_JsonDecoder._v$29?ProzperServer_JsonDecoder._v$29:ProzperServer_JsonDecoder._v$29=(Provider.DecodeRecord(void 0,[["idAliado",ProzperServer_JsonDecoder.j$6,0],["aliados",Provider.DecodeArray(ProzperServer_JsonDecoder.j$21),0],["anoActual",Provider.Id(),0],["periodoActual",Provider.Id(),0],["premisas",Provider.Id(),0],["nevento",Provider.Id(),0]]))();
+  return ProzperServer_JsonEncoder._v$8?ProzperServer_JsonEncoder._v$8:ProzperServer_JsonEncoder._v$8=(Provider.EncodeUnion(StatusAliado,"$",[[0,[]],[1,[]],[2,[]],[3,[]],[4,[]]]))();
  };
- ProzperServer_JsonEncoder.j$29=function()
+ ProzperServer_JsonEncoder.j$5=function()
  {
-  return ProzperServer_JsonEncoder._v$29?ProzperServer_JsonEncoder._v$29:ProzperServer_JsonEncoder._v$29=(Provider.EncodeRecord(void 0,[["idAliado",ProzperServer_JsonEncoder.j$6,0],["aliados",Provider.EncodeArray(ProzperServer_JsonEncoder.j$21),0],["anoActual",Provider.Id(),0],["periodoActual",Provider.Id(),0],["premisas",Provider.Id(),0],["nevento",Provider.Id(),0]]))();
- };
- ProzperServer_JsonDecoder.j$33=function()
- {
-  return ProzperServer_JsonDecoder._v$33?ProzperServer_JsonDecoder._v$33:ProzperServer_JsonDecoder._v$33=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.DecodeArray(ProzperServer_JsonDecoder.j$34),1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
- };
- ProzperServer_JsonEncoder.j$33=function()
- {
-  return ProzperServer_JsonEncoder._v$33?ProzperServer_JsonEncoder._v$33:ProzperServer_JsonEncoder._v$33=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.EncodeArray(ProzperServer_JsonEncoder.j$34),1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
- };
- ProzperServer_JsonDecoder.j$39=function()
- {
-  return ProzperServer_JsonDecoder._v$39?ProzperServer_JsonDecoder._v$39:ProzperServer_JsonDecoder._v$39=(Provider.DecodeUnion(TipoTarjeta,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$40=function()
- {
-  return ProzperServer_JsonDecoder._v$40?ProzperServer_JsonDecoder._v$40:ProzperServer_JsonDecoder._v$40=(Provider.DecodeUnion(NumeroTarjeta,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$41=function()
- {
-  return ProzperServer_JsonDecoder._v$41?ProzperServer_JsonDecoder._v$41:ProzperServer_JsonDecoder._v$41=(Provider.DecodeRecord(Expiracion,[["anio",Provider.Id(),0],["mes",Provider.Id(),0]]))();
- };
- ProzperServer_JsonEncoder.j$39=function()
- {
-  return ProzperServer_JsonEncoder._v$39?ProzperServer_JsonEncoder._v$39:ProzperServer_JsonEncoder._v$39=(Provider.EncodeUnion(TipoTarjeta,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$40=function()
- {
-  return ProzperServer_JsonEncoder._v$40?ProzperServer_JsonEncoder._v$40:ProzperServer_JsonEncoder._v$40=(Provider.EncodeUnion(NumeroTarjeta,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$41=function()
- {
-  return ProzperServer_JsonEncoder._v$41?ProzperServer_JsonEncoder._v$41:ProzperServer_JsonEncoder._v$41=(Provider.EncodeRecord(Expiracion,[["anio",Provider.Id(),0],["mes",Provider.Id(),0]]))();
- };
- ProzperServer_JsonDecoder.j$44=function()
- {
-  return ProzperServer_JsonDecoder._v$44?ProzperServer_JsonDecoder._v$44:ProzperServer_JsonDecoder._v$44=(Provider.DecodeUnion(TipoCuenta,"$",[[0,[]],[1,[]],[2,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonEncoder._v$5?ProzperServer_JsonEncoder._v$5:ProzperServer_JsonEncoder._v$5=(Provider.EncodeUnion(void 0,"$",[null,[1,[["$0","Value",Provider.Id(),0]]]]))();
  };
  ProzperServer_JsonDecoder.j$45=function()
  {
-  return ProzperServer_JsonDecoder._v$45?ProzperServer_JsonDecoder._v$45:ProzperServer_JsonDecoder._v$45=(Provider.DecodeUnion(NumeroCuenta,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonDecoder._v$45?ProzperServer_JsonDecoder._v$45:ProzperServer_JsonDecoder._v$45=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.Id(),1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
  };
- ProzperServer_JsonDecoder.j$46=function()
+ ProzperServer_JsonDecoder.j$34=function()
  {
-  return ProzperServer_JsonDecoder._v$46?ProzperServer_JsonDecoder._v$46:ProzperServer_JsonDecoder._v$46=(Provider.DecodeUnion(RoutingNumber,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$44=function()
- {
-  return ProzperServer_JsonEncoder._v$44?ProzperServer_JsonEncoder._v$44:ProzperServer_JsonEncoder._v$44=(Provider.EncodeUnion(TipoCuenta,"$",[[0,[]],[1,[]],[2,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonDecoder._v$34?ProzperServer_JsonDecoder._v$34:ProzperServer_JsonDecoder._v$34=(Provider.DecodeUnion(IdPayment,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
  };
  ProzperServer_JsonEncoder.j$45=function()
  {
-  return ProzperServer_JsonEncoder._v$45?ProzperServer_JsonEncoder._v$45:ProzperServer_JsonEncoder._v$45=(Provider.EncodeUnion(NumeroCuenta,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonEncoder._v$45?ProzperServer_JsonEncoder._v$45:ProzperServer_JsonEncoder._v$45=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.Id(),1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
  };
- ProzperServer_JsonEncoder.j$46=function()
+ ProzperServer_JsonEncoder.j$34=function()
  {
-  return ProzperServer_JsonEncoder._v$46?ProzperServer_JsonEncoder._v$46:ProzperServer_JsonEncoder._v$46=(Provider.EncodeUnion(RoutingNumber,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonEncoder._v$34?ProzperServer_JsonEncoder._v$34:ProzperServer_JsonEncoder._v$34=(Provider.EncodeUnion(IdPayment,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
  };
- ProzperServer_JsonDecoder.j$35=function()
+ ProzperServer_JsonDecoder.j$36=function()
  {
-  return ProzperServer_JsonDecoder._v$35?ProzperServer_JsonDecoder._v$35:ProzperServer_JsonDecoder._v$35=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","ResultValue",ProzperServer_JsonDecoder.j$36,0]]],[1,[["$0","ErrorValue",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonDecoder._v$36?ProzperServer_JsonDecoder._v$36:ProzperServer_JsonDecoder._v$36=(Provider.DecodeRecord(void 0,[["titular",Provider.Id(),0],["tipoTarjeta",ProzperServer_JsonDecoder.j$37,0],["numero",ProzperServer_JsonDecoder.j$38,0],["expiracion",ProzperServer_JsonDecoder.j$39,0]]))();
  };
- ProzperServer_JsonDecoder.j$37=function()
+ ProzperServer_JsonEncoder.j$36=function()
  {
-  return ProzperServer_JsonDecoder._v$37?ProzperServer_JsonDecoder._v$37:ProzperServer_JsonDecoder._v$37=(Provider.DecodeUnion(void 0,"$",[[0,[[null,null,ProzperServer_JsonDecoder.j$43]]],[1,[[null,null,ProzperServer_JsonDecoder.j$38]]],[2,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonEncoder._v$36?ProzperServer_JsonEncoder._v$36:ProzperServer_JsonEncoder._v$36=(Provider.EncodeRecord(void 0,[["titular",Provider.Id(),0],["tipoTarjeta",ProzperServer_JsonEncoder.j$37,0],["numero",ProzperServer_JsonEncoder.j$38,0],["expiracion",ProzperServer_JsonEncoder.j$39,0]]))();
  };
- ProzperServer_JsonEncoder.j$35=function()
+ ProzperServer_JsonDecoder.j$41=function()
  {
-  return ProzperServer_JsonEncoder._v$35?ProzperServer_JsonEncoder._v$35:ProzperServer_JsonEncoder._v$35=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","ResultValue",ProzperServer_JsonEncoder.j$36,0]]],[1,[["$0","ErrorValue",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonDecoder._v$41?ProzperServer_JsonDecoder._v$41:ProzperServer_JsonDecoder._v$41=(Provider.DecodeRecord(void 0,[["titular",Provider.Id(),0],["banco",Provider.Id(),0],["tipo",ProzperServer_JsonDecoder.j$42,0],["numero",ProzperServer_JsonDecoder.j$43,0],["routing",ProzperServer_JsonDecoder.j$44,0]]))();
  };
- ProzperServer_JsonEncoder.j$37=function()
+ ProzperServer_JsonEncoder.j$41=function()
  {
-  return ProzperServer_JsonEncoder._v$37?ProzperServer_JsonEncoder._v$37:ProzperServer_JsonEncoder._v$37=(Provider.EncodeUnion(void 0,"$",[[0,[[null,null,ProzperServer_JsonEncoder.j$43]]],[1,[[null,null,ProzperServer_JsonEncoder.j$38]]],[2,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonEncoder._v$41?ProzperServer_JsonEncoder._v$41:ProzperServer_JsonEncoder._v$41=(Provider.EncodeRecord(void 0,[["titular",Provider.Id(),0],["banco",Provider.Id(),0],["tipo",ProzperServer_JsonEncoder.j$42,0],["numero",ProzperServer_JsonEncoder.j$43,0],["routing",ProzperServer_JsonEncoder.j$44,0]]))();
+ };
+ ProzperServer_JsonDecoder.j$32=function()
+ {
+  return ProzperServer_JsonDecoder._v$32?ProzperServer_JsonDecoder._v$32:ProzperServer_JsonDecoder._v$32=(Provider.DecodeRecord(void 0,[["nombre",Provider.Id(),0],["authorizeIdR",ProzperServer_JsonDecoder.j$33,0],["cuentaPago",ProzperServer_JsonDecoder.j$35,0]]))();
  };
  ProzperServer_JsonDecoder.j$23=function()
  {
-  return ProzperServer_JsonDecoder._v$23?ProzperServer_JsonDecoder._v$23:ProzperServer_JsonDecoder._v$23=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",ProzperServer_JsonDecoder.j$17,0]]],[1,[["$0","Item",ProzperServer_JsonDecoder.j$24,0]]]]))();
- };
- ProzperServer_JsonDecoder.j$25=function()
- {
-  return ProzperServer_JsonDecoder._v$25?ProzperServer_JsonDecoder._v$25:ProzperServer_JsonDecoder._v$25=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",Provider.Id(),0]]],[1,[["$0","Item",Provider.Id(),0]]],[2,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$13=function()
- {
-  return ProzperServer_JsonDecoder._v$13?ProzperServer_JsonDecoder._v$13:ProzperServer_JsonDecoder._v$13=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","ResultValue",ProzperServer_JsonDecoder.j$14,0]]],[1,[["$0","ErrorValue",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$15=function()
- {
-  return ProzperServer_JsonDecoder._v$15?ProzperServer_JsonDecoder._v$15:ProzperServer_JsonDecoder._v$15=(Provider.DecodeUnion(TipoDireccion,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$16=function()
- {
-  return ProzperServer_JsonDecoder._v$16?ProzperServer_JsonDecoder._v$16:ProzperServer_JsonDecoder._v$16=(Provider.DecodeUnion(Estado,"$",[[0,[]],[1,[]],[2,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$18=function()
- {
-  return ProzperServer_JsonDecoder._v$18?ProzperServer_JsonDecoder._v$18:ProzperServer_JsonDecoder._v$18=(Provider.DecodeUnion(ZonaPostal,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonDecoder.j$10=function()
- {
-  return ProzperServer_JsonDecoder._v$10?ProzperServer_JsonDecoder._v$10:ProzperServer_JsonDecoder._v$10=(Provider.DecodeUnion(TipoTelefono,"$",[[0,[]],[1,[]],[2,[]],[3,[]]]))();
- };
- ProzperServer_JsonEncoder.j$23=function()
- {
-  return ProzperServer_JsonEncoder._v$23?ProzperServer_JsonEncoder._v$23:ProzperServer_JsonEncoder._v$23=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",ProzperServer_JsonEncoder.j$17,0]]],[1,[["$0","Item",ProzperServer_JsonEncoder.j$24,0]]]]))();
- };
- ProzperServer_JsonEncoder.j$25=function()
- {
-  return ProzperServer_JsonEncoder._v$25?ProzperServer_JsonEncoder._v$25:ProzperServer_JsonEncoder._v$25=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",Provider.Id(),0]]],[1,[["$0","Item",Provider.Id(),0]]],[2,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$13=function()
- {
-  return ProzperServer_JsonEncoder._v$13?ProzperServer_JsonEncoder._v$13:ProzperServer_JsonEncoder._v$13=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","ResultValue",ProzperServer_JsonEncoder.j$14,0]]],[1,[["$0","ErrorValue",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$15=function()
- {
-  return ProzperServer_JsonEncoder._v$15?ProzperServer_JsonEncoder._v$15:ProzperServer_JsonEncoder._v$15=(Provider.EncodeUnion(TipoDireccion,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$16=function()
- {
-  return ProzperServer_JsonEncoder._v$16?ProzperServer_JsonEncoder._v$16:ProzperServer_JsonEncoder._v$16=(Provider.EncodeUnion(Estado,"$",[[0,[]],[1,[]],[2,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$18=function()
- {
-  return ProzperServer_JsonEncoder._v$18?ProzperServer_JsonEncoder._v$18:ProzperServer_JsonEncoder._v$18=(Provider.EncodeUnion(ZonaPostal,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
- };
- ProzperServer_JsonEncoder.j$10=function()
- {
-  return ProzperServer_JsonEncoder._v$10?ProzperServer_JsonEncoder._v$10:ProzperServer_JsonEncoder._v$10=(Provider.EncodeUnion(TipoTelefono,"$",[[0,[]],[1,[]],[2,[]],[3,[]]]))();
+  return ProzperServer_JsonDecoder._v$23?ProzperServer_JsonDecoder._v$23:ProzperServer_JsonDecoder._v$23=(Provider.DecodeUnion(IdForAuthorize,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
  };
  ProzperServer_JsonDecoder.j$24=function()
  {
-  return ProzperServer_JsonDecoder._v$24?ProzperServer_JsonDecoder._v$24:ProzperServer_JsonDecoder._v$24=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",ProzperServer_JsonDecoder.j$16,0]]]]))();
+  return ProzperServer_JsonDecoder._v$24?ProzperServer_JsonDecoder._v$24:ProzperServer_JsonDecoder._v$24=(Provider.DecodeRecord(void 0,[["emisor",ProzperServer_JsonDecoder.j$25,0],["documento",ProzperServer_JsonDecoder.j$27,0],["emision",Provider.DecodeDateTime(),0],["vence",Provider.DecodeDateTime(),0]]))();
  };
- ProzperServer_JsonDecoder.j$14=function()
+ ProzperServer_JsonDecoder.j$28=function()
  {
-  return ProzperServer_JsonDecoder._v$14?ProzperServer_JsonDecoder._v$14:ProzperServer_JsonDecoder._v$14=(Provider.DecodeUnion(IdAddress,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonDecoder._v$28?ProzperServer_JsonDecoder._v$28:ProzperServer_JsonDecoder._v$28=(Provider.DecodeUnion(void 0,"$",[[0,[]],[1,[]],[2,[]],[3,[]],[4,[]],[5,[]]]))();
+ };
+ ProzperServer_JsonDecoder.j$29=function()
+ {
+  return ProzperServer_JsonDecoder._v$29?ProzperServer_JsonDecoder._v$29:ProzperServer_JsonDecoder._v$29=(Provider.DecodeUnion(TipoAliado,"$",[[0,[]],[1,[]]]))();
+ };
+ ProzperServer_JsonEncoder.j$32=function()
+ {
+  return ProzperServer_JsonEncoder._v$32?ProzperServer_JsonEncoder._v$32:ProzperServer_JsonEncoder._v$32=(Provider.EncodeRecord(void 0,[["nombre",Provider.Id(),0],["authorizeIdR",ProzperServer_JsonEncoder.j$33,0],["cuentaPago",ProzperServer_JsonEncoder.j$35,0]]))();
+ };
+ ProzperServer_JsonEncoder.j$23=function()
+ {
+  return ProzperServer_JsonEncoder._v$23?ProzperServer_JsonEncoder._v$23:ProzperServer_JsonEncoder._v$23=(Provider.EncodeUnion(IdForAuthorize,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
  };
  ProzperServer_JsonEncoder.j$24=function()
  {
-  return ProzperServer_JsonEncoder._v$24?ProzperServer_JsonEncoder._v$24:ProzperServer_JsonEncoder._v$24=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",ProzperServer_JsonEncoder.j$16,0]]]]))();
+  return ProzperServer_JsonEncoder._v$24?ProzperServer_JsonEncoder._v$24:ProzperServer_JsonEncoder._v$24=(Provider.EncodeRecord(void 0,[["emisor",ProzperServer_JsonEncoder.j$25,0],["documento",ProzperServer_JsonEncoder.j$27,0],["emision",Provider.EncodeDateTime(),0],["vence",Provider.EncodeDateTime(),0]]))();
+ };
+ ProzperServer_JsonEncoder.j$28=function()
+ {
+  return ProzperServer_JsonEncoder._v$28?ProzperServer_JsonEncoder._v$28:ProzperServer_JsonEncoder._v$28=(Provider.EncodeUnion(void 0,"$",[[0,[]],[1,[]],[2,[]],[3,[]],[4,[]],[5,[]]]))();
+ };
+ ProzperServer_JsonEncoder.j$29=function()
+ {
+  return ProzperServer_JsonEncoder._v$29?ProzperServer_JsonEncoder._v$29:ProzperServer_JsonEncoder._v$29=(Provider.EncodeUnion(TipoAliado,"$",[[0,[]],[1,[]]]))();
+ };
+ ProzperServer_JsonDecoder.j$47=function()
+ {
+  return ProzperServer_JsonDecoder._v$47?ProzperServer_JsonDecoder._v$47:ProzperServer_JsonDecoder._v$47=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.DecodeArray(Provider.Id()),1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$47=function()
+ {
+  return ProzperServer_JsonEncoder._v$47?ProzperServer_JsonEncoder._v$47:ProzperServer_JsonEncoder._v$47=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.EncodeArray(Provider.Id()),1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$18=function()
+ {
+  return ProzperServer_JsonDecoder._v$18?ProzperServer_JsonDecoder._v$18:ProzperServer_JsonDecoder._v$18=(Provider.DecodeUnion(Pais,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$21=function()
+ {
+  return ProzperServer_JsonDecoder._v$21?ProzperServer_JsonDecoder._v$21:ProzperServer_JsonDecoder._v$21=(Provider.DecodeUnion(void 0,"$",[[0,[]],[1,[]],[2,[]]]))();
+ };
+ ProzperServer_JsonDecoder.j$13=function()
+ {
+  return ProzperServer_JsonDecoder._v$13?ProzperServer_JsonDecoder._v$13:ProzperServer_JsonDecoder._v$13=(Provider.DecodeRecord(void 0,[["authorizeIdR",ProzperServer_JsonDecoder.j$14,0],["tipoDireccion",ProzperServer_JsonDecoder.j$16,0],["linea1",Provider.Id(),0],["linea2",Provider.Id(),0],["ciudad",Provider.Id(),0],["estado",ProzperServer_JsonDecoder.j$17,0],["pais",ProzperServer_JsonDecoder.j$18,0],["zonaPostal",ProzperServer_JsonDecoder.j$19,0]]))();
+ };
+ ProzperServer_JsonDecoder.j$12=function()
+ {
+  return ProzperServer_JsonDecoder._v$12?ProzperServer_JsonDecoder._v$12:ProzperServer_JsonDecoder._v$12=(Provider.DecodeRecord(CorreoElectronico,[["email",Provider.Id(),0],["enviado",Provider.DecodeDateTime(),1],["recibido",Provider.DecodeDateTime(),1]]))();
+ };
+ ProzperServer_JsonDecoder.j$10=function()
+ {
+  return ProzperServer_JsonDecoder._v$10?ProzperServer_JsonDecoder._v$10:ProzperServer_JsonDecoder._v$10=(Provider.DecodeRecord(void 0,[["tipoTelefono",ProzperServer_JsonDecoder.j$11,0],["codigoPais",Provider.Id(),0],["codigoArea",Provider.Id(),0],["numero",Provider.Id(),0],["extension",Provider.Id(),0],["mensajes",Provider.Id(),0]]))();
+ };
+ ProzperServer_JsonEncoder.j$18=function()
+ {
+  return ProzperServer_JsonEncoder._v$18?ProzperServer_JsonEncoder._v$18:ProzperServer_JsonEncoder._v$18=(Provider.EncodeUnion(Pais,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$21=function()
+ {
+  return ProzperServer_JsonEncoder._v$21?ProzperServer_JsonEncoder._v$21:ProzperServer_JsonEncoder._v$21=(Provider.EncodeUnion(void 0,"$",[[0,[]],[1,[]],[2,[]]]))();
+ };
+ ProzperServer_JsonEncoder.j$13=function()
+ {
+  return ProzperServer_JsonEncoder._v$13?ProzperServer_JsonEncoder._v$13:ProzperServer_JsonEncoder._v$13=(Provider.EncodeRecord(void 0,[["authorizeIdR",ProzperServer_JsonEncoder.j$14,0],["tipoDireccion",ProzperServer_JsonEncoder.j$16,0],["linea1",Provider.Id(),0],["linea2",Provider.Id(),0],["ciudad",Provider.Id(),0],["estado",ProzperServer_JsonEncoder.j$17,0],["pais",ProzperServer_JsonEncoder.j$18,0],["zonaPostal",ProzperServer_JsonEncoder.j$19,0]]))();
+ };
+ ProzperServer_JsonEncoder.j$12=function()
+ {
+  return ProzperServer_JsonEncoder._v$12?ProzperServer_JsonEncoder._v$12:ProzperServer_JsonEncoder._v$12=(Provider.EncodeRecord(CorreoElectronico,[["email",Provider.Id(),0],["enviado",Provider.EncodeDateTime(),1],["recibido",Provider.EncodeDateTime(),1]]))();
+ };
+ ProzperServer_JsonEncoder.j$10=function()
+ {
+  return ProzperServer_JsonEncoder._v$10?ProzperServer_JsonEncoder._v$10:ProzperServer_JsonEncoder._v$10=(Provider.EncodeRecord(void 0,[["tipoTelefono",ProzperServer_JsonEncoder.j$11,0],["codigoPais",Provider.Id(),0],["codigoArea",Provider.Id(),0],["numero",Provider.Id(),0],["extension",Provider.Id(),0],["mensajes",Provider.Id(),0]]))();
+ };
+ ProzperServer_JsonDecoder.j$31=function()
+ {
+  return ProzperServer_JsonDecoder._v$31?ProzperServer_JsonDecoder._v$31:ProzperServer_JsonDecoder._v$31=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.DecodeArray(ProzperServer_JsonDecoder.j$32),1],["$1","Item2",ProzperServer_JsonDecoder.j$3,0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$31=function()
+ {
+  return ProzperServer_JsonEncoder._v$31?ProzperServer_JsonEncoder._v$31:ProzperServer_JsonEncoder._v$31=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item1",Provider.EncodeArray(ProzperServer_JsonEncoder.j$32),1],["$1","Item2",ProzperServer_JsonEncoder.j$3,0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$37=function()
+ {
+  return ProzperServer_JsonDecoder._v$37?ProzperServer_JsonDecoder._v$37:ProzperServer_JsonDecoder._v$37=(Provider.DecodeUnion(TipoTarjeta,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$38=function()
+ {
+  return ProzperServer_JsonDecoder._v$38?ProzperServer_JsonDecoder._v$38:ProzperServer_JsonDecoder._v$38=(Provider.DecodeUnion(NumeroTarjeta,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$39=function()
+ {
+  return ProzperServer_JsonDecoder._v$39?ProzperServer_JsonDecoder._v$39:ProzperServer_JsonDecoder._v$39=(Provider.DecodeRecord(Expiracion,[["anio",Provider.Id(),0],["mes",Provider.Id(),0]]))();
+ };
+ ProzperServer_JsonEncoder.j$37=function()
+ {
+  return ProzperServer_JsonEncoder._v$37?ProzperServer_JsonEncoder._v$37:ProzperServer_JsonEncoder._v$37=(Provider.EncodeUnion(TipoTarjeta,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$38=function()
+ {
+  return ProzperServer_JsonEncoder._v$38?ProzperServer_JsonEncoder._v$38:ProzperServer_JsonEncoder._v$38=(Provider.EncodeUnion(NumeroTarjeta,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$39=function()
+ {
+  return ProzperServer_JsonEncoder._v$39?ProzperServer_JsonEncoder._v$39:ProzperServer_JsonEncoder._v$39=(Provider.EncodeRecord(Expiracion,[["anio",Provider.Id(),0],["mes",Provider.Id(),0]]))();
+ };
+ ProzperServer_JsonDecoder.j$42=function()
+ {
+  return ProzperServer_JsonDecoder._v$42?ProzperServer_JsonDecoder._v$42:ProzperServer_JsonDecoder._v$42=(Provider.DecodeUnion(TipoCuenta,"$",[[0,[]],[1,[]],[2,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$43=function()
+ {
+  return ProzperServer_JsonDecoder._v$43?ProzperServer_JsonDecoder._v$43:ProzperServer_JsonDecoder._v$43=(Provider.DecodeUnion(NumeroCuenta,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$44=function()
+ {
+  return ProzperServer_JsonDecoder._v$44?ProzperServer_JsonDecoder._v$44:ProzperServer_JsonDecoder._v$44=(Provider.DecodeUnion(RoutingNumber,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$42=function()
+ {
+  return ProzperServer_JsonEncoder._v$42?ProzperServer_JsonEncoder._v$42:ProzperServer_JsonEncoder._v$42=(Provider.EncodeUnion(TipoCuenta,"$",[[0,[]],[1,[]],[2,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$43=function()
+ {
+  return ProzperServer_JsonEncoder._v$43?ProzperServer_JsonEncoder._v$43:ProzperServer_JsonEncoder._v$43=(Provider.EncodeUnion(NumeroCuenta,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$44=function()
+ {
+  return ProzperServer_JsonEncoder._v$44?ProzperServer_JsonEncoder._v$44:ProzperServer_JsonEncoder._v$44=(Provider.EncodeUnion(RoutingNumber,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$33=function()
+ {
+  return ProzperServer_JsonDecoder._v$33?ProzperServer_JsonDecoder._v$33:ProzperServer_JsonDecoder._v$33=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","ResultValue",ProzperServer_JsonDecoder.j$34,0]]],[1,[["$0","ErrorValue",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$35=function()
+ {
+  return ProzperServer_JsonDecoder._v$35?ProzperServer_JsonDecoder._v$35:ProzperServer_JsonDecoder._v$35=(Provider.DecodeUnion(void 0,"$",[[0,[[null,null,ProzperServer_JsonDecoder.j$41]]],[1,[[null,null,ProzperServer_JsonDecoder.j$36]]],[2,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$25=function()
+ {
+  return ProzperServer_JsonDecoder._v$25?ProzperServer_JsonDecoder._v$25:ProzperServer_JsonDecoder._v$25=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",ProzperServer_JsonDecoder.j$18,0]]],[1,[["$0","Item",ProzperServer_JsonDecoder.j$26,0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$27=function()
+ {
+  return ProzperServer_JsonDecoder._v$27?ProzperServer_JsonDecoder._v$27:ProzperServer_JsonDecoder._v$27=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",Provider.Id(),0]]],[1,[["$0","Item",Provider.Id(),0]]],[2,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$33=function()
+ {
+  return ProzperServer_JsonEncoder._v$33?ProzperServer_JsonEncoder._v$33:ProzperServer_JsonEncoder._v$33=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","ResultValue",ProzperServer_JsonEncoder.j$34,0]]],[1,[["$0","ErrorValue",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$35=function()
+ {
+  return ProzperServer_JsonEncoder._v$35?ProzperServer_JsonEncoder._v$35:ProzperServer_JsonEncoder._v$35=(Provider.EncodeUnion(void 0,"$",[[0,[[null,null,ProzperServer_JsonEncoder.j$41]]],[1,[[null,null,ProzperServer_JsonEncoder.j$36]]],[2,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$25=function()
+ {
+  return ProzperServer_JsonEncoder._v$25?ProzperServer_JsonEncoder._v$25:ProzperServer_JsonEncoder._v$25=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",ProzperServer_JsonEncoder.j$18,0]]],[1,[["$0","Item",ProzperServer_JsonEncoder.j$26,0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$27=function()
+ {
+  return ProzperServer_JsonEncoder._v$27?ProzperServer_JsonEncoder._v$27:ProzperServer_JsonEncoder._v$27=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",Provider.Id(),0]]],[1,[["$0","Item",Provider.Id(),0]]],[2,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$14=function()
+ {
+  return ProzperServer_JsonDecoder._v$14?ProzperServer_JsonDecoder._v$14:ProzperServer_JsonDecoder._v$14=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","ResultValue",ProzperServer_JsonDecoder.j$15,0]]],[1,[["$0","ErrorValue",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$16=function()
+ {
+  return ProzperServer_JsonDecoder._v$16?ProzperServer_JsonDecoder._v$16:ProzperServer_JsonDecoder._v$16=(Provider.DecodeUnion(TipoDireccion,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$17=function()
+ {
+  return ProzperServer_JsonDecoder._v$17?ProzperServer_JsonDecoder._v$17:ProzperServer_JsonDecoder._v$17=(Provider.DecodeUnion(Estado,"$",[[0,[]],[1,[]],[2,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$19=function()
+ {
+  return ProzperServer_JsonDecoder._v$19?ProzperServer_JsonDecoder._v$19:ProzperServer_JsonDecoder._v$19=(Provider.DecodeUnion(ZonaPostal,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$11=function()
+ {
+  return ProzperServer_JsonDecoder._v$11?ProzperServer_JsonDecoder._v$11:ProzperServer_JsonDecoder._v$11=(Provider.DecodeUnion(TipoTelefono,"$",[[0,[]],[1,[]],[2,[]],[3,[]]]))();
  };
  ProzperServer_JsonEncoder.j$14=function()
  {
-  return ProzperServer_JsonEncoder._v$14?ProzperServer_JsonEncoder._v$14:ProzperServer_JsonEncoder._v$14=(Provider.EncodeUnion(IdAddress,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+  return ProzperServer_JsonEncoder._v$14?ProzperServer_JsonEncoder._v$14:ProzperServer_JsonEncoder._v$14=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","ResultValue",ProzperServer_JsonEncoder.j$15,0]]],[1,[["$0","ErrorValue",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$16=function()
+ {
+  return ProzperServer_JsonEncoder._v$16?ProzperServer_JsonEncoder._v$16:ProzperServer_JsonEncoder._v$16=(Provider.EncodeUnion(TipoDireccion,"$",[[0,[]],[1,[]],[2,[]],[3,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$17=function()
+ {
+  return ProzperServer_JsonEncoder._v$17?ProzperServer_JsonEncoder._v$17:ProzperServer_JsonEncoder._v$17=(Provider.EncodeUnion(Estado,"$",[[0,[]],[1,[]],[2,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$19=function()
+ {
+  return ProzperServer_JsonEncoder._v$19?ProzperServer_JsonEncoder._v$19:ProzperServer_JsonEncoder._v$19=(Provider.EncodeUnion(ZonaPostal,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$11=function()
+ {
+  return ProzperServer_JsonEncoder._v$11?ProzperServer_JsonEncoder._v$11:ProzperServer_JsonEncoder._v$11=(Provider.EncodeUnion(TipoTelefono,"$",[[0,[]],[1,[]],[2,[]],[3,[]]]))();
+ };
+ ProzperServer_JsonDecoder.j$26=function()
+ {
+  return ProzperServer_JsonDecoder._v$26?ProzperServer_JsonDecoder._v$26:ProzperServer_JsonDecoder._v$26=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",ProzperServer_JsonDecoder.j$17,0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$26=function()
+ {
+  return ProzperServer_JsonEncoder._v$26?ProzperServer_JsonEncoder._v$26:ProzperServer_JsonEncoder._v$26=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",ProzperServer_JsonEncoder.j$17,0]]]]))();
+ };
+ ProzperServer_JsonDecoder.j$15=function()
+ {
+  return ProzperServer_JsonDecoder._v$15?ProzperServer_JsonDecoder._v$15:ProzperServer_JsonDecoder._v$15=(Provider.DecodeUnion(IdAddress,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ ProzperServer_JsonEncoder.j$15=function()
+ {
+  return ProzperServer_JsonEncoder._v$15?ProzperServer_JsonEncoder._v$15:ProzperServer_JsonEncoder._v$15=(Provider.EncodeUnion(IdAddress,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
  };
  Seq.sortWith=function(f,s)
  {
@@ -8112,6 +8145,30 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     e.Dispose();
   }
  };
+ Seq.sumBy=function(f,s)
+ {
+  return Seq.fold(function($1,$2)
+  {
+   return $1+f($2);
+  },0,s);
+ };
+ Seq.length=function(s)
+ {
+  var i,e;
+  i=0;
+  e=Enumerator.Get(s);
+  try
+  {
+   while(e.MoveNext())
+    i=i+1;
+   return i;
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
  Seq.zip=function(s1,s2)
  {
   return Seq.map2(function($1,$2)
@@ -8125,7 +8182,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    var m;
    m=f(x);
-   return m==null?T$1.Empty:List$1.ofArray([m.$0]);
+   return m==null?T$1.Empty:List.ofArray([m.$0]);
   },s);
  };
  Seq.distinct=function(s)
@@ -8202,6 +8259,23 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return[$1,$2];
   },s);
+ };
+ Seq.fold=function(f,x,s)
+ {
+  var r,e;
+  r=x;
+  e=Enumerator.Get(s);
+  try
+  {
+   while(e.MoveNext())
+    r=f(r,e.Current());
+   return r;
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
  };
  Seq.map2=function(f,s1,s2)
  {
@@ -8514,23 +8588,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     e.Dispose();
   }
  };
- Seq.fold=function(f,x,s)
- {
-  var r,e;
-  r=x;
-  e=Enumerator.Get(s);
-  try
-  {
-   while(e.MoveNext())
-    r=f(r,e.Current());
-   return r;
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
  Seq.take=function(n,s)
  {
   n<0?Seq.nonNegative():void 0;
@@ -8694,10 +8751,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return Arrays.ofSeq(strings).join(separator);
  };
- Strings.PadRight=function(s,n)
- {
-  return Strings.PadRightWith(s,n," ");
- };
  Strings.PadLeftWith=function(s,n,c)
  {
   return n>s.length?Global.Array(n-s.length+1).join(c)+s:s;
@@ -8719,10 +8772,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return index!==-1?(replaced=Strings.ReplaceOnce(subj,search,replace),(nextStartIndex=index+replace.length,Strings.Substring(replaced,0,index+replace.length)+replaceLoop(replaced.substring(nextStartIndex)))):subj;
   }
   return replaceLoop(subject);
- };
- Strings.PadRightWith=function(s,n,c)
- {
-  return n>s.length?s+Global.Array(n-s.length+1).join(c):s;
  };
  Strings.SplitChars=function(s,sep,opts)
  {
@@ -8793,7 +8842,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    recibido:recibido
   });
  };
- DatosPersonales$1.formaDoc=function(datosV)
+ DatosPersonales.formaDoc=function(datosV)
  {
   var forma,b,G,p,i,requeridosW;
   forma=(b=(G=Doc.EmbedView(View.Map(VariousUI.crearOptions,VariousUI.generos().get_View())),ProviderBuilder.Make().WithHole({
@@ -8831,7 +8880,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      },Seq.filter(function(t)
      {
       return t[0];
-     },List$1.ofArray([[Strings.Trim($1)==="","Nombres"],[Strings.Trim($2)==="","Apellidos"],[Strings.Trim($3)==="","Fecha de Nacimiento"],[Strings.Trim($4)==="","Genero"]])));
+     },List.ofArray([[Strings.Trim($1)==="","Nombres"],[Strings.Trim($2)==="","Apellidos"],[Strings.Trim($3)==="","Fecha de Nacimiento"],[Strings.Trim($4)==="","Genero"]])));
     };
    };
   },forma.Hole("nombres").get_View(),forma.Hole("apellidos").get_View()),forma.Hole("fechanacimiento").get_View()),forma.Hole("genero").get_View());
@@ -8849,7 +8898,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      {
       return{
        $:1,
-       $0:DatosPersonales.New(null,Arrays.get(Strings.SplitChars(Strings.Trim($4),[" "],0),0),Strings.concat(" ",Slice.array(Strings.SplitChars(Strings.Trim($5),[" "],0),{
+       $0:DatosPersonales$1.New(null,Arrays.get(Strings.SplitChars(Strings.Trim($4),[" "],0),0),Strings.concat(" ",Slice.array(Strings.SplitChars(Strings.Trim($5),[" "],0),{
         $:1,
         $0:1
        },null)),Arrays.get(Strings.SplitChars(Strings.Trim($6),[" "],0),0),Strings.concat(" ",Slice.array(Strings.SplitChars(Strings.Trim($7),[" "],0),{
@@ -8907,7 +8956,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      },Seq.filter(function(t)
      {
       return t[0];
-     },List$1.ofArray([[Strings.Trim($1)==="","Correo"],[Strings.Trim($2)==="","ConfirmarCorreo"],[$3!=="",$4]])));
+     },List.ofArray([[Strings.Trim($1)==="","Correo"],[Strings.Trim($2)==="","ConfirmarCorreo"],[$3!=="",$4]])));
     };
    };
   },forma.Hole("correo").get_View(),forma.Hole("confirmarcorreo").get_View()),mensaje.get_View()),mensaje.get_View());
@@ -8965,7 +9014,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     },Seq.filter(function(t)
     {
      return t[0];
-    },List$1.ofArray([[Strings.Trim($1)==="","CodigoPais"],[Strings.Trim($2)==="","Telefono"],[Strings.Trim($3)==="","TipoTelefono"]])));
+    },List.ofArray([[Strings.Trim($1)==="","CodigoPais"],[Strings.Trim($2)==="","Telefono"],[Strings.Trim($3)==="","TipoTelefono"]])));
    };
   },forma.Hole("codigopais").get_View(),forma.Hole("telefono").get_View()),forma.Hole("tipotelefono").get_View());
   View.Sink(function(v)
@@ -9053,7 +9102,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     },Seq.filter(function(t)
     {
      return t[0];
-    },List$1.ofArray([[Strings.Trim($1)==="","Direccion1"],[Strings.Trim($2)==="","Ciudad"],[Strings.Trim($3)==="","Estado"],[Strings.Trim($4)==="","Pais"],[Strings.Trim($5)==="","CodigoPostal"],[Strings.Trim($6)==="","TipoDireccion"]])));
+    },List.ofArray([[Strings.Trim($1)==="","Direccion1"],[Strings.Trim($2)==="","Ciudad"],[Strings.Trim($3)==="","Estado"],[Strings.Trim($4)==="","Pais"],[Strings.Trim($5)==="","CodigoPostal"],[Strings.Trim($6)==="","TipoDireccion"]])));
    },4);
   },forma.Hole("direccion1").get_View(),forma.Hole("ciudad").get_View()),forma.Hole("estado").get_View()),forma.Hole("pais").get_View()),forma.Hole("codigopostal").get_View()),forma.Hole("tipodireccion").get_View());
   View.Sink(function(v)
@@ -9156,7 +9205,23 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   While:function(guard,fRA)
   {
    return AsyncResultM.whileLoop(guard,fRA);
-  }
+  },
+  TryFinally:function(fRA,fn)
+  {
+   var b;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    return Concurrency.TryFinally(Concurrency.Delay(function()
+    {
+     return fRA();
+    }),function()
+    {
+     fn();
+    });
+   });
+  },
+  ReturnFrom$4:Global.id
  },Obj,AsyncResultMBuilder);
  AsyncResultMBuilder.New=Runtime$1.Ctor(function()
  {
@@ -9473,7 +9538,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   return Strings.concat("\n",Seq.filter(function(y)
   {
    return""!==y;
-  },List$1.ofArray([Global.String(msg),ResultMessage.summaryF(f,msg)])));
+  },List.ofArray([Global.String(msg),ResultMessage.summaryF(f,msg)])));
  };
  ResultMessage.summaryF=function(f,msg)
  {
@@ -9557,138 +9622,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return msg.$==0;
  };
- Msal.userO=function()
- {
-  SC$1.$cctor();
-  return SC$1.userO;
- };
- Msal.logout=function()
- {
-  Msal.executePolicy(true,Policy.SignIn);
- };
- Msal.storeValue=function(name,v)
- {
-  Msal.storage().setItem(name,v);
-  return v;
- };
- Msal.getAuthority=function(tenantName,policyName)
- {
-  return((((Runtime$1.Curried(function($1,$2,$3,$4)
-  {
-   return $1("https://"+Utils.toSafe($2)+".b2clogin.com/tfp/"+Utils.toSafe($3)+".onmicrosoft.com/"+Utils.toSafe($4));
-  },4))(Global.id))(tenantName))(tenantName))(policyName);
- };
- Msal.tenantName=function()
- {
-  SC$1.$cctor();
-  return SC$1.tenantName;
- };
- Msal.signInPolicy=function()
- {
-  SC$1.$cctor();
-  return SC$1.signInPolicy;
- };
- Msal.applicationId=function()
- {
-  SC$1.$cctor();
-  return SC$1.applicationId;
- };
- Msal.authority=function()
- {
-  SC$1.$cctor();
-  return SC$1.authority;
- };
- Msal.callback=function(errorDesc,token,error,tokenType,state)
- {
-  ((function($1)
-  {
-   return function($2)
-   {
-    return $1("callback: "+("("+Utils.prettyPrint($2[0])+", "+Utils.prettyPrint($2[1])+", "+Utils.prettyPrint($2[2])+", "+Utils.prettyPrint($2[3])+", "+Utils.prettyPrint($2[4])+")"));
-   };
-  }(function(s)
-  {
-   console.log(s);
-  }))([errorDesc,error,tokenType,token,state]));
- };
- Msal.checkUser=function()
- {
-  var b;
-  Concurrency.Start((b=null,Concurrency.Delay(function()
-  {
-   return Concurrency.Bind(Concurrency.Sleep(100),function()
-   {
-    return Concurrency.While(function()
-    {
-     return true;
-    },Concurrency.Delay(function()
-    {
-     var newO,m;
-     newO=(m=Msal.agent().getUser(),Unchecked.Equals(m,null)?null:{
-      $:1,
-      $0:m
-     });
-     return Concurrency.Combine(Msal.getId(newO)!==Msal.getId(Msal.userO().Get())?(Msal.userO().Set(newO),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
-     {
-      return Concurrency.Combine(Unchecked.Equals(Msal.userO().Get(),null)?(Msal.executePolicy(false,Policy.SignIn),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
-      {
-       return Concurrency.Bind(Concurrency.Sleep(9000),function()
-       {
-        return Concurrency.Return(null);
-       });
-      }));
-     }));
-    }));
-   });
-  })),null);
- };
- Msal.referidoPor=function()
- {
-  return Msal.localStorage().getItem("referidoPor");
- };
- Msal.claims=function(user)
- {
-  var r;
-  r=[["oid",user.idToken.oid],["city",user.idToken.city],["country",user.idToken.country],["extension_DateOfBirth",user.idToken.extension_DateOfBirth],["given_name",user.idToken.given_name],["postalCode",user.idToken.postalCode],["state",user.idToken.state],["streetAddress",user.idToken.streetAddress],["family_name",user.idToken.family_name],["emails",Arrays.get(user.idToken.emails,0)],["referidoPor",Msal.referidoPor()]];
-  Msal.localStorage().setItem("referidoPor","");
-  return r;
- };
- Msal.executePolicy=function(force,policy)
- {
-  Msal.storeValue("forceLogin",force?"1":"0");
-  Msal.storeValue("goInsideLink",self.location.href);
-  Msal.storeValue("policyType",Global.String(policy));
-  self.location.replace("blob/Msal.html");
- };
- Msal.storage=function()
- {
-  SC$1.$cctor();
-  return SC$1.storage;
- };
- Msal.agent=function()
- {
-  SC$1.$cctor();
-  return SC$1.agent;
- };
- Msal.getId=function(userO)
- {
-  var o;
-  o=userO==null?null:{
-   $:1,
-   $0:userO.$0.idToken.oid
-  };
-  return o==null?"":o.$0;
- };
- Msal.localStorage=function()
- {
-  SC$1.$cctor();
-  return SC$1.localStorage;
- };
- Fila.New=function(nombre,status,tipo,referido,nivel,referidos,descendientes,comision,diaPago,desde,Id)
+ Fila.New=function(nombre,status,influyente,tipo,referido,nivel,referidos,descendientes,comision,diaPago,desde,Id)
  {
   return{
    nombre:nombre,
    status:status,
+   influyente:influyente,
    tipo:tipo,
    referido:referido,
    nivel:nivel,
@@ -9809,8 +9748,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   l=xs;
   while(!(l.$==0))
    {
-    q.push(List$1.head(l));
-    l=List$1.tail(l);
+    q.push(List.head(l));
+    l=List.tail(l);
    }
   return q;
  };
@@ -9929,11 +9868,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   for(i=0,$1=size-1;i<=$1;i++)r[i]=value;
   return r;
  };
- Arrays.iter=function(f,arr)
- {
-  var i,$1;
-  for(i=0,$1=arr.length-1;i<=$1;i++)f(arr[i]);
- };
  Arrays.foldBack=function(f,arr,zero)
  {
   var acc,$1,len,i,$2;
@@ -9941,6 +9875,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   len=arr.length;
   for(i=1,$2=len;i<=$2;i++)acc=f(arr[len-i],acc);
   return acc;
+ };
+ Arrays.iter=function(f,arr)
+ {
+  var i,$1;
+  for(i=0,$1=arr.length-1;i<=$1;i++)f(arr[i]);
  };
  Arrays.findIndex=function(f,arr)
  {
@@ -10073,6 +10012,39 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  ResultMessage.NoMsg=new ResultMessage({
   $:0
  });
+ StatusAliado=TypesV0.StatusAliado=Runtime$1.Class({
+  toString:function()
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,StatusAliado);
+ StatusAliado.tryParse=function(s)
+ {
+  var m;
+  m=Strings.Trim(s).toUpperCase();
+  return m==="CUENTACREADA"?StatusAliado.CuentaCreada:m==="DATOSBANCARIOSINGRESADOS"?StatusAliado.DatosBancariosIngresados:m==="ACTIVO"?StatusAliado.Activo:m==="CANCELADO"?StatusAliado.Cancelado:StatusAliado.Inactivo;
+ };
+ StatusAliado.CuentaCreada=new StatusAliado({
+  $:0
+ });
+ StatusAliado.DatosBancariosIngresados=new StatusAliado({
+  $:1
+ });
+ StatusAliado.Activo=new StatusAliado({
+  $:2
+ });
+ StatusAliado.Cancelado=new StatusAliado({
+  $:4
+ });
+ StatusAliado.Inactivo=new StatusAliado({
+  $:3
+ });
  Utils.toSafe=function(s)
  {
   return s==null?"":s;
@@ -10190,6 +10162,96 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return $1(Global.String($2)+Utils.toSafe($3)+Utils.padNumLeft(Global.String($4),2)+Utils.toSafe($5)+Utils.padNumLeft(Global.String($6),2));
   },6))(Global.id))((new Date$1(date)).getFullYear()))(sep))((new Date$1(date)).getMonth()+1))(sep))((new Date$1(date)).getDate());
+ };
+ List.ofArray=function(arr)
+ {
+  var r,i,$1;
+  r=T$1.Empty;
+  for(i=Arrays.length(arr)-1,$1=0;i>=$1;i--)r=new T$1({
+   $:1,
+   $0:Arrays.get(arr,i),
+   $1:r
+  });
+  return r;
+ };
+ List.ofSeq=function(s)
+ {
+  var e,$1,go,r,res,t;
+  if(s instanceof T$1)
+   return s;
+  else
+   if(s instanceof Global.Array)
+    return List.ofArray(s);
+   else
+    {
+     e=Enumerator.Get(s);
+     try
+     {
+      go=e.MoveNext();
+      if(!go)
+       $1=T$1.Empty;
+      else
+       {
+        res=new T$1({
+         $:1
+        });
+        r=res;
+        while(go)
+         {
+          r.$0=e.Current();
+          e.MoveNext()?r=(t=new T$1({
+           $:1
+          }),r.$1=t,t):go=false;
+         }
+        r.$1=T$1.Empty;
+        $1=res;
+       }
+      return $1;
+     }
+     finally
+     {
+      if(typeof e=="object"&&"Dispose"in e)
+       e.Dispose();
+     }
+    }
+ };
+ List.rev=function(l)
+ {
+  var res,r;
+  res=T$1.Empty;
+  r=l;
+  while(r.$==1)
+   {
+    res=new T$1({
+     $:1,
+     $0:r.$0,
+     $1:res
+    });
+    r=r.$1;
+   }
+  return res;
+ };
+ List.head=function(l)
+ {
+  return l.$==1?l.$0:List.listEmpty();
+ };
+ List.tail=function(l)
+ {
+  return l.$==1?l.$1:List.listEmpty();
+ };
+ List.listEmpty=function()
+ {
+  return Operators.FailWith("The input list was empty.");
+ };
+ List.iter=function(f,l)
+ {
+  var r;
+  r=l;
+  while(r.$==1)
+   {
+    f(List.head(r));
+    r=List.tail(r);
+   }
  };
  CuentaBancaria.New=function(titular,banco,tipo,numero,routing)
  {
@@ -10359,6 +10421,133 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    actFunction:actFunction,
    actEnabled:actEnabled
   };
+ };
+ Msal.logout=function()
+ {
+  Msal.executePolicy(true,Policy.SignIn);
+ };
+ Msal.userO=function()
+ {
+  SC$1.$cctor();
+  return SC$1.userO;
+ };
+ Msal.storeValue=function(name,v)
+ {
+  Msal.storage().setItem(name,v);
+  return v;
+ };
+ Msal.getAuthority=function(tenantName,policyName)
+ {
+  return((((Runtime$1.Curried(function($1,$2,$3,$4)
+  {
+   return $1("https://"+Utils.toSafe($2)+".b2clogin.com/tfp/"+Utils.toSafe($3)+".onmicrosoft.com/"+Utils.toSafe($4));
+  },4))(Global.id))(tenantName))(tenantName))(policyName);
+ };
+ Msal.tenantName=function()
+ {
+  SC$1.$cctor();
+  return SC$1.tenantName;
+ };
+ Msal.signInPolicy=function()
+ {
+  SC$1.$cctor();
+  return SC$1.signInPolicy;
+ };
+ Msal.applicationId=function()
+ {
+  SC$1.$cctor();
+  return SC$1.applicationId;
+ };
+ Msal.authority=function()
+ {
+  SC$1.$cctor();
+  return SC$1.authority;
+ };
+ Msal.callback=function(errorDesc,token,error,tokenType,state)
+ {
+  ((function($1)
+  {
+   return function($2)
+   {
+    return $1("callback: "+("("+Utils.prettyPrint($2[0])+", "+Utils.prettyPrint($2[1])+", "+Utils.prettyPrint($2[2])+", "+Utils.prettyPrint($2[3])+", "+Utils.prettyPrint($2[4])+")"));
+   };
+  }(function(s)
+  {
+   console.log(s);
+  }))([errorDesc,error,tokenType,token,state]));
+ };
+ Msal.checkUser=function()
+ {
+  var b;
+  Concurrency.Start((b=null,Concurrency.Delay(function()
+  {
+   return Concurrency.Bind(Concurrency.Sleep(100),function()
+   {
+    return Concurrency.While(function()
+    {
+     return true;
+    },Concurrency.Delay(function()
+    {
+     var newO,m;
+     newO=(m=Msal.agent().getUser(),Unchecked.Equals(m,null)?null:{
+      $:1,
+      $0:m
+     });
+     return Concurrency.Combine(Msal.getId(newO)!==Msal.getId(Msal.userO().Get())?(Msal.userO().Set(newO),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
+     {
+      return Concurrency.Combine(Unchecked.Equals(Msal.userO().Get(),null)?(Msal.executePolicy(false,Policy.SignIn),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
+      {
+       return Concurrency.Bind(Concurrency.Sleep(9000),function()
+       {
+        return Concurrency.Return(null);
+       });
+      }));
+     }));
+    }));
+   });
+  })),null);
+ };
+ Msal.referidoPor=function()
+ {
+  return Msal.localStorage().getItem("referidoPor");
+ };
+ Msal.claims=function(user)
+ {
+  var r;
+  r=[["oid",user.idToken.oid],["city",user.idToken.city],["country",user.idToken.country],["extension_DateOfBirth",user.idToken.extension_DateOfBirth],["given_name",user.idToken.given_name],["postalCode",user.idToken.postalCode],["state",user.idToken.state],["streetAddress",user.idToken.streetAddress],["family_name",user.idToken.family_name],["emails",Arrays.get(user.idToken.emails,0)],["referidoPor",Msal.referidoPor()]];
+  Msal.localStorage().setItem("referidoPor","");
+  return r;
+ };
+ Msal.executePolicy=function(force,policy)
+ {
+  Msal.storeValue("forceLogin",force?"1":"0");
+  Msal.storeValue("goInsideLink",self.location.href);
+  Msal.storeValue("policyType",Global.String(policy));
+  self.location.replace("blob/Msal.html");
+ };
+ Msal.storage=function()
+ {
+  SC$1.$cctor();
+  return SC$1.storage;
+ };
+ Msal.agent=function()
+ {
+  SC$1.$cctor();
+  return SC$1.agent;
+ };
+ Msal.getId=function(userO)
+ {
+  var o;
+  o=userO==null?null:{
+   $:1,
+   $0:userO.$0.idToken.oid
+  };
+  return o==null?"":o.$0;
+ };
+ Msal.localStorage=function()
+ {
+  SC$1.$cctor();
+  return SC$1.localStorage;
  };
  LayoutEngine.New=function(lytName,lytDefinition)
  {
@@ -10771,6 +10960,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$2["|Double|_|"]=ParseO.parseDoubleO();
   SC$2["|Guid|_|"]=ParseO.parseGuidO();
   SC$2.rexGuid="([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})";
+  SC$2.rexEmail="(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@[*[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+]*";
   SC$2.observers=T$1.Empty;
   SC$2.css="\r\n                .tab-panel {\r\n                 overflow  : hidden   ;\r\n                 display   : flex     ;\r\n                 flex-flow : column   ;\r\n                 background: lightgray;\r\n                 height    : 100%    ;\r\n                 width     : 100%    ;\r\n                }\r\n                .tab-content {\r\n                 flex      : 1 1     ;\r\n                 overflow  : auto    ;\r\n                 position  : relative;\r\n                }\r\n                .tab-children {\r\n                 height    : 100%    ;\r\n                 width     : 100%    ;\r\n                 position  : absolute;\r\n                 display   : grid    ;\r\n                }\r\n                .tab-strip {\r\n                 padding   : 0pt     ;\r\n                 flex      : 0 0     ;\r\n                }\r\n                .tab {\r\n                 border     : 0.2pt solid transparent;\r\n                 padding    : 0pt 4pt;\r\n                 display    : inline-block;\r\n                 font-family: sans-serif;\r\n                 font-weight: 200;\r\n                 font-size  : small;\r\n                 color      : #666;\r\n                 cursor     : pointer;\r\n                }\r\n                .top>.tab {\r\n                 border-radius: 2pt 2pt 0pt 0pt;\r\n                 border-bottom-width: 0pt;\r\n                 vertical-align: bottom;\r\n                }\r\n                .bottom>.tab {\r\n                 border-top-width: 0pt;\r\n                 border-radius: 0pt 0pt 2pt 2pt;\r\n                 vertical-align: top;\r\n                }\r\n                .horizontal>.tab:not(:first-child) {\r\n                 border-left-width: 0pt;\r\n                }\r\n                .tab.hovering {\r\n                 background: red;\r\n                }\r\n                .tab.selected {\r\n                 background: white;\r\n                 border-left-width: 0.2pt;\r\n                 color: black;\r\n                 font-weight: 500;\r\n                 border-color: black;\r\n                }\r\n                .horizontal>.tab.selected {\r\n                 border-left-width: 0.2pt;\r\n                }\r\n                ::slotted(*              ) { \r\n                 width : 100%;\r\n                 height: 100%;\r\n                }\r\n                        ";
   SC$2.init=Lazy.Create(function()
@@ -11022,7 +11212,263 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $2:"[Layout]"
   })]),plg.plgQueries)));
  };
- List=Collections.List=Runtime$1.Class({
+ IdForAuthorize=TypesV0.IdForAuthorize=Runtime$1.Class({},null,IdForAuthorize);
+ DatosPersonales$1.New=function(titulo,nombre1,nombre2,apellido1,apellido2,nacionalidad,genero,fechaNacimiento)
+ {
+  return{
+   titulo:titulo,
+   nombre1:nombre1,
+   nombre2:nombre2,
+   apellido1:apellido1,
+   apellido2:apellido2,
+   nacionalidad:nacionalidad,
+   genero:genero,
+   fechaNacimiento:fechaNacimiento
+  };
+ };
+ DiaPago.Dia01={
+  $:0
+ };
+ TipoAliado=TypesV0.TipoAliado=Runtime$1.Class({
+  toString:function()
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$1($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,TipoAliado);
+ TipoAliado.Regular=new TipoAliado({
+  $:1
+ });
+ Numeric.TryParseInt32=function(s,r)
+ {
+  return Numeric.TryParse(s,-2147483648,2147483647,r);
+ };
+ SC$3.$cctor=function()
+ {
+  var f,g,c,c$1,d;
+  SC$3.$cctor=Global.ignore;
+  function g$1(s)
+  {
+   return Strings.concat("\n",s);
+  }
+  function f$1(s)
+  {
+   return String.splitByChar("\n",s);
+  }
+  function g$2(s)
+  {
+   var a,b;
+   return Slice.array(s,{
+    $:1,
+    $0:0
+   },{
+    $:1,
+    $0:(a=0,(b=Arrays.length(s)-2,Unchecked.Compare(a,b)===1?a:b))
+   });
+  }
+  function g$3(s)
+  {
+   return Strings.concat("\n",s);
+  }
+  function f$2(s)
+  {
+   return s+"T00:00:00";
+  }
+  SC$3.rtn=function(v)
+  {
+   return[v];
+  };
+  SC$3.result=new Builder.New();
+  SC$3.result$1=Result$1.result();
+  SC$3.resultM=new Builder$1.New();
+  SC$3.asyncResultM=new AsyncResultMBuilder.New();
+  SC$3.unindentStr=function(x)
+  {
+   return g$1(String.unindent(x));
+  };
+  SC$3.skipLastLine=(f=function(x)
+  {
+   return g$2(f$1(x));
+  },function(x)
+  {
+   return g$3(f(x));
+  });
+  SC$3.parseDateO2=(g=ParseO.tryParseWith(function(a)
+  {
+   var o,m;
+   o=0;
+   return[(m=DateUtil.TryParse(a),m!=null&&m.$==1&&(o=m.$0,true)),o];
+  }),function(x)
+  {
+   return g(f$2(x));
+  });
+  SC$3.parseDateO=ParseO.tryParseWith(function(a)
+  {
+   var o,m;
+   o=0;
+   return[(m=DateUtil.TryParse(a),m!=null&&m.$==1&&(o=m.$0,true)),o];
+  });
+  SC$3.parseIntO=ParseO.tryParseWith(function(a)
+  {
+   var o;
+   o=0;
+   return[Numeric.TryParseInt32(a,{
+    get:function()
+    {
+     return o;
+    },
+    set:function(v)
+    {
+     o=v;
+    }
+   }),o];
+  });
+  SC$3.parseInt64O=ParseO.tryParseWith(function(a)
+  {
+   var o;
+   o=0;
+   return[Numeric.TryParseInt64(a,{
+    get:function()
+    {
+     return o;
+    },
+    set:function(v)
+    {
+     o=v;
+    }
+   }),o];
+  });
+  SC$3.parseSingleO=ParseO.tryParseWith(function(a)
+  {
+   var o,$1;
+   o=0;
+   return[($1=Global.Number(a),Global.isNaN($1)?false:(o=$1,true)),o];
+  });
+  SC$3.parseDoubleO=ParseO.tryParseWith(function(a)
+  {
+   var o,$1;
+   o=0;
+   return[($1=Global.Number(a),Global.isNaN($1)?false:(o=$1,true)),o];
+  });
+  SC$3.parseGuidO=ParseO.tryParseWith(function(a)
+  {
+   var o;
+   o=null;
+   return[Guid.TryParse(a,{
+    get:function()
+    {
+     return o;
+    },
+    set:function(v)
+    {
+     o=v;
+    }
+   }),o];
+  });
+  SC$3["|Date|_|"]=ParseO.parseDateO();
+  SC$3["|Int|_|"]=ParseO.parseIntO();
+  SC$3["|Int64|_|"]=ParseO.parseInt64O();
+  SC$3["|Single|_|"]=ParseO.parseSingleO();
+  SC$3["|Double|_|"]=ParseO.parseDoubleO();
+  SC$3["|Guid|_|"]=ParseO.parseGuidO();
+  SC$3.serString=[Serializer.toJsonString,function(j)
+  {
+   return j.tryString();
+  }];
+  SC$3.serFloat=[function(v)
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(Global.id))(v);
+  },function(j)
+  {
+   return j.tryFloat();
+  }];
+  SC$3.serInt=[function(v)
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(Global.id))(v);
+  },function(j)
+  {
+   var o;
+   o=j.tryInt();
+   return o==null?null:{
+    $:1,
+    $0:Operators.toInt(o.$0)
+   };
+  }];
+  SC$3.serInt64=[function($1)
+  {
+   return function($2)
+   {
+    return $1(Global.String($2));
+   };
+  }(Global.id),function(j)
+  {
+   return j.tryInt();
+  }];
+  SC$3.serBool=[function(v)
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(Global.id))(v);
+  },function(j)
+  {
+   return j.tryBool();
+  }];
+  SC$3.premisasCalculo=PremisasCalculo.New(15,25,25,0,75,31,26,28);
+  SC$3.telVacio=Telefono$1.New(TipoTelefono.Movil,"","","","",false);
+  SC$3.dirVacio=Direccion$1.New(Library.Error(""),TipoDireccion.Habitacion,"","","",new Estado({
+   $:2,
+   $0:""
+  }),new Pais({
+   $:3,
+   $0:""
+  }),new ZonaPostal({
+   $:0,
+   $0:""
+  }));
+  SC$3.tarVacio=TarjetaCredito.New("",TipoTarjeta.Visa,new NumeroTarjeta({
+   $:0,
+   $0:""
+  }),Expiracion.New(2000,1));
+  SC$3.ctaVacio=CuentaBancaria.New("","",TipoCuenta.Ahorro,new NumeroCuenta({
+   $:0,
+   $0:""
+  }),new RoutingNumber({
+   $:0,
+   $0:""
+  }));
+  SC$3.modeloVacio=Modelo.New(new IdAliado({
+   $:0,
+   $0:""
+  }),[],(c=Date$1.now(),(new Date$1(c)).getFullYear()),(c$1=Date$1.now(),(new Date$1(c$1)).getMonth()+1),TypesV0.premisasCalculo(),0);
+  SC$3.correoVacio=CorreoElectronico.New("",null,null);
+  SC$3.empty=(d=DatosPersonales$1.New(null,"","","","",Pais.USA,Genero.Masculino,(new Date$1(2000,1-1,1)).getTime()),Aliado$1.New(new IdAliado({
+   $:0,
+   $0:""
+  }),null,null,null,d,[],[],false,StatusAliado.Inactivo,DiaPago.Dia01,TipoAliado.Regular,(new Date$1(2000,1-1,1)).getTime(),(new Date$1(2000,1-1,1)).getTime(),0,0,0,0,0,0));
+  SC$3.registroRpcs=new Dictionary.New$5();
+ };
+ List$1=Collections.List=Runtime$1.Class({
   GetEnumerator:function()
   {
    return Enumerator.Get(this);
@@ -11031,7 +11477,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return Enumerator.Get0(this);
   }
- },null,List);
+ },null,List$1);
  Dictionary=Collections.Dictionary=Runtime$1.Class({
   set_Item:function(k,v)
   {
@@ -11320,226 +11766,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return console.log("WebSharper UI: Uncaught asynchronous exception",e);
  };
- SC$3.$cctor=function()
- {
-  var f,g,c,c$1,d;
-  SC$3.$cctor=Global.ignore;
-  function g$1(s)
-  {
-   return Strings.concat("\n",s);
-  }
-  function f$1(s)
-  {
-   return String.splitByChar("\n",s);
-  }
-  function g$2(s)
-  {
-   var a,b;
-   return Slice.array(s,{
-    $:1,
-    $0:0
-   },{
-    $:1,
-    $0:(a=0,(b=Arrays.length(s)-2,Unchecked.Compare(a,b)===1?a:b))
-   });
-  }
-  function g$3(s)
-  {
-   return Strings.concat("\n",s);
-  }
-  function f$2(s)
-  {
-   return s+"T00:00:00";
-  }
-  SC$3.rtn=function(v)
-  {
-   return[v];
-  };
-  SC$3.result=new Builder.New();
-  SC$3.result$1=Result$1.result();
-  SC$3.resultM=new Builder$1.New();
-  SC$3.asyncResultM=new AsyncResultMBuilder.New();
-  SC$3.unindentStr=function(x)
-  {
-   return g$1(String.unindent(x));
-  };
-  SC$3.skipLastLine=(f=function(x)
-  {
-   return g$2(f$1(x));
-  },function(x)
-  {
-   return g$3(f(x));
-  });
-  SC$3.parseDateO2=(g=ParseO.tryParseWith(function(a)
-  {
-   var o,m;
-   o=0;
-   return[(m=DateUtil.TryParse(a),m!=null&&m.$==1&&(o=m.$0,true)),o];
-  }),function(x)
-  {
-   return g(f$2(x));
-  });
-  SC$3.parseDateO=ParseO.tryParseWith(function(a)
-  {
-   var o,m;
-   o=0;
-   return[(m=DateUtil.TryParse(a),m!=null&&m.$==1&&(o=m.$0,true)),o];
-  });
-  SC$3.parseIntO=ParseO.tryParseWith(function(a)
-  {
-   var o;
-   o=0;
-   return[Numeric.TryParseInt32(a,{
-    get:function()
-    {
-     return o;
-    },
-    set:function(v)
-    {
-     o=v;
-    }
-   }),o];
-  });
-  SC$3.parseInt64O=ParseO.tryParseWith(function(a)
-  {
-   var o;
-   o=0;
-   return[Numeric.TryParseInt64(a,{
-    get:function()
-    {
-     return o;
-    },
-    set:function(v)
-    {
-     o=v;
-    }
-   }),o];
-  });
-  SC$3.parseSingleO=ParseO.tryParseWith(function(a)
-  {
-   var o,$1;
-   o=0;
-   return[($1=Global.Number(a),Global.isNaN($1)?false:(o=$1,true)),o];
-  });
-  SC$3.parseDoubleO=ParseO.tryParseWith(function(a)
-  {
-   var o,$1;
-   o=0;
-   return[($1=Global.Number(a),Global.isNaN($1)?false:(o=$1,true)),o];
-  });
-  SC$3.parseGuidO=ParseO.tryParseWith(function(a)
-  {
-   var o;
-   o=null;
-   return[Guid.TryParse(a,{
-    get:function()
-    {
-     return o;
-    },
-    set:function(v)
-    {
-     o=v;
-    }
-   }),o];
-  });
-  SC$3["|Date|_|"]=ParseO.parseDateO();
-  SC$3["|Int|_|"]=ParseO.parseIntO();
-  SC$3["|Int64|_|"]=ParseO.parseInt64O();
-  SC$3["|Single|_|"]=ParseO.parseSingleO();
-  SC$3["|Double|_|"]=ParseO.parseDoubleO();
-  SC$3["|Guid|_|"]=ParseO.parseGuidO();
-  SC$3.serString=[Serializer.toJsonString,function(j)
-  {
-   return j.tryString();
-  }];
-  SC$3.serFloat=[function(v)
-  {
-   return(function($1)
-   {
-    return function($2)
-    {
-     return $1(Utils.prettyPrint($2));
-    };
-   }(Global.id))(v);
-  },function(j)
-  {
-   return j.tryFloat();
-  }];
-  SC$3.serInt=[function(v)
-  {
-   return(function($1)
-   {
-    return function($2)
-    {
-     return $1(Utils.prettyPrint($2));
-    };
-   }(Global.id))(v);
-  },function(j)
-  {
-   var o;
-   o=j.tryInt();
-   return o==null?null:{
-    $:1,
-    $0:Operators.toInt(o.$0)
-   };
-  }];
-  SC$3.serInt64=[function($1)
-  {
-   return function($2)
-   {
-    return $1(Global.String($2));
-   };
-  }(Global.id),function(j)
-  {
-   return j.tryInt();
-  }];
-  SC$3.serBool=[function(v)
-  {
-   return(function($1)
-   {
-    return function($2)
-    {
-     return $1(Utils.prettyPrint($2));
-    };
-   }(Global.id))(v);
-  },function(j)
-  {
-   return j.tryBool();
-  }];
-  SC$3.premisasCalculo=PremisasCalculo.New(15,25,25,0,75,31,26,28);
-  SC$3.telVacio=Telefono$1.New(TipoTelefono.Movil,"","","","",false);
-  SC$3.dirVacio=Direccion$1.New(Library.Error(""),TipoDireccion.Habitacion,"","","",new Estado({
-   $:2,
-   $0:""
-  }),new Pais({
-   $:3,
-   $0:""
-  }),new ZonaPostal({
-   $:0,
-   $0:""
-  }));
-  SC$3.tarVacio=TarjetaCredito.New("",TipoTarjeta.Visa,new NumeroTarjeta({
-   $:0,
-   $0:""
-  }),Expiracion.New(2000,1));
-  SC$3.ctaVacio=CuentaBancaria.New("","",TipoCuenta.Ahorro,new NumeroCuenta({
-   $:0,
-   $0:""
-  }),new RoutingNumber({
-   $:0,
-   $0:""
-  }));
-  SC$3.modeloVacio=Modelo.New(new IdAliado({
-   $:0,
-   $0:""
-  }),[],(c=Date$1.now(),(new Date$1(c)).getFullYear()),(c$1=Date$1.now(),(new Date$1(c$1)).getMonth()+1),TypesV0.premisasCalculo(),0);
-  SC$3.correoVacio=CorreoElectronico.New("",null,null);
-  SC$3.empty=(d=DatosPersonales.New(null,"","","","",Pais.USA,Genero.Masculino,(new Date$1(2000,1-1,1)).getTime()),Aliado.New(new IdAliado({
-   $:0,
-   $0:""
-  }),null,d,[],[],false,StatusAliado.Inactivo,DiaPago.Dia01,TipoAliado.Regular,(new Date$1(2000,1-1,1)).getTime(),(new Date$1(2000,1-1,1)).getTime(),0,0,0,0,0,0));
-  SC$3.registroRpcs=new Dictionary.New$5();
- };
  PremisasCalculo.New=function(comisionReferidosRegular,comisionReferidosMaster,comisionDescendientesMaster,comisionDescendientesRegular,montoAfiliacion,numeroReferidosMaster,diaCorte1,diaCorte2)
  {
   return{
@@ -11564,13 +11790,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Fresh.set_counter=function($1)
  {
-  SC$5.$cctor();
-  SC$5.counter=$1;
+  SC$6.$cctor();
+  SC$6.counter=$1;
  };
  Fresh.counter=function()
  {
-  SC$5.$cctor();
-  return SC$5.counter;
+  SC$6.$cctor();
+  return SC$6.counter;
  };
  Fresh.Id=function()
  {
@@ -11607,96 +11833,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Slice.string=function(source,start,finish)
  {
   return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):"":finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
- };
- List$1.ofArray=function(arr)
- {
-  var r,i,$1;
-  r=T$1.Empty;
-  for(i=Arrays.length(arr)-1,$1=0;i>=$1;i--)r=new T$1({
-   $:1,
-   $0:Arrays.get(arr,i),
-   $1:r
-  });
-  return r;
- };
- List$1.ofSeq=function(s)
- {
-  var e,$1,go,r,res,t;
-  if(s instanceof T$1)
-   return s;
-  else
-   if(s instanceof Global.Array)
-    return List$1.ofArray(s);
-   else
-    {
-     e=Enumerator.Get(s);
-     try
-     {
-      go=e.MoveNext();
-      if(!go)
-       $1=T$1.Empty;
-      else
-       {
-        res=new T$1({
-         $:1
-        });
-        r=res;
-        while(go)
-         {
-          r.$0=e.Current();
-          e.MoveNext()?r=(t=new T$1({
-           $:1
-          }),r.$1=t,t):go=false;
-         }
-        r.$1=T$1.Empty;
-        $1=res;
-       }
-      return $1;
-     }
-     finally
-     {
-      if(typeof e=="object"&&"Dispose"in e)
-       e.Dispose();
-     }
-    }
- };
- List$1.rev=function(l)
- {
-  var res,r;
-  res=T$1.Empty;
-  r=l;
-  while(r.$==1)
-   {
-    res=new T$1({
-     $:1,
-     $0:r.$0,
-     $1:res
-    });
-    r=r.$1;
-   }
-  return res;
- };
- List$1.head=function(l)
- {
-  return l.$==1?l.$0:List$1.listEmpty();
- };
- List$1.tail=function(l)
- {
-  return l.$==1?l.$1:List$1.listEmpty();
- };
- List$1.listEmpty=function()
- {
-  return Operators.FailWith("The input list was empty.");
- };
- List$1.iter=function(f,l)
- {
-  var r;
-  r=l;
-  while(r.$==1)
-   {
-    f(List$1.head(r));
-    r=List$1.tail(r);
-   }
  };
  Policy=Msal$1.Policy=Runtime$1.Class({
   toString:function()
@@ -11736,8 +11872,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  LibraryJS.rexEmail=function()
  {
-  SC$1.$cctor();
-  return SC$1.rexEmail;
+  SC$2.$cctor();
+  return SC$2.rexEmail;
  };
  EndPoint.DefaultEP={
   $:0
@@ -11827,6 +11963,112 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  ViewBuilder.B={
   $:0
  };
+ Remoting.set_EndPoint=function($1)
+ {
+  SC$4.$cctor();
+  SC$4.EndPoint=$1;
+ };
+ Remoting.AjaxProvider=function()
+ {
+  SC$4.$cctor();
+  return SC$4.AjaxProvider;
+ };
+ Remoting.makePayload=function(data)
+ {
+  return JSON.stringify(data);
+ };
+ Remoting.makeHeaders=function(m)
+ {
+  return{
+   "content-type":"application/json",
+   "x-websharper-rpc":m
+  };
+ };
+ Remoting.EndPoint=function()
+ {
+  SC$4.$cctor();
+  return SC$4.EndPoint;
+ };
+ Remoting.ajax=function(async,url,headers,data,ok,err,csrf)
+ {
+  var xhr,csrf$1,h;
+  xhr=new Global.XMLHttpRequest();
+  csrf$1=Global.document.cookie.replace(new Global.RegExp("(?:(?:^|.*;)\\s*csrftoken\\s*\\=\\s*([^;]*).*$)|^.*$"),"$1");
+  xhr.open("POST",url,async);
+  if(async==true)
+   xhr.withCredentials=true;
+  for(var h$1 in headers)xhr.setRequestHeader(h$1,headers[h$1]);
+  if(csrf$1)
+   xhr.setRequestHeader("x-csrftoken",csrf$1);
+  function k()
+  {
+   var msg;
+   if(xhr.status==200)
+    ok(xhr.responseText);
+   else
+    if(csrf&&xhr.status==403&&xhr.responseText=="CSRF")
+     csrf();
+    else
+     {
+      msg="Response status is not 200: ";
+      err(new Error(msg+xhr.status));
+     }
+  }
+  if("onload"in xhr)
+   xhr.onload=xhr.onerror=xhr.onabort=k;
+  else
+   xhr.onreadystatechange=function()
+   {
+    if(xhr.readyState==4)
+     k();
+   };
+  xhr.send(data);
+ };
+ Rpc$1.invoke=function(fname,idAliado,p)
+ {
+  var b;
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   return AsyncResultMAutoOpen["AsyncResultMBuilder.Bind"](b,Concurrency.Return(null),function()
+   {
+    var headers,req,r;
+    headers=new Global.Headers();
+    headers.append("Content-Type","application/json");
+    headers.append("IdAliado",idAliado);
+    req=(r={},r.mode="cors",r.credentials="include",r.method="POST",r.headers=headers,r.body=!p?"null":p,r);
+    return AsyncResultMAutoOpen["AsyncResultMBuilder.Bind"](b,Promise.AsAsync(self.fetch((self.location.protocol==="http:"?"http://localhost:7071/api/":"https://prozper.azurewebsites.net/api/")+fname,req)),function(a)
+    {
+     return AsyncResultMAutoOpen["AsyncResultMBuilder.Bind"](b,Promise.AsAsync(a.text()),function(a$1)
+     {
+      ((function($1)
+      {
+       return function($2)
+       {
+        return $1("invoke resp = "+Utils.prettyPrint($2));
+       };
+      }(function(s)
+      {
+       console.log(s);
+      }))(a$1));
+      return b.Return(a$1);
+     });
+    });
+   });
+  }));
+ };
+ Rpc$1.registroRpcs=function()
+ {
+  SC$3.$cctor();
+  return SC$3.registroRpcs;
+ };
+ PlugInQuery.New=function(qryName,qryFunction)
+ {
+  return{
+   qryName:qryName,
+   qryFunction:qryFunction
+  };
+ };
  Snap.Obsolete=function(sn)
  {
   var $1,m,i,$2,o;
@@ -11849,121 +12091,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return{
    s:State
-  };
- };
- Pais=TypesV0.Pais=Runtime$1.Class({
-  toString:function()
-  {
-   return this.$==3?this.$0:(function($1)
-   {
-    return function($2)
-    {
-     return $1(ProzperServer_GeneratedPrintf.p$2($2));
-    };
-   }(Global.id))(this);
-  }
- },null,Pais);
- Pais.tryParse=function(s)
- {
-  var $1,m;
-  m=Strings.Trim(s).toUpperCase();
-  switch(m)
-  {
-   case"":
-    return null;
-   case"USA":
-   case"AMERICA":
-   case"E.E.U.U.":
-   case"US":
-   case"UNITED STATES OF AMERICA":
-   case"UNITED STATES":
-   case"EEUU":
-    return{
-     $:1,
-     $0:Pais.USA
-    };
-   case"VENEZUELA":
-    return{
-     $:1,
-     $0:Pais.Venezuela
-    };
-   case"ARGENTINA":
-    return{
-     $:1,
-     $0:Pais.Argentina
-    };
-   default:
-    return{
-     $:1,
-     $0:new Pais({
-      $:3,
-      $0:Strings.Trim(s)
-     })
-    };
-  }
- };
- Pais.USA=new Pais({
-  $:0
- });
- Pais.Venezuela=new Pais({
-  $:1
- });
- Pais.Argentina=new Pais({
-  $:2
- });
- Genero.tryParse=function(s)
- {
-  var m;
-  m=Strings.Trim(s);
-  return m==="Masculino"?{
-   $:1,
-   $0:Genero.Masculino
-  }:m==="Femenino"?{
-   $:1,
-   $0:Genero.Femenino
-  }:m==="Empresa"?{
-   $:1,
-   $0:Genero.Empresa
-  }:null;
- };
- Genero.Masculino={
-  $:0
- };
- Genero.Femenino={
-  $:1
- };
- Genero.Empresa={
-  $:2
- };
- Direccion$1.New=function(authorizeIdR,tipoDireccion,linea1,linea2,ciudad,estado,pais,zonaPostal)
- {
-  return{
-   authorizeIdR:authorizeIdR,
-   tipoDireccion:tipoDireccion,
-   linea1:linea1,
-   linea2:linea2,
-   ciudad:ciudad,
-   estado:estado,
-   pais:pais,
-   zonaPostal:zonaPostal
-  };
- };
- Telefono$1.New=function(tipoTelefono,codigoPais,codigoArea,numero,extension,mensajes)
- {
-  return{
-   tipoTelefono:tipoTelefono,
-   codigoPais:codigoPais,
-   codigoArea:codigoArea,
-   numero:numero,
-   extension:extension,
-   mensajes:mensajes
-  };
- };
- PlugInQuery.New=function(qryName,qryFunction)
- {
-  return{
-   qryName:qryName,
-   qryFunction:qryFunction
   };
  };
  FSharpMap=Collections.FSharpMap=Runtime$1.Class({
@@ -12317,7 +12444,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return Operators.FailWith("The input must be non-negative.");
  };
- T$1=List$1.T=Runtime$1.Class({
+ T$1=List.T=Runtime$1.Class({
   GetEnumerator:function()
   {
    return new T.New(this,null,function(e)
@@ -12341,6 +12468,30 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return Operators.FailWith("View<'T>.V can only be called in an argument to a V-enabled function or if 'T = Doc.");
   }
  },null,View);
+ Genero.tryParse=function(s)
+ {
+  var m;
+  m=Strings.Trim(s);
+  return m==="Masculino"?{
+   $:1,
+   $0:Genero.Masculino
+  }:m==="Femenino"?{
+   $:1,
+   $0:Genero.Femenino
+  }:m==="Empresa"?{
+   $:1,
+   $0:Genero.Empresa
+  }:null;
+ };
+ Genero.Masculino={
+  $:0
+ };
+ Genero.Femenino={
+  $:1
+ };
+ Genero.Empresa={
+  $:2
+ };
  ParseO.parseDateO2=function()
  {
   SC$2.$cctor();
@@ -12400,6 +12551,77 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$2.$cctor();
   return SC$2["|Int|_|"];
  };
+ Pais=TypesV0.Pais=Runtime$1.Class({
+  toString:function()
+  {
+   return this.$==3?this.$0:(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$2($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,Pais);
+ Pais.tryParse=function(s)
+ {
+  var $1,m;
+  m=Strings.Trim(s).toUpperCase();
+  switch(m)
+  {
+   case"":
+    return null;
+   case"USA":
+   case"AMERICA":
+   case"E.E.U.U.":
+   case"US":
+   case"UNITED STATES OF AMERICA":
+   case"UNITED STATES":
+   case"EEUU":
+    return{
+     $:1,
+     $0:Pais.USA
+    };
+   case"VENEZUELA":
+    return{
+     $:1,
+     $0:Pais.Venezuela
+    };
+   case"ARGENTINA":
+    return{
+     $:1,
+     $0:Pais.Argentina
+    };
+   default:
+    return{
+     $:1,
+     $0:new Pais({
+      $:3,
+      $0:Strings.Trim(s)
+     })
+    };
+  }
+ };
+ Pais.USA=new Pais({
+  $:0
+ });
+ Pais.Venezuela=new Pais({
+  $:1
+ });
+ Pais.Argentina=new Pais({
+  $:2
+ });
+ Telefono$1.New=function(tipoTelefono,codigoPais,codigoArea,numero,extension,mensajes)
+ {
+  return{
+   tipoTelefono:tipoTelefono,
+   codigoPais:codigoPais,
+   codigoArea:codigoArea,
+   numero:numero,
+   extension:extension,
+   mensajes:mensajes
+  };
+ };
  TipoTelefono=TypesV0.TipoTelefono=Runtime$1.Class({
   toString:function()
   {
@@ -12437,6 +12659,19 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  TipoTelefono.Habitacion=new TipoTelefono({
   $:2
  });
+ Direccion$1.New=function(authorizeIdR,tipoDireccion,linea1,linea2,ciudad,estado,pais,zonaPostal)
+ {
+  return{
+   authorizeIdR:authorizeIdR,
+   tipoDireccion:tipoDireccion,
+   linea1:linea1,
+   linea2:linea2,
+   ciudad:ciudad,
+   estado:estado,
+   pais:pais,
+   zonaPostal:zonaPostal
+  };
+ };
  TipoDireccion=TypesV0.TipoDireccion=Runtime$1.Class({
   toString:function()
   {
@@ -12542,44 +12777,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:Strings.Trim(s)
    })
   }:null;
- };
- Rpc$1.invoke=function(fname,idAliado,p)
- {
-  var b;
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
-  {
-   return AsyncResultMAutoOpen["AsyncResultMBuilder.Bind"](b,Concurrency.Return(null),function()
-   {
-    var headers,req,r;
-    headers=new Global.Headers();
-    headers.append("Content-Type","application/json");
-    headers.append("IdAliado",idAliado);
-    req=(r={},r.mode="cors",r.credentials="include",r.method="POST",r.headers=headers,r.body=!p?"null":p,r);
-    return AsyncResultMAutoOpen["AsyncResultMBuilder.Bind"](b,Promise.AsAsync(self.fetch((self.location.protocol==="http:"?"http://localhost:7071/api/":"https://prozper.azurewebsites.net/api/")+fname,req)),function(a)
-    {
-     return AsyncResultMAutoOpen["AsyncResultMBuilder.Bind"](b,Promise.AsAsync(a.text()),function(a$1)
-     {
-      ((function($1)
-      {
-       return function($2)
-       {
-        return $1("invoke resp = "+Utils.prettyPrint($2));
-       };
-      }(function(s)
-      {
-       console.log(s);
-      }))(a$1));
-      return b.Return(a$1);
-     });
-    });
-   });
-  }));
- };
- Rpc$1.registroRpcs=function()
- {
-  SC$3.$cctor();
-  return SC$3.registroRpcs;
  };
  Array.replace=function(i,item,array)
  {
@@ -12715,7 +12912,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      },Seq.filter(function(t)
      {
       return t[0];
-     },List$1.ofArray([[Strings.Trim($1)==="","Titular"],[Strings.Trim($2)==="","Banco"],[Strings.Trim($3)==="","Numero de Cuenta"],[Strings.Trim($4)==="","ABA/Routing Number"]])));
+     },List.ofArray([[Strings.Trim($1)==="","Titular"],[Strings.Trim($2)==="","Banco"],[Strings.Trim($3)==="","Numero de Cuenta"],[Strings.Trim($4)==="","ABA/Routing Number"]])));
     };
    };
   },forma.Hole("titular").get_View(),forma.Hole("banco").get_View()),forma.Hole("numero").get_View()),forma.Hole("routing").get_View());
@@ -12851,7 +13048,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     },Seq.filter(function(t)
     {
      return t[0];
-    },List$1.ofArray([[Strings.Trim($1)==="","Titular"],[Strings.Trim($2)==="","TipoTarjeta"],[Strings.Trim($3)==="","Numero"],[Strings.Trim($4)==="","Ano de Vencimiento"],[Strings.Trim($5)==="","Mes de Vencimiento"]])));
+    },List.ofArray([[Strings.Trim($1)==="","Titular"],[Strings.Trim($2)==="","TipoTarjeta"],[Strings.Trim($3)==="","Numero"],[Strings.Trim($4)==="","Ano de Vencimiento"],[Strings.Trim($5)==="","Mes de Vencimiento"]])));
    });
   },forma.Hole("titular").get_View(),forma.Hole("tipotarjeta").get_View()),forma.Hole("numero").get_View()),forma.Hole("aniovenc").get_View()),forma.Hole("mesvenc").get_View());
   View.Sink(function(a$1)
@@ -12902,13 +13099,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   };
  };
  FromView=UI.FromView=Runtime$1.Class({
-  Set:function(x)
-  {
-   this.set(x);
-  },
   get_View:function()
   {
    return this.view;
+  },
+  Set:function(x)
+  {
+   this.set(x);
   },
   Get:function()
   {
@@ -12948,6 +13145,62 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return x;
   },view);
  },FromView);
+ Array$1.ofSeqNonCopying=function(xs)
+ {
+  var q,o;
+  if(xs instanceof Global.Array)
+   return xs;
+  else
+   if(xs instanceof T$1)
+    return Arrays.ofList(xs);
+   else
+    if(xs===null)
+     return[];
+    else
+     {
+      q=[];
+      o=Enumerator.Get(xs);
+      try
+      {
+       while(o.MoveNext())
+        q.push(o.Current());
+       return q;
+      }
+      finally
+      {
+       if(typeof o=="object"&&"Dispose"in o)
+        o.Dispose();
+      }
+     }
+ };
+ Array$1.TreeReduce=function(defaultValue,reduction,array)
+ {
+  var l;
+  function loop(off,len)
+  {
+   var $1,l2;
+   return len<=0?defaultValue:len===1&&(off>=0&&off<l)?Arrays.get(array,off):(l2=len/2>>0,reduction(loop(off,l2),loop(off+l2,len-l2)));
+  }
+  l=Arrays.length(array);
+  return loop(0,l);
+ };
+ Array$1.mapInPlace=function(f,arr)
+ {
+  var i,$1;
+  for(i=0,$1=arr.length-1;i<=$1;i++)arr[i]=f(arr[i]);
+  return arr;
+ };
+ Array$1.MapTreeReduce=function(mapping,defaultValue,reduction,array)
+ {
+  var l;
+  function loop(off,len)
+  {
+   var $1,l2;
+   return len<=0?defaultValue:len===1&&(off>=0&&off<l)?mapping(Arrays.get(array,off)):(l2=len/2>>0,reduction(loop(off,l2),loop(off+l2,len-l2)));
+  }
+  l=Arrays.length(array);
+  return loop(0,l);
+ };
  TipoCuenta=TypesV0.TipoCuenta=Runtime$1.Class({
   toString:function()
   {
@@ -13048,8 +13301,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Concurrency.Zero=function()
  {
-  SC$4.$cctor();
-  return SC$4.Zero;
+  SC$5.$cctor();
+  return SC$5.Zero;
  };
  Concurrency.Start=function(c,ctOpt)
  {
@@ -13099,6 +13352,32 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     });
    });
   };
+ };
+ Concurrency.Return=function(x)
+ {
+  return function(c)
+  {
+   c.k({
+    $:0,
+    $0:x
+   });
+  };
+ };
+ Concurrency.StartImmediateAsTask=function(c,ctOpt)
+ {
+  var tcs;
+  tcs=new TaskCompletionSource.New();
+  Concurrency.StartWithContinuations(c,function(a)
+  {
+   tcs.SetResult(a);
+  },function(a)
+  {
+   tcs.SetException$1(a);
+  },function()
+  {
+   tcs.SetCanceled();
+  },ctOpt);
+  return tcs.get_Task();
  };
  Concurrency.checkCancel=function(r)
  {
@@ -13158,8 +13437,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Concurrency.defCTS=function()
  {
-  SC$4.$cctor();
-  return SC$4.defCTS;
+  SC$5.$cctor();
+  return SC$5.defCTS;
  };
  Concurrency.UncaughtAsyncError=function(e)
  {
@@ -13171,16 +13450,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return b;
   });
- };
- Concurrency.Return=function(x)
- {
-  return function(c)
-  {
-   c.k({
-    $:0,
-    $0:x
-   });
-  };
  };
  Concurrency.Register=function(ct,callback)
  {
@@ -13203,6 +13472,21 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $:2,
    $0:new OperationCanceledException.New(c.ct)
   });
+ };
+ Concurrency.StartWithContinuations=function(c,s,f,cc,ctOpt)
+ {
+  var ct,d;
+  ct=(d=(Concurrency.defCTS())[0],ctOpt==null?d:ctOpt.$0);
+  !ct.c?c(AsyncBody.New(function(a)
+  {
+   if(a.$==1)
+    f(a.$0);
+   else
+    if(a.$==2)
+     cc(a.$0);
+    else
+     s(a.$0);
+  },ct)):void 0;
  };
  Concurrency.TryWith=function(r,f)
  {
@@ -13239,13 +13523,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Concurrency.scheduler=function()
  {
-  SC$4.$cctor();
-  return SC$4.scheduler;
+  SC$5.$cctor();
+  return SC$5.scheduler;
  };
  Concurrency.noneCT=function()
  {
-  SC$4.$cctor();
-  return SC$4.noneCT;
+  SC$5.$cctor();
+  return SC$5.noneCT;
  };
  Concurrency.TryFinally=function(run,f)
  {
@@ -13268,20 +13552,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    },c.ct));
   };
  };
- Concurrency.StartWithContinuations=function(c,s,f,cc,ctOpt)
+ Concurrency.GetCT=function()
  {
-  var ct,d;
-  ct=(d=(Concurrency.defCTS())[0],ctOpt==null?d:ctOpt.$0);
-  !ct.c?c(AsyncBody.New(function(a)
-  {
-   if(a.$==1)
-    f(a.$0);
-   else
-    if(a.$==2)
-     cc(a.$0);
-    else
-     s(a.$0);
-  },ct)):void 0;
+  SC$5.$cctor();
+  return SC$5.GetCT;
  };
  IdPayment=TypesV0.IdPayment=Runtime$1.Class({},null,IdPayment);
  Result$1.defaultValue=function(d,r)
@@ -13654,7 +13928,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     var a,top,tabs;
     top=!el.hasAttribute("bottom");
-    tabs=List$1.ofSeq(Seq.delay(function()
+    tabs=List.ofSeq(Seq.delay(function()
     {
      return Seq.collect(function(i)
      {
@@ -13859,7 +14133,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   strip=Doc.Element("div",[AttrProxy.Create("class",(((Runtime$1.Curried3(function($1,$2,$3)
   {
    return $1("tab-strip "+Utils.toSafe($2)+" "+Utils.toSafe($3));
-  }))(Global.id))(top?"top":"bottom"))(horizontal?"horizontal":"vertical"))],List$1.ofSeq(Seq.delay(function()
+  }))(Global.id))(top?"top":"bottom"))(horizontal?"horizontal":"vertical"))],List.ofSeq(Seq.delay(function()
   {
    return Seq.collect(function(m)
    {
@@ -13877,7 +14151,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     })],[Doc.TextNode(m[1][0])]))];
    },Seq.indexed(tabs));
   })));
-  return Doc.Element("div",[AttrProxy.Create("class","tab-panel")],List$1.ofSeq(Seq.delay(function()
+  return Doc.Element("div",[AttrProxy.Create("class","tab-panel")],List.ofSeq(Seq.delay(function()
   {
    return Seq.append(top?[strip]:[],Seq.delay(function()
    {
@@ -13885,9 +14159,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     {
      return Seq.append(!top?[strip]:[],Seq.delay(function()
      {
-      return Seq.append([Doc.Element("style",T$1.Empty,List$1.ofArray([Doc.TextNode(WcTabStrip.css())]))],Seq.delay(function()
+      return Seq.append([Doc.Element("style",T$1.Empty,List.ofArray([Doc.TextNode(WcTabStrip.css())]))],Seq.delay(function()
       {
-       return[Doc.Element("style",T$1.Empty,List$1.ofArray([Doc.TextView(View.Map(function($1)
+       return[Doc.Element("style",T$1.Empty,List.ofArray([Doc.TextView(View.Map(function($1)
        {
         return function($2)
         {
@@ -13904,6 +14178,211 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   SC$2.$cctor();
   return SC$2.css;
+ };
+ Builder=Result$1.Builder=Runtime$1.Class({},Obj,Builder);
+ Builder.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+ },Builder);
+ Builder$1=ResultM.Builder=Runtime$1.Class({},Obj,Builder$1);
+ Builder$1.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+ },Builder$1);
+ String.unindent=function(s)
+ {
+  var lines,n,o,o$1;
+  lines=Strings.SplitChars(s,["\n"],0);
+  n=(o=Seq.tryFindIndex(function(y)
+  {
+   return" "!==y;
+  },(o$1=Seq.tryFind(function(l)
+  {
+   return Strings.Trim(l)!=="";
+  },lines),o$1==null?"":o$1.$0)),o==null?0:o.$0);
+  return Seq.filter(function(s$1)
+  {
+   return!Strings.StartsWith(s$1,"# 1 ");
+  },Seq.map(function(l)
+  {
+   return l.length<=n?"":l.substring(n);
+  },lines));
+ };
+ String.splitByChar=function(c,s)
+ {
+  return Strings.SplitChars(s,[c],0);
+ };
+ ParseO.tryParseWith=function(tryParseFunc)
+ {
+  function g($1,$2)
+  {
+   return $1?{
+    $:1,
+    $0:$2
+   }:null;
+  }
+  return function(x)
+  {
+   return g.apply(null,tryParseFunc(x));
+  };
+ };
+ ParseO.parseDateO=function()
+ {
+  SC$3.$cctor();
+  return SC$3.parseDateO;
+ };
+ ParseO.parseIntO=function()
+ {
+  SC$3.$cctor();
+  return SC$3.parseIntO;
+ };
+ ParseO.parseInt64O=function()
+ {
+  SC$3.$cctor();
+  return SC$3.parseInt64O;
+ };
+ ParseO.parseSingleO=function()
+ {
+  SC$3.$cctor();
+  return SC$3.parseSingleO;
+ };
+ ParseO.parseDoubleO=function()
+ {
+  SC$3.$cctor();
+  return SC$3.parseDoubleO;
+ };
+ ParseO.parseGuidO=function()
+ {
+  SC$3.$cctor();
+  return SC$3.parseGuidO;
+ };
+ Serializer.toJsonString=function(v)
+ {
+  return Arrays.ofSeq(Seq.delay(function()
+  {
+   return Seq.append(["\""],Seq.delay(function()
+   {
+    return Seq.append(!Strings.IsNullOrEmpty(v)?Seq.collect(function(i)
+    {
+     var c,ci;
+     c=v[i];
+     ci=c.charCodeAt();
+     return ci>=0&&ci<=7||ci===11||ci>=14&&ci<=31?(function($1)
+     {
+      return function($2)
+      {
+       return $1("\\u"+Utils.padNumLeft($2.toString(16),4));
+      };
+     }(Global.id))(ci):c==="\u0008"?"\\b":c==="\u0009"?"\\t":c==="\n"?"\\n":c==="\u000c"?"\\f":c==="\r"?"\\r":c==="\""?"\\\"":c==="\\"?"\\\\":[c];
+    },Operators.range(0,v.length-1)):[],Seq.delay(function()
+    {
+     return["\""];
+    }));
+   }));
+  })).join("");
+ };
+ Library.Error=function(a)
+ {
+  return{
+   $:1,
+   $0:a
+  };
+ };
+ Library.print=function(v)
+ {
+  if(typeof v=="string")
+   ((function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.toSafe($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(v));
+  else
+   ((function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(v));
+ };
+ Expiracion=TypesV0.Expiracion=Runtime$1.Class({},null,Expiracion);
+ Expiracion.New=function(anio,mes)
+ {
+  return new Expiracion({
+   anio:anio,
+   mes:mes
+  });
+ };
+ TipoTarjeta=TypesV0.TipoTarjeta=Runtime$1.Class({
+  toString:function()
+  {
+   return this.$==3?this.$0:(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$4($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,TipoTarjeta);
+ TipoTarjeta.Visa=new TipoTarjeta({
+  $:0
+ });
+ TipoTarjeta.tryParse=function(s)
+ {
+  var $1,m;
+  m=Strings.Trim(s).toUpperCase();
+  switch(m)
+  {
+   case"":
+    return null;
+   case"VISA":
+    return{
+     $:1,
+     $0:TipoTarjeta.Visa
+    };
+   case"MASTERCARD":
+    return{
+     $:1,
+     $0:TipoTarjeta.MasterCard
+    };
+   case"AMERICAN EXPRESS":
+   case"AMEX":
+    return{
+     $:1,
+     $0:TipoTarjeta.Amex
+    };
+   default:
+    return{
+     $:1,
+     $0:new TipoTarjeta({
+      $:3,
+      $0:Strings.Trim(s)
+     })
+    };
+  }
+ };
+ TipoTarjeta.MasterCard=new TipoTarjeta({
+  $:1
+ });
+ TipoTarjeta.Amex=new TipoTarjeta({
+  $:2
+ });
+ DictionaryUtil.notPresent=function()
+ {
+  return Operators.FailWith("The given key was not present in the dictionary.");
+ };
+ DictionaryUtil.alreadyAdded=function()
+ {
+  return Operators.FailWith("An item with the same key has already been added.");
  };
  AttrProxy=UI.AttrProxy=Runtime$1.Class({},null,AttrProxy);
  AttrProxy.Create=function(name,value)
@@ -13943,30 +14422,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return this.$==1?this.$0:this.$==2?this.$0:this.$1;
   }
  },null,CheckedInput);
- DictionaryUtil.notPresent=function()
- {
-  return Operators.FailWith("The given key was not present in the dictionary.");
- };
- DictionaryUtil.alreadyAdded=function()
- {
-  return Operators.FailWith("An item with the same key has already been added.");
- };
- Templates.RunFullDocTemplate=function(fillWith)
- {
-  var x,a;
-  Templates.LoadLocalTemplates("");
-  Templates.PrepareTemplateStrict("",null,DomUtility.ChildrenArray(self.document.body),{
-   $:1,
-   $0:self.document.body
-  },null);
-  x=Templates.ChildrenTemplate(self.document.body,fillWith);
-  a=self.document.body;
-  (function(a$1)
-  {
-   Doc.RunInPlace(true,a,a$1);
-  }(x));
-  return x;
- };
  Templates.LoadLocalTemplates=function(baseName)
  {
   !Templates.LocalTemplatesLoaded()?(Templates.set_LocalTemplatesLoaded(true),Templates.LoadNestedTemplates(self.document.body,"")):void 0;
@@ -13986,6 +14441,114 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
   }),o]);
   return m[0]?Templates.ChildrenTemplate(m[1].cloneNode(true),fillWith):(console.warn("Local template doesn't exist",name),Doc.get_Empty());
+ };
+ Templates.RunFullDocTemplate=function(fillWith)
+ {
+  var x,a;
+  Templates.LoadLocalTemplates("");
+  Templates.PrepareTemplateStrict("",null,DomUtility.ChildrenArray(self.document.body),{
+   $:1,
+   $0:self.document.body
+  },null);
+  x=Templates.ChildrenTemplate(self.document.body,fillWith);
+  a=self.document.body;
+  (function(a$1)
+  {
+   Doc.RunInPlace(true,a,a$1);
+  }(x));
+  return x;
+ };
+ Templates.LocalTemplatesLoaded=function()
+ {
+  SC$7.$cctor();
+  return SC$7.LocalTemplatesLoaded;
+ };
+ Templates.set_LocalTemplatesLoaded=function($1)
+ {
+  SC$7.$cctor();
+  SC$7.LocalTemplatesLoaded=$1;
+ };
+ Templates.LoadNestedTemplates=function(root,baseName)
+ {
+  var loadedTpls,rawTpls,wsTemplates,i,$1,node,name,wsChildrenTemplates,i$1,$2,node$1,name$1,els,instantiated;
+  function prepareTemplate(name$2)
+  {
+   var m,o;
+   if(!loadedTpls.ContainsKey(name$2))
+    {
+     m=(o=null,[rawTpls.TryGetValue(name$2,{
+      get:function()
+      {
+       return o;
+      },
+      set:function(v)
+      {
+       o=v;
+      }
+     }),o]);
+     m[0]?(instantiated.Add(name$2),rawTpls.Remove(name$2),Templates.PrepareTemplateStrict(baseName,{
+      $:1,
+      $0:name$2
+     },m[1][0],{
+      $:1,
+      $0:m[1][1]
+     },{
+      $:1,
+      $0:prepareTemplate
+     })):console.warn(instantiated.Contains(name$2)?"Encountered loop when instantiating "+name$2:"Local template does not exist: "+name$2);
+    }
+  }
+  loadedTpls=Templates.LoadedTemplateFile(baseName);
+  rawTpls=new Dictionary.New$5();
+  wsTemplates=root.querySelectorAll("[ws-template]");
+  for(i=0,$1=wsTemplates.length-1;i<=$1;i++){
+   node=wsTemplates[i];
+   name=node.getAttribute("ws-template").toLowerCase();
+   node.removeAttribute("ws-template");
+   rawTpls.set_Item(name,[[node],Templates.FakeRootSingle(node)]);
+  }
+  wsChildrenTemplates=root.querySelectorAll("[ws-children-template]");
+  for(i$1=0,$2=wsChildrenTemplates.length-1;i$1<=$2;i$1++){
+   node$1=wsChildrenTemplates[i$1];
+   name$1=node$1.getAttribute("ws-children-template").toLowerCase();
+   node$1.removeAttribute("ws-children-template");
+   rawTpls.set_Item(name$1,(els=DomUtility.ChildrenArray(node$1),[els,Templates.FakeRoot(els)]));
+  }
+  instantiated=new HashSet.New$3();
+  while(rawTpls.count>0)
+   prepareTemplate(Seq.head(rawTpls.get_Keys()));
+ };
+ Templates.LoadedTemplates=function()
+ {
+  SC$7.$cctor();
+  return SC$7.LoadedTemplates;
+ };
+ Templates.LoadedTemplateFile=function(name)
+ {
+  var m,o,d;
+  m=(o=null,[Templates.LoadedTemplates().TryGetValue(name,{
+   get:function()
+   {
+    return o;
+   },
+   set:function(v)
+   {
+    o=v;
+   }
+  }),o]);
+  return m[0]?m[1]:(d=new Dictionary.New$5(),(Templates.LoadedTemplates().set_Item(name,d),d));
+ };
+ Templates.ChildrenTemplate=function(el,fillWith)
+ {
+  var p,updates,docTreeNode,m,$1;
+  p=Templates.InlineTemplate(el,fillWith);
+  updates=p[1];
+  docTreeNode=p[0];
+  m=docTreeNode.Els;
+  return!Unchecked.Equals(m,null)&&m.length===1&&(Arrays.get(m,0)instanceof Node&&(Unchecked.Equals(Arrays.get(m,0).nodeType,Node.ELEMENT_NODE)&&($1=Arrays.get(m,0),true)))?Elt.TreeNode(docTreeNode,updates):Doc.Mk({
+   $:6,
+   $0:docTreeNode
+  },updates);
  };
  Templates.PrepareTemplateStrict=function(baseName,name,els,root,prepareLocalTemplate)
  {
@@ -14187,97 +14750,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     }
   }(fakeroot),convertNodeAndSiblings(Arrays.get(els,0))):void 0;
  };
- Templates.ChildrenTemplate=function(el,fillWith)
+ Templates.FakeRootSingle=function(el)
  {
-  var p,updates,docTreeNode,m,$1;
-  p=Templates.InlineTemplate(el,fillWith);
-  updates=p[1];
-  docTreeNode=p[0];
-  m=docTreeNode.Els;
-  return!Unchecked.Equals(m,null)&&m.length===1&&(Arrays.get(m,0)instanceof Node&&(Unchecked.Equals(Arrays.get(m,0).nodeType,Node.ELEMENT_NODE)&&($1=Arrays.get(m,0),true)))?Elt.TreeNode(docTreeNode,updates):Doc.Mk({
-   $:6,
-   $0:docTreeNode
-  },updates);
- };
- Templates.LocalTemplatesLoaded=function()
- {
-  SC$6.$cctor();
-  return SC$6.LocalTemplatesLoaded;
- };
- Templates.set_LocalTemplatesLoaded=function($1)
- {
-  SC$6.$cctor();
-  SC$6.LocalTemplatesLoaded=$1;
- };
- Templates.LoadNestedTemplates=function(root,baseName)
- {
-  var loadedTpls,rawTpls,wsTemplates,i,$1,node,name,wsChildrenTemplates,i$1,$2,node$1,name$1,els,instantiated;
-  function prepareTemplate(name$2)
-  {
-   var m,o;
-   if(!loadedTpls.ContainsKey(name$2))
-    {
-     m=(o=null,[rawTpls.TryGetValue(name$2,{
-      get:function()
-      {
-       return o;
-      },
-      set:function(v)
-      {
-       o=v;
-      }
-     }),o]);
-     m[0]?(instantiated.Add(name$2),rawTpls.Remove(name$2),Templates.PrepareTemplateStrict(baseName,{
-      $:1,
-      $0:name$2
-     },m[1][0],{
-      $:1,
-      $0:m[1][1]
-     },{
-      $:1,
-      $0:prepareTemplate
-     })):console.warn(instantiated.Contains(name$2)?"Encountered loop when instantiating "+name$2:"Local template does not exist: "+name$2);
-    }
-  }
-  loadedTpls=Templates.LoadedTemplateFile(baseName);
-  rawTpls=new Dictionary.New$5();
-  wsTemplates=root.querySelectorAll("[ws-template]");
-  for(i=0,$1=wsTemplates.length-1;i<=$1;i++){
-   node=wsTemplates[i];
-   name=node.getAttribute("ws-template").toLowerCase();
-   node.removeAttribute("ws-template");
-   rawTpls.set_Item(name,[[node],Templates.FakeRootSingle(node)]);
-  }
-  wsChildrenTemplates=root.querySelectorAll("[ws-children-template]");
-  for(i$1=0,$2=wsChildrenTemplates.length-1;i$1<=$2;i$1++){
-   node$1=wsChildrenTemplates[i$1];
-   name$1=node$1.getAttribute("ws-children-template").toLowerCase();
-   node$1.removeAttribute("ws-children-template");
-   rawTpls.set_Item(name$1,(els=DomUtility.ChildrenArray(node$1),[els,Templates.FakeRoot(els)]));
-  }
-  instantiated=new HashSet.New$3();
-  while(rawTpls.count>0)
-   prepareTemplate(Seq.head(rawTpls.get_Keys()));
- };
- Templates.LoadedTemplates=function()
- {
-  SC$6.$cctor();
-  return SC$6.LoadedTemplates;
- };
- Templates.LoadedTemplateFile=function(name)
- {
-  var m,o,d;
-  m=(o=null,[Templates.LoadedTemplates().TryGetValue(name,{
-   get:function()
-   {
-    return o;
-   },
-   set:function(v)
-   {
-    o=v;
-   }
-  }),o]);
-  return m[0]?m[1]:(d=new Dictionary.New$5(),(Templates.LoadedTemplates().set_Item(name,d),d));
+  var m,m$1,n;
+  el.removeAttribute("ws-template");
+  m=el.getAttribute("ws-replace");
+  m===null?void 0:(el.removeAttribute("ws-replace"),m$1=el.parentNode,Unchecked.Equals(m$1,null)?void 0:(n=self.document.createElement(el.tagName),n.setAttribute("ws-replace",m),m$1.replaceChild(n,el)));
+  return Templates.FakeRoot([el]);
  };
  Templates.FakeRoot=function(els)
  {
@@ -14285,20 +14764,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   fakeroot=self.document.createElement("div");
   for(i=0,$1=els.length-1;i<=$1;i++)fakeroot.appendChild(Arrays.get(els,i));
   return fakeroot;
- };
- Templates.PrepareSingleTemplate=function(baseName,name,el)
- {
-  var root,e,r;
-  root=Templates.FakeRootSingle(el);
-  e=[el];
-  r={
-   $:1,
-   $0:root
-  };
-  return function(p)
-  {
-   Templates.PrepareTemplateStrict(baseName,name,e,r,p);
-  };
  };
  Templates.InlineTemplate=function(el,fillWith)
  {
@@ -14617,216 +15082,25 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }:null,$2?$2.$0:void 0)
   },["Render","El"]),Array$1.TreeReduce(View.Const(),View.Map2Unit,updates)];
  };
- Templates.FakeRootSingle=function(el)
+ Templates.PrepareSingleTemplate=function(baseName,name,el)
  {
-  var m,m$1,n;
-  el.removeAttribute("ws-template");
-  m=el.getAttribute("ws-replace");
-  m===null?void 0:(el.removeAttribute("ws-replace"),m$1=el.parentNode,Unchecked.Equals(m$1,null)?void 0:(n=self.document.createElement(el.tagName),n.setAttribute("ws-replace",m),m$1.replaceChild(n,el)));
-  return Templates.FakeRoot([el]);
+  var root,e,r;
+  root=Templates.FakeRootSingle(el);
+  e=[el];
+  r={
+   $:1,
+   $0:root
+  };
+  return function(p)
+  {
+   Templates.PrepareTemplateStrict(baseName,name,e,r,p);
+  };
  };
  Templates.TextHoleRE=function()
  {
-  SC$6.$cctor();
-  return SC$6.TextHoleRE;
+  SC$7.$cctor();
+  return SC$7.TextHoleRE;
  };
- Builder=Result$1.Builder=Runtime$1.Class({},Obj,Builder);
- Builder.New=Runtime$1.Ctor(function()
- {
-  Obj.New.call(this);
- },Builder);
- Builder$1=ResultM.Builder=Runtime$1.Class({},Obj,Builder$1);
- Builder$1.New=Runtime$1.Ctor(function()
- {
-  Obj.New.call(this);
- },Builder$1);
- String.unindent=function(s)
- {
-  var lines,n,o,o$1;
-  lines=Strings.SplitChars(s,["\n"],0);
-  n=(o=Seq.tryFindIndex(function(y)
-  {
-   return" "!==y;
-  },(o$1=Seq.tryFind(function(l)
-  {
-   return Strings.Trim(l)!=="";
-  },lines),o$1==null?"":o$1.$0)),o==null?0:o.$0);
-  return Seq.filter(function(s$1)
-  {
-   return!Strings.StartsWith(s$1,"# 1 ");
-  },Seq.map(function(l)
-  {
-   return l.length<=n?"":l.substring(n);
-  },lines));
- };
- String.splitByChar=function(c,s)
- {
-  return Strings.SplitChars(s,[c],0);
- };
- ParseO.tryParseWith=function(tryParseFunc)
- {
-  function g($1,$2)
-  {
-   return $1?{
-    $:1,
-    $0:$2
-   }:null;
-  }
-  return function(x)
-  {
-   return g.apply(null,tryParseFunc(x));
-  };
- };
- ParseO.parseDateO=function()
- {
-  SC$3.$cctor();
-  return SC$3.parseDateO;
- };
- ParseO.parseIntO=function()
- {
-  SC$3.$cctor();
-  return SC$3.parseIntO;
- };
- ParseO.parseInt64O=function()
- {
-  SC$3.$cctor();
-  return SC$3.parseInt64O;
- };
- ParseO.parseSingleO=function()
- {
-  SC$3.$cctor();
-  return SC$3.parseSingleO;
- };
- ParseO.parseDoubleO=function()
- {
-  SC$3.$cctor();
-  return SC$3.parseDoubleO;
- };
- ParseO.parseGuidO=function()
- {
-  SC$3.$cctor();
-  return SC$3.parseGuidO;
- };
- Serializer.toJsonString=function(v)
- {
-  return Arrays.ofSeq(Seq.delay(function()
-  {
-   return Seq.append(["\""],Seq.delay(function()
-   {
-    return Seq.append(!Strings.IsNullOrEmpty(v)?Seq.collect(function(i)
-    {
-     var c,ci;
-     c=v[i];
-     ci=c.charCodeAt();
-     return ci>=0&&ci<=7||ci===11||ci>=14&&ci<=31?(function($1)
-     {
-      return function($2)
-      {
-       return $1("\\u"+Utils.padNumLeft($2.toString(16),4));
-      };
-     }(Global.id))(ci):c==="\u0008"?"\\b":c==="\u0009"?"\\t":c==="\n"?"\\n":c==="\u000c"?"\\f":c==="\r"?"\\r":c==="\""?"\\\"":c==="\\"?"\\\\":[c];
-    },Operators.range(0,v.length-1)):[],Seq.delay(function()
-    {
-     return["\""];
-    }));
-   }));
-  })).join("");
- };
- Library.Error=function(a)
- {
-  return{
-   $:1,
-   $0:a
-  };
- };
- Library.print=function(v)
- {
-  if(typeof v=="string")
-   ((function($1)
-   {
-    return function($2)
-    {
-     return $1(Utils.toSafe($2));
-    };
-   }(function(s)
-   {
-    console.log(s);
-   }))(v));
-  else
-   ((function($1)
-   {
-    return function($2)
-    {
-     return $1(Utils.prettyPrint($2));
-    };
-   }(function(s)
-   {
-    console.log(s);
-   }))(v));
- };
- Expiracion=TypesV0.Expiracion=Runtime$1.Class({},null,Expiracion);
- Expiracion.New=function(anio,mes)
- {
-  return new Expiracion({
-   anio:anio,
-   mes:mes
-  });
- };
- TipoTarjeta=TypesV0.TipoTarjeta=Runtime$1.Class({
-  toString:function()
-  {
-   return this.$==3?this.$0:(function($1)
-   {
-    return function($2)
-    {
-     return $1(ProzperServer_GeneratedPrintf.p$4($2));
-    };
-   }(Global.id))(this);
-  }
- },null,TipoTarjeta);
- TipoTarjeta.Visa=new TipoTarjeta({
-  $:0
- });
- TipoTarjeta.tryParse=function(s)
- {
-  var $1,m;
-  m=Strings.Trim(s).toUpperCase();
-  switch(m)
-  {
-   case"":
-    return null;
-   case"VISA":
-    return{
-     $:1,
-     $0:TipoTarjeta.Visa
-    };
-   case"MASTERCARD":
-    return{
-     $:1,
-     $0:TipoTarjeta.MasterCard
-    };
-   case"AMERICAN EXPRESS":
-   case"AMEX":
-    return{
-     $:1,
-     $0:TipoTarjeta.Amex
-    };
-   default:
-    return{
-     $:1,
-     $0:new TipoTarjeta({
-      $:3,
-      $0:Strings.Trim(s)
-     })
-    };
-  }
- };
- TipoTarjeta.MasterCard=new TipoTarjeta({
-  $:1
- });
- TipoTarjeta.Amex=new TipoTarjeta({
-  $:2
- });
  Pojo.newPojoOpt=function(propOs)
  {
   function c(n,vO)
@@ -14948,9 +15222,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      return fields$1.$==1?(t$1=fields$1.$1,Seq.collect(function($1)
      {
       return m$5($1[0],$1[1]);
-     },fields$1.$0.Parse(path$1))):[[path$1,createCase(i,Arrays.ofList(List$1.rev(acc)))]];
+     },fields$1.$0.Parse(path$1))):[[path$1,createCase(i,Arrays.ofList(List.rev(acc)))]];
     }
-    return RouterOperators.isCorrectMethod(m$2,path.Method)?(m$3=List$2.startsWith(List$1.ofArray(s),path.Segments),m$3==null?[]:(p=m$3.$0,(m$4=List$1.ofArray(fields),m$4.$==0?[[Route.New(p,path.QueryArgs,path.FormData,path.Method,path.Body),createCase(i,[])]]:collect(m$4,Route.New(p,path.QueryArgs,path.FormData,path.Method,path.Body),T$1.Empty)))):[];
+    return RouterOperators.isCorrectMethod(m$2,path.Method)?(m$3=List$2.startsWith(List.ofArray(s),path.Segments),m$3==null?[]:(p=m$3.$0,(m$4=List.ofArray(fields),m$4.$==0?[[Route.New(p,path.QueryArgs,path.FormData,path.Method,path.Body),createCase(i,[])]]:collect(m$4,Route.New(p,path.QueryArgs,path.FormData,path.Method,path.Body),T$1.Empty)))):[];
    }
    return Seq.collect(function($1)
    {
@@ -14967,7 +15241,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    p=Arrays.get(cases,tag);
    fields=p[2];
    p$1=Arrays.get(p[1],0);
-   casePath=[Route.Segment(List$1.ofArray(p$1[1]),p$1[0])];
+   casePath=[Route.Segment(List.ofArray(p$1[1]),p$1[0])];
    return!Unchecked.Equals(fields,null)&&fields.length===0?{
     $:1,
     $0:casePath
@@ -14989,8 +15263,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  RouterOperators.rString=function()
  {
-  SC$7.$cctor();
-  return SC$7.rString;
+  SC$8.$cctor();
+  return SC$8.rString;
+ };
+ RouterOperators.rWildcard=function()
+ {
+  SC$8.$cctor();
+  return SC$8.rWildcard;
  };
  RouterModule.Parse=function(router,path)
  {
@@ -15058,13 +15337,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var p,m,i;
   p=(m=path.indexOf("?"),m===-1?[path,new FSharpMap.New([])]:[Strings.Substring(path,0,m),Route.ParseQuery(path.substring(m+1))]);
   i=Route.get_Empty();
-  return Route.New(List$1.ofArray(Strings.SplitChars(p[0],["/"],strict!=null&&strict.$0?0:1)),p[1],i.FormData,i.Method,i.Body);
+  return Route.New(List.ofArray(Strings.SplitChars(p[0],["/"],strict!=null&&strict.$0?0:1)),p[1],i.FormData,i.Method,i.Body);
  };
  Route.Segment$2=function(s)
  {
   var i;
   i=Route.get_Empty();
-  return Route.New(List$1.ofArray([s]),i.QueryArgs,i.FormData,i.Method,i.Body);
+  return Route.New(List.ofArray([s]),i.QueryArgs,i.FormData,i.Method,i.Body);
  };
  Route.ParseQuery=function(q)
  {
@@ -15123,13 +15402,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        {
         return t.Add(k,v);
        },formData,p.FormData);
-       List$1.iter(function(a)
+       List.iter(function(a)
        {
         segments.push(a);
        },p.Segments);
        i=i+1;
       }());
-     return Route.New(List$1.ofSeq(segments),queryArgs,formData,method,Lazy.CreateFromValue(body));
+     return Route.New(List.ofSeq(segments),queryArgs,formData,method,Lazy.CreateFromValue(body));
     }
  };
  Route.New=function(Segments,QueryArgs,FormData,Method,Body)
@@ -15142,7 +15421,72 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    Body:Body
   });
  };
- IdAddress=TypesV0.IdAddress=Runtime$1.Class({},null,IdAddress);
+ SC$4.$cctor=function()
+ {
+  SC$4.$cctor=Global.ignore;
+  SC$4.EndPoint="?";
+  SC$4.AjaxProvider=new XhrProvider.New();
+ };
+ AjaxRemotingProvider=Remoting.AjaxRemotingProvider=Runtime$1.Class({
+  AsyncBase:function(m,data)
+  {
+   var $this,b;
+   $this=this;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    var headers,payload;
+    headers=Remoting.makeHeaders(m);
+    payload=Remoting.makePayload(data);
+    return Concurrency.Bind(Concurrency.GetCT(),function(a)
+    {
+     return Concurrency.FromContinuations(function(ok,err,cc)
+     {
+      var waiting,reg,a$1;
+      function callback(u)
+      {
+       return waiting[0]?(waiting[0]=false,cc(new OperationCanceledException.New(a))):null;
+      }
+      waiting=[true];
+      reg=Concurrency.Register(a,function()
+      {
+       callback();
+      });
+      a$1=$this.get_EndPoint();
+      return Remoting.AjaxProvider().Async(a$1,headers,payload,function(x)
+      {
+       if(waiting[0])
+        {
+         waiting[0]=false;
+         reg.Dispose();
+         ok(Json.Activate(JSON.parse(x)));
+        }
+      },function(e)
+      {
+       if(waiting[0])
+        {
+         waiting[0]=false;
+         reg.Dispose();
+         err(e);
+        }
+      });
+     });
+    });
+   });
+  },
+  get_EndPoint:function()
+  {
+   return Remoting.EndPoint();
+  },
+  Async:function(m,data)
+  {
+   return this.AsyncBase(m,data);
+  }
+ },Obj,AjaxRemotingProvider);
+ AjaxRemotingProvider.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+ },AjaxRemotingProvider);
  MapUtil.fromSeq=function(s)
  {
   var a;
@@ -15169,62 +15513,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    Count:Count
   };
  };
- Array$1.ofSeqNonCopying=function(xs)
- {
-  var q,o;
-  if(xs instanceof Global.Array)
-   return xs;
-  else
-   if(xs instanceof T$1)
-    return Arrays.ofList(xs);
-   else
-    if(xs===null)
-     return[];
-    else
-     {
-      q=[];
-      o=Enumerator.Get(xs);
-      try
-      {
-       while(o.MoveNext())
-        q.push(o.Current());
-       return q;
-      }
-      finally
-      {
-       if(typeof o=="object"&&"Dispose"in o)
-        o.Dispose();
-      }
-     }
- };
- Array$1.TreeReduce=function(defaultValue,reduction,array)
- {
-  var l;
-  function loop(off,len)
-  {
-   var $1,l2;
-   return len<=0?defaultValue:len===1&&(off>=0&&off<l)?Arrays.get(array,off):(l2=len/2>>0,reduction(loop(off,l2),loop(off+l2,len-l2)));
-  }
-  l=Arrays.length(array);
-  return loop(0,l);
- };
- Array$1.mapInPlace=function(f,arr)
- {
-  var i,$1;
-  for(i=0,$1=arr.length-1;i<=$1;i++)arr[i]=f(arr[i]);
-  return arr;
- };
- Array$1.MapTreeReduce=function(mapping,defaultValue,reduction,array)
- {
-  var l;
-  function loop(off,len)
-  {
-   var $1,l2;
-   return len<=0?defaultValue:len===1&&(off>=0&&off<l)?mapping(Arrays.get(array,off)):(l2=len/2>>0,reduction(loop(off,l2),loop(off+l2,len-l2)));
-  }
-  l=Arrays.length(array);
-  return loop(0,l);
- };
+ IdAddress=TypesV0.IdAddress=Runtime$1.Class({},null,IdAddress);
  Docs.CreateEmbedNode=function()
  {
   return{
@@ -15462,14 +15751,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    ct:ct
   };
  };
- SC$4.$cctor=function()
+ SC$5.$cctor=function()
  {
-  SC$4.$cctor=Global.ignore;
-  SC$4.noneCT=CT.New(false,[]);
-  SC$4.scheduler=new Scheduler.New();
-  SC$4.defCTS=[new CancellationTokenSource.New()];
-  SC$4.Zero=Concurrency.Return();
-  SC$4.GetCT=function(c)
+  SC$5.$cctor=Global.ignore;
+  SC$5.noneCT=CT.New(false,[]);
+  SC$5.scheduler=new Scheduler.New();
+  SC$5.defCTS=[new CancellationTokenSource.New()];
+  SC$5.Zero=Concurrency.Return();
+  SC$5.GetCT=function(c)
   {
    c.k({
     $:0,
@@ -15514,7 +15803,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var dir,meas,p,name1,def1,p$1,name2,def2,t,t$1;
   return node.$==1?(dir=node.$0.$0,(meas=node.$0.$1,(p=Layout.createLayoutDefinitions(nameBase+"_1",node.$0.$2),(name1=p[0],(def1=p[1],(p$1=Layout.createLayoutDefinitions(nameBase+"_2",node.$0.$3),(name2=p$1[0],(def2=p$1[1],[nameBase,Arrays.ofSeq(Seq.delay(function()
   {
-   return Seq.append([Strings.concat(" ",List$1.ofArray([nameBase,dir?"vertical":"horizontal",Global.String(meas),name1,name2]))],Seq.delay(function()
+   return Seq.append([Strings.concat(" ",List.ofArray([nameBase,dir?"vertical":"horizontal",Global.String(meas),name1,name2]))],Seq.delay(function()
    {
     return Seq.append(def1,Seq.delay(function()
     {
@@ -15704,8 +15993,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Attrs.EmptyAttr=function()
  {
-  SC$10.$cctor();
-  return SC$10.EmptyAttr;
+  SC$11.$cctor();
+  return SC$11.EmptyAttr;
  };
  Attrs.Insert=function(elem,tree)
  {
@@ -15850,8 +16139,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  DomUtility.Doc=function()
  {
-  SC$9.$cctor();
-  return SC$9.Doc;
+  SC$10.$cctor();
+  return SC$10.Doc;
  };
  DomUtility.RemoveAttr=function(el,attrName)
  {
@@ -16080,10 +16369,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    ElKey:ElKey
   },(Runtime$1.SetOptional($1,"Delimiters",Delimiters),Runtime$1.SetOptional($1,"Render",Render),$1)));
  };
- SC$5.$cctor=function()
+ SC$6.$cctor=function()
  {
-  SC$5.$cctor=Global.ignore;
-  SC$5.counter=0;
+  SC$6.$cctor=Global.ignore;
+  SC$6.counter=0;
  };
  Router$1.New$1=function(Parse,Write)
  {
@@ -16108,6 +16397,50 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     return null;
   }
  };
+ XhrProvider=Remoting.XhrProvider=Runtime$1.Class({
+  Async:function(url,headers,data,ok,err)
+  {
+   Remoting.ajax(true,url,headers,data,ok,err,function()
+   {
+    Remoting.ajax(true,url,headers,data,ok,err,void 0);
+   });
+  }
+ },Obj,XhrProvider);
+ XhrProvider.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+ },XhrProvider);
+ TaskCompletionSource=WebSharper.TaskCompletionSource=Runtime$1.Class({
+  SetResult:function(res)
+  {
+   this.task.get_IsCompleted()?Operators.FailWith("Task already completed."):void 0;
+   this.task.status=5;
+   this.task.result=res;
+   this.task.RunContinuations();
+  },
+  SetException$1:function(exc)
+  {
+   this.task.get_IsCompleted()?Operators.FailWith("Task already completed."):void 0;
+   this.task.status=7;
+   this.task.exc=new AggregateException.New$3([exc]);
+   this.task.RunContinuations();
+  },
+  SetCanceled:function()
+  {
+   this.task.get_IsCompleted()?Operators.FailWith("Task already completed."):void 0;
+   this.task.status=6;
+   this.task.RunContinuations();
+  },
+  get_Task:function()
+  {
+   return this.task;
+  }
+ },Obj,TaskCompletionSource);
+ TaskCompletionSource.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+  this.task=new Task1.New$4(null,Concurrency.noneCT(),1,null,void 0);
+ },TaskCompletionSource);
  Pair=Collections.Pair=Runtime$1.Class({
   Equals:function(other)
   {
@@ -16128,6 +16461,109 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    Key:Key,
    Value:Value
   });
+ };
+ Json.Activate=function(json)
+ {
+  var $1,types,i,$2,$3,$4,m;
+  function decode(x)
+  {
+   var o,ti,t,r,k;
+   if(Unchecked.Equals(x,null))
+    return x;
+   else
+    if(typeof x=="object")
+    {
+     if(x instanceof Global.Array)
+      return Json.shallowMap(decode,x);
+     else
+      {
+       o=Json.shallowMap(decode,x.$V);
+       ti=x.$T;
+       if(ti===void 0)
+        return o;
+       else
+        {
+         t=Arrays.get(types,ti);
+         if(t===1)
+          return List.ofArray(o);
+         else
+          if(t===2)
+           return self.WebSharper.Decimal.CreateDecimalBits(o);
+          else
+           {
+            r=new(Arrays.get(types,ti))();
+            for(var k$1 in o)if(function(k$2)
+            {
+             r[k$2]=o[k$2];
+             return false;
+            }(k$1))
+             break;
+            return r;
+           }
+        }
+      }
+    }
+    else
+     return x;
+  }
+  types=json?json.$TYPES:void 0;
+  if(types===void 0)
+   $1=json;
+  else
+   {
+    for(i=0,$2=Arrays.length(types)-1;i<=$2;i++){
+     m=Arrays.get(types,i);
+     switch(!Unchecked.Equals(m,null)&&m.length===3?Arrays.get(m,0)==="WebSharper"?Arrays.get(m,1)==="List"?Arrays.get(m,2)==="T"?0:($4=m,2):($4=m,2):($4=m,2):!Unchecked.Equals(m,null)&&m.length===2?Arrays.get(m,0)==="WebSharper"?Arrays.get(m,1)==="Decimal"?1:($4=m,2):($4=m,2):($4=m,2))
+     {
+      case 0:
+       $3=1;
+       break;
+      case 1:
+       $3=2;
+       break;
+      case 2:
+       $3=Json.lookup($4);
+       break;
+     }
+     Arrays.set(types,i,$3);
+    }
+    $1=json.$DATA;
+   }
+  return decode($1);
+ };
+ Json.shallowMap=function(f,x)
+ {
+  var r,k;
+  if(x instanceof Global.Array)
+   return Arrays.map(f,x);
+  else
+   if(typeof x=="object")
+    {
+     r={};
+     for(var k$1 in x)if(function(y)
+     {
+      r[y]=f(x[y]);
+      return false;
+     }(k$1))
+      break;
+     return r;
+    }
+   else
+    return x;
+ };
+ Json.lookup=function(x)
+ {
+  var r,i,k,n,rn;
+  k=Arrays.length(x);
+  r=self;
+  i=0;
+  while(i<k)
+   {
+    n=Arrays.get(x,i);
+    rn=r[n];
+    !Unchecked.Equals(typeof rn,void 0)?(r=rn,i=i+1):Operators.FailWith("Invalid server reply. Failed to find type: "+n);
+   }
+  return r;
  };
  Scheduler=Concurrency.Scheduler=Runtime$1.Class({
   Fork:function(action)
@@ -16524,6 +16960,70 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return[r.top,r.left,r.width,r.height];
  };
+ SC$7.$cctor=function()
+ {
+  SC$7.$cctor=Global.ignore;
+  SC$7.LoadedTemplates=new Dictionary.New$5();
+  SC$7.LocalTemplatesLoaded=false;
+  SC$7.TextHoleRE="\\${([^}]+)}";
+ };
+ Elt=UI.Elt=Runtime$1.Class({
+  on:function(ev,cb)
+  {
+   var $this;
+   $this=this;
+   this.elt.addEventListener(ev,function(ev$1)
+   {
+    return cb($this.elt,ev$1);
+   },false);
+   return this;
+  }
+ },Doc,Elt);
+ Elt.TreeNode=function(tree,updates)
+ {
+  var rvUpdates,x;
+  function f(t)
+  {
+   return t[1];
+  }
+  rvUpdates=Updates.Create(updates);
+  return new Elt.New$1({
+   $:6,
+   $0:tree
+  },View.Map2Unit((x=Arrays.map(function(x$1)
+  {
+   return Attrs.Updates(f(x$1));
+  },tree.Attrs),Array$1.TreeReduce(View.Const(),View.Map2Unit,x)),rvUpdates.v),Arrays.get(tree.Els,0),rvUpdates);
+ };
+ Elt.New=function(el,attr$1,children)
+ {
+  var node,rvUpdates;
+  node=Docs.CreateElemNode(el,attr$1,children.docNode);
+  rvUpdates=Updates.Create(children.updates);
+  return new Elt.New$1({
+   $:1,
+   $0:node
+  },View.Map2Unit(Attrs.Updates(node.Attr),rvUpdates.v),el,rvUpdates);
+ };
+ Elt.New$1=Runtime$1.Ctor(function(docNode,updates,elt,rvUpdates)
+ {
+  Doc.New.call(this,docNode,updates);
+  this.docNode$1=docNode;
+  this.updates$1=updates;
+  this.elt=elt;
+  this.rvUpdates=rvUpdates;
+ },Elt);
+ Dyn.New=function(DynElem,DynFlags,DynNodes,OnAfterRender)
+ {
+  var $1;
+  $1={
+   DynElem:DynElem,
+   DynFlags:DynFlags,
+   DynNodes:DynNodes
+  };
+  Runtime$1.SetOptional($1,"OnAfterRender",OnAfterRender);
+  return $1;
+ };
  Prepare.convertTextNode=function(n)
  {
   var m,li,$1,s,strRE,hole;
@@ -16733,52 +17233,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    el.removeAttribute(a$1);
   },toRemove);
  };
- Elt=UI.Elt=Runtime$1.Class({
-  on:function(ev,cb)
-  {
-   var $this;
-   $this=this;
-   this.elt.addEventListener(ev,function(ev$1)
-   {
-    return cb($this.elt,ev$1);
-   },false);
-   return this;
-  }
- },Doc,Elt);
- Elt.TreeNode=function(tree,updates)
- {
-  var rvUpdates,x;
-  function f(t)
-  {
-   return t[1];
-  }
-  rvUpdates=Updates.Create(updates);
-  return new Elt.New$1({
-   $:6,
-   $0:tree
-  },View.Map2Unit((x=Arrays.map(function(x$1)
-  {
-   return Attrs.Updates(f(x$1));
-  },tree.Attrs),Array$1.TreeReduce(View.Const(),View.Map2Unit,x)),rvUpdates.v),Arrays.get(tree.Els,0),rvUpdates);
- };
- Elt.New=function(el,attr$1,children)
- {
-  var node,rvUpdates;
-  node=Docs.CreateElemNode(el,attr$1,children.docNode);
-  rvUpdates=Updates.Create(children.updates);
-  return new Elt.New$1({
-   $:1,
-   $0:node
-  },View.Map2Unit(Attrs.Updates(node.Attr),rvUpdates.v),el,rvUpdates);
- };
- Elt.New$1=Runtime$1.Ctor(function(docNode,updates,elt,rvUpdates)
- {
-  Doc.New.call(this,docNode,updates);
-  this.docNode$1=docNode;
-  this.updates$1=updates;
-  this.elt=elt;
-  this.rvUpdates=rvUpdates;
- },Elt);
  An.get_UseAnimations=function()
  {
   return Anims.UseAnimations();
@@ -16846,8 +17300,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Settings.BatchUpdatesEnabled=function()
  {
-  SC$8.$cctor();
-  return SC$8.BatchUpdatesEnabled;
+  SC$9.$cctor();
+  return SC$9.BatchUpdatesEnabled;
  };
  Mailbox.StartProcessor=function(procAsync)
  {
@@ -16874,24 +17328,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    m===0?(st[0]=1,Concurrency.Start(work(),null)):m===1?st[0]=2:void 0;
   };
  };
- SC$6.$cctor=function()
- {
-  SC$6.$cctor=Global.ignore;
-  SC$6.LoadedTemplates=new Dictionary.New$5();
-  SC$6.LocalTemplatesLoaded=false;
-  SC$6.TextHoleRE="\\${([^}]+)}";
- };
- Dyn.New=function(DynElem,DynFlags,DynNodes,OnAfterRender)
- {
-  var $1;
-  $1={
-   DynElem:DynElem,
-   DynFlags:DynFlags,
-   DynNodes:DynNodes
-  };
-  Runtime$1.SetOptional($1,"OnAfterRender",OnAfterRender);
-  return $1;
- };
  HashSetUtil.concat=function(o)
  {
   var r,k;
@@ -16903,12 +17339,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return Arrays.ofSeq(Seq.collect(Global.id,Seq.mapi(function(i,c)
   {
-   return i>0&&Char.IsUpper(c)?List$1.ofArray(["_",c]):List$1.ofArray([c]);
+   return i>0&&Char.IsUpper(c)?List.ofArray(["_",c]):List.ofArray([c]);
   },_this))).join("");
  };
- SC$7.$cctor=function()
+ SC$8.$cctor=function()
  {
-  SC$7.$cctor=Global.ignore;
+  SC$8.$cctor=Global.ignore;
   function pInt(x)
   {
    var m,o;
@@ -16927,18 +17363,18 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:m[1]
    }:null;
   }
-  SC$7.Empty=Router$1.New$1(function()
+  SC$8.Empty=Router$1.New$1(function()
   {
    return[];
   },function()
   {
    return null;
   });
-  SC$7.rRoot=Router$1.New(function(path)
+  SC$8.rRoot=Router$1.New(function(path)
   {
    return[path];
   },[]);
-  SC$7.rString=Router$1.New$1(function(path)
+  SC$8.rString=Router$1.New$1(function(path)
   {
    var m,m$1;
    m=path.Segments;
@@ -16950,7 +17386,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(value==null?"null":StringEncoding.write(value))]
    };
   });
-  SC$7.rChar=Router$1.New$1(function(path)
+  SC$8.rChar=Router$1.New$1(function(path)
   {
    var m,m$1,$1;
    m=path.Segments;
@@ -16962,7 +17398,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(value)]
    };
   });
-  SC$7.rGuid=Router$1.New$1(function(path)
+  SC$8.rGuid=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -16983,7 +17419,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rInt=Router$1.New$1(function(path)
+  SC$8.rInt=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -17004,7 +17440,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rDouble=Router$1.New$1(function(path)
+  SC$8.rDouble=Router$1.New$1(function(path)
   {
    var m,res,$1;
    m=path.Segments;
@@ -17016,7 +17452,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rSByte=Router$1.New$1(function(path)
+  SC$8.rSByte=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -17037,7 +17473,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rByte=Router$1.New$1(function(path)
+  SC$8.rByte=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -17058,7 +17494,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rInt16=Router$1.New$1(function(path)
+  SC$8.rInt16=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -17079,7 +17515,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rUInt16=Router$1.New$1(function(path)
+  SC$8.rUInt16=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -17100,7 +17536,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rUInt=Router$1.New$1(function(path)
+  SC$8.rUInt=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -17121,7 +17557,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rInt64=Router$1.New$1(function(path)
+  SC$8.rInt64=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -17142,7 +17578,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rUInt64=Router$1.New$1(function(path)
+  SC$8.rUInt64=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -17163,7 +17599,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rSingle=Router$1.New$1(function(path)
+  SC$8.rSingle=Router$1.New$1(function(path)
   {
    var m,res,$1;
    m=path.Segments;
@@ -17175,7 +17611,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rBool=Router$1.New$1(function(path)
+  SC$8.rBool=Router$1.New$1(function(path)
   {
    var m,m$1,o;
    m=path.Segments;
@@ -17196,7 +17632,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(value?"True":"False")]
    };
   });
-  SC$7.rWildcard=Router$1.New$1(function(path)
+  SC$8.rWildcard=Router$1.New$1(function(path)
   {
    return[[Route.New(T$1.Empty,path.QueryArgs,path.FormData,path.Method,path.Body),Strings.concat("/",path.Segments)]];
   },function(value)
@@ -17206,7 +17642,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(value)]
    };
   });
-  SC$7.rDateTime=Router$1.New$1(function(path)
+  SC$8.rDateTime=Router$1.New$1(function(path)
   {
    var m,h,$1,$2,$3,$4,$5,$6,$7;
    m=path.Segments;
@@ -17295,6 +17731,77 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   Object.setPrototypeOf(this,OperationCanceledException.prototype);
   this.ct=ct;
  },OperationCanceledException);
+ Task=WebSharper.Task=Runtime$1.Class({
+  get_IsCompleted:function()
+  {
+   return this.status===5||this.status===7||this.status===6;
+  },
+  RunContinuations:function()
+  {
+   var a,i,$1;
+   a=this.continuations;
+   for(i=0,$1=a.length-1;i<=$1;i++)Arrays.get(a,i).StartContinuation();
+  },
+  StartContinuation:function()
+  {
+   var $this;
+   $this=this;
+   this.status===1?(this.status=2,Concurrency.scheduler().Fork(function()
+   {
+    if($this.status===2)
+     {
+      $this.status=3;
+      try
+      {
+       $this.Execute();
+       $this.status=5;
+      }
+      catch(e)
+      {
+       $this.exc=new AggregateException.New$3([e]);
+       $this.status=7;
+      }
+      $this.RunContinuations();
+     }
+   })):void 0;
+  },
+  Execute:function()
+  {
+   this.action();
+  }
+ },Obj,Task);
+ Task.New$4=Runtime$1.Ctor(function(action,token,status,exc)
+ {
+  Obj.New.call(this);
+  this.action=action;
+  this.token=token;
+  this.status=status;
+  this.continuations=[];
+  this.exc=exc;
+ },Task);
+ Task1=WebSharper.Task1=Runtime$1.Class({
+  Execute:function()
+  {
+   this.result=this.func();
+  }
+ },Task,Task1);
+ Task1.New$4=Runtime$1.Ctor(function(func,token,status,exc,result)
+ {
+  Task.New$4.call(this,null,token,status,exc);
+  this.func=func;
+  this.result=result;
+ },Task1);
+ AggregateException=WebSharper.AggregateException=Runtime$1.Class({},Error,AggregateException);
+ AggregateException.New$3=Runtime$1.Ctor(function(innerExceptions)
+ {
+  AggregateException.New$4.call(this,"One or more errors occurred.",innerExceptions);
+ },AggregateException);
+ AggregateException.New$4=Runtime$1.Ctor(function(message,innerExceptions)
+ {
+  this.message=message;
+  Object.setPrototypeOf(this,AggregateException.prototype);
+  this.innerExceptions=innerExceptions;
+ },AggregateException);
  Queue.Clear=function(a)
  {
   a.splice(0,Arrays.length(a));
@@ -17339,17 +17846,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $this.dirty=true;
   },view);
  },DynamicAttrNode);
- AggregateException=WebSharper.AggregateException=Runtime$1.Class({},Error,AggregateException);
- AggregateException.New$3=Runtime$1.Ctor(function(innerExceptions)
- {
-  AggregateException.New$4.call(this,"One or more errors occurred.",innerExceptions);
- },AggregateException);
- AggregateException.New$4=Runtime$1.Ctor(function(message,innerExceptions)
- {
-  this.message=message;
-  Object.setPrototypeOf(this,AggregateException.prototype);
-  this.innerExceptions=innerExceptions;
- },AggregateException);
  ArrayStorage=Storage.ArrayStorage=Runtime$1.Class({
   SSetAt:function(idx,elem,arr)
   {
@@ -17436,6 +17932,28 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
   };
  };
+ KeyCollection=Collections.KeyCollection=Runtime$1.Class({
+  GetEnumerator$1:function()
+  {
+   return Enumerator.Get(Seq.map(function(kvp)
+   {
+    return kvp.K;
+   },this.d));
+  },
+  GetEnumerator:function()
+  {
+   return this.GetEnumerator$1();
+  },
+  GetEnumerator0:function()
+  {
+   return this.GetEnumerator$1();
+  }
+ },Obj,KeyCollection);
+ KeyCollection.New=Runtime$1.Ctor(function(d)
+ {
+  Obj.New.call(this);
+  this.d=d;
+ },KeyCollection);
  Updates=UI.Updates=Runtime$1.Class({},null,Updates);
  Updates.Create=function(v)
  {
@@ -17533,8 +18051,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Anims.UseAnimations=function()
  {
-  SC$11.$cctor();
-  return SC$11.UseAnimations;
+  SC$12.$cctor();
+  return SC$12.UseAnimations;
  };
  Anims.Actions=function(a)
  {
@@ -17608,33 +18126,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    Duration:nextDuration
   };
  };
- SC$8.$cctor=function()
+ SC$9.$cctor=function()
  {
-  SC$8.$cctor=Global.ignore;
-  SC$8.BatchUpdatesEnabled=true;
+  SC$9.$cctor=Global.ignore;
+  SC$9.BatchUpdatesEnabled=true;
  };
- KeyCollection=Collections.KeyCollection=Runtime$1.Class({
-  GetEnumerator$1:function()
-  {
-   return Enumerator.Get(Seq.map(function(kvp)
-   {
-    return kvp.K;
-   },this.d));
-  },
-  GetEnumerator:function()
-  {
-   return this.GetEnumerator$1();
-  },
-  GetEnumerator0:function()
-  {
-   return this.GetEnumerator$1();
-  }
- },Obj,KeyCollection);
- KeyCollection.New=Runtime$1.Ctor(function(d)
- {
-  Obj.New.call(this);
-  this.d=d;
- },KeyCollection);
  Char.IsUpper=function(c)
  {
   return c>="A"&&c<="Z";
@@ -17684,7 +18180,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         chars=m[1];
        }
     }
-  }(List$1.ofSeq(Seq.map(function(v)
+  }(List.ofSeq(Seq.map(function(v)
   {
    return v.charCodeAt();
   },s)));
@@ -17769,30 +18265,30 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   this.message=message;
   Object.setPrototypeOf(this,FormatException.prototype);
  },FormatException);
- SC$9.$cctor=function()
- {
-  SC$9.$cctor=Global.ignore;
-  SC$9.Doc=self.document;
- };
  SC$10.$cctor=function()
  {
   SC$10.$cctor=Global.ignore;
-  SC$10.EmptyAttr=null;
+  SC$10.Doc=self.document;
+ };
+ SC$11.$cctor=function()
+ {
+  SC$11.$cctor=Global.ignore;
+  SC$11.EmptyAttr=null;
  };
  String$1.isBlank=function(s)
  {
   return Strings.forall(Char.IsWhiteSpace,s);
  };
- SC$11.$cctor=function()
+ SC$12.$cctor=function()
  {
-  SC$11.$cctor=Global.ignore;
-  SC$11.CubicInOut=Easing.Custom(function(t)
+  SC$12.$cctor=Global.ignore;
+  SC$12.CubicInOut=Easing.Custom(function(t)
   {
    var t2;
    t2=t*t;
    return 3*t2-2*(t2*t);
   });
-  SC$11.UseAnimations=true;
+  SC$12.UseAnimations=true;
  };
  AppendList.Append=function(x,y)
  {
@@ -17834,8 +18330,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  AppendList.Empty=function()
  {
-  SC$12.$cctor();
-  return SC$12.Empty;
+  SC$13.$cctor();
+  return SC$13.Empty;
  };
  PathUtil.WriteLink=function(s,q)
  {
@@ -17848,7 +18344,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var sb,start;
   sb=[];
   start=true;
-  List$1.iter(function(x)
+  List.iter(function(x)
   {
    if(!Strings.IsNullOrEmpty(x))
     {
@@ -17997,10 +18493,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:Array$1.ofSeqNonCopying(q)
   };
  };
- SC$12.$cctor=function()
+ SC$13.$cctor=function()
  {
-  SC$12.$cctor=Global.ignore;
-  SC$12.Empty={
+  SC$13.$cctor=Global.ignore;
+  SC$13.Empty={
    $:0
   };
  };

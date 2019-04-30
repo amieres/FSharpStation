@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,String,Array,SortWith,LibraryJS,Pojo,Date,REGEX,Msal,Policy,WebSharper,Obj,User,UserAgentApplication,ProzperClient,Templating,Msal$1,ModeloUI,EndPoint,Rpc,Refresh,VariousUI,CorreoElectronico,Telefono,Direccion,CuentaBancaria,TarjetaCredito,DatosPersonales,FormaRegistro,FormaDatos,FormaGenerica,FormaContactos,FormaFormasPago,RenderAliados,RenderAliado,ReporteConsolidado,Fila,TablaPagos,Aliado,MainProgram,SC$1,testing_GeneratedPrintf,testing_Templates,testing_Router,Strings,Slice,Seq,Arrays,Unchecked,Char,List,IntelliFactory,Runtime,Utils,Concurrency,console,JSON,ClientSideJson,Provider,ProzperServer_JsonEncoder,ProzperServer_JsonDecoder,Prozper,Rpc$1,Monads,ResultM,AsyncResultMAutoOpen,AsyncResultM,ResultMessage,TypesV0,UI,Doc,AttrProxy,Var$1,Templating$1,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,View,CorreoElectronico$1,TipoTelefono,Telefono$1,TipoDireccion,Estado,Pais,ZonaPostal,Direccion$1,AttrModule,TipoCuenta,CuentaBancaria$1,TipoTarjeta,TarjetaCredito$1,Expiracion,ParseO,Genero,DatosPersonales$1,System,Guid,FromView,Collections,FSharpSet,Result,FormaPago,Aliado$1,ProzperServer_GeneratedPrintf,Aliado$2,StatusAliado,AppFramework,PlugIn,Lazy,LayoutEngineModule,Client,Templates,Modelo,Date$1,Router,Sitelets,RouterOperators;
+ var Global,FsRoot,Library,String,Array,SortWith,LibraryJS,Pojo,Date,REGEX,Msal,Policy,WebSharper,Obj,User,UserAgentApplication,ProzperClient,Templating,Msal$1,ModeloUI,EndPoint,Rpc,Refresh,VariousUI,CorreoElectronico,Telefono,Direccion,CuentaBancaria,TarjetaCredito,DatosPersonales,FormaRegistro,FormaDatos,FormaGenerica,FormaContactos,FormaFormasPago,RenderAliados,RenderAliado,ReporteConsolidado,Fila,TablaPagos,ListaDocs,Aliado,MainProgram,SC$1,testing_GeneratedPrintf,testing_Templates,testing_Router,Strings,Slice,Seq,Arrays,Unchecked,Char,List,IntelliFactory,Runtime,Utils,Concurrency,console,JSON,ClientSideJson,Provider,ProzperServer_JsonEncoder,ProzperServer_JsonDecoder,Prozper,Rpc$1,Monads,ResultM,AsyncResultMAutoOpen,Remoting,AjaxRemotingProvider,TypesV0,AsyncResultM,ResultMessage,UI,Doc,AttrProxy,Var$1,Templating$1,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,View,CorreoElectronico$1,TipoTelefono,Telefono$1,TipoDireccion,Estado,Pais,ZonaPostal,Direccion$1,AttrModule,TipoCuenta,CuentaBancaria$1,TipoTarjeta,TarjetaCredito$1,Expiracion,ParseO,Genero,DatosPersonales$1,System,Guid,FromView,Collections,FSharpSet,Result,FormaPago,Aliado$1,ProzperServer_GeneratedPrintf,Aliado$2,StatusAliado,$,AppFramework,PlugIn,Lazy,LayoutEngineModule,Client,Templates,Modelo,Date$1,Router,Sitelets,RouterOperators;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -42,6 +42,7 @@
  ReporteConsolidado=ModeloUI.ReporteConsolidado=ModeloUI.ReporteConsolidado||{};
  Fila=ReporteConsolidado.Fila=ReporteConsolidado.Fila||{};
  TablaPagos=ModeloUI.TablaPagos=ModeloUI.TablaPagos||{};
+ ListaDocs=ModeloUI.ListaDocs=ModeloUI.ListaDocs||{};
  Aliado=ModeloUI.Aliado=ModeloUI.Aliado||{};
  MainProgram=ProzperClient.MainProgram=ProzperClient.MainProgram||{};
  SC$1=Global.StartupCode$testing$testing=Global.StartupCode$testing$testing||{};
@@ -70,9 +71,11 @@
  Monads=Library&&Library.Monads;
  ResultM=Monads&&Monads.ResultM;
  AsyncResultMAutoOpen=Monads&&Monads.AsyncResultMAutoOpen;
+ Remoting=WebSharper&&WebSharper.Remoting;
+ AjaxRemotingProvider=Remoting&&Remoting.AjaxRemotingProvider;
+ TypesV0=Prozper&&Prozper.TypesV0;
  AsyncResultM=Monads&&Monads.AsyncResultM;
  ResultMessage=Library&&Library.ResultMessage;
- TypesV0=Prozper&&Prozper.TypesV0;
  UI=WebSharper&&WebSharper.UI;
  Doc=UI&&UI.Doc;
  AttrProxy=UI&&UI.AttrProxy;
@@ -112,6 +115,7 @@
  ProzperServer_GeneratedPrintf=Global.ProzperServer_GeneratedPrintf;
  Aliado$2=TypesV0&&TypesV0.Aliado;
  StatusAliado=TypesV0&&TypesV0.StatusAliado;
+ $=Global.jQuery;
  AppFramework=LibraryJS&&LibraryJS.AppFramework;
  PlugIn=AppFramework&&AppFramework.PlugIn;
  Lazy=WebSharper&&WebSharper.Lazy;
@@ -455,7 +459,7 @@
   SC$1.$cctor();
   return SC$1.policies;
  };
- LibraryJS.rexEmail=function()
+ LibraryJS.rexEmail$1=function()
  {
   SC$1.$cctor();
   return SC$1.rexEmail;
@@ -660,1129 +664,985 @@
    console.log(s);
   }))([errorDesc,error,tokenType,token,state]));
  };
+ EndPoint.PreRegister={
+  $:2
+ };
+ EndPoint.NoUser={
+  $:1
+ };
  EndPoint.DefaultEP={
   $:0
  };
- Rpc.obtenerFormasDePagoPara=function(p)
+ Rpc.obtenerListaDocs=function()
  {
-  var p1,b;
-  function f($1,$2)
+  var f,fname,b;
+  function serializeP(p)
   {
-   var fname;
-   function serializeP(p$1)
-   {
-    return JSON.stringify(((Provider.EncodeArray(ProzperServer_JsonEncoder.j$6))())(p$1));
-   }
-   function serializeR(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$48())(p$1));
-   }
-   function deserializeP(s)
-   {
-    return((Provider.DecodeArray(ProzperServer_JsonDecoder.j$6))())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$48())(JSON.parse(s));
-   }
-   return((fname="obtenerFormasDePagoPara",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p$1)
-    {
-     return Rpc$1.invoke(fname,idAliado,p$1);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p$1;
-       p$1=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p$1),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
+   return JSON.stringify(((Provider.Id())())(p));
   }
-  p1=Aliado.get_LoggedId();
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
+  function serializeR(p)
   {
-   function f$1(v)
+   return JSON.stringify((ProzperServer_JsonEncoder.j$47())(p));
+  }
+  function deserializeP(s)
+  {
+   return((Provider.Id())())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$47())(JSON.parse(s));
+  }
+  f=(fname="obtenerListaDocs",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p)
    {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
+    return Rpc$1.invoke(fname,idAliado,p);
    }
-   function g(v)
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
    {
     return Concurrency.Return(v);
    }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,p),function(x)
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
    {
     return g(f$1(x));
-   }),function(a)
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
    {
-    return b.Return(a);
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p;
+      p=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(void 0));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
+   });
+  }));
+ };
+ Rpc.obtenerFormasDePagoPara=function(p)
+ {
+  var f,fname,b;
+  function serializeP(p$1)
+  {
+   return JSON.stringify(((Provider.EncodeArray(ProzperServer_JsonEncoder.j$22))())(p$1));
+  }
+  function serializeR(p$1)
+  {
+   return JSON.stringify((ProzperServer_JsonEncoder.j$46())(p$1));
+  }
+  function deserializeP(s)
+  {
+   return((Provider.DecodeArray(ProzperServer_JsonDecoder.j$22))())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$46())(JSON.parse(s));
+  }
+  f=(fname="obtenerFormasDePagoPara",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p$1)
+   {
+    return Rpc$1.invoke(fname,idAliado,p$1);
+   }
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
+   {
+    return Concurrency.Return(v);
+   }
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
+   {
+    return g(f$1(x));
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
+   {
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p$1;
+      p$1=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p$1),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
    });
   }));
  };
  Rpc.borrarFormaPago=function(p)
  {
-  var p1,b;
-  function f($1,$2)
+  var f,fname,b;
+  function serializeP(p$1)
   {
-   var fname;
-   function serializeP(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$36())(p$1));
-   }
-   function serializeR(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$47())(p$1));
-   }
-   function deserializeP(s)
-   {
-    return(ProzperServer_JsonDecoder.j$36())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$47())(JSON.parse(s));
-   }
-   return((fname="borrarFormaPago",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p$1)
-    {
-     return Rpc$1.invoke(fname,idAliado,p$1);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p$1;
-       p$1=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p$1),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
+   return JSON.stringify((ProzperServer_JsonEncoder.j$34())(p$1));
   }
-  p1=Aliado.get_LoggedId();
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
+  function serializeR(p$1)
   {
-   function f$1(v)
+   return JSON.stringify((ProzperServer_JsonEncoder.j$45())(p$1));
+  }
+  function deserializeP(s)
+  {
+   return(ProzperServer_JsonDecoder.j$34())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$45())(JSON.parse(s));
+  }
+  f=(fname="borrarFormaPago",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p$1)
    {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
+    return Rpc$1.invoke(fname,idAliado,p$1);
    }
-   function g(v)
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
    {
     return Concurrency.Return(v);
    }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,p),function(x)
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
    {
     return g(f$1(x));
-   }),function(a)
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
    {
-    return b.Return(a);
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p$1;
+      p$1=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p$1),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
    });
   }));
  };
  Rpc.validarFormaPago=function(p)
  {
-  var p1,b;
-  function f($1,$2)
+  var f,fname,b;
+  function serializeP(p$1)
   {
-   var fname;
-   function serializeP(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$36())(p$1));
-   }
-   function serializeR(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$47())(p$1));
-   }
-   function deserializeP(s)
-   {
-    return(ProzperServer_JsonDecoder.j$36())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$47())(JSON.parse(s));
-   }
-   return((fname="validarFormaPago",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p$1)
-    {
-     return Rpc$1.invoke(fname,idAliado,p$1);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p$1;
-       p$1=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p$1),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
+   return JSON.stringify((ProzperServer_JsonEncoder.j$34())(p$1));
   }
-  p1=Aliado.get_LoggedId();
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
+  function serializeR(p$1)
   {
-   function f$1(v)
+   return JSON.stringify((ProzperServer_JsonEncoder.j$45())(p$1));
+  }
+  function deserializeP(s)
+  {
+   return(ProzperServer_JsonDecoder.j$34())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$45())(JSON.parse(s));
+  }
+  f=(fname="validarFormaPago",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p$1)
    {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
+    return Rpc$1.invoke(fname,idAliado,p$1);
    }
-   function g(v)
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
    {
     return Concurrency.Return(v);
    }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,p),function(x)
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
    {
     return g(f$1(x));
-   }),function(a)
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
    {
-    return b.Return(a);
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p$1;
+      p$1=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p$1),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
    });
   }));
  };
  Rpc.registrarCuenta=function(p)
  {
-  var p1,b;
-  function f($1,$2)
+  var f,fname,b;
+  function serializeP(p$1)
   {
-   var fname;
-   function serializeP(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$43())(p$1));
-   }
-   function serializeR(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$47())(p$1));
-   }
-   function deserializeP(s)
-   {
-    return(ProzperServer_JsonDecoder.j$43())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$47())(JSON.parse(s));
-   }
-   return((fname="registrarCuenta",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p$1)
-    {
-     return Rpc$1.invoke(fname,idAliado,p$1);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p$1;
-       p$1=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p$1),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
+   return JSON.stringify((ProzperServer_JsonEncoder.j$41())(p$1));
   }
-  p1=Aliado.get_LoggedId();
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
+  function serializeR(p$1)
   {
-   function f$1(v)
+   return JSON.stringify((ProzperServer_JsonEncoder.j$45())(p$1));
+  }
+  function deserializeP(s)
+  {
+   return(ProzperServer_JsonDecoder.j$41())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$45())(JSON.parse(s));
+  }
+  f=(fname="registrarCuenta",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p$1)
    {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
+    return Rpc$1.invoke(fname,idAliado,p$1);
    }
-   function g(v)
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
    {
     return Concurrency.Return(v);
    }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,p),function(x)
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
    {
     return g(f$1(x));
-   }),function(a)
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
    {
-    return b.Return(a);
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p$1;
+      p$1=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p$1),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
    });
   }));
  };
  Rpc.registrarTarjeta=function(p)
  {
-  var p1,b;
-  function f($1,$2)
+  var f,fname,b;
+  function serializeP(p$1)
   {
-   var fname;
-   function serializeP(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$38())(p$1));
-   }
-   function serializeR(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$47())(p$1));
-   }
-   function deserializeP(s)
-   {
-    return(ProzperServer_JsonDecoder.j$38())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$47())(JSON.parse(s));
-   }
-   return((fname="registrarTarjeta",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p$1)
-    {
-     return Rpc$1.invoke(fname,idAliado,p$1);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p$1;
-       p$1=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p$1),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
+   return JSON.stringify((ProzperServer_JsonEncoder.j$36())(p$1));
   }
-  p1=Aliado.get_LoggedId();
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
+  function serializeR(p$1)
   {
-   function f$1(v)
+   return JSON.stringify((ProzperServer_JsonEncoder.j$45())(p$1));
+  }
+  function deserializeP(s)
+  {
+   return(ProzperServer_JsonDecoder.j$36())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$45())(JSON.parse(s));
+  }
+  f=(fname="registrarTarjeta",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p$1)
    {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
+    return Rpc$1.invoke(fname,idAliado,p$1);
    }
-   function g(v)
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
    {
     return Concurrency.Return(v);
    }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,p),function(x)
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
    {
     return g(f$1(x));
-   }),function(a)
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
    {
-    return b.Return(a);
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p$1;
+      p$1=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p$1),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
    });
   }));
  };
  Rpc.obtenerFormasDePago=function()
  {
-  var p1,b;
-  function f($1,$2)
+  var f,fname,b;
+  function serializeP(p)
   {
-   var fname;
-   function serializeP(p)
-   {
-    return JSON.stringify(((Provider.Id())())(p));
-   }
-   function serializeR(p)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$33())(p));
-   }
-   function deserializeP(s)
-   {
-    return((Provider.Id())())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$33())(JSON.parse(s));
-   }
-   return((fname="obtenerFormasDePago",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p)
-    {
-     return Rpc$1.invoke(fname,idAliado,p);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p;
-       p=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
+   return JSON.stringify(((Provider.Id())())(p));
   }
-  p1=Aliado.get_LoggedId();
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
+  function serializeR(p)
   {
-   function f$1(v)
+   return JSON.stringify((ProzperServer_JsonEncoder.j$31())(p));
+  }
+  function deserializeP(s)
+  {
+   return((Provider.Id())())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$31())(JSON.parse(s));
+  }
+  f=(fname="obtenerFormasDePago",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p)
    {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
+    return Rpc$1.invoke(fname,idAliado,p);
    }
-   function g(v)
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
    {
     return Concurrency.Return(v);
    }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,void 0),function(x)
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
    {
     return g(f$1(x));
-   }),function(a)
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
    {
-    return b.Return(a);
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p;
+      p=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(void 0));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
    });
   }));
  };
  Rpc.enviarCorreosInvitacion=function(p,p$1,p$2)
  {
-  var p1,p2,b;
-  function f($1,$2)
+  var f,fname,p$3,b;
+  function serializeP(p$4)
   {
-   var fname;
-   function serializeP(p$3)
-   {
-    return JSON.stringify(((Provider.EncodeTuple([Provider.Id(),ProzperServer_JsonEncoder.j$6,Provider.EncodeArray(Provider.Id())]))())(p$3));
-   }
-   function serializeR(p$3)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$32())(p$3));
-   }
-   function deserializeP(s)
-   {
-    return((Provider.DecodeTuple([Provider.Id(),ProzperServer_JsonDecoder.j$6,Provider.DecodeArray(Provider.Id())]))())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$32())(JSON.parse(s));
-   }
-   return((fname="enviarCorreosInvitacion",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p$3)
-    {
-     return Rpc$1.invoke(fname,idAliado,p$3);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p$3;
-       p$3=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p$3),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
+   return JSON.stringify(((Provider.EncodeTuple([Provider.Id(),ProzperServer_JsonEncoder.j$7,Provider.EncodeArray(Provider.Id())]))())(p$4));
   }
-  p1=Aliado.get_LoggedId();
-  p2=[p,p$1,p$2];
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
+  function serializeR(p$4)
   {
-   function f$1(v)
+   return JSON.stringify((ProzperServer_JsonEncoder.j$30())(p$4));
+  }
+  function deserializeP(s)
+  {
+   return((Provider.DecodeTuple([Provider.Id(),ProzperServer_JsonDecoder.j$7,Provider.DecodeArray(Provider.Id())]))())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$30())(JSON.parse(s));
+  }
+  f=(fname="enviarCorreosInvitacion",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p$4)
    {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
+    return Rpc$1.invoke(fname,idAliado,p$4);
    }
-   function g(v)
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
    {
     return Concurrency.Return(v);
    }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,p2),function(x)
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
    {
     return g(f$1(x));
-   }),function(a)
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
    {
-    return b.Return(a);
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p$4;
+      p$4=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p$4),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  p$3=[p,p$1,p$2];
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p$3));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
    });
   }));
  };
  Rpc.ejecutarDataEventoNuevo=function(p)
  {
-  var p1,b;
-  function f($1,$2)
+  var f,fname,b;
+  function serializeP(p$1)
   {
-   var fname;
-   function serializeP(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$4())(p$1));
-   }
-   function serializeR(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$1())(p$1));
-   }
-   function deserializeP(s)
-   {
-    return(ProzperServer_JsonDecoder.j$4())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$1())(JSON.parse(s));
-   }
-   return((fname="ejecutarDataEventoNuevo",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p$1)
-    {
-     return Rpc$1.invoke(fname,idAliado,p$1);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p$1;
-       p$1=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p$1),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
+   return JSON.stringify((ProzperServer_JsonEncoder.j$4())(p$1));
   }
-  p1=Aliado.get_LoggedId();
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
+  function serializeR(p$1)
   {
-   function f$1(v)
+   return JSON.stringify((ProzperServer_JsonEncoder.j$1())(p$1));
+  }
+  function deserializeP(s)
+  {
+   return(ProzperServer_JsonDecoder.j$4())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$1())(JSON.parse(s));
+  }
+  f=(fname="ejecutarDataEventoNuevo",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p$1)
    {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
+    return Rpc$1.invoke(fname,idAliado,p$1);
    }
-   function g(v)
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
    {
     return Concurrency.Return(v);
    }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,p),function(x)
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
    {
     return g(f$1(x));
-   }),function(a)
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
    {
-    return b.Return(a);
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p$1;
+      p$1=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p$1),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
    });
   }));
  };
  Rpc.obtenerUnions=function()
  {
-  var p1,b;
-  function f($1,$2)
+  var b;
+  function f()
   {
-   var fname;
-   function serializeP(p)
-   {
-    return JSON.stringify(((Provider.Id())())(p));
-   }
-   function serializeR(p)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$31())(p));
-   }
-   function deserializeP(s)
-   {
-    return((Provider.Id())())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$31())(JSON.parse(s));
-   }
-   return((fname="obtenerUnions",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p)
-    {
-     return Rpc$1.invoke(fname,idAliado,p);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p;
-       p=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
+   return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.Prozper+Rpc.obtenerUnions:1790054391",[]);
   }
-  p1=Aliado.get_LoggedId();
   b=AsyncResultMAutoOpen.asyncResultM();
   return b.Run(b.Delay(function()
   {
-   function f$1(v)
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
    {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
-   }
-   function g(v)
+    return b.ReturnFrom$4(f(void 0));
+   }),function()
    {
-    return Concurrency.Return(v);
-   }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,void 0),function(x)
-   {
-    return g(f$1(x));
-   }),function(a)
-   {
-    return b.Return(a);
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
    });
   }));
  };
- Rpc.obtenerEstadoParaUsuario=function()
+ Rpc.obtenerEstadoParaUsuario=function(p)
  {
-  var p1,b;
-  function f($1,$2)
+  var p$1,b;
+  function f(i)
   {
-   var fname;
-   function serializeP(p)
-   {
-    return JSON.stringify(((Provider.Id())())(p));
-   }
-   function serializeR(p)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$28())(p));
-   }
-   function deserializeP(s)
-   {
-    return((Provider.Id())())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$28())(JSON.parse(s));
-   }
-   return((fname="obtenerEstadoParaUsuario",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p)
-    {
-     return Rpc$1.invoke(fname,idAliado,p);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p;
-       p=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
+   return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.Prozper+Rpc.obtenerEstadoParaUsuario:-1569835008",[i]);
   }
-  p1=Aliado.get_LoggedId();
+  p$1=new TypesV0.IdAliado({
+   $:0,
+   $0:Aliado.get_LoggedId()
+  });
   b=AsyncResultMAutoOpen.asyncResultM();
   return b.Run(b.Delay(function()
   {
-   function f$1(v)
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
    {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
-   }
-   function g(v)
+    return b.ReturnFrom$4(f(p$1));
+   }),function()
    {
-    return Concurrency.Return(v);
-   }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,void 0),function(x)
-   {
-    return g(f$1(x));
-   }),function(a)
-   {
-    return b.Return(a);
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
    });
   }));
  };
  Rpc.agregarUsuarioSiEsNuevo=function(p)
  {
-  var p1,b;
-  function f($1,$2)
+  var f,fname,b;
+  function serializeP(p$1)
   {
-   var fname;
-   function serializeP(p$1)
-   {
-    return JSON.stringify(((Provider.EncodeArray(Provider.EncodeTuple([Provider.Id(),Provider.Id()])))())(p$1));
-   }
-   function serializeR(p$1)
-   {
-    return JSON.stringify((ProzperServer_JsonEncoder.j$32())(p$1));
-   }
-   function deserializeP(s)
-   {
-    return((Provider.DecodeArray(Provider.DecodeTuple([Provider.Id(),Provider.Id()])))())(JSON.parse(s));
-   }
-   function deserializeR(s)
-   {
-    return(ProzperServer_JsonDecoder.j$32())(JSON.parse(s));
-   }
-   return((fname="agregarUsuarioSiEsNuevo",[function(idAliado)
-   {
-    var f$1,g,f$2;
-    function g$1(p$1)
-    {
-     return Rpc$1.invoke(fname,idAliado,p$1);
-    }
-    function f$3(r)
-    {
-     return ResultM.bind(deserializeR,r);
-    }
-    function g$2(v)
-    {
-     return Concurrency.Return(v);
-    }
-    f$1=function(x)
-    {
-     return g$1(serializeP(x));
-    };
-    g=(f$2=function(x)
-    {
-     return g$2(f$3(x));
-    },function(v)
-    {
-     return Concurrency.Bind(v,f$2);
-    });
-    return function(x)
-    {
-     return g(f$1(x));
-    };
-   },function(f$1)
-   {
-    Rpc$1.registroRpcs().Add(fname,function(c)
-    {
-     return function(js)
-     {
-      var b$1;
-      function g(v)
-      {
-       return Concurrency.Return(v);
-      }
-      return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
-      {
-       var p$1;
-       p$1=deserializeP(js);
-       return b$1.Bind$4((f$1(c))(p$1),function(a)
-       {
-        return b$1.Return(a);
-       });
-      }))),function(x)
-      {
-       return g(serializeR(x));
-      });
-     };
-    });
-   }])[0]($1))($2);
+   return JSON.stringify(((Provider.EncodeArray(Provider.EncodeTuple([Provider.Id(),Provider.Id()])))())(p$1));
   }
-  p1=Aliado.get_LoggedId();
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
+  function serializeR(p$1)
   {
-   function f$1(v)
+   return JSON.stringify((ProzperServer_JsonEncoder.j$30())(p$1));
+  }
+  function deserializeP(s)
+  {
+   return((Provider.DecodeArray(Provider.DecodeTuple([Provider.Id(),Provider.Id()])))())(JSON.parse(s));
+  }
+  function deserializeR(s)
+  {
+   return(ProzperServer_JsonDecoder.j$30())(JSON.parse(s));
+  }
+  f=(fname="agregarUsuarioSiEsNuevo",[function(idAliado)
+  {
+   var f$1,g,f$2;
+   function g$1(p$1)
    {
-    Rpc.setLlamadas(Rpc.llamadas().Get()-1);
-    return v;
+    return Rpc$1.invoke(fname,idAliado,p$1);
    }
-   function g(v)
+   function f$3(r)
+   {
+    return ResultM.bind(deserializeR,r);
+   }
+   function g$2(v)
    {
     return Concurrency.Return(v);
    }
-   Rpc.setLlamadas(Rpc.llamadas().Get()+1);
-   return b.Bind$4(Concurrency.Bind(f(p1,p),function(x)
+   f$1=function(x)
+   {
+    return g$1(serializeP(x));
+   };
+   g=(f$2=function(x)
+   {
+    return g$2(f$3(x));
+   },function(v)
+   {
+    return Concurrency.Bind(v,f$2);
+   });
+   return function(x)
    {
     return g(f$1(x));
-   }),function(a)
+   };
+  },function(f$1)
+  {
+   Rpc$1.registroRpcs().Add(fname,function(c)
    {
-    return b.Return(a);
+    return function(js)
+    {
+     var b$1;
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+     {
+      var p$1;
+      p$1=deserializeP(js);
+      return b$1.Bind$4((f$1(c))(p$1),function(a)
+      {
+       return b$1.Return(a);
+      });
+     }))),function(x)
+     {
+      return g(serializeR(x));
+     });
+    };
+   });
+  }])[0](Aliado.get_LoggedId());
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
    });
   }));
  };
@@ -1796,10 +1656,6 @@
   {
    return g(ResultMessage.summarized(x));
   },Global.ignore,arm);
- };
- Rpc.setLlamadas=function(v)
- {
-  Rpc.llamadas().Set(v);
  };
  Rpc.llamadas=function()
  {
@@ -2466,7 +2322,7 @@
   },requeridosW,forma.Hole("genero").get_View()),forma.Hole("fechanacimiento").get_View()),forma.Hole("nombres").get_View()),forma.Hole("nombres").get_View()),forma.Hole("apellidos").get_View()),forma.Hole("apellidos").get_View()));
   return[requeridosW,forma.get_Doc()];
  };
- FormaRegistro.formaDoc$961$41=function(mostrar,mensajes,datosOV,correoOV,telefonoOV,direccionOV)
+ FormaRegistro.formaDoc$988$41=function(mostrar,mensajes,datosOV,correoOV,telefonoOV,direccionOV)
  {
   return function()
   {
@@ -2635,7 +2491,7 @@
  {
   return ModeloUI.aliadoIdDoc(FormaDatos.formaAliado);
  };
- FormaDatos.formaAliado$1014$36=function(mostrar,mensajes,datosOV,aliadoW)
+ FormaDatos.formaAliado$1041$36=function(mostrar,mensajes,datosOV,aliadoW)
  {
   return function()
   {
@@ -2763,7 +2619,7 @@
   },p[0]));
   return forma.get_Doc();
  };
- FormaGenerica.forma$1050$38=function(salvar)
+ FormaGenerica.forma$1077$38=function(salvar)
  {
   return function()
   {
@@ -2805,7 +2661,7 @@
  {
   return ModeloUI.aliadoIdDoc(FormaContactos.formaContactos);
  };
- FormaContactos.formaContactos$1123$36=function(mostrar,mensajes,aliadoW,contactosV)
+ FormaContactos.formaContactos$1150$36=function(mostrar,mensajes,aliadoW,contactosV)
  {
   return function()
   {
@@ -2839,7 +2695,7 @@
    }))))):Global.alert("Error not caught FormaDatos"));
   };
  };
- FormaContactos.formaContactos$1122$42=function(contactosV)
+ FormaContactos.formaContactos$1149$42=function(contactosV)
  {
   return function()
   {
@@ -2849,7 +2705,7 @@
    }]));
   };
  };
- FormaContactos.formaContactos$1121$42=function(contactosV)
+ FormaContactos.formaContactos$1148$42=function(contactosV)
  {
   return function()
   {
@@ -2859,7 +2715,7 @@
    }]));
   };
  };
- FormaContactos.formaContactos$1120$42=function(contactosV)
+ FormaContactos.formaContactos$1147$42=function(contactosV)
  {
   return function()
   {
@@ -3222,7 +3078,7 @@
  {
   return ModeloUI.aliadoIdDoc(FormaFormasPago.formaFormasPago);
  };
- FormaFormasPago.formaFormasPago$1212$36=function(mostrar,mensajes,aliadoW,fpIds,formasPagoV)
+ FormaFormasPago.formaFormasPago$1239$36=function(mostrar,mensajes,aliadoW,fpIds,formasPagoV)
  {
   return function()
   {
@@ -3281,7 +3137,7 @@
    })))):Global.alert("Error not caught FormaDatos"));
   };
  };
- FormaFormasPago.formaFormasPago$1210$42=function(formasPagoV,fp)
+ FormaFormasPago.formaFormasPago$1237$42=function(formasPagoV,fp)
  {
   return function()
   {
@@ -3291,7 +3147,7 @@
    })]));
   };
  };
- FormaFormasPago.formaFormasPago$1209$42=function(formasPagoV,fp)
+ FormaFormasPago.formaFormasPago$1236$42=function(formasPagoV,fp)
  {
   return function()
   {
@@ -3569,14 +3425,14 @@
    };
   }(Global.id))(idR.$0):idR.$0===""?"La cuenta aun no ha sido verificada":idR.$0;
  };
- RenderAliados.aliados$1313$49=function(seleccionar,alid)
+ RenderAliados.aliados$1340$49=function(seleccionar,alid)
  {
   return function()
   {
    seleccionar(alid);
   };
  };
- RenderAliados.aliados$1311$49=function(expandir,alid)
+ RenderAliados.aliados$1338$49=function(expandir,alid)
  {
   return function()
   {
@@ -4058,11 +3914,12 @@
    }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],testing_Templates.calculo(p[0])),(b.i=i,i)))).get_Doc();
   });
  };
- Fila.New=function(nombre,status,tipo,referido,nivel,referidos,descendientes,comision,diaPago,desde,Id)
+ Fila.New=function(nombre,status,influyente,tipo,referido,nivel,referidos,descendientes,comision,diaPago,desde,Id)
  {
   return{
    nombre:nombre,
    status:status,
+   influyente:influyente,
    tipo:tipo,
    referido:referido,
    nivel:nivel,
@@ -4074,91 +3931,98 @@
    Id:Id
   };
  };
- ReporteConsolidado.consolidado$1544$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1579$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().Id);
   };
  };
- ReporteConsolidado.consolidado$1543$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1578$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().desde);
   };
  };
- ReporteConsolidado.consolidado$1542$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1577$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().diaPago);
   };
  };
- ReporteConsolidado.consolidado$1541$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1576$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().comision);
   };
  };
- ReporteConsolidado.consolidado$1540$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1575$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().descendientes);
   };
  };
- ReporteConsolidado.consolidado$1539$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1574$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().referidos);
   };
  };
- ReporteConsolidado.consolidado$1538$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1573$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().nivel);
   };
  };
- ReporteConsolidado.consolidado$1537$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1572$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().referido);
   };
  };
- ReporteConsolidado.consolidado$1536$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1571$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().tipo);
   };
  };
- ReporteConsolidado.consolidado$1535$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1570$45=function(toggle,ordenV)
+ {
+  return function()
+  {
+   toggle(ordenV.Get().influyente);
+  };
+ };
+ ReporteConsolidado.consolidado$1569$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().status);
   };
  };
- ReporteConsolidado.consolidado$1534$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1568$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().nombre);
   };
  };
- ReporteConsolidado.consolidado$1529$45=function(aliadosV)
+ ReporteConsolidado.consolidado$1564$45=function(aliadosV)
  {
   return function()
   {
    aliadosV.Set(ModeloUI.modeloV().Get().aliados);
   };
  };
- ReporteConsolidado.consolidado$1528$45=function(salvar)
+ ReporteConsolidado.consolidado$1563$45=function(salvar)
  {
   return function()
   {
@@ -4167,7 +4031,7 @@
  };
  ReporteConsolidado.consolidado=function()
  {
-  var aliadosV,ordenV,filtroV,referidores,b,T,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,t$9,t$10,S,t$11,t$12,p,i;
+  var aliadosV,ordenV,filtroV,referidores,b,T,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,t$9,t$10,t$11,t$12,t$13,p,i;
   function referidos(al)
   {
    return al.nReferidos===0?"-":(((Runtime.Curried3(function($1,$2,$3)
@@ -4200,13 +4064,14 @@
   }
   function aliado2Fila(al)
   {
+   var o;
    return Fila.New(Aliado$1.nombre(al.datosPersonales),(function($1)
    {
     return function($2)
     {
      return $1(ProzperServer_GeneratedPrintf.p($2));
     };
-   }(Global.id))(al.status),(function($1)
+   }(Global.id))(al.status),(o=al.influyente,o==null?"":o.$0),(function($1)
    {
     return function($2)
     {
@@ -4216,25 +4081,25 @@
    {
     return function($2)
     {
-     return $1(Strings.PadRight(Global.String($2),9));
+     return $1(Strings.PadLeft(Global.String($2),9));
     };
    }(Global.id))(al.nivel),(function($1)
    {
     return function($2)
     {
-     return $1(Strings.PadRight(Utils.toSafe($2),9));
+     return $1(Strings.PadLeft(Utils.toSafe($2),9));
     };
    }(Global.id))(referidos(al)),(function($1)
    {
     return function($2)
     {
-     return $1(Strings.PadRight(Utils.toSafe($2),9));
+     return $1(Strings.PadLeft(Utils.toSafe($2),9));
     };
    }(Global.id))(descendientes(al)),(function($1)
    {
     return function($2)
     {
-     return $1(Strings.PadRight(Utils.toSafe($2),9));
+     return $1(Strings.PadLeft(Utils.toSafe($2),9));
     };
    }(Global.id))(comision(al.comision)),Library["String.Right"]((function($1)
    {
@@ -4252,15 +4117,15 @@
   }
   function campos(orden)
   {
-   return[orden.nombre,orden.status,orden.tipo,orden.referido,orden.nivel,orden.referidos,orden.descendientes,orden.comision,orden.diaPago,orden.desde,orden.Id];
+   return[orden.nombre,orden.status,orden.influyente,orden.tipo,orden.referido,orden.nivel,orden.referidos,orden.descendientes,orden.comision,orden.diaPago,orden.desde,orden.Id];
   }
-  function newOrden(n,v,f)
+  function newOrden(n,a$1,a$2)
   {
-   return function(t$13)
+   return function(t$14)
    {
     var no;
-    no=t$13[0];
-    return[n===no?1:no<n?no+1:no,n===1?!v:v,t$13[2]];
+    no=t$14[0];
+    return[no===n?1:no<n?no+1:no,n===no&&n===1?!t$14[1]:t$14[1],t$14[2]];
    };
   }
   function toggle(v)
@@ -4272,6 +4137,9 @@
    {
     return newOrden($1[0],$1[1],$1[2]);
    }(v))(ordenV.Get().status),(function($1)
+   {
+    return newOrden($1[0],$1[1],$1[2]);
+   }(v))(ordenV.Get().influyente),(function($1)
    {
     return newOrden($1[0],$1[1],$1[2]);
    }(v))(ordenV.Get().tipo),(function($1)
@@ -4311,7 +4179,17 @@
   {
    return setAliado(id,function(al)
    {
-    return Aliado$2.New(al.id,al.idPadreO,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,StatusAliado.tryParse(v),al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel);
+    return Aliado$2.New(al.id,al.idPadreO,al.idForAuthorize,al.influyente,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,StatusAliado.tryParse(v),al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel);
+   });
+  }
+  function setInfluyente(id,v)
+  {
+   return setAliado(id,function(al)
+   {
+    return Aliado$2.New(al.id,al.idPadreO,al.idForAuthorize,Strings.Trim(v)===""?null:{
+     $:1,
+     $0:Strings.Trim(v)
+    },al.datosPersonales,al.contactos,al.identificacion,al.isInternal,al.status,al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel);
    });
   }
   function setPadre(id,v)
@@ -4326,7 +4204,7 @@
    };
    return setAliado(id,function(al)
    {
-    return Aliado$2.New(al.id,padre,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,al.status,al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel);
+    return Aliado$2.New(al.id,padre,al.idForAuthorize,al.influyente,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,al.status,al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel);
    });
   }
   function obtenerAliado(alid)
@@ -4352,9 +4230,9 @@
     {
      var m,al2;
      m=obtenerAliado(a$1.id);
-     return m!=null&&m.$==1?(al2=m.$0,!Unchecked.Equals(a$1.status,al2.status)||!Unchecked.Equals(a$1.idPadreO,al2.idPadreO)?b$1.Bind$4(Rpc.ejecutarDataEventoNuevo({
+     return m!=null&&m.$==1?(al2=m.$0,!Unchecked.Equals(a$1.status,al2.status)||!Unchecked.Equals(a$1.idPadreO,al2.idPadreO)||!Unchecked.Equals(a$1.influyente,al2.influyente)?b$1.Bind$4(Rpc.ejecutarDataEventoNuevo({
       $:8,
-      $0:[a$1.id,a$1.status,a$1.idPadreO]
+      $0:[a$1.id,a$1.status,a$1.idPadreO,a$1.influyente]
      }),function(a$2)
      {
       return b$1.Bind$2(new ResultMessage({
@@ -4380,97 +4258,114 @@
   }
   function a(alid,fW)
   {
-   var b$1,r,$1,s,$2,p$1,i$1;
-   return(b$1=(r=new FromView.New(View.Map(function($3)
+   var b$1,S,i$1,$1,s,$2,r,$3,p$1,i$2;
+   return(b$1=(S=Doc.BindView(VariousUI.crearOptions,VariousUI.statuses().get_View()),(i$1=new FromView.New(View.Map(function($4)
    {
-    return $3.referido;
+    return $4.influyente;
    },fW),($1=new TypesV0.IdAliado({
     $:0,
     $0:alid
-   }),function($3)
+   }),function($4)
    {
-    return setPadre($1,$3);
-   })),(s=new FromView.New(View.Map(function($3)
+    return setInfluyente($1,$4);
+   })),(s=new FromView.New(View.Map(function($4)
    {
-    return $3.status;
+    return $4.status;
    },fW),($2=new TypesV0.IdAliado({
     $:0,
     $0:alid
-   }),function($3)
+   }),function($4)
    {
-    return setStatus($2,$3);
+    return setStatus($2,$4);
+   })),(r=new FromView.New(View.Map(function($4)
+   {
+    return $4.referido;
+   },fW),($3=new TypesV0.IdAliado({
+    $:0,
+    $0:alid
+   }),function($4)
+   {
+    return setPadre($3,$4);
    })),ProviderBuilder.Make().WithHole({
     $:2,
     $0:"nombre",
-    $1:View.Map(function($3)
+    $1:View.Map(function($4)
     {
-     return $3.nombre;
+     return $4.nombre;
     },fW)
    }).WithHole({
     $:2,
     $0:"tipo",
-    $1:View.Map(function($3)
+    $1:View.Map(function($4)
     {
-     return $3.tipo;
+     return $4.tipo;
     },fW)
    }).WithHole({
+    $:8,
+    $0:"referido",
+    $1:r
+   })).WithHole({
     $:8,
     $0:"status",
     $1:s
    })).WithHole({
     $:8,
-    $0:"referido",
-    $1:r
+    $0:"influyente",
+    $1:i$1
+   })).WithHole({
+    $:0,
+    $0:"statuses",
+    $1:S
    })).WithHole({
     $:2,
     $0:"nivel",
-    $1:View.Map(function($3)
+    $1:View.Map(function($4)
     {
-     return $3.nivel;
+     return $4.nivel;
     },fW)
    }).WithHole({
     $:2,
     $0:"referidos",
-    $1:View.Map(function($3)
+    $1:View.Map(function($4)
     {
-     return $3.referidos;
+     return $4.referidos;
     },fW)
    }).WithHole({
     $:2,
     $0:"descendientes",
-    $1:View.Map(function($3)
+    $1:View.Map(function($4)
     {
-     return $3.descendientes;
+     return $4.descendientes;
     },fW)
    }).WithHole({
     $:2,
     $0:"comision",
-    $1:View.Map(function($3)
+    $1:View.Map(function($4)
     {
-     return $3.comision;
+     return $4.comision;
     },fW)
    }).WithHole({
     $:2,
     $0:"diapago",
-    $1:View.Map(function($3)
+    $1:View.Map(function($4)
     {
-     return $3.diaPago;
+     return $4.diaPago;
     },fW)
    }).WithHole({
     $:2,
     $0:"desde",
-    $1:View.Map(function($3)
+    $1:View.Map(function($4)
     {
-     return $3.desde;
+     return $4.desde;
     },fW)
    }).WithHole({
     $:2,
     $0:"id",
-    $1:View.Map(function($3)
+    $1:View.Map(function($4)
     {
-     return $3.Id;
+     return $4.Id;
     },fW)
-   }),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[["status",0],["referido",0]]),(i$1=new TemplateInstance.New(p$1[1],testing_Templates.filaconsolidado(p$1[0])),(b$1.i=i$1,i$1)))).get_Doc();
+   }),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[["influyente",0],["status",0],["referido",0]]),(i$2=new TemplateInstance.New(p$1[1],testing_Templates.filaconsolidado(p$1[0])),(b$1.i=i$2,i$2)))).get_Doc();
   }
   aliadosV=Var$1.Create$1([]);
   View.Sink(function(a$1)
@@ -4486,31 +4381,34 @@
   }],[3,true,function(d)
   {
    return d.status.toUpperCase();
-  }],[4,true,function(d)
+  }],[4,false,function(d)
   {
-   return d.tipo.toUpperCase();
+   return d.influyente.toUpperCase();
   }],[5,true,function(d)
   {
-   return d.referido.toUpperCase();
+   return d.tipo.toUpperCase();
   }],[6,true,function(d)
   {
-   return d.nivel.toUpperCase();
+   return d.referido.toUpperCase();
   }],[7,true,function(d)
   {
+   return d.nivel.toUpperCase();
+  }],[8,true,function(d)
+  {
    return d.referidos.toUpperCase();
-  }],[8,false,function(d)
+  }],[1,false,function(d)
   {
    return d.descendientes.toUpperCase();
-  }],[1,true,function(d)
-  {
-   return d.comision.toUpperCase();
   }],[9,true,function(d)
   {
-   return d.diaPago.toUpperCase();
+   return d.comision.toUpperCase();
   }],[10,true,function(d)
   {
-   return d.desde.toUpperCase();
+   return d.diaPago.toUpperCase();
   }],[11,true,function(d)
+  {
+   return d.desde.toUpperCase();
+  }],[12,true,function(d)
   {
    return d.Id.toUpperCase();
   }]));
@@ -4580,15 +4478,15 @@
   },View.Map(function($1)
   {
    return $1.aliados;
-  },ModeloUI.modeloV().get_View()),ordenV.get_View(),filtroV.get_View())),(t=(t$1=(t$2=(t$3=(t$4=(t$5=(t$6=(t$7=(t$8=(t$9=(t$10=(S=Doc.BindView(VariousUI.crearOptions,VariousUI.statuses().get_View()),(t$11=(t$12=ProviderBuilder.Make(),t$12.WithHole(Handler.EventQ2(t$12.k,"salvar",function()
+  },ModeloUI.modeloV().get_View()),ordenV.get_View(),filtroV.get_View())),(t=(t$1=(t$2=(t$3=(t$4=(t$5=(t$6=(t$7=(t$8=(t$9=(t$10=(t$11=(t$12=(t$13=ProviderBuilder.Make(),t$13.WithHole(Handler.EventQ2(t$13.k,"salvar",function()
   {
-   return t$12.i;
+   return t$13.i;
   },function()
   {
    salvar();
-  }))),t$11.WithHole(Handler.EventQ2(t$11.k,"cancelar",function()
+  }))),t$12.WithHole(Handler.EventQ2(t$12.k,"cancelar",function()
   {
-   return t$11.i;
+   return t$12.i;
   },function()
   {
    aliadosV.Set(ModeloUI.modeloV().Get().aliados);
@@ -4605,24 +4503,26 @@
    $1:filtroV
   }).WithHole({
    $:0,
-   $0:"statuses",
-   $1:S
-  })).WithHole({
-   $:0,
    $0:"referidores",
    $1:referidores
-  }),t$10.WithHole(Handler.EventQ2(t$10.k,"sort_nombre",function()
+  }),t$11.WithHole(Handler.EventQ2(t$11.k,"sort_nombre",function()
+  {
+   return t$11.i;
+  },function()
+  {
+   toggle(ordenV.Get().nombre);
+  }))),t$10.WithHole(Handler.EventQ2(t$10.k,"sort_status",function()
   {
    return t$10.i;
   },function()
   {
-   toggle(ordenV.Get().nombre);
-  }))),t$9.WithHole(Handler.EventQ2(t$9.k,"sort_status",function()
+   toggle(ordenV.Get().status);
+  }))),t$9.WithHole(Handler.EventQ2(t$9.k,"sort_influyente",function()
   {
    return t$9.i;
   },function()
   {
-   toggle(ordenV.Get().status);
+   toggle(ordenV.Get().influyente);
   }))),t$8.WithHole(Handler.EventQ2(t$8.k,"sort_tipo",function()
   {
    return t$8.i;
@@ -4683,7 +4583,7 @@
    $1:T
   })),(p=Handler.CompleteHoles(b.k,b.h,[["filtro",0]]),(i=new TemplateInstance.New(p[1],testing_Templates.consolidado(p[0])),(b.i=i,i)))).get_Doc();
  };
- TablaPagos.comisiones$1624$37=function(saveAs)
+ TablaPagos.comisiones$1661$37=function(saveAs)
  {
   return function()
   {
@@ -4692,15 +4592,15 @@
  };
  TablaPagos.comisiones=function()
  {
-  var pagosW,b,T,t,p,i;
+  var pagosW,b,T,b$1,p,i,b$2,p$1,i$1,t,p$2,i$2;
   function def(d,v)
   {
    return v===""?d:v;
   }
   function saveAs()
   {
-   var b$1;
-   Concurrency.Start((b$1=null,Concurrency.Delay(function()
+   var b$3;
+   Concurrency.Start((b$3=null,Concurrency.Delay(function()
    {
     return Concurrency.Bind(View.GetAsync(pagosW),function(a$2)
     {
@@ -4732,7 +4632,7 @@
   }
   function a$1(alid,alfpW)
   {
-   var alW,ctaW,b$1,p$1,i$1;
+   var alW,ctaW,b$3,p$3,i$3;
    alW=View.Map(function($1)
    {
     return $1[0];
@@ -4741,7 +4641,7 @@
    {
     return $1[1];
    },alfpW);
-   return(b$1=ProviderBuilder.Make().WithHole({
+   return(b$3=ProviderBuilder.Make().WithHole({
     $:1,
     $0:"codigo",
     $1:"22"
@@ -4783,30 +4683,27 @@
     {
      return def(Aliado$1.nombre2($1.datosPersonales),$2.titular);
     },alW,ctaW)
-   }),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i$1=new TemplateInstance.New(p$1[1],testing_Templates.filapago(p$1[0])),(b$1.i=i$1,i$1)))).get_Doc();
+   }),(p$3=Handler.CompleteHoles(b$3.k,b$3.h,[]),(i$3=new TemplateInstance.New(p$3[1],testing_Templates.filapago(p$3[0])),(b$3.i=i$3,i$3)))).get_Doc();
   }
   pagosW=View.MapAsync(function(als)
   {
-   var b$1,f,d;
+   var b$3,f,d;
    function g(v)
    {
     return Concurrency.Return(v);
    }
-   return Concurrency.Bind((b$1=AsyncResultMAutoOpen.asyncResultM(),b$1.Run(b$1.Delay(function()
+   return Concurrency.Bind((b$3=AsyncResultMAutoOpen.asyncResultM(),b$3.Run(b$3.Delay(function()
    {
     var alsf;
     alsf=Seq.filter(function(al)
     {
      return al.comision>0;
     },als);
-    return b$1.Bind$4(Rpc.obtenerFormasDePagoPara(Arrays.ofSeq(Seq.map(function(al)
-    {
-     return al.id;
-    },alsf))),function(a$2)
+    return b$3.Bind$4(Rpc.obtenerFormasDePagoPara(Arrays.ofSeq(alsf)),function(a$2)
     {
      function c(al,a$3)
      {
-      return Unchecked.Equals(al.id,a$3[0])?{
+      return Unchecked.Equals(al.id,a$3[0].id)?{
        $:1,
        $0:[al,a$3[1]]
       }:null;
@@ -4824,7 +4721,7 @@
        }:null;
       },fps),(v=TypesV0.ctaVacio(),o==null?v:o.$0))];
      }
-     return b$1.Return(Seq.choose(function($1)
+     return b$3.Return(Seq.choose(function($1)
      {
       return c($1[0],$1[1]);
      },Seq.zip(alsf,Seq.map(function($1)
@@ -4843,7 +4740,80 @@
   {
    return $1.aliados;
   },ModeloUI.modeloV().get_View()));
-  return(b=(T=Doc.ConvertSeqBy(function($1)
+  return(b=(T=List.ofArray([(b$1=ProviderBuilder.Make().WithHole({
+   $:2,
+   $0:"codigo",
+   $1:View.Map(function($1)
+   {
+    return(function($2)
+    {
+     return function($3)
+     {
+      return $2(Global.String($3));
+     };
+    }(Global.id))(Seq.length($1));
+   },pagosW)
+  }).WithHole({
+   $:1,
+   $0:"cuenta",
+   $1:""
+  }).WithHole({
+   $:1,
+   $0:"aba",
+   $1:""
+  }).WithHole({
+   $:2,
+   $0:"monto",
+   $1:View.Map(function($1)
+   {
+    function p$3(pg,a$2)
+    {
+     return pg.comision;
+    }
+    return(function($2)
+    {
+     return function($3)
+     {
+      return $2(Global.String($3)+".00");
+     };
+    }(Global.id))(Seq.sumBy(function($2)
+    {
+     return p$3($2[0],$2[1]);
+    },$1));
+   },pagosW)
+  }).WithHole({
+   $:1,
+   $0:"identificacion",
+   $1:""
+  }).WithHole({
+   $:1,
+   $0:"nombre",
+   $1:""
+  }),(p=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i=new TemplateInstance.New(p[1],testing_Templates.filapago(p[0])),(b$1.i=i,i)))).get_Doc(),(b$2=ProviderBuilder.Make().WithHole({
+   $:1,
+   $0:"codigo",
+   $1:""
+  }).WithHole({
+   $:1,
+   $0:"cuenta",
+   $1:""
+  }).WithHole({
+   $:1,
+   $0:"aba",
+   $1:""
+  }).WithHole({
+   $:1,
+   $0:"monto",
+   $1:"--------------------"
+  }).WithHole({
+   $:1,
+   $0:"identificacion",
+   $1:""
+  }).WithHole({
+   $:1,
+   $0:"nombre",
+   $1:""
+  }),(p$1=Handler.CompleteHoles(b$2.k,b$2.h,[]),(i$1=new TemplateInstance.New(p$1[1],testing_Templates.filapago(p$1[0])),(b$2.i=i$1,i$1)))).get_Doc(),Doc.ConvertSeqBy(function($1)
   {
    return a($1[0],$1[1]);
   },function($1)
@@ -4852,7 +4822,7 @@
    {
     return a$1($1,$2);
    };
-  },pagosW),(t=ProviderBuilder.Make(),t.WithHole(Handler.EventQ2(t.k,"exportar",function()
+  },pagosW)]),(t=ProviderBuilder.Make(),t.WithHole(Handler.EventQ2(t.k,"exportar",function()
   {
    return t.i;
   },function()
@@ -4861,8 +4831,90 @@
   }))).WithHole({
    $:0,
    $0:"tbody",
+   $1:Doc.Concat(T)
+  })),(p$2=Handler.CompleteHoles(b.k,b.h,[]),(i$2=new TemplateInstance.New(p$2[1],testing_Templates.tablapagos(p$2[0])),(b.i=i$2,i$2)))).get_Doc();
+ };
+ ListaDocs.listaDocs$1743$32=function()
+ {
+  return function(e)
+  {
+   var o;
+   o=View.TryGet(ModeloUI.aliadoW());
+   o==null?void 0:ListaDocs.subir(e.Event,o.$0.id.get_Id());
+  };
+ };
+ ListaDocs.listaDocs=function()
+ {
+  var b,t,T,p,i;
+  function a(docName,docNameW)
+  {
+   var b$1,i$1,p$1,i$2;
+   return(b$1=(i$1=View.Map(function($1)
+   {
+    return $1.id.get_Id();
+   },ModeloUI.aliadoW()),ProviderBuilder.Make().WithHole({
+    $:2,
+    $0:"nombre",
+    $1:docNameW
+   }).WithHole({
+    $:2,
+    $0:"idaliado",
+    $1:i$1
+   })),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i$2=new TemplateInstance.New(p$1[1],testing_Templates.filadocs(p$1[0])),(b$1.i=i$2,i$2)))).get_Doc();
+  }
+  ListaDocs.refrescarListaDocs();
+  return(b=(t=(T=Doc.ConvertSeqBy(Global.id,function($1)
+  {
+   return function($2)
+   {
+    return a($1,$2);
+   };
+  },ListaDocs.docsV().get_View()),ProviderBuilder.Make().WithHole({
+   $:0,
+   $0:"tbody",
    $1:T
-  })),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],testing_Templates.tablapagos(p[0])),(b.i=i,i)))).get_Doc();
+  })),t.WithHole(Handler.EventQ2(t.k,"subir",function()
+  {
+   return t.i;
+  },function(e)
+  {
+   var o;
+   o=View.TryGet(ModeloUI.aliadoW());
+   o==null?void 0:ListaDocs.subir(e.Event,o.$0.id.get_Id());
+  }))),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],testing_Templates.subirdocumentos(p[0])),(b.i=i,i)))).get_Doc();
+ };
+ ListaDocs.subir=function(e,id)
+ {
+  var $1,file,filename,r,form,fd,a,i,$2,x;
+  e.preventDefault();
+  form=Global.jQuery("#SubirDocumentos");
+  fd=new Global.FormData();
+  a=form.serializeArray();
+  for(i=0,$2=a.length-1;i<=$2;i++){
+   x=Arrays.get(a,i);
+   fd.append(x.name,x.value);
+  }
+  file=form.children("input[type=file]").first().get(0).files.item(0);
+  filename=file.name;
+  fd.append("file",file);
+  $.ajax((r={},r.type="POST",r.url="/api/subir/"+id+"/"+filename,r.data=fd,r.contentType=false,r.processData=false,r.success=ListaDocs.uploaded(),r));
+ };
+ ListaDocs.uploaded=function()
+ {
+  SC$1.$cctor();
+  return SC$1.uploaded;
+ };
+ ListaDocs.refrescarListaDocs=function()
+ {
+  AsyncResultM.iterpA(function(a)
+  {
+   ListaDocs.docsV().Set(a);
+  },Rpc.obtenerListaDocs());
+ };
+ ListaDocs.docsV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.docsV;
  };
  Aliado.get_LoggedId=function()
  {
@@ -4988,7 +5040,7 @@
   });
   MainProgram.mainProgram();
  };
- MainProgram.mainProgram$1880$36=function()
+ MainProgram.mainProgram$1996$36=function()
  {
   return function()
   {
@@ -4997,7 +5049,7 @@
  };
  MainProgram.mainProgram=function()
  {
-  var titleV,mesActualW,anoActualW,nombreAliadoW,idAliadoW,statusAliadoW,comisionAliadoW,datosAliadoW,l,m,a,o,v,getExtraMenu,b,t,h,M,p;
+  var titleV,mesActualW,anoActualW,nombreAliadoW,idAliadoW,statusAliadoW,comisionAliadoW,datosAliadoW,l,m,a,o,v,b,t,h,M,M$1,p;
   titleV=Var$1.Create$1(MainProgram.appName());
   mesActualW=View.Map(function($1)
   {
@@ -5027,7 +5079,10 @@
   {
    return Global.String($1.nReferidos);
   },ModeloUI.aliadoW());
-  AppFramework.addPlugIn(PlugIn.New(MainProgram.appName(),[AppFramework.newVar("title",titleV),AppFramework.newVar("contentVar",ModeloUI.contentVar()),AppFramework.newVar("invitaciones",ModeloUI.invitacionesV())],[AppFramework.newViw("mesActual",mesActualW),AppFramework.newViw("anoActual",anoActualW),AppFramework.newViw("aliado",nombreAliadoW),AppFramework.newViw("idAliado",idAliadoW),AppFramework.newViw("status",statusAliadoW),AppFramework.newViw("comision",comisionAliadoW),AppFramework.newViw("datos",datosAliadoW),AppFramework.newViw("emailsInvitar",ModeloUI.emailsInvitarW()),AppFramework.newViw("invitacionesDisabled",ModeloUI.invitacionesDisabledW())],[AppFramework.newDoc("Aliados",Lazy.Create(RenderAliados.aliados)),AppFramework.newDoc("Aliado",Lazy.Create(RenderAliado.aliado)),AppFramework.newDoc("Calculo",Lazy.Create(RenderAliado.calculo)),AppFramework.newDoc("FormaRegistro",Lazy.Create(FormaRegistro.formaDoc)),AppFramework.newDoc("FormaDatos",Lazy.Create(FormaDatos.formaDoc)),AppFramework.newDoc("FormaContactos",Lazy.Create(FormaContactos.formaDoc)),AppFramework.newDoc("FormaFormasPago",Lazy.Create(FormaFormasPago.formaDoc)),AppFramework.newDoc("contentDoc",Lazy.Create(MainProgram.getContentDoc)),AppFramework.newDoc("ReporteConsolidado",Lazy.Create(ReporteConsolidado.consolidado)),AppFramework.newDoc("TablaPagos",Lazy.Create(TablaPagos.comisiones))],[AppFramework.newAct("Logout",function()
+  AppFramework.addPlugIn(PlugIn.New(MainProgram.appName(),[AppFramework.newVar("title",titleV),AppFramework.newVar("contentVar",ModeloUI.contentVar()),AppFramework.newVar("invitaciones",ModeloUI.invitacionesV()),AppFramework.newVar("influencer",MainProgram.influencerV())],[AppFramework.newViw("mesActual",mesActualW),AppFramework.newViw("anoActual",anoActualW),AppFramework.newViw("aliado",nombreAliadoW),AppFramework.newViw("idAliado",idAliadoW),AppFramework.newViw("status",statusAliadoW),AppFramework.newViw("comision",comisionAliadoW),AppFramework.newViw("datos",datosAliadoW),AppFramework.newViw("emailsInvitar",ModeloUI.emailsInvitarW()),AppFramework.newViw("invitacionesDisabled",ModeloUI.invitacionesDisabledW()),AppFramework.newViw("VideoW",View.Map(function($1)
+  {
+   return $1.$==5?$1.$0:"";
+  },ModeloUI.endPointV().get_View())),AppFramework.newViw("influencerW",MainProgram.influencerClassW())],[AppFramework.newDoc("Aliados",Lazy.Create(RenderAliados.aliados)),AppFramework.newDoc("Aliado",Lazy.Create(RenderAliado.aliado)),AppFramework.newDoc("Calculo",Lazy.Create(RenderAliado.calculo)),AppFramework.newDoc("FormaRegistro",Lazy.Create(FormaRegistro.formaDoc)),AppFramework.newDoc("FormaDatos",Lazy.Create(FormaDatos.formaDoc)),AppFramework.newDoc("FormaContactos",Lazy.Create(FormaContactos.formaDoc)),AppFramework.newDoc("FormaFormasPago",Lazy.Create(FormaFormasPago.formaDoc)),AppFramework.newDoc("contentDoc",Lazy.Create(MainProgram.getContentDoc)),AppFramework.newDoc("ReporteConsolidado",Lazy.Create(ReporteConsolidado.consolidado)),AppFramework.newDoc("TablaPagos",Lazy.Create(TablaPagos.comisiones)),AppFramework.newDoc("ListaDocs",Lazy.Create(ListaDocs.listaDocs))],[AppFramework.newAct("Logout",function()
   {
    MainProgram.logout();
   }),AppFramework.newAct("LogIn",function()
@@ -5040,34 +5095,30 @@
   LayoutEngineModule.addLayout((l=(m=self.document.getElementById("GlobalLayout"),Unchecked.Equals(m,null)?"\r\n                        menuEditor layout\r\n                        |          main\r\n        \r\n                        main div \"\"\r\n                        :                 template  header     \"id=header\"           brand  brandV   logout \"@{Prozper.Logout}\" afiliado \"@{Prozper.aliado}\"\r\n                        :                 Doc       Prozper.contentDoc\r\n                        :                 template  sidedrawer \"id=sidedrawer\"       brand  brandV   idaliado \"@{Prozper.idAliado}\" \r\n                        :                 template  footer     \"id=footer\"           brand  brandV   madeby \"CIPHER Bsc\" madebylink \"www.cipherbsc.com\"\r\n         \r\n                        mainContent          template  content    \"id=content-wrapper\"  content aliados                  fecha \"@{Prozper.mesActual} @{Prozper.anoActual}\" idaliado \"@{Prozper.aliado}\"\r\n                        cntFormaRegistro     template  content    \"id=content-wrapper\"  content Prozper.FormaRegistro    titulo \"Referido por: @{Prozper.aliado}\"  \r\n                        cntFormaDatos        template  content    \"id=content-wrapper\"  content Prozper.FormaDatos       titulo \" \"\r\n                        cntFormaContactos    template  content    \"id=content-wrapper\"  content Prozper.FormaContactos   titulo \" \" \r\n                        cntFormaFormasPago   template  content    \"id=content-wrapper\"  content Prozper.FormaFormasPago  titulo \" \" \r\n                        cntFormaCuentas      template  content    \"id=content-wrapper\"  content ProzperLyt.FormaCuentas  titulo \" \"  \r\n                        cntFormaDocumentos   template  content    \"id=content-wrapper\"  content Prozper.FormaDocumentos  titulo \" \"  \r\n                        cntFormaNoUser       template  content    \"id=content-wrapper\"  content botonLogin               titulo \" \"  \r\n                        cntFormaInvitaciones template  content    \"id=content-wrapper\"  content invitaciones             titulo \" \"  \r\n        \r\n                        aliados          div       \"class=row\"\r\n                        :                div       \"class=mui-col-md-6\"\r\n                        ::               div       \"class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto\" Prozper.Aliados\r\n                        :                div       \"class=mui-col-md-6\"\r\n                        ::               div       \"class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto\" Aliado Comisiones\r\n                        brandV           Var       \"Prozper\"\r\n        \r\n                        botonLogin       div       \"class=row\"\r\n                        :                div       \"class=mui-col-md-6\"\r\n                        ::               div       \"class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto\" \r\n                        :::              button    Prozper.LogIn \"class=mui-btn mui-btn--primary\" \"Ingresar al Sistema\"\r\n        \r\n                        invitaciones     div       \"class=row\"\r\n                        :                div       \"class=mui-col-md-6 mui-col-md-offset-1\"\r\n                        ::               div       \"class=mui-panel mui--z5 scrollbar; max-height:550px ; overflow:auto\" \r\n                        :::              h1        \"\" \"Enviar Invitaciones\"\r\n                        :::              textarea  Prozper.invitaciones  \"width:100% ; height:30rem; placeholder=Copie aqui las direcciones de correo electronico\" \r\n                        :                div       \"white-space: pre-wrap\" \"@{Prozper.emailsInvitar}\"\r\n                        :                button    Prozper.enviarInvitaciones \"class=mui-btn mui-btn--raised mui-btn--primary;@{Prozper.invitacionesDisabled}\" \"Enviar\"\r\n        \r\n                        Aliado           div       \"class=mui-col-md-8\"\r\n                        :                Doc Prozper.Aliado\r\n        \r\n                        Comisiones       template    tablacomisiones \"class=mui-col-md-3\"  tbody filasComisiones\r\n                        filasComisiones  concat      \"\"\r\n                        :                template    filacomision    \"\"  periodo \"Ene 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Feb 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Mar 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Abr 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"May 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Jun 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Jul 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Ago 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Sep 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Oct 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Nov 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Dec 2018\" comision \"$1,000\"\r\n                \r\n                        menuEditorx      horizontal  65          menuLogo                  editorMessages\r\n                        double           horizontal  0-50-100    AppFramework.AppFwkClient menuEditor\r\n                        menuLogo         vertical    350         logo                      menu\r\n                        logo             span       \"margin:0;   color:gray; font-size: 55px; font-weight:530\" \"StackOverflow\"\r\n                        editorMessages   horizontal  10-83-100   editorButtons             messages\r\n                        messages         vertical    0-50-100    messagesLeft              messagesRight\r\n                        editorButtons    vertical    150 buttons snippetsSnippet \r\n                        snippetsSnippet  vertical    0-20-100    snippets                  editorProperties\r\n                        snippets         horizontal  20          \"@{FSharpStation.CurrentPath}\" tblDimensions2\r\n                        editorProperties vertical    0-100-100   snippet                   properties\r\n                        properties       div        \"\"           FSharpStation.Properties\r\n                        snippet          horizontal  35          Name                      FSharpStation.editor\r\n                        menu             span       \"display: grid; grid-template-columns: 30% 20% 20% 10%; grid-gap: 25px; margin:5px; grid-template-rows:50px\" inpServer btnLoad btnSaveAs\r\n                         \r\n                        severalTabs      wcomp-tabstrip  \"\" \r\n                        :                div \"tabname=Dimensions\" \r\n                        ::               div \"\" btnAddDimension RuleEditor.Dimensions\r\n                        :                div \"tabname=Cubes\"\r\n                        :                div \"tabname=Global Definitions\" RuleEditor.globalDefs\r\n                \r\n                        btnSaveAs        button RuleEditor.SaveAs         \"class=btn @{RuleEditor.SaveNeeded}\" \"Save as...    \"\r\n                        btnAddDimension  button RuleEditor.AddDimension      \"\"                  \"new dim...\"\r\n                        btnDeleteSnippet button FSharpStation.RemoveSnippet  \"\"                  \"Delete Snippet\"\r\n                        btnIndentIn      button FSharpStation.IndentIn       \"\"                  \"Indent In  >> \"\r\n                        btnIndentOut     button FSharpStation.IndentOut      \"\"                  \"Indent Out << \"\r\n                        btnRunFS         button FSharpStation.RunFS          \"\"                  \"Run F#        \"\r\n                        btnAbortFsi      button FSharpStation.AbortFsi       \"\"                  \"Abort Fsi     \"\r\n                \r\n                        messagesLeft     wcomp-tabstrip                      \"\"                  Output FsCode\r\n                        messagesRight    wcomp-tabstrip                      \"\"                  Parser\r\n                \r\n                        buttons          div \"overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px\"\r\n                        :                button RuleEditor.AddCalculation    \"\"                 \"Add Calculation\"\r\n                        :                button RuleEditor.AddTotal          \"\"                 \"Add Total\"\r\n                        :                Doc       none x\r\n                        :                button RuleEditor.IndentIn          \"\"                  \"Indent In  >> \"\r\n                        :                button RuleEditor.IndentOut         \"\"                  \"Indent Out << \"\r\n                \r\n                        Output           textarea  RuleEditor.Output         \"tabname=Output ; placeholder=Output messages ; spellcheck=false\" \r\n                        FsCode           textarea  RuleEditor.CodeFS         \"tabname=F# Code; placeholder=F# Code         ; spellcheck=false\" \r\n                        Parser           textarea  RuleEditor.Parser         \"tabname=Parser ; placeholder=Parser messages; dblclick=@{FSharpStation.JumpTo} ; spellcheck=false\" \r\n                        Name             Doc       InputLabel                \"\"     \"Name:\"        FSharpStation.SnippetName\r\n                        inpServer        Doc       InputLabel                \"\"     \"Server:\"      RuleEditor.Server\r\n                        btnLoad          Doc       InputFile                 \"\"     \"Load File...\" RuleEditor.LoadFile  FileName\r\n                        btnImport        Doc       InputFile                 \"\"     \"Import...\"    FSharpStation.Import    \"\"\r\n                        FileName         div                                 \"class=form-control\"  RuleEditor.fileName\r\n        \r\n                   ":m.textContent),LayoutEngineModule.newLyt(MainProgram.layoutName(),l)));
   a=(o=null,(v=MainProgram.layoutName(),o==null?v:o.$0));
   AppFramework.mainDocV().Set(a);
-  getExtraMenu=Doc.BindView(function(al)
+  Doc.BindView(function(al)
   {
    var b$1,p$1,i;
    return Unchecked.Equals(al.id,Aliado$1.empty().id)?(b$1=ProviderBuilder.Make(),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i=new TemplateInstance.New(p$1[1],testing_Templates.opcionesadministrador(p$1[0])),(b$1.i=i,i)))).get_Doc():Doc.get_Empty();
   },ModeloUI.aliadoW());
-  b=(t=(h=MainProgram.getDocView(MainProgram.layoutName(),"headerCenter"),(M=MainProgram.getContentDoc(),ProviderBuilder.Make().WithHole({
+  b=(t=(h=MainProgram.getDocView(MainProgram.layoutName(),"headerCenter"),(M=MainProgram.getMenuDoc(),(M$1=MainProgram.getContentDoc(),ProviderBuilder.Make().WithHole({
    $:0,
    $0:"maincontent",
+   $1:M$1
+  })).WithHole({
+   $:0,
+   $0:"menu",
    $1:M
   })).WithHole({
    $:0,
    $0:"headercenter",
    $1:h
-  })).WithHole({
-   $:2,
-   $0:"idaliado",
-   $1:idAliadoW
-  }),t.WithHole(Handler.EventQ2(t.k,"logout",function()
+  })),t.WithHole(Handler.EventQ2(t.k,"logout",function()
   {
    return t.i;
   },function()
   {
    MainProgram.logout();
   }))).WithHole({
-   $:0,
-   $0:"extramenu",
-   $1:getExtraMenu
-  }).WithHole({
    $:2,
    $0:"cortina",
    $1:View.Map(function($1)
@@ -5082,16 +5133,31 @@
    self.document.title=t$1;
   },titleV.get_View());
  };
+ MainProgram.influencerClassW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.influencerClassW;
+ };
+ MainProgram.influencerV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.influencerV;
+ };
+ MainProgram.getMenuDoc=function()
+ {
+  return Doc.EmbedView(View.Map2(function($1,$2)
+  {
+   var d;
+   d=$1!=null&&$1.$==1?Unchecked.Equals($2.id,Aliado$1.empty().id)?"ProzperLyt.mnuAdministrador":"ProzperLyt.mnuUsuario":"ProzperLyt.mnuNoUsuario";
+   return MainProgram.getDoc(MainProgram.appName(),d);
+  },Msal$1.userO().get_View(),ModeloUI.aliadoW()));
+ };
  MainProgram.getContentDoc=function()
  {
-  var $1,$2;
-  function a(content,userO)
+  return Doc.EmbedView(View.Map(function(d)
   {
-   var content$1;
-   content$1=userO!=null&&userO.$==1?content:MainProgram.layoutName()+".cntFormaNoUser";
-   return MainProgram.getDoc(MainProgram.appName(),content$1);
-  }
-  return Doc.EmbedView(($1=ModeloUI.contentVar().get_View(),($2=Msal$1.userO().get_View(),(((Runtime.Curried3(View.Map2))(a))($1))($2))));
+   return MainProgram.getDoc(MainProgram.appName(),d);
+  },ModeloUI.contentVar().get_View()));
  };
  MainProgram.getDocView=function(appName,docName)
  {
@@ -5213,6 +5279,18 @@
   {
    Msal$1.callback(e,t,e$1,t$1,s);
   }
+  function f$2(a)
+  {
+   return a==="ProzperLyt.mainContent"?EndPoint.DefaultEP:{
+    $:3,
+    $0:a
+   };
+  }
+  function g$3(v)
+  {
+   if(!Unchecked.Equals(ModeloUI.endPointV().Get(),v))
+    ModeloUI.endPointV().Set(v);
+  }
   SC$1.unindentStr=function(x)
   {
    return g(String.unindent$1(x));
@@ -5266,7 +5344,6 @@
    return tokenReceivedCallback($1[0],$1[1],$1[2],$1[3],$1[4]);
   },options))));
   SC$1.localStorage=self.localStorage;
-  Msal$1.checkUser();
   SC$1.modeloV=Var$1.Create$1(Modelo.New(new TypesV0.IdAliado({
    $:0,
    $0:":"
@@ -5285,15 +5362,29 @@
   SC$1.selAliadoIdOV=Var$1.Create$1(null);
   SC$1.refAliadoIdOV=Var$1.Create$1(null);
   SC$1.endPointV=Router.InstallHash(EndPoint.DefaultEP,testing_Router.r());
-  SC$1.contentVar=Var$1.Lens(ModeloUI.endPointV(),function(a)
+  View.Sink(function(a)
   {
-   return a.$==1?a.$0:"ProzperLyt.mainContent";
-  },function(a,a$1)
+   if(a.$==1)
+    ;
+   else
+    if(a.$==2)
+     ;
+    else
+     if(a.$==4)
+      Global.showPDF(a.$0);
+     else
+      if(a.$==5)
+       Global.playVideo();
+      else
+       Msal$1.checkUser();
+  },ModeloUI.endPointV().get_View());
+  SC$1.contentVar=new FromView.New(View.Map2(function(a,a$1)
   {
-   return a$1==="ProzperLyt.mainContent"?EndPoint.DefaultEP:{
-    $:1,
-    $0:a$1
-   };
+   var $1,$2;
+   return a$1.$==0&&!Unchecked.Equals(Msal$1.userO().Get(),null)?"ProzperLyt.mainContent":a$1.$==3&&(!Unchecked.Equals(Msal$1.userO().Get(),null)&&($2=a$1.$0,true))?$2:a$1.$==2?"ProzperLyt.cntPreRegister":a$1.$==4?"ProzperLyt.cntPDF":a$1.$==5?"ProzperLyt.cntVideo":"ProzperLyt.cntFormaNoUser";
+  },Msal$1.userO().get_View(),ModeloUI.endPointV().get_View()),function(x)
+  {
+   return g$3(f$2(x));
   });
   SC$1.aliadoW=(b=View.get_Do(),View.Bind(function(a)
   {
@@ -5306,12 +5397,13 @@
    return View.Const(aliadoO!=null&&aliadoO.$==1?aliadoO.$0:Aliado$1.empty());
   },ModeloUI.modeloV().get_View()));
   SC$1.llamadas=Var$1.Create$1(0);
+  Remoting.set_EndPoint((self.location.protocol==="http:"?"http://localhost:7071/api/":"https://prozper.azurewebsites.net/api/")+"rpc/rpc");
   SC$1.shouldRefresh=true;
   View.Sink(function()
   {
    Refresh.refrescarData(true);
   },Msal$1.userO().get_View());
-  Concurrency.Start((b$1=null,Concurrency.Delay(function()
+  Concurrency.StartImmediateAsTask((b$1=null,Concurrency.Delay(function()
   {
    return Concurrency.While(function()
    {
@@ -5320,8 +5412,7 @@
    {
     return Concurrency.Bind(Concurrency.Sleep(5*60*1000),function()
     {
-     Refresh.refrescarData(true);
-     return Concurrency.Zero();
+     return Concurrency.Return(null);
     });
    }));
   })),null);
@@ -5329,7 +5420,7 @@
   {
    self.document.addEventListener("visibilityChange",function()
    {
-    return Refresh.refrescarData(false);
+    return null;
    },false);
   }
   catch(m)
@@ -5438,8 +5529,16 @@
     });
    };
   }];
+  SC$1.docsV=Var$1.Create$1([]);
+  SC$1.uploaded=function(a,b$3)
+  {
+   ListaDocs.refrescarListaDocs();
+   return Global.alert(b$3);
+  };
   SC$1.layoutName="ProzperLyt";
   SC$1.appName="Prozper";
+  SC$1.influencerV=Var$1.Create$1("");
+  SC$1.influencerClassW=View.Const("");
  };
  testing_GeneratedPrintf.p=function($1)
  {
@@ -5613,6 +5712,22 @@
    $0:"filapago"
   },h):void 0;
  };
+ testing_Templates.subirdocumentos=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"subirdocumentos"
+  },h):void 0;
+ };
+ testing_Templates.filadocs=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"filadocs"
+  },h):void 0;
+ };
  testing_Templates.opcionesadministrador=function(h)
  {
   Templates.LoadLocalTemplates("index");
@@ -5623,7 +5738,7 @@
  };
  testing_Router.r=function()
  {
-  return RouterOperators.JSUnion(void 0,[[null,[[null,[]]],[]],[null,[[null,["Content"]]],[RouterOperators.rString()]]]);
+  return RouterOperators.JSUnion(void 0,[[null,[[null,[]]],[]],[null,[[null,["NoUser"]]],[]],[null,[[null,["PreRegister"]]],[]],[null,[[null,["Content"]]],[RouterOperators.rString()]],[null,[[null,["Pdf"]]],[RouterOperators.rWildcard()]],[null,[[null,["Video"]]],[RouterOperators.rWildcard()]]]);
  };
  Runtime.OnLoad(function()
  {
