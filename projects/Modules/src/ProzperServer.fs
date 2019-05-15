@@ -2,7 +2,7 @@
 #nowarn "52"
 #nowarn "1182"
 #nowarn "1178"
-////-d:FSharpStation1556565204816 -d:NOFRAMEWORK --noframework -d:WEBSHARPER
+////-d:FSharpStation1556889190256 -d:NOFRAMEWORK --noframework -d:WEBSHARPER
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0"
@@ -38,13 +38,19 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Common.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\other\AuthorizeNet\lib\AuthorizeNet.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\other\Microsoft.IdentityModel.Clients.ActiveDirectory\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Newtonsoft.Json\lib\net45\Newtonsoft.Json.dll"
+//#r @"D:\Abe\CIPHERWorkspace\AzureFunctions/packages/Microsoft.Azure.Storage.Common/lib/net452/Microsoft.Azure.Storage.Common.dll"
+//#r @"D:\Abe\CIPHERWorkspace\AzureFunctions/packages/Microsoft.Azure.Storage.Blob/lib/net452/Microsoft.Azure.Storage.Blob.dll"
+//#r @"D:\Abe\CIPHERWorkspace\AzureFunctions/packages/Microsoft.Azure.Storage.Queue/lib/net452/Microsoft.Azure.Storage.Queue.dll"
+//#r @"D:\Abe\CIPHERWorkspace\AzureFunctions/packages/Microsoft.Azure.Cosmos.Table/lib/netstandard2.0/Microsoft.Azure.Cosmos.Table.dll"
+//#r @"D:\Abe\CIPHERWorkspace\AzureFunctions/packages/WindowsAzure.Storage/lib/net45/Microsoft.WindowsAzure.Storage.dll"
 //#nowarn "3242"
 //#nowarn "52"
 //#nowarn "1182"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1556565204816
+//#define FSharpStation1556889190256
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -462,188 +468,235 @@ namespace FsRoot
                         let result = result
                 
                 
-                type ResultM<'v, 'm> = ResultM of Option<'v> * ResultMessage<'m>
+                /// Based on Nick Palladino's https://github.com/palladin/Eff
                 
-                let inline OkM              v    = ResultM (Some v, NoMsg)
-                let inline OkMWithMsg       v m  = ResultM(Some v, m)
-                //let inline OkMWithMsgs      v ms = ms |> ResultMessage.reduceMsgs |> OkMWithMsg v
+                [< AutoOpen >]
+                module Eff =
+                    type Effect  = abstract Extend : (Effect -> Effect) -> Effect
                 
-                let inline ErrorM             m  = ResultM (None  , m    )
-                //let inline ErrorMWithMsgs     ms = ms |> ResultMessage.reduceMsgs |> ErrorM
-                let (|OkM|ErrorM|)             r = match r with
-                                                    | ResultM(Some v, m) -> OkM   (v, m)
-                                                    | ResultM(None  , e) -> ErrorM e
-                module ResultM =
+                    type Eff<'H, 'a> = Eff of ('H -> ('a -> Effect) -> Effect) 
+                        with  member this.Create = match this with Eff create -> create
                 
-                    type CheckError<'T> = CheckErrorF of ('T -> bool)
-                    let checkError   () = CheckErrorF (fun _ -> true )
-                    let checkErrorW  () = CheckErrorF (fun _ -> false)
+                    let inline rtn  v : Eff<'H, 'a> = Eff (fun h k -> k v)
+                    let bind  (f: 'a -> Eff<'H, 'b>) (effA: Eff<'H, 'a>) : Eff<'H, 'b> = 
+                                        Eff (fun h kb -> 
+                                                let (Eff effKa) = effA
+                                                effKa h (fun a -> 
+                                                    let (Eff effKb) = f a
+                                                    effKb h kb
+                                                )
+                                            )
+                    let inline map   f  m  = bind (f >> rtn) m
+                    let inline apply fR vR = fR |> bind (fun f -> map f vR)
                 
-                    let inline rtn                 v = OkM v
-                    let inline rtnM                m = OkMWithMsg () m
-                    let inline rtnr               vR = vR  |> Result.map OkM          |> Result.defaultWith       ErrorM
-                    let freeMessage                r = r   |> function Ok v -> Ok v   | Error e -> ResultMessage.freeMessage e |> Error
-                    let inline toResult            r = match r with
-                                                       | ResultM(Some v, _) -> Ok     v
-                                                       | ResultM(None  , e) -> Error  e
-                    let inline toResultD           r = match r with
-                                                       | ResultM(Some v, m) -> Ok    (v, m)
-                                                       | ResultM(None  , e) -> Error  e
-                    let toOption                   r = r   |> function ResultM (v,_) -> v
-                    let defaultWith              f r = r   |> toResult |> Result.defaultWith   f
-                    let defaultValue             d r = r   |> toResult |> Result.defaultValue  d
-                    let map         f  (ResultM (v, m)) = ResultM (v |> Option.map f, m)
-                    let mapMessage  fM (ResultM (v, m)) = ResultM (v, fM m)
-                    let bind                  f    r = match r with
-                                                       | ResultM(Some v, m) -> f v |> mapMessage (ResultMessage.addMsg m)
-                                                       | ResultM(None  , e) -> ResultM(None  , e)
-                    /// bind version that protects against exceptions
-                    let bindP                 f    r = match r with
-                                                       | ResultM(Some v, m) -> try f v |> mapMessage (ResultMessage.addMsg m)
-                                                                               with  e -> ExceptMsg (e.Message, e.StackTrace) |> ErrorM
-                                                       | ResultM(None  , e) -> ResultM(None  , e)
-                    let bindM                 f    m = rtnM m |> bindP f
+                    type Done<'a>(v : 'a) =
+                        member self.Value = v
+                        interface Effect with member self.Extend(_) : Effect = self :> _
                 
-                    let check (CheckErrorF k) vR = vR |> function ResultM(Some _, m) when ResultMessage.isFatalF k m -> ErrorM m |_-> vR
+                    let done' (v :  'a) : Effect = new Done<'a>(v) :> _ 
+                    let return' v  = Eff( fun _ _ -> done' v )
                 
-                    /// map version that protects against exceptions
-                    let inline mapP           f    m = bindP (f >> rtn) m
-                    let iter                  fM f r = r   |> mapP f |> function | ResultM(Some (), m) -> () | ResultM(None, m) -> fM m  : unit
-                    let get                        r = r   |>          defaultWith (string >> failwith)
-                    let ofOption              f   vO = vO  |> Option.map OkM          |> Option.defaultWith (f >> ErrorM)
-                    let ofResult                  vR = vR  |> rtnr
-                    let insertO                  vRO = vRO |> Option.map(map Some)    |> Option.defaultWith(fun () -> OkM None)
-                    let absorbO               f  vOR = vOR |> bindP (ofOption f)
-                    let addMsg                  m  r = r |> mapMessage (ResultMessage.addMsg m)
-                    let failIfFatalMsgF         f  r = r |> function OkM (v, m) when ResultMessage.isFatalF f m -> ErrorM m |_-> r
-                    let failIfFatalMsg             r = r |> function OkM (v, m) when ResultMessage.isFatal    m -> ErrorM m |_-> r
-                    let failIfFatalMsgW            r = r |> function OkM (v, m) when ResultMessage.isFatalW   m -> ErrorM m |_-> r
-                    let (>>=)                    r f = bind f r
-                    let rec    traverseSeq    f   sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
-                                                       Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
-                    let inline sequenceSeq        sq = traverseSeq id sq
-                        
+                    let run<'H, 'a> (handler: 'H) (eff: Eff<'H, 'a>) : 'a =
+                        match eff.Create handler done' with
+                        | :? Done<'a> as done' -> done'.Value
+                        | v                    -> failwithf "Unhandled effect %A" v
+                
+                    let inline runResult h eff = 
+                        try run h eff |> Ok
+                        with e -> Error(e.ToString())
+                
+                
+                    let inline (<*>) f v   = apply f v
+                    let inline (|>>) v f   = map   f v
+                    let inline (>>=) v f   = bind  f v
+                    let inline (>->) f g v = f v |>> g
+                    let inline (>=>) f g v = f v >>= g
                     
-                    type Builder() =
-                        member inline __.Return          x       = rtn  x
-                        member inline __.ReturnFrom      x       =     (x:ResultM<_,_>)
-                        member inline __.ReturnFrom      x       =     (x:Result< _,_>)
-                        member inline __.ReturnFrom      x       = rtnM x
-                        member        __.Bind           (w , r ) = bindP  r w
-                        member        __.Bind           (w , r ) = bindM  r w
-                        member inline __.Zero           ()       = rtn ()
-                        member inline __.Delay           f       = f
-                        member inline __.Combine        (a, b)   = a |> bind b
-                        member inline __.Run             f       = OkM () |> bindP f
-                        member __.TryWith   (body, handler     ) = try body() with e -> handler     e
-                        member __.TryFinally(body, compensation) = try body() finally   compensation()
-                        member __.Using     (disposable, body  ) = using (disposable:#System.IDisposable) body
+                    let inline join m = m |> bind id
+                    
+                    let traverseSeq            f     sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                          Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq           sq = traverseSeq id sq
+                    
+                    let inline insertO    vvO               = vvO   |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
+                    let inline insertR   (vvR:Result<_,_>)  = vvR   |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
+                    let inline insertFst (fst, vEf)         = vEf   |> map (fun v -> fst, v)
+                    let inline insertSnd (vEf, snd)         = vEf   |> map (fun v -> v, snd)
+                    
+                    let inline bindO (f:'a->Eff<'H,'b>) (ef:Eff<'H,'a option>) = bind (Option.map f >> insertO) ef
+                    
+                    type EffBuilder() = 
+                        member self.Zero      (                 ) = rtn ()
+                        member self.Return    (v   :         'A ) = rtn v
+                        member self.ReturnFrom(eff : Eff<'U, 'A>) = eff
+                        member self.Bind      (eff, f           ) = bind f eff
+                        member self.Combine (first : Eff<'U, unit>, second : Eff<'U, 'B>) : Eff<'U, 'B> =  self.Bind(first, fun () -> second)
+                        member self.Delay (f : unit -> Eff<'U, 'A>) : Eff<'U, 'A> =  Eff (fun k -> let (Eff cont) = f () in cont k)
+                    //    member inline __.Delay       f                  = f
                         member __.While(guard, body) =
                             let rec whileLoop guard body =
                                 if guard() then body() |> bind (fun () -> whileLoop guard body)
                                 else rtn   ()
                             whileLoop guard body
+                        member this.TryWith   (body, handler     ) = Eff(fun k -> try body() |> function Eff(f) -> f k with e -> handler e |> function Eff(f) -> f k)
+                        member this.TryFinally(body, compensation) = Eff(fun k -> try body() |> function Eff(f) -> f k finally   compensation()           )
+                        member this.Using     (disposable, body  ) = //wrap(fun r -> using (disposable:#System.IDisposable) (fun u -> body u |> getFun <| r) )
+                                    let body' = fun () -> body disposable
+                                    this.TryFinally(body', fun () -> if disposable :> obj <> null then (disposable:#System.IDisposable).Dispose() )
                         member this.For(sequence:seq<_>, body) =
                             this.Using(sequence.GetEnumerator(),fun enum -> 
                                 this.While(enum.MoveNext, 
-                                    this.Delay(fun () -> body enum.Current)))
-                                    
-                    module Operators =
-                        let inline (|>>) v f   = mapP  f v
-                        let inline (>>=) v f   = bindP f v
-                        let inline (>>>) f g v = f v |>> g
-                        let inline (>=>) f g v = f v >>= g
-                        let inline rtn   v     = rtn    v
-                
-                [< AutoOpen >]
-                module ResultMAutoOpen =
-                    open ResultM
+                                    fun () -> this.Delay(fun () -> body enum.Current)))
                     
-                    let resultM = Builder()
                     
-                
-                
-                type AsyncResultM<'v, 'm> = Async<ResultM<'v, 'm>>
-                
-                /// A computation expression to build an Async<Result<'ok, 'error>> value
-                module AsyncResultM =
-                    let mapError fE v  = v |> Async.map (ResultM.mapMessage fE)
-                    let freeMessage v  = v |> Async.map  ResultM.freeMessage
-                
-                    let rtn         v   = async.Return(OkM v  )
-                    let rtnr        vR  = async.Return(ResultM.rtnr vR)
-                    let rtnR        vR  = async.Return    vR
-                    let rtnM        vM  = async.Return(ResultM.rtnM vM)
-                    let rtnrA       vrA = vrA |> Async.map    ResultM.ofResult
-                    let errorMsgf   fmt = Printf.ksprintf (ErrorMsg >> ErrorM >> async.Return) fmt
-                    let iterS  fE f vRA = Async.iterS (ResultM.iter fE f) vRA
-                    let iterA  fE f vRA = Async.iterA (ResultM.iter fE f) vRA
-                    let iterpS    f vRA = vRA |> iterS (ResultMessage.summarized >> print) f
-                    let iterpA    f vRA = vRA |> iterA (ResultMessage.summarized >> print) f
-                    let bind  (fRA:'a -> Async<ResultM<'b,'c>>)  (vRA: Async<ResultM<'a,'c>>) : Async<ResultM<'b,'c>>= async {
-                        try 
-                            let!  vR = vRA
-                            match vR with
-                            | OkM   (v, m) -> return! fRA   v |> Async.map (ResultM.addMsg m)
-                            | ErrorM    m  -> return  ErrorM m
-                        with  e -> return ExceptMsg (e.Message, e.StackTrace) |> ErrorM
-                    }
-                    let inline bindr  f a  = rtnr   a |> bind f : AsyncResultM<_,_>
-                    let inline bindM  f a  = rtnM   a |> bind f : AsyncResultM<_,_>
-                    let inline bindrA f a  = rtnrA  a |> bind f : AsyncResultM<_,_>
-                    let inline bindR  f a  = rtnR   a |> bind f : AsyncResultM<_,_>
-                    let inline map    f m = bind  (f >> rtn) m            
-                    let rec whileLoop cond fRA =
-                        if   cond () 
-                        then fRA  () |> bind (fun () -> whileLoop cond fRA)
-                        else rtn  ()
-                    let (>>=)                              v f = bind f v
-                    let rec    traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
-                                                                 Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
-                    let inline sequenceSeq                  sq = traverseSeq id sq
-                    let insertO   vRAO                         = vRAO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
-                    let insertR ( vRAR:Result<_,_>)            = vRAR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
-                    let absorbR   vRRA                         = vRRA |> Async.map (ResultM.bindP   id)
-                    let absorbO f vORA                         = vORA |> Async.map (ResultM.absorbO  f)
-                    let getResultM       (a:AsyncResultM<_,_>) = a    |> Async.map  OkM   
-                    type AsyncResultMBuilder() =
-                        member __.ReturnFrom vRA        : Async<ResultM<'v  , 'm>> =           vRA
-                        member __.ReturnFrom vR         : Async<ResultM<'v  , 'm>> = rtnr      vR
-                        member __.ReturnFrom vR         : Async<ResultM<unit, 'm>> = rtnM      vR
-                        member __.ReturnFrom vR         : Async<ResultM<'v  , 'm>> = rtnR      vR
-                        member __.ReturnFrom vR         : Async<ResultM<'v  , 'm>> = rtnrA     vR
-                        member __.Return     v          : Async<ResultM<'v  , 'm>> = rtn       v  
-                        member __.Zero       ()         : Async<ResultM<unit, 'm>> = rtn       () 
-                        member __.Bind      (vRA,  fRA) : Async<ResultM<'b  , 'm>> = bind fRA  vRA
-                        member __.Bind       (w , r )                              = bindr   r w
-                        member __.Bind       (w , r )                              = bindM   r w
-                        member __.Bind       (w , r )                              = bindR   r w
-                        member __.Bind       (w , r )                              = bindrA  r w
-                        member __.Combine   (vRA,  fRA) : Async<ResultM<'b  , 'm>> = bind fRA  vRA
-                        member __.Combine   (vR ,  fRA) : Async<ResultM<'b  , 'm>> = bind fRA (vR  |> rtnR)
-                        member __.Delay            fRA                             = fRA
-                        member __.Run              fRA                             = rtn () |> bind fRA
-                        member __.TryWith   (fRA , hnd) : Async<ResultM<'a  , 'm>> = async { try return! fRA() with e -> return! hnd e  }
-                        member __.TryFinally(fRA , fn ) : Async<ResultM<'a  , 'm>> = async { try return! fRA() finally   fn  () }
-                        member __.Using(resource , fRA) : Async<ResultM<'a  , 'm>> = async.Using(resource,       fRA)
-                        member __.While   (guard , fRA) : Async<ResultM<unit, 'a>> = whileLoop guard fRA 
-                        member th.For  (s: 'a seq, fRA) : Async<ResultM<unit, 'b>> = th.Using(s.GetEnumerator (), fun enum ->
-                                                                                        th.While(enum.MoveNext,
-                                                                                            th.Delay(fun () -> fRA enum.Current)))
-                
-                [<AutoOpen>]
-                module AsyncResultMAutoOpen =
-                    open AsyncResultM
-                
-                    let asyncResultM = AsyncResultMBuilder()
-                
-                    // Having Async<_> members as extensions gives them lower priority in
-                    // overload resolution between Async<_> and Async<Result<_,_>>.
-                    type AsyncResultMBuilder with
-                    member __.ReturnFrom (vA: Async<_>     ) : Async<ResultM<_,_>> =           Async.map OkM vA
-                    member __.Bind       (vA: Async<_>, fRA) : Async<ResultM<_,_>> = bind fRA (Async.map OkM vA)
-                    member __.Combine    (vA: Async<_>, fRA) : Async<ResultM<_,_>> = bind fRA (Async.map OkM vA)
-                
+                    let eff = new EffBuilder()
+                    
+                    //type EA<'H, 'a, 'b> = 'a -> Eff<'H, 'b>
+                    /// Equal to (|>) 
+                    //let (>|>) (ea:EA<_,_,_>) f : EA<_,_,_> = ea |> f
+                    /// Equal to (>>)
+                    //let (>>>) = (>>)
+                    
+                    module EA =
+                        let tee (f: 'a -> Eff<'H, unit>) : 'a -> Eff<'H, 'a> = (fun v -> f v |> map (fun () -> v) )
+                    
+                    //    let mapOutput  f (ea: EA<_,_, _>) : EA<_,_,          _   > = ea >> (bind (f >> rtn) )
+                    //    let bindOutput(f: EA<_,_, _>) (ea: EA<_,_, _>) : EA<_,_, _> = ea >> (bind  f  )
+                    //    let mapBoth    f (ea: EA<_,_, _>) : EA<_,_,          _   > = fun i -> i |> mapOutput (f i) ea
+                    //    let bindBoth   f (ea: EA<_,_, _>) : EA<_,_,          _   > = mapBoth f  ea |> bindOutput id
+                    //
+                    //    let mapO         (ea: EA<_,_, _>) : EA<_,_,          _   > = Option.map ea >> insertO
+                    //
+                    //    let mapFst     f (a, b) = (f a,   b)
+                    //    let mapSnd     f (a, b) = (  a, f b)
+                    //
+                    //    let bindFst    (f:EA<_,_,_>) (a, b) = eff {
+                    //        let! fa = f a
+                    //        return (fa, b)
+                    //    }
+                    //
+                    //    let bindSnd    (f:EA<_,_,_>) (a, b) = eff {
+                    //        let! fb = f b
+                    //        return (a, fb)
+                    //    }
+                    //
+                    //    let lift    f : EA<_,_,_> = f >> rtn
+                    //    let pairWith v ea : EA<_,_,_> =
+                    //        ea
+                    //        >-> fun fst -> fst, v
+                    //
+                    //    let getResult ea:EA<_,_,_> = ea >-> Ok
+                    
+                    
+                    module Log = 
+                        type Log< 'L> = interface end  // this acts as a reminder to add a handler for the Log Effects
+                        type Log1<'L> = interface end  // this acts as a reminder to add a handler for the Log Effects
+                        type Log2<'L> = interface end  // this acts as a reminder to add a handler for the Log Effects
+                    
+                        type LogEntry<'L>(v : 'L, k : unit -> Effect) =
+                            member self.Value = v
+                            member self.K     = k
+                            interface Effect with
+                                member self.Extend extension  : Effect = new LogEntry<'L>(v, k >> extension) :> _
+                    
+                        let log (s:'L) : Eff<_, unit> = Eff (fun (h:#Log<'L>) k -> LogEntry(s, k) :> _ )
+                        let logf fmt = Printf.ksprintf log fmt
+                        let log1 (s:'L) : Eff<_, unit> = Eff (fun (h:#Log1<'L>) k -> LogEntry(s, k) :> _ )
+                        let log2 (s:'L) : Eff<_, unit> = Eff (fun (h:#Log2<'L>) k -> LogEntry(s, k) :> _ )
+                    
+                        let pureLogHandler<'L, 'H, 'a when 'H :> Log<'L>> (eff: Eff<'H, 'a>) : Eff<'H, 'a * list<'L>> = 
+                            let rec loop (exitK:('a * list<'L>) -> Effect) (ls: list<'L>) : Effect -> Effect = function
+                                | :? Done<    'a> as done' -> (done'.Value, ls)  |>       exitK
+                                | :? LogEntry<'L> as log   -> log.K ()           |>  loop exitK (log.Value :: ls)  
+                                | effect                   -> effect.Extend         (loop exitK ls               )
+                            Eff (fun h exitK               -> eff.Create h done' |>  loop exitK []               )
+                    
+                    
+                        let consoleLogHandler<'L, 'H, 'a when 'H :> Log<'L>> (eff: Eff<'H, 'a>) : Eff<'H, 'a> =
+                            let rec loop (exitK: 'a -> Effect) : Effect -> Effect = function
+                                | :? Done<    'a> as done' -> done'.Value        |>      exitK
+                                | :? LogEntry<'L> as log   -> printfn "Log: %A" log.Value
+                                                              log.K ()           |> loop exitK
+                                | effect                   -> effect.Extend        (loop exitK)
+                            Eff (fun h exitK               -> eff.Create h done' |> loop exitK)
+                    
+                        let consoleLogHandler1<'L, 'H, 'a when 'H :> Log1<'L>> (eff: Eff<'H, 'a>) : Eff<'H, 'a> =
+                            let rec loop (exitK: 'a -> Effect) : Effect -> Effect = function
+                                | :? Done<    'a> as done' -> done'.Value        |>      exitK
+                                | :? LogEntry<'L> as log   -> printfn "Log1: %A" log.Value
+                                                              log.K ()           |> loop exitK
+                                | effect                   -> effect.Extend        (loop exitK)
+                            Eff (fun h exitK               -> eff.Create h done' |> loop exitK)
+                    
+                    module Rsl = 
+                    
+                    
+                        type Rsl<'M> = interface end
+                        
+                        type RslI<'M> = abstract Value : 'M
+                    
+                        type Fail<'a,'M>(v : 'M, k : 'a -> Effect) =
+                            member self.Value = v
+                            member self.K     = k
+                            interface Effect   with member __.Extend extension : Effect = new Fail<'a,'M>(v, k >> extension) :> _
+                            interface RslI<'M> with member __.Value = v
+                    
+                        let fail (s:'M) = Eff (fun (h:#Rsl<'M>) k -> new Fail<_,_>(s, k) :> _)
+                        let failf fmt = Printf.ksprintf fail fmt
+                        let inline ofResult (res:Result<'a,'b>) : Eff<'c,'a> = eff {
+                            match res with
+                            | Ok    v   ->  return v
+                            | Error msg ->  let! m = fail msg
+                                            return failwith "this code should be unreachable"
+                        }
+                        
+                        let rec RslHandler<'U, 'M, 'A when 'U :> Rsl<'M>> (eff: Eff<'U, 'A>) : Eff<'U, _> = 
+                            let rec loop (exitK:(Result<'A,'M>) -> Effect) : Effect -> Effect = function
+                                | :? Done<    'A> as done' -> Ok    done'.Value   |>       exitK
+                                | :? RslI<    'M> as fail  -> Error fail .Value   |>       exitK
+                                | effect                   -> effect.Extend          (loop exitK)
+                            Eff (fun h exitK               -> eff.Create h done'  |>  loop exitK)
+                    
+                        let inline getResult   v                = map Ok v
+                        let inline absorbR     vvEf             = vvEf  |> bind ofResult
+                        let inline absorbO   f vOEf             = vOEf  |> map (Result.ofOption  f) |> absorbR
+                    
+                    module Asy = 
+                        type Asy = interface end // this acts as a reminder to add a handler for the Effect
+                    
+                        type AsynG =
+                            abstract RunSync      : unit               -> Effect
+                            abstract RunAsync<'a> : (Effect -> Effect) -> Effect
+                    
+                        [< Inline "console.log('RunSynch Not implemented in JavaSacript')" >]
+                        let runSynch v = Async.RunSynchronously v
+                    
+                        type Asyn<'v>(v : Async<'v>, k : ('v -> Effect) ) =
+                            member __.Value = v
+                            member __.K     = k
+                            interface Effect with member __.Extend   extension = new Asyn<_>(v, k >> extension) :> _
+                            interface AsynG  with 
+                                member __.RunSync  ()        = runSynch v |> k
+                                member __.RunAsync<'a> exitK = done' (v |> Async.bind (fun v -> k v |> exitK :?> Done<Async<'a>> |> fun don -> don.Value ) )
+                    
+                        let inline ofAsync (v:Async<'a>) : Eff<'H, 'a> = Eff (fun (h:#Asy) k -> new Asyn<'a>(v, k) :> _)
+                    
+                        /// This handler uses RunSynchronously to resolve Asyncs
+                        let SyncHandler<'H, 'a when 'H :> Asy> (eff: Eff<'H, 'a>) : Eff<'H, 'a> =
+                            let rec loop (exitK:'a -> Effect) : Effect -> Effect = function
+                                | :? Done<'a> as done' -> done'.Value        |>      exitK
+                                | :? AsynG    as asy   -> asy.RunSync()      |> loop exitK
+                                | effect               -> effect.Extend        (loop exitK)
+                            Eff (fun h exitK           -> eff.Create h done' |> loop exitK)
+                    
+                        /// this should be the last handler before Eff.run
+                        let AsyncHandler<'H, 'a when 'H :> Asy> (eff: Eff<'H, 'a>) : Eff<'H, Async<'a>> = 
+                            let rec loop (exitK:(Async<'a>) -> Effect) : Effect -> Effect = function
+                                | :? Done<'a> as done' -> done'.Value |> async.Return |>      exitK
+                                | :? AsynG    as asy   -> asy.RunAsync<'a>              (loop exitK)
+                                | effect               -> effect.Extend                 (loop exitK)
+                            Eff (fun h exitK           -> eff.Create h done'          |> loop exitK)
+                    
             type System.String with
                 member this.Substring2(from, n) = 
                     if   n    <= 0           then ""
@@ -695,6 +748,9 @@ namespace FsRoot
                 let (|StartsWith|_|) (start:string) (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
                 let (|EndsWith  |_|) (ends :string) (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
                 
+            
+            let mapFst     (f: 'a->'c) (a:'a, b:'b) = (f a,   b)
+            let mapSnd     (f: 'b->'c) (a:'a, b:'b) = (  a, f b)
             
             module ParseO =
                 let tryParseWith tryParseFunc = tryParseFunc >> function
@@ -1060,51 +1116,31 @@ namespace FsRoot
         //#define WEBSHARPER
         [< JavaScript ; AutoOpen >]
         module LibraryJS =
+            module Promise =
+                let ofAsyncResult (v: Async<Result<'a,'b>>) : Promise<'a> =
+                    new Promise<'a>(fun (resolve, reject) ->
+                        Async.StartWithContinuations(v, (function Ok ok -> resolve ok | Error er -> reject <| sprintf "%A" er), reject, reject)
+                    )
+            
             [< Inline """(!$v)""">]
             let isUndefined v = v.GetType() = v.GetType()
                 
             
     
-    module Prozper =
-        module AA =
+    module ProzperServer =
+        [< AutoOpen ; JavaScript >]
+        module Basico =
+            type IdAliado     = IdAliado     of string          with member this.Id = match this with IdAliado    id -> id
+            type IdAuthorize  = IdAuthorize  of string          with member this.Id = match this with IdAuthorize id -> id
+            type IdAddress    = IdAddress    of string          with member this.Id = match this with IdAddress   id -> id
+            type IdPayment    = IdPayment    of string          with member this.Id = match this with IdPayment   id -> id
         
-            type AA<'a, 'b> = 'a -> AsyncResultM<'b, unit>
+            type VariableAmbienteI   = 
+                    abstract getVar  : string -> string
+                    abstract member CarpetaRaiz          : unit     -> string
         
-            let mapInput   f (aa: AA<_, _>) : AA<_,          _   > = f >> aa
-            let mapOutput  f (aa: AA<_, _>) : AA<_,          _   > = aa >> (AsyncResultM.bind (f >> AsyncResultM.rtn) )
-            let mapBoth    f (aa: AA<_, _>) : AA<_,          _   > = fun i -> i |> mapOutput (f i) aa
-            let bindInput (f: AA<_, _>) (aa: AA<_, _>) : AA<_, _> = f  >> (AsyncResultM.bind  aa )
-            let bindOutput(f: AA<_, _>) (aa: AA<_, _>) : AA<_, _> = aa >> (AsyncResultM.bind  f  )
-            let bindBoth   f (aa: AA<_, _>) : AA<_,          _   > = mapBoth f  aa |> bindOutput id
-            let getResultM   (aa: AA<_,'r>) : AA<_, ResultM<'r,_>> =            aa >> AsyncResultM.getResultM
-            let absorbO    m (aa: AA<_, _>) : AA<_,          _   > =            aa >> AsyncResultM.absorbO m
-            let absorbR      (aa: AA<_, _>) : AA<_,          _   > =            aa >> AsyncResultM.absorbR  
-        
-            let mapO         (aa: AA<_, _>) : AA<_,          _   > = Option.map aa >> AsyncResultM.insertO
-        
-            let mapFst     f (a, b) = (f a,   b)
-            let mapSnd     f (a, b) = (  a, f b)
-        
-            let bindFst    (f:AA<_,_>) (a, b) = asyncResultM {
-                let! fa = f a
-                return (fa, b)
-            }
-        
-            let bindSnd    (f:AA<_,_>) (a, b) = asyncResultM {
-                let! fb = f b
-                return (a, fb)
-            }
-        
-            let  map    f = f >> AsyncResultM.rtn
-            let (>=>)     = bindInput
-            let (>->) a b = a >=> map b
-            let (>*>)     = (|>)
-            let  tee (f: AA<'b, unit>) : AA<'b, 'b> = (fun v -> f v |> AsyncResultM.map (fun () -> v) )
-        
-        
-        // AA<a,        b       >      :   a        -> Async<ResultM<b       >>
-        // AA<a option, b option>      :   a option -> Async<ResultM<b option>>
-        
+            let variableAmbienteE v  = Eff (fun (h:#VariableAmbienteI) k -> h.getVar     v  |> k )
+            let carpetaRaiz       () = Eff (fun (h:#VariableAmbienteI) k -> h.CarpetaRaiz() |> k )
         
         
         [< AutoOpen ; JavaScript >]
@@ -1596,14 +1632,22 @@ namespace FsRoot
                 }
         
             let diaPago (registro:System.DateTime) =
-                let diaMes = registro.Day
-                if diaMes    =  1 then Dia01
+                let  diaMes = registro.Day
+                if   diaMes  =  1 then Dia01
                 elif diaMes <=  5 then Dia05
                 elif diaMes <= 10 then Dia10
                 elif diaMes <= 15 then Dia15
                 elif diaMes <= 20 then Dia20
                 elif diaMes <= 25 then Dia25
                 else                   Dia01
+        
+            let dia = function
+            | Dia01 ->  1
+            | Dia05 ->  5
+            | Dia10 -> 10
+            | Dia15 -> 15
+            | Dia20 -> 20
+            | Dia25 -> 25
         
             let actualizarAliados modelo =
                 let  buscar            = busqueda modelo.aliados
@@ -1684,254 +1728,6 @@ namespace FsRoot
             let nombre2 dp = 
                 let titulo   = dp.titulo |> Option.map ((+) " ") |> Option.defaultValue ""
                 titulo + (dp.nombre1 + " " + dp.nombre2).Trim() + " " + (dp.apellido1 + " " + dp.apellido2).Trim()
-        
-        //#define NOFRAMEWORK --noframework
-        //#define WEBSHARPER
-        
-        [< AutoOpen >]
-        module Ambiente =
-            type IAmbiente = 
-                interface
-                    /// nuevoEvento (usuario:string) (nombre:string) (evento:string) (tipo:string) : AsyncResultM<long, unit>
-                    abstract member NuevoEvento          : string   ->  string -> string -> string -> AsyncResultM<int64, unit>
-                    abstract member UltimoEvento         : unit     ->  int64 option
-                    abstract member UltimoEstado         : unit     ->  int64 option
-                    abstract member LeerEventos          : int64    ->  AsyncResultM<(int64 * string * string * string * string * System.DateTime) [], unit>
-                    abstract member LeerTipos            : unit     ->  string           []
-                    abstract member LeerEventosTipos     : unit     -> (string * string) []
-                    abstract member GuardarEstado        : int64    ->  string ->  AsyncResultM<unit, unit>
-                    abstract member GuardarAliado        : string   ->  string ->  AsyncResultM<unit, unit>
-                    abstract member ObtenerEstado        : unit     ->  AsyncResultM<(int64 * string) option, unit>
-                    abstract member ObtenerAliados       : unit     ->  AsyncResultM<string [], unit>
-                    abstract member NombreAmbiente       : unit     -> string
-                    abstract member CarpetaRaiz          : unit     -> string
-                    abstract member EnviarCorreo         : string   -> string -> string           -> AsyncResultM<unit, unit>
-                    abstract member EnviarMensaje        : string   -> string -> string -> string -> AsyncResultM<unit, unit>
-                    abstract member ObtenerTransacciones : IdAliado -> AsyncResultM<Transaccion [], unit>
-                    abstract member ObtenerMensajes      : IdAliado -> AsyncResultM<Mensaje     [], unit>
-                    abstract member ObtenerListaDocs     : IdAliado -> AsyncResultM<string      [], unit>
-                    abstract member VariableAmbiente     : string   -> string
-                    abstract member Prepare              : unit     -> unit
-                end
-        
-        
-            let mutable ambiente : IAmbiente = 
-                { new IAmbiente with 
-                    member __.UltimoEvento             ()  = Some 0L
-                    member __.UltimoEstado             ()  = Some 0L
-                    member __.LeerTipos                ()  = [||]   
-                    member __.LeerEventosTipos         ()  = [||]   
-                    member __.NuevoEvento (usuario:string) (nombre:string) (evento:string) (tipo:string) = AsyncResultM.errorMsgf "not implemented"
-                    member __.LeerEventos              n   = AsyncResultM.errorMsgf "Ambiente.LeerEventos: not implemented"
-                    member __.GuardarAliado            i s = AsyncResultM.errorMsgf "Ambiente.GuardarAliado: not implemented"
-                    member __.GuardarEstado            n s = AsyncResultM.errorMsgf "Ambiente.GuardarEstado: not implemented"
-                    member __.ObtenerEstado            ()  = AsyncResultM.errorMsgf "Ambiente.ObtenerEstado: not implemented"
-                    member __.ObtenerAliados           ()  = AsyncResultM.errorMsgf "Ambiente.ObtenerAliados: not implemented"
-                    member __.NombreAmbiente           ()  =                        "Ambiente.NombreAmbiente: not implemented"
-                    member __.CarpetaRaiz              ()  = "."
-                    member __.EnviarCorreo           r t c = AsyncResultM.errorMsgf "Ambiente.EnviarCorreo: not implemented"
-                    member __.EnviarMensaje        d r t c = AsyncResultM.errorMsgf "Ambiente.EnviarMensaje: not implemented" 
-                    member __.ObtenerTransacciones      id = AsyncResultM.errorMsgf "Ambiente.ObtenerTransacciones: not implemented"
-                    member __.ObtenerMensajes           id = AsyncResultM.errorMsgf "Ambiente.ObtenerMensajes: not implemented"
-                    member __.ObtenerListaDocs          id = AsyncResultM.errorMsgf "Ambiente.ObtenerListaDocs: not implemented"
-                    member __.VariableAmbiente           v = failwithf "Ambiente.VariableAmbiente: not implemented"
-                    member __.Prepare                   () = ()
-                }
-        
-        
-         [< JavaScript >]
-        type DataEvento =
-        | AgregarAliados            of (Aliado[]                                                   )
-        | AgregarAliado             of (Aliado                                                     )
-        | InvitarPotencialesAliados of (IdAliado * string []                                       )
-        | RegistroNuevo             of (IdAliado * DatosPersonales * IdAliado option * Contacto [] )
-        | ActualizarDatosPersonales of (IdAliado * DatosPersonales                                 )
-        | ActualizarContactos       of (IdAliado * Contacto  []                                    )
-        //| ActualizarFormasPago      of (IdAliado * FormaPago []                                    )
-        | CorreoVerificacionEnviado of (IdAliado * string                                          )
-        | CorreoVerificado          of (IdAliado * string                                          )
-        //| ActualizarAuthorizeId     of (IdAliado * Result<IdAuthorize, string>                     )
-        //| ActualizarPagoAuthorizeId of (IdAliado * CuentaPago * Result<IdPayment, string>          )
-        | ActualizarStatusPadre     of (IdAliado * StatusAliado * (IdAliado option) * string option)
-        
-        [< JavaScript >]
-        type Evento = {
-            nevento : int64
-            aliadoO : IdAliado option
-            data    : DataEvento
-        }
-        
-        [< JavaScript >]
-        type Respuesta =
-        | ROk
-        | NuevoRegistro        of string
-        | Mensaje              of string
-        
-        
-        module Eventos =
-        
-            type TipoDatos = TipoDatos of nombre:string * tipos:string
-        
-            type ResultadoManejador = Modelo -> AsyncResultM<Modelo * Respuesta, unit>
-        
-            type ObjetoDatos<'T> = {
-                tipoDatos : TipoDatos
-                datos     : 'T
-            }
-        
-            type ManejadorDatos<'T> = {
-                tipoDatos  : TipoDatos
-                manejadorF : ObjetoDatos<'T> -> ResultadoManejador
-            }
-        
-            let Manejadores = System.Collections.Generic.Dictionary<TipoDatos, ManejadorDatos<obj>>()
-        
-            let deDatosGen (msg: ObjetoDatos<obj>) : ObjetoDatos<_> = {
-                tipoDatos = msg.tipoDatos
-                datos     = unbox msg.datos
-            }    
-        
-            let registrarManejador nombre (manejadorF:ObjetoDatos<'T> -> ResultadoManejador) =
-                let manejador  = {
-                    tipoDatos  = TipoDatos (nombre, typeof<'T> |> getTypeName) |>! print
-                    manejadorF = deDatosGen >> manejadorF
-                }
-                Manejadores.Add(manejador.tipoDatos, manejador )
-        
-            let registrarManejadorf nombre (manejadorF:'T -> ResultadoManejador) =
-                registrarManejador  nombre (fun oDatos -> manejadorF oDatos.datos)
-        
-            let manejadorGenerico (msg:ObjetoDatos<obj>) : ResultadoManejador =
-                match Manejadores.TryGetValue msg.tipoDatos with
-                | false, _         -> failwithf "No Handler for message: %A" msg
-                | true , manejador -> manejador.manejadorF msg
-        
-            let addNewAliados (als1: Aliado []) (als2: Aliado []) : Aliado [] =
-                als1 |> Seq.filter(fun a -> als2 |> Seq.exists (fun b -> a.id = b.id ) |> not ) |> Seq.append als2 |> Seq.toArray
-        
-            let registroNuevo (idA, datos:DatosPersonales, padre, contactos) (modelo: Modelo) : AsyncResultM<Modelo * Respuesta, unit> = asyncResultM {
-                match   contactos
-                        |> Seq.tryPick(function CorreoElectronico email -> Some email |_-> None ) with
-                | None        -> return! errorMsgf "No se encontro Correo Electronico: %A" datos |> ErrorM
-                | Some correo ->
-                if  modelo.aliados
-                    |> Seq.exists(fun al ->
-                        al.contactos
-                        |> Seq.exists(function CorreoElectronico correo2 -> correo = correo2 |_-> false ) 
-                    )
-                    then return! errorMsgf "Correo Electronico ya esta registrado: %A" correo |> ErrorM
-                else
-                if modelo.aliados |> Seq.exists (fun al -> al.id = idA) 
-                    then return! errorMsgf "Id ya esta en uso: %A" idA                        |> ErrorM
-                else
-                let now = System.DateTime.Now
-                let aliado = {
-                    datosPersonales =  datos
-                    id              =  idA
-                    idPadreO        =  padre
-                    idForAuthorize  =  None
-                    influyente      =  None
-                    contactos       =  contactos
-                    identificacion  =  [||]
-                    isInternal      =  false
-                    status          =  CuentaCreada
-                    tipo            =  Regular
-                    fechaRegistro   =  now
-                    fechaStatus     =  now
-                    diaPago         =  Dia01
-                    nReferidos      =  0
-                    nRefActivos     =  0
-                    nDescendientes  =  0
-                    nDescActivos    =  0
-                    comision        =  0
-                    nivel           =  0
-                }
-                return
-                    { modelo with aliados = Array.append modelo.aliados [| aliado |] }
-                ,   [ datos.nombre1 ; datos.nombre2 ; datos.apellido1 ; datos.apellido2 ] 
-                    |> String.concat " "
-                    |> NuevoRegistro  
-            }
-        
-            let cambiaAliado ida   f (modelo:Modelo) = { modelo with aliados    = modelo.aliados          |> Array.map (fun al -> if al.id = ida then f al else al )}
-            let cambiaCorreo email f (aliado:Aliado) = { aliado with contactos  = aliado.contactos        |> Array.map (function CorreoElectronico c when c.email = email -> f c |> CorreoElectronico | co -> co )}
-            //let cambiaFormaPago cp f (aliado:Aliado) = { aliado with formasPago = aliado.formasPago.Value |> Array.map (fun fp -> if fp.cuentaPago = cp then f fp else fp ) }
-            let cambiaStatusCorreo ida email f = cambiaAliado ida (cambiaCorreo email  f)
-        
-            let actualizarDatosPersonales (idA, datos:DatosPersonales) (modelo: Modelo) : AsyncResultM<Modelo * Respuesta, unit> = asyncResultM {
-                return
-                    cambiaAliado idA (fun al -> { al with datosPersonales = datos }) modelo
-                ,   Mensaje <| "Datos personales actualizados!" 
-            }
-        
-            //let actualizarAuthorizeId   (idA, authorizeIdR) (modelo: Modelo) : AsyncResultM<Modelo * Respuesta, unit> = asyncResultM {
-            //    return
-            //        cambiaAliado idA (fun al -> { al with authorizeIdR = authorizeIdR }) modelo
-            //    ,   Mensaje <| "AuthorizeId actualizada" 
-            //}
-        
-            //let actualizarPagoAuthorizeId (idA, cuenta, paymentIdR : Result<IdPayment, string> )  (modelo: Modelo) : AsyncResultM<Modelo * Respuesta, unit> = asyncResultM {
-            //    return
-            //        cambiaAliado idA (cambiaFormaPago cuenta (fun fp -> { fp with authorizeIdR = paymentIdR }) ) modelo
-            //    ,   Mensaje <| "AuthorizeId actualizada" 
-            //}
-        
-            let actualizarContactos (idA, contactos:Contacto[]) (modelo: Modelo) : AsyncResultM<Modelo * Respuesta, unit> = asyncResultM {
-                return
-                    cambiaAliado idA (fun al -> { al with contactos = contactos }) modelo
-                ,   Mensaje <| "Contactos actualizados!" 
-            }
-        
-            let actualizarStatusPadre (idA, status:StatusAliado, padreO:IdAliado option, inflO :  string option) (modelo: Modelo) : AsyncResultM<Modelo * Respuesta, unit> = asyncResultM {
-                return
-                    cambiaAliado idA (fun al -> { al with status = status ; idPadreO = padreO ; influyente = inflO }) modelo
-                ,   Mensaje <| "status actualizados!" 
-            }
-        
-            //let actualizarFormasPago (idA, formasPago:FormaPago[]) (modelo: Modelo) : AsyncResultM<Modelo * Respuesta, unit> = asyncResultM {
-            //    return
-            //        cambiaAliado idA (fun al -> { al with formasPago = formasPago }) modelo
-            //    ,  Mensaje <| "Formas de pago actualizadas!" 
-            //}
-        
-            let agregarAliado  aliado  modelo = asyncResultM { return { modelo with Modelo.aliados = addNewAliados [| aliado  |] modelo.aliados }, ROk }
-            let agregarAliados aliados modelo = asyncResultM { return { modelo with Modelo.aliados = addNewAliados    aliados    modelo.aliados }, ROk }
-        
-            let correoVerificacionEnviado (ida, correo)  (modelo: Modelo) : AsyncResultM<Modelo * Respuesta, unit> = asyncResultM {
-                return
-                    cambiaStatusCorreo ida correo (fun c -> { c with enviado = Some System.DateTime.Now }) modelo
-                ,   ROk
-            }
-        
-            let correoVerificado          (ida, correo)  (modelo: Modelo) : AsyncResultM<Modelo * Respuesta, unit> = asyncResultM {
-                return
-                    cambiaStatusCorreo ida correo (fun c -> { c with recibido = Some System.DateTime.Now }) modelo
-                ,   ROk
-            }
-        
-            let actualizarEstado (modelo: Modelo, evento: Evento) = asyncResultM {
-                if modelo.nevento <> -1L && modelo.nevento + 1L <> evento.nevento then 
-                    failwithf "Evento fuera de secuencia: %d %d" modelo.nevento evento.nevento
-                let case, tuple, data = DiscUnion.caseTuple evento.data
-                let objData           = {
-                    tipoDatos         = TipoDatos(case, tuple |> getTypeName)
-                    datos             = data
-                }
-                return! manejadorGenerico objData modelo
-            }
-        
-            let eventoNoImplementado ev (modelo: Modelo) : AsyncResultM<Modelo * Respuesta, unit> = asyncResultM {
-                return! errorMsgf "Evento no Implementado: %A" ev |> ErrorM
-            } 
-        
-            let invitarPotencialesAliados ev = eventoNoImplementado ev
-        module CodigoGenerado =
-            type EventoTipos = 
-            | ActualizarDatosPersonales_V0  of (IdAliado * DatosPersonales)
-            //| ActualizarFormasPago_V0 of System.Tuple<TypesV0.IdAliado,TypesV0.FormaPago[]>
-            //| AgregarAliado_V1 of TypesV1.Aliado
-            //| CorreoVerificacionEnviado_V0 of System.Tuple<TypesV0.IdAliado,System.String>
-            //| RegistroNuevo_V1 of System.Tuple<TypesV0.IdAliado,TypesV0.DatosPersonales,Option<TypesV0.IdAliado>,TypesV1.Contacto[]>
         
         module Serializador =
             open Serializer
@@ -2133,6 +1929,614 @@ namespace FsRoot
                         serPremisasCalculo            |> serField "premisas"      (fun s -> s.premisas      ) (fun v s -> { s with premisas      = v } )
                     |] |> serRecord LibraryNoJS.Default.value<_>
         
+        
+        module ObtenerEstado =
+            open Serializador
+        
+            type EstadoI<'H> =
+                    abstract member UltimoEstado         : unit     ->  int64 option
+        //            abstract member LeerEventos          : int64    ->  Eff<'H, (int64 * string * string * string * string * System.DateTime) []>
+        //            abstract member LeerTipos            : unit     ->  string           []
+        //            abstract member LeerEventosTipos     : unit     -> (string * string) []
+                    abstract member GuardarEstado<'H>    : int64    ->  string ->  Eff<'H, unit>
+                    abstract member GuardarAliado<'H>    : string   ->  string ->  Eff<'H, unit>
+                    abstract member ObtenerEstado<'H>    : unit     ->  Eff<'H, (int64 * string) option>
+                    abstract member ObtenerAliados<'H>   : unit     ->  Eff<'H, string []>
+        
+            let guardarEstadoE  (nevento, serialModelo) = Eff (fun (h:#EstadoI<_>) k -> h.GuardarEstado nevento serialModelo |> k ) |> join
+            let obtenerEstado0E ()                      = Eff (fun (h:#EstadoI<_>) k -> h.ObtenerEstado ()                   |> k ) |> join
+            let obtenerAliadosE ()                      = Eff (fun (h:#EstadoI<_>) k -> h.ObtenerAliados()                   |> k ) |> join
+            let guardarAliadoE  id json                 = Eff (fun (h:#EstadoI<_>) k -> h.GuardarAliado id json              |> k ) |> join
+            let ultimoEstadoE   ()                      = Eff (fun (h:#EstadoI<_>) k -> h.UltimoEstado  ()                   |> k )
+        
+            let aliadosPrevio = System.Collections.Generic.Dictionary<_,_>()
+        
+            let guardarAliados aliados = eff {
+                let mutable first = true
+                for (aliado:Aliado) in aliados do
+                    let previoO = Dict.tryGetValue aliado.id aliadosPrevio
+                    if previoO <> Some aliado then
+                        if first then 
+                            first <- false
+                            printfn "previo = %A" previoO 
+                            printfn "nuevo  = %A" aliado
+                        do! aliado |> Serializer.serialize serAliado |> guardarAliadoE aliado.id.Id
+                    if previoO.IsSome then aliadosPrevio.Remove aliado.id |> ignore
+                    aliadosPrevio.Add(aliado.id, aliado)
+            }
+        
+            let actualizarAliadosPrevio modelo = eff {
+                aliadosPrevio.Clear()
+                for aliado in modelo.aliados do
+                    aliadosPrevio.Add(aliado.id, aliado)
+            }
+        
+            let guardarEstado nevento modelo =
+                { modelo with nevento = nevento ; aliados = Aliado.actualizarAliados modelo } 
+                |> EA.tee (fun e -> guardarAliados e.aliados)
+                |>> fun (modelo:Modelo) -> nevento, modelo |> Serializer.serialize serModelo
+                >>= guardarEstadoE
+        
+            let obtenerAliados (modelo:Modelo) = eff {
+                let! aliadoss = obtenerAliadosE()
+                let  aliados  = aliadoss |> Array.choose (Serializer.deserializeWithDefs serAliado)
+                return { modelo with aliados = aliados}
+            }
+        
+            let salvarEstadoEnMemoria (aa: _ -> Eff<_,Modelo>) : _ -> Eff<_,Modelo> = 
+                let mutable estadoActual : Modelo option = None        
+                fun ()   -> eff{
+                    let! estado = ultimoEstadoE()
+                    match estado, estadoActual with
+                    | Some n, Some e when n = e.nevento -> return e
+                    |_-> return! aa >-> tee (fun e -> estadoActual <- Some e) <| ()
+                }
+        
+            let obtenerEstado00E() =
+                obtenerEstado0E()
+                |>> Option.map snd                                       
+                |>> Option.map (Serializer.deserializeWithDefs serModelo)
+                |>> Option.defaultValue  (Some modeloVacio)              
+                |>  Rsl.absorbO   (fun () -> "Modelo no fue deserializado")
+                >>= obtenerAliados
+                >>= EA.tee actualizarAliadosPrevio
+        
+            let obtenerEstado() = obtenerEstado00E |> salvarEstadoEnMemoria <| ()
+        
+            let pairEstado ev =
+                obtenerEstado()
+                |>> fun modelo -> modelo, ev
+        
+            let obtenerUsuario (claims: (_*_) []) : string = 
+                claims 
+                |>  Seq.tryFind(fun (n,v) -> n = "http://schemas.microsoft.com/identity/claims/objectidentifier") 
+                |>  Option.map snd
+                |>  Option.defaultWith (fun () -> failwith "Usuario no autenticado")
+        
+            let obtenerAliadoEstado0 usuario =
+                obtenerEstado()
+                |>> fun modelo -> 
+                        modelo.aliados 
+                        |> Array.tryFind (fun al -> al.id = IdAliado usuario) 
+                        |> Option.map (fun v -> v, modelo) 
+                |> Rsl.absorbO (fun () -> "Aliado no fue encontrado")
+        
+            let obtenerAliadoEstado    claims       = obtenerUsuario       claims |>  obtenerAliadoEstado0
+            let obtenerAliado          claims       = obtenerAliadoEstado  claims |>> fst
+            let obtenerAliadoEstadoId (IdAliado id) = obtenerAliadoEstado0 id
+            let pairAliadoEstado       claims   ev  = obtenerAliadoEstado  claims |>> fun s -> s, ev
+            let pairAliado             claims   ev  = obtenerAliado        claims |>> fun a -> a, ev
+        
+        
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\other\AuthorizeNet\lib\AuthorizeNet.dll"
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll"
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+        
+        module Authorize =
+            open System
+            open AuthorizeNet
+            open AuthorizeNet.Api.Controllers
+            open AuthorizeNet.Api.Contracts.V1
+            open AuthorizeNet.Api.Controllers.Bases
+        
+            type AuthorizeI<'H>     = abstract execute : IApiOperation<'A, 'B> -> 'B
+                                      abstract prepare : unit                  -> Eff<'H, unit>
+        
+            let authorizeMerchantId (aliado:Aliado) =
+                match aliado.idForAuthorize with
+                | Some v ->        v .Id                .Left(20)
+                | None   -> aliado.id.Id.Replace("-","").Left(20)
+        
+            let executeE (controller: IApiOperation<_,_> ) = Eff (fun (h:#AuthorizeI<_>) k -> h.execute controller |> k )
+            let prepareE (                               ) = Eff (fun (h:#AuthorizeI<_>) k -> h.prepare ()         |> k ) |> join
+            let inline executeGetResponse controller : Eff<_, 'b> = eff {
+                let! response = executeE controller
+                if response = null then 
+                    return! Rsl.failf "%s Failed, Response = null" ( controller.GetType().Name )
+                elif response.messages.resultCode = messageTypeEnum.Ok then
+                    return response
+                elif response.messages.message <> null then
+                    return! Rsl.failf "%s Error: %s %s"  ( controller.GetType().Name ) response.messages.message.[0].code response.messages.message.[0].text
+                else
+                    return! Rsl.failf "%s Error: resultCode = %A, no messages" ( controller.GetType().Name ) response.messages.resultCode
+            }
+        
+            let ( *> ) controllerF responseF =
+                fun v ->
+                    prepareE()
+                    |>> fun () -> controllerF v
+                    >>= executeGetResponse 
+                    |>> responseF
+        
+            let buscarPerfil aliado =
+                getCustomerProfileRequest( merchantCustomerId  = authorizeMerchantId aliado ) 
+                |> getCustomerProfileController
+                *> fun response -> response.profile, match response.subscriptionIds with null -> [||] | v -> v
+                
+        
+            let buscarIdAuthorize aliado =
+                buscarPerfil aliado
+                |>> fun (p,_) -> IdAuthorize p.customerProfileId
+        
+            let registrarAliadoNuevo (aliado:Aliado, paymentProfile : customerPaymentProfileType) =
+                let email = aliado.contactos 
+                            |> Seq.choose(function CorreoElectronico cor -> Some cor.email |_-> None) 
+                            |> Seq.tryHead |> Option.defaultValue ""
+                let customerProfile = 
+                    customerProfileType(        merchantCustomerId  = authorizeMerchantId aliado
+                                            ,   email               = email 
+                                            ,   paymentProfiles     = [| paymentProfile |] )
+                createCustomerProfileRequest(   profile             = customerProfile
+                                            ,   validationMode      = validationModeEnum.liveMode )
+                |>  createCustomerProfileController 
+                *> fun response -> response.customerPaymentProfileIdList.[0]
+        
+            let registrarPagoNuevo (IdAuthorize id, pp : customerPaymentProfileType) =
+                createCustomerPaymentProfileRequest(customerProfileId = id
+                                                ,   paymentProfile    = pp
+                                                ,   validationMode    = validationModeEnum.liveMode)
+                |>  createCustomerPaymentProfileController
+                *> fun response -> response.customerPaymentProfileId
+        
+            let pagoTipoTarjeta (tar:TarjetaCredito) =
+                let creditCard = creditCardType(cardNumber      = tar.numero.Id
+                                            ,   expirationDate  = tar.expiracion.Id               )
+                paymentType( Item = creditCard ), tar.titular
+        
+            let pagoTipoCuenta  (cta:CuentaBancaria) =
+                let  bankAccount = bankAccountType(  accountNumber   = cta.numero .Id
+                                                ,   routingNumber   = cta.routing.Id
+                                            //,   accountType     = bankAccountTypeEnum.checking
+                                            //,   echeckType      = echeckTypeEnum.WEB
+                                                ,   nameOnAccount   = cta.titular
+                                                ,   bankName        = cta.banco)
+                paymentType( Item = bankAccount  ), cta.titular
+        
+            let datosTitularO (aliado:Aliado) (titular:string) =
+                aliado.contactos 
+                |> Seq.tryPick(function | Direccion dir -> Some dir |_-> None)
+                |> Option.map (fun direccion -> 
+                    customerAddressType(firstName = (titular.Split ' ').[0]
+                                    ,   lastName  = (titular.Split ' ' |> Seq.skip 1 |> String.concat " ")
+                                    ,   address   = direccion.linea1
+                                    ,   city      = direccion.ciudad
+                                    ,   state     = direccion.estado    .ToString()
+                                    ,   zip       = direccion.zonaPostal.ToString()
+                                    ,   country   = direccion.pais      .ToString()
+                                    )
+                )
+        
+            let perfilPago (tipoPago: paymentType, titular: string) (aliado:Aliado) =
+                datosTitularO aliado titular
+                |> Option.map (fun datosTitular ->
+                    aliado,
+                    customerPaymentProfileType( payment = tipoPago
+                                            ,   billTo  = datosTitular )
+                )
+        
+            let obtenerFormasDePagoId aliado =
+                buscarPerfil aliado
+                |>> fun (perfil,_) ->
+                        perfil.paymentProfiles
+                        |> Array.choose (fun pago ->
+                            match pago.payment.Item with
+                            | :? AuthorizeNet.Api.Contracts.V1.creditCardMaskedType as cc -> 
+                                TarjetaCredito {
+                                    titular       = pago.billTo.firstName + " " + pago.billTo.lastName
+                                    tipoTarjeta   = TipoTarjeta.tryParse cc.cardType |> Option.defaultValue Visa
+                                    numero        = NumeroTarjeta cc.cardNumber
+                                    expiracion    = { anio = 0 ; mes = Mes.Enero}
+                                } |> Some
+                            | :? AuthorizeNet.Api.Contracts.V1.bankAccountMaskedType as ba -> 
+                                CuentaBancaria {
+                                    titular     = ba.nameOnAccount
+                                    banco       = ba.bankName
+                                    tipo        = match ba.accountType with
+                                                    | AuthorizeNet.Api.Contracts.V1.bankAccountTypeEnum.businessChecking
+                                                    | AuthorizeNet.Api.Contracts.V1.bankAccountTypeEnum.checking          -> Corriente
+                                                    |_-> Ahorro
+                                    numero      = NumeroCuenta  ba.accountNumber
+                                    routing     = RoutingNumber ba.routingNumber
+                                } |> Some
+                            |_-> None
+                            |> Option.map (fun cta ->
+                                {
+                                    nombre       = ""
+                                    authorizeIdR = pago.customerPaymentProfileId |> IdPayment |> Ok
+                                    cuentaPago   = cta
+                                }
+                            )
+                        )
+                |>  Rsl.getResult
+                |>> Result.defaultValue [||]
+        
+        //    let obtenerFormasDePago claims =
+        //        fun () -> ObtenerEstado.obtenerAliado claims
+        //        >=> obtenerFormasDePagoId
+        
+            let obtenerFormasDePagoPara claims (alIds:_[]) = eff {
+                let! fps =
+                    alIds 
+                    |> traverseSeq (fun id -> eff {
+                        let! fp = obtenerFormasDePagoId id
+                        return id, fp
+                    })
+                return fps |> Seq.toArray 
+            }
+        
+            let registrarFormaPago (al, pp) =
+                buscarIdAuthorize al
+                |> Rsl.getResult
+                >>= function
+                    | Ok p -> registrarPagoNuevo   (p , pp)
+                    |_     -> registrarAliadoNuevo (al, pp)
+        
+            let crearFormaPago claims (tipoPago: paymentType, titular : string) =
+                ObtenerEstado.obtenerAliado claims
+                |>> perfilPago (tipoPago, titular)
+                |>  Rsl.absorbO (fun () -> "No se encontro direccion")
+                >>= registrarFormaPago
+        
+            let registrarTarjeta         claims (tc:TarjetaCredito) =
+                pagoTipoTarjeta tc
+                |>  crearFormaPago claims
+                |>> fun _ -> "Tarjeta registrada."
+        
+            let registrarCuenta          claims (cta: CuentaBancaria) =
+                pagoTipoCuenta cta
+                |>  crearFormaPago claims
+                |>> fun _ -> "Cuenta registrada."
+        
+            let validarFormaPago         claims (IdPayment idp) =
+                ObtenerEstado.obtenerAliado claims
+                >>= buscarIdAuthorize
+                |>> fun (IdAuthorize idm)  ->
+                        validateCustomerPaymentProfileRequest(  customerProfileId        = idm
+                                                            ,   customerPaymentProfileId = idp
+                                                            ,   validationMode           = validationModeEnum.liveMode
+                        )
+                >>= validateCustomerPaymentProfileController
+                *>  fun response -> response.directResponse
+        
+            let borrarFormaPago claims (IdPayment idp) =
+                ObtenerEstado.obtenerAliado claims
+                >>= buscarIdAuthorize
+                |>> fun (IdAuthorize idm)  ->
+                        deleteCustomerPaymentProfileRequest(customerProfileId        = idm
+                                                        ,   customerPaymentProfileId = idp
+                        )
+                >>= deleteCustomerPaymentProfileController
+                *>  fun response -> "Forma de pago borrada."
+        
+            let obtenerAliadoEstadoPerfilSubIds idAl =
+                ObtenerEstado.obtenerAliadoEstadoId idAl
+                >>= fun (al,md) ->
+                        buscarPerfil al
+                        |>> fun (pe,subs) -> al, md, pe, subs
+        
+            let crearSubscripcion claims (IdPayment idp) =
+                obtenerAliadoEstadoPerfilSubIds claims 
+                >>= fun  (al : Aliado, md : Modelo, pe, subs)  -> eff {
+                        let start = DateTime(DateTime.Today.Year, DateTime.Today.Month, Aliado.dia al.diaPago)
+                                    |> fun start -> if start < DateTime.Today               then start.AddMonths 1 else start
+                                    |> fun start -> if start < al.fechaRegistro.AddMonths 1 then start.AddMonths 1 else start
+                        let sub   = if subs.Length = 0 then 
+                                        ARBSubscriptionType(
+                                                amount                  = decimal md.premisas.montoAfiliacion
+                                            ,   name                    = "Afiliacion Mensual Prozper"
+                                            ,   paymentSchedule         = paymentScheduleType(  interval                    = paymentScheduleTypeInterval(length = int16 1, unit = ARBSubscriptionUnitEnum.months) 
+                                                                                            ,   totalOccurrences            = int16 240
+                                                                                            ,   startDate                   = start)
+                                            ,   profile                 = customerProfileIdType(customerProfileId           = pe.customerProfileId
+                                                                                            ,   customerPaymentProfileId    = idp)
+                                        )
+                                    else
+                                        ARBSubscriptionType(
+                                                amount                  = decimal md.premisas.montoAfiliacion
+                                            ,   name                    = "Afiliacion Mensual Prozper"
+                                            ,   profile                 = customerProfileIdType(customerProfileId           = pe.customerProfileId
+                                                                                            ,   customerPaymentProfileId    = idp)
+                                        )
+                        return sub |>! print, if (subs |>! print).Length = 0 then None else Some subs.[0]
+                    }
+        
+            let createSubscription sub =
+                ARBCreateSubscriptionRequest(subscription = sub)
+                |> ARBCreateSubscriptionController
+                *> fun response -> response.subscriptionId
+        
+            let updateSubscription subId sub =
+                ARBUpdateSubscriptionRequest(subscription = sub, subscriptionId = subId)
+                |> ARBUpdateSubscriptionController
+                *> fun _response -> subId
+        
+            let actualizarSubscripcion claims idp =
+                crearSubscripcion claims idp
+                >>= function
+                    | sub, None       -> createSubscription       sub
+                    | sub, Some subId -> updateSubscription subId sub
+        
+            let getBatchDetalles bid = 
+                getTransactionListRequest(  batchId = bid )
+                |> getTransactionListController
+                *> fun response -> response.transactions
+        
+            let buscarPerfilPorProfileId pid =
+                getCustomerProfileRequest(  customerProfileId = string pid )
+                |> getCustomerProfileController
+                *> fun response -> response.profile
+        
+            let getSubscriptions() =
+                ARBGetSubscriptionListRequest(searchType = ARBGetSubscriptionListSearchTypeEnum.subscriptionActive)
+                |>  ARBGetSubscriptionListController
+                *>  fun response -> response.subscriptionDetails
+                >>= EA.tee (fun ss -> Log.logf  "Subscriptions %d" ss.Length )
+                >>= EA.tee (fun ss -> Log.log1 ("Subscriptions",   ss.Length ) )
+                >>= traverseSeq (fun s -> buscarPerfilPorProfileId s.customerProfileId |>> (fun p -> s, p) )
+        
+            let getSubscriptionTransactions () =
+                getSettledBatchListRequest(  firstSettlementDate = System.DateTime.Today.AddMonths -1 
+                                         ,   lastSettlementDate = System.DateTime.Now)
+                |>  getSettledBatchListController
+                *>  fun response -> response.batchList
+                >>= traverseSeq (fun b -> getBatchDetalles b.batchId |>> (fun ts -> b, ts) )
+                |>>(Seq.map   (fun (b,ts) -> b, ts |> Seq.filter(fun t -> t.subscription <> null) )
+                 >> Seq.filter(fun (b,ts) ->    ts |> Seq.isEmpty |> not )
+                   )
+        
+            let SubsYTransacciones () =
+                getSubscriptionTransactions()
+                |>> Seq.collect (fun (b, ts) -> ts |> Seq.map (fun t -> b, t))
+                >>= fun ts -> eff {
+                        let! subs = getSubscriptions()
+                        return ts, subs 
+                    }
+                >>= EA.tee (fun (ts, subs) -> eff {
+                        let orphan = ts |> Seq.filter(fun (b,t) -> subs |> Seq.exists (fun (s,p) -> s.id = t.subscription.id) |> not)
+                        for b, t in orphan do
+                            do! Log.logf "Huerfano: %A" (
+                                        b.batchId
+                                        , t.accountNumber
+                                        , t.accountType
+                                        , t.firstName
+                                        , t.lastName
+                                        , t.settleAmount
+                                        , t.subscription.id
+                                        , t.subscription.payNum
+                                        , t.transactionStatus
+                                        , t.transId )
+                    })
+                |>> fun (ts, subs) ->  subs |> Seq.map(fun (sub,p) -> sub,p, ts |> Seq.filter (fun (b,t) -> t.subscription.id = sub.id) )
+        
+            //type H() =
+            //    interface Rsl.Rsl<string>
+            //    interface Log.Log<string>
+            //    interface VariableAmbienteI with member __.getVar  v  = failwith "VariableAmbienteI.getVar not implemented"
+            //    interface AuthorizeI<H>     with member __.execute c  = failwith "AuthorizeI<H>.Execute not implemented"
+            //                                     member __.prepare () = failwith "AuthorizeI<H>.Prepare not implemented"
+            //    interface EstadoI with
+            //            member __.UltimoEvento      ()  = failwith "EstadoI.UltimoEvento not implemented"
+            //            member __.UltimoEstado      ()  = failwith "EstadoI.UltimoEstado not implemented"
+            //            member __.LeerEventos       p   = failwith "EstadoI.LeerEventos not implemented"
+            //            member __.LeerTipos         ()  = failwith "EstadoI.LeerTipos not implemented"
+            //            member __.LeerEventosTipos  ()  = failwith "EstadoI.LeerEventosTipos not implemented"
+            //            member __.GuardarEstado     p q = failwith "EstadoI.GuardarEstado not implemented"
+            //            member __.GuardarAliado     p q = failwith "EstadoI.GuardarAliado not implemented"
+            //            member __.ObtenerEstado     ()  = failwith "EstadoI.ObtenerEstado not implemented"
+            //            member __.ObtenerAliados    ()  = failwith "EstadoI.ObtenerAliados not implemented"
+        
+        
+         [< JavaScript >]
+        type DataEvento =
+        | AgregarAliados            of (Aliado[]                                                   )
+        | AgregarAliado             of (Aliado                                                     )
+        | InvitarPotencialesAliados of (IdAliado * string []                                       )
+        | RegistroNuevo             of (IdAliado * DatosPersonales * IdAliado option * Contacto [] )
+        | ActualizarDatosPersonales of (IdAliado * DatosPersonales                                 )
+        | ActualizarContactos       of (IdAliado * Contacto  []                                    )
+        //| ActualizarFormasPago      of (IdAliado * FormaPago []                                    )
+        | CorreoVerificacionEnviado of (IdAliado * string                                          )
+        | CorreoVerificado          of (IdAliado * string                                          )
+        //| ActualizarAuthorizeId     of (IdAliado * Result<IdAuthorize, string>                     )
+        //| ActualizarPagoAuthorizeId of (IdAliado * CuentaPago * Result<IdPayment, string>          )
+        | ActualizarStatusPadre     of (IdAliado * StatusAliado * (IdAliado option) * string option)
+        
+        [< JavaScript >]
+        type Evento = {
+            nevento : int64
+            aliadoO : IdAliado option
+            data    : DataEvento
+        }
+        
+        [< JavaScript >]
+        type Respuesta =
+        | ROk
+        | NuevoRegistro        of string
+        | Mensaje              of string
+        
+        
+        module Eventos =
+        
+            type TipoDatos = TipoDatos of nombre:string * tipos:string
+        
+            type ResultadoManejador<'H> = Modelo -> Eff<'H,Modelo * Respuesta>
+        
+            type ObjetoDatos<'T> = {
+                tipoDatos : TipoDatos
+                datos     : 'T
+            }
+        
+            type ManejadorDatos<'T, 'H> = {
+                tipoDatos  : TipoDatos
+                manejadorF : ObjetoDatos<'T> -> ResultadoManejador<'H>
+            }
+        
+            let Manejadores<'H> = System.Collections.Generic.Dictionary<TipoDatos, ManejadorDatos<obj,'H>>()
+        
+            let deDatosGen (msg: ObjetoDatos<obj>) : ObjetoDatos<_> = {
+                tipoDatos = msg.tipoDatos
+                datos     = unbox msg.datos
+            }    
+        
+            let registrarManejador nombre (manejadorF:ObjetoDatos<'T> -> ResultadoManejador<_>) =
+                let manejador  = {
+                    tipoDatos  = TipoDatos (nombre, typeof<'T> |> getTypeName) |>! print
+                    manejadorF = deDatosGen >> manejadorF
+                }
+                Manejadores.Add(manejador.tipoDatos, manejador )
+        
+            let registrarManejadorf nombre (manejadorF:'T -> ResultadoManejador<_>) =
+                registrarManejador  nombre (fun oDatos -> manejadorF oDatos.datos)
+        
+            let manejadorGenerico (msg:ObjetoDatos<obj>) : ResultadoManejador<_> =
+                match Manejadores.TryGetValue msg.tipoDatos with
+                | false, _         -> failwithf "No Handler for message: %A" msg
+                | true , manejador -> manejador.manejadorF msg
+        
+            let addNewAliados (als1: Aliado []) (als2: Aliado []) : Aliado [] =
+                als1 |> Seq.filter(fun a -> als2 |> Seq.exists (fun b -> a.id = b.id ) |> not ) |> Seq.append als2 |> Seq.toArray
+        
+            let registroNuevo (idA, datos:DatosPersonales, padre, contactos) (modelo: Modelo) : Eff<'H,Modelo * Respuesta> = eff {
+                match   contactos
+                        |> Seq.tryPick(function CorreoElectronico email -> Some email |_-> None ) with
+                | None        -> return! sprintf "No se encontro Correo Electronico: %A" datos |> Error |> Rsl.ofResult
+                | Some correo ->
+                if  modelo.aliados
+                    |> Seq.exists(fun al ->
+                        al.contactos
+                        |> Seq.exists(function CorreoElectronico correo2 -> correo = correo2 |_-> false ) 
+                    )
+                    then return! sprintf "Correo Electronico ya esta registrado: %A" correo |> Error |> Rsl.ofResult
+                else
+                if modelo.aliados |> Seq.exists (fun al -> al.id = idA) 
+                    then return! sprintf "Id ya esta en uso: %A" idA                        |> Error |> Rsl.ofResult
+                else
+                let now = System.DateTime.Now
+                let aliado = {
+                    datosPersonales =  datos
+                    id              =  idA
+                    idPadreO        =  padre
+                    idForAuthorize  =  None
+                    influyente      =  None
+                    contactos       =  contactos
+                    identificacion  =  [||]
+                    isInternal      =  false
+                    status          =  CuentaCreada
+                    tipo            =  Regular
+                    fechaRegistro   =  now
+                    fechaStatus     =  now
+                    diaPago         =  Dia01
+                    nReferidos      =  0
+                    nRefActivos     =  0
+                    nDescendientes  =  0
+                    nDescActivos    =  0
+                    comision        =  0
+                    nivel           =  0
+                }
+                return
+                    { modelo with aliados = Array.append modelo.aliados [| aliado |] }
+                ,   [ datos.nombre1 ; datos.nombre2 ; datos.apellido1 ; datos.apellido2 ] 
+                    |> String.concat " "
+                    |> NuevoRegistro  
+            }
+        
+            let cambiaAliado ida   f (modelo:Modelo) = { modelo with aliados    = modelo.aliados          |> Array.map (fun al -> if al.id = ida then f al else al )}
+            let cambiaCorreo email f (aliado:Aliado) = { aliado with contactos  = aliado.contactos        |> Array.map (function CorreoElectronico c when c.email = email -> f c |> CorreoElectronico | co -> co )}
+            //let cambiaFormaPago cp f (aliado:Aliado) = { aliado with formasPago = aliado.formasPago.Value |> Array.map (fun fp -> if fp.cuentaPago = cp then f fp else fp ) }
+            let cambiaStatusCorreo ida email f = cambiaAliado ida (cambiaCorreo email  f)
+        
+            let actualizarDatosPersonales (idA, datos:DatosPersonales) (modelo: Modelo) : Eff<_,Modelo * Respuesta> = eff {
+                return
+                    cambiaAliado idA (fun al -> { al with datosPersonales = datos }) modelo
+                ,   Mensaje <| "Datos personales actualizados!" 
+            }
+        
+            //let actualizarAuthorizeId   (idA, authorizeIdR) (modelo: Modelo) : Eff<_,Modelo * Respuesta> = eff {
+            //    return
+            //        cambiaAliado idA (fun al -> { al with authorizeIdR = authorizeIdR }) modelo
+            //    ,   Mensaje <| "AuthorizeId actualizada" 
+            //}
+        
+            //let actualizarPagoAuthorizeId (idA, cuenta, paymentIdR : Result<IdPayment, string> )  (modelo: Modelo) : Eff<_,Modelo * Respuesta> = eff {
+            //    return
+            //        cambiaAliado idA (cambiaFormaPago cuenta (fun fp -> { fp with authorizeIdR = paymentIdR }) ) modelo
+            //    ,   Mensaje <| "AuthorizeId actualizada" 
+            //}
+        
+            let actualizarContactos (idA, contactos:Contacto[]) (modelo: Modelo) : Eff<_,Modelo * Respuesta> = eff {
+                return
+                    cambiaAliado idA (fun al -> { al with contactos = contactos }) modelo
+                ,   Mensaje <| "Contactos actualizados!" 
+            }
+        
+            let actualizarStatusPadre (idA, status:StatusAliado, padreO:IdAliado option, inflO :  string option) (modelo: Modelo) : Eff<_,Modelo * Respuesta> = eff {
+                return
+                    cambiaAliado idA (fun al -> { al with status = status ; idPadreO = padreO ; influyente = inflO }) modelo
+                ,   Mensaje <| "status actualizados!" 
+            }
+        
+            //let actualizarFormasPago (idA, formasPago:FormaPago[]) (modelo: Modelo) : Eff<_,Modelo * Respuesta> = eff {
+            //    return
+            //        cambiaAliado idA (fun al -> { al with formasPago = formasPago }) modelo
+            //    ,  Mensaje <| "Formas de pago actualizadas!" 
+            //}
+        
+            let agregarAliado  aliado  modelo = eff { return { modelo with Modelo.aliados = addNewAliados [| aliado  |] modelo.aliados }, ROk }
+            let agregarAliados aliados modelo = eff { return { modelo with Modelo.aliados = addNewAliados    aliados    modelo.aliados }, ROk }
+        
+            let correoVerificacionEnviado (ida, correo)  (modelo: Modelo) : Eff<_,Modelo * Respuesta> = eff {
+                return
+                    cambiaStatusCorreo ida correo (fun c -> { c with enviado = Some System.DateTime.Now }) modelo
+                ,   ROk
+            }
+        
+            let correoVerificado          (ida, correo)  (modelo: Modelo) : Eff<_,Modelo * Respuesta> = eff {
+                return
+                    cambiaStatusCorreo ida correo (fun c -> { c with recibido = Some System.DateTime.Now }) modelo
+                ,   ROk
+            }
+        
+            let actualizarEstado (modelo: Modelo, evento: Evento) = eff {
+                if modelo.nevento <> -1L && modelo.nevento + 1L <> evento.nevento then 
+                    failwithf "Evento fuera de secuencia: %d %d" modelo.nevento evento.nevento
+                let case, tuple, data = DiscUnion.caseTuple evento.data
+                let objData           = {
+                    tipoDatos         = TipoDatos(case, tuple |> getTypeName)
+                    datos             = data
+                }
+                return! manejadorGenerico objData modelo
+            }
+        
+            let eventoNoImplementado ev (modelo: Modelo) : Eff<_,Modelo * Respuesta> = eff {
+                return! sprintf "Evento no Implementado: %A" ev |> Error |> Rsl.ofResult
+            } 
+        
+            let invitarPotencialesAliados ev = eventoNoImplementado ev
+        module SerializadorEventos =
+            open Serializador
+            open Serializer
+            open System
+        
             open FSharp.Reflection
         
             let serObject : Ser<obj> = (fun o -> o.GetType().ToString() |> sprintf "%A"), (fun _ -> None)
@@ -2213,18 +2617,18 @@ namespace FsRoot
                 |> Option.defaultWith (fun () -> failwithf "Could not find deserializer for %s" tipoEvento)
         
         
-            let registrarF evento (f : 'T -> Eventos.ResultadoManejador) =
+            let registrarF evento (f : 'T -> Eventos.ResultadoManejador<_>) =
                 Eventos.registrarManejadorf evento f
                 registrarSerializadorPara typeof<'T>
         
             print "serializers:"
             serSerializadoresEventos.Keys |> Seq.iter print
         
-            open CodigoGenerado
+            //open CodigoGenerado
         
-            let chequearEventosEnBD et =
-                match et with
-                | ActualizarDatosPersonales_V0  v -> Eventos.actualizarDatosPersonales  v
+        //    let chequearEventosEnBD et =
+        //        match et with
+        //        | ActualizarDatosPersonales_V0  v -> Eventos.actualizarDatosPersonales  v
                 //| ActualizarFormasPago_V0       v -> Eventos.actualizarFormasPago       v
                 //| AgregarAliado_V1              v -> Eventos.agregarAliado              v
                 //| RegistroNuevo_V1              v -> Eventos.registroNuevo              v
@@ -2275,171 +2679,93 @@ namespace FsRoot
             open System.IO
             open WebSharper.UI.Server
         
-            let sendTestEmail (recipiente:string) (tema:string) (contenido:string)  = ambiente.EnviarCorreo recipiente tema contenido
+            type EmailI<'H> = abstract member SendEmail : string -> string -> string -> Eff<'H, unit>
+            let sendEmail (recipiente:string) (tema:string) (contenido:string)  = Eff(fun (h:#EmailI<'H>) k -> h.SendEmail recipiente tema contenido |> k) |> join
         
-            let dummyCtx =
-                { new WebSharper.Web.Context() with
-                    member this.RootFolder      = ambiente.CarpetaRaiz()
-                    member this.RequestUri      = failwith "Unsupported"
-                    member this.UserSession     = failwith "Unsupported"
-                    member this.Environment     = failwith "Unsupported"
-                    member this.Json            = failwith "Unsupported"
-                    member this.Metadata        = failwith "Unsupported"
-                    member this.Dependencies    = failwith "Unsupported"
-                    member this.ApplicationPath = failwith "Unsupported"
-                    member this.ResourceContext = failwith "Unsupported" }
+            let dummyCtxE() =
+                carpetaRaiz()
+                |>> fun raiz ->
+                        { new WebSharper.Web.Context() with
+                            member this.RootFolder      = raiz
+                            member this.RequestUri      = failwith "Unsupported"
+                            member this.UserSession     = failwith "Unsupported"
+                            member this.Environment     = failwith "Unsupported"
+                            member this.Json            = failwith "Unsupported"
+                            member this.Metadata        = failwith "Unsupported"
+                            member this.Dependencies    = failwith "Unsupported"
+                            member this.ApplicationPath = failwith "Unsupported"
+                            member this.ResourceContext = failwith "Unsupported" }
         
             let prepareHtml (doc:Doc) =
-                use tw  = new StringWriter()
-                use w   = new Core.Resources.HtmlTextWriter(tw, " ")        
-                doc.Write(dummyCtx, w, false)
-                tw.ToString()
+                dummyCtxE()
+                |>> fun dummyCtx ->
+                        use tw  = new StringWriter()
+                        use w   = new Core.Resources.HtmlTextWriter(tw, " ")        
+                        doc.Write(dummyCtx, w, false)
+                        tw.ToString()
         
             open WebSharper.UI.Templating
         
             let [< Literal >] TemplatesCorreos = @"Correos.html"
             type TemplateCorreo = Template<TemplatesCorreos, serverLoad = ServerLoad.WhenChanged>
         
-            let host = "https://prozper.azurewebsites.net"
+            let hostE() = variableAmbienteE "Website" |>> sprintf "https://%s"
         
             let SendGridAPIKey = ""
          
             let enviarCorreoInvitacion tema (IdAliado idPadre) (email:string)= 
-                TemplateCorreo.Invitacion() 
-                    .Logo(   TemplateCorreo.Logo().Doc())
-                    .Enlace( sprintf "%s/Register/%s" host idPadre )
-                    .Doc()
-                |> prepareHtml
-                |> sendTestEmail email tema
+                hostE()
+                |>> fun host ->
+                        TemplateCorreo.Invitacion() 
+                            .Logo(   TemplateCorreo.Logo().Doc())
+                            .Enlace( sprintf "%s/Register/%s" host idPadre )
+                            .Doc()
+                >>= prepareHtml
+                >>= sendEmail email tema
         
-            let enviarCorreosInvitacion claims1 (tema, padre, emails:string[]) = asyncResultM {
+            let enviarCorreosInvitacion claims1 (tema, padre, emails:string[]) = eff {
                 for email in emails do
                     do! enviarCorreoInvitacion tema padre email
             }
         
             let enviarBienvenida (aliado:Aliado) (correo:CorreoElectronico) =
-                asyncResultM {
-                    let sufijo = match aliado.datosPersonales.genero with Femenino -> "a" |_-> "o"
-                    let nombre = Aliado.nombre2 aliado.datosPersonales
-                    let tema   = sprintf "Prozper le da la bienvenida"
-                    do! TemplateCorreo.Bienvenida()
-                            .Logo(   TemplateCorreo.Logo().Doc())
-                            .Enlace(        sprintf "%s/#/Content/ProzperLyt.cntFormaFormasPago" host )
-                            .Sufijo(        sufijo                                                    )
-                            .NombreAfiliado(nombre                                                    )
-                            .Doc()
-                        |> prepareHtml
-                        |> sendTestEmail correo.email tema
-                    //CorreoVerificacionEnviado (aliado.id, correo.email)
-                    //|> EstadoActual.agregarEventoServer
-                } |> AsyncResultM.iterA print id
+                let sufijo = match aliado.datosPersonales.genero with Femenino -> "a" |_-> "o"
+                let nombre = Aliado.nombre2 aliado.datosPersonales
+                let tema   = sprintf "Prozper le da la bienvenida"
+                hostE()
+                |>> fun host ->
+                        TemplateCorreo.Bienvenida()
+                                .Logo(   TemplateCorreo.Logo().Doc())
+                                .Enlace(        sprintf "%s/#/Content/ProzperLyt.cntFormaFormasPago" host )
+                                .Sufijo(        sufijo                                                    )
+                                .NombreAfiliado(nombre                                                    )
+                                .Doc()
+                >>= prepareHtml
+                >>= sendEmail correo.email tema
+                //CorreoVerificacionEnviado (aliado.id, correo.email)
+                //|> EstadoActual.agregarEventoServer
         
-            let enviarVerificacionCorreo (aliado:Aliado) (correo:CorreoElectronico) = 
-                asyncResultM {
-                    do! WebSharper.UI.Html.div [] [ WebSharper.UI.Html.text "CORREO CONTENIDO" ]
-                        |> prepareHtml
-                        |> sendTestEmail correo.email "Verificacion de Correo"
-                    //CorreoVerificacionEnviado (aliado.id, correo.email)
-                    //|> EstadoActual.agregarEventoServer
-                } |> AsyncResultM.iterA print id
+            let enviarVerificacionCorreo (aliado:Aliado) (correo:CorreoElectronico) =
+                WebSharper.UI.Html.div [] [ WebSharper.UI.Html.text "CORREO CONTENIDO" ]
+                |>  prepareHtml
+                >>= sendEmail correo.email "Verificacion de Correo"
+                //CorreoVerificacionEnviado (aliado.id, correo.email)
+                //|> EstadoActual.agregarEventoServer
         
-        
-        module ObtenerEstado =
-            open Serializador
-            open AA
-        
-            let guardarEstado0     (nevento, serialModelo) = ambiente.GuardarEstado      nevento serialModelo
-            let obtenerEstado00    ()                      = ambiente.ObtenerEstado      ()
-            let obtenerAliados0    ()                      = ambiente.ObtenerAliados     ()
-            let ultimoEstado       ()                      = ambiente.UltimoEstado       ()
-        
-            let aliadosPrevio = System.Collections.Generic.Dictionary<_,_>()
-        
-            let guardarAliados aliados = asyncResultM {
-                let mutable first = true
-                for (aliado:Aliado) in aliados do
-                    let previoO = Dict.tryGetValue aliado.id aliadosPrevio
-                    if previoO <> Some aliado then
-                        if first then 
-                            first <- false
-                            printfn "previo = %A" previoO 
-                            printfn "nuevo  = %A" aliado
-                        do! aliado |> Serializer.serialize serAliado |> ambiente.GuardarAliado aliado.id.Id
-                    if previoO.IsSome then aliadosPrevio.Remove aliado.id |> ignore
-                    aliadosPrevio.Add(aliado.id, aliado)
-            }
-        
-            let actualizarAliadosPrevio modelo = asyncResultM {
-                aliadosPrevio.Clear()
-                for aliado in modelo.aliados do
-                    aliadosPrevio.Add(aliado.id, aliado)
-            }
-        
-            let guardarEstado =
-                    map (fun (modelo:Modelo) -> { modelo with aliados = Aliado.actualizarAliados modelo } )
-                >=> tee (fun e -> guardarAliados e.aliados)
-                >=> map (fun (modelo:Modelo) -> modelo.nevento, modelo |> Serializer.serialize serModelo )
-                >=> guardarEstado0
-        
-            let obtenerAliados (modelo:Modelo) = asyncResultM {
-                let! aliadoss = obtenerAliados0()
-                let  aliados  = aliadoss |> Array.choose (Serializer.deserializeWithDefs serAliado)
-                return { modelo with aliados = aliados}
-            }
-        
-            let salvarEstado (aa: AA<_,Modelo>) : AA<_,Modelo> =
-                let mutable estadoActual : Modelo option = None
-                fun ()   -> match ultimoEstado(), estadoActual with
-                            | Some n, Some e when n = e.nevento -> AsyncResultM.rtn e
-                            |_-> aa >=> map (Library.tee (fun e -> estadoActual <- Some e)) <| ()
-        
-            let obtenerEstado =
-                    obtenerEstado00
-                >=> map (Option.map snd                                         )
-                >=> map (Option.map (Serializer.deserializeWithDefs serModelo)  )
-                >=> map (Option.defaultValue  (Some modeloVacio)                )
-                 |> absorbO   (fun () -> errorMsgf "Modelo no fue deserializado")
-                >=> obtenerAliados
-                >=> tee actualizarAliadosPrevio
-                 |> salvarEstado
-        
-            let pairEstado ev =
-                obtenerEstado
-                >=> map (fun s -> s, ev)
-                <| ()
-        
-            let obtenerUsuario (claims: (_*_) []) : string = 
-                claims 
-                |>  Seq.tryFind(fun (n,v) -> n = "http://schemas.microsoft.com/identity/claims/objectidentifier") 
-                |>  Option.map snd
-                |>  Option.defaultWith (fun () -> failwith "Usuario no autenticado")
-        
-            let obtenerAliadoEstado0 = 
-                pairEstado
-                >=> map(fun (modelo, usuario) -> modelo.aliados |> Array.tryFind (fun al -> al.id = IdAliado usuario) |> Option.map (fun v -> v, modelo) )
-                 |> absorbO (fun () -> ResultMessage.ErrorMsg "Aliado no fue encontrado")
-        
-            let obtenerAliadoEstado =
-                map obtenerUsuario
-                >=> obtenerAliadoEstado0
-        
-            let obtenerAliado =
-                obtenerAliadoEstado
-                >-> fst
-        
-            let pairAliadoEstado claims ev =
-                obtenerAliadoEstado
-                >=> map (fun s -> s, ev)
-                <| claims
-        
-            let pairAliado claims =
-                pairAliadoEstado claims
-                >=> map (fun ((a,s), ev) -> a, ev)
         
         
         module ManejadorEventos =
             //open ObtenerEstado
-            open AA
+        
+            type EventoI<'H> =
+                    abstract member NuevoEvento<     'H> : string   -> string -> string -> string -> Eff<'H,int64>
+                    abstract member UltimoEvento<    'H> : unit     ->                                      int64 option
+                    abstract member EnviarMensaje<   'H> : string   -> string -> string -> string -> Eff<'H, unit>
+                    abstract member ObtenerListaDocs<'H> : IdAliado ->                               Eff<'H,string      []>
+        
+            let nuevoEvento   (usuario:string) (nombre:string) (evento:string) (tipo:string) = Eff(fun (h:#EventoI<'H>) k -> h.NuevoEvento usuario nombre evento tipo |> k ) |> join
+            let enviarMensaje (d:string) (r:string) (t:string) (c:string)                    = Eff(fun (h:#EventoI<'H>) k -> h.EnviarMensaje d r t c                  |> k ) |> join
+            let obtenerListaDocs0 alid                                                       = Eff(fun (h:#EventoI<'H>) k -> h.ObtenerListaDocs alid                  |> k ) |> join
         
             type SerialEvento = {
                 nombre  : string
@@ -2459,12 +2785,19 @@ namespace FsRoot
             }
         
             let deserializarEvento (serEvento : SerialEvento) =
-                let ser = Serializador.obtenerSerializador serEvento.tipo
+                let ser = SerializadorEventos.obtenerSerializador serEvento.tipo
                 match Serializer.deserializeWithDefs ser serEvento.json with
                 | Some data -> data
                 | None      -> failwithf "No se pudo deserializar el Evento: %A" serEvento
         
-            let manejadorGenerico (modelo , msg         ) = Eventos .manejadorGenerico msg     modelo
+            let manejadorGenerico msg = 
+                ObtenerEstado.obtenerEstado()
+                >>= fun estadoO -> 
+                        Eventos.manejadorGenerico msg estadoO
+                        |>  Rsl.getResult
+                        |>> function 
+                            | Ok (estadoN, r) -> estadoN, Ok    r
+                            | Error m         -> estadoO, Error m
         
             let serialN2serialU (serEventoN: SerialEventoN) = serEventoN.serEventoU
         
@@ -2482,23 +2815,21 @@ namespace FsRoot
                 }
         
             let separarEstado (modeloI:Modelo, eventoSerialN : SerialEventoN) oR =  
-                let modelo = oR |> ResultM.map fst |> ResultM.defaultValue modeloI
-                let resp   = oR |> ResultM.map snd
+                let modelo = oR |> Result.map fst |> Result.defaultValue modeloI
+                let resp   = oR |> Result.map snd
                 { modelo with nevento = eventoSerialN.nevento }, resp
         
-            let ejecutarEventoSerial =
-                    ObtenerEstado.pairEstado
-                >=> (   map (mapSnd (serialN2serialU >> serialU2TipoDatos) )
-                    >=> manejadorGenerico
-                     |> getResultM
-                     |> mapBoth separarEstado
-                    )
-                >=> tee (fst >> ObtenerEstado.guardarEstado)
-                >=> map  snd
-                 |> absorbR
+            let ejecutarEventoSerial ev =
+                ev
+                |> serialN2serialU 
+                |> serialU2TipoDatos
+                |> manejadorGenerico
+                >>= EA.tee (fst >> ObtenerEstado.guardarEstado ev.nevento)
+                |>> snd
+                |>  Rsl.absorbR
         
             let guardarEventoSerialU (serEventoU :  SerialEventoU) = 
-                ambiente.NuevoEvento
+                nuevoEvento
                     serEventoU.usuario
                     serEventoU.serEvento.nombre
                     serEventoU.serEvento.json
@@ -2507,69 +2838,60 @@ namespace FsRoot
             let serializarDataEvento (evento : DataEvento) =
                 let  name, ttype, obj = DiscUnion.caseTuple evento
                 let  tname            = ttype |> getTypeName
-                let  ser              = Serializador.obtenerSerializador tname
+                let  ser              = SerializadorEventos.obtenerSerializador tname
                 {   nombre            = name
                     tipo              = tname
                     json              = fst ser obj
                     data              = obj
                 }
         
-            let guardarEventoSerial =
-                guardarEventoSerialU
-                |>  mapBoth (fun serEventoU nevento  -> { nevento = nevento ; serEventoU = serEventoU } )
+            let guardarEventoSerial  serEventoU =
+                guardarEventoSerialU serEventoU
+                |>> fun nevento  -> { nevento = nevento ; serEventoU = serEventoU }
         
-            let serializarEvento =
-                    map (fun (evento:Evento) -> evento.data)
-                >=> map serializarDataEvento
-                 |> mapBoth (fun (evento:Evento) serEvento -> 
-                        evento.aliadoO 
-                        |> Option.map(fun (IdAliado usuario) -> { usuario = usuario ; serEvento  = serEvento })
-                        |> ResultM.ofOption (fun () -> errorMsgf "Aliado es Nulo para evento %A" evento)
-                    )
-                 |> absorbR
+            let serializarEvento (evento:Evento) =
+                evento.aliadoO 
+                |> Option.map(fun (IdAliado usuario) -> { usuario = usuario ; serEvento  = serializarDataEvento evento.data })
+                |> Result.ofOption (fun () -> sprintf "Aliado es Nulo para evento %A" evento)
+                |> Rsl.ofResult
         
-            let intentarEventoSerial =
-                ObtenerEstado.pairEstado
-                >=> map (mapSnd serialU2TipoDatos)
-                >=> manejadorGenerico
-                >=> map  ignore
+            let intentarEventoSerial ev =
+                serialU2TipoDatos ev
+                |>  manejadorGenerico
+                |>> snd
+                |>  Rsl.absorbR
+                |>> ignore
         
-            let ejecutarEventoNuevo =
-                serializarEvento
-                >=> tee intentarEventoSerial
-                >=> guardarEventoSerial
-                >=>(ejecutarEventoSerial
-                    |> bindBoth (fun inp out -> asyncResultM {
-                            do! ambiente.EnviarMensaje "" inp.serEventoU.usuario (sprintf "%A" out) ""
-                            return out
+            let ejecutarEventoNuevo ev =
+                serializarEvento ev
+                >>= EA.tee intentarEventoSerial
+                >>= guardarEventoSerial
+                >>= fun inp ->
+                        ejecutarEventoSerial inp
+                        >>= EA.tee (fun out ->  enviarMensaje "" inp.serEventoU.usuario (sprintf "%A" out) "")
+        
+            let ejecutarDataEventoNuevo  claims de =
+                ObtenerEstado.obtenerAliado claims
+                |>> fun al ->
+                        {
+                            Evento.nevento = 0L
+                            Evento.aliadoO = Some al.id
+                            data           = de
                         }
-                      )
-                    )
+                >>= ejecutarEventoNuevo
         
-            let ejecutarDataEventoNuevo  claims  =
-                ObtenerEstado.pairAliado claims
-                >=> map (fun (al, de) ->
-                    {
-                        Evento.nevento = 0L
-                        Evento.aliadoO = Some al.id
-                        data           = de
-                    })
-                >=> ejecutarEventoNuevo
-        
-            let obtenerSubModelo (aliado:Aliado, modelo:Modelo) =  asyncResultM {
+            let obtenerSubModelo (aliado:Aliado, modelo:Modelo) = 
                 let buscar = Aliado.busqueda modelo.aliados
-                if aliado.datosPersonales.nombre1 = "Administrador" && aliado.datosPersonales.apellido1 = "Supremo" then return modelo else
+                if aliado.datosPersonales.nombre1 = "Administrador" && aliado.datosPersonales.apellido1 = "Supremo" then modelo else
                 let subAliados = (if aliado.tipo = Master then buscar.descendientes else buscar.hijos) aliado
-                return
-                    { modelo with 
-                        idAliado = aliado.id
-                        aliados  = Array.append [| aliado |] subAliados 
-                    }
-            }
+                { modelo with 
+                    idAliado = aliado.id
+                    aliados  = Array.append [| aliado |] subAliados 
+                }
         
-            let obtenerEstadoParaUsuario : AA<string, _> =
-                ObtenerEstado.obtenerAliadoEstado0
-                >=> obtenerSubModelo
+            let obtenerEstadoParaUsuario usuario =
+                ObtenerEstado.obtenerAliadoEstado0 usuario
+                |>> obtenerSubModelo
         
             let obtenerClaim claim claims =
                 claims 
@@ -2577,19 +2899,18 @@ namespace FsRoot
                 |>  Option.map snd
         
             let enviarBienvenida claims = 
-                ObtenerEstado.pairAliado claims
-                >=> map fst
-                >=> fun (aliado:Aliado) -> asyncResultM {
+                ObtenerEstado.obtenerAliado claims
+                >>= fun (aliado:Aliado) -> eff {
                     for contacto in aliado.contactos do
                         match contacto with
                         | CorreoElectronico correo -> 
                             match correo.enviado with
-                            | None -> Correo.enviarBienvenida aliado correo
+                            | None -> do! Correo.enviarBienvenida aliado correo
                             |_-> ()
                         | _ -> ()
                 }
                 
-            let crearRegistroNuevo claims1 (modelo:Modelo, claims) = asyncResultM {
+            let crearRegistroNuevo claims1 claims (modelo:Modelo) = eff {
                 let usuario   = ObtenerEstado.obtenerUsuario claims1
                 if  usuario   = "admin" || (modelo.aliados |> Array.exists (fun al -> al.id = IdAliado usuario)) then return None else
                 let datos     = 
@@ -2618,7 +2939,7 @@ namespace FsRoot
                     |> Option.bind (function "" -> None | s -> Some s)
                     |> Option.bind (fun ref -> modelo.aliados |> Seq.tryFind(fun padre -> padre.id.Id = ref))
                     |> Option.map  (fun padre -> padre.id)
-                do! Info <| sprintf "referidoPor = %A" referidoPor
+                do! Log.logf "referidoPor = %A" referidoPor
                 //Correo.enviarBienvenida aliado // (**) mover afuera
                 return Some
                     {
@@ -2628,660 +2949,444 @@ namespace FsRoot
                     }
             }
         
-            let agregarUsuarioSiEsNuevo claims1 =
-                ObtenerEstado.pairEstado
-                >=>       crearRegistroNuevo      claims1
-                >=> mapO ejecutarEventoNuevo
-                >=> mapO (enviarBienvenida        claims1)
-                >=> map  (Option.iter             print  )
+            let agregarUsuarioSiEsNuevo claims1 claims =
+                ObtenerEstado.obtenerEstado()
+                >>= crearRegistroNuevo claims1 claims        
+                |>  bindO ejecutarEventoNuevo                
+                |>  bindO (fun _ -> enviarBienvenida claims1)
+                |>> Option.iter             print
         
-            let obtenerListaDocs claims : AA<unit, _> =
-                ObtenerEstado.pairAliado claims
-                >=> map (fun (al, _) -> al.id)
-                >=> ambiente.ObtenerListaDocs
+            let obtenerListaDocs claims =
+                ObtenerEstado.obtenerAliado claims
+                |>> fun al -> al.id
+                >>= obtenerListaDocs0
+        
+            let obtenerInfluyente (inf:string) =
+                ObtenerEstado.obtenerEstado()
+                |>> fun es -> 
+                        let infO = Some (inf.Trim().ToLower())
+                        es.aliados 
+                        |> Seq.tryFind (fun al -> al.influyente = infO )
+                        |> Result.ofOption (fun () -> sprintf "Influyente no encontrado : %s" inf)
+                |>  Rsl.absorbR
+        
+            let obtenerIdInfluyente inf =
+                obtenerInfluyente   inf
+                |>> fun al -> al.id.Id
         
         
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\other\AuthorizeNet\lib\AuthorizeNet.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll"
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\other\Microsoft.IdentityModel.Clients.ActiveDirectory\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll"
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Newtonsoft.Json\lib\net45\Newtonsoft.Json.dll"
+        //#r @"D:\Abe\CIPHERWorkspace\AzureFunctions/packages/Microsoft.Azure.Storage.Common/lib/net452/Microsoft.Azure.Storage.Common.dll" 
+        //#r @"D:\Abe\CIPHERWorkspace\AzureFunctions/packages/Microsoft.Azure.Storage.Blob/lib/net452/Microsoft.Azure.Storage.Blob.dll" 
+        //#r @"D:\Abe\CIPHERWorkspace\AzureFunctions/packages/Microsoft.Azure.Storage.Queue/lib/net452/Microsoft.Azure.Storage.Queue.dll" 
+        //#r @"D:\Abe\CIPHERWorkspace\AzureFunctions/packages/Microsoft.Azure.Cosmos.Table/lib/netstandard2.0/Microsoft.Azure.Cosmos.Table.dll" 
+        //#r @"D:\Abe\CIPHERWorkspace\AzureFunctions/packages/WindowsAzure.Storage/lib/net45/Microsoft.WindowsAzure.Storage.dll" 
         
-        module Authorize =
+        module Azure =
+        
             open System
+            open System.IO
+            //open Microsoft.Extensions.Logging
+            //open Microsoft.Azure.WebJobs
+            //open Microsoft.Azure.WebJobs.Extensions.Http
+            open Microsoft.Azure
+            open Microsoft.WindowsAzure.Storage
+            open Microsoft.WindowsAzure.Storage.Queue
+        
+            open Microsoft.Azure.Cosmos.Table
+        
+            //open Suave.Azure.Functions.Context
+        
+        
+            //let archivoUltimoEvento =  "ultimoEvento.txt"
+            //let archivoUltimoEstado =  "ultimoEstado.txt"
+            //let archivoEstado       =  "estado.txt"
+            //let archivoEventos      =  "eventos.txt"
+            let carpetaAmbiente     = @"%HOME%\data\MyFunctionAppData"
+            let storageSetting      =  "APPSETTING_AzureWebJobsStorage"
+        
+            let aliadosTableName    =  "Aliados"
+            let eventosTableName    =  "Eventos"
+            let mensajesTableName   =  "Mensajes"
+            let estadoTableName     =  "Modelo"
+        
+            let correosQueueName    =  "correos"
+            let mensajesQueueName   =  "mensajes"
+            
+            let storageAccount      = CloudStorageAccount.Parse(System.Environment.GetEnvironmentVariable storageSetting)
+        
+            let tableClient         = storageAccount.CreateCloudTableClient()
+            let aliadosTable        = tableClient.GetTableReference(aliadosTableName )
+            let mensajesTable       = tableClient.GetTableReference(mensajesTableName)
+            let eventosTable        = tableClient.GetTableReference(eventosTableName )
+            let estadoTable         = tableClient.GetTableReference(estadoTableName  )
+        
+            open Microsoft.WindowsAzure.Storage
+        
+            let storageAccountQ     = CloudStorageAccount.Parse(System.Environment.GetEnvironmentVariable storageSetting)
+            let queueClient         = storageAccountQ.CreateCloudQueueClient()
+            let queueCorreos        = queueClient.GetQueueReference(correosQueueName )
+            let queueMensajes       = queueClient.GetQueueReference(mensajesQueueName)
+        
+            let blobClient          = storageAccountQ.CreateCloudBlobClient()
+        
+            type Correo = {
+                Subject       : string
+                Content       : string
+                CustomerEmail : string
+            }
+        
+            type Mensaje = {
+                remitente     : string
+                destinatario  : string
+                tema          : string
+                contenido     : string
+            }
+        
+            let carpeta                = System.Environment.ExpandEnvironmentVariables(carpetaAmbiente).Replace("%", "")
+            let nombreCompleto archivo = Path.Combine(carpeta, archivo)
+            let existe         archivo = nombreCompleto archivo |> File.Exists
+        
+            let enviarCorreoAzure (recipiente:string) (tema:string) (contenido:string)  = 
+                {   Subject       = tema
+                    Content       = contenido 
+                    CustomerEmail = recipiente
+                }
+                |> Newtonsoft.Json.JsonConvert.SerializeObject
+                |> CloudQueueMessage
+                |> queueCorreos.AddMessage
+        
+            let enviarMensaje (mensaje:Mensaje) = 
+                mensaje
+                |> Newtonsoft.Json.JsonConvert.SerializeObject
+                |> CloudQueueMessage 
+                |> queueMensajes.AddMessage
+        
+            let xescribirArchivo archivo texto = 
+                Directory.CreateDirectory carpeta |> ignore // noop if it already exists
+                File.WriteAllText(nombreCompleto archivo, texto)
+        
+            let xobtenerTextoArchivo archivo =
+                if   existe archivo 
+                then nombreCompleto archivo |> File.ReadAllText |> Some 
+                else None
+        
+            type AliadoE(id, aliado: string) =
+                inherit TableEntity(partitionKey="Aliado", rowKey=id)
+                new() = AliadoE(null, null)
+                member val Aliado = aliado with get, set
+        
+            type MensajeE(mensaje: Mensaje, id) =
+                inherit TableEntity(partitionKey= mensaje.destinatario, rowKey=id)
+                new(mensaje) = MensajeE(mensaje, System.Guid.NewGuid().ToString())
+                new() = MensajeE(
+                                    {
+                                        remitente     = ""
+                                        destinatario  = ""
+                                        tema          = ""
+                                        contenido     = ""
+                                    }
+                )
+                member val id           = id                    with get, set
+                member val Remitente    = mensaje.remitente     with get, set
+                member val Destinatario = mensaje.destinatario  with get, set
+                member val Tema         = mensaje.tema          with get, set
+                member val Contenido    = mensaje.contenido     with get, set
+        
+            type EstadoE(n:int64, estado: string) =
+                inherit TableEntity(partitionKey= "EstadoActual", rowKey= "Estado")
+                new() = EstadoE(0L, "")
+                member val nevento      = n      with get, set
+                member val estado       = estado with get, set
+        
+            type EstadoNE(n:int64) =
+                inherit TableEntity(partitionKey= "EstadoActual", rowKey= "EstadoActual")
+                new() = EstadoNE(0L)
+                member val nevento      = n      with get, set
+        
+            type EventoE(n:int64, usuario:string, nombre:string, evento:string, tipo:string) =
+                inherit TableEntity(partitionKey= "Evento", rowKey= sprintf "%08d" n)
+                new() = EventoE(0L, "", "", "", "")
+                member val nevento      = n       with get, set
+                member val usuario      = usuario with get, set
+                member val nombre       = nombre  with get, set
+                member val tipo         = tipo    with get, set
+                member val evento       = evento  with get, set
+        
+            type EventoNE(n:int64) =
+                inherit TableEntity(partitionKey= "Actual", rowKey= "Actual")
+                new() = EventoNE(0L)
+                member val nevento      = n      with get, set
+        
+            let guardarAliado id contenido = 
+                TableOperation.InsertOrReplace <| AliadoE(id, contenido)
+                |> aliadosTable.Execute
+        
+            let guardarMensaje mensaje =
+                TableOperation.InsertOrReplace <| MensajeE(mensaje)
+                |> mensajesTable.Execute
+        
+            let obtenerAliados() = 
+                TableQuery<AliadoE>()
+                |> aliadosTable.ExecuteQuery
+                |> Seq.map (fun al -> al.Aliado ) |> Seq.toArray
+        
+            let guardarEstado (n:int64) s =
+                let op1 = TableOperation.InsertOrReplace <| EstadoE( n, s)
+                let op2 = TableOperation.InsertOrReplace <| EstadoNE(n   )
+                let tableResult = estadoTable.Execute op1
+                let tableResult = estadoTable.Execute op2
+                ()
+        
+            let ultimoEstado() =
+                let query   = TableQuery<EstadoNE>()
+                                .Where(
+                                    TableQuery.CombineFilters(
+                                        TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "EstadoActual"),
+                                        TableOperators.And,
+                                        TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal,"EstadoActual")
+                                ));        
+                let result  = estadoTable.ExecuteQuery query
+                result |> Seq.tryHead |> Option.map (fun e -> e.nevento)
+        
+            let obtenerEstado() =
+                let query   = TableQuery<EstadoE>()
+                                .Where(
+                                    TableQuery.CombineFilters(
+                                        TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "EstadoActual"),
+                                        TableOperators.And,
+                                        TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal,"Estado")
+                                ));        
+                let result  = estadoTable.ExecuteQuery query
+                result |> Seq.tryHead |> Option.map (fun e -> e.nevento, e.estado)
+        
+            let ultimoEvento() = //obtenerTextoArchivo archivoUltimoEvento |> Option.bind ParseO.parseInt64O 
+                let query   = TableQuery<EventoNE>()
+                                .Where(
+                                    TableQuery.CombineFilters(
+                                        TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "Actual"),
+                                        TableOperators.And,
+                                        TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal,"Actual")
+                                ));        
+                let result  = eventosTable.ExecuteQuery query
+                result |> Seq.tryHead |> Option.map (fun e -> e.nevento)
+        
+            let nuevoEvento (usuario:string) (nombre:string) (evento:string) (tipo:string) =
+                let nextEvento = 1L + (ultimoEvento() |> Option.defaultValue 0L)
+                let op1 = TableOperation.InsertOrReplace <| EventoE( nextEvento, usuario, nombre, evento, tipo)
+                let op2 = TableOperation.InsertOrReplace <| EventoNE(nextEvento   )
+                let tableResult = eventosTable.Execute op1
+                let tableResult = eventosTable.Execute op2
+                nextEvento
+        
+            let getMimeO (name :string)=
+                match name.ToLower() with
+                | String.EndsWith ".pdf"  _ -> Some "application/pdf"
+                | String.EndsWith ".rtf"  _ -> Some "application/rtf"
+                | String.EndsWith ".pbm"  _ -> Some "image/x-portable-bitmap"
+                | String.EndsWith ".bmp"  _ -> Some "image/bmp"
+                | String.EndsWith ".gif"  _ -> Some "image/gif"
+                | String.EndsWith ".tif"  _
+                | String.EndsWith ".tiff" _ -> Some "image/tiff"
+                | String.EndsWith ".png"  _ -> Some "image/png"
+                | String.EndsWith ".jpe"  _ 
+                | String.EndsWith ".jpeg" _ 
+                | String.EndsWith ".jpg"  _ -> Some "image/jpeg"
+                | String.EndsWith ".png"  _ -> Some "image/png"
+                | _-> None
+        
+            let obtenerListaDocs (IdAliado alid) =
+                let  container = blobClient.GetContainerReference "documentos"
+                let  dir       = container.GetDirectoryReference(alid)
+                let  blobs     = dir.ListBlobsSegmented(null) 
+                blobs.Results 
+                |> Seq.choose (fun blob -> 
+                    blob.Uri.GetComponents(UriComponents.Path, UriFormat.Unescaped) 
+                    |> String.splitInTwoO (alid + "/")
+                    |> Option.map snd
+                    )
+                |> Seq.toArray
+        
+        //    let setAmbiente() =
+        //        {
+        //            new IAmbiente with 
+        //                member __.UltimoEvento      ()  = ultimoEvento()
+        //                member __.UltimoEstado      ()  = ultimoEstado()
+        //                member __.LeerTipos         ()  = [||]   
+        //                member __.LeerEventosTipos  ()  = [||]   
+        //                member __.NuevoEvento       (usuario:string) (nombre:string) (evento:string) (tipo:string) = nuevoEvento usuario nombre evento tipo
+        //                member __.LeerEventos       n   = AsyncResultM.errorMsgf "ambienteAzure.LeerEventos not implemented"
+        //                member __.GuardarEstado     n s = guardarEstado n s
+        //                member __.ObtenerEstado     ()  = obtenerEstado
+        //                member __.GuardarAliado     i s = guardarAliado i s
+        //                member __.ObtenerAliados    ()  = obtenerAliados
+        //                member __.NombreAmbiente    ()  = "azure"
+        //                member __.CarpetaRaiz       ()  = carpeta
+        //                member __.EnviarCorreo    r t c = enviarCorreoAzure r t c
+        //                member __.EnviarMensaje d r t c = enviarMensaje  { 
+        //                                                        remitente     = d 
+        //                                                        destinatario  = r 
+        //                                                        tema          = t 
+        //                                                        contenido     = c 
+        //                                                    }
+        //                member __.ObtenerTransacciones      id = AsyncResultM.errorMsgf "Ambiente.ObtenerTransacciones: not implemented"
+        //                member __.ObtenerMensajes           id = AsyncResultM.errorMsgf "Ambiente.ObtenerMensajes: not implemented"
+        //                member __.ObtenerListaDocs          id = obtenerListaDocs id
+        //                member __.VariableAmbiente           v = System.Environment.GetEnvironmentVariable v
+        //                member __.Prepare                   () = Authorize.prepareAuthorizeNetEnvironment()
+        //        }
+        //
+        [< AutoOpen >]
+        module AzureHandler =
+            open Authorize
             open AuthorizeNet
             open AuthorizeNet.Api.Controllers
             open AuthorizeNet.Api.Contracts.V1
             open AuthorizeNet.Api.Controllers.Bases
-            open AA
         
-            let mutable environmentName = "NoEnvironmentSet"
+            let invokeR nameF (f:'a->'b) (p:'a) =
+                try 
+                    f p |> Ok
+                with e ->
+                    Error (sprintf "Exception! %s %s" <| nameF p <| e.ToString())
+                |> Rsl.ofResult
         
-            let prepareAuthorizeNetEnvironment() =
-                let Environment, EnvironmentName, Id, Transaction =
-                    match ambiente.VariableAmbiente("Authorize_Environment").ToUpper() with
-                    | "P" ->(   AuthorizeNet.Environment.PRODUCTION
-                            ,   "PRODUCTION"
-                            ,   ambiente.VariableAmbiente "Authorize_Id_Production"          
-                            ,   ambiente.VariableAmbiente "Authorize_Transaction_Production" 
-                            )
-                    |_->    (   AuthorizeNet.Environment.SANDBOX
-                            ,   "SANDBOX"
-                            ,   ambiente.VariableAmbiente "Authorize_Id_Sandbox"          
-                            ,   ambiente.VariableAmbiente "Authorize_Transaction_Sandbox" 
-                            )
-                let Key = ambiente.VariableAmbiente "Authorize_Key"     //??
-                environmentName <- EnvironmentName
-                ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment <- Environment
-                ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication <- 
-                    new merchantAuthenticationType( name            = Id
-                                                ,   ItemElementName = ItemChoiceType.transactionKey
-                                                ,   Item            = Transaction )
-            //prepareAuthorizeNetEnvironment()
-            let authorizeMerchantId (aliado:Aliado) =
-                match aliado.idForAuthorize with
-                | Some v ->        v .Id                .Left(20)
-                | None   -> aliado.id.Id.Replace("-","").Left(20)
+            let invokeL nameF (f:'a->'b) (p:'a) =
+                try 
+                    f p |> Log.logf "%s %A" (nameF p) |>> ignore 
+                with e ->
+                    Error (sprintf "Exception! %s %s" <| nameF p <| e.ToString())
+                    |> Rsl.ofResult
         
-            let inline execute (controller: IApiOperation<_,_> ) = 
-                controller.Execute()
-                controller.GetApiResponse()
+            type AzureHandler(?environment : string) =
+                let prepareEnvironment env id transactionKey =
+                    ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment         <- env
+                    ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication <- 
+                        new merchantAuthenticationType( name            = id
+                                                    ,   ItemElementName = ItemChoiceType.transactionKey
+                                                    ,   Item            = transactionKey )
+                let mutable environmentNameO = None
+                let prepararE = eff {
+                    let! env =  eff {
+                                    match environment with
+                                    | Some v -> return v.ToUpper()
+                                    |_       -> return! variableAmbienteE "Authorize_Environment"
+                                }
+                    let  environment, environmentName, idV, tranKeyV =
+                        match env with
+                        | "P" ->(   AuthorizeNet.Environment.PRODUCTION
+                                ,   "PRODUCTION"
+                                ,   "Authorize_Id_Production"          
+                                ,   "Authorize_Transaction_Production" 
+                                )
+                        |_->    (   AuthorizeNet.Environment.SANDBOX
+                                ,   "SANDBOX"
+                                ,   "Authorize_Id_Sandbox"          
+                                ,   "Authorize_Transaction_Sandbox" 
+                                )
+                    let! id      = variableAmbienteE idV
+                    let! tranKey = variableAmbienteE tranKeyV
+                    environmentNameO <- Some environmentName
+                    prepareEnvironment environment id tranKey
+                }
+                interface Rsl.Rsl<string>
+                interface Log.Log<string>
+                interface Log.Log1<string * int>
+                interface AuthorizeI<AzureHandler> with
+                    member __.execute controller =  controller.Execute()
+                                                    controller.GetApiResponse()
+                    member __.prepare         () = if environmentNameO.IsNone then prepararE else rtn ()
+                interface VariableAmbienteI with 
+                    member __.getVar          v  = System.Environment.GetEnvironmentVariable v
+                    member __.CarpetaRaiz     () = "."
+                interface Correo          .EmailI< AzureHandler> with
+                    member __.SendEmail                        r t c = invokeR (fun _ -> "GuardarEstado" ) (Azure.enviarCorreoAzure r t) c
+                interface ObtenerEstado   .EstadoI<AzureHandler> with
+                    member __.UltimoEstado                        () = Azure.ultimoEstado()
+                    member __.GuardarEstado                      n s = invokeR (fun _ -> "GuardarEstado" ) (Azure.guardarEstado  n) s
+                    member __.GuardarAliado                     id s = invokeL (fun _ -> "GuardarAliado" ) (Azure.guardarAliado id) s
+                    member __.ObtenerEstado                       () = invokeR (fun _ -> "ObtenerEstado" )  Azure.obtenerEstado     ()
+                    member __.ObtenerAliados                      () = invokeR (fun _ -> "ObtenerAliados")  Azure.obtenerAliados    ()
+                interface ManejadorEventos.EventoI<AzureHandler> with
+                    member __.NuevoEvento usuario nombre evento tipo = invokeR (fun _ -> "NuevoEvento" ) (Azure.nuevoEvento   usuario nombre evento) tipo
+                    member __.UltimoEvento                        () = Azure.ultimoEvento  ()
+                    member __.EnviarMensaje                  d r t c = invokeR (fun _ -> "EnviarMensaje") Azure.enviarMensaje { 
+                                                                                                                            remitente     = d 
+                                                                                                                            destinatario  = r 
+                                                                                                                            tema          = t 
+                                                                                                                            contenido     = c 
+                                                                                                                        }
+                    member __.ObtenerListaDocs                   ida = invokeR (fun _ -> "ObtenerListaDocs")  Azure.obtenerListaDocs ida
+                member this.Run   (eff:Eff<AzureHandler,_>) = 
+                    eff
+                    |> Log.consoleLogHandler
+                    //|> Log.consoleLogHandler1
+                    |> Rsl.RslHandler
+                    |> Eff.run this
+                //member this.Print eff = 
+                //    this.Run (eff |>> print)
+                //    |> function
+                //        | Ok ()   -> ()
+                //        | Error m -> print m
         
-            let inline executeGetResponse controller : AsyncResultM<'b, unit> = asyncResultM {
-                do! ResultMessage.Info <|  sprintf "Authorize: %s" environmentName
-                let response = execute controller
-                if response = null then 
-                    return! AsyncResultM.errorMsgf "%s Failed, Response = null" ( controller.GetType().Name )
-                elif response.messages.resultCode = messageTypeEnum.Ok then
-                    return response
-                elif response.messages.message <> null then
-                    return! AsyncResultM.errorMsgf "%s Error: %s %s"  ( controller.GetType().Name ) response.messages.message.[0].code response.messages.message.[0].text
-                else
-                    return! AsyncResultM.errorMsgf "%s Error: resultCode = %A, no messages" ( controller.GetType().Name ) response.messages.resultCode
-            }
-        
-            let (>>>) = (>>)
-            let (@->) controllerF responseF =
-                controllerF
-                >>> executeGetResponse
-                >-> responseF
-        
-            let buscarPerfil :AA<_,_> =
-                (fun (aliado : Aliado) -> getCustomerProfileRequest( merchantCustomerId  = authorizeMerchantId aliado ) )
-                >>> getCustomerProfileController
-                @-> fun response -> response.profile
-                >=> (fun v -> asyncResultM { return v } )
-        
-            let buscarIdAuthorize = 
-                buscarPerfil 
-                >-> fun p -> IdAuthorize p.customerProfileId
-        
-            let registrarAliadoNuevo :AA<_,_> =
-                (fun (aliado:Aliado, paymentProfile : customerPaymentProfileType) ->
-                    let email = aliado.contactos 
-                                |> Seq.choose(function CorreoElectronico cor -> Some cor.email |_-> None) 
-                                |> Seq.tryHead |> Option.defaultValue ""
-                    let customerProfile = 
-                        customerProfileType(        merchantCustomerId  = authorizeMerchantId aliado
-                                                ,   email               = email 
-                                                ,   paymentProfiles     = [| paymentProfile |] )
-                    createCustomerProfileRequest(   profile             = customerProfile
-                                                ,   validationMode      = validationModeEnum.liveMode )
-                )
-        //        >=> tee (fun inp -> asyncResultM { 
-        //                do! Newtonsoft.Json.JsonConvert.SerializeObject inp |> ResultMessage.Info
-        //                })
-                >>> createCustomerProfileController 
-                @-> (fun response -> response.customerPaymentProfileIdList.[0] )
-        
-            let registrarPagoNuevo :AA<_,_> =
-                (fun (IdAuthorize id, pp : customerPaymentProfileType) ->  
-                    createCustomerPaymentProfileRequest(customerProfileId = id
-                                                    ,   paymentProfile    = pp
-                                                    ,   validationMode    = validationModeEnum.liveMode)
-                )
-                >>> createCustomerPaymentProfileController
-                @-> fun response -> response.customerPaymentProfileId
-        
-            let pagoTipoTarjeta (tar:TarjetaCredito) =
-                let creditCard = creditCardType(cardNumber      = tar.numero.Id
-                                            ,   expirationDate  = tar.expiracion.Id               )
-                paymentType( Item = creditCard ), tar.titular
-        
-            let pagoTipoCuenta  (cta:CuentaBancaria) =
-                let  bankAccount = bankAccountType(  accountNumber   = cta.numero .Id
-                                                 ,   routingNumber   = cta.routing.Id
-                                               //,   accountType     = bankAccountTypeEnum.checking
-                                               //,   echeckType      = echeckTypeEnum.WEB
-                                                 ,   nameOnAccount   = cta.titular
-                                                 ,   bankName        = cta.banco)
-                paymentType( Item = bankAccount  ), cta.titular
-        
-            let datosTitularO (aliado:Aliado) (titular:string) =
-                aliado.contactos 
-                |> Seq.tryPick(function | Direccion dir -> Some dir |_-> None)
-                |> Option.map (fun direccion -> 
-                    customerAddressType(firstName = (titular.Split ' ').[0]
-                                    ,   lastName  = (titular.Split ' ' |> Seq.skip 1 |> String.concat " ")
-                                    ,   address   = direccion.linea1
-                                    ,   city      = direccion.ciudad
-                                    ,   state     = direccion.estado    .ToString()
-                                    ,   zip       = direccion.zonaPostal.ToString()
-                                    ,   country   = direccion.pais      .ToString()
-                                    )
-                )
-        
-            let perfilPago (tipoPago: paymentType, titular: string) (aliado:Aliado) =
-                datosTitularO aliado titular
-                |> Option.map (fun datosTitular ->
-                    aliado,
-                    customerPaymentProfileType( payment = tipoPago
-                                            ,   billTo  = datosTitular )
-                )
-        
-            let obtenerFormasDePagoId =
-                buscarPerfil
-                >-> (fun perfil ->
-                    perfil.paymentProfiles
-                    |> Array.choose (fun pago ->
-                        match pago.payment.Item with
-                        | :? AuthorizeNet.Api.Contracts.V1.creditCardMaskedType as cc -> 
-                            TarjetaCredito {
-                                titular       = pago.billTo.firstName + " " + pago.billTo.lastName
-                                tipoTarjeta   = TipoTarjeta.tryParse cc.cardType |> Option.defaultValue Visa
-                                numero        = NumeroTarjeta cc.cardNumber
-                                expiracion    = { anio = 0 ; mes = Mes.Enero}
-                            } |> Some
-                        | :? AuthorizeNet.Api.Contracts.V1.bankAccountMaskedType as ba -> 
-                            CuentaBancaria {
-                                titular     = ba.nameOnAccount
-                                banco       = ba.bankName
-                                tipo        = match ba.accountType with
-                                                | AuthorizeNet.Api.Contracts.V1.bankAccountTypeEnum.businessChecking
-                                                | AuthorizeNet.Api.Contracts.V1.bankAccountTypeEnum.checking          -> Corriente
-                                                |_-> Ahorro
-                                numero      = NumeroCuenta  ba.accountNumber
-                                routing     = RoutingNumber ba.routingNumber
-                            } |> Some
-                        |_-> None
-                        |> Option.map (fun cta ->
-                            {
-                                nombre       = ""
-                                authorizeIdR = pago.customerPaymentProfileId |> IdPayment |> Ok
-                                cuentaPago   = cta
-                            }
-                        )
-                    )
-                )
-                >*> getResultM
-                >-> ResultM.defaultValue [||]
-        
-            let obtenerFormasDePago claims =
-                fun () -> ObtenerEstado.obtenerAliado claims
-                >=> obtenerFormasDePagoId
-        
-            let obtenerFormasDePagoPara claims (alIds:_[]) = asyncResultM {
-                let! fps =
-                    alIds 
-                    |> AsyncResultM.traverseSeq (fun id -> asyncResultM {
-                        let! fp = obtenerFormasDePagoId id
-                        return id, fp
-                    })
-                return fps |> Seq.toArray 
-            }
-        
-            let registrarFormaPago =
-                fst 
-                >>> buscarIdAuthorize
-                >*> getResultM
-                >*> bindBoth (fun (al, pp) ->
-                    function
-                    | OkM(p, _) -> registrarPagoNuevo   (p , pp)
-                    |_          -> registrarAliadoNuevo (al, pp)
-                )        
-            let crearFormaPago claims =
-                fun _ -> ObtenerEstado.obtenerAliado claims
-                >*> mapBoth perfilPago
-                >*> absorbO (fun () -> ResultMessage.ErrorMsg "No se encontro direccion")
-                >=> registrarFormaPago
-        
-            let registrarTarjeta         claims =
-                pagoTipoTarjeta 
-                >>> crearFormaPago claims
-                >-> fun _ -> "Tarjeta registrada."
-        
-            let registrarCuenta          claims =
-                pagoTipoCuenta 
-                >>> crearFormaPago claims
-                >-> fun _ -> "Cuenta registrada."
-        
-            let validarFormaPago         claims =
-                fun _ -> ObtenerEstado.obtenerAliado claims
-                >=> buscarIdAuthorize
-                >*> mapBoth (fun (IdPayment idp) (IdAuthorize idm)  ->
-                        validateCustomerPaymentProfileRequest(  customerProfileId        = idm
-                                                            ,   customerPaymentProfileId = idp
-                                                            ,   validationMode           = validationModeEnum.liveMode
-                        ))
-                >=> validateCustomerPaymentProfileController
-                @-> fun response -> response.directResponse
-        
-            let borrarFormaPago claims =
-                fun _ -> ObtenerEstado.obtenerAliado claims
-                >=> buscarIdAuthorize
-                >*> mapBoth (fun (IdPayment idp) (IdAuthorize idm)  ->
-                        deleteCustomerPaymentProfileRequest(customerProfileId        = idm
-                                                        ,   customerPaymentProfileId = idp
-                        ))
-                >=> deleteCustomerPaymentProfileController
-                @-> fun response -> "Forma de pago borrada."
-        
-        module Acciones =
-            open ObtenerEstado
-            open AA
-            open AuthorizeNet.Api.Contracts.V1
-        
-            //let enviarCorreosVerificacion (estado: Modelo) =
-            //    let mutable enviado = false
-            //    for aliado in estado.aliados do
-            //        for contacto in aliado.contactos do
-            //            match contacto with
-            //            | CorreoElectronico correo -> 
-            //                match correo.enviado with
-            //                | None -> enviado <- true; Correo.enviarVerificacionCorreo aliado correo
-            //                |_-> ()
-            //            | _ -> ()
-            //    enviado
-        
-            //let actualizarAuthorizeId aliado authorizeIdR = 
-            //    {
-            //        nevento  = 0L
-            //        aliadoO  = Some aliado.id
-            //        data     = ActualizarAuthorizeId(aliado.id, authorizeIdR)        
-            //    } |> ManejadorEventos.ejecutarEventoNuevo
-        
-            //let toResult v = v |> ResultM.toResult |> Result.mapError ResultMessage.summarized
-        //
-            //let registrarAliados (estado: Modelo) = asyncResultM {
-            //    let mutable enviado = false
-            //    for aliado in estado.aliados do
-            //        if aliado.formasPago.Length > 0 && aliado.authorizeIdR = Error "" then
-            //            enviado <- true
-            //            let! idR = Authorize.buscarIdAuthorize aliado |> AsyncResultM.getResultM
-            //            match idR with
-            //            | ErrorM _  ->  let! resR = Authorize.registrarAliado aliado |> AsyncResultM.getResultM
-            //                            do!  resR |> toResult
-            //                                 |> actualizarAuthorizeId aliado |> AsyncResultM.map ignore
-            //            | OkM(id, _) -> do!  Ok id 
-            //                                 |> actualizarAuthorizeId aliado |> AsyncResultM.map ignore
-            //    return enviado
-            //}
-        //
-            //let actualizarPagoAuthorizeId aliado cta authorizeIdR =
-            //    {
-            //        nevento  = 0L
-            //        aliadoO  = Some aliado.id
-            //        data     = ActualizarPagoAuthorizeId(aliado.id, cta, authorizeIdR)
-            //    } |> ManejadorEventos.ejecutarEventoNuevo
-        //
-            //let registrarCuentas (estado: Modelo) =  asyncResultM {
-            //    let mutable enviado = false
-            //    for aliado in estado.aliados do
-            //        match aliado.authorizeIdR with
-            //        | Ok authorizeId ->
-            //            for formaPago in aliado.formasPago do
-            //                match formaPago.authorizeIdR with
-            //                | Error "" ->
-            //                    match formaPago.cuentaPago with
-            //                    | TarjetaCredito tar -> enviado <- true
-            //                                            let! authorizeIdR = Authorize.registrarTarjeta aliado authorizeId tar |> AsyncResultM.getResultM
-            //                                            do! actualizarPagoAuthorizeId aliado formaPago.cuentaPago (toResult authorizeIdR) |> AsyncResultM.map ignore
-            //                    | CuentaBancaria cta -> enviado <- true
-            //                                            let! authorizeIdR = Authorize.registrarCuenta  aliado authorizeId cta |> AsyncResultM.getResultM
-            //                                            do! actualizarPagoAuthorizeId aliado formaPago.cuentaPago (toResult authorizeIdR) |> AsyncResultM.map ignore
-            //                    |_-> () 
-            //                |_-> ()
-            //        |_-> ()
-            //    return enviado
-            //}
-        
-            let bindBoth f aa : AA<_, _> = fun inp -> inp |> (aa >=>  (f inp) )
-            let mapIfFalse f aa = aa |> bindBoth (fun estado enviado -> if enviado then AsyncResultM.rtn true else f estado ) 
-        
-            //let ejecutarAcciones = 
-            //    obtenerEstado
-            //    >=> 
-            //    (registrarAliados
-            //     //|> mapIfFalse enviarCorreosVerificacion
-            //     |> mapIfFalse registrarCuentas         )
-        
+            let handler = AzureHandler()
         module Rpc =
             open WebSharper
             open WebSharper.JavaScript
-            open AA
         
-            [< JavaScript ; Inline >]
+            [< JavaScript >]
             let serverEndPoint = 
-                if IsClient then 
-                    if JS.Window.Location.Protocol = "http:" 
-                    then "http://localhost:7071/api/"
-                    else "https://prozper.azurewebsites.net/api/"
-                else     "https://prozper.azurewebsites.net/api/"
+                lazy 
+                    if IsClient then 
+                        if JS.Window.Location.Protocol = "http:" 
+                        then "http://localhost:7071/api/"
+                        else sprintf "https://%s/api/" JS.Window.Location.Host
+                    else     
+                        variableAmbienteE "Website" 
+                        |>> sprintf "https://%s/api/"
+                        |>  Eff.run { new VariableAmbienteI with
+                                        member __.getVar      v  = System.Environment.GetEnvironmentVariable v 
+                                        member __.CarpetaRaiz () = "."
+                                    }
         
-            [< JavaScript >]
-            let invoke (fname:string) idAliado (p:string) = asyncResultM {
-                do!  async.Return ()
-                let p = if isUndefined p then "null" else p
-                let  headers = Headers()
-                headers.Append("Content-Type", "application/json")
-                headers.Append("IdAliado"    , idAliado          )
-                let  req  = RequestOptions( 
-                                  Mode        = RequestMode.Cors
-                                , Credentials = RequestCredentials.Include
-                                , Method      = "POST"
-                                , Headers     = headers
-                                , Body        = p)
-                let! resp = JS.Fetch(serverEndPoint + fname, req ) |> Promise.AsAsync
-                let! text = resp.Text() |> Promise.AsAsync
-                printfn "invoke resp = %A" text
-                return text
-            }
+            let obtenerUnions0 () =
+                ( DiscUnion.simple<Pais          >
+                , DiscUnion.simple<Estado        >
+                , DiscUnion.simple<TipoDireccion >
+                , DiscUnion.simple<TipoTelefono  >
+                , DiscUnion.simple<Genero        >
+                , DiscUnion.simple<TipoCuenta    >
+                , DiscUnion.simple<TipoTarjeta   >
+                , DiscUnion.simple<StatusAliado  >
+                , [| for m in System.Enum.GetValues(typeof<Mes>)                       do yield string m |]
+                , [| for i in System.DateTime.Now.Year..System.DateTime.Now.Year + 15  do yield        i |])
         
-            [< JavaScript >]
-            let registroRpcs = System.Collections.Generic.Dictionary<string, (string*string)[]-> string -> Async<string> >()
+            open AzureHandler
         
-            [< JavaScript ; Inline >]
-            let inline doRpc<'P, 'R> fname =
-                let serializeP   (p:        'P            ) : string            = Json.Serialize   p
-                let serializeR   (p:ResultM<'R    , unit> ) : string            = Json.Serialize   p
-                let deserializeP (s:        string        ) : 'P                = Json.Deserialize s
-                let deserializeR (s:        string        ) : ResultM<'R, unit> = Json.Deserialize s
-                (fun idAliado -> serializeP >> invoke fname idAliado >> Async.map (ResultM.bind deserializeR))
-              , (fun (f: (string*string)[] -> AA<'P, 'R>) -> registroRpcs.Add(fname, (fun c js -> 
-                                asyncResultM {
-                                    let  p = deserializeP js
-                                    let! r = f c p
-                                    return r
-                                } |> Async.map serializeR
-                     ) ) )
+            type AR<'T> = Async<Result<'T, string>>
+            type CL = (string * string) []
         
-            let obtenerUnions0 () = asyncResultM {
-                return DiscUnion.simple<Pais          >
-                     , DiscUnion.simple<Estado        >
-                     , DiscUnion.simple<TipoDireccion >
-                     , DiscUnion.simple<TipoTelefono  >
-                     , DiscUnion.simple<Genero        >
-                     , DiscUnion.simple<TipoCuenta    >
-                     , DiscUnion.simple<TipoTarjeta   >
-                     , DiscUnion.simple<StatusAliado  >
-                     , [| for m in System.Enum.GetValues(typeof<Mes>)                       do yield string m |]
-                     , [| for i in System.DateTime.Now.Year..System.DateTime.Now.Year + 15  do yield        i |]
-            }
+            let [< Rpc >] obtenerUnions                       () : AR<_> = invokeR(fun _ -> "obtenerUnions") obtenerUnions0 ()     |> handler.Run |> Async.rtn
+            let [< Rpc >] obtenerEstadoParaUsuario (id:IdAliado) : AR<_> = ManejadorEventos.obtenerEstadoParaUsuario id.Id         |> handler.Run |> Async.rtn
+            let [< Rpc >] obtenerIdInfluyente       codigo       : AR<_> = ManejadorEventos.obtenerIdInfluyente      codigo        |> handler.Run |> Async.rtn
+            let [< Rpc >] actualizarSubscripcion (id:IdAliado) (idp: IdPayment)  : AR<_> = Authorize.actualizarSubscripcion id idp |> handler.Run |> Async.rtn
+            let [< Rpc >] ejecutarDataEventoNuevo claims  de     : AR<_> = ManejadorEventos.ejecutarDataEventoNuevo claims  de     |> handler.Run |> Async.rtn
+            let [< Rpc >] agregarUsuarioSiEsNuevo claims1 claims : AR<_> = ManejadorEventos.agregarUsuarioSiEsNuevo claims1 claims |> handler.Run |> Async.rtn
+            let [< Rpc >] enviarCorreosInvitacion (c:CL)  p      : AR<_> = Correo.enviarCorreosInvitacion           c       p      |> handler.Run |> Async.rtn
+            let [< Rpc >] obtenerFormasDePago     (c:CL)  p      : AR<_> = Authorize.obtenerFormasDePagoId                  p      |> handler.Run |> Async.rtn
+            let [< Rpc >] registrarTarjeta        claims  p      : AR<_> = Authorize.registrarTarjeta               claims  p      |> handler.Run |> Async.rtn
+            let [< Rpc >] registrarCuenta         claims  p      : AR<_> = Authorize.registrarCuenta                claims  p      |> handler.Run |> Async.rtn
+            let [< Rpc >] validarFormaPago        claims  p      : AR<_> = Authorize.validarFormaPago               claims  p      |> handler.Run |> Async.rtn
+            let [< Rpc >] borrarFormaPago         claims  p      : AR<_> = Authorize.borrarFormaPago                claims  p      |> handler.Run |> Async.rtn
+            let [< Rpc >] obtenerFormasDePagoPara (c:CL)  p      : AR<_> = Authorize.obtenerFormasDePagoPara        c       p      |> handler.Run |> Async.rtn
+            let [< Rpc >] obtenerListaDocs                p      : AR<_> = ManejadorEventos.obtenerListaDocs                p      |> handler.Run |> Async.rtn
         
-            let logoutUser0 _claims () : AsyncResultM<unit, unit> = AsyncResultM.errorMsgf "logoutUser0: not implemented"
-        
-            let [< Inline >] d01 = doRpc "ejecutarDataEventoNuevo" 
-            //let [< Inline >] d02 = doRpc "obtenerEstadoParaUsuario"
-            //let [< Inline >] d03 = doRpc "obtenerUnions"
-            let [< Inline >] d04 = doRpc "logoutUser"
-            let [< Inline >] d05 = doRpc "agregarUsuarioSiEsNuevo"
-            let [< Inline >] d06 = doRpc "enviarCorreosInvitacion"
-            let [< Inline >] d07 = doRpc "obtenerFormasDePago"
-            let [< Inline >] d08 = doRpc "registrarTarjeta"
-            let [< Inline >] d09 = doRpc "registrarCuenta"
-            let [< Inline >] d10 = doRpc "validarFormaPago"
-            let [< Inline >] d11 = doRpc "borrarFormaPago"
-            let [< Inline >] d12 = doRpc "obtenerFormasDePagoPara"
-            let [< Inline >] d13 = doRpc "obtenerListaDocs"
-        
-            let [< Inline >] ejecutarDataEventoNuevo  =  fst d01
-            //let [< Inline >] obtenerEstadoParaUsuario =  fst d02
-            //let [< Inline >] obtenerUnions            =  fst d03
-            let [< Inline >] logoutUser               =  fst d04
-            let [< Inline >] agregarUsuarioSiEsNuevo  =  fst d05
-            let [< Inline >] enviarCorreosInvitacion  =  fst d06
-            let [< Inline >] obtenerFormasDePago      =  fst d07
-            let [< Inline >] registrarTarjeta         =  fst d08
-            let [< Inline >] registrarCuenta          =  fst d09
-            let [< Inline >] validarFormaPago         =  fst d10
-            let [< Inline >] borrarFormaPago          =  fst d11
-            let [< Inline >] obtenerFormasDePagoPara  =  fst d12
-            let [< Inline >] obtenerListaDocs         =  fst d13
-        
-            ManejadorEventos.ejecutarDataEventoNuevo  |> snd d01 
-            //ManejadorEventos.obtenerEstadoParaUsuario |> snd d02 
-            //obtenerUnions0                            |> snd d03 
-            logoutUser0                               |> snd d04 
-            ManejadorEventos.agregarUsuarioSiEsNuevo  |> snd d05
-            Correo.enviarCorreosInvitacion            |> snd d06
-            Authorize.obtenerFormasDePago             |> snd d07
-            Authorize.registrarTarjeta                |> snd d08
-            Authorize.registrarCuenta                 |> snd d09
-            Authorize.validarFormaPago                |> snd d10
-            Authorize.borrarFormaPago                 |> snd d11
-            Authorize.obtenerFormasDePagoPara         |> snd d12
-            ManejadorEventos.obtenerListaDocs         |> snd d13
-        
-        
-        //// when using pattern matching to separate the tuple we get error:
-        ////                 WebSharper error FS9001: 
-        ////                    Global error 'Undefined variable during writing JavaScript: $1626
-        //// when using the library
-        
-            //let [< Inline >] ejecutarDataEventoNuevo ,  d1 =  doRpc "ejecutarDataEventoNuevo" 
-            //let [< Inline >] obtenerEstado           ,  d2 =  doRpc "obtenerEstado"          
-            //let [< Inline >] obtenerUnions           ,  d3 =  doRpc "obtenerUnions"          
-            //let [< Inline >] logoutUser              ,  d4 =  doRpc "logoutUser"
-        //
-            //ManejadorEventos.ejecutarDataEventoNuevo |> d1
-            //ManejadorEventos.obtenerEstado           |> d2
-            //do               obtenerUnions0          |> d3
-            //do               logoutUser0             |> d4 
-        
-            type AR<'T> = AsyncResultM<'T, unit>
-        
-            let [< Rpc >] obtenerUnions                       () : AR<_> = obtenerUnions0 ()
-            let [< Rpc >] obtenerEstadoParaUsuario (id:IdAliado) : AR<_> = ManejadorEventos.obtenerEstadoParaUsuario id.Id
-        
-        module AmbienteMemoria =
-            open System.Net.Mail
-            open AA
-        
-            let mutable ultimoEvento  = 0L
-            let mutable eventos       = [| |]
-            let mutable ultimoEstadoO = None
-            let mutable estadoO       = None
-            let         aliados       = System.Collections.Generic.Dictionary<_,_>()
-        
-            let enviarCorreo (recipiente:string) (tema:string) (contenido:string)  = asyncResultM {
-                use msg = new MailMessage(recipiente, "no-reply@prozper.com", tema, contenido)
-                msg.IsBodyHtml <- true
-                use client = new SmtpClient(@"localhost")
-                client.DeliveryMethod <- SmtpDeliveryMethod.Network        
-                client.Send msg
-                do! ResultMessage.Info <| sprintf "Enviando correo %s" recipiente
-            }
-        
-            let setAmbiente() =
-                ambiente <- {
-                    new IAmbiente with
-                    member __.UltimoEvento             ()  = Some ultimoEvento
-                    member __.UltimoEstado             ()  =      ultimoEstadoO
-                    member __.LeerTipos                ()  = [||]   
-                    member __.LeerEventosTipos         ()  = [||]   
-                    member __.NuevoEvento      (usuario:string) (nombre:string) (evento:string) (tipo:string) = asyncResultM {
-                        ultimoEvento <- ultimoEvento + 1L
-                        eventos      <- Array.append eventos [| ultimoEvento, usuario, nombre, tipo, evento, System.DateTime.Now |]
-                        return ultimoEvento
-                    }
-                    member __.LeerEventos              n   = asyncResultM {
-                        return (eventos).[int (n-1L) ..] 
-                    }
-                    member __.GuardarEstado            n s = asyncResultM {
-                        ultimoEstadoO <- Some n
-                        estadoO       <- Some s
-                    }
-                    member __.ObtenerEstado            ()  = asyncResultM {
-                        return ultimoEstadoO |> Option.bind(fun n -> estadoO |> Option.map(fun e -> n, e))
-                    }
-                    member __.GuardarAliado            i s = asyncResultM {
-                        if aliados.ContainsKey i then aliados.Remove i |> ignore
-                        aliados.Add(i, s) |> ignore
-                    }
-                    member __.ObtenerAliados           ()  = asyncResultM {
-                        return aliados.Values |> Seq.toArray
-                    }
-                    member __.NombreAmbiente           ()  = "memoria"
-                    member __.CarpetaRaiz              ()  = "..\src"
-                    member __.EnviarCorreo           r t c = enviarCorreo r t c
-                    member __.EnviarMensaje        d r t c = AsyncResultM.errorMsgf "AmbienteMemoria.EnviarMensaje: not implemented"
-                    member __.ObtenerTransacciones      id = AsyncResultM.errorMsgf "Ambiente.ObtenerTransacciones: not implemented"
-                    member __.ObtenerMensajes           id = AsyncResultM.errorMsgf "Ambiente.ObtenerMensajes: not implemented"
-                    member __.ObtenerListaDocs          id = AsyncResultM.errorMsgf "Ambiente.ObtenerListaDocs: not implemented"
-                    member __.VariableAmbiente           v = failwithf "Ambiente.VariableAmbiente: not implemented"
-                    member __.Prepare                   () = Authorize.prepareAuthorizeNetEnvironment()
-                }
-                
-        //[< JavaScript false >]
-        module Sample =
-            let data = """
-        """
-        
-        
-            let getLines = String.splitByChar '\n'
-                        >> Seq.map String.trim
-                        >> Seq.filter ((<>) "")
-        
-            let extraerCodigo nm =
-                nm
-                |> String.splitByChar ','
-                |> function | [| apellido ; nombre |] -> Some (apellido, nombre) |_-> None
-                |> Option.bind (fun (a,nm) -> String.delimitedO "(" ")" nm |> Option.bind (fun (nm, cd, _) -> Some (a.Trim(), nm.Trim(), cd.Trim() )) )
-        
-            let aliados =
-                getLines data
-                |> Seq.map (String.splitByChar '|')
-                |> Seq.choose (function [| padre ; aliado ; tel ; email |] -> Some (padre, aliado, tel, email) |_-> None)
-                |> Seq.choose (fun (p,al, tel, email) -> 
-                    match extraerCodigo p, extraerCodigo al with
-                    | Some(_,_,p), Some(ap, nm, cd) -> Some( p, ap, nm, cd, tel, email)
-                    | _-> None
-                )
-                |> Seq.map (fun (p2, apellido, nombre, p1, tel, email) ->
-                    {
-                        id              = IdAliado p1
-                        idPadreO        = IdAliado p2 |> Some
-                        idForAuthorize  = None
-                        influyente      = None
-                        identificacion  = [||]
-                        datosPersonales = {
-                                            titulo          = None
-                                            nombre1         = nombre
-                                            nombre2         = ""
-                                            apellido1       = apellido
-                                            apellido2       = ""
-                                            nacionalidad    = Venezuela
-                                            genero          = Masculino
-                                            fechaNacimiento = System.DateTime.Now
-                        }
-                        contactos       = [|
-                                                Telefono { telVacio with numero = tel }
-                                                CorreoElectronico {correoVacio with email = email }
-                        |]
-                        isInternal      = p1 = "PRZ"
-                        status          = Activo
-                        tipo            = Regular
-                        fechaRegistro   = System.DateTime.Now
-                        fechaStatus     = System.DateTime.Now
-                        diaPago         = Dia01
-                        nReferidos      = 0
-                        nRefActivos     = 0
-                        nDescendientes  = 0
-                        nDescActivos    = 0
-                        comision        = 0
-                        nivel           = 0
-                    }
-                )
-        
-        
-            aliados |> Seq.iter (printfn "%A" )
-        
-            //let aliados =
-            //    getLines data
-            //    |> Seq.map (String.splitByChar '|')
-            //    |> Seq.map (fun p -> p.[0], Seq.last p)
-            //    |> Seq.map (fun (p1, p2) -> 
-            //        try statuses.[p1]
-            //        with e -> printfn "not found %A" p1 ; "INACTIVO"
-            //        , p1, p2)
-            //    |> Seq.map (fun (sta, p1, p2) ->
-            //        let apellido, nombre, genero = 
-            //            match p1.Split ',' with
-            //            | [| ap ; nm |] -> ap.Trim(), nm.Trim(), Femenino
-            //            | _             -> ""       , p1.Trim(), Empresa
-            //        {
-            //            id              = IdAliado p1
-            //            //authorizeIdR    = Error ""
-            //            idPadreO        = IdAliado p2 |> Some
-            //            identificacion  = [||]
-            //            datosPersonales = {
-            //                                titulo          = None
-            //                                nombre1         = nombre
-            //                                nombre2         = ""
-            //                                apellido1       = apellido
-            //                                apellido2       = ""
-            //                                nacionalidad    = Venezuela
-            //                                genero          = genero
-            //                                fechaNacimiento = System.DateTime.Now
-            //            }
-            //            contactos       = [||]
-            //            isInternal      = false
-            //            status          = if sta = "ACTIVO" then Activo else Inactivo
-            //            tipo            = Regular
-            //            fechaRegistro   = System.DateTime.Now
-            //            fechaStatus     = System.DateTime.Now
-            //            diaPago         = Dia01
-            //            nReferidos      = 0
-            //            nRefActivos     = 0
-            //            nDescendientes  = 0
-            //            nDescActivos    = 0
-            //            comision        = 0
-            //            nivel           = 0
-            //        }
-            //    )
-        
-            let modelo = {
-                idAliado      = IdAliado "PRZ"
-                aliados       = aliados |> Seq.toArray
-                anoActual     = 2019
-                periodoActual = 1
-                premisas      = premisasCalculo
-                nevento       = -2L
-            }
-           //Aliado.actualizarAliados modelo
-            //|> Seq.iter print
-        
-        
-        //#define NOFMK --noframework
-        
-            
         //#nowarn "52"
         //#nowarn "1182"
         //#nowarn "1178"
         
-        // without this   v    WebSharper compilation fails with message: 
-        //               vvv      WebSharper error FS9001: 
-        //                v       Global error 'An index satisfying the predicate was not found in the collection.'
-        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
-        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
-        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+        //#define NOFRAMEWORK --noframework
+        //#define WEBSHARPER
         
-        module AddSamples =
-        
-            let addSamples() =
-                Sample.aliados 
-                    |> Seq.iter (fun al ->
-                        { data    = DataEvento.AgregarAliado al
-                          aliadoO = Some <| IdAliado "Server"
-                          nevento = 0L
-                        }
-                        |> ManejadorEventos.ejecutarEventoNuevo 
-                        |> AsyncResultM.iterpS print)
         

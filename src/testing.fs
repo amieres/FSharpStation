@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1556565204816 -d:NOFRAMEWORK --noframework -d:WEBSHARPER
+////-d:FSharpStation1556889190256 -d:NOFRAMEWORK --noframework -d:WEBSHARPER
 ////#cd @"##FSCODE##\projects\ProzperClient\src"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
@@ -38,7 +38,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\LayoutEngine\bin\LayoutEngine.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1556565204816
+//#define FSharpStation1556889190256
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -367,6 +367,10 @@ namespace FsRoot
             let editProfilePolicy   = storeValue "editProfilePolicy"      "B2C_1_EditarPerfil"
             let resetPasswordPolicy = storeValue "resetPasswordPolicy"    "B2C_1_PasswordReset"
             let policyType          = storeValue "policyType"             "SignIn"
+            match storage.GetItem "preambleState" with
+            | "InPreamble"  | "" | null ->
+                                      storeValue "preambleState"          "GoToSignIn" |> ignore
+            |_->()
         
             let getAuthority tenantName policyName = sprintf "https://%s.b2clogin.com/tfp/%s.onmicrosoft.com/%s" tenantName tenantName policyName
         
@@ -553,7 +557,6 @@ namespace FsRoot
                     finally llamadas.Set <| llamadas.Value - 1
                 }
                 let agregarUsuarioSiEsNuevo  p = llamar (Rpc.agregarUsuarioSiEsNuevo              Aliado.LoggedId) p
-                let obtenerEstadoParaUsuario p = llamar  Rpc.obtenerEstadoParaUsuario <| IdAliado Aliado.LoggedId
                 let obtenerUnions            p = llamar  Rpc.obtenerUnions                                         p
                 let ejecutarDataEventoNuevo  p = llamar (Rpc.ejecutarDataEventoNuevo              Aliado.LoggedId) p
                 let enviarCorreosInvitacion  p = llamar (Rpc.enviarCorreosInvitacion              Aliado.LoggedId) p
@@ -564,8 +567,10 @@ namespace FsRoot
                 let borrarFormaPago          p = llamar (Rpc.borrarFormaPago                      Aliado.LoggedId) p
                 let obtenerFormasDePagoPara  p = llamar (Rpc.obtenerFormasDePagoPara              Aliado.LoggedId) p
                 let obtenerListaDocs         p = llamar (Rpc.obtenerListaDocs                     Aliado.LoggedId) p
+                let obtenerEstadoParaUsuario p = llamar  Rpc.obtenerEstadoParaUsuario <| IdAliado Aliado.LoggedId
+                let actualizarSubscripcion   p = llamar (Rpc.actualizarSubscripcion   <| IdAliado Aliado.LoggedId) p
         
-                WebSharper.Remoting.EndPoint <- Rpc.serverEndPoint + "rpc/rpc"
+                WebSharper.Remoting.EndPoint <- Rpc.serverEndPoint.Value + "rpc/rpc"
             [< AutoOpen >]
             module Refresh =
                 let mutable shouldRefresh = true
@@ -1166,6 +1171,39 @@ namespace FsRoot
             
                 let formaDoc() = aliadoIdDoc formaContactos
             
+            module FormaAutorizacion =
+            
+                let cuentaAutorizar = Var.Create <| Html.text "No hay cuenta seleccionada"
+                let mutable pid : IdPayment = IdPayment ""
+            
+                let formaAutorizacion () =
+                    let mensajes = Var.Create ""
+                    let nombreW  = V( Aliado.nombre2 aliadoW.V.datosPersonales) 
+                    let ymd    (f:System.DateTime) = f.Year * 10000 + f.Month * 100 + f.Day
+                    let forma    =
+                        TemplateLib.Autorizacion()
+                            .Afiliado(          nombreW                                             ) 
+                            .MontoAfiliacion(   sprintf "$%d.00" modeloV.V.premisas.montoAfiliacion )
+                            .dia(               string <| Aliado.dia aliadoW.V.diaPago              )
+                            .CuentaDebitar(     cuentaAutorizar.V                                   )
+                            .FirmarClass(       if mensajes.V = "" then "mui-btn--primary" else ""  )
+                            .Firmar(            fun _ -> 
+                                                    if mensajes.Value <> "" then JS.Alert mensajes.Value else
+                                                    Rpc.actualizarSubscripcion pid
+                                                    |> AsyncResultM.iterA (ResultMessage.summarized >> JS.Alert) JS.Alert  )
+                            .Create()
+                    V( 
+                        [
+                            forma.Vars.Titular.V.Trim().ToLower()                        <> nombreW.V.ToLower()             , "Nombre del titular debe coincidir"
+                            forma.Vars.Fecha  .V |> ParseO.parseDateO |> Option.map ymd <> Some (ymd System.DateTime.Today), "Introduzca fecha de hoy"
+                        ]
+                        |> Seq.filter fst
+                        |> Seq.map    snd
+                        |> String.concat ", "
+                    )
+                    |> View.Sink mensajes.Set
+                    forma.Doc
+                 
             module FormaFormasPago =
                 open VariousUI
             
@@ -1206,19 +1244,33 @@ namespace FsRoot
                             return resp
                         } |> AsyncResultM.iterA (ResultMessage.summarized >> JS.Alert) JS.Alert
             
-                    let otherButtons i doc = 
-                        [   yield doc
+                    let otherButtons i docF = 
+                        [   
+                            yield Doc.Button "AUTORIZAR DEBITO" [
+                                    Html.attr.title "Autorizar pago recurrente" 
+                                    Html.attr.styleDyn <| V (match formasPagoV.V.[i].authorizeIdR with | Ok _ -> "" |_-> "display:None")
+                                    ] 
+                                    (fun _ -> 
+                                        match formasPagoV.Value.[i].authorizeIdR with
+                                        | Error m -> JS.Alert ("Pago no está verificado en Authorize: " + m)
+                                        | Ok pid ->
+                                            FormaAutorizacion.cuentaAutorizar   .Set <| docF()
+                                            FormaAutorizacion.pid                    <- pid
+                                            Content "ProzperLyt.cntAutorizacion"     |> endPointV.Set
+                                    )
+                            yield Html.br [] []
+                            yield docF()
                             yield Doc.Button "validar" [    
                                     Html.attr.title "validar forma de pago" 
                                     Html.attr.styleDyn <| V (match formasPagoV.V.[i].authorizeIdR with | Ok _ -> "" |_-> "display:None")
-                                    ] (fun _ -> validar formasPagoV.Value.[i]  ) 
+                                    ] (fun _ -> validar formasPagoV.Value.[i]  )
                         ] 
                         |> Doc.Concat
                         |> removeButton (fun _ -> formasPagoV.Value |> Array.remove i |> formasPagoV.Set )
             
             
-                    let tarDocs = tars |> Doc.BindSeqCachedBy id (fun i -> makeVar ftar i |> TarjetaCredito.formaDocO |> snd |> otherButtons i )
-                    let ctaDocs = ctas |> Doc.BindSeqCachedBy id (fun i -> makeVar fcta i |> CuentaBancaria.formaDocO |> snd |> otherButtons i )
+                    let tarDocs = tars |> Doc.BindSeqCachedBy id (fun i -> makeVar ftar i |> (fun v () -> TarjetaCredito.formaDocO v |> snd) |> otherButtons i )
+                    let ctaDocs = ctas |> Doc.BindSeqCachedBy id (fun i -> makeVar fcta i |> (fun v () -> CuentaBancaria.formaDocO v |> snd) |> otherButtons i )
             
                     let fp cp = {
                         cuentaPago   = cp
@@ -1761,17 +1813,17 @@ namespace FsRoot
         
             let mesToString =
                 function
-                |  1 -> "Ene"            
+                |  1 -> "Ene"
                 |  2 -> "Feb"
-                |  3 -> "Mar"            
-                |  4 -> "Abr"            
-                |  5 -> "May"            
-                |  6 -> "Jun"            
-                |  7 -> "Jul"            
-                |  8 -> "Ago"            
-                |  9 -> "Sep"            
-                | 10 -> "Oct"            
-                | 11 -> "Nov"            
+                |  3 -> "Mar"
+                |  4 -> "Abr"
+                |  5 -> "May"
+                |  6 -> "Jun"
+                |  7 -> "Jul"
+                |  8 -> "Ago"
+                |  9 -> "Sep"
+                | 10 -> "Oct"
+                | 11 -> "Nov"
                 | 12 -> "Dic"
                 | _  -> "---"
         
@@ -1812,8 +1864,20 @@ namespace FsRoot
                 |> Doc.EmbedView
         
             let influencerV       = Var.Create ""
-            let influencerClassW  = View.Const ""
-            //let gotoInfluencer () = Window.Location.Href <- influencerV.Value
+            let influencerClassW  = influencerV.View |> View.MapAsync (fun inf -> async {
+                    let! inf = Rpc.obtenerIdInfluyente inf
+                    match inf with
+                    | OkM (_,_) -> return "mui-btn--primary"
+                    | _         -> return ""
+            })
+            let gotoInfluencer () = 
+                async {
+                    let! inf = Rpc.obtenerIdInfluyente influencerV.Value
+                    match inf with
+                    | OkM (v,_) -> JS.Window.Location.Href <- "/Register/" + influencerV.Value
+                    | _         -> JS.Window.Alert <| "Código inválido:" + influencerV.Value
+                } |> Async.Start
+                
         
             [< SPAEntryPoint >]    
             let mainProgram() =
@@ -1843,23 +1907,25 @@ namespace FsRoot
                                        AF.newViw  "emailsInvitar"           ModeloUI.emailsInvitarW
                                        AF.newViw  "invitacionesDisabled"    ModeloUI.invitacionesDisabledW
                                        AF.newViw  "VideoW"               <| V(endPointV.V |> function Video v -> v |_-> "")
-                                       AF.newViw  "influencerW"             influencerClassW
+                                       AF.newViw  "influencerClassW"        influencerClassW
                                     |]  
-                    AF.plgDocs    = [| AF.newDoc  "Aliados"            (lazy RenderAliados     .aliados    () )
-                                       AF.newDoc  "Aliado"             (lazy RenderAliado      .aliado     () )
-                                       AF.newDoc  "Calculo"            (lazy RenderAliado      .calculo    () )
-                                       AF.newDoc  "FormaRegistro"      (lazy FormaRegistro     .formaDoc   () )
-                                       AF.newDoc  "FormaDatos"         (lazy FormaDatos        .formaDoc   () )
-                                       AF.newDoc  "FormaContactos"     (lazy FormaContactos    .formaDoc   () )
-                                       AF.newDoc  "FormaFormasPago"    (lazy FormaFormasPago   .formaDoc   () )
-                                       AF.newDoc  "contentDoc"         (lazy getContentDoc                 () )
-                                       AF.newDoc  "ReporteConsolidado" (lazy ReporteConsolidado.consolidado() )
-                                       AF.newDoc  "TablaPagos"         (lazy TablaPagos        .comisiones () )
-                                       AF.newDoc  "ListaDocs"          (lazy ListaDocs         .listaDocs  () )
+                    AF.plgDocs    = [| AF.newDoc  "Aliados"            (lazy RenderAliados     .aliados          () )
+                                       AF.newDoc  "Aliado"             (lazy RenderAliado      .aliado           () )
+                                       AF.newDoc  "Calculo"            (lazy RenderAliado      .calculo          () )
+                                       AF.newDoc  "FormaRegistro"      (lazy FormaRegistro     .formaDoc         () )
+                                       AF.newDoc  "FormaDatos"         (lazy FormaDatos        .formaDoc         () )
+                                       AF.newDoc  "FormaContactos"     (lazy FormaContactos    .formaDoc         () )
+                                       AF.newDoc  "FormaFormasPago"    (lazy FormaFormasPago   .formaDoc         () )
+                                       AF.newDoc  "contentDoc"         (lazy getContentDoc                       () )
+                                       AF.newDoc  "ReporteConsolidado" (lazy ReporteConsolidado.consolidado      () )
+                                       AF.newDoc  "TablaPagos"         (lazy TablaPagos        .comisiones       () )
+                                       AF.newDoc  "ListaDocs"          (lazy ListaDocs         .listaDocs        () )
+                                       AF.newDoc  "FormaAutorizacion"  (lazy FormaAutorizacion .formaAutorizacion() )
                                     |]  
-                    AF.plgActions = [| AF.newAct  "Logout"      logout
-                                       AF.newAct  "LogIn"       login
-                                       AF.newAct  "enviarInvitaciones" enviarCorreosInvitacion
+                    AF.plgActions = [| AF.newAct  "Logout"              logout
+                                       AF.newAct  "LogIn"               login
+                                       AF.newAct  "enviarInvitaciones"  enviarCorreosInvitacion
+                                       AF.newAct  "gotoInfluencer"      gotoInfluencer
                                     |]
                     AF.plgQueries = [|                                               
                                     |]

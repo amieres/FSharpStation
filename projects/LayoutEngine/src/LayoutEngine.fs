@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1556145022734 -d:NOFRAMEWORK --noframework -d:WEBSHARPER
+////-d:FSharpStation1556889190256 -d:NOFRAMEWORK --noframework -d:WEBSHARPER
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0"
@@ -35,7 +35,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Common.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1556145022734
+//#define FSharpStation1556889190256
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -1200,15 +1200,15 @@ namespace FsRoot
                             |> Seq.filter(fun (i, _) -> i % 2 = 0)
                             |> Seq.map  snd
                             |> Seq.map( function
-                                | (nm, _), Identifier id -> splitName     lytNm id ||> AF.tryGetDoc |> Option.map (fun doc -> TemplateHole.Elt(   nm, getDocF [] doc |> fst) )
+                                | (nm, _), Identifier id -> splitName     lytNm id ||> AF.tryGetDoc |> Option.map (fun doc -> TemplateHole.Elt(   nm.ToLower(), getDocF [] doc |> fst) )
                                                             |> Option.orElseWith (fun () ->
-                                                                splitName lytNm id ||> AF.tryGetVar |> Option.map (fun var -> TemplateHole.VarStr(nm, var.varVar) )
+                                                                splitName lytNm id ||> AF.tryGetVar |> Option.map (fun var -> TemplateHole.VarStr(nm.ToLower(), var.varVar) )
                                                             )
-                                                            |> Option.defaultWith(fun () -> TemplateHole.Elt(nm, sprintf "Missing element: %s" id |> errDoc) )
+                                                            |> Option.defaultWith(fun () -> TemplateHole.Elt(nm.ToLower(), sprintf "Missing element: %s" id |> errDoc) )
                                 | (nm, _), (txt, _)      -> match getTextData lytNm txt with
-                                                            | TDPlain v   -> TemplateHole.Text(    nm, v )
-                                                            | TDView  vw  -> TemplateHole.TextView(nm, vw)
-                                                            | TDAct   act -> TemplateHole.Event(   nm, (fun el ev -> act.actFunction |> AF.callFunction el ev ))
+                                                            | TDPlain v   -> TemplateHole.Text(    nm.ToLower(), v )
+                                                            | TDView  vw  -> TemplateHole.TextView(nm.ToLower(), vw)
+                                                            | TDAct   act -> TemplateHole.Event(   nm.ToLower(), (fun el ev -> act.actFunction |> AF.callFunction el ev ))
                             )
                             |> (if Seq.isEmpty attrs then id else TemplateHole.Attribute("attrs", Attr.Concat attrs) |> Seq.singleton |> Seq.append)
                             |> Client.Doc.NamedTemplate "local" ((fst tempName).ToLower() |> Some)

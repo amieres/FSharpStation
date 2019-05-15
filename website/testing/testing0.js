@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,String,Array,SortWith,LibraryJS,Pojo,Date,REGEX,Msal,Policy,WebSharper,Obj,User,UserAgentApplication,ProzperClient,Templating,Msal$1,ModeloUI,EndPoint,Rpc,Refresh,VariousUI,CorreoElectronico,Telefono,Direccion,CuentaBancaria,TarjetaCredito,DatosPersonales,FormaRegistro,FormaDatos,FormaGenerica,FormaContactos,FormaFormasPago,RenderAliados,RenderAliado,ReporteConsolidado,Fila,TablaPagos,ListaDocs,Aliado,MainProgram,SC$1,testing_GeneratedPrintf,testing_Templates,testing_Router,Strings,Slice,Seq,Arrays,Unchecked,Char,List,IntelliFactory,Runtime,Utils,Concurrency,console,JSON,ClientSideJson,Provider,ProzperServer_JsonEncoder,ProzperServer_JsonDecoder,Prozper,Rpc$1,Monads,ResultM,AsyncResultMAutoOpen,Remoting,AjaxRemotingProvider,TypesV0,AsyncResultM,ResultMessage,UI,Doc,AttrProxy,Var$1,Templating$1,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,View,CorreoElectronico$1,TipoTelefono,Telefono$1,TipoDireccion,Estado,Pais,ZonaPostal,Direccion$1,AttrModule,TipoCuenta,CuentaBancaria$1,TipoTarjeta,TarjetaCredito$1,Expiracion,ParseO,Genero,DatosPersonales$1,System,Guid,FromView,Collections,FSharpSet,Result,FormaPago,Aliado$1,ProzperServer_GeneratedPrintf,Aliado$2,StatusAliado,$,AppFramework,PlugIn,Lazy,LayoutEngineModule,Client,Templates,Modelo,Date$1,Router,Sitelets,RouterOperators;
+ var Global,FsRoot,Library,String,Array,SortWith,LibraryJS,Pojo,Date,REGEX,Msal,Policy,WebSharper,Obj,User,UserAgentApplication,ProzperClient,Templating,Msal$1,ModeloUI,EndPoint,Rpc,Refresh,VariousUI,CorreoElectronico,Telefono,Direccion,CuentaBancaria,TarjetaCredito,DatosPersonales,FormaRegistro,FormaDatos,FormaGenerica,FormaContactos,FormaAutorizacion,FormaFormasPago,RenderAliados,RenderAliado,ReporteConsolidado,Fila,TablaPagos,ListaDocs,Aliado,MainProgram,SC$1,testing_GeneratedPrintf,testing_Templates,testing_Router,Strings,Slice,Seq,Arrays,Unchecked,Char,List,IntelliFactory,Runtime,Utils,Concurrency,console,Prozper,TypesV0,Remoting,AjaxRemotingProvider,Monads,AsyncResultMAutoOpen,JSON,ClientSideJson,Provider,ProzperServer_JsonEncoder,ProzperServer_JsonDecoder,Rpc$1,ResultM,AsyncResultM,ResultMessage,UI,Doc,AttrProxy,Var$1,Templating$1,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,View,CorreoElectronico$1,TipoTelefono,Telefono$1,TipoDireccion,Estado,Pais,ZonaPostal,Direccion$1,AttrModule,TipoCuenta,CuentaBancaria$1,TipoTarjeta,TarjetaCredito$1,Expiracion,ParseO,Genero,DatosPersonales$1,System,Guid,FromView,Aliado$1,Date$1,DateUtil,Collections,FSharpSet,Result,FormaPago,ProzperServer_GeneratedPrintf,Aliado$2,StatusAliado,$,AppFramework,PlugIn,Lazy,LayoutEngineModule,Client,Templates,Modelo,Router,Sitelets,RouterOperators;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -36,6 +36,7 @@
  FormaDatos=ModeloUI.FormaDatos=ModeloUI.FormaDatos||{};
  FormaGenerica=ModeloUI.FormaGenerica=ModeloUI.FormaGenerica||{};
  FormaContactos=ModeloUI.FormaContactos=ModeloUI.FormaContactos||{};
+ FormaAutorizacion=ModeloUI.FormaAutorizacion=ModeloUI.FormaAutorizacion||{};
  FormaFormasPago=ModeloUI.FormaFormasPago=ModeloUI.FormaFormasPago||{};
  RenderAliados=ModeloUI.RenderAliados=ModeloUI.RenderAliados||{};
  RenderAliado=ModeloUI.RenderAliado=ModeloUI.RenderAliado||{};
@@ -61,19 +62,19 @@
  Utils=WebSharper&&WebSharper.Utils;
  Concurrency=WebSharper&&WebSharper.Concurrency;
  console=Global.console;
+ Prozper=FsRoot&&FsRoot.Prozper;
+ TypesV0=Prozper&&Prozper.TypesV0;
+ Remoting=WebSharper&&WebSharper.Remoting;
+ AjaxRemotingProvider=Remoting&&Remoting.AjaxRemotingProvider;
+ Monads=Library&&Library.Monads;
+ AsyncResultMAutoOpen=Monads&&Monads.AsyncResultMAutoOpen;
  JSON=Global.JSON;
  ClientSideJson=WebSharper&&WebSharper.ClientSideJson;
  Provider=ClientSideJson&&ClientSideJson.Provider;
  ProzperServer_JsonEncoder=Global.ProzperServer_JsonEncoder;
  ProzperServer_JsonDecoder=Global.ProzperServer_JsonDecoder;
- Prozper=FsRoot&&FsRoot.Prozper;
  Rpc$1=Prozper&&Prozper.Rpc;
- Monads=Library&&Library.Monads;
  ResultM=Monads&&Monads.ResultM;
- AsyncResultMAutoOpen=Monads&&Monads.AsyncResultMAutoOpen;
- Remoting=WebSharper&&WebSharper.Remoting;
- AjaxRemotingProvider=Remoting&&Remoting.AjaxRemotingProvider;
- TypesV0=Prozper&&Prozper.TypesV0;
  AsyncResultM=Monads&&Monads.AsyncResultM;
  ResultMessage=Library&&Library.ResultMessage;
  UI=WebSharper&&WebSharper.UI;
@@ -107,11 +108,13 @@
  System=Global.System;
  Guid=System&&System.Guid;
  FromView=UI&&UI.FromView;
+ Aliado$1=Prozper&&Prozper.Aliado;
+ Date$1=Global.Date;
+ DateUtil=WebSharper&&WebSharper.DateUtil;
  Collections=WebSharper&&WebSharper.Collections;
  FSharpSet=Collections&&Collections.FSharpSet;
  Result=WebSharper&&WebSharper.Result;
  FormaPago=TypesV0&&TypesV0.FormaPago;
- Aliado$1=Prozper&&Prozper.Aliado;
  ProzperServer_GeneratedPrintf=Global.ProzperServer_GeneratedPrintf;
  Aliado$2=TypesV0&&TypesV0.Aliado;
  StatusAliado=TypesV0&&TypesV0.StatusAliado;
@@ -123,7 +126,6 @@
  Client=UI&&UI.Client;
  Templates=Client&&Client.Templates;
  Modelo=TypesV0&&TypesV0.Modelo;
- Date$1=Global.Date;
  Router=UI&&UI.Router;
  Sitelets=WebSharper&&WebSharper.Sitelets;
  RouterOperators=Sitelets&&Sitelets.RouterOperators;
@@ -672,6 +674,61 @@
  };
  EndPoint.DefaultEP={
   $:0
+ };
+ Rpc.actualizarSubscripcion=function(p)
+ {
+  var f,i,b;
+  f=(i=new TypesV0.IdAliado({
+   $:0,
+   $0:Aliado.get_LoggedId()
+  }),function(i$1)
+  {
+   return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.Prozper+Rpc.actualizarSubscripcion:808715793",[i,i$1]);
+  });
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
+   });
+  }));
+ };
+ Rpc.obtenerEstadoParaUsuario=function(p)
+ {
+  var p$1,b;
+  function f(i)
+  {
+   return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.Prozper+Rpc.obtenerEstadoParaUsuario:-1569835008",[i]);
+  }
+  p$1=new TypesV0.IdAliado({
+   $:0,
+   $0:Aliado.get_LoggedId()
+  });
+  b=AsyncResultMAutoOpen.asyncResultM();
+  return b.Run(b.Delay(function()
+  {
+   var a;
+   a=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$4(f(p$1));
+   }),function()
+   {
+    var a$1;
+    a$1=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$1);
+   });
+  }));
  };
  Rpc.obtenerListaDocs=function()
  {
@@ -1526,34 +1583,6 @@
    });
   }));
  };
- Rpc.obtenerEstadoParaUsuario=function(p)
- {
-  var p$1,b;
-  function f(i)
-  {
-   return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.Prozper+Rpc.obtenerEstadoParaUsuario:-1569835008",[i]);
-  }
-  p$1=new TypesV0.IdAliado({
-   $:0,
-   $0:Aliado.get_LoggedId()
-  });
-  b=AsyncResultMAutoOpen.asyncResultM();
-  return b.Run(b.Delay(function()
-  {
-   var a;
-   a=Rpc.llamadas().Get()+1;
-   Rpc.llamadas().Set(a);
-   return b.TryFinally(b.Delay(function()
-   {
-    return b.ReturnFrom$4(f(p$1));
-   }),function()
-   {
-    var a$1;
-    a$1=Rpc.llamadas().Get()-1;
-    Rpc.llamadas().Set(a$1);
-   });
-  }));
- };
  Rpc.agregarUsuarioSiEsNuevo=function(p)
  {
   var f,fname,b;
@@ -2322,7 +2351,7 @@
   },requeridosW,forma.Hole("genero").get_View()),forma.Hole("fechanacimiento").get_View()),forma.Hole("nombres").get_View()),forma.Hole("nombres").get_View()),forma.Hole("apellidos").get_View()),forma.Hole("apellidos").get_View()));
   return[requeridosW,forma.get_Doc()];
  };
- FormaRegistro.formaDoc$988$41=function(mostrar,mensajes,datosOV,correoOV,telefonoOV,direccionOV)
+ FormaRegistro.formaDoc$993$41=function(mostrar,mensajes,datosOV,correoOV,telefonoOV,direccionOV)
  {
   return function()
   {
@@ -2491,7 +2520,7 @@
  {
   return ModeloUI.aliadoIdDoc(FormaDatos.formaAliado);
  };
- FormaDatos.formaAliado$1041$36=function(mostrar,mensajes,datosOV,aliadoW)
+ FormaDatos.formaAliado$1046$36=function(mostrar,mensajes,datosOV,aliadoW)
  {
   return function()
   {
@@ -2619,7 +2648,7 @@
   },p[0]));
   return forma.get_Doc();
  };
- FormaGenerica.forma$1077$38=function(salvar)
+ FormaGenerica.forma$1082$38=function(salvar)
  {
   return function()
   {
@@ -2661,7 +2690,7 @@
  {
   return ModeloUI.aliadoIdDoc(FormaContactos.formaContactos);
  };
- FormaContactos.formaContactos$1150$36=function(mostrar,mensajes,aliadoW,contactosV)
+ FormaContactos.formaContactos$1155$36=function(mostrar,mensajes,aliadoW,contactosV)
  {
   return function()
   {
@@ -2695,7 +2724,7 @@
    }))))):Global.alert("Error not caught FormaDatos"));
   };
  };
- FormaContactos.formaContactos$1149$42=function(contactosV)
+ FormaContactos.formaContactos$1154$42=function(contactosV)
  {
   return function()
   {
@@ -2705,7 +2734,7 @@
    }]));
   };
  };
- FormaContactos.formaContactos$1148$42=function(contactosV)
+ FormaContactos.formaContactos$1153$42=function(contactosV)
  {
   return function()
   {
@@ -2715,7 +2744,7 @@
    }]));
   };
  };
- FormaContactos.formaContactos$1147$42=function(contactosV)
+ FormaContactos.formaContactos$1152$42=function(contactosV)
  {
   return function()
   {
@@ -3074,11 +3103,142 @@
   SC$1.$cctor();
   return SC$1.ftel;
  };
+ FormaAutorizacion.formaAutorizacion$1190$48=function(mensajes)
+ {
+  return function()
+  {
+   function g(a)
+   {
+    Global.alert(a);
+   }
+   if(mensajes.Get()!=="")
+    Global.alert(mensajes.Get());
+   else
+    {
+     AsyncResultM.iterA(function(x)
+     {
+      return g(ResultMessage.summarized(x));
+     },function(a)
+     {
+      Global.alert(a);
+     },Rpc.actualizarSubscripcion(FormaAutorizacion.pid()));
+    }
+  };
+ };
+ FormaAutorizacion.formaAutorizacion=function()
+ {
+  var mensajes,nombreW,forma,b,t,C,p,i;
+  function ymd(f)
+  {
+   return(new Global.Date(f)).getFullYear()*10000+((new Global.Date(f)).getMonth()+1)*100+(new Global.Date(f)).getDate();
+  }
+  mensajes=Var$1.Create$1("");
+  nombreW=View.Map(function($1)
+  {
+   return Aliado$1.nombre2($1.datosPersonales);
+  },ModeloUI.aliadoW());
+  forma=(b=(t=(C=Doc.EmbedView(FormaAutorizacion.cuentaAutorizar().get_View()),ProviderBuilder.Make().WithHole({
+   $:2,
+   $0:"afiliado",
+   $1:nombreW
+  }).WithHole({
+   $:2,
+   $0:"montoafiliacion",
+   $1:View.Map(function($1)
+   {
+    return(function($2)
+    {
+     return function($3)
+     {
+      return $2("$"+Global.String($3)+".00");
+     };
+    }(Global.id))($1.premisas.montoAfiliacion);
+   },ModeloUI.modeloV().get_View())
+  }).WithHole({
+   $:2,
+   $0:"dia",
+   $1:View.Map(function($1)
+   {
+    return Global.String(Aliado$1.dia($1.diaPago));
+   },ModeloUI.aliadoW())
+  }).WithHole({
+   $:0,
+   $0:"cuentadebitar",
+   $1:C
+  })).WithHole({
+   $:2,
+   $0:"firmarclass",
+   $1:View.Map(function($1)
+   {
+    return $1===""?"mui-btn--primary":"";
+   },mensajes.get_View())
+  }),t.WithHole(Handler.EventQ2(t.k,"firmar",function()
+  {
+   return t.i;
+  },function()
+  {
+   function g(a)
+   {
+    Global.alert(a);
+   }
+   if(mensajes.Get()!=="")
+    Global.alert(mensajes.Get());
+   else
+    {
+     AsyncResultM.iterA(function(x)
+     {
+      return g(ResultMessage.summarized(x));
+     },function(a)
+     {
+      Global.alert(a);
+     },Rpc.actualizarSubscripcion(FormaAutorizacion.pid()));
+    }
+  }))),(p=Handler.CompleteHoles(b.k,b.h,[["titular",0],["fecha",0]]),(i=new TemplateInstance.New(p[1],testing_Templates.autorizacion(p[0])),(b.i=i,i))));
+  View.Sink(function(a)
+  {
+   mensajes.Set(a);
+  },View.Apply(View.Map2(function($1,$2)
+  {
+   return function($3)
+   {
+    var o,c;
+    return Strings.concat(", ",Seq.map(function(t$1)
+    {
+     return t$1[1];
+    },Seq.filter(function(t$1)
+    {
+     return t$1[0];
+    },List.ofArray([[Strings.Trim($1).toLowerCase()!==$2.toLowerCase(),"Nombre del titular debe coincidir"],[!Unchecked.Equals((o=(ParseO.parseDateO())($3),o==null?null:{
+     $:1,
+     $0:ymd(o.$0)
+    }),{
+     $:1,
+     $0:ymd((c=Date$1.now(),DateUtil.DatePortion(c)))
+    }),"Introduzca fecha de hoy"]]))));
+   };
+  },forma.Hole("titular").get_View(),nombreW),forma.Hole("fecha").get_View()));
+  return forma.get_Doc();
+ };
+ FormaAutorizacion.pid=function()
+ {
+  SC$1.$cctor();
+  return SC$1.pid;
+ };
+ FormaAutorizacion.set_pid=function($1)
+ {
+  SC$1.$cctor();
+  SC$1.pid=$1;
+ };
+ FormaAutorizacion.cuentaAutorizar=function()
+ {
+  SC$1.$cctor();
+  return SC$1.cuentaAutorizar;
+ };
  FormaFormasPago.formaDoc=function()
  {
   return ModeloUI.aliadoIdDoc(FormaFormasPago.formaFormasPago);
  };
- FormaFormasPago.formaFormasPago$1239$36=function(mostrar,mensajes,aliadoW,fpIds,formasPagoV)
+ FormaFormasPago.formaFormasPago$1291$36=function(mostrar,mensajes,aliadoW,fpIds,formasPagoV)
  {
   return function()
   {
@@ -3137,7 +3297,7 @@
    })))):Global.alert("Error not caught FormaDatos"));
   };
  };
- FormaFormasPago.formaFormasPago$1237$42=function(formasPagoV,fp)
+ FormaFormasPago.formaFormasPago$1289$42=function(formasPagoV,fp)
  {
   return function()
   {
@@ -3147,7 +3307,7 @@
    })]));
   };
  };
- FormaFormasPago.formaFormasPago$1236$42=function(formasPagoV,fp)
+ FormaFormasPago.formaFormasPago$1288$42=function(formasPagoV,fp)
  {
   return function()
   {
@@ -3210,22 +3370,39 @@
     });
    }))));
   }
-  function otherButtons(i$1,doc)
+  function otherButtons(i$1,docF)
   {
    return VariousUI.removeButton(function()
    {
     formasPagoV.Set(Array.remove(i$1,formasPagoV.Get()));
    },Doc.Concat(List.ofSeq(Seq.delay(function()
    {
-    return Seq.append([doc],Seq.delay(function()
+    return Seq.append([Doc.Button("AUTORIZAR DEBITO",[AttrProxy.Create("title","Autorizar pago recurrente"),AttrModule.Dynamic("style",View.Map(function($1)
     {
-     return[Doc.Button("validar",[AttrProxy.Create("title","validar forma de pago"),AttrModule.Dynamic("style",View.Map(function($1)
+     return Arrays.get($1,i$1).authorizeIdR.$==0?"":"display:None";
+    },formasPagoV.get_View()))],function()
+    {
+     var m,a;
+     m=Arrays.get(formasPagoV.Get(),i$1).authorizeIdR;
+     m.$==0?(a=docF(),FormaAutorizacion.cuentaAutorizar().Set(a),FormaAutorizacion.set_pid(m.$0),ModeloUI.endPointV().Set({
+      $:3,
+      $0:"ProzperLyt.cntAutorizacion"
+     })):Global.alert("Pago no está verificado en Authorize: "+m.$0);
+    })],Seq.delay(function()
+    {
+     return Seq.append([Doc.Element("br",[],[])],Seq.delay(function()
      {
-      return Arrays.get($1,i$1).authorizeIdR.$==0?"":"display:None";
-     },formasPagoV.get_View()))],function()
-     {
-      validar(Arrays.get(formasPagoV.Get(),i$1));
-     })];
+      return Seq.append([docF()],Seq.delay(function()
+      {
+       return[Doc.Button("validar",[AttrProxy.Create("title","validar forma de pago"),AttrModule.Dynamic("style",View.Map(function($1)
+       {
+        return Arrays.get($1,i$1).authorizeIdR.$==0?"":"display:None";
+       },formasPagoV.get_View()))],function()
+       {
+        validar(Arrays.get(formasPagoV.Get(),i$1));
+       })];
+      }));
+     }));
     }));
    }))));
   }
@@ -3284,17 +3461,25 @@
   },formasPagoIW);
   tarDocs=Doc.ConvertBy(Global.id,function(i$1)
   {
-   return otherButtons(i$1,(TarjetaCredito.formaDocO((function($1)
+   var v;
+   return otherButtons(i$1,(v=(function($1)
    {
     return makeVar($1[0],$1[1]);
-   }(FormaFormasPago.ftar()))(i$1)))[1]);
+   }(FormaFormasPago.ftar()))(i$1),function()
+   {
+    return(TarjetaCredito.formaDocO(v))[1];
+   }));
   },tars);
   ctaDocs=Doc.ConvertBy(Global.id,function(i$1)
   {
-   return otherButtons(i$1,(CuentaBancaria.formaDocO((function($1)
+   var v;
+   return otherButtons(i$1,(v=(function($1)
    {
     return makeVar($1[0],$1[1]);
-   }(FormaFormasPago.fcta()))(i$1)))[1]);
+   }(FormaFormasPago.fcta()))(i$1),function()
+   {
+    return(CuentaBancaria.formaDocO(v))[1];
+   }));
   },ctas);
   return(b=(t=(t$1=(t$2=ProviderBuilder.Make().WithHole({
    $:2,
@@ -3425,14 +3610,14 @@
    };
   }(Global.id))(idR.$0):idR.$0===""?"La cuenta aun no ha sido verificada":idR.$0;
  };
- RenderAliados.aliados$1340$49=function(seleccionar,alid)
+ RenderAliados.aliados$1392$49=function(seleccionar,alid)
  {
   return function()
   {
    seleccionar(alid);
   };
  };
- RenderAliados.aliados$1338$49=function(expandir,alid)
+ RenderAliados.aliados$1390$49=function(expandir,alid)
  {
   return function()
   {
@@ -3931,98 +4116,98 @@
    Id:Id
   };
  };
- ReporteConsolidado.consolidado$1579$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1631$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().Id);
   };
  };
- ReporteConsolidado.consolidado$1578$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1630$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().desde);
   };
  };
- ReporteConsolidado.consolidado$1577$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1629$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().diaPago);
   };
  };
- ReporteConsolidado.consolidado$1576$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1628$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().comision);
   };
  };
- ReporteConsolidado.consolidado$1575$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1627$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().descendientes);
   };
  };
- ReporteConsolidado.consolidado$1574$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1626$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().referidos);
   };
  };
- ReporteConsolidado.consolidado$1573$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1625$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().nivel);
   };
  };
- ReporteConsolidado.consolidado$1572$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1624$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().referido);
   };
  };
- ReporteConsolidado.consolidado$1571$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1623$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().tipo);
   };
  };
- ReporteConsolidado.consolidado$1570$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1622$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().influyente);
   };
  };
- ReporteConsolidado.consolidado$1569$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1621$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().status);
   };
  };
- ReporteConsolidado.consolidado$1568$45=function(toggle,ordenV)
+ ReporteConsolidado.consolidado$1620$45=function(toggle,ordenV)
  {
   return function()
   {
    toggle(ordenV.Get().nombre);
   };
  };
- ReporteConsolidado.consolidado$1564$45=function(aliadosV)
+ ReporteConsolidado.consolidado$1616$45=function(aliadosV)
  {
   return function()
   {
    aliadosV.Set(ModeloUI.modeloV().Get().aliados);
   };
  };
- ReporteConsolidado.consolidado$1563$45=function(salvar)
+ ReporteConsolidado.consolidado$1615$45=function(salvar)
  {
   return function()
   {
@@ -4583,7 +4768,7 @@
    $1:T
   })),(p=Handler.CompleteHoles(b.k,b.h,[["filtro",0]]),(i=new TemplateInstance.New(p[1],testing_Templates.consolidado(p[0])),(b.i=i,i)))).get_Doc();
  };
- TablaPagos.comisiones$1661$37=function(saveAs)
+ TablaPagos.comisiones$1713$37=function(saveAs)
  {
   return function()
   {
@@ -4834,7 +5019,7 @@
    $1:Doc.Concat(T)
   })),(p$2=Handler.CompleteHoles(b.k,b.h,[]),(i$2=new TemplateInstance.New(p$2[1],testing_Templates.tablapagos(p$2[0])),(b.i=i$2,i$2)))).get_Doc();
  };
- ListaDocs.listaDocs$1743$32=function()
+ ListaDocs.listaDocs$1795$32=function()
  {
   return function(e)
   {
@@ -5040,7 +5225,7 @@
   });
   MainProgram.mainProgram();
  };
- MainProgram.mainProgram$1996$36=function()
+ MainProgram.mainProgram$2062$36=function()
  {
   return function()
   {
@@ -5082,7 +5267,7 @@
   AppFramework.addPlugIn(PlugIn.New(MainProgram.appName(),[AppFramework.newVar("title",titleV),AppFramework.newVar("contentVar",ModeloUI.contentVar()),AppFramework.newVar("invitaciones",ModeloUI.invitacionesV()),AppFramework.newVar("influencer",MainProgram.influencerV())],[AppFramework.newViw("mesActual",mesActualW),AppFramework.newViw("anoActual",anoActualW),AppFramework.newViw("aliado",nombreAliadoW),AppFramework.newViw("idAliado",idAliadoW),AppFramework.newViw("status",statusAliadoW),AppFramework.newViw("comision",comisionAliadoW),AppFramework.newViw("datos",datosAliadoW),AppFramework.newViw("emailsInvitar",ModeloUI.emailsInvitarW()),AppFramework.newViw("invitacionesDisabled",ModeloUI.invitacionesDisabledW()),AppFramework.newViw("VideoW",View.Map(function($1)
   {
    return $1.$==5?$1.$0:"";
-  },ModeloUI.endPointV().get_View())),AppFramework.newViw("influencerW",MainProgram.influencerClassW())],[AppFramework.newDoc("Aliados",Lazy.Create(RenderAliados.aliados)),AppFramework.newDoc("Aliado",Lazy.Create(RenderAliado.aliado)),AppFramework.newDoc("Calculo",Lazy.Create(RenderAliado.calculo)),AppFramework.newDoc("FormaRegistro",Lazy.Create(FormaRegistro.formaDoc)),AppFramework.newDoc("FormaDatos",Lazy.Create(FormaDatos.formaDoc)),AppFramework.newDoc("FormaContactos",Lazy.Create(FormaContactos.formaDoc)),AppFramework.newDoc("FormaFormasPago",Lazy.Create(FormaFormasPago.formaDoc)),AppFramework.newDoc("contentDoc",Lazy.Create(MainProgram.getContentDoc)),AppFramework.newDoc("ReporteConsolidado",Lazy.Create(ReporteConsolidado.consolidado)),AppFramework.newDoc("TablaPagos",Lazy.Create(TablaPagos.comisiones)),AppFramework.newDoc("ListaDocs",Lazy.Create(ListaDocs.listaDocs))],[AppFramework.newAct("Logout",function()
+  },ModeloUI.endPointV().get_View())),AppFramework.newViw("influencerClassW",MainProgram.influencerClassW())],[AppFramework.newDoc("Aliados",Lazy.Create(RenderAliados.aliados)),AppFramework.newDoc("Aliado",Lazy.Create(RenderAliado.aliado)),AppFramework.newDoc("Calculo",Lazy.Create(RenderAliado.calculo)),AppFramework.newDoc("FormaRegistro",Lazy.Create(FormaRegistro.formaDoc)),AppFramework.newDoc("FormaDatos",Lazy.Create(FormaDatos.formaDoc)),AppFramework.newDoc("FormaContactos",Lazy.Create(FormaContactos.formaDoc)),AppFramework.newDoc("FormaFormasPago",Lazy.Create(FormaFormasPago.formaDoc)),AppFramework.newDoc("contentDoc",Lazy.Create(MainProgram.getContentDoc)),AppFramework.newDoc("ReporteConsolidado",Lazy.Create(ReporteConsolidado.consolidado)),AppFramework.newDoc("TablaPagos",Lazy.Create(TablaPagos.comisiones)),AppFramework.newDoc("ListaDocs",Lazy.Create(ListaDocs.listaDocs)),AppFramework.newDoc("FormaAutorizacion",Lazy.Create(FormaAutorizacion.formaAutorizacion))],[AppFramework.newAct("Logout",function()
   {
    MainProgram.logout();
   }),AppFramework.newAct("LogIn",function()
@@ -5091,6 +5276,9 @@
   }),AppFramework.newAct("enviarInvitaciones",function()
   {
    MainProgram.enviarCorreosInvitacion();
+  }),AppFramework.newAct("gotoInfluencer",function()
+  {
+   MainProgram.gotoInfluencer();
   })],[]));
   LayoutEngineModule.addLayout((l=(m=self.document.getElementById("GlobalLayout"),Unchecked.Equals(m,null)?"\r\n                        menuEditor layout\r\n                        |          main\r\n        \r\n                        main div \"\"\r\n                        :                 template  header     \"id=header\"           brand  brandV   logout \"@{Prozper.Logout}\" afiliado \"@{Prozper.aliado}\"\r\n                        :                 Doc       Prozper.contentDoc\r\n                        :                 template  sidedrawer \"id=sidedrawer\"       brand  brandV   idaliado \"@{Prozper.idAliado}\" \r\n                        :                 template  footer     \"id=footer\"           brand  brandV   madeby \"CIPHER Bsc\" madebylink \"www.cipherbsc.com\"\r\n         \r\n                        mainContent          template  content    \"id=content-wrapper\"  content aliados                  fecha \"@{Prozper.mesActual} @{Prozper.anoActual}\" idaliado \"@{Prozper.aliado}\"\r\n                        cntFormaRegistro     template  content    \"id=content-wrapper\"  content Prozper.FormaRegistro    titulo \"Referido por: @{Prozper.aliado}\"  \r\n                        cntFormaDatos        template  content    \"id=content-wrapper\"  content Prozper.FormaDatos       titulo \" \"\r\n                        cntFormaContactos    template  content    \"id=content-wrapper\"  content Prozper.FormaContactos   titulo \" \" \r\n                        cntFormaFormasPago   template  content    \"id=content-wrapper\"  content Prozper.FormaFormasPago  titulo \" \" \r\n                        cntFormaCuentas      template  content    \"id=content-wrapper\"  content ProzperLyt.FormaCuentas  titulo \" \"  \r\n                        cntFormaDocumentos   template  content    \"id=content-wrapper\"  content Prozper.FormaDocumentos  titulo \" \"  \r\n                        cntFormaNoUser       template  content    \"id=content-wrapper\"  content botonLogin               titulo \" \"  \r\n                        cntFormaInvitaciones template  content    \"id=content-wrapper\"  content invitaciones             titulo \" \"  \r\n        \r\n                        aliados          div       \"class=row\"\r\n                        :                div       \"class=mui-col-md-6\"\r\n                        ::               div       \"class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto\" Prozper.Aliados\r\n                        :                div       \"class=mui-col-md-6\"\r\n                        ::               div       \"class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto\" Aliado Comisiones\r\n                        brandV           Var       \"Prozper\"\r\n        \r\n                        botonLogin       div       \"class=row\"\r\n                        :                div       \"class=mui-col-md-6\"\r\n                        ::               div       \"class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto\" \r\n                        :::              button    Prozper.LogIn \"class=mui-btn mui-btn--primary\" \"Ingresar al Sistema\"\r\n        \r\n                        invitaciones     div       \"class=row\"\r\n                        :                div       \"class=mui-col-md-6 mui-col-md-offset-1\"\r\n                        ::               div       \"class=mui-panel mui--z5 scrollbar; max-height:550px ; overflow:auto\" \r\n                        :::              h1        \"\" \"Enviar Invitaciones\"\r\n                        :::              textarea  Prozper.invitaciones  \"width:100% ; height:30rem; placeholder=Copie aqui las direcciones de correo electronico\" \r\n                        :                div       \"white-space: pre-wrap\" \"@{Prozper.emailsInvitar}\"\r\n                        :                button    Prozper.enviarInvitaciones \"class=mui-btn mui-btn--raised mui-btn--primary;@{Prozper.invitacionesDisabled}\" \"Enviar\"\r\n        \r\n                        Aliado           div       \"class=mui-col-md-8\"\r\n                        :                Doc Prozper.Aliado\r\n        \r\n                        Comisiones       template    tablacomisiones \"class=mui-col-md-3\"  tbody filasComisiones\r\n                        filasComisiones  concat      \"\"\r\n                        :                template    filacomision    \"\"  periodo \"Ene 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Feb 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Mar 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Abr 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"May 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Jun 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Jul 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Ago 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Sep 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Oct 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Nov 2018\" comision \"$1,000\"\r\n                        :                template    filacomision    \"\"  periodo \"Dec 2018\" comision \"$1,000\"\r\n                \r\n                        menuEditorx      horizontal  65          menuLogo                  editorMessages\r\n                        double           horizontal  0-50-100    AppFramework.AppFwkClient menuEditor\r\n                        menuLogo         vertical    350         logo                      menu\r\n                        logo             span       \"margin:0;   color:gray; font-size: 55px; font-weight:530\" \"StackOverflow\"\r\n                        editorMessages   horizontal  10-83-100   editorButtons             messages\r\n                        messages         vertical    0-50-100    messagesLeft              messagesRight\r\n                        editorButtons    vertical    150 buttons snippetsSnippet \r\n                        snippetsSnippet  vertical    0-20-100    snippets                  editorProperties\r\n                        snippets         horizontal  20          \"@{FSharpStation.CurrentPath}\" tblDimensions2\r\n                        editorProperties vertical    0-100-100   snippet                   properties\r\n                        properties       div        \"\"           FSharpStation.Properties\r\n                        snippet          horizontal  35          Name                      FSharpStation.editor\r\n                        menu             span       \"display: grid; grid-template-columns: 30% 20% 20% 10%; grid-gap: 25px; margin:5px; grid-template-rows:50px\" inpServer btnLoad btnSaveAs\r\n                         \r\n                        severalTabs      wcomp-tabstrip  \"\" \r\n                        :                div \"tabname=Dimensions\" \r\n                        ::               div \"\" btnAddDimension RuleEditor.Dimensions\r\n                        :                div \"tabname=Cubes\"\r\n                        :                div \"tabname=Global Definitions\" RuleEditor.globalDefs\r\n                \r\n                        btnSaveAs        button RuleEditor.SaveAs         \"class=btn @{RuleEditor.SaveNeeded}\" \"Save as...    \"\r\n                        btnAddDimension  button RuleEditor.AddDimension      \"\"                  \"new dim...\"\r\n                        btnDeleteSnippet button FSharpStation.RemoveSnippet  \"\"                  \"Delete Snippet\"\r\n                        btnIndentIn      button FSharpStation.IndentIn       \"\"                  \"Indent In  >> \"\r\n                        btnIndentOut     button FSharpStation.IndentOut      \"\"                  \"Indent Out << \"\r\n                        btnRunFS         button FSharpStation.RunFS          \"\"                  \"Run F#        \"\r\n                        btnAbortFsi      button FSharpStation.AbortFsi       \"\"                  \"Abort Fsi     \"\r\n                \r\n                        messagesLeft     wcomp-tabstrip                      \"\"                  Output FsCode\r\n                        messagesRight    wcomp-tabstrip                      \"\"                  Parser\r\n                \r\n                        buttons          div \"overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px\"\r\n                        :                button RuleEditor.AddCalculation    \"\"                 \"Add Calculation\"\r\n                        :                button RuleEditor.AddTotal          \"\"                 \"Add Total\"\r\n                        :                Doc       none x\r\n                        :                button RuleEditor.IndentIn          \"\"                  \"Indent In  >> \"\r\n                        :                button RuleEditor.IndentOut         \"\"                  \"Indent Out << \"\r\n                \r\n                        Output           textarea  RuleEditor.Output         \"tabname=Output ; placeholder=Output messages ; spellcheck=false\" \r\n                        FsCode           textarea  RuleEditor.CodeFS         \"tabname=F# Code; placeholder=F# Code         ; spellcheck=false\" \r\n                        Parser           textarea  RuleEditor.Parser         \"tabname=Parser ; placeholder=Parser messages; dblclick=@{FSharpStation.JumpTo} ; spellcheck=false\" \r\n                        Name             Doc       InputLabel                \"\"     \"Name:\"        FSharpStation.SnippetName\r\n                        inpServer        Doc       InputLabel                \"\"     \"Server:\"      RuleEditor.Server\r\n                        btnLoad          Doc       InputFile                 \"\"     \"Load File...\" RuleEditor.LoadFile  FileName\r\n                        btnImport        Doc       InputFile                 \"\"     \"Import...\"    FSharpStation.Import    \"\"\r\n                        FileName         div                                 \"class=form-control\"  RuleEditor.fileName\r\n        \r\n                   ":m.textContent),LayoutEngineModule.newLyt(MainProgram.layoutName(),l)));
   a=(o=null,(v=MainProgram.layoutName(),o==null?v:o.$0));
@@ -5132,6 +5320,17 @@
   {
    self.document.title=t$1;
   },titleV.get_View());
+ };
+ MainProgram.gotoInfluencer=function()
+ {
+  var b;
+  Concurrency.Start((b=null,Concurrency.Delay(function()
+  {
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.Prozper+Rpc.obtenerIdInfluyente:42009634",[MainProgram.influencerV().Get()]),function(a)
+   {
+    return Monads.OkM(a).$==0?(self.location.href="/Register/"+MainProgram.influencerV().Get(),Concurrency.Zero()):(self.alert("Código inválido:"+MainProgram.influencerV().Get()),Concurrency.Zero());
+   });
+  })),null);
  };
  MainProgram.influencerClassW=function()
  {
@@ -5250,7 +5449,7 @@
  };
  SC$1.$cctor=function()
  {
-  var f,clientId,authority,options,c,c$1,b,b$1,b$2;
+  var f,m,$1,clientId,authority,options,c,c$1,b,b$1,b$2;
   SC$1.$cctor=Global.ignore;
   function g(s)
   {
@@ -5308,11 +5507,11 @@
   SC$1.rootdir="D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperClient\\website";
   SC$1.TemplatesFileName="D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperClient\\website"+"\\index.html";
   SC$1.LoginFileName="D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperClient\\website"+"\\Login.html";
-  ((function($1)
+  ((function($2)
   {
-   return function($2)
+   return function($3)
    {
-    return $1(Utils.toSafe($2));
+    return $2(Utils.toSafe($3));
    };
   }(function(s)
   {
@@ -5331,6 +5530,8 @@
   SC$1.editProfilePolicy=Msal$1.storeValue("editProfilePolicy","B2C_1_EditarPerfil");
   SC$1.resetPasswordPolicy=Msal$1.storeValue("resetPasswordPolicy","B2C_1_PasswordReset");
   SC$1.policyType=Msal$1.storeValue("policyType","SignIn");
+  m=Msal$1.storage().getItem("preambleState");
+  m==="InPreamble"||(m===""||m===null)?void Msal$1.storeValue("preambleState","GoToSignIn"):null;
   SC$1.authority=Msal$1.getAuthority(Msal$1.tenantName(),Msal$1.signInPolicy());
   SC$1.userO=Var$1.Create$1(null);
   SC$1.agent=(clientId=Msal$1.applicationId(),(authority=Msal$1.authority(),(options=UserAgentApplication.Options(null,null,null,null,null,null,null,null,null,{
@@ -5339,9 +5540,9 @@
   },null,{
    $:1,
    $0:false
-  }),new self.Msal.UserAgentApplication(clientId,authority,function($1)
+  }),new self.Msal.UserAgentApplication(clientId,authority,function($2)
   {
-   return tokenReceivedCallback($1[0],$1[1],$1[2],$1[3],$1[4]);
+   return tokenReceivedCallback($2[0],$2[1],$2[2],$2[3],$2[4]);
   },options))));
   SC$1.localStorage=self.localStorage;
   SC$1.modeloV=Var$1.Create$1(Modelo.New(new TypesV0.IdAliado({
@@ -5350,14 +5551,14 @@
   }),[],(c=Date$1.now(),(new Date$1(c)).getFullYear()),(c$1=Date$1.now(),(new Date$1(c$1)).getMonth()+1),TypesV0.premisasCalculo(),-2));
   SC$1.formasPagoAliadoV=Var$1.Create$1([]);
   SC$1.invitacionesV=Var$1.Create$1("");
-  SC$1.emailsInvitarW=View.Map(function($1)
+  SC$1.emailsInvitarW=View.Map(function($2)
   {
    var a;
-   return Strings.concat("\n",Seq.sort(Seq.distinct((a=LibraryJS.REGEX$1(LibraryJS.rexEmail(),"gi",$1),a!=null&&a.$==1?a.$0:[]))));
+   return Strings.concat("\n",Seq.sort(Seq.distinct((a=LibraryJS.REGEX$1(LibraryJS.rexEmail(),"gi",$2),a!=null&&a.$==1?a.$0:[]))));
   },ModeloUI.invitacionesV().get_View());
-  SC$1.invitacionesDisabledW=View.Map(function($1)
+  SC$1.invitacionesDisabledW=View.Map(function($2)
   {
-   return $1===""?"disabled":"";
+   return $2===""?"disabled":"";
   },ModeloUI.emailsInvitarW());
   SC$1.selAliadoIdOV=Var$1.Create$1(null);
   SC$1.refAliadoIdOV=Var$1.Create$1(null);
@@ -5380,8 +5581,8 @@
   },ModeloUI.endPointV().get_View());
   SC$1.contentVar=new FromView.New(View.Map2(function(a,a$1)
   {
-   var $1,$2;
-   return a$1.$==0&&!Unchecked.Equals(Msal$1.userO().Get(),null)?"ProzperLyt.mainContent":a$1.$==3&&(!Unchecked.Equals(Msal$1.userO().Get(),null)&&($2=a$1.$0,true))?$2:a$1.$==2?"ProzperLyt.cntPreRegister":a$1.$==4?"ProzperLyt.cntPDF":a$1.$==5?"ProzperLyt.cntVideo":"ProzperLyt.cntFormaNoUser";
+   var $2,$3;
+   return a$1.$==0&&!Unchecked.Equals(Msal$1.userO().Get(),null)?"ProzperLyt.mainContent":a$1.$==3&&(!Unchecked.Equals(Msal$1.userO().Get(),null)&&($3=a$1.$0,true))?$3:a$1.$==2?"ProzperLyt.cntPreRegister":a$1.$==4?"ProzperLyt.cntPDF":a$1.$==5?"ProzperLyt.cntVideo":"ProzperLyt.cntFormaNoUser";
   },Msal$1.userO().get_View(),ModeloUI.endPointV().get_View()),function(x)
   {
    return g$3(f$2(x));
@@ -5397,7 +5598,7 @@
    return View.Const(aliadoO!=null&&aliadoO.$==1?aliadoO.$0:Aliado$1.empty());
   },ModeloUI.modeloV().get_View()));
   SC$1.llamadas=Var$1.Create$1(0);
-  Remoting.set_EndPoint((self.location.protocol==="http:"?"http://localhost:7071/api/":"https://prozper.azurewebsites.net/api/")+"rpc/rpc");
+  Remoting.set_EndPoint(Rpc$1.serverEndPoint().f()+"rpc/rpc");
   SC$1.shouldRefresh=true;
   View.Sink(function()
   {
@@ -5423,7 +5624,7 @@
     return null;
    },false);
   }
-  catch(m)
+  catch(m$1)
   {
    null;
   }
@@ -5493,13 +5694,18 @@
     $0:a
    };
   }];
+  SC$1.cuentaAutorizar=Var$1.Create$1(Doc.TextNode("No hay cuenta seleccionada"));
+  SC$1.pid=new TypesV0.IdPayment({
+   $:0,
+   $0:""
+  });
   SC$1.ftar=[function(cp)
   {
-   var m$1;
-   m$1=cp.cuentaPago;
-   return m$1.$==1?{
+   var m$2;
+   m$2=cp.cuentaPago;
+   return m$2.$==1?{
     $:1,
-    $0:[m$1.$0,FormaFormasPago.msg(cp),cp.authorizeIdR.$==0]
+    $0:[m$2.$0,FormaFormasPago.msg(cp),cp.authorizeIdR.$==0]
    }:null;
   },function(fp)
   {
@@ -5513,11 +5719,11 @@
   }];
   SC$1.fcta=[function(cp)
   {
-   var m$1;
-   m$1=cp.cuentaPago;
-   return m$1.$==0?{
+   var m$2;
+   m$2=cp.cuentaPago;
+   return m$2.$==0?{
     $:1,
-    $0:[m$1.$0,FormaFormasPago.msg(cp),cp.authorizeIdR.$==0]
+    $0:[m$2.$0,FormaFormasPago.msg(cp),cp.authorizeIdR.$==0]
    }:null;
   },function(fp)
   {
@@ -5538,7 +5744,18 @@
   SC$1.layoutName="ProzperLyt";
   SC$1.appName="Prozper";
   SC$1.influencerV=Var$1.Create$1("");
-  SC$1.influencerClassW=View.Const("");
+  SC$1.influencerClassW=View.MapAsync(function(inf)
+  {
+   var b$3;
+   b$3=null;
+   return Concurrency.Delay(function()
+   {
+    return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.Prozper+Rpc.obtenerIdInfluyente:42009634",[inf]),function(a)
+    {
+     return Monads.OkM(a).$==0?Concurrency.Return("mui-btn--primary"):Concurrency.Return("");
+    });
+   });
+  },MainProgram.influencerV().get_View());
  };
  testing_GeneratedPrintf.p=function($1)
  {
@@ -5630,6 +5847,14 @@
   return h?Templates.NamedTemplate("index",{
    $:1,
    $0:"formacontactos"
+  },h):void 0;
+ };
+ testing_Templates.autorizacion=function(h)
+ {
+  Templates.LoadLocalTemplates("index");
+  return h?Templates.NamedTemplate("index",{
+   $:1,
+   $0:"autorizacion"
   },h):void 0;
  };
  testing_Templates.formacuentas=function(h)

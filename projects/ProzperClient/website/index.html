@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
         <meta charset="utf-8">
@@ -211,7 +212,7 @@
         </div>
     </footer>
 
-    <div id="${Cortina}"><img src="blob/images/loading-prozper.gif" style=" display: block; margin-top: calc(50vh - 32px); margin-left: calc(50vw - 32px); position:fixed"></img></div>
+    <div id="${Cortina}"><img src="blob/images/loading-prozper.gif" style=" display: block; margin-top: calc(50vh - 32px); margin-left: calc(50vw - 32px); position:fixed"></div>
 
     <div style="display:none" >
         <div ws-replace="Initializer"></div>
@@ -238,11 +239,11 @@
                 cntPreRegister        div "class=mui-panel"
                 :                     h3 "" "Para registrarse en Prozper necesita recibir una invitación por email o tener un código de referencia."
                 :                     br ""
-                :                     Doc InputLabel "" "Código de referencia:" Influencer
+                :                     Doc InputLabel "" "Código de referencia:" Prozper.influencer
                 :                     br ""
-                :                     button "id=refer;class=mui-btn mui-btn--primary;onclick=gotoTaing(this)" "Registrarse"
-
-                Influencer            Var ""
+                :                     button Prozper.gotoInfluencer "id=refer;class=mui-btn @{Prozper.influencerClassW}" "Registrarse"
+                cntAutorizacion       div "class=mui-panel"
+                :                     template Autorizacion "" afiliado "@{Prozper.aliado}" montoafiliacion "$75.00"
 
                 mnuNoUsuario          ul ""
                 :                     template MenuNoUsuario ""
@@ -431,6 +432,58 @@
                 </ul>
             </li>
         </ul>
+
+        <div ws-template="Autorizacion" class="mui--text-center ">
+            <div class="mui--z2 mui--text-center mui--bg-primary mui--text-white mui--text-headline">
+            AUTORIZACIÓN PARA EL COBRO DE LA AFILIACIÓN
+            </div>
+            <br>
+            <b>INSTRUCCIONES</b>
+            <br>
+            Por favor complete y revise los datos de esta planilla de autorización y fírmela en señal de aprobación. El llenado de
+            esta planilla se requiere para procesar los cobros mensuales de su afiliación PROZPER a través de su cuenta bancaria
+            o su tarjeta de débito o tarjeta de crédito. Al completar esta planilla de autorización para cargar los pagos mensuales
+            de su afiliación en su cuenta bancaria o su tarjeta de crédito o débito, usted nos ayuda a protegerlo a usted de fraudes.
+            Toda la información que ingrese en esta planilla se mantendrá estrictamente confidencial.
+            <br>
+            <br>
+            <div class="mui--z2 mui--text-center mui--bg-primary mui--text-white mui--text-headline">
+            AUTORIZACION PARA CARGAR A CUENTA BANCARIA, TARJETA DE CREDITO O TARJETA DE DEBITO
+            </div>
+            <br>
+            Yo, <b>${Afiliado}</b> Titular de la cuenta, autorizo a PROZPER LLC a debitar mensualmente, los días ${dia} de cada mes de mi
+            cuenta bancaria - tarjeta de crédito – tarjeta de débito (cuya información aparece más abajo) el Monto
+            de <b>${MontoAfiliacion}</b> para el pago de mi afiliación como Aliado de PROZPER. En caso de
+            que el cobro no pueda ser realizado por problemas de comunicación con el banco o cualquier otro
+            inconveniente no previsto, autorizo a realizar un segundo intento para hacer efectivo el pago de mi
+            afiliación.
+            <br>
+            <br>
+            <div ws-replace="CuentaDebitar"/>
+            <br>
+            <br>
+            
+            <div class="mui--z2 mui--text-center  mui--bg-primary mui--text-white mui--text-headline">
+            FIRMA Y CONFIRMACION
+            </div>
+            <br>
+            Yo afirmo y confirmo que soy el titular de la cuenta bancaria o tarjeta arriba descrita. Yo además confirmo que Yo
+            mismo he completado toda la información de esta planilla de autorización y toda la información ingresada es cierta y
+            correcta. Yo estoy de acuerdo en pagar el monto total descrito arriba mensualmente y a cumplir con los términos y
+            condiciones del contrato de Aliado con PROZPER.
+            <br>
+            <br>
+            Firma del titular de la cuenta: <input type="text" name="Titular" ws-var="Titular" required>
+            <br>
+            Fecha: <input type="text" name="Fecha" ws-var="Fecha" required>
+            <br>
+            <label>
+                    <input type="checkbox" value="" unchecked>
+                    He leído los términos arriba indicados y estoy de acuerdo
+            </label>
+            <br>
+            <button type="button" class="mui-btn mui-btn--raised ${FirmarClass}" ws-onclick="Firmar" >Firmar y Procesar</button>
+        </div>
 
         <div ws-children-template="Correo">
             <br>
@@ -696,19 +749,18 @@
             <datalist id="Referidores" ws-hole="Referidores" ></datalist>
             <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
                 <thead>
-                    <th ws-onclick="sort_nombre"        style="width:5%; text-align:center">Nombre       </th>
+                    <th ws-onclick="sort_nombre"        style="width:9%; text-align:center">Nombre       </th>
                     <th ws-onclick="sort_influyente"    style="width:1%; text-align:center">Influ.       </th>
-                    <th ws-onclick="sort_tipo"          style="width:1%; text-align:center">Tipo         </th>
-                    <th ws-onclick="sort_status"        style="width:1%; text-align:center">Status       </th>
-                    <th ws-onclick="sort_referido"      style="width:1%; text-align:center; font-size: x-small">Referido por </th>
-                    <th ws-onclick="sort_nivel"         style="width:1%; text-align:center">nivel        </th>
-                    <th ws-onclick="sort_referidos"     style="width:1%; text-align:center">refs.        </th>
-                    <th ws-onclick="sort_descendientes" style="width:1%; text-align:center">descs.       </th>
-                    <th ws-onclick="sort_comision"      style="width:1%; text-align:center">comision     </th>
-                    <th ws-onclick="sort_diaPago"       style="width:1%; text-align:center">dia pago     </th>
-                    <th ws-onclick="sort_desde"         style="width:1%; text-align:center">desde        </th>
-                    <th ws-onclick="sort_Id"            style="width:1%; text-align:center">Id           </th>
-                    <th                                 style="width:  1%; text-align: center">...          </th>
+                    <th ws-onclick="sort_tipo"          style="width:2%; text-align:center">Tipo         </th>
+                    <th ws-onclick="sort_status"        style="width:2%; text-align:center">Status       </th>
+                    <th ws-onclick="sort_referido"      style="width:2%; text-align:center; font-size: x-small">Referido por </th>
+                    <th ws-onclick="sort_nivel"         style="width:2%; text-align:center">nivel        </th>
+                    <th ws-onclick="sort_referidos"     style="width:2%; text-align:center">refs.        </th>
+                    <th ws-onclick="sort_descendientes" style="width:2%; text-align:center">descs.       </th>
+                    <th ws-onclick="sort_comision"      style="width:2%; text-align:center">comision     </th>
+                    <th ws-onclick="sort_diaPago"       style="width:2%; text-align:center">dia pago     </th>
+                    <th ws-onclick="sort_desde"         style="width:2%; text-align:center">desde        </th>
+                    <th ws-onclick="sort_Id"            style="width:2%; text-align:center">Id           </th>
                 </thead>
                 <tbody ws-hole="TBody" ws-children-template="FilaConsolidado">
                     <tr style="">
