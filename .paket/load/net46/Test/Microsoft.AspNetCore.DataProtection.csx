@@ -1,0 +1,5 @@
+#load "Microsoft.AspNetCore.Hosting.Abstractions.csx" 
+#load "Microsoft.Extensions.Options.csx" 
+#load "Microsoft.Win32.Registry.csx" 
+#load "System.Security.Cryptography.Xml.csx" 
+#load "System.Security.Principal.Windows.csx" 

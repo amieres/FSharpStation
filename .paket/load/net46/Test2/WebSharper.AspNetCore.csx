@@ -1,0 +1,4 @@
+#load "Microsoft.AspNetCore.Authentication.Abstractions.csx" 
+#load "Microsoft.AspNetCore.Hosting.Abstractions.csx" 
+#load "Microsoft.AspNetCore.Http.Abstractions.csx" 
+#load "Microsoft.Extensions.Configuration.Abstractions.csx" 

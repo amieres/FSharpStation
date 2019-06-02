@@ -1,0 +1,8 @@
+#load "Newtonsoft.Json.csx" 
+#load "System.Collections.csx" 
+#load "System.Collections.Concurrent.csx" 
+#load "System.Linq.csx" 
+#load "System.Runtime.csx" 
+#load "System.Security.Cryptography.Algorithms.csx" 
+#load "System.Security.Cryptography.Cng.csx" 
+#r "../../../../packages/test2/Microsoft.Azure.KeyVault.WebKey/lib/net452/Microsoft.Azure.KeyVault.WebKey.dll" 

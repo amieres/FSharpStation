@@ -1,0 +1,7 @@
+#load "Microsoft.Win32.Primitives.csx" 
+#load "System.Resources.ResourceManager.csx" 
+#load "System.Runtime.csx" 
+#load "System.Threading.Tasks.csx" 
+#r "System" 
+#r "mscorlib" 
+#r "../../../packages/System.Net.WebSockets/lib/net46/System.Net.WebSockets.dll" 

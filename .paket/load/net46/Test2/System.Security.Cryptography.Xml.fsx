@@ -1,0 +1,5 @@
+#load "System.Security.Cryptography.Pkcs.fsx" 
+#load "System.Security.Permissions.fsx" 
+#r "System" 
+#r "System.Security" 
+#r "System.Xml" 

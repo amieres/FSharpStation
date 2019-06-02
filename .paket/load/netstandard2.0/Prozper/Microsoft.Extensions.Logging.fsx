@@ -1,0 +1,5 @@
+#load "Microsoft.Extensions.Configuration.Binder.fsx" 
+#load "Microsoft.Extensions.DependencyInjection.Abstractions.fsx" 
+#load "Microsoft.Extensions.Logging.Abstractions.fsx" 
+#load "Microsoft.Extensions.Options.fsx" 
+#r "../../../../packages/prozper/Microsoft.Extensions.Logging/lib/netstandard2.0/Microsoft.Extensions.Logging.dll" 

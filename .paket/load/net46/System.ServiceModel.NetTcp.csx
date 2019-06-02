@@ -1,0 +1,7 @@
+#load "System.Private.ServiceModel.csx" 
+#load "System.ServiceModel.Primitives.csx" 
+#r "System.ServiceModel" 
+#r "mscorlib" 
+#r "System" 
+#r "System.Runtime.Serialization" 
+#r "../../../packages/System.ServiceModel.NetTcp/lib/net46/System.ServiceModel.NetTcp.dll" 

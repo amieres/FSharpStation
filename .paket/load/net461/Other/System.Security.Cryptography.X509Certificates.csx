@@ -1,0 +1,6 @@
+#load "System.Security.Cryptography.Algorithms.csx" 
+#load "System.Security.Cryptography.Encoding.csx" 
+#r "System" 
+#r "System.Core" 
+#r "mscorlib" 
+#r "../../../../packages/other/System.Security.Cryptography.X509Certificates/lib/net461/System.Security.Cryptography.X509Certificates.dll" 

@@ -1,0 +1,1 @@
+#r "../../../../packages/prozper/Microsoft.Extensions.ObjectPool/lib/netstandard2.0/Microsoft.Extensions.ObjectPool.dll" 

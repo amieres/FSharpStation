@@ -1,0 +1,6 @@
+#load "Microsoft.AspNetCore.Http.Abstractions.csx" 
+#load "Microsoft.AspNetCore.WebUtilities.csx" 
+#load "Microsoft.Extensions.ObjectPool.csx" 
+#load "Microsoft.Extensions.Options.csx" 
+#load "Microsoft.Net.Http.Headers.csx" 
+#r "../../../../packages/prozper/Microsoft.AspNetCore.Http/lib/netstandard2.0/Microsoft.AspNetCore.Http.dll" 

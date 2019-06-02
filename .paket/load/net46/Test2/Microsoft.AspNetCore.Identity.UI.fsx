@@ -1,0 +1,5 @@
+#load "Microsoft.AspNetCore.Identity.fsx" 
+#load "Microsoft.AspNetCore.Mvc.fsx" 
+#load "Microsoft.AspNetCore.StaticFiles.fsx" 
+#load "Microsoft.Extensions.FileProviders.Embedded.fsx" 
+#load "Microsoft.Extensions.Identity.Stores.fsx" 

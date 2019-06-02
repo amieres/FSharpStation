@@ -1,0 +1,2 @@
+#load "Microsoft.Extensions.DependencyInjection.Abstractions.fsx" 
+#r "../../../../packages/prozper/Microsoft.Extensions.DependencyInjection/lib/netcoreapp2.0/Microsoft.Extensions.DependencyInjection.dll" 

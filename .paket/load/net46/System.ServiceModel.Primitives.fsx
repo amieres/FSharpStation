@@ -1,0 +1,7 @@
+#load "System.Private.ServiceModel.fsx" 
+#r "System.ServiceModel" 
+#r "System.IdentityModel" 
+#r "System" 
+#r "System.Runtime.Serialization" 
+#r "System.Xml" 
+#r "../../../packages/System.ServiceModel.Primitives/lib/net46/System.ServiceModel.Primitives.dll" 

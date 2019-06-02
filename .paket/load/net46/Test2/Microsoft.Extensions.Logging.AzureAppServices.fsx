@@ -1,0 +1,5 @@
+#load "Microsoft.Extensions.Configuration.EnvironmentVariables.fsx" 
+#load "Microsoft.Extensions.Configuration.Json.fsx" 
+#load "Microsoft.Extensions.Logging.fsx" 
+#load "Microsoft.Extensions.Logging.Configuration.fsx" 
+#load "System.ValueTuple.fsx" 

@@ -1,0 +1,1 @@
+#r "../../../../packages/test2/System.Interactive.Async/lib/net46/System.Interactive.Async.dll" 

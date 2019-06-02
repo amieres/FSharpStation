@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,String,ParseO,LibraryJS,REGEX,Hoverable,Hoverable$1,ResizeObserver,WebSharper,Obj,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,WcSplitterT,AppFramework,PlugInVar,PlugInView,PlugInDoc,PlugInAction,PlugInQuery,PlugIn,LayoutEngine,LayoutEngineModule,Measures,Layout,SC$1,LayoutEngine_Templates,GeneratedPrintf,LayoutEngine_GeneratedPrintf,Strings,Slice,Seq,Unchecked,CancellationTokenSource,Concurrency,Utils,console,Arrays,IntelliFactory,Runtime,UI,DomUtility,Doc,List,View,AttrModule,AttrProxy,Var$1,Node,Operators,Client,Templates,Reflect,Object,FromView,Templating,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,Math,System,Guid,Lazy,DateUtil,Numeric,ListModel,Collections,Dictionary;
+ var Global,FsRoot,Library,String,ParseO,LibraryJS,REGEX,Hoverable,Hoverable$1,ResizeObserver,WebSharper,Obj,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,WcSplitterT,AppFramework,PlugInVar,PlugInView,PlugInDoc,PlugInAction,PlugInQuery,PlugIn,LayoutEngine,LayoutEngineModule,Measures,Layout,SC$1,LayoutEngine_Templates,GeneratedPrintf,LayoutEngine_GeneratedPrintf,Strings,Slice,Seq,Arrays,Char,List,Unchecked,CancellationTokenSource,Concurrency,Utils,console,IntelliFactory,Runtime,UI,DomUtility,Doc,View,AttrModule,AttrProxy,Var$1,Node,Operators,Client,Templates,Reflect,Object,FromView,Templating,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,Math,System,Guid,Lazy,DateUtil,Numeric,ListModel,Collections,Dictionary;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -37,18 +37,19 @@
  Strings=WebSharper&&WebSharper.Strings;
  Slice=WebSharper&&WebSharper.Slice;
  Seq=WebSharper&&WebSharper.Seq;
+ Arrays=WebSharper&&WebSharper.Arrays;
+ Char=WebSharper&&WebSharper.Char;
+ List=WebSharper&&WebSharper.List;
  Unchecked=WebSharper&&WebSharper.Unchecked;
  CancellationTokenSource=WebSharper&&WebSharper.CancellationTokenSource;
  Concurrency=WebSharper&&WebSharper.Concurrency;
  Utils=WebSharper&&WebSharper.Utils;
  console=Global.console;
- Arrays=WebSharper&&WebSharper.Arrays;
  IntelliFactory=Global.IntelliFactory;
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
  UI=WebSharper&&WebSharper.UI;
  DomUtility=UI&&UI.DomUtility;
  Doc=UI&&UI.Doc;
- List=WebSharper&&WebSharper.List;
  View=UI&&UI.View;
  AttrModule=UI&&UI.AttrModule;
  AttrProxy=UI&&UI.AttrProxy;
@@ -273,6 +274,13 @@
    return g.apply(null,tryParseFunc(x));
   };
  };
+ Library["String.get_toUnderscore"]=function(_this,u)
+ {
+  return Arrays.ofSeq(Seq.collect(Global.id,Seq.mapi(function(i,c)
+  {
+   return i>0&&Char.IsUpper(c)?List.ofArray(["_",c]):List.ofArray([c]);
+  },_this))).join("");
+ };
  Library["String.Right"]=function(_this,n)
  {
   var a,b;
@@ -416,15 +424,15 @@
  {
   return Hoverable$1.New$1().Content(Doc.Element("div",[AttrProxy.Create("style","flex-flow: column;")],[Doc.TextNode("Hover over me!")]));
  };
- Hoverable$1.Content$289$81=Runtime.Curried3(function(e,$1,$2)
+ Hoverable$1.Content$302$81=Runtime.Curried3(function(e,$1,$2)
  {
   return DomUtility.RemoveClass(e.elt,"hovering");
  });
- Hoverable$1.get_Attributes$285$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$298$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(false);
  });
- Hoverable$1.get_Attributes$284$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$297$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(true);
  });
@@ -566,7 +574,7 @@
   SC$1.$cctor();
   return SC$1.init;
  };
- WcTabStrip.tabStrip$431$64=function(i,selected)
+ WcTabStrip.tabStrip$444$64=function(i,selected)
  {
   return function()
   {
@@ -997,15 +1005,15 @@
  {
   return PlugInVar.New(name,_var);
  };
- AppFramework.vertical$804$39=function(mouseDown)
+ AppFramework.vertical$817$39=function(mouseDown)
  {
   return function(te)
   {
    mouseDown(te.Event);
   };
  };
- AppFramework.vertical$803$39=Global.id;
- AppFramework.vertical$802$39=Global.id;
+ AppFramework.vertical$816$39=Global.id;
+ AppFramework.vertical$815$39=Global.id;
  AppFramework.vertical=function(partSizes,afterRender,afterRenderSp,mouseDown,gap)
  {
   var b,t,p,i;
@@ -1033,15 +1041,15 @@
    $1:gap
   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.wcompsplitterver(p[0])),(b.i=i,i)))).get_Doc();
  };
- AppFramework.horizontal$796$39=function(mouseDown)
+ AppFramework.horizontal$809$39=function(mouseDown)
  {
   return function(te)
   {
    mouseDown(te.Event);
   };
  };
- AppFramework.horizontal$795$39=Global.id;
- AppFramework.horizontal$794$39=Global.id;
+ AppFramework.horizontal$808$39=Global.id;
+ AppFramework.horizontal$807$39=Global.id;
  AppFramework.horizontal=function(partSizes,afterRender,afterRenderSp,mouseDown,gap)
  {
   var b,t,p,i;
@@ -1069,7 +1077,7 @@
    $1:gap
   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.wcompsplitterhor(p[0])),(b.i=i,i)))).get_Doc();
  };
- AppFramework.mainDoc$785$42=function()
+ AppFramework.mainDoc$798$42=function()
  {
   return function()
   {
@@ -1134,7 +1142,7 @@
   SC$1.$cctor();
   return SC$1.AppFwkClient;
  };
- AppFramework.renderQueries$751$39=function(qry)
+ AppFramework.renderQueries$764$39=function(qry)
  {
   return function()
   {
@@ -1176,14 +1184,14 @@
    },plg.plgQueries);
   },AppFramework.currentPlugInW()));
  };
- AppFramework.renderActions$740$51=function(act)
+ AppFramework.renderActions$753$51=function(act)
  {
   return function(ev)
   {
    AppFramework.callFunction(ev,null,act.actFunction);
   };
  };
- AppFramework.renderActions$736$51=function(act)
+ AppFramework.renderActions$749$51=function(act)
  {
   return function(ev)
   {
@@ -1262,7 +1270,7 @@
    else
     actF.$0();
  };
- AppFramework.renderDocs$714$39=function(doc)
+ AppFramework.renderDocs$727$39=function(doc)
  {
   return function()
   {
@@ -1406,7 +1414,7 @@
    },plg.plgVars);
   },AppFramework.currentPlugInW()));
  };
- AppFramework.renderPlugIns$676$35=function(name)
+ AppFramework.renderPlugIns$689$35=function(name)
  {
   return function()
   {
@@ -1752,17 +1760,40 @@
        $3:"Var"
       })],Seq.delay(function()
       {
-       return[AppFramework.newDocF("none",{
+       var l$2;
+       return Seq.append([AppFramework.newDocF("HtmlDoc",{
         $:1,
-        $0:LayoutEngineModule.none,
-        $1:"x"
-       })];
+        $0:(l$2=lyt.lytName,function(h)
+        {
+         return LayoutEngineModule.htmlDoc(l$2,h);
+        }),
+        $1:"html"
+       })],Seq.delay(function()
+       {
+        return[AppFramework.newDocF("none",{
+         $:1,
+         $0:LayoutEngineModule.none,
+         $1:"x"
+        })];
+       }));
       }));
      }));
     }));
    })),[],[]));
    AppFramework.mainDocV().Set(AppFramework.mainDocV().Get());
   },lyt.lytDefinition.get_View());
+ };
+ LayoutEngineModule.htmlDoc=function(lytNm,html)
+ {
+  var m;
+  m=LayoutEngineModule.getTextData(lytNm,html);
+  return m.$==1?Doc.BindView(Doc.Verbatim,m.$0):m.$==2?LayoutEngineModule.errDoc((function($1)
+  {
+   return function($2)
+   {
+    return $1("HtmlDoc: unexpected action "+GeneratedPrintf.p$1($2));
+   };
+  }(Global.id))(m.$0)):Doc.Verbatim(m.$0);
  };
  LayoutEngineModule.none=function(x)
  {
@@ -1783,11 +1814,11 @@
    };
   }(Global.id))(varName)):o.$0;
  };
- LayoutEngineModule.inputFile$1427$69=Runtime.Curried3(function(act,el,$1)
+ LayoutEngineModule.inputFile$1440$69=Runtime.Curried3(function(act,el,$1)
  {
   return AppFramework.callFunction(el,null,act.actFunction);
  });
- LayoutEngineModule.inputFile$1426$69=Runtime.Curried3(function($1,el,$2)
+ LayoutEngineModule.inputFile$1439$69=Runtime.Curried3(function($1,el,$2)
  {
   el.value="";
  });
@@ -2088,19 +2119,19 @@
      $:1,
      $0:{
       $:0,
-      $0:nm,
+      $0:nm.toLowerCase(),
       $1:(LayoutEngineModule.getDocF(List.T.Empty,o$3.$0))[0]
      }
     }),o$2==null?(o$4=(t$1=((LayoutEngineModule.splitName())(lytNm))(id),AppFramework.tryGetVar(t$1[0],t$1[1])),o$4==null?null:{
      $:1,
      $0:{
       $:8,
-      $0:nm,
+      $0:nm.toLowerCase(),
       $1:o$4.$0.varVar
      }
     }):o$2),o$1==null?{
      $:0,
-     $0:nm,
+     $0:nm.toLowerCase(),
      $1:LayoutEngineModule.errDoc((function($4)
      {
       return function($5)
@@ -2110,11 +2141,11 @@
      }(Global.id))(id))
     }:o$1.$0):(nm$1=$2[0],m$1=LayoutEngineModule.getTextData(lytNm,$3[0]),m$1.$==1?{
      $:2,
-     $0:nm$1,
+     $0:nm$1.toLowerCase(),
      $1:m$1.$0
     }:m$1.$==2?(act=m$1.$0,{
      $:4,
-     $0:nm$1,
+     $0:nm$1.toLowerCase(),
      $1:function(el)
      {
       return function(ev)
@@ -2124,7 +2155,7 @@
      }
     }):{
      $:1,
-     $0:nm$1,
+     $0:nm$1.toLowerCase(),
      $1:m$1.$0
     });
    }
@@ -2154,7 +2185,7 @@
       return Seq.append(s,s$1);
      }))(x$1)),Templates.NamedTemplate("local",{
       $:1,
-      $0:tempName[0]
+      $0:tempName[0].toLowerCase()
      },x))
     };
    }
@@ -2664,6 +2695,11 @@
    $0:$1
   }:null;
  };
+ LibraryJS.rexEmail=function()
+ {
+  SC$1.$cctor();
+  return SC$1.rexEmail;
+ };
  LibraryJS.rexGuid=function()
  {
   SC$1.$cctor();
@@ -3081,6 +3117,7 @@
   SC$1["|Double|_|"]=ParseO.parseDoubleO();
   SC$1["|Guid|_|"]=ParseO.parseGuidO();
   SC$1.rexGuid="([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})";
+  SC$1.rexEmail="(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@[*[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+]*";
   SC$1.observers=List.T.Empty;
   SC$1.css="\r\n                .tab-panel {\r\n                 overflow  : hidden   ;\r\n                 display   : flex     ;\r\n                 flex-flow : column   ;\r\n                 background: lightgray;\r\n                 height    : 100%    ;\r\n                 width     : 100%    ;\r\n                }\r\n                .tab-content {\r\n                 flex      : 1 1     ;\r\n                 overflow  : auto    ;\r\n                 position  : relative;\r\n                }\r\n                .tab-children {\r\n                 height    : 100%    ;\r\n                 width     : 100%    ;\r\n                 position  : absolute;\r\n                 display   : grid    ;\r\n                }\r\n                .tab-strip {\r\n                 padding   : 0pt     ;\r\n                 flex      : 0 0     ;\r\n                }\r\n                .tab {\r\n                 border     : 0.2pt solid transparent;\r\n                 padding    : 0pt 4pt;\r\n                 display    : inline-block;\r\n                 font-family: sans-serif;\r\n                 font-weight: 200;\r\n                 font-size  : small;\r\n                 color      : #666;\r\n                 cursor     : pointer;\r\n                }\r\n                .top>.tab {\r\n                 border-radius: 2pt 2pt 0pt 0pt;\r\n                 border-bottom-width: 0pt;\r\n                 vertical-align: bottom;\r\n                }\r\n                .bottom>.tab {\r\n                 border-top-width: 0pt;\r\n                 border-radius: 0pt 0pt 2pt 2pt;\r\n                 vertical-align: top;\r\n                }\r\n                .horizontal>.tab:not(:first-child) {\r\n                 border-left-width: 0pt;\r\n                }\r\n                .tab.hovering {\r\n                 background: red;\r\n                }\r\n                .tab.selected {\r\n                 background: white;\r\n                 border-left-width: 0.2pt;\r\n                 color: black;\r\n                 font-weight: 500;\r\n                 border-color: black;\r\n                }\r\n                .horizontal>.tab.selected {\r\n                 border-left-width: 0.2pt;\r\n                }\r\n                ::slotted(*              ) { \r\n                 width : 100%;\r\n                 height: 100%;\r\n                }\r\n                        ";
   SC$1.init=Lazy.Create(function()
@@ -3403,6 +3440,18 @@
    $:1,
    $0:"namevalueinput"
   },h):void 0;
+ };
+ GeneratedPrintf.p$1=function($1)
+ {
+  return"{"+("actName = "+Utils.prettyPrint($1.actName))+"; "+("actFunction = "+LayoutEngine_GeneratedPrintf.p$1($1.actFunction))+"; "+("actEnabled = "+LayoutEngine_GeneratedPrintf.p$2($1.actEnabled))+"}";
+ };
+ LayoutEngine_GeneratedPrintf.p$2=function($1)
+ {
+  return"View <fun>";
+ };
+ LayoutEngine_GeneratedPrintf.p$1=function($1)
+ {
+  return $1.$==2?"FunAct2 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+")":$1.$==1?"FunAct1 (<fun>, "+Utils.prettyPrint($1.$1)+")":"FunAct0 <fun>";
  };
  LayoutEngine_Templates.fixedsplitterhor=function(h)
  {

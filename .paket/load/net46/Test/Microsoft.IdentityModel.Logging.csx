@@ -1,0 +1,7 @@
+#load "System.Diagnostics.Tracing.csx" 
+#load "System.Globalization.csx" 
+#load "System.IO.csx" 
+#load "System.IO.FileSystem.csx" 
+#r "Microsoft.CSharp" 
+#r "System" 
+#r "../../../../packages/test/Microsoft.IdentityModel.Logging/lib/net451/Microsoft.IdentityModel.Logging.dll" 

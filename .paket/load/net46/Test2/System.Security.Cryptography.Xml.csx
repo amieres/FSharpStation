@@ -1,0 +1,6 @@
+#load "System.Security.Cryptography.Pkcs.csx" 
+#load "System.Security.Permissions.csx" 
+#r "System" 
+#r "System.Security" 
+#r "System.Xml" 
+#r "mscorlib" 

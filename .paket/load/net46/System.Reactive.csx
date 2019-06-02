@@ -1,0 +1,5 @@
+#load "System.Runtime.InteropServices.WindowsRuntime.csx" 
+#r "System.Windows" 
+#r "System.Windows.Forms" 
+#r "WindowsBase" 
+#r "../../../packages/System.Reactive/lib/net46/System.Reactive.dll" 

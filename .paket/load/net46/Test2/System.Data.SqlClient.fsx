@@ -1,0 +1,6 @@
+#load "Microsoft.Win32.Registry.fsx" 
+#load "System.Security.Principal.Windows.fsx" 
+#load "System.Text.Encoding.CodePages.fsx" 
+#r "System.Data" 
+#r "System.Xml" 
+#r "../../../../packages/test2/System.Data.SqlClient/lib/net46/System.Data.SqlClient.dll" 

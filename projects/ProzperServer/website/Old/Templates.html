@@ -1,0 +1,1251 @@
+<html>
+  <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="//cdn.muicss.com/mui-0.9.41/css/mui.min.css" rel="stylesheet" type="text/css" />
+        <script src="//cdn.muicss.com/mui-0.9.41/js/mui.min.js"></script>
+        <!-- script src="//code.jquery.com/jquery-2.1.4.min.js"></script -->
+        <script ws-replace="scripts"></script>
+        <script>
+                function doNothing(e){
+                    console.log("donothing");
+                    e.preventDefault();
+                }
+                jQuery(function ($) {
+                    var $bodyEl       = $('body'       );
+                    var $sidedrawerEl = $('#sidedrawer');        
+                    showSidedrawer = function() {
+                        // show overlay
+                        var options = {
+                            onclose: function () {
+                                $sidedrawerEl
+                                    .removeClass('active')
+                                    .appendTo(document.body);
+                            }
+                        };        
+                        var $overlayEl = $(mui.overlay('on', options));        
+                        // show element
+                        $sidedrawerEl.appendTo($overlayEl);
+                        setTimeout(function () {
+                            $sidedrawerEl.addClass('active');
+                        }, 20);
+                    }
+                    hideSidedrawer = function() {
+                        $bodyEl.toggleClass('hide-sidedrawer');
+                    }
+                });
+        </script>
+
+        <style>
+            #sidedrawer-brand             { padding-left    : 20px      }
+            #sidedrawer ul                { list-style      : none      }
+            #sidedrawer>ul                { padding-left    : 0px       }
+            #sidedrawer>ul>li:first-child { padding-top     : 15px      }
+            #sidedrawer strong:hover      { background-color: #E0E0E0 } 
+            #sidedrawer strong+ul>li      { padding         : 6px 0px   }
+            #sidedrawer strong {
+                display: block;
+                padding: 15px 22px;
+                cursor: pointer;
+            }
+
+
+            /** Body CSS */
+            html,
+            body {
+                height: 100%;
+                background-color: #eee;
+            }
+
+            html,
+            body,
+            input,
+            textarea,
+            button {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+            }
+
+
+            /** Layout CSS */
+            #header {
+                position: fixed;
+                top: 0;
+                right: 0;
+                left: 0;
+                z-index: 2;
+                transition: left 0.2s;
+            }
+
+            #sidedrawer {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                width: 200px;
+                left: -200px;
+                overflow: auto;
+                z-index: 2;
+                background-color: #fff;
+                transition: transform 0.2s;
+            }
+
+            #content-wrapper {
+                min-height: 100%;
+                overflow-x: hidden;
+                margin-left: 0px;
+                transition: margin-left 0.2s;
+
+                /* sticky bottom */
+                margin-bottom: -160px;
+                padding-bottom: 160px;
+            }
+
+            #footer {
+                height: 160px;
+                margin-left: 0px;
+                transition: margin-left 0.2s;
+            }
+
+            @media (min-width: 768px) {
+                #header                               { left: 200px                 }
+                #sidedrawer                           { transform: translate(200px) }
+                #content-wrapper                      { margin-left: 200px          }
+                #footer                               { margin-left: 200px          }
+                body.hide-sidedrawer #header          { left: 0                     }
+                body.hide-sidedrawer #sidedrawer      { transform: translate(0px)   }
+                body.hide-sidedrawer #content-wrapper { margin-left: 0              }
+                body.hide-sidedrawer #footer          { margin-left: 0              }
+            }
+
+
+            /**
+     * Toggle Side drawer
+     */
+            #sidedrawer.active { transform: translate(200px); }
+
+
+            /**
+     * Header CSS
+     */
+            .sidedrawer-toggle {
+                color: #fff;
+                cursor: pointer;
+                font-size: 20px;
+                line-height: 20px;
+                margin-right: 10px;
+            }
+
+            .sidedrawer-toggle:hover {
+                color: #fff;
+                text-decoration: none;
+            }
+
+
+            /**
+     * Footer CSS
+     */
+            #footer {
+                background-color: #0288D1;
+                color: #fff;
+            }
+
+            #footer a {
+                color: #fff;
+                text-decoration: underline;
+            }
+        </style>
+
+    <title>${Title}</title>
+  </head>
+  <body class="scrollbar">
+    <div ws-replace="MainContent"></div>
+  </body>
+    <div style="display:none" >
+        <div ws-replace="Initializer"></div>
+        <div id="GlobalLayout" >menuEditor layout
+                |          main
+
+                main div ""
+                :                 template  header     "id=header"           brand  brandV   logout "@{Prozper.Logout}" afiliado "@{Prozper.aliado}"
+                :                 Doc       Prozper.contentDoc
+                :                 template  sidedrawer "id=sidedrawer"       brand  brandV 
+                :                 template  footer     "id=footer"           brand  brandV   madeby "CIPHER Bsc" madebylink "www.cipherbsc.com"
+ 
+                mainContent        template  content    "id=content-wrapper"  content aliados                 fecha "@{Prozper.mesActual} @{Prozper.anoActual}"
+                cntFormaRegistro   template  content    "id=content-wrapper"  content Prozper.FormaRegistro   titulo "Referido por: @{Prozper.aliado}"  
+                cntFormaDatos      template  content    "id=content-wrapper"  content Prozper.FormaDatos      titulo " "  
+                cntFormaContactos  template  content    "id=content-wrapper"  content Prozper.FormaContactos  titulo " " 
+                cntFormaFormasPago template  content    "id=content-wrapper"  content Prozper.FormaFormasPago titulo " " 
+                cntFormaCuentas    template  content    "id=content-wrapper"  content ProzperLyt.FormaCuentas titulo " "  
+                cntFormaDocumentos template  content    "id=content-wrapper"  content Prozper.FormaDocumentos titulo " "  
+
+                aliados          div       "class=row"
+                :                div       "class=mui-col-md-6"
+                ::               div       "class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto" Prozper.Aliados
+                :                div       "class=mui-col-md-6"
+                ::               div       "class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto" Aliado Comisiones
+                brandV           Var       "Prozper"
+
+                Aliado           div       "class=mui-col-md-8"
+                :                Doc Prozper.Aliado
+
+                Comisiones       template    tablacomisiones "class=mui-col-md-3"  tbody filasComisiones
+                filasComisiones  concat      ""
+                :                template    filacomision    ""  periodo "Ene 2018" comision "$1,000"
+                :                template    filacomision    ""  periodo "Feb 2018" comision "$1,000"
+                :                template    filacomision    ""  periodo "Mar 2018" comision "$1,000"
+                :                template    filacomision    ""  periodo "Abr 2018" comision "$1,000"
+                :                template    filacomision    ""  periodo "May 2018" comision "$1,000"
+                :                template    filacomision    ""  periodo "Jun 2018" comision "$1,000"
+                :                template    filacomision    ""  periodo "Jul 2018" comision "$1,000"
+                :                template    filacomision    ""  periodo "Ago 2018" comision "$1,000"
+                :                template    filacomision    ""  periodo "Sep 2018" comision "$1,000"
+                :                template    filacomision    ""  periodo "Oct 2018" comision "$1,000"
+                :                template    filacomision    ""  periodo "Nov 2018" comision "$1,000"
+                :                template    filacomision    ""  periodo "Dec 2018" comision "$1,000"
+        
+                menuEditorx      horizontal  65          menuLogo                  editorMessages
+                double           horizontal  0-50-100    AppFramework.AppFwkClient menuEditor
+                menuLogo         vertical    350         logo                      menu
+                logo             span       "margin:0;   color:gray; font-size: 55px; font-weight:530" "StackOverflow"
+                editorMessages   horizontal  10-83-100   editorButtons             messages
+                messages         vertical    0-50-100    messagesLeft              messagesRight
+                editorButtons    vertical    150 buttons snippetsSnippet 
+                snippetsSnippet  vertical    0-20-100    snippets                  editorProperties
+                snippets         horizontal  20          "@{FSharpStation.CurrentPath}" tblDimensions2
+                editorProperties vertical    0-100-100   snippet                   properties
+                properties       div        ""           FSharpStation.Properties
+                snippet          horizontal  35          Name                      FSharpStation.editor
+                menu             span       "display: grid; grid-template-columns: 30% 20% 20% 10%; grid-gap: 25px; margin:5px; grid-template-rows:50px" inpServer btnLoad btnSaveAs
+                 
+                severalTabs      wcomp-tabstrip  "" 
+                :                div "tabname=Dimensions" 
+                ::               div "" btnAddDimension RuleEditor.Dimensions
+                :                div "tabname=Cubes"
+                :                div "tabname=Global Definitions" RuleEditor.globalDefs
+        
+                btnSaveAs        button RuleEditor.SaveAs         "class=btn @{RuleEditor.SaveNeeded}" "Save as...    "
+                btnAddDimension  button RuleEditor.AddDimension      ""                  "new dim..."
+                btnDeleteSnippet button FSharpStation.RemoveSnippet  ""                  "Delete Snippet"
+                btnIndentIn      button FSharpStation.IndentIn       ""                  "Indent In  >> "
+                btnIndentOut     button FSharpStation.IndentOut      ""                  "Indent Out << "
+                btnRunFS         button FSharpStation.RunFS          ""                  "Run F#        "
+                btnAbortFsi      button FSharpStation.AbortFsi       ""                  "Abort Fsi     "
+        
+                messagesLeft     wcomp-tabstrip                      ""                  Output FsCode
+                messagesRight    wcomp-tabstrip                      ""                  Parser
+        
+                buttons          div "overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px"
+                :                button RuleEditor.AddCalculation    ""                 "Add Calculation"
+                :                button RuleEditor.AddTotal          ""                 "Add Total"
+                :                Doc       none x
+                :                button RuleEditor.IndentIn          ""                  "Indent In  >> "
+                :                button RuleEditor.IndentOut         ""                  "Indent Out << "
+        
+                Output           textarea  RuleEditor.Output         "tabname=Output ; placeholder=Output messages ; spellcheck=false" 
+                FsCode           textarea  RuleEditor.CodeFS         "tabname=F# Code; placeholder=F# Code         ; spellcheck=false" 
+                Parser           textarea  RuleEditor.Parser         "tabname=Parser ; placeholder=Parser messages; dblclick=@{FSharpStation.JumpTo} ; spellcheck=false" 
+                Name             Doc       InputLabel                ""     "Name:"        FSharpStation.SnippetName
+                inpServer        Doc       InputLabel                ""     "Server:"      RuleEditor.Server
+                btnLoad          Doc       InputFile                 ""     "Load File..." RuleEditor.LoadFile  FileName
+                btnImport        Doc       InputFile                 ""     "Import..."    FSharpStation.Import    ""
+                FileName         div                                 "class=form-control"  RuleEditor.fileName
+
+            </div>
+        </div>
+
+        <div ws-children-template="Correo">
+            <br>
+            <div style="color:red">${Mensaje}</div>
+            <div class="mui-textfield mui-textfield--float-label">
+                <input type="email" name="Correo" ws-var="Correo" required>
+                <label>Correo Electronico</label>
+            </div>
+            <div class="mui-textfield mui-textfield--float-label">
+                <input type="email" name="ConfirmarCorreo" ws-var="ConfirmarCorreo" required>
+                <label>Confirmar Correo Electronico</label>
+            </div>
+        </div>
+
+        <div ws-children-template="Telefono">
+            <br>
+            <div class="mui-select">
+                <label>Tipo de Teléfono</label>
+                <select ws-var="TipoTelefono" ws-hole="Tipos" required>
+                </select>
+            </div>            
+            <div class="mui-textfield mui-textfield--float-label">
+                <input type="text" name="CodigoPais" ws-var="CodigoPais" required style="width:90px; text-align: center">
+                <label>Código Pais</label>
+            </div>
+            <div class="mui-textfield mui-textfield--float-label">
+                <input type="text" name="CodigoArea" ws-var="CodigoArea" style="width:90px; text-align: center" >
+                <label>Código Área</label>
+            </div>    
+            <div class="mui-textfield mui-textfield--float-label">
+                <input type="tel" name="Telefono" ws-var="Telefono" required style="text-align: center">
+                <label>Teléfono</label>
+            </div>
+            <div class="mui-textfield mui-textfield--float-label">
+                <input type="tel" name="Extension" ws-var="Extension"  style="width:90px; text-align: center" >
+                <label>Extensión</label>
+            </div>    
+        </div>
+
+        <div ws-children-template="Direccion">
+            <br>
+            <div style="color:red">${Mensaje}</div>
+            <div class="mui-select">
+                <label>Tipo de Dirección</label>
+                <select ws-var="TipoDireccion" ws-hole="Tipos" required>
+                </select>
+            </div>            
+            <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                <input type="text" name="Direccion1" ws-var="Direccion1" required>
+                <label>Direccion1</label>
+            </div>
+            <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                <input type="text" name="Direccion2" ws-var="Direccion2" >
+                <label>Direccion2</label>
+            </div>                
+            <legend></legend>
+            <div class="mui-textfield mui-textfield--float-label">
+                <input type="text" name="Ciudad" ws-var="Ciudad" required>
+                <label>Ciudad</label>
+            </div>                
+            <div class="mui-textfield mui-textfield--float-label">
+                <input type="text" name="Estado" ws-var="Estado" list="Estados" required>
+                <label>Estado</label>
+                <datalist id="Estados" ws-hole="Estados" >
+                </datalist>
+            </div>                
+            <div class="mui-textfield mui-textfield--float-label">
+                <input type="text" name="CodigoPostal" ws-var="CodigoPostal" required>
+                <label>Codigo Postal</label>
+            </div>                
+            <div class="mui-textfield mui-textfield--float-label">
+                <input type="text" name="Pais" ws-var="Pais" list="Paises" required>
+                <label>País</label>
+                <datalist id="Paises" ws-hole="Paises" >
+                </datalist>
+            </div>
+        </div>
+
+        <div ws-template=DatosPersonales >
+            <div style="color:red">${Mensajes}</div>
+            <div class="mui-textfield mui-textfield--float-label" style="display:block">
+              <input type="text" name="Nombres" ws-var="Nombres" required>
+              <label>Nombres</label>
+            </div>
+            <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                <input type="text" name="Apellidos" ws-var="Apellidos" required>
+                <label>Apellidos</label>
+            </div>
+            <legend></legend>
+            <div class="mui-textfield">
+                <label>Fecha de Nacimiento</label>
+                <input type="date" name="FechaNacimiento" ws-var="FechaNacimiento" required>
+            </div>                
+            <div class="mui-select">
+                <label>Genero</label>
+                <select ws-var="Genero" ws-hole="Generos" required>
+                </select>
+            </div>
+            <legend style="color:transparent">.</legend>
+        </div>
+    
+        <div ws-children-template="CuentaBancaria">
+            <br>
+            <div style="color:red">${Mensaje}</div>
+            <div class="mui-select">
+                <label>Tipo de Cuenta</label>
+                <select ws-var="TipoCuenta" ws-hole="TiposCuenta" >
+                </select>
+            </div>            
+            <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                <input type="text" name="Titular" ws-var="Titular" required>
+                <label>Titular</label>
+            </div>
+            <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                <input type="text" name="Banco" ws-var="Banco" >
+                <label>Banco</label>
+            </div>
+            <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                <input type="text" name="NumeroCuenta" ws-var="Numero" >
+                <label>Numero de Cuenta</label>
+            </div>                
+            <legend></legend>
+            <div class="mui-textfield mui-textfield--float-label">
+                <input type="text" name="RoutingNumber" ws-var="Routing" required>
+                <label>ABA/RoutingNumber</label>
+            </div>
+        </div>
+
+        <div ws-children-template="TarjetaCredito">
+            <br>
+            <div style="color:red">${Mensaje}</div>
+            <div class="mui-select">
+                <label>Tipo de Tarjeta</label>
+                <select ws-var="TipoTarjeta" ws-hole="TiposTarjeta" >
+                </select>
+            </div>            
+            <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                <input type="text" name="Titular" ws-var="Titular" required>
+                <label>Titular</label>
+            </div>
+            <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                <input type="text" name="NumeroTarjeta" ws-var="Numero" >
+                <label>Numero de Tarjeta</label>
+            </div>                
+            <legend></legend>
+            <div class="mui-textfield mui-textfield--float-label">
+                <input type="text" name="Expiracion" ws-var="Expiracion" required>
+                <label>Vencimiento(MMYY)</label>
+            </div>
+        </div>
+            
+        <div ws-template=FormaRegistro class="mui-col-md-8 mui-col-md-offset-1">
+            <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
+                <legend>Datos Personales</legend>
+                <div ws-replace="DatosPersonales"></div>
+                <legend></legend>    
+                <legend>Contacto</legend>
+                <div ws-replace="Correo"></div>
+                <legend></legend>
+                <div ws-replace="Telefono"></div>
+                <legend></legend>
+                <div ws-replace="Direccion"></div>
+                <legend></legend>
+                <button type="button" class="mui-btn mui-btn--raised" ws-onclick="Registrarse" >Registrarse</button>
+                <button style="display: none;" type="submit" >Hidden button</button>
+                <div style="color:red">${Mensajes}</div>
+            </form>
+        </div>
+
+        <div ws-template=FormaDatosPersonales class="mui-col-md-8 mui-col-md-offset-1">
+            <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
+                <legend>Datos Personales</legend>
+                <div ws-replace="DatosPersonales"></div>
+                <legend></legend>    
+                <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar" >Guardar</button>
+                <button style="display: none;" type="submit" >Hidden button</button>
+                <div style="color:red">${Mensajes}</div>
+            </form>
+        </div>
+    
+        <div ws-template=FormaContactos class="mui-col-md-8 mui-col-md-offset-1">
+            <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
+                <div class="mui-panel">
+                    <legend>Correos</legend>
+                    <div ws-replace="Correos"></div>
+                    <button title="agregar correo" ws-onclick="MasCorreo" type="button" class="mui-btn mui-btn--small mui-btn--fab mui-btn--accent">+</button>
+                </div>    
+                <legend></legend>
+                <div class="mui-panel">
+                    <legend>Telefonos</legend>
+                    <div ws-replace="Telefonos"></div>
+                    <button title="agregar telefono" ws-onclick="MasTelefono" type="button" class="mui-btn mui-btn--small mui-btn--fab mui-btn--accent">+</button>
+                </div>    
+                <legend></legend>
+                <div class="mui-panel">
+                    <legend>Direcciones</legend>
+                    <legend></legend>
+                    <div ws-replace="Direcciones"></div>
+                    <button title="agregar direccion" ws-onclick="MasDireccion" type="button" class="mui-btn mui-btn--small mui-btn--fab mui-btn--accent">+</button>
+                </div>    
+                <legend></legend>
+                <legend></legend>
+                <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar" >Guardar</button>
+                <button style="display: none;" type="submit" >Hidden button</button>
+                <div style="color:red">${Mensajes}</div>
+            </form>
+        </div>
+
+        <div ws-template=FormaCuentas class="mui-col-md-8 mui-col-md-offset-1">
+            Aqui puede introducir una forma de pago. Puede usar su tarjeta de credito o una cuenta bancaria:
+            <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
+                <div class="mui-panel">
+                    <legend>Tarjetas de Credito</legend>
+                    <div ws-replace="Tarjetas"></div>
+                    <button title="agregar tarjeta" ws-onclick="MasTarjeta" type="button" class="mui-btn mui-btn--small mui-btn--fab mui-btn--accent">+</button>
+                </div>    
+                <legend></legend>
+                <div class="mui-panel">
+                    <legend>Cuentas Bancarias</legend>
+                    <legend></legend>
+                    <div ws-replace="Cuentas"></div>
+                    <button title="agregar cuenta" ws-onclick="MasCuenta" type="button" class="mui-btn mui-btn--small mui-btn--fab mui-btn--accent">+</button>
+                </div>    
+                <legend></legend>
+                <legend></legend>
+                <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar" >Guardar</button>
+                <button style="display: none;" type="submit" >Hidden button</button>
+                <div style="color:red">${Mensajes}</div>
+            </form>
+        </div>    
+    
+        <div ws-template=FormaGenerica class="mui-col-md-8 mui-col-md-offset-1">
+            <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
+                <legend>${Titulo}</legend>
+                <div ws-replace="Content"></div>
+                <legend></legend>
+                <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar" >Guardar</button>
+                <button style="display: none;" type="submit" >Hidden button</button>
+                <div style="color:red">${Mensajes}</div>
+            </form>
+        </div>
+        
+        <div ws-template=TablaAliados>
+            <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
+                <thead>
+                    <th style="width:  20%; text-align: center">Aliado</th>
+                    <!--th style="width:  1%; text-align: center">Nivel</th>
+                    <th style="width:  1%; text-align: center">Status</th>
+                    <th style="width:  1%; text-align: center">Tipo</th-->
+                    <th style="width:  1%; text-align: center">Ref.</th>
+                    <th style="width:  1%; text-align: center">Des.</th>
+                    <th style="width:  1%; text-align: right ">Comisión</th>
+                </thead>
+                <tbody ws-hole="TBody" ws-children-template="FilaAliado">
+                    <tr ws-onclick="seleccionar" style="margin-bottom: 2px" class="level ${tipo} ${status} ${seleccionado} seleccionable">
+                        <td> <div>
+                            <span class="${expandido} nodo" title="expandir/colapsar" ws-onclick="expandir" style="width: ${nivel}em"></span>
+                            <span style="text-align: left">${nombre}       </span> 
+                                                                                 </div> </td>
+                        <!--td> <div style="text-align: center"    >${nivel}        </div> </td>
+                        <td> <div style="text-align: center"    >${status}       </div> </td>
+                        <td> <div style="text-align: center"    >${tipo}         </div> </td-->
+                        <td> <div style="text-align: center"    >${referidos}    </div> </td>
+                        <td> <div style="text-align: center"    >${descendientes}</div> </td>
+                        <td> <div style="text-align: right"     >${comision}     </div> </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div ws-template=TablaComisiones ws-attr="attrs">
+                <table style="border-spacing:0px" class="mui-table ">
+                    <thead>
+                        <th style="width:  20%; text-align: center">Periodo</th>
+                        <th style="width:  1%; text-align: right ">Comisión</th>
+                    </thead>
+                    <tbody ws-hole="TBody" ws-children-template="FilaComision">
+                        <tr ws-onclick="Select" style="margin-bottom: 2px" class="level ${tipo} ${status}">
+                            <td style="padding: 2px"> <div style="text-align: center"    >${periodo}      </div> </td>
+                            <td style="padding: 2px"> <div style="text-align: right"     >${comision}     </div> </td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+    
+        <div ws-template=Aliado ws-attr="attrs" >
+            <div class="mui--text-display1 mui--text-center ${status}" ><strong>${nombre}</strong></div>
+            <div class="mui--text-subhead mui--text-center mui--text-accent" >${contacto}</div>
+            <div class="space-bottom"></div>
+            <div class="mui-panel mui--z3 mui--text-body2"  ws-hole=Calculo>
+                <table ws-template=Calculo>
+                    <tbody  >
+                        <tr>
+                            <td> <div style="text-align: right"     ><strong>Referidos:</strong> ${referidos}, activos: ${refActivos} x ${porReferido} = ${comReferido}</div> </td>
+                        </tr>
+                        <tr>
+                            <td> <div style="text-align: right"     ><strong>Descendientes:</strong> ${descendientes}, activos: ${desActivos} x ${porDescendiente}  =  ${comDescendiente}</div> </td>
+                        </tr>
+                        <tr style="text-align: right">
+                            <td> <span   class="mui--text-title" >Comisión del mes:</span><span class="mui--text-display1"> ${comision}     </span> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mui--text-headline mui--text-center ${status}" >${status} -  <span class="${tipo}">${tipo}</span></div>
+        </div>
+
+        <div ws-template="CorreoNuevaAfiliacion">
+            Felicitaciones usted ha sido recomendado para afiliarse a <b>Prozper</b>. 
+            <br>${NombreAfiliado}
+            <br>
+            Inicie su afiliación dando click aquí: <a href="http://localhost:9006/Registro/${IdAliado}">Forma de Afiliación</a>
+            <br>
+            Tambien puede usar el enlace: http://localhost:9006/Registro/${IdAliado}
+        </div>
+
+        <div ws-attr="attrs" ws-template="sidedrawer" class="mui--no-user-select">
+            <div id="sidedrawer-brand" class="mui--appbar-line-height">
+                <a href="#" class="mui--text-title"><img class="logo" src="http://prozper.com/images/logos/pro.png" alt="Logo"></a>
+            </div>
+            <div class="mui-divider"></div>
+            <ul>
+                <strong onclick="$(this).next().slideToggle(200)">Menu</strong>
+                <ul >
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Mensajes</a></li>
+                </ul>
+                <li>
+                    <strong onclick="$(this).next().slideToggle(200)">Referir</strong>
+                    <ul style="display: none;">
+                        <li><a href="#/Content/ProzperLyt.cntFormaRegistro">Llenar Afiliación</a></li>
+                        <li><a href="#">Enviar Invitaciones</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <strong onclick="$(this).next().slideToggle(200)">Reportes</strong>
+                    <ul style="display: none;">
+                        <li><a href="#">Mes Actual</a></li>
+                        <li><a href="#">Historial de Transacciones</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <strong onclick="$(this).next().slideToggle(200)">Actualizar Informacion</strong>
+                    <ul style="display: none;">
+                            <li><a href="#/Content/ProzperLyt.cntFormaDatos"         >Datos Personales</a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaIdentificacion">Identificación  </a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaContactos"     >Contactos       </a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaFormasPago"    >Cuentas Bancarias</a></li>
+                            <li><a href="#/Content/ProzperLyt.cntFormaDocumentos"    >Documentos      </a></li>
+                        </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mui-container" ws-attr="attrs" ws-template="header2">
+                <table>
+                  <tr class="mui--appbar-height">
+                    <td class="mui--text-title">${Brand}</td>
+                    <td class="mui--text-right">
+                      <ul class="mui-list--inline mui--text-body2">
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i> Login</a></li>
+                      </ul>
+                    </td>
+                  </tr>
+                </table>
+        </div>
+
+        <header ws-attr="attrs" ws-template="header"><nav class="mui-container-fluid">
+            <table width="100%" cellspacing="0"><tbody>
+                <tr class="mui-appbar mui--appbar-line-height" >
+                    <td class="mui-container-fluid">
+                        <a class="sidedrawer-toggle mui--visible-xs-inline-block mui--visible-sm-inline-block js-show-sidedrawer" onclick="showSidedrawer()">☰</a>
+                        <a class="sidedrawer-toggle mui--hidden-xs mui--hidden-sm js-hide-sidedrawer" onclick="hideSidedrawer()">☰</a>
+                        <span class="mui--text-title mui--visible-xs-inline-block">${Brand}</span>
+                    </td>
+                    <td >
+                        <ul class="mui-list--inline mui--text-body2">
+                          <li class="mui--text-light mui--text-display1">${Afiliado}</li>
+                          <li><a href="#" style="color:white">${Status}</a></li>
+                          <li><a href="#" style="color:white">${Comision}</a></li>
+                        </ul>
+                    </td>
+                    <td class="mui--text-right">
+                        <ul class="mui-list--inline mui--text-body2">
+                          <li><a href="#" style="color:white">Acerca</a></li>
+                          <li><a href="/" style="color:white" ws-onclick="Logout"><i class="fa fa-user" aria-hidden="true"></i> Salir</a></li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody></table>
+        </nav></header>
+
+        <div ws-attr="attrs" ws-template="content">
+            <div class="mui--appbar-height"></div>
+            <div class="mui-container-fluid">
+                <br>
+                <div>
+                    <span class="mui--pull-left  mui--text-dark-secondary mui--text-display1">${Titulo}</span>
+                    <span class="mui--pull-right mui--text-dark-secondary mui--text-display1">${fecha}</span>
+                    <div class="mui--clearfix"></div>
+                </div>
+                <div ws-replace="content"/>
+            </div>
+        </div>
+
+        <footer ws-attr="attrs" ws-template="Footer">
+            <div class="mui-container-fluid">
+                <br>
+                Made with ♥ by <a href="https://${madebylink}">${madeby}</a>
+            </div>
+        </footer>
+
+        <style>
+            .Inactivo          { font-weight: 100 ; color: rgba(179, 177, 177, 0.644) }
+            .Master            { font-weight: 800 }
+            .Expandido::before { content: "-" }
+            .Colapsado::before { content: "+" }
+            .nodo              { display: inline-block; cursor: pointer; }
+            .scrollbar {
+                overflow-y: scroll;
+                scrollbar-width: none; /* Firefox */
+                -ms-overflow-style: none;  /* IE 10+ */
+            }
+            .scrollbar::-webkit-scrollbar { /* WebKit */
+                width: 0px;
+            }
+            //.scrollbar:hover {
+            //    overflow-y: scroll;
+            //    scrollbar-width: 15px; /* Firefox */
+            //    -ms-overflow-style: 15px;  /* IE 10+ */
+            //}
+            //.scrollbar:hover::-webkit-scrollbar { /* WebKit */
+            //    width: 15px;
+            //}
+            .seleccionable:hover { background-color: rgba(226, 226, 226, 0.979) }
+            .seleccionado        { background-color: rgba(226, 226, 226, 0.979) }
+            #header,#sidedrawer{position:fixed;top:0;z-index:2}.highlight .c,.highlight .cm,.highlight .ge,.highlight .sd{font-style:italic}#f-features-list,.color-group ul{list-style-type:none}body,html{height:100%;background-color:#eee;font-family:"Helvetica Neue",Helvetica,Arial,Verdana,Tahoma}body,button,html,input,textarea{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-shadow:1px 1px 1px rgba(0,0,0,.004)}#header{right:0;left:0;-webkit-transition:left .2s;transition:left .2s}#sidedrawer{bottom:0;width:12.5rem;left:-12.5rem;overflow:auto;background-color:#FFF;-webkit-transition:-webkit-transform .2s;transition:-webkit-transform .2s;transition:transform .2s;transition:transform .2s,-webkit-transform .2s}#sidedrawer.active{-webkit-transform:translate(12.5rem);transform:translate(12.5rem)}#content-wrapper{-webkit-box-sizing:border-box;box-sizing:border-box;min-height:100%;overflow-x:hidden;margin-left:0;-webkit-transition:margin-left .2s;transition:margin-left .2s;margin-bottom:-10rem;padding-bottom:10rem}#footer{-webkit-box-sizing:border-box;box-sizing:border-box;height:10rem;margin-left:0;-webkit-transition:margin-left .2s;transition:margin-left .2s}@media (min-width:768px){#header{left:12.5rem}#sidedrawer{-webkit-transform:translate(12.5rem);transform:translate(12.5rem)}#content-wrapper,#footer{margin-left:12.5rem}body.hide-sidedrawer #header{left:0}body.hide-sidedrawer #sidedrawer{-webkit-transform:translate(0);transform:translate(0)}body.hide-sidedrawer #content-wrapper,body.hide-sidedrawer #footer{margin-left:0}}.space-top+h1{color:rgba(0,0,0,.54)}p{font-size:.9375rem;line-height:1.5625rem}.space-top{height:1.25rem}.space-bottom{height:2.5rem}#appbar-more-vert,#appbar-sidenav-hide,#appbar-sidenav-show{width:31px;height:31px;line-height:31px;display:inline-block;color:#FFF;cursor:pointer;text-align:center;border-radius:50%}.btn-accent{color:#FFF;background-color:#FF80AB}.btn-accent:hover{color:#FFF;background-color:#ff76a4}#appbar-more-vert:hover,#appbar-sidenav-hide:hover,#appbar-sidenav-show:hover{background-color:rgba(0,0,0,.27);text-decoration:none}#appbar,#footer{background-color:#78909C}.properties-table td{vertical-align:top}#header.active,.header-shadow{-webkit-box-shadow:0 2px 5px rgba(0,0,0,.26);box-shadow:0 2px 5px rgba(0,0,0,.26);-webkit-transition:-webkit-box-shadow .2s;transition:-webkit-box-shadow .2s;transition:box-shadow .2s;transition:box-shadow .2s,-webkit-box-shadow .2s}#appbar{color:#FFF}#appbar .icon-keyboard-arrow-right{font-size:1.25rem;position:relative;top:1px}#appbar-sidenav-hide,#appbar-sidenav-show{position:relative;left:-2px;margin-right:18px}#appbar-sidenav-hide .icon-menu,#appbar-sidenav-show .icon-menu{font-size:24px;position:relative;top:3px}#appbar-social-links{display:inline-block;position:relative;top:2px}#appbar-social-links a{margin-left:6px}#appbar-social-links a:first-child{margin-right:2px}#appbar-social-links a:hover{text-decoration:none}#appbar-social-links i{color:#FFF;font-size:20px}#appbar-more-vert .icon-more-vert{font-size:24px;position:relative;top:3px}.appbar-brand{font-size:1.25rem;color:#fff}.appbar-brand:hover{text-decoration:none;color:#fff}#footer{padding-top:.625rem;padding-bottom:5rem}#footer a{color:#FFF}#sidenav h2{padding-left:1.375rem;margin:0}#sidenav h2 a{color:rgba(0,0,0,.38)}#sidenav h2 a:hover{text-decoration:none}#sidenav ul{list-style:none}#sidenav>ul{padding-left:0;font-size:.8125rem}#sidenav>ul>li:first-child{padding-top:.9375rem}#sidenav>ul a{color:rgba(0,0,0,.87)}#sidenav strong{display:block;padding:.9375rem 1.375rem;cursor:pointer}#sidenav strong:hover{background-color:#E0E0E0}#sidenav strong+ul>li{padding:.375rem 0}#sidenav strong:not(.active)+ul{display:none}#sidenav a.active{color:#C51162}#g-flashes{position:fixed;top:0;right:0;z-index:2}#g-flashes li{font-size:13px;color:#FFF;background-color:#000;padding:2px 6px;margin:2px}.highlight pre{padding:.625rem;font-size:.9em;overflow-x:auto}.varname,p code{background-color:#F5F5F5;color:#F44336;padding:1px}#newsletter-banner{position:fixed;top:50px;right:30px;z-index:2;width:320px;padding:20px 20px 30px;background-color:#FFF}#newsletter-banner .mui-btn{margin-bottom:0}@media (max-width:544px){#newsletter-banner{top:0;right:0;width:100%;-webkit-box-sizing:border-box;box-sizing:border-box}#newsletter-banner form{display:table}#newsletter-banner .mui-form-group{display:table-cell;width:100%;padding-right:20px}#newsletter-banner .mui-btn{margin-bottom:6px}}#newsletter-banner-close{position:absolute;right:10px;top:0;cursor:pointer}#newsletter-banner-social{margin-top:5px;margin-bottom:-10px}#newsletter-banner-social>a{margin-right:10px}#newsletter-banner-social>a:hover{text-decoration:none}#newsletter-banner-social>a:hover>i{color:#757575}#newsletter-banner-social>a>i{font-size:35px;color:#9E9E9E}.highlight .hll{background-color:#ffc}.highlight{background:#f8f8f8}.highlight .c{color:#408080}.highlight .k{color:green;font-weight:700}.highlight .o{color:#666}.highlight .cm{color:#408080}.highlight .cp{color:#BC7A00}.highlight .c1,.highlight .cs{color:#408080;font-style:italic}.highlight .gd{color:#A00000}.highlight .gr{color:red}.highlight .gh{color:navy;font-weight:700}.highlight .gi{color:#00A000}.highlight .go{color:#888}.highlight .gp{color:navy;font-weight:700}.highlight .gs{font-weight:700}.highlight .gu{color:purple;font-weight:700}.highlight .gt{color:#04D}.highlight .kc,.highlight .kd,.highlight .kn{color:green;font-weight:700}.highlight .kp{color:green}.highlight .kr{color:green;font-weight:700}.highlight .kt{color:#B00040}.highlight .m{color:#666}.highlight .s{color:#BA2121}.highlight .na{color:#7D9029}.highlight .nb{color:green}.highlight .nc{color:#00F;font-weight:700}.highlight .no{color:#800}.highlight .nd{color:#A2F}.highlight .ni{color:#999;font-weight:700}.highlight .ne{color:#D2413A;font-weight:700}.highlight .nf{color:#00F}.highlight .nl{color:#A0A000}.highlight .nn{color:#00F;font-weight:700}.highlight .nt{color:green;font-weight:700}.highlight .nv{color:#19177C}.highlight .ow{color:#A2F;font-weight:700}.highlight .w{color:#bbb}.highlight .mf,.highlight .mh,.highlight .mi,.highlight .mo{color:#666}.highlight .s2,.highlight .sb,.highlight .sc{color:#BA2121}.highlight .sd{color:#BA2121}.highlight .se{color:#B62;font-weight:700}.highlight .sh{color:#BA2121}.highlight .si{color:#B68;font-weight:700}.highlight .sx{color:green}.highlight .sr{color:#B68}.highlight .s1{color:#BA2121}.highlight .ss{color:#19177C}.highlight .bp{color:green}.highlight .vc,.highlight .vg,.highlight .vi{color:#19177C}.highlight .il{color:#666}#g-modal-wrapper{min-height:100%;height:auto!important;height:100%;margin-bottom:-50px;padding-bottom:50px}#g-modal-wrapper .panel{margin-bottom:20px}#modal-header-brand{color:#777;margin:20px 0;display:inline-block;font-size:25px;font-weight:700}.color-group,.color-group-main{font-weight:500}#modal-header-brand:hover{text-decoration:none}#modal-header-brand img{height:30px;width:30px;position:relative;top:-3px}#g-modal-footer{height:50px;text-align:center}#g-modal-footer a{color:#333}#f-hero-welcome .mui--text-title a,.f-bg-dark h4,.f-bg-dark p{color:#FFF}#f-hero{background-color:#78909C}#f-hero-welcome .mui--text-title{max-width:500px;margin:0 auto;font-weight:500}#f-mui-logo{display:inline-block;margin:0 0 35px;height:101px;width:101px;border-radius:50%;color:#FFF;background-color:#FF80AB;line-height:101px;font-size:35px;cursor:default;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.f-bg-medium{background-color:#E0E0E0}.f-bg-dark{background-color:#9E9E9E}#f-buttons{margin:35px 0 0}#f-buttons a{width:196px;margin-left:4px;margin-right:4px}#f-download-btn{text-transform:none}.f-panel .highlight{background-color:#fff}.f-panel pre{padding:0;margin:0}#hero-panel{margin-top:20px}#f-welcome .icon-mui-logo{font-size:101px;color:#ff4081;position:relative;top:4px;display:block;margin:25px 0 45px}#f-welcome .mui--type-title{max-width:650px;margin:0 auto}#f-newsletter-form{padding:5px 0 25px}#f-newsletter-form input::-webkit-input-placeholder{color:rgba(0,0,0,.56)}#f-newsletter-form input:-ms-input-placeholder{color:rgba(0,0,0,.56)}#f-newsletter-form input::-ms-input-placeholder{color:rgba(0,0,0,.56)}#f-newsletter-form input::placeholder{color:rgba(0,0,0,.56)}#f-newsletter-form .visible-xs .form-group{margin-bottom:5px}#f-newsletter-form .mui--hidden-xs{display:table;width:100%}#f-newsletter-form .mui--hidden-xs>div{display:table-cell;vertical-align:middle;white-space:nowrap}#f-newsletter-form .mui--hidden-xs>div:nth-child(1){width:145px}#f-newsletter-form .mui--hidden-xs>div:nth-child(2){padding-right:20px}#f-newsletter-form .mui--hidden-xs>div:nth-child(3){width:120px;text-align:right}#f-features-list>li>h3{margin-left:-27px}.sass-variables-table th{background-color:#ddd}.sass-variables-table td{padding-top:5px!important;padding-bottom:5px!important}.sass-variables-table td:nth-child(1){color:#7D9029;white-space:nowrap}.sass-variables-table td:nth-child(2){color:#00F}.sass-variables-table em{color:#000}.sass-variables-table-lastrow td{padding-bottom:15px}.highlight .err{border:none}.color-group{margin-bottom:50px}.color-group-main,.color-group-white>ul:first-child{margin-bottom:5px}.color-group ul{padding-left:0}.color-group li{padding:15px}.color-group-main>div:nth-child(2){margin-top:55px}.color-group-white>ul{background-color:#eee;padding:0}.color-group-white li{border:1px solid #eee;padding:14px 15px}[class*=" icon-"],[class^=icon-]{font-family:icomoon;speak:none;font-style:normal;font-weight:400;font-variant:normal;text-transform:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.icon-email:before{content:"\e600"}.icon-keyboard-arrow-right:before{content:"\e604"}.icon-menu:before{content:"\e603"}.icon-more-vert:before{content:"\e605"}.icon-twitter:before{content:"\f099"}.icon-github:before{content:"\f09b"}
+        </style>
+    </div>
+    <div style="display:none" >
+            <div links>
+                <xlink href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+                <xscript src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"  type="text/javascript"></xscript>
+            </div>
+            <div ws-template="FixedSplitterVer" 
+                style="display: grid; 
+                       grid-gap: 0px; 
+                       box-sizing: border-box; 
+                       height: 100%;
+                       width : 100%;
+                       grid-template-areas: 'one two'; 
+                       grid-template-rows   :100%; 
+                       overflow: hidden; 
+                       grid-template-columns: ${PartSizes}"  >
+               <div ws-hole="First"  style="grid-area: one; " class="relative" ></div>
+               <div ws-hole="Second" style="grid-area: two; " class="relative" ></div>
+            </div>               
+            <div ws-template="FixedSplitterHor" 
+           style="display: grid; 
+                  grid-gap: 0px; 
+                  box-sizing: border-box; 
+                  height: 100%;
+                  width : 100%;
+                  grid-template-areas: 'one' 'two'; 
+                  grid-template-columns:100%; 
+                  overflow: hidden; 
+                  grid-template-rows   : ${PartSizes}"  >
+          <div ws-hole="First"  style="grid-area: one; " class="relative" ></div>
+          <div ws-hole="Second" style="grid-area: two; " class="relative" ></div>
+            </div>               
+            <div ws-template="WCompSplitterHor" 
+                 ws-onafterrender="AfterRender"
+                 style="display: grid;
+                        grid-gap: 5px; 
+                        box-sizing: border-box; 
+                        grid-template-areas: 'one' 'two'; 
+                        grid-template-columns:100%; 
+                        overflow: hidden; 
+                        grid-template-rows   : ${PartSizes}" 
+                 >
+                 <slot></slot>
+                <slot name="splitter">  <div style="grid-row:2; grid-column:1 / 1 ; cursor: row-resize; z-index: 3; background-color: #eef ; height: ${Gap}; margin-top :-${Gap}" ws-onmousedown="MouseDown" ws-onafterrender="AfterRenderSp" ></div> </slot>
+                <style>
+                    ::slotted(*) {
+                        display: grid;
+                        height : 100%;
+                        width  : 100%;
+                        overflow: hidden;
+                    }
+                    ::slotted(*:nth-child(2)) {
+                        grid-area: two;
+                    }
+                    ::slotted(*[slot="splitter"]) {
+                        grid-row:2; grid-column:1 / 1 ; 
+                        cursor: row-resize; 
+                        z-index: 3; 
+                        background-color: #eef ; 
+                        height: ${Gap}; 
+                        margin-top :-${Gap}
+                    }
+                </style>
+            </div>        
+            <div ws-template="WCompSplitterVer" 
+                 ws-onafterrender="AfterRender"
+                 style="display: grid; 
+                        grid-gap: 5px; 
+                        box-sizing: border-box; 
+                        grid-template-areas: 'one two'; 
+                        grid-template-rows   :100%; 
+                        overflow: hidden; 
+                        grid-template-columns: ${PartSizes}"  >
+                <slot></slot>
+                <slot name="splitter"> <div style="grid-column:2; grid-row:1 / 1 ; cursor: col-resize; z-index: 3; background-color: #eef ; width: ${Gap}; margin-left :-${Gap}" ws-onmousedown="MouseDown" ws-onafterrender="AfterRenderSp" ></div> </slot>
+                <style>
+                    ::slotted(*) {
+                        display: grid;
+                        height : 100%;
+                        width  : 100%;
+                        overflow: hidden;
+                    }
+                    ::slotted(*:nth-child(2)) {
+                        grid-area: two;
+                    }
+                    ::slotted(*[slot="splitter"]) {
+                        grid-column:2; grid-row:1 / 1
+                        cursor: column-resize; 
+                        z-index: 3; 
+                        background-color: #eef ; 
+                        width: ${Gap}; 
+                        margin-left:-${Gap}
+                    }
+                </style>
+            </div>
+            <div ws-template="AppFwkClient" >
+                <ws-FixedSplitterHor>
+                    <PartSizes>55px calc(100% - 55px)</PartSizes>
+                    <First>
+                        <span style="display: grid;
+                              grid-template-columns: 30% 20% 20% 10%;
+                              grid-gap: 25px;
+                            ">
+                            <div class="mainTitle">AppFramework</div>
+                        </span>
+                    </First>
+                    <Second>
+                            <ws-FixedSplitterVer>
+                                <PartSizes>calc(100% - 150px) 150px</PartSizes>
+                                <First>
+                                    <wcomp-splitter vertical value="18" max="100">
+                                        <div><div ws-hole="PlugIns" style="overflow:auto" >
+                                            <div ws-template="Tile">
+                                                <div draggable="true" class="code-editor-list-tile ${Predecessor} ${Selected}" 
+                                                ws-ondrag="Drag"
+                                                ws-ondragover="DragOver"
+                                                ws-ondrop="Drop"
+                                               >
+                                               <span class="node ${Parent} ${ErrorMsg}" title="expand" ws-onclick="ToggleCollapse"></span>
+                                               <div  class="code-editor-list-text" style="text-indent:${Indent}em; white-space: pre" ws-onclick="Select" ws-onafterrender="AfterRender" >${Name}</div>
+                                               <span class="predecessor" title="toggle predecessor" ws-onclick="TogglePred">X</span>
+                                           </div>
+                                   
+                                            </div>
+                                        </div></div>
+                                        <wcomp-splitter vertical value="100" min="30" max="100">
+                                            <ws-FixedSplitterHor>
+                                                <PartSizes>32px calc(100% - 32px)</PartSizes>
+                                                <First>
+                                                    <div>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon">name:</span>
+                                                            <span class="input-group-addon">${PlugInName}</span>
+                                                        </div>
+                                                    </div>
+                                                </First>
+                                                <Second>
+                                                    <div style="overflow:auto">
+                                                        <div>
+                                                            <div>Docs:</div>
+                                                            <div ws-hole="Docs" style="overflow:auto" ></div>
+                                                        </div>
+                                                        <div>
+                                                            <div>Vars:</div>
+                                                            <div ws-hole="Vars" style="overflow:auto" >
+                                                                    <div ws-template="NameValueInput" class="input-group">
+                                                                    <span class="input-group-addon">${Name}:</span>
+                                                                    <textarea class="form-control" id="" placeholder="Value..." ws-var="Value" spellcheck="false"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div>Views:</div>
+                                                            <div ws-hole="Views" style="overflow:auto" >
+                                                                <div ws-template="NameValue" class="input-group">
+                                                                    <span class="input-group-addon">${Name}:</span>
+                                                                    <span class="input-group-addon">${Value}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div>Queries:</div>
+                                                            <div ws-hole="Queries" style="overflow:auto" ></div>
+                                                        </div>
+                                                    </div>
+                                                </Second>
+                                            </ws-FixedSplitterHor>
+                                            <wcomp-tabstrip >
+                                                <div tabname="Properties">
+                                                    <div>
+                                                        <table style="border-spacing:0px">
+                                                            <thead>
+                                                                <th style="width: 30%  ">Name</th>
+                                                                <th style="width: 70% ">Value</th>
+                                                            </thead>
+                                                            <tbody ws-hole="Properties" ws-children-template="Property">
+                                                                <tr ws-onclick="Select" style="margin-bottom: 2px" class="level  ">
+                                                                    <td class="level-item">
+                                                                        <div>
+                                                                            <input ws-var="Name" type="text" class="form-control" id="" placeholder="Property...">
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="level-item">
+                                                                        <div>
+                                                                            <textarea ws-var="Value" class="form-control" id="" placeholder="Value..."></textarea>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="level-item">
+                                                                        <div style=" cursor: pointer " title="remove">
+                                                                            <button ws-onclick="Remove" class="delete is-small">x</button>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <button ws-onclick="AddProperty" class="add is-small">add ...</button>
+                                                    </div>
+                                                </div>
+                                            </wcomp-tabstrip>
+                                        </wcomp-splitter>
+                                    </wcomp-splitter>
+                                </First>
+                                <Second>
+                                    <div style="
+                                        overflow: hidden;
+                                        display: grid;
+                                        grid-template-columns: 100%;
+                                        grid-template-rows: repeat(15, calc(100% / 15));
+                                        bxackground-color: #eee;
+                                        box-sizing: border-box;
+                                        padding : 5px;
+                                        grid-gap: 5px;
+                                        margin-right: 21px;
+                                   "  class="absolute" ws-hole="Actions" >
+                                        <button ws-template="Action"         ws-onclick="Click" class="btn" type="button" id=""          >${Name}</button>
+                                        <button ws-template="ActionDisabled" ws-onclick="Click" class="btn" type="button" id="" disabled >${Name}</button>
+                                    </div>
+                                </Second>
+                            </ws-FixedSplitterVer>
+                    </Second>
+                </ws-FixedSplitterHor>
+            </div>
+            <div ws-template="AppFramework" style="height: calc(100vh - 0px); width: calc(100vw - 0px) " class="relative" >
+                <div ws-hole="MainClient"></div>
+                <div class="AppFrameworkGo"><button ws-onclick="GoClient">${MainDoc}</button></div>
+            </div>
+            <xstyle style="display: none">
+                    .Hidden     { display   : none         }
+                    table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }
+                    td input.form-control { 
+                        padding    : 0px; 
+                        font-family: monospace;
+                        font-size  :   small;
+                        margin-top :   0px;
+                        margin-left: -2px;
+                        width      : 100%
+                    }
+                    td select {
+                        font-size : smaller;
+                        max-width : 8ch;
+                    }
+                    xtextarea {
+                       resize : none;
+                    }
+                    .tab-content {
+                        overflow: hidden
+                    }
+                    .tab-children {
+                        position:relative;
+                    }
+                    .tab-children>div>* {
+                        position:absolute;
+                        height: 100%;
+                        width:  100%;
+                        display: grid;
+                    }
+                    .relative {
+                        position:relative;
+                    }
+                    .relative>* {
+                        position:absolute;
+                        height: 100%;
+                        width:  100%;
+                        display: grid;
+                    }
+                    table.table-striped    tbody tr:nth-child(even) { background: #EEE  }
+                    table.table-striped    tbody tr:nth-child(odd ) { background: #FFF  }
+                    table.table-striped    tbody input              { background: transparent; border: none}
+                    table.table-striped    tbody select             { background: transparent; border: none}
+                    table.table-nonstriped tbody tr:nth-child(even) { background: inherit }
+                    table.table-nonstriped tbody tr:nth-child(odd ) { background: inherit }
+                    table.table            tbody tr.hover           { border    : solid thin transparent; } 
+                    table.table            tbody tr.hover:hover     { border    : solid thin blue     ; } 
+                    table.table            tbody th:hover           { background: gray; cursor: pointer }
+                    table.table            tbody tr.hover:hover>td  { border-top: solid thin blue     ; 
+                                                               border-bottom: solid thin blue     ; } 
+                    table.table            tbody tr.selected { background   : #b9eeff             ; }
+                    table.table            tbody tr.formula.selected { background: #20f7f7             ; }
+                    thead { color: gray }
+                    h3 { 
+                        color: gray;
+                        line-height: 1em;
+                    }
+                    button       { border: solid thin transparent ; border-radius: 3px; }
+                    button:hover { border: solid thin blue }
+                    .indenter { position  : absolute; 
+                                top:0px; bottom:0px; left:0px; 
+                                background: white; color:white;
+                                border-right: gray thin dotted;
+                                }
+                    body {
+                        color      : #333;
+                        font-size  : small;
+                        font-family: monospace;
+                        line-height: 1.2;
+                    }
+                    .mainTitle {  
+                        font-size: 48px;
+                        font-weight: 500;
+                        color: gray;
+                        margin-top: -12px;
+                    }
+                    .CodeMirror {
+                        height: 100%;
+                    }
+                    
+                  
+                    body { margin: 0px }     
+                         
+                    div textarea {
+                        font-family     : monospace;
+                    }
+                    .code-editor-list-tile {
+                        white-space     : nowrap; 
+                        border-style    : solid none none;
+                        border-color    : white;
+                        border-width    : 1px;
+                        background-color: #D8D8D8;
+                        display         : flex;
+                    }
+                    .code-editor-list-text{
+                        padding         : 1px 10px 1px 5px;
+                        overflow        : hidden;
+                        text-overflow   : ellipsis;
+                        white-space     : nowrap;
+                        flex            : 1;
+                    }
+                    
+                    .code-editor-list-tile span.node.ErrorMsg {
+                        background-color: red
+                    }
+                    .code-editor-list-tile span.node.expanded::before {
+                        content: "-"
+                    }
+                    .code-editor-list-tile span.node.collapsed::before {
+                        content: "+"
+                    }
+                    .code-editor-list-tile.direct-predecessor {
+                        font-weight     : bold;
+                        color           : blue;
+                    }
+                    .code-editor-list-tile.indirect-predecessor {
+                        color           : blue;
+                    }
+                    .code-editor-list-tile.included-predecessor {
+                        color           : chocolate;
+                    }
+                    .code-editor-list-tile.selected {
+                        background-color: #77F;
+                        color           : white;
+                    }
+                    .code-editor-list-tile.codeSnippet {
+                        text-decoration: underline
+                    }
+                    .code-editor-list-tile:hover {
+                        background      : lightgray;
+                    }
+                    .code-editor-list-tile.selected:hover {
+                        background      : blue;
+                    }
+                    .code-editor-list-tile>.predecessor {
+                        font-weight     : bold;
+                        border-style    : inset;
+                        border-width    : 1px;
+                        text-align      : center;
+                        color           : transparent;
+                    }
+                    .code-editor-list-tile.direct-predecessor>.predecessor {
+                        color           : blue;
+                    }
+                    
+                    .CodeMirror { height: 100%; }
+                    
+                    .node {
+                        background-color: white; 
+                        width           : 2ch; 
+                        color           : #A03; 
+                        font-weight     : bold; 
+                        text-align      : center;
+                        font-family     : arial;
+                    }
+                    .Warning { text-decoration: underline lightblue } 
+                    .Error   { text-decoration: underline red       } 
+                    
+            </xstyle>
+        <style style="display: none">
+                .Hidden     { display   : none         }
+                table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }
+                td input.form-control { 
+                    padding    : 0px; 
+                    font-family: monospace;
+                    font-size  :   small;
+                    margin-top :   0px;
+                    margin-left: -2px;
+                    width      : 100%
+                }
+                td select {
+                    font-size : smaller;
+                    max-width : 8ch;
+                }
+                xtextarea {
+                   resize : none;
+                }
+                .tab-content {
+                    overflow: hidden
+                }
+                .tab-children {
+                    position:relative;
+                }
+                .tab-children>div>* {
+                    position:absolute;
+                    height: 100%;
+                    width:  100%;
+                    display: grid;
+                }
+                .relative {
+                    position:relative;
+                }
+                .relative>* {
+                    position:absolute;
+                    height: 100%;
+                    width:  100%;
+                    display: grid;
+                }
+                table.table-striped    tbody tr:nth-child(even) { background: #EEE  }
+                table.table-striped    tbody tr:nth-child(odd ) { background: #FFF  }
+                table.table-striped    tbody input              { background: transparent; border: none}
+                table.table-striped    tbody select             { background: transparent; border: none}
+                table.table-nonstriped tbody tr:nth-child(even) { background: inherit }
+                table.table-nonstriped tbody tr:nth-child(odd ) { background: inherit }
+                table.table            tbody tr.hover           { border    : solid thin transparent; } 
+                table.table            tbody tr.hover:hover     { border    : solid thin blue     ; } 
+                table.table            tbody th:hover           { background: gray; cursor: pointer }
+                table.table            tbody tr.hover:hover>td  { border-top: solid thin blue     ; 
+                                                           border-bottom: solid thin blue     ; } 
+                table.table            tbody tr.selected { background   : #b9eeff             ; }
+                table.table            tbody tr.formula.selected { background: #20f7f7             ; }
+                thead { color: gray }
+                h3 { 
+                    color: gray;
+                    line-height: 1em;
+                }
+                button       { border: solid thin transparent ; border-radius: 3px; }
+                button:hover { border: solid thin blue }
+                .indenter { position  : absolute; 
+                            top:0px; bottom:0px; left:0px; 
+                            background: white; color:white;
+                            border-right: gray thin dotted;
+                            }
+                xbody {
+                    color      : #333;
+                    font-size  : small;
+                    font-family: monospace;
+                    line-height: 1.2;
+                }
+                .mainTitle {  
+                    font-size: 48px;
+                    font-weight: 500;
+                    color: gray;
+                    margin-top: -12px;
+                }
+                .CodeMirror {
+                    height: 100%;
+                }
+                
+              
+                body { margin: 0px }     
+                     
+                div textarea {
+                    font-family     : monospace;
+                }
+                .code-editor-list-tile {
+                    white-space     : nowrap; 
+                    border-style    : solid none none;
+                    border-color    : white;
+                    border-width    : 1px;
+                    background-color: #D8D8D8;
+                    display         : flex;
+                }
+                .code-editor-list-text{
+                    padding         : 1px 10px 1px 5px;
+                    overflow        : hidden;
+                    text-overflow   : ellipsis;
+                    white-space     : nowrap;
+                    flex            : 1;
+                }
+                
+                .code-editor-list-tile span.node.ErrorMsg {
+                    background-color: red
+                }
+                .code-editor-list-tile span.node.expanded::before {
+                    content: "-"
+                }
+                .code-editor-list-tile span.node.collapsed::before {
+                    content: "+"
+                }
+                .code-editor-list-tile.direct-predecessor {
+                    font-weight     : bold;
+                    color           : blue;
+                }
+                .code-editor-list-tile.indirect-predecessor {
+                    color           : blue;
+                }
+                .code-editor-list-tile.included-predecessor {
+                    color           : chocolate;
+                }
+                .code-editor-list-tile.selected {
+                    background-color: #77F;
+                    color           : white;
+                }
+                .code-editor-list-tile.codeSnippet {
+                    text-decoration: underline
+                }
+                .code-editor-list-tile:hover {
+                    background      : lightgray;
+                }
+                .code-editor-list-tile.selected:hover {
+                    background      : blue;
+                }
+                .code-editor-list-tile>.predecessor {
+                    font-weight     : bold;
+                    border-style    : inset;
+                    border-width    : 1px;
+                    text-align      : center;
+                    color           : transparent;
+                }
+                .code-editor-list-tile.direct-predecessor>.predecessor {
+                    color           : blue;
+                }
+                
+                .CodeMirror { height: 100%; }
+                
+                .node {
+                    background-color: white; 
+                    width           : 2ch; 
+                    color           : #A03; 
+                    font-weight     : bold; 
+                    text-align      : center;
+                    font-family     : arial;
+                }
+                .Warning { text-decoration: underline lightblue } 
+                .Error   { text-decoration: underline red       } 
+                .AppFrameworkGo {
+                    max-width: 2px;
+                    max-height: 2px;
+                    z-index: 400;
+                    overflow: hidden;
+                }
+                
+            </style>
+    </div>
+    
+
+</html>

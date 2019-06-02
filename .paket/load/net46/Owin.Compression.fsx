@@ -1,0 +1,6 @@
+#load "Microsoft.AspNetCore.Http.Abstractions.fsx" 
+#load "Microsoft.AspNetCore.Http.Features.fsx" 
+#load "Microsoft.Extensions.Primitives.fsx" 
+#load "Microsoft.Owin.fsx" 
+#load "Owin.fsx" 
+#r "../../../packages/Owin.Compression/lib/net452/Owin.Compression.dll" 

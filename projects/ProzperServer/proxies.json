@@ -1,0 +1,133 @@
+{
+    "$schema": "http://json.schemastore.org/proxies",
+    "proxies": {
+        "Info": {
+            "matchCondition": {
+                "route": "/Info"
+            },
+            "responseOverrides": {
+                "response.statusCode": "302",
+                "response.statusReason": "Mantener perfil",
+                "response.headers.Location": "/#/Pdf/blob/Inscripcion/01%20Instructivo%20de%20Afiliacion.pdf"
+            }
+        },
+        "Blob": {
+            "matchCondition": {
+                "route": "/blob/{*any}"
+            },
+            "backendUri": "https://prozpereventpro970c.blob.core.windows.net/prozperblobs/{any}"
+        },
+        "Favicon": {
+            "matchCondition": {
+                "route": "/favicon.ico"
+            },
+            "backendUri": "https://prozpereventpro970c.blob.core.windows.net/prozperblobs/favicon.ico"
+        },
+        "Documentos": {
+            "matchCondition": {
+                "route": "/documentos/{*any}"
+            },
+            "backendUri": "https://prozpereventpro970c.blob.core.windows.net/documentos/{any}"
+        },
+        "Default": {
+            "matchCondition": {
+                "route": "/"
+            },
+            "backendUri": "https://prozpereventpro970c.blob.core.windows.net/prozperblobs/index0.html"
+        },
+        "Done": {
+            "matchCondition": {
+                "route": "/.auth/login/done/"
+            },
+            "responseOverrides": {
+                "response.statusCode": "302",
+                "response.statusReason": "Login out and going home",
+                "response.headers.Location": "/"
+            }
+        },
+        "null": {
+            "matchCondition": {
+                "route": "/null/"
+            },
+            "responseOverrides": {
+                "response.statusCode": "302",
+                "response.statusReason": "Mantener perfil",
+                "response.headers.Location": "/"
+            }
+        },
+        "EditProfile": {
+            "matchCondition": {
+                "route": "/Profile/"
+            },
+            "responseOverrides": {
+                "response.statusCode": "302",
+                "response.statusReason": "Mantener perfil",
+                "response.headers.Location": "/blob/Msal.html?applicationId=%B2cAppId%&preambleState=GoToEditProfile&goInsideLink=/"
+            }
+        },
+        "ResetPassword": {
+            "matchCondition": {
+                "route": "/ResetPassword/"
+            },
+            "responseOverrides": {
+                "response.statusCode": "302",
+                "response.statusReason": "Mantener perfil",
+                "response.headers.Location": "/blob/Msal.html?applicationId=%B2cAppId%&preambleState=GoToResetPassword&goInsideLink=/"
+            }
+        },
+        "Register": {
+            "matchCondition": {
+                "route": "/Register/{referidoPor}"
+            },
+            "responseOverrides": {
+                "response.statusCode": "302",
+                "response.statusReason": "Registrando nuevo usuario",
+                "response.headers.Location": "/blob/Msal.html?applicationId=%B2cAppId%&preambleState=GoToSignUp&goInsideLink=/&referidoPor={referidoPor}"
+            }
+        },
+        "Login": {
+            "matchCondition": {
+                "route": "/Login/"
+            },
+            "responseOverrides": {
+                "response.statusCode": "302",
+                "response.statusReason": "Login in and going home",
+                "response.headers.Location": "/blob/Msal.html?applicationId=%B2cAppId%&preambleState=GoToSignIn&goInsideLink=/"
+            }
+        },
+        "Logout": {
+            "matchCondition": {
+                "route": "/Logout/"
+            },
+            "responseOverrides": {
+                "response.statusCode": "302",
+                "response.statusReason": "Login out and going home",
+                "response.headers.Set-Cookie": "AppServiceAuthSession=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT",
+                "response.headers.Location": "/blob/Msal.html?applicationId=%B2cAppId%&preambleState=GoToSignIn&goInsideLink=/"
+            }
+        },
+        "AfterLogout": {
+            "matchCondition": {
+                "route": "/AfterLogout/"
+            },
+            "responseOverrides": {
+                "response.statusCode": "302",
+                "response.statusReason": "Login out and going home",
+                "response.headers.Set-Cookie": "AppServiceAuthSession=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT",
+                "response.headers.Location": "/"
+            }
+        },
+        "Api": {
+            "matchCondition": {
+                "route": "/{any}/"
+            },
+            "backendUri": "https://%WEBSITE_HOSTNAME%/api/{any}"
+        },
+        "letsencryptProxy": {
+            "matchCondition": {
+                "route": "/.well-known/acme-challenge/{any}"
+            },
+            "backendUri": "https://%WEBSITE_HOSTNAME%/api/letsencrypt/{any}"
+        }
+    }
+}

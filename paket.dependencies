@@ -28,6 +28,20 @@ nuget FSharp.Control.Reactive
 nuget FSharpPlus 
 nuget Microsoft.NETCore.UniversalWindowsPlatform = 5.2.4
 nuget FSharp.Formatting
+nuget Fake.IO.FileSystem
+
+group Prozper
+    framework: netstandard2, net461
+    source https://www.nuget.org/api/v2
+    nuget Microsoft.Azure.Storage.Blob
+    nuget Microsoft.Azure.Storage.Queue
+    nuget WindowsAzure.Storage
+    nuget Microsoft.Azure.WebJobs
+    nuget Microsoft.Azure.WebJobs.Extensions
+    nuget Microsoft.Azure.WebJobs.Extensions.Storage
+    nuget Microsoft.Azure.WebJobs.Extensions.Http
+    nuget AuthorizeNet
+    nuget Microsoft.AspNetCore.Mvc.Core
 
 group Testing
     framework: netstandard2, net461
@@ -54,7 +68,6 @@ group Other
     nuget AuthorizeNet
     nuget Microsoft.Azure.WebJobs
     nuget Microsoft.Azure.WebJobs.Core
-    nuget Microsoft.Azure.Cosmos.Table
     nuget SendGrid
     nuget Microsoft.IdentityModel.Clients.ActiveDirectory
 
@@ -74,7 +87,8 @@ group Test
 group Test2
     framework: netstandard2.0, netcoreapp2.1
     source https://www.nuget.org/api/v2
-    nuget FSharp.Core
+    nuget FSharp.Core = 4.6.2
+    nuget FSharp.Compiler.Tools
     nuget WebSharper
     nuget WebSharper.AspNetCore
     nuget WebSharper.UI

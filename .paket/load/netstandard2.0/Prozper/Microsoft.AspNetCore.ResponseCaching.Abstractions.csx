@@ -1,0 +1,2 @@
+#load "Microsoft.Extensions.Primitives.csx" 
+#r "../../../../packages/prozper/Microsoft.AspNetCore.ResponseCaching.Abstractions/lib/netstandard2.0/Microsoft.AspNetCore.ResponseCaching.Abstractions.dll" 

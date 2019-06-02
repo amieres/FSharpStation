@@ -1,0 +1,5 @@
+#load "Microsoft.AspNetCore.Mvc.Razor.csx" 
+#load "Microsoft.AspNetCore.Razor.Runtime.csx" 
+#load "Microsoft.AspNetCore.Routing.Abstractions.csx" 
+#load "Microsoft.Extensions.Caching.Memory.csx" 
+#load "Microsoft.Extensions.Primitives.csx" 

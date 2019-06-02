@@ -1,0 +1,6 @@
+#load "Microsoft.AspNetCore.Authentication.Core.fsx" 
+#load "Microsoft.AspNetCore.DataProtection.fsx" 
+#load "Microsoft.AspNetCore.Http.fsx" 
+#load "Microsoft.AspNetCore.Http.Extensions.fsx" 
+#load "Microsoft.Extensions.Options.fsx" 
+#load "Microsoft.Extensions.WebEncoders.fsx" 

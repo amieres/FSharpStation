@@ -1,0 +1,5 @@
+#load "System.Private.ServiceModel.csx" 
+#load "System.ServiceModel.Primitives.csx" 
+#r "System.ServiceModel" 
+#r "System.Runtime.Serialization" 
+#r "mscorlib" 

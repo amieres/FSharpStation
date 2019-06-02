@@ -1,0 +1,6 @@
+#load "Microsoft.IdentityModel.JsonWebTokens.fsx" 
+#load "Microsoft.IdentityModel.Tokens.fsx" 
+#load "Newtonsoft.Json.fsx" 
+#r "Microsoft.CSharp" 
+#r "System" 
+#r "../../../../packages/test/System.IdentityModel.Tokens.Jwt/lib/net451/System.IdentityModel.Tokens.Jwt.dll" 

@@ -1,0 +1,8 @@
+#load "Microsoft.AspNetCore.Authorization.Policy.csx" 
+#load "Microsoft.AspNetCore.Hosting.Abstractions.csx" 
+#load "Microsoft.AspNetCore.Http.csx" 
+#load "Microsoft.AspNetCore.Http.Connections.Common.csx" 
+#load "Microsoft.AspNetCore.Routing.csx" 
+#load "Microsoft.AspNetCore.WebSockets.csx" 
+#load "Newtonsoft.Json.csx" 
+#load "System.Security.Principal.Windows.csx" 

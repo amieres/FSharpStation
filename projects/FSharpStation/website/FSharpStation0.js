@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,FusionM,Operators$1,Builder$1,Builder$2,FusionAsyncM,Operators$2,Builder$3,Builder$4,ResultM,Builder$5,Operators$3,ResultMAutoOpen,AsyncResult,AsyncResultBuilder,AsyncResultBuilderP,Extensions,AsyncResultM,AsyncResultMBuilder,AsyncResultMAutoOpen,String,ParseO,MailboxProcessorExt,Mailbox,StateFull,ResourceAgentState,ResourceAgent,AgentReaderM,CommArgRoot,CommArg,CommArgCollection,TypedCommArg,CommArgModule,FsCodeModule,PreproDirective,SnippetId,Snippet,SnippetCollection,SnippetModule,Hole,TreeReader,Node,LibraryJS,Promise,View,Pojo,GenEditor,Position,AnnotationType,Annotation,Completion,GenEditorHook,GenEditor$1,Serializer,REGEX,Hoverable,Hoverable$1,ResizeObserver,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,WcSplitterT,Monaco,Position$1,Range,Uri,Location,FindMatch,WordAtPosition,Model,MarkDownString,MarkerData,CompletionItem,Hover,Editor,MonacoConfig,MonacoGenAdapter,MonacoRT,CompletionItemProvider,HoverProvider,DefinitionProvider,Library2,FsiAgent,WebSockets,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ReplyHandler,Handler,WSMessagingClient,FSMessage,FsAutoComplete,CommTypes,ResponseError,Location$1,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,MsgTypes,ParseRequest,DeclarationsRequest,CompletionRequest,PositionRequest,ProjectRequest,LintRequest,HelptextRequest,WorkspacePeekRequest,Calls,FSharpStation,FStation,Snippets,DragDrop,DragInfo,Templating,RenderSnippets,RenderProperties,Monaco$1,HoverProvider$1,CompletionItemProvider$1,DefinitionProvider$1,MonacoOptions,ITextModelService,JumpTo,CustomAction,Serializer$1,Model$1,LoadSave,Importer,MainProgram,EndPoint,Messaging,Server,SC$1,FSharpStation_JsonEncoder,FSharpStation_JsonDecoder,FSharpStation_GeneratedPrintf,FSharpStation_Router,FSharpStation_Templates,GeneratedPrintf,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$4,Unchecked,Slice,Control,MailboxProcessor,System,Guid,Collections,FSharpSet,Option$1,CancellationTokenSource,console,UI,View$1,Var$1,FSharpMap,BalancedTree,DomUtility,Doc,AttrModule,AttrProxy,Node$1,Client,Templates,Reflect,Object,Map,JSON,TimeoutException,ClientSideJson,Provider,Owin,WebSocket,Client$1,WithEncoding,Endpoint,location,Remoting,AjaxRemotingProvider,FromView,Templating$1,Runtime$1,Server$1,ProviderBuilder,Handler$1,TemplateInstance,JavaScript,Promise$1,AppFramework,Date,PlugIn,Lazy,LayoutEngineModule,DateUtil,Numeric,ListModel,Dictionary,Router,Sitelets,RouterOperators;
+ var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,BuilderP,FusionM,Operators$1,Builder$1,Builder$2,FusionAsyncM,Operators$2,Builder$3,Builder$4,ResultM,Builder$5,Operators$3,ResultMAutoOpen,AsyncResult,AsyncResultBuilder,AsyncResultBuilderP,Extensions,AsyncResultM,AsyncResultMBuilder,Operators$4,AsyncResultMAutoOpen,String,ParseO,MailboxProcessorExt,Mailbox,StateFull,ResourceAgentState,ResourceAgent,AgentReaderM,CommArgRoot,CommArg,CommArgCollection,TypedCommArg,CommArgModule,FsCodeModule,PreproDirective,PrepState,SnippetId,Snippet,SnippetCollection,SnippetModule,Hole,TreeReader,Node,LibraryJS,Promise,PromiseM,View,Pojo,GenEditor,Position,AnnotationType,Annotation,Completion,GenEditorHook,GenEditor$1,Serializer,REGEX,Hoverable,Hoverable$1,ResizeObserver,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,WcSplitterT,Monaco,Position$1,Range,Uri,Location,FindMatch,WordAtPosition,Model,MarkDownString,MarkerData,CompletionItem,Hover,Editor,MonacoConfig,MonacoGenAdapter,MonacoRT,CompletionItemProvider,HoverProvider,DefinitionProvider,Library2,FsiAgent,WebSockets,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ReplyHandler,Handler,WSMessagingClient,FSMessage,FsAutoComplete,CommTypes,ResponseError,Location$1,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,MsgTypes,ParseRequest,DeclarationsRequest,CompletionRequest,PositionRequest,ProjectRequest,LintRequest,HelptextRequest,WorkspacePeekRequest,Calls,FSharpStation,FStation,Snippets,DragDrop,DragInfo,Templating,RenderSnippets,RenderProperties,Monaco$1,HoverProvider$1,CompletionItemProvider$1,DefinitionProvider$1,MonacoOptions,ITextModelService,JumpTo,CustomAction,Serializer$1,Model$1,LoadSave,Importer,MainProgram,EndPoint,Messaging,Server,SC$1,FSharpStation_JsonEncoder,FSharpStation_JsonDecoder,FSharpStation_GeneratedPrintf,FSharpStation_Router,FSharpStation_Templates,GeneratedPrintf,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$5,Unchecked,Slice,Control,MailboxProcessor,System,Guid,Collections,FSharpSet,Option$1,Char,CancellationTokenSource,console,UI,View$1,Var$1,FSharpMap,BalancedTree,DomUtility,Doc,AttrModule,AttrProxy,Node$1,Client,Templates,Reflect,Object,Map,JSON,TimeoutException,ClientSideJson,Provider,Owin,WebSocket,Client$1,WithEncoding,Endpoint,location,Remoting,AjaxRemotingProvider,FromView,Templating$1,Runtime$1,Server$1,ProviderBuilder,Handler$1,TemplateInstance,JavaScript,Promise$1,AppFramework,Date,PlugIn,Lazy,LayoutEngineModule,DateUtil,Numeric,ListModel,Dictionary,Router,Sitelets,RouterOperators;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -16,6 +16,7 @@
  Result=Monads.Result=Monads.Result||{};
  Builder=Result.Builder=Result.Builder||{};
  Operators=Result.Operators=Result.Operators||{};
+ BuilderP=Result.BuilderP=Result.BuilderP||{};
  FusionM=Monads.FusionM=Monads.FusionM||{};
  Operators$1=FusionM.Operators=FusionM.Operators||{};
  Builder$1=FusionM.Builder=FusionM.Builder||{};
@@ -34,6 +35,7 @@
  Extensions=Monads.Extensions=Monads.Extensions||{};
  AsyncResultM=Monads.AsyncResultM=Monads.AsyncResultM||{};
  AsyncResultMBuilder=AsyncResultM.AsyncResultMBuilder=AsyncResultM.AsyncResultMBuilder||{};
+ Operators$4=AsyncResultM.Operators=AsyncResultM.Operators||{};
  AsyncResultMAutoOpen=Monads.AsyncResultMAutoOpen=Monads.AsyncResultMAutoOpen||{};
  String=Library.String=Library.String||{};
  ParseO=Library.ParseO=Library.ParseO||{};
@@ -50,6 +52,7 @@
  CommArgModule=CommArgRoot.CommArgModule=CommArgRoot.CommArgModule||{};
  FsCodeModule=Library.FsCodeModule=Library.FsCodeModule||{};
  PreproDirective=FsCodeModule.PreproDirective=FsCodeModule.PreproDirective||{};
+ PrepState=FsCodeModule.PrepState=FsCodeModule.PrepState||{};
  SnippetId=Library.SnippetId=Library.SnippetId||{};
  Snippet=Library.Snippet=Library.Snippet||{};
  SnippetCollection=Library.SnippetCollection=Library.SnippetCollection||{};
@@ -59,6 +62,7 @@
  Node=TreeReader.Node=TreeReader.Node||{};
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
  Promise=LibraryJS.Promise=LibraryJS.Promise||{};
+ PromiseM=LibraryJS.PromiseM=LibraryJS.PromiseM||{};
  View=LibraryJS.View=LibraryJS.View||{};
  Pojo=LibraryJS.Pojo=LibraryJS.Pojo||{};
  GenEditor=LibraryJS.GenEditor=LibraryJS.GenEditor||{};
@@ -188,7 +192,7 @@
  Concurrency=WebSharper&&WebSharper.Concurrency;
  Enumerator=WebSharper&&WebSharper.Enumerator;
  Result$1=WebSharper&&WebSharper.Result;
- Operators$4=WebSharper&&WebSharper.Operators;
+ Operators$5=WebSharper&&WebSharper.Operators;
  Unchecked=WebSharper&&WebSharper.Unchecked;
  Slice=WebSharper&&WebSharper.Slice;
  Control=WebSharper&&WebSharper.Control;
@@ -198,6 +202,7 @@
  Collections=WebSharper&&WebSharper.Collections;
  FSharpSet=Collections&&Collections.FSharpSet;
  Option$1=WebSharper&&WebSharper.Option;
+ Char=WebSharper&&WebSharper.Char;
  CancellationTokenSource=WebSharper&&WebSharper.CancellationTokenSource;
  console=Global.console;
  UI=WebSharper&&WebSharper.UI;
@@ -913,7 +918,7 @@
   },
   Run:function(f)
   {
-   return Result.bindP(f,{
+   return Result$1.Bind(f,{
     $:0,
     $0:null
    });
@@ -960,11 +965,142 @@
  };
  Operators.op_GreaterGreaterEquals=function(v,f)
  {
-  return Result.bindP(f,v);
+  return Result$1.Bind(f,v);
  };
  Operators.op_BarGreaterGreater=function(v,f)
  {
-  return Result.mapP(f,v);
+  return Result$1.Map(f,v);
+ };
+ BuilderP=Result.BuilderP=Runtime.Class({
+  For:function(sequence,body)
+  {
+   var $this;
+   $this=this;
+   return this.Using(Enumerator.Get(sequence),function(_enum)
+   {
+    return $this.While(function()
+    {
+     return _enum.MoveNext();
+    },$this.Delay(function()
+    {
+     return body(_enum.Current());
+    }));
+   });
+  },
+  While:function(guard,body)
+  {
+   function whileLoop(guard$1,body$1)
+   {
+    return guard$1()?Result$1.Bind(function()
+    {
+     return whileLoop(guard$1,body$1);
+    },body$1()):Result.rtn();
+   }
+   return whileLoop(guard,body);
+  },
+  Using:function(disposable,body)
+  {
+   try
+   {
+    return body(disposable);
+   }
+   finally
+   {
+    disposable.Dispose();
+   }
+  },
+  TryFinally:function(body,compensation)
+  {
+   try
+   {
+    return body();
+   }
+   finally
+   {
+    compensation();
+   }
+  },
+  TryWith:function(body,handler)
+  {
+   try
+   {
+    return body();
+   }
+   catch(e)
+   {
+    return handler(e);
+   }
+  },
+  Run:function(f)
+  {
+   return Result.bindP(f,{
+    $:0,
+    $0:null
+   });
+  },
+  Combine:function(a,b)
+  {
+   return Result$1.Bind(b,a);
+  },
+  Delay:Global.id,
+  Zero:function()
+  {
+   return Result.rtn();
+  },
+  Bind:function(w,r)
+  {
+   return Result$1.Bind(r,w);
+  },
+  ReturnFrom:Global.id,
+  Return:function(x)
+  {
+   return Result.rtn(x);
+  }
+ },Obj,BuilderP);
+ BuilderP.New=Runtime.Ctor(function()
+ {
+  Obj.New.call(this);
+ },BuilderP);
+ Result.resultP=function()
+ {
+  SC$1.$cctor();
+  return SC$1.resultP;
+ };
+ Result.iterP=function(fE,f,r)
+ {
+  Result.defaultWith(fE,Result.mapP(f,r));
+ };
+ Result.mapP=function(f,m)
+ {
+  return Result.bindP(function(x)
+  {
+   return Result.rtn(f(x));
+  },m);
+ };
+ Result.bindP=function(f,r)
+ {
+  if(r.$==1)
+   return Library.Error$1(r.$0);
+  else
+   try
+   {
+    return f(r.$0);
+   }
+   catch(e)
+   {
+    return Library.Error$1(new ResultMessage({
+     $:5,
+     $0:e.message,
+     $1:e.stack
+    }));
+   }
+ };
+ Result.freeMessage=function(r)
+ {
+  return r.$==1?Library.Error$1(ResultMessage.freeMessage(r.$0)):{
+   $:0,
+   $0:r.$0
+  };
  };
  Result.result=function()
  {
@@ -998,7 +1134,7 @@
  };
  Result.absorbO=function(f,vOR)
  {
-  return Result.bindP(function(v)
+  return Result$1.Bind(function(v)
   {
    return Result.ofOption(f,v);
   },vOR);
@@ -1040,37 +1176,12 @@
  {
   return Result.defaultWith(function(x)
   {
-   return Operators$4.FailWith(Global.String(x));
+   return Operators$5.FailWith(Global.String(x));
   },r);
  };
  Result.iter=function(fE,f,r)
  {
-  Result.defaultWith(fE,Result.mapP(f,r));
- };
- Result.mapP=function(f,m)
- {
-  return Result.bindP(function(x)
-  {
-   return Result.rtn(f(x));
-  },m);
- };
- Result.bindP=function(f,r)
- {
-  if(r.$==1)
-   return Library.Error$1(r.$0);
-  else
-   try
-   {
-    return f(r.$0);
-   }
-   catch(e)
-   {
-    return Library.Error$1(new ResultMessage({
-     $:5,
-     $0:e.message,
-     $1:e.stack
-    }));
-   }
+  Result.defaultWith(fE,Result$1.Map(f,r));
  };
  Result.failIfFalse=function(m,v)
  {
@@ -1114,13 +1225,6 @@
   return{
    $:0,
    $0:a
-  };
- };
- Result.freeMessage=function(r)
- {
-  return r.$==1?Library.Error$1(ResultMessage.freeMessage(r.$0)):{
-   $:0,
-   $0:r.$0
   };
  };
  Result.errorf=function(fmt)
@@ -2655,7 +2759,7 @@
  {
   return ResultM.defaultWith(function(x)
   {
-   return Operators$4.FailWith(Global.String(x));
+   return Operators$5.FailWith(Global.String(x));
   },r);
  };
  ResultM.iter=function(fM,f,r)
@@ -3411,6 +3515,26 @@
  {
   Obj.New.call(this);
  },AsyncResultMBuilder);
+ Operators$4.rtn=function(v)
+ {
+  return AsyncResultM.rtn(v);
+ };
+ Operators$4.op_GreaterEqualsGreater=function(f,g,v)
+ {
+  return Operators$4.op_GreaterGreaterEquals(f(v),g);
+ };
+ Operators$4.op_GreaterMinusGreater=function(f,g,v)
+ {
+  return Operators$4.op_BarGreaterGreater(f(v),g);
+ };
+ Operators$4.op_GreaterGreaterEquals=function(v,f)
+ {
+  return AsyncResultM.bind(f,v);
+ };
+ Operators$4.op_BarGreaterGreater=function(v,f)
+ {
+  return AsyncResultM.map(f,v);
+ };
  AsyncResultM.getResultM=function(a)
  {
   function g(v)
@@ -3608,9 +3732,27 @@
  {
   throw"iterS cannot be used in JavaScript!";
  };
- AsyncResultM.errorMsgf=function(v)
+ AsyncResultM.errorMsgf=function(fmt)
  {
-  return Concurrency.Return(Monads.ErrorM(ResultMessageHelpers.errorMsgf(v)));
+  var f;
+  function f$1(a)
+  {
+   return new ResultMessage({
+    $:1,
+    $0:a
+   });
+  }
+  function g(a)
+  {
+   return Concurrency.Return(a);
+  }
+  return fmt((f=function(x)
+  {
+   return Monads.ErrorM(f$1(x));
+  },function(x)
+  {
+   return g(f(x));
+  }));
  };
  AsyncResultM.rtnrA=function(vrA)
  {
@@ -4781,13 +4923,16 @@
   return true;
  };
  PreproDirective.NoPrepo={
-  $:12
+  $:13
  };
  PreproDirective.PrepoEndIf={
-  $:9
+  $:10
  };
  PreproDirective.PrepoElse={
-  $:8
+  $:9
+ };
+ PrepState.LevelZero={
+  $:0
  };
  FsCodeModule.getSourceDir=function(srcDir,lines)
  {
@@ -4801,86 +4946,150 @@
  };
  FsCodeModule.separateDirectives=function(fsNass)
  {
-  var assembs,defines,prepoIs,nowarns,cd;
+  var defines,preps,assembs,prepoIs,nowarns,cd;
   function f(t)
   {
    return t[1];
   }
   function g(a)
   {
-   return a.$==1?{
+   return a.$==2?{
     $:1,
     $0:a.$0
    }:null;
   }
-  function f$1(t)
+  defines=Arrays.ofSeq(Seq$1.distinct(Seq$1.choose(function(x)
+  {
+   return g(f(x));
+  },fsNass)));
+  preps=FsCodeModule.filterPreps(fsNass);
+  assembs=Arrays.ofSeq(Seq$1.distinct(Seq$1.choose(function(a)
+  {
+   return a.$==1?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },preps)));
+  prepoIs=Arrays.ofSeq(Seq$1.distinct(Seq$1.choose(function(a)
+  {
+   return a.$==6?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },preps)));
+  nowarns=Arrays.ofSeq(Seq$1.distinct(Seq$1.choose(function(a)
+  {
+   return a.$==5?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },preps)));
+  cd=Seq$1.tryHead(Seq$1.choose(function(a)
+  {
+   return a.$==0?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },preps));
+  return[Arrays.ofSeq(Seq$1.map(function(t)
+  {
+   return t[0];
+  },fsNass)),assembs,defines,prepoIs,nowarns,cd];
+ };
+ FsCodeModule.filterPreps=function(fsNass)
+ {
+  var defines,y;
+  function f(t)
   {
    return t[1];
   }
-  function g$1(a)
+  function g(a)
   {
    return a.$==2?{
     $:1,
     $0:a.$0
    }:null;
   }
-  function f$2(t)
+  function isDefined(def)
   {
-   return t[1];
+   var x;
+   x=Seq$1.contains(Strings.Trim(Strings.Replace(def,"!","")),defines);
+   return(Strings.StartsWith(Strings.Trim(def),"!")?function(v)
+   {
+    return!v;
+   }:Global.id)(x);
   }
-  function g$2(a)
+  function m(st,prep)
   {
-   return a.$==6?{
-    $:1,
-    $0:a.$0
-   }:null;
+   var $1;
+   switch(st.$==0?prep.$==7?($1=prep.$0,0):prep.$==10?2:7:st.$==2?prep.$==7?1:prep.$==10?2:prep.$==8?($1=[prep.$0,st.$0],4):prep.$==9?($1=st.$0,5):8:st.$==3?prep.$==7?1:prep.$==10?2:prep.$==8?($1=st.$0,6):prep.$==9?($1=st.$0,6):8:prep.$==7?($1=prep.$0,0):prep.$==10?2:prep.$==8?($1=st.$0,3):prep.$==9?($1=st.$0,3):7)
+   {
+    case 0:
+     return[null,isDefined($1)?{
+      $:1,
+      $0:st
+     }:{
+      $:2,
+      $0:st
+     }];
+    case 1:
+     return[null,{
+      $:3,
+      $0:st
+     }];
+    case 2:
+     return[null,FsCodeModule.prev(st)];
+    case 3:
+     return[null,{
+      $:3,
+      $0:$1
+     }];
+    case 4:
+     return[null,isDefined($1[0])?{
+      $:1,
+      $0:st
+     }:{
+      $:2,
+      $0:$1[1]
+     }];
+    case 5:
+     return[null,{
+      $:1,
+      $0:$1
+     }];
+    case 6:
+     return[null,{
+      $:3,
+      $0:$1
+     }];
+    case 7:
+     return[{
+      $:1,
+      $0:prep
+     },st];
+    case 8:
+     return[null,st];
+   }
   }
-  function f$3(t)
-  {
-   return t[1];
-  }
-  function g$3(a)
-  {
-   return a.$==5?{
-    $:1,
-    $0:a.$0
-   }:null;
-  }
-  function f$4(t)
-  {
-   return t[1];
-  }
-  function g$4(a)
-  {
-   return a.$==0?{
-    $:1,
-    $0:a.$0
-   }:null;
-  }
-  assembs=Arrays.ofSeq(Seq$1.distinct(Seq$1.choose(function(x)
+  defines=Arrays.ofSeq(Seq$1.distinct(Seq$1.choose(function(x)
   {
    return g(f(x));
   },fsNass)));
-  defines=Arrays.ofSeq(Seq$1.distinct(Seq$1.choose(function(x)
+  return Arrays.ofSeq(Seq$1.choose(Global.id,(y=Arrays.ofSeq(Seq$1.filter(function(a)
   {
-   return g$1(f$1(x));
-  },fsNass)));
-  prepoIs=Arrays.ofSeq(Seq$1.distinct(Seq$1.choose(function(x)
+   return a.$!=13;
+  },Seq$1.map(function(t)
   {
-   return g$2(f$2(x));
-  },fsNass)));
-  nowarns=Arrays.ofSeq(Seq$1.distinct(Seq$1.choose(function(x)
-  {
-   return g$3(f$3(x));
-  },fsNass)));
-  cd=Seq$1.tryHead(Seq$1.choose(function(x)
-  {
-   return g$4(f$4(x));
-  },fsNass));
-  return[Arrays.ofSeq(Seq$1.map(function(t)
-  {
-   return t[0];
-  },fsNass)),assembs,defines,prepoIs,nowarns,cd];
+   return t[1];
+  },fsNass))),(((Runtime.Curried3(Seq$1.mapFold))(m))(PrepState.LevelZero))(y))[0]));
+ };
+ FsCodeModule.prev=function(a)
+ {
+  return a.$==1?a.$0:a.$==2?a.$0:a.$==3?a.$0:PrepState.LevelZero;
+ };
+ FsCodeModule.isActive=function(a)
+ {
+  return a.$==1||(a.$==2?false:a.$!=3);
  };
  FsCodeModule.separatePrepros=function(code)
  {
@@ -4890,11 +5099,13 @@
    o=Seq$1.tryLast(Strings.SplitStrings(Strings.Trim(line),["\""],1));
    return o==null?line:o.$0;
   }
-  function define(line)
+  function rest(line)
   {
-   var o;
-   o=Seq$1.tryHead(Strings.SplitStrings(Strings.Trim(line),["#define "],1));
-   return o==null?"":o.$0;
+   var o,o$1;
+   return Strings.Trim((o=(o$1=String.splitInTwoO$1(" ",Strings.Trim(line)),o$1==null?null:{
+    $:1,
+    $0:o$1.$0[1]
+   }),o==null?"":o.$0));
   }
   function comment(y)
   {
@@ -4902,11 +5113,11 @@
   }
   return Arrays.map(function(line)
   {
-   var m,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13;
+   var m,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14;
    m=true;
    return m&&Strings.StartsWith(line,"#define")?[comment(line),{
     $:2,
-    $0:define(line)
+    $0:rest(line)
    }]:m&&Strings.StartsWith(line,"#cd")?[comment(line),{
     $:0,
     $0:quoted(line)
@@ -4930,12 +5141,15 @@
     $0:quoted(line)
    }]:m&&Strings.StartsWith(line,"#if")?[line,{
     $:7,
-    $0:line
+    $0:rest(line)
+   }]:m&&Strings.StartsWith(line,"#elif")?[line,{
+    $:8,
+    $0:rest(line)
    }]:m&&Strings.StartsWith(line,"#else")?[line,PreproDirective.PrepoElse]:m&&Strings.StartsWith(line,"#endif")?[line,PreproDirective.PrepoEndIf]:m&&Strings.StartsWith(line,"#light")?[line,{
-    $:10,
+    $:11,
     $0:false
    }]:m&&Strings.StartsWith(line,"#")?[comment(line),{
-    $:11,
+    $:12,
     $0:line
    }]:[line,PreproDirective.NoPrepo];
   },code);
@@ -5971,6 +6185,13 @@
    return Seq$1.collect(Global.id,s);
   });
  };
+ Library["String.get_toUnderscore$1"]=function(_this,u)
+ {
+  return Arrays.ofSeq(Seq$1.collect(Global.id,Seq$1.mapi(function(i,c)
+  {
+   return i>0&&Char.IsUpper(c)?List.ofArray(["_",c]):List.ofArray([c]);
+  },_this))).join("");
+ };
  Library["String.Right$1"]=function(_this,n)
  {
   var a,b;
@@ -6056,24 +6277,6 @@
    $0:a
   };
  };
- Promise.ofAsyncResultM=function(v)
- {
-  return new Global.Promise(function(resolve,reject)
-  {
-   Concurrency.StartWithContinuations(v,function(a)
-   {
-    var a$1;
-    a$1=Monads.OkM(a);
-    a$1.$==1?reject(ResultMessage.summarized(a$1.$0)):resolve(a$1.$0[0]);
-   },function(a)
-   {
-    reject(a);
-   },function(a)
-   {
-    reject(a);
-   },null);
-  });
- };
  Promise.ofAsyncResult=function(v)
  {
   return new Global.Promise(function(resolve,reject)
@@ -6090,6 +6293,24 @@
      }(Global.id))(a.$0));
     else
      resolve(a.$0);
+   },function(a)
+   {
+    reject(a);
+   },function(a)
+   {
+    reject(a);
+   },null);
+  });
+ };
+ PromiseM.ofAsyncResultM=function(v)
+ {
+  return new Global.Promise(function(resolve,reject)
+  {
+   Concurrency.StartWithContinuations(v,function(a)
+   {
+    var a$1;
+    a$1=Monads.OkM(a);
+    a$1.$==1?reject(ResultMessage.summarized(a$1.$0)):resolve(a$1.$0[0]);
    },function(a)
    {
     reject(a);
@@ -6145,6 +6366,20 @@
     $0:a$1
    };
   },a.$0);
+ };
+ Pojo.newPojoOpt=function(propOs)
+ {
+  function c(n,vO)
+  {
+   return vO==null?null:{
+    $:1,
+    $0:[n,vO.$0]
+   };
+  }
+  return Pojo.newPojo(Seq$1.choose(function($1)
+  {
+   return c($1[0],$1[1]);
+  },propOs));
  };
  Pojo.newPojo=function(props)
  {
@@ -6699,15 +6934,15 @@
  {
   return Hoverable$1.New$3().Content(Doc.Element("div",[AttrProxy.Create("style","flex-flow: column;")],[Doc.TextNode("Hover over me!")]));
  };
- Hoverable$1.Content$2615$81=Runtime.Curried3(function(e,$1,$2)
+ Hoverable$1.Content$2728$81=Runtime.Curried3(function(e,$1,$2)
  {
   return DomUtility.RemoveClass(e.elt,"hovering");
  });
- Hoverable$1.get_Attributes$2611$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$2724$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(false);
  });
- Hoverable$1.get_Attributes$2610$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$2723$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(true);
  });
@@ -6810,7 +7045,7 @@
         return $1("Tab "+Global.String($2));
        };
       }(Global.id))(i),node]]:[];
-     },Operators$4.range(1,el.childNodes.length));
+     },Operators$5.range(1,el.childNodes.length));
     }));
     while(elsh.childNodes.length>0)
      elsh.removeChild(elsh.lastChild);
@@ -6849,7 +7084,7 @@
   SC$1.$cctor();
   return SC$1.init;
  };
- WcTabStrip.tabStrip$2757$64=function(i,selected)
+ WcTabStrip.tabStrip$2870$64=function(i,selected)
  {
   return function()
   {
@@ -7253,7 +7488,7 @@
  {
   return MonacoConfig.New(v,monc.onChange,monc.onRender,monc.editorO,monc.disabled,monc.options,monc.overrides);
  };
- Monaco.render$3115$48=function(monc)
+ Monaco.render$3228$48=function(monc)
  {
   return function(elchild)
   {
@@ -7349,7 +7584,7 @@
   {
    var $this,b;
    $this=this;
-   return Promise.ofAsyncResultM((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+   return PromiseM.ofAsyncResultM((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
    {
     return AsyncResultMAutoOpen["AsyncResultMBuilder.Bind"](b,$this.autoComplete(Position.New(pos.lineNumber,pos.column)),function(a)
     {
@@ -7371,7 +7606,7 @@
   {
    var $this,b;
    $this=this;
-   return Promise.ofAsyncResultM((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+   return PromiseM.ofAsyncResultM((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
    {
     return AsyncResultMAutoOpen["AsyncResultMBuilder.Bind"](b,$this.toolTip(Position.New(pos.lineNumber,pos.column)),function(a)
     {
@@ -7390,7 +7625,7 @@
   {
    var $this,b;
    $this=this;
-   return Promise.ofAsyncResultM((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+   return PromiseM.ofAsyncResultM((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
    {
     return AsyncResultMAutoOpen["AsyncResultMBuilder.Bind"](b,$this.declaration(Position.New(pos.lineNumber,pos.column)),function(a)
     {
@@ -7512,7 +7747,7 @@
   });
   return o==null?"":o.$0;
  };
- MonacoGenAdapter.generateDoc$3257$48=function(monRT,onRender,genE)
+ MonacoGenAdapter.generateDoc$3370$48=function(monRT,onRender,genE)
  {
   return function(elchild)
   {
@@ -7643,6 +7878,11 @@
   var m;
   m=monRT.editorO;
   m!=null&&m.$==1?f(m.$0):void 0;
+ };
+ LibraryJS.rexEmail$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.rexEmail;
  };
  LibraryJS.rexGuid$1=function()
  {
@@ -9547,7 +9787,7 @@
    $1:S
   })),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.snippetlist(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderSnippets.snippets$4860$40=function(snpId)
+ RenderSnippets.snippets$4976$40=function(snpId)
  {
   return function(ev)
   {
@@ -9560,7 +9800,7 @@
    }))(x);
   };
  };
- RenderSnippets.snippets$4859$40=function(snpId)
+ RenderSnippets.snippets$4975$40=function(snpId)
  {
   return function(ev)
   {
@@ -9568,7 +9808,7 @@
     ev.Event.preventDefault();
   };
  };
- RenderSnippets.snippets$4858$40=function(snpId)
+ RenderSnippets.snippets$4974$40=function(snpId)
  {
   return function(ev)
   {
@@ -9576,21 +9816,21 @@
    ev.Event.stopPropagation();
   };
  };
- RenderSnippets.snippets$4857$40=function(snpId)
+ RenderSnippets.snippets$4973$40=function(snpId)
  {
   return function()
   {
    Snippets.toggleCollapse(snpId);
   };
  };
- RenderSnippets.snippets$4856$40=function(snpId)
+ RenderSnippets.snippets$4972$40=function(snpId)
  {
   return function()
   {
    Snippets.togglePredecessor(snpId);
   };
  };
- RenderSnippets.snippets$4855$40=function(snpId)
+ RenderSnippets.snippets$4971$40=function(snpId)
  {
   var s;
   s=View$1.Map(function(y)
@@ -9602,7 +9842,7 @@
    return RenderSnippets.scrollIntoView(s,e);
   };
  };
- RenderSnippets.snippets$4854$40=function(snpId)
+ RenderSnippets.snippets$4970$40=function(snpId)
  {
   return function()
   {
@@ -9757,7 +9997,7 @@
     }
   },selW);
  };
- RenderProperties.render$4899$34=function()
+ RenderProperties.render$5015$34=function()
  {
   return function()
   {
@@ -9779,7 +10019,7 @@
    RenderProperties.addProperty();
   }))),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.propertytable(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderProperties.properties$4892$33=function(i)
+ RenderProperties.properties$5008$33=function(i)
  {
   return function()
   {
@@ -9850,7 +10090,7 @@
    }))),(p=Handler$1.CompleteHoles(b.k,b.h,[["name",0],["value",0]]),(i$1=new TemplateInstance.New(p[1],FSharpStation_Templates.property(p[0])),(b.i=i$1,i$1)))).get_Doc();
   },View$1.Map(function($1)
   {
-   return Arrays.ofSeq(Operators$4.range(0,Arrays.length($1)-1));
+   return Arrays.ofSeq(Operators$5.range(0,Arrays.length($1)-1));
   },propsV.get_View()));
  };
  RenderProperties.remProperty=function(i)
@@ -9903,7 +10143,7 @@
    var b;
    function f(a)
    {
-    return a.$==1?Operators$4.FailWith((function($1)
+    return a.$==1?Operators$5.FailWith((function($1)
     {
      return function($2)
      {
@@ -9943,7 +10183,7 @@
    var b;
    function f(a)
    {
-    return a.$==1?Operators$4.FailWith((function($1)
+    return a.$==1?Operators$5.FailWith((function($1)
     {
      return function($2)
      {
@@ -9983,7 +10223,7 @@
    var b;
    function f(a)
    {
-    return a.$==1?Operators$4.FailWith((function($1)
+    return a.$==1?Operators$5.FailWith((function($1)
     {
      return function($2)
      {
@@ -10297,7 +10537,7 @@
    var $1,a$1,t;
    return(a$1=LibraryJS.REGEX$2(rex,"",v),a$1!=null&&a$1.$==1&&((t=a$1.$0,!Unchecked.Equals(t,null)&&t.length===8)&&($1=[Arrays.get(a$1.$0,3),Arrays.get(a$1.$0,2),Arrays.get(a$1.$0,6),Arrays.get(a$1.$0,7),Arrays.get(a$1.$0,5),Arrays.get(a$1.$0,4),Arrays.get(a$1.$0,1)],true)))?{
     $:1,
-    $0:[$1[6],Operators$4.toInt(Global.Number($1[1])),Operators$4.toInt(Global.Number($1[0])),Operators$4.toInt(Global.Number($1[5])),Operators$4.toInt(Global.Number($1[4])),$1[2],$1[3]]
+    $0:[$1[6],Operators$5.toInt(Global.Number($1[1])),Operators$5.toInt(Global.Number($1[0])),Operators$5.toInt(Global.Number($1[5])),Operators$5.toInt(Global.Number($1[4])),$1[2],$1[3]]
    }:null;
   },(a=LibraryJS.REGEX$2(rex,"g",msgs),a!=null&&a.$==1?a.$0:[])));
  };
@@ -10362,7 +10602,7 @@
   x=(_s="snpId:"+(c=sid.get_Id(),Global.String(c)),self.monaco.Uri.parse(_s));
   return Monaco$1.getModelUri(Snippets.runReader(function(x$1)
   {
-   return Operators$4.FailWith(Global.String(x$1));
+   return Operators$5.FailWith(Global.String(x$1));
   },SnippetModule.snippetRm(sid)).snpContent,x);
  };
  Monaco$1.getModelUri=function(txt,uri)
@@ -10450,12 +10690,29 @@
   a$1!=null&&a$1.$==1?(t=a$1.$0,!Unchecked.Equals(t,null)&&t.length===6)?(col=Arrays.get(a$1.$0,2),guid=Arrays.get(a$1.$0,5),line=Arrays.get(a$1.$0,1),Concurrency.Start(Monaco$1["goto"](new SnippetId({
    $:0,
    $0:guid
-  }),Operators$4.toInt(Global.Number(line)),Operators$4.toInt(Global.Number(col))),null)):void 0:void 0;
+  }),Operators$5.toInt(Global.Number(line)),Operators$5.toInt(Global.Number(col))),null)):void 0:void 0;
  };
  JumpTo.rexGuid=function()
  {
   SC$1.$cctor();
   return SC$1.rexGuid$1;
+ };
+ CustomAction.setScrollToBottom=function()
+ {
+  SC$1.$cctor();
+  return SC$1.setScrollToBottom;
+ };
+ CustomAction.scrollToBottom=function(el)
+ {
+  var b;
+  Concurrency.Start((b=null,Concurrency.Delay(function()
+  {
+   return Concurrency.Bind(Concurrency.Sleep(100),function()
+   {
+    el.scrollTop=el.scrollHeight;
+    return Concurrency.Zero();
+   });
+  })),null);
  };
  CustomAction.setCurrentProperty=function(p,v)
  {
@@ -10996,6 +11253,13 @@
     CustomAction.actionClick(o);
    },
    $1:"name"
+  }),AppFramework.newActF("SetScrollToBottom",{
+   $:1,
+   $0:function(o)
+   {
+    (CustomAction.setScrollToBottom())(o);
+   },
+   $1:"textarea"
   }),AppFramework.newActF("ActionSnp",{
    $:2,
    $0:function(o1)
@@ -11083,36 +11347,36 @@
   p=Handler$1.CompleteHoles(b.k,b.h,[]);
   b.i=new TemplateInstance.New(p[1],Templates.RunFullDocTemplate(p[0]));
  };
- MainProgram.mainDoc$5627$78=Global.id;
- MainProgram.mainDoc$5619$39=function()
+ MainProgram.mainDoc$5753$78=Global.id;
+ MainProgram.mainDoc$5744$39=function()
  {
   return function(ev)
   {
    JumpTo.jumpToRef(ev.Target);
   };
  };
- MainProgram.mainDoc$5618$39=function()
+ MainProgram.mainDoc$5743$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5617$39=function()
+ MainProgram.mainDoc$5742$39=function()
  {
   return function(ev)
   {
    Importer.importFile(ev.Target);
   };
  };
- MainProgram.mainDoc$5616$39=function()
+ MainProgram.mainDoc$5741$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5615$39=function()
+ MainProgram.mainDoc$5740$39=function()
  {
   return function(ev)
   {
@@ -11231,11 +11495,11 @@
   }))))))))))))));
   return(p=Handler$1.CompleteHoles(tmp.k,tmp.h,[["filename",0],["name",0],["output",0],["fscode",0],["parser",0]]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.layout(p[0])),(tmp.i=i,i))).get_Doc();
  };
- MainProgram.buttonsRight$5601$74=Global.id;
- MainProgram.buttonsRight$5600$74=Global.id;
- MainProgram.buttonsRight$5599$74=Global.id;
- MainProgram.buttonsRight$5598$74=Global.id;
- MainProgram.buttonsRight$5597$74=Global.id;
+ MainProgram.buttonsRight$5726$74=Global.id;
+ MainProgram.buttonsRight$5725$74=Global.id;
+ MainProgram.buttonsRight$5724$74=Global.id;
+ MainProgram.buttonsRight$5723$74=Global.id;
+ MainProgram.buttonsRight$5722$74=Global.id;
  MainProgram.buttonsRight=function()
  {
   var tmp,p,i;
@@ -11461,13 +11725,13 @@
    return t[0];
   },(x=(b=FusionAsyncM.fusion(),b.Run(b.Delay(function()
   {
-   var $1,t,t$1,t$2,t$3,a,path,prop,v;
+   var $1,t,t$1,t$2,t$3,$2,$3,$4,a,path,prop,v;
    function m(snp)
    {
     Snippets.setProperty(snp,prop,v);
     return"Ok";
    }
-   switch(msg.$==1?($1=msg.$0,1):msg.$==2?($1=msg.$0,2):msg.$==3?($1=msg.$0,3):msg.$==4?(t=msg.$0,!Unchecked.Equals(t,null)&&t.length===2?Arrays.get(msg.$0,0)==="AddOutput"?($1=Arrays.get(msg.$0,1),4):Arrays.get(msg.$0,0)==="ExecJS"?($1=Arrays.get(msg.$0,1),5):($1=[Arrays.get(msg.$0,0),Arrays.get(msg.$0,1)],8):(t$1=msg.$0,!Unchecked.Equals(t$1,null)&&t$1.length===4?Arrays.get(msg.$0,0)==="SetProperty"?($1=[Arrays.get(msg.$0,1),Arrays.get(msg.$0,2),Arrays.get(msg.$0,3)],6):12:(t$2=msg.$0,!Unchecked.Equals(t$2,null)&&t$2.length===1?($1=Arrays.get(msg.$0,0),7):(t$3=msg.$0,!Unchecked.Equals(t$3,null)&&t$3.length===3?($1=[Arrays.get(msg.$0,0),Arrays.get(msg.$0,1),Arrays.get(msg.$0,2)],9):12)))):msg.$==6?($1=msg.$0,10):msg.$==5?11:0)
+   switch(msg.$==1?($1=msg.$0,1):msg.$==2?($1=msg.$0,2):msg.$==3?($1=msg.$0,3):msg.$==4?(t=msg.$0,!Unchecked.Equals(t,null)&&t.length===2?Arrays.get(msg.$0,0)==="AddOutput"?($1=Arrays.get(msg.$0,1),4):Arrays.get(msg.$0,0)==="ExecJS"?($1=Arrays.get(msg.$0,1),5):($1=[Arrays.get(msg.$0,0),Arrays.get(msg.$0,1)],8):(t$1=msg.$0,!Unchecked.Equals(t$1,null)&&t$1.length===4?Arrays.get(msg.$0,0)==="SetProperty"?($1=[Arrays.get(msg.$0,1),Arrays.get(msg.$0,2),Arrays.get(msg.$0,3)],6):13:(t$2=msg.$0,!Unchecked.Equals(t$2,null)&&t$2.length===1?($1=Arrays.get(msg.$0,0),7):(t$3=msg.$0,!Unchecked.Equals(t$3,null)&&t$3.length===3?($1=[Arrays.get(msg.$0,0),Arrays.get(msg.$0,1),Arrays.get(msg.$0,2)],9):13)))):msg.$==6?($1=msg.$0,10):msg.$==7?($1=[msg.$1,msg.$0],11):msg.$==5?12:0)
    {
     case 0:
      return b.Return({
@@ -11491,11 +11755,11 @@
      {
       return new ResultMessage({
        $:1,
-       $0:(function($2)
+       $0:(function($5)
        {
-        return function($3)
+        return function($6)
         {
-         return $2("Snippet not found "+FSharpStation_GeneratedPrintf.p$2($3));
+         return $5("Snippet not found "+FSharpStation_GeneratedPrintf.p$2($6));
         };
        }(Global.id))($1)
       });
@@ -11528,9 +11792,34 @@
       $0:"Ok"
      });
     case 5:
-     return b.Return({
-      $:0,
-      $0:(a=self["eval"].apply(self,[$1]),a===null?"":a)
+     try
+     {
+      $4={
+       $:0,
+       $0:(a=self["eval"].apply(self,[$1]),Unchecked.Equals(a,null)?"":(function($5)
+       {
+        return function($6)
+        {
+         return $5(Utils.prettyPrint($6));
+        };
+       }(Global.id))(a))
+      };
+     }
+     catch(e)
+     {
+      $4=Library.Error(new ResultMessage({
+       $:5,
+       $0:e.message,
+       $1:e.stack
+      }));
+     }
+     $3=FusionAsyncM.ofResultRM($4);
+     return b.Bind($3,function(a$1)
+     {
+      return b.Return({
+       $:0,
+       $0:a$1
+      });
      });
     case 6:
      path=$1[0];
@@ -11540,11 +11829,11 @@
      {
       return new ResultMessage({
        $:1,
-       $0:(function($2)
+       $0:(function($5)
        {
-        return function($3)
+        return function($6)
         {
-         return $2("Snippet not found: "+Utils.toSafe($3));
+         return $5("Snippet not found: "+Utils.toSafe($6));
         };
        }(Global.id))(path)
       });
@@ -11573,20 +11862,45 @@
     case 10:
      return b.ReturnFrom(Messaging.getValue($1));
     case 11:
+     return b.ReturnFrom(Messaging.setValue($1[1],$1[0]));
+    case 12:
      return b.Return({
       $:0,
       $0:self.document.baseURI
      });
-    case 12:
-     return b.Return(Hole.Hole[(function($2)
+    case 13:
+     return b.Return(Hole.Hole[(function($5)
      {
-      return function($3)
+      return function($6)
       {
-       return $2("TODO message: "+FSharpStation_GeneratedPrintf.p$3($3));
+       return $5("TODO message: "+FSharpStation_GeneratedPrintf.p$3($6));
       };
      }(Global.id))(msg)]);
    }
   }))),FusionAsyncM.runReader(Snippets.snippetsColl(),x)));
+ };
+ Messaging.setValue=function(vname,v)
+ {
+  var b;
+  b=FusionAsyncM.fusion();
+  return b.Run(b.Delay(function()
+  {
+   var m,t;
+   m=(t=(AppFramework.splitName(MainProgram.FStationLyt()))(vname),AppFramework.tryGetVar(t[0],t[1]));
+   return m!=null&&m.$==1?(m.$0.varVar.Set(v),b.Return({
+    $:0,
+    $0:"Ok"
+   })):b.ReturnFrom(FusionAsyncM.ofResultRM(Library.Error(new ResultMessage({
+    $:1,
+    $0:(function($1)
+    {
+     return function($2)
+     {
+      return $1("Var "+Utils.toSafe($2)+" not found");
+     };
+    }(Global.id))(vname)
+   }))));
+  }));
  };
  Messaging.getValue=function(vname)
  {
@@ -11642,14 +11956,14 @@
   SC$1.$cctor();
   return SC$1.wsStationClient;
  };
- Server.content$5875$54=function()
+ Server.content$6012$54=function()
  {
   MainProgram.mainProgram();
   return Doc.TextNode("Initialized");
  };
  SC$1.$cctor=function()
  {
-  var f,g$3,generation,$1,b,b$1,cache,$2,cache$1,$3,cache$2,$4,g$8,v,prior,f$3,f$4,f$5,f$6,x,$5,$6,v$1,s,sQ,x$1,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,x$2,t$9,i,x$3,t$10,t$11,t$12,t$13,t$14,i$1,x$4,t$15,t$16,t$17,t$18,t$19,t$20,t$21,i$2,t$22,g$11,g$12,x$5,b$2;
+  var f,g$3,generation,$1,b,b$1,cache,$2,cache$1,$3,cache$2,$4,g$8,v,prior,f$3,f$4,f$5,f$6,x,$5,$6,v$1,elO,s,sQ,x$1,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,x$2,t$9,i,x$3,t$10,t$11,t$12,t$13,t$14,i$1,x$4,t$15,t$16,t$17,t$18,t$19,t$20,t$21,i$2,t$22,g$11,g$12,x$5,b$2;
   SC$1.$cctor=Global.ignore;
   SC$1.rtn=function(v$2)
   {
@@ -11657,6 +11971,7 @@
   };
   SC$1.result=new Builder.New();
   SC$1.result$1=Result.result();
+  SC$1.resultP=new BuilderP.New();
   SC$1.fusion=new Builder$2.New();
   SC$1.fusion$1=new Builder$4.New();
   SC$1.resultM=new Builder$5.New();
@@ -11861,6 +12176,7 @@
    return g$7(Global.id(x$6));
   }];
   SC$1.rexGuid="([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})";
+  SC$1.rexEmail="(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@[*[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+]*";
   SC$1.observers=List.T.Empty;
   SC$1.css="\r\n                .tab-panel {\r\n                 overflow  : hidden   ;\r\n                 display   : flex     ;\r\n                 flex-flow : column   ;\r\n                 background: lightgray;\r\n                 height    : 100%    ;\r\n                 width     : 100%    ;\r\n                }\r\n                .tab-content {\r\n                 flex      : 1 1     ;\r\n                 overflow  : auto    ;\r\n                 position  : relative;\r\n                }\r\n                .tab-children {\r\n                 height    : 100%    ;\r\n                 width     : 100%    ;\r\n                 position  : absolute;\r\n                 display   : grid    ;\r\n                }\r\n                .tab-strip {\r\n                 padding   : 0pt     ;\r\n                 flex      : 0 0     ;\r\n                }\r\n                .tab {\r\n                 border     : 0.2pt solid transparent;\r\n                 padding    : 0pt 4pt;\r\n                 display    : inline-block;\r\n                 font-family: sans-serif;\r\n                 font-weight: 200;\r\n                 font-size  : small;\r\n                 color      : #666;\r\n                 cursor     : pointer;\r\n                }\r\n                .top>.tab {\r\n                 border-radius: 2pt 2pt 0pt 0pt;\r\n                 border-bottom-width: 0pt;\r\n                 vertical-align: bottom;\r\n                }\r\n                .bottom>.tab {\r\n                 border-top-width: 0pt;\r\n                 border-radius: 0pt 0pt 2pt 2pt;\r\n                 vertical-align: top;\r\n                }\r\n                .horizontal>.tab:not(:first-child) {\r\n                 border-left-width: 0pt;\r\n                }\r\n                .tab.hovering {\r\n                 background: red;\r\n                }\r\n                .tab.selected {\r\n                 background: white;\r\n                 border-left-width: 0.2pt;\r\n                 color: black;\r\n                 font-weight: 500;\r\n                 border-color: black;\r\n                }\r\n                .horizontal>.tab.selected {\r\n                 border-left-width: 0.2pt;\r\n                }\r\n                ::slotted(*              ) { \r\n                 width : 100%;\r\n                 height: 100%;\r\n                }\r\n                        ";
   SC$1.init=Lazy.Create(function()
@@ -12302,7 +12618,7 @@
        return Seq$1.append(ss,Seq$1.delay(function()
        {
         var x$6,x$7;
-        return[(x$6=Strings.concat(" ",(x$7=List.ofSeq(Operators$4.range(0,Seq$1.length(ss)-1)),Seq$1.map(function($7)
+        return[(x$6=Strings.concat(" ",(x$7=List.ofSeq(Operators$5.range(0,Seq$1.length(ss)-1)),Seq$1.map(function($7)
         {
          return function($8)
          {
@@ -12408,6 +12724,26 @@
    }
   },Snippets.CurrentSnippetIdW());
   SC$1.rexGuid$1="\\((\\d+)\\,\\s*(\\d+)\\) - \\((\\d+)\\,\\s*(\\d+)\\).*([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})";
+  SC$1.setScrollToBottom=(elO=null,View$1.Sink(function()
+  {
+   (Option.iter(function(e)
+   {
+    CustomAction.scrollToBottom(e);
+   }))(elO);
+  },FStation.outputMsgs().get_View()),function(el)
+  {
+   elO={
+    $:1,
+    $0:el
+   };
+   (function($7)
+   {
+    return $7("setScrollToBottom");
+   }(function(s$1)
+   {
+    console.log(s$1);
+   }));
+  });
   function get(a$4)
   {
    return a$4.$0;
@@ -12746,7 +13082,7 @@
       }
       function g$15(m$4)
       {
-       Operators$4.FailWith(m$4);
+       Operators$5.FailWith(m$4);
       }
       _this=Messaging.wsStationClient();
       _this.payloadProcessorO={
@@ -12811,7 +13147,7 @@
  };
  FSharpStation_JsonDecoder.j$4=function()
  {
-  return FSharpStation_JsonDecoder._v$4?FSharpStation_JsonDecoder._v$4:FSharpStation_JsonDecoder._v$4=(Provider.DecodeUnion(void 0,"$",[[0,[]],[1,[["$0","Item",Provider.DecodeArray(FSharpStation_JsonDecoder.j$5),0]]],[2,[["$0","Item",FSharpStation_JsonDecoder.j$5,0]]],[3,[["$0","Item",FSharpStation_JsonDecoder.j$5,0]]],[4,[["$0","Item",Provider.DecodeArray(Provider.Id()),0]]],[5,[]],[6,[["$0","Item",Provider.Id(),0]]]]))();
+  return FSharpStation_JsonDecoder._v$4?FSharpStation_JsonDecoder._v$4:FSharpStation_JsonDecoder._v$4=(Provider.DecodeUnion(void 0,"$",[[0,[]],[1,[["$0","Item",Provider.DecodeArray(FSharpStation_JsonDecoder.j$5),0]]],[2,[["$0","Item",FSharpStation_JsonDecoder.j$5,0]]],[3,[["$0","Item",FSharpStation_JsonDecoder.j$5,0]]],[4,[["$0","Item",Provider.DecodeArray(Provider.Id()),0]]],[5,[]],[6,[["$0","Item",Provider.Id(),0]]],[7,[["$0","Item1",Provider.Id(),0],["$1","Item2",Provider.Id(),0]]]]))();
  };
  FSharpStation_JsonDecoder.j$6=function()
  {
@@ -12912,7 +13248,7 @@
  };
  FSharpStation_GeneratedPrintf.p$3=function($1)
  {
-  return $1.$==6?"MsgGetValue "+Utils.prettyPrint($1.$0):$1.$==5?"MsgGetUrl":$1.$==4?"MsgAction "+Utils.printArray(Utils.prettyPrint,$1.$0):$1.$==3?"MsgGetPredecessors "+FSharpStation_GeneratedPrintf.p$2($1.$0):$1.$==2?"MsgGetCode "+FSharpStation_GeneratedPrintf.p$2($1.$0):$1.$==1?"MsgGetSnippets "+Utils.printArray(function($2)
+  return $1.$==7?"MsgSetValue ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+")":$1.$==6?"MsgGetValue "+Utils.prettyPrint($1.$0):$1.$==5?"MsgGetUrl":$1.$==4?"MsgAction "+Utils.printArray(Utils.prettyPrint,$1.$0):$1.$==3?"MsgGetPredecessors "+FSharpStation_GeneratedPrintf.p$2($1.$0):$1.$==2?"MsgGetCode "+FSharpStation_GeneratedPrintf.p$2($1.$0):$1.$==1?"MsgGetSnippets "+Utils.printArray(function($2)
   {
    return FSharpStation_GeneratedPrintf.p$2($2);
   },$1.$0):"MsgGetId";

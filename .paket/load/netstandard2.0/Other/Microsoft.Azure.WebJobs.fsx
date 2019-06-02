@@ -1,0 +1,1 @@
+#r "../../../../packages/other/Microsoft.Azure.WebJobs/lib/netstandard2.0/Microsoft.Azure.WebJobs.Host.dll" 

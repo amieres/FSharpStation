@@ -1,0 +1,1 @@
+#r "../../../../packages/other/FSharp.Data.TypeProviders/lib/net40/FSharp.Data.TypeProviders.dll" 

@@ -1,0 +1,7 @@
+#load "Microsoft.AspNetCore.Hosting.Abstractions.csx" 
+#load "Microsoft.AspNetCore.Http.Extensions.csx" 
+#load "Microsoft.AspNetCore.WebUtilities.csx" 
+#load "Microsoft.Extensions.FileProviders.Physical.csx" 
+#load "Microsoft.Extensions.Options.csx" 
+#load "System.Diagnostics.DiagnosticSource.csx" 
+#load "System.Reflection.Metadata.csx" 

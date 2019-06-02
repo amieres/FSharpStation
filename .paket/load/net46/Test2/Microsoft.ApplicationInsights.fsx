@@ -1,0 +1,5 @@
+#load "System.Diagnostics.DiagnosticSource.fsx" 
+#load "System.Diagnostics.StackTrace.fsx" 
+#load "System.Net.Requests.fsx" 
+#r "System.Net.Http" 
+#r "../../../../packages/test2/Microsoft.ApplicationInsights/lib/net46/Microsoft.ApplicationInsights.dll" 

@@ -1,0 +1,5 @@
+#load "Microsoft.Azure.KeyVault.Core.csx" 
+#load "Newtonsoft.Json.csx" 
+#r "System.Xml" 
+#r "System.Xml.Linq" 
+#r "../../../../packages/prozper/Microsoft.Azure.Storage.Common/lib/net452/Microsoft.Azure.Storage.Common.dll" 

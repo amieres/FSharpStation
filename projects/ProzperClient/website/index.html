@@ -4,7 +4,9 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" href="/blob/images/favicon.ico" type="image/x-icon">
         <link href="//cdn.muicss.com/mui-0.9.41/css/mui.min.css" rel="stylesheet" type="text/css" >
+        <script src="//cdn.muicss.com/mui-0.9.41/js/mui.min.js"></script>
         <script src="//cdn.muicss.com/mui-0.9.41/js/mui.min.js"></script>
         <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
         <!-- Latest compiled and minified JavaScript -->
@@ -14,10 +16,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js" class="pre"></script>
         <script ws-replace="scripts"></script>
         <script>
-                function gotoTaing() { 
-                    if (document.getElementById("refer").value == "taing") 
-                        window.location.href = "taing"; 
-                }
                 function doNothing(e){
                     console.log("donothing");
                     e.preventDefault();
@@ -231,8 +229,8 @@
                 cntFormaInvitaciones  Doc invitaciones
                 cntReporteConsolidado Doc Prozper.ReporteConsolidado
                 cntTablaPagos         Doc Prozper.TablaPagos
-                cntPDF                div   "id=pdfViewer  ;max-height:calc(100% - 68px)"
-                cntVideo              video "id=videoViewer;max-height:calc(100% - 68px); max-width:100%; height:calc(100% - 68px); width:100%;poster=blob/images/loading-prozper.gif"
+                cntPDF                div   "id=pdfViewer  ;height:calc(100vh - 68px)"
+                cntVideo              video "id=videoViewer;height:calc(100vh - 68px); max-width:100%; height:calc(100% - 68px); width:100%;poster=blob/images/loading-prozper.gif"
                 :                     source "src=@{Prozper.VideoW};type=video/mp4"
                 cntSubirDocumentos    div "class=mui-panel"
                 :                     Doc Prozper.ListaDocs  
@@ -243,7 +241,7 @@
                 :                     br ""
                 :                     button Prozper.gotoInfluencer "id=refer;class=mui-btn @{Prozper.influencerClassW}" "Registrarse"
                 cntAutorizacion       div "class=mui-panel"
-                :                     template Autorizacion "" afiliado "@{Prozper.aliado}" montoafiliacion "$75.00"
+                :                     Doc Prozper.FormaAutorizacion
 
                 mnuNoUsuario          ul ""
                 :                     template MenuNoUsuario ""
@@ -459,10 +457,9 @@
             afiliación.
             <br>
             <br>
-            <div ws-replace="CuentaDebitar"/>
+            <div class="mui-form mui-form--inline mui-panel" ws-hole="CuentaDebitar"></div>
             <br>
             <br>
-            
             <div class="mui--z2 mui--text-center  mui--bg-primary mui--text-white mui--text-headline">
             FIRMA Y CONFIRMACION
             </div>
@@ -475,12 +472,13 @@
             <br>
             Firma del titular de la cuenta: <input type="text" name="Titular" ws-var="Titular" required>
             <br>
-            Fecha: <input type="text" name="Fecha" ws-var="Fecha" required>
+            Fecha(AAAA/MM/DD): <input type="text" name="Fecha" ws-var="Fecha" required>
             <br>
             <label>
-                    <input type="checkbox" value="" unchecked>
+                    <input type="checkbox" value="" ws-var="Acepto" unchecked>
                     He leído los términos arriba indicados y estoy de acuerdo
             </label>
+            <div style="color:red">${Mensaje}</div>
             <br>
             <button type="button" class="mui-btn mui-btn--raised ${FirmarClass}" ws-onclick="Firmar" >Firmar y Procesar</button>
         </div>
@@ -1503,4 +1501,5 @@
   </body>
   <script src="/blob/Scripts/FileSaver.js"></script>
   <script src="/blob/Scripts/testing.js"></script>
+  <script src="/blob/Scripts/html2canvas.min.js"></script>
 </html>

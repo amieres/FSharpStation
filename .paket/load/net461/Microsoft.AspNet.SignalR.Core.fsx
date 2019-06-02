@@ -1,0 +1,5 @@
+#load "Microsoft.Owin.Security.fsx" 
+#load "Newtonsoft.Json.fsx" 
+#r "Microsoft.CSharp" 
+#r "System.Security" 
+#r "../../../packages/Microsoft.AspNet.SignalR.Core/lib/net45/Microsoft.AspNet.SignalR.Core.dll" 

@@ -1,0 +1,1 @@
+#r "../../../../packages/other/Microsoft.IdentityModel.Clients.ActiveDirectory/lib/netstandard1.3/Microsoft.IdentityModel.Clients.ActiveDirectory.dll" 

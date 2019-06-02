@@ -1,0 +1,1 @@
+#r "../../../../packages/other/AuthorizeNet/lib/AuthorizeNet.dll" 

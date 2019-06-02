@@ -1,0 +1,1 @@
+#r "../../../../packages/prozper/Microsoft.Azure.KeyVault.Core/lib/netstandard1.4/Microsoft.Azure.KeyVault.Core.dll" 

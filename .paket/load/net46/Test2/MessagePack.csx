@@ -1,0 +1,8 @@
+#load "System.Reflection.Emit.csx" 
+#load "System.Reflection.Emit.Lightweight.csx" 
+#load "System.Runtime.Serialization.Primitives.csx" 
+#load "System.Threading.Tasks.Extensions.csx" 
+#load "System.ValueTuple.csx" 
+#r "System" 
+#r "System.Core" 
+#r "../../../../packages/test2/MessagePack/lib/net45/MessagePack.dll" 

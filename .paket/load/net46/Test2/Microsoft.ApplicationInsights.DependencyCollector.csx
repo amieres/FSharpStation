@@ -1,0 +1,6 @@
+#load "Microsoft.ApplicationInsights.csx" 
+#load "Microsoft.Extensions.PlatformAbstractions.csx" 
+#load "System.Data.SqlClient.csx" 
+#load "System.Diagnostics.DiagnosticSource.csx" 
+#load "System.Diagnostics.StackTrace.csx" 
+#r "../../../../packages/test2/Microsoft.ApplicationInsights.DependencyCollector/lib/net45/Microsoft.AI.DependencyCollector.dll" 

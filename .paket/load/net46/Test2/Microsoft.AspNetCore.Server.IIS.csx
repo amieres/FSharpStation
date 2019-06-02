@@ -1,0 +1,5 @@
+#load "Microsoft.AspNetCore.Authentication.Core.csx" 
+#load "Microsoft.AspNetCore.Connections.Abstractions.csx" 
+#load "Microsoft.AspNetCore.Hosting.Abstractions.csx" 
+#load "System.IO.Pipelines.csx" 
+#load "System.Security.Principal.Windows.csx" 

@@ -1,0 +1,5 @@
+#load "System.Resources.ResourceManager.csx" 
+#load "System.Runtime.csx" 
+#load "System.Runtime.Handles.csx" 
+#r "mscorlib" 
+#r "../../../packages/System.Threading.Overlapped/lib/net46/System.Threading.Overlapped.dll" 
