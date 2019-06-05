@@ -1,6 +1,5 @@
-#nowarn "3242"
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1559368300303 -d:NOFRAMEWORK --noframework -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1559463961192 -d:WEBSHARPER
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\FSharpStation\src"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
@@ -42,50 +41,23 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin\lib\net461\HttpMultipartParser.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.StaticFiles\lib\net451\Microsoft.Owin.StaticFiles.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
-//#nowarn "3242"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1559368300303
+//#define FSharpStation1559463961192
 #if INTERACTIVE
 module FsRoot   =
 #else
 namespace FsRoot
 #endif
 
-    #if WEBSHARPER
-    //#nowarn "3242" 
-    
-    open WebSharper
-    open WebSharper.JavaScript
-    open WebSharper.UI
-    open WebSharper.UI.Client
-    type on   = WebSharper.UI.Html.on
-    type attr = WebSharper.UI.Html.attr
-    #else
-    /// dummy WebSharper definition in order to avoid having to use #if WEBSHARPER all the time
-    module WebSharper =
-        type RpcAttribute() =
-            let a = 1
-        type JavaScriptAttribute(translate:bool) =
-            let a = 1
-            new() = JavaScriptAttribute true
-        type InlineAttribute(code:string) =
-            let a = 1
-            new() = InlineAttribute ""
-        type DirectAttribute(code:string) =
-            let a = 1
-    
-    open WebSharper
-    
-    #endif
-    //#define NOFRAMEWORK --noframework
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
-    
+    //#define WEBSHARPER
+    #if WEBSHARPER
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
     
@@ -104,7 +76,37 @@ namespace FsRoot
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    #endif
+    #if WEBSHARPER
+    //#nowarn "3242" 
     
+    open WebSharper
+    open WebSharper.JavaScript
+    open WebSharper.UI
+    open WebSharper.UI.Client
+    type on   = WebSharper.UI.Html.on
+    type attr = WebSharper.UI.Html.attr
+    #else
+    /// dummy WebSharper definition in order to avoid having to use #if WEBSHARPER all the time
+    module WebSharper =
+        type RpcAttribute() =
+            inherit SealedAttribute()
+            let a = 1
+        type JavaScriptAttribute(translate:bool) =
+            inherit SealedAttribute()
+            let a = 1
+            new() = JavaScriptAttribute true
+        type InlineAttribute(code:string) =
+            inherit SealedAttribute()
+            let a = 1
+            new() = InlineAttribute ""
+        type DirectAttribute(code:string) =
+            inherit SealedAttribute()
+            let a = 1
+    
+    open WebSharper
+    
+    #endif
     
         /// Essentials that can be converted to JavaScript with WebSharper
         [< JavaScript ; AutoOpen >]
@@ -1527,10 +1529,9 @@ namespace FsRoot
                 | Looking   pr -> pr
                 | Found     pr -> pr
             
-                let filterPreps (fsNass:(string * PreproDirective) seq) =
-                    let  defines  = fsNass |> Seq.choose (snd >> (function | PrepoDefine d -> Some d | _ -> None)) |> Seq.distinct |> Seq.toArray
+                let filterPreps (preps:PreproDirective seq) =
+                    let  defines  = preps |> Seq.choose (function | PrepoDefine d -> Some d | _ -> None) |> Seq.distinct |> Seq.toArray
                     let isDefined (def:string) =    defines |> Seq.contains (def.Replace("!","").Trim()) |> (if def.Trim().StartsWith "!" then not else id)
-                    let preps = fsNass |> Seq.map snd  |> Seq.filter (function NoPrepo  -> false |_-> true ) |> Seq.toArray
                     (LevelZero, preps) 
                     ||> Seq.mapFold(fun st prep ->
                         match st, prep with
@@ -1553,15 +1554,29 @@ namespace FsRoot
                     |>  Seq.choose id
                     |>  Seq.toArray
             
-                let separateDirectives (fsNass:(string * PreproDirective) seq) =
-                    let  defines  = fsNass |> Seq.choose (snd >> (function | PrepoDefine d      -> Some d      | _ -> None)) |> Seq.distinct |> Seq.toArray
+                let getTopDirectives (fsNass:(string * PreproDirective) seq) =
+                    let  directs  = fsNass |> Seq.map snd |> Seq.filter (function 
+                                        | PrepoDefine _
+                                        | PrepoR      _ 
+                                        | PrepoI      _
+                                        | PrepoNoWarn _
+                                        | PrepoCd     _ 
+                                        | PrepoIf     _
+                                        | PrepoEndIf  
+                                        | PrepoElIf   _
+                                        | PrepoElse    -> true
+                                        |_             -> false) |> Seq.toArray
+                    let  code     = fsNass |> Seq.map fst |> Seq.toArray
+                    code, directs
+                    
+                let separateDirectives (fsNass:PreproDirective seq) =
+                    let  defines  = fsNass |> Seq.choose (function | PrepoDefine d      -> Some d      | _ -> None) |> Seq.distinct |> Seq.toArray
                     let  preps    = filterPreps fsNass
-                    let  assembs  = preps  |> Seq.choose ((function | PrepoR      assemb -> Some assemb | _ -> None)) |> Seq.distinct |> Seq.toArray
-                    let  prepoIs  = preps  |> Seq.choose ((function | PrepoI      d      -> Some d      | _ -> None)) |> Seq.distinct |> Seq.toArray
-                    let  nowarns  = preps  |> Seq.choose ((function | PrepoNoWarn d      -> Some d      | _ -> None)) |> Seq.distinct |> Seq.toArray
-                    let  cd       = preps  |> Seq.choose ((function | PrepoCd     dir    -> Some dir    | _ -> None)) |> Seq.tryHead
-                    let  code     = fsNass |> Seq.map     fst                                                                                |> Seq.toArray
-                    code, assembs, defines, prepoIs, nowarns, cd
+                    let  assembs  = preps  |> Seq.choose (function | PrepoR      assemb -> Some assemb | _ -> None) |> Seq.distinct |> Seq.toArray
+                    let  prepoIs  = preps  |> Seq.choose (function | PrepoI      d      -> Some d      | _ -> None) |> Seq.distinct |> Seq.toArray
+                    let  nowarns  = preps  |> Seq.choose (function | PrepoNoWarn d      -> Some d      | _ -> None) |> Seq.distinct |> Seq.toArray
+                    let  cd       = preps  |> Seq.choose (function | PrepoCd     dir    -> Some dir    | _ -> None) |> Seq.tryHead
+                    assembs, defines, prepoIs, nowarns, cd
                     
                 let getSourceDir srcDir (lines:string[]) =
                     match lines.[0], Array.tryItem 1 lines with
@@ -1595,7 +1610,7 @@ namespace FsRoot
             | RefSnippetId   of SnippetId
             | RefSnippetPath of string[]
             
-            type Reduced = ((SnippetId * string * int * int) [] * string [] * string [] * string [] * string [] * string [] * string option) option
+            type Reduced = ((SnippetId * string * int * int) [] * string [] * FsCode.PreproDirective [] ) option
             
             type SnippetCollection = {
                 generation       : int
@@ -1766,33 +1781,30 @@ namespace FsRoot
                     let  indentF, prfx = if indent = 0         then (id, "") else (Array.map    (fun (l, pr) -> String.replicate indent " " + l, pr), sprintf"(%d)" indent)
                     let! code          = prepareCodeRm snp
                     //let  name          = nameSanitized snp
-                    let  code, assembs, defines, prepIs, nowarns, cdO =
+                    let  code, directs =
                         code.Split('\n')
                         |> FsCode.separatePrepros
                         |> indentF
-                        |> FsCode.separateDirectives
+                        |> FsCode.getTopDirectives
                     return
-                        [| snp.snpId, snippetName snp.snpName snp.snpContent, code.Length, indent |] , code, assembs, defines, prepIs, nowarns,cdO
+                        [| snp.snpId, snippetName snp.snpName snp.snpContent, code.Length, indent |] , code, directs
                 }
-                let addSeps (lines1:(SnippetId*string*int*int)[], code1:string[], assembs1:string[], defines1:string[], prepIs1:string[], nowarns1:string[], cdO1:string option)
-                            (lines2:(SnippetId*string*int*int)[], code2:string[], assembs2:string[], defines2:string[], prepIs2:string[], nowarns2:string[], cdO2:string option) =
+                let addSeps (lines1:(SnippetId*string*int*int)[], code1:string[], directs1:FsCode.PreproDirective[])
+                            (lines2:(SnippetId*string*int*int)[], code2:string[], directs2:FsCode.PreproDirective[]) =
                     Array.append lines1   lines2
                   , Array.append code1    code2
-                  , Seq  .append assembs1 assembs2 |> Seq.distinct |> Seq.toArray
-                  , Seq  .append defines1 defines2 |> Seq.distinct |> Seq.toArray
-                  , Seq  .append prepIs1  prepIs2  |> Seq.distinct |> Seq.toArray
-                  , Seq  .append nowarns1 nowarns2 |> Seq.distinct |> Seq.toArray
-                  , cdO1 |> function None -> cdO2 |_-> cdO1
+                  , Array.append directs1 directs2
                 let reducedCodeRm  snippets = fusion {
                     let! parts    = snippets |> traverseSeq separateCodeRm
                     let  reduced  = parts
-                                    |> fun snps -> if snps |> Seq.isEmpty then seq [ [||],  [||],  [||],  [||],  [||],  [||], None ] else snps
+                                    |> fun snps -> if snps |> Seq.isEmpty then seq [ [||],  [||],  [||] ] else snps
                                     |> Seq.reduce addSeps
-                                    |> fun (lines, code                                         , assembs, defines, prepIs, nowarns, cdO) ->
-                                           (lines, code |> String.concat "\n" |> Array.singleton, assembs, defines, prepIs, nowarns, cdO)
+                                    |> fun (lines, code                                         , directs) ->
+                                           (lines, code |> String.concat "\n" |> Array.singleton, directs)
                     return reduced
                 }
-                let finishCode (lines:(SnippetId*string*int*int)[],code:string[], assembs:string[], defines:string[], prepIs:string[], nowarns:string[], cdO: string option) =
+                let finishCode (lines:(SnippetId*string*int*int)[],code:string[], directs:FsCode.PreproDirective[]) =
+                    let assembs, defines, prepIs, nowarns, cdO = FsCode.separateDirectives directs
                     let config = defines |> Seq.sort |> Seq.map ((+)"-d:") |> String.concat " "
                     let part1  =
                       [ if config <> "" then yield "////" + config
@@ -2467,7 +2479,7 @@ namespace FsRoot
                 }
             
         /// Essentials that run in Javascript (WebSharper)
-        //#define WEBSHARPER
+        //#define WEBSHARPER 
         [< JavaScript ; AutoOpen >]
         module LibraryJS =
             module Promise =
@@ -3943,7 +3955,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/d2b2edfb-4b2c-4cd8-984b-801fa86ec69f"
+                    "http://localhost:9005/#/Snippet/a17730c1-09a7-48f8-bba8-a24ba4c61dd5"
                 #endif
                 
                 let extractEndPoint() = 
@@ -4136,7 +4148,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1559368300303"
+                let mutable fsharpStationAddress = Address "FSharpStation1559463961192"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 

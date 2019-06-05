@@ -362,7 +362,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 (function()
 {
  "use strict";
- var Global,FsRoot,ProzperServer,ClientSide,MainProgram,WebSharper,Obj,UI,Var$1,LibraryJS,AppFramework,PlugIn,ModeloUI,Aliado,Operators,View,Var,Lazy,RenderAliados,RenderAliado,FormaRegistro,FormaDatos,FormaContactos,FormaFormasPago,ReporteConsolidado,TablaPagos,ListaDocs,FormaAutorizacion,EventTarget,Node,JavaScript,JS,Unchecked,LayoutEngineModule,Option,TypesV0,Aliado$1,Aliado$2,Templating,Runtime,Server,TemplateInstance,Arrays,ProviderBuilder,Handler,ProzperServer_Templates,ProzperServer_GeneratedPrintf,ProzperServer_Router,Doc,Rpc,IdAliado,Modelo,ConcreteVar,Snap,SC$1,ListModel,PlugInVar,PlugInView,PlugInDoc,Pervasives,LazyExtensionsProxy,LazyRecord,Seq,Library,SortWith,Buscar,Collections,FSharpSet,Set,Strings,CorreoElectronico,DatosPersonales,CorreoElectronico$1,Telefono,Direccion,Monads,AsyncResultBuilder,Refresh,System,Guid,Fila,VariousUI,StatusAliado,Utils,Date,List,CuentaBancaria,RoutingNumber,NumeroCuenta,FormaPago,Result,PremisasCalculo,AsyncResult,ParseO,PlugInAction,Msal,Extensions,WindowOrWorkerGlobalScope,LayoutEngine,SC$2,IdForAuthorize,DatosPersonales$1,DiaPago,TipoAliado,Numeric,List$1,Dictionary,HashSet,Client,Abbrev,Async,Fresh,Builder,BuilderP,Eff,EffBuilder,AsyncResultBuilderP,String,Slice,Serializer,Msal$1,Policy,Telefono$1,TipoTelefono,Direccion$1,TipoDireccion,Estado,Pais,ZonaPostal,TarjetaCredito,Expiracion,NumeroTarjeta,TipoTarjeta,TipoCuenta,Genero,Remoting,UserAgentApplication,EndPoint,Router,ViewBuilder,Remoting$1,Rpc$1,IdPayment,PlugInQuery,FSharpMap,Enumerator,T,BalancedTree,T$1,AjaxRemotingProvider,Array,HtmlModule,attr,CuentaBancaria$1,TarjetaCredito$1,Object,FromView,Array$1,Concurrency,Blob,AttrModule,GeneratedPrintf,LayoutEngine_Templates,LayoutEngine_GeneratedPrintf,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,DictionaryUtil,AttrProxy,CheckedInput,Client$1,Templates,DateUtil,SC$3,Pojo,Sitelets,RouterOperators,RouterModule,Route,CustomXhrProvider,Promise,MapUtil,Tree,IdAddress,Docs,AsyncBody,SC$4,CT,Layout,Attrs,DomUtility,WcSplitterT,DocElemNode,CharacterData,SC$5,XhrProvider,Router$1,List$2,Pair,Result$1,Scheduler,CancellationTokenSource,Measures,Hoverable,Hoverable$1,Storage,Event,UIEvent,ResizeObserver,SC$6,Elt,Attrs$1,Dyn,Prepare,An,Settings,Mailbox,HashSetUtil,SC$7,Map,Error,NonStandardPromiseRejectionException,OperationCanceledException,Queue,DynamicAttrNode,SC$8,AggregateException,ArrayStorage,KeyCollection,Updates,Docs$1,RunState,NodeSet,Anims,SC$9,Char,Json,FormatException,StringEncoding,SC$10,String$1,SC$11,AppendList,PathUtil,Easing,HashSet$1,DomNodes,SC$12,IntelliFactory,Runtime$1,Math,$,Date$1,console,JSON,Reflect,String$2;
+ var Global,FsRoot,ProzperServer,ClientSide,MainProgram,WebSharper,Obj,UI,Var$1,LibraryJS,AppFramework,PlugIn,ModeloUI,Aliado,Operators,View,Var,Lazy,RenderAliados,RenderAliado,FormaRegistro,FormaDatos,FormaContactos,FormaFormasPago,ReporteConsolidado,TablaPagos,ListaDocs,FormaAutorizacion,EventTarget,Node,JavaScript,JS,Unchecked,LayoutEngineModule,Option,TypesV0,Aliado$1,Aliado$2,Templating,Runtime,Server,TemplateInstance,Arrays,ProviderBuilder,Handler,ProzperServer_Templates,ProzperServer_GeneratedPrintf,ProzperServer_Router,GeneratedPrintf,Doc,Rpc,IdAliado,Modelo,ConcreteVar,Snap,SC$1,ListModel,PlugInVar,PlugInView,PlugInDoc,Pervasives,LazyExtensionsProxy,LazyRecord,Seq,Library,SortWith,Buscar,Collections,FSharpSet,Set,Strings,CorreoElectronico,DatosPersonales,CorreoElectronico$1,Telefono,Direccion,Monads,AsyncResultBuilder,Refresh,System,Guid,Fila,VariousUI,StatusAliado,Utils,Date,List,CuentaBancaria,RoutingNumber,NumeroCuenta,FormaPago,Result,FormaFirma,PremisasCalculo,PlugInAction,Msal,Extensions,WindowOrWorkerGlobalScope,LayoutEngine,SC$2,IdForAuthorize,DatosPersonales$1,DiaPago,TipoAliado,Numeric,List$1,Dictionary,HashSet,Client,Abbrev,Async,Fresh,Builder,BuilderP,Eff,EffBuilder,AsyncResultBuilderP,String,Slice,ParseO,Serializer,Msal$1,Policy,Telefono$1,TipoTelefono,Direccion$1,TipoDireccion,Estado,Pais,ZonaPostal,TarjetaCredito,Expiracion,NumeroTarjeta,TipoTarjeta,TipoCuenta,Genero,Remoting,Configuration,AuthOptions,Control,MailboxProcessor,Mailbox,EndPoint,Router,ViewBuilder,Remoting$1,Rpc$1,IdPayment,PlugInQuery,FSharpMap,Enumerator,T,BalancedTree,T$1,AsyncResult,AjaxRemotingProvider,Array,HtmlModule,attr,CuentaBancaria$1,TarjetaCredito$1,Object,FromView,Array$1,Concurrency,Blob,AttrModule,LayoutEngine_Templates,LayoutEngine_GeneratedPrintf,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,DictionaryUtil,AttrProxy,CheckedInput,Client$1,Templates,DateUtil,SC$3,Pojo,Error,TimeoutException,Promise,Sitelets,RouterOperators,RouterModule,Route,CustomXhrProvider,MapUtil,Tree,IdAddress,Docs,AsyncBody,SC$4,CT,Layout,Attrs,DomUtility,WcSplitterT,DocElemNode,CharacterData,SC$5,XhrProvider,FSharpEvent,LinkedList,AuthenticationParameters,Account,Router$1,List$2,Pair,Result$1,Scheduler,CancellationTokenSource,Measures,Hoverable,Hoverable$1,Storage,Event,UIEvent,ResizeObserver,SC$6,Elt,Attrs$1,Dyn,Prepare,An,Settings,Mailbox$1,HashSetUtil,Event$1,Event$2,NonStandardPromiseRejectionException,SC$7,Map,OperationCanceledException,Queue,DynamicAttrNode,SC$8,AggregateException,ArrayStorage,KeyCollection,Updates,Docs$1,RunState,NodeSet,Anims,SC$9,Char,Json,FormatException,StringEncoding,SC$10,String$1,SC$11,AppendList,LinkedListEnumerator,PathUtil,Easing,HashSet$1,DomNodes,SC$12,IntelliFactory,Runtime$1,Math,$,console,Date$1,JSON,Reflect,String$2;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  ProzperServer=FsRoot.ProzperServer=FsRoot.ProzperServer||{};
@@ -411,6 +411,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  ProzperServer_Templates=Global.ProzperServer_Templates=Global.ProzperServer_Templates||{};
  ProzperServer_GeneratedPrintf=Global.ProzperServer_GeneratedPrintf=Global.ProzperServer_GeneratedPrintf||{};
  ProzperServer_Router=Global.ProzperServer_Router=Global.ProzperServer_Router||{};
+ GeneratedPrintf=Global.GeneratedPrintf=Global.GeneratedPrintf||{};
  Doc=UI.Doc=UI.Doc||{};
  Rpc=ModeloUI.Rpc=ModeloUI.Rpc||{};
  IdAliado=TypesV0.IdAliado=TypesV0.IdAliado||{};
@@ -454,9 +455,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  NumeroCuenta=TypesV0.NumeroCuenta=TypesV0.NumeroCuenta||{};
  FormaPago=TypesV0.FormaPago=TypesV0.FormaPago||{};
  Result=Monads.Result=Monads.Result||{};
+ FormaFirma=ModeloUI.FormaFirma=ModeloUI.FormaFirma||{};
  PremisasCalculo=TypesV0.PremisasCalculo=TypesV0.PremisasCalculo||{};
- AsyncResult=Monads.AsyncResult=Monads.AsyncResult||{};
- ParseO=Library.ParseO=Library.ParseO||{};
  PlugInAction=AppFramework.PlugInAction=AppFramework.PlugInAction||{};
  Msal=ClientSide.Msal=ClientSide.Msal||{};
  Extensions=Monads.Extensions=Monads.Extensions||{};
@@ -482,6 +482,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  AsyncResultBuilderP=Monads.AsyncResultBuilderP=Monads.AsyncResultBuilderP||{};
  String=Library.String=Library.String||{};
  Slice=WebSharper.Slice=WebSharper.Slice||{};
+ ParseO=Library.ParseO=Library.ParseO||{};
  Serializer=Library.Serializer=Library.Serializer||{};
  Msal$1=LibraryJS.Msal=LibraryJS.Msal||{};
  Policy=Msal$1.Policy=Msal$1.Policy||{};
@@ -499,7 +500,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  TipoCuenta=TypesV0.TipoCuenta=TypesV0.TipoCuenta||{};
  Genero=TypesV0.Genero=TypesV0.Genero||{};
  Remoting=WebSharper.Remoting=WebSharper.Remoting||{};
- UserAgentApplication=Msal$1.UserAgentApplication=Msal$1.UserAgentApplication||{};
+ Configuration=Msal$1.Configuration=Msal$1.Configuration||{};
+ AuthOptions=Msal$1.AuthOptions=Msal$1.AuthOptions||{};
+ Control=WebSharper.Control=WebSharper.Control||{};
+ MailboxProcessor=Control.MailboxProcessor=Control.MailboxProcessor||{};
+ Mailbox=Library.Mailbox=Library.Mailbox||{};
  EndPoint=ModeloUI.EndPoint=ModeloUI.EndPoint||{};
  Router=UI.Router=UI.Router||{};
  ViewBuilder=UI.ViewBuilder=UI.ViewBuilder||{};
@@ -512,6 +517,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  T=Enumerator.T=Enumerator.T||{};
  BalancedTree=Collections.BalancedTree=Collections.BalancedTree||{};
  T$1=List.T=List.T||{};
+ AsyncResult=Monads.AsyncResult=Monads.AsyncResult||{};
  AjaxRemotingProvider=Remoting.AjaxRemotingProvider=Remoting.AjaxRemotingProvider||{};
  Array=Library.Array=Library.Array||{};
  HtmlModule=UI.HtmlModule=UI.HtmlModule||{};
@@ -524,7 +530,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Concurrency=WebSharper.Concurrency=WebSharper.Concurrency||{};
  Blob=Global.Blob;
  AttrModule=UI.AttrModule=UI.AttrModule||{};
- GeneratedPrintf=Global.GeneratedPrintf=Global.GeneratedPrintf||{};
  LayoutEngine_Templates=Global.LayoutEngine_Templates=Global.LayoutEngine_Templates||{};
  LayoutEngine_GeneratedPrintf=Global.LayoutEngine_GeneratedPrintf=Global.LayoutEngine_GeneratedPrintf||{};
  WebComponent=LibraryJS.WebComponent=LibraryJS.WebComponent||{};
@@ -539,12 +544,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  DateUtil=WebSharper.DateUtil=WebSharper.DateUtil||{};
  SC$3=Global.StartupCode$WebSharper_Main$Remoting=Global.StartupCode$WebSharper_Main$Remoting||{};
  Pojo=LibraryJS.Pojo=LibraryJS.Pojo||{};
+ Error=Global.Error;
+ TimeoutException=WebSharper.TimeoutException=WebSharper.TimeoutException||{};
+ Promise=JavaScript.Promise=JavaScript.Promise||{};
  Sitelets=WebSharper.Sitelets=WebSharper.Sitelets||{};
  RouterOperators=Sitelets.RouterOperators=Sitelets.RouterOperators||{};
  RouterModule=Sitelets.RouterModule=Sitelets.RouterModule||{};
  Route=Sitelets.Route=Sitelets.Route||{};
  CustomXhrProvider=Remoting$1.CustomXhrProvider=Remoting$1.CustomXhrProvider||{};
- Promise=JavaScript.Promise=JavaScript.Promise||{};
  MapUtil=Collections.MapUtil=Collections.MapUtil||{};
  Tree=BalancedTree.Tree=BalancedTree.Tree||{};
  IdAddress=TypesV0.IdAddress=TypesV0.IdAddress||{};
@@ -560,6 +567,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  CharacterData=Global.CharacterData;
  SC$5=Global.StartupCode$WebSharper_UI$Abbrev=Global.StartupCode$WebSharper_UI$Abbrev||{};
  XhrProvider=Remoting.XhrProvider=Remoting.XhrProvider||{};
+ FSharpEvent=Control.FSharpEvent=Control.FSharpEvent||{};
+ LinkedList=Collections.LinkedList=Collections.LinkedList||{};
+ AuthenticationParameters=Msal$1.AuthenticationParameters=Msal$1.AuthenticationParameters||{};
+ Account=Msal$1.Account=Msal$1.Account||{};
  Router$1=Sitelets.Router=Sitelets.Router||{};
  List$2=Sitelets.List=Sitelets.List||{};
  Pair=Collections.Pair=Collections.Pair||{};
@@ -580,12 +591,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Prepare=Templates.Prepare=Templates.Prepare||{};
  An=UI.An=UI.An||{};
  Settings=Client$1.Settings=Client$1.Settings||{};
- Mailbox=Abbrev.Mailbox=Abbrev.Mailbox||{};
+ Mailbox$1=Abbrev.Mailbox=Abbrev.Mailbox||{};
  HashSetUtil=Collections.HashSetUtil=Collections.HashSetUtil||{};
+ Event$1=Control.Event=Control.Event||{};
+ Event$2=Event$1.Event=Event$1.Event||{};
+ NonStandardPromiseRejectionException=JavaScript.NonStandardPromiseRejectionException=JavaScript.NonStandardPromiseRejectionException||{};
  SC$7=Global.StartupCode$WebSharper_Sitelets$Router=Global.StartupCode$WebSharper_Sitelets$Router||{};
  Map=Collections.Map=Collections.Map||{};
- Error=Global.Error;
- NonStandardPromiseRejectionException=JavaScript.NonStandardPromiseRejectionException=JavaScript.NonStandardPromiseRejectionException||{};
  OperationCanceledException=WebSharper.OperationCanceledException=WebSharper.OperationCanceledException||{};
  Queue=WebSharper.Queue=WebSharper.Queue||{};
  DynamicAttrNode=UI.DynamicAttrNode=UI.DynamicAttrNode||{};
@@ -607,6 +619,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  String$1=UI.String=UI.String||{};
  SC$11=Global.StartupCode$WebSharper_UI$Animation=Global.StartupCode$WebSharper_UI$Animation||{};
  AppendList=UI.AppendList=UI.AppendList||{};
+ LinkedListEnumerator=Collections.LinkedListEnumerator=Collections.LinkedListEnumerator||{};
  PathUtil=Sitelets.PathUtil=Sitelets.PathUtil||{};
  Easing=UI.Easing=UI.Easing||{};
  HashSet$1=Abbrev.HashSet=Abbrev.HashSet||{};
@@ -616,8 +629,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Runtime$1=IntelliFactory&&IntelliFactory.Runtime;
  Math=Global.Math;
  $=Global.jQuery;
- Date$1=Global.Date;
  console=Global.console;
+ Date$1=Global.Date;
  JSON=Global.JSON;
  Reflect=Global.Reflect;
  String$2=Global.String;
@@ -2358,7 +2371,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      {
       return function($7)
       {
-       return $6(ProzperServer_GeneratedPrintf.p$12($7));
+       return $6(ProzperServer_GeneratedPrintf.p$13($7));
       };
      }(Global.id))(a));
      return b$1.Zero();
@@ -2464,7 +2477,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      {
       return function($5)
       {
-       return $4(ProzperServer_GeneratedPrintf.p$12($5));
+       return $4(ProzperServer_GeneratedPrintf.p$13($5));
       };
      }(Global.id))(a));
      return b$1.Zero();
@@ -2703,7 +2716,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      {
       return function($2)
       {
-       return $1(ProzperServer_GeneratedPrintf.p$12($2));
+       return $1(ProzperServer_GeneratedPrintf.p$13($2));
       };
      }(Global.id))(a));
      return b$1.Zero();
@@ -2969,7 +2982,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return function($2)
    {
-    return $1("Cuenta verificada: "+ProzperServer_GeneratedPrintf.p$13($2));
+    return $1("Cuenta verificada: "+ProzperServer_GeneratedPrintf.p$14($2));
    };
   }(Global.id))(idR.$0):idR.$0===""?"La cuenta aun no ha sido verificada":idR.$0;
  };
@@ -3066,7 +3079,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return function($2)
     {
-     return $1(ProzperServer_GeneratedPrintf.p$14($2));
+     return $1(ProzperServer_GeneratedPrintf.p$15($2));
     };
    }(Global.id))(al.diaPago),2),Date.toYYYYMMDD("-",al.fechaRegistro),(function($1)
    {
@@ -3843,20 +3856,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  ListaDocs.uploaded=function()
  {
   SC$1.$cctor();
-  return SC$1.uploaded;
+  return SC$1.uploaded$1;
  };
  FormaAutorizacion.formaAutorizacion=function()
  {
-  var mensajes,acepto,forma,b,t,C,p,i;
-  function ymd(f)
-  {
-   return(new Global.Date(f)).getFullYear()*10000+((new Global.Date(f)).getMonth()+1)*100+(new Global.Date(f)).getDate();
-  }
-  mensajes=Var$1.Create$1("");
-  acepto=Var$1.Create$1(false);
-  forma=(b=(t=(C=Doc.EmbedView(FormaAutorizacion.cuentaAutorizar().get_View()),ProviderBuilder.Make().WithHole({
+  var formaContenido,b,C,p,i;
+  formaContenido=(b=(C=Doc.EmbedView(FormaAutorizacion.cuentaAutorizar().get_View()),ProviderBuilder.Make().WithHole({
    $:2,
-   $0:"afiliado",
+   $0:"titular",
    $1:FormaAutorizacion.titular().get_View()
   }).WithHole({
    $:2,
@@ -3882,97 +3889,40 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $:0,
    $0:"cuentadebitar",
    $1:C
-  })).WithHole({
-   $:2,
-   $0:"firmarclass",
-   $1:View.Map(function($1)
-   {
-    return $1===""?"mui-btn--primary":"";
-   },mensajes.get_View())
-  }).WithHole({
-   $:2,
-   $0:"mensaje",
-   $1:mensajes.get_View()
-  }).WithHole({
-   $:9,
-   $0:"acepto",
-   $1:Var$1.Lens(acepto,Global.id,function($1,$2)
-   {
-    return $2;
-   })
-  }),t.WithHole(Handler.EventQ2(t.k,"firmar",function()
-  {
-   return t.i;
-  },function()
-  {
-   var x,f;
-   function g(a)
-   {
-    Global.alert(a);
-   }
-   if(mensajes.Get()!=="")
-    Global.alert(mensajes.Get());
-   else
-    {
-     Rpc.iterA((x=Rpc.actualizarSubscripcion(FormaAutorizacion.pid()),AsyncResult.map((f=function($1)
-     {
-      return function($2)
-      {
-       return $1("Subscripción #"+Utils.toSafe($2)+" creada.");
-      };
-     }(Global.id),function(x$1)
-     {
-      return g(f(x$1));
-     }),x)));
-    }
-  }))),(p=Handler.CompleteHoles(b.k,b.h,[["titular",0],["fecha",0],["acepto",2]]),(i=new TemplateInstance.New(p[1],ProzperServer_Templates.autorizacion(p[0])),(b.i=i,i))));
-  View.Sink(function(a)
-  {
-   mensajes.Set(a);
-  },View.Apply(View.Apply(View.Map2(function($1,$2)
-  {
-   return function($3)
-   {
-    return function($4)
-    {
-     var o,c;
-     return Strings.concat(", ",Seq.map(function(t$1)
-     {
-      return t$1[1];
-     },Seq.filter(function(t$1)
-     {
-      return t$1[0];
-     },List.ofArray([[Strings.Trim($1)!==$2.toUpperCase(),"Nombre del titular en MAYUSCULAS debe coincidir"],[!Unchecked.Equals((o=(ParseO.parseDateO$1())($3),o==null?null:{
-      $:1,
-      $0:ymd(o.$0)
-     }),{
-      $:1,
-      $0:ymd((c=Date$1.now(),DateUtil.DatePortion(c)))
-     }),"Introduzca fecha de hoy"],[!$4,"Acepte los terminos indicados"]]))));
-    };
-   };
-  },forma.Hole("titular").get_View(),FormaAutorizacion.titular().get_View()),forma.Hole("fecha").get_View()),forma.Hole("acepto").get_View()));
-  return forma.get_Doc();
+  })),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],ProzperServer_Templates.autorizacionpago(p[0])),(b.i=i,i)))).get_Doc();
+  return FormaFirma.formaFirma(FormaAutorizacion.titular().get_View(),formaContenido,FormaAutorizacion.actualizarSubscripcion,"AutorizacionPago");
  };
  FormaAutorizacion.titular=function()
  {
   SC$1.$cctor();
   return SC$1.titular;
  };
+ FormaAutorizacion.actualizarSubscripcion=function()
+ {
+  var x;
+  x=Rpc.actualizarSubscripcion(FormaAutorizacion.pid());
+  return AsyncResult.map(function($1)
+  {
+   return function($2)
+   {
+    return $1("Subscripción #"+Utils.toSafe($2)+" creada.");
+   };
+  }(Global.id),x);
+ };
  FormaAutorizacion.cuentaAutorizar=function()
  {
   SC$1.$cctor();
   return SC$1.cuentaAutorizar;
  };
- FormaAutorizacion.pid=function()
- {
-  SC$1.$cctor();
-  return SC$1.pid;
- };
  FormaAutorizacion.set_pid=function($1)
  {
   SC$1.$cctor();
   SC$1.pid=$1;
+ };
+ FormaAutorizacion.pid=function()
+ {
+  SC$1.$cctor();
+  return SC$1.pid;
  };
  JS.GetFields=function(o)
  {
@@ -4007,7 +3957,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        if(a instanceof Global.Array&&b instanceof Global.Array)
         return Unchecked.arrayEquals(a,b);
        else
-        if(a instanceof Date$1&&b instanceof Date$1)
+        if(a instanceof Global.Date&&b instanceof Global.Date)
          return Unchecked.dateEquals(a,b);
         else
          {
@@ -4087,7 +4037,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
           if(a instanceof Global.Array&&b instanceof Global.Array)
            $2=Unchecked.compareArrays(a,b);
           else
-           if(a instanceof Date$1&&b instanceof Date$1)
+           if(a instanceof Global.Date&&b instanceof Global.Date)
             $2=Unchecked.compareDates(a,b);
            else
             {
@@ -5493,7 +5443,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:"calculo"
   },h):void 0;
  };
- ProzperServer_GeneratedPrintf.p$12=function($1)
+ ProzperServer_GeneratedPrintf.p$13=function($1)
  {
   return $1.$==2?"Mensaje "+Utils.prettyPrint($1.$0):$1.$==1?"NuevoRegistro "+Utils.prettyPrint($1.$0):"ROk";
  };
@@ -5521,7 +5471,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:"consolidado"
   },h):void 0;
  };
- ProzperServer_GeneratedPrintf.p$14=function($1)
+ ProzperServer_GeneratedPrintf.p$15=function($1)
  {
   return $1.$==5?"Dia25":$1.$==4?"Dia20":$1.$==3?"Dia15":$1.$==2?"Dia10":$1.$==1?"Dia05":"Dia01";
  };
@@ -5557,12 +5507,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:"subirdocumentos"
   },h):void 0;
  };
- ProzperServer_Templates.autorizacion=function(h)
+ ProzperServer_Templates.autorizacionpago=function(h)
  {
   Templates.LoadLocalTemplates("index0");
   return h?Templates.NamedTemplate("index0",{
    $:1,
-   $0:"autorizacion"
+   $0:"autorizacionpago"
   },h):void 0;
  };
  ProzperServer_Router.r=function()
@@ -5581,7 +5531,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:"datospersonales"
   },h):void 0;
  };
- ProzperServer_GeneratedPrintf.p$11=function($1)
+ ProzperServer_GeneratedPrintf.p$12=function($1)
  {
   return $1.$==2?"Empresa":$1.$==1?"Femenino":"Masculino";
  };
@@ -5633,7 +5583,23 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:"formacuentas"
   },h):void 0;
  };
- ProzperServer_GeneratedPrintf.p$13=function($1)
+ ProzperServer_Templates.formafirma=function(h)
+ {
+  Templates.LoadLocalTemplates("index0");
+  return h?Templates.NamedTemplate("index0",{
+   $:1,
+   $0:"formafirma"
+  },h):void 0;
+ };
+ GeneratedPrintf.p=function($1)
+ {
+  return"{"+("errorCode = "+Utils.prettyPrint($1.errorCode))+"; "+("errorMessage = "+Utils.prettyPrint($1.errorMessage))+"; "+("message = "+Utils.prettyPrint($1.message))+"; "+("name = "+Utils.prettyPrint($1.name))+"; "+("stack = "+ProzperServer_GeneratedPrintf.p$11($1.stack))+"}";
+ };
+ GeneratedPrintf.p$1=function($1)
+ {
+  return"{"+("accessToken = "+Utils.prettyPrint($1.accessToken))+"; "+("account = "+Utils.prettyPrint($1.account))+"; "+("accountState = "+Utils.prettyPrint($1.accountState))+"; "+("expiresOn = "+Utils.prettyPrint($1.expiresOn))+"; "+("idToken = "+Utils.prettyPrint($1.idToken))+"; "+("scopes = "+Utils.prettyPrint($1.scopes))+"; "+("tenantId = "+Utils.prettyPrint($1.tenantId))+"; "+("tokenType = "+Utils.prettyPrint($1.tokenType))+"; "+("uniqueId = "+Utils.prettyPrint($1.uniqueId))+"}";
+ };
+ ProzperServer_GeneratedPrintf.p$14=function($1)
  {
   return"IdPayment "+Utils.prettyPrint($1.$0);
  };
@@ -5648,6 +5614,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  ProzperServer_GeneratedPrintf.p$6=function($1)
  {
   return $1.$==2?"Otra "+Utils.prettyPrint($1.$0):$1.$==1?"Corriente":"Ahorro";
+ };
+ ProzperServer_GeneratedPrintf.p$11=function($1)
+ {
+  return $1==null?"null":"Some "+Utils.prettyPrint($1.$0);
  };
  ProzperServer_Templates.cuentabancaria=function(h)
  {
@@ -5788,7 +5758,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   var st;
   st=Docs.CreateRunState(parent,doc.docNode);
-  View.Sink(An.get_UseAnimations()||Settings.BatchUpdatesEnabled()?Mailbox.StartProcessor(Docs.PerformAnimatedUpdate(childrenOnly,st,doc.docNode)):function()
+  View.Sink(An.get_UseAnimations()||Settings.BatchUpdatesEnabled()?Mailbox$1.StartProcessor(Docs.PerformAnimatedUpdate(childrenOnly,st,doc.docNode)):function()
   {
    Docs.PerformSyncUpdate(childrenOnly,st,doc.docNode);
   },doc.updates);
@@ -5897,30 +5867,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     var a$1;
     a$1=Rpc.llamadas().Get()-1;
     Rpc.llamadas().Set(a$1);
-   });
-  }));
- };
- Rpc.actualizarSubscripcion=function(p)
- {
-  var f,a,b;
-  f=(a=Aliado.get_LoggedId(),function(i)
-  {
-   return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc.actualizarSubscripcion:1837795433",[a,i]);
-  });
-  b=Monads.asyncResult();
-  return b.Run(b.Delay(function()
-  {
-   var a$1;
-   a$1=Rpc.llamadas().Get()+1;
-   Rpc.llamadas().Set(a$1);
-   return b.TryFinally(b.Delay(function()
-   {
-    return b.ReturnFrom$1(f(p));
-   }),function()
-   {
-    var a$2;
-    a$2=Rpc.llamadas().Get()-1;
-    Rpc.llamadas().Set(a$2);
    });
   }));
  };
@@ -6163,6 +6109,30 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     var a$1;
     a$1=Rpc.llamadas().Get()-1;
     Rpc.llamadas().Set(a$1);
+   });
+  }));
+ };
+ Rpc.actualizarSubscripcion=function(p)
+ {
+  var f,a,b;
+  f=(a=Aliado.get_LoggedId(),function(i)
+  {
+   return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc.actualizarSubscripcion:1837795433",[a,i]);
+  });
+  b=Monads.asyncResult();
+  return b.Run(b.Delay(function()
+  {
+   var a$1;
+   a$1=Rpc.llamadas().Get()+1;
+   Rpc.llamadas().Set(a$1);
+   return b.TryFinally(b.Delay(function()
+   {
+    return b.ReturnFrom$1(f(p));
+   }),function()
+   {
+    var a$2;
+    a$2=Rpc.llamadas().Get()-1;
+    Rpc.llamadas().Set(a$2);
    });
   }));
  };
@@ -6613,7 +6583,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  SC$1.$cctor=function()
  {
-  var f,g,c,c$1,d,m,$1,c$2,c$3,f$1,f$2,b,b$1,b$2;
+  var f,g,c,c$1,d,m,$1,agent,c$2,c$3,f$1,f$2,b,b$1,b$2,b$3;
   SC$1.$cctor=Global.ignore;
   function g$1(s)
   {
@@ -6625,13 +6595,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   }
   function g$2(s)
   {
-   var a,b$3;
+   var a,b$4;
    return Slice.array(s,{
     $:1,
     $0:0
    },{
     $:1,
-    $0:(a=0,(b$3=Arrays.length(s)-2,Unchecked.Compare(a,b$3)===1?a:b$3))
+    $0:(a=0,(b$4=Arrays.length(s)-2,Unchecked.Compare(a,b$4)===1?a:b$4))
    });
   }
   function g$3(s)
@@ -6869,8 +6839,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$1.originalProvider=Remoting.AjaxProvider();
   SC$1.getTokenOA=function()
   {
-   var b$3;
-   b$3=null;
+   var b$4;
+   b$4=null;
    return Concurrency.Delay(function()
    {
     return Concurrency.Return(null);
@@ -6907,24 +6877,32 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$1.userO=Var$1.Create$1(null);
   SC$1.agent=Lazy.Create(function()
   {
-   var clientId,authority,options;
-   function tokenReceivedCallback(e,t,e$1,t$1,s)
+   var agent$1,options;
+   agent$1=(options=Configuration.New$1({
+    $:1,
+    $0:AuthOptions.New$1(Msal.applicationId(),{
+     $:1,
+     $0:Msal.authority()
+    },{
+     $:1,
+     $0:false
+    },null,null,null)
+   },null,null,null),new self.Msal.UserAgentApplication(options));
+   agent$1.handleRedirectCallback(function($2,$3)
    {
-    Msal.callback(e,t,e$1,t$1,s);
-   }
-   clientId=Msal.applicationId();
-   authority=Msal.authority();
-   options=UserAgentApplication.Options(null,null,null,null,null,null,null,null,null,{
-    $:1,
-    $0:false
-   },null,{
-    $:1,
-    $0:false
+    Msal.redirectCallback($2,$3);
    });
-   return new self.Msal.UserAgentApplication(clientId,authority,function($2)
+   return agent$1;
+  });
+  SC$1.getTokenO=(agent=Mailbox.callA(function(v)
+  {
+   Library.print$1(v);
+  },Msal.getTokenO0),function()
+  {
+   return agent.PostAndAsyncReply(function(reply)
    {
-    return tokenReceivedCallback($2[0],$2[1],$2[2],$2[3],$2[4]);
-   },options);
+    return[reply,null];
+   },null);
   });
   SC$1.modeloV=Var$1.Create$1(Modelo.New(new IdAliado({
    $:0,
@@ -6983,7 +6961,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    },a.aliados);
    return View.Const(aliadoO!=null&&aliadoO.$==1?aliadoO.$0:Aliado$2.empty());
   },ModeloUI.modeloV().get_View()));
-  Remoting$1.installBearer(Msal.getTokenO);
+  Remoting$1.installBearer(Msal.getTokenO());
   SC$1.llamadas=Var$1.Create$1(0);
   Remoting.set_EndPoint(Rpc$1.serverEndPoint().f()+"rpc/rpc");
   SC$1.shouldRefresh=true;
@@ -7081,6 +7059,32 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:a
    };
   }];
+  SC$1.uploaded=function(a,b$4)
+  {
+   return Library.print$1(b$4);
+  };
+  SC$1.mensajes=Var$1.Create$1("");
+  SC$1.firmanteV=Var$1.Create$1("");
+  SC$1.fechaHoraV=Var$1.Create$1("");
+  Concurrency.Start((b$3=null,Concurrency.Delay(function()
+  {
+   return Concurrency.While(function()
+   {
+    return true;
+   },Concurrency.Delay(function()
+   {
+    return Concurrency.Bind(Concurrency.Sleep(2000),function()
+    {
+     var a;
+     a=function(n)
+     {
+      return n.getFullYear()+"-"+("0"+(n.getMonth()+1)).slice(-2)+"-"+("0"+n.getDate()).slice(-2)+" "+("0"+n.getHours()).slice(-2)+":"+("0"+n.getMinutes()).slice(-2)+":"+("0"+n.getSeconds()).slice(-2)+":"+("00"+n.getMilliseconds()).slice(-3);
+     }(new Date$1(Date$1.now()));
+     FormaFirma.fechaHoraV().Set(a);
+     return Concurrency.Zero();
+    });
+   }));
+  })),null);
   SC$1.cuentaAutorizar=Var$1.Create$1(Doc.TextNode("No hay cuenta seleccionada"));
   SC$1.titular=Var$1.Create$1("");
   SC$1.pid=new IdPayment({
@@ -7124,18 +7128,18 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    };
   }];
   SC$1.docsV=Var$1.Create$1([]);
-  SC$1.uploaded=function(a,b$3)
+  SC$1.uploaded$1=function(a,b$4)
   {
    ListaDocs.refrescarListaDocs();
-   return Global.alert(b$3);
+   return Global.alert(b$4);
   };
   SC$1.layoutName="ProzperLyt";
   SC$1.appName="Prozper";
   SC$1.influencerV=Var$1.Create$1("");
   SC$1.influencerClassW=View.MapAsync(function(inf)
   {
-   var b$3;
-   b$3=null;
+   var b$4;
+   b$4=null;
    return Concurrency.Delay(function()
    {
     return Concurrency.Bind(Rpc.obtenerIdInfluyente(inf),function(a)
@@ -8258,7 +8262,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      {
       return function($2)
       {
-       return $1(ProzperServer_GeneratedPrintf.p$11($2));
+       return $1(ProzperServer_GeneratedPrintf.p$12($2));
       };
      }(Global.id))(dat.genero));
     }
@@ -8586,6 +8590,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return AsyncResult.whileLoop(guard,fRA);
   },
+  ReturnFrom$1:Global.id,
   TryFinally:function(fRA,fn)
   {
    var b;
@@ -8600,8 +8605,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      fn();
     });
    });
-  },
-  ReturnFrom$1:Global.id
+  }
  },Obj,AsyncResultBuilder);
  AsyncResultBuilder.New=Runtime$1.Ctor(function()
  {
@@ -9016,12 +9020,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   for(i=0,$1=size-1;i<=$1;i++)r[i]=f(i);
   return r;
  };
- Arrays.pick=function(f,arr)
- {
-  var m;
-  m=Arrays.tryPick(f,arr);
-  return m==null?Operators.FailWith("KeyNotFoundException"):m.$0;
- };
  Arrays.tryPick=function(f,arr)
  {
   var res,i,m;
@@ -9056,6 +9054,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    else
     i=i+1;
   return e;
+ };
+ Arrays.pick=function(f,arr)
+ {
+  var m;
+  m=Arrays.tryPick(f,arr);
+  return m==null?Operators.FailWith("KeyNotFoundException"):m.$0;
  };
  Arrays.create=function(size,value)
  {
@@ -9239,6 +9243,31 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $:1,
    $0:a
   };
+ };
+ Library.print$1=function(v)
+ {
+  if(typeof v=="string")
+   ((function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.toSafe($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(v));
+  else
+   ((function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(v));
  };
  Library["String.Substring2$1"]=function(_this,from,n)
  {
@@ -9448,6 +9477,119 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return r.$==1?f(r.$0):r.$0;
  };
+ FormaFirma.formaFirma=function(nombre,contenido,procesar,filenamePre)
+ {
+  var acepto,forma,b,t,p,i;
+  function firmarDocumento()
+  {
+   var b$1;
+   Rpc.iterA((b$1=Monads.asyncResult(),b$1.Run(b$1.Delay(function()
+   {
+    return FormaFirma.mensajes().Get()!==""?(Global.alert(FormaFirma.mensajes().Get()),b$1.Zero()):Extensions["AsyncResultBuilder.Bind"](b$1,FormaFirma.subirScreenShot(filenamePre),function()
+    {
+     return b$1.ReturnFrom$1(AsyncResult.map(function(a)
+     {
+      Global.alert(a);
+     },procesar()));
+    });
+   }))));
+  }
+  acepto=Var$1.Create$1(false);
+  forma=(b=(t=ProviderBuilder.Make().WithHole({
+   $:2,
+   $0:"firmarclass",
+   $1:View.Map(function($1)
+   {
+    return $1===""?"mui-btn--primary":"";
+   },FormaFirma.mensajes().get_View())
+  }).WithHole({
+   $:2,
+   $0:"mensaje",
+   $1:FormaFirma.mensajes().get_View()
+  }).WithHole({
+   $:0,
+   $0:"contenido",
+   $1:contenido
+  }).WithHole({
+   $:9,
+   $0:"acepto",
+   $1:Var$1.Lens(acepto,Global.id,function($1,$2)
+   {
+    return $2;
+   })
+  }),t.WithHole(Handler.EventQ2(t.k,"firmar",function()
+  {
+   return t.i;
+  },function()
+  {
+   firmarDocumento();
+  }))).WithHole({
+   $:2,
+   $0:"datetime",
+   $1:FormaFirma.fechaHoraV().get_View()
+  }),(p=Handler.CompleteHoles(b.k,b.h,[["firmante",0],["fecha",0],["acepto",2]]),(i=new TemplateInstance.New(p[1],ProzperServer_Templates.formafirma(p[0])),(b.i=i,i))));
+  View.Sink(function(a)
+  {
+   FormaFirma.mensajes().Set(a);
+  },View.Apply(View.Apply(View.Apply(View.Map2(function($1,$2)
+  {
+   return Runtime$1.Curried3(function($3,$4,$5)
+   {
+    return Strings.concat(", ",Seq.map(function(t$1)
+    {
+     return t$1[1];
+    },Seq.filter(function(t$1)
+    {
+     return t$1[0];
+    },List.ofArray([[Strings.Trim($1)!==$2.toUpperCase(),"Nombre en MAYUSCULAS debe coincidir"],[$3!==Library["String.Left$1"]($4,10),"Introduzca fecha de hoy (YYYY-MM-DD)"],[!Unchecked.Equals($5,true),"Acepte los terminos indicados"]]))));
+   });
+  },forma.Hole("firmante").get_View(),nombre),forma.Hole("fecha").get_View()),FormaFirma.fechaHoraV().get_View()),forma.Hole("acepto").get_View()));
+  return forma.get_Doc();
+ };
+ FormaFirma.fechaHoraV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.fechaHoraV;
+ };
+ FormaFirma.mensajes=function()
+ {
+  SC$1.$cctor();
+  return SC$1.mensajes;
+ };
+ FormaFirma.subirScreenShot=function(filenamePre)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind(Promise.AsAsync(Global.html2canvas(self.document.querySelector("#content-wrapper"))),function(a)
+   {
+    self.document.body.appendChild(a);
+    a.toBlob(function(blob)
+    {
+     var filename,fd,r;
+     filename=(((Runtime$1.Curried3(function($1,$2,$3)
+     {
+      return $1(Utils.toSafe($2)+" "+Utils.toSafe($3)+".png");
+     }))(Global.id))(filenamePre))(Strings.Replace(function(n)
+     {
+      return n.getFullYear()+"-"+("0"+(n.getMonth()+1)).slice(-2)+"-"+("0"+n.getDate()).slice(-2)+" "+("0"+n.getHours()).slice(-2)+":"+("0"+n.getMinutes()).slice(-2)+":"+("0"+n.getSeconds()).slice(-2)+":"+("00"+n.getMilliseconds()).slice(-3);
+     }(new Date$1(Date$1.now())),":","."));
+     fd=new Global.FormData();
+     fd.append("fname",filename);
+     fd.append("data",blob);
+     $.ajax((r={},r.type="POST",r.url="/api/subir/"+ModeloUI.modeloV().Get().idAliado.get_Id()+"/"+filename,r.data=fd,r.contentType=false,r.processData=false,r.success=FormaFirma.uploaded(),r));
+    });
+    self.document.body.removeChild(a);
+    return Concurrency.Zero();
+   });
+  });
+ };
+ FormaFirma.uploaded=function()
+ {
+  SC$1.$cctor();
+  return SC$1.uploaded;
+ };
  PremisasCalculo.New=function(comisionReferidosRegular,comisionReferidosMaster,comisionDescendientesMaster,comisionDescendientesRegular,montoAfiliacion,numeroReferidosMaster,diaCorte1,diaCorte2)
  {
   return{
@@ -9460,107 +9602,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    diaCorte1:diaCorte1,
    diaCorte2:diaCorte2
   };
- };
- AsyncResult.map=function(f,m)
- {
-  return AsyncResult.bind(function(x)
-  {
-   return AsyncResult.rtn(f(x));
-  },m);
- };
- AsyncResult.rtn=function(v)
- {
-  return Concurrency.Return({
-   $:0,
-   $0:v
-  });
- };
- AsyncResult.bind=function(fRA,vRA)
- {
-  var b;
-  b=null;
-  return Concurrency.Delay(function()
-  {
-   return Concurrency.Bind(vRA,function(a)
-   {
-    return a.$==1?Concurrency.Return(Library.Error$1(a.$0)):fRA(a.$0);
-   });
-  });
- };
- AsyncResult.iterA=function(fE,f,vRA)
- {
-  function f$1(r)
-  {
-   Result.iter(fE,f,r);
-  }
-  function g(v)
-  {
-   return Concurrency.Return(v);
-  }
-  Concurrency.Start(Concurrency.Bind(vRA,function(x)
-  {
-   return g(f$1(x));
-  }),null);
- };
- AsyncResult.rtnR=function(vR)
- {
-  return Concurrency.Return(vR);
- };
- AsyncResult.whileLoop=function(cond,fRA)
- {
-  return cond()?AsyncResult.bind(function()
-  {
-   return AsyncResult.whileLoop(cond,fRA);
-  },fRA()):AsyncResult.rtn();
- };
- ParseO.parseDateO$1=function()
- {
-  SC$1.$cctor();
-  return SC$1.parseDateO;
- };
- ParseO.tryParseWith$1=function(tryParseFunc)
- {
-  function g($1,$2)
-  {
-   return $1?{
-    $:1,
-    $0:$2
-   }:null;
-  }
-  return function(x)
-  {
-   return g.apply(null,tryParseFunc(x));
-  };
- };
- ParseO.parseIntO$1=function()
- {
-  SC$1.$cctor();
-  return SC$1.parseIntO;
- };
- ParseO.parseInt64O$1=function()
- {
-  SC$1.$cctor();
-  return SC$1.parseInt64O;
- };
- ParseO.parseSingleO$1=function()
- {
-  SC$1.$cctor();
-  return SC$1.parseSingleO;
- };
- ParseO.parseDoubleO$1=function()
- {
-  SC$1.$cctor();
-  return SC$1.parseDoubleO;
- };
- ParseO.parseGuidO$1=function()
- {
-  SC$1.$cctor();
-  return SC$1.parseGuidO;
- };
- ParseO.parseDateO2$1=function()
- {
-  SC$1.$cctor();
-  return SC$1.parseDateO2;
  };
  PlugInAction.New=function(actName,actFunction,actEnabled)
  {
@@ -9620,18 +9661,56 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$1.$cctor();
   return SC$1.authority;
  };
- Msal.callback=function(errorDesc,token,error,tokenType,state)
+ Msal.redirectCallback=function(error,resp)
  {
-  ((function($1)
+  try
   {
-   return function($2)
+   !Unchecked.Equals(error,null)?(function($1)
    {
-    return $1("callback: "+("("+Utils.prettyPrint($2[0])+", "+Utils.prettyPrint($2[1])+", "+Utils.prettyPrint($2[2])+", "+Utils.prettyPrint($2[3])+", "+Utils.prettyPrint($2[4])+")"));
-   };
-  }(function(s)
+    return function($2)
+    {
+     return $1("error: "+GeneratedPrintf.p($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(error):void 0;
+   !Unchecked.Equals(resp,null)?(function($1)
+   {
+    return function($2)
+    {
+     return $1("resp : "+GeneratedPrintf.p$1($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(resp):null;
+  }
+  catch(e)
   {
-   console.log(s);
-  }))([errorDesc,error,tokenType,token,state]));
+   (((Runtime$1.Curried3(function($1,$2,$3)
+   {
+    return $1(Utils.prettyPrint($2)+" "+Utils.toSafe($3));
+   }))(function(s)
+   {
+    console.log(s);
+   }))(e))(e.stack);
+  }
+ };
+ Msal.getTokenO0=function()
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Msal.userO().Get()==null?Concurrency.Return(null):Concurrency.Bind(Promise.AsAsync(Msal.agent().f().acquireTokenSilent(Msal.authParms())),function(a)
+   {
+    return Concurrency.Return({
+     $:1,
+     $0:a.accessToken
+    });
+   });
+  });
  };
  Msal.checkUser=function()
  {
@@ -9646,7 +9725,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     },Concurrency.Delay(function()
     {
      var newO,m;
-     newO=(m=Msal.agent().f().getUser(),Unchecked.Equals(m,null)?null:{
+     newO=(m=Msal.agent().f().getAccount(),Unchecked.Equals(m,null)?null:{
       $:1,
       $0:m
      });
@@ -9666,23 +9745,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Msal.getTokenO=function()
  {
-  var b;
-  b=null;
-  return Concurrency.Delay(function()
-  {
-   var m;
-   m=Msal.userO().Get();
-   return m==null?Concurrency.Return(null):Concurrency.Bind(Promise.AsAsync(Msal.agent().f().acquireTokenPopup([(((Runtime$1.Curried3(function($1,$2,$3)
-   {
-    return $1("https://"+Utils.toSafe($2)+".onmicrosoft.com/"+Utils.toSafe($3)+"/user_impersonation");
-   }))(Global.id))(Msal.tenantName()))(Msal.appId())],Msal.authority(),m.$0,null)),function(a)
-   {
-    return Concurrency.Return({
-     $:1,
-     $0:a
-    });
-   });
-  });
+  SC$1.$cctor();
+  return SC$1.getTokenO;
  };
  Msal.referidoPor=function()
  {
@@ -9701,6 +9765,16 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   Msal.storeValue("goInsideLink",self.location.href);
   Msal.storeValue("policyType",Global.String(policy));
   self.location.replace("blob/Msal.html");
+ };
+ Msal.authParms=function()
+ {
+  return AuthenticationParameters.New$1(null,null,null,null,null,null,null,null,{
+   $:1,
+   $0:[(((Runtime$1.Curried3(function($1,$2,$3)
+   {
+    return $1("https://"+Utils.toSafe($2)+".onmicrosoft.com/"+Utils.toSafe($3)+"/user_impersonation");
+   }))(Global.id))(Msal.tenantName()))(Msal.appId())]
+  },null,null);
  };
  Msal.agent=function()
  {
@@ -10452,10 +10526,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    this.set(k,v);
   },
-  get_Item:function(k)
-  {
-   return this.get(k);
-  },
   set:function(k,v)
   {
    var $this,h,d,m;
@@ -10476,20 +10546,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     V:v
    });
   },
-  get:function(k)
+  get_Item:function(k)
   {
-   var $this,d;
-   $this=this;
-   d=this.data[this.hash(k)];
-   return d==null?DictionaryUtil.notPresent():Arrays.pick(function(a)
-   {
-    var a$1;
-    a$1=Operators.KeyValue(a);
-    return $this.equals.apply(null,[a$1[0],k])?{
-     $:1,
-     $0:a$1[1]
-    }:null;
-   },d);
+   return this.get(k);
   },
   TryGetValue:function(k,res)
   {
@@ -10523,6 +10582,21 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   Add:function(k,v)
   {
    this.add(k,v);
+  },
+  get:function(k)
+  {
+   var $this,d;
+   $this=this;
+   d=this.data[this.hash(k)];
+   return d==null?DictionaryUtil.notPresent():Arrays.pick(function(a)
+   {
+    var a$1;
+    a$1=Operators.KeyValue(a);
+    return $this.equals.apply(null,[a$1[0],k])?{
+     $:1,
+     $0:a$1[1]
+    }:null;
+   },d);
   },
   get_Keys:function()
   {
@@ -10744,11 +10818,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   Fresh.set_counter(Fresh.counter()+1);
   return Fresh.counter();
  };
- Fresh.Id=function()
- {
-  Fresh.set_counter(Fresh.counter()+1);
-  return"uid"+Global.String(Fresh.counter());
- };
  Fresh.set_counter=function($1)
  {
   SC$5.$cctor();
@@ -10758,6 +10827,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   SC$5.$cctor();
   return SC$5.counter;
+ };
+ Fresh.Id=function()
+ {
+  Fresh.set_counter(Fresh.counter()+1);
+  return"uid"+Global.String(Fresh.counter());
  };
  Builder=Result.Builder=Runtime$1.Class({},Obj,Builder);
  Builder.New=Runtime$1.Ctor(function()
@@ -10809,6 +10883,55 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Slice.string=function(source,start,finish)
  {
   return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):"":finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
+ };
+ ParseO.tryParseWith$1=function(tryParseFunc)
+ {
+  function g($1,$2)
+  {
+   return $1?{
+    $:1,
+    $0:$2
+   }:null;
+  }
+  return function(x)
+  {
+   return g.apply(null,tryParseFunc(x));
+  };
+ };
+ ParseO.parseDateO$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseDateO;
+ };
+ ParseO.parseIntO$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseIntO;
+ };
+ ParseO.parseInt64O$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseInt64O;
+ };
+ ParseO.parseSingleO$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseSingleO;
+ };
+ ParseO.parseDoubleO$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseDoubleO;
+ };
+ ParseO.parseGuidO$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseGuidO;
+ };
+ ParseO.parseDateO2$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseDateO2;
  };
  Serializer.toJsonString=function(v)
  {
@@ -11302,9 +11425,281 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    };
   xhr.send(data);
  };
- UserAgentApplication.Options=function(cacheLocation,isAngular,loadFrameTimeout,logger,navigateToLoginRequestUrl,postLogoutRedirectUri,protectedResourceMap,redirectUri,state,storeAuthStateInCookie,unprotectedResources,validateAuthority)
+ Configuration.New$1=function(auth,cache,system,framework)
  {
-  return Pojo.newPojoOpt([Msal$1.op_EqualsEqualsGreater("cacheLocation",cacheLocation),Msal$1.op_EqualsEqualsGreater("isAngular",isAngular),Msal$1.op_EqualsEqualsGreater("loadFrameTimeout",loadFrameTimeout),Msal$1.op_EqualsEqualsGreater("logger",logger),Msal$1.op_EqualsEqualsGreater("navigateToLoginRequestUrl",navigateToLoginRequestUrl),Msal$1.op_EqualsEqualsGreater("postLogoutRedirectUri",postLogoutRedirectUri),Msal$1.op_EqualsEqualsGreater("protectedResourceMap",protectedResourceMap),Msal$1.op_EqualsEqualsGreater("redirectUri",redirectUri),Msal$1.op_EqualsEqualsGreater("state",state),Msal$1.op_EqualsEqualsGreater("storeAuthStateInCookie",storeAuthStateInCookie),Msal$1.op_EqualsEqualsGreater("unprotectedResources",unprotectedResources),Msal$1.op_EqualsEqualsGreater("validateAuthority",validateAuthority)]);
+  return Pojo.newPojoOpt([Msal$1.op_EqualsEqualsGreater("auth",auth),Msal$1.op_EqualsEqualsGreater("cache",cache),Msal$1.op_EqualsEqualsGreater("system",system),Msal$1.op_EqualsEqualsGreater("framework",framework)]);
+ };
+ AuthOptions.New$1=function(clientId,authority,validateAuthority,redirectUri,postLogoutRedirectUri,navigateToLoginRequestUrl)
+ {
+  return Pojo.newPojoOpt([Msal$1.op_MinusMinusGreater("clientId",clientId),Msal$1.op_EqualsEqualsGreater("authority",authority),Msal$1.op_EqualsEqualsGreater("validateAuthority",validateAuthority),Msal$1.op_EqualsEqualsGreater("redirectUri",redirectUri),Msal$1.op_EqualsEqualsGreater("postLogoutRedirectUri",postLogoutRedirectUri),Msal$1.op_EqualsEqualsGreater("navigateToLoginRequestUrl",navigateToLoginRequestUrl)]);
+ };
+ MailboxProcessor=Control.MailboxProcessor=Runtime$1.Class({
+  PostAndAsyncReply:function(msgf,timeout)
+  {
+   var $this,b;
+   $this=this;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    return Concurrency.Bind($this.PostAndTryAsyncReply(msgf,timeout),function(a)
+    {
+     var $1,$2;
+     if(a!=null&&a.$==1)
+      $2=a.$0;
+     else
+      throw new TimeoutException.New();
+     return Concurrency.Return($2);
+    });
+   });
+  },
+  PostAndTryAsyncReply:function(msgf,timeout)
+  {
+   var $this,timeout$1,d;
+   function a(ok)
+   {
+    var waiting;
+    function f(a$1)
+    {
+     return{
+      $:1,
+      $0:a$1
+     };
+    }
+    if(timeout$1<0)
+     {
+      $this.mailbox.AddLast(msgf(function(x)
+      {
+       return ok(f(x));
+      }));
+      $this.resume();
+     }
+    else
+     {
+      waiting=[true];
+      $this.mailbox.AddLast(msgf(function(res)
+      {
+       if(waiting[0])
+        {
+         waiting[0]=false;
+         ok({
+          $:1,
+          $0:res
+         });
+        }
+      }));
+      $this.resume();
+      Global.setTimeout(function()
+      {
+       if(waiting[0])
+        {
+         waiting[0]=false;
+         ok(null);
+        }
+      },timeout$1);
+     }
+   }
+   $this=this;
+   timeout$1=(d=this.get_DefaultTimeout(),timeout==null?d:timeout.$0);
+   return Concurrency.FromContinuations(function($1,$2,$3)
+   {
+    return a.apply(null,[$1,$2,$3]);
+   });
+  },
+  get_DefaultTimeout:function()
+  {
+   return this.DefaultTimeout;
+  },
+  Receive:function(timeout)
+  {
+   var $this,b;
+   $this=this;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    return Concurrency.Bind($this.TryReceive(timeout),function(a)
+    {
+     var $1,$2;
+     if(a!=null&&a.$==1)
+      $2=a.$0;
+     else
+      throw new TimeoutException.New();
+     return Concurrency.Return($2);
+    });
+   });
+  },
+  resume:function()
+  {
+   var m;
+   m=this.savedCont;
+   m!=null&&m.$==1?(this.savedCont=null,this.startAsync(m.$0)):void 0;
+  },
+  Start:function()
+  {
+   var $this,b;
+   $this=this;
+   this.started?Operators.FailWith("The MailboxProcessor has already been started."):(this.started=true,$this.startAsync((b=null,Concurrency.Delay(function()
+   {
+    return Concurrency.TryWith(Concurrency.Delay(function()
+    {
+     return Concurrency.Bind($this.initial($this),function()
+     {
+      return Concurrency.Return(null);
+     });
+    }),function(a)
+    {
+     $this.errorEvent.event.Trigger(a);
+     return Concurrency.Zero();
+    });
+   }))));
+  },
+  TryReceive:function(timeout)
+  {
+   var $this,timeout$1,d;
+   function a(ok)
+   {
+    var b,waiting,pending,b$1;
+    if(Unchecked.Equals($this.mailbox.n,null))
+    {
+     if(timeout$1<0)
+      {
+       $this.savedCont={
+        $:1,
+        $0:(b=null,Concurrency.Delay(function()
+        {
+         ok({
+          $:1,
+          $0:$this.dequeue()
+         });
+         return Concurrency.Zero();
+        }))
+       };
+      }
+     else
+      {
+       waiting=[true];
+       pending=Global.setTimeout(function()
+       {
+        if(waiting[0])
+         {
+          waiting[0]=false;
+          $this.savedCont=null;
+          ok(null);
+         }
+       },timeout$1);
+       $this.savedCont={
+        $:1,
+        $0:(b$1=null,Concurrency.Delay(function()
+        {
+         return waiting[0]?(waiting[0]=false,Global.clearTimeout(pending),ok({
+          $:1,
+          $0:$this.dequeue()
+         }),Concurrency.Zero()):Concurrency.Zero();
+        }))
+       };
+      }
+    }
+    else
+     ok({
+      $:1,
+      $0:$this.dequeue()
+     });
+   }
+   $this=this;
+   timeout$1=(d=this.get_DefaultTimeout(),timeout==null?d:timeout.$0);
+   return Concurrency.FromContinuations(function($1,$2,$3)
+   {
+    return a.apply(null,[$1,$2,$3]);
+   });
+  },
+  startAsync:function(a)
+  {
+   Concurrency.Start(a,this.token);
+  },
+  dequeue:function()
+  {
+   var f;
+   f=this.mailbox.n.v;
+   this.mailbox.RemoveFirst();
+   return f;
+  }
+ },Obj,MailboxProcessor);
+ MailboxProcessor.Start=function(initial,token)
+ {
+  var mb;
+  mb=new MailboxProcessor.New(initial,token);
+  mb.Start();
+  return mb;
+ };
+ MailboxProcessor.New=Runtime$1.Ctor(function(initial,token)
+ {
+  var $this,m;
+  function callback(u)
+  {
+   return $this.resume();
+  }
+  $this=this;
+  Obj.New.call(this);
+  this.initial=initial;
+  this.token=token;
+  this.started=false;
+  this.errorEvent=new FSharpEvent.New();
+  this.mailbox=new LinkedList.New();
+  this.savedCont=null;
+  m=this.token;
+  m==null?void 0:Concurrency.Register(m.$0,function()
+  {
+   callback();
+  });
+  this.DefaultTimeout=-1;
+ },MailboxProcessor);
+ Mailbox.callA=function(hndl,f)
+ {
+  return Mailbox.iterA(hndl,function(t)
+  {
+   var replyChannel,msg,b;
+   replyChannel=t[0];
+   msg=t[1];
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    return Concurrency.Bind(f(msg),function(a)
+    {
+     replyChannel(a);
+     return Concurrency.Zero();
+    });
+   });
+  });
+ };
+ Mailbox.iterA=function(hndl,f)
+ {
+  return MailboxProcessor.Start(function(inbox)
+  {
+   var b;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    return Concurrency.While(function()
+    {
+     return true;
+    },Concurrency.Delay(function()
+    {
+     return Concurrency.TryWith(Concurrency.Delay(function()
+     {
+      return Concurrency.Bind(inbox.Receive(null),function(a)
+      {
+       return Concurrency.Bind(f(a),function()
+       {
+        return Concurrency.Return(null);
+       });
+      });
+     }),function(a)
+     {
+      hndl(a);
+      return Concurrency.Zero();
+     });
+    }));
+   });
+  },null);
  };
  LibraryJS.REGEX$2=function(expr,opt,value)
  {
@@ -11839,6 +12234,58 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return Operators.FailWith("View<'T>.V can only be called in an argument to a V-enabled function or if 'T = Doc.");
   }
  },null,View);
+ AsyncResult.rtn=function(v)
+ {
+  return Concurrency.Return({
+   $:0,
+   $0:v
+  });
+ };
+ AsyncResult.bind=function(fRA,vRA)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind(vRA,function(a)
+   {
+    return a.$==1?Concurrency.Return(Library.Error$1(a.$0)):fRA(a.$0);
+   });
+  });
+ };
+ AsyncResult.iterA=function(fE,f,vRA)
+ {
+  function f$1(r)
+  {
+   Result.iter(fE,f,r);
+  }
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  Concurrency.Start(Concurrency.Bind(vRA,function(x)
+  {
+   return g(f$1(x));
+  }),null);
+ };
+ AsyncResult.map=function(f,m)
+ {
+  return AsyncResult.bind(function(x)
+  {
+   return AsyncResult.rtn(f(x));
+  },m);
+ };
+ AsyncResult.rtnR=function(vR)
+ {
+  return Concurrency.Return(vR);
+ };
+ AsyncResult.whileLoop=function(cond,fRA)
+ {
+  return cond()?AsyncResult.bind(function()
+  {
+   return AsyncResult.whileLoop(cond,fRA);
+  },fRA()):AsyncResult.rtn();
+ };
  AjaxRemotingProvider=Remoting.AjaxRemotingProvider=Runtime$1.Class({
   AsyncBase:function(m,data)
   {
@@ -12506,6 +12953,32 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   SC$4.$cctor();
   return SC$4.scheduler;
+ };
+ Concurrency.TryWith=function(r,f)
+ {
+  return function(c)
+  {
+   r(AsyncBody.New(function(a)
+   {
+    if(a.$==0)
+     c.k({
+      $:0,
+      $0:a.$0
+     });
+    else
+     if(a.$==1)
+      try
+      {
+       (f(a.$0))(c);
+      }
+      catch(e)
+      {
+       c.k(a);
+      }
+     else
+      c.k(a);
+   },c.ct));
+  };
  };
  Concurrency.noneCT=function()
  {
@@ -13921,12 +14394,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:d
   };
  };
- DateUtil.DatePortion=function(d)
- {
-  var e;
-  e=new Date$1(d);
-  return(new Date$1(e.getFullYear(),e.getMonth(),e.getDate())).getTime();
- };
  Numeric.TryParse=function(s,min,max,r)
  {
   var x,ok;
@@ -13998,6 +14465,37 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $:1,
    $0:vO.$0
   }];
+ };
+ Msal$1.op_MinusMinusGreater=function(n,v)
+ {
+  return[n,{
+   $:1,
+   $0:v
+  }];
+ };
+ TimeoutException=WebSharper.TimeoutException=Runtime$1.Class({},Error,TimeoutException);
+ TimeoutException.New=Runtime$1.Ctor(function()
+ {
+  TimeoutException.New$1.call(this,"The operation has timed out.");
+ },TimeoutException);
+ TimeoutException.New$1=Runtime$1.Ctor(function(message)
+ {
+  this.message=message;
+  Object.setPrototypeOf(this,TimeoutException.prototype);
+ },TimeoutException);
+ Promise.AsAsync=function(p)
+ {
+  return Concurrency.FromContinuations(function(ok,ko)
+  {
+   p.then(ok,function(err)
+   {
+    return ko(Promise.unwrapExn(err));
+   });
+  });
+ };
+ Promise.unwrapExn=function(x)
+ {
+  return x instanceof Error?x:new NonStandardPromiseRejectionException.New(x);
  };
  RouterOperators.JSUnion=function(t,cases)
  {
@@ -14292,20 +14790,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   Obj.New.call(this);
  },CustomXhrProvider);
- Promise.AsAsync=function(p)
- {
-  return Concurrency.FromContinuations(function(ok,ko)
-  {
-   p.then(ok,function(err)
-   {
-    return ko(Promise.unwrapExn(err));
-   });
-  });
- };
- Promise.unwrapExn=function(x)
- {
-  return x instanceof Error?x:new NonStandardPromiseRejectionException.New(x);
- };
  MapUtil.fromSeq=function(s)
  {
   var a;
@@ -15256,6 +15740,97 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   Obj.New.call(this);
  },XhrProvider);
+ FSharpEvent=Control.FSharpEvent=Runtime$1.Class({},Obj,FSharpEvent);
+ FSharpEvent.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+  this.event=Event$2.New([]);
+ },FSharpEvent);
+ LinkedList=Collections.LinkedList=Runtime$1.Class({
+  AddLast:function(value)
+  {
+   var node;
+   return this.c===0?(node={
+    p:null,
+    n:null,
+    v:value
+   },(this.n=node,this.p=this.n,this.c=1,node)):this.AddAfter(this.p,value);
+  },
+  GetEnumerator$1:function()
+  {
+   return new LinkedListEnumerator.New(this);
+  },
+  AddAfter:function(after,value)
+  {
+   var before,node;
+   before=after.n;
+   node={
+    p:after,
+    n:before,
+    v:value
+   };
+   Unchecked.Equals(after.n,null)?this.p=node:void 0;
+   after.n=node;
+   !Unchecked.Equals(before,null)?before.p=node:void 0;
+   this.c=this.c+1;
+   return node;
+  },
+  RemoveFirst:function()
+  {
+   this.Remove$1(this.n);
+  },
+  Remove$1:function(node)
+  {
+   var before,after;
+   before=node.p;
+   after=node.n;
+   Unchecked.Equals(before,null)?this.n=after:before.n=after;
+   Unchecked.Equals(after,null)?this.p=before:after.p=before;
+   this.c=this.c-1;
+  },
+  GetEnumerator:function()
+  {
+   return this.GetEnumerator$1();
+  },
+  GetEnumerator0:function()
+  {
+   return this.GetEnumerator$1();
+  }
+ },Obj,LinkedList);
+ LinkedList.New=Runtime$1.Ctor(function()
+ {
+  LinkedList.New$1.call(this,[]);
+ },LinkedList);
+ LinkedList.New$1=Runtime$1.Ctor(function(coll)
+ {
+  var ie,node;
+  Obj.New.call(this);
+  this.c=0;
+  this.n=null;
+  this.p=null;
+  ie=Enumerator.Get(coll);
+  ie.MoveNext()?(this.n={
+   p:null,
+   n:null,
+   v:ie.Current()
+  },this.p=this.n,this.c=1):void 0;
+  while(ie.MoveNext())
+   {
+    node={
+     p:this.p,
+     n:null,
+     v:ie.Current()
+    };
+    this.p.n=node;
+    this.p=node;
+    this.c=this.c+1;
+   }
+ },LinkedList);
+ AuthenticationParameters.New$1=function(account,authority,claimsRequest,correlationId,extraQueryParameters,extraScopesToConsent,loginHint,prompt,scopes,sid,state)
+ {
+  return Pojo.newPojoOpt([Msal$1.op_EqualsEqualsGreater("account",account),Msal$1.op_EqualsEqualsGreater("authority",authority),Msal$1.op_EqualsEqualsGreater("claimsRequest",claimsRequest),Msal$1.op_EqualsEqualsGreater("correlationId",correlationId),Msal$1.op_EqualsEqualsGreater("extraQueryParameters",extraQueryParameters),Msal$1.op_EqualsEqualsGreater("extraScopesToConsent",extraScopesToConsent),Msal$1.op_EqualsEqualsGreater("loginHint",loginHint),Msal$1.op_EqualsEqualsGreater("prompt",prompt),Msal$1.op_EqualsEqualsGreater("scopes",scopes),Msal$1.op_EqualsEqualsGreater("sid",sid),Msal$1.op_EqualsEqualsGreater("state",state)]);
+ };
+ Account=Msal$1.Account=Runtime$1.Class({},Obj,Account);
  Router$1.New$1=function(Parse,Write)
  {
   return{
@@ -15836,7 +16411,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$9.$cctor();
   return SC$9.BatchUpdatesEnabled;
  };
- Mailbox.StartProcessor=function(procAsync)
+ Mailbox$1.StartProcessor=function(procAsync)
  {
   var st;
   function work()
@@ -15868,6 +16443,28 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   for(var k$1 in o)r.push.apply(r,o[k$1]);
   return r;
  };
+ Event$2=Event$1.Event=Runtime$1.Class({
+  Trigger:function(x)
+  {
+   var a,i,$1;
+   a=this.Handlers.slice();
+   for(i=0,$1=a.length-1;i<=$1;i++)(Arrays.get(a,i))(null,x);
+  },
+  Dispose:Global.ignore
+ },null,Event$2);
+ Event$2.New=function(Handlers)
+ {
+  return new Event$2({
+   Handlers:Handlers
+  });
+ };
+ NonStandardPromiseRejectionException=JavaScript.NonStandardPromiseRejectionException=Runtime$1.Class({},Error,NonStandardPromiseRejectionException);
+ NonStandardPromiseRejectionException.New=Runtime$1.Ctor(function(reason)
+ {
+  this.message="Promise rejected";
+  Object.setPrototypeOf(this,NonStandardPromiseRejectionException.prototype);
+  this.reason=reason;
+ },NonStandardPromiseRejectionException);
  SC$7.$cctor=function()
  {
   SC$7.$cctor=Global.ignore;
@@ -16245,13 +16842,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return[kv.Key,kv.Value];
   },BalancedTree.Enumerate(false,m.get_Tree()));
  };
- NonStandardPromiseRejectionException=JavaScript.NonStandardPromiseRejectionException=Runtime$1.Class({},Error,NonStandardPromiseRejectionException);
- NonStandardPromiseRejectionException.New=Runtime$1.Ctor(function(reason)
- {
-  this.message="Promise rejected";
-  Object.setPrototypeOf(this,NonStandardPromiseRejectionException.prototype);
-  this.reason=reason;
- },NonStandardPromiseRejectionException);
  OperationCanceledException=WebSharper.OperationCanceledException=Runtime$1.Class({},Error,OperationCanceledException);
  OperationCanceledException.New=Runtime$1.Ctor(function(ct)
  {
@@ -16895,6 +17485,23 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$12.$cctor();
   return SC$12.Empty;
  };
+ LinkedListEnumerator=Collections.LinkedListEnumerator=Runtime$1.Class({
+  MoveNext:function()
+  {
+   this.c=this.c.n;
+   return!Unchecked.Equals(this.c,null);
+  },
+  Current:function()
+  {
+   return this.c.v;
+  },
+  Dispose:Global.ignore
+ },Obj,LinkedListEnumerator);
+ LinkedListEnumerator.New=Runtime$1.Ctor(function(l)
+ {
+  Obj.New.call(this);
+  this.c=l;
+ },LinkedListEnumerator);
  PathUtil.WriteLink=function(s,q)
  {
   var query;
