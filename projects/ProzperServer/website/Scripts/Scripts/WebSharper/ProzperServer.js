@@ -879,13 +879,7 @@
  };
  Rsl.getResult=function(v)
  {
-  return Eff.map(function(a)
-  {
-   return{
-    $:0,
-    $0:a
-   };
-  },v);
+  return Rsl.rslHandler(v);
  };
  Rsl.rslHandler=function(eff)
  {
@@ -1113,6 +1107,24 @@
  Eff.join=function(m)
  {
   return Eff.bind(Global.id,m);
+ };
+ Eff.op_GreaterGreaterEqualsBang=function(v,f)
+ {
+  return Eff.bind(function(w)
+  {
+   return Eff.op_BarGreaterGreater(f(w),function()
+   {
+    return w;
+   });
+  },v);
+ };
+ Eff.op_BarGreaterGreaterBang=function(v,f)
+ {
+  return Eff.map(function(v$1)
+  {
+   f(v$1);
+   return v$1;
+  },v);
  };
  Eff.op_GreaterEqualsGreater=function(f,g,v)
  {

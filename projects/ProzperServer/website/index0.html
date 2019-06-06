@@ -1,176 +1,177 @@
 
             <!DOCTYPE html>
             <html>
-              <head>
-                    <meta charset="utf-8">
-                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                    <meta name="viewport" content="width=device-width, initial-scale=1">
-                    <link rel="shortcut icon" href="/blob/images/favicon.ico" type="image/x-icon">
-                    <link href="//cdn.muicss.com/mui-0.9.41/css/mui.min.css" rel="stylesheet" type="text/css" >
-                    <script src="//cdn.muicss.com/mui-0.9.41/js/mui.min.js"></script>
-                    <script src="//cdn.muicss.com/mui-0.9.41/js/mui.min.js"></script>
-                    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
-                    <!-- Latest compiled and minified JavaScript -->
-                    <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.0/js/msal.min.js"></script>
-                    <!-- IE support: add promises polyfill before msal.js  -->
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js" class="pre"></script>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js" class="pre"></script>
-                    <script ws-replace="scripts"></script>
-                    <script>
-                            function doNothing(e){
-                                console.log("donothing");
-                                e.preventDefault();
+            
+                  <head>
+                        <meta charset="utf-8">
+                        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                        <meta name="viewport" content="width=device-width, initial-scale=1">
+                        <link rel="shortcut icon" href="/blob/images/favicon.ico" type="image/x-icon">
+                        <link href="//cdn.muicss.com/mui-0.9.41/css/mui.min.css" rel="stylesheet" type="text/css" >
+                        <script src="//cdn.muicss.com/mui-0.9.41/js/mui.min.js"></script>
+                        <script src="//cdn.muicss.com/mui-0.9.41/js/mui.min.js"></script>
+                        <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+                        <!-- Latest compiled and minified JavaScript -->
+                        <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.0/js/msal.min.js"></script>
+                        <!-- IE support: add promises polyfill before msal.js  -->
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js" class="pre"></script>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js" class="pre"></script>
+                        <script ws-replace="scripts"></script>
+                        <script>
+                                function doNothing(e){
+                                    console.log("donothing");
+                                    e.preventDefault();
+                                }
+                                jQuery(function ($) {
+                                    var $bodyEl       = $('body'       );
+                                    var $sidedrawerEl = $('#sidedrawer');        
+                                    showSidedrawer = function() {
+                                        // show overlay
+                                        var options = {
+                                            onclose: function () {
+                                                $sidedrawerEl
+                                                    .removeClass('active')
+                                                    .appendTo(document.body);
+                                            }
+                                        };        
+                                        var $overlayEl = $(mui.overlay('on', options));        
+                                        // show element
+                                        $sidedrawerEl.appendTo($overlayEl);
+                                        setTimeout(function () {
+                                            $sidedrawerEl.addClass('active');
+                                        }, 20);
+                                    }
+                                    hideSidedrawer = function() {
+                                        $bodyEl.toggleClass('hide-sidedrawer');
+                                    }
+                                });
+                        </script>
+                        <style>
+                            #sidedrawer-brand             { padding-left    : 20px      }
+                            #sidedrawer ul                { list-style      : none      }
+                            #sidedrawer>ul                { padding-left    : 0px       }
+                            #sidedrawer>ul>li:first-child { padding-top     : 15px      }
+                            #sidedrawer strong:hover      { background-color: #E0E0E0 } 
+                            #sidedrawer strong+ul>li      { padding         : 6px 0px   }
+                            #sidedrawer strong {
+                                display: block;
+                                padding: 15px 22px;
+                                cursor: pointer;
                             }
-                            jQuery(function ($) {
-                                var $bodyEl       = $('body'       );
-                                var $sidedrawerEl = $('#sidedrawer');        
-                                showSidedrawer = function() {
-                                    // show overlay
-                                    var options = {
-                                        onclose: function () {
-                                            $sidedrawerEl
-                                                .removeClass('active')
-                                                .appendTo(document.body);
-                                        }
-                                    };        
-                                    var $overlayEl = $(mui.overlay('on', options));        
-                                    // show element
-                                    $sidedrawerEl.appendTo($overlayEl);
-                                    setTimeout(function () {
-                                        $sidedrawerEl.addClass('active');
-                                    }, 20);
-                                }
-                                hideSidedrawer = function() {
-                                    $bodyEl.toggleClass('hide-sidedrawer');
-                                }
-                            });
-                    </script>
-                    <style>
-                        #sidedrawer-brand             { padding-left    : 20px      }
-                        #sidedrawer ul                { list-style      : none      }
-                        #sidedrawer>ul                { padding-left    : 0px       }
-                        #sidedrawer>ul>li:first-child { padding-top     : 15px      }
-                        #sidedrawer strong:hover      { background-color: #E0E0E0 } 
-                        #sidedrawer strong+ul>li      { padding         : 6px 0px   }
-                        #sidedrawer strong {
-                            display: block;
-                            padding: 15px 22px;
-                            cursor: pointer;
-                        }
-            
-            
-                        /** Body CSS */
-                        html,
-                        body {
-                            height: 100%;
-                            background-color: #eee;
-                        }
-            
-                        html,
-                        body,
-                        input,
-                        textarea,
-                        button {
-                            -webkit-font-smoothing: antialiased;
-                            -moz-osx-font-smoothing: grayscale;
-                            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
-                        }
-            
-            
-                        /** Layout CSS */
-                        #header {
-                            position: fixed;
-                            top: 0;
-                            right: 0;
-                            left: 0;
-                            z-index: 2;
-                            transition: left 0.2s;
-                        }
-            
-                        #sidedrawer {
-                            position: fixed;
-                            top: 0;
-                            bottom: 0;
-                            width: 200px;
-                            left: -200px;
-                            overflow: auto;
-                            z-index: 2;
-                            background-color: #fff;
-                            transition: transform 0.2s;
-                        }
-            
-                        #content-wrapper {
-                            min-height: 100%;
-                            overflow-x: hidden;
-                            margin-left: 0px;
-                            transition: margin-left 0.2s;
-            
-                            /* sticky bottom */
-                            margin-bottom: -160px;
-                            padding-bottom: 160px;
-                        }
-            
-                        #footer {
-                            height: 160px;
-                            margin-left: 0px;
-                            transition: margin-left 0.2s;
-                        }
-            
-                        @media (min-width: 768px) {
-                            #header                               { left: 200px                 }
-                            #sidedrawer                           { transform: translate(200px) }
-                            #content-wrapper                      { margin-left: 200px          }
-                            #footer                               { margin-left: 200px          }
-                            body.hide-sidedrawer #header          { left: 0                     }
-                            body.hide-sidedrawer #sidedrawer      { transform: translate(0px)   }
-                            body.hide-sidedrawer #content-wrapper { margin-left: 0              }
-                            body.hide-sidedrawer #footer          { margin-left: 0              }
-                        }
-            
-            
-                        /**
-                 * Toggle Side drawer
-                 */
-                        #sidedrawer.active { transform: translate(200px); }
-            
-            
-                        /**
-                 * Header CSS
-                 */
-                        .sidedrawer-toggle {
-                            color: #fff;
-                            cursor: pointer;
-                            font-size: 20px;
-                            line-height: 20px;
-                            margin-right: 10px;
-                        }
-            
-                        .sidedrawer-toggle:hover {
-                            color: #fff;
-                            text-decoration: none;
-                        }
-            
-            
-                        /**
-                 * Footer CSS
-                 */
-                        #footer {
-                            background-color: #0288D1;
-                            color: #fff;
-                        }
-            
-                        #footer a {
-                            color: #fff;
-                            text-decoration: underline;
-                        }
-                    </style>
-            
-                <title>Prozper</title>
-              </head>
-              <body class="scrollbar">
-            
-            
-            
+                
+                
+                            /** Body CSS */
+                            html,
+                            body {
+                                height: 100%;
+                                background-color: #eee;
+                            }
+                
+                            html,
+                            body,
+                            input,
+                            textarea,
+                            button {
+                                -webkit-font-smoothing: antialiased;
+                                -moz-osx-font-smoothing: grayscale;
+                                text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+                            }
+                
+                
+                            /** Layout CSS */
+                            #header {
+                                position: fixed;
+                                top: 0;
+                                right: 0;
+                                left: 0;
+                                z-index: 2;
+                                transition: left 0.2s;
+                            }
+                
+                            #sidedrawer {
+                                position: fixed;
+                                top: 0;
+                                bottom: 0;
+                                width: 200px;
+                                left: -200px;
+                                overflow: auto;
+                                z-index: 2;
+                                background-color: #fff;
+                                transition: transform 0.2s;
+                            }
+                
+                            #content-wrapper {
+                                min-height: 100%;
+                                overflow-x: hidden;
+                                margin-left: 0px;
+                                transition: margin-left 0.2s;
+                
+                                /* sticky bottom */
+                                margin-bottom: -160px;
+                                padding-bottom: 160px;
+                            }
+                
+                            #footer {
+                                height: 160px;
+                                margin-left: 0px;
+                                transition: margin-left 0.2s;
+                            }
+                
+                            @media (min-width: 768px) {
+                                #header                               { left: 200px                 }
+                                #sidedrawer                           { transform: translate(200px) }
+                                #content-wrapper                      { margin-left: 200px          }
+                                #footer                               { margin-left: 200px          }
+                                body.hide-sidedrawer #header          { left: 0                     }
+                                body.hide-sidedrawer #sidedrawer      { transform: translate(0px)   }
+                                body.hide-sidedrawer #content-wrapper { margin-left: 0              }
+                                body.hide-sidedrawer #footer          { margin-left: 0              }
+                            }
+                
+                
+                            /**
+                     * Toggle Side drawer
+                     */
+                            #sidedrawer.active { transform: translate(200px); }
+                
+                
+                            /**
+                     * Header CSS
+                     */
+                            .sidedrawer-toggle {
+                                color: #fff;
+                                cursor: pointer;
+                                font-size: 20px;
+                                line-height: 20px;
+                                margin-right: 10px;
+                            }
+                
+                            .sidedrawer-toggle:hover {
+                                color: #fff;
+                                text-decoration: none;
+                            }
+                
+                
+                            /**
+                     * Footer CSS
+                     */
+                            #footer {
+                                background-color: #0288D1;
+                                color: #fff;
+                            }
+                
+                            #footer a {
+                                color: #fff;
+                                text-decoration: underline;
+                            }
+                        </style>
+                
+                    <title>Prozper</title>
+                  </head>
+                  <body class="scrollbar">
+                
+                
+                
                 <div id="sidedrawer" class="mui--no-user-select">
                     <div id="sidedrawer-brand" class="mui--appbar-line-height">
                         <a href="#" class="mui--text-title"><img class="logo" src="/blob/images/prozper.png" alt="Logo"></a>
@@ -213,7 +214,7 @@
                                 <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 logos-center">
                                     <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item">
                                         <a href="https://prozper.com/" class="logo">
-                                            <img alt="" class="img-fluid" src="/app-website/img/pro.png" width="140">
+                                            <img alt="" class="img-fluid" src="/blob/images/pro.png" width="140">
                                             <p>Empowering Sales Professionals Worldwide</p>
                                         </a>
                                     </div>
@@ -244,11 +245,12 @@
                 
                             
                             <div class="mui-col-lg-6 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 flex-center">
+                            <div class="mui-row">
                                 <div class="mui-col-lg-4 mui-col-md-3 mui-col-sm-6 mui-col-xs-12 logos-center">
                                     <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item" style="text-align: center;">
                                         <a href="javascript:;" class="logo logo-bgp" style="float: none">
                                             <p class="title-logo title-logo-1"></p>
-                                            <img alt="" class="img-fluid mb-3" src="/app-website/img/logo-blue-grey.png" style="max-width: 170px; width: 100%;">
+                                            <img alt="" class="img-fluid mb-3" src="/blob/images/logo-blue-grey.png" style="max-width: 170px; width: 100%;">
                                         </a>
                                     </div>
                                 </div>
@@ -256,7 +258,7 @@
                                     <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item" style="text-align: center;">
                                         <p class="title-logo title-logo-1"></p>
                                         <a href="javascript:;" class="logo logo-arch" style="float: none">
-                                            <img alt="" class="img-fluid mb-3" src="/app-website/img/iatan.png" style="max-width: 90px; width: 100%;">
+                                            <img alt="" class="img-fluid mb-3" src="/blob/images/iatan.png" style="max-width: 90px; width: 100%;">
                                         </a>
                                     </div>
                                 </div>
@@ -264,7 +266,17 @@
                                     <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item pl-0" style="text-align: center;">
                                         <p class="title-logo title-logo-1"></p>
                                         <a href="javascript:;" class="logo logo-arch" style="float: none">
-                                            <img alt="" class="img-fluid mb-3" src="/app-website/img/arc.png" style="max-width: 130px; width: 100%;">
+                                            <img alt="" class="img-fluid mb-3" src="/blob/images/arc.png" style="max-width: 130px; width: 100%;">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mui-row">
+                                <div class="mui-col-lg-4 mui-col-md-4 mui-col-sm-6 mui-col-xs-12 logos-center pt-10">
+                                    <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item" style="text-align: center;">
+                                        <p class="title-logo title-logo-1"></p>
+                                        <a href="javascript:;" class="logo logo-arch" style="float: none">
+                                            <img alt="" class="img-fluid mb-3" src="/blob/images/authorize-cards.png" style="max-width: 150px; width: 100%;">
                                         </a>
                                     </div>
                                 </div>
@@ -272,7 +284,7 @@
                                     <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item" style="text-align: center;">
                                         <p class="title-logo title-logo-1"></p>
                                         <a href="javascript:;" class="logo logo-arch" style="float: none">
-                                            <img alt="" class="img-fluid mb-3" src="/app-website/img/authorize-cards.png" style="max-width: 150px; width: 100%;">
+                                            <img alt="" class="img-fluid mb-3" src="/blob/images/authorize.png" style="max-width: 90px; width: 100%;">
                                         </a>
                                     </div>
                                 </div>
@@ -280,7 +292,88 @@
                                     <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item" style="text-align: center;">
                                         <p class="title-logo title-logo-1"></p>
                                         <a href="javascript:;" class="logo logo-arch" style="float: none">
-                                            <img alt="" class="img-fluid mb-3" src="/app-website/img/authorize.png" style="max-width: 90px; width: 100%;">
+                                            <img alt="" class="img-fluid mb-3" src="/blob/images/mdabroad_white.png " style="max-width: 200px; width: 100%;">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>            <br>
+                        <div class="mui-row mui--text-right">Made with ♥ by <a href="https://www.cipherbsc.com">CIPHER Bsc</a></div>
+                    </div>
+                </footer>
+                
+                
+                <footer id="footer" >
+                    <div class="mui-container-fluid">
+                        <div class="mui-row">
+                            <div class="mui-col-lg-3 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 flex-center">
+                                <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 logos-center">
+                                    <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item">
+                                        <a href="https://prozper.com/" class="logo">
+                                            <img alt="" class="img-fluid" src="https://aliados.prozper.com/blob/images/pro.png" width="140">
+                                            <p>Empowering Sales Professionals Worldwide</p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <div class="mui-col-lg-3 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 mb-4 mb-lg-0 flex-center address-block">
+                                <div class="row">
+                                    <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12" style="float:left; padding:0px 15px;">
+                                        <p style="margin:0px 0px 5px 0px;">
+                                            <i class="fa fa-phone" aria-hidden="true"></i> <span style="margin-left:8px;">+1(954)453.6060</span>
+                                        </p>
+                
+                                        <p style="margin:0px 0px 5px 0px;">
+                                            <i class="fa fa-envelope" aria-hidden="true"></i> <span style="margin-left:8px;">info@prozper.com</span>
+                                        </p>
+                                    </div>
+                
+                                    <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12" style="float:left; padding:0px 15px;">
+                                        <p style="margin:0px 0px 5px 0px;">
+                                            <span>
+                                                2893 Executive Park Dr <br> Ste.202 Weston FL33331
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            
+                            <div class="mui-col-lg-6 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 flex-center">
+                            <div class="mui-row">
+                                <div class="mui-col-lg-4 mui-col-md-3 mui-col-sm-6 mui-col-xs-12 logos-center">
+                                    <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item" style="text-align: center;">
+                                        <a href="javascript:;" class="logo logo-bgp" style="float: none">
+                                            <p class="title-logo title-logo-1"></p>
+                                            <img alt="" class="img-fluid mb-3" src="https://aliados.prozper.com/blob/images/logo-blue-grey.png" style="max-width: 170px; width: 100%;">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="mui-col-lg-2 mui-col-md-3 mui-col-sm-6 mui-col-xs-12 logos-center">
+                                    <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item" style="text-align: center;">
+                                        <p class="title-logo title-logo-1"></p>
+                                        <a href="javascript:;" class="logo logo-arch" style="float: none">
+                                            <img alt="" class="img-fluid mb-3" src="https://aliados.prozper.com/blob/images/iatan.png" style="max-width: 90px; width: 100%;">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="mui-col-lg-3 mui-col-md-3 mui-col-sm-6 mui-col-xs-12 logos-center pl-0 ml-8">
+                                    <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item pl-0" style="text-align: center;">
+                                        <p class="title-logo title-logo-1"></p>
+                                        <a href="javascript:;" class="logo logo-arch" style="float: none">
+                                            <img alt="" class="img-fluid mb-3" src="https://aliados.prozper.com/blob/images/arc.png" style="max-width: 130px; width: 100%;">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mui-row">
+                                <div class="mui-col-lg-4 mui-col-md-4 mui-col-sm-6 mui-col-xs-12 logos-center pt-10">
+                                    <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item" style="text-align: center;">
+                                        <p class="title-logo title-logo-1"></p>
+                                        <a href="javascript:;" class="logo logo-arch" style="float: none">
+                                            <img alt="" class="img-fluid mb-3" src="https://aliados.prozper.com/blob/images/authorize-cards.png" style="max-width: 150px; width: 100%;">
                                         </a>
                                     </div>
                                 </div>
@@ -288,10 +381,19 @@
                                     <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item" style="text-align: center;">
                                         <p class="title-logo title-logo-1"></p>
                                         <a href="javascript:;" class="logo logo-arch" style="float: none">
-                                            <img alt="" class="img-fluid mb-3" src="/app-website/img/mdabroad_white.png " style="max-width: 200px; width: 100%;">
+                                            <img alt="" class="img-fluid mb-3" src="https://aliados.prozper.com/blob/images/authorize.png" style="max-width: 90px; width: 100%;">
                                         </a>
                                     </div>
                                 </div>
+                                <div class="mui-col-lg-4 mui-col-md-4 mui-col-sm-6 mui-col-xs-12 logos-center pt-10">
+                                    <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item" style="text-align: center;">
+                                        <p class="title-logo title-logo-1"></p>
+                                        <a href="javascript:;" class="logo logo-arch" style="float: none">
+                                            <img alt="" class="img-fluid mb-3" src="https://aliados.prozper.com/blob/images/mdabroad_white.png " style="max-width: 200px; width: 100%;">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                             </div>
                         </div>            <br>
                         <div class="mui-row mui--text-right">Made with ♥ by <a href="https://www.cipherbsc.com">CIPHER Bsc</a></div>
@@ -319,7 +421,7 @@
                         cntFormaInvitaciones  Doc invitaciones
                         cntReporteConsolidado Doc Prozper.ReporteConsolidado
                         cntTablaPagos         Doc Prozper.TablaPagos
-                        cntFormaContrato      template FormaContrato "" Aliado "@{Prozper.aliado}"
+                        cntFormaContrato      Doc Prozper.FormaContrato
                         cntPDF                div   "id=pdfViewer  ;height:calc(100vh - 68px)"
                         cntVideo              video "id=videoViewer;height:calc(100vh - 68px); max-width:100%; height:calc(100% - 68px); width:100%;poster=blob/images/loading-prozper.gif"
                         :                     source "src=@{Prozper.VideoW};type=video/mp4"
@@ -463,6 +565,7 @@
                     <li>
                         <strong onclick="$(this).next().slideToggle(200)">Actualizar Información</strong>
                         <ul style="display: none;">
+                            <li><a href="#/Content/ProzperLyt.cntFormaContrato"      >Firmar Contrato</a></li>
                             <li><a href="#/Content/ProzperLyt.cntFormaFormasPago"    >Formas de Pago   </a></li>
                             <li><a href="#/Content/ProzperLyt.cntFormaDatos"         >Datos Personales </a></li>
                             <li><a href="#/Content/ProzperLyt.cntFormaContactos"     >Contactos        </a></li>
@@ -577,7 +680,7 @@
                     <br>
                     <br>
                     <div class="mui-row">
-                    <div class="mui-col-md-7 mui-col-md-offset-2">
+                    <div class="mui-col-md-10 mui-col-md-offset-1">
                         <div class="mui--z2 mui-form mui-form--inline mui-panel " ws-hole="CuentaDebitar"></div></div></div>
                     <div class="mui--z2 mui--text-center  mui--bg-primary mui--text-white mui--text-headline">
                     FIRMA Y CONFIRMACION
@@ -592,10 +695,10 @@
                 </div>
                 
                 
-                <div ws-template="Contrato">
+                <div ws-template="Contrato" class="markdown">
                     <h2>Contrato de Afiliación a Negocio Independiente PROZPER</h2>
                     <p>PROZPER LLC., compañía conformada en el Estado de Florida, EE. UU con domicilio en el 2893 Executive Park Dr. Suite
-                    202. Weston, FL 33331, en la persona de su Representante Legal Giancarlo Molero (en adelante "PROZPER") y el
+                    202. Weston, FL 33331, en la persona de su Representante Legal Giancarlo Molero (en adelante "PROZPER") y
                     <strong>${Aliado}</strong>, identificado con los datos proporcionados mediante “Planilla de solicitud de afiliación a PROZPER”, (en
                     adelante el "Aliado"), (PROZPER y el Aliado, conjuntamente denominados las "Partes" e individualmente denominados la
                     "Parte"), firman el siguiente contrato (el "Contrato")</p>
@@ -879,6 +982,91 @@
                     <p>Cuando una o más cláusulas a las que se hace referencia en el presente Contrato sean declaradas nulas o inválidas por
                     la autoridad jurisdiccional competente, el resto del Contrato seguirá siendo válido entre las Partes, salvo que dicha cláusula
                     haya constituido el motivo determinante para la conclusión del presente contrato.</p>
+                    <h2>ANEXO B</h2>
+                    <h2>LISTADO DE PRODUCTOS, SERVICIOS Y COMISIONES</h2>
+                    <table>
+                    <thead>
+                    <tr class="header">
+                    <th><p>PRODUCTO O SERVICIO</p></th>
+                    <th><p>COMISION (S.4 c.1. Comisiones por ventas de productos y servicios de PROZPER)</p></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="odd">
+                    <td><p>Venta de pólizas de asistencia en viajes</p></td>
+                    <td><p>60% de comisión sobre el precio de venta al publico</p></td>
+                    </tr>
+                    <tr class="even">
+                    <td><p>Venta de boletos aéreos</p></td>
+                    <td><p>60% de comisión sobre la comisión que determine la línea aérea</p></td>
+                    </tr>
+                    <tr class="odd">
+                    <td><p>Emisión de boletos aéreos</p></td>
+                    <td><p>20.00 USD por ticket emitido</p></td>
+                    </tr>
+                    <tr class="even">
+                    <td><p>Paquetes turisticos</p></td>
+                    <td><p>60% de comisión sobre la parte comisionable del proveedor</p></td>
+                    </tr>
+                    <tr class="odd">
+                    <td><p>Cruceros</p></td>
+                    <td><p>60% de comisión sobre la parte comisionable del proveedor</p></td>
+                    </tr>
+                    <tr class="even">
+                    <td><p>Hoteles</p></td>
+                    <td><p>60% de comisión sobre la parte comisionable del proveedor</p></td>
+                    </tr>
+                    </tbody>
+                    </table>
+                    
+                    <hr />
+                    <table>
+                    <thead>
+                    <tr class="header">
+                    <th><p>TIPO DE COMISION</p></th>
+                    <th><p>COMISION (S.4 c.2. Comisión por referir nuevos Aliados)</p></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="odd">
+                    <td><p>Comisión por referir</p></td>
+                    <td><p>15.00 USD por cada Aliado que haya sido referido directamente y que tenga su afiliación activa (pagada) al momento del calculo de comisiones.</p></td>
+                    </tr>
+                    </tbody>
+                    </table>
+                    
+                    <hr />
+                    <table>
+                    <thead>
+                    <tr class="header">
+                    <th><p>TIPO DE COMISION</p></th>
+                    <th><p>COMISION (S.4 c.3. Comisión Máster)</p></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="odd">
+                    <td><p>Comisión Máster</p></td>
+                    <td><p>25.00 USD por cada Aliado que haya sido referido directamente y por todos los referidos que hayan referido sus referidos directos. Se deben cumplir 2 condiciones: los referidos y sus descendientes deben tener su afiliación activa (pagada) y no pueden estar recibiendo Comisión Máster para que sean contabilizados en el calculo de esta comisión.</p></td>
+                    </tr>
+                    </tbody>
+                    </table>
+                    
+                    <hr />
+                    <table>
+                    <thead>
+                    <tr class="header">
+                    <th><p>MONTO DE AFILIACION</p></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="odd">
+                    <td><p>Pago de Afiliacion mensual = 75.00 USD</p></td>
+                    </tr>
+                    </tbody>
+                    </table>
+                    
+                    <hr />
+                    <style>  .markdown table, .markdown th, .markdown tr, .markdown td { border: black solid 1px; } </style>
                     
                     </div>
                 <div ws-children-template="Correo">
@@ -1063,7 +1251,7 @@
                         <input type="text" pattern="dddddddddddddddd" size="16" name="NumeroTarjeta" ws-var="Numero" ws-attr="Disabled3" >
                         <label>Numero de Tarjeta</label>
                     </div>
-                    <div>
+                    <div style="${Visible}">
                         <label>Venc.</label>
                         <div class="mui-textfield mui-textfield--float-label">
                             <div class="mui-select">
@@ -1291,296 +1479,6 @@
                     <div class="mui--text-headline mui--text-center ${status}" >${status} -  <span class="${tipo}">${tipo}</span></div>
                 </div>
                 
-                
-                <div ws-template="contratoprozper" class="MarkDownHtml" style="display: block; overflow: auto; margin: 15px;">
-                    <h2 class="mui--text-center ">Contrato de Afiliación a Negocio Independiente PROZPER</h2>
-                    <p><b>PROZPER LLC.</b>, compañía conformada en el Estado de Florida, EE. UU con domicilio en el 2893 Executive Park Dr. Suite
-                    202. Weston, FL 33331, en la persona de su Representante Legal Giancarlo Molero (en adelante "PROZPER") y 
-                    <b>${aliado}</b>, identificado con los datos proporcionados mediante “Planilla de solicitud de afiliación a PROZPER”, (en
-                    adelante el "Aliado"), (PROZPER y el Aliado, conjuntamente denominados las "Partes" e individualmente denominados la
-                    "Parte"), firman el siguiente contrato (el "Contrato")</p>
-                    <p>Considerando</p>
-                    <ol>
-                    <li>PROZPER es una sociedad especializada en el sector de Servicios de tecnología para la realización de Negocios.</li>
-                    <li>
-                    PROZPER ha diseñado y desarrollado una plataforma digital on-line accesible por Internet en la modalidad
-                    “Software online” (la “Plataforma PROZPER”) que permite al usuario Aliado gestionar directa y autónomamente
-                    la venta (entre otras) de Productos y Servicios on-line;
-                    </li>
-                    <li>
-                    La Plataforma PROZPER es un instrumento reservado a usuarios profesionales y el Aliado se compromete a
-                    utilizarlo exclusivamente en relación con su propia actividad profesional y en cualquier caso por exigencias
-                    vinculadas a la misma.
-                    </li>
-                    </ol>
-                    <p>Considerando lo anterior, las Partes convienen y estipulan el siguiente Contrato de licencia de uso no exclusivo de la
-                    Plataforma PROZPER.</p>
-                    <p>Los considerandos y los anexos al Contrato, en particular los Términos de Uso y Registro, forman parte integrante y
-                    sustancial del Contrato.</p>
-                    <h3>Sección 1. Definiciones</h3>
-                    <p>En relación con el presente Contrato se indican en adelante los significados que deben atribuirse a los términos y
-                    expresiones recurrentes:</p>
-                    <p>“Base de Datos”: se deberán entender por este término los contenidos de los datos obtenidos por el Aliado y los datos
-                    personales de los destinatarios de los servicios solicitados;</p>
-                    <p>“Contrato”: se considera tal el presente documento formado por los Términos de Uso;</p>
-                    <p>“Datos Personales”: se deberá entender por este término cualquier información relativa a una persona física identificada
-                    o identificable de cuyo tratamiento sea Responsable el Aliado y que sea objeto de la solicitud de servicio a efectos de
-                    ejecutar el Contrato. Más en concreto, los datos objeto de tratamiento serán la dirección email, el número de teléfono, y
-                    los datos generados a partir de la solicitud de las comunicaciones transmitidas.</p>
-                    <p>“Fecha de activación”: se considera como tal la fecha comunicada por email al Aliado en el acto de suscripción online a
-                    distancia, mediante conexión Internet.</p>
-                    <p>“Fecha de expiración”: se considera como tal la fecha de caducidad del Contrato, considerando también la terminación
-                    del servicio por la falta de pago del Fee de afiliación.</p>
-                    <p>“Propiedad intelectual”: se considera como tal a cualquier derecho de propiedad intelectual regulado, en cada caso, por
-                    las leyes sobre patentes, sobre protección de los chip semiconductores, sobre el derecho de autor, sobre el secreto
-                    industrial, sobre las marcas y sobre cualquier otro derecho de propiedad intelectual esté o no registrado, así como las
-                    eventuales aplicaciones, renovaciones, ampliaciones, reintroducciones y restauraciones, actualmente en vigor o que
-                    puedan realizarse en el futuro, en todo el mundo.</p>
-                    <h3>Sección 2: Condiciones de uso de la plataforma</h3>
-                    <p>a. Condiciones, deberes y derechos del Aliado:</p>
-                    <ul>
-                    <li>El aliado debe ser mayor de edad</li>
-                    <li>Tiene el derecho de ofrecer los productos y servicios de PROZPER de acuerdo con los términos y Condiciones.</li>
-                    <li>Tiene el derecho de reclutar personas para PROZPER y que estas estén bajo su estructura comercial.</li>
-                    <li>
-                    Debe asistir a los eventos preparados por la organización, entrenarse debidamente para ofrecer al cliente final, los
-                    productos y servicios con la mayor claridad posible y motivar a los Aliados en su línea descendiente.
-                    </li>
-                    <li>
-                    Debe cumplir con todas la leyes, ordenanzas y regulaciones Federales, Estadales y del Condado. Así como realizar
-                    reportes y enviar las retenciones y deducciones que sean exigidas por el país, estado o condado.
-                    </li>
-                    <li>
-                    Debe desarrollar la actividad como un VENDEDOR INDEPENDIENTE con honestidad, integridad y acorde con el código
-                    de ética.
-                    </li>
-                    <li>
-                    Debe utilizar solo los métodos y contratos de venta provistos por PROZPER y sus proveedores comerciales y seguir las
-                    políticas y procedimientos preestablecidos por PROZPER para todas las ventas.
-                    </li>
-                    <li>
-                    Debe estar de acuerdo en presentar los planes de mercadeo, compensación y productos tal como están publicados y
-                    enterados por PROZPER en su página oficial.
-                    </li>
-                    <li>Debe mantener el pago de su afiliación al día.</li>
-                    <li>No podrá reclamar de ninguna forma ganancias, productos o servicios que no hayan sido determinados.</li>
-                    <li>
-                    Tiene el derecho de cancelar el presente contrato sin previo aviso y en cualquier momento enviando una
-                    notificacion con su decision al correo electronico afiliacion@prozper.com. Para evitar el cobro de la afiliación de
-                    un mes en especifico, se deberá entregar la notificación de cancelación antes del día 10 de ese mes.
-                    </li>
-                    </ul>
-                    <p>b. Licencia de uso de la Plataforma:</p>
-                    <p>PROZPER, respetando los términos y condiciones del presente Contrato, se compromete a facilitar al Aliado una licencia
-                    limitada, no exclusiva, de utilización de la Plataforma PROZPER, que permite directamente al Aliado realizar transacciones
-                    de negocios independiente de asistencia en viajes tales como Seguros de Asistencia al Viajero, obtención de boletería y
-                    paquetes para viajeros a través de las opciones tercerizadas de sus aliados Comerciales y proveedores. El Aliado entiende
-                    y acepta expresamente que la Plataforma PROZPER es un instrumento reservado a usuarios Aliados de Negocios
-                    Independientes y a los efectos de este contrato es considerado un VENDEDOR INDEPENDIENTE de PROZPER y acepta
-                    que no es un agente o ni un empleado a los efectos tributarios federales y estatales. Sin embargo, el Aliado dispone de
-                    un periodo de prueba del sistema, durante el cual podrá verificar las funcionalidades de la Plataforma PROZPER y podrá
-                    rescindir este contrato sin ningún coste u obligación. En la utilización de la Plataforma PROZPER el Aliado se compromete
-                    a dar cumplimiento a las instrucciones de uso definidas por PROZPER en base a las indicaciones. Se entiende que el
-                    tratamiento de los datos conectado con el uso de la plataforma se producirá en cualquier caso respetando la normativa
-                    vigente, entendiéndose que al suscribirse asume la función de Aliado; y PROZPER, valiéndose para ello de su propia
-                    estructura organizativa, asume la función de responsable del tratamiento tal y como se establece. Debido a la naturaleza
-                    y al funcionamiento de la Plataforma PROZPER, las Partes reconocen, conforme y dentro de los límites contemplados en
-                    el presente Contrato, que será el Aliado el que gestione directa y autónomamente los instrumentos del negocio puestos
-                    a disposición por parte de PROZPER y será el propio Aliado, bajo su exclusiva responsabilidad, el que realice la solicitud
-                    para realizar el negocio de venta a través de la Plataforma y gestione, en calidad de Aliado, la verificación de la entrega
-                    de comprobante final.</p>
-                    <p>c. Acceso del Aliado a la Plataforma:</p>
-                    <p>El Aliado tendrá acceso a la Plataforma PROZPER una vez envíe su solicitud de registro y aprobación; le será enviado un
-                    Usuario y Password (clave) de autorización y autenticación atribuidas al Aliado, conservadas y utilizadas por este bajo su
-                    exclusiva responsabilidad. El acceso a la Plataforma deberá realizarse con arreglo a lo indicado en el presente Contrato
-                    y en los Términos de Uso. En particular, el Aliado se compromete a conservar con la máxima confidencialidad los códigos
-                    alfanuméricos de acceso (denominados "username" y "password") mencionados, y responde por lo tanto también de la
-                    custodia de estos: el Aliado será por lo tanto el único responsable de cualquier daño causado por la eventual utilización
-                    de login y password por parte de terceros no autorizados. El Aliado se compromete a comunicar inmediatamente a
-                    PROZPER el eventual robo, extravío, pérdida o apropiación por cualquier título, por terceros no autorizados, de la
-                    información de acceso.</p>
-                    <p>d. Disponibilidad de la Plataforma PROZPER:</p>
-                    <p>Con el presente Contrato PROZPER se obliga a garantizar que la Plataforma PROZPER se encuentre disponible con una
-                    tasa de disponibilidad up-time del 99%, las 24 horas los 365 días del año. Las Partes convienen que en ningún caso
-                    podrá imputarse a PROZPER la falta de disponibilidad de la Plataforma PROZPER debido a hechos y circunstancias
-                    reconducibles al Aliado o a sujetos de cuyo comportamiento deba responder el Aliado, como, a título enunciativo no
-                    limitativo, la disponibilidad de una red de Internet idónea del Aliado, problemas de hardware, software, de network internos
-                    de la estructura organizativa del Aliado o debido a la localidad donde se encuentre. De la definición del nivel mínimo de
-                    funcionalidades garantizado se excluyen las actividades de mantenimiento ordinario comunicadas al Aliado con preaviso
-                    de al menos 2 (dos) días naturales y de mantenimiento extraordinario comunicadas al Cliente con preaviso que podrá
-                    ser también inferior a 4 (cuatro) horas. Durante los festivos y de las 0.00 a las 6.00 los días laborables, podrán ser
-                    necesarias interrupciones del servicio ocasionales a causa de las operaciones de mantenimiento del programa que no se
-                    incluyan en la determinación del nivel mínimo de funcionalidades garantizado, y respecto a las cuales se excluye cualquier
-                    responsabilidad para PROZPER.</p>
-                    <h3>Sección 3. Propiedad y Marcas; Terceros licenciatarios.</h3>
-                    <p>PROZPER es el único propietario exclusivo de todos los derechos e intereses de la Plataforma, y de cualquier Propiedad
-                    Intelectual vinculada a la misma, incluyendo sus desarrollos. PROZPER es una marca comercial en registro. El sitio web,
-                    la Plataforma PROZPER y la información allí recogida, son propiedad de PROZPER. Está prohibida la copia no autorizada
-                    y la difusión vulnerando los derechos de Propiedad Intelectual.</p>
-                    <h3>Sección 4. Términos económicos y duración contractual.</h3>
-                    <p>a. Comienzo del Contrato.</p>
-                    <p>Con la firma de este contrato (que incluye la planilla de autorización de cobro automático a su cuenta bancaria o tarjeta
-                    de crédito del Anexo A “Autorización para el cobro de la afiliación”), el Aliado acepta ser un VENDEDOR INDEPENDIENTE
-                    de PROZPER, y recibirá las credenciales de acceso a la plataforma tal como se describe en la parte c de la sección 2. El
-                    mes en que reciba dichas credenciales será su “Mes de Inscripción”. Durante dicho mes el Aliado tendrá libre acceso a
-                    la plataforma, sin necesidad de realizar ningún pago por la afiliación.</p>
-                    <p>b. Pago por afiliación y mantenimiento de la plataforma y otros servicios.</p>
-                    <p>A partir del siguiente mes posterior al “Mes de Inscripción”, el Aliado debe pagar una afiliación mensual para mantener
-                    activa la plataforma de ventas y disponer de todo el soporte que ofrece PROZPER para mantener la operación. El sistema
-                    hará el cargo automático por el monto de la afiliación que se indica en el Anexo A de este contrato.
-                    Cuando el pago de comisiones (“Comisión por Referir” o “Comisión Máster”) que recibirá el Aliado durante un mes
-                    cualquiera sea mayor que el monto de la afiliación mensual, el Aliado autoriza a PROZPER a descontar de estas comisiones
-                    el monto de la afiliación correspondiente a ese mes, en cuyo caso no se hará el cargo a la cuenta bancaria autorizada o
-                    tarjeta de crédito.
-                    El monto de la afiliación y las condiciones descritas en el Anexo A “Autorización para el cobro de la afiliación”, podrán ser
-                    modificados en cualquier momento y sin previo aviso, según lo requiera la operación del negocio.</p>
-                    <p>c. Beneficios económicos por venta de productos y servicios y plan de referidos.</p>
-                    <p>c.1. Comisiones por ventas de productos y servicios de PROZPER</p>
-                    <p>PROZPER facilitará los medios necesarios para la cotización, emisión, administración y pago en línea de productos y
-                    servicios de los diferentes proveedores con los que PROZPER tenga convenios. PROZPER brindará a sus Aliados el
-                    mayor porcentaje posible de comisión que los productos y servicios disponibles puedan ofrecer sin afectar la rentabilidad
-                    de sus proveedores y guardándose PROZPER el derecho de modificar dicho porcentaje de comisión de cada uno de los
-                    productos y servicios independientemente, en cualquier momento que lo considere conveniente y sin necesidad de
-                    notificación previa.
-                    La lista de productos y servicios disponibles, el porcentaje de comisión y las condiciones especiales que rigen para cada
-                    producto o servicio se especifican en el Anexo B “Listado de productos, servicios y comisiones”.</p>
-                    <p>c.2. Comisión por referir nuevos Aliados</p>
-                    <p>PROZPER mantendrá en la plataforma la “Relación de Referido” de todos los nuevos Aliados que refiera el VENDEDOR
-                    INDEPENDIENTE, y a su vez, la “Relación de Referido” de todos los descendientes que refieran estos nuevos aliados
-                    referidos por el VENDEDOR INDEPENDIENTE.
-                    PROZPER reconocerá el pago de una “Comisión por Referir” que se pagará mensualmente y cuyo monto se muestra en
-                    el Anexo B “Listado de productos y servicios y comisiones”. Esta “Comisión por Referir” se pagará por cada uno de los
-                    nuevos Aliados que haya referido directamente el VENDEDOR INDEPENDIENTE y que estén activos en la plataforma a
-                    través del pago mensual de su afiliación para el momento del cálculo de la comisión.
-                    Esta comisión no se pagará por ninguno de los descendientes de los Aliados que haya referido directamente el
-                    VENDEDOR INDEPENDIENTE.</p>
-                    <p>c.3. Comisión Máster</p>
-                    <p>Cuando el VENDEDOR INDEPENDIENTE haya referido directamente 31 o mas Aliados, PROZPER reconocerá una
-                    “Comisión Máster” cuyo monto se muestra en el Anexo B “Listado de productos, servicios y comisiones”. Dicha “Comisión
-                    Máster” se pagará mensualmente por cada uno de los nuevos Aliados que haya referido directamente el VENDEDOR
-                    INDEPENDIENTE y por todos los descendientes que estos a su vez hayan referido, siempre y cuando los referidos
-                    directamente o sus descendientes cumplan las siguientes 2 condiciones:</p>
-                    <ol>
-                    <li>Esten activos en la plataforma a través del pago mensual de su afiliación, para el momento del cálculo de comisiones.</li>
-                    <li>No reciban el pago de “Comisión Máster”</li>
-                    </ol>
-                    <h3>Sección 5. Asistencia al Aliado</h3>
-                    <p>a. Asistencia clientes:</p>
-                    <p>Para garantizar la correcta utilización y la plena funcionalidad de la Plataforma PROZPER, este se compromete a prestar
-                    asistencia técnica con recomendaciones sobre problemas ligados al correcto funcionamiento de la Plataforma, los días
-                    hábiles de lunes a viernes en horario de oficina.
-                    PROZPER prestará asistencia técnica por email o a través del CRM disponible dentro de la plataforma o a través de
-                    cualquier otro medio que disponga para ello, sobre los temas relativos al funcionamiento de la Plataforma abordando el
-                    problema a partir del momento en que soporte técnico ofrece la primera respuesta de hacerse cargo de la solicitud. Esta
-                    asistencia no incluye asesoría sobre ventas, ni características o condiciones de los productos y servicios que ofrece la
-                    plataforma.</p>
-                    <h3>Sección 6. Declaraciones, garantías, responsabilidades y limitaciones.</h3>
-                    <p>Al firmar como Solicitante Aliado en la parte inferior, estoy de acuerdo con cada uno de los siguientes:</p>
-                    <ol>
-                    <li>
-                    Como un Aliado o VENDEDOR INDEPENDIENTE soy un asesor independiente cuyo éxito o fracaso depende de mi
-                    esfuerzo personal.
-                    </li>
-                    <li>
-                    Como un Aliado no se garantiza ningún ingreso, ganancia o éxito, y al firmar la Solicitud y Acuerdo convengo que ni
-                    PROZPER, ni los proveedores comerciales, han hecho alguna afirmación o declaración garantizando ganancias o
-                    declaraciones de ganancias anticipadas. Tampoco haré ninguna reclamación de ingresos o proyecciones que afirmen o
-                    prometan cualquier cantidad específica de compensación que un Aliado de Negocio Independiente pueda ganar, ya sea
-                    oralmente o por escrito a otros Aliados o potenciales VENDEDORES INDEPENDIENTES.
-                    </li>
-                    <li>
-                    Como un Aliado, toda mi publicidad debe ser verdadera y no engañosa. Cualquier anuncio que promueva o represente
-                    empleo, posiciones asalariadas, posiciones administrativas, salarios por hora o ingresos garantizados, están prohibidos.
-                    Como un Aliado, cumpliré con los lineamientos de PROZPER para la publicidad y siempre manifestaré que promuevo una
-                    gestión por cuenta propia, VENDEDOR INDEPENDIENTE o una oportunidad de “poseer tu propio negocio”.
-                    </li>
-                    <li>
-                    Cuando use ejemplos para promocionar cómo funciona el plan de gestión del negocio, tendré a la mano, en todo
-                    momento, el Cuadro indicativo de los porcentajes de comisiones de la línea descendiente.
-                    </li>
-                    <li>
-                    Como un Aliado, no daré una falsa interpretación de las capacidades de ninguno de los servicios de PROZPER. No
-                    crearé materiales que describan productos de PROZPER o ningún tipo de información con resultados de pruebas o de
-                    comparación de productos, a menos que estos se encuentren autorizados en forma escrita por PROZPER.
-                    </li>
-                    <li>
-                    El Plan de Compensación de PROZPER no solo está basado sobre la venta de productos y servicios ofrecidos por
-                    PROZPER, sino también con la captación de otros Aliados, por lo que la simple estructuración de una organización de
-                    negocio puede generar rentas atractivas.
-                    </li>
-                    <li>
-                    Como un Aliado, se puede dar por terminado el acuerdo o ser disciplinado por cualquier violación al Contrato de
-                    VENDEDOR INDEPENDIENTE, a las Políticas y Procedimientos, o al Plan de Compensación, o por cometer prácticas
-                    comerciales no equitativas o engañosas, o cualquier violación de la ley.
-                    </li>
-                    <li>
-                    Convengo que leeré y estaré de acuerdo en cumplir con las Políticas y Procedimientos de PROZPER. Las establecidas,
-                    las enmiendas, los cambios y/o las nuevas Políticas que así se informen.
-                    </li>
-                    <li>
-                    Estoy conforme que este Acuerdo debe ser llevado a cabo y tener copias impresas, debidamente completadas, en los
-                    archivos de PROZPER antes de que sea pagada cualquier comisión por mi permiso de Afiliación, y que puede ser
-                    terminado a discreción de PROZPER si cualquiera de estas páginas no ha sido presentada totalmente completada al
-                    momento de la afiliación.
-                    </li>
-                    </ol>
-                    <p>TERMINOS Y CONDICIONES ADICIONALES</p>
-                    <ol>
-                    <li>
-                    ENTIENDO QUE PARA SER EXITOSO EN ESTE PROGRAMA DEBO CONOCER EL FUNCIONAMINETO DE LA
-                    PLATAFORMA Y LA CALIDAD Y ALCANCE DE LOS SERVICIOS OFRECIDOS Y COMERCIALIZARLOS, ASI COMO
-                    PATROCINAR E INCENTIVAR A OTROS VENDEDORES INDEPENDIENTES QUE HAGAN LO MISMO; Y PARA QUE ELLOS
-                    SEAN EXITOSOS DEBEN HACER LO MISMO.
-                    </li>
-                    <li>
-                    Los reportes que hacen referencia a las grandes cantidades de ingresos de Aliados o VENDEDORES INDEPENDIENTES
-                    exitosos de PROZPER, no son necesariamente distintivos o representativos de lo que un VENDEDOR INDEPENDIENTE
-                    de PROZPER en particular puede ganar. No se puede garantizar a nadie el éxito como un VENDEDOR INDEPENDIENTE
-                    y no todos los VENDEDORES INDEPENDIENTES ganan ingresos iguales.
-                    </li>
-                    </ol>
-                    <p>Además, PROZPER no recomienda que ningún potencial VENDEDOR INDEPENDIENTE deje su empleo actual o
-                    transformaciones en su estructura organizativa hasta el tiempo en que su negocio genere ingresos estables y significativos
-                    basados en la venta de los productos y captación de nuevos Aliados en línea descendente.</p>
-                    <p>LOS INGRESOS INDIVIDUALES DEPENDEN ESTRICTAMENTE DEL TIEMPO, ESFUERZO E INICIATIVA DEDICADOS POR
-                    EL VENDEDOR INDEPENDIENTE. POR FAVOR LEA CON CUIDADO. ESTA ES UNA LIBERACION DE RESPONSABILIDAD
-                    Y RENUNCIA A DERECHOS LEGALES. Reconozco que mi participación en una red de afiliación y comercialización a
-                    PROZPER es completamente voluntaria e implica el riesgo financiero y los gastos asociados con cualquier negocio propio
-                    administrado y operado personalmente. Expresamente asumo todos los riesgos y costos asociados con mi participación
-                    en la actividad, incluso y sin restricción: cambio de costos de bienes y servicios; cambios en las condiciones económicas
-                    existentes y futuras; disponibilidad y discontinuación de productos y servicios; gastos adicionales para operaciones
-                    comerciales y publicidad. A pesar de todos los riesgos, voluntariamente he decidido participar en esta actividad.</p>
-                    <p>Estoy de acuerdo en utilizar solo formatos y servicios aprobados por PROZPER, LLC en todo momento. En consideración
-                    al producto ofrecido, la inscripción y recibir el permiso para participar en la actividad de desarrollo de negocio
-                    independiente, estoy de acuerdo en liberar y exonerar de responsabilidad a PROZPER, LLC, sus filiales y proveedores,
-                    sus representantes, oficiales, directivos, dueños, coordinadores y empleados (colectivamente, “el Grupo Exonerado”) por
-                    todas y cada una de las reclamaciones que pueda poner de manifiesto como resultado de pérdida monetaria, daño físico,
-                    incluso muerte, o daños a la propiedad sustentados en relación a la Actividad, incluso aquellas reclamaciones basadas en
-                    negligencia o incumplimiento de las regulaciones. Estoy de acuerdo en indemnizar a “el Grupo Exonerado” por cualquier
-                    reclamación, no importa que sea causada por terceros, que yo pudiera ocasionar.</p>
-                    <p>Este acuerdo es obligatorio en mi País, con mis herederos, administradores y es adscrito y será regido según las leyes
-                    del estado de mi residencia al momento de firmar esta aplicación.</p>
-                    <p><strong>Validez de las cláusulas contractuales</strong>.
-                    Las cláusulas del presente Contrato se entienden enteramente en vigor y aceptadas por el Aliado incluso en caso de
-                    utilización no onerosa y/o temporal de las funcionalidades prestadas a cualquier título por PROZPER.</p>
-                    <p><strong>Cargas fiscales</strong>. Cualquier carga fiscal derivada de la ejecución del Contrato son a cargo del Aliado.</p>
-                    <p><strong>Ley aplicable</strong>. El presente Contrato se regula e interpreta según la ley del Estado de Florida EE. UU, sin excluir
-                    reclamaciones que pudiesen surgir según el domicilio del Aliado.</p>
-                    <p><strong>Cláusulas finales</strong>. El presente Contrato, del que forman parte integrante y sustancial todos los anexos indicados, abroga
-                    y sustituye cualquier acuerdo, pacto, negociación, escrito o verbal, anterior entre las Partes y relativo al objeto del presente
-                    Contrato.</p>
-                    <p>El hecho de que una de las Partes no haga valer en su momento los derechos que se le reconocen en virtud de una o
-                    más cláusulas a las que se hace referencia en el presente Contrato, no podrá entenderse como una renuncia general y
-                    tácita a los derechos y deberes recogidos en la cláusula, ni impedirá a esa parte reclamar posteriormente la puntual y
-                    rigurosa observancia de cualquier cláusula contractual.</p>
-                    <p>Las Partes acuerdan que: (a) las palabras en el formato electrónico se considerarán que están "por escrito" a los efectos
-                    de toda la legislación aplicable donde se requiera que deban estar "por escrito"; y (b) la prueba electrónica será admisible
-                    ante cualquier tribunal u otros procedimientos cuasi-judiciales entre las partes.</p>
-                    <p>Cuando una o más cláusulas a las que se hace referencia en el presente Contrato sean declaradas nulas o inválidas por
-                    la autoridad jurisdiccional competente, el resto del Contrato seguirá siendo válido entre las Partes, salvo que dicha cláusula
-                    haya constituido el motivo determinante para la conclusión del presente contrato.</p>
-                    <style>.MarkDownHtml>*>code,.MarkDownHtml>*>*>code,.MarkDownHtml>*>*>*>code{ color:black; border-radius:unset; width:max-content; display:inline-table; background-color: #eff0f1}  .MarkDownHtml>pre {  border-radius:unset; border:none; overflow:auto;  margin-bottom: 1em;    padding: 5px;    padding-bottom: 20px !ie7;    width: auto;    width: 650px !ie7; max-height: 600px; overflow: auto; font-size: 13px; background-color: #eff0f1}</style>
-                </div>
                 
                         <style>
                             .Inactivo          { font-weight: 100 ; color: rgba(179, 177, 177, 0.644) }
