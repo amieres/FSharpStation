@@ -2232,7 +2232,7 @@
  ConceptoPago.PagoAfiliacion=new ConceptoPago({
   $:0
  });
- Transaccion.New=function(fechaPago,ano,periodo,monto,idAliado,concepto,transaccion)
+ Transaccion.New=function(fechaPago,ano,periodo,monto,idAliado,concepto,transaccion,statusTran)
  {
   return{
    fechaPago:fechaPago,
@@ -2241,7 +2241,8 @@
    monto:monto,
    idAliado:idAliado,
    concepto:concepto,
-   transaccion:transaccion
+   transaccion:transaccion,
+   statusTran:statusTran
   };
  };
  TipoDireccion=TypesV0.TipoDireccion=Runtime.Class({
