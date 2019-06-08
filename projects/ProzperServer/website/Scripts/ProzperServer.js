@@ -362,7 +362,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 (function()
 {
  "use strict";
- var Global,FsRoot,ProzperServer,ClientSide,MainProgram,WebSharper,Obj,UI,Var$1,LibraryJS,AppFramework,PlugIn,ModeloUI,Aliado,Operators,View,Var,Lazy,RenderAliados,RenderAliado,FormaRegistro,FormaDatos,FormaContactos,FormaFormasPago,ReporteConsolidado,TablaPagos,ListaDocs,FormaAutorizacion,FormaContrato,Transacciones,EventTarget,Node,JavaScript,JS,Unchecked,LayoutEngineModule,Option,TypesV0,Aliado$1,Aliado$2,Templating,Runtime,Server,TemplateInstance,Arrays,ProviderBuilder,Handler,ProzperServer_Templates,ProzperServer_GeneratedPrintf,ProzperServer_Router,GeneratedPrintf,Doc,Rpc,IdAliado,Modelo,ConcreteVar,Snap,SC$1,ListModel,PlugInVar,PlugInView,PlugInDoc,Pervasives,LazyExtensionsProxy,LazyRecord,Seq,Library,SortWith,Buscar,Collections,FSharpSet,Set,Strings,CorreoElectronico,DatosPersonales,CorreoElectronico$1,Telefono,Direccion,Monads,AsyncResultBuilder,Refresh,System,Guid,Fila,VariousUI,StatusAliado,Utils,Date,List,CuentaBancaria,RoutingNumber,NumeroCuenta,FormaPago,Result,FormaFirma,PremisasCalculo,PlugInAction,Msal,Extensions,WindowOrWorkerGlobalScope,LayoutEngine,SC$2,IdForAuthorize,DatosPersonales$1,DiaPago,TipoAliado,Numeric,List$1,Dictionary,HashSet,Client,Abbrev,Async,Fresh,Builder,BuilderP,Eff,EffBuilder,AsyncResultBuilderP,String,Slice,ParseO,Serializer,Msal$1,Policy,Telefono$1,TipoTelefono,Direccion$1,TipoDireccion,Estado,Pais,ZonaPostal,TarjetaCredito,Expiracion,NumeroTarjeta,TipoTarjeta,TipoCuenta,Genero,Remoting,Configuration,AuthOptions,Control,MailboxProcessor,Mailbox,EndPoint,Router,ViewBuilder,Remoting$1,Rpc$1,IdPayment,PlugInQuery,FSharpMap,Enumerator,T,BalancedTree,T$1,AsyncResult,AjaxRemotingProvider,Array,HtmlModule,attr,CuentaBancaria$1,TarjetaCredito$1,Object,FromView,Array$1,Concurrency,Blob,AttrModule,LayoutEngine_Templates,LayoutEngine_GeneratedPrintf,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,DictionaryUtil,AttrProxy,CheckedInput,Client$1,Templates,DateUtil,SC$3,Pojo,Error,TimeoutException,Promise,Sitelets,RouterOperators,RouterModule,Route,CustomXhrProvider,MapUtil,Tree,IdAddress,Docs,AsyncBody,SC$4,CT,ConceptoPago,Layout,Attrs,DomUtility,WcSplitterT,DocElemNode,CharacterData,SC$5,XhrProvider,FSharpEvent,LinkedList,AuthenticationParameters,Account,Router$1,List$2,Pair,Result$1,Scheduler,CancellationTokenSource,Measures,Hoverable,Hoverable$1,Storage,Event,UIEvent,ResizeObserver,SC$6,Elt,Attrs$1,Dyn,Prepare,An,Settings,Mailbox$1,HashSetUtil,Event$1,Event$2,NonStandardPromiseRejectionException,SC$7,Map,OperationCanceledException,Queue,DynamicAttrNode,SC$8,AggregateException,ArrayStorage,KeyCollection,Updates,Docs$1,RunState,NodeSet,Anims,SC$9,Char,Json,FormatException,StringEncoding,SC$10,String$1,SC$11,AppendList,LinkedListEnumerator,PathUtil,Easing,HashSet$1,DomNodes,SC$12,IntelliFactory,Runtime$1,Math,$,console,Date$1,JSON,Reflect,String$2;
+ var Global,FsRoot,ProzperServer,ClientSide,MainProgram,WebSharper,Obj,UI,Var$1,LibraryJS,AppFramework,PlugIn,ModeloUI,Aliado,Operators,View,Var,Lazy,RenderAliados,RenderAliado,FormaRegistro,FormaDatos,FormaContactos,FormaFormasPago,ReporteConsolidado,TablaPagos,ListaDocs,FormaAutorizacion,FormaContrato,Transacciones,EventTarget,Node,JavaScript,JS,Unchecked,LayoutEngineModule,Option,TypesV0,Aliado$1,Aliado$2,Templating,Runtime,Server,TemplateInstance,Arrays,ProviderBuilder,Handler,ProzperServer_Templates,ProzperServer_GeneratedPrintf,ProzperServer_Router,GeneratedPrintf,Doc,Rpc,IdAliado,Modelo,ConcreteVar,Snap,SC$1,ListModel,PlugInVar,PlugInView,PlugInDoc,Pervasives,LazyExtensionsProxy,LazyRecord,Seq,Library,SortWith,Buscar,Collections,FSharpSet,Set,Strings,CorreoElectronico,DatosPersonales,CorreoElectronico$1,Telefono,Direccion,Monads,AsyncResultBuilder,Refresh,System,Guid,Fila,VariousUI,StatusAliado,Utils,Date,List,CuentaBancaria,RoutingNumber,NumeroCuenta,FormaPago,Result,FormaFirma,PremisasCalculo,PlugInAction,Msal,Extensions,WindowOrWorkerGlobalScope,LayoutEngine,SC$2,IdForAuthorize,DatosPersonales$1,DiaPago,TipoAliado,Numeric,List$1,Dictionary,HashSet,Client,Abbrev,Async,Fresh,Builder,BuilderP,Eff,EffBuilder,AsyncResultBuilderP,String,Slice,ParseO,Serializer,Msal$1,Policy,Telefono$1,TipoTelefono,Direccion$1,TipoDireccion,Estado,Pais,ZonaPostal,TarjetaCredito,Expiracion,NumeroTarjeta,TipoTarjeta,TipoCuenta,Genero,Remoting,Configuration,AuthOptions,Control,MailboxProcessor,Mailbox,EndPoint,Router,ViewBuilder,Remoting$1,Rpc$1,IdPayment,AjaxRemotingProvider,PlugInQuery,FSharpMap,Enumerator,T,BalancedTree,T$1,AsyncResult,Array,HtmlModule,attr,CuentaBancaria$1,TarjetaCredito$1,Object,FromView,Array$1,Concurrency,Blob,AttrModule,LayoutEngine_Templates,LayoutEngine_GeneratedPrintf,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,DictionaryUtil,AttrProxy,CheckedInput,Client$1,Templates,DateUtil,SC$3,Pojo,Error,TimeoutException,Promise,Sitelets,RouterOperators,RouterModule,Route,CustomXhrProvider,ConceptoPago,MapUtil,Tree,IdAddress,Docs,AsyncBody,SC$4,CT,Layout,Attrs,DomUtility,WcSplitterT,DocElemNode,CharacterData,SC$5,XhrProvider,FSharpEvent,LinkedList,AuthenticationParameters,Account,Router$1,List$2,Pair,Result$1,Scheduler,CancellationTokenSource,Measures,Hoverable,Hoverable$1,Storage,Event,UIEvent,ResizeObserver,SC$6,Elt,Attrs$1,Dyn,Prepare,An,Settings,Mailbox$1,HashSetUtil,Event$1,Event$2,NonStandardPromiseRejectionException,SC$7,Map,OperationCanceledException,Queue,DynamicAttrNode,SC$8,AggregateException,ArrayStorage,KeyCollection,Updates,Docs$1,RunState,NodeSet,Anims,SC$9,Char,Json,FormatException,StringEncoding,SC$10,String$1,SC$11,AppendList,LinkedListEnumerator,PathUtil,Easing,HashSet$1,DomNodes,SC$12,IntelliFactory,Runtime$1,Math,$,console,Date$1,JSON,Reflect,String$2;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  ProzperServer=FsRoot.ProzperServer=FsRoot.ProzperServer||{};
@@ -513,6 +513,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Remoting$1=ProzperServer.Remoting=ProzperServer.Remoting||{};
  Rpc$1=ProzperServer.Rpc=ProzperServer.Rpc||{};
  IdPayment=TypesV0.IdPayment=TypesV0.IdPayment||{};
+ AjaxRemotingProvider=Remoting.AjaxRemotingProvider=Remoting.AjaxRemotingProvider||{};
  PlugInQuery=AppFramework.PlugInQuery=AppFramework.PlugInQuery||{};
  FSharpMap=Collections.FSharpMap=Collections.FSharpMap||{};
  Enumerator=WebSharper.Enumerator=WebSharper.Enumerator||{};
@@ -520,7 +521,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  BalancedTree=Collections.BalancedTree=Collections.BalancedTree||{};
  T$1=List.T=List.T||{};
  AsyncResult=Monads.AsyncResult=Monads.AsyncResult||{};
- AjaxRemotingProvider=Remoting.AjaxRemotingProvider=Remoting.AjaxRemotingProvider||{};
  Array=Library.Array=Library.Array||{};
  HtmlModule=UI.HtmlModule=UI.HtmlModule||{};
  attr=HtmlModule.attr=HtmlModule.attr||{};
@@ -554,6 +554,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  RouterModule=Sitelets.RouterModule=Sitelets.RouterModule||{};
  Route=Sitelets.Route=Sitelets.Route||{};
  CustomXhrProvider=Remoting$1.CustomXhrProvider=Remoting$1.CustomXhrProvider||{};
+ ConceptoPago=TypesV0.ConceptoPago=TypesV0.ConceptoPago||{};
  MapUtil=Collections.MapUtil=Collections.MapUtil||{};
  Tree=BalancedTree.Tree=BalancedTree.Tree||{};
  IdAddress=TypesV0.IdAddress=TypesV0.IdAddress||{};
@@ -561,7 +562,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  AsyncBody=Concurrency.AsyncBody=Concurrency.AsyncBody||{};
  SC$4=Global.StartupCode$WebSharper_Main$Concurrency=Global.StartupCode$WebSharper_Main$Concurrency||{};
  CT=Concurrency.CT=Concurrency.CT||{};
- ConceptoPago=TypesV0.ConceptoPago=TypesV0.ConceptoPago||{};
  Layout=LayoutEngineModule.Layout=LayoutEngineModule.Layout||{};
  Attrs=UI.Attrs=UI.Attrs||{};
  DomUtility=UI.DomUtility=UI.DomUtility||{};
@@ -1540,6 +1540,17 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return View.Const(aliadoO!=null&&aliadoO.$==1?fDoc(View.Const(aliadoO.$0)):Doc.get_Empty());
   },ModeloUI.modeloV().get_View())));
  };
+ Aliado.get_LoggedId=function()
+ {
+  var o,o$1;
+  return new IdAliado({
+   $:0,
+   $0:(o=(o$1=Msal.userO().Get(),o$1==null?null:{
+    $:1,
+    $0:o$1.$0.idToken.oid
+   }),o==null?"":o.$0)
+  });
+ };
  ModeloUI.separate=function(s,parts)
  {
   var s$1;
@@ -1562,17 +1573,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       $1:parts
      });
     }
- };
- Aliado.get_LoggedId=function()
- {
-  var o,o$1;
-  return new IdAliado({
-   $:0,
-   $0:(o=(o$1=Msal.userO().Get(),o$1==null?null:{
-    $:1,
-    $0:o$1.$0.idToken.oid
-   }),o==null?"":o.$0)
-  });
  };
  ModeloUI.formasPagoAliadoV=function()
  {
@@ -6071,31 +6071,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    });
   }));
  };
- Rpc.obtenerTransaccionesPara=function(p)
- {
-  var p$1,b;
-  function f(a)
-  {
-   return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc.obtenerTransaccionesPara:1561052143",[a]);
-  }
-  p$1=Aliado.get_LoggedId();
-  b=Monads.asyncResult();
-  return b.Run(b.Delay(function()
-  {
-   var a;
-   a=Rpc.llamadas().Get()+1;
-   Rpc.llamadas().Set(a);
-   return b.TryFinally(b.Delay(function()
-   {
-    return b.ReturnFrom$1(f(p$1));
-   }),function()
-   {
-    var a$1;
-    a$1=Rpc.llamadas().Get()-1;
-    Rpc.llamadas().Set(a$1);
-   });
-  }));
- };
  Rpc.agregarUsuarioSiEsNuevo=function(p)
  {
   var f,a,b;
@@ -7280,14 +7255,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     });
    };
   }];
-  SC$1.transaccionesW=View.MapAsync(function(modelo)
+  SC$1.transaccionesW=View.MapAsync(function()
   {
    var f$7,d$1;
    function g$6(v)
    {
     return Concurrency.Return(v);
    }
-   return Concurrency.Bind(Rpc.obtenerTransaccionesPara(modelo.idAliado),(f$7=(d$1=[],function(r)
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc.obtenerTransaccionesPara:1561052143",[Aliado.get_LoggedId()]),(f$7=(d$1=[],function(r)
    {
     return Result.defaultValue(d$1,r);
    }),function(x)
@@ -12007,6 +11982,66 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   return SC$1.serverEndPoint;
  };
  IdPayment=TypesV0.IdPayment=Runtime$1.Class({},null,IdPayment);
+ AjaxRemotingProvider=Remoting.AjaxRemotingProvider=Runtime$1.Class({
+  AsyncBase:function(m,data)
+  {
+   var $this,b;
+   $this=this;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    var headers,payload;
+    headers=Remoting.makeHeaders(m);
+    payload=Remoting.makePayload(data);
+    return Concurrency.Bind(Concurrency.GetCT(),function(a)
+    {
+     return Concurrency.FromContinuations(function(ok,err,cc)
+     {
+      var waiting,reg,a$1;
+      function callback(u)
+      {
+       return waiting[0]?(waiting[0]=false,cc(new OperationCanceledException.New(a))):null;
+      }
+      waiting=[true];
+      reg=Concurrency.Register(a,function()
+      {
+       callback();
+      });
+      a$1=$this.get_EndPoint();
+      return Remoting.AjaxProvider().Async(a$1,headers,payload,function(x)
+      {
+       if(waiting[0])
+        {
+         waiting[0]=false;
+         reg.Dispose();
+         ok(Json.Activate(JSON.parse(x)));
+        }
+      },function(e)
+      {
+       if(waiting[0])
+        {
+         waiting[0]=false;
+         reg.Dispose();
+         err(e);
+        }
+      });
+     });
+    });
+   });
+  },
+  get_EndPoint:function()
+  {
+   return Remoting.EndPoint();
+  },
+  Async:function(m,data)
+  {
+   return this.AsyncBase(m,data);
+  }
+ },Obj,AjaxRemotingProvider);
+ AjaxRemotingProvider.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+ },AjaxRemotingProvider);
  PlugInQuery.New=function(qryName,qryFunction)
  {
   return{
@@ -12465,66 +12500,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return AsyncResult.whileLoop(cond,fRA);
   },fRA()):AsyncResult.rtn();
  };
- AjaxRemotingProvider=Remoting.AjaxRemotingProvider=Runtime$1.Class({
-  AsyncBase:function(m,data)
-  {
-   var $this,b;
-   $this=this;
-   b=null;
-   return Concurrency.Delay(function()
-   {
-    var headers,payload;
-    headers=Remoting.makeHeaders(m);
-    payload=Remoting.makePayload(data);
-    return Concurrency.Bind(Concurrency.GetCT(),function(a)
-    {
-     return Concurrency.FromContinuations(function(ok,err,cc)
-     {
-      var waiting,reg,a$1;
-      function callback(u)
-      {
-       return waiting[0]?(waiting[0]=false,cc(new OperationCanceledException.New(a))):null;
-      }
-      waiting=[true];
-      reg=Concurrency.Register(a,function()
-      {
-       callback();
-      });
-      a$1=$this.get_EndPoint();
-      return Remoting.AjaxProvider().Async(a$1,headers,payload,function(x)
-      {
-       if(waiting[0])
-        {
-         waiting[0]=false;
-         reg.Dispose();
-         ok(Json.Activate(JSON.parse(x)));
-        }
-      },function(e)
-      {
-       if(waiting[0])
-        {
-         waiting[0]=false;
-         reg.Dispose();
-         err(e);
-        }
-      });
-     });
-    });
-   });
-  },
-  get_EndPoint:function()
-  {
-   return Remoting.EndPoint();
-  },
-  Async:function(m,data)
-  {
-   return this.AsyncBase(m,data);
-  }
- },Obj,AjaxRemotingProvider);
- AjaxRemotingProvider.New=Runtime$1.Ctor(function()
- {
-  Obj.New.call(this);
- },AjaxRemotingProvider);
  Array.replace=function(i,item,array)
  {
   return Arrays.ofSeq(Seq.delay(function()
@@ -14976,6 +14951,18 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   Obj.New.call(this);
  },CustomXhrProvider);
+ ConceptoPago=TypesV0.ConceptoPago=Runtime$1.Class({
+  toString:function()
+  {
+   return this.$==2?this.$0:(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$7($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,ConceptoPago);
  MapUtil.fromSeq=function(s)
  {
   var a;
@@ -15262,18 +15249,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    r:Registrations
   };
  };
- ConceptoPago=TypesV0.ConceptoPago=Runtime$1.Class({
-  toString:function()
-  {
-   return this.$==2?this.$0:(function($1)
-   {
-    return function($2)
-    {
-     return $1(ProzperServer_GeneratedPrintf.p$7($2));
-    };
-   }(Global.id))(this);
-  }
- },null,ConceptoPago);
  Layout.extractNodes=function(lyt)
  {
   var m,m$1;

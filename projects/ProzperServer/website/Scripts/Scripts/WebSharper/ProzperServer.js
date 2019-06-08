@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,Dict,Monads,Seq,Async,WebSharper,Obj,Result,Builder,Operators,Eff,Eff$1,Done,EffBuilder,EA,Reader,Ask,Log,LogEntry,Rsl,Fail,Asy,Asyn,String,ParseO,Serializer,JsonIntermediate,LibraryJS,Promise,ProzperServer,Basico,IdAliado,IdAuthorize,IdAddress,IdPayment,TypesV0,LatestType,IdAliado$1,IdAuthorize$1,IdAddress$1,IdPayment$1,StatusAliado,TipoAliado,Pais,Estado,Identificacion,Expiracion,NumeroCuenta,NumeroTarjeta,RoutingNumber,TipoTarjeta,TipoCuenta,CuentaBancaria,TarjetaCredito,ConceptoPago,Transaccion,TipoDireccion,ZonaPostal,Direccion,TipoTelefono,Telefono,CorreoElectronico,Genero,DatosPersonales,StatusFormaPago,FormaPago,TipoMensaje,Remitente,Mensaje,PremisasCalculo,DiaPago,IdForAuthorize,Aliado,Modelo,Aliado$1,Buscar,Evento,Respuesta,Rpc,Remoting,CustomXhrProvider,SC$1,ProzperServer_GeneratedPrintf,Seq$1,Concurrency,Arrays,List,IntelliFactory,Runtime,Enumerator,Result$1,Operators$1,Unchecked,Utils,console,Strings,Slice,Collections,FSharpMap,FSharpSet,BalancedTree,Char,Dictionary,Remoting$1,DateUtil,Numeric,System,Guid,Date,Lazy;
+ var Global,FsRoot,Library,Dict,Monads,Seq,Async,WebSharper,Obj,Result,Builder,Operators,Eff,Eff$1,Done,EffBuilder,EA,Reader,Ask,Log,LogEntry,Rsl,Fail,Asy,Asyn,String,ParseO,Serializer,JsonIntermediate,LibraryJS,Promise,ProzperServer,Basico,IdAliado,IdAuthorize,IdAddress,IdPayment,TypesV0,LatestType,IdAliado$1,IdAuthorize$1,IdAddress$1,IdPayment$1,StatusAliado,TipoAliado,Pais,Estado,Identificacion,Expiracion,NumeroCuenta,NumeroTarjeta,RoutingNumber,TipoTarjeta,TipoCuenta,CuentaBancaria,TarjetaCredito,ConceptoPago,Transaccion,TipoDireccion,ZonaPostal,Direccion,TipoTelefono,Telefono,CorreoElectronico,Genero,DatosPersonales,StatusFormaPago,FormaPago,TipoMensaje,Remitente,Mensaje,PremisasCalculo,DiaPago,IdForAuthorize,Aliado,Modelo,Aliado$1,Buscar,Evento,Respuesta,Rpc,Remoting,CustomXhrProvider,SC$1,ProzperServer_GeneratedPrintf,Seq$1,Concurrency,Arrays,List,IntelliFactory,Runtime,Enumerator,Result$1,Operators$1,Unchecked,Utils,console,Strings,Slice,Collections,FSharpMap,FSharpSet,BalancedTree,Char,Date,DateUtil,Dictionary,Remoting$1,Numeric,System,Guid,Lazy;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -106,13 +106,13 @@
  FSharpSet=Collections&&Collections.FSharpSet;
  BalancedTree=Collections&&Collections.BalancedTree;
  Char=WebSharper&&WebSharper.Char;
+ Date=Global.Date;
+ DateUtil=WebSharper&&WebSharper.DateUtil;
  Dictionary=Collections&&Collections.Dictionary;
  Remoting$1=WebSharper&&WebSharper.Remoting;
- DateUtil=WebSharper&&WebSharper.DateUtil;
  Numeric=WebSharper&&WebSharper.Numeric;
  System=Global.System;
  Guid=System&&System.Guid;
- Date=Global.Date;
  Lazy=WebSharper&&WebSharper.Lazy;
  Dict.add=function(key,v,dict)
  {
@@ -2232,6 +2232,24 @@
  ConceptoPago.PagoAfiliacion=new ConceptoPago({
   $:0
  });
+ ConceptoPago.tryParse=function(s)
+ {
+  var m;
+  m=Strings.Trim(s).toUpperCase();
+  return m===""?null:m==="PAGOAFILIACION"?{
+   $:1,
+   $0:ConceptoPago.PagoAfiliacion
+  }:m==="PAGOCOMISION"?{
+   $:1,
+   $0:ConceptoPago.PagoComision
+  }:{
+   $:1,
+   $0:new ConceptoPago({
+    $:2,
+    $0:Strings.Trim(s)
+   })
+  };
+ };
  Transaccion.New=function(fechaPago,ano,periodo,monto,idAliado,concepto,transaccion,statusTran)
  {
   return{
@@ -2590,14 +2608,24 @@
   SC$1.$cctor();
   return SC$1.empty;
  };
- Aliado$1.actualizarAliados=function(modelo)
+ Aliado$1.actualizarAliados=function(transAll,modelo)
  {
-  var aliadoActualizadoM,p,cache,getOrAdd,buscar,pre;
+  var aliadoActualizadoM,p,cache,getOrAdd,buscar,pre,trans;
+  function statusActual(al)
+  {
+   var m,$1;
+   m=al.status;
+   return m.$==2||m.$==3?Seq$1.exists(function(tr)
+   {
+    return Unchecked.Equals(tr.idAliado,al.id)&&tr.monto>=pre.montoAfiliacion;
+   },trans)?StatusAliado.Activo:StatusAliado.Inactivo:m;
+  }
   function aliadoActualizado(alid)
   {
-   var al,hijos,nReferidos,nRefActivos,nDescendientes,nDescActivos,nivel,_al,p$1;
+   var al,hijos,status,nReferidos,nRefActivos,nDescendientes,nDescActivos,nivel,al0,p$1,al1;
    al=buscar.aliado(alid);
    hijos=Seq$1.cache(Seq$1.map(aliadoActualizadoM,buscar.hijosDe(al.id)));
+   status=statusActual(al);
    nReferidos=Seq$1.length(hijos);
    nRefActivos=Seq$1.length(Seq$1.filter(function(al$1)
    {
@@ -2612,9 +2640,10 @@
     return al$1.nDescActivos+al$1.nRefActivos;
    },hijos);
    nivel=1+buscar.nivelDe(al.idPadreO);
-   _al=Aliado.New(al.id,al.idPadreO,al.idForAuthorize,al.influyente,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,al.status,Aliado$1.diaPago(al.fechaRegistro),nRefActivos>=pre.numeroReferidosMaster?TipoAliado.Master:TipoAliado.Regular,al.fechaRegistro,al.fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,al.comision,nivel);
-   p$1=Aliado$1.comision(pre,_al);
-   return Aliado.New(_al.id,_al.idPadreO,_al.idForAuthorize,_al.influyente,_al.datosPersonales,_al.contactos,_al.identificacion,_al.isInternal,_al.status,_al.diaPago,_al.tipo,_al.fechaRegistro,_al.fechaStatus,_al.nReferidos,_al.nRefActivos,_al.nDescendientes,_al.nDescActivos,p$1[0]+p$1[1],_al.nivel);
+   al0=Aliado.New(al.id,al.idPadreO,al.idForAuthorize,al.influyente,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,status,Aliado$1.diaPago(al.fechaRegistro),nRefActivos>=pre.numeroReferidosMaster?TipoAliado.Master:TipoAliado.Regular,al.fechaRegistro,al.fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,al.comision,nivel);
+   p$1=Aliado$1.comision(pre,al0);
+   al1=Aliado.New(al0.id,al0.idPadreO,al0.idForAuthorize,al0.influyente,al0.datosPersonales,al0.contactos,al0.identificacion,al0.isInternal,al0.status,al0.diaPago,al0.tipo,al0.fechaRegistro,al0.fechaStatus,al0.nReferidos,al0.nRefActivos,al0.nDescendientes,al0.nDescActivos,p$1[0]+p$1[1],al0.nivel);
+   return Aliado.New(al1.id,al1.idPadreO,al1.idForAuthorize,al1.influyente,al1.datosPersonales,al1.contactos,al1.identificacion,al1.isInternal,al1.status.$===3&&al1.comision>=pre.montoAfiliacion?StatusAliado.Activo:al1.status,al1.diaPago,al1.tipo,al1.fechaRegistro,al1.fechaStatus,al1.nReferidos,al1.nRefActivos,al1.nDescendientes,al1.nDescActivos,al1.comision,al1.nivel);
   }
   function checkO(v)
   {
@@ -2647,6 +2676,11 @@
   }
   buscar=Aliado$1.busqueda(modelo.aliados);
   pre=modelo.premisas;
+  trans=Arrays.filter(function(tr)
+  {
+   var c,c$1;
+   return tr.fechaPago>(c=(c$1=Date.now(),DateUtil.DatePortion(c$1)),DateUtil.AddMonths(c,-1));
+  },transAll);
   aliadoActualizadoM=(p=(cache=new Dictionary.New$5(),[[checkO,function($1)
   {
    return function($2)
@@ -2672,7 +2706,7 @@
  Aliado$1.diaPago=function(registro)
  {
   var diaMes;
-  diaMes=(new Global.Date(registro)).getDate();
+  diaMes=(new Date(registro)).getDate();
   return diaMes===1?DiaPago.Dia01:diaMes<=5?DiaPago.Dia05:diaMes<=10?DiaPago.Dia10:diaMes<=15?DiaPago.Dia15:diaMes<=20?DiaPago.Dia20:diaMes<=25?DiaPago.Dia25:DiaPago.Dia01;
  };
  Aliado$1.busqueda=function(aliados)
