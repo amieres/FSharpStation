@@ -1,0 +1,1999 @@
+
+        <!DOCTYPE html>
+        <html>
+        
+              <head>
+                    <meta charset="utf-8">
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                    <link rel="shortcut icon" href="/blob/images/favicon.ico" type="image/x-icon">
+                    <link href="//cdn.muicss.com/mui-0.9.41/css/mui.min.css" rel="stylesheet" type="text/css" >
+                    <script src="//cdn.muicss.com/mui-0.9.41/js/mui.min.js"></script>
+                    <script src="//cdn.muicss.com/mui-0.9.41/js/mui.min.js"></script>
+                    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+                    <!-- Latest compiled and minified JavaScript -->
+                    <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.0/js/msal.min.js"></script>
+                    <!-- IE support: add promises polyfill before msal.js  -->
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js" class="pre"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js" class="pre"></script>
+                    <script ws-replace="scripts"></script>
+                    <script>
+                            function doNothing(e){
+                                console.log("donothing");
+                                e.preventDefault();
+                            }
+                            jQuery(function ($) {
+                                var $bodyEl       = $('body'       );
+                                var $sidedrawerEl = $('#sidedrawer');        
+                                showSidedrawer = function() {
+                                    // show overlay
+                                    var options = {
+                                        onclose: function () {
+                                            $sidedrawerEl
+                                                .removeClass('active')
+                                                .appendTo(document.body);
+                                        }
+                                    };        
+                                    var $overlayEl = $(mui.overlay('on', options));        
+                                    // show element
+                                    $sidedrawerEl.appendTo($overlayEl);
+                                    setTimeout(function () {
+                                        $sidedrawerEl.addClass('active');
+                                    }, 20);
+                                }
+                                hideSidedrawer = function() {
+                                    $bodyEl.toggleClass('hide-sidedrawer');
+                                }
+                            });
+                    </script>
+                    <style>
+                        #sidedrawer-brand             { padding-left    : 20px      }
+                        #sidedrawer ul                { list-style      : none      }
+                        #sidedrawer>ul                { padding-left    : 0px       }
+                        #sidedrawer>ul>li:first-child { padding-top     : 15px      }
+                        #sidedrawer strong:hover      { background-color: #E0E0E0 } 
+                        #sidedrawer strong+ul>li      { padding         : 6px 0px   }
+                        #sidedrawer strong {
+                            display: block;
+                            padding: 15px 22px;
+                            cursor: pointer;
+                        }
+            
+            
+                        /** Body CSS */
+                        html,
+                        body {
+                            height: 100%;
+                            background-color: #eee;
+                        }
+            
+                        html,
+                        body,
+                        input,
+                        textarea,
+                        button {
+                            -webkit-font-smoothing: antialiased;
+                            -moz-osx-font-smoothing: grayscale;
+                            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
+                        }
+            
+            
+                        /** Layout CSS */
+                        #header {
+                            position: fixed;
+                            top: 0;
+                            right: 0;
+                            left: 0;
+                            z-index: 2;
+                            transition: left 0.2s;
+                        }
+            
+                        #sidedrawer {
+                            position: fixed;
+                            top: 0;
+                            bottom: 0;
+                            width: 200px;
+                            left: -200px;
+                            overflow: auto;
+                            z-index: 2;
+                            background-color: #fff;
+                            transition: transform 0.2s;
+                        }
+            
+                        #content-wrapper {
+                            min-height: 100%;
+                            overflow-x: hidden;
+                            margin-left: 0px;
+                            transition: margin-left 0.2s;
+            
+                            /* sticky bottom */
+                            margin-bottom: -160px;
+                            padding-bottom: 160px;
+                        }
+            
+                        #footer {
+                            height: 160px;
+                            margin-left: 0px;
+                            transition: margin-left 0.2s;
+                        }
+            
+                        @media (min-width: 768px) {
+                            #header                               { left: 200px                 }
+                            #sidedrawer                           { transform: translate(200px) }
+                            #content-wrapper                      { margin-left: 200px          }
+                            #footer                               { margin-left: 200px          }
+                            body.hide-sidedrawer #header          { left: 0                     }
+                            body.hide-sidedrawer #sidedrawer      { transform: translate(0px)   }
+                            body.hide-sidedrawer #content-wrapper { margin-left: 0              }
+                            body.hide-sidedrawer #footer          { margin-left: 0              }
+                        }
+            
+            
+                        /**
+                 * Toggle Side drawer
+                 */
+                        #sidedrawer.active { transform: translate(200px); }
+            
+            
+                        /**
+                 * Header CSS
+                 */
+                        .sidedrawer-toggle {
+                            color: #fff;
+                            cursor: pointer;
+                            font-size: 20px;
+                            line-height: 20px;
+                            margin-right: 10px;
+                        }
+            
+                        .sidedrawer-toggle:hover {
+                            color: #fff;
+                            text-decoration: none;
+                        }
+            
+            
+                        /**
+                 * Footer CSS
+                 */
+                        #footer {
+                            background-color: #0288D1;
+                            color: #fff;
+                        }
+            
+                        #footer a {
+                            color: #fff;
+                            text-decoration: underline;
+                        }
+                    </style>
+            
+                <title>Prozper</title>
+              </head>
+              <body class="scrollbar">
+            
+            
+            
+            <div id="sidedrawer" class="mui--no-user-select">
+                <div id="sidedrawer-brand" class="mui--appbar-line-height">
+                    <a href="#" class="mui--text-title"><img class="logo" src="/blob/images/prozper.png" alt="Logo"></a>
+                </div>
+                <div class="mui-divider"></div>
+                <div ws-replace="Menu"  ></div>
+            </div>
+            
+            <header id="header" ><nav class="mui-container-fluid">
+                <table width="100%" cellspacing="0"><tbody>
+                    <tr class="mui-appbar mui--appbar-line-height" >
+                        <td class="mui-container-fluid">
+                            <a class="sidedrawer-toggle mui--visible-xs-inline-block mui--visible-sm-inline-block js-show-sidedrawer" onclick="showSidedrawer()">☰</a>
+                            <a class="sidedrawer-toggle mui--hidden-xs mui--hidden-sm js-hide-sidedrawer" onclick="hideSidedrawer()">☰</a>
+                            <span class="mui--text-title mui--visible-xs-inline-block">${Brand}</span>
+                        </td>
+                        <td ws-hole = "headerCenter">
+                        </td>
+                        <td class="mui--text-right">
+                            <ul class="mui-list--inline mui--text-body2">
+                                <!--li><a href="#" style="color:white">Acerca</a></li-->
+                                <li><a href="/Logout" style="color:white" ws-onclick="Logout"><i class="fa fa-user" aria-hidden="true"></i> Salir</a></li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody></table>
+            </nav></header>
+            
+            <div id="content-wrapper" >
+                <div class="mui--appbar-height"></div>
+                <div class="mui-container-fluid">
+                    <div ws-replace="MainContent"></div>
+                </div>
+            </div>
+            
+            
+            <footer id="footer" >
+                <div class="mui-container-fluid">
+                    <div class="mui-row">
+                        <div class="mui-col-lg-3 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 flex-center">
+                            <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 logos-center">
+                                <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item">
+                                    <a href="https://prozper.com/" class="logo">
+                                        <img alt="" class="img-fluid" src="https://aliados.prozper.com/blob/images/pro.png" width="110">
+                                        <p style="font-size:smaller">Empowering Sales Professionals Worldwide</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <div class="mui-col-lg-3 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 mb-4 mb-lg-0 flex-center address-block">
+                            <div class="row">
+                                <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12" style="float:left; padding:0px 15px;">
+                                    <p style="margin:0px 0px 5px 0px;">
+                                        <i class="fa fa-phone" aria-hidden="true"></i> <span style="margin-left:8px;">+1(954)453.6060</span>
+                                    </p>
+            
+                                    <p style="margin:0px 0px 5px 0px;">
+                                        <i class="fa fa-envelope" aria-hidden="true"></i> <span style="margin-left:8px;">info@prozper.com</span>
+                                    </p>
+                                </div>
+            
+                                <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12" style="float:left; padding:0px 15px;">
+                                    <p style="margin:0px 0px 5px 0px;">
+                                        <span>
+                                            2893 Executive Park Dr <br> Ste.202 Weston FL33331
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+            
+                        
+                        <div class="mui-col-lg-6 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 flex-center">
+                        <div class="mui-row">
+                            <div class="mui-col-lg-4 mui-col-md-3 mui-col-sm-6 mui-col-xs-12 logos-center">
+                                <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item" style="text-align: center;">
+                                    <a href="javascript:;" class="logo logo-bgp" style="float: none">
+                                        <p class="title-logo title-logo-1"></p>
+                                        <img alt="" class="img-fluid mb-3" src="https://aliados.prozper.com/blob/images/logo-blue-grey.png" style="max-width: 170px; width: 100%;">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="mui-col-lg-2 mui-col-md-3 mui-col-sm-6 mui-col-xs-12 logos-center">
+                                <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item" style="text-align: center;">
+                                    <p class="title-logo title-logo-1"></p>
+                                    <a href="javascript:;" class="logo logo-arch" style="float: none">
+                                        <img alt="" class="img-fluid mb-3" src="https://aliados.prozper.com/blob/images/iatan.png" style="max-width: 90px; width: 100%;">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="mui-col-lg-3 mui-col-md-3 mui-col-sm-6 mui-col-xs-12 logos-center pl-0 ml-8">
+                                <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item pl-0" style="text-align: center;">
+                                    <p class="title-logo title-logo-1"></p>
+                                    <a href="javascript:;" class="logo logo-arch" style="float: none">
+                                        <img alt="" class="img-fluid mb-3" src="https://aliados.prozper.com/blob/images/arc.png" style="max-width: 130px; width: 100%;">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mui-row">
+                            <div class="mui-col-lg-4 mui-col-md-4 mui-col-sm-6 mui-col-xs-12 logos-center pt-10">
+                                <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item" style="text-align: center;">
+                                    <p class="title-logo title-logo-1"></p>
+                                    <a href="javascript:;" class="logo logo-arch" style="float: none">
+                                        <img alt="" class="img-fluid mb-3" src="https://aliados.prozper.com/blob/images/authorize-cards.png" style="max-width: 150px; width: 100%;">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="mui-col-lg-4 mui-col-md-4 mui-col-sm-6 mui-col-xs-12 logos-center pt-10">
+                                <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item" style="text-align: center;">
+                                    <p class="title-logo title-logo-1"></p>
+                                    <a href="javascript:;" class="logo logo-arch" style="float: none">
+                                        <img alt="" class="img-fluid mb-3" src="https://aliados.prozper.com/blob/images/authorize.png" style="max-width: 90px; width: 100%;">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="mui-col-lg-4 mui-col-md-4 mui-col-sm-6 mui-col-xs-12 logos-center pt-10">
+                                <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item" style="text-align: center;">
+                                    <p class="title-logo title-logo-1"></p>
+                                    <a href="javascript:;" class="logo logo-arch" style="float: none">
+                                        <img alt="" class="img-fluid mb-3" src="https://aliados.prozper.com/blob/images/mdabroad_white.png " style="max-width: 200px; width: 100%;">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>            <br>
+                    <div class="mui-row mui--text-right">Made with ♥ by <a href="https://www.cipherbsc.com">CIPHER Bsc</a></div>
+                </div>
+            </footer>
+            
+            
+            <div id="${Cortina}"><img src="blob/images/loading-prozper.gif" style=" display: block; margin-top: calc(50vh - 32px); margin-left: calc(50vw - 32px); position:fixed"></div>
+            
+            <div style="display:none" >
+                <div ws-replace="Initializer"></div>
+            
+            <div id="GlobalLayout" >
+                    menuEditor layout
+                    |          Prozper.contentDoc
+            
+                    mainContent           Doc aliados
+                    cntFormaRegistro      Doc Prozper.FormaRegistro
+                    cntFormaDatos         Doc Prozper.FormaDatos
+                    cntFormaContactos     Doc Prozper.FormaContactos
+                    cntFormaFormasPago    Doc Prozper.FormaFormasPago
+                    cntFormaCuentas       Doc ProzperLyt.FormaCuentas
+                    cntFormaDocumentos    Doc Prozper.FormaDocumentos
+                    cntFormaNoUser        Doc botonLogin
+                    cntFormaInvitaciones  Doc invitaciones
+                    cntReporteConsolidado Doc Prozper.ReporteConsolidado
+                    cntTablaPagos         Doc Prozper.TablaPagos
+                    cntFormaContrato      Doc Prozper.FormaContrato
+                    cntPDF                div   "id=pdfViewer  ;height:calc(100vh - 68px)"
+                    cntVideo              video "id=videoViewer;height:calc(100vh - 68px); max-width:100%; height:calc(100% - 68px); width:100%;poster=blob/images/loading-prozper.gif"
+                    :                     source "src=@{Prozper.VideoW};type=video/mp4"
+                    cntSubirDocumentos    div "class=mui-panel"
+                    :                     Doc Prozper.ListaDocs  
+                    cntPreRegister        div "class=mui-panel"
+                    :                     h3 "" "Para registrarse en Prozper necesita recibir una invitación por email o tener un código de referencia."
+                    :                     br ""
+                    :                     Doc InputLabel "" "Código de referencia:" Prozper.influencer
+                    :                     br ""
+                    :                     button Prozper.gotoInfluencer "id=refer;class=mui-btn @{Prozper.influencerClassW}" "Registrarse"
+                    cntAutorizacion       div "class=mui-panel"
+                    :                     Doc Prozper.FormaAutorizacion
+            
+                    mnuNoUsuario          ul ""
+                    :                     template MenuNoUsuario ""
+                    :                     template MenuTodos "" display "inherit"
+                    mnuUsuario            ul ""
+                    :                     template MenuUsuario "" IdAliado "@{Prozper.idAliado}"
+                    :                     template MenuTodos "" display "none"
+                    mnuAdministrador      ul "" 
+                    :                     template MenuUsuario "" IdAliado "@{Prozper.idAliado}"
+                    :                     template OpcionesAdministrador ""
+                    :                     template MenuTodos "" display "none"
+            
+                    headerCenter ul "class=mui-list--inline mui--text-body2"
+                    :            li "class=mui--text-light  mui--text-display1"                          "@{Prozper.aliado}"
+                    :            li "class=mui--text-light  mui--text-body1"                             "@{Prozper.status}"
+                    :            li "class=mui--text-light  mui--text-body1 comision@{Prozper.comision}" "$@{Prozper.comision}"
+                    aliados          div       "class=row"
+                    :                div       "class=mui-col-md-6"
+                    ::               div       "class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto" Prozper.Aliados
+                    :                div       "class=mui-col-md-6"
+                    ::               div       "class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto" Aliado
+                    ::               div       "class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto" Prozper.Transacciones
+                    brandV           Var       "Prozper"
+            
+                    botonLogin       div       "class=row"
+                    :                div       "class=mui-col-md-6"
+                    ::               div       "class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto" 
+                    :::              button    Prozper.LogIn "class=mui-btn mui-btn--primary" "Ingresar al Sistema"
+            
+                    invitaciones     div       "class=row"
+                    :                div       "class=mui-col-md-6 mui-col-md-offset-1"
+                    ::               div       "class=mui-panel mui--z5 scrollbar; max-height:550px ; overflow:auto" 
+                    :::              h1        "" "Enviar Invitaciones"
+                    :::              textarea  Prozper.invitaciones  "width:100% ; height:30rem; placeholder=Copie aqui las direcciones de correo electronico" 
+                    :                div       "white-space: pre-wrap" "@{Prozper.emailsInvitar}"
+                    :                button    Prozper.enviarInvitaciones "class=mui-btn mui-btn--raised mui-btn--primary;@{Prozper.invitacionesDisabled}" "Enviar"
+            
+                    Aliado           div       "class=mui-col-md-12"
+                    :                Doc        Prozper.Aliado
+            
+                    Comisiones       template    tablacomisiones "class=mui-col-md-3"  tbody filasComisiones
+                    filasComisiones  concat      ""
+                    :                template    filacomision    ""  periodo "Ene 2018" comision "$1,000"
+                    :                template    filacomision    ""  periodo "Feb 2018" comision "$1,000"
+                    :                template    filacomision    ""  periodo "Mar 2018" comision "$1,000"
+                    :                template    filacomision    ""  periodo "Abr 2018" comision "$1,000"
+                    :                template    filacomision    ""  periodo "May 2018" comision "$1,000"
+                    :                template    filacomision    ""  periodo "Jun 2018" comision "$1,000"
+                    :                template    filacomision    ""  periodo "Jul 2018" comision "$1,000"
+                    :                template    filacomision    ""  periodo "Ago 2018" comision "$1,000"
+                    :                template    filacomision    ""  periodo "Sep 2018" comision "$1,000"
+                    :                template    filacomision    ""  periodo "Oct 2018" comision "$1,000"
+                    :                template    filacomision    ""  periodo "Nov 2018" comision "$1,000"
+                    :                template    filacomision    ""  periodo "Dec 2018" comision "$1,000"
+            
+                    menuEditorx      horizontal  65          menuLogo                  editorMessages
+                    double           horizontal  0-50-100    AppFramework.AppFwkClient menuEditor
+                    menuLogo         vertical    350         logo                      menu
+                    logo             span       "margin:0;   color:gray; font-size: 55px; font-weight:530" "StackOverflow"
+                    editorMessages   horizontal  10-83-100   editorButtons             messages
+                    messages         vertical    0-50-100    messagesLeft              messagesRight
+                    editorButtons    vertical    150 buttons snippetsSnippet 
+                    snippetsSnippet  vertical    0-20-100    snippets                  editorProperties
+                    snippets         horizontal  20          "@{FSharpStation.CurrentPath}" tblDimensions2
+                    editorProperties vertical    0-100-100   snippet                   properties
+                    properties       div        ""           FSharpStation.Properties
+                    snippet          horizontal  35          Name                      FSharpStation.editor
+                    menu             span       "display: grid; grid-template-columns: 30% 20% 20% 10%; grid-gap: 25px; margin:5px; grid-template-rows:50px" inpServer btnLoad btnSaveAs
+                        
+                    severalTabs      wcomp-tabstrip  "" 
+                    :                div "tabname=Dimensions" 
+                    ::               div "" btnAddDimension RuleEditor.Dimensions
+                    :                div "tabname=Cubes"
+                    :                div "tabname=Global Definitions" RuleEditor.globalDefs
+            
+                    btnSaveAs        button RuleEditor.SaveAs         "class=btn @{RuleEditor.SaveNeeded}" "Save as...    "
+                    btnAddDimension  button RuleEditor.AddDimension      ""                  "new dim..."
+                    btnDeleteSnippet button FSharpStation.RemoveSnippet  ""                  "Delete Snippet"
+                    btnIndentIn      button FSharpStation.IndentIn       ""                  "Indent In  >> "
+                    btnIndentOut     button FSharpStation.IndentOut      ""                  "Indent Out << "
+                    btnRunFS         button FSharpStation.RunFS          ""                  "Run F#        "
+                    btnAbortFsi      button FSharpStation.AbortFsi       ""                  "Abort Fsi     "
+            
+                    messagesLeft     wcomp-tabstrip                      ""                  Output FsCode
+                    messagesRight    wcomp-tabstrip                      ""                  Parser
+            
+                    buttons          div "overflow: hidden; display: grid; grid-template-columns: 100%; grid-template-rows: repeat(15, calc(100% / 15)); bxackground-color: #eee; box-sizing: border-box; padding : 5px; grid-gap: 5px; margin-right: 21px"
+                    :                button RuleEditor.AddCalculation    ""                 "Add Calculation"
+                    :                button RuleEditor.AddTotal          ""                 "Add Total"
+                    :                Doc       none x
+                    :                button RuleEditor.IndentIn          ""                  "Indent In  >> "
+                    :                button RuleEditor.IndentOut         ""                  "Indent Out << "
+            
+                    Output           textarea  RuleEditor.Output         "tabname=Output ; placeholder=Output messages ; spellcheck=false" 
+                    FsCode           textarea  RuleEditor.CodeFS         "tabname=F# Code; placeholder=F# Code         ; spellcheck=false" 
+                    Parser           textarea  RuleEditor.Parser         "tabname=Parser ; placeholder=Parser messages; dblclick=@{FSharpStation.JumpTo} ; spellcheck=false" 
+                    Name             Doc       InputLabel                ""     "Name:"        FSharpStation.SnippetName
+                    inpServer        Doc       InputLabel                ""     "Server:"      RuleEditor.Server
+                    btnLoad          Doc       InputFile                 ""     "Load File..." RuleEditor.LoadFile  FileName
+                    btnImport        Doc       InputFile                 ""     "Import..."    FSharpStation.Import    ""
+                    FileName         div                                 "class=form-control"  RuleEditor.fileName
+            
+            </div>
+            
+            
+            <ul ws-children-template="MenuNoUsuario">
+                <strong onclick="$(this).next().slideToggle(200)">Menú</strong>
+                <ul >
+                    <li><a href="#/PreRegister">Me quiero registrar!</a></li>
+                    <!-- li><a href="#">Mensajes</a></li -->
+                </ul>
+            </ul>
+            
+            <ul ws-children-template="MenuUsuario">
+                <strong onclick="$(this).next().slideToggle(200)">Menú</strong>
+                <ul >
+                    <li><a href="#">Inicio</a></li>
+                    <!-- li><a href="#">Mensajes</a></li -->
+                </ul>
+                <li>
+                    <strong onclick="$(this).next().slideToggle(200)">Referir</strong>
+                    <ul style="display: none;">
+                        <li><a href="#/Content/ProzperLyt.cntFormaInvitaciones">Enviar Invitaciones</a></li>
+                        <li><a href="/Register/${IdAliado}">Llenar Afiliación</a></li>
+                        <!-- li><a href="#/Content/ProzperLyt.cntFormaRegistro">Llenar Afiliación</a></li -->
+                    </ul>
+                </li>
+                <li>
+                    <strong onclick="$(this).next().slideToggle(200)">Actualizar Información</strong>
+                    <ul style="display: none;">
+                        <li><a href="#/Content/ProzperLyt.cntFormaContrato"      >Firmar Contrato</a></li>
+                        <li><a href="#/Content/ProzperLyt.cntFormaFormasPago"    >Formas de Pago   </a></li>
+                        <li><a href="#/Content/ProzperLyt.cntFormaDatos"         >Datos Personales </a></li>
+                        <li><a href="#/Content/ProzperLyt.cntFormaContactos"     >Contactos        </a></li>
+                        <li><a href="/Profile"                                   >Cuenta           </a></li>
+                        <!-- li><a href="#/Content/ProzperLyt.cntFormaIdentificacion">Identificación   </a></li -->
+                        <li><a href="#/Content/ProzperLyt.cntSubirDocumentos"    >Documentos       </a></li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <ul ws-children-template="MenuTodos">
+                <li>
+                    <strong onclick="$(this).next().slideToggle(200)">Kit de Inscripción</strong>
+                    <ol style="display: ${display};">
+                        <li><a href="#/Pdf/blob/Inscripcion/01 Instructivo de Afiliacion.pdf"                   >Instructivo de Afiliación    </a></li>
+                        <li><a href="#/Pdf/blob/Inscripcion/02 Carta de Bienvenida.pdf"                         >Carta de Bienvenida          </a></li>
+                        <li><a href="#/Pdf/blob/Inscripcion/03 Presentacion Prozper.pdf"                        >Presentación Prozper         </a></li>
+                        <li><a href="#/Pdf/blob/Inscripcion/04 Contrato de Afiliacion Aliados Prozper Rev.3.pdf">Contrato de Afiliación       </a></li>
+                        <li><a href="#/Pdf/blob/Inscripcion/05 Form W-8BEN.pdf"                                 >Forma W-8BEN                 </a></li>
+                        <li><a href="#/Pdf/blob/Inscripcion/06 Form W-8BEN-E.pdf"                               >Forma W-8BEN-E               </a></li>
+                        <li><a href="#/Pdf/blob/Inscripcion/07 Form W-9.pdf"                                    >Forma W-9                    </a></li>
+                        <li><a href="#/Pdf/blob/Inscripcion/08 Cancelacion de contratos.pdf"                    >Cancelación de Contratos     </a></li>
+                        <li><a href="#/Pdf/blob/Inscripcion/09 Instructivo Cotizador Prozper.pdf"               >Instructivo Cotizador Prozper</a></li>
+                        <li><a href="#/Pdf/blob/Inscripcion/10 Anexo C - Ctas. Terceros.pdf"                    >Anexo C - Ctas. Terceros     </a></li>
+                    </ol>
+                    <script>
+                        function playVideo() {
+                            setTimeout(function(){
+                                var video = document.getElementById("videoViewer")
+                                try { video.pause(); } catch (e) {}
+                                try { video.load();  } catch (e) {}
+                                video.play(); 
+                            }, 200);
+                        }
+                        function showPDF(pdfURL) {
+                            var options = {
+                                pdfOpenParams: {
+                                    navpanes : 1,
+                                    toolbar  : 1,
+                                    statusbar: 1,
+                                    view: "FitV"
+                                }
+                            };
+                            if (document.getElementById("pdfViewer") == null)
+                                setTimeout(function () { showPDF(pdfURL) }, 100);
+                            else PDFObject.embed(pdfURL, "#pdfViewer", options);;
+                        }
+                    </script>
+                </li>
+                <li>
+                    <strong onclick="$(this).next().slideToggle(200)">Videos</strong>
+                    <ul style="display: ${display};">
+                        <li><a href="#/Video/blob/Inscripcion/VIDEO PROMO PROZPER_001.mp4">Promoción Prozper   </a></li>
+                        <li><a href="#/Video/blob/Inscripcion/Esp_Prozper_002.mp4"            >Video en Español    </a></li>
+                        <li><a href="#/Video/blob/Inscripcion/Ing_Prozper_002.mp4"            >Video in English    </a></li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <li ws-template="OpcionesAdministrador">
+                <strong onclick="$(this).next().slideToggle(200)">Reportes</strong>
+                <ul style="display: none;">
+                    <li><a href="#/Content/ProzperLyt.cntReporteConsolidado"    >Consolidado</a></li>
+                    <li><a href="#/Content/ProzperLyt.cntTablaPagos"            >Pagos      </a></li>
+                </ul>
+            </li>
+            
+            
+            <div ws-template="FormaFirma">
+                <div class = "mui-panel mui-col-md-8 mui-col-md-offset-2 mui--z4">
+                    <div ws-replace="Contenido" ></div>
+                    <br>
+                    Firma en MAYUSCULAS: <input type="text" name="Firmante" ws-var="Firmante" required>
+                    <br>
+                    Fecha(AAAA-MM-DD): <input type="text" name="Fecha" ws-var="Fecha" required>
+                    <br>
+                    <label>
+                            <input type="checkbox" value="" ws-var="Acepto" unchecked>
+                            Declaro que he leído los términos arriba indicados y estoy de acuerdo
+                    </label>
+                    <div style="color:red">${Mensaje}</div>
+                    <br>
+                    <button type="button" class="mui-btn mui-btn--raised ${FirmarClass}" ws-onclick="Firmar" >Firmar y Procesar</button>
+                    <br>
+                    <div>${DateTime}</div>
+                </div>
+            </div> 
+            <div ws-template="AutorizacionPago" class="mui--text-center ">
+                <div class="mui--z2 mui--text-center mui--bg-primary mui--text-white mui--text-headline">
+                AUTORIZACIÓN PARA EL COBRO DE LA AFILIACIÓN
+                </div>
+                <br>
+                <b>INSTRUCCIONES</b>
+                <br>
+                Por favor complete y revise los datos de esta planilla de autorización y fírmela en señal de aprobación. El llenado de
+                esta planilla se requiere para procesar los cobros mensuales de su afiliación PROZPER a través de su cuenta bancaria
+                o su tarjeta de débito o tarjeta de crédito. Al completar esta planilla de autorización para cargar los pagos mensuales
+                de su afiliación en su cuenta bancaria o su tarjeta de crédito o débito, usted nos ayuda a protegerlo a usted de fraudes.
+                Toda la información que ingrese en esta planilla se mantendrá estrictamente confidencial.
+                <br>
+                <br>
+                <div class="mui--z2 mui--text-center mui--bg-primary mui--text-white mui--text-headline">
+                AUTORIZACION PARA CARGAR A CUENTA BANCARIA, TARJETA DE CREDITO O TARJETA DE DEBITO
+                </div>
+                <br>
+                Yo, <b>${Titular}</b> Titular de la cuenta, autorizo a PROZPER LLC a debitar mensualmente, los días ${dia} de cada mes de mi
+                cuenta bancaria - tarjeta de crédito – tarjeta de débito (cuya información aparece más abajo) el Monto
+                de <b>${MontoAfiliacion}</b> para el pago de mi afiliación como Aliado de PROZPER. En caso de
+                que el cobro no pueda ser realizado por problemas de comunicación con el banco o cualquier otro
+                inconveniente no previsto, autorizo a realizar un segundo intento para hacer efectivo el pago de mi
+                afiliación.
+                <br>
+                <br>
+                <div class="mui-row">
+                <div class="mui-col-md-10 mui-col-md-offset-1">
+                    <div class="mui--z2 mui-form mui-form--inline mui-panel " ws-hole="CuentaDebitar"></div></div></div>
+                <div class="mui--z2 mui--text-center  mui--bg-primary mui--text-white mui--text-headline">
+                FIRMA Y CONFIRMACION
+                </div>
+                <br>
+                Yo afirmo y confirmo que soy el titular de la cuenta bancaria o tarjeta arriba descrita. Yo además confirmo que Yo
+                mismo he completado toda la información de esta planilla de autorización y toda la información ingresada es cierta y
+                correcta. Yo estoy de acuerdo en pagar el monto total descrito arriba mensualmente y a cumplir con los términos y
+                condiciones del contrato de Aliado con PROZPER.
+                <br>
+                <br>
+            </div>
+            
+            
+            <div ws-template="Contrato" class="markdown">
+                <h2>Contrato de Afiliación a Negocio Independiente PROZPER</h2>
+                <p>PROZPER LLC., compañía conformada en el Estado de Florida, EE. UU con domicilio en el 2893 Executive Park Dr. Suite
+                202. Weston, FL 33331, en la persona de su Representante Legal Giancarlo Molero (en adelante "PROZPER") y
+                <strong>${Aliado}</strong>, identificado con los datos proporcionados mediante “Planilla de solicitud de afiliación a PROZPER”, (en
+                adelante el "Aliado"), (PROZPER y el Aliado, conjuntamente denominados las "Partes" e individualmente denominados la
+                "Parte"), firman el siguiente contrato (el "Contrato")</p>
+                <p>Considerando</p>
+                <ol>
+                <li>PROZPER es una sociedad especializada en el sector de Servicios de tecnología para la realización de Negocios.</li>
+                <li>
+                PROZPER ha diseñado y desarrollado una plataforma digital on-line accesible por Internet en la modalidad
+                “Software online” (la “Plataforma PROZPER”) que permite al usuario Aliado gestionar directa y autónomamente
+                la venta (entre otras) de Productos y Servicios on-line;
+                </li>
+                <li>
+                La Plataforma PROZPER es un instrumento reservado a usuarios profesionales y el Aliado se compromete a
+                utilizarlo exclusivamente en relación con su propia actividad profesional y en cualquier caso por exigencias
+                vinculadas a la misma.
+                </li>
+                </ol>
+                <p>Considerando lo anterior, las Partes convienen y estipulan el siguiente Contrato de licencia de uso no exclusivo de la
+                Plataforma PROZPER.</p>
+                <p>Los considerandos y los anexos al Contrato, en particular los Términos de Uso y Registro, forman parte integrante y
+                sustancial del Contrato.</p>
+                <h3>Sección 1. Definiciones</h3>
+                <p>En relación con el presente Contrato se indican en adelante los significados que deben atribuirse a los términos y
+                expresiones recurrentes:</p>
+                <p>“Base de Datos”: se deberán entender por este término los contenidos de los datos obtenidos por el Aliado y los datos
+                personales de los destinatarios de los servicios solicitados;</p>
+                <p>“Contrato”: se considera tal el presente documento formado por los Términos de Uso;</p>
+                <p>“Datos Personales”: se deberá entender por este término cualquier información relativa a una persona física identificada
+                o identificable de cuyo tratamiento sea Responsable el Aliado y que sea objeto de la solicitud de servicio a efectos de
+                ejecutar el Contrato. Más en concreto, los datos objeto de tratamiento serán la dirección email, el número de teléfono, y
+                los datos generados a partir de la solicitud de las comunicaciones transmitidas.</p>
+                <p>“Fecha de activación”: se considera como tal la fecha comunicada por email al Aliado en el acto de suscripción online a
+                distancia, mediante conexión Internet.</p>
+                <p>“Fecha de expiración”: se considera como tal la fecha de caducidad del Contrato, considerando también la terminación
+                del servicio por la falta de pago del Fee de afiliación.</p>
+                <p>“Propiedad intelectual”: se considera como tal a cualquier derecho de propiedad intelectual regulado, en cada caso, por
+                las leyes sobre patentes, sobre protección de los chip semiconductores, sobre el derecho de autor, sobre el secreto
+                industrial, sobre las marcas y sobre cualquier otro derecho de propiedad intelectual esté o no registrado, así como las
+                eventuales aplicaciones, renovaciones, ampliaciones, reintroducciones y restauraciones, actualmente en vigor o que
+                puedan realizarse en el futuro, en todo el mundo.</p>
+                <h3>Sección 2: Condiciones de uso de la plataforma</h3>
+                <p>a. Condiciones, deberes y derechos del Aliado:</p>
+                <ul>
+                <li>El aliado debe ser mayor de edad</li>
+                <li>Tiene el derecho de ofrecer los productos y servicios de PROZPER de acuerdo con los términos y Condiciones.</li>
+                <li>Tiene el derecho de reclutar personas para PROZPER y que estas estén bajo su estructura comercial.</li>
+                <li>
+                Debe asistir a los eventos preparados por la organización, entrenarse debidamente para ofrecer al cliente final, los
+                productos y servicios con la mayor claridad posible y motivar a los Aliados en su línea descendiente.
+                </li>
+                <li>
+                Debe cumplir con todas la leyes, ordenanzas y regulaciones Federales, Estadales y del Condado. Así como realizar
+                reportes y enviar las retenciones y deducciones que sean exigidas por el país, estado o condado.
+                </li>
+                <li>
+                Debe desarrollar la actividad como un VENDEDOR INDEPENDIENTE con honestidad, integridad y acorde con el código
+                de ética.
+                </li>
+                <li>
+                Debe utilizar solo los métodos y contratos de venta provistos por PROZPER y sus proveedores comerciales y seguir las
+                políticas y procedimientos preestablecidos por PROZPER para todas las ventas.
+                </li>
+                <li>
+                Debe estar de acuerdo en presentar los planes de mercadeo, compensación y productos tal como están publicados y
+                enterados por PROZPER en su página oficial.
+                </li>
+                <li>Debe mantener el pago de su afiliación al día.</li>
+                <li>No podrá reclamar de ninguna forma ganancias, productos o servicios que no hayan sido determinados.</li>
+                <li>
+                Tiene el derecho de cancelar el presente contrato sin previo aviso y en cualquier momento enviando una
+                notificacion con su decision al correo electronico afiliacion@prozper.com. Para evitar el cobro de la afiliación de
+                un mes en especifico, se deberá entregar la notificación de cancelación antes del día 10 de ese mes.
+                </li>
+                </ul>
+                <p>b. Licencia de uso de la Plataforma:</p>
+                <p>PROZPER, respetando los términos y condiciones del presente Contrato, se compromete a facilitar al Aliado una licencia
+                limitada, no exclusiva, de utilización de la Plataforma PROZPER, que permite directamente al Aliado realizar transacciones
+                de negocios independiente de asistencia en viajes tales como Seguros de Asistencia al Viajero, obtención de boletería y
+                paquetes para viajeros a través de las opciones tercerizadas de sus aliados Comerciales y proveedores. El Aliado entiende
+                y acepta expresamente que la Plataforma PROZPER es un instrumento reservado a usuarios Aliados de Negocios
+                Independientes y a los efectos de este contrato es considerado un VENDEDOR INDEPENDIENTE de PROZPER y acepta
+                que no es un agente o ni un empleado a los efectos tributarios federales y estatales. Sin embargo, el Aliado dispone de
+                un periodo de prueba del sistema, durante el cual podrá verificar las funcionalidades de la Plataforma PROZPER y podrá
+                rescindir este contrato sin ningún coste u obligación. En la utilización de la Plataforma PROZPER el Aliado se compromete
+                a dar cumplimiento a las instrucciones de uso definidas por PROZPER en base a las indicaciones. Se entiende que el
+                tratamiento de los datos conectado con el uso de la plataforma se producirá en cualquier caso respetando la normativa
+                vigente, entendiéndose que al suscribirse asume la función de Aliado; y PROZPER, valiéndose para ello de su propia
+                estructura organizativa, asume la función de responsable del tratamiento tal y como se establece. Debido a la naturaleza
+                y al funcionamiento de la Plataforma PROZPER, las Partes reconocen, conforme y dentro de los límites contemplados en
+                el presente Contrato, que será el Aliado el que gestione directa y autónomamente los instrumentos del negocio puestos
+                a disposición por parte de PROZPER y será el propio Aliado, bajo su exclusiva responsabilidad, el que realice la solicitud
+                para realizar el negocio de venta a través de la Plataforma y gestione, en calidad de Aliado, la verificación de la entrega
+                de comprobante final.</p>
+                <p>c. Acceso del Aliado a la Plataforma:</p>
+                <p>El Aliado tendrá acceso a la Plataforma PROZPER una vez envíe su solicitud de registro y aprobación; le será enviado un
+                Usuario y Password (clave) de autorización y autenticación atribuidas al Aliado, conservadas y utilizadas por este bajo su
+                exclusiva responsabilidad. El acceso a la Plataforma deberá realizarse con arreglo a lo indicado en el presente Contrato
+                y en los Términos de Uso. En particular, el Aliado se compromete a conservar con la máxima confidencialidad los códigos
+                alfanuméricos de acceso (denominados "username" y "password") mencionados, y responde por lo tanto también de la
+                custodia de estos: el Aliado será por lo tanto el único responsable de cualquier daño causado por la eventual utilización
+                de login y password por parte de terceros no autorizados. El Aliado se compromete a comunicar inmediatamente a
+                PROZPER el eventual robo, extravío, pérdida o apropiación por cualquier título, por terceros no autorizados, de la
+                información de acceso.</p>
+                <p>d. Disponibilidad de la Plataforma PROZPER:</p>
+                <p>Con el presente Contrato PROZPER se obliga a garantizar que la Plataforma PROZPER se encuentre disponible con una
+                tasa de disponibilidad up-time del 99%, las 24 horas los 365 días del año. Las Partes convienen que en ningún caso
+                podrá imputarse a PROZPER la falta de disponibilidad de la Plataforma PROZPER debido a hechos y circunstancias
+                reconducibles al Aliado o a sujetos de cuyo comportamiento deba responder el Aliado, como, a título enunciativo no
+                limitativo, la disponibilidad de una red de Internet idónea del Aliado, problemas de hardware, software, de network internos
+                de la estructura organizativa del Aliado o debido a la localidad donde se encuentre. De la definición del nivel mínimo de
+                funcionalidades garantizado se excluyen las actividades de mantenimiento ordinario comunicadas al Aliado con preaviso
+                de al menos 2 (dos) días naturales y de mantenimiento extraordinario comunicadas al Cliente con preaviso que podrá
+                ser también inferior a 4 (cuatro) horas. Durante los festivos y de las 0.00 a las 6.00 los días laborables, podrán ser
+                necesarias interrupciones del servicio ocasionales a causa de las operaciones de mantenimiento del programa que no se
+                incluyan en la determinación del nivel mínimo de funcionalidades garantizado, y respecto a las cuales se excluye cualquier
+                responsabilidad para PROZPER.</p>
+                <h3>Sección 3. Propiedad y Marcas; Terceros licenciatarios.</h3>
+                <p>PROZPER es el único propietario exclusivo de todos los derechos e intereses de la Plataforma, y de cualquier Propiedad
+                Intelectual vinculada a la misma, incluyendo sus desarrollos. PROZPER es una marca comercial en registro. El sitio web,
+                la Plataforma PROZPER y la información allí recogida, son propiedad de PROZPER. Está prohibida la copia no autorizada
+                y la difusión vulnerando los derechos de Propiedad Intelectual.</p>
+                <h3>Sección 4. Términos económicos y duración contractual.</h3>
+                <p>a. Comienzo del Contrato.</p>
+                <p>Con la firma de este contrato (que incluye la planilla de autorización de cobro automático a su cuenta bancaria o tarjeta
+                de crédito del Anexo A “Autorización para el cobro de la afiliación”), el Aliado acepta ser un VENDEDOR INDEPENDIENTE
+                de PROZPER, y recibirá las credenciales de acceso a la plataforma tal como se describe en la parte c de la sección 2. El
+                mes en que reciba dichas credenciales será su “Mes de Inscripción”. Durante dicho mes el Aliado tendrá libre acceso a
+                la plataforma, sin necesidad de realizar ningún pago por la afiliación.</p>
+                <p>b. Pago por afiliación y mantenimiento de la plataforma y otros servicios.</p>
+                <p>A partir del siguiente mes posterior al “Mes de Inscripción”, el Aliado debe pagar una afiliación mensual para mantener
+                activa la plataforma de ventas y disponer de todo el soporte que ofrece PROZPER para mantener la operación. El sistema
+                hará el cargo automático por el monto de la afiliación que se indica en el Anexo A de este contrato.
+                Cuando el pago de comisiones (“Comisión por Referir” o “Comisión Máster”) que recibirá el Aliado durante un mes
+                cualquiera sea mayor que el monto de la afiliación mensual, el Aliado autoriza a PROZPER a descontar de estas comisiones
+                el monto de la afiliación correspondiente a ese mes, en cuyo caso no se hará el cargo a la cuenta bancaria autorizada o
+                tarjeta de crédito.
+                El monto de la afiliación y las condiciones descritas en el Anexo A “Autorización para el cobro de la afiliación”, podrán ser
+                modificados en cualquier momento y sin previo aviso, según lo requiera la operación del negocio.</p>
+                <p>c. Beneficios económicos por venta de productos y servicios y plan de referidos.</p>
+                <p>c.1. Comisiones por ventas de productos y servicios de PROZPER</p>
+                <p>PROZPER facilitará los medios necesarios para la cotización, emisión, administración y pago en línea de productos y
+                servicios de los diferentes proveedores con los que PROZPER tenga convenios. PROZPER brindará a sus Aliados el
+                mayor porcentaje posible de comisión que los productos y servicios disponibles puedan ofrecer sin afectar la rentabilidad
+                de sus proveedores y guardándose PROZPER el derecho de modificar dicho porcentaje de comisión de cada uno de los
+                productos y servicios independientemente, en cualquier momento que lo considere conveniente y sin necesidad de
+                notificación previa.
+                La lista de productos y servicios disponibles, el porcentaje de comisión y las condiciones especiales que rigen para cada
+                producto o servicio se especifican en el Anexo B “Listado de productos, servicios y comisiones”.</p>
+                <p>c.2. Comisión por referir nuevos Aliados</p>
+                <p>PROZPER mantendrá en la plataforma la “Relación de Referido” de todos los nuevos Aliados que refiera el VENDEDOR
+                INDEPENDIENTE, y a su vez, la “Relación de Referido” de todos los descendientes que refieran estos nuevos aliados
+                referidos por el VENDEDOR INDEPENDIENTE.
+                PROZPER reconocerá el pago de una “Comisión por Referir” que se pagará mensualmente y cuyo monto se muestra en
+                el Anexo B “Listado de productos y servicios y comisiones”. Esta “Comisión por Referir” se pagará por cada uno de los
+                nuevos Aliados que haya referido directamente el VENDEDOR INDEPENDIENTE y que estén activos en la plataforma a
+                través del pago mensual de su afiliación para el momento del cálculo de la comisión.
+                Esta comisión no se pagará por ninguno de los descendientes de los Aliados que haya referido directamente el
+                VENDEDOR INDEPENDIENTE.</p>
+                <p>c.3. Comisión Máster</p>
+                <p>Cuando el VENDEDOR INDEPENDIENTE haya referido directamente 31 o mas Aliados, PROZPER reconocerá una
+                “Comisión Máster” cuyo monto se muestra en el Anexo B “Listado de productos, servicios y comisiones”. Dicha “Comisión
+                Máster” se pagará mensualmente por cada uno de los nuevos Aliados que haya referido directamente el VENDEDOR
+                INDEPENDIENTE y por todos los descendientes que estos a su vez hayan referido, siempre y cuando los referidos
+                directamente o sus descendientes cumplan las siguientes 2 condiciones:</p>
+                <ol>
+                <li>Esten activos en la plataforma a través del pago mensual de su afiliación, para el momento del cálculo de comisiones.</li>
+                <li>No reciban el pago de “Comisión Máster”</li>
+                </ol>
+                <h3>Sección 5. Asistencia al Aliado</h3>
+                <p>a. Asistencia clientes:</p>
+                <p>Para garantizar la correcta utilización y la plena funcionalidad de la Plataforma PROZPER, este se compromete a prestar
+                asistencia técnica con recomendaciones sobre problemas ligados al correcto funcionamiento de la Plataforma, los días
+                hábiles de lunes a viernes en horario de oficina.
+                PROZPER prestará asistencia técnica por email o a través del CRM disponible dentro de la plataforma o a través de
+                cualquier otro medio que disponga para ello, sobre los temas relativos al funcionamiento de la Plataforma abordando el
+                problema a partir del momento en que soporte técnico ofrece la primera respuesta de hacerse cargo de la solicitud. Esta
+                asistencia no incluye asesoría sobre ventas, ni características o condiciones de los productos y servicios que ofrece la
+                plataforma.</p>
+                <h3>Sección 6. Declaraciones, garantías, responsabilidades y limitaciones.</h3>
+                <p>Al firmar como Solicitante Aliado en la parte inferior, estoy de acuerdo con cada uno de los siguientes:</p>
+                <ol>
+                <li>
+                Como un Aliado o VENDEDOR INDEPENDIENTE soy un asesor independiente cuyo éxito o fracaso depende de mi
+                esfuerzo personal.
+                </li>
+                <li>
+                Como un Aliado no se garantiza ningún ingreso, ganancia o éxito, y al firmar la Solicitud y Acuerdo convengo que ni
+                PROZPER, ni los proveedores comerciales, han hecho alguna afirmación o declaración garantizando ganancias o
+                declaraciones de ganancias anticipadas. Tampoco haré ninguna reclamación de ingresos o proyecciones que afirmen o
+                prometan cualquier cantidad específica de compensación que un Aliado de Negocio Independiente pueda ganar, ya sea
+                oralmente o por escrito a otros Aliados o potenciales VENDEDORES INDEPENDIENTES.
+                </li>
+                <li>
+                Como un Aliado, toda mi publicidad debe ser verdadera y no engañosa. Cualquier anuncio que promueva o represente
+                empleo, posiciones asalariadas, posiciones administrativas, salarios por hora o ingresos garantizados, están prohibidos.
+                Como un Aliado, cumpliré con los lineamientos de PROZPER para la publicidad y siempre manifestaré que promuevo una
+                gestión por cuenta propia, VENDEDOR INDEPENDIENTE o una oportunidad de “poseer tu propio negocio”.
+                </li>
+                <li>
+                Cuando use ejemplos para promocionar cómo funciona el plan de gestión del negocio, tendré a la mano, en todo
+                momento, el Cuadro indicativo de los porcentajes de comisiones de la línea descendiente.
+                </li>
+                <li>
+                Como un Aliado, no daré una falsa interpretación de las capacidades de ninguno de los servicios de PROZPER. No
+                crearé materiales que describan productos de PROZPER o ningún tipo de información con resultados de pruebas o de
+                comparación de productos, a menos que estos se encuentren autorizados en forma escrita por PROZPER.
+                </li>
+                <li>
+                El Plan de Compensación de PROZPER no solo está basado sobre la venta de productos y servicios ofrecidos por
+                PROZPER, sino también con la captación de otros Aliados, por lo que la simple estructuración de una organización de
+                negocio puede generar rentas atractivas.
+                </li>
+                <li>
+                Como un Aliado, se puede dar por terminado el acuerdo o ser disciplinado por cualquier violación al Contrato de
+                VENDEDOR INDEPENDIENTE, a las Políticas y Procedimientos, o al Plan de Compensación, o por cometer prácticas
+                comerciales no equitativas o engañosas, o cualquier violación de la ley.
+                </li>
+                <li>
+                Convengo que leeré y estaré de acuerdo en cumplir con las Políticas y Procedimientos de PROZPER. Las establecidas,
+                las enmiendas, los cambios y/o las nuevas Políticas que así se informen.
+                </li>
+                <li>
+                Estoy conforme que este Acuerdo debe ser llevado a cabo y tener copias impresas, debidamente completadas, en los
+                archivos de PROZPER antes de que sea pagada cualquier comisión por mi permiso de Afiliación, y que puede ser
+                terminado a discreción de PROZPER si cualquiera de estas páginas no ha sido presentada totalmente completada al
+                momento de la afiliación.
+                </li>
+                </ol>
+                <p>TERMINOS Y CONDICIONES ADICIONALES</p>
+                <ol>
+                <li>
+                ENTIENDO QUE PARA SER EXITOSO EN ESTE PROGRAMA DEBO CONOCER EL FUNCIONAMINETO DE LA
+                PLATAFORMA Y LA CALIDAD Y ALCANCE DE LOS SERVICIOS OFRECIDOS Y COMERCIALIZARLOS, ASI COMO
+                PATROCINAR E INCENTIVAR A OTROS VENDEDORES INDEPENDIENTES QUE HAGAN LO MISMO; Y PARA QUE ELLOS
+                SEAN EXITOSOS DEBEN HACER LO MISMO.
+                </li>
+                <li>
+                Los reportes que hacen referencia a las grandes cantidades de ingresos de Aliados o VENDEDORES INDEPENDIENTES
+                exitosos de PROZPER, no son necesariamente distintivos o representativos de lo que un VENDEDOR INDEPENDIENTE
+                de PROZPER en particular puede ganar. No se puede garantizar a nadie el éxito como un VENDEDOR INDEPENDIENTE
+                y no todos los VENDEDORES INDEPENDIENTES ganan ingresos iguales.
+                </li>
+                </ol>
+                <p>Además, PROZPER no recomienda que ningún potencial VENDEDOR INDEPENDIENTE deje su empleo actual o
+                transformaciones en su estructura organizativa hasta el tiempo en que su negocio genere ingresos estables y significativos
+                basados en la venta de los productos y captación de nuevos Aliados en línea descendente.</p>
+                <p>LOS INGRESOS INDIVIDUALES DEPENDEN ESTRICTAMENTE DEL TIEMPO, ESFUERZO E INICIATIVA DEDICADOS POR
+                EL VENDEDOR INDEPENDIENTE. POR FAVOR LEA CON CUIDADO. ESTA ES UNA LIBERACION DE RESPONSABILIDAD
+                Y RENUNCIA A DERECHOS LEGALES. Reconozco que mi participación en una red de afiliación y comercialización a
+                PROZPER es completamente voluntaria e implica el riesgo financiero y los gastos asociados con cualquier negocio propio
+                administrado y operado personalmente. Expresamente asumo todos los riesgos y costos asociados con mi participación
+                en la actividad, incluso y sin restricción: cambio de costos de bienes y servicios; cambios en las condiciones económicas
+                existentes y futuras; disponibilidad y discontinuación de productos y servicios; gastos adicionales para operaciones
+                comerciales y publicidad. A pesar de todos los riesgos, voluntariamente he decidido participar en esta actividad.</p>
+                <p>Estoy de acuerdo en utilizar solo formatos y servicios aprobados por PROZPER, LLC en todo momento. En consideración
+                al producto ofrecido, la inscripción y recibir el permiso para participar en la actividad de desarrollo de negocio
+                independiente, estoy de acuerdo en liberar y exonerar de responsabilidad a PROZPER, LLC, sus filiales y proveedores,
+                sus representantes, oficiales, directivos, dueños, coordinadores y empleados (colectivamente, “el Grupo Exonerado”) por
+                todas y cada una de las reclamaciones que pueda poner de manifiesto como resultado de pérdida monetaria, daño físico,
+                incluso muerte, o daños a la propiedad sustentados en relación a la Actividad, incluso aquellas reclamaciones basadas en
+                negligencia o incumplimiento de las regulaciones. Estoy de acuerdo en indemnizar a “el Grupo Exonerado” por cualquier
+                reclamación, no importa que sea causada por terceros, que yo pudiera ocasionar.</p>
+                <p>Este acuerdo es obligatorio en mi País, con mis herederos, administradores y es adscrito y será regido según las leyes
+                del estado de mi residencia al momento de firmar esta aplicación.</p>
+                <p><strong>Validez de las cláusulas contractuales</strong>.
+                Las cláusulas del presente Contrato se entienden enteramente en vigor y aceptadas por el Aliado incluso en caso de
+                utilización no onerosa y/o temporal de las funcionalidades prestadas a cualquier título por PROZPER.</p>
+                <p><strong>Cargas fiscales</strong>. Cualquier carga fiscal derivada de la ejecución del Contrato son a cargo del Aliado.</p>
+                <p><strong>Ley aplicable</strong>. El presente Contrato se regula e interpreta según la ley del Estado de Florida EE. UU, sin excluir
+                reclamaciones que pudiesen surgir según el domicilio del Aliado.</p>
+                <p><strong>Cláusulas finales</strong>. El presente Contrato, del que forman parte integrante y sustancial todos los anexos indicados, abroga
+                y sustituye cualquier acuerdo, pacto, negociación, escrito o verbal, anterior entre las Partes y relativo al objeto del presente
+                Contrato.</p>
+                <p>El hecho de que una de las Partes no haga valer en su momento los derechos que se le reconocen en virtud de una o
+                más cláusulas a las que se hace referencia en el presente Contrato, no podrá entenderse como una renuncia general y
+                tácita a los derechos y deberes recogidos en la cláusula, ni impedirá a esa parte reclamar posteriormente la puntual y
+                rigurosa observancia de cualquier cláusula contractual.</p>
+                <p>Las Partes acuerdan que: (a) las palabras en el formato electrónico se considerarán que están "por escrito" a los efectos
+                de toda la legislación aplicable donde se requiera que deban estar "por escrito"; y (b) la prueba electrónica será admisible
+                ante cualquier tribunal u otros procedimientos cuasi-judiciales entre las partes.</p>
+                <p>Cuando una o más cláusulas a las que se hace referencia en el presente Contrato sean declaradas nulas o inválidas por
+                la autoridad jurisdiccional competente, el resto del Contrato seguirá siendo válido entre las Partes, salvo que dicha cláusula
+                haya constituido el motivo determinante para la conclusión del presente contrato.</p>
+                <h2>ANEXO B</h2>
+                <h2>LISTADO DE PRODUCTOS, SERVICIOS Y COMISIONES</h2>
+                <table>
+                <thead>
+                <tr class="header">
+                <th><p>PRODUCTO O SERVICIO</p></th>
+                <th><p>COMISION (S.4 c.1. Comisiones por ventas de productos y servicios de PROZPER)</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="odd">
+                <td><p>Venta de pólizas de asistencia en viajes</p></td>
+                <td><p>60% de comisión sobre el precio de venta al publico</p></td>
+                </tr>
+                <tr class="even">
+                <td><p>Venta de boletos aéreos</p></td>
+                <td><p>60% de comisión sobre la comisión que determine la línea aérea</p></td>
+                </tr>
+                <tr class="odd">
+                <td><p>Emisión de boletos aéreos</p></td>
+                <td><p>20.00 USD por ticket emitido</p></td>
+                </tr>
+                <tr class="even">
+                <td><p>Paquetes turisticos</p></td>
+                <td><p>60% de comisión sobre la parte comisionable del proveedor</p></td>
+                </tr>
+                <tr class="odd">
+                <td><p>Cruceros</p></td>
+                <td><p>60% de comisión sobre la parte comisionable del proveedor</p></td>
+                </tr>
+                <tr class="even">
+                <td><p>Hoteles</p></td>
+                <td><p>60% de comisión sobre la parte comisionable del proveedor</p></td>
+                </tr>
+                </tbody>
+                </table>
+                
+                <hr />
+                <table>
+                <thead>
+                <tr class="header">
+                <th><p>TIPO DE COMISION</p></th>
+                <th><p>COMISION (S.4 c.2. Comisión por referir nuevos Aliados)</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="odd">
+                <td><p>Comisión por referir</p></td>
+                <td><p>15.00 USD por cada Aliado que haya sido referido directamente y que tenga su afiliación activa (pagada) al momento del calculo de comisiones.</p></td>
+                </tr>
+                </tbody>
+                </table>
+                
+                <hr />
+                <table>
+                <thead>
+                <tr class="header">
+                <th><p>TIPO DE COMISION</p></th>
+                <th><p>COMISION (S.4 c.3. Comisión Máster)</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="odd">
+                <td><p>Comisión Máster</p></td>
+                <td><p>25.00 USD por cada Aliado que haya sido referido directamente y por todos los referidos que hayan referido sus referidos directos. Se deben cumplir 2 condiciones: los referidos y sus descendientes deben tener su afiliación activa (pagada) y no pueden estar recibiendo Comisión Máster para que sean contabilizados en el calculo de esta comisión.</p></td>
+                </tr>
+                </tbody>
+                </table>
+                
+                <hr />
+                <table>
+                <thead>
+                <tr class="header">
+                <th><p>MONTO DE AFILIACION</p></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="odd">
+                <td><p>Pago de Afiliacion mensual = 75.00 USD</p></td>
+                </tr>
+                </tbody>
+                </table>
+                
+                <hr />
+                <style>  .markdown table, .markdown th, .markdown tr, .markdown td { border: black solid 1px; } </style>
+                
+                </div>
+            <div ws-children-template="Correo">
+                <br>
+                <div style="color:red">${Mensaje}</div>
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="email" name="Correo" ws-var="Correo" required>
+                    <label>Correo Electronico</label>
+                </div>
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="email" name="ConfirmarCorreo" ws-var="ConfirmarCorreo" required>
+                    <label>Confirmar Correo Electronico</label>
+                </div>
+            </div>
+            
+            <div ws-children-template="Telefono">
+                <br>
+                <div class="mui-select">
+                    <label>Tipo de Teléfono</label>
+                    <select ws-var="TipoTelefono" ws-hole="Tipos" required>
+                    </select>
+                </div>            
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="text" name="CodigoPais" ws-var="CodigoPais" required style="width:90px; text-align: center">
+                    <label>Código Pais</label>
+                </div>
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="text" name="CodigoArea" ws-var="CodigoArea" style="width:90px; text-align: center" >
+                    <label>Código Área</label>
+                </div>    
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="tel" name="Telefono" ws-var="Telefono" required style="text-align: center">
+                    <label>Teléfono</label>
+                </div>
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="tel" name="Extension" ws-var="Extension"  style="width:90px; text-align: center" >
+                    <label>Extensión</label>
+                </div>    
+            </div>
+            
+            <div ws-children-template="Direccion">
+                <br>
+                <div style="color:red">${Mensaje}</div>
+                <div class="mui-select">
+                    <label>Tipo de Dirección</label>
+                    <select ws-var="TipoDireccion" ws-hole="Tipos" required>
+                    </select>
+                </div>            
+                <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                    <input type="text" name="Direccion1" ws-var="Direccion1" required>
+                    <label>Direccion1</label>
+                </div>
+                <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                    <input type="text" name="Direccion2" ws-var="Direccion2" >
+                    <label>Direccion2</label>
+                </div>                
+                <legend></legend>
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="text" name="Ciudad" ws-var="Ciudad" required>
+                    <label>Ciudad</label>
+                </div>                
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="text" name="Estado" ws-var="Estado" list="Estados" required>
+                    <label>Estado</label>
+                    <datalist id="Estados" ws-hole="Estados" >
+                    </datalist>
+                </div>                
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="text" name="CodigoPostal" ws-var="CodigoPostal" required>
+                    <label>Codigo Postal</label>
+                </div>                
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="text" name="Pais" ws-var="Pais" list="Paises" required>
+                    <label>País</label>
+                    <datalist id="Paises" ws-hole="Paises" >
+                    </datalist>
+                </div>
+            </div>
+            
+            <div ws-template="FormaContactos" class="mui-col-md-8 mui-col-md-offset-1">
+                <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
+                    <div class="xmui-panel">
+                        <legend>Correos</legend>
+                        <div ws-replace="Correos"></div>
+                        <button title="agregar correo" ws-onclick="MasCorreo" type="button" class="mui-btn mui-btn--small mui-btn--fab mui-btn--accent">+</button>
+                    </div>    
+                    <legend></legend>
+                    <div class="xmui-panel">
+                        <legend>Telefonos</legend>
+                        <div ws-replace="Telefonos"></div>
+                        <button title="agregar telefono" ws-onclick="MasTelefono" type="button" class="mui-btn mui-btn--small mui-btn--fab mui-btn--accent">+</button>
+                    </div>    
+                    <legend></legend>
+                    <div class="xmui-panel">
+                        <legend>Direcciones</legend>
+                        <legend></legend>
+                        <div ws-replace="Direcciones"></div>
+                        <button title="agregar direccion" ws-onclick="MasDireccion" type="button" class="mui-btn mui-btn--small mui-btn--fab mui-btn--accent">+</button>
+                    </div>    
+                    <legend></legend>
+                    <legend></legend>
+                    <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar" >Guardar</button>
+                    <button style="display: none;" type="submit" >Hidden button</button>
+                    <div style="color:red">${Mensajes}</div>
+                </form>
+            </div>
+            
+            
+            <div ws-template="DatosPersonales" >
+                <div style="color:red">${Mensajes}</div>
+                <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                    <input type="text" name="Nombres" ws-var="Nombres" required>
+                    <label>Nombres</label>
+                </div>
+                <div class="mui-textfield mui-textfield--float-label" style="display:block">
+                    <input type="text" name="Apellidos" ws-var="Apellidos" required>
+                    <label>Apellidos</label>
+                </div>
+                <legend></legend>
+                <div class="mui-textfield">
+                    <label>Fecha de Nacimiento</label>
+                    <input type="date" name="FechaNacimiento" ws-var="FechaNacimiento" required>
+                </div>                
+                <div class="mui-select">
+                    <label>Genero</label>
+                    <select ws-var="Genero" ws-hole="Generos" required>
+                    </select>
+                </div>
+                <legend style="color:transparent">.</legend>
+            </div>
+            
+            <div ws-template="FormaDatosPersonales" class="mui-col-md-8 mui-col-md-offset-1">
+                <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
+                    <legend>Datos Personales</legend>
+                    <div ws-replace="DatosPersonales"></div>
+                    <legend></legend>    
+                    <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar" >Guardar</button>
+                    <button style="display: none;" type="submit" >Hidden button</button>
+                    <div style="color:red">${Mensajes}</div>
+                </form>
+            </div>
+            
+            
+            <div ws-children-template="CuentaBancaria">
+                <div class="mui-select">
+                    <label>Tipo de Cuenta</label>
+                    <select ws-var="TipoCuenta" ws-hole="TiposCuenta" ws-attr="Disabled1" >
+                    </select>
+                </div>            
+                <div class="mui-textfield mui-textfield--float-label" style="display:inline-block" >
+                    <input type="text" name="Titular" ws-var="Titular" required ws-attr="Disabled2" >
+                    <label>Titular</label>
+                </div>
+                <div class="mui-textfield mui-textfield--float-label" style="display:inline-block">
+                    <input type="text" name="NumeroCuenta" ws-var="Numero" ws-attr="Disabled3" >
+                    <label>Numero de Cuenta</label>
+                </div>                
+                <legend></legend>
+                <div class="mui-textfield mui-textfield--float-label" style="display:inline-block">
+                        <input type="text" name="Banco" ws-var="Banco" ws-attr="Disabled4" >
+                        <label>Banco</label>
+                    </div>
+                    <div class="mui-textfield mui-textfield--float-label">
+                    <input type="text" name="RoutingNumber" ws-var="Routing" required ws-attr="Disabled5" >
+                    <label>ABA/RoutingNumber</label>
+                </div>
+                <br>
+                <div style="color:red">${Mensaje}</div>
+            </div>
+            
+            <div ws-children-template="TarjetaCredito" >
+                <div class="mui-select">
+                    <label >Tipo de Tarjeta</label>
+                    <select ws-var="TipoTarjeta" ws-hole="TiposTarjeta" ws-attr="Disabled1" >
+                    </select>
+                </div>            
+                <div class="mui-textfield mui-textfield--float-label" style="display:inline-block" >
+                    <input type="text" name="Titular" ws-var="Titular" required ws-attr="Disabled2" >
+                    <label>Titular</label>
+                </div>
+                <div class="mui-textfield mui-textfield--float-label" style="display:inline-block">
+                    <input type="text" pattern="dddddddddddddddd" size="16" name="NumeroTarjeta" ws-var="Numero" ws-attr="Disabled3" >
+                    <label>Numero de Tarjeta</label>
+                </div>
+                <div style="${Visible}">
+                    <label>Venc.</label>
+                    <div class="mui-textfield mui-textfield--float-label">
+                        <div class="mui-select">
+                            <select type="number" ws-var="AnioVenc" ws-hole="Anios" ws-attr="Disabled4" ></select>
+                        </div>
+                        <div class="mui-select">
+                            <select  ws-var="MesVenc"  ws-hole="Meses"              ws-attr="Disabled5" ></select>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div style="color:red">${Mensaje}</div>
+            </div>
+            
+            <div ws-template="FormaCuentas" class="mui-col-md-8 mui-col-md-offset-1">
+                Aquí puede introducir una forma de pago. Use su tarjeta de crédito o una cuenta bancaria:
+                <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
+                    <div ">
+                        <legend>Tarjetas de Crédito</legend>
+                        <div ws-replace="Tarjetas"></div>
+                        <button title="agregar tarjeta" ws-onclick="MasTarjeta" type="button" class="mui-btn mui-btn--small mui-btn--fab mui-btn--accent">+</button>
+                    </div>    
+                    <legend></legend>
+                    <div >
+                        <legend>Cuentas Bancarias</legend>
+                        <legend></legend>
+                        <div ws-replace="Cuentas"></div>
+                        <button title="agregar cuenta" ws-onclick="MasCuenta" type="button" class="mui-btn mui-btn--small mui-btn--fab mui-btn--accent">+</button>
+                    </div>    
+                    <legend></legend>
+                    <legend></legend>
+                    <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar" >Guardar</button>
+                    <button style="display: none;" type="submit" >Hidden button</button>
+                    <div style="color:red">${Mensajes}</div>
+                </form>
+            </div>    
+            
+            
+            <div ws-template="Consolidado" class="mui-panel">
+                <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar"   >Guardar</button>
+                <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Cancelar" >Cancelar</button>
+                <br>
+                <div class="mui-textfield mui-textfield--float-label" style="display:inline-block" >
+                    <input type="text" name="Filtro" ws-var="Filtro" >
+                    <label>Filtro</label>
+                </div>
+                <datalist id="Referidores" ws-hole="Referidores" ></datalist>
+                <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
+                    <thead>
+                        <th ws-onclick="sort_nombre"        style="width:9%; text-align:center">Nombre       </th>
+                        <th ws-onclick="sort_influyente"    style="width:1%; text-align:center">Influ.       </th>
+                        <th ws-onclick="sort_tipo"          style="width:2%; text-align:center">Tipo         </th>
+                        <th ws-onclick="sort_status"        style="width:2%; text-align:center">Status       </th>
+                        <th ws-onclick="sort_referido"      style="width:2%; text-align:center; font-size: x-small">Referido por </th>
+                        <th ws-onclick="sort_nivel"         style="width:2%; text-align:center">nivel        </th>
+                        <th ws-onclick="sort_referidos"     style="width:2%; text-align:center">refs.        </th>
+                        <th ws-onclick="sort_descendientes" style="width:2%; text-align:center">descs.       </th>
+                        <th ws-onclick="sort_comision"      style="width:2%; text-align:center">comision     </th>
+                        <th ws-onclick="sort_diaPago"       style="width:2%; text-align:center">dia pago     </th>
+                        <th ws-onclick="sort_desde"         style="width:2%; text-align:center">desde        </th>
+                        <th ws-onclick="sort_Id"            style="width:2%; text-align:center">Id           </th>
+                    </thead>
+                    <tbody ws-hole="TBody" ws-children-template="FilaConsolidado">
+                        <tr style="">
+                            <td> <div style="text-align: center                     ">${nombre}        </div> </td>
+                            <td> <div style="text-align: center; font-size: small ">
+                                <input type="text" name="Influyente" ws-var="influyente" " >
+                            </div> </td>
+                            <td> <div style="text-align: center                     ">${tipo}          </div> </td>
+                            <td> <div style="text-align: center; font-size: small ">
+                                <select type="text" name="Status" ws-var="status" ws-hole="Statuses" ></select>
+                            </div> </td>
+                            <td> <div style="text-align: center; font-size: x-small ">
+                                <input type="text" name="Referido" ws-var="referido" list="Referidores" >
+                            </div> </td>
+                            <td> <div style="text-align: center                     ">${nivel}         </div> </td>
+                            <td> <div style="text-align: center                     ">${referidos}     </div> </td>
+                            <td> <div style="text-align: center                     ">${descendientes} </div> </td>
+                            <td> <div style="text-align: center                     ">${comision}      </div> </td>
+                            <td> <div style="text-align: center                     ">${diaPago}       </div> </td>
+                            <td> <div style="text-align: center; font-size:   small ">${desde}         </div> </td>
+                            <td> <div style="text-align: right; font-size: xx-small ">${Id}            </div> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div ws-template="TablaPagos" class="mui-panel">
+                <button type="button" class="mui-btn mui-btn--raised mui-btn--primary" ws-onclick="Exportar"   >Exportar</button>
+                <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
+                    <thead>
+                        <th style="width:  1%; text-align: center">Codigo</th>
+                        <th style="width:  1%; text-align: center">Cuenta</th>
+                        <th style="width:  1%; text-align: center">ABA</th>
+                        <th style="width:  1%; text-align: center">Monto</th>
+                        <th style="width:  1%; text-align: center">Identificacion</th>
+                        <th style="width:  1%; text-align: center">Nombre</th>
+                    </thead>
+                    <tbody ws-hole="TBody" ws-children-template="FilaPago">
+                        <tr>
+                            <td> <div style="text-align: center"    >${codigo}        </div> </td>
+                            <td> <div style="text-align: center"    >${cuenta}        </div> </td>
+                            <td> <div style="text-align: center"    >${ABA}           </div> </td>
+                            <td> <div style="text-align: center"    >${monto}         </div> </td>
+                            <td> <div style="text-align: center"    >${identificacion}</div> </td>
+                            <td> <div style="text-align: right"     >${nombre}        </div> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            
+            <div ws-template="SubirDocumentos">
+                <form id="SubirDocumentos">
+                    <label>Seleccione archivo a subir:</label>
+                    <input type="file" name="some-file" />
+                    <button ws-onclick="Subir">Subir</button>
+                </form>
+                <!--button type="button" class="mui-btn mui-btn--raised mui-btn--primary" ws-onclick="Exportar"   >Exportar</button-->
+                <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
+                    <thead>
+                        <th style="width:  1%; text-align: center">Nombre</th>
+                    </thead>
+                    <tbody ws-hole="TBody" ws-children-template="FilaDocs">
+                        <tr>
+                            <td> <a href="/documentos/${idAliado}/${nombre}" style="text-align: left" target="_blank"    >${nombre}        </a> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            
+            <div ws-template="Transacciones">
+                <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
+                    <thead>
+                            <th> Fecha   </th>
+                            <th> TransId </th>
+                            <th> Cuenta  </th>
+                            <th> Status  </th>
+                            <th> Monto   </th>
+                    </thead>
+                    <tbody ws-hole="TBody" ws-children-template="Transaccion">
+                        <tr>
+                            <td> ${Fecha}   </td>
+                            <td> ${TransId} </td>
+                            <td> ${Cuenta}  </td>
+                            <td> ${Status}  </td>
+                            <td> ${Monto}   </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            
+            <div ws-template="FormaRegistro" class="mui-col-md-8 mui-col-md-offset-1">
+                <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
+                    <legend>Datos Personales</legend>
+                    <div ws-replace="DatosPersonales"></div>
+                    <legend></legend>    
+                    <legend>Contacto</legend>
+                    <div ws-replace="Correo"></div>
+                    <legend></legend>
+                    <div ws-replace="Telefono"></div>
+                    <legend></legend>
+                    <div ws-replace="Direccion"></div>
+                    <legend></legend>
+                    <button type="button" class="mui-btn mui-btn--raised" ws-onclick="Registrarse" >Registrarse</button>
+                    <button style="display: none;" type="submit" >Hidden button</button>
+                    <div style="color:red">${Mensajes}</div>
+                </form>
+            </div>
+            
+            <div ws-template="FormaGenerica" class="mui-col-md-8 mui-col-md-offset-1">
+                <form class="mui-form mui-form--inline mui-panel" onsubmit="function nosubmit(e) { console.log('onsubmit v'); e.preventDefault(); }">
+                    <legend>${Titulo}</legend>
+                    <div ws-replace="Content"></div>
+                    <legend></legend>
+                    <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar" >Guardar</button>
+                    <button style="display: none;" type="submit" >Hidden button</button>
+                    <div style="color:red">${Mensajes}</div>
+                </form>
+            </div>
+            
+            
+            <div ws-template="TablaAliados">
+                <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
+                    <thead>
+                        <th style="width:  20%; text-align: center">Aliado</th>
+                        <!--th style="width:  1%; text-align: center">Nivel</th>
+                        <th style="width:  1%; text-align: center">Status</th>
+                        <th style="width:  1%; text-align: center">Tipo</th-->
+                        <th style="width:  1%; text-align: center">Ref.</th>
+                        <th style="width:  1%; text-align: center">Des.</th>
+                        <th style="width:  1%; text-align: right ">Comisión</th>
+                    </thead>
+                    <tbody ws-hole="TBody" ws-children-template="FilaAliado">
+                        <tr ws-onclick="seleccionar" style="margin-bottom: 2px" class="level ${tipo} ${status} ${seleccionado} seleccionable">
+                            <td> <div>
+                                <span class="${expandido} nodo" title="expandir/colapsar" ws-onclick="expandir" style="width: ${nivel}em"></span>
+                                <span style="text-align: left">${nombre}       </span> 
+                                                                                        </div> </td>
+                            <!--td> <div style="text-align: center"    >${nivel}        </div> </td>
+                            <td> <div style="text-align: center"    >${status}       </div> </td>
+                            <td> <div style="text-align: center"    >${tipo}         </div> </td-->
+                            <td> <div style="text-align: center"    >${referidos}    </div> </td>
+                            <td> <div style="text-align: center"    >${descendientes}</div> </td>
+                            <td> <div style="text-align: right"     >${comision}     </div> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div ws-template="TablaComisiones" ws-attr="attrs">
+                    <table style="border-spacing:0px" class="mui-table ">
+                        <thead>
+                            <th style="width:  20%; text-align: center">Periodo</th>
+                            <th style="width:  1%; text-align: right ">Comisión</th>
+                        </thead>
+                        <tbody ws-hole="TBody" ws-children-template="FilaComision">
+                            <tr ws-onclick="Select" style="margin-bottom: 2px" class="level ${tipo} ${status}">
+                                <td style="padding: 2px"> <div style="text-align: center"    >${periodo}      </div> </td>
+                                <td style="padding: 2px"> <div style="text-align: right"     >${comision}     </div> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+            
+            <div ws-template="Aliado" ws-attr="attrs" >
+                <div class="mui--text-display1 mui--text-center ${status}" ><strong>${nombre}</strong></div>
+                <div class="mui--text-subhead mui--text-center mui--text-accent" >${contacto}</div>
+                <div class="space-bottom"></div>
+                <div class="mui-panel mui--z3 mui--text-body2"  ws-hole=Calculo>
+                    <table ws-template=Calculo>
+                        <tbody  >
+                            <tr>
+                                <td> <div style="text-align: right"     ><strong>Referidos:</strong> ${referidos}, activos: ${refActivos} x ${porReferido} = ${comReferido}</div> </td>
+                            </tr>
+                            <tr>
+                                <td> <div style="text-align: right"     ><strong>Descendientes:</strong> ${descendientes}, activos: ${desActivos} x ${porDescendiente}  =  ${comDescendiente}</div> </td>
+                            </tr>
+                            <tr style="text-align: right">
+                                <td> <span   class="mui--text-title" >Comisión del mes:</span><span class="mui--text-display1"> ${comision}     </span> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mui--text-headline mui--text-center ${status}" >${status} -  <span class="${tipo}">${tipo}</span></div>
+            </div>
+            
+            
+                    <style>
+                        .Inactivo          { font-weight: 100 ; color: rgba(179, 177, 177, 0.644) }
+                        .CuentaCreada      { font-weight: 100 ; color: blue                       }
+                        .Cancelado         { font-weight: 100 ; color: red                        }
+                        .Master            { font-weight: 800 }
+                        li.comision0       { display: none; }
+                        .Expandido::before { content: "-" }
+                        .Colapsado::before { content: "+" }
+                        .nodo              { display: inline-block; cursor: pointer; }
+                        .scrollbar {
+                            overflow-y: scroll;
+                            scrollbar-width: none; /* Firefox */
+                            -ms-overflow-style: none;  /* IE 10+ */
+                        }
+                        .scrollbar::-webkit-scrollbar { /* WebKit */
+                            width: 0px;
+                        }
+                        //.scrollbar:hover {
+                        //    overflow-y: scroll;
+                        //    scrollbar-width: 15px; /* Firefox */
+                        //    -ms-overflow-style: 15px;  /* IE 10+ */
+                        //}
+                        //.scrollbar:hover::-webkit-scrollbar { /* WebKit */
+                        //    width: 15px;
+                        //}
+                        .seleccionable:hover { background-color: rgba(226, 226, 226, 0.979) }
+                        .seleccionado        { background-color: rgba(226, 226, 226, 0.979) }
+                        #header,#sidedrawer{position:fixed;top:0;z-index:2}.highlight .c,.highlight .cm,.highlight .ge,.highlight .sd{font-style:italic}#f-features-list,.color-group ul{list-style-type:none}body,html{height:100%;background-color:#eee;font-family:"Helvetica Neue",Helvetica,Arial,Verdana,Tahoma}body,button,html,input,textarea{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-shadow:1px 1px 1px rgba(0,0,0,.004)}#header{right:0;left:0;-webkit-transition:left .2s;transition:left .2s}#sidedrawer{bottom:0;width:12.5rem;left:-12.5rem;overflow:auto;background-color:#FFF;-webkit-transition:-webkit-transform .2s;transition:-webkit-transform .2s;transition:transform .2s;transition:transform .2s,-webkit-transform .2s}#sidedrawer.active{-webkit-transform:translate(12.5rem);transform:translate(12.5rem)}#content-wrapper{-webkit-box-sizing:border-box;box-sizing:border-box;min-height:100%;overflow-x:hidden;margin-left:0;-webkit-transition:margin-left .2s;transition:margin-left .2s;margin-bottom:-10rem;padding-bottom:10rem}#footer{-webkit-box-sizing:border-box;box-sizing:border-box;height:10rem;margin-left:0;-webkit-transition:margin-left .2s;transition:margin-left .2s}@media (min-width:768px){#header{left:12.5rem}#sidedrawer{-webkit-transform:translate(12.5rem);transform:translate(12.5rem)}#content-wrapper,#footer{margin-left:12.5rem}body.hide-sidedrawer #header{left:0}body.hide-sidedrawer #sidedrawer{-webkit-transform:translate(0);transform:translate(0)}body.hide-sidedrawer #content-wrapper,body.hide-sidedrawer #footer{margin-left:0}}.space-top+h1{color:rgba(0,0,0,.54)}p{font-size:.9375rem;line-height:1.5625rem}.space-top{height:1.25rem}.space-bottom{height:2.5rem}#appbar-more-vert,#appbar-sidenav-hide,#appbar-sidenav-show{width:31px;height:31px;line-height:31px;display:inline-block;color:#FFF;cursor:pointer;text-align:center;border-radius:50%}.btn-accent{color:#FFF;background-color:#FF80AB}.btn-accent:hover{color:#FFF;background-color:#ff76a4}#appbar-more-vert:hover,#appbar-sidenav-hide:hover,#appbar-sidenav-show:hover{background-color:rgba(0,0,0,.27);text-decoration:none}#appbar,#footer{background-color:#78909C}.properties-table td{vertical-align:top}#header.active,.header-shadow{-webkit-box-shadow:0 2px 5px rgba(0,0,0,.26);box-shadow:0 2px 5px rgba(0,0,0,.26);-webkit-transition:-webkit-box-shadow .2s;transition:-webkit-box-shadow .2s;transition:box-shadow .2s;transition:box-shadow .2s,-webkit-box-shadow .2s}#appbar{color:#FFF}#appbar .icon-keyboard-arrow-right{font-size:1.25rem;position:relative;top:1px}#appbar-sidenav-hide,#appbar-sidenav-show{position:relative;left:-2px;margin-right:18px}#appbar-sidenav-hide .icon-menu,#appbar-sidenav-show .icon-menu{font-size:24px;position:relative;top:3px}#appbar-social-links{display:inline-block;position:relative;top:2px}#appbar-social-links a{margin-left:6px}#appbar-social-links a:first-child{margin-right:2px}#appbar-social-links a:hover{text-decoration:none}#appbar-social-links i{color:#FFF;font-size:20px}#appbar-more-vert .icon-more-vert{font-size:24px;position:relative;top:3px}.appbar-brand{font-size:1.25rem;color:#fff}.appbar-brand:hover{text-decoration:none;color:#fff}#footer{padding-top:.625rem;padding-bottom:5rem}#footer a{color:#FFF}#sidenav h2{padding-left:1.375rem;margin:0}#sidenav h2 a{color:rgba(0,0,0,.38)}#sidenav h2 a:hover{text-decoration:none}#sidenav ul{list-style:none}#sidenav>ul{padding-left:0;font-size:.8125rem}#sidenav>ul>li:first-child{padding-top:.9375rem}#sidenav>ul a{color:rgba(0,0,0,.87)}#sidenav strong{display:block;padding:.9375rem 1.375rem;cursor:pointer}#sidenav strong:hover{background-color:#E0E0E0}#sidenav strong+ul>li{padding:.375rem 0}#sidenav strong:not(.active)+ul{display:none}#sidenav a.active{color:#C51162}#g-flashes{position:fixed;top:0;right:0;z-index:2}#g-flashes li{font-size:13px;color:#FFF;background-color:#000;padding:2px 6px;margin:2px}.highlight pre{padding:.625rem;font-size:.9em;overflow-x:auto}.varname,p code{background-color:#F5F5F5;color:#F44336;padding:1px}#newsletter-banner{position:fixed;top:50px;right:30px;z-index:2;width:320px;padding:20px 20px 30px;background-color:#FFF}#newsletter-banner .mui-btn{margin-bottom:0}@media (max-width:544px){#newsletter-banner{top:0;right:0;width:100%;-webkit-box-sizing:border-box;box-sizing:border-box}#newsletter-banner form{display:table}#newsletter-banner .mui-form-group{display:table-cell;width:100%;padding-right:20px}#newsletter-banner .mui-btn{margin-bottom:6px}}#newsletter-banner-close{position:absolute;right:10px;top:0;cursor:pointer}#newsletter-banner-social{margin-top:5px;margin-bottom:-10px}#newsletter-banner-social>a{margin-right:10px}#newsletter-banner-social>a:hover{text-decoration:none}#newsletter-banner-social>a:hover>i{color:#757575}#newsletter-banner-social>a>i{font-size:35px;color:#9E9E9E}.highlight .hll{background-color:#ffc}.highlight{background:#f8f8f8}.highlight .c{color:#408080}.highlight .k{color:green;font-weight:700}.highlight .o{color:#666}.highlight .cm{color:#408080}.highlight .cp{color:#BC7A00}.highlight .c1,.highlight .cs{color:#408080;font-style:italic}.highlight .gd{color:#A00000}.highlight .gr{color:red}.highlight .gh{color:navy;font-weight:700}.highlight .gi{color:#00A000}.highlight .go{color:#888}.highlight .gp{color:navy;font-weight:700}.highlight .gs{font-weight:700}.highlight .gu{color:purple;font-weight:700}.highlight .gt{color:#04D}.highlight .kc,.highlight .kd,.highlight .kn{color:green;font-weight:700}.highlight .kp{color:green}.highlight .kr{color:green;font-weight:700}.highlight .kt{color:#B00040}.highlight .m{color:#666}.highlight .s{color:#BA2121}.highlight .na{color:#7D9029}.highlight .nb{color:green}.highlight .nc{color:#00F;font-weight:700}.highlight .no{color:#800}.highlight .nd{color:#A2F}.highlight .ni{color:#999;font-weight:700}.highlight .ne{color:#D2413A;font-weight:700}.highlight .nf{color:#00F}.highlight .nl{color:#A0A000}.highlight .nn{color:#00F;font-weight:700}.highlight .nt{color:green;font-weight:700}.highlight .nv{color:#19177C}.highlight .ow{color:#A2F;font-weight:700}.highlight .w{color:#bbb}.highlight .mf,.highlight .mh,.highlight .mi,.highlight .mo{color:#666}.highlight .s2,.highlight .sb,.highlight .sc{color:#BA2121}.highlight .sd{color:#BA2121}.highlight .se{color:#B62;font-weight:700}.highlight .sh{color:#BA2121}.highlight .si{color:#B68;font-weight:700}.highlight .sx{color:green}.highlight .sr{color:#B68}.highlight .s1{color:#BA2121}.highlight .ss{color:#19177C}.highlight .bp{color:green}.highlight .vc,.highlight .vg,.highlight .vi{color:#19177C}.highlight .il{color:#666}#g-modal-wrapper{min-height:100%;height:auto!important;height:100%;margin-bottom:-50px;padding-bottom:50px}#g-modal-wrapper .panel{margin-bottom:20px}#modal-header-brand{color:#777;margin:20px 0;display:inline-block;font-size:25px;font-weight:700}.color-group,.color-group-main{font-weight:500}#modal-header-brand:hover{text-decoration:none}#modal-header-brand img{height:30px;width:30px;position:relative;top:-3px}#g-modal-footer{height:50px;text-align:center}#g-modal-footer a{color:#333}#f-hero-welcome .mui--text-title a,.f-bg-dark h4,.f-bg-dark p{color:#FFF}#f-hero{background-color:#78909C}#f-hero-welcome .mui--text-title{max-width:500px;margin:0 auto;font-weight:500}#f-mui-logo{display:inline-block;margin:0 0 35px;height:101px;width:101px;border-radius:50%;color:#FFF;background-color:#FF80AB;line-height:101px;font-size:35px;cursor:default;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.f-bg-medium{background-color:#E0E0E0}.f-bg-dark{background-color:#9E9E9E}#f-buttons{margin:35px 0 0}#f-buttons a{width:196px;margin-left:4px;margin-right:4px}#f-download-btn{text-transform:none}.f-panel .highlight{background-color:#fff}.f-panel pre{padding:0;margin:0}#hero-panel{margin-top:20px}#f-welcome .icon-mui-logo{font-size:101px;color:#ff4081;position:relative;top:4px;display:block;margin:25px 0 45px}#f-welcome .mui--type-title{max-width:650px;margin:0 auto}#f-newsletter-form{padding:5px 0 25px}#f-newsletter-form input::-webkit-input-placeholder{color:rgba(0,0,0,.56)}#f-newsletter-form input:-ms-input-placeholder{color:rgba(0,0,0,.56)}#f-newsletter-form input::-ms-input-placeholder{color:rgba(0,0,0,.56)}#f-newsletter-form input::placeholder{color:rgba(0,0,0,.56)}#f-newsletter-form .visible-xs .form-group{margin-bottom:5px}#f-newsletter-form .mui--hidden-xs{display:table;width:100%}#f-newsletter-form .mui--hidden-xs>div{display:table-cell;vertical-align:middle;white-space:nowrap}#f-newsletter-form .mui--hidden-xs>div:nth-child(1){width:145px}#f-newsletter-form .mui--hidden-xs>div:nth-child(2){padding-right:20px}#f-newsletter-form .mui--hidden-xs>div:nth-child(3){width:120px;text-align:right}#f-features-list>li>h3{margin-left:-27px}.sass-variables-table th{background-color:#ddd}.sass-variables-table td{padding-top:5px!important;padding-bottom:5px!important}.sass-variables-table td:nth-child(1){color:#7D9029;white-space:nowrap}.sass-variables-table td:nth-child(2){color:#00F}.sass-variables-table em{color:#000}.sass-variables-table-lastrow td{padding-bottom:15px}.highlight .err{border:none}.color-group{margin-bottom:50px}.color-group-main,.color-group-white>ul:first-child{margin-bottom:5px}.color-group ul{padding-left:0}.color-group li{padding:15px}.color-group-main>div:nth-child(2){margin-top:55px}.color-group-white>ul{background-color:#eee;padding:0}.color-group-white li{border:1px solid #eee;padding:14px 15px}[class*=" icon-"],[class^=icon-]{font-family:icomoon;speak:none;font-style:normal;font-weight:400;font-variant:normal;text-transform:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.icon-email:before{content:"\e600"}.icon-keyboard-arrow-right:before{content:"\e604"}.icon-menu:before{content:"\e603"}.icon-more-vert:before{content:"\e605"}.icon-twitter:before{content:"\f099"}.icon-github:before{content:"\f09b"}
+                    </style>
+                </div>
+                <div style="display:none" >
+                        <div links>
+                            <xlink href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+                            <xscript src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"  type="text/javascript"></xscript>
+                        </div>
+                        <div ws-template="FixedSplitterVer" 
+                            style="display: grid; 
+                                   grid-gap: 0px; 
+                                   box-sizing: border-box; 
+                                   height: 100%;
+                                   width : 100%;
+                                   grid-template-areas: 'one two'; 
+                                   grid-template-rows   :100%; 
+                                   overflow: hidden; 
+                                   grid-template-columns: ${PartSizes}"  >
+                           <div ws-hole="First"  style="grid-area: one; " class="relative" ></div>
+                           <div ws-hole="Second" style="grid-area: two; " class="relative" ></div>
+                        </div>               
+                        <div ws-template="FixedSplitterHor" 
+                       style="display: grid; 
+                              grid-gap: 0px; 
+                              box-sizing: border-box; 
+                              height: 100%;
+                              width : 100%;
+                              grid-template-areas: 'one' 'two'; 
+                              grid-template-columns:100%; 
+                              overflow: hidden; 
+                              grid-template-rows   : ${PartSizes}"  >
+                      <div ws-hole="First"  style="grid-area: one; " class="relative" ></div>
+                      <div ws-hole="Second" style="grid-area: two; " class="relative" ></div>
+                        </div>               
+                        <div ws-template="WCompSplitterHor" 
+                             ws-onafterrender="AfterRender"
+                             style="display: grid;
+                                    grid-gap: 5px; 
+                                    box-sizing: border-box; 
+                                    grid-template-areas: 'one' 'two'; 
+                                    grid-template-columns:100%; 
+                                    overflow: hidden; 
+                                    grid-template-rows   : ${PartSizes}" 
+                             >
+                             <slot></slot>
+                            <slot name="splitter">  <div style="grid-row:2; grid-column:1 / 1 ; cursor: row-resize; z-index: 3; background-color: #eef ; height: ${Gap}; margin-top :-${Gap}" ws-onmousedown="MouseDown" ws-onafterrender="AfterRenderSp" ></div> </slot>
+                            <style>
+                                ::slotted(*) {
+                                    display: grid;
+                                    height : 100%;
+                                    width  : 100%;
+                                    overflow: hidden;
+                                }
+                                ::slotted(*:nth-child(2)) {
+                                    grid-area: two;
+                                }
+                                ::slotted(*[slot="splitter"]) {
+                                    grid-row:2; grid-column:1 / 1 ; 
+                                    cursor: row-resize; 
+                                    z-index: 3; 
+                                    background-color: #eef ; 
+                                    height: ${Gap}; 
+                                    margin-top :-${Gap}
+                                }
+                            </style>
+                        </div>        
+                        <div ws-template="WCompSplitterVer" 
+                             ws-onafterrender="AfterRender"
+                             style="display: grid; 
+                                    grid-gap: 5px; 
+                                    box-sizing: border-box; 
+                                    grid-template-areas: 'one two'; 
+                                    grid-template-rows   :100%; 
+                                    overflow: hidden; 
+                                    grid-template-columns: ${PartSizes}"  >
+                            <slot></slot>
+                            <slot name="splitter"> <div style="grid-column:2; grid-row:1 / 1 ; cursor: col-resize; z-index: 3; background-color: #eef ; width: ${Gap}; margin-left :-${Gap}" ws-onmousedown="MouseDown" ws-onafterrender="AfterRenderSp" ></div> </slot>
+                            <style>
+                                ::slotted(*) {
+                                    display: grid;
+                                    height : 100%;
+                                    width  : 100%;
+                                    overflow: hidden;
+                                }
+                                ::slotted(*:nth-child(2)) {
+                                    grid-area: two;
+                                }
+                                ::slotted(*[slot="splitter"]) {
+                                    grid-column:2; grid-row:1 / 1
+                                    cursor: column-resize; 
+                                    z-index: 3; 
+                                    background-color: #eef ; 
+                                    width: ${Gap}; 
+                                    margin-left:-${Gap}
+                                }
+                            </style>
+                        </div>
+                        <div ws-template="AppFwkClient" >
+                            <ws-FixedSplitterHor>
+                                <PartSizes>55px calc(100% - 55px)</PartSizes>
+                                <First>
+                                    <span style="display: grid;
+                                          grid-template-columns: 30% 20% 20% 10%;
+                                          grid-gap: 25px;
+                                        ">
+                                        <div class="mainTitle">AppFramework</div>
+                                    </span>
+                                </First>
+                                <Second>
+                                        <ws-FixedSplitterVer>
+                                            <PartSizes>calc(100% - 150px) 150px</PartSizes>
+                                            <First>
+                                                <wcomp-splitter vertical value="18" max="100">
+                                                    <div><div ws-hole="PlugIns" style="overflow:auto" >
+                                                        <div ws-template="Tile">
+                                                            <div draggable="true" class="code-editor-list-tile ${Predecessor} ${Selected}" 
+                                                            ws-ondrag="Drag"
+                                                            ws-ondragover="DragOver"
+                                                            ws-ondrop="Drop"
+                                                           >
+                                                           <span class="node ${Parent} ${ErrorMsg}" title="expand" ws-onclick="ToggleCollapse"></span>
+                                                           <div  class="code-editor-list-text" style="text-indent:${Indent}em; white-space: pre" ws-onclick="Select" ws-onafterrender="AfterRender" >${Name}</div>
+                                                           <span class="predecessor" title="toggle predecessor" ws-onclick="TogglePred">X</span>
+                                                       </div>
+                                               
+                                                        </div>
+                                                    </div></div>
+                                                    <wcomp-splitter vertical value="100" min="30" max="100">
+                                                        <ws-FixedSplitterHor>
+                                                            <PartSizes>32px calc(100% - 32px)</PartSizes>
+                                                            <First>
+                                                                <div>
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-addon">name:</span>
+                                                                        <span class="input-group-addon">${PlugInName}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </First>
+                                                            <Second>
+                                                                <div style="overflow:auto">
+                                                                    <div>
+                                                                        <div>Docs:</div>
+                                                                        <div ws-hole="Docs" style="overflow:auto" ></div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div>Vars:</div>
+                                                                        <div ws-hole="Vars" style="overflow:auto" >
+                                                                                <div ws-template="NameValueInput" class="input-group">
+                                                                                <span class="input-group-addon">${Name}:</span>
+                                                                                <textarea class="form-control" id="" placeholder="Value..." ws-var="Value" spellcheck="false"></textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div>Views:</div>
+                                                                        <div ws-hole="Views" style="overflow:auto" >
+                                                                            <div ws-template="NameValue" class="input-group">
+                                                                                <span class="input-group-addon">${Name}:</span>
+                                                                                <span class="input-group-addon">${Value}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div>Queries:</div>
+                                                                        <div ws-hole="Queries" style="overflow:auto" ></div>
+                                                                    </div>
+                                                                </div>
+                                                            </Second>
+                                                        </ws-FixedSplitterHor>
+                                                        <wcomp-tabstrip >
+                                                            <div tabname="Properties">
+                                                                <div>
+                                                                    <table style="border-spacing:0px">
+                                                                        <thead>
+                                                                            <th style="width: 30%  ">Name</th>
+                                                                            <th style="width: 70% ">Value</th>
+                                                                        </thead>
+                                                                        <tbody ws-hole="Properties" ws-children-template="Property">
+                                                                            <tr ws-onclick="Select" style="margin-bottom: 2px" class="level  ">
+                                                                                <td class="level-item">
+                                                                                    <div>
+                                                                                        <input ws-var="Name" type="text" class="form-control" id="" placeholder="Property...">
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="level-item">
+                                                                                    <div>
+                                                                                        <textarea ws-var="Value" class="form-control" id="" placeholder="Value..."></textarea>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="level-item">
+                                                                                    <div style=" cursor: pointer " title="remove">
+                                                                                        <button ws-onclick="Remove" class="delete is-small">x</button>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <button ws-onclick="AddProperty" class="add is-small">add ...</button>
+                                                                </div>
+                                                            </div>
+                                                        </wcomp-tabstrip>
+                                                    </wcomp-splitter>
+                                                </wcomp-splitter>
+                                            </First>
+                                            <Second>
+                                                <div style="
+                                                    overflow: hidden;
+                                                    display: grid;
+                                                    grid-template-columns: 100%;
+                                                    grid-template-rows: repeat(15, calc(100% / 15));
+                                                    bxackground-color: #eee;
+                                                    box-sizing: border-box;
+                                                    padding : 5px;
+                                                    grid-gap: 5px;
+                                                    margin-right: 21px;
+                                               "  class="absolute" ws-hole="Actions" >
+                                                    <button ws-template="Action"         ws-onclick="Click" class="btn" type="button" id=""          >${Name}</button>
+                                                    <button ws-template="ActionDisabled" ws-onclick="Click" class="btn" type="button" id="" disabled >${Name}</button>
+                                                </div>
+                                            </Second>
+                                        </ws-FixedSplitterVer>
+                                </Second>
+                            </ws-FixedSplitterHor>
+                        </div>
+                        <div ws-template="AppFramework" style="height: calc(100vh - 0px); width: calc(100vw - 0px) " class="relative" >
+                            <div ws-hole="MainClient"></div>
+                            <div class="AppFrameworkGo"><button ws-onclick="GoClient">${MainDoc}</button></div>
+                        </div>
+                        <xstyle style="display: none">
+                                .Hidden     { display   : none         }
+                                table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }
+                                td input.form-control { 
+                                    padding    : 0px; 
+                                    font-family: monospace;
+                                    font-size  :   small;
+                                    margin-top :   0px;
+                                    margin-left: -2px;
+                                    width      : 100%
+                                }
+                                td select {
+                                    font-size : smaller;
+                                    max-width : 8ch;
+                                }
+                                xtextarea {
+                                   resize : none;
+                                }
+                                .tab-content {
+                                    overflow: hidden
+                                }
+                                .tab-children {
+                                    position:relative;
+                                }
+                                .tab-children>div>* {
+                                    position:absolute;
+                                    height: 100%;
+                                    width:  100%;
+                                    display: grid;
+                                }
+                                .relative {
+                                    position:relative;
+                                }
+                                .relative>* {
+                                    position:absolute;
+                                    height: 100%;
+                                    width:  100%;
+                                    display: grid;
+                                }
+                                table.table-striped    tbody tr:nth-child(even) { background: #EEE  }
+                                table.table-striped    tbody tr:nth-child(odd ) { background: #FFF  }
+                                table.table-striped    tbody input              { background: transparent; border: none}
+                                table.table-striped    tbody select             { background: transparent; border: none}
+                                table.table-nonstriped tbody tr:nth-child(even) { background: inherit }
+                                table.table-nonstriped tbody tr:nth-child(odd ) { background: inherit }
+                                table.table            tbody tr.hover           { border    : solid thin transparent; } 
+                                table.table            tbody tr.hover:hover     { border    : solid thin blue     ; } 
+                                table.table            tbody th:hover           { background: gray; cursor: pointer }
+                                table.table            tbody tr.hover:hover>td  { border-top: solid thin blue     ; 
+                                                                           border-bottom: solid thin blue     ; } 
+                                table.table            tbody tr.selected { background   : #b9eeff             ; }
+                                table.table            tbody tr.formula.selected { background: #20f7f7             ; }
+                                thead { color: gray }
+                                h3 { 
+                                    color: gray;
+                                    line-height: 1em;
+                                }
+                                button       { border: solid thin transparent ; border-radius: 3px; }
+                                button:hover { border: solid thin blue }
+                                .indenter { position  : absolute; 
+                                            top:0px; bottom:0px; left:0px; 
+                                            background: white; color:white;
+                                            border-right: gray thin dotted;
+                                            }
+                                body {
+                                    color      : #333;
+                                    font-size  : small;
+                                    font-family: monospace;
+                                    line-height: 1.2;
+                                }
+                                .mainTitle {  
+                                    font-size: 48px;
+                                    font-weight: 500;
+                                    color: gray;
+                                    margin-top: -12px;
+                                }
+                                .CodeMirror {
+                                    height: 100%;
+                                }
+                                
+                              
+                                body { margin: 0px }     
+                                     
+                                div textarea {
+                                    font-family     : monospace;
+                                }
+                                .code-editor-list-tile {
+                                    white-space     : nowrap; 
+                                    border-style    : solid none none;
+                                    border-color    : white;
+                                    border-width    : 1px;
+                                    background-color: #D8D8D8;
+                                    display         : flex;
+                                }
+                                .code-editor-list-text{
+                                    padding         : 1px 10px 1px 5px;
+                                    overflow        : hidden;
+                                    text-overflow   : ellipsis;
+                                    white-space     : nowrap;
+                                    flex            : 1;
+                                }
+                                
+                                .code-editor-list-tile span.node.ErrorMsg {
+                                    background-color: red
+                                }
+                                .code-editor-list-tile span.node.expanded::before {
+                                    content: "-"
+                                }
+                                .code-editor-list-tile span.node.collapsed::before {
+                                    content: "+"
+                                }
+                                .code-editor-list-tile.direct-predecessor {
+                                    font-weight     : bold;
+                                    color           : blue;
+                                }
+                                .code-editor-list-tile.indirect-predecessor {
+                                    color           : blue;
+                                }
+                                .code-editor-list-tile.included-predecessor {
+                                    color           : chocolate;
+                                }
+                                .code-editor-list-tile.selected {
+                                    background-color: #77F;
+                                    color           : white;
+                                }
+                                .code-editor-list-tile.codeSnippet {
+                                    text-decoration: underline
+                                }
+                                .code-editor-list-tile:hover {
+                                    background      : lightgray;
+                                }
+                                .code-editor-list-tile.selected:hover {
+                                    background      : blue;
+                                }
+                                .code-editor-list-tile>.predecessor {
+                                    font-weight     : bold;
+                                    border-style    : inset;
+                                    border-width    : 1px;
+                                    text-align      : center;
+                                    color           : transparent;
+                                }
+                                .code-editor-list-tile.direct-predecessor>.predecessor {
+                                    color           : blue;
+                                }
+                                
+                                .CodeMirror { height: 100%; }
+                                
+                                .node {
+                                    background-color: white; 
+                                    width           : 2ch; 
+                                    color           : #A03; 
+                                    font-weight     : bold; 
+                                    text-align      : center;
+                                    font-family     : arial;
+                                }
+                                .Warning { text-decoration: underline lightblue } 
+                                .Error   { text-decoration: underline red       } 
+                                
+                        </xstyle>
+                    <style style="display: none">
+                            .Hidden     { display   : none         }
+                            table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }
+                            td input.form-control { 
+                                padding    : 0px; 
+                                font-family: monospace;
+                                font-size  :   small;
+                                margin-top :   0px;
+                                margin-left: -2px;
+                                width      : 100%
+                            }
+                            td select {
+                                font-size : smaller;
+                                max-width : 8ch;
+                            }
+                            xtextarea {
+                               resize : none;
+                            }
+                            button {
+                                margin-right: 2ch;
+                            }
+                            .tab-content {
+                                overflow: hidden
+                            }
+                            .tab-children {
+                                position:relative;
+                            }
+                            .tab-children>div>* {
+                                position:absolute;
+                                height: 100%;
+                                width:  100%;
+                                display: grid;
+                            }
+                            .relative {
+                                position:relative;
+                            }
+                            .relative>* {
+                                position:absolute;
+                                height: 100%;
+                                width:  100%;
+                                display: grid;
+                            }
+                            table.table-striped    tbody tr:nth-child(even) { background: #EEE  }
+                            table.table-striped    tbody tr:nth-child(odd ) { background: #FFF  }
+                            table.table-striped    tbody input              { background: transparent; border: none}
+                            table.table-striped    tbody select             { background: transparent; border: none}
+                            table.table-nonstriped tbody tr:nth-child(even) { background: inherit }
+                            table.table-nonstriped tbody tr:nth-child(odd ) { background: inherit }
+                            table.table            tbody tr.hover           { border    : solid thin transparent; } 
+                            table.table            tbody tr.hover:hover     { border    : solid thin blue     ; } 
+                            table.table            tbody th:hover           { background: gray; cursor: pointer }
+                            table.table            tbody tr.hover:hover>td  { border-top: solid thin blue     ; 
+                                                                       border-bottom: solid thin blue     ; } 
+                            table.table            tbody tr.selected { background   : #b9eeff             ; }
+                            table.table            tbody tr.formula.selected { background: #20f7f7             ; }
+                            thead { color: gray }
+                            h3 { 
+                                color: gray;
+                                line-height: 1em;
+                            }
+                            button       { border: solid thin transparent ; border-radius: 3px; }
+                            button:hover { border: solid thin blue }
+                            .indenter { position  : absolute; 
+                                        top:0px; bottom:0px; left:0px; 
+                                        background: white; color:white;
+                                        border-right: gray thin dotted;
+                                        }
+                            xbody {
+                                color      : #333;
+                                font-size  : small;
+                                font-family: monospace;
+                                line-height: 1.2;
+                            }
+                            .mainTitle {  
+                                font-size: 48px;
+                                font-weight: 500;
+                                color: gray;
+                                margin-top: -12px;
+                            }
+                            .CodeMirror {
+                                height: 100%;
+                            }
+                            
+                          
+                            body { margin: 0px }     
+                                 
+                            div textarea {
+                                font-family     : monospace;
+                            }
+                            .code-editor-list-tile {
+                                white-space     : nowrap; 
+                                border-style    : solid none none;
+                                border-color    : white;
+                                border-width    : 1px;
+                                background-color: #D8D8D8;
+                                display         : flex;
+                            }
+                            .code-editor-list-text{
+                                padding         : 1px 10px 1px 5px;
+                                overflow        : hidden;
+                                text-overflow   : ellipsis;
+                                white-space     : nowrap;
+                                flex            : 1;
+                            }
+                            
+                            .code-editor-list-tile span.node.ErrorMsg {
+                                background-color: red
+                            }
+                            .code-editor-list-tile span.node.expanded::before {
+                                content: "-"
+                            }
+                            .code-editor-list-tile span.node.collapsed::before {
+                                content: "+"
+                            }
+                            .code-editor-list-tile.direct-predecessor {
+                                font-weight     : bold;
+                                color           : blue;
+                            }
+                            .code-editor-list-tile.indirect-predecessor {
+                                color           : blue;
+                            }
+                            .code-editor-list-tile.included-predecessor {
+                                color           : chocolate;
+                            }
+                            .code-editor-list-tile.selected {
+                                background-color: #77F;
+                                color           : white;
+                            }
+                            .code-editor-list-tile.codeSnippet {
+                                text-decoration: underline
+                            }
+                            .code-editor-list-tile:hover {
+                                background      : lightgray;
+                            }
+                            .code-editor-list-tile.selected:hover {
+                                background      : blue;
+                            }
+                            .code-editor-list-tile>.predecessor {
+                                font-weight     : bold;
+                                border-style    : inset;
+                                border-width    : 1px;
+                                text-align      : center;
+                                color           : transparent;
+                            }
+                            .code-editor-list-tile.direct-predecessor>.predecessor {
+                                color           : blue;
+                            }
+                            
+                            .CodeMirror { height: 100%; }
+                            
+                            .node {
+                                background-color: white; 
+                                width           : 2ch; 
+                                color           : #A03; 
+                                font-weight     : bold; 
+                                text-align      : center;
+                                font-family     : arial;
+                            }
+                            .Warning { text-decoration: underline lightblue } 
+                            .Error   { text-decoration: underline red       } 
+                            .AppFrameworkGo {
+                                max-width: 2px;
+                                max-height: 2px;
+                                z-index: 400;
+                                overflow: hidden;
+                            }
+                            
+                        </style>
+                </div>
+            
+                </div>
+              </body>
+              <script src="/blob/Scripts/FileSaver.js"></script>
+              <script src="/blob/Scripts/ProzperServer.js"></script>
+              <script src="/blob/Scripts/html2canvas.min.js"></script>
+            
+            </html>

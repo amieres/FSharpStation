@@ -43,6 +43,11 @@ group Prozper
     nuget AuthorizeNet
     nuget Microsoft.AspNetCore.Mvc.Core
 
+group Prozper2
+    framework: netstandard2, net461
+    source https://www.nuget.org/api/v2
+    nuget Microsoft.NET.Sdk.Functions
+
 group Testing
     framework: netstandard2, net461
 //    storage: symlink

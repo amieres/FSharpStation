@@ -1,5 +1,6 @@
+#nowarn "3242"
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1559463961192 -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1559673172621 -d:TEE -d:WEBSHARPER
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\FSharpStation\src"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
@@ -41,22 +42,24 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin\lib\net461\HttpMultipartParser.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.StaticFiles\lib\net451\Microsoft.Owin.StaticFiles.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
+//#nowarn "3242"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1559463961192
+//#define FSharpStation1559673172621
 #if INTERACTIVE
 module FsRoot   =
 #else
 namespace FsRoot
 #endif
 
+    #if !NETSTANDARD20
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
-    //#define WEBSHARPER
+    
     #if WEBSHARPER
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
@@ -77,6 +80,7 @@ namespace FsRoot
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
     #endif
+    #endif
     #if WEBSHARPER
     //#nowarn "3242" 
     
@@ -90,18 +94,18 @@ namespace FsRoot
     /// dummy WebSharper definition in order to avoid having to use #if WEBSHARPER all the time
     module WebSharper =
         type RpcAttribute() =
-            inherit SealedAttribute()
+            inherit System.Attribute()
             let a = 1
         type JavaScriptAttribute(translate:bool) =
-            inherit SealedAttribute()
+            inherit System.Attribute()
             let a = 1
             new() = JavaScriptAttribute true
         type InlineAttribute(code:string) =
-            inherit SealedAttribute()
+            inherit System.Attribute()
             let a = 1
             new() = InlineAttribute ""
         type DirectAttribute(code:string) =
-            inherit SealedAttribute()
+            inherit System.Attribute()
             let a = 1
     
     open WebSharper
@@ -133,6 +137,13 @@ namespace FsRoot
                 match box v with
                 | :? string as s -> printfn "%s" s
                 | __             -> printfn "%A" v
+            
+            //#define TEE
+            
+            let [< Inline "new Date(0).getTime()" >] Utc1970_01_01                 = System.DateTime(1970,1,1,0,0,0,System.DateTimeKind.Utc)
+            let [< Inline "$d"                    >] date2Long (d:System.DateTime) = d.Subtract(Utc1970_01_01).Ticks / 10000L
+            let [< Inline "$l"                    >] long2Date (l:int64          ) = Utc1970_01_01.Add(System.TimeSpan(l * 10000L) )
+            
             
             /// Extensible type for error messages, warnings and exceptions
             type ResultMessage<'M> =
@@ -1603,7 +1614,7 @@ namespace FsRoot
                 snpParentIdO    : SnippetId option
                 snpPredIds      : SnippetId Set
                 snpProperties   : (string* string) []
-                snpGeneration   : int
+                snpModified     : System.DateTime
             }
             
             type SnippetReference =
@@ -1613,7 +1624,7 @@ namespace FsRoot
             type Reduced = ((SnippetId * string * int * int) [] * string [] * FsCode.PreproDirective [] ) option
             
             type SnippetCollection = {
-                generation       : int
+                generation       : System.DateTime
                 ordered          : Snippet seq
                 fetcher          : SnippetId -> Snippet Option
                 predecesorsCache : unit -> ((SnippetId -> SnippetId list option) * (SnippetId -> (SnippetId -> SnippetId list) -> SnippetId list))
@@ -1626,10 +1637,11 @@ namespace FsRoot
                 open FusionM
                 open Operators
             
-                let getNextGeneration, setGeneration = 
-                    let mutable generation  = 1
-                    (fun () -> generation <- generation + 1 ; generation)
-                  , (fun n  -> generation <- n                          )  
+                let getNextModified() = DateTime.Now
+                //let getNextGeneration, setGeneration = 
+                //    let mutable generation  = 1
+                //    (fun () -> generation <- generation + 1 ; generation)
+                //  , (fun n  -> generation <- n                          )  
                 let New name content parentO = 
                     {
                         snpId           = SnippetId <| System.Guid.NewGuid()   
@@ -1638,7 +1650,7 @@ namespace FsRoot
                         snpParentIdO    = parentO
                         snpPredIds      = Set.empty
                         snpProperties   = Array.empty
-                        snpGeneration   = getNextGeneration()
+                        snpModified     = getNextModified()
                     }
                 let defaultSnippet              = {
                     snpId           = SnippetId <| System.Guid.Empty
@@ -1647,7 +1659,7 @@ namespace FsRoot
                     snpParentIdO    = None
                     snpPredIds      = Set.empty
                     snpProperties   = Array.empty
-                    snpGeneration   = 0
+                    snpModified     = Utc1970_01_01
                 }    
                 let snippetName name (content: string) =
                     if name <> "" then name else 
@@ -1671,8 +1683,8 @@ namespace FsRoot
                 let snippetORm        sid = readerFun (fun { fetcher    = ftch } -> ftch sid                                               )
                 let parentORm         snp = readerFun (fun { fetcher    = ftch } -> snp.snpParentIdO |> Option.bind ftch                   )
                 let predecessorsRm    snp = readerFun (fun { fetcher    = ftch } -> snp.snpPredIds   |> Seq.choose  ftch                   )
-                let maxGenerationRm   ()  = readerFun (fun { ordered    = snps } -> snps |> Seq.map (fun s -> s.snpGeneration) |> Seq.max  )
-                let modifiedRm        snp = readerFun (fun { generation = gen  } -> snp.snpGeneration > gen                                )
+                let maxGenerationRm   ()  = readerFun (fun { ordered    = snps } -> snps |> Seq.map (fun s -> s.snpModified  ) |> Seq.max  )
+                let modifiedRm        snp = readerFun (fun { generation = gen  } -> snp.snpModified   > gen                                )
                 let childrenRm        sid = readerFun (fun { ordered    = snps } -> snps |> Seq.filter(fun s -> s.snpParentIdO = Some sid) )
                 let orderedRm         ()  = readerFun (fun { ordered    = snps } -> snps                                                   )
                 let prepareCodeRm     snp = readerFun (fun { prepCode   = prep } -> prep snp                                               )
@@ -1730,7 +1742,7 @@ namespace FsRoot
                 let uniquePredsRm     snp = predsLRmMemo() snp.snpId
                 let predsGenerationRm snp = fusion {
                                                 let! preds = uniquePredsRm snp >>= traverseSeq snippetRm
-                                                return preds (* |> Seq.append [ snp ] *) |> Seq.map (fun snp -> snp.snpGeneration) |> Seq.max 
+                                                return preds (* |> Seq.append [ snp ] *) |> Seq.map (fun snp -> snp.snpModified  ) |> Seq.max 
                                             }
                 let rec modifiedRecRm snp = fusion {
                     let! modified         = modifiedRm     snp
@@ -2644,6 +2656,7 @@ namespace FsRoot
                 
             
             module Serializer =
+                open System
                 
                 type SerS<'T> = ('T  -> string)        //      Serialization function
                 type SerD<'T> = (obj -> 'T    )        //    deSerialization function
@@ -2660,10 +2673,11 @@ namespace FsRoot
                 let [< Inline >] inline sprintQ v = sprintf "\"%A\""   v
                 let              inline sprintA v = String.concat ", " v |> sprintf "[%s]"
                 
-                let serFloat  : Ser<float > = sprintU        , (unbox >> ifUndef 0.0   )
-                let serInt    : Ser<int   > = sprintU        , (unbox >> ifUndef 0     )
-                let serBool   : Ser<bool  > = sprintU        , (unbox >> ifUndef false )
-                let serString : Ser<string> = Json.Serialize , (unbox >> ifUndef ""    )
+                let serFloat  : Ser<float   > = sprintU               , (unbox >> ifUndef 0.0             )
+                let serInt    : Ser<int     > = sprintU               , (unbox >> ifUndef 0               )
+                let serBool   : Ser<bool    > = sprintU               , (unbox >> ifUndef false           )
+                let serString : Ser<string  > = Json.Serialize        , (unbox >> ifUndef ""              )
+                let serDate   : Ser<DateTime> = (date2Long >> sprintU), (unbox >> ifUndef 0L >> long2Date )
             
                 let [< Inline >] inline serId  (get: 'a->System.Guid) (set:System.Guid->'a) (print: 'a->string) : Ser<'a> =
                     let s           = System.Guid.Empty |> set |> print |> fun (s:string) -> s.Split ' ' |> Array.head
@@ -2672,11 +2686,14 @@ namespace FsRoot
                     let deserialize = fun (x: obj) -> x?(s) |> deserGuid |> set
                     serialize, deserialize
             
-                let serField (name:string) (get:'D->'e) (set:'e->'D->'D) (serFuncs:('e->string) * (obj->'e)) : string * SerS<'D> * ('D -> SerD<'D>) = 
-                    serFuncs |> fun (ser, deser) -> name, get >> ser, (fun rc o -> set (deser o) rc) 
+                let serField (name:string) (get:'D->'e) (set:'e->'D->'D) (serFuncs:('e->string) * (obj->'e)) : string * _ * ('D -> SerD<'D>) = 
+                    serFuncs |> fun (ser, deser) -> name, get >> ser >> Some, (fun rc o -> set (deser o) rc) 
                     
-                let [< Inline >] serRecord init (fields: #seq<(string * SerS<'D> * ('D -> SerD<'D>))>) : Ser<'D> =
-                    let serialize   dim = fields |> Seq.map  (fun     (n,  ser, _deser) -> sprintf "%A: %s" n (ser dim)) |> String.concat ", " |> sprintf "{%s}"
+                let serFieldO (name:string) (get:'D->'e option) (set:'e->'D->'D) (serFuncs:('e->string) * (obj->'e)) : string * _ * _ = 
+                    serFuncs |> fun (ser, deser) -> name, get >> Option.map ser, (fun rc o -> if isUndefined o then rc else set (deser o) rc) 
+                    
+                let [< Inline >] serRecord init (fields: #seq<(string * ('D -> string option) * ('D -> SerD<'D>))>) : Ser<'D> =
+                    let serialize   dim = fields |> Seq.choose(fun (n, ser, _deser) -> ser dim |> Option.map (sprintf "%A: %s" n)) |> String.concat ", " |> sprintf "{%s}"
                     let deserialize o   = if isUndefined o then init else fields |> Seq.fold (fun dim (n, _ser,  deser) ->  deser dim (o?(n)) )   init
                     serialize, deserialize
                 
@@ -3564,7 +3581,7 @@ namespace FsRoot
                 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
                 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
                 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
-                
+                //#define WEBSHARPER
                 open WebSharper
                 
                 let MessageBrokerId  = "<MessageBroker>"
@@ -3955,7 +3972,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/a17730c1-09a7-48f8-bba8-a24ba4c61dd5"
+                    "http://localhost:9005/#/Snippet/6ee01ba8-84e7-4280-946c-63dbe3cb9aec"
                 #endif
                 
                 let extractEndPoint() = 
@@ -4148,7 +4165,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1559463961192"
+                let mutable fsharpStationAddress = Address "FSharpStation1559673172621"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -4616,7 +4633,7 @@ namespace FsRoot
             
             let private snippets               = ListModel<SnippetId, Snippet> (fun s -> s.snpId)
             let private hierarchy              = Var.Create [||]
-            let private generation             = Var.Create 5
+            let private generation             = Var.Create Utc1970_01_01
             let         currentSnippetIdOV     = Var.Create (None:SnippetId option)
             let private codeSnippetIdOV        = Var.Create (None:SnippetId option)
             let private collapsedV             = Var.Create Set.empty
@@ -4649,7 +4666,7 @@ namespace FsRoot
             
             let setCurrentSnippetIdO snpIdO    = snpIdO |> Option.iter expandParents 
                                                  currentSnippetIdOV.Set snpIdO
-            let setSnippet                 snp = if snp.snpId.Id <> System.Guid.Empty then snippets.Add { snp with snpGeneration = (runReader (fun e -> print e; 999) <| Snippet.maxGenerationRm()) + 1 }
+            let setSnippet                 snp = if snp.snpId.Id <> System.Guid.Empty then snippets.Add { snp with snpModified = System.DateTime.Now }
             let getSnippetsGen              () = snippets.Value, generation.Value, collapsedV.Value
         
             let getParentIdONotMemo      snpId = snippets.TryFindByKey snpId |> Option.bind(fun s -> s.snpParentIdO)
@@ -4711,8 +4728,8 @@ namespace FsRoot
                                                  }) 
             let FsCodeW                        = codeAndStartsW |> View.Map fst
             let codeStartsW                    = codeAndStartsW |> View.Map snd
-            let hasChangedW                snp = V (generation.V < snp.snpGeneration )
-            let SaveAsClassW                   = View.Map2 (fun snps gen -> if Seq.exists (fun snp -> snp.snpGeneration > gen) snps then "btn-primary" else "") 
+            let hasChangedW                snp = V (generation.V < snp.snpModified )
+            let SaveAsClassW                   = View.Map2 (fun snps gen -> if Seq.exists (fun snp -> snp.snpModified > gen) snps then "btn-primary" else "") 
                                                     snippets  .View 
                                                     generation.View
             let currentPathW                   = currentSnippetW
@@ -5540,29 +5557,31 @@ namespace FsRoot
         
             let serSnippet   : Ser<Snippet  > = 
                 [|
-                    serSnippetId                                         |> serField "snpId"         (fun s -> s.snpId        ) (fun v s -> { s with snpId         = v } )
-                    serString                                            |> serField "snpName"       (fun s -> s.snpName      ) (fun v s -> { s with snpName       = v } )
-                    serString                                            |> serField "snpContent"    (fun s -> s.snpContent   ) (fun v s -> { s with snpContent    = v } )
-                    serSnippetId                     |> serOpt           |> serField "snpParentIdO"  (fun s -> s.snpParentIdO ) (fun v s -> { s with snpParentIdO  = v } )
-                    serSnippetId                     |> serSet           |> serField "snpPredIds"    (fun s -> s.snpPredIds   ) (fun v s -> { s with snpPredIds    = v } )
-                    serString              |> serDup serString |> serArr |> serField "snpProperties" (fun s -> s.snpProperties) (fun v s -> { s with snpProperties = v } )
-                    serInt                                               |> serField "snpGeneration" (fun s -> s.snpGeneration) (fun v s -> { s with snpGeneration = v } )
+                    serSnippetId                                         |> serField  "snpId"         (fun s ->      s.snpId        ) (fun v s -> { s with snpId         =                                v  } )
+                    serString                                            |> serField  "snpName"       (fun s ->      s.snpName      ) (fun v s -> { s with snpName       =                                v  } )
+                    serString                                            |> serField  "snpContent"    (fun s ->      s.snpContent   ) (fun v s -> { s with snpContent    =                                v  } )
+                    serSnippetId                     |> serOpt           |> serField  "snpParentIdO"  (fun s ->      s.snpParentIdO ) (fun v s -> { s with snpParentIdO  =                                v  } )
+                    serSnippetId                     |> serSet           |> serField  "snpPredIds"    (fun s ->      s.snpPredIds   ) (fun v s -> { s with snpPredIds    =                                v  } )
+                    serString              |> serDup serString |> serArr |> serField  "snpProperties" (fun s ->      s.snpProperties) (fun v s -> { s with snpProperties =                                v  } )
+                    serInt                                               |> serFieldO "snpGeneration" (fun s -> None                ) (fun v s -> { s with snpModified   = Utc1970_01_01.AddMinutes(float v) } )
+                    serDate                                              |> serFieldO "snpModified"   (fun s -> Some s.snpModified  ) (fun v s -> { s with snpModified   =                                v  } )
                 |] |> serRecord (Snippet.New "" "" None)
             
             type Model = {
                 snippets   : Snippet []
-                generation : int
+                modified   : System.DateTime
                 collapsed  : SnippetId Set
             }
         
-            let getModel(snippets, gen, coll) =  { snippets = snippets |> Seq.toArray ;  generation = gen ; collapsed = coll}
+            let getModel(snippets, gen, coll) =  { snippets = snippets |> Seq.toArray ;  modified = gen ; collapsed = coll}
         
             let serModel : Ser<Model> =
                 [|
-                    serSnippet                       |> serArr           |> serField "snippets"   (fun m -> m.snippets  ) (fun v m -> { m with snippets   = v } )
-                    serInt                                               |> serField "generation" (fun m -> m.generation) (fun v m -> { m with generation = v } )
-                    serSnippetId                     |> serSet           |> serField "collapsed"  (fun m -> m.collapsed ) (fun v m -> { m with collapsed  = v } )
-                |] |> serRecord { snippets = [||] ; generation = 0 ; collapsed = Set.empty}
+                    serSnippet                       |> serArr           |> serField  "snippets"   (fun m ->      m.snippets  ) (fun v m -> { m with snippets  =                                v  } )
+                    serInt                                               |> serFieldO "generation" (fun m -> None             ) (fun v m -> { m with modified  = Utc1970_01_01.AddMinutes(float v) } )
+                    serDate                                              |> serFieldO "modified"   (fun m -> Some m.modified  ) (fun v m -> { m with modified  =                                v  } )
+                    serSnippetId                     |> serSet           |> serField  "collapsed"  (fun m ->      m.collapsed ) (fun v m -> { m with collapsed =                                v  } )
+                |] |> serRecord { snippets = [||] ; modified = Utc1970_01_01 ; collapsed = Set.empty}
                 
         
         module LoadSave =

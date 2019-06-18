@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,BuilderP,FusionM,Operators$1,Builder$1,Builder$2,FusionAsyncM,Operators$2,Builder$3,Builder$4,ResultM,Builder$5,Operators$3,ResultMAutoOpen,AsyncResult,AsyncResultBuilder,AsyncResultBuilderP,Extensions,AsyncResultM,AsyncResultMBuilder,Operators$4,AsyncResultMAutoOpen,String,ParseO,MailboxProcessorExt,Mailbox,StateFull,ResourceAgentState,ResourceAgent,AgentReaderM,CommArgRoot,CommArg,CommArgCollection,TypedCommArg,CommArgModule,FsCodeModule,PreproDirective,PrepState,SnippetId,Snippet,SnippetCollection,SnippetModule,Hole,TreeReader,Node,LibraryJS,Promise,PromiseM,View,Pojo,GenEditor,Position,AnnotationType,Annotation,Completion,GenEditorHook,GenEditor$1,Serializer,REGEX,Hoverable,Hoverable$1,ResizeObserver,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,WcSplitterT,Monaco,Position$1,Range,Uri,Location,FindMatch,WordAtPosition,Model,MarkDownString,MarkerData,CompletionItem,Hover,Editor,MonacoConfig,MonacoGenAdapter,MonacoRT,CompletionItemProvider,HoverProvider,DefinitionProvider,Library2,FsiAgent,WebSockets,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ReplyHandler,Handler,WSMessagingClient,FSMessage,FsAutoComplete,CommTypes,ResponseError,Location$1,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,MsgTypes,ParseRequest,DeclarationsRequest,CompletionRequest,PositionRequest,ProjectRequest,LintRequest,HelptextRequest,WorkspacePeekRequest,Calls,FSharpStation,FStation,Snippets,DragDrop,DragInfo,Templating,RenderSnippets,RenderProperties,Monaco$1,HoverProvider$1,CompletionItemProvider$1,DefinitionProvider$1,MonacoOptions,ITextModelService,JumpTo,CustomAction,Serializer$1,Model$1,LoadSave,Importer,MainProgram,EndPoint,Messaging,Server,SC$1,FSharpStation_JsonEncoder,FSharpStation_JsonDecoder,FSharpStation_GeneratedPrintf,FSharpStation_Router,FSharpStation_Templates,GeneratedPrintf,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$5,Unchecked,Slice,Control,MailboxProcessor,System,Guid,Collections,FSharpSet,Option$1,Char,CancellationTokenSource,console,UI,View$1,Var$1,FSharpMap,BalancedTree,DomUtility,Doc,AttrModule,AttrProxy,Node$1,Client,Templates,Reflect,Object,Map,JSON,TimeoutException,ClientSideJson,Provider,Owin,WebSocket,Client$1,WithEncoding,Endpoint,location,Remoting,AjaxRemotingProvider,FromView,Templating$1,Runtime$1,Server$1,ProviderBuilder,Handler$1,TemplateInstance,JavaScript,Promise$1,AppFramework,Date,PlugIn,Lazy,LayoutEngineModule,DateUtil,Numeric,ListModel,Dictionary,Router,Sitelets,RouterOperators;
+ var Global,FsRoot,Library,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,BuilderP,FusionM,Operators$1,Builder$1,Builder$2,FusionAsyncM,Operators$2,Builder$3,Builder$4,ResultM,Builder$5,Operators$3,ResultMAutoOpen,AsyncResult,AsyncResultBuilder,AsyncResultBuilderP,Extensions,AsyncResultM,AsyncResultMBuilder,Operators$4,AsyncResultMAutoOpen,String,ParseO,MailboxProcessorExt,Mailbox,StateFull,ResourceAgentState,ResourceAgent,AgentReaderM,CommArgRoot,CommArg,CommArgCollection,TypedCommArg,CommArgModule,FsCodeModule,PreproDirective,PrepState,SnippetId,Snippet,SnippetCollection,SnippetModule,Hole,TreeReader,Node,LibraryJS,Promise,PromiseM,View,Pojo,GenEditor,Position,AnnotationType,Annotation,Completion,GenEditorHook,GenEditor$1,Serializer,REGEX,Hoverable,Hoverable$1,ResizeObserver,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,WcSplitterT,Monaco,Position$1,Range,Uri,Location,FindMatch,WordAtPosition,Model,MarkDownString,MarkerData,CompletionItem,Hover,Editor,MonacoConfig,MonacoGenAdapter,MonacoRT,CompletionItemProvider,HoverProvider,DefinitionProvider,Library2,FsiAgent,WebSockets,Address,BrokerRequest,MessageType,BrokerMessage,Replier,MessageGeneric,ClientTypeFSharp,ClientTypeFSStation,ClientTypeJScript,ReplyHandler,Handler,WSMessagingClient,FSMessage,FsAutoComplete,CommTypes,ResponseError,Location$1,CompletionResponse,OverloadDescription,OverloadParameter,Overload,Parameter,SignatureData,MethodResponse,SymbolUseRange,SymbolUseResponse,HelpTextResponse,CompilerLocationResponse,FSharpErrorInfo,ErrorResponse,Colorization,Declaration,DeclarationResponse,OpenNamespace,QualifySymbol,ResolveNamespaceResponse,UnionCaseResponse,MsgTypes,ParseRequest,DeclarationsRequest,CompletionRequest,PositionRequest,ProjectRequest,LintRequest,HelptextRequest,WorkspacePeekRequest,Calls,FSharpStation,FStation,Snippets,DragDrop,DragInfo,Templating,RenderSnippets,RenderProperties,Monaco$1,HoverProvider$1,CompletionItemProvider$1,DefinitionProvider$1,MonacoOptions,ITextModelService,JumpTo,CustomAction,Serializer$1,Model$1,LoadSave,Importer,MainProgram,EndPoint,Messaging,Server,SC$1,FSharpStation_JsonEncoder,FSharpStation_JsonDecoder,FSharpStation_GeneratedPrintf,FSharpStation_Router,FSharpStation_Templates,GeneratedPrintf,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$5,Unchecked,Slice,Control,MailboxProcessor,System,Guid,Collections,FSharpSet,Option$1,Date,Char,CancellationTokenSource,console,UI,View$1,Var$1,FSharpMap,BalancedTree,DomUtility,Doc,AttrModule,AttrProxy,Node$1,Client,Templates,Reflect,Object,Map,JSON,TimeoutException,ClientSideJson,Provider,Owin,WebSocket,Client$1,WithEncoding,Endpoint,location,Remoting,AjaxRemotingProvider,FromView,Templating$1,Runtime$1,Server$1,ProviderBuilder,Handler$1,TemplateInstance,JavaScript,Promise$1,AppFramework,PlugIn,Lazy,LayoutEngineModule,DateUtil,Numeric,ListModel,Dictionary,Router,Sitelets,RouterOperators;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -202,6 +202,7 @@
  Collections=WebSharper&&WebSharper.Collections;
  FSharpSet=Collections&&Collections.FSharpSet;
  Option$1=WebSharper&&WebSharper.Option;
+ Date=Global.Date;
  Char=WebSharper&&WebSharper.Char;
  CancellationTokenSource=WebSharper&&WebSharper.CancellationTokenSource;
  console=Global.console;
@@ -242,7 +243,6 @@
  JavaScript=WebSharper&&WebSharper.JavaScript;
  Promise$1=JavaScript&&JavaScript.Promise;
  AppFramework=LibraryJS&&LibraryJS.AppFramework;
- Date=Global.Date;
  PlugIn=AppFramework&&AppFramework.PlugIn;
  Lazy=WebSharper&&WebSharper.Lazy;
  LayoutEngineModule=LibraryJS&&LibraryJS.LayoutEngineModule;
@@ -5165,7 +5165,7 @@
    $0:"00000000-0000-0000-0000-000000000000"
   });
  };
- Snippet.New=function(snpId,snpName,snpContent,snpParentIdO,snpPredIds,snpProperties,snpGeneration)
+ Snippet.New=function(snpId,snpName,snpContent,snpParentIdO,snpPredIds,snpProperties,snpModified)
  {
   return{
    snpId:snpId,
@@ -5174,7 +5174,7 @@
    snpParentIdO:snpParentIdO,
    snpPredIds:snpPredIds,
    snpProperties:snpProperties,
-   snpGeneration:snpGeneration
+   snpModified:snpModified
   };
  };
  SnippetCollection.New=function(generation,ordered,fetcher,predecesorsCache,reducedCache,prepCode)
@@ -5572,7 +5572,7 @@
    {
     return b.Return(Seq$1.max(Seq$1.map(function(snp$1)
     {
-     return snp$1.snpGeneration;
+     return snp$1.snpModified;
     },a)));
    });
   }));
@@ -5753,7 +5753,7 @@
  {
   return FusionM.readerFun(function(a)
   {
-   return snp.snpGeneration>a.generation;
+   return snp.snpModified>a.generation;
   });
  };
  SnippetModule.maxGenerationRm=function()
@@ -5762,7 +5762,7 @@
   {
    return Seq$1.max(Seq$1.map(function(s)
    {
-    return s.snpGeneration;
+    return s.snpModified;
    },a.ordered));
   });
  };
@@ -5844,17 +5844,11 @@
   return Snippet.New(new SnippetId({
    $:0,
    $0:Guid.NewGuid()
-  }),name,content,parentO,new FSharpSet.New$1(null),[],(SnippetModule.getNextGeneration())());
+  }),name,content,parentO,new FSharpSet.New$1(null),[],SnippetModule.getNextModified());
  };
- SnippetModule.getNextGeneration=function()
+ SnippetModule.getNextModified=function()
  {
-  SC$1.$cctor();
-  return SC$1.getNextGeneration;
- };
- SnippetModule.setGeneration=function()
- {
-  SC$1.$cctor();
-  return SC$1.setGeneration;
+  return Date.now();
  };
  Hole.Hole={
   $:0
@@ -6794,18 +6788,54 @@
    return g(Global.id(x));
   })];
  };
- Serializer.serField=function(name,get,set,s,s$1)
+ Serializer.serFieldO=function(name,get,set,s,s$1)
  {
+  function g(o)
+  {
+   return o==null?null:{
+    $:1,
+    $0:s(o.$0)
+   };
+  }
   return[name,function(x)
   {
-   return s(get(x));
+   return g(get(x));
   },function(rc)
+  {
+   return function(o)
+   {
+    return!o?rc:set(s$1(o),rc);
+   };
+  }];
+ };
+ Serializer.serField=function(name,get,set,s,s$1)
+ {
+  var f;
+  function g(a)
+  {
+   return{
+    $:1,
+    $0:a
+   };
+  }
+  return[name,(f=function(x)
+  {
+   return s(get(x));
+  },function(x)
+  {
+   return g(f(x));
+  }),function(rc)
   {
    return function(o)
    {
     return set(s$1(o),rc);
    };
   }];
+ };
+ Serializer.serDate=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serDate;
  };
  Serializer.serString=function()
  {
@@ -6917,15 +6947,15 @@
  {
   return Hoverable$1.New$3().Content(Doc.Element("div",[AttrProxy.Create("style","flex-flow: column;")],[Doc.TextNode("Hover over me!")]));
  };
- Hoverable$1.Content$2740$81=Runtime.Curried3(function(e,$1,$2)
+ Hoverable$1.Content$2757$81=Runtime.Curried3(function(e,$1,$2)
  {
   return DomUtility.RemoveClass(e.elt,"hovering");
  });
- Hoverable$1.get_Attributes$2736$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$2753$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(false);
  });
- Hoverable$1.get_Attributes$2735$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$2752$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(true);
  });
@@ -7067,7 +7097,7 @@
   SC$1.$cctor();
   return SC$1.init;
  };
- WcTabStrip.tabStrip$2882$64=function(i,selected)
+ WcTabStrip.tabStrip$2899$64=function(i,selected)
  {
   return function()
   {
@@ -7471,7 +7501,7 @@
  {
   return MonacoConfig.New(v,monc.onChange,monc.onRender,monc.editorO,monc.disabled,monc.options,monc.overrides);
  };
- Monaco.render$3240$48=function(monc)
+ Monaco.render$3257$48=function(monc)
  {
   return function(elchild)
   {
@@ -7730,7 +7760,7 @@
   });
   return o==null?"":o.$0;
  };
- MonacoGenAdapter.generateDoc$3382$48=function(monRT,onRender,genE)
+ MonacoGenAdapter.generateDoc$3399$48=function(monRT,onRender,genE)
  {
   return function(elchild)
   {
@@ -9115,7 +9145,7 @@
     Snippets.setSnippet(Snippet.New(snp.snpId,snp.snpName,snp.snpContent,snp.snpParentIdO,snp.snpPredIds,Arrays.ofSeq(Seq$1.append(Seq$1.filter(function(x)
     {
      return g(f(x));
-    },snp.snpProperties),List.ofArray([[prop,v]]))),snp.snpGeneration));
+    },snp.snpProperties),List.ofArray([[prop,v]]))),snp.snpModified));
    }
  };
  Snippets.toggleCollapse=function(snpId)
@@ -9284,7 +9314,7 @@
    return $1.snpPredIds;
   },function($1,$2)
   {
-   return Snippet.New($1.snpId,$1.snpName,$1.snpContent,$1.snpParentIdO,$2,$1.snpProperties,$1.snpGeneration);
+   return Snippet.New($1.snpId,$1.snpName,$1.snpContent,$1.snpParentIdO,$2,$1.snpProperties,$1.snpModified);
   });
   preds.Set((x=preds.Get(),((preds.Get().Contains(predId)?function(v)
   {
@@ -9394,7 +9424,7 @@
     return Snippet.New(s.snpId,s.snpName,s.snpContent,{
      $:1,
      $0:snpId
-    },s.snpPredIds,s.snpProperties,s.snpGeneration);
+    },s.snpPredIds,s.snpProperties,s.snpModified);
    },Seq$1.filter(function(s)
    {
     return!Unchecked.Equals(s.snpParentIdO,{
@@ -9407,7 +9437,7 @@
     Snippets.setSnippet(s);
    },Seq$1.map(function(s)
    {
-    return Snippet.New(s.snpId,s.snpName,s.snpContent,null,s.snpPredIds,s.snpProperties,s.snpGeneration);
+    return Snippet.New(s.snpId,s.snpName,s.snpContent,null,s.snpPredIds,s.snpProperties,s.snpModified);
    },Seq$1.filter(function(s)
    {
     return Unchecked.Equals(s.snpParentIdO,{
@@ -9485,7 +9515,7 @@
  {
   return View$1.Map(function($1)
   {
-   return $1<snp.snpGeneration;
+   return $1<snp.snpModified;
   },Snippets.generation().get_View());
  };
  Snippets.codeStartsW=function()
@@ -9590,11 +9620,7 @@
  Snippets.setSnippet=function(snp)
  {
   if(!Unchecked.Equals(snp.snpId.get_Id(),"00000000-0000-0000-0000-000000000000"))
-   Snippets.snippets().Append(Snippet.New(snp.snpId,snp.snpName,snp.snpContent,snp.snpParentIdO,snp.snpPredIds,snp.snpProperties,Snippets.runReader(function(e)
-   {
-    Library.print$1(e);
-    return 999;
-   },SnippetModule.maxGenerationRm())+1));
+   Snippets.snippets().Append(Snippet.New(snp.snpId,snp.snpName,snp.snpContent,snp.snpParentIdO,snp.snpPredIds,snp.snpProperties,Date.now()));
  };
  Snippets.setCurrentSnippetIdO=function(snpIdO)
  {
@@ -9770,7 +9796,7 @@
    $1:S
   })),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.snippetlist(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderSnippets.snippets$4988$40=function(snpId)
+ RenderSnippets.snippets$5005$40=function(snpId)
  {
   return function(ev)
   {
@@ -9783,7 +9809,7 @@
    }))(x);
   };
  };
- RenderSnippets.snippets$4987$40=function(snpId)
+ RenderSnippets.snippets$5004$40=function(snpId)
  {
   return function(ev)
   {
@@ -9791,7 +9817,7 @@
     ev.Event.preventDefault();
   };
  };
- RenderSnippets.snippets$4986$40=function(snpId)
+ RenderSnippets.snippets$5003$40=function(snpId)
  {
   return function(ev)
   {
@@ -9799,21 +9825,21 @@
    ev.Event.stopPropagation();
   };
  };
- RenderSnippets.snippets$4985$40=function(snpId)
+ RenderSnippets.snippets$5002$40=function(snpId)
  {
   return function()
   {
    Snippets.toggleCollapse(snpId);
   };
  };
- RenderSnippets.snippets$4984$40=function(snpId)
+ RenderSnippets.snippets$5001$40=function(snpId)
  {
   return function()
   {
    Snippets.togglePredecessor(snpId);
   };
  };
- RenderSnippets.snippets$4983$40=function(snpId)
+ RenderSnippets.snippets$5000$40=function(snpId)
  {
   var s;
   s=View$1.Map(function(y)
@@ -9825,7 +9851,7 @@
    return RenderSnippets.scrollIntoView(s,e);
   };
  };
- RenderSnippets.snippets$4982$40=function(snpId)
+ RenderSnippets.snippets$4999$40=function(snpId)
  {
   return function()
   {
@@ -9980,7 +10006,7 @@
     }
   },selW);
  };
- RenderProperties.render$5027$34=function()
+ RenderProperties.render$5044$34=function()
  {
   return function()
   {
@@ -10002,7 +10028,7 @@
    RenderProperties.addProperty();
   }))),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.propertytable(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderProperties.properties$5020$33=function(i)
+ RenderProperties.properties$5037$33=function(i)
  {
   return function()
   {
@@ -10026,7 +10052,7 @@
    return $1.snpProperties;
   },function($1,$2)
   {
-   return Snippet.New($1.snpId,$1.snpName,$1.snpContent,$1.snpParentIdO,$1.snpPredIds,$2,$1.snpGeneration);
+   return Snippet.New($1.snpId,$1.snpName,$1.snpContent,$1.snpParentIdO,$1.snpPredIds,$2,$1.snpModified);
   });
   return Doc.Convert(function(i)
   {
@@ -10088,12 +10114,12 @@
   }).concat(Slice.array(Snippets.currentSnippetV().Get().snpProperties,{
    $:1,
    $0:i+1
-  },null)),i$1.snpGeneration)));
+  },null)),i$1.snpModified)));
  };
  RenderProperties.addProperty=function()
  {
   var i;
-  Snippets.currentSnippetV().Set((i=Snippets.currentSnippetV().Get(),Snippet.New(i.snpId,i.snpName,i.snpContent,i.snpParentIdO,i.snpPredIds,Snippets.currentSnippetV().Get().snpProperties.concat([["",""]]),i.snpGeneration)));
+  Snippets.currentSnippetV().Set((i=Snippets.currentSnippetV().Get(),Snippet.New(i.snpId,i.snpName,i.snpContent,i.snpParentIdO,i.snpPredIds,Snippets.currentSnippetV().Get().snpProperties.concat([["",""]]),i.snpModified)));
  };
  HoverProvider$1=Monaco$1.HoverProvider=Runtime.Class({
   provideHover:function(model,pos,token)
@@ -10284,7 +10310,7 @@
      return $1.snpContent;
     },function($1,$2)
     {
-     return Snippet.New($1.snpId,$1.snpName,$2,$1.snpParentIdO,$1.snpPredIds,$1.snpProperties,$1.snpGeneration);
+     return Snippet.New($1.snpId,$1.snpName,$2,$1.snpParentIdO,$1.snpPredIds,$1.snpProperties,$1.snpModified);
     }),{
      $:1,
      $0:View$1.Map2(Monaco$1.transformAnnotations,Snippets.currentSnippetW(),FStation.annotationsV().get_View())
@@ -10791,7 +10817,7 @@
          {
           return $1(FSharpStation_GeneratedPrintf.p($2));
          };
-        }(Global.id))(snp.snpId),Global.String(a$3),{
+        }(Global.id))(snp.snpId),(new Date(a$3)).toLocaleString(),{
          $:0,
          $0:a$2
         },{
@@ -10825,7 +10851,7 @@
    })),function(a)
    {
     var snp;
-    return a!=null&&a.$==1?(snp=a.$0,(Snippets.setSnippet(Snippet.New(snp.snpId,snp.snpName,content,snp.snpParentIdO,snp.snpPredIds,snp.snpProperties,snp.snpGeneration)),b.Zero())):b.ReturnFrom(FusionAsyncM.ofResultRM(Library.Error$1(new ResultMessage({
+    return a!=null&&a.$==1?(snp=a.$0,(Snippets.setSnippet(Snippet.New(snp.snpId,snp.snpName,content,snp.snpParentIdO,snp.snpPredIds,snp.snpProperties,snp.snpModified)),b.Zero())):b.ReturnFrom(FusionAsyncM.ofResultRM(Library.Error$1(new ResultMessage({
      $:1,
      $0:(function($1)
      {
@@ -10895,7 +10921,7 @@
          {
           return $1(FSharpStation_GeneratedPrintf.p($2));
          };
-        }(Global.id))(a$1.snpId),Global.String(a$4),{
+        }(Global.id))(a$1.snpId),(new Date(a$4)).toLocaleString(),{
          $:0,
          $0:a$3
         },{
@@ -11015,11 +11041,11 @@
    };
   });
  };
- Model$1.New=function(snippets,generation,collapsed)
+ Model$1.New=function(snippets,modified,collapsed)
  {
   return{
    snippets:snippets,
-   generation:generation,
+   modified:modified,
    collapsed:collapsed
   };
  };
@@ -11158,13 +11184,13 @@
    return $1.snpName;
   },function($1,$2)
   {
-   return Snippet.New($1.snpId,$2,$1.snpContent,$1.snpParentIdO,$1.snpPredIds,$1.snpProperties,$1.snpGeneration);
+   return Snippet.New($1.snpId,$2,$1.snpContent,$1.snpParentIdO,$1.snpPredIds,$1.snpProperties,$1.snpModified);
   })),AppFramework.newVar("Content",Var$1.Lens(Snippets.currentSnippetV(),function($1)
   {
    return $1.snpContent;
   },function($1,$2)
   {
-   return Snippet.New($1.snpId,$1.snpName,$2,$1.snpParentIdO,$1.snpPredIds,$1.snpProperties,$1.snpGeneration);
+   return Snippet.New($1.snpId,$1.snpName,$2,$1.snpParentIdO,$1.snpPredIds,$1.snpProperties,$1.snpModified);
   })),AppFramework.newVar("Output",FStation.outputMsgs()),AppFramework.newVar("Parser",FStation.annotationsV())],[AppFramework.newViw("FsCode",Snippets.FsCodeW()),AppFramework.newViw("SaveNeeded",Snippets.SaveAsClassW()),AppFramework.newViw("CurrentPath",Snippets.currentPathW()),AppFramework.newViw("FStationId",View$1.Const(FStation.id())),AppFramework.newViw("CurrentSid",View$1.Map(function(sid)
   {
    return Global.String(sid.get_Id());
@@ -11330,36 +11356,36 @@
   p=Handler$1.CompleteHoles(b.k,b.h,[]);
   b.i=new TemplateInstance.New(p[1],Templates.RunFullDocTemplate(p[0]));
  };
- MainProgram.mainDoc$5765$78=Global.id;
- MainProgram.mainDoc$5756$39=function()
+ MainProgram.mainDoc$5784$78=Global.id;
+ MainProgram.mainDoc$5775$39=function()
  {
   return function(ev)
   {
    JumpTo.jumpToRef(ev.Target);
   };
  };
- MainProgram.mainDoc$5755$39=function()
+ MainProgram.mainDoc$5774$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5754$39=function()
+ MainProgram.mainDoc$5773$39=function()
  {
   return function(ev)
   {
    Importer.importFile(ev.Target);
   };
  };
- MainProgram.mainDoc$5753$39=function()
+ MainProgram.mainDoc$5772$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5752$39=function()
+ MainProgram.mainDoc$5771$39=function()
  {
   return function(ev)
   {
@@ -11478,11 +11504,11 @@
   }))))))))))))));
   return(p=Handler$1.CompleteHoles(tmp.k,tmp.h,[["filename",0],["name",0],["output",0],["fscode",0],["parser",0]]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.layout(p[0])),(tmp.i=i,i))).get_Doc();
  };
- MainProgram.buttonsRight$5738$74=Global.id;
- MainProgram.buttonsRight$5737$74=Global.id;
- MainProgram.buttonsRight$5736$74=Global.id;
- MainProgram.buttonsRight$5735$74=Global.id;
- MainProgram.buttonsRight$5734$74=Global.id;
+ MainProgram.buttonsRight$5757$74=Global.id;
+ MainProgram.buttonsRight$5756$74=Global.id;
+ MainProgram.buttonsRight$5755$74=Global.id;
+ MainProgram.buttonsRight$5754$74=Global.id;
+ MainProgram.buttonsRight$5753$74=Global.id;
  MainProgram.buttonsRight=function()
  {
   var tmp,p,i;
@@ -11939,14 +11965,14 @@
   SC$1.$cctor();
   return SC$1.wsStationClient;
  };
- Server.content$6024$54=function()
+ Server.content$6043$54=function()
  {
   MainProgram.mainProgram();
   return Doc.TextNode("Initialized");
  };
  SC$1.$cctor=function()
  {
-  var f,g$3,generation,$1,b,b$1,cache,$2,cache$1,$3,cache$2,$4,g$8,v,prior,f$3,f$4,f$5,f$6,x,$5,$6,v$1,elO,s,sQ,x$1,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,x$2,t$9,i,x$3,t$10,t$11,t$12,t$13,t$14,i$1,x$4,t$15,t$16,t$17,t$18,t$19,t$20,t$21,i$2,t$22,g$11,g$12,x$5,b$2;
+  var f,g$3,f$3,b,b$1,cache,$1,cache$1,$2,cache$2,$3,g$10,v,prior,f$4,f$5,f$6,f$7,x,$4,$5,v$1,elO,s,sQ,x$1,t,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,x$2,t$9,t$10,i,x$3,t$11,t$12,t$13,t$14,t$15,t$16,i$1,x$4,t$17,t$18,t$19,t$20,t$21,t$22,t$23,i$2,t$24,g$13,g$14,x$5,b$2;
   SC$1.$cctor=Global.ignore;
   SC$1.rtn=function(v$2)
   {
@@ -12046,15 +12072,15 @@
   });
   SC$1.parseSingleO=ParseO.tryParseWith$1(function(a$4)
   {
-   var o,$7;
+   var o,$6;
    o=0;
-   return[($7=Global.Number(a$4),Global.isNaN($7)?false:(o=$7,true)),o];
+   return[($6=Global.Number(a$4),Global.isNaN($6)?false:(o=$6,true)),o];
   });
   SC$1.parseDoubleO=ParseO.tryParseWith$1(function(a$4)
   {
-   var o,$7;
+   var o,$6;
    o=0;
-   return[($7=Global.Number(a$4),Global.isNaN($7)?false:(o=$7,true)),o];
+   return[($6=Global.Number(a$4),Global.isNaN($6)?false:(o=$6,true)),o];
   });
   SC$1.parseGuidO=ParseO.tryParseWith$1(function(a$4)
   {
@@ -12077,20 +12103,10 @@
   SC$1["|Single|_|"]=ParseO.parseSingleO$1();
   SC$1["|Double|_|"]=ParseO.parseDoubleO$1();
   SC$1["|Guid|_|"]=ParseO.parseGuidO$1();
-  $1=(generation=1,[function()
-  {
-   generation=generation+1;
-   return generation;
-  },function(n)
-  {
-   generation=n;
-  }]);
-  SC$1.setGeneration=$1[1];
-  SC$1.getNextGeneration=$1[0];
   SC$1.defaultSnippet=Snippet.New(new SnippetId({
    $:0,
    $0:"00000000-0000-0000-0000-000000000000"
-  }),"","",null,new FSharpSet.New$1(null),[],0);
+  }),"","",null,new FSharpSet.New$1(null),[],(new Date(0)).getTime());
   SC$1.tieFighter="|"+"-"+"|";
   SC$1.deserGuid=function(v$2)
   {
@@ -12102,11 +12118,11 @@
   }
   SC$1.serFloat=[function(v$2)
   {
-   return(function($7)
+   return(function($6)
    {
-    return function($8)
+    return function($7)
     {
-     return $7(Utils.prettyPrint($8));
+     return $6(Utils.prettyPrint($7));
     };
    }(Global.id))(v$2);
   },function(x$6)
@@ -12119,11 +12135,11 @@
   }
   SC$1.serInt=[function(v$2)
   {
-   return(function($7)
+   return(function($6)
    {
-    return function($8)
+    return function($7)
     {
-     return $7(Utils.prettyPrint($8));
+     return $6(Utils.prettyPrint($7));
     };
    }(Global.id))(v$2);
   },function(x$6)
@@ -12136,11 +12152,11 @@
   }
   SC$1.serBool=[function(v$2)
   {
-   return(function($7)
+   return(function($6)
    {
-    return function($8)
+    return function($7)
     {
-     return $7(Utils.prettyPrint($8));
+     return $6(Utils.prettyPrint($7));
     };
    }(Global.id))(v$2);
   },function(x$6)
@@ -12158,6 +12174,32 @@
   {
    return g$7(Global.id(x$6));
   }];
+  function g$8(v$2)
+  {
+   return(function($6)
+   {
+    return function($7)
+    {
+     return $6(Utils.prettyPrint($7));
+    };
+   }(Global.id))(v$2);
+  }
+  function g$9(v$2)
+  {
+   return Serializer.ifUndef(0,v$2);
+  }
+  SC$1.serDate=[function(x$6)
+  {
+   return g$8(Global.id(x$6));
+  },(f$3=function(x$6)
+  {
+   return g$9(Global.id(x$6));
+  },function(x$6)
+  {
+   var l;
+   l=f$3(x$6);
+   return l;
+  })];
   SC$1.rexGuid="([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})";
   SC$1.rexEmail="(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@[*[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+]*";
   SC$1.observers=List.T.Empty;
@@ -12168,11 +12210,11 @@
    o=new WcTabStripT.New$1();
    WebComponent.defineWebComponent$1("wcomp-tabstrip",WcTabStripT.Constructor$1,self.FsRoot.LibraryJS.WebComponent.WcTabStrip.WcTabStripT.New);
   });
-  SC$1.layoutHorizontal=Runtime.Curried(function($7,$8,$9,$10,$11)
+  SC$1.layoutHorizontal=Runtime.Curried(function($6,$7,$8,$9,$10)
   {
    return Doc.get_Empty();
   },5);
-  SC$1.layoutVertical=Runtime.Curried(function($7,$8,$9,$10,$11)
+  SC$1.layoutVertical=Runtime.Curried(function($6,$7,$8,$9,$10)
   {
    return Doc.get_Empty();
   },5);
@@ -12205,9 +12247,9 @@
    {
     FStation.set_rootDir(a$4[1]);
     FStation.set_srcDir(a$4[2]);
-    (((Runtime.Curried3(function($7,$8,$9)
+    (((Runtime.Curried3(function($6,$7,$8)
     {
-     return $7("fileName = "+Utils.toSafe($8)+"\\"+Utils.toSafe($9)+".fsx");
+     return $6("fileName = "+Utils.toSafe($7)+"\\"+Utils.toSafe($8)+".fsx");
     }))(function(s$1)
     {
      console.log(s$1);
@@ -12222,7 +12264,7 @@
    return s$1.snpId;
   });
   SC$1.hierarchy=Var$1.Create$1([]);
-  SC$1.generation=Var$1.Create$1(5);
+  SC$1.generation=Var$1.Create$1((new Date(0)).getTime());
   SC$1.currentSnippetIdOV=Var$1.Create$1(null);
   SC$1.codeSnippetIdOV=Var$1.Create$1(null);
   SC$1.collapsedV=Var$1.Create$1(new FSharpSet.New$1(null));
@@ -12249,24 +12291,24 @@
    cache.set_Item(v$2,res);
    return res;
   }
-  function getOrAdd(p,f$9)
+  function getOrAdd(p,f$10)
   {
    var o;
    o=checkO(p);
-   return o==null?store(p,f$9(p)):o.$0;
+   return o==null?store(p,f$10(p)):o.$0;
   }
-  $2=(cache=new Dictionary.New$5(),[[checkO,function($7)
+  $1=(cache=new Dictionary.New$5(),[[checkO,function($6)
   {
-   return function($8)
+   return function($7)
    {
-    return getOrAdd($7,$8);
+    return getOrAdd($6,$7);
    };
   }],function()
   {
    cache.Clear();
   }]);
-  SC$1.predsCache=$2[0];
-  SC$1.clearPreds=$2[1];
+  SC$1.predsCache=$1[0];
+  SC$1.clearPreds=$1[1];
   function checkO$1(v$2)
   {
    var res;
@@ -12290,24 +12332,24 @@
    cache$1.set_Item(v$2,res);
    return res;
   }
-  function getOrAdd$1(p,f$9)
+  function getOrAdd$1(p,f$10)
   {
    var o;
    o=checkO$1(p);
-   return o==null?store$1(p,f$9(p)):o.$0;
+   return o==null?store$1(p,f$10(p)):o.$0;
   }
-  $3=(cache$1=new Dictionary.New$5(),[[checkO$1,function($7)
+  $2=(cache$1=new Dictionary.New$5(),[[checkO$1,function($6)
   {
-   return function($8)
+   return function($7)
    {
-    return getOrAdd$1($7,$8);
+    return getOrAdd$1($6,$7);
    };
   }],function()
   {
    cache$1.Clear();
   }]);
-  SC$1.reducCache=$3[0];
-  SC$1.clearReduc=$3[1];
+  SC$1.reducCache=$2[0];
+  SC$1.clearReduc=$2[1];
   function checkO$2(v$2)
   {
    var res;
@@ -12331,27 +12373,27 @@
    cache$2.set_Item(v$2,res);
    return res;
   }
-  function getOrAdd$2(p,f$9)
+  function getOrAdd$2(p,f$10)
   {
    var o;
    o=checkO$2(p);
-   return o==null?store$2(p,f$9(p)):o.$0;
+   return o==null?store$2(p,f$10(p)):o.$0;
   }
-  $4=(cache$2=new Dictionary.New$5(),[[checkO$2,function($7)
+  $3=(cache$2=new Dictionary.New$5(),[[checkO$2,function($6)
   {
-   return function($8)
+   return function($7)
    {
-    return getOrAdd$2($7,$8);
+    return getOrAdd$2($6,$7);
    };
   }],function()
   {
    cache$2.Clear();
   }]);
-  SC$1.parentCache=$4[0];
-  SC$1.clearParent=$4[1];
-  SC$1.getParentIdO=(g$8=(Snippets.parentCache())[1],function(p)
+  SC$1.parentCache=$3[0];
+  SC$1.clearParent=$3[1];
+  SC$1.getParentIdO=(g$10=(Snippets.parentCache())[1],function(p)
   {
-   return(g$8(p))(Snippets.getParentIdONotMemo);
+   return(g$10(p))(Snippets.getParentIdONotMemo);
   });
   View$1.Sink(function(a$4)
   {
@@ -12423,7 +12465,7 @@
    v$2=SnippetModule.defaultSnippet().snpId;
    return sidO==null?v$2:sidO.$0;
   },Snippets.currentSnippetIdOV().get_View());
-  function g$9(o)
+  function g$11(o)
   {
    var v$2;
    v$2=SnippetModule.defaultSnippet();
@@ -12433,13 +12475,13 @@
   {
    return Snippets.snippets().TryFindByKeyAsView(a$4);
   }
-  SC$1.currentSnippetW=View$1.Map((f$3=function(o)
+  SC$1.currentSnippetW=View$1.Map((f$4=function(o)
   {
    return o==null?null:Global.id(o.$0);
   },function(x$6)
   {
-   return g$9(f$3(x$6));
-  }),View$1.Bind((f$4=function(o)
+   return g$11(f$4(x$6));
+  }),View$1.Bind((f$5=function(o)
   {
    return o==null?null:{
     $:1,
@@ -12447,9 +12489,9 @@
    };
   },function(x$6)
   {
-   return View.insertWO(f$4(x$6));
+   return View.insertWO(f$5(x$6));
   }),Snippets.currentSnippetIdOV().get_View()));
-  function g$10(o)
+  function g$12(o)
   {
    var v$2;
    v$2=SnippetModule.defaultSnippet();
@@ -12459,13 +12501,13 @@
   {
    return Snippets.snippets().TryFindByKeyAsView(a$4);
   }
-  SC$1.codeSnippetW=View$1.Map((f$5=function(o)
+  SC$1.codeSnippetW=View$1.Map((f$6=function(o)
   {
    return o==null?null:Global.id(o.$0);
   },function(x$6)
   {
-   return g$10(f$5(x$6));
-  }),View$1.Bind((f$6=function(o)
+   return g$12(f$6(x$6));
+  }),View$1.Bind((f$7=function(o)
   {
    return o==null?null:{
     $:1,
@@ -12473,7 +12515,7 @@
    };
   },function(x$6)
   {
-   return View.insertWO(f$6(x$6));
+   return View.insertWO(f$7(x$6));
   }),Snippets.codeSnippetIdOV().get_View()));
   SC$1.currentSnippetV=new FromView.New(Snippets.currentSnippetW(),function(s$1)
   {
@@ -12485,28 +12527,28 @@
   }
   function a(a$4)
   {
-   function f$9(n)
+   function f$10(n)
    {
     return TreeReader.listNodes(0,n);
    }
-   function g$13(r)
+   function g$15(r)
    {
     return Snippets.runReader(Snippets.handleError,r);
    }
    return function(x$6)
    {
-    return g$13(f$9(x$6));
+    return g$15(f$10(x$6));
    };
   }
   SC$1.getHierarchyW=View$1.Map(Arrays.ofSeq,View$1.Map(function(s$1)
   {
-   return Seq$1.map(function($7)
+   return Seq$1.map(function($6)
    {
-    return m$3($7[0],$7[1]);
+    return m$3($6[0],$6[1]);
    },s$1);
-  },(x=Snippets.hierarchy().get_View(),View$1.Map2(function($7,$8)
+  },(x=Snippets.hierarchy().get_View(),View$1.Map2(function($6,$7)
   {
-   return(a($7))($8);
+   return(a($6))($7);
   },Snippets.collapsedV().get_View(),x))));
   function a$1(a$4,a$5)
   {
@@ -12520,20 +12562,20 @@
     });
    });
   }
-  SC$1.codeAndStartsW=($5=Snippets.codeSnippetW(),($6=Snippets.snippets().v,(((Runtime.Curried3(View$1.MapAsync2))(a$1))($5))($6)));
-  SC$1.FsCodeW=View$1.Map(function(t$23)
+  SC$1.codeAndStartsW=($4=Snippets.codeSnippetW(),($5=Snippets.snippets().v,(((Runtime.Curried3(View$1.MapAsync2))(a$1))($4))($5)));
+  SC$1.FsCodeW=View$1.Map(function(t$25)
   {
-   return t$23[0];
+   return t$25[0];
   },Snippets.codeAndStartsW());
-  SC$1.codeStartsW=View$1.Map(function(t$23)
+  SC$1.codeStartsW=View$1.Map(function(t$25)
   {
-   return t$23[1];
+   return t$25[1];
   },Snippets.codeAndStartsW());
   SC$1.SaveAsClassW=View$1.Map2(function(snps,gen)
   {
    return Seq$1.exists(function(snp)
    {
-    return snp.snpGeneration>gen;
+    return snp.snpModified>gen;
    },snps)?"btn-primary":"";
   },Snippets.snippets().v,Snippets.generation().get_View());
   SC$1.currentPathW=View$1.Map(function(snp)
@@ -12579,16 +12621,16 @@
       x$6=Strings.StartsWith(btn,":")?Slice.string(btn,{
        $:1,
        $0:1
-      },null):(function($7)
+      },null):(function($6)
       {
-       return function($8)
+       return function($7)
        {
-        return $7("button \"click=@{FSharpStation.ButtonClick}\" "+Utils.prettyPrint($8));
+        return $6("button \"click=@{FSharpStation.ButtonClick}\" "+Utils.prettyPrint($7));
        };
       }(Global.id))(btn);
-      return(((Runtime.Curried3(function($7,$8,$9)
+      return(((Runtime.Curried3(function($6,$7,$8)
       {
-       return $7("btn"+Global.String($8)+" "+Utils.toSafe($9));
+       return $6("btn"+Global.String($7)+" "+Utils.toSafe($8));
       }))(Global.id))(i$3))(x$6);
      },Seq$1.filter(function(s$1)
      {
@@ -12601,15 +12643,15 @@
        return Seq$1.append(ss,Seq$1.delay(function()
        {
         var x$6,x$7;
-        return[(x$6=Strings.concat(" ",(x$7=List.ofSeq(Operators$5.range(0,Seq$1.length(ss)-1)),Seq$1.map(function($7)
+        return[(x$6=Strings.concat(" ",(x$7=List.ofSeq(Operators$5.range(0,Seq$1.length(ss)-1)),Seq$1.map(function($6)
         {
-         return function($8)
+         return function($7)
          {
-          return $7("btn"+Global.String($8));
+          return $6("btn"+Global.String($7));
          };
-        }(Global.id),x$7))),(((Runtime.Curried3(function($7,$8,$9)
+        }(Global.id),x$7))),(((Runtime.Curried3(function($6,$7,$8)
         {
-         return $7("buttons div "+Utils.toSafe($8)+" "+Utils.toSafe($9)+" ");
+         return $6("buttons div "+Utils.toSafe($7)+" "+Utils.toSafe($8)+" ");
         }))(Global.id))(ats))(x$6))];
        }));
       }));
@@ -12617,36 +12659,36 @@
     }
     return b$3.Bind(Operators$1.op_BarGreaterGreater(SnippetModule.propertyHierORm("Buttons",snp),function(o)
     {
-     var $7;
+     var $6;
      return o==null?null:{
       $:1,
-      $0:($7=o.$0,m$4($7[0],$7[1]))
+      $0:($6=o.$0,m$4($6[0],$6[1]))
      };
     }),function(a$4)
     {
      function m$5(snL,a$5)
      {
-      var txL,o,$7;
+      var txL,o,$6;
       txL=a$5[0];
       return["Snp_"+Strings.Replace(Global.String(snL.snpId.get_Id()),"-",""),(o=a$4==null?null:{
        $:1,
-       $0:($7=a$4.$0,($7[0],Strings.concat("\n",List.ofArray([txL,$7[1]]))))
+       $0:($6=a$4.$0,($6[0],Strings.concat("\n",List.ofArray([txL,$6[1]]))))
       },o==null?txL:o.$0)];
      }
-     function f$9()
+     function f$10()
      {
       return a$4;
      }
      return b$3.ReturnFrom(Operators$1.op_BarGreaterGreater(Operators$1.op_BarGreaterGreater(SnippetModule.propertyHierORm("Layout",snp),function(o)
      {
-      var $7;
+      var $6;
       return o==null?null:{
        $:1,
-       $0:($7=o.$0,m$5($7[0],$7[1]))
+       $0:($6=o.$0,m$5($6[0],$6[1]))
       };
      }),function(o)
      {
-      return Option.bindNone(f$9,o);
+      return Option.bindNone(f$10,o);
      }));
     });
    }))));
@@ -12662,21 +12704,21 @@
     return null;
    },Operators$1.op_BarGreaterGreater(SnippetModule.propertyHierORm("LayoutJS",snp),function(o)
    {
-    var $7;
+    var $6;
     return o==null?null:{
      $:1,
-     $0:($7=o.$0,m$4($7[0],$7[1]))
+     $0:($6=o.$0,m$4($6[0],$6[1]))
     };
    }));
   },Snippets.currentSnippetW());
   SC$1.drag=DragInfo.DragNone;
   SC$1.rootdir="..\\website";
   SC$1.TemplatesFileName="..\\website"+"\\Templates.html";
-  ((function($7)
+  ((function($6)
   {
-   return function($8)
+   return function($7)
    {
-    return $7(Utils.toSafe($8));
+    return $6(Utils.toSafe($7));
    };
   }(function(s$1)
   {
@@ -12719,9 +12761,9 @@
     $:1,
     $0:el
    };
-   (function($7)
+   (function($6)
    {
-    return $7("setScrollToBottom");
+    return $6("setScrollToBottom");
    }(function(s$1)
    {
     console.log(s$1);
@@ -12738,25 +12780,25 @@
     $0:a$4
    });
   }
-  SC$1.serSnippetId=(s=Arrays.head(Strings.SplitChars((function($7)
+  SC$1.serSnippetId=(s=Arrays.head(Strings.SplitChars((function($6)
   {
-   return function($8)
+   return function($7)
    {
-    return $7(FSharpStation_GeneratedPrintf.p($8));
+    return $6(FSharpStation_GeneratedPrintf.p($7));
    };
-  }(Global.id))(set("00000000-0000-0000-0000-000000000000")),[" "],0)),(sQ=(function($7)
+  }(Global.id))(set("00000000-0000-0000-0000-000000000000")),[" "],0)),(sQ=(function($6)
   {
-   return function($8)
+   return function($7)
    {
-    return $7(Utils.prettyPrint($8));
+    return $6(Utils.prettyPrint($7));
    };
   }(Global.id))(s),[function(id)
   {
    var x$6;
    x$6=get(id);
-   return(((Runtime.Curried3(function($7,$8,$9)
+   return(((Runtime.Curried3(function($6,$7,$8)
    {
-    return $7("{"+Strings.PadLeft(Utils.toSafe($8),10)+" :"+Utils.prettyPrint($9)+"}");
+    return $6("{"+Strings.PadLeft(Utils.toSafe($7),10)+" :"+Utils.prettyPrint($8)+"}");
    }))(Global.id))(sQ))(x$6);
   },function(x$6)
   {
@@ -12768,125 +12810,155 @@
    return s$1.snpId;
   },function(v$2,s$1)
   {
-   return Snippet.New(v$2,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpGeneration);
+   return Snippet.New(v$2,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpModified);
   },t[0],t[1])),(t$1=Serializer.serString(),Serializer.serField("snpName",function(s$1)
   {
    return s$1.snpName;
   },function(v$2,s$1)
   {
-   return Snippet.New(s$1.snpId,v$2,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpGeneration);
+   return Snippet.New(s$1.snpId,v$2,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpModified);
   },t$1[0],t$1[1])),(t$2=Serializer.serString(),Serializer.serField("snpContent",function(s$1)
   {
    return s$1.snpContent;
   },function(v$2,s$1)
   {
-   return Snippet.New(s$1.snpId,s$1.snpName,v$2,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpGeneration);
+   return Snippet.New(s$1.snpId,s$1.snpName,v$2,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpModified);
   },t$2[0],t$2[1])),(t$3=(t$4=Serializer$1.serSnippetId(),Serializer.serOpt(t$4[0],t$4[1])),Serializer.serField("snpParentIdO",function(s$1)
   {
    return s$1.snpParentIdO;
   },function(v$2,s$1)
   {
-   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,v$2,s$1.snpPredIds,s$1.snpProperties,s$1.snpGeneration);
+   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,v$2,s$1.snpPredIds,s$1.snpProperties,s$1.snpModified);
   },t$3[0],t$3[1])),(t$5=(t$6=Serializer$1.serSnippetId(),Serializer.serSet(t$6[0],t$6[1])),Serializer.serField("snpPredIds",function(s$1)
   {
    return s$1.snpPredIds;
   },function(v$2,s$1)
   {
-   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,v$2,s$1.snpProperties,s$1.snpGeneration);
+   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,v$2,s$1.snpProperties,s$1.snpModified);
   },t$5[0],t$5[1])),(t$7=(t$8=(x$2=Serializer.serString(),Serializer.serDup((Serializer.serString())[0],(Serializer.serString())[1],x$2[0],x$2[1])),Serializer.serArr(t$8[0],t$8[1])),Serializer.serField("snpProperties",function(s$1)
   {
    return s$1.snpProperties;
   },function(v$2,s$1)
   {
-   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,v$2,s$1.snpGeneration);
-  },t$7[0],t$7[1])),(t$9=Serializer.serInt(),Serializer.serField("snpGeneration",function(s$1)
+   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,v$2,s$1.snpModified);
+  },t$7[0],t$7[1])),(t$9=Serializer.serInt(),Serializer.serFieldO("snpGeneration",function()
   {
-   return s$1.snpGeneration;
+   return null;
+  },function(v$2,s$1)
+  {
+   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,(new Date(0)).getTime()+v$2*60000);
+  },t$9[0],t$9[1])),(t$10=Serializer.serDate(),Serializer.serFieldO("snpModified",function(s$1)
+  {
+   return{
+    $:1,
+    $0:s$1.snpModified
+   };
   },function(v$2,s$1)
   {
    return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,v$2);
-  },t$9[0],t$9[1]))],(i=SnippetModule.New("","",null),[function(dim)
+  },t$10[0],t$10[1]))],(i=SnippetModule.New("","",null),[function(dim)
   {
    var x$6;
-   function m$4(n,ser,_deser)
+   function c(n,ser,_deser)
    {
-    return(((Runtime.Curried3(function($7,$8,$9)
+    var x$7,m$4;
+    x$7=ser(dim);
+    m$4=((Runtime.Curried3(function($6,$7,$8)
     {
-     return $7(Utils.prettyPrint($8)+": "+Utils.toSafe($9));
-    }))(Global.id))(n))(ser(dim));
+     return $6(Utils.prettyPrint($7)+": "+Utils.toSafe($8));
+    }))(Global.id))(n);
+    return x$7==null?null:{
+     $:1,
+     $0:m$4(x$7.$0)
+    };
    }
-   x$6=Strings.concat(", ",Seq$1.map(function($7)
+   x$6=Strings.concat(", ",Seq$1.choose(function($6)
    {
-    return m$4($7[0],$7[1],$7[2]);
+    return c($6[0],$6[1],$6[2]);
    },x$1));
-   return(function($7)
+   return(function($6)
    {
-    return function($8)
+    return function($7)
     {
-     return $7("{"+Utils.toSafe($8)+"}");
+     return $6("{"+Utils.toSafe($7)+"}");
     };
    }(Global.id))(x$6);
   },function(o)
   {
-   return!o?i:Seq$1.fold(function(dim,t$23)
+   return!o?i:Seq$1.fold(function(dim,t$25)
    {
-    return(t$23[2](dim))(o[t$23[0]]);
+    return(t$25[2](dim))(o[t$25[0]]);
    },i,x$1);
   }]));
-  SC$1.serModel=(x$3=[(t$10=(t$11=Serializer$1.serSnippet(),Serializer.serArr(t$11[0],t$11[1])),Serializer.serField("snippets",function(m$4)
+  SC$1.serModel=(x$3=[(t$11=(t$12=Serializer$1.serSnippet(),Serializer.serArr(t$12[0],t$12[1])),Serializer.serField("snippets",function(m$4)
   {
    return m$4.snippets;
   },function(v$2,m$4)
   {
-   return Model$1.New(v$2,m$4.generation,m$4.collapsed);
-  },t$10[0],t$10[1])),(t$12=Serializer.serInt(),Serializer.serField("generation",function(m$4)
+   return Model$1.New(v$2,m$4.modified,m$4.collapsed);
+  },t$11[0],t$11[1])),(t$13=Serializer.serInt(),Serializer.serFieldO("generation",function()
   {
-   return m$4.generation;
+   return null;
+  },function(v$2,m$4)
+  {
+   return Model$1.New(m$4.snippets,(new Date(0)).getTime()+v$2*60000,m$4.collapsed);
+  },t$13[0],t$13[1])),(t$14=Serializer.serDate(),Serializer.serFieldO("modified",function(m$4)
+  {
+   return{
+    $:1,
+    $0:m$4.modified
+   };
   },function(v$2,m$4)
   {
    return Model$1.New(m$4.snippets,v$2,m$4.collapsed);
-  },t$12[0],t$12[1])),(t$13=(t$14=Serializer$1.serSnippetId(),Serializer.serSet(t$14[0],t$14[1])),Serializer.serField("collapsed",function(m$4)
+  },t$14[0],t$14[1])),(t$15=(t$16=Serializer$1.serSnippetId(),Serializer.serSet(t$16[0],t$16[1])),Serializer.serField("collapsed",function(m$4)
   {
    return m$4.collapsed;
   },function(v$2,m$4)
   {
-   return Model$1.New(m$4.snippets,m$4.generation,v$2);
-  },t$13[0],t$13[1]))],(i$1=Model$1.New([],0,new FSharpSet.New$1(null)),[function(dim)
+   return Model$1.New(m$4.snippets,m$4.modified,v$2);
+  },t$15[0],t$15[1]))],(i$1=Model$1.New([],(new Date(0)).getTime(),new FSharpSet.New$1(null)),[function(dim)
   {
    var x$6;
-   function m$4(n,ser,_deser)
+   function c(n,ser,_deser)
    {
-    return(((Runtime.Curried3(function($7,$8,$9)
+    var x$7,m$4;
+    x$7=ser(dim);
+    m$4=((Runtime.Curried3(function($6,$7,$8)
     {
-     return $7(Utils.prettyPrint($8)+": "+Utils.toSafe($9));
-    }))(Global.id))(n))(ser(dim));
+     return $6(Utils.prettyPrint($7)+": "+Utils.toSafe($8));
+    }))(Global.id))(n);
+    return x$7==null?null:{
+     $:1,
+     $0:m$4(x$7.$0)
+    };
    }
-   x$6=Strings.concat(", ",Seq$1.map(function($7)
+   x$6=Strings.concat(", ",Seq$1.choose(function($6)
    {
-    return m$4($7[0],$7[1],$7[2]);
+    return c($6[0],$6[1],$6[2]);
    },x$3));
-   return(function($7)
+   return(function($6)
    {
-    return function($8)
+    return function($7)
     {
-     return $7("{"+Utils.toSafe($8)+"}");
+     return $6("{"+Utils.toSafe($7)+"}");
     };
    }(Global.id))(x$6);
   },function(o)
   {
-   return!o?i$1:Seq$1.fold(function(dim,t$23)
+   return!o?i$1:Seq$1.fold(function(dim,t$25)
    {
-    return(t$23[2](dim))(o[t$23[0]]);
+    return(t$25[2](dim))(o[t$25[0]]);
    },i$1,x$3);
   }]));
   SC$1.fileName$1=Var$1.Create$1("");
   SC$1.serSnippetId2=[function(v$2)
   {
-   return(function($7)
+   return(function($6)
    {
-    return function($8)
+    return function($7)
     {
-     return $7(Utils.prettyPrint($8));
+     return $6(Utils.prettyPrint($7));
     };
    }(Global.id))(v$2);
   },function(x$6)
@@ -12897,7 +12969,7 @@
     $0:(x$7=x$6.Item,(Serializer.deserGuid())(x$7))
    });
   }];
-  SC$1.serSnippet2=(x$4=[(t$15=Importer.serSnippetId2(),Serializer.serField("id",function(s$1)
+  SC$1.serSnippet2=(x$4=[(t$17=Importer.serSnippetId2(),Serializer.serField("id",function(s$1)
   {
    return s$1.snpId;
   },function(v$2,s$1)
@@ -12905,20 +12977,20 @@
    return Snippet.New(Unchecked.Equals(v$2,SnippetId.get_Empty())?new SnippetId({
     $:0,
     $0:Guid.NewGuid()
-   }):v$2,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpGeneration);
-  },t$15[0],t$15[1])),(t$16=Serializer.serString(),Serializer.serField("name",function(s$1)
+   }):v$2,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpModified);
+  },t$17[0],t$17[1])),(t$18=Serializer.serString(),Serializer.serField("name",function(s$1)
   {
    return s$1.snpName;
   },function(v$2,s$1)
   {
-   return Snippet.New(s$1.snpId,v$2,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpGeneration);
-  },t$16[0],t$16[1])),(t$17=Serializer.serString(),Serializer.serField("content",function(s$1)
+   return Snippet.New(s$1.snpId,v$2,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpModified);
+  },t$18[0],t$18[1])),(t$19=Serializer.serString(),Serializer.serField("content",function(s$1)
   {
    return s$1.snpContent;
   },function(v$2,s$1)
   {
-   return Snippet.New(s$1.snpId,s$1.snpName,v$2,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpGeneration);
-  },t$17[0],t$17[1])),(t$18=(t$19=Importer.serSnippetId2(),Serializer.serOpt(t$19[0],t$19[1])),Serializer.serField("parent",function(s$1)
+   return Snippet.New(s$1.snpId,s$1.snpName,v$2,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpModified);
+  },t$19[0],t$19[1])),(t$20=(t$21=Importer.serSnippetId2(),Serializer.serOpt(t$21[0],t$21[1])),Serializer.serField("parent",function(s$1)
   {
    return s$1.snpParentIdO;
   },function(v$2,s$1)
@@ -12926,44 +12998,50 @@
    return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,Unchecked.Equals(v$2,{
     $:1,
     $0:SnippetId.get_Empty()
-   })?null:v$2,s$1.snpPredIds,s$1.snpProperties,s$1.snpGeneration);
-  },t$18[0],t$18[1])),(t$20=(t$21=Importer.serSnippetId2(),Serializer.serArr(t$21[0],t$21[1])),Serializer.serField("predecessors",function(s$1)
+   })?null:v$2,s$1.snpPredIds,s$1.snpProperties,s$1.snpModified);
+  },t$20[0],t$20[1])),(t$22=(t$23=Importer.serSnippetId2(),Serializer.serArr(t$23[0],t$23[1])),Serializer.serField("predecessors",function(s$1)
   {
    return Arrays.ofSeq(s$1.snpPredIds);
   },function(v$2,s$1)
   {
-   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,new FSharpSet.New(v$2),s$1.snpProperties,s$1.snpGeneration);
-  },t$20[0],t$20[1]))],(i$2=SnippetModule.New("","",null),[function(dim)
+   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,new FSharpSet.New(v$2),s$1.snpProperties,s$1.snpModified);
+  },t$22[0],t$22[1]))],(i$2=SnippetModule.New("","",null),[function(dim)
   {
    var x$6;
-   function m$4(n,ser,_deser)
+   function c(n,ser,_deser)
    {
-    return(((Runtime.Curried3(function($7,$8,$9)
+    var x$7,m$4;
+    x$7=ser(dim);
+    m$4=((Runtime.Curried3(function($6,$7,$8)
     {
-     return $7(Utils.prettyPrint($8)+": "+Utils.toSafe($9));
-    }))(Global.id))(n))(ser(dim));
+     return $6(Utils.prettyPrint($7)+": "+Utils.toSafe($8));
+    }))(Global.id))(n);
+    return x$7==null?null:{
+     $:1,
+     $0:m$4(x$7.$0)
+    };
    }
-   x$6=Strings.concat(", ",Seq$1.map(function($7)
+   x$6=Strings.concat(", ",Seq$1.choose(function($6)
    {
-    return m$4($7[0],$7[1],$7[2]);
+    return c($6[0],$6[1],$6[2]);
    },x$4));
-   return(function($7)
+   return(function($6)
    {
-    return function($8)
+    return function($7)
     {
-     return $7("{"+Utils.toSafe($8)+"}");
+     return $6("{"+Utils.toSafe($7)+"}");
     };
    }(Global.id))(x$6);
   },function(o)
   {
-   return!o?i$2:Seq$1.fold(function(dim,t$23)
+   return!o?i$2:Seq$1.fold(function(dim,t$25)
    {
-    return(t$23[2](dim))(o[t$23[0]]);
+    return(t$25[2](dim))(o[t$25[0]]);
    },i$2,x$4);
   }]));
-  SC$1.serSnippets=(t$22=Importer.serSnippet2(),Serializer.serArr(t$22[0],t$22[1]));
+  SC$1.serSnippets=(t$24=Importer.serSnippet2(),Serializer.serArr(t$24[0],t$24[1]));
   SC$1.endPointV=Router.InstallHash(EndPoint.NoSnippet,FSharpStation_Router.r());
-  function f$7(a$4)
+  function f$8(a$4)
   {
    var pth;
    return a$4.$==0?View.rtn({
@@ -12992,7 +13070,7 @@
    if(!Unchecked.Equals(Snippets.currentSnippetIdOV().Get(),sidO))
     Snippets.setCurrentSnippetIdO(sidO);
   }
-  function f$8(a$4)
+  function f$9(a$4)
   {
    var guid;
    return a$4!=null&&a$4.$==1?(guid=a$4.$0.$0,View$1.Map(function(p)
@@ -13011,25 +13089,25 @@
    if(!Unchecked.Equals(MainProgram.endPointV().Get(),ep))
     MainProgram.endPointV().Set(ep);
   }
-  View$1.Sink((g$11=function(a$4)
+  View$1.Sink((g$13=function(a$4)
   {
    View$1.Get(a$2,a$4);
   },function(x$6)
   {
-   return g$11(f$7(x$6));
+   return g$13(f$8(x$6));
   }),MainProgram.endPointV().get_View());
-  View$1.Sink((g$12=function(a$4)
+  View$1.Sink((g$14=function(a$4)
   {
    View$1.Get(a$3,a$4);
   },function(x$6)
   {
-   return g$12(f$8(x$6));
+   return g$14(f$9(x$6));
   }),Snippets.currentSnippetIdOV().get_View());
   SC$1.FStationLyt="FStationLyt";
   x$5=Snippets.codeAndStartsW();
-  View$1.Sink(Library.delayed(300,function(t$23)
+  View$1.Sink(Library.delayed(300,function(t$25)
   {
-   Monaco$1.parse(t$23[0],t$23[1]);
+   Monaco$1.parse(t$25[0],t$25[1]);
   }),x$5);
   View$1.Sink(function(m$4)
   {
@@ -13050,43 +13128,43 @@
     {
      return Concurrency.TryWith(Concurrency.Delay(function()
      {
-      var _this,f$9,g$13,f$10,dst,p;
-      function f$11(a$4)
+      var _this,f$10,g$15,f$11,dst,p;
+      function f$12(a$4)
       {
        return(FSharpStation_JsonDecoder.j$4())(JSON.parse(a$4));
       }
-      function f$12(a$4)
+      function f$13(a$4)
       {
        return JSON.stringify((FSharpStation_JsonEncoder.j$4())(a$4));
       }
-      function g$14(v$2)
+      function g$16(v$2)
       {
        return Concurrency.Return(v$2);
       }
-      function g$15(m$4)
+      function g$17(m$4)
       {
        Operators$5.FailWith(m$4);
       }
       _this=Messaging.wsStationClient();
       _this.payloadProcessorO={
        $:1,
-       $0:(f$9=function(x$6)
+       $0:(f$10=function(x$6)
        {
-        return Messaging.processMessage(f$11(x$6));
-       },(g$13=(f$10=function(x$6)
+        return Messaging.processMessage(f$12(x$6));
+       },(g$15=(f$11=function(x$6)
        {
-        return g$14(f$12(x$6));
+        return g$16(f$13(x$6));
        },function(v$2)
        {
-        return Concurrency.Bind(v$2,f$10);
+        return Concurrency.Bind(v$2,f$11);
        }),function(x$6)
        {
-        return g$13(f$9(x$6));
+        return g$15(f$10(x$6));
        }))
       };
       AsyncResult.iterA(function(x$6)
       {
-       return g$15(Global.String(x$6));
+       return g$17(Global.String(x$6));
       },Global.ignore,_this.sendAndForget(WebSockets.msgType(MessageType.MsgInformation,(dst=WebSockets.MessageBrokerAddress(),(p=JSON.stringify(((Provider.Id())())("Registering Processor")),MessageGeneric.New(new Address({
        $:0,
        $0:""
@@ -13097,11 +13175,11 @@
       });
      }),function(a$4)
      {
-      ((function($7)
+      ((function($6)
       {
-       return function($8)
+       return function($7)
        {
-        return $7(Utils.toSafe($8));
+        return $6(Utils.toSafe($7));
        };
       }(function(s$1)
       {
@@ -13124,17 +13202,13 @@
  {
   return FSharpStation_JsonEncoder._v$6?FSharpStation_JsonEncoder._v$6:FSharpStation_JsonEncoder._v$6=(Provider.EncodeUnion(void 0,"$",[[0,[["$0","Item",Provider.Id(),0]]],[1,[["$0","Item",Provider.EncodeArray(FSharpStation_JsonEncoder.j$7),0]]]]))();
  };
- FSharpStation_JsonDecoder.j$5=function()
- {
-  return FSharpStation_JsonDecoder._v$5?FSharpStation_JsonDecoder._v$5:FSharpStation_JsonDecoder._v$5=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",FSharpStation_JsonDecoder.j$6,0]]],[1,[["$0","Item",Provider.DecodeArray(Provider.Id()),0]]]]))();
- };
- FSharpStation_JsonDecoder.j$4=function()
- {
-  return FSharpStation_JsonDecoder._v$4?FSharpStation_JsonDecoder._v$4:FSharpStation_JsonDecoder._v$4=(Provider.DecodeUnion(void 0,"$",[[0,[]],[1,[["$0","Item",Provider.DecodeArray(FSharpStation_JsonDecoder.j$5),0]]],[2,[["$0","Item",FSharpStation_JsonDecoder.j$5,0]]],[3,[["$0","Item",FSharpStation_JsonDecoder.j$5,0]]],[4,[["$0","Item",Provider.DecodeArray(Provider.Id()),0]]],[5,[]],[6,[["$0","Item",Provider.Id(),0]]],[7,[["$0","Item1",Provider.Id(),0],["$1","Item2",Provider.Id(),0]]]]))();
- };
  FSharpStation_JsonDecoder.j$6=function()
  {
   return FSharpStation_JsonDecoder._v$6?FSharpStation_JsonDecoder._v$6:FSharpStation_JsonDecoder._v$6=(Provider.DecodeUnion(SnippetId,"$",[[0,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ FSharpStation_JsonDecoder.j$5=function()
+ {
+  return FSharpStation_JsonDecoder._v$5?FSharpStation_JsonDecoder._v$5:FSharpStation_JsonDecoder._v$5=(Provider.DecodeUnion(void 0,"$",[[0,[["$0","Item",FSharpStation_JsonDecoder.j$6,0]]],[1,[["$0","Item",Provider.DecodeArray(Provider.Id()),0]]]]))();
  };
  FSharpStation_GeneratedPrintf.p=function($1)
  {
@@ -13150,7 +13224,7 @@
  };
  FSharpStation_JsonEncoder.j$7=function()
  {
-  return FSharpStation_JsonEncoder._v$7?FSharpStation_JsonEncoder._v$7:FSharpStation_JsonEncoder._v$7=(Provider.EncodeRecord(void 0,[["snpId",FSharpStation_JsonEncoder.j$8,0],["snpName",Provider.Id(),0],["snpContent",Provider.Id(),0],["snpParentIdO",FSharpStation_JsonEncoder.j$8,1],["snpPredIds",Provider.EncodeSet(FSharpStation_JsonEncoder.j$8),0],["snpProperties",Provider.EncodeArray(Provider.EncodeTuple([Provider.Id(),Provider.Id()])),0],["snpGeneration",Provider.Id(),0]]))();
+  return FSharpStation_JsonEncoder._v$7?FSharpStation_JsonEncoder._v$7:FSharpStation_JsonEncoder._v$7=(Provider.EncodeRecord(void 0,[["snpId",FSharpStation_JsonEncoder.j$8,0],["snpName",Provider.Id(),0],["snpContent",Provider.Id(),0],["snpParentIdO",FSharpStation_JsonEncoder.j$8,1],["snpPredIds",Provider.EncodeSet(FSharpStation_JsonEncoder.j$8),0],["snpProperties",Provider.EncodeArray(Provider.EncodeTuple([Provider.Id(),Provider.Id()])),0],["snpModified",Provider.EncodeDateTime(),0]]))();
  };
  FSharpStation_JsonEncoder.j$8=function()
  {
@@ -13466,5 +13540,9 @@
  FSharpStation_JsonDecoder.j=function()
  {
   return FSharpStation_JsonDecoder._v?FSharpStation_JsonDecoder._v:FSharpStation_JsonDecoder._v=(Provider.DecodeRecord(void 0,[["from",FSharpStation_JsonDecoder.j$1,0],["destination",FSharpStation_JsonDecoder.j$1,0],["msgType",FSharpStation_JsonDecoder.j$2,0],["subtype",Provider.Id(),0],["id",Provider.Id(),0],["payload",Provider.Id(),0],["replier",FSharpStation_JsonDecoder.j$3,0]]))();
+ };
+ FSharpStation_JsonDecoder.j$4=function()
+ {
+  return FSharpStation_JsonDecoder._v$4?FSharpStation_JsonDecoder._v$4:FSharpStation_JsonDecoder._v$4=(Provider.DecodeUnion(void 0,"$",[[0,[]],[1,[["$0","Item",Provider.DecodeArray(FSharpStation_JsonDecoder.j$5),0]]],[2,[["$0","Item",FSharpStation_JsonDecoder.j$5,0]]],[3,[["$0","Item",FSharpStation_JsonDecoder.j$5,0]]],[4,[["$0","Item",Provider.DecodeArray(Provider.Id()),0]]],[5,[]],[6,[["$0","Item",Provider.Id(),0]]],[7,[["$0","Item1",Provider.Id(),0],["$1","Item2",Provider.Id(),0]]]]))();
  };
 }());

@@ -1,10 +1,15 @@
 #nowarn "3242"
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1558459418666 -d:NOFRAMEWORK --noframework -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1559673172621 -d:TEE -d:WEBSHARPER
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\FSharpStation\src"
+//#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
+//#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
@@ -29,8 +34,6 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
-//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
-//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\LayoutEngine\bin\LayoutEngine.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.Hosting\lib\net451\Microsoft.Owin.Hosting.dll"
@@ -42,45 +45,22 @@
 //#nowarn "3242"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1558459418666
+//#define FSharpStation1559673172621
 #if INTERACTIVE
 module FsRoot   =
 #else
 namespace FsRoot
 #endif
 
-    #if WEBSHARPER
-    //#nowarn "3242" 
-    
-    open WebSharper
-    open WebSharper.JavaScript
-    open WebSharper.UI
-    open WebSharper.UI.Client
-    type on   = WebSharper.UI.Html.on
-    type attr = WebSharper.UI.Html.attr
-    #else
-    /// dummy WebSharper definition in order to avoid having to use #if WEBSHARPER all the time
-    module WebSharper =
-        type RpcAttribute() =
-            let a = 1
-        type JavaScriptAttribute(translate:bool) =
-            let a = 1
-            new() = JavaScriptAttribute true
-        type InlineAttribute(code:string) =
-            let a = 1
-            new() = InlineAttribute ""
-        type DirectAttribute(code:string) =
-            let a = 1
-    
-    open WebSharper
-    
-    #endif
-    //#define NOFRAMEWORK --noframework
+    #if !NETSTANDARD20
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
     
+    #if WEBSHARPER
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
     
@@ -99,7 +79,38 @@ namespace FsRoot
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    #endif
+    #endif
+    #if WEBSHARPER
+    //#nowarn "3242" 
     
+    open WebSharper
+    open WebSharper.JavaScript
+    open WebSharper.UI
+    open WebSharper.UI.Client
+    type on   = WebSharper.UI.Html.on
+    type attr = WebSharper.UI.Html.attr
+    #else
+    /// dummy WebSharper definition in order to avoid having to use #if WEBSHARPER all the time
+    module WebSharper =
+        type RpcAttribute() =
+            inherit System.Attribute()
+            let a = 1
+        type JavaScriptAttribute(translate:bool) =
+            inherit System.Attribute()
+            let a = 1
+            new() = JavaScriptAttribute true
+        type InlineAttribute(code:string) =
+            inherit System.Attribute()
+            let a = 1
+            new() = InlineAttribute ""
+        type DirectAttribute(code:string) =
+            inherit System.Attribute()
+            let a = 1
+    
+    open WebSharper
+    
+    #endif
     
         /// Essentials that can be converted to JavaScript with WebSharper
         [< JavaScript ; AutoOpen >]
@@ -126,6 +137,13 @@ namespace FsRoot
                 match box v with
                 | :? string as s -> printfn "%s" s
                 | __             -> printfn "%A" v
+            
+            //#define TEE
+            
+            let [< Inline "new Date(0).getTime()" >] Utc1970_01_01                 = System.DateTime(1970,1,1,0,0,0,System.DateTimeKind.Utc)
+            let [< Inline "$d"                    >] date2Long (d:System.DateTime) = d.Subtract(Utc1970_01_01).Ticks / 10000L
+            let [< Inline "$l"                    >] long2Date (l:int64          ) = Utc1970_01_01.Add(System.TimeSpan(l * 10000L) )
+            
             
             /// Extensible type for error messages, warnings and exceptions
             type ResultMessage<'M> =
@@ -1469,6 +1487,7 @@ namespace FsRoot
                 | PrepoNoWarn of string
                 | PrepoI      of string
                 | PrepoIf     of string
+                | PrepoElIf   of string
                 | PrepoElse   
                 | PrepoEndIf
                 | PrepoLight  of bool
@@ -1482,33 +1501,93 @@ namespace FsRoot
             
                 let separatePrepros (code:string[]) =
                     let  quoted (line:string) = line.Trim().Split([| "\""       |], System.StringSplitOptions.RemoveEmptyEntries) |> Seq.tryLast |> Option.defaultValue line
-                    let  define (line:string) = line.Trim().Split([| "#define " |], System.StringSplitOptions.RemoveEmptyEntries) |> Seq.tryHead |> Option.defaultValue ""
+                    let  rest   (line:string) = line.Trim() |> String.splitInTwoO " " |> Option.map snd |> Option.defaultValue "" |> fun s -> s.Trim()
                     let  comment = ((+)"//") 
-                    let  prepro (line:string) = match true with 
-                                                | true when line       .StartsWith("#define") -> (comment line, line |> define |> PrepoDefine)
-                                                | true when line       .StartsWith("#cd"    ) -> (comment line, line |> quoted |> PrepoCd    )
-                                                | true when line       .StartsWith("#r"     ) -> (comment line, line |> quoted |> PrepoR     )
-                                                | true when line       .StartsWith("#load"  ) -> (comment line, line |> quoted |> PrepoLoad  )
-                                                | true when line       .StartsWith("#nowarn") -> (comment line, line |> quoted |> PrepoNoWarn)
-                                                | true when line.Trim().StartsWith("# "     ) -> (comment line, line |> quoted |> PrepoLine  )
-                                                | true when line.Trim().StartsWith("#line"  ) -> (comment line, line |> quoted |> PrepoLine  )
-                                                | true when line       .StartsWith("#I"     ) -> (comment line, line |> quoted |> PrepoI     )
-                                                | true when line       .StartsWith("#if"    ) -> (        line, line           |> PrepoIf    )
-                                                | true when line       .StartsWith("#else"  ) -> (        line,                   PrepoElse  )
-                                                | true when line       .StartsWith("#endif" ) -> (        line,                   PrepoEndIf )
-                                                | true when line       .StartsWith("#light" ) -> (        line, false          |> PrepoLight )
-                                                | true when line       .StartsWith("#"      ) -> (comment line, line           |> PrepoOther )
-                                                | _                                           -> (        line,                   NoPrepo    ) 
+                    let  prepro (line:string) = 
+                        match true with 
+                        | true when line       .StartsWith("#define") -> (comment line, line |> rest   |> PrepoDefine)
+                        | true when line       .StartsWith("#cd"    ) -> (comment line, line |> quoted |> PrepoCd    )
+                        | true when line       .StartsWith("#r"     ) -> (comment line, line |> quoted |> PrepoR     )
+                        | true when line       .StartsWith("#load"  ) -> (comment line, line |> quoted |> PrepoLoad  )
+                        | true when line       .StartsWith("#nowarn") -> (comment line, line |> quoted |> PrepoNoWarn)
+                        | true when line.Trim().StartsWith("# "     ) -> (comment line, line |> quoted |> PrepoLine  )
+                        | true when line.Trim().StartsWith("#line"  ) -> (comment line, line |> quoted |> PrepoLine  )
+                        | true when line       .StartsWith("#I"     ) -> (comment line, line |> quoted |> PrepoI     )
+                        | true when line       .StartsWith("#if"    ) -> (        line, line |> rest   |> PrepoIf    )
+                        | true when line       .StartsWith("#elif"  ) -> (        line, line |> rest   |> PrepoElIf  )
+                        | true when line       .StartsWith("#else"  ) -> (        line,                   PrepoElse  )
+                        | true when line       .StartsWith("#endif" ) -> (        line,                   PrepoEndIf )
+                        | true when line       .StartsWith("#light" ) -> (        line, false          |> PrepoLight )
+                        | true when line       .StartsWith("#"      ) -> (comment line, line           |> PrepoOther )
+                        | _                                           -> (        line,                   NoPrepo    ) 
                     code |> Array.map prepro
+            
+                type PrepState = 
+                | LevelZero
+                | TrueValue of PrepState
+                | Looking   of PrepState
+                | Found     of PrepState
+            
+                let isActive = function
+                | LevelZero
+                | TrueValue _ -> true
+                | Looking   _ -> false
+                | Found     _ -> false
+            
+                let prev = function
+                | LevelZero    -> LevelZero
+                | TrueValue pr -> pr
+                | Looking   pr -> pr
+                | Found     pr -> pr
+            
+                let filterPreps (preps:PreproDirective seq) =
+                    let  defines  = preps |> Seq.choose (function | PrepoDefine d -> Some d | _ -> None) |> Seq.distinct |> Seq.toArray
+                    let isDefined (def:string) =    defines |> Seq.contains (def.Replace("!","").Trim()) |> (if def.Trim().StartsWith "!" then not else id)
+                    (LevelZero, preps) 
+                    ||> Seq.mapFold(fun st prep ->
+                        match st, prep with
+                        | TrueValue _ , PrepoIf    def             
+                        | LevelZero   , PrepoIf    def -> None     , if isDefined def then TrueValue st else Looking st
+                        | Looking   _ , PrepoIf    _             
+                        | Found     _ , PrepoIf    _   -> None     , Found st
+                        |           _ , PrepoEndIf     -> None     , prev  st
+                        | TrueValue pr, PrepoElIf  _
+                        | TrueValue pr, PrepoElse      -> None     , Found     pr
+                        | Looking   pr, PrepoElIf  def -> None     , if isDefined def then TrueValue st else Looking pr
+                        | Looking   pr, PrepoElse      -> None     , TrueValue pr
+                        | Found     pr, PrepoElIf  _
+                        | Found     pr, PrepoElse      -> None     , Found     pr
+                        | TrueValue _ , _             
+                        | LevelZero   , _              -> Some prep, st
+                        | _                            -> None     , st
+                        )
+                    |>  fst
+                    |>  Seq.choose id
+                    |>  Seq.toArray
+            
+                let getTopDirectives (fsNass:(string * PreproDirective) seq) =
+                    let  directs  = fsNass |> Seq.map snd |> Seq.filter (function 
+                                        | PrepoDefine _
+                                        | PrepoR      _ 
+                                        | PrepoI      _
+                                        | PrepoNoWarn _
+                                        | PrepoCd     _ 
+                                        | PrepoIf     _
+                                        | PrepoEndIf  
+                                        | PrepoElIf   _
+                                        | PrepoElse    -> true
+                                        |_             -> false) |> Seq.toArray
+                    let  code     = fsNass |> Seq.map fst |> Seq.toArray
+                    code, directs
                     
-                let separateDirectives (fsNass:(string * PreproDirective) seq) =
-                    let  defines  = fsNass |> Seq.choose (snd >> (function | PrepoDefine d      -> Some d      | _ -> None)) |> Seq.distinct |> Seq.toArray
-                    let  assembs  = fsNass |> Seq.choose (snd >> (function | PrepoR      assemb -> Some assemb | _ -> None)) |> Seq.distinct |> Seq.toArray
-                    let  prepoIs  = fsNass |> Seq.choose (snd >> (function | PrepoI      d      -> Some d      | _ -> None)) |> Seq.distinct |> Seq.toArray
-                    let  nowarns  = fsNass |> Seq.choose (snd >> (function | PrepoNoWarn d      -> Some d      | _ -> None)) |> Seq.distinct |> Seq.toArray
-                    let  cd       = fsNass |> Seq.choose (snd >> (function | PrepoCd     dir    -> Some dir    | _ -> None)) |> Seq.tryHead
-                    let  code     = fsNass |> Seq.map     fst                                                                                |> Seq.toArray
-                    code, assembs, defines, prepoIs, nowarns, cd
+                let separateDirectives (fsNass:PreproDirective seq) =
+                    let  defines  = fsNass |> Seq.choose (function | PrepoDefine d      -> Some d      | _ -> None) |> Seq.distinct |> Seq.toArray
+                    let  preps    = filterPreps fsNass
+                    let  assembs  = preps  |> Seq.choose (function | PrepoR      assemb -> Some assemb | _ -> None) |> Seq.distinct |> Seq.toArray
+                    let  prepoIs  = preps  |> Seq.choose (function | PrepoI      d      -> Some d      | _ -> None) |> Seq.distinct |> Seq.toArray
+                    let  nowarns  = preps  |> Seq.choose (function | PrepoNoWarn d      -> Some d      | _ -> None) |> Seq.distinct |> Seq.toArray
+                    let  cd       = preps  |> Seq.choose (function | PrepoCd     dir    -> Some dir    | _ -> None) |> Seq.tryHead
+                    assembs, defines, prepoIs, nowarns, cd
                     
                 let getSourceDir srcDir (lines:string[]) =
                     match lines.[0], Array.tryItem 1 lines with
@@ -1535,17 +1614,17 @@ namespace FsRoot
                 snpParentIdO    : SnippetId option
                 snpPredIds      : SnippetId Set
                 snpProperties   : (string* string) []
-                snpGeneration   : int
+                snpModified     : System.DateTime
             }
             
             type SnippetReference =
             | RefSnippetId   of SnippetId
             | RefSnippetPath of string[]
             
-            type Reduced = ((SnippetId * string * int * int) [] * string [] * string [] * string [] * string [] * string [] * string option) option
+            type Reduced = ((SnippetId * string * int * int) [] * string [] * FsCode.PreproDirective [] ) option
             
             type SnippetCollection = {
-                generation       : int
+                generation       : System.DateTime
                 ordered          : Snippet seq
                 fetcher          : SnippetId -> Snippet Option
                 predecesorsCache : unit -> ((SnippetId -> SnippetId list option) * (SnippetId -> (SnippetId -> SnippetId list) -> SnippetId list))
@@ -1558,10 +1637,11 @@ namespace FsRoot
                 open FusionM
                 open Operators
             
-                let getNextGeneration, setGeneration = 
-                    let mutable generation  = 1
-                    (fun () -> generation <- generation + 1 ; generation)
-                  , (fun n  -> generation <- n                          )  
+                let getNextModified() = DateTime.Now
+                //let getNextGeneration, setGeneration = 
+                //    let mutable generation  = 1
+                //    (fun () -> generation <- generation + 1 ; generation)
+                //  , (fun n  -> generation <- n                          )  
                 let New name content parentO = 
                     {
                         snpId           = SnippetId <| System.Guid.NewGuid()   
@@ -1570,7 +1650,7 @@ namespace FsRoot
                         snpParentIdO    = parentO
                         snpPredIds      = Set.empty
                         snpProperties   = Array.empty
-                        snpGeneration   = getNextGeneration()
+                        snpModified     = getNextModified()
                     }
                 let defaultSnippet              = {
                     snpId           = SnippetId <| System.Guid.Empty
@@ -1579,7 +1659,7 @@ namespace FsRoot
                     snpParentIdO    = None
                     snpPredIds      = Set.empty
                     snpProperties   = Array.empty
-                    snpGeneration   = 0
+                    snpModified     = Utc1970_01_01
                 }    
                 let snippetName name (content: string) =
                     if name <> "" then name else 
@@ -1603,8 +1683,8 @@ namespace FsRoot
                 let snippetORm        sid = readerFun (fun { fetcher    = ftch } -> ftch sid                                               )
                 let parentORm         snp = readerFun (fun { fetcher    = ftch } -> snp.snpParentIdO |> Option.bind ftch                   )
                 let predecessorsRm    snp = readerFun (fun { fetcher    = ftch } -> snp.snpPredIds   |> Seq.choose  ftch                   )
-                let maxGenerationRm   ()  = readerFun (fun { ordered    = snps } -> snps |> Seq.map (fun s -> s.snpGeneration) |> Seq.max  )
-                let modifiedRm        snp = readerFun (fun { generation = gen  } -> snp.snpGeneration > gen                                )
+                let maxGenerationRm   ()  = readerFun (fun { ordered    = snps } -> snps |> Seq.map (fun s -> s.snpModified  ) |> Seq.max  )
+                let modifiedRm        snp = readerFun (fun { generation = gen  } -> snp.snpModified   > gen                                )
                 let childrenRm        sid = readerFun (fun { ordered    = snps } -> snps |> Seq.filter(fun s -> s.snpParentIdO = Some sid) )
                 let orderedRm         ()  = readerFun (fun { ordered    = snps } -> snps                                                   )
                 let prepareCodeRm     snp = readerFun (fun { prepCode   = prep } -> prep snp                                               )
@@ -1662,7 +1742,7 @@ namespace FsRoot
                 let uniquePredsRm     snp = predsLRmMemo() snp.snpId
                 let predsGenerationRm snp = fusion {
                                                 let! preds = uniquePredsRm snp >>= traverseSeq snippetRm
-                                                return preds (* |> Seq.append [ snp ] *) |> Seq.map (fun snp -> snp.snpGeneration) |> Seq.max 
+                                                return preds (* |> Seq.append [ snp ] *) |> Seq.map (fun snp -> snp.snpModified  ) |> Seq.max 
                                             }
                 let rec modifiedRecRm snp = fusion {
                     let! modified         = modifiedRm     snp
@@ -1713,33 +1793,30 @@ namespace FsRoot
                     let  indentF, prfx = if indent = 0         then (id, "") else (Array.map    (fun (l, pr) -> String.replicate indent " " + l, pr), sprintf"(%d)" indent)
                     let! code          = prepareCodeRm snp
                     //let  name          = nameSanitized snp
-                    let  code, assembs, defines, prepIs, nowarns, cdO =
+                    let  code, directs =
                         code.Split('\n')
                         |> FsCode.separatePrepros
                         |> indentF
-                        |> FsCode.separateDirectives
+                        |> FsCode.getTopDirectives
                     return
-                        [| snp.snpId, snippetName snp.snpName snp.snpContent, code.Length, indent |] , code, assembs, defines, prepIs, nowarns,cdO
+                        [| snp.snpId, snippetName snp.snpName snp.snpContent, code.Length, indent |] , code, directs
                 }
-                let addSeps (lines1:(SnippetId*string*int*int)[], code1:string[], assembs1:string[], defines1:string[], prepIs1:string[], nowarns1:string[], cdO1:string option)
-                            (lines2:(SnippetId*string*int*int)[], code2:string[], assembs2:string[], defines2:string[], prepIs2:string[], nowarns2:string[], cdO2:string option) =
+                let addSeps (lines1:(SnippetId*string*int*int)[], code1:string[], directs1:FsCode.PreproDirective[])
+                            (lines2:(SnippetId*string*int*int)[], code2:string[], directs2:FsCode.PreproDirective[]) =
                     Array.append lines1   lines2
                   , Array.append code1    code2
-                  , Seq  .append assembs1 assembs2 |> Seq.distinct |> Seq.toArray
-                  , Seq  .append defines1 defines2 |> Seq.distinct |> Seq.toArray
-                  , Seq  .append prepIs1  prepIs2  |> Seq.distinct |> Seq.toArray
-                  , Seq  .append nowarns1 nowarns2 |> Seq.distinct |> Seq.toArray
-                  , cdO1 |> function None -> cdO2 |_-> cdO1
+                  , Array.append directs1 directs2
                 let reducedCodeRm  snippets = fusion {
                     let! parts    = snippets |> traverseSeq separateCodeRm
                     let  reduced  = parts
-                                    |> fun snps -> if snps |> Seq.isEmpty then seq [ [||],  [||],  [||],  [||],  [||],  [||], None ] else snps
+                                    |> fun snps -> if snps |> Seq.isEmpty then seq [ [||],  [||],  [||] ] else snps
                                     |> Seq.reduce addSeps
-                                    |> fun (lines, code                                         , assembs, defines, prepIs, nowarns, cdO) ->
-                                           (lines, code |> String.concat "\n" |> Array.singleton, assembs, defines, prepIs, nowarns, cdO)
+                                    |> fun (lines, code                                         , directs) ->
+                                           (lines, code |> String.concat "\n" |> Array.singleton, directs)
                     return reduced
                 }
-                let finishCode (lines:(SnippetId*string*int*int)[],code:string[], assembs:string[], defines:string[], prepIs:string[], nowarns:string[], cdO: string option) =
+                let finishCode (lines:(SnippetId*string*int*int)[],code:string[], directs:FsCode.PreproDirective[]) =
+                    let assembs, defines, prepIs, nowarns, cdO = FsCode.separateDirectives directs
                     let config = defines |> Seq.sort |> Seq.map ((+)"-d:") |> String.concat " "
                     let part1  =
                       [ if config <> "" then yield "////" + config
@@ -2247,10 +2324,10 @@ namespace FsRoot
                   CommArgCollection
                     [|
                        wscProjectType /=       "Site"
-                       wscWebSite     /= (rtn (fun d -> d +/+ "website" ) <*> gS intDirectory )
+                       wscWebSite     /= (rtn (fun d   -> d +/+ "website"  ) <*> gS intDirectory )
+                       wscJsOutput    /= (rtn (fun d n -> d +/+ n + "0.js" ) <*> gS wscWebSite  <*> gS intName )
                        wscProjectFile /=       gS intName
                        wscJSMap       /=       true
-                       wscJsOutput    /= (rtn (fun d n   -> d +/+ n + "0.js" ) <*> gS wscWebSite    <*> gS intName                     )
                     |] 
                  
                 let wsProjectOptions ()=
@@ -2342,7 +2419,7 @@ namespace FsRoot
                 let endToken = "xXxY" + "yYyhH"
                 type FsiExe(config:string, workingDir, ?outHndl, ?errHndl) =
                     let silent                     = ref false
-                    let fsiexe                     = @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Compiler.Tools\tools" +/+ if config.Contains "-d:FSI32BIT" then "fsi.exe" else "fsianycpu.exe"
+                    let fsiexe                     = @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Test2\FSharp.Compiler.Tools\tools" +/+ if config.Contains "-d:FSI32BIT" then "fsi.exe" else "fsianycpu.exe"
                     let startInfo                  = ProcessStartInfo(fsiexe, config, WorkingDirectory= workingDir)
                     let outHndlS                   = outHndl |> Option.map(fun outh v -> if !silent then () else outh v)
                     let errHndlS                   = errHndl |> Option.map(fun errh v -> if !silent then () else errh v)
@@ -2414,7 +2491,7 @@ namespace FsRoot
                 }
             
         /// Essentials that run in Javascript (WebSharper)
-        //#define WEBSHARPER
+        //#define WEBSHARPER 
         [< JavaScript ; AutoOpen >]
         module LibraryJS =
             module Promise =
@@ -2579,6 +2656,7 @@ namespace FsRoot
                 
             
             module Serializer =
+                open System
                 
                 type SerS<'T> = ('T  -> string)        //      Serialization function
                 type SerD<'T> = (obj -> 'T    )        //    deSerialization function
@@ -2595,10 +2673,11 @@ namespace FsRoot
                 let [< Inline >] inline sprintQ v = sprintf "\"%A\""   v
                 let              inline sprintA v = String.concat ", " v |> sprintf "[%s]"
                 
-                let serFloat  : Ser<float > = sprintU        , (unbox >> ifUndef 0.0   )
-                let serInt    : Ser<int   > = sprintU        , (unbox >> ifUndef 0     )
-                let serBool   : Ser<bool  > = sprintU        , (unbox >> ifUndef false )
-                let serString : Ser<string> = Json.Serialize , (unbox >> ifUndef ""    )
+                let serFloat  : Ser<float   > = sprintU               , (unbox >> ifUndef 0.0             )
+                let serInt    : Ser<int     > = sprintU               , (unbox >> ifUndef 0               )
+                let serBool   : Ser<bool    > = sprintU               , (unbox >> ifUndef false           )
+                let serString : Ser<string  > = Json.Serialize        , (unbox >> ifUndef ""              )
+                let serDate   : Ser<DateTime> = (date2Long >> sprintU), (unbox >> ifUndef 0L >> long2Date )
             
                 let [< Inline >] inline serId  (get: 'a->System.Guid) (set:System.Guid->'a) (print: 'a->string) : Ser<'a> =
                     let s           = System.Guid.Empty |> set |> print |> fun (s:string) -> s.Split ' ' |> Array.head
@@ -2607,11 +2686,14 @@ namespace FsRoot
                     let deserialize = fun (x: obj) -> x?(s) |> deserGuid |> set
                     serialize, deserialize
             
-                let serField (name:string) (get:'D->'e) (set:'e->'D->'D) (serFuncs:('e->string) * (obj->'e)) : string * SerS<'D> * ('D -> SerD<'D>) = 
-                    serFuncs |> fun (ser, deser) -> name, get >> ser, (fun rc o -> set (deser o) rc) 
+                let serField (name:string) (get:'D->'e) (set:'e->'D->'D) (serFuncs:('e->string) * (obj->'e)) : string * _ * ('D -> SerD<'D>) = 
+                    serFuncs |> fun (ser, deser) -> name, get >> ser >> Some, (fun rc o -> set (deser o) rc) 
                     
-                let [< Inline >] serRecord init (fields: #seq<(string * SerS<'D> * ('D -> SerD<'D>))>) : Ser<'D> =
-                    let serialize   dim = fields |> Seq.map  (fun     (n,  ser, _deser) -> sprintf "%A: %s" n (ser dim)) |> String.concat ", " |> sprintf "{%s}"
+                let serFieldO (name:string) (get:'D->'e option) (set:'e->'D->'D) (serFuncs:('e->string) * (obj->'e)) : string * _ * _ = 
+                    serFuncs |> fun (ser, deser) -> name, get >> Option.map ser, (fun rc o -> if isUndefined o then rc else set (deser o) rc) 
+                    
+                let [< Inline >] serRecord init (fields: #seq<(string * ('D -> string option) * ('D -> SerD<'D>))>) : Ser<'D> =
+                    let serialize   dim = fields |> Seq.choose(fun (n, ser, _deser) -> ser dim |> Option.map (sprintf "%A: %s" n)) |> String.concat ", " |> sprintf "{%s}"
                     let deserialize o   = if isUndefined o then init else fields |> Seq.fold (fun dim (n, _ser,  deser) ->  deser dim (o?(n)) )   init
                     serialize, deserialize
                 
@@ -3499,7 +3581,7 @@ namespace FsRoot
                 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
                 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
                 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
-                
+                //#define WEBSHARPER
                 open WebSharper
                 
                 let MessageBrokerId  = "<MessageBroker>"
@@ -3890,7 +3972,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/e2c502cb-d20a-4e6c-b75c-836776fed43f"
+                    "http://localhost:9005/#/Snippet/6ee01ba8-84e7-4280-946c-63dbe3cb9aec"
                 #endif
                 
                 let extractEndPoint() = 
@@ -4083,7 +4165,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1558459418666"
+                let mutable fsharpStationAddress = Address "FSharpStation1559673172621"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -4551,7 +4633,7 @@ namespace FsRoot
             
             let private snippets               = ListModel<SnippetId, Snippet> (fun s -> s.snpId)
             let private hierarchy              = Var.Create [||]
-            let private generation             = Var.Create 5
+            let private generation             = Var.Create Utc1970_01_01
             let         currentSnippetIdOV     = Var.Create (None:SnippetId option)
             let private codeSnippetIdOV        = Var.Create (None:SnippetId option)
             let private collapsedV             = Var.Create Set.empty
@@ -4584,7 +4666,7 @@ namespace FsRoot
             
             let setCurrentSnippetIdO snpIdO    = snpIdO |> Option.iter expandParents 
                                                  currentSnippetIdOV.Set snpIdO
-            let setSnippet                 snp = if snp.snpId.Id <> System.Guid.Empty then snippets.Add { snp with snpGeneration = (runReader (fun e -> print e; 999) <| Snippet.maxGenerationRm()) + 1 }
+            let setSnippet                 snp = if snp.snpId.Id <> System.Guid.Empty then snippets.Add { snp with snpModified = System.DateTime.Now }
             let getSnippetsGen              () = snippets.Value, generation.Value, collapsedV.Value
         
             let getParentIdONotMemo      snpId = snippets.TryFindByKey snpId |> Option.bind(fun s -> s.snpParentIdO)
@@ -4646,8 +4728,8 @@ namespace FsRoot
                                                  }) 
             let FsCodeW                        = codeAndStartsW |> View.Map fst
             let codeStartsW                    = codeAndStartsW |> View.Map snd
-            let hasChangedW                snp = V (generation.V < snp.snpGeneration )
-            let SaveAsClassW                   = View.Map2 (fun snps gen -> if Seq.exists (fun snp -> snp.snpGeneration > gen) snps then "btn-primary" else "") 
+            let hasChangedW                snp = V (generation.V < snp.snpModified )
+            let SaveAsClassW                   = View.Map2 (fun snps gen -> if Seq.exists (fun snp -> snp.snpModified > gen) snps then "btn-primary" else "") 
                                                     snippets  .View 
                                                     generation.View
             let currentPathW                   = currentSnippetW
@@ -5457,7 +5539,16 @@ namespace FsRoot
                                                                                      |> AsyncResult.map fst
                                                                                      |> AsyncResult.absorbO (fun () -> errorMsgf "Property %s not found" p)
             let setCurrentProperty      p v = Snippets.setProperty Snippets.currentSnippetV.Value p v
+            let scrollToBottom (el:Dom.Element) = 
+                async { 
+                    do! Async.Sleep 100
+                    do  el.ScrollTop <- el.ScrollHeight
+                } |> Async.Start
         
+            let setScrollToBottom =
+                let mutable elO :Dom.Element option = None
+                outputMsgs.View |> View.Sink(fun _s -> elO |> Option.iter scrollToBottom )
+                fun (el:Dom.Element) -> elO <- Some el ; printfn "setScrollToBottom"
         
         module Serializer =
             open Serializer
@@ -5466,29 +5557,31 @@ namespace FsRoot
         
             let serSnippet   : Ser<Snippet  > = 
                 [|
-                    serSnippetId                                         |> serField "snpId"         (fun s -> s.snpId        ) (fun v s -> { s with snpId         = v } )
-                    serString                                            |> serField "snpName"       (fun s -> s.snpName      ) (fun v s -> { s with snpName       = v } )
-                    serString                                            |> serField "snpContent"    (fun s -> s.snpContent   ) (fun v s -> { s with snpContent    = v } )
-                    serSnippetId                     |> serOpt           |> serField "snpParentIdO"  (fun s -> s.snpParentIdO ) (fun v s -> { s with snpParentIdO  = v } )
-                    serSnippetId                     |> serSet           |> serField "snpPredIds"    (fun s -> s.snpPredIds   ) (fun v s -> { s with snpPredIds    = v } )
-                    serString              |> serDup serString |> serArr |> serField "snpProperties" (fun s -> s.snpProperties) (fun v s -> { s with snpProperties = v } )
-                    serInt                                               |> serField "snpGeneration" (fun s -> s.snpGeneration) (fun v s -> { s with snpGeneration = v } )
+                    serSnippetId                                         |> serField  "snpId"         (fun s ->      s.snpId        ) (fun v s -> { s with snpId         =                                v  } )
+                    serString                                            |> serField  "snpName"       (fun s ->      s.snpName      ) (fun v s -> { s with snpName       =                                v  } )
+                    serString                                            |> serField  "snpContent"    (fun s ->      s.snpContent   ) (fun v s -> { s with snpContent    =                                v  } )
+                    serSnippetId                     |> serOpt           |> serField  "snpParentIdO"  (fun s ->      s.snpParentIdO ) (fun v s -> { s with snpParentIdO  =                                v  } )
+                    serSnippetId                     |> serSet           |> serField  "snpPredIds"    (fun s ->      s.snpPredIds   ) (fun v s -> { s with snpPredIds    =                                v  } )
+                    serString              |> serDup serString |> serArr |> serField  "snpProperties" (fun s ->      s.snpProperties) (fun v s -> { s with snpProperties =                                v  } )
+                    serInt                                               |> serFieldO "snpGeneration" (fun s -> None                ) (fun v s -> { s with snpModified   = Utc1970_01_01.AddMinutes(float v) } )
+                    serDate                                              |> serFieldO "snpModified"   (fun s -> Some s.snpModified  ) (fun v s -> { s with snpModified   =                                v  } )
                 |] |> serRecord (Snippet.New "" "" None)
             
             type Model = {
                 snippets   : Snippet []
-                generation : int
+                modified   : System.DateTime
                 collapsed  : SnippetId Set
             }
         
-            let getModel(snippets, gen, coll) =  { snippets = snippets |> Seq.toArray ;  generation = gen ; collapsed = coll}
+            let getModel(snippets, gen, coll) =  { snippets = snippets |> Seq.toArray ;  modified = gen ; collapsed = coll}
         
             let serModel : Ser<Model> =
                 [|
-                    serSnippet                       |> serArr           |> serField "snippets"   (fun m -> m.snippets  ) (fun v m -> { m with snippets   = v } )
-                    serInt                                               |> serField "generation" (fun m -> m.generation) (fun v m -> { m with generation = v } )
-                    serSnippetId                     |> serSet           |> serField "collapsed"  (fun m -> m.collapsed ) (fun v m -> { m with collapsed  = v } )
-                |] |> serRecord { snippets = [||] ; generation = 0 ; collapsed = Set.empty}
+                    serSnippet                       |> serArr           |> serField  "snippets"   (fun m ->      m.snippets  ) (fun v m -> { m with snippets  =                                v  } )
+                    serInt                                               |> serFieldO "generation" (fun m -> None             ) (fun v m -> { m with modified  = Utc1970_01_01.AddMinutes(float v) } )
+                    serDate                                              |> serFieldO "modified"   (fun m -> Some m.modified  ) (fun v m -> { m with modified  =                                v  } )
+                    serSnippetId                     |> serSet           |> serField  "collapsed"  (fun m ->      m.collapsed ) (fun v m -> { m with collapsed =                                v  } )
+                |] |> serRecord { snippets = [||] ; modified = Utc1970_01_01 ; collapsed = Set.empty}
                 
         
         module LoadSave =
@@ -5675,11 +5768,12 @@ namespace FsRoot
         
             let mainDoc() =
                 TemplateLib.Layout()
-                    .LoadFileChanged(  fun ev -> LoadSave.loadTextFile ev.Target)
-                    .LoadFileClear(    fun ev -> ev.Target?value <- ""          )
-                    .ImportFileChanged(fun ev -> Importer.importFile ev.Target  )
-                    .ImportFileClear(  fun ev -> ev.Target?value <- ""          )
-                    .JumpRef(          fun ev -> JumpTo.jumpToRef ev.Target     )
+                    .LoadFileChanged(  fun ev -> LoadSave.loadTextFile ev.Target                  )
+                    .LoadFileClear(    fun ev -> ev.Target?value <- ""                            )
+                    .ImportFileChanged(fun ev -> Importer.importFile ev.Target                    )
+                    .ImportFileClear(  fun ev -> ev.Target?value <- ""                            )
+                    .JumpRef(          fun ev -> JumpTo.jumpToRef ev.Target                       )
+                    //.OutputAfterRender(fun ev -> outputMsgs.View |> View.Sink (scrollToBottom ev) )
                     //|> hookVar "FSharpStation" "Content"     (fun tmp -> tmp.Content     )
                     |> hookVar "FSharpStation" "fileName"      (fun tmp    -> tmp.Filename                    )
                     |> hookVar "FSharpStation" "SnippetName"   (fun tmp    -> tmp.Name                        )
@@ -5732,6 +5826,7 @@ namespace FsRoot
                                        AF.newActF "JumpTo"             <| AF.FunAct1 ((fun o     -> unbox o  |> JumpTo.jumpToRef                   ), "textarea"   )
                                        AF.newActF "ButtonClick"        <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.buttonClick           ), "button"     )
                                        AF.newActF "ActionClick"        <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.actionClick           ), "name"       )
+                                       AF.newActF "SetScrollToBottom"  <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.setScrollToBottom     ), "textarea"   )
                                        AF.newActF "ActionSnp"          <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.actionSnp (unbox o1)  ), "snpPath", "name" )
                                        AF.newActF "setCurrentProperty" <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.setCurrentProperty (unbox o1)  ), "name", "value" )
                                        AF.newActF "setSnippetContent"  <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.setSnippetContent  (unbox o1)  ), "path", "value" )

@@ -1,0 +1,15 @@
+{
+  "generatedBy": "Microsoft.NET.Sdk.Functions-1.0.28",
+  "configurationSource": "attributes",
+  "bindings": [
+    {
+      "type": "queueTrigger",
+      "queueName": "mensajes",
+      "connection": "AzureWebJobsStorage",
+      "name": "mensaje"
+    }
+  ],
+  "disabled": false,
+  "scriptFile": "../bin/ProzperServer.dll",
+  "entryPoint": "FsRoot.ProzperServer+AzureFunctions.passMessages"
+}

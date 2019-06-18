@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,Dict,Monads,Seq,Async,WebSharper,Obj,Result,Builder,Operators,Eff,Eff$1,Done,EffBuilder,EA,Reader,Ask,Log,LogEntry,Rsl,Fail,Asy,Asyn,String,ParseO,Serializer,JsonIntermediate,LibraryJS,Promise,ProzperServer,Basico,IdAliado,IdAuthorize,IdAddress,IdPayment,TypesV0,LatestType,IdAliado$1,IdAuthorize$1,IdAddress$1,IdPayment$1,StatusAliado,TipoAliado,Pais,Estado,Identificacion,Expiracion,NumeroCuenta,NumeroTarjeta,RoutingNumber,TipoTarjeta,TipoCuenta,CuentaBancaria,TarjetaCredito,ConceptoPago,Transaccion,TipoDireccion,ZonaPostal,Direccion,TipoTelefono,Telefono,CorreoElectronico,Genero,DatosPersonales,StatusFormaPago,FormaPago,TipoMensaje,Remitente,Mensaje,PremisasCalculo,DiaPago,IdForAuthorize,Aliado,Modelo,Aliado$1,Buscar,Evento,Respuesta,Rpc,Remoting,CustomXhrProvider,SC$1,ProzperServer_GeneratedPrintf,Seq$1,Concurrency,Arrays,List,IntelliFactory,Runtime,Enumerator,Result$1,Operators$1,Unchecked,Utils,console,Strings,Slice,Collections,FSharpMap,FSharpSet,BalancedTree,Char,Date,DateUtil,Dictionary,Remoting$1,Numeric,System,Guid,Lazy;
+ var Global,FsRoot,Library,Dict,Monads,Seq,Async,WebSharper,Obj,Result,Builder,Operators,Eff,Eff$1,Done,EffBuilder,EA,Reader,Ask,Log,LogEntry,Rsl,Fail,Asy,Asyn,String,ParseO,Serializer,JsonIntermediate,LibraryJS,Promise,ProzperServer,Basico,IdAliado,IdAuthorize,IdAddress,IdPayment,TypesV0,LatestType,IdAliado$1,IdAuthorize$1,IdAddress$1,IdPayment$1,StatusAliado,TipoAliado,Pais,Estado,Identificacion,TipoArchivo,StatusArchivo,Archivo,Expiracion,NumeroCuenta,NumeroTarjeta,RoutingNumber,TipoTarjeta,TipoCuenta,CuentaBancaria,TarjetaCredito,ConceptoPago,Transaccion,TipoDireccion,ZonaPostal,Direccion,TipoTelefono,Telefono,CorreoElectronico,Genero,DatosPersonales,StatusFormaPago,FormaPago,TipoMensaje,Remitente,Mensaje,PremisasCalculo,DiaPago,IdForAuthorize,Aliado,Modelo,Aliado$1,Buscar,Evento,Respuesta,Rpc,Remoting,CustomXhrProvider,SC$1,ProzperServer_GeneratedPrintf,Seq$1,Concurrency,Arrays,List,IntelliFactory,Runtime,Enumerator,Result$1,Operators$1,Unchecked,Utils,console,Strings,Slice,Collections,FSharpMap,FSharpSet,BalancedTree,Char,Date,DateUtil,Dictionary,Remoting$1,Numeric,System,Guid,Lazy;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -50,6 +50,9 @@
  Pais=TypesV0.Pais=TypesV0.Pais||{};
  Estado=TypesV0.Estado=TypesV0.Estado||{};
  Identificacion=TypesV0.Identificacion=TypesV0.Identificacion||{};
+ TipoArchivo=TypesV0.TipoArchivo=TypesV0.TipoArchivo||{};
+ StatusArchivo=TypesV0.StatusArchivo=TypesV0.StatusArchivo||{};
+ Archivo=TypesV0.Archivo=TypesV0.Archivo||{};
  Expiracion=TypesV0.Expiracion=TypesV0.Expiracion||{};
  NumeroCuenta=TypesV0.NumeroCuenta=TypesV0.NumeroCuenta||{};
  NumeroTarjeta=TypesV0.NumeroTarjeta=TypesV0.NumeroTarjeta||{};
@@ -1223,6 +1226,35 @@
    }
   });
  };
+ String.thousands=function(n)
+ {
+  var v,r,s;
+  v=Global.String(n);
+  r=v.length%3;
+  s=r===0?3:r;
+  return Strings.concat(",",List.ofSeq(Seq$1.delay(function()
+  {
+   return Seq$1.append([Slice.string(v,{
+    $:1,
+    $0:0
+   },{
+    $:1,
+    $0:s-1
+   })],Seq$1.delay(function()
+   {
+    return Seq$1.map(function(i)
+    {
+     return Slice.string(v,{
+      $:1,
+      $0:i*3+s
+     },{
+      $:1,
+      $0:i*3+s+2
+     });
+    },Operators$1.range(0,((v.length-s)/3>>0)-1));
+   }));
+  })));
+ };
  String.EndsWith=function(ends,s)
  {
   return Strings.EndsWith(s,ends)?{
@@ -1644,6 +1676,11 @@
    };
   }];
  };
+ Serializer.serDate=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serDate;
+ };
  Serializer.serBool=function()
  {
   SC$1.$cctor();
@@ -1891,15 +1928,12 @@
   }
  },null,StatusAliado);
  StatusAliado.Cancelado=new StatusAliado({
-  $:4
- });
- StatusAliado.Inactivo=new StatusAliado({
   $:3
  });
- StatusAliado.Activo=new StatusAliado({
+ StatusAliado.Inactivo=new StatusAliado({
   $:2
  });
- StatusAliado.DatosBancariosIngresados=new StatusAliado({
+ StatusAliado.Activo=new StatusAliado({
   $:1
  });
  StatusAliado.CuentaCreada=new StatusAliado({
@@ -1909,7 +1943,7 @@
  {
   var m;
   m=Strings.Trim(s).toUpperCase();
-  return m==="CUENTACREADA"?StatusAliado.CuentaCreada:m==="DATOSBANCARIOSINGRESADOS"?StatusAliado.DatosBancariosIngresados:m==="ACTIVO"?StatusAliado.Activo:m==="CANCELADO"?StatusAliado.Cancelado:StatusAliado.Inactivo;
+  return m==="CUENTACREADA"?StatusAliado.CuentaCreada:m==="ACTIVO"?StatusAliado.Activo:m==="CANCELADO"?StatusAliado.Cancelado:StatusAliado.Inactivo;
  };
  TipoAliado=TypesV0.TipoAliado=Runtime.Class({
   toString:function()
@@ -2046,6 +2080,98 @@
    vence:vence
   };
  };
+ TipoArchivo=TypesV0.TipoArchivo=Runtime.Class({
+  toString:function()
+  {
+   return this.$==7?this.$0:(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$4($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,TipoArchivo);
+ TipoArchivo.FormaW8BEN=new TipoArchivo({
+  $:6
+ });
+ TipoArchivo.FormaW9=new TipoArchivo({
+  $:5
+ });
+ TipoArchivo.LicenciaConducir=new TipoArchivo({
+  $:4
+ });
+ TipoArchivo.Cedula=new TipoArchivo({
+  $:3
+ });
+ TipoArchivo.Pasaporte=new TipoArchivo({
+  $:2
+ });
+ TipoArchivo.Autorizacion=new TipoArchivo({
+  $:1
+ });
+ TipoArchivo.Contrato=new TipoArchivo({
+  $:0
+ });
+ TipoArchivo.Parse=function(s)
+ {
+  var a;
+  a=String.StartsWith("Otro ",s);
+  return a!=null&&a.$==1?new TipoArchivo({
+   $:7,
+   $0:a.$0
+  }):s==="Contrato"?TipoArchivo.Contrato:s==="FormaW9"?TipoArchivo.FormaW9:s==="FormaW8BEN"?TipoArchivo.FormaW8BEN:s==="Autorizacion"?TipoArchivo.Autorizacion:s==="Pasaporte"?TipoArchivo.Pasaporte:s==="Cedula"?TipoArchivo.Cedula:s==="LicenciaConducir"?TipoArchivo.LicenciaConducir:new TipoArchivo({
+   $:7,
+   $0:Strings.Trim(s)
+  });
+ };
+ StatusArchivo=TypesV0.StatusArchivo=Runtime.Class({
+  toString:function()
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$5($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,StatusArchivo);
+ StatusArchivo.Cambiado=new StatusArchivo({
+  $:5
+ });
+ StatusArchivo.Cancelado=new StatusArchivo({
+  $:4
+ });
+ StatusArchivo.Expirado=new StatusArchivo({
+  $:3
+ });
+ StatusArchivo.Subido=new StatusArchivo({
+  $:0
+ });
+ StatusArchivo.Parse=function(s)
+ {
+  var a,a$1;
+  return s==="Cambiado"?StatusArchivo.Cambiado:s==="Expirado"?StatusArchivo.Expirado:s==="Cancelado"?StatusArchivo.Cancelado:(a=String.StartsWith("Verificado ",s),a!=null&&a.$==1?new StatusArchivo({
+   $:1,
+   $0:a.$0
+  }):(a$1=String.StartsWith("Rechazado ",s),a$1!=null&&a$1.$==1?new StatusArchivo({
+   $:2,
+   $0:a$1.$0
+  }):StatusArchivo.Subido));
+ };
+ Archivo.New=function(idAliado,tipo,nombre,modificado,tamano,status,comentario)
+ {
+  return{
+   idAliado:idAliado,
+   tipo:tipo,
+   nombre:nombre,
+   modificado:modificado,
+   tamano:tamano,
+   status:status,
+   comentario:comentario
+  };
+ };
  Expiracion=TypesV0.Expiracion=Runtime.Class({
   get_Id:function()
   {
@@ -2099,7 +2225,7 @@
    {
     return function($2)
     {
-     return $1(ProzperServer_GeneratedPrintf.p$4($2));
+     return $1(ProzperServer_GeneratedPrintf.p$6($2));
     };
    }(Global.id))(this);
   }
@@ -2154,7 +2280,7 @@
    {
     return function($2)
     {
-     return $1(ProzperServer_GeneratedPrintf.p$5($2));
+     return $1(ProzperServer_GeneratedPrintf.p$7($2));
     };
    }(Global.id))(this);
   }
@@ -2221,7 +2347,7 @@
    {
     return function($2)
     {
-     return $1(ProzperServer_GeneratedPrintf.p$6($2));
+     return $1(ProzperServer_GeneratedPrintf.p$8($2));
     };
    }(Global.id))(this);
   }
@@ -2270,7 +2396,7 @@
    {
     return function($2)
     {
-     return $1(ProzperServer_GeneratedPrintf.p$7($2));
+     return $1(ProzperServer_GeneratedPrintf.p$9($2));
     };
    }(Global.id))(this);
   }
@@ -2341,7 +2467,7 @@
    {
     return function($2)
     {
-     return $1(ProzperServer_GeneratedPrintf.p$8($2));
+     return $1(ProzperServer_GeneratedPrintf.p$10($2));
     };
    }(Global.id))(this);
   }
@@ -2506,7 +2632,7 @@
    return this.$0;
   }
  },null,IdForAuthorize);
- Aliado.New=function(id,idPadreO,idForAuthorize,influyente,datosPersonales,contactos,identificacion,isInternal,status,diaPago,tipo,fechaRegistro,fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,comision,nivel)
+ Aliado.New=function(id,idPadreO,idForAuthorize,influyente,datosPersonales,contactos,identificacion,isInternal,status,diaPago,tipo,fechaRegistro,fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,comision,nivel,documentos,docPendientes)
  {
   return{
    id:id,
@@ -2527,7 +2653,9 @@
    nDescendientes:nDescendientes,
    nDescActivos:nDescActivos,
    comision:comision,
-   nivel:nivel
+   nivel:nivel,
+   documentos:documentos,
+   docPendientes:docPendientes
   };
  };
  Modelo.New=function(idAliado,aliados,anoActual,periodoActual,premisas,nevento)
@@ -2587,6 +2715,18 @@
    descendientes:descendientes
   };
  };
+ Aliado$1.correo=function(al)
+ {
+  var o;
+  o=Seq$1.tryHead(Seq$1.choose(function(a)
+  {
+   return a.$==1?{
+    $:1,
+    $0:a.$0.email
+   }:null;
+  },al.contactos));
+  return o==null?"":o.$0;
+ };
  Aliado$1.nombre2=function(dp)
  {
   var o,o$1;
@@ -2615,7 +2755,7 @@
   {
    var m,$1;
    m=al.status;
-   return m.$==2||m.$==3?Seq$1.exists(function(tr)
+   return m.$==1||m.$==2?Seq$1.exists(function(tr)
    {
     return Unchecked.Equals(tr.idAliado,al.id)&&tr.monto>=pre.montoAfiliacion;
    },trans)?StatusAliado.Activo:StatusAliado.Inactivo:m;
@@ -2629,7 +2769,7 @@
    nReferidos=Seq$1.length(hijos);
    nRefActivos=Seq$1.length(Seq$1.filter(function(al$1)
    {
-    return al$1.status.$===2&&al$1.tipo.$===1;
+    return al$1.status.$===1&&al$1.tipo.$===1;
    },hijos));
    nDescendientes=Seq$1.sumBy(function(al$1)
    {
@@ -2640,10 +2780,10 @@
     return al$1.nDescActivos+al$1.nRefActivos;
    },hijos);
    nivel=1+buscar.nivelDe(al.idPadreO);
-   al0=Aliado.New(al.id,al.idPadreO,al.idForAuthorize,al.influyente,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,status,Aliado$1.diaPago(al.fechaRegistro),nRefActivos>=pre.numeroReferidosMaster?TipoAliado.Master:TipoAliado.Regular,al.fechaRegistro,al.fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,al.comision,nivel);
+   al0=Aliado.New(al.id,al.idPadreO,al.idForAuthorize,al.influyente,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,status,Aliado$1.diaPago(al.fechaRegistro),nRefActivos>=pre.numeroReferidosMaster?TipoAliado.Master:TipoAliado.Regular,al.fechaRegistro,al.fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,al.comision,nivel,al.documentos,al.docPendientes);
    p$1=Aliado$1.comision(pre,al0);
-   al1=Aliado.New(al0.id,al0.idPadreO,al0.idForAuthorize,al0.influyente,al0.datosPersonales,al0.contactos,al0.identificacion,al0.isInternal,al0.status,al0.diaPago,al0.tipo,al0.fechaRegistro,al0.fechaStatus,al0.nReferidos,al0.nRefActivos,al0.nDescendientes,al0.nDescActivos,p$1[0]+p$1[1],al0.nivel);
-   return Aliado.New(al1.id,al1.idPadreO,al1.idForAuthorize,al1.influyente,al1.datosPersonales,al1.contactos,al1.identificacion,al1.isInternal,al1.status.$===3&&al1.comision>=pre.montoAfiliacion?StatusAliado.Activo:al1.status,al1.diaPago,al1.tipo,al1.fechaRegistro,al1.fechaStatus,al1.nReferidos,al1.nRefActivos,al1.nDescendientes,al1.nDescActivos,al1.comision,al1.nivel);
+   al1=Aliado.New(al0.id,al0.idPadreO,al0.idForAuthorize,al0.influyente,al0.datosPersonales,al0.contactos,al0.identificacion,al0.isInternal,al0.status,al0.diaPago,al0.tipo,al0.fechaRegistro,al0.fechaStatus,al0.nReferidos,al0.nRefActivos,al0.nDescendientes,al0.nDescActivos,p$1[0]+p$1[1],al0.nivel,al0.documentos,al0.docPendientes);
+   return Aliado.New(al1.id,al1.idPadreO,al1.idForAuthorize,al1.influyente,al1.datosPersonales,al1.contactos,al1.identificacion,al1.isInternal,al1.status.$===2&&al1.comision>=pre.montoAfiliacion?StatusAliado.Activo:al1.status,al1.diaPago,al1.tipo,al1.fechaRegistro,al1.fechaStatus,al1.nReferidos,al1.nRefActivos,al1.nDescendientes,al1.nDescActivos,al1.comision,al1.nivel,al1.documentos,al1.docPendientes);
   }
   function checkO(v)
   {
@@ -2807,7 +2947,7 @@
     {
      return function($2)
      {
-      return $1("buscarAliado failed: "+ProzperServer_GeneratedPrintf.p$9($2));
+      return $1("buscarAliado failed: "+ProzperServer_GeneratedPrintf.p$11($2));
      };
     }(Operators$1.FailWith))(id);
    }
@@ -2823,7 +2963,7 @@
  {
   var p;
   p=al.tipo.$==0?[pre.comisionReferidosMaster,pre.comisionDescendientesMaster]:[pre.comisionReferidosRegular,pre.comisionDescendientesRegular];
-  return al.status.$==2?[p[0],p[1]]:[0,0];
+  return al.status.$==1?[p[0],p[1]]:[0,0];
  };
  Evento.New=function(nevento,aliadoO,data)
  {
@@ -2920,6 +3060,16 @@
   function f$2(s)
   {
    return s+"T00:00:00";
+  }
+  function g$4(v)
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(Global.id))(v);
   }
   SC$1.rtn=function(v)
   {
@@ -3075,6 +3225,18 @@
   {
    return j.tryBool();
   }];
+  SC$1.serDate=[function(x)
+  {
+   return g$4(Global.id(x));
+  },function(j)
+  {
+   var o;
+   o=j.tryInt();
+   return o==null?null:{
+    $:1,
+    $0:o.$0
+   };
+  }];
   SC$1.premisasCalculo=PremisasCalculo.New(15,25,25,0,75,31,26,28);
   SC$1.telVacio=Telefono.New(TipoTelefono.Movil,"","","","",false);
   SC$1.dirVacio=Direccion.New(Library.Error(""),TipoDireccion.Habitacion,"","","",new Estado({
@@ -3106,7 +3268,7 @@
   SC$1.empty=(d=DatosPersonales.New(null,"","","","",Pais.USA,Genero.Masculino,(new Date(2000,1-1,1)).getTime()),Aliado.New(new IdAliado$1({
    $:0,
    $0:""
-  }),null,null,null,d,[],[],false,StatusAliado.Inactivo,DiaPago.Dia01,TipoAliado.Regular,(new Date(2000,1-1,1)).getTime(),(new Date(2000,1-1,1)).getTime(),0,0,0,0,0,0));
+  }),null,null,null,d,[],[],false,StatusAliado.Inactivo,DiaPago.Dia01,TipoAliado.Regular,(new Date(2000,1-1,1)).getTime(),(new Date(2000,1-1,1)).getTime(),0,0,0,0,0,0,0,0));
   SC$1.serverEndPoint=Lazy.Create(function()
   {
    return self.location.protocol==="http:"?"http://localhost:7071/api/":(function($1)
@@ -3130,7 +3292,7 @@
  };
  ProzperServer_GeneratedPrintf.p=function($1)
  {
-  return $1.$==4?"Cancelado":$1.$==3?"Inactivo":$1.$==2?"Activo":$1.$==1?"DatosBancariosIngresados":"CuentaCreada";
+  return $1.$==3?"Cancelado":$1.$==2?"Inactivo":$1.$==1?"Activo":"CuentaCreada";
  };
  ProzperServer_GeneratedPrintf.p$1=function($1)
  {
@@ -3146,25 +3308,33 @@
  };
  ProzperServer_GeneratedPrintf.p$4=function($1)
  {
-  return $1.$==3?"Otra "+Utils.prettyPrint($1.$0):$1.$==2?"Amex":$1.$==1?"MasterCard":"Visa";
+  return $1.$==7?"Otro "+Utils.prettyPrint($1.$0):$1.$==6?"FormaW8BEN":$1.$==5?"FormaW9":$1.$==4?"LicenciaConducir":$1.$==3?"Cedula":$1.$==2?"Pasaporte":$1.$==1?"Autorizacion":"Contrato";
  };
  ProzperServer_GeneratedPrintf.p$5=function($1)
  {
-  return $1.$==2?"Otra "+Utils.prettyPrint($1.$0):$1.$==1?"Corriente":"Ahorro";
+  return $1.$==5?"Cambiado":$1.$==4?"Cancelado":$1.$==3?"Expirado":$1.$==2?"Rechazado "+Utils.prettyPrint($1.$0):$1.$==1?"Verificado "+Utils.prettyPrint($1.$0):"Subido";
  };
  ProzperServer_GeneratedPrintf.p$6=function($1)
  {
-  return $1.$==2?"Otro "+Utils.prettyPrint($1.$0):$1.$==1?"PagoComision":"PagoAfiliacion";
+  return $1.$==3?"Otra "+Utils.prettyPrint($1.$0):$1.$==2?"Amex":$1.$==1?"MasterCard":"Visa";
  };
  ProzperServer_GeneratedPrintf.p$7=function($1)
  {
-  return $1.$==3?"Otro "+Utils.prettyPrint($1.$0):$1.$==2?"ServicioPostal":$1.$==1?"Oficina":"Habitacion";
+  return $1.$==2?"Otra "+Utils.prettyPrint($1.$0):$1.$==1?"Corriente":"Ahorro";
  };
  ProzperServer_GeneratedPrintf.p$8=function($1)
  {
-  return $1.$==3?"Voip":$1.$==2?"Habitacion":$1.$==1?"Oficina":"Movil";
+  return $1.$==2?"Otro "+Utils.prettyPrint($1.$0):$1.$==1?"PagoComision":"PagoAfiliacion";
  };
  ProzperServer_GeneratedPrintf.p$9=function($1)
+ {
+  return $1.$==3?"Otro "+Utils.prettyPrint($1.$0):$1.$==2?"ServicioPostal":$1.$==1?"Oficina":"Habitacion";
+ };
+ ProzperServer_GeneratedPrintf.p$10=function($1)
+ {
+  return $1.$==3?"Voip":$1.$==2?"Habitacion":$1.$==1?"Oficina":"Movil";
+ };
+ ProzperServer_GeneratedPrintf.p$11=function($1)
  {
   return"IdAliado "+Utils.prettyPrint($1.$0);
  };

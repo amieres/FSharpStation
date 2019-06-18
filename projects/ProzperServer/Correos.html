@@ -1,0 +1,58 @@
+<div style="display:none" >
+
+        <div ws-template="Logo">
+            <div class="ui menu fixed" style="background: white; margin-bottom:0px;">
+                <div class="header left item">
+                    <div class="logoHolder logoHolderLeft">
+                        <img class="logo" src="http://prozper.com/images/logos/pro.png" alt="Logo">
+                    </div>
+                </div>
+            </div>            
+        </div>
+
+        <div ws-template="Invitacion">
+            <div ws-hole="Logo"></div>
+            Felicitaciones, 
+            <br>
+            usted ha sido invitado a afiliarse a <b>Prozper</b>. 
+            <br>
+            Para iniciar su afiliación cree una cuenta en Prozper dando click aquí: <a href="${Host}/Register/${IdPadre}">Forma de Afiliación</a>
+            </ol>
+            <br>
+            En caso de que el enlace no funcione puede copiar la siguiente dirección en su browser: 
+            <br>
+            ${Host}/Register/${IdPadre}
+        </div>
+
+        <div ws-template="Bienvenida">
+            <div ws-hole="Logo"></div>
+            Estimad${Sufijo} ${NombreAfiliado},
+            <br>
+            Bienvenid${Sufijo} a <b>Prozper</b>, su nueva cuenta de afiliad${Sufijo} ha sido creada.
+            <br>
+            Continúe el proceso de afiliación con los siguientes pasos:
+            <ol>
+            <li>Firmando el <a href="${Host}/#/Content/ProzperLyt.cntFormaContrato"><b>Contrato de Afiliación</b></a></li>
+            <li>Introduciendo un método de pago en: <a href="${Host}/#/Content/ProzperLyt.cntFormaFormasPago"><b>Formas de Pago</b></a></li>
+            <li>Autorizando el pago mensual de la subscripción desde la cuenta introducida en el paso anterios</li>
+            </ol>
+            <br>
+            <br>
+            En caso de que el enlace no funcione puede copiar la siguiente dirección en su browser: 
+            <br>
+            <br>
+            ${Host}/#/Content/ProzperLyt.cntFormaContrato
+        </div>
+
+        <div ws-template="VerificacionCorreo">
+            <div ws-hole="Logo"></div>             
+            Por favor <b>Prozper</b>. 
+            <br>${NombreAfiliado}
+            <br>
+            Verifique su correo dando click aquí: <a href="${Host}">Verificar Correo</a>
+            <br>
+            En caso de que el enlace no funcione puede copiar la siguiente dirección en su browser: 
+            <br>
+            ${Host}
+        </div>
+</div>

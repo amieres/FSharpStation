@@ -192,7 +192,7 @@
                         </td>
                         <td class="mui--text-right">
                             <ul class="mui-list--inline mui--text-body2">
-                                <li><a href="#" style="color:white">Acerca</a></li>
+                                <!--li><a href="#" style="color:white">Acerca</a></li-->
                                 <li><a href="/Logout" style="color:white" ws-onclick="Logout"><i class="fa fa-user" aria-hidden="true"></i> Salir</a></li>
                             </ul>
                         </td>
@@ -215,8 +215,8 @@
                             <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 logos-center">
                                 <div class="mui-col-lg-12 mui-col-md-12 mui-col-sm-12 mui-col-xs-12 footer-item">
                                     <a href="https://prozper.com/" class="logo">
-                                        <img alt="" class="img-fluid" src="https://aliados.prozper.com/blob/images/pro.png" width="140">
-                                        <p>Empowering Sales Professionals Worldwide</p>
+                                        <img alt="" class="img-fluid" src="https://aliados.prozper.com/blob/images/pro.png" width="110">
+                                        <p style="font-size:smaller">Empowering Sales Professionals Worldwide</p>
                                     </a>
                                 </div>
                             </div>
@@ -356,6 +356,7 @@
                     :            li "class=mui--text-light  mui--text-body1"                             "@{Prozper.status}"
                     :            li "class=mui--text-light  mui--text-body1 comision@{Prozper.comision}" "$@{Prozper.comision}"
                     aliados          div       "class=row"
+                    :                Doc       Prozper.Pendientes
                     :                div       "class=mui-col-md-6"
                     ::               div       "class=mui-panel mui--z5 scrollbar;max-height:550px;overflow:auto" Prozper.Aliados
                     :                div       "class=mui-col-md-6"
@@ -555,6 +556,8 @@
                     <button type="button" class="mui-btn mui-btn--raised ${FirmarClass}" ws-onclick="Firmar" >Firmar y Procesar</button>
                     <br>
                     <div>${DateTime}</div>
+                    <div>${IdLoggedIn}</div>
+                    <div>${Location}</div>
                 </div>
             </div> 
             <div ws-template="AutorizacionPago" class="mui--text-center ">
@@ -1205,27 +1208,31 @@
                 <datalist id="Referidores" ws-hole="Referidores" ></datalist>
                 <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
                     <thead>
-                        <th ws-onclick="sort_nombre"        style="width:9%; text-align:center">Nombre       </th>
-                        <th ws-onclick="sort_influyente"    style="width:1%; text-align:center">Influ.       </th>
-                        <th ws-onclick="sort_tipo"          style="width:2%; text-align:center">Tipo         </th>
-                        <th ws-onclick="sort_status"        style="width:2%; text-align:center">Status       </th>
-                        <th ws-onclick="sort_referido"      style="width:2%; text-align:center; font-size: x-small">Referido por </th>
-                        <th ws-onclick="sort_nivel"         style="width:2%; text-align:center">nivel        </th>
-                        <th ws-onclick="sort_referidos"     style="width:2%; text-align:center">refs.        </th>
-                        <th ws-onclick="sort_descendientes" style="width:2%; text-align:center">descs.       </th>
-                        <th ws-onclick="sort_comision"      style="width:2%; text-align:center">comision     </th>
-                        <th ws-onclick="sort_diaPago"       style="width:2%; text-align:center">dia pago     </th>
-                        <th ws-onclick="sort_desde"         style="width:2%; text-align:center">desde        </th>
-                        <th ws-onclick="sort_Id"            style="width:2%; text-align:center">Id           </th>
+                        <th ws-onclick="sort_nombre"        style="width:19%; text-align:center">Nombre       </th>
+                        <th ws-onclick="sort_archivos"      style="width: 0%; text-align:center">Archivos     </th>
+                        <th ws-onclick="sort_correo"        style="width: 1%; text-align:center">Correo       </th>
+                        <th ws-onclick="sort_influyente"    style="width: 1%; text-align:center">Influ.       </th>
+                        <th ws-onclick="sort_tipo"          style="width: 2%; text-align:center">Tipo         </th>
+                        <th ws-onclick="sort_status"        style="width: 2%; text-align:center">Status       </th>
+                        <th ws-onclick="sort_referido"      style="width: 2%; text-align:center; font-size: x-small">Referido por </th>
+                        <th ws-onclick="sort_nivel"         style="width: 2%; text-align:center">nivel        </th>
+                        <th ws-onclick="sort_referidos"     style="width: 2%; text-align:center">refs.        </th>
+                        <th ws-onclick="sort_descendientes" style="width: 2%; text-align:center">descs.       </th>
+                        <th ws-onclick="sort_comision"      style="width: 2%; text-align:center">comision     </th>
+                        <th ws-onclick="sort_diaPago"       style="width: 2%; text-align:center">dia pago     </th>
+                        <th ws-onclick="sort_desde"         style="width: 8%; text-align:center">desde        </th>
+                        <th ws-onclick="sort_Id"            style="width:13%; text-align:center">Id           </th>
                     </thead>
                     <tbody ws-hole="TBody" ws-children-template="FilaConsolidado">
                         <tr style="">
                             <td> <div style="text-align: center                     ">${nombre}        </div> </td>
+                            <td> <div ws-onclick="expandFiles" style="cursor:pointer">${expanded}      </div> </td>
+                            <td> <div style="text-align: center; font-size: small "  >${correo}        </div> </td>
                             <td> <div style="text-align: center; font-size: small ">
-                                <input type="text" name="Influyente" ws-var="influyente" " >
+                                <input type="text" name="Influyente" ws-var="influyente" style="width:8ch" >
                             </div> </td>
                             <td> <div style="text-align: center                     ">${tipo}          </div> </td>
-                            <td> <div style="text-align: center; font-size: small ">
+                            <td> <div style="text-align: center; font-size: small   ">
                                 <select type="text" name="Status" ws-var="status" ws-hole="Statuses" ></select>
                             </div> </td>
                             <td> <div style="text-align: center; font-size: x-small ">
@@ -1239,6 +1246,7 @@
                             <td> <div style="text-align: center; font-size:   small ">${desde}         </div> </td>
                             <td> <div style="text-align: right; font-size: xx-small ">${Id}            </div> </td>
                         </tr>
+                        <tr ws-replace="detalles"></tr>
                     </tbody>
                 </table>
             </div>
@@ -1274,17 +1282,28 @@
                     <input type="file" name="some-file" />
                     <button ws-onclick="Subir">Subir</button>
                 </form>
+                <datalist id="TiposArchivo" ws-hole="TiposArchivo"></datalist>
                 <!--button type="button" class="mui-btn mui-btn--raised mui-btn--primary" ws-onclick="Exportar"   >Exportar</button-->
                 <table style="border-spacing:0px" class="mui-table mui-table--bordered mui-table-stripped">
                     <thead>
-                        <th style="width:  1%; text-align: center">Nombre</th>
+                        <th style="width:  9%; text-align: center">Nombre</th>
+                        <th style="width:  1%; text-align: center">Tipo</th>
+                        <th style="width:  1%; text-align: center">Status</th>
+                        <th style="width:  1%; text-align: center">Tamaño</th>
+                        <th style="width:  2%; text-align: center">Fecha</th>
                     </thead>
                     <tbody ws-hole="TBody" ws-children-template="FilaDocs">
                         <tr>
-                            <td> <a href="/documentos/${idAliado}/${nombre}" style="text-align: left" target="_blank"    >${nombre}        </a> </td>
+                            <td><a href="/documentos/${idAliado}/${nombre}" style="text-align: left" target="_blank">
+                                ${nombre}</a></td>
+                            <td><input type="text" name="TiposArchivo" ws-var="tipo" list="TiposArchivo" ></td>
+                            <td> <select ws-var="status" ws-hole="statuses" required ws-attr="disabled" ></select> </td>
+                            <td>${tamano}    </td>
+                            <td>${modificado}</td>
                         </tr>
                     </tbody>
                 </table>
+                <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar" >Guardar</button>
             </div>
             
             
@@ -1406,6 +1425,10 @@
             </div>
             
             
+            <div ws-template="Pendientes">
+            <h2>Pasos pendientes para completar el proceso de Afiliacion:</h2>
+            <div ws-replace="pasos" ></div>
+            </div>
                     <style>
                         .Inactivo          { font-weight: 100 ; color: rgba(179, 177, 177, 0.644) }
                         .CuentaCreada      { font-weight: 100 ; color: blue                       }
@@ -1674,7 +1697,7 @@
                                 }
                                 td select {
                                     font-size : smaller;
-                                    max-width : 8ch;
+                                    max-width : 10ch;
                                 }
                                 xtextarea {
                                    resize : none;
@@ -1833,7 +1856,7 @@
                             }
                             td select {
                                 font-size : smaller;
-                                max-width : 8ch;
+                                max-width : 10ch;
                             }
                             xtextarea {
                                resize : none;
