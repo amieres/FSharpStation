@@ -362,7 +362,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 (function()
 {
  "use strict";
- var Global,FsRoot,ProzperServer,ClientSide,MainProgram,WebSharper,Obj,UI,Var$1,LibraryJS,AppFramework,PlugIn,ModeloUI,Aliado,Operators,View,Var,Lazy,RenderAliados,RenderAliado,FormaRegistro,FormaDatos,FormaContactos,FormaFormasPago,ReporteConsolidado,TablaPagos,ListaDocs,FormaAutorizacion,FormaContrato,Transacciones,Pendientes,EventTarget,Node,JavaScript,JS,Unchecked,LayoutEngineModule,Option,TypesV0,Aliado$1,Aliado$2,Templating,Runtime,Server,TemplateInstance,Arrays,ProviderBuilder,Handler,ProzperServer_Templates,ProzperServer_GeneratedPrintf,ProzperServer_Router,GeneratedPrintf,Doc,Rpc,IdAliado,Modelo,ConcreteVar,Snap,SC$1,ListModel,PlugInVar,PlugInView,PlugInDoc,Pervasives,LazyExtensionsProxy,LazyRecord,Seq,Library,SortWith,Buscar,Collections,FSharpSet,Set,Strings,CorreoElectronico,DatosPersonales,CorreoElectronico$1,Telefono,Direccion,Monads,AsyncResultBuilder,Refresh,System,Guid,Fila,VariousUI,HtmlModule,attr,StatusAliado,Utils,Date,List,CuentaBancaria,RoutingNumber,NumeroCuenta,FormaPago,Result,Archivo,Extensions,ListModel$1,String,TipoArchivo,StatusArchivo,Blob,FormaFirma,PremisasCalculo,Rpc$1,Remoting,AjaxRemotingProvider,PlugInAction,Msal,WindowOrWorkerGlobalScope,LayoutEngine,SC$2,IdForAuthorize,DatosPersonales$1,DiaPago,TipoAliado,Numeric,List$1,Dictionary,HashSet,Client,Abbrev,Async,Fresh,Builder,BuilderP,Eff,EffBuilder,AsyncResultBuilderP,Slice,ParseO,Serializer,Msal$1,Policy,Telefono$1,TipoTelefono,Direccion$1,TipoDireccion,Estado,Pais,ZonaPostal,TarjetaCredito,Expiracion,NumeroTarjeta,TipoTarjeta,TipoCuenta,Genero,Configuration,AuthOptions,Control,MailboxProcessor,Mailbox,EndPoint,Router,ViewBuilder,Remoting$1,IdPayment,CuentaPago,PlugInQuery,FSharpMap,Enumerator,T,BalancedTree,T$1,AsyncResult,Array,CuentaBancaria$1,TarjetaCredito$1,Object,FromView,AttrProxy,Array$1,Concurrency,Storage,AttrModule,LayoutEngine_Templates,LayoutEngine_GeneratedPrintf,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,DictionaryUtil,CheckedInput,Client$1,Templates,DateUtil,SC$3,Pojo,Error,TimeoutException,Promise,Sitelets,RouterOperators,RouterModule,Route,CustomXhrProvider,ConceptoPago,MapUtil,Tree,IdAddress,Docs,Attrs,DomUtility,AsyncBody,SC$4,CT,ArrayStorage,Var$2,Layout,WcSplitterT,DocElemNode,CharacterData,SC$5,XhrProvider,FSharpEvent,LinkedList,AuthenticationParameters,Account,Router$1,List$2,Pair,Result$1,Scheduler,CancellationTokenSource,DynamicAttrNode,Measures,Hoverable,Hoverable$1,Event,UIEvent,ResizeObserver,SC$6,Elt,Attrs$1,Dyn,Prepare,An,Settings,Mailbox$1,OperationCanceledException,Json,HashSetUtil,Event$1,Event$2,NonStandardPromiseRejectionException,SC$7,Map,Queue,SC$8,SC$9,AggregateException,KeyCollection,Updates,Docs$1,RunState,NodeSet,Anims,SC$10,Char,FormatException,StringEncoding,String$1,SC$11,AppendList,LinkedListEnumerator,PathUtil,Easing,HashSet$1,DomNodes,SC$12,IntelliFactory,Runtime$1,Math,$,console,Date$1,JSON,Reflect,String$2;
+ var Global,FsRoot,ProzperServer,ClientSide,MainProgram,WebSharper,Obj,UI,Var$1,LibraryJS,AppFramework,PlugIn,ModeloUI,Aliado,Operators,View,Var,Lazy,RenderAliados,RenderAliado,FormaRegistro,FormaDatos,FormaContactos,FormaFormasPago,ReporteConsolidado,TablaPagos,ListaDocs,FormaAutorizacion,FormaContrato,Transacciones,Pendientes,EventTarget,Node,JavaScript,JS,Unchecked,LayoutEngineModule,Option,TypesV0,Aliado$1,Aliado$2,Templating,Runtime,Server,TemplateInstance,Arrays,ProviderBuilder,Handler,ProzperServer_Templates,ProzperServer_GeneratedPrintf,ProzperServer_Router,GeneratedPrintf,Doc,Rpc,IdAliado,Modelo,ConcreteVar,Snap,SC$1,ListModel,PlugInVar,PlugInView,PlugInDoc,Pervasives,LazyExtensionsProxy,LazyRecord,Seq,Library,SortWith,Buscar,Collections,FSharpSet,Set,Strings,CorreoElectronico,DatosPersonales,CorreoElectronico$1,Telefono,Direccion,Monads,AsyncResultBuilder,Refresh,System,Guid,Fila,VariousUI,HtmlModule,attr,StatusAliado,Utils,Date,List,CuentaBancaria,RoutingNumber,NumeroCuenta,FormaPago,Result,Archivo,Extensions,ListModel$1,String,TipoArchivo,StatusArchivo,Blob,CuentaPago,FormaFirma,PremisasCalculo,Rpc$1,Remoting,AjaxRemotingProvider,PlugInAction,Msal,WindowOrWorkerGlobalScope,LayoutEngine,SC$2,IdForAuthorize,DatosPersonales$1,DiaPago,TipoAliado,Numeric,List$1,Dictionary,HashSet,Client,Abbrev,Async,Fresh,Builder,BuilderP,Eff,EffBuilder,AsyncResultBuilderP,Slice,ParseO,Serializer,Msal$1,Policy,Telefono$1,TipoTelefono,Direccion$1,TipoDireccion,Estado,Pais,ZonaPostal,TarjetaCredito,Expiracion,NumeroTarjeta,TipoTarjeta,TipoCuenta,Genero,Configuration,AuthOptions,Control,MailboxProcessor,Mailbox,EndPoint,Router,ViewBuilder,Remoting$1,IdPayment,PlugInQuery,FSharpMap,Enumerator,T,BalancedTree,T$1,AsyncResult,Array,CuentaBancaria$1,TarjetaCredito$1,Object,FromView,AttrProxy,Array$1,Concurrency,Storage,AttrModule,LayoutEngine_Templates,LayoutEngine_GeneratedPrintf,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,DictionaryUtil,CheckedInput,Client$1,Templates,DateUtil,SC$3,Pojo,Error,TimeoutException,Promise,Sitelets,RouterOperators,RouterModule,Route,CustomXhrProvider,ConceptoPago,MapUtil,Tree,IdAddress,Docs,Attrs,DomUtility,AsyncBody,SC$4,CT,ArrayStorage,Var$2,Enlace,Layout,WcSplitterT,DocElemNode,CharacterData,SC$5,XhrProvider,FSharpEvent,LinkedList,AuthenticationParameters,Account,Router$1,List$2,Pair,Result$1,Scheduler,CancellationTokenSource,DynamicAttrNode,Measures,Hoverable,Hoverable$1,Event,UIEvent,ResizeObserver,SC$6,Elt,Attrs$1,Dyn,Prepare,An,Settings,Mailbox$1,OperationCanceledException,Json,HashSetUtil,Event$1,Event$2,NonStandardPromiseRejectionException,SC$7,Map,Queue,SC$8,SC$9,AggregateException,KeyCollection,Updates,Docs$1,RunState,NodeSet,Anims,SC$10,Char,FormatException,StringEncoding,String$1,SC$11,AppendList,LinkedListEnumerator,PathUtil,Easing,HashSet$1,DomNodes,SC$12,IntelliFactory,Runtime$1,Math,$,console,Date$1,JSON,Reflect,String$2;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  ProzperServer=FsRoot.ProzperServer=FsRoot.ProzperServer||{};
@@ -467,6 +467,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  TipoArchivo=TypesV0.TipoArchivo=TypesV0.TipoArchivo||{};
  StatusArchivo=TypesV0.StatusArchivo=TypesV0.StatusArchivo||{};
  Blob=Global.Blob;
+ CuentaPago=TypesV0.CuentaPago=TypesV0.CuentaPago||{};
  FormaFirma=ModeloUI.FormaFirma=ModeloUI.FormaFirma||{};
  PremisasCalculo=TypesV0.PremisasCalculo=TypesV0.PremisasCalculo||{};
  Rpc$1=ProzperServer.Rpc=ProzperServer.Rpc||{};
@@ -522,7 +523,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  ViewBuilder=UI.ViewBuilder=UI.ViewBuilder||{};
  Remoting$1=ProzperServer.Remoting=ProzperServer.Remoting||{};
  IdPayment=TypesV0.IdPayment=TypesV0.IdPayment||{};
- CuentaPago=TypesV0.CuentaPago=TypesV0.CuentaPago||{};
  PlugInQuery=AppFramework.PlugInQuery=AppFramework.PlugInQuery||{};
  FSharpMap=Collections.FSharpMap=Collections.FSharpMap||{};
  Enumerator=WebSharper.Enumerator=WebSharper.Enumerator||{};
@@ -573,6 +573,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  CT=Concurrency.CT=Concurrency.CT||{};
  ArrayStorage=Storage.ArrayStorage=Storage.ArrayStorage||{};
  Var$2=LibraryJS.Var=LibraryJS.Var||{};
+ Enlace=Pendientes.Enlace=Pendientes.Enlace||{};
  Layout=LayoutEngineModule.Layout=LayoutEngineModule.Layout||{};
  WcSplitterT=WcSplitter.WcSplitterT=WcSplitter.WcSplitterT||{};
  DocElemNode=UI.DocElemNode=UI.DocElemNode||{};
@@ -2786,12 +2787,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     formasPagoV.Set(Array.remove(i$1,formasPagoV.Get()));
    },Doc.Concat(List.ofSeq(Seq.delay(function()
    {
-    return Seq.append([Doc.Button("AUTORIZAR DEBITO",[AttrProxy.Create("title","Autorizar pago recurrente"),AttrModule.Dynamic("style",View.Map(function($1)
+    return Seq.append([Doc.Button("AUTORIZAR DEBITO",[AttrProxy.Create("class","mui-btn mui-btn--raised mui-btn--primary"),AttrProxy.Create("title","Autorizar pago recurrente"),AttrModule.Dynamic("style",View.Map(function($1)
     {
      return Arrays.get($1,i$1).authorizeIdR.$==0?"":"display:None";
     },formasPagoV.get_View()))],function()
     {
-     var $1,$2,$3,a;
+     var $1,$2,$3,a,a$1;
      $2=Arrays.get(formasPagoV.Get(),i$1).authorizeIdR;
      $3=Arrays.get(formasPagoV.Get(),i$1).cuentaPago;
      switch($2.$==0?$3.$==0?($1=[$2.$0,$3.$0.titular],1):$3.$==1?($1=[$2.$0,$3.$0.titular],1):2:($1=$2.$0,0))
@@ -2800,8 +2801,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        Global.alert("Pago no está verificado en Authorize: "+$1);
        break;
       case 1:
-       a=docF();
-       FormaAutorizacion.cuentaAutorizar().Set(a);
+       a={
+        $:1,
+        $0:Arrays.get(formasPagoV.Get(),i$1).cuentaPago
+       };
+       FormaAutorizacion.cuentaPagoO().Set(a);
+       a$1=docF();
+       FormaAutorizacion.cuentaAutorizar().Set(a$1);
        FormaAutorizacion.titular().Set($1[1]);
        FormaAutorizacion.set_pid($1[0]);
        ModeloUI.endPointV().Set({
@@ -3396,7 +3402,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     {
      return $4.archivos;
     },fW)
-   }),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[["influyente",0],["status",0],["referido",0]]),(i$2=new TemplateInstance.New(p$1[1],ProzperServer_Templates.filaconsolidado(p$1[0])),(b$1.i=i$2,i$2)))).get_Doc();
+   }),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[["status",0],["influyente",0],["referido",0]]),(i$2=new TemplateInstance.New(p$1[1],ProzperServer_Templates.filaconsolidado(p$1[0])),(b$1.i=i$2,i$2)))).get_Doc();
   }
   aliadosV=Var$1.Create$1([]);
   View.Sink(function(a$1)
@@ -4095,6 +4101,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      }),function(a$1)
      {
       refrescarListaDocs();
+      Refresh.refrescarData(true);
       Global.alert((function($1)
       {
        return function($2)
@@ -4120,7 +4127,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  FormaAutorizacion.formaAutorizacion=function()
  {
-  var formaContenido,b,C,p,i;
+  var formaContenido,b,C,p,i,x,o,o$1;
   formaContenido=(b=(C=Doc.EmbedView(FormaAutorizacion.cuentaAutorizar().get_View()),ProviderBuilder.Make().WithHole({
    $:2,
    $0:"titular",
@@ -4150,12 +4157,16 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:"cuentadebitar",
    $1:C
   })),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],ProzperServer_Templates.autorizacionpago(p[0])),(b.i=i,i)))).get_Doc();
-  return FormaFirma.formaFirma(FormaAutorizacion.titular().get_View(),formaContenido,TipoArchivo.Autorizacion,FormaAutorizacion.actualizarSubscripcion,"AutorizacionPago");
+  x=(o=(o$1=FormaAutorizacion.cuentaPagoO().Get(),o$1==null?null:{
+   $:1,
+   $0:o$1.$0.get_AutorizacionPre()
+  }),o==null?"Autorizacion -- ------":o.$0);
+  return FormaFirma.formaFirma(FormaAutorizacion.titular().get_View(),formaContenido,TipoArchivo.Autorizacion,FormaAutorizacion.actualizarSubscripcion,x);
  };
- FormaAutorizacion.titular=function()
+ FormaAutorizacion.cuentaPagoO=function()
  {
   SC$1.$cctor();
-  return SC$1.titular;
+  return SC$1.cuentaPagoO;
  };
  FormaAutorizacion.actualizarSubscripcion=function()
  {
@@ -4168,6 +4179,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     return $1("Subscripción #"+Utils.toSafe($2)+" creada.");
    };
   }(Global.id),x);
+ };
+ FormaAutorizacion.titular=function()
+ {
+  SC$1.$cctor();
+  return SC$1.titular;
  };
  FormaAutorizacion.cuentaAutorizar=function()
  {
@@ -4294,7 +4310,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return Concurrency.Bind(Pendientes.chequearStatusAliado(al,Rpc.obtenerListaDocs(al.id),(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc.obtenerFormasDePagoId:-1441558235",[al.id])),function(a)
     {
-     return a.$==1?Concurrency.Return(Doc.TextNode(a.$0)):Concurrency.Return(a.$0);
+     var $1,b$1,p,p$1,i;
+     return a.$==0&&Seq.isEmpty(a.$0)?Concurrency.Return(Doc.get_Empty()):a.$==1?Concurrency.Return(Doc.TextNode(a.$0)):Concurrency.Return((b$1=(p=Doc.Concat(Seq.map(Pendientes.pendiente,a.$0)),ProviderBuilder.Make().WithHole({
+      $:0,
+      $0:"pasos",
+      $1:p
+     })),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i=new TemplateInstance.New(p$1[1],ProzperServer_Templates.pendientes(p$1[0])),(b$1.i=i,i)))).get_Doc());
     });
    });
   },aliadoW));
@@ -4314,62 +4335,66 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      {
       return fp.authorizeIdR.$==0;
      },a$1);
-     return b.Return(Doc.Concat(List.ofSeq(Seq.delay(function()
+     return b.Return(List.ofSeq(Seq.delay(function()
      {
       var t;
-      return Seq.append([Pendientes.chequearArchivos((t=TipoArchivo.Contrato,function(a$2)
+      return Seq.append(Pendientes.chequearArchivos((t=TipoArchivo.Contrato,function(a$2)
       {
        return Pendientes.esArchivoTipo(t,a$2);
-      }),Pendientes.firmarContrato,a)],Seq.delay(function()
+      }),Pendientes.firmarContrato,a),Seq.delay(function()
       {
-       return Seq.append([Pendientes.chequearCuentas(function()
+       return Seq.append(Pendientes.chequearCuentas(function()
        {
         return true;
-       },Pendientes.agregarCuenta,a$1)],Seq.delay(function()
+       },Pendientes.agregarCuenta,a$1),Seq.delay(function()
        {
-        return Seq.append(Seq.length(ctasAuth)>0?[Pendientes.chequearArchivos(function(a$2)
+        return Seq.append(Seq.length(ctasAuth)>0?Pendientes.chequearArchivos(function(a$2)
         {
          return Pendientes.esAutorizacion(ctasAuth,a$2);
-        },Pendientes.firmarAutorizacion,a)]:[],Seq.delay(function()
+        },Pendientes.firmarAutorizacion,a):[],Seq.delay(function()
         {
          var t$1;
-         return Seq.append([Pendientes.chequearArchivos((t$1=TipoArchivo.FormaW9,function(a$2)
+         return Seq.append(Pendientes.chequearArchivos((t$1=TipoArchivo.FormaW9,function(a$2)
          {
           return Pendientes.esArchivoTipo(t$1,a$2);
          }),function()
          {
           return Pendientes.subirArchivoTipo(TipoArchivo.FormaW9);
-         },a)],Seq.delay(function()
+         },a),Seq.delay(function()
          {
           var t$2;
-          return Seq.append([Pendientes.chequearArchivos((t$2=TipoArchivo.FormaW8BEN,function(a$2)
+          return Seq.append(Pendientes.chequearArchivos((t$2=TipoArchivo.FormaW8BEN,function(a$2)
           {
            return Pendientes.esArchivoTipo(t$2,a$2);
           }),function()
           {
            return Pendientes.subirArchivoTipo(TipoArchivo.FormaW8BEN);
-          },a)],Seq.delay(function()
+          },a),Seq.delay(function()
           {
-           return[Pendientes.chequearArchivos(Pendientes.esIdentificacion,Pendientes.subirIdentificacion,a)];
+           return Pendientes.chequearArchivos(Pendientes.esIdentificacion,Pendientes.subirIdentificacion,a);
           }));
          }));
         }));
        }));
       }));
-     }))));
+     })));
     });
-   }):b.Return(Doc.get_Empty());
+   }):b.Return(T$1.Empty);
   }));
+ };
+ Pendientes.pendiente=function(docs)
+ {
+  return Doc.Element("li",[],docs);
  };
  Pendientes.chequearArchivos=function(es,subirlo,archivos)
  {
   var m;
   m=Pendientes.filtroArchivo(es,archivos);
-  return!Unchecked.Equals(m,null)&&m.length===0?subirlo():Doc.Concat(Seq.map(Pendientes.verificarArchivo,m));
+  return!Unchecked.Equals(m,null)&&m.length===0?[subirlo()]:Seq.map(Pendientes.verificarArchivo,m);
  };
  Pendientes.firmarContrato=function()
  {
-  return Pendientes.pendiente(List.ofArray([Doc.TextNode("Firmar "),Doc.Element("a",[AttrProxy.Create("href","/#/Content/ProzperLyt.cntFormaContrato")],[Doc.TextNode("Contrato")])]));
+  return List.ofArray([Doc.Element("i",[AttrProxy.Create("class","far fa-square")],[]),Doc.TextNode(" Firmar "),Pendientes.enlace(Enlace.FormaContrato(),"Contrato")]);
  };
  Pendientes.esArchivoTipo=function(tipo,ar)
  {
@@ -4379,15 +4404,15 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   var m;
   m=Pendientes.filtroCuenta(es,cuentas);
-  return!Unchecked.Equals(m,null)&&m.length===0?agregar():Doc.Concat(Seq.map(Pendientes.verificarCuenta,m));
+  return!Unchecked.Equals(m,null)&&m.length===0?[agregar()]:Seq.map(Pendientes.verificarCuenta,m);
  };
  Pendientes.agregarCuenta=function()
  {
-  return Pendientes.pendiente(List.ofArray([Doc.TextNode("Agregar Forma de pago: "),Doc.Element("a",[AttrProxy.Create("href","/#/Content/ProzperLyt.cntFormaFormasPago")],[Doc.TextNode("Tarjeta de Credito o Cuenta Bancaria")])]));
+  return List.ofArray([Doc.Element("i",[AttrProxy.Create("class","far fa-square")],[]),Doc.TextNode(" Agregar Forma de pago: "),Pendientes.enlace(Enlace.FormasPago(),"Tarjeta de Credito o Cuenta Bancaria")]);
  };
  Pendientes.firmarAutorizacion=function()
  {
-  return Pendientes.pendiente(List.ofArray([Doc.TextNode("Firmar "),Doc.Element("a",[AttrProxy.Create("href","/#/Content/ProzperLyt.cntFormaFormasPago")],[Doc.TextNode("Autorizacion (de click en: AUTORIZAR DEBITO)")])]));
+  return List.ofArray([Doc.Element("i",[AttrProxy.Create("class","far fa-square")],[]),Doc.TextNode(" Firmar "),Pendientes.enlace(Enlace.FormasPago(),"Autorizacion (Haga click en: AUTORIZAR DEBITO)")]);
  };
  Pendientes.esAutorizacion=function(cuentas,archivo)
  {
@@ -4398,13 +4423,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Pendientes.subirArchivoTipo=function(tipo)
  {
-  return Pendientes.pendiente(List.ofArray([Doc.TextNode("Subir "),Doc.Element("a",[AttrProxy.Create("href","/#/Content/ProzperLyt.cntSubirDocumentos")],[Doc.TextNode((function($1)
-  {
-   return function($2)
-   {
-    return $1(ProzperServer_GeneratedPrintf.p$5($2));
-   };
-  }(Global.id))(tipo))])]));
+  var p;
+  p=Pendientes.tarchivo2String(tipo);
+  return List.ofArray([Doc.Element("i",[AttrProxy.Create("class","far fa-square")],[]),Pendientes.enlace(Enlace.Subir()," Subir "),Pendientes.enlace(p[1],p[0])]);
  };
  Pendientes.esIdentificacion=function(ar)
  {
@@ -4414,7 +4435,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Pendientes.subirIdentificacion=function()
  {
-  return Pendientes.pendiente(List.ofArray([Doc.TextNode("Subir documento de identidad: "),Doc.Element("a",[AttrProxy.Create("href","/#/Content/ProzperLyt.cntSubirDocumentos")],[Doc.TextNode("Cedula, Pasaporte, Licencia de Conducir")])]));
+  return List.ofArray([Doc.Element("i",[AttrProxy.Create("class","far fa-square")],[]),Pendientes.enlace(Enlace.Subir()," Subir "),Doc.TextNode("documento de identidad: "),Pendientes.enlace(Enlace.Subir(),"Cedula, Pasaporte, Licencia de Conducir")]);
  };
  Pendientes.filtroArchivo=function(p,archivos)
  {
@@ -4427,14 +4448,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   var m;
   m=ar.status;
-  return m.$==1?Doc.TextNode((((Runtime$1.Curried3(function($1,$2,$3)
-  {
-   return $1(ProzperServer_GeneratedPrintf.p$5($2)+" Verificado ("+Utils.toSafe($3)+")");
-  }))(Global.id))(ar.tipo))(m.$0)):Pendientes.pendienteArchivo(ar);
+  return m.$==1?List.ofArray([Doc.Element("i",[AttrProxy.Create("class","fas fa-check-double")],[]),Doc.TextNode(" "),Pendientes.enlaceArchivo(ar),Doc.TextNode(" Verificado")]):m.$==2?List.ofArray([Doc.Element("i",[AttrProxy.Create("class","fas fa-times-circle")],[]),Doc.TextNode(" "),Pendientes.enlaceArchivo(ar),Doc.TextNode(" Rechazado")]):Pendientes.pendienteArchivo(ar);
  };
- Pendientes.pendiente=function(docs)
+ Pendientes.enlace=function(dir,texto)
  {
-  return Doc.Element("li",[],docs);
+  return Doc.Element("a",[AttrProxy.Create("href",dir)],[Doc.TextNode(texto)]);
  };
  Pendientes.filtroCuenta=function(p,cuentas)
  {
@@ -4444,26 +4462,25 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   var m;
   m=fp.authorizeIdR;
-  return m.$==1?Doc.TextNode((((Runtime$1.Curried3(function($1,$2,$3)
+  return m.$==1?List.ofArray([Doc.Element("i",[AttrProxy.Create("class","far fa-square")],[]),Doc.TextNode(((((Runtime$1.Curried(function($1,$2,$3,$4)
   {
-   return $1(Utils.toSafe($2)+" NO REGISTRADA en Authorize ("+Utils.toSafe($3)+")");
-  }))(Global.id))(Global.String(fp.cuentaPago)))(m.$0)):Doc.TextNode((((Runtime$1.Curried3(function($1,$2,$3)
+   return $1(" "+Utils.toSafe($2)+" "+Utils.toSafe($3)+" NO REGISTRADA en Authorize ("+Utils.toSafe($4)+")");
+  },4))(Global.id))(fp.cuentaPago.get_TipoLargo()))(fp.cuentaPago.get_MaskedCuenta()))(m.$0))]):List.ofArray([Doc.Element("i",[AttrProxy.Create("class","far fa-check-square")],[]),Doc.TextNode(((((Runtime$1.Curried(function($1,$2,$3,$4)
   {
-   return $1(Utils.toSafe($2)+" Registrada ("+Utils.toSafe($3)+")");
-  }))(Global.id))(Global.String(fp.cuentaPago)))(m.$0.get_Id()));
+   return $1(" "+Utils.toSafe($2)+" "+Utils.toSafe($3)+" Registrada ("+Utils.toSafe($4)+")");
+  },4))(Global.id))(fp.cuentaPago.get_TipoLargo()))(fp.cuentaPago.get_MaskedCuenta()))(m.$0.get_Id()))]);
+ };
+ Pendientes.tarchivo2String=function(a)
+ {
+  return a.$==6?["Formulario W-8BEN",Enlace.FormaW8BEN()]:a.$==1?["Autorización de pago",Enlace.FormasPago()]:a.$==0?["Contrato",Enlace.FormaContrato()]:a.$==3?["Cedula",Enlace.Subir()]:a.$==4?["Licencia de Conducir",Enlace.Subir()]:a.$==2?["Pasaporte",Enlace.Subir()]:a.$==7?[a.$0,Enlace.Subir()]:["Formulario W-9",Enlace.FormaW9()];
+ };
+ Pendientes.enlaceArchivo=function(ar)
+ {
+  return Pendientes.enlace(Enlace.documento(ar.idAliado,ar.nombre),(Pendientes.tarchivo2String(ar.tipo))[0]);
  };
  Pendientes.pendienteArchivo=function(ar)
  {
-  return Pendientes.pendiente(List.ofArray([Doc.Element("a",[AttrProxy.Create("href",(((Runtime$1.Curried3(function($1,$2,$3)
-  {
-   return $1("https://prozper0.azurewebsites.net/documentos/"+Utils.toSafe($2)+"/"+Utils.toSafe($3));
-  }))(Global.id))(ar.idAliado.get_Id()))(ar.nombre))],[Doc.TextNode((function($1)
-  {
-   return function($2)
-   {
-    return $1(ProzperServer_GeneratedPrintf.p$5($2));
-   };
-  }(Global.id))(ar.tipo))]),Doc.TextNode(" pendiente de Verificacion")]));
+  return List.ofArray([Doc.Element("i",[AttrProxy.Create("class","far fa-check-square")],[]),Doc.TextNode(" "),Pendientes.enlaceArchivo(ar),Doc.TextNode(" subido. "),Doc.Element("i",[AttrProxy.Create("class","far fa-square")],[]),Doc.TextNode(" Pendiente de Verificacion")]);
  };
  JS.GetFields=function(o)
  {
@@ -6078,6 +6095,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:"contrato"
   },h):void 0;
  };
+ ProzperServer_Templates.pendientes=function(h)
+ {
+  Templates.LoadLocalTemplates("index0");
+  return h?Templates.NamedTemplate("index0",{
+   $:1,
+   $0:"pendientes"
+  },h):void 0;
+ };
  ProzperServer_Router.r=function()
  {
   return RouterOperators.JSUnion(void 0,[[null,[[null,[]]],[]],[null,[[null,["NoUser"]]],[]],[null,[[null,["PreRegister"]]],[]],[null,[[null,["Content"]]],[RouterOperators.rString()]],[null,[[null,["Pdf"]]],[RouterOperators.rWildcard()]],[null,[[null,["Video"]]],[RouterOperators.rWildcard()]]]);
@@ -6182,10 +6207,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return"IdPayment "+Utils.prettyPrint($1.$0);
  };
- ProzperServer_GeneratedPrintf.p$5=function($1)
- {
-  return $1.$==7?"Otro "+Utils.prettyPrint($1.$0):$1.$==6?"FormaW8BEN":$1.$==5?"FormaW9":$1.$==4?"LicenciaConducir":$1.$==3?"Cedula":$1.$==2?"Pasaporte":$1.$==1?"Autorizacion":"Contrato";
- };
  ProzperServer_GeneratedPrintf.p$4=function($1)
  {
   return $1.$==2?"OtroS "+Utils.prettyPrint($1.$0):$1.$==1?"Florida":"Texas";
@@ -6198,9 +6219,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return $1.$==2?"Otra "+Utils.prettyPrint($1.$0):$1.$==1?"Corriente":"Ahorro";
  };
+ ProzperServer_GeneratedPrintf.p$5=function($1)
+ {
+  return $1.$==7?"Otro "+Utils.prettyPrint($1.$0):$1.$==6?"FormaW8BEN":$1.$==5?"FormaW9":$1.$==4?"LicenciaConducir":$1.$==3?"Cedula":$1.$==2?"Pasaporte":$1.$==1?"Autorizacion":"Contrato";
+ };
  ProzperServer_GeneratedPrintf.p$6=function($1)
  {
-  return $1.$==5?"Cambiado":$1.$==4?"Cancelado":$1.$==3?"Expirado":$1.$==2?"Rechazado "+Utils.prettyPrint($1.$0):$1.$==1?"Verificado "+Utils.prettyPrint($1.$0):"Subido";
+  return $1.$==5?"Cambiado":$1.$==4?"Cancelado":$1.$==3?"Expirado":$1.$==2?"Rechazado":$1.$==1?"Verificado":"Subido";
  };
  ProzperServer_GeneratedPrintf.p$13=function($1)
  {
@@ -7704,6 +7729,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return Library.print$1(b$4);
   };
+  SC$1.cuentaPagoO=Var$1.Create$1(null);
   SC$1.cuentaAutorizar=Var$1.Create$1(Doc.TextNode("No hay cuenta seleccionada"));
   SC$1.titular=Var$1.Create$1("");
   SC$1.pid=new IdPayment({
@@ -7770,6 +7796,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return $2==null?$3.id:$2.$0;
   },ListaDocs.expandedOV().get_View(),ModeloUI.aliadoW());
+  SC$1.FormaW9="/#/Pdf/blob/Inscripcion/07 Form W-9.pdf";
+  SC$1.FormaW8BEN="/#/Pdf/blob/Inscripcion/05 Form W-8BEN.pdf";
+  SC$1.FormasPago="/#/Content/ProzperLyt.cntFormaFormasPago";
+  SC$1.FormaContrato="/#/Content/ProzperLyt.cntFormaContrato";
+  SC$1.Subir="/#/Content/ProzperLyt.cntSubirDocumentos";
   SC$1.layoutName="ProzperLyt";
   SC$1.appName="Prozper";
   SC$1.influencerV=Var$1.Create$1("");
@@ -9280,7 +9311,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     return!self.document.hidden?Refresh.shouldRefresh()?b.Bind$1(Rpc.obtenerEstadoParaUsuario(),function(a)
     {
      Refresh.set_shouldRefresh(false);
-     return!Unchecked.Equals(ModeloUI.modeloV().Get(),a)?(ModeloUI.modeloV().Set(a),b.Zero()):b.Zero();
+     ModeloUI.modeloV().Set(a);
+     return b.Zero();
     }):b.Zero():b.Zero();
    }));
   }))))):ModeloUI.modeloV().Set(TypesV0.modeloVacio());
@@ -10390,14 +10422,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  },null,StatusArchivo);
  StatusArchivo.Parse=function(s)
  {
-  var a,a$1;
-  return s==="Cambiado"?StatusArchivo.Cambiado:s==="Expirado"?StatusArchivo.Expirado:s==="Cancelado"?StatusArchivo.Cancelado:(a=String.StartsWith$1("Verificado ",s),a!=null&&a.$==1?new StatusArchivo({
-   $:1,
-   $0:a.$0
-  }):(a$1=String.StartsWith$1("Rechazado ",s),a$1!=null&&a$1.$==1?new StatusArchivo({
-   $:2,
-   $0:a$1.$0
-  }):StatusArchivo.Subido));
+  return s==="Cambiado"?StatusArchivo.Cambiado:s==="Expirado"?StatusArchivo.Expirado:s==="Cancelado"?StatusArchivo.Cancelado:s==="Verificado"?StatusArchivo.Verificado:s==="Rechazado"?StatusArchivo.Rechazado:StatusArchivo.Subido;
  };
  StatusArchivo.Cambiado=new StatusArchivo({
   $:5
@@ -10408,6 +10433,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  StatusArchivo.Cancelado=new StatusArchivo({
   $:4
  });
+ StatusArchivo.Verificado=new StatusArchivo({
+  $:1
+ });
+ StatusArchivo.Rechazado=new StatusArchivo({
+  $:2
+ });
  StatusArchivo.Subido=new StatusArchivo({
   $:0
  });
@@ -10417,6 +10448,27 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return Operators.FailWith("View<'T>.V can only be called in an argument to a V-enabled function or if 'T = Doc.");
   }
  },null,View);
+ CuentaPago=TypesV0.CuentaPago=Runtime$1.Class({
+  get_AutorizacionPre:function()
+  {
+   return(((Runtime$1.Curried3(function($1,$2,$3)
+   {
+    return $1("Autorizacion "+Utils.toSafe($2)+" "+Utils.toSafe($3));
+   }))(Global.id))(this.get_TipoCorto()))(this.get_MaskedCuenta());
+  },
+  get_TipoCorto:function()
+  {
+   return this.$==0?"CB":this.$==2?"TE":"TC";
+  },
+  get_MaskedCuenta:function()
+  {
+   return this.$==0?this.$0.numero.get_Id():this.$==2?this.$0:this.$0.numero.get_Id();
+  },
+  get_TipoLargo:function()
+  {
+   return this.$==0?"Cuenta Bancaria":this.$==2?"Transferencia Electronica":"Tarjeta de Credito";
+  }
+ },null,CuentaPago);
  FormaFirma.formaFirma=function(nombre,contenido,tipo,procesar,filenamePre)
  {
   var acepto,forma,b,I,t,p,i;
@@ -12844,12 +12896,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return this.$0;
   }
  },null,IdPayment);
- CuentaPago=TypesV0.CuentaPago=Runtime$1.Class({
-  get_MaskedCuenta:function()
-  {
-   return this.$==0?this.$0.numero.get_Id():this.$==2?this.$0:this.$0.numero.get_Id();
-  }
- },null,CuentaPago);
  PlugInQuery.New=function(qryName,qryFunction)
  {
   return{
@@ -16311,6 +16357,38 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   SC$1.$cctor();
   return SC$1.counter;
+ };
+ Enlace.FormaContrato=function()
+ {
+  SC$1.$cctor();
+  return SC$1.FormaContrato;
+ };
+ Enlace.FormasPago=function()
+ {
+  SC$1.$cctor();
+  return SC$1.FormasPago;
+ };
+ Enlace.Subir=function()
+ {
+  SC$1.$cctor();
+  return SC$1.Subir;
+ };
+ Enlace.FormaW8BEN=function()
+ {
+  SC$1.$cctor();
+  return SC$1.FormaW8BEN;
+ };
+ Enlace.FormaW9=function()
+ {
+  SC$1.$cctor();
+  return SC$1.FormaW9;
+ };
+ Enlace.documento=function(a,doc)
+ {
+  return(((Runtime$1.Curried3(function($1,$2,$3)
+  {
+   return $1("https://prozper0.azurewebsites.net/documentos/"+Utils.toSafe($2)+"/"+Utils.toSafe($3));
+  }))(Global.id))(a.$0))(doc);
  };
  Layout.extractNodes=function(lyt)
  {

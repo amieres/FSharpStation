@@ -9,13 +9,13 @@
                     <link rel="shortcut icon" href="/blob/images/favicon.ico" type="image/x-icon">
                     <link href="//cdn.muicss.com/mui-0.9.41/css/mui.min.css" rel="stylesheet" type="text/css" >
                     <script src="//cdn.muicss.com/mui-0.9.41/js/mui.min.js"></script>
-                    <script src="//cdn.muicss.com/mui-0.9.41/js/mui.min.js"></script>
                     <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
                     <!-- Latest compiled and minified JavaScript -->
                     <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.0/js/msal.min.js"></script>
                     <!-- IE support: add promises polyfill before msal.js  -->
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js" class="pre"></script>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js" class="pre"></script>
+                    <script src="https://kit.fontawesome.com/837b14b52b.js"></script>        
                     <script ws-replace="scripts"></script>
                     <script>
                             function doNothing(e){
@@ -1224,8 +1224,8 @@
                         <th ws-onclick="sort_Id"            style="width:13%; text-align:center">Id           </th>
                     </thead>
                     <tbody ws-hole="TBody" ws-children-template="FilaConsolidado">
-                        <tr style="">
-                            <td> <div style="text-align: center                     ">${nombre}        </div> </td>
+                        <tr style="" class="${status}">
+                            <td> <div ws-onclick="expandFiles" style="cursor:pointer">${nombre}        </div> </td>
                             <td> <div ws-onclick="expandFiles" style="cursor:pointer">${expanded}      </div> </td>
                             <td> <div style="text-align: center; font-size: small "  >${correo}        </div> </td>
                             <td> <div style="text-align: center; font-size: small ">
@@ -1426,8 +1426,10 @@
             
             
             <div ws-template="Pendientes">
-            <h2>Pasos pendientes para completar el proceso de Afiliacion:</h2>
-            <div ws-replace="pasos" ></div>
+                <div class="mui-panel mui--z5" style="max-height: 550px; overflow: auto;">
+                    <h2>Pasos pendientes para completar el proceso de Afiliación:</h2>
+                    <div ws-replace="pasos" ></div>
+                </div>
             </div>
                     <style>
                         .Inactivo          { font-weight: 100 ; color: rgba(179, 177, 177, 0.644) }

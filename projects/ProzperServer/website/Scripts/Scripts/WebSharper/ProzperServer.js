@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,Dict,Monads,Seq,Async,WebSharper,Obj,Result,Builder,Operators,Eff,Eff$1,Done,EffBuilder,EA,Reader,Ask,Log,LogEntry,Rsl,Fail,Asy,Asyn,String,ParseO,Serializer,JsonIntermediate,LibraryJS,Promise,ProzperServer,Basico,IdAliado,IdAuthorize,IdAddress,IdPayment,TypesV0,LatestType,IdAliado$1,IdAuthorize$1,IdAddress$1,IdPayment$1,StatusAliado,TipoAliado,Pais,Estado,Identificacion,TipoArchivo,StatusArchivo,Archivo,Expiracion,NumeroCuenta,NumeroTarjeta,RoutingNumber,TipoTarjeta,TipoCuenta,CuentaBancaria,TarjetaCredito,ConceptoPago,Transaccion,TipoDireccion,ZonaPostal,Direccion,TipoTelefono,Telefono,CorreoElectronico,Genero,DatosPersonales,StatusFormaPago,FormaPago,TipoMensaje,Remitente,Mensaje,PremisasCalculo,DiaPago,IdForAuthorize,Aliado,Modelo,Aliado$1,Buscar,Evento,Respuesta,Rpc,Remoting,CustomXhrProvider,SC$1,ProzperServer_GeneratedPrintf,Seq$1,Concurrency,Arrays,List,IntelliFactory,Runtime,Enumerator,Result$1,Operators$1,Unchecked,Utils,console,Strings,Slice,Collections,FSharpMap,FSharpSet,BalancedTree,Char,Date,DateUtil,Dictionary,Remoting$1,Numeric,System,Guid,Lazy;
+ var Global,FsRoot,Library,Dict,Monads,Seq,Async,WebSharper,Obj,Result,Builder,Operators,Eff,Eff$1,Done,EffBuilder,EA,Reader,Ask,Log,LogEntry,Rsl,Fail,Asy,Asyn,String,ParseO,Serializer,JsonIntermediate,LibraryJS,Promise,ProzperServer,Basico,IdAliado,IdAuthorize,IdAddress,IdPayment,TypesV0,LatestType,IdAliado$1,IdAuthorize$1,IdAddress$1,IdPayment$1,StatusAliado,TipoAliado,Pais,Estado,Identificacion,TipoArchivo,StatusArchivo,Archivo,Expiracion,NumeroCuenta,NumeroTarjeta,RoutingNumber,TipoTarjeta,TipoCuenta,CuentaBancaria,TarjetaCredito,ConceptoPago,Transaccion,TipoDireccion,ZonaPostal,Direccion,TipoTelefono,Telefono,CorreoElectronico,Genero,DatosPersonales,CuentaPago,StatusFormaPago,FormaPago,TipoMensaje,Remitente,Mensaje,PremisasCalculo,DiaPago,IdForAuthorize,Aliado,Modelo,Aliado$1,Buscar,Evento,Respuesta,Rpc,Remoting,CustomXhrProvider,SC$1,ProzperServer_GeneratedPrintf,Seq$1,Concurrency,Arrays,List,IntelliFactory,Runtime,Enumerator,Result$1,Operators$1,Unchecked,Utils,console,Strings,Slice,Collections,FSharpMap,FSharpSet,BalancedTree,Char,Date,DateUtil,Dictionary,Remoting$1,Numeric,System,Guid,Lazy;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -71,6 +71,7 @@
  CorreoElectronico=TypesV0.CorreoElectronico=TypesV0.CorreoElectronico||{};
  Genero=TypesV0.Genero=TypesV0.Genero||{};
  DatosPersonales=TypesV0.DatosPersonales=TypesV0.DatosPersonales||{};
+ CuentaPago=TypesV0.CuentaPago=TypesV0.CuentaPago||{};
  StatusFormaPago=TypesV0.StatusFormaPago=TypesV0.StatusFormaPago||{};
  FormaPago=TypesV0.FormaPago=TypesV0.FormaPago||{};
  TipoMensaje=TypesV0.TipoMensaje=TypesV0.TipoMensaje||{};
@@ -2146,19 +2147,18 @@
  StatusArchivo.Expirado=new StatusArchivo({
   $:3
  });
+ StatusArchivo.Rechazado=new StatusArchivo({
+  $:2
+ });
+ StatusArchivo.Verificado=new StatusArchivo({
+  $:1
+ });
  StatusArchivo.Subido=new StatusArchivo({
   $:0
  });
  StatusArchivo.Parse=function(s)
  {
-  var a,a$1;
-  return s==="Cambiado"?StatusArchivo.Cambiado:s==="Expirado"?StatusArchivo.Expirado:s==="Cancelado"?StatusArchivo.Cancelado:(a=String.StartsWith("Verificado ",s),a!=null&&a.$==1?new StatusArchivo({
-   $:1,
-   $0:a.$0
-  }):(a$1=String.StartsWith("Rechazado ",s),a$1!=null&&a$1.$==1?new StatusArchivo({
-   $:2,
-   $0:a$1.$0
-  }):StatusArchivo.Subido));
+  return s==="Cambiado"?StatusArchivo.Cambiado:s==="Expirado"?StatusArchivo.Expirado:s==="Cancelado"?StatusArchivo.Cancelado:s==="Verificado"?StatusArchivo.Verificado:s==="Rechazado"?StatusArchivo.Rechazado:StatusArchivo.Subido;
  };
  Archivo.New=function(idAliado,tipo,nombre,modificado,tamano,status,comentario)
  {
@@ -2562,6 +2562,27 @@
    fechaNacimiento:fechaNacimiento
   };
  };
+ CuentaPago=TypesV0.CuentaPago=Runtime.Class({
+  get_AutorizacionPre:function()
+  {
+   return(((Runtime.Curried3(function($1,$2,$3)
+   {
+    return $1("Autorizacion "+Utils.toSafe($2)+" "+Utils.toSafe($3));
+   }))(Global.id))(this.get_TipoCorto()))(this.get_MaskedCuenta());
+  },
+  get_TipoLargo:function()
+  {
+   return this.$==0?"Cuenta Bancaria":this.$==2?"Transferencia Electronica":"Tarjeta de Credito";
+  },
+  get_TipoCorto:function()
+  {
+   return this.$==0?"CB":this.$==2?"TE":"TC";
+  },
+  get_MaskedCuenta:function()
+  {
+   return this.$==0?this.$0.numero.get_Id():this.$==2?this.$0:this.$0.numero.get_Id();
+  }
+ },null,CuentaPago);
  StatusFormaPago.NuevaFormaPago={
   $:0
  };
@@ -3312,7 +3333,7 @@
  };
  ProzperServer_GeneratedPrintf.p$5=function($1)
  {
-  return $1.$==5?"Cambiado":$1.$==4?"Cancelado":$1.$==3?"Expirado":$1.$==2?"Rechazado "+Utils.prettyPrint($1.$0):$1.$==1?"Verificado "+Utils.prettyPrint($1.$0):"Subido";
+  return $1.$==5?"Cambiado":$1.$==4?"Cancelado":$1.$==3?"Expirado":$1.$==2?"Rechazado":$1.$==1?"Verificado":"Subido";
  };
  ProzperServer_GeneratedPrintf.p$6=function($1)
  {
