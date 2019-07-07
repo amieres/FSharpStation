@@ -1,0 +1,6 @@
+#load "Microsoft.Azure.WebJobs.fsx" 
+#load "Microsoft.Azure.WebJobs.Extensions.fsx" 
+#load "Microsoft.Azure.WebJobs.Extensions.Http.fsx" 
+#load "Microsoft.Azure.WebJobs.Script.ExtensionsMetadataGenerator.fsx" 
+#load "Newtonsoft.Json.fsx" 
+#load "System.ValueTuple.fsx" 

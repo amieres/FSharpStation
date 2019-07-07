@@ -1,6 +1,6 @@
 #nowarn "3242"
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1559673172621 -d:TEE -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1561191553159 -d:TEE -d:WEBSHARPER
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\FSharpStation\src"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
@@ -45,7 +45,7 @@
 //#nowarn "3242"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1559673172621
+//#define FSharpStation1561191553159
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -1126,6 +1126,14 @@ namespace FsRoot
                 let (|StartsWith|_|) (start:string) (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
                 let (|EndsWith  |_|) (ends :string) (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
                 
+                let thousands n =
+                    let v = n.ToString()
+                    let r = v.Length % 3 
+                    let s = if r = 0 then 3 else r
+                    [   yield v.[0.. s - 1]
+                        for i in 0..(v.Length - s)/ 3 - 1 do
+                            yield v.[i * 3 + s .. i * 3 + s + 2]
+                    ] |> String.concat ","
             
             [< Inline "$a + '/' + $b" >]
             let inline (+/+) a b = System.IO.Path.Combine(a, b)
@@ -2689,8 +2697,8 @@ namespace FsRoot
                 let serField (name:string) (get:'D->'e) (set:'e->'D->'D) (serFuncs:('e->string) * (obj->'e)) : string * _ * ('D -> SerD<'D>) = 
                     serFuncs |> fun (ser, deser) -> name, get >> ser >> Some, (fun rc o -> set (deser o) rc) 
                     
-                let serFieldO (name:string) (get:'D->'e option) (set:'e->'D->'D) (serFuncs:('e->string) * (obj->'e)) : string * _ * _ = 
-                    serFuncs |> fun (ser, deser) -> name, get >> Option.map ser, (fun rc o -> if isUndefined o then rc else set (deser o) rc) 
+                let serFieldO (name:string) (get:'D->'e option) (set:'e option->'D->'D) (serFuncs:('e->string) * (obj->'e)) : string * _ * _ = 
+                    serFuncs |> fun (ser, deser) -> name, get >> Option.map ser, (fun rc o -> set (if isUndefined o then None else Some(deser o) ) rc) 
                     
                 let [< Inline >] serRecord init (fields: #seq<(string * ('D -> string option) * ('D -> SerD<'D>))>) : Ser<'D> =
                     let serialize   dim = fields |> Seq.choose(fun (n, ser, _deser) -> ser dim |> Option.map (sprintf "%A: %s" n)) |> String.concat ", " |> sprintf "{%s}"
@@ -3972,7 +3980,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/6ee01ba8-84e7-4280-946c-63dbe3cb9aec"
+                    "http://localhost:9005/#/Snippet/e2c502cb-d20a-4e6c-b75c-836776fed43f"
                 #endif
                 
                 let extractEndPoint() = 
@@ -4156,16 +4164,18 @@ namespace FsRoot
             | MsgGetUrl
             | MsgGetValue        of string
             | MsgSetValue        of string * string
+            | MsgGetModified     of SnippetReference
             
             [< JavaScript >]
             type FSResponse =
             | RespString         of string
             | RespSnippets       of Snippet[]
+            | RespDateTime       of System.DateTime
             
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1559673172621"
+                let mutable fsharpStationAddress = Address "FSharpStation1561191553159"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -4192,6 +4202,12 @@ namespace FsRoot
                     | _               -> return! Error <| ErrorMsg (sprintf "Unexpected %A" response)
                 }
             
+                let respDateTime response = asyncResult { 
+                    match response with
+                    | RespDateTime time -> return time
+                    | _                 -> return! Error <| ErrorMsg (sprintf "Unexpected %A" response)
+                }
+            
                 let respSnippet response = asyncResult { 
                     match response with
                     | RespSnippets [| snp |] -> return snp
@@ -4205,6 +4221,14 @@ namespace FsRoot
                     |> MsgGetCode
                     |> sendMessage
                     |> AsyncResult.bind respString
+            
+                let getModified path = 
+                    path
+                    |> String.splitByChar '/'
+                    |> RefSnippetPath
+                    |> MsgGetModified
+                    |> sendMessage
+                    |> AsyncResult.bind respDateTime
             
                 let getSnippet path = 
                     path
@@ -4633,7 +4657,7 @@ namespace FsRoot
             
             let private snippets               = ListModel<SnippetId, Snippet> (fun s -> s.snpId)
             let private hierarchy              = Var.Create [||]
-            let private generation             = Var.Create Utc1970_01_01
+            let private generation             = Var.Create System.DateTime.MinValue
             let         currentSnippetIdOV     = Var.Create (None:SnippetId option)
             let private codeSnippetIdOV        = Var.Create (None:SnippetId option)
             let private collapsedV             = Var.Create Set.empty
@@ -5557,14 +5581,14 @@ namespace FsRoot
         
             let serSnippet   : Ser<Snippet  > = 
                 [|
-                    serSnippetId                                         |> serField  "snpId"         (fun s ->      s.snpId        ) (fun v s -> { s with snpId         =                                v  } )
-                    serString                                            |> serField  "snpName"       (fun s ->      s.snpName      ) (fun v s -> { s with snpName       =                                v  } )
-                    serString                                            |> serField  "snpContent"    (fun s ->      s.snpContent   ) (fun v s -> { s with snpContent    =                                v  } )
-                    serSnippetId                     |> serOpt           |> serField  "snpParentIdO"  (fun s ->      s.snpParentIdO ) (fun v s -> { s with snpParentIdO  =                                v  } )
-                    serSnippetId                     |> serSet           |> serField  "snpPredIds"    (fun s ->      s.snpPredIds   ) (fun v s -> { s with snpPredIds    =                                v  } )
-                    serString              |> serDup serString |> serArr |> serField  "snpProperties" (fun s ->      s.snpProperties) (fun v s -> { s with snpProperties =                                v  } )
-                    serInt                                               |> serFieldO "snpGeneration" (fun s -> None                ) (fun v s -> { s with snpModified   = Utc1970_01_01.AddMinutes(float v) } )
-                    serDate                                              |> serFieldO "snpModified"   (fun s -> Some s.snpModified  ) (fun v s -> { s with snpModified   =                                v  } )
+                    serSnippetId                                         |> serField  "snpId"         (fun s -> s.snpId        ) (fun v  s -> { s with snpId         = v } )
+                    serString                                            |> serField  "snpName"       (fun s -> s.snpName      ) (fun v  s -> { s with snpName       = v } )
+                    serString                                            |> serField  "snpContent"    (fun s -> s.snpContent   ) (fun v  s -> { s with snpContent    = v } )
+                    serSnippetId                     |> serOpt           |> serField  "snpParentIdO"  (fun s -> s.snpParentIdO ) (fun v  s -> { s with snpParentIdO  = v } )
+                    serSnippetId                     |> serSet           |> serField  "snpPredIds"    (fun s -> s.snpPredIds   ) (fun v  s -> { s with snpPredIds    = v } )
+                    serString              |> serDup serString |> serArr |> serField  "snpProperties" (fun s -> s.snpProperties) (fun v  s -> { s with snpProperties = v } )
+                    serInt                                               |> serFieldO "snpGeneration" (fun s -> None           ) (fun vO s -> match vO with None->s |  Some v -> { s with snpModified = Utc1970_01_01.AddHours (float v) } )
+                    serDate                                              |> serField  "snpModified"   (fun s -> s.snpModified  ) (fun v  s -> { s with snpModified   = v } )
                 |] |> serRecord (Snippet.New "" "" None)
             
             type Model = {
@@ -5577,10 +5601,10 @@ namespace FsRoot
         
             let serModel : Ser<Model> =
                 [|
-                    serSnippet                       |> serArr           |> serField  "snippets"   (fun m ->      m.snippets  ) (fun v m -> { m with snippets  =                                v  } )
-                    serInt                                               |> serFieldO "generation" (fun m -> None             ) (fun v m -> { m with modified  = Utc1970_01_01.AddMinutes(float v) } )
-                    serDate                                              |> serFieldO "modified"   (fun m -> Some m.modified  ) (fun v m -> { m with modified  =                                v  } )
-                    serSnippetId                     |> serSet           |> serField  "collapsed"  (fun m ->      m.collapsed ) (fun v m -> { m with collapsed =                                v  } )
+                    serSnippet                       |> serArr           |> serField  "snippets"   (fun m -> m.snippets  ) (fun v  m -> { m with snippets   = v } )
+                    serInt                                               |> serFieldO "generation" (fun m -> None        ) (fun vO m -> match vO with None -> m | Some v -> { m with modified = Utc1970_01_01.AddHours (float v) } )
+                    serDate                                              |> serField  "modified"   (fun m -> m.modified  ) (fun v  m -> { m with modified   = v } )
+                    serSnippetId                     |> serSet           |> serField  "collapsed"  (fun m -> m.collapsed ) (fun v  m -> { m with collapsed  = v } )
                 |] |> serRecord { snippets = [||] ; modified = Utc1970_01_01 ; collapsed = Set.empty}
                 
         
@@ -5967,8 +5991,14 @@ namespace FsRoot
                     | MsgGetCode                   snr  -> Snippets.clearPredsCache ()
                                                            let!    snp  = Snippet.snippetFromRefORm snr |> ofFusionM |> absorbO (fun () -> ErrorMsg <| sprintf "Snippet not found %A" snr)
                                                            return! Snippet.fastCodeRm (Some snp.snpId) (Some snp.snpId) |> ofFusionM |>> fst |>> RespString
-                    | MsgGetPredecessors           snr  -> Snippets.clearPredsCache ()
-                                                           return  Hole ? TODO_GetPredecessors
+                    | MsgGetModified               snr  -> let!    snp  = Snippet.snippetFromRefORm snr |> ofFusionM |> absorbO (fun () -> ErrorMsg <| sprintf "Snippet not found %A" snr)
+                                                           let!    ids  = Snippet.predsLRm snp.snpId |> ofFusionM
+                                                           let!    prds = ids |> Fusion.traverseSeq (Snippet.snippetORm >> ofFusionM)
+                                                           return  prds |> Seq.choose (Option.map (fun s -> s.snpModified)) |> Seq.max |> RespDateTime
+                    | MsgGetPredecessors           snr  -> let!    snp  = Snippet.snippetFromRefORm snr |> ofFusionM |> absorbO (fun () -> ErrorMsg <| sprintf "Snippet not found %A" snr)
+                                                           let!    ids  = Snippet.predsLRm snp.snpId |> ofFusionM
+                                                           let!    prds = ids |> Fusion.traverseSeq (Snippet.snippetORm >> ofFusionM)
+                                                           return  prds |> Seq.choose id |> Seq.toArray |> RespSnippets
                     | MsgAction [| "AddOutput" ; txt |] -> appendMsgs txt
                                                            return  FSResponse.RespString "Ok"
                     | MsgAction [| "ExecJS"    ; js  |] -> let! v = try  JS.Apply JS.Window "eval" [| js |] |> (function null -> "" | s -> sprintf "%A" s) |> Ok

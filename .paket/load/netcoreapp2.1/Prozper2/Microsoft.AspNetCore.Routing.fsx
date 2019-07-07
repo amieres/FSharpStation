@@ -1,0 +1,6 @@
+#load "Microsoft.AspNetCore.Http.Extensions.fsx" 
+#load "Microsoft.AspNetCore.Routing.Abstractions.fsx" 
+#load "Microsoft.Extensions.Logging.Abstractions.fsx" 
+#load "Microsoft.Extensions.ObjectPool.fsx" 
+#load "Microsoft.Extensions.Options.fsx" 
+#r "../../../../packages/prozper2/Microsoft.AspNetCore.Routing/lib/netstandard2.0/Microsoft.AspNetCore.Routing.dll" 

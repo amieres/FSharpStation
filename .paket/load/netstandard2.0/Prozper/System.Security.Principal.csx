@@ -1,0 +1,1 @@
+#r "../../../../packages/prozper/System.Security.Principal/lib/netstandard1.0/System.Security.Principal.dll" 

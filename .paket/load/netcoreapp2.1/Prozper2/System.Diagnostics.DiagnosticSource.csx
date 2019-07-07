@@ -1,0 +1,1 @@
+#r "../../../../packages/prozper2/System.Diagnostics.DiagnosticSource/lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll" 

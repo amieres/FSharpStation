@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,Dict,Monads,Seq,Async,WebSharper,Obj,Result,Builder,Operators,Eff,Eff$1,Done,EffBuilder,EA,Reader,Ask,Log,LogEntry,Rsl,Fail,Asy,Asyn,String,ParseO,Serializer,JsonIntermediate,LibraryJS,Promise,ProzperServer,Basico,IdAliado,IdAuthorize,IdAddress,IdPayment,TypesV0,LatestType,IdAliado$1,IdAuthorize$1,IdAddress$1,IdPayment$1,StatusAliado,TipoAliado,Pais,Estado,Identificacion,TipoArchivo,StatusArchivo,Archivo,Expiracion,NumeroCuenta,NumeroTarjeta,RoutingNumber,TipoTarjeta,TipoCuenta,CuentaBancaria,TarjetaCredito,ConceptoPago,Transaccion,TipoDireccion,ZonaPostal,Direccion,TipoTelefono,Telefono,CorreoElectronico,Genero,DatosPersonales,CuentaPago,StatusFormaPago,FormaPago,TipoMensaje,Remitente,Mensaje,PremisasCalculo,DiaPago,IdForAuthorize,Aliado,Modelo,Aliado$1,Buscar,Evento,Respuesta,Rpc,Remoting,CustomXhrProvider,SC$1,ProzperServer_GeneratedPrintf,Seq$1,Concurrency,Arrays,List,IntelliFactory,Runtime,Enumerator,Result$1,Operators$1,Unchecked,Utils,console,Strings,Slice,Collections,FSharpMap,FSharpSet,BalancedTree,Char,Date,DateUtil,Dictionary,Remoting$1,Numeric,System,Guid,Lazy;
+ var Global,FsRoot,Library,Dict,Monads,Seq,Async,WebSharper,Obj,Result,Builder,Operators,Eff,Eff$1,Done,EffBuilder,EA,Reader,Ask,Log,LogEntry,Rsl,Fail,Asy,Asyn,String,ParseO,Serializer,JsonIntermediate,LibraryJS,Promise,Date,ProzperServer,Basico,IdAliado,IdAuthorize,IdAddress,IdPayment,TypesV0,LatestType,IdAliado$1,IdAuthorize$1,IdAddress$1,IdPayment$1,IdSubscription,StatusAliado,TipoAliado,Pais,Estado,Identificacion,TipoArchivo,StatusArchivo,Archivo,Expiracion,NumeroCuenta,NumeroTarjeta,RoutingNumber,TipoTarjeta,TipoCuenta,CuentaBancaria,TarjetaCredito,ConceptoPago,Transaccion,TipoDireccion,ZonaPostal,Direccion,TipoTelefono,Telefono,CorreoElectronico,Genero,DatosPersonales,CuentaPago,StatusFormaPago,Subscripcion,FormaPago,TipoMensaje,Remitente,Mensaje,PremisasCalculo,DiaPago,IdForAuthorize,Aliado,Modelo,Aliado$1,Buscar,Evento,Respuesta,Rpc0,Remoting,CustomXhrProvider,SC$1,ProzperServer_GeneratedPrintf,Seq$1,Concurrency,Arrays,List,IntelliFactory,Runtime,Enumerator,Result$1,Operators$1,Unchecked,Utils,console,Strings,Slice,Collections,FSharpMap,FSharpSet,BalancedTree,Char,Date$1,DateUtil,Dictionary,Remoting$1,Numeric,System,Guid,Lazy;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -33,6 +33,7 @@
  JsonIntermediate=Serializer.JsonIntermediate=Serializer.JsonIntermediate||{};
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
  Promise=LibraryJS.Promise=LibraryJS.Promise||{};
+ Date=LibraryJS.Date=LibraryJS.Date||{};
  ProzperServer=FsRoot.ProzperServer=FsRoot.ProzperServer||{};
  Basico=ProzperServer.Basico=ProzperServer.Basico||{};
  IdAliado=Basico.IdAliado=Basico.IdAliado||{};
@@ -45,6 +46,7 @@
  IdAuthorize$1=TypesV0.IdAuthorize=TypesV0.IdAuthorize||{};
  IdAddress$1=TypesV0.IdAddress=TypesV0.IdAddress||{};
  IdPayment$1=TypesV0.IdPayment=TypesV0.IdPayment||{};
+ IdSubscription=TypesV0.IdSubscription=TypesV0.IdSubscription||{};
  StatusAliado=TypesV0.StatusAliado=TypesV0.StatusAliado||{};
  TipoAliado=TypesV0.TipoAliado=TypesV0.TipoAliado||{};
  Pais=TypesV0.Pais=TypesV0.Pais||{};
@@ -73,6 +75,7 @@
  DatosPersonales=TypesV0.DatosPersonales=TypesV0.DatosPersonales||{};
  CuentaPago=TypesV0.CuentaPago=TypesV0.CuentaPago||{};
  StatusFormaPago=TypesV0.StatusFormaPago=TypesV0.StatusFormaPago||{};
+ Subscripcion=TypesV0.Subscripcion=TypesV0.Subscripcion||{};
  FormaPago=TypesV0.FormaPago=TypesV0.FormaPago||{};
  TipoMensaje=TypesV0.TipoMensaje=TypesV0.TipoMensaje||{};
  Remitente=TypesV0.Remitente=TypesV0.Remitente||{};
@@ -86,7 +89,7 @@
  Buscar=Aliado$1.Buscar=Aliado$1.Buscar||{};
  Evento=ProzperServer.Evento=ProzperServer.Evento||{};
  Respuesta=ProzperServer.Respuesta=ProzperServer.Respuesta||{};
- Rpc=ProzperServer.Rpc=ProzperServer.Rpc||{};
+ Rpc0=ProzperServer.Rpc0=ProzperServer.Rpc0||{};
  Remoting=ProzperServer.Remoting=ProzperServer.Remoting||{};
  CustomXhrProvider=Remoting.CustomXhrProvider=Remoting.CustomXhrProvider||{};
  SC$1=Global.StartupCode$ProzperServer$ProzperServer=Global.StartupCode$ProzperServer$ProzperServer||{};
@@ -110,7 +113,7 @@
  FSharpSet=Collections&&Collections.FSharpSet;
  BalancedTree=Collections&&Collections.BalancedTree;
  Char=WebSharper&&WebSharper.Char;
- Date=Global.Date;
+ Date$1=Global.Date;
  DateUtil=WebSharper&&WebSharper.DateUtil;
  Dictionary=Collections&&Collections.Dictionary;
  Remoting$1=WebSharper&&WebSharper.Remoting;
@@ -1851,6 +1854,27 @@
    },null);
   });
  };
+ Date.toYYYYMMDDHHMM=function(sep,date)
+ {
+  return(((Runtime.Curried3(function($1,$2,$3)
+  {
+   return $1(Utils.toSafe($2)+" "+Utils.toSafe($3));
+  }))(Global.id))(Date.toYYYYMMDD(sep,date)))(Date.toHHMM(date));
+ };
+ Date.toHHMM=function(date)
+ {
+  return(((Runtime.Curried3(function($1,$2,$3)
+  {
+   return $1(Utils.padNumLeft(Global.String($2),2)+":"+Utils.padNumLeft(Global.String($3),2));
+  }))(Global.id))((new Global.Date(date)).getHours()))((new Global.Date(date)).getMinutes());
+ };
+ Date.toYYYYMMDD=function(sep,date)
+ {
+  return((((((Runtime.Curried(function($1,$2,$3,$4,$5,$6)
+  {
+   return $1(Global.String($2)+Utils.toSafe($3)+Utils.padNumLeft(Global.String($4),2)+Utils.toSafe($5)+Utils.padNumLeft(Global.String($6),2));
+  },6))(Global.id))((new Global.Date(date)).getFullYear()))(sep))((new Global.Date(date)).getMonth()+1))(sep))((new Global.Date(date)).getDate());
+ };
  IdAliado=Basico.IdAliado=Runtime.Class({
   get_Id:function()
   {
@@ -1916,6 +1940,12 @@
    return this.$0;
   }
  },null,IdPayment$1);
+ IdSubscription=TypesV0.IdSubscription=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,IdSubscription);
  StatusAliado=TypesV0.StatusAliado=Runtime.Class({
   toString:function()
   {
@@ -2586,12 +2616,32 @@
  StatusFormaPago.NuevaFormaPago={
   $:0
  };
- FormaPago.New=function(nombre,authorizeIdR,cuentaPago)
+ Subscripcion=TypesV0.Subscripcion=Runtime.Class({
+  get_Short:function()
+  {
+   return((((((Runtime.Curried(function($1,$2,$3,$4,$5,$6)
+   {
+    return $1(Utils.toSafe($2)+" "+Utils.toSafe($3)+" $"+Global.String($4)+".00 "+Utils.toSafe($5)+" "+Global.String($6));
+   },6))(Global.id))(this.idSubscripcion.get_Id()))(Date.toYYYYMMDD("-",this.inicio)))(this.monto))(this.descripcion))(this.status);
+  }
+ },null,Subscripcion);
+ Subscripcion.New=function(idSubscripcion,inicio,monto,descripcion,status)
+ {
+  return new Subscripcion({
+   idSubscripcion:idSubscripcion,
+   inicio:inicio,
+   monto:monto,
+   descripcion:descripcion,
+   status:status
+  });
+ };
+ FormaPago.New=function(nombre,authorizeIdR,cuentaPago,subscripcion)
  {
   return{
    nombre:nombre,
    authorizeIdR:authorizeIdR,
-   cuentaPago:cuentaPago
+   cuentaPago:cuentaPago,
+   subscripcion:subscripcion
   };
  };
  TipoMensaje.Saludo={
@@ -2840,7 +2890,7 @@
   trans=Arrays.filter(function(tr)
   {
    var c,c$1;
-   return tr.fechaPago>(c=(c$1=Date.now(),DateUtil.DatePortion(c$1)),DateUtil.AddMonths(c,-1));
+   return tr.fechaPago>(c=(c$1=Date$1.now(),DateUtil.DatePortion(c$1)),DateUtil.AddMonths(c,-1));
   },transAll);
   aliadoActualizadoM=(p=(cache=new Dictionary.New$5(),[[checkO,function($1)
   {
@@ -2867,7 +2917,7 @@
  Aliado$1.diaPago=function(registro)
  {
   var diaMes;
-  diaMes=(new Date(registro)).getDate();
+  diaMes=(new Date$1(registro)).getDate();
   return diaMes===1?DiaPago.Dia01:diaMes<=5?DiaPago.Dia05:diaMes<=10?DiaPago.Dia10:diaMes<=15?DiaPago.Dia15:diaMes<=20?DiaPago.Dia20:diaMes<=25?DiaPago.Dia25:DiaPago.Dia01;
  };
  Aliado$1.busqueda=function(aliados)
@@ -2997,7 +3047,7 @@
  Respuesta.ROk={
   $:0
  };
- Rpc.serverEndPoint=function()
+ Rpc0.serverEndPoint=function()
  {
   SC$1.$cctor();
   return SC$1.serverEndPoint;
@@ -3284,12 +3334,12 @@
   SC$1.modeloVacio=Modelo.New(new IdAliado$1({
    $:0,
    $0:""
-  }),[],(c=Date.now(),(new Date(c)).getFullYear()),(c$1=Date.now(),(new Date(c$1)).getMonth()+1),TypesV0.premisasCalculo(),0);
+  }),[],(c=Date$1.now(),(new Date$1(c)).getFullYear()),(c$1=Date$1.now(),(new Date$1(c$1)).getMonth()+1),TypesV0.premisasCalculo(),0);
   SC$1.correoVacio=CorreoElectronico.New("",null,null);
-  SC$1.empty=(d=DatosPersonales.New(null,"","","","",Pais.USA,Genero.Masculino,(new Date(2000,1-1,1)).getTime()),Aliado.New(new IdAliado$1({
+  SC$1.empty=(d=DatosPersonales.New(null,"","","","",Pais.USA,Genero.Masculino,(new Date$1(2000,1-1,1)).getTime()),Aliado.New(new IdAliado$1({
    $:0,
    $0:""
-  }),null,null,null,d,[],[],false,StatusAliado.Inactivo,DiaPago.Dia01,TipoAliado.Regular,(new Date(2000,1-1,1)).getTime(),(new Date(2000,1-1,1)).getTime(),0,0,0,0,0,0,0,0));
+  }),null,null,null,d,[],[],false,StatusAliado.Inactivo,DiaPago.Dia01,TipoAliado.Regular,(new Date$1(2000,1-1,1)).getTime(),(new Date$1(2000,1-1,1)).getTime(),0,0,0,0,0,0,0,0));
   SC$1.serverEndPoint=Lazy.Create(function()
   {
    return self.location.protocol==="http:"?"http://localhost:7071/api/":(function($1)

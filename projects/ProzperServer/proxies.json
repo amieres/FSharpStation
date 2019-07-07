@@ -33,7 +33,7 @@
             "matchCondition": {
                 "route": "/"
             },
-            "backendUri": "https://prozpereventpro970c.blob.core.windows.net/prozperblobs/index0.html"
+            "backendUri": "https://prozpereventpro970c.blob.core.windows.net/prozperblobs/%defaultHtml%"
         },
         "Done": {
             "matchCondition": {

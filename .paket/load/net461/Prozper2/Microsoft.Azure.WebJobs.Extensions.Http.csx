@@ -1,0 +1,6 @@
+#load "Microsoft.AspNet.WebApi.Client.csx" 
+#load "Microsoft.AspNetCore.Http.csx" 
+#load "Microsoft.AspNetCore.Mvc.Formatters.Json.csx" 
+#load "Microsoft.AspNetCore.Mvc.WebApiCompatShim.csx" 
+#load "Microsoft.AspNetCore.Routing.csx" 
+#load "Microsoft.Azure.WebJobs.csx" 

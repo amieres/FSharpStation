@@ -1,0 +1,850 @@
+////-d:FSharpStation1562140138904 -d:TEE
+#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
+#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
+#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
+#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
+#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\"
+#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40"
+#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Reactive\lib\net46\System.Reactive.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Control.Reactive\lib\net46\FSharp.Control.Reactive.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\WebSharper.Core.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\WebSharper.Compiler.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\WebSharper.Compiler.FSharp.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\System.Reflection.Metadata.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\FSharp.Compiler.Service.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\Mono.Cecil.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\Mono.Cecil.Pdb.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\Mono.Cecil.Mdb.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40\Owin.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\FSharpStationClient.dll"
+#nowarn "40"
+/// Root namespace for all code
+//#define FSharpStation1562140138904
+#if INTERACTIVE
+module FsRoot   =
+#else
+namespace FsRoot
+#endif
+
+    #if !NETSTANDARD20
+    //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
+    //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
+    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
+    
+    #if WEBSHARPER
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
+    
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    #endif
+    #endif
+    #if WEBSHARPER
+    //#nowarn "3242" 
+    
+    open WebSharper
+    open WebSharper.JavaScript
+    open WebSharper.UI
+    open WebSharper.UI.Client
+    type on   = WebSharper.UI.Html.on
+    type attr = WebSharper.UI.Html.attr
+    #else
+    /// dummy WebSharper definition in order to avoid having to use #if WEBSHARPER all the time
+    module WebSharper =
+        type RpcAttribute() =
+            inherit System.Attribute()
+            let a = 1
+        type JavaScriptAttribute(translate:bool) =
+            inherit System.Attribute()
+            let a = 1
+            new() = JavaScriptAttribute true
+        type InlineAttribute(code:string) =
+            inherit System.Attribute()
+            let a = 1
+            new() = InlineAttribute ""
+        type DirectAttribute(code:string) =
+            inherit System.Attribute()
+            let a = 1
+    
+    open WebSharper
+    
+    #endif
+    
+        /// Essentials that can be converted to JavaScript with WebSharper
+        [< JavaScript ; AutoOpen >]
+        module Library = 
+            let Error = Result.Error
+        
+            /// call a function but return the input value
+            /// for logging, debugging
+            /// use: (5 * 8) |> tee (printfn "value = %d") |> doSomethingElse
+            let [<Inline>] inline tee f v = f v ; v
+            
+            /// tee: call a function but return the input value
+            /// for logging, debugging
+            /// use: (5 * 8) |!> printfn "value = %d" |> doSomethingElse
+            let [<Inline>] inline  (|>!) v f   = f v ; v
+            let [<Inline>] inline  (>>!) g f   = g >> fun v -> f v ; v
+            
+            let inline print v = 
+                match box v with
+                | :? string as s -> printfn "%s" s
+                | __             -> printfn "%A" v
+            
+            //#define TEE
+            [< AutoOpen >]
+            module Monads =
+                module Seq =    
+                    let rtn = Seq.singleton
+                    let insertO  vSO              = vSO |> Option.map(Seq.map Some) |> Option.defaultWith(fun () -> rtn None)
+                    let insertR (vSR:Result<_,_>) = vSR |> function | Error m -> rtn (Error m) | Ok v -> Seq.map Ok v
+                    let absorbO  vOS              = vOS |> Seq.choose id
+                    let absorbR  vOS              = vOS |> Seq.choose (function Ok v -> Some v |_-> None)
+                    let ofOption vO = 
+                        match vO with
+                        | Some v -> Seq.singleton v
+                        | None   -> Seq.empty
+                
+                /// Extensions to Async
+                module Async =
+                    let [< Inline >] inline rtn   v    = async.Return v
+                    let [< Inline >] inline bind  f vA = async.Bind(  vA, f)
+                    let [< Inline >] inline map   f    = bind (f >> rtn)
+                    /// Executes f Synchronously
+                    [< Inline "throw 'iterS cannot be used in JavaScript!'" >] 
+                    let inline iterS (f: 'a->unit) = map f >> Async.RunSynchronously
+                    /// Executes f Asynchronously
+                    let [< Inline >] inline iterA f             = map f >> Async.Start
+                    let apply fA vA = async {
+                        let! fChild = Async.StartChild fA
+                        let! vChild = Async.StartChild vA
+                        let! f = fChild
+                        let! v = vChild 
+                        return f v 
+                    }
+                    let sleepThen f milliseconds = async {
+                        do! Async.Sleep milliseconds
+                        return f()
+                    }
+                    let (>>=)                              v f = bind f v
+                    let traverseSeq             f           sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                                 Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq                  sq = traverseSeq id sq
+                    let insertO  vAO                           = vAO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
+                    let insertR (vAR:Result<_,_>)              = vAR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
+                
+                
+                module Result =
+                    open Result
+                
+                    let errorf fmt = Printf.ksprintf Error fmt
+                
+                    let rtn                          = Ok
+                    let join                       r = Result.bind id r
+                    let flatten                    r = Result.bind id r
+                    let toOption                   r = r   |> function Ok v -> Some v |       _ -> None
+                    let defaultWith              f r = r   |> function Ok v ->      v | Error e -> f e
+                    let defaultValue             d r = r   |> function Ok v ->      v | Error _ -> d
+                    let failIfTrue               m v = if     v then m |> Error  else Ok () 
+                    let failIfFalse              m v = if not v then m |> Error  else Ok () 
+                    let iter                  fE f r = r   |> map  f |> defaultWith fE                                                 : unit
+                    let get                        r = r   |>          defaultWith (string >> failwith)
+                    let ofOption              f   vO = vO  |> Option.map Ok           |> Option.defaultWith (f >> Error)
+                    let insertO                  vRO = vRO |> Option.map(map Some)    |> Option.defaultWith(fun () -> Ok None)
+                    let absorbO               f  vOR = vOR |> bind (ofOption f)
+                    let (>>=)                    r f = bind f r
+                    let traverseSeq           f   sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                       Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq        sq = traverseSeq id sq
+                        
+                    
+                    type Builder() =
+                        member inline this.Return          x       = rtn  x
+                        member inline this.ReturnFrom      x       =     (x:Result<_,_>)
+                        member        this.Bind           (w , r ) = Result.bind  r w
+                        member inline this.Zero           ()       = rtn ()
+                        member inline this.Delay           f       = f
+                        member inline this.Combine        (a, b)   = bind b a
+                        member inline this.Run             f       = Ok () |> bind f
+                        member this.TryWith   (body, handler     ) = try body() with e -> handler     e
+                        member this.TryFinally(body, compensation) = try body() finally   compensation()
+                        member this.Using     (disposable, body  ) = using (disposable:#System.IDisposable) body
+                        member this.While(guard, body) =
+                            let rec whileLoop guard body =
+                                if guard() then body() |> bind (fun () -> whileLoop guard body)
+                                else rtn   ()
+                            whileLoop guard body
+                        member this.For(sequence:seq<_>, body) =
+                            this.Using(sequence.GetEnumerator(),fun enum -> 
+                                this.While(enum.MoveNext, 
+                                    this.Delay(fun () -> body enum.Current)))
+                                    
+                    let result = Builder()
+                    
+                    module Operators =
+                        let inline (|>>) v f   = map   f v
+                        let inline (>>=) v f   = bind  f v
+                        let inline (>>>) f g v = f v |>> g
+                        let inline (>=>) f g v = f v >>= g
+                        let inline rtn   v     = rtn    v
+                        let result = result
+                
+                
+                /// Based on Nick Palladino's https://github.com/palladin/Eff
+                
+                [< AutoOpen >]
+                module Eff =
+                    type Effect  = abstract Extend : (Effect -> Effect) -> Effect
+                
+                    type Eff<'H, 'a> = Eff of (('a -> Effect) -> Effect) 
+                        with  member this.Create = match this with Eff create -> create
+                
+                    let inline rtn  v : Eff<'H, 'a> = Eff (fun k -> k v)
+                    let bind  (f: 'a -> Eff<'H, 'b>) (effA: Eff<'H, 'a>) : Eff<'H, 'b> = 
+                                        Eff (fun kb -> 
+                                                let (Eff effKa) = effA
+                                                effKa (fun a -> 
+                                                    let (Eff effKb) = f a
+                                                    effKb kb
+                                                )
+                                            )
+                    let inline map   f  m  = bind (f >> rtn) m
+                    let inline apply fR vR = fR |> bind (fun f -> map f vR)
+                
+                    type Done<'a>(v : 'a) =
+                        member self.Value = v
+                        interface Effect with member self.Extend(_) : Effect = self :> _
+                
+                    let done'  (v : 'a) : Effect = new Done<'a>(v) :> _ 
+                    //let return'(v : 'a) : Eff<'H, 'c> = Eff( fun _ -> done' v )
+                    let return' v = Eff( fun _ -> done' v )
+                
+                    let run<'H, 'a> (eff: Eff<'H, 'a>) : 'a =
+                        match eff.Create done' with
+                        | :? Done<'a> as done' -> done'.Value
+                        | v                    -> failwithf "Unhandled effect %A" v
+                
+                    let inline runResult<'H, 'a> eff = 
+                        try run<'H, 'a> eff |> Ok
+                        with e -> Error(e.ToString())
+                
+                
+                    let inline ( <*> ) f v   = apply f v
+                    let inline ( |>> ) v f   = map   f v
+                    let inline ( >>= ) v f   = bind  f v
+                    let inline ( >-> ) f g v = f v |>> g
+                    let inline ( >=> ) f g v = f v >>= g
+                    
+                    #if TEE
+                    let inline ( |>>!) v f   = map   (tee f                       ) v
+                    let inline ( >>=!) v f   = bind  (fun w -> f w |>> fun () -> w) v
+                    #endif
+                    
+                    let inline join m = m |> bind id
+                    
+                    let traverseSeq            f     sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                          Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |>> Seq.ofList
+                    let inline sequenceSeq           sq = traverseSeq id sq
+                    
+                    let inline insertO    vvO               = vvO   |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
+                    let inline insertR   (vvR:Result<_,_>)  = vvR   |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
+                    let inline insertFst (fst, vEf)         = vEf   |> map (fun v -> fst, v)
+                    let inline insertSnd (vEf, snd)         = vEf   |> map (fun v -> v, snd)
+                    
+                    let inline bindO (f:'a->Eff<'H,'b>) (ef:Eff<'H,'a option>) = bind (Option.map f >> insertO) ef
+                    let rec whileLoop cond fEf =
+                        if   cond () 
+                        then fEf  () |> bind (fun () -> whileLoop cond fEf)
+                        else rtn  ()
+                    
+                    
+                    type EffBuilder<'H>() =
+                        member __.ReturnFrom            vEf        : Eff<'H, _   > =           vEf
+                        member __.Return                v          : Eff<'H, _   > = rtn       v  
+                        member __.Zero                  ()         : Eff<'H, unit> = rtn       () 
+                        member __.Bind                 (vEf,  fEf) : Eff<'H, _   > = bind fEf  vEf
+                        member __.Combine              (vEf,  fEf) : Eff<'H, _   > = bind fEf  vEf
+                        member __.Delay                       fEf                  = fEf
+                        member __.Run                         fEf  : Eff<'H, _   > = rtn () |> bind fEf
+                        member this.TryWith   (body, handler     ) : Eff<'H,_> = Eff(fun k -> try body() |> function Eff(f) -> f k with e -> handler e |> function Eff(f) -> f k)
+                        member this.TryFinally(body, compensation) : Eff<'H,_> = Eff(fun k -> try body() |> function Eff(f) -> f k finally   compensation()           )
+                        member this.Using     (disposable, body  ) : Eff<'H,_> = //wrap(fun r -> using (disposable:#System.IDisposable) (fun u -> body u |> getFun <| r) )
+                                    let body' = fun () -> body disposable
+                                    this.TryFinally(body', fun () -> if disposable :> obj <> null then (disposable:#System.IDisposable).Dispose() )
+                        member __.While   (guard , fEf) : Eff<'H, unit> = whileLoop guard fEf 
+                        member th.For  (s: 'a seq, fEf) : Eff<'H, unit> = th.Using(s.GetEnumerator (), fun enum ->
+                                                                                        th.While(enum.MoveNext,
+                                                                                            th.Delay(fun () -> fEf enum.Current)))
+                    
+                    let eff<'H> = EffBuilder<'H>()
+                    
+                    //type EffBuilder<'H>() =
+                    //    member self.Zero      (                 ) = rtn ()
+                    //    member self.Return    (v   :         'A ) = rtn v
+                    //    member self.ReturnFrom eff                = eff
+                    //    member self.Bind      (eff, f           ) = bind f eff
+                    //    member self.Combine   (first, second    ) = bind (fun () -> second) first
+                    //    member __.Combine   (vEf,  fEf) : Eff<'H  , 'm> = bind fEf  vEf
+                    //    member self.Delay (f : unit -> Eff<'U, 'A>) : Eff<'U, 'A> =  Eff (fun k -> let (Eff cont) = f () in cont k)
+                    ////    member inline __.Delay       f                  = f
+                    //    member __.While(guard, body) =
+                    //        let rec whileLoop guard body =
+                    //            if guard() then body() |> bind (fun () -> whileLoop guard body)
+                    //            else rtn   ()
+                    //        whileLoop guard body
+                    //    member this.TryWith   (body, handler     ) = Eff(fun k -> try body() |> function Eff(f) -> f k with e -> handler e |> function Eff(f) -> f k)
+                    //    member this.TryFinally(body, compensation) = Eff(fun k -> try body() |> function Eff(f) -> f k finally   compensation()           )
+                    //    member this.Using     (disposable, body  ) = //wrap(fun r -> using (disposable:#System.IDisposable) (fun u -> body u |> getFun <| r) )
+                    //                let body' = fun () -> body disposable
+                    //                this.TryFinally(body', fun () -> if disposable :> obj <> null then (disposable:#System.IDisposable).Dispose() )
+                    //    member this.For(sequence:seq<_>, body) =
+                    //        this.Using(sequence.GetEnumerator(),fun enum -> 
+                    //            this.While(enum.MoveNext, 
+                    //                fun () -> this.Delay(fun () -> body enum.Current)))
+                    //
+                    //
+                    //let eff<'H> = new EffBuilder<'H>()
+                    
+                    //type EA<'H, 'a, 'b> = 'a -> Eff<'H, 'b>
+                    /// Equal to (|>) 
+                    //let (>|>) (ea:EA<_,_,_>) f : EA<_,_,_> = ea |> f
+                    /// Equal to (>>)
+                    //let (>>>) = (>>)
+                    
+                    module EA =
+                        let tee (f: 'a -> Eff<'H, unit>) : 'a -> Eff<'H, 'a> = (fun v -> f v |> map (fun () -> v) )
+                    
+                    //    let mapOutput  f (ea: EA<_,_, _>) : EA<_,_,          _   > = ea >> (bind (f >> rtn) )
+                    //    let bindOutput(f: EA<_,_, _>) (ea: EA<_,_, _>) : EA<_,_, _> = ea >> (bind  f  )
+                    //    let mapBoth    f (ea: EA<_,_, _>) : EA<_,_,          _   > = fun i -> i |> mapOutput (f i) ea
+                    //    let bindBoth   f (ea: EA<_,_, _>) : EA<_,_,          _   > = mapBoth f  ea |> bindOutput id
+                    //
+                    //    let mapO         (ea: EA<_,_, _>) : EA<_,_,          _   > = Option.map ea >> insertO
+                    //
+                    //    let mapFst     f (a, b) = (f a,   b)
+                    //    let mapSnd     f (a, b) = (  a, f b)
+                    //
+                    //    let bindFst    (f:EA<_,_,_>) (a, b) = eff {
+                    //        let! fa = f a
+                    //        return (fa, b)
+                    //    }
+                    //
+                    //    let bindSnd    (f:EA<_,_,_>) (a, b) = eff {
+                    //        let! fb = f b
+                    //        return (a, fb)
+                    //    }
+                    //
+                    //    let lift    f : EA<_,_,_> = f >> rtn
+                    //    let pairWith v ea : EA<_,_,_> =
+                    //        ea
+                    //        >-> fun fst -> fst, v
+                    //
+                    //    let getResult ea:EA<_,_,_> = ea >-> Ok
+                    
+                    
+                    module Reader =
+                        type Reader<'E> = interface end // this acts as a reminder to add a handler for the Effect
+                    
+                        type Ask<'E>(k : 'E -> Effect) =
+                            member self.K = k
+                            interface Effect with
+                                member self.Extend extension : Effect = new Ask<'E>(k >> extension) :> _
+                    
+                        let ask() : Eff<'H, 'E> when 'H :> Reader<'E> = Eff (fun k -> Ask(k) :> _ )
+                    
+                        let readerHandler<'E, 'H, 'a when 'H :> Reader<'E>> (env:'E) (eff: Eff<'H, 'a>) : Eff<'H, 'a> = 
+                            let rec loop (exitK: 'a -> Effect) : Effect -> Effect = function
+                                | :? Done<'a> as done' -> done'.Value        |>      exitK
+                                | :? Ask<'E>  as ask   -> ask.K env          |> loop exitK
+                                | effect               -> effect.Extend        (loop exitK)
+                            Eff (fun exitK             -> eff.Create done'   |> loop exitK)
+                    
+                        let readerFun f = ask() |> map f 
+                    module Log = 
+                        type Log< 'L> = interface end  // this acts as a reminder to add a handler for the Log Effects
+                        type Log1<'L> = interface end  // this acts as a reminder to add a handler for the Log Effects
+                        type Log2<'L> = interface end  // this acts as a reminder to add a handler for the Log Effects
+                    
+                        type LogEntry<'L>(v : 'L, k : unit -> Effect) =
+                            member self.Value = v
+                            member self.K     = k
+                            interface Effect with
+                                member self.Extend extension  : Effect = new LogEntry<'L>(v, k >> extension) :> _
+                    
+                        let log (s:'L)  : Eff<'H, unit> when 'H :> #Log< 'L> = Eff (fun k -> LogEntry(s, k) :> _ )
+                        let logf fmt = Printf.ksprintf log fmt
+                        let log1 (s:'L) : Eff<'H, unit> when 'H :> #Log1<'L> = Eff (fun k -> LogEntry(s, k) :> _ )
+                        let log2 (s:'L) : Eff<'H, unit> when 'H :> #Log2<'L> = Eff (fun k -> LogEntry(s, k) :> _ )
+                    
+                        let pureLogHandler<'L, 'H, 'a when 'H :> Log<'L>> (eff: Eff<'H, 'a>) : Eff<'H, 'a * list<'L>> = 
+                            let rec loop (exitK:('a * list<'L>) -> Effect) (ls: list<'L>) : Effect -> Effect = function
+                                | :? Done<    'a> as done' -> (done'.Value, ls)  |>       exitK
+                                | :? LogEntry<'L> as log   -> log.K ()           |>  loop exitK (log.Value :: ls)  
+                                | effect                   -> effect.Extend         (loop exitK ls               )
+                            Eff (fun exitK                 -> eff.Create done'   |>  loop exitK []               )
+                    
+                    
+                        let consoleLogHandler<'L, 'H, 'a when 'H :> Log<'L>> (eff: Eff<'H, 'a>) : Eff<'H, 'a> =
+                            let rec loop (exitK: 'a -> Effect) : Effect -> Effect = function
+                                | :? Done<    'a> as done' -> done'.Value        |>      exitK
+                                | :? LogEntry<'L> as log   -> printfn "Log: %A" log.Value
+                                                              log.K ()           |> loop exitK
+                                | effect                   -> effect.Extend        (loop exitK)
+                            Eff (fun exitK                 -> eff.Create done'   |> loop exitK)
+                    
+                        let loggerLogHandler<'L, 'H, 'a when 'H :> Log<'L>> logger (eff: Eff<'H, 'a>) : Eff<'H, 'a> =
+                            let rec loop (exitK: 'a -> Effect) : Effect -> Effect = function
+                                | :? Done<    'a> as done' -> done'.Value        |>      exitK
+                                | :? LogEntry<'L> as log   -> logger log.Value
+                                                              log.K ()           |> loop exitK
+                                | effect                   -> effect.Extend        (loop exitK)
+                            Eff (fun exitK                 -> eff.Create done'   |> loop exitK)
+                    
+                        let consoleLogHandler1<'L, 'H, 'a when 'H :> Log1<'L>> (eff: Eff<'H, 'a>) : Eff<'H, 'a> =
+                            let rec loop (exitK: 'a -> Effect) : Effect -> Effect = function
+                                | :? Done<    'a> as done' -> done'.Value        |>      exitK
+                                | :? LogEntry<'L> as log   -> printfn "Log1: %A" log.Value
+                                                              log.K ()           |> loop exitK
+                                | effect                   -> effect.Extend        (loop exitK)
+                            Eff (fun exitK                 -> eff.Create done'   |> loop exitK)
+                    
+                    module Rsl = 
+                    
+                    
+                        type Rsl<'M> = interface end
+                        
+                        type IRsl<'M> = abstract Value : 'M
+                    
+                        type Fail<'a,'M>(v : 'M, k : 'a -> Effect) =
+                            member self.Value = v
+                            member self.K     = k
+                            interface Effect   with member __.Extend extension : Effect = new Fail<'a,'M>(v, k >> extension) :> _
+                            interface IRsl<'M> with member __.Value = v
+                    
+                        let fail (s:'M) : Eff<'H, _> when 'H :> #Rsl<'M> = Eff (fun k -> new Fail<_,_>(s, k) :> _)
+                        let failf fmt = Printf.ksprintf fail fmt
+                        let inline ofResult (res:Result<'a,'b>) : Eff<'c,'a> = eff {
+                            match res with
+                            | Ok    v   ->  return v
+                            | Error msg ->  let! m = fail msg
+                                            return failwith "this code should be unreachable"
+                        }
+                        
+                        let rslHandler<'U, 'M, 'A when 'U :> Rsl<'M>> (eff: Eff<'U, 'A>) : Eff<'U, _> = 
+                            let rec loop (exitK:(Result<'A,'M>) -> Effect) : Effect -> Effect = function
+                                | :? Done<    'A> as done' -> Ok    done'.Value |>       exitK
+                                | :? IRsl<    'M> as fail  -> Error fail .Value |>       exitK
+                                | effect                   -> effect.Extend        (loop exitK)
+                            Eff (fun exitK                 -> eff.Create done'  |>  loop exitK)
+                    
+                        let inline getResult   v                = v     |> rslHandler
+                        let inline absorbR     vvEf             = vvEf  |> bind ofResult
+                        let inline absorbO   f vOEf             = vOEf  |> map (Result.ofOption  f) |> absorbR
+                    
+                    module Asy = 
+                        type Asy = interface end // this acts as a reminder to add a handler for the Effect
+                    
+                        type AsynG =
+                            abstract RunSync      : unit               -> Effect
+                            abstract RunAsync<'a> : (Effect -> Effect) -> Effect
+                    
+                        [< Inline "console.log('RunSynch Not implemented in JavaSacript')" >]
+                        let runSynch v = Async.RunSynchronously v
+                    
+                        type Asyn<'v>(v : Async<'v>, k : ('v -> Effect) ) =
+                            member __.Value = v
+                            member __.K     = k
+                            interface Effect with member __.Extend   extension = new Asyn<_>(v, k >> extension) :> _
+                            interface AsynG  with 
+                                member __.RunSync  ()        = runSynch v |> k
+                                member __.RunAsync<'a> exitK = done' (v |> Async.bind (fun v -> k v |> exitK :?> Done<Async<'a>> |> fun don -> don.Value ) )
+                    
+                        let inline ofAsync (v:Async<'a>) : Eff<'H, 'a> when 'H :> Asy= Eff (fun k -> new Asyn<'a>(v, k) :> _)
+                    
+                        /// This handler uses RunSynchronously to resolve Asyncs
+                        let syncHandler<'H, 'a when 'H :> Asy> (eff: Eff<'H, 'a>) : Eff<'H, 'a> =
+                            let rec loop (exitK:'a -> Effect) : Effect -> Effect = function
+                                | :? Done<'a> as done' -> done'.Value        |>      exitK
+                                | :? AsynG    as asy   -> asy.RunSync()      |> loop exitK
+                                | effect               -> effect.Extend        (loop exitK)
+                            Eff (fun exitK             -> eff.Create done'   |> loop exitK)
+                    
+                        /// this should be the last handler before Eff.run
+                        let asyncHandler0<'H, 'a when 'H :> Asy> (eff: Eff<'H, 'a>) : Eff<'H, Async<'a>> = 
+                            let rec loop (exitK:(Async<'a>) -> Effect) : Effect -> Effect = function
+                                | :? Done<'a> as done' -> done'.Value |> async.Return |>      exitK
+                                | :? AsynG    as asy   -> asy.RunAsync<'a>              (loop exitK)
+                                | effect               -> effect.Extend                 (loop exitK)
+                            Eff (fun exitK             -> eff.Create done'            |> loop exitK)
+                    
+                        let asyncHandler<'H, 'a when 'H :> Asy> (eff: Eff<'H, 'a>) : Eff<'H, Async<'a>> = 
+                            Async.rtn () 
+                            |>  ofAsync 
+                            >>= fun () -> eff 
+                            |>  asyncHandler0
+                    
+                [< AutoOpen >]
+                module EffReadLogRslAsy =
+                
+                    type ReaderLogRslAsy<'read, 'log, 'err>() = interface Reader.Reader<'read> interface Log.Log<'log> interface Rsl.Rsl<'err> interface Asy.Asy
+                
+                    let inline runReaderLRA readV eff = 
+                        eff
+                        |> Reader.readerHandler readV
+                        |> Log.pureLogHandler
+                        |> Rsl.rslHandler
+                        |> Asy.asyncHandler
+                        |> Eff.run<ReaderLogRslAsy<_,_,_>,_>
+                
+                //    let inline ofResultRM mr = eff {
+                //        match mr with
+                //        | Ok    v    -> return v
+                //        | Error rmsg ->        
+                //        match rmsg with
+                //        | NoMsg          -> do! Rsl.fail <| ErrorMsg "Failed! (no explanation)"
+                //        | RMessages msgs -> for msg in msgs do do! Log.log msg
+                //                            do! Rsl.fail <| ErrorMsg (ResultMessage.summarized rmsg)
+                //        | msg            -> do! Rsl.fail    msg
+                //        return Unchecked.defaultof<_>
+                //    }
+                //
+                //    let inline ofAsyncResultRM mra = Asy.ofAsync mra >>= ofResultRM
+                //
+                //    let inline ofFusionReader (fr:FusionM<'v,'s,'m>) = eff {
+                //        let! (s: 's)       = Reader.ask()
+                //        let! (v: 'v), rmsg = fr |> FusionM.runReader s |> Rsl.ofResult
+                //        match rmsg with
+                //        | NoMsg          -> ()
+                //        | RMessages msgs -> for msg in msgs do do! Log.log msg
+                //        | msg            ->                    do! Log.log msg
+                //        return v
+                //    }
+                
+                    let executeConsoleSync rdr monad =
+                        monad
+                        |> Reader.readerHandler rdr
+                        |> Log.consoleLogHandler
+                        |> Rsl.rslHandler
+                        |> Asy.syncHandler
+                        |> fun (eff : Eff<ReaderLogRslAsy<_,_,_>,_>) -> Eff.run eff
+                        |> Result.iter print id
+                
+                
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Reactive\lib\net46\System.Reactive.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Control.Reactive\lib\net46\FSharp.Control.Reactive.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\WebSharper.Core.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\WebSharper.Compiler.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\WebSharper.Compiler.FSharp.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\System.Reflection.Metadata.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\FSharp.Compiler.Service.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\Mono.Cecil.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\Mono.Cecil.Pdb.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\Mono.Cecil.Mdb.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40\Owin.dll"
+
+
+//#define FSharpStation1562140138904
+let inline tee    f v   = f v ; v
+let inline  (|>!) v f   = f v ; v
+let inline  (>>!) g f   = g >> fun v -> f v ; v
+
+let inline print v = 
+    match box v with
+    | :? string as s -> printfn "%s" s
+    | __             -> printfn "%A" v
+
+
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\FSharpStationClient.dll"
+//#nowarn "40"
+
+module Target2 =
+    open System
+    open FsRoot
+
+    type TargetObject =
+    | Variable  of string * string
+    | File      of string
+    | Snippet   of path:string
+    | CloudFile of share:string * file:string
+
+    type Signature =
+    | DateSig of DateTime
+    | Missing
+
+    type WorkResult = WorkResult
+
+    type TargetId = TargetId of System.Guid
+
+    type TargetState<'A> =
+    | Ready
+    | PendingWork   of Target<'A>    * info: string
+    | Pending       of Target<'A> []
+    | Impossible    of Target<'A> [] * string
+    | Failed        of DateTime  * string []
+        with override this.ToString() =
+                match this with
+                | PendingWork   (tg, info) -> sprintf "PendingWork %s %s" (tg  .toString()) info
+                | Pending        tgs       -> tgs |> Seq.map (fun tg -> tg.toString()) |> String.concat ", " |> sprintf "Pending [%s]" 
+                | Impossible    (tgs,info) -> tgs |> Seq.map (fun tg -> tg.toString()) |> String.concat ", " |> sprintf "Impossible [%s]" 
+                | _                        -> sprintf "%A" this
+
+    and [< CustomEquality ; NoComparison >] Target<'A> = {
+        id            : TargetId
+        getTargetInfo : unit -> TargetObject
+        readyness     : unit -> Eff<'A, TargetState<'A>>
+        doWork        : unit -> Eff<'A, WorkResult >
+        precursors    : Target<'A> []
+        toString      : unit -> string
+    } with
+        override this.GetHashCode() =
+            hash this.id
+        override this.Equals(b) =
+            match b with
+            | :? Target<'A> as t -> this.id = t.id
+            | _ -> false
+
+    let createFileTarget filename = {
+        id            = System.Guid.NewGuid() |> TargetId
+        getTargetInfo = fun ()  -> File filename
+        readyness     = fun prs -> (if IO.File.Exists filename then Ready else Impossible([||], "File not found: " + IO.Path.GetFullPath filename) ) |> rtn
+        doWork        = fun ()  -> WorkResult |> rtn
+        precursors    = [||]
+        toString      = fun ()  -> sprintf "File: %s" filename
+    }
+
+    let createAzureFileTarget filename = {
+        id            = System.Guid.NewGuid() |> TargetId
+        getTargetInfo = fun ()  -> File filename
+        readyness     = fun prs -> (if IO.File.Exists filename then Ready else Impossible([||], "File not found: " + IO.Path.GetFullPath filename) ) |> rtn
+        doWork        = fun ()  -> WorkResult |> rtn
+        precursors    = [||]
+        toString      = fun ()  -> sprintf "File: %s" filename
+    }
+
+    let getSnippetR path = eff {
+        let! snpR = FSharpStationClient.getSnippet path |> Asy.ofAsync
+        return snpR |> Result.mapError ResultMessage.summarized
+    }
+
+    let saveSnippetText path filename = eff {
+        let! snpR  = getSnippetR  path
+        let! snp   = snpR |> Rsl.ofResult
+        IO.File.WriteAllText(filename, snp.snpContent)
+    }    
+
+    let saveSnippetCode path filename = eff {
+        let! codeR = FSharpStationClient.getCode path |> Asy.ofAsync
+        let! code  = codeR |> Result.mapError ResultMessage.summarized |> Rsl.ofResult
+        IO.File.WriteAllText(filename, code)
+    }    
+
+    let createSnippetTarget path = {
+        id            = System.Guid.NewGuid() |> TargetId
+        getTargetInfo = fun ()  -> Snippet path
+        readyness     = fun prs -> eff {
+                            let! snpR = getSnippetR path
+                            match snpR with
+                            | Ok    snp -> return Ready
+                            | Error msg -> return Impossible([||], msg + " " + path)
+                        }
+        doWork        = fun ()  -> WorkResult |> rtn
+        precursors    = [||]
+        toString      = fun ()  -> sprintf "Snippet: %s" path
+    }
+
+    let getFileDate     fn   = if IO.File.Exists fn then IO.File.GetLastWriteTimeUtc fn |> Some else None
+    let getSnippetDateO path = eff {
+        let! snpR = getSnippetR path
+        match snpR with
+        | Ok    snp -> return Some snp.snpModified
+        | Error msg -> return None
+    }
+
+    let getSnippetCodeDateO path = eff {
+        let! snpR = getSnippetR path
+        match snpR with
+        | Ok    snp ->  let! mR = FSharpStationClient.getModified path |> Asy.ofAsync
+                        let! m  = mR |> Result.mapError ResultMessage.summarized |> Rsl.ofResult
+                        return Some m
+        | Error msg ->  return None
+    }
+
+    let createCopyFileTarget filename source = eff {
+        match source.getTargetInfo() with
+        | File sourcefn ->
+            let ft = createFileTarget filename
+            let rec tg =
+                { ft with
+                    readyness  = fun () -> eff {
+                        let! rdy = source.readyness()
+                        match rdy with
+                        | Ready ->
+                            match getFileDate sourcefn, getFileDate filename with
+                            | None   , Some ds               -> do! Log.logf "Warning: source file not found: %A" sourcefn
+                                                                return Ready
+                            | Some df, Some ds when ds >= df -> return Ready
+                            | _                              -> return PendingWork (tg, sprintf "Copy %A to %s" sourcefn filename )
+                        | p                                  -> return p
+                    }
+                    precursors = [| source |]
+                    doWork     = fun () -> eff {
+                        try IO.File.Delete filename
+                        with _ -> ()
+                        IO.File.Copy(sourcefn, filename) 
+                        return WorkResult 
+                    }
+                } 
+            return tg
+        | _ -> return! Error "Source for CopyFile" |> Rsl.ofResult
+    }
+
+    let createSnippet2FileTarget filename source = eff {
+        match source.getTargetInfo() with
+        | Snippet path ->
+            let ft = createFileTarget filename
+            let rec tg =
+                { ft with
+                    readyness  = fun () -> eff {
+                        let! rdy = source.readyness()
+                        match rdy with
+                        | Ready ->
+                            let! snpDateO = getSnippetDateO path
+                            match snpDateO, getFileDate filename with
+                            | None   , Some ds               -> do! Log.logf "Warning: snippet not found: %A" path
+                                                                return Ready
+                            | Some df, Some ds when ds >= df -> return Ready
+                            | _                              -> return PendingWork   (tg, sprintf "Copy Snippet %s to %s" path filename )
+                        | p                                  -> return p
+                    }
+                    precursors = [| source |]
+                    doWork     = fun () -> eff {
+                        do! saveSnippetText path filename
+                        return WorkResult
+                    }
+                }
+            return tg
+        | _ -> return! Error "Source for CopyFile" |> Rsl.ofResult
+    }
+
+    let createSnippetCode2FileTarget filename source = eff {
+        match source.getTargetInfo() with
+        | Snippet path ->
+            let ft = createFileTarget filename
+            let rec tg =
+                { ft with
+                    readyness  = fun () -> eff {
+                        let! rdy = source.readyness()
+                        match rdy with
+                        | Ready ->
+                            let! snpDateO = getSnippetCodeDateO path
+                            match snpDateO, getFileDate filename with
+                            | None   , Some ds               -> do! Log.logf "Warning: snippet not found: %A" path
+                                                                return Ready
+                            | Some df, Some ds when ds >= df -> return Ready
+                            | _                              -> return PendingWork (tg, sprintf "Copy Snippet %s to %s" path filename )
+                        | p                                  -> return p
+                    }
+                    precursors = [| source |]
+                    doWork     = fun () -> eff {
+                        do! saveSnippetCode path filename
+                        return WorkResult
+                    }
+                }
+            return tg
+        | _ -> return! Error "Source for CopyFile" |> Rsl.ofResult
+    }
+
+    let pendingPrecursorsxxx prs =
+        prs |> Seq.map (fun pre -> pre.readyness() )
+
+    let createFsDllTarget dllName prs = {
+        id            = System.Guid.NewGuid() |> TargetId
+        getTargetInfo = fun () -> File dllName
+        readyness     = fun () -> Pending prs |> rtn
+        doWork        = fun () -> WorkResult  |> rtn
+        precursors    = prs
+        toString      = fun ()  -> sprintf "Dll: %s" dllName
+    }
+
+    let rec updateTarget tg = eff {
+        let!  rdy = tg.readyness()
+        match rdy with
+        | Ready                  -> do! Log.logf "Nothing to do. It is ready!"
+        | PendingWork(t0,info)   -> do! Log.logf "Going to do: %s" info
+                                    do! t0.doWork() |>> print
+        | Pending     ts         -> do! Log.logf "Pending %d" ts.Length
+                                    for t in ts do do! updateTarget t
+        | Impossible (ts,info)   -> do! Log.logf "Cannot do it: %s" info
+        | Failed     (dt,ins )   -> do! Log.logf "Something Failed: %A" dt
+                                    for m in ins do do! Log.logf  "%s" m
+    }
+
+    FSharpStationClient.fsharpStationAddress <- WebSockets.Address "FSharpStation1562140138904"
+    
+    let rec processTarget (rdyO: TargetState<_> option) (tg:Target<_>) = eff {
+        let! state = tg.readyness()
+        match state with
+        | Ready                  -> do! Log.logf "Target Ready!"
+        | st when Some st = rdyO -> do! Log.logf "Reached state %A" st
+        | _                      -> do! updateTarget                tg
+                                    do! processTarget (Some state)  tg                
+    }

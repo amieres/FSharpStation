@@ -1,0 +1,1 @@
+#r "../../../../packages/prozper2/Microsoft.Extensions.DependencyInjection/lib/net461/Microsoft.Extensions.DependencyInjection.dll" 

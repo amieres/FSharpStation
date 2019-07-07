@@ -1,0 +1,5 @@
+#load "Microsoft.AspNet.WebApi.Client.csx" 
+#load "Microsoft.AspNetCore.Mvc.Core.csx" 
+#load "Microsoft.AspNetCore.Mvc.Formatters.Json.csx" 
+#load "Microsoft.AspNetCore.WebUtilities.csx" 
+#r "../../../../packages/prozper2/Microsoft.AspNetCore.Mvc.WebApiCompatShim/lib/netstandard2.0/Microsoft.AspNetCore.Mvc.WebApiCompatShim.dll" 

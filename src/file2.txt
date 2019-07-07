@@ -1,0 +1,10 @@
+#define ##FSHARPSTATION_ID##
+let inline tee    f v   = f v ; v
+let inline  (|>!) v f   = f v ; v
+let inline  (>>!) g f   = g >> fun v -> f v ; v
+
+let inline print v = 
+    match box v with
+    | :? string as s -> printfn "%s" s
+    | __             -> printfn "%A" v
+
