@@ -11052,19 +11052,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $1:I
   })).WithHole({
    $:2,
-   $0:"location",
-   $1:View.Map(function($1)
-   {
-    return(function($2)
-    {
-     return function($3)
-     {
-      return $2(Utils.prettyPrint($3));
-     };
-    }(Global.id))($1);
-   },FormaFirma.locationV().get_View())
-  }).WithHole({
-   $:2,
    $0:"textobotonfirmar",
    $1:View.Map(function($1)
    {
@@ -11099,11 +11086,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$1.$cctor();
   return SC$1.firmadoV;
  };
- FormaFirma.locationV=function()
- {
-  SC$1.$cctor();
-  return SC$1.locationV;
- };
  FormaFirma.mensajes=function()
  {
   SC$1.$cctor();
@@ -11130,7 +11112,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      {
       a[k]=self.navigator[k];
      },List.ofArray(["appVersion","platform","product","productSub","vendor","languages"]));
-     FormaFirma.locationV().Set(a);
+     Global.obj2Table(a);
      return Concurrency.Bind(Concurrency.Sleep(100),function()
      {
       return Concurrency.Bind(Promise.AsAsync(Global.html2canvas(self.document.querySelector("#FormaFirma"))),function(a$1)

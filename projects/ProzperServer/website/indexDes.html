@@ -483,12 +483,11 @@
             
             <ul ws-children-template="MenuTodos">
                 <li>
-                    <strong onclick="$(this).next().slideToggle(200)">Kit de Inscripción</strong>
+                    <strong onclick="$(this).next().slideToggle(200)">Otros Documentos</strong>
                     <ol style="display: ${display};">
-                        <li><a href="#/Pdf/blob/Inscripcion/01 Instructivo de Afiliacion.pdf"                   >Instructivo de Afiliación    </a></li>
                         <li><a href="#/Pdf/blob/Inscripcion/02 Carta de Bienvenida.pdf"                         >Carta de Bienvenida          </a></li>
                         <li><a href="#/Pdf/blob/Inscripcion/03 Presentacion Prozper.pdf"                        >Presentación Prozper         </a></li>
-                        <li><a href="#/Pdf/blob/Inscripcion/04 Contrato de Afiliacion Aliados Prozper Rev.3.pdf">Contrato de Afiliación       </a></li>
+                        <!--li><a href="#/Pdf/blob/Inscripcion/04 Contrato de Afiliacion Aliados Prozper Rev.3.pdf">Contrato de Afiliación       </a></li-->
                         <li><a href="#/Pdf/blob/Inscripcion/05 Form W-8BEN.pdf"                                 >Forma W-8BEN                 </a></li>
                         <li><a href="#/Pdf/blob/Inscripcion/06 Form W-8BEN-E.pdf"                               >Forma W-8BEN-E               </a></li>
                         <li><a href="#/Pdf/blob/Inscripcion/07 Form W-9.pdf"                                    >Forma W-9                    </a></li>
@@ -557,7 +556,16 @@
                     <br>
                     <div>${DateTime}</div>
                     <div>${IdLoggedIn}</div>
-                    <div>${Location}</div>
+                    <div id="table_pnl" class="left_panel" style="width: 844px;">
+                        <div class="top_size"></div>
+                        <div id="inner_tbl"><table></table></div>
+                    </div><div class="vsplitter" style="left: 844px;"></div>
+                    <style>
+                        .td_row_even { padding: 2px; background-color: #F6F4F0 }
+                        .td_row_odd  { padding: 2px; background-color: #FFF    }
+                        .td_head     { padding: 2px; font-weight: 700          }
+                        #inner_tbl table,#inner_tbl td, #inner_tbl th { border: 1px solid gray }
+                    </style>                
                 </div>
             </div> 
             <div ws-template="AutorizacionPago" class="mui--text-center ">
@@ -1076,6 +1084,7 @@
                     <legend></legend>
                     <legend></legend>
                     <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar" >Guardar</button>
+                    <span class="Esconder${Changed} mui--text-danger mui--text-button" >&#x21D0; Presione aquí para guardar efectivamente los cambios</span>
                     <button style="display: none;" type="submit" >Hidden button</button>
                     <div style="color:red">${Mensajes}</div>
                 </form>
@@ -1111,6 +1120,7 @@
                     <div ws-replace="DatosPersonales"></div>
                     <legend></legend>    
                     <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar" >Guardar</button>
+                    <span class="Esconder${Changed} mui--text-danger mui--text-button" >&#x21D0; Presione aquí para guardar efectivamente los cambios</span>
                     <button style="display: none;" type="submit" >Hidden button</button>
                     <div style="color:red">${Mensajes}</div>
                 </form>
@@ -1191,6 +1201,7 @@
                     <legend></legend>
                     <legend></legend>
                     <button type="button" class="mui-btn mui-btn--raised ${Changed}" ws-onclick="Salvar" >Guardar</button>
+                    <span class="Esconder${Changed} mui--text-danger mui--text-button" >&#x21D0; Presione aquí para guardar efectivamente los cambios</span>
                     <button style="display: none;" type="submit" >Hidden button</button>
                     <div style="color:red">${Mensajes}</div>
                 </form>
@@ -1429,6 +1440,113 @@
                     <div ws-replace="pasos" ></div>
                 </div>
             </div>
+            <script>
+            var json_visible = !0
+              , json_pnl_size = 0
+              , table_visible = !0;
+            jQuery(function(a) {
+                tree_pnl_size = a("#tree_pnl").width();
+            });
+            function call(a) {
+                $("#json_vl").val(JSON.stringify(a, void 0, 2));
+                processJson()
+            }
+            function obj2Table(o) {
+                let t = buildTable(o    ); console.log(t);
+                $("#inner_tbl").html(t);
+            }
+            function json2Table(json) {
+                console.log(json);
+                let o = $.parseJSON(json); console.log(o);
+                obj2Table(o);
+            }
+            function buildTable(a) {
+                var e = document.createElement("table"), d, b;
+                if (isArray(a))
+                    return buildArray(a);
+                for (var c in a)
+                    "object" != typeof a[c] || isArray(a[c]) ? "object" == typeof a[c] && isArray(a[c]) ? (d = e.insertRow(-1),
+                    b = d.insertCell(-1),
+                    b.colSpan = 2,
+                    b.innerHTML = '<div class="td_head">' + encodeText(c) + '</div><table style="width:100%">' + $(buildArray(a[c]), !1).html() + "</table>") : (d = e.insertRow(-1),
+                    b = d.insertCell(-1),
+                    b.innerHTML = "<div class='td_head'>" + encodeText(c) + "</div>",
+                    d = d.insertCell(-1),
+                    d.innerHTML = "<div class='td_row_even'>" + encodeText(a[c]) + "</div>") : (d = e.insertRow(-1),
+                    b = d.insertCell(-1),
+                    b.colSpan = 2,
+                    b.innerHTML = '<div class="td_head">' + encodeText(c) + '</div><table style="width:100%">' + $(buildTable(a[c]), !1).html() + "</table>");
+                return e
+            }
+            function buildArray(a) {
+                var e = document.createElement("table"), d, b, c = !1, p = !1, m = {}, h = -1, n = 0, l;
+                l = "";
+                if (0 == a.length)
+                    return "<div></div>";
+                d = e.insertRow(-1);
+                for (var f = 0; f < a.length; f++)
+                    if ("object" != typeof a[f] || isArray(a[f]))
+                        "object" == typeof a[f] && isArray(a[f]) ? (b = d.insertCell(h),
+                        b.colSpan = 2,
+                        b.innerHTML = '<div class="td_head"></div><table style="width:100%">' + $(buildArray(a[f]), !1).html() + "</table>",
+                        c = !0) : p || (h += 1,
+                        p = !0,
+                        b = d.insertCell(h),
+                        m.empty = h,
+                        b.innerHTML = "<div class='td_head'>&nbsp;</div>");
+                    else
+                        for (var k in a[f])
+                            l = "-" + k,
+                            l in m || (c = !0,
+                            h += 1,
+                            b = d.insertCell(h),
+                            m[l] = h,
+                            b.innerHTML = "<div class='td_head'>" + encodeText(k) + "</div>");
+                c || e.deleteRow(0);
+                n = h + 1;
+                for (f = 0; f < a.length; f++)
+                    if (d = e.insertRow(-1),
+                    td_class = isEven(f) ? "td_row_even" : "td_row_odd",
+                    "object" != typeof a[f] || isArray(a[f]))
+                        if ("object" == typeof a[f] && isArray(a[f]))
+                            for (h = m.empty,
+                            c = 0; c < n; c++)
+                                b = d.insertCell(c),
+                                b.className = td_class,
+                                l = c == h ? '<table style="width:100%">' + $(buildArray(a[f]), !1).html() + "</table>" : " ",
+                                b.innerHTML = "<div class='" + td_class + "'>" + encodeText(l) + "</div>";
+                        else
+                            for (h = m.empty,
+                            c = 0; c < n; c++)
+                                b = d.insertCell(c),
+                                l = c == h ? a[f] : " ",
+                                b.className = td_class,
+                                b.innerHTML = "<div class='" + td_class + "'>" + encodeText(l) + "</div>";
+                    else {
+                        for (c = 0; c < n; c++)
+                            b = d.insertCell(c),
+                            b.className = td_class,
+                            b.innerHTML = "<div class='" + td_class + "'>&nbsp;</div>";
+                        for (k in a[f])
+                            c = a[f],
+                            l = "-" + k,
+                            h = m[l],
+                            b = d.cells[h],
+                            b.className = td_class,
+                            "object" != typeof c[k] || isArray(c[k]) ? "object" == typeof c[k] && isArray(c[k]) ? b.innerHTML = '<table style="width:100%">' + $(buildArray(c[k]), !1).html() + "</table>" : b.innerHTML = "<div class='" + td_class + "'>" + encodeText(c[k]) + "</div>" : b.innerHTML = '<table style="width:100%">' + $(buildTable(c[k]), !1).html() + "</table>"
+                    }
+                return e
+            }
+            function encodeText(a) {
+                return $("<div />").text(a).html()
+            }
+            function isArray(a) {
+                return "[object Array]" === Object.prototype.toString.call(a)
+            }
+            function isEven(a) {
+                return 0 == a % 2
+            }
+            </script>
                     <style>
                         .Inactivo          { font-weight: 100 ; color: rgba(179, 177, 177, 0.644) }
             
@@ -1437,6 +1555,7 @@
                         .Cancelado         { font-weight: 100 ; color: red                        }
             
                         .Master            { font-weight: 800 }
+                        .Esconder          { display: none; }
             
                         li.comision0       { display: none; }
             

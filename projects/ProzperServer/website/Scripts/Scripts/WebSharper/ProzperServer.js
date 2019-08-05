@@ -669,7 +669,27 @@
  {
   return Eff.map(f,Reader.ask());
  };
+ Reader.readerHandler5=function(env,eff)
+ {
+  return Reader.readerHandler0(env,eff);
+ };
+ Reader.readerHandler4=function(env,eff)
+ {
+  return Reader.readerHandler0(env,eff);
+ };
+ Reader.readerHandler3=function(env,eff)
+ {
+  return Reader.readerHandler0(env,eff);
+ };
+ Reader.readerHandler2=function(env,eff)
+ {
+  return Reader.readerHandler0(env,eff);
+ };
  Reader.readerHandler=function(env,eff)
+ {
+  return Reader.readerHandler0(env,eff);
+ };
+ Reader.readerHandler0=function(env,eff)
  {
   function loop(exitK,a)
   {
@@ -683,6 +703,46 @@
    $0:function(exitK)
    {
     return loop(exitK,(eff.get_Create())(Eff["done'"]));
+   }
+  });
+ };
+ Reader.ask5=function()
+ {
+  return new Eff$1({
+   $:0,
+   $0:function(k)
+   {
+    return new Ask.New(k);
+   }
+  });
+ };
+ Reader.ask4=function()
+ {
+  return new Eff$1({
+   $:0,
+   $0:function(k)
+   {
+    return new Ask.New(k);
+   }
+  });
+ };
+ Reader.ask3=function()
+ {
+  return new Eff$1({
+   $:0,
+   $0:function(k)
+   {
+    return new Ask.New(k);
+   }
+  });
+ };
+ Reader.ask2=function()
+ {
+  return new Eff$1({
+   $:0,
+   $0:function(k)
+   {
+    return new Ask.New(k);
    }
   });
  };
@@ -720,33 +780,43 @@
   this.v=v;
   this.k=k;
  },LogEntry);
- Log.consoleLogHandler1=function(eff)
+ Log.loggerLogHandler3=function(logger,eff)
  {
-  function loop(exitK,a)
-  {
-   return a instanceof Done?exitK(a.get_Value()):a instanceof LogEntry?((function($1)
-   {
-    return function($2)
-    {
-     return $1("Log1: "+Utils.prettyPrint($2));
-    };
-   }(function(s)
-   {
-    console.log(s);
-   }))(a.get_Value()),loop(exitK,(a.get_K())())):a.FsRoot_Library_Monads_Eff_Effect$Extend(function($1)
-   {
-    return loop(exitK,$1);
-   });
-  }
-  return new Eff$1({
-   $:0,
-   $0:function(exitK)
-   {
-    return loop(exitK,(eff.get_Create())(Eff["done'"]));
-   }
-  });
+  return Log.loggerLogHandler0(logger,eff);
+ };
+ Log.loggerLogHandler2=function(logger,eff)
+ {
+  return Log.loggerLogHandler0(logger,eff);
  };
  Log.loggerLogHandler=function(logger,eff)
+ {
+  return Log.loggerLogHandler0(logger,eff);
+ };
+ Log.consoleLogHandler3=function(eff)
+ {
+  return Log.consoleLogHandler0(eff);
+ };
+ Log.consoleLogHandler2=function(eff)
+ {
+  return Log.consoleLogHandler0(eff);
+ };
+ Log.consoleLogHandler=function(eff)
+ {
+  return Log.consoleLogHandler0(eff);
+ };
+ Log.pureLogHandler3=function(eff)
+ {
+  return Log.pureLogHandler0(eff);
+ };
+ Log.pureLogHandler2=function(eff)
+ {
+  return Log.pureLogHandler0(eff);
+ };
+ Log.pureLogHandler=function(eff)
+ {
+  return Log.pureLogHandler0(eff);
+ };
+ Log.loggerLogHandler0=function(logger,eff)
  {
   function loop(exitK,a)
   {
@@ -763,7 +833,7 @@
    }
   });
  };
- Log.consoleLogHandler=function(eff)
+ Log.consoleLogHandler0=function(eff)
  {
   function loop(exitK,a)
   {
@@ -789,7 +859,7 @@
    }
   });
  };
- Log.pureLogHandler=function(eff)
+ Log.pureLogHandler0=function(eff)
  {
   function loop(exitK,ls,a)
   {
@@ -811,7 +881,7 @@
    }
   });
  };
- Log.log2=function(s)
+ Log.log3=function(s)
  {
   return new Eff$1({
    $:0,
@@ -821,7 +891,7 @@
    }
   });
  };
- Log.log1=function(s)
+ Log.log2=function(s)
  {
   return new Eff$1({
    $:0,

@@ -5549,7 +5549,7 @@
   b=FusionM.fusion();
   return b.Run(b.Delay(function()
   {
-   var m,vs;
+   var m;
    m=SnippetModule.propertyO(n,snp);
    return m==null?b.Bind(SnippetModule.parentORm(snp),function(a)
    {
@@ -5563,7 +5563,7 @@
     });
    }):b.Return({
     $:1,
-    $0:[snp,(vs=Strings.SplitStrings(m.$0,["|-|"],1),[Arrays.get(vs,0),Arrays.length(vs)>1?Arrays.get(vs,1):Arrays.get(vs,0)])]
+    $0:[snp,SnippetModule.propertyPair(m.$0)]
    });
   }));
  };
@@ -5820,12 +5820,18 @@
  };
  SnippetModule.propertyPairO=function(n,snp)
  {
-  var o,vs,x,v;
+  var o;
   o=SnippetModule.propertyO(n,snp);
   return o==null?null:{
    $:1,
-   $0:(vs=Strings.SplitStrings(o.$0,[SnippetModule.tieFighter()],1),[Arrays.get(vs,0),(x=Arrays.tryItem(1,vs),(v=Arrays.get(vs,0),x==null?v:x.$0))])
+   $0:SnippetModule.propertyPair(o.$0)
   };
+ };
+ SnippetModule.propertyPair=function(prv)
+ {
+  var vs,x,v;
+  vs=Strings.SplitStrings(prv,[SnippetModule.tieFighter()],0);
+  return[Arrays.get(vs,0),(x=Arrays.tryItem(1,vs),(v=Arrays.get(vs,0),x==null?v:x.$0))];
  };
  SnippetModule.tieFighter=function()
  {
@@ -6979,15 +6985,15 @@
  {
   return Hoverable$1.New$3().Content(Doc.Element("div",[AttrProxy.Create("style","flex-flow: column;")],[Doc.TextNode("Hover over me!")]));
  };
- Hoverable$1.Content$2765$81=Runtime.Curried3(function(e,$1,$2)
+ Hoverable$1.Content$2768$81=Runtime.Curried3(function(e,$1,$2)
  {
   return DomUtility.RemoveClass(e.elt,"hovering");
  });
- Hoverable$1.get_Attributes$2761$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$2764$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(false);
  });
- Hoverable$1.get_Attributes$2760$69=Runtime.Curried3(function(_this,$1,$2)
+ Hoverable$1.get_Attributes$2763$69=Runtime.Curried3(function(_this,$1,$2)
  {
   return _this.hover.Set(true);
  });
@@ -7129,7 +7135,7 @@
   SC$1.$cctor();
   return SC$1.init;
  };
- WcTabStrip.tabStrip$2907$64=function(i,selected)
+ WcTabStrip.tabStrip$2910$64=function(i,selected)
  {
   return function()
   {
@@ -7533,7 +7539,7 @@
  {
   return MonacoConfig.New(v,monc.onChange,monc.onRender,monc.editorO,monc.disabled,monc.options,monc.overrides);
  };
- Monaco.render$3265$48=function(monc)
+ Monaco.render$3268$48=function(monc)
  {
   return function(elchild)
   {
@@ -7792,7 +7798,7 @@
   });
   return o==null?"":o.$0;
  };
- MonacoGenAdapter.generateDoc$3407$48=function(monRT,onRender,genE)
+ MonacoGenAdapter.generateDoc$3410$48=function(monRT,onRender,genE)
  {
   return function(elchild)
   {
@@ -9828,7 +9834,7 @@
    $1:S
   })),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.snippetlist(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderSnippets.snippets$5029$40=function(snpId)
+ RenderSnippets.snippets$5032$40=function(snpId)
  {
   return function(ev)
   {
@@ -9841,7 +9847,7 @@
    }))(x);
   };
  };
- RenderSnippets.snippets$5028$40=function(snpId)
+ RenderSnippets.snippets$5031$40=function(snpId)
  {
   return function(ev)
   {
@@ -9849,7 +9855,7 @@
     ev.Event.preventDefault();
   };
  };
- RenderSnippets.snippets$5027$40=function(snpId)
+ RenderSnippets.snippets$5030$40=function(snpId)
  {
   return function(ev)
   {
@@ -9857,21 +9863,21 @@
    ev.Event.stopPropagation();
   };
  };
- RenderSnippets.snippets$5026$40=function(snpId)
+ RenderSnippets.snippets$5029$40=function(snpId)
  {
   return function()
   {
    Snippets.toggleCollapse(snpId);
   };
  };
- RenderSnippets.snippets$5025$40=function(snpId)
+ RenderSnippets.snippets$5028$40=function(snpId)
  {
   return function()
   {
    Snippets.togglePredecessor(snpId);
   };
  };
- RenderSnippets.snippets$5024$40=function(snpId)
+ RenderSnippets.snippets$5027$40=function(snpId)
  {
   var s;
   s=View$1.Map(function(y)
@@ -9883,7 +9889,7 @@
    return RenderSnippets.scrollIntoView(s,e);
   };
  };
- RenderSnippets.snippets$5023$40=function(snpId)
+ RenderSnippets.snippets$5026$40=function(snpId)
  {
   return function()
   {
@@ -10038,7 +10044,7 @@
     }
   },selW);
  };
- RenderProperties.render$5068$34=function()
+ RenderProperties.render$5071$34=function()
  {
   return function()
   {
@@ -10060,7 +10066,7 @@
    RenderProperties.addProperty();
   }))),(p=Handler$1.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.propertytable(p[0])),(b.i=i,i)))).get_Doc();
  };
- RenderProperties.properties$5061$33=function(i)
+ RenderProperties.properties$5064$33=function(i)
  {
   return function()
   {
@@ -11388,36 +11394,36 @@
   p=Handler$1.CompleteHoles(b.k,b.h,[]);
   b.i=new TemplateInstance.New(p[1],Templates.RunFullDocTemplate(p[0]));
  };
- MainProgram.mainDoc$5808$78=Global.id;
- MainProgram.mainDoc$5799$39=function()
+ MainProgram.mainDoc$5811$78=Global.id;
+ MainProgram.mainDoc$5802$39=function()
  {
   return function(ev)
   {
    JumpTo.jumpToRef(ev.Target);
   };
  };
- MainProgram.mainDoc$5798$39=function()
+ MainProgram.mainDoc$5801$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5797$39=function()
+ MainProgram.mainDoc$5800$39=function()
  {
   return function(ev)
   {
    Importer.importFile(ev.Target);
   };
  };
- MainProgram.mainDoc$5796$39=function()
+ MainProgram.mainDoc$5799$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5795$39=function()
+ MainProgram.mainDoc$5798$39=function()
  {
   return function(ev)
   {
@@ -11536,11 +11542,11 @@
   }))))))))))))));
   return(p=Handler$1.CompleteHoles(tmp.k,tmp.h,[["filename",0],["name",0],["output",0],["fscode",0],["parser",0]]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.layout(p[0])),(tmp.i=i,i))).get_Doc();
  };
+ MainProgram.buttonsRight$5784$74=Global.id;
+ MainProgram.buttonsRight$5783$74=Global.id;
+ MainProgram.buttonsRight$5782$74=Global.id;
  MainProgram.buttonsRight$5781$74=Global.id;
  MainProgram.buttonsRight$5780$74=Global.id;
- MainProgram.buttonsRight$5779$74=Global.id;
- MainProgram.buttonsRight$5778$74=Global.id;
- MainProgram.buttonsRight$5777$74=Global.id;
  MainProgram.buttonsRight=function()
  {
   var tmp,p,i;
@@ -11698,8 +11704,8 @@
     $0:FStation.id()
    })])),function()
    {
-    var t;
-    return b.Bind(FusionAsyncM.ofAsync((t=Seq$1.last(Strings.SplitChars(FStation.outputMsgs().Get(),["\n"],0)),(new AjaxRemotingProvider.New()).Async("FSharpStation:FsRoot.Library2+FsiAgent.sendFsiInput:-1181784350",[t]))),function()
+    var s;
+    return b.Bind((s=Seq$1.last(Strings.SplitChars(FStation.outputMsgs().Get(),["\n"],0)),FusionAsyncM.ofAsync((new AjaxRemotingProvider.New()).Async("FSharpStation:FsRoot.Library2+FsiAgent.sendFsiInput:-1181784350",[s+";;"]))),function()
     {
      return b.Return();
     });
@@ -12062,7 +12068,7 @@
   SC$1.$cctor();
   return SC$1.wsStationClient;
  };
- Server.content$6073$54=function()
+ Server.content$6076$54=function()
  {
   MainProgram.mainProgram();
   return Doc.TextNode("Initialized");

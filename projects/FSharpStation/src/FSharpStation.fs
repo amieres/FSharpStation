@@ -1,6 +1,6 @@
 #nowarn "3242"
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1561191553159 -d:TEE -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1562140138904 -d:TEE -d:WEBSHARPER
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\FSharpStation\src"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
@@ -45,7 +45,7 @@
 //#nowarn "3242"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1561191553159
+//#define FSharpStation1562140138904
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -1687,7 +1687,8 @@ namespace FsRoot
                     |> fun c -> c + " " + snp.snpId.Id.ToString()
                 let propertyO       n snp = snp.snpProperties |> Array.tryPick (fun (name, value) -> if name = n then Some value else None)
                 let tieFighter            = "|" + "-" + "|"
-                let propertyPairO   n snp = propertyO n snp |> Option.map(fun v -> v.Split([| tieFighter |], StringSplitOptions.RemoveEmptyEntries) |> fun vs -> vs.[0], vs |> Array.tryItem 1 |> Option.defaultValue vs.[0])
+                let propertyPair      prv = (prv:string).Split([| tieFighter |], StringSplitOptions.None) |> fun vs -> vs.[0], vs |> Array.tryItem 1 |> Option.defaultValue vs.[0]
+                let propertyPairO   n snp = propertyO n snp |> Option.map propertyPair
                 let snippetORm        sid = readerFun (fun { fetcher    = ftch } -> ftch sid                                               )
                 let parentORm         snp = readerFun (fun { fetcher    = ftch } -> snp.snpParentIdO |> Option.bind ftch                   )
                 let predecessorsRm    snp = readerFun (fun { fetcher    = ftch } -> snp.snpPredIds   |> Seq.choose  ftch                   )
@@ -1762,7 +1763,7 @@ namespace FsRoot
                 }
                 let rec propertyHierORm n snp = fusion {
                     match propertyO n snp with
-                    | Some v -> return Some (snp, v.Split([| @"|-|" |], StringSplitOptions.RemoveEmptyEntries) |> fun vs -> vs.[0], if vs.Length > 1 then vs.[1] else vs.[0])
+                    | Some v -> return Some (snp, propertyPair v)
                     | None   -> let! parentO = parentORm   snp
                                 match parentO with
                                 | Some p -> let!   propO = propertyHierORm n p
@@ -2435,9 +2436,11 @@ namespace FsRoot
                     do  startInfo.CreateNoWindow  <- false
                         shell.Start() |> ignore
                     member __.Eval (FsCode code)   = asyncResult {
-                                                         shell.Send code
-                                                         shell.Send ";;"
-                                                         return! shell.SendAndWait("printfn \"" + endToken + "\";;", endToken)
+                                                        shell.Output() |> ignore
+                                                        shell.Error () |> ignore
+                                                        shell.Send code
+                                                        shell.Send ";;"
+                                                        return! shell.SendAndWait("printfn \"" + endToken + "\";;", endToken)
                                                      }
                     member __.IsAlive              = not shell.HasExited
                     member __.Abort()              = shell.Abort()
@@ -3980,7 +3983,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/e2c502cb-d20a-4e6c-b75c-836776fed43f"
+                    "http://localhost:9005/#/Snippet/c677b6fd-d833-43ee-a15c-62c60d8572e4"
                 #endif
                 
                 let extractEndPoint() = 
@@ -4175,7 +4178,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1561191553159"
+                let mutable fsharpStationAddress = Address "FSharpStation1562140138904"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -5738,7 +5741,7 @@ namespace FsRoot
                 let out (v:string) = appendMsgs <| v.Replace(FsiEvaluator.endToken, "Done!")
                 fusion {
                     do! FSharpStationClient.setAddress (WebSockets.Address FStation.id)  |> ofAsync
-                    do! outputMsgs.Value.Split '\n' |> Seq.last |> FsiAgent.sendFsiInput |> ofAsync 
+                    do! outputMsgs.Value.Split '\n' |> Seq.last |> fun s -> s + ";;" |> FsiAgent.sendFsiInput |> ofAsync 
                 } |> iterResultA (sprintf "Error:\n%A" >> out) ignore
         
             let deleteSnippet() =
