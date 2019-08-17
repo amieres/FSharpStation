@@ -1,4 +1,4 @@
-////-d:FSharpStation1564764915205 -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1565212027435 -d:TEE -d:WEBSHARPER
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/ProzperServer"
 #I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 #I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
@@ -23,11 +23,14 @@
 #r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
 #r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 #r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Reactive\lib\net46\System.Reactive.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Control.Reactive\lib\net46\FSharp.Control.Reactive.dll"
 #r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
 #r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
 #r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
 #r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
 #r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40\Owin.dll"
+#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\FSharp.Compiler.Service.dll"
 #r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\other\AuthorizeNet\lib\AuthorizeNet.dll"
 #r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper/WindowsAzure.Storage/lib/net45/Microsoft.WindowsAzure.Storage.dll"
 #r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper/Newtonsoft.Json/lib/net45/Newtonsoft.Json.dll"
@@ -35,7 +38,7 @@
 #r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Newtonsoft.Json\lib\net45\Newtonsoft.Json.dll"
 #nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1564764915205
+//#define FSharpStation1565212027435
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -704,7 +707,7 @@ namespace FsRoot
                         member __.Delay                       fEf                  = fEf
                         member __.Run                         fEf  : Eff<'H, _   > = rtn () |> bind fEf
                         member this.TryWith   (body, handler     ) : Eff<'H,_> = Eff(fun k -> try body() |> function Eff(f) -> f k with e -> handler e |> function Eff(f) -> f k)
-                        member this.TryFinally(body, compensation) : Eff<'H,_> = Eff(fun k -> try body() |> function Eff(f) -> f k finally   compensation()           )
+                        member this.TryFinally(body, compensation) : Eff<'H,_> = (try body() with e -> compensation() ; reraise() ) |>> compensation
                         member this.Using     (disposable, body  ) : Eff<'H,_> = //wrap(fun r -> using (disposable:#System.IDisposable) (fun u -> body u |> getFun <| r) )
                                     let body' = fun () -> body disposable
                                     this.TryFinally(body', fun () -> if disposable :> obj <> null then (disposable:#System.IDisposable).Dispose() )
@@ -1459,6 +1462,96 @@ namespace FsRoot
                                                                                                     return st 
                                                                                                 })
             
+            module Argument =
+            
+                type ArgumentId = ArgumentId of string
+            
+                type Argument<'T> = {
+                    cargId : ArgumentId
+                    name   : string
+                    unique : bool
+                    build  : 'T -> string
+                }
+                  with
+                    member this.TryConstant(args:Arguments) = args.TryConstant this
+                    member this.TryGet     (args:Arguments) = args.TryGet      this
+                    member this.   Get     (args:Arguments) = args.   Get      this
+                    member this.BuildValue  args            = this.build (this.Get args)
+                    static member ( /= ) (arg :  Argument<'T>, v:              'T) = ArgPair(arg, Constant v).Box
+                    static member ( /= ) (arg :  Argument<'T>, f: Arguments -> 'T) = ArgPair(arg, Func     f).Box
+                    static member New(name, unique, build : 'T -> string) = {
+                        cargId = ArgumentId <| System.Guid.NewGuid().ToString()
+                        name   = name
+                        unique = unique
+                        build  = build 
+                    }
+            
+                and  ArgValue<'T> =
+                | Constant of 'T
+                | Func of (Arguments -> 'T)
+                  with
+                    member this.TryConstant = match this with Constant v -> Some v |_-> None
+                    member this.Get      av = match this with Constant v ->      v | Func f -> f av
+                    static member Unbox (value : ArgValue<obj>) : ArgValue<'T> =
+                        match value with
+                        | Constant v -> Constant (               unbox v)
+                        | Func     f -> Func     (f >> (fun v -> unbox v) )
+            
+                and  ArgPair<  'T> = ArgPair   of Argument<'T> * ArgValue<'T>
+                  with
+                    member this.BuildValue  av = match this with ArgPair(arg, value) -> this.Get av |> arg.build
+                    member this.Id             = match this with ArgPair(arg, value) -> arg.cargId
+                    member this.TryConstant    = match this with ArgPair(arg, value) -> value.TryConstant
+                    member this.Get         av = match this with ArgPair(arg, value) -> value.Get av
+                    member this.Box : ArgPair<obj> =
+                        match this with
+                        ArgPair(arg, value) ->
+                        ArgPair(
+                            {
+                                cargId =          arg.cargId
+                                name   =          arg.name
+                                unique =          arg.unique
+                                build  = unbox >> arg.build
+                            }
+                            , 
+                            match value with
+                            | Constant v -> Constant (box v)
+                            | Func     f -> Func     (f >> (fun v -> box v) )
+                        )
+                    static member Unbox (ArgPair(arg, value)) : ArgPair<'T> =
+                        ArgPair(
+                            {
+                                cargId =          arg.cargId
+                                name   =          arg.name
+                                unique =          arg.unique
+                                build  =   box >> arg.build
+                            }
+                            , 
+                            match value with
+                            | Constant v -> Constant (unbox v)
+                            | Func     f -> Func     (f >> (fun v -> unbox v) )
+                        )
+            
+                and  Arguments = Arguments of ArgPair<obj> []
+                  with
+                    member this.Args          = match this with Arguments args -> args
+                    member this.BuildValues f = this.Args |> Seq.filter f |> Seq.map (fun a -> a.BuildValue this)
+                    member this.somethingGet (f:(ArgPair<obj> -> bool) -> ArgPair<obj> [] -> 'a) (argP: Argument<'T>) =
+                        this.Args |> f (fun (ArgPair(arg, v)) -> arg.cargId = argP.cargId) 
+                    member this.TryConstant(argP: Argument<'T>) = this.somethingGet Seq.tryFind   argP |> Option.bind(fun (ArgPair(arg, v)) -> (ArgValue<'T>.Unbox v).TryConstant)
+                    member this.TryGet     (argP: Argument<'T>) = this.somethingGet Seq.tryFind   argP |> Option.map (fun (ArgPair(arg, v)) -> (ArgValue<'T>.Unbox v).Get    this)
+                    member this.   GetAll  (argP: Argument<'T>) = this.somethingGet Seq.   filter argP |> Seq.map    (fun (ArgPair(arg, v)) -> (ArgValue<'T>.Unbox v).Get    this)
+                    member this.   Get     (argP: Argument<'T>) = this.TryGet argP |> Option.defaultWith (fun () -> failwithf "Argument not found: %s" argP.name )
+                    member this.Add (pair: ArgPair<'T>) =
+                        match this, pair with
+                        Arguments args, ArgPair(arg,_) -> 
+                            (if arg.unique then this.somethingGet (fun f -> Array.filter (f >> not)) arg else args)
+                            |> fun args2 -> Arguments(Array.append args2 [| pair.Box |])
+                    static member (+) (args:Arguments, ap   :      ArgPair<_> ) =                                      args.Add ap
+                    static member (+) (args:Arguments, args2: #seq<ArgPair<_>>) = (args , args2) ||> Seq.fold (fun s p -> s.Add p ) 
+                    static member (+) (args:Arguments, Arguments args2        ) =  args + args2
+            
+                let Arguments ps = ps |> Seq.toArray |> Arguments
             type FsCode = FsCode of string
             
             module FsCode =
@@ -1856,6 +1949,189 @@ namespace FsRoot
         /// Essentials that cannot run in Javascript (WebSharper)
         [< AutoOpen >]
         module LibraryNoJS =
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Reactive\lib\net46\System.Reactive.dll"
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Control.Reactive\lib\net46\FSharp.Control.Reactive.dll"
+            module RunProcess =
+                open System.Diagnostics
+                open System.Text
+                open FSharp.Control.Reactive
+                open FSharp.Control.Reactive.WaitHandle
+                open FSharp.Control
+            
+                let startProcess p ops =
+                    let procStart   = ProcessStartInfo(p, ops)
+                    let proc        = new Process(StartInfo = procStart)
+                    proc.Start() 
+                
+                let startProcessDir p ops dir =
+                    let procStart   = ProcessStartInfo(p, ops, WorkingDirectory = dir)
+                    let proc        = new Process(StartInfo = procStart)
+                    proc.Start() 
+                
+                type ShellResponse =
+                    | ShellDidNotStart 
+                    | ShellExit                  of int * stdout: string * stderr:string
+                    | ShellNoExit                of       stdout: string * stderr:string
+                    | ShellCrashed               of       stdout: string * stderr:string
+                    with 
+                    override msg.ToString() = 
+                        match msg with
+                        | ShellDidNotStart                 -> [ "Shell did not start" ]
+                        | ShellExit        (cod, out, err) -> [ if cod <> 0 then yield sprintf "exit(%d)" cod
+                                                                yield                          out ; if err <> "" then yield "ERROR:" ; yield err ]
+                        | ShellCrashed     (     out, err) -> [ yield "Shell crashed!" ; yield out ; if err <> "" then yield "ERROR:" ; yield err ]
+                        | ShellNoExit      (     out, err) -> [ yield                          out ; if err <> "" then yield "ERROR:" ; yield err ]
+                        |> String.concat "\n"
+                
+                type ShellEx(startInfo: ProcessStartInfo, ?outHndl, ?errHndl, ?priorityClass) =
+                    let bufferOutput                      = new StringBuilder()
+                    let bufferError                       = new StringBuilder()
+                    let append  (sb: StringBuilder) txt   = sb.Append(txt + "\n")                       |> ignore
+                    let consume (sb: StringBuilder)       = sb.ToString() |>! (fun _ -> sb.Clear()      |> ignore)
+                    let dataHandler handler               = DataReceivedEventHandler(fun sender args -> try handler args.Data with _ -> ())
+                    let outputHandler                     = append bufferOutput |> dataHandler
+                    let errorHandler                      = append bufferError  |> dataHandler
+                    do  startInfo.RedirectStandardInput  <- true
+                        startInfo.RedirectStandardOutput <- true
+                        startInfo.RedirectStandardError  <- true
+                        startInfo.UseShellExecute        <- false
+                    let proc                              = new Process(
+                                                                StartInfo           = startInfo
+                                                              , EnableRaisingEvents = true     )
+                    do  outputHandler                    |>             proc.OutputDataReceived.AddHandler
+                        errorHandler                     |>             proc.ErrorDataReceived .AddHandler
+                        Option.map dataHandler outHndl   |> Option.iter proc.OutputDataReceived.AddHandler
+                        Option.map dataHandler errHndl   |> Option.iter proc.ErrorDataReceived .AddHandler
+                //        proc.Exited            .AddHandler(System.EventHandler     (fun sender args -> try proc.Close()                                    with _ -> () ))
+                      
+                    new          (program, args, ?priorityClass) = let startInfo                     = new ProcessStartInfo()
+                                                                   do  startInfo.FileName           <- program
+                                                                       startInfo.Arguments          <- args
+                                                                   new ShellEx(startInfo, ?priorityClass = priorityClass)
+                    member ____.Start                         () = let r = proc.Start() 
+                                                                   priorityClass |> Option.iter (fun p -> proc.PriorityClass <- p)
+                                                                   proc.BeginOutputReadLine()
+                                                                   proc.BeginErrorReadLine ()
+                                                                   r
+                    member ____.WaitToFinish                  () = proc.WaitForExit()
+                                                                   let    output  = (consume bufferOutput).Trim()
+                                                                   let    error   = (consume bufferError ).Trim()
+                                                                   ((if proc.HasExited then proc.ExitCode else -99999), output, error)
+                    member ____.WaitForInputIdle              () = proc.WaitForInputIdle()
+                    member this.StartAndWait                  () = let _started = this.Start()
+                                                                   this.WaitToFinish()
+                    member this.StartAndWaitS                 () = this.StartAndWait()
+                                                                   |>! fun _ -> (this :> System.IDisposable).Dispose()
+                                                                   |> ShellExit
+                    member this.stdOutErr2Result exit out errs   = if exit <> 0
+                                                                   then Result.Error <| ErrorMsg(
+                                                                           [| if out  <> ""              then yield "stdout: " + out           
+                                                                              if errs <> ""              then yield errs                       
+                                                                              if errs  = "" || exit <> 1 then yield sprintf "ExitCode: %d" exit
+                                                                           |] |> String.concat "\n")
+                                                                   else Result.Ok (out, errs)
+                    member this.StartAndWaitR                 () = let r = this.StartAndWait()
+                                                                   (this :> System.IDisposable).Dispose()
+                                                                   r |||> this.stdOutErr2Result
+                    member this.RunToFinish                   () = this.StartAndWaitS().ToString()
+                    member this.RunOutputToFileR            file = proc.OutputDataReceived.RemoveHandler outputHandler
+                                                                   use stream  = new System.IO.FileStream(file, System.IO.FileMode.Create)
+                                                                   let _started = proc.Start() 
+                                                                   proc.BeginErrorReadLine ()
+                                                                   proc.StandardOutput.BaseStream.CopyTo stream
+                                                                   this.WaitToFinish()
+                                                                   |> ShellExit
+                    member this.RunOutputToFile             file = this.RunOutputToFileR file
+                                                                   |> fun v -> v.ToString() 
+                    member ____.Send                (txt:string) = proc.StandardInput.WriteLine txt
+                    member ____.Output                        () = consume bufferOutput
+                    member ____.Error                         () = consume bufferError
+                    member ____.Response(out:string, err:string) = match out.Trim(), err.Trim() with
+                                                                   | good, ""  -> Result.Ok    <| good               
+                                                                   | good, bad -> Result.Error <| Message(ShellNoExit(good, bad))
+                    member this.Response                      () = this.Response(this.Output(), this.Error())
+                    member this.SendAndWait (send, wait, ?onErr) =
+                        let waitOnError = defaultArg onErr false
+                        let obsWait   = if waitOnError then proc.ErrorDataReceived else proc.OutputDataReceived
+                                          |> Observable.choose (fun evArgs -> try evArgs.Data |> (fun v -> if v.Contains wait then Some <| Result.Ok v else None) with _ -> None)
+                        let obsAll    = Observable.merge obsWait  (Event.map (fun _ -> Result.Error <| Message (ShellCrashed(this.Output(), this.Error()))) proc.Exited)
+                        asyncResult {
+                            //do! Result.tryProtection()
+                            async { 
+                                do!    Async.Sleep 20 
+                                this.Send send        } |> Async.Start
+                            let!  waited = Observable.wait (obsAll |> Observable.take 1) 
+                            do!   Async.Sleep 200
+                            return! if waitOnError
+                                    then this.Response(this.Output(), this.Error() |> fun msg -> msg.Split([| waited |], System.StringSplitOptions.None) |> Array.head)
+                                    else this.Response()
+                        }
+                    member ____.HasExited = try proc.HasExited with _ -> true
+                    member ____.Abort()   = try proc.Kill   () with _ -> ()
+                    member ____.Process   = proc
+                    interface System.IDisposable with
+                        member ____.Dispose () =
+                            try proc.Close  ()
+                                proc.Kill   ()
+                                proc.Dispose() 
+                            with _ ->       ()
+                
+                
+                let runAndWaitS p ops =
+                    let procStart   = ProcessStartInfo(p, ops)
+                    let shell       = new ShellEx(procStart)
+                    shell.StartAndWaitS() 
+                
+                let runToFinish p ops =
+                    let procStart   = ProcessStartInfo(p, ops)
+                    let shell       = new ShellEx(procStart, printfn "%s", eprintfn "%s")
+                    shell.RunToFinish() 
+                
+                let runOutputToFile p ops file =
+                    let procStart   = ProcessStartInfo(p, ops)
+                    let shell       = new ShellEx(procStart)
+                    shell.RunOutputToFile file 
+                
+                
+            module CopyIfMust =
+                open System.IO
+                
+                let copyIfNotExistsToFile from dest =
+                    let fit = FileInfo dest
+                    if not fit.Exists then
+                        File.Copy(from, dest, true )
+                
+                let toFile from dest =
+                    let fit = FileInfo dest
+                    let must = 
+                        match fit.Exists with 
+                        | false -> true
+                        | true  ->
+                            let fif = FileInfo dest
+                            fif.Length <> fit.Length || fif.LastWriteTime <> fit.LastWriteTime
+                    if must then
+                        File.Copy(from, dest, true )
+                
+                let toDir from destDir =
+                    let dest = Path.Combine(destDir, Path.GetFileName(from))
+                    toFile from dest
+                
+            type ITempFileName =
+                inherit System.IDisposable
+                abstract Name : string
+            
+            type TempFileName(fn) =
+                new () = new TempFileName(System.IO.Path.GetTempFileName())
+                member __.Name = fn
+                interface ITempFileName      with member __.Name      = fn
+                interface System.IDisposable with member __.Dispose() = 
+                                                    if System.IO.File.Exists fn then 
+                                                        System.IO.File.Delete fn 
+                    
+            type NonTempFileName(fn) =
+                interface ITempFileName      with member __.Name      = fn
+                interface System.IDisposable with member __.Dispose() = ()
+            
             let rec getNamespace (t:System.Type) =
                 match t.DeclaringType with
                 | null -> match t.Namespace with null -> "" | ns -> ns + "."
@@ -2073,6 +2349,219 @@ namespace FsRoot
                 let inline value<'T> : 'T = typeof<'T> |> defaultValue defs |> unbox
             
             
+            module Arguments =
+            
+                open Argument
+                open System.IO
+                    
+                let flag t f p = function true -> p + t |_-> p + f
+                let flagpm   p = flag "+" "-" p
+            
+                let intRootDir       = Argument<_>.New("RootDir"      , true , sprintf  "++root:%s"        )
+                let intSnippet       = Argument<_>.New("Snippet"      , true , sprintf  "++snippet:%s"     )
+                let intCreateDir     = Argument<_>.New("CreateDir"    , true , fun v ->  if v then "++createdirectory" else "")
+                let intDirectory     = Argument<_>.New("Directory"    , true , sprintf  "++directory:%s"   )
+                let intName          = Argument<_>.New("Name"         , true , sprintf  "++name:%s"        )
+                let intExtension     = Argument<_>.New("Extension"    , true , sprintf  "++extension:%s"   )
+                let intFileName      = Argument<_>.New("Filename"     , true , sprintf  "++filename:%s"    )
+                let intOutputFile    = Argument<_>.New("OutputFile"   , true , sprintf  "++fileout:%s"     )
+                let intConfig        = Argument<_>.New("Config"       , true , sprintf  "++config:%s"      )
+                let intCopyConfig    = Argument<_>.New("CopyConfig"   , true , flagpm   "++copyconfig"     )
+                let intWebSharper    = Argument<_>.New("WebSharper"   , true , flagpm   "++websharper"     )
+                let intStaticLinkAll = Argument<_>.New("StaticLinkAll", true , flagpm   "++staticlinkall"  )
+                let intCopyAssem     = Argument<_>.New("CopyAssem"    , true , flagpm   "++copyassemblies" )
+                let intShowArgs      = Argument<_>.New("ShowArgs"     , true , flagpm   "++showargs"       )
+                let intRemLineDir    = Argument<_>.New("RemLineDir"   , true , flagpm   "++remlinedir"     )
+                let intUnifiedJs     = Argument<_>.New("UnifiedJs"    , true , sprintf  "++unifiedjs:%s"   )
+                let intSkipCompile   = Argument<_>.New("SkipCompile"  , true , fun v ->  if v then "++skipcompile" else "")
+                
+                let internalArgs = 
+                    Set [
+                        intSnippet      .cargId
+                        intDirectory    .cargId
+                        intName         .cargId
+                        intExtension    .cargId
+                        intFileName     .cargId
+                        intOutputFile   .cargId
+                        intConfig       .cargId
+                        intWebSharper   .cargId
+                        intStaticLinkAll.cargId
+                        intCopyAssem    .cargId
+                        intShowArgs     .cargId
+                        intUnifiedJs    .cargId
+                        intSkipCompile  .cargId
+                    ]
+            
+                let fscIOption     = Argument<string>.New("IOption"    , false, sprintf "-I:%A"          )
+                let fscReference   = Argument<string>.New("Reference"  , false, sprintf "-r:%A"          )
+                let fscSource      = Argument<string>.New("Source"     , false, sprintf "%A"             )
+                let fscTarget      = Argument<_     >.New("Target"     , true , sprintf "--target:%s"    )
+                let fscPlatform    = Argument<_     >.New("Platform"   , true , sprintf "--platform:%s"  )
+                let fscOutput      = Argument<string>.New("Output"     , true , sprintf "-o:%A"          )
+                let fscDebug       = Argument<_     >.New("Debug"      , true , sprintf "--debug:%s"     )
+                let fscDefine      = Argument<_     >.New("Define"     , false, sprintf "--define:%s"    )
+                let fscStaticLink  = Argument<_     >.New("StaticLink" , false, sprintf "--staticlink:%s")
+                let fscGenFSharp1  = Argument<_     >.New("GenFSharp1" , false, sprintf "-%s"            )
+                let fscGenFSharp2  = Argument<_     >.New("GenFSharp2" , false, sprintf "--%s"           )
+                let fscNoFramework = Argument<_     >.New("NoFramework", true , function true -> "--noframework" |_-> "" )
+                
+                let FSharpArgs = 
+                    Set [
+                          fscIOption    .cargId
+                          fscReference  .cargId
+                          fscSource     .cargId
+                          fscTarget     .cargId
+                          fscPlatform   .cargId
+                          fscOutput     .cargId
+                          fscDebug      .cargId
+                          fscDefine     .cargId
+                          fscStaticLink .cargId
+                          fscGenFSharp1 .cargId
+                          fscGenFSharp2 .cargId
+                          fscNoFramework.cargId
+                ] 
+                
+                let wscWebSite      = Argument<string>.New("Website"     , true , sprintf "--wsoutput:%A"              )
+                let wscProjectFile  = Argument<string>.New("WsProject"   , true , sprintf "--project:%A"               )
+                let wscProjectType  = Argument<_     >.New("ProjectType" , true , sprintf "--ws:%s"                    )
+                let wscGenWSharper  = Argument<_     >.New("GenWSharper" , false, sprintf "--%s"                       )
+                let wscJSMap        = Argument<_     >.New("JSMap"       , false, flagpm  "--jsmap"                    )
+                let wscDeadCodeElim = Argument<_     >.New("DeadCodeElim", false, flagpm  "--dce"                      )
+                let wscWarnOnly     = Argument<_     >.New("WarnOnly"    , false, flagpm  "--wswarnonly"               )
+                let wscDownloadResc = Argument<_     >.New("DownloadResc", false, flagpm  "--dlres"                    )
+                let wscPrintJS      = Argument<_     >.New("PrintJS"     , false, flagpm  "--printjs"                  )
+                let wscClosures     = Argument<_     >.New("Closures"    , false, flagpm  "--closures"                 )
+                let wscClosrMoveTop = Argument<_     >.New("ClosrMoveTop", false, flag    "--closures:movetotop" "" "" )
+                let wscJsOutput     = Argument<string>.New("JsOutput"    , true , sprintf "--jsoutput:%A"              )
+            
+                let WebSharpArgs = 
+                    Set [
+                          wscWebSite     .cargId
+                          wscProjectFile .cargId
+                          wscProjectType .cargId
+                          wscGenWSharper .cargId
+                          wscJSMap       .cargId
+                          wscDeadCodeElim.cargId
+                          wscWarnOnly    .cargId
+                          wscDownloadResc.cargId
+                          wscPrintJS     .cargId
+                          wscClosures    .cargId
+                          wscClosrMoveTop.cargId
+                          wscJsOutput    .cargId
+                    ] 
+                
+                let dllOptions   () = Arguments [ fscTarget      /= "library"                                                                     ] 
+                let exeOptions   () = Arguments [ fscTarget      /= "exe"     ; intCopyAssem /= true ; intCopyConfig /= true ]
+                let winExeOptions() = Arguments [ fscTarget      /= "winexe"  ; intCopyAssem /= true ; intCopyConfig /= true ]    
+                
+                let genericOptions () = 
+                  Arguments
+                    [
+            //           intSnippet     /= "Test"
+                        intRootDir     /= Path.GetFullPath ".."
+                        intName        /= fun av -> (intSnippet.Get av) |> String.splitByChar '/' |> Array.last
+                        intDirectory   /= intRootDir.Get
+                        intExtension   /= fun av -> match fscTarget.Get av with "library" -> "dll" |_-> "exe"
+                        intFileName    /= fun av -> (intDirectory.Get av) +/+ "src" +/+ (intName.Get av) + ".fs"
+                        fscOutput      /= fun av -> (intDirectory.Get av) +/+ "bin" +/+ (intName.Get av) + "." + (intExtension.Get av)
+                        intOutputFile  /= (fscOutput.Get >> Path.GetFileName)
+                        intConfig      /= fun av -> intOutputFile.Get av + ".config"
+                        intWebSharper  /= fun av -> WebSharpArgs |> Seq.exists(fun id -> av.Args |> Seq.exists(fun p -> p.Id = id) )
+                        intSkipCompile /= false
+                        fscSource      /= intFileName.Get
+                        fscNoFramework /= fun av -> av.GetAll fscReference
+                                                    |> Seq.map    (fun (s:string) -> s.ToLower()) 
+                                                    |> Seq.exists(fun s -> s.Contains("fsharp.core.dll") || s.Contains("mscorlib.dll") )
+                    ]
+                    
+                let siteOptions ()=
+                  Arguments
+                    [|
+                       wscProjectType /= "Site"
+                       wscWebSite     /= fun av -> (intDirectory.Get av) +/+ "website"
+                       wscJsOutput    /= fun av -> (wscWebSite  .Get av) +/+ (intName.Get av) + "0.js"
+                       wscProjectFile /= intName.Get
+                       wscJSMap       /= true
+                    |]
+            
+                let unifyJs () =
+                        intUnifiedJs  /= fun av -> (wscWebSite.Get av) +/+ "Scripts" +/+ (intName.Get av) + "U.js"
+                 
+                let wsProjectOptions ()=
+                  Arguments
+                    [|
+                       wscProjectFile /= intName.Get
+                    |] 
+                 
+                let debugOptions() = 
+                  Arguments
+                    [|
+                       fscGenFSharp1  /= "g"
+                       fscDebug       /= "full"
+                       fscDefine      /= "DEBUG"
+                       fscDefine      /= "TRACE"
+                       fscGenFSharp2  /= "optimize-"
+                       fscGenFSharp2  /= "tailcalls-"
+                    |]
+                
+                let otherOptions () =
+                  Arguments
+                    [|
+                       //@"--noframework"
+                       fscGenFSharp2  /= "warn:3"
+                       fscGenFSharp2  /= "nowarn:1178"
+                       fscGenFSharp2  /= "nowarn:1182"
+                       fscGenFSharp2  /= "nowarn:52"
+                       fscGenFSharp2  /= "warnaserror:76"
+                       fscGenFSharp2  /= "vserrors"
+                       fscGenFSharp2  /= "utf8output"
+                       fscGenFSharp2  /= "fullpaths"
+                       fscGenFSharp2  /= "flaterrors"
+                       fscGenFSharp2  /= "subsystemversion:6.00"
+                       fscGenFSharp2  /= "highentropyva+"
+                       intRemLineDir  /= true
+                    |]
+                
+                let compileOptionsDll() = 
+                    genericOptions()
+                    + dllOptions  ()
+                    + otherOptions()
+                    
+                let compileOptionsDllDebug   () = compileOptionsDll     () + debugOptions ()       
+                let compileOptionsExeDebug   () = compileOptionsDllDebug() + exeOptions   ()
+                let compileOptionsWinExeDebug() = compileOptionsDllDebug() + winExeOptions()
+                    
+                let prepOptions (args:Arguments) (assembs : string [], defines : string [], prepoIs : string []) =
+                    let staticLinksAll = intStaticLinkAll.TryGet args |> Option.defaultValue false
+                    args + [
+                        yield! prepoIs |> Array.map ((/=) fscIOption  ) 
+                        yield! assembs |> Array.map ((/=) fscReference)
+                        yield! defines |> Array.map ((/=) fscDefine   )
+                        if staticLinksAll then 
+                            yield! assembs |> Array.map (fun f -> fscStaticLink /= System.IO.Path.GetFileNameWithoutExtension f)
+                    ]
+                    
+                let processArgs av code assembs nowarns =
+                    let  show      = intShowArgs.Get av
+                    if show      then av.Args |> Seq.map (fun p -> p.BuildValue av) |> Seq.sort |> Seq.iter (printfn "%s")
+                    let  workDir   = intDirectory.   Get av 
+                    let  fileName  = intFileName .   Get av
+                    let  output    = fscOutput   .   Get av
+                    let  copyAssem = intCopyAssem.TryGet av |> Option.defaultValue false
+                    let  createDir = intCreateDir.TryGet av |> Option.defaultValue false
+                    let  srcDir    = Path.GetDirectoryName fileName
+                    let  outDir    = Path.GetDirectoryName output
+                    if createDir then 
+                                     Directory.CreateDirectory workDir |> ignore
+                                     Directory.CreateDirectory  srcDir |> ignore
+                                     Directory.CreateDirectory  outDir |> ignore
+                    let  code2     = [
+                                        yield! nowarns |> Seq.distinct |> Seq.map (sprintf "#nowarn \"%s\"")
+                                        yield! code 
+                                     ] |> String.concat "\n"
+                    do               File.WriteAllText(fileName, code2)
+                    if copyAssem then assembs |> Array.iter (fun f -> outDir |> CopyIfMust.toDir f)      
+                
         /// Essentials that run in Javascript (WebSharper)
         //#define WEBSHARPER 
         [< JavaScript ; AutoOpen >]
@@ -2536,7 +3025,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1564764915205"
+                let mutable fsharpStationAddress = Address "FSharpStation1565212027435"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -2612,6 +3101,108 @@ namespace FsRoot
                 let actionCall2 act p1 p2   = sendMessage (MsgAction [|  act          ; p1   ; p2       |])
                                         
                 let getBrokerProcessId() = fsharpStationClient.MBProcessId
+        /// Essentials that cannot run in Javascript (WebSharper)
+        [< AutoOpen >]
+        module LibraryNoJS2 =
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\FSharp.Compiler.Service.dll"
+            module Compilers =
+                open Argument
+                open Arguments
+                open System
+                open System.IO
+                open FsCode
+            
+                type ProcessorArguments<'H> = abstract member ProcessArguments : Arguments -> Eff<'H,unit>
+            
+                let processArguments args  = Reader.ask3() >>= fun (h:#ProcessorArguments<_>) -> h.ProcessArguments args
+            
+                let wsFsc (args:Arguments) = eff {
+                    let  compiler  = @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\wsfsc.exe"
+                    let  wsArgIds  = Set.union WebSharpArgs FSharpArgs 
+                    if intCreateDir.TryGet args = Some true then
+                        Directory.CreateDirectory(wscWebSite.Get args) |> ignore        
+                    match wscJsOutput.TryGet args, wscProjectFile.TryGet args with
+                    | Some outputJs0, Some wsconfig ->
+                        File.WriteAllText(wsconfig, sprintf """
+                            {
+                              "$schema"         : "https://websharper.com/wsconfig.schema.json",
+                              "outputDir"       : "%s"
+                            }
+                        """  <| Path.GetDirectoryName(outputJs0).Replace(@"\", @"\\") )
+                    |_-> ()
+                    if intSkipCompile.TryGet args = Some true then 
+                        do! Log.log "Compilation Skipped"
+                    else
+                    let! out, err = 
+                            args.BuildValues (fun arg -> Set.contains arg.Id wsArgIds )
+                            |> String.concat "  "
+                            |> fun ops -> (new RunProcess.ShellEx(compiler, ops, priorityClass = System.Diagnostics.ProcessPriorityClass.RealTime)).StartAndWaitR()
+                            |> Result.mapError ResultMessage.summarized |> Rsl.ofResult
+                    match intUnifiedJs.TryGet args, wscJsOutput.TryGet args, wscWebSite.TryGet args, intName.TryGet args with
+                    | Some unified, Some outputJs0, Some website, Some name ->
+                        let  js0      = File.ReadAllText outputJs0
+                        let  includes = File.ReadAllText (website +/+ name + ".head.html") 
+                        let  incs     = includes.Split([| "src="; "href=" ; "<" ; ">" |], System.StringSplitOptions.RemoveEmptyEntries)
+                                        |> Seq.choose(fun v -> if v.[0] = '"' then v.Split([| '"' |], System.StringSplitOptions.RemoveEmptyEntries).[0] |> sprintf "%A" |> Some else None)
+                        let  js2      = js0.[1..js0.Length - 7] |> (sprintf "CIPHERSpaceLoadFiles([%s], %s);" (incs |> String.concat ", ")  )
+                        File.WriteAllText(unified, js2)
+                    |_->()
+                    do! Log.log (if out = "" then "Compiled!" else out + err)
+                }
+            
+                open Microsoft.FSharp.Compiler.SourceCodeServices
+            
+                let fSharpError2message (error : FSharpErrorInfo) =
+                    let indent, file = 0, System.IO.Path.GetFileNameWithoutExtension error.FileName
+                    sprintf "%A: %s (%d,%d) - (%d,%d) %s %d: %s"
+                        error.Severity
+                        file 
+                        error.StartLineAlternate (error.StartColumn - indent) 
+                        error.EndLineAlternate   (error.EndColumn   - indent) 
+                        error.Subcategory error.ErrorNumber error.Message
+            
+                let fsc (args:Arguments) = eff {
+                    if intSkipCompile.TryGet args = Some true then 
+                        do! Log.log "Compilation Skipped"
+                    else
+                    let! msgs, exit = 
+                        args.BuildValues (fun arg -> Set.contains arg.Id FSharpArgs )
+                        |> Seq.append [| "IGNORED_Fsc.exe" |]
+                        |> Seq.map (fun (s:string) -> s.Replace("\"",""))
+                        |> Seq.toArray
+                        |> FSharpChecker.Create().Compile
+                        |> Asy.ofAsync
+                    for msg in msgs do
+                        do! fSharpError2message msg |> Log.log
+                    do! Rsl.ofResult (if exit <> 0 then Ok() else Error "NoMsg")
+                }         
+            
+                let callCompiler (args:Arguments) = eff {
+                    do! processArguments  args
+                    if intWebSharper.TryGet args = Some true then
+                          return! wsFsc args
+                    else  return!   fsc args
+                }
+            
+                let compile (args:Arguments) = eff {
+                    match intSnippet.TryGet args with
+                    | None                 ->
+                        do!                   callCompiler args
+                    | Some snpName         ->
+                        let! codeFsR        = FSharpStationClient.getCode snpName |> Asy.ofAsync
+                        let! codeFs         = codeFsR                             |> Result.mapError ResultMessage.summarized |> Rsl.ofResult
+                        let  code           = codeFs.Split '\n'
+                        let  defines0       = (FsCode.extractDefines <| FsCode codeFs).Split([| " " ; "-d:" |], StringSplitOptions.RemoveEmptyEntries) 
+            //            let  fs, assembs, defines1, prepIs, nowarns, _ = separatePrepros code |> separateDirectives
+                        let  fs, directs    = separatePrepros code |> FsCode.getTopDirectives
+                        let  assembs, defines1, prepIs, nowarns, _ = separateDirectives directs 
+                        let  defines        = Array.append defines0 defines1
+                        let  args2          = prepOptions  args    (assembs, defines, prepIs)
+                        do                    processArgs  args2 fs assembs nowarns
+                        do!                   callCompiler args2
+                }
+            
+            
     
     //#cd @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/ProzperServer"
     module ProzperServer =
@@ -4622,6 +5213,8 @@ namespace FsRoot
                 interface VariableAmbienteI with 
                     member __.getVar v = if settings.ContainsKey v then settings.[v] else failwithf "Variable not found: %s" v
                     member __.CarpetaRaiz() = "."
+                interface Compilers.ProcessorArguments<AzureReader> with
+                    member __.ProcessArguments args = rtn ()
         
             //and  ReaderLogRsl = inherit Reader.Reader<AzureReader> inherit Log.Log<string> inherit Rsl.Rsl<string>
         
@@ -4647,7 +5240,7 @@ namespace FsRoot
                     | Error m -> failwith m
         
         
-//#define FSharpStation1564764915205
+//#define FSharpStation1565212027435
 let inline tee    f v   = f v ; v
 let inline  (|>!) v f   = f v ; v
 let inline  (>>!) g f   = g >> fun v -> f v ; v
@@ -4709,15 +5302,18 @@ module Test =
     type AzureShare = AzureShare of name: string * share    : string
     type NeedAll    = NeedAll    of name: string
     type Snippet    = Snippet    of path: string * isCode   : bool
+    type TextTgt    = TextTgt    of       string
     type LocalFile  with member this.Name      = match this with LocalFile  name             ->                   name
     type AzureBlob  with member this.Name      = match this with AzureBlob (name, container) -> container + "/" + name
     type AzureShare with member this.Name      = match this with AzureShare(name, share    ) -> share     + "/" + name
     type NeedAll    with member this.Name      = match this with NeedAll    name             ->                   name
     type Snippet    with member this.Name      = match this with Snippet   (name, isCode   ) -> (if isCode then "Code:" else "Content:") + name
+    type TextTgt    with member this.Name      = match this with TextTgt    name             ->                   name    
     type LocalFile  with member this.GetInfo() = match this with LocalFile  name             -> name |> localFileData                                                                                                                                       |>  TargetInfo.FileInfo |> rtn
     type AzureBlob  with member this.GetInfo() = match this with AzureBlob (name, container) -> name |> ProzperServer.Azure.obtenerPropiedadesBlob    container |>> Option.map (fun props -> props.LastModified.GetValueOrDefault().DateTime, props.Length) |>> TargetInfo.FileInfo
     type AzureShare with member this.GetInfo() = match this with AzureShare(name, share    ) -> name |> ProzperServer.Azure.obtenerPropiedadesArchivo share     |>> Option.map (fun props -> props.LastModified.GetValueOrDefault().DateTime, props.Length) |>> TargetInfo.FileInfo
     type NeedAll    with member this.GetInfo() = match this with NeedAll    name             -> TargetInfo.TextInfo name |> rtn
+    type TextTgt    with member this.GetInfo() = match this with TextTgt    txt              -> txt                                                                                                                                                         |>  TargetInfo.TextInfo |> rtn
     type Snippet    with member this.GetInfo() = match this with Snippet   (name, isCode   ) ->
                                                                     if isCode then
                                                                         FSharpStationClient.getModified name |> AsyncResult.map (fun mdf -> mdf, -1L)  
@@ -4726,6 +5322,8 @@ module Test =
                                                                     |> Async.map Result.toOption
                                                                     |> Asy.ofAsync
                                                                     |>> TargetInfo.FileInfo
+
+    let LocalFile (name:string) = LocalFile <| name.Replace(@"\", "/")
 
     let getSnippetTxt snippet = eff {
         match snippet with
@@ -4747,6 +5345,7 @@ module Test =
     | AzureBlob  of AzureBlob  
     | AzureShare of AzureShare 
     | Snippet    of Snippet
+    | TextTgt    of TextTgt
     | NeedAll    of NeedAll  
     with    
         member this.Name      =
@@ -4756,6 +5355,7 @@ module Test =
             | AzureShare tgt -> tgt.Name
             | NeedAll    tgt -> tgt.Name
             | Snippet    tgt -> tgt.Name
+            | TextTgt    tgt -> tgt.Name
         member this.GetInfo() = 
             match this with 
             | LocalFile  tgt -> tgt.GetInfo()
@@ -4763,6 +5363,7 @@ module Test =
             | AzureShare tgt -> tgt.GetInfo()
             | NeedAll    tgt -> tgt.GetInfo()
             | Snippet    tgt -> tgt.GetInfo()
+            | TextTgt    tgt -> tgt.GetInfo()
         member this.SaveTextFO         () =
             match this with
             | LocalFile (LocalFile .LocalFile  name     )-> Some (fun txt -> File.WriteAllText(name, txt) |> rtn )
@@ -4785,7 +5386,7 @@ module Test =
             | _                                          -> None
         member this.GetLocalFileNameFO () =
             match this with
-            | LocalFile (LocalFile .LocalFile name      )-> Some (fun () -> name |>  rtn )
+            | LocalFile (LocalFile .LocalFile name      )-> Some (fun () -> new NonTempFileName(name) :> ITempFileName |>  rtn )
             | _                                          -> None
 
     type RuleKey = 
@@ -4940,7 +5541,49 @@ module Test =
 
     module Example =
 
-        let copyFrom source = eff {
+        let processArguments (args:Argument.Arguments) = eff {
+            let files = seq {
+                yield! args.GetAll Arguments.fscSource
+                yield! args.GetAll Arguments.fscReference
+            }
+            for fname in files |> Seq.toArray do
+                let! _ = LocalFile fname         |> Target.LocalFile |> Rule.need
+                ()
+            for snippet in args.GetAll Arguments.intSnippet |> Seq.toArray do
+                let! _ = Snippet (snippet, true) |> Target.Snippet   |> Rule.need
+                ()
+        }
+
+        let createCompileRule (args:Argument.Arguments) =
+            let fname   = args.Get Arguments.fscOutput
+            let outFile = Target.LocalFile (LocalFile fname)
+            let rid = RuleId outFile.Name
+            {
+                ruleId            = rid
+                ruleInformation   = NoInformation
+                ruleTargets       = [| outFile |]
+                ruleAction        = fun () -> eff {
+                    do! Log.logf "Compiling %s ..." fname
+                    do! Compilers.compile args
+                    //do!  r |> Result.mapError (sprintf "%A") |> Rsl.ofResult
+                    return FileCopied
+                }
+            }
+
+        let createCompileSnippetRule (snpPath:string) =
+            Arguments  .compileOptionsDll()
+            + Arguments.siteOptions      ()
+            + Arguments.debugOptions     ()
+            + Arguments.intRootDir     /= "D:\Abe\CIPHERWorkspace\FSharpStation/projects/ProzperServer"
+            + Arguments.intName        /= "ProzperServer"
+            + Arguments.wscWebSite     /= (fun av -> (Arguments.intRootDir    .Get av) +/+ "website/Scripts"  )
+            + Arguments.intShowArgs    /= (fun av -> (Arguments.intSkipCompile.Get av) |> not                 )
+            + Arguments.intCopyAssem   /= true
+            + Arguments.intSnippet     /= snpPath
+            + Arguments.wscProjectType /= "library"
+            |> createCompileRule
+
+        let copyFrom (transformO:(string -> string) option) source = eff {
             let! target   = Rule.getTarget()
             let! data1    = Rule.need source
             let! data2    = target.GetInfo()
@@ -4951,31 +5594,47 @@ module Test =
                 return      FilesSeemEqual
             |_->
             do!             Log.logf "Copying %s to %s ..." source.Name target.Name
-            match source.GetLocalFileNameFO(), source.GetTextFO(), target.SaveFromFileFO(), target.SaveTextFO() with
-            | Some getFile, _, Some saveFile, _  -> let! fname = getFile()
-                                                    do!          saveFile fname
-            | _, Some getText, _, Some saveText  -> let! txt   = getText()
-                                                    do!          saveText txt
-            | _, Some getText, Some saveFile, _  -> let! txt   = getText()
-                                                    let  fname = Path.GetTempFileName()
-                                                    do           File.WriteAllText(fname, txt)
-                                                    try 
-                                                        do!      saveFile fname
-                                                    finally
-                                                        File.Delete fname
-            |_                                   -> failwithf "Cannot copy from %s to %s"  source.Name target.Name
+            let tO, getFileFO, getTextFO =
+                match transformO, source.GetLocalFileNameFO(), source.GetTextFO() with
+                | _      , None    , None          -> failwithf "Cannot copy from %s"  source.Name
+                | Some t , _       , Some getText  -> None, None    , Some(getText >> (map t) )
+                |      tO, getFileO,      getTextO -> tO  , getFileO, getTextO
+            let saveFileFO, saveTextFO =
+                match tO, target.SaveFromFileFO(), target.SaveTextFO() with
+                | _     , None          , None           -> failwithf "Cannot copy to %s"  target.Name
+                | None  ,      saveFileO,      saveTextO -> saveFileO, saveTextO
+                | Some t, _             , Some saveText  -> None     , Some(t >> saveText)
+                | Some t, Some saveFile , _              -> None     , Some(fun txt -> eff {
+                                                                            use  fname = new TempFileName()
+                                                                            do           File.WriteAllText(fname.Name, t txt)
+                                                                            do!          saveFile fname.Name
+                                                                        })
+            match getFileFO, getTextFO, saveFileFO, saveTextFO with
+            | _           , Some getText, _            , Some saveText   -> do!          getText() >>= saveText
+            | Some getFile, _           , Some saveFile, _               -> use! fname = getFile()
+                                                                            do!          saveFile fname.Name
+            | Some getFile, _           ,  _           , Some saveText   -> use! fname = getFile()
+                                                                            let  txt   = File.ReadAllText fname.Name
+                                                                            do!          saveText txt
+            | _           , Some getText, Some saveFile, _               -> let! txt   = getText()
+                                                                            use  fname = new TempFileName()
+                                                                            do           File.WriteAllText(fname.Name, txt)
+                                                                            do!          saveFile fname.Name
+            |_                                                           -> failwithf "Cannot copy from %s to %s"  source.Name target.Name
             do              Target.resetGetInfo()
             return          FileCopied
         }
 
-        let createCopyRule (file1:Target) (file2:Target) =
+        let createCopyRule transformO (file1:Target) (file2:Target) =
             let rid = RuleId file2.Name
             {
                 ruleId            = rid
                 ruleInformation   = FileCopy (file1.Name, file2.Name)
                 ruleTargets       = [| file2 |]
-                ruleAction        = fun () -> copyFrom file1
+                ruleAction        = fun () -> copyFrom transformO file1
             }
+
+        let (==>) a b = createCopyRule None a b
 
         let needAllFrom (sources: Target seq) = eff {
             let! target   = Rule.getTarget()
@@ -4996,22 +5655,30 @@ module Test =
 
         open ProzperServer
 
+        let splitHtml txt = txt |> String.splitInTwoO "<<STARTHTML>>" |> Option.map snd |> Option.defaultValue txt
+
         let rules() : Eff<'H, Rule<'H> list> = eff {
             let! share     = variableAmbienteE "share"
             let! container = variableAmbienteE "container"
+            let! indexHtml = variableAmbienteE "indexHtml"
             let  tgta      = Snippet(   "FSI ZONE/pre"            , true     ) |> Target.Snippet
             let  tgt0      = Snippet(   "FSI ZONE/x"              , false    ) |> Target.Snippet
+            let  tgtdll    = LocalFile @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/ProzperServer\bin\ProzperServer.dll" |> Target.LocalFile
             let  tgt1      = LocalFile  "D:\Abe\CIPHERWorkspace\FSharpStation/src/file1.txt"             |> Target.LocalFile
             let  tgt2      = LocalFile  "D:\Abe\CIPHERWorkspace\FSharpStation/src/file2.txt"             |> Target.LocalFile
             let  tgt3      = AzureShare("site/wwwroot/file3.txt"  , share    ) |> Target.AzureShare 
-            let  tgt3b     = AzureBlob ("file3.txt"               , container) |> Target.AzureBlob 
+            let  tgt3b     = AzureBlob ("file3.txt"               , container) |> Target.AzureBlob
+            let  indexSnip = Snippet   ("FsRoot/Applications/ProzperServer/Html/" + indexHtml , true) |> Target.Snippet
+            let  indexFile = AzureBlob (indexHtml                 , container) |> Target.AzureBlob
             return [
-                createCopyRule       tgt2 tgt3b
-                createCopyRule       tgt2 tgt3
-                createCopyRule       tgt1 tgt2
-                createCopyRule       tgt0 tgt1
-                createCopyRule       tgta tgt0
-                createNeedAllRule    [ tgt3 ; tgt3b ] tgtMain
+                createCompileSnippetRule "FsRoot/Applications/ProzperServer/ProzperServer"
+                tgt2      ==> tgt3b
+                tgtdll    ==> tgt3
+                tgt1      ==> tgt2
+                tgt0      ==> tgt1
+                tgta      ==> tgt0
+                createCopyRule (Some splitHtml) indexSnip indexFile
+                createNeedAllRule    [ tgt3 ; tgt3b ; indexFile ] tgtMain
             ]
         }
 
@@ -5028,6 +5695,7 @@ module HandlerEff =
         inherit Rsl.Rsl<string>
         inherit Reader.Reader<'rdr> 
         inherit Reader.Reader2<Rule<HandlerEff<'rdr>>>
+        inherit Reader.Reader3<Compilers.ProcessorArguments<HandlerEff<'rdr>>>
         inherit Asy.Asy
 
     let readHistory fname =
@@ -5039,7 +5707,10 @@ module HandlerEff =
             print e.Message
             [||]
 
-    type TestReader(historyFile:string, ivar:AzureReader) =
+
+    type IRul = IRules<                       HandlerEff<TestReader>>
+    and  IProcArgs = Compilers.ProcessorArguments< HandlerEff<TestReader>>
+    and  TestReader(historyFile:string, ivar:AzureReader) =
         let mutable history  = Map<RuleId, RuleHistory> []
         let mutable rules    : Rule<HandlerEff<TestReader>> list = []
 
@@ -5054,16 +5725,20 @@ module HandlerEff =
                                                     |> Newtonsoft.Json.JsonConvert.SerializeObject
                                                     |> fun txt -> System.IO.File.WriteAllText(historyFile, txt)
             member __.TryGetHistory  rid          = if history |> Map.containsKey rid then Some( history.[rid] ) else None
-        interface IRules<HandlerEff<TestReader>> with
-            member __.GetRules      ()            = rules        |> Seq.ofList
-            member __.SetRules      rls           = rules <- rls |> Seq.toList
         interface FsRoot.ProzperServer.Basico.VariableAmbienteI with
             member __.getVar        var           = (ivar :> VariableAmbienteI) .getVar var
             member __.CarpetaRaiz   ()            = (ivar :> VariableAmbienteI) .CarpetaRaiz ()
+        interface IRul with
+            member __.GetRules      ()            = rules        |> Seq.ofList
+            member __.SetRules      rls           = rules <- rls |> Seq.toList
+        interface IProcArgs with
+            member __.ProcessArguments       args = Example.processArguments args
 
         member __.History = history
 
-    let executeRA rdr (monad : Eff<_, 'b>) =
+
+
+    let executeRA (rdr:TestReader) (monad : Eff<_, 'b>) =
         eff {
             let! rules = Example.rules()
             do!          setRules rules
@@ -5071,7 +5746,8 @@ module HandlerEff =
             do           Target.resetGetInfo()
             return r
         }
-        |>   Reader.readerHandler   rdr
+        |>   Reader.readerHandler    rdr
+        |>   Reader.readerHandler3   (rdr :> IProcArgs)
         |>   Log.consoleLogHandler
         |>   State.refHandler { dependencies = Set.empty ; steps = Set.empty }
         |>   Rsl.rslHandler
@@ -5089,11 +5765,13 @@ module HandlerEff =
         "share"     , "prozper0a1d0"
         "container" , "prozperblobs"
         "jsFile"    , "prozperDes.js"
+        "indexHtml" , "indexDes.html"
     ]
     let settingsProd = [   
         "share"     , "prozperab74"  
         "container" , "prozperblobs"
         "jsFile"    , "prozperProd.js"
+        "indexHtml" , "index.html"
     ]
 
     let historyFile = @"D:\Abe\CIPHERWorkspace\FSharpStation/src/history.txt"

@@ -2,7 +2,7 @@
 #nowarn "52"
 #nowarn "1182"
 #nowarn "1178"
-////-d:FSharpStation1564156981429 -d:NETSTANDARD20 -d:NOFRAMEWORK --noframework -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1565212027435 -d:NETSTANDARD20 -d:NOFRAMEWORK --noframework -d:TEE -d:WEBSHARPER
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/ProzperServer"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
@@ -76,7 +76,7 @@
 //#nowarn "1182"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1564156981429
+//#define FSharpStation1565212027435
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -482,7 +482,7 @@ namespace FsRoot
                         member __.Delay                       fEf                  = fEf
                         member __.Run                         fEf  : Eff<'H, _   > = rtn () |> bind fEf
                         member this.TryWith   (body, handler     ) : Eff<'H,_> = Eff(fun k -> try body() |> function Eff(f) -> f k with e -> handler e |> function Eff(f) -> f k)
-                        member this.TryFinally(body, compensation) : Eff<'H,_> = Eff(fun k -> try body() |> function Eff(f) -> f k finally   compensation()           )
+                        member this.TryFinally(body, compensation) : Eff<'H,_> = (try body() with e -> compensation() ; reraise() ) |>> compensation
                         member this.Using     (disposable, body  ) : Eff<'H,_> = //wrap(fun r -> using (disposable:#System.IDisposable) (fun u -> body u |> getFun <| r) )
                                     let body' = fun () -> body disposable
                                     this.TryFinally(body', fun () -> if disposable :> obj <> null then (disposable:#System.IDisposable).Dispose() )
@@ -3006,8 +3006,7 @@ namespace FsRoot
             //)
         
         
-        
-        module Correo =
+        module Correo = 
             open System.IO
             open WebSharper.UI.Server
         

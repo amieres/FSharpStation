@@ -1,6 +1,6 @@
 #nowarn "3242"
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1562140138904 -d:TEE -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1565212027435 -d:TEE -d:WEBSHARPER
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\FSharpStation\src"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
@@ -45,7 +45,7 @@
 //#nowarn "3242"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1562140138904
+//#define FSharpStation1565212027435
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -3983,7 +3983,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/c677b6fd-d833-43ee-a15c-62c60d8572e4"
+                    "http://localhost:9005/#/Snippet/a817abcc-6cb2-42cf-843c-f1525420c0d4"
                 #endif
                 
                 let extractEndPoint() = 
@@ -4178,7 +4178,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1562140138904"
+                let mutable fsharpStationAddress = Address "FSharpStation1565212027435"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -5504,6 +5504,8 @@ namespace FsRoot
                         |>> Option.defaultValue snp
             }
         
+            let codeModule code = code |> String.indentStr 4 |> sprintf "module Call%s =\n%s" (string <| FStation.now())
+        
             let getCode snp name = 
                 fusion {
                     let!  openProp  = propO snp "Open" |>> Option.map (__ (+) "\n") |>> Option.defaultValue ""
@@ -5513,8 +5515,8 @@ namespace FsRoot
                     | None      ->
                     if name.StartsWith ":" then return openProp + name.[1..] else 
                     let! template  = propO snp "action-template" |>> Option.defaultValue "${button}() |> printfn \"%A\""
-                    return openProp + template |> String.indentStr 4 |> sprintf "module Call%s =\n%s" (string <| FStation.now())
-                } |>> Snippets.prepAnyCode
+                    return openProp + template
+                } |>> codeModule |>> Snippets.prepAnyCode
         
             module AF = FsRoot.LibraryJS.AppFramework
         
