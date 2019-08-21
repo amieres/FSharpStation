@@ -1,0 +1,121 @@
+
+module Test =
+    open FsRoot
+
+    type GlobalReaderW = abstract GetValueA : unit -> string
+    type GlobalReaderV = abstract GetValueB : unit -> string
+
+    let getValueA () = Reader.ask () |>> fun (h:GlobalReaderW) -> h.GetValueA() 
+    let getValueB () = Reader.ask2() |>> fun (h:GlobalReaderV) -> h.GetValueB() 
+    let getValueAB() = eff {
+        let! a = getValueA()
+        let! b = getValueB()
+        do! Log.logf "Log: %s %s" a b
+        return a + b
+    }
+
+    let rW1, rV1 = { new GlobalReaderW with member __.GetValueA() = "GlobalReaderW-1" }, { new GlobalReaderV with member __.GetValueB() = "-1" }
+    let rW2, rV2 = { new GlobalReaderW with member __.GetValueA() = "GlobalReaderW-2" }, { new GlobalReaderV with member __.GetValueB() = "-2" }
+    let rW3, rV3 = { new GlobalReaderW with member __.GetValueA() = "GlobalReaderW-3" }, { new GlobalReaderV with member __.GetValueB() = "-3" }
+
+    let replaceGetVB (gvB: unit->string) = Reader.readerHandler2 { new GlobalReaderV with member __.GetValueB() = gvB() }
+
+    let w() = eff {
+        let! v1 = getValueAB()
+        let! v2 = getValueAB() |> replaceGetVB(fun () -> "&2")
+        let! v3 = getValueAB()
+        return [| v1 ; v2 ; v3 |]
+    }
+
+    w() |>> print |> executeConsoleSync()()() rV1 rW1
+    w() |>> print |> executeConsoleSync()()() rV2 rW2
+    w() |>> print |> executeConsoleSync()()() rV3 rW3
+    
+module Test2 =
+    open FsRoot
+
+    type GlobalReaderW = abstract GetValueA : unit -> string
+    type GlobalReaderV = abstract GetValueB : unit -> string
+
+    let getValueA () = Reader.ask() |>> fun (h:#GlobalReaderW) -> h.GetValueA() 
+    let getValueB () = Reader.ask() |>> fun (h:#GlobalReaderV) -> h.GetValueB() 
+    let getValueAB() = eff {
+        let! a = getValueA()
+        let! b = getValueB()
+        do! Log.logf "Log: %s %s" a b
+        return a + b
+    }
+
+    type R(I1 : GlobalReaderW, I2 : GlobalReaderV) =
+        interface GlobalReaderW with member __.GetValueA() =  I1.GetValueA()
+        interface GlobalReaderV with member __.GetValueB() =  I2.GetValueB()
+        member __.I1 = I1
+        member __.I2 = I2
+
+    let r1 = R( { new GlobalReaderW with member __.GetValueA() = "GlobalReaderX-1" }, { new GlobalReaderV with member __.GetValueB() = "-1" } )
+    let r2 = R( { new GlobalReaderW with member __.GetValueA() = "GlobalReaderX-2" }, { new GlobalReaderV with member __.GetValueB() = "-2" } )
+    let r3 = R( { new GlobalReaderW with member __.GetValueA() = "GlobalReaderX-3" }, { new GlobalReaderV with member __.GetValueB() = "-3" } )
+
+    let replaceGetVB (gvB: unit->string) e = eff {
+        let!    (current:R) = Reader.ask()
+        return! Reader.readerHandler (R(current.I1, { new GlobalReaderV with member __.GetValueB() = gvB() })) e
+    }
+
+    let w() = eff {
+        let! v1 = getValueAB()
+        let! v2 = getValueAB() |> replaceGetVB(fun () -> "^2")
+        let! v3 = getValueAB()
+        return [| v1 ; v2 ; v3 |]
+    }
+
+    w() |>> print |> executeConsoleSync()()()() r1
+    w() |>> print |> executeConsoleSync()()()() r2
+    w() |>> print |> executeConsoleSync()()()() r3
+    
+module Test3 =
+    open FsRoot
+
+    type GlobalReaderW = abstract GetValueA : unit -> string
+    type GlobalReaderV = abstract GetValueB : unit -> string
+
+    let getValueA () = Reader.ask() |>> fun (h:#GlobalReaderW) -> h.GetValueA() 
+    let getValueB () = Reader.ask() |>> fun (h:#GlobalReaderV) -> h.GetValueB() 
+    let getValueAB() = eff {
+        let! a = getValueA()
+        let! b = getValueB()
+        do! Log.logf "Log: %s %s" a b
+        return a + b
+    }
+
+    type R(?rO:R) =
+        abstract GetValueA : unit -> string
+        abstract GetValueB : unit -> string
+        default __.GetValueA() = match rO with Some r -> r.GetValueA() |_-> ""
+        default __.GetValueB() = match rO with Some r -> r.GetValueB() |_-> ""
+        interface GlobalReaderW with member __.GetValueA() = __.GetValueA()
+        interface GlobalReaderV with member __.GetValueB() = __.GetValueB()
+
+    let r1 = { new R() with member __.GetValueA() = "GlobalReaderX-1"
+                            member __.GetValueB() =              "-1" }
+    let r2 = { new R() with member __.GetValueA() = "GlobalReaderX-2"
+                            member __.GetValueB() =              "-2" }
+    let r3 = { new R() with member __.GetValueA() = "GlobalReaderX-3"
+                            member __.GetValueB() =              "-3" }
+
+    let replaceGetVB (gvB: unit->string) e = eff {
+        let!    (current:R) = Reader.ask()
+        return! Reader.readerHandler { new R(current) with member __.GetValueB() = gvB() } e
+    }
+
+    let w() = eff {
+        let! v1 = getValueAB()
+        let! v2 = getValueAB() |> replaceGetVB(fun () -> "#2")
+        let! v3 = getValueAB()
+        return [| v1 ; v2 ; v3 |]
+    }
+
+    w() |>> print |> executeConsoleSync()()()() r1
+    w() |>> print |> executeConsoleSync()()()() r2
+    w() |>> print |> executeConsoleSync()()()() r3
+    
+        
