@@ -1524,7 +1524,7 @@
    return g.apply(null,tryParseFunc(x));
   };
  };
- JsonIntermediate.New=function(tryFloat,tryInt,tryString,tryBool,tryArray,tryField,isObject,isNull)
+ JsonIntermediate.New=function(tryFloat,tryInt,tryString,tryBool,tryArray,tryField,isObject,isNull,toString)
  {
   return{
    tryFloat:tryFloat,
@@ -1534,8 +1534,31 @@
    tryArray:tryArray,
    tryField:tryField,
    isObject:isObject,
-   isNull:isNull
+   isNull:isNull,
+   toString:toString
   };
+ };
+ Serializer.map=function(g,f,a,a$1)
+ {
+  function g$1(o)
+  {
+   return o==null?null:{
+    $:1,
+    $0:f(o.$0)
+   };
+  }
+  return[function(x)
+  {
+   return a(g(x));
+  },function(x)
+  {
+   return g$1(a$1(x));
+  }];
+ };
+ Serializer.serTypedRegisters=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serTypedRegisters;
  };
  Serializer.serMap=function(s,s$1,s$2,s$3)
  {
@@ -3199,16 +3222,6 @@
   {
    return s+"T00:00:00";
   }
-  function g$4(v)
-  {
-   return(function($1)
-   {
-    return function($2)
-    {
-     return $1(Utils.prettyPrint($2));
-    };
-   }(Global.id))(v);
-  }
   SC$1.rtn=function(v)
   {
    return[v];
@@ -3340,13 +3353,7 @@
     $0:Operators$1.toInt(o.$0)
    };
   }];
-  SC$1.serInt64=[function($1)
-  {
-   return function($2)
-   {
-    return $1(Global.String($2));
-   };
-  }(Global.id),function(j)
+  SC$1.serInt64=[Global.String,function(j)
   {
    return j.tryInt();
   }];
@@ -3365,7 +3372,7 @@
   }];
   SC$1.serDate=[function(x)
   {
-   return g$4(Global.id(x));
+   return Global.String(Global.id(x));
   },function(j)
   {
    var o;
@@ -3375,6 +3382,7 @@
     $0:o.$0
    };
   }];
+  SC$1.serTypedRegisters=new Dictionary.New$5();
   SC$1.premisasCalculo=PremisasCalculo.New(15,25,25,0,75,31,26,28);
   SC$1.telVacio=Telefono.New(TipoTelefono.Movil,"","","","",false);
   SC$1.dirVacio=Direccion.New(Library.Error(""),TipoDireccion.Habitacion,"","","",new Estado({

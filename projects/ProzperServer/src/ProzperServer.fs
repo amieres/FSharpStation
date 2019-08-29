@@ -2,7 +2,7 @@
 #nowarn "52"
 #nowarn "1182"
 #nowarn "1178"
-////-d:FSharpStation1565212027435 -d:NETSTANDARD20 -d:NOFRAMEWORK --noframework -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1566972573107 -d:NETSTANDARD20 -d:NOFRAMEWORK --noframework -d:TEE -d:WEBSHARPER
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/ProzperServer"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
@@ -76,7 +76,7 @@
 //#nowarn "1182"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1565212027435
+//#define FSharpStation1566972573107
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -815,6 +815,7 @@ namespace FsRoot
                     tryField    : string ->  JsonIntermediate     option
                     isObject    : unit   ->  bool
                     isNull      : unit   ->  bool
+                    toString    : unit   ->  string  
                 }
             
                 type SerS<'T> = ('T                 -> string   )        //      Serialization function
@@ -824,9 +825,10 @@ namespace FsRoot
                 let serialize (ser: Ser<_>) v = fst ser v
                 let (|Field|_|) field j = j.tryField field
             
-                let [< Inline >] inline sprintU v = sprintf "%A"       v
-                let [< Inline >] inline sprintQ v = sprintf "\"%A\""   v
-                let              inline sprintA v = String.concat ", " v |> sprintf "[%s]"
+                let [< Inline >] inline sprintU  v = sprintf "%A"       v
+                let [< Inline >] inline toString v = v.ToString()
+                let [< Inline >] inline sprintQ  v = sprintf "\"%A\""   v
+                let              inline sprintA  v = String.concat ", " v |> sprintf "[%s]"
             
                 let toJsonString (v:string) =
                     seq {
@@ -850,12 +852,18 @@ namespace FsRoot
                         yield '"'
                     } |> Seq.toArray|> String
             
-                let serString : Ser<string  > = toJsonString          , (fun j -> j.tryString()                         )
-                let serFloat  : Ser<float   > = sprintU               , (fun j -> j.tryFloat ()                         )
-                let serInt    : Ser<int     > = sprintU               , (fun j -> j.tryInt   () |> Option.map int       )
-                let serInt64  : Ser<int64   > = sprintf "%d"          , (fun j -> j.tryInt   ()                         )
-                let serBool   : Ser<bool    > = sprintU               , (fun j -> j.tryBool  ()                         )
-                let serDate   : Ser<DateTime> = (date2Long >> sprintU), (fun j -> j.tryInt   () |> Option.map long2Date )
+                let serString : Ser<string  > = toJsonString           , (fun j -> j.tryString()                         )
+                let serFloat  : Ser<float   > = sprintU                , (fun j -> j.tryFloat ()                         )
+                let serInt    : Ser<int     > = sprintU                , (fun j -> j.tryInt   () |> Option.map int       )
+                let serInt64  : Ser<int64   > = toString               , (fun j -> j.tryInt   ()                         )
+                let serBool   : Ser<bool    > = sprintU                , (fun j -> j.tryBool  ()                         )
+                let serDate   : Ser<DateTime> = (date2Long >> toString), (fun j -> j.tryInt   () |> Option.map long2Date )
+                [< JavaScript false >]
+                let serDate2  : Ser<DateTime> = (fun d -> d.ToFileTimeUtc() |> toString), (fun j -> j.tryInt   () |> Option.map (fun t -> DateTime.FromFileTimeUtc t ) )
+                [< JavaScript false >]
+                let serDate3  : Ser<DateTime> = 
+                    (  fun (d:System.DateTime ) -> d.ToString("u") |> sprintf "%A"                )
+                    , (fun (j:JsonIntermediate) -> j.tryString() |> Option.bind ParseO.parseDateO )
             
                 let [< Inline >] inline serId  (get: 'a -> System.Guid) (set:System.Guid -> 'a) (print: 'a->string) : Ser<'a> =
                     let s               = System.Guid.Empty |> set |> print |> fun (s:string) -> s.Split ' ' |> Array.head
@@ -895,6 +903,32 @@ namespace FsRoot
                                                                 |> serSeq 
                                                                 |> (fun serKVPs -> (Seq.map (fun kvp -> kvp.Key, kvp.Value) >> fst serKVPs) , (snd serKVPs >> Option.map Map) )
             
+                let serTypedRegisters = System.Collections.Generic.Dictionary<string, Ser<obj>>()
+            
+                let map (g: 'b -> 'a) (f: 'a -> 'b) ((serS, serD): Ser<'a>) : Ser<'b> = g >> serS, (serD >> Option.map f)
+            
+                [< JavaScript false >]
+                let fixType t = System.Text.RegularExpressions.Regex.Replace(t, @"FSI_[0-9]{4}\+", "", System.Text.RegularExpressions.RegexOptions.IgnorePatternWhitespace)
+            
+                [< JavaScript false >]
+                let serSpecial (regSer: Ser<'T>) : Ser<obj> =
+                    let tn0 = typeof<'T>.FullName |> fixType
+                    if serTypedRegisters.ContainsKey tn0 |> not then serTypedRegisters.Add(tn0, map unbox box regSer)
+                    (fun t -> 
+                        let tn    = t.GetType().FullName |> fixType
+                        let snd   = if   serTypedRegisters.ContainsKey tn 
+                                    then fst serTypedRegisters.[tn] t
+                                    else failwithf "Serializer not registered for type: %s" tn
+                        sprintf "[%s, %s]" (fst serString tn) snd)
+                    ,(fun j -> 
+                        match j.tryArray () with
+                        | Some [| j1 ; j2 |] -> 
+                            match snd serString j1 with
+                            | Some tn    -> if   serTypedRegisters.ContainsKey tn 
+                                            then snd serTypedRegisters.[tn] j2
+                                            else failwithf "Serializer not registered for type: %s" tn
+                            |_-> failwithf "Expected json string with type name: %A" (j1.toString())
+                        |    _-> failwithf "Expected json array with 2 elements: %s" (j.toString()) )
             
         /// Essentials that cannot run in Javascript (WebSharper)
         [< AutoOpen >]
@@ -956,40 +990,47 @@ namespace FsRoot
                         tryField    = fun fl -> j.TryGetProperty fl |> Option.map jsonInt                                                                 
                         isObject    = fun () -> (match j with JsonValue.Record  _ ->       true |_-> false)
                         isNull      = fun () -> (match j with JsonValue.Null      ->       true |_-> false)
+                        toString    = fun () -> sprintf "%A" j
                     }
             
+                let tryJsonValue s =
+                    JsonValue.TryParse ("[" + s + "]")
+                    |> Option.bind (function JsonValue.Array v -> Seq.tryHead v |_ -> None)
             
-                let deserialize df di ds db da (ser: Serializer.Ser<_>) js = 
-                    JsonValue.TryParse js //|>! print
-                    |> Option.map  (getJsonIntermediate df di ds db da)
-                    |> Option.bind (snd ser)
+                let toJsonIntermediateWithTry (s:string) =
+                    tryJsonValue s
+                    |> Option.map
+                        (getJsonIntermediate
+                            (fun _   -> None                                 )
+                            (fun _   -> None                                 )
+                            (fun _   -> None                                 )
+                            (fun _   -> None                                 )
+                            (fun _   -> None                                 ))
             
-                let tryDeserialize ser = 
-                    deserialize
-                        (fun _   -> None)
-                        (fun _   -> None)
-                        (fun _   -> None)
-                        (fun _   -> None)
-                        (fun _   -> None)
-                        ser
+                let toJsonIntermediateWithDefs s = 
+                    tryJsonValue s
+                    |> Option.map
+                        (getJsonIntermediate
+                            (fun _   -> Some 0.0                             )
+                            (fun _   -> Some 0L                              )
+                            (fun _   -> Some ""                              )
+                            (fun _   -> Some false                           )
+                            (fun _   -> Some [||]                            ))
             
-                let deserializeWithDefs ser = 
-                    deserialize
-                        (fun _   -> Some 0.0                          )
-                        (fun _   -> Some 0L                           )
-                        (fun _   -> Some ""                           )
-                        (fun _   -> Some false                        )
-                        (fun _   -> Some [||]                         )
-                        ser
+                let toJsonIntermediateWithFail s = 
+                    tryJsonValue s
+                    |> Option.map
+                        (getJsonIntermediate
+                            (fun _   -> failwith  "Error expecting float"    )
+                            (fun _   -> failwith  "Error expecting int"      )
+                            (fun _   -> failwith  "Error expecting string"   )
+                            (fun _   -> failwith  "Error expecting bool"     )
+                            (fun _   -> failwith  "Error expecting array"    ))
             
-                let deserializeWithFail ser = 
-                    deserialize
-                        (fun _   -> failwith  "Error expecting float"    )
-                        (fun _   -> failwith  "Error expecting int"      )
-                        (fun _   -> failwith  "Error expecting string"   )
-                        (fun _   -> failwith  "Error expecting bool"     )
-                        (fun _   -> failwith  "Error expecting array"    )
-                        ser
+                let deserialize toJsonIntermediate (ser: Serializer.Ser<_>) js = toJsonIntermediate js |> Option.bind (snd ser)
+                let tryDeserialize      ser = deserialize toJsonIntermediateWithTry  ser
+                let deserializeWithDefs ser = deserialize toJsonIntermediateWithDefs ser
+                let deserializeWithFail ser = deserialize toJsonIntermediateWithFail ser
             
                 open FSharp.Reflection
             
@@ -2681,7 +2722,7 @@ namespace FsRoot
         
             type TipoDatos = TipoDatos of nombre:string * tipos:string
         
-            type ResultadoManejador<'H> = Modelo -> Eff<'H,Modelo * Respuesta>
+            type ResultadoManejador<'H> = Modelo -> Eff<'H, Modelo * Respuesta>
         
             type ObjetoDatos<'T> = {
                 tipoDatos : TipoDatos
