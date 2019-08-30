@@ -2,7 +2,7 @@
 #nowarn "52"
 #nowarn "1182"
 #nowarn "1178"
-////-d:FSharpStation1566972573107 -d:NETSTANDARD20 -d:NOFRAMEWORK --noframework -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1567145566689 -d:NETSTANDARD20 -d:NOFRAMEWORK --noframework -d:TEE -d:WEBSHARPER
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/ProzperServer"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
@@ -76,7 +76,7 @@
 //#nowarn "1182"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1566972573107
+//#define FSharpStation1567145566689
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -482,7 +482,7 @@ namespace FsRoot
                         member __.Delay                       fEf                  = fEf
                         member __.Run                         fEf  : Eff<'H, _   > = rtn () |> bind fEf
                         member this.TryWith   (body, handler     ) : Eff<'H,_> = Eff(fun k -> try body() |> function Eff(f) -> f k with e -> handler e |> function Eff(f) -> f k)
-                        member this.TryFinally(body, compensation) : Eff<'H,_> = (try body() with e -> compensation() ; reraise() ) |>> compensation
+                        member this.TryFinally(body, compensation) : Eff<'H,_> = try body() finally compensation()
                         member this.Using     (disposable, body  ) : Eff<'H,_> = //wrap(fun r -> using (disposable:#System.IDisposable) (fun u -> body u |> getFun <| r) )
                                     let body' = fun () -> body disposable
                                     this.TryFinally(body', fun () -> if disposable :> obj <> null then (disposable:#System.IDisposable).Dispose() )
@@ -4145,24 +4145,26 @@ namespace FsRoot
                 use jsonWriter  = new MaxDepthJsonTextWriter(writer, depth)
                 JsonSerializer.Create(settings).Serialize(jsonWriter, obj)
                 writer.ToString()
-            
+        
+            let  wsServer = lazy RM.Server.Create WebSharper.Web.Shared.Metadata WebSharper.Web.Shared.Json
+        
             [<FunctionName("rpc")>]
             let runRpc( [<HttpTrigger(AuthorizationLevel.Anonymous, "get" , "post", "options", Route = "rpc/rpc")>] 
                         request     : HttpRequest
                       , principal   : System.Security.Claims.ClaimsPrincipal 
                       , log         : ILogger  ) = 
                 async {
-                    log.LogInformation "runRpc: ENTERING v.015"
+                    do              log.LogInformation "runRpc: ENTERING v.016"
                     //serializeMaxDepth 13 request   |> splitAndSend 9999 log.LogInformation "request"
                     //serializeMaxDepth 13 principal |> splitAndSend 9999 log.LogInformation "principal"
                     //log.LogInformation(sprintf "%d Headers:" <| Seq.length request.Headers)
                     //request.Headers |> Seq.collect (fun kvp -> kvp.Value |> Seq.map (fun v -> kvp.Key, v)) |> Seq.iter (sprintf "%A" >> log.LogInformation)
                     //log.LogInformation(sprintf "%d real Claims:" <| Seq.length principal.Claims)
                     //principal.Claims |> Seq.map (fun kvp -> kvp.Type, kvp.Value) |> Seq.iter (sprintf "%A" >> log.LogInformation)
-                    log.LogInformation <| sprintf "runRpc: %s" request.Headers.["x-websharper-rpc"].[0]
-                    let start = System.DateTime.UtcNow.Ticks
-                    let  wsServer = RM.Server.Create WebSharper.Web.Shared.Metadata WebSharper.Web.Shared.Json
-                    log.LogInformation "runRpc: after Server.Create"
+                    do              log.LogInformation <| sprintf "runRpc: %s" request.Headers.["x-websharper-rpc"].[0]
+                    let  start    = System.DateTime.UtcNow.Ticks
+                    //let  wsServer = RM.Server.Create WebSharper.Web.Shared.Metadata WebSharper.Web.Shared.Json
+                    do              log.LogInformation "runRpc: after Server.Create"
                     let! body     = request.ReadAsStringAsync() |> Async.AwaitTask
                     let  wsReq    = {
                         RM.Request.Body    = body
@@ -4170,8 +4172,8 @@ namespace FsRoot
                     }
                     logger <- fun s -> log.LogInformation s
                     try
-                        let! wsResp   = wsServer.HandleRequest wsReq
-                        let elapsedSpan = new System.TimeSpan(System.DateTime.UtcNow.Ticks - start)
+                        let! wsResp      = wsServer.Value.HandleRequest wsReq
+                        let  elapsedSpan = new System.TimeSpan(System.DateTime.UtcNow.Ticks - start)
                         log.LogInformation <| sprintf "Finished: %s %s" request.Headers.["x-websharper-rpc"].[0] (elapsedSpan.ToString())
                         //log.LogInformation (sprintf "runRpc: after HandleRequest %s %s" wsResp.ContentType wsResp.Content)
                         return ContentResult(Content = wsResp.Content, ContentType = wsResp.ContentType)

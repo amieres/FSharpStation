@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1562140138904 -d:WEBSHARPER
+////-d:FSharpStation1567145566689 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -25,7 +25,7 @@
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1562140138904
+//#define FSharpStation1567145566689
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -101,6 +101,52 @@ namespace FsRoot
             
             /// swap: for use with operators: [1..5] |> List.map (__ (/) 2)
             let [<Inline>] inline __   f a b = f b a
+            
+            /// call a function but return the input value
+            /// for logging, debugging
+            /// use: (5 * 8) |> tee (printfn "value = %d") |> doSomethingElse
+            let [<Inline>] inline tee f v = f v ; v
+            
+            /// tee: call a function but return the input value
+            /// for logging, debugging
+            /// use: (5 * 8) |!> printfn "value = %d" |> doSomethingElse
+            let [<Inline>] inline  (|>!) v f   = f v ; v
+            let [<Inline>] inline  (>>!) g f   = g >> fun v -> f v ; v
+            
+            let inline print v = 
+                match box v with
+                | :? string as s -> printfn "%s" s
+                | __             -> printfn "%A" v
+            
+            //#define TEE
+            [< Inline "(function (n) { return n.getFullYear() + '-' + ('0'+(n.getMonth()+1)).slice(-2) + '-' +  ('0'+n.getDate()).slice(-2) + ' '+('0'+n.getHours()).slice(-2)+ ':'+('0'+n.getMinutes()).slice(-2)+ ':'+('0'+n.getSeconds()).slice(-2)+ ':'+('00'+n.getMilliseconds()).slice(-3) })(new Date(Date.now()))" >]
+            let nowStamp() = 
+                let t = System.DateTime.UtcNow // in two steps to avoid Warning: The value has been copied to ensure the original is not mutated
+                t.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
+            
+            let [<Inline>] inline traceT t v = tee (sprintf "%A" >> (fun s -> s.[..min 100 s.Length-1]) >> printfn "%s %s: %A" (nowStamp()) t) v
+            let [<Inline>] inline trace   v = traceT "trace" v
+            let [<Inline>] inline traceI  v = trace          v |> ignore
+            
+            module Log =
+                let [<Inline>] inline In     n f   =      (traceT (sprintf "%s in " n)) >> f
+                let [<Inline>] inline Out    n f   = f >> (traceT (sprintf "%s out" n))
+                let [<Inline>] inline InA    n f p = async { return! In  n f p }
+                let [<Inline>] inline OutA   n f p = async { return! Out n f p }
+                let [<Inline>] inline InOut  n     = In  n >> Out  n
+                let [<Inline>] inline InOutA n f p = async {
+                    let!   r = InA n f  p
+                    do         Out n id r |> ignore
+                    return r 
+                  }
+            
+                let [<Inline>] inline TimeIt n f p =
+                    printfn "Starting %s" n
+                    let start = System.DateTime.UtcNow.Ticks
+                    f p
+                    let elapsedSpan = new System.TimeSpan(System.DateTime.UtcNow.Ticks - start)
+                    print <| elapsedSpan.ToString()
+            
             
             [< AutoOpen >]
             module Monads =
@@ -480,7 +526,9 @@ namespace FsRoot
                         query.Split '&'
                         |> Seq.iter (fun p ->
                             match p.Split '=' with
-                            | [| name ; value |] -> storage.SetItem(name, JS.Window.DecodeURIComponent value)
+                            | [| name ; value |] -> 
+                                storage.SetItem(name, JS.Window.DecodeURIComponent value)
+                                printfn "Preamble: Query param: %s = %s" name value
                             |_-> ()
                         )
                     |_-> ()
@@ -560,11 +608,11 @@ namespace FsRoot
                         |> Array.choose (String.splitInTwoO "=") 
                         |> Pojo.newPojo
             
-                    let redirectCallback(error: AuthError, resp: AuthResponse) = 
+                    let redirectCallback(error: AuthError, resp: AuthResponse) =
                         try 
-                            if box error <> null then printfn "error: %A" error
-                            if box resp  <> null then printfn "resp : %A" resp
-                        with e -> printfn "%A %s" e e.StackTrace
+                            if box error <> null then printfn "Preamble redirectCallback error: %A" error
+                            if box resp  <> null then printfn "Preamble redirectCallback resp : %A" resp
+                        with e -> printfn "Preamble redirectCallback exception %A %s" e e.StackTrace
             
                     let authParms () =
                         AuthenticationParameters.New(
@@ -575,7 +623,7 @@ namespace FsRoot
                         | Some agent ->
                             async {
                                 let promise = f agent (authParms ())
-                                if  promise = null then printfn "No promise?" else
+                                if  promise = null then printfn "Preamble executePolicy No promise?" else
                                 let! (s:AuthResponse) = promise |> Promise.AsAsync
                                 token.Set s.accessToken
                                 checkUser()
@@ -705,7 +753,7 @@ namespace FsRoot
                             | None -> ()
                             | Some agent ->
                                 let! token =  agent.acquireTokenSilent (authParms ()) |> Promise.AsAsync
-                                printfn "%A" token
+                                printfn "Preamble actObtainToken %A" token
                         } |> Async.Start
             
                     let goInside         () = JS.Window.Location.Replace goInsideLink.Value
@@ -732,7 +780,7 @@ namespace FsRoot
             
                     let updateState() =
                         checkUser()
-                        printfn "ENTERING STATE %A, user = %A" preambleState.Value userO.Value.IsSome
+                        printfn "Preamble updateState ENTERING STATE %A, user = %A" preambleState.Value userO.Value.IsSome
                         let rec updateState state =
                             let newState, action = updateOnEnter state
                             if action.IsNone && newState <> InPreamble then updateState newState else
@@ -742,7 +790,7 @@ namespace FsRoot
                         async {
                             while preambleState.Value <> PreambleState.Parse (storage.GetItem "preambleState") do
                                 do! Async.Sleep 50
-                            printfn "EXITING STATE %A = %s" preambleState.Value <| storage.GetItem("preambleState")
+                            printfn "Preamble updateState EXITING STATE %A = %s" preambleState.Value <| storage.GetItem("preambleState")
                             action |> Option.iter (fun f -> f())
                         } |> Async.Start
             
@@ -767,7 +815,7 @@ namespace FsRoot
                                                 elif box resp  <> null then 
                                                     consoleLog ("redirectCallback: "      , resp )
                                                     ok resp
-                                            with e -> printfn "%A %s" e e.StackTrace
+                                            with e -> printfn "Preamble getTokenO0 exception %A %s" e e.StackTrace
                                         ) )
                                         agent.acquireTokenRedirect( authParms () ) 
                                     )

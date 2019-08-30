@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,Monads,Seq,Async,String,LibraryJS,Pojo,Msal,Policy,AuthOptions,CacheOptions,SystemOptions,FrameworkOptions,Configuration,WebSharper,Obj,Account,AuthResponse,AuthError,AuthenticationParameters,TestingJS,Msal$1,PreambleState,SC$1,testing_GeneratedPrintf,GeneratedPrintf,Seq$1,Concurrency,Arrays,List,Strings,Slice,Operators,Char,Unchecked,IntelliFactory,Runtime,console,Utils,JavaScript,Promise,UI,View,AttrModule,Doc,AttrProxy,JS,Client,Templates,Var$1;
+ var Global,FsRoot,Library,Monads,Seq,Async,String,LibraryJS,Pojo,Msal,Policy,AuthOptions,CacheOptions,SystemOptions,FrameworkOptions,Configuration,WebSharper,Obj,Account,AuthResponse,AuthError,AuthenticationParameters,TestingJS,Msal$1,PreambleState,SC$1,testing_GeneratedPrintf,GeneratedPrintf,Seq$1,Concurrency,Arrays,List,Strings,Slice,Operators,Char,Unchecked,Utils,console,IntelliFactory,Runtime,JavaScript,Promise,UI,View,AttrModule,Doc,AttrProxy,JS,Client,Templates,Var$1;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -39,10 +39,10 @@
  Operators=WebSharper&&WebSharper.Operators;
  Char=WebSharper&&WebSharper.Char;
  Unchecked=WebSharper&&WebSharper.Unchecked;
+ Utils=WebSharper&&WebSharper.Utils;
+ console=Global.console;
  IntelliFactory=Global.IntelliFactory;
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
- console=Global.console;
- Utils=WebSharper&&WebSharper.Utils;
  JavaScript=WebSharper&&WebSharper.JavaScript;
  Promise=JavaScript&&JavaScript.Promise;
  UI=WebSharper&&WebSharper.UI;
@@ -390,6 +390,31 @@
       return from>=_this.length?"":Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
    }
  };
+ Library.print=function(v)
+ {
+  if(typeof v=="string")
+   ((function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.toSafe($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(v));
+  else
+   ((function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(v));
+ };
  Library.Error=function(a)
  {
   return{
@@ -658,7 +683,7 @@
   m=Strings.Replace(txt," ","");
   return m==="GoToSignIn"?PreambleState.GoToSignIn:m==="GoingToSignIn"?PreambleState.GoingToSignIn:m==="GoToSignUp"?PreambleState.GoToSignUp:m==="GoingToSignUp"?PreambleState.GoingToSignUp:m==="GoToEditProfile"?PreambleState.GoToEditProfile:m==="GoToResetPassword"?PreambleState.GoToResetPassword:m==="WentToSignIn"?PreambleState.WentToSignIn:m==="WentToSignUp"?PreambleState.WentToSignUp:m==="WentToEditProfile"?PreambleState.WentToEditProfile:m==="WentToResetPassword"?PreambleState.WentToResetPassword:m==="WentInside"?PreambleState.WentInside:PreambleState.InPreamble;
  };
- Msal$1.main$848$45=function()
+ Msal$1.main$896$45=function()
  {
   return function()
   {
@@ -714,7 +739,7 @@
     {
      return function($2)
      {
-      return $1("error: "+GeneratedPrintf.p$1($2));
+      return $1("Preamble redirectCallback error: "+GeneratedPrintf.p$1($2));
      };
     }(function(s)
     {
@@ -724,7 +749,7 @@
     {
      return function($2)
      {
-      return $1("resp : "+GeneratedPrintf.p($2));
+      return $1("Preamble redirectCallback resp : "+GeneratedPrintf.p($2));
      };
     }(function(s)
     {
@@ -735,7 +760,7 @@
    {
     (((Runtime.Curried3(function($1,$2,$3)
     {
-     return $1(Utils.prettyPrint($2)+" "+Utils.toSafe($3));
+     return $1("Preamble redirectCallback exception "+Utils.prettyPrint($2)+" "+Utils.toSafe($3));
     }))(function(s)
     {
      console.log(s);
@@ -762,7 +787,7 @@
     promise=(f(agent))(authParms());
     return Unchecked.Equals(promise,null)?(function($1)
     {
-     return $1("No promise?");
+     return $1("Preamble executePolicy No promise?");
     }(function(s)
     {
      console.log(s);
@@ -1033,7 +1058,7 @@
        {
         (((Runtime.Curried3(function($4,$5,$6)
         {
-         return $4(Utils.prettyPrint($5)+" "+Utils.toSafe($6));
+         return $4("Preamble getTokenO0 exception "+Utils.prettyPrint($5)+" "+Utils.toSafe($6));
         }))(function(s)
         {
          console.log(s);
@@ -1114,7 +1139,7 @@
   },Msal$1.agentO().get_View());
   Msal$1.createOnStartB().Get()&&!Msal$1.editingB().Get()?(createAgent(),checkUser(),(((Runtime.Curried3(function($1,$2,$3)
   {
-   return $1("ENTERING STATE "+testing_GeneratedPrintf.p$1($2)+", user = "+Utils.prettyPrint($3));
+   return $1("Preamble updateState ENTERING STATE "+testing_GeneratedPrintf.p$1($2)+", user = "+Utils.prettyPrint($3));
   }))(function(s)
   {
    console.log(s);
@@ -1146,7 +1171,7 @@
    {
     (((Runtime.Curried3(function($1,$2,$3)
     {
-     return $1("EXITING STATE "+testing_GeneratedPrintf.p$1($2)+" = "+Utils.toSafe($3));
+     return $1("Preamble updateState EXITING STATE "+testing_GeneratedPrintf.p$1($2)+" = "+Utils.toSafe($3));
     }))(function(s)
     {
      console.log(s);
@@ -1184,7 +1209,7 @@
      {
       return function($2)
       {
-       return $1(GeneratedPrintf.p($2));
+       return $1("Preamble actObtainToken "+GeneratedPrintf.p($2));
       };
      }(function(s)
      {
@@ -1410,7 +1435,13 @@
   {
    var m$1,value,name;
    m$1=Strings.SplitChars(p,["="],0);
-   !Unchecked.Equals(m$1,null)&&m$1.length===2?(value=Arrays.get(m$1,1),name=Arrays.get(m$1,0),Msal$1.storage().setItem(name,Global.decodeURIComponent(value))):void 0;
+   !Unchecked.Equals(m$1,null)&&m$1.length===2?(value=Arrays.get(m$1,1),name=Arrays.get(m$1,0),Msal$1.storage().setItem(name,Global.decodeURIComponent(value)),(((Runtime.Curried3(function($1,$2,$3)
+   {
+    return $1("Preamble: Query param: "+Utils.toSafe($2)+" = "+Utils.toSafe($3));
+   }))(function(s)
+   {
+    console.log(s);
+   }))(name))(value)):void 0;
   },Strings.SplitChars(query,["&"],0))):void 0;
  };
  Msal$1.storage=function()

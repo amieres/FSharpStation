@@ -580,17 +580,14 @@
   },
   TryFinally:function(body,compensation)
   {
-   var $1;
    try
    {
-    $1=body();
+    return body();
    }
-   catch(e)
+   finally
    {
     compensation();
-    throw e;
    }
-   return Eff.op_BarGreaterGreater($1,compensation);
   },
   TryWith:function(body,handler)
   {

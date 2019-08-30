@@ -10987,51 +10987,46 @@
  CustomAction.getCode=function(snp,name)
  {
   var b;
-  return Operators$2.op_BarGreaterGreater(Operators$2.op_BarGreaterGreater((b=FusionAsyncM.fusion(),b.Run(b.Delay(function()
+  b=FusionAsyncM.fusion();
+  return b.Run(b.Delay(function()
   {
-   var m;
-   function f(x,y)
+   var b$1;
+   return b.Bind((b$1=FusionAsyncM.fusion(),b$1.Run(b$1.Delay(function()
    {
-    return x+y;
-   }
-   return b.Bind(Operators$2.op_BarGreaterGreater(Operators$2.op_BarGreaterGreater(CustomAction.propO(snp,"Open"),(m=function(b$1)
-   {
-    return f(b$1,"\n");
-   },function(o)
-   {
-    return o==null?null:{
-     $:1,
-     $0:m(o.$0)
-    };
-   })),function(o)
-   {
-    return o==null?"":o.$0;
-   }),function(a)
-   {
-    return b.Bind(CustomAction.propO(snp,name),function(a$1)
+    return b$1.Bind(CustomAction.propO(snp,name),function(a)
     {
-     return a$1==null?Strings.StartsWith(name,":")?b.Return(a+Slice.string(name,{
+     return a==null?Strings.StartsWith(name,":")?b$1.Return(Slice.string(name,{
       $:1,
       $0:1
-     },null)):b.Bind(Operators$2.op_BarGreaterGreater(CustomAction.propO(snp,"action-template"),function(o)
+     },null)):b$1.Bind(CustomAction.propO(snp,"action-template"),function(a$1)
      {
-      return o==null?"${button}() |> printfn \"%A\"":o.$0;
-     }),function(a$2)
-     {
-      return b.Return(a+a$2);
-     }):b.Return(a+a$1.$0);
+      return b$1.Return(a$1==null?"${button}() |> printfn \"%A\"":a$1.$0);
+     }):b$1.Return(a.$0);
+    });
+   }))),function(a)
+   {
+    return b.Bind(CustomAction.codeModule(snp,a),function(a$1)
+    {
+     return b.Return(Snippets.prepAnyCode(a$1));
     });
    });
-  }))),CustomAction.codeModule),Snippets.prepAnyCode);
+  }));
  };
- CustomAction.codeModule=function(code)
+ CustomAction.codeModule=function(snp,code)
  {
-  var x;
-  x=(String.indentStr$1(4))(code);
-  return(((Runtime.Curried3(function($1,$2,$3)
+  var b;
+  b=FusionAsyncM.fusion();
+  return b.Run(b.Delay(function()
   {
-   return $1("module Call"+Utils.toSafe($2)+" =\n"+Utils.toSafe($3));
-  }))(Global.id))(Global.String(Date.now())))(x);
+   return b.Bind(CustomAction.propO(snp,"Open"),function(a)
+   {
+    var x;
+    return a!=null&&a.$==1?b.Return((x=(String.indentStr$1(4))(a.$0+"\n"+code),(((Runtime.Curried3(function($1,$2,$3)
+    {
+     return $1("module Call"+Utils.toSafe($2)+" =\n"+Utils.toSafe($3));
+    }))(Global.id))(Global.String(Date.now())))(x))):b.Return(code);
+   });
+  }));
  };
  CustomAction.getBaseSnippet=function()
  {
@@ -11399,36 +11394,36 @@
   p=Handler$1.CompleteHoles(b.k,b.h,[]);
   b.i=new TemplateInstance.New(p[1],Templates.RunFullDocTemplate(p[0]));
  };
- MainProgram.mainDoc$5813$78=Global.id;
- MainProgram.mainDoc$5804$39=function()
+ MainProgram.mainDoc$5824$78=Global.id;
+ MainProgram.mainDoc$5815$39=function()
  {
   return function(ev)
   {
    JumpTo.jumpToRef(ev.Target);
   };
  };
- MainProgram.mainDoc$5803$39=function()
+ MainProgram.mainDoc$5814$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5802$39=function()
+ MainProgram.mainDoc$5813$39=function()
  {
   return function(ev)
   {
    Importer.importFile(ev.Target);
   };
  };
- MainProgram.mainDoc$5801$39=function()
+ MainProgram.mainDoc$5812$39=function()
  {
   return function(ev)
   {
    ev.Target.value="";
   };
  };
- MainProgram.mainDoc$5800$39=function()
+ MainProgram.mainDoc$5811$39=function()
  {
   return function(ev)
   {
@@ -11547,11 +11542,11 @@
   }))))))))))))));
   return(p=Handler$1.CompleteHoles(tmp.k,tmp.h,[["filename",0],["name",0],["output",0],["fscode",0],["parser",0]]),(i=new TemplateInstance.New(p[1],FSharpStation_Templates.layout(p[0])),(tmp.i=i,i))).get_Doc();
  };
- MainProgram.buttonsRight$5786$74=Global.id;
- MainProgram.buttonsRight$5785$74=Global.id;
- MainProgram.buttonsRight$5784$74=Global.id;
- MainProgram.buttonsRight$5783$74=Global.id;
- MainProgram.buttonsRight$5782$74=Global.id;
+ MainProgram.buttonsRight$5797$74=Global.id;
+ MainProgram.buttonsRight$5796$74=Global.id;
+ MainProgram.buttonsRight$5795$74=Global.id;
+ MainProgram.buttonsRight$5794$74=Global.id;
+ MainProgram.buttonsRight$5793$74=Global.id;
  MainProgram.buttonsRight=function()
  {
   var tmp,p,i;
@@ -12073,7 +12068,7 @@
   SC$1.$cctor();
   return SC$1.wsStationClient;
  };
- Server.content$6078$54=function()
+ Server.content$6089$54=function()
  {
   MainProgram.mainProgram();
   return Doc.TextNode("Initialized");

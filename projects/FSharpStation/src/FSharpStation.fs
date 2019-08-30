@@ -1,6 +1,6 @@
 #nowarn "3242"
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1565212027435 -d:TEE -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1567110848639 -d:TEE -d:WEBSHARPER
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\FSharpStation\src"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
@@ -45,7 +45,7 @@
 //#nowarn "3242"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1565212027435
+//#define FSharpStation1567110848639
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -4178,7 +4178,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1565212027435"
+                let mutable fsharpStationAddress = Address "FSharpStation1567110848639"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -5504,19 +5504,30 @@ namespace FsRoot
                         |>> Option.defaultValue snp
             }
         
-            let codeModule code = code |> String.indentStr 4 |> sprintf "module Call%s =\n%s" (string <| FStation.now())
+            let codeModule snp code = fusion {
+                let! openPropO = propO snp "Open"
+                match openPropO with
+                | None    -> return code
+                | Some op ->
+                return
+                    op  + "\n" + code 
+                    |> String.indentStr 4 
+                    |> sprintf "module Call%s =\n%s" (string <| FStation.now())
+            }
         
-            let getCode snp name = 
-                fusion {
-                    let!  openProp  = propO snp "Open" |>> Option.map (__ (+) "\n") |>> Option.defaultValue ""
-                    let!  namecodeO = propO snp  name
+            let getCode snp name = fusion {
+                let! code        = fusion {
+                    let!  namecodeO = propO snp name
                     match namecodeO with
-                    | Some code -> return openProp + code
+                    | Some code -> return code
                     | None      ->
-                    if name.StartsWith ":" then return openProp + name.[1..] else 
-                    let! template  = propO snp "action-template" |>> Option.defaultValue "${button}() |> printfn \"%A\""
-                    return openProp + template
-                } |>> codeModule |>> Snippets.prepAnyCode
+                    if name.StartsWith ":" then return name.[1..] else 
+                    let!   template  = propO snp "action-template"
+                    return template |> Option.defaultValue "${button}() |> printfn \"%A\""
+                }
+                let! code2 = codeModule snp code
+                return Snippets.prepAnyCode code2
+            }
         
             module AF = FsRoot.LibraryJS.AppFramework
         

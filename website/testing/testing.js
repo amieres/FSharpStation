@@ -361,7 +361,7 @@ if (!console) {
 (function()
 {
  "use strict";
- var Global,FsRoot,TestingJS,Msal,PreambleState,WebSharper,Operators,testing_GeneratedPrintf,GeneratedPrintf,SC$1,EventTarget,WindowOrWorkerGlobalScope,JavaScript,JS,Unchecked,Arrays,Seq,Obj,UI,Var$1,Var,View,LibraryJS,Msal$1,AuthenticationParameters,Utils,Promise,List,T,HtmlModule,attr,ViewBuilder,Configuration,AuthOptions,Policy,Doc,Pervasives,Node,Library,String,Pojo,Strings,Slice,Enumerator,ConcreteVar,Snap,Abbrev,Fresh,Object,Concurrency,Account,AttrModule,AttrProxy,T$1,Array,Client,Templates,AsyncBody,SC$2,Error,NonStandardPromiseRejectionException,CT,Attrs,DomUtility,Docs,Collections,Dictionary,SC$3,Scheduler,CancellationTokenSource,DynamicAttrNode,Elt,FSharpMap,DocElemNode,CharacterData,SC$4,HashSet,An,Settings,Mailbox,OperationCanceledException,Char,SC$5,Updates,Pair,Attrs$1,Dyn,DictionaryUtil,Prepare,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$6,Queue,SC$7,SC$8,AppendList,BalancedTree,Easing,HashSet$1,HashSetUtil,DomNodes,Lazy,SC$9,LazyExtensionsProxy,LazyRecord,IntelliFactory,Runtime,console,$,Date;
+ var Global,FsRoot,TestingJS,Msal,PreambleState,WebSharper,Operators,testing_GeneratedPrintf,GeneratedPrintf,SC$1,EventTarget,WindowOrWorkerGlobalScope,JavaScript,JS,Unchecked,Arrays,Seq,Utils,Obj,UI,Var$1,Var,View,LibraryJS,Msal$1,AuthenticationParameters,Promise,List,T,HtmlModule,attr,ViewBuilder,Configuration,AuthOptions,Policy,Doc,Pervasives,Node,Library,String,Pojo,Strings,Slice,Enumerator,ConcreteVar,Snap,Abbrev,Fresh,Object,Concurrency,Account,AttrModule,AttrProxy,T$1,Array,Client,Templates,AsyncBody,SC$2,Error,NonStandardPromiseRejectionException,CT,Attrs,DomUtility,Docs,Collections,Dictionary,SC$3,Scheduler,CancellationTokenSource,DynamicAttrNode,Elt,FSharpMap,DocElemNode,CharacterData,SC$4,HashSet,An,Settings,Mailbox,OperationCanceledException,Char,SC$5,Updates,Pair,Attrs$1,Dyn,DictionaryUtil,Prepare,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$6,Queue,SC$7,SC$8,AppendList,BalancedTree,Easing,HashSet$1,HashSetUtil,DomNodes,Lazy,SC$9,LazyExtensionsProxy,LazyRecord,IntelliFactory,Runtime,console,$,Date;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
@@ -379,6 +379,7 @@ if (!console) {
  Unchecked=WebSharper.Unchecked=WebSharper.Unchecked||{};
  Arrays=WebSharper.Arrays=WebSharper.Arrays||{};
  Seq=WebSharper.Seq=WebSharper.Seq||{};
+ Utils=WebSharper.Utils=WebSharper.Utils||{};
  Obj=WebSharper.Obj=WebSharper.Obj||{};
  UI=WebSharper.UI=WebSharper.UI||{};
  Var$1=UI.Var$1=UI.Var$1||{};
@@ -387,7 +388,6 @@ if (!console) {
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
  Msal$1=LibraryJS.Msal=LibraryJS.Msal||{};
  AuthenticationParameters=Msal$1.AuthenticationParameters=Msal$1.AuthenticationParameters||{};
- Utils=WebSharper.Utils=WebSharper.Utils||{};
  Promise=JavaScript.Promise=JavaScript.Promise||{};
  List=WebSharper.List=WebSharper.List||{};
  T=List.T=List.T||{};
@@ -498,7 +498,13 @@ if (!console) {
   {
    var m$1,value,name;
    m$1=Strings.SplitChars(p,["="],0);
-   !Unchecked.Equals(m$1,null)&&m$1.length===2?(value=Arrays.get(m$1,1),name=Arrays.get(m$1,0),Msal.storage().setItem(name,Global.decodeURIComponent(value))):void 0;
+   !Unchecked.Equals(m$1,null)&&m$1.length===2?(value=Arrays.get(m$1,1),name=Arrays.get(m$1,0),Msal.storage().setItem(name,Global.decodeURIComponent(value)),(((Runtime.Curried3(function($1,$2,$3)
+   {
+    return $1("Preamble: Query param: "+Utils.toSafe($2)+" = "+Utils.toSafe($3));
+   }))(function(s)
+   {
+    console.log(s);
+   }))(name))(value)):void 0;
   },Strings.SplitChars(query,["&"],0))):void 0;
  };
  Msal.storedVar=function(name,def)
@@ -690,7 +696,7 @@ if (!console) {
     {
      return function($2)
      {
-      return $1("error: "+GeneratedPrintf.p$1($2));
+      return $1("Preamble redirectCallback error: "+GeneratedPrintf.p$1($2));
      };
     }(function(s)
     {
@@ -700,7 +706,7 @@ if (!console) {
     {
      return function($2)
      {
-      return $1("resp : "+GeneratedPrintf.p($2));
+      return $1("Preamble redirectCallback resp : "+GeneratedPrintf.p($2));
      };
     }(function(s)
     {
@@ -711,7 +717,7 @@ if (!console) {
    {
     (((Runtime.Curried3(function($1,$2,$3)
     {
-     return $1(Utils.prettyPrint($2)+" "+Utils.toSafe($3));
+     return $1("Preamble redirectCallback exception "+Utils.prettyPrint($2)+" "+Utils.toSafe($3));
     }))(function(s)
     {
      console.log(s);
@@ -738,7 +744,7 @@ if (!console) {
     promise=(f(agent))(authParms());
     return Unchecked.Equals(promise,null)?(function($1)
     {
-     return $1("No promise?");
+     return $1("Preamble executePolicy No promise?");
     }(function(s)
     {
      console.log(s);
@@ -1009,7 +1015,7 @@ if (!console) {
        {
         (((Runtime.Curried3(function($4,$5,$6)
         {
-         return $4(Utils.prettyPrint($5)+" "+Utils.toSafe($6));
+         return $4("Preamble getTokenO0 exception "+Utils.prettyPrint($5)+" "+Utils.toSafe($6));
         }))(function(s)
         {
          console.log(s);
@@ -1090,7 +1096,7 @@ if (!console) {
   },Msal.agentO().get_View());
   Msal.createOnStartB().Get()&&!Msal.editingB().Get()?(createAgent(),checkUser(),(((Runtime.Curried3(function($1,$2,$3)
   {
-   return $1("ENTERING STATE "+testing_GeneratedPrintf.p$1($2)+", user = "+Utils.prettyPrint($3));
+   return $1("Preamble updateState ENTERING STATE "+testing_GeneratedPrintf.p$1($2)+", user = "+Utils.prettyPrint($3));
   }))(function(s)
   {
    console.log(s);
@@ -1122,7 +1128,7 @@ if (!console) {
    {
     (((Runtime.Curried3(function($1,$2,$3)
     {
-     return $1("EXITING STATE "+testing_GeneratedPrintf.p$1($2)+" = "+Utils.toSafe($3));
+     return $1("Preamble updateState EXITING STATE "+testing_GeneratedPrintf.p$1($2)+" = "+Utils.toSafe($3));
     }))(function(s)
     {
      console.log(s);
@@ -1160,7 +1166,7 @@ if (!console) {
      {
       return function($2)
       {
-       return $1(GeneratedPrintf.p($2));
+       return $1("Preamble actObtainToken "+GeneratedPrintf.p($2));
       };
      }(function(s)
      {
@@ -2223,6 +2229,22 @@ if (!console) {
  {
   return Operators.FailWith("The input sequence was empty.");
  };
+ Utils.toSafe=function(s)
+ {
+  return s==null?"":s;
+ };
+ Utils.prettyPrint=function(o)
+ {
+  var t,s;
+  function m(k,v)
+  {
+   return k+" = "+Utils.prettyPrint(v);
+  }
+  return o===null?"null":(t=typeof o,t=="string"?"\""+o+"\"":t=="object"?o instanceof Global.Array?"[|"+Strings.concat("; ",Arrays.map(Utils.prettyPrint,o))+"|]":(s=Global.String(o),s==="[object Object]"?"{"+Strings.concat("; ",Arrays.map(function($1)
+  {
+   return m($1[0],$1[1]);
+  },JS.GetFields(o)))+"}":s):Global.String(o));
+ };
  Obj=WebSharper.Obj=Runtime.Class({
   Equals:function(obj)
   {
@@ -2409,22 +2431,6 @@ if (!console) {
  AuthenticationParameters.New$1=function(account,authority,claimsRequest,correlationId,extraQueryParameters,extraScopesToConsent,loginHint,prompt,scopes,sid,state)
  {
   return Pojo.newPojoOpt([Msal$1.op_EqualsEqualsGreater("account",account),Msal$1.op_EqualsEqualsGreater("authority",authority),Msal$1.op_EqualsEqualsGreater("claimsRequest",claimsRequest),Msal$1.op_EqualsEqualsGreater("correlationId",correlationId),Msal$1.op_EqualsEqualsGreater("extraQueryParameters",extraQueryParameters),Msal$1.op_EqualsEqualsGreater("extraScopesToConsent",extraScopesToConsent),Msal$1.op_EqualsEqualsGreater("loginHint",loginHint),Msal$1.op_EqualsEqualsGreater("prompt",prompt),Msal$1.op_EqualsEqualsGreater("scopes",scopes),Msal$1.op_EqualsEqualsGreater("sid",sid),Msal$1.op_EqualsEqualsGreater("state",state)]);
- };
- Utils.toSafe=function(s)
- {
-  return s==null?"":s;
- };
- Utils.prettyPrint=function(o)
- {
-  var t,s;
-  function m(k,v)
-  {
-   return k+" = "+Utils.prettyPrint(v);
-  }
-  return o===null?"null":(t=typeof o,t=="string"?"\""+o+"\"":t=="object"?o instanceof Global.Array?"[|"+Strings.concat("; ",Arrays.map(Utils.prettyPrint,o))+"|]":(s=Global.String(o),s==="[object Object]"?"{"+Strings.concat("; ",Arrays.map(function($1)
-  {
-   return m($1[0],$1[1]);
-  },JS.GetFields(o)))+"}":s):Global.String(o));
  };
  Promise.AsAsync=function(p)
  {

@@ -362,7 +362,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 (function()
 {
  "use strict";
- var Global,FsRoot,ProzperServer,ClientSide,MainProgram,WebSharper,Obj,UI,Var$1,LibraryJS,AppFramework,PlugIn,ModeloUI,Aliado,Operators,View,Var,Lazy,RenderAliados,RenderAliado,FormaRegistro,FormaDatos,FormaContactos,FormaFormasPago,ReporteConsolidado,TablaPagos,ListaDocs,FormaAutorizacion,FormaContrato,Transacciones,Pendientes,EventTarget,Node,JavaScript,JS,Unchecked,LayoutEngineModule,Option,TypesV0,Aliado$1,Aliado$2,Templating,Runtime,Server,TemplateInstance,Arrays,ProviderBuilder,Handler,prozperDes$js_Templates,prozperDes$js_GeneratedPrintf,prozperDes$js_Router,Doc,Rpc,IdAliado,Modelo,ConcreteVar,Snap,SC$1,ListModel,PlugInVar,PlugInView,PlugInDoc,Pervasives,LazyExtensionsProxy,LazyRecord,Seq,Library,SortWith,Buscar,Collections,FSharpSet,Set,Strings,CorreoElectronico,DatosPersonales,CorreoElectronico$1,Telefono,Direccion,Monads,AsyncResultBuilder,Refresh,System,Guid,VariousUI,HtmlModule,attr,ViewBuilder,StatusAliado,List,CuentaBancaria,RoutingNumber,NumeroCuenta,Utils,FormaPago,Result,Archivo,Extensions,ListModel$1,Date,String,TipoArchivo,StatusArchivo,Blob,CuentaPago,FormaFirma,PremisasCalculo,PlugInAction,Msal,WindowOrWorkerGlobalScope,LayoutEngine,SC$2,IdForAuthorize,DatosPersonales$1,DiaPago,TipoAliado,Numeric,List$1,Dictionary,HashSet,Client,Abbrev,Async,Fresh,Builder,BuilderP,Eff,EffBuilder,AsyncResultBuilderP,Slice,ParseO,Serializer,Msal$1,Policy,Telefono$1,TipoTelefono,Direccion$1,TipoDireccion,Estado,Pais,ZonaPostal,TarjetaCredito,Expiracion,NumeroTarjeta,TipoTarjeta,TipoCuenta,Genero,Remoting,Configuration,AuthOptions,Control,MailboxProcessor,Mailbox,EndPoint,Router,Rpc0,IdPayment,PlugInQuery,FSharpMap,Enumerator,T,BalancedTree,T$1,AsyncResult,AjaxRemotingProvider,Array,Subscripcion,CuentaBancaria$1,TarjetaCredito$1,Object,FromView,Concurrency,AttrProxy,Array$1,Storage,AttrModule,GeneratedPrintf,LayoutEngine_Templates,LayoutEngine_GeneratedPrintf,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,DictionaryUtil,CheckedInput,Client$1,Templates,DateUtil,SC$3,Pojo,Error,TimeoutException,Promise,Sitelets,RouterOperators,RouterModule,Route,MapUtil,Tree,IdAddress,IdSubscription,Docs,AsyncBody,CT,Attrs,DomUtility,SC$4,ArrayStorage,Var$2,ConceptoPago,Enlace,Layout,WcSplitterT,DocElemNode,CharacterData,SC$5,XhrProvider,FSharpEvent,LinkedList,AuthenticationParameters,Account,Router$1,List$2,Pair,Result$1,Scheduler,CancellationTokenSource,DynamicAttrNode,Measures,Hoverable,Hoverable$1,Event,UIEvent,ResizeObserver,SC$6,Elt,Attrs$1,Dyn,Prepare,An,Settings,Mailbox$1,HashSetUtil,Event$1,Event$2,NonStandardPromiseRejectionException,SC$7,Map,OperationCanceledException,Queue,SC$8,SC$9,AggregateException,KeyCollection,Updates,Docs$1,RunState,NodeSet,Anims,SC$10,Char,Json,FormatException,StringEncoding,String$1,SC$11,AppendList,LinkedListEnumerator,PathUtil,Easing,HashSet$1,DomNodes,SC$12,IntelliFactory,Runtime$1,Math,$,console,Date$1,JSON,Reflect,String$2;
+ var Global,FsRoot,ProzperServer,ClientSide,MainProgram,WebSharper,Obj,UI,Var$1,LibraryJS,AppFramework,PlugIn,ModeloUI,Aliado,Operators,View,Var,Lazy,RenderAliados,RenderAliado,FormaRegistro,FormaDatos,FormaContactos,FormaFormasPago,ReporteConsolidado,TablaPagos,ListaDocs,FormaAutorizacion,FormaContrato,Transacciones,Pendientes,EventTarget,Node,JavaScript,JS,Unchecked,LayoutEngineModule,Option,TypesV0,Aliado$1,Aliado$2,Templating,Runtime,Server,TemplateInstance,Arrays,ProviderBuilder,Handler,prozperDes$js_Templates,prozperDes$js_GeneratedPrintf,prozperDes$js_Router,Doc,Rpc,IdAliado,Modelo,ConcreteVar,Snap,SC$1,ListModel,PlugInVar,PlugInView,PlugInDoc,Pervasives,LazyExtensionsProxy,LazyRecord,ProzperServer_GeneratedPrintf,Seq,Library,SortWith,Buscar,Collections,FSharpSet,Set,Strings,CorreoElectronico,DatosPersonales,CorreoElectronico$1,Telefono,Direccion,Monads,AsyncResultBuilder,Refresh,System,Guid,VariousUI,HtmlModule,attr,ViewBuilder,StatusAliado,List,CuentaBancaria,RoutingNumber,NumeroCuenta,Utils,FormaPago,Result,Archivo,Extensions,ListModel$1,Date,String,TipoArchivo,StatusArchivo,Blob,CuentaPago,FormaFirma,PremisasCalculo,PlugInAction,Msal,WindowOrWorkerGlobalScope,LayoutEngine,SC$2,IdForAuthorize,DatosPersonales$1,DiaPago,TipoAliado,Numeric,SC$3,List$1,Dictionary,HashSet,Client,Abbrev,Async,Fresh,Builder,BuilderP,Eff,EffBuilder,AsyncResultBuilderP,Slice,Msal$1,Policy,Configuration,AuthOptions,Control,MailboxProcessor,Mailbox,EndPoint,Router,Remoting,Rpc0,IdPayment,PlugInQuery,FSharpMap,Enumerator,T,BalancedTree,T$1,Genero,ParseO,Pais,Telefono$1,TipoTelefono,Direccion$1,TipoDireccion,Estado,ZonaPostal,AsyncResult,AjaxRemotingProvider,Array,TarjetaCredito,Subscripcion,NumeroTarjeta,CuentaBancaria$1,TarjetaCredito$1,Object,FromView,Concurrency,AttrProxy,Array$1,TipoCuenta,Storage,AttrModule,GeneratedPrintf,LayoutEngine_Templates,LayoutEngine_GeneratedPrintf,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,Serializer,Expiracion,TipoTarjeta,DictionaryUtil,CheckedInput,Client$1,Templates,Pojo,Error,TimeoutException,Promise,Sitelets,RouterOperators,RouterModule,Route,SC$4,MapUtil,Tree,IdAddress,IdSubscription,Docs,AsyncBody,CT,Attrs,DomUtility,SC$5,ArrayStorage,Var$2,ConceptoPago,Enlace,Layout,DateUtil,WcSplitterT,DocElemNode,CharacterData,SC$6,FSharpEvent,LinkedList,AuthenticationParameters,Account,Router$1,List$2,XhrProvider,Pair,Result$1,Scheduler,CancellationTokenSource,DynamicAttrNode,Measures,Hoverable,Hoverable$1,Event,UIEvent,ResizeObserver,SC$7,Elt,Attrs$1,Dyn,Prepare,An,Settings,Mailbox$1,HashSetUtil,Event$1,Event$2,NonStandardPromiseRejectionException,SC$8,Map,OperationCanceledException,Queue,SC$9,SC$10,AggregateException,KeyCollection,Updates,Docs$1,RunState,NodeSet,Anims,SC$11,Char,Json,StringEncoding,FormatException,String$1,SC$12,AppendList,LinkedListEnumerator,PathUtil,Easing,HashSet$1,DomNodes,SC$13,IntelliFactory,Runtime$1,Math,$,console,Date$1,JSON,Reflect,String$2;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  ProzperServer=FsRoot.ProzperServer=FsRoot.ProzperServer||{};
@@ -428,6 +428,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Pervasives=JavaScript.Pervasives=JavaScript.Pervasives||{};
  LazyExtensionsProxy=WebSharper.LazyExtensionsProxy=WebSharper.LazyExtensionsProxy||{};
  LazyRecord=LazyExtensionsProxy.LazyRecord=LazyExtensionsProxy.LazyRecord||{};
+ ProzperServer_GeneratedPrintf=Global.ProzperServer_GeneratedPrintf=Global.ProzperServer_GeneratedPrintf||{};
  Seq=WebSharper.Seq=WebSharper.Seq||{};
  Library=FsRoot.Library=FsRoot.Library||{};
  SortWith=Library.SortWith=Library.SortWith||{};
@@ -479,6 +480,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  DiaPago=TypesV0.DiaPago=TypesV0.DiaPago||{};
  TipoAliado=TypesV0.TipoAliado=TypesV0.TipoAliado||{};
  Numeric=WebSharper.Numeric=WebSharper.Numeric||{};
+ SC$3=Global.StartupCode$ProzperServer$ProzperServer=Global.StartupCode$ProzperServer$ProzperServer||{};
  List$1=Collections.List=Collections.List||{};
  Dictionary=Collections.Dictionary=Collections.Dictionary||{};
  HashSet=Collections.HashSet=Collections.HashSet||{};
@@ -492,24 +494,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  EffBuilder=Eff.EffBuilder=Eff.EffBuilder||{};
  AsyncResultBuilderP=Monads.AsyncResultBuilderP=Monads.AsyncResultBuilderP||{};
  Slice=WebSharper.Slice=WebSharper.Slice||{};
- ParseO=Library.ParseO=Library.ParseO||{};
- Serializer=Library.Serializer=Library.Serializer||{};
  Msal$1=LibraryJS.Msal=LibraryJS.Msal||{};
  Policy=Msal$1.Policy=Msal$1.Policy||{};
- Telefono$1=TypesV0.Telefono=TypesV0.Telefono||{};
- TipoTelefono=TypesV0.TipoTelefono=TypesV0.TipoTelefono||{};
- Direccion$1=TypesV0.Direccion=TypesV0.Direccion||{};
- TipoDireccion=TypesV0.TipoDireccion=TypesV0.TipoDireccion||{};
- Estado=TypesV0.Estado=TypesV0.Estado||{};
- Pais=TypesV0.Pais=TypesV0.Pais||{};
- ZonaPostal=TypesV0.ZonaPostal=TypesV0.ZonaPostal||{};
- TarjetaCredito=TypesV0.TarjetaCredito=TypesV0.TarjetaCredito||{};
- Expiracion=TypesV0.Expiracion=TypesV0.Expiracion||{};
- NumeroTarjeta=TypesV0.NumeroTarjeta=TypesV0.NumeroTarjeta||{};
- TipoTarjeta=TypesV0.TipoTarjeta=TypesV0.TipoTarjeta||{};
- TipoCuenta=TypesV0.TipoCuenta=TypesV0.TipoCuenta||{};
- Genero=TypesV0.Genero=TypesV0.Genero||{};
- Remoting=WebSharper.Remoting=WebSharper.Remoting||{};
  Configuration=Msal$1.Configuration=Msal$1.Configuration||{};
  AuthOptions=Msal$1.AuthOptions=Msal$1.AuthOptions||{};
  Control=WebSharper.Control=WebSharper.Control||{};
@@ -517,6 +503,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Mailbox=Library.Mailbox=Library.Mailbox||{};
  EndPoint=ModeloUI.EndPoint=ModeloUI.EndPoint||{};
  Router=UI.Router=UI.Router||{};
+ Remoting=WebSharper.Remoting=WebSharper.Remoting||{};
  Rpc0=ProzperServer.Rpc0=ProzperServer.Rpc0||{};
  IdPayment=TypesV0.IdPayment=TypesV0.IdPayment||{};
  PlugInQuery=AppFramework.PlugInQuery=AppFramework.PlugInQuery||{};
@@ -525,10 +512,21 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  T=Enumerator.T=Enumerator.T||{};
  BalancedTree=Collections.BalancedTree=Collections.BalancedTree||{};
  T$1=List.T=List.T||{};
+ Genero=TypesV0.Genero=TypesV0.Genero||{};
+ ParseO=Library.ParseO=Library.ParseO||{};
+ Pais=TypesV0.Pais=TypesV0.Pais||{};
+ Telefono$1=TypesV0.Telefono=TypesV0.Telefono||{};
+ TipoTelefono=TypesV0.TipoTelefono=TypesV0.TipoTelefono||{};
+ Direccion$1=TypesV0.Direccion=TypesV0.Direccion||{};
+ TipoDireccion=TypesV0.TipoDireccion=TypesV0.TipoDireccion||{};
+ Estado=TypesV0.Estado=TypesV0.Estado||{};
+ ZonaPostal=TypesV0.ZonaPostal=TypesV0.ZonaPostal||{};
  AsyncResult=Monads.AsyncResult=Monads.AsyncResult||{};
  AjaxRemotingProvider=Remoting.AjaxRemotingProvider=Remoting.AjaxRemotingProvider||{};
  Array=Library.Array=Library.Array||{};
+ TarjetaCredito=TypesV0.TarjetaCredito=TypesV0.TarjetaCredito||{};
  Subscripcion=TypesV0.Subscripcion=TypesV0.Subscripcion||{};
+ NumeroTarjeta=TypesV0.NumeroTarjeta=TypesV0.NumeroTarjeta||{};
  CuentaBancaria$1=ModeloUI.CuentaBancaria=ModeloUI.CuentaBancaria||{};
  TarjetaCredito$1=ModeloUI.TarjetaCredito=ModeloUI.TarjetaCredito||{};
  Object=Global.Object;
@@ -536,6 +534,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Concurrency=WebSharper.Concurrency=WebSharper.Concurrency||{};
  AttrProxy=UI.AttrProxy=UI.AttrProxy||{};
  Array$1=UI.Array=UI.Array||{};
+ TipoCuenta=TypesV0.TipoCuenta=TypesV0.TipoCuenta||{};
  Storage=UI.Storage=UI.Storage||{};
  AttrModule=UI.AttrModule=UI.AttrModule||{};
  GeneratedPrintf=Global.GeneratedPrintf=Global.GeneratedPrintf||{};
@@ -545,12 +544,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  WcTabStrip=WebComponent.WcTabStrip=WebComponent.WcTabStrip||{};
  WcTabStripT=WcTabStrip.WcTabStripT=WcTabStrip.WcTabStripT||{};
  WcSplitter=WebComponent.WcSplitter=WebComponent.WcSplitter||{};
+ Serializer=Library.Serializer=Library.Serializer||{};
+ Expiracion=TypesV0.Expiracion=TypesV0.Expiracion||{};
+ TipoTarjeta=TypesV0.TipoTarjeta=TypesV0.TipoTarjeta||{};
  DictionaryUtil=Collections.DictionaryUtil=Collections.DictionaryUtil||{};
  CheckedInput=UI.CheckedInput=UI.CheckedInput||{};
  Client$1=UI.Client=UI.Client||{};
  Templates=Client$1.Templates=Client$1.Templates||{};
- DateUtil=WebSharper.DateUtil=WebSharper.DateUtil||{};
- SC$3=Global.StartupCode$WebSharper_Main$Remoting=Global.StartupCode$WebSharper_Main$Remoting||{};
  Pojo=LibraryJS.Pojo=LibraryJS.Pojo||{};
  Error=Global.Error;
  TimeoutException=WebSharper.TimeoutException=WebSharper.TimeoutException||{};
@@ -559,6 +559,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  RouterOperators=Sitelets.RouterOperators=Sitelets.RouterOperators||{};
  RouterModule=Sitelets.RouterModule=Sitelets.RouterModule||{};
  Route=Sitelets.Route=Sitelets.Route||{};
+ SC$4=Global.StartupCode$WebSharper_Main$Remoting=Global.StartupCode$WebSharper_Main$Remoting||{};
  MapUtil=Collections.MapUtil=Collections.MapUtil||{};
  Tree=BalancedTree.Tree=BalancedTree.Tree||{};
  IdAddress=TypesV0.IdAddress=TypesV0.IdAddress||{};
@@ -568,23 +569,24 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  CT=Concurrency.CT=Concurrency.CT||{};
  Attrs=UI.Attrs=UI.Attrs||{};
  DomUtility=UI.DomUtility=UI.DomUtility||{};
- SC$4=Global.StartupCode$WebSharper_Main$Concurrency=Global.StartupCode$WebSharper_Main$Concurrency||{};
+ SC$5=Global.StartupCode$WebSharper_Main$Concurrency=Global.StartupCode$WebSharper_Main$Concurrency||{};
  ArrayStorage=Storage.ArrayStorage=Storage.ArrayStorage||{};
  Var$2=LibraryJS.Var=LibraryJS.Var||{};
  ConceptoPago=TypesV0.ConceptoPago=TypesV0.ConceptoPago||{};
  Enlace=Pendientes.Enlace=Pendientes.Enlace||{};
  Layout=LayoutEngineModule.Layout=LayoutEngineModule.Layout||{};
+ DateUtil=WebSharper.DateUtil=WebSharper.DateUtil||{};
  WcSplitterT=WcSplitter.WcSplitterT=WcSplitter.WcSplitterT||{};
  DocElemNode=UI.DocElemNode=UI.DocElemNode||{};
  CharacterData=Global.CharacterData;
- SC$5=Global.StartupCode$WebSharper_UI$Abbrev=Global.StartupCode$WebSharper_UI$Abbrev||{};
- XhrProvider=Remoting.XhrProvider=Remoting.XhrProvider||{};
+ SC$6=Global.StartupCode$WebSharper_UI$Abbrev=Global.StartupCode$WebSharper_UI$Abbrev||{};
  FSharpEvent=Control.FSharpEvent=Control.FSharpEvent||{};
  LinkedList=Collections.LinkedList=Collections.LinkedList||{};
  AuthenticationParameters=Msal$1.AuthenticationParameters=Msal$1.AuthenticationParameters||{};
  Account=Msal$1.Account=Msal$1.Account||{};
  Router$1=Sitelets.Router=Sitelets.Router||{};
  List$2=Sitelets.List=Sitelets.List||{};
+ XhrProvider=Remoting.XhrProvider=Remoting.XhrProvider||{};
  Pair=Collections.Pair=Collections.Pair||{};
  Result$1=WebSharper.Result=WebSharper.Result||{};
  Scheduler=Concurrency.Scheduler=Concurrency.Scheduler||{};
@@ -596,7 +598,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Event=Global.Event;
  UIEvent=Global.UIEvent;
  ResizeObserver=LibraryJS.ResizeObserver=LibraryJS.ResizeObserver||{};
- SC$6=Global.StartupCode$WebSharper_UI$Templates=Global.StartupCode$WebSharper_UI$Templates||{};
+ SC$7=Global.StartupCode$WebSharper_UI$Templates=Global.StartupCode$WebSharper_UI$Templates||{};
  Elt=UI.Elt=UI.Elt||{};
  Attrs$1=Client$1.Attrs=Client$1.Attrs||{};
  Dyn=Attrs$1.Dyn=Attrs$1.Dyn||{};
@@ -608,12 +610,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Event$1=Control.Event=Control.Event||{};
  Event$2=Event$1.Event=Event$1.Event||{};
  NonStandardPromiseRejectionException=JavaScript.NonStandardPromiseRejectionException=JavaScript.NonStandardPromiseRejectionException||{};
- SC$7=Global.StartupCode$WebSharper_Sitelets$Router=Global.StartupCode$WebSharper_Sitelets$Router||{};
+ SC$8=Global.StartupCode$WebSharper_Sitelets$Router=Global.StartupCode$WebSharper_Sitelets$Router||{};
  Map=Collections.Map=Collections.Map||{};
  OperationCanceledException=WebSharper.OperationCanceledException=WebSharper.OperationCanceledException||{};
  Queue=WebSharper.Queue=WebSharper.Queue||{};
- SC$8=Global.StartupCode$WebSharper_UI$DomUtility=Global.StartupCode$WebSharper_UI$DomUtility||{};
- SC$9=Global.StartupCode$WebSharper_UI$Attr_Client=Global.StartupCode$WebSharper_UI$Attr_Client||{};
+ SC$9=Global.StartupCode$WebSharper_UI$DomUtility=Global.StartupCode$WebSharper_UI$DomUtility||{};
+ SC$10=Global.StartupCode$WebSharper_UI$Attr_Client=Global.StartupCode$WebSharper_UI$Attr_Client||{};
  AggregateException=WebSharper.AggregateException=WebSharper.AggregateException||{};
  KeyCollection=Collections.KeyCollection=Collections.KeyCollection||{};
  Updates=UI.Updates=UI.Updates||{};
@@ -621,20 +623,20 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  RunState=Docs$1.RunState=Docs$1.RunState||{};
  NodeSet=Docs$1.NodeSet=Docs$1.NodeSet||{};
  Anims=UI.Anims=UI.Anims||{};
- SC$10=Global.StartupCode$WebSharper_UI$Doc_Proxy=Global.StartupCode$WebSharper_UI$Doc_Proxy||{};
+ SC$11=Global.StartupCode$WebSharper_UI$Doc_Proxy=Global.StartupCode$WebSharper_UI$Doc_Proxy||{};
  Char=WebSharper.Char=WebSharper.Char||{};
  Json=WebSharper.Json=WebSharper.Json||{};
- FormatException=WebSharper.FormatException=WebSharper.FormatException||{};
  StringEncoding=Sitelets.StringEncoding=Sitelets.StringEncoding||{};
+ FormatException=WebSharper.FormatException=WebSharper.FormatException||{};
  String$1=UI.String=UI.String||{};
- SC$11=Global.StartupCode$WebSharper_UI$Animation=Global.StartupCode$WebSharper_UI$Animation||{};
+ SC$12=Global.StartupCode$WebSharper_UI$Animation=Global.StartupCode$WebSharper_UI$Animation||{};
  AppendList=UI.AppendList=UI.AppendList||{};
  LinkedListEnumerator=Collections.LinkedListEnumerator=Collections.LinkedListEnumerator||{};
  PathUtil=Sitelets.PathUtil=Sitelets.PathUtil||{};
  Easing=UI.Easing=UI.Easing||{};
  HashSet$1=Abbrev.HashSet=Abbrev.HashSet||{};
  DomNodes=Docs$1.DomNodes=Docs$1.DomNodes||{};
- SC$12=Global.StartupCode$WebSharper_UI$AppendList=Global.StartupCode$WebSharper_UI$AppendList||{};
+ SC$13=Global.StartupCode$WebSharper_UI$AppendList=Global.StartupCode$WebSharper_UI$AppendList||{};
  IntelliFactory=Global.IntelliFactory;
  Runtime$1=IntelliFactory&&IntelliFactory.Runtime;
  Math=Global.Math;
@@ -1593,12 +1595,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   throw new Error(msg);
  };
- Operators.toInt=function(x)
- {
-  var u;
-  u=Operators.toUInt(x);
-  return u>=2147483648?u-4294967296:u;
- };
  Operators.range=function(min,max)
  {
   var count;
@@ -1607,6 +1603,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return x+min;
   });
+ };
+ Operators.toInt=function(x)
+ {
+  var u;
+  u=Operators.toUInt(x);
+  return u>=2147483648?u-4294967296:u;
  };
  Operators.toUInt=function(x)
  {
@@ -2032,7 +2034,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      {
       return function($3)
       {
-       return $2(prozperDes$js_GeneratedPrintf.p($3));
+       return $2(ProzperServer_GeneratedPrintf.p($3));
       };
      }(Global.id))($1.status);
     },alv)
@@ -2045,7 +2047,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      {
       return function($3)
       {
-       return $2(prozperDes$js_GeneratedPrintf.p$1($3));
+       return $2(ProzperServer_GeneratedPrintf.p$1($3));
       };
      }(Global.id))($1.tipo);
     },alv)
@@ -2155,7 +2157,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      {
       return function($3)
       {
-       return $2(prozperDes$js_GeneratedPrintf.p($3));
+       return $2(ProzperServer_GeneratedPrintf.p($3));
       };
      }(Global.id))($1.status);
     },alv)
@@ -2168,7 +2170,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      {
       return function($3)
       {
-       return $2(prozperDes$js_GeneratedPrintf.p$1($3));
+       return $2(ProzperServer_GeneratedPrintf.p$1($3));
       };
      }(Global.id))($1.tipo);
     },alv)
@@ -2384,7 +2386,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      {
       return function($7)
       {
-       return $6(prozperDes$js_GeneratedPrintf.p$15($7));
+       return $6(prozperDes$js_GeneratedPrintf.p$3($7));
       };
      }(Global.id))(a));
      return b$1.Zero();
@@ -2490,7 +2492,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      {
       return function($5)
       {
-       return $4(prozperDes$js_GeneratedPrintf.p$15($5));
+       return $4(prozperDes$js_GeneratedPrintf.p$3($5));
       };
      }(Global.id))(a));
      return b$1.Zero();
@@ -2729,7 +2731,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      {
       return function($2)
       {
-       return $1(prozperDes$js_GeneratedPrintf.p$15($2));
+       return $1(prozperDes$js_GeneratedPrintf.p$3($2));
       };
      }(Global.id))(a));
      return b$1.Zero();
@@ -3018,7 +3020,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return function($2)
    {
-    return $1("Cuenta verificada: "+prozperDes$js_GeneratedPrintf.p$16($2));
+    return $1("Cuenta verificada: "+prozperDes$js_GeneratedPrintf.p$4($2));
    };
   }(Global.id))(idR.$0):idR.$0===""?"La cuenta aun no ha sido verificada":idR.$0;
  };
@@ -3894,7 +3896,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     });
    }))),(f=(d=[],function(r)
    {
-    return Result.defaultValue(d,r);
+    return Result.defaultValue$1(d,r);
    }),function(x)
    {
     return g(f(x));
@@ -4149,14 +4151,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:"tamano",
     $1:View.Map(function($1)
     {
-     return String.thousands($1.tamano);
+     return String.thousands$1($1.tamano);
     },arV.get_View())
    }).WithHole({
     $:2,
     $0:"modificado",
     $1:View.Map(function($1)
     {
-     return Date.toYYYYMMDDHHMM("-",$1.modificado);
+     return Date.toYYYYMMDDHHMM$1("-",$1.modificado);
     },arV.get_View())
    }).WithHole({
     $:0,
@@ -4227,7 +4229,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       {
        return function($2)
        {
-        return $1(prozperDes$js_GeneratedPrintf.p$15($2));
+        return $1(prozperDes$js_GeneratedPrintf.p$3($2));
        };
       }(Global.id))(a$1));
       return b$1.Zero();
@@ -4353,7 +4355,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:"fecha",
     $1:View.Map(function($1)
     {
-     return Date.toYYYYMMDDHHMM("-",$1.fechaPago);
+     return Date.toYYYYMMDDHHMM$1("-",$1.fechaPago);
     },trv)
    }).WithHole({
     $:2,
@@ -4619,12 +4621,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Pendientes.enlaceArchivo=function(ar)
  {
-  var b,n,i,p,i$1;
-  return(b=(n=(Pendientes.tarchivo2String(ar.tipo))[0][0],(i=ar.idAliado.get_Id(),ProviderBuilder.Make().WithHole({
+  var b,n,p,i;
+  return(b=(n=(Pendientes.tarchivo2String(ar.tipo))[0][0],ProviderBuilder.Make().WithHole({
    $:1,
    $0:"idaliado",
-   $1:i
-  })).WithHole({
+   $1:ar.idAliado.get_Id()
+  }).WithHole({
    $:1,
    $0:"archivo",
    $1:ar.nombre
@@ -4636,7 +4638,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $:1,
    $0:"nombre",
    $1:n
-  })),(p=Handler.CompleteHoles(b.k,b.h,[]),(i$1=new TemplateInstance.New(p[1],prozperDes$js_Templates.enlacedocumento(p[0])),(b.i=i$1,i$1)))).get_Doc();
+  })),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],prozperDes$js_Templates.enlacedocumento(p[0])),(b.i=i,i)))).get_Doc();
  };
  Pendientes.sufijo=function(ar)
  {
@@ -5865,8 +5867,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Aliado$2.empty=function()
  {
-  SC$1.$cctor();
-  return SC$1.empty;
+  SC$3.$cctor();
+  return SC$3.empty;
  };
  Aliado$2.nombre2=function(dp)
  {
@@ -5982,7 +5984,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     {
      return function($2)
      {
-      return $1("buscarAliado failed: "+prozperDes$js_GeneratedPrintf.p$13($2));
+      return $1("buscarAliado failed: "+ProzperServer_GeneratedPrintf.p$11($2));
      };
     }(Operators.FailWith))(id);
    }
@@ -6145,14 +6147,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:"opcionesadministrador"
   },h):void 0;
  };
- prozperDes$js_GeneratedPrintf.p$1=function($1)
- {
-  return $1.$==1?"Regular":"Master";
- };
- prozperDes$js_GeneratedPrintf.p=function($1)
- {
-  return $1.$==3?"Cancelado":$1.$==2?"Inactivo":$1.$==1?"Activo":"CuentaCreada";
- };
  prozperDes$js_Templates.filaaliado=function(h)
  {
   Templates.LoadLocalTemplates("indexdes");
@@ -6185,7 +6179,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:"calculo"
   },h):void 0;
  };
- prozperDes$js_GeneratedPrintf.p$15=function($1)
+ prozperDes$js_GeneratedPrintf.p$3=function($1)
  {
   return $1.$==2?"Mensaje "+Utils.prettyPrint($1.$0):$1.$==1?"NuevoRegistro "+Utils.prettyPrint($1.$0):"ROk";
  };
@@ -6281,13 +6275,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return RouterOperators.JSUnion(void 0,[[null,[[null,[]]],[]],[null,[[null,["NoUser"]]],[]],[null,[[null,["PreRegister"]]],[]],[null,[[null,["Content"]]],[RouterOperators.rString()]],[null,[[null,["Pdf"]]],[RouterOperators.rWildcard()]],[null,[[null,["Video"]]],[RouterOperators.rWildcard()]]]);
  };
- prozperDes$js_GeneratedPrintf.p$2=function($1)
+ prozperDes$js_GeneratedPrintf.p=function($1)
  {
   return $1.$==5?"Dia25":$1.$==4?"Dia20":$1.$==3?"Dia15":$1.$==2?"Dia10":$1.$==1?"Dia05":"Dia01";
- };
- prozperDes$js_GeneratedPrintf.p$13=function($1)
- {
-  return"IdAliado "+Utils.prettyPrint($1.$0);
  };
  prozperDes$js_Templates.datospersonales=function(h)
  {
@@ -6297,7 +6287,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:"datospersonales"
   },h):void 0;
  };
- prozperDes$js_GeneratedPrintf.p$14=function($1)
+ prozperDes$js_GeneratedPrintf.p$2=function($1)
  {
   return $1.$==2?"Empresa":$1.$==1?"Femenino":"Masculino";
  };
@@ -6373,29 +6363,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:"transacciones"
   },h):void 0;
  };
- prozperDes$js_GeneratedPrintf.p$16=function($1)
- {
-  return"IdPayment "+Utils.prettyPrint($1.$0);
- };
- prozperDes$js_GeneratedPrintf.p$5=function($1)
- {
-  return $1.$==2?"OtroS "+Utils.prettyPrint($1.$0):$1.$==1?"Florida":"Texas";
- };
  prozperDes$js_GeneratedPrintf.p$4=function($1)
  {
-  return $1.$==3?"OtroP "+Utils.prettyPrint($1.$0):$1.$==2?"Argentina":$1.$==1?"Venezuela":"USA";
- };
- prozperDes$js_GeneratedPrintf.p$9=function($1)
- {
-  return $1.$==2?"Otra "+Utils.prettyPrint($1.$0):$1.$==1?"Corriente":"Ahorro";
- };
- prozperDes$js_GeneratedPrintf.p$6=function($1)
- {
-  return $1.$==7?"Otro "+Utils.prettyPrint($1.$0):$1.$==6?"FormaW8BEN":$1.$==5?"FormaW9":$1.$==4?"LicenciaConducir":$1.$==3?"Cedula":$1.$==2?"Pasaporte":$1.$==1?"Autorizacion":"Contrato";
- };
- prozperDes$js_GeneratedPrintf.p$7=function($1)
- {
-  return $1.$==5?"Cambiado":$1.$==4?"Cancelado":$1.$==3?"Expirado":$1.$==2?"Rechazado":$1.$==1?"Verificado":"Subido";
+  return"IdPayment "+Utils.prettyPrint($1.$0);
  };
  prozperDes$js_Templates.cuentabancaria=function(h)
  {
@@ -6413,25 +6383,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:"tarjetacredito"
   },h):void 0;
  };
- prozperDes$js_GeneratedPrintf.p$3=function($1)
+ prozperDes$js_GeneratedPrintf.p$1=function($1)
  {
   return $1.$==3?"ResetPassword":$1.$==2?"EditProfile":$1.$==1?"SignUp":"SignIn";
- };
- prozperDes$js_GeneratedPrintf.p$12=function($1)
- {
-  return $1.$==3?"Voip":$1.$==2?"Habitacion":$1.$==1?"Oficina":"Movil";
- };
- prozperDes$js_GeneratedPrintf.p$11=function($1)
- {
-  return $1.$==3?"Otro "+Utils.prettyPrint($1.$0):$1.$==2?"ServicioPostal":$1.$==1?"Oficina":"Habitacion";
- };
- prozperDes$js_GeneratedPrintf.p$8=function($1)
- {
-  return $1.$==3?"Otra "+Utils.prettyPrint($1.$0):$1.$==2?"Amex":$1.$==1?"MasterCard":"Visa";
- };
- prozperDes$js_GeneratedPrintf.p$10=function($1)
- {
-  return $1.$==2?"Otro "+Utils.prettyPrint($1.$0):$1.$==1?"PagoComision":"PagoAfiliacion";
  };
  Doc=UI.Doc=Runtime$1.Class({},Obj,Doc);
  Doc.get_Empty=function()
@@ -6608,7 +6562,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     a=Aliado.get_LoggedId();
     return function(d)
     {
-     return(new AjaxRemotingProvider.New()).Async("prozperDes.js:FsRoot.ProzperServer+Rpc0.ejecutarDataEventoNuevo:822709795",[tk,a,d]);
+     return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc0.ejecutarDataEventoNuevo:181407377",[tk,a,d]);
     };
    }($1))($2);
   }
@@ -6629,7 +6583,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn(x));
+      return g(Result.rtn$1(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -6658,7 +6612,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var b;
   function f($1,$2)
   {
-   return(new AjaxRemotingProvider.New()).Async("prozperDes.js:FsRoot.ProzperServer+Rpc0.obtenerFormasDePagoPara:515984594",[$1,$2]);
+   return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc0.obtenerFormasDePagoPara:-1929458241",[$1,$2]);
   }
   b=Monads.asyncResult();
   return b.Run(b.Delay(function()
@@ -6677,7 +6631,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn(x));
+      return g(Result.rtn$1(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -6694,7 +6648,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var b;
   function f($1,$2)
   {
-   return(new AjaxRemotingProvider.New()).Async("prozperDes.js:FsRoot.ProzperServer+Rpc0.obtenerListaDocs:2133265368",[$1,$2]);
+   return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc0.obtenerListaDocs:-881142106",[$1,$2]);
   }
   b=Monads.asyncResult();
   return b.Run(b.Delay(function()
@@ -6713,7 +6667,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn(x));
+      return g(Result.rtn$1(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -6730,7 +6684,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var b;
   function f($1,$2)
   {
-   return(new AjaxRemotingProvider.New()).Async("prozperDes.js:FsRoot.ProzperServer+Rpc0.obtenerFormasDePagoId:207359703",[$1,$2]);
+   return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc0.obtenerFormasDePagoId:2063455187",[$1,$2]);
   }
   b=Monads.asyncResult();
   return b.Run(b.Delay(function()
@@ -6749,7 +6703,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn(x));
+      return g(Result.rtn$1(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -6772,7 +6726,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     a=Aliado.get_LoggedId();
     return function(t)
     {
-     return(new AjaxRemotingProvider.New()).Async("prozperDes.js:FsRoot.ProzperServer+Rpc0.enviarCorreosInvitacion:1581401877",[tk,a,t[0],t[1]]);
+     return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc0.enviarCorreosInvitacion:1622714317",[tk,a,t[0],t[1]]);
     };
    }($1))($2);
   }
@@ -6794,7 +6748,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn(x));
+      return g(Result.rtn$1(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p$2));
@@ -6811,7 +6765,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var b;
   function f(c)
   {
-   return(new AjaxRemotingProvider.New()).Async("prozperDes.js:FsRoot.ProzperServer+Rpc0.obtenerIdInfluyente:231616815",[c]);
+   return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc0.obtenerIdInfluyente:231616815",[c]);
   }
   b=null;
   return Concurrency.Delay(function()
@@ -6833,7 +6787,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var b;
   function f()
   {
-   return(new AjaxRemotingProvider.New()).Async("prozperDes.js:FsRoot.ProzperServer+Rpc0.obtenerUnions:-1742744641",[]);
+   return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc0.obtenerUnions:-1742744641",[]);
   }
   b=null;
   return Concurrency.Delay(function()
@@ -6855,7 +6809,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var p$1,b;
   function f($1,$2)
   {
-   return(new AjaxRemotingProvider.New()).Async("prozperDes.js:FsRoot.ProzperServer+Rpc0.obtenerTransaccionesPara:-1185662803",[$1,$2]);
+   return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc0.obtenerTransaccionesPara:-1914339047",[$1,$2]);
   }
   p$1=Aliado.get_LoggedId();
   b=Monads.asyncResult();
@@ -6875,7 +6829,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn(x));
+      return g(Result.rtn$1(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p$1));
@@ -6898,7 +6852,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     a=Aliado.get_LoggedId();
     return function(c)
     {
-     return(new AjaxRemotingProvider.New()).Async("prozperDes.js:FsRoot.ProzperServer+Rpc0.agregarUsuarioSiEsNuevo:196139867",[tk,a,c]);
+     return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc0.agregarUsuarioSiEsNuevo:1579629588",[tk,a,c]);
     };
    }($1))($2);
   }
@@ -6919,7 +6873,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn(x));
+      return g(Result.rtn$1(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -6936,7 +6890,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var p$1,b;
   function f($1,$2)
   {
-   return(new AjaxRemotingProvider.New()).Async("prozperDes.js:FsRoot.ProzperServer+Rpc0.obtenerEstadoParaUsuario:-732444745",[$1,$2]);
+   return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc0.obtenerEstadoParaUsuario:-1561662925",[$1,$2]);
   }
   p$1=Aliado.get_LoggedId();
   b=Monads.asyncResult();
@@ -6956,7 +6910,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn(x));
+      return g(Result.rtn$1(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p$1));
@@ -6979,7 +6933,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     a=Aliado.get_LoggedId();
     return function(p$1)
     {
-     return(new AjaxRemotingProvider.New()).Async("prozperDes.js:FsRoot.ProzperServer+Rpc0.borrarFormaPago:111893165",[tk,a,p$1]);
+     return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc0.borrarFormaPago:-384331266",[tk,a,p$1]);
     };
    }($1))($2);
   }
@@ -7000,7 +6954,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn(x));
+      return g(Result.rtn$1(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -7023,7 +6977,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     a=Aliado.get_LoggedId();
     return function(p$1)
     {
-     return(new AjaxRemotingProvider.New()).Async("prozperDes.js:FsRoot.ProzperServer+Rpc0.registrarTarjeta:576748903",[tk,a,p$1]);
+     return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc0.registrarTarjeta:-1859341136",[tk,a,p$1]);
     };
    }($1))($2);
   }
@@ -7044,7 +6998,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn(x));
+      return g(Result.rtn$1(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -7067,7 +7021,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     a=Aliado.get_LoggedId();
     return function(p$1)
     {
-     return(new AjaxRemotingProvider.New()).Async("prozperDes.js:FsRoot.ProzperServer+Rpc0.registrarCuenta:640489445",[tk,a,p$1]);
+     return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc0.registrarCuenta:244739382",[tk,a,p$1]);
     };
    }($1))($2);
   }
@@ -7088,7 +7042,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn(x));
+      return g(Result.rtn$1(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -7111,7 +7065,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     a=Aliado.get_LoggedId();
     return function(p$1)
     {
-     return(new AjaxRemotingProvider.New()).Async("prozperDes.js:FsRoot.ProzperServer+Rpc0.validarFormaPago:111893165",[tk,a,p$1]);
+     return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc0.validarFormaPago:-384331266",[tk,a,p$1]);
     };
    }($1))($2);
   }
@@ -7132,7 +7086,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn(x));
+      return g(Result.rtn$1(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -7155,7 +7109,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     a=Aliado.get_LoggedId();
     return function(i)
     {
-     return(new AjaxRemotingProvider.New()).Async("prozperDes.js:FsRoot.ProzperServer+Rpc0.actualizarSubscripcion:111893165",[tk,a,i]);
+     return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc0.actualizarSubscripcion:-384331266",[tk,a,i]);
     };
    }($1))($2);
   }
@@ -7176,7 +7130,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn(x));
+      return g(Result.rtn$1(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -7193,7 +7147,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var b;
   function f($1,$2)
   {
-   return(new AjaxRemotingProvider.New()).Async("prozperDes.js:FsRoot.ProzperServer+Rpc0.obtenerFormasDePagoId:207359703",[$1,Aliado.get_LoggedId()]);
+   return(new AjaxRemotingProvider.New()).Async("ProzperServer:FsRoot.ProzperServer+Rpc0.obtenerFormasDePagoId:2063455187",[$1,Aliado.get_LoggedId()]);
   }
   b=Monads.asyncResult();
   return b.Run(b.Delay(function()
@@ -7212,7 +7166,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn(x));
+      return g(Result.rtn$1(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,void 0));
@@ -7647,16 +7601,16 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  SC$1.$cctor=function()
  {
-  var f,g$3,c,c$1,d,m,$1,agent,c$2,c$3,f$3,f$4,b,llamadas,$2,b$1,b$2,b$3;
+  var f,m,$1,agent,c,c$1,f$2,f$3,b,llamadas,$2,b$1,b$2,b$3;
   SC$1.$cctor=Global.ignore;
   SC$1.rtn=function(v)
   {
    return[v];
   };
-  SC$1.result=new Builder.New();
-  SC$1.result$1=Result.result();
+  SC$1.result=new Builder.New$1();
+  SC$1.result$1=Result.result$1();
   SC$1.resultP=new BuilderP.New();
-  SC$1.eff=new EffBuilder.New();
+  SC$1.eff=new EffBuilder.New$1();
   SC$1.asyncResult=new AsyncResultBuilder.New();
   SC$1.asyncResultP=new AsyncResultBuilderP.New();
   function g(s)
@@ -7693,209 +7647,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return g$2(f(x));
   });
-  function f$2(s)
-  {
-   return s+"T00:00:00";
-  }
-  SC$1.parseDateO2=(g$3=ParseO.tryParseWith$1(function(a)
-  {
-   var o,m$1;
-   o=0;
-   return[(m$1=DateUtil.TryParse(a),m$1!=null&&m$1.$==1&&(o=m$1.$0,true)),o];
-  }),function(x)
-  {
-   return g$3(f$2(x));
-  });
-  SC$1.parseDateO=ParseO.tryParseWith$1(function(a)
-  {
-   var o,m$1;
-   o=0;
-   return[(m$1=DateUtil.TryParse(a),m$1!=null&&m$1.$==1&&(o=m$1.$0,true)),o];
-  });
-  SC$1.parseIntO=ParseO.tryParseWith$1(function(a)
-  {
-   var o;
-   o=0;
-   return[Numeric.TryParseInt32(a,{
-    get:function()
-    {
-     return o;
-    },
-    set:function(v)
-    {
-     o=v;
-    }
-   }),o];
-  });
-  SC$1.parseInt64O=ParseO.tryParseWith$1(function(a)
-  {
-   var o;
-   o=0;
-   return[Numeric.TryParseInt64(a,{
-    get:function()
-    {
-     return o;
-    },
-    set:function(v)
-    {
-     o=v;
-    }
-   }),o];
-  });
-  SC$1.parseSingleO=ParseO.tryParseWith$1(function(a)
-  {
-   var o,$3;
-   o=0;
-   return[($3=Global.Number(a),Global.isNaN($3)?false:(o=$3,true)),o];
-  });
-  SC$1.parseDoubleO=ParseO.tryParseWith$1(function(a)
-  {
-   var o,$3;
-   o=0;
-   return[($3=Global.Number(a),Global.isNaN($3)?false:(o=$3,true)),o];
-  });
-  SC$1.parseGuidO=ParseO.tryParseWith$1(function(a)
-  {
-   var o;
-   o=null;
-   return[Guid.TryParse(a,{
-    get:function()
-    {
-     return o;
-    },
-    set:function(v)
-    {
-     o=v;
-    }
-   }),o];
-  });
-  SC$1["|Date|_|"]=ParseO.parseDateO$1();
-  SC$1["|Int|_|"]=ParseO.parseIntO$1();
-  SC$1["|Int64|_|"]=ParseO.parseInt64O$1();
-  SC$1["|Single|_|"]=ParseO.parseSingleO$1();
-  SC$1["|Double|_|"]=ParseO.parseDoubleO$1();
-  SC$1["|Guid|_|"]=ParseO.parseGuidO$1();
-  SC$1.serString=[Serializer.toJsonString,function(j)
-  {
-   return j.tryString();
-  }];
-  SC$1.serFloat=[function(v)
-  {
-   return(function($3)
-   {
-    return function($4)
-    {
-     return $3(Utils.prettyPrint($4));
-    };
-   }(Global.id))(v);
-  },function(j)
-  {
-   return j.tryFloat();
-  }];
-  SC$1.serInt=[function(v)
-  {
-   return(function($3)
-   {
-    return function($4)
-    {
-     return $3(Utils.prettyPrint($4));
-    };
-   }(Global.id))(v);
-  },function(j)
-  {
-   var o;
-   o=j.tryInt();
-   return o==null?null:{
-    $:1,
-    $0:Operators.toInt(o.$0)
-   };
-  }];
-  SC$1.serInt64=[Global.String,function(j)
-  {
-   return j.tryInt();
-  }];
-  SC$1.serBool=[function(v)
-  {
-   return(function($3)
-   {
-    return function($4)
-    {
-     return $3(Utils.prettyPrint($4));
-    };
-   }(Global.id))(v);
-  },function(j)
-  {
-   return j.tryBool();
-  }];
-  SC$1.serDate=[function(x)
-  {
-   return Global.String(Global.id(x));
-  },function(j)
-  {
-   var o;
-   o=j.tryInt();
-   return o==null?null:{
-    $:1,
-    $0:o.$0
-   };
-  }];
-  SC$1.serTypedRegisters=new Dictionary.New$5();
   SC$1.counter=1;
   SC$1.rexGuid="([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})";
   SC$1.rexEmail="(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@[*[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+]*";
   SC$1.policies=List.ofArray([Policy.SignIn,Policy.SignUp,Policy.EditProfile,Policy.ResetPassword]);
-  SC$1.premisasCalculo=PremisasCalculo.New(15,25,25,0,75,31,26,28);
-  SC$1.telVacio=Telefono$1.New(TipoTelefono.Movil,"","","","",false);
-  SC$1.dirVacio=Direccion$1.New(Library.Error$1(""),TipoDireccion.Habitacion,"","","",new Estado({
-   $:2,
-   $0:""
-  }),new Pais({
-   $:3,
-   $0:""
-  }),new ZonaPostal({
-   $:0,
-   $0:""
-  }));
-  SC$1.tarVacio=TarjetaCredito.New("",TipoTarjeta.Visa,new NumeroTarjeta({
-   $:0,
-   $0:""
-  }),Expiracion.New(2000,1));
-  SC$1.ctaVacio=CuentaBancaria.New("","",TipoCuenta.Ahorro,new NumeroCuenta({
-   $:0,
-   $0:""
-  }),new RoutingNumber({
-   $:0,
-   $0:""
-  }));
-  SC$1.modeloVacio=Modelo.New(new IdAliado({
-   $:0,
-   $0:""
-  }),[],(c=Date$1.now(),(new Date$1(c)).getFullYear()),(c$1=Date$1.now(),(new Date$1(c$1)).getMonth()+1),TypesV0.premisasCalculo(),0);
-  SC$1.correoVacio=CorreoElectronico.New("",null,null);
-  SC$1.empty=(d=DatosPersonales$1.New(null,"","","","",Pais.USA,Genero.Masculino,(new Date$1(2000,1-1,1)).getTime()),Aliado$1.New(new IdAliado({
-   $:0,
-   $0:""
-  }),null,null,null,d,[],[],false,StatusAliado.Inactivo,DiaPago.Dia01,TipoAliado.Regular,(new Date$1(2000,1-1,1)).getTime(),(new Date$1(2000,1-1,1)).getTime(),0,0,0,0,0,0,0,0));
-  SC$1.serverEndPoint=Lazy.Create(function()
-  {
-   return self.location.protocol==="http:"?"http://localhost:7071/api/":(function($3)
-   {
-    return function($4)
-    {
-     return $3("https://"+Utils.toSafe($4)+"/api/");
-    };
-   }(Global.id))(self.location.host);
-  });
-  SC$1.originalProvider=Remoting.AjaxProvider();
-  SC$1.getTokenOA=function()
-  {
-   var b$4;
-   b$4=null;
-   return Concurrency.Delay(function()
-   {
-    return Concurrency.Return(null);
-   });
-  };
   SC$1.rootdir="D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperServer\\website";
   SC$1.TemplatesFileName="D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperServer\\website"+"\\indexDes.html";
   ((function($3)
@@ -7957,28 +7712,28 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$1.modeloV=Var$1.Create$1(Modelo.New(new IdAliado({
    $:0,
    $0:":"
-  }),[],(c$2=Date$1.now(),(new Date$1(c$2)).getFullYear()),(c$3=Date$1.now(),(new Date$1(c$3)).getMonth()+1),TypesV0.premisasCalculo(),-2));
+  }),[],(c=Date$1.now(),(new Date$1(c)).getFullYear()),(c$1=Date$1.now(),(new Date$1(c$1)).getMonth()+1),TypesV0.premisasCalculo(),-2));
   SC$1.formasPagoAliadoV=Var$1.Create$1([]);
   SC$1.invitacionesV=Var$1.Create$1("");
-  function f$5(a)
+  function f$4(a)
   {
    var a$1;
    a$1=LibraryJS.REGEX$2(LibraryJS.rexEmail$1(),"gi",a);
    return a$1!=null&&a$1.$==1?a$1.$0:[];
   }
-  function g$4(s)
+  function g$3(s)
   {
    return Strings.concat("\n",s);
   }
-  SC$1.emailsInvitarW=View.Map((f$3=(f$4=function(x)
+  SC$1.emailsInvitarW=View.Map((f$2=(f$3=function(x)
   {
-   return Seq.distinct(f$5(x));
+   return Seq.distinct(f$4(x));
   },function(x)
   {
-   return Seq.sort(f$4(x));
+   return Seq.sort(f$3(x));
   }),function(x)
   {
-   return g$4(f$3(x));
+   return g$3(f$2(x));
   }),ModeloUI.invitacionesV().get_View());
   SC$1.invitacionesDisabledW=View.Map(function(a)
   {
@@ -8003,14 +7758,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       else
        Msal.checkUser();
   },ModeloUI.endPointV().get_View());
-  function f$6(a)
+  function f$5(a)
   {
    return a==="ProzperLyt.mainContent"?EndPoint.DefaultEP:{
     $:3,
     $0:a
    };
   }
-  function g$5(v)
+  function g$4(v)
   {
    if(!Unchecked.Equals(ModeloUI.endPointV().Get(),v))
     ModeloUI.endPointV().Set(v);
@@ -8021,7 +7776,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return a$1.$==0&&!Unchecked.Equals(Msal.userO().Get(),null)?"ProzperLyt.mainContent":a$1.$==3&&(!Unchecked.Equals(Msal.userO().Get(),null)&&($4=a$1.$0,true))?$4:a$1.$==2?"ProzperLyt.cntPreRegister":a$1.$==4?"ProzperLyt.cntPDF":a$1.$==5?"ProzperLyt.cntVideo":"ProzperLyt.cntFormaNoUser";
   },Msal.userO().get_View(),ModeloUI.endPointV().get_View()),function(x)
   {
-   return g$5(f$6(x));
+   return g$4(f$5(x));
   });
   SC$1.aliadoW=(b=View.get_Do(),View.Bind(function(a)
   {
@@ -8195,12 +7950,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return function(v)
    {
-    var c$4;
-    c$4=new CuentaPago({
+    var c$2;
+    c$2=new CuentaPago({
      $:1,
      $0:v
     });
-    return FormaPago.New(fp.nombre,Library.Error$1(""),c$4,fp.subscripcion);
+    return FormaPago.New(fp.nombre,Library.Error$1(""),c$2,fp.subscripcion);
    };
   }];
   SC$1.fcta=[function(cp)
@@ -8215,27 +7970,27 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return function(v)
    {
-    var c$4;
-    c$4=new CuentaPago({
+    var c$2;
+    c$2=new CuentaPago({
      $:0,
      $0:v
     });
-    return FormaPago.New(fp.nombre,Library.Error$1(""),c$4,fp.subscripcion);
+    return FormaPago.New(fp.nombre,Library.Error$1(""),c$2,fp.subscripcion);
    };
   }];
   SC$1.transaccionesW=View.MapAsync(function()
   {
-   var f$7,d$1;
-   function g$6(v)
+   var f$6,d;
+   function g$5(v)
    {
     return Concurrency.Return(v);
    }
-   return Concurrency.Bind(Rpc.obtenerTransaccionesPara(Aliado.get_LoggedId()),(f$7=(d$1=[],function(r)
+   return Concurrency.Bind(Rpc.obtenerTransaccionesPara(Aliado.get_LoggedId()),(f$6=(d=[],function(r)
    {
-    return Result.defaultValue(d$1,r);
+    return Result.defaultValue$1(d,r);
    }),function(x)
    {
-    return g$6(f$7(x));
+    return g$5(f$6(x));
    }));
   },ModeloUI.modeloV().get_View());
   SC$1.expandedOV=Var$1.Create$1(null);
@@ -8273,7 +8028,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return function($4)
     {
-     return $3(prozperDes$js_GeneratedPrintf.p($4));
+     return $3(ProzperServer_GeneratedPrintf.p($4));
     };
    }(Global.id))(al.status);
   });
@@ -8289,7 +8044,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return function($4)
     {
-     return $3(prozperDes$js_GeneratedPrintf.p$1($4));
+     return $3(ProzperServer_GeneratedPrintf.p$1($4));
     };
    }(Global.id))(al.tipo);
   });
@@ -8343,13 +8098,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return function($4)
     {
-     return $3(prozperDes$js_GeneratedPrintf.p$2($4));
+     return $3(prozperDes$js_GeneratedPrintf.p($4));
     };
    }(Global.id))(al.diaPago),2);
   });
   SC$1.i_desde=ReporteConsolidado.agregarCampo(11,true,function(al)
   {
-   return Date.toYYYYMMDD("-",al.fechaRegistro);
+   return Date.toYYYYMMDD$1("-",al.fechaRegistro);
   });
   SC$1.i_Id=ReporteConsolidado.agregarCampo(12,true,function(al)
   {
@@ -8601,6 +8356,54 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    v:evalOrVal,
    f:force
   };
+ };
+ ProzperServer_GeneratedPrintf.p$1=function($1)
+ {
+  return $1.$==1?"Regular":"Master";
+ };
+ ProzperServer_GeneratedPrintf.p=function($1)
+ {
+  return $1.$==3?"Cancelado":$1.$==2?"Inactivo":$1.$==1?"Activo":"CuentaCreada";
+ };
+ ProzperServer_GeneratedPrintf.p$11=function($1)
+ {
+  return"IdAliado "+Utils.prettyPrint($1.$0);
+ };
+ ProzperServer_GeneratedPrintf.p$2=function($1)
+ {
+  return $1.$==3?"OtroP "+Utils.prettyPrint($1.$0):$1.$==2?"Argentina":$1.$==1?"Venezuela":"USA";
+ };
+ ProzperServer_GeneratedPrintf.p$7=function($1)
+ {
+  return $1.$==2?"Otra "+Utils.prettyPrint($1.$0):$1.$==1?"Corriente":"Ahorro";
+ };
+ ProzperServer_GeneratedPrintf.p$4=function($1)
+ {
+  return $1.$==7?"Otro "+Utils.prettyPrint($1.$0):$1.$==6?"FormaW8BEN":$1.$==5?"FormaW9":$1.$==4?"LicenciaConducir":$1.$==3?"Cedula":$1.$==2?"Pasaporte":$1.$==1?"Autorizacion":"Contrato";
+ };
+ ProzperServer_GeneratedPrintf.p$5=function($1)
+ {
+  return $1.$==5?"Cambiado":$1.$==4?"Cancelado":$1.$==3?"Expirado":$1.$==2?"Rechazado":$1.$==1?"Verificado":"Subido";
+ };
+ ProzperServer_GeneratedPrintf.p$3=function($1)
+ {
+  return $1.$==2?"OtroS "+Utils.prettyPrint($1.$0):$1.$==1?"Florida":"Texas";
+ };
+ ProzperServer_GeneratedPrintf.p$10=function($1)
+ {
+  return $1.$==3?"Voip":$1.$==2?"Habitacion":$1.$==1?"Oficina":"Movil";
+ };
+ ProzperServer_GeneratedPrintf.p$9=function($1)
+ {
+  return $1.$==3?"Otro "+Utils.prettyPrint($1.$0):$1.$==2?"ServicioPostal":$1.$==1?"Oficina":"Habitacion";
+ };
+ ProzperServer_GeneratedPrintf.p$6=function($1)
+ {
+  return $1.$==3?"Otra "+Utils.prettyPrint($1.$0):$1.$==2?"Amex":$1.$==1?"MasterCard":"Visa";
+ };
+ ProzperServer_GeneratedPrintf.p$8=function($1)
+ {
+  return $1.$==2?"Otro "+Utils.prettyPrint($1.$0):$1.$==1?"PagoComision":"PagoAfiliacion";
  };
  Seq.sortWith=function(f,s)
  {
@@ -9440,10 +9243,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return s.replace(new Global.RegExp("[-\\/\\\\^$*+?.()|[\\]{}]","g"),"\\$&");
  };
- Strings.IsNullOrEmpty=function(x)
- {
-  return x==null||x=="";
- };
  Strings.SplitWith=function(str,pat)
  {
   return str.split(pat);
@@ -9451,6 +9250,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Strings.replicate=function(count,s)
  {
   return Arrays.create(count,s).join("");
+ };
+ Strings.IsNullOrEmpty=function(x)
+ {
+  return x==null||x=="";
  };
  Strings.ReplaceChar=function(s,oldC,newC)
  {
@@ -9502,12 +9305,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      dat=a.$0;
      forma.Hole("nombres").Set(Strings.Trim(dat.nombre1+" "+dat.nombre2));
      forma.Hole("apellidos").Set(Strings.Trim(dat.apellido1+" "+dat.apellido2));
-     forma.Hole("fechanacimiento").Set(Date.toYYYYMMDD("-",dat.fechaNacimiento));
+     forma.Hole("fechanacimiento").Set(Date.toYYYYMMDD$1("-",dat.fechaNacimiento));
      forma.Hole("genero").Set((function($1)
      {
       return function($2)
       {
-       return $1(prozperDes$js_GeneratedPrintf.p$14($2));
+       return $1(prozperDes$js_GeneratedPrintf.p$2($2));
       };
      }(Global.id))(dat.genero));
     }
@@ -9538,7 +9341,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return!Seq.isEmpty($1)?null:VariousUI.alertIfNone("Genero",Genero.tryParse($2),function(genero)
     {
-     return VariousUI.alertIfNone("Fecha incorrecta",(ParseO.parseDateO2$1())($3),function(fecha)
+     return VariousUI.alertIfNone("Fecha incorrecta",(ParseO.parseDateO2())($3),function(fecha)
      {
       return{
        $:1,
@@ -10423,7 +10226,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return function($2)
     {
-     return $1(prozperDes$js_GeneratedPrintf.p($2));
+     return $1(ProzperServer_GeneratedPrintf.p($2));
     };
    }(Global.id))(this);
   }
@@ -10434,9 +10237,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   m=Strings.Trim(s).toUpperCase();
   return m==="CUENTACREADA"?StatusAliado.CuentaCreada:m==="ACTIVO"?StatusAliado.Activo:m==="CANCELADO"?StatusAliado.Cancelado:StatusAliado.Inactivo;
  };
- StatusAliado.Inactivo=new StatusAliado({
-  $:2
- });
  StatusAliado.CuentaCreada=new StatusAliado({
   $:0
  });
@@ -10445,6 +10245,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  });
  StatusAliado.Cancelado=new StatusAliado({
   $:3
+ });
+ StatusAliado.Inactivo=new StatusAliado({
+  $:2
  });
  List.ofArray=function(arr)
  {
@@ -10595,71 +10398,71 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  TypesV0.ctaVacio=function()
  {
-  SC$1.$cctor();
-  return SC$1.ctaVacio;
+  SC$3.$cctor();
+  return SC$3.ctaVacio;
  };
  TypesV0.premisasCalculo=function()
  {
-  SC$1.$cctor();
-  return SC$1.premisasCalculo;
+  SC$3.$cctor();
+  return SC$3.premisasCalculo;
  };
  TypesV0.correoVacio=function()
  {
-  SC$1.$cctor();
-  return SC$1.correoVacio;
+  SC$3.$cctor();
+  return SC$3.correoVacio;
  };
  TypesV0.modeloVacio=function()
  {
-  SC$1.$cctor();
-  return SC$1.modeloVacio;
+  SC$3.$cctor();
+  return SC$3.modeloVacio;
  };
  TypesV0.telVacio=function()
  {
-  SC$1.$cctor();
-  return SC$1.telVacio;
+  SC$3.$cctor();
+  return SC$3.telVacio;
  };
  TypesV0.dirVacio=function()
  {
-  SC$1.$cctor();
-  return SC$1.dirVacio;
+  SC$3.$cctor();
+  return SC$3.dirVacio;
  };
  TypesV0.tarVacio=function()
  {
-  SC$1.$cctor();
-  return SC$1.tarVacio;
+  SC$3.$cctor();
+  return SC$3.tarVacio;
  };
- Result.defaultValue=function(d,r)
+ Result.defaultValue$1=function(d,r)
  {
   return r.$==1?d:r.$0;
  };
- Result.result=function()
+ Result.result$1=function()
  {
   SC$1.$cctor();
   return SC$1.result;
  };
- Result.rtn=function(a)
+ Result.rtn$1=function(a)
  {
   return{
    $:0,
    $0:a
   };
  };
- Result.iter=function(fE,f,r)
+ Result.iter$1=function(fE,f,r)
  {
-  Result.defaultWith(fE,Result$1.Map(f,r));
+  Result.defaultWith$1(fE,Result$1.Map(f,r));
  };
- Result.absorbO=function(f,vOR)
+ Result.absorbO$1=function(f,vOR)
  {
   return Result$1.Bind(function(v)
   {
-   return Result.ofOption(f,v);
+   return Result.ofOption$1(f,v);
   },vOR);
  };
- Result.defaultWith=function(f,r)
+ Result.defaultWith$1=function(f,r)
  {
   return r.$==1?f(r.$0):r.$0;
  };
- Result.ofOption=function(f,vO)
+ Result.ofOption$1=function(f,vO)
  {
   var o;
   o=vO==null?null:{
@@ -10788,28 +10591,28 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   Var.New.call($1);
   return $1;
  };
- Date.toYYYYMMDDHHMM=function(sep,date)
+ Date.toYYYYMMDDHHMM$1=function(sep,date)
  {
   return(((Runtime$1.Curried3(function($1,$2,$3)
   {
    return $1(Utils.toSafe($2)+" "+Utils.toSafe($3));
-  }))(Global.id))(Date.toYYYYMMDD(sep,date)))(Date.toHHMM(date));
+  }))(Global.id))(Date.toYYYYMMDD$1(sep,date)))(Date.toHHMM$1(date));
  };
- Date.toYYYYMMDD=function(sep,date)
+ Date.toYYYYMMDD$1=function(sep,date)
  {
   return((((((Runtime$1.Curried(function($1,$2,$3,$4,$5,$6)
   {
    return $1(Global.String($2)+Utils.toSafe($3)+Utils.padNumLeft(Global.String($4),2)+Utils.toSafe($5)+Utils.padNumLeft(Global.String($6),2));
   },6))(Global.id))((new Date$1(date)).getFullYear()))(sep))((new Date$1(date)).getMonth()+1))(sep))((new Date$1(date)).getDate());
  };
- Date.toHHMM=function(date)
+ Date.toHHMM$1=function(date)
  {
   return(((Runtime$1.Curried3(function($1,$2,$3)
   {
    return $1(Utils.padNumLeft(Global.String($2),2)+":"+Utils.padNumLeft(Global.String($3),2));
   }))(Global.id))((new Date$1(date)).getHours()))((new Date$1(date)).getMinutes());
  };
- String.thousands=function(n)
+ String.thousands$1=function(n)
  {
   var v,r,s;
   v=Global.String(n);
@@ -10861,16 +10664,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return Strings.SplitChars(s,[c],0);
  };
- String.StartsWith$1=function(start,s)
- {
-  return Strings.StartsWith(s,start)?{
-   $:1,
-   $0:Slice.string(s,{
-    $:1,
-    $0:start.length
-   },null)
-  }:null;
- };
  TipoArchivo=TypesV0.TipoArchivo=Runtime$1.Class({
   toString:function()
   {
@@ -10878,7 +10671,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return function($2)
     {
-     return $1(prozperDes$js_GeneratedPrintf.p$6($2));
+     return $1(ProzperServer_GeneratedPrintf.p$4($2));
     };
    }(Global.id))(this);
   }
@@ -10886,7 +10679,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  TipoArchivo.Parse=function(s)
  {
   var a;
-  a=String.StartsWith$1("Otro ",s);
+  a=String.StartsWith("Otro ",s);
   return a!=null&&a.$==1?new TipoArchivo({
    $:7,
    $0:a.$0
@@ -10923,7 +10716,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return function($2)
     {
-     return $1(prozperDes$js_GeneratedPrintf.p$7($2));
+     return $1(ProzperServer_GeneratedPrintf.p$5($2));
     };
    }(Global.id))(this);
   }
@@ -12063,7 +11856,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return function($2)
     {
-     return $1(prozperDes$js_GeneratedPrintf.p$1($2));
+     return $1(ProzperServer_GeneratedPrintf.p$1($2));
     };
    }(Global.id))(this);
   }
@@ -12074,6 +11867,251 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Numeric.TryParseInt32=function(s,r)
  {
   return Numeric.TryParse(s,-2147483648,2147483647,r);
+ };
+ SC$3.$cctor=function()
+ {
+  var f,g,c,c$1,d;
+  SC$3.$cctor=Global.ignore;
+  function g$1(s)
+  {
+   return Strings.concat("\n",s);
+  }
+  function f$1(s)
+  {
+   return String.splitByChar("\n",s);
+  }
+  function g$2(s)
+  {
+   var a,b;
+   return Slice.array(s,{
+    $:1,
+    $0:0
+   },{
+    $:1,
+    $0:(a=0,(b=Arrays.length(s)-2,Unchecked.Compare(a,b)===1?a:b))
+   });
+  }
+  function g$3(s)
+  {
+   return Strings.concat("\n",s);
+  }
+  function f$2(s)
+  {
+   return s+"T00:00:00";
+  }
+  SC$3.rtn=function(v)
+  {
+   return[v];
+  };
+  SC$3.result=new Builder.New();
+  SC$3.result$1=Result.result();
+  SC$3.eff=new EffBuilder.New();
+  SC$3.unindentStr=function(x)
+  {
+   return g$1(String.unindent(x));
+  };
+  SC$3.skipLastLine=(f=function(x)
+  {
+   return g$2(f$1(x));
+  },function(x)
+  {
+   return g$3(f(x));
+  });
+  SC$3.parseDateO2=(g=ParseO.tryParseWith(function(a)
+  {
+   var o,m;
+   o=0;
+   return[(m=DateUtil.TryParse(a),m!=null&&m.$==1&&(o=m.$0,true)),o];
+  }),function(x)
+  {
+   return g(f$2(x));
+  });
+  SC$3.parseDateO=ParseO.tryParseWith(function(a)
+  {
+   var o,m;
+   o=0;
+   return[(m=DateUtil.TryParse(a),m!=null&&m.$==1&&(o=m.$0,true)),o];
+  });
+  SC$3.parseIntO=ParseO.tryParseWith(function(a)
+  {
+   var o;
+   o=0;
+   return[Numeric.TryParseInt32(a,{
+    get:function()
+    {
+     return o;
+    },
+    set:function(v)
+    {
+     o=v;
+    }
+   }),o];
+  });
+  SC$3.parseInt64O=ParseO.tryParseWith(function(a)
+  {
+   var o;
+   o=0;
+   return[Numeric.TryParseInt64(a,{
+    get:function()
+    {
+     return o;
+    },
+    set:function(v)
+    {
+     o=v;
+    }
+   }),o];
+  });
+  SC$3.parseSingleO=ParseO.tryParseWith(function(a)
+  {
+   var o,$1;
+   o=0;
+   return[($1=Global.Number(a),Global.isNaN($1)?false:(o=$1,true)),o];
+  });
+  SC$3.parseDoubleO=ParseO.tryParseWith(function(a)
+  {
+   var o,$1;
+   o=0;
+   return[($1=Global.Number(a),Global.isNaN($1)?false:(o=$1,true)),o];
+  });
+  SC$3.parseGuidO=ParseO.tryParseWith(function(a)
+  {
+   var o;
+   o=null;
+   return[Guid.TryParse(a,{
+    get:function()
+    {
+     return o;
+    },
+    set:function(v)
+    {
+     o=v;
+    }
+   }),o];
+  });
+  SC$3["|Date|_|"]=ParseO.parseDateO();
+  SC$3["|Int|_|"]=ParseO.parseIntO();
+  SC$3["|Int64|_|"]=ParseO.parseInt64O();
+  SC$3["|Single|_|"]=ParseO.parseSingleO();
+  SC$3["|Double|_|"]=ParseO.parseDoubleO();
+  SC$3["|Guid|_|"]=ParseO.parseGuidO();
+  SC$3.serString=[Serializer.toJsonString,function(j)
+  {
+   return j.tryString();
+  }];
+  SC$3.serFloat=[function(v)
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(Global.id))(v);
+  },function(j)
+  {
+   return j.tryFloat();
+  }];
+  SC$3.serInt=[function(v)
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(Global.id))(v);
+  },function(j)
+  {
+   var o;
+   o=j.tryInt();
+   return o==null?null:{
+    $:1,
+    $0:Operators.toInt(o.$0)
+   };
+  }];
+  SC$3.serInt64=[Global.String,function(j)
+  {
+   return j.tryInt();
+  }];
+  SC$3.serBool=[function(v)
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(Global.id))(v);
+  },function(j)
+  {
+   return j.tryBool();
+  }];
+  SC$3.serDate=[function(x)
+  {
+   return Global.String(Global.id(x));
+  },function(j)
+  {
+   var o;
+   o=j.tryInt();
+   return o==null?null:{
+    $:1,
+    $0:o.$0
+   };
+  }];
+  SC$3.serTypedRegisters=new Dictionary.New$5();
+  SC$3.premisasCalculo=PremisasCalculo.New(15,25,25,0,75,31,26,28);
+  SC$3.telVacio=Telefono$1.New(TipoTelefono.Movil,"","","","",false);
+  SC$3.dirVacio=Direccion$1.New(Library.Error(""),TipoDireccion.Habitacion,"","","",new Estado({
+   $:2,
+   $0:""
+  }),new Pais({
+   $:3,
+   $0:""
+  }),new ZonaPostal({
+   $:0,
+   $0:""
+  }));
+  SC$3.tarVacio=TarjetaCredito.New("",TipoTarjeta.Visa,new NumeroTarjeta({
+   $:0,
+   $0:""
+  }),Expiracion.New(2000,1));
+  SC$3.ctaVacio=CuentaBancaria.New("","",TipoCuenta.Ahorro,new NumeroCuenta({
+   $:0,
+   $0:""
+  }),new RoutingNumber({
+   $:0,
+   $0:""
+  }));
+  SC$3.modeloVacio=Modelo.New(new IdAliado({
+   $:0,
+   $0:""
+  }),[],(c=Date$1.now(),(new Date$1(c)).getFullYear()),(c$1=Date$1.now(),(new Date$1(c$1)).getMonth()+1),TypesV0.premisasCalculo(),0);
+  SC$3.correoVacio=CorreoElectronico.New("",null,null);
+  SC$3.empty=(d=DatosPersonales$1.New(null,"","","","",Pais.USA,Genero.Masculino,(new Date$1(2000,1-1,1)).getTime()),Aliado$1.New(new IdAliado({
+   $:0,
+   $0:""
+  }),null,null,null,d,[],[],false,StatusAliado.Inactivo,DiaPago.Dia01,TipoAliado.Regular,(new Date$1(2000,1-1,1)).getTime(),(new Date$1(2000,1-1,1)).getTime(),0,0,0,0,0,0,0,0));
+  SC$3.serverEndPoint=Lazy.Create(function()
+  {
+   return self.location.protocol==="http:"?"http://localhost:7071/api/":(function($1)
+   {
+    return function($2)
+    {
+     return $1("https://"+Utils.toSafe($2)+"/api/");
+    };
+   }(Global.id))(self.location.host);
+  });
+  SC$3.originalProvider=Remoting.AjaxProvider();
+  SC$3.getTokenOA=function()
+  {
+   var b;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    return Concurrency.Return(null);
+   });
+  };
  };
  List$1=Collections.List=Runtime$1.Class({
   GetEnumerator:function()
@@ -12389,16 +12427,16 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Fresh.set_counter=function($1)
  {
-  SC$5.$cctor();
-  SC$5.counter=$1;
+  SC$6.$cctor();
+  SC$6.counter=$1;
  };
  Fresh.counter=function()
  {
-  SC$5.$cctor();
-  return SC$5.counter;
+  SC$6.$cctor();
+  return SC$6.counter;
  };
  Builder=Result.Builder=Runtime$1.Class({},Obj,Builder);
- Builder.New=Runtime$1.Ctor(function()
+ Builder.New$1=Runtime$1.Ctor(function()
  {
   Obj.New.call(this);
  },Builder);
@@ -12408,7 +12446,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   Obj.New.call(this);
  },BuilderP);
  EffBuilder=Eff.EffBuilder=Runtime$1.Class({},Obj,EffBuilder);
- EffBuilder.New=Runtime$1.Ctor(function()
+ EffBuilder.New$1=Runtime$1.Ctor(function()
  {
   Obj.New.call(this);
  },EffBuilder);
@@ -12425,146 +12463,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):"":finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
  };
- ParseO.tryParseWith$1=function(tryParseFunc)
- {
-  function g($1,$2)
-  {
-   return $1?{
-    $:1,
-    $0:$2
-   }:null;
-  }
-  return function(x)
-  {
-   return g.apply(null,tryParseFunc(x));
-  };
- };
- ParseO.parseDateO$1=function()
- {
-  SC$1.$cctor();
-  return SC$1.parseDateO;
- };
- ParseO.parseIntO$1=function()
- {
-  SC$1.$cctor();
-  return SC$1.parseIntO;
- };
- ParseO.parseInt64O$1=function()
- {
-  SC$1.$cctor();
-  return SC$1.parseInt64O;
- };
- ParseO.parseSingleO$1=function()
- {
-  SC$1.$cctor();
-  return SC$1.parseSingleO;
- };
- ParseO.parseDoubleO$1=function()
- {
-  SC$1.$cctor();
-  return SC$1.parseDoubleO;
- };
- ParseO.parseGuidO$1=function()
- {
-  SC$1.$cctor();
-  return SC$1.parseGuidO;
- };
- ParseO.parseDateO2$1=function()
- {
-  SC$1.$cctor();
-  return SC$1.parseDateO2;
- };
- Serializer.toJsonString=function(v)
- {
-  return Arrays.ofSeq(Seq.delay(function()
-  {
-   return Seq.append(["\""],Seq.delay(function()
-   {
-    return Seq.append(!Strings.IsNullOrEmpty(v)?Seq.collect(function(i)
-    {
-     var c,ci;
-     c=v[i];
-     ci=c.charCodeAt();
-     return ci>=0&&ci<=7||ci===11||ci>=14&&ci<=31?(function($1)
-     {
-      return function($2)
-      {
-       return $1("\\u"+Utils.padNumLeft($2.toString(16),4));
-      };
-     }(Global.id))(ci):c==="\u0008"?"\\b":c==="\u0009"?"\\t":c==="\n"?"\\n":c==="\u000c"?"\\f":c==="\r"?"\\r":c==="\""?"\\\"":c==="\\"?"\\\\":[c];
-    },Operators.range(0,v.length-1)):[],Seq.delay(function()
-    {
-     return["\""];
-    }));
-   }));
-  })).join("");
- };
- Library.Error$1=function(a)
- {
-  return{
-   $:1,
-   $0:a
-  };
- };
- Library.print$1=function(v)
- {
-  if(typeof v=="string")
-   ((function($1)
-   {
-    return function($2)
-    {
-     return $1(Utils.toSafe($2));
-    };
-   }(function(s)
-   {
-    console.log(s);
-   }))(v));
-  else
-   ((function($1)
-   {
-    return function($2)
-    {
-     return $1(Utils.prettyPrint($2));
-    };
-   }(function(s)
-   {
-    console.log(s);
-   }))(v));
- };
- Library["String.Left$1"]=function(_this,n)
- {
-  return n<0?Library["String.Substring2$1"](_this,0,_this.length+n):Library["String.Substring2$1"](_this,0,n);
- };
- Library["String.Right$1"]=function(_this,n)
- {
-  var a,b;
-  return Library["String.Substring2$1"](_this,(a=0,(b=_this.length-n,Unchecked.Compare(a,b)===1?a:b)),_this.length);
- };
- Library["String.Substring2$1"]=function(_this,from,n)
- {
-  var from$1,b;
-  while(true)
-   {
-    if(n<=0)
-     return"";
-    else
-     if(from<0)
-      {
-       from$1=from;
-       from=0;
-       n=n+from$1;
-      }
-     else
-      return from>=_this.length?"":Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
-   }
- };
- Library["String.get_toUnderscore$1"]=function(_this,u)
- {
-  return Arrays.ofSeq(Seq.collect(Global.id,Seq.mapi(function(i,c)
-  {
-   return i>0&&Char.IsUpper(c)?List.ofArray(["_",c]):List.ofArray([c]);
-  },_this))).join("");
- };
  Policy=Msal$1.Policy=Runtime$1.Class({
   toString:function()
   {
@@ -12572,7 +12470,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return function($2)
     {
-     return $1(prozperDes$js_GeneratedPrintf.p$3($2));
+     return $1(prozperDes$js_GeneratedPrintf.p$1($2));
     };
    }(Global.id))(this)),"_"," ");
   }
@@ -12589,444 +12487,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Policy.ResetPassword=new Policy({
   $:3
  });
- Telefono$1.New=function(tipoTelefono,codigoPais,codigoArea,numero,extension,mensajes)
- {
-  return{
-   tipoTelefono:tipoTelefono,
-   codigoPais:codigoPais,
-   codigoArea:codigoArea,
-   numero:numero,
-   extension:extension,
-   mensajes:mensajes
-  };
- };
- TipoTelefono=TypesV0.TipoTelefono=Runtime$1.Class({
-  toString:function()
-  {
-   return(function($1)
-   {
-    return function($2)
-    {
-     return $1(prozperDes$js_GeneratedPrintf.p$12($2));
-    };
-   }(Global.id))(this);
-  }
- },null,TipoTelefono);
- TipoTelefono.Movil=new TipoTelefono({
-  $:0
- });
- TipoTelefono.get_tryParse=function()
- {
-  return function(a)
-  {
-   return a==="Movil"?{
-    $:1,
-    $0:TipoTelefono.Movil
-   }:a==="Oficina"?{
-    $:1,
-    $0:TipoTelefono.Oficina
-   }:a==="Habitacion"?{
-    $:1,
-    $0:TipoTelefono.Habitacion
-   }:null;
-  };
- };
- TipoTelefono.Oficina=new TipoTelefono({
-  $:1
- });
- TipoTelefono.Habitacion=new TipoTelefono({
-  $:2
- });
- Direccion$1.New=function(authorizeIdR,tipoDireccion,linea1,linea2,ciudad,estado,pais,zonaPostal)
- {
-  return{
-   authorizeIdR:authorizeIdR,
-   tipoDireccion:tipoDireccion,
-   linea1:linea1,
-   linea2:linea2,
-   ciudad:ciudad,
-   estado:estado,
-   pais:pais,
-   zonaPostal:zonaPostal
-  };
- };
- TipoDireccion=TypesV0.TipoDireccion=Runtime$1.Class({
-  toString:function()
-  {
-   return this.$==3?this.$0:(function($1)
-   {
-    return function($2)
-    {
-     return $1(prozperDes$js_GeneratedPrintf.p$11($2));
-    };
-   }(Global.id))(this);
-  }
- },null,TipoDireccion);
- TipoDireccion.Habitacion=new TipoDireccion({
-  $:0
- });
- TipoDireccion.tryParse=function(s)
- {
-  var m;
-  m=Strings.Trim(s);
-  return m===""?null:m==="Habitacion"?{
-   $:1,
-   $0:TipoDireccion.Habitacion
-  }:m==="Oficina"?{
-   $:1,
-   $0:TipoDireccion.Oficina
-  }:m==="ServicioPostal"?{
-   $:1,
-   $0:TipoDireccion.ServicioPostal
-  }:{
-   $:1,
-   $0:new TipoDireccion({
-    $:3,
-    $0:m
-   })
-  };
- };
- TipoDireccion.Oficina=new TipoDireccion({
-  $:1
- });
- TipoDireccion.ServicioPostal=new TipoDireccion({
-  $:2
- });
- Estado=TypesV0.Estado=Runtime$1.Class({
-  toString:function()
-  {
-   return this.$==2?this.$0:(function($1)
-   {
-    return function($2)
-    {
-     return $1(prozperDes$js_GeneratedPrintf.p$5($2));
-    };
-   }(Global.id))(this);
-  }
- },null,Estado);
- Estado.tryParse=function(s)
- {
-  var $1,m;
-  m=Strings.Trim(s).toUpperCase();
-  switch(m)
-  {
-   case"":
-    return null;
-   case"TEXAS":
-   case"TX":
-    return{
-     $:1,
-     $0:Estado.Texas
-    };
-   case"FLORIDA":
-   case"FL":
-    return{
-     $:1,
-     $0:Estado.Florida
-    };
-   default:
-    return{
-     $:1,
-     $0:new Estado({
-      $:2,
-      $0:Strings.Trim(s)
-     })
-    };
-  }
- };
- Estado.Texas=new Estado({
-  $:0
- });
- Estado.Florida=new Estado({
-  $:1
- });
- Pais=TypesV0.Pais=Runtime$1.Class({
-  toString:function()
-  {
-   return this.$==3?this.$0:(function($1)
-   {
-    return function($2)
-    {
-     return $1(prozperDes$js_GeneratedPrintf.p$4($2));
-    };
-   }(Global.id))(this);
-  }
- },null,Pais);
- Pais.USA=new Pais({
-  $:0
- });
- Pais.tryParse=function(s)
- {
-  var $1,m;
-  m=Strings.Trim(s).toUpperCase();
-  switch(m)
-  {
-   case"":
-    return null;
-   case"USA":
-   case"AMERICA":
-   case"E.E.U.U.":
-   case"US":
-   case"UNITED STATES OF AMERICA":
-   case"UNITED STATES":
-   case"EEUU":
-    return{
-     $:1,
-     $0:Pais.USA
-    };
-   case"VENEZUELA":
-    return{
-     $:1,
-     $0:Pais.Venezuela
-    };
-   case"ARGENTINA":
-    return{
-     $:1,
-     $0:Pais.Argentina
-    };
-   default:
-    return{
-     $:1,
-     $0:new Pais({
-      $:3,
-      $0:Strings.Trim(s)
-     })
-    };
-  }
- };
- Pais.Venezuela=new Pais({
-  $:1
- });
- Pais.Argentina=new Pais({
-  $:2
- });
- ZonaPostal=TypesV0.ZonaPostal=Runtime$1.Class({
-  toString:function()
-  {
-   return this.$0;
-  }
- },null,ZonaPostal);
- ZonaPostal.tryParse=function(s)
- {
-  return Strings.Trim(s)!==""?{
-   $:1,
-   $0:new ZonaPostal({
-    $:0,
-    $0:Strings.Trim(s)
-   })
-  }:null;
- };
- TarjetaCredito.New=function(titular,tipoTarjeta,numero,expiracion)
- {
-  return{
-   titular:titular,
-   tipoTarjeta:tipoTarjeta,
-   numero:numero,
-   expiracion:expiracion
-  };
- };
- Expiracion=TypesV0.Expiracion=Runtime$1.Class({},null,Expiracion);
- Expiracion.New=function(anio,mes)
- {
-  return new Expiracion({
-   anio:anio,
-   mes:mes
-  });
- };
- NumeroTarjeta=TypesV0.NumeroTarjeta=Runtime$1.Class({
-  get_Id:function()
-  {
-   return this.$0;
-  }
- },null,NumeroTarjeta);
- TipoTarjeta=TypesV0.TipoTarjeta=Runtime$1.Class({
-  toString:function()
-  {
-   return this.$==3?this.$0:(function($1)
-   {
-    return function($2)
-    {
-     return $1(prozperDes$js_GeneratedPrintf.p$8($2));
-    };
-   }(Global.id))(this);
-  }
- },null,TipoTarjeta);
- TipoTarjeta.Visa=new TipoTarjeta({
-  $:0
- });
- TipoTarjeta.tryParse=function(s)
- {
-  var $1,m;
-  m=Strings.Trim(s).toUpperCase();
-  switch(m)
-  {
-   case"":
-    return null;
-   case"VISA":
-    return{
-     $:1,
-     $0:TipoTarjeta.Visa
-    };
-   case"MASTERCARD":
-    return{
-     $:1,
-     $0:TipoTarjeta.MasterCard
-    };
-   case"AMERICAN EXPRESS":
-   case"AMEX":
-    return{
-     $:1,
-     $0:TipoTarjeta.Amex
-    };
-   default:
-    return{
-     $:1,
-     $0:new TipoTarjeta({
-      $:3,
-      $0:Strings.Trim(s)
-     })
-    };
-  }
- };
- TipoTarjeta.MasterCard=new TipoTarjeta({
-  $:1
- });
- TipoTarjeta.Amex=new TipoTarjeta({
-  $:2
- });
- TipoCuenta=TypesV0.TipoCuenta=Runtime$1.Class({
-  toString:function()
-  {
-   return this.$==2?this.$0:(function($1)
-   {
-    return function($2)
-    {
-     return $1(prozperDes$js_GeneratedPrintf.p$9($2));
-    };
-   }(Global.id))(this);
-  }
- },null,TipoCuenta);
- TipoCuenta.Ahorro=new TipoCuenta({
-  $:0
- });
- TipoCuenta.tryParse=function(s)
- {
-  var $1,m;
-  m=Strings.Trim(s).toUpperCase();
-  switch(m)
-  {
-   case"":
-    return null;
-   case"AHORRO":
-   case"SAVINGS":
-    return{
-     $:1,
-     $0:TipoCuenta.Ahorro
-    };
-   case"CORRIENTE":
-   case"CHECKING":
-    return{
-     $:1,
-     $0:TipoCuenta.Corriente
-    };
-   default:
-    return{
-     $:1,
-     $0:new TipoCuenta({
-      $:2,
-      $0:Strings.Trim(s)
-     })
-    };
-  }
- };
- TipoCuenta.Corriente=new TipoCuenta({
-  $:1
- });
- Genero.Masculino={
-  $:0
- };
- Genero.tryParse=function(s)
- {
-  var m;
-  m=Strings.Trim(s);
-  return m==="Masculino"?{
-   $:1,
-   $0:Genero.Masculino
-  }:m==="Femenino"?{
-   $:1,
-   $0:Genero.Femenino
-  }:m==="Empresa"?{
-   $:1,
-   $0:Genero.Empresa
-  }:null;
- };
- Genero.Femenino={
-  $:1
- };
- Genero.Empresa={
-  $:2
- };
- Remoting.AjaxProvider=function()
- {
-  SC$3.$cctor();
-  return SC$3.AjaxProvider;
- };
- Remoting.set_EndPoint=function($1)
- {
-  SC$3.$cctor();
-  SC$3.EndPoint=$1;
- };
- Remoting.makePayload=function(data)
- {
-  return JSON.stringify(data);
- };
- Remoting.makeHeaders=function(m)
- {
-  return{
-   "content-type":"application/json",
-   "x-websharper-rpc":m
-  };
- };
- Remoting.EndPoint=function()
- {
-  SC$3.$cctor();
-  return SC$3.EndPoint;
- };
- Remoting.ajax=function(async,url,headers,data,ok,err,csrf)
- {
-  var xhr,csrf$1,h;
-  xhr=new Global.XMLHttpRequest();
-  csrf$1=Global.document.cookie.replace(new Global.RegExp("(?:(?:^|.*;)\\s*csrftoken\\s*\\=\\s*([^;]*).*$)|^.*$"),"$1");
-  xhr.open("POST",url,async);
-  if(async==true)
-   xhr.withCredentials=true;
-  for(var h$1 in headers)xhr.setRequestHeader(h$1,headers[h$1]);
-  if(csrf$1)
-   xhr.setRequestHeader("x-csrftoken",csrf$1);
-  function k()
-  {
-   var msg;
-   if(xhr.status==200)
-    ok(xhr.responseText);
-   else
-    if(csrf&&xhr.status==403&&xhr.responseText=="CSRF")
-     csrf();
-    else
-     {
-      msg="Response status is not 200: ";
-      err(new Error(msg+xhr.status));
-     }
-  }
-  if("onload"in xhr)
-   xhr.onload=xhr.onerror=xhr.onabort=k;
-  else
-   xhr.onreadystatechange=function()
-   {
-    if(xhr.readyState==4)
-     k();
-   };
-  xhr.send(data);
- };
  Configuration.New$1=function(auth,cache,system,framework)
  {
   return Pojo.newPojoOpt([Msal$1.op_EqualsEqualsGreater("auth",auth),Msal$1.op_EqualsEqualsGreater("cache",cache),Msal$1.op_EqualsEqualsGreater("system",system),Msal$1.op_EqualsEqualsGreater("framework",framework)]);
@@ -13303,6 +12763,72 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    });
   },null);
  };
+ Library.print$1=function(v)
+ {
+  if(typeof v=="string")
+   ((function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.toSafe($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(v));
+  else
+   ((function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(v));
+ };
+ Library["String.Left$1"]=function(_this,n)
+ {
+  return n<0?Library["String.Substring2$1"](_this,0,_this.length+n):Library["String.Substring2$1"](_this,0,n);
+ };
+ Library.Error$1=function(a)
+ {
+  return{
+   $:1,
+   $0:a
+  };
+ };
+ Library["String.Right$1"]=function(_this,n)
+ {
+  var a,b;
+  return Library["String.Substring2$1"](_this,(a=0,(b=_this.length-n,Unchecked.Compare(a,b)===1?a:b)),_this.length);
+ };
+ Library["String.Substring2$1"]=function(_this,from,n)
+ {
+  var from$1,b;
+  while(true)
+   {
+    if(n<=0)
+     return"";
+    else
+     if(from<0)
+      {
+       from$1=from;
+       from=0;
+       n=n+from$1;
+      }
+     else
+      return from>=_this.length?"":Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
+   }
+ };
+ Library["String.get_toUnderscore$1"]=function(_this,u)
+ {
+  return Arrays.ofSeq(Seq.collect(Global.id,Seq.mapi(function(i,c)
+  {
+   return i>0&&Char.IsUpper(c)?List.ofArray(["_",c]):List.ofArray([c]);
+  },_this))).join("");
+ };
  LibraryJS.REGEX$2=function(expr,opt,value)
  {
   var m;
@@ -13401,10 +12927,71 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     else
      n=n.parentNode;
  };
+ Remoting.set_EndPoint=function($1)
+ {
+  SC$4.$cctor();
+  SC$4.EndPoint=$1;
+ };
+ Remoting.AjaxProvider=function()
+ {
+  SC$4.$cctor();
+  return SC$4.AjaxProvider;
+ };
+ Remoting.makePayload=function(data)
+ {
+  return JSON.stringify(data);
+ };
+ Remoting.makeHeaders=function(m)
+ {
+  return{
+   "content-type":"application/json",
+   "x-websharper-rpc":m
+  };
+ };
+ Remoting.EndPoint=function()
+ {
+  SC$4.$cctor();
+  return SC$4.EndPoint;
+ };
+ Remoting.ajax=function(async,url,headers,data,ok,err,csrf)
+ {
+  var xhr,csrf$1,h;
+  xhr=new Global.XMLHttpRequest();
+  csrf$1=Global.document.cookie.replace(new Global.RegExp("(?:(?:^|.*;)\\s*csrftoken\\s*\\=\\s*([^;]*).*$)|^.*$"),"$1");
+  xhr.open("POST",url,async);
+  if(async==true)
+   xhr.withCredentials=true;
+  for(var h$1 in headers)xhr.setRequestHeader(h$1,headers[h$1]);
+  if(csrf$1)
+   xhr.setRequestHeader("x-csrftoken",csrf$1);
+  function k()
+  {
+   var msg;
+   if(xhr.status==200)
+    ok(xhr.responseText);
+   else
+    if(csrf&&xhr.status==403&&xhr.responseText=="CSRF")
+     csrf();
+    else
+     {
+      msg="Response status is not 200: ";
+      err(new Error(msg+xhr.status));
+     }
+  }
+  if("onload"in xhr)
+   xhr.onload=xhr.onerror=xhr.onabort=k;
+  else
+   xhr.onreadystatechange=function()
+   {
+    if(xhr.readyState==4)
+     k();
+   };
+  xhr.send(data);
+ };
  Rpc0.serverEndPoint=function()
  {
-  SC$1.$cctor();
-  return SC$1.serverEndPoint;
+  SC$3.$cctor();
+  return SC$3.serverEndPoint;
  };
  IdPayment=TypesV0.IdPayment=Runtime$1.Class({
   get_Id:function()
@@ -13812,6 +13399,306 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  T$1.Empty=new T$1({
   $:0
  });
+ Genero.tryParse=function(s)
+ {
+  var m;
+  m=Strings.Trim(s);
+  return m==="Masculino"?{
+   $:1,
+   $0:Genero.Masculino
+  }:m==="Femenino"?{
+   $:1,
+   $0:Genero.Femenino
+  }:m==="Empresa"?{
+   $:1,
+   $0:Genero.Empresa
+  }:null;
+ };
+ Genero.Masculino={
+  $:0
+ };
+ Genero.Femenino={
+  $:1
+ };
+ Genero.Empresa={
+  $:2
+ };
+ ParseO.parseDateO2=function()
+ {
+  SC$3.$cctor();
+  return SC$3.parseDateO2;
+ };
+ ParseO.tryParseWith=function(tryParseFunc)
+ {
+  function g($1,$2)
+  {
+   return $1?{
+    $:1,
+    $0:$2
+   }:null;
+  }
+  return function(x)
+  {
+   return g.apply(null,tryParseFunc(x));
+  };
+ };
+ ParseO.parseDateO=function()
+ {
+  SC$3.$cctor();
+  return SC$3.parseDateO;
+ };
+ ParseO.parseIntO=function()
+ {
+  SC$3.$cctor();
+  return SC$3.parseIntO;
+ };
+ ParseO.parseInt64O=function()
+ {
+  SC$3.$cctor();
+  return SC$3.parseInt64O;
+ };
+ ParseO.parseSingleO=function()
+ {
+  SC$3.$cctor();
+  return SC$3.parseSingleO;
+ };
+ ParseO.parseDoubleO=function()
+ {
+  SC$3.$cctor();
+  return SC$3.parseDoubleO;
+ };
+ ParseO.parseGuidO=function()
+ {
+  SC$3.$cctor();
+  return SC$3.parseGuidO;
+ };
+ Pais=TypesV0.Pais=Runtime$1.Class({
+  toString:function()
+  {
+   return this.$==3?this.$0:(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$2($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,Pais);
+ Pais.tryParse=function(s)
+ {
+  var $1,m;
+  m=Strings.Trim(s).toUpperCase();
+  switch(m)
+  {
+   case"":
+    return null;
+   case"USA":
+   case"AMERICA":
+   case"E.E.U.U.":
+   case"US":
+   case"UNITED STATES OF AMERICA":
+   case"UNITED STATES":
+   case"EEUU":
+    return{
+     $:1,
+     $0:Pais.USA
+    };
+   case"VENEZUELA":
+    return{
+     $:1,
+     $0:Pais.Venezuela
+    };
+   case"ARGENTINA":
+    return{
+     $:1,
+     $0:Pais.Argentina
+    };
+   default:
+    return{
+     $:1,
+     $0:new Pais({
+      $:3,
+      $0:Strings.Trim(s)
+     })
+    };
+  }
+ };
+ Pais.USA=new Pais({
+  $:0
+ });
+ Pais.Venezuela=new Pais({
+  $:1
+ });
+ Pais.Argentina=new Pais({
+  $:2
+ });
+ Telefono$1.New=function(tipoTelefono,codigoPais,codigoArea,numero,extension,mensajes)
+ {
+  return{
+   tipoTelefono:tipoTelefono,
+   codigoPais:codigoPais,
+   codigoArea:codigoArea,
+   numero:numero,
+   extension:extension,
+   mensajes:mensajes
+  };
+ };
+ TipoTelefono=TypesV0.TipoTelefono=Runtime$1.Class({
+  toString:function()
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$10($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,TipoTelefono);
+ TipoTelefono.get_tryParse=function()
+ {
+  return function(a)
+  {
+   return a==="Movil"?{
+    $:1,
+    $0:TipoTelefono.Movil
+   }:a==="Oficina"?{
+    $:1,
+    $0:TipoTelefono.Oficina
+   }:a==="Habitacion"?{
+    $:1,
+    $0:TipoTelefono.Habitacion
+   }:null;
+  };
+ };
+ TipoTelefono.Movil=new TipoTelefono({
+  $:0
+ });
+ TipoTelefono.Oficina=new TipoTelefono({
+  $:1
+ });
+ TipoTelefono.Habitacion=new TipoTelefono({
+  $:2
+ });
+ Direccion$1.New=function(authorizeIdR,tipoDireccion,linea1,linea2,ciudad,estado,pais,zonaPostal)
+ {
+  return{
+   authorizeIdR:authorizeIdR,
+   tipoDireccion:tipoDireccion,
+   linea1:linea1,
+   linea2:linea2,
+   ciudad:ciudad,
+   estado:estado,
+   pais:pais,
+   zonaPostal:zonaPostal
+  };
+ };
+ TipoDireccion=TypesV0.TipoDireccion=Runtime$1.Class({
+  toString:function()
+  {
+   return this.$==3?this.$0:(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$9($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,TipoDireccion);
+ TipoDireccion.tryParse=function(s)
+ {
+  var m;
+  m=Strings.Trim(s);
+  return m===""?null:m==="Habitacion"?{
+   $:1,
+   $0:TipoDireccion.Habitacion
+  }:m==="Oficina"?{
+   $:1,
+   $0:TipoDireccion.Oficina
+  }:m==="ServicioPostal"?{
+   $:1,
+   $0:TipoDireccion.ServicioPostal
+  }:{
+   $:1,
+   $0:new TipoDireccion({
+    $:3,
+    $0:m
+   })
+  };
+ };
+ TipoDireccion.Habitacion=new TipoDireccion({
+  $:0
+ });
+ TipoDireccion.Oficina=new TipoDireccion({
+  $:1
+ });
+ TipoDireccion.ServicioPostal=new TipoDireccion({
+  $:2
+ });
+ Estado=TypesV0.Estado=Runtime$1.Class({
+  toString:function()
+  {
+   return this.$==2?this.$0:(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$3($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,Estado);
+ Estado.tryParse=function(s)
+ {
+  var $1,m;
+  m=Strings.Trim(s).toUpperCase();
+  switch(m)
+  {
+   case"":
+    return null;
+   case"TEXAS":
+   case"TX":
+    return{
+     $:1,
+     $0:Estado.Texas
+    };
+   case"FLORIDA":
+   case"FL":
+    return{
+     $:1,
+     $0:Estado.Florida
+    };
+   default:
+    return{
+     $:1,
+     $0:new Estado({
+      $:2,
+      $0:Strings.Trim(s)
+     })
+    };
+  }
+ };
+ Estado.Texas=new Estado({
+  $:0
+ });
+ Estado.Florida=new Estado({
+  $:1
+ });
+ ZonaPostal=TypesV0.ZonaPostal=Runtime$1.Class({
+  toString:function()
+  {
+   return this.$0;
+  }
+ },null,ZonaPostal);
+ ZonaPostal.tryParse=function(s)
+ {
+  return Strings.Trim(s)!==""?{
+   $:1,
+   $0:new ZonaPostal({
+    $:0,
+    $0:Strings.Trim(s)
+   })
+  }:null;
+ };
  AsyncResult.rtn=function(v)
  {
   return Concurrency.Return({
@@ -13835,7 +13722,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   function f$1(r)
   {
-   Result.iter(fE,f,r);
+   Result.iter$1(fE,f,r);
   }
   function g(v)
   {
@@ -13857,7 +13744,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   function f$1(v)
   {
-   return Result.absorbO(f,v);
+   return Result.absorbO$1(f,v);
   }
   function g(v)
   {
@@ -13974,6 +13861,15 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }));
   }));
  };
+ TarjetaCredito.New=function(titular,tipoTarjeta,numero,expiracion)
+ {
+  return{
+   titular:titular,
+   tipoTarjeta:tipoTarjeta,
+   numero:numero,
+   expiracion:expiracion
+  };
+ };
  Subscripcion=TypesV0.Subscripcion=Runtime$1.Class({
   get_Short:function()
   {
@@ -13983,6 +13879,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    },6))(Global.id))(this.idSubscripcion.get_Id()))(Date.toYYYYMMDD("-",this.inicio)))(this.monto))(this.descripcion))(this.status);
   }
  },null,Subscripcion);
+ NumeroTarjeta=TypesV0.NumeroTarjeta=Runtime$1.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,NumeroTarjeta);
  CuentaBancaria$1.formaDocO=function(ctaOV)
  {
   var v;
@@ -14232,7 +14134,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       $0:TarjetaCredito.New(Strings.Trim($3),tipoTar,new NumeroTarjeta({
        $:0,
        $0:Strings.Trim($4)
-      }),Expiracion.New((o=(x=Strings.Trim($5),(ParseO.parseIntO$1())(x)),o==null?0:o.$0),(a$1=Strings.Trim($6),a$1==="Febrero"?2:a$1==="Marzo"?3:a$1==="Abril"?4:a$1==="Mayo"?5:a$1==="Junio"?6:a$1==="Julio"?7:a$1==="Agosto"?8:a$1==="Septiembre"?9:a$1==="Octubre"?10:a$1==="Noviembre"?11:a$1==="Diciembre"?12:1)))
+      }),Expiracion.New((o=(x=Strings.Trim($5),(ParseO.parseIntO())(x)),o==null?0:o.$0),(a$1=Strings.Trim($6),a$1==="Febrero"?2:a$1==="Marzo"?3:a$1==="Abril"?4:a$1==="Mayo"?5:a$1==="Junio"?6:a$1==="Julio"?7:a$1==="Agosto"?8:a$1==="Septiembre"?9:a$1==="Octubre"?10:a$1==="Noviembre"?11:a$1==="Diciembre"?12:1)))
      };
     });
    },4);
@@ -14362,8 +14264,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Concurrency.Zero=function()
  {
-  SC$4.$cctor();
-  return SC$4.Zero;
+  SC$5.$cctor();
+  return SC$5.Zero;
  };
  Concurrency.Sleep=function(ms)
  {
@@ -14412,8 +14314,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Concurrency.defCTS=function()
  {
-  SC$4.$cctor();
-  return SC$4.defCTS;
+  SC$5.$cctor();
+  return SC$5.defCTS;
  };
  Concurrency.UncaughtAsyncError=function(e)
  {
@@ -14522,8 +14424,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Concurrency.scheduler=function()
  {
-  SC$4.$cctor();
-  return SC$4.scheduler;
+  SC$5.$cctor();
+  return SC$5.scheduler;
  };
  Concurrency.Using=function(x,f)
  {
@@ -14555,8 +14457,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Concurrency.noneCT=function()
  {
-  SC$4.$cctor();
-  return SC$4.noneCT;
+  SC$5.$cctor();
+  return SC$5.noneCT;
  };
  Concurrency.StartWithContinuations=function(c,s,f,cc,ctOpt)
  {
@@ -14575,8 +14477,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Concurrency.GetCT=function()
  {
-  SC$4.$cctor();
-  return SC$4.GetCT;
+  SC$5.$cctor();
+  return SC$5.GetCT;
  };
  AttrProxy=UI.AttrProxy=Runtime$1.Class({},null,AttrProxy);
  AttrProxy.Create=function(name,value)
@@ -14666,9 +14568,90 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   for(i=0,$1=arr.length-1;i<=$1;i++)arr[i]=f(arr[i]);
   return arr;
  };
+ TipoCuenta=TypesV0.TipoCuenta=Runtime$1.Class({
+  toString:function()
+  {
+   return this.$==2?this.$0:(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$7($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,TipoCuenta);
+ TipoCuenta.Ahorro=new TipoCuenta({
+  $:0
+ });
+ TipoCuenta.tryParse=function(s)
+ {
+  var $1,m;
+  m=Strings.Trim(s).toUpperCase();
+  switch(m)
+  {
+   case"":
+    return null;
+   case"AHORRO":
+   case"SAVINGS":
+    return{
+     $:1,
+     $0:TipoCuenta.Ahorro
+    };
+   case"CORRIENTE":
+   case"CHECKING":
+    return{
+     $:1,
+     $0:TipoCuenta.Corriente
+    };
+   default:
+    return{
+     $:1,
+     $0:new TipoCuenta({
+      $:2,
+      $0:Strings.Trim(s)
+     })
+    };
+  }
+ };
+ TipoCuenta.Corriente=new TipoCuenta({
+  $:1
+ });
  Storage.InMemory=function(init)
  {
   return new ArrayStorage.New(init);
+ };
+ String.StartsWith=function(start,s)
+ {
+  return Strings.StartsWith(s,start)?{
+   $:1,
+   $0:Slice.string(s,{
+    $:1,
+    $0:start.length
+   },null)
+  }:null;
+ };
+ String.unindent=function(s)
+ {
+  var lines,n,o,o$1;
+  lines=Strings.SplitChars(s,["\n"],0);
+  n=(o=Seq.tryFindIndex(function(y)
+  {
+   return" "!==y;
+  },(o$1=Seq.tryFind(function(l)
+  {
+   return Strings.Trim(l)!=="";
+  },lines),o$1==null?"":o$1.$0)),o==null?0:o.$0);
+  return Seq.filter(function(s$1)
+  {
+   return!Strings.StartsWith(s$1,"# 1 ");
+  },Seq.map(function(l)
+  {
+   return l.length<=n?"":l.substring(n);
+  },lines));
+ };
+ String.splitByChar=function(c,s)
+ {
+  return Strings.SplitChars(s,[c],0);
  };
  AttrModule.DynamicPred=function(name,predView,valView)
  {
@@ -15304,6 +15287,116 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$2.$cctor();
   return SC$2.css;
  };
+ Builder=Result.Builder=Runtime$1.Class({},Obj,Builder);
+ Builder.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+ },Builder);
+ Result.result=function()
+ {
+  SC$3.$cctor();
+  return SC$3.result;
+ };
+ EffBuilder=Eff.EffBuilder=Runtime$1.Class({},Obj,EffBuilder);
+ EffBuilder.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+ },EffBuilder);
+ Serializer.toJsonString=function(v)
+ {
+  return Arrays.ofSeq(Seq.delay(function()
+  {
+   return Seq.append(["\""],Seq.delay(function()
+   {
+    return Seq.append(!Strings.IsNullOrEmpty(v)?Seq.collect(function(i)
+    {
+     var c,ci;
+     c=v[i];
+     ci=c.charCodeAt();
+     return ci>=0&&ci<=7||ci===11||ci>=14&&ci<=31?(function($1)
+     {
+      return function($2)
+      {
+       return $1("\\u"+Utils.padNumLeft($2.toString(16),4));
+      };
+     }(Global.id))(ci):c==="\u0008"?"\\b":c==="\u0009"?"\\t":c==="\n"?"\\n":c==="\u000c"?"\\f":c==="\r"?"\\r":c==="\""?"\\\"":c==="\\"?"\\\\":[c];
+    },Operators.range(0,v.length-1)):[],Seq.delay(function()
+    {
+     return["\""];
+    }));
+   }));
+  })).join("");
+ };
+ Library.Error=function(a)
+ {
+  return{
+   $:1,
+   $0:a
+  };
+ };
+ Expiracion=TypesV0.Expiracion=Runtime$1.Class({},null,Expiracion);
+ Expiracion.New=function(anio,mes)
+ {
+  return new Expiracion({
+   anio:anio,
+   mes:mes
+  });
+ };
+ TipoTarjeta=TypesV0.TipoTarjeta=Runtime$1.Class({
+  toString:function()
+  {
+   return this.$==3?this.$0:(function($1)
+   {
+    return function($2)
+    {
+     return $1(ProzperServer_GeneratedPrintf.p$6($2));
+    };
+   }(Global.id))(this);
+  }
+ },null,TipoTarjeta);
+ TipoTarjeta.Visa=new TipoTarjeta({
+  $:0
+ });
+ TipoTarjeta.tryParse=function(s)
+ {
+  var $1,m;
+  m=Strings.Trim(s).toUpperCase();
+  switch(m)
+  {
+   case"":
+    return null;
+   case"VISA":
+    return{
+     $:1,
+     $0:TipoTarjeta.Visa
+    };
+   case"MASTERCARD":
+    return{
+     $:1,
+     $0:TipoTarjeta.MasterCard
+    };
+   case"AMERICAN EXPRESS":
+   case"AMEX":
+    return{
+     $:1,
+     $0:TipoTarjeta.Amex
+    };
+   default:
+    return{
+     $:1,
+     $0:new TipoTarjeta({
+      $:3,
+      $0:Strings.Trim(s)
+     })
+    };
+  }
+ };
+ TipoTarjeta.MasterCard=new TipoTarjeta({
+  $:1
+ });
+ TipoTarjeta.Amex=new TipoTarjeta({
+  $:2
+ });
  DictionaryUtil.notPresent=function()
  {
   return Operators.FailWith("The given key was not present in the dictionary.");
@@ -15356,13 +15449,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Templates.LocalTemplatesLoaded=function()
  {
-  SC$6.$cctor();
-  return SC$6.LocalTemplatesLoaded;
+  SC$7.$cctor();
+  return SC$7.LocalTemplatesLoaded;
  };
  Templates.set_LocalTemplatesLoaded=function($1)
  {
-  SC$6.$cctor();
-  SC$6.LocalTemplatesLoaded=$1;
+  SC$7.$cctor();
+  SC$7.LocalTemplatesLoaded=$1;
  };
  Templates.LoadNestedTemplates=function(root,baseName)
  {
@@ -15416,8 +15509,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Templates.LoadedTemplates=function()
  {
-  SC$6.$cctor();
-  return SC$6.LoadedTemplates;
+  SC$7.$cctor();
+  return SC$7.LoadedTemplates;
  };
  Templates.LoadedTemplateFile=function(name)
  {
@@ -15994,37 +16087,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Templates.TextHoleRE=function()
  {
-  SC$6.$cctor();
-  return SC$6.TextHoleRE;
- };
- DateUtil.TryParse=function(s)
- {
-  var d;
-  d=Date$1.parse(s);
-  return Global.isNaN(d)?null:{
-   $:1,
-   $0:d
-  };
- };
- Numeric.TryParse=function(s,min,max,r)
- {
-  var x,ok;
-  x=+s;
-  ok=x===x-x%1&&x>=min&&x<=max;
-  ok?r.set(x):void 0;
-  return ok;
- };
- Numeric.TryParseBool=function(s,r)
- {
-  var m;
-  m=s.toLowerCase();
-  return m==="true"?(r.set(true),true):m==="false"&&(r.set(false),true);
- };
- SC$3.$cctor=function()
- {
-  SC$3.$cctor=Global.ignore;
-  SC$3.EndPoint="?";
-  SC$3.AjaxProvider=new XhrProvider.New();
+  SC$7.$cctor();
+  return SC$7.TextHoleRE;
  };
  Pojo.newPojoOpt=function(propOs)
  {
@@ -16219,13 +16283,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  RouterOperators.rString=function()
  {
-  SC$7.$cctor();
-  return SC$7.rString;
+  SC$8.$cctor();
+  return SC$8.rString;
  };
  RouterOperators.rWildcard=function()
  {
-  SC$7.$cctor();
-  return SC$7.rWildcard;
+  SC$8.$cctor();
+  return SC$8.rWildcard;
  };
  RouterModule.Parse=function(router,path)
  {
@@ -16377,6 +16441,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    Body:Body
   });
  };
+ SC$4.$cctor=function()
+ {
+  SC$4.$cctor=Global.ignore;
+  SC$4.EndPoint="?";
+  SC$4.AjaxProvider=new XhrProvider.New();
+ };
  MapUtil.fromSeq=function(s)
  {
   var a;
@@ -16410,6 +16480,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return this.$0;
   }
  },null,IdSubscription);
+ Date.toYYYYMMDD=function(sep,date)
+ {
+  return((((((Runtime$1.Curried(function($1,$2,$3,$4,$5,$6)
+  {
+   return $1(Global.String($2)+Utils.toSafe($3)+Utils.padNumLeft(Global.String($4),2)+Utils.toSafe($5)+Utils.padNumLeft(Global.String($6),2));
+  },6))(Global.id))((new Date$1(date)).getFullYear()))(sep))((new Date$1(date)).getMonth()+1))(sep))((new Date$1(date)).getDate());
+ };
  Docs.CreateEmbedNode=function()
  {
   return{
@@ -16706,8 +16783,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Attrs.EmptyAttr=function()
  {
-  SC$9.$cctor();
-  return SC$9.EmptyAttr;
+  SC$10.$cctor();
+  return SC$10.EmptyAttr;
  };
  Attrs.Flags=function(a)
  {
@@ -16819,8 +16896,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  DomUtility.Doc=function()
  {
-  SC$8.$cctor();
-  return SC$8.Doc;
+  SC$9.$cctor();
+  return SC$9.Doc;
  };
  DomUtility.SetProperty=function(target,name,value)
  {
@@ -16872,14 +16949,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   if(el.parentNode===parent)
    parent.removeChild(el);
  };
- SC$4.$cctor=function()
+ SC$5.$cctor=function()
  {
-  SC$4.$cctor=Global.ignore;
-  SC$4.noneCT=CT.New(false,[]);
-  SC$4.scheduler=new Scheduler.New();
-  SC$4.defCTS=[new CancellationTokenSource.New()];
-  SC$4.Zero=Concurrency.Return();
-  SC$4.GetCT=function(c)
+  SC$5.$cctor=Global.ignore;
+  SC$5.noneCT=CT.New(false,[]);
+  SC$5.scheduler=new Scheduler.New();
+  SC$5.defCTS=[new CancellationTokenSource.New()];
+  SC$5.Zero=Concurrency.Return();
+  SC$5.GetCT=function(c)
   {
    c.k({
     $:0,
@@ -16934,7 +17011,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return function($2)
     {
-     return $1(prozperDes$js_GeneratedPrintf.p$10($2));
+     return $1(ProzperServer_GeneratedPrintf.p$8($2));
     };
    }(Global.id))(this);
   }
@@ -17158,6 +17235,29 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     })).join("");
    },Operators.range(0,max-1));
   }));
+ };
+ DateUtil.TryParse=function(s)
+ {
+  var d;
+  d=Date$1.parse(s);
+  return Global.isNaN(d)?null:{
+   $:1,
+   $0:d
+  };
+ };
+ Numeric.TryParse=function(s,min,max,r)
+ {
+  var x,ok;
+  x=+s;
+  ok=x===x-x%1&&x>=min&&x<=max;
+  ok?r.set(x):void 0;
+  return ok;
+ };
+ Numeric.TryParseBool=function(s,r)
+ {
+  var m;
+  m=s.toLowerCase();
+  return m==="true"?(r.set(true),true):m==="false"&&(r.set(false),true);
  };
  Library.delayed=function(delay,doF)
  {
@@ -17392,24 +17492,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    ElKey:ElKey
   },(Runtime$1.SetOptional($1,"Delimiters",Delimiters),Runtime$1.SetOptional($1,"Render",Render),$1)));
  };
- SC$5.$cctor=function()
+ SC$6.$cctor=function()
  {
-  SC$5.$cctor=Global.ignore;
-  SC$5.counter=0;
+  SC$6.$cctor=Global.ignore;
+  SC$6.counter=0;
  };
- XhrProvider=Remoting.XhrProvider=Runtime$1.Class({
-  Async:function(url,headers,data,ok,err)
-  {
-   Remoting.ajax(true,url,headers,data,ok,err,function()
-   {
-    Remoting.ajax(true,url,headers,data,ok,err,void 0);
-   });
-  }
- },Obj,XhrProvider);
- XhrProvider.New=Runtime$1.Ctor(function()
- {
-  Obj.New.call(this);
- },XhrProvider);
  FSharpEvent=Control.FSharpEvent=Runtime$1.Class({},Obj,FSharpEvent);
  FSharpEvent.New=Runtime$1.Ctor(function()
  {
@@ -17524,6 +17611,19 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     return null;
   }
  };
+ XhrProvider=Remoting.XhrProvider=Runtime$1.Class({
+  Async:function(url,headers,data,ok,err)
+  {
+   Remoting.ajax(true,url,headers,data,ok,err,function()
+   {
+    Remoting.ajax(true,url,headers,data,ok,err,void 0);
+   });
+  }
+ },Obj,XhrProvider);
+ XhrProvider.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+ },XhrProvider);
  Pair=Collections.Pair=Runtime$1.Class({
   Equals:function(other)
   {
@@ -17781,12 +17881,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return[r.top,r.left,r.width,r.height];
  };
- SC$6.$cctor=function()
+ SC$7.$cctor=function()
  {
-  SC$6.$cctor=Global.ignore;
-  SC$6.LoadedTemplates=new Dictionary.New$5();
-  SC$6.LocalTemplatesLoaded=false;
-  SC$6.TextHoleRE="\\${([^}]+)}";
+  SC$7.$cctor=Global.ignore;
+  SC$7.LoadedTemplates=new Dictionary.New$5();
+  SC$7.LocalTemplatesLoaded=false;
+  SC$7.TextHoleRE="\\${([^}]+)}";
  };
  Elt=UI.Elt=Runtime$1.Class({
   on:function(ev,cb)
@@ -18121,8 +18221,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Settings.BatchUpdatesEnabled=function()
  {
-  SC$10.$cctor();
-  return SC$10.BatchUpdatesEnabled;
+  SC$11.$cctor();
+  return SC$11.BatchUpdatesEnabled;
  };
  Mailbox$1.StartProcessor=function(procAsync)
  {
@@ -18178,9 +18278,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   Object.setPrototypeOf(this,NonStandardPromiseRejectionException.prototype);
   this.reason=reason;
  },NonStandardPromiseRejectionException);
- SC$7.$cctor=function()
+ SC$8.$cctor=function()
  {
-  SC$7.$cctor=Global.ignore;
+  SC$8.$cctor=Global.ignore;
   function pInt(x)
   {
    var m,o;
@@ -18199,18 +18299,18 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:m[1]
    }:null;
   }
-  SC$7.Empty=Router$1.New$1(function()
+  SC$8.Empty=Router$1.New$1(function()
   {
    return[];
   },function()
   {
    return null;
   });
-  SC$7.rRoot=Router$1.New(function(path)
+  SC$8.rRoot=Router$1.New(function(path)
   {
    return[path];
   },[]);
-  SC$7.rString=Router$1.New$1(function(path)
+  SC$8.rString=Router$1.New$1(function(path)
   {
    var m,m$1;
    m=path.Segments;
@@ -18222,7 +18322,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(value==null?"null":StringEncoding.write(value))]
    };
   });
-  SC$7.rChar=Router$1.New$1(function(path)
+  SC$8.rChar=Router$1.New$1(function(path)
   {
    var m,m$1,$1;
    m=path.Segments;
@@ -18234,7 +18334,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(value)]
    };
   });
-  SC$7.rGuid=Router$1.New$1(function(path)
+  SC$8.rGuid=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -18255,7 +18355,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rInt=Router$1.New$1(function(path)
+  SC$8.rInt=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -18276,7 +18376,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rDouble=Router$1.New$1(function(path)
+  SC$8.rDouble=Router$1.New$1(function(path)
   {
    var m,res,$1;
    m=path.Segments;
@@ -18288,7 +18388,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rSByte=Router$1.New$1(function(path)
+  SC$8.rSByte=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -18309,7 +18409,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rByte=Router$1.New$1(function(path)
+  SC$8.rByte=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -18330,7 +18430,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rInt16=Router$1.New$1(function(path)
+  SC$8.rInt16=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -18351,7 +18451,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rUInt16=Router$1.New$1(function(path)
+  SC$8.rUInt16=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -18372,7 +18472,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rUInt=Router$1.New$1(function(path)
+  SC$8.rUInt=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -18393,7 +18493,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rInt64=Router$1.New$1(function(path)
+  SC$8.rInt64=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -18414,7 +18514,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rUInt64=Router$1.New$1(function(path)
+  SC$8.rUInt64=Router$1.New$1(function(path)
   {
    var m,res;
    m=path.Segments;
@@ -18435,7 +18535,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rSingle=Router$1.New$1(function(path)
+  SC$8.rSingle=Router$1.New$1(function(path)
   {
    var m,res,$1;
    m=path.Segments;
@@ -18447,7 +18547,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(Global.String(value))]
    };
   });
-  SC$7.rBool=Router$1.New$1(function(path)
+  SC$8.rBool=Router$1.New$1(function(path)
   {
    var m,m$1,o;
    m=path.Segments;
@@ -18468,7 +18568,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(value?"True":"False")]
    };
   });
-  SC$7.rWildcard=Router$1.New$1(function(path)
+  SC$8.rWildcard=Router$1.New$1(function(path)
   {
    return[[Route.New(T$1.Empty,path.QueryArgs,path.FormData,path.Method,path.Body),Strings.concat("/",path.Segments)]];
   },function(value)
@@ -18478,7 +18578,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:[Route.Segment$2(value)]
    };
   });
-  SC$7.rDateTime=Router$1.New$1(function(path)
+  SC$8.rDateTime=Router$1.New$1(function(path)
   {
    var m,h,$1,$2,$3,$4,$5,$6,$7;
    m=path.Segments;
@@ -18571,15 +18671,15 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   a.splice(0,Arrays.length(a));
  };
- SC$8.$cctor=function()
- {
-  SC$8.$cctor=Global.ignore;
-  SC$8.Doc=self.document;
- };
  SC$9.$cctor=function()
  {
   SC$9.$cctor=Global.ignore;
-  SC$9.EmptyAttr=null;
+  SC$9.Doc=self.document;
+ };
+ SC$10.$cctor=function()
+ {
+  SC$10.$cctor=Global.ignore;
+  SC$10.EmptyAttr=null;
  };
  AggregateException=WebSharper.AggregateException=Runtime$1.Class({},Error,AggregateException);
  AggregateException.New$3=Runtime$1.Ctor(function(innerExceptions)
@@ -18780,8 +18880,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Anims.UseAnimations=function()
  {
-  SC$11.$cctor();
-  return SC$11.UseAnimations;
+  SC$12.$cctor();
+  return SC$12.UseAnimations;
  };
  Anims.Actions=function(a)
  {
@@ -18855,10 +18955,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    Duration:nextDuration
   };
  };
- SC$10.$cctor=function()
+ SC$11.$cctor=function()
  {
-  SC$10.$cctor=Global.ignore;
-  SC$10.BatchUpdatesEnabled=true;
+  SC$11.$cctor=Global.ignore;
+  SC$11.BatchUpdatesEnabled=true;
  };
  Char.IsUpper=function(c)
  {
@@ -18975,12 +19075,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
   return r;
  };
- FormatException=WebSharper.FormatException=Runtime$1.Class({},Error,FormatException);
- FormatException.New$1=Runtime$1.Ctor(function(message)
- {
-  this.message=message;
-  Object.setPrototypeOf(this,FormatException.prototype);
- },FormatException);
  Router$1.New=function(Parse,Segment)
  {
   return{
@@ -19083,20 +19177,26 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return Numeric.TryParse(s,0,18446744073709551615,r);
  };
+ FormatException=WebSharper.FormatException=Runtime$1.Class({},Error,FormatException);
+ FormatException.New$1=Runtime$1.Ctor(function(message)
+ {
+  this.message=message;
+  Object.setPrototypeOf(this,FormatException.prototype);
+ },FormatException);
  String$1.isBlank=function(s)
  {
   return Strings.forall(Char.IsWhiteSpace,s);
  };
- SC$11.$cctor=function()
+ SC$12.$cctor=function()
  {
-  SC$11.$cctor=Global.ignore;
-  SC$11.CubicInOut=Easing.Custom(function(t)
+  SC$12.$cctor=Global.ignore;
+  SC$12.CubicInOut=Easing.Custom(function(t)
   {
    var t2;
    t2=t*t;
    return 3*t2-2*(t2*t);
   });
-  SC$11.UseAnimations=true;
+  SC$12.UseAnimations=true;
  };
  AppendList.Append=function(x,y)
  {
@@ -19138,8 +19238,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  AppendList.Empty=function()
  {
-  SC$12.$cctor();
-  return SC$12.Empty;
+  SC$13.$cctor();
+  return SC$13.Empty;
  };
  LinkedListEnumerator=Collections.LinkedListEnumerator=Runtime$1.Class({
   MoveNext:function()
@@ -19311,10 +19411,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:Array$1.ofSeqNonCopying(q)
   };
  };
- SC$12.$cctor=function()
+ SC$13.$cctor=function()
  {
-  SC$12.$cctor=Global.ignore;
-  SC$12.Empty={
+  SC$13.$cctor=Global.ignore;
+  SC$13.Empty={
    $:0
   };
  };
