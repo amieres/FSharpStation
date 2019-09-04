@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1567145566689 -d:NETSTANDARD20 -d:NOFRAMEWORK --noframework -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1567214137408 -d:NETSTANDARD20 -d:NOFRAMEWORK --noframework -d:TEE -d:WEBSHARPER
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/ProzperServer"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
@@ -38,7 +38,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\ProzperServer\bin\ProzperServer.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1567145566689
+//#define FSharpStation1567214137408
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -572,7 +572,7 @@ namespace FsRoot
                         member __.Delay                       fEf                  = fEf
                         member __.Run                         fEf  : Eff<'H, _   > = rtn () |> bind fEf
                         member this.TryWith   (body, handler     ) : Eff<'H,_> = Eff(fun k -> try body() |> function Eff(f) -> f k with e -> handler e |> function Eff(f) -> f k)
-                        member this.TryFinally(body, compensation) : Eff<'H,_> = try body() finally compensation()
+                        member this.TryFinally(body:unit-> Eff<'H,'R>, compensation) : Eff<'H,'R> = (try body() with e -> compensation() ; reraise() ) |>>! (fun _ -> compensation())
                         member this.Using     (disposable, body  ) : Eff<'H,_> = //wrap(fun r -> using (disposable:#System.IDisposable) (fun u -> body u |> getFun <| r) )
                                     let body' = fun () -> body disposable
                                     this.TryFinally(body', fun () -> if disposable :> obj <> null then (disposable:#System.IDisposable).Dispose() )
@@ -1407,6 +1407,7 @@ namespace FsRoot
         
         [< JavaScript >]
         module ClientSide =
+            open FsRoot
             open FsRoot.ProzperServer
             
             [< AutoOpen >]
@@ -3336,6 +3337,91 @@ namespace FsRoot
                                     )
                                 ]
                             ).Doc()
+                module Calculado =
+                    open Html
+                
+                    let inputLabel attrs txt var =
+                        div attrs [
+                            div [ attr.``class`` "input-group"       ] [
+                                span [ attr.``class`` "input-group-addon" ] [ text txt ]
+                                Doc.Input [ attr.``class`` "form-control" ]   var
+                            ]
+                        ]
+                
+                    let lensVarStr(v:Var<float>) = Var.Make (V (sprintf "%A" v.V)) (ParseO.parseDoubleO >> function Some d when d <> v.Value -> v.Set d |_->())
+                    let textLine txtW = div [] [ textView txtW ]
+                
+                    module KeylessList =
+                
+                        let createListModel newF elUI =
+                            let elements : ListModel<_,_> = ListModel.Create fst []
+                            let addNew = 
+                                let mutable i = 0
+                                fun () ->        
+                                    (i, newF()) |> elements.Add
+                                    i <- i + 1
+                            let delete k () = elements.RemoveByKey k
+                            let doc = elements.DocLens (fun k v -> elUI (delete k) (v.Lens snd (fun (i, _) nv -> i, nv ) ) )
+                            elements, addNew, doc
+                
+                        let elemsUI doc addNew =
+                            div [] [
+                                doc
+                                Doc.Button "New" [] addNew
+                            ]
+                
+                        let lazyDoc elemUI newElem =
+                            let elems, addNew, doc = createListModel newElem elemUI
+                            lazy elemsUI doc addNew 
+                
+                
+                    module AF =
+                        open FsRoot
+                        module AF = AppFramework
+                
+                        let addDocs plgName docs =
+                            AF.addPlugIn {
+                                AF.plgName    = plgName
+                                AF.plgVars    = [| |]  
+                                AF.plgViews   = [| |]  
+                                AF.plgDocs    = [| for docName, doc in docs -> AF.newDoc  docName doc |]  
+                                AF.plgActions = [| |]
+                                AF.plgQueries = [| |]
+                            } 
+                
+                    type Calculado = {
+                        valorA : float
+                        valorB : float
+                        valorC : float
+                    }
+                
+                    let newCalc() = {
+                        valorA = 0.
+                        valorB = 0.
+                        valorC = 0.
+                    }
+                
+                    let calcUI delete (calc:Var<Calculado>) =
+                        let valorA  = lensVarStr (Lens calc.V.valorA) 
+                        let valorB  = lensVarStr (Lens calc.V.valorB) 
+                        let valorC  = lensVarStr (Lens calc.V.valorC)
+                        let dup     = V (calc.V.valorA * 2.             )
+                        let mult    = V (calc.V.valorA * calc.V.valorB  )
+                        let multAdd = V (mult.V + calc.V.valorC         )
+                        div [] [
+                            Doc.Button "x" [] delete
+                            inputLabel [] "valor A: " valorA
+                            inputLabel [] "valor B: " valorB
+                            inputLabel [] "valor C: " valorC
+                            textLine <| V(sprintf "%A = %s * 2"        dup.V       valorA.V                    ) 
+                            textLine <| V(sprintf "%A = %s * %s"       mult.V      valorA.V valorB.V           ) 
+                            textLine <| V(sprintf "%A = %s * %s + %s"  multAdd.V   valorA.V valorB.V valorC.V  ) 
+                        ]
+                
+                    [ "Calc", KeylessList.lazyDoc calcUI newCalc ]
+                    |> AF.addDocs "Calc"
+                
+                
             module MainProgram =
                 open Templating
                 open ModeloUI

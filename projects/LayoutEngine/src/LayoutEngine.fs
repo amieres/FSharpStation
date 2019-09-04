@@ -1,11 +1,12 @@
 #nowarn "3242"
-////-d:FSharpStation1558468777792 -d:NOFRAMEWORK --noframework -d:WEBSHARPER
+////-d:FSharpStation1567214137408 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
@@ -23,46 +24,22 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1558468777792
+//#define FSharpStation1567214137408
 #if INTERACTIVE
 module FsRoot   =
 #else
 namespace FsRoot
 #endif
 
-    #if WEBSHARPER
-    //#nowarn "3242" 
-    
-    open WebSharper
-    open WebSharper.JavaScript
-    open WebSharper.UI
-    open WebSharper.UI.Client
-    type on   = WebSharper.UI.Html.on
-    type attr = WebSharper.UI.Html.attr
-    #else
-    /// dummy WebSharper definition in order to avoid having to use #if WEBSHARPER all the time
-    module WebSharper =
-        type RpcAttribute() =
-            let a = 1
-        type JavaScriptAttribute(translate:bool) =
-            let a = 1
-            new() = JavaScriptAttribute true
-        type InlineAttribute(code:string) =
-            let a = 1
-            new() = InlineAttribute ""
-        type DirectAttribute(code:string) =
-            let a = 1
-    
-    open WebSharper
-    
-    #endif
-    //#define NOFRAMEWORK --noframework
+    #if !NETSTANDARD20
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
     
+    #if WEBSHARPER
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
     
@@ -81,7 +58,38 @@ namespace FsRoot
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    #endif
+    #endif
+    #if WEBSHARPER
+    //#nowarn "3242" 
     
+    open WebSharper
+    open WebSharper.JavaScript
+    open WebSharper.UI
+    open WebSharper.UI.Client
+    type on   = WebSharper.UI.Html.on
+    type attr = WebSharper.UI.Html.attr
+    #else
+    /// dummy WebSharper definition in order to avoid having to use #if WEBSHARPER all the time
+    module WebSharper =
+        type RpcAttribute() =
+            inherit System.Attribute()
+            let a = 1
+        type JavaScriptAttribute(translate:bool) =
+            inherit System.Attribute()
+            let a = 1
+            new() = JavaScriptAttribute true
+        type InlineAttribute(code:string) =
+            inherit System.Attribute()
+            let a = 1
+            new() = InlineAttribute ""
+        type DirectAttribute(code:string) =
+            inherit System.Attribute()
+            let a = 1
+    
+    open WebSharper
+    
+    #endif
     
         /// Essentials that can be converted to JavaScript with WebSharper
         [< JavaScript ; AutoOpen >]
@@ -104,6 +112,7 @@ namespace FsRoot
                 | :? string as s -> printfn "%s" s
                 | __             -> printfn "%A" v
             
+            //#define TEE
             module Memoize =
             
                 /// returns 3 functions:
@@ -230,6 +239,14 @@ namespace FsRoot
                 let (|StartsWith|_|) (start:string) (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
                 let (|EndsWith  |_|) (ends :string) (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
                 
+                let thousands n =
+                    let v = n.ToString()
+                    let r = v.Length % 3 
+                    let s = if r = 0 then 3 else r
+                    [   yield v.[0.. s - 1]
+                        for i in 0..(v.Length - s)/ 3 - 1 do
+                            yield v.[i * 3 + s .. i * 3 + s + 2]
+                    ] |> String.concat ","
             
             module ParseO =
                 let tryParseWith tryParseFunc = tryParseFunc >> function
@@ -256,9 +273,13 @@ namespace FsRoot
                 let (|Guid  |_|) = parseGuidO
                 
         /// Essentials that run in Javascript (WebSharper)
-        //#define WEBSHARPER
+        //#define WEBSHARPER 
         [< JavaScript ; AutoOpen >]
         module LibraryJS =
+            [< Inline """(!$v)""">]
+            let isUndefined v = v.GetType() = v.GetType()
+                
+            
             let (|REGEX|_|) (expr: string) (opt: string) (value: string) =
                 if value = null then None else
                 match JavaScript.String(value).Match(RegExp(expr, opt)) with
@@ -926,18 +947,19 @@ namespace FsRoot
                     | Identifier id                   -> Elem id
                     |                               _ -> Nothing
             
-                let (|Var|Doc|Button|Input|TextArea|Select|Nothing|) =
+                let (|Button|Input|TextArea|Select|Nothing|) =
                     function
-                    | s, false when s = "Var"        -> Var
-                    | s, false when s = "Doc"        -> Doc
                     | s, false when s = "button"     -> Button
                     | s, false when s = "input"      -> Input
                     | s, false when s = "textarea"   -> TextArea
                     | s, false when s = "select"     -> Select
                     |                              _ -> Nothing
             
-                let (|Concat|Nothing|) =
+                let (|Var|Doc|View|Concat|Nothing|) =
                     function
+                    | s, false when s = "Var"        -> Var
+                    | s, false when s = "Doc"        -> Doc
+                    | s, false when s = "View"       -> View
                     | s, false when s = "concat"     -> Concat
                     |                              _ -> Nothing
             
@@ -1196,7 +1218,39 @@ namespace FsRoot
                 let createConcat(lytNm, name, docs) =
                     turnToView (fun _ -> getDocs lytNm docs |> Doc.Concat)
             
-                let createVar( lytNm, varName, v    ) = Var.Create v
+                let createVar( lytNm, varName, v           ) = Var.Create v
+                let findJSEntry fname =
+                    fname 
+                    |> String.splitByChar '.'
+                    |> Seq.fold(fun oO nm ->
+                        oO |> Option.bind(fun o -> if (isUndefined o?(nm)) then None else Some o?(nm) ) 
+                        ) (Some (JS.Inline("window") :> obj) )
+            
+                let createView(lytNm, viwName, fname, parms) = 
+                    AF.mainDocV.View |> View.Bind (fun _ -> 
+                        findJSEntry fname 
+                        |> function 
+                        | None   -> sprintf "Missing JavaScript function: %s" fname |> View.Const
+                        | Some f when JS.Inline("$0 instanceof Function", f) |> not -> sprintf "Not a JavaScript function: %s" fname |> View.Const
+                        | Some f ->
+                        match parms with
+                        | [] -> JS.Inline("$0()", f) |> View.Const
+                        | _  -> parms 
+                                |> Seq.map (function
+                                    | Identifier id  -> splitName     lytNm id ||> AF.tryGetDoc |> Option.map (getDocF [] >> fst >> box >> View.Const)
+                                                        |> Option.orElseWith (fun () ->
+                                                            splitName lytNm id ||> AF.tryGetWoW |> Option.map (View.Map box)
+                                                        )
+                                                        |> Option.defaultWith(fun () -> sprintf "Missing element: %s" id |> box |> View.Const) 
+                                    | (txt, _)       ->
+                                                        match getTextData lytNm txt with
+                                                        | TDPlain v   -> View.Const (box v  )
+                                                        | TDView  vw  -> View.Map    box vw   
+                                                        | TDAct   act -> View.Const (box act)
+                                )
+                                |> View.Sequence
+                                |> View.Map (fun ps -> JS.Inline("$0.apply(null, $1)", f, ps))
+                    )
             
                 let createSplitterM = Memoize.memoize createSplitter
                 let createButtonM   = Memoize.memoize createButton
@@ -1207,24 +1261,27 @@ namespace FsRoot
                 let createTemplateM = Memoize.memoize createTemplate
                 let createConcatM   = Memoize.memoize createConcat
                 let createVarM      = Memoize.memoize createVar
+                let createViewM     = Memoize.memoize createView
             
-                let entryDoc  n doc = AF.newDoc n (lazy doc    ) |> EntryDoc |> Some
-                let entryVar  n v   = AF.newVar n  v             |> EntryVar |> Some
+                let entryDoc  n doc = AF.newDoc n (lazy doc    ) |> EntryDoc  |> Some
+                let entryVar  n v   = AF.newVar n  v             |> EntryVar  |> Some
+                let entryView n w   = AF.newViw n  w             |> EntryView |> Some
             
                 let createEntryO lytNm (line:string) =
                     try
                         match splitTokens line with
-                        |   Identifier name :: Vertical   :: Measures measures          :: docs    -> entryDoc name <| createSplitterM(lytNm, name, true , measures, docs ) 
-                        |   Identifier name :: Horizontal :: Measures measures          :: docs    -> entryDoc name <| createSplitterM(lytNm, name, false, measures, docs ) 
-                        | [ Identifier name ;  Button     ;  Identifier act    ;  attrs ;  text  ] -> entryDoc name <| createButtonM(  lytNm, name, act  , attrs   , text ) 
-                        | [ Identifier name ;  Input      ;  Identifier var    ;  attrs          ] -> entryDoc name <| createInputM(   lytNm, name, var  , attrs          ) 
-                        | [ Identifier name ;  TextArea   ;  Identifier var    ;  attrs          ] -> entryDoc name <| createTextAreaM(lytNm, name, var  , attrs          ) 
-                        | [ Identifier name ;  Var        ;                       v              ] -> entryVar name <| createVarM(     lytNm, name, fst v                 ) 
-                        |   Identifier name :: Doc        :: doc                        :: parms   -> entryDoc name <| createDocM(     lytNm, name, fst doc  , parms      ) 
-                        |   Identifier name :: Template   :: temp              :: attrs :: holes   -> entryDoc name <| createTemplateM(lytNm, name, temp , attrs   , holes)
-                        |   Identifier name :: Concat                                   :: docs    -> entryDoc name <| createConcatM(  lytNm, name,                  docs )
-                        |   Identifier name :: Grid       :: cols :: rows      :: attrs :: docs    -> None
-                        |   Identifier name :: Elem elem                       :: attrs :: docs    -> entryDoc name <| createElementM( lytNm, name, elem , attrs   , docs ) 
+                        |   Identifier name :: Vertical   :: Measures measures          :: docs    -> entryDoc  name <| createSplitterM(lytNm, name, true , measures, docs ) 
+                        |   Identifier name :: Horizontal :: Measures measures          :: docs    -> entryDoc  name <| createSplitterM(lytNm, name, false, measures, docs ) 
+                        | [ Identifier name ;  Button     ;  Identifier act    ;  attrs ;  text  ] -> entryDoc  name <| createButtonM(  lytNm, name, act  , attrs   , text ) 
+                        | [ Identifier name ;  Input      ;  Identifier var    ;  attrs          ] -> entryDoc  name <| createInputM(   lytNm, name, var  , attrs          ) 
+                        | [ Identifier name ;  TextArea   ;  Identifier var    ;  attrs          ] -> entryDoc  name <| createTextAreaM(lytNm, name, var  , attrs          ) 
+                        | [ Identifier name ;  Var        ;                       v              ] -> entryVar  name <| createVarM(     lytNm, name, fst v                 ) 
+                        |   Identifier name :: Doc        :: doc                        :: parms   -> entryDoc  name <| createDocM(     lytNm, name, fst doc  , parms      ) 
+                        |   Identifier name :: View       :: fname                      :: parms   -> entryView name <| createViewM(    lytNm, name, fst fname, parms      )
+                        |   Identifier name :: Template   :: temp              :: attrs :: holes   -> entryDoc  name <| createTemplateM(lytNm, name, temp , attrs   , holes)
+                        |   Identifier name :: Concat                                   :: docs    -> entryDoc  name <| createConcatM(  lytNm, name,                  docs )
+                        |   Identifier name :: Grid       :: cols :: rows      :: attrs :: docs    -> None 
+                        |   Identifier name :: Elem elem                       :: attrs :: docs    -> entryDoc  name <| createElementM( lytNm, name, elem , attrs   , docs ) 
                         | _                                                                        -> None
                     with e -> 
                         printfn "%A" e
@@ -1424,6 +1481,21 @@ namespace FsRoot
                     |> Seq.choose (function | EntryVar var -> Some var |_-> None)
                     |> Seq.groupBy (fun v -> v.varName) |> Seq.map (snd >> Seq.last)
             
+                let getViewEntries entries =
+                    entries
+                    |> Seq.choose (function | EntryView vw -> Some vw |_-> None)
+                    |> Seq.groupBy (fun v -> v.viwName) |> Seq.map (snd >> Seq.last)
+            
+                let getActionEntries entries =
+                    entries
+                    |> Seq.choose (function | EntryAction ac -> Some ac |_-> None)
+                    |> Seq.groupBy (fun v -> v.actName) |> Seq.map (snd >> Seq.last)
+            
+                let getQueryEntries entries =
+                    entries
+                    |> Seq.choose (function | EntryQuery qr -> Some qr |_-> None)
+                    |> Seq.groupBy (fun v -> v.qryName) |> Seq.map (snd >> Seq.last)
+            
                 let inputFile lytNm attrs labelName actName doc =
                     splitName lytNm actName
                     ||> AF.tryGetAct
@@ -1472,17 +1544,17 @@ namespace FsRoot
                         AF.addPlugIn { 
                             plgName    = lyt.lytName
                             plgVars    = [| yield  AF.newVar "Layout" lyt.lytDefinition  
-                                            yield! getVarEntries entries
+                                            yield! getVarEntries    entries
                                          |]
-                            plgViews   = [|                                       |]
-                            plgDocs    = [| yield! getDocEntries entries
+                            plgViews   = [| yield! getViewEntries   entries       |]
+                            plgDocs    = [| yield! getDocEntries    entries
                                             yield  AF.newDocF "InputFile"  <| AF.FunDoc4(inputFile  lyt.lytName, "attrs", "Label", "Action", "[Doc]")
                                             yield  AF.newDocF "InputLabel" <| AF.FunDoc3(inputLabel lyt.lytName, "attrs", "Label", "Var"            )
                                             yield  AF.newDocF "HtmlDoc"    <| AF.FunDoc1(htmlDoc    lyt.lytName, "html"                             )
                                             yield  AF.newDocF "none"       <| AF.FunDoc1(none                  , "x"                                )
                                          |]
-                            plgActions = [|                                       |]
-                            plgQueries = [|                                       |]
+                            plgActions = [| yield! getActionEntries entries         |]
+                            plgQueries = [| yield! getQueryEntries  entries         |]
                         }
                         AF.mainDocV.Set AF.mainDocV.Value
                     )

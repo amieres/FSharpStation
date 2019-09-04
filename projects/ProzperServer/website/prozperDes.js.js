@@ -362,7 +362,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 (function()
 {
  "use strict";
- var Global,FsRoot,ProzperServer,ClientSide,MainProgram,WebSharper,Obj,UI,Var$1,LibraryJS,AppFramework,PlugIn,ModeloUI,Aliado,Operators,View,Var,Lazy,RenderAliados,RenderAliado,FormaRegistro,FormaDatos,FormaContactos,FormaFormasPago,ReporteConsolidado,TablaPagos,ListaDocs,FormaAutorizacion,FormaContrato,Transacciones,Pendientes,EventTarget,Node,JavaScript,JS,Unchecked,LayoutEngineModule,Option,TypesV0,Aliado$1,Aliado$2,Templating,Runtime,Server,TemplateInstance,Arrays,ProviderBuilder,Handler,prozperDes$js_Templates,prozperDes$js_GeneratedPrintf,prozperDes$js_Router,Doc,Rpc,IdAliado,Modelo,ConcreteVar,Snap,SC$1,ListModel,PlugInVar,PlugInView,PlugInDoc,Pervasives,LazyExtensionsProxy,LazyRecord,ProzperServer_GeneratedPrintf,Seq,Library,SortWith,Buscar,Collections,FSharpSet,Set,Strings,CorreoElectronico,DatosPersonales,CorreoElectronico$1,Telefono,Direccion,Monads,AsyncResultBuilder,Refresh,System,Guid,VariousUI,HtmlModule,attr,ViewBuilder,StatusAliado,List,CuentaBancaria,RoutingNumber,NumeroCuenta,Utils,FormaPago,Result,Archivo,Extensions,ListModel$1,Date,String,TipoArchivo,StatusArchivo,Blob,CuentaPago,FormaFirma,PremisasCalculo,PlugInAction,Msal,WindowOrWorkerGlobalScope,LayoutEngine,SC$2,IdForAuthorize,DatosPersonales$1,DiaPago,TipoAliado,Numeric,SC$3,List$1,Dictionary,HashSet,Client,Abbrev,Async,Fresh,Builder,BuilderP,Eff,EffBuilder,AsyncResultBuilderP,Slice,Msal$1,Policy,Configuration,AuthOptions,Control,MailboxProcessor,Mailbox,EndPoint,Router,Remoting,Rpc0,IdPayment,PlugInQuery,FSharpMap,Enumerator,T,BalancedTree,T$1,Genero,ParseO,Pais,Telefono$1,TipoTelefono,Direccion$1,TipoDireccion,Estado,ZonaPostal,AsyncResult,AjaxRemotingProvider,Array,TarjetaCredito,Subscripcion,NumeroTarjeta,CuentaBancaria$1,TarjetaCredito$1,Object,FromView,Concurrency,AttrProxy,Array$1,TipoCuenta,Storage,AttrModule,GeneratedPrintf,LayoutEngine_Templates,LayoutEngine_GeneratedPrintf,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,Serializer,Expiracion,TipoTarjeta,DictionaryUtil,CheckedInput,Client$1,Templates,Pojo,Error,TimeoutException,Promise,Sitelets,RouterOperators,RouterModule,Route,SC$4,MapUtil,Tree,IdAddress,IdSubscription,Docs,AsyncBody,CT,Attrs,DomUtility,SC$5,ArrayStorage,Var$2,ConceptoPago,Enlace,Layout,DateUtil,WcSplitterT,DocElemNode,CharacterData,SC$6,FSharpEvent,LinkedList,AuthenticationParameters,Account,Router$1,List$2,XhrProvider,Pair,Result$1,Scheduler,CancellationTokenSource,DynamicAttrNode,Measures,Hoverable,Hoverable$1,Event,UIEvent,ResizeObserver,SC$7,Elt,Attrs$1,Dyn,Prepare,An,Settings,Mailbox$1,HashSetUtil,Event$1,Event$2,NonStandardPromiseRejectionException,SC$8,Map,OperationCanceledException,Queue,SC$9,SC$10,AggregateException,KeyCollection,Updates,Docs$1,RunState,NodeSet,Anims,SC$11,Char,Json,StringEncoding,FormatException,String$1,SC$12,AppendList,LinkedListEnumerator,PathUtil,Easing,HashSet$1,DomNodes,SC$13,IntelliFactory,Runtime$1,Math,$,console,Date$1,JSON,Reflect,String$2;
+ var Global,FsRoot,ProzperServer,ClientSide,MainProgram,WebSharper,Obj,UI,Var$1,LibraryJS,AppFramework,PlugIn,ModeloUI,Aliado,Operators,View,Var,Lazy,RenderAliados,RenderAliado,FormaRegistro,FormaDatos,FormaContactos,FormaFormasPago,ReporteConsolidado,TablaPagos,ListaDocs,FormaAutorizacion,FormaContrato,Transacciones,Pendientes,EventTarget,Node,JavaScript,JS,Unchecked,LayoutEngineModule,Option,TypesV0,Aliado$1,Aliado$2,Templating,Runtime,Server,TemplateInstance,Arrays,ProviderBuilder,Handler,prozperDes$js_Templates,prozperDes$js_GeneratedPrintf,prozperDes$js_Router,Doc,Rpc,IdAliado,Modelo,ConcreteVar,Snap,SC$1,ListModel,PlugInVar,PlugInView,PlugInDoc,Pervasives,LazyExtensionsProxy,LazyRecord,ProzperServer_GeneratedPrintf,Seq,Library,SortWith,Buscar,Collections,FSharpSet,Set,Strings,CorreoElectronico,DatosPersonales,CorreoElectronico$1,Telefono,Direccion,Monads,AsyncResultBuilder,Refresh,System,Guid,VariousUI,HtmlModule,attr,ViewBuilder,StatusAliado,List,CuentaBancaria,RoutingNumber,NumeroCuenta,Utils,FormaPago,Result,Archivo,Extensions,ListModel$1,Date,String,TipoArchivo,StatusArchivo,Blob,CuentaPago,FormaFirma,PremisasCalculo,PlugInAction,Msal,WindowOrWorkerGlobalScope,LayoutEngine,SC$2,IdForAuthorize,DatosPersonales$1,DiaPago,TipoAliado,Numeric,SC$3,List$1,Dictionary,HashSet,Client,Abbrev,Async,Fresh,Builder,BuilderP,Eff,EffBuilder,AsyncResultBuilderP,Slice,Msal$1,Policy,Configuration,AuthOptions,Control,MailboxProcessor,Mailbox,EndPoint,Router,Remoting,Rpc0,IdPayment,Calculado,KeylessList,AF,PlugInQuery,FSharpMap,Enumerator,T,BalancedTree,T$1,Genero,ParseO,Pais,Telefono$1,TipoTelefono,Direccion$1,TipoDireccion,Estado,ZonaPostal,AsyncResult,AjaxRemotingProvider,Array,TarjetaCredito,Subscripcion,NumeroTarjeta,CuentaBancaria$1,TarjetaCredito$1,Object,FromView,Concurrency,AttrProxy,Array$1,TipoCuenta,Storage,AttrModule,GeneratedPrintf,LayoutEngine_Templates,LayoutEngine_GeneratedPrintf,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,Serializer,Expiracion,TipoTarjeta,DictionaryUtil,CheckedInput,Client$1,Templates,Pojo,Error,TimeoutException,Promise,Sitelets,RouterOperators,RouterModule,Route,SC$4,Calculado$1,MapUtil,Tree,IdAddress,IdSubscription,Docs,AsyncBody,CT,Attrs,DomUtility,SC$5,ArrayStorage,Var$2,ConceptoPago,Enlace,Layout,DateUtil,WcSplitterT,MatchFailureException,DocElemNode,CharacterData,SC$6,FSharpEvent,LinkedList,AuthenticationParameters,Account,Router$1,List$2,XhrProvider,Pair,Result$1,Scheduler,CancellationTokenSource,DynamicAttrNode,Measures,Hoverable,Hoverable$1,Event,UIEvent,ResizeObserver,SC$7,Elt,Attrs$1,Dyn,Prepare,An,Settings,Mailbox$1,HashSetUtil,Event$1,Event$2,NonStandardPromiseRejectionException,SC$8,Map,OperationCanceledException,Queue,SC$9,SC$10,AggregateException,KeyCollection,Updates,Docs$1,RunState,NodeSet,Anims,SC$11,Char,Json,StringEncoding,FormatException,String$1,SC$12,AppendList,LinkedListEnumerator,PathUtil,Easing,HashSet$1,DomNodes,SC$13,IntelliFactory,Runtime$1,Math,$,console,Date$1,JSON,Reflect,String$2;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  ProzperServer=FsRoot.ProzperServer=FsRoot.ProzperServer||{};
@@ -506,6 +506,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Remoting=WebSharper.Remoting=WebSharper.Remoting||{};
  Rpc0=ProzperServer.Rpc0=ProzperServer.Rpc0||{};
  IdPayment=TypesV0.IdPayment=TypesV0.IdPayment||{};
+ Calculado=ModeloUI.Calculado=ModeloUI.Calculado||{};
+ KeylessList=Calculado.KeylessList=Calculado.KeylessList||{};
+ AF=Calculado.AF=Calculado.AF||{};
  PlugInQuery=AppFramework.PlugInQuery=AppFramework.PlugInQuery||{};
  FSharpMap=Collections.FSharpMap=Collections.FSharpMap||{};
  Enumerator=WebSharper.Enumerator=WebSharper.Enumerator||{};
@@ -560,6 +563,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  RouterModule=Sitelets.RouterModule=Sitelets.RouterModule||{};
  Route=Sitelets.Route=Sitelets.Route||{};
  SC$4=Global.StartupCode$WebSharper_Main$Remoting=Global.StartupCode$WebSharper_Main$Remoting||{};
+ Calculado$1=Calculado.Calculado=Calculado.Calculado||{};
  MapUtil=Collections.MapUtil=Collections.MapUtil||{};
  Tree=BalancedTree.Tree=BalancedTree.Tree||{};
  IdAddress=TypesV0.IdAddress=TypesV0.IdAddress||{};
@@ -577,6 +581,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Layout=LayoutEngineModule.Layout=LayoutEngineModule.Layout||{};
  DateUtil=WebSharper.DateUtil=WebSharper.DateUtil||{};
  WcSplitterT=WcSplitter.WcSplitterT=WcSplitter.WcSplitterT||{};
+ MatchFailureException=WebSharper.MatchFailureException=WebSharper.MatchFailureException||{};
  DocElemNode=UI.DocElemNode=UI.DocElemNode||{};
  CharacterData=Global.CharacterData;
  SC$6=Global.StartupCode$WebSharper_UI$Abbrev=Global.StartupCode$WebSharper_UI$Abbrev||{};
@@ -1578,10 +1583,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    else
     {
      s$1=s;
-     s=Library["String.Left$1"](s$1,-3);
+     s=Library["String.Left"](s$1,-3);
      parts=new T$1({
       $:1,
-      $0:Library["String.Right$1"](s$1,3),
+      $0:Library["String.Right"](s$1,3),
       $1:parts
      });
     }
@@ -1771,6 +1776,16 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return Snap.Map2Unit(a(),a$1());
   });
  };
+ View.Sequence=function(views)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.Sequence(Seq.map(function(a)
+   {
+    return a();
+   },views));
+  });
+ };
  View.ConvertSeqNode=function(conv,value)
  {
   var _var,view;
@@ -1802,16 +1817,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    state[0]=newState;
    return result;
   },view);
- };
- View.Sequence=function(views)
- {
-  return View.CreateLazy(function()
-  {
-   return Snap.Sequence(Seq.map(function(a)
-   {
-    return a();
-   },views));
-  });
  };
  Var=UI.Var=Runtime$1.Class({},Obj,Var);
  Var.New=Runtime$1.Ctor(function()
@@ -2857,7 +2862,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   }
   function fp(cp)
   {
-   return FormaPago.New("",Library.Error$1(""),cp,null);
+   return FormaPago.New("",Library.Error(""),cp,null);
   }
   function fpIds(fps)
   {
@@ -3896,7 +3901,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     });
    }))),(f=(d=[],function(r)
    {
-    return Result.defaultValue$1(d,r);
+    return Result.defaultValue(d,r);
    }),function(x)
    {
     return g(f(x));
@@ -4151,14 +4156,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:"tamano",
     $1:View.Map(function($1)
     {
-     return String.thousands$1($1.tamano);
+     return String.thousands($1.tamano);
     },arV.get_View())
    }).WithHole({
     $:2,
     $0:"modificado",
     $1:View.Map(function($1)
     {
-     return Date.toYYYYMMDDHHMM$1("-",$1.modificado);
+     return Date.toYYYYMMDDHHMM("-",$1.modificado);
     },arV.get_View())
    }).WithHole({
     $:0,
@@ -4355,7 +4360,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $0:"fecha",
     $1:View.Map(function($1)
     {
-     return Date.toYYYYMMDDHHMM$1("-",$1.fechaPago);
+     return Date.toYYYYMMDDHHMM("-",$1.fechaPago);
     },trv)
    }).WithHole({
     $:2,
@@ -4877,7 +4882,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     {
      return LayoutEngineModule.getVarEntries(entries);
     }));
-   })),[],Arrays.ofSeq(Seq.delay(function()
+   })),Arrays.ofSeq(Seq.delay(function()
+   {
+    return LayoutEngineModule.getViewEntries(entries);
+   })),Arrays.ofSeq(Seq.delay(function()
    {
     return Seq.append(LayoutEngineModule.getDocEntries(entries),Seq.delay(function()
     {
@@ -4919,7 +4927,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       }));
      }));
     }));
-   })),[],[]));
+   })),Arrays.ofSeq(Seq.delay(function()
+   {
+    return LayoutEngineModule.getActionEntries(entries);
+   })),Arrays.ofSeq(Seq.delay(function()
+   {
+    return LayoutEngineModule.getQueryEntries(entries);
+   }))));
    AppFramework.mainDocV().Set(AppFramework.mainDocV().Get());
   },lyt.lytDefinition.get_View());
  };
@@ -4945,6 +4959,26 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   },Seq.choose(function(a)
   {
    return a.$==0?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },entries)));
+ };
+ LayoutEngineModule.getViewEntries=function(entries)
+ {
+  function f(t)
+  {
+   return t[1];
+  }
+  return Seq.map(function(x)
+  {
+   return Seq.last(f(x));
+  },Seq.groupBy(function(v)
+  {
+   return v.viwName;
+  },Seq.choose(function(a)
+  {
+   return a.$==1?{
     $:1,
     $0:a.$0
    }:null;
@@ -5028,6 +5062,46 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return Doc.Element("span",[],[]);
  };
+ LayoutEngineModule.getActionEntries=function(entries)
+ {
+  function f(t)
+  {
+   return t[1];
+  }
+  return Seq.map(function(x)
+  {
+   return Seq.last(f(x));
+  },Seq.groupBy(function(v)
+  {
+   return v.actName;
+  },Seq.choose(function(a)
+  {
+   return a.$==3?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },entries)));
+ };
+ LayoutEngineModule.getQueryEntries=function(entries)
+ {
+  function f(t)
+  {
+   return t[1];
+  }
+  return Seq.map(function(x)
+  {
+   return Seq.last(f(x));
+  },Seq.groupBy(function(v)
+  {
+   return v.qryName;
+  },Seq.choose(function(a)
+  {
+   return a.$==4?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },entries)));
+ };
  LayoutEngineModule.turnToView=function(f)
  {
   return Doc.EmbedView(View.Map(f,AppFramework.mainDocV().get_View()));
@@ -5099,19 +5173,19 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  LayoutEngineModule.createEntryO=function(lytNm,line)
  {
-  var m,$1,a,t,t$1,a$1,t$2,name,$2,a$2,t$3,t$4,a$3,t$5,name$1,$3,a$4,t$6,t$7,a$5,t$8,name$2,$4,a$6,t$9,t$10,a$7,t$11,name$3,$5,a$8,t$12,t$13,a$9,t$14,name$4,$6,a$10,t$15,t$16,name$5,$7,a$11,t$17,t$18,name$6,$8,a$12,t$19,t$20,name$7,$9,a$13,t$21,t$22,name$8,$10,a$14,t$23,t$24,$11,a$15,t$25,a$16,t$26,name$9;
+  var m,$1,a,t,t$1,a$1,t$2,name,$2,a$2,t$3,t$4,a$3,t$5,name$1,$3,a$4,t$6,t$7,a$5,t$8,name$2,$4,a$6,t$9,t$10,a$7,t$11,name$3,$5,a$8,t$12,t$13,a$9,t$14,name$4,$6,a$10,t$15,t$16,name$5,$7,a$11,t$17,t$18,name$6,$8,a$12,t$19,t$20,name$7,$9,a$13,t$21,t$22,name$8,$10,a$14,t$23,t$24,name$9,$11,a$15,t$25,t$26,$12,a$16,t$27,a$17,t$28,name$10;
   try
   {
    m=LayoutEngineModule.splitTokens(line);
-   return m.$==1&&(a=(t=m.$0,LayoutEngineModule.Identifier(t[0],t[1])),a!=null&&a.$==1&&(m.$1.$==1&&((t$1=m.$1.$0,LayoutEngineModule.Vertical(t$1[0],t$1[1])).$==0&&(m.$1.$1.$==1&&(a$1=(t$2=m.$1.$1.$0,LayoutEngineModule.Measures$1(t$2[0],t$2[1])),a$1!=null&&a$1.$==1&&($1=[m.$1.$1.$1,a$1.$0,a.$0],true))))))?(name=$1[2],LayoutEngineModule.entryDoc(name,(LayoutEngineModule.createSplitterM())([lytNm,name,true,$1[1],$1[0]]))):m.$==1&&(a$2=(t$3=m.$0,LayoutEngineModule.Identifier(t$3[0],t$3[1])),a$2!=null&&a$2.$==1&&(m.$1.$==1&&((t$4=m.$1.$0,LayoutEngineModule.Vertical(t$4[0],t$4[1])).$==1&&(m.$1.$1.$==1&&(a$3=(t$5=m.$1.$1.$0,LayoutEngineModule.Measures$1(t$5[0],t$5[1])),a$3!=null&&a$3.$==1&&($2=[m.$1.$1.$1,a$3.$0,a$2.$0],true))))))?(name$1=$2[2],LayoutEngineModule.entryDoc(name$1,(LayoutEngineModule.createSplitterM())([lytNm,name$1,false,$2[1],$2[0]]))):m.$==1&&(a$4=(t$6=m.$0,LayoutEngineModule.Identifier(t$6[0],t$6[1])),a$4!=null&&a$4.$==1&&(m.$1.$==1&&((t$7=m.$1.$0,LayoutEngineModule.Var(t$7[0],t$7[1])).$==2&&(m.$1.$1.$==1&&(a$5=(t$8=m.$1.$1.$0,LayoutEngineModule.Identifier(t$8[0],t$8[1])),a$5!=null&&a$5.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$1.$==0&&($3=[a$5.$0,m.$1.$1.$1.$0,a$4.$0,m.$1.$1.$1.$1.$0],true)))))))))?(name$2=$3[2],LayoutEngineModule.entryDoc(name$2,(LayoutEngineModule.createButtonM())([lytNm,name$2,$3[0],$3[1],$3[3]]))):m.$==1&&(a$6=(t$9=m.$0,LayoutEngineModule.Identifier(t$9[0],t$9[1])),a$6!=null&&a$6.$==1&&(m.$1.$==1&&((t$10=m.$1.$0,LayoutEngineModule.Var(t$10[0],t$10[1])).$==3&&(m.$1.$1.$==1&&(a$7=(t$11=m.$1.$1.$0,LayoutEngineModule.Identifier(t$11[0],t$11[1])),a$7!=null&&a$7.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==0&&($4=[m.$1.$1.$1.$0,a$6.$0,a$7.$0],true))))))))?(name$3=$4[1],LayoutEngineModule.entryDoc(name$3,(LayoutEngineModule.createInputM())([lytNm,name$3,$4[2],$4[0]]))):m.$==1&&(a$8=(t$12=m.$0,LayoutEngineModule.Identifier(t$12[0],t$12[1])),a$8!=null&&a$8.$==1&&(m.$1.$==1&&((t$13=m.$1.$0,LayoutEngineModule.Var(t$13[0],t$13[1])).$==4&&(m.$1.$1.$==1&&(a$9=(t$14=m.$1.$1.$0,LayoutEngineModule.Identifier(t$14[0],t$14[1])),a$9!=null&&a$9.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==0&&($5=[m.$1.$1.$1.$0,a$8.$0,a$9.$0],true))))))))?(name$4=$5[1],LayoutEngineModule.entryDoc(name$4,(LayoutEngineModule.createTextAreaM())([lytNm,name$4,$5[2],$5[0]]))):m.$==1&&(a$10=(t$15=m.$0,LayoutEngineModule.Identifier(t$15[0],t$15[1])),a$10!=null&&a$10.$==1&&(m.$1.$==1&&((t$16=m.$1.$0,LayoutEngineModule.Var(t$16[0],t$16[1])).$==0&&(m.$1.$1.$==1&&(m.$1.$1.$1.$==0&&($6=[a$10.$0,m.$1.$1.$0],true))))))?(name$5=$6[0],LayoutEngineModule.entryVar(name$5,(LayoutEngineModule.createVarM())([lytNm,name$5,$6[1][0]]))):m.$==1&&(a$11=(t$17=m.$0,LayoutEngineModule.Identifier(t$17[0],t$17[1])),a$11!=null&&a$11.$==1&&(m.$1.$==1&&((t$18=m.$1.$0,LayoutEngineModule.Var(t$18[0],t$18[1])).$==1&&(m.$1.$1.$==1&&($7=[m.$1.$1.$0,a$11.$0,m.$1.$1.$1],true)))))?(name$6=$7[1],LayoutEngineModule.entryDoc(name$6,(LayoutEngineModule.createDocM())([lytNm,name$6,$7[0][0],$7[2]]))):m.$==1&&(a$12=(t$19=m.$0,LayoutEngineModule.Identifier(t$19[0],t$19[1])),a$12!=null&&a$12.$==1&&(m.$1.$==1&&((t$20=m.$1.$0,LayoutEngineModule.Vertical(t$20[0],t$20[1])).$==4&&(m.$1.$1.$==1&&(m.$1.$1.$1.$==1&&($8=[m.$1.$1.$1.$0,m.$1.$1.$1.$1,a$12.$0,m.$1.$1.$0],true))))))?(name$7=$8[2],LayoutEngineModule.entryDoc(name$7,(LayoutEngineModule.createTemplateM())([lytNm,name$7,$8[3],$8[0],$8[1]]))):m.$==1&&(a$13=(t$21=m.$0,LayoutEngineModule.Identifier(t$21[0],t$21[1])),a$13!=null&&a$13.$==1&&(m.$1.$==1&&((t$22=m.$1.$0,LayoutEngineModule.Concat(t$22[0],t$22[1])).$==0&&($9=[m.$1.$1,a$13.$0],true))))?(name$8=$9[1],LayoutEngineModule.entryDoc(name$8,(LayoutEngineModule.createConcatM())([lytNm,name$8,$9[0]]))):m.$==1&&(a$14=(t$23=m.$0,LayoutEngineModule.Identifier(t$23[0],t$23[1])),a$14!=null&&a$14.$==1&&(m.$1.$==1&&((t$24=m.$1.$0,LayoutEngineModule.Vertical(t$24[0],t$24[1])).$==3&&(m.$1.$1.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==1&&($10=[m.$1.$1.$1.$1.$0,m.$1.$1.$0,m.$1.$1.$1.$1.$1,a$14.$0,m.$1.$1.$1.$0],true)))))))?null:m.$==1&&(a$15=(t$25=m.$0,LayoutEngineModule.Identifier(t$25[0],t$25[1])),a$15!=null&&a$15.$==1&&(m.$1.$==1&&(a$16=(t$26=m.$1.$0,LayoutEngineModule.Vertical(t$26[0],t$26[1])),a$16.$==5&&(m.$1.$1.$==1&&($11=[m.$1.$1.$0,m.$1.$1.$1,a$16.$0,a$15.$0],true)))))?(name$9=$11[3],LayoutEngineModule.entryDoc(name$9,(LayoutEngineModule.createElementM())([lytNm,name$9,$11[2],$11[0],$11[1]]))):null;
+   return m.$==1&&(a=(t=m.$0,LayoutEngineModule.Identifier(t[0],t[1])),a!=null&&a.$==1&&(m.$1.$==1&&((t$1=m.$1.$0,LayoutEngineModule.Vertical(t$1[0],t$1[1])).$==0&&(m.$1.$1.$==1&&(a$1=(t$2=m.$1.$1.$0,LayoutEngineModule.Measures$1(t$2[0],t$2[1])),a$1!=null&&a$1.$==1&&($1=[m.$1.$1.$1,a$1.$0,a.$0],true))))))?(name=$1[2],LayoutEngineModule.entryDoc(name,(LayoutEngineModule.createSplitterM())([lytNm,name,true,$1[1],$1[0]]))):m.$==1&&(a$2=(t$3=m.$0,LayoutEngineModule.Identifier(t$3[0],t$3[1])),a$2!=null&&a$2.$==1&&(m.$1.$==1&&((t$4=m.$1.$0,LayoutEngineModule.Vertical(t$4[0],t$4[1])).$==1&&(m.$1.$1.$==1&&(a$3=(t$5=m.$1.$1.$0,LayoutEngineModule.Measures$1(t$5[0],t$5[1])),a$3!=null&&a$3.$==1&&($2=[m.$1.$1.$1,a$3.$0,a$2.$0],true))))))?(name$1=$2[2],LayoutEngineModule.entryDoc(name$1,(LayoutEngineModule.createSplitterM())([lytNm,name$1,false,$2[1],$2[0]]))):m.$==1&&(a$4=(t$6=m.$0,LayoutEngineModule.Identifier(t$6[0],t$6[1])),a$4!=null&&a$4.$==1&&(m.$1.$==1&&((t$7=m.$1.$0,LayoutEngineModule.Button(t$7[0],t$7[1])).$==0&&(m.$1.$1.$==1&&(a$5=(t$8=m.$1.$1.$0,LayoutEngineModule.Identifier(t$8[0],t$8[1])),a$5!=null&&a$5.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$1.$==0&&($3=[a$5.$0,m.$1.$1.$1.$0,a$4.$0,m.$1.$1.$1.$1.$0],true)))))))))?(name$2=$3[2],LayoutEngineModule.entryDoc(name$2,(LayoutEngineModule.createButtonM())([lytNm,name$2,$3[0],$3[1],$3[3]]))):m.$==1&&(a$6=(t$9=m.$0,LayoutEngineModule.Identifier(t$9[0],t$9[1])),a$6!=null&&a$6.$==1&&(m.$1.$==1&&((t$10=m.$1.$0,LayoutEngineModule.Button(t$10[0],t$10[1])).$==1&&(m.$1.$1.$==1&&(a$7=(t$11=m.$1.$1.$0,LayoutEngineModule.Identifier(t$11[0],t$11[1])),a$7!=null&&a$7.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==0&&($4=[m.$1.$1.$1.$0,a$6.$0,a$7.$0],true))))))))?(name$3=$4[1],LayoutEngineModule.entryDoc(name$3,(LayoutEngineModule.createInputM())([lytNm,name$3,$4[2],$4[0]]))):m.$==1&&(a$8=(t$12=m.$0,LayoutEngineModule.Identifier(t$12[0],t$12[1])),a$8!=null&&a$8.$==1&&(m.$1.$==1&&((t$13=m.$1.$0,LayoutEngineModule.Button(t$13[0],t$13[1])).$==2&&(m.$1.$1.$==1&&(a$9=(t$14=m.$1.$1.$0,LayoutEngineModule.Identifier(t$14[0],t$14[1])),a$9!=null&&a$9.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==0&&($5=[m.$1.$1.$1.$0,a$8.$0,a$9.$0],true))))))))?(name$4=$5[1],LayoutEngineModule.entryDoc(name$4,(LayoutEngineModule.createTextAreaM())([lytNm,name$4,$5[2],$5[0]]))):m.$==1&&(a$10=(t$15=m.$0,LayoutEngineModule.Identifier(t$15[0],t$15[1])),a$10!=null&&a$10.$==1&&(m.$1.$==1&&((t$16=m.$1.$0,LayoutEngineModule.Var(t$16[0],t$16[1])).$==0&&(m.$1.$1.$==1&&(m.$1.$1.$1.$==0&&($6=[a$10.$0,m.$1.$1.$0],true))))))?(name$5=$6[0],LayoutEngineModule.entryVar(name$5,(LayoutEngineModule.createVarM())([lytNm,name$5,$6[1][0]]))):m.$==1&&(a$11=(t$17=m.$0,LayoutEngineModule.Identifier(t$17[0],t$17[1])),a$11!=null&&a$11.$==1&&(m.$1.$==1&&((t$18=m.$1.$0,LayoutEngineModule.Var(t$18[0],t$18[1])).$==1&&(m.$1.$1.$==1&&($7=[m.$1.$1.$0,a$11.$0,m.$1.$1.$1],true)))))?(name$6=$7[1],LayoutEngineModule.entryDoc(name$6,(LayoutEngineModule.createDocM())([lytNm,name$6,$7[0][0],$7[2]]))):m.$==1&&(a$12=(t$19=m.$0,LayoutEngineModule.Identifier(t$19[0],t$19[1])),a$12!=null&&a$12.$==1&&(m.$1.$==1&&((t$20=m.$1.$0,LayoutEngineModule.Var(t$20[0],t$20[1])).$==2&&(m.$1.$1.$==1&&($8=[m.$1.$1.$0,a$12.$0,m.$1.$1.$1],true)))))?(name$7=$8[1],LayoutEngineModule.entryView(name$7,(LayoutEngineModule.createViewM())([lytNm,name$7,$8[0][0],$8[2]]))):m.$==1&&(a$13=(t$21=m.$0,LayoutEngineModule.Identifier(t$21[0],t$21[1])),a$13!=null&&a$13.$==1&&(m.$1.$==1&&((t$22=m.$1.$0,LayoutEngineModule.Vertical(t$22[0],t$22[1])).$==4&&(m.$1.$1.$==1&&(m.$1.$1.$1.$==1&&($9=[m.$1.$1.$1.$0,m.$1.$1.$1.$1,a$13.$0,m.$1.$1.$0],true))))))?(name$8=$9[2],LayoutEngineModule.entryDoc(name$8,(LayoutEngineModule.createTemplateM())([lytNm,name$8,$9[3],$9[0],$9[1]]))):m.$==1&&(a$14=(t$23=m.$0,LayoutEngineModule.Identifier(t$23[0],t$23[1])),a$14!=null&&a$14.$==1&&(m.$1.$==1&&((t$24=m.$1.$0,LayoutEngineModule.Var(t$24[0],t$24[1])).$==3&&($10=[m.$1.$1,a$14.$0],true))))?(name$9=$10[1],LayoutEngineModule.entryDoc(name$9,(LayoutEngineModule.createConcatM())([lytNm,name$9,$10[0]]))):m.$==1&&(a$15=(t$25=m.$0,LayoutEngineModule.Identifier(t$25[0],t$25[1])),a$15!=null&&a$15.$==1&&(m.$1.$==1&&((t$26=m.$1.$0,LayoutEngineModule.Vertical(t$26[0],t$26[1])).$==3&&(m.$1.$1.$==1&&(m.$1.$1.$1.$==1&&(m.$1.$1.$1.$1.$==1&&($11=[m.$1.$1.$1.$1.$0,m.$1.$1.$0,m.$1.$1.$1.$1.$1,a$15.$0,m.$1.$1.$1.$0],true)))))))?null:m.$==1&&(a$16=(t$27=m.$0,LayoutEngineModule.Identifier(t$27[0],t$27[1])),a$16!=null&&a$16.$==1&&(m.$1.$==1&&(a$17=(t$28=m.$1.$0,LayoutEngineModule.Vertical(t$28[0],t$28[1])),a$17.$==5&&(m.$1.$1.$==1&&($12=[m.$1.$1.$0,m.$1.$1.$1,a$17.$0,a$16.$0],true)))))?(name$10=$12[3],LayoutEngineModule.entryDoc(name$10,(LayoutEngineModule.createElementM())([lytNm,name$10,$12[2],$12[0],$12[1]]))):null;
   }
   catch(e)
   {
-   ((function($12)
+   ((function($13)
    {
-    return function($13)
+    return function($14)
     {
-     return $12(Utils.prettyPrint($13));
+     return $13(Utils.prettyPrint($14));
     };
    }(function(s)
    {
@@ -5459,6 +5533,65 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return Var$1.Create$1(v);
  };
+ LayoutEngineModule.createView=function(lytNm,viwName,fname,parms)
+ {
+  return View.Bind(function()
+  {
+   var f,a;
+   function m($1,$2)
+   {
+    var a$1,id,o,o$1,o$2,t,o$3,t$1,m$1;
+    a$1=LayoutEngineModule.Identifier($1,$2);
+    return a$1!=null&&a$1.$==1?(id=a$1.$0,(o=(o$1=(o$2=(t=((LayoutEngineModule.splitName())(lytNm))(id),AppFramework.tryGetDoc(t[0],t[1])),o$2==null?null:{
+     $:1,
+     $0:View.Const((LayoutEngineModule.getDocF(T$1.Empty,o$2.$0))[0])
+    }),o$1==null?(o$3=(t$1=((LayoutEngineModule.splitName())(lytNm))(id),AppFramework.tryGetWoW(t$1[0],t$1[1])),o$3==null?null:{
+     $:1,
+     $0:View.Map(Global.id,o$3.$0)
+    }):o$1),o==null?View.Const((function($3)
+    {
+     return function($4)
+     {
+      return $3("Missing element: "+Utils.toSafe($4));
+     };
+    }(Global.id))(id)):o.$0)):(m$1=LayoutEngineModule.getTextData(lytNm,$1),m$1.$==1?View.Map(Global.id,m$1.$0):m$1.$==2?View.Const(m$1.$0):View.Const(m$1.$0));
+   }
+   a=LayoutEngineModule.findJSEntry(fname);
+   if(a!=null&&a.$==1)
+   {
+    if(!(a.$0 instanceof Global.Function))
+     return View.Const((function($1)
+     {
+      return function($2)
+      {
+       return $1("Not a JavaScript function: "+Utils.toSafe($2));
+      };
+     }(Global.id))(fname));
+    else
+     if(a!=null&&a.$==1)
+      {
+       f=a.$0;
+       return parms.$==0?View.Const(f()):View.Map(function(ps)
+       {
+        return f.apply(null,ps);
+       },View.Sequence(Seq.map(function($1)
+       {
+        return m($1[0],$1[1]);
+       },parms)));
+      }
+     else
+      throw new MatchFailureException.New("D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\LayoutEngine\\src\\LayoutEngine.fs",1232,27);
+   }
+   else
+    return View.Const((function($1)
+    {
+     return function($2)
+     {
+      return $1("Missing JavaScript function: "+Utils.toSafe($2));
+     };
+    }(Global.id))(fname));
+  },AppFramework.mainDocV().get_View());
+ };
  LayoutEngineModule.addNewLayout=function(name,layout)
  {
   var x,x$1;
@@ -5633,29 +5766,23 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$2.$cctor();
   return SC$2.createSplitterM;
  };
- LayoutEngineModule.Var=function(a,a$1)
+ LayoutEngineModule.Button=function(a,a$1)
  {
-  var $1,$2,$3,$4,$5,$6;
-  return(a$1?false:a==="Var")?{
+  var $1,$2,$3,$4;
+  return(a$1?false:a==="button")?{
    $:0,
    $0:null
-  }:(a$1?false:a==="Doc")?{
+  }:(a$1?false:a==="input")?{
    $:1,
    $0:null
-  }:(a$1?false:a==="button")?{
+  }:(a$1?false:a==="textarea")?{
    $:2,
    $0:null
-  }:(a$1?false:a==="input")?{
+  }:(a$1?false:a==="select")?{
    $:3,
    $0:null
-  }:(a$1?false:a==="textarea")?{
-   $:4,
-   $0:null
-  }:(a$1?false:a==="select")?{
-   $:5,
-   $0:null
   }:{
-   $:6,
+   $:4,
    $0:null
   };
  };
@@ -5673,6 +5800,26 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   SC$2.$cctor();
   return SC$2.createTextAreaM;
+ };
+ LayoutEngineModule.Var=function(a,a$1)
+ {
+  var $1,$2,$3,$4;
+  return(a$1?false:a==="Var")?{
+   $:0,
+   $0:null
+  }:(a$1?false:a==="Doc")?{
+   $:1,
+   $0:null
+  }:(a$1?false:a==="View")?{
+   $:2,
+   $0:null
+  }:(a$1?false:a==="concat")?{
+   $:3,
+   $0:null
+  }:{
+   $:4,
+   $0:null
+  };
  };
  LayoutEngineModule.entryVar=function(n,v)
  {
@@ -5694,21 +5841,25 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$2.$cctor();
   return SC$2.createDocM;
  };
+ LayoutEngineModule.entryView=function(n,w)
+ {
+  return{
+   $:1,
+   $0:{
+    $:1,
+    $0:AppFramework.newViw(n,w)
+   }
+  };
+ };
+ LayoutEngineModule.createViewM=function()
+ {
+  SC$2.$cctor();
+  return SC$2.createViewM;
+ };
  LayoutEngineModule.createTemplateM=function()
  {
   SC$2.$cctor();
   return SC$2.createTemplateM;
- };
- LayoutEngineModule.Concat=function(a,a$1)
- {
-  var $1;
-  return(a$1?false:a==="concat")?{
-   $:0,
-   $0:null
-  }:{
-   $:1,
-   $0:null
-  };
  };
  LayoutEngineModule.createConcatM=function()
  {
@@ -5808,6 +5959,20 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:"second",
    $1:doc2
   }),(p$1=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i$1=new TemplateInstance.New(p$1[1],LayoutEngine_Templates.fixedsplitterhor(p$1[0])),(b$1.i=i$1,i$1)))).get_Doc();
+ };
+ LayoutEngineModule.findJSEntry=function(fname)
+ {
+  return Seq.fold(function(oO,nm)
+  {
+   var o;
+   return oO==null?null:(o=oO.$0,!o[nm]?null:{
+    $:1,
+    $0:o[nm]
+   });
+  },{
+   $:1,
+   $0:Global
+  },String.splitByChar(".",fname));
  };
  LayoutEngineModule.getOneDoc=function(lytNm,docs)
  {
@@ -6583,7 +6748,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn$1(x));
+      return g(Result.rtn(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -6631,7 +6796,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn$1(x));
+      return g(Result.rtn(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -6667,7 +6832,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn$1(x));
+      return g(Result.rtn(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -6703,7 +6868,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn$1(x));
+      return g(Result.rtn(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -6748,7 +6913,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn$1(x));
+      return g(Result.rtn(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p$2));
@@ -6829,7 +6994,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn$1(x));
+      return g(Result.rtn(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p$1));
@@ -6873,7 +7038,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn$1(x));
+      return g(Result.rtn(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -6910,7 +7075,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn$1(x));
+      return g(Result.rtn(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p$1));
@@ -6954,7 +7119,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn$1(x));
+      return g(Result.rtn(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -6998,7 +7163,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn$1(x));
+      return g(Result.rtn(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -7042,7 +7207,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn$1(x));
+      return g(Result.rtn(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -7086,7 +7251,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn$1(x));
+      return g(Result.rtn(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -7130,7 +7295,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn$1(x));
+      return g(Result.rtn(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,p));
@@ -7166,7 +7331,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return"User not logged in";
      },Concurrency.Bind((Msal.getTokenO())(),function(x)
      {
-      return g(Result.rtn$1(x));
+      return g(Result.rtn(x));
      })),function(a)
      {
       return b.ReturnFrom$1(f(a,void 0));
@@ -7701,7 +7866,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   });
   SC$1.getTokenO=(agent=Mailbox.callA(function(v)
   {
-   Library.print$1(v);
+   Library.print(v);
   },Msal.getTokenO0),function()
   {
    return agent.PostAndAsyncReply(function(reply)
@@ -7718,7 +7883,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   function f$4(a)
   {
    var a$1;
-   a$1=LibraryJS.REGEX$2(LibraryJS.rexEmail$1(),"gi",a);
+   a$1=LibraryJS.REGEX$1(LibraryJS.rexEmail(),"gi",a);
    return a$1!=null&&a$1.$==1?a$1.$0:[];
   }
   function g$3(s)
@@ -7918,7 +8083,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     return Concurrency.Bind(Concurrency.Sleep(1000),function()
     {
      var a;
-     a=Library["String.Left$1"](function(n)
+     a=Library["String.Left"](function(n)
      {
       return n.getFullYear()+"-"+("0"+(n.getMonth()+1)).slice(-2)+"-"+("0"+n.getDate()).slice(-2)+" "+("0"+n.getHours()).slice(-2)+":"+("0"+n.getMinutes()).slice(-2)+":"+("0"+n.getSeconds()).slice(-2)+":"+("00"+n.getMilliseconds()).slice(-3);
      }(new Date$1(Date$1.now())),19);
@@ -7929,7 +8094,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   })),null);
   SC$1.uploaded=function(a,b$4)
   {
-   return Library.print$1(b$4);
+   return Library.print(b$4);
   };
   SC$1.cuentaPagoO=Var$1.Create$1(null);
   SC$1.cuentaAutorizar=Var$1.Create$1(Doc.TextNode("No hay cuenta seleccionada"));
@@ -7950,12 +8115,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return function(v)
    {
-    var c$2;
-    c$2=new CuentaPago({
+    return FormaPago.New(fp.nombre,Library.Error(""),new CuentaPago({
      $:1,
      $0:v
-    });
-    return FormaPago.New(fp.nombre,Library.Error$1(""),c$2,fp.subscripcion);
+    }),fp.subscripcion);
    };
   }];
   SC$1.fcta=[function(cp)
@@ -7970,12 +8133,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return function(v)
    {
-    var c$2;
-    c$2=new CuentaPago({
+    return FormaPago.New(fp.nombre,Library.Error(""),new CuentaPago({
      $:0,
      $0:v
-    });
-    return FormaPago.New(fp.nombre,Library.Error$1(""),c$2,fp.subscripcion);
+    }),fp.subscripcion);
    };
   }];
   SC$1.transaccionesW=View.MapAsync(function()
@@ -7987,7 +8148,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
    return Concurrency.Bind(Rpc.obtenerTransaccionesPara(Aliado.get_LoggedId()),(f$6=(d=[],function(r)
    {
-    return Result.defaultValue$1(d,r);
+    return Result.defaultValue(d,r);
    }),function(x)
    {
     return g$5(f$6(x));
@@ -8094,7 +8255,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   });
   SC$1.i_diaPago=ReporteConsolidado.agregarCampo(10,true,function(al)
   {
-   return Library["String.Right$1"]((function($3)
+   return Library["String.Right"]((function($3)
    {
     return function($4)
     {
@@ -8104,7 +8265,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   });
   SC$1.i_desde=ReporteConsolidado.agregarCampo(11,true,function(al)
   {
-   return Date.toYYYYMMDD$1("-",al.fechaRegistro);
+   return Date.toYYYYMMDD("-",al.fechaRegistro);
   });
   SC$1.i_Id=ReporteConsolidado.agregarCampo(12,true,function(al)
   {
@@ -8116,6 +8277,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     };
    }(Global.id))(al.id.get_Id());
   });
+  AF.addDocs("Calc",List.ofArray([["Calc",KeylessList.lazyDoc(Calculado.calcUI,Calculado.newCalc)]]));
   SC$1.layoutName="ProzperLyt";
   SC$1.appName="Prozper";
   SC$1.influencerV=Var$1.Create$1("");
@@ -8202,6 +8364,16 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     return Unchecked.Equals($this.key(it),key);
    },v);
    m!=null&&m.$==1?(index=m.$0,m$1=fn(Arrays.get(v,index)),m$1!=null&&m$1.$==1?(this["var"].Set(this.storage.SSetAt(index,m$1.$0,v)),this.ObsoleteKey(key)):void 0):void 0;
+  },
+  RemoveByKey:function(key)
+  {
+   var $this;
+   $this=this;
+   this["var"].Set(this.storage.SRemoveIf(function(i)
+   {
+    return Unchecked.Equals($this.key(i),key);
+   },this["var"].Get()));
+   this.ObsoleteKey(key);
   },
   MapLens:function(f)
   {
@@ -9305,7 +9477,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      dat=a.$0;
      forma.Hole("nombres").Set(Strings.Trim(dat.nombre1+" "+dat.nombre2));
      forma.Hole("apellidos").Set(Strings.Trim(dat.apellido1+" "+dat.apellido2));
-     forma.Hole("fechanacimiento").Set(Date.toYYYYMMDD$1("-",dat.fechaNacimiento));
+     forma.Hole("fechanacimiento").Set(Date.toYYYYMMDD("-",dat.fechaNacimiento));
      forma.Hole("genero").Set((function($1)
      {
       return function($2)
@@ -9574,7 +9746,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          $0:Direccion$1.New((o=$9==null?null:{
           $:1,
           $0:$9.$0.authorizeIdR
-         },o==null?Library.Error$1(""):o.$0),tipo,Strings.Trim($6),Strings.Trim($7),Strings.Trim($8),estado,pais,codigo)
+         },o==null?Library.Error(""):o.$0),tipo,Strings.Trim($6),Strings.Trim($7),Strings.Trim($8),estado,pais,codigo)
         };
        });
       });
@@ -10106,6 +10278,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   for(i=0,$1=size-1;i<=$1;i++)r[i]=value;
   return r;
  };
+ Arrays.iter=function(f,arr)
+ {
+  var i,$1;
+  for(i=0,$1=arr.length-1;i<=$1;i++)f(arr[i]);
+ };
  Arrays.foldBack=function(f,arr,zero)
  {
   var acc,$1,len,i,$2;
@@ -10113,11 +10290,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   len=arr.length;
   for(i=1,$2=len;i<=$2;i++)acc=f(arr[len-i],acc);
   return acc;
- };
- Arrays.iter=function(f,arr)
- {
-  var i,$1;
-  for(i=0,$1=arr.length-1;i<=$1;i++)f(arr[i]);
  };
  VariousUI.statuses=function()
  {
@@ -10431,51 +10603,21 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$3.$cctor();
   return SC$3.tarVacio;
  };
- Result.defaultValue$1=function(d,r)
+ Result.defaultValue=function(d,r)
  {
   return r.$==1?d:r.$0;
  };
- Result.result$1=function()
+ Result.result=function()
  {
-  SC$1.$cctor();
-  return SC$1.result;
+  SC$3.$cctor();
+  return SC$3.result;
  };
- Result.rtn$1=function(a)
+ Result.rtn=function(a)
  {
   return{
    $:0,
    $0:a
   };
- };
- Result.iter$1=function(fE,f,r)
- {
-  Result.defaultWith$1(fE,Result$1.Map(f,r));
- };
- Result.absorbO$1=function(f,vOR)
- {
-  return Result$1.Bind(function(v)
-  {
-   return Result.ofOption$1(f,v);
-  },vOR);
- };
- Result.defaultWith$1=function(f,r)
- {
-  return r.$==1?f(r.$0):r.$0;
- };
- Result.ofOption$1=function(f,vO)
- {
-  var o;
-  o=vO==null?null:{
-   $:1,
-   $0:{
-    $:0,
-    $0:vO.$0
-   }
-  };
-  return o==null?function(x)
-  {
-   return Library.Error$1(f(x));
-  }():o.$0;
  };
  ListModel.Create=function(key,init)
  {
@@ -10591,28 +10733,28 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   Var.New.call($1);
   return $1;
  };
- Date.toYYYYMMDDHHMM$1=function(sep,date)
+ Date.toYYYYMMDDHHMM=function(sep,date)
  {
   return(((Runtime$1.Curried3(function($1,$2,$3)
   {
    return $1(Utils.toSafe($2)+" "+Utils.toSafe($3));
-  }))(Global.id))(Date.toYYYYMMDD$1(sep,date)))(Date.toHHMM$1(date));
+  }))(Global.id))(Date.toYYYYMMDD(sep,date)))(Date.toHHMM(date));
  };
- Date.toYYYYMMDD$1=function(sep,date)
+ Date.toYYYYMMDD=function(sep,date)
  {
   return((((((Runtime$1.Curried(function($1,$2,$3,$4,$5,$6)
   {
    return $1(Global.String($2)+Utils.toSafe($3)+Utils.padNumLeft(Global.String($4),2)+Utils.toSafe($5)+Utils.padNumLeft(Global.String($6),2));
   },6))(Global.id))((new Date$1(date)).getFullYear()))(sep))((new Date$1(date)).getMonth()+1))(sep))((new Date$1(date)).getDate());
  };
- Date.toHHMM$1=function(date)
+ Date.toHHMM=function(date)
  {
   return(((Runtime$1.Curried3(function($1,$2,$3)
   {
    return $1(Utils.padNumLeft(Global.String($2),2)+":"+Utils.padNumLeft(Global.String($3),2));
   }))(Global.id))((new Date$1(date)).getHours()))((new Date$1(date)).getMinutes());
  };
- String.thousands$1=function(n)
+ String.thousands=function(n)
  {
   var v,r,s;
   v=Global.String(n);
@@ -10641,7 +10783,17 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }));
   })));
  };
- String.unindent$1=function(s)
+ String.StartsWith=function(start,s)
+ {
+  return Strings.StartsWith(s,start)?{
+   $:1,
+   $0:Slice.string(s,{
+    $:1,
+    $0:start.length
+   },null)
+  }:null;
+ };
+ String.unindent=function(s)
  {
   var lines,n,o,o$1;
   lines=Strings.SplitChars(s,["\n"],0);
@@ -10660,7 +10812,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return l.length<=n?"":l.substring(n);
   },lines));
  };
- String.splitByChar$1=function(c,s)
+ String.splitByChar=function(c,s)
  {
   return Strings.SplitChars(s,[c],0);
  };
@@ -10849,7 +11001,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     },Seq.filter(function(t$1)
     {
      return t$1[0];
-    },List.ofArray([[Strings.Trim($1)!==$2.toUpperCase(),"Nombre en MAYUSCULAS debe coincidir"],[$3!==Library["String.Left$1"]($4,10),"Introduzca fecha de hoy (YYYY-MM-DD)"],[!Unchecked.Equals($5,true),"Acepte los terminos indicados"],[!Unchecked.Equals(Aliado.get_LoggedId(),$6.id),"El documento solo debe ser firmado por el titular de la cuenta"]]))));
+    },List.ofArray([[Strings.Trim($1)!==$2.toUpperCase(),"Nombre en MAYUSCULAS debe coincidir"],[$3!==Library["String.Left"]($4,10),"Introduzca fecha de hoy (YYYY-MM-DD)"],[!Unchecked.Equals($5,true),"Acepte los terminos indicados"],[!Unchecked.Equals(Aliado.get_LoggedId(),$6.id),"El documento solo debe ser firmado por el titular de la cuenta"]]))));
    },4);
   },forma.Hole("firmante").get_View(),nombre),forma.Hole("fecha").get_View()),FormaFirma.fechaHoraV().get_View()),forma.Hole("acepto").get_View()),ModeloUI.aliadoW()));
   return forma.get_Doc();
@@ -11178,7 +11330,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  SC$2.$cctor=function()
  {
-  var f,g,x,p,cache,getOrAdd,p$1,cache$1,getOrAdd$1,p$2,cache$2,getOrAdd$2,p$3,cache$3,getOrAdd$3,p$4,cache$4,getOrAdd$4,p$5,cache$5,getOrAdd$5,p$6,cache$6,getOrAdd$6,p$7,cache$7,getOrAdd$7,p$8,cache$8,getOrAdd$8,o,plg;
+  var f,g,x,p,cache,getOrAdd,p$1,cache$1,getOrAdd$1,p$2,cache$2,getOrAdd$2,p$3,cache$3,getOrAdd$3,p$4,cache$4,getOrAdd$4,p$5,cache$5,getOrAdd$5,p$6,cache$6,getOrAdd$6,p$7,cache$7,getOrAdd$7,p$8,cache$8,getOrAdd$8,p$9,cache$9,getOrAdd$9,o,plg;
   SC$2.$cctor=Global.ignore;
   function g$1(s)
   {
@@ -11252,11 +11404,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    cache.set_Item(v,res);
    return res;
   }
-  function getOrAdd$9(p$9,f$3)
+  function getOrAdd$10(p$10,f$3)
   {
    var o$1;
-   o$1=checkO(p$9);
-   return o$1==null?store(p$9,f$3(p$9)):o$1.$0;
+   o$1=checkO(p$10);
+   return o$1==null?store(p$10,f$3(p$10)):o$1.$0;
   }
   function checkO$1(v)
   {
@@ -11281,11 +11433,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    cache$1.set_Item(v,res);
    return res;
   }
-  function getOrAdd$10(p$9,f$3)
+  function getOrAdd$11(p$10,f$3)
   {
    var o$1;
-   o$1=checkO$1(p$9);
-   return o$1==null?store$1(p$9,f$3(p$9)):o$1.$0;
+   o$1=checkO$1(p$10);
+   return o$1==null?store$1(p$10,f$3(p$10)):o$1.$0;
   }
   function checkO$2(v)
   {
@@ -11310,11 +11462,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    cache$2.set_Item(v,res);
    return res;
   }
-  function getOrAdd$11(p$9,f$3)
+  function getOrAdd$12(p$10,f$3)
   {
    var o$1;
-   o$1=checkO$2(p$9);
-   return o$1==null?store$2(p$9,f$3(p$9)):o$1.$0;
+   o$1=checkO$2(p$10);
+   return o$1==null?store$2(p$10,f$3(p$10)):o$1.$0;
   }
   function checkO$3(v)
   {
@@ -11339,11 +11491,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    cache$3.set_Item(v,res);
    return res;
   }
-  function getOrAdd$12(p$9,f$3)
+  function getOrAdd$13(p$10,f$3)
   {
    var o$1;
-   o$1=checkO$3(p$9);
-   return o$1==null?store$3(p$9,f$3(p$9)):o$1.$0;
+   o$1=checkO$3(p$10);
+   return o$1==null?store$3(p$10,f$3(p$10)):o$1.$0;
   }
   function checkO$4(v)
   {
@@ -11368,11 +11520,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    cache$4.set_Item(v,res);
    return res;
   }
-  function getOrAdd$13(p$9,f$3)
+  function getOrAdd$14(p$10,f$3)
   {
    var o$1;
-   o$1=checkO$4(p$9);
-   return o$1==null?store$4(p$9,f$3(p$9)):o$1.$0;
+   o$1=checkO$4(p$10);
+   return o$1==null?store$4(p$10,f$3(p$10)):o$1.$0;
   }
   function checkO$5(v)
   {
@@ -11397,11 +11549,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    cache$5.set_Item(v,res);
    return res;
   }
-  function getOrAdd$14(p$9,f$3)
+  function getOrAdd$15(p$10,f$3)
   {
    var o$1;
-   o$1=checkO$5(p$9);
-   return o$1==null?store$5(p$9,f$3(p$9)):o$1.$0;
+   o$1=checkO$5(p$10);
+   return o$1==null?store$5(p$10,f$3(p$10)):o$1.$0;
   }
   function checkO$6(v)
   {
@@ -11426,11 +11578,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    cache$6.set_Item(v,res);
    return res;
   }
-  function getOrAdd$15(p$9,f$3)
+  function getOrAdd$16(p$10,f$3)
   {
    var o$1;
-   o$1=checkO$6(p$9);
-   return o$1==null?store$6(p$9,f$3(p$9)):o$1.$0;
+   o$1=checkO$6(p$10);
+   return o$1==null?store$6(p$10,f$3(p$10)):o$1.$0;
   }
   function checkO$7(v)
   {
@@ -11455,11 +11607,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    cache$7.set_Item(v,res);
    return res;
   }
-  function getOrAdd$16(p$9,f$3)
+  function getOrAdd$17(p$10,f$3)
   {
    var o$1;
-   o$1=checkO$7(p$9);
-   return o$1==null?store$7(p$9,f$3(p$9)):o$1.$0;
+   o$1=checkO$7(p$10);
+   return o$1==null?store$7(p$10,f$3(p$10)):o$1.$0;
   }
   function checkO$8(v)
   {
@@ -11484,11 +11636,40 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    cache$8.set_Item(v,res);
    return res;
   }
-  function getOrAdd$17(p$9,f$3)
+  function getOrAdd$18(p$10,f$3)
   {
    var o$1;
-   o$1=checkO$8(p$9);
-   return o$1==null?store$8(p$9,f$3(p$9)):o$1.$0;
+   o$1=checkO$8(p$10);
+   return o$1==null?store$8(p$10,f$3(p$10)):o$1.$0;
+  }
+  function checkO$9(v)
+  {
+   var res;
+   res=null;
+   return cache$9.TryGetValue(v,{
+    get:function()
+    {
+     return res;
+    },
+    set:function(v$1)
+    {
+     res=v$1;
+    }
+   })?{
+    $:1,
+    $0:res
+   }:null;
+  }
+  function store$9(v,res)
+  {
+   cache$9.set_Item(v,res);
+   return res;
+  }
+  function getOrAdd$19(p$10,f$3)
+  {
+   var o$1;
+   o$1=checkO$9(p$10);
+   return o$1==null?store$9(p$10,f$3(p$10)):o$1.$0;
   }
   SC$2.unindentStr=function(x$1)
   {
@@ -11618,7 +11799,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   });
   SC$2.AppFwkClient=Lazy.Create(function()
   {
-   var b,Q,A,D,V,V$1,P,p$9,i;
+   var b,Q,A,D,V,V$1,P,p$10,i;
    return(b=(Q=AppFramework.renderQueries(),(A=AppFramework.renderActions(),(D=AppFramework.renderDocs(),(V=AppFramework.renderViews(),(V$1=AppFramework.renderVars(),(P=AppFramework.renderPlugIns(),ProviderBuilder.Make().WithHole({
     $:0,
     $0:"plugins",
@@ -11650,7 +11831,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $:0,
     $0:"queries",
     $1:Q
-   })),(p$9=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p$9[1],LayoutEngine_Templates.appfwkclient(p$9[0])),(b.i=i,i)))).get_Doc();
+   })),(p$10=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p$10[1],LayoutEngine_Templates.appfwkclient(p$10[0])),(b.i=i,i)))).get_Doc();
   });
   SC$2.actHello=AppFramework.newAct("Hello",function()
   {
@@ -11678,14 +11859,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return function($2)
    {
-    return getOrAdd$9($1,$2);
+    return getOrAdd$10($1,$2);
    };
   }],function()
   {
    cache.Clear();
-  }]),(getOrAdd=p[0][1],[function(p$9)
+  }]),(getOrAdd=p[0][1],[function(p$10)
   {
-   return(getOrAdd(p$9))(function($1)
+   return(getOrAdd(p$10))(function($1)
    {
     return LayoutEngineModule.createSplitter($1[0],$1[1],$1[2],$1[3],$1[4]);
    });
@@ -11694,14 +11875,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return function($2)
    {
-    return getOrAdd$10($1,$2);
+    return getOrAdd$11($1,$2);
    };
   }],function()
   {
    cache$1.Clear();
-  }]),(getOrAdd$1=p$1[0][1],[function(p$9)
+  }]),(getOrAdd$1=p$1[0][1],[function(p$10)
   {
-   return(getOrAdd$1(p$9))(function($1)
+   return(getOrAdd$1(p$10))(function($1)
    {
     return LayoutEngineModule.createButton($1[0],$1[1],$1[2],$1[3],$1[4]);
    });
@@ -11710,14 +11891,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return function($2)
    {
-    return getOrAdd$11($1,$2);
+    return getOrAdd$12($1,$2);
    };
   }],function()
   {
    cache$2.Clear();
-  }]),(getOrAdd$2=p$2[0][1],[function(p$9)
+  }]),(getOrAdd$2=p$2[0][1],[function(p$10)
   {
-   return(getOrAdd$2(p$9))(function($1)
+   return(getOrAdd$2(p$10))(function($1)
    {
     return LayoutEngineModule.createInput($1[0],$1[1],$1[2],$1[3]);
    });
@@ -11726,14 +11907,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return function($2)
    {
-    return getOrAdd$12($1,$2);
+    return getOrAdd$13($1,$2);
    };
   }],function()
   {
    cache$3.Clear();
-  }]),(getOrAdd$3=p$3[0][1],[function(p$9)
+  }]),(getOrAdd$3=p$3[0][1],[function(p$10)
   {
-   return(getOrAdd$3(p$9))(function($1)
+   return(getOrAdd$3(p$10))(function($1)
    {
     return LayoutEngineModule.createTextArea($1[0],$1[1],$1[2],$1[3]);
    });
@@ -11742,14 +11923,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return function($2)
    {
-    return getOrAdd$13($1,$2);
+    return getOrAdd$14($1,$2);
    };
   }],function()
   {
    cache$4.Clear();
-  }]),(getOrAdd$4=p$4[0][1],[function(p$9)
+  }]),(getOrAdd$4=p$4[0][1],[function(p$10)
   {
-   return(getOrAdd$4(p$9))(function($1)
+   return(getOrAdd$4(p$10))(function($1)
    {
     return LayoutEngineModule.createElement($1[0],$1[1],$1[2],$1[3],$1[4]);
    });
@@ -11758,14 +11939,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return function($2)
    {
-    return getOrAdd$14($1,$2);
+    return getOrAdd$15($1,$2);
    };
   }],function()
   {
    cache$5.Clear();
-  }]),(getOrAdd$5=p$5[0][1],[function(p$9)
+  }]),(getOrAdd$5=p$5[0][1],[function(p$10)
   {
-   return(getOrAdd$5(p$9))(function($1)
+   return(getOrAdd$5(p$10))(function($1)
    {
     return LayoutEngineModule.createDoc($1[0],$1[1],$1[2],$1[3]);
    });
@@ -11774,14 +11955,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return function($2)
    {
-    return getOrAdd$15($1,$2);
+    return getOrAdd$16($1,$2);
    };
   }],function()
   {
    cache$6.Clear();
-  }]),(getOrAdd$6=p$6[0][1],[function(p$9)
+  }]),(getOrAdd$6=p$6[0][1],[function(p$10)
   {
-   return(getOrAdd$6(p$9))(function($1)
+   return(getOrAdd$6(p$10))(function($1)
    {
     return LayoutEngineModule.createTemplate($1[0],$1[1],$1[2],$1[3],$1[4]);
    });
@@ -11790,14 +11971,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return function($2)
    {
-    return getOrAdd$16($1,$2);
+    return getOrAdd$17($1,$2);
    };
   }],function()
   {
    cache$7.Clear();
-  }]),(getOrAdd$7=p$7[0][1],[function(p$9)
+  }]),(getOrAdd$7=p$7[0][1],[function(p$10)
   {
-   return(getOrAdd$7(p$9))(function($1)
+   return(getOrAdd$7(p$10))(function($1)
    {
     return LayoutEngineModule.createConcat($1[0],$1[1],$1[2]);
    });
@@ -11806,18 +11987,34 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return function($2)
    {
-    return getOrAdd$17($1,$2);
+    return getOrAdd$18($1,$2);
    };
   }],function()
   {
    cache$8.Clear();
-  }]),(getOrAdd$8=p$8[0][1],[function(p$9)
+  }]),(getOrAdd$8=p$8[0][1],[function(p$10)
   {
-   return(getOrAdd$8(p$9))(function($1)
+   return(getOrAdd$8(p$10))(function($1)
    {
     return LayoutEngineModule.createVar($1[0],$1[1],$1[2]);
    });
   },p$8[1]]))[0];
+  SC$2.createViewM=(p$9=(cache$9=new Dictionary.New$5(),[[checkO$9,function($1)
+  {
+   return function($2)
+   {
+    return getOrAdd$19($1,$2);
+   };
+  }],function()
+  {
+   cache$9.Clear();
+  }]),(getOrAdd$9=p$9[0][1],[function(p$10)
+  {
+   return(getOrAdd$9(p$10))(function($1)
+   {
+    return LayoutEngineModule.createView($1[0],$1[1],$1[2],$1[3]);
+   });
+  },p$9[1]]))[0];
   o=AppFramework.tryGetPlugIn("AppFramework");
   o==null?void 0:(plg=o.$0,AppFramework.addPlugIn(PlugIn.New(plg.plgName,plg.plgVars,plg.plgViews,plg.plgDocs,plg.plgActions.concat([AppFramework.newActF("AddLayout",{
    $:2,
@@ -12440,6 +12637,41 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   Obj.New.call(this);
  },Builder);
+ Result.result$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.result;
+ };
+ Result.iter$1=function(fE,f,r)
+ {
+  Result.defaultWith$1(fE,Result$1.Map(f,r));
+ };
+ Result.absorbO$1=function(f,vOR)
+ {
+  return Result$1.Bind(function(v)
+  {
+   return Result.ofOption$1(f,v);
+  },vOR);
+ };
+ Result.defaultWith$1=function(f,r)
+ {
+  return r.$==1?f(r.$0):r.$0;
+ };
+ Result.ofOption$1=function(f,vO)
+ {
+  var o;
+  o=vO==null?null:{
+   $:1,
+   $0:{
+    $:0,
+    $0:vO.$0
+   }
+  };
+  return o==null?function(x)
+  {
+   return Library.Error$1(f(x));
+  }():o.$0;
+ };
  BuilderP=Result.BuilderP=Runtime$1.Class({},Obj,BuilderP);
  BuilderP.New=Runtime$1.Ctor(function()
  {
@@ -12455,6 +12687,29 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   Obj.New.call(this);
  },AsyncResultBuilderP);
+ String.unindent$1=function(s)
+ {
+  var lines,n,o,o$1;
+  lines=Strings.SplitChars(s,["\n"],0);
+  n=(o=Seq.tryFindIndex(function(y)
+  {
+   return" "!==y;
+  },(o$1=Seq.tryFind(function(l)
+  {
+   return Strings.Trim(l)!=="";
+  },lines),o$1==null?"":o$1.$0)),o==null?0:o.$0);
+  return Seq.filter(function(s$1)
+  {
+   return!Strings.StartsWith(s$1,"# 1 ");
+  },Seq.map(function(l)
+  {
+   return l.length<=n?"":l.substring(n);
+  },lines));
+ };
+ String.splitByChar$1=function(c,s)
+ {
+  return Strings.SplitChars(s,[c],0);
+ };
  Slice.array=function(source,start,finish)
  {
   return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):[]:finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
@@ -12763,7 +13018,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    });
   },null);
  };
- Library.print$1=function(v)
+ Library.print=function(v)
  {
   if(typeof v=="string")
    ((function($1)
@@ -12788,23 +13043,23 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     console.log(s);
    }))(v));
  };
- Library["String.Left$1"]=function(_this,n)
+ Library["String.Left"]=function(_this,n)
  {
-  return n<0?Library["String.Substring2$1"](_this,0,_this.length+n):Library["String.Substring2$1"](_this,0,n);
+  return n<0?Library["String.Substring2"](_this,0,_this.length+n):Library["String.Substring2"](_this,0,n);
  };
- Library.Error$1=function(a)
+ Library.Error=function(a)
  {
   return{
    $:1,
    $0:a
   };
  };
- Library["String.Right$1"]=function(_this,n)
+ Library["String.Right"]=function(_this,n)
  {
   var a,b;
-  return Library["String.Substring2$1"](_this,(a=0,(b=_this.length-n,Unchecked.Compare(a,b)===1?a:b)),_this.length);
+  return Library["String.Substring2"](_this,(a=0,(b=_this.length-n,Unchecked.Compare(a,b)===1?a:b)),_this.length);
  };
- Library["String.Substring2$1"]=function(_this,from,n)
+ Library["String.Substring2"]=function(_this,from,n)
  {
   var from$1,b;
   while(true)
@@ -12822,14 +13077,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       return from>=_this.length?"":Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
    }
  };
- Library["String.get_toUnderscore$1"]=function(_this,u)
- {
-  return Arrays.ofSeq(Seq.collect(Global.id,Seq.mapi(function(i,c)
-  {
-   return i>0&&Char.IsUpper(c)?List.ofArray(["_",c]):List.ofArray([c]);
-  },_this))).join("");
- };
- LibraryJS.REGEX$2=function(expr,opt,value)
+ LibraryJS.REGEX$1=function(expr,opt,value)
  {
   var m;
   return value===null?null:(m=(new Global.String(value)).match(new Global.RegExp(expr,opt)),Unchecked.Equals(m,null)?null:!Unchecked.Equals(m,null)&&m.length===0?null:{
@@ -12837,10 +13085,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:m
   });
  };
- LibraryJS.rexEmail$1=function()
+ LibraryJS.rexEmail=function()
  {
-  SC$1.$cctor();
-  return SC$1.rexEmail;
+  SC$2.$cctor();
+  return SC$2.rexEmail;
  };
  EndPoint.DefaultEP={
   $:0
@@ -12993,12 +13241,192 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$3.$cctor();
   return SC$3.serverEndPoint;
  };
+ Library.Error$1=function(a)
+ {
+  return{
+   $:1,
+   $0:a
+  };
+ };
+ Library["String.get_toUnderscore$1"]=function(_this,u)
+ {
+  return Arrays.ofSeq(Seq.collect(Global.id,Seq.mapi(function(i,c)
+  {
+   return i>0&&Char.IsUpper(c)?List.ofArray(["_",c]):List.ofArray([c]);
+  },_this))).join("");
+ };
  IdPayment=TypesV0.IdPayment=Runtime$1.Class({
   get_Id:function()
   {
    return this.$0;
   }
  },null,IdPayment);
+ KeylessList.lazyDoc=function(elemUI,newElem)
+ {
+  var p,doc,addNew;
+  p=KeylessList.createListModel(newElem,elemUI);
+  doc=p[2];
+  addNew=p[1];
+  return Lazy.Create(function()
+  {
+   return KeylessList.elemsUI(doc,addNew);
+  });
+ };
+ KeylessList.createListModel=function(newF,elUI)
+ {
+  var elements,i;
+  function _delete(k,u)
+  {
+   return elements.RemoveByKey(k);
+  }
+  elements=ListModel.Create(function(t)
+  {
+   return t[0];
+  },T$1.Empty);
+  return[elements,(i=0,function()
+  {
+   elements.Append([i,newF()]);
+   i=i+1;
+  }),Doc.Flatten(elements.MapLens(function($1,$2)
+  {
+   function a(i$1,nv)
+   {
+    return[i$1,nv];
+   }
+   return elUI(function($3)
+   {
+    return _delete($1,$3);
+   },Var$1.Lens($2,function(t)
+   {
+    return t[1];
+   },function($3,$4)
+   {
+    return(function($5)
+    {
+     var $6;
+     $6=$5[0];
+     return function($7)
+     {
+      return a($6,$7);
+     };
+    }($3))($4);
+   }));
+  }))];
+ };
+ KeylessList.elemsUI=function(doc,addNew)
+ {
+  return Doc.Element("div",[],[doc,Doc.Button("New",[],addNew)]);
+ };
+ Calculado.calcUI=function(_delete,calc)
+ {
+  var valorA,valorB,valorC,dup,mult,multAdd;
+  valorA=Calculado.lensVarStr(Var$1.Lens(calc,function($1)
+  {
+   return $1.valorA;
+  },function($1,$2)
+  {
+   return Calculado$1.New($2,$1.valorB,$1.valorC);
+  }));
+  valorB=Calculado.lensVarStr(Var$1.Lens(calc,function($1)
+  {
+   return $1.valorB;
+  },function($1,$2)
+  {
+   return Calculado$1.New($1.valorA,$2,$1.valorC);
+  }));
+  valorC=Calculado.lensVarStr(Var$1.Lens(calc,function($1)
+  {
+   return $1.valorC;
+  },function($1,$2)
+  {
+   return Calculado$1.New($1.valorA,$1.valorB,$2);
+  }));
+  dup=View.Map(function($1)
+  {
+   return $1.valorA*2;
+  },calc.get_View());
+  mult=View.Map2(function($1,$2)
+  {
+   return $1.valorA*$2.valorB;
+  },calc.get_View(),calc.get_View());
+  multAdd=View.Map2(function($1,$2)
+  {
+   return $1+$2.valorC;
+  },mult,calc.get_View());
+  return Doc.Element("div",[],[Doc.Button("x",[],_delete),Calculado.inputLabel([],"valor A: ",valorA),Calculado.inputLabel([],"valor B: ",valorB),Calculado.inputLabel([],"valor C: ",valorC),Calculado.textLine(View.Map2(function($1,$2)
+  {
+   return(((Runtime$1.Curried3(function($3,$4,$5)
+   {
+    return $3(Utils.prettyPrint($4)+" = "+Utils.toSafe($5)+" * 2");
+   }))(Global.id))($1))($2);
+  },dup,valorA.get_View())),Calculado.textLine(View.Apply(View.Map2(function($1,$2)
+  {
+   return function($3)
+   {
+    return((((Runtime$1.Curried(function($4,$5,$6,$7)
+    {
+     return $4(Utils.prettyPrint($5)+" = "+Utils.toSafe($6)+" * "+Utils.toSafe($7));
+    },4))(Global.id))($1))($2))($3);
+   };
+  },mult,valorA.get_View()),valorB.get_View())),Calculado.textLine(View.Apply(View.Apply(View.Map2(function($1,$2)
+  {
+   return function($3)
+   {
+    return function($4)
+    {
+     return(((((Runtime$1.Curried(function($5,$6,$7,$8,$9)
+     {
+      return $5(Utils.prettyPrint($6)+" = "+Utils.toSafe($7)+" * "+Utils.toSafe($8)+" + "+Utils.toSafe($9));
+     },5))(Global.id))($1))($2))($3))($4);
+    };
+   };
+  },multAdd,valorA.get_View()),valorB.get_View()),valorC.get_View()))]);
+ };
+ Calculado.newCalc=function()
+ {
+  return Calculado$1.New(0,0,0);
+ };
+ Calculado.lensVarStr=function(v)
+ {
+  var f;
+  function g(a)
+  {
+   if(a!=null&&a.$==1)
+    if(a.$0!==v.Get())
+     v.Set(a.$0);
+  }
+  return new FromView.New(View.Map(function($1)
+  {
+   return(function($2)
+   {
+    return function($3)
+    {
+     return $2(Utils.prettyPrint($3));
+    };
+   }(Global.id))($1);
+  },v.get_View()),(f=ParseO.parseDoubleO(),function(x)
+  {
+   return g(f(x));
+  }));
+ };
+ Calculado.inputLabel=function(attrs,txt,_var)
+ {
+  return Doc.Element("div",attrs,[Doc.Element("div",[AttrProxy.Create("class","input-group")],[Doc.Element("span",[AttrProxy.Create("class","input-group-addon")],[Doc.TextNode(txt)]),Doc.Input([AttrProxy.Create("class","form-control")],_var)])]);
+ };
+ Calculado.textLine=function(txtW)
+ {
+  return Doc.Element("div",[],[Doc.TextView(txtW)]);
+ };
+ AF.addDocs=function(plgName,docs)
+ {
+  AppFramework.addPlugIn(PlugIn.New(plgName,[],[],Arrays.ofSeq(Seq.delay(function()
+  {
+   return Seq.collect(function(m)
+   {
+    return[AppFramework.newDoc(m[0],m[1])];
+   },docs);
+  })),[],[]));
+ };
  PlugInQuery.New=function(qryName,qryFunction)
  {
   return{
@@ -14620,39 +15048,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return new ArrayStorage.New(init);
  };
- String.StartsWith=function(start,s)
- {
-  return Strings.StartsWith(s,start)?{
-   $:1,
-   $0:Slice.string(s,{
-    $:1,
-    $0:start.length
-   },null)
-  }:null;
- };
- String.unindent=function(s)
- {
-  var lines,n,o,o$1;
-  lines=Strings.SplitChars(s,["\n"],0);
-  n=(o=Seq.tryFindIndex(function(y)
-  {
-   return" "!==y;
-  },(o$1=Seq.tryFind(function(l)
-  {
-   return Strings.Trim(l)!=="";
-  },lines),o$1==null?"":o$1.$0)),o==null?0:o.$0);
-  return Seq.filter(function(s$1)
-  {
-   return!Strings.StartsWith(s$1,"# 1 ");
-  },Seq.map(function(l)
-  {
-   return l.length<=n?"":l.substring(n);
-  },lines));
- };
- String.splitByChar=function(c,s)
- {
-  return Strings.SplitChars(s,[c],0);
- };
  AttrModule.DynamicPred=function(name,predView,valView)
  {
   function viewFn(el,t)
@@ -15292,11 +15687,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   Obj.New.call(this);
  },Builder);
- Result.result=function()
- {
-  SC$3.$cctor();
-  return SC$3.result;
- };
  EffBuilder=Eff.EffBuilder=Runtime$1.Class({},Obj,EffBuilder);
  EffBuilder.New=Runtime$1.Ctor(function()
  {
@@ -15326,13 +15716,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     }));
    }));
   })).join("");
- };
- Library.Error=function(a)
- {
-  return{
-   $:1,
-   $0:a
-  };
  };
  Expiracion=TypesV0.Expiracion=Runtime$1.Class({},null,Expiracion);
  Expiracion.New=function(anio,mes)
@@ -16447,6 +16830,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$4.EndPoint="?";
   SC$4.AjaxProvider=new XhrProvider.New();
  };
+ Calculado$1.New=function(valorA,valorB,valorC)
+ {
+  return{
+   valorA:valorA,
+   valorB:valorB,
+   valorC:valorC
+  };
+ };
  MapUtil.fromSeq=function(s)
  {
   var a;
@@ -16480,13 +16871,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return this.$0;
   }
  },null,IdSubscription);
- Date.toYYYYMMDD=function(sep,date)
- {
-  return((((((Runtime$1.Curried(function($1,$2,$3,$4,$5,$6)
-  {
-   return $1(Global.String($2)+Utils.toSafe($3)+Utils.padNumLeft(Global.String($4),2)+Utils.toSafe($5)+Utils.padNumLeft(Global.String($6),2));
-  },6))(Global.id))((new Date$1(date)).getFullYear()))(sep))((new Date$1(date)).getMonth()+1))(sep))((new Date$1(date)).getDate());
- };
  Docs.CreateEmbedNode=function()
  {
   return{
@@ -16982,6 +17366,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SInit:function()
   {
    return this.init;
+  },
+  SRemoveIf:function(pred,arr)
+  {
+   return Arrays.filter(function(i)
+   {
+    return!pred(i);
+   },arr);
   }
  },Obj,ArrayStorage);
  ArrayStorage.New=Runtime$1.Ctor(function(init)
@@ -17472,6 +17863,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    console.log(s);
   }));
  },WcSplitterT);
+ MatchFailureException=WebSharper.MatchFailureException=Runtime$1.Class({},Error,MatchFailureException);
+ MatchFailureException.New=Runtime$1.Ctor(function(message,line,column)
+ {
+  this.message=message+" at "+Global.String(line)+":"+Global.String(column);
+  Object.setPrototypeOf(this,MatchFailureException.prototype);
+ },MatchFailureException);
  DocElemNode=UI.DocElemNode=Runtime$1.Class({
   Equals:function(o)
   {
@@ -17778,14 +18175,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $this.dirty=true;
   },view);
  },DynamicAttrNode);
- LibraryJS.REGEX$1=function(expr,opt,value)
- {
-  var m;
-  return value===null?null:(m=(new Global.String(value)).match(new Global.RegExp(expr,opt)),Unchecked.Equals(m,null)?null:!Unchecked.Equals(m,null)&&m.length===0?null:{
-   $:1,
-   $0:m
-  });
- };
  Measures=LayoutEngineModule.Measures=Runtime$1.Class({
   toString:function()
   {

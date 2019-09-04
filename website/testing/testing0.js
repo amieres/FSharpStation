@@ -1,1618 +1,962 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,Monads,Seq,Async,String,LibraryJS,Pojo,Msal,Policy,AuthOptions,CacheOptions,SystemOptions,FrameworkOptions,Configuration,WebSharper,Obj,Account,AuthResponse,AuthError,AuthenticationParameters,TestingJS,Msal$1,PreambleState,SC$1,testing_GeneratedPrintf,GeneratedPrintf,Seq$1,Concurrency,Arrays,List,Strings,Slice,Operators,Char,Unchecked,Utils,console,IntelliFactory,Runtime,JavaScript,Promise,UI,View,AttrModule,Doc,AttrProxy,JS,Client,Templates,Var$1;
+ var Global,FsRoot,Library,StringId,GuidId,LibraryJS,View,AppFrameworkTemplate,TestingJS,Test,Util,WebSharper,Obj,AF,PlugInBuilder,ListModelData,LayoutEngine,LM,LMX,Calculado,Calculado$1,SC$1,IntelliFactory,Runtime,Arrays,List,UI,View$1,AppFramework,Client,Templates,Doc,console,ParseO,FromView,Utils,AttrProxy,AttrModule,PlugIn,PlugInVar,PlugInView,PlugInDoc,PlugInAction,PlugInQuery,Lazy,LayoutEngineModule,Enumerator,Seq,Unchecked,ListModel,Var$1,System,Guid;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
- Monads=Library.Monads=Library.Monads||{};
- Seq=Monads.Seq=Monads.Seq||{};
- Async=Monads.Async=Monads.Async||{};
- String=Library.String=Library.String||{};
+ StringId=Library.StringId=Library.StringId||{};
+ GuidId=Library.GuidId=Library.GuidId||{};
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
- Pojo=LibraryJS.Pojo=LibraryJS.Pojo||{};
- Msal=LibraryJS.Msal=LibraryJS.Msal||{};
- Policy=Msal.Policy=Msal.Policy||{};
- AuthOptions=Msal.AuthOptions=Msal.AuthOptions||{};
- CacheOptions=Msal.CacheOptions=Msal.CacheOptions||{};
- SystemOptions=Msal.SystemOptions=Msal.SystemOptions||{};
- FrameworkOptions=Msal.FrameworkOptions=Msal.FrameworkOptions||{};
- Configuration=Msal.Configuration=Msal.Configuration||{};
+ View=LibraryJS.View=LibraryJS.View||{};
+ AppFrameworkTemplate=LibraryJS.AppFrameworkTemplate=LibraryJS.AppFrameworkTemplate||{};
+ TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
+ Test=TestingJS.Test=TestingJS.Test||{};
+ Util=TestingJS.Util=TestingJS.Util||{};
  WebSharper=Global.WebSharper;
  Obj=WebSharper&&WebSharper.Obj;
- Account=Msal.Account=Msal.Account||{};
- AuthResponse=Msal.AuthResponse=Msal.AuthResponse||{};
- AuthError=Msal.AuthError=Msal.AuthError||{};
- AuthenticationParameters=Msal.AuthenticationParameters=Msal.AuthenticationParameters||{};
- TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
- Msal$1=TestingJS.Msal=TestingJS.Msal||{};
- PreambleState=Msal$1.PreambleState=Msal$1.PreambleState||{};
+ AF=TestingJS.AF=TestingJS.AF||{};
+ PlugInBuilder=AF.PlugInBuilder=AF.PlugInBuilder||{};
+ ListModelData=AF.ListModelData=AF.ListModelData||{};
+ LayoutEngine=TestingJS.LayoutEngine=TestingJS.LayoutEngine||{};
+ LM=TestingJS.LM=TestingJS.LM||{};
+ LMX=TestingJS.LMX=TestingJS.LMX||{};
+ Calculado=TestingJS.Calculado=TestingJS.Calculado||{};
+ Calculado$1=Calculado.Calculado=Calculado.Calculado||{};
  SC$1=Global.StartupCode$testing$testing=Global.StartupCode$testing$testing||{};
- testing_GeneratedPrintf=Global.testing_GeneratedPrintf=Global.testing_GeneratedPrintf||{};
- GeneratedPrintf=Global.GeneratedPrintf=Global.GeneratedPrintf||{};
- Seq$1=WebSharper&&WebSharper.Seq;
- Concurrency=WebSharper&&WebSharper.Concurrency;
- Arrays=WebSharper&&WebSharper.Arrays;
- List=WebSharper&&WebSharper.List;
- Strings=WebSharper&&WebSharper.Strings;
- Slice=WebSharper&&WebSharper.Slice;
- Operators=WebSharper&&WebSharper.Operators;
- Char=WebSharper&&WebSharper.Char;
- Unchecked=WebSharper&&WebSharper.Unchecked;
- Utils=WebSharper&&WebSharper.Utils;
- console=Global.console;
  IntelliFactory=Global.IntelliFactory;
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
- JavaScript=WebSharper&&WebSharper.JavaScript;
- Promise=JavaScript&&JavaScript.Promise;
+ Arrays=WebSharper&&WebSharper.Arrays;
+ List=WebSharper&&WebSharper.List;
  UI=WebSharper&&WebSharper.UI;
- View=UI&&UI.View;
- AttrModule=UI&&UI.AttrModule;
- Doc=UI&&UI.Doc;
- AttrProxy=UI&&UI.AttrProxy;
- JS=JavaScript&&JavaScript.JS;
+ View$1=UI&&UI.View;
+ AppFramework=LibraryJS&&LibraryJS.AppFramework;
  Client=UI&&UI.Client;
  Templates=Client&&Client.Templates;
+ Doc=UI&&UI.Doc;
+ console=Global.console;
+ ParseO=Library&&Library.ParseO;
+ FromView=UI&&UI.FromView;
+ Utils=WebSharper&&WebSharper.Utils;
+ AttrProxy=UI&&UI.AttrProxy;
+ AttrModule=UI&&UI.AttrModule;
+ PlugIn=AppFramework&&AppFramework.PlugIn;
+ PlugInVar=AppFramework&&AppFramework.PlugInVar;
+ PlugInView=AppFramework&&AppFramework.PlugInView;
+ PlugInDoc=AppFramework&&AppFramework.PlugInDoc;
+ PlugInAction=AppFramework&&AppFramework.PlugInAction;
+ PlugInQuery=AppFramework&&AppFramework.PlugInQuery;
+ Lazy=WebSharper&&WebSharper.Lazy;
+ LayoutEngineModule=LibraryJS&&LibraryJS.LayoutEngineModule;
+ Enumerator=WebSharper&&WebSharper.Enumerator;
+ Seq=WebSharper&&WebSharper.Seq;
+ Unchecked=WebSharper&&WebSharper.Unchecked;
+ ListModel=UI&&UI.ListModel;
  Var$1=UI&&UI.Var$1;
- Seq.ofOption=function(vO)
- {
-  return vO==null?[]:[vO.$0];
- };
- Seq.absorbR=function(vOS)
- {
-  return Seq$1.choose(function(a)
+ System=Global.System;
+ Guid=System&&System.Guid;
+ StringId=Library.StringId=Runtime.Class({
+  get_Id:function()
   {
-   return a.$==0?{
-    $:1,
-    $0:a.$0
-   }:null;
-  },vOS);
- };
- Seq.absorbO=function(vOS)
- {
-  return Seq$1.choose(Global.id,vOS);
- };
- Seq.insertR=function(vSR)
- {
-  return vSR.$==0?Seq$1.map(function(a)
-  {
-   return{
-    $:0,
-    $0:a
-   };
-  },vSR.$0):(Seq.rtn())(Library.Error(vSR.$0));
- };
- Seq.insertO=function(vSO)
- {
-  var o;
-  o=vSO==null?null:{
-   $:1,
-   $0:Seq$1.map(function(a)
-   {
-    return{
-     $:1,
-     $0:a
-    };
-   },vSO.$0)
-  };
-  return o==null?(Seq.rtn())(null):o.$0;
- };
- Seq.rtn=function()
- {
-  SC$1.$cctor();
-  return SC$1.rtn;
- };
- Async.insertR=function(vAR)
- {
-  function f(a)
-  {
-   return{
-    $:0,
-    $0:a
-   };
+   return this.$0;
   }
-  function g(v)
+ },null,StringId);
+ GuidId=Library.GuidId=Runtime.Class({
+  get_Id:function()
   {
-   return Concurrency.Return(v);
+   return this.$0;
   }
-  return vAR.$==0?Concurrency.Bind(vAR.$0,function(x)
-  {
-   return g(f(x));
-  }):Concurrency.Return(Library.Error(vAR.$0));
- };
- Async.insertO=function(vAO)
- {
-  var o;
-  function f(a)
-  {
-   return{
-    $:1,
-    $0:a
-   };
-  }
-  function g(v)
-  {
-   return Concurrency.Return(v);
-  }
-  o=vAO==null?null:{
-   $:1,
-   $0:Concurrency.Bind(vAO.$0,function(x)
-   {
-    return g(f(x));
-   })
-  };
-  return o==null?Concurrency.Return(null):o.$0;
- };
- Async.sequenceSeq=function(sq)
- {
-  return Async.traverseSeq(Global.id,sq);
- };
- Async.traverseSeq=function(f,sq)
- {
-  function g(v)
-  {
-   return Concurrency.Return(v);
-  }
-  return Concurrency.Bind(Arrays.foldBack(function(head,tail)
-  {
-   return Async.op_GreaterGreaterEquals(f(head),function(h)
-   {
-    return Async.op_GreaterGreaterEquals(tail,function(t)
-    {
-     return Concurrency.Return(new List.T({
-      $:1,
-      $0:h,
-      $1:t
-     }));
-    });
-   });
-  },Arrays.ofSeq(sq),Concurrency.Return(List.T.Empty)),function(x)
-  {
-   return g(Global.id(x));
-  });
- };
- Async.op_GreaterGreaterEquals=function(v,f)
- {
-  return Concurrency.Bind(v,f);
- };
- Async.sleepThen=function(f,milliseconds)
- {
-  var b;
-  b=null;
-  return Concurrency.Delay(function()
-  {
-   return Concurrency.Bind(Concurrency.Sleep(milliseconds),function()
-   {
-    return Concurrency.Return(f());
-   });
-  });
- };
- Async.apply=function(fA,vA)
- {
-  var b;
-  b=null;
-  return Concurrency.Delay(function()
-  {
-   return Concurrency.Bind(Concurrency.StartChild(fA,null),function(a)
-   {
-    return Concurrency.Bind(Concurrency.StartChild(vA,null),function(a$1)
-    {
-     return Concurrency.Bind(a,function(a$2)
-     {
-      return Concurrency.Bind(a$1,function(a$3)
-      {
-       return Concurrency.Return(a$2(a$3));
-      });
-     });
-    });
-   });
-  });
- };
- String.thousands=function(n)
- {
-  var v,r,s;
-  v=Global.String(n);
-  r=v.length%3;
-  s=r===0?3:r;
-  return Strings.concat(",",List.ofSeq(Seq$1.delay(function()
-  {
-   return Seq$1.append([Slice.string(v,{
-    $:1,
-    $0:0
-   },{
-    $:1,
-    $0:s-1
-   })],Seq$1.delay(function()
-   {
-    return Seq$1.map(function(i)
-    {
-     return Slice.string(v,{
-      $:1,
-      $0:i*3+s
-     },{
-      $:1,
-      $0:i*3+s+2
-     });
-    },Operators.range(0,((v.length-s)/3>>0)-1));
-   }));
-  })));
- };
- String.EndsWith=function(ends,s)
- {
-  return Strings.EndsWith(s,ends)?{
-   $:1,
-   $0:Slice.string(s,{
-    $:1,
-    $0:0
-   },{
-    $:1,
-    $0:s.length-ends.length-1
-   })
-  }:null;
- };
- String.StartsWith=function(start,s)
- {
-  return Strings.StartsWith(s,start)?{
-   $:1,
-   $0:Slice.string(s,{
-    $:1,
-    $0:start.length
-   },null)
-  }:null;
- };
- String.skipLastLine=function()
- {
-  SC$1.$cctor();
-  return SC$1.skipLastLine;
- };
- String.indentStr=function(i)
- {
-  function f(s)
-  {
-   return String.indent(i,s);
-  }
-  function g(s)
-  {
-   return Strings.concat("\n",s);
-  }
-  return function(x)
-  {
-   return g(f(x));
-  };
- };
- String.unindentStr=function()
- {
-  SC$1.$cctor();
-  return SC$1.unindentStr;
- };
- String.indent=function(n,s)
- {
-  var x,x$1;
-  x=Strings.SplitChars(s,["\n"],0);
-  return Seq$1.map((x$1=Strings.replicate(n," "),function(y)
-  {
-   return x$1+y;
-  }),x);
- };
- String.unindent=function(s)
- {
-  var lines,n,o,o$1;
-  lines=Strings.SplitChars(s,["\n"],0);
-  n=(o=Seq$1.tryFindIndex(function(y)
-  {
-   return" "!==y;
-  },(o$1=Seq$1.tryFind(function(l)
-  {
-   return Strings.Trim(l)!=="";
-  },lines),o$1==null?"":o$1.$0)),o==null?0:o.$0);
-  return Seq$1.filter(function(s$1)
-  {
-   return!Strings.StartsWith(s$1,"# 1 ");
-  },Seq$1.map(function(l)
-  {
-   return l.length<=n?"":l.substring(n);
-  },lines));
- };
- String.skipFirstLine=function(txt)
- {
-  var i;
-  i=txt.indexOf("\n");
-  return i<0?"":Slice.string(txt,{
-   $:1,
-   $0:i+1
-  },null);
- };
- String.append=function(a,b)
- {
-  return a+b;
- };
- String.trim=function(s)
- {
-  return Strings.Trim(s);
- };
- String.contains=function(sub,whole)
- {
-  return whole.indexOf(sub)!=-1;
- };
- String.delimitedO=function(op,cl,txt)
- {
-  var o,$1,bef,o$1,$2;
-  o=String.splitInTwoO(op,txt);
-  return o==null?null:($1=o.$0,(bef=$1[0],(o$1=String.splitInTwoO(cl,$1[1]),o$1==null?null:{
-   $:1,
-   $0:($2=o$1.$0,[bef,$2[0],$2[1]])
-  })));
- };
- String.splitInTwoO=function(spl,txt)
- {
-  var i;
-  i=txt.indexOf(spl);
-  return i===-1?null:{
-   $:1,
-   $0:[Library["String.Left"](txt,i),txt.substring(i+spl.length)]
-  };
- };
- String.splitByChar=function(c,s)
- {
-  return Strings.SplitChars(s,[c],0);
- };
- Library["String.get_toUnderscore"]=function(_this,u)
- {
-  return Arrays.ofSeq(Seq$1.collect(Global.id,Seq$1.mapi(function(i,c)
-  {
-   return i>0&&Char.IsUpper(c)?List.ofArray(["_",c]):List.ofArray([c]);
-  },_this))).join("");
- };
- Library["String.Right"]=function(_this,n)
- {
-  var a,b;
-  return Library["String.Substring2"](_this,(a=0,(b=_this.length-n,Unchecked.Compare(a,b)===1?a:b)),_this.length);
- };
- Library["String.Left"]=function(_this,n)
- {
-  return n<0?Library["String.Substring2"](_this,0,_this.length+n):Library["String.Substring2"](_this,0,n);
- };
- Library["String.Substring2"]=function(_this,from,n)
- {
-  var from$1,b;
-  while(true)
-   {
-    if(n<=0)
-     return"";
-    else
-     if(from<0)
-      {
-       from$1=from;
-       from=0;
-       n=n+from$1;
-      }
-     else
-      return from>=_this.length?"":Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
-   }
- };
- Library.print=function(v)
- {
-  if(typeof v=="string")
-   ((function($1)
-   {
-    return function($2)
-    {
-     return $1(Utils.toSafe($2));
-    };
-   }(function(s)
-   {
-    console.log(s);
-   }))(v));
-  else
-   ((function($1)
-   {
-    return function($2)
-    {
-     return $1(Utils.prettyPrint($2));
-    };
-   }(function(s)
-   {
-    console.log(s);
-   }))(v));
- };
- Library.Error=function(a)
+ },null,GuidId);
+ Library.Error$1=function(a)
  {
   return{
    $:1,
    $0:a
   };
  };
- Pojo.newPojoOpt=function(propOs)
+ View.sequenceSeq=function(sq)
  {
-  function c(n,vO)
-  {
-   return vO==null?null:{
-    $:1,
-    $0:[n,vO.$0]
-   };
-  }
-  return Pojo.newPojo(Seq$1.choose(function($1)
-  {
-   return c($1[0],$1[1]);
-  },propOs));
+  return View.traverseSeq(Global.id,sq);
  };
- Pojo.newPojo=function(props)
+ View.traverseSeq=function(f,sq)
  {
-  var pojo,f;
-  function f$1(a,a$1)
+  return View.map(Global.id,Arrays.foldBack(function(head,tail)
   {
-   return function(p)
+   return View.op_GreaterGreaterEquals(f(head),function(h)
    {
-    return Pojo.addProp(a,a$1,p);
+    return View.op_GreaterGreaterEquals(tail,function(t)
+    {
+     return View.rtn(new List.T({
+      $:1,
+      $0:h,
+      $1:t
+     }));
+    });
+   });
+  },Arrays.ofSeq(sq),View.rtn(List.T.Empty)));
+ };
+ View.op_GreaterGreaterEquals=function(v,f)
+ {
+  return View.bind(f,v);
+ };
+ View.rtn=function(a)
+ {
+  return View$1.Const(a);
+ };
+ View.map=function(a,a$1)
+ {
+  return View$1.Map(a,a$1);
+ };
+ View.bind=function(a,a$1)
+ {
+  return View$1.Bind(a,a$1);
+ };
+ View.insertWO=function(a)
+ {
+  return a==null?View$1.Const(null):View$1.Map(function(a$1)
+  {
+   return{
+    $:1,
+    $0:a$1
    };
-  }
+  },a.$0);
+ };
+ AppFrameworkTemplate.html=function()
+ {
+  SC$1.$cctor();
+  return SC$1.html;
+ };
+ Test.main=function()
+ {
+  var d,x,a;
+  d=self.document.createElement("div");
+  self.document.body.appendChild(d);
+  d.outerHTML=AppFrameworkTemplate.html();
+  x=AppFramework.getMainDoc().f();
+  a=self.document.body;
+  Templates.LoadLocalTemplates("");
+  Doc.RunAppend(a,x);
+ };
+ Test.something=function()
+ {
+  (function($1)
+  {
+   return $1("do something");
+  }(function(s)
+  {
+   console.log(s);
+  }));
+ };
+ Util.orderedList=function(l)
+ {
+  return Doc.Element("ol",[],[l]);
+ };
+ Util.newButton=function(f)
+ {
+  return Util.simpleButton("New",f);
+ };
+ Util.simpleButton=function(txt,f)
+ {
   function g(v)
   {
   }
-  pojo={};
-  Seq$1.iter((f=function(b)
+  return Doc.Button(txt,[],function(x)
   {
-   return(function($1)
-   {
-    return f$1($1[0],$1[1]);
-   }(b))(pojo);
+   return g(f(x));
+  });
+ };
+ Util.wrapUI=function(elem,f,a,b,c)
+ {
+  var f$1,f$2,g;
+  function g$1(v)
+  {
+   return[v];
+  }
+  f$1=(f$2=f(a,b,c),function(x)
+  {
+   return g$1(f$2(x));
+  });
+  g=elem(List.T.Empty);
+  return function(x)
+  {
+   return g(f$1(x));
+  };
+ };
+ Util.unselectorV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.unselectorV;
+ };
+ Util.selectorLensGuidId=function(sel)
+ {
+  var f,g;
+  function m(a)
+  {
+   return new GuidId({
+    $:0,
+    $0:a
+   });
+  }
+  return(Util.selectorLens(function(v)
+  {
+   var c;
+   c=v.get_Id();
+   return Global.String(c);
+  },(f=ParseO.parseGuidO(),(g=function(o)
+  {
+   return o==null?null:{
+    $:1,
+    $0:m(o.$0)
+   };
   },function(x)
   {
    return g(f(x));
-  }),props);
-  return pojo;
+  }))))(sel);
  };
- Pojo.addProp=function(p,p$1,pojo)
+ Util.selectorLensGuid=function(sel)
  {
-  pojo[p]=p$1;
-  return pojo;
+  return(Util.selectorLens(Global.String,ParseO.parseGuidO()))(sel);
  };
- Policy=Msal.Policy=Runtime.Class({
-  toString:function()
+ Util.selectorLensInt=function(sel)
+ {
+  return(Util.selectorLens(Global.String,ParseO.parseIntO()))(sel);
+ };
+ Util.selectorLens=function(toStr,ofStrO)
+ {
+  function f(s)
   {
-   return Strings.ReplaceChar(Library["String.get_toUnderscore"]((function($1)
-   {
-    return function($2)
-    {
-     return $1(testing_GeneratedPrintf.p($2));
-    };
-   }(Global.id))(this)),"_"," ");
+   return Util.mapVarO(toStr,ofStrO,s);
   }
- },null,Policy);
- Policy.ResetPassword=new Policy({
-  $:3
- });
- Policy.EditProfile=new Policy({
-  $:2
- });
- Policy.SignUp=new Policy({
-  $:1
- });
- Policy.SignIn=new Policy({
-  $:0
- });
- Policy.Parse=function(txt)
- {
-  var m;
-  m=Strings.Replace(txt," ","");
-  return m==="SignUp"?Policy.SignUp:m==="EditProfile"?Policy.EditProfile:m==="ResetPassword"?Policy.ResetPassword:Policy.SignIn;
- };
- AuthOptions.New$1=function(clientId,authority,validateAuthority,redirectUri,postLogoutRedirectUri,navigateToLoginRequestUrl)
- {
-  return Pojo.newPojoOpt([Msal.op_MinusMinusGreater("clientId",clientId),Msal.op_EqualsEqualsGreater("authority",authority),Msal.op_EqualsEqualsGreater("validateAuthority",validateAuthority),Msal.op_EqualsEqualsGreater("redirectUri",redirectUri),Msal.op_EqualsEqualsGreater("postLogoutRedirectUri",postLogoutRedirectUri),Msal.op_EqualsEqualsGreater("navigateToLoginRequestUrl",navigateToLoginRequestUrl)]);
- };
- AuthOptions.New=function(clientId,authority,validateAuthority,redirectUri,postLogoutRedirectUri,navigateToLoginRequestUrl)
- {
-  return{
-   clientId:clientId,
-   authority:authority,
-   validateAuthority:validateAuthority,
-   redirectUri:redirectUri,
-   postLogoutRedirectUri:postLogoutRedirectUri,
-   navigateToLoginRequestUrl:navigateToLoginRequestUrl
+  return function(x)
+  {
+   return Util.lensStrO(f(x));
   };
  };
- CacheOptions.New$1=function(cacheLocation,storeAuthStateInCookie)
+ Util.mapVarO=function(toB,ofBO,sel)
  {
-  return Pojo.newPojoOpt([Msal.op_EqualsEqualsGreater("cacheLocation",cacheLocation),Msal.op_EqualsEqualsGreater("storeAuthStateInCookie",storeAuthStateInCookie)]);
+  return new FromView.New(View$1.Map(function($1)
+  {
+   return $1==null?null:{
+    $:1,
+    $0:toB($1.$0)
+   };
+  },sel.get_View()),function(a)
+  {
+   var o;
+   if(a!=null&&a.$==1)
+    {
+     o=ofBO(a.$0);
+     o==null?void 0:sel.Set({
+      $:1,
+      $0:o.$0
+     });
+    }
+   else
+    sel.Set(null);
+  });
  };
- CacheOptions.New=function(cacheLocation,storeAuthStateInCookie)
+ Util.lensStrO=function(sel)
  {
-  return{
-   cacheLocation:cacheLocation,
-   storeAuthStateInCookie:storeAuthStateInCookie
-  };
+  return new FromView.New(View$1.Map(function($1)
+  {
+   return $1!=null&&$1.$==1?$1.$0:"";
+  },sel.get_View()),function(s)
+  {
+   if(s==="")
+    sel.Set(null);
+   else
+    sel.Set({
+     $:1,
+     $0:s
+    });
+  });
  };
- SystemOptions.New$1=function(logger,loadFrameTimeout,navigateFrameWait,tokenRenewalOffsetSeconds)
+ Util.textLine=function(txtW)
  {
-  return Pojo.newPojoOpt([Msal.op_EqualsEqualsGreater("logger",logger),Msal.op_EqualsEqualsGreater("loadFrameTimeout",loadFrameTimeout),Msal.op_EqualsEqualsGreater("navigateFrameWait",navigateFrameWait),Msal.op_EqualsEqualsGreater("tokenRenewalOffsetSeconds",tokenRenewalOffsetSeconds)]);
+  return Doc.Element("div",[],[Doc.TextView(txtW)]);
  };
- SystemOptions.New=function(logger,loadFrameTimeout,navigateFrameWait,tokenRenewalOffsetSeconds)
+ Util.lensFloat2Str=function(v)
  {
-  return{
-   logger:logger,
-   loadFrameTimeout:loadFrameTimeout,
-   navigateFrameWait:navigateFrameWait,
-   tokenRenewalOffsetSeconds:tokenRenewalOffsetSeconds
-  };
+  var f;
+  function g(a)
+  {
+   if(a!=null&&a.$==1)
+    if(a.$0!==v.Get())
+     v.Set(a.$0);
+  }
+  return new FromView.New(View$1.Map(function($1)
+  {
+   return(function($2)
+   {
+    return function($3)
+    {
+     return $2(Utils.prettyPrint($3));
+    };
+   }(Global.id))($1);
+  },v.get_View()),(f=ParseO.parseDoubleO(),function(x)
+  {
+   return g(f(x));
+  }));
  };
- FrameworkOptions.New$1=function(isAngular,protectedResourceMap,unprotectedResources)
+ Util.elemsUI=function(doc,addNew)
  {
-  return Pojo.newPojoOpt([Msal.op_EqualsEqualsGreater("isAngular",isAngular),Msal.op_EqualsEqualsGreater("protectedResourceMap",protectedResourceMap),Msal.op_EqualsEqualsGreater("unprotectedResources",unprotectedResources)]);
+  return Doc.Element("div",[],[doc,Doc.Button("New",[],addNew)]);
  };
- FrameworkOptions.New=function(isAngular,protectedResourceMap,unprotectedResources)
+ Util.inputLabel=function(attrs,disW,txt,_var)
  {
-  return{
-   isAngular:isAngular,
-   protectedResourceMap:protectedResourceMap,
-   unprotectedResources:unprotectedResources
-  };
+  return Doc.Element("div",attrs,[Doc.Element("div",[AttrProxy.Create("class","input-group")],[Doc.Element("span",[AttrProxy.Create("class","input-group-addon")],[Doc.TextNode(txt)]),Doc.Input([AttrProxy.Create("class","form-control"),Util.disabled(disW)],_var)])]);
  };
- Configuration.New$1=function(auth,cache,system,framework)
+ Util.disabled=function(disW)
  {
-  return Pojo.newPojoOpt([Msal.op_EqualsEqualsGreater("auth",auth),Msal.op_EqualsEqualsGreater("cache",cache),Msal.op_EqualsEqualsGreater("system",system),Msal.op_EqualsEqualsGreater("framework",framework)]);
+  return AttrModule.DynamicPred("disabled",disW,View$1.Const(""));
  };
- Configuration.New=function(auth,cache,system,framework)
- {
-  return{
-   auth:auth,
-   cache:cache,
-   system:system,
-   framework:framework
-  };
- };
- Account=Msal.Account=Runtime.Class({},Obj,Account);
- Account.New=Runtime.Ctor(function()
+ PlugInBuilder=AF.PlugInBuilder=Runtime.Class({
+  Merge:function(plg,prefix,p2)
+  {
+   return PlugIn.New(plg.plgName,plg.plgVars.concat(Arrays.map(function(v)
+   {
+    return PlugInVar.New(prefix+v.varName,v.varVar);
+   },p2.plgVars)),plg.plgViews.concat(Arrays.map(function(w)
+   {
+    return PlugInView.New(prefix+w.viwName,w.viwView);
+   },p2.plgViews)),plg.plgDocs.concat(Arrays.map(function(d)
+   {
+    return PlugInDoc.New(prefix+d.docName,d.docDoc);
+   },p2.plgDocs)),plg.plgActions.concat(Arrays.map(function(a)
+   {
+    return PlugInAction.New(prefix+a.actName,a.actFunction,a.actEnabled);
+   },p2.plgActions)),plg.plgQueries.concat(Arrays.map(function(q)
+   {
+    return PlugInQuery.New(prefix+q.qryName,q.qryFunction);
+   },p2.plgQueries)));
+  },
+  AddViw:function(plg,name,viw)
+  {
+   return PlugIn.New(plg.plgName,plg.plgVars,plg.plgViews.concat([AppFramework.newViw(name,viw)]),plg.plgDocs,plg.plgActions,plg.plgQueries);
+  },
+  InsDoc:function(plg,name,doc)
+  {
+   return PlugIn.New(plg.plgName,plg.plgVars,plg.plgViews,[AppFramework.newDoc(name,doc)].concat(plg.plgDocs),plg.plgActions,plg.plgQueries);
+  },
+  AddActO:function(plg,name,actO)
+  {
+   return actO==null?plg:PlugIn.New(plg.plgName,plg.plgVars,plg.plgViews,plg.plgDocs,plg.plgActions.concat([AppFramework.newAct(name,actO.$0)]),plg.plgQueries);
+  },
+  AddAct:function(plg,name,act)
+  {
+   return PlugIn.New(plg.plgName,plg.plgVars,plg.plgViews,plg.plgDocs,plg.plgActions.concat([AppFramework.newAct(name,act)]),plg.plgQueries);
+  },
+  AddDocF:function(plg,name,docF)
+  {
+   return PlugIn.New(plg.plgName,plg.plgVars,plg.plgViews,plg.plgDocs.concat([AppFramework.newDoc(name,Lazy.Create(function()
+   {
+    return LayoutEngineModule.turnToView(docF);
+   }))]),plg.plgActions,plg.plgQueries);
+  },
+  AddDoc:function(plg,name,doc)
+  {
+   return PlugIn.New(plg.plgName,plg.plgVars,plg.plgViews,plg.plgDocs.concat([AppFramework.newDoc(name,doc)]),plg.plgActions,plg.plgQueries);
+  },
+  AddVar:function(plg,name,_var)
+  {
+   return PlugIn.New(plg.plgName,plg.plgVars.concat([AppFramework.newVar(name,_var)]),plg.plgViews,plg.plgDocs,plg.plgActions,plg.plgQueries);
+  },
+  Name:function(plg,name)
+  {
+   return PlugIn.New(name,plg.plgVars,plg.plgViews,plg.plgDocs,plg.plgActions,plg.plgQueries);
+  },
+  For:function(coll,func)
+  {
+   var ie;
+   ie=Enumerator.Get(coll);
+   while(ie.MoveNext())
+    func(ie.Current());
+  },
+  Yield:function()
+  {
+   return this.Zero();
+  },
+  Zero:function()
+  {
+   return PlugIn.New("Main",[],[],[],[],[]);
+  }
+ },Obj,PlugInBuilder);
+ PlugInBuilder.New=Runtime.Ctor(function()
  {
   Obj.New.call(this);
- },Account);
- AuthResponse.New=function(accessToken,account,accountState,expiresOn,idToken,scopes,tenantId,tokenType,uniqueId)
- {
-  return{
-   accessToken:accessToken,
-   account:account,
-   accountState:accountState,
-   expiresOn:expiresOn,
-   idToken:idToken,
-   scopes:scopes,
-   tenantId:tenantId,
-   tokenType:tokenType,
-   uniqueId:uniqueId
-  };
- };
- AuthError.New=function(errorCode,errorMessage,message,name,stack)
- {
-  return{
-   errorCode:errorCode,
-   errorMessage:errorMessage,
-   message:message,
-   name:name,
-   stack:stack
-  };
- };
- AuthenticationParameters.New$1=function(account,authority,claimsRequest,correlationId,extraQueryParameters,extraScopesToConsent,loginHint,prompt,scopes,sid,state)
- {
-  return Pojo.newPojoOpt([Msal.op_EqualsEqualsGreater("account",account),Msal.op_EqualsEqualsGreater("authority",authority),Msal.op_EqualsEqualsGreater("claimsRequest",claimsRequest),Msal.op_EqualsEqualsGreater("correlationId",correlationId),Msal.op_EqualsEqualsGreater("extraQueryParameters",extraQueryParameters),Msal.op_EqualsEqualsGreater("extraScopesToConsent",extraScopesToConsent),Msal.op_EqualsEqualsGreater("loginHint",loginHint),Msal.op_EqualsEqualsGreater("prompt",prompt),Msal.op_EqualsEqualsGreater("scopes",scopes),Msal.op_EqualsEqualsGreater("sid",sid),Msal.op_EqualsEqualsGreater("state",state)]);
- };
- AuthenticationParameters.New=function(account,authority,claimsRequest,correlationId,extraQueryParameters,extraScopesToConsent,loginHint,prompt,scopes,sid,state)
- {
-  return{
-   account:account,
-   authority:authority,
-   claimsRequest:claimsRequest,
-   correlationId:correlationId,
-   extraQueryParameters:extraQueryParameters,
-   extraScopesToConsent:extraScopesToConsent,
-   loginHint:loginHint,
-   prompt:prompt,
-   scopes:scopes,
-   sid:sid,
-   state:state
-  };
- };
- Msal.op_EqualsEqualsGreater=function(n,vO)
- {
-  return[n,vO==null?null:{
-   $:1,
-   $0:vO.$0
-  }];
- };
- Msal.op_MinusMinusGreater=function(n,v)
- {
-  return[n,{
-   $:1,
-   $0:v
-  }];
- };
- Msal.policies=function()
- {
-  SC$1.$cctor();
-  return SC$1.policies;
- };
- PreambleState=Msal$1.PreambleState=Runtime.Class({
-  toString:function()
+ },PlugInBuilder);
+ ListModelData=AF.ListModelData=Runtime.Class({
+  get_CurrentDoc:function()
   {
-   return(function($1)
+   return(this.getDoc(this.selV.get_View()))(this.get_CurrentV());
+  },
+  get_CurrentV:function()
+  {
+   var $this;
+   $this=this;
+   return new FromView.New(this.get_CurrentW(),function(v)
    {
-    return function($2)
-    {
-     return $1(testing_GeneratedPrintf.p$1($2));
+    var m;
+    m=$this.selV.Get();
+    m!=null&&m.$==1?$this.elems.ContainsKey(m.$0)?$this.elems.Append(v):void 0:void 0;
+   });
+  },
+  get_CurrentW:function()
+  {
+   var f,g,v,f$1,m,o;
+   return View$1.Map((f=function(o$1)
+   {
+    return o$1==null?null:Global.id(o$1.$0);
+   },(g=(v=this.def,function(o$1)
+   {
+    return o$1==null?v:o$1.$0;
+   }),function(x)
+   {
+    return g(f(x));
+   })),View$1.Bind((f$1=(m=(o=this.elems,function(a)
+   {
+    return o.TryFindByKeyAsView(a);
+   }),function(o$1)
+   {
+    return o$1==null?null:{
+     $:1,
+     $0:m(o$1.$0)
     };
-   }(Global.id))(this);
+   }),function(x)
+   {
+    return View.insertWO(f$1(x));
+   }),this.selV.get_View()));
+  },
+  PlugIn:function(selectorLens)
+  {
+   var $this,b,f;
+   function g(v)
+   {
+   }
+   $this=this;
+   b=AF.plugin();
+   return b.AddAct(b.AddAct(b.AddVar(b.AddDoc(b.AddDoc(b.Yield(),"list",Lazy.Create(function()
+   {
+    return $this.doc;
+   })),"cur",Lazy.Create(function()
+   {
+    return $this.get_CurrentDoc();
+   })),"sel",selectorLens(this.selV)),"add",(f=this.add,function(x)
+   {
+    return g(f(x));
+   })),"del",this.delCur);
   }
- },null,PreambleState);
- PreambleState.InPreamble=new PreambleState({
-  $:11
- });
- PreambleState.WentInside=new PreambleState({
-  $:10
- });
- PreambleState.WentToResetPassword=new PreambleState({
-  $:9
- });
- PreambleState.WentToEditProfile=new PreambleState({
-  $:8
- });
- PreambleState.WentToSignUp=new PreambleState({
-  $:7
- });
- PreambleState.WentToSignIn=new PreambleState({
-  $:6
- });
- PreambleState.GoToResetPassword=new PreambleState({
-  $:5
- });
- PreambleState.GoToEditProfile=new PreambleState({
-  $:4
- });
- PreambleState.GoingToSignUp=new PreambleState({
-  $:3
- });
- PreambleState.GoToSignUp=new PreambleState({
-  $:2
- });
- PreambleState.GoingToSignIn=new PreambleState({
-  $:1
- });
- PreambleState.GoToSignIn=new PreambleState({
-  $:0
- });
- PreambleState.Parse=function(txt)
+ },null,ListModelData);
+ ListModelData.New=function(elems,doc,selV,add,delCur,getDoc,def)
+ {
+  return new ListModelData({
+   elems:elems,
+   doc:doc,
+   selV:selV,
+   add:add,
+   delCur:delCur,
+   getDoc:getDoc,
+   def:def
+  });
+ };
+ AF.concatMainDocs=function(plugins)
+ {
+  return Doc.Concat(Seq.choose(function(a)
+  {
+   return a.docDoc.$==0?{
+    $:1,
+    $0:a.docDoc.$0.f()
+   }:null;
+  },Seq.choose(function(plg)
+  {
+   return Seq.tryHead(plg.plgDocs);
+  },plugins)));
+ };
+ AF.addPlugIn2=function(plg)
  {
   var m;
-  m=Strings.Replace(txt," ","");
-  return m==="GoToSignIn"?PreambleState.GoToSignIn:m==="GoingToSignIn"?PreambleState.GoingToSignIn:m==="GoToSignUp"?PreambleState.GoToSignUp:m==="GoingToSignUp"?PreambleState.GoingToSignUp:m==="GoToEditProfile"?PreambleState.GoToEditProfile:m==="GoToResetPassword"?PreambleState.GoToResetPassword:m==="WentToSignIn"?PreambleState.WentToSignIn:m==="WentToSignUp"?PreambleState.WentToSignUp:m==="WentToEditProfile"?PreambleState.WentToEditProfile:m==="WentToResetPassword"?PreambleState.WentToResetPassword:m==="WentInside"?PreambleState.WentInside:PreambleState.InPreamble;
+  AppFramework.addPlugIn(plg);
+  m=Seq.tryHead(plg.plgDocs);
+  m!=null&&m.$==1?AppFramework.mainDocV().Set(plg.plgName+"."+m.$0.docName):void 0;
  };
- Msal$1.main$896$45=function()
+ AF.plugin=function()
+ {
+  SC$1.$cctor();
+  return SC$1.plugin;
+ };
+ LayoutEngine.addLayout0=function(lyt)
+ {
+  LayoutEngineModule.addLayout(lyt);
+  AppFramework.mainDocV().Set(lyt.lytName);
+ };
+ LM.addElements=function(li,elems)
+ {
+  li.elems.AppendMany(elems);
+ };
+ LM.setCurrentDoc=function(docF,li)
+ {
+  return ListModelData.New(li.elems,li.doc,li.selV,li.add,li.delCur,docF(Util.unselectorV(),Global.ignore),li.def);
+ };
+ LM.getDoc=function(keyF,def,newF,elUI)
+ {
+  var elements,selected0,selectedV;
+  function f(a)
+  {
+   var $1;
+   return a!=null&&a.$==1&&(elements.ContainsKey(a.$0)&&($1=a.$0,true))?{
+    $:1,
+    $0:$1
+   }:null;
+  }
+  function g(v)
+  {
+   if(!Unchecked.Equals(selected0.Get(),v))
+    selected0.Set(v);
+  }
+  function _delete(k,u)
+  {
+   selectedV.Set(null);
+   return elements.RemoveByKey(k);
+  }
+  elements=ListModel.Create(keyF,List.T.Empty);
+  selected0=Var$1.Create$1(null);
+  selectedV=new FromView.New(selected0.get_View(),function(x)
+  {
+   return g(f(x));
+  });
+  return ListModelData.New(elements,Doc.Flatten(elements.MapLens(function($1,$2)
+  {
+   return((elUI(selectedV,function($3)
+   {
+    return _delete($1,$3);
+   }))(View$1.Const({
+    $:1,
+    $0:$1
+   })))($2);
+  })),selectedV,function()
+  {
+   var n;
+   n=newF();
+   elements.Append(n);
+   selectedV.Set({
+    $:1,
+    $0:keyF(n)
+   });
+   return n;
+  },function()
+  {
+   var o;
+   o=selectedV.Get();
+   o==null?void 0:_delete(o.$0,null);
+  },elUI(selectedV,Global.ignore),def);
+ };
+ LMX.addElements=function(li,elems)
+ {
+  Seq.iter(function(v)
+  {
+   li.elems.Append([(li.add())[0],v]);
+  },elems);
+ };
+ LMX.setCurrentDoc=function(docF)
+ {
+  function x(a,b,c,v)
+  {
+   return LMX.elemUI2(docF,a,b,c,v);
+  }
+  return function(l)
+  {
+   return LM.setCurrentDoc(function($1,$2)
+   {
+    return Runtime.Curried(x,2,[$1,$2]);
+   },l);
+  };
+ };
+ LMX.getDocGuidId=function(def,newElem,elemUI)
+ {
+  var x;
+  function e(a,b,c,v)
+  {
+   return LMX.elemUI2(elemUI,a,b,c,v);
+  }
+  x=LMX.addNewO(newElem,new GuidId({
+   $:0,
+   $0:Guid.NewGuid()
+  }),function()
+  {
+   return new GuidId({
+    $:0,
+    $0:Guid.NewGuid()
+   });
+  });
+  return LM.getDoc(function(t)
+  {
+   return t[0];
+  },[new GuidId({
+   $:0,
+   $0:"00000000-0000-0000-0000-000000000000"
+  }),def],x,function($1,$2)
+  {
+   return Runtime.Curried(e,2,[$1,$2]);
+  });
+ };
+ LMX.getDocGuid=function(def,newElem,elemUI)
+ {
+  function e(a,b,c,v)
+  {
+   return LMX.elemUI2(elemUI,a,b,c,v);
+  }
+  return LM.getDoc(function(t)
+  {
+   return t[0];
+  },["00000000-0000-0000-0000-000000000000",def],LMX.addNewO(newElem,Guid.NewGuid(),function()
+  {
+   return Guid.NewGuid();
+  }),function($1,$2)
+  {
+   return Runtime.Curried(e,2,[$1,$2]);
+  });
+ };
+ LMX.getDocInt=function(def,newElem,elemUI)
+ {
+  function e(a,b,c,v)
+  {
+   return LMX.elemUI2(elemUI,a,b,c,v);
+  }
+  return LM.getDoc(function(t)
+  {
+   return t[0];
+  },[-1,def],LMX.addNewO(newElem,0,function(y)
+  {
+   return 1+y;
+  }),function($1,$2)
+  {
+   return Runtime.Curried(e,2,[$1,$2]);
+  });
+ };
+ LMX.elemUI2=function(elemUI,a,b,c,v)
+ {
+  function a$1(i,nv)
+  {
+   return[i,nv];
+  }
+  return elemUI(a,b,c,Var$1.Lens(v,function(t)
+  {
+   return t[1];
+  },function($1,$2)
+  {
+   return(function($3)
+   {
+    var $4;
+    $4=$3[0];
+    return function($5)
+    {
+     return a$1($4,$5);
+    };
+   }($1))($2);
+  }));
+ };
+ LMX.addNewO=function(newF,firstKey,nextKey)
+ {
+  var k;
+  k=firstKey;
+  return function()
+  {
+   var e;
+   e=[k,newF()];
+   k=nextKey(k);
+   return e;
+  };
+ };
+ Calculado$1.New=function(id,valorA,valorB,valorC)
+ {
+  return{
+   id:id,
+   valorA:valorA,
+   valorB:valorB,
+   valorC:valorC
+  };
+ };
+ Calculado.list1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.list1;
+ };
+ Calculado.list3=function()
+ {
+  SC$1.$cctor();
+  return SC$1.list3;
+ };
+ Calculado.list2=function()
+ {
+  SC$1.$cctor();
+  return SC$1.list2;
+ };
+ Calculado.list0=function()
+ {
+  SC$1.$cctor();
+  return SC$1.list0;
+ };
+ Calculado.calcUIEdit=function(selectedV,_delete,k,calc)
+ {
+  return Doc.BindView(Global.id,View$1.Map(function($1)
+  {
+   return $1?Calculado.calcUIDet(true,selectedV,_delete,k,calc):Calculado.calcUI(false,selectedV,_delete,k,calc);
+  },View$1.Map2(Unchecked.Equals,selectedV.get_View(),k)));
+ };
+ Calculado.calcUIDet$796$62=function(k,selectedV)
  {
   return function()
   {
-   var b;
-   Concurrency.Start((b=null,Concurrency.Delay(function()
+   return function()
    {
-    return Concurrency.Combine(Concurrency.While(function()
+    return View$1.Get(function(a)
     {
-     return!self.Msal;
-    },Concurrency.Delay(function()
-    {
-     return Concurrency.Bind(Concurrency.Sleep(50),function()
-     {
-      return Concurrency.Return(null);
-     });
-    })),Concurrency.Delay(function()
-    {
-     Msal$1.ui();
-     return Concurrency.Zero();
-    }));
-   })),null);
+     selectedV.Set(a);
+    },k);
+   };
   };
  };
- Msal$1.main=function()
+ Calculado.calcUIDet=function(allowDelete,selectedV,_delete,k,calc)
  {
-  SC$1.$cctor();
-  return SC$1.main;
- };
- Msal$1.ui=function()
- {
-  var loginMessageDoc,b,signInW,signUpW,editProfileW,resetPasswordW,p,action,b$1,DoNotShowUI,doc,b$2,parent;
-  function checkUser()
+  var valorA,valorB,valorC,dup,mult,multAdd,selectedW,disabledW;
+  valorA=Util.lensFloat2Str(Var$1.Lens(calc,function($1)
   {
-   var a,o,m;
-   a=(o=Msal$1.agentO().Get(),o==null?null:(m=o.$0.getAccount(),Unchecked.Equals(m,null)?null:{
-    $:1,
-    $0:m
-   }));
-   Msal$1.userO().Set(a);
-  }
-  function convert2QPDict(s)
-  {
-   return Pojo.newPojo(Arrays.choose(function(t)
-   {
-    return String.splitInTwoO("=",t);
-   },Strings.SplitChars(s,["&"],0)));
-  }
-  function redirectCallback(error,resp)
-  {
-   try
-   {
-    !Unchecked.Equals(error,null)?(function($1)
-    {
-     return function($2)
-     {
-      return $1("Preamble redirectCallback error: "+GeneratedPrintf.p$1($2));
-     };
-    }(function(s)
-    {
-     console.log(s);
-    }))(error):void 0;
-    !Unchecked.Equals(resp,null)?(function($1)
-    {
-     return function($2)
-     {
-      return $1("Preamble redirectCallback resp : "+GeneratedPrintf.p($2));
-     };
-    }(function(s)
-    {
-     console.log(s);
-    }))(resp):null;
-   }
-   catch(e)
-   {
-    (((Runtime.Curried3(function($1,$2,$3)
-    {
-     return $1("Preamble redirectCallback exception "+Utils.prettyPrint($2)+" "+Utils.toSafe($3));
-    }))(function(s)
-    {
-     console.log(s);
-    }))(e))(e.stack);
-   }
-  }
-  function authParms()
-  {
-   return AuthenticationParameters.New$1(null,null,null,null,{
-    $:1,
-    $0:convert2QPDict(Msal$1.extraQueryParms().Get())
-   },null,null,null,{
-    $:1,
-    $0:Arrays.map(Strings.Trim,Strings.SplitChars(Msal$1.scopes().Get(),[","],0))
-   },null,null);
-  }
-  function executePolicy(f)
-  {
-   var m,agent,b$3;
-   m=Msal$1.agentO().Get();
-   m!=null&&m.$==1?(agent=m.$0,Concurrency.Start((b$3=null,Concurrency.Delay(function()
-   {
-    var promise;
-    promise=(f(agent))(authParms());
-    return Unchecked.Equals(promise,null)?(function($1)
-    {
-     return $1("Preamble executePolicy No promise?");
-    }(function(s)
-    {
-     console.log(s);
-    }),Concurrency.Zero()):Concurrency.Bind(Promise.AsAsync(promise),function(a)
-    {
-     Msal$1.token().Set(a.accessToken);
-     checkUser();
-     return Concurrency.Zero();
-    });
-   })),null)):void 0;
-  }
-  function executeRedirect()
-  {
-   executePolicy(function(agent)
-   {
-    return function(v)
-    {
-     agent.loginRedirect({
-      $:1,
-      $0:v
-     });
-     return null;
-    };
-   });
-  }
-  function logout()
-  {
-   var o;
-   o=Msal$1.agentO().Get();
-   o==null?void 0:(o.$0.logout(),checkUser());
-  }
-  function enableAtt(w)
-  {
-   var view;
-   view=View.Const("");
-   return AttrModule.DynamicPred("disabled",View.Map(function(v)
-   {
-    return!v;
-   },w),view);
-  }
-  function enabledV()
-  {
-   return enableAtt(View.Map(function($1)
-   {
-    return Unchecked.Equals($1,null);
-   },Msal$1.agentO().get_View()));
-  }
-  function disabledV()
-  {
-   return enableAtt(View.Map(function($1)
-   {
-    return!Unchecked.Equals($1,null);
-   },Msal$1.agentO().get_View()));
-  }
-  function row0(attO1,elem1,attO2,elem2)
-  {
-   var o,o$1;
-   return Doc.Element("tr",[],[Doc.Element("td",(o=attO1==null?null:{
-    $:1,
-    $0:List.ofArray([attO1.$0])
-   },o==null?List.T.Empty:o.$0),[elem1]),Doc.Element("td",(o$1=attO2==null?null:{
-    $:1,
-    $0:List.ofArray([attO2.$0])
-   },o$1==null?List.T.Empty:o$1.$0),[elem2])]);
-  }
-  function row(lbl,elem)
-  {
-   return row0({
-    $:1,
-    $0:AttrProxy.Create("style","text-align:right; width: 20%")
-   },Doc.Element("label",[],[Doc.TextNode(lbl+":")]),null,elem);
-  }
-  function input0(lbl,_var)
-  {
-   return row0({
-    $:1,
-    $0:AttrProxy.Create("style","text-align:right; width: 20%")
-   },lbl,null,Doc.Input([enabledV(),AttrProxy.Create("style","width: 95%")],_var));
-  }
-  function input(lbl,_var)
-  {
-   return input0(Doc.Element("label",[],[Doc.TextNode(lbl+":")]),_var);
-  }
-  function select0(attrs,_var,ops)
-  {
-   return Doc.Select(attrs,Global.String,ops,_var);
-  }
-  function tableObject(p$1,o)
-  {
-   return Doc.Element("table",[],[Doc.Element("tbody",[],List.ofSeq(Seq$1.delay(function()
-   {
-    function m(n,v)
-    {
-     return Doc.Element("tr",[],[Doc.Element("td",[],[Doc.Element("b",[],[Doc.TextNode(n)])]),Doc.Element("td",[],[Doc.TextNode((function($1)
-     {
-      return function($2)
-      {
-       return $1(Utils.prettyPrint($2));
-      };
-     }(Global.id))(v))])]);
-    }
-    return Seq$1.map(function($1)
-    {
-     return m($1[0],$1[1]);
-    },Seq$1.filter(p$1,JS.GetFields(o)));
-   })))]);
-  }
-  function buttonV(txt,enabled,act)
-  {
-   var b$3;
-   return Doc.BindView(Global.id,(b$3=View.get_Do(),View.Bind(function(a)
-   {
-    return View.Const(Doc.Button(a+" "+txt,[enabled?enabledV():disabledV()],act));
-   },Msal$1.policyTypeS().get_View())));
-  }
-  function buttonP(policy,enabledW,act)
-  {
-   return Doc.Button(Global.String(policy)+" Policy: ",[enableAtt(enabledW)],act);
-  }
-  function checkbox(txt,_var)
-  {
-   return Doc.Element("span",[],[Doc.TextNode(txt),Doc.CheckBox([],_var)]);
-  }
-  function createAgent()
-  {
-   var a,x,options;
-   a={
-    $:1,
-    $0:(x=(options=Configuration.New$1({
-     $:1,
-     $0:AuthOptions.New$1(Msal$1.applicationId().Get(),{
-      $:1,
-      $0:Msal$1.authority().Get()
-     },{
-      $:1,
-      $0:false
-     },null,null,null)
-    },null,null,null),new self.Msal.UserAgentApplication(options)),(function(agent)
-    {
-     agent.handleRedirectCallback(Runtime.CreateFuncWithArgs(function($1)
-     {
-      return redirectCallback($1[0],$1[1]);
-     }));
-    }(x),x))
-   };
-   Msal$1.agentO().Set(a);
-   Msal$1.editingB().Set(false);
-   checkUser();
-  }
-  function setAndRunPolicy(policy)
-  {
-   var b$3;
-   Concurrency.Start((b$3=null,Concurrency.Delay(function()
-   {
-    Msal$1.policyType().Set(policy);
-    return Concurrency.Bind(View.GetAsync(Msal$1.authorityW()),function()
-    {
-     createAgent();
-     executeRedirect();
-     return Concurrency.Zero();
-    });
-   })),null);
-  }
-  function actSignIn()
-  {
-   setAndRunPolicy(Policy.SignIn);
-  }
-  function actSignUp()
-  {
-   setAndRunPolicy(Policy.SignUp);
-  }
-  function actEditProfile()
-  {
-   setAndRunPolicy(Policy.EditProfile);
-  }
-  function actResetPassword()
-  {
-   setAndRunPolicy(Policy.ResetPassword);
-  }
-  function goInside()
-  {
-   self.location.replace(Msal$1.goInsideLink().Get());
-  }
-  function updateOnEnter(state)
-  {
-   var $1;
-   switch(state.$==1?1:state.$==2?2:state.$==3?3:state.$==4?4:state.$==5?5:state.$==6?6:state.$==7?6:state.$==8?6:state.$==9?6:state.$==10?7:state.$==11?8:0)
-   {
-    case 0:
-     return[PreambleState.GoingToSignIn,Msal$1.forceLoginB().Get()?{
-      $:1,
-      $0:logout
-     }:null];
-    case 1:
-     return[PreambleState.WentToSignIn,{
-      $:1,
-      $0:actSignIn
-     }];
-    case 2:
-     return[PreambleState.GoingToSignUp,{
-      $:1,
-      $0:logout
-     }];
-    case 3:
-     return[PreambleState.WentToSignUp,{
-      $:1,
-      $0:actSignUp
-     }];
-    case 4:
-     return[PreambleState.WentToEditProfile,{
-      $:1,
-      $0:actEditProfile
-     }];
-    case 5:
-     return[PreambleState.WentToResetPassword,{
-      $:1,
-      $0:actResetPassword
-     }];
-    case 6:
-     return self.location.hash!==""?[state,{
-      $:1,
-      $0:Global.ignore
-     }]:Msal$1.goInsideLink().Get()===""?[PreambleState.InPreamble,null]:Msal$1.userO().Get()!=null?[PreambleState.WentInside,{
-      $:1,
-      $0:goInside
-     }]:[PreambleState.GoingToSignIn,{
-      $:1,
-      $0:logout
-     }];
-    case 7:
-     return Msal$1.goInsideLink().Get()===""?[PreambleState.InPreamble,null]:[PreambleState.GoingToSignIn,{
-      $:1,
-      $0:logout
-     }];
-    case 8:
-     return[PreambleState.InPreamble,null];
-   }
-  }
-  function getTokenO0()
-  {
-   var b$3;
-   b$3=null;
-   return Concurrency.Delay(function()
-   {
-    var $1,$2,$3,agent;
-    $1=Msal$1.userO().Get();
-    $2=Msal$1.agentO().Get();
-    return $1!=null&&$1.$==1&&($2!=null&&$2.$==1&&($3=[$2.$0,$1.$0],true))?(agent=$3[0],Concurrency.TryWith(Concurrency.Delay(function()
-    {
-     return Concurrency.Bind(Promise.AsAsync(agent.acquireTokenSilent(authParms())),function(a)
-     {
-      return Concurrency.Return({
-       $:1,
-       $0:a.accessToken
-      });
-     });
-    }),function()
-    {
-     return Concurrency.Bind(Concurrency.FromContinuations(function(ok,ko)
-     {
-      agent.handleRedirectCallback(function(error,resp)
-      {
-       try
-       {
-        !Unchecked.Equals(error,null)?(console.log(["redirectCallback ERROR: ",error]),ko(new Global.Error(error.errorMessage))):!Unchecked.Equals(resp,null)?(console.log(["redirectCallback: ",resp]),ok(resp)):null;
-       }
-       catch(e)
-       {
-        (((Runtime.Curried3(function($4,$5,$6)
-        {
-         return $4("Preamble getTokenO0 exception "+Utils.prettyPrint($5)+" "+Utils.toSafe($6));
-        }))(function(s)
-        {
-         console.log(s);
-        }))(e))(e.stack);
-       }
-      });
-      return agent.acquireTokenRedirect(authParms());
-     }),function(a)
-     {
-      return Concurrency.Return({
-       $:1,
-       $0:a.accessToken
-      });
-     });
-    })):Concurrency.Return(null);
-   });
-  }
-  loginMessageDoc=Doc.BindView(Global.id,(b=View.get_Do(),View.Bind(function(a)
-  {
-   return View.Bind(function(a$1)
-   {
-    return View.Bind(function(a$2)
-    {
-     var o,user,$1,greeting,v;
-     greeting=Doc.Element("h3",List.T.Empty,[Doc.TextNode((o=a==null?null:{
-      $:1,
-      $0:(user=a.$0,(((Runtime.Curried3(function($2,$3,$4)
-      {
-       return $2("Hello "+Utils.toSafe($3)+" "+Utils.toSafe($4)+".");
-      }))(Global.id))(user.idToken.given_name))(user.idToken.family_name))
-     },o==null?"":o.$0))]);
-     switch(a$1==null?0:a==null?a$2.$==1?3:a$2.$==2?4:($1=a$2,5):a$2.$==0?1:a$2.$==1?2:($1=a$2,5))
-     {
-      case 0:
-       return View.Const(Doc.TextNode("Select your options and click on <Create Agent>."));
-      case 1:
-       return View.Const(greeting);
-      case 2:
-       return View.Const(Doc.Concat(List.ofArray([greeting,Doc.TextNode(function($2)
-       {
-        return $2("To Sign Up click on <Logout> first!");
-       }(Global.id))])));
-      case 3:
-       return View.Const(Doc.TextNode(function($2)
-       {
-        return $2("To Sign Up make sure to really be logged out by clicking on <Logout> first and then click on Sign Up Popup or Redirect!");
-       }(Global.id)));
-      case 4:
-       return View.Const(Doc.TextNode(function($2)
-       {
-        return $2("Sign In before invoking Edit Profile!");
-       }(Global.id)));
-      case 5:
-       v=Global.String($1);
-       return View.Const(Doc.Concat(List.ofArray([greeting,Doc.TextNode(((((Runtime.Curried(function($2,$3,$4,$5)
-       {
-        return $2("To "+Utils.toSafe($3)+" click on <"+Utils.toSafe($4)+" Popup> or <"+Utils.toSafe($5)+" Redirect>.");
-       },4))(Global.id))(v))(v))(v))])));
-     }
-    },Msal$1.policyType().get_View());
-   },Msal$1.agentO().get_View());
-  },Msal$1.userO().get_View())));
-  signInW=View.Map2(function($1,$2)
-  {
-   return $1!=null&&$2==null;
-  },Msal$1.agentO().get_View(),Msal$1.userO().get_View());
-  signUpW=View.Map2(function($1,$2)
-  {
-   return $1!=null&&$2==null;
-  },Msal$1.agentO().get_View(),Msal$1.userO().get_View());
-  editProfileW=View.Map2(function($1,$2)
-  {
-   return $1!=null&&$2!=null;
-  },Msal$1.agentO().get_View(),Msal$1.userO().get_View());
-  resetPasswordW=View.Map(function($1)
-  {
-   return $1!=null;
-  },Msal$1.agentO().get_View());
-  Msal$1.createOnStartB().Get()&&!Msal$1.editingB().Get()?(createAgent(),checkUser(),(((Runtime.Curried3(function($1,$2,$3)
-  {
-   return $1("Preamble updateState ENTERING STATE "+testing_GeneratedPrintf.p$1($2)+", user = "+Utils.prettyPrint($3));
-  }))(function(s)
-  {
-   console.log(s);
-  }))(Msal$1.preambleState().Get()))(Msal$1.userO().Get()!=null),p=function(state)
-  {
-   var p$1,newState,action$1;
-   while(true)
-    {
-     p$1=updateOnEnter(state);
-     newState=p$1[0];
-     action$1=p$1[1];
-     if(action$1==null&&newState.$!==11)
-      state=newState;
-     else
-      return[newState,action$1];
-    }
-  }(Msal$1.preambleState().Get()),action=p[1],Msal$1.preambleState().Set(p[0]),Concurrency.Start((b$1=null,Concurrency.Delay(function()
-  {
-   return Concurrency.Combine(Concurrency.While(function()
-   {
-    return!Unchecked.Equals(Msal$1.preambleState().Get(),PreambleState.Parse(Msal$1.storage().getItem("preambleState")));
-   },Concurrency.Delay(function()
-   {
-    return Concurrency.Bind(Concurrency.Sleep(50),function()
-    {
-     return Concurrency.Return(null);
-    });
-   })),Concurrency.Delay(function()
-   {
-    (((Runtime.Curried3(function($1,$2,$3)
-    {
-     return $1("Preamble updateState EXITING STATE "+testing_GeneratedPrintf.p$1($2)+" = "+Utils.toSafe($3));
-    }))(function(s)
-    {
-     console.log(s);
-    }))(Msal$1.preambleState().Get()))(Msal$1.storage().getItem("preambleState"));
-    action==null?void 0:action.$0();
-    return Concurrency.Zero();
-   }));
-  })),null)):void 0;
-  DoNotShowUI=Msal$1.preambleState().Get().$!==11&&Msal$1.createOnStartB().Get()&&!Msal$1.editingB().Get();
-  doc=Doc.Element("div",[],[Doc.Element("h1",[],[Doc.TextNode((function($1)
-  {
-   return function($2)
-   {
-    return $1("Msal.js "+Utils.toSafe($2)+" (Microsoft authentication library) & Azure AD B2C");
-   };
-  }(Global.id))(Msal$1.version()))]),Doc.Element("br",[],[]),Doc.Element("table",[],[Doc.Element("tbody",[],[row0(null,Doc.Button("Create Agent",[enabledV()],createAgent),null,checkbox("Create on Start",Msal$1.createOnStartB())),row0(null,Doc.Button("Edit",[disabledV()],function()
-  {
-   if(Msal$1.refreshBeforeB().Get())
-    {
-     Msal$1.editingB().Set(true);
-     self.location.reload();
-    }
-   else
-    Msal$1.agentO().Set(null);
-  }),null,checkbox("Refresh before Edit",Msal$1.refreshBeforeB()))])]),Doc.Element("br",[],[]),Doc.Element("table",[AttrProxy.Create("style","width: 95%")],[Doc.Element("tbody",[],[row("preamble state",Doc.Concat([select0(List.T.Empty,Msal$1.preambleState(),Msal$1.preambleStates()),Doc.TextNode("Refresh (F5) to update state")])),input("App Id",Msal$1.applicationId()),input("tenant Name",Msal$1.tenantName()),input("ref/state",Msal$1.ref()),input("extra query parameters",Msal$1.extraQueryParms()),input("go Inside link",Msal$1.goInsideLink()),input0(Doc.Concat(List.ofArray([checkbox("Force login dialog",Msal$1.forceLoginB()),buttonP(Policy.SignIn,signInW,actSignIn)])),Msal$1.signInPolicy()),input0(buttonP(Policy.SignUp,signUpW,actSignUp),Msal$1.signUpPolicy()),input0(buttonP(Policy.EditProfile,editProfileW,actEditProfile),Msal$1.editProfilePolicy()),input0(buttonP(Policy.ResetPassword,resetPasswordW,actResetPassword),Msal$1.resetPasswordPolicy()),Doc.Element("tr",[],[]),row("policy type",select0(List.ofArray([enabledV()]),Msal$1.policyType(),Msal.policies())),input("Authority",Msal$1.authority()),input0(Doc.Button("Scopes",[enableAtt(editProfileW)],function()
-  {
-   var b$3;
-   Concurrency.Start((b$3=null,Concurrency.Delay(function()
-   {
-    var m;
-    m=Msal$1.agentO().Get();
-    return m!=null&&m.$==1?Concurrency.Bind(Promise.AsAsync(m.$0.acquireTokenSilent(authParms())),function(a)
-    {
-     ((function($1)
-     {
-      return function($2)
-      {
-       return $1("Preamble actObtainToken "+GeneratedPrintf.p($2));
-      };
-     }(function(s)
-     {
-      console.log(s);
-     }))(a));
-     return Concurrency.Zero();
-    }):Concurrency.Zero();
-   })),null);
-  }),Msal$1.scopes())])]),Doc.Element("br",[],[]),Doc.Element("div",[],[Doc.Button("Logout",[disabledV()],logout)]),loginMessageDoc,Doc.Element("div",[],[buttonV("Popup",false,function()
-  {
-   executePolicy(function(agent)
-   {
-    return function(v)
-    {
-     return agent.loginPopup({
-      $:1,
-      $0:v
-     });
-    };
-   });
-  })]),Doc.Element("div",[],[buttonV("Redirect",false,executeRedirect)]),Doc.Element("br",[],[]),Doc.Element("b",[],[Doc.TextNode("Token: ")]),Doc.TextView(Msal$1.token().get_View()),Doc.Element("br",[],[]),Doc.Element("div",[],[Doc.Button("Check User",[disabledV()],checkUser)]),Doc.Element("div",[],[Doc.Button("Get Token",[disabledV()],function()
-  {
-   function f(o)
-   {
-    console.log(o);
-   }
-   function g(v)
-   {
-    return Concurrency.Return(v);
-   }
-   Concurrency.Start(Concurrency.Bind(getTokenO0(),function(x)
-   {
-    return g(f(x));
-   }),null);
-  })]),Doc.Element("h5",[],[Doc.TextNode("User: ")]),Doc.BindView(Global.id,(b$2=View.get_Do(),View.Bind(function(a)
-  {
-   var user;
-   function f(t)
-   {
-    return t[0];
-   }
-   function g(y)
-   {
-    return"idToken"!==y;
-   }
-   return a!=null&&a.$==1?(user=a.$0,View.Const(Doc.Concat(List.ofArray([tableObject(function(x)
-   {
-    return g(f(x));
-   },user),Doc.Element("h4",[],[Doc.TextNode("idToken")]),tableObject(function()
-   {
-    return true;
-   },user.idToken)])))):View.Const(Doc.get_Empty());
-  },Msal$1.userO().get_View()))),Doc.Element("a",[AttrProxy.Create("href","https://gist.github.com/amieres/bc8e39f2e1e6e54fd1dfaeeae24ad304")],[Doc.TextNode("gist")])]);
-  !DoNotShowUI?(parent=self.document.body,Templates.LoadLocalTemplates(""),Doc.Run(parent,doc)):void 0;
- };
- Msal$1.agentO=function()
- {
-  SC$1.$cctor();
-  return SC$1.agentO;
- };
- Msal$1.authParms=function()
- {
-  return AuthenticationParameters.New$1(null,null,null,null,null,null,null,null,{
-   $:1,
-   $0:[(((Runtime.Curried3(function($1,$2,$3)
-   {
-    return $1("https://"+Utils.toSafe($2)+".onmicrosoft.com/"+Utils.toSafe($3)+"/user_impersonation");
-   }))(Global.id))(Msal$1.tenantName().Get()))(Msal$1.applicationId().Get()),(((Runtime.Curried3(function($1,$2,$3)
-   {
-    return $1("https://"+Utils.toSafe($2)+".onmicrosoft.com/"+Utils.toSafe($3)+"/Prozper.Admin");
-   }))(Global.id))(Msal$1.tenantName().Get()))(Msal$1.applicationId().Get())]
-  },null,null);
- };
- Msal$1.authorityW=function()
- {
-  SC$1.$cctor();
-  return SC$1.authorityW;
- };
- Msal$1.userO=function()
- {
-  SC$1.$cctor();
-  return SC$1.userO;
- };
- Msal$1.token=function()
- {
-  SC$1.$cctor();
-  return SC$1.token;
- };
- Msal$1.authority=function()
- {
-  SC$1.$cctor();
-  return SC$1.authority;
- };
- Msal$1.policyNameW=function()
- {
-  SC$1.$cctor();
-  return SC$1.policyNameW;
- };
- Msal$1.preambleState=function()
- {
-  SC$1.$cctor();
-  return SC$1.preambleState;
- };
- Msal$1.policyType=function()
- {
-  SC$1.$cctor();
-  return SC$1.policyType;
- };
- Msal$1.preambleStateS=function()
- {
-  SC$1.$cctor();
-  return SC$1.preambleStateS;
- };
- Msal$1.scopes=function()
- {
-  SC$1.$cctor();
-  return SC$1.scopes;
- };
- Msal$1.goInsideLink=function()
- {
-  SC$1.$cctor();
-  return SC$1.goInsideLink;
- };
- Msal$1.policyTypeS=function()
- {
-  SC$1.$cctor();
-  return SC$1.policyTypeS;
- };
- Msal$1.resetPasswordPolicy=function()
- {
-  SC$1.$cctor();
-  return SC$1.resetPasswordPolicy;
- };
- Msal$1.editProfilePolicy=function()
- {
-  SC$1.$cctor();
-  return SC$1.editProfilePolicy;
- };
- Msal$1.signUpPolicy=function()
- {
-  SC$1.$cctor();
-  return SC$1.signUpPolicy;
- };
- Msal$1.signInPolicy=function()
- {
-  SC$1.$cctor();
-  return SC$1.signInPolicy;
- };
- Msal$1.extraQueryParms=function()
- {
-  SC$1.$cctor();
-  return SC$1.extraQueryParms;
- };
- Msal$1.ref=function()
- {
-  SC$1.$cctor();
-  return SC$1.ref;
- };
- Msal$1.tenantName=function()
- {
-  SC$1.$cctor();
-  return SC$1.tenantName;
- };
- Msal$1.applicationId=function()
- {
-  SC$1.$cctor();
-  return SC$1.applicationId;
- };
- Msal$1.editingB=function()
- {
-  SC$1.$cctor();
-  return SC$1.editingB;
- };
- Msal$1.forceLoginB=function()
- {
-  SC$1.$cctor();
-  return SC$1.forceLoginB;
- };
- Msal$1.createOnStartB=function()
- {
-  SC$1.$cctor();
-  return SC$1.createOnStartB;
- };
- Msal$1.refreshBeforeB=function()
- {
-  SC$1.$cctor();
-  return SC$1.refreshBeforeB;
- };
- Msal$1.storedVarB=function(name,def)
- {
-  function toS(a$1)
-  {
-   return a$1?"1":"";
-  }
-  function a(a$1)
-  {
-   return toS;
-  }
-  return Var$1.Lens(Msal$1.storedVar(name,toS(def)),function(a$1)
-  {
-   return a$1==="1";
+   return $1.valorA;
   },function($1,$2)
   {
-   return(a($1))($2);
-  });
- };
- Msal$1.storedVar=function(name,def)
- {
-  var storedVar,_var;
-  storedVar=Msal$1.storage().getItem(name);
-  _var=Var$1.Create$1(storedVar===null?def:storedVar);
-  View.Sink(function(v)
+   return Calculado$1.New($1.id,$2,$1.valorB,$1.valorC);
+  }));
+  valorB=Util.lensFloat2Str(Var$1.Lens(calc,function($1)
   {
-   Msal$1.storage().setItem(name,v);
-  },_var.get_View());
-  return _var;
- };
- Msal$1.replaceQueryParameters=function()
- {
-  var m,query;
-  m=Strings.SplitChars(self.location.href,["?"],0);
-  !Unchecked.Equals(m,null)&&m.length===2?(query=Arrays.get(m,1),Arrays.get(m,0),Seq$1.iter(function(p)
+   return $1.valorB;
+  },function($1,$2)
   {
-   var m$1,value,name;
-   m$1=Strings.SplitChars(p,["="],0);
-   !Unchecked.Equals(m$1,null)&&m$1.length===2?(value=Arrays.get(m$1,1),name=Arrays.get(m$1,0),Msal$1.storage().setItem(name,Global.decodeURIComponent(value)),(((Runtime.Curried3(function($1,$2,$3)
+   return Calculado$1.New($1.id,$1.valorA,$2,$1.valorC);
+  }));
+  valorC=Util.lensFloat2Str(Var$1.Lens(calc,function($1)
+  {
+   return $1.valorC;
+  },function($1,$2)
+  {
+   return Calculado$1.New($1.id,$1.valorA,$1.valorB,$2);
+  }));
+  dup=View$1.Map(function($1)
+  {
+   return $1.valorA*2;
+  },calc.get_View());
+  mult=View$1.Map2(function($1,$2)
+  {
+   return $1.valorA*$2.valorB;
+  },calc.get_View(),calc.get_View());
+  multAdd=View$1.Map2(function($1,$2)
+  {
+   return $1+$2.valorC;
+  },mult,calc.get_View());
+  selectedW=View$1.Map2(Unchecked.Equals,selectedV.get_View(),k);
+  disabledW=View$1.Map(function($1)
+  {
+   return $1==null;
+  },k);
+  return Doc.Element("div",[AttrModule.Dynamic("style",View$1.Map2(function($1,$2)
+  {
+   return $1?"display:none; background-color:lightgray; color:gray":$2?"background-color:lightblue":"";
+  },disabledW,selectedW)),AttrProxy.HandlerImpl("click",function()
+  {
+   return function()
    {
-    return $1("Preamble: Query param: "+Utils.toSafe($2)+" = "+Utils.toSafe($3));
-   }))(function(s)
+    return View$1.Get(function(a)
+    {
+     selectedV.Set(a);
+    },k);
+   };
+  })],[Doc.Button("x",[AttrModule.Dynamic("style",View$1.Map(function($1)
+  {
+   return!allowDelete||$1?"display:none":"";
+  },disabledW))],_delete),Util.inputLabel([],disabledW,"valor A: ",valorA),Util.inputLabel([],disabledW,"valor B: ",valorB),Util.inputLabel([],disabledW,"valor C: ",valorC),Util.textLine(View$1.Map2(function($1,$2)
+  {
+   return(((Runtime.Curried3(function($3,$4,$5)
    {
-    console.log(s);
-   }))(name))(value)):void 0;
-  },Strings.SplitChars(query,["&"],0))):void 0;
+    return $3(Utils.prettyPrint($4)+" = "+Utils.toSafe($5)+" * 2");
+   }))(Global.id))($1))($2);
+  },dup,valorA.get_View())),Util.textLine(View$1.Apply(View$1.Map2(function($1,$2)
+  {
+   return function($3)
+   {
+    return((((Runtime.Curried(function($4,$5,$6,$7)
+    {
+     return $4(Utils.prettyPrint($5)+" = "+Utils.toSafe($6)+" * "+Utils.toSafe($7));
+    },4))(Global.id))($1))($2))($3);
+   };
+  },mult,valorA.get_View()),valorB.get_View())),Util.textLine(View$1.Apply(View$1.Apply(View$1.Map2(function($1,$2)
+  {
+   return function($3)
+   {
+    return function($4)
+    {
+     return(((((Runtime.Curried(function($5,$6,$7,$8,$9)
+     {
+      return $5(Utils.prettyPrint($6)+" = "+Utils.toSafe($7)+" * "+Utils.toSafe($8)+" + "+Utils.toSafe($9));
+     },5))(Global.id))($1))($2))($3))($4);
+    };
+   };
+  },multAdd,valorA.get_View()),valorB.get_View()),valorC.get_View()))]);
  };
- Msal$1.storage=function()
+ Calculado.calcUI$781$62=function(k,selectedV)
+ {
+  return function()
+  {
+   return function()
+   {
+    return View$1.Get(function(a)
+    {
+     selectedV.Set(a);
+    },k);
+   };
+  };
+ };
+ Calculado.calcUI=function(allowDelete,selectedV,_delete,k,calc)
+ {
+  var disabledW;
+  disabledW=View$1.Map(function($1)
+  {
+   return $1==null;
+  },k);
+  return Doc.Element("div",[AttrModule.Dynamic("style",View$1.Map(function($1)
+  {
+   return $1?"background-color:lightblue":"";
+  },View$1.Map2(Unchecked.Equals,selectedV.get_View(),k))),AttrProxy.HandlerImpl("click",function()
+  {
+   return function()
+   {
+    return View$1.Get(function(a)
+    {
+     selectedV.Set(a);
+    },k);
+   };
+  })],[Doc.Button("x",[AttrModule.Dynamic("style",View$1.Map(function($1)
+  {
+   return!allowDelete||$1?"display:None":"";
+  },disabledW))],_delete),Util.textLine(View$1.Apply(View$1.Map2(function($1,$2)
+  {
+   return function($3)
+   {
+    return((((Runtime.Curried(function($4,$5,$6,$7)
+    {
+     return $4("("+Utils.prettyPrint($5)+", "+Utils.prettyPrint($6)+", "+Utils.prettyPrint($7)+")");
+    },4))(Global.id))($1.valorA))($2.valorB))($3.valorC);
+   };
+  },calc.get_View(),calc.get_View()),calc.get_View()))]);
+ };
+ Calculado.def=function()
  {
   SC$1.$cctor();
-  return SC$1.storage;
+  return SC$1.def;
  };
- Msal$1.version=function()
+ Calculado.newCalc=function()
  {
-  SC$1.$cctor();
-  return SC$1.version;
- };
- Msal$1.preambleStates=function()
- {
-  SC$1.$cctor();
-  return SC$1.preambleStates;
+  return Calculado$1.New(new GuidId({
+   $:0,
+   $0:Guid.NewGuid()
+  }),0,0,0);
  };
  SC$1.$cctor=function()
  {
-  var f,b,b$1,x,a;
+  var i,x,e,e$1,b;
   SC$1.$cctor=Global.ignore;
-  function g(s)
+  SC$1.html="\r\n            <div style=\"display:none\" >\r\n                <div links>\r\n                    <link href=\"http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\r\n                    <script src=\"http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"  type=\"text/javascript\"></script>\r\n                </div>\r\n                <div ws-template=\"AppFramework\" style=\"height: calc(100vh - 4px); width: calc(100vw - 4px) \" class=\"relative\" >\r\n                    <div ws-hole=\"MainClient\"></div>\r\n                    <div class=\"AppFrameworkGo\"><button ws-onclick=\"GoClient\">${MainDoc}</button></div>\r\n                </div>\r\n                <style>\r\n                    .AppFrameworkGo {\r\n                        max-width: 2px;\r\n                        max-height: 2px;\r\n                        z-index: 4000;\r\n                        overflow: hidden;\r\n                        position: fixed;\r\n                        top: 0px;\r\n                        left: 0px;\r\n                    }\r\n                </style>\r\n                <div ws-template=\"FixedSplitterVer\" \r\n                    style=\"display: grid; \r\n                           grid-gap: 0px; \r\n                           box-sizing: border-box; \r\n                           height: 100%;\r\n                           width : 100%;\r\n                           grid-template-areas: 'one two'; \r\n                           grid-template-rows   :100%; \r\n                           overflow: hidden; \r\n                           grid-template-columns: ${PartSizes}\"  >\r\n                   <div ws-hole=\"First\"  style=\"grid-area: one; \" class=\"relative\" ></div>\r\n                   <div ws-hole=\"Second\" style=\"grid-area: two; \" class=\"relative\" ></div>\r\n                </div>               \r\n                <div ws-template=\"FixedSplitterHor\" \r\n               style=\"display: grid; \r\n                      grid-gap: 0px; \r\n                      box-sizing: border-box; \r\n                      height: 100%;\r\n                      width : 100%;\r\n                      grid-template-areas: 'one' 'two'; \r\n                      grid-template-columns:100%; \r\n                      overflow: hidden; \r\n                      grid-template-rows   : ${PartSizes}\"  >\r\n              <div ws-hole=\"First\"  style=\"grid-area: one; \" class=\"relative\" ></div>\r\n              <div ws-hole=\"Second\" style=\"grid-area: two; \" class=\"relative\" ></div>\r\n                </div>               \r\n                <div ws-template=\"WCompSplitterHor\" \r\n                     ws-onafterrender=\"AfterRender\"\r\n                     style=\"display: grid;\r\n                            grid-gap: 5px; \r\n                            box-sizing: border-box; \r\n                            grid-template-areas: 'one' 'two'; \r\n                            grid-template-columns:100%; \r\n                            overflow: hidden; \r\n                            grid-template-rows   : ${PartSizes}\" \r\n                     >\r\n                     <slot></slot>\r\n                    <slot name=\"splitter\">  <div style=\"grid-row:2; grid-column:1 / 1 ; cursor: row-resize; z-index: 3; background-color: #eef ; height: ${Gap}; margin-top :-${Gap}\" ws-onmousedown=\"MouseDown\" ws-onafterrender=\"AfterRenderSp\" ></div> </slot>\r\n                    <style>\r\n                        ::slotted(*) {\r\n                            display: grid;\r\n                            height : 100%;\r\n                            width  : 100%;\r\n                            overflow: hidden;\r\n                        }\r\n                        ::slotted(*:nth-child(2)) {\r\n                            grid-area: two;\r\n                        }\r\n                        ::slotted(*[slot=\"splitter\"]) {\r\n                            grid-row:2; grid-column:1 / 1 ; \r\n                            cursor: row-resize; \r\n                            z-index: 3; \r\n                            background-color: #eef ; \r\n                            height: ${Gap}; \r\n                            margin-top :-${Gap}\r\n                        }\r\n                    </style>\r\n                </div>        \r\n                <div ws-template=\"WCompSplitterVer\" \r\n                     ws-onafterrender=\"AfterRender\"\r\n                     style=\"display: grid; \r\n                            grid-gap: 5px; \r\n                            box-sizing: border-box; \r\n                            grid-template-areas: 'one two'; \r\n                            grid-template-rows   :100%; \r\n                            overflow: hidden; \r\n                            grid-template-columns: ${PartSizes}\"  >\r\n                    <slot></slot>\r\n                    <slot name=\"splitter\"> <div style=\"grid-column:2; grid-row:1 / 1 ; cursor: col-resize; z-index: 3; background-color: #eef ; width: ${Gap}; margin-left :-${Gap}\" ws-onmousedown=\"MouseDown\" ws-onafterrender=\"AfterRenderSp\" ></div> </slot>\r\n                    <style>\r\n                        ::slotted(*) {\r\n                            display: grid;\r\n                            height : 100%;\r\n                            width  : 100%;\r\n                            overflow: hidden;\r\n                        }\r\n                        ::slotted(*:nth-child(2)) {\r\n                            grid-area: two;\r\n                        }\r\n                        ::slotted(*[slot=\"splitter\"]) {\r\n                            grid-column:2; grid-row:1 / 1\r\n                            cursor: column-resize; \r\n                            z-index: 3; \r\n                            background-color: #eef ; \r\n                            width: ${Gap}; \r\n                            margin-left:-${Gap}\r\n                        }\r\n                    </style>\r\n                </div>\r\n                <div ws-template=\"AppFwkClient\" >\r\n                    <ws-FixedSplitterHor>\r\n                        <PartSizes>55px calc(100% - 55px)</PartSizes>\r\n                        <First>\r\n                            <span style=\"display: grid;\r\n                                  grid-template-columns: 30% 20% 20% 10%;\r\n                                  grid-gap: 25px;\r\n                                \">\r\n                                <div class=\"mainTitle\">AppFramework</div>\r\n                            </span>\r\n                        </First>\r\n                        <Second>\r\n                                <ws-FixedSplitterVer>\r\n                                    <PartSizes>calc(100% - 150px) 150px</PartSizes>\r\n                                    <First>\r\n                                        <wcomp-splitter vertical value=\"18\" max=\"100\">\r\n                                            <div><div ws-hole=\"PlugIns\" style=\"overflow:auto\" >\r\n                                                <div ws-template=\"Tile\">\r\n                                                    <div draggable=\"true\" class=\"code-editor-list-tile ${Predecessor} ${Selected}\" \r\n                                                    ws-ondrag=\"Drag\"\r\n                                                    ws-ondragover=\"DragOver\"\r\n                                                    ws-ondrop=\"Drop\"\r\n                                                   >\r\n                                                   <span class=\"node ${Parent} ${ErrorMsg}\" title=\"expand\" ws-onclick=\"ToggleCollapse\"></span>\r\n                                                   <div  class=\"code-editor-list-text\" style=\"text-indent:${Indent}em; white-space: pre\" ws-onclick=\"Select\" ws-onafterrender=\"AfterRender\" >${Name}</div>\r\n                                                   <span class=\"predecessor\" title=\"toggle predecessor\" ws-onclick=\"TogglePred\">X</span>\r\n                                               </div>\r\n                                       \r\n                                                </div>\r\n                                            </div></div>\r\n                                            <wcomp-splitter vertical value=\"100\" min=\"30\" max=\"100\">\r\n                                                <ws-FixedSplitterHor>\r\n                                                    <PartSizes>32px calc(100% - 32px)</PartSizes>\r\n                                                    <First>\r\n                                                        <div>\r\n                                                            <div class=\"input-group\">\r\n                                                                <span class=\"input-group-addon\">name:</span>\r\n                                                                <span class=\"input-group-addon\">${PlugInName}</span>\r\n                                                            </div>\r\n                                                        </div>\r\n                                                    </First>\r\n                                                    <Second>\r\n                                                        <div style=\"overflow:auto\">\r\n                                                            <div>\r\n                                                                <div>Docs:</div>\r\n                                                                <div ws-hole=\"Docs\" style=\"overflow:auto\" ></div>\r\n                                                            </div>\r\n                                                            <div>\r\n                                                                <div>Vars:</div>\r\n                                                                <div ws-hole=\"Vars\" style=\"overflow:auto\" >\r\n                                                                        <div ws-template=\"NameValueInput\" class=\"input-group\">\r\n                                                                        <span class=\"input-group-addon\">${Name}:</span>\r\n                                                                        <textarea class=\"form-control\" id=\"\" placeholder=\"Value...\" ws-var=\"Value\" spellcheck=\"false\">\r\n                                                                    </div>\r\n                                                                </div>\r\n                                                            </div>\r\n                                                            <div>\r\n                                                                <div>Views:</div>\r\n                                                                <div ws-hole=\"Views\" style=\"overflow:auto\" >\r\n                                                                    <div ws-template=\"NameValue\" class=\"input-group\">\r\n                                                                        <span class=\"input-group-addon\">${Name}:</span>\r\n                                                                        <span class=\"input-group-addon\">${Value}</span>\r\n                                                                    </div>\r\n                                                                </div>\r\n                                                            </div>\r\n                                                            <div>\r\n                                                                <div>Queries:</div>\r\n                                                                <div ws-hole=\"Queries\" style=\"overflow:auto\" ></div>\r\n                                                            </div>\r\n                                                        </div>\r\n                                                    </Second>\r\n                                                </ws-FixedSplitterHor>\r\n                                                <wcomp-tabstrip >\r\n                                                    <div tabname=\"Properties\">\r\n                                                        <div>\r\n                                                            <table style=\"border-spacing:0px\">\r\n                                                                <thead>\r\n                                                                    <th style=\"width: 30%  \">Name</th>\r\n                                                                    <th style=\"width: 70% \">Value</th>\r\n                                                                </thead>\r\n                                                                <tbody ws-hole=\"Properties\" ws-children-template=\"Property\">\r\n                                                                    <tr ws-onclick=\"Select\" style=\"margin-bottom: 2px\" class=\"level  \">\r\n                                                                        <td class=\"level-item\">\r\n                                                                            <div>\r\n                                                                                <input ws-var=\"Name\" type=\"text\" class=\"form-control\" id=\"\" placeholder=\"Property...\">\r\n                                                                            </div>\r\n                                                                        </td>\r\n                                                                        <td class=\"level-item\">\r\n                                                                            <div>\r\n                                                                                <textarea ws-var=\"Value\" class=\"form-control\" id=\"\" placeholder=\"Value...\"></textarea>\r\n                                                                            </div>\r\n                                                                        </td>\r\n                                                                        <td class=\"level-item\">\r\n                                                                            <div style=\" cursor: pointer \" title=\"remove\">\r\n                                                                                <button ws-onclick=\"Remove\" class=\"delete is-small\">x</button>\r\n                                                                            </div>\r\n                                                                        </td>\r\n                                                                    </tr>\r\n                                                                </tbody>\r\n                                                            </table>\r\n                                                            <button ws-onclick=\"AddProperty\" class=\"add is-small\">add ...</button>\r\n                                                        </div>\r\n                                                    </div>\r\n                                                </wcomp-tabstrip>\r\n                                            </wcomp-splitter>\r\n                                        </wcomp-splitter>\r\n                                    </First>\r\n                                    <Second>\r\n                                        <div style=\"\r\n                                            overflow: hidden;\r\n                                            display: grid;\r\n                                            grid-template-columns: 100%;\r\n                                            grid-template-rows: repeat(15, calc(100% / 15));\r\n                                            bxackground-color: #eee;\r\n                                            box-sizing: border-box;\r\n                                            padding : 5px;\r\n                                            grid-gap: 5px;\r\n                                            margin-right: 21px;\r\n                                       \"  class=\"absolute\" ws-hole=\"Actions\" >\r\n                                            <button ws-template=\"Action\"         ws-onclick=\"Click\" class=\"btn\" type=\"button\" id=\"\"          >${Name}</button>\r\n                                            <button ws-template=\"ActionDisabled\" ws-onclick=\"Click\" class=\"btn\" type=\"button\" id=\"\" disabled >${Name}</button>\r\n                                        </div>\r\n                                    </Second>\r\n                                </ws-FixedSplitterVer>\r\n                        </Second>\r\n                    </ws-FixedSplitterHor>\r\n                </div>\r\n                <style style=\"display: none\">\r\n                        .Hidden     { display   : none         }\r\n                        table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }\r\n                        td input.form-control { \r\n                            padding    : 0px; \r\n                            font-family: monospace;\r\n                            font-size  :   small;\r\n                            margin-top :   0px;\r\n                            margin-left: -2px;\r\n                            width      : 100%\r\n                        }\r\n                        td select {\r\n                            font-size : smaller;\r\n                            max-width : 8ch;\r\n                        }\r\n                        xtextarea {\r\n                           resize : none;\r\n                        }\r\n                        .tab-content {\r\n                            overflow: hidden\r\n                        }\r\n                        .tab-children {\r\n                            position:relative;\r\n                        }\r\n                        .tab-children>div>* {\r\n                            position:absolute;\r\n                            height: 100%;\r\n                            width:  100%;\r\n                            display: grid;\r\n                        }\r\n                        .relative {\r\n                            position:relative;\r\n                        }\r\n                        .relative>* {\r\n                            position:absolute;\r\n                            height: 100%;\r\n                            width:  100%;\r\n                            display: grid;\r\n                        }\r\n                        table.table-striped    tbody tr:nth-child(even) { background: #EEE  }\r\n                        table.table-striped    tbody tr:nth-child(odd ) { background: #FFF  }\r\n                        table.table-striped    tbody input              { background: transparent; border: none}\r\n                        table.table-striped    tbody select             { background: transparent; border: none}\r\n                        table.table-nonstriped tbody tr:nth-child(even) { background: inherit }\r\n                        table.table-nonstriped tbody tr:nth-child(odd ) { background: inherit }\r\n                        table.table            tbody tr.hover           { border    : solid thin transparent; } \r\n                        table.table            tbody tr.hover:hover     { border    : solid thin blue     ; } \r\n                        table.table            tbody th:hover           { background: gray; cursor: pointer }\r\n                        table.table            tbody tr.hover:hover>td  { border-top: solid thin blue     ; \r\n                                                                   border-bottom: solid thin blue     ; } \r\n                        table.table            tbody tr.selected { background   : #b9eeff             ; }\r\n                        table.table            tbody tr.formula.selected { background: #20f7f7             ; }\r\n                        thead { color: gray }\r\n                        h3 { \r\n                            color: gray;\r\n                            line-height: 1em;\r\n                        }\r\n                        button       { border: solid thin transparent ; border-radius: 3px; }\r\n                        button:hover { border: solid thin blue }\r\n                        .indenter { position  : absolute; \r\n                                    top:0px; bottom:0px; left:0px; \r\n                                    background: white; color:white;\r\n                                    border-right: gray thin dotted;\r\n                                    }\r\n                        body {\r\n                            color      : #333;\r\n                            font-size  : small;\r\n                            font-family: monospace;\r\n                            line-height: 1.2;\r\n                        }\r\n                        .mainTitle {  \r\n                            font-size: 48px;\r\n                            font-weight: 500;\r\n                            color: gray;\r\n                            margin-top: -12px;\r\n                        }\r\n                        .CodeMirror {\r\n                            height: 100%;\r\n                        }\r\n                        \r\n                      \r\n                        body { margin: 0px }     \r\n                             \r\n                        div textarea {\r\n                            font-family     : monospace;\r\n                        }\r\n                        .code-editor-list-tile {\r\n                            white-space     : nowrap; \r\n                            border-style    : solid none none;\r\n                            border-color    : white;\r\n                            border-width    : 1px;\r\n                            background-color: #D8D8D8;\r\n                            display         : flex;\r\n                        }\r\n                        .code-editor-list-text{\r\n                            padding         : 1px 10px 1px 5px;\r\n                            overflow        : hidden;\r\n                            text-overflow   : ellipsis;\r\n                            white-space     : nowrap;\r\n                            flex            : 1;\r\n                        }\r\n                        \r\n                        .code-editor-list-tile span.node.ErrorMsg {\r\n                            background-color: red\r\n                        }\r\n                        .code-editor-list-tile span.node.expanded::before {\r\n                            content: \"-\"\r\n                        }\r\n                        .code-editor-list-tile span.node.collapsed::before {\r\n                            content: \"+\"\r\n                        }\r\n                        .code-editor-list-tile.direct-predecessor {\r\n                            font-weight     : bold;\r\n                            color           : blue;\r\n                        }\r\n                        .code-editor-list-tile.indirect-predecessor {\r\n                            color           : blue;\r\n                        }\r\n                        .code-editor-list-tile.included-predecessor {\r\n                            color           : chocolate;\r\n                        }\r\n                        .code-editor-list-tile.selected {\r\n                            background-color: #77F;\r\n                            color           : white;\r\n                        }\r\n                        .code-editor-list-tile.codeSnippet {\r\n                            text-decoration: underline\r\n                        }\r\n                        .code-editor-list-tile:hover {\r\n                            background      : lightgray;\r\n                        }\r\n                        .code-editor-list-tile.selected:hover {\r\n                            background      : blue;\r\n                        }\r\n                        .code-editor-list-tile>.predecessor {\r\n                            font-weight     : bold;\r\n                            border-style    : inset;\r\n                            border-width    : 1px;\r\n                            text-align      : center;\r\n                            color           : transparent;\r\n                        }\r\n                        .code-editor-list-tile.direct-predecessor>.predecessor {\r\n                            color           : blue;\r\n                        }\r\n                        \r\n                        .CodeMirror { height: 100%; }\r\n                        \r\n                        .node {\r\n                            background-color: white; \r\n                            width           : 2ch; \r\n                            color           : #A03; \r\n                            font-weight     : bold; \r\n                            text-align      : center;\r\n                            font-family     : arial;\r\n                        }\r\n                        .Warning { text-decoration: underline lightblue } \r\n                        .Error   { text-decoration: underline red       } \r\n                        \r\n                    </style>\r\n            </div>\r\n            ";
+  SC$1.unselectorV=new FromView.New(View$1.Const(null),Global.ignore);
+  SC$1.plugin=new PlugInBuilder.New();
+  SC$1.def=(i=Calculado.newCalc(),Calculado$1.New(new GuidId({
+   $:0,
+   $0:"00000000-0000-0000-0000-000000000000"
+  }),i.valorA,i.valorB,i.valorC));
+  SC$1.list0=LMX.getDocInt(Calculado.def(),Calculado.newCalc,function($1,$2,$3,$4)
   {
-   return Strings.concat("\n",s);
-  }
-  function f$1(s)
-  {
-   return String.splitByChar("\n",s);
-  }
-  function g$1(s)
-  {
-   var a$3,b$2;
-   return Slice.array(s,{
-    $:1,
-    $0:0
-   },{
-    $:1,
-    $0:(a$3=0,(b$2=Arrays.length(s)-2,Unchecked.Compare(a$3,b$2)===1?a$3:b$2))
-   });
-  }
-  function g$2(s)
-  {
-   return Strings.concat("\n",s);
-  }
-  function a$1(a$3)
-  {
-   return Global.String;
-  }
-  function a$2(a$3)
-  {
-   return Global.String;
-  }
-  SC$1.rtn=function(v)
-  {
-   return[v];
-  };
-  SC$1.unindentStr=function(x$1)
-  {
-   return g(String.unindent(x$1));
-  };
-  SC$1.skipLastLine=(f=function(x$1)
-  {
-   return g$1(f$1(x$1));
-  },function(x$1)
-  {
-   return g$2(f(x$1));
+   function e$2(a,c)
+   {
+    return Doc.Element("li",a,c);
+   }
+   function f(s,d,k,c)
+   {
+    return Calculado.calcUI(false,s,d,k,c);
+   }
+   return((((Runtime.Curried(Util.wrapUI,3,[function($5)
+   {
+    return function($6)
+    {
+     return e$2($5,$6);
+    };
+   },function($5,$6,$7)
+   {
+    return function($8)
+    {
+     return f($5,$6,$7,$8);
+    };
+   }]))($1))($2))($3))($4);
   });
-  SC$1.policies=List.ofArray([Policy.SignIn,Policy.SignUp,Policy.EditProfile,Policy.ResetPassword]);
-  SC$1.preambleStates=List.ofArray([PreambleState.GoToSignIn,PreambleState.GoingToSignIn,PreambleState.GoToSignUp,PreambleState.GoingToSignUp,PreambleState.GoToEditProfile,PreambleState.GoToResetPassword,PreambleState.WentToSignIn,PreambleState.WentToSignUp,PreambleState.WentToEditProfile,PreambleState.WentToResetPassword,PreambleState.WentInside,PreambleState.InPreamble]);
-  SC$1.version="1.0.0";
-  SC$1.storage=self.localStorage;
-  Msal$1.replaceQueryParameters();
-  SC$1.refreshBeforeB=Msal$1.storedVarB("refreshBefore",false);
-  SC$1.createOnStartB=Msal$1.storedVarB("createOnStart",true);
-  SC$1.forceLoginB=Msal$1.storedVarB("forceLogin",false);
-  SC$1.editingB=Msal$1.storedVarB("Editing",false);
-  SC$1.applicationId=Msal$1.storedVar("applicationId","faf95af2-18b5-4895-9663-18f7feb95def");
-  SC$1.tenantName=Msal$1.storedVar("tenantName","prozper");
-  SC$1.ref=Msal$1.storedVar("ref","");
-  SC$1.extraQueryParms=Msal$1.storedVar("extraQueryParms","mkt=es-us");
-  SC$1.signInPolicy=Msal$1.storedVar("signInPolicy","B2C_1_SignIn");
-  SC$1.signUpPolicy=Msal$1.storedVar("signUpPolicy","B2C_1_Registrarse");
-  SC$1.editProfilePolicy=Msal$1.storedVar("editProfilePolicy","B2C_1_EditarPerfil");
-  SC$1.resetPasswordPolicy=Msal$1.storedVar("resetPasswordPolicy","B2C_1_PasswordReset");
-  SC$1.policyTypeS=Msal$1.storedVar("policyType","SignIn");
-  SC$1.goInsideLink=Msal$1.storedVar("goInsideLink","");
-  SC$1.scopes=Msal$1.storedVar("scopes","https://prozper.onmicrosoft.com/faf95af2-18b5-4895-9663-18f7feb95def/user_impersonation");
-  SC$1.preambleStateS=Msal$1.storedVar("preambleState","InPreamble");
-  SC$1.policyType=Var$1.Lens(Msal$1.policyTypeS(),Policy.Parse,function($1,$2)
+  SC$1.list2=LMX.getDocGuidId(Calculado.def(),Calculado.newCalc,function($1,$2,$3,$4)
   {
-   return(a$1($1))($2);
+   function e$2(a,c)
+   {
+    return Doc.Element("li",a,c);
+   }
+   function f(s,d,k,c)
+   {
+    return Calculado.calcUIDet(true,s,d,k,c);
+   }
+   return((((Runtime.Curried(Util.wrapUI,3,[function($5)
+   {
+    return function($6)
+    {
+     return e$2($5,$6);
+    };
+   },function($5,$6,$7)
+   {
+    return function($8)
+    {
+     return f($5,$6,$7,$8);
+    };
+   }]))($1))($2))($3))($4);
   });
-  SC$1.preambleState=Var$1.Lens(Msal$1.preambleStateS(),PreambleState.Parse,function($1,$2)
+  SC$1.list3=LM.getDoc(function(e$2)
   {
-   return(a$2($1))($2);
+   return e$2.id;
+  },Calculado.def(),Calculado.newCalc,function($1,$2)
+  {
+   function e$2(a,c)
+   {
+    return Doc.Element("li",a,c);
+   }
+   return((Runtime.Curried(Util.wrapUI,3,[function($3)
+   {
+    return function($4)
+    {
+     return e$2($3,$4);
+    };
+   },function($3,$4,$5)
+   {
+    return function($6)
+    {
+     return Calculado.calcUIEdit($3,$4,$5,$6);
+    };
+   }]))($1))($2);
   });
-  SC$1.policyNameW=(b=View.get_Do(),View.Bind(function(a$3)
+  SC$1.list1=(x=Calculado.list0(),(LMX.setCurrentDoc(function($1,$2,$3,$4)
   {
-   return View.Bind(function(a$4)
-   {
-    return View.Const(a$4);
-   },a$3.$==1?Msal$1.signUpPolicy().get_View():a$3.$==2?Msal$1.editProfilePolicy().get_View():a$3.$==3?Msal$1.resetPasswordPolicy().get_View():Msal$1.signInPolicy().get_View());
-  },Msal$1.policyType().get_View()));
-  SC$1.authority=Var$1.Create$1("");
-  SC$1.token=Var$1.Create$1("");
-  SC$1.userO=Var$1.Create$1(null);
-  SC$1.authorityW=(b$1=View.get_Do(),View.Bind(function(a$3)
+   return Calculado.calcUIDet(false,$1,$2,$3,$4);
+  }))(x));
+  e=List.ofArray([Calculado.newCalc(),Calculado.newCalc()]);
+  LMX.addElements(Calculado.list1(),e);
+  e$1=List.ofArray([Calculado.newCalc(),Calculado.newCalc()]);
+  LM.addElements(Calculado.list3(),e$1);
+  AF.addPlugIn2((b=AF.plugin(),b.Merge(b.Merge(b.Merge(b.AddDocF(b.Name(b.Yield(),"Calc"),"main",function()
   {
-   return View.Bind(function(a$4)
-   {
-    return View.Const(((((Runtime.Curried(function($1,$2,$3,$4)
-    {
-     return $1("https://"+Utils.toSafe($2)+".b2clogin.com/tfp/"+Utils.toSafe($3)+".onmicrosoft.com/"+Utils.toSafe($4));
-    },4))(Global.id))(a$3))(a$3))(a$4));
-   },Msal$1.policyNameW());
-  },Msal$1.tenantName().get_View()));
-  View.Sink(function(a$3)
-  {
-   Msal$1.authority().Set(a$3);
-  },Msal$1.authorityW());
-  SC$1.agentO=Var$1.Create$1(null);
-  SC$1.main=self.location.search!==""?self.location.replace(Arrays.get(Strings.SplitChars(self.location.href,["?"],0),0)):(x=Doc.Element("script",[AttrProxy.Create("src",(function($1)
-  {
-   return function($2)
-   {
-    return $1("https://secure.aadcdn.microsoftonline-p.com/lib/"+Utils.toSafe($2)+"/js/msal.min.js");
-   };
-  }(Global.id))(Msal$1.version())),AttrProxy.OnAfterRenderImpl(function()
-  {
-   var b$2;
-   Concurrency.Start((b$2=null,Concurrency.Delay(function()
-   {
-    return Concurrency.Combine(Concurrency.While(function()
-    {
-     return!self.Msal;
-    },Concurrency.Delay(function()
-    {
-     return Concurrency.Bind(Concurrency.Sleep(50),function()
-     {
-      return Concurrency.Return(null);
-     });
-    })),Concurrency.Delay(function()
-    {
-     Msal$1.ui();
-     return Concurrency.Zero();
-    }));
-   })),null);
-  })],[]),(a=self.document.head,(Templates.LoadLocalTemplates(""),Doc.Run(a,x))));
- };
- testing_GeneratedPrintf.p=function($1)
- {
-  return $1.$==3?"ResetPassword":$1.$==2?"EditProfile":$1.$==1?"SignUp":"SignIn";
- };
- testing_GeneratedPrintf.p$1=function($1)
- {
-  return $1.$==11?"InPreamble":$1.$==10?"WentInside":$1.$==9?"WentToResetPassword":$1.$==8?"WentToEditProfile":$1.$==7?"WentToSignUp":$1.$==6?"WentToSignIn":$1.$==5?"GoToResetPassword":$1.$==4?"GoToEditProfile":$1.$==3?"GoingToSignUp":$1.$==2?"GoToSignUp":$1.$==1?"GoingToSignIn":"GoToSignIn";
- };
- GeneratedPrintf.p$1=function($1)
- {
-  return"{"+("errorCode = "+Utils.prettyPrint($1.errorCode))+"; "+("errorMessage = "+Utils.prettyPrint($1.errorMessage))+"; "+("message = "+Utils.prettyPrint($1.message))+"; "+("name = "+Utils.prettyPrint($1.name))+"; "+("stack = "+testing_GeneratedPrintf.p$2($1.stack))+"}";
- };
- testing_GeneratedPrintf.p$2=function($1)
- {
-  return $1==null?"null":"Some "+Utils.prettyPrint($1.$0);
- };
- GeneratedPrintf.p=function($1)
- {
-  return"{"+("accessToken = "+Utils.prettyPrint($1.accessToken))+"; "+("account = "+Utils.prettyPrint($1.account))+"; "+("accountState = "+Utils.prettyPrint($1.accountState))+"; "+("expiresOn = "+Utils.prettyPrint($1.expiresOn))+"; "+("idToken = "+Utils.prettyPrint($1.idToken))+"; "+("scopes = "+Utils.prettyPrint($1.scopes))+"; "+("tenantId = "+Utils.prettyPrint($1.tenantId))+"; "+("tokenType = "+Utils.prettyPrint($1.tokenType))+"; "+("uniqueId = "+Utils.prettyPrint($1.uniqueId))+"}";
+   return Doc.Concat([Util.orderedList(Calculado.list1().doc),Calculado.list1().get_CurrentDoc(),Util.orderedList(Calculado.list2().doc),Util.newButton(Calculado.list2().add),Util.orderedList(Calculado.list3().doc),Util.newButton(Calculado.list3().add)]);
+  }),"calc1_",Calculado.list1().PlugIn(Util.selectorLensInt)),"calc2_",Calculado.list2().PlugIn(Util.selectorLensGuidId)),"calc3_",Calculado.list3().PlugIn(Util.selectorLensGuidId))));
+  LayoutEngine.addLayout0(LayoutEngineModule.newLyt("CalcLyt","\r\n                    split horizontal 0-50-100 AppFramework.AppFwkClient main\r\n                    main div \"overflow:auto\" Calc.main \r\n                "));
  };
  Runtime.OnLoad(function()
  {
-  Msal$1.main();
+  Test.main();
  });
 }());

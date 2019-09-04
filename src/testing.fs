@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1567145566689 -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1567214137408 -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -23,9 +23,10 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\LayoutEngine\bin\LayoutEngine.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1567145566689
+//#define FSharpStation1567214137408
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -97,368 +98,438 @@ namespace FsRoot
         module Library = 
             let Error = Result.Error
         
-            let [<Inline>] inline swap f a b = f b a
             
-            /// swap: for use with operators: [1..5] |> List.map (__ (/) 2)
-            let [<Inline>] inline __   f a b = f b a
+            type StringId<'T> = StringId of string 
+            with
+                member this.Id = match this with StringId v -> v
             
-            /// call a function but return the input value
-            /// for logging, debugging
-            /// use: (5 * 8) |> tee (printfn "value = %d") |> doSomethingElse
-            let [<Inline>] inline tee f v = f v ; v
-            
-            /// tee: call a function but return the input value
-            /// for logging, debugging
-            /// use: (5 * 8) |!> printfn "value = %d" |> doSomethingElse
-            let [<Inline>] inline  (|>!) v f   = f v ; v
-            let [<Inline>] inline  (>>!) g f   = g >> fun v -> f v ; v
-            
-            let inline print v = 
-                match box v with
-                | :? string as s -> printfn "%s" s
-                | __             -> printfn "%A" v
-            
-            //#define TEE
-            [< Inline "(function (n) { return n.getFullYear() + '-' + ('0'+(n.getMonth()+1)).slice(-2) + '-' +  ('0'+n.getDate()).slice(-2) + ' '+('0'+n.getHours()).slice(-2)+ ':'+('0'+n.getMinutes()).slice(-2)+ ':'+('0'+n.getSeconds()).slice(-2)+ ':'+('00'+n.getMilliseconds()).slice(-3) })(new Date(Date.now()))" >]
-            let nowStamp() = 
-                let t = System.DateTime.UtcNow // in two steps to avoid Warning: The value has been copied to ensure the original is not mutated
-                t.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
-            
-            let [<Inline>] inline traceT t v = tee (sprintf "%A" >> (fun s -> s.[..min 100 s.Length-1]) >> printfn "%s %s: %A" (nowStamp()) t) v
-            let [<Inline>] inline trace   v = traceT "trace" v
-            let [<Inline>] inline traceI  v = trace          v |> ignore
-            
-            module Log =
-                let [<Inline>] inline In     n f   =      (traceT (sprintf "%s in " n)) >> f
-                let [<Inline>] inline Out    n f   = f >> (traceT (sprintf "%s out" n))
-                let [<Inline>] inline InA    n f p = async { return! In  n f p }
-                let [<Inline>] inline OutA   n f p = async { return! Out n f p }
-                let [<Inline>] inline InOut  n     = In  n >> Out  n
-                let [<Inline>] inline InOutA n f p = async {
-                    let!   r = InA n f  p
-                    do         Out n id r |> ignore
-                    return r 
-                  }
-            
-                let [<Inline>] inline TimeIt n f p =
-                    printfn "Starting %s" n
-                    let start = System.DateTime.UtcNow.Ticks
-                    f p
-                    let elapsedSpan = new System.TimeSpan(System.DateTime.UtcNow.Ticks - start)
-                    print <| elapsedSpan.ToString()
-            
-            
-            [< AutoOpen >]
-            module Monads =
-                module Seq =    
-                    let rtn = Seq.singleton
-                    let insertO  vSO              = vSO |> Option.map(Seq.map Some) |> Option.defaultWith(fun () -> rtn None)
-                    let insertR (vSR:Result<_,_>) = vSR |> function | Error m -> rtn (Error m) | Ok v -> Seq.map Ok v
-                    let absorbO  vOS              = vOS |> Seq.choose id
-                    let absorbR  vOS              = vOS |> Seq.choose (function Ok v -> Some v |_-> None)
-                    let ofOption vO = 
-                        match vO with
-                        | Some v -> Seq.singleton v
-                        | None   -> Seq.empty
-                
-                /// Extensions to Async
-                module Async =
-                    let [< Inline >] inline rtn   v    = async.Return v
-                    let [< Inline >] inline bind  f vA = async.Bind(  vA, f)
-                    let [< Inline >] inline map   f    = bind (f >> rtn)
-                    /// Executes f Synchronously
-                    [< Inline "throw 'iterS cannot be used in JavaScript!'" >] 
-                    let inline iterS (f: 'a->unit) = map f >> Async.RunSynchronously
-                    /// Executes f Asynchronously
-                    let [< Inline >] inline iterA f             = map f >> Async.Start
-                    let apply fA vA = async {
-                        let! fChild = Async.StartChild fA
-                        let! vChild = Async.StartChild vA
-                        let! f = fChild
-                        let! v = vChild 
-                        return f v 
-                    }
-                    let sleepThen f milliseconds = async {
-                        do! Async.Sleep milliseconds
-                        return f()
-                    }
-                    let (>>=)                              v f = bind f v
-                    let traverseSeq             f           sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
-                                                                 Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
-                    let inline sequenceSeq                  sq = traverseSeq id sq
-                    let insertO  vAO                           = vAO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
-                    let insertR (vAR:Result<_,_>)              = vAR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
-                
-                
-            type System.String with
-                member this.Substring2(from, n) = 
-                    if   n    <= 0           then ""
-                    elif from <  0           then this.Substring2(0, n + from)
-                    elif from >= this.Length then ""
-                    else this.Substring(from, min n (this.Length - from))
-                member this.Left             n  = if n < 0 
-                                                  then this.Substring2(0, this.Length + n)
-                                                  else this.Substring2(0, n              )
-                member this.Right            n  = this.Substring2(max 0 (this.Length - n), this.Length)
-                member this.toUnderscore        = this |> Seq.mapi(fun i c -> if i > 0 && System.Char.IsUpper(c) then [ '_' ; c ] else [ c ])  |> Seq.collect id |> Seq.toArray |> System.String
-            
-            module String =
-                let splitByChar (c: char) (s: string) = s.Split c
-                let splitInTwoO spl txt = 
-                    let i = (txt:string).IndexOf (spl:string)
-                    if  i = -1 then None else
-                    (txt.Left(i), txt.Substring (i + spl.Length) )
-                    |> Some
-                let delimitedO  op cl txt =
-                    splitInTwoO op txt
-                    |> Option.bind(fun (bef, sec) ->
-                        splitInTwoO cl sec
-                        |> Option.map(fun (mid, aft) -> bef, mid, aft)
-                    )
-                let contains     sub  (whole: string) = whole.Contains sub
-                let trim                  (s: string) = s.Trim()
-                let append     (a: string)(b: string) =  a + b
-                let skipFirstLine (txt:string) = txt.IndexOf '\n' |> fun i -> if i < 0 then "" else txt.[i + 1..]
-                let unindent (s:string) =
-                    let lines = s.Split '\n'
-                    let n     = lines 
-                                |> Seq.tryFind (fun l -> l.Trim() <> "")
-                                |> Option.defaultValue ""
-                                |> Seq.tryFindIndex ((<>) ' ') 
-                                |> Option.defaultValue 0
-                    lines 
-                    |> Seq.map    (fun l -> if l.Length <= n then "" else l.Substring n)
-                    |> Seq.filter (fun s -> s.StartsWith "# 1 " |> not)
-                let indent n (s:string) =
-                    s.Split '\n'
-                    |> Seq.map ((+) (String.replicate n " "))
-                let unindentStr = unindent >> String.concat "\n"
-                let indentStr i = indent i >> String.concat "\n" 
-                let skipLastLine =
-                       splitByChar '\n' 
-                    >> fun s -> s.[0 .. (max 0 (s.Length - 2)) ]
-                    >> String.concat "\n"
-                let (|StartsWith|_|) (start:string) (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
-                let (|EndsWith  |_|) (ends :string) (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
-                
-                let thousands n =
-                    let v = n.ToString()
-                    let r = v.Length % 3 
-                    let s = if r = 0 then 3 else r
-                    [   yield v.[0.. s - 1]
-                        for i in 0..(v.Length - s)/ 3 - 1 do
-                            yield v.[i * 3 + s .. i * 3 + s + 2]
-                    ] |> String.concat ","
+            type GuidId<'T> = GuidId of System.Guid
+            with
+                member this.Id = match this with GuidId v -> v
             
         /// Essentials that run in Javascript (WebSharper)
         //#define WEBSHARPER 
         [< JavaScript ; AutoOpen >]
         module LibraryJS =
-            module Pojo =
-                let addProp prop (pojo:JSObject) = pojo.Add prop ; pojo
-                
-                let newPojo props =
-                    let pojo = JSObject()
-                    if IsClient then
-                        props |> Seq.iter (swap addProp pojo >> ignore)
-                    pojo
+            module View =
+                let insertWO = 
+                    function
+                    | Some v -> View.Map Some v
+                    | None   -> View.Const None
+                let [<Inline>] inline consistent   (vl:View<_>)  = 
+                    let prior      = ref <| Var.Create Unchecked.defaultof<_>
+                    let setPrior v = if (!prior).Value <> v then (!prior).Value <- v 
+                    View.Sink setPrior vl
+                    !prior |> View.FromVar
             
-                let newPojoOpt (propOs : seq<string * obj option>) =
-                    propOs
-                    |> Seq.choose(fun (n,vO) -> vO |> Option.map(fun v -> n,v))
-                    |> newPojo
+                let bind = View.Bind
+                let map  = View.Map
+                let rtn  = View.Const
             
+                let (>>=)                              v f = bind f v
+                let rec    traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                             Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                let inline sequenceSeq                  sq = traverseSeq id sq
             
-            [< Inline "console.log($o)" >]
-            let consoleLog o : unit = X<_>
-            
-            [< Inline """(!$v)""">]
-            let isUndefined v = v.GetType() = v.GetType()
-                
-            
-            module Msal =
-            
-                type Policy =
-                | SignIn
-                | SignUp
-                | EditProfile
-                | ResetPassword
-                with 
-                    static member Parse (txt:string) = 
-                        match txt.Replace(" ", "") with
-                        | "SignUp"        -> SignUp
-                        | "EditProfile"   -> EditProfile
-                        | "ResetPassword" -> ResetPassword
-                        | _               -> SignIn
-                    override this.ToString() = (sprintf "%A" this).toUnderscore.Replace('_', ' ')
-            
-                let policies = [
-                    SignIn
-                    SignUp
-                    EditProfile
-                    ResetPassword
-                ]
-                
-                type TokenReceivedCallback = (string * string * string * string * string) -> unit
-            
-                let (-->) (n:string) (v : _       ) = n, (                           v :> obj) |> Some
-                let (==>) (n:string) (vO: _ option) = n, (vO |> Option.map (fun v -> v :> obj))
-            
-                type AuthOptions = {
-                    clientId                    : string
-                    authority                   : string
-                    validateAuthority           : bool
-                    redirectUri                 : string
-                    postLogoutRedirectUri       : string
-                    navigateToLoginRequestUrl   : bool
-                }
-                   with
-                        static member New(clientId: string, ?authority: string, ?validateAuthority: bool, ?redirectUri: string, ?postLogoutRedirectUri: string, ?navigateToLoginRequestUrl: bool) : AuthOptions=
-                            Pojo.newPojoOpt [
-                                "clientId"                  --> clientId                 
-                                "authority"                 ==> authority                
-                                "validateAuthority"         ==> validateAuthority        
-                                "redirectUri"               ==> redirectUri              
-                                "postLogoutRedirectUri"     ==> postLogoutRedirectUri    
-                                "navigateToLoginRequestUrl" ==> navigateToLoginRequestUrl
-                            ] |> box |> unbox
-            
-                type CacheLocation = string // LocalStorage | SessionStorage
-            
-                type CacheOptions = {
-                    cacheLocation          : string
-                    storeAuthStateInCookie : bool
-                }
-                   with
-                        static member New(?cacheLocation: CacheLocation, ?storeAuthStateInCookie: bool) : CacheOptions =
-                            Pojo.newPojoOpt [
-                                "cacheLocation"           ==> cacheLocation
-                                "storeAuthStateInCookie"  ==> storeAuthStateInCookie
-                            ] |> box |> unbox
-            
-                type Logger = obj
-            
-                type SystemOptions = {
-                    logger                      : Logger
-                    loadFrameTimeout            : int
-                    navigateFrameWait           : int
-                    tokenRenewalOffsetSeconds   : int
-                }
-                   with
-                        static member New(?logger: Logger, ?loadFrameTimeout: int, ?navigateFrameWait: int, ?tokenRenewalOffsetSeconds: int) : SystemOptions =
-                            Pojo.newPojoOpt [
-                                "logger"                    ==> logger
-                                "loadFrameTimeout"          ==> loadFrameTimeout
-                                "navigateFrameWait"         ==> navigateFrameWait
-                                "tokenRenewalOffsetSeconds" ==> tokenRenewalOffsetSeconds
-                            ] |> box |> unbox
-            
-                type FrameworkOptions = {
-                    isAngular           : bool
-                    protectedResourceMap: Map<string, string[]>
-                    unprotectedResources: string[]
-                }
-                   with
-                        static member New(?isAngular: bool, ?protectedResourceMap: Map<string, string[]>, ?unprotectedResources: string[]) : FrameworkOptions =
-                            Pojo.newPojoOpt [
-                                "isAngular"            ==> isAngular
-                                "protectedResourceMap" ==> protectedResourceMap
-                                "unprotectedResources" ==> unprotectedResources
-                            ] |> box |> unbox
-            
-                type Configuration = { auth: AuthOptions ;cache : CacheOptions ; system: SystemOptions ; framework :  FrameworkOptions }
-                    with 
-                        static member New(?auth: AuthOptions, ?cache : CacheOptions, ? system: SystemOptions, ? framework :  FrameworkOptions) : Configuration =
-                            Pojo.newPojoOpt [
-                                "auth"      ==> auth
-                                "cache"     ==> cache
-                                "system"    ==> system
-                                "framework" ==> framework
-                            ] |> box |> unbox
-            
-            //    [< AllowNullLiteral >]
-            //    type User (displayableId: string, name: string, identityProvider: string, userIdentifier: string, idToken: obj, sid: string) =
-            //        [< Inline "User.createUser($idToken, $clientInfo)" >]
-            //        static member createUser(idToken: obj, clientInfo: obj) : User = X<_>
-            
-                [< AllowNullLiteral >]
-                type Account() = 
-                    [< DefaultValue >] val mutable accountIdentifier     : string  
-                    [< DefaultValue >] val mutable environment           : string  
-                    [< DefaultValue >] val mutable homeAccountIdentifier : string  
-                    [< DefaultValue >] val mutable idToken               : JSObject
-                    [< DefaultValue >] val mutable name                  : string  
-                    [< DefaultValue >] val mutable sid                   : string  
-                    [< DefaultValue >] val mutable userName              : string  
-            
-                type AuthResponse = {
-                    accessToken  : string
-                    account      : Account
-                    accountState : string
-                    expiresOn    : Date
-                    idToken      : JSObject
-                    scopes       : Array<string>
-                    tenantId     : string
-                    tokenType    : string
-                    uniqueId     : string        
-                }
-            
-                type AuthError = {
-                    errorCode    : string
-                    errorMessage : string
-                    message      : string
-                    name         : string
-                    stack        : string option
-                }
-            
-                type tokenReceivedCallback =             AuthResponse  -> unit
-                type errorReceivedCallback = AuthError                 -> unit 
-                type authResponseCallback  = FuncWithArgs<AuthError * AuthResponse, unit>
-            
-                type QPDict = JSObject
-            
-                type AuthenticationParameters = {
-                    account              : Account
-                    authority            : string
-                    claimsRequest        : string
-                    correlationId        : string
-                    extraQueryParameters : QPDict
-                    extraScopesToConsent : string []
-                    loginHint            : string
-                    prompt               : string
-                    scopes               : string []
-                    sid                  : string
-                    state                : string        
-                }
-                   with
-                        static member New(?account: Account, ?authority: string, ?claimsRequest: string, ?correlationId: string, ?extraQueryParameters: QPDict, ?extraScopesToConsent: string[], ?loginHint: string, ?prompt: string, ?scopes: string[], ?sid: string, ?state: string) : AuthenticationParameters =
-                            Pojo.newPojoOpt [
-                                "account"              ==> account
-                                "authority"            ==> authority
-                                "claimsRequest"        ==> claimsRequest
-                                "correlationId"        ==> correlationId
-                                "extraQueryParameters" ==> extraQueryParameters
-                                "extraScopesToConsent" ==> extraScopesToConsent
-                                "loginHint"            ==> loginHint
-                                "prompt"               ==> prompt
-                                "scopes"               ==> scopes
-                                "sid"                  ==> sid
-                                "state"                ==> state
-                            ] |> box |> unbox
-            
-                type UserAgentApplication
-                    [< Inline "new $global.Msal.UserAgentApplication($options)" >] (options: Configuration) =
-                    [< Inline "$this.handleRedirectCallback($tokenReceivedCallback, $errorReceivedCallback) " >] member this.handleRedirectCallback(tokenReceivedCallback: tokenReceivedCallback, errorReceivedCallback: errorReceivedCallback) : unit   = X<_>
-                    [< Inline "$this.handleRedirectCallback($authCallback)                                  " >] member this.handleRedirectCallback(authCallback: authResponseCallback) : unit                  = X<_>
-                    [< Inline "$this.loginPopup(   $request)                                                " >] member this.loginPopup          (?request: AuthenticationParameters  ) : Promise<AuthResponse> = X<_>
-                    [< Inline "$this.loginRedirect($request)                                                " >] member this.loginRedirect       (?request: AuthenticationParameters  ) : unit                  = X<_>
-                    [< Inline "$this.acquireTokenSilent  ($request)                                         " >] member this.acquireTokenSilent  ( request: AuthenticationParameters  ) : Promise<AuthResponse> = X<_>
-                    [< Inline "$this.acquireTokenRedirect($request)                                         " >] member this.acquireTokenRedirect( request: AuthenticationParameters  ) : unit                  = X<_>
-                    [< Inline "$this.acquireTokenPopup   ($request)                                         " >] member this.acquireTokenPopup   ( request: AuthenticationParameters  ) : Promise<AuthResponse> = X<_>
-                    [< Inline "$this.logout()                                                               " >] member this.logout              ()                                     : unit                  = X<_>
-                    [< Inline "$this.getAccount()                                                           " >] member this.getAccount          ()                                     : Account               = X<_>
-                    //[< Inline "$this.getUserState($state)                                                   " >] member this.getUserState        (state: string)                        : string                = X<_>
-            
+            module AppFrameworkTemplate =
+                let html = """
+            <div style="display:none" >
+                <div links>
+                    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+                    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"  type="text/javascript"></script>
+                </div>
+                <div ws-template="AppFramework" style="height: calc(100vh - 4px); width: calc(100vw - 4px) " class="relative" >
+                    <div ws-hole="MainClient"></div>
+                    <div class="AppFrameworkGo"><button ws-onclick="GoClient">${MainDoc}</button></div>
+                </div>
+                <style>
+                    .AppFrameworkGo {
+                        max-width: 2px;
+                        max-height: 2px;
+                        z-index: 4000;
+                        overflow: hidden;
+                        position: fixed;
+                        top: 0px;
+                        left: 0px;
+                    }
+                </style>
+                <div ws-template="FixedSplitterVer" 
+                    style="display: grid; 
+                           grid-gap: 0px; 
+                           box-sizing: border-box; 
+                           height: 100%;
+                           width : 100%;
+                           grid-template-areas: 'one two'; 
+                           grid-template-rows   :100%; 
+                           overflow: hidden; 
+                           grid-template-columns: ${PartSizes}"  >
+                   <div ws-hole="First"  style="grid-area: one; " class="relative" ></div>
+                   <div ws-hole="Second" style="grid-area: two; " class="relative" ></div>
+                </div>               
+                <div ws-template="FixedSplitterHor" 
+               style="display: grid; 
+                      grid-gap: 0px; 
+                      box-sizing: border-box; 
+                      height: 100%;
+                      width : 100%;
+                      grid-template-areas: 'one' 'two'; 
+                      grid-template-columns:100%; 
+                      overflow: hidden; 
+                      grid-template-rows   : ${PartSizes}"  >
+              <div ws-hole="First"  style="grid-area: one; " class="relative" ></div>
+              <div ws-hole="Second" style="grid-area: two; " class="relative" ></div>
+                </div>               
+                <div ws-template="WCompSplitterHor" 
+                     ws-onafterrender="AfterRender"
+                     style="display: grid;
+                            grid-gap: 5px; 
+                            box-sizing: border-box; 
+                            grid-template-areas: 'one' 'two'; 
+                            grid-template-columns:100%; 
+                            overflow: hidden; 
+                            grid-template-rows   : ${PartSizes}" 
+                     >
+                     <slot></slot>
+                    <slot name="splitter">  <div style="grid-row:2; grid-column:1 / 1 ; cursor: row-resize; z-index: 3; background-color: #eef ; height: ${Gap}; margin-top :-${Gap}" ws-onmousedown="MouseDown" ws-onafterrender="AfterRenderSp" ></div> </slot>
+                    <style>
+                        ::slotted(*) {
+                            display: grid;
+                            height : 100%;
+                            width  : 100%;
+                            overflow: hidden;
+                        }
+                        ::slotted(*:nth-child(2)) {
+                            grid-area: two;
+                        }
+                        ::slotted(*[slot="splitter"]) {
+                            grid-row:2; grid-column:1 / 1 ; 
+                            cursor: row-resize; 
+                            z-index: 3; 
+                            background-color: #eef ; 
+                            height: ${Gap}; 
+                            margin-top :-${Gap}
+                        }
+                    </style>
+                </div>        
+                <div ws-template="WCompSplitterVer" 
+                     ws-onafterrender="AfterRender"
+                     style="display: grid; 
+                            grid-gap: 5px; 
+                            box-sizing: border-box; 
+                            grid-template-areas: 'one two'; 
+                            grid-template-rows   :100%; 
+                            overflow: hidden; 
+                            grid-template-columns: ${PartSizes}"  >
+                    <slot></slot>
+                    <slot name="splitter"> <div style="grid-column:2; grid-row:1 / 1 ; cursor: col-resize; z-index: 3; background-color: #eef ; width: ${Gap}; margin-left :-${Gap}" ws-onmousedown="MouseDown" ws-onafterrender="AfterRenderSp" ></div> </slot>
+                    <style>
+                        ::slotted(*) {
+                            display: grid;
+                            height : 100%;
+                            width  : 100%;
+                            overflow: hidden;
+                        }
+                        ::slotted(*:nth-child(2)) {
+                            grid-area: two;
+                        }
+                        ::slotted(*[slot="splitter"]) {
+                            grid-column:2; grid-row:1 / 1
+                            cursor: column-resize; 
+                            z-index: 3; 
+                            background-color: #eef ; 
+                            width: ${Gap}; 
+                            margin-left:-${Gap}
+                        }
+                    </style>
+                </div>
+                <div ws-template="AppFwkClient" >
+                    <ws-FixedSplitterHor>
+                        <PartSizes>55px calc(100% - 55px)</PartSizes>
+                        <First>
+                            <span style="display: grid;
+                                  grid-template-columns: 30% 20% 20% 10%;
+                                  grid-gap: 25px;
+                                ">
+                                <div class="mainTitle">AppFramework</div>
+                            </span>
+                        </First>
+                        <Second>
+                                <ws-FixedSplitterVer>
+                                    <PartSizes>calc(100% - 150px) 150px</PartSizes>
+                                    <First>
+                                        <wcomp-splitter vertical value="18" max="100">
+                                            <div><div ws-hole="PlugIns" style="overflow:auto" >
+                                                <div ws-template="Tile">
+                                                    <div draggable="true" class="code-editor-list-tile ${Predecessor} ${Selected}" 
+                                                    ws-ondrag="Drag"
+                                                    ws-ondragover="DragOver"
+                                                    ws-ondrop="Drop"
+                                                   >
+                                                   <span class="node ${Parent} ${ErrorMsg}" title="expand" ws-onclick="ToggleCollapse"></span>
+                                                   <div  class="code-editor-list-text" style="text-indent:${Indent}em; white-space: pre" ws-onclick="Select" ws-onafterrender="AfterRender" >${Name}</div>
+                                                   <span class="predecessor" title="toggle predecessor" ws-onclick="TogglePred">X</span>
+                                               </div>
+                                       
+                                                </div>
+                                            </div></div>
+                                            <wcomp-splitter vertical value="100" min="30" max="100">
+                                                <ws-FixedSplitterHor>
+                                                    <PartSizes>32px calc(100% - 32px)</PartSizes>
+                                                    <First>
+                                                        <div>
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">name:</span>
+                                                                <span class="input-group-addon">${PlugInName}</span>
+                                                            </div>
+                                                        </div>
+                                                    </First>
+                                                    <Second>
+                                                        <div style="overflow:auto">
+                                                            <div>
+                                                                <div>Docs:</div>
+                                                                <div ws-hole="Docs" style="overflow:auto" ></div>
+                                                            </div>
+                                                            <div>
+                                                                <div>Vars:</div>
+                                                                <div ws-hole="Vars" style="overflow:auto" >
+                                                                        <div ws-template="NameValueInput" class="input-group">
+                                                                        <span class="input-group-addon">${Name}:</span>
+                                                                        <textarea class="form-control" id="" placeholder="Value..." ws-var="Value" spellcheck="false">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <div>Views:</div>
+                                                                <div ws-hole="Views" style="overflow:auto" >
+                                                                    <div ws-template="NameValue" class="input-group">
+                                                                        <span class="input-group-addon">${Name}:</span>
+                                                                        <span class="input-group-addon">${Value}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <div>Queries:</div>
+                                                                <div ws-hole="Queries" style="overflow:auto" ></div>
+                                                            </div>
+                                                        </div>
+                                                    </Second>
+                                                </ws-FixedSplitterHor>
+                                                <wcomp-tabstrip >
+                                                    <div tabname="Properties">
+                                                        <div>
+                                                            <table style="border-spacing:0px">
+                                                                <thead>
+                                                                    <th style="width: 30%  ">Name</th>
+                                                                    <th style="width: 70% ">Value</th>
+                                                                </thead>
+                                                                <tbody ws-hole="Properties" ws-children-template="Property">
+                                                                    <tr ws-onclick="Select" style="margin-bottom: 2px" class="level  ">
+                                                                        <td class="level-item">
+                                                                            <div>
+                                                                                <input ws-var="Name" type="text" class="form-control" id="" placeholder="Property...">
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="level-item">
+                                                                            <div>
+                                                                                <textarea ws-var="Value" class="form-control" id="" placeholder="Value..."></textarea>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="level-item">
+                                                                            <div style=" cursor: pointer " title="remove">
+                                                                                <button ws-onclick="Remove" class="delete is-small">x</button>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <button ws-onclick="AddProperty" class="add is-small">add ...</button>
+                                                        </div>
+                                                    </div>
+                                                </wcomp-tabstrip>
+                                            </wcomp-splitter>
+                                        </wcomp-splitter>
+                                    </First>
+                                    <Second>
+                                        <div style="
+                                            overflow: hidden;
+                                            display: grid;
+                                            grid-template-columns: 100%;
+                                            grid-template-rows: repeat(15, calc(100% / 15));
+                                            bxackground-color: #eee;
+                                            box-sizing: border-box;
+                                            padding : 5px;
+                                            grid-gap: 5px;
+                                            margin-right: 21px;
+                                       "  class="absolute" ws-hole="Actions" >
+                                            <button ws-template="Action"         ws-onclick="Click" class="btn" type="button" id=""          >${Name}</button>
+                                            <button ws-template="ActionDisabled" ws-onclick="Click" class="btn" type="button" id="" disabled >${Name}</button>
+                                        </div>
+                                    </Second>
+                                </ws-FixedSplitterVer>
+                        </Second>
+                    </ws-FixedSplitterHor>
+                </div>
+                <style style="display: none">
+                        .Hidden     { display   : none         }
+                        table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }
+                        td input.form-control { 
+                            padding    : 0px; 
+                            font-family: monospace;
+                            font-size  :   small;
+                            margin-top :   0px;
+                            margin-left: -2px;
+                            width      : 100%
+                        }
+                        td select {
+                            font-size : smaller;
+                            max-width : 8ch;
+                        }
+                        xtextarea {
+                           resize : none;
+                        }
+                        .tab-content {
+                            overflow: hidden
+                        }
+                        .tab-children {
+                            position:relative;
+                        }
+                        .tab-children>div>* {
+                            position:absolute;
+                            height: 100%;
+                            width:  100%;
+                            display: grid;
+                        }
+                        .relative {
+                            position:relative;
+                        }
+                        .relative>* {
+                            position:absolute;
+                            height: 100%;
+                            width:  100%;
+                            display: grid;
+                        }
+                        table.table-striped    tbody tr:nth-child(even) { background: #EEE  }
+                        table.table-striped    tbody tr:nth-child(odd ) { background: #FFF  }
+                        table.table-striped    tbody input              { background: transparent; border: none}
+                        table.table-striped    tbody select             { background: transparent; border: none}
+                        table.table-nonstriped tbody tr:nth-child(even) { background: inherit }
+                        table.table-nonstriped tbody tr:nth-child(odd ) { background: inherit }
+                        table.table            tbody tr.hover           { border    : solid thin transparent; } 
+                        table.table            tbody tr.hover:hover     { border    : solid thin blue     ; } 
+                        table.table            tbody th:hover           { background: gray; cursor: pointer }
+                        table.table            tbody tr.hover:hover>td  { border-top: solid thin blue     ; 
+                                                                   border-bottom: solid thin blue     ; } 
+                        table.table            tbody tr.selected { background   : #b9eeff             ; }
+                        table.table            tbody tr.formula.selected { background: #20f7f7             ; }
+                        thead { color: gray }
+                        h3 { 
+                            color: gray;
+                            line-height: 1em;
+                        }
+                        button       { border: solid thin transparent ; border-radius: 3px; }
+                        button:hover { border: solid thin blue }
+                        .indenter { position  : absolute; 
+                                    top:0px; bottom:0px; left:0px; 
+                                    background: white; color:white;
+                                    border-right: gray thin dotted;
+                                    }
+                        body {
+                            color      : #333;
+                            font-size  : small;
+                            font-family: monospace;
+                            line-height: 1.2;
+                        }
+                        .mainTitle {  
+                            font-size: 48px;
+                            font-weight: 500;
+                            color: gray;
+                            margin-top: -12px;
+                        }
+                        .CodeMirror {
+                            height: 100%;
+                        }
+                        
+                      
+                        body { margin: 0px }     
+                             
+                        div textarea {
+                            font-family     : monospace;
+                        }
+                        .code-editor-list-tile {
+                            white-space     : nowrap; 
+                            border-style    : solid none none;
+                            border-color    : white;
+                            border-width    : 1px;
+                            background-color: #D8D8D8;
+                            display         : flex;
+                        }
+                        .code-editor-list-text{
+                            padding         : 1px 10px 1px 5px;
+                            overflow        : hidden;
+                            text-overflow   : ellipsis;
+                            white-space     : nowrap;
+                            flex            : 1;
+                        }
+                        
+                        .code-editor-list-tile span.node.ErrorMsg {
+                            background-color: red
+                        }
+                        .code-editor-list-tile span.node.expanded::before {
+                            content: "-"
+                        }
+                        .code-editor-list-tile span.node.collapsed::before {
+                            content: "+"
+                        }
+                        .code-editor-list-tile.direct-predecessor {
+                            font-weight     : bold;
+                            color           : blue;
+                        }
+                        .code-editor-list-tile.indirect-predecessor {
+                            color           : blue;
+                        }
+                        .code-editor-list-tile.included-predecessor {
+                            color           : chocolate;
+                        }
+                        .code-editor-list-tile.selected {
+                            background-color: #77F;
+                            color           : white;
+                        }
+                        .code-editor-list-tile.codeSnippet {
+                            text-decoration: underline
+                        }
+                        .code-editor-list-tile:hover {
+                            background      : lightgray;
+                        }
+                        .code-editor-list-tile.selected:hover {
+                            background      : blue;
+                        }
+                        .code-editor-list-tile>.predecessor {
+                            font-weight     : bold;
+                            border-style    : inset;
+                            border-width    : 1px;
+                            text-align      : center;
+                            color           : transparent;
+                        }
+                        .code-editor-list-tile.direct-predecessor>.predecessor {
+                            color           : blue;
+                        }
+                        
+                        .CodeMirror { height: 100%; }
+                        
+                        .node {
+                            background-color: white; 
+                            width           : 2ch; 
+                            color           : #A03; 
+                            font-weight     : bold; 
+                            text-align      : center;
+                            font-family     : arial;
+                        }
+                        .Warning { text-decoration: underline lightblue } 
+                        .Error   { text-decoration: underline red       } 
+                        
+                    </style>
+            </div>
+            """
     
         //#define WEBSHARPER
         //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
@@ -466,441 +537,311 @@ namespace FsRoot
         module TestingJS =
         
         
-            module Msal =
-                open Msal
-                open WebSharper
-                open WebSharper.UI
-                open WebSharper.UI.Html
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\LayoutEngine\bin\LayoutEngine.dll"
+            open FsRoot
             
-                type PreambleState =
-                | GoToSignIn
-                | GoingToSignIn
-                | GoToSignUp
-                | GoingToSignUp
-                | GoToEditProfile
-                | GoToResetPassword
-                | WentToSignIn
-                | WentToSignUp
-                | WentToEditProfile
-                | WentToResetPassword
-                | WentInside
-                | InPreamble
-                    static member Parse (txt:string) = 
-                        match txt.Replace(" ", "") with
-                        | "GoToSignIn"          -> GoToSignIn
-                        | "GoingToSignIn"       -> GoingToSignIn   
-                        | "GoToSignUp"          -> GoToSignUp
-                        | "GoingToSignUp"       -> GoingToSignUp   
-                        | "GoToEditProfile"     -> GoToEditProfile     
-                        | "GoToResetPassword"   -> GoToResetPassword       
-                        | "WentToSignIn"        -> WentToSignIn  
-                        | "WentToSignUp"        -> WentToSignUp  
-                        | "WentToEditProfile"   -> WentToEditProfile       
-                        | "WentToResetPassword" -> WentToResetPassword         
-                        | "WentInside"          -> WentInside
-                        | _                     -> InPreamble
-                    override this.ToString() = sprintf "%A" this
+            [< JavaScript ; JavaScriptExport (typeof<WebComponent.WcSplitter.WcSplitterT>) >]
+            module Test =
+                open FsRoot
             
-                let preambleStates = [
-                    GoToSignIn
-                    GoingToSignIn
-                    GoToSignUp
-                    GoingToSignUp
-                    GoToEditProfile
-                    GoToResetPassword
-                    WentToSignIn
-                    WentToSignUp
-                    WentToEditProfile
-                    WentToResetPassword
-                    WentInside
-                    InPreamble        
-                ]
+                let something() = printfn "do something"
             
-                let version = "1.0.0"
+                [< SPAEntryPoint >]
+                let main() =
+                    let d = JS.Window.Document.CreateElement "div"
+                    let _ = JS.Window.Document.Body.AppendChild d
+                    d?outerHTML <- AppFrameworkTemplate.html
+                    AppFramework.getMainDoc.Value 
+                    |> Doc.RunAppend JS.Window.Document.Body 
             
-                let storage             = JS.Window.LocalStorage
+            module Util =
+                open Html
             
-                let replaceQueryParameters() =
-                    match JS.Window.Location.Href.Split '?' with
-                    | [| noquery ; query |] ->
-                        query.Split '&'
-                        |> Seq.iter (fun p ->
-                            match p.Split '=' with
-                            | [| name ; value |] -> 
-                                storage.SetItem(name, JS.Window.DecodeURIComponent value)
-                                printfn "Preamble: Query param: %s = %s" name value
-                            |_-> ()
-                        )
-                    |_-> ()
-                replaceQueryParameters()
-            
-                let storedVar name def  =
-                    let storedVar = storage.GetItem name
-                    let var = Var.Create <| if storedVar = null then def else storedVar
-                    var.View |> View.Sink (fun v -> storage.SetItem(name, v))
-                    var
-            
-                let storedVarB name def  =
-                    let ofS = function "1"  -> true |_-> false
-                    let toS = function true -> "1"  |_-> ""
-                    let varS = storedVar name (toS def)
-                    Var.Lens varS ofS (fun _ -> toS)
-            
-                let refreshBeforeB      = storedVarB "refreshBefore"          false
-                let createOnStartB      = storedVarB "createOnStart"          true
-                let forceLoginB         = storedVarB "forceLogin"             false
-                let editingB            = storedVarB "Editing"                false
-                let applicationId       = storedVar  "applicationId"          "faf95af2-18b5-4895-9663-18f7feb95def"
-                let tenantName          = storedVar  "tenantName"             "prozper"
-                let ref                 = storedVar  "ref"                    ""
-                let extraQueryParms     = storedVar  "extraQueryParms"        "mkt=es-us"
-                let signInPolicy        = storedVar  "signInPolicy"           "B2C_1_SignIn"
-                let signUpPolicy        = storedVar  "signUpPolicy"           "B2C_1_Registrarse"
-                let editProfilePolicy   = storedVar  "editProfilePolicy"      "B2C_1_EditarPerfil"
-                let resetPasswordPolicy = storedVar  "resetPasswordPolicy"    "B2C_1_PasswordReset"
-                let policyTypeS         = storedVar  "policyType"             "SignIn"
-                let goInsideLink        = storedVar  "goInsideLink"           ""
-                let scopes              = storedVar  "scopes"                 "https://prozper.onmicrosoft.com/faf95af2-18b5-4895-9663-18f7feb95def/user_impersonation"
-            
-                let preambleStateS      = storedVar  "preambleState"          "InPreamble"
-            
-                let policyType          = Var.Lens policyTypeS    Policy       .Parse (fun _ -> string)
-                let preambleState       = Var.Lens preambleStateS PreambleState.Parse (fun _ -> string)
-            
-                let policyNameW = View.Do {
-                    let! policyType = policyType.View
-                    let! v =
-                        match policyType with
-                        | SignIn        -> signInPolicy       .View
-                        | SignUp        -> signUpPolicy       .View
-                        | EditProfile   -> editProfilePolicy  .View
-                        | ResetPassword -> resetPasswordPolicy.View
-                    return v
-                }
-            
-                let authority           = Var.Create ""
-                let token               = Var.Create ""
-                let userO               = Var.Create None
-            
-                let authorityW = View.Do {
-                    let! tenantName = tenantName.View
-                    let! policyName = policyNameW
-                    return sprintf "https://%s.b2clogin.com/tfp/%s.onmicrosoft.com/%s" tenantName tenantName policyName
-                }
-                do authorityW |> View.Sink authority.Set
-            
-            
-                let authParms () =
-                    AuthenticationParameters.New( scopes = [|   sprintf "https://%s.onmicrosoft.com/%s/user_impersonation" tenantName.Value applicationId.Value 
-                                                                sprintf "https://%s.onmicrosoft.com/%s/Prozper.Admin"      tenantName.Value applicationId.Value |] )
-            
-                let agentO : Var<UserAgentApplication option> = Var.Create None
-            
-                let ui () =
-            
-                    let checkUser() =
-                        agentO.Value 
-                        |> Option.bind (fun agent -> match agent.getAccount() with | null -> None |user -> Some user)
-                        |> userO.Set
-            
-                    let convert2QPDict (s:string) =
-                        s.Split '&'
-                        |> Array.choose (String.splitInTwoO "=") 
-                        |> Pojo.newPojo
-            
-                    let redirectCallback(error: AuthError, resp: AuthResponse) =
-                        try 
-                            if box error <> null then printfn "Preamble redirectCallback error: %A" error
-                            if box resp  <> null then printfn "Preamble redirectCallback resp : %A" resp
-                        with e -> printfn "Preamble redirectCallback exception %A %s" e e.StackTrace
-            
-                    let authParms () =
-                        AuthenticationParameters.New(
-                                                        scopes               = (scopes.Value.Split ',' |> Array.map (fun s -> s.Trim()) )
-                                                      , extraQueryParameters = convert2QPDict extraQueryParms.Value)
-                    let executePolicy f =
-                        match agentO.Value with
-                        | Some agent ->
-                            async {
-                                let promise = f agent (authParms ())
-                                if  promise = null then printfn "Preamble executePolicy No promise?" else
-                                let! (s:AuthResponse) = promise |> Promise.AsAsync
-                                token.Set s.accessToken
-                                checkUser()
-                            } |> Async.Start
-                        |_-> ()
-            
-                    let executePopup    () = executePolicy (fun agent v -> agent.loginPopup    v)
-                    let executeRedirect () = executePolicy (fun agent v -> agent.loginRedirect v; null)
-                    let logout          () = agentO.Value |> Option.iter (fun agent -> agent.logout() ; checkUser() )
-            
-                    let editOn() =
-                        if refreshBeforeB.Value then
-                            editingB.Set true
-                            JS.Window.Location.Reload()
-                        else
-                            agentO.Set None
-            
-                    let enableAtt w = attr.disabledDynPred (V "") (View.Map not w)
-                    let enabledV  () = enableAtt (V (agentO.V =  None))
-                    let disabledV () = enableAtt (V (agentO.V <> None))
-            
-                    let row0 attO1 elem1 attO2 elem2 =
-                        tr [] [
-                            td (attO1 |> Option.map List.singleton |> Option.defaultValue []) [ elem1 ]
-                            td (attO2 |> Option.map List.singleton |> Option.defaultValue []) [ elem2 ]
+                let disabled disW = attr.disabledDynPred (V "") disW
+                let inputLabel attrs disW txt var =
+                    div attrs [
+                        div [           attr.``class`` "input-group"                       ] [
+                            span      [ attr.``class`` "input-group-addon"                 ] [ text txt ]
+                            Doc.Input [ attr.``class`` "form-control"      ; disabled disW ]   var
                         ]
-            
-                    let row lbl elem =
-                        row0 (Some(attr.style "text-align:right; width: 20%")) ( label [] [text (lbl  + ":") ] ) None elem
-            
-                    let input0 lbl  var             = row0 (Some(attr.style "text-align:right; width: 20%")) lbl None (Doc.Input  [ enabledV() ; attr.style "width: 95%" ] var)
-                    let input  lbl  var             = input0 ( label [] [text (lbl  + ":") ] ) var
-                    let inline select0     attrs var (ops: 'a list) = Doc.Select attrs string ops var
-                    let inline select  lbl attrs var (ops: 'a list) = row  lbl (select0 attrs var ops)
-            
-                    let tableObject p (o:obj) =
-                        table [] [
-                            tbody  [] [
-                                yield!
-                                    JS.GetFields o
-                                    |> Seq.filter p
-                                    |> Seq.map( fun (n,v) -> tr [] [ 
-                                        td [] [ b[] [ text n ]         ]
-                                        td [] [ text (sprintf "%A" v)  ]
-                                    ] )
-                            ]  
-                        ]
-            
-                    let buttonV txt enabled act = 
-                        View.Do {
-                            let! text        = policyTypeS.View
-                            let  attdisabled = if enabled then enabledV() else disabledV() 
-                            return Doc.Button (text + " " + txt) [ attdisabled ] act 
-                        } |> Doc.BindView id
-            
-                    let buttonP (policy:Policy) enabledW act =
-                        let  text = string policy + " Policy: "
-                        Doc.Button text [ enableAtt enabledW ] act 
-            
-                    let checkbox txt var =
-                        span [] [
-                            text txt
-                            Doc.CheckBox [] var
-                        ]
-            
-                    let loginMessageDoc = 
-                        View.Do {
-                            let! userO      = userO .View
-                            let! agentO     = agentO.View
-                            let! policyType = policyType.View
-                            let  greeting   = userO 
-                                                |> Option.map (fun user -> sprintf "Hello %s %s." user?idToken?given_name user?idToken?family_name)
-                                                |> Option.defaultValue ""
-                                                |> text
-                                                |> Seq.singleton
-                                                |> h3 []
-                            match agentO, userO, policyType with
-                            | None, _     , _           -> return text "Select your options and click on <Create Agent>."
-                            | _   , Some _, SignIn      -> return   greeting
-                            | _   , Some _, SignUp      -> return [ greeting ; text <| sprintf "To Sign Up click on <Logout> first!" ] |> Doc.Concat
-                            | _   , None  , SignUp      -> return text <| sprintf "To Sign Up make sure to really be logged out by clicking on <Logout> first and then click on Sign Up Popup or Redirect!"
-                            | _   , None  , EditProfile -> return text <| sprintf "Sign In before invoking Edit Profile!"
-                            | _   , _     , pol         ->
-                                let v = string pol
-                                return [ greeting ; text <| sprintf "To %s click on <%s Popup> or <%s Redirect>." v v v ] |> Doc.Concat
-                        } |> Doc.BindView id
-            
-                    let signInW        = V(agentO.V.IsSome && userO.V.IsNone)
-                    let signUpW        = V(agentO.V.IsSome && userO.V.IsNone)
-                    let editProfileW   = V(agentO.V.IsSome && userO.V.IsSome)
-                    let resetPasswordW = V(agentO.V.IsSome                  )
-            
-                    let createAgent () = 
-                        UserAgentApplication(
-                            Configuration.New(auth = AuthOptions.New( 
-                                                    clientId          = applicationId.Value
-                                                ,   authority         = authority    .Value
-                                                ,   validateAuthority = false) 
-                        )
-                                                        //,   tokenReceivedCallback       = callback
-                                                        //,   validateAuthority           = false
-                                                        //,   navigateToLoginRequestUrl   = true
-                                                        //,   storeAuthStateInCookie      = false
-                                                        //,   state                       = ref.Value
-                        ) 
-                        |>! fun agent -> agent.handleRedirectCallback(FuncWithArgs<_,_> redirectCallback)
-                        |> Some
-                        |> agentO.Set
-                        editingB.Set false
-                        checkUser()
-            
-                    let setAndRunPolicy policy =
-                        async {
-                            policyType.Set policy
-                            let! _ = authorityW |> View.GetAsync
-                            createAgent()
-                            executeRedirect()
-                        } |> Async.Start
-            
-                    let actSignIn        () = setAndRunPolicy SignIn       
-                    let actSignUp        () = setAndRunPolicy SignUp       
-                    let actEditProfile   () = setAndRunPolicy EditProfile  
-                    let actResetPassword () = setAndRunPolicy ResetPassword
-                    let actObtainToken   () = 
-                        async { 
-                            match agentO.Value with
-                            | None -> ()
-                            | Some agent ->
-                                let! token =  agent.acquireTokenSilent (authParms ()) |> Promise.AsAsync
-                                printfn "Preamble actObtainToken %A" token
-                        } |> Async.Start
-            
-                    let goInside         () = JS.Window.Location.Replace goInsideLink.Value
-            
-                    let updateOnEnter (state:PreambleState) : PreambleState * (unit -> unit) option =
-                        match state with
-                        | GoToSignIn             -> GoingToSignIn      , (if forceLoginB.Value then Some logout else None)
-                        | GoingToSignIn          -> WentToSignIn       , Some actSignIn
-                        | GoToSignUp             -> GoingToSignUp      , Some logout
-                        | GoingToSignUp          -> WentToSignUp       , Some actSignUp
-                        | GoToEditProfile        -> WentToEditProfile  , Some actEditProfile
-                        | GoToResetPassword      -> WentToResetPassword, Some actResetPassword
-                        | WentToSignIn
-                        | WentToSignUp
-                        | WentToEditProfile
-                        | WentToResetPassword    -> if JS.Window.Location.Hash <> "" then state     , Some ignore else
-                                                    if goInsideLink.Value      =  "" then InPreamble, None        else
-                                                    if userO.Value.IsSome 
-                                                    then WentInside   , Some goInside
-                                                    else GoingToSignIn, Some logout                                        
-                        | WentInside             -> if goInsideLink.Value = "" then InPreamble, None else
-                                                    GoingToSignIn, Some logout
-                        | InPreamble             -> InPreamble   , None
-            
-                    let updateState() =
-                        checkUser()
-                        printfn "Preamble updateState ENTERING STATE %A, user = %A" preambleState.Value userO.Value.IsSome
-                        let rec updateState state =
-                            let newState, action = updateOnEnter state
-                            if action.IsNone && newState <> InPreamble then updateState newState else
-                            newState, action
-                        let newState, action = updateState preambleState.Value
-                        preambleState.Set newState
-                        async {
-                            while preambleState.Value <> PreambleState.Parse (storage.GetItem "preambleState") do
-                                do! Async.Sleep 50
-                            printfn "Preamble updateState EXITING STATE %A = %s" preambleState.Value <| storage.GetItem("preambleState")
-                            action |> Option.iter (fun f -> f())
-                        } |> Async.Start
-            
-                    if createOnStartB.Value && (not editingB.Value) then 
-                        createAgent()
-                        updateState()
-            
-                    let DoNotShowUI = preambleState.Value <> InPreamble && createOnStartB.Value && not editingB.Value
-            
-                    let getTokenO0() = async {
-                        match userO.Value, agentO.Value with
-                        | Some user, Some agent  -> 
-                            try let! auth = agent.acquireTokenSilent(authParms () ) |> Promise.AsAsync 
-                                return Some auth.accessToken
-                            with e ->
-                                let! auth = Async.FromContinuations(fun (ok, ko, ca) -> 
-                                        agent.handleRedirectCallback( FuncWithArgs<_,_> (fun (error: AuthError, resp: AuthResponse) ->
-                                            try 
-                                                if box error <> null then 
-                                                    consoleLog ("redirectCallback ERROR: ", error)
-                                                    ko (exn error.errorMessage)
-                                                elif box resp  <> null then 
-                                                    consoleLog ("redirectCallback: "      , resp )
-                                                    ok resp
-                                            with e -> printfn "Preamble getTokenO0 exception %A %s" e e.StackTrace
-                                        ) )
-                                        agent.acquireTokenRedirect( authParms () ) 
-                                    )
-                                return Some auth.accessToken
-                        | _ -> return None
-                    }
-            
-                    div [] [
-                        h1  [] [ text      <| sprintf"Msal.js %s (Microsoft authentication library) & Azure AD B2C" version ]
-                        br  [] []
-                        table [] [
-                            tbody [] [
-                                row0 None (Doc.Button   "Create Agent"     [ enabledV () ] createAgent    )
-                                     None (checkbox     "Create on Start"                  createOnStartB )
-                                row0 None (Doc.Button   "Edit"            [ disabledV() ]  editOn         )
-                                     None (checkbox     "Refresh before Edit"              refreshBeforeB )
-                            ]
-                        ]
-                        br  [] []
-                        table [ attr.style "width: 95%" ] [
-                            tbody[] [
-                                row "preamble state" 
-                                    <| Doc.Concat [
-                                    select0   []     preambleState          preambleStates 
-                                    text "Refresh (F5) to update state"
-                                ]
-                                input  "App Id"                                                   applicationId
-                                input  "tenant Name"                                              tenantName
-                                input  "ref/state"                                                ref
-                                input  "extra query parameters"                                   extraQueryParms
-                                input  "go Inside link"                                           goInsideLink
-                                input0 ([   checkbox "Force login dialog" forceLoginB
-                                            buttonP SignIn          signInW         actSignIn
-                                        ] |> Doc.Concat                                         ) signInPolicy       
-                                input0 (buttonP SignUp          signUpW         actSignUp       ) signUpPolicy       
-                                input0 (buttonP EditProfile     editProfileW    actEditProfile  ) editProfilePolicy  
-                                input0 (buttonP ResetPassword   resetPasswordW  actResetPassword) resetPasswordPolicy
-                                tr [][]
-                                select "policy type" [ enabledV() ] policyType          policies  
-                                input  "Authority"                  authority
-                                input0 (Doc.Button "Scopes" [ enableAtt editProfileW ] actObtainToken ) scopes
-                            ]
-                        ]            
-                        br  [] []
-                        div [] [ Doc.Button   "Logout"           [ disabledV() ] logout          ]
-                        loginMessageDoc
-                        div [] [ buttonV      "Popup"              false         executePopup    ]
-                        div [] [ buttonV      "Redirect"           false         executeRedirect ]
-                        br  [] []
-                        b[] [ text "Token: " ]
-                        text token.V
-                        br  [] []
-                        div [] [ Doc.Button   "Check User"       [ disabledV() ] checkUser      ]
-                        div [] [ Doc.Button   "Get Token"        [ disabledV() ] (fun () -> getTokenO0() |> Async.map consoleLog |>Async.Start )]
-                        h5[] [ text "User: " ]
-                        View.Do {
-                            let! userO = userO.View
-                            match userO with
-                            | None      -> return Doc.Empty
-                            | Some user ->
-                            return
-                                [ 
-                                    user         |> tableObject (fst >> (<>) "idToken") 
-                                    h4 [] [ text "idToken" ]
-                                    user?idToken |> tableObject (fun _ -> true)
-                                ] |> Doc.Concat
-                        } |> Doc.BindView id
-                        a [ attr.href "https://gist.github.com/amieres/bc8e39f2e1e6e54fd1dfaeeae24ad304"] [ text "gist" ]
                     ]
-                    |> fun doc -> if not DoNotShowUI then Doc.Run JS.Document.Body doc
             
-                [< SPAEntryPoint >]    
-                let main =
-                    if JS.Window.Location.Search <> "" then 
-                        JS.Window.Location.Replace (JS.Window.Location.Href.Split '?').[0] 
-                    else
-                    script [ attr.src <| sprintf @"https://secure.aadcdn.microsoftonline-p.com/lib/%s/js/msal.min.js" version
-                             on.afterRender (fun _ ->
-                                async {
-                                    while isUndefined JS.Window?Msal do
-                                        do! Async.Sleep 50
-                                    ui()
-                                } |> Async.Start
-                             )
-                        ] []
-                    |> Doc.Run JS.Document.Head
+                let elemsUI doc addNew =
+                    div [] [
+                        doc
+                        Doc.Button "New" [] addNew
+                    ]
             
+                let lensFloat2Str(v:Var<float>) = Var.Make (V (sprintf "%A" v.V)) (ParseO.parseDoubleO >> function Some d when d <> v.Value -> v.Set d |_->())
+                let textLine txtW = div [] [ textView txtW ]
+            
+                let lensStrO (sel:Var<string option>) =
+                    Var.Make 
+                        (V ( match sel.V with Some s -> s |_-> "" )) 
+                        (fun s -> if s = "" then sel.Set None
+                                  else Some s |> sel.Set)
+            
+                let mapVarO toB ofBO (sel:Var<_ option>) = 
+                    Var.Make(V (sel.V |> Option.map toB)) 
+                            (function Some s -> ofBO s |> Option.iter (Some >> sel.Set) |_-> sel.Set None) 
+            
+                //let selectorLens toStr ofStrO (sel:Var<_ option>) =
+                //    Var.Make 
+                //        (V ( match sel.V with Some v -> sprintf "%s" (toStr v) |_-> "" )) 
+                //        (fun s -> if s = "" then sel.Set None
+                //                  else ofStrO s |> Option.iter (Some >> sel.Set) )
+                let selectorLens toStr ofStrO = mapVarO toStr ofStrO >> lensStrO
+            
+                let selectorLensInt    sel = selectorLens (fun (v          ) -> v   .ToString()) (ParseO.parseIntO                      ) sel
+                let selectorLensGuid   sel = selectorLens (fun (v          ) -> v   .ToString()) (ParseO.parseGuidO                     ) sel
+                let selectorLensGuidId sel = selectorLens (fun (v:GuidId<_>) -> v.Id.ToString()) (ParseO.parseGuidO >> Option.map GuidId) sel
+            
+                let unselectorV<'K> : Var<'K option> = Var.Make (View.Const None) ignore
+            
+                let wrapUI elem f = (fun a b c -> f a b c >> Seq.singleton >> elem [] )
+                let simpleButton txt f = Doc.Button txt [] (f >> ignore)
+                let newButton   f = simpleButton "New" f
+                let orderedList l = ol [] [ l ]
+            
+            module AF =
+                open FsRoot
+                open AppFramework
+            
+                type PlugInBuilder() =
+                    member __.Zero() = {
+                        plgName    = "Main"
+                        plgVars    = [| |]  
+                        plgViews   = [| |]  
+                        plgDocs    = [| |]  
+                        plgActions = [| |]
+                        plgQueries = [| |]
+                    }
+                    member this.Yield(()) = this.Zero()
+                    member __.For(coll:seq<_>, func) =
+                        let ie = coll.GetEnumerator()
+                        while ie.MoveNext() do
+                            func ie.Current
+                    [<CustomOperation("name"   )>]
+                    member __.Name  (plg:PlugIn, name     ) = { plg with plgName    = name }
+                    [<CustomOperation("var"    )>]  
+                    member __.AddVar(plg:PlugIn, name, var) = { plg with plgVars    = [| newVar name var |] |> Array.append    plg.plgVars    }
+                    [<CustomOperation("doc"    )>]  
+                    member __.AddDoc(plg:PlugIn, name, doc) = { plg with plgDocs    = [| newDoc name doc |] |> Array.append    plg.plgDocs    }
+                    [<CustomOperation("docDyn" )>]  
+                    member __.AddDocF(plg:PlugIn, name, docF)= { plg with plgDocs    = [| newDoc name (lazy LayoutEngine.turnToView docF) |] |> Array.append    plg.plgDocs    }
+                    [<CustomOperation("act"    )>]
+                    member __.AddAct(plg:PlugIn, name, act) = { plg with plgActions = [| newAct name act |] |> Array.append    plg.plgActions }
+                    [<CustomOperation("actOpt"    )>]
+                    member __.AddActO(plg:PlugIn, name,actO) = match actO with 
+                                                               | Some act -> { plg with plgActions = [| newAct name act |] |> Array.append    plg.plgActions }
+                                                               | None -> plg
+                    [<CustomOperation("mainDoc")>]
+                    member __.InsDoc(plg:PlugIn, name, doc) = { plg with plgDocs    = [| newDoc name doc |] |> Array.append <| plg.plgDocs    }
+                    [<CustomOperation("view"   )>]  
+                    member __.AddViw(plg:PlugIn, name, viw) = { plg with plgViews   = [| newViw name viw |] |> Array.append    plg.plgViews   }
+                    [<CustomOperation("merge"  )>]
+                    member __.Merge (plg:PlugIn, prefix, p2:PlugIn) = 
+                        { plg with
+                                plgVars    = Array.append plg.plgVars    (p2.plgVars    |> Array.map (fun v -> { v with varName = prefix + v.varName } ) )
+                                plgViews   = Array.append plg.plgViews   (p2.plgViews   |> Array.map (fun w -> { w with viwName = prefix + w.viwName } ) )
+                                plgDocs    = Array.append plg.plgDocs    (p2.plgDocs    |> Array.map (fun d -> { d with docName = prefix + d.docName } ) )
+                                plgActions = Array.append plg.plgActions (p2.plgActions |> Array.map (fun a -> { a with actName = prefix + a.actName } ) )
+                                plgQueries = Array.append plg.plgQueries (p2.plgQueries |> Array.map (fun q -> { q with qryName = prefix + q.qryName } ) )
+                        }
+            
+                let plugin = PlugInBuilder()
+                let addPlugIn2 plg =
+                    addPlugIn  plg
+                    match Seq.tryHead plg.plgDocs with
+                    | Some doc -> mainDocV.Set (plg.plgName + "." + doc.docName)
+                    |_->()
+            
+                let concatMainDocs plugins = 
+                    plugins 
+                    |> Seq.choose (fun plg -> Seq.tryHead plg.plgDocs) 
+                    |> Seq.choose (function {docDoc = (LazyDoc d)}-> Some d.Value|_-> None) 
+                    |> Doc.Concat
+            
+                type ListModelData<'K, 'D when 'K : equality> = {
+                    elems  : ListModel<'K, 'D>
+                    doc    : Doc
+                    selV   : Var<'K option>
+                    add    : unit -> 'D  
+                    delCur : unit -> unit
+                    getDoc : View<'K option> -> Var<'D> -> Doc
+                    def    : 'D
+                } with 
+                    member this.PlugIn selectorLens = plugin {
+                        doc    "list" (lazy this.doc         )
+                        doc    "cur"  (lazy this.CurrentDoc  )
+                        var    "sel"  (selectorLens this.selV)
+                        act    "add"  (this.add >> ignore    )
+                        act    "del"  this.delCur
+                    }
+                    member this.CurrentW =
+                        this.selV.View 
+                        |> View.Bind (Option.map this.elems.TryFindByKeyAsView >> View.insertWO) 
+                        |> View.Map  (Option.bind id >> Option.defaultValue this.def)
+                    member this.CurrentV =
+                        Var.Make this.CurrentW
+                                (fun v -> match this.selV.Value with Some k when this.elems.ContainsKey k -> this.elems.Add v |_-> ())
+                    member this.CurrentDoc   = this.getDoc this.selV.View this.CurrentV
+            
+                //type ListModelDataGuidId<'D> = ListModelData<GuidId<'D> , 'D>
+                //type ListModelDataGuid<  'D> = ListModelData<System.Guid, 'D>
+                //type ListModelDataInt<   'D> = ListModelData<int        , 'D>
+            //
+                //type ListModelDataGuidId<'D> with
+                //    member this.PlugIn () = (box this |> unbox<ListModelData<GuidId<'D>, 'D>>).PlugIn Util.selectorLensGuidId
+            
+            module LayoutEngine =
+                open LayoutEngine
+                module AF = AppFramework
+            
+                let addLayout0 lyt = 
+                    addLayout lyt
+                    AF.mainDocV.Set lyt.lytName
+            
+            module LM =
+                open Util
+            
+                let getDoc keyF def newF elUI =
+                    let elements  : ListModel<_,_> = ListModel.Create keyF []
+                    let selected0 : Var<_ option>  = Var.Create None
+                    let selectedV : Var<_ option>  = 
+                        Var.Make   
+                            selected0.View 
+                            (function Some k when elements.ContainsKey k -> Some k |_-> None
+                             >> fun v -> if selected0.Value <> v then selected0.Set v )
+                    let addNew () =
+                        let n = newF()
+                        elements.Add n
+                        selectedV.Set (Some <| keyF n)
+                        n
+                    let delete  k = fun () -> selectedV.Set None ; elements.RemoveByKey k
+                    let list      = elements.DocLens (fun k v -> elUI selectedV (delete k) (View.Const (Some k)) v )
+                    {
+                        AF.elems  = elements
+                        AF.doc    = list
+                        AF.selV   = selectedV
+                        AF.delCur = fun () -> selectedV.Value |> Option.iter (fun k -> delete k () )
+                        AF.add    = addNew
+                        AF.getDoc = elUI selectedV ignore
+                        AF.def    = def
+                    }
+                let setCurrentDoc docF li = { li with AF.getDoc = docF Util.unselectorV ignore }
+                let addElements (li:AF.ListModelData<_,_>) elems = li.elems.AppendMany elems
+            
+            module LMX =
+                open Util
+                open System
+            
+                let addNewO newF firstKey nextKey=
+                    let mutable k = firstKey
+                    fun () ->
+                        let e = k, newF()
+                        k <- nextKey k
+                        e
+            
+                let elemUI2 elemUI a b c (v:Var<_>) = elemUI a b c (v.Lens snd (fun (i, _) nv -> i, nv ) )
+            
+                let getDocInt    def newElem elemUI = addNewO newElem 0                          ((+) 1)                             |> LM.getDoc fst (-1               , def) <| elemUI2 elemUI
+                let getDocGuid   def newElem elemUI = addNewO newElem (Guid.NewGuid())           (fun _ -> Guid.NewGuid())           |> LM.getDoc fst (       Guid.Empty, def) <| elemUI2 elemUI
+                let getDocGuidId def newElem elemUI = addNewO newElem (Guid.NewGuid() |> GuidId) (fun _ -> Guid.NewGuid() |> GuidId) |> LM.getDoc fst (GuidId Guid.Empty, def) <| elemUI2 elemUI
+                                                        : AF.ListModelData<GuidId<'C>, GuidId<'C> * 'C>
+            
+                let setCurrentDoc docF = elemUI2 docF |> LM.setCurrentDoc
+            
+                let addElements (li:AF.ListModelData<_,_>) elems = elems |> Seq.iter (fun v -> (li.add() |> fst, v) |> li.elems.Add )
+            
+            module Calculado =
+                open FsRoot
+                open Html
+            
+                type Calculado = {
+                    id     : GuidId<Calculado>
+                    valorA : float
+                    valorB : float
+                    valorC : float
+                }
+            
+                let newCalc () = {
+                    id     = System.Guid.NewGuid() |> GuidId 
+                    valorA = 0.
+                    valorB = 0.
+                    valorC = 0.
+                }
+            
+                let def = { newCalc() with id = System.Guid.Empty |> GuidId }
+            
+                let calcUI allowDelete (selectedV:Var<_ option>) delete (k:View<_ option>) (calc:Var<Calculado>) =
+                    let disabledW = V (Option.isNone k.V              )
+                    let selectedW = V (selectedV.V = k.V              )
+                    let backColor = V (if selectedW.V then "background-color:lightblue" else "" )
+                    div [ attr.styleDyn backColor ; on.click (fun _ _ -> View.Get selectedV.Set k ) ] [
+                        Doc.Button "x" [ attr.styleDyn (V (if not allowDelete || disabledW.V then "display:None" else "") ) ] delete
+                        Util.textLine <| V(sprintf "(%A, %A, %A)" calc.V.valorA calc.V.valorB calc.V.valorC ) 
+                    ]
+            
+                let calcUIDet allowDelete (selectedV:Var<_ option>) delete (k:View<_ option>) (calc:Var<Calculado>)  =
+                    let valorA    = Util.lensFloat2Str (Lens calc.V.valorA)
+                    let valorB    = Util.lensFloat2Str (Lens calc.V.valorB)
+                    let valorC    = Util.lensFloat2Str (Lens calc.V.valorC)
+                    let dup       = V (calc.V.valorA * 2.             )
+                    let mult      = V (calc.V.valorA * calc.V.valorB  )
+                    let multAdd   = V (mult.V + calc.V.valorC         )
+                    let selectedW = V (selectedV.V = k.V              )
+                    let disabledW = V (Option.isNone k.V              )
+                    let backColor = V (if disabledW.V then "display:none; background-color:lightgray; color:gray" elif selectedW.V then "background-color:lightblue" else "" )
+                    div [ attr.styleDyn backColor ; on.click (fun _ _ -> View.Get selectedV.Set k ) ] [
+                        Doc.Button "x" [ attr.styleDyn (V (if  not allowDelete || disabledW.V then "display:none" else "") ) ] delete
+                        Util.inputLabel [] disabledW "valor A: " valorA
+                        Util.inputLabel [] disabledW "valor B: " valorB
+                        Util.inputLabel [] disabledW "valor C: " valorC
+                        Util.textLine <| V(sprintf "%A = %s * 2"        dup.V       valorA.V                    ) 
+                        Util.textLine <| V(sprintf "%A = %s * %s"       mult.V      valorA.V valorB.V           ) 
+                        Util.textLine <| V(sprintf "%A = %s * %s + %s"  multAdd.V   valorA.V valorB.V valorC.V  ) 
+                    ]
+            
+                let calcUIEdit (selectedV:Var<_ option>) delete (k:View<_ option>) (calc:Var<Calculado>) =
+                    let selectedW = V (selectedV.V = k.V              )
+                    V(
+                        if selectedW.V 
+                        then calcUIDet true  selectedV delete k calc
+                        else calcUI    false selectedV delete k calc)
+                        |> Doc.BindView id
+            
+            
+                let list0 = LMX.getDocInt             def newCalc (calcUI     false |> Util.wrapUI li )
+                let list2 = LMX.getDocGuidId          def newCalc (calcUIDet  true  |> Util.wrapUI li )
+                let list3 = LM .getDoc(fun e -> e.id) def newCalc (calcUIEdit       |> Util.wrapUI li )
+            
+                let list1 = list0 |> LMX.setCurrentDoc (calcUIDet false)
+            
+                [ newCalc() ; newCalc() ] |> LMX.addElements list1
+                [ newCalc() ; newCalc() ] |> LM.addElements  list3
+            
+                module AF = AppFramework
+            
+                AF.plugin {
+                    name   "Calc"
+                    docDyn "main"   (fun _ -> Doc.Concat [ 
+                                        Util.orderedList list1.doc
+                                        list1.CurrentDoc
+                                        Util.orderedList list2.doc
+                                        Util.newButton   list2.add
+                                        Util.orderedList list3.doc
+                                        Util.newButton   list3.add
+                                    ])
+                    merge  "calc1_" (list1.PlugIn Util.selectorLensInt   )
+                    merge  "calc2_" (list2.PlugIn Util.selectorLensGuidId)
+                    merge  "calc3_" (list3.PlugIn Util.selectorLensGuidId)
+                }
+                |> AF.addPlugIn2
+            
+                LayoutEngine.newLyt "CalcLyt" """
+                    split horizontal 0-50-100 AppFramework.AppFwkClient main
+                    main div "overflow:auto" Calc.main 
+                """
+                |> LayoutEngine.addLayout0
             
