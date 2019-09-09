@@ -3351,15 +3351,15 @@ namespace FsRoot
                     let lensVarStr(v:Var<float>) = Var.Make (V (sprintf "%A" v.V)) (ParseO.parseDoubleO >> function Some d when d <> v.Value -> v.Set d |_->())
                     let textLine txtW = div [] [ textView txtW ]
                 
-                    module KeylessList =
+                    module ExternalKeyList =
                 
-                        let createListModel newF elUI =
+                        let createListModel firstKey nextKey newF elUI =
                             let elements : ListModel<_,_> = ListModel.Create fst []
                             let addNew = 
-                                let mutable i = 0
+                                let mutable k = firstKey
                                 fun () ->        
-                                    (i, newF()) |> elements.Add
-                                    i <- i + 1
+                                    (k, newF()) |> elements.Add
+                                    k <- nextKey k
                             let delete k () = elements.RemoveByKey k
                             let doc = elements.DocLens (fun k v -> elUI (delete k) (v.Lens snd (fun (i, _) nv -> i, nv ) ) )
                             elements, addNew, doc
@@ -3370,9 +3370,12 @@ namespace FsRoot
                                 Doc.Button "New" [] addNew
                             ]
                 
-                        let lazyDoc elemUI newElem =
-                            let elems, addNew, doc = createListModel newElem elemUI
+                        let lazyDoc firstKey nextKey elemUI newElem =
+                            let elems, addNew, doc = createListModel firstKey nextKey newElem elemUI
                             lazy elemsUI doc addNew 
+                
+                        let lazyDocInt  elemUI newElem = lazyDoc 0 ((+) 1) elemUI newElem
+                        let lazyDocGuid elemUI newElem = lazyDoc (System.Guid.NewGuid()) (fun _ -> System.Guid.NewGuid()) elemUI newElem
                 
                 
                     module AF =
@@ -3418,7 +3421,7 @@ namespace FsRoot
                             textLine <| V(sprintf "%A = %s * %s + %s"  multAdd.V   valorA.V valorB.V valorC.V  ) 
                         ]
                 
-                    [ "Calc", KeylessList.lazyDoc calcUI newCalc ]
+                    [ "Calc", ExternalKeyList.lazyDocGuid calcUI newCalc ]
                     |> AF.addDocs "Calc"
                 
                 

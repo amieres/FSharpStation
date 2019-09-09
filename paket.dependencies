@@ -67,6 +67,7 @@ group Testing
     nuget Expecto.FsCheck
     nuget Logary.Adapters.Facade
     nuget canopy
+    nuget Http.fs
 
 group Other
     framework: net461, net46
@@ -106,4 +107,4 @@ group Test2
     nuget WebSharper.UI
     nuget WebSharper.FSharp
     nuget Microsoft.AspNetCore.All <= 2.1
-    nuget System.Identity.Model
+    #nuget System.Identity.Model

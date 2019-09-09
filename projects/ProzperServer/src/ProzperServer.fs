@@ -2689,6 +2689,54 @@ namespace FsRoot
             }
         
         
+        module ArsWeb =
+            open WebSharper
+            open WebSharper.Sitelets
+            open WebSharper.JavaScript
+            open FSharp.Data
+        
+            type PersonData = string
+        
+            type ApiClient = {
+                client      : string
+                password    : string
+            }
+        
+            type Page = {
+                page : int
+            }
+        
+            type ApiEndPoint =
+                | [< EndPoint "POST /client/register"; Json "apiClient" >] RegisterApiClient of apiClient: ApiClient
+                | [< EndPoint "GET /agents"          ; Json "page"      >] GetAgents of client: string * password: string * page: int
+        
+                //| [< EndPoint "GET /people"                     >] GetPeople
+                //| [< EndPoint "GET /people"                     >] GetPerson of id: int
+                //| [< EndPoint "POST /people"; Json "personData" >] CreatePerson of personData: PersonData
+                //| [< EndPoint "PUT /people"; Json "personData"  >] EditPerson of personData: PersonData
+                //| [< EndPoint "DELETE /people"                  >] DeletePerson of id: int
+        
+            type EndPoint =
+                | [<EndPoint "/api">] Api of ApiEndPoint
+        
+            let newOptions() : RequestOptions = JSObject() |> box |> unbox
+        
+            let baseUrl         = "https://stage.admin.prozper.com"
+            let router          = Router.Infer<EndPoint>()
+        
+            let registrarCliente client password = async {
+                try
+                    let  ep  = RegisterApiClient { client = client ; password = password } |> EndPoint.Api
+                    match Router.Write router ep with
+                    | Some path  ->
+                        let  url = baseUrl.TrimEnd('/') + path.ToLink()
+                        let  r   = Http.RequestString(url, body= TextRequest  path.Body.Value)
+                        return    Ok r
+                    | _ -> return failwith "Failed to map endpoint to request"
+                with e ->
+                    return Result.Error (e.Message + "\n" + e.StackTrace)
+            }
+                
          [< JavaScript >]
         type DataEvento =
         | AgregarAliados            of (Aliado[]                                                   )

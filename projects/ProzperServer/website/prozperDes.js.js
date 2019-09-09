@@ -362,7 +362,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 (function()
 {
  "use strict";
- var Global,FsRoot,ProzperServer,ClientSide,MainProgram,WebSharper,Obj,UI,Var$1,LibraryJS,AppFramework,PlugIn,ModeloUI,Aliado,Operators,View,Var,Lazy,RenderAliados,RenderAliado,FormaRegistro,FormaDatos,FormaContactos,FormaFormasPago,ReporteConsolidado,TablaPagos,ListaDocs,FormaAutorizacion,FormaContrato,Transacciones,Pendientes,EventTarget,Node,JavaScript,JS,Unchecked,LayoutEngineModule,Option,TypesV0,Aliado$1,Aliado$2,Templating,Runtime,Server,TemplateInstance,Arrays,ProviderBuilder,Handler,prozperDes$js_Templates,prozperDes$js_GeneratedPrintf,prozperDes$js_Router,Doc,Rpc,IdAliado,Modelo,ConcreteVar,Snap,SC$1,ListModel,PlugInVar,PlugInView,PlugInDoc,Pervasives,LazyExtensionsProxy,LazyRecord,ProzperServer_GeneratedPrintf,Seq,Library,SortWith,Buscar,Collections,FSharpSet,Set,Strings,CorreoElectronico,DatosPersonales,CorreoElectronico$1,Telefono,Direccion,Monads,AsyncResultBuilder,Refresh,System,Guid,VariousUI,HtmlModule,attr,ViewBuilder,StatusAliado,List,CuentaBancaria,RoutingNumber,NumeroCuenta,Utils,FormaPago,Result,Archivo,Extensions,ListModel$1,Date,String,TipoArchivo,StatusArchivo,Blob,CuentaPago,FormaFirma,PremisasCalculo,PlugInAction,Msal,WindowOrWorkerGlobalScope,LayoutEngine,SC$2,IdForAuthorize,DatosPersonales$1,DiaPago,TipoAliado,Numeric,SC$3,List$1,Dictionary,HashSet,Client,Abbrev,Async,Fresh,Builder,BuilderP,Eff,EffBuilder,AsyncResultBuilderP,Slice,Msal$1,Policy,Configuration,AuthOptions,Control,MailboxProcessor,Mailbox,EndPoint,Router,Remoting,Rpc0,IdPayment,Calculado,KeylessList,AF,PlugInQuery,FSharpMap,Enumerator,T,BalancedTree,T$1,Genero,ParseO,Pais,Telefono$1,TipoTelefono,Direccion$1,TipoDireccion,Estado,ZonaPostal,AsyncResult,AjaxRemotingProvider,Array,TarjetaCredito,Subscripcion,NumeroTarjeta,CuentaBancaria$1,TarjetaCredito$1,Object,FromView,Concurrency,AttrProxy,Array$1,TipoCuenta,Storage,AttrModule,GeneratedPrintf,LayoutEngine_Templates,LayoutEngine_GeneratedPrintf,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,Serializer,Expiracion,TipoTarjeta,DictionaryUtil,CheckedInput,Client$1,Templates,Pojo,Error,TimeoutException,Promise,Sitelets,RouterOperators,RouterModule,Route,SC$4,Calculado$1,MapUtil,Tree,IdAddress,IdSubscription,Docs,AsyncBody,CT,Attrs,DomUtility,SC$5,ArrayStorage,Var$2,ConceptoPago,Enlace,Layout,DateUtil,WcSplitterT,MatchFailureException,DocElemNode,CharacterData,SC$6,FSharpEvent,LinkedList,AuthenticationParameters,Account,Router$1,List$2,XhrProvider,Pair,Result$1,Scheduler,CancellationTokenSource,DynamicAttrNode,Measures,Hoverable,Hoverable$1,Event,UIEvent,ResizeObserver,SC$7,Elt,Attrs$1,Dyn,Prepare,An,Settings,Mailbox$1,HashSetUtil,Event$1,Event$2,NonStandardPromiseRejectionException,SC$8,Map,OperationCanceledException,Queue,SC$9,SC$10,AggregateException,KeyCollection,Updates,Docs$1,RunState,NodeSet,Anims,SC$11,Char,Json,StringEncoding,FormatException,String$1,SC$12,AppendList,LinkedListEnumerator,PathUtil,Easing,HashSet$1,DomNodes,SC$13,IntelliFactory,Runtime$1,Math,$,console,Date$1,JSON,Reflect,String$2;
+ var Global,FsRoot,ProzperServer,ClientSide,MainProgram,WebSharper,Obj,UI,Var$1,LibraryJS,AppFramework,PlugIn,ModeloUI,Aliado,Operators,View,Var,Lazy,RenderAliados,RenderAliado,FormaRegistro,FormaDatos,FormaContactos,FormaFormasPago,ReporteConsolidado,TablaPagos,ListaDocs,FormaAutorizacion,FormaContrato,Transacciones,Pendientes,EventTarget,Node,JavaScript,JS,Unchecked,LayoutEngineModule,Option,TypesV0,Aliado$1,Aliado$2,Templating,Runtime,Server,TemplateInstance,Arrays,ProviderBuilder,Handler,prozperDes$js_Templates,prozperDes$js_GeneratedPrintf,prozperDes$js_Router,Doc,Rpc,IdAliado,Modelo,ConcreteVar,Snap,SC$1,ListModel,PlugInVar,PlugInView,PlugInDoc,Pervasives,LazyExtensionsProxy,LazyRecord,ProzperServer_GeneratedPrintf,Seq,Library,SortWith,Buscar,Collections,FSharpSet,Set,Strings,CorreoElectronico,DatosPersonales,CorreoElectronico$1,Telefono,Direccion,Monads,AsyncResultBuilder,Refresh,System,Guid,VariousUI,HtmlModule,attr,ViewBuilder,StatusAliado,List,CuentaBancaria,RoutingNumber,NumeroCuenta,Utils,FormaPago,Result,Archivo,Extensions,ListModel$1,Date,String,TipoArchivo,StatusArchivo,Blob,CuentaPago,FormaFirma,PremisasCalculo,PlugInAction,Msal,WindowOrWorkerGlobalScope,LayoutEngine,SC$2,IdForAuthorize,DatosPersonales$1,DiaPago,TipoAliado,Numeric,SC$3,List$1,Dictionary,HashSet,Client,Abbrev,Async,Fresh,Builder,BuilderP,Eff,EffBuilder,AsyncResultBuilderP,Slice,Msal$1,Policy,Configuration,AuthOptions,Control,MailboxProcessor,Mailbox,EndPoint,Router,Remoting,Rpc0,IdPayment,Calculado,ExternalKeyList,AF,PlugInQuery,FSharpMap,Enumerator,T,BalancedTree,T$1,Genero,ParseO,Pais,Telefono$1,TipoTelefono,Direccion$1,TipoDireccion,Estado,ZonaPostal,AsyncResult,AjaxRemotingProvider,Array,TarjetaCredito,Subscripcion,NumeroTarjeta,CuentaBancaria$1,TarjetaCredito$1,Object,FromView,Concurrency,AttrProxy,Array$1,TipoCuenta,Storage,AttrModule,GeneratedPrintf,LayoutEngine_Templates,LayoutEngine_GeneratedPrintf,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,Serializer,Expiracion,TipoTarjeta,DictionaryUtil,CheckedInput,Client$1,Templates,Pojo,Error,TimeoutException,Promise,Sitelets,RouterOperators,RouterModule,Route,SC$4,Calculado$1,MapUtil,Tree,IdAddress,IdSubscription,Docs,AsyncBody,CT,Attrs,DomUtility,SC$5,ArrayStorage,Var$2,ConceptoPago,Enlace,Layout,DateUtil,WcSplitterT,MatchFailureException,DocElemNode,CharacterData,SC$6,FSharpEvent,LinkedList,AuthenticationParameters,Account,Router$1,List$2,XhrProvider,Pair,Result$1,Scheduler,CancellationTokenSource,DynamicAttrNode,Measures,Hoverable,Hoverable$1,Event,UIEvent,ResizeObserver,SC$7,Elt,Attrs$1,Dyn,Prepare,An,Settings,Mailbox$1,HashSetUtil,Event$1,Event$2,NonStandardPromiseRejectionException,SC$8,Map,OperationCanceledException,Queue,SC$9,SC$10,AggregateException,KeyCollection,Updates,Docs$1,RunState,NodeSet,Anims,SC$11,Char,Json,StringEncoding,FormatException,String$1,SC$12,AppendList,LinkedListEnumerator,PathUtil,Easing,HashSet$1,DomNodes,SC$13,IntelliFactory,Runtime$1,Math,$,console,Date$1,JSON,Reflect,String$2;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  ProzperServer=FsRoot.ProzperServer=FsRoot.ProzperServer||{};
@@ -507,7 +507,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Rpc0=ProzperServer.Rpc0=ProzperServer.Rpc0||{};
  IdPayment=TypesV0.IdPayment=TypesV0.IdPayment||{};
  Calculado=ModeloUI.Calculado=ModeloUI.Calculado||{};
- KeylessList=Calculado.KeylessList=Calculado.KeylessList||{};
+ ExternalKeyList=Calculado.ExternalKeyList=Calculado.ExternalKeyList||{};
  AF=Calculado.AF=Calculado.AF||{};
  PlugInQuery=AppFramework.PlugInQuery=AppFramework.PlugInQuery||{};
  FSharpMap=Collections.FSharpMap=Collections.FSharpMap||{};
@@ -8277,7 +8277,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     };
    }(Global.id))(al.id.get_Id());
   });
-  AF.addDocs("Calc",List.ofArray([["Calc",KeylessList.lazyDoc(Calculado.calcUI,Calculado.newCalc)]]));
+  AF.addDocs("Calc",List.ofArray([["Calc",ExternalKeyList.lazyDocGuid(Calculado.calcUI,Calculado.newCalc)]]));
   SC$1.layoutName="ProzperLyt";
   SC$1.appName="Prozper";
   SC$1.influencerV=Var$1.Create$1("");
@@ -13261,37 +13261,44 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return this.$0;
   }
  },null,IdPayment);
- KeylessList.lazyDoc=function(elemUI,newElem)
+ ExternalKeyList.lazyDocGuid=function(elemUI,newElem)
+ {
+  return ExternalKeyList.lazyDoc(Guid.NewGuid(),function()
+  {
+   return Guid.NewGuid();
+  },elemUI,newElem);
+ };
+ ExternalKeyList.lazyDoc=function(firstKey,nextKey,elemUI,newElem)
  {
   var p,doc,addNew;
-  p=KeylessList.createListModel(newElem,elemUI);
+  p=ExternalKeyList.createListModel(firstKey,nextKey,newElem,elemUI);
   doc=p[2];
   addNew=p[1];
   return Lazy.Create(function()
   {
-   return KeylessList.elemsUI(doc,addNew);
+   return ExternalKeyList.elemsUI(doc,addNew);
   });
  };
- KeylessList.createListModel=function(newF,elUI)
+ ExternalKeyList.createListModel=function(firstKey,nextKey,newF,elUI)
  {
-  var elements,i;
-  function _delete(k,u)
+  var elements,k;
+  function _delete(k$1,u)
   {
-   return elements.RemoveByKey(k);
+   return elements.RemoveByKey(k$1);
   }
   elements=ListModel.Create(function(t)
   {
    return t[0];
   },T$1.Empty);
-  return[elements,(i=0,function()
+  return[elements,(k=firstKey,function()
   {
-   elements.Append([i,newF()]);
-   i=i+1;
+   elements.Append([k,newF()]);
+   k=nextKey(k);
   }),Doc.Flatten(elements.MapLens(function($1,$2)
   {
-   function a(i$1,nv)
+   function a(i,nv)
    {
-    return[i$1,nv];
+    return[i,nv];
    }
    return elUI(function($3)
    {
@@ -13313,7 +13320,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }));
   }))];
  };
- KeylessList.elemsUI=function(doc,addNew)
+ ExternalKeyList.elemsUI=function(doc,addNew)
  {
   return Doc.Element("div",[],[doc,Doc.Button("New",[],addNew)]);
  };

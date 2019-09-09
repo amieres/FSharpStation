@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,Dict,ResultMessage,ResultMessageHelpers,Monads,Seq,Async,WebSharper,Obj,Result,Builder,Operators,BuilderP,Eff,Eff$1,Done,EffBuilder,EA,Log,LogEntry,Rsl,Fail,Asy,Asyn,AsyncResult,AsyncResultBuilder,AsyncResultBuilderP,Extensions,String,Array,SortWith,MailboxProcessorExt,Mailbox,StateFull,LibraryJS,Var,ListModel,Pojo,Date,REGEX,Msal,Policy,AuthOptions,CacheOptions,SystemOptions,FrameworkOptions,Configuration,Account,AuthResponse,AuthError,AuthenticationParameters,ProzperServer,ClientSide,Templating,Msal$1,ModeloUI,EndPoint,Rpc,Refresh,VariousUI,CorreoElectronico,Telefono,Direccion,CuentaBancaria,TarjetaCredito,DatosPersonales,FormaRegistro,FormaDatos,FormaContactos,FormaFirma,FormaAutorizacion,FormaContrato,FormaFormasPago,RenderAliados,RenderAliado,Transacciones,ListaDocs,Pendientes,Enlace,ReporteConsolidado,TablaPagos,Calculado,KeylessList,AF,Calculado$1,Aliado,MainProgram,SC$1,prozperDes$js_GeneratedPrintf,prozperDes$js_Templates,prozperDes$js_Router,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$1,Unchecked,console,Slice,Control,MailboxProcessor,Char,UI,View,Var$1,FromView,Doc,JavaScript,Promise,Remoting,AjaxRemotingProvider,TypesV0,AttrProxy,Var$2,Templating$1,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,CorreoElectronico$1,TipoTelefono,Telefono$1,TipoDireccion,Estado,Pais,ZonaPostal,Direccion$1,AttrModule,TipoCuenta,CuentaBancaria$1,TipoTarjeta,TarjetaCredito$1,Expiracion,ParseO,Genero,DatosPersonales$1,System,Guid,$,Archivo,Date$1,Aliado$1,Collections,FSharpSet,FormaPago,ProzperServer_GeneratedPrintf,ListModel$1,StatusArchivo,TipoArchivo,Aliado$2,StatusAliado,Lazy,AppFramework,PlugIn,LayoutEngineModule,Client,Templates,Modelo,Router,Rpc0,Sitelets,RouterOperators;
+ var Global,FsRoot,Library,Dict,ResultMessage,ResultMessageHelpers,Monads,Seq,Async,WebSharper,Obj,Result,Builder,Operators,BuilderP,Eff,Eff$1,Done,EffBuilder,EA,Log,LogEntry,Rsl,Fail,Asy,Asyn,AsyncResult,AsyncResultBuilder,AsyncResultBuilderP,Extensions,String,Array,SortWith,MailboxProcessorExt,Mailbox,StateFull,LibraryJS,Var,ListModel,Pojo,Date,REGEX,Msal,Policy,AuthOptions,CacheOptions,SystemOptions,FrameworkOptions,Configuration,Account,AuthResponse,AuthError,AuthenticationParameters,ProzperServer,ClientSide,Templating,Msal$1,ModeloUI,EndPoint,Rpc,Refresh,VariousUI,CorreoElectronico,Telefono,Direccion,CuentaBancaria,TarjetaCredito,DatosPersonales,FormaRegistro,FormaDatos,FormaContactos,FormaFirma,FormaAutorizacion,FormaContrato,FormaFormasPago,RenderAliados,RenderAliado,Transacciones,ListaDocs,Pendientes,Enlace,ReporteConsolidado,TablaPagos,Calculado,ExternalKeyList,AF,Calculado$1,Aliado,MainProgram,SC$1,prozperDes$js_GeneratedPrintf,prozperDes$js_Templates,prozperDes$js_Router,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$1,Unchecked,console,Slice,Control,MailboxProcessor,Char,UI,View,Var$1,FromView,Doc,JavaScript,Promise,Remoting,AjaxRemotingProvider,TypesV0,AttrProxy,Var$2,Templating$1,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,CorreoElectronico$1,TipoTelefono,Telefono$1,TipoDireccion,Estado,Pais,ZonaPostal,Direccion$1,AttrModule,TipoCuenta,CuentaBancaria$1,TipoTarjeta,TarjetaCredito$1,Expiracion,ParseO,Genero,DatosPersonales$1,System,Guid,$,Archivo,Date$1,Aliado$1,Collections,FSharpSet,FormaPago,ProzperServer_GeneratedPrintf,ListModel$1,StatusArchivo,TipoArchivo,Aliado$2,StatusAliado,Lazy,AppFramework,PlugIn,LayoutEngineModule,Client,Templates,Modelo,Router,Rpc0,Sitelets,RouterOperators;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -86,7 +86,7 @@
  ReporteConsolidado=ModeloUI.ReporteConsolidado=ModeloUI.ReporteConsolidado||{};
  TablaPagos=ModeloUI.TablaPagos=ModeloUI.TablaPagos||{};
  Calculado=ModeloUI.Calculado=ModeloUI.Calculado||{};
- KeylessList=Calculado.KeylessList=Calculado.KeylessList||{};
+ ExternalKeyList=Calculado.ExternalKeyList=Calculado.ExternalKeyList||{};
  AF=Calculado.AF=Calculado.AF||{};
  Calculado$1=Calculado.Calculado=Calculado.Calculado||{};
  Aliado=ModeloUI.Aliado=ModeloUI.Aliado||{};
@@ -8466,41 +8466,55 @@
    $1:Doc.Concat(T)
   })),(p$2=Handler.CompleteHoles(b.k,b.h,[]),(i$2=new TemplateInstance.New(p$2[1],prozperDes$js_Templates.tablapagos(p$2[0])),(b.i=i$2,i$2)))).get_Doc();
  };
- KeylessList.lazyDoc=function(elemUI,newElem)
+ ExternalKeyList.lazyDocGuid=function(elemUI,newElem)
+ {
+  return ExternalKeyList.lazyDoc(Guid.NewGuid(),function()
+  {
+   return Guid.NewGuid();
+  },elemUI,newElem);
+ };
+ ExternalKeyList.lazyDocInt=function(elemUI,newElem)
+ {
+  return ExternalKeyList.lazyDoc(0,function(y)
+  {
+   return 1+y;
+  },elemUI,newElem);
+ };
+ ExternalKeyList.lazyDoc=function(firstKey,nextKey,elemUI,newElem)
  {
   var p,doc,addNew;
-  p=KeylessList.createListModel(newElem,elemUI);
+  p=ExternalKeyList.createListModel(firstKey,nextKey,newElem,elemUI);
   doc=p[2];
   addNew=p[1];
   return Lazy.Create(function()
   {
-   return KeylessList.elemsUI(doc,addNew);
+   return ExternalKeyList.elemsUI(doc,addNew);
   });
  };
- KeylessList.elemsUI=function(doc,addNew)
+ ExternalKeyList.elemsUI=function(doc,addNew)
  {
   return Doc.Element("div",[],[doc,Doc.Button("New",[],addNew)]);
  };
- KeylessList.createListModel=function(newF,elUI)
+ ExternalKeyList.createListModel=function(firstKey,nextKey,newF,elUI)
  {
-  var elements,i;
-  function _delete(k,u)
+  var elements,k;
+  function _delete(k$1,u)
   {
-   return elements.RemoveByKey(k);
+   return elements.RemoveByKey(k$1);
   }
   elements=ListModel$1.Create(function(t)
   {
    return t[0];
   },List.T.Empty);
-  return[elements,(i=0,function()
+  return[elements,(k=firstKey,function()
   {
-   elements.Append([i,newF()]);
-   i=i+1;
+   elements.Append([k,newF()]);
+   k=nextKey(k);
   }),Doc.Flatten(elements.MapLens(function($1,$2)
   {
-   function a(i$1,nv)
+   function a(i,nv)
    {
-    return[i$1,nv];
+    return[i,nv];
    }
    return elUI(function($3)
    {
@@ -8766,7 +8780,7 @@
   });
   MainProgram.mainProgram();
  };
- MainProgram.mainProgram$3696$40=function()
+ MainProgram.mainProgram$3699$40=function()
  {
   return function()
   {
@@ -9498,7 +9512,7 @@
     };
    }(Global.id))(al.id.get_Id());
   });
-  AF.addDocs("Calc",List.ofArray([["Calc",KeylessList.lazyDoc(Calculado.calcUI,Calculado.newCalc)]]));
+  AF.addDocs("Calc",List.ofArray([["Calc",ExternalKeyList.lazyDocGuid(Calculado.calcUI,Calculado.newCalc)]]));
   SC$1.layoutName="ProzperLyt";
   SC$1.appName="Prozper";
   SC$1.influencerV=Var$2.Create$1("");
