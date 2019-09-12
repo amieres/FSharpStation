@@ -2,7 +2,7 @@
 #nowarn "52"
 #nowarn "1182"
 #nowarn "1178"
-////-d:FSharpStation1567214137408 -d:NETSTANDARD20 -d:NOFRAMEWORK --noframework -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1567769197495 -d:NETSTANDARD20 -d:NOFRAMEWORK --noframework -d:TEE -d:WEBSHARPER
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/ProzperServer"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
@@ -39,6 +39,9 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Common.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\other\AuthorizeNet\lib\AuthorizeNet.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\testing\Hopac\lib\net471\Hopac.Core.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\testing\Hopac\lib\net471\Hopac.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\testing\Http.fs\lib\net471\Httpfs.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper/WindowsAzure.Storage/lib/net45/Microsoft.WindowsAzure.Storage.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper/Newtonsoft.Json/lib/net45/Newtonsoft.Json.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.IdentityModel.Tokens\lib\net461\Microsoft.IdentityModel.Tokens.dll"
@@ -76,7 +79,7 @@
 //#nowarn "1182"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1567214137408
+//#define FSharpStation1567769197495
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -2689,54 +2692,102 @@ namespace FsRoot
             }
         
         
-        module ArsWeb =
+        //#define WEBSHARPER
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\testing\Hopac\lib\net471\Hopac.Core.dll"
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\testing\Hopac\lib\net471\Hopac.dll"
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\testing\Http.fs\lib\net471\Httpfs.dll"
+        module ArWeb =
             open WebSharper
             open WebSharper.Sitelets
             open WebSharper.JavaScript
-            open FSharp.Data
+            open HttpFs.Client
+            open Hopac
         
-            type PersonData = string
-        
-            type ApiClient = {
-                client      : string
-                password    : string
+            type UserData = {
+                first_name     : string
+                last_name      : string
+                gender         : int
+                email          : string
+                rol            : int
+                agent          : string
+                username       : string
+                password       : string
             }
         
-            type Page = {
-                page : int
+            type Agent = {
+                code           : string
+                fullname       : string
+            }
+            type BillingData = {
+                back           : string
+                account_holder : string
+                account_number : string
+                routing_number : string
+                address        : string
+            }
+            type Gender = {
+                value          : int
+                label          : string
+            }
+            type Rol = {
+                value          : int
+                label          : string
             }
         
-            type ApiEndPoint =
-                | [< EndPoint "POST /client/register"; Json "apiClient" >] RegisterApiClient of apiClient: ApiClient
-                | [< EndPoint "GET /agents"          ; Json "page"      >] GetAgents of client: string * password: string * page: int
+            let baseUrl = "https://stage.admin.prozper.com/api"
+            let userpwd = [ 
+                            "client"  , "amieres"
+                            "password", "Secure2Pass"
+                        ]
         
-                //| [< EndPoint "GET /people"                     >] GetPeople
-                //| [< EndPoint "GET /people"                     >] GetPerson of id: int
-                //| [< EndPoint "POST /people"; Json "personData" >] CreatePerson of personData: PersonData
-                //| [< EndPoint "PUT /people"; Json "personData"  >] EditPerson of personData: PersonData
-                //| [< EndPoint "DELETE /people"                  >] DeletePerson of id: int
-        
-            type EndPoint =
-                | [<EndPoint "/api">] Api of ApiEndPoint
-        
-            let newOptions() : RequestOptions = JSObject() |> box |> unbox
-        
-            let baseUrl         = "https://stage.admin.prozper.com"
-            let router          = Router.Infer<EndPoint>()
-        
-            let registrarCliente client password = async {
-                try
-                    let  ep  = RegisterApiClient { client = client ; password = password } |> EndPoint.Api
-                    match Router.Write router ep with
-                    | Some path  ->
-                        let  url = baseUrl.TrimEnd('/') + path.ToLink()
-                        let  r   = Http.RequestString(url, body= TextRequest  path.Body.Value)
-                        return    Ok r
-                    | _ -> return failwith "Failed to map endpoint to request"
-                with e ->
-                    return Result.Error (e.Message + "\n" + e.StackTrace)
+            let callApi method path headers body = async {
+                return
+                    Request.createUrl method (baseUrl.TrimEnd('/') + path |>! print)
+                    |> (fun r -> (r, headers) ||> Seq.fold (fun rq hd -> rq |> Request.setHeader(Custom hd) ) )
+                    |> Request.body (BodyForm ( body |> Seq.map  NameValue |> Seq.toList) )
+                    |>! print
+                    |> (fun req -> job { 
+                            use! resp = getResponse req
+                            print resp
+                            return! Response.readBodyAsString resp
+                    })
+                    |> run
             }
+        
+        //    let callApi method path headers body = async {
+        //        try
+        //            let  url     = baseUrl.TrimEnd('/') + path |>! print
+        //            let! r       = Http.AsyncRequest(url 
+        //                                , headers    = headers
+        //                                , body       = FormValues body
+        //                                , httpMethod = method
+        //                            )
+        //            return    Ok r
+        //        with e ->
+        //            return Result.Error (e.Message + "\n" + e.StackTrace)
+        //    }
+        
+            let apiGET  path body   = callApi Get  path userpwd body
+            let apiPOST path body   = callApi Post path userpwd body
+        
+            let registrarCliente              () = apiPOST "/client/register" []
+            let agents                (page:int) = apiGET  "/agents"          [ "page" , page.ToString() ]
+            let billing       agent              = apiGET  "/billing-data"    [ "agent", agent           ]
+            let reference     service (page:int) = apiGET  "/reference"       [ "page" , page.ToString() ; "service", service ]
+            let registerUSer (user:UserData)     = apiPOST "/user/register"   [  
+                "first_name" , user.first_name 
+                "last_name"  , user.last_name  
+                "gender"     , user.gender.ToString()     
+                "email"      , user.email      
+                "rol"        , user.rol.ToString()
+                "agent"      , user.agent      
+                "username"   , user.username   
+                "password"   , user.password
+            ]
                 
+            //registrarCliente () |> Async.RunSynchronously |> print
+            agents            0 |> Async.RunSynchronously |> print
          [< JavaScript >]
         type DataEvento =
         | AgregarAliados            of (Aliado[]                                                   )

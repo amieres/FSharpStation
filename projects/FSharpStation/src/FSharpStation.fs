@@ -1,6 +1,6 @@
 #nowarn "3242"
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1567110848639 -d:TEE -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1568188869990 -d:TEE -d:WEBSHARPER
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\FSharpStation\src"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
@@ -42,10 +42,11 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin\lib\net461\HttpMultipartParser.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.StaticFiles\lib\net451\Microsoft.Owin.StaticFiles.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\CommonServiceLocator\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll"
 //#nowarn "3242"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1567110848639
+//#define FSharpStation1568188869990
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -2589,6 +2590,7 @@ namespace FsRoot
                     posFromIndex      :  int                               -> Position
                     indexFromPos      :  Position                          -> int
                     getWordAt         :  Position                          -> (string * Position) option
+                    getSelectionText  :  unit                              -> string
                     getUri            :  unit                              -> string
                     setUri            :  string                            -> unit
                     hookOnChange      : (obj           -> unit           ) -> unit
@@ -3122,6 +3124,7 @@ namespace FsRoot
                     [< Inline "$mo.getPositionAt($_i)                            " >] member mo.GetPositionAt(_i: int     )     : Position       = X<_>
                     [< Inline "$mo.getOffsetAt($_p)                              " >] member mo.GetOffsetAt(  _p: Position)     : int            = X<_>
                     [< Inline "$mo.dispose()                                     " >] member mo.Dispose()                       : unit           = X<_>
+                    [< Inline "$mo.getValueInRange($_r)                          " >] member mo.GetValueInRange(  _r: Range)    : string         = X<_>
                     
                 type MarkDownString = {
                     value      : string
@@ -3213,6 +3216,7 @@ namespace FsRoot
                     [< Inline "$monc.updateOptions($_o)"           >] member monc.UpdateOptions(_o:obj)                       : unit            = X<_>
                     [< Inline "$monc.setPosition($_p)            " >] member monc.SetPosition(_p:Position)                    : unit            = X<_>
                     [< Inline "$monc.focus()                     " >] member monc.Focus()                                     : unit            = X<_>
+                    [< Inline "$monc.getSelection()              " >] member monc.GetSelection()                              : Range           = X<_>
                     
             //        [< Inline "$monc.refresh()"                 >] member monc.Refresh()                                   : unit            = X<_>
             //        [< Inline "$monc.setOption($_o, $_v)"       >] member monc.SetOption(_o:string, _v:obj)                : unit            = X<_>
@@ -3432,6 +3436,7 @@ namespace FsRoot
                                                                             (word.word, {   col  = word.startColumn
                                                                                             line = pos.line })
                                                                             |> Some
+                let getSelect monRT     = mapEditor  monRT    <| (fun ed -> ed.GetSelection() |> ed.GetModel().GetValueInRange ) |> Option.defaultValue "" 
             
                 let showAnnotations monRT ans =
                     iterEditor monRT <| fun ed ->
@@ -3454,17 +3459,18 @@ namespace FsRoot
                         Editor.SetModelMarkers(ed.GetModel(), "annotations", ms)
             
                 let newHook monRT = {
-                    generateDoc     =            generateDoc  monRT 
-                    getValue        = fun ()  -> getValue     monRT
-                    setValue        =            setValue     monRT
-                    getWordAt       =            getWordAt    monRT
-                    showAnnotations = showAnnotations         monRT
-                    setDisabled     = ignore //  bool                              -> unit
-                    hookOnChange    = fun f   -> monRT.onChange <- f 
-                    posFromIndex    =            posFromIndex monRT
-                    indexFromPos    =            indexFromPos monRT
-                    getUri          = fun ()  -> getUri       monRT
-                    setUri          =            setUri       monRT
+                    generateDoc      =            generateDoc  monRT 
+                    getValue         = fun ()  -> getValue     monRT
+                    setValue         =            setValue     monRT
+                    getWordAt        =            getWordAt    monRT
+                    showAnnotations  = showAnnotations         monRT
+                    setDisabled      = ignore //  bool                              -> unit
+                    hookOnChange     = fun f   -> monRT.onChange <- f 
+                    posFromIndex     =            posFromIndex monRT
+                    indexFromPos     =            indexFromPos monRT
+                    getUri           = fun ()  -> getUri       monRT
+                    setUri           =            setUri       monRT
+                    getSelectionText = fun ()  -> getSelect    monRT
                 }
             
                 let newRT options overrides = {
@@ -3983,7 +3989,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/a817abcc-6cb2-42cf-843c-f1525420c0d4"
+                    "http://localhost:9005/#/Snippet/c677b6fd-d833-43ee-a15c-62c60d8572e4"
                 #endif
                 
                 let extractEndPoint() = 
@@ -4178,7 +4184,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1567110848639"
+                let mutable fsharpStationAddress = Address "FSharpStation1568188869990"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -5452,7 +5458,11 @@ namespace FsRoot
                 | _       -> ()
             }
         
-                
+            let getSelection () =
+                match editorConfigO |> Option.bind (fun cfg -> cfg.editorO) with
+                | Some ed -> ed.GetSelection() |> ed.GetModel().GetValueInRange
+                | _       -> ""
+               
         
         
         module JumpTo =
@@ -5750,11 +5760,11 @@ namespace FsRoot
                     } |> iterResultA (sprintf "Error:\n%A" >> out) ignore
                 )
         
-            let lastLineToFsi () = 
+            let selectionToFsi () = 
                 let out (v:string) = appendMsgs <| v.Replace(FsiEvaluator.endToken, "Done!")
                 fusion {
                     do! FSharpStationClient.setAddress (WebSockets.Address FStation.id)  |> ofAsync
-                    do! outputMsgs.Value.Split '\n' |> Seq.last |> fun s -> s + ";;" |> FsiAgent.sendFsiInput |> ofAsync 
+                    do! Monaco.getSelection() |> fun s -> s + ";;" |> FsiAgent.sendFsiInput |> ofAsync 
                 } |> iterResultA (sprintf "Error:\n%A" >> out) ignore
         
             let deleteSnippet() =
@@ -5858,7 +5868,7 @@ namespace FsRoot
                                        AF.newAct  "AddProperty"        RenderProperties.addProperty
                                        AF.newAct  "SaveAs"             LoadSave.saveAs
                                        AF.newAct  "RunFS"              runFsCode
-                                       AF.newAct  "LastLineToFsi"      lastLineToFsi
+                                       AF.newAct  "SelectionToFsi"     selectionToFsi
                                        AF.newAct  "AbortFsi"           FsiAgent.abortFsiExe
                                        AF.newAct  "DisposeFsi"         FsiAgent.disposeFsiExe
                                        AF.newActF "LoadFile"           <| AF.FunAct1 ((fun o     -> unbox o  |> LoadSave.loadTextFile              ), "FileElement")
@@ -5899,7 +5909,7 @@ namespace FsRoot
                     btnIndentIn      button FSharpStation.IndentIn       ""                  "Indent In  >> "
                     btnIndentOut     button FSharpStation.IndentOut      ""                  "Indent Out << "
                     btnRunFS         button FSharpStation.RunFS          ""                  "Run F#        "
-                    btnInputFsi      button FSharpStation.LastLineToFsi  ""                  "last line |> Fsi"
+                    btnInputFsi      button FSharpStation.selectionToFsi   ""                  "selection |> Fsi"
                     btnAbortFsi      button FSharpStation.AbortFsi       ""                  "Abort Fsi     "
         
                     messagesLeft     wcomp-tabstrip                      ""                  Output FsCode
@@ -6059,6 +6069,7 @@ namespace FsRoot
         //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin\lib\net461\HttpMultipartParser.dll"
         //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.StaticFiles\lib\net451\Microsoft.Owin.StaticFiles.dll"
         //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.FileSystems\lib\net451\Microsoft.Owin.FileSystems.dll"
+        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\CommonServiceLocator\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll"
         
         [< JavaScript false >]
         module Server =

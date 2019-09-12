@@ -7,6 +7,7 @@ nuget FSharp.Core        = 4.5.0
 nuget Newtonsoft.Json
 nuget FSharp.Compiler.Tools
 nuget FSharp.Interop.Dynamic
+nuget CommonServiceLocator
 nuget WebSharper         = 4.5.1.304
 nuget Websharper.FSharp  = 4.5.1.304
 nuget Websharper.UI	     = 4.5.1.141
