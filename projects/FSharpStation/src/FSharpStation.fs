@@ -1,6 +1,6 @@
 #nowarn "3242"
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1568188869990 -d:TEE -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1568323546207 -d:TEE -d:WEBSHARPER
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\FSharpStation\src"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
@@ -46,7 +46,7 @@
 //#nowarn "3242"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1568188869990
+//#define FSharpStation1568323546207
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -2429,7 +2429,7 @@ namespace FsRoot
                 let endToken = "xXxY" + "yYyhH"
                 type FsiExe(config:string, workingDir, ?outHndl, ?errHndl) =
                     let silent                     = ref false
-                    let fsiexe                     = @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Test2\FSharp.Compiler.Tools\tools" +/+ if config.Contains "-d:FSI32BIT" then "fsi.exe" else "fsianycpu.exe"
+                    let fsiexe                     = if config.Contains "-d:FSI32BIT" then "fsi.exe" else "fsianycpu.exe"
                     let startInfo                  = ProcessStartInfo(fsiexe, config, WorkingDirectory= workingDir)
                     let outHndlS                   = outHndl |> Option.map(fun outh v -> if !silent then () else outh v)
                     let errHndlS                   = errHndl |> Option.map(fun errh v -> if !silent then () else errh v)
@@ -3989,7 +3989,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/c677b6fd-d833-43ee-a15c-62c60d8572e4"
+                    "http://localhost:9005/#/Snippet/a17730c1-09a7-48f8-bba8-a24ba4c61dd5"
                 #endif
                 
                 let extractEndPoint() = 
@@ -4184,7 +4184,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1568188869990"
+                let mutable fsharpStationAddress = Address "FSharpStation1568323546207"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
