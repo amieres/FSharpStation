@@ -58,9 +58,9 @@
         btnDeleteSnippet button FSharpStation.RemoveSnippet  ""                  "Delete Snippet"
         btnIndentIn      button FSharpStation.IndentIn       ""                  "Indent In  >> "
         btnIndentOut     button FSharpStation.IndentOut      ""                  "Indent Out << "
-        btnRunFS         button FSharpStation.RunFS          ""                  "Run F#        "
-        btnInputFsi      button FSharpStation.SelectionToFsi ""                  "selection |> Fsi"
-        btnAbortFsi      button FSharpStation.AbortFsi       ""                  "Abort Fsi     "
+        btnRunFS         button FSharpStation.RunFS          ""                  "F# Code   |> FSI"
+        btnInputFsi      button FSharpStation.SelectionToFsi ""                  "selection |> FSI"
+        btnAbortFsi      button FSharpStation.AbortFsi       ""                  "Abort FSI     "
        
         messagesLeft     wcomp-tabstrip                      ""                  
         :                textarea  FSharpStation.Output      "tabname=Output ; placeholder=Output messages ; spellcheck=false; click=@{FSharpStation.SetScrollToBottom}" 
