@@ -2,84 +2,82 @@
 #nowarn "52"
 #nowarn "1182"
 #nowarn "1178"
-////-d:FSharpStation1567769197495 -d:NETSTANDARD20 -d:NOFRAMEWORK --noframework -d:TEE -d:WEBSHARPER
-////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/ProzperServer"
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\netstandard.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\mscorlib.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Globalization.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Reflection.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Numerics.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Core.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.Linq.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Net.Http.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Runtime.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.IO.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.Tasks.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Core.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Core.JavaScript.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Collections.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.InterfaceGenerator.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Main.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.JQuery.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.JavaScript.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Web.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Sitelets.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Control.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\HtmlAgilityPack.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Runtime.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Common.dll"
+////-d:FSharpStation1569527865882 -d:NETSTANDARD20 -d:NOFRAMEWORK --noframework -d:TEE -d:WEBSHARPER
+////#cd @"d:\Abe\CIPHERWorkspace\FSharpStation/projects/ProzperServer"
+//#I @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
+//#I @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
+//#I @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\netstandard.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\mscorlib.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Globalization.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Reflection.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Numerics.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Core.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.Linq.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Net.Http.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Runtime.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.IO.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.Tasks.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Core.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Core.JavaScript.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Collections.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.InterfaceGenerator.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Main.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.JQuery.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.JavaScript.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Web.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Sitelets.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Control.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\HtmlAgilityPack.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Runtime.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Common.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\other\AuthorizeNet\lib\AuthorizeNet.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\other\AuthorizeNet\lib\AuthorizeNet.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\testing\Hopac\lib\net471\Hopac.Core.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\testing\Hopac\lib\net471\Hopac.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\testing\Http.fs\lib\net471\Httpfs.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper/WindowsAzure.Storage/lib/net45/Microsoft.WindowsAzure.Storage.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper/Newtonsoft.Json/lib/net45/Newtonsoft.Json.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.IdentityModel.Tokens\lib\net461\Microsoft.IdentityModel.Tokens.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\Microsoft.IdentityModel.Protocols\lib\net461\Microsoft.IdentityModel.Protocols.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\Microsoft.IdentityModel.Protocols.OpenIdConnect\lib\net461\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\Microsoft.IdentityModel.Logging\lib\net461\Microsoft.IdentityModel.Logging.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\Microsoft.IdentityModel.JsonWebTokens\lib\net461\Microsoft.IdentityModel.JsonWebTokens.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Configuration.ConfigurationManager/lib/net461/System.Configuration.ConfigurationManager.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Security.Cryptography.ProtectedData/lib/net461/System.Security.Cryptography.ProtectedData.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Security.Permissions/lib/net461/System.Security.Permissions.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Security.AccessControl/lib/net461/System.Security.AccessControl.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Buffers/lib/netstandard1.1/System.Buffers.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Numerics.Vectors/lib/net46/System.Numerics.Vectors.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Runtime.CompilerServices.Unsafe/lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Security.Principal.Windows/lib/net461/System.Security.Principal.Windows.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Memory/lib/netstandard1.1/System.Memory.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages\test2\System.IdentityModel.Tokens.Jwt\lib\net461\System.IdentityModel.Tokens.Jwt.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs\lib\netstandard2.0\Microsoft.Azure.WebJobs.Host.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs.Core\lib\netstandard2.0\Microsoft.Azure.WebJobs.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs.Extensions\lib\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs.Extensions.Storage\lib\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.Storage.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.Primitives\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.Logging\lib\netstandard2.0\Microsoft.Extensions.Logging.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.Logging.Abstractions\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs.Extensions.Http\lib\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.Http.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.DependencyInjection\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.DependencyInjection.Abstractions\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Http\lib\netstandard2.0\Microsoft.AspNetCore.Http.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Http.Abstractions\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Http.Features\lib\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Mvc.Core\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Core.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Mvc.Abstractions\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Abstractions.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper/WindowsAzure.Storage/lib/net45/Microsoft.WindowsAzure.Storage.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper/Newtonsoft.Json/lib/net45/Newtonsoft.Json.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.IdentityModel.Tokens\lib\net461\Microsoft.IdentityModel.Tokens.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\Microsoft.IdentityModel.Protocols\lib\net461\Microsoft.IdentityModel.Protocols.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\Microsoft.IdentityModel.Protocols.OpenIdConnect\lib\net461\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\Microsoft.IdentityModel.Logging\lib\net461\Microsoft.IdentityModel.Logging.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\Microsoft.IdentityModel.JsonWebTokens\lib\net461\Microsoft.IdentityModel.JsonWebTokens.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Configuration.ConfigurationManager/lib/net461/System.Configuration.ConfigurationManager.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Security.Cryptography.ProtectedData/lib/net461/System.Security.Cryptography.ProtectedData.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Security.Permissions/lib/net461/System.Security.Permissions.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Security.AccessControl/lib/net461/System.Security.AccessControl.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Buffers/lib/netstandard1.1/System.Buffers.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Numerics.Vectors/lib/net46/System.Numerics.Vectors.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Runtime.CompilerServices.Unsafe/lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Security.Principal.Windows/lib/net461/System.Security.Principal.Windows.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Memory/lib/netstandard1.1/System.Memory.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages\test2\System.IdentityModel.Tokens.Jwt\lib\net461\System.IdentityModel.Tokens.Jwt.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs\lib\netstandard2.0\Microsoft.Azure.WebJobs.Host.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs.Core\lib\netstandard2.0\Microsoft.Azure.WebJobs.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs.Extensions\lib\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs.Extensions.Storage\lib\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.Storage.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.Primitives\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.Logging\lib\netstandard2.0\Microsoft.Extensions.Logging.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.Logging.Abstractions\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs.Extensions.Http\lib\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.Http.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.DependencyInjection\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.DependencyInjection.Abstractions\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Http\lib\netstandard2.0\Microsoft.AspNetCore.Http.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Http.Abstractions\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Http.Features\lib\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Mvc.Core\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Core.dll"
+//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Mvc.Abstractions\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Abstractions.dll"
 //#nowarn "3242"
 //#nowarn "52"
 //#nowarn "1182"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1567769197495
+//#define FSharpStation1569527865882
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -95,66 +93,66 @@ namespace FsRoot
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
     
     #if WEBSHARPER
-    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
-    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
+    //#I @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
+    //#I @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
     
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
     #endif
     #endif
     //#define NOFRAMEWORK --noframework
     
     #if NETSTANDARD20
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll"
-    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\netstandard.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\mscorlib.dll"
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Globalization.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Reflection.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Numerics.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Core.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.Linq.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Net.Http.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Runtime.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.IO.dll"   
-    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.Tasks.dll"  
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll"
+    //#I @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\netstandard.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\mscorlib.dll"
+    //#r "d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.dll"   
+    //#r "d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Globalization.dll"   
+    //#r "d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.dll"   
+    //#r "d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Reflection.dll"   
+    //#r "d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Numerics.dll"   
+    //#r "d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Core.dll"   
+    //#r "d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.dll"   
+    //#r "d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.Linq.dll"   
+    //#r "d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Net.Http.dll"   
+    //#r "d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Runtime.dll"   
+    //#r "d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.IO.dll"   
+    //#r "d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.Tasks.dll"  
     
-    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
-    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0"
+    //#I @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
+    //#I @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0"
     
     #if WEBSHARPER
     
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Core.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Core.JavaScript.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Collections.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.InterfaceGenerator.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Main.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.JQuery.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.JavaScript.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Web.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Sitelets.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Control.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\HtmlAgilityPack.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Runtime.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Common.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Core.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Core.JavaScript.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Collections.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.InterfaceGenerator.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Main.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.JQuery.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.JavaScript.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Web.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Sitelets.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Control.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\HtmlAgilityPack.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Runtime.dll"
+    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Common.dll"
     #endif
     #endif
     #if WEBSHARPER
@@ -722,8 +720,8 @@ namespace FsRoot
             type System.String with
                 member this.Substring2(from, n) = 
                     if   n    <= 0           then ""
-                    elif from <  0           then this.Substring2(0, n + from)
                     elif from >= this.Length then ""
+                    elif from <  0           then this.Substring2(0, n + from)
                     else this.Substring(from, min n (this.Length - from))
                 member this.Left             n  = if n < 0 
                                                   then this.Substring2(0, this.Length + n)
@@ -902,13 +900,21 @@ namespace FsRoot
                                                                                                                                                         | Some [| j1 ;j2; j3|]   -> match snd sF j1, snd sS j2, snd sT j3 with
                                                                                                                                                                                     | Some f, Some s, Some t -> Some(f, s, t) |_-> None
                                                                                                                                                         | _ -> None ) 
+                let serPair serFst serSnd : Ser<'a * 'b    > = serDup(serFst, serSnd)
                 let serMap serKey serElm : Ser<Map<'k, 'e>> =   serDup(serKey, serElm)
                                                                 |> serSeq 
                                                                 |> (fun serKVPs -> (Seq.map (fun kvp -> kvp.Key, kvp.Value) >> fst serKVPs) , (snd serKVPs >> Option.map Map) )
             
                 let serTypedRegisters = System.Collections.Generic.Dictionary<string, Ser<obj>>()
             
-                let map (g: 'b -> 'a) (f: 'a -> 'b) ((serS, serD): Ser<'a>) : Ser<'b> = g >> serS, (serD >> Option.map f)
+                let map (g: 'b -> 'a) (f: 'a -> 'b       ) ((serS, serD): Ser<'a>) : Ser<'b> = g >> serS, (serD >> Option.map  f )
+                let mapO(g: 'b -> 'a) (f: 'a -> 'b option) ((serS, serD): Ser<'a>) : Ser<'b> = g >> serS, (serD >> Option.bind f )
+            
+            
+                /// Constant value with check, fails with value is not correct
+                let serC  ser c : Ser<unit> = ser |> mapO (fun () -> c) (fun v -> if v = c then Some() else None )
+                /// Constant value with no check
+                let serCn ser c : Ser<unit> = ser |> map (fun () -> c) (fun _ -> c )
             
                 [< JavaScript false >]
                 let fixType t = System.Text.RegularExpressions.Regex.Replace(t, @"FSI_[0-9]{4}\+", "", System.Text.RegularExpressions.RegexOptions.IgnorePatternWhitespace)
@@ -932,6 +938,15 @@ namespace FsRoot
                                             else failwithf "Serializer not registered for type: %s" tn
                             |_-> failwithf "Expected json string with type name: %A" (j1.toString())
                         |    _-> failwithf "Expected json array with 2 elements: %s" (j.toString()) )
+            
+                //let check show (ser:Ser<_>) v =
+                //    let bs = fst ser v
+                //    if show then printfn "%A -> %s" v bs
+                //    match deserialize ser bs with
+                //    | Some(vv) when vv = v -> true
+                //    | re -> if show then printfn "-> %A" re
+                //            false
+            
             
         /// Essentials that cannot run in Javascript (WebSharper)
         [< AutoOpen >]
@@ -977,7 +992,7 @@ namespace FsRoot
                 let caseInfos<'T>            = FSharpType.GetUnionCases typeof<'T>
                 let caseInfo< 'T> (s:string) = caseInfos<'T> |> Seq.find (fun c -> c.Name = s)
             
-            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+            //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
             module Serializer =
                 open Serializer
                 open FSharp.Data
@@ -1204,7 +1219,7 @@ namespace FsRoot
                 
             
     
-    //#cd @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/ProzperServer"
+    //#cd @"d:\Abe\CIPHERWorkspace\FSharpStation/projects/ProzperServer"
     module ProzperServer =
     
         [< AutoOpen ; JavaScript >]
@@ -1686,6 +1701,7 @@ namespace FsRoot
                 id              :      IdAliado
                 idPadreO        :      IdAliado       option
                 idForAuthorize  :      IdForAuthorize option
+                idForAdminSeg   :      IdForAuthorize option
                 influyente      :      string         option
                 datosPersonales :      DatosPersonales
                 contactos       :      Contacto       []
@@ -1878,6 +1894,7 @@ namespace FsRoot
                 id              =  IdAliado ""
                 idPadreO        =  None
                 idForAuthorize  =  None
+                idForAdminSeg   =  None
                 influyente      =  None
                 contactos       =  [||]
                 identificacion  =  [||]
@@ -2248,8 +2265,8 @@ namespace FsRoot
                 |>> obtenerSubModelo esAdmin
         
         
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\other\AuthorizeNet\lib\AuthorizeNet.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\other\AuthorizeNet\lib\AuthorizeNet.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Newtonsoft.Json\lib\netstandard2.0\Newtonsoft.Json.dll"
         //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
         
         module Authorize =
@@ -2693,23 +2710,40 @@ namespace FsRoot
         
         
         //#define WEBSHARPER
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\testing\Hopac\lib\net471\Hopac.Core.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\testing\Hopac\lib\net471\Hopac.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\testing\Http.fs\lib\net471\Httpfs.dll"
-        module ArWeb =
-            open WebSharper
-            open WebSharper.Sitelets
-            open WebSharper.JavaScript
-            open HttpFs.Client
-            open Hopac
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\testing\Hopac\lib\net471\Hopac.Core.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\testing\Hopac\lib\net471\Hopac.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\testing\Http.fs\lib\net471\Httpfs.dll"
+        module AdminSeg =
+        //    open WebSharper
+        //    open WebSharper.Sitelets
+        //    open WebSharper.JavaScript
+        //    open HttpFs.Client
+        //    open Hopac
+            open FSharp.Data
+        
+            type Reference = {
+                value          : int
+                label          : string
+            }
+        
+            type Gender =
+            | Male
+            | Female
+            | Other
+        
+            type Rol =
+            | Sudo
+            | Administrator
+            | Agente
+            | Tpa
         
             type UserData = {
                 first_name     : string
                 last_name      : string
-                gender         : int
+                gender         : Gender
                 email          : string
-                rol            : int
+                rol            : Rol
                 agent          : string
                 username       : string
                 password       : string
@@ -2726,14 +2760,6 @@ namespace FsRoot
                 routing_number : string
                 address        : string
             }
-            type Gender = {
-                value          : int
-                label          : string
-            }
-            type Rol = {
-                value          : int
-                label          : string
-            }
         
             let baseUrl = "https://stage.admin.prozper.com/api"
             let userpwd = [ 
@@ -2741,53 +2767,104 @@ namespace FsRoot
                             "password", "Secure2Pass"
                         ]
         
-            let callApi method path headers body = async {
-                return
-                    Request.createUrl method (baseUrl.TrimEnd('/') + path |>! print)
-                    |> (fun r -> (r, headers) ||> Seq.fold (fun rq hd -> rq |> Request.setHeader(Custom hd) ) )
-                    |> Request.body (BodyForm ( body |> Seq.map  NameValue |> Seq.toList) )
-                    |>! print
-                    |> (fun req -> job { 
-                            use! resp = getResponse req
-                            print resp
-                            return! Response.readBodyAsString resp
-                    })
-                    |> run
-            }
+            open Newtonsoft.Json
+            
+            let toJson s =
+                JsonConvert.SerializeObject(s, JsonSerializerSettings(ReferenceLoopHandling = ReferenceLoopHandling.Ignore)) 
         
-        //    let callApi method path headers body = async {
-        //        try
-        //            let  url     = baseUrl.TrimEnd('/') + path |>! print
-        //            let! r       = Http.AsyncRequest(url 
-        //                                , headers    = headers
-        //                                , body       = FormValues body
-        //                                , httpMethod = method
-        //                            )
-        //            return    Ok r
-        //        with e ->
-        //            return Result.Error (e.Message + "\n" + e.StackTrace)
-        //    }
+            let callApi method headers path query body =
+                if Seq.isEmpty body then
+                    Http.Request( (baseUrl.TrimEnd('/') + path |>! print)
+                                ,  query                 = query
+                                ,  httpMethod            = method
+                                ,  headers               = headers
+                                ,  customizeHttpRequest  = tee (fun rq -> rq |> toJson |> print)
+                                )
+                else
+                    Http.Request( (baseUrl.TrimEnd('/') + path |>! print)
+                                ,  query                 = query
+                                ,  httpMethod            = method
+                                ,  headers               = headers
+                                ,  body                  = FormValues body
+                                ,  customizeHttpRequest  = tee (fun rq -> rq |> toJson |> print)
+                                )
         
-            let apiGET  path body   = callApi Get  path userpwd body
-            let apiPOST path body   = callApi Post path userpwd body
+            let respToJson (resp: HttpResponse) = 
+                match resp.Body with
+                | Text((String.StartsWith "["  _) as t)
+                | Text((String.StartsWith "{"  _) as t)  -> t
+                | Text((String.StartsWith "\"" _) as t)  -> "["    + t +   "]"
+                | Text t                                 -> "[\""  + t + "\"]"
+                | _                                      -> "[\""  + resp.Body.ToString() + "\"]"
         
-            let registrarCliente              () = apiPOST "/client/register" []
-            let agents                (page:int) = apiGET  "/agents"          [ "page" , page.ToString() ]
-            let billing       agent              = apiGET  "/billing-data"    [ "agent", agent           ]
-            let reference     service (page:int) = apiGET  "/reference"       [ "page" , page.ToString() ; "service", service ]
-            let registerUSer (user:UserData)     = apiPOST "/user/register"   [  
-                "first_name" , user.first_name 
-                "last_name"  , user.last_name  
-                "gender"     , user.gender.ToString()     
-                "email"      , user.email      
-                "rol"        , user.rol.ToString()
-                "agent"      , user.agent      
-                "username"   , user.username   
-                "password"   , user.password
+            let apiGET  path query body   = callApi "GET"  userpwd path query body
+            let apiPOST path query body   = callApi "POST" userpwd path query body
+        
+            let registerClient                () = apiPOST "/client/register" []                                                []
+            let agents                (page:int) = apiGET  "/agents"          [ "page" , page.ToString() ]                      []
+            let billing       agent              = apiGET  "/billing-data"    [ "agent", agent           ]                      []
+            let reference     service (page:int) = apiGET  "/reference"       [ "page" , page.ToString() ; "service", service ] []
+        
+            type ReferencesJson = JsonProvider<"""{"list":{"0":{"0":{},"label":"Sudo","value":1},"1":{"0":{},"label":"Administrator","value":2},"2":{"0":{},"label":"Agente","value":3},"3":{"0":{},"label":"Tpa","value":4}},"page":"1","pages":1,"registers":4}""">
+            type AgentsJson     = JsonProvider<"""{"list":{"0":{"0":{},"fullname":"Casta\u00d1eda Jim\u00c9nez, Jorge Humberto","code":"PRZ000087"},"1":{"0":{},"fullname":"Jimenez, Maria Jose","code":"PRZ000088"},"2":{"0":{},"fullname":"Alvins, Marilin","code":"PRZ000089"},"3":{"0":{},"fullname":"Coronel, Mariana","code":"PRZ000090"},"4":{"0":{},"fullname":"Rivera Capriles, Carmenlia","code":"PRZ000091"},"5":{"0":{},"fullname":"Larriega, Elena","code":"PRZ000092"},"6":{"0":{},"fullname":"Rodriguez, Limbergt","code":"PRZ000093"},"7":{"0":{},"fullname":"Marquez, Nurami","code":"PRZ000094"},"8":{"0":{},"fullname":"Nicolicchia, Paolo","code":"PRZ000095"},"9":{"0":{},"fullname":"Wakefull, Corporation C.a","code":"PRZ000096"},"10":{"0":{},"fullname":"Aumaitre T., Claudio J.","code":"PRZ000097"},"11":{"0":{},"fullname":"Caled, Isaac","code":"PRZ000098"},"12":{"0":{},"fullname":"Gonzalez, Maria Virginia Virginia","code":"PRZ000099"},"13":{"0":{},"fullname":"Fernandez, Samuel","code":"PRZ000100"},"14":{"0":{},"fullname":"Garces, Jose Jaime","code":"PRZ000101"},"15":{"0":{},"fullname":"Co Plan, Salud Llc","code":"PRZ000102"},"16":{"0":{},"fullname":"Gonzalez, Mercedes","code":"PRZ000103"},"17":{"0":{},"fullname":"Verde, Olga Josefina","code":"PRZ000104"},"18":{"0":{},"fullname":"Asociados, Ghm","code":"PRZ000106"},"19":{"0":{},"fullname":"Santana, Pablo","code":"PRZ000107"},"20":{"0":{},"fullname":"Francesaad Consulting, Group Llc","code":"PRZ000108"},"21":{"0":{},"fullname":"Taing, .","code":"PRZ000109"},"22":{"0":{},"fullname":"Araujo, Adriana Isabel","code":"PRZ000110"},"23":{"0":{},"fullname":"Cruz, Andrea","code":"PRZ000111"},"24":{"0":{},"fullname":"Salinas, Luisa Yajaira","code":"PRZ000112"}},"page":2,"pages":3,"registers":73}""">
+        
+            //let extractAgents() =
+            //    let rec loop result page =
+            //        let resp = agents page
+            //        match resp.Body with
+            //        | Text txt -> 
+            //            let refs  = AgentsJson.Parse txt
+            //            let pages = refs.Pages
+            //            let newr  = refs.List.JsonValue.Properties()
+            //                        |> Array.map (fun (i, r) -> r.["label"].AsString(), r.["value"].AsInteger())
+            //                        |> Array.append result
+            //            if page >= pages then newr else
+            //            loop newr (page + 1)
+            //        | _-> failwithf "query for agents failed: %A" resp
+            //    loop [||] 1
+        
+            open FSharp.Data.JsonExtensions
+        
+            let extractReferences service =
+                let rec loop result page =
+                    let resp = reference service page
+                    match resp.Body with
+                    | Text txt -> 
+                        let refs  = ReferencesJson.Parse txt
+                        let pages = refs.Pages
+                        let newr  = refs.List.JsonValue.Properties
+                                    |> Array.map (fun (i, r) -> r?label.AsString(), r?value.AsInteger())
+                                    |> Array.append result
+                        if page >= pages then newr else
+                        loop newr (page + 1)
+                    | _-> failwithf "query for %s failed: %A" service resp
+                loop [||] 1 
+        
+            let genders = lazy extractReferences "gender"
+            let roles   = lazy extractReferences "rol"
+        
+            let findValue k vs =
+                vs 
+                |> Seq.tryFind(fun (label, v) -> label = k) 
+                |> Option.defaultWith (fun () -> failwithf "Could not find %s" k) 
+                |> snd 
+        
+            let getGenderCode (gender:Gender) = genders.Value |> findValue (string gender)
+            let getRolCode    (rol:   Rol   ) = roles  .Value |> findValue (string rol   )
+        
+            let registerUser (user:UserData)  = apiPOST "/user/register"   [] [  
+                "first_name"   , user.first_name 
+                "last_name"    , user.last_name  
+                "gender"       , user.gender |> getGenderCode |> string
+                "email"        , user.email      
+                "rol"          , user.rol    |> getRolCode    |> string
+                "general_agent", user.agent      
+                "username"     , user.username
+                "password"     , user.password
             ]
                 
             //registrarCliente () |> Async.RunSynchronously |> print
-            agents            0 |> Async.RunSynchronously |> print
+            //agents            0 |> Async.RunSynchronously |> print
          [< JavaScript >]
         type DataEvento =
         | AgregarAliados            of (Aliado[]                                                   )
@@ -2893,6 +2970,7 @@ namespace FsRoot
                     id              =  idA
                     idPadreO        =  padre
                     idForAuthorize  =  None
+                    idForAdminSeg   =  None
                     influyente      =  None
                     contactos       =  contactos
                     identificacion  =  [||]
@@ -3432,8 +3510,8 @@ namespace FsRoot
                 |>> fun al -> al.id.Id
         
         
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper/WindowsAzure.Storage/lib/net45/Microsoft.WindowsAzure.Storage.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper/Newtonsoft.Json/lib/net45/Newtonsoft.Json.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper/WindowsAzure.Storage/lib/net45/Microsoft.WindowsAzure.Storage.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper/Newtonsoft.Json/lib/net45/Newtonsoft.Json.dll"
         module Azure =
             open System
             open System.IO
@@ -3999,23 +4077,23 @@ namespace FsRoot
         
         
         
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Fake.IO.FileSystem\lib\net46\Fake.IO.FileSystem.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.IdentityModel.Tokens\lib\net461\Microsoft.IdentityModel.Tokens.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\Microsoft.IdentityModel.Protocols\lib\net461\Microsoft.IdentityModel.Protocols.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\Microsoft.IdentityModel.Protocols.OpenIdConnect\lib\net461\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\Microsoft.IdentityModel.Logging\lib\net461\Microsoft.IdentityModel.Logging.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\Microsoft.IdentityModel.JsonWebTokens\lib\net461\Microsoft.IdentityModel.JsonWebTokens.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Configuration.ConfigurationManager/lib/net461/System.Configuration.ConfigurationManager.dll" 
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Security.Cryptography.ProtectedData/lib/net461/System.Security.Cryptography.ProtectedData.dll" 
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Security.Permissions/lib/net461/System.Security.Permissions.dll" 
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Security.AccessControl/lib/net461/System.Security.AccessControl.dll" 
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Buffers/lib/netstandard1.1/System.Buffers.dll" 
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Numerics.Vectors/lib/net46/System.Numerics.Vectors.dll" 
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Runtime.CompilerServices.Unsafe/lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll" 
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Security.Principal.Windows/lib/net461/System.Security.Principal.Windows.dll" 
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Memory/lib/netstandard1.1/System.Memory.dll" 
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages\test2\System.IdentityModel\lib\net461\System.IdentityModel.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/packages\test2\System.IdentityModel.Tokens.Jwt\lib\net461\System.IdentityModel.Tokens.Jwt.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Fake.IO.FileSystem\lib\net46\Fake.IO.FileSystem.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.IdentityModel.Tokens\lib\net461\Microsoft.IdentityModel.Tokens.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\Microsoft.IdentityModel.Protocols\lib\net461\Microsoft.IdentityModel.Protocols.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\Microsoft.IdentityModel.Protocols.OpenIdConnect\lib\net461\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\Microsoft.IdentityModel.Logging\lib\net461\Microsoft.IdentityModel.Logging.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\Microsoft.IdentityModel.JsonWebTokens\lib\net461\Microsoft.IdentityModel.JsonWebTokens.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Configuration.ConfigurationManager/lib/net461/System.Configuration.ConfigurationManager.dll" 
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Security.Cryptography.ProtectedData/lib/net461/System.Security.Cryptography.ProtectedData.dll" 
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Security.Permissions/lib/net461/System.Security.Permissions.dll" 
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Security.AccessControl/lib/net461/System.Security.AccessControl.dll" 
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Buffers/lib/netstandard1.1/System.Buffers.dll" 
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Numerics.Vectors/lib/net46/System.Numerics.Vectors.dll" 
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Runtime.CompilerServices.Unsafe/lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll" 
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Security.Principal.Windows/lib/net461/System.Security.Principal.Windows.dll" 
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages/prozper0/System.Memory/lib/netstandard1.1/System.Memory.dll" 
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages\test2\System.IdentityModel\lib\net461\System.IdentityModel.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation/packages\test2\System.IdentityModel.Tokens.Jwt\lib\net461\System.IdentityModel.Tokens.Jwt.dll"
         module TokenValidate =
             open System.IO
             open Microsoft.IdentityModel.Tokens
@@ -4153,6 +4231,7 @@ namespace FsRoot
             let [< Rpc >] obtenerFormasDePagoPara  tk aids          : AR<_> = check tk adm >>= (fun _  -> Authorize       .obtenerFormasDePagoPara  aids            ) |> AzureHandler.run
             let [< Rpc >] obtenerTransaccionesPara tk aid           : AR<_> = check tk aid >>= (fun aL -> Authorize       .obtenerTransaccionesPara aid    aL.Value ) |> AzureHandler.run
             let [< Rpc >] refrescarTransacciones   tk            () : AR<_> = check tk adm >>= (fun _  -> reader          .RefrescarTransacciones            ()     ) |> AzureHandler.run
+            //let [< Rpc >] obtenerCtasBancariasPara tk aids          : AR<_> = check tk adm >>= (fun _  -> AdminSeg        .obtenerCtasBancariasPara aids            ) |> AzureHandler.run
         
         [<JavaScript>]
         module Remoting = // not being used anymore as token now is a parameter of the rpc function
@@ -4177,21 +4256,21 @@ namespace FsRoot
                 getTokenOA <-  getTokenOAF
                 WebSharper.Remoting.AjaxProvider <- CustomXhrProvider()
                 
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs\lib\netstandard2.0\Microsoft.Azure.WebJobs.Host.dll" 
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs.Core\lib\netstandard2.0\Microsoft.Azure.WebJobs.dll" 
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs.Extensions\lib\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.dll" 
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs.Extensions.Storage\lib\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.Storage.dll" 
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.Primitives\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.Logging\lib\netstandard2.0\Microsoft.Extensions.Logging.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.Logging.Abstractions\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs.Extensions.Http\lib\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.Http.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.DependencyInjection\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.DependencyInjection.Abstractions\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Http\lib\netstandard2.0\Microsoft.AspNetCore.Http.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Http.Abstractions\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Http.Features\lib\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Mvc.Core\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Core.dll"
-        //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Mvc.Abstractions\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Abstractions.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs\lib\netstandard2.0\Microsoft.Azure.WebJobs.Host.dll" 
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs.Core\lib\netstandard2.0\Microsoft.Azure.WebJobs.dll" 
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs.Extensions\lib\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.dll" 
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs.Extensions.Storage\lib\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.Storage.dll" 
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.Primitives\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.Logging\lib\netstandard2.0\Microsoft.Extensions.Logging.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.Logging.Abstractions\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Azure.WebJobs.Extensions.Http\lib\netstandard2.0\Microsoft.Azure.WebJobs.Extensions.Http.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.DependencyInjection\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.Extensions.DependencyInjection.Abstractions\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Http\lib\netstandard2.0\Microsoft.AspNetCore.Http.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Http.Abstractions\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Http.Features\lib\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Mvc.Core\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Core.dll"
+        //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\Prozper\Microsoft.AspNetCore.Mvc.Abstractions\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Abstractions.dll"
         
         //#define NETSTANDARD20
         

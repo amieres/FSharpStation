@@ -2,21 +2,23 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>FSharp.Core</id>
-    <version>4.5.0</version>
-    <title>FSharp.Core for F# 4.5</title>
+    <version>4.6.2</version>
+    <title>FSharp.Core for F# 4.6</title>
     <authors>Microsoft and F# Software Foundation</authors>
     <owners>Microsoft and F# Software Foundation</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <licenseUrl>https://github.com/Microsoft/visualfsharp/blob/master/License.txt</licenseUrl>
     <projectUrl>https://github.com/Microsoft/visualfsharp</projectUrl>
     <iconUrl>http://fsharp.org/img/logo.png</iconUrl>
-    <description>FSharp.Core redistributables from Visual F# Tools version 10.2 For F# 4.5
+    <description>FSharp.Core redistributables from Visual F# Tools version 10.4 For F# 4.6
                 Supported Platforms:
-                    .NET 4.5+           (net45)
+                    .NET Framework 4.5+ (net45)
                     netstandard1.6      (netstandard1.6)
                     netstandard2.0      (netstandard2.0)
-                Commit hash: fb7f38082efdeb0e02a389c0968f40245ef67bd3.</description>
-    <summary>FSharp.Core for F# 4.5</summary>
+
+                Commit hash: 8527f4444ac8618a2aee143be608f63c55f51325</description>
+    <summary>FSharp.Core for F# 4.6</summary>
+    <copyright>(C) Microsoft Corporation. All rights reserved.</copyright>
     <language>en-US</language>
     <tags>Visual F# Compiler FSharp functional programming</tags>
     <dependencies>

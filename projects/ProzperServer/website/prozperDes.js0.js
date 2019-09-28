@@ -2685,14 +2685,17 @@
     if(n<=0)
      return"";
     else
-     if(from<0)
-      {
-       from$1=from;
-       from=0;
-       n=n+from$1;
-      }
+     if(from>=_this.length)
+      return"";
      else
-      return from>=_this.length?"":Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
+      if(from<0)
+       {
+        from$1=from;
+        from=0;
+        n=n+from$1;
+       }
+      else
+       return Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
    }
  };
  Library.print$1=function(v)
@@ -7540,14 +7543,14 @@
   {
    return setAliado(id,function(al)
    {
-    return Aliado$2.New(al.id,al.idPadreO,al.idForAuthorize,al.influyente,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,StatusAliado.tryParse(v),al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel,al.documentos,al.docPendientes);
+    return Aliado$2.New(al.id,al.idPadreO,al.idForAuthorize,al.idForAdminSeg,al.influyente,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,StatusAliado.tryParse(v),al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel,al.documentos,al.docPendientes);
    });
   }
   function setInfluyente(id,v)
   {
    return setAliado(id,function(al)
    {
-    return Aliado$2.New(al.id,al.idPadreO,al.idForAuthorize,Strings.Trim(v)===""?null:{
+    return Aliado$2.New(al.id,al.idPadreO,al.idForAuthorize,al.idForAdminSeg,Strings.Trim(v)===""?null:{
      $:1,
      $0:Strings.Trim(v)
     },al.datosPersonales,al.contactos,al.identificacion,al.isInternal,al.status,al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel,al.documentos,al.docPendientes);
@@ -7565,7 +7568,7 @@
    };
    return setAliado(id,function(al)
    {
-    return Aliado$2.New(al.id,padre,al.idForAuthorize,al.influyente,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,al.status,al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel,al.documentos,al.docPendientes);
+    return Aliado$2.New(al.id,padre,al.idForAuthorize,al.idForAdminSeg,al.influyente,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,al.status,al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel,al.documentos,al.docPendientes);
    });
   }
   function obtenerAliado(alid)
@@ -9051,8 +9054,8 @@
   SC$1.rexGuid="([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})";
   SC$1.rexEmail="(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@[*[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+]*";
   SC$1.policies=List.ofArray([Policy.SignIn,Policy.SignUp,Policy.EditProfile,Policy.ResetPassword]);
-  SC$1.rootdir="D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperServer\\website";
-  SC$1.TemplatesFileName="D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperServer\\website"+"\\indexDes.html";
+  SC$1.rootdir="d:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperServer\\website";
+  SC$1.TemplatesFileName="d:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperServer\\website"+"\\indexDes.html";
   ((function($3)
   {
    return function($4)
@@ -9062,7 +9065,7 @@
   }(function(s)
   {
    console.log(s);
-  }))("D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperServer\\website\\indexDes.html"));
+  }))("d:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperServer\\website\\indexDes.html"));
   SC$1.appId=Strings.StartsWith(self.location.host,"prozper0")?"76703639-1d21-4bc3-bd46-c764f5ea78ee":"70ad4f9b-9a2b-409e-9c1e-d04dbb2e7cf2";
   SC$1.applicationId=Msal$1.storeValue("applicationId",Msal$1.appId());
   SC$1.tenantName=Msal$1.storeValue("tenantName","prozper");

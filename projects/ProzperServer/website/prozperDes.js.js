@@ -3085,14 +3085,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return setAliado(id,function(al)
    {
-    return Aliado$1.New(al.id,al.idPadreO,al.idForAuthorize,al.influyente,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,StatusAliado.tryParse(v),al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel,al.documentos,al.docPendientes);
+    return Aliado$1.New(al.id,al.idPadreO,al.idForAuthorize,al.idForAdminSeg,al.influyente,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,StatusAliado.tryParse(v),al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel,al.documentos,al.docPendientes);
    });
   }
   function setInfluyente(id,v)
   {
    return setAliado(id,function(al)
    {
-    return Aliado$1.New(al.id,al.idPadreO,al.idForAuthorize,Strings.Trim(v)===""?null:{
+    return Aliado$1.New(al.id,al.idPadreO,al.idForAuthorize,al.idForAdminSeg,Strings.Trim(v)===""?null:{
      $:1,
      $0:Strings.Trim(v)
     },al.datosPersonales,al.contactos,al.identificacion,al.isInternal,al.status,al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel,al.documentos,al.docPendientes);
@@ -3110,7 +3110,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    };
    return setAliado(id,function(al)
    {
-    return Aliado$1.New(al.id,padre,al.idForAuthorize,al.influyente,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,al.status,al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel,al.documentos,al.docPendientes);
+    return Aliado$1.New(al.id,padre,al.idForAuthorize,al.idForAdminSeg,al.influyente,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,al.status,al.diaPago,al.tipo,al.fechaRegistro,al.fechaStatus,al.nReferidos,al.nRefActivos,al.nDescendientes,al.nDescActivos,al.comision,al.nivel,al.documentos,al.docPendientes);
    });
   }
   function obtenerAliado(alid)
@@ -6004,12 +6004,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:o
   };
  };
- Aliado$1.New=function(id,idPadreO,idForAuthorize,influyente,datosPersonales,contactos,identificacion,isInternal,status,diaPago,tipo,fechaRegistro,fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,comision,nivel,documentos,docPendientes)
+ Aliado$1.New=function(id,idPadreO,idForAuthorize,idForAdminSeg,influyente,datosPersonales,contactos,identificacion,isInternal,status,diaPago,tipo,fechaRegistro,fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,comision,nivel,documentos,docPendientes)
  {
   return{
    id:id,
    idPadreO:idPadreO,
    idForAuthorize:idForAuthorize,
+   idForAdminSeg:idForAdminSeg,
    influyente:influyente,
    datosPersonales:datosPersonales,
    contactos:contactos,
@@ -7816,8 +7817,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$1.rexGuid="([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})";
   SC$1.rexEmail="(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@[*[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+]*";
   SC$1.policies=List.ofArray([Policy.SignIn,Policy.SignUp,Policy.EditProfile,Policy.ResetPassword]);
-  SC$1.rootdir="D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperServer\\website";
-  SC$1.TemplatesFileName="D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperServer\\website"+"\\indexDes.html";
+  SC$1.rootdir="d:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperServer\\website";
+  SC$1.TemplatesFileName="d:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperServer\\website"+"\\indexDes.html";
   ((function($3)
   {
    return function($4)
@@ -7827,7 +7828,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   }(function(s)
   {
    console.log(s);
-  }))("D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperServer\\website\\indexDes.html"));
+  }))("d:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\ProzperServer\\website\\indexDes.html"));
   SC$1.appId=Strings.StartsWith(self.location.host,"prozper0")?"76703639-1d21-4bc3-bd46-c764f5ea78ee":"70ad4f9b-9a2b-409e-9c1e-d04dbb2e7cf2";
   SC$1.applicationId=Msal.storeValue("applicationId",Msal.appId());
   SC$1.tenantName=Msal.storeValue("tenantName","prozper");
@@ -12288,7 +12289,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$3.empty=(d=DatosPersonales$1.New(null,"","","","",Pais.USA,Genero.Masculino,(new Date$1(2000,1-1,1)).getTime()),Aliado$1.New(new IdAliado({
    $:0,
    $0:""
-  }),null,null,null,d,[],[],false,StatusAliado.Inactivo,DiaPago.Dia01,TipoAliado.Regular,(new Date$1(2000,1-1,1)).getTime(),(new Date$1(2000,1-1,1)).getTime(),0,0,0,0,0,0,0,0));
+  }),null,null,null,null,d,[],[],false,StatusAliado.Inactivo,DiaPago.Dia01,TipoAliado.Regular,(new Date$1(2000,1-1,1)).getTime(),(new Date$1(2000,1-1,1)).getTime(),0,0,0,0,0,0,0,0));
   SC$3.serverEndPoint=Lazy.Create(function()
   {
    return self.location.protocol==="http:"?"http://localhost:7071/api/":(function($1)
@@ -13067,14 +13068,17 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     if(n<=0)
      return"";
     else
-     if(from<0)
-      {
-       from$1=from;
-       from=0;
-       n=n+from$1;
-      }
+     if(from>=_this.length)
+      return"";
      else
-      return from>=_this.length?"":Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
+      if(from<0)
+       {
+        from$1=from;
+        from=0;
+        n=n+from$1;
+       }
+      else
+       return Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
    }
  };
  LibraryJS.REGEX$1=function(expr,opt,value)

@@ -4087,14 +4087,17 @@ if (!console) {
     if(n<=0)
      return"";
     else
-     if(from<0)
-      {
-       from$1=from;
-       from=0;
-       n=n+from$1;
-      }
+     if(from>=_this.length)
+      return"";
      else
-      return from>=_this.length?"":Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
+      if(from<0)
+       {
+        from$1=from;
+        from=0;
+        n=n+from$1;
+       }
+      else
+       return Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
    }
  };
  Library["String.get_toUnderscore"]=function(_this,u)

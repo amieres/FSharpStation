@@ -30,7 +30,6 @@ D: /lib/net45/zh-Hant
 F: /lib/net45/zh-Hant/FSharp.Core.resources.dll
 F: /lib/net45/FSharp.Core.dll
 F: /lib/net45/FSharp.Core.optdata
-F: /lib/net45/FSharp.Core.resources.dll
 F: /lib/net45/FSharp.Core.sigdata
 F: /lib/net45/FSharp.Core.xml
 D: /lib/netstandard1.6
@@ -70,10 +69,10 @@ D: /package
 D: /package/services
 D: /package/services/metadata
 D: /package/services/metadata/core-properties
-F: /package/services/metadata/core-properties/d0c08af8c8e24060b0fd6bf264255833.psmdcp
+F: /package/services/metadata/core-properties/8a2b9e01d0d54526b48532d83ffef969.psmdcp
 D: /_rels
 F: /_rels/.rels
 F: /.signature.p7s
-F: /fsharp.core.4.5.0.nupkg
+F: /fsharp.core.4.6.2.nupkg
 F: /FSharp.Core.nuspec
 F: /[Content_Types].xml

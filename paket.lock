@@ -20,7 +20,7 @@ NUGET
     FSharp.Control.Reactive (4.1)
       FSharp.Core (>= 4.2.3)
       System.Reactive (>= 4.0)
-    FSharp.Core (4.5)
+    FSharp.Core (4.6.2)
     FSharp.Data (3.0)
       FSharp.Core (>= 4.0.0.1) - restriction: || (== net461) (&& (== netstandard2.0) (>= net45))
       FSharp.Core (>= 4.3.4) - restriction: || (&& (== net461) (< net45) (>= netstandard2.0)) (== netstandard2.0)
@@ -1028,6 +1028,12 @@ NUGET
       HtmlAgilityPack (>= 1.7.1)
       System.Xml.XDocument (>= 4.3)
       WebSharper (>= 4.5.1 < 4.6)
+
+GROUP FSharp47
+RESTRICTION: || (== net461) (== netstandard2.0)
+NUGET
+  remote: https://www.nuget.org/api/v2
+    FSharp.Core (4.6.2)
 
 GROUP Other
 RESTRICTION: || (== net46) (== net461)
@@ -3089,7 +3095,7 @@ RESTRICTION: || (== netcoreapp2.1) (== netstandard2.0)
 NUGET
   remote: https://www.nuget.org/api/v2
     FSharp.Compiler.Tools (10.2.3)
-    FSharp.Core (4.6.2)
+    FSharp.Core (4.7)
     HtmlAgilityPack (1.8.12)
       System.Net.Http (>= 4.3.2)
       System.Xml.XmlDocument (>= 4.3)

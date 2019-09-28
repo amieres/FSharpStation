@@ -6221,14 +6221,17 @@
     if(n<=0)
      return"";
     else
-     if(from<0)
-      {
-       from$1=from;
-       from=0;
-       n=n+from$1;
-      }
+     if(from>=_this.length)
+      return"";
      else
-      return from>=_this.length?"":Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
+      if(from<0)
+       {
+        from$1=from;
+        from=0;
+        n=n+from$1;
+       }
+      else
+       return Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
    }
  };
  Library.delayed$1=function(delay,doF)
@@ -8628,13 +8631,6 @@
    b=null;
    return Concurrency.Delay(function()
    {
-    (function($1)
-    {
-     return $1("getServer");
-    }(function(s)
-    {
-     console.log(s);
-    }));
     return Concurrency.Combine($this.serverO==null?(function($1)
     {
      return $1("getServer Connecting");

@@ -1,6 +1,6 @@
 #nowarn "3242"
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1568323546207 -d:TEE -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1568639954583 -d:TEE -d:WEBSHARPER
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\FSharpStation\src"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
@@ -46,7 +46,7 @@
 //#nowarn "3242"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1568323546207
+//#define FSharpStation1568639954583
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -1079,8 +1079,8 @@ namespace FsRoot
             type System.String with
                 member this.Substring2(from, n) = 
                     if   n    <= 0           then ""
-                    elif from <  0           then this.Substring2(0, n + from)
                     elif from >= this.Length then ""
+                    elif from <  0           then this.Substring2(0, n + from)
                     else this.Substring(from, min n (this.Length - from))
                 member this.Left             n  = if n < 0 
                                                   then this.Substring2(0, this.Length + n)
@@ -2429,7 +2429,7 @@ namespace FsRoot
                 let endToken = "xXxY" + "yYyhH"
                 type FsiExe(config:string, workingDir, ?outHndl, ?errHndl) =
                     let silent                     = ref false
-                    let fsiexe                     = if config.Contains "-d:FSI32BIT" then "fsi.exe" else "fsianycpu.exe"
+                    let fsiexe                     = @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Test2\FSharp.Compiler.Tools\tools" +/+ if config.Contains "-d:FSI32BIT" then "fsi.exe" else "fsianycpu.exe"
                     let startInfo                  = ProcessStartInfo(fsiexe, config, WorkingDirectory= workingDir)
                     let outHndlS                   = outHndl |> Option.map(fun outh v -> if !silent then () else outh v)
                     let errHndlS                   = errHndl |> Option.map(fun errh v -> if !silent then () else errh v)
@@ -3576,8 +3576,8 @@ namespace FsRoot
                     fusion {    
                         let! currentValueO  = getPresenceRm presenceKey
                         if   currentValueO <> Some presenceValue then
-                            do!  evaluateRm    presenceCode |>> ignore
                             do!  addPresenceRm presenceKey presenceValue
+                            do!  evaluateRm    presenceCode |>> ignore
                         return! evaluateRm code
                     }
                     |> AgentReaderM.ofResourceRm
@@ -3989,7 +3989,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/a17730c1-09a7-48f8-bba8-a24ba4c61dd5"
+                    "http://localhost:9005/#/Snippet/47149dff-c248-4229-8076-db0dc48a3b0e"
                 #endif
                 
                 let extractEndPoint() = 
@@ -4050,7 +4050,7 @@ namespace FsRoot
                         }
                 
                     let checkServer = Mailbox.callA print ( fun () -> async {
-                        printfn "getServer"
+                        //printfn "getServer"
                         if serverO.IsNone then
                             printfn "getServer Connecting"
                             do! connectToWebSocketServer()
@@ -4184,7 +4184,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1568323546207"
+                let mutable fsharpStationAddress = Address "FSharpStation1568639954583"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 

@@ -1541,6 +1541,37 @@
    toString:toString
   };
  };
+ Serializer.serCn=function(s,s$1,c)
+ {
+  return Serializer.map(Global.ignore,Global.ignore,s,s$1);
+ };
+ Serializer.serC=function(s,s$1,c)
+ {
+  return Serializer.mapO(function()
+  {
+   return c;
+  },function(v)
+  {
+   return Unchecked.Equals(v,c)?{
+    $:1,
+    $0:null
+   }:null;
+  },s,s$1);
+ };
+ Serializer.mapO=function(g,f,a,a$1)
+ {
+  function g$1(o)
+  {
+   return o==null?null:f(o.$0);
+  }
+  return[function(x)
+  {
+   return a(g(x));
+  },function(x)
+  {
+   return g$1(a$1(x));
+  }];
+ };
  Serializer.map=function(g,f,a,a$1)
  {
   function g$1(o)
@@ -1591,6 +1622,10 @@
   {
    return g$1(f$1(x));
   }))];
+ };
+ Serializer.serPair=function(s,s$1,s$2,s$3)
+ {
+  return Serializer.serDup([s,s$1],[s$2,s$3]);
  };
  Serializer.serTrp=function(sF,sS,sT)
  {
@@ -1880,14 +1915,17 @@
     if(n<=0)
      return"";
     else
-     if(from<0)
-      {
-       from$1=from;
-       from=0;
-       n=n+from$1;
-      }
+     if(from>=_this.length)
+      return"";
      else
-      return from>=_this.length?"":Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
+      if(from<0)
+       {
+        from$1=from;
+        from=0;
+        n=n+from$1;
+       }
+      else
+       return Strings.Substring(_this,from,(b=_this.length-from,Unchecked.Compare(n,b)===-1?n:b));
    }
  };
  Library.print=function(v)
@@ -2796,12 +2834,13 @@
    return this.$0;
   }
  },null,IdForAuthorize);
- Aliado.New=function(id,idPadreO,idForAuthorize,influyente,datosPersonales,contactos,identificacion,isInternal,status,diaPago,tipo,fechaRegistro,fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,comision,nivel,documentos,docPendientes)
+ Aliado.New=function(id,idPadreO,idForAuthorize,idForAdminSeg,influyente,datosPersonales,contactos,identificacion,isInternal,status,diaPago,tipo,fechaRegistro,fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,comision,nivel,documentos,docPendientes)
  {
   return{
    id:id,
    idPadreO:idPadreO,
    idForAuthorize:idForAuthorize,
+   idForAdminSeg:idForAdminSeg,
    influyente:influyente,
    datosPersonales:datosPersonales,
    contactos:contactos,
@@ -2944,10 +2983,10 @@
     return al$1.nDescActivos+al$1.nRefActivos;
    },hijos);
    nivel=1+buscar.nivelDe(al.idPadreO);
-   al0=Aliado.New(al.id,al.idPadreO,al.idForAuthorize,al.influyente,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,status,Aliado$1.diaPago(al.fechaRegistro),nRefActivos>=pre.numeroReferidosMaster?TipoAliado.Master:TipoAliado.Regular,al.fechaRegistro,al.fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,al.comision,nivel,al.documentos,al.docPendientes);
+   al0=Aliado.New(al.id,al.idPadreO,al.idForAuthorize,al.idForAdminSeg,al.influyente,al.datosPersonales,al.contactos,al.identificacion,al.isInternal,status,Aliado$1.diaPago(al.fechaRegistro),nRefActivos>=pre.numeroReferidosMaster?TipoAliado.Master:TipoAliado.Regular,al.fechaRegistro,al.fechaStatus,nReferidos,nRefActivos,nDescendientes,nDescActivos,al.comision,nivel,al.documentos,al.docPendientes);
    p$1=Aliado$1.comision(pre,al0);
-   al1=Aliado.New(al0.id,al0.idPadreO,al0.idForAuthorize,al0.influyente,al0.datosPersonales,al0.contactos,al0.identificacion,al0.isInternal,al0.status,al0.diaPago,al0.tipo,al0.fechaRegistro,al0.fechaStatus,al0.nReferidos,al0.nRefActivos,al0.nDescendientes,al0.nDescActivos,p$1[0]+p$1[1],al0.nivel,al0.documentos,al0.docPendientes);
-   return Aliado.New(al1.id,al1.idPadreO,al1.idForAuthorize,al1.influyente,al1.datosPersonales,al1.contactos,al1.identificacion,al1.isInternal,al1.status.$===2&&al1.comision>=pre.montoAfiliacion?StatusAliado.Activo:al1.status,al1.diaPago,al1.tipo,al1.fechaRegistro,al1.fechaStatus,al1.nReferidos,al1.nRefActivos,al1.nDescendientes,al1.nDescActivos,al1.comision,al1.nivel,al1.documentos,al1.docPendientes);
+   al1=Aliado.New(al0.id,al0.idPadreO,al0.idForAuthorize,al0.idForAdminSeg,al0.influyente,al0.datosPersonales,al0.contactos,al0.identificacion,al0.isInternal,al0.status,al0.diaPago,al0.tipo,al0.fechaRegistro,al0.fechaStatus,al0.nReferidos,al0.nRefActivos,al0.nDescendientes,al0.nDescActivos,p$1[0]+p$1[1],al0.nivel,al0.documentos,al0.docPendientes);
+   return Aliado.New(al1.id,al1.idPadreO,al1.idForAuthorize,al1.idForAdminSeg,al1.influyente,al1.datosPersonales,al1.contactos,al1.identificacion,al1.isInternal,al1.status.$===2&&al1.comision>=pre.montoAfiliacion?StatusAliado.Activo:al1.status,al1.diaPago,al1.tipo,al1.fechaRegistro,al1.fechaStatus,al1.nReferidos,al1.nRefActivos,al1.nDescendientes,al1.nDescActivos,al1.comision,al1.nivel,al1.documentos,al1.docPendientes);
   }
   function checkO(v)
   {
@@ -3417,7 +3456,7 @@
   SC$1.empty=(d=DatosPersonales.New(null,"","","","",Pais.USA,Genero.Masculino,(new Date$1(2000,1-1,1)).getTime()),Aliado.New(new IdAliado$1({
    $:0,
    $0:""
-  }),null,null,null,d,[],[],false,StatusAliado.Inactivo,DiaPago.Dia01,TipoAliado.Regular,(new Date$1(2000,1-1,1)).getTime(),(new Date$1(2000,1-1,1)).getTime(),0,0,0,0,0,0,0,0));
+  }),null,null,null,null,d,[],[],false,StatusAliado.Inactivo,DiaPago.Dia01,TipoAliado.Regular,(new Date$1(2000,1-1,1)).getTime(),(new Date$1(2000,1-1,1)).getTime(),0,0,0,0,0,0,0,0));
   SC$1.serverEndPoint=Lazy.Create(function()
   {
    return self.location.protocol==="http:"?"http://localhost:7071/api/":(function($1)
