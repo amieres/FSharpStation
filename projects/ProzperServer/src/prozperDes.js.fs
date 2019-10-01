@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1569527865882 -d:NETSTANDARD20 -d:NOFRAMEWORK --noframework -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1569726400375 -d:NETSTANDARD20 -d:NOFRAMEWORK --noframework -d:TEE -d:WEBSHARPER
 ////#cd @"d:\Abe\CIPHERWorkspace\FSharpStation/projects/ProzperServer"
 //#I @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
 //#I @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
@@ -38,7 +38,7 @@
 //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\projects\ProzperServer\bin\ProzperServer.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1569527865882
+//#define FSharpStation1569726400375
 #if INTERACTIVE
 module FsRoot   =
 #else
