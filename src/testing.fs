@@ -1,34 +1,34 @@
 #nowarn "3242"
 #nowarn "42"
-////-d:FSharpStation1570657700051 -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1571155948940 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
-//#I @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
-//#I @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
-//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
-//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
-//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
-//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
-//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
-//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
-//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
-//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
-//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
-//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
-//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
-//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
-//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
-//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
-//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
-//#r @"d:\Abe\CIPHERWorkspace\FSharpStation\projects\LayoutEngine\bin\LayoutEngine.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\LayoutEngine\bin\LayoutEngine.dll"
 //#nowarn "3242"
 //#nowarn "42"
 /// Root namespace for all code
-//#define FSharpStation1570657700051
+//#define FSharpStation1571155948940
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -44,24 +44,24 @@ namespace FsRoot
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
     
     #if WEBSHARPER
-    //#I @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
-    //#I @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
     
-    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
-    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
-    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
-    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
-    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
-    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
-    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
-    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
-    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
-    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
-    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
-    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
-    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
-    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
-    //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
     #endif
     #endif
     #if WEBSHARPER
@@ -1139,7 +1139,7 @@ namespace FsRoot
             
                 let serSnippetId : Ser<Guid<SnippetId>> = 
                     let s           = "SnippetId"
-                    let serialize   (gid:Guid<SnippetId>) = UoM.Untag gid |> string |> sprintf "{%s :%A}" s
+                    let serialize   (gid:Guid<SnippetId>) = UoM.Untag gid |> string |> sprintf "{%A :%A}" s
                     let deserialize j   = j.tryField s 
                                           |> Option.bind (fun jf -> jf.tryString() ) 
                                           |> Option.bind ParseO.parseGuidO 
@@ -2246,7 +2246,7 @@ namespace FsRoot
         module TestingJS =
         
         
-            //#r @"d:\Abe\CIPHERWorkspace\FSharpStation\projects\LayoutEngine\bin\LayoutEngine.dll"
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\LayoutEngine\bin\LayoutEngine.dll"
             open FsRoot
             
             [< JavaScript ; JavaScriptExport (typeof<WebComponent.WcSplitter.WcSplitterT>) >]
@@ -2327,46 +2327,39 @@ namespace FsRoot
                 open AppFramework
             
                 type PlugInBuilder() =
-                    member __.Zero() = {
-                        plgName    = "Main"
-                        plgVars    = [| |]  
-                        plgViews   = [| |]  
-                        plgDocs    = [| |]  
-                        plgActions = [| |]
-                        plgQueries = [| |]
-                    }
+                    member __.Zero() = { defaultPlugIn() with plgName    = "Main" }
                     member this.Yield(()) = this.Zero()
                     member __.For(coll:seq<_>, func) =
                         let ie = coll.GetEnumerator()
                         while ie.MoveNext() do
                             func ie.Current
                     [<CustomOperation("name"   )>]
-                    member __.Name  (plg:PlugIn, name     ) = { plg with plgName    = name }
+                    member __.Name  (plg:PlugIn, name     )   = { plg with plgName    = name }
                     [<CustomOperation("var"    )>]  
-                    member __.AddVar(plg:PlugIn, name, var) = { plg with plgVars    = [| newVar name var |] |> Array.append    plg.plgVars    }
+                    member __.AddVar(plg:PlugIn, name, var)   = plg.plgVars   .Add(newVar name var)  ; plg
                     [<CustomOperation("doc"    )>]  
-                    member __.AddDoc(plg:PlugIn, name, doc) = { plg with plgDocs    = [| newDoc name doc |] |> Array.append    plg.plgDocs    }
+                    member __.AddDoc(plg:PlugIn, name, doc)   = plg.plgDocs   .Add(newDoc name doc)  ; plg
                     [<CustomOperation("docDyn" )>]  
-                    member __.AddDocF(plg:PlugIn, name, docF)= { plg with plgDocs    = [| newDoc name (lazy LayoutEngine.turnToView docF) |] |> Array.append    plg.plgDocs    }
+                    member __.AddDocF(plg:PlugIn, name, docF) = plg.plgDocs   .Add(newDoc name (lazy LayoutEngine.turnToView docF) ) ; plg
                     [<CustomOperation("act"    )>]
-                    member __.AddAct(plg:PlugIn, name, act) = { plg with plgActions = [| newAct name act |] |> Array.append    plg.plgActions }
+                    member __.AddAct(plg:PlugIn, name, act)   = plg.plgActions.Add(newAct name act) ; plg
                     [<CustomOperation("actOpt"    )>]
                     member __.AddActO(plg:PlugIn, name,actO) = match actO with 
-                                                               | Some act -> { plg with plgActions = [| newAct name act |] |> Array.append    plg.plgActions }
-                                                               | None -> plg
-                    [<CustomOperation("mainDoc")>]
-                    member __.InsDoc(plg:PlugIn, name, doc) = { plg with plgDocs    = [| newDoc name doc |] |> Array.append <| plg.plgDocs    }
+                                                               | Some act -> plg.plgActions.Add(newAct name act)
+                                                               | None     -> ()
+                                                               plg
+                    //[<CustomOperation("mainDoc")>]
+                    //member __.InsDoc(plg:PlugIn, name, doc) = plg.plgDocs.    = [| newDoc name doc |] |> Array.append <| plg.plgDocs    }
                     [<CustomOperation("view"   )>]  
-                    member __.AddViw(plg:PlugIn, name, viw) = { plg with plgViews   = [| newViw name viw |] |> Array.append    plg.plgViews   }
+                    member __.AddViw(plg:PlugIn, name, viw) = plg.plgViews.Add(newViw name viw)
                     [<CustomOperation("merge"  )>]
                     member __.Merge (plg:PlugIn, prefix, p2:PlugIn) = 
-                        { plg with
-                                plgVars    = Array.append plg.plgVars    (p2.plgVars    |> Array.map (fun v -> { v with varName = prefix + v.varName } ) )
-                                plgViews   = Array.append plg.plgViews   (p2.plgViews   |> Array.map (fun w -> { w with viwName = prefix + w.viwName } ) )
-                                plgDocs    = Array.append plg.plgDocs    (p2.plgDocs    |> Array.map (fun d -> { d with docName = prefix + d.docName } ) )
-                                plgActions = Array.append plg.plgActions (p2.plgActions |> Array.map (fun a -> { a with actName = prefix + a.actName } ) )
-                                plgQueries = Array.append plg.plgQueries (p2.plgQueries |> Array.map (fun q -> { q with qryName = prefix + q.qryName } ) )
-                        }
+                        plg.plgVars   .AppendMany(p2.plgVars    |> Seq.map (fun v -> { v with varName = prefix + v.varName } ) ) 
+                        plg.plgViews  .AppendMany(p2.plgViews   |> Seq.map (fun w -> { w with viwName = prefix + w.viwName } ) ) 
+                        plg.plgDocs   .AppendMany(p2.plgDocs    |> Seq.map (fun d -> { d with docName = prefix + d.docName } ) ) 
+                        plg.plgActions.AppendMany(p2.plgActions |> Seq.map (fun a -> { a with actName = prefix + a.actName } ) ) 
+                        plg.plgQueries.AppendMany(p2.plgQueries |> Seq.map (fun q -> { q with qryName = prefix + q.qryName } ) ) 
+                        plg
             
                 let plugin = PlugInBuilder()
                 let addPlugIn2 plg =
@@ -2693,7 +2686,6 @@ namespace FsRoot
                     match drag with 
                     | DragNode dnid when dnid <> tnId -> Some dnid 
                     | _ -> None
-                    
                 
                 let [< Inline >] inline moveItem dropId elems getId item =
                     elems
@@ -2716,7 +2708,7 @@ namespace FsRoot
                 open WebSharper.UI.Templating
             
                 [< Literal >] 
-                let TemplateFileName =  @"d:\Abe\CIPHERWorkspace\FSharpStation\website\Templates.html"
+                let TemplateFileName =  @"D:\Abe\CIPHERWorkspace\FSharpStation\website\Templates.html"
                 type Templates       = Templating.Template<TemplateFileName, ClientLoad.FromDocument, ServerLoad.WhenChanged, LegacyMode.New>
             
                 let snippetsLM       = ListModel.Create (fun e -> e.snpId) []
@@ -2891,22 +2883,39 @@ namespace FsRoot
                     var  "content" currentSnippetContentV
                 }
             
-                let loadTextFile element  =
-                    FileList.OfElement element
-                    |> fun files ->
-                        if files.Length > 0 then
-                            let reader = TextFileReader()
-                            reader.Onload <- fun e -> 
-                                try         e.Target?result
-                                            |> Serializer.deserializeWithDefs SnippetSerialize.serModel
-                                            |> Option.iter (fun m -> 
-                                                snippetsLM.Set m.snippets
-                                                collapsedV.Set m.collapsed
-                                                )
-                                with e ->   JS.Alert <| e.ToString()
-                                            printfn "%A" e
-                            files.[0] 
-                            |> reader.ReadAsText
+                module SaveLoad =
+                    let loadTextFile element  =
+                        FileList.OfElement element
+                        |> fun files ->
+                            if files.Length > 0 then
+                                let reader = TextFileReader()
+                                reader.Onload <- fun e -> 
+                                    try         e.Target?result
+                                                |> Serializer.deserializeWithDefs SnippetSerialize.serModel
+                                                |> Option.iter (fun m -> 
+                                                    snippetsLM.Set m.snippets
+                                                    collapsedV.Set m.collapsed
+                                                    )
+                                    with e ->   JS.Alert <| e.ToString()
+                                                printfn "%A" e
+                                files.[0] 
+                                |> reader.ReadAsText
+            
+                    open WebSharper.Core.Resources
+                    type SaveAsResources() =
+                        inherit BaseResource(@"/EPFileX/FileSaver/FileSaver.js")
+            
+                    [< Require(typeof<SaveAsResources>) >]
+                    [< Inline "saveAs(new Blob([$_txt], {type: 'text/plain;charset=utf-8'}), $_name)" >]
+                    let saveAsJavaScript (_name:string) (_txt:string) = ()
+            
+                    let saveAs() = 
+                        let name = "noname.snippets" 
+                        (snippetsLM.Value, System.DateTime.Now, collapsedV.Value)
+                        |> SnippetSerialize.getModel
+                        |> fst SnippetSerialize.serModel
+                        |> saveAsJavaScript name
+                        //Snippets.updateGeneration()
             
                 let selectorLensGuidId sel = Util.selectorLens (fun (v:Guid<SnippetId>) -> v.ToString()) (ParseO.parseGuidO >> Option.map UoM.Tag) sel
             
@@ -3031,13 +3040,28 @@ namespace FsRoot
                     doc    "editor"        (lazy (div [] [ monaco |> GenEditor.generateDoc ]) )
                     merge  "snippets_"     (snippetList.PlugIn selectorLensGuidId  )
                     merge  "curSnp_"        curSnp
-                    act    "LoadSnippets"  (fun () -> loadTextFile (JS.Document.GetElementById "LoadSnippets")?firstElementChild?firstElementChild?firstElementChild?firstElementChild )
+                    act    "LoadSnippets"  (fun () -> SaveLoad.loadTextFile (JS.Document.GetElementById "LoadSnippets")?firstElementChild?firstElementChild?firstElementChild?firstElementChild )
+                    act    "SaveSnippets"             SaveLoad.saveAs
                     act    "IndentIn"       indentIn
                     act    "IndentOut"      indentOut
                     act    "AddSnippet"     addSnippet
                     act    "DeleteSnippet"  deleteSnippet
                 }
                 |> AF.addPlugIn2
+            
+                LayoutEngine.newLyt "lytTarget" """
+            main horizontal 10-50-70 part1 part2
+            
+            part1 div "" 
+            : h1 "" "Demo123 " message
+            :: div "" "Message:"
+            :: textarea message "height:200px;width:500px"
+            
+            part2 div "" lytTarget.Layout
+            
+            message Var "Hello"     
+                """
+                |> LayoutEngine.addLayout0
             
                 LayoutEngine.newLyt "SnippetsLyt" """
                     split horizontal 0-50-100 AppFramework.AppFwkClient main
@@ -3056,6 +3080,52 @@ namespace FsRoot
                     : Doc    InputLabel "" "Name:" Snippets.curSnp_name
                     : div "height:100%;class=relative" Snippets.editor                
                 """  ///// THERE IS a BUG HERE: if THERE IS NO SPACE after SearchFor then it just shows: SearchFor as if it were a text
+                |> LayoutEngine.addLayout0
+            
+                LayoutEngine.newLyt "lytDemo" """
+            SetTarget Action AppFramework.SetVar     "lytTarget.Layout"         "@{target}" 
+            SetMain2  Action AppFramework.SetVar     "AppFramework.mainDocV"    "lytDemo.main2"
+            SetMain   Action AppFramework.SetVar     "AppFramework.mainDocV"    "lytDemo.main"
+            
+            main2 vertical 0-50-100 Left2 lytTarget.main            
+            Left2 vertical 0-25-100 list snippet
+            gotoMain  button "click=@{SetMain};width:16px" "<<"
+            
+            main vertical 0-50-100 Left lytTarget.main
+            Left div "display:flex;flex-direction:column" gotoMain2 snippet
+            gotoMain2 button "click=@{SetMain2};width:16px" ">>"
+            
+            list div "display: flex;flex-direction: column" gotoMain File
+            : div    "margin:5px" SearchFor 
+            : Concat buttons
+            : div "overflow:auto;width:100%;max-width:calc(100% - 10px)" Snippets.snippets_list
+            : ul "margin:3px"
+            :: button "click=@{Snippets.AddSnippet}   ;title=Add New Snippet" "+"
+            :: button "margin-left:20px;click=@{Snippets.DeleteSnippet};title=Delete  Snippet" "x"
+            
+            snippet div "display: flex;flex-direction: column;flex:1" Trigger
+            : button "click=@{SetTarget}" "Apply"
+            : div    "click=@{SetTarget}" Snippets.snippets_sel
+            : Doc    InputLabel "" "Name:" Snippets.curSnp_name
+            : div "height:100%;class=relative;flex:1" Snippets.editor            
+            
+            buttons ul ""
+            : div "margin:3px"
+            :: button "click=@{Snippets.IndentOut};title=indent out"     "<--"
+            :: button "click=@{Snippets.IndentIn};title=indent in"       "--> "
+            
+            SearchFor   Doc InputLabel "" "Search" Snippets.searchFor
+            
+            File span "class=input-group;margin:5px;id=LoadSnippets"
+            : div "class=input-group-btn"
+            :: label "class=btn btn-info" "Load File"
+            ::: div ""
+            :::: input "class=form-control;type=file;display: none;change=@{Snippets.LoadSnippets}" 
+            :: label "class=btn btn-primary;click=@{Snippets.SaveSnippets}" "Save File"
+            
+            Trigger   Doc    AppFramework.TrigAction Snippets.snippets_sel lytDemo.SetTarget
+            target    View "n => n.includes('main ')?n:'main Contact "" ""'" Snippets.curSnp_content
+                """
                 |> LayoutEngine.addLayout0
             
                 [< SPAEntryPoint >]

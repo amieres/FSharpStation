@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,UoM,Unsafe,UoM$1,StringId,GuidId,Dict,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,BuilderP,Depend,DependBuilder,Operators$1,ResultM,Builder$1,Operators$2,ResultMAutoOpen,AsyncResultM,AsyncResultMBuilder,Operators$3,AsyncResultMAutoOpen,ParseO,Serializer,JsonIntermediate,Snippet,SnippetModule,SnippetSerialize,Model,LibraryJS,Promise,PromiseM,View,GenEditor,Position,AnnotationType,Annotation,Completion,GenEditorHook,GenEditor$1,Serializer$1,ResizeObserver,Monaco,Position$1,Range,Uri,Location,FindMatch,WordAtPosition,Model$1,MarkDownString,MarkerData,CompletionItem,Hover,Editor,MonacoConfig,MonacoGenAdapter,MonacoRT,CompletionItemProvider,HoverProvider,DefinitionProvider,AppFrameworkTemplate,TestingJS,StartAppFramework,Util,AF,PlugInBuilder,ListModelData,LayoutEngine,ListModel,LM,LMX,SnippetTemplates,DragDrop,DragInfo,SnippetsUI,SnippetHierData,SC$1,testing_Templates,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$4,Unchecked,Collections,FSharpMap,FSharpSet,BalancedTree,Option$1,System,Guid,Date,console,UI,View$1,Var$1,JSON,Doc,AttrProxy,FromView,AttrModule,AppFramework,PlugIn,PlugInVar,PlugInView,PlugInDoc,PlugInAction,PlugInQuery,Lazy,LayoutEngineModule,ListModel$1,Slice,Templating,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,Dictionary,DateUtil,Numeric,Client,Templates;
+ var Global,FsRoot,Library,UoM,Unsafe,UoM$1,StringId,GuidId,Dict,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,BuilderP,Depend,DependBuilder,Operators$1,ResultM,Builder$1,Operators$2,ResultMAutoOpen,AsyncResultM,AsyncResultMBuilder,Operators$3,AsyncResultMAutoOpen,ParseO,Serializer,JsonIntermediate,Snippet,SnippetModule,SnippetSerialize,Model,LibraryJS,Promise,PromiseM,View,GenEditor,Position,AnnotationType,Annotation,Completion,GenEditorHook,GenEditor$1,Serializer$1,ResizeObserver,Monaco,Position$1,Range,Uri,Location,FindMatch,WordAtPosition,Model$1,MarkDownString,MarkerData,CompletionItem,Hover,Editor,MonacoConfig,MonacoGenAdapter,MonacoRT,CompletionItemProvider,HoverProvider,DefinitionProvider,AppFrameworkTemplate,TestingJS,StartAppFramework,Util,AF,PlugInBuilder,ListModelData,LayoutEngine,ListModel,LM,LMX,SnippetTemplates,DragDrop,DragInfo,SnippetsUI,SnippetHierData,SaveLoad,SC$1,testing_Templates,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$4,Unchecked,Collections,FSharpMap,FSharpSet,BalancedTree,Option$1,System,Guid,Date,console,UI,View$1,Var$1,JSON,Doc,AttrProxy,FromView,AttrModule,AppFramework,PlugInVar,PlugInView,PlugInDoc,PlugInAction,PlugInQuery,Lazy,LayoutEngineModule,PlugIn,ListModel$1,Slice,Templating,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,Dictionary,DateUtil,Numeric,Client,Templates;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -89,6 +89,7 @@
  DragInfo=DragDrop.DragInfo=DragDrop.DragInfo||{};
  SnippetsUI=TestingJS.SnippetsUI=TestingJS.SnippetsUI||{};
  SnippetHierData=SnippetsUI.SnippetHierData=SnippetsUI.SnippetHierData||{};
+ SaveLoad=SnippetsUI.SaveLoad=SnippetsUI.SaveLoad||{};
  SC$1=Global.StartupCode$testing$testing=Global.StartupCode$testing$testing||{};
  testing_Templates=Global.testing_Templates=Global.testing_Templates||{};
  IntelliFactory=Global.IntelliFactory;
@@ -121,7 +122,6 @@
  FromView=UI&&UI.FromView;
  AttrModule=UI&&UI.AttrModule;
  AppFramework=LibraryJS&&LibraryJS.AppFramework;
- PlugIn=AppFramework&&AppFramework.PlugIn;
  PlugInVar=AppFramework&&AppFramework.PlugInVar;
  PlugInView=AppFramework&&AppFramework.PlugInView;
  PlugInDoc=AppFramework&&AppFramework.PlugInDoc;
@@ -129,6 +129,7 @@
  PlugInQuery=AppFramework&&AppFramework.PlugInQuery;
  Lazy=WebSharper&&WebSharper.Lazy;
  LayoutEngineModule=LibraryJS&&LibraryJS.LayoutEngineModule;
+ PlugIn=AppFramework&&AppFramework.PlugIn;
  ListModel$1=UI&&UI.ListModel;
  Slice=WebSharper&&WebSharper.Slice;
  Templating=UI&&UI.Templating;
@@ -3118,44 +3119,44 @@
    },null);
   });
  };
- View.sequenceSeq=function(sq)
+ View.sequenceSeq$1=function(sq)
  {
-  return View.traverseSeq(Global.id,sq);
+  return View.traverseSeq$1(Global.id,sq);
  };
- View.traverseSeq=function(f,sq)
+ View.traverseSeq$1=function(f,sq)
  {
-  return View.map(Global.id,Arrays.foldBack(function(head,tail)
+  return View.map$1(Global.id,Arrays.foldBack(function(head,tail)
   {
-   return View.op_GreaterGreaterEquals(f(head),function(h)
+   return View.op_GreaterGreaterEquals$1(f(head),function(h)
    {
-    return View.op_GreaterGreaterEquals(tail,function(t)
+    return View.op_GreaterGreaterEquals$1(tail,function(t)
     {
-     return View.rtn(new List.T({
+     return View.rtn$1(new List.T({
       $:1,
       $0:h,
       $1:t
      }));
     });
    });
-  },Arrays.ofSeq(sq),View.rtn(List.T.Empty)));
+  },Arrays.ofSeq(sq),View.rtn$1(List.T.Empty)));
  };
- View.op_GreaterGreaterEquals=function(v,f)
+ View.op_GreaterGreaterEquals$1=function(v,f)
  {
-  return View.bind(f,v);
+  return View.bind$1(f,v);
  };
- View.rtn=function(a)
+ View.rtn$1=function(a)
  {
   return View$1.Const(a);
  };
- View.map=function(a,a$1)
+ View.map$1=function(a,a$1)
  {
   return View$1.Map(a,a$1);
  };
- View.bind=function(a,a$1)
+ View.bind$1=function(a,a$1)
  {
   return View$1.Bind(a,a$1);
  };
- View.insertWO=function(a)
+ View.insertWO$1=function(a)
  {
   return a==null?View$1.Const(null):View$1.Map(function(a$1)
   {
@@ -4343,53 +4344,59 @@
  PlugInBuilder=AF.PlugInBuilder=Runtime.Class({
   Merge:function(plg,prefix,p2)
   {
-   return PlugIn.New(plg.plgName,plg.plgVars.concat(Arrays.map(function(v)
+   plg.plgVars.AppendMany(Seq$1.map(function(v)
    {
     return PlugInVar.New(prefix+v.varName,v.varVar);
-   },p2.plgVars)),plg.plgViews.concat(Arrays.map(function(w)
+   },p2.plgVars));
+   plg.plgViews.AppendMany(Seq$1.map(function(w)
    {
     return PlugInView.New(prefix+w.viwName,w.viwView);
-   },p2.plgViews)),plg.plgDocs.concat(Arrays.map(function(d)
+   },p2.plgViews));
+   plg.plgDocs.AppendMany(Seq$1.map(function(d)
    {
     return PlugInDoc.New(prefix+d.docName,d.docDoc);
-   },p2.plgDocs)),plg.plgActions.concat(Arrays.map(function(a)
+   },p2.plgDocs));
+   plg.plgActions.AppendMany(Seq$1.map(function(a)
    {
     return PlugInAction.New(prefix+a.actName,a.actFunction,a.actEnabled);
-   },p2.plgActions)),plg.plgQueries.concat(Arrays.map(function(q)
+   },p2.plgActions));
+   plg.plgQueries.AppendMany(Seq$1.map(function(q)
    {
     return PlugInQuery.New(prefix+q.qryName,q.qryFunction);
-   },p2.plgQueries)));
+   },p2.plgQueries));
+   return plg;
   },
   AddViw:function(plg,name,viw)
   {
-   return PlugIn.New(plg.plgName,plg.plgVars,plg.plgViews.concat([AppFramework.newViw(name,viw)]),plg.plgDocs,plg.plgActions,plg.plgQueries);
-  },
-  InsDoc:function(plg,name,doc)
-  {
-   return PlugIn.New(plg.plgName,plg.plgVars,plg.plgViews,[AppFramework.newDoc(name,doc)].concat(plg.plgDocs),plg.plgActions,plg.plgQueries);
+   plg.plgViews.Append(AppFramework.newViw(name,viw));
   },
   AddActO:function(plg,name,actO)
   {
-   return actO==null?plg:PlugIn.New(plg.plgName,plg.plgVars,plg.plgViews,plg.plgDocs,plg.plgActions.concat([AppFramework.newAct(name,actO.$0)]),plg.plgQueries);
+   actO==null?void 0:plg.plgActions.Append(AppFramework.newAct(name,actO.$0));
+   return plg;
   },
   AddAct:function(plg,name,act)
   {
-   return PlugIn.New(plg.plgName,plg.plgVars,plg.plgViews,plg.plgDocs,plg.plgActions.concat([AppFramework.newAct(name,act)]),plg.plgQueries);
+   plg.plgActions.Append(AppFramework.newAct(name,act));
+   return plg;
   },
   AddDocF:function(plg,name,docF)
   {
-   return PlugIn.New(plg.plgName,plg.plgVars,plg.plgViews,plg.plgDocs.concat([AppFramework.newDoc(name,Lazy.Create(function()
+   plg.plgDocs.Append(AppFramework.newDoc(name,Lazy.Create(function()
    {
     return LayoutEngineModule.turnToView(docF);
-   }))]),plg.plgActions,plg.plgQueries);
+   })));
+   return plg;
   },
   AddDoc:function(plg,name,doc)
   {
-   return PlugIn.New(plg.plgName,plg.plgVars,plg.plgViews,plg.plgDocs.concat([AppFramework.newDoc(name,doc)]),plg.plgActions,plg.plgQueries);
+   plg.plgDocs.Append(AppFramework.newDoc(name,doc));
+   return plg;
   },
   AddVar:function(plg,name,_var)
   {
-   return PlugIn.New(plg.plgName,plg.plgVars.concat([AppFramework.newVar(name,_var)]),plg.plgViews,plg.plgDocs,plg.plgActions,plg.plgQueries);
+   plg.plgVars.Append(AppFramework.newVar(name,_var));
+   return plg;
   },
   Name:function(plg,name)
   {
@@ -4408,7 +4415,9 @@
   },
   Zero:function()
   {
-   return PlugIn.New("Main",[],[],[],[],[]);
+   var i;
+   i=AppFramework.defaultPlugIn();
+   return PlugIn.New("Main",i.plgVars,i.plgViews,i.plgDocs,i.plgActions,i.plgQueries);
   }
  },Obj,PlugInBuilder);
  PlugInBuilder.New=Runtime.Ctor(function()
@@ -4737,6 +4746,45 @@
    path:path,
    errorO:errorO
   };
+ };
+ SaveLoad.saveAs=function()
+ {
+  var x;
+  Global.saveAs(new Global.Blob([(x=SnippetSerialize.getModel((SnippetsUI.snippetsLM())["var"].Get(),Date.now(),SnippetsUI.collapsedV().Get()),(SnippetSerialize.serModel())[0](x))],{
+   type:"text/plain;charset=utf-8"
+  }),"noname.snippets");
+ };
+ SaveLoad.loadTextFile=function(element)
+ {
+  var files,reader;
+  files=element.files;
+  files.length>0?(reader=new Global.FileReader(),reader.onload=function(e)
+  {
+   var x,x$1;
+   try
+   {
+    x=(x$1=e.target.result,(Serializer$1.deserializeWithDefs((SnippetSerialize.serModel())[0],(SnippetSerialize.serModel())[1]))(x$1));
+    return(Option.iter(function(m)
+    {
+     SnippetsUI.snippetsLM().Set(m.snippets);
+     SnippetsUI.collapsedV().Set(m.collapsed);
+    }))(x);
+   }
+   catch(e$1)
+   {
+    Global.alert(Global.String(e$1));
+    return(function($1)
+    {
+     return function($2)
+     {
+      return $1(Utils.prettyPrint($2));
+     };
+    }(function(s)
+    {
+     console.log(s);
+    }))(e$1);
+   }
+  },reader.readAsText(files.item(0))):void 0;
  };
  SnippetsUI.main=function()
  {
@@ -5094,38 +5142,6 @@
    return g(f(x));
   })))(sel);
  };
- SnippetsUI.loadTextFile=function(element)
- {
-  var files,reader;
-  files=element.files;
-  files.length>0?(reader=new Global.FileReader(),reader.onload=function(e)
-  {
-   var x,x$1;
-   try
-   {
-    x=(x$1=e.target.result,(Serializer$1.deserializeWithDefs((SnippetSerialize.serModel())[0],(SnippetSerialize.serModel())[1]))(x$1));
-    return(Option.iter(function(m)
-    {
-     SnippetsUI.snippetsLM().Set(m.snippets);
-     SnippetsUI.collapsedV().Set(m.collapsed);
-    }))(x);
-   }
-   catch(e$1)
-   {
-    Global.alert(Global.String(e$1));
-    return(function($1)
-    {
-     return function($2)
-     {
-      return $1(Utils.prettyPrint($2));
-     };
-    }(function(s)
-    {
-     console.log(s);
-    }))(e$1);
-   }
-  },reader.readAsText(files.item(0))):void 0;
- };
  SnippetsUI.curSnp=function()
  {
   SC$1.$cctor();
@@ -5160,7 +5176,7 @@
   SC$1.$cctor();
   return SC$1.search;
  };
- SnippetsUI.calcUI$2853$44=function(k)
+ SnippetsUI.calcUI$2845$44=function(k)
  {
   return function(ev)
   {
@@ -5180,7 +5196,7 @@
    },k);
   };
  };
- SnippetsUI.calcUI$2852$44=function(k)
+ SnippetsUI.calcUI$2844$44=function(k)
  {
   return function(ev)
   {
@@ -5192,7 +5208,7 @@
    },k);
   };
  };
- SnippetsUI.calcUI$2851$44=function(k)
+ SnippetsUI.calcUI$2843$44=function(k)
  {
   return function(ev)
   {
@@ -5206,7 +5222,7 @@
    },k);
   };
  };
- SnippetsUI.calcUI$2842$44=function(snpdW,snp)
+ SnippetsUI.calcUI$2834$44=function(snpdW,snp)
  {
   return function()
   {
@@ -5233,7 +5249,7 @@
    },snpdW);
   };
  };
- SnippetsUI.calcUI$2836$44=function(k,lmd)
+ SnippetsUI.calcUI$2828$44=function(k,lmd)
  {
   return function()
   {
@@ -5839,7 +5855,7 @@
    x$2=Global.String(UoM$1.Untag$4(gid));
    return(((Runtime.Curried3(function($1,$2,$3)
    {
-    return $1("{"+Utils.toSafe($2)+" :"+Utils.prettyPrint($3)+"}");
+    return $1("{"+Utils.prettyPrint($2)+" :"+Utils.prettyPrint($3)+"}");
    }))(Global.id))(s))(x$2);
   },function(j)
   {
@@ -6039,7 +6055,7 @@
   SC$1.plugin=new PlugInBuilder.New();
   SC$1.html$1="\r\n                <div ws-template=\"Snippet\" >\r\n                    <div draggable=\"true\" class=\"code-editor-list-tile ${Predecessor} ${Selected}\" \r\n                         ws-ondrag=\"Drag\"\r\n                         ws-ondragover=\"DragOver\"\r\n                         ws-ondrop=\"Drop\"\r\n                        >\r\n                        <span class=\"node ${Parent} ${ErrorMsg}\" title=\"expand\" ws-onclick=\"ToggleCollapse\"></span>\r\n                        <div  class=\"code-editor-list-text\" style=\"text-indent:${Indent}em; white-space: pre\" ws-onclick=\"Select\" ws-onafterrender=\"AfterRender\" >${Name}</div>\r\n                        <span class=\"predecessor\" title=\"toggle predecessor\" ws-onclick=\"TogglePred\">X</span>\r\n                    </div>\r\n                </div>\r\n                <style>\r\n                    .Hidden     { display   : none         }\r\n                    table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }\r\n                    td input.form-control { \r\n                        padding    : 0px; \r\n                        font-family: monospace;\r\n                        font-size  :   small;\r\n                        margin-top :   0px;\r\n                        margin-left: -2px;\r\n                        width      : 100%\r\n                    }\r\n                    td select {\r\n                        font-size : smaller;\r\n                        max-width : 8ch;\r\n                    }\r\n                    textarea {\r\n                       resize : none;\r\n                    }\r\n                    .tab-content {\r\n                        overflow: hidden\r\n                    }\r\n                    .tab-children {\r\n                        position:relative;\r\n                    }\r\n                    .tab-children>div>* {\r\n                        position:absolute;\r\n                        height: 100%;\r\n                        width:  100%;\r\n                        display: grid;\r\n                    }\r\n                    .relative {\r\n                        position:relative;\r\n                    }\r\n                    .relative>* {\r\n                        position:absolute;\r\n                        height: 100%;\r\n                        width:  100%;\r\n                        display: grid;\r\n                    }\r\n                    table.table-striped    tbody tr:nth-child(even) { background: #EEE  }\r\n                    table.table-striped    tbody tr:nth-child(odd ) { background: #FFF  }\r\n                    table.table-striped    tbody input              { background: transparent; border: none}\r\n                    table.table-striped    tbody select             { background: transparent; border: none}\r\n                    table.table-nonstriped tbody tr:nth-child(even) { background: inherit }\r\n                    table.table-nonstriped tbody tr:nth-child(odd ) { background: inherit }\r\n                    table.table            tbody tr.hover           { border    : solid thin transparent; } \r\n                    table.table            tbody tr.hover:hover     { border    : solid thin blue     ; } \r\n                    table.table            tbody th:hover           { background: gray; cursor: pointer }\r\n                    table.table            tbody tr.hover:hover>td  { border-top: solid thin blue     ; \r\n                                                               border-bottom: solid thin blue     ; } \r\n                    table.table            tbody tr.selected { background   : #b9eeff             ; }\r\n                    table.table            tbody tr.formula.selected { background: #20f7f7             ; }\r\n                    thead { color: gray }\r\n                    h3 { \r\n                        color: gray;\r\n                        line-height: 1em;\r\n                    }\r\n                    button       { border: solid thin transparent ; border-radius: 3px; }\r\n                    button:hover { border: solid thin blue }\r\n                    .indenter { position  : absolute; \r\n                                top:0px; bottom:0px; left:0px; \r\n                                background: white; color:white;\r\n                                border-right: gray thin dotted;\r\n                                }\r\n                    body {\r\n                        color      : #333;\r\n                        font-size  : small;\r\n                        font-family: monospace;\r\n                        line-height: 1.2;\r\n                    }\r\n                    .mainTitle {  \r\n                        font-size: 48px;\r\n                        font-weight: 500;\r\n                        color: gray;\r\n                        margin-top: -12px;\r\n                    }\r\n                    .CodeMirror {\r\n                        height: 100%;\r\n                    }\r\n                    \r\n                  \r\n                    body { margin: 0px }     \r\n                         \r\n                    div textarea {\r\n                        font-family     : monospace;\r\n                    }\r\n                    .code-editor-list-tile {\r\n                        white-space     : nowrap; \r\n                        border-style    : solid none none;\r\n                        border-color    : white;\r\n                        border-width    : 1px;\r\n                        background-color: #D8D8D8;\r\n                        display         : flex;\r\n                    }\r\n                    .code-editor-list-text{\r\n                        padding         : 1px 10px 1px 5px;\r\n                        overflow        : hidden;\r\n                        text-overflow   : ellipsis;\r\n                        white-space     : nowrap;\r\n                        flex            : 1;\r\n                    }\r\n                    \r\n                    .code-editor-list-tile span.node.ErrorMsg {\r\n                        background-color: red\r\n                    }\r\n                    .code-editor-list-tile span.node.expanded::before {\r\n                        content: \"-\"\r\n                    }\r\n                    .code-editor-list-tile span.node.collapsed::before {\r\n                        content: \"+\"\r\n                    }\r\n                    .code-editor-list-tile.direct-predecessor {\r\n                        font-weight     : bold;\r\n                        color           : blue;\r\n                    }\r\n                    .code-editor-list-tile.indirect-predecessor {\r\n                        color           : blue;\r\n                    }\r\n                    .code-editor-list-tile.included-predecessor {\r\n                        color           : chocolate;\r\n                    }\r\n                    .code-editor-list-tile.selected {\r\n                        background-color: #77F;\r\n                        color           : white;\r\n                    }\r\n                    .code-editor-list-tile.codeSnippet {\r\n                        text-decoration : underline;\r\n                        font-weight     : bold;\r\n                    }\r\n                    .code-editor-list-tile:hover {\r\n                        background      : lightgray;\r\n                    }\r\n                    .code-editor-list-tile.selected:hover {\r\n                        background      : blue;\r\n                    }\r\n                    .code-editor-list-tile>.predecessor {\r\n                        font-weight     : bold;\r\n                        border-style    : inset;\r\n                        border-width    : 1px;\r\n                        text-align      : center;\r\n                        color           : transparent;\r\n                    }\r\n                    .code-editor-list-tile.direct-predecessor>.predecessor {\r\n                        color           : blue;\r\n                    }\r\n                    \r\n                    .CodeMirror { height: 100%; }\r\n                    \r\n                    .node {\r\n                        background-color: white; \r\n                        width           : 2ch; \r\n                        color           : #A03; \r\n                        font-weight     : bold; \r\n                        text-align      : center;\r\n                        font-family     : arial;\r\n                    }\r\n                    .Warning { text-decoration: underline lightblue } \r\n                    .Error   { text-decoration: underline red       } \r\n                    \r\n                </style>\r\n            ";
   SC$1.drag=DragInfo.DragNone;
-  SC$1.TemplateFileName="d:\\Abe\\CIPHERWorkspace\\FSharpStation\\website\\Templates.html";
+  SC$1.TemplateFileName="D:\\Abe\\CIPHERWorkspace\\FSharpStation\\website\\Templates.html";
   SC$1.snippetsLM=ListModel$1.Create(function(e)
   {
    return e.snpId;
@@ -6190,12 +6206,15 @@
   {
    return Snippet.New($1.snpId,$1.snpName,$2,$1.snpParentIdO,$1.snpPredIds,$1.snpProperties,$1.snpModified);
   })),GenEditor$1.New(i$2["var"],i$2.disabled,View$1.Const([]),i$2.onChange,i$2.onRender,null,null,null,i$2.editorO,i$2.editorHook));
-  AF.addPlugIn2((b$5=AF.plugin(),b$5.AddAct(b$5.AddAct(b$5.AddAct(b$5.AddAct(b$5.AddAct(b$5.Merge(b$5.Merge(b$5.AddDoc(b$5.AddVar(b$5.Name(b$5.Yield(),"Snippets"),"searchFor",SnippetsUI.searchFor()),"editor",Lazy.Create(function()
+  AF.addPlugIn2((b$5=AF.plugin(),b$5.AddAct(b$5.AddAct(b$5.AddAct(b$5.AddAct(b$5.AddAct(b$5.AddAct(b$5.Merge(b$5.Merge(b$5.AddDoc(b$5.AddVar(b$5.Name(b$5.Yield(),"Snippets"),"searchFor",SnippetsUI.searchFor()),"editor",Lazy.Create(function()
   {
    return Doc.Element("div",[],[GenEditor.generateDoc(SnippetsUI.monaco())]);
   })),"snippets_",SnippetsUI.snippetList().PlugIn(SnippetsUI.selectorLensGuidId)),"curSnp_",SnippetsUI.curSnp()),"LoadSnippets",function()
   {
-   SnippetsUI.loadTextFile(self.document.getElementById("LoadSnippets").firstElementChild.firstElementChild.firstElementChild.firstElementChild);
+   SaveLoad.loadTextFile(self.document.getElementById("LoadSnippets").firstElementChild.firstElementChild.firstElementChild.firstElementChild);
+  }),"SaveSnippets",function()
+  {
+   SaveLoad.saveAs();
   }),"IndentIn",function()
   {
    SnippetsUI.indentIn();
@@ -6209,7 +6228,9 @@
   {
    SnippetsUI.deleteSnippet();
   })));
+  LayoutEngine.addLayout0(LayoutEngineModule.newLyt("lytTarget","\r\n            main horizontal 10-50-70 part1 part2\r\n            \r\n            part1 div \"\" \r\n            : h1 \"\" \"Demo123 \" message\r\n            :: div \"\" \"Message:\"\r\n            :: textarea message \"height:200px;width:500px\"\r\n            \r\n            part2 div \"\" lytTarget.Layout\r\n            \r\n            message Var \"Hello\"     \r\n                "));
   LayoutEngine.addLayout0(LayoutEngineModule.newLyt("SnippetsLyt","\r\n                    split horizontal 0-50-100 AppFramework.AppFwkClient main\r\n                    main vertical 0-25-100 list snippet\r\n                    SearchFor   Doc InputLabel \"\" \"Search\" Snippets.searchFor\r\n                    File        Doc InputFile  \"id=LoadSnippets\" \"Open File\" Snippets.LoadSnippets \"\"\r\n                    list div \"display: flex;flex-direction: column\" File\r\n                    : button \"click=@{Snippets.AddSnippet}\"    \"Add New Snippet\"\r\n                    : button \"click=@{Snippets.DeleteSnippet}\" \"Delete Snippet\"\r\n                    : button \"click=@{Snippets.IndentIn}\"      \"Indent in\"\r\n                    : button \"click=@{Snippets.IndentOut}\"     \"Indent out\"\r\n                    : div    \"\" SearchFor \r\n                    : div \"overflow:auto;width:100%;max-width:100%\" Snippets.snippets_list\r\n                    snippet div \"display: flex;flex-direction: column\"\r\n                    : div    \"\" Snippets.snippets_sel\r\n                    : Doc    InputLabel \"\" \"Name:\" Snippets.curSnp_name\r\n                    : div \"height:100%;class=relative\" Snippets.editor                \r\n                "));
+  LayoutEngine.addLayout0(LayoutEngineModule.newLyt("lytDemo","\r\n            SetTarget Action AppFramework.SetVar     \"lytTarget.Layout\"         \"@{target}\" \r\n            SetMain2  Action AppFramework.SetVar     \"AppFramework.mainDocV\"    \"lytDemo.main2\"\r\n            SetMain   Action AppFramework.SetVar     \"AppFramework.mainDocV\"    \"lytDemo.main\"\r\n            \r\n            main2 vertical 0-50-100 Left2 lytTarget.main            \r\n            Left2 vertical 0-25-100 list snippet\r\n            gotoMain  button \"click=@{SetMain};width:16px\" \"<<\"\r\n            \r\n            main vertical 0-50-100 Left lytTarget.main\r\n            Left div \"display:flex;flex-direction:column\" gotoMain2 snippet\r\n            gotoMain2 button \"click=@{SetMain2};width:16px\" \">>\"\r\n            \r\n            list div \"display: flex;flex-direction: column\" gotoMain File\r\n            : div    \"margin:5px\" SearchFor \r\n            : Concat buttons\r\n            : div \"overflow:auto;width:100%;max-width:calc(100% - 10px)\" Snippets.snippets_list\r\n            : ul \"margin:3px\"\r\n            :: button \"click=@{Snippets.AddSnippet}   ;title=Add New Snippet\" \"+\"\r\n            :: button \"margin-left:20px;click=@{Snippets.DeleteSnippet};title=Delete  Snippet\" \"x\"\r\n            \r\n            snippet div \"display: flex;flex-direction: column;flex:1\" Trigger\r\n            : button \"click=@{SetTarget}\" \"Apply\"\r\n            : div    \"click=@{SetTarget}\" Snippets.snippets_sel\r\n            : Doc    InputLabel \"\" \"Name:\" Snippets.curSnp_name\r\n            : div \"height:100%;class=relative;flex:1\" Snippets.editor            \r\n            \r\n            buttons ul \"\"\r\n            : div \"margin:3px\"\r\n            :: button \"click=@{Snippets.IndentOut};title=indent out\"     \"<--\"\r\n            :: button \"click=@{Snippets.IndentIn};title=indent in\"       \"--> \"\r\n            \r\n            SearchFor   Doc InputLabel \"\" \"Search\" Snippets.searchFor\r\n            \r\n            File span \"class=input-group;margin:5px;id=LoadSnippets\"\r\n            : div \"class=input-group-btn\"\r\n            :: label \"class=btn btn-info\" \"Load File\"\r\n            ::: div \"\"\r\n            :::: input \"class=form-control;type=file;display: none;change=@{Snippets.LoadSnippets}\" \r\n            :: label \"class=btn btn-primary;click=@{Snippets.SaveSnippets}\" \"Save File\"\r\n            \r\n            Trigger   Doc    AppFramework.TrigAction Snippets.snippets_sel lytDemo.SetTarget\r\n            target    View \"n => n.includes('main ')?n:'main Contact \"\" \"\"'\" Snippets.curSnp_content\r\n                "));
  };
  testing_Templates.snippet=function(h)
  {
