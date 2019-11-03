@@ -333,6 +333,7 @@ if (!console) {
         warn: ignore
     }
 };
+var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n:n}function f(n){return o.lastIndex=0,o.test(n)?'"'+n.replace(o,function(n){var t=s[n];return typeof t=="string"?t:"\\u"+("0000"+n.charCodeAt(0).toString(16)).slice(-4)})+'"':'"'+n+'"'}function r(i,e){var s,l,h,a,v=n,c,o=e[i];o&&typeof o=="object"&&typeof o.toJSON=="function"&&(o=o.toJSON(i)),typeof t=="function"&&(o=t.call(e,i,o));switch(typeof o){case"string":return f(o);case"number":return isFinite(o)?String(o):"null";case"boolean":case"null":return String(o);case"object":if(!o)return"null";if(n+=u,c=[],Object.prototype.toString.apply(o)==="[object Array]"){for(a=o.length,s=0;s<a;s+=1)c[s]=r(s,o)||"null";return h=c.length===0?"[]":n?"[\n"+n+c.join(",\n"+n)+"\n"+v+"]":"["+c.join(",")+"]",n=v,h}if(t&&typeof t=="object")for(a=t.length,s=0;s<a;s+=1)typeof t[s]=="string"&&(l=t[s],h=r(l,o),h&&c.push(f(l)+(n?": ":":")+h));else for(l in o)Object.prototype.hasOwnProperty.call(o,l)&&(h=r(l,o),h&&c.push(f(l)+(n?": ":":")+h));return h=c.length===0?"{}":n?"{\n"+n+c.join(",\n"+n)+"\n"+v+"}":"{"+c.join(",")+"}",n=v,h}}typeof Date.prototype.toJSON!="function"&&(Date.prototype.toJSON=function(){return isFinite(this.valueOf())?this.getUTCFullYear()+"-"+i(this.getUTCMonth()+1)+"-"+i(this.getUTCDate())+"T"+i(this.getUTCHours())+":"+i(this.getUTCMinutes())+":"+i(this.getUTCSeconds())+"Z":null},String.prototype.toJSON=Number.prototype.toJSON=Boolean.prototype.toJSON=function(){return this.valueOf()});var e=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,o=/[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,n,u,s={"\b":"\\b","\t":"\\t","\n":"\\n","\f":"\\f","\r":"\\r",'"':'\\"',"\\":"\\\\"},t;typeof JSON.stringify!="function"&&(JSON.stringify=function(i,f,e){var o;if(n="",u="",typeof e=="number")for(o=0;o<e;o+=1)u+=" ";else typeof e=="string"&&(u=e);if(t=f,f&&typeof f!="function"&&(typeof f!="object"||typeof f.length!="number"))throw new Error("JSON.stringify");return r("",{"":i})}),typeof JSON.parse!="function"&&(JSON.parse=function(n,t){function r(n,i){var f,e,u=n[i];if(u&&typeof u=="object")for(f in u)Object.prototype.hasOwnProperty.call(u,f)&&(e=r(u,f),e!==undefined?u[f]=e:delete u[f]);return t.call(n,i,u)}var i;if(n=String(n),e.lastIndex=0,e.test(n)&&(n=n.replace(e,function(n){return"\\u"+("0000"+n.charCodeAt(0).toString(16)).slice(-4)})),/^[\],:{}\s]*$/.test(n.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,"@").replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,"]").replace(/(?:^|:|,)(?:\s*\[)+/g,"")))return i=eval("("+n+")"),typeof t=="function"?r({"":i},""):i;throw new SyntaxError("JSON.parse");})}();;
 (function () {
     var lastTime = 0;
     var vendors = ['webkit', 'moz'];
@@ -361,15 +362,31 @@ if (!console) {
 (function()
 {
  "use strict";
- var Global,FsRoot,TestingJS,StartAppFramework,Util,AF,WebSharper,Obj,PlugInBuilder,ListModelData,LayoutEngine,ListModel,LM,LMX,SnippetTemplates,NewLY,Fun,Val,Extract0,SC$1,UI,View,HtmlModule,attr,Var$1,Operators,Library,ParseO,Var,Utils,GuidId,LibraryJS,AppFramework,PlugIn,ListModel$1,Lazy,LayoutEngineModule,Seq,PlugInVar,PlugInView,PlugInDoc,PlugInAction,PlugInQuery,Doc,View$1,LayoutEngine$1,Unchecked,ViewBuilder,List,T,System,Guid,String,Slice,Monads,Depend,AppFrameworkTemplate,DependBuilder,Strings,EventTarget,Node,WindowOrWorkerGlobalScope,JavaScript,JS,Pervasives,AttrModule,PlugInBuilder$1,Snap,AttrProxy,Abbrev,Fresh,FromView,SC$2,Arrays,Enumerator,LazyExtensionsProxy,LazyRecord,Collections,List$1,T$1,Array,Dictionary,ListModel$2,ConcreteVar,Storage,GeneratedPrintf,LayoutEngine_Templates,LayoutEngine_GeneratedPrintf,Client,Templates,Attrs,DomUtility,State,CEBuilder,Numeric,WebComponent,WcTabStrip,WcTabStripT,Templating,Runtime,Server,TemplateInstance,ProviderBuilder,Handler,WcSplitter,Object,DocElemNode,CharacterData,FSharpSet,DictionaryUtil,ArrayStorage,Docs,DynamicAttrNode,SC$3,Elt,DateUtil,HashSet,Client$1,WcSplitterT,Attrs$1,Dyn,BalancedTree,SC$4,SC$5,Updates,Hoverable,Hoverable$1,CancellationTokenSource,CheckedInput,Event,UIEvent,ResizeObserver,Layout,Measures,Tree,Prepare,KeyCollection,An,Settings,Mailbox,SC$6,Error,AggregateException,Concurrency,Queue,MatchFailureException,Docs$1,RunState,NodeSet,Anims,SC$7,FormatException,CT,AsyncBody,SC$8,HashSetUtil,SC$9,AppendList,Scheduler,OperationCanceledException,Easing,HashSet$1,String$1,DomNodes,Char,SC$10,IntelliFactory,Runtime$1,Date,Math,console,$,Reflect;
+ var Global,FsRoot,LibraryJS,Monaco,Position,Range,Location,MarkDownString,MarkerData,CompletionItem,Hover,WebSharper,Obj,Editor,MonacoConfig,MonacoGenAdapter,MonacoRT,CompletionItemProvider,HoverProvider,DefinitionProvider,TestingJS,StartAppFramework,Util,AF,PlugInBuilder,ListModelData,LayoutEngine,ListModel,LM,LMX,SnippetTemplates,NewLY,Fun,P,Val,Extract0,DragDrop,DragInfo,SnippetsUI,SnippetHierData,SaveLoad,Numeric,UI,Var,View,Operators,Unchecked,SC$1,EventTarget,ResizeObserver,Library,Monads,Option,GenEditor,Var$1,Option$1,Position$1,AsyncResultMAutoOpen,AsyncResultM,AsyncResultMBuilder,Arrays,PromiseM,GenEditor$1,Seq,GenEditorHook,HtmlModule,attr,ParseO,Utils,GuidId,AppFramework,PlugIn,ListModel$1,Lazy,LayoutEngineModule,PlugInVar,PlugInView,PlugInDoc,PlugInAction,PlugInQuery,Doc,View$1,LayoutEngine$1,ViewBuilder,List,T,System,Guid,Depend,Operators$1,String,DependBuilder,Slice,Collections,Dictionary,Set,Snippet,Templating,Runtime,Server,TemplateInstance,ProviderBuilder,Handler,testing_Templates,testing_GeneratedPrintf,FileReader,JavaScript,Pervasives,Serializer,SnippetSerialize,Model,JS,UoM,UoM$1,AppFrameworkTemplate,Snap,Result,Builder,BuilderP,ResultM,Builder$1,Strings,Serializer$1,JsonIntermediate,SnippetModule,Node,WindowOrWorkerGlobalScope,AttrModule,AttrProxy,PlugInBuilder$1,Concurrency,ConcreteVar,Abbrev,Fresh,Object,ResultMessage,Enumerator,T$1,FromView,SC$2,LazyExtensionsProxy,LazyRecord,List$1,Array,ListModel$2,Storage,DictionaryUtil,FSharpSet,HashSet,Client,Unsafe,Syntax,DateUtil,BalancedTree,Client$1,Templates,Attrs,DomUtility,GeneratedPrintf,LayoutEngine_Templates,LayoutEngine_GeneratedPrintf,Async,AsyncBody,State,CEBuilder,WebComponent,WcTabStrip,WcTabStripT,WcSplitter,DocElemNode,CharacterData,ArrayStorage,Docs,Tree,CheckedInput,FSharpMap,RefType,DynamicAttrNode,CT,Scheduler,SC$3,SC$4,Elt,WcSplitterT,Attrs$1,Dyn,Layout,SC$5,SC$6,Error,OperationCanceledException,CancellationTokenSource,SC$7,Updates,Hoverable,Hoverable$1,Event,UIEvent,Measures,MapUtil,Pair,HashSetUtil,FormatException,Prepare,KeyCollection,An,Settings,Mailbox,Queue,AggregateException,MatchFailureException,Docs$1,RunState,NodeSet,Anims,SC$8,String$1,SC$9,AppendList,Char,Easing,HashSet$1,DomNodes,SC$10,IntelliFactory,Runtime$1,console,Date,Math,$,JSON,Reflect;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
+ LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
+ Monaco=LibraryJS.Monaco=LibraryJS.Monaco||{};
+ Position=Monaco.Position=Monaco.Position||{};
+ Range=Monaco.Range=Monaco.Range||{};
+ Location=Monaco.Location=Monaco.Location||{};
+ MarkDownString=Monaco.MarkDownString=Monaco.MarkDownString||{};
+ MarkerData=Monaco.MarkerData=Monaco.MarkerData||{};
+ CompletionItem=Monaco.CompletionItem=Monaco.CompletionItem||{};
+ Hover=Monaco.Hover=Monaco.Hover||{};
+ WebSharper=Global.WebSharper=Global.WebSharper||{};
+ Obj=WebSharper.Obj=WebSharper.Obj||{};
+ Editor=Monaco.Editor=Monaco.Editor||{};
+ MonacoConfig=Monaco.MonacoConfig=Monaco.MonacoConfig||{};
+ MonacoGenAdapter=LibraryJS.MonacoGenAdapter=LibraryJS.MonacoGenAdapter||{};
+ MonacoRT=MonacoGenAdapter.MonacoRT=MonacoGenAdapter.MonacoRT||{};
+ CompletionItemProvider=MonacoGenAdapter.CompletionItemProvider=MonacoGenAdapter.CompletionItemProvider||{};
+ HoverProvider=MonacoGenAdapter.HoverProvider=MonacoGenAdapter.HoverProvider||{};
+ DefinitionProvider=MonacoGenAdapter.DefinitionProvider=MonacoGenAdapter.DefinitionProvider||{};
  TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
  StartAppFramework=TestingJS.StartAppFramework=TestingJS.StartAppFramework||{};
  Util=TestingJS.Util=TestingJS.Util||{};
  AF=TestingJS.AF=TestingJS.AF||{};
- WebSharper=Global.WebSharper=Global.WebSharper||{};
- Obj=WebSharper.Obj=WebSharper.Obj||{};
  PlugInBuilder=AF.PlugInBuilder=AF.PlugInBuilder||{};
  ListModelData=AF.ListModelData=AF.ListModelData||{};
  LayoutEngine=TestingJS.LayoutEngine=TestingJS.LayoutEngine||{};
@@ -379,27 +396,48 @@ if (!console) {
  SnippetTemplates=TestingJS.SnippetTemplates=TestingJS.SnippetTemplates||{};
  NewLY=TestingJS.NewLY=TestingJS.NewLY||{};
  Fun=NewLY.Fun=NewLY.Fun||{};
+ P=NewLY.P=NewLY.P||{};
  Val=NewLY.Val=NewLY.Val||{};
  Extract0=NewLY.Extract0=NewLY.Extract0||{};
- SC$1=Global.StartupCode$testing$testing=Global.StartupCode$testing$testing||{};
+ DragDrop=TestingJS.DragDrop=TestingJS.DragDrop||{};
+ DragInfo=DragDrop.DragInfo=DragDrop.DragInfo||{};
+ SnippetsUI=TestingJS.SnippetsUI=TestingJS.SnippetsUI||{};
+ SnippetHierData=SnippetsUI.SnippetHierData=SnippetsUI.SnippetHierData||{};
+ SaveLoad=SnippetsUI.SaveLoad=SnippetsUI.SaveLoad||{};
+ Numeric=WebSharper.Numeric=WebSharper.Numeric||{};
  UI=WebSharper.UI=WebSharper.UI||{};
+ Var=UI.Var=UI.Var||{};
  View=UI.View=UI.View||{};
+ Operators=WebSharper.Operators=WebSharper.Operators||{};
+ Unchecked=WebSharper.Unchecked=WebSharper.Unchecked||{};
+ SC$1=Global.StartupCode$testing$testing=Global.StartupCode$testing$testing||{};
+ EventTarget=Global.EventTarget;
+ ResizeObserver=LibraryJS.ResizeObserver=LibraryJS.ResizeObserver||{};
+ Library=FsRoot.Library=FsRoot.Library||{};
+ Monads=Library.Monads=Library.Monads||{};
+ Option=Monads.Option=Monads.Option||{};
+ GenEditor=LibraryJS.GenEditor=LibraryJS.GenEditor||{};
+ Var$1=UI.Var$1=UI.Var$1||{};
+ Option$1=WebSharper.Option=WebSharper.Option||{};
+ Position$1=GenEditor.Position=GenEditor.Position||{};
+ AsyncResultMAutoOpen=Monads.AsyncResultMAutoOpen=Monads.AsyncResultMAutoOpen||{};
+ AsyncResultM=Monads.AsyncResultM=Monads.AsyncResultM||{};
+ AsyncResultMBuilder=AsyncResultM.AsyncResultMBuilder=AsyncResultM.AsyncResultMBuilder||{};
+ Arrays=WebSharper.Arrays=WebSharper.Arrays||{};
+ PromiseM=LibraryJS.PromiseM=LibraryJS.PromiseM||{};
+ GenEditor$1=GenEditor.GenEditor=GenEditor.GenEditor||{};
+ Seq=WebSharper.Seq=WebSharper.Seq||{};
+ GenEditorHook=GenEditor.GenEditorHook=GenEditor.GenEditorHook||{};
  HtmlModule=UI.HtmlModule=UI.HtmlModule||{};
  attr=HtmlModule.attr=HtmlModule.attr||{};
- Var$1=UI.Var$1=UI.Var$1||{};
- Operators=WebSharper.Operators=WebSharper.Operators||{};
- Library=FsRoot.Library=FsRoot.Library||{};
  ParseO=Library.ParseO=Library.ParseO||{};
- Var=UI.Var=UI.Var||{};
  Utils=WebSharper.Utils=WebSharper.Utils||{};
  GuidId=Library.GuidId=Library.GuidId||{};
- LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
  AppFramework=LibraryJS.AppFramework=LibraryJS.AppFramework||{};
  PlugIn=AppFramework.PlugIn=AppFramework.PlugIn||{};
  ListModel$1=UI.ListModel=UI.ListModel||{};
  Lazy=WebSharper.Lazy=WebSharper.Lazy||{};
  LayoutEngineModule=LibraryJS.LayoutEngineModule=LibraryJS.LayoutEngineModule||{};
- Seq=WebSharper.Seq=WebSharper.Seq||{};
  PlugInVar=AppFramework.PlugInVar=AppFramework.PlugInVar||{};
  PlugInView=AppFramework.PlugInView=AppFramework.PlugInView||{};
  PlugInDoc=AppFramework.PlugInDoc=AppFramework.PlugInDoc||{};
@@ -408,133 +446,623 @@ if (!console) {
  Doc=UI.Doc=UI.Doc||{};
  View$1=LibraryJS.View=LibraryJS.View||{};
  LayoutEngine$1=LibraryJS.LayoutEngine=LibraryJS.LayoutEngine||{};
- Unchecked=WebSharper.Unchecked=WebSharper.Unchecked||{};
  ViewBuilder=UI.ViewBuilder=UI.ViewBuilder||{};
  List=WebSharper.List=WebSharper.List||{};
  T=List.T=List.T||{};
  System=Global.System=Global.System||{};
  Guid=System.Guid=System.Guid||{};
- String=Library.String=Library.String||{};
- Slice=WebSharper.Slice=WebSharper.Slice||{};
- Monads=Library.Monads=Library.Monads||{};
  Depend=Monads.Depend=Monads.Depend||{};
- AppFrameworkTemplate=LibraryJS.AppFrameworkTemplate=LibraryJS.AppFrameworkTemplate||{};
+ Operators$1=Depend.Operators=Depend.Operators||{};
+ String=Library.String=Library.String||{};
  DependBuilder=Depend.DependBuilder=Depend.DependBuilder||{};
- Strings=WebSharper.Strings=WebSharper.Strings||{};
- EventTarget=Global.EventTarget;
- Node=Global.Node;
- WindowOrWorkerGlobalScope=Global.WindowOrWorkerGlobalScope;
- JavaScript=WebSharper.JavaScript=WebSharper.JavaScript||{};
- JS=JavaScript.JS=JavaScript.JS||{};
- Pervasives=JavaScript.Pervasives=JavaScript.Pervasives||{};
- AttrModule=UI.AttrModule=UI.AttrModule||{};
- PlugInBuilder$1=AppFramework.PlugInBuilder=AppFramework.PlugInBuilder||{};
- Snap=UI.Snap=UI.Snap||{};
- AttrProxy=UI.AttrProxy=UI.AttrProxy||{};
- Abbrev=UI.Abbrev=UI.Abbrev||{};
- Fresh=Abbrev.Fresh=Abbrev.Fresh||{};
- FromView=UI.FromView=UI.FromView||{};
- SC$2=Global.StartupCode$LayoutEngine$LayoutEngine=Global.StartupCode$LayoutEngine$LayoutEngine||{};
- Arrays=WebSharper.Arrays=WebSharper.Arrays||{};
- Enumerator=WebSharper.Enumerator=WebSharper.Enumerator||{};
- LazyExtensionsProxy=WebSharper.LazyExtensionsProxy=WebSharper.LazyExtensionsProxy||{};
- LazyRecord=LazyExtensionsProxy.LazyRecord=LazyExtensionsProxy.LazyRecord||{};
+ Slice=WebSharper.Slice=WebSharper.Slice||{};
  Collections=WebSharper.Collections=WebSharper.Collections||{};
- List$1=Collections.List=Collections.List||{};
- T$1=Enumerator.T=Enumerator.T||{};
- Array=UI.Array=UI.Array||{};
  Dictionary=Collections.Dictionary=Collections.Dictionary||{};
- ListModel$2=LibraryJS.ListModel=LibraryJS.ListModel||{};
- ConcreteVar=UI.ConcreteVar=UI.ConcreteVar||{};
- Storage=UI.Storage=UI.Storage||{};
- GeneratedPrintf=Global.GeneratedPrintf=Global.GeneratedPrintf||{};
- LayoutEngine_Templates=Global.LayoutEngine_Templates=Global.LayoutEngine_Templates||{};
- LayoutEngine_GeneratedPrintf=Global.LayoutEngine_GeneratedPrintf=Global.LayoutEngine_GeneratedPrintf||{};
- Client=UI.Client=UI.Client||{};
- Templates=Client.Templates=Client.Templates||{};
- Attrs=UI.Attrs=UI.Attrs||{};
- DomUtility=UI.DomUtility=UI.DomUtility||{};
- State=Monads.State=Monads.State||{};
- CEBuilder=State.CEBuilder=State.CEBuilder||{};
- Numeric=WebSharper.Numeric=WebSharper.Numeric||{};
- WebComponent=LibraryJS.WebComponent=LibraryJS.WebComponent||{};
- WcTabStrip=WebComponent.WcTabStrip=WebComponent.WcTabStrip||{};
- WcTabStripT=WcTabStrip.WcTabStripT=WcTabStrip.WcTabStripT||{};
+ Set=Collections.Set=Collections.Set||{};
+ Snippet=Library.Snippet=Library.Snippet||{};
  Templating=UI.Templating=UI.Templating||{};
  Runtime=Templating.Runtime=Templating.Runtime||{};
  Server=Runtime.Server=Runtime.Server||{};
  TemplateInstance=Server.TemplateInstance=Server.TemplateInstance||{};
  ProviderBuilder=Server.ProviderBuilder=Server.ProviderBuilder||{};
  Handler=Server.Handler=Server.Handler||{};
- WcSplitter=WebComponent.WcSplitter=WebComponent.WcSplitter||{};
+ testing_Templates=Global.testing_Templates=Global.testing_Templates||{};
+ testing_GeneratedPrintf=Global.testing_GeneratedPrintf=Global.testing_GeneratedPrintf||{};
+ FileReader=Global.FileReader;
+ JavaScript=WebSharper.JavaScript=WebSharper.JavaScript||{};
+ Pervasives=JavaScript.Pervasives=JavaScript.Pervasives||{};
+ Serializer=LibraryJS.Serializer=LibraryJS.Serializer||{};
+ SnippetSerialize=Library.SnippetSerialize=Library.SnippetSerialize||{};
+ Model=SnippetSerialize.Model=SnippetSerialize.Model||{};
+ JS=JavaScript.JS=JavaScript.JS||{};
+ UoM=Library.UoM=Library.UoM||{};
+ UoM$1=UoM.UoM=UoM.UoM||{};
+ AppFrameworkTemplate=LibraryJS.AppFrameworkTemplate=LibraryJS.AppFrameworkTemplate||{};
+ Snap=UI.Snap=UI.Snap||{};
+ Result=Monads.Result=Monads.Result||{};
+ Builder=Result.Builder=Result.Builder||{};
+ BuilderP=Result.BuilderP=Result.BuilderP||{};
+ ResultM=Monads.ResultM=Monads.ResultM||{};
+ Builder$1=ResultM.Builder=ResultM.Builder||{};
+ Strings=WebSharper.Strings=WebSharper.Strings||{};
+ Serializer$1=Library.Serializer=Library.Serializer||{};
+ JsonIntermediate=Serializer$1.JsonIntermediate=Serializer$1.JsonIntermediate||{};
+ SnippetModule=Library.SnippetModule=Library.SnippetModule||{};
+ Node=Global.Node;
+ WindowOrWorkerGlobalScope=Global.WindowOrWorkerGlobalScope;
+ AttrModule=UI.AttrModule=UI.AttrModule||{};
+ AttrProxy=UI.AttrProxy=UI.AttrProxy||{};
+ PlugInBuilder$1=AppFramework.PlugInBuilder=AppFramework.PlugInBuilder||{};
+ Concurrency=WebSharper.Concurrency=WebSharper.Concurrency||{};
+ ConcreteVar=UI.ConcreteVar=UI.ConcreteVar||{};
+ Abbrev=UI.Abbrev=UI.Abbrev||{};
+ Fresh=Abbrev.Fresh=Abbrev.Fresh||{};
  Object=Global.Object;
+ ResultMessage=Library.ResultMessage=Library.ResultMessage||{};
+ Enumerator=WebSharper.Enumerator=WebSharper.Enumerator||{};
+ T$1=Enumerator.T=Enumerator.T||{};
+ FromView=UI.FromView=UI.FromView||{};
+ SC$2=Global.StartupCode$LayoutEngine$LayoutEngine=Global.StartupCode$LayoutEngine$LayoutEngine||{};
+ LazyExtensionsProxy=WebSharper.LazyExtensionsProxy=WebSharper.LazyExtensionsProxy||{};
+ LazyRecord=LazyExtensionsProxy.LazyRecord=LazyExtensionsProxy.LazyRecord||{};
+ List$1=Collections.List=Collections.List||{};
+ Array=UI.Array=UI.Array||{};
+ ListModel$2=LibraryJS.ListModel=LibraryJS.ListModel||{};
+ Storage=UI.Storage=UI.Storage||{};
+ DictionaryUtil=Collections.DictionaryUtil=Collections.DictionaryUtil||{};
+ FSharpSet=Collections.FSharpSet=Collections.FSharpSet||{};
+ HashSet=Collections.HashSet=Collections.HashSet||{};
+ Client=Runtime.Client=Runtime.Client||{};
+ Unsafe=UoM.Unsafe=UoM.Unsafe||{};
+ Syntax=LayoutEngineModule.Syntax=LayoutEngineModule.Syntax||{};
+ DateUtil=WebSharper.DateUtil=WebSharper.DateUtil||{};
+ BalancedTree=Collections.BalancedTree=Collections.BalancedTree||{};
+ Client$1=UI.Client=UI.Client||{};
+ Templates=Client$1.Templates=Client$1.Templates||{};
+ Attrs=UI.Attrs=UI.Attrs||{};
+ DomUtility=UI.DomUtility=UI.DomUtility||{};
+ GeneratedPrintf=Global.GeneratedPrintf=Global.GeneratedPrintf||{};
+ LayoutEngine_Templates=Global.LayoutEngine_Templates=Global.LayoutEngine_Templates||{};
+ LayoutEngine_GeneratedPrintf=Global.LayoutEngine_GeneratedPrintf=Global.LayoutEngine_GeneratedPrintf||{};
+ Async=Abbrev.Async=Abbrev.Async||{};
+ AsyncBody=Concurrency.AsyncBody=Concurrency.AsyncBody||{};
+ State=Monads.State=Monads.State||{};
+ CEBuilder=State.CEBuilder=State.CEBuilder||{};
+ WebComponent=LibraryJS.WebComponent=LibraryJS.WebComponent||{};
+ WcTabStrip=WebComponent.WcTabStrip=WebComponent.WcTabStrip||{};
+ WcTabStripT=WcTabStrip.WcTabStripT=WcTabStrip.WcTabStripT||{};
+ WcSplitter=WebComponent.WcSplitter=WebComponent.WcSplitter||{};
  DocElemNode=UI.DocElemNode=UI.DocElemNode||{};
  CharacterData=Global.CharacterData;
- FSharpSet=Collections.FSharpSet=Collections.FSharpSet||{};
- DictionaryUtil=Collections.DictionaryUtil=Collections.DictionaryUtil||{};
  ArrayStorage=Storage.ArrayStorage=Storage.ArrayStorage||{};
  Docs=UI.Docs=UI.Docs||{};
+ Tree=BalancedTree.Tree=BalancedTree.Tree||{};
+ CheckedInput=UI.CheckedInput=UI.CheckedInput||{};
+ FSharpMap=Collections.FSharpMap=Collections.FSharpMap||{};
+ RefType=Syntax.RefType=Syntax.RefType||{};
  DynamicAttrNode=UI.DynamicAttrNode=UI.DynamicAttrNode||{};
- SC$3=Global.StartupCode$WebSharper_UI$Abbrev=Global.StartupCode$WebSharper_UI$Abbrev||{};
+ CT=Concurrency.CT=Concurrency.CT||{};
+ Scheduler=Concurrency.Scheduler=Concurrency.Scheduler||{};
+ SC$3=Global.StartupCode$WebSharper_Main$Concurrency=Global.StartupCode$WebSharper_Main$Concurrency||{};
+ SC$4=Global.StartupCode$WebSharper_UI$Abbrev=Global.StartupCode$WebSharper_UI$Abbrev||{};
  Elt=UI.Elt=UI.Elt||{};
- DateUtil=WebSharper.DateUtil=WebSharper.DateUtil||{};
- HashSet=Collections.HashSet=Collections.HashSet||{};
- Client$1=Runtime.Client=Runtime.Client||{};
  WcSplitterT=WcSplitter.WcSplitterT=WcSplitter.WcSplitterT||{};
- Attrs$1=Client.Attrs=Client.Attrs||{};
+ Attrs$1=Client$1.Attrs=Client$1.Attrs||{};
  Dyn=Attrs$1.Dyn=Attrs$1.Dyn||{};
- BalancedTree=Collections.BalancedTree=Collections.BalancedTree||{};
- SC$4=Global.StartupCode$WebSharper_UI$Templates=Global.StartupCode$WebSharper_UI$Templates||{};
- SC$5=Global.StartupCode$WebSharper_UI$DomUtility=Global.StartupCode$WebSharper_UI$DomUtility||{};
+ Layout=LayoutEngineModule.Layout=LayoutEngineModule.Layout||{};
+ SC$5=Global.StartupCode$WebSharper_UI$Templates=Global.StartupCode$WebSharper_UI$Templates||{};
+ SC$6=Global.StartupCode$WebSharper_UI$Attr_Client=Global.StartupCode$WebSharper_UI$Attr_Client||{};
+ Error=Global.Error;
+ OperationCanceledException=WebSharper.OperationCanceledException=WebSharper.OperationCanceledException||{};
+ CancellationTokenSource=WebSharper.CancellationTokenSource=WebSharper.CancellationTokenSource||{};
+ SC$7=Global.StartupCode$WebSharper_UI$DomUtility=Global.StartupCode$WebSharper_UI$DomUtility||{};
  Updates=UI.Updates=UI.Updates||{};
  Hoverable=LibraryJS.Hoverable=LibraryJS.Hoverable||{};
  Hoverable$1=Hoverable.Hoverable=Hoverable.Hoverable||{};
- CancellationTokenSource=WebSharper.CancellationTokenSource=WebSharper.CancellationTokenSource||{};
- CheckedInput=UI.CheckedInput=UI.CheckedInput||{};
  Event=Global.Event;
  UIEvent=Global.UIEvent;
- ResizeObserver=LibraryJS.ResizeObserver=LibraryJS.ResizeObserver||{};
- Layout=LayoutEngineModule.Layout=LayoutEngineModule.Layout||{};
  Measures=LayoutEngineModule.Measures=LayoutEngineModule.Measures||{};
- Tree=BalancedTree.Tree=BalancedTree.Tree||{};
+ MapUtil=Collections.MapUtil=Collections.MapUtil||{};
+ Pair=Collections.Pair=Collections.Pair||{};
+ HashSetUtil=Collections.HashSetUtil=Collections.HashSetUtil||{};
+ FormatException=WebSharper.FormatException=WebSharper.FormatException||{};
  Prepare=Templates.Prepare=Templates.Prepare||{};
  KeyCollection=Collections.KeyCollection=Collections.KeyCollection||{};
  An=UI.An=UI.An||{};
- Settings=Client.Settings=Client.Settings||{};
+ Settings=Client$1.Settings=Client$1.Settings||{};
  Mailbox=Abbrev.Mailbox=Abbrev.Mailbox||{};
- SC$6=Global.StartupCode$WebSharper_UI$Attr_Client=Global.StartupCode$WebSharper_UI$Attr_Client||{};
- Error=Global.Error;
- AggregateException=WebSharper.AggregateException=WebSharper.AggregateException||{};
- Concurrency=WebSharper.Concurrency=WebSharper.Concurrency||{};
  Queue=WebSharper.Queue=WebSharper.Queue||{};
+ AggregateException=WebSharper.AggregateException=WebSharper.AggregateException||{};
  MatchFailureException=WebSharper.MatchFailureException=WebSharper.MatchFailureException||{};
- Docs$1=Client.Docs=Client.Docs||{};
+ Docs$1=Client$1.Docs=Client$1.Docs||{};
  RunState=Docs$1.RunState=Docs$1.RunState||{};
  NodeSet=Docs$1.NodeSet=Docs$1.NodeSet||{};
  Anims=UI.Anims=UI.Anims||{};
- SC$7=Global.StartupCode$WebSharper_UI$Doc_Proxy=Global.StartupCode$WebSharper_UI$Doc_Proxy||{};
- FormatException=WebSharper.FormatException=WebSharper.FormatException||{};
- CT=Concurrency.CT=Concurrency.CT||{};
- AsyncBody=Concurrency.AsyncBody=Concurrency.AsyncBody||{};
- SC$8=Global.StartupCode$WebSharper_Main$Concurrency=Global.StartupCode$WebSharper_Main$Concurrency||{};
- HashSetUtil=Collections.HashSetUtil=Collections.HashSetUtil||{};
+ SC$8=Global.StartupCode$WebSharper_UI$Doc_Proxy=Global.StartupCode$WebSharper_UI$Doc_Proxy||{};
+ String$1=UI.String=UI.String||{};
  SC$9=Global.StartupCode$WebSharper_UI$Animation=Global.StartupCode$WebSharper_UI$Animation||{};
  AppendList=UI.AppendList=UI.AppendList||{};
- Scheduler=Concurrency.Scheduler=Concurrency.Scheduler||{};
- OperationCanceledException=WebSharper.OperationCanceledException=WebSharper.OperationCanceledException||{};
+ Char=WebSharper.Char=WebSharper.Char||{};
  Easing=UI.Easing=UI.Easing||{};
  HashSet$1=Abbrev.HashSet=Abbrev.HashSet||{};
- String$1=UI.String=UI.String||{};
  DomNodes=Docs$1.DomNodes=Docs$1.DomNodes||{};
- Char=WebSharper.Char=WebSharper.Char||{};
  SC$10=Global.StartupCode$WebSharper_UI$AppendList=Global.StartupCode$WebSharper_UI$AppendList||{};
  IntelliFactory=Global.IntelliFactory;
  Runtime$1=IntelliFactory&&IntelliFactory.Runtime;
+ console=Global.console;
  Date=Global.Date;
  Math=Global.Math;
- console=Global.console;
  $=Global.jQuery;
+ JSON=Global.JSON;
  Reflect=Global.Reflect;
+ Monaco.newVar=function(_var)
+ {
+  return MonacoConfig.New(_var,Global.ignore,null,null,View.Const(false),null,null);
+ };
+ Monaco.loader=function()
+ {
+  SC$1.$cctor();
+  return SC$1.loader;
+ };
+ Monaco.render=function(monc)
+ {
+  var b;
+  return Doc.Async((b=null,Concurrency.Delay(function()
+  {
+   return Concurrency.Bind(Monaco.loader(),function()
+   {
+    return Concurrency.Return(Doc.Element("div",[AttrProxy.OnAfterRenderImpl(function(elchild)
+    {
+     var editor,_elt;
+     editor=(_elt=elchild.parentElement,self.monaco.editor.create(_elt,monc.options,monc.overrides));
+     ResizeObserver.addResizeObserver$1(function()
+     {
+      editor.layout();
+     },elchild.parentElement);
+     elchild.parentNode.removeChild(elchild);
+     monc.editorO={
+      $:1,
+      $0:editor
+     };
+     (Option.iter(function(onrender)
+     {
+      onrender(editor);
+     }))(monc.onRender);
+     GenEditor.bindVarEditor(function(a)
+     {
+      editor.onDidChangeModelContent(a);
+     },function()
+     {
+      return editor.getValue();
+     },function(a)
+     {
+      editor.setValue(a);
+     },monc.onChange,monc["var"]);
+    })],[]));
+   });
+  })));
+ };
+ Monaco.setVar=function(v,monc)
+ {
+  return MonacoConfig.New(v,monc.onChange,monc.onRender,monc.editorO,monc.disabled,monc.options,monc.overrides);
+ };
+ Monaco.onChange=function(f,monc)
+ {
+  return MonacoConfig.New(monc["var"],f,monc.onRender,monc.editorO,monc.disabled,monc.options,monc.overrides);
+ };
+ Monaco.onRender=function(f,monc)
+ {
+  return MonacoConfig.New(monc["var"],monc.onChange,{
+   $:1,
+   $0:f
+  },monc.editorO,monc.disabled,monc.options,monc.overrides);
+ };
+ Monaco.disabled=function(dis,monc)
+ {
+  return MonacoConfig.New(monc["var"],monc.onChange,monc.onRender,monc.editorO,dis,monc.options,monc.overrides);
+ };
+ Monaco["var"]=function(monc)
+ {
+  return monc["var"];
+ };
+ Monaco.newText=function(v)
+ {
+  return Monaco.newVar(Var$1.Create$1(v));
+ };
+ Monaco.newVarO=function(v)
+ {
+  var x;
+  x=Monaco.newVar(Var$1.Lens(v,function(o)
+  {
+   return o==null?"":o.$0;
+  },function(sO,s)
+  {
+   return sO==null?null:{
+    $:1,
+    $0:s
+   };
+  }));
+  return Monaco.disabled(View.Map(function($1)
+  {
+   return $1==null;
+  },v.get_View()),x);
+ };
+ Position.New=function(column,lineNumber)
+ {
+  return{
+   column:column,
+   lineNumber:lineNumber
+  };
+ };
+ Range.New=function(startColumn,endColumn,startLineNumber,endLineNumber)
+ {
+  return{
+   startColumn:startColumn,
+   endColumn:endColumn,
+   startLineNumber:startLineNumber,
+   endLineNumber:endLineNumber
+  };
+ };
+ Location.New=function(range,uri)
+ {
+  return{
+   range:range,
+   uri:uri
+  };
+ };
+ MarkDownString.New=function(value,isTrusted)
+ {
+  return{
+   value:value,
+   isTrusted:isTrusted
+  };
+ };
+ MarkerData.New=function(startColumn,endColumn,startLineNumber,endLineNumber,severity,message)
+ {
+  return{
+   startColumn:startColumn,
+   endColumn:endColumn,
+   startLineNumber:startLineNumber,
+   endLineNumber:endLineNumber,
+   severity:severity,
+   message:message
+  };
+ };
+ CompletionItem.New=function(kind,label,detail)
+ {
+  return{
+   kind:kind,
+   label:label,
+   detail:detail
+  };
+ };
+ Hover.New=function(contents,range)
+ {
+  return{
+   contents:contents,
+   range:range
+  };
+ };
+ Obj=WebSharper.Obj=Runtime$1.Class({
+  Equals:function(obj)
+  {
+   return this===obj;
+  },
+  GetHashCode:function()
+  {
+   return -1;
+  }
+ },null,Obj);
+ Obj.New=Runtime$1.Ctor(function()
+ {
+ },Obj);
+ Editor=Monaco.Editor=Runtime$1.Class({},Obj,Editor);
+ Editor.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+ },Editor);
+ MonacoConfig.New=function(_var,onChange,onRender,editorO,disabled,options,overrides)
+ {
+  return{
+   "var":_var,
+   onChange:onChange,
+   onRender:onRender,
+   editorO:editorO,
+   disabled:disabled,
+   options:options,
+   overrides:overrides
+  };
+ };
+ MonacoGenAdapter.iterEditor=function(monRT,f)
+ {
+  var m;
+  m=monRT.editorO;
+  m!=null&&m.$==1?f(m.$0):void 0;
+ };
+ MonacoGenAdapter.mapEditor=function(monRT,f)
+ {
+  var m;
+  m=monRT.editorO;
+  return m!=null&&m.$==1?{
+   $:1,
+   $0:f(m.$0)
+  }:null;
+ };
+ MonacoGenAdapter.bindEditor=function(monRT,f)
+ {
+  var m;
+  m=monRT.editorO;
+  return m!=null&&m.$==1?f(m.$0):null;
+ };
+ MonacoGenAdapter.posGen2Ed=function(p)
+ {
+  return Position.New(p.col,p.line);
+ };
+ MonacoGenAdapter.posEd2Gen=function(p)
+ {
+  return Position$1.New(p.lineNumber,p.column);
+ };
+ MonacoGenAdapter.indexFromPos=function(monRT,p)
+ {
+  var o;
+  o=MonacoGenAdapter.mapEditor(monRT,function(ed)
+  {
+   return ed.getModel().getOffsetAt(MonacoGenAdapter.posGen2Ed(p));
+  });
+  return o==null?-1:o.$0;
+ };
+ MonacoGenAdapter.posFromIndex=function(monRT,i)
+ {
+  var o;
+  o=MonacoGenAdapter.mapEditor(monRT,function(ed)
+  {
+   return MonacoGenAdapter.posEd2Gen(ed.getModel().getPositionAt(i));
+  });
+  return o==null?Position$1.New(1,1):o.$0;
+ };
+ MonacoGenAdapter.convertGlyphChar=function(a)
+ {
+  return a==="C"?6:a==="E"?12:a==="S"?11:a==="I"?7:a==="N"?8:a==="M"?1:a==="P"?9:a==="F"?4:a==="T"?6:a==="K"?13:0;
+ };
+ MonacoGenAdapter.generateDoc=function(monRT,genE,onRender)
+ {
+  var b;
+  return Doc.Async((b=null,Concurrency.Delay(function()
+  {
+   return Concurrency.Bind(Monaco.loader(),function()
+   {
+    return Concurrency.Return(Doc.Element("div",[AttrProxy.OnAfterRenderImpl(function(elchild)
+    {
+     var editor,_elt;
+     editor=(_elt=elchild.parentElement,self.monaco.editor.create(_elt,monRT.options,monRT.overrides));
+     ResizeObserver.addResizeObserver$1(function()
+     {
+      editor.layout();
+     },elchild.parentElement);
+     elchild.parentNode.removeChild(elchild);
+     monRT.editorO={
+      $:1,
+      $0:editor
+     };
+     onRender(editor);
+     editor.onDidChangeModelContent(monRT.onChange);
+     (Option.iter(function(f)
+     {
+      var _p;
+      _p=new HoverProvider.New(f(genE));
+      self.monaco.languages.registerHoverProvider("fsharp",_p);
+     }))(genE.toolTip);
+     (Option.iter(function(f)
+     {
+      var _p;
+      _p=new DefinitionProvider.New(f(genE));
+      self.monaco.languages.registerDefinitionProvider("fsharp",_p);
+     }))(genE.declaration);
+     (Option.iter(function(f)
+     {
+      var _p;
+      _p=new CompletionItemProvider.New(f(genE));
+      self.monaco.languages.registerCompletionItemProvider("fsharp",_p);
+     }))(genE.autoCompletion);
+    })],[]));
+   });
+  })));
+ };
+ MonacoGenAdapter.getUri=function(monRT)
+ {
+  var o;
+  o=MonacoGenAdapter.mapEditor(monRT,function(ed)
+  {
+   return Global.String(ed.getModel().uri);
+  });
+  return o==null?"":o.$0;
+ };
+ MonacoGenAdapter.setUri=function(monRT,uri)
+ {
+  MonacoGenAdapter.iterEditor(monRT,function(ed)
+  {
+   ed.getModel().uri=self.monaco.Uri.parse(uri);
+  });
+ };
+ MonacoGenAdapter.getValue=function(monRT)
+ {
+  var o;
+  o=MonacoGenAdapter.mapEditor(monRT,function(ed)
+  {
+   return ed.getValue();
+  });
+  return o==null?"":o.$0;
+ };
+ MonacoGenAdapter.setValue=function(monRT,txt)
+ {
+  MonacoGenAdapter.iterEditor(monRT,function(ed)
+  {
+   ed.setValue(txt);
+  });
+ };
+ MonacoGenAdapter.getWordAt=function(monRT,pos)
+ {
+  return MonacoGenAdapter.bindEditor(monRT,function(ed)
+  {
+   var word;
+   word=ed.getModel().getWordAtPosition(Position.New(pos.col,pos.line));
+   return!word?null:{
+    $:1,
+    $0:[word.word,Position$1.New(pos.line,word.startColumn)]
+   };
+  });
+ };
+ MonacoGenAdapter.getSelect=function(monRT)
+ {
+  var o;
+  o=MonacoGenAdapter.mapEditor(monRT,function(ed)
+  {
+   var x;
+   x=ed.getSelection();
+   return ed.getModel().getValueInRange(x);
+  });
+  return o==null?"":o.$0;
+ };
+ MonacoGenAdapter.showAnnotations=function(monRT,ans)
+ {
+  MonacoGenAdapter.iterEditor(monRT,function(ed)
+  {
+   var ms,_m;
+   ms=Arrays.ofSeq(Seq.map(function(an)
+   {
+    var m;
+    return MarkerData.New(an.startP.col,an.endP.col,an.startP.line,an.endP.line,(m=an.severity,m.$==0?8:m.$==1?4:m.$==3?1:2),an.message);
+   },ans));
+   _m=ed.getModel();
+   self.monaco.editor.setModelMarkers(_m,"annotations",ms);
+  });
+ };
+ MonacoGenAdapter.newHook=function(monRT)
+ {
+  function g(g$1,o)
+  {
+   return MonacoGenAdapter.generateDoc(monRT,g$1,o);
+  }
+  return GenEditorHook.New(function($1)
+  {
+   return function($2)
+   {
+    return g($1,$2);
+   };
+  },function()
+  {
+   return MonacoGenAdapter.getValue(monRT);
+  },function(t)
+  {
+   MonacoGenAdapter.setValue(monRT,t);
+  },Global.ignore,function(a)
+  {
+   MonacoGenAdapter.showAnnotations(monRT,a);
+  },function(i)
+  {
+   return MonacoGenAdapter.posFromIndex(monRT,i);
+  },function(p)
+  {
+   return MonacoGenAdapter.indexFromPos(monRT,p);
+  },function(p)
+  {
+   return MonacoGenAdapter.getWordAt(monRT,p);
+  },function()
+  {
+   return MonacoGenAdapter.getSelect(monRT);
+  },function()
+  {
+   return MonacoGenAdapter.getUri(monRT);
+  },function(u)
+  {
+   MonacoGenAdapter.setUri(monRT,u);
+  },function(f)
+  {
+   monRT.onChange=f;
+  });
+ };
+ MonacoGenAdapter.newRT=function(options,overrides)
+ {
+  return MonacoRT.New(null,Global.ignore,options,overrides);
+ };
+ MonacoGenAdapter.newVar=function(options,overrides,v)
+ {
+  return GenEditor.newVar(MonacoGenAdapter.newHook(MonacoGenAdapter.newRT(options,overrides)),v);
+ };
+ MonacoRT.New=function(editorO,onChange,options,overrides)
+ {
+  return{
+   editorO:editorO,
+   onChange:onChange,
+   options:options,
+   overrides:overrides
+  };
+ };
+ CompletionItemProvider=MonacoGenAdapter.CompletionItemProvider=Runtime$1.Class({
+  provideCompletionItems:function(model,pos,token,context)
+  {
+   var $this,b;
+   $this=this;
+   return PromiseM.ofAsyncResultM((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+   {
+    return AsyncResultMAutoOpen["AsyncResultMBuilder.Bind"](b,$this.autoComplete(Position$1.New(pos.lineNumber,pos.column)),function(a)
+    {
+     return b.Return(Arrays.map(function(comp)
+     {
+      return CompletionItem.New(MonacoGenAdapter.convertGlyphChar(comp.kind),comp.label,comp.detail);
+     },a));
+    });
+   }))));
+  },
+  resolveCompletionItem:function(item,token)
+  {
+   return CompletionItem.New(item.kind,item.label,"more details");
+  }
+ },Obj,CompletionItemProvider);
+ CompletionItemProvider.New=Runtime$1.Ctor(function(autoComplete)
+ {
+  Obj.New.call(this);
+  this.autoComplete=autoComplete;
+ },CompletionItemProvider);
+ HoverProvider=MonacoGenAdapter.HoverProvider=Runtime$1.Class({
+  provideHover:function(model,pos,token)
+  {
+   var $this,b;
+   $this=this;
+   return PromiseM.ofAsyncResultM((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+   {
+    return AsyncResultMAutoOpen["AsyncResultMBuilder.Bind"](b,$this.toolTip(Position$1.New(pos.lineNumber,pos.column)),function(a)
+    {
+     return a!=null&&a.$==1?b.Return(Hover.New([MarkDownString.New(a.$0,true)],null)):b.Return(null);
+    });
+   }))));
+  }
+ },Obj,HoverProvider);
+ HoverProvider.New=Runtime$1.Ctor(function(toolTip)
+ {
+  Obj.New.call(this);
+  this.toolTip=toolTip;
+ },HoverProvider);
+ DefinitionProvider=MonacoGenAdapter.DefinitionProvider=Runtime$1.Class({
+  provideDefinition:function(model,pos,token)
+  {
+   var $this,b;
+   $this=this;
+   return PromiseM.ofAsyncResultM((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+   {
+    return AsyncResultMAutoOpen["AsyncResultMBuilder.Bind"](b,$this.declaration(Position$1.New(pos.lineNumber,pos.column)),function(a)
+    {
+     var pos$1;
+     return a!=null&&a.$==1?(pos$1=a.$0[0],b.Return(Location.New(Range.New(pos$1.col,pos$1.col,pos$1.line,pos$1.line),self.monaco.Uri.parse(a.$0[1])))):b.Return(null);
+    });
+   }))));
+  }
+ },Obj,DefinitionProvider);
+ DefinitionProvider.New=Runtime$1.Ctor(function(declaration)
+ {
+  Obj.New.call(this);
+  this.declaration=declaration;
+ },DefinitionProvider);
  StartAppFramework.htmlD=function()
  {
   SC$1.$cctor();
@@ -617,14 +1145,25 @@ if (!console) {
    };
   },sel.get_View()),function(a)
   {
-   var o;
+   var x;
+   function f(a$1)
+   {
+    return{
+     $:1,
+     $0:a$1
+    };
+   }
+   function g(a$1)
+   {
+    sel.Set(a$1);
+   }
    if(a!=null&&a.$==1)
     {
-     o=ofBO(a.$0);
-     o==null?void 0:sel.Set({
-      $:1,
-      $0:o.$0
-     });
+     x=ofBO(a.$0);
+     (Option.iter(function(x$1)
+     {
+      return g(f(x$1));
+     }))(x);
     }
    else
     sel.Set(null);
@@ -723,19 +1262,6 @@ if (!console) {
    return Seq.tryHead(plg.plgDocs);
   },plugins)));
  };
- Obj=WebSharper.Obj=Runtime$1.Class({
-  Equals:function(obj)
-  {
-   return this===obj;
-  },
-  GetHashCode:function()
-  {
-   return -1;
-  }
- },null,Obj);
- Obj.New=Runtime$1.Ctor(function()
- {
- },Obj);
  PlugInBuilder=AF.PlugInBuilder=Runtime$1.Class({
   Zero:function()
   {
@@ -952,9 +1478,12 @@ if (!console) {
    return n;
   },function()
   {
-   var o;
-   o=selectedV.Get();
-   o==null?void 0:_delete(o.$0,null);
+   var x;
+   x=selectedV.Get();
+   (Option.iter(function(k)
+   {
+    _delete(k,null);
+   }))(x);
   },def);
   elUIF=elUI(result);
   return ListModelData.New(result.elems,Doc.Convert(Global.id,ListModel.MapLens(predWO,function(k,v)
@@ -1072,6 +1601,17 @@ if (!console) {
   SC$1.$cctor();
   return SC$1.html$1;
  };
+ NewLY.bindWrap=function(f,pv)
+ {
+  return P.New(Operators$1.op_GreaterGreaterEquals(pv,function(v)
+  {
+   return f(v).r;
+  }));
+ };
+ NewLY.unwrapBindWrap=function(f,pv)
+ {
+  return P.New(Operators$1.op_BarGreaterGreater(pv.r,f));
+ };
  NewLY.add1=function(a)
  {
   return a+1;
@@ -1108,51 +1648,47 @@ if (!console) {
   SC$1.$cctor();
   return SC$1.pb;
  };
- NewLY.getDoc=function(r)
- {
-  var p,pName,oName;
-  p=(AppFramework.splitName("NewLY"))(r);
-  pName=p[0];
-  oName=p[1];
-  return Doc.BindView(function(docO)
-  {
-   var o;
-   function d()
-   {
-    return(function($1)
-    {
-     return function($2)
-     {
-      return $1("Reference not found @{"+Utils.toSafe($2)+"}");
-     };
-    }(Global.id))(r);
-   }
-   o=docO==null?null:{
-    $:1,
-    $0:AppFramework.getLazyDoc(docO.$0)
-   };
-   return o==null?Doc.TextView(View.Map(function(o$1)
-   {
-    return o$1==null?d():o$1.$0;
-   },AppFramework.tryGetWoWW(pName,oName))):o.$0;
-  },AppFramework.tryGetDocW(pName,oName));
- };
- NewLY.extractDoc=function()
+ NewLY.currentPlugInNameDef=function()
  {
   SC$1.$cctor();
-  return SC$1.extractDoc$1;
+  return SC$1.currentPlugInNameDef;
  };
- NewLY.vvv=function()
+ NewLY.currentPlugInNameD=function()
  {
   SC$1.$cctor();
-  return SC$1.vvv;
+  return SC$1.currentPlugInNameD;
+ };
+ NewLY.getDocD=function()
+ {
+  SC$1.$cctor();
+  return SC$1.getDocD;
+ };
+ NewLY.getTextActViewD=function()
+ {
+  SC$1.$cctor();
+  return SC$1.getTextActViewD;
+ };
+ NewLY.extractDocD=function()
+ {
+  SC$1.$cctor();
+  return SC$1.extractDocD$1;
+ };
+ NewLY.extractAtsD=function()
+ {
+  SC$1.$cctor();
+  return SC$1.extractAtsD$1;
+ };
+ NewLY.extractAttD=function()
+ {
+  SC$1.$cctor();
+  return SC$1.extractAttD;
  };
  NewLY.op_Dereference=function(v)
  {
-  return{
+  return P.New((Operators$1.rtn())({
    $:1,
    $0:v
-  };
+  }));
  };
  NewLY.name=function()
  {
@@ -1238,17 +1774,45 @@ if (!console) {
   SC$1.$cctor();
   return SC$1.split2;
  };
- NewLY.mainProgram=function()
+ NewLY.callDocPFn=function(pin,pf)
  {
-  var x;
-  x=StartAppFramework.startWithHtmlD();
-  (Depend.resolver(List.ofArray([["AppFrameworkTemplate.html",AppFrameworkTemplate.html()+SnippetTemplates.html()]]),x))();
+  var f;
+  f=P.run(pin,pf);
+  return Doc.BindView(function()
+  {
+   var m;
+   m=f.f.$==0?f.p.$==1?{
+    $:0,
+    $0:View.Apply(f.f.$0,View.Const(f.p.$0))
+   }:{
+    $:0,
+    $0:View.Apply(f.f.$0,f.p.$0)
+   }:f.p.$==0?{
+    $:0,
+    $0:View.Apply(View.Const(f.f.$0),f.p.$0)
+   }:{
+    $:1,
+    $0:f.f.$0(f.p.$0)
+   };
+   return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
+  },AppFramework.mainDocV().get_View());
+ };
+ NewLY.pName=function()
+ {
+  SC$1.$cctor();
+  return SC$1.pName;
  };
  Fun.New=function(f,p)
  {
   return{
    f:f,
    p:p
+  };
+ };
+ P.New=function(r)
+ {
+  return{
+   r:r
   };
  };
  Val.addDoc=function(d,docs)
@@ -1261,9 +1825,24 @@ if (!console) {
    $0:Seq.append(docs.$0,[d])
   };
  };
+ Val.addAtt=function(a,atts)
+ {
+  return atts.$==0?function($1)
+  {
+   return $1("addAtt for VView not implemented");
+  }(Operators.FailWith):{
+   $:1,
+   $0:Seq.append(atts.$0,[a])
+  };
+ };
  Val.textDoc=function(a)
  {
   return a.$==0?Doc.TextView(a.$0):Doc.TextNode(a.$0);
+ };
+ Val.textAtt=function()
+ {
+  SC$1.$cctor();
+  return SC$1.textAtt;
  };
  Extract0.getDocFromReference=function(ref)
  {
@@ -1271,9 +1850,22 @@ if (!console) {
   {
    return function($2)
    {
-    return $1("tryGetTextFromReference not implemented: @{"+Utils.toSafe($2)+"}");
+    return $1("getDocFromReference not implemented: @{"+Utils.toSafe($2)+"}");
    };
   }(Global.id))(ref));
+ };
+ Extract0.getTextActViewFromReference=function(ref)
+ {
+  return View.Const({
+   $:0,
+   $0:(function($1)
+   {
+    return function($2)
+    {
+     return $1("getTextActViewFromReference not implemented: @{"+Utils.toSafe($2)+"}");
+    };
+   }(Global.id))(ref)
+  });
  };
  Extract0.getOneTextData=function(bef,name,aft)
  {
@@ -1313,573 +1905,1015 @@ if (!console) {
   SC$1.$cctor();
   return SC$1.getDocFromReferenceD;
  };
+ Extract0.getTextActViewFromReferenceD=function()
+ {
+  SC$1.$cctor();
+  return SC$1.getTextActViewFromReferenceD;
+ };
  Extract0.extractDocD=function()
  {
   SC$1.$cctor();
   return SC$1.extractDocD;
  };
- Extract0.extractDoc=function()
+ Extract0.extractAtsD=function()
  {
   SC$1.$cctor();
-  return SC$1.extractDoc;
+  return SC$1.extractAtsD;
  };
- SC$1.$cctor=function()
+ P.run=function(pin,p)
  {
-  var f,b,b$1,f$1,f$2,sayHello_0,c,f$3,a,c$1,c$2,c$3,f$4,c$4,c$5,c$6,c$7,c$8,c$9,c$10,c$11,c$12,p,f$5,f$6,f$7,f$8,c$13,p$1,c$14,f$9,p$2,f$10,c$15,f$11,p$3,b$2;
-  SC$1.$cctor=Global.ignore;
-  function g(s)
+  var x,b;
+  x=(b=Operators$1.depend(),b.Delay(function()
   {
-   return Strings.concat("\n",s);
+   return b.Bind(NewLY.getDocD(),function(a)
+   {
+    return b.Bind(NewLY.getTextActViewD(),function(a$1)
+    {
+     return b.Return(Depend.resolver(List.ofArray([["getDocFromReference",a],["getTextActViewFromReference",a$1]]),p.r));
+    });
+   });
+  }));
+  return Depend.resolver(List.ofArray([["currentPlugInName",pin]]),x);
+ };
+ DragDrop.set_drag=function($1)
+ {
+  SC$1.$cctor();
+  SC$1.drag=$1;
+ };
+ DragDrop.drag=function()
+ {
+  SC$1.$cctor();
+  return SC$1.drag;
+ };
+ DragDrop.setDragNone=function()
+ {
+  DragDrop.set_drag(DragInfo.DragNone);
+ };
+ DragDrop.setDragNode=function(tnid)
+ {
+  DragDrop.set_drag({
+   $:1,
+   $0:tnid
+  });
+ };
+ DragDrop.getDragNIdO=function(tnId)
+ {
+  var $1;
+  return DragDrop.drag().$==1&&(!Unchecked.Equals(DragDrop.drag().$0,tnId)&&($1=DragDrop.drag().$0,true))?{
+   $:1,
+   $0:$1
+  }:null;
+ };
+ DragInfo.DragNone={
+  $:0
+ };
+ SnippetsUI.TemplateFileName=function()
+ {
+  SC$1.$cctor();
+  return SC$1.TemplateFileName;
+ };
+ SnippetsUI.snippetsLM=function()
+ {
+  SC$1.$cctor();
+  return SC$1.snippetsLM;
+ };
+ SnippetsUI.collapsedV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.collapsedV;
+ };
+ SnippetsUI.codeSnippetIdV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.codeSnippetIdV;
+ };
+ SnippetsUI.searchFor=function()
+ {
+  SC$1.$cctor();
+  return SC$1.searchFor;
+ };
+ SnippetsUI.allPredecessors=function()
+ {
+  SC$1.$cctor();
+  return SC$1.allPredecessors;
+ };
+ SnippetsUI.indPredIds=function()
+ {
+  SC$1.$cctor();
+  return SC$1.indPredIds;
+ };
+ SnippetsUI.allCodePredsW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.allCodePredsW;
+ };
+ SnippetsUI.allCodePredIdsW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.allCodePredIdsW;
+ };
+ SnippetsUI.shdDef=function()
+ {
+  SC$1.$cctor();
+  return SC$1.shdDef;
+ };
+ SnippetsUI.processHier=function(snps,collapsed)
+ {
+  var path,collapse,dSnps,i,e;
+  dSnps=new Dictionary.New$5();
+  path=[];
+  collapse=0;
+  i=Seq.indexed(snps);
+  e=Enumerator.Get(i);
+  try
+  {
+   while(e.MoveNext())
+    (function()
+    {
+     var f,sid,pidO,k,p,pid,m,j,pth,lvl,o,o$1;
+     function p$1(a,spid)
+     {
+      return Unchecked.Equals(spid,pid);
+     }
+     f=e.Current();
+     sid=f[1][0];
+     pidO=f[1][1];
+     k=f[0];
+     p=pidO!=null&&pidO.$==1?(pid=pidO.$0,(m=Seq.tryFind(function($1)
+     {
+      return p$1($1[0],$1[1]);
+     },Seq.indexed(path)),m!=null&&m.$==1?(j=m.$0[0],[j+1,Slice.array(path,{
+      $:1,
+      $0:0
+     },{
+      $:1,
+      $0:j
+     }),null]):[0,[],{
+      $:1,
+      $0:(function($1)
+      {
+       return function($2)
+       {
+        return $1("Parent not found in path "+Utils.prettyPrint($2));
+       };
+      }(Global.id))(pid)
+     }])):[0,[],null];
+     pth=p[1];
+     lvl=p[0];
+     dSnps.Add(sid,SnippetHierData.New(lvl,k,(o=(o$1=Seq.tryItem(k+1,snps),o$1==null?null:{
+      $:1,
+      $0:Unchecked.Equals({
+       $:1,
+       $0:sid
+      },o$1.$0[1])
+     }),o==null?false:o.$0),collapse>=lvl,pth,p[2]));
+     path=pth.concat([sid]);
+     return collapse>=lvl?void(collapse=collapsed.Contains(sid)?lvl:lvl+1):null;
+    }());
   }
-  function f$12(s)
+  finally
   {
-   return String.splitByChar$1("\n",s);
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
   }
-  function g$1(s)
+  return dSnps;
+ };
+ SnippetsUI.snpIdParentsW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.snpIdParentsW;
+ };
+ SnippetsUI.processHierW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.processHierW;
+ };
+ SnippetsUI.docWrap=function(wrapper,doc)
+ {
+  return(wrapper([]))([doc]);
+ };
+ SnippetsUI.moveNode=function(frid,toid)
+ {
+  View.Get(function(hier)
   {
-   var a$1,b$3;
-   return Slice.array(s,{
+   var $1,res,$2,res$1,$3,$4,frdt,frsn,todt,elems,n,newSn,a;
+   $1=(res=null,hier.TryGetValue(frid,{
+    get:function()
+    {
+     return res;
+    },
+    set:function(v)
+    {
+     res=v;
+    }
+   })?{
+    $:1,
+    $0:res
+   }:null);
+   $2=(res$1=null,hier.TryGetValue(toid,{
+    get:function()
+    {
+     return res$1;
+    },
+    set:function(v)
+    {
+     res$1=v;
+    }
+   })?{
+    $:1,
+    $0:res$1
+   }:null);
+   $3=SnippetsUI.snippetsLM().TryFindByKey(frid);
+   $4=SnippetsUI.snippetsLM().TryFindByKey(toid);
+   $1!=null&&$1.$==1?$2!=null&&$2.$==1?$3!=null&&$3.$==1?$4!=null&&$4.$==1?(frdt=$1.$0,frsn=$3.$0,todt=$2.$0,Seq.contains(frid,todt.path)?void 0:(elems=Arrays.ofSeq((SnippetsUI.snippetsLM())["var"].Get()),n=function(i)
+   {
+    var res$2,m,m$1;
+    while(true)
+     {
+      m=Arrays.tryItem(i+1,elems);
+      if(m!=null&&m.$==1)
+       {
+        m$1=(res$2=null,hier.TryGetValue(m.$0.snpId,{
+         get:function()
+         {
+          return res$2;
+         },
+         set:function(v)
+         {
+          res$2=v;
+         }
+        })?{
+         $:1,
+         $0:res$2
+        }:null);
+        if(m$1!=null&&m$1.$==1)
+        {
+         if(Seq.contains(frid,m$1.$0.path))
+          i=i+1;
+         else
+          return i;
+        }
+        else
+         return i;
+       }
+      else
+       return i;
+     }
+   }(frdt.pos),newSn=Snippet.New(frsn.snpId,frsn.snpName,frsn.snpContent,$4.$0.snpParentIdO,frsn.snpPredIds,frsn.snpProperties,frsn.snpModified),a=Arrays.concat(frdt.pos<todt.pos?[Slice.array(elems,{
     $:1,
     $0:0
    },{
     $:1,
-    $0:(a$1=0,(b$3=Arrays.length(s)-2,Unchecked.Compare(a$1,b$3)===1?a$1:b$3))
-   });
-  }
-  function g$2(s)
+    $0:frdt.pos-1
+   }),Slice.array(elems,{
+    $:1,
+    $0:n+1
+   },{
+    $:1,
+    $0:todt.pos-1
+   }),[newSn],Slice.array(elems,{
+    $:1,
+    $0:frdt.pos+1
+   },{
+    $:1,
+    $0:n
+   }),Slice.array(elems,{
+    $:1,
+    $0:todt.pos
+   },null)]:[Slice.array(elems,{
+    $:1,
+    $0:0
+   },{
+    $:1,
+    $0:todt.pos-1
+   }),[newSn],Slice.array(elems,{
+    $:1,
+    $0:frdt.pos+1
+   },{
+    $:1,
+    $0:n
+   }),Slice.array(elems,{
+    $:1,
+    $0:todt.pos
+   },{
+    $:1,
+    $0:frdt.pos-1
+   }),Slice.array(elems,{
+    $:1,
+    $0:n+1
+   },null)]),SnippetsUI.snippetsLM().Set(a))):void 0:void 0:void 0:void 0;
+  },SnippetsUI.processHierW());
+ };
+ SnippetsUI.calcUI=function(wrapper,allowDelete,lmd)
+ {
+  var indSelPredIdsW,v,prior;
+  indSelPredIdsW=View.Map(function($1)
   {
-   return Strings.concat("\n",s);
-  }
-  SC$1.depend=new DependBuilder.New();
-  SC$1.unindentStr=function(x)
+   return(SnippetsUI.indPredIds())($1);
+  },(v=View.Apply(View.Map2(function($1,$2)
   {
-   return g(String.unindent$1(x));
-  };
-  SC$1.skipLastLine=(f=function(x)
-  {
-   return g$1(f$12(x));
-  },function(x)
-  {
-   return g$2(f(x));
-  });
-  SC$1.html="\r\n            <div style=\"display:none\" >\r\n                <div links>\r\n                    <link href=\"http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\r\n                    <script src=\"http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"  type=\"text/javascript\"></script>\r\n                </div>\r\n                <div ws-template=\"AppFramework\" style=\"height: calc(100vh - 4px); width: calc(100vw - 4px) \" class=\"relative\" >\r\n                    <div ws-hole=\"MainClient\"></div>\r\n                    <div class=\"AppFrameworkGo\"><button ws-onclick=\"GoClient\">${MainDoc}</button></div>\r\n                </div>\r\n                <style>\r\n                    .AppFrameworkGo {\r\n                        max-width: 2px;\r\n                        max-height: 2px;\r\n                        z-index: 4000;\r\n                        overflow: hidden;\r\n                        position: fixed;\r\n                        top: 0px;\r\n                        left: 0px;\r\n                    }\r\n                </style>\r\n                <div ws-template=\"FixedSplitterVer\" \r\n                    style=\"display: grid; \r\n                           grid-gap: 0px; \r\n                           box-sizing: border-box; \r\n                           height: 100%;\r\n                           width : 100%;\r\n                           grid-template-areas: 'one two'; \r\n                           grid-template-rows   :100%; \r\n                           overflow: hidden; \r\n                           grid-template-columns: ${PartSizes}\"  >\r\n                   <div ws-hole=\"First\"  style=\"grid-area: one; \" class=\"relative\" ></div>\r\n                   <div ws-hole=\"Second\" style=\"grid-area: two; \" class=\"relative\" ></div>\r\n                </div>               \r\n                <div ws-template=\"FixedSplitterHor\" \r\n               style=\"display: grid; \r\n                      grid-gap: 0px; \r\n                      box-sizing: border-box; \r\n                      height: 100%;\r\n                      width : 100%;\r\n                      grid-template-areas: 'one' 'two'; \r\n                      grid-template-columns:100%; \r\n                      overflow: hidden; \r\n                      grid-template-rows   : ${PartSizes}\"  >\r\n              <div ws-hole=\"First\"  style=\"grid-area: one; \" class=\"relative\" ></div>\r\n              <div ws-hole=\"Second\" style=\"grid-area: two; \" class=\"relative\" ></div>\r\n                </div>               \r\n                <div ws-template=\"WCompSplitterHor\" \r\n                     ws-onafterrender=\"AfterRender\"\r\n                     style=\"display: grid;\r\n                            grid-gap: 5px; \r\n                            box-sizing: border-box; \r\n                            grid-template-areas: 'one' 'two'; \r\n                            grid-template-columns:100%; \r\n                            overflow: hidden; \r\n                            grid-template-rows   : ${PartSizes}\" \r\n                     >\r\n                     <slot></slot>\r\n                    <slot name=\"splitter\">  <div style=\"grid-row:2; grid-column:1 / 1 ; cursor: row-resize; z-index: 3; background-color: #eef ; height: ${Gap}; margin-top :-${Gap}\" ws-onmousedown=\"MouseDown\" ws-onafterrender=\"AfterRenderSp\" ></div> </slot>\r\n                    <style>\r\n                        ::slotted(*) {\r\n                            display: grid;\r\n                            height : 100%;\r\n                            width  : 100%;\r\n                            overflow: hidden;\r\n                        }\r\n                        ::slotted(*:nth-child(2)) {\r\n                            grid-area: two;\r\n                        }\r\n                        ::slotted(*[slot=\"splitter\"]) {\r\n                            grid-row:2; grid-column:1 / 1 ; \r\n                            cursor: row-resize; \r\n                            z-index: 3; \r\n                            background-color: #eef ; \r\n                            height: ${Gap}; \r\n                            margin-top :-${Gap}\r\n                        }\r\n                    </style>\r\n                </div>        \r\n                <div ws-template=\"WCompSplitterVer\" \r\n                     ws-onafterrender=\"AfterRender\"\r\n                     style=\"display: grid; \r\n                            grid-gap: 5px; \r\n                            box-sizing: border-box; \r\n                            grid-template-areas: 'one two'; \r\n                            grid-template-rows   :100%; \r\n                            overflow: hidden; \r\n                            grid-template-columns: ${PartSizes}\"  >\r\n                    <slot></slot>\r\n                    <slot name=\"splitter\"> <div style=\"grid-column:2; grid-row:1 / 1 ; cursor: col-resize; z-index: 3; background-color: #eef ; width: ${Gap}; margin-left :-${Gap}\" ws-onmousedown=\"MouseDown\" ws-onafterrender=\"AfterRenderSp\" ></div> </slot>\r\n                    <style>\r\n                        ::slotted(*) {\r\n                            display: grid;\r\n                            height : 100%;\r\n                            width  : 100%;\r\n                            overflow: hidden;\r\n                        }\r\n                        ::slotted(*:nth-child(2)) {\r\n                            grid-area: two;\r\n                        }\r\n                        ::slotted(*[slot=\"splitter\"]) {\r\n                            grid-column:2; grid-row:1 / 1\r\n                            cursor: column-resize; \r\n                            z-index: 3; \r\n                            background-color: #eef ; \r\n                            width: ${Gap}; \r\n                            margin-left:-${Gap}\r\n                        }\r\n                    </style>\r\n                </div>\r\n                <div ws-template=\"AppFwkClient\" >\r\n                    <ws-FixedSplitterHor>\r\n                        <PartSizes>55px calc(100% - 55px)</PartSizes>\r\n                        <First>\r\n                            <span style=\"display: grid;\r\n                                  grid-template-columns: 30% 20% 20% 10%;\r\n                                  grid-gap: 25px;\r\n                                \">\r\n                                <div class=\"mainTitle\">AppFramework</div>\r\n                            </span>\r\n                        </First>\r\n                        <Second>\r\n                                <ws-FixedSplitterVer>\r\n                                    <PartSizes>calc(100% - 150px) 150px</PartSizes>\r\n                                    <First>\r\n                                        <wcomp-splitter vertical value=\"18\" max=\"100\">\r\n                                            <div><div ws-hole=\"PlugIns\" style=\"overflow:auto\" >\r\n                                                <div ws-template=\"Tile\">\r\n                                                    <div draggable=\"true\" class=\"code-editor-list-tile ${Predecessor} ${Selected}\" \r\n                                                    ws-ondrag=\"Drag\"\r\n                                                    ws-ondragover=\"DragOver\"\r\n                                                    ws-ondrop=\"Drop\"\r\n                                                   >\r\n                                                   <span class=\"node ${Parent} ${ErrorMsg}\" title=\"expand\" ws-onclick=\"ToggleCollapse\"></span>\r\n                                                   <div  class=\"code-editor-list-text\" style=\"text-indent:${Indent}em; white-space: pre\" ws-onclick=\"Select\" ws-onafterrender=\"AfterRender\" >${Name}</div>\r\n                                                   <span class=\"predecessor\" title=\"toggle predecessor\" ws-onclick=\"TogglePred\">X</span>\r\n                                               </div>\r\n                                       \r\n                                                </div>\r\n                                            </div></div>\r\n                                            <wcomp-splitter vertical value=\"100\" min=\"30\" max=\"100\">\r\n                                                <ws-FixedSplitterHor>\r\n                                                    <PartSizes>32px calc(100% - 32px)</PartSizes>\r\n                                                    <First>\r\n                                                        <div>\r\n                                                            <div class=\"input-group\">\r\n                                                                <span class=\"input-group-addon\">name:</span>\r\n                                                                <span class=\"input-group-addon\">${PlugInName}</span>\r\n                                                            </div>\r\n                                                        </div>\r\n                                                    </First>\r\n                                                    <Second>\r\n                                                        <div style=\"overflow:auto\">\r\n                                                            <div>\r\n                                                                <div>Docs:</div>\r\n                                                                <div ws-hole=\"Docs\" style=\"overflow:auto\" ></div>\r\n                                                            </div>\r\n                                                            <div>\r\n                                                                <div>Views:</div>\r\n                                                                <div ws-hole=\"Views\" style=\"overflow:auto\" >\r\n                                                                    <div ws-template=\"NameValue\" class=\"input-group\">\r\n                                                                        <span class=\"input-group-addon\">${Name}:</span>\r\n                                                                        <span class=\"input-group-addon\">${Value}</span>\r\n                                                                    </div>\r\n                                                                </div>\r\n                                                            </div>\r\n                                                            <div>\r\n                                                                <div>Queries:</div>\r\n                                                                <div ws-hole=\"Queries\" style=\"overflow:auto\" ></div>\r\n                                                            </div>\r\n                                                            <div>\r\n                                                                <div>Vars:</div>\r\n                                                                <div ws-hole=\"Vars\" style=\"overflow:auto\" >\r\n                                                                    <div ws-template=\"NameValueInput\" class=\"input-group\">\r\n                                                                        <span class=\"input-group-addon\">${Name}:</span>\r\n                                                                        <textarea class=\"form-control\" id=\"\" placeholder=\"Value...\" ws-var=\"Value\" spellcheck=\"false\">\r\n                                                                    </div>\r\n                                                                </div>\r\n                                                            </div>\r\n                                                        </div>\r\n                                                    </Second>\r\n                                                </ws-FixedSplitterHor>\r\n                                                <wcomp-tabstrip >\r\n                                                    <div tabname=\"Properties\">\r\n                                                        <div>\r\n                                                            <table style=\"border-spacing:0px\">\r\n                                                                <thead>\r\n                                                                    <th style=\"width: 30%  \">Name</th>\r\n                                                                    <th style=\"width: 70% \">Value</th>\r\n                                                                </thead>\r\n                                                                <tbody ws-hole=\"Properties\" ws-children-template=\"Property\">\r\n                                                                    <tr ws-onclick=\"Select\" style=\"margin-bottom: 2px\" class=\"level  \">\r\n                                                                        <td class=\"level-item\">\r\n                                                                            <div>\r\n                                                                                <input ws-var=\"Name\" type=\"text\" class=\"form-control\" id=\"\" placeholder=\"Property...\">\r\n                                                                            </div>\r\n                                                                        </td>\r\n                                                                        <td class=\"level-item\">\r\n                                                                            <div>\r\n                                                                                <textarea ws-var=\"Value\" class=\"form-control\" id=\"\" placeholder=\"Value...\"></textarea>\r\n                                                                            </div>\r\n                                                                        </td>\r\n                                                                        <td class=\"level-item\">\r\n                                                                            <div style=\" cursor: pointer \" title=\"remove\">\r\n                                                                                <button ws-onclick=\"Remove\" class=\"delete is-small\">x</button>\r\n                                                                            </div>\r\n                                                                        </td>\r\n                                                                    </tr>\r\n                                                                </tbody>\r\n                                                            </table>\r\n                                                            <button ws-onclick=\"AddProperty\" class=\"add is-small\">add ...</button>\r\n                                                        </div>\r\n                                                    </div>\r\n                                                </wcomp-tabstrip>\r\n                                            </wcomp-splitter>\r\n                                        </wcomp-splitter>\r\n                                    </First>\r\n                                    <Second>\r\n                                        <div style=\"\r\n                                            overflow: hidden;\r\n                                            display: grid;\r\n                                            grid-template-columns: 100%;\r\n                                            grid-template-rows: repeat(15, calc(100% / 15));\r\n                                            bxackground-color: #eee;\r\n                                            box-sizing: border-box;\r\n                                            padding : 5px;\r\n                                            grid-gap: 5px;\r\n                                            margin-right: 21px;\r\n                                       \"  class=\"absolute\" ws-hole=\"Actions\" >\r\n                                            <button ws-template=\"Action\"         ws-onclick=\"Click\" class=\"btn\" type=\"button\" id=\"\"          >${Name}</button>\r\n                                            <button ws-template=\"ActionDisabled\" ws-onclick=\"Click\" class=\"btn\" type=\"button\" id=\"\" disabled >${Name}</button>\r\n                                        </div>\r\n                                    </Second>\r\n                                </ws-FixedSplitterVer>\r\n                        </Second>\r\n                    </ws-FixedSplitterHor>\r\n                </div>\r\n                <style style=\"display: none\">\r\n                        .Hidden     { display   : none         }\r\n                        table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }\r\n                        td input.form-control { \r\n                            padding    : 0px; \r\n                            font-family: monospace;\r\n                            font-size  :   small;\r\n                            margin-top :   0px;\r\n                            margin-left: -2px;\r\n                            width      : 100%\r\n                        }\r\n                        td select {\r\n                            font-size : smaller;\r\n                            max-width : 8ch;\r\n                        }\r\n                        xtextarea {\r\n                           resize : none;\r\n                        }\r\n                        .tab-content {\r\n                            overflow: hidden\r\n                        }\r\n                        .tab-children {\r\n                            position:relative;\r\n                        }\r\n                        .tab-children>div>* {\r\n                            position:absolute;\r\n                            height: 100%;\r\n                            width:  100%;\r\n                            display: grid;\r\n                        }\r\n                        .relative {\r\n                            position:relative;\r\n                        }\r\n                        .relative>* {\r\n                            position:absolute;\r\n                            height: 100%;\r\n                            width:  100%;\r\n                            display: grid;\r\n                        }\r\n                        table.table-striped    tbody tr:nth-child(even) { background: #EEE  }\r\n                        table.table-striped    tbody tr:nth-child(odd ) { background: #FFF  }\r\n                        table.table-striped    tbody input              { background: transparent; border: none}\r\n                        table.table-striped    tbody select             { background: transparent; border: none}\r\n                        table.table-nonstriped tbody tr:nth-child(even) { background: inherit }\r\n                        table.table-nonstriped tbody tr:nth-child(odd ) { background: inherit }\r\n                        table.table            tbody tr.hover           { border    : solid thin transparent; } \r\n                        table.table            tbody tr.hover:hover     { border    : solid thin blue     ; } \r\n                        table.table            tbody th:hover           { background: gray; cursor: pointer }\r\n                        table.table            tbody tr.hover:hover>td  { border-top: solid thin blue     ; \r\n                                                                   border-bottom: solid thin blue     ; } \r\n                        table.table            tbody tr.selected { background   : #b9eeff             ; }\r\n                        table.table            tbody tr.formula.selected { background: #20f7f7             ; }\r\n                        thead { color: gray }\r\n                        h3 { \r\n                            color: gray;\r\n                            line-height: 1em;\r\n                        }\r\n                        button       { border: solid thin transparent ; border-radius: 3px; }\r\n                        button:hover { border: solid thin blue }\r\n                        .indenter { position  : absolute; \r\n                                    top:0px; bottom:0px; left:0px; \r\n                                    background: white; color:white;\r\n                                    border-right: gray thin dotted;\r\n                                    }\r\n                        body {\r\n                            color      : #333;\r\n                            font-size  : small;\r\n                            font-family: monospace;\r\n                            line-height: 1.2;\r\n                        }\r\n                        .mainTitle {  \r\n                            font-size: 48px;\r\n                            font-weight: 500;\r\n                            color: gray;\r\n                            margin-top: -12px;\r\n                        }\r\n                        .CodeMirror {\r\n                            height: 100%;\r\n                        }\r\n                        \r\n                      \r\n                        body { margin: 0px }     \r\n                             \r\n                        div textarea {\r\n                            font-family     : monospace;\r\n                        }\r\n                        .code-editor-list-tile {\r\n                            white-space     : nowrap; \r\n                            border-style    : solid none none;\r\n                            border-color    : white;\r\n                            border-width    : 1px;\r\n                            background-color: #D8D8D8;\r\n                            display         : flex;\r\n                        }\r\n                        .code-editor-list-text{\r\n                            padding         : 1px 10px 1px 5px;\r\n                            overflow        : hidden;\r\n                            text-overflow   : ellipsis;\r\n                            white-space     : nowrap;\r\n                            flex            : 1;\r\n                        }\r\n                        \r\n                        .code-editor-list-tile span.node.ErrorMsg {\r\n                            background-color: red\r\n                        }\r\n                        .code-editor-list-tile span.node.expanded::before {\r\n                            content: \"-\"\r\n                        }\r\n                        .code-editor-list-tile span.node.collapsed::before {\r\n                            content: \"+\"\r\n                        }\r\n                        .code-editor-list-tile.direct-predecessor {\r\n                            font-weight     : bold;\r\n                            color           : blue;\r\n                        }\r\n                        .code-editor-list-tile.indirect-predecessor {\r\n                            color           : blue;\r\n                        }\r\n                        .code-editor-list-tile.included-predecessor {\r\n                            color           : chocolate;\r\n                        }\r\n                        .code-editor-list-tile.selected {\r\n                            background-color: #77F;\r\n                            color           : white;\r\n                        }\r\n                        .code-editor-list-tile.codeSnippet {\r\n                            text-decoration: underline\r\n                        }\r\n                        .code-editor-list-tile:hover {\r\n                            background      : lightgray;\r\n                        }\r\n                        .code-editor-list-tile.selected:hover {\r\n                            background      : blue;\r\n                        }\r\n                        .code-editor-list-tile>.predecessor {\r\n                            font-weight     : bold;\r\n                            border-style    : inset;\r\n                            border-width    : 1px;\r\n                            text-align      : center;\r\n                            color           : transparent;\r\n                        }\r\n                        .code-editor-list-tile.direct-predecessor>.predecessor {\r\n                            color           : blue;\r\n                        }\r\n                        \r\n                        .CodeMirror { height: 100%; }\r\n                        \r\n                        .node {\r\n                            background-color: white; \r\n                            width           : 2ch; \r\n                            color           : #A03; \r\n                            font-weight     : bold; \r\n                            text-align      : center;\r\n                            font-family     : arial;\r\n                        }\r\n                        .Warning { text-decoration: underline lightblue } \r\n                        .Error   { text-decoration: underline red       } \r\n                        \r\n                    </style>\r\n            </div>\r\n            ";
-  SC$1.htmlD=Depend.dependByName("AppFrameworkTemplate.html",AppFrameworkTemplate.html(),Global.id);
-  SC$1.startWithHtmlD=(b=Depend.depend(),b.Delay(function()
-  {
-   return b.Bind(StartAppFramework.htmlD(),function(a$1)
+   return function($3)
    {
-    return b.Return(function()
-    {
-     var d,x,a$2;
-     d=self.document.createElement("div");
-     self.document.body.appendChild(d);
-     d.outerHTML=a$1;
-     x=AppFramework.getMainDoc().f();
-     a$2=self.document.body;
-     Templates.LoadLocalTemplates("");
-     Doc.RunAppend(a$2,x);
-    });
-   });
-  }));
-  SC$1.unselectorV=new FromView.New(View.Const(null),Global.ignore);
-  SC$1.plugin=new PlugInBuilder.New();
-  SC$1.html$1="\r\n                <div ws-template=\"Snippet\" >\r\n                    <div draggable=\"true\" class=\"code-editor-list-tile ${Predecessor} ${Selected}\" \r\n                         ws-ondrag=\"Drag\"\r\n                         ws-ondragover=\"DragOver\"\r\n                         ws-ondrop=\"Drop\"\r\n                        >\r\n                        <span class=\"node ${Parent} ${ErrorMsg}\" title=\"expand\" ws-onclick=\"ToggleCollapse\"></span>\r\n                        <div  class=\"code-editor-list-text\" style=\"text-indent:${Indent}em; white-space: pre\" ws-onclick=\"Select\" ws-onafterrender=\"AfterRender\" >${Name}</div>\r\n                        <span class=\"predecessor\" title=\"toggle predecessor\" ws-onclick=\"TogglePred\">X</span>\r\n                    </div>\r\n                </div>\r\n                <style>\r\n                    .Hidden     { display   : none         }\r\n                    table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }\r\n                    td input.form-control { \r\n                        padding    : 0px; \r\n                        font-family: monospace;\r\n                        font-size  :   small;\r\n                        margin-top :   0px;\r\n                        margin-left: -2px;\r\n                        width      : 100%\r\n                    }\r\n                    td select {\r\n                        font-size : smaller;\r\n                        max-width : 8ch;\r\n                    }\r\n                    textarea {\r\n                       resize : none;\r\n                    }\r\n                    .tab-content {\r\n                        overflow: hidden\r\n                    }\r\n                    .tab-children {\r\n                        position:relative;\r\n                    }\r\n                    .tab-children>div>* {\r\n                        position:absolute;\r\n                        height: 100%;\r\n                        width:  100%;\r\n                        display: grid;\r\n                    }\r\n                    .relative {\r\n                        position:relative;\r\n                    }\r\n                    .relative>* {\r\n                        position:absolute;\r\n                        height: 100%;\r\n                        width:  100%;\r\n                        display: grid;\r\n                    }\r\n                    table.table-striped    tbody tr:nth-child(even) { background: #EEE  }\r\n                    table.table-striped    tbody tr:nth-child(odd ) { background: #FFF  }\r\n                    table.table-striped    tbody input              { background: transparent; border: none}\r\n                    table.table-striped    tbody select             { background: transparent; border: none}\r\n                    table.table-nonstriped tbody tr:nth-child(even) { background: inherit }\r\n                    table.table-nonstriped tbody tr:nth-child(odd ) { background: inherit }\r\n                    table.table            tbody tr.hover           { border    : solid thin transparent; } \r\n                    table.table            tbody tr.hover:hover     { border    : solid thin blue     ; } \r\n                    table.table            tbody th:hover           { background: gray; cursor: pointer }\r\n                    table.table            tbody tr.hover:hover>td  { border-top: solid thin blue     ; \r\n                                                               border-bottom: solid thin blue     ; } \r\n                    table.table            tbody tr.selected { background   : #b9eeff             ; }\r\n                    table.table            tbody tr.formula.selected { background: #20f7f7             ; }\r\n                    thead { color: gray }\r\n                    h3 { \r\n                        color: gray;\r\n                        line-height: 1em;\r\n                    }\r\n                    button       { border: solid thin transparent ; border-radius: 3px; }\r\n                    button:hover { border: solid thin blue }\r\n                    .indenter { position  : absolute; \r\n                                top:0px; bottom:0px; left:0px; \r\n                                background: white; color:white;\r\n                                border-right: gray thin dotted;\r\n                                }\r\n                    body {\r\n                        color      : #333;\r\n                        font-size  : small;\r\n                        font-family: monospace;\r\n                        line-height: 1.2;\r\n                    }\r\n                    .mainTitle {  \r\n                        font-size: 48px;\r\n                        font-weight: 500;\r\n                        color: gray;\r\n                        margin-top: -12px;\r\n                    }\r\n                    .CodeMirror {\r\n                        height: 100%;\r\n                    }\r\n                    \r\n                  \r\n                    body { margin: 0px }     \r\n                         \r\n                    div textarea {\r\n                        font-family     : monospace;\r\n                    }\r\n                    .code-editor-list-tile {\r\n                        white-space     : nowrap; \r\n                        border-style    : solid none none;\r\n                        border-color    : white;\r\n                        border-width    : 1px;\r\n                        background-color: #D8D8D8;\r\n                        display         : flex;\r\n                    }\r\n                    .code-editor-list-text{\r\n                        padding         : 1px 10px 1px 5px;\r\n                        overflow        : hidden;\r\n                        text-overflow   : ellipsis;\r\n                        white-space     : nowrap;\r\n                        flex            : 1;\r\n                    }\r\n                    \r\n                    .code-editor-list-tile span.node.ErrorMsg {\r\n                        background-color: red\r\n                    }\r\n                    .code-editor-list-tile span.node.expanded::before {\r\n                        content: \"-\"\r\n                    }\r\n                    .code-editor-list-tile span.node.collapsed::before {\r\n                        content: \"+\"\r\n                    }\r\n                    .code-editor-list-tile.direct-predecessor {\r\n                        font-weight     : bold;\r\n                        color           : blue;\r\n                    }\r\n                    .code-editor-list-tile.indirect-predecessor {\r\n                        color           : blue;\r\n                    }\r\n                    .code-editor-list-tile.included-predecessor {\r\n                        color           : chocolate;\r\n                    }\r\n                    .code-editor-list-tile.selected {\r\n                        background-color: #77F;\r\n                        color           : white;\r\n                    }\r\n                    .code-editor-list-tile.codeSnippet {\r\n                        text-decoration : underline;\r\n                        font-weight     : bold;\r\n                    }\r\n                    .code-editor-list-tile:hover {\r\n                        background      : lightgray;\r\n                    }\r\n                    .code-editor-list-tile.selected:hover {\r\n                        background      : blue;\r\n                    }\r\n                    .code-editor-list-tile>.predecessor {\r\n                        font-weight     : bold;\r\n                        border-style    : inset;\r\n                        border-width    : 1px;\r\n                        text-align      : center;\r\n                        color           : transparent;\r\n                    }\r\n                    .code-editor-list-tile.direct-predecessor>.predecessor {\r\n                        color           : blue;\r\n                    }\r\n                    \r\n                    .CodeMirror { height: 100%; }\r\n                    \r\n                    .node {\r\n                        background-color: white; \r\n                        width           : 2ch; \r\n                        color           : #A03; \r\n                        font-weight     : bold; \r\n                        text-align      : center;\r\n                        font-family     : arial;\r\n                    }\r\n                    .Warning { text-decoration: underline lightblue } \r\n                    .Error   { text-decoration: underline red       } \r\n                    \r\n                </style>\r\n            ";
-  SC$1.a11V=Var$1.Create$1(11);
-  SC$1.mainX={
-   $:0,
-   $0:NewLY.a11V().get_View()
-  };
-  SC$1.getDocFromReferenceD=Depend.dependByName("getDocFromReference",Extract0.getDocFromReference,Global.id);
-  SC$1.extractDocD=(b$1=Depend.depend(),b$1.Delay(function()
+    return[$1.snpId,$2.snpParentIdO,$3.snpPredIds];
+   };
+  },lmd.get_CurrentV().get_View(),lmd.get_CurrentV().get_View()),lmd.get_CurrentV().get_View()),(prior=[Var$1.Create$1(null)],(View.Sink(function(v$1)
   {
-   return b$1.Bind(Extract0.getDocFromReferenceD(),function(a$1)
+   if(!Unchecked.Equals(prior[0].Get(),v$1))
+    prior[0].Set(v$1);
+  },v),prior[0].get_View()))));
+  return function(k)
+  {
+   return function(snp)
    {
-    return b$1.Return(function(txt)
+    var snpdW,b,t,t$1,t$2,t$3,t$4,p,i;
+    View.Map(function($1)
     {
-     var a$2,$1;
-     a$2=List.map(function(a$3)
+     return $1==null;
+    },k);
+    snpdW=View.Map2(function($1,$2)
+    {
+     var o,k$1,v$1;
+     o=(k$1=$2.snpId,function(d)
      {
-      return a$3.$==1?a$1(a$3.$0):Doc.TextNode(a$3.$0);
-     },Extract0.getTextData(txt));
-     return(a$2.$==1?a$2.$1.$==0?($1=a$2.$0,true):($1=a$2,false):($1=a$2,false))?$1:Doc.Concat($1);
-    });
-   });
-  }));
-  SC$1.extractDoc=Depend.resolver([],Extract0.extractDocD());
-  SC$1.aV=Var$1.Create$1(4);
-  SC$1.pa=NewLY.aV().get_View();
-  SC$1.pb=6.2;
-  SC$1.extractDoc$1=Depend.resolver([["getDocFromReference",NewLY.getDoc]],Extract0.extractDocD());
-  SC$1.vvv=(f$1=Fun.New((f$2=Fun.New({
-   $:1,
-   $0:function(a$1)
-   {
-    return function(b$3)
+      var res;
+      res=null;
+      return d.TryGetValue(k$1,{
+       get:function()
+       {
+        return res;
+       },
+       set:function(v$2)
+       {
+        res=v$2;
+       }
+      })?{
+       $:1,
+       $0:res
+      }:null;
+     }($1));
+     v$1=SnippetsUI.shdDef();
+     return o==null?v$1:o.$0;
+    },SnippetsUI.processHierW(),snp.get_View());
+    return SnippetsUI.docWrap(wrapper,(b=(t=(t$1=(t$2=(t$3=(t$4=ProviderBuilder.Make().WithHole({
+     $:2,
+     $0:"name",
+     $1:View.Map2(function($1,$2)
+     {
+      return($1.errorO==null?Global.id:function($3)
+      {
+       return function($4)
+       {
+        return $3("!"+Utils.toSafe($4));
+       };
+      }(Global.id))($2.snpName);
+     },snpdW,snp.get_View())
+    }).WithHole({
+     $:2,
+     $0:"selected",
+     $1:View.Map2(function($1,$2)
+     {
+      return Unchecked.Equals($1,$2)?"selected":"";
+     },lmd.selV.get_View(),k)
+    }).WithHole({
+     $:2,
+     $0:"predecessor",
+     $1:View.Apply(View.Apply(View.Apply(View.Map2(function($1,$2)
+     {
+      return Runtime$1.Curried3(function($3,$4,$5)
+      {
+       var key;
+       return $1!=null&&$1.$==1?(key=$1.$0,(Seq.contains(key,$2.snpPredIds)?"direct-predecessor":Seq.contains(key,$3)?"indirect-predecessor":Seq.contains(key,$4)?"included-predecessor":"")+(Unchecked.Equals($5,$1)?" codeSnippet":"")):"";
+      });
+     },k,lmd.get_CurrentV().get_View()),indSelPredIdsW),SnippetsUI.allCodePredIdsW()),SnippetsUI.codeSnippetIdV().get_View())
+    }),t$4.WithHole(Handler.EventQ2(t$4.k,"select",function()
     {
-     return NewLY.concat(a$1,b$3);
-    };
+     return t$4.i;
+    },function()
+    {
+     var o;
+     View.Get((o=lmd.selV,function(a)
+     {
+      o.Set(a);
+     }),k);
+    }))).WithHole({
+     $:2,
+     $0:"indent",
+     $1:View.Map(function($1)
+     {
+      return Global.String(1.5*$1.level);
+     },snpdW)
+    }).WithHole({
+     $:2,
+     $0:"parent",
+     $1:View.Apply(View.Map2(function($1,$2)
+     {
+      return function($3)
+      {
+       return $1.hasChildren?$2.Contains($3.snpId)?"collapsed":"expanded":"";
+      };
+     },snpdW,SnippetsUI.collapsedV().get_View()),snp.get_View())
+    }),t$3.WithHole(Handler.EventQ2(t$3.k,"togglecollapse",function()
+    {
+     return t$3.i;
+    },function()
+    {
+     View.Get(function(snpd)
+     {
+      var a;
+      if(snpd.hasChildren)
+       {
+        a=((SnippetsUI.collapsedV().Get().Contains(snp.Get().snpId)?function(v$1)
+        {
+         return function(s)
+         {
+          return s.Remove(v$1);
+         };
+        }:function(v$1)
+        {
+         return function(s)
+         {
+          return s.Add(v$1);
+         };
+        })(snp.Get().snpId))(SnippetsUI.collapsedV().Get());
+        SnippetsUI.collapsedV().Set(a);
+       }
+     },snpdW);
+    }))),t$2.WithHole(Handler.EventQ2(t$2.k,"drag",function()
+    {
+     return t$2.i;
+    },function(ev)
+    {
+     View.Get(function(a)
+     {
+      if(a!=null&&a.$==1)
+       {
+        DragDrop.setDragNode(a.$0);
+        ev.Event.stopPropagation();
+       }
+     },k);
+    }))),t$1.WithHole(Handler.EventQ2(t$1.k,"dragover",function()
+    {
+     return t$1.i;
+    },function(ev)
+    {
+     View.Get(function(a)
+     {
+      if(a!=null&&a.$==1)
+       if(DragDrop.getDragNIdO(a.$0)!=null)
+        ev.Event.preventDefault();
+     },k);
+    }))),t.WithHole(Handler.EventQ2(t.k,"drop",function()
+    {
+     return t.i;
+    },function(ev)
+    {
+     ev.Event.preventDefault();
+     View.Get(function(a)
+     {
+      var sid,x;
+      if(a!=null&&a.$==1)
+       {
+        sid=a.$0;
+        x=DragDrop.getDragNIdO(sid);
+        (Option.iter(function(fr)
+        {
+         SnippetsUI.moveNode(fr,sid);
+        }))(x);
+       }
+     },k);
+    }))),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],testing_Templates.snippet(p[0])),(b.i=i,i)))).get_Doc());
+   };
+  };
+ };
+ SnippetsUI.search=function()
+ {
+  SC$1.$cctor();
+  return SC$1.search;
+ };
+ SnippetsUI.wrapNothing=function(a)
+ {
+  return Doc.Concat;
+ };
+ SnippetsUI.snippetList=function()
+ {
+  SC$1.$cctor();
+  return SC$1.snippetList;
+ };
+ SnippetsUI.currentSnippetV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.currentSnippetV;
+ };
+ SnippetsUI.currentSnippetNameV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.currentSnippetNameV;
+ };
+ SnippetsUI.currentSnippetContentV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.currentSnippetContentV;
+ };
+ SnippetsUI.curSnp=function()
+ {
+  SC$1.$cctor();
+  return SC$1.curSnp;
+ };
+ SnippetsUI.selectorLensGuidId=function(sel)
+ {
+  var f;
+  function g(o)
+  {
+   return o==null?null:{
+    $:1,
+    $0:UoM$1.Tag$4(o.$0)
+   };
+  }
+  return(Util.selectorLens(Global.String,(f=ParseO.parseGuidO(),function(x)
+  {
+   return g(f(x));
+  })))(sel);
+ };
+ SnippetsUI.monacoNew=function(_var)
+ {
+  return GenEditor.onRender(function(ged)
+  {
+   var x;
+   x=ged.editorO;
+   (Option.iter(function(ed)
+   {
+    var _m;
+    _m=ed.getModel();
+    self.monaco.editor.setModelLanguage(_m,"fsharp");
+   }))(x);
+   self.monaco.editor.setTheme("vs-dark");
+  },MonacoGenAdapter.newVar(function()
+  {
+   return{};
+  },function()
+  {
+   return{};
+  },_var));
+ };
+ SnippetsUI.monaco=function()
+ {
+  SC$1.$cctor();
+  return SC$1.monaco;
+ };
+ SnippetsUI.addSnippet=function()
+ {
+  View.Get(function(hier)
+  {
+   var elems,newS,sid,m,res,n,a;
+   elems=Arrays.ofSeq((SnippetsUI.snippetsLM())["var"].Get());
+   newS=SnippetsUI.snippetList().add();
+   sid=SnippetsUI.currentSnippetV().Get().snpId;
+   m=(res=null,hier.TryGetValue(sid,{
+    get:function()
+    {
+     return res;
+    },
+    set:function(v)
+    {
+     res=v;
+    }
+   })?{
+    $:1,
+    $0:res
+   }:null);
+   m!=null&&m.$==1?(n=function(i)
+   {
+    var res$1,m$1,m$2;
+    while(true)
+     {
+      m$1=Arrays.tryItem(i+1,elems);
+      if(m$1!=null&&m$1.$==1)
+       {
+        m$2=(res$1=null,hier.TryGetValue(m$1.$0.snpId,{
+         get:function()
+         {
+          return res$1;
+         },
+         set:function(v)
+         {
+          res$1=v;
+         }
+        })?{
+         $:1,
+         $0:res$1
+        }:null);
+        if(m$2!=null&&m$2.$==1)
+        {
+         if(Seq.contains(sid,m$2.$0.path))
+          i=i+1;
+         else
+          return i;
+        }
+        else
+         return i;
+       }
+      else
+       return i;
+     }
+   }(m.$0.pos),a=Arrays.concat([Slice.array(elems,{
+    $:1,
+    $0:0
+   },{
+    $:1,
+    $0:n
+   }),[Snippet.New(newS.snpId,newS.snpName,newS.snpContent,SnippetsUI.currentSnippetV().Get().snpParentIdO,newS.snpPredIds,newS.snpProperties,newS.snpModified)],Slice.array(elems,{
+    $:1,
+    $0:n+1
+   },null)]),SnippetsUI.snippetsLM().Set(a)):void 0;
+  },SnippetsUI.processHierW());
+ };
+ SnippetsUI.deleteSnippet=function()
+ {
+  View.Get(function(hier)
+  {
+   var sid,pidO,m,res,hdt,elems,a;
+   sid=SnippetsUI.currentSnippetV().Get().snpId;
+   pidO=SnippetsUI.currentSnippetV().Get().snpParentIdO;
+   m=(res=null,hier.TryGetValue(sid,{
+    get:function()
+    {
+     return res;
+    },
+    set:function(v)
+    {
+     res=v;
+    }
+   })?{
+    $:1,
+    $0:res
+   }:null);
+   m!=null&&m.$==1?(hdt=m.$0,elems=Arrays.ofSeq((SnippetsUI.snippetsLM())["var"].Get()),function(i)
+   {
+    var res$1,m$1,snp,m$2;
+    while(true)
+     {
+      m$1=Arrays.tryItem(i,elems);
+      if(m$1!=null&&m$1.$==1)
+       {
+        snp=m$1.$0;
+        if(Unchecked.Equals(snp.snpParentIdO,{
+         $:1,
+         $0:sid
+        }))
+         {
+          Arrays.set(elems,i,Snippet.New(snp.snpId,snp.snpName,snp.snpContent,pidO,snp.snpPredIds,snp.snpProperties,snp.snpModified));
+          i=i+1;
+         }
+        else
+         {
+          m$2=(res$1=null,hier.TryGetValue(snp.snpId,{
+           get:function()
+           {
+            return res$1;
+           },
+           set:function(v)
+           {
+            res$1=v;
+           }
+          })?{
+           $:1,
+           $0:res$1
+          }:null);
+          if(m$2!=null&&m$2.$==1)
+          {
+           if(Seq.contains(sid,m$2.$0.path))
+            i=i+1;
+           else
+            return null;
+          }
+          else
+           return null;
+         }
+       }
+      else
+       return null;
+     }
+   }(hdt.pos+1),a=Arrays.concat([Slice.array(elems,{
+    $:1,
+    $0:0
+   },{
+    $:1,
+    $0:hdt.pos-1
+   }),Slice.array(elems,{
+    $:1,
+    $0:hdt.pos+1
+   },null)]),SnippetsUI.snippetsLM().Set(a)):void 0;
+  },SnippetsUI.processHierW());
+ };
+ SnippetsUI.indentIn=function()
+ {
+  View.Get(function(hier)
+  {
+   var x,k;
+   x=(k=SnippetsUI.currentSnippetV().Get().snpId,function(d)
+   {
+    var res;
+    res=null;
+    return d.TryGetValue(k,{
+     get:function()
+     {
+      return res;
+     },
+     set:function(v)
+     {
+      res=v;
+     }
+    })?{
+     $:1,
+     $0:res
+    }:null;
+   }(hier));
+   (Option.iter(function(hdt)
+   {
+    var pidO,x$1;
+    pidO=SnippetsUI.currentSnippetV().Get().snpParentIdO;
+    x$1=function(i)
+    {
+     var snp;
+     while(true)
+      if(i===0)
+       return null;
+      else
+       {
+        snp=Seq.nth(i-1,(SnippetsUI.snippetsLM())["var"].Get());
+        if(Unchecked.Equals({
+         $:1,
+         $0:snp.snpId
+        },pidO))
+         return null;
+        else
+         if(Unchecked.Equals(snp.snpParentIdO,pidO))
+          return{
+           $:1,
+           $0:snp.snpId
+          };
+         else
+          i=i-1;
+       }
+    }(hdt.pos);
+    (Option.iter(function(pid)
+    {
+     Var$1.Lens(SnippetsUI.currentSnippetV(),function($1)
+     {
+      return $1.snpParentIdO;
+     },function($1,$2)
+     {
+      return Snippet.New($1.snpId,$1.snpName,$1.snpContent,$2,$1.snpPredIds,$1.snpProperties,$1.snpModified);
+     }).Set({
+      $:1,
+      $0:pid
+     });
+    }))(x$1);
+   }))(x);
+  },SnippetsUI.processHierW());
+ };
+ SnippetsUI.indentOut=function()
+ {
+  View.Get(function(hier)
+  {
+   var sid,$1,res,$2,hdt,pid,newPidO,elems,m,b,a,a$1;
+   sid=SnippetsUI.currentSnippetV().Get().snpId;
+   $1=(res=null,hier.TryGetValue(sid,{
+    get:function()
+    {
+     return res;
+    },
+    set:function(v)
+    {
+     res=v;
+    }
+   })?{
+    $:1,
+    $0:res
+   }:null);
+   $2=SnippetsUI.currentSnippetV().Get().snpParentIdO;
+   $1!=null&&$1.$==1?$2!=null&&$2.$==1?(hdt=$1.$0,pid=$2.$0,newPidO=Seq.tryItem(Arrays.length(hdt.path)-2,hdt.path),!Unchecked.Equals({
+    $:1,
+    $0:pid
+   },newPidO)?(Var$1.Lens(SnippetsUI.currentSnippetV(),function($3)
+   {
+    return $3.snpParentIdO;
+   },function($3,$4)
+   {
+    return Snippet.New($3.snpId,$3.snpName,$3.snpContent,$4,$3.snpPredIds,$3.snpProperties,$3.snpModified);
+   }).Set(newPidO),elems=Arrays.ofSeq((SnippetsUI.snippetsLM())["var"].Get()),m=function(k,i)
+   {
+    var res$1,m$1,m$2,shd;
+    while(true)
+     {
+      m$1=Arrays.tryItem(i+1,elems);
+      if(m$1!=null&&m$1.$==1)
+       {
+        m$2=(res$1=null,hier.TryGetValue(m$1.$0.snpId,{
+         get:function()
+         {
+          return res$1;
+         },
+         set:function(v)
+         {
+          res$1=v;
+         }
+        })?{
+         $:1,
+         $0:res$1
+        }:null);
+        if(m$2!=null&&m$2.$==1)
+         {
+          shd=m$2.$0;
+          if(Seq.contains(sid,shd.path))
+           {
+            k=i+1;
+            i=i+1;
+           }
+          else
+           if(Seq.contains(pid,shd.path))
+            i=i+1;
+           else
+            return{
+             $:1,
+             $0:[k,i]
+            };
+         }
+        else
+         return null;
+       }
+      else
+       return null;
+     }
+   }(hdt.pos,hdt.pos),m!=null&&m.$==1?(b=m.$0[1],a=m.$0[0],a$1=Arrays.concat([Slice.array(elems,{
+    $:1,
+    $0:0
+   },{
+    $:1,
+    $0:hdt.pos-1
+   }),Slice.array(elems,{
+    $:1,
+    $0:a+1
+   },{
+    $:1,
+    $0:b
+   }),Slice.array(elems,{
+    $:1,
+    $0:hdt.pos
+   },{
+    $:1,
+    $0:a
+   }),Slice.array(elems,{
+    $:1,
+    $0:b+1
+   },null)]),SnippetsUI.snippetsLM().Set(a$1)):void 0):void 0):void 0:void 0;
+  },SnippetsUI.processHierW());
+ };
+ SnippetsUI.parseW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseW;
+ };
+ SnippetsUI.parseNewLY=function()
+ {
+  var x,f,g,g$1,a,c;
+  function f$1(t)
+  {
+   return LayoutEngineModule.parseEntries("lytTarget",t);
+  }
+  function c$1(a$1)
+  {
+   return a$1.$==0?{
+    $:1,
+    $0:a$1.$0
+   }:null;
+  }
+  (function($1)
+  {
+   return $1("xParseNewLYx");
+  }(function(s)
+  {
+   console.log(s);
+  }));
+  x=SnippetsUI.currentSnippetContentV().get_View();
+  View.Get((f=(g=function(s)
+  {
+   return Seq.choose(c$1,s);
+  },function(x$1)
+  {
+   return g(f$1(x$1));
+  }),(g$1=(a=(c=function($1)
+  {
+   return function($2)
+   {
+    return $1("("+Utils.prettyPrint($2[0])+", "+testing_GeneratedPrintf.p$3($2[1])+")");
+   };
+  }(function(s)
+  {
+   console.log(s);
+  }),function(t)
+  {
+   c([t[0],t[1]]);
+  }),function(s)
+  {
+   Seq.iter(a,s);
+  }),function(x$1)
+  {
+   return g$1(f(x$1));
+  })),x);
+ };
+ SnippetsUI.main=function()
+ {
+  var x;
+  x=StartAppFramework.startWithHtmlD();
+  (Depend.resolver(List.ofArray([["AppFrameworkTemplate.html",AppFrameworkTemplate.html()+SnippetTemplates.html()]]),x))();
+ };
+ SnippetHierData.New=function(level,pos,hasChildren,visible,path,errorO)
+ {
+  return{
+   level:level,
+   pos:pos,
+   hasChildren:hasChildren,
+   visible:visible,
+   path:path,
+   errorO:errorO
+  };
+ };
+ SaveLoad.loadTextFile=function(element)
+ {
+  var files,reader;
+  files=element.files;
+  files.length>0?(reader=new FileReader(),reader.onload=function(e)
+  {
+   var x,x$1;
+   try
+   {
+    x=(x$1=e.target.result,(Serializer.deserializeWithDefs((SnippetSerialize.serModel())[0],(SnippetSerialize.serModel())[1]))(x$1));
+    return(Option.iter(function(m)
+    {
+     SnippetsUI.snippetsLM().Set(m.snippets);
+     SnippetsUI.collapsedV().Set(m.collapsed);
+    }))(x);
    }
-  },{
-   $:0,
-   $0:NewLY.pa()
-  }),f$2.f.$==0?f$2.p.$==1?{
-   $:0,
-   $0:View.Apply(f$2.f.$0,View.Const(f$2.p.$0))
-  }:{
-   $:0,
-   $0:View.Apply(f$2.f.$0,f$2.p.$0)
-  }:f$2.p.$==0?{
-   $:0,
-   $0:View.Apply(View.Const(f$2.f.$0),f$2.p.$0)
-  }:{
-   $:1,
-   $0:f$2.f.$0(f$2.p.$0)
-  }),{
-   $:1,
-   $0:NewLY.pb()
-  }),f$1.f.$==0?f$1.p.$==1?{
-   $:0,
-   $0:View.Apply(f$1.f.$0,View.Const(f$1.p.$0))
-  }:{
-   $:0,
-   $0:View.Apply(f$1.f.$0,f$1.p.$0)
-  }:f$1.p.$==0?{
-   $:0,
-   $0:View.Apply(View.Const(f$1.f.$0),f$1.p.$0)
-  }:{
-   $:1,
-   $0:f$1.f.$0(f$1.p.$0)
+   catch(e$1)
+   {
+    Global.alert(Global.String(e$1));
+    return(function($1)
+    {
+     return function($2)
+     {
+      return $1(Utils.prettyPrint($2));
+     };
+    }(function(s)
+    {
+     console.log(s);
+    }))(e$1);
+   }
+  },reader.readAsText(files.item(0))):void 0;
+ };
+ SaveLoad.saveAs=function()
+ {
+  var x;
+  Global.saveAs(new Global.Blob([(x=SnippetSerialize.getModel((SnippetsUI.snippetsLM())["var"].Get(),Date.now(),SnippetsUI.collapsedV().Get()),(SnippetSerialize.serModel())[0](x))],{
+   type:"text/plain;charset=utf-8"
+  }),"noname.snippets");
+ };
+ Numeric.TryParseInt32=function(s,r)
+ {
+  return Numeric.TryParse(s,-2147483648,2147483647,r);
+ };
+ Var=UI.Var=Runtime$1.Class({},Obj,Var);
+ Var.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+ },Var);
+ View=UI.View=Runtime$1.Class({},null,View);
+ Operators.toInt=function(x)
+ {
+  var u;
+  u=Operators.toUInt(x);
+  return u>=2147483648?u-4294967296:u;
+ };
+ Operators.FailWith=function(msg)
+ {
+  throw new Error(msg);
+ };
+ Operators.range=function(min,max)
+ {
+  var count;
+  count=1+max-min;
+  return count<=0?[]:Seq.init(count,function(x)
+  {
+   return x+min;
   });
-  SC$1.name=Var$1.Create$1("World");
-  SC$1.enterName=Fun.New(NewLY.op_Dereference(NewLY.checkName),{
-   $:0,
-   $0:NewLY.name().get_View()
-  });
-  SC$1.now=Fun.New(NewLY.op_Dereference(function()
-  {
-   var n;
-   n=new Global.Date(Date.now());
-   return n.getFullYear()+"-"+("0"+(n.getMonth()+1)).slice(-2)+"-"+("0"+n.getDate()).slice(-2)+" "+("0"+n.getHours()).slice(-2)+":"+("0"+n.getMinutes()).slice(-2)+":"+("0"+n.getSeconds()).slice(-2)+":"+("00"+n.getMilliseconds()).slice(-3);
-  }),{
-   $:0,
-   $0:NewLY.name().get_View()
-  });
-  SC$1.sayHello=(sayHello_0=(c=Fun.New(NewLY.op_Dereference(Doc.Concat),{
-   $:1,
-   $0:[(NewLY.extractDoc())("Hello @{name}!")]
-  }),Fun.New(c.f,Val.addDoc(Val.textDoc((f$3=NewLY.enterName(),f$3.f.$==0?f$3.p.$==1?{
-   $:0,
-   $0:View.Apply(f$3.f.$0,View.Const(f$3.p.$0))
-  }:{
-   $:0,
-   $0:View.Apply(f$3.f.$0,f$3.p.$0)
-  }:f$3.p.$==0?{
-   $:0,
-   $0:View.Apply(View.Const(f$3.f.$0),f$3.p.$0)
-  }:{
-   $:1,
-   $0:f$3.f.$0(f$3.p.$0)
-  })),c.p))),(a=Fun.New(NewLY.op_Dereference(Doc.Concat),{
-   $:1,
-   $0:[(NewLY.extractDoc())("How are you?")]
-  }),(c$1=Fun.New(NewLY.op_Dereference(Doc.Concat),{
-   $:1,
-   $0:[Doc.BindView(function()
-   {
-    var m;
-    m=sayHello_0.f.$==0?sayHello_0.p.$==1?{
-     $:0,
-     $0:View.Apply(sayHello_0.f.$0,View.Const(sayHello_0.p.$0))
-    }:{
-     $:0,
-     $0:View.Apply(sayHello_0.f.$0,sayHello_0.p.$0)
-    }:sayHello_0.p.$==0?{
-     $:0,
-     $0:View.Apply(View.Const(sayHello_0.f.$0),sayHello_0.p.$0)
-    }:{
-     $:1,
-     $0:sayHello_0.f.$0(sayHello_0.p.$0)
-    };
-    return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-   },AppFramework.mainDocV().get_View())]
-  }),Fun.New(c$1.f,Val.addDoc(Doc.BindView(function()
-  {
-   var m;
-   m=a.f.$==0?a.p.$==1?{
-    $:0,
-    $0:View.Apply(a.f.$0,View.Const(a.p.$0))
-   }:{
-    $:0,
-    $0:View.Apply(a.f.$0,a.p.$0)
-   }:a.p.$==0?{
-    $:0,
-    $0:View.Apply(View.Const(a.f.$0),a.p.$0)
-   }:{
-    $:1,
-    $0:a.f.$0(a.p.$0)
-   };
-   return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-  },AppFramework.mainDocV().get_View()),c$1.p)))));
-  SC$1.aString=Var$1.Lens(NewLY.aV(),Global.String,function(a$1,v)
-  {
-   return Operators.toInt(Global.Number(v));
-  });
-  SC$1.main0=(c$2=Fun.New(NewLY.op_Dereference(function(a$1)
-  {
-   return function(b$3)
-   {
-    return NewLY.concat(a$1,b$3);
-   };
-  }),{
-   $:0,
-   $0:NewLY.aV().get_View()
-  }),Fun.New(c$2.f.$==0?c$2.p.$==1?{
-   $:0,
-   $0:View.Apply(c$2.f.$0,View.Const(c$2.p.$0))
-  }:{
-   $:0,
-   $0:View.Apply(c$2.f.$0,c$2.p.$0)
-  }:c$2.p.$==0?{
-   $:0,
-   $0:View.Apply(View.Const(c$2.f.$0),c$2.p.$0)
-  }:{
-   $:1,
-   $0:c$2.f.$0(c$2.p.$0)
-  },{
-   $:1,
-   $0:3.2
-  }));
-  SC$1.main1=(c$3=Fun.New(NewLY.op_Dereference((Runtime$1.Curried3(function($1,$2,$3)
-  {
-   return $1("result = "+Utils.toSafe($2)+" "+Utils.toSafe($3));
-  }))(Global.id)),(f$4=NewLY.main0(),f$4.f.$==0?f$4.p.$==1?{
-   $:0,
-   $0:View.Apply(f$4.f.$0,View.Const(f$4.p.$0))
-  }:{
-   $:0,
-   $0:View.Apply(f$4.f.$0,f$4.p.$0)
-  }:f$4.p.$==0?{
-   $:0,
-   $0:View.Apply(View.Const(f$4.f.$0),f$4.p.$0)
-  }:{
-   $:1,
-   $0:f$4.f.$0(f$4.p.$0)
-  })),Fun.New(c$3.f.$==0?c$3.p.$==1?{
-   $:0,
-   $0:View.Apply(c$3.f.$0,View.Const(c$3.p.$0))
-  }:{
-   $:0,
-   $0:View.Apply(c$3.f.$0,c$3.p.$0)
-  }:c$3.p.$==0?{
-   $:0,
-   $0:View.Apply(View.Const(c$3.f.$0),c$3.p.$0)
-  }:{
-   $:1,
-   $0:c$3.f.$0(c$3.p.$0)
-  },{
-   $:1,
-   $0:"main0"
-  }));
-  SC$1.main=(c$4=(c$5=(c$6=(c$7=(c$8=(c$9=(c$10=(c$11=(c$12=Fun.New(NewLY.op_Dereference((Runtime$1.Curried3(Doc.Element))("h3")),{
-   $:1,
-   $0:List.ofArray([AttrModule.DynamicStyle("color",NewLY.name().get_View())])
-  }),(p={
-   $:1,
-   $0:[(NewLY.extractDoc())("MAIN:")]
-  },Fun.New(c$12.f.$==0?c$12.p.$==1?{
-   $:0,
-   $0:View.Apply(c$12.f.$0,View.Const(c$12.p.$0))
-  }:{
-   $:0,
-   $0:View.Apply(c$12.f.$0,c$12.p.$0)
-  }:c$12.p.$==0?{
-   $:0,
-   $0:View.Apply(View.Const(c$12.f.$0),c$12.p.$0)
-  }:{
-   $:1,
-   $0:c$12.f.$0(c$12.p.$0)
-  },p))),Fun.New(c$11.f,Val.addDoc(Val.textDoc((f$5=NewLY.main1(),f$5.f.$==0?f$5.p.$==1?{
-   $:0,
-   $0:View.Apply(f$5.f.$0,View.Const(f$5.p.$0))
-  }:{
-   $:0,
-   $0:View.Apply(f$5.f.$0,f$5.p.$0)
-  }:f$5.p.$==0?{
-   $:0,
-   $0:View.Apply(View.Const(f$5.f.$0),f$5.p.$0)
-  }:{
-   $:1,
-   $0:f$5.f.$0(f$5.p.$0)
-  })),c$11.p))),Fun.New(c$10.f,Val.addDoc(Val.textDoc((f$6=NewLY.main1(),f$6.f.$==0?f$6.p.$==1?{
-   $:0,
-   $0:View.Apply(f$6.f.$0,View.Const(f$6.p.$0))
-  }:{
-   $:0,
-   $0:View.Apply(f$6.f.$0,f$6.p.$0)
-  }:f$6.p.$==0?{
-   $:0,
-   $0:View.Apply(View.Const(f$6.f.$0),f$6.p.$0)
-  }:{
-   $:1,
-   $0:f$6.f.$0(f$6.p.$0)
-  })),c$10.p))),Fun.New(c$9.f,Val.addDoc((NewLY.extractDoc())(":"),c$9.p))),Fun.New(c$8.f,Val.addDoc((f$7=NewLY.sayHello(),Doc.BindView(function()
-  {
-   var m;
-   m=f$7.f.$==0?f$7.p.$==1?{
-    $:0,
-    $0:View.Apply(f$7.f.$0,View.Const(f$7.p.$0))
-   }:{
-    $:0,
-    $0:View.Apply(f$7.f.$0,f$7.p.$0)
-   }:f$7.p.$==0?{
-    $:0,
-    $0:View.Apply(View.Const(f$7.f.$0),f$7.p.$0)
-   }:{
-    $:1,
-    $0:f$7.f.$0(f$7.p.$0)
-   };
-   return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-  },AppFramework.mainDocV().get_View())),c$8.p))),Fun.New(c$7.f,Val.addDoc((NewLY.extractDoc())(":"),c$7.p))),Fun.New(c$6.f,Val.addDoc((NewLY.extractDoc())(" Más >> "),c$6.p))),Fun.New(c$5.f,Val.addDoc((f$8=NewLY.sayHello(),Doc.BindView(function()
-  {
-   var m;
-   m=f$8.f.$==0?f$8.p.$==1?{
-    $:0,
-    $0:View.Apply(f$8.f.$0,View.Const(f$8.p.$0))
-   }:{
-    $:0,
-    $0:View.Apply(f$8.f.$0,f$8.p.$0)
-   }:f$8.p.$==0?{
-    $:0,
-    $0:View.Apply(View.Const(f$8.f.$0),f$8.p.$0)
-   }:{
-    $:1,
-    $0:f$8.f.$0(f$8.p.$0)
-   };
-   return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-  },AppFramework.mainDocV().get_View())),c$5.p))),Fun.New(c$4.f,Val.addDoc((NewLY.extractDoc())(" <<"),c$4.p)));
-  SC$1.main2=NewLY.makeAViewDoc(function()
-  {
-   return Doc.Element("h4",[AttrModule.Dynamic("style",NewLY.name().get_View())],[Doc.TextNode("MAIN2:"),Doc.TextView(NewLY.name().get_View())]);
-  });
-  SC$1.appFwk=(c$13=Fun.New(NewLY.op_Dereference((Runtime$1.Curried3(Doc.Element))("div")),{
-   $:1,
-   $0:T.Empty
-  }),(p$1={
-   $:1,
-   $0:[(NewLY.extractDoc())("@{AppFramework.AppFwkClient}")]
-  },Fun.New(c$13.f.$==0?c$13.p.$==1?{
-   $:0,
-   $0:View.Apply(c$13.f.$0,View.Const(c$13.p.$0))
-  }:{
-   $:0,
-   $0:View.Apply(c$13.f.$0,c$13.p.$0)
-  }:c$13.p.$==0?{
-   $:0,
-   $0:View.Apply(View.Const(c$13.f.$0),c$13.p.$0)
-  }:{
-   $:1,
-   $0:c$13.f.$0(c$13.p.$0)
-  },p$1)));
-  SC$1.split=(c$14=Fun.New(NewLY.op_Dereference(Runtime$1.Curried(LayoutEngineModule.variableSplitter,2,[false,0,50,100])),{
-   $:1,
-   $0:(f$9=NewLY.appFwk(),Doc.BindView(function()
-   {
-    var m;
-    m=f$9.f.$==0?f$9.p.$==1?{
-     $:0,
-     $0:View.Apply(f$9.f.$0,View.Const(f$9.p.$0))
-    }:{
-     $:0,
-     $0:View.Apply(f$9.f.$0,f$9.p.$0)
-    }:f$9.p.$==0?{
-     $:0,
-     $0:View.Apply(View.Const(f$9.f.$0),f$9.p.$0)
-    }:{
-     $:1,
-     $0:f$9.f.$0(f$9.p.$0)
-    };
-    return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-   },AppFramework.mainDocV().get_View()))
-  }),(p$2={
-   $:1,
-   $0:(f$10=NewLY.main(),Doc.BindView(function()
-   {
-    var m;
-    m=f$10.f.$==0?f$10.p.$==1?{
-     $:0,
-     $0:View.Apply(f$10.f.$0,View.Const(f$10.p.$0))
-    }:{
-     $:0,
-     $0:View.Apply(f$10.f.$0,f$10.p.$0)
-    }:f$10.p.$==0?{
-     $:0,
-     $0:View.Apply(View.Const(f$10.f.$0),f$10.p.$0)
-    }:{
-     $:1,
-     $0:f$10.f.$0(f$10.p.$0)
-    };
-    return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-   },AppFramework.mainDocV().get_View()))
-  },Fun.New(c$14.f.$==0?c$14.p.$==1?{
-   $:0,
-   $0:View.Apply(c$14.f.$0,View.Const(c$14.p.$0))
-  }:{
-   $:0,
-   $0:View.Apply(c$14.f.$0,c$14.p.$0)
-  }:c$14.p.$==0?{
-   $:0,
-   $0:View.Apply(View.Const(c$14.f.$0),c$14.p.$0)
-  }:{
-   $:1,
-   $0:c$14.f.$0(c$14.p.$0)
-  },p$2)));
-  SC$1.split2=(c$15=Fun.New(NewLY.op_Dereference(Runtime$1.Curried(LayoutEngineModule.variableSplitter,2,[false,0,50,100])),{
-   $:1,
-   $0:(f$11=NewLY.appFwk(),Doc.BindView(function()
-   {
-    var m;
-    m=f$11.f.$==0?f$11.p.$==1?{
-     $:0,
-     $0:View.Apply(f$11.f.$0,View.Const(f$11.p.$0))
-    }:{
-     $:0,
-     $0:View.Apply(f$11.f.$0,f$11.p.$0)
-    }:f$11.p.$==0?{
-     $:0,
-     $0:View.Apply(View.Const(f$11.f.$0),f$11.p.$0)
-    }:{
-     $:1,
-     $0:f$11.f.$0(f$11.p.$0)
-    };
-    return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-   },AppFramework.mainDocV().get_View()))
-  }),(p$3={
-   $:1,
-   $0:NewLY.main2()
-  },Fun.New(c$15.f.$==0?c$15.p.$==1?{
-   $:0,
-   $0:View.Apply(c$15.f.$0,View.Const(c$15.p.$0))
-  }:{
-   $:0,
-   $0:View.Apply(c$15.f.$0,c$15.p.$0)
-  }:c$15.p.$==0?{
-   $:0,
-   $0:View.Apply(View.Const(c$15.f.$0),c$15.p.$0)
-  }:{
-   $:1,
-   $0:c$15.f.$0(c$15.p.$0)
-  },p$3)));
-  AppFramework.addPlugIn((b$2=AppFramework.plugin(),b$2.AddDoc(b$2.AddDoc(b$2.AddDoc(b$2.AddDoc(b$2.AddDoc(b$2.AddDoc(b$2.AddVar(b$2.AddVar(b$2.Name(b$2.Yield(),"NewLY"),"name",NewLY.name()),"a",NewLY.aString()),"split",Lazy.Create(function()
-  {
-   var f$13;
-   f$13=NewLY.split();
-   return Doc.BindView(function()
-   {
-    var m;
-    m=f$13.f.$==0?f$13.p.$==1?{
-     $:0,
-     $0:View.Apply(f$13.f.$0,View.Const(f$13.p.$0))
-    }:{
-     $:0,
-     $0:View.Apply(f$13.f.$0,f$13.p.$0)
-    }:f$13.p.$==0?{
-     $:0,
-     $0:View.Apply(View.Const(f$13.f.$0),f$13.p.$0)
-    }:{
-     $:1,
-     $0:f$13.f.$0(f$13.p.$0)
-    };
-    return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-   },AppFramework.mainDocV().get_View());
-  })),"split2",Lazy.Create(function()
-  {
-   var f$13;
-   f$13=NewLY.split2();
-   return Doc.BindView(function()
-   {
-    var m;
-    m=f$13.f.$==0?f$13.p.$==1?{
-     $:0,
-     $0:View.Apply(f$13.f.$0,View.Const(f$13.p.$0))
-    }:{
-     $:0,
-     $0:View.Apply(f$13.f.$0,f$13.p.$0)
-    }:f$13.p.$==0?{
-     $:0,
-     $0:View.Apply(View.Const(f$13.f.$0),f$13.p.$0)
-    }:{
-     $:1,
-     $0:f$13.f.$0(f$13.p.$0)
-    };
-    return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-   },AppFramework.mainDocV().get_View());
-  })),"main",Lazy.Create(function()
-  {
-   var f$13;
-   f$13=NewLY.main();
-   return Doc.BindView(function()
-   {
-    var m;
-    m=f$13.f.$==0?f$13.p.$==1?{
-     $:0,
-     $0:View.Apply(f$13.f.$0,View.Const(f$13.p.$0))
-    }:{
-     $:0,
-     $0:View.Apply(f$13.f.$0,f$13.p.$0)
-    }:f$13.p.$==0?{
-     $:0,
-     $0:View.Apply(View.Const(f$13.f.$0),f$13.p.$0)
-    }:{
-     $:1,
-     $0:f$13.f.$0(f$13.p.$0)
-    };
-    return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-   },AppFramework.mainDocV().get_View());
-  })),"main2",Lazy.Create(NewLY.main2)),"sayHello",Lazy.Create(function()
-  {
-   var f$13;
-   f$13=NewLY.sayHello();
-   return Doc.BindView(function()
-   {
-    var m;
-    m=f$13.f.$==0?f$13.p.$==1?{
-     $:0,
-     $0:View.Apply(f$13.f.$0,View.Const(f$13.p.$0))
-    }:{
-     $:0,
-     $0:View.Apply(f$13.f.$0,f$13.p.$0)
-    }:f$13.p.$==0?{
-     $:0,
-     $0:View.Apply(View.Const(f$13.f.$0),f$13.p.$0)
-    }:{
-     $:1,
-     $0:f$13.f.$0(f$13.p.$0)
-    };
-    return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-   },AppFramework.mainDocV().get_View());
-  })),"sayHello2",Lazy.Create(function()
-  {
-   var f$13;
-   f$13=NewLY.sayHello();
-   return Doc.BindView(function()
-   {
-    var m;
-    m=f$13.f.$==0?f$13.p.$==1?{
-     $:0,
-     $0:View.Apply(f$13.f.$0,View.Const(f$13.p.$0))
-    }:{
-     $:0,
-     $0:View.Apply(f$13.f.$0,f$13.p.$0)
-    }:f$13.p.$==0?{
-     $:0,
-     $0:View.Apply(View.Const(f$13.f.$0),f$13.p.$0)
-    }:{
-     $:1,
-     $0:f$13.f.$0(f$13.p.$0)
-    };
-    return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-   },AppFramework.mainDocV().get_View());
-  }))));
+ };
+ Operators.toUInt=function(x)
+ {
+  return(x<0?Math.ceil(x):Math.floor(x))>>>0;
+ };
+ Operators.KeyValue=function(kvp)
+ {
+  return[kvp.K,kvp.V];
  };
  View.Const=function(x)
  {
@@ -1946,6 +2980,38 @@ if (!console) {
    return f(x);
   },fn,view);
  };
+ View.Get=function(f,a)
+ {
+  var ok;
+  function obs()
+  {
+   Snap.WhenRun(a(),function(v)
+   {
+    if(!ok[0])
+     {
+      ok[0]=true;
+      f(v);
+     }
+   },function()
+   {
+    if(!ok[0])
+     obs();
+   });
+  }
+  ok=[false];
+  obs();
+ };
+ View.Sink=function(act,a)
+ {
+  function loop()
+  {
+   Snap.WhenRun(a(),act,function()
+   {
+    Concurrency.scheduler().Fork(loop);
+   });
+  }
+  Concurrency.scheduler().Fork(loop);
+ };
  View.CreateLazy=function(observe)
  {
   var lv;
@@ -1970,17 +3036,6 @@ if (!console) {
    return Snap.Join(a());
   });
  };
- View.Sink=function(act,a)
- {
-  function loop()
-  {
-   Snap.WhenRun(a(),act,function()
-   {
-    Concurrency.scheduler().Fork(loop);
-   });
-  }
-  Concurrency.scheduler().Fork(loop);
- };
  View.ConvertSeqNode=function(conv,value)
  {
   var _var,view;
@@ -1991,6 +3046,13 @@ if (!console) {
    r:_var,
    w:view
   };
+ };
+ View.MapAsync=function(fn,a)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.MapAsync(fn,a());
+  });
  };
  View.TryGet=function(a)
  {
@@ -2006,27 +3068,6 @@ if (!console) {
  View.MapSeqCached=function(conv,view)
  {
   return View.MapSeqCachedBy(Global.id,conv,view);
- };
- View.Get=function(f,a)
- {
-  var ok;
-  function obs()
-  {
-   Snap.WhenRun(a(),function(v)
-   {
-    if(!ok[0])
-     {
-      ok[0]=true;
-      f(v);
-     }
-   },function()
-   {
-    if(!ok[0])
-     obs();
-   });
-  }
-  ok=[false];
-  obs();
  };
  View.MapSeqCachedBy=function(key,conv,view)
  {
@@ -2066,8 +3107,1697 @@ if (!console) {
    },views));
   });
  };
- attr=HtmlModule.attr=Runtime$1.Class({},Obj,attr);
+ Unchecked.Equals=function(a,b)
+ {
+  var m,eqR,k,k$1;
+  if(a===b)
+   return true;
+  else
+   {
+    m=typeof a;
+    if(m=="object")
+    {
+     if(a===null||a===void 0||b===null||b===void 0)
+      return false;
+     else
+      if("Equals"in a)
+       return a.Equals(b);
+      else
+       if(a instanceof Global.Array&&b instanceof Global.Array)
+        return Unchecked.arrayEquals(a,b);
+       else
+        if(a instanceof Date&&b instanceof Date)
+         return Unchecked.dateEquals(a,b);
+        else
+         {
+          eqR=[true];
+          for(var k$2 in a)if(function(k$3)
+          {
+           eqR[0]=!a.hasOwnProperty(k$3)||b.hasOwnProperty(k$3)&&Unchecked.Equals(a[k$3],b[k$3]);
+           return!eqR[0];
+          }(k$2))
+           break;
+          if(eqR[0])
+           {
+            for(var k$3 in b)if(function(k$4)
+            {
+             eqR[0]=!b.hasOwnProperty(k$4)||a.hasOwnProperty(k$4);
+             return!eqR[0];
+            }(k$3))
+             break;
+           }
+          return eqR[0];
+         }
+    }
+    else
+     return m=="function"&&("$Func"in a?a.$Func===b.$Func&&a.$Target===b.$Target:"$Invokes"in a&&"$Invokes"in b&&Unchecked.arrayEquals(a.$Invokes,b.$Invokes));
+   }
+ };
+ Unchecked.arrayEquals=function(a,b)
+ {
+  var eq,i;
+  if(Arrays.length(a)===Arrays.length(b))
+   {
+    eq=true;
+    i=0;
+    while(eq&&i<Arrays.length(a))
+     {
+      !Unchecked.Equals(Arrays.get(a,i),Arrays.get(b,i))?eq=false:void 0;
+      i=i+1;
+     }
+    return eq;
+   }
+  else
+   return false;
+ };
+ Unchecked.dateEquals=function(a,b)
+ {
+  return a.getTime()===b.getTime();
+ };
+ Unchecked.Compare=function(a,b)
+ {
+  var $1,m,$2,cmp,k,k$1;
+  if(a===b)
+   return 0;
+  else
+   {
+    m=typeof a;
+    switch(m=="function"?1:m=="boolean"?2:m=="number"?2:m=="string"?2:m=="object"?3:0)
+    {
+     case 0:
+      return typeof b=="undefined"?0:-1;
+     case 1:
+      return Operators.FailWith("Cannot compare function values.");
+     case 2:
+      return a<b?-1:1;
+     case 3:
+      if(a===null)
+       $2=-1;
+      else
+       if(b===null)
+        $2=1;
+       else
+        if("CompareTo"in a)
+         $2=a.CompareTo(b);
+        else
+         if("CompareTo0"in a)
+          $2=a.CompareTo0(b);
+         else
+          if(a instanceof Global.Array&&b instanceof Global.Array)
+           $2=Unchecked.compareArrays(a,b);
+          else
+           if(a instanceof Date&&b instanceof Date)
+            $2=Unchecked.compareDates(a,b);
+           else
+            {
+             cmp=[0];
+             for(var k$2 in a)if(function(k$3)
+             {
+              return!a.hasOwnProperty(k$3)?false:!b.hasOwnProperty(k$3)?(cmp[0]=1,true):(cmp[0]=Unchecked.Compare(a[k$3],b[k$3]),cmp[0]!==0);
+             }(k$2))
+              break;
+             if(cmp[0]===0)
+              {
+               for(var k$3 in b)if(function(k$4)
+               {
+                return!b.hasOwnProperty(k$4)?false:!a.hasOwnProperty(k$4)&&(cmp[0]=-1,true);
+               }(k$3))
+                break;
+              }
+             $2=cmp[0];
+            }
+      return $2;
+    }
+   }
+ };
+ Unchecked.Hash=function(o)
+ {
+  var m;
+  m=typeof o;
+  return m=="function"?0:m=="boolean"?o?1:0:m=="number"?o:m=="string"?Unchecked.hashString(o):m=="object"?o==null?0:o instanceof Global.Array?Unchecked.hashArray(o):Unchecked.hashObject(o):0;
+ };
+ Unchecked.compareArrays=function(a,b)
+ {
+  var cmp,i;
+  if(Arrays.length(a)<Arrays.length(b))
+   return -1;
+  else
+   if(Arrays.length(a)>Arrays.length(b))
+    return 1;
+   else
+    {
+     cmp=0;
+     i=0;
+     while(cmp===0&&i<Arrays.length(a))
+      {
+       cmp=Unchecked.Compare(Arrays.get(a,i),Arrays.get(b,i));
+       i=i+1;
+      }
+     return cmp;
+    }
+ };
+ Unchecked.compareDates=function(a,b)
+ {
+  return Unchecked.Compare(a.getTime(),b.getTime());
+ };
+ Unchecked.hashString=function(s)
+ {
+  var hash,i,$1;
+  if(s===null)
+   return 0;
+  else
+   {
+    hash=5381;
+    for(i=0,$1=s.length-1;i<=$1;i++)hash=Unchecked.hashMix(hash,s[i].charCodeAt());
+    return hash;
+   }
+ };
+ Unchecked.hashArray=function(o)
+ {
+  var h,i,$1;
+  h=-34948909;
+  for(i=0,$1=Arrays.length(o)-1;i<=$1;i++)h=Unchecked.hashMix(h,Unchecked.Hash(Arrays.get(o,i)));
+  return h;
+ };
+ Unchecked.hashObject=function(o)
+ {
+  var h,k;
+  if("GetHashCode"in o)
+   return o.GetHashCode();
+  else
+   {
+    h=[0];
+    for(var k$1 in o)if(function(key)
+    {
+     h[0]=Unchecked.hashMix(Unchecked.hashMix(h[0],Unchecked.hashString(key)),Unchecked.Hash(o[key]));
+     return false;
+    }(k$1))
+     break;
+    return h[0];
+   }
+ };
+ Unchecked.hashMix=function(x,y)
+ {
+  return(x<<5)+x+y;
+ };
+ SC$1.$cctor=function()
+ {
+  var f,g,t,s,x,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,t$9,t$10,t$11,i,x$1,t$12,t$13,t$14,t$15,t$16,t$17,i$1,b,b$1,b$2,b$3,b$4,b$5,b$6,pf,p,pf$1,p$1,sayHello_0,c,vf,a,vf$1,c$1,vf$2,pc,pf$2,p$2,p$3,pc$1,vf$3,p$4,c$2,c$3,c$4,c$5,c$6,c$7,c$8,c$9,c$10,vf$4,c$11,vf$5,c$12,vf$6,pc$2,vf$7,p$5,b$7,v,prior,b$8,b$9,b$10,i$2,f$1,g$1,b$11;
+  SC$1.$cctor=Global.ignore;
+  function g$2(s$1)
+  {
+   return Strings.concat("\n",s$1);
+  }
+  function f$2(s$1)
+  {
+   return String.splitByChar$1("\n",s$1);
+  }
+  function g$3(s$1)
+  {
+   var a$1,b$12;
+   return Slice.array(s$1,{
+    $:1,
+    $0:0
+   },{
+    $:1,
+    $0:(a$1=0,(b$12=Arrays.length(s$1)-2,Unchecked.Compare(a$1,b$12)===1?a$1:b$12))
+   });
+  }
+  function g$4(s$1)
+  {
+   return Strings.concat("\n",s$1);
+  }
+  function f$3(s$1)
+  {
+   return s$1+"T00:00:00";
+  }
+  function t$18(a$1)
+  {
+   return SnippetsUI.snippetsLM().TryFindByKey(a$1);
+  }
+  function t$19(a$1)
+  {
+   return SnippetsUI.snippetsLM().TryFindByKey(a$1);
+  }
+  function f$4(t$20)
+  {
+   return LayoutEngineModule.parseEntries("lytTarget",t$20);
+  }
+  function c$13(a$1)
+  {
+   return a$1.$==1?{
+    $:1,
+    $0:a$1.$0
+   }:null;
+  }
+  function g$5(s$1)
+  {
+   return Strings.concat("\n",s$1);
+  }
+  SC$1.rtn=function(v$1)
+  {
+   return[v$1];
+  };
+  SC$1.result=new Builder.New();
+  SC$1.result$1=Result.result();
+  SC$1.resultP=new BuilderP.New();
+  SC$1.depend=new DependBuilder.New();
+  SC$1.rtn$1=Depend.rtn;
+  SC$1.depend$1=Depend.depend();
+  SC$1.resultM=new Builder$1.New();
+  SC$1.asyncResultM=new AsyncResultMBuilder.New();
+  SC$1.unindentStr=function(x$2)
+  {
+   return g$2(String.unindent$1(x$2));
+  };
+  SC$1.skipLastLine=(f=function(x$2)
+  {
+   return g$3(f$2(x$2));
+  },function(x$2)
+  {
+   return g$4(f(x$2));
+  });
+  SC$1.parseDateO2=(g=ParseO.tryParseWith$1(function(a$1)
+  {
+   var o,m;
+   o=0;
+   return[(m=DateUtil.TryParse(a$1),m!=null&&m.$==1&&(o=m.$0,true)),o];
+  }),function(x$2)
+  {
+   return g(f$3(x$2));
+  });
+  SC$1.parseDateO=ParseO.tryParseWith$1(function(a$1)
+  {
+   var o,m;
+   o=0;
+   return[(m=DateUtil.TryParse(a$1),m!=null&&m.$==1&&(o=m.$0,true)),o];
+  });
+  SC$1.parseIntO=ParseO.tryParseWith$1(function(a$1)
+  {
+   var o;
+   o=0;
+   return[Numeric.TryParseInt32(a$1,{
+    get:function()
+    {
+     return o;
+    },
+    set:function(v$1)
+    {
+     o=v$1;
+    }
+   }),o];
+  });
+  SC$1.parseInt64O=ParseO.tryParseWith$1(function(a$1)
+  {
+   var o;
+   o=0;
+   return[Numeric.TryParseInt64(a$1,{
+    get:function()
+    {
+     return o;
+    },
+    set:function(v$1)
+    {
+     o=v$1;
+    }
+   }),o];
+  });
+  SC$1.parseSingleO=ParseO.tryParseWith$1(function(a$1)
+  {
+   var o,$1;
+   o=0;
+   return[($1=Global.Number(a$1),Global.isNaN($1)?false:(o=$1,true)),o];
+  });
+  SC$1.parseDoubleO=ParseO.tryParseWith$1(function(a$1)
+  {
+   var o,$1;
+   o=0;
+   return[($1=Global.Number(a$1),Global.isNaN($1)?false:(o=$1,true)),o];
+  });
+  SC$1.parseGuidO=ParseO.tryParseWith$1(function(a$1)
+  {
+   var o;
+   o=null;
+   return[Guid.TryParse(a$1,{
+    get:function()
+    {
+     return o;
+    },
+    set:function(v$1)
+    {
+     o=v$1;
+    }
+   }),o];
+  });
+  SC$1["|Date|_|"]=ParseO.parseDateO$1();
+  SC$1["|Int|_|"]=ParseO.parseIntO$1();
+  SC$1["|Int64|_|"]=ParseO.parseInt64O$1();
+  SC$1["|Single|_|"]=ParseO.parseSingleO$1();
+  SC$1["|Double|_|"]=ParseO.parseDoubleO$1();
+  SC$1["|Guid|_|"]=ParseO.parseGuidO$1();
+  SC$1.serString=[Serializer$1.toJsonString,function(j)
+  {
+   return j.tryString();
+  }];
+  SC$1.serFloat=[function(v$1)
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(Global.id))(v$1);
+  },function(j)
+  {
+   return j.tryFloat();
+  }];
+  SC$1.serInt=[function(v$1)
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(Global.id))(v$1);
+  },function(j)
+  {
+   var o;
+   o=j.tryInt();
+   return o==null?null:{
+    $:1,
+    $0:Operators.toInt(o.$0)
+   };
+  }];
+  SC$1.serInt64=[Global.String,function(j)
+  {
+   return j.tryInt();
+  }];
+  SC$1.serBool=[function(v$1)
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(Global.id))(v$1);
+  },function(j)
+  {
+   return j.tryBool();
+  }];
+  SC$1.serDate=[function(x$2)
+  {
+   return Global.String(Global.id(x$2));
+  },function(j)
+  {
+   var o;
+   o=j.tryInt();
+   return o==null?null:{
+    $:1,
+    $0:o.$0
+   };
+  }];
+  SC$1.serTypedRegisters=new Dictionary.New$5();
+  SC$1.serGuid=(t=Serializer$1.serString(),Serializer$1.mapO(Global.String,ParseO.parseGuidO$1(),t[0],t[1]));
+  SC$1.defaultSnippet=Snippet.New(UoM$1.Tag$4("00000000-0000-0000-0000-000000000000"),"","",null,new FSharpSet.New$1(null),[],(new Date(0)).getTime());
+  SC$1.serSnippetId=(s="SnippetId",[function(gid)
+  {
+   var x$2;
+   x$2=Global.String(UoM$1.Untag$4(gid));
+   return(((Runtime$1.Curried3(function($1,$2,$3)
+   {
+    return $1("{"+Utils.prettyPrint($2)+" :"+Utils.prettyPrint($3)+"}");
+   }))(Global.id))(s))(x$2);
+  },function(j)
+  {
+   var o,o$1,o$2,f$5;
+   o=(o$1=(o$2=j.tryField(s),o$2==null?null:o$2.$0.tryString()),(f$5=ParseO.parseGuidO$1(),o$1==null?null:f$5(o$1.$0)));
+   return o==null?null:{
+    $:1,
+    $0:UoM$1.Tag$4(o.$0)
+   };
+  }]);
+  SC$1.serSnippet=(x=[(t$1=SnippetSerialize.serSnippetId(),Serializer$1.serField("snpId",function(s$1)
+  {
+   return s$1.snpId;
+  },function(v$1,s$1)
+  {
+   return Snippet.New(v$1,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpModified);
+  },t$1[0],t$1[1])),(t$2=Serializer$1.serString(),Serializer$1.serField("snpName",function(s$1)
+  {
+   return s$1.snpName;
+  },function(v$1,s$1)
+  {
+   return Snippet.New(s$1.snpId,v$1,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpModified);
+  },t$2[0],t$2[1])),(t$3=Serializer$1.serString(),Serializer$1.serField("snpContent",function(s$1)
+  {
+   return s$1.snpContent;
+  },function(v$1,s$1)
+  {
+   return Snippet.New(s$1.snpId,s$1.snpName,v$1,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpModified);
+  },t$3[0],t$3[1])),(t$4=(t$5=SnippetSerialize.serSnippetId(),Serializer$1.serOpt(t$5[0],t$5[1])),Serializer$1.serField("snpParentIdO",function(s$1)
+  {
+   return s$1.snpParentIdO;
+  },function(v$1,s$1)
+  {
+   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,v$1,s$1.snpPredIds,s$1.snpProperties,s$1.snpModified);
+  },t$4[0],t$4[1])),(t$6=(t$7=SnippetSerialize.serSnippetId(),Serializer$1.serSet(t$7[0],t$7[1])),Serializer$1.serField("snpPredIds",function(s$1)
+  {
+   return s$1.snpPredIds;
+  },function(v$1,s$1)
+  {
+   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,v$1,s$1.snpProperties,s$1.snpModified);
+  },t$6[0],t$6[1])),(t$8=(t$9=Serializer$1.serDup(Serializer$1.serString(),Serializer$1.serString()),Serializer$1.serArr(t$9[0],t$9[1])),Serializer$1.serField("snpProperties",function(s$1)
+  {
+   return s$1.snpProperties;
+  },function(v$1,s$1)
+  {
+   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,v$1,s$1.snpModified);
+  },t$8[0],t$8[1])),(t$10=Serializer$1.serInt(),Serializer$1.serFieldO("snpGeneration",function()
+  {
+   return null;
+  },function(vO,s$1)
+  {
+   return vO!=null&&vO.$==1?Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,(new Date(0)).getTime()+vO.$0*3600000):s$1;
+  },t$10[0],t$10[1])),(t$11=Serializer$1.serDate(),Serializer$1.serField("snpModified",function(s$1)
+  {
+   return s$1.snpModified;
+  },function(v$1,s$1)
+  {
+   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,v$1);
+  },t$11[0],t$11[1]))],(i=SnippetModule.New("","",null),[function(rc)
+  {
+   var x$2;
+   function c$14(n,ser,_deser)
+   {
+    var x$3,m;
+    x$3=ser(rc);
+    m=((Runtime$1.Curried3(function($1,$2,$3)
+    {
+     return $1(Utils.prettyPrint($2)+": "+Utils.toSafe($3));
+    }))(Global.id))(n);
+    return x$3==null?null:{
+     $:1,
+     $0:m(x$3.$0)
+    };
+   }
+   x$2=Strings.concat(", ",Seq.choose(function($1)
+   {
+    return c$14($1[0],$1[1],$1[2]);
+   },x));
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1("{"+Utils.toSafe($2)+"}");
+    };
+   }(Global.id))(x$2);
+  },function(j)
+  {
+   return{
+    $:1,
+    $0:Seq.fold(function(rc,t$20)
+    {
+     var x$2;
+     x$2=j.tryField(t$20[0]);
+     return(t$20[2](rc))(x$2);
+    },i,x)
+   };
+  }]));
+  SC$1.serModel=(x$1=[(t$12=(t$13=SnippetSerialize.serSnippet(),Serializer$1.serArr(t$13[0],t$13[1])),Serializer$1.serField("snippets",function(m)
+  {
+   return m.snippets;
+  },function(v$1,m)
+  {
+   return Model.New(v$1,m.modified,m.collapsed);
+  },t$12[0],t$12[1])),(t$14=Serializer$1.serInt(),Serializer$1.serFieldO("generation",function()
+  {
+   return null;
+  },function(vO,m)
+  {
+   return vO!=null&&vO.$==1?Model.New(m.snippets,(new Date(0)).getTime()+vO.$0*3600000,m.collapsed):m;
+  },t$14[0],t$14[1])),(t$15=Serializer$1.serDate(),Serializer$1.serField("modified",function(m)
+  {
+   return m.modified;
+  },function(v$1,m)
+  {
+   return Model.New(m.snippets,v$1,m.collapsed);
+  },t$15[0],t$15[1])),(t$16=(t$17=SnippetSerialize.serSnippetId(),Serializer$1.serSet(t$17[0],t$17[1])),Serializer$1.serField("collapsed",function(m)
+  {
+   return m.collapsed;
+  },function(v$1,m)
+  {
+   return Model.New(m.snippets,m.modified,v$1);
+  },t$16[0],t$16[1]))],(i$1=Model.New([],(new Date(0)).getTime(),new FSharpSet.New$1(null)),[function(rc)
+  {
+   var x$2;
+   function c$14(n,ser,_deser)
+   {
+    var x$3,m;
+    x$3=ser(rc);
+    m=((Runtime$1.Curried3(function($1,$2,$3)
+    {
+     return $1(Utils.prettyPrint($2)+": "+Utils.toSafe($3));
+    }))(Global.id))(n);
+    return x$3==null?null:{
+     $:1,
+     $0:m(x$3.$0)
+    };
+   }
+   x$2=Strings.concat(", ",Seq.choose(function($1)
+   {
+    return c$14($1[0],$1[1],$1[2]);
+   },x$1));
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1("{"+Utils.toSafe($2)+"}");
+    };
+   }(Global.id))(x$2);
+  },function(j)
+  {
+   return{
+    $:1,
+    $0:Seq.fold(function(rc,t$20)
+    {
+     var x$2;
+     x$2=j.tryField(t$20[0]);
+     return(t$20[2](rc))(x$2);
+    },i$1,x$1)
+   };
+  }]));
+  SC$1.observers=T.Empty;
+  SC$1.loader=(b=null,Concurrency.Delay(function()
+  {
+   self.require.config({
+    paths:{
+     vs:"/EPFileX/monaco/package/min/vs"
+    }
+   });
+   return Concurrency.Bind(Concurrency.FromContinuations(function(success,failed)
+   {
+    return self.require(["vs/editor/editor.main"],success,failed);
+   }),function()
+   {
+    return Concurrency.Return(null);
+   });
+  }));
+  SC$1.html="\r\n            <div style=\"display:none\" >\r\n                <div links>\r\n                    <link href=\"http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\r\n                    <script src=\"http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"  type=\"text/javascript\"></script>\r\n                </div>\r\n                <div ws-template=\"AppFramework\" style=\"height: calc(100vh - 4px); width: calc(100vw - 4px) \" class=\"relative\" >\r\n                    <div ws-hole=\"MainClient\"></div>\r\n                    <div class=\"AppFrameworkGo\"><button ws-onclick=\"GoClient\">${MainDoc}</button></div>\r\n                </div>\r\n                <style>\r\n                    .AppFrameworkGo {\r\n                        max-width: 2px;\r\n                        max-height: 2px;\r\n                        z-index: 4000;\r\n                        overflow: hidden;\r\n                        position: fixed;\r\n                        top: 0px;\r\n                        left: 0px;\r\n                    }\r\n                </style>\r\n                <div ws-template=\"FixedSplitterVer\" \r\n                    style=\"display: grid; \r\n                           grid-gap: 0px; \r\n                           box-sizing: border-box; \r\n                           height: 100%;\r\n                           width : 100%;\r\n                           grid-template-areas: 'one two'; \r\n                           grid-template-rows   :100%; \r\n                           overflow: hidden; \r\n                           grid-template-columns: ${PartSizes}\"  >\r\n                   <div ws-hole=\"First\"  style=\"grid-area: one; \" class=\"relative\" ></div>\r\n                   <div ws-hole=\"Second\" style=\"grid-area: two; \" class=\"relative\" ></div>\r\n                </div>               \r\n                <div ws-template=\"FixedSplitterHor\" \r\n               style=\"display: grid; \r\n                      grid-gap: 0px; \r\n                      box-sizing: border-box; \r\n                      height: 100%;\r\n                      width : 100%;\r\n                      grid-template-areas: 'one' 'two'; \r\n                      grid-template-columns:100%; \r\n                      overflow: hidden; \r\n                      grid-template-rows   : ${PartSizes}\"  >\r\n              <div ws-hole=\"First\"  style=\"grid-area: one; \" class=\"relative\" ></div>\r\n              <div ws-hole=\"Second\" style=\"grid-area: two; \" class=\"relative\" ></div>\r\n                </div>               \r\n                <div ws-template=\"WCompSplitterHor\" \r\n                     ws-onafterrender=\"AfterRender\"\r\n                     style=\"display: grid;\r\n                            grid-gap: 5px; \r\n                            box-sizing: border-box; \r\n                            grid-template-areas: 'one' 'two'; \r\n                            grid-template-columns:100%; \r\n                            overflow: hidden; \r\n                            grid-template-rows   : ${PartSizes}\" \r\n                     >\r\n                     <slot></slot>\r\n                    <slot name=\"splitter\">  <div style=\"grid-row:2; grid-column:1 / 1 ; cursor: row-resize; z-index: 3; background-color: #eef ; height: ${Gap}; margin-top :-${Gap}\" ws-onmousedown=\"MouseDown\" ws-onafterrender=\"AfterRenderSp\" ></div> </slot>\r\n                    <style>\r\n                        ::slotted(*) {\r\n                            display: grid;\r\n                            height : 100%;\r\n                            width  : 100%;\r\n                            overflow: hidden;\r\n                        }\r\n                        ::slotted(*:nth-child(2)) {\r\n                            grid-area: two;\r\n                        }\r\n                        ::slotted(*[slot=\"splitter\"]) {\r\n                            grid-row:2; grid-column:1 / 1 ; \r\n                            cursor: row-resize; \r\n                            z-index: 3; \r\n                            background-color: #eef ; \r\n                            height: ${Gap}; \r\n                            margin-top :-${Gap}\r\n                        }\r\n                    </style>\r\n                </div>        \r\n                <div ws-template=\"WCompSplitterVer\" \r\n                     ws-onafterrender=\"AfterRender\"\r\n                     style=\"display: grid; \r\n                            grid-gap: 5px; \r\n                            box-sizing: border-box; \r\n                            grid-template-areas: 'one two'; \r\n                            grid-template-rows   :100%; \r\n                            overflow: hidden; \r\n                            grid-template-columns: ${PartSizes}\"  >\r\n                    <slot></slot>\r\n                    <slot name=\"splitter\"> <div style=\"grid-column:2; grid-row:1 / 1 ; cursor: col-resize; z-index: 3; background-color: #eef ; width: ${Gap}; margin-left :-${Gap}\" ws-onmousedown=\"MouseDown\" ws-onafterrender=\"AfterRenderSp\" ></div> </slot>\r\n                    <style>\r\n                        ::slotted(*) {\r\n                            display: grid;\r\n                            height : 100%;\r\n                            width  : 100%;\r\n                            overflow: hidden;\r\n                        }\r\n                        ::slotted(*:nth-child(2)) {\r\n                            grid-area: two;\r\n                        }\r\n                        ::slotted(*[slot=\"splitter\"]) {\r\n                            grid-column:2; grid-row:1 / 1\r\n                            cursor: column-resize; \r\n                            z-index: 3; \r\n                            background-color: #eef ; \r\n                            width: ${Gap}; \r\n                            margin-left:-${Gap}\r\n                        }\r\n                    </style>\r\n                </div>\r\n                <div ws-template=\"AppFwkClient\" >\r\n                    <ws-FixedSplitterHor>\r\n                        <PartSizes>55px calc(100% - 55px)</PartSizes>\r\n                        <First>\r\n                            <span style=\"display: grid;\r\n                                  grid-template-columns: 30% 20% 20% 10%;\r\n                                  grid-gap: 25px;\r\n                                \">\r\n                                <div class=\"mainTitle\">AppFramework</div>\r\n                            </span>\r\n                        </First>\r\n                        <Second>\r\n                                <ws-FixedSplitterVer>\r\n                                    <PartSizes>calc(100% - 150px) 150px</PartSizes>\r\n                                    <First>\r\n                                        <wcomp-splitter vertical value=\"18\" max=\"100\">\r\n                                            <div><div ws-hole=\"PlugIns\" style=\"overflow:auto\" >\r\n                                                <div ws-template=\"Tile\">\r\n                                                    <div draggable=\"true\" class=\"code-editor-list-tile ${Predecessor} ${Selected}\" \r\n                                                    ws-ondrag=\"Drag\"\r\n                                                    ws-ondragover=\"DragOver\"\r\n                                                    ws-ondrop=\"Drop\"\r\n                                                   >\r\n                                                   <span class=\"node ${Parent} ${ErrorMsg}\" title=\"expand\" ws-onclick=\"ToggleCollapse\"></span>\r\n                                                   <div  class=\"code-editor-list-text\" style=\"text-indent:${Indent}em; white-space: pre\" ws-onclick=\"Select\" ws-onafterrender=\"AfterRender\" >${Name}</div>\r\n                                                   <span class=\"predecessor\" title=\"toggle predecessor\" ws-onclick=\"TogglePred\">X</span>\r\n                                               </div>\r\n                                       \r\n                                                </div>\r\n                                            </div></div>\r\n                                            <wcomp-splitter vertical value=\"100\" min=\"30\" max=\"100\">\r\n                                                <ws-FixedSplitterHor>\r\n                                                    <PartSizes>32px calc(100% - 32px)</PartSizes>\r\n                                                    <First>\r\n                                                        <div>\r\n                                                            <div class=\"input-group\">\r\n                                                                <span class=\"input-group-addon\">name:</span>\r\n                                                                <span class=\"input-group-addon\">${PlugInName}</span>\r\n                                                            </div>\r\n                                                        </div>\r\n                                                    </First>\r\n                                                    <Second>\r\n                                                        <div style=\"overflow:auto\">\r\n                                                            <div>\r\n                                                                <div>Docs:</div>\r\n                                                                <div ws-hole=\"Docs\" style=\"overflow:auto\" ></div>\r\n                                                            </div>\r\n                                                            <div>\r\n                                                                <div>Views:</div>\r\n                                                                <div ws-hole=\"Views\" style=\"overflow:auto\" >\r\n                                                                    <div ws-template=\"NameValue\" class=\"input-group\">\r\n                                                                        <span class=\"input-group-addon\">${Name}:</span>\r\n                                                                        <span class=\"input-group-addon\">${Value}</span>\r\n                                                                    </div>\r\n                                                                </div>\r\n                                                            </div>\r\n                                                            <div>\r\n                                                                <div>Queries:</div>\r\n                                                                <div ws-hole=\"Queries\" style=\"overflow:auto\" ></div>\r\n                                                            </div>\r\n                                                            <div>\r\n                                                                <div>Vars:</div>\r\n                                                                <div ws-hole=\"Vars\" style=\"overflow:auto\" >\r\n                                                                    <div ws-template=\"NameValueInput\" class=\"input-group\">\r\n                                                                        <span class=\"input-group-addon\">${Name}:</span>\r\n                                                                        <textarea class=\"form-control\" id=\"\" placeholder=\"Value...\" ws-var=\"Value\" spellcheck=\"false\">\r\n                                                                    </div>\r\n                                                                </div>\r\n                                                            </div>\r\n                                                        </div>\r\n                                                    </Second>\r\n                                                </ws-FixedSplitterHor>\r\n                                                <wcomp-tabstrip >\r\n                                                    <div tabname=\"Properties\">\r\n                                                        <div>\r\n                                                            <table style=\"border-spacing:0px\">\r\n                                                                <thead>\r\n                                                                    <th style=\"width: 30%  \">Name</th>\r\n                                                                    <th style=\"width: 70% \">Value</th>\r\n                                                                </thead>\r\n                                                                <tbody ws-hole=\"Properties\" ws-children-template=\"Property\">\r\n                                                                    <tr ws-onclick=\"Select\" style=\"margin-bottom: 2px\" class=\"level  \">\r\n                                                                        <td class=\"level-item\">\r\n                                                                            <div>\r\n                                                                                <input ws-var=\"Name\" type=\"text\" class=\"form-control\" id=\"\" placeholder=\"Property...\">\r\n                                                                            </div>\r\n                                                                        </td>\r\n                                                                        <td class=\"level-item\">\r\n                                                                            <div>\r\n                                                                                <textarea ws-var=\"Value\" class=\"form-control\" id=\"\" placeholder=\"Value...\"></textarea>\r\n                                                                            </div>\r\n                                                                        </td>\r\n                                                                        <td class=\"level-item\">\r\n                                                                            <div style=\" cursor: pointer \" title=\"remove\">\r\n                                                                                <button ws-onclick=\"Remove\" class=\"delete is-small\">x</button>\r\n                                                                            </div>\r\n                                                                        </td>\r\n                                                                    </tr>\r\n                                                                </tbody>\r\n                                                            </table>\r\n                                                            <button ws-onclick=\"AddProperty\" class=\"add is-small\">add ...</button>\r\n                                                        </div>\r\n                                                    </div>\r\n                                                </wcomp-tabstrip>\r\n                                            </wcomp-splitter>\r\n                                        </wcomp-splitter>\r\n                                    </First>\r\n                                    <Second>\r\n                                        <div style=\"\r\n                                            overflow: hidden;\r\n                                            display: grid;\r\n                                            grid-template-columns: 100%;\r\n                                            grid-template-rows: repeat(15, calc(100% / 15));\r\n                                            bxackground-color: #eee;\r\n                                            box-sizing: border-box;\r\n                                            padding : 5px;\r\n                                            grid-gap: 5px;\r\n                                            margin-right: 21px;\r\n                                       \"  class=\"absolute\" ws-hole=\"Actions\" >\r\n                                            <button ws-template=\"Action\"         ws-onclick=\"Click\" class=\"btn\" type=\"button\" id=\"\"          >${Name}</button>\r\n                                            <button ws-template=\"ActionDisabled\" ws-onclick=\"Click\" class=\"btn\" type=\"button\" id=\"\" disabled >${Name}</button>\r\n                                        </div>\r\n                                    </Second>\r\n                                </ws-FixedSplitterVer>\r\n                        </Second>\r\n                    </ws-FixedSplitterHor>\r\n                </div>\r\n                <style style=\"display: none\">\r\n                        .Hidden     { display   : none         }\r\n                        table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }\r\n                        td input.form-control { \r\n                            padding    : 0px; \r\n                            font-family: monospace;\r\n                            font-size  :   small;\r\n                            margin-top :   0px;\r\n                            margin-left: -2px;\r\n                            width      : 100%\r\n                        }\r\n                        td select {\r\n                            font-size : smaller;\r\n                            max-width : 8ch;\r\n                        }\r\n                        xtextarea {\r\n                           resize : none;\r\n                        }\r\n                        .tab-content {\r\n                            overflow: hidden\r\n                        }\r\n                        .tab-children {\r\n                            position:relative;\r\n                        }\r\n                        .tab-children>div>* {\r\n                            position:absolute;\r\n                            height: 100%;\r\n                            width:  100%;\r\n                            display: grid;\r\n                        }\r\n                        .relative {\r\n                            position:relative;\r\n                        }\r\n                        .relative>* {\r\n                            position:absolute;\r\n                            height: 100%;\r\n                            width:  100%;\r\n                            display: grid;\r\n                        }\r\n                        table.table-striped    tbody tr:nth-child(even) { background: #EEE  }\r\n                        table.table-striped    tbody tr:nth-child(odd ) { background: #FFF  }\r\n                        table.table-striped    tbody input              { background: transparent; border: none}\r\n                        table.table-striped    tbody select             { background: transparent; border: none}\r\n                        table.table-nonstriped tbody tr:nth-child(even) { background: inherit }\r\n                        table.table-nonstriped tbody tr:nth-child(odd ) { background: inherit }\r\n                        table.table            tbody tr.hover           { border    : solid thin transparent; } \r\n                        table.table            tbody tr.hover:hover     { border    : solid thin blue     ; } \r\n                        table.table            tbody th:hover           { background: gray; cursor: pointer }\r\n                        table.table            tbody tr.hover:hover>td  { border-top: solid thin blue     ; \r\n                                                                   border-bottom: solid thin blue     ; } \r\n                        table.table            tbody tr.selected { background   : #b9eeff             ; }\r\n                        table.table            tbody tr.formula.selected { background: #20f7f7             ; }\r\n                        thead { color: gray }\r\n                        h3 { \r\n                            color: gray;\r\n                            line-height: 1em;\r\n                        }\r\n                        button       { border: solid thin transparent ; border-radius: 3px; }\r\n                        button:hover { border: solid thin blue }\r\n                        .indenter { position  : absolute; \r\n                                    top:0px; bottom:0px; left:0px; \r\n                                    background: white; color:white;\r\n                                    border-right: gray thin dotted;\r\n                                    }\r\n                        body {\r\n                            color      : #333;\r\n                            font-size  : small;\r\n                            font-family: monospace;\r\n                            line-height: 1.2;\r\n                        }\r\n                        .mainTitle {  \r\n                            font-size: 48px;\r\n                            font-weight: 500;\r\n                            color: gray;\r\n                            margin-top: -12px;\r\n                        }\r\n                        .CodeMirror {\r\n                            height: 100%;\r\n                        }\r\n                        \r\n                      \r\n                        body { margin: 0px }     \r\n                             \r\n                        div textarea {\r\n                            font-family     : monospace;\r\n                        }\r\n                        .code-editor-list-tile {\r\n                            white-space     : nowrap; \r\n                            border-style    : solid none none;\r\n                            border-color    : white;\r\n                            border-width    : 1px;\r\n                            background-color: #D8D8D8;\r\n                            display         : flex;\r\n                        }\r\n                        .code-editor-list-text{\r\n                            padding         : 1px 10px 1px 5px;\r\n                            overflow        : hidden;\r\n                            text-overflow   : ellipsis;\r\n                            white-space     : nowrap;\r\n                            flex            : 1;\r\n                        }\r\n                        \r\n                        .code-editor-list-tile span.node.ErrorMsg {\r\n                            background-color: red\r\n                        }\r\n                        .code-editor-list-tile span.node.expanded::before {\r\n                            content: \"-\"\r\n                        }\r\n                        .code-editor-list-tile span.node.collapsed::before {\r\n                            content: \"+\"\r\n                        }\r\n                        .code-editor-list-tile.direct-predecessor {\r\n                            font-weight     : bold;\r\n                            color           : blue;\r\n                        }\r\n                        .code-editor-list-tile.indirect-predecessor {\r\n                            color           : blue;\r\n                        }\r\n                        .code-editor-list-tile.included-predecessor {\r\n                            color           : chocolate;\r\n                        }\r\n                        .code-editor-list-tile.selected {\r\n                            background-color: #77F;\r\n                            color           : white;\r\n                        }\r\n                        .code-editor-list-tile.codeSnippet {\r\n                            text-decoration: underline\r\n                        }\r\n                        .code-editor-list-tile:hover {\r\n                            background      : lightgray;\r\n                        }\r\n                        .code-editor-list-tile.selected:hover {\r\n                            background      : blue;\r\n                        }\r\n                        .code-editor-list-tile>.predecessor {\r\n                            font-weight     : bold;\r\n                            border-style    : inset;\r\n                            border-width    : 1px;\r\n                            text-align      : center;\r\n                            color           : transparent;\r\n                        }\r\n                        .code-editor-list-tile.direct-predecessor>.predecessor {\r\n                            color           : blue;\r\n                        }\r\n                        \r\n                        .CodeMirror { height: 100%; }\r\n                        \r\n                        .node {\r\n                            background-color: white; \r\n                            width           : 2ch; \r\n                            color           : #A03; \r\n                            font-weight     : bold; \r\n                            text-align      : center;\r\n                            font-family     : arial;\r\n                        }\r\n                        .Warning { text-decoration: underline lightblue } \r\n                        .Error   { text-decoration: underline red       } \r\n                        \r\n                    </style>\r\n            </div>\r\n            ";
+  SC$1.htmlD=Depend.dependByName("AppFrameworkTemplate.html",AppFrameworkTemplate.html(),Global.id);
+  SC$1.startWithHtmlD=(b$1=Depend.depend(),b$1.Delay(function()
+  {
+   return b$1.Bind(StartAppFramework.htmlD(),function(a$1)
+   {
+    return b$1.Return(function()
+    {
+     var d,x$2,a$2;
+     d=self.document.createElement("div");
+     self.document.body.appendChild(d);
+     d.outerHTML=a$1;
+     x$2=AppFramework.getMainDoc().f();
+     a$2=self.document.body;
+     Templates.LoadLocalTemplates("");
+     Doc.RunAppend(a$2,x$2);
+    });
+   });
+  }));
+  SC$1.unselectorV=new FromView.New(View.Const(null),Global.ignore);
+  SC$1.plugin=new PlugInBuilder.New();
+  SC$1.html$1="\r\n                <div ws-template=\"Snippet\" >\r\n                    <div draggable=\"true\" class=\"code-editor-list-tile ${Predecessor} ${Selected}\" \r\n                         ws-ondrag=\"Drag\"\r\n                         ws-ondragover=\"DragOver\"\r\n                         ws-ondrop=\"Drop\"\r\n                        >\r\n                        <span class=\"node ${Parent} ${ErrorMsg}\" title=\"expand\" ws-onclick=\"ToggleCollapse\"></span>\r\n                        <div  class=\"code-editor-list-text\" style=\"text-indent:${Indent}em; white-space: pre\" ws-onclick=\"Select\" ws-onafterrender=\"AfterRender\" >${Name}</div>\r\n                        <span class=\"predecessor\" title=\"toggle predecessor\" ws-onclick=\"TogglePred\">X</span>\r\n                    </div>\r\n                </div>\r\n                <style>\r\n                    .Hidden     { display   : none         }\r\n                    table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }\r\n                    td input.form-control { \r\n                        padding    : 0px; \r\n                        font-family: monospace;\r\n                        font-size  :   small;\r\n                        margin-top :   0px;\r\n                        margin-left: -2px;\r\n                        width      : 100%\r\n                    }\r\n                    td select {\r\n                        font-size : smaller;\r\n                        max-width : 8ch;\r\n                    }\r\n                    textarea {\r\n                       resize : none;\r\n                    }\r\n                    .tab-content {\r\n                        overflow: hidden\r\n                    }\r\n                    .tab-children {\r\n                        position:relative;\r\n                    }\r\n                    .tab-children>div>* {\r\n                        position:absolute;\r\n                        height: 100%;\r\n                        width:  100%;\r\n                        display: grid;\r\n                    }\r\n                    .relative {\r\n                        position:relative;\r\n                    }\r\n                    .relative>* {\r\n                        position:absolute;\r\n                        height: 100%;\r\n                        width:  100%;\r\n                        display: grid;\r\n                    }\r\n                    table.table-striped    tbody tr:nth-child(even) { background: #EEE  }\r\n                    table.table-striped    tbody tr:nth-child(odd ) { background: #FFF  }\r\n                    table.table-striped    tbody input              { background: transparent; border: none}\r\n                    table.table-striped    tbody select             { background: transparent; border: none}\r\n                    table.table-nonstriped tbody tr:nth-child(even) { background: inherit }\r\n                    table.table-nonstriped tbody tr:nth-child(odd ) { background: inherit }\r\n                    table.table            tbody tr.hover           { border    : solid thin transparent; } \r\n                    table.table            tbody tr.hover:hover     { border    : solid thin blue     ; } \r\n                    table.table            tbody th:hover           { background: gray; cursor: pointer }\r\n                    table.table            tbody tr.hover:hover>td  { border-top: solid thin blue     ; \r\n                                                               border-bottom: solid thin blue     ; } \r\n                    table.table            tbody tr.selected { background   : #b9eeff             ; }\r\n                    table.table            tbody tr.formula.selected { background: #20f7f7             ; }\r\n                    thead { color: gray }\r\n                    h3 { \r\n                        color: gray;\r\n                        line-height: 1em;\r\n                    }\r\n                    button       { border: solid thin transparent ; border-radius: 3px; }\r\n                    button:hover { border: solid thin blue }\r\n                    .indenter { position  : absolute; \r\n                                top:0px; bottom:0px; left:0px; \r\n                                background: white; color:white;\r\n                                border-right: gray thin dotted;\r\n                                }\r\n                    body {\r\n                        color      : #333;\r\n                        font-size  : small;\r\n                        font-family: monospace;\r\n                        line-height: 1.2;\r\n                    }\r\n                    .mainTitle {  \r\n                        font-size: 48px;\r\n                        font-weight: 500;\r\n                        color: gray;\r\n                        margin-top: -12px;\r\n                    }\r\n                    .CodeMirror {\r\n                        height: 100%;\r\n                    }\r\n                    \r\n                  \r\n                    body { margin: 0px }     \r\n                         \r\n                    div textarea {\r\n                        font-family     : monospace;\r\n                    }\r\n                    .code-editor-list-tile {\r\n                        white-space     : nowrap; \r\n                        border-style    : solid none none;\r\n                        border-color    : white;\r\n                        border-width    : 1px;\r\n                        background-color: #D8D8D8;\r\n                        display         : flex;\r\n                    }\r\n                    .code-editor-list-text{\r\n                        padding         : 1px 10px 1px 5px;\r\n                        overflow        : hidden;\r\n                        text-overflow   : ellipsis;\r\n                        white-space     : nowrap;\r\n                        flex            : 1;\r\n                    }\r\n                    \r\n                    .code-editor-list-tile span.node.ErrorMsg {\r\n                        background-color: red\r\n                    }\r\n                    .code-editor-list-tile span.node.expanded::before {\r\n                        content: \"-\"\r\n                    }\r\n                    .code-editor-list-tile span.node.collapsed::before {\r\n                        content: \"+\"\r\n                    }\r\n                    .code-editor-list-tile.direct-predecessor {\r\n                        font-weight     : bold;\r\n                        color           : blue;\r\n                    }\r\n                    .code-editor-list-tile.indirect-predecessor {\r\n                        color           : blue;\r\n                    }\r\n                    .code-editor-list-tile.included-predecessor {\r\n                        color           : chocolate;\r\n                    }\r\n                    .code-editor-list-tile.selected {\r\n                        background-color: #77F;\r\n                        color           : white;\r\n                    }\r\n                    .code-editor-list-tile.codeSnippet {\r\n                        text-decoration : underline;\r\n                        font-weight     : bold;\r\n                    }\r\n                    .code-editor-list-tile:hover {\r\n                        background      : lightgray;\r\n                    }\r\n                    .code-editor-list-tile.selected:hover {\r\n                        background      : blue;\r\n                    }\r\n                    .code-editor-list-tile>.predecessor {\r\n                        font-weight     : bold;\r\n                        border-style    : inset;\r\n                        border-width    : 1px;\r\n                        text-align      : center;\r\n                        color           : transparent;\r\n                    }\r\n                    .code-editor-list-tile.direct-predecessor>.predecessor {\r\n                        color           : blue;\r\n                    }\r\n                    \r\n                    .CodeMirror { height: 100%; }\r\n                    \r\n                    .node {\r\n                        background-color: white; \r\n                        width           : 2ch; \r\n                        color           : #A03; \r\n                        font-weight     : bold; \r\n                        text-align      : center;\r\n                        font-family     : arial;\r\n                    }\r\n                    .Warning { text-decoration: underline lightblue } \r\n                    .Error   { text-decoration: underline red       } \r\n                    \r\n                </style>\r\n            ";
+  SC$1.a11V=Var$1.Create$1(11);
+  SC$1.mainX={
+   $:0,
+   $0:NewLY.a11V().get_View()
+  };
+  SC$1.textAtt=function($1)
+  {
+   return function()
+   {
+    return $1("textAtt not implemented");
+   };
+  }(Operators.FailWith);
+  SC$1.getDocFromReferenceD=Depend.dependByName("getDocFromReference",Extract0.getDocFromReference,Global.id);
+  SC$1.getTextActViewFromReferenceD=Depend.dependByName("getTextActViewFromReference",Extract0.getTextActViewFromReference,Global.id);
+  SC$1.extractDocD=(b$2=Depend.depend(),b$2.Delay(function()
+  {
+   return b$2.Bind(Extract0.getDocFromReferenceD(),function(a$1)
+   {
+    return b$2.Return(function(txt)
+    {
+     var a$2,$1;
+     a$2=List.map(function(a$3)
+     {
+      return a$3.$==1?a$1(a$3.$0):Doc.TextNode(a$3.$0);
+     },Extract0.getTextData(txt));
+     return(a$2.$==1?a$2.$1.$==0?($1=a$2.$0,true):($1=a$2,false):($1=a$2,false))?$1:Doc.Concat($1);
+    });
+   });
+  }));
+  SC$1.extractAtsD=(b$3=Depend.depend(),b$3.Delay(function()
+  {
+   return b$3.Bind(Extract0.getTextActViewFromReferenceD(),function(a$1)
+   {
+    function toViewString(w)
+    {
+     return View.Map(function(a$2)
+     {
+      return a$2.$==1?(function($1)
+      {
+       return function($2)
+       {
+        return $1("@{expecting string, got Action: "+Utils.prettyPrint($2)+"}");
+       };
+      }(Global.id))(a$2.$0):a$2.$0;
+     },w);
+    }
+    function getTextVal(txt)
+    {
+     var $1,a$2,x$2;
+     a$2=Extract0.getTextData(txt);
+     function f$5(s$1)
+     {
+      return Strings.concat("",s$1);
+     }
+     function g$6(a$3)
+     {
+      return{
+       $:0,
+       $0:a$3
+      };
+     }
+     switch(a$2.$==1?a$2.$0.$==1?a$2.$1.$==0?($1=a$2.$0.$0,1):($1=a$2,2):a$2.$1.$==0?($1=a$2.$0.$0,0):($1=a$2,2):($1=a$2,2))
+     {
+      case 0:
+       return{
+        $:1,
+        $0:{
+         $:0,
+         $0:$1
+        }
+       };
+      case 1:
+       return{
+        $:0,
+        $0:a$1($1)
+       };
+      case 2:
+       return{
+        $:0,
+        $0:(x$2=View$1.traverseListApp(function(a$3)
+        {
+         return a$3.$==1?toViewString(a$1(a$3.$0)):View.Const(a$3.$0);
+        },$1),View.Apply(View.Const(function(x$3)
+        {
+         return g$6(f$5(x$3));
+        }),x$2))
+       };
+     }
+    }
+    return b$3.Return(function(txt)
+    {
+     return Seq.map(function(t$20)
+     {
+      var m,sty,atn,m$1,m$2,atv,atn$1,m$3;
+      function s$1(el,a$2)
+      {
+       var act;
+       return a$2.$==1?(act=a$2.$0,el.addEventListener(atn$1,function(ev)
+       {
+        return AppFramework.callFunction(el,ev,act.actFunction);
+       },false)):el.setAttribute(atn$1,Strings.Trim(a$2.$0));
+      }
+      m=Strings.SplitChars(t$20,[":"],0);
+      return!Unchecked.Equals(m,null)&&m.length===2?(sty=Arrays.get(m,1),(atn=Arrays.get(m,0),(m$1=getTextVal(sty),m$1.$==0?AttrModule.DynamicStyle(atn,toViewString(m$1.$0)):m$1.$0.$==0?AttrModule.Style(atn,m$1.$0.$0):(function($1)
+      {
+       return function($2)
+       {
+        return $1("Illegal value "+testing_GeneratedPrintf.p($2));
+       };
+      }(Operators.FailWith))(m$1)))):(m$2=Arrays.map(Strings.Trim,Strings.SplitChars(t$20,["="],0)),!Unchecked.Equals(m$2,null)&&m$2.length===2?(atv=Arrays.get(m$2,1),(atn$1=Arrays.get(m$2,0),(m$3=getTextVal(atv),m$3.$==0?AttrModule.DynamicCustom(function($1)
+      {
+       return function($2)
+       {
+        return s$1($1,$2);
+       };
+      },m$3.$0):m$3.$0.$==0?AttrProxy.Create(atn$1,m$3.$0.$0):(function($1)
+      {
+       return function($2)
+       {
+        return $1("Illegal value "+testing_GeneratedPrintf.p($2));
+       };
+      }(Operators.FailWith))(m$3)))):(function($1)
+      {
+       return function($2)
+       {
+        return $1("single reference attribute not implemented "+Utils.toSafe($2));
+       };
+      }(Operators.FailWith))(t$20));
+     },Seq.filter(function(y)
+     {
+      return""!==y;
+     },Seq.map(Strings.Trim,Strings.SplitChars(txt,[";"],0))));
+    });
+   });
+  }));
+  SC$1.aV=Var$1.Create$1(4);
+  SC$1.pa=NewLY.aV().get_View();
+  SC$1.pb=6.2;
+  SC$1.currentPlugInNameDef=UoM$1.Tag$3("NewLYx");
+  SC$1.currentPlugInNameD=Depend.dependByName("currentPlugInName",NewLY.currentPlugInNameDef(),Global.id);
+  SC$1.getDocD=(b$4=Depend.depend(),b$4.Delay(function()
+  {
+   return b$4.Bind(NewLY.currentPlugInNameD(),function(a$1)
+   {
+    return b$4.Return(function(r)
+    {
+     var p$6,pName,oName;
+     p$6=(AppFramework.splitName(UoM$1.Untag$3(a$1)))(r);
+     pName=p$6[0];
+     oName=p$6[1];
+     return Doc.BindView(function(docO)
+     {
+      var o;
+      function d()
+      {
+       return(function($1)
+       {
+        return function($2)
+        {
+         return $1("Reference not found @{"+Utils.toSafe($2)+"}");
+        };
+       }(Global.id))(r);
+      }
+      o=docO==null?null:{
+       $:1,
+       $0:AppFramework.getLazyDoc(docO.$0)
+      };
+      return o==null?Doc.TextView(View.Map(function(o$1)
+      {
+       return o$1==null?d():o$1.$0;
+      },AppFramework.tryGetWoWW(pName,oName))):o.$0;
+     },AppFramework.tryGetDocW(pName,oName));
+    });
+   });
+  }));
+  SC$1.getTextActViewD=(b$5=Depend.depend(),b$5.Delay(function()
+  {
+   return b$5.Bind(NewLY.currentPlugInNameD(),function(a$1)
+   {
+    return b$5.Return(function(r)
+    {
+     var p$6,pName,oName;
+     p$6=(AppFramework.splitName(UoM$1.Untag$3(a$1)))(r);
+     pName=p$6[0];
+     oName=p$6[1];
+     return View.Bind(function(a$2)
+     {
+      function d()
+      {
+       return(function($1)
+       {
+        return function($2)
+        {
+         return $1("Text Reference not found @{"+Utils.toSafe($2)+"}");
+        };
+       }(Global.id))(r);
+      }
+      return a$2==null?View.Map(function(a$3)
+      {
+       return{
+        $:0,
+        $0:a$3
+       };
+      },View.Map(function(o)
+      {
+       return o==null?d():o.$0;
+      },AppFramework.tryGetWoWW(pName,oName))):View.Const({
+       $:1,
+       $0:a$2.$0
+      });
+     },AppFramework.tryGetActW(pName,oName));
+    });
+   });
+  }));
+  SC$1.extractDocD$1=Extract0.extractDocD();
+  SC$1.extractAtsD$1=Extract0.extractAtsD();
+  SC$1.extractAttD=(b$6=Operators$1.depend(),b$6.Delay(function()
+  {
+   return b$6.Bind(NewLY.extractAtsD(),function(a$1)
+   {
+    return b$6.Return(function(p$6)
+    {
+     return AttrProxy.Concat(a$1(p$6));
+    });
+   });
+  }));
+  SC$1.name=Var$1.Create$1("World");
+  SC$1.enterName=(pf=NewLY.op_Dereference(NewLY.checkName),(p={
+   $:0,
+   $0:NewLY.name().get_View()
+  },P.New(Operators$1.op_BarGreaterGreater(pf.r,function(f$5)
+  {
+   return Fun.New(f$5,p);
+  }))));
+  SC$1.now=(pf$1=NewLY.op_Dereference(function()
+  {
+   var n;
+   n=new Date(Date.now());
+   return n.getFullYear()+"-"+("0"+(n.getMonth()+1)).slice(-2)+"-"+("0"+n.getDate()).slice(-2)+" "+("0"+n.getHours()).slice(-2)+":"+("0"+n.getMinutes()).slice(-2)+":"+("0"+n.getSeconds()).slice(-2)+":"+("00"+n.getMilliseconds()).slice(-3);
+  }),(p$1={
+   $:0,
+   $0:NewLY.name().get_View()
+  },P.New(Operators$1.op_BarGreaterGreater(pf$1.r,function(f$5)
+  {
+   return Fun.New(f$5,p$1);
+  }))));
+  SC$1.sayHello=(sayHello_0=(c=(vf=NewLY.op_Dereference(Doc.Concat),NewLY.bindWrap(function(extractDoc)
+  {
+   var p$6;
+   p$6={
+    $:1,
+    $0:[extractDoc("Hello @{name}!")]
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(vf.r,function(f$5)
+   {
+    return Fun.New(f$5,p$6);
+   }));
+  },NewLY.extractDocD())),NewLY.bindWrap(function(aF)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(Val.textDoc(aF.f.$==0?aF.p.$==1?{
+     $:0,
+     $0:View.Apply(aF.f.$0,View.Const(aF.p.$0))
+    }:{
+     $:0,
+     $0:View.Apply(aF.f.$0,aF.p.$0)
+    }:aF.p.$==0?{
+     $:0,
+     $0:View.Apply(View.Const(aF.f.$0),aF.p.$0)
+    }:{
+     $:1,
+     $0:aF.f.$0(aF.p.$0)
+    }),c$14.p));
+   },c);
+  },NewLY.enterName().r)),(a=(vf$1=NewLY.op_Dereference(Doc.Concat),NewLY.bindWrap(function(extractDoc)
+  {
+   var p$6;
+   p$6={
+    $:1,
+    $0:[extractDoc("How are you?")]
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(vf$1.r,function(f$5)
+   {
+    return Fun.New(f$5,p$6);
+   }));
+  },NewLY.extractDocD())),(c$1=(vf$2=NewLY.op_Dereference(Doc.Concat),NewLY.bindWrap(function(aF)
+  {
+   var p$6;
+   p$6={
+    $:1,
+    $0:[Doc.BindView(function()
+    {
+     var m;
+     m=aF.f.$==0?aF.p.$==1?{
+      $:0,
+      $0:View.Apply(aF.f.$0,View.Const(aF.p.$0))
+     }:{
+      $:0,
+      $0:View.Apply(aF.f.$0,aF.p.$0)
+     }:aF.p.$==0?{
+      $:0,
+      $0:View.Apply(View.Const(aF.f.$0),aF.p.$0)
+     }:{
+      $:1,
+      $0:aF.f.$0(aF.p.$0)
+     };
+     return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
+    },AppFramework.mainDocV().get_View())]
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(vf$2.r,function(f$5)
+   {
+    return Fun.New(f$5,p$6);
+   }));
+  },sayHello_0.r)),NewLY.bindWrap(function(aF)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(Doc.BindView(function()
+    {
+     var m;
+     m=aF.f.$==0?aF.p.$==1?{
+      $:0,
+      $0:View.Apply(aF.f.$0,View.Const(aF.p.$0))
+     }:{
+      $:0,
+      $0:View.Apply(aF.f.$0,aF.p.$0)
+     }:aF.p.$==0?{
+      $:0,
+      $0:View.Apply(View.Const(aF.f.$0),aF.p.$0)
+     }:{
+      $:1,
+      $0:aF.f.$0(aF.p.$0)
+     };
+     return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
+    },AppFramework.mainDocV().get_View()),c$14.p));
+   },c$1);
+  },a.r))));
+  SC$1.aString=Var$1.Lens(NewLY.aV(),Global.String,function(a$1,v$1)
+  {
+   return Operators.toInt(Global.Number(v$1));
+  });
+  SC$1.main0=(pc=(pf$2=NewLY.op_Dereference(function(a$1)
+  {
+   return function(b$12)
+   {
+    return NewLY.concat(a$1,b$12);
+   };
+  }),(p$2={
+   $:0,
+   $0:NewLY.aV().get_View()
+  },P.New(Operators$1.op_BarGreaterGreater(pf$2.r,function(f$5)
+  {
+   return Fun.New(f$5,p$2);
+  })))),(p$3={
+   $:1,
+   $0:3.2
+  },P.New(Operators$1.op_BarGreaterGreater(pc.r,function(c$14)
+  {
+   return Fun.New(c$14.f.$==0?c$14.p.$==1?{
+    $:0,
+    $0:View.Apply(c$14.f.$0,View.Const(c$14.p.$0))
+   }:{
+    $:0,
+    $0:View.Apply(c$14.f.$0,c$14.p.$0)
+   }:c$14.p.$==0?{
+    $:0,
+    $0:View.Apply(View.Const(c$14.f.$0),c$14.p.$0)
+   }:{
+    $:1,
+    $0:c$14.f.$0(c$14.p.$0)
+   },p$3);
+  }))));
+  SC$1.main1=(pc$1=(vf$3=NewLY.op_Dereference((Runtime$1.Curried3(function($1,$2,$3)
+  {
+   return $1("result = "+Utils.toSafe($2)+" "+Utils.toSafe($3));
+  }))(Global.id)),NewLY.bindWrap(function(aF)
+  {
+   var p$6;
+   p$6=aF.f.$==0?aF.p.$==1?{
+    $:0,
+    $0:View.Apply(aF.f.$0,View.Const(aF.p.$0))
+   }:{
+    $:0,
+    $0:View.Apply(aF.f.$0,aF.p.$0)
+   }:aF.p.$==0?{
+    $:0,
+    $0:View.Apply(View.Const(aF.f.$0),aF.p.$0)
+   }:{
+    $:1,
+    $0:aF.f.$0(aF.p.$0)
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(vf$3.r,function(f$5)
+   {
+    return Fun.New(f$5,p$6);
+   }));
+  },NewLY.main0().r)),(p$4={
+   $:1,
+   $0:"main0"
+  },P.New(Operators$1.op_BarGreaterGreater(pc$1.r,function(c$14)
+  {
+   return Fun.New(c$14.f.$==0?c$14.p.$==1?{
+    $:0,
+    $0:View.Apply(c$14.f.$0,View.Const(c$14.p.$0))
+   }:{
+    $:0,
+    $0:View.Apply(c$14.f.$0,c$14.p.$0)
+   }:c$14.p.$==0?{
+    $:0,
+    $0:View.Apply(View.Const(c$14.f.$0),c$14.p.$0)
+   }:{
+    $:1,
+    $0:c$14.f.$0(c$14.p.$0)
+   },p$4);
+  }))));
+  SC$1.main=(c$2=(c$3=(c$4=(c$5=(c$6=(c$7=(c$8=(c$9=(c$10=(vf$4=NewLY.op_Dereference((Runtime$1.Curried3(Doc.Element))("h3")),NewLY.bindWrap(function(extractAts)
+  {
+   var p$6;
+   p$6={
+    $:1,
+    $0:extractAts("color:@{name}; background:red; click=@{AppFramework.Hello}")
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(vf$4.r,function(f$5)
+   {
+    return Fun.New(f$5,p$6);
+   }));
+  },NewLY.extractAtsD())),NewLY.bindWrap(function(extractDoc)
+  {
+   var p$6;
+   p$6={
+    $:1,
+    $0:[extractDoc("MAIN:")]
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(c$10.r,function(c$14)
+   {
+    return Fun.New(c$14.f.$==0?c$14.p.$==1?{
+     $:0,
+     $0:View.Apply(c$14.f.$0,View.Const(c$14.p.$0))
+    }:{
+     $:0,
+     $0:View.Apply(c$14.f.$0,c$14.p.$0)
+    }:c$14.p.$==0?{
+     $:0,
+     $0:View.Apply(View.Const(c$14.f.$0),c$14.p.$0)
+    }:{
+     $:1,
+     $0:c$14.f.$0(c$14.p.$0)
+    },p$6);
+   }));
+  },NewLY.extractDocD())),NewLY.bindWrap(function(aF)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(Val.textDoc(aF.f.$==0?aF.p.$==1?{
+     $:0,
+     $0:View.Apply(aF.f.$0,View.Const(aF.p.$0))
+    }:{
+     $:0,
+     $0:View.Apply(aF.f.$0,aF.p.$0)
+    }:aF.p.$==0?{
+     $:0,
+     $0:View.Apply(View.Const(aF.f.$0),aF.p.$0)
+    }:{
+     $:1,
+     $0:aF.f.$0(aF.p.$0)
+    }),c$14.p));
+   },c$9);
+  },NewLY.main1().r)),NewLY.bindWrap(function(aF)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(Val.textDoc(aF.f.$==0?aF.p.$==1?{
+     $:0,
+     $0:View.Apply(aF.f.$0,View.Const(aF.p.$0))
+    }:{
+     $:0,
+     $0:View.Apply(aF.f.$0,aF.p.$0)
+    }:aF.p.$==0?{
+     $:0,
+     $0:View.Apply(View.Const(aF.f.$0),aF.p.$0)
+    }:{
+     $:1,
+     $0:aF.f.$0(aF.p.$0)
+    }),c$14.p));
+   },c$8);
+  },NewLY.main1().r)),NewLY.bindWrap(function(extractDoc)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(extractDoc(":"),c$14.p));
+   },c$7);
+  },NewLY.extractDocD())),NewLY.bindWrap(function(aF)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(Doc.BindView(function()
+    {
+     var m;
+     m=aF.f.$==0?aF.p.$==1?{
+      $:0,
+      $0:View.Apply(aF.f.$0,View.Const(aF.p.$0))
+     }:{
+      $:0,
+      $0:View.Apply(aF.f.$0,aF.p.$0)
+     }:aF.p.$==0?{
+      $:0,
+      $0:View.Apply(View.Const(aF.f.$0),aF.p.$0)
+     }:{
+      $:1,
+      $0:aF.f.$0(aF.p.$0)
+     };
+     return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
+    },AppFramework.mainDocV().get_View()),c$14.p));
+   },c$6);
+  },NewLY.sayHello().r)),NewLY.bindWrap(function(extractDoc)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(extractDoc(":"),c$14.p));
+   },c$5);
+  },NewLY.extractDocD())),NewLY.bindWrap(function(extractDoc)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(extractDoc(" Más >> "),c$14.p));
+   },c$4);
+  },NewLY.extractDocD())),NewLY.bindWrap(function(aF)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(Doc.BindView(function()
+    {
+     var m;
+     m=aF.f.$==0?aF.p.$==1?{
+      $:0,
+      $0:View.Apply(aF.f.$0,View.Const(aF.p.$0))
+     }:{
+      $:0,
+      $0:View.Apply(aF.f.$0,aF.p.$0)
+     }:aF.p.$==0?{
+      $:0,
+      $0:View.Apply(View.Const(aF.f.$0),aF.p.$0)
+     }:{
+      $:1,
+      $0:aF.f.$0(aF.p.$0)
+     };
+     return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
+    },AppFramework.mainDocV().get_View()),c$14.p));
+   },c$3);
+  },NewLY.sayHello().r)),NewLY.bindWrap(function(extractDoc)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(extractDoc(" <<"),c$14.p));
+   },c$2);
+  },NewLY.extractDocD()));
+  SC$1.main2=NewLY.makeAViewDoc(function()
+  {
+   return Doc.Element("h4",[AttrModule.Dynamic("style",View.Map(function($1)
+   {
+    return"color:"+$1;
+   },NewLY.name().get_View()))],[Doc.TextNode("MAIN2:"),Doc.TextView(NewLY.name().get_View())]);
+  });
+  SC$1.appFwk=(c$11=(vf$5=NewLY.op_Dereference((Runtime$1.Curried3(Doc.Element))("div")),NewLY.bindWrap(function(extractAts)
+  {
+   var p$6;
+   p$6={
+    $:1,
+    $0:extractAts("color:@{name}")
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(vf$5.r,function(f$5)
+   {
+    return Fun.New(f$5,p$6);
+   }));
+  },NewLY.extractAtsD())),NewLY.bindWrap(function(extractDoc)
+  {
+   var p$6;
+   p$6={
+    $:1,
+    $0:[extractDoc("@{AppFramework.AppFwkClient}")]
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(c$11.r,function(c$14)
+   {
+    return Fun.New(c$14.f.$==0?c$14.p.$==1?{
+     $:0,
+     $0:View.Apply(c$14.f.$0,View.Const(c$14.p.$0))
+    }:{
+     $:0,
+     $0:View.Apply(c$14.f.$0,c$14.p.$0)
+    }:c$14.p.$==0?{
+     $:0,
+     $0:View.Apply(View.Const(c$14.f.$0),c$14.p.$0)
+    }:{
+     $:1,
+     $0:c$14.f.$0(c$14.p.$0)
+    },p$6);
+   }));
+  },NewLY.extractDocD()));
+  SC$1.split=(c$12=(vf$6=NewLY.op_Dereference(Runtime$1.Curried(LayoutEngineModule.variableSplitter,2,[false,0,50,100])),NewLY.bindWrap(function(aF)
+  {
+   var p$6;
+   p$6={
+    $:1,
+    $0:Doc.BindView(function()
+    {
+     var m;
+     m=aF.f.$==0?aF.p.$==1?{
+      $:0,
+      $0:View.Apply(aF.f.$0,View.Const(aF.p.$0))
+     }:{
+      $:0,
+      $0:View.Apply(aF.f.$0,aF.p.$0)
+     }:aF.p.$==0?{
+      $:0,
+      $0:View.Apply(View.Const(aF.f.$0),aF.p.$0)
+     }:{
+      $:1,
+      $0:aF.f.$0(aF.p.$0)
+     };
+     return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
+    },AppFramework.mainDocV().get_View())
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(vf$6.r,function(f$5)
+   {
+    return Fun.New(f$5,p$6);
+   }));
+  },NewLY.appFwk().r)),NewLY.bindWrap(function(aF)
+  {
+   var p$6;
+   p$6={
+    $:1,
+    $0:Doc.BindView(function()
+    {
+     var m;
+     m=aF.f.$==0?aF.p.$==1?{
+      $:0,
+      $0:View.Apply(aF.f.$0,View.Const(aF.p.$0))
+     }:{
+      $:0,
+      $0:View.Apply(aF.f.$0,aF.p.$0)
+     }:aF.p.$==0?{
+      $:0,
+      $0:View.Apply(View.Const(aF.f.$0),aF.p.$0)
+     }:{
+      $:1,
+      $0:aF.f.$0(aF.p.$0)
+     };
+     return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
+    },AppFramework.mainDocV().get_View())
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(c$12.r,function(c$14)
+   {
+    return Fun.New(c$14.f.$==0?c$14.p.$==1?{
+     $:0,
+     $0:View.Apply(c$14.f.$0,View.Const(c$14.p.$0))
+    }:{
+     $:0,
+     $0:View.Apply(c$14.f.$0,c$14.p.$0)
+    }:c$14.p.$==0?{
+     $:0,
+     $0:View.Apply(View.Const(c$14.f.$0),c$14.p.$0)
+    }:{
+     $:1,
+     $0:c$14.f.$0(c$14.p.$0)
+    },p$6);
+   }));
+  },NewLY.main().r));
+  SC$1.split2=(pc$2=(vf$7=NewLY.op_Dereference(Runtime$1.Curried(LayoutEngineModule.variableSplitter,2,[false,0,50,100])),NewLY.bindWrap(function(aF)
+  {
+   var p$6;
+   p$6={
+    $:1,
+    $0:Doc.BindView(function()
+    {
+     var m;
+     m=aF.f.$==0?aF.p.$==1?{
+      $:0,
+      $0:View.Apply(aF.f.$0,View.Const(aF.p.$0))
+     }:{
+      $:0,
+      $0:View.Apply(aF.f.$0,aF.p.$0)
+     }:aF.p.$==0?{
+      $:0,
+      $0:View.Apply(View.Const(aF.f.$0),aF.p.$0)
+     }:{
+      $:1,
+      $0:aF.f.$0(aF.p.$0)
+     };
+     return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
+    },AppFramework.mainDocV().get_View())
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(vf$7.r,function(f$5)
+   {
+    return Fun.New(f$5,p$6);
+   }));
+  },NewLY.appFwk().r)),(p$5={
+   $:1,
+   $0:NewLY.main2()
+  },P.New(Operators$1.op_BarGreaterGreater(pc$2.r,function(c$14)
+  {
+   return Fun.New(c$14.f.$==0?c$14.p.$==1?{
+    $:0,
+    $0:View.Apply(c$14.f.$0,View.Const(c$14.p.$0))
+   }:{
+    $:0,
+    $0:View.Apply(c$14.f.$0,c$14.p.$0)
+   }:c$14.p.$==0?{
+    $:0,
+    $0:View.Apply(View.Const(c$14.f.$0),c$14.p.$0)
+   }:{
+    $:1,
+    $0:c$14.f.$0(c$14.p.$0)
+   },p$5);
+  }))));
+  SC$1.pName=UoM$1.Tag$3("NewLY");
+  AppFramework.addPlugIn((b$7=AppFramework.plugin(),b$7.AddDoc(b$7.AddDoc(b$7.AddDoc(b$7.AddDoc(b$7.AddDoc(b$7.AddDoc(b$7.AddVar(b$7.AddVar(b$7.Name(b$7.Yield(),UoM$1.Untag$3(NewLY.pName())),"name",NewLY.name()),"a",NewLY.aString()),"split",Lazy.Create(function()
+  {
+   var p$6;
+   p$6=NewLY.split();
+   return NewLY.callDocPFn(NewLY.pName(),p$6);
+  })),"split2",Lazy.Create(function()
+  {
+   var p$6;
+   p$6=NewLY.split2();
+   return NewLY.callDocPFn(NewLY.pName(),p$6);
+  })),"main",Lazy.Create(function()
+  {
+   var p$6;
+   p$6=NewLY.main();
+   return NewLY.callDocPFn(NewLY.pName(),p$6);
+  })),"main2",Lazy.Create(NewLY.main2)),"sayHello",Lazy.Create(function()
+  {
+   var p$6;
+   p$6=NewLY.sayHello();
+   return NewLY.callDocPFn(NewLY.pName(),p$6);
+  })),"sayHello2",Lazy.Create(function()
+  {
+   var p$6;
+   p$6=NewLY.sayHello();
+   return NewLY.callDocPFn(NewLY.pName(),p$6);
+  }))));
+  SC$1.drag=DragInfo.DragNone;
+  SC$1.TemplateFileName="D:\\Abe\\CIPHERWorkspace\\FSharpStation\\website\\Templates.html";
+  SC$1.snippetsLM=ListModel$1.Create(function(e)
+  {
+   return e.snpId;
+  },T.Empty);
+  SC$1.collapsedV=Var$1.Create$1(new FSharpSet.New$1(null));
+  SC$1.codeSnippetIdV=Var$1.Create$1(null);
+  SC$1.searchFor=Var$1.Create$1("");
+  SC$1.allPredecessors=function(s$1)
+  {
+   return SnippetModule.allPredecessors(t$18,s$1);
+  };
+  SC$1.indPredIds=function(t$20)
+  {
+   return SnippetModule.indirectPredecessorIds(t$19,t$20[0],t$20[1],t$20[2]);
+  };
+  SC$1.allCodePredsW=View.Map(function($1)
+  {
+   var sid,m;
+   return $1!=null&&$1.$==1?(sid=$1.$0,(m=SnippetsUI.snippetsLM().TryFindByKey(sid),m!=null&&m.$==1?(SnippetsUI.allPredecessors())(m.$0):new FSharpSet.New$1(null))):new FSharpSet.New$1(null);
+  },SnippetsUI.codeSnippetIdV().get_View());
+  SC$1.allCodePredIdsW=View.Map(function($1)
+  {
+   return Seq.map(function(snp)
+   {
+    return snp.snpId;
+   },$1);
+  },SnippetsUI.allCodePredsW());
+  SC$1.shdDef=SnippetHierData.New(0,0,false,true,[],null);
+  SC$1.snpIdParentsW=(v=View.Map(function($1)
+  {
+   return Arrays.ofSeq(Seq.map(function(snp)
+   {
+    return[snp.snpId,snp.snpParentIdO];
+   },$1));
+  },SnippetsUI.snippetsLM().v),(prior=[Var$1.Create$1(null)],(View.Sink(function(v$1)
+  {
+   if(!Unchecked.Equals(prior[0].Get(),v$1))
+    prior[0].Set(v$1);
+  },v),prior[0].get_View())));
+  SC$1.processHierW=(b$8=View.get_Do(),View.Bind(function(a$1)
+  {
+   return View.Bind(function(a$2)
+   {
+    return View.Const(SnippetsUI.processHier(a$1,a$2));
+   },SnippetsUI.collapsedV().get_View());
+  },SnippetsUI.snpIdParentsW()));
+  SC$1.search=(b$9=View.get_Do(),View.Bind(function(a$1)
+  {
+   function visibleF(snp)
+   {
+    var o,o$1,k;
+    o=(o$1=(k=snp.snpId,function(d)
+    {
+     var res;
+     res=null;
+     return d.TryGetValue(k,{
+      get:function()
+      {
+       return res;
+      },
+      set:function(v$1)
+      {
+       res=v$1;
+      }
+     })?{
+      $:1,
+      $0:res
+     }:null;
+    }(a$1)),o$1==null?null:{
+     $:1,
+     $0:o$1.$0.visible
+    });
+    return o==null||o.$0;
+   }
+   return View.Bind(function(a$2)
+   {
+    return a$2===""?View.Const(visibleF):View.Bind(function(a$3)
+    {
+     return View.Bind(function(a$4)
+     {
+      return a$2==="."?View.Const(function(snp)
+      {
+       return(Unchecked.Equals(a$4,{
+        $:1,
+        $0:snp.snpId
+       })||Seq.contains(snp.snpId,a$3))&&visibleF(snp);
+      }):View.Const(function(snp)
+      {
+       return snp.snpName.indexOf(a$2)!=-1||snp.snpContent.indexOf(a$2)!=-1;
+      });
+     },SnippetsUI.codeSnippetIdV().get_View());
+    },SnippetsUI.allCodePredIdsW());
+   },SnippetsUI.searchFor().get_View());
+  },SnippetsUI.processHierW()));
+  SC$1.snippetList=LM.getDocFor(SnippetsUI.snippetsLM(),SnippetModule.defaultSnippet(),function()
+  {
+   return SnippetModule.New("","",null);
+  },{
+   $:1,
+   $0:SnippetsUI.search()
+  },function(l)
+  {
+   return SnippetsUI.calcUI(SnippetsUI.wrapNothing,true,l);
+  });
+  View.Sink(function(a$1)
+  {
+   var sid;
+   if(a$1!=null&&a$1.$==1)
+    {
+     sid=a$1.$0;
+     View.Get(function(allCodePredIds)
+     {
+      if(!Unchecked.Equals(SnippetsUI.codeSnippetIdV().Get(),{
+       $:1,
+       $0:sid
+      }))
+       if(!Seq.contains(sid,allCodePredIds))
+        SnippetsUI.codeSnippetIdV().Set({
+         $:1,
+         $0:sid
+        });
+     },SnippetsUI.allCodePredIdsW());
+    }
+  },SnippetsUI.snippetList().selV.get_View());
+  SC$1.currentSnippetV=Var$1.Lens(SnippetsUI.snippetList().get_CurrentV(),Global.id,function(a$1,x$2)
+  {
+   return x$2;
+  });
+  SC$1.currentSnippetNameV=Var$1.Lens(SnippetsUI.currentSnippetV(),function($1)
+  {
+   return $1.snpName;
+  },function($1,$2)
+  {
+   return Snippet.New($1.snpId,$2,$1.snpContent,$1.snpParentIdO,$1.snpPredIds,$1.snpProperties,$1.snpModified);
+  });
+  SC$1.currentSnippetContentV=Var$1.Lens(SnippetsUI.currentSnippetV(),function($1)
+  {
+   return $1.snpContent;
+  },function($1,$2)
+  {
+   return Snippet.New($1.snpId,$1.snpName,$2,$1.snpParentIdO,$1.snpPredIds,$1.snpProperties,$1.snpModified);
+  });
+  SC$1.curSnp=(b$10=AF.plugin(),b$10.AddVar(b$10.AddVar(b$10.Yield(),"name",SnippetsUI.currentSnippetNameV()),"content",SnippetsUI.currentSnippetContentV()));
+  SC$1.monaco=(i$2=SnippetsUI.monacoNew(Var$1.Lens(SnippetsUI.currentSnippetV(),function($1)
+  {
+   return $1.snpContent;
+  },function($1,$2)
+  {
+   return Snippet.New($1.snpId,$1.snpName,$2,$1.snpParentIdO,$1.snpPredIds,$1.snpProperties,$1.snpModified);
+  })),GenEditor$1.New(i$2["var"],i$2.disabled,View.Const([]),i$2.onChange,i$2.onRender,null,null,null,i$2.editorO,i$2.editorHook));
+  SC$1.parseW=View.Map((f$1=(g$1=function(s$1)
+  {
+   return Seq.choose(c$13,s$1);
+  },function(x$2)
+  {
+   return g$1(f$4(x$2));
+  }),function(x$2)
+  {
+   return g$5(f$1(x$2));
+  }),SnippetsUI.currentSnippetContentV().get_View());
+  AF.addPlugIn2((b$11=AppFramework.plugin(),b$11.AddAct(b$11.AddAct(b$11.AddAct(b$11.AddAct(b$11.AddAct(b$11.AddAct(b$11.AddAct(b$11.Merge(b$11.Merge(b$11.AddDoc(b$11.AddViw(b$11.AddVar(b$11.Name(b$11.Yield(),"Snippets"),"searchFor",SnippetsUI.searchFor()),"parseOut",SnippetsUI.parseW()),"editor",Lazy.Create(function()
+  {
+   return Doc.Element("div",[],[GenEditor.generateDoc(SnippetsUI.monaco())]);
+  })),"snippets_",SnippetsUI.snippetList().PlugIn(SnippetsUI.selectorLensGuidId)),"curSnp_",SnippetsUI.curSnp()),"LoadSnippets",function()
+  {
+   SaveLoad.loadTextFile(self.document.getElementById("LoadSnippets").firstElementChild.firstElementChild.firstElementChild.firstElementChild);
+  }),"SaveSnippets",function()
+  {
+   SaveLoad.saveAs();
+  }),"IndentIn",function()
+  {
+   SnippetsUI.indentIn();
+  }),"IndentOut",function()
+  {
+   SnippetsUI.indentOut();
+  }),"AddSnippet",function()
+  {
+   SnippetsUI.addSnippet();
+  }),"DeleteSnippet",function()
+  {
+   SnippetsUI.deleteSnippet();
+  }),"ParseNewLY",function()
+  {
+   SnippetsUI.parseNewLY();
+  })));
+  LayoutEngine.addLayout0(LayoutEngineModule.newLyt("lytTarget","\r\n            main horizontal 10-50-70 part1 part2\r\n            \r\n            part1 div \"\" \r\n            : h1 \"\" \"Demo123 \" message\r\n            :: div \"\" \"Message:\"\r\n            :: textarea message \"height:200px;width:500px\"\r\n            \r\n            part2 div \"\" lytTarget.Layout\r\n            \r\n            message Var \"Hello\"     \r\n                "));
+  LayoutEngine.addLayout0(LayoutEngineModule.newLyt("SnippetsLyt","\r\n                    split horizontal 0-50-100 AppFramework.AppFwkClient main\r\n                    main vertical 0-25-100 list snippet\r\n                    SearchFor   Doc InputLabel \"\" \"Search\" Snippets.searchFor\r\n                    File        Doc InputFile  \"id=LoadSnippets\" \"Open File\" Snippets.LoadSnippets \"\"\r\n                    list div \"display: flex;flex-direction: column\" File\r\n                    : button \"click=@{Snippets.AddSnippet}\"    \"Add New Snippet\"\r\n                    : button \"click=@{Snippets.DeleteSnippet}\" \"Delete Snippet\"\r\n                    : button \"click=@{Snippets.IndentIn}\"      \"Indent in\"\r\n                    : button \"click=@{Snippets.IndentOut}\"     \"Indent out\"\r\n                    : div    \"\" SearchFor \r\n                    : div \"overflow:auto;width:100%;max-width:100%\" Snippets.snippets_list\r\n                    snippet div \"display: flex;flex-direction: column\"\r\n                    : div    \"\" Snippets.snippets_sel\r\n                    : Doc    InputLabel \"\" \"Name:\" Snippets.curSnp_name\r\n                    : div \"height:100%;class=relative\" Snippets.editor                \r\n                "));
+  LayoutEngine.addLayout0(LayoutEngineModule.newLyt("lytDemo","\r\n            SetTarget Action AppFramework.SetVar     \"lytTarget.Layout\"         \"@{target}\" \r\n            SetMain2  Action AppFramework.SetVar     \"AppFramework.mainDocV\"    \"lytDemo.main2\"\r\n            SetMain   Action AppFramework.SetVar     \"AppFramework.mainDocV\"    \"lytDemo.main\"\r\n            \r\n            main2 vertical 0-50-100 Left2 lytTarget.main            \r\n            Left2 vertical 0-25-100 list snippet\r\n            gotoMain  button \"click=@{SetMain};width:16px\" \"<<\"\r\n            \r\n            main vertical 0-50-100 Left lytTarget.main\r\n            Left div \"display:flex;flex-direction:column\" gotoMain2 snippet\r\n            gotoMain2 button \"click=@{SetMain2};width:16px\" \">>\"\r\n            \r\n            list div \"display: flex;flex-direction: column\" gotoMain File\r\n            : div    \"margin:5px\" SearchFor \r\n            : Concat buttons\r\n            : div \"overflow:auto;width:100%;max-width:calc(100% - 10px)\" Snippets.snippets_list\r\n            : ul \"margin:3px\"\r\n            :: button \"click=@{Snippets.AddSnippet}   ;title=Add New Snippet\" \"+\"\r\n            :: button \"margin-left:20px;click=@{Snippets.DeleteSnippet};title=Delete  Snippet\" \"x\"\r\n            \r\n            snippet div \"display: flex;flex-direction: column;flex:1\" Trigger\r\n            : button \"click=@{SetTarget}\"  \"Apply\"\r\n            : button \"click=@{Snippets.ParseNewLY}\" \"Apply NewLY\"\r\n            : div    \"click=@{SetTarget}\" Snippets.snippets_sel\r\n            : Doc    InputLabel \"\" \"Name:\" Snippets.curSnp_name\r\n            : div \"height:100%;class=relative;flex:1\" Snippets.editor            \r\n            : textarea   Snippets.parseOut \"height:7em\"\r\n            \r\n            buttons ul \"\"\r\n            : div \"margin:3px\"\r\n            :: button \"click=@{Snippets.IndentOut};title=indent out\"     \"<--\"\r\n            :: button \"click=@{Snippets.IndentIn};title=indent in\"       \"--> \"\r\n            \r\n            SearchFor   Doc InputLabel \"\" \"Search\" Snippets.searchFor\r\n            \r\n            File span \"class=input-group;margin:5px;id=LoadSnippets\"\r\n            : div \"class=input-group-btn\"\r\n            :: label \"class=btn btn-info\" \"Load File\"\r\n            ::: div \"\"\r\n            :::: input \"class=form-control;type=file;display: none;change=@{Snippets.LoadSnippets}\" \r\n            :: label \"class=btn btn-primary;click=@{Snippets.SaveSnippets}\" \"Save File\"\r\n            \r\n            Trigger   Doc    AppFramework.TrigAction Snippets.snippets_sel lytDemo.SetTarget\r\n            target    View \"n => n.includes('main ')?n:'main Contact \"\" \"\"'\" Snippets.curSnp_content\r\n                "));
+ };
+ ResizeObserver.addResizeObserver$1=function(f,el)
+ {
+  var r,ro,changed,b;
+  try
+  {
+   r=!(!Global.ResizeObserver);
+  }
+  catch(e)
+  {
+   r=false;
+  }
+  if(r)
+   {
+    ro=new Global.ResizeObserver(f);
+    ResizeObserver.set_observers$1(new T({
+     $:1,
+     $0:ro,
+     $1:ResizeObserver.observers$1()
+    }));
+    ro.observe(el);
+   }
+  else
+   {
+    changed=ResizeObserver.dimsChanged$1(el);
+    Concurrency.Start((b=null,Concurrency.Delay(function()
+    {
+     return Concurrency.While(function()
+     {
+      return el.isConnected;
+     },Concurrency.Delay(function()
+     {
+      return Concurrency.Bind(Concurrency.Sleep(110),function()
+      {
+       return changed()?(f(),Concurrency.Zero()):Concurrency.Zero();
+      });
+     }));
+    })),null);
+   }
+ };
+ ResizeObserver.set_observers$1=function($1)
+ {
+  SC$1.$cctor();
+  SC$1.observers=$1;
+ };
+ ResizeObserver.observers$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.observers;
+ };
+ ResizeObserver.dimsChanged$1=function(el)
+ {
+  var dims;
+  dims=[el.getBoundingClientRect()];
+  return function()
+  {
+   var ndims;
+   ndims=el.getBoundingClientRect();
+   return Unchecked.Equals(ResizeObserver.domRect2Tuple$1(dims[0]),ResizeObserver.domRect2Tuple$1(ndims))?false:(dims[0]=ndims,true);
+  };
+ };
+ ResizeObserver.domRect2Tuple$1=function(r)
+ {
+  return[r.top,r.left,r.width,r.height];
+ };
+ Option.iter=function(f)
+ {
+  function f$1(o)
+  {
+   return o==null?null:{
+    $:1,
+    $0:f(o.$0)
+   };
+  }
+  function g(o)
+  {
+   if(o==null)
+    ;
+  }
+  return function(x)
+  {
+   return g(f$1(x));
+  };
+ };
+ GenEditor.bindVarEditor=function(setEvent,getVal,setVal,onChange,_var)
+ {
+  var editorChanged,varChanged;
+  editorChanged=[0];
+  varChanged=[0];
+  setEvent(function()
+  {
+   var v;
+   v=getVal();
+   !Unchecked.Equals(_var.Get(),v)?(editorChanged[0]=editorChanged[0]+1,_var.Set(v),onChange(v)):void 0;
+  });
+  View.Sink(function()
+  {
+   if(editorChanged[0]>varChanged[0])
+    varChanged[0]=editorChanged[0];
+   else
+    if(!Unchecked.Equals(getVal(),_var.Get()))
+     setVal(_var.Get());
+  },_var.get_View());
+ };
+ GenEditor.newVar=function(edh,_var)
+ {
+  return GenEditor$1.New(_var,View.Const(false),View.Const([]),null,Global.ignore,null,null,null,null,edh);
+ };
+ GenEditor.onRender=function(f,genE)
+ {
+  return GenEditor$1.New(genE["var"],genE.disabled,genE.annotations,genE.onChange,f,genE.autoCompletion,genE.toolTip,genE.declaration,genE.editorO,genE.editorHook);
+ };
+ GenEditor.generateDoc=function(genE)
+ {
+  var onChange,o,o$1;
+  onChange=(o=(o$1=genE.onChange,o$1==null?null:{
+   $:1,
+   $0:o$1.$0(genE)
+  }),o==null?Global.ignore:o.$0);
+  return(genE.editorHook.generateDoc(genE))(function(ed)
+  {
+   genE.editorO={
+    $:1,
+    $0:ed
+   };
+   GenEditor.bindVarEditor(genE.editorHook.hookOnChange,genE.editorHook.getValue,genE.editorHook.setValue,onChange,genE["var"]);
+   View.Sink(genE.editorHook.showAnnotations,genE.annotations);
+   View.Sink(genE.editorHook.setDisabled,genE.disabled);
+   genE.onRender(genE);
+  });
+ };
  Var$1=UI.Var$1=Runtime$1.Class({},Obj,Var$1);
+ Var$1.Create$1=function(v)
+ {
+  return new ConcreteVar.New(false,Snap.New({
+   $:2,
+   $0:v,
+   $1:[]
+  }),v);
+ };
  Var$1.Lens=function(_var,get,update)
  {
   var id,view,$1;
@@ -2120,45 +4850,951 @@ if (!console) {
   Var.New.call($1);
   return $1;
  };
- Var$1.Create$1=function(v)
- {
-  return new ConcreteVar.New(false,Snap.New({
-   $:2,
-   $0:v,
-   $1:[]
-  }),v);
- };
  Var$1.Set=function(_var,value)
  {
   _var.Set(value);
  };
- Operators.toInt=function(x)
+ Option$1.toArray=function(x)
  {
-  var u;
-  u=Operators.toUInt(x);
-  return u>=2147483648?u-4294967296:u;
+  return x==null?[]:[x.$0];
  };
- Operators.toUInt=function(x)
+ Position$1.New=function(line,col)
  {
-  return(x<0?Math.ceil(x):Math.floor(x))>>>0;
+  return{
+   line:line,
+   col:col
+  };
  };
- Operators.KeyValue=function(kvp)
+ AsyncResultMAutoOpen.asyncResultM=function()
  {
-  return[kvp.K,kvp.V];
+  SC$1.$cctor();
+  return SC$1.asyncResultM;
  };
- Operators.FailWith=function(msg)
+ AsyncResultMAutoOpen["AsyncResultMBuilder.Bind"]=function(__,vA,fRA)
  {
-  throw new Error(msg);
- };
- Operators.range=function(min,max)
- {
-  var count;
-  count=1+max-min;
-  return count<=0?[]:Seq.init(count,function(x)
+  function g(v)
   {
-   return x+min;
+   return Concurrency.Return(v);
+  }
+  return AsyncResultM.bind(fRA,Concurrency.Bind(vA,function(x)
+  {
+   return g(Monads.OkM$1(x));
+  }));
+ };
+ AsyncResultMBuilder=AsyncResultM.AsyncResultMBuilder=Runtime$1.Class({
+  Run:function(fRA)
+  {
+   return AsyncResultM.bind(fRA,AsyncResultM.rtn());
+  },
+  Delay:Global.id,
+  Return:function(v)
+  {
+   return AsyncResultM.rtn(v);
+  }
+ },Obj,AsyncResultMBuilder);
+ AsyncResultMBuilder.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+ },AsyncResultMBuilder);
+ Arrays.map=function(f,arr)
+ {
+  var r,i,$1;
+  r=new Global.Array(arr.length);
+  for(i=0,$1=arr.length-1;i<=$1;i++)r[i]=f(arr[i]);
+  return r;
+ };
+ Arrays.splitAt=function(n,ar)
+ {
+  return[Arrays.take(n,ar),Arrays.skip(n,ar)];
+ };
+ Arrays.findIndex=function(f,arr)
+ {
+  var m;
+  m=Arrays.tryFindIndex(f,arr);
+  return m==null?Operators.FailWith("KeyNotFoundException"):m.$0;
+ };
+ Arrays.concat=function(xs)
+ {
+  return Global.Array.prototype.concat.apply([],Arrays.ofSeq(xs));
+ };
+ Arrays.tryItem=function(i,arr)
+ {
+  return arr.length<=i||i<0?null:{
+   $:1,
+   $0:arr[i]
+  };
+ };
+ Arrays.ofSeq=function(xs)
+ {
+  var q,o;
+  if(xs instanceof Global.Array)
+   return xs.slice();
+  else
+   if(xs instanceof T)
+    return Arrays.ofList(xs);
+   else
+    {
+     q=[];
+     o=Enumerator.Get(xs);
+     try
+     {
+      while(o.MoveNext())
+       q.push(o.Current());
+      return q;
+     }
+     finally
+     {
+      if(typeof o=="object"&&"Dispose"in o)
+       o.Dispose();
+     }
+    }
+ };
+ Arrays.tryFindIndex=function(f,arr)
+ {
+  var res,i;
+  res=null;
+  i=0;
+  while(i<arr.length&&res==null)
+   {
+    f(arr[i])?res={
+     $:1,
+     $0:i
+    }:void 0;
+    i=i+1;
+   }
+  return res;
+ };
+ Arrays.exists=function(f,x)
+ {
+  var e,i,$1,l;
+  e=false;
+  i=0;
+  l=Arrays.length(x);
+  while(!e&&i<l)
+   if(f(x[i]))
+    e=true;
+   else
+    i=i+1;
+  return e;
+ };
+ Arrays.filter=function(f,arr)
+ {
+  var r,i,$1;
+  r=[];
+  for(i=0,$1=arr.length-1;i<=$1;i++)if(f(arr[i]))
+   r.push(arr[i]);
+  return r;
+ };
+ Arrays.take=function(n,ar)
+ {
+  return n<0?Seq.nonNegative():n>ar.length?Seq.insufficient():ar.slice(0,n);
+ };
+ Arrays.skip=function(i,ar)
+ {
+  return i<0?Seq.nonNegative():i>ar.length?Seq.insufficient():ar.slice(i);
+ };
+ Arrays.tryFind=function(f,arr)
+ {
+  var res,i;
+  res=null;
+  i=0;
+  while(i<arr.length&&res==null)
+   {
+    f(arr[i])?res={
+     $:1,
+     $0:arr[i]
+    }:void 0;
+    i=i+1;
+   }
+  return res;
+ };
+ Arrays.choose=function(f,arr)
+ {
+  var q,i,$1,m;
+  q=[];
+  for(i=0,$1=arr.length-1;i<=$1;i++){
+   m=f(arr[i]);
+   m==null?void 0:q.push(m.$0);
+  }
+  return q;
+ };
+ Arrays.ofList=function(xs)
+ {
+  var l,q;
+  q=[];
+  l=xs;
+  while(!(l.$==0))
+   {
+    q.push(List.head(l));
+    l=List.tail(l);
+   }
+  return q;
+ };
+ Arrays.tryPick=function(f,arr)
+ {
+  var res,i,m;
+  res=null;
+  i=0;
+  while(i<arr.length&&res==null)
+   {
+    m=f(arr[i]);
+    m!=null&&m.$==1?res=m:void 0;
+    i=i+1;
+   }
+  return res;
+ };
+ Arrays.foldBack=function(f,arr,zero)
+ {
+  var acc,$1,len,i,$2;
+  acc=zero;
+  len=arr.length;
+  for(i=1,$2=len;i<=$2;i++)acc=f(arr[len-i],acc);
+  return acc;
+ };
+ Arrays.pick=function(f,arr)
+ {
+  var m;
+  m=Arrays.tryPick(f,arr);
+  return m==null?Operators.FailWith("KeyNotFoundException"):m.$0;
+ };
+ Arrays.sortInPlace=function(arr)
+ {
+  Arrays.mapInPlace(function(t)
+  {
+   return t[0];
+  },Arrays.mapiInPlace(function($1,$2)
+  {
+   return[$2,$1];
+  },arr).sort(Unchecked.Compare));
+ };
+ Arrays.find=function(f,arr)
+ {
+  var m;
+  m=Arrays.tryFind(f,arr);
+  return m==null?Operators.FailWith("KeyNotFoundException"):m.$0;
+ };
+ Arrays.iter=function(f,arr)
+ {
+  var i,$1;
+  for(i=0,$1=arr.length-1;i<=$1;i++)f(arr[i]);
+ };
+ Arrays.create=function(size,value)
+ {
+  var r,i,$1;
+  r=new Global.Array(size);
+  for(i=0,$1=size-1;i<=$1;i++)r[i]=value;
+  return r;
+ };
+ Arrays.sortInPlaceBy=function(f,arr)
+ {
+  Arrays.mapInPlace(function(t)
+  {
+   return t[0];
+  },Arrays.mapiInPlace(function($1,$2)
+  {
+   return[$2,[f($2),$1]];
+  },arr).sort(function($1,$2)
+  {
+   return Unchecked.Compare($1[1],$2[1]);
+  }));
+ };
+ Arrays.forall=function(f,x)
+ {
+  var a,i,$1,l;
+  a=true;
+  i=0;
+  l=Arrays.length(x);
+  while(a&&i<l)
+   if(f(x[i]))
+    i=i+1;
+   else
+    a=false;
+  return a;
+ };
+ Arrays.init=function(size,f)
+ {
+  var r,i,$1;
+  size<0?Operators.FailWith("Negative size given."):null;
+  r=new Global.Array(size);
+  for(i=0,$1=size-1;i<=$1;i++)r[i]=f(i);
+  return r;
+ };
+ PromiseM.ofAsyncResultM=function(v)
+ {
+  return new Global.Promise(function(resolve,reject)
+  {
+   Concurrency.StartWithContinuations(v,function(a)
+   {
+    var a$1;
+    a$1=Monads.OkM(a);
+    a$1.$==1?reject(ResultMessage.summarized(a$1.$0)):resolve(a$1.$0[0]);
+   },function(a)
+   {
+    reject(a);
+   },function(a)
+   {
+    reject(a);
+   },null);
   });
  };
+ GenEditor$1.New=function(_var,disabled,annotations,onChange,onRender,autoCompletion,toolTip,declaration,editorO,editorHook)
+ {
+  return{
+   "var":_var,
+   disabled:disabled,
+   annotations:annotations,
+   onChange:onChange,
+   onRender:onRender,
+   autoCompletion:autoCompletion,
+   toolTip:toolTip,
+   declaration:declaration,
+   editorO:editorO,
+   editorHook:editorHook
+  };
+ };
+ Seq.map=function(f,s)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    var en;
+    en=Enumerator.Get(s);
+    return new T$1.New(null,null,function(e)
+    {
+     return en.MoveNext()&&(e.c=f(en.Current()),true);
+    },function()
+    {
+     en.Dispose();
+    });
+   }
+  };
+ };
+ Seq.choose=function(f,s)
+ {
+  return Seq.collect(function(x)
+  {
+   var m;
+   m=f(x);
+   return m==null?T.Empty:List.ofArray([m.$0]);
+  },s);
+ };
+ Seq.iter=function(p,s)
+ {
+  var e;
+  e=Enumerator.Get(s);
+  try
+  {
+   while(e.MoveNext())
+    p(e.Current());
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ Seq.append=function(s1,s2)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    var e1,first;
+    e1=Enumerator.Get(s1);
+    first=[true];
+    return new T$1.New(e1,null,function(x)
+    {
+     var x$1;
+     return x.s.MoveNext()?(x.c=x.s.Current(),true):(x$1=x.s,!Unchecked.Equals(x$1,null)?x$1.Dispose():void 0,x.s=null,first[0]&&(first[0]=false,x.s=Enumerator.Get(s2),x.s.MoveNext()?(x.c=x.s.Current(),true):(x.s.Dispose(),x.s=null,false)));
+    },function(x)
+    {
+     var x$1;
+     x$1=x.s;
+     !Unchecked.Equals(x$1,null)?x$1.Dispose():void 0;
+    });
+   }
+  };
+ };
+ Seq.filter=function(f,s)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    var o;
+    o=Enumerator.Get(s);
+    return new T$1.New(null,null,function(e)
+    {
+     var loop,c,res;
+     loop=o.MoveNext();
+     c=o.Current();
+     res=false;
+     while(loop)
+      if(f(c))
+       {
+        e.c=c;
+        res=true;
+        loop=false;
+       }
+      else
+       if(o.MoveNext())
+        c=o.Current();
+       else
+        loop=false;
+     return res;
+    },function()
+    {
+     o.Dispose();
+    });
+   }
+  };
+ };
+ Seq.collect=function(f,s)
+ {
+  return Seq.concat(Seq.map(f,s));
+ };
+ Seq.indexed=function(s)
+ {
+  return Seq.mapi(function($1,$2)
+  {
+   return[$1,$2];
+  },s);
+ };
+ Seq.tryFind=function(ok,s)
+ {
+  var e,r,x;
+  e=Enumerator.Get(s);
+  try
+  {
+   r=null;
+   while(r==null&&e.MoveNext())
+    {
+     x=e.Current();
+     ok(x)?r={
+      $:1,
+      $0:x
+     }:void 0;
+    }
+   return r;
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ Seq.fold=function(f,x,s)
+ {
+  var r,e;
+  r=x;
+  e=Enumerator.Get(s);
+  try
+  {
+   while(e.MoveNext())
+    r=f(r,e.Current());
+   return r;
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ Seq.delay=function(f)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    return Enumerator.Get(f());
+   }
+  };
+ };
+ Seq.concat=function(ss)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    var outerE;
+    outerE=Enumerator.Get(ss);
+    return new T$1.New(null,null,function(st)
+    {
+     var m;
+     while(true)
+      {
+       m=st.s;
+       if(Unchecked.Equals(m,null))
+       {
+        if(outerE.MoveNext())
+         {
+          st.s=Enumerator.Get(outerE.Current());
+          st=st;
+         }
+        else
+         {
+          outerE.Dispose();
+          return false;
+         }
+       }
+       else
+        if(m.MoveNext())
+         {
+          st.c=m.Current();
+          return true;
+         }
+        else
+         {
+          st.Dispose();
+          st.s=null;
+          st=st;
+         }
+      }
+    },function(st)
+    {
+     var x;
+     x=st.s;
+     !Unchecked.Equals(x,null)?x.Dispose():void 0;
+     !Unchecked.Equals(outerE,null)?outerE.Dispose():void 0;
+    });
+   }
+  };
+ };
+ Seq.mapi=function(f,s)
+ {
+  return Seq.map2(f,Seq.initInfinite(Global.id),s);
+ };
+ Seq.nth=function(index,s)
+ {
+  var pos,e;
+  if(index<0)
+   Operators.FailWith("negative index requested");
+  pos=-1;
+  e=Enumerator.Get(s);
+  try
+  {
+   while(pos<index)
+    {
+     !e.MoveNext()?Seq.insufficient():void 0;
+     pos=pos+1;
+    }
+   return e.Current();
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ Seq.tryFindIndex=function(ok,s)
+ {
+  var e,loop,i;
+  e=Enumerator.Get(s);
+  try
+  {
+   loop=true;
+   i=0;
+   while(loop&&e.MoveNext())
+    if(ok(e.Current()))
+     loop=false;
+    else
+     i=i+1;
+   return loop?null:{
+    $:1,
+    $0:i
+   };
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ Seq.head=function(s)
+ {
+  var e;
+  e=Enumerator.Get(s);
+  try
+  {
+   return e.MoveNext()?e.Current():Seq.insufficient();
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ Seq.cache=function(s)
+ {
+  var cache,o;
+  cache=[];
+  o=[Enumerator.Get(s)];
+  return{
+   GetEnumerator:function()
+   {
+    return new T$1.New(0,null,function(e)
+    {
+     var en;
+     return e.s<cache.length?(e.c=cache[e.s],e.s=e.s+1,true):(en=o[0],Unchecked.Equals(en,null)?false:en.MoveNext()?(e.s=e.s+1,e.c=en.Current(),cache.push(e.c),true):(en.Dispose(),o[0]=null,false));
+    },void 0);
+   }
+  };
+ };
+ Seq.groupBy=function(f,s)
+ {
+  return Seq.delay(function()
+  {
+   return Arrays.groupBy(f,Arrays.ofSeq(s));
+  });
+ };
+ Seq.map2=function(f,s1,s2)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    var e1,e2;
+    e1=Enumerator.Get(s1);
+    e2=Enumerator.Get(s2);
+    return new T$1.New(null,null,function(e)
+    {
+     return e1.MoveNext()&&e2.MoveNext()&&(e.c=f(e1.Current(),e2.Current()),true);
+    },function()
+    {
+     e1.Dispose();
+     e2.Dispose();
+    });
+   }
+  };
+ };
+ Seq.initInfinite=function(f)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    return new T$1.New(0,null,function(e)
+    {
+     e.c=f(e.s);
+     e.s=e.s+1;
+     return true;
+    },void 0);
+   }
+  };
+ };
+ Seq.init=function(n,f)
+ {
+  return Seq.take(n,Seq.initInfinite(f));
+ };
+ Seq.pairwise=function(s)
+ {
+  return Seq.map(function(x)
+  {
+   return[Arrays.get(x,0),Arrays.get(x,1)];
+  },Seq.windowed(2,s));
+ };
+ Seq.isEmpty=function(s)
+ {
+  var e;
+  e=Enumerator.Get(s);
+  try
+  {
+   return!e.MoveNext();
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ Seq.distinctBy=function(f,s)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    var o,seen;
+    o=Enumerator.Get(s);
+    seen=new HashSet.New$3();
+    return new T$1.New(null,null,function(e)
+    {
+     var cur,has;
+     if(o.MoveNext())
+      {
+       cur=o.Current();
+       has=seen.Add(f(cur));
+       while(!has&&o.MoveNext())
+        {
+         cur=o.Current();
+         has=seen.Add(f(cur));
+        }
+       return has&&(e.c=cur,true);
+      }
+     else
+      return false;
+    },function()
+    {
+     o.Dispose();
+    });
+   }
+  };
+ };
+ Seq.forall2=function(p,s1,s2)
+ {
+  return!Seq.exists2(function($1,$2)
+  {
+   return!p($1,$2);
+  },s1,s2);
+ };
+ Seq.take=function(n,s)
+ {
+  n<0?Seq.nonNegative():void 0;
+  return{
+   GetEnumerator:function()
+   {
+    var e;
+    e=[Enumerator.Get(s)];
+    return new T$1.New(0,null,function(o)
+    {
+     var en;
+     o.s=o.s+1;
+     return o.s>n?false:(en=e[0],Unchecked.Equals(en,null)?Seq.insufficient():en.MoveNext()?(o.c=en.Current(),o.s===n?(en.Dispose(),e[0]=null):void 0,true):(en.Dispose(),e[0]=null,Seq.insufficient()));
+    },function()
+    {
+     var x;
+     x=e[0];
+     !Unchecked.Equals(x,null)?x.Dispose():void 0;
+    });
+   }
+  };
+ };
+ Seq.distinct=function(s)
+ {
+  return Seq.distinctBy(Global.id,s);
+ };
+ Seq.tryPick=function(f,s)
+ {
+  var e,r;
+  e=Enumerator.Get(s);
+  try
+  {
+   r=null;
+   while(Unchecked.Equals(r,null)&&e.MoveNext())
+    r=f(e.Current());
+   return r;
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ Seq.windowed=function(windowSize,s)
+ {
+  windowSize<=0?Operators.FailWith("The input must be positive."):void 0;
+  return Seq.delay(function()
+  {
+   return Seq.enumUsing(Enumerator.Get(s),function(e)
+   {
+    var q;
+    q=[];
+    return Seq.append(Seq.enumWhile(function()
+    {
+     return q.length<windowSize&&e.MoveNext();
+    },Seq.delay(function()
+    {
+     q.push(e.Current());
+     return[];
+    })),Seq.delay(function()
+    {
+     return q.length===windowSize?Seq.append([q.slice(0)],Seq.delay(function()
+     {
+      return Seq.enumWhile(function()
+      {
+       return e.MoveNext();
+      },Seq.delay(function()
+      {
+       q.shift();
+       q.push(e.Current());
+       return[q.slice(0)];
+      }));
+     })):[];
+    }));
+   });
+  });
+ };
+ Seq.skip=function(n,s)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    var o;
+    o=Enumerator.Get(s);
+    return new T$1.New(true,null,function(e)
+    {
+     var i,$1;
+     if(e.s)
+      {
+       for(i=1,$1=n;i<=$1;i++)if(!o.MoveNext())
+        Seq.insufficient();
+       e.s=false;
+      }
+     else
+      null;
+     return o.MoveNext()&&(e.c=o.Current(),true);
+    },function()
+    {
+     o.Dispose();
+    });
+   }
+  };
+ };
+ Seq.exists2=function(p,s1,s2)
+ {
+  var e1,$1,e2,r;
+  e1=Enumerator.Get(s1);
+  try
+  {
+   e2=Enumerator.Get(s2);
+   try
+   {
+    r=false;
+    while(!r&&e1.MoveNext()&&e2.MoveNext())
+     r=p(e1.Current(),e2.Current());
+    $1=r;
+   }
+   finally
+   {
+    if(typeof e2=="object"&&"Dispose"in e2)
+     e2.Dispose();
+   }
+   return $1;
+  }
+  finally
+  {
+   if(typeof e1=="object"&&"Dispose"in e1)
+    e1.Dispose();
+  }
+ };
+ Seq.compareWith=function(f,s1,s2)
+ {
+  var e1,$1,e2,r,loop;
+  e1=Enumerator.Get(s1);
+  try
+  {
+   e2=Enumerator.Get(s2);
+   try
+   {
+    r=0;
+    loop=true;
+    while(loop&&r===0)
+     if(e1.MoveNext())
+      r=e2.MoveNext()?f(e1.Current(),e2.Current()):1;
+     else
+      if(e2.MoveNext())
+       r=-1;
+      else
+       loop=false;
+    $1=r;
+   }
+   finally
+   {
+    if(typeof e2=="object"&&"Dispose"in e2)
+     e2.Dispose();
+   }
+   return $1;
+  }
+  finally
+  {
+   if(typeof e1=="object"&&"Dispose"in e1)
+    e1.Dispose();
+  }
+ };
+ Seq.unfold=function(f,s)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    return new T$1.New(s,null,function(e)
+    {
+     var m;
+     m=f(e.s);
+     return m==null?false:(e.c=m.$0[0],e.s=m.$0[1],true);
+    },void 0);
+   }
+  };
+ };
+ Seq.sortBy=function(f,s)
+ {
+  return Seq.delay(function()
+  {
+   var array;
+   array=Arrays.ofSeq(s);
+   Arrays.sortInPlaceBy(f,array);
+   return array;
+  });
+ };
+ Seq.max=function(s)
+ {
+  var e,m,x;
+  e=Enumerator.Get(s);
+  try
+  {
+   if(!e.MoveNext())
+    Seq.seqEmpty();
+   m=e.Current();
+   while(e.MoveNext())
+    {
+     x=e.Current();
+     Unchecked.Compare(x,m)===1?m=x:void 0;
+    }
+   return m;
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ Seq.seqEmpty=function()
+ {
+  return Operators.FailWith("The input sequence was empty.");
+ };
+ Seq.forall=function(p,s)
+ {
+  return!Seq.exists(function(x)
+  {
+   return!p(x);
+  },s);
+ };
+ Seq.exists=function(p,s)
+ {
+  var e,r;
+  e=Enumerator.Get(s);
+  try
+  {
+   r=false;
+   while(!r&&e.MoveNext())
+    r=p(e.Current());
+   return r;
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ GenEditorHook.New=function(generateDoc,getValue,setValue,setDisabled,showAnnotations,posFromIndex,indexFromPos,getWordAt,getSelectionText,getUri,setUri,hookOnChange)
+ {
+  return{
+   generateDoc:generateDoc,
+   getValue:getValue,
+   setValue:setValue,
+   setDisabled:setDisabled,
+   showAnnotations:showAnnotations,
+   posFromIndex:posFromIndex,
+   indexFromPos:indexFromPos,
+   getWordAt:getWordAt,
+   getSelectionText:getSelectionText,
+   getUri:getUri,
+   setUri:setUri,
+   hookOnChange:hookOnChange
+  };
+ };
+ attr=HtmlModule.attr=Runtime$1.Class({},Obj,attr);
  ParseO.parseDoubleO=function()
  {
   SC$2.$cctor();
@@ -2213,11 +5849,6 @@ if (!console) {
   SC$2.$cctor();
   return SC$2["|Int|_|"];
  };
- Var=UI.Var=Runtime$1.Class({},Obj,Var);
- Var.New=Runtime$1.Ctor(function()
- {
-  Obj.New.call(this);
- },Var);
  Utils.prettyPrint=function(o)
  {
   var t,s;
@@ -2234,9 +5865,19 @@ if (!console) {
  {
   return s==null?"":s;
  };
+ Utils.padNumLeft=function(s,l)
+ {
+  var f;
+  f=Arrays.get(s,0);
+  return f===" "||f==="+"||f==="-"?f+Strings.PadLeftWith(s.substr(1),l-1,"0"):Strings.PadLeftWith(s,l,"0");
+ };
  Utils.printList=function(p,o)
  {
   return"["+Strings.concat("; ",Seq.map(p,o))+"]";
+ };
+ Utils.printArray=function(p,o)
+ {
+  return o===null?"null":"[|"+Strings.concat("; ",Arrays.map(p,o))+"|]";
  };
  GuidId=Library.GuidId=Runtime$1.Class({
   get_Id:function()
@@ -2294,6 +5935,21 @@ if (!console) {
   SC$2.$cctor();
   return SC$2.mainDocV;
  };
+ AppFramework.getMainDoc=function()
+ {
+  SC$2.$cctor();
+  return SC$2.getMainDoc;
+ };
+ AppFramework.callFunction=function(p1,p2,actF)
+ {
+  if(actF.$==1)
+   actF.$0(p1);
+  else
+   if(actF.$==2)
+    (actF.$0(p1))(p2);
+   else
+    actF.$0();
+ };
  AppFramework.splitName=function(lytNm)
  {
   function f(s)
@@ -2350,10 +6006,12 @@ if (!console) {
    },a.$0.viwView);
   },AppFramework.tryGetViwW(plgName,viwName));
  };
- AppFramework.getMainDoc=function()
+ AppFramework.tryGetActW=function(plgName,actName)
  {
-  SC$2.$cctor();
-  return SC$2.getMainDoc;
+  return View.Bind(function(a)
+  {
+   return a!=null&&a.$==1?a.$0.plgActions.TryFindByKeyAsView(actName):View.Const(null);
+  },AppFramework.tryGetPlugInW(plgName));
  };
  AppFramework.plugin=function()
  {
@@ -2812,16 +6470,6 @@ if (!console) {
   o=AppFramework.tryGetPlugIn(plgName);
   return o==null?null:o.$0.plgActions.TryFindByKey(actName);
  };
- AppFramework.callFunction=function(p1,p2,actF)
- {
-  if(actF.$==1)
-   actF.$0(p1);
-  else
-   if(actF.$==2)
-    (actF.$0(p1))(p2);
-   else
-    actF.$0();
- };
  AppFramework.errDoc=function(txt)
  {
   return Doc.Element("div",[],[Doc.TextNode(txt)]);
@@ -2950,13 +6598,6 @@ if (!console) {
    $:0,
    $0:txt
   }):o.$0;
- };
- AppFramework.tryGetActW=function(plgName,actName)
- {
-  return View.Bind(function(a)
-  {
-   return a!=null&&a.$==1?a.$0.plgActions.TryFindByKeyAsView(actName):View.Const(null);
-  },AppFramework.tryGetPlugInW(plgName));
  };
  AppFramework.getOneTextData=function(lytNm,name,bef,aft)
  {
@@ -3090,6 +6731,20 @@ if (!console) {
     return Arrays.exists(p,a);
    },this["var"].get_View());
   },
+  TryFindByKey:function(key)
+  {
+   var $this;
+   $this=this;
+   return Arrays.tryFind(function(it)
+   {
+    return Unchecked.Equals($this.key(it),key);
+   },this["var"].Get());
+  },
+  Set:function(lst)
+  {
+   this["var"].Set(this.storage.SSet(lst));
+   this.ObsoleteAll();
+  },
   Append:function(item)
   {
    var $this,v,t,m;
@@ -3118,18 +6773,17 @@ if (!console) {
    }),o]);
    m[0]?(Snap.Obsolete(m[1]),this.it.Remove(key)):void 0;
   },
-  TryFindByKey:function(key)
-  {
-   var $this;
-   $this=this;
-   return Arrays.tryFind(function(it)
-   {
-    return Unchecked.Equals($this.key(it),key);
-   },this["var"].Get());
-  },
   LensInto:function(get,update,key)
   {
    return this["LensInto'"](get,update,key,View.Map(get,this.FindByKeyAsView(key)));
+  },
+  ObsoleteAll:function()
+  {
+   Seq.iter(function(ksn)
+   {
+    Snap.Obsolete(ksn.V);
+   },this.it);
+   this.it.Clear();
   },
   "LensInto'":function(get,update,key,view)
   {
@@ -3359,6 +7013,10 @@ if (!console) {
    })));
   },lyt.lytDefinition.get_View());
  };
+ LayoutEngineModule.parseEntries=function(lytNm,txt)
+ {
+  return LayoutEngineModule.processText(Syntax.createEntryO2(lytNm,new Dictionary.New$5()),txt);
+ };
  LayoutEngineModule.variableSplitter=function(vertical,min,value,max,doc1,doc2)
  {
   return Doc.Element("wcomp-splitter",List.ofSeq(Seq.delay(function()
@@ -3374,6 +7032,10 @@ if (!console) {
     }));
    }));
   })),List.ofArray([doc1,doc2]));
+ };
+ LayoutEngineModule.newLyt=function(name,lyt)
+ {
+  return LayoutEngine$1.New(name,Var$1.Create$1(lyt));
  };
  LayoutEngineModule.currentViewTriggger=function()
  {
@@ -3569,6 +7231,10 @@ if (!console) {
  LayoutEngineModule.none=function(x)
  {
   return Doc.Element("span",[],[]);
+ };
+ LayoutEngineModule.processText=function(f,txt)
+ {
+  return LayoutEngineModule.processLines(f,Strings.SplitChars(txt,["\n","\r"],1));
  };
  LayoutEngineModule.createSplitter=function(lytNm,name,vertical,measures,docs)
  {
@@ -3904,10 +7570,6 @@ if (!console) {
   var x,x$1;
   LayoutEngineModule.addLayout((x=(x$1=!Unchecked.Equals(layout,null)?layout:"\r\n            split horizontal 0-50-100 AppFramework.AppFwkClient Hello\r\n            Hello h1 \"color:blue; class=btn-primary\" \"How are you today?\" Ask\r\n            Ask Doc InputLabel \"placeholder=Type you answer here...\" \"Answer:\" AppFramework.mainDocV  \r\n            ",(String.unindentStr())(x$1)),LayoutEngineModule.newLyt(!Unchecked.Equals(layout,null)?name:"Lyt_"+Strings.Replace(Global.String(Guid.NewGuid()),"-",""),x)));
  };
- LayoutEngineModule.processText=function(f,txt)
- {
-  return LayoutEngineModule.processLines(f,Strings.SplitChars(txt,["\n","\r"],1));
- };
  LayoutEngineModule.createEntryO=function(lytNm,line)
  {
   var m,$1,a,a$1,name,$2,a$2,a$3,name$1,$3,a$4,a$5,name$2,$4,a$6,a$7,name$3,$5,a$8,a$9,name$4,$6,a$10,name$5,$7,a$11,name$6,$8,a$12,name$7,$9,a$13,name$8,$10,a$14,name$9,$11,a$15,a$16,name$10,$12,a$17,a$18,name$11;
@@ -4024,6 +7686,41 @@ if (!console) {
    $:0,
    $0:txt
   }):o.$0;
+ };
+ LayoutEngineModule.processLines=function(f,ls)
+ {
+  function processLinesR(ls$1)
+  {
+   var m,l,m$1,$1,a,p,p$1,rest,docs,p$2,names,ls$2;
+   m=Seq.tryHead(ls$1);
+   return m!=null&&m.$==1?(l=m.$0,(m$1=LayoutEngineModule.splitTokens(l),m$1.$==1&&(a=LayoutEngineModule.Identifier(m$1.$0),a!=null&&a.$==1&&(m$1.$1.$==1&&(LayoutEngineModule.Vertical(m$1.$1.$0).$==2&&(m$1.$1.$1.$==0&&($1=a.$0,true)))))?(p=LayoutEngineModule.getExtraLines(function(l$1)
+   {
+    return Strings.StartsWith(Strings.Trim(l$1),"|");
+   },ls$1),processLinesR((Layout.createLayoutDefinitions($1,Layout.extractNodes(p[0])))[1].concat(p[1]))):m$1.$==0?processLinesR(Slice.array(ls$1,{
+    $:1,
+    $0:1
+   },null)):(p$1=LayoutEngineModule.getExtraLines(function(l$1)
+   {
+    return Strings.StartsWith(Strings.Trim(l$1),":");
+   },ls$1),(rest=p$1[1],(docs=p$1[0],Arrays.length(docs)>0?(p$2=LayoutEngineModule.createLines(Seq.nth(0,Strings.SplitChars(l,[" "],1)),1,[],[],1,docs),(names=p$2[0],(ls$2=p$2[1],processLinesR(Arrays.ofSeq(Seq.delay(function()
+   {
+    return Seq.append(ls$2,Seq.delay(function()
+    {
+     return Seq.append([l+" "+Strings.concat(" ",names)],Seq.delay(function()
+     {
+      return rest;
+     }));
+    }));
+   })))))):Arrays.ofSeq(Seq.delay(function()
+   {
+    var m$2;
+    return Seq.append((m$2=f(l),m$2!=null&&m$2.$==1?[m$2.$0]:[]),Seq.delay(function()
+    {
+     return processLinesR(rest);
+    }));
+   }))))))):[];
+  }
+  return processLinesR(ls);
  };
  LayoutEngineModule.pairOfDocs=function(lytNm,docs)
  {
@@ -4162,45 +7859,6 @@ if (!console) {
    else
     f(a.$0);
   },LayoutEngineModule.getTextToken(lytNm,token));
- };
- LayoutEngineModule.newLyt=function(name,lyt)
- {
-  return LayoutEngine$1.New(name,Var$1.Create$1(lyt));
- };
- LayoutEngineModule.processLines=function(f,ls)
- {
-  function processLinesR(ls$1)
-  {
-   var m,l,m$1,$1,a,p,p$1,rest,docs,p$2,names,ls$2;
-   m=Seq.tryHead(ls$1);
-   return m!=null&&m.$==1?(l=m.$0,(m$1=LayoutEngineModule.splitTokens(l),m$1.$==1&&(a=LayoutEngineModule.Identifier(m$1.$0),a!=null&&a.$==1&&(m$1.$1.$==1&&(LayoutEngineModule.Vertical(m$1.$1.$0).$==2&&(m$1.$1.$1.$==0&&($1=a.$0,true)))))?(p=LayoutEngineModule.getExtraLines(function(l$1)
-   {
-    return Strings.StartsWith(Strings.Trim(l$1),"|");
-   },ls$1),processLinesR((Layout.createLayoutDefinitions($1,Layout.extractNodes(p[0])))[1].concat(p[1]))):m$1.$==0?processLinesR(Slice.array(ls$1,{
-    $:1,
-    $0:1
-   },null)):(p$1=LayoutEngineModule.getExtraLines(function(l$1)
-   {
-    return Strings.StartsWith(Strings.Trim(l$1),":");
-   },ls$1),(rest=p$1[1],(docs=p$1[0],Arrays.length(docs)>0?(p$2=LayoutEngineModule.createLines(Seq.nth(0,Strings.SplitChars(l,[" "],1)),1,[],[],1,docs),(names=p$2[0],(ls$2=p$2[1],processLinesR(Arrays.ofSeq(Seq.delay(function()
-   {
-    return Seq.append(ls$2,Seq.delay(function()
-    {
-     return Seq.append([l+" "+Strings.concat(" ",names)],Seq.delay(function()
-     {
-      return rest;
-     }));
-    }));
-   })))))):Arrays.ofSeq(Seq.delay(function()
-   {
-    var m$2;
-    return Seq.append((m$2=f(l),m$2!=null&&m$2.$==1?[m$2.$0]:[]),Seq.delay(function()
-    {
-     return processLinesR(rest);
-    }));
-   }))))))):[];
-  }
-  return processLinesR(ls);
  };
  LayoutEngineModule.splitTokens=function(line)
  {
@@ -4458,34 +8116,6 @@ if (!console) {
    });
   },AppFramework.tryGetActW(plg,n));
  };
- LayoutEngineModule.getADoc=function(lytNm,token)
- {
-  var a,di,p,plg,nm;
-  a=LayoutEngineModule.Identifier(token);
-  return a!=null&&a.$==1?(di=a.$0,(p=((LayoutEngineModule.splitName())(lytNm))(di),(plg=p[0],(nm=p[1],Doc.BindView(function(a$1)
-  {
-   return a$1==null?Doc.BindView(function(a$2)
-   {
-    var v;
-    return a$2==null?AppFramework.errDoc((v=(function($1)
-    {
-     return function($2)
-     {
-      return $1("Missing doc: "+Utils.toSafe($2));
-     };
-    }(Global.id))(di),(Library.print(v),v))):Doc.TextNode(a$2.$0);
-   },AppFramework.tryGetWoWW(plg,nm)):(LayoutEngineModule.getDocF(T.Empty,a$1.$0))[0];
-  },AppFramework.tryGetDocW(plg,nm)))))):Doc.TextView(View.Map(function(a$1)
-  {
-   return a$1.$==1?(function($1)
-   {
-    return function($2)
-    {
-     return $1("Unexpected action: "+Utils.toSafe($2));
-    };
-   }(Global.id))(a$1.$0.actName):a$1.$0;
-  },LayoutEngineModule.getTextData(lytNm,LayoutEngineModule.S(token))));
- };
  LayoutEngineModule.getExtraLines=function(pred,ls)
  {
   var i,x,o,v;
@@ -4536,6 +8166,34 @@ if (!console) {
    }));
   })),i+1,p[1]))))))):[names,lines]):[names,lines];
  };
+ LayoutEngineModule.getADoc=function(lytNm,token)
+ {
+  var a,di,p,plg,nm;
+  a=LayoutEngineModule.Identifier(token);
+  return a!=null&&a.$==1?(di=a.$0,(p=((LayoutEngineModule.splitName())(lytNm))(di),(plg=p[0],(nm=p[1],Doc.BindView(function(a$1)
+  {
+   return a$1==null?Doc.BindView(function(a$2)
+   {
+    var v;
+    return a$2==null?AppFramework.errDoc((v=(function($1)
+    {
+     return function($2)
+     {
+      return $1("Missing doc: "+Utils.toSafe($2));
+     };
+    }(Global.id))(di),(Library.print(v),v))):Doc.TextNode(a$2.$0);
+   },AppFramework.tryGetWoWW(plg,nm)):(LayoutEngineModule.getDocF(T.Empty,a$1.$0))[0];
+  },AppFramework.tryGetDocW(plg,nm)))))):Doc.TextView(View.Map(function(a$1)
+  {
+   return a$1.$==1?(function($1)
+   {
+    return function($2)
+    {
+     return $1("Unexpected action: "+Utils.toSafe($2));
+    };
+   }(Global.id))(a$1.$0.actName):a$1.$0;
+  },LayoutEngineModule.getTextData(lytNm,LayoutEngineModule.S(token))));
+ };
  LayoutEngineModule.doubleQuote=function(a)
  {
   var $1,$2,$3;
@@ -4575,631 +8233,6 @@ if (!console) {
       throw new MatchFailureException.New("D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\LayoutEngine\\src\\LayoutEngine.fs",1372,38);
     }
     return $2;
-  }
- };
- Seq.map=function(f,s)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var en;
-    en=Enumerator.Get(s);
-    return new T$1.New(null,null,function(e)
-    {
-     return en.MoveNext()&&(e.c=f(en.Current()),true);
-    },function()
-    {
-     en.Dispose();
-    });
-   }
-  };
- };
- Seq.choose=function(f,s)
- {
-  return Seq.collect(function(x)
-  {
-   var m;
-   m=f(x);
-   return m==null?T.Empty:List.ofArray([m.$0]);
-  },s);
- };
- Seq.iter=function(p,s)
- {
-  var e;
-  e=Enumerator.Get(s);
-  try
-  {
-   while(e.MoveNext())
-    p(e.Current());
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
- Seq.append=function(s1,s2)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var e1,first;
-    e1=Enumerator.Get(s1);
-    first=[true];
-    return new T$1.New(e1,null,function(x)
-    {
-     var x$1;
-     return x.s.MoveNext()?(x.c=x.s.Current(),true):(x$1=x.s,!Unchecked.Equals(x$1,null)?x$1.Dispose():void 0,x.s=null,first[0]&&(first[0]=false,x.s=Enumerator.Get(s2),x.s.MoveNext()?(x.c=x.s.Current(),true):(x.s.Dispose(),x.s=null,false)));
-    },function(x)
-    {
-     var x$1;
-     x$1=x.s;
-     !Unchecked.Equals(x$1,null)?x$1.Dispose():void 0;
-    });
-   }
-  };
- };
- Seq.fold=function(f,x,s)
- {
-  var r,e;
-  r=x;
-  e=Enumerator.Get(s);
-  try
-  {
-   while(e.MoveNext())
-    r=f(r,e.Current());
-   return r;
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
- Seq.collect=function(f,s)
- {
-  return Seq.concat(Seq.map(f,s));
- };
- Seq.delay=function(f)
- {
-  return{
-   GetEnumerator:function()
-   {
-    return Enumerator.Get(f());
-   }
-  };
- };
- Seq.tryFind=function(ok,s)
- {
-  var e,r,x;
-  e=Enumerator.Get(s);
-  try
-  {
-   r=null;
-   while(r==null&&e.MoveNext())
-    {
-     x=e.Current();
-     ok(x)?r={
-      $:1,
-      $0:x
-     }:void 0;
-    }
-   return r;
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
- Seq.tryFindIndex=function(ok,s)
- {
-  var e,loop,i;
-  e=Enumerator.Get(s);
-  try
-  {
-   loop=true;
-   i=0;
-   while(loop&&e.MoveNext())
-    if(ok(e.Current()))
-     loop=false;
-    else
-     i=i+1;
-   return loop?null:{
-    $:1,
-    $0:i
-   };
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
- Seq.filter=function(f,s)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var o;
-    o=Enumerator.Get(s);
-    return new T$1.New(null,null,function(e)
-    {
-     var loop,c,res;
-     loop=o.MoveNext();
-     c=o.Current();
-     res=false;
-     while(loop)
-      if(f(c))
-       {
-        e.c=c;
-        res=true;
-        loop=false;
-       }
-      else
-       if(o.MoveNext())
-        c=o.Current();
-       else
-        loop=false;
-     return res;
-    },function()
-    {
-     o.Dispose();
-    });
-   }
-  };
- };
- Seq.concat=function(ss)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var outerE;
-    outerE=Enumerator.Get(ss);
-    return new T$1.New(null,null,function(st)
-    {
-     var m;
-     while(true)
-      {
-       m=st.s;
-       if(Unchecked.Equals(m,null))
-       {
-        if(outerE.MoveNext())
-         {
-          st.s=Enumerator.Get(outerE.Current());
-          st=st;
-         }
-        else
-         {
-          outerE.Dispose();
-          return false;
-         }
-       }
-       else
-        if(m.MoveNext())
-         {
-          st.c=m.Current();
-          return true;
-         }
-        else
-         {
-          st.Dispose();
-          st.s=null;
-          st=st;
-         }
-      }
-    },function(st)
-    {
-     var x;
-     x=st.s;
-     !Unchecked.Equals(x,null)?x.Dispose():void 0;
-     !Unchecked.Equals(outerE,null)?outerE.Dispose():void 0;
-    });
-   }
-  };
- };
- Seq.cache=function(s)
- {
-  var cache,o;
-  cache=[];
-  o=[Enumerator.Get(s)];
-  return{
-   GetEnumerator:function()
-   {
-    return new T$1.New(0,null,function(e)
-    {
-     var en;
-     return e.s<cache.length?(e.c=cache[e.s],e.s=e.s+1,true):(en=o[0],Unchecked.Equals(en,null)?false:en.MoveNext()?(e.s=e.s+1,e.c=en.Current(),cache.push(e.c),true):(en.Dispose(),o[0]=null,false));
-    },void 0);
-   }
-  };
- };
- Seq.groupBy=function(f,s)
- {
-  return Seq.delay(function()
-  {
-   return Arrays.groupBy(f,Arrays.ofSeq(s));
-  });
- };
- Seq.pairwise=function(s)
- {
-  return Seq.map(function(x)
-  {
-   return[Arrays.get(x,0),Arrays.get(x,1)];
-  },Seq.windowed(2,s));
- };
- Seq.indexed=function(s)
- {
-  return Seq.mapi(function($1,$2)
-  {
-   return[$1,$2];
-  },s);
- };
- Seq.isEmpty=function(s)
- {
-  var e;
-  e=Enumerator.Get(s);
-  try
-  {
-   return!e.MoveNext();
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
- Seq.distinctBy=function(f,s)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var o,seen;
-    o=Enumerator.Get(s);
-    seen=new HashSet.New$3();
-    return new T$1.New(null,null,function(e)
-    {
-     var cur,has;
-     if(o.MoveNext())
-      {
-       cur=o.Current();
-       has=seen.Add(f(cur));
-       while(!has&&o.MoveNext())
-        {
-         cur=o.Current();
-         has=seen.Add(f(cur));
-        }
-       return has&&(e.c=cur,true);
-      }
-     else
-      return false;
-    },function()
-    {
-     o.Dispose();
-    });
-   }
-  };
- };
- Seq.head=function(s)
- {
-  var e;
-  e=Enumerator.Get(s);
-  try
-  {
-   return e.MoveNext()?e.Current():Seq.insufficient();
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
- Seq.init=function(n,f)
- {
-  return Seq.take(n,Seq.initInfinite(f));
- };
- Seq.tryPick=function(f,s)
- {
-  var e,r;
-  e=Enumerator.Get(s);
-  try
-  {
-   r=null;
-   while(Unchecked.Equals(r,null)&&e.MoveNext())
-    r=f(e.Current());
-   return r;
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
- Seq.windowed=function(windowSize,s)
- {
-  windowSize<=0?Operators.FailWith("The input must be positive."):void 0;
-  return Seq.delay(function()
-  {
-   return Seq.enumUsing(Enumerator.Get(s),function(e)
-   {
-    var q;
-    q=[];
-    return Seq.append(Seq.enumWhile(function()
-    {
-     return q.length<windowSize&&e.MoveNext();
-    },Seq.delay(function()
-    {
-     q.push(e.Current());
-     return[];
-    })),Seq.delay(function()
-    {
-     return q.length===windowSize?Seq.append([q.slice(0)],Seq.delay(function()
-     {
-      return Seq.enumWhile(function()
-      {
-       return e.MoveNext();
-      },Seq.delay(function()
-      {
-       q.shift();
-       q.push(e.Current());
-       return[q.slice(0)];
-      }));
-     })):[];
-    }));
-   });
-  });
- };
- Seq.mapi=function(f,s)
- {
-  return Seq.map2(f,Seq.initInfinite(Global.id),s);
- };
- Seq.distinct=function(s)
- {
-  return Seq.distinctBy(Global.id,s);
- };
- Seq.forall2=function(p,s1,s2)
- {
-  return!Seq.exists2(function($1,$2)
-  {
-   return!p($1,$2);
-  },s1,s2);
- };
- Seq.compareWith=function(f,s1,s2)
- {
-  var e1,$1,e2,r,loop;
-  e1=Enumerator.Get(s1);
-  try
-  {
-   e2=Enumerator.Get(s2);
-   try
-   {
-    r=0;
-    loop=true;
-    while(loop&&r===0)
-     if(e1.MoveNext())
-      r=e2.MoveNext()?f(e1.Current(),e2.Current()):1;
-     else
-      if(e2.MoveNext())
-       r=-1;
-      else
-       loop=false;
-    $1=r;
-   }
-   finally
-   {
-    if(typeof e2=="object"&&"Dispose"in e2)
-     e2.Dispose();
-   }
-   return $1;
-  }
-  finally
-  {
-   if(typeof e1=="object"&&"Dispose"in e1)
-    e1.Dispose();
-  }
- };
- Seq.take=function(n,s)
- {
-  n<0?Seq.nonNegative():void 0;
-  return{
-   GetEnumerator:function()
-   {
-    var e;
-    e=[Enumerator.Get(s)];
-    return new T$1.New(0,null,function(o)
-    {
-     var en;
-     o.s=o.s+1;
-     return o.s>n?false:(en=e[0],Unchecked.Equals(en,null)?Seq.insufficient():en.MoveNext()?(o.c=en.Current(),o.s===n?(en.Dispose(),e[0]=null):void 0,true):(en.Dispose(),e[0]=null,Seq.insufficient()));
-    },function()
-    {
-     var x;
-     x=e[0];
-     !Unchecked.Equals(x,null)?x.Dispose():void 0;
-    });
-   }
-  };
- };
- Seq.initInfinite=function(f)
- {
-  return{
-   GetEnumerator:function()
-   {
-    return new T$1.New(0,null,function(e)
-    {
-     e.c=f(e.s);
-     e.s=e.s+1;
-     return true;
-    },void 0);
-   }
-  };
- };
- Seq.map2=function(f,s1,s2)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var e1,e2;
-    e1=Enumerator.Get(s1);
-    e2=Enumerator.Get(s2);
-    return new T$1.New(null,null,function(e)
-    {
-     return e1.MoveNext()&&e2.MoveNext()&&(e.c=f(e1.Current(),e2.Current()),true);
-    },function()
-    {
-     e1.Dispose();
-     e2.Dispose();
-    });
-   }
-  };
- };
- Seq.skip=function(n,s)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var o;
-    o=Enumerator.Get(s);
-    return new T$1.New(true,null,function(e)
-    {
-     var i,$1;
-     if(e.s)
-      {
-       for(i=1,$1=n;i<=$1;i++)if(!o.MoveNext())
-        Seq.insufficient();
-       e.s=false;
-      }
-     else
-      null;
-     return o.MoveNext()&&(e.c=o.Current(),true);
-    },function()
-    {
-     o.Dispose();
-    });
-   }
-  };
- };
- Seq.nth=function(index,s)
- {
-  var pos,e;
-  if(index<0)
-   Operators.FailWith("negative index requested");
-  pos=-1;
-  e=Enumerator.Get(s);
-  try
-  {
-   while(pos<index)
-    {
-     !e.MoveNext()?Seq.insufficient():void 0;
-     pos=pos+1;
-    }
-   return e.Current();
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
- Seq.exists2=function(p,s1,s2)
- {
-  var e1,$1,e2,r;
-  e1=Enumerator.Get(s1);
-  try
-  {
-   e2=Enumerator.Get(s2);
-   try
-   {
-    r=false;
-    while(!r&&e1.MoveNext()&&e2.MoveNext())
-     r=p(e1.Current(),e2.Current());
-    $1=r;
-   }
-   finally
-   {
-    if(typeof e2=="object"&&"Dispose"in e2)
-     e2.Dispose();
-   }
-   return $1;
-  }
-  finally
-  {
-   if(typeof e1=="object"&&"Dispose"in e1)
-    e1.Dispose();
-  }
- };
- Seq.sortBy=function(f,s)
- {
-  return Seq.delay(function()
-  {
-   var array;
-   array=Arrays.ofSeq(s);
-   Arrays.sortInPlaceBy(f,array);
-   return array;
-  });
- };
- Seq.max=function(s)
- {
-  var e,m,x;
-  e=Enumerator.Get(s);
-  try
-  {
-   if(!e.MoveNext())
-    Seq.seqEmpty();
-   m=e.Current();
-   while(e.MoveNext())
-    {
-     x=e.Current();
-     Unchecked.Compare(x,m)===1?m=x:void 0;
-    }
-   return m;
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
- Seq.unfold=function(f,s)
- {
-  return{
-   GetEnumerator:function()
-   {
-    return new T$1.New(s,null,function(e)
-    {
-     var m;
-     m=f(e.s);
-     return m==null?false:(e.c=m.$0[0],e.s=m.$0[1],true);
-    },void 0);
-   }
-  };
- };
- Seq.seqEmpty=function()
- {
-  return Operators.FailWith("The input sequence was empty.");
- };
- Seq.forall=function(p,s)
- {
-  return!Seq.exists(function(x)
-  {
-   return!p(x);
-  },s);
- };
- Seq.exists=function(p,s)
- {
-  var e,r;
-  e=Enumerator.Get(s);
-  try
-  {
-   r=false;
-   while(!r&&e.MoveNext())
-    r=p(e.Current());
-   return r;
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
   }
  };
  PlugInVar.New=function(varName,varVar)
@@ -5248,6 +8281,10 @@ if (!console) {
  Doc.get_Empty=function()
  {
   return Doc.Mk(null,View.Const());
+ };
+ Doc.Async=function(a)
+ {
+  return Doc.EmbedView(View.MapAsync(Global.id,View.Const(a)));
  };
  Doc.TextNode=function(v)
  {
@@ -5322,6 +8359,19 @@ if (!console) {
   a$1=Doc.Concat(children);
   return Elt.New(DomUtility.CreateElement(name),a,a$1);
  };
+ Doc.EmbedView=function(view)
+ {
+  var node;
+  node=Docs.CreateEmbedNode();
+  return Doc.Mk({
+   $:2,
+   $0:node
+  },View.Map(Global.ignore,View.Bind(function(doc)
+  {
+   Docs.UpdateEmbedNode(node,doc.docNode);
+   return doc.updates;
+  },view)));
+ };
  Doc.InputInternal=function(elemTy,attr$1)
  {
   var el;
@@ -5338,19 +8388,6 @@ if (!console) {
    return action();
   },false);
   return el;
- };
- Doc.EmbedView=function(view)
- {
-  var node;
-  node=Docs.CreateEmbedNode();
-  return Doc.Mk({
-   $:2,
-   $0:node
-  },View.Map(Global.ignore,View.Bind(function(doc)
-  {
-   Docs.UpdateEmbedNode(node,doc.docNode);
-   return doc.updates;
-  },view)));
  };
  Doc.Verbatim=function(html)
  {
@@ -5467,199 +8504,6 @@ if (!console) {
    lytName:lytName,
    lytDefinition:lytDefinition
   };
- };
- Unchecked.Equals=function(a,b)
- {
-  var m,eqR,k,k$1;
-  if(a===b)
-   return true;
-  else
-   {
-    m=typeof a;
-    if(m=="object")
-    {
-     if(a===null||a===void 0||b===null||b===void 0)
-      return false;
-     else
-      if("Equals"in a)
-       return a.Equals(b);
-      else
-       if(a instanceof Global.Array&&b instanceof Global.Array)
-        return Unchecked.arrayEquals(a,b);
-       else
-        if(a instanceof Date&&b instanceof Date)
-         return Unchecked.dateEquals(a,b);
-        else
-         {
-          eqR=[true];
-          for(var k$2 in a)if(function(k$3)
-          {
-           eqR[0]=!a.hasOwnProperty(k$3)||b.hasOwnProperty(k$3)&&Unchecked.Equals(a[k$3],b[k$3]);
-           return!eqR[0];
-          }(k$2))
-           break;
-          if(eqR[0])
-           {
-            for(var k$3 in b)if(function(k$4)
-            {
-             eqR[0]=!b.hasOwnProperty(k$4)||a.hasOwnProperty(k$4);
-             return!eqR[0];
-            }(k$3))
-             break;
-           }
-          return eqR[0];
-         }
-    }
-    else
-     return m=="function"&&("$Func"in a?a.$Func===b.$Func&&a.$Target===b.$Target:"$Invokes"in a&&"$Invokes"in b&&Unchecked.arrayEquals(a.$Invokes,b.$Invokes));
-   }
- };
- Unchecked.arrayEquals=function(a,b)
- {
-  var eq,i;
-  if(Arrays.length(a)===Arrays.length(b))
-   {
-    eq=true;
-    i=0;
-    while(eq&&i<Arrays.length(a))
-     {
-      !Unchecked.Equals(Arrays.get(a,i),Arrays.get(b,i))?eq=false:void 0;
-      i=i+1;
-     }
-    return eq;
-   }
-  else
-   return false;
- };
- Unchecked.dateEquals=function(a,b)
- {
-  return a.getTime()===b.getTime();
- };
- Unchecked.Compare=function(a,b)
- {
-  var $1,m,$2,cmp,k,k$1;
-  if(a===b)
-   return 0;
-  else
-   {
-    m=typeof a;
-    switch(m=="function"?1:m=="boolean"?2:m=="number"?2:m=="string"?2:m=="object"?3:0)
-    {
-     case 0:
-      return typeof b=="undefined"?0:-1;
-     case 1:
-      return Operators.FailWith("Cannot compare function values.");
-     case 2:
-      return a<b?-1:1;
-     case 3:
-      if(a===null)
-       $2=-1;
-      else
-       if(b===null)
-        $2=1;
-       else
-        if("CompareTo"in a)
-         $2=a.CompareTo(b);
-        else
-         if("CompareTo0"in a)
-          $2=a.CompareTo0(b);
-         else
-          if(a instanceof Global.Array&&b instanceof Global.Array)
-           $2=Unchecked.compareArrays(a,b);
-          else
-           if(a instanceof Date&&b instanceof Date)
-            $2=Unchecked.compareDates(a,b);
-           else
-            {
-             cmp=[0];
-             for(var k$2 in a)if(function(k$3)
-             {
-              return!a.hasOwnProperty(k$3)?false:!b.hasOwnProperty(k$3)?(cmp[0]=1,true):(cmp[0]=Unchecked.Compare(a[k$3],b[k$3]),cmp[0]!==0);
-             }(k$2))
-              break;
-             if(cmp[0]===0)
-              {
-               for(var k$3 in b)if(function(k$4)
-               {
-                return!b.hasOwnProperty(k$4)?false:!a.hasOwnProperty(k$4)&&(cmp[0]=-1,true);
-               }(k$3))
-                break;
-              }
-             $2=cmp[0];
-            }
-      return $2;
-    }
-   }
- };
- Unchecked.compareArrays=function(a,b)
- {
-  var cmp,i;
-  if(Arrays.length(a)<Arrays.length(b))
-   return -1;
-  else
-   if(Arrays.length(a)>Arrays.length(b))
-    return 1;
-   else
-    {
-     cmp=0;
-     i=0;
-     while(cmp===0&&i<Arrays.length(a))
-      {
-       cmp=Unchecked.Compare(Arrays.get(a,i),Arrays.get(b,i));
-       i=i+1;
-      }
-     return cmp;
-    }
- };
- Unchecked.compareDates=function(a,b)
- {
-  return Unchecked.Compare(a.getTime(),b.getTime());
- };
- Unchecked.Hash=function(o)
- {
-  var m;
-  m=typeof o;
-  return m=="function"?0:m=="boolean"?o?1:0:m=="number"?o:m=="string"?Unchecked.hashString(o):m=="object"?o==null?0:o instanceof Global.Array?Unchecked.hashArray(o):Unchecked.hashObject(o):0;
- };
- Unchecked.hashString=function(s)
- {
-  var hash,i,$1;
-  if(s===null)
-   return 0;
-  else
-   {
-    hash=5381;
-    for(i=0,$1=s.length-1;i<=$1;i++)hash=Unchecked.hashMix(hash,s[i].charCodeAt());
-    return hash;
-   }
- };
- Unchecked.hashArray=function(o)
- {
-  var h,i,$1;
-  h=-34948909;
-  for(i=0,$1=Arrays.length(o)-1;i<=$1;i++)h=Unchecked.hashMix(h,Unchecked.Hash(Arrays.get(o,i)));
-  return h;
- };
- Unchecked.hashObject=function(o)
- {
-  var h,k;
-  if("GetHashCode"in o)
-   return o.GetHashCode();
-  else
-   {
-    h=[0];
-    for(var k$1 in o)if(function(key)
-    {
-     h[0]=Unchecked.hashMix(Unchecked.hashMix(h[0],Unchecked.hashString(key)),Unchecked.Hash(o[key]));
-     return false;
-    }(k$1))
-     break;
-    return h[0];
-   }
- };
- Unchecked.hashMix=function(x,y)
- {
-  return(x<<5)+x+y;
  };
  ViewBuilder.B={
   $:0
@@ -5871,7 +8715,24 @@ if (!console) {
  {
   throw new FormatException.New$1("Format String can be only \"D\", \"d\", \"N\", \"n\", \"P\", \"p\", \"B\", \"b\", \"X\" or \"x\".");
  };
- View=UI.View=Runtime$1.Class({},null,View);
+ Operators$1.op_GreaterGreaterEquals=function(ma,f)
+ {
+  return Depend.bind(f,ma);
+ };
+ Operators$1.op_BarGreaterGreater=function(ma,f)
+ {
+  return(Depend.map(f))(ma);
+ };
+ Operators$1.rtn=function()
+ {
+  SC$1.$cctor();
+  return SC$1.rtn$1;
+ };
+ Operators$1.depend=function()
+ {
+  SC$1.$cctor();
+  return SC$1.depend$1;
+ };
  String.delimitedO=function(op,cl,txt)
  {
   var o,$1,bef,o$1,$2;
@@ -5964,6 +8825,10 @@ if (!console) {
     return res;
    }
  };
+ List.foldBack=function(f,l,s)
+ {
+  return Arrays.foldBack(f,Arrays.ofList(l),s);
+ };
  List.ofSeq=function(s)
  {
   var e,$1,go,r,res,t;
@@ -6013,18 +8878,56 @@ if (!console) {
  {
   return l.$==1?l.$1:List.listEmpty();
  };
+ List.append=function(x,y)
+ {
+  var r,l,go,res,t;
+  if(x.$==0)
+   return y;
+  else
+   if(y.$==0)
+    return x;
+   else
+    {
+     res=new T({
+      $:1
+     });
+     r=res;
+     l=x;
+     go=true;
+     while(go)
+      {
+       r.$0=l.$0;
+       l=l.$1;
+       l.$==0?go=false:r=(t=new T({
+        $:1
+       }),r.$1=t,t);
+      }
+     r.$1=y;
+     return res;
+    }
+ };
  List.listEmpty=function()
  {
   return Operators.FailWith("The input list was empty.");
  };
- Slice.string=function(source,start,finish)
+ DependBuilder=Depend.DependBuilder=Runtime$1.Class({
+  Delay:function(f)
+  {
+   return f();
+  },
+  Bind:function(m,f)
+  {
+   return Depend.bind(f,m);
+  },
+  Return:function(v)
+  {
+   return Depend.rtn(v);
+  }
+ },Obj,DependBuilder);
+ DependBuilder.New=Runtime$1.Ctor(function()
  {
-  return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):"":finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
- };
- Slice.array=function(source,start,finish)
- {
-  return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):[]:finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
- };
+  Obj.New.call(this);
+ },DependBuilder);
  Depend.resolver=function(lst,depend)
  {
   function resolve(a)
@@ -6048,6 +8951,18 @@ if (!console) {
   }
   return resolve(depend);
  };
+ Depend.rtn=function(a)
+ {
+  return{
+   $:1,
+   $0:a
+  };
+ };
+ Depend.depend=function()
+ {
+  SC$1.$cctor();
+  return SC$1.depend;
+ };
  Depend.dependByName=function(nm,defF,kf)
  {
   return{
@@ -6064,11 +8979,6 @@ if (!console) {
     };
    }
   };
- };
- Depend.depend=function()
- {
-  SC$1.$cctor();
-  return SC$1.depend;
  };
  Depend.bind=function(f,pa)
  {
@@ -6093,36 +9003,1046 @@ if (!console) {
   }
   return bindR(pa);
  };
- Depend.rtn=function(a)
+ Depend.map=function(f)
+ {
+  var f$1;
+  f$1=function(x)
+  {
+   return Depend.rtn(f(x));
+  };
+  return function(p)
+  {
+   return Depend.bind(f$1,p);
+  };
+ };
+ Slice.string=function(source,start,finish)
+ {
+  return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):"":finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
+ };
+ Slice.array=function(source,start,finish)
+ {
+  return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):[]:finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
+ };
+ Dictionary=Collections.Dictionary=Runtime$1.Class({
+  Add:function(k,v)
+  {
+   this.add(k,v);
+  },
+  TryGetValue:function(k,res)
+  {
+   var $this,d,v;
+   $this=this;
+   d=this.data[this.hash(k)];
+   return d==null?false:(v=Arrays.tryPick(function(a)
+   {
+    var a$1;
+    a$1=Operators.KeyValue(a);
+    return $this.equals.apply(null,[a$1[0],k])?{
+     $:1,
+     $0:a$1[1]
+    }:null;
+   },d),v!=null&&v.$==1&&(res.set(v.$0),true));
+  },
+  ContainsKey:function(k)
+  {
+   var $this,d;
+   $this=this;
+   d=this.data[this.hash(k)];
+   return d==null?false:Arrays.exists(function(a)
+   {
+    return $this.equals.apply(null,[(Operators.KeyValue(a))[0],k]);
+   },d);
+  },
+  get_Item:function(k)
+  {
+   return this.get(k);
+  },
+  set_Item:function(k,v)
+  {
+   this.set(k,v);
+  },
+  add:function(k,v)
+  {
+   var $this,h,d;
+   $this=this;
+   h=this.hash(k);
+   d=this.data[h];
+   d==null?(this.count=this.count+1,this.data[h]=new Global.Array({
+    K:k,
+    V:v
+   })):(Arrays.exists(function(a)
+   {
+    return $this.equals.apply(null,[(Operators.KeyValue(a))[0],k]);
+   },d)?DictionaryUtil.alreadyAdded():void 0,this.count=this.count+1,d.push({
+    K:k,
+    V:v
+   }));
+  },
+  Remove:function(k)
+  {
+   return this.remove(k);
+  },
+  get:function(k)
+  {
+   var $this,d;
+   $this=this;
+   d=this.data[this.hash(k)];
+   return d==null?DictionaryUtil.notPresent():Arrays.pick(function(a)
+   {
+    var a$1;
+    a$1=Operators.KeyValue(a);
+    return $this.equals.apply(null,[a$1[0],k])?{
+     $:1,
+     $0:a$1[1]
+    }:null;
+   },d);
+  },
+  set:function(k,v)
+  {
+   var $this,h,d,m;
+   $this=this;
+   h=this.hash(k);
+   d=this.data[h];
+   d==null?(this.count=this.count+1,this.data[h]=new Global.Array({
+    K:k,
+    V:v
+   })):(m=Arrays.tryFindIndex(function(a)
+   {
+    return $this.equals.apply(null,[(Operators.KeyValue(a))[0],k]);
+   },d),m==null?(this.count=this.count+1,d.push({
+    K:k,
+    V:v
+   })):d[m.$0]={
+    K:k,
+    V:v
+   });
+  },
+  Clear:function()
+  {
+   this.data=[];
+   this.count=0;
+  },
+  remove:function(k)
+  {
+   var $this,h,d,r;
+   $this=this;
+   h=this.hash(k);
+   d=this.data[h];
+   return d==null?false:(r=Arrays.filter(function(a)
+   {
+    return!$this.equals.apply(null,[(Operators.KeyValue(a))[0],k]);
+   },d),Arrays.length(r)<d.length&&(this.count=this.count-1,this.data[h]=r,true));
+  },
+  get_Keys:function()
+  {
+   return new KeyCollection.New(this);
+  },
+  GetEnumerator:function()
+  {
+   return Enumerator.Get0(this);
+  },
+  GetEnumerator0:function()
+  {
+   return Enumerator.Get0(Arrays.concat(JS.GetFieldValues(this.data)));
+  }
+ },Obj,Dictionary);
+ Dictionary.New$5=Runtime$1.Ctor(function()
+ {
+  Dictionary.New$6.call(this,[],Unchecked.Equals,Unchecked.Hash);
+ },Dictionary);
+ Dictionary.New$6=Runtime$1.Ctor(function(init,equals,hash)
+ {
+  var e,x;
+  Obj.New.call(this);
+  this.equals=equals;
+  this.hash=hash;
+  this.count=0;
+  this.data=[];
+  e=Enumerator.Get(init);
+  try
+  {
+   while(e.MoveNext())
+    {
+     x=e.Current();
+     this.set(x.K,x.V);
+    }
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ },Dictionary);
+ Set.Filter=function(f,s)
+ {
+  var data;
+  return new FSharpSet.New$1((data=Arrays.ofSeq(Seq.filter(f,s)),BalancedTree.Build(data,0,data.length-1)));
+ };
+ Arrays.set=function(arr,n,x)
+ {
+  Arrays.checkBounds(arr,n);
+  arr[n]=x;
+ };
+ Arrays.get=function(arr,n)
+ {
+  Arrays.checkBounds(arr,n);
+  return arr[n];
+ };
+ Arrays.checkBounds=function(arr,n)
+ {
+  if(n<0||n>=arr.length)
+   Operators.FailWith("Index was outside the bounds of the array.");
+ };
+ Arrays.length=function(arr)
+ {
+  return arr.dims===2?arr.length*arr.length:arr.length;
+ };
+ Snippet.New=function(snpId,snpName,snpContent,snpParentIdO,snpPredIds,snpProperties,snpModified)
  {
   return{
-   $:1,
-   $0:a
+   snpId:snpId,
+   snpName:snpName,
+   snpContent:snpContent,
+   snpParentIdO:snpParentIdO,
+   snpPredIds:snpPredIds,
+   snpProperties:snpProperties,
+   snpModified:snpModified
   };
+ };
+ TemplateInstance=Server.TemplateInstance=Runtime$1.Class({
+  get_Doc:function()
+  {
+   return this.doc;
+  }
+ },Obj,TemplateInstance);
+ TemplateInstance.New=Runtime$1.Ctor(function(c,doc)
+ {
+  Obj.New.call(this);
+  this.doc=doc;
+  this.allVars=c.$==0?c.$0:Operators.FailWith("Should not happen");
+ },TemplateInstance);
+ ProviderBuilder=Server.ProviderBuilder=Runtime$1.Class({
+  WithHole:function(h)
+  {
+   this.h.push(h);
+   return this;
+  }
+ },null,ProviderBuilder);
+ ProviderBuilder.Make=function()
+ {
+  var c;
+  return ProviderBuilder.New(null,(c=Guid.NewGuid(),Global.String(c)),[]);
+ };
+ ProviderBuilder.New=function(Instance,Key,Holes)
+ {
+  return new ProviderBuilder({
+   i:Instance,
+   k:Key,
+   h:Holes
+  });
+ };
+ Handler.EventQ2=function(key,holeName,ti,f)
+ {
+  return{
+   $:5,
+   $0:holeName,
+   $1:true,
+   $2:function(el)
+   {
+    return function(ev)
+    {
+     return f({
+      Vars:ti(),
+      Target:el,
+      Event:ev
+     });
+    };
+   }
+  };
+ };
+ Handler.CompleteHoles=function(a,filledHoles,vars)
+ {
+  var allVars,filledVars,e,h,$1,n;
+  function c(name,ty)
+  {
+   var p,r,r$1,r$2;
+   return filledVars.Contains(name)?null:(p=ty===0?(r=Var$1.Create$1(""),[{
+    $:8,
+    $0:name,
+    $1:r
+   },r]):ty===1?(r$1=Var$1.Create$1(0),[{
+    $:13,
+    $0:name,
+    $1:r$1
+   },r$1]):ty===2?(r$2=Var$1.Create$1(false),[{
+    $:9,
+    $0:name,
+    $1:r$2
+   },r$2]):Operators.FailWith("Invalid value type"),(allVars.set_Item(name,p[1]),{
+    $:1,
+    $0:p[0]
+   }));
+  }
+  allVars=new Dictionary.New$5();
+  filledVars=new HashSet.New$3();
+  e=Enumerator.Get(filledHoles);
+  try
+  {
+   while(e.MoveNext())
+    {
+     h=e.Current();
+     (h.$==8?($1=[h.$0,Client.Box(h.$1)],true):h.$==11?($1=[h.$0,Client.Box(h.$1)],true):h.$==10?($1=[h.$0,Client.Box(h.$1)],true):h.$==13?($1=[h.$0,Client.Box(h.$1)],true):h.$==12?($1=[h.$0,Client.Box(h.$1)],true):h.$==9&&($1=[h.$0,Client.Box(h.$1)],true))?(n=$1[0],filledVars.Add(n),allVars.set_Item(n,$1[1])):void 0;
+    }
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+  return[Seq.append(filledHoles,Arrays.choose(function($2)
+  {
+   return c($2[0],$2[1]);
+  },vars)),{
+   $:0,
+   $0:allVars
+  }];
+ };
+ testing_Templates.snippet=function(h)
+ {
+  Templates.LoadLocalTemplates("templates");
+  return h?Templates.NamedTemplate("templates",{
+   $:1,
+   $0:"snippet"
+  },h):void 0;
+ };
+ testing_GeneratedPrintf.p$3=function($1)
+ {
+  return $1.$==5?"EnPlgRef "+("("+Utils.prettyPrint($1.$0[0])+", "+testing_GeneratedPrintf.p$25($1.$0[1])+")"):$1.$==4?"EnPlgDef "+testing_GeneratedPrintf.p$24($1.$0):$1.$==3?"EnViwDef "+testing_GeneratedPrintf.p$23($1.$0):$1.$==2?"EnVarDef "+testing_GeneratedPrintf.p$22($1.$0):$1.$==1?"EnActDef "+testing_GeneratedPrintf.p$21($1.$0):"EnDocDef "+testing_GeneratedPrintf.p$4($1.$0);
+ };
+ testing_GeneratedPrintf.p=function($1)
+ {
+  return $1.$==1?"VConst "+testing_GeneratedPrintf.p$2($1.$0):"VView "+testing_GeneratedPrintf.p$1($1.$0);
+ };
+ testing_GeneratedPrintf.p$25=function($1)
+ {
+  return $1.$==4?"RPlg":$1.$==3?"RAct":$1.$==2?"RViw":$1.$==1?"RVar":"RDoc";
+ };
+ testing_GeneratedPrintf.p$24=function($1)
+ {
+  return"PlgDef "+Utils.prettyPrint($1.$0);
+ };
+ testing_GeneratedPrintf.p$23=function($1)
+ {
+  return"ViwDef "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$17($2);
+  },$1.$0);
+ };
+ testing_GeneratedPrintf.p$22=function($1)
+ {
+  return"VarDef "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$11($2);
+  },$1.$0);
+ };
+ testing_GeneratedPrintf.p$21=function($1)
+ {
+  return"ActDef ("+testing_GeneratedPrintf.p$9($1.$0)+", "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$17($2);
+  },$1.$1)+")";
+ };
+ testing_GeneratedPrintf.p$4=function($1)
+ {
+  return $1.$==6?"DcElement "+testing_GeneratedPrintf.p$20($1.$0):$1.$==5?"DcConcat "+testing_GeneratedPrintf.p$18($1.$0):$1.$==4?"DcDocF "+testing_GeneratedPrintf.p$16($1.$0):$1.$==3?"DcTextArea "+testing_GeneratedPrintf.p$15($1.$0):$1.$==2?"DcInput "+testing_GeneratedPrintf.p$14($1.$0):$1.$==1?"DcButton "+testing_GeneratedPrintf.p$8($1.$0):"DcSplitter "+testing_GeneratedPrintf.p$5($1.$0);
+ };
+ testing_GeneratedPrintf.p$2=function($1)
+ {
+  return $1.$==1?"Choice2Of2 "+GeneratedPrintf.p($1.$0):"Choice1Of2 "+Utils.prettyPrint($1.$0);
+ };
+ testing_GeneratedPrintf.p$1=function($1)
+ {
+  return"View <fun>";
+ };
+ testing_GeneratedPrintf.p$17=function($1)
+ {
+  return $1.$==4?"PrActRef "+testing_GeneratedPrintf.p$9($1.$0):$1.$==3?"PrViwRef "+testing_GeneratedPrintf.p$13($1.$0):$1.$==2?"PrVarRef "+testing_GeneratedPrintf.p$12($1.$0):$1.$==1?"PrDocRef "+testing_GeneratedPrintf.p$7($1.$0):"PrTextValL "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$11($2);
+  },$1.$0);
+ };
+ testing_GeneratedPrintf.p$11=function($1)
+ {
+  return $1.$==2?"TvViwRef "+testing_GeneratedPrintf.p$13($1.$0):$1.$==1?"TvVarRef "+testing_GeneratedPrintf.p$12($1.$0):"TvConst "+Utils.prettyPrint($1.$0);
+ };
+ testing_GeneratedPrintf.p$9=function($1)
+ {
+  return"ActRef "+LayoutEngine_GeneratedPrintf.p$3($1.$0);
+ };
+ testing_GeneratedPrintf.p$20=function($1)
+ {
+  return"ElementDef ("+Utils.prettyPrint($1.$0)+", "+Utils.printArray(function($2)
+  {
+   return testing_GeneratedPrintf.p$10($2);
+  },$1.$1)+", "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$19($2);
+  },$1.$2)+")";
+ };
+ testing_GeneratedPrintf.p$18=function($1)
+ {
+  return"ConcatDef "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$19($2);
+  },$1.$0);
+ };
+ testing_GeneratedPrintf.p$16=function($1)
+ {
+  return"DocFDef ("+testing_GeneratedPrintf.p$7($1.$0)+", "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$17($2);
+  },$1.$1)+")";
+ };
+ testing_GeneratedPrintf.p$15=function($1)
+ {
+  return"TextAreaDef ("+testing_GeneratedPrintf.p$12($1.$0)+", "+Utils.printArray(function($2)
+  {
+   return testing_GeneratedPrintf.p$10($2);
+  },$1.$1)+")";
+ };
+ testing_GeneratedPrintf.p$14=function($1)
+ {
+  return"InputDef ("+testing_GeneratedPrintf.p$12($1.$0)+", "+Utils.printArray(function($2)
+  {
+   return testing_GeneratedPrintf.p$10($2);
+  },$1.$1)+")";
+ };
+ testing_GeneratedPrintf.p$8=function($1)
+ {
+  return"ButtonDef ("+testing_GeneratedPrintf.p$9($1.$0)+", "+Utils.printArray(function($2)
+  {
+   return testing_GeneratedPrintf.p$10($2);
+  },$1.$1)+", "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$11($2);
+  },$1.$2)+")";
+ };
+ testing_GeneratedPrintf.p$5=function($1)
+ {
+  return"SplitterDef ("+Utils.prettyPrint($1.$0)+", "+testing_GeneratedPrintf.p$6($1.$1)+", "+testing_GeneratedPrintf.p$7($1.$2)+", "+testing_GeneratedPrintf.p$7($1.$3)+")";
+ };
+ testing_GeneratedPrintf.p$13=function($1)
+ {
+  return"ViwRef "+LayoutEngine_GeneratedPrintf.p$3($1.$0);
+ };
+ testing_GeneratedPrintf.p$12=function($1)
+ {
+  return"VarRef "+LayoutEngine_GeneratedPrintf.p$3($1.$0);
+ };
+ testing_GeneratedPrintf.p$7=function($1)
+ {
+  return"DocRef "+LayoutEngine_GeneratedPrintf.p$3($1.$0);
+ };
+ testing_GeneratedPrintf.p$10=function($1)
+ {
+  return $1.$==2?"AtAct ("+Utils.prettyPrint($1.$0)+", "+testing_GeneratedPrintf.p$9($1.$1)+")":$1.$==1?"AtAttr ("+Utils.prettyPrint($1.$0)+", "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$11($2);
+  },$1.$1)+")":"AtStyle ("+Utils.prettyPrint($1.$0)+", "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$11($2);
+  },$1.$1)+")";
+ };
+ testing_GeneratedPrintf.p$19=function($1)
+ {
+  return $1.$==3?"NdViwRef "+testing_GeneratedPrintf.p$13($1.$0):$1.$==2?"NdVarRef "+testing_GeneratedPrintf.p$12($1.$0):$1.$==1?"NdDocRef "+testing_GeneratedPrintf.p$7($1.$0):"NdTextValL "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$11($2);
+  },$1.$0);
+ };
+ testing_GeneratedPrintf.p$6=function($1)
+ {
+  return $1.$==1?"Variable ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+")":"Fixed ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+")";
+ };
+ Pervasives.NewFromSeq=function(fields)
+ {
+  var r,e,f;
+  r={};
+  e=Enumerator.Get(fields);
+  try
+  {
+   while(e.MoveNext())
+    {
+     f=e.Current();
+     r[f[0]]=f[1];
+    }
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+  return r;
+ };
+ Serializer.deserializeWithDefs=function(s,s$1)
+ {
+  return Serializer.deserialize(function()
+  {
+   return{
+    $:1,
+    $0:0
+   };
+  },function()
+  {
+   return{
+    $:1,
+    $0:0
+   };
+  },function()
+  {
+   return{
+    $:1,
+    $0:""
+   };
+  },function()
+  {
+   return{
+    $:1,
+    $0:false
+   };
+  },function()
+  {
+   return{
+    $:1,
+    $0:[]
+   };
+  },s,s$1);
+ };
+ Serializer.deserialize=function(df,di,ds,db,da,s,s$1)
+ {
+  var f,g;
+  function f$1(a)
+  {
+   return JSON.parse(a);
+  }
+  function g$1(o)
+  {
+   return Serializer.getJsonIntermediate(df,di,ds,db,da,o);
+  }
+  f=function(x)
+  {
+   return g$1(f$1(x));
+  };
+  g=[s,s$1][1];
+  return function(x)
+  {
+   return g(f(x));
+  };
+ };
+ Serializer.getJsonIntermediate=function(df,di,ds,db,da,o)
+ {
+  function jsonInt(o$1)
+  {
+   return Serializer.getJsonIntermediate(df,di,ds,db,da,o$1);
+  }
+  return JsonIntermediate.New(function()
+  {
+   var o$1;
+   o$1=!o?null:typeof o=="number"?{
+    $:1,
+    $0:o
+   }:null;
+   return o$1==null?df():o$1;
+  },function()
+  {
+   var o$1;
+   o$1=!o?null:typeof o=="number"?{
+    $:1,
+    $0:o
+   }:null;
+   return o$1==null?di():o$1;
+  },function()
+  {
+   var o$1;
+   o$1=!o?null:typeof o=="string"?{
+    $:1,
+    $0:o
+   }:null;
+   return o$1==null?ds():o$1;
+  },function()
+  {
+   var o$1;
+   o$1=!o?null:typeof o=="boolean"?{
+    $:1,
+    $0:o
+   }:null;
+   return o$1==null?db():o$1;
+  },function()
+  {
+   var o$1;
+   o$1=!o?null:o instanceof Global.Array?{
+    $:1,
+    $0:Arrays.map(jsonInt,o)
+   }:null;
+   return o$1==null?da(jsonInt):o$1;
+  },function(fl)
+  {
+   var m;
+   return!o?null:(m=o[fl],Unchecked.Equals(m,null)?{
+    $:1,
+    $0:jsonInt(null)
+   }:!m?null:{
+    $:1,
+    $0:jsonInt(m)
+   });
+  },function()
+  {
+   return Unchecked.Equals(typeof o,"object")&&!Unchecked.Equals(o,null);
+  },function()
+  {
+   return Unchecked.Equals(o,null);
+  },function()
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(Global.id))(o);
+  });
+ };
+ SnippetSerialize.serModel=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serModel;
+ };
+ SnippetSerialize.getModel=function(snippets,gen,coll)
+ {
+  return Model.New(Arrays.ofSeq(snippets),gen,coll);
+ };
+ SnippetSerialize.serSnippetId=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serSnippetId;
+ };
+ SnippetSerialize.serSnippet=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serSnippet;
+ };
+ Model.New=function(snippets,modified,collapsed)
+ {
+  return{
+   snippets:snippets,
+   modified:modified,
+   collapsed:collapsed
+  };
+ };
+ JS.GetFields=function(o)
+ {
+  var r,k;
+  r=[];
+  for(var k$1 in o)r.push([k$1,o[k$1]]);
+  return r;
+ };
+ JS.GetFieldValues=function(o)
+ {
+  var r,k;
+  r=[];
+  for(var k$1 in o)r.push(o[k$1]);
+  return r;
+ };
+ UoM$1.Tag$4=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Untag$4=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Tag$3=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Untag$3=function(x)
+ {
+  return Unsafe.cast(x);
  };
  AppFrameworkTemplate.html=function()
  {
   SC$1.$cctor();
   return SC$1.html;
  };
- DependBuilder=Depend.DependBuilder=Runtime$1.Class({
-  Delay:function(f)
+ Snap.Map=function(fn,sn)
+ {
+  var m,res;
+  m=sn.s;
+  return m!=null&&m.$==0?Snap.New({
+   $:0,
+   $0:fn(m.$0)
+  }):(res=Snap.New({
+   $:3,
+   $0:[],
+   $1:[]
+  }),(Snap.When(sn,function(a)
   {
-   return f();
-  },
-  Bind:function(m,f)
+   Snap.MarkDone(res,sn,fn(a));
+  },res),res));
+ };
+ Snap.Map2=function(fn,sn1,sn2)
+ {
+  var $1,$2,res;
+  function cont(a)
   {
-   return Depend.bind(f,m);
-  },
-  Return:function(v)
-  {
-   return Depend.rtn(v);
+   var m,$3,$4;
+   if(!(m=res.s,m!=null&&m.$==0||m!=null&&m.$==2))
+    {
+     $3=Snap.ValueAndForever(sn1);
+     $4=Snap.ValueAndForever(sn2);
+     $3!=null&&$3.$==1?$4!=null&&$4.$==1?$3.$0[1]&&$4.$0[1]?Snap.MarkForever(res,fn($3.$0[0],$4.$0[0])):Snap.MarkReady(res,fn($3.$0[0],$4.$0[0])):void 0:void 0;
+    }
   }
- },Obj,DependBuilder);
- DependBuilder.New=Runtime$1.Ctor(function()
+  $1=sn1.s;
+  $2=sn2.s;
+  return $1!=null&&$1.$==0?$2!=null&&$2.$==0?Snap.New({
+   $:0,
+   $0:fn($1.$0,$2.$0)
+  }):Snap.Map2Opt1(fn,$1.$0,sn2):$2!=null&&$2.$==0?Snap.Map2Opt2(fn,$2.$0,sn1):(res=Snap.New({
+   $:3,
+   $0:[],
+   $1:[]
+  }),(Snap.When(sn1,cont,res),Snap.When(sn2,cont,res),res));
+ };
+ Snap.WhenRun=function(snap,avail,obs)
+ {
+  var m;
+  m=snap.s;
+  m==null?obs():m!=null&&m.$==2?(m.$1.push(obs),avail(m.$0)):m!=null&&m.$==3?(m.$0.push(avail),m.$1.push(obs)):avail(m.$0);
+ };
+ Snap.WhenObsoleteRun=function(snap,obs)
+ {
+  var m;
+  m=snap.s;
+  m==null?obs():m!=null&&m.$==2?m.$1.push(obs):m!=null&&m.$==3?m.$1.push(obs):void 0;
+ };
+ Snap.When=function(snap,avail,obs)
+ {
+  var m;
+  m=snap.s;
+  m==null?Snap.Obsolete(obs):m!=null&&m.$==2?(Snap.EnqueueSafe(m.$1,obs),avail(m.$0)):m!=null&&m.$==3?(m.$0.push(avail),Snap.EnqueueSafe(m.$1,obs)):avail(m.$0);
+ };
+ Snap.MarkDone=function(res,sn,v)
+ {
+  var $1;
+  if($1=sn.s,$1!=null&&$1.$==0)
+   Snap.MarkForever(res,v);
+  else
+   Snap.MarkReady(res,v);
+ };
+ Snap.Join=function(snap)
+ {
+  var res;
+  res=Snap.New({
+   $:3,
+   $0:[],
+   $1:[]
+  });
+  Snap.When(snap,function(x)
+  {
+   var y;
+   y=x();
+   Snap.When(y,function(v)
+   {
+    var $1,$2;
+    if(($1=y.s,$1!=null&&$1.$==0)&&($2=snap.s,$2!=null&&$2.$==0))
+     Snap.MarkForever(res,v);
+    else
+     Snap.MarkReady(res,v);
+   },res);
+  },res);
+  return res;
+ };
+ Snap.Map2Opt1=function(fn,x,sn2)
+ {
+  return Snap.Map(function(y)
+  {
+   return fn(x,y);
+  },sn2);
+ };
+ Snap.Map2Opt2=function(fn,y,sn1)
+ {
+  return Snap.Map(function(x)
+  {
+   return fn(x,y);
+  },sn1);
+ };
+ Snap.ValueAndForever=function(snap)
+ {
+  var m;
+  m=snap.s;
+  return m!=null&&m.$==0?{
+   $:1,
+   $0:[m.$0,true]
+  }:m!=null&&m.$==2?{
+   $:1,
+   $0:[m.$0,false]
+  }:null;
+ };
+ Snap.MarkForever=function(sn,v)
+ {
+  var m,qa,i,$1;
+  m=sn.s;
+  if(m!=null&&m.$==3)
+   {
+    sn.s={
+     $:0,
+     $0:v
+    };
+    qa=m.$0;
+    for(i=0,$1=Arrays.length(qa)-1;i<=$1;i++)(Arrays.get(qa,i))(v);
+   }
+  else
+   void 0;
+ };
+ Snap.MarkReady=function(sn,v)
+ {
+  var m,qa,i,$1;
+  m=sn.s;
+  if(m!=null&&m.$==3)
+   {
+    sn.s={
+     $:2,
+     $0:v,
+     $1:m.$1
+    };
+    qa=m.$0;
+    for(i=0,$1=Arrays.length(qa)-1;i<=$1;i++)(Arrays.get(qa,i))(v);
+   }
+  else
+   void 0;
+ };
+ Snap.MapAsync=function(fn,snap)
+ {
+  var res;
+  res=Snap.New({
+   $:3,
+   $0:[],
+   $1:[]
+  });
+  Snap.When(snap,function(v)
+  {
+   Async.StartTo(fn(v),function(v$1)
+   {
+    Snap.MarkDone(res,snap,v$1);
+   });
+  },res);
+  return res;
+ };
+ Snap.EnqueueSafe=function(q,x)
+ {
+  var qcopy,i,$1,o;
+  q.push(x);
+  if(q.length%20===0)
+   {
+    qcopy=q.slice(0);
+    Queue.Clear(q);
+    for(i=0,$1=Arrays.length(qcopy)-1;i<=$1;i++){
+     o=Arrays.get(qcopy,i);
+     typeof o=="object"?function(sn)
+     {
+      if(sn.s)
+       q.push(sn);
+     }(o):function(f)
+     {
+      q.push(f);
+     }(o);
+    }
+   }
+  else
+   void 0;
+ };
+ Snap.TryGet=function(snap)
+ {
+  var m,$1;
+  m=snap.s;
+  return(m!=null&&m.$==0?($1=m.$0,true):m!=null&&m.$==2&&($1=m.$0,true))?{
+   $:1,
+   $0:$1
+  }:null;
+ };
+ Snap.Map2Unit=function(sn1,sn2)
+ {
+  var $1,$2,res;
+  function cont()
+  {
+   var m,$3,$4;
+   if(!(m=res.s,m!=null&&m.$==0||m!=null&&m.$==2))
+    {
+     $3=Snap.ValueAndForever(sn1);
+     $4=Snap.ValueAndForever(sn2);
+     $3!=null&&$3.$==1?$4!=null&&$4.$==1?$3.$0[1]&&$4.$0[1]?Snap.MarkForever(res,null):Snap.MarkReady(res,null):void 0:void 0;
+    }
+  }
+  $1=sn1.s;
+  $2=sn2.s;
+  return $1!=null&&$1.$==0?$2!=null&&$2.$==0?Snap.New({
+   $:0,
+   $0:null
+  }):sn2:$2!=null&&$2.$==0?sn1:(res=Snap.New({
+   $:3,
+   $0:[],
+   $1:[]
+  }),(Snap.When(sn1,cont,res),Snap.When(sn2,cont,res),res));
+ };
+ Snap.Copy=function(sn)
+ {
+  var m,res,res$1;
+  m=sn.s;
+  return m==null?sn:m!=null&&m.$==2?(res=Snap.New({
+   $:2,
+   $0:m.$0,
+   $1:[]
+  }),(Snap.WhenObsolete(sn,res),res)):m!=null&&m.$==3?(res$1=Snap.New({
+   $:3,
+   $0:[],
+   $1:[]
+  }),(Snap.When(sn,function(v)
+  {
+   Snap.MarkDone(res$1,sn,v);
+  },res$1),res$1)):sn;
+ };
+ Snap.WhenObsolete=function(snap,obs)
+ {
+  var m;
+  m=snap.s;
+  m==null?Snap.Obsolete(obs):m!=null&&m.$==2?Snap.EnqueueSafe(m.$1,obs):m!=null&&m.$==3?Snap.EnqueueSafe(m.$1,obs):void 0;
+ };
+ Snap.Map3=function(fn,sn1,sn2,sn3)
+ {
+  var $1,$2,$3,res;
+  function cont(a)
+  {
+   var m,$4,$5,$6;
+   if(!(m=res.s,m!=null&&m.$==0||m!=null&&m.$==2))
+    {
+     $4=Snap.ValueAndForever(sn1);
+     $5=Snap.ValueAndForever(sn2);
+     $6=Snap.ValueAndForever(sn3);
+     $4!=null&&$4.$==1?$5!=null&&$5.$==1?$6!=null&&$6.$==1?$4.$0[1]&&$5.$0[1]&&$6.$0[1]?Snap.MarkForever(res,fn($4.$0[0],$5.$0[0],$6.$0[0])):Snap.MarkReady(res,fn($4.$0[0],$5.$0[0],$6.$0[0])):void 0:void 0:void 0;
+    }
+  }
+  $1=sn1.s;
+  $2=sn2.s;
+  $3=sn3.s;
+  return $1!=null&&$1.$==0?$2!=null&&$2.$==0?$3!=null&&$3.$==0?Snap.New({
+   $:0,
+   $0:fn($1.$0,$2.$0,$3.$0)
+  }):Snap.Map3Opt1(fn,$1.$0,$2.$0,sn3):$3!=null&&$3.$==0?Snap.Map3Opt2(fn,$1.$0,$3.$0,sn2):Snap.Map3Opt3(fn,$1.$0,sn2,sn3):$2!=null&&$2.$==0?$3!=null&&$3.$==0?Snap.Map3Opt4(fn,$2.$0,$3.$0,sn1):Snap.Map3Opt5(fn,$2.$0,sn1,sn3):$3!=null&&$3.$==0?Snap.Map3Opt6(fn,$3.$0,sn1,sn2):(res=Snap.New({
+   $:3,
+   $0:[],
+   $1:[]
+  }),(Snap.When(sn1,cont,res),Snap.When(sn2,cont,res),Snap.When(sn3,cont,res),res));
+ };
+ Snap.Sequence=function(snaps)
+ {
+  var snaps$1,res,w;
+  function cont(a)
+  {
+   var vs;
+   if(w[0]===0)
+    {
+     vs=Arrays.map(function(s)
+     {
+      var m;
+      m=s.s;
+      return m!=null&&m.$==0?m.$0:m!=null&&m.$==2?m.$0:Operators.FailWith("value not found by View.Sequence");
+     },snaps$1);
+     Arrays.forall(function(a$1)
+     {
+      var $1;
+      $1=a$1.s;
+      return $1!=null&&$1.$==0;
+     },snaps$1)?Snap.MarkForever(res,vs):Snap.MarkReady(res,vs);
+    }
+   else
+    w[0]--;
+  }
+  snaps$1=Arrays.ofSeq(snaps);
+  return snaps$1.length==0?Snap.New({
+   $:0,
+   $0:[]
+  }):(res=Snap.New({
+   $:3,
+   $0:[],
+   $1:[]
+  }),(w=[Arrays.length(snaps$1)-1],(Arrays.iter(function(s)
+  {
+   Snap.When(s,cont,res);
+  },snaps$1),res)));
+ };
+ Snap.Map3Opt1=function(fn,x,y,sn3)
+ {
+  return Snap.Map(function(z)
+  {
+   return fn(x,y,z);
+  },sn3);
+ };
+ Snap.Map3Opt2=function(fn,x,z,sn2)
+ {
+  return Snap.Map(function(y)
+  {
+   return fn(x,y,z);
+  },sn2);
+ };
+ Snap.Map3Opt3=function(fn,x,sn2,sn3)
+ {
+  return Snap.Map2(function($1,$2)
+  {
+   return fn(x,$1,$2);
+  },sn2,sn3);
+ };
+ Snap.Map3Opt4=function(fn,y,z,sn1)
+ {
+  return Snap.Map(function(x)
+  {
+   return fn(x,y,z);
+  },sn1);
+ };
+ Snap.Map3Opt5=function(fn,y,sn1,sn3)
+ {
+  return Snap.Map2(function($1,$2)
+  {
+   return fn($1,y,$2);
+  },sn1,sn3);
+ };
+ Snap.Map3Opt6=function(fn,z,sn1,sn2)
+ {
+  return Snap.Map2(function($1,$2)
+  {
+   return fn($1,$2,z);
+  },sn1,sn2);
+ };
+ Builder=Result.Builder=Runtime$1.Class({},Obj,Builder);
+ Builder.New=Runtime$1.Ctor(function()
  {
   Obj.New.call(this);
- },DependBuilder);
+ },Builder);
+ Result.result=function()
+ {
+  SC$1.$cctor();
+  return SC$1.result;
+ };
+ BuilderP=Result.BuilderP=Runtime$1.Class({},Obj,BuilderP);
+ BuilderP.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+ },BuilderP);
+ Builder$1=ResultM.Builder=Runtime$1.Class({},Obj,Builder$1);
+ Builder$1.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+ },Builder$1);
  String.unindent$1=function(s)
  {
   var lines,n,o,o$1;
@@ -6162,6 +10082,10 @@ if (!console) {
  {
   return t.substring(0,s.length)==s;
  };
+ Strings.IsNullOrEmpty=function(x)
+ {
+  return x==null||x=="";
+ };
  Strings.Split=function(s,pat,opts)
  {
   return opts===1?Arrays.filter(function(x)
@@ -6173,6 +10097,14 @@ if (!console) {
  {
   return s.replace(new Global.RegExp("[-\\/\\\\^$*+?.()|[\\]{}]","g"),"\\$&");
  };
+ Strings.PadLeftWith=function(s,n,c)
+ {
+  return n>s.length?Global.Array(n-s.length+1).join(c)+s:s;
+ };
+ Strings.SplitWith=function(str,pat)
+ {
+  return str.split(pat);
+ };
  Strings.Replace=function(subject,search,replace)
  {
   function replaceLoop(subj)
@@ -6183,14 +10115,6 @@ if (!console) {
   }
   return replaceLoop(subject);
  };
- Strings.SplitWith=function(str,pat)
- {
-  return str.split(pat);
- };
- Strings.ReplaceOnce=function(string,search,replace)
- {
-  return string.replace(search,replace);
- };
  Strings.replicate=function(count,s)
  {
   return Arrays.create(count,s).join("");
@@ -6198,6 +10122,10 @@ if (!console) {
  Strings.Substring=function(s,ix,ct)
  {
   return s.substr(ix,ct);
+ };
+ Strings.ReplaceOnce=function(string,search,replace)
+ {
+  return string.replace(search,replace);
  };
  Strings.SplitStrings=function(s,sep,opts)
  {
@@ -6211,39 +10139,421 @@ if (!console) {
  {
   return s===null?"":s;
  };
- JS.GetFields=function(o)
+ ParseO.tryParseWith$1=function(tryParseFunc)
  {
-  var r,k;
-  r=[];
-  for(var k$1 in o)r.push([k$1,o[k$1]]);
-  return r;
- };
- JS.GetFieldValues=function(o)
- {
-  var r,k;
-  r=[];
-  for(var k$1 in o)r.push(o[k$1]);
-  return r;
- };
- Pervasives.NewFromSeq=function(fields)
- {
-  var r,e,f;
-  r={};
-  e=Enumerator.Get(fields);
-  try
+  function g($1,$2)
   {
-   while(e.MoveNext())
+   return $1?{
+    $:1,
+    $0:$2
+   }:null;
+  }
+  return function(x)
+  {
+   return g.apply(null,tryParseFunc(x));
+  };
+ };
+ ParseO.parseDateO$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseDateO;
+ };
+ ParseO.parseIntO$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseIntO;
+ };
+ ParseO.parseInt64O$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseInt64O;
+ };
+ ParseO.parseSingleO$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseSingleO;
+ };
+ ParseO.parseDoubleO$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseDoubleO;
+ };
+ ParseO.parseGuidO$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseGuidO;
+ };
+ Numeric.TryParseInt64=function(s,r)
+ {
+  return Numeric.TryParse(s,-9223372036854775808,9223372036854775807,r);
+ };
+ Serializer$1.toJsonString=function(v)
+ {
+  return Arrays.ofSeq(Seq.delay(function()
+  {
+   return Seq.append(["\""],Seq.delay(function()
+   {
+    return Seq.append(!Strings.IsNullOrEmpty(v)?Seq.collect(function(i)
     {
-     f=e.Current();
-     r[f[0]]=f[1];
-    }
-  }
-  finally
+     var c,ci;
+     c=v[i];
+     ci=c.charCodeAt();
+     return ci>=0&&ci<=7||ci===11||ci>=14&&ci<=31?(function($1)
+     {
+      return function($2)
+      {
+       return $1("\\u"+Utils.padNumLeft($2.toString(16),4));
+      };
+     }(Global.id))(ci):c==="\u0008"?"\\b":c==="\u0009"?"\\t":c==="\n"?"\\n":c==="\u000c"?"\\f":c==="\r"?"\\r":c==="\""?"\\\"":c==="\\"?"\\\\":[c];
+    },Operators.range(0,v.length-1)):[],Seq.delay(function()
+    {
+     return["\""];
+    }));
+   }));
+  })).join("");
+ };
+ Serializer$1.serString=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serString;
+ };
+ Serializer$1.mapO=function(g,f,a,a$1)
+ {
+  function g$1(o)
   {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
+   return o==null?null:f(o.$0);
   }
-  return r;
+  return[function(x)
+  {
+   return a(g(x));
+  },function(x)
+  {
+   return g$1(a$1(x));
+  }];
+ };
+ Serializer$1.serField=function(name,get,set,a,a$1)
+ {
+  var f;
+  function g(a$2)
+  {
+   return{
+    $:1,
+    $0:a$2
+   };
+  }
+  return[name,(f=function(x)
+  {
+   return a(get(x));
+  },function(x)
+  {
+   return g(f(x));
+  }),function(rc)
+  {
+   var f$1,b,g$1;
+   function m(b$1)
+   {
+    return set(b$1,rc);
+   }
+   function g$2(o)
+   {
+    return o==null?rc:o.$0;
+   }
+   f$1=(b=(g$1=function(o)
+   {
+    return o==null?null:{
+     $:1,
+     $0:m(o.$0)
+    };
+   },function(x)
+   {
+    return g$1(a$1(x));
+   }),function(o)
+   {
+    return o==null?null:b(o.$0);
+   });
+   return function(x)
+   {
+    return g$2(f$1(x));
+   };
+  }];
+ };
+ Serializer$1.serOpt=function(s,s$1)
+ {
+  var ser,f,m;
+  function g(o)
+  {
+   return o==null?"null":o.$0;
+  }
+  ser=[s,s$1];
+  return[(f=(m=ser[0],function(o)
+  {
+   return o==null?null:{
+    $:1,
+    $0:m(o.$0)
+   };
+  }),function(x)
+  {
+   return g(f(x));
+  }),function(j)
+  {
+   return{
+    $:1,
+    $0:j.isNull()?null:ser[1](j)
+   };
+  }];
+ };
+ Serializer$1.serSet=function(s,s$1)
+ {
+  var ser,f,m;
+  ser=[s,s$1];
+  return[(f=(m=ser[0],function(s$2)
+  {
+   return new FSharpSet.New$1(BalancedTree.OfSeq(Seq.map(m,s$2)));
+  }),function(x)
+  {
+   return Serializer$1.sprintA(f(x));
+  }),function(j)
+  {
+   var o,x,m$1,c;
+   o=(x=j.tryArray(),(m$1=(c=ser[1],function(a)
+   {
+    return Arrays.choose(c,a);
+   }),x==null?null:{
+    $:1,
+    $0:m$1(x.$0)
+   }));
+   return o==null?null:{
+    $:1,
+    $0:new FSharpSet.New(o.$0)
+   };
+  }];
+ };
+ Serializer$1.serDup=function(serFst,serSnd)
+ {
+  return[function(t)
+  {
+   return(((Runtime$1.Curried3(function($1,$2,$3)
+   {
+    return $1("["+Utils.toSafe($2)+", "+Utils.toSafe($3)+"]");
+   }))(Global.id))(serFst[0](t[0])))(serSnd[0](t[1]));
+  },function(j)
+  {
+   var a,$1,t,$2,$3,$4;
+   a=j.tryArray();
+   return a!=null&&a.$==1&&((t=a.$0,!Unchecked.Equals(t,null)&&t.length===2)&&($1=[Arrays.get(a.$0,0),Arrays.get(a.$0,1)],true))?($2=serFst[1]($1[0]),($3=serSnd[1]($1[1]),$2!=null&&$2.$==1&&($3!=null&&$3.$==1&&($4=[$2.$0,$3.$0],true))?{
+    $:1,
+    $0:[$4[0],$4[1]]
+   }:null)):null;
+  }];
+ };
+ Serializer$1.serArr=function(s,s$1)
+ {
+  var ser,f,m;
+  ser=[s,s$1];
+  return[(f=(m=ser[0],function(a)
+  {
+   return Arrays.map(m,a);
+  }),function(x)
+  {
+   return Serializer$1.sprintA(f(x));
+  }),function(j)
+  {
+   var x,m$1,c;
+   x=j.tryArray();
+   m$1=(c=ser[1],function(a)
+   {
+    return Arrays.choose(c,a);
+   });
+   return x==null?null:{
+    $:1,
+    $0:m$1(x.$0)
+   };
+  }];
+ };
+ Serializer$1.serInt=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serInt;
+ };
+ Serializer$1.serFieldO=function(name,get,set,a,a$1)
+ {
+  function g(o)
+  {
+   return o==null?null:{
+    $:1,
+    $0:a(o.$0)
+   };
+  }
+  return[name,function(x)
+  {
+   return g(get(x));
+  },function(rc)
+  {
+   var f,m;
+   function g$1(b)
+   {
+    return set(b,rc);
+   }
+   function g$2(o)
+   {
+    return o==null?rc:o.$0;
+   }
+   f=(m=function(x)
+   {
+    return g$1(a$1(x));
+   },function(o)
+   {
+    return o==null?null:{
+     $:1,
+     $0:m(o.$0)
+    };
+   });
+   return function(x)
+   {
+    return g$2(f(x));
+   };
+  }];
+ };
+ Serializer$1.serDate=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serDate;
+ };
+ Serializer$1.sprintA=function(v)
+ {
+  var x;
+  x=Strings.concat(", ",v);
+  return(function($1)
+  {
+   return function($2)
+   {
+    return $1("["+Utils.toSafe($2)+"]");
+   };
+  }(Global.id))(x);
+ };
+ JsonIntermediate.New=function(tryFloat,tryInt,tryString,tryBool,tryArray,tryField,isObject,isNull,toString)
+ {
+  return{
+   tryFloat:tryFloat,
+   tryInt:tryInt,
+   tryString:tryString,
+   tryBool:tryBool,
+   tryArray:tryArray,
+   tryField:tryField,
+   isObject:isObject,
+   isNull:isNull,
+   toString:toString
+  };
+ };
+ SnippetModule.New=function(name,content,parentO)
+ {
+  return Snippet.New(UoM$1.Tag$4(Guid.NewGuid()),name,content,parentO,new FSharpSet.New$1(null),[],SnippetModule.getNextModified());
+ };
+ SnippetModule.allPredecessors=function(tryFindSnippet,snp)
+ {
+  var parentS;
+  parentS=new FSharpSet.New(Option$1.toArray(snp.snpParentIdO));
+  return function(out,searched,toSearch)
+  {
+   var sid,toSearch1,searched1,m,snp1,news,out1,toSearch2;
+   while(true)
+    if(toSearch.get_IsEmpty())
+     return out;
+    else
+     {
+      sid=Seq.head(toSearch);
+      toSearch1=toSearch.Remove(sid);
+      searched1=searched.Add(sid);
+      m=tryFindSnippet(sid);
+      if(m!=null&&m.$==1)
+       {
+        snp1=m.$0;
+        news=FSharpSet.op_Addition(new FSharpSet.New(Option$1.toArray(snp1.snpParentIdO)),new FSharpSet.New(snp1.snpPredIds));
+        out1=out.Add(snp1);
+        toSearch2=FSharpSet.op_Addition(toSearch1,FSharpSet.op_Subtraction(news,searched1));
+        out=out1;
+        searched=searched1;
+        toSearch=toSearch2;
+       }
+      else
+       {
+        searched=searched1;
+        toSearch=toSearch1;
+       }
+     }
+  }(new FSharpSet.New$1(null),(new FSharpSet.New$1(null)).Add(snp.snpId),FSharpSet.op_Addition(parentS,new FSharpSet.New(snp.snpPredIds)));
+ };
+ SnippetModule.indirectPredecessorIds=function(tryFindSnippet,snpId,snpParentIdO,snpPredIds)
+ {
+  var parentS;
+  parentS=new FSharpSet.New(Option$1.toArray(snpParentIdO));
+  return function(out,searched,toSearch)
+  {
+   var sid,toSearch1,searched1,m,snp1,news,out1,toSearch2;
+   while(true)
+    if(toSearch.get_IsEmpty())
+     return out;
+    else
+     {
+      sid=Seq.head(toSearch);
+      toSearch1=toSearch.Remove(sid);
+      searched1=searched.Add(sid);
+      m=tryFindSnippet(sid);
+      if(m!=null&&m.$==1)
+       {
+        snp1=m.$0;
+        news=FSharpSet.op_Addition(new FSharpSet.New(Option$1.toArray(snp1.snpParentIdO)),new FSharpSet.New(snp1.snpPredIds));
+        out1=FSharpSet.op_Addition(out,news);
+        toSearch2=FSharpSet.op_Addition(toSearch1,FSharpSet.op_Subtraction(news,searched1));
+        out=out1;
+        searched=searched1;
+        toSearch=toSearch2;
+       }
+      else
+       {
+        searched=searched1;
+        toSearch=toSearch1;
+       }
+     }
+  }(parentS,(new FSharpSet.New$1(null)).Add(snpId),FSharpSet.op_Addition(parentS,snpPredIds));
+ };
+ SnippetModule.defaultSnippet=function()
+ {
+  SC$1.$cctor();
+  return SC$1.defaultSnippet;
+ };
+ SnippetModule.getNextModified=function()
+ {
+  return Date.now();
+ };
+ View$1.traverseListApp=function(f,list)
+ {
+  function cons(head,tail)
+  {
+   return new T({
+    $:1,
+    $0:head,
+    $1:tail
+   });
+  }
+  return List.foldBack(function(head,tail)
+  {
+   return View$1.op_LessMultiplyGreater(View$1.op_LessMultiplyGreater(View$1.rtn$1(function($1)
+   {
+    return function($2)
+    {
+     return cons($1,$2);
+    };
+   }),f(head)),tail);
+  },list,View$1.rtn$1(T.Empty));
+ };
+ View$1.rtn$1=function(a)
+ {
+  return View.Const(a);
+ };
+ View$1.op_LessMultiplyGreater=function(a,a$1)
+ {
+  return View.Apply(a,a$1);
  };
  AttrModule.DynamicStyle=function(name,view)
  {
@@ -6254,6 +10564,17 @@ if (!console) {
     return DomUtility.SetStyle(el,name,v);
    };
   });
+ };
+ AttrModule.Style=function(name,value)
+ {
+  return Attrs.Static(function(el)
+  {
+   DomUtility.SetStyle(el,name,value);
+  });
+ };
+ AttrModule.DynamicCustom=function(set,view)
+ {
+  return Attrs.Dynamic(view,set);
  };
  AttrModule.DynamicPred=function(name,predView,valView)
  {
@@ -6296,13 +10617,6 @@ if (!console) {
    return g(Global.id(x));
   });
  };
- AttrModule.Style=function(name,value)
- {
-  return Attrs.Static(function(el)
-  {
-   DomUtility.SetStyle(el,name,value);
-  });
- };
  AttrModule.CustomValue=function(_var,toString,fromString)
  {
   return AttrModule.CustomVar(_var,function($1,$2)
@@ -6312,10 +10626,6 @@ if (!console) {
   {
    return fromString(e.value);
   });
- };
- AttrModule.DynamicCustom=function(set,view)
- {
-  return Attrs.Dynamic(view,set);
  };
  AttrModule.CustomVar=function(_var,set,get)
  {
@@ -6498,6 +10808,45 @@ if (!console) {
    };
   });
  };
+ AttrProxy=UI.AttrProxy=Runtime$1.Class({},null,AttrProxy);
+ AttrProxy.Create=function(name,value)
+ {
+  return Attrs.Static(function(el)
+  {
+   DomUtility.SetAttr(el,name,value);
+  });
+ };
+ AttrProxy.Concat=function(xs)
+ {
+  var x;
+  x=Array.ofSeqNonCopying(xs);
+  return Array.TreeReduce(Attrs.EmptyAttr(),AttrProxy.Append,x);
+ };
+ AttrProxy.OnAfterRenderImpl=function(q)
+ {
+  return new AttrProxy({
+   $:4,
+   $0:q
+  });
+ };
+ AttrProxy.Append=function(a,b)
+ {
+  return Attrs.AppendTree(a,b);
+ };
+ AttrProxy.HandlerImpl=function(event,q)
+ {
+  return Attrs.Static(function(el)
+  {
+   el.addEventListener(event,function(d)
+   {
+    return(q(el))(d);
+   },false);
+  });
+ };
+ AttrProxy.Handler=function(event,q)
+ {
+  return AttrProxy.HandlerImpl(event,q);
+ };
  PlugInBuilder$1=AppFramework.PlugInBuilder=Runtime$1.Class({
   AddDoc:function(plg,name,doc)
   {
@@ -6517,16 +10866,45 @@ if (!console) {
   {
    return this.Zero();
   },
+  AddAct:function(plg,name,act)
+  {
+   plg.plgActions.Append(AppFramework.newAct(name,act));
+   return plg;
+  },
+  Merge:function(plg,prefix,p2)
+  {
+   plg.plgVars.AppendMany(Seq.map(function(v)
+   {
+    return PlugInVar.New(prefix+v.varName,v.varVar);
+   },p2.plgVars));
+   plg.plgViews.AppendMany(Seq.map(function(w)
+   {
+    return PlugInView.New(prefix+w.viwName,w.viwView);
+   },p2.plgViews));
+   plg.plgDocs.AppendMany(Seq.map(function(d)
+   {
+    return PlugInDoc.New(prefix+d.docName,d.docDoc);
+   },p2.plgDocs));
+   plg.plgActions.AppendMany(Seq.map(function(a)
+   {
+    return PlugInAction.New(prefix+a.actName,a.actFunction,a.actEnabled);
+   },p2.plgActions));
+   plg.plgQueries.AppendMany(Seq.map(function(q)
+   {
+    return PlugInQuery.New(prefix+q.qryName,q.qryFunction);
+   },p2.plgQueries));
+   return plg;
+  },
+  AddViw:function(plg,name,viw)
+  {
+   plg.plgViews.Append(AppFramework.newViw(name,viw));
+   return plg;
+  },
   Zero:function()
   {
    var i;
    i=AppFramework.defaultPlugIn();
    return PlugIn.New("Main",i.plgVars,i.plgViews,i.plgDocs,i.plgActions,i.plgQueries);
-  },
-  AddAct:function(plg,name,act)
-  {
-   plg.plgActions.Append(AppFramework.newAct(name,act));
-   return plg;
   },
   AddAct2:function(plg,name,act,p1,p2)
   {
@@ -6569,398 +10947,554 @@ if (!console) {
  {
   Obj.New.call(this);
  },PlugInBuilder$1);
- Snap.Map=function(fn,sn)
+ Concurrency.Delay=function(mk)
  {
-  var m,res;
-  m=sn.s;
-  return m!=null&&m.$==0?Snap.New({
-   $:0,
-   $0:fn(m.$0)
-  }):(res=Snap.New({
-   $:3,
-   $0:[],
-   $1:[]
-  }),(Snap.When(sn,function(a)
+  return function(c)
   {
-   Snap.MarkDone(res,sn,fn(a));
-  },res),res));
- };
- Snap.Map2=function(fn,sn1,sn2)
- {
-  var $1,$2,res;
-  function cont(a)
-  {
-   var m,$3,$4;
-   if(!(m=res.s,m!=null&&m.$==0||m!=null&&m.$==2))
-    {
-     $3=Snap.ValueAndForever(sn1);
-     $4=Snap.ValueAndForever(sn2);
-     $3!=null&&$3.$==1?$4!=null&&$4.$==1?$3.$0[1]&&$4.$0[1]?Snap.MarkForever(res,fn($3.$0[0],$4.$0[0])):Snap.MarkReady(res,fn($3.$0[0],$4.$0[0])):void 0:void 0;
-    }
-  }
-  $1=sn1.s;
-  $2=sn2.s;
-  return $1!=null&&$1.$==0?$2!=null&&$2.$==0?Snap.New({
-   $:0,
-   $0:fn($1.$0,$2.$0)
-  }):Snap.Map2Opt1(fn,$1.$0,sn2):$2!=null&&$2.$==0?Snap.Map2Opt2(fn,$2.$0,sn1):(res=Snap.New({
-   $:3,
-   $0:[],
-   $1:[]
-  }),(Snap.When(sn1,cont,res),Snap.When(sn2,cont,res),res));
- };
- Snap.WhenObsoleteRun=function(snap,obs)
- {
-  var m;
-  m=snap.s;
-  m==null?obs():m!=null&&m.$==2?m.$1.push(obs):m!=null&&m.$==3?m.$1.push(obs):void 0;
- };
- Snap.When=function(snap,avail,obs)
- {
-  var m;
-  m=snap.s;
-  m==null?Snap.Obsolete(obs):m!=null&&m.$==2?(Snap.EnqueueSafe(m.$1,obs),avail(m.$0)):m!=null&&m.$==3?(m.$0.push(avail),Snap.EnqueueSafe(m.$1,obs)):avail(m.$0);
- };
- Snap.MarkDone=function(res,sn,v)
- {
-  var $1;
-  if($1=sn.s,$1!=null&&$1.$==0)
-   Snap.MarkForever(res,v);
-  else
-   Snap.MarkReady(res,v);
- };
- Snap.Join=function(snap)
- {
-  var res;
-  res=Snap.New({
-   $:3,
-   $0:[],
-   $1:[]
-  });
-  Snap.When(snap,function(x)
-  {
-   var y;
-   y=x();
-   Snap.When(y,function(v)
+   try
    {
-    var $1,$2;
-    if(($1=y.s,$1!=null&&$1.$==0)&&($2=snap.s,$2!=null&&$2.$==0))
-     Snap.MarkForever(res,v);
+    (mk(null))(c);
+   }
+   catch(e)
+   {
+    c.k({
+     $:1,
+     $0:e
+    });
+   }
+  };
+ };
+ Concurrency.Bind=function(r,f)
+ {
+  return Concurrency.checkCancel(function(c)
+  {
+   r(AsyncBody.New(function(a)
+   {
+    var x;
+    if(a.$==0)
+     {
+      x=a.$0;
+      Concurrency.scheduler().Fork(function()
+      {
+       try
+       {
+        (f(x))(c);
+       }
+       catch(e)
+       {
+        c.k({
+         $:1,
+         $0:e
+        });
+       }
+      });
+     }
     else
-     Snap.MarkReady(res,v);
-   },res);
-  },res);
-  return res;
+     Concurrency.scheduler().Fork(function()
+     {
+      c.k(a);
+     });
+   },c.ct));
+  });
  };
- Snap.WhenRun=function(snap,avail,obs)
+ Concurrency.Return=function(x)
  {
-  var m;
-  m=snap.s;
-  m==null?obs():m!=null&&m.$==2?(m.$1.push(obs),avail(m.$0)):m!=null&&m.$==3?(m.$0.push(avail),m.$1.push(obs)):avail(m.$0);
- };
- Snap.Map2Opt1=function(fn,x,sn2)
- {
-  return Snap.Map(function(y)
+  return function(c)
   {
-   return fn(x,y);
-  },sn2);
+   c.k({
+    $:0,
+    $0:x
+   });
+  };
  };
- Snap.Map2Opt2=function(fn,y,sn1)
+ Concurrency.FromContinuations=function(subscribe)
  {
-  return Snap.Map(function(x)
+  return function(c)
   {
-   return fn(x,y);
-  },sn1);
- };
- Snap.ValueAndForever=function(snap)
- {
-  var m;
-  m=snap.s;
-  return m!=null&&m.$==0?{
-   $:1,
-   $0:[m.$0,true]
-  }:m!=null&&m.$==2?{
-   $:1,
-   $0:[m.$0,false]
-  }:null;
- };
- Snap.MarkForever=function(sn,v)
- {
-  var m,qa,i,$1;
-  m=sn.s;
-  if(m!=null&&m.$==3)
+   var continued;
+   function once(cont)
    {
-    sn.s={
-     $:0,
-     $0:v
-    };
-    qa=m.$0;
-    for(i=0,$1=Arrays.length(qa)-1;i<=$1;i++)(Arrays.get(qa,i))(v);
+    if(continued[0])
+     Operators.FailWith("A continuation provided by Async.FromContinuations was invoked multiple times");
+    else
+     {
+      continued[0]=true;
+      Concurrency.scheduler().Fork(cont);
+     }
    }
-  else
-   void 0;
- };
- Snap.MarkReady=function(sn,v)
- {
-  var m,qa,i,$1;
-  m=sn.s;
-  if(m!=null&&m.$==3)
+   continued=[false];
+   subscribe(function(a)
    {
-    sn.s={
-     $:2,
-     $0:v,
-     $1:m.$1
-    };
-    qa=m.$0;
-    for(i=0,$1=Arrays.length(qa)-1;i<=$1;i++)(Arrays.get(qa,i))(v);
-   }
-  else
-   void 0;
- };
- Snap.TryGet=function(snap)
- {
-  var m,$1;
-  m=snap.s;
-  return(m!=null&&m.$==0?($1=m.$0,true):m!=null&&m.$==2&&($1=m.$0,true))?{
-   $:1,
-   $0:$1
-  }:null;
- };
- Snap.EnqueueSafe=function(q,x)
- {
-  var qcopy,i,$1,o;
-  q.push(x);
-  if(q.length%20===0)
+    once(function()
+    {
+     c.k({
+      $:0,
+      $0:a
+     });
+    });
+   },function(e)
    {
-    qcopy=q.slice(0);
-    Queue.Clear(q);
-    for(i=0,$1=Arrays.length(qcopy)-1;i<=$1;i++){
-     o=Arrays.get(qcopy,i);
-     typeof o=="object"?function(sn)
-     {
-      if(sn.s)
-       q.push(sn);
-     }(o):function(f)
-     {
-      q.push(f);
-     }(o);
-    }
-   }
-  else
-   void 0;
- };
- Snap.Map2Unit=function(sn1,sn2)
- {
-  var $1,$2,res;
-  function cont()
-  {
-   var m,$3,$4;
-   if(!(m=res.s,m!=null&&m.$==0||m!=null&&m.$==2))
+    once(function()
     {
-     $3=Snap.ValueAndForever(sn1);
-     $4=Snap.ValueAndForever(sn2);
-     $3!=null&&$3.$==1?$4!=null&&$4.$==1?$3.$0[1]&&$4.$0[1]?Snap.MarkForever(res,null):Snap.MarkReady(res,null):void 0:void 0;
-    }
-  }
-  $1=sn1.s;
-  $2=sn2.s;
-  return $1!=null&&$1.$==0?$2!=null&&$2.$==0?Snap.New({
-   $:0,
-   $0:null
-  }):sn2:$2!=null&&$2.$==0?sn1:(res=Snap.New({
-   $:3,
-   $0:[],
-   $1:[]
-  }),(Snap.When(sn1,cont,res),Snap.When(sn2,cont,res),res));
- };
- Snap.Copy=function(sn)
- {
-  var m,res,res$1;
-  m=sn.s;
-  return m==null?sn:m!=null&&m.$==2?(res=Snap.New({
-   $:2,
-   $0:m.$0,
-   $1:[]
-  }),(Snap.WhenObsolete(sn,res),res)):m!=null&&m.$==3?(res$1=Snap.New({
-   $:3,
-   $0:[],
-   $1:[]
-  }),(Snap.When(sn,function(v)
-  {
-   Snap.MarkDone(res$1,sn,v);
-  },res$1),res$1)):sn;
- };
- Snap.WhenObsolete=function(snap,obs)
- {
-  var m;
-  m=snap.s;
-  m==null?Snap.Obsolete(obs):m!=null&&m.$==2?Snap.EnqueueSafe(m.$1,obs):m!=null&&m.$==3?Snap.EnqueueSafe(m.$1,obs):void 0;
- };
- Snap.Map3=function(fn,sn1,sn2,sn3)
- {
-  var $1,$2,$3,res;
-  function cont(a)
-  {
-   var m,$4,$5,$6;
-   if(!(m=res.s,m!=null&&m.$==0||m!=null&&m.$==2))
+     c.k({
+      $:1,
+      $0:e
+     });
+    });
+   },function(e)
+   {
+    once(function()
     {
-     $4=Snap.ValueAndForever(sn1);
-     $5=Snap.ValueAndForever(sn2);
-     $6=Snap.ValueAndForever(sn3);
-     $4!=null&&$4.$==1?$5!=null&&$5.$==1?$6!=null&&$6.$==1?$4.$0[1]&&$5.$0[1]&&$6.$0[1]?Snap.MarkForever(res,fn($4.$0[0],$5.$0[0],$6.$0[0])):Snap.MarkReady(res,fn($4.$0[0],$5.$0[0],$6.$0[0])):void 0:void 0:void 0;
-    }
-  }
-  $1=sn1.s;
-  $2=sn2.s;
-  $3=sn3.s;
-  return $1!=null&&$1.$==0?$2!=null&&$2.$==0?$3!=null&&$3.$==0?Snap.New({
-   $:0,
-   $0:fn($1.$0,$2.$0,$3.$0)
-  }):Snap.Map3Opt1(fn,$1.$0,$2.$0,sn3):$3!=null&&$3.$==0?Snap.Map3Opt2(fn,$1.$0,$3.$0,sn2):Snap.Map3Opt3(fn,$1.$0,sn2,sn3):$2!=null&&$2.$==0?$3!=null&&$3.$==0?Snap.Map3Opt4(fn,$2.$0,$3.$0,sn1):Snap.Map3Opt5(fn,$2.$0,sn1,sn3):$3!=null&&$3.$==0?Snap.Map3Opt6(fn,$3.$0,sn1,sn2):(res=Snap.New({
-   $:3,
-   $0:[],
-   $1:[]
-  }),(Snap.When(sn1,cont,res),Snap.When(sn2,cont,res),Snap.When(sn3,cont,res),res));
+     c.k({
+      $:2,
+      $0:e
+     });
+    });
+   });
+  };
  };
- Snap.Sequence=function(snaps)
+ Concurrency.checkCancel=function(r)
  {
-  var snaps$1,res,w;
-  function cont(a)
+  return function(c)
   {
-   var vs;
-   if(w[0]===0)
-    {
-     vs=Arrays.map(function(s)
-     {
-      var m;
-      m=s.s;
-      return m!=null&&m.$==0?m.$0:m!=null&&m.$==2?m.$0:Operators.FailWith("value not found by View.Sequence");
-     },snaps$1);
-     Arrays.forall(function(a$1)
-     {
-      var $1;
-      $1=a$1.s;
-      return $1!=null&&$1.$==0;
-     },snaps$1)?Snap.MarkForever(res,vs):Snap.MarkReady(res,vs);
-    }
+   if(c.ct.c)
+    Concurrency.cancel(c);
    else
-    w[0]--;
-  }
-  snaps$1=Arrays.ofSeq(snaps);
-  return snaps$1.length==0?Snap.New({
-   $:0,
-   $0:[]
-  }):(res=Snap.New({
-   $:3,
-   $0:[],
-   $1:[]
-  }),(w=[Arrays.length(snaps$1)-1],(Arrays.iter(function(s)
+    r(c);
+  };
+ };
+ Concurrency.While=function(g,c)
+ {
+  return g()?Concurrency.Bind(c,function()
   {
-   Snap.When(s,cont,res);
-  },snaps$1),res)));
+   return Concurrency.While(g,c);
+  }):Concurrency.Return();
  };
- Snap.Map3Opt1=function(fn,x,y,sn3)
+ Concurrency.Sleep=function(ms)
  {
-  return Snap.Map(function(z)
+  return function(c)
   {
-   return fn(x,y,z);
-  },sn3);
- };
- Snap.Map3Opt2=function(fn,x,z,sn2)
- {
-  return Snap.Map(function(y)
-  {
-   return fn(x,y,z);
-  },sn2);
- };
- Snap.Map3Opt3=function(fn,x,sn2,sn3)
- {
-  return Snap.Map2(function($1,$2)
-  {
-   return fn(x,$1,$2);
-  },sn2,sn3);
- };
- Snap.Map3Opt4=function(fn,y,z,sn1)
- {
-  return Snap.Map(function(x)
-  {
-   return fn(x,y,z);
-  },sn1);
- };
- Snap.Map3Opt5=function(fn,y,sn1,sn3)
- {
-  return Snap.Map2(function($1,$2)
-  {
-   return fn($1,y,$2);
-  },sn1,sn3);
- };
- Snap.Map3Opt6=function(fn,z,sn1,sn2)
- {
-  return Snap.Map2(function($1,$2)
-  {
-   return fn($1,$2,z);
-  },sn1,sn2);
- };
- AttrProxy=UI.AttrProxy=Runtime$1.Class({},null,AttrProxy);
- AttrProxy.Create=function(name,value)
- {
-  return Attrs.Static(function(el)
-  {
-   DomUtility.SetAttr(el,name,value);
-  });
- };
- AttrProxy.Concat=function(xs)
- {
-  var x;
-  x=Array.ofSeqNonCopying(xs);
-  return Array.TreeReduce(Attrs.EmptyAttr(),AttrProxy.Append,x);
- };
- AttrProxy.Append=function(a,b)
- {
-  return Attrs.AppendTree(a,b);
- };
- AttrProxy.HandlerImpl=function(event,q)
- {
-  return Attrs.Static(function(el)
-  {
-   el.addEventListener(event,function(d)
+   var pending,creg;
+   pending=void 0;
+   creg=void 0;
+   pending=Global.setTimeout(function()
    {
-    return(q(el))(d);
-   },false);
+    creg.Dispose();
+    Concurrency.scheduler().Fork(function()
+    {
+     c.k({
+      $:0,
+      $0:null
+     });
+    });
+   },ms);
+   creg=Concurrency.Register(c.ct,function()
+   {
+    Global.clearTimeout(pending);
+    Concurrency.scheduler().Fork(function()
+    {
+     Concurrency.cancel(c);
+    });
+   });
+  };
+ };
+ Concurrency.Zero=function()
+ {
+  SC$3.$cctor();
+  return SC$3.Zero;
+ };
+ Concurrency.Start=function(c,ctOpt)
+ {
+  var ct,d;
+  ct=(d=(Concurrency.defCTS())[0],ctOpt==null?d:ctOpt.$0);
+  Concurrency.scheduler().Fork(function()
+  {
+   if(!ct.c)
+    c(AsyncBody.New(function(a)
+    {
+     if(a.$==1)
+      Concurrency.UncaughtAsyncError(a.$0);
+    },ct));
   });
  };
- AttrProxy.Handler=function(event,q)
+ Concurrency.StartWithContinuations=function(c,s,f,cc,ctOpt)
  {
-  return AttrProxy.HandlerImpl(event,q);
+  var ct,d;
+  ct=(d=(Concurrency.defCTS())[0],ctOpt==null?d:ctOpt.$0);
+  !ct.c?c(AsyncBody.New(function(a)
+  {
+   if(a.$==1)
+    f(a.$0);
+   else
+    if(a.$==2)
+     cc(a.$0);
+    else
+     s(a.$0);
+  },ct)):void 0;
  };
+ Concurrency.cancel=function(c)
+ {
+  c.k({
+   $:2,
+   $0:new OperationCanceledException.New(c.ct)
+  });
+ };
+ Concurrency.scheduler=function()
+ {
+  SC$3.$cctor();
+  return SC$3.scheduler;
+ };
+ Concurrency.Register=function(ct,callback)
+ {
+  var i;
+  return ct===Concurrency.noneCT()?{
+   Dispose:function()
+   {
+    return null;
+   }
+  }:(i=ct.r.push(callback)-1,{
+   Dispose:function()
+   {
+    return Arrays.set(ct.r,i,Global.ignore);
+   }
+  });
+ };
+ Concurrency.defCTS=function()
+ {
+  SC$3.$cctor();
+  return SC$3.defCTS;
+ };
+ Concurrency.UncaughtAsyncError=function(e)
+ {
+  console.log("WebSharper: Uncaught asynchronous exception",e);
+ };
+ Concurrency.TryWith=function(r,f)
+ {
+  return function(c)
+  {
+   r(AsyncBody.New(function(a)
+   {
+    if(a.$==0)
+     c.k({
+      $:0,
+      $0:a.$0
+     });
+    else
+     if(a.$==1)
+      try
+      {
+       (f(a.$0))(c);
+      }
+      catch(e)
+      {
+       c.k(a);
+      }
+     else
+      c.k(a);
+   },c.ct));
+  };
+ };
+ Concurrency.noneCT=function()
+ {
+  SC$3.$cctor();
+  return SC$3.noneCT;
+ };
+ ConcreteVar=UI.ConcreteVar=Runtime$1.Class({
+  get_View:function()
+  {
+   return this.view;
+  },
+  Set:function(v)
+  {
+   if(this.isConst)
+    (function($1)
+    {
+     return $1("WebSharper.UI: invalid attempt to change value of a Var after calling SetFinal");
+    }(function(s)
+    {
+     console.log(s);
+    }));
+   else
+    {
+     Snap.Obsolete(this.snap);
+     this.current=v;
+     this.snap=Snap.New({
+      $:2,
+      $0:v,
+      $1:[]
+     });
+    }
+  },
+  Get:function()
+  {
+   return this.current;
+  },
+  Update:function(f)
+  {
+   this.Set(f(this.Get()));
+  },
+  UpdateMaybe:function(f)
+  {
+   var m;
+   m=f(this.Get());
+   m!=null&&m.$==1?this.Set(m.$0):void 0;
+  }
+ },Var,ConcreteVar);
+ ConcreteVar.New=Runtime$1.Ctor(function(isConst,initSnap,initValue)
+ {
+  var $this;
+  $this=this;
+  Var.New.call(this);
+  this.isConst=isConst;
+  this.current=initValue;
+  this.snap=initSnap;
+  this.view=function()
+  {
+   return $this.snap;
+  };
+  this.id=Fresh.Int();
+ },ConcreteVar);
  Fresh.Id=function()
  {
   Fresh.set_counter(Fresh.counter()+1);
   return"uid"+Global.String(Fresh.counter());
- };
- Fresh.set_counter=function($1)
- {
-  SC$3.$cctor();
-  SC$3.counter=$1;
- };
- Fresh.counter=function()
- {
-  SC$3.$cctor();
-  return SC$3.counter;
  };
  Fresh.Int=function()
  {
   Fresh.set_counter(Fresh.counter()+1);
   return Fresh.counter();
  };
- FromView=UI.FromView=Runtime$1.Class({
-  Set:function(x)
+ Fresh.set_counter=function($1)
+ {
+  SC$4.$cctor();
+  SC$4.counter=$1;
+ };
+ Fresh.counter=function()
+ {
+  SC$4.$cctor();
+  return SC$4.counter;
+ };
+ AsyncResultM.rtn=function(v)
+ {
+  return Concurrency.Return(Monads.OkM$1(v));
+ };
+ AsyncResultM.bind=function(fRA,vRA)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
   {
-   this.set(x);
+   return Concurrency.TryWith(Concurrency.Delay(function()
+   {
+    return Concurrency.Bind(vRA,function(a)
+    {
+     var a$1,m;
+     function f(r)
+     {
+      return ResultM.addMsg(m,r);
+     }
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     a$1=Monads.OkM(a);
+     return a$1.$==1?Concurrency.Return(Monads.ErrorM(a$1.$0)):(m=a$1.$0[1],Concurrency.Bind(fRA(a$1.$0[0]),function(x)
+     {
+      return g(f(x));
+     }));
+    });
+   }),function(a)
+   {
+    return Concurrency.Return(Monads.ErrorM(new ResultMessage({
+     $:5,
+     $0:a.message,
+     $1:a.stack
+    })));
+   });
+  });
+ };
+ Monads.OkM$1=function(v)
+ {
+  return{
+   $:0,
+   $0:{
+    $:1,
+    $0:v
+   },
+   $1:ResultMessage.NoMsg
+  };
+ };
+ Monads.OkM=function(r)
+ {
+  return r.$0==null?{
+   $:1,
+   $0:r.$1
+  }:{
+   $:0,
+   $0:[r.$0.$0,r.$1]
+  };
+ };
+ Monads.ErrorM=function(m)
+ {
+  return{
+   $:0,
+   $0:null,
+   $1:m
+  };
+ };
+ ResultMessage.summarized=function(msg)
+ {
+  return ResultMessage.summarizedF(function()
+  {
+   return[1,0,0];
+  },msg);
+ };
+ ResultMessage.summarizedF=function(f,msg)
+ {
+  return Strings.concat("\n",Seq.filter(function(y)
+  {
+   return""!==y;
+  },List.ofArray([Global.String(msg),ResultMessage.summaryF(f,msg)])));
+ };
+ ResultMessage.addMsg=function(a,b)
+ {
+  return a.$==0?b:a.$==6?b.$==0?a:b.$==6?new ResultMessage({
+   $:6,
+   $0:a.$0.concat(b.$0)
+  }):new ResultMessage({
+   $:6,
+   $0:a.$0.concat([b])
+  }):b.$==0?a:b.$==6?new ResultMessage({
+   $:6,
+   $0:[a].concat(b.$0)
+  }):new ResultMessage({
+   $:6,
+   $0:[a,b]
+  });
+ };
+ ResultMessage.summaryF=function(f,msg)
+ {
+  var $1,m;
+  m=ResultMessage.countF(f,msg);
+  switch(m[0]===0?m[1]===0?0:m[1]===1?m[2]===0?0:($1=m[1],2):($1=m[1],2):m[0]===1?m[1]===0?m[2]===0?0:($1=m[0],1):($1=[m[0],m[1]],3):m[1]===0?($1=m[0],1):($1=[m[0],m[1]],3))
+  {
+   case 0:
+    return"";
+   case 1:
+    return(function($2)
+    {
+     return function($3)
+     {
+      return $2("Errors   : "+Global.String($3)+"\n");
+     };
+    }(Global.id))($1);
+   case 2:
+    return(function($2)
+    {
+     return function($3)
+     {
+      return $2("Warnings : "+Global.String($3)+"\n");
+     };
+    }(Global.id))($1);
+   case 3:
+    return(((Runtime$1.Curried3(function($2,$3,$4)
+    {
+     return $2("Errors   : "+Global.String($3)+", Warnings: "+Global.String($4)+"\n");
+    }))(Global.id))($1[0]))($1[1]);
+  }
+ };
+ ResultMessage.countF=function(f,msg)
+ {
+  function f$1(f$2,w,i)
+  {
+   return function(t)
+   {
+    return[f$2+t[0],w+t[1],i+t[2]];
+   };
+  }
+  return msg.$==0?[0,0,0]:msg.$==3?[0,0,1]:msg.$==2?[0,1,0]:msg.$==4?f(msg.$0):msg.$==6?Seq.fold(function($1,$2)
+  {
+   return(function($3)
+   {
+    return f$1($3[0],$3[1],$3[2]);
+   }($1))($2);
+  },[0,0,0],Seq.map(function(m)
+  {
+   return ResultMessage.countF(f,m);
+  },ResultMessage.exclnoMsg(msg.$0))):[1,0,0];
+ };
+ ResultMessage.exclnoMsg=function(ms)
+ {
+  function g(v)
+  {
+   return!v;
+  }
+  return Seq.filter(function(x)
+  {
+   return g(ResultMessage.noMsg(x));
+  },ms);
+ };
+ ResultMessage.noMsg=function(msg)
+ {
+  return msg.$==0;
+ };
+ Enumerator.Get=function(x)
+ {
+  return x instanceof Global.Array?Enumerator.ArrayEnumerator(x):Unchecked.Equals(typeof x,"string")?Enumerator.StringEnumerator(x):x.GetEnumerator();
+ };
+ Enumerator.ArrayEnumerator=function(s)
+ {
+  return new T$1.New(0,null,function(e)
+  {
+   var i;
+   i=e.s;
+   return i<Arrays.length(s)&&(e.c=Arrays.get(s,i),e.s=i+1,true);
+  },void 0);
+ };
+ Enumerator.StringEnumerator=function(s)
+ {
+  return new T$1.New(0,null,function(e)
+  {
+   var i;
+   i=e.s;
+   return i<s.length&&(e.c=s[i],e.s=i+1,true);
+  },void 0);
+ };
+ Enumerator.Get0=function(x)
+ {
+  return x instanceof Global.Array?Enumerator.ArrayEnumerator(x):Unchecked.Equals(typeof x,"string")?Enumerator.StringEnumerator(x):"GetEnumerator0"in x?x.GetEnumerator0():x.GetEnumerator();
+ };
+ T$1=Enumerator.T=Runtime$1.Class({
+  MoveNext:function()
+  {
+   return this.n(this);
   },
+  Current:function()
+  {
+   return this.c;
+  },
+  Dispose:function()
+  {
+   if(this.d)
+    this.d(this);
+  }
+ },Obj,T$1);
+ T$1.New=Runtime$1.Ctor(function(s,c,n,d)
+ {
+  Obj.New.call(this);
+  this.s=s;
+  this.c=c;
+  this.n=n;
+  this.d=d;
+ },T$1);
+ FromView=UI.FromView=Runtime$1.Class({
   get_View:function()
   {
    return this.view;
+  },
+  Set:function(x)
+  {
+   this.set(x);
   },
   Get:function()
   {
@@ -7499,11 +12033,11 @@ if (!console) {
   });
   SC$2.AppFwkClient=Lazy.Create(function()
   {
-   var b$2,Q,A,D,V,V$1,P,p$11,i;
-   return(b$2=(Q=AppFramework.renderQueries(),(A=AppFramework.renderActions(),(D=AppFramework.renderDocs(),(V=AppFramework.renderViews(),(V$1=AppFramework.renderVars(),(P=AppFramework.renderPlugIns(),ProviderBuilder.Make().WithHole({
+   var b$2,Q,A,D,V,V$1,P$1,p$11,i;
+   return(b$2=(Q=AppFramework.renderQueries(),(A=AppFramework.renderActions(),(D=AppFramework.renderDocs(),(V=AppFramework.renderViews(),(V$1=AppFramework.renderVars(),(P$1=AppFramework.renderPlugIns(),ProviderBuilder.Make().WithHole({
     $:0,
     $0:"plugins",
-    $1:P
+    $1:P$1
    })).WithHole({
     $:2,
     $0:"pluginname",
@@ -7775,249 +12309,6 @@ if (!console) {
    $2:"[Layout]"
   }));
  };
- Arrays.get=function(arr,n)
- {
-  Arrays.checkBounds(arr,n);
-  return arr[n];
- };
- Arrays.length=function(arr)
- {
-  return arr.dims===2?arr.length*arr.length:arr.length;
- };
- Arrays.checkBounds=function(arr,n)
- {
-  if(n<0||n>=arr.length)
-   Operators.FailWith("Index was outside the bounds of the array.");
- };
- Arrays.set=function(arr,n,x)
- {
-  Arrays.checkBounds(arr,n);
-  arr[n]=x;
- };
- Arrays.map=function(f,arr)
- {
-  var r,i,$1;
-  r=new Global.Array(arr.length);
-  for(i=0,$1=arr.length-1;i<=$1;i++)r[i]=f(arr[i]);
-  return r;
- };
- Arrays.tryFindIndex=function(f,arr)
- {
-  var res,i;
-  res=null;
-  i=0;
-  while(i<arr.length&&res==null)
-   {
-    f(arr[i])?res={
-     $:1,
-     $0:i
-    }:void 0;
-    i=i+1;
-   }
-  return res;
- };
- Arrays.exists=function(f,x)
- {
-  var e,i,$1,l;
-  e=false;
-  i=0;
-  l=Arrays.length(x);
-  while(!e&&i<l)
-   if(f(x[i]))
-    e=true;
-   else
-    i=i+1;
-  return e;
- };
- Arrays.filter=function(f,arr)
- {
-  var r,i,$1;
-  r=[];
-  for(i=0,$1=arr.length-1;i<=$1;i++)if(f(arr[i]))
-   r.push(arr[i]);
-  return r;
- };
- Arrays.ofList=function(xs)
- {
-  var l,q;
-  q=[];
-  l=xs;
-  while(!(l.$==0))
-   {
-    q.push(List.head(l));
-    l=List.tail(l);
-   }
-  return q;
- };
- Arrays.tryPick=function(f,arr)
- {
-  var res,i,m;
-  res=null;
-  i=0;
-  while(i<arr.length&&res==null)
-   {
-    m=f(arr[i]);
-    m!=null&&m.$==1?res=m:void 0;
-    i=i+1;
-   }
-  return res;
- };
- Arrays.tryFind=function(f,arr)
- {
-  var res,i;
-  res=null;
-  i=0;
-  while(i<arr.length&&res==null)
-   {
-    f(arr[i])?res={
-     $:1,
-     $0:arr[i]
-    }:void 0;
-    i=i+1;
-   }
-  return res;
- };
- Arrays.ofSeq=function(xs)
- {
-  var q,o;
-  if(xs instanceof Global.Array)
-   return xs.slice();
-  else
-   if(xs instanceof T)
-    return Arrays.ofList(xs);
-   else
-    {
-     q=[];
-     o=Enumerator.Get(xs);
-     try
-     {
-      while(o.MoveNext())
-       q.push(o.Current());
-      return q;
-     }
-     finally
-     {
-      if(typeof o=="object"&&"Dispose"in o)
-       o.Dispose();
-     }
-    }
- };
- Arrays.choose=function(f,arr)
- {
-  var q,i,$1,m;
-  q=[];
-  for(i=0,$1=arr.length-1;i<=$1;i++){
-   m=f(arr[i]);
-   m==null?void 0:q.push(m.$0);
-  }
-  return q;
- };
- Arrays.pick=function(f,arr)
- {
-  var m;
-  m=Arrays.tryPick(f,arr);
-  return m==null?Operators.FailWith("KeyNotFoundException"):m.$0;
- };
- Arrays.concat=function(xs)
- {
-  return Global.Array.prototype.concat.apply([],Arrays.ofSeq(xs));
- };
- Arrays.foldBack=function(f,arr,zero)
- {
-  var acc,$1,len,i,$2;
-  acc=zero;
-  len=arr.length;
-  for(i=1,$2=len;i<=$2;i++)acc=f(arr[len-i],acc);
-  return acc;
- };
- Arrays.sortInPlace=function(arr)
- {
-  Arrays.mapInPlace(function(t)
-  {
-   return t[0];
-  },Arrays.mapiInPlace(function($1,$2)
-  {
-   return[$2,$1];
-  },arr).sort(Unchecked.Compare));
- };
- Arrays.find=function(f,arr)
- {
-  var m;
-  m=Arrays.tryFind(f,arr);
-  return m==null?Operators.FailWith("KeyNotFoundException"):m.$0;
- };
- Arrays.iter=function(f,arr)
- {
-  var i,$1;
-  for(i=0,$1=arr.length-1;i<=$1;i++)f(arr[i]);
- };
- Arrays.create=function(size,value)
- {
-  var r,i,$1;
-  r=new Global.Array(size);
-  for(i=0,$1=size-1;i<=$1;i++)r[i]=value;
-  return r;
- };
- Arrays.sortInPlaceBy=function(f,arr)
- {
-  Arrays.mapInPlace(function(t)
-  {
-   return t[0];
-  },Arrays.mapiInPlace(function($1,$2)
-  {
-   return[$2,[f($2),$1]];
-  },arr).sort(function($1,$2)
-  {
-   return Unchecked.Compare($1[1],$2[1]);
-  }));
- };
- Arrays.forall=function(f,x)
- {
-  var a,i,$1,l;
-  a=true;
-  i=0;
-  l=Arrays.length(x);
-  while(a&&i<l)
-   if(f(x[i]))
-    i=i+1;
-   else
-    a=false;
-  return a;
- };
- Arrays.init=function(size,f)
- {
-  var r,i,$1;
-  size<0?Operators.FailWith("Negative size given."):null;
-  r=new Global.Array(size);
-  for(i=0,$1=size-1;i<=$1;i++)r[i]=f(i);
-  return r;
- };
- Enumerator.Get=function(x)
- {
-  return x instanceof Global.Array?Enumerator.ArrayEnumerator(x):Unchecked.Equals(typeof x,"string")?Enumerator.StringEnumerator(x):x.GetEnumerator();
- };
- Enumerator.ArrayEnumerator=function(s)
- {
-  return new T$1.New(0,null,function(e)
-  {
-   var i;
-   i=e.s;
-   return i<Arrays.length(s)&&(e.c=Arrays.get(s,i),e.s=i+1,true);
-  },void 0);
- };
- Enumerator.StringEnumerator=function(s)
- {
-  return new T$1.New(0,null,function(e)
-  {
-   var i;
-   i=e.s;
-   return i<s.length&&(e.c=s[i],e.s=i+1,true);
-  },void 0);
- };
- Enumerator.Get0=function(x)
- {
-  return x instanceof Global.Array?Enumerator.ArrayEnumerator(x):Unchecked.Equals(typeof x,"string")?Enumerator.StringEnumerator(x):"GetEnumerator0"in x?x.GetEnumerator0():x.GetEnumerator();
- };
  LazyRecord.New=function(created,evalOrVal,force)
  {
   return{
@@ -8036,29 +12327,6 @@ if (!console) {
    return Enumerator.Get0(this);
   }
  },null,List$1);
- T$1=Enumerator.T=Runtime$1.Class({
-  MoveNext:function()
-  {
-   return this.n(this);
-  },
-  Current:function()
-  {
-   return this.c;
-  },
-  Dispose:function()
-  {
-   if(this.d)
-    this.d(this);
-  }
- },Obj,T$1);
- T$1.New=Runtime$1.Ctor(function(s,c,n,d)
- {
-  Obj.New.call(this);
-  this.s=s;
-  this.c=c;
-  this.n=n;
-  this.d=d;
- },T$1);
  Seq.tryHead=function(s)
  {
   var e;
@@ -8075,6 +12343,60 @@ if (!console) {
    if(typeof e=="object"&&"Dispose"in e)
     e.Dispose();
   }
+ };
+ Seq.tryItem=function(i,s)
+ {
+  var j,e,go;
+  if(i<0)
+   return null;
+  else
+   {
+    j=0;
+    e=Enumerator.Get(s);
+    try
+    {
+     go=true;
+     while(go&&j<=i)
+      if(e.MoveNext())
+       j=j+1;
+      else
+       go=false;
+     return go?{
+      $:1,
+      $0:e.Current()
+     }:null;
+    }
+    finally
+    {
+     if(typeof e=="object"&&"Dispose"in e)
+      e.Dispose();
+    }
+   }
+ };
+ Seq.contains=function(el,s)
+ {
+  var e,r;
+  e=Enumerator.Get(s);
+  try
+  {
+   r=false;
+   while(!r&&e.MoveNext())
+    r=Unchecked.Equals(e.Current(),el);
+   return r;
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ Seq.nonNegative=function()
+ {
+  return Operators.FailWith("The input must be non-negative.");
+ };
+ Seq.insufficient=function()
+ {
+  return Operators.FailWith("The input sequence has an insufficient number of elements.");
  };
  Arrays.groupBy=function(f,a)
  {
@@ -8119,48 +12441,11 @@ if (!console) {
   var i,$1;
   for(i=0,$1=arr.length-1;i<=$1;i++)arr[i]=f(arr[i]);
  };
- Seq.insufficient=function()
- {
-  return Operators.FailWith("The input sequence has an insufficient number of elements.");
- };
  Arrays.mapiInPlace=function(f,arr)
  {
   var i,$1;
   for(i=0,$1=arr.length-1;i<=$1;i++)arr[i]=f(i,arr[i]);
   return arr;
- };
- Seq.nonNegative=function()
- {
-  return Operators.FailWith("The input must be non-negative.");
- };
- Seq.tryItem=function(i,s)
- {
-  var j,e,go;
-  if(i<0)
-   return null;
-  else
-   {
-    j=0;
-    e=Enumerator.Get(s);
-    try
-    {
-     go=true;
-     while(go&&j<=i)
-      if(e.MoveNext())
-       j=j+1;
-      else
-       go=false;
-     return go?{
-      $:1,
-      $0:e.Current()
-     }:null;
-    }
-    finally
-    {
-     if(typeof e=="object"&&"Dispose"in e)
-      e.Dispose();
-    }
-   }
  };
  Array.ofSeqNonCopying=function(xs)
  {
@@ -8218,156 +12503,6 @@ if (!console) {
   l=Arrays.length(array);
   return loop(0,l);
  };
- Dictionary=Collections.Dictionary=Runtime$1.Class({
-  TryGetValue:function(k,res)
-  {
-   var $this,d,v;
-   $this=this;
-   d=this.data[this.hash(k)];
-   return d==null?false:(v=Arrays.tryPick(function(a)
-   {
-    var a$1;
-    a$1=Operators.KeyValue(a);
-    return $this.equals.apply(null,[a$1[0],k])?{
-     $:1,
-     $0:a$1[1]
-    }:null;
-   },d),v!=null&&v.$==1&&(res.set(v.$0),true));
-  },
-  Add:function(k,v)
-  {
-   this.add(k,v);
-  },
-  ContainsKey:function(k)
-  {
-   var $this,d;
-   $this=this;
-   d=this.data[this.hash(k)];
-   return d==null?false:Arrays.exists(function(a)
-   {
-    return $this.equals.apply(null,[(Operators.KeyValue(a))[0],k]);
-   },d);
-  },
-  get_Item:function(k)
-  {
-   return this.get(k);
-  },
-  set_Item:function(k,v)
-  {
-   this.set(k,v);
-  },
-  Remove:function(k)
-  {
-   return this.remove(k);
-  },
-  add:function(k,v)
-  {
-   var $this,h,d;
-   $this=this;
-   h=this.hash(k);
-   d=this.data[h];
-   d==null?(this.count=this.count+1,this.data[h]=new Global.Array({
-    K:k,
-    V:v
-   })):(Arrays.exists(function(a)
-   {
-    return $this.equals.apply(null,[(Operators.KeyValue(a))[0],k]);
-   },d)?DictionaryUtil.alreadyAdded():void 0,this.count=this.count+1,d.push({
-    K:k,
-    V:v
-   }));
-  },
-  get:function(k)
-  {
-   var $this,d;
-   $this=this;
-   d=this.data[this.hash(k)];
-   return d==null?DictionaryUtil.notPresent():Arrays.pick(function(a)
-   {
-    var a$1;
-    a$1=Operators.KeyValue(a);
-    return $this.equals.apply(null,[a$1[0],k])?{
-     $:1,
-     $0:a$1[1]
-    }:null;
-   },d);
-  },
-  set:function(k,v)
-  {
-   var $this,h,d,m;
-   $this=this;
-   h=this.hash(k);
-   d=this.data[h];
-   d==null?(this.count=this.count+1,this.data[h]=new Global.Array({
-    K:k,
-    V:v
-   })):(m=Arrays.tryFindIndex(function(a)
-   {
-    return $this.equals.apply(null,[(Operators.KeyValue(a))[0],k]);
-   },d),m==null?(this.count=this.count+1,d.push({
-    K:k,
-    V:v
-   })):d[m.$0]={
-    K:k,
-    V:v
-   });
-  },
-  remove:function(k)
-  {
-   var $this,h,d,r;
-   $this=this;
-   h=this.hash(k);
-   d=this.data[h];
-   return d==null?false:(r=Arrays.filter(function(a)
-   {
-    return!$this.equals.apply(null,[(Operators.KeyValue(a))[0],k]);
-   },d),Arrays.length(r)<d.length&&(this.count=this.count-1,this.data[h]=r,true));
-  },
-  get_Keys:function()
-  {
-   return new KeyCollection.New(this);
-  },
-  Clear:function()
-  {
-   this.data=[];
-   this.count=0;
-  },
-  GetEnumerator:function()
-  {
-   return Enumerator.Get0(this);
-  },
-  GetEnumerator0:function()
-  {
-   return Enumerator.Get0(Arrays.concat(JS.GetFieldValues(this.data)));
-  }
- },Obj,Dictionary);
- Dictionary.New$5=Runtime$1.Ctor(function()
- {
-  Dictionary.New$6.call(this,[],Unchecked.Equals,Unchecked.Hash);
- },Dictionary);
- Dictionary.New$6=Runtime$1.Ctor(function(init,equals,hash)
- {
-  var e,x;
-  Obj.New.call(this);
-  this.equals=equals;
-  this.hash=hash;
-  this.count=0;
-  this.data=[];
-  e=Enumerator.Get(init);
-  try
-  {
-   while(e.MoveNext())
-    {
-     x=e.Current();
-     this.set(x.K,x.V);
-    }
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- },Dictionary);
  Snap.Obsolete=function(sn)
  {
   var $1,m,i,$2,o;
@@ -8403,193 +12538,971 @@ if (!console) {
     lm.RemoveByKey(lm.key(e));
   },Seq.cache(lm));
  };
- ConcreteVar=UI.ConcreteVar=Runtime$1.Class({
-  Set:function(v)
-  {
-   if(this.isConst)
-    (function($1)
-    {
-     return $1("WebSharper.UI: invalid attempt to change value of a Var after calling SetFinal");
-    }(function(s)
-    {
-     console.log(s);
-    }));
-   else
-    {
-     Snap.Obsolete(this.snap);
-     this.current=v;
-     this.snap=Snap.New({
-      $:2,
-      $0:v,
-      $1:[]
-     });
-    }
-  },
-  get_View:function()
-  {
-   return this.view;
-  },
-  Get:function()
-  {
-   return this.current;
-  },
-  Update:function(f)
-  {
-   this.Set(f(this.Get()));
-  },
-  UpdateMaybe:function(f)
-  {
-   var m;
-   m=f(this.Get());
-   m!=null&&m.$==1?this.Set(m.$0):void 0;
-  }
- },Var,ConcreteVar);
- ConcreteVar.New=Runtime$1.Ctor(function(isConst,initSnap,initValue)
- {
-  var $this;
-  $this=this;
-  Var.New.call(this);
-  this.isConst=isConst;
-  this.current=initValue;
-  this.snap=initSnap;
-  this.view=function()
-  {
-   return $this.snap;
-  };
-  this.id=Fresh.Int();
- },ConcreteVar);
  Storage.InMemory=function(init)
  {
   return new ArrayStorage.New(init);
  };
- GeneratedPrintf.p$1=function($1)
+ DictionaryUtil.alreadyAdded=function()
  {
-  return"{"+("docName = "+Utils.prettyPrint($1.docName))+"; "+("docDoc = "+LayoutEngine_GeneratedPrintf.p$2($1.docDoc))+"}";
+  return Operators.FailWith("An item with the same key has already been added.");
  };
- LayoutEngine_Templates.appfwkclient=function(h)
+ DictionaryUtil.notPresent=function()
  {
-  LayoutEngine_Templates.fixedsplitterhor();
-  LayoutEngine_Templates.fixedsplitterver();
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
+  return Operators.FailWith("The given key was not present in the dictionary.");
+ };
+ FSharpSet=Collections.FSharpSet=Runtime$1.Class({
+  Contains:function(v)
+  {
+   return BalancedTree.Contains(v,this.tree);
+  },
+  Remove:function(v)
+  {
+   return new FSharpSet.New$1(BalancedTree.Remove(v,this.tree));
+  },
+  Add:function(x)
+  {
+   return new FSharpSet.New$1(BalancedTree.Add(x,this.tree));
+  },
+  GetEnumerator$1:function()
+  {
+   return Enumerator.Get(BalancedTree.Enumerate(false,this.tree));
+  },
+  Equals:function(other)
+  {
+   return this.get_Count()===other.get_Count()&&Seq.forall2(Unchecked.Equals,this,other);
+  },
+  get_IsEmpty:function()
+  {
+   return this.tree==null;
+  },
+  get_Count:function()
+  {
+   var tree;
+   tree=this.tree;
+   return tree==null?0:tree.Count;
+  },
+  GetHashCode:function()
+  {
+   return -1741749453+Unchecked.Hash(Arrays.ofSeq(this));
+  },
+  GetEnumerator:function()
+  {
+   return this.GetEnumerator$1();
+  },
+  GetEnumerator0:function()
+  {
+   return this.GetEnumerator$1();
+  },
+  CompareTo0:function(other)
+  {
+   return Seq.compareWith(Unchecked.Compare,this,other);
+  }
+ },Obj,FSharpSet);
+ FSharpSet.op_Addition=function(x,y)
+ {
+  return new FSharpSet.New$1(BalancedTree.OfSeq(Seq.append(x,y)));
+ };
+ FSharpSet.op_Subtraction=function(x,y)
+ {
+  return Set.Filter(function(x$1)
+  {
+   return!y.Contains(x$1);
+  },x);
+ };
+ FSharpSet.New=Runtime$1.Ctor(function(s)
+ {
+  FSharpSet.New$1.call(this,BalancedTree.OfSeq(s));
+ },FSharpSet);
+ FSharpSet.New$1=Runtime$1.Ctor(function(tree)
+ {
+  Obj.New.call(this);
+  this.tree=tree;
+ },FSharpSet);
+ HashSet=Collections.HashSet=Runtime$1.Class({
+  Add:function(item)
+  {
+   return this.add(item);
+  },
+  Contains:function(item)
+  {
+   var arr;
+   arr=this.data[this.hash(item)];
+   return arr==null?false:this.arrContains(item,arr);
+  },
+  add:function(item)
+  {
+   var h,arr;
+   h=this.hash(item);
+   arr=this.data[h];
+   return arr==null?(this.data[h]=[item],this.count=this.count+1,true):this.arrContains(item,arr)?false:(arr.push(item),this.count=this.count+1,true);
+  },
+  arrContains:function(item,arr)
+  {
+   var c,i,$1,l;
+   c=true;
+   i=0;
+   l=arr.length;
+   while(c&&i<l)
+    if(this.equals.apply(null,[arr[i],item]))
+     c=false;
+    else
+     i=i+1;
+   return!c;
+  },
+  ExceptWith:function(xs)
+  {
+   var e;
+   e=Enumerator.Get(xs);
+   try
+   {
+    while(e.MoveNext())
+     this.Remove(e.Current());
+   }
+   finally
+   {
+    if(typeof e=="object"&&"Dispose"in e)
+     e.Dispose();
+   }
+  },
+  get_Count:function()
+  {
+   return this.count;
+  },
+  CopyTo:function(arr)
+  {
+   var i,all,i$1,$1;
+   i=0;
+   all=HashSetUtil.concat(this.data);
+   for(i$1=0,$1=all.length-1;i$1<=$1;i$1++)Arrays.set(arr,i$1,all[i$1]);
+  },
+  IntersectWith:function(xs)
+  {
+   var other,all,i,$1,item;
+   other=new HashSet.New$4(xs,this.equals,this.hash);
+   all=HashSetUtil.concat(this.data);
+   for(i=0,$1=all.length-1;i<=$1;i++){
+    item=all[i];
+    !other.Contains(item)?this.Remove(item):void 0;
+   }
+  },
+  Remove:function(item)
+  {
+   var arr;
+   arr=this.data[this.hash(item)];
+   return arr==null?false:this.arrRemove(item,arr)&&(this.count=this.count-1,true);
+  },
+  arrRemove:function(item,arr)
+  {
+   var c,i,$1,l;
+   c=true;
+   i=0;
+   l=arr.length;
+   while(c&&i<l)
+    if(this.equals.apply(null,[arr[i],item]))
+     {
+      arr.splice.apply(arr,[i,1]);
+      c=false;
+     }
+    else
+     i=i+1;
+   return!c;
+  },
+  GetEnumerator:function()
+  {
+   return Enumerator.Get(HashSetUtil.concat(this.data));
+  },
+  GetEnumerator0:function()
+  {
+   return Enumerator.Get(HashSetUtil.concat(this.data));
+  }
+ },Obj,HashSet);
+ HashSet.New$3=Runtime$1.Ctor(function()
+ {
+  HashSet.New$4.call(this,[],Unchecked.Equals,Unchecked.Hash);
+ },HashSet);
+ HashSet.New$4=Runtime$1.Ctor(function(init,equals,hash)
+ {
+  var e;
+  Obj.New.call(this);
+  this.equals=equals;
+  this.hash=hash;
+  this.data=[];
+  this.count=0;
+  e=Enumerator.Get(init);
+  try
+  {
+   while(e.MoveNext())
+    this.add(e.Current());
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ },HashSet);
+ HashSet.New$2=Runtime$1.Ctor(function(init)
+ {
+  HashSet.New$4.call(this,init,Unchecked.Equals,Unchecked.Hash);
+ },HashSet);
+ Client.Box=Global.id;
+ Unsafe.cast=Global.id;
+ Syntax.createEntryO2=function(lytNm,refs)
+ {
+  function ok(nm,en)
+  {
+   refs.Add(nm,en);
+   return{
+    $:1,
+    $0:{
+     $:0,
+     $0:[nm,en]
+    }
+   };
+  }
+  function ko(msg)
+  {
+   return{
+    $:1,
+    $0:{
+     $:1,
+     $0:msg
+    }
+   };
+  }
+  function getRef(nm)
+  {
+   try
+   {
+    return refs.get_Item(nm);
+   }
+   catch(e)
+   {
+    return(function($1)
+    {
+     return function($2)
+     {
+      return $1("Could not find reference to "+Utils.toSafe($2));
+     };
+    }(Operators.FailWith))(nm);
+   }
+  }
+  function getType(rf)
+  {
+   var $1,entry,nm,ly,a;
+   if(rf.$==1)
+    {
+     nm=rf.$1;
+     ly=rf.$0;
+     a=getRef(ly);
+     if(a.$==4)
+      try
+      {
+       $1=a.$0.$0.get_Item(nm);
+      }
+      catch(e)
+      {
+       $1=(((Runtime$1.Curried3(function($2,$3,$4)
+       {
+        return $2("Could not find reference to "+Utils.toSafe($3)+"."+Utils.toSafe($4));
+       }))(Operators.FailWith))(ly))(nm);
+      }
+     else
+      $1=(function($2)
+      {
+       return function($3)
+       {
+        return $2("PlugIn not registered: "+LayoutEngine_GeneratedPrintf.p$3($3));
+       };
+      }(Operators.FailWith))(rf);
+     return[$1,null];
+    }
+   else
+    {
+     entry=getRef(rf.$0);
+     return[entry.$==1?RefType.RAct:entry.$==2?RefType.RVar:entry.$==3?RefType.RViw:entry.$==5?RefType.RPlg:entry.$==4?(function($2)
+     {
+      return function($3)
+      {
+       return $2("PlugIn should not be referenced by itself: "+LayoutEngine_GeneratedPrintf.p$3($3));
+      };
+     }(Operators.FailWith))(rf):RefType.RDoc,{
+      $:1,
+      $0:entry
+     }];
+    }
+  }
+  return function(line)
+  {
+   var a;
+   try
+   {
+    a=Syntax.createEntryO(getType,lytNm,line);
+    return a==null?ko((function($1)
+    {
+     return function($2)
+     {
+      return $1("Line not matched!: "+Utils.toSafe($2));
+     };
+    }(Global.id))(line)):ok(a.$0.$0,a.$0.$1);
+   }
+   catch(e)
+   {
+    return ko(e.message);
+   }
+  };
+ };
+ Syntax.createEntryO=function(getType,lytNm,line)
+ {
+  var m,$1,a,a$1,$2,a$2,a$3,$3,a$4,a$5,$4,a$6,a$7,$5,a$8,a$9,$6,a$10,a$11,a$12,a$13,$7,a$14,a$15,a$16,a$17,$8,a$18,a$19,a$20,a$21,$9,a$22,a$23,a$24,$10,a$25,a$26,a$27,$11,a$28,a$29,$12,a$30,a$31,a$32,$13,a$33,a$34,$14,a$35,a$36,$15,a$37,a$38,a$39,$16,a$40,a$41,a$42,a$43;
+  function Rt(a$44)
+  {
+   var a$45,itr;
+   a$45=Syntax.R(a$44);
+   return a$45!=null&&a$45.$==1?(itr=a$45.$0,{
+    $:1,
+    $0:[getType(itr),itr]
+   }):null;
+  }
+  function DocRf(a$44)
+  {
+   var $17,a$45;
+   return(a$45=Rt(a$44),a$45!=null&&a$45.$==1&&(a$45.$0[0][0].$==0&&($17=a$45.$0[1],true)))?{
+    $:1,
+    $0:{
+     $:0,
+     $0:$17
+    }
+   }:null;
+  }
+  function VarRf(a$44)
+  {
+   var $17,a$45;
+   return(a$45=Rt(a$44),a$45!=null&&a$45.$==1&&(a$45.$0[0][0].$==1&&($17=a$45.$0[1],true)))?{
+    $:1,
+    $0:{
+     $:0,
+     $0:$17
+    }
+   }:null;
+  }
+  function ViwRf(a$44)
+  {
+   var $17,a$45;
+   return(a$45=Rt(a$44),a$45!=null&&a$45.$==1&&(a$45.$0[0][0].$==2&&($17=a$45.$0[1],true)))?{
+    $:1,
+    $0:{
+     $:0,
+     $0:$17
+    }
+   }:null;
+  }
+  function ActRf(a$44)
+  {
+   var $17,a$45;
+   return(a$45=Rt(a$44),a$45!=null&&a$45.$==1&&(a$45.$0[0][0].$==3&&($17=a$45.$0[1],true)))?{
+    $:1,
+    $0:{
+     $:0,
+     $0:$17
+    }
+   }:null;
+  }
+  function PlgRf(a$44)
+  {
+   var $17,a$45,$18;
+   return(a$45=Rt(a$44),a$45!=null&&a$45.$==1&&(a$45.$0[0][0].$==4&&(($18=a$45.$0[0][1],$18!=null&&$18.$==1)&&(a$45.$0[0][1].$0.$==5&&($17=[a$45.$0[0][1].$0.$0,a$45.$0[1]],true)))))?{
+    $:1,
+    $0:$17[0]
+   }:null;
+  }
+  function Name(a$44)
+  {
+   var $17,a$45;
+   return(a$45=Syntax.R(a$44),a$45!=null&&a$45.$==1&&(a$45.$0.$==0&&($17=a$45.$0.$0,true)))?{
+    $:1,
+    $0:$17
+   }:null;
+  }
+  function NamU(a$44)
+  {
+   var $17,a$45;
+   return(a$45=Name(a$44),a$45!=null&&a$45.$==1&&(Strings.StartsWith(a$45.$0,"_")&&($17=a$45.$0,true)))?{
+    $:1,
+    $0:$17
+   }:null;
+  }
+  function Tr(a$44)
+  {
+   var a$45,a$46;
+   a$45=VarRf(a$44);
+   return a$45!=null&&a$45.$==1?{
+    $:1,
+    $0:{
+     $:1,
+     $0:a$45.$0
+    }
+   }:(a$46=ViwRf(a$44),a$46!=null&&a$46.$==1?{
+    $:1,
+    $0:{
+     $:2,
+     $0:a$46.$0
+    }
+   }:null);
+  }
+  function Indi(txt)
+  {
+   var m$1;
+   m$1=String.delimitedO("@{","}",txt);
+   return m$1!=null&&m$1.$==1?{
+    $:1,
+    $0:[m$1.$0[0],{
+     $:1,
+     $0:m$1.$0[1]
+    },m$1.$0[2]]
+   }:null;
+  }
+  function Tx(txt)
+  {
+   var $17,a$44,a$45,aft,bef,tl,a$46,$18;
+   return(a$44=Indi(txt),a$44!=null&&a$44.$==1&&(a$45=Tr(a$44.$0[1]),a$45!=null&&a$45.$==1&&($17=[a$44.$0[2],a$44.$0[0],a$45.$0],true)))?(aft=$17[0],(bef=$17[1],(tl=bef===""?List.ofArray([$17[2]]):List.ofArray([{
+    $:0,
+    $0:bef
+   },$17[2]]),aft===""?{
+    $:1,
+    $0:tl
+   }:(a$46=Tx(aft),a$46!=null&&a$46.$==1?{
+    $:1,
+    $0:List.append(tl,a$46.$0)
+   }:null)))):($18=Indi(txt),$18!=null&&$18.$==1)?null:{
+    $:1,
+    $0:List.ofArray([{
+     $:0,
+     $0:txt
+    }])
+   };
+  }
+  function ActI(txt)
+  {
+   var $17,a$44,a$45;
+   return(a$44=Indi(txt),a$44!=null&&a$44.$==1&&(a$45=ActRf(a$44.$0[1]),a$45!=null&&a$45.$==1&&(Strings.Trim(a$44.$0[0])===""&&Strings.Trim(a$44.$0[2])===""&&($17=[a$44.$0[2],a$45.$0,a$44.$0[0]],true))))?{
+    $:1,
+    $0:$17[1]
+   }:null;
+  }
+  function QTx(a$44)
+  {
+   var $17,a$45;
+   return a$44.$==0&&(a$45=Tx(a$44.$0),a$45!=null&&a$45.$==1&&($17=a$45.$0,true))?{
+    $:1,
+    $0:$17
+   }:null;
+  }
+  function At(a$44)
+  {
+   return a$44.$==0?{
+    $:1,
+    $0:Arrays.ofSeq(Seq.choose(function(a$45)
+    {
+     var m$1,$17,a$46,$18,a$47,m$2,$19,a$48;
+     m$1=Strings.SplitChars(Strings.Trim(a$45),["="],0);
+     return!Unchecked.Equals(m$1,null)&&m$1.length===2&&(a$46=ActI(Arrays.get(m$1,1)),a$46!=null&&a$46.$==1&&($17=[a$46.$0,Arrays.get(m$1,0)],true))?{
+      $:1,
+      $0:{
+       $:2,
+       $0:Strings.Trim($17[1]),
+       $1:$17[0]
+      }
+     }:!Unchecked.Equals(m$1,null)&&m$1.length===2&&(a$47=Tx(Arrays.get(m$1,1)),a$47!=null&&a$47.$==1&&($18=[Arrays.get(m$1,0),a$47.$0],true))?{
+      $:1,
+      $0:{
+       $:1,
+       $0:Strings.Trim($18[0]),
+       $1:$18[1]
+      }
+     }:(m$2=Strings.SplitChars(Strings.Trim(a$45),[":"],0),!Unchecked.Equals(m$2,null)&&m$2.length===2&&(a$48=Tx(Arrays.get(m$2,1)),a$48!=null&&a$48.$==1&&($19=[Arrays.get(m$2,0),a$48.$0],true))?{
+      $:1,
+      $0:{
+       $:0,
+       $0:Strings.Trim($19[0]),
+       $1:$19[1]
+      }
+     }:(function($20)
+     {
+      return function($21)
+      {
+       return $20("Attributes should be like: \"name=val\" or \"name:val\" and separated by ';' : "+Utils.toSafe($21));
+      };
+     }(Operators.FailWith))(a$45));
+    },Seq.filter(function(v)
+    {
+     return Strings.Trim(v)!=="";
+    },Strings.SplitChars(Strings.Trim(a$44.$0),[";"],0))))
+   }:null;
+  }
+  function Pr(a$44)
+  {
+   var a$45,a$46,a$47,a$48,a$49;
+   a$45=QTx(a$44);
+   return a$45!=null&&a$45.$==1?{
+    $:1,
+    $0:{
+     $:0,
+     $0:a$45.$0
+    }
+   }:(a$46=DocRf(a$44),a$46!=null&&a$46.$==1?{
+    $:1,
+    $0:{
+     $:1,
+     $0:a$46.$0
+    }
+   }:(a$47=VarRf(a$44),a$47!=null&&a$47.$==1?{
+    $:1,
+    $0:{
+     $:2,
+     $0:a$47.$0
+    }
+   }:(a$48=ViwRf(a$44),a$48!=null&&a$48.$==1?{
+    $:1,
+    $0:{
+     $:3,
+     $0:a$48.$0
+    }
+   }:(a$49=ActRf(a$44),a$49!=null&&a$49.$==1?{
+    $:1,
+    $0:{
+     $:4,
+     $0:a$49.$0
+    }
+   }:null))));
+  }
+  function Prs(a$44)
+  {
+   var $17,a$45,a$46;
+   switch(a$44.$==1?(a$45=Pr(a$44.$0),a$45!=null&&a$45.$==1?(a$46=Prs(a$44.$1),a$46!=null&&a$46.$==1?($17=[a$45.$0,a$46.$0],1):2):2):0)
+   {
+    case 0:
+     return{
+      $:1,
+      $0:T.Empty
+     };
+    case 1:
+     return{
+      $:1,
+      $0:new T({
+       $:1,
+       $0:$17[0],
+       $1:$17[1]
+      })
+     };
+    case 2:
+     return null;
+   }
+  }
+  function Nd(a$44)
+  {
+   var a$45,a$46,a$47,a$48;
+   a$45=QTx(a$44);
+   return a$45!=null&&a$45.$==1?{
+    $:1,
+    $0:{
+     $:0,
+     $0:a$45.$0
+    }
+   }:(a$46=DocRf(a$44),a$46!=null&&a$46.$==1?{
+    $:1,
+    $0:{
+     $:1,
+     $0:a$46.$0
+    }
+   }:(a$47=VarRf(a$44),a$47!=null&&a$47.$==1?{
+    $:1,
+    $0:{
+     $:2,
+     $0:a$47.$0
+    }
+   }:(a$48=ViwRf(a$44),a$48!=null&&a$48.$==1?{
+    $:1,
+    $0:{
+     $:3,
+     $0:a$48.$0
+    }
+   }:null)));
+  }
+  function Nds(a$44)
+  {
+   var $17,a$45,a$46;
+   switch(a$44.$==1?(a$45=Nd(a$44.$0),a$45!=null&&a$45.$==1?(a$46=Nds(a$44.$1),a$46!=null&&a$46.$==1?($17=[a$45.$0,a$46.$0],1):2):2):0)
+   {
+    case 0:
+     return{
+      $:1,
+      $0:T.Empty
+     };
+    case 1:
+     return{
+      $:1,
+      $0:new T({
+       $:1,
+       $0:$17[0],
+       $1:$17[1]
+      })
+     };
+    case 2:
+     return null;
+   }
+  }
+  function Pgs(a$44)
+  {
+   var $17,a$45,a$46;
+   switch(a$44.$==1?(a$45=PlgRf(a$44.$0),a$45!=null&&a$45.$==1?(a$46=Pgs(a$44.$1),a$46!=null&&a$46.$==1?($17=[a$45.$0,a$46.$0],1):2):2):0)
+   {
+    case 0:
+     return{
+      $:1,
+      $0:T.Empty
+     };
+    case 1:
+     return{
+      $:1,
+      $0:new T({
+       $:1,
+       $0:$17[0],
+       $1:$17[1]
+      })
+     };
+    case 2:
+     return null;
+   }
+  }
+  m=LayoutEngineModule.splitTokens(line);
+  return m.$==1&&(a=Name(m.$0),a!=null&&a.$==1&&(m.$1.$==1&&(LayoutEngineModule.PlugIn(m.$1.$0).$==0&&(a$1=Pgs(m.$1.$1),a$1!=null&&a$1.$==1&&($1=[a$1.$0,a.$0],true)))))?Syntax.entryPlg($1[1],{
+   $:0,
+   $0:new FSharpMap.New($1[0])
+  }):m.$==1&&(a$2=NamU(m.$0),a$2!=null&&a$2.$==1&&(m.$1.$==1&&(LayoutEngineModule.Var(m.$1.$0).$==1&&(m.$1.$1.$==1&&(a$3=Name(m.$1.$1.$0),a$3!=null&&a$3.$==1&&(m.$1.$1.$1.$==0&&($2=[a$2.$0,a$3.$0],true)))))))?Syntax.entryRef($2[0],$2[1],RefType.RDoc):m.$==1&&(a$4=NamU(m.$0),a$4!=null&&a$4.$==1&&(m.$1.$==1&&(LayoutEngineModule.Var(m.$1.$0).$==0&&(m.$1.$1.$==1&&(a$5=Name(m.$1.$1.$0),a$5!=null&&a$5.$==1&&(m.$1.$1.$1.$==0&&($3=[a$4.$0,a$5.$0],true)))))))?Syntax.entryRef($3[0],$3[1],RefType.RVar):m.$==1&&(a$6=NamU(m.$0),a$6!=null&&a$6.$==1&&(m.$1.$==1&&(LayoutEngineModule.Var(m.$1.$0).$==2&&(m.$1.$1.$==1&&(a$7=Name(m.$1.$1.$0),a$7!=null&&a$7.$==1&&(m.$1.$1.$1.$==0&&($4=[a$6.$0,a$7.$0],true)))))))?Syntax.entryRef($4[0],$4[1],RefType.RViw):m.$==1&&(a$8=NamU(m.$0),a$8!=null&&a$8.$==1&&(m.$1.$==1&&(LayoutEngineModule.Var(m.$1.$0).$==4&&(m.$1.$1.$==1&&(a$9=Name(m.$1.$1.$0),a$9!=null&&a$9.$==1&&(m.$1.$1.$1.$==0&&($5=[a$8.$0,a$9.$0],true)))))))?Syntax.entryRef($5[0],$5[1],RefType.RAct):m.$==1&&(a$10=Name(m.$0),a$10!=null&&a$10.$==1&&(m.$1.$==1&&(LayoutEngineModule.Vertical(m.$1.$0).$==0&&(m.$1.$1.$==1&&(a$11=LayoutEngineModule.Measures$1(m.$1.$1.$0),a$11!=null&&a$11.$==1&&(m.$1.$1.$1.$==1&&(a$12=DocRf(m.$1.$1.$1.$0),a$12!=null&&a$12.$==1&&(m.$1.$1.$1.$1.$==1&&(a$13=DocRf(m.$1.$1.$1.$1.$0),a$13!=null&&a$13.$==1&&(m.$1.$1.$1.$1.$1.$==0&&($6=[a$12.$0,a$11.$0,a$10.$0,a$13.$0],true)))))))))))?Syntax.entryDoc($6[2],{
+   $:0,
+   $0:{
+    $:0,
+    $0:true,
+    $1:$6[1],
+    $2:$6[0],
+    $3:$6[3]
+   }
+  }):m.$==1&&(a$14=Name(m.$0),a$14!=null&&a$14.$==1&&(m.$1.$==1&&(LayoutEngineModule.Vertical(m.$1.$0).$==1&&(m.$1.$1.$==1&&(a$15=LayoutEngineModule.Measures$1(m.$1.$1.$0),a$15!=null&&a$15.$==1&&(m.$1.$1.$1.$==1&&(a$16=DocRf(m.$1.$1.$1.$0),a$16!=null&&a$16.$==1&&(m.$1.$1.$1.$1.$==1&&(a$17=DocRf(m.$1.$1.$1.$1.$0),a$17!=null&&a$17.$==1&&(m.$1.$1.$1.$1.$1.$==0&&($7=[a$16.$0,a$15.$0,a$14.$0,a$17.$0],true)))))))))))?Syntax.entryDoc($7[2],{
+   $:0,
+   $0:{
+    $:0,
+    $0:false,
+    $1:$7[1],
+    $2:$7[0],
+    $3:$7[3]
+   }
+  }):m.$==1&&(a$18=Name(m.$0),a$18!=null&&a$18.$==1&&(m.$1.$==1&&(LayoutEngineModule.PlugIn(m.$1.$0).$==1&&(m.$1.$1.$==1&&(a$19=ActRf(m.$1.$1.$0),a$19!=null&&a$19.$==1&&(m.$1.$1.$1.$==1&&(a$20=At(m.$1.$1.$1.$0),a$20!=null&&a$20.$==1&&(m.$1.$1.$1.$1.$==1&&(a$21=QTx(m.$1.$1.$1.$1.$0),a$21!=null&&a$21.$==1&&(m.$1.$1.$1.$1.$1.$==0&&($8=[a$19.$0,a$20.$0,a$18.$0,a$21.$0],true)))))))))))?Syntax.entryDoc($8[2],{
    $:1,
-   $0:"appfwkclient"
-  },h):void 0;
+   $0:{
+    $:0,
+    $0:$8[0],
+    $1:$8[1],
+    $2:$8[3]
+   }
+  }):m.$==1&&(a$22=Name(m.$0),a$22!=null&&a$22.$==1&&(m.$1.$==1&&(LayoutEngineModule.PlugIn(m.$1.$0).$==2&&(m.$1.$1.$==1&&(a$23=VarRf(m.$1.$1.$0),a$23!=null&&a$23.$==1&&(m.$1.$1.$1.$==1&&(a$24=At(m.$1.$1.$1.$0),a$24!=null&&a$24.$==1&&(m.$1.$1.$1.$1.$==0&&($9=[a$24.$0,a$22.$0,a$23.$0],true)))))))))?Syntax.entryDoc($9[1],{
+   $:2,
+   $0:{
+    $:0,
+    $0:$9[2],
+    $1:$9[0]
+   }
+  }):m.$==1&&(a$25=Name(m.$0),a$25!=null&&a$25.$==1&&(m.$1.$==1&&(LayoutEngineModule.PlugIn(m.$1.$0).$==3&&(m.$1.$1.$==1&&(a$26=VarRf(m.$1.$1.$0),a$26!=null&&a$26.$==1&&(m.$1.$1.$1.$==1&&(a$27=At(m.$1.$1.$1.$0),a$27!=null&&a$27.$==1&&(m.$1.$1.$1.$1.$==0&&($10=[a$27.$0,a$25.$0,a$26.$0],true)))))))))?Syntax.entryDoc($10[1],{
+   $:3,
+   $0:{
+    $:0,
+    $0:$10[2],
+    $1:$10[0]
+   }
+  }):m.$==1&&(a$28=Name(m.$0),a$28!=null&&a$28.$==1&&(m.$1.$==1&&(LayoutEngineModule.Var(m.$1.$0).$==0&&(m.$1.$1.$==1&&(a$29=QTx(m.$1.$1.$0),a$29!=null&&a$29.$==1&&(m.$1.$1.$1.$==0&&($11=[a$28.$0,a$29.$0],true)))))))?Syntax.entryVar($11[0],{
+   $:0,
+   $0:$11[1]
+  }):m.$==1&&(a$30=Name(m.$0),a$30!=null&&a$30.$==1&&(m.$1.$==1&&(LayoutEngineModule.Var(m.$1.$0).$==1&&(m.$1.$1.$==1&&(a$31=DocRf(m.$1.$1.$0),a$31!=null&&a$31.$==1&&(a$32=Prs(m.$1.$1.$1),a$32!=null&&a$32.$==1&&($12=[a$31.$0,a$30.$0,a$32.$0],true)))))))?Syntax.entryDoc($12[1],{
+   $:4,
+   $0:{
+    $:0,
+    $0:$12[0],
+    $1:$12[2]
+   }
+  }):m.$==1&&(a$33=Name(m.$0),a$33!=null&&a$33.$==1&&(m.$1.$==1&&(LayoutEngineModule.Var(m.$1.$0).$==2&&(a$34=Prs(m.$1.$1),a$34!=null&&a$34.$==1&&($13=[a$33.$0,a$34.$0],true)))))?Syntax.entryView($13[0],{
+   $:0,
+   $0:$13[1]
+  }):m.$==1&&(a$35=Name(m.$0),a$35!=null&&a$35.$==1&&(m.$1.$==1&&(LayoutEngineModule.Var(m.$1.$0).$==3&&(a$36=Nds(m.$1.$1),a$36!=null&&a$36.$==1&&($14=[a$35.$0,a$36.$0],true)))))?Syntax.entryDoc($14[0],{
+   $:5,
+   $0:{
+    $:0,
+    $0:$14[1]
+   }
+  }):m.$==1&&(a$37=Name(m.$0),a$37!=null&&a$37.$==1&&(m.$1.$==1&&(LayoutEngineModule.Var(m.$1.$0).$==4&&(m.$1.$1.$==1&&(a$38=ActRf(m.$1.$1.$0),a$38!=null&&a$38.$==1&&(a$39=Prs(m.$1.$1.$1),a$39!=null&&a$39.$==1&&($15=[a$38.$0,a$37.$0,a$39.$0],true)))))))?Syntax.entryAct($15[1],{
+   $:0,
+   $0:$15[0],
+   $1:$15[2]
+  }):m.$==1&&(a$40=Name(m.$0),a$40!=null&&a$40.$==1&&(m.$1.$==1&&(a$41=LayoutEngineModule.Vertical(m.$1.$0),a$41.$==5&&(m.$1.$1.$==1&&(a$42=At(m.$1.$1.$0),a$42!=null&&a$42.$==1&&(a$43=Nds(m.$1.$1.$1),a$43!=null&&a$43.$==1&&($16=[a$42.$0,a$41.$0,a$40.$0,a$43.$0],true)))))))?Syntax.entryDoc($16[2],{
+   $:6,
+   $0:{
+    $:0,
+    $0:$16[1],
+    $1:$16[0],
+    $2:$16[3]
+   }
+  }):null;
  };
- GeneratedPrintf.p=function($1)
+ Syntax.R=function(a)
  {
-  return"{"+("actName = "+Utils.prettyPrint($1.actName))+"; "+("actFunction = "+LayoutEngine_GeneratedPrintf.p($1.actFunction))+"; "+("actEnabled = "+LayoutEngine_GeneratedPrintf.p$1($1.actEnabled))+"}";
- };
- LayoutEngine_GeneratedPrintf.p$2=function($1)
- {
-  return $1.$==5?"FunDoc5 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+", "+Utils.prettyPrint($1.$3)+", "+Utils.prettyPrint($1.$4)+", "+Utils.prettyPrint($1.$5)+")":$1.$==4?"FunDoc4 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+", "+Utils.prettyPrint($1.$3)+", "+Utils.prettyPrint($1.$4)+")":$1.$==3?"FunDoc3 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+", "+Utils.prettyPrint($1.$3)+")":$1.$==2?"FunDoc2 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+")":$1.$==1?"FunDoc1 (<fun>, "+Utils.prettyPrint($1.$1)+")":"LazyDoc "+Utils.prettyPrint($1.$0);
- };
- LayoutEngine_Templates.tile=function(h)
- {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
+  var a$1,m,n;
+  a$1=LayoutEngineModule.Identifier(a);
+  return a$1!=null&&a$1.$==1?(m=Strings.SplitChars(a$1.$0,["."],0),!Unchecked.Equals(m,null)&&m.length===1?{
    $:1,
-   $0:"tile"
-  },h):void 0;
- };
- LayoutEngine_Templates.namevalueinput=function(h)
- {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
+   $0:{
+    $:0,
+    $0:Arrays.get(m,0)
+   }
+  }:!Unchecked.Equals(m,null)&&m.length===2?(n=Arrays.get(m,1),{
    $:1,
-   $0:"namevalueinput"
-  },h):void 0;
+   $0:{
+    $:1,
+    $0:Arrays.get(m,0),
+    $1:n
+   }
+  }):null):null;
  };
- LayoutEngine_Templates.namevalue=function(h)
+ Syntax.entryPlg=function(n,p)
  {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
+  return{
    $:1,
-   $0:"namevalue"
-  },h):void 0;
+   $0:Syntax.entryDef(n,{
+    $:4,
+    $0:p
+   })
+  };
  };
- LayoutEngine_Templates.action=function(h)
+ Syntax.entryRef=function(n,e,e$1)
  {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
+  return{
    $:1,
-   $0:"action"
-  },h):void 0;
+   $0:Syntax.entryDef(n,{
+    $:5,
+    $0:[e,e$1]
+   })
+  };
  };
- LayoutEngine_Templates.actiondisabled=function(h)
+ Syntax.entryDoc=function(n,d)
  {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
+  return{
    $:1,
-   $0:"actiondisabled"
-  },h):void 0;
+   $0:Syntax.entryDef(n,{
+    $:0,
+    $0:d
+   })
+  };
  };
- LayoutEngine_Templates.fixedsplitterhor=function(h)
+ Syntax.entryVar=function(n,v)
  {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
+  return{
    $:1,
-   $0:"fixedsplitterhor"
-  },h):void 0;
+   $0:Syntax.entryDef(n,{
+    $:2,
+    $0:v
+   })
+  };
  };
- LayoutEngine_Templates.fixedsplitterver=function(h)
+ Syntax.entryView=function(n,w)
  {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
+  return{
    $:1,
-   $0:"fixedsplitterver"
-  },h):void 0;
+   $0:Syntax.entryDef(n,{
+    $:3,
+    $0:w
+   })
+  };
  };
- LayoutEngine_Templates.wcompsplitterhor=function(h)
+ Syntax.entryAct=function(n,a)
  {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
+  return{
    $:1,
-   $0:"wcompsplitterhor"
-  },h):void 0;
+   $0:Syntax.entryDef(n,{
+    $:1,
+    $0:a
+   })
+  };
  };
- LayoutEngine_Templates.wcompsplitterver=function(h)
+ Syntax.entryDef=function(n,e)
  {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
+  return{
+   $:0,
+   $0:n,
+   $1:e
+  };
+ };
+ DateUtil.TryParse=function(s)
+ {
+  var d;
+  d=Date.parse(s);
+  return Global.isNaN(d)?null:{
    $:1,
-   $0:"wcompsplitterver"
-  },h):void 0;
+   $0:d
+  };
  };
- LayoutEngine_Templates.appframework=function(h)
+ Numeric.TryParse=function(s,min,max,r)
  {
-  Templates.LoadLocalTemplates("appframework");
-  return h?Templates.NamedTemplate("appframework",{
+  var x,ok;
+  x=+s;
+  ok=x===x-x%1&&x>=min&&x<=max;
+  ok?r.set(x):void 0;
+  return ok;
+ };
+ BalancedTree.Contains=function(v,t)
+ {
+  return!((BalancedTree.Lookup(v,t))[0]==null);
+ };
+ BalancedTree.Remove=function(k,src)
+ {
+  var p,t,spine,d;
+  p=BalancedTree.Lookup(k,src);
+  t=p[0];
+  spine=p[1];
+  return t==null?src:t.Right==null?BalancedTree.Rebuild(spine,t.Left):t.Left==null?BalancedTree.Rebuild(spine,t.Right):BalancedTree.Rebuild(spine,(d=Arrays.ofSeq(Seq.append(BalancedTree.Enumerate(false,t.Left),BalancedTree.Enumerate(false,t.Right))),BalancedTree.Build(d,0,d.length-1)));
+ };
+ BalancedTree.Add=function(x,t)
+ {
+  return BalancedTree.Put(function($1,$2)
+  {
+   return $2;
+  },x,t);
+ };
+ BalancedTree.OfSeq=function(data)
+ {
+  var a;
+  a=Arrays.ofSeq(Seq.distinct(data));
+  Arrays.sortInPlace(a);
+  return BalancedTree.Build(a,0,a.length-1);
+ };
+ BalancedTree.Lookup=function(k,t)
+ {
+  var spine,t$1,loop,m;
+  spine=[];
+  t$1=t;
+  loop=true;
+  while(loop)
+   if(t$1==null)
+    loop=false;
+   else
+    {
+     m=Unchecked.Compare(k,t$1.Node);
+     m===0?loop=false:m===1?(spine.unshift([true,t$1.Node,t$1.Left]),t$1=t$1.Right):(spine.unshift([false,t$1.Node,t$1.Right]),t$1=t$1.Left);
+    }
+  return[t$1,spine];
+ };
+ BalancedTree.Rebuild=function(spine,t)
+ {
+  var t$1,i,$1,m,x,l,m$1,x$1,r,m$2;
+  function h(x$2)
+  {
+   return x$2==null?0:x$2.Height;
+  }
+  t$1=t;
+  for(i=0,$1=Arrays.length(spine)-1;i<=$1;i++){
+   t$1=(m=Arrays.get(spine,i),m[0]?(x=m[1],(l=m[2],h(t$1)>h(l)+1?h(t$1.Left)===h(t$1.Right)+1?(m$1=t$1.Left,BalancedTree.Branch(m$1.Node,BalancedTree.Branch(x,l,m$1.Left),BalancedTree.Branch(t$1.Node,m$1.Right,t$1.Right))):BalancedTree.Branch(t$1.Node,BalancedTree.Branch(x,l,t$1.Left),t$1.Right):BalancedTree.Branch(x,l,t$1))):(x$1=m[1],(r=m[2],h(t$1)>h(r)+1?h(t$1.Right)===h(t$1.Left)+1?(m$2=t$1.Right,BalancedTree.Branch(m$2.Node,BalancedTree.Branch(t$1.Node,t$1.Left,m$2.Left),BalancedTree.Branch(x$1,m$2.Right,r))):BalancedTree.Branch(t$1.Node,t$1.Left,BalancedTree.Branch(x$1,t$1.Right,r)):BalancedTree.Branch(x$1,t$1,r))));
+  }
+  return t$1;
+ };
+ BalancedTree.Put=function(combine,k,t)
+ {
+  var p,t$1;
+  p=BalancedTree.Lookup(k,t);
+  t$1=p[0];
+  return t$1==null?BalancedTree.Rebuild(p[1],BalancedTree.Branch(k,null,null)):BalancedTree.Rebuild(p[1],BalancedTree.Branch(combine(t$1.Node,k),t$1.Left,t$1.Right));
+ };
+ BalancedTree.Branch=function(node,left,right)
+ {
+  var a,b;
+  return Tree.New(node,left,right,1+(a=left==null?0:left.Height,(b=right==null?0:right.Height,Unchecked.Compare(a,b)===1?a:b)),1+(left==null?0:left.Count)+(right==null?0:right.Count));
+ };
+ BalancedTree.Enumerate=function(flip,t)
+ {
+  function gen(t$1,spine)
+  {
+   var t$2;
+   while(true)
+    if(t$1==null)
+     return spine.$==1?{
+      $:1,
+      $0:[spine.$0[0],[spine.$0[1],spine.$1]]
+     }:null;
+    else
+     if(flip)
+      {
+       t$2=t$1;
+       t$1=t$2.Right;
+       spine=new T({
+        $:1,
+        $0:[t$2.Node,t$2.Left],
+        $1:spine
+       });
+      }
+     else
+      {
+       t$2=t$1;
+       t$1=t$2.Left;
+       spine=new T({
+        $:1,
+        $0:[t$2.Node,t$2.Right],
+        $1:spine
+       });
+      }
+  }
+  return Seq.unfold(function($1)
+  {
+   return gen($1[0],$1[1]);
+  },[t,T.Empty]);
+ };
+ BalancedTree.Build=function(data,min,max)
+ {
+  var center,left,right;
+  return max-min+1<=0?null:(center=(min+max)/2>>0,(left=BalancedTree.Build(data,min,center-1),(right=BalancedTree.Build(data,center+1,max),BalancedTree.Branch(Arrays.get(data,center),left,right))));
+ };
+ BalancedTree.TryFind=function(v,t)
+ {
+  var x;
+  x=(BalancedTree.Lookup(v,t))[0];
+  return x==null?null:{
    $:1,
-   $0:"appframework"
-  },h):void 0;
- };
- LayoutEngine_GeneratedPrintf.p$4=function($1)
- {
-  return $1.$==1?"UnQuoted "+Utils.prettyPrint($1.$0):"Quoted "+Utils.prettyPrint($1.$0);
- };
- LayoutEngine_GeneratedPrintf.p=function($1)
- {
-  return $1.$==2?"FunAct2 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+")":$1.$==1?"FunAct1 (<fun>, "+Utils.prettyPrint($1.$1)+")":"FunAct0 <fun>";
- };
- LayoutEngine_GeneratedPrintf.p$1=function($1)
- {
-  return"View <fun>";
+   $0:x.Node
+  };
  };
  Templates.LoadLocalTemplates=function(baseName)
  {
   !Templates.LocalTemplatesLoaded()?(Templates.set_LocalTemplatesLoaded(true),Templates.LoadNestedTemplates(self.document.body,"")):void 0;
   Templates.LoadedTemplates().set_Item(baseName,Templates.LoadedTemplateFile(""));
  };
+ Templates.NamedTemplate=function(baseName,name,fillWith)
+ {
+  var m,o;
+  m=(o=null,[Templates.LoadedTemplateFile(baseName).TryGetValue(name==null?"":name.$0,{
+   get:function()
+   {
+    return o;
+   },
+   set:function(v)
+   {
+    o=v;
+   }
+  }),o]);
+  return m[0]?Templates.ChildrenTemplate(m[1].cloneNode(true),fillWith):(console.warn("Local template doesn't exist",name),Doc.get_Empty());
+ };
  Templates.LocalTemplatesLoaded=function()
  {
-  SC$4.$cctor();
-  return SC$4.LocalTemplatesLoaded;
+  SC$5.$cctor();
+  return SC$5.LocalTemplatesLoaded;
  };
  Templates.set_LocalTemplatesLoaded=function($1)
  {
-  SC$4.$cctor();
-  SC$4.LocalTemplatesLoaded=$1;
+  SC$5.$cctor();
+  SC$5.LocalTemplatesLoaded=$1;
  };
  Templates.LoadNestedTemplates=function(root,baseName)
  {
@@ -8643,8 +13556,8 @@ if (!console) {
  };
  Templates.LoadedTemplates=function()
  {
-  SC$4.$cctor();
-  return SC$4.LoadedTemplates;
+  SC$5.$cctor();
+  return SC$5.LoadedTemplates;
  };
  Templates.LoadedTemplateFile=function(name)
  {
@@ -8660,6 +13573,18 @@ if (!console) {
    }
   }),o]);
   return m[0]?m[1]:(d=new Dictionary.New$5(),(Templates.LoadedTemplates().set_Item(name,d),d));
+ };
+ Templates.ChildrenTemplate=function(el,fillWith)
+ {
+  var p,updates,docTreeNode,m,$1;
+  p=Templates.InlineTemplate(el,fillWith);
+  updates=p[1];
+  docTreeNode=p[0];
+  m=docTreeNode.Els;
+  return!Unchecked.Equals(m,null)&&m.length===1&&(Arrays.get(m,0)instanceof Node&&(Unchecked.Equals(Arrays.get(m,0).nodeType,Node.ELEMENT_NODE)&&($1=Arrays.get(m,0),true)))?Elt.TreeNode(docTreeNode,updates):Doc.Mk({
+   $:6,
+   $0:docTreeNode
+  },updates);
  };
  Templates.FakeRootSingle=function(el)
  {
@@ -8875,52 +13800,6 @@ if (!console) {
       }
     }
   }(fakeroot),convertNodeAndSiblings(Arrays.get(els,0))):void 0;
- };
- Templates.NamedTemplate=function(baseName,name,fillWith)
- {
-  var m,o;
-  m=(o=null,[Templates.LoadedTemplateFile(baseName).TryGetValue(name==null?"":name.$0,{
-   get:function()
-   {
-    return o;
-   },
-   set:function(v)
-   {
-    o=v;
-   }
-  }),o]);
-  return m[0]?Templates.ChildrenTemplate(m[1].cloneNode(true),fillWith):(console.warn("Local template doesn't exist",name),Doc.get_Empty());
- };
- Templates.PrepareSingleTemplate=function(baseName,name,el)
- {
-  var root,e,r;
-  root=Templates.FakeRootSingle(el);
-  e=[el];
-  r={
-   $:1,
-   $0:root
-  };
-  return function(p)
-  {
-   Templates.PrepareTemplateStrict(baseName,name,e,r,p);
-  };
- };
- Templates.ChildrenTemplate=function(el,fillWith)
- {
-  var p,updates,docTreeNode,m,$1;
-  p=Templates.InlineTemplate(el,fillWith);
-  updates=p[1];
-  docTreeNode=p[0];
-  m=docTreeNode.Els;
-  return!Unchecked.Equals(m,null)&&m.length===1&&(Arrays.get(m,0)instanceof Node&&(Unchecked.Equals(Arrays.get(m,0).nodeType,Node.ELEMENT_NODE)&&($1=Arrays.get(m,0),true)))?Elt.TreeNode(docTreeNode,updates):Doc.Mk({
-   $:6,
-   $0:docTreeNode
-  },updates);
- };
- Templates.TextHoleRE=function()
- {
-  SC$4.$cctor();
-  return SC$4.TextHoleRE;
  };
  Templates.InlineTemplate=function(el,fillWith)
  {
@@ -9239,6 +14118,25 @@ if (!console) {
    }:null,$2?$2.$0:void 0)
   },["Render","El"]),Array.TreeReduce(View.Const(),View.Map2Unit,updates)];
  };
+ Templates.PrepareSingleTemplate=function(baseName,name,el)
+ {
+  var root,e,r;
+  root=Templates.FakeRootSingle(el);
+  e=[el];
+  r={
+   $:1,
+   $0:root
+  };
+  return function(p)
+  {
+   Templates.PrepareTemplateStrict(baseName,name,e,r,p);
+  };
+ };
+ Templates.TextHoleRE=function()
+ {
+  SC$5.$cctor();
+  return SC$5.TextHoleRE;
+ };
  Attrs.Dynamic=function(view,set)
  {
   return new AttrProxy({
@@ -9253,13 +14151,6 @@ if (!console) {
    $0:attr$1
   });
  };
- Attrs.Updates=function(dyn)
- {
-  return Array.MapTreeReduce(function(x)
-  {
-   return x.NChanged();
-  },View.Const(),View.Map2Unit,dyn.DynNodes);
- };
  Attrs.AppendTree=function(a,b)
  {
   var x;
@@ -9273,6 +14164,21 @@ if (!console) {
  {
   SC$6.$cctor();
   return SC$6.EmptyAttr;
+ };
+ Attrs.SetFlags=function(a,f)
+ {
+  a.flags=f;
+ };
+ Attrs.Flags=function(a)
+ {
+  return a!==null&&a.hasOwnProperty("flags")?a.flags:0;
+ };
+ Attrs.Updates=function(dyn)
+ {
+  return Array.MapTreeReduce(function(x)
+  {
+   return x.NChanged();
+  },View.Const(),View.Map2Unit,dyn.DynNodes);
  };
  Attrs.Insert=function(elem,tree)
  {
@@ -9310,13 +14216,9 @@ if (!console) {
    }
   });
  };
- Attrs.SetFlags=function(a,f)
+ Attrs.Empty=function(e)
  {
-  a.flags=f;
- };
- Attrs.Flags=function(a)
- {
-  return a!==null&&a.hasOwnProperty("flags")?a.flags:0;
+  return Dyn.New(e,0,[],null);
  };
  Attrs.HasExitAnim=function(attr$1)
  {
@@ -9356,10 +14258,6 @@ if (!console) {
   {
    return $1.NGetChangeAnim($2);
   });
- };
- Attrs.Empty=function(e)
- {
-  return Dyn.New(e,0,[],null);
  };
  Attrs.GetAnim=function(dyn,f)
  {
@@ -9401,8 +14299,8 @@ if (!console) {
  };
  DomUtility.Doc=function()
  {
-  SC$5.$cctor();
-  return SC$5.Doc;
+  SC$7.$cctor();
+  return SC$7.Doc;
  };
  DomUtility.ChildrenArray=function(element)
  {
@@ -9457,19 +14355,195 @@ if (!console) {
   if(el.parentNode===parent)
    parent.removeChild(el);
  };
+ GeneratedPrintf.p$1=function($1)
+ {
+  return"{"+("docName = "+Utils.prettyPrint($1.docName))+"; "+("docDoc = "+LayoutEngine_GeneratedPrintf.p$2($1.docDoc))+"}";
+ };
+ LayoutEngine_Templates.appfwkclient=function(h)
+ {
+  LayoutEngine_Templates.fixedsplitterhor();
+  LayoutEngine_Templates.fixedsplitterver();
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"appfwkclient"
+  },h):void 0;
+ };
+ GeneratedPrintf.p=function($1)
+ {
+  return"{"+("actName = "+Utils.prettyPrint($1.actName))+"; "+("actFunction = "+LayoutEngine_GeneratedPrintf.p($1.actFunction))+"; "+("actEnabled = "+LayoutEngine_GeneratedPrintf.p$1($1.actEnabled))+"}";
+ };
+ LayoutEngine_GeneratedPrintf.p$3=function($1)
+ {
+  return $1.$==1?"FullRef ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+")":"LocalRef "+Utils.prettyPrint($1.$0);
+ };
+ LayoutEngine_GeneratedPrintf.p$2=function($1)
+ {
+  return $1.$==5?"FunDoc5 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+", "+Utils.prettyPrint($1.$3)+", "+Utils.prettyPrint($1.$4)+", "+Utils.prettyPrint($1.$5)+")":$1.$==4?"FunDoc4 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+", "+Utils.prettyPrint($1.$3)+", "+Utils.prettyPrint($1.$4)+")":$1.$==3?"FunDoc3 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+", "+Utils.prettyPrint($1.$3)+")":$1.$==2?"FunDoc2 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+")":$1.$==1?"FunDoc1 (<fun>, "+Utils.prettyPrint($1.$1)+")":"LazyDoc "+Utils.prettyPrint($1.$0);
+ };
+ LayoutEngine_Templates.tile=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"tile"
+  },h):void 0;
+ };
+ LayoutEngine_Templates.namevalueinput=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"namevalueinput"
+  },h):void 0;
+ };
+ LayoutEngine_Templates.namevalue=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"namevalue"
+  },h):void 0;
+ };
+ LayoutEngine_Templates.action=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"action"
+  },h):void 0;
+ };
+ LayoutEngine_Templates.actiondisabled=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"actiondisabled"
+  },h):void 0;
+ };
+ LayoutEngine_Templates.fixedsplitterhor=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"fixedsplitterhor"
+  },h):void 0;
+ };
+ LayoutEngine_Templates.fixedsplitterver=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"fixedsplitterver"
+  },h):void 0;
+ };
+ LayoutEngine_Templates.wcompsplitterhor=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"wcompsplitterhor"
+  },h):void 0;
+ };
+ LayoutEngine_Templates.wcompsplitterver=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"wcompsplitterver"
+  },h):void 0;
+ };
+ LayoutEngine_Templates.appframework=function(h)
+ {
+  Templates.LoadLocalTemplates("appframework");
+  return h?Templates.NamedTemplate("appframework",{
+   $:1,
+   $0:"appframework"
+  },h):void 0;
+ };
+ LayoutEngine_GeneratedPrintf.p$4=function($1)
+ {
+  return $1.$==1?"UnQuoted "+Utils.prettyPrint($1.$0):"Quoted "+Utils.prettyPrint($1.$0);
+ };
+ LayoutEngine_GeneratedPrintf.p=function($1)
+ {
+  return $1.$==2?"FunAct2 (<fun>, "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+")":$1.$==1?"FunAct1 (<fun>, "+Utils.prettyPrint($1.$1)+")":"FunAct0 <fun>";
+ };
+ LayoutEngine_GeneratedPrintf.p$1=function($1)
+ {
+  return"View <fun>";
+ };
+ Async.StartTo=function(comp,k)
+ {
+  Concurrency.StartWithContinuations(comp,k,function(e)
+  {
+   Async.OnError(e);
+  },Global.ignore,null);
+ };
+ Async.OnError=function(e)
+ {
+  return console.log("WebSharper UI: Uncaught asynchronous exception",e);
+ };
+ AsyncBody.New=function(k,ct)
+ {
+  return{
+   k:k,
+   ct:ct
+  };
+ };
+ ResultM.addMsg=function(m,r)
+ {
+  return ResultM.mapMessage(function(b)
+  {
+   return ResultMessage.addMsg(m,b);
+  },r);
+ };
+ ResultM.mapMessage=function(fM,a)
+ {
+  return{
+   $:0,
+   $0:a.$0,
+   $1:fM(a.$1)
+  };
+ };
+ ResultMessage=Library.ResultMessage=Runtime$1.Class({
+  toString:function()
+  {
+   return this.$==1?(function($1)
+   {
+    return function($2)
+    {
+     return $1("Error    : "+Utils.toSafe($2));
+    };
+   }(Global.id))(this.$0):this.$==2?(function($1)
+   {
+    return function($2)
+    {
+     return $1("Warning  : "+Utils.toSafe($2));
+    };
+   }(Global.id))(this.$0):this.$==3?this.$0:this.$==4?(function($1)
+   {
+    return function($2)
+    {
+     return $1(Global.String($2));
+    };
+   }(Global.id))(this.$0):this.$==5?(((Runtime$1.Curried3(function($1,$2,$3)
+   {
+    return $1("Exception: "+Utils.toSafe($2)+", "+Utils.toSafe($3));
+   }))(Global.id))(this.$0))(this.$1):this.$==6?Strings.concat("\n",Seq.map(Global.String,Seq.filter(function(a)
+   {
+    return a.$!=0;
+   },this.$0))):"";
+  }
+ },null,ResultMessage);
+ ResultMessage.NoMsg=new ResultMessage({
+  $:0
+ });
  CEBuilder=State.CEBuilder=Runtime$1.Class({},Obj,CEBuilder);
  CEBuilder.New=Runtime$1.Ctor(function()
  {
   Obj.New.call(this);
  },CEBuilder);
- Numeric.TryParseInt32=function(s,r)
- {
-  return Numeric.TryParse(s,-2147483648,2147483647,r);
- };
- Numeric.TryParseInt64=function(s,r)
- {
-  return Numeric.TryParse(s,-9223372036854775808,9223372036854775807,r);
- };
  WcTabStripT=WcTabStrip.WcTabStripT=Runtime$1.Class({
   connectedCallback:function()
   {
@@ -9545,104 +14619,6 @@ if (!console) {
     console.log(s);
    }));
   }
- };
- TemplateInstance=Server.TemplateInstance=Runtime$1.Class({
-  get_Doc:function()
-  {
-   return this.doc;
-  }
- },Obj,TemplateInstance);
- TemplateInstance.New=Runtime$1.Ctor(function(c,doc)
- {
-  Obj.New.call(this);
-  this.doc=doc;
-  this.allVars=c.$==0?c.$0:Operators.FailWith("Should not happen");
- },TemplateInstance);
- ProviderBuilder=Server.ProviderBuilder=Runtime$1.Class({
-  WithHole:function(h)
-  {
-   this.h.push(h);
-   return this;
-  }
- },null,ProviderBuilder);
- ProviderBuilder.Make=function()
- {
-  var c;
-  return ProviderBuilder.New(null,(c=Guid.NewGuid(),Global.String(c)),[]);
- };
- ProviderBuilder.New=function(Instance,Key,Holes)
- {
-  return new ProviderBuilder({
-   i:Instance,
-   k:Key,
-   h:Holes
-  });
- };
- Handler.CompleteHoles=function(a,filledHoles,vars)
- {
-  var allVars,filledVars,e,h,$1,n;
-  function c(name,ty)
-  {
-   var p,r,r$1,r$2;
-   return filledVars.Contains(name)?null:(p=ty===0?(r=Var$1.Create$1(""),[{
-    $:8,
-    $0:name,
-    $1:r
-   },r]):ty===1?(r$1=Var$1.Create$1(0),[{
-    $:13,
-    $0:name,
-    $1:r$1
-   },r$1]):ty===2?(r$2=Var$1.Create$1(false),[{
-    $:9,
-    $0:name,
-    $1:r$2
-   },r$2]):Operators.FailWith("Invalid value type"),(allVars.set_Item(name,p[1]),{
-    $:1,
-    $0:p[0]
-   }));
-  }
-  allVars=new Dictionary.New$5();
-  filledVars=new HashSet.New$3();
-  e=Enumerator.Get(filledHoles);
-  try
-  {
-   while(e.MoveNext())
-    {
-     h=e.Current();
-     (h.$==8?($1=[h.$0,Client$1.Box(h.$1)],true):h.$==11?($1=[h.$0,Client$1.Box(h.$1)],true):h.$==10?($1=[h.$0,Client$1.Box(h.$1)],true):h.$==13?($1=[h.$0,Client$1.Box(h.$1)],true):h.$==12?($1=[h.$0,Client$1.Box(h.$1)],true):h.$==9&&($1=[h.$0,Client$1.Box(h.$1)],true))?(n=$1[0],filledVars.Add(n),allVars.set_Item(n,$1[1])):void 0;
-    }
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
-  return[Seq.append(filledHoles,Arrays.choose(function($2)
-  {
-   return c($2[0],$2[1]);
-  },vars)),{
-   $:0,
-   $0:allVars
-  }];
- };
- Handler.EventQ2=function(key,holeName,ti,f)
- {
-  return{
-   $:5,
-   $0:holeName,
-   $1:true,
-   $2:function(el)
-   {
-    return function(ev)
-    {
-     return f({
-      Vars:ti(),
-      Target:el,
-      Event:ev
-     });
-    };
-   }
-  };
  };
  WcSplitter.init=function(layoutH,layoutV)
  {
@@ -9749,59 +14725,6 @@ if (!console) {
    ElKey:ElKey
   },(Runtime$1.SetOptional($1,"Delimiters",Delimiters),Runtime$1.SetOptional($1,"Render",Render),$1)));
  };
- FSharpSet=Collections.FSharpSet=Runtime$1.Class({
-  Contains:function(v)
-  {
-   return BalancedTree.Contains(v,this.tree);
-  },
-  Equals:function(other)
-  {
-   return this.get_Count()===other.get_Count()&&Seq.forall2(Unchecked.Equals,this,other);
-  },
-  GetEnumerator$1:function()
-  {
-   return Enumerator.Get(BalancedTree.Enumerate(false,this.tree));
-  },
-  get_Count:function()
-  {
-   var tree;
-   tree=this.tree;
-   return tree==null?0:tree.Count;
-  },
-  GetHashCode:function()
-  {
-   return -1741749453+Unchecked.Hash(Arrays.ofSeq(this));
-  },
-  GetEnumerator:function()
-  {
-   return this.GetEnumerator$1();
-  },
-  GetEnumerator0:function()
-  {
-   return this.GetEnumerator$1();
-  },
-  CompareTo0:function(other)
-  {
-   return Seq.compareWith(Unchecked.Compare,this,other);
-  }
- },Obj,FSharpSet);
- FSharpSet.New=Runtime$1.Ctor(function(s)
- {
-  FSharpSet.New$1.call(this,BalancedTree.OfSeq(s));
- },FSharpSet);
- FSharpSet.New$1=Runtime$1.Ctor(function(tree)
- {
-  Obj.New.call(this);
-  this.tree=tree;
- },FSharpSet);
- DictionaryUtil.alreadyAdded=function()
- {
-  return Operators.FailWith("An item with the same key has already been added.");
- };
- DictionaryUtil.notPresent=function()
- {
-  return Operators.FailWith("The given key was not present in the dictionary.");
- };
  ArrayStorage=Storage.ArrayStorage=Runtime$1.Class({
   SAppendMany:function(is,arr)
   {
@@ -9821,6 +14744,10 @@ if (!console) {
    {
     return!pred(i);
    },arr);
+  },
+  SSet:function(coll)
+  {
+   return Arrays.ofSeq(coll);
   },
   SAppend:function(i,arr)
   {
@@ -9917,6 +14844,15 @@ if (!console) {
   {
    return $1==null||$1.constructor===Object?Docs.InsertDoc(parent,$1,$2):Docs.InsertNode(parent,$1,$2);
   },doc.$0.Els,pos):Docs.InsertDoc(parent,doc.$0,Docs.InsertDoc(parent,doc.$1,pos));
+ };
+ Docs.InsertBeforeDelim=function(afterDelim,doc)
+ {
+  var p,before;
+  p=afterDelim.parentNode;
+  before=self.document.createTextNode("");
+  p.insertBefore(before,afterDelim);
+  Docs.LinkPrevElement(afterDelim,doc);
+  return before;
  };
  Docs.CreateDelimitedElemNode=function(ldelim,rdelim,attr$1,children)
  {
@@ -10055,15 +14991,6 @@ if (!console) {
   m=Runtime$1.GetOptional(el.Render);
   m!=null&&m.$==1?(m.$0(el.El),Runtime$1.SetOptional(el,"Render",null)):void 0;
  };
- Docs.InsertBeforeDelim=function(afterDelim,doc)
- {
-  var p,before;
-  p=afterDelim.parentNode;
-  before=self.document.createTextNode("");
-  p.insertBefore(before,afterDelim);
-  Docs.LinkPrevElement(afterDelim,doc);
-  return before;
- };
  Docs.DoSyncElement=function(el)
  {
   var parent,p,m;
@@ -10158,6 +15085,99 @@ if (!console) {
     console.log(s);
    }))(v));
  };
+ Tree.New=function(Node$1,Left,Right,Height,Count)
+ {
+  return{
+   Node:Node$1,
+   Left:Left,
+   Right:Right,
+   Height:Height,
+   Count:Count
+  };
+ };
+ CheckedInput=UI.CheckedInput=Runtime$1.Class({
+  get_Input:function()
+  {
+   return this.$==1?this.$0:this.$==2?this.$0:this.$1;
+  }
+ },null,CheckedInput);
+ FSharpMap=Collections.FSharpMap=Runtime$1.Class({
+  get_Item:function(k)
+  {
+   var m;
+   m=this.TryFind(k);
+   return m==null?Operators.FailWith("The given key was not present in the dictionary."):m.$0;
+  },
+  TryFind:function(k)
+  {
+   var o;
+   o=BalancedTree.TryFind(Pair.New(k,void 0),this.tree);
+   return o==null?null:{
+    $:1,
+    $0:o.$0.Value
+   };
+  },
+  Equals:function(other)
+  {
+   return this.get_Count()===other.get_Count()&&Seq.forall2(Unchecked.Equals,this,other);
+  },
+  GetEnumerator$1:function()
+  {
+   return Enumerator.Get(Seq.map(function(kv)
+   {
+    return{
+     K:kv.Key,
+     V:kv.Value
+    };
+   },BalancedTree.Enumerate(false,this.tree)));
+  },
+  get_Count:function()
+  {
+   var tree;
+   tree=this.tree;
+   return tree==null?0:tree.Count;
+  },
+  GetHashCode:function()
+  {
+   return Unchecked.Hash(Arrays.ofSeq(this));
+  },
+  GetEnumerator:function()
+  {
+   return this.GetEnumerator$1();
+  },
+  GetEnumerator0:function()
+  {
+   return this.GetEnumerator$1();
+  },
+  CompareTo0:function(other)
+  {
+   return Seq.compareWith(Unchecked.Compare,this,other);
+  }
+ },Obj,FSharpMap);
+ FSharpMap.New=Runtime$1.Ctor(function(s)
+ {
+  FSharpMap.New$1.call(this,MapUtil.fromSeq(s));
+ },FSharpMap);
+ FSharpMap.New$1=Runtime$1.Ctor(function(tree)
+ {
+  Obj.New.call(this);
+  this.tree=tree;
+ },FSharpMap);
+ RefType.RAct={
+  $:3
+ };
+ RefType.RVar={
+  $:1
+ };
+ RefType.RViw={
+  $:2
+ };
+ RefType.RPlg={
+  $:4
+ };
+ RefType.RDoc={
+  $:0
+ };
  DynamicAttrNode=UI.DynamicAttrNode=Runtime$1.Class({
   NChanged:function()
   {
@@ -10198,10 +15218,71 @@ if (!console) {
    $this.dirty=true;
   },view);
  },DynamicAttrNode);
+ CT.New=function(IsCancellationRequested,Registrations)
+ {
+  return{
+   c:IsCancellationRequested,
+   r:Registrations
+  };
+ };
+ Scheduler=Concurrency.Scheduler=Runtime$1.Class({
+  Fork:function(action)
+  {
+   var $this;
+   $this=this;
+   this.robin.push(action);
+   this.idle?(this.idle=false,Global.setTimeout(function()
+   {
+    $this.tick();
+   },0)):void 0;
+  },
+  tick:function()
+  {
+   var loop,$this,t;
+   $this=this;
+   t=Date.now();
+   loop=true;
+   while(loop)
+    if(this.robin.length===0)
+     {
+      this.idle=true;
+      loop=false;
+     }
+    else
+     {
+      (this.robin.shift())();
+      Date.now()-t>40?(Global.setTimeout(function()
+      {
+       $this.tick();
+      },0),loop=false):void 0;
+     }
+  }
+ },Obj,Scheduler);
+ Scheduler.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+  this.idle=true;
+  this.robin=[];
+ },Scheduler);
  SC$3.$cctor=function()
  {
   SC$3.$cctor=Global.ignore;
-  SC$3.counter=0;
+  SC$3.noneCT=CT.New(false,[]);
+  SC$3.scheduler=new Scheduler.New();
+  SC$3.defCTS=[new CancellationTokenSource.New()];
+  SC$3.Zero=Concurrency.Return();
+  SC$3.GetCT=function(c)
+  {
+   c.k({
+    $:0,
+    $0:c.ct
+   });
+  };
+ };
+ SC$4.$cctor=function()
+ {
+  SC$4.$cctor=Global.ignore;
+  SC$4.counter=0;
  };
  Elt=UI.Elt=Runtime$1.Class({
   on:function(ev,cb)
@@ -10249,150 +15330,6 @@ if (!console) {
   this.elt=elt;
   this.rvUpdates=rvUpdates;
  },Elt);
- DateUtil.TryParse=function(s)
- {
-  var d;
-  d=Date.parse(s);
-  return Global.isNaN(d)?null:{
-   $:1,
-   $0:d
-  };
- };
- Numeric.TryParse=function(s,min,max,r)
- {
-  var x,ok;
-  x=+s;
-  ok=x===x-x%1&&x>=min&&x<=max;
-  ok?r.set(x):void 0;
-  return ok;
- };
- HashSet=Collections.HashSet=Runtime$1.Class({
-  Add:function(item)
-  {
-   return this.add(item);
-  },
-  Contains:function(item)
-  {
-   var arr;
-   arr=this.data[this.hash(item)];
-   return arr==null?false:this.arrContains(item,arr);
-  },
-  add:function(item)
-  {
-   var h,arr;
-   h=this.hash(item);
-   arr=this.data[h];
-   return arr==null?(this.data[h]=[item],this.count=this.count+1,true):this.arrContains(item,arr)?false:(arr.push(item),this.count=this.count+1,true);
-  },
-  arrContains:function(item,arr)
-  {
-   var c,i,$1,l;
-   c=true;
-   i=0;
-   l=arr.length;
-   while(c&&i<l)
-    if(this.equals.apply(null,[arr[i],item]))
-     c=false;
-    else
-     i=i+1;
-   return!c;
-  },
-  ExceptWith:function(xs)
-  {
-   var e;
-   e=Enumerator.Get(xs);
-   try
-   {
-    while(e.MoveNext())
-     this.Remove(e.Current());
-   }
-   finally
-   {
-    if(typeof e=="object"&&"Dispose"in e)
-     e.Dispose();
-   }
-  },
-  get_Count:function()
-  {
-   return this.count;
-  },
-  CopyTo:function(arr)
-  {
-   var i,all,i$1,$1;
-   i=0;
-   all=HashSetUtil.concat(this.data);
-   for(i$1=0,$1=all.length-1;i$1<=$1;i$1++)Arrays.set(arr,i$1,all[i$1]);
-  },
-  IntersectWith:function(xs)
-  {
-   var other,all,i,$1,item;
-   other=new HashSet.New$4(xs,this.equals,this.hash);
-   all=HashSetUtil.concat(this.data);
-   for(i=0,$1=all.length-1;i<=$1;i++){
-    item=all[i];
-    !other.Contains(item)?this.Remove(item):void 0;
-   }
-  },
-  Remove:function(item)
-  {
-   var arr;
-   arr=this.data[this.hash(item)];
-   return arr==null?false:this.arrRemove(item,arr)&&(this.count=this.count-1,true);
-  },
-  arrRemove:function(item,arr)
-  {
-   var c,i,$1,l;
-   c=true;
-   i=0;
-   l=arr.length;
-   while(c&&i<l)
-    if(this.equals.apply(null,[arr[i],item]))
-     {
-      arr.splice.apply(arr,[i,1]);
-      c=false;
-     }
-    else
-     i=i+1;
-   return!c;
-  },
-  GetEnumerator:function()
-  {
-   return Enumerator.Get(HashSetUtil.concat(this.data));
-  },
-  GetEnumerator0:function()
-  {
-   return Enumerator.Get(HashSetUtil.concat(this.data));
-  }
- },Obj,HashSet);
- HashSet.New$3=Runtime$1.Ctor(function()
- {
-  HashSet.New$4.call(this,[],Unchecked.Equals,Unchecked.Hash);
- },HashSet);
- HashSet.New$4=Runtime$1.Ctor(function(init,equals,hash)
- {
-  var e;
-  Obj.New.call(this);
-  this.equals=equals;
-  this.hash=hash;
-  this.data=[];
-  this.count=0;
-  e=Enumerator.Get(init);
-  try
-  {
-   while(e.MoveNext())
-    this.add(e.Current());
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- },HashSet);
- HashSet.New$2=Runtime$1.Ctor(function(init)
- {
-  HashSet.New$4.call(this,init,Unchecked.Equals,Unchecked.Hash);
- },HashSet);
- Client$1.Box=Global.id;
  WcSplitterT=WcSplitter.WcSplitterT=Runtime$1.Class({
   connectedCallback:function()
   {
@@ -10543,254 +15480,6 @@ if (!console) {
   };
   Runtime$1.SetOptional($1,"OnAfterRender",OnAfterRender);
   return $1;
- };
- BalancedTree.OfSeq=function(data)
- {
-  var a;
-  a=Arrays.ofSeq(Seq.distinct(data));
-  Arrays.sortInPlace(a);
-  return BalancedTree.Build(a,0,a.length-1);
- };
- BalancedTree.Contains=function(v,t)
- {
-  return!((BalancedTree.Lookup(v,t))[0]==null);
- };
- BalancedTree.Lookup=function(k,t)
- {
-  var spine,t$1,loop,m;
-  spine=[];
-  t$1=t;
-  loop=true;
-  while(loop)
-   if(t$1==null)
-    loop=false;
-   else
-    {
-     m=Unchecked.Compare(k,t$1.Node);
-     m===0?loop=false:m===1?(spine.unshift([true,t$1.Node,t$1.Left]),t$1=t$1.Right):(spine.unshift([false,t$1.Node,t$1.Right]),t$1=t$1.Left);
-    }
-  return[t$1,spine];
- };
- BalancedTree.Build=function(data,min,max)
- {
-  var center,left,right;
-  return max-min+1<=0?null:(center=(min+max)/2>>0,(left=BalancedTree.Build(data,min,center-1),(right=BalancedTree.Build(data,center+1,max),BalancedTree.Branch(Arrays.get(data,center),left,right))));
- };
- BalancedTree.Branch=function(node,left,right)
- {
-  var a,b;
-  return Tree.New(node,left,right,1+(a=left==null?0:left.Height,(b=right==null?0:right.Height,Unchecked.Compare(a,b)===1?a:b)),1+(left==null?0:left.Count)+(right==null?0:right.Count));
- };
- BalancedTree.Enumerate=function(flip,t)
- {
-  function gen(t$1,spine)
-  {
-   var t$2;
-   while(true)
-    if(t$1==null)
-     return spine.$==1?{
-      $:1,
-      $0:[spine.$0[0],[spine.$0[1],spine.$1]]
-     }:null;
-    else
-     if(flip)
-      {
-       t$2=t$1;
-       t$1=t$2.Right;
-       spine=new T({
-        $:1,
-        $0:[t$2.Node,t$2.Left],
-        $1:spine
-       });
-      }
-     else
-      {
-       t$2=t$1;
-       t$1=t$2.Left;
-       spine=new T({
-        $:1,
-        $0:[t$2.Node,t$2.Right],
-        $1:spine
-       });
-      }
-  }
-  return Seq.unfold(function($1)
-  {
-   return gen($1[0],$1[1]);
-  },[t,T.Empty]);
- };
- SC$4.$cctor=function()
- {
-  SC$4.$cctor=Global.ignore;
-  SC$4.LoadedTemplates=new Dictionary.New$5();
-  SC$4.LocalTemplatesLoaded=false;
-  SC$4.TextHoleRE="\\${([^}]+)}";
- };
- SC$5.$cctor=function()
- {
-  SC$5.$cctor=Global.ignore;
-  SC$5.Doc=self.document;
- };
- Updates=UI.Updates=Runtime$1.Class({},null,Updates);
- Updates.Create=function(v)
- {
-  var _var;
-  _var=null;
-  _var=Updates.New(v,null,function()
-  {
-   var c;
-   c=_var.s;
-   return c===null?(c=Snap.Copy(_var.c()),_var.s=c,Snap.WhenObsoleteRun(c,function()
-   {
-    _var.s=null;
-   }),c):c;
-  });
-  return _var;
- };
- Updates.New=function(Current,Snap$1,VarView)
- {
-  return new Updates({
-   c:Current,
-   s:Snap$1,
-   v:VarView
-  });
- };
- Hoverable$1=Hoverable.Hoverable=Runtime$1.Class({
-  Content:function(e)
-  {
-   return e.on("mouseenter",function()
-   {
-    return DomUtility.AddClass(e.elt,"hovering");
-   }).on("mouseleave",function()
-   {
-    return DomUtility.RemoveClass(e.elt,"hovering");
-   });
-  }
- },null,Hoverable$1);
- Hoverable$1.New$1=function()
- {
-  return Hoverable$1.New(Var$1.Create$1(false));
- };
- Hoverable$1.New=function(hover)
- {
-  return new Hoverable$1({
-   hover:hover
-  });
- };
- CancellationTokenSource=WebSharper.CancellationTokenSource=Runtime$1.Class({
-  Cancel$1:function()
-  {
-   var errors;
-   if(!this.c)
-    {
-     this.c=true;
-     errors=Arrays.choose(function(a)
-     {
-      try
-      {
-       a();
-       return null;
-      }
-      catch(e)
-      {
-       return{
-        $:1,
-        $0:e
-       };
-      }
-     },this.r);
-     if(Arrays.length(errors)>0)
-      throw new AggregateException.New$3(errors);
-     else
-      void 0;
-    }
-  }
- },Obj,CancellationTokenSource);
- CancellationTokenSource.New=Runtime$1.Ctor(function()
- {
-  Obj.New.call(this);
-  this.c=false;
-  this.pending=null;
-  this.r=[];
-  this.init=1;
- },CancellationTokenSource);
- CheckedInput=UI.CheckedInput=Runtime$1.Class({
-  get_Input:function()
-  {
-   return this.$==1?this.$0:this.$==2?this.$0:this.$1;
-  }
- },null,CheckedInput);
- ResizeObserver.addResizeObserver=function(f,el)
- {
-  var r,ro,changed,b;
-  try
-  {
-   r=!(!Global.ResizeObserver);
-  }
-  catch(e)
-  {
-   r=false;
-  }
-  if(r)
-   {
-    ro=new Global.ResizeObserver(f);
-    ResizeObserver.set_observers(new T({
-     $:1,
-     $0:ro,
-     $1:ResizeObserver.observers()
-    }));
-    ro.observe(el);
-   }
-  else
-   {
-    changed=ResizeObserver.dimsChanged(el);
-    Concurrency.Start((b=null,Concurrency.Delay(function()
-    {
-     return Concurrency.While(function()
-     {
-      return el.isConnected;
-     },Concurrency.Delay(function()
-     {
-      return Concurrency.Bind(Concurrency.Sleep(110),function()
-      {
-       return changed()?(f(),Concurrency.Zero()):Concurrency.Zero();
-      });
-     }));
-    })),null);
-   }
- };
- ResizeObserver.set_observers=function($1)
- {
-  SC$2.$cctor();
-  SC$2.observers=$1;
- };
- ResizeObserver.observers=function()
- {
-  SC$2.$cctor();
-  return SC$2.observers;
- };
- ResizeObserver.dimsChanged=function(el)
- {
-  var dims;
-  dims=[el.getBoundingClientRect()];
-  return function()
-  {
-   var ndims;
-   ndims=el.getBoundingClientRect();
-   return Unchecked.Equals(ResizeObserver.domRect2Tuple(dims[0]),ResizeObserver.domRect2Tuple(ndims))?false:(dims[0]=ndims,true);
-  };
- };
- ResizeObserver.domRect2Tuple=function(r)
- {
-  return[r.top,r.left,r.width,r.height];
- };
- LibraryJS.REGEX$1=function(expr,opt,value)
- {
-  var m;
-  return value===null?null:(m=(new Global.String(value)).match(new Global.RegExp(expr,opt)),Unchecked.Equals(m,null)?null:!Unchecked.Equals(m,null)&&m.length===0?null:{
-   $:1,
-   $0:m
-  });
  };
  Layout.extractNodes=function(lyt)
  {
@@ -10987,6 +15676,190 @@ if (!console) {
    },Operators.range(0,max-1));
   }));
  };
+ SC$5.$cctor=function()
+ {
+  SC$5.$cctor=Global.ignore;
+  SC$5.LoadedTemplates=new Dictionary.New$5();
+  SC$5.LocalTemplatesLoaded=false;
+  SC$5.TextHoleRE="\\${([^}]+)}";
+ };
+ SC$6.$cctor=function()
+ {
+  SC$6.$cctor=Global.ignore;
+  SC$6.EmptyAttr=null;
+ };
+ OperationCanceledException=WebSharper.OperationCanceledException=Runtime$1.Class({},Error,OperationCanceledException);
+ OperationCanceledException.New=Runtime$1.Ctor(function(ct)
+ {
+  OperationCanceledException.New$1.call(this,"The operation was canceled.",null,ct);
+ },OperationCanceledException);
+ OperationCanceledException.New$1=Runtime$1.Ctor(function(message,inner,ct)
+ {
+  this.message=message;
+  this.inner=inner;
+  Object.setPrototypeOf(this,OperationCanceledException.prototype);
+  this.ct=ct;
+ },OperationCanceledException);
+ CancellationTokenSource=WebSharper.CancellationTokenSource=Runtime$1.Class({
+  Cancel$1:function()
+  {
+   var errors;
+   if(!this.c)
+    {
+     this.c=true;
+     errors=Arrays.choose(function(a)
+     {
+      try
+      {
+       a();
+       return null;
+      }
+      catch(e)
+      {
+       return{
+        $:1,
+        $0:e
+       };
+      }
+     },this.r);
+     if(Arrays.length(errors)>0)
+      throw new AggregateException.New$3(errors);
+     else
+      void 0;
+    }
+  }
+ },Obj,CancellationTokenSource);
+ CancellationTokenSource.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+  this.c=false;
+  this.pending=null;
+  this.r=[];
+  this.init=1;
+ },CancellationTokenSource);
+ SC$7.$cctor=function()
+ {
+  SC$7.$cctor=Global.ignore;
+  SC$7.Doc=self.document;
+ };
+ Updates=UI.Updates=Runtime$1.Class({},null,Updates);
+ Updates.Create=function(v)
+ {
+  var _var;
+  _var=null;
+  _var=Updates.New(v,null,function()
+  {
+   var c;
+   c=_var.s;
+   return c===null?(c=Snap.Copy(_var.c()),_var.s=c,Snap.WhenObsoleteRun(c,function()
+   {
+    _var.s=null;
+   }),c):c;
+  });
+  return _var;
+ };
+ Updates.New=function(Current,Snap$1,VarView)
+ {
+  return new Updates({
+   c:Current,
+   s:Snap$1,
+   v:VarView
+  });
+ };
+ Hoverable$1=Hoverable.Hoverable=Runtime$1.Class({
+  Content:function(e)
+  {
+   return e.on("mouseenter",function()
+   {
+    return DomUtility.AddClass(e.elt,"hovering");
+   }).on("mouseleave",function()
+   {
+    return DomUtility.RemoveClass(e.elt,"hovering");
+   });
+  }
+ },null,Hoverable$1);
+ Hoverable$1.New$1=function()
+ {
+  return Hoverable$1.New(Var$1.Create$1(false));
+ };
+ Hoverable$1.New=function(hover)
+ {
+  return new Hoverable$1({
+   hover:hover
+  });
+ };
+ ResizeObserver.addResizeObserver=function(f,el)
+ {
+  var r,ro,changed,b;
+  try
+  {
+   r=!(!Global.ResizeObserver);
+  }
+  catch(e)
+  {
+   r=false;
+  }
+  if(r)
+   {
+    ro=new Global.ResizeObserver(f);
+    ResizeObserver.set_observers(new T({
+     $:1,
+     $0:ro,
+     $1:ResizeObserver.observers()
+    }));
+    ro.observe(el);
+   }
+  else
+   {
+    changed=ResizeObserver.dimsChanged(el);
+    Concurrency.Start((b=null,Concurrency.Delay(function()
+    {
+     return Concurrency.While(function()
+     {
+      return el.isConnected;
+     },Concurrency.Delay(function()
+     {
+      return Concurrency.Bind(Concurrency.Sleep(110),function()
+      {
+       return changed()?(f(),Concurrency.Zero()):Concurrency.Zero();
+      });
+     }));
+    })),null);
+   }
+ };
+ ResizeObserver.set_observers=function($1)
+ {
+  SC$2.$cctor();
+  SC$2.observers=$1;
+ };
+ ResizeObserver.observers=function()
+ {
+  SC$2.$cctor();
+  return SC$2.observers;
+ };
+ ResizeObserver.dimsChanged=function(el)
+ {
+  var dims;
+  dims=[el.getBoundingClientRect()];
+  return function()
+  {
+   var ndims;
+   ndims=el.getBoundingClientRect();
+   return Unchecked.Equals(ResizeObserver.domRect2Tuple(dims[0]),ResizeObserver.domRect2Tuple(ndims))?false:(dims[0]=ndims,true);
+  };
+ };
+ ResizeObserver.domRect2Tuple=function(r)
+ {
+  return[r.top,r.left,r.width,r.height];
+ };
+ LibraryJS.REGEX$1=function(expr,opt,value)
+ {
+  var m;
+  return value===null?null:(m=(new Global.String(value)).match(new Global.RegExp(expr,opt)),Unchecked.Equals(m,null)?null:!Unchecked.Equals(m,null)&&m.length===0?null:{
+   $:1,
+   $0:m
+  });
+ };
  Measures=LayoutEngineModule.Measures=Runtime$1.Class({
   toString:function()
   {
@@ -10996,16 +15869,56 @@ if (!console) {
    },4))(Global.id))(Operators.toInt(this.$0)))(Operators.toInt(this.$1)))(Operators.toInt(this.$2)):Global.String(Operators.toInt(this.$1?this.$0:-this.$0));
   }
  },null,Measures);
- Tree.New=function(Node$1,Left,Right,Height,Count)
+ MapUtil.fromSeq=function(s)
  {
-  return{
-   Node:Node$1,
-   Left:Left,
-   Right:Right,
-   Height:Height,
-   Count:Count
-  };
+  var a;
+  a=Arrays.ofSeq(Seq.delay(function()
+  {
+   return Seq.collect(function(m)
+   {
+    return[Pair.New(m[0],m[1])];
+   },Seq.distinctBy(function(t)
+   {
+    return t[0];
+   },s));
+  }));
+  Arrays.sortInPlace(a);
+  return BalancedTree.Build(a,0,a.length-1);
  };
+ Pair=Collections.Pair=Runtime$1.Class({
+  Equals:function(other)
+  {
+   return Unchecked.Equals(this.Key,other.Key);
+  },
+  GetHashCode:function()
+  {
+   return Unchecked.Hash(this.Key);
+  },
+  CompareTo0:function(other)
+  {
+   return Unchecked.Compare(this.Key,other.Key);
+  }
+ },null,Pair);
+ Pair.New=function(Key,Value)
+ {
+  return new Pair({
+   Key:Key,
+   Value:Value
+  });
+ };
+ HashSetUtil.concat=function(o)
+ {
+  var r,k;
+  r=[];
+  for(var k$1 in o)r.push.apply(r,o[k$1]);
+  return r;
+ };
+ FormatException=WebSharper.FormatException=Runtime$1.Class({},Error,FormatException);
+ FormatException.New$1=Runtime$1.Ctor(function(message)
+ {
+  this.message=message;
+  Object.setPrototypeOf(this,FormatException.prototype);
+ },FormatException);
  Prepare.convertTextNode=function(n)
  {
   var m,li,$1,s,strRE,hole;
@@ -11304,8 +16217,8 @@ if (!console) {
  };
  Settings.BatchUpdatesEnabled=function()
  {
-  SC$7.$cctor();
-  return SC$7.BatchUpdatesEnabled;
+  SC$8.$cctor();
+  return SC$8.BatchUpdatesEnabled;
  };
  Mailbox.StartProcessor=function(procAsync)
  {
@@ -11332,10 +16245,9 @@ if (!console) {
    m===0?(st[0]=1,Concurrency.Start(work(),null)):m===1?st[0]=2:void 0;
   };
  };
- SC$6.$cctor=function()
+ Queue.Clear=function(a)
  {
-  SC$6.$cctor=Global.ignore;
-  SC$6.EmptyAttr=null;
+  a.splice(0,Arrays.length(a));
  };
  AggregateException=WebSharper.AggregateException=Runtime$1.Class({},Error,AggregateException);
  AggregateException.New$3=Runtime$1.Ctor(function(innerExceptions)
@@ -11348,217 +16260,6 @@ if (!console) {
   Object.setPrototypeOf(this,AggregateException.prototype);
   this.innerExceptions=innerExceptions;
  },AggregateException);
- Concurrency.Start=function(c,ctOpt)
- {
-  var ct,d;
-  ct=(d=(Concurrency.defCTS())[0],ctOpt==null?d:ctOpt.$0);
-  Concurrency.scheduler().Fork(function()
-  {
-   if(!ct.c)
-    c(AsyncBody.New(function(a)
-    {
-     if(a.$==1)
-      Concurrency.UncaughtAsyncError(a.$0);
-    },ct));
-  });
- };
- Concurrency.Delay=function(mk)
- {
-  return function(c)
-  {
-   try
-   {
-    (mk(null))(c);
-   }
-   catch(e)
-   {
-    c.k({
-     $:1,
-     $0:e
-    });
-   }
-  };
- };
- Concurrency.Bind=function(r,f)
- {
-  return Concurrency.checkCancel(function(c)
-  {
-   r(AsyncBody.New(function(a)
-   {
-    var x;
-    if(a.$==0)
-     {
-      x=a.$0;
-      Concurrency.scheduler().Fork(function()
-      {
-       try
-       {
-        (f(x))(c);
-       }
-       catch(e)
-       {
-        c.k({
-         $:1,
-         $0:e
-        });
-       }
-      });
-     }
-    else
-     Concurrency.scheduler().Fork(function()
-     {
-      c.k(a);
-     });
-   },c.ct));
-  });
- };
- Concurrency.Sleep=function(ms)
- {
-  return function(c)
-  {
-   var pending,creg;
-   pending=void 0;
-   creg=void 0;
-   pending=Global.setTimeout(function()
-   {
-    creg.Dispose();
-    Concurrency.scheduler().Fork(function()
-    {
-     c.k({
-      $:0,
-      $0:null
-     });
-    });
-   },ms);
-   creg=Concurrency.Register(c.ct,function()
-   {
-    Global.clearTimeout(pending);
-    Concurrency.scheduler().Fork(function()
-    {
-     Concurrency.cancel(c);
-    });
-   });
-  };
- };
- Concurrency.Zero=function()
- {
-  SC$8.$cctor();
-  return SC$8.Zero;
- };
- Concurrency.defCTS=function()
- {
-  SC$8.$cctor();
-  return SC$8.defCTS;
- };
- Concurrency.UncaughtAsyncError=function(e)
- {
-  console.log("WebSharper: Uncaught asynchronous exception",e);
- };
- Concurrency.checkCancel=function(r)
- {
-  return function(c)
-  {
-   if(c.ct.c)
-    Concurrency.cancel(c);
-   else
-    r(c);
-  };
- };
- Concurrency.Register=function(ct,callback)
- {
-  var i;
-  return ct===Concurrency.noneCT()?{
-   Dispose:function()
-   {
-    return null;
-   }
-  }:(i=ct.r.push(callback)-1,{
-   Dispose:function()
-   {
-    return Arrays.set(ct.r,i,Global.ignore);
-   }
-  });
- };
- Concurrency.cancel=function(c)
- {
-  c.k({
-   $:2,
-   $0:new OperationCanceledException.New(c.ct)
-  });
- };
- Concurrency.While=function(g,c)
- {
-  return g()?Concurrency.Bind(c,function()
-  {
-   return Concurrency.While(g,c);
-  }):Concurrency.Return();
- };
- Concurrency.Return=function(x)
- {
-  return function(c)
-  {
-   c.k({
-    $:0,
-    $0:x
-   });
-  };
- };
- Concurrency.scheduler=function()
- {
-  SC$8.$cctor();
-  return SC$8.scheduler;
- };
- Concurrency.noneCT=function()
- {
-  SC$8.$cctor();
-  return SC$8.noneCT;
- };
- Concurrency.FromContinuations=function(subscribe)
- {
-  return function(c)
-  {
-   var continued;
-   function once(cont)
-   {
-    if(continued[0])
-     Operators.FailWith("A continuation provided by Async.FromContinuations was invoked multiple times");
-    else
-     {
-      continued[0]=true;
-      Concurrency.scheduler().Fork(cont);
-     }
-   }
-   continued=[false];
-   subscribe(function(a)
-   {
-    once(function()
-    {
-     c.k({
-      $:0,
-      $0:a
-     });
-    });
-   },function(e)
-   {
-    once(function()
-    {
-     c.k({
-      $:1,
-      $0:e
-     });
-    });
-   },function(e)
-   {
-    once(function()
-    {
-     c.k({
-      $:2,
-      $0:e
-     });
-    });
-   });
-  };
- };
  Seq.enumUsing=function(x,f)
  {
   return{
@@ -11627,10 +16328,6 @@ if (!console) {
     });
    }
   };
- };
- Queue.Clear=function(a)
- {
-  a.splice(0,Arrays.length(a));
  };
  MatchFailureException=WebSharper.MatchFailureException=Runtime$1.Class({},Error,MatchFailureException);
  MatchFailureException.New=Runtime$1.Ctor(function(message,line,column)
@@ -11786,52 +16483,14 @@ if (!console) {
    Duration:nextDuration
   };
  };
- SC$7.$cctor=function()
- {
-  SC$7.$cctor=Global.ignore;
-  SC$7.BatchUpdatesEnabled=true;
- };
- FormatException=WebSharper.FormatException=Runtime$1.Class({},Error,FormatException);
- FormatException.New$1=Runtime$1.Ctor(function(message)
- {
-  this.message=message;
-  Object.setPrototypeOf(this,FormatException.prototype);
- },FormatException);
- CT.New=function(IsCancellationRequested,Registrations)
- {
-  return{
-   c:IsCancellationRequested,
-   r:Registrations
-  };
- };
- AsyncBody.New=function(k,ct)
- {
-  return{
-   k:k,
-   ct:ct
-  };
- };
  SC$8.$cctor=function()
  {
   SC$8.$cctor=Global.ignore;
-  SC$8.noneCT=CT.New(false,[]);
-  SC$8.scheduler=new Scheduler.New();
-  SC$8.defCTS=[new CancellationTokenSource.New()];
-  SC$8.Zero=Concurrency.Return();
-  SC$8.GetCT=function(c)
-  {
-   c.k({
-    $:0,
-    $0:c.ct
-   });
-  };
+  SC$8.BatchUpdatesEnabled=true;
  };
- HashSetUtil.concat=function(o)
+ String$1.isBlank=function(s)
  {
-  var r,k;
-  r=[];
-  for(var k$1 in o)r.push.apply(r,o[k$1]);
-  return r;
+  return Strings.forall(Char.IsWhiteSpace,s);
  };
  SC$9.$cctor=function()
  {
@@ -11887,57 +16546,10 @@ if (!console) {
   SC$10.$cctor();
   return SC$10.Empty;
  };
- Scheduler=Concurrency.Scheduler=Runtime$1.Class({
-  Fork:function(action)
-  {
-   var $this;
-   $this=this;
-   this.robin.push(action);
-   this.idle?(this.idle=false,Global.setTimeout(function()
-   {
-    $this.tick();
-   },0)):void 0;
-  },
-  tick:function()
-  {
-   var loop,$this,t;
-   $this=this;
-   t=Date.now();
-   loop=true;
-   while(loop)
-    if(this.robin.length===0)
-     {
-      this.idle=true;
-      loop=false;
-     }
-    else
-     {
-      (this.robin.shift())();
-      Date.now()-t>40?(Global.setTimeout(function()
-      {
-       $this.tick();
-      },0),loop=false):void 0;
-     }
-  }
- },Obj,Scheduler);
- Scheduler.New=Runtime$1.Ctor(function()
+ Char.IsWhiteSpace=function(c)
  {
-  Obj.New.call(this);
-  this.idle=true;
-  this.robin=[];
- },Scheduler);
- OperationCanceledException=WebSharper.OperationCanceledException=Runtime$1.Class({},Error,OperationCanceledException);
- OperationCanceledException.New=Runtime$1.Ctor(function(ct)
- {
-  OperationCanceledException.New$1.call(this,"The operation was canceled.",null,ct);
- },OperationCanceledException);
- OperationCanceledException.New$1=Runtime$1.Ctor(function(message,inner,ct)
- {
-  this.message=message;
-  this.inner=inner;
-  Object.setPrototypeOf(this,OperationCanceledException.prototype);
-  this.ct=ct;
- },OperationCanceledException);
+  return c.match(new Global.RegExp("\\s"))!==null;
+ };
  Easing=UI.Easing=Runtime$1.Class({},Obj,Easing);
  Easing.Custom=function(f)
  {
@@ -11972,10 +16584,6 @@ if (!console) {
   set=new HashSet.New$2(HashSet$1.ToArray(a));
   set.IntersectWith(HashSet$1.ToArray(b));
   return set;
- };
- String$1.isBlank=function(s)
- {
-  return Strings.forall(Char.IsWhiteSpace,s);
  };
  DomNodes.Children=function(elem,delims)
  {
@@ -12063,10 +16671,6 @@ if (!console) {
    $0:Array.ofSeqNonCopying(q)
   };
  };
- Char.IsWhiteSpace=function(c)
- {
-  return c.match(new Global.RegExp("\\s"))!==null;
- };
  SC$10.$cctor=function()
  {
   SC$10.$cctor=Global.ignore;
@@ -12076,7 +16680,7 @@ if (!console) {
  };
  Runtime$1.OnLoad(function()
  {
-  NewLY.mainProgram();
+  SnippetsUI.main();
  });
 }());
 

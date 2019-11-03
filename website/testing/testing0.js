@@ -1,21 +1,79 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,StringId,GuidId,WebSharper,Obj,Monads,Depend,DependBuilder,Operators,String,LibraryJS,View,AppFrameworkTemplate,TestingJS,StartAppFramework,Util,AF,PlugInBuilder,ListModelData,LayoutEngine,ListModel,LM,LMX,SnippetTemplates,NewLY,Fun,Val,Extract0,SC$1,IntelliFactory,Runtime,Strings,Seq,Utils,List,Slice,Operators$1,Arrays,Char,Unchecked,console,UI,View$1,Doc,ParseO,FromView,AttrProxy,Var$1,AttrModule,AppFramework,PlugInVar,PlugInView,PlugInDoc,PlugInAction,PlugInQuery,Lazy,LayoutEngineModule,PlugIn,Enumerator,ListModel$1,System,Guid,Client,Templates,Date;
+ var Global,FsRoot,Library,UoM,Unsafe,UoM$1,StringId,GuidId,Dict,ResultMessage,ResultMessageHelpers,Monads,Seq,Option,Async,WebSharper,Obj,Result,Builder,Operators,BuilderP,Depend,DependBuilder,Operators$1,ResultM,Builder$1,Operators$2,ResultMAutoOpen,AsyncResultM,AsyncResultMBuilder,Operators$3,AsyncResultMAutoOpen,String,ParseO,Serializer,JsonIntermediate,Snippet,SnippetModule,SnippetSerialize,Model,LibraryJS,Promise,PromiseM,View,GenEditor,Position,AnnotationType,Annotation,Completion,GenEditorHook,GenEditor$1,Serializer$1,ResizeObserver,Monaco,Position$1,Range,Uri,Location,FindMatch,WordAtPosition,Model$1,MarkDownString,MarkerData,CompletionItem,Hover,Editor,MonacoConfig,MonacoGenAdapter,MonacoRT,CompletionItemProvider,HoverProvider,DefinitionProvider,AppFrameworkTemplate,TestingJS,StartAppFramework,Util,AF,PlugInBuilder,ListModelData,LayoutEngine,ListModel,LM,LMX,SnippetTemplates,NewLY,Fun,P,Val,Extract0,DragDrop,DragInfo,SnippetsUI,SnippetHierData,SaveLoad,SC$1,testing_GeneratedPrintf,testing_Templates,IntelliFactory,Runtime,Utils,Strings,Seq$1,List,Arrays,Concurrency,Enumerator,Result$1,Operators$4,Slice,Unchecked,Collections,FSharpMap,FSharpSet,BalancedTree,Option$1,System,Guid,Date,Char,console,UI,View$1,Var$1,JSON,Doc,AttrProxy,FromView,AttrModule,AppFramework,PlugInVar,PlugInView,PlugInDoc,PlugInAction,PlugInQuery,Lazy,LayoutEngineModule,PlugIn,ListModel$1,Templating,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,Dictionary,DateUtil,Numeric,Client,Templates,GeneratedPrintf,LayoutEngine_GeneratedPrintf;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
+ UoM=Library.UoM=Library.UoM||{};
+ Unsafe=UoM.Unsafe=UoM.Unsafe||{};
+ UoM$1=UoM.UoM=UoM.UoM||{};
  StringId=Library.StringId=Library.StringId||{};
  GuidId=Library.GuidId=Library.GuidId||{};
+ Dict=Library.Dict=Library.Dict||{};
+ ResultMessage=Library.ResultMessage=Library.ResultMessage||{};
+ ResultMessageHelpers=Library.ResultMessageHelpers=Library.ResultMessageHelpers||{};
+ Monads=Library.Monads=Library.Monads||{};
+ Seq=Monads.Seq=Monads.Seq||{};
+ Option=Monads.Option=Monads.Option||{};
+ Async=Monads.Async=Monads.Async||{};
  WebSharper=Global.WebSharper;
  Obj=WebSharper&&WebSharper.Obj;
- Monads=Library.Monads=Library.Monads||{};
+ Result=Monads.Result=Monads.Result||{};
+ Builder=Result.Builder=Result.Builder||{};
+ Operators=Result.Operators=Result.Operators||{};
+ BuilderP=Result.BuilderP=Result.BuilderP||{};
  Depend=Monads.Depend=Monads.Depend||{};
  DependBuilder=Depend.DependBuilder=Depend.DependBuilder||{};
- Operators=Depend.Operators=Depend.Operators||{};
+ Operators$1=Depend.Operators=Depend.Operators||{};
+ ResultM=Monads.ResultM=Monads.ResultM||{};
+ Builder$1=ResultM.Builder=ResultM.Builder||{};
+ Operators$2=ResultM.Operators=ResultM.Operators||{};
+ ResultMAutoOpen=Monads.ResultMAutoOpen=Monads.ResultMAutoOpen||{};
+ AsyncResultM=Monads.AsyncResultM=Monads.AsyncResultM||{};
+ AsyncResultMBuilder=AsyncResultM.AsyncResultMBuilder=AsyncResultM.AsyncResultMBuilder||{};
+ Operators$3=AsyncResultM.Operators=AsyncResultM.Operators||{};
+ AsyncResultMAutoOpen=Monads.AsyncResultMAutoOpen=Monads.AsyncResultMAutoOpen||{};
  String=Library.String=Library.String||{};
+ ParseO=Library.ParseO=Library.ParseO||{};
+ Serializer=Library.Serializer=Library.Serializer||{};
+ JsonIntermediate=Serializer.JsonIntermediate=Serializer.JsonIntermediate||{};
+ Snippet=Library.Snippet=Library.Snippet||{};
+ SnippetModule=Library.SnippetModule=Library.SnippetModule||{};
+ SnippetSerialize=Library.SnippetSerialize=Library.SnippetSerialize||{};
+ Model=SnippetSerialize.Model=SnippetSerialize.Model||{};
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
+ Promise=LibraryJS.Promise=LibraryJS.Promise||{};
+ PromiseM=LibraryJS.PromiseM=LibraryJS.PromiseM||{};
  View=LibraryJS.View=LibraryJS.View||{};
+ GenEditor=LibraryJS.GenEditor=LibraryJS.GenEditor||{};
+ Position=GenEditor.Position=GenEditor.Position||{};
+ AnnotationType=GenEditor.AnnotationType=GenEditor.AnnotationType||{};
+ Annotation=GenEditor.Annotation=GenEditor.Annotation||{};
+ Completion=GenEditor.Completion=GenEditor.Completion||{};
+ GenEditorHook=GenEditor.GenEditorHook=GenEditor.GenEditorHook||{};
+ GenEditor$1=GenEditor.GenEditor=GenEditor.GenEditor||{};
+ Serializer$1=LibraryJS.Serializer=LibraryJS.Serializer||{};
+ ResizeObserver=LibraryJS.ResizeObserver=LibraryJS.ResizeObserver||{};
+ Monaco=LibraryJS.Monaco=LibraryJS.Monaco||{};
+ Position$1=Monaco.Position=Monaco.Position||{};
+ Range=Monaco.Range=Monaco.Range||{};
+ Uri=Monaco.Uri=Monaco.Uri||{};
+ Location=Monaco.Location=Monaco.Location||{};
+ FindMatch=Monaco.FindMatch=Monaco.FindMatch||{};
+ WordAtPosition=Monaco.WordAtPosition=Monaco.WordAtPosition||{};
+ Model$1=Monaco.Model=Monaco.Model||{};
+ MarkDownString=Monaco.MarkDownString=Monaco.MarkDownString||{};
+ MarkerData=Monaco.MarkerData=Monaco.MarkerData||{};
+ CompletionItem=Monaco.CompletionItem=Monaco.CompletionItem||{};
+ Hover=Monaco.Hover=Monaco.Hover||{};
+ Editor=Monaco.Editor=Monaco.Editor||{};
+ MonacoConfig=Monaco.MonacoConfig=Monaco.MonacoConfig||{};
+ MonacoGenAdapter=LibraryJS.MonacoGenAdapter=LibraryJS.MonacoGenAdapter||{};
+ MonacoRT=MonacoGenAdapter.MonacoRT=MonacoGenAdapter.MonacoRT||{};
+ CompletionItemProvider=MonacoGenAdapter.CompletionItemProvider=MonacoGenAdapter.CompletionItemProvider||{};
+ HoverProvider=MonacoGenAdapter.HoverProvider=MonacoGenAdapter.HoverProvider||{};
+ DefinitionProvider=MonacoGenAdapter.DefinitionProvider=MonacoGenAdapter.DefinitionProvider||{};
  AppFrameworkTemplate=LibraryJS.AppFrameworkTemplate=LibraryJS.AppFrameworkTemplate||{};
  TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
  StartAppFramework=TestingJS.StartAppFramework=TestingJS.StartAppFramework||{};
@@ -30,28 +88,47 @@
  SnippetTemplates=TestingJS.SnippetTemplates=TestingJS.SnippetTemplates||{};
  NewLY=TestingJS.NewLY=TestingJS.NewLY||{};
  Fun=NewLY.Fun=NewLY.Fun||{};
+ P=NewLY.P=NewLY.P||{};
  Val=NewLY.Val=NewLY.Val||{};
  Extract0=NewLY.Extract0=NewLY.Extract0||{};
+ DragDrop=TestingJS.DragDrop=TestingJS.DragDrop||{};
+ DragInfo=DragDrop.DragInfo=DragDrop.DragInfo||{};
+ SnippetsUI=TestingJS.SnippetsUI=TestingJS.SnippetsUI||{};
+ SnippetHierData=SnippetsUI.SnippetHierData=SnippetsUI.SnippetHierData||{};
+ SaveLoad=SnippetsUI.SaveLoad=SnippetsUI.SaveLoad||{};
  SC$1=Global.StartupCode$testing$testing=Global.StartupCode$testing$testing||{};
+ testing_GeneratedPrintf=Global.testing_GeneratedPrintf=Global.testing_GeneratedPrintf||{};
+ testing_Templates=Global.testing_Templates=Global.testing_Templates||{};
  IntelliFactory=Global.IntelliFactory;
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
- Strings=WebSharper&&WebSharper.Strings;
- Seq=WebSharper&&WebSharper.Seq;
  Utils=WebSharper&&WebSharper.Utils;
+ Strings=WebSharper&&WebSharper.Strings;
+ Seq$1=WebSharper&&WebSharper.Seq;
  List=WebSharper&&WebSharper.List;
- Slice=WebSharper&&WebSharper.Slice;
- Operators$1=WebSharper&&WebSharper.Operators;
  Arrays=WebSharper&&WebSharper.Arrays;
- Char=WebSharper&&WebSharper.Char;
+ Concurrency=WebSharper&&WebSharper.Concurrency;
+ Enumerator=WebSharper&&WebSharper.Enumerator;
+ Result$1=WebSharper&&WebSharper.Result;
+ Operators$4=WebSharper&&WebSharper.Operators;
+ Slice=WebSharper&&WebSharper.Slice;
  Unchecked=WebSharper&&WebSharper.Unchecked;
+ Collections=WebSharper&&WebSharper.Collections;
+ FSharpMap=Collections&&Collections.FSharpMap;
+ FSharpSet=Collections&&Collections.FSharpSet;
+ BalancedTree=Collections&&Collections.BalancedTree;
+ Option$1=WebSharper&&WebSharper.Option;
+ System=Global.System;
+ Guid=System&&System.Guid;
+ Date=Global.Date;
+ Char=WebSharper&&WebSharper.Char;
  console=Global.console;
  UI=WebSharper&&WebSharper.UI;
  View$1=UI&&UI.View;
- Doc=UI&&UI.Doc;
- ParseO=Library&&Library.ParseO;
- FromView=UI&&UI.FromView;
- AttrProxy=UI&&UI.AttrProxy;
  Var$1=UI&&UI.Var$1;
+ JSON=Global.JSON;
+ Doc=UI&&UI.Doc;
+ AttrProxy=UI&&UI.AttrProxy;
+ FromView=UI&&UI.FromView;
  AttrModule=UI&&UI.AttrModule;
  AppFramework=LibraryJS&&LibraryJS.AppFramework;
  PlugInVar=AppFramework&&AppFramework.PlugInVar;
@@ -62,13 +139,153 @@
  Lazy=WebSharper&&WebSharper.Lazy;
  LayoutEngineModule=LibraryJS&&LibraryJS.LayoutEngineModule;
  PlugIn=AppFramework&&AppFramework.PlugIn;
- Enumerator=WebSharper&&WebSharper.Enumerator;
  ListModel$1=UI&&UI.ListModel;
- System=Global.System;
- Guid=System&&System.Guid;
+ Templating=UI&&UI.Templating;
+ Runtime$1=Templating&&Templating.Runtime;
+ Server=Runtime$1&&Runtime$1.Server;
+ ProviderBuilder=Server&&Server.ProviderBuilder;
+ Handler=Server&&Server.Handler;
+ TemplateInstance=Server&&Server.TemplateInstance;
+ Dictionary=Collections&&Collections.Dictionary;
+ DateUtil=WebSharper&&WebSharper.DateUtil;
+ Numeric=WebSharper&&WebSharper.Numeric;
  Client=UI&&UI.Client;
  Templates=Client&&Client.Templates;
- Date=Global.Date;
+ GeneratedPrintf=Global.GeneratedPrintf;
+ LayoutEngine_GeneratedPrintf=Global.LayoutEngine_GeneratedPrintf;
+ Unsafe.cast=Global.id;
+ UoM$1.Cast=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Cast$1=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Cast$2=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Cast$3=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Cast$4=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Cast$5=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Cast$6=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Cast$7=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Cast$8=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Cast$9=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Cast$10=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Untag=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Untag$1=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Untag$2=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Untag$3=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Untag$4=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Untag$5=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Untag$6=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Untag$7=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Untag$8=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Untag$9=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Untag$10=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Tag=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Tag$1=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Tag$2=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Tag$3=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Tag$4=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Tag$5=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Tag$6=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Tag$7=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Tag$8=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Tag$9=function(x)
+ {
+  return Unsafe.cast(x);
+ };
+ UoM$1.Tag$10=function(x)
+ {
+  return Unsafe.cast(x);
+ };
  StringId=Library.StringId=Runtime.Class({
   get_Id:function()
   {
@@ -81,6 +298,991 @@
    return this.$0;
   }
  },null,GuidId);
+ Dict.add$1=function(key,v,dict)
+ {
+  if(dict.ContainsKey(key))
+   dict.set_Item(key,v);
+  else
+   dict.Add(key,v);
+ };
+ ResultMessage=Library.ResultMessage=Runtime.Class({
+  toString:function()
+  {
+   return this.$==1?(function($1)
+   {
+    return function($2)
+    {
+     return $1("Error    : "+Utils.toSafe($2));
+    };
+   }(Global.id))(this.$0):this.$==2?(function($1)
+   {
+    return function($2)
+    {
+     return $1("Warning  : "+Utils.toSafe($2));
+    };
+   }(Global.id))(this.$0):this.$==3?this.$0:this.$==4?(function($1)
+   {
+    return function($2)
+    {
+     return $1(Global.String($2));
+    };
+   }(Global.id))(this.$0):this.$==5?(((Runtime.Curried3(function($1,$2,$3)
+   {
+    return $1("Exception: "+Utils.toSafe($2)+", "+Utils.toSafe($3));
+   }))(Global.id))(this.$0))(this.$1):this.$==6?Strings.concat("\n",Seq$1.map(Global.String,Seq$1.filter(function(a)
+   {
+    return a.$!=0;
+   },this.$0))):"";
+  }
+ },null,ResultMessage);
+ ResultMessage.NoMsg=new ResultMessage({
+  $:0
+ });
+ ResultMessageHelpers.infof=function(fmt)
+ {
+  return fmt(function(a)
+  {
+   return new ResultMessage({
+    $:3,
+    $0:a
+   });
+  });
+ };
+ ResultMessageHelpers.warningf=function(fmt)
+ {
+  return fmt(function(a)
+  {
+   return new ResultMessage({
+    $:2,
+    $0:a
+   });
+  });
+ };
+ ResultMessageHelpers.errorMsgf=function(fmt)
+ {
+  return fmt(function(a)
+  {
+   return new ResultMessage({
+    $:1,
+    $0:a
+   });
+  });
+ };
+ ResultMessage.summarizedI=function(msg)
+ {
+  return ResultMessage.summarizedF(function()
+  {
+   return[0,0,1];
+  },msg);
+ };
+ ResultMessage.summarizedW=function(msg)
+ {
+  return ResultMessage.summarizedF(function()
+  {
+   return[0,1,0];
+  },msg);
+ };
+ ResultMessage.summarized=function(msg)
+ {
+  return ResultMessage.summarizedF(function()
+  {
+   return[1,0,0];
+  },msg);
+ };
+ ResultMessage.summarizedF=function(f,msg)
+ {
+  return Strings.concat("\n",Seq$1.filter(function(y)
+  {
+   return""!==y;
+  },List.ofArray([Global.String(msg),ResultMessage.summaryF(f,msg)])));
+ };
+ ResultMessage.summaryF=function(f,msg)
+ {
+  var $1,m;
+  m=ResultMessage.countF(f,msg);
+  switch(m[0]===0?m[1]===0?0:m[1]===1?m[2]===0?0:($1=m[1],2):($1=m[1],2):m[0]===1?m[1]===0?m[2]===0?0:($1=m[0],1):($1=[m[0],m[1]],3):m[1]===0?($1=m[0],1):($1=[m[0],m[1]],3))
+  {
+   case 0:
+    return"";
+   case 1:
+    return(function($2)
+    {
+     return function($3)
+     {
+      return $2("Errors   : "+Global.String($3)+"\n");
+     };
+    }(Global.id))($1);
+   case 2:
+    return(function($2)
+    {
+     return function($3)
+     {
+      return $2("Warnings : "+Global.String($3)+"\n");
+     };
+    }(Global.id))($1);
+   case 3:
+    return(((Runtime.Curried3(function($2,$3,$4)
+    {
+     return $2("Errors   : "+Global.String($3)+", Warnings: "+Global.String($4)+"\n");
+    }))(Global.id))($1[0]))($1[1]);
+  }
+ };
+ ResultMessage.reduceMsgs=function(ms)
+ {
+  return Seq$1.fold(ResultMessage.addMsg,ResultMessage.NoMsg,ms);
+ };
+ ResultMessage.addMsg=function(a,b)
+ {
+  return a.$==0?b:a.$==6?b.$==0?a:b.$==6?new ResultMessage({
+   $:6,
+   $0:a.$0.concat(b.$0)
+  }):new ResultMessage({
+   $:6,
+   $0:a.$0.concat([b])
+  }):b.$==0?a:b.$==6?new ResultMessage({
+   $:6,
+   $0:[a].concat(b.$0)
+  }):new ResultMessage({
+   $:6,
+   $0:[a,b]
+  });
+ };
+ ResultMessage.countI=function(msg)
+ {
+  return ResultMessage.countF(function()
+  {
+   return[0,0,1];
+  },msg);
+ };
+ ResultMessage.countW=function(msg)
+ {
+  return ResultMessage.countF(function()
+  {
+   return[0,1,0];
+  },msg);
+ };
+ ResultMessage.count=function(msg)
+ {
+  return ResultMessage.countF(function()
+  {
+   return[1,0,0];
+  },msg);
+ };
+ ResultMessage.countF=function(f,msg)
+ {
+  function f$1(f$2,w,i)
+  {
+   return function(t)
+   {
+    return[f$2+t[0],w+t[1],i+t[2]];
+   };
+  }
+  return msg.$==0?[0,0,0]:msg.$==3?[0,0,1]:msg.$==2?[0,1,0]:msg.$==4?f(msg.$0):msg.$==6?Seq$1.fold(function($1,$2)
+  {
+   return(function($3)
+   {
+    return f$1($3[0],$3[1],$3[2]);
+   }($1))($2);
+  },[0,0,0],Seq$1.map(function(m)
+  {
+   return ResultMessage.countF(f,m);
+  },ResultMessage.exclnoMsg(msg.$0))):[1,0,0];
+ };
+ ResultMessage.isFatalW=function(msg)
+ {
+  return ResultMessage.isFatalF(function()
+  {
+   return false;
+  },msg);
+ };
+ ResultMessage.isFatal=function(msg)
+ {
+  return ResultMessage.isFatalF(function()
+  {
+   return true;
+  },msg);
+ };
+ ResultMessage.isFatalF=function(f,msg)
+ {
+  return msg.$==0?false:msg.$==3?false:msg.$==2?false:msg.$==4?f(msg.$0):msg.$==6?Seq$1.exists(function(m)
+  {
+   return ResultMessage.isFatalF(f,m);
+  },msg.$0):true;
+ };
+ ResultMessage.isWarningOrInfoW=function(msg)
+ {
+  return ResultMessage.isWarningOrInfoF(function()
+  {
+   return true;
+  },msg);
+ };
+ ResultMessage.isWarningOrInfo=function(msg)
+ {
+  return ResultMessage.isWarningOrInfoF(function()
+  {
+   return false;
+  },msg);
+ };
+ ResultMessage.isWarningOrInfoF=function(f,msg)
+ {
+  return msg.$==2||(msg.$==4?f(msg.$0):msg.$==6&&Seq$1.forall(function(m)
+  {
+   return ResultMessage.isWarningOrInfoF(f,m)||ResultMessage.isInfoF(f,m);
+  },ResultMessage.exclnoMsg(msg.$0)));
+ };
+ ResultMessage.isInfoI=function(msg)
+ {
+  return ResultMessage.isInfoF(function()
+  {
+   return true;
+  },msg);
+ };
+ ResultMessage.isInfo=function(msg)
+ {
+  return ResultMessage.isInfoF(function()
+  {
+   return false;
+  },msg);
+ };
+ ResultMessage.isInfoF=function(f,msg)
+ {
+  return msg.$==3||(msg.$==4?f(msg.$0):msg.$==6&&Seq$1.forall(function(m)
+  {
+   return ResultMessage.isInfoF(f,m);
+  },ResultMessage.exclnoMsg(msg.$0)));
+ };
+ ResultMessage.freeMessageI=function(msg)
+ {
+  var f;
+  function g(a)
+  {
+   return new ResultMessage({
+    $:3,
+    $0:a
+   });
+  }
+  return ResultMessage.freeMessageF((f=function($1)
+  {
+   return function($2)
+   {
+    return $1(Global.String($2));
+   };
+  }(Global.id),function(x)
+  {
+   return g(f(x));
+  }),msg);
+ };
+ ResultMessage.freeMessageW=function(msg)
+ {
+  var f;
+  function g(a)
+  {
+   return new ResultMessage({
+    $:2,
+    $0:a
+   });
+  }
+  return ResultMessage.freeMessageF((f=function($1)
+  {
+   return function($2)
+   {
+    return $1(Global.String($2));
+   };
+  }(Global.id),function(x)
+  {
+   return g(f(x));
+  }),msg);
+ };
+ ResultMessage.freeMessage=function(msg)
+ {
+  var f;
+  function g(a)
+  {
+   return new ResultMessage({
+    $:1,
+    $0:a
+   });
+  }
+  return ResultMessage.freeMessageF((f=function($1)
+  {
+   return function($2)
+   {
+    return $1(Global.String($2));
+   };
+  }(Global.id),function(x)
+  {
+   return g(f(x));
+  }),msg);
+ };
+ ResultMessage.freeMessageF=function(f,msg)
+ {
+  return ResultMessage.bindMessage(f,msg);
+ };
+ ResultMessage.bindMessage=function(f,msg)
+ {
+  return msg.$==4?f(msg.$0):msg.$==1?new ResultMessage({
+   $:1,
+   $0:msg.$0
+  }):msg.$==3?new ResultMessage({
+   $:3,
+   $0:msg.$0
+  }):msg.$==2?new ResultMessage({
+   $:2,
+   $0:msg.$0
+  }):msg.$==5?new ResultMessage({
+   $:5,
+   $0:msg.$0,
+   $1:msg.$1
+  }):msg.$==6?new ResultMessage({
+   $:6,
+   $0:Arrays.map(function(m)
+   {
+    return ResultMessage.bindMessage(f,m);
+   },msg.$0)
+  }):ResultMessage.NoMsg;
+ };
+ ResultMessage.exclnoMsg=function(ms)
+ {
+  function g(v)
+  {
+   return!v;
+  }
+  return Seq$1.filter(function(x)
+  {
+   return g(ResultMessage.noMsg(x));
+  },ms);
+ };
+ ResultMessage.noMsg=function(msg)
+ {
+  return msg.$==0;
+ };
+ Seq.ofOption=function(vO)
+ {
+  return vO==null?[]:[vO.$0];
+ };
+ Seq.absorbR=function(vOS)
+ {
+  return Seq$1.choose(function(a)
+  {
+   return a.$==0?{
+    $:1,
+    $0:a.$0
+   }:null;
+  },vOS);
+ };
+ Seq.absorbO=function(vOS)
+ {
+  return Seq$1.choose(Global.id,vOS);
+ };
+ Seq.insertR=function(vSR)
+ {
+  return vSR.$==0?Seq$1.map(function(a)
+  {
+   return{
+    $:0,
+    $0:a
+   };
+  },vSR.$0):(Seq.rtn())(Library.Error$1(vSR.$0));
+ };
+ Seq.insertO=function(vSO)
+ {
+  var o;
+  o=vSO==null?null:{
+   $:1,
+   $0:Seq$1.map(function(a)
+   {
+    return{
+     $:1,
+     $0:a
+    };
+   },vSO.$0)
+  };
+  return o==null?(Seq.rtn())(null):o.$0;
+ };
+ Seq.rtn=function()
+ {
+  SC$1.$cctor();
+  return SC$1.rtn;
+ };
+ Option.absorbR=function(vRO)
+ {
+  var $1,c;
+  return vRO!=null&&vRO.$==1&&(c=vRO.$0,c.$==0&&($1=c.$0,true))?{
+   $:1,
+   $0:$1
+  }:null;
+ };
+ Option.insertR=function(vOR)
+ {
+  var x;
+  return vOR.$==0?(x=vOR.$0,x==null?null:{
+   $:1,
+   $0:{
+    $:0,
+    $0:x.$0
+   }
+  }):Option.rtn(Library.Error$1(vOR.$0));
+ };
+ Option.sequenceSeq=function(sq)
+ {
+  return Option.traverseSeq(Global.id,sq);
+ };
+ Option.traverseSeq=function(f,sq)
+ {
+  var o;
+  o=Arrays.foldBack(function(head,tail)
+  {
+   return Option.op_GreaterGreaterEquals(f(head),function(h)
+   {
+    return Option.op_GreaterGreaterEquals(tail,function(t)
+    {
+     return Option.rtn(new List.T({
+      $:1,
+      $0:h,
+      $1:t
+     }));
+    });
+   });
+  },Arrays.ofSeq(sq),Option.rtn(List.T.Empty));
+  return o==null?null:{
+   $:1,
+   $0:o.$0
+  };
+ };
+ Option.op_GreaterGreaterEquals=function(v,f)
+ {
+  return v==null?null:f(v.$0);
+ };
+ Option.bindNone=function(f,o)
+ {
+  return o!=null&&o.$==1?{
+   $:1,
+   $0:o.$0
+  }:f();
+ };
+ Option.mapNone=function(f,o)
+ {
+  return o==null?f():o.$0;
+ };
+ Option.apply=function(fO,vO)
+ {
+  var $1;
+  return fO!=null&&fO.$==1&&(vO!=null&&vO.$==1&&($1=[fO.$0,vO.$0],true))?{
+   $:1,
+   $0:$1[0]($1[1])
+  }:null;
+ };
+ Option.join=function(o)
+ {
+  return o==null?null:o.$0;
+ };
+ Option.iter=function(f)
+ {
+  function f$1(o)
+  {
+   return o==null?null:{
+    $:1,
+    $0:f(o.$0)
+   };
+  }
+  function g(o)
+  {
+   if(o==null)
+    ;
+  }
+  return function(x)
+  {
+   return g(f$1(x));
+  };
+ };
+ Option.rtn=function(a)
+ {
+  return{
+   $:1,
+   $0:a
+  };
+ };
+ Async.insertR=function(vAR)
+ {
+  function f(a)
+  {
+   return{
+    $:0,
+    $0:a
+   };
+  }
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return vAR.$==0?Concurrency.Bind(vAR.$0,function(x)
+  {
+   return g(f(x));
+  }):Concurrency.Return(Library.Error$1(vAR.$0));
+ };
+ Async.insertO=function(vAO)
+ {
+  var o;
+  function f(a)
+  {
+   return{
+    $:1,
+    $0:a
+   };
+  }
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  o=vAO==null?null:{
+   $:1,
+   $0:Concurrency.Bind(vAO.$0,function(x)
+   {
+    return g(f(x));
+   })
+  };
+  return o==null?Concurrency.Return(null):o.$0;
+ };
+ Async.sequenceSeq=function(sq)
+ {
+  return Async.traverseSeq(Global.id,sq);
+ };
+ Async.traverseSeq=function(f,sq)
+ {
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return Concurrency.Bind(Arrays.foldBack(function(head,tail)
+  {
+   return Async.op_GreaterGreaterEquals(f(head),function(h)
+   {
+    return Async.op_GreaterGreaterEquals(tail,function(t)
+    {
+     return Concurrency.Return(new List.T({
+      $:1,
+      $0:h,
+      $1:t
+     }));
+    });
+   });
+  },Arrays.ofSeq(sq),Concurrency.Return(List.T.Empty)),function(x)
+  {
+   return g(Global.id(x));
+  });
+ };
+ Async.op_GreaterGreaterEquals=function(v,f)
+ {
+  return Concurrency.Bind(v,f);
+ };
+ Async.sleepThen=function(f,milliseconds)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind(Concurrency.Sleep(milliseconds),function()
+   {
+    return Concurrency.Return(f());
+   });
+  });
+ };
+ Async.apply=function(fA,vA)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind(Concurrency.StartChild(fA,null),function(a)
+   {
+    return Concurrency.Bind(Concurrency.StartChild(vA,null),function(a$1)
+    {
+     return Concurrency.Bind(a,function(a$2)
+     {
+      return Concurrency.Bind(a$1,function(a$3)
+      {
+       return Concurrency.Return(a$2(a$3));
+      });
+     });
+    });
+   });
+  });
+ };
+ Builder=Result.Builder=Runtime.Class({
+  For:function(sequence,body)
+  {
+   var $this;
+   $this=this;
+   return this.Using(Enumerator.Get(sequence),function(_enum)
+   {
+    return $this.While(function()
+    {
+     return _enum.MoveNext();
+    },$this.Delay(function()
+    {
+     return body(_enum.Current());
+    }));
+   });
+  },
+  While:function(guard,body)
+  {
+   function whileLoop(guard$1,body$1)
+   {
+    return guard$1()?Result$1.Bind(function()
+    {
+     return whileLoop(guard$1,body$1);
+    },body$1()):Result.rtn();
+   }
+   return whileLoop(guard,body);
+  },
+  Using:function(disposable,body)
+  {
+   try
+   {
+    return body(disposable);
+   }
+   finally
+   {
+    disposable.Dispose();
+   }
+  },
+  TryFinally:function(body,compensation)
+  {
+   try
+   {
+    return body();
+   }
+   finally
+   {
+    compensation();
+   }
+  },
+  TryWith:function(body,handler)
+  {
+   try
+   {
+    return body();
+   }
+   catch(e)
+   {
+    return handler(e);
+   }
+  },
+  Run:function(f)
+  {
+   return Result$1.Bind(f,{
+    $:0,
+    $0:null
+   });
+  },
+  Combine:function(a,b)
+  {
+   return Result$1.Bind(b,a);
+  },
+  Delay:Global.id,
+  Zero:function()
+  {
+   return Result.rtn();
+  },
+  Bind:function(w,r)
+  {
+   return Result$1.Bind(r,w);
+  },
+  ReturnFrom:Global.id,
+  Return:function(x)
+  {
+   return Result.rtn(x);
+  }
+ },Obj,Builder);
+ Builder.New=Runtime.Ctor(function()
+ {
+  Obj.New.call(this);
+ },Builder);
+ Operators.result=function()
+ {
+  SC$1.$cctor();
+  return SC$1.result$1;
+ };
+ Operators.rtn=function(v)
+ {
+  return Result.rtn(v);
+ };
+ Operators.op_GreaterEqualsGreater=function(f,g,v)
+ {
+  return Operators.op_GreaterGreaterEquals(f(v),g);
+ };
+ Operators.op_RightShift=function(f,g,v)
+ {
+  return Operators.op_BarGreaterGreater(f(v),g);
+ };
+ Operators.op_GreaterGreaterEquals=function(v,f)
+ {
+  return Result$1.Bind(f,v);
+ };
+ Operators.op_BarGreaterGreater=function(v,f)
+ {
+  return Result$1.Map(f,v);
+ };
+ BuilderP=Result.BuilderP=Runtime.Class({
+  For:function(sequence,body)
+  {
+   var $this;
+   $this=this;
+   return this.Using(Enumerator.Get(sequence),function(_enum)
+   {
+    return $this.While(function()
+    {
+     return _enum.MoveNext();
+    },$this.Delay(function()
+    {
+     return body(_enum.Current());
+    }));
+   });
+  },
+  While:function(guard,body)
+  {
+   function whileLoop(guard$1,body$1)
+   {
+    return guard$1()?Result$1.Bind(function()
+    {
+     return whileLoop(guard$1,body$1);
+    },body$1()):Result.rtn();
+   }
+   return whileLoop(guard,body);
+  },
+  Using:function(disposable,body)
+  {
+   try
+   {
+    return body(disposable);
+   }
+   finally
+   {
+    disposable.Dispose();
+   }
+  },
+  TryFinally:function(body,compensation)
+  {
+   try
+   {
+    return body();
+   }
+   finally
+   {
+    compensation();
+   }
+  },
+  TryWith:function(body,handler)
+  {
+   try
+   {
+    return body();
+   }
+   catch(e)
+   {
+    return handler(e);
+   }
+  },
+  Run:function(f)
+  {
+   return Result.bindP(f,{
+    $:0,
+    $0:null
+   });
+  },
+  Combine:function(a,b)
+  {
+   return Result$1.Bind(b,a);
+  },
+  Delay:Global.id,
+  Zero:function()
+  {
+   return Result.rtn();
+  },
+  Bind:function(w,r)
+  {
+   return Result$1.Bind(r,w);
+  },
+  ReturnFrom:Global.id,
+  Return:function(x)
+  {
+   return Result.rtn(x);
+  }
+ },Obj,BuilderP);
+ BuilderP.New=Runtime.Ctor(function()
+ {
+  Obj.New.call(this);
+ },BuilderP);
+ Result.resultP=function()
+ {
+  SC$1.$cctor();
+  return SC$1.resultP;
+ };
+ Result.iterP=function(fE,f,r)
+ {
+  Result.defaultWith(fE,Result.mapP(f,r));
+ };
+ Result.mapP=function(f,m)
+ {
+  return Result.bindP(function(x)
+  {
+   return Result.rtn(f(x));
+  },m);
+ };
+ Result.bindP=function(f,r)
+ {
+  if(r.$==1)
+   return Library.Error$1(r.$0);
+  else
+   try
+   {
+    return f(r.$0);
+   }
+   catch(e)
+   {
+    return Library.Error$1(new ResultMessage({
+     $:5,
+     $0:e.message,
+     $1:e.stack
+    }));
+   }
+ };
+ Result.freeMessage=function(r)
+ {
+  return r.$==1?Library.Error$1(ResultMessage.freeMessage(r.$0)):{
+   $:0,
+   $0:r.$0
+  };
+ };
+ Result.result=function()
+ {
+  SC$1.$cctor();
+  return SC$1.result;
+ };
+ Result.sequenceSeq=function(sq)
+ {
+  return Result.traverseSeq(Global.id,sq);
+ };
+ Result.traverseSeq=function(f,sq)
+ {
+  return Result$1.Map(Global.id,Arrays.foldBack(function(head,tail)
+  {
+   return Result.op_GreaterGreaterEquals(f(head),function(h)
+   {
+    return Result.op_GreaterGreaterEquals(tail,function(t)
+    {
+     return Result.rtn(new List.T({
+      $:1,
+      $0:h,
+      $1:t
+     }));
+    });
+   });
+  },Arrays.ofSeq(sq),Result.rtn(List.T.Empty)));
+ };
+ Result.op_GreaterGreaterEquals=function(r,f)
+ {
+  return Result$1.Bind(f,r);
+ };
+ Result.absorbO=function(f,vOR)
+ {
+  return Result$1.Bind(function(v)
+  {
+   return Result.ofOption(f,v);
+  },vOR);
+ };
+ Result.insertO=function(vRO)
+ {
+  var o;
+  o=vRO==null?null:{
+   $:1,
+   $0:Result$1.Map(function(a)
+   {
+    return{
+     $:1,
+     $0:a
+    };
+   },vRO.$0)
+  };
+  return o==null?{
+   $:0,
+   $0:null
+  }:o.$0;
+ };
+ Result.ofOption=function(f,vO)
+ {
+  var o;
+  o=vO==null?null:{
+   $:1,
+   $0:{
+    $:0,
+    $0:vO.$0
+   }
+  };
+  return o==null?function(x)
+  {
+   return Library.Error$1(f(x));
+  }():o.$0;
+ };
+ Result.get=function(r)
+ {
+  return Result.defaultWith(function(x)
+  {
+   return Operators$4.FailWith(Global.String(x));
+  },r);
+ };
+ Result.iter=function(fE,f,r)
+ {
+  Result.defaultWith(fE,Result$1.Map(f,r));
+ };
+ Result.failIfFalse=function(m,v)
+ {
+  return!v?Library.Error$1(m):{
+   $:0,
+   $0:null
+  };
+ };
+ Result.failIfTrue=function(m,v)
+ {
+  return v?Library.Error$1(m):{
+   $:0,
+   $0:null
+  };
+ };
+ Result.defaultValue=function(d,r)
+ {
+  return r.$==1?d:r.$0;
+ };
+ Result.defaultWith=function(f,r)
+ {
+  return r.$==1?f(r.$0):r.$0;
+ };
+ Result.toOption=function(r)
+ {
+  return r.$==0?{
+   $:1,
+   $0:r.$0
+  }:null;
+ };
+ Result.flatten=function(r)
+ {
+  return Result$1.Bind(Global.id,r);
+ };
+ Result.join=function(r)
+ {
+  return Result$1.Bind(Global.id,r);
+ };
+ Result.rtn=function(a)
+ {
+  return{
+   $:0,
+   $0:a
+  };
+ };
+ Result.errorf=function(fmt)
+ {
+  return fmt(Library.Error$1);
+ };
  DependBuilder=Depend.DependBuilder=Runtime.Class({
   Delay:function(f)
   {
@@ -99,17 +1301,27 @@
  {
   Obj.New.call(this);
  },DependBuilder);
- Operators.op_BarGreaterGreater=function(ma,f)
+ Operators$1.depend=function()
+ {
+  SC$1.$cctor();
+  return SC$1.depend$1;
+ };
+ Operators$1.rtn=function()
+ {
+  SC$1.$cctor();
+  return SC$1.rtn$1;
+ };
+ Operators$1.op_BarGreaterGreater=function(ma,f)
  {
   return(Depend.map(f))(ma);
  };
- Operators.op_GreaterGreaterEquals=function(ma,f)
+ Operators$1.op_GreaterGreaterEquals=function(ma,f)
  {
   return Depend.bind(f,ma);
  };
  Depend.toString=function(dep)
  {
-  return Strings.concat("\n",Seq.sort(Seq.distinct(Seq.map(function(a)
+  return Strings.concat("\n",Seq$1.sort(Seq$1.distinct(Seq$1.map(function(a)
   {
    var $1,$2;
    return(a.$==0?($2=a.$0,$2!=null&&$2.$==1)?($1=[a.$1,a.$0.$0[0],a.$0.$0[1]],true):($1=a,false):($1=a,false))?(((Runtime.Curried3(function($3,$4,$5)
@@ -170,7 +1382,7 @@
    {
     return nm===y;
    }
-   return a.$==1?a.$0:($1=a.$0,$1!=null&&$1.$==1)?(k=a.$1,(nm=a.$0.$0[0],resolve((o=(o$1=Seq.tryFind(function(x)
+   return a.$==1?a.$0:($1=a.$0,$1!=null&&$1.$==1)?(k=a.$1,(nm=a.$0.$0[0],resolve((o=(o$1=Seq$1.tryFind(function(x)
    {
     return g(f(x));
    },lst),o$1==null?null:{
@@ -192,7 +1404,7 @@
    return a.$==1?{
     $:1,
     $0:a.$0
-   }:($1=a.$0,$1!=null&&$1.$==1)?(k=a.$1,(nm=a.$0.$0[0],(o=(o$1=Seq.tryFind(function($3)
+   }:($1=a.$0,$1!=null&&$1.$==1)?(k=a.$1,(nm=a.$0.$0[0],(o=(o$1=Seq$1.tryFind(function($3)
    {
     return p($3[0],$3[1]);
    },lst),o$1==null?null:{
@@ -245,7 +1457,7 @@
    return a.$==1?{
     $:1,
     $0:a.$0
-   }:($1=a.$0,$1!=null&&$1.$==1)?(k=a.$1,(nm=a.$0.$0[0],(o=(o$1=Seq.tryFind(function(x)
+   }:($1=a.$0,$1!=null&&$1.$==1)?(k=a.$1,(nm=a.$0.$0[0],(o=(o$1=Seq$1.tryFind(function(x)
    {
     return g(f$1(x));
    },lst),o$1==null?null:{
@@ -341,23 +1553,874 @@
    }
   };
  };
+ Builder$1=ResultM.Builder=Runtime.Class({
+  For:function(sequence,body)
+  {
+   var $this;
+   $this=this;
+   return this.Using(Enumerator.Get(sequence),function(_enum)
+   {
+    return $this.While(function()
+    {
+     return _enum.MoveNext();
+    },$this.Delay(function()
+    {
+     return body(_enum.Current());
+    }));
+   });
+  },
+  While:function(guard,body)
+  {
+   function whileLoop(guard$1,body$1)
+   {
+    return guard$1()?ResultM.bind(function()
+    {
+     return whileLoop(guard$1,body$1);
+    },body$1()):ResultM.rtn();
+   }
+   return whileLoop(guard,body);
+  },
+  Using:function(disposable,body)
+  {
+   try
+   {
+    return body(disposable);
+   }
+   finally
+   {
+    disposable.Dispose();
+   }
+  },
+  TryFinally:function(body,compensation)
+  {
+   try
+   {
+    return body();
+   }
+   finally
+   {
+    compensation();
+   }
+  },
+  TryWith:function(body,handler)
+  {
+   try
+   {
+    return body();
+   }
+   catch(e)
+   {
+    return handler(e);
+   }
+  },
+  Run:function(f)
+  {
+   return ResultM.bindP(f,Monads.OkM$1());
+  },
+  Combine:function(a,b)
+  {
+   return ResultM.bind(b,a);
+  },
+  Delay:Global.id,
+  Zero:function()
+  {
+   return ResultM.rtn();
+  },
+  Bind:function(w,r)
+  {
+   return ResultM.bindM(r,w);
+  },
+  Bind$1:function(w,r)
+  {
+   return ResultM.bindP(r,w);
+  },
+  ReturnFrom:function(x)
+  {
+   return ResultM.rtnM(x);
+  },
+  ReturnFrom$1:Global.id,
+  ReturnFrom$2:Global.id,
+  Return:function(x)
+  {
+   return ResultM.rtn(x);
+  }
+ },Obj,Builder$1);
+ Builder$1.New=Runtime.Ctor(function()
+ {
+  Obj.New.call(this);
+ },Builder$1);
+ Operators$2.rtn=function(v)
+ {
+  return ResultM.rtn(v);
+ };
+ Operators$2.op_GreaterEqualsGreater=function(f,g,v)
+ {
+  return Operators$2.op_GreaterGreaterEquals(f(v),g);
+ };
+ Operators$2.op_RightShift=function(f,g,v)
+ {
+  return Operators$2.op_BarGreaterGreater(f(v),g);
+ };
+ Operators$2.op_GreaterGreaterEquals=function(v,f)
+ {
+  return ResultM.bindP(f,v);
+ };
+ Operators$2.op_BarGreaterGreater=function(v,f)
+ {
+  return ResultM.mapP(f,v);
+ };
+ ResultM.sequenceSeq=function(sq)
+ {
+  return ResultM.traverseSeq(Global.id,sq);
+ };
+ ResultM.traverseSeq=function(f,sq)
+ {
+  return ResultM.map(Global.id,Arrays.foldBack(function(head,tail)
+  {
+   return ResultM.op_GreaterGreaterEquals(f(head),function(h)
+   {
+    return ResultM.op_GreaterGreaterEquals(tail,function(t)
+    {
+     return ResultM.rtn(new List.T({
+      $:1,
+      $0:h,
+      $1:t
+     }));
+    });
+   });
+  },Arrays.ofSeq(sq),ResultM.rtn(List.T.Empty)));
+ };
+ ResultM.op_GreaterGreaterEquals=function(r,f)
+ {
+  return ResultM.bind(f,r);
+ };
+ ResultM.failIfFatalMsgW=function(r)
+ {
+  var a;
+  a=Monads.OkM(r);
+  return a.$==0?ResultMessage.isFatalW(a.$0[1])?Monads.ErrorM(a.$0[1]):r:r;
+ };
+ ResultM.failIfFatalMsg=function(r)
+ {
+  var a;
+  a=Monads.OkM(r);
+  return a.$==0?ResultMessage.isFatal(a.$0[1])?Monads.ErrorM(a.$0[1]):r:r;
+ };
+ ResultM.failIfFatalMsgF=function(f,r)
+ {
+  var a;
+  a=Monads.OkM(r);
+  return a.$==0?ResultMessage.isFatalF(f,a.$0[1])?Monads.ErrorM(a.$0[1]):r:r;
+ };
+ ResultM.addMsg=function(m,r)
+ {
+  return ResultM.mapMessage(function(b)
+  {
+   return ResultMessage.addMsg(m,b);
+  },r);
+ };
+ ResultM.absorbO=function(f,vOR)
+ {
+  return ResultM.bindP(function(v)
+  {
+   return ResultM.ofOption(f,v);
+  },vOR);
+ };
+ ResultM.insertO=function(vRO)
+ {
+  var o;
+  o=vRO==null?null:{
+   $:1,
+   $0:ResultM.map(function(a)
+   {
+    return{
+     $:1,
+     $0:a
+    };
+   },vRO.$0)
+  };
+  return o==null?Monads.OkM$1(null):o.$0;
+ };
+ ResultM.ofResult=function(vR)
+ {
+  return ResultM.rtnr(vR);
+ };
+ ResultM.ofOption=function(f,vO)
+ {
+  var o;
+  o=vO==null?null:{
+   $:1,
+   $0:Monads.OkM$1(vO.$0)
+  };
+  return o==null?function(x)
+  {
+   return Monads.ErrorM(f(x));
+  }():o.$0;
+ };
+ ResultM.get=function(r)
+ {
+  return ResultM.defaultWith(function(x)
+  {
+   return Operators$4.FailWith(Global.String(x));
+  },r);
+ };
+ ResultM.iter=function(fM,f,r)
+ {
+  var a;
+  a=ResultM.mapP(f,r);
+  a.$0==null?fM(a.$1):void 0;
+ };
+ ResultM.mapP=function(f,m)
+ {
+  return ResultM.bindP(function(x)
+  {
+   return ResultM.rtn(f(x));
+  },m);
+ };
+ ResultM.check=function(a,vR)
+ {
+  var $1;
+  return($1=vR.$0,$1!=null&&$1.$==1)?ResultMessage.isFatalF(a.$0,vR.$1)?Monads.ErrorM(vR.$1):vR:vR;
+ };
+ ResultM.bindM=function(f,m)
+ {
+  return ResultM.bindP(f,ResultM.rtnM(m));
+ };
+ ResultM.bindP=function(f,r)
+ {
+  var m;
+  if(r.$0==null)
+   return{
+    $:0,
+    $0:null,
+    $1:r.$1
+   };
+  else
+   {
+    m=r.$1;
+    try
+    {
+     return ResultM.mapMessage(function(b)
+     {
+      return ResultMessage.addMsg(m,b);
+     },f(r.$0.$0));
+    }
+    catch(e)
+    {
+     return Monads.ErrorM(new ResultMessage({
+      $:5,
+      $0:e.message,
+      $1:e.stack
+     }));
+    }
+   }
+ };
+ ResultM.bind=function(f,r)
+ {
+  var m;
+  return r.$0==null?{
+   $:0,
+   $0:null,
+   $1:r.$1
+  }:(m=r.$1,ResultM.mapMessage(function(b)
+  {
+   return ResultMessage.addMsg(m,b);
+  },f(r.$0.$0)));
+ };
+ ResultM.mapMessage=function(fM,a)
+ {
+  return{
+   $:0,
+   $0:a.$0,
+   $1:fM(a.$1)
+  };
+ };
+ ResultM.map=function(f,a)
+ {
+  var o;
+  return{
+   $:0,
+   $0:(o=a.$0,o==null?null:{
+    $:1,
+    $0:f(o.$0)
+   }),
+   $1:a.$1
+  };
+ };
+ ResultM.defaultValue=function(d,r)
+ {
+  return Result.defaultValue(d,ResultM.toResult(r));
+ };
+ ResultM.defaultWith=function(f,r)
+ {
+  return Result.defaultWith(f,ResultM.toResult(r));
+ };
+ ResultM.toOption=function(r)
+ {
+  return r.$0;
+ };
+ ResultM.toResultD=function(r)
+ {
+  return r.$0==null?Library.Error$1(r.$1):{
+   $:0,
+   $0:[r.$0.$0,r.$1]
+  };
+ };
+ ResultM.toResult=function(r)
+ {
+  return r.$0==null?Library.Error$1(r.$1):{
+   $:0,
+   $0:r.$0.$0
+  };
+ };
+ ResultM.freeMessage=function(r)
+ {
+  return r.$==1?Library.Error$1(ResultMessage.freeMessage(r.$0)):{
+   $:0,
+   $0:r.$0
+  };
+ };
+ ResultM.rtnr=function(vR)
+ {
+  return Result.defaultWith(Monads.ErrorM,Result$1.Map(Monads.OkM$1,vR));
+ };
+ ResultM.rtnM=function(m)
+ {
+  return Monads.OkMWithMsg(null,m);
+ };
+ ResultM.rtn=function(v)
+ {
+  return Monads.OkM$1(v);
+ };
+ ResultM.checkErrorW=function()
+ {
+  return{
+   $:0,
+   $0:function()
+   {
+    return false;
+   }
+  };
+ };
+ ResultM.checkError=function()
+ {
+  return{
+   $:0,
+   $0:function()
+   {
+    return true;
+   }
+  };
+ };
+ ResultMAutoOpen.resultM=function()
+ {
+  SC$1.$cctor();
+  return SC$1.resultM;
+ };
+ AsyncResultMBuilder=AsyncResultM.AsyncResultMBuilder=Runtime.Class({
+  For:function(s,fRA)
+  {
+   var $this;
+   $this=this;
+   return this.Using(Enumerator.Get(s),function(_enum)
+   {
+    return $this.While(function()
+    {
+     return _enum.MoveNext();
+    },$this.Delay(function()
+    {
+     return fRA(_enum.Current());
+    }));
+   });
+  },
+  While:function(guard,fRA)
+  {
+   return AsyncResultM.whileLoop(guard,fRA);
+  },
+  Using:function(resource,fRA)
+  {
+   return Concurrency.Using(resource,fRA);
+  },
+  TryFinally:function(fRA,fn)
+  {
+   var b;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    return Concurrency.TryFinally(Concurrency.Delay(function()
+    {
+     return fRA();
+    }),function()
+    {
+     fn();
+    });
+   });
+  },
+  TryWith:function(fRA,hnd)
+  {
+   var b;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    return Concurrency.TryWith(Concurrency.Delay(function()
+    {
+     return fRA();
+    }),function(a)
+    {
+     return hnd(a);
+    });
+   });
+  },
+  Run:function(fRA)
+  {
+   return AsyncResultM.bind(fRA,AsyncResultM.rtn());
+  },
+  Delay:Global.id,
+  Combine:function(vR,fRA)
+  {
+   return AsyncResultM.bind(fRA,AsyncResultM.rtnR(vR));
+  },
+  Combine$1:function(vRA,fRA)
+  {
+   return AsyncResultM.bind(fRA,vRA);
+  },
+  Bind:function(w,r)
+  {
+   return AsyncResultM.bindrA(r,w);
+  },
+  Bind$1:function(w,r)
+  {
+   return AsyncResultM.bindR(r,w);
+  },
+  Bind$2:function(w,r)
+  {
+   return AsyncResultM.bindM(r,w);
+  },
+  Bind$3:function(w,r)
+  {
+   return AsyncResultM.bindr(r,w);
+  },
+  Bind$4:function(vRA,fRA)
+  {
+   return AsyncResultM.bind(fRA,vRA);
+  },
+  Zero:function()
+  {
+   return AsyncResultM.rtn();
+  },
+  Return:function(v)
+  {
+   return AsyncResultM.rtn(v);
+  },
+  ReturnFrom:function(vR)
+  {
+   return AsyncResultM.rtnrA(vR);
+  },
+  ReturnFrom$1:function(vR)
+  {
+   return AsyncResultM.rtnR(vR);
+  },
+  ReturnFrom$2:function(vR)
+  {
+   return AsyncResultM.rtnM(vR);
+  },
+  ReturnFrom$3:function(vR)
+  {
+   return AsyncResultM.rtnr(vR);
+  },
+  ReturnFrom$4:Global.id
+ },Obj,AsyncResultMBuilder);
+ AsyncResultMBuilder.New=Runtime.Ctor(function()
+ {
+  Obj.New.call(this);
+ },AsyncResultMBuilder);
+ Operators$3.rtn=function(v)
+ {
+  return AsyncResultM.rtn(v);
+ };
+ Operators$3.op_GreaterEqualsGreater=function(f,g,v)
+ {
+  return Operators$3.op_GreaterGreaterEquals(f(v),g);
+ };
+ Operators$3.op_GreaterMinusGreater=function(f,g,v)
+ {
+  return Operators$3.op_BarGreaterGreater(f(v),g);
+ };
+ Operators$3.op_GreaterGreaterEquals=function(v,f)
+ {
+  return AsyncResultM.bind(f,v);
+ };
+ Operators$3.op_BarGreaterGreater=function(v,f)
+ {
+  return AsyncResultM.map(f,v);
+ };
+ AsyncResultM.getResultM=function(a)
+ {
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return Concurrency.Bind(a,function(x)
+  {
+   return g(Monads.OkM$1(x));
+  });
+ };
+ AsyncResultM.absorbO=function(f,vORA)
+ {
+  function f$1(v)
+  {
+   return ResultM.absorbO(f,v);
+  }
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return Concurrency.Bind(vORA,function(x)
+  {
+   return g(f$1(x));
+  });
+ };
+ AsyncResultM.absorbR=function(vRRA)
+ {
+  var f;
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return Concurrency.Bind(vRRA,(f=function(r)
+  {
+   return ResultM.bindP(Global.id,r);
+  },function(x)
+  {
+   return g(f(x));
+  }));
+ };
+ AsyncResultM.insertR=function(vRAR)
+ {
+  return vRAR.$==0?AsyncResultM.map(function(a)
+  {
+   return{
+    $:0,
+    $0:a
+   };
+  },vRAR.$0):AsyncResultM.rtn(Library.Error$1(vRAR.$0));
+ };
+ AsyncResultM.insertO=function(vRAO)
+ {
+  var o;
+  o=vRAO==null?null:{
+   $:1,
+   $0:AsyncResultM.map(function(a)
+   {
+    return{
+     $:1,
+     $0:a
+    };
+   },vRAO.$0)
+  };
+  return o==null?AsyncResultM.rtn(null):o.$0;
+ };
+ AsyncResultM.sequenceSeq=function(sq)
+ {
+  return AsyncResultM.traverseSeq(Global.id,sq);
+ };
+ AsyncResultM.traverseSeq=function(f,sq)
+ {
+  return AsyncResultM.map(Global.id,Arrays.foldBack(function(head,tail)
+  {
+   return AsyncResultM.op_GreaterGreaterEquals(f(head),function(h)
+   {
+    return AsyncResultM.op_GreaterGreaterEquals(tail,function(t)
+    {
+     return AsyncResultM.rtn(new List.T({
+      $:1,
+      $0:h,
+      $1:t
+     }));
+    });
+   });
+  },Arrays.ofSeq(sq),AsyncResultM.rtn(List.T.Empty)));
+ };
+ AsyncResultM.op_GreaterGreaterEquals=function(v,f)
+ {
+  return AsyncResultM.bind(f,v);
+ };
+ AsyncResultM.whileLoop=function(cond,fRA)
+ {
+  return cond()?AsyncResultM.bind(function()
+  {
+   return AsyncResultM.whileLoop(cond,fRA);
+  },fRA()):AsyncResultM.rtn();
+ };
+ AsyncResultM.map=function(f,m)
+ {
+  return AsyncResultM.bind(function(x)
+  {
+   return AsyncResultM.rtn(f(x));
+  },m);
+ };
+ AsyncResultM.bindR=function(f,a)
+ {
+  return AsyncResultM.bind(f,AsyncResultM.rtnR(a));
+ };
+ AsyncResultM.bindrA=function(f,a)
+ {
+  return AsyncResultM.bind(f,AsyncResultM.rtnrA(a));
+ };
+ AsyncResultM.bindM=function(f,a)
+ {
+  return AsyncResultM.bind(f,AsyncResultM.rtnM(a));
+ };
+ AsyncResultM.bindr=function(f,a)
+ {
+  return AsyncResultM.bind(f,AsyncResultM.rtnr(a));
+ };
+ AsyncResultM.bind=function(fRA,vRA)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.TryWith(Concurrency.Delay(function()
+   {
+    return Concurrency.Bind(vRA,function(a)
+    {
+     var a$1,m;
+     function f(r)
+     {
+      return ResultM.addMsg(m,r);
+     }
+     function g(v)
+     {
+      return Concurrency.Return(v);
+     }
+     a$1=Monads.OkM(a);
+     return a$1.$==1?Concurrency.Return(Monads.ErrorM(a$1.$0)):(m=a$1.$0[1],Concurrency.Bind(fRA(a$1.$0[0]),function(x)
+     {
+      return g(f(x));
+     }));
+    });
+   }),function(a)
+   {
+    return Concurrency.Return(Monads.ErrorM(new ResultMessage({
+     $:5,
+     $0:a.message,
+     $1:a.stack
+    })));
+   });
+  });
+ };
+ AsyncResultM.iterpA=function(f,vRA)
+ {
+  function g(v)
+  {
+   Library.print$1(v);
+  }
+  AsyncResultM.iterA(function(x)
+  {
+   return g(ResultMessage.summarized(x));
+  },f,vRA);
+ };
+ AsyncResultM.iterpS=function(f,vRA)
+ {
+  function g(v)
+  {
+   Library.print$1(v);
+  }
+  AsyncResultM.iterS(function(x)
+  {
+   return g(ResultMessage.summarized(x));
+  },f,vRA);
+ };
+ AsyncResultM.iterA=function(fE,f,vRA)
+ {
+  function f$1(r)
+  {
+   ResultM.iter(fE,f,r);
+  }
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  Concurrency.Start(Concurrency.Bind(vRA,function(x)
+  {
+   return g(f$1(x));
+  }),null);
+ };
+ AsyncResultM.iterS=function(fE,f,vRA)
+ {
+  throw"iterS cannot be used in JavaScript!";
+ };
+ AsyncResultM.errorMsgf=function(fmt)
+ {
+  var f;
+  function f$1(a)
+  {
+   return new ResultMessage({
+    $:1,
+    $0:a
+   });
+  }
+  function g(a)
+  {
+   return Concurrency.Return(a);
+  }
+  return fmt((f=function(x)
+  {
+   return Monads.ErrorM(f$1(x));
+  },function(x)
+  {
+   return g(f(x));
+  }));
+ };
+ AsyncResultM.rtnrA=function(vrA)
+ {
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return Concurrency.Bind(vrA,function(x)
+  {
+   return g(ResultM.ofResult(x));
+  });
+ };
+ AsyncResultM.rtnM=function(vM)
+ {
+  return Concurrency.Return(ResultM.rtnM(vM));
+ };
+ AsyncResultM.rtnR=function(vR)
+ {
+  return Concurrency.Return(vR);
+ };
+ AsyncResultM.rtnr=function(vR)
+ {
+  return Concurrency.Return(ResultM.rtnr(vR));
+ };
+ AsyncResultM.rtn=function(v)
+ {
+  return Concurrency.Return(Monads.OkM$1(v));
+ };
+ AsyncResultM.freeMessage=function(v)
+ {
+  function g(v$1)
+  {
+   return Concurrency.Return(v$1);
+  }
+  return Concurrency.Bind(v,function(x)
+  {
+   return g(ResultM.freeMessage(x));
+  });
+ };
+ AsyncResultM.mapError=function(fE,v)
+ {
+  function f(a)
+  {
+   return ResultM.mapMessage(fE,a);
+  }
+  function g(v$1)
+  {
+   return Concurrency.Return(v$1);
+  }
+  return Concurrency.Bind(v,function(x)
+  {
+   return g(f(x));
+  });
+ };
+ AsyncResultMAutoOpen["AsyncResultMBuilder.Combine"]=function(__,vA,fRA)
+ {
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return AsyncResultM.bind(fRA,Concurrency.Bind(vA,function(x)
+  {
+   return g(Monads.OkM$1(x));
+  }));
+ };
+ AsyncResultMAutoOpen["AsyncResultMBuilder.Bind"]=function(__,vA,fRA)
+ {
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return AsyncResultM.bind(fRA,Concurrency.Bind(vA,function(x)
+  {
+   return g(Monads.OkM$1(x));
+  }));
+ };
+ AsyncResultMAutoOpen["AsyncResultMBuilder.ReturnFrom"]=function(__,vA)
+ {
+  function g(v)
+  {
+   return Concurrency.Return(v);
+  }
+  return Concurrency.Bind(vA,function(x)
+  {
+   return g(Monads.OkM$1(x));
+  });
+ };
+ AsyncResultMAutoOpen.asyncResultM=function()
+ {
+  SC$1.$cctor();
+  return SC$1.asyncResultM;
+ };
+ Monads.OkM=function(r)
+ {
+  return r.$0==null?{
+   $:1,
+   $0:r.$1
+  }:{
+   $:0,
+   $0:[r.$0.$0,r.$1]
+  };
+ };
+ Monads.ErrorM=function(m)
+ {
+  return{
+   $:0,
+   $0:null,
+   $1:m
+  };
+ };
+ Monads.OkMWithMsg=function(v,m)
+ {
+  return{
+   $:0,
+   $0:{
+    $:1,
+    $0:v
+   },
+   $1:m
+  };
+ };
+ Monads.OkM$1=function(v)
+ {
+  return{
+   $:0,
+   $0:{
+    $:1,
+    $0:v
+   },
+   $1:ResultMessage.NoMsg
+  };
+ };
  String.thousands$1=function(n)
  {
   var v,r,s;
   v=Global.String(n);
   r=v.length%3;
   s=r===0?3:r;
-  return Strings.concat(",",List.ofSeq(Seq.delay(function()
+  return Strings.concat(",",List.ofSeq(Seq$1.delay(function()
   {
-   return Seq.append([Slice.string(v,{
+   return Seq$1.append([Slice.string(v,{
     $:1,
     $0:0
    },{
     $:1,
     $0:s-1
-   })],Seq.delay(function()
+   })],Seq$1.delay(function()
    {
-    return Seq.map(function(i)
+    return Seq$1.map(function(i)
     {
      return Slice.string(v,{
       $:1,
@@ -366,7 +2429,7 @@
       $:1,
       $0:i*3+s+2
      });
-    },Operators$1.range(0,((v.length-s)/3>>0)-1));
+    },Operators$4.range(0,((v.length-s)/3>>0)-1));
    }));
   })));
  };
@@ -422,7 +2485,7 @@
  {
   var x,x$1;
   x=Strings.SplitChars(s,["\n"],0);
-  return Seq.map((x$1=Strings.replicate(n," "),function(y)
+  return Seq$1.map((x$1=Strings.replicate(n," "),function(y)
   {
    return x$1+y;
   }),x);
@@ -431,17 +2494,17 @@
  {
   var lines,n,o,o$1;
   lines=Strings.SplitChars(s,["\n"],0);
-  n=(o=Seq.tryFindIndex(function(y)
+  n=(o=Seq$1.tryFindIndex(function(y)
   {
    return" "!==y;
-  },(o$1=Seq.tryFind(function(l)
+  },(o$1=Seq$1.tryFind(function(l)
   {
    return Strings.Trim(l)!=="";
   },lines),o$1==null?"":o$1.$0)),o==null?0:o.$0);
-  return Seq.filter(function(s$1)
+  return Seq$1.filter(function(s$1)
   {
    return!Strings.StartsWith(s$1,"# 1 ");
-  },Seq.map(function(l)
+  },Seq$1.map(function(l)
   {
    return l.length<=n?"":l.substring(n);
   },lines));
@@ -489,9 +2552,669 @@
  {
   return Strings.SplitChars(s,[c],0);
  };
+ ParseO.Guid$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1["|Guid|_|"];
+ };
+ ParseO.Double$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1["|Double|_|"];
+ };
+ ParseO.Single$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1["|Single|_|"];
+ };
+ ParseO.Int64$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1["|Int64|_|"];
+ };
+ ParseO.Int$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1["|Int|_|"];
+ };
+ ParseO.Date$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1["|Date|_|"];
+ };
+ ParseO.parseGuidO$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseGuidO;
+ };
+ ParseO.parseDoubleO$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseDoubleO;
+ };
+ ParseO.parseSingleO$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseSingleO;
+ };
+ ParseO.parseInt64O$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseInt64O;
+ };
+ ParseO.parseIntO$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseIntO;
+ };
+ ParseO.parseDateO$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseDateO;
+ };
+ ParseO.parseDateO2$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseDateO2;
+ };
+ ParseO.tryParseWith$1=function(tryParseFunc)
+ {
+  function g($1,$2)
+  {
+   return $1?{
+    $:1,
+    $0:$2
+   }:null;
+  }
+  return function(x)
+  {
+   return g.apply(null,tryParseFunc(x));
+  };
+ };
+ JsonIntermediate.New=function(tryFloat,tryInt,tryString,tryBool,tryArray,tryField,isObject,isNull,toString)
+ {
+  return{
+   tryFloat:tryFloat,
+   tryInt:tryInt,
+   tryString:tryString,
+   tryBool:tryBool,
+   tryArray:tryArray,
+   tryField:tryField,
+   isObject:isObject,
+   isNull:isNull,
+   toString:toString
+  };
+ };
+ Serializer.serGuid=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serGuid;
+ };
+ Serializer.serCn=function(s,s$1,c)
+ {
+  return Serializer.map(Global.ignore,Global.ignore,s,s$1);
+ };
+ Serializer.serC=function(s,s$1,c)
+ {
+  return Serializer.mapO(function()
+  {
+   return c;
+  },function(v)
+  {
+   return Unchecked.Equals(v,c)?{
+    $:1,
+    $0:null
+   }:null;
+  },s,s$1);
+ };
+ Serializer.mapO=function(g,f,a,a$1)
+ {
+  function g$1(o)
+  {
+   return o==null?null:f(o.$0);
+  }
+  return[function(x)
+  {
+   return a(g(x));
+  },function(x)
+  {
+   return g$1(a$1(x));
+  }];
+ };
+ Serializer.map=function(g,f,a,a$1)
+ {
+  function g$1(o)
+  {
+   return o==null?null:{
+    $:1,
+    $0:f(o.$0)
+   };
+  }
+  return[function(x)
+  {
+   return a(g(x));
+  },function(x)
+  {
+   return g$1(a$1(x));
+  }];
+ };
+ Serializer.serTypedRegisters=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serTypedRegisters;
+ };
+ Serializer.serMap=function(s,s$1,s$2,s$3)
+ {
+  var serKVPs,t,f,g,f$1,g$1;
+  function m(kvp)
+  {
+   return[kvp.K,kvp.V];
+  }
+  function m$1(a)
+  {
+   return new FSharpMap.New(a);
+  }
+  serKVPs=(t=Serializer.serDup([s,s$1],[s$2,s$3]),Serializer.serSeq(t[0],t[1]));
+  return[(f=function(s$4)
+  {
+   return Seq$1.map(m,s$4);
+  },(g=serKVPs[0],function(x)
+  {
+   return g(f(x));
+  })),(f$1=serKVPs[1],(g$1=function(o)
+  {
+   return o==null?null:{
+    $:1,
+    $0:m$1(o.$0)
+   };
+  },function(x)
+  {
+   return g$1(f$1(x));
+  }))];
+ };
+ Serializer.serPair=function(s,s$1,s$2,s$3)
+ {
+  return Serializer.serDup([s,s$1],[s$2,s$3]);
+ };
+ Serializer.serTrp=function(sF,sS,sT)
+ {
+  return[function(t)
+  {
+   return((((Runtime.Curried(function($1,$2,$3,$4)
+   {
+    return $1("["+Utils.toSafe($2)+", "+Utils.toSafe($3)+", "+Utils.toSafe($4)+"]");
+   },4))(Global.id))(sF[0](t[0])))(sS[0](t[1])))(sT[0](t[2]));
+  },function(j)
+  {
+   var a,$1,t,$2,$3,$4,$5;
+   a=j.tryArray();
+   return a!=null&&a.$==1&&((t=a.$0,!Unchecked.Equals(t,null)&&t.length===3)&&($1=[Arrays.get(a.$0,0),Arrays.get(a.$0,1),Arrays.get(a.$0,2)],true))?($2=sF[1]($1[0]),($3=sS[1]($1[1]),($4=sT[1]($1[2]),$2!=null&&$2.$==1&&($3!=null&&$3.$==1&&($4!=null&&$4.$==1&&($5=[$2.$0,$3.$0,$4.$0],true)))?{
+    $:1,
+    $0:[$5[0],$5[1],$5[2]]
+   }:null))):null;
+  }];
+ };
+ Serializer.serDup=function(serFst,serSnd)
+ {
+  return[function(t)
+  {
+   return(((Runtime.Curried3(function($1,$2,$3)
+   {
+    return $1("["+Utils.toSafe($2)+", "+Utils.toSafe($3)+"]");
+   }))(Global.id))(serFst[0](t[0])))(serSnd[0](t[1]));
+  },function(j)
+  {
+   var a,$1,t,$2,$3,$4;
+   a=j.tryArray();
+   return a!=null&&a.$==1&&((t=a.$0,!Unchecked.Equals(t,null)&&t.length===2)&&($1=[Arrays.get(a.$0,0),Arrays.get(a.$0,1)],true))?($2=serFst[1]($1[0]),($3=serSnd[1]($1[1]),$2!=null&&$2.$==1&&($3!=null&&$3.$==1&&($4=[$2.$0,$3.$0],true))?{
+    $:1,
+    $0:[$4[0],$4[1]]
+   }:null)):null;
+  }];
+ };
+ Serializer.serOpt=function(s,s$1)
+ {
+  var ser,f,m;
+  function g(o)
+  {
+   return o==null?"null":o.$0;
+  }
+  ser=[s,s$1];
+  return[(f=(m=ser[0],function(o)
+  {
+   return o==null?null:{
+    $:1,
+    $0:m(o.$0)
+   };
+  }),function(x)
+  {
+   return g(f(x));
+  }),function(j)
+  {
+   return{
+    $:1,
+    $0:j.isNull()?null:ser[1](j)
+   };
+  }];
+ };
+ Serializer.serSet=function(s,s$1)
+ {
+  var ser,f,m;
+  ser=[s,s$1];
+  return[(f=(m=ser[0],function(s$2)
+  {
+   return new FSharpSet.New$1(BalancedTree.OfSeq(Seq$1.map(m,s$2)));
+  }),function(x)
+  {
+   return Serializer.sprintA(f(x));
+  }),function(j)
+  {
+   var o,x,m$1,c;
+   o=(x=j.tryArray(),(m$1=(c=ser[1],function(a)
+   {
+    return Arrays.choose(c,a);
+   }),x==null?null:{
+    $:1,
+    $0:m$1(x.$0)
+   }));
+   return o==null?null:{
+    $:1,
+    $0:new FSharpSet.New(o.$0)
+   };
+  }];
+ };
+ Serializer.serLst=function(s,s$1)
+ {
+  var ser,f,m;
+  ser=[s,s$1];
+  return[(f=(m=ser[0],function(l)
+  {
+   return List.map(m,l);
+  }),function(x)
+  {
+   return Serializer.sprintA(f(x));
+  }),function(j)
+  {
+   var o,x,m$1,c;
+   o=(x=j.tryArray(),(m$1=(c=ser[1],function(a)
+   {
+    return Arrays.choose(c,a);
+   }),x==null?null:{
+    $:1,
+    $0:m$1(x.$0)
+   }));
+   return o==null?null:{
+    $:1,
+    $0:List.ofSeq(o.$0)
+   };
+  }];
+ };
+ Serializer.serArr=function(s,s$1)
+ {
+  var ser,f,m;
+  ser=[s,s$1];
+  return[(f=(m=ser[0],function(a)
+  {
+   return Arrays.map(m,a);
+  }),function(x)
+  {
+   return Serializer.sprintA(f(x));
+  }),function(j)
+  {
+   var x,m$1,c;
+   x=j.tryArray();
+   m$1=(c=ser[1],function(a)
+   {
+    return Arrays.choose(c,a);
+   });
+   return x==null?null:{
+    $:1,
+    $0:m$1(x.$0)
+   };
+  }];
+ };
+ Serializer.serSeq=function(s,s$1)
+ {
+  var ser,f,m;
+  ser=[s,s$1];
+  return[(f=(m=ser[0],function(s$2)
+  {
+   return Seq$1.map(m,s$2);
+  }),function(x)
+  {
+   return Serializer.sprintA(f(x));
+  }),function(j)
+  {
+   var o,x,m$1,c;
+   o=(x=j.tryArray(),(m$1=(c=ser[1],function(a)
+   {
+    return Arrays.choose(c,a);
+   }),x==null?null:{
+    $:1,
+    $0:m$1(x.$0)
+   }));
+   return o==null?null:{
+    $:1,
+    $0:o.$0
+   };
+  }];
+ };
+ Serializer.serFieldO=function(name,get,set,a,a$1)
+ {
+  function g(o)
+  {
+   return o==null?null:{
+    $:1,
+    $0:a(o.$0)
+   };
+  }
+  return[name,function(x)
+  {
+   return g(get(x));
+  },function(rc)
+  {
+   var f,m;
+   function g$1(b)
+   {
+    return set(b,rc);
+   }
+   function g$2(o)
+   {
+    return o==null?rc:o.$0;
+   }
+   f=(m=function(x)
+   {
+    return g$1(a$1(x));
+   },function(o)
+   {
+    return o==null?null:{
+     $:1,
+     $0:m(o.$0)
+    };
+   });
+   return function(x)
+   {
+    return g$2(f(x));
+   };
+  }];
+ };
+ Serializer.serField=function(name,get,set,a,a$1)
+ {
+  var f;
+  function g(a$2)
+  {
+   return{
+    $:1,
+    $0:a$2
+   };
+  }
+  return[name,(f=function(x)
+  {
+   return a(get(x));
+  },function(x)
+  {
+   return g(f(x));
+  }),function(rc)
+  {
+   var f$1,b,g$1;
+   function m(b$1)
+   {
+    return set(b$1,rc);
+   }
+   function g$2(o)
+   {
+    return o==null?rc:o.$0;
+   }
+   f$1=(b=(g$1=function(o)
+   {
+    return o==null?null:{
+     $:1,
+     $0:m(o.$0)
+    };
+   },function(x)
+   {
+    return g$1(a$1(x));
+   }),function(o)
+   {
+    return o==null?null:b(o.$0);
+   });
+   return function(x)
+   {
+    return g$2(f$1(x));
+   };
+  }];
+ };
+ Serializer.serDate=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serDate;
+ };
+ Serializer.serBool=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serBool;
+ };
+ Serializer.serInt64=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serInt64;
+ };
+ Serializer.serInt=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serInt;
+ };
+ Serializer.serFloat=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serFloat;
+ };
+ Serializer.serString=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serString;
+ };
+ Serializer.toJsonString=function(v)
+ {
+  return Arrays.ofSeq(Seq$1.delay(function()
+  {
+   return Seq$1.append(["\""],Seq$1.delay(function()
+   {
+    return Seq$1.append(!Strings.IsNullOrEmpty(v)?Seq$1.collect(function(i)
+    {
+     var c,ci;
+     c=v[i];
+     ci=c.charCodeAt();
+     return ci>=0&&ci<=7||ci===11||ci>=14&&ci<=31?(function($1)
+     {
+      return function($2)
+      {
+       return $1("\\u"+Utils.padNumLeft($2.toString(16),4));
+      };
+     }(Global.id))(ci):c==="\u0008"?"\\b":c==="\u0009"?"\\t":c==="\n"?"\\n":c==="\u000c"?"\\f":c==="\r"?"\\r":c==="\""?"\\\"":c==="\\"?"\\\\":[c];
+    },Operators$4.range(0,v.length-1)):[],Seq$1.delay(function()
+    {
+     return["\""];
+    }));
+   }));
+  })).join("");
+ };
+ Serializer.sprintA=function(v)
+ {
+  var x;
+  x=Strings.concat(", ",v);
+  return(function($1)
+  {
+   return function($2)
+   {
+    return $1("["+Utils.toSafe($2)+"]");
+   };
+  }(Global.id))(x);
+ };
+ Serializer.Field=function(field,j)
+ {
+  return j.tryField(field);
+ };
+ Serializer.serialize=function(s,s$1,v)
+ {
+  return[s,s$1][0](v);
+ };
+ Snippet.New=function(snpId,snpName,snpContent,snpParentIdO,snpPredIds,snpProperties,snpModified)
+ {
+  return{
+   snpId:snpId,
+   snpName:snpName,
+   snpContent:snpContent,
+   snpParentIdO:snpParentIdO,
+   snpPredIds:snpPredIds,
+   snpProperties:snpProperties,
+   snpModified:snpModified
+  };
+ };
+ SnippetModule.hasChildren=function(getSnippets,snp)
+ {
+  var snps,m,o,o$1;
+  snps=getSnippets();
+  m=Seq$1.tryFindIndex(function(s)
+  {
+   return Unchecked.Equals(s.snpId,snp.snpId);
+  },snps);
+  return m!=null&&m.$==1&&(o=(o$1=Seq$1.tryItem(m.$0+1,snps),o$1==null?null:{
+   $:1,
+   $0:Unchecked.Equals(o$1.$0.snpParentIdO,{
+    $:1,
+    $0:snp.snpId
+   })
+  }),o==null?false:o.$0);
+ };
+ SnippetModule.getLevel=function(tryFindSnippet,snp)
+ {
+  var lvl,snp1,o,m;
+  lvl=0;
+  snp1=snp;
+  while(true)
+   {
+    m=(o=snp1.snpParentIdO,o==null?null:tryFindSnippet(o.$0));
+    if(m!=null&&m.$==1)
+     {
+      lvl=lvl+1;
+      snp1=m.$0;
+     }
+    else
+     return lvl;
+   }
+ };
+ SnippetModule.allPredecessors=function(tryFindSnippet,snp)
+ {
+  var parentS;
+  parentS=new FSharpSet.New(Option$1.toArray(snp.snpParentIdO));
+  return function(out,searched,toSearch)
+  {
+   var sid,toSearch1,searched1,m,snp1,news,out1,toSearch2;
+   while(true)
+    if(toSearch.get_IsEmpty())
+     return out;
+    else
+     {
+      sid=Seq$1.head(toSearch);
+      toSearch1=toSearch.Remove(sid);
+      searched1=searched.Add(sid);
+      m=tryFindSnippet(sid);
+      if(m!=null&&m.$==1)
+       {
+        snp1=m.$0;
+        news=FSharpSet.op_Addition(new FSharpSet.New(Option$1.toArray(snp1.snpParentIdO)),new FSharpSet.New(snp1.snpPredIds));
+        out1=out.Add(snp1);
+        toSearch2=FSharpSet.op_Addition(toSearch1,FSharpSet.op_Subtraction(news,searched1));
+        out=out1;
+        searched=searched1;
+        toSearch=toSearch2;
+       }
+      else
+       {
+        searched=searched1;
+        toSearch=toSearch1;
+       }
+     }
+  }(new FSharpSet.New$1(null),(new FSharpSet.New$1(null)).Add(snp.snpId),FSharpSet.op_Addition(parentS,new FSharpSet.New(snp.snpPredIds)));
+ };
+ SnippetModule.indirectPredecessorIds=function(tryFindSnippet,snpId,snpParentIdO,snpPredIds)
+ {
+  var parentS;
+  parentS=new FSharpSet.New(Option$1.toArray(snpParentIdO));
+  return function(out,searched,toSearch)
+  {
+   var sid,toSearch1,searched1,m,snp1,news,out1,toSearch2;
+   while(true)
+    if(toSearch.get_IsEmpty())
+     return out;
+    else
+     {
+      sid=Seq$1.head(toSearch);
+      toSearch1=toSearch.Remove(sid);
+      searched1=searched.Add(sid);
+      m=tryFindSnippet(sid);
+      if(m!=null&&m.$==1)
+       {
+        snp1=m.$0;
+        news=FSharpSet.op_Addition(new FSharpSet.New(Option$1.toArray(snp1.snpParentIdO)),new FSharpSet.New(snp1.snpPredIds));
+        out1=FSharpSet.op_Addition(out,news);
+        toSearch2=FSharpSet.op_Addition(toSearch1,FSharpSet.op_Subtraction(news,searched1));
+        out=out1;
+        searched=searched1;
+        toSearch=toSearch2;
+       }
+      else
+       {
+        searched=searched1;
+        toSearch=toSearch1;
+       }
+     }
+  }(parentS,(new FSharpSet.New$1(null)).Add(snpId),FSharpSet.op_Addition(parentS,snpPredIds));
+ };
+ SnippetModule.defaultSnippet=function()
+ {
+  SC$1.$cctor();
+  return SC$1.defaultSnippet;
+ };
+ SnippetModule.New=function(name,content,parentO)
+ {
+  return Snippet.New(UoM$1.Tag$4(Guid.NewGuid()),name,content,parentO,new FSharpSet.New$1(null),[],SnippetModule.getNextModified());
+ };
+ SnippetModule.getNextModified=function()
+ {
+  return Date.now();
+ };
+ Model.New=function(snippets,modified,collapsed)
+ {
+  return{
+   snippets:snippets,
+   modified:modified,
+   collapsed:collapsed
+  };
+ };
+ SnippetSerialize.serModel=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serModel;
+ };
+ SnippetSerialize.getModel=function(snippets,gen,coll)
+ {
+  return Model.New(Arrays.ofSeq(snippets),gen,coll);
+ };
+ SnippetSerialize.serSnippet=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serSnippet;
+ };
+ SnippetSerialize.serSnippetId=function()
+ {
+  SC$1.$cctor();
+  return SC$1.serSnippetId;
+ };
  Library["String.get_toUnderscore$1"]=function(_this,u)
  {
-  return Arrays.ofSeq(Seq.collect(Global.id,Seq.mapi(function(i,c)
+  return Arrays.ofSeq(Seq$1.collect(Global.id,Seq$1.mapi(function(i,c)
   {
    return i>0&&Char.IsUpper(c)?List.ofArray(["_",c]):List.ofArray([c]);
   },_this))).join("");
@@ -558,6 +3281,78 @@
    $0:a
   };
  };
+ Promise.ofAsyncResult=function(v)
+ {
+  return new Global.Promise(function(resolve,reject)
+  {
+   Concurrency.StartWithContinuations(v,function(a)
+   {
+    if(a.$==1)
+     reject((function($1)
+     {
+      return function($2)
+      {
+       return $1(Utils.prettyPrint($2));
+      };
+     }(Global.id))(a.$0));
+    else
+     resolve(a.$0);
+   },function(a)
+   {
+    reject(a);
+   },function(a)
+   {
+    reject(a);
+   },null);
+  });
+ };
+ PromiseM.ofAsyncResultM=function(v)
+ {
+  return new Global.Promise(function(resolve,reject)
+  {
+   Concurrency.StartWithContinuations(v,function(a)
+   {
+    var a$1;
+    a$1=Monads.OkM(a);
+    a$1.$==1?reject(ResultMessage.summarized(a$1.$0)):resolve(a$1.$0[0]);
+   },function(a)
+   {
+    reject(a);
+   },function(a)
+   {
+    reject(a);
+   },null);
+  });
+ };
+ View.sequenceListApp=function(list)
+ {
+  return View.traverseListApp(Global.id,list);
+ };
+ View.traverseListApp=function(f,list)
+ {
+  function cons(head,tail)
+  {
+   return new List.T({
+    $:1,
+    $0:head,
+    $1:tail
+   });
+  }
+  return List.foldBack(function(head,tail)
+  {
+   return View.op_LessMultiplyGreater(View.op_LessMultiplyGreater(View.rtn$1(function($1)
+   {
+    return function($2)
+    {
+     return cons($1,$2);
+    };
+   }),f(head)),tail);
+  },list,View.rtn$1(List.T.Empty));
+ };
+ View.op_LessMultiplyGreater=function(a,a$1)
+ {
+  return View$1.Apply(a,a$1);
+ };
  View.sequenceSeq$1=function(sq)
  {
   return View.traverseSeq$1(Global.id,sq);
@@ -604,6 +3399,1002 @@
     $0:a$1
    };
   },a.$0);
+ };
+ Position.New=function(line,col)
+ {
+  return{
+   line:line,
+   col:col
+  };
+ };
+ AnnotationType.Hint={
+  $:3
+ };
+ AnnotationType.Info={
+  $:2
+ };
+ AnnotationType.Warning={
+  $:1
+ };
+ AnnotationType.Error={
+  $:0
+ };
+ Annotation.New=function(startP,endP,severity,message)
+ {
+  return{
+   startP:startP,
+   endP:endP,
+   severity:severity,
+   message:message
+  };
+ };
+ Completion.New=function(kind,label,detail,replace)
+ {
+  return{
+   kind:kind,
+   label:label,
+   detail:detail,
+   replace:replace
+  };
+ };
+ GenEditorHook.New=function(generateDoc,getValue,setValue,setDisabled,showAnnotations,posFromIndex,indexFromPos,getWordAt,getSelectionText,getUri,setUri,hookOnChange)
+ {
+  return{
+   generateDoc:generateDoc,
+   getValue:getValue,
+   setValue:setValue,
+   setDisabled:setDisabled,
+   showAnnotations:showAnnotations,
+   posFromIndex:posFromIndex,
+   indexFromPos:indexFromPos,
+   getWordAt:getWordAt,
+   getSelectionText:getSelectionText,
+   getUri:getUri,
+   setUri:setUri,
+   hookOnChange:hookOnChange
+  };
+ };
+ GenEditor$1.New=function(_var,disabled,annotations,onChange,onRender,autoCompletion,toolTip,declaration,editorO,editorHook)
+ {
+  return{
+   "var":_var,
+   disabled:disabled,
+   annotations:annotations,
+   onChange:onChange,
+   onRender:onRender,
+   autoCompletion:autoCompletion,
+   toolTip:toolTip,
+   declaration:declaration,
+   editorO:editorO,
+   editorHook:editorHook
+  };
+ };
+ GenEditor.generateDoc=function(genE)
+ {
+  var onChange,o,o$1;
+  onChange=(o=(o$1=genE.onChange,o$1==null?null:{
+   $:1,
+   $0:o$1.$0(genE)
+  }),o==null?Global.ignore:o.$0);
+  return(genE.editorHook.generateDoc(genE))(function(ed)
+  {
+   genE.editorO={
+    $:1,
+    $0:ed
+   };
+   GenEditor.bindVarEditor(genE.editorHook.hookOnChange,genE.editorHook.getValue,genE.editorHook.setValue,onChange,genE["var"]);
+   View$1.Sink(genE.editorHook.showAnnotations,genE.annotations);
+   View$1.Sink(genE.editorHook.setDisabled,genE.disabled);
+   genE.onRender(genE);
+  });
+ };
+ GenEditor.bindVarEditor=function(setEvent,getVal,setVal,onChange,_var)
+ {
+  var editorChanged,varChanged;
+  editorChanged=[0];
+  varChanged=[0];
+  setEvent(function()
+  {
+   var v;
+   v=getVal();
+   !Unchecked.Equals(_var.Get(),v)?(editorChanged[0]=editorChanged[0]+1,_var.Set(v),onChange(v)):void 0;
+  });
+  View$1.Sink(function()
+  {
+   if(editorChanged[0]>varChanged[0])
+    varChanged[0]=editorChanged[0];
+   else
+    if(!Unchecked.Equals(getVal(),_var.Get()))
+     setVal(_var.Get());
+  },_var.get_View());
+ };
+ GenEditor.newVarO=function(edh,v)
+ {
+  var x;
+  x=GenEditor.newVar(edh,Var$1.Lens(v,function(o)
+  {
+   return o==null?"":o.$0;
+  },function(sO,s)
+  {
+   return sO==null?null:{
+    $:1,
+    $0:s
+   };
+  }));
+  return GenEditor.disabled(View$1.Map(function($1)
+  {
+   return $1==null;
+  },v.get_View()),x);
+ };
+ GenEditor.newText=function(edh,v)
+ {
+  return GenEditor.newVar(edh,Var$1.Create$1(v));
+ };
+ GenEditor.newVar=function(edh,_var)
+ {
+  return GenEditor$1.New(_var,View$1.Const(false),View$1.Const([]),null,Global.ignore,null,null,null,null,edh);
+ };
+ GenEditor["var"]=function(genE)
+ {
+  return genE["var"];
+ };
+ GenEditor.disabled=function(dis,genE)
+ {
+  return GenEditor$1.New(genE["var"],dis,genE.annotations,genE.onChange,genE.onRender,genE.autoCompletion,genE.toolTip,genE.declaration,genE.editorO,genE.editorHook);
+ };
+ GenEditor.onRender=function(f,genE)
+ {
+  return GenEditor$1.New(genE["var"],genE.disabled,genE.annotations,genE.onChange,f,genE.autoCompletion,genE.toolTip,genE.declaration,genE.editorO,genE.editorHook);
+ };
+ GenEditor.onChange=function(f,genE)
+ {
+  return GenEditor$1.New(genE["var"],genE.disabled,genE.annotations,f,genE.onRender,genE.autoCompletion,genE.toolTip,genE.declaration,genE.editorO,genE.editorHook);
+ };
+ GenEditor.setVar=function(v,genE)
+ {
+  return GenEditor$1.New(v,genE.disabled,genE.annotations,genE.onChange,genE.onRender,genE.autoCompletion,genE.toolTip,genE.declaration,genE.editorO,genE.editorHook);
+ };
+ Serializer$1.deserializeWithFail=function(s,s$1)
+ {
+  return Serializer$1.deserialize(function()
+  {
+   return Operators$4.FailWith("Error expecting float");
+  },function()
+  {
+   return Operators$4.FailWith("Error expecting int");
+  },function()
+  {
+   return Operators$4.FailWith("Error expecting string");
+  },function()
+  {
+   return Operators$4.FailWith("Error expecting bool");
+  },function()
+  {
+   return Operators$4.FailWith("Error expecting array");
+  },s,s$1);
+ };
+ Serializer$1.deserializeWithDefs=function(s,s$1)
+ {
+  return Serializer$1.deserialize(function()
+  {
+   return{
+    $:1,
+    $0:0
+   };
+  },function()
+  {
+   return{
+    $:1,
+    $0:0
+   };
+  },function()
+  {
+   return{
+    $:1,
+    $0:""
+   };
+  },function()
+  {
+   return{
+    $:1,
+    $0:false
+   };
+  },function()
+  {
+   return{
+    $:1,
+    $0:[]
+   };
+  },s,s$1);
+ };
+ Serializer$1.tryDeserialize=function(s,s$1)
+ {
+  return Serializer$1.deserialize(function()
+  {
+   return null;
+  },function()
+  {
+   return null;
+  },function()
+  {
+   return null;
+  },function()
+  {
+   return null;
+  },function()
+  {
+   return null;
+  },s,s$1);
+ };
+ Serializer$1.deserialize=function(df,di,ds,db,da,s,s$1)
+ {
+  var f,g;
+  function f$1(a)
+  {
+   return JSON.parse(a);
+  }
+  function g$1(o)
+  {
+   return Serializer$1.getJsonIntermediate(df,di,ds,db,da,o);
+  }
+  f=function(x)
+  {
+   return g$1(f$1(x));
+  };
+  g=[s,s$1][1];
+  return function(x)
+  {
+   return g(f(x));
+  };
+ };
+ Serializer$1.getJsonIntermediate=function(df,di,ds,db,da,o)
+ {
+  function jsonInt(o$1)
+  {
+   return Serializer$1.getJsonIntermediate(df,di,ds,db,da,o$1);
+  }
+  return JsonIntermediate.New(function()
+  {
+   var o$1;
+   o$1=!o?null:typeof o=="number"?{
+    $:1,
+    $0:o
+   }:null;
+   return o$1==null?df():o$1;
+  },function()
+  {
+   var o$1;
+   o$1=!o?null:typeof o=="number"?{
+    $:1,
+    $0:o
+   }:null;
+   return o$1==null?di():o$1;
+  },function()
+  {
+   var o$1;
+   o$1=!o?null:typeof o=="string"?{
+    $:1,
+    $0:o
+   }:null;
+   return o$1==null?ds():o$1;
+  },function()
+  {
+   var o$1;
+   o$1=!o?null:typeof o=="boolean"?{
+    $:1,
+    $0:o
+   }:null;
+   return o$1==null?db():o$1;
+  },function()
+  {
+   var o$1;
+   o$1=!o?null:o instanceof Global.Array?{
+    $:1,
+    $0:Arrays.map(jsonInt,o)
+   }:null;
+   return o$1==null?da(jsonInt):o$1;
+  },function(fl)
+  {
+   var m;
+   return!o?null:(m=o[fl],Unchecked.Equals(m,null)?{
+    $:1,
+    $0:jsonInt(null)
+   }:!m?null:{
+    $:1,
+    $0:jsonInt(m)
+   });
+  },function()
+  {
+   return Unchecked.Equals(typeof o,"object")&&!Unchecked.Equals(o,null);
+  },function()
+  {
+   return Unchecked.Equals(o,null);
+  },function()
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(Global.id))(o);
+  });
+ };
+ Serializer$1.serLMdField=function(name,lmd,s,s$1)
+ {
+  var serS,f,g;
+  function g$1(lm)
+  {
+   return lm["var"].Get();
+  }
+  serS=Serializer.serSeq(s,s$1);
+  return[name,(f=function(x)
+  {
+   return g$1(lmd(x));
+  },(g=serS[0],function(x)
+  {
+   return g(f(x));
+  })),function(rc)
+  {
+   return function(b)
+   {
+    var v,o;
+    return(v=serS[1](b),((Option.iter((o=lmd(rc),function(a)
+    {
+     o.Set(a);
+    })))(v),v))==null?null:{
+     $:1,
+     $0:rc
+    };
+   };
+  }];
+ };
+ Serializer$1.serVarField=function(name,_var,s,s$1)
+ {
+  var f;
+  function g(a)
+  {
+   return a.Get();
+  }
+  return[name,(f=function(x)
+  {
+   return g(_var(x));
+  },function(x)
+  {
+   return s(f(x));
+  }),function(rc)
+  {
+   return function(o)
+   {
+    var v,a;
+    return(v=s$1(o),((Option.iter((a=_var(rc),function(a$1)
+    {
+     return Var$1.Set(a,a$1);
+    })))(v),v))==null?null:{
+     $:1,
+     $0:rc
+    };
+   };
+  }];
+ };
+ ResizeObserver.addResizeObserver$1=function(f,el)
+ {
+  var r,ro,changed,b;
+  try
+  {
+   r=!(!Global.ResizeObserver);
+  }
+  catch(e)
+  {
+   r=false;
+  }
+  if(r)
+   {
+    ro=new Global.ResizeObserver(f);
+    ResizeObserver.set_observers$1(new List.T({
+     $:1,
+     $0:ro,
+     $1:ResizeObserver.observers$1()
+    }));
+    ro.observe(el);
+   }
+  else
+   {
+    changed=ResizeObserver.dimsChanged$1(el);
+    Concurrency.Start((b=null,Concurrency.Delay(function()
+    {
+     return Concurrency.While(function()
+     {
+      return el.isConnected;
+     },Concurrency.Delay(function()
+     {
+      return Concurrency.Bind(Concurrency.Sleep(110),function()
+      {
+       return changed()?(f(),Concurrency.Zero()):Concurrency.Zero();
+      });
+     }));
+    })),null);
+   }
+ };
+ ResizeObserver.dimsChanged$1=function(el)
+ {
+  var dims;
+  dims=[el.getBoundingClientRect()];
+  return function()
+  {
+   var ndims;
+   ndims=el.getBoundingClientRect();
+   return Unchecked.Equals(ResizeObserver.domRect2Tuple$1(dims[0]),ResizeObserver.domRect2Tuple$1(ndims))?false:(dims[0]=ndims,true);
+  };
+ };
+ ResizeObserver.domRect2Tuple$1=function(r)
+ {
+  return[r.top,r.left,r.width,r.height];
+ };
+ ResizeObserver.observers$1=function()
+ {
+  SC$1.$cctor();
+  return SC$1.observers;
+ };
+ ResizeObserver.set_observers$1=function($1)
+ {
+  SC$1.$cctor();
+  SC$1.observers=$1;
+ };
+ Position$1.New=function(column,lineNumber)
+ {
+  return{
+   column:column,
+   lineNumber:lineNumber
+  };
+ };
+ Range.New=function(startColumn,endColumn,startLineNumber,endLineNumber)
+ {
+  return{
+   startColumn:startColumn,
+   endColumn:endColumn,
+   startLineNumber:startLineNumber,
+   endLineNumber:endLineNumber
+  };
+ };
+ Uri.New=function(authority,fragment,fsPath,path,query,scheme)
+ {
+  return{
+   authority:authority,
+   fragment:fragment,
+   fsPath:fsPath,
+   path:path,
+   query:query,
+   scheme:scheme
+  };
+ };
+ Location.New=function(range,uri)
+ {
+  return{
+   range:range,
+   uri:uri
+  };
+ };
+ FindMatch.New=function(matches,range)
+ {
+  return{
+   matches:matches,
+   range:range
+  };
+ };
+ WordAtPosition.New=function(endColumn,startColumn,word)
+ {
+  return{
+   endColumn:endColumn,
+   startColumn:startColumn,
+   word:word
+  };
+ };
+ Model$1.New=function(uri)
+ {
+  return{
+   uri:uri
+  };
+ };
+ MarkDownString.New=function(value,isTrusted)
+ {
+  return{
+   value:value,
+   isTrusted:isTrusted
+  };
+ };
+ MarkerData.New=function(startColumn,endColumn,startLineNumber,endLineNumber,severity,message)
+ {
+  return{
+   startColumn:startColumn,
+   endColumn:endColumn,
+   startLineNumber:startLineNumber,
+   endLineNumber:endLineNumber,
+   severity:severity,
+   message:message
+  };
+ };
+ CompletionItem.New=function(kind,label,detail)
+ {
+  return{
+   kind:kind,
+   label:label,
+   detail:detail
+  };
+ };
+ Hover.New=function(contents,range)
+ {
+  return{
+   contents:contents,
+   range:range
+  };
+ };
+ Editor=Monaco.Editor=Runtime.Class({},Obj,Editor);
+ Editor.New=Runtime.Ctor(function()
+ {
+  Obj.New.call(this);
+ },Editor);
+ MonacoConfig.New=function(_var,onChange,onRender,editorO,disabled,options,overrides)
+ {
+  return{
+   "var":_var,
+   onChange:onChange,
+   onRender:onRender,
+   editorO:editorO,
+   disabled:disabled,
+   options:options,
+   overrides:overrides
+  };
+ };
+ Monaco.newVarO=function(v)
+ {
+  var x;
+  x=Monaco.newVar(Var$1.Lens(v,function(o)
+  {
+   return o==null?"":o.$0;
+  },function(sO,s)
+  {
+   return sO==null?null:{
+    $:1,
+    $0:s
+   };
+  }));
+  return Monaco.disabled(View$1.Map(function($1)
+  {
+   return $1==null;
+  },v.get_View()),x);
+ };
+ Monaco.newText=function(v)
+ {
+  return Monaco.newVar(Var$1.Create$1(v));
+ };
+ Monaco["var"]=function(monc)
+ {
+  return monc["var"];
+ };
+ Monaco.disabled=function(dis,monc)
+ {
+  return MonacoConfig.New(monc["var"],monc.onChange,monc.onRender,monc.editorO,dis,monc.options,monc.overrides);
+ };
+ Monaco.onRender=function(f,monc)
+ {
+  return MonacoConfig.New(monc["var"],monc.onChange,{
+   $:1,
+   $0:f
+  },monc.editorO,monc.disabled,monc.options,monc.overrides);
+ };
+ Monaco.onChange=function(f,monc)
+ {
+  return MonacoConfig.New(monc["var"],f,monc.onRender,monc.editorO,monc.disabled,monc.options,monc.overrides);
+ };
+ Monaco.setVar=function(v,monc)
+ {
+  return MonacoConfig.New(v,monc.onChange,monc.onRender,monc.editorO,monc.disabled,monc.options,monc.overrides);
+ };
+ Monaco.render$1731$48=function(monc)
+ {
+  return function(elchild)
+  {
+   var editor,_elt;
+   editor=(_elt=elchild.parentElement,self.monaco.editor.create(_elt,monc.options,monc.overrides));
+   ResizeObserver.addResizeObserver$1(function()
+   {
+    editor.layout();
+   },elchild.parentElement);
+   elchild.parentNode.removeChild(elchild);
+   monc.editorO={
+    $:1,
+    $0:editor
+   };
+   (Option.iter(function(onrender)
+   {
+    onrender(editor);
+   }))(monc.onRender);
+   GenEditor.bindVarEditor(function(a)
+   {
+    editor.onDidChangeModelContent(a);
+   },function()
+   {
+    return editor.getValue();
+   },function(a)
+   {
+    editor.setValue(a);
+   },monc.onChange,monc["var"]);
+  };
+ };
+ Monaco.render=function(monc)
+ {
+  var b;
+  return Doc.Async((b=null,Concurrency.Delay(function()
+  {
+   return Concurrency.Bind(Monaco.loader(),function()
+   {
+    return Concurrency.Return(Doc.Element("div",[AttrProxy.OnAfterRenderImpl(function(elchild)
+    {
+     var editor,_elt;
+     editor=(_elt=elchild.parentElement,self.monaco.editor.create(_elt,monc.options,monc.overrides));
+     ResizeObserver.addResizeObserver$1(function()
+     {
+      editor.layout();
+     },elchild.parentElement);
+     elchild.parentNode.removeChild(elchild);
+     monc.editorO={
+      $:1,
+      $0:editor
+     };
+     (Option.iter(function(onrender)
+     {
+      onrender(editor);
+     }))(monc.onRender);
+     GenEditor.bindVarEditor(function(a)
+     {
+      editor.onDidChangeModelContent(a);
+     },function()
+     {
+      return editor.getValue();
+     },function(a)
+     {
+      editor.setValue(a);
+     },monc.onChange,monc["var"]);
+    })],[]));
+   });
+  })));
+ };
+ Monaco.loader=function()
+ {
+  SC$1.$cctor();
+  return SC$1.loader;
+ };
+ Monaco.newVar=function(_var)
+ {
+  return MonacoConfig.New(_var,Global.ignore,null,null,View$1.Const(false),null,null);
+ };
+ MonacoRT.New=function(editorO,onChange,options,overrides)
+ {
+  return{
+   editorO:editorO,
+   onChange:onChange,
+   options:options,
+   overrides:overrides
+  };
+ };
+ CompletionItemProvider=MonacoGenAdapter.CompletionItemProvider=Runtime.Class({
+  resolveCompletionItem:function(item,token)
+  {
+   return CompletionItem.New(item.kind,item.label,"more details");
+  },
+  provideCompletionItems:function(model,pos,token,context)
+  {
+   var $this,b;
+   $this=this;
+   return PromiseM.ofAsyncResultM((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+   {
+    return AsyncResultMAutoOpen["AsyncResultMBuilder.Bind"](b,$this.autoComplete(Position.New(pos.lineNumber,pos.column)),function(a)
+    {
+     return b.Return(Arrays.map(function(comp)
+     {
+      return CompletionItem.New(MonacoGenAdapter.convertGlyphChar(comp.kind),comp.label,comp.detail);
+     },a));
+    });
+   }))));
+  }
+ },Obj,CompletionItemProvider);
+ CompletionItemProvider.New=Runtime.Ctor(function(autoComplete)
+ {
+  Obj.New.call(this);
+  this.autoComplete=autoComplete;
+ },CompletionItemProvider);
+ HoverProvider=MonacoGenAdapter.HoverProvider=Runtime.Class({
+  provideHover:function(model,pos,token)
+  {
+   var $this,b;
+   $this=this;
+   return PromiseM.ofAsyncResultM((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+   {
+    return AsyncResultMAutoOpen["AsyncResultMBuilder.Bind"](b,$this.toolTip(Position.New(pos.lineNumber,pos.column)),function(a)
+    {
+     return a!=null&&a.$==1?b.Return(Hover.New([MarkDownString.New(a.$0,true)],null)):b.Return(null);
+    });
+   }))));
+  }
+ },Obj,HoverProvider);
+ HoverProvider.New=Runtime.Ctor(function(toolTip)
+ {
+  Obj.New.call(this);
+  this.toolTip=toolTip;
+ },HoverProvider);
+ DefinitionProvider=MonacoGenAdapter.DefinitionProvider=Runtime.Class({
+  provideDefinition:function(model,pos,token)
+  {
+   var $this,b;
+   $this=this;
+   return PromiseM.ofAsyncResultM((b=AsyncResultMAutoOpen.asyncResultM(),b.Run(b.Delay(function()
+   {
+    return AsyncResultMAutoOpen["AsyncResultMBuilder.Bind"](b,$this.declaration(Position.New(pos.lineNumber,pos.column)),function(a)
+    {
+     var pos$1;
+     return a!=null&&a.$==1?(pos$1=a.$0[0],b.Return(Location.New(Range.New(pos$1.col,pos$1.col,pos$1.line,pos$1.line),self.monaco.Uri.parse(a.$0[1])))):b.Return(null);
+    });
+   }))));
+  }
+ },Obj,DefinitionProvider);
+ DefinitionProvider.New=Runtime.Ctor(function(declaration)
+ {
+  Obj.New.call(this);
+  this.declaration=declaration;
+ },DefinitionProvider);
+ MonacoGenAdapter.newVar=function(options,overrides,v)
+ {
+  return GenEditor.newVar(MonacoGenAdapter.newHook(MonacoGenAdapter.newRT(options,overrides)),v);
+ };
+ MonacoGenAdapter.newRT=function(options,overrides)
+ {
+  return MonacoRT.New(null,Global.ignore,options,overrides);
+ };
+ MonacoGenAdapter.newHook=function(monRT)
+ {
+  function g(g$1,o)
+  {
+   return MonacoGenAdapter.generateDoc(monRT,g$1,o);
+  }
+  return GenEditorHook.New(function($1)
+  {
+   return function($2)
+   {
+    return g($1,$2);
+   };
+  },function()
+  {
+   return MonacoGenAdapter.getValue(monRT);
+  },function(t)
+  {
+   MonacoGenAdapter.setValue(monRT,t);
+  },Global.ignore,function(a)
+  {
+   MonacoGenAdapter.showAnnotations(monRT,a);
+  },function(i)
+  {
+   return MonacoGenAdapter.posFromIndex(monRT,i);
+  },function(p)
+  {
+   return MonacoGenAdapter.indexFromPos(monRT,p);
+  },function(p)
+  {
+   return MonacoGenAdapter.getWordAt(monRT,p);
+  },function()
+  {
+   return MonacoGenAdapter.getSelect(monRT);
+  },function()
+  {
+   return MonacoGenAdapter.getUri(monRT);
+  },function(u)
+  {
+   MonacoGenAdapter.setUri(monRT,u);
+  },function(f)
+  {
+   monRT.onChange=f;
+  });
+ };
+ MonacoGenAdapter.showAnnotations=function(monRT,ans)
+ {
+  MonacoGenAdapter.iterEditor(monRT,function(ed)
+  {
+   var ms,_m;
+   ms=Arrays.ofSeq(Seq$1.map(function(an)
+   {
+    var m;
+    return MarkerData.New(an.startP.col,an.endP.col,an.startP.line,an.endP.line,(m=an.severity,m.$==0?8:m.$==1?4:m.$==3?1:2),an.message);
+   },ans));
+   _m=ed.getModel();
+   self.monaco.editor.setModelMarkers(_m,"annotations",ms);
+  });
+ };
+ MonacoGenAdapter.getSelect=function(monRT)
+ {
+  var o;
+  o=MonacoGenAdapter.mapEditor(monRT,function(ed)
+  {
+   var x;
+   x=ed.getSelection();
+   return ed.getModel().getValueInRange(x);
+  });
+  return o==null?"":o.$0;
+ };
+ MonacoGenAdapter.getWordAt=function(monRT,pos)
+ {
+  return MonacoGenAdapter.bindEditor(monRT,function(ed)
+  {
+   var word;
+   word=ed.getModel().getWordAtPosition(Position$1.New(pos.col,pos.line));
+   return!word?null:{
+    $:1,
+    $0:[word.word,Position.New(pos.line,word.startColumn)]
+   };
+  });
+ };
+ MonacoGenAdapter.setValue=function(monRT,txt)
+ {
+  MonacoGenAdapter.iterEditor(monRT,function(ed)
+  {
+   ed.setValue(txt);
+  });
+ };
+ MonacoGenAdapter.getValue=function(monRT)
+ {
+  var o;
+  o=MonacoGenAdapter.mapEditor(monRT,function(ed)
+  {
+   return ed.getValue();
+  });
+  return o==null?"":o.$0;
+ };
+ MonacoGenAdapter.setUri=function(monRT,uri)
+ {
+  MonacoGenAdapter.iterEditor(monRT,function(ed)
+  {
+   ed.getModel().uri=self.monaco.Uri.parse(uri);
+  });
+ };
+ MonacoGenAdapter.getUri=function(monRT)
+ {
+  var o;
+  o=MonacoGenAdapter.mapEditor(monRT,function(ed)
+  {
+   return Global.String(ed.getModel().uri);
+  });
+  return o==null?"":o.$0;
+ };
+ MonacoGenAdapter.generateDoc$1873$48=function(monRT,onRender,genE)
+ {
+  return function(elchild)
+  {
+   var editor,_elt;
+   editor=(_elt=elchild.parentElement,self.monaco.editor.create(_elt,monRT.options,monRT.overrides));
+   ResizeObserver.addResizeObserver$1(function()
+   {
+    editor.layout();
+   },elchild.parentElement);
+   elchild.parentNode.removeChild(elchild);
+   monRT.editorO={
+    $:1,
+    $0:editor
+   };
+   onRender(editor);
+   editor.onDidChangeModelContent(monRT.onChange);
+   (Option.iter(function(f)
+   {
+    var _p;
+    _p=new HoverProvider.New(f(genE));
+    self.monaco.languages.registerHoverProvider("fsharp",_p);
+   }))(genE.toolTip);
+   (Option.iter(function(f)
+   {
+    var _p;
+    _p=new DefinitionProvider.New(f(genE));
+    self.monaco.languages.registerDefinitionProvider("fsharp",_p);
+   }))(genE.declaration);
+   (Option.iter(function(f)
+   {
+    var _p;
+    _p=new CompletionItemProvider.New(f(genE));
+    self.monaco.languages.registerCompletionItemProvider("fsharp",_p);
+   }))(genE.autoCompletion);
+  };
+ };
+ MonacoGenAdapter.generateDoc=function(monRT,genE,onRender)
+ {
+  var b;
+  return Doc.Async((b=null,Concurrency.Delay(function()
+  {
+   return Concurrency.Bind(Monaco.loader(),function()
+   {
+    return Concurrency.Return(Doc.Element("div",[AttrProxy.OnAfterRenderImpl(function(elchild)
+    {
+     var editor,_elt;
+     editor=(_elt=elchild.parentElement,self.monaco.editor.create(_elt,monRT.options,monRT.overrides));
+     ResizeObserver.addResizeObserver$1(function()
+     {
+      editor.layout();
+     },elchild.parentElement);
+     elchild.parentNode.removeChild(elchild);
+     monRT.editorO={
+      $:1,
+      $0:editor
+     };
+     onRender(editor);
+     editor.onDidChangeModelContent(monRT.onChange);
+     (Option.iter(function(f)
+     {
+      var _p;
+      _p=new HoverProvider.New(f(genE));
+      self.monaco.languages.registerHoverProvider("fsharp",_p);
+     }))(genE.toolTip);
+     (Option.iter(function(f)
+     {
+      var _p;
+      _p=new DefinitionProvider.New(f(genE));
+      self.monaco.languages.registerDefinitionProvider("fsharp",_p);
+     }))(genE.declaration);
+     (Option.iter(function(f)
+     {
+      var _p;
+      _p=new CompletionItemProvider.New(f(genE));
+      self.monaco.languages.registerCompletionItemProvider("fsharp",_p);
+     }))(genE.autoCompletion);
+    })],[]));
+   });
+  })));
+ };
+ MonacoGenAdapter.convertGlyphChar=function(a)
+ {
+  return a==="C"?6:a==="E"?12:a==="S"?11:a==="I"?7:a==="N"?8:a==="M"?1:a==="P"?9:a==="F"?4:a==="T"?6:a==="K"?13:0;
+ };
+ MonacoGenAdapter.posFromIndex=function(monRT,i)
+ {
+  var o;
+  o=MonacoGenAdapter.mapEditor(monRT,function(ed)
+  {
+   return MonacoGenAdapter.posEd2Gen(ed.getModel().getPositionAt(i));
+  });
+  return o==null?Position.New(1,1):o.$0;
+ };
+ MonacoGenAdapter.indexFromPos=function(monRT,p)
+ {
+  var o;
+  o=MonacoGenAdapter.mapEditor(monRT,function(ed)
+  {
+   return ed.getModel().getOffsetAt(MonacoGenAdapter.posGen2Ed(p));
+  });
+  return o==null?-1:o.$0;
+ };
+ MonacoGenAdapter.posEd2Gen=function(p)
+ {
+  return Position.New(p.lineNumber,p.column);
+ };
+ MonacoGenAdapter.posGen2Ed=function(p)
+ {
+  return Position$1.New(p.col,p.line);
+ };
+ MonacoGenAdapter.bindEditor=function(monRT,f)
+ {
+  var m;
+  m=monRT.editorO;
+  return m!=null&&m.$==1?f(m.$0):null;
+ };
+ MonacoGenAdapter.mapEditor=function(monRT,f)
+ {
+  var m;
+  m=monRT.editorO;
+  return m!=null&&m.$==1?{
+   $:1,
+   $0:f(m.$0)
+  }:null;
+ };
+ MonacoGenAdapter.iterEditor=function(monRT,f)
+ {
+  var m;
+  m=monRT.editorO;
+  m!=null&&m.$==1?f(m.$0):void 0;
  };
  AppFrameworkTemplate.html=function()
  {
@@ -698,14 +4489,25 @@
    };
   },sel.get_View()),function(a)
   {
-   var o;
+   var x;
+   function f(a$1)
+   {
+    return{
+     $:1,
+     $0:a$1
+    };
+   }
+   function g(a$1)
+   {
+    sel.Set(a$1);
+   }
    if(a!=null&&a.$==1)
     {
-     o=ofBO(a.$0);
-     o==null?void 0:sel.Set({
-      $:1,
-      $0:o.$0
-     });
+     x=ofBO(a.$0);
+     (Option.iter(function(x$1)
+     {
+      return g(f(x$1));
+     }))(x);
     }
    else
     sel.Set(null);
@@ -776,23 +4578,23 @@
  PlugInBuilder=AF.PlugInBuilder=Runtime.Class({
   Merge:function(plg,prefix,p2)
   {
-   plg.plgVars.AppendMany(Seq.map(function(v)
+   plg.plgVars.AppendMany(Seq$1.map(function(v)
    {
     return PlugInVar.New(prefix+v.varName,v.varVar);
    },p2.plgVars));
-   plg.plgViews.AppendMany(Seq.map(function(w)
+   plg.plgViews.AppendMany(Seq$1.map(function(w)
    {
     return PlugInView.New(prefix+w.viwName,w.viwView);
    },p2.plgViews));
-   plg.plgDocs.AppendMany(Seq.map(function(d)
+   plg.plgDocs.AppendMany(Seq$1.map(function(d)
    {
     return PlugInDoc.New(prefix+d.docName,d.docDoc);
    },p2.plgDocs));
-   plg.plgActions.AppendMany(Seq.map(function(a)
+   plg.plgActions.AppendMany(Seq$1.map(function(a)
    {
     return PlugInAction.New(prefix+a.actName,a.actFunction,a.actEnabled);
    },p2.plgActions));
-   plg.plgQueries.AppendMany(Seq.map(function(q)
+   plg.plgQueries.AppendMany(Seq$1.map(function(q)
    {
     return PlugInQuery.New(prefix+q.qryName,q.qryFunction);
    },p2.plgQueries));
@@ -925,22 +4727,22 @@
  };
  AF.concatMainDocs=function(plugins)
  {
-  return Doc.Concat(Seq.choose(function(a)
+  return Doc.Concat(Seq$1.choose(function(a)
   {
    return a.docDoc.$==0?{
     $:1,
     $0:a.docDoc.$0.f()
    }:null;
-  },Seq.choose(function(plg)
+  },Seq$1.choose(function(plg)
   {
-   return Seq.tryHead(plg.plgDocs);
+   return Seq$1.tryHead(plg.plgDocs);
   },plugins)));
  };
  AF.addPlugIn2=function(plg)
  {
   var m;
   AppFramework.addPlugIn(plg);
-  m=Seq.tryHead(plg.plgDocs);
+  m=Seq$1.tryHead(plg.plgDocs);
   m!=null&&m.$==1?AppFramework.mainDocV().Set(plg.plgName+"."+m.$0.docName):void 0;
  };
  AF.plugin=function()
@@ -1022,9 +4824,12 @@
    return n;
   },function()
   {
-   var o;
-   o=selectedV.Get();
-   o==null?void 0:_delete(o.$0,null);
+   var x;
+   x=selectedV.Get();
+   (Option.iter(function(k)
+   {
+    _delete(k,null);
+   }))(x);
   },def);
   elUIF=elUI(result);
   return ListModelData.New(result.elems,Doc.Convert(Global.id,ListModel.MapLens(predWO,function(k,v)
@@ -1037,7 +4842,7 @@
  };
  LMX.addElements=function(li,elems)
  {
-  Seq.iter(function(v)
+  Seq$1.iter(function(v)
   {
    li.elems.Append([(li.add())[0],v]);
   },elems);
@@ -1141,9 +4946,30 @@
    p:p
   };
  };
+ P.New=function(r)
+ {
+  return{
+   r:r
+  };
+ };
+ Val.textAtt=function()
+ {
+  SC$1.$cctor();
+  return SC$1.textAtt;
+ };
  Val.textDoc=function(a)
  {
   return a.$==0?Doc.TextView(a.$0):Doc.TextNode(a.$0);
+ };
+ Val.addAtt=function(a,atts)
+ {
+  return atts.$==0?function($1)
+  {
+   return $1("addAtt for VView not implemented");
+  }(Operators$4.FailWith):{
+   $:1,
+   $0:Seq$1.append(atts.$0,[a])
+  };
  };
  Val.addDoc=function(d,docs)
  {
@@ -1152,18 +4978,23 @@
    $0:[Doc.BindView(Doc.Concat,docs.$0),d]
   }:{
    $:1,
-   $0:Seq.append(docs.$0,[d])
+   $0:Seq$1.append(docs.$0,[d])
   };
  };
- Extract0.extractDoc=function()
+ Extract0.extractAtsD=function()
  {
   SC$1.$cctor();
-  return SC$1.extractDoc;
+  return SC$1.extractAtsD;
  };
  Extract0.extractDocD=function()
  {
   SC$1.$cctor();
   return SC$1.extractDocD;
+ };
+ Extract0.getTextActViewFromReferenceD=function()
+ {
+  SC$1.$cctor();
+  return SC$1.getTextActViewFromReferenceD;
  };
  Extract0.getDocFromReferenceD=function()
  {
@@ -1203,21 +5034,71 @@
    $1:aft===""?List.T.Empty:Extract0.getTextData(aft)
   }));
  };
+ Extract0.getTextActViewFromReference=function(ref)
+ {
+  return View$1.Const({
+   $:0,
+   $0:(function($1)
+   {
+    return function($2)
+    {
+     return $1("getTextActViewFromReference not implemented: @{"+Utils.toSafe($2)+"}");
+    };
+   }(Global.id))(ref)
+  });
+ };
  Extract0.getDocFromReference=function(ref)
  {
   return Doc.TextNode((function($1)
   {
    return function($2)
    {
-    return $1("tryGetTextFromReference not implemented: @{"+Utils.toSafe($2)+"}");
+    return $1("getDocFromReference not implemented: @{"+Utils.toSafe($2)+"}");
    };
   }(Global.id))(ref));
  };
- NewLY.mainProgram=function()
+ P.run=function(pin,p)
  {
-  var x;
-  x=StartAppFramework.startWithHtmlD();
-  (Depend.resolver(List.ofArray([["AppFrameworkTemplate.html",AppFrameworkTemplate.html()+SnippetTemplates.html()]]),x))();
+  var x,b;
+  x=(b=Operators$1.depend(),b.Delay(function()
+  {
+   return b.Bind(NewLY.getDocD(),function(a)
+   {
+    return b.Bind(NewLY.getTextActViewD(),function(a$1)
+    {
+     return b.Return(Depend.resolver(List.ofArray([["getDocFromReference",a],["getTextActViewFromReference",a$1]]),p.r));
+    });
+   });
+  }));
+  return Depend.resolver(List.ofArray([["currentPlugInName",pin]]),x);
+ };
+ NewLY.pName=function()
+ {
+  SC$1.$cctor();
+  return SC$1.pName;
+ };
+ NewLY.callDocPFn=function(pin,pf)
+ {
+  var f;
+  f=P.run(pin,pf);
+  return Doc.BindView(function()
+  {
+   var m;
+   m=f.f.$==0?f.p.$==1?{
+    $:0,
+    $0:View$1.Apply(f.f.$0,View$1.Const(f.p.$0))
+   }:{
+    $:0,
+    $0:View$1.Apply(f.f.$0,f.p.$0)
+   }:f.p.$==0?{
+    $:0,
+    $0:View$1.Apply(View$1.Const(f.f.$0),f.p.$0)
+   }:{
+    $:1,
+    $0:f.f.$0(f.p.$0)
+   };
+   return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
+  },AppFramework.mainDocV().get_View());
  };
  NewLY.split2=function()
  {
@@ -1305,49 +5186,45 @@
  };
  NewLY.op_Dereference=function(v)
  {
-  return{
+  return P.New((Operators$1.rtn())({
    $:1,
    $0:v
-  };
+  }));
  };
- NewLY.vvv=function()
+ NewLY.extractAttD=function()
  {
   SC$1.$cctor();
-  return SC$1.vvv;
+  return SC$1.extractAttD;
  };
- NewLY.extractDoc=function()
+ NewLY.extractAtsD=function()
  {
   SC$1.$cctor();
-  return SC$1.extractDoc$1;
+  return SC$1.extractAtsD$1;
  };
- NewLY.getDoc=function(r)
+ NewLY.extractDocD=function()
  {
-  var p,pName,oName;
-  p=(AppFramework.splitName("NewLY"))(r);
-  pName=p[0];
-  oName=p[1];
-  return Doc.BindView(function(docO)
-  {
-   var o;
-   function d()
-   {
-    return(function($1)
-    {
-     return function($2)
-     {
-      return $1("Reference not found @{"+Utils.toSafe($2)+"}");
-     };
-    }(Global.id))(r);
-   }
-   o=docO==null?null:{
-    $:1,
-    $0:AppFramework.getLazyDoc(docO.$0)
-   };
-   return o==null?Doc.TextView(View$1.Map(function(o$1)
-   {
-    return o$1==null?d():o$1.$0;
-   },AppFramework.tryGetWoWW(pName,oName))):o.$0;
-  },AppFramework.tryGetDocW(pName,oName));
+  SC$1.$cctor();
+  return SC$1.extractDocD$1;
+ };
+ NewLY.getTextActViewD=function()
+ {
+  SC$1.$cctor();
+  return SC$1.getTextActViewD;
+ };
+ NewLY.getDocD=function()
+ {
+  SC$1.$cctor();
+  return SC$1.getDocD;
+ };
+ NewLY.currentPlugInNameD=function()
+ {
+  SC$1.$cctor();
+  return SC$1.currentPlugInNameD;
+ };
+ NewLY.currentPlugInNameDef=function()
+ {
+  SC$1.$cctor();
+  return SC$1.currentPlugInNameDef;
  };
  NewLY.pb=function()
  {
@@ -1385,61 +5262,1465 @@
  {
   return a+1;
  };
- SC$1.$cctor=function()
+ NewLY.unwrapBindWrap=function(f,pv)
  {
-  var f,b,b$1,f$1,f$2,sayHello_0,c,f$3,a,c$1,c$2,c$3,f$4,c$4,c$5,c$6,c$7,c$8,c$9,c$10,c$11,c$12,p,f$5,f$6,f$7,f$8,c$13,p$1,c$14,f$9,p$2,f$10,c$15,f$11,p$3,b$2;
-  SC$1.$cctor=Global.ignore;
-  function g(s)
+  return P.New(Operators$1.op_BarGreaterGreater(pv.r,f));
+ };
+ NewLY.bindWrap=function(f,pv)
+ {
+  return P.New(Operators$1.op_GreaterGreaterEquals(pv,function(v)
   {
-   return Strings.concat("\n",s);
+   return f(v).r;
+  }));
+ };
+ DragInfo.DragNone={
+  $:0
+ };
+ DragDrop.getDragNIdO=function(tnId)
+ {
+  var $1;
+  return DragDrop.drag().$==1&&(!Unchecked.Equals(DragDrop.drag().$0,tnId)&&($1=DragDrop.drag().$0,true))?{
+   $:1,
+   $0:$1
+  }:null;
+ };
+ DragDrop.setDragNode=function(tnid)
+ {
+  DragDrop.set_drag({
+   $:1,
+   $0:tnid
+  });
+ };
+ DragDrop.setDragNone=function()
+ {
+  DragDrop.set_drag(DragInfo.DragNone);
+ };
+ DragDrop.drag=function()
+ {
+  SC$1.$cctor();
+  return SC$1.drag;
+ };
+ DragDrop.set_drag=function($1)
+ {
+  SC$1.$cctor();
+  SC$1.drag=$1;
+ };
+ SnippetHierData.New=function(level,pos,hasChildren,visible,path,errorO)
+ {
+  return{
+   level:level,
+   pos:pos,
+   hasChildren:hasChildren,
+   visible:visible,
+   path:path,
+   errorO:errorO
+  };
+ };
+ SaveLoad.saveAs=function()
+ {
+  var x;
+  Global.saveAs(new Global.Blob([(x=SnippetSerialize.getModel((SnippetsUI.snippetsLM())["var"].Get(),Date.now(),SnippetsUI.collapsedV().Get()),(SnippetSerialize.serModel())[0](x))],{
+   type:"text/plain;charset=utf-8"
+  }),"noname.snippets");
+ };
+ SaveLoad.loadTextFile=function(element)
+ {
+  var files,reader;
+  files=element.files;
+  files.length>0?(reader=new Global.FileReader(),reader.onload=function(e)
+  {
+   var x,x$1;
+   try
+   {
+    x=(x$1=e.target.result,(Serializer$1.deserializeWithDefs((SnippetSerialize.serModel())[0],(SnippetSerialize.serModel())[1]))(x$1));
+    return(Option.iter(function(m)
+    {
+     SnippetsUI.snippetsLM().Set(m.snippets);
+     SnippetsUI.collapsedV().Set(m.collapsed);
+    }))(x);
+   }
+   catch(e$1)
+   {
+    Global.alert(Global.String(e$1));
+    return(function($1)
+    {
+     return function($2)
+     {
+      return $1(Utils.prettyPrint($2));
+     };
+    }(function(s)
+    {
+     console.log(s);
+    }))(e$1);
+   }
+  },reader.readAsText(files.item(0))):void 0;
+ };
+ SnippetsUI.main=function()
+ {
+  var x;
+  x=StartAppFramework.startWithHtmlD();
+  (Depend.resolver(List.ofArray([["AppFrameworkTemplate.html",AppFrameworkTemplate.html()+SnippetTemplates.html()]]),x))();
+ };
+ SnippetsUI.parseNewLY=function()
+ {
+  var x,f,g,g$1,a,c;
+  function f$1(t)
+  {
+   return LayoutEngineModule.parseEntries("lytTarget",t);
   }
-  function f$12(s)
+  function c$1(a$1)
   {
-   return String.splitByChar$1("\n",s);
+   return a$1.$==0?{
+    $:1,
+    $0:a$1.$0
+   }:null;
   }
-  function g$1(s)
+  (function($1)
   {
-   var a$1,b$3;
-   return Slice.array(s,{
+   return $1("xParseNewLYx");
+  }(function(s)
+  {
+   console.log(s);
+  }));
+  x=SnippetsUI.currentSnippetContentV().get_View();
+  View$1.Get((f=(g=function(s)
+  {
+   return Seq$1.choose(c$1,s);
+  },function(x$1)
+  {
+   return g(f$1(x$1));
+  }),(g$1=(a=(c=function($1)
+  {
+   return function($2)
+   {
+    return $1("("+Utils.prettyPrint($2[0])+", "+testing_GeneratedPrintf.p$3($2[1])+")");
+   };
+  }(function(s)
+  {
+   console.log(s);
+  }),function(t)
+  {
+   c([t[0],t[1]]);
+  }),function(s)
+  {
+   Seq$1.iter(a,s);
+  }),function(x$1)
+  {
+   return g$1(f(x$1));
+  })),x);
+ };
+ SnippetsUI.parseW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.parseW;
+ };
+ SnippetsUI.indentOut=function()
+ {
+  View$1.Get(function(hier)
+  {
+   var sid,$1,res,$2,hdt,pid,newPidO,elems,m,b,a,a$1;
+   sid=SnippetsUI.currentSnippetV().Get().snpId;
+   $1=(res=null,hier.TryGetValue(sid,{
+    get:function()
+    {
+     return res;
+    },
+    set:function(v)
+    {
+     res=v;
+    }
+   })?{
+    $:1,
+    $0:res
+   }:null);
+   $2=SnippetsUI.currentSnippetV().Get().snpParentIdO;
+   $1!=null&&$1.$==1?$2!=null&&$2.$==1?(hdt=$1.$0,pid=$2.$0,newPidO=Seq$1.tryItem(Arrays.length(hdt.path)-2,hdt.path),!Unchecked.Equals({
+    $:1,
+    $0:pid
+   },newPidO)?(Var$1.Lens(SnippetsUI.currentSnippetV(),function($3)
+   {
+    return $3.snpParentIdO;
+   },function($3,$4)
+   {
+    return Snippet.New($3.snpId,$3.snpName,$3.snpContent,$4,$3.snpPredIds,$3.snpProperties,$3.snpModified);
+   }).Set(newPidO),elems=Arrays.ofSeq((SnippetsUI.snippetsLM())["var"].Get()),m=function(k,i)
+   {
+    var res$1,m$1,m$2,shd;
+    while(true)
+     {
+      m$1=Arrays.tryItem(i+1,elems);
+      if(m$1!=null&&m$1.$==1)
+       {
+        m$2=(res$1=null,hier.TryGetValue(m$1.$0.snpId,{
+         get:function()
+         {
+          return res$1;
+         },
+         set:function(v)
+         {
+          res$1=v;
+         }
+        })?{
+         $:1,
+         $0:res$1
+        }:null);
+        if(m$2!=null&&m$2.$==1)
+         {
+          shd=m$2.$0;
+          if(Seq$1.contains(sid,shd.path))
+           {
+            k=i+1;
+            i=i+1;
+           }
+          else
+           if(Seq$1.contains(pid,shd.path))
+            i=i+1;
+           else
+            return{
+             $:1,
+             $0:[k,i]
+            };
+         }
+        else
+         return null;
+       }
+      else
+       return null;
+     }
+   }(hdt.pos,hdt.pos),m!=null&&m.$==1?(b=m.$0[1],a=m.$0[0],a$1=Arrays.concat([Slice.array(elems,{
     $:1,
     $0:0
    },{
     $:1,
-    $0:(a$1=0,(b$3=Arrays.length(s)-2,Unchecked.Compare(a$1,b$3)===1?a$1:b$3))
+    $0:hdt.pos-1
+   }),Slice.array(elems,{
+    $:1,
+    $0:a+1
+   },{
+    $:1,
+    $0:b
+   }),Slice.array(elems,{
+    $:1,
+    $0:hdt.pos
+   },{
+    $:1,
+    $0:a
+   }),Slice.array(elems,{
+    $:1,
+    $0:b+1
+   },null)]),SnippetsUI.snippetsLM().Set(a$1)):void 0):void 0):void 0:void 0;
+  },SnippetsUI.processHierW());
+ };
+ SnippetsUI.indentIn=function()
+ {
+  View$1.Get(function(hier)
+  {
+   var x,k;
+   x=(k=SnippetsUI.currentSnippetV().Get().snpId,function(d)
+   {
+    var res;
+    res=null;
+    return d.TryGetValue(k,{
+     get:function()
+     {
+      return res;
+     },
+     set:function(v)
+     {
+      res=v;
+     }
+    })?{
+     $:1,
+     $0:res
+    }:null;
+   }(hier));
+   (Option.iter(function(hdt)
+   {
+    var pidO,x$1;
+    pidO=SnippetsUI.currentSnippetV().Get().snpParentIdO;
+    x$1=function(i)
+    {
+     var snp;
+     while(true)
+      if(i===0)
+       return null;
+      else
+       {
+        snp=Seq$1.nth(i-1,(SnippetsUI.snippetsLM())["var"].Get());
+        if(Unchecked.Equals({
+         $:1,
+         $0:snp.snpId
+        },pidO))
+         return null;
+        else
+         if(Unchecked.Equals(snp.snpParentIdO,pidO))
+          return{
+           $:1,
+           $0:snp.snpId
+          };
+         else
+          i=i-1;
+       }
+    }(hdt.pos);
+    (Option.iter(function(pid)
+    {
+     Var$1.Lens(SnippetsUI.currentSnippetV(),function($1)
+     {
+      return $1.snpParentIdO;
+     },function($1,$2)
+     {
+      return Snippet.New($1.snpId,$1.snpName,$1.snpContent,$2,$1.snpPredIds,$1.snpProperties,$1.snpModified);
+     }).Set({
+      $:1,
+      $0:pid
+     });
+    }))(x$1);
+   }))(x);
+  },SnippetsUI.processHierW());
+ };
+ SnippetsUI.deleteSnippet=function()
+ {
+  View$1.Get(function(hier)
+  {
+   var sid,pidO,m,res,hdt,elems,a;
+   sid=SnippetsUI.currentSnippetV().Get().snpId;
+   pidO=SnippetsUI.currentSnippetV().Get().snpParentIdO;
+   m=(res=null,hier.TryGetValue(sid,{
+    get:function()
+    {
+     return res;
+    },
+    set:function(v)
+    {
+     res=v;
+    }
+   })?{
+    $:1,
+    $0:res
+   }:null);
+   m!=null&&m.$==1?(hdt=m.$0,elems=Arrays.ofSeq((SnippetsUI.snippetsLM())["var"].Get()),function(i)
+   {
+    var res$1,m$1,snp,m$2;
+    while(true)
+     {
+      m$1=Arrays.tryItem(i,elems);
+      if(m$1!=null&&m$1.$==1)
+       {
+        snp=m$1.$0;
+        if(Unchecked.Equals(snp.snpParentIdO,{
+         $:1,
+         $0:sid
+        }))
+         {
+          Arrays.set(elems,i,Snippet.New(snp.snpId,snp.snpName,snp.snpContent,pidO,snp.snpPredIds,snp.snpProperties,snp.snpModified));
+          i=i+1;
+         }
+        else
+         {
+          m$2=(res$1=null,hier.TryGetValue(snp.snpId,{
+           get:function()
+           {
+            return res$1;
+           },
+           set:function(v)
+           {
+            res$1=v;
+           }
+          })?{
+           $:1,
+           $0:res$1
+          }:null);
+          if(m$2!=null&&m$2.$==1)
+          {
+           if(Seq$1.contains(sid,m$2.$0.path))
+            i=i+1;
+           else
+            return null;
+          }
+          else
+           return null;
+         }
+       }
+      else
+       return null;
+     }
+   }(hdt.pos+1),a=Arrays.concat([Slice.array(elems,{
+    $:1,
+    $0:0
+   },{
+    $:1,
+    $0:hdt.pos-1
+   }),Slice.array(elems,{
+    $:1,
+    $0:hdt.pos+1
+   },null)]),SnippetsUI.snippetsLM().Set(a)):void 0;
+  },SnippetsUI.processHierW());
+ };
+ SnippetsUI.addSnippet=function()
+ {
+  View$1.Get(function(hier)
+  {
+   var elems,newS,sid,m,res,n,a;
+   elems=Arrays.ofSeq((SnippetsUI.snippetsLM())["var"].Get());
+   newS=SnippetsUI.snippetList().add();
+   sid=SnippetsUI.currentSnippetV().Get().snpId;
+   m=(res=null,hier.TryGetValue(sid,{
+    get:function()
+    {
+     return res;
+    },
+    set:function(v)
+    {
+     res=v;
+    }
+   })?{
+    $:1,
+    $0:res
+   }:null);
+   m!=null&&m.$==1?(n=function(i)
+   {
+    var res$1,m$1,m$2;
+    while(true)
+     {
+      m$1=Arrays.tryItem(i+1,elems);
+      if(m$1!=null&&m$1.$==1)
+       {
+        m$2=(res$1=null,hier.TryGetValue(m$1.$0.snpId,{
+         get:function()
+         {
+          return res$1;
+         },
+         set:function(v)
+         {
+          res$1=v;
+         }
+        })?{
+         $:1,
+         $0:res$1
+        }:null);
+        if(m$2!=null&&m$2.$==1)
+        {
+         if(Seq$1.contains(sid,m$2.$0.path))
+          i=i+1;
+         else
+          return i;
+        }
+        else
+         return i;
+       }
+      else
+       return i;
+     }
+   }(m.$0.pos),a=Arrays.concat([Slice.array(elems,{
+    $:1,
+    $0:0
+   },{
+    $:1,
+    $0:n
+   }),[Snippet.New(newS.snpId,newS.snpName,newS.snpContent,SnippetsUI.currentSnippetV().Get().snpParentIdO,newS.snpPredIds,newS.snpProperties,newS.snpModified)],Slice.array(elems,{
+    $:1,
+    $0:n+1
+   },null)]),SnippetsUI.snippetsLM().Set(a)):void 0;
+  },SnippetsUI.processHierW());
+ };
+ SnippetsUI.monaco=function()
+ {
+  SC$1.$cctor();
+  return SC$1.monaco;
+ };
+ SnippetsUI.monacoNew=function(_var)
+ {
+  return GenEditor.onRender(function(ged)
+  {
+   var x;
+   x=ged.editorO;
+   (Option.iter(function(ed)
+   {
+    var _m;
+    _m=ed.getModel();
+    self.monaco.editor.setModelLanguage(_m,"fsharp");
+   }))(x);
+   self.monaco.editor.setTheme("vs-dark");
+  },MonacoGenAdapter.newVar(function()
+  {
+   return{};
+  },function()
+  {
+   return{};
+  },_var));
+ };
+ SnippetsUI.selectorLensGuidId=function(sel)
+ {
+  var f;
+  function g(o)
+  {
+   return o==null?null:{
+    $:1,
+    $0:UoM$1.Tag$4(o.$0)
+   };
+  }
+  return(Util.selectorLens(Global.String,(f=ParseO.parseGuidO(),function(x)
+  {
+   return g(f(x));
+  })))(sel);
+ };
+ SnippetsUI.curSnp=function()
+ {
+  SC$1.$cctor();
+  return SC$1.curSnp;
+ };
+ SnippetsUI.currentSnippetContentV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.currentSnippetContentV;
+ };
+ SnippetsUI.currentSnippetNameV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.currentSnippetNameV;
+ };
+ SnippetsUI.currentSnippetV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.currentSnippetV;
+ };
+ SnippetsUI.snippetList=function()
+ {
+  SC$1.$cctor();
+  return SC$1.snippetList;
+ };
+ SnippetsUI.wrapNothing=function(a)
+ {
+  return Doc.Concat;
+ };
+ SnippetsUI.search=function()
+ {
+  SC$1.$cctor();
+  return SC$1.search;
+ };
+ SnippetsUI.calcUI$3277$44=function(k)
+ {
+  return function(ev)
+  {
+   ev.Event.preventDefault();
+   View$1.Get(function(a)
+   {
+    var sid,x;
+    if(a!=null&&a.$==1)
+     {
+      sid=a.$0;
+      x=DragDrop.getDragNIdO(sid);
+      (Option.iter(function(fr)
+      {
+       SnippetsUI.moveNode(fr,sid);
+      }))(x);
+     }
+   },k);
+  };
+ };
+ SnippetsUI.calcUI$3276$44=function(k)
+ {
+  return function(ev)
+  {
+   View$1.Get(function(a)
+   {
+    if(a!=null&&a.$==1)
+     if(DragDrop.getDragNIdO(a.$0)!=null)
+      ev.Event.preventDefault();
+   },k);
+  };
+ };
+ SnippetsUI.calcUI$3275$44=function(k)
+ {
+  return function(ev)
+  {
+   View$1.Get(function(a)
+   {
+    if(a!=null&&a.$==1)
+     {
+      DragDrop.setDragNode(a.$0);
+      ev.Event.stopPropagation();
+     }
+   },k);
+  };
+ };
+ SnippetsUI.calcUI$3266$44=function(snpdW,snp)
+ {
+  return function()
+  {
+   View$1.Get(function(snpd)
+   {
+    var a;
+    if(snpd.hasChildren)
+     {
+      a=((SnippetsUI.collapsedV().Get().Contains(snp.Get().snpId)?function(v)
+      {
+       return function(s)
+       {
+        return s.Remove(v);
+       };
+      }:function(v)
+      {
+       return function(s)
+       {
+        return s.Add(v);
+       };
+      })(snp.Get().snpId))(SnippetsUI.collapsedV().Get());
+      SnippetsUI.collapsedV().Set(a);
+     }
+   },snpdW);
+  };
+ };
+ SnippetsUI.calcUI$3260$44=function(k,lmd)
+ {
+  return function()
+  {
+   var o;
+   View$1.Get((o=lmd.selV,function(a)
+   {
+    o.Set(a);
+   }),k);
+  };
+ };
+ SnippetsUI.calcUI=function(wrapper,allowDelete,lmd)
+ {
+  var indSelPredIdsW,v,prior;
+  indSelPredIdsW=View$1.Map(function($1)
+  {
+   return(SnippetsUI.indPredIds())($1);
+  },(v=View$1.Apply(View$1.Map2(function($1,$2)
+  {
+   return function($3)
+   {
+    return[$1.snpId,$2.snpParentIdO,$3.snpPredIds];
+   };
+  },lmd.get_CurrentV().get_View(),lmd.get_CurrentV().get_View()),lmd.get_CurrentV().get_View()),(prior=[Var$1.Create$1(null)],(View$1.Sink(function(v$1)
+  {
+   if(!Unchecked.Equals(prior[0].Get(),v$1))
+    prior[0].Set(v$1);
+  },v),prior[0].get_View()))));
+  return function(k)
+  {
+   return function(snp)
+   {
+    var snpdW,b,t,t$1,t$2,t$3,t$4,p,i;
+    View$1.Map(function($1)
+    {
+     return $1==null;
+    },k);
+    snpdW=View$1.Map2(function($1,$2)
+    {
+     var o,k$1,v$1;
+     o=(k$1=$2.snpId,function(d)
+     {
+      var res;
+      res=null;
+      return d.TryGetValue(k$1,{
+       get:function()
+       {
+        return res;
+       },
+       set:function(v$2)
+       {
+        res=v$2;
+       }
+      })?{
+       $:1,
+       $0:res
+      }:null;
+     }($1));
+     v$1=SnippetsUI.shdDef();
+     return o==null?v$1:o.$0;
+    },SnippetsUI.processHierW(),snp.get_View());
+    return SnippetsUI.docWrap(wrapper,(b=(t=(t$1=(t$2=(t$3=(t$4=ProviderBuilder.Make().WithHole({
+     $:2,
+     $0:"name",
+     $1:View$1.Map2(function($1,$2)
+     {
+      return($1.errorO==null?Global.id:function($3)
+      {
+       return function($4)
+       {
+        return $3("!"+Utils.toSafe($4));
+       };
+      }(Global.id))($2.snpName);
+     },snpdW,snp.get_View())
+    }).WithHole({
+     $:2,
+     $0:"selected",
+     $1:View$1.Map2(function($1,$2)
+     {
+      return Unchecked.Equals($1,$2)?"selected":"";
+     },lmd.selV.get_View(),k)
+    }).WithHole({
+     $:2,
+     $0:"predecessor",
+     $1:View$1.Apply(View$1.Apply(View$1.Apply(View$1.Map2(function($1,$2)
+     {
+      return Runtime.Curried3(function($3,$4,$5)
+      {
+       var key;
+       return $1!=null&&$1.$==1?(key=$1.$0,(Seq$1.contains(key,$2.snpPredIds)?"direct-predecessor":Seq$1.contains(key,$3)?"indirect-predecessor":Seq$1.contains(key,$4)?"included-predecessor":"")+(Unchecked.Equals($5,$1)?" codeSnippet":"")):"";
+      });
+     },k,lmd.get_CurrentV().get_View()),indSelPredIdsW),SnippetsUI.allCodePredIdsW()),SnippetsUI.codeSnippetIdV().get_View())
+    }),t$4.WithHole(Handler.EventQ2(t$4.k,"select",function()
+    {
+     return t$4.i;
+    },function()
+    {
+     var o;
+     View$1.Get((o=lmd.selV,function(a)
+     {
+      o.Set(a);
+     }),k);
+    }))).WithHole({
+     $:2,
+     $0:"indent",
+     $1:View$1.Map(function($1)
+     {
+      return Global.String(1.5*$1.level);
+     },snpdW)
+    }).WithHole({
+     $:2,
+     $0:"parent",
+     $1:View$1.Apply(View$1.Map2(function($1,$2)
+     {
+      return function($3)
+      {
+       return $1.hasChildren?$2.Contains($3.snpId)?"collapsed":"expanded":"";
+      };
+     },snpdW,SnippetsUI.collapsedV().get_View()),snp.get_View())
+    }),t$3.WithHole(Handler.EventQ2(t$3.k,"togglecollapse",function()
+    {
+     return t$3.i;
+    },function()
+    {
+     View$1.Get(function(snpd)
+     {
+      var a;
+      if(snpd.hasChildren)
+       {
+        a=((SnippetsUI.collapsedV().Get().Contains(snp.Get().snpId)?function(v$1)
+        {
+         return function(s)
+         {
+          return s.Remove(v$1);
+         };
+        }:function(v$1)
+        {
+         return function(s)
+         {
+          return s.Add(v$1);
+         };
+        })(snp.Get().snpId))(SnippetsUI.collapsedV().Get());
+        SnippetsUI.collapsedV().Set(a);
+       }
+     },snpdW);
+    }))),t$2.WithHole(Handler.EventQ2(t$2.k,"drag",function()
+    {
+     return t$2.i;
+    },function(ev)
+    {
+     View$1.Get(function(a)
+     {
+      if(a!=null&&a.$==1)
+       {
+        DragDrop.setDragNode(a.$0);
+        ev.Event.stopPropagation();
+       }
+     },k);
+    }))),t$1.WithHole(Handler.EventQ2(t$1.k,"dragover",function()
+    {
+     return t$1.i;
+    },function(ev)
+    {
+     View$1.Get(function(a)
+     {
+      if(a!=null&&a.$==1)
+       if(DragDrop.getDragNIdO(a.$0)!=null)
+        ev.Event.preventDefault();
+     },k);
+    }))),t.WithHole(Handler.EventQ2(t.k,"drop",function()
+    {
+     return t.i;
+    },function(ev)
+    {
+     ev.Event.preventDefault();
+     View$1.Get(function(a)
+     {
+      var sid,x;
+      if(a!=null&&a.$==1)
+       {
+        sid=a.$0;
+        x=DragDrop.getDragNIdO(sid);
+        (Option.iter(function(fr)
+        {
+         SnippetsUI.moveNode(fr,sid);
+        }))(x);
+       }
+     },k);
+    }))),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],testing_Templates.snippet(p[0])),(b.i=i,i)))).get_Doc());
+   };
+  };
+ };
+ SnippetsUI.moveNode=function(frid,toid)
+ {
+  View$1.Get(function(hier)
+  {
+   var $1,res,$2,res$1,$3,$4,frdt,frsn,todt,elems,n,newSn,a;
+   $1=(res=null,hier.TryGetValue(frid,{
+    get:function()
+    {
+     return res;
+    },
+    set:function(v)
+    {
+     res=v;
+    }
+   })?{
+    $:1,
+    $0:res
+   }:null);
+   $2=(res$1=null,hier.TryGetValue(toid,{
+    get:function()
+    {
+     return res$1;
+    },
+    set:function(v)
+    {
+     res$1=v;
+    }
+   })?{
+    $:1,
+    $0:res$1
+   }:null);
+   $3=SnippetsUI.snippetsLM().TryFindByKey(frid);
+   $4=SnippetsUI.snippetsLM().TryFindByKey(toid);
+   $1!=null&&$1.$==1?$2!=null&&$2.$==1?$3!=null&&$3.$==1?$4!=null&&$4.$==1?(frdt=$1.$0,frsn=$3.$0,todt=$2.$0,Seq$1.contains(frid,todt.path)?void 0:(elems=Arrays.ofSeq((SnippetsUI.snippetsLM())["var"].Get()),n=function(i)
+   {
+    var res$2,m,m$1;
+    while(true)
+     {
+      m=Arrays.tryItem(i+1,elems);
+      if(m!=null&&m.$==1)
+       {
+        m$1=(res$2=null,hier.TryGetValue(m.$0.snpId,{
+         get:function()
+         {
+          return res$2;
+         },
+         set:function(v)
+         {
+          res$2=v;
+         }
+        })?{
+         $:1,
+         $0:res$2
+        }:null);
+        if(m$1!=null&&m$1.$==1)
+        {
+         if(Seq$1.contains(frid,m$1.$0.path))
+          i=i+1;
+         else
+          return i;
+        }
+        else
+         return i;
+       }
+      else
+       return i;
+     }
+   }(frdt.pos),newSn=Snippet.New(frsn.snpId,frsn.snpName,frsn.snpContent,$4.$0.snpParentIdO,frsn.snpPredIds,frsn.snpProperties,frsn.snpModified),a=Arrays.concat(frdt.pos<todt.pos?[Slice.array(elems,{
+    $:1,
+    $0:0
+   },{
+    $:1,
+    $0:frdt.pos-1
+   }),Slice.array(elems,{
+    $:1,
+    $0:n+1
+   },{
+    $:1,
+    $0:todt.pos-1
+   }),[newSn],Slice.array(elems,{
+    $:1,
+    $0:frdt.pos+1
+   },{
+    $:1,
+    $0:n
+   }),Slice.array(elems,{
+    $:1,
+    $0:todt.pos
+   },null)]:[Slice.array(elems,{
+    $:1,
+    $0:0
+   },{
+    $:1,
+    $0:todt.pos-1
+   }),[newSn],Slice.array(elems,{
+    $:1,
+    $0:frdt.pos+1
+   },{
+    $:1,
+    $0:n
+   }),Slice.array(elems,{
+    $:1,
+    $0:todt.pos
+   },{
+    $:1,
+    $0:frdt.pos-1
+   }),Slice.array(elems,{
+    $:1,
+    $0:n+1
+   },null)]),SnippetsUI.snippetsLM().Set(a))):void 0:void 0:void 0:void 0;
+  },SnippetsUI.processHierW());
+ };
+ SnippetsUI.docWrap=function(wrapper,doc)
+ {
+  return(wrapper([]))([doc]);
+ };
+ SnippetsUI.processHierW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.processHierW;
+ };
+ SnippetsUI.snpIdParentsW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.snpIdParentsW;
+ };
+ SnippetsUI.processHier=function(snps,collapsed)
+ {
+  var path,collapse,dSnps,i,e;
+  dSnps=new Dictionary.New$5();
+  path=[];
+  collapse=0;
+  i=Seq$1.indexed(snps);
+  e=Enumerator.Get(i);
+  try
+  {
+   while(e.MoveNext())
+    (function()
+    {
+     var f,sid,pidO,k,p,pid,m,j,pth,lvl,o,o$1;
+     function p$1(a,spid)
+     {
+      return Unchecked.Equals(spid,pid);
+     }
+     f=e.Current();
+     sid=f[1][0];
+     pidO=f[1][1];
+     k=f[0];
+     p=pidO!=null&&pidO.$==1?(pid=pidO.$0,(m=Seq$1.tryFind(function($1)
+     {
+      return p$1($1[0],$1[1]);
+     },Seq$1.indexed(path)),m!=null&&m.$==1?(j=m.$0[0],[j+1,Slice.array(path,{
+      $:1,
+      $0:0
+     },{
+      $:1,
+      $0:j
+     }),null]):[0,[],{
+      $:1,
+      $0:(function($1)
+      {
+       return function($2)
+       {
+        return $1("Parent not found in path "+Utils.prettyPrint($2));
+       };
+      }(Global.id))(pid)
+     }])):[0,[],null];
+     pth=p[1];
+     lvl=p[0];
+     dSnps.Add(sid,SnippetHierData.New(lvl,k,(o=(o$1=Seq$1.tryItem(k+1,snps),o$1==null?null:{
+      $:1,
+      $0:Unchecked.Equals({
+       $:1,
+       $0:sid
+      },o$1.$0[1])
+     }),o==null?false:o.$0),collapse>=lvl,pth,p[2]));
+     path=pth.concat([sid]);
+     return collapse>=lvl?void(collapse=collapsed.Contains(sid)?lvl:lvl+1):null;
+    }());
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+  return dSnps;
+ };
+ SnippetsUI.shdDef=function()
+ {
+  SC$1.$cctor();
+  return SC$1.shdDef;
+ };
+ SnippetsUI.allCodePredIdsW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.allCodePredIdsW;
+ };
+ SnippetsUI.allCodePredsW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.allCodePredsW;
+ };
+ SnippetsUI.indPredIds=function()
+ {
+  SC$1.$cctor();
+  return SC$1.indPredIds;
+ };
+ SnippetsUI.allPredecessors=function()
+ {
+  SC$1.$cctor();
+  return SC$1.allPredecessors;
+ };
+ SnippetsUI.searchFor=function()
+ {
+  SC$1.$cctor();
+  return SC$1.searchFor;
+ };
+ SnippetsUI.codeSnippetIdV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.codeSnippetIdV;
+ };
+ SnippetsUI.collapsedV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.collapsedV;
+ };
+ SnippetsUI.snippetsLM=function()
+ {
+  SC$1.$cctor();
+  return SC$1.snippetsLM;
+ };
+ SnippetsUI.TemplateFileName=function()
+ {
+  SC$1.$cctor();
+  return SC$1.TemplateFileName;
+ };
+ SC$1.$cctor=function()
+ {
+  var f,g,t,s,x,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,t$9,t$10,t$11,i,x$1,t$12,t$13,t$14,t$15,t$16,t$17,i$1,b,b$1,b$2,b$3,b$4,b$5,b$6,pf,p,pf$1,p$1,sayHello_0,c,vf,a,vf$1,c$1,vf$2,pc,pf$2,p$2,p$3,pc$1,vf$3,p$4,c$2,c$3,c$4,c$5,c$6,c$7,c$8,c$9,c$10,vf$4,c$11,vf$5,c$12,vf$6,pc$2,vf$7,p$5,b$7,v,prior,b$8,b$9,b$10,i$2,f$1,g$1,b$11;
+  SC$1.$cctor=Global.ignore;
+  function g$2(s$1)
+  {
+   return Strings.concat("\n",s$1);
+  }
+  function f$2(s$1)
+  {
+   return String.splitByChar$1("\n",s$1);
+  }
+  function g$3(s$1)
+  {
+   var a$1,b$12;
+   return Slice.array(s$1,{
+    $:1,
+    $0:0
+   },{
+    $:1,
+    $0:(a$1=0,(b$12=Arrays.length(s$1)-2,Unchecked.Compare(a$1,b$12)===1?a$1:b$12))
    });
   }
-  function g$2(s)
+  function g$4(s$1)
   {
-   return Strings.concat("\n",s);
+   return Strings.concat("\n",s$1);
   }
-  SC$1.depend=new DependBuilder.New();
-  SC$1.unindentStr=function(x)
+  function f$3(s$1)
   {
-   return g(String.unindent$1(x));
+   return s$1+"T00:00:00";
+  }
+  function t$18(a$1)
+  {
+   return SnippetsUI.snippetsLM().TryFindByKey(a$1);
+  }
+  function t$19(a$1)
+  {
+   return SnippetsUI.snippetsLM().TryFindByKey(a$1);
+  }
+  function f$4(t$20)
+  {
+   return LayoutEngineModule.parseEntries("lytTarget",t$20);
+  }
+  function c$13(a$1)
+  {
+   return a$1.$==1?{
+    $:1,
+    $0:a$1.$0
+   }:null;
+  }
+  function g$5(s$1)
+  {
+   return Strings.concat("\n",s$1);
+  }
+  SC$1.rtn=function(v$1)
+  {
+   return[v$1];
   };
-  SC$1.skipLastLine=(f=function(x)
+  SC$1.result=new Builder.New();
+  SC$1.result$1=Result.result();
+  SC$1.resultP=new BuilderP.New();
+  SC$1.depend=new DependBuilder.New();
+  SC$1.rtn$1=Depend.rtn;
+  SC$1.depend$1=Depend.depend();
+  SC$1.resultM=new Builder$1.New();
+  SC$1.asyncResultM=new AsyncResultMBuilder.New();
+  SC$1.unindentStr=function(x$2)
   {
-   return g$1(f$12(x));
-  },function(x)
+   return g$2(String.unindent$1(x$2));
+  };
+  SC$1.skipLastLine=(f=function(x$2)
   {
-   return g$2(f(x));
+   return g$3(f$2(x$2));
+  },function(x$2)
+  {
+   return g$4(f(x$2));
   });
+  SC$1.parseDateO2=(g=ParseO.tryParseWith$1(function(a$1)
+  {
+   var o,m;
+   o=0;
+   return[(m=DateUtil.TryParse(a$1),m!=null&&m.$==1&&(o=m.$0,true)),o];
+  }),function(x$2)
+  {
+   return g(f$3(x$2));
+  });
+  SC$1.parseDateO=ParseO.tryParseWith$1(function(a$1)
+  {
+   var o,m;
+   o=0;
+   return[(m=DateUtil.TryParse(a$1),m!=null&&m.$==1&&(o=m.$0,true)),o];
+  });
+  SC$1.parseIntO=ParseO.tryParseWith$1(function(a$1)
+  {
+   var o;
+   o=0;
+   return[Numeric.TryParseInt32(a$1,{
+    get:function()
+    {
+     return o;
+    },
+    set:function(v$1)
+    {
+     o=v$1;
+    }
+   }),o];
+  });
+  SC$1.parseInt64O=ParseO.tryParseWith$1(function(a$1)
+  {
+   var o;
+   o=0;
+   return[Numeric.TryParseInt64(a$1,{
+    get:function()
+    {
+     return o;
+    },
+    set:function(v$1)
+    {
+     o=v$1;
+    }
+   }),o];
+  });
+  SC$1.parseSingleO=ParseO.tryParseWith$1(function(a$1)
+  {
+   var o,$1;
+   o=0;
+   return[($1=Global.Number(a$1),Global.isNaN($1)?false:(o=$1,true)),o];
+  });
+  SC$1.parseDoubleO=ParseO.tryParseWith$1(function(a$1)
+  {
+   var o,$1;
+   o=0;
+   return[($1=Global.Number(a$1),Global.isNaN($1)?false:(o=$1,true)),o];
+  });
+  SC$1.parseGuidO=ParseO.tryParseWith$1(function(a$1)
+  {
+   var o;
+   o=null;
+   return[Guid.TryParse(a$1,{
+    get:function()
+    {
+     return o;
+    },
+    set:function(v$1)
+    {
+     o=v$1;
+    }
+   }),o];
+  });
+  SC$1["|Date|_|"]=ParseO.parseDateO$1();
+  SC$1["|Int|_|"]=ParseO.parseIntO$1();
+  SC$1["|Int64|_|"]=ParseO.parseInt64O$1();
+  SC$1["|Single|_|"]=ParseO.parseSingleO$1();
+  SC$1["|Double|_|"]=ParseO.parseDoubleO$1();
+  SC$1["|Guid|_|"]=ParseO.parseGuidO$1();
+  SC$1.serString=[Serializer.toJsonString,function(j)
+  {
+   return j.tryString();
+  }];
+  SC$1.serFloat=[function(v$1)
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(Global.id))(v$1);
+  },function(j)
+  {
+   return j.tryFloat();
+  }];
+  SC$1.serInt=[function(v$1)
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(Global.id))(v$1);
+  },function(j)
+  {
+   var o;
+   o=j.tryInt();
+   return o==null?null:{
+    $:1,
+    $0:Operators$4.toInt(o.$0)
+   };
+  }];
+  SC$1.serInt64=[Global.String,function(j)
+  {
+   return j.tryInt();
+  }];
+  SC$1.serBool=[function(v$1)
+  {
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(Global.id))(v$1);
+  },function(j)
+  {
+   return j.tryBool();
+  }];
+  SC$1.serDate=[function(x$2)
+  {
+   return Global.String(Global.id(x$2));
+  },function(j)
+  {
+   var o;
+   o=j.tryInt();
+   return o==null?null:{
+    $:1,
+    $0:o.$0
+   };
+  }];
+  SC$1.serTypedRegisters=new Dictionary.New$5();
+  SC$1.serGuid=(t=Serializer.serString(),Serializer.mapO(Global.String,ParseO.parseGuidO$1(),t[0],t[1]));
+  SC$1.defaultSnippet=Snippet.New(UoM$1.Tag$4("00000000-0000-0000-0000-000000000000"),"","",null,new FSharpSet.New$1(null),[],(new Date(0)).getTime());
+  SC$1.serSnippetId=(s="SnippetId",[function(gid)
+  {
+   var x$2;
+   x$2=Global.String(UoM$1.Untag$4(gid));
+   return(((Runtime.Curried3(function($1,$2,$3)
+   {
+    return $1("{"+Utils.prettyPrint($2)+" :"+Utils.prettyPrint($3)+"}");
+   }))(Global.id))(s))(x$2);
+  },function(j)
+  {
+   var o,o$1,o$2,f$5;
+   o=(o$1=(o$2=j.tryField(s),o$2==null?null:o$2.$0.tryString()),(f$5=ParseO.parseGuidO$1(),o$1==null?null:f$5(o$1.$0)));
+   return o==null?null:{
+    $:1,
+    $0:UoM$1.Tag$4(o.$0)
+   };
+  }]);
+  SC$1.serSnippet=(x=[(t$1=SnippetSerialize.serSnippetId(),Serializer.serField("snpId",function(s$1)
+  {
+   return s$1.snpId;
+  },function(v$1,s$1)
+  {
+   return Snippet.New(v$1,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpModified);
+  },t$1[0],t$1[1])),(t$2=Serializer.serString(),Serializer.serField("snpName",function(s$1)
+  {
+   return s$1.snpName;
+  },function(v$1,s$1)
+  {
+   return Snippet.New(s$1.snpId,v$1,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpModified);
+  },t$2[0],t$2[1])),(t$3=Serializer.serString(),Serializer.serField("snpContent",function(s$1)
+  {
+   return s$1.snpContent;
+  },function(v$1,s$1)
+  {
+   return Snippet.New(s$1.snpId,s$1.snpName,v$1,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,s$1.snpModified);
+  },t$3[0],t$3[1])),(t$4=(t$5=SnippetSerialize.serSnippetId(),Serializer.serOpt(t$5[0],t$5[1])),Serializer.serField("snpParentIdO",function(s$1)
+  {
+   return s$1.snpParentIdO;
+  },function(v$1,s$1)
+  {
+   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,v$1,s$1.snpPredIds,s$1.snpProperties,s$1.snpModified);
+  },t$4[0],t$4[1])),(t$6=(t$7=SnippetSerialize.serSnippetId(),Serializer.serSet(t$7[0],t$7[1])),Serializer.serField("snpPredIds",function(s$1)
+  {
+   return s$1.snpPredIds;
+  },function(v$1,s$1)
+  {
+   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,v$1,s$1.snpProperties,s$1.snpModified);
+  },t$6[0],t$6[1])),(t$8=(t$9=Serializer.serDup(Serializer.serString(),Serializer.serString()),Serializer.serArr(t$9[0],t$9[1])),Serializer.serField("snpProperties",function(s$1)
+  {
+   return s$1.snpProperties;
+  },function(v$1,s$1)
+  {
+   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,v$1,s$1.snpModified);
+  },t$8[0],t$8[1])),(t$10=Serializer.serInt(),Serializer.serFieldO("snpGeneration",function()
+  {
+   return null;
+  },function(vO,s$1)
+  {
+   return vO!=null&&vO.$==1?Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,(new Date(0)).getTime()+vO.$0*3600000):s$1;
+  },t$10[0],t$10[1])),(t$11=Serializer.serDate(),Serializer.serField("snpModified",function(s$1)
+  {
+   return s$1.snpModified;
+  },function(v$1,s$1)
+  {
+   return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,v$1);
+  },t$11[0],t$11[1]))],(i=SnippetModule.New("","",null),[function(rc)
+  {
+   var x$2;
+   function c$14(n,ser,_deser)
+   {
+    var x$3,m;
+    x$3=ser(rc);
+    m=((Runtime.Curried3(function($1,$2,$3)
+    {
+     return $1(Utils.prettyPrint($2)+": "+Utils.toSafe($3));
+    }))(Global.id))(n);
+    return x$3==null?null:{
+     $:1,
+     $0:m(x$3.$0)
+    };
+   }
+   x$2=Strings.concat(", ",Seq$1.choose(function($1)
+   {
+    return c$14($1[0],$1[1],$1[2]);
+   },x));
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1("{"+Utils.toSafe($2)+"}");
+    };
+   }(Global.id))(x$2);
+  },function(j)
+  {
+   return{
+    $:1,
+    $0:Seq$1.fold(function(rc,t$20)
+    {
+     var x$2;
+     x$2=j.tryField(t$20[0]);
+     return(t$20[2](rc))(x$2);
+    },i,x)
+   };
+  }]));
+  SC$1.serModel=(x$1=[(t$12=(t$13=SnippetSerialize.serSnippet(),Serializer.serArr(t$13[0],t$13[1])),Serializer.serField("snippets",function(m)
+  {
+   return m.snippets;
+  },function(v$1,m)
+  {
+   return Model.New(v$1,m.modified,m.collapsed);
+  },t$12[0],t$12[1])),(t$14=Serializer.serInt(),Serializer.serFieldO("generation",function()
+  {
+   return null;
+  },function(vO,m)
+  {
+   return vO!=null&&vO.$==1?Model.New(m.snippets,(new Date(0)).getTime()+vO.$0*3600000,m.collapsed):m;
+  },t$14[0],t$14[1])),(t$15=Serializer.serDate(),Serializer.serField("modified",function(m)
+  {
+   return m.modified;
+  },function(v$1,m)
+  {
+   return Model.New(m.snippets,v$1,m.collapsed);
+  },t$15[0],t$15[1])),(t$16=(t$17=SnippetSerialize.serSnippetId(),Serializer.serSet(t$17[0],t$17[1])),Serializer.serField("collapsed",function(m)
+  {
+   return m.collapsed;
+  },function(v$1,m)
+  {
+   return Model.New(m.snippets,m.modified,v$1);
+  },t$16[0],t$16[1]))],(i$1=Model.New([],(new Date(0)).getTime(),new FSharpSet.New$1(null)),[function(rc)
+  {
+   var x$2;
+   function c$14(n,ser,_deser)
+   {
+    var x$3,m;
+    x$3=ser(rc);
+    m=((Runtime.Curried3(function($1,$2,$3)
+    {
+     return $1(Utils.prettyPrint($2)+": "+Utils.toSafe($3));
+    }))(Global.id))(n);
+    return x$3==null?null:{
+     $:1,
+     $0:m(x$3.$0)
+    };
+   }
+   x$2=Strings.concat(", ",Seq$1.choose(function($1)
+   {
+    return c$14($1[0],$1[1],$1[2]);
+   },x$1));
+   return(function($1)
+   {
+    return function($2)
+    {
+     return $1("{"+Utils.toSafe($2)+"}");
+    };
+   }(Global.id))(x$2);
+  },function(j)
+  {
+   return{
+    $:1,
+    $0:Seq$1.fold(function(rc,t$20)
+    {
+     var x$2;
+     x$2=j.tryField(t$20[0]);
+     return(t$20[2](rc))(x$2);
+    },i$1,x$1)
+   };
+  }]));
+  SC$1.observers=List.T.Empty;
+  SC$1.loader=(b=null,Concurrency.Delay(function()
+  {
+   self.require.config({
+    paths:{
+     vs:"/EPFileX/monaco/package/min/vs"
+    }
+   });
+   return Concurrency.Bind(Concurrency.FromContinuations(function(success,failed)
+   {
+    return self.require(["vs/editor/editor.main"],success,failed);
+   }),function()
+   {
+    return Concurrency.Return(null);
+   });
+  }));
   SC$1.html="\r\n            <div style=\"display:none\" >\r\n                <div links>\r\n                    <link href=\"http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" type=\"text/css\" rel=\"stylesheet\">\r\n                    <script src=\"http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"  type=\"text/javascript\"></script>\r\n                </div>\r\n                <div ws-template=\"AppFramework\" style=\"height: calc(100vh - 4px); width: calc(100vw - 4px) \" class=\"relative\" >\r\n                    <div ws-hole=\"MainClient\"></div>\r\n                    <div class=\"AppFrameworkGo\"><button ws-onclick=\"GoClient\">${MainDoc}</button></div>\r\n                </div>\r\n                <style>\r\n                    .AppFrameworkGo {\r\n                        max-width: 2px;\r\n                        max-height: 2px;\r\n                        z-index: 4000;\r\n                        overflow: hidden;\r\n                        position: fixed;\r\n                        top: 0px;\r\n                        left: 0px;\r\n                    }\r\n                </style>\r\n                <div ws-template=\"FixedSplitterVer\" \r\n                    style=\"display: grid; \r\n                           grid-gap: 0px; \r\n                           box-sizing: border-box; \r\n                           height: 100%;\r\n                           width : 100%;\r\n                           grid-template-areas: 'one two'; \r\n                           grid-template-rows   :100%; \r\n                           overflow: hidden; \r\n                           grid-template-columns: ${PartSizes}\"  >\r\n                   <div ws-hole=\"First\"  style=\"grid-area: one; \" class=\"relative\" ></div>\r\n                   <div ws-hole=\"Second\" style=\"grid-area: two; \" class=\"relative\" ></div>\r\n                </div>               \r\n                <div ws-template=\"FixedSplitterHor\" \r\n               style=\"display: grid; \r\n                      grid-gap: 0px; \r\n                      box-sizing: border-box; \r\n                      height: 100%;\r\n                      width : 100%;\r\n                      grid-template-areas: 'one' 'two'; \r\n                      grid-template-columns:100%; \r\n                      overflow: hidden; \r\n                      grid-template-rows   : ${PartSizes}\"  >\r\n              <div ws-hole=\"First\"  style=\"grid-area: one; \" class=\"relative\" ></div>\r\n              <div ws-hole=\"Second\" style=\"grid-area: two; \" class=\"relative\" ></div>\r\n                </div>               \r\n                <div ws-template=\"WCompSplitterHor\" \r\n                     ws-onafterrender=\"AfterRender\"\r\n                     style=\"display: grid;\r\n                            grid-gap: 5px; \r\n                            box-sizing: border-box; \r\n                            grid-template-areas: 'one' 'two'; \r\n                            grid-template-columns:100%; \r\n                            overflow: hidden; \r\n                            grid-template-rows   : ${PartSizes}\" \r\n                     >\r\n                     <slot></slot>\r\n                    <slot name=\"splitter\">  <div style=\"grid-row:2; grid-column:1 / 1 ; cursor: row-resize; z-index: 3; background-color: #eef ; height: ${Gap}; margin-top :-${Gap}\" ws-onmousedown=\"MouseDown\" ws-onafterrender=\"AfterRenderSp\" ></div> </slot>\r\n                    <style>\r\n                        ::slotted(*) {\r\n                            display: grid;\r\n                            height : 100%;\r\n                            width  : 100%;\r\n                            overflow: hidden;\r\n                        }\r\n                        ::slotted(*:nth-child(2)) {\r\n                            grid-area: two;\r\n                        }\r\n                        ::slotted(*[slot=\"splitter\"]) {\r\n                            grid-row:2; grid-column:1 / 1 ; \r\n                            cursor: row-resize; \r\n                            z-index: 3; \r\n                            background-color: #eef ; \r\n                            height: ${Gap}; \r\n                            margin-top :-${Gap}\r\n                        }\r\n                    </style>\r\n                </div>        \r\n                <div ws-template=\"WCompSplitterVer\" \r\n                     ws-onafterrender=\"AfterRender\"\r\n                     style=\"display: grid; \r\n                            grid-gap: 5px; \r\n                            box-sizing: border-box; \r\n                            grid-template-areas: 'one two'; \r\n                            grid-template-rows   :100%; \r\n                            overflow: hidden; \r\n                            grid-template-columns: ${PartSizes}\"  >\r\n                    <slot></slot>\r\n                    <slot name=\"splitter\"> <div style=\"grid-column:2; grid-row:1 / 1 ; cursor: col-resize; z-index: 3; background-color: #eef ; width: ${Gap}; margin-left :-${Gap}\" ws-onmousedown=\"MouseDown\" ws-onafterrender=\"AfterRenderSp\" ></div> </slot>\r\n                    <style>\r\n                        ::slotted(*) {\r\n                            display: grid;\r\n                            height : 100%;\r\n                            width  : 100%;\r\n                            overflow: hidden;\r\n                        }\r\n                        ::slotted(*:nth-child(2)) {\r\n                            grid-area: two;\r\n                        }\r\n                        ::slotted(*[slot=\"splitter\"]) {\r\n                            grid-column:2; grid-row:1 / 1\r\n                            cursor: column-resize; \r\n                            z-index: 3; \r\n                            background-color: #eef ; \r\n                            width: ${Gap}; \r\n                            margin-left:-${Gap}\r\n                        }\r\n                    </style>\r\n                </div>\r\n                <div ws-template=\"AppFwkClient\" >\r\n                    <ws-FixedSplitterHor>\r\n                        <PartSizes>55px calc(100% - 55px)</PartSizes>\r\n                        <First>\r\n                            <span style=\"display: grid;\r\n                                  grid-template-columns: 30% 20% 20% 10%;\r\n                                  grid-gap: 25px;\r\n                                \">\r\n                                <div class=\"mainTitle\">AppFramework</div>\r\n                            </span>\r\n                        </First>\r\n                        <Second>\r\n                                <ws-FixedSplitterVer>\r\n                                    <PartSizes>calc(100% - 150px) 150px</PartSizes>\r\n                                    <First>\r\n                                        <wcomp-splitter vertical value=\"18\" max=\"100\">\r\n                                            <div><div ws-hole=\"PlugIns\" style=\"overflow:auto\" >\r\n                                                <div ws-template=\"Tile\">\r\n                                                    <div draggable=\"true\" class=\"code-editor-list-tile ${Predecessor} ${Selected}\" \r\n                                                    ws-ondrag=\"Drag\"\r\n                                                    ws-ondragover=\"DragOver\"\r\n                                                    ws-ondrop=\"Drop\"\r\n                                                   >\r\n                                                   <span class=\"node ${Parent} ${ErrorMsg}\" title=\"expand\" ws-onclick=\"ToggleCollapse\"></span>\r\n                                                   <div  class=\"code-editor-list-text\" style=\"text-indent:${Indent}em; white-space: pre\" ws-onclick=\"Select\" ws-onafterrender=\"AfterRender\" >${Name}</div>\r\n                                                   <span class=\"predecessor\" title=\"toggle predecessor\" ws-onclick=\"TogglePred\">X</span>\r\n                                               </div>\r\n                                       \r\n                                                </div>\r\n                                            </div></div>\r\n                                            <wcomp-splitter vertical value=\"100\" min=\"30\" max=\"100\">\r\n                                                <ws-FixedSplitterHor>\r\n                                                    <PartSizes>32px calc(100% - 32px)</PartSizes>\r\n                                                    <First>\r\n                                                        <div>\r\n                                                            <div class=\"input-group\">\r\n                                                                <span class=\"input-group-addon\">name:</span>\r\n                                                                <span class=\"input-group-addon\">${PlugInName}</span>\r\n                                                            </div>\r\n                                                        </div>\r\n                                                    </First>\r\n                                                    <Second>\r\n                                                        <div style=\"overflow:auto\">\r\n                                                            <div>\r\n                                                                <div>Docs:</div>\r\n                                                                <div ws-hole=\"Docs\" style=\"overflow:auto\" ></div>\r\n                                                            </div>\r\n                                                            <div>\r\n                                                                <div>Views:</div>\r\n                                                                <div ws-hole=\"Views\" style=\"overflow:auto\" >\r\n                                                                    <div ws-template=\"NameValue\" class=\"input-group\">\r\n                                                                        <span class=\"input-group-addon\">${Name}:</span>\r\n                                                                        <span class=\"input-group-addon\">${Value}</span>\r\n                                                                    </div>\r\n                                                                </div>\r\n                                                            </div>\r\n                                                            <div>\r\n                                                                <div>Queries:</div>\r\n                                                                <div ws-hole=\"Queries\" style=\"overflow:auto\" ></div>\r\n                                                            </div>\r\n                                                            <div>\r\n                                                                <div>Vars:</div>\r\n                                                                <div ws-hole=\"Vars\" style=\"overflow:auto\" >\r\n                                                                    <div ws-template=\"NameValueInput\" class=\"input-group\">\r\n                                                                        <span class=\"input-group-addon\">${Name}:</span>\r\n                                                                        <textarea class=\"form-control\" id=\"\" placeholder=\"Value...\" ws-var=\"Value\" spellcheck=\"false\">\r\n                                                                    </div>\r\n                                                                </div>\r\n                                                            </div>\r\n                                                        </div>\r\n                                                    </Second>\r\n                                                </ws-FixedSplitterHor>\r\n                                                <wcomp-tabstrip >\r\n                                                    <div tabname=\"Properties\">\r\n                                                        <div>\r\n                                                            <table style=\"border-spacing:0px\">\r\n                                                                <thead>\r\n                                                                    <th style=\"width: 30%  \">Name</th>\r\n                                                                    <th style=\"width: 70% \">Value</th>\r\n                                                                </thead>\r\n                                                                <tbody ws-hole=\"Properties\" ws-children-template=\"Property\">\r\n                                                                    <tr ws-onclick=\"Select\" style=\"margin-bottom: 2px\" class=\"level  \">\r\n                                                                        <td class=\"level-item\">\r\n                                                                            <div>\r\n                                                                                <input ws-var=\"Name\" type=\"text\" class=\"form-control\" id=\"\" placeholder=\"Property...\">\r\n                                                                            </div>\r\n                                                                        </td>\r\n                                                                        <td class=\"level-item\">\r\n                                                                            <div>\r\n                                                                                <textarea ws-var=\"Value\" class=\"form-control\" id=\"\" placeholder=\"Value...\"></textarea>\r\n                                                                            </div>\r\n                                                                        </td>\r\n                                                                        <td class=\"level-item\">\r\n                                                                            <div style=\" cursor: pointer \" title=\"remove\">\r\n                                                                                <button ws-onclick=\"Remove\" class=\"delete is-small\">x</button>\r\n                                                                            </div>\r\n                                                                        </td>\r\n                                                                    </tr>\r\n                                                                </tbody>\r\n                                                            </table>\r\n                                                            <button ws-onclick=\"AddProperty\" class=\"add is-small\">add ...</button>\r\n                                                        </div>\r\n                                                    </div>\r\n                                                </wcomp-tabstrip>\r\n                                            </wcomp-splitter>\r\n                                        </wcomp-splitter>\r\n                                    </First>\r\n                                    <Second>\r\n                                        <div style=\"\r\n                                            overflow: hidden;\r\n                                            display: grid;\r\n                                            grid-template-columns: 100%;\r\n                                            grid-template-rows: repeat(15, calc(100% / 15));\r\n                                            bxackground-color: #eee;\r\n                                            box-sizing: border-box;\r\n                                            padding : 5px;\r\n                                            grid-gap: 5px;\r\n                                            margin-right: 21px;\r\n                                       \"  class=\"absolute\" ws-hole=\"Actions\" >\r\n                                            <button ws-template=\"Action\"         ws-onclick=\"Click\" class=\"btn\" type=\"button\" id=\"\"          >${Name}</button>\r\n                                            <button ws-template=\"ActionDisabled\" ws-onclick=\"Click\" class=\"btn\" type=\"button\" id=\"\" disabled >${Name}</button>\r\n                                        </div>\r\n                                    </Second>\r\n                                </ws-FixedSplitterVer>\r\n                        </Second>\r\n                    </ws-FixedSplitterHor>\r\n                </div>\r\n                <style style=\"display: none\">\r\n                        .Hidden     { display   : none         }\r\n                        table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }\r\n                        td input.form-control { \r\n                            padding    : 0px; \r\n                            font-family: monospace;\r\n                            font-size  :   small;\r\n                            margin-top :   0px;\r\n                            margin-left: -2px;\r\n                            width      : 100%\r\n                        }\r\n                        td select {\r\n                            font-size : smaller;\r\n                            max-width : 8ch;\r\n                        }\r\n                        xtextarea {\r\n                           resize : none;\r\n                        }\r\n                        .tab-content {\r\n                            overflow: hidden\r\n                        }\r\n                        .tab-children {\r\n                            position:relative;\r\n                        }\r\n                        .tab-children>div>* {\r\n                            position:absolute;\r\n                            height: 100%;\r\n                            width:  100%;\r\n                            display: grid;\r\n                        }\r\n                        .relative {\r\n                            position:relative;\r\n                        }\r\n                        .relative>* {\r\n                            position:absolute;\r\n                            height: 100%;\r\n                            width:  100%;\r\n                            display: grid;\r\n                        }\r\n                        table.table-striped    tbody tr:nth-child(even) { background: #EEE  }\r\n                        table.table-striped    tbody tr:nth-child(odd ) { background: #FFF  }\r\n                        table.table-striped    tbody input              { background: transparent; border: none}\r\n                        table.table-striped    tbody select             { background: transparent; border: none}\r\n                        table.table-nonstriped tbody tr:nth-child(even) { background: inherit }\r\n                        table.table-nonstriped tbody tr:nth-child(odd ) { background: inherit }\r\n                        table.table            tbody tr.hover           { border    : solid thin transparent; } \r\n                        table.table            tbody tr.hover:hover     { border    : solid thin blue     ; } \r\n                        table.table            tbody th:hover           { background: gray; cursor: pointer }\r\n                        table.table            tbody tr.hover:hover>td  { border-top: solid thin blue     ; \r\n                                                                   border-bottom: solid thin blue     ; } \r\n                        table.table            tbody tr.selected { background   : #b9eeff             ; }\r\n                        table.table            tbody tr.formula.selected { background: #20f7f7             ; }\r\n                        thead { color: gray }\r\n                        h3 { \r\n                            color: gray;\r\n                            line-height: 1em;\r\n                        }\r\n                        button       { border: solid thin transparent ; border-radius: 3px; }\r\n                        button:hover { border: solid thin blue }\r\n                        .indenter { position  : absolute; \r\n                                    top:0px; bottom:0px; left:0px; \r\n                                    background: white; color:white;\r\n                                    border-right: gray thin dotted;\r\n                                    }\r\n                        body {\r\n                            color      : #333;\r\n                            font-size  : small;\r\n                            font-family: monospace;\r\n                            line-height: 1.2;\r\n                        }\r\n                        .mainTitle {  \r\n                            font-size: 48px;\r\n                            font-weight: 500;\r\n                            color: gray;\r\n                            margin-top: -12px;\r\n                        }\r\n                        .CodeMirror {\r\n                            height: 100%;\r\n                        }\r\n                        \r\n                      \r\n                        body { margin: 0px }     \r\n                             \r\n                        div textarea {\r\n                            font-family     : monospace;\r\n                        }\r\n                        .code-editor-list-tile {\r\n                            white-space     : nowrap; \r\n                            border-style    : solid none none;\r\n                            border-color    : white;\r\n                            border-width    : 1px;\r\n                            background-color: #D8D8D8;\r\n                            display         : flex;\r\n                        }\r\n                        .code-editor-list-text{\r\n                            padding         : 1px 10px 1px 5px;\r\n                            overflow        : hidden;\r\n                            text-overflow   : ellipsis;\r\n                            white-space     : nowrap;\r\n                            flex            : 1;\r\n                        }\r\n                        \r\n                        .code-editor-list-tile span.node.ErrorMsg {\r\n                            background-color: red\r\n                        }\r\n                        .code-editor-list-tile span.node.expanded::before {\r\n                            content: \"-\"\r\n                        }\r\n                        .code-editor-list-tile span.node.collapsed::before {\r\n                            content: \"+\"\r\n                        }\r\n                        .code-editor-list-tile.direct-predecessor {\r\n                            font-weight     : bold;\r\n                            color           : blue;\r\n                        }\r\n                        .code-editor-list-tile.indirect-predecessor {\r\n                            color           : blue;\r\n                        }\r\n                        .code-editor-list-tile.included-predecessor {\r\n                            color           : chocolate;\r\n                        }\r\n                        .code-editor-list-tile.selected {\r\n                            background-color: #77F;\r\n                            color           : white;\r\n                        }\r\n                        .code-editor-list-tile.codeSnippet {\r\n                            text-decoration: underline\r\n                        }\r\n                        .code-editor-list-tile:hover {\r\n                            background      : lightgray;\r\n                        }\r\n                        .code-editor-list-tile.selected:hover {\r\n                            background      : blue;\r\n                        }\r\n                        .code-editor-list-tile>.predecessor {\r\n                            font-weight     : bold;\r\n                            border-style    : inset;\r\n                            border-width    : 1px;\r\n                            text-align      : center;\r\n                            color           : transparent;\r\n                        }\r\n                        .code-editor-list-tile.direct-predecessor>.predecessor {\r\n                            color           : blue;\r\n                        }\r\n                        \r\n                        .CodeMirror { height: 100%; }\r\n                        \r\n                        .node {\r\n                            background-color: white; \r\n                            width           : 2ch; \r\n                            color           : #A03; \r\n                            font-weight     : bold; \r\n                            text-align      : center;\r\n                            font-family     : arial;\r\n                        }\r\n                        .Warning { text-decoration: underline lightblue } \r\n                        .Error   { text-decoration: underline red       } \r\n                        \r\n                    </style>\r\n            </div>\r\n            ";
   SC$1.htmlD=Depend.dependByName("AppFrameworkTemplate.html",AppFrameworkTemplate.html(),Global.id);
-  SC$1.startWithHtmlD=(b=Depend.depend(),b.Delay(function()
+  SC$1.startWithHtmlD=(b$1=Depend.depend(),b$1.Delay(function()
   {
-   return b.Bind(StartAppFramework.htmlD(),function(a$1)
+   return b$1.Bind(StartAppFramework.htmlD(),function(a$1)
    {
-    return b.Return(function()
+    return b$1.Return(function()
     {
-     var d,x,a$2;
+     var d,x$2,a$2;
      d=self.document.createElement("div");
      self.document.body.appendChild(d);
      d.outerHTML=a$1;
-     x=AppFramework.getMainDoc().f();
+     x$2=AppFramework.getMainDoc().f();
      a$2=self.document.body;
      Templates.LoadLocalTemplates("");
-     Doc.RunAppend(a$2,x);
+     Doc.RunAppend(a$2,x$2);
     });
    });
   }));
@@ -1451,12 +6732,20 @@
    $:0,
    $0:NewLY.a11V().get_View()
   };
-  SC$1.getDocFromReferenceD=Depend.dependByName("getDocFromReference",Extract0.getDocFromReference,Global.id);
-  SC$1.extractDocD=(b$1=Depend.depend(),b$1.Delay(function()
+  SC$1.textAtt=function($1)
   {
-   return b$1.Bind(Extract0.getDocFromReferenceD(),function(a$1)
+   return function()
    {
-    return b$1.Return(function(txt)
+    return $1("textAtt not implemented");
+   };
+  }(Operators$4.FailWith);
+  SC$1.getDocFromReferenceD=Depend.dependByName("getDocFromReference",Extract0.getDocFromReference,Global.id);
+  SC$1.getTextActViewFromReferenceD=Depend.dependByName("getTextActViewFromReference",Extract0.getTextActViewFromReference,Global.id);
+  SC$1.extractDocD=(b$2=Depend.depend(),b$2.Delay(function()
+  {
+   return b$2.Bind(Extract0.getDocFromReferenceD(),function(a$1)
+   {
+    return b$2.Return(function(txt)
     {
      var a$2,$1;
      a$2=List.map(function(a$3)
@@ -1467,484 +6756,1068 @@
     });
    });
   }));
-  SC$1.extractDoc=Depend.resolver([],Extract0.extractDocD());
+  SC$1.extractAtsD=(b$3=Depend.depend(),b$3.Delay(function()
+  {
+   return b$3.Bind(Extract0.getTextActViewFromReferenceD(),function(a$1)
+   {
+    function toViewString(w)
+    {
+     return View$1.Map(function(a$2)
+     {
+      return a$2.$==1?(function($1)
+      {
+       return function($2)
+       {
+        return $1("@{expecting string, got Action: "+Utils.prettyPrint($2)+"}");
+       };
+      }(Global.id))(a$2.$0):a$2.$0;
+     },w);
+    }
+    function getTextVal(txt)
+    {
+     var $1,a$2,x$2;
+     a$2=Extract0.getTextData(txt);
+     function f$5(s$1)
+     {
+      return Strings.concat("",s$1);
+     }
+     function g$6(a$3)
+     {
+      return{
+       $:0,
+       $0:a$3
+      };
+     }
+     switch(a$2.$==1?a$2.$0.$==1?a$2.$1.$==0?($1=a$2.$0.$0,1):($1=a$2,2):a$2.$1.$==0?($1=a$2.$0.$0,0):($1=a$2,2):($1=a$2,2))
+     {
+      case 0:
+       return{
+        $:1,
+        $0:{
+         $:0,
+         $0:$1
+        }
+       };
+      case 1:
+       return{
+        $:0,
+        $0:a$1($1)
+       };
+      case 2:
+       return{
+        $:0,
+        $0:(x$2=View.traverseListApp(function(a$3)
+        {
+         return a$3.$==1?toViewString(a$1(a$3.$0)):View$1.Const(a$3.$0);
+        },$1),View$1.Apply(View$1.Const(function(x$3)
+        {
+         return g$6(f$5(x$3));
+        }),x$2))
+       };
+     }
+    }
+    return b$3.Return(function(txt)
+    {
+     return Seq$1.map(function(t$20)
+     {
+      var m,sty,atn,m$1,m$2,atv,atn$1,m$3;
+      function s$1(el,a$2)
+      {
+       var act;
+       return a$2.$==1?(act=a$2.$0,el.addEventListener(atn$1,function(ev)
+       {
+        return AppFramework.callFunction(el,ev,act.actFunction);
+       },false)):el.setAttribute(atn$1,Strings.Trim(a$2.$0));
+      }
+      m=Strings.SplitChars(t$20,[":"],0);
+      return!Unchecked.Equals(m,null)&&m.length===2?(sty=Arrays.get(m,1),(atn=Arrays.get(m,0),(m$1=getTextVal(sty),m$1.$==0?AttrModule.DynamicStyle(atn,toViewString(m$1.$0)):m$1.$0.$==0?AttrModule.Style(atn,m$1.$0.$0):(function($1)
+      {
+       return function($2)
+       {
+        return $1("Illegal value "+testing_GeneratedPrintf.p($2));
+       };
+      }(Operators$4.FailWith))(m$1)))):(m$2=Arrays.map(Strings.Trim,Strings.SplitChars(t$20,["="],0)),!Unchecked.Equals(m$2,null)&&m$2.length===2?(atv=Arrays.get(m$2,1),(atn$1=Arrays.get(m$2,0),(m$3=getTextVal(atv),m$3.$==0?AttrModule.DynamicCustom(function($1)
+      {
+       return function($2)
+       {
+        return s$1($1,$2);
+       };
+      },m$3.$0):m$3.$0.$==0?AttrProxy.Create(atn$1,m$3.$0.$0):(function($1)
+      {
+       return function($2)
+       {
+        return $1("Illegal value "+testing_GeneratedPrintf.p($2));
+       };
+      }(Operators$4.FailWith))(m$3)))):(function($1)
+      {
+       return function($2)
+       {
+        return $1("single reference attribute not implemented "+Utils.toSafe($2));
+       };
+      }(Operators$4.FailWith))(t$20));
+     },Seq$1.filter(function(y)
+     {
+      return""!==y;
+     },Seq$1.map(Strings.Trim,Strings.SplitChars(txt,[";"],0))));
+    });
+   });
+  }));
   SC$1.aV=Var$1.Create$1(4);
   SC$1.pa=NewLY.aV().get_View();
   SC$1.pb=6.2;
-  SC$1.extractDoc$1=Depend.resolver([["getDocFromReference",NewLY.getDoc]],Extract0.extractDocD());
-  SC$1.vvv=(f$1=Fun.New((f$2=Fun.New({
-   $:1,
-   $0:function(a$1)
+  SC$1.currentPlugInNameDef=UoM$1.Tag$3("NewLYx");
+  SC$1.currentPlugInNameD=Depend.dependByName("currentPlugInName",NewLY.currentPlugInNameDef(),Global.id);
+  SC$1.getDocD=(b$4=Depend.depend(),b$4.Delay(function()
+  {
+   return b$4.Bind(NewLY.currentPlugInNameD(),function(a$1)
    {
-    return function(b$3)
+    return b$4.Return(function(r)
     {
-     return NewLY.concat(a$1,b$3);
-    };
-   }
-  },{
-   $:0,
-   $0:NewLY.pa()
-  }),f$2.f.$==0?f$2.p.$==1?{
-   $:0,
-   $0:View$1.Apply(f$2.f.$0,View$1.Const(f$2.p.$0))
-  }:{
-   $:0,
-   $0:View$1.Apply(f$2.f.$0,f$2.p.$0)
-  }:f$2.p.$==0?{
-   $:0,
-   $0:View$1.Apply(View$1.Const(f$2.f.$0),f$2.p.$0)
-  }:{
-   $:1,
-   $0:f$2.f.$0(f$2.p.$0)
-  }),{
-   $:1,
-   $0:NewLY.pb()
-  }),f$1.f.$==0?f$1.p.$==1?{
-   $:0,
-   $0:View$1.Apply(f$1.f.$0,View$1.Const(f$1.p.$0))
-  }:{
-   $:0,
-   $0:View$1.Apply(f$1.f.$0,f$1.p.$0)
-  }:f$1.p.$==0?{
-   $:0,
-   $0:View$1.Apply(View$1.Const(f$1.f.$0),f$1.p.$0)
-  }:{
-   $:1,
-   $0:f$1.f.$0(f$1.p.$0)
-  });
+     var p$6,pName,oName;
+     p$6=(AppFramework.splitName(UoM$1.Untag$3(a$1)))(r);
+     pName=p$6[0];
+     oName=p$6[1];
+     return Doc.BindView(function(docO)
+     {
+      var o;
+      function d()
+      {
+       return(function($1)
+       {
+        return function($2)
+        {
+         return $1("Reference not found @{"+Utils.toSafe($2)+"}");
+        };
+       }(Global.id))(r);
+      }
+      o=docO==null?null:{
+       $:1,
+       $0:AppFramework.getLazyDoc(docO.$0)
+      };
+      return o==null?Doc.TextView(View$1.Map(function(o$1)
+      {
+       return o$1==null?d():o$1.$0;
+      },AppFramework.tryGetWoWW(pName,oName))):o.$0;
+     },AppFramework.tryGetDocW(pName,oName));
+    });
+   });
+  }));
+  SC$1.getTextActViewD=(b$5=Depend.depend(),b$5.Delay(function()
+  {
+   return b$5.Bind(NewLY.currentPlugInNameD(),function(a$1)
+   {
+    return b$5.Return(function(r)
+    {
+     var p$6,pName,oName;
+     p$6=(AppFramework.splitName(UoM$1.Untag$3(a$1)))(r);
+     pName=p$6[0];
+     oName=p$6[1];
+     return View$1.Bind(function(a$2)
+     {
+      function d()
+      {
+       return(function($1)
+       {
+        return function($2)
+        {
+         return $1("Text Reference not found @{"+Utils.toSafe($2)+"}");
+        };
+       }(Global.id))(r);
+      }
+      return a$2==null?View$1.Map(function(a$3)
+      {
+       return{
+        $:0,
+        $0:a$3
+       };
+      },View$1.Map(function(o)
+      {
+       return o==null?d():o.$0;
+      },AppFramework.tryGetWoWW(pName,oName))):View$1.Const({
+       $:1,
+       $0:a$2.$0
+      });
+     },AppFramework.tryGetActW(pName,oName));
+    });
+   });
+  }));
+  SC$1.extractDocD$1=Extract0.extractDocD();
+  SC$1.extractAtsD$1=Extract0.extractAtsD();
+  SC$1.extractAttD=(b$6=Operators$1.depend(),b$6.Delay(function()
+  {
+   return b$6.Bind(NewLY.extractAtsD(),function(a$1)
+   {
+    return b$6.Return(function(p$6)
+    {
+     return AttrProxy.Concat(a$1(p$6));
+    });
+   });
+  }));
   SC$1.name=Var$1.Create$1("World");
-  SC$1.enterName=Fun.New(NewLY.op_Dereference(NewLY.checkName),{
+  SC$1.enterName=(pf=NewLY.op_Dereference(NewLY.checkName),(p={
    $:0,
    $0:NewLY.name().get_View()
-  });
-  SC$1.now=Fun.New(NewLY.op_Dereference(function()
+  },P.New(Operators$1.op_BarGreaterGreater(pf.r,function(f$5)
+  {
+   return Fun.New(f$5,p);
+  }))));
+  SC$1.now=(pf$1=NewLY.op_Dereference(function()
   {
    var n;
-   n=new Global.Date(Date.now());
+   n=new Date(Date.now());
    return n.getFullYear()+"-"+("0"+(n.getMonth()+1)).slice(-2)+"-"+("0"+n.getDate()).slice(-2)+" "+("0"+n.getHours()).slice(-2)+":"+("0"+n.getMinutes()).slice(-2)+":"+("0"+n.getSeconds()).slice(-2)+":"+("00"+n.getMilliseconds()).slice(-3);
-  }),{
+  }),(p$1={
    $:0,
    $0:NewLY.name().get_View()
-  });
-  SC$1.sayHello=(sayHello_0=(c=Fun.New(NewLY.op_Dereference(Doc.Concat),{
-   $:1,
-   $0:[(NewLY.extractDoc())("Hello @{name}!")]
-  }),Fun.New(c.f,Val.addDoc(Val.textDoc((f$3=NewLY.enterName(),f$3.f.$==0?f$3.p.$==1?{
-   $:0,
-   $0:View$1.Apply(f$3.f.$0,View$1.Const(f$3.p.$0))
-  }:{
-   $:0,
-   $0:View$1.Apply(f$3.f.$0,f$3.p.$0)
-  }:f$3.p.$==0?{
-   $:0,
-   $0:View$1.Apply(View$1.Const(f$3.f.$0),f$3.p.$0)
-  }:{
-   $:1,
-   $0:f$3.f.$0(f$3.p.$0)
-  })),c.p))),(a=Fun.New(NewLY.op_Dereference(Doc.Concat),{
-   $:1,
-   $0:[(NewLY.extractDoc())("How are you?")]
-  }),(c$1=Fun.New(NewLY.op_Dereference(Doc.Concat),{
-   $:1,
-   $0:[Doc.BindView(function()
+  },P.New(Operators$1.op_BarGreaterGreater(pf$1.r,function(f$5)
+  {
+   return Fun.New(f$5,p$1);
+  }))));
+  SC$1.sayHello=(sayHello_0=(c=(vf=NewLY.op_Dereference(Doc.Concat),NewLY.bindWrap(function(extractDoc)
+  {
+   var p$6;
+   p$6={
+    $:1,
+    $0:[extractDoc("Hello @{name}!")]
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(vf.r,function(f$5)
    {
-    var m;
-    m=sayHello_0.f.$==0?sayHello_0.p.$==1?{
+    return Fun.New(f$5,p$6);
+   }));
+  },NewLY.extractDocD())),NewLY.bindWrap(function(aF)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(Val.textDoc(aF.f.$==0?aF.p.$==1?{
      $:0,
-     $0:View$1.Apply(sayHello_0.f.$0,View$1.Const(sayHello_0.p.$0))
+     $0:View$1.Apply(aF.f.$0,View$1.Const(aF.p.$0))
     }:{
      $:0,
-     $0:View$1.Apply(sayHello_0.f.$0,sayHello_0.p.$0)
-    }:sayHello_0.p.$==0?{
+     $0:View$1.Apply(aF.f.$0,aF.p.$0)
+    }:aF.p.$==0?{
      $:0,
-     $0:View$1.Apply(View$1.Const(sayHello_0.f.$0),sayHello_0.p.$0)
+     $0:View$1.Apply(View$1.Const(aF.f.$0),aF.p.$0)
     }:{
      $:1,
-     $0:sayHello_0.f.$0(sayHello_0.p.$0)
-    };
-    return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-   },AppFramework.mainDocV().get_View())]
-  }),Fun.New(c$1.f,Val.addDoc(Doc.BindView(function()
+     $0:aF.f.$0(aF.p.$0)
+    }),c$14.p));
+   },c);
+  },NewLY.enterName().r)),(a=(vf$1=NewLY.op_Dereference(Doc.Concat),NewLY.bindWrap(function(extractDoc)
   {
-   var m;
-   m=a.f.$==0?a.p.$==1?{
-    $:0,
-    $0:View$1.Apply(a.f.$0,View$1.Const(a.p.$0))
-   }:{
-    $:0,
-    $0:View$1.Apply(a.f.$0,a.p.$0)
-   }:a.p.$==0?{
-    $:0,
-    $0:View$1.Apply(View$1.Const(a.f.$0),a.p.$0)
-   }:{
+   var p$6;
+   p$6={
     $:1,
-    $0:a.f.$0(a.p.$0)
+    $0:[extractDoc("How are you?")]
    };
-   return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-  },AppFramework.mainDocV().get_View()),c$1.p)))));
-  SC$1.aString=Var$1.Lens(NewLY.aV(),Global.String,function(a$1,v)
-  {
-   return Operators$1.toInt(Global.Number(v));
-  });
-  SC$1.main0=(c$2=Fun.New(NewLY.op_Dereference(function(a$1)
-  {
-   return function(b$3)
+   return P.New(Operators$1.op_BarGreaterGreater(vf$1.r,function(f$5)
    {
-    return NewLY.concat(a$1,b$3);
+    return Fun.New(f$5,p$6);
+   }));
+  },NewLY.extractDocD())),(c$1=(vf$2=NewLY.op_Dereference(Doc.Concat),NewLY.bindWrap(function(aF)
+  {
+   var p$6;
+   p$6={
+    $:1,
+    $0:[Doc.BindView(function()
+    {
+     var m;
+     m=aF.f.$==0?aF.p.$==1?{
+      $:0,
+      $0:View$1.Apply(aF.f.$0,View$1.Const(aF.p.$0))
+     }:{
+      $:0,
+      $0:View$1.Apply(aF.f.$0,aF.p.$0)
+     }:aF.p.$==0?{
+      $:0,
+      $0:View$1.Apply(View$1.Const(aF.f.$0),aF.p.$0)
+     }:{
+      $:1,
+      $0:aF.f.$0(aF.p.$0)
+     };
+     return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
+    },AppFramework.mainDocV().get_View())]
    };
-  }),{
+   return P.New(Operators$1.op_BarGreaterGreater(vf$2.r,function(f$5)
+   {
+    return Fun.New(f$5,p$6);
+   }));
+  },sayHello_0.r)),NewLY.bindWrap(function(aF)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(Doc.BindView(function()
+    {
+     var m;
+     m=aF.f.$==0?aF.p.$==1?{
+      $:0,
+      $0:View$1.Apply(aF.f.$0,View$1.Const(aF.p.$0))
+     }:{
+      $:0,
+      $0:View$1.Apply(aF.f.$0,aF.p.$0)
+     }:aF.p.$==0?{
+      $:0,
+      $0:View$1.Apply(View$1.Const(aF.f.$0),aF.p.$0)
+     }:{
+      $:1,
+      $0:aF.f.$0(aF.p.$0)
+     };
+     return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
+    },AppFramework.mainDocV().get_View()),c$14.p));
+   },c$1);
+  },a.r))));
+  SC$1.aString=Var$1.Lens(NewLY.aV(),Global.String,function(a$1,v$1)
+  {
+   return Operators$4.toInt(Global.Number(v$1));
+  });
+  SC$1.main0=(pc=(pf$2=NewLY.op_Dereference(function(a$1)
+  {
+   return function(b$12)
+   {
+    return NewLY.concat(a$1,b$12);
+   };
+  }),(p$2={
    $:0,
    $0:NewLY.aV().get_View()
-  }),Fun.New(c$2.f.$==0?c$2.p.$==1?{
-   $:0,
-   $0:View$1.Apply(c$2.f.$0,View$1.Const(c$2.p.$0))
-  }:{
-   $:0,
-   $0:View$1.Apply(c$2.f.$0,c$2.p.$0)
-  }:c$2.p.$==0?{
-   $:0,
-   $0:View$1.Apply(View$1.Const(c$2.f.$0),c$2.p.$0)
-  }:{
-   $:1,
-   $0:c$2.f.$0(c$2.p.$0)
-  },{
+  },P.New(Operators$1.op_BarGreaterGreater(pf$2.r,function(f$5)
+  {
+   return Fun.New(f$5,p$2);
+  })))),(p$3={
    $:1,
    $0:3.2
-  }));
-  SC$1.main1=(c$3=Fun.New(NewLY.op_Dereference((Runtime.Curried3(function($1,$2,$3)
+  },P.New(Operators$1.op_BarGreaterGreater(pc.r,function(c$14)
+  {
+   return Fun.New(c$14.f.$==0?c$14.p.$==1?{
+    $:0,
+    $0:View$1.Apply(c$14.f.$0,View$1.Const(c$14.p.$0))
+   }:{
+    $:0,
+    $0:View$1.Apply(c$14.f.$0,c$14.p.$0)
+   }:c$14.p.$==0?{
+    $:0,
+    $0:View$1.Apply(View$1.Const(c$14.f.$0),c$14.p.$0)
+   }:{
+    $:1,
+    $0:c$14.f.$0(c$14.p.$0)
+   },p$3);
+  }))));
+  SC$1.main1=(pc$1=(vf$3=NewLY.op_Dereference((Runtime.Curried3(function($1,$2,$3)
   {
    return $1("result = "+Utils.toSafe($2)+" "+Utils.toSafe($3));
-  }))(Global.id)),(f$4=NewLY.main0(),f$4.f.$==0?f$4.p.$==1?{
-   $:0,
-   $0:View$1.Apply(f$4.f.$0,View$1.Const(f$4.p.$0))
-  }:{
-   $:0,
-   $0:View$1.Apply(f$4.f.$0,f$4.p.$0)
-  }:f$4.p.$==0?{
-   $:0,
-   $0:View$1.Apply(View$1.Const(f$4.f.$0),f$4.p.$0)
-  }:{
-   $:1,
-   $0:f$4.f.$0(f$4.p.$0)
-  })),Fun.New(c$3.f.$==0?c$3.p.$==1?{
-   $:0,
-   $0:View$1.Apply(c$3.f.$0,View$1.Const(c$3.p.$0))
-  }:{
-   $:0,
-   $0:View$1.Apply(c$3.f.$0,c$3.p.$0)
-  }:c$3.p.$==0?{
-   $:0,
-   $0:View$1.Apply(View$1.Const(c$3.f.$0),c$3.p.$0)
-  }:{
-   $:1,
-   $0:c$3.f.$0(c$3.p.$0)
-  },{
+  }))(Global.id)),NewLY.bindWrap(function(aF)
+  {
+   var p$6;
+   p$6=aF.f.$==0?aF.p.$==1?{
+    $:0,
+    $0:View$1.Apply(aF.f.$0,View$1.Const(aF.p.$0))
+   }:{
+    $:0,
+    $0:View$1.Apply(aF.f.$0,aF.p.$0)
+   }:aF.p.$==0?{
+    $:0,
+    $0:View$1.Apply(View$1.Const(aF.f.$0),aF.p.$0)
+   }:{
+    $:1,
+    $0:aF.f.$0(aF.p.$0)
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(vf$3.r,function(f$5)
+   {
+    return Fun.New(f$5,p$6);
+   }));
+  },NewLY.main0().r)),(p$4={
    $:1,
    $0:"main0"
-  }));
-  SC$1.main=(c$4=(c$5=(c$6=(c$7=(c$8=(c$9=(c$10=(c$11=(c$12=Fun.New(NewLY.op_Dereference((Runtime.Curried3(Doc.Element))("h3")),{
-   $:1,
-   $0:List.ofArray([AttrModule.DynamicStyle("color",NewLY.name().get_View())])
-  }),(p={
-   $:1,
-   $0:[(NewLY.extractDoc())("MAIN:")]
-  },Fun.New(c$12.f.$==0?c$12.p.$==1?{
-   $:0,
-   $0:View$1.Apply(c$12.f.$0,View$1.Const(c$12.p.$0))
-  }:{
-   $:0,
-   $0:View$1.Apply(c$12.f.$0,c$12.p.$0)
-  }:c$12.p.$==0?{
-   $:0,
-   $0:View$1.Apply(View$1.Const(c$12.f.$0),c$12.p.$0)
-  }:{
-   $:1,
-   $0:c$12.f.$0(c$12.p.$0)
-  },p))),Fun.New(c$11.f,Val.addDoc(Val.textDoc((f$5=NewLY.main1(),f$5.f.$==0?f$5.p.$==1?{
-   $:0,
-   $0:View$1.Apply(f$5.f.$0,View$1.Const(f$5.p.$0))
-  }:{
-   $:0,
-   $0:View$1.Apply(f$5.f.$0,f$5.p.$0)
-  }:f$5.p.$==0?{
-   $:0,
-   $0:View$1.Apply(View$1.Const(f$5.f.$0),f$5.p.$0)
-  }:{
-   $:1,
-   $0:f$5.f.$0(f$5.p.$0)
-  })),c$11.p))),Fun.New(c$10.f,Val.addDoc(Val.textDoc((f$6=NewLY.main1(),f$6.f.$==0?f$6.p.$==1?{
-   $:0,
-   $0:View$1.Apply(f$6.f.$0,View$1.Const(f$6.p.$0))
-  }:{
-   $:0,
-   $0:View$1.Apply(f$6.f.$0,f$6.p.$0)
-  }:f$6.p.$==0?{
-   $:0,
-   $0:View$1.Apply(View$1.Const(f$6.f.$0),f$6.p.$0)
-  }:{
-   $:1,
-   $0:f$6.f.$0(f$6.p.$0)
-  })),c$10.p))),Fun.New(c$9.f,Val.addDoc((NewLY.extractDoc())(":"),c$9.p))),Fun.New(c$8.f,Val.addDoc((f$7=NewLY.sayHello(),Doc.BindView(function()
+  },P.New(Operators$1.op_BarGreaterGreater(pc$1.r,function(c$14)
   {
-   var m;
-   m=f$7.f.$==0?f$7.p.$==1?{
+   return Fun.New(c$14.f.$==0?c$14.p.$==1?{
     $:0,
-    $0:View$1.Apply(f$7.f.$0,View$1.Const(f$7.p.$0))
+    $0:View$1.Apply(c$14.f.$0,View$1.Const(c$14.p.$0))
    }:{
     $:0,
-    $0:View$1.Apply(f$7.f.$0,f$7.p.$0)
-   }:f$7.p.$==0?{
+    $0:View$1.Apply(c$14.f.$0,c$14.p.$0)
+   }:c$14.p.$==0?{
     $:0,
-    $0:View$1.Apply(View$1.Const(f$7.f.$0),f$7.p.$0)
+    $0:View$1.Apply(View$1.Const(c$14.f.$0),c$14.p.$0)
    }:{
     $:1,
-    $0:f$7.f.$0(f$7.p.$0)
-   };
-   return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-  },AppFramework.mainDocV().get_View())),c$8.p))),Fun.New(c$7.f,Val.addDoc((NewLY.extractDoc())(":"),c$7.p))),Fun.New(c$6.f,Val.addDoc((NewLY.extractDoc())(" Más >> "),c$6.p))),Fun.New(c$5.f,Val.addDoc((f$8=NewLY.sayHello(),Doc.BindView(function()
+    $0:c$14.f.$0(c$14.p.$0)
+   },p$4);
+  }))));
+  SC$1.main=(c$2=(c$3=(c$4=(c$5=(c$6=(c$7=(c$8=(c$9=(c$10=(vf$4=NewLY.op_Dereference((Runtime.Curried3(Doc.Element))("h3")),NewLY.bindWrap(function(extractAts)
   {
-   var m;
-   m=f$8.f.$==0?f$8.p.$==1?{
-    $:0,
-    $0:View$1.Apply(f$8.f.$0,View$1.Const(f$8.p.$0))
-   }:{
-    $:0,
-    $0:View$1.Apply(f$8.f.$0,f$8.p.$0)
-   }:f$8.p.$==0?{
-    $:0,
-    $0:View$1.Apply(View$1.Const(f$8.f.$0),f$8.p.$0)
-   }:{
+   var p$6;
+   p$6={
     $:1,
-    $0:f$8.f.$0(f$8.p.$0)
+    $0:extractAts("color:@{name}; background:red; click=@{AppFramework.Hello}")
    };
-   return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-  },AppFramework.mainDocV().get_View())),c$5.p))),Fun.New(c$4.f,Val.addDoc((NewLY.extractDoc())(" <<"),c$4.p)));
+   return P.New(Operators$1.op_BarGreaterGreater(vf$4.r,function(f$5)
+   {
+    return Fun.New(f$5,p$6);
+   }));
+  },NewLY.extractAtsD())),NewLY.bindWrap(function(extractDoc)
+  {
+   var p$6;
+   p$6={
+    $:1,
+    $0:[extractDoc("MAIN:")]
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(c$10.r,function(c$14)
+   {
+    return Fun.New(c$14.f.$==0?c$14.p.$==1?{
+     $:0,
+     $0:View$1.Apply(c$14.f.$0,View$1.Const(c$14.p.$0))
+    }:{
+     $:0,
+     $0:View$1.Apply(c$14.f.$0,c$14.p.$0)
+    }:c$14.p.$==0?{
+     $:0,
+     $0:View$1.Apply(View$1.Const(c$14.f.$0),c$14.p.$0)
+    }:{
+     $:1,
+     $0:c$14.f.$0(c$14.p.$0)
+    },p$6);
+   }));
+  },NewLY.extractDocD())),NewLY.bindWrap(function(aF)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(Val.textDoc(aF.f.$==0?aF.p.$==1?{
+     $:0,
+     $0:View$1.Apply(aF.f.$0,View$1.Const(aF.p.$0))
+    }:{
+     $:0,
+     $0:View$1.Apply(aF.f.$0,aF.p.$0)
+    }:aF.p.$==0?{
+     $:0,
+     $0:View$1.Apply(View$1.Const(aF.f.$0),aF.p.$0)
+    }:{
+     $:1,
+     $0:aF.f.$0(aF.p.$0)
+    }),c$14.p));
+   },c$9);
+  },NewLY.main1().r)),NewLY.bindWrap(function(aF)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(Val.textDoc(aF.f.$==0?aF.p.$==1?{
+     $:0,
+     $0:View$1.Apply(aF.f.$0,View$1.Const(aF.p.$0))
+    }:{
+     $:0,
+     $0:View$1.Apply(aF.f.$0,aF.p.$0)
+    }:aF.p.$==0?{
+     $:0,
+     $0:View$1.Apply(View$1.Const(aF.f.$0),aF.p.$0)
+    }:{
+     $:1,
+     $0:aF.f.$0(aF.p.$0)
+    }),c$14.p));
+   },c$8);
+  },NewLY.main1().r)),NewLY.bindWrap(function(extractDoc)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(extractDoc(":"),c$14.p));
+   },c$7);
+  },NewLY.extractDocD())),NewLY.bindWrap(function(aF)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(Doc.BindView(function()
+    {
+     var m;
+     m=aF.f.$==0?aF.p.$==1?{
+      $:0,
+      $0:View$1.Apply(aF.f.$0,View$1.Const(aF.p.$0))
+     }:{
+      $:0,
+      $0:View$1.Apply(aF.f.$0,aF.p.$0)
+     }:aF.p.$==0?{
+      $:0,
+      $0:View$1.Apply(View$1.Const(aF.f.$0),aF.p.$0)
+     }:{
+      $:1,
+      $0:aF.f.$0(aF.p.$0)
+     };
+     return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
+    },AppFramework.mainDocV().get_View()),c$14.p));
+   },c$6);
+  },NewLY.sayHello().r)),NewLY.bindWrap(function(extractDoc)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(extractDoc(":"),c$14.p));
+   },c$5);
+  },NewLY.extractDocD())),NewLY.bindWrap(function(extractDoc)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(extractDoc(" Más >> "),c$14.p));
+   },c$4);
+  },NewLY.extractDocD())),NewLY.bindWrap(function(aF)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(Doc.BindView(function()
+    {
+     var m;
+     m=aF.f.$==0?aF.p.$==1?{
+      $:0,
+      $0:View$1.Apply(aF.f.$0,View$1.Const(aF.p.$0))
+     }:{
+      $:0,
+      $0:View$1.Apply(aF.f.$0,aF.p.$0)
+     }:aF.p.$==0?{
+      $:0,
+      $0:View$1.Apply(View$1.Const(aF.f.$0),aF.p.$0)
+     }:{
+      $:1,
+      $0:aF.f.$0(aF.p.$0)
+     };
+     return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
+    },AppFramework.mainDocV().get_View()),c$14.p));
+   },c$3);
+  },NewLY.sayHello().r)),NewLY.bindWrap(function(extractDoc)
+  {
+   return NewLY.unwrapBindWrap(function(c$14)
+   {
+    return Fun.New(c$14.f,Val.addDoc(extractDoc(" <<"),c$14.p));
+   },c$2);
+  },NewLY.extractDocD()));
   SC$1.main2=NewLY.makeAViewDoc(function()
   {
-   return Doc.Element("h4",[AttrModule.Dynamic("style",NewLY.name().get_View())],[Doc.TextNode("MAIN2:"),Doc.TextView(NewLY.name().get_View())]);
+   return Doc.Element("h4",[AttrModule.Dynamic("style",View$1.Map(function($1)
+   {
+    return"color:"+$1;
+   },NewLY.name().get_View()))],[Doc.TextNode("MAIN2:"),Doc.TextView(NewLY.name().get_View())]);
   });
-  SC$1.appFwk=(c$13=Fun.New(NewLY.op_Dereference((Runtime.Curried3(Doc.Element))("div")),{
-   $:1,
-   $0:List.T.Empty
-  }),(p$1={
-   $:1,
-   $0:[(NewLY.extractDoc())("@{AppFramework.AppFwkClient}")]
-  },Fun.New(c$13.f.$==0?c$13.p.$==1?{
-   $:0,
-   $0:View$1.Apply(c$13.f.$0,View$1.Const(c$13.p.$0))
-  }:{
-   $:0,
-   $0:View$1.Apply(c$13.f.$0,c$13.p.$0)
-  }:c$13.p.$==0?{
-   $:0,
-   $0:View$1.Apply(View$1.Const(c$13.f.$0),c$13.p.$0)
-  }:{
-   $:1,
-   $0:c$13.f.$0(c$13.p.$0)
-  },p$1)));
-  SC$1.split=(c$14=Fun.New(NewLY.op_Dereference(Runtime.Curried(LayoutEngineModule.variableSplitter,2,[false,0,50,100])),{
-   $:1,
-   $0:(f$9=NewLY.appFwk(),Doc.BindView(function()
+  SC$1.appFwk=(c$11=(vf$5=NewLY.op_Dereference((Runtime.Curried3(Doc.Element))("div")),NewLY.bindWrap(function(extractAts)
+  {
+   var p$6;
+   p$6={
+    $:1,
+    $0:extractAts("color:@{name}")
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(vf$5.r,function(f$5)
    {
-    var m;
-    m=f$9.f.$==0?f$9.p.$==1?{
+    return Fun.New(f$5,p$6);
+   }));
+  },NewLY.extractAtsD())),NewLY.bindWrap(function(extractDoc)
+  {
+   var p$6;
+   p$6={
+    $:1,
+    $0:[extractDoc("@{AppFramework.AppFwkClient}")]
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(c$11.r,function(c$14)
+   {
+    return Fun.New(c$14.f.$==0?c$14.p.$==1?{
      $:0,
-     $0:View$1.Apply(f$9.f.$0,View$1.Const(f$9.p.$0))
+     $0:View$1.Apply(c$14.f.$0,View$1.Const(c$14.p.$0))
     }:{
      $:0,
-     $0:View$1.Apply(f$9.f.$0,f$9.p.$0)
-    }:f$9.p.$==0?{
+     $0:View$1.Apply(c$14.f.$0,c$14.p.$0)
+    }:c$14.p.$==0?{
      $:0,
-     $0:View$1.Apply(View$1.Const(f$9.f.$0),f$9.p.$0)
+     $0:View$1.Apply(View$1.Const(c$14.f.$0),c$14.p.$0)
     }:{
      $:1,
-     $0:f$9.f.$0(f$9.p.$0)
-    };
-    return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-   },AppFramework.mainDocV().get_View()))
-  }),(p$2={
-   $:1,
-   $0:(f$10=NewLY.main(),Doc.BindView(function()
+     $0:c$14.f.$0(c$14.p.$0)
+    },p$6);
+   }));
+  },NewLY.extractDocD()));
+  SC$1.split=(c$12=(vf$6=NewLY.op_Dereference(Runtime.Curried(LayoutEngineModule.variableSplitter,2,[false,0,50,100])),NewLY.bindWrap(function(aF)
+  {
+   var p$6;
+   p$6={
+    $:1,
+    $0:Doc.BindView(function()
+    {
+     var m;
+     m=aF.f.$==0?aF.p.$==1?{
+      $:0,
+      $0:View$1.Apply(aF.f.$0,View$1.Const(aF.p.$0))
+     }:{
+      $:0,
+      $0:View$1.Apply(aF.f.$0,aF.p.$0)
+     }:aF.p.$==0?{
+      $:0,
+      $0:View$1.Apply(View$1.Const(aF.f.$0),aF.p.$0)
+     }:{
+      $:1,
+      $0:aF.f.$0(aF.p.$0)
+     };
+     return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
+    },AppFramework.mainDocV().get_View())
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(vf$6.r,function(f$5)
    {
-    var m;
-    m=f$10.f.$==0?f$10.p.$==1?{
+    return Fun.New(f$5,p$6);
+   }));
+  },NewLY.appFwk().r)),NewLY.bindWrap(function(aF)
+  {
+   var p$6;
+   p$6={
+    $:1,
+    $0:Doc.BindView(function()
+    {
+     var m;
+     m=aF.f.$==0?aF.p.$==1?{
+      $:0,
+      $0:View$1.Apply(aF.f.$0,View$1.Const(aF.p.$0))
+     }:{
+      $:0,
+      $0:View$1.Apply(aF.f.$0,aF.p.$0)
+     }:aF.p.$==0?{
+      $:0,
+      $0:View$1.Apply(View$1.Const(aF.f.$0),aF.p.$0)
+     }:{
+      $:1,
+      $0:aF.f.$0(aF.p.$0)
+     };
+     return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
+    },AppFramework.mainDocV().get_View())
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(c$12.r,function(c$14)
+   {
+    return Fun.New(c$14.f.$==0?c$14.p.$==1?{
      $:0,
-     $0:View$1.Apply(f$10.f.$0,View$1.Const(f$10.p.$0))
+     $0:View$1.Apply(c$14.f.$0,View$1.Const(c$14.p.$0))
     }:{
      $:0,
-     $0:View$1.Apply(f$10.f.$0,f$10.p.$0)
-    }:f$10.p.$==0?{
+     $0:View$1.Apply(c$14.f.$0,c$14.p.$0)
+    }:c$14.p.$==0?{
      $:0,
-     $0:View$1.Apply(View$1.Const(f$10.f.$0),f$10.p.$0)
+     $0:View$1.Apply(View$1.Const(c$14.f.$0),c$14.p.$0)
     }:{
      $:1,
-     $0:f$10.f.$0(f$10.p.$0)
-    };
-    return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-   },AppFramework.mainDocV().get_View()))
-  },Fun.New(c$14.f.$==0?c$14.p.$==1?{
-   $:0,
-   $0:View$1.Apply(c$14.f.$0,View$1.Const(c$14.p.$0))
-  }:{
-   $:0,
-   $0:View$1.Apply(c$14.f.$0,c$14.p.$0)
-  }:c$14.p.$==0?{
-   $:0,
-   $0:View$1.Apply(View$1.Const(c$14.f.$0),c$14.p.$0)
-  }:{
-   $:1,
-   $0:c$14.f.$0(c$14.p.$0)
-  },p$2)));
-  SC$1.split2=(c$15=Fun.New(NewLY.op_Dereference(Runtime.Curried(LayoutEngineModule.variableSplitter,2,[false,0,50,100])),{
-   $:1,
-   $0:(f$11=NewLY.appFwk(),Doc.BindView(function()
+     $0:c$14.f.$0(c$14.p.$0)
+    },p$6);
+   }));
+  },NewLY.main().r));
+  SC$1.split2=(pc$2=(vf$7=NewLY.op_Dereference(Runtime.Curried(LayoutEngineModule.variableSplitter,2,[false,0,50,100])),NewLY.bindWrap(function(aF)
+  {
+   var p$6;
+   p$6={
+    $:1,
+    $0:Doc.BindView(function()
+    {
+     var m;
+     m=aF.f.$==0?aF.p.$==1?{
+      $:0,
+      $0:View$1.Apply(aF.f.$0,View$1.Const(aF.p.$0))
+     }:{
+      $:0,
+      $0:View$1.Apply(aF.f.$0,aF.p.$0)
+     }:aF.p.$==0?{
+      $:0,
+      $0:View$1.Apply(View$1.Const(aF.f.$0),aF.p.$0)
+     }:{
+      $:1,
+      $0:aF.f.$0(aF.p.$0)
+     };
+     return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
+    },AppFramework.mainDocV().get_View())
+   };
+   return P.New(Operators$1.op_BarGreaterGreater(vf$7.r,function(f$5)
    {
-    var m;
-    m=f$11.f.$==0?f$11.p.$==1?{
-     $:0,
-     $0:View$1.Apply(f$11.f.$0,View$1.Const(f$11.p.$0))
-    }:{
-     $:0,
-     $0:View$1.Apply(f$11.f.$0,f$11.p.$0)
-    }:f$11.p.$==0?{
-     $:0,
-     $0:View$1.Apply(View$1.Const(f$11.f.$0),f$11.p.$0)
-    }:{
-     $:1,
-     $0:f$11.f.$0(f$11.p.$0)
-    };
-    return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-   },AppFramework.mainDocV().get_View()))
-  }),(p$3={
+    return Fun.New(f$5,p$6);
+   }));
+  },NewLY.appFwk().r)),(p$5={
    $:1,
    $0:NewLY.main2()
-  },Fun.New(c$15.f.$==0?c$15.p.$==1?{
-   $:0,
-   $0:View$1.Apply(c$15.f.$0,View$1.Const(c$15.p.$0))
-  }:{
-   $:0,
-   $0:View$1.Apply(c$15.f.$0,c$15.p.$0)
-  }:c$15.p.$==0?{
-   $:0,
-   $0:View$1.Apply(View$1.Const(c$15.f.$0),c$15.p.$0)
-  }:{
-   $:1,
-   $0:c$15.f.$0(c$15.p.$0)
-  },p$3)));
-  AppFramework.addPlugIn((b$2=AppFramework.plugin(),b$2.AddDoc(b$2.AddDoc(b$2.AddDoc(b$2.AddDoc(b$2.AddDoc(b$2.AddDoc(b$2.AddVar(b$2.AddVar(b$2.Name(b$2.Yield(),"NewLY"),"name",NewLY.name()),"a",NewLY.aString()),"split",Lazy.Create(function()
+  },P.New(Operators$1.op_BarGreaterGreater(pc$2.r,function(c$14)
   {
-   var f$13;
-   f$13=NewLY.split();
-   return Doc.BindView(function()
-   {
-    var m;
-    m=f$13.f.$==0?f$13.p.$==1?{
-     $:0,
-     $0:View$1.Apply(f$13.f.$0,View$1.Const(f$13.p.$0))
-    }:{
-     $:0,
-     $0:View$1.Apply(f$13.f.$0,f$13.p.$0)
-    }:f$13.p.$==0?{
-     $:0,
-     $0:View$1.Apply(View$1.Const(f$13.f.$0),f$13.p.$0)
-    }:{
-     $:1,
-     $0:f$13.f.$0(f$13.p.$0)
-    };
-    return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-   },AppFramework.mainDocV().get_View());
+   return Fun.New(c$14.f.$==0?c$14.p.$==1?{
+    $:0,
+    $0:View$1.Apply(c$14.f.$0,View$1.Const(c$14.p.$0))
+   }:{
+    $:0,
+    $0:View$1.Apply(c$14.f.$0,c$14.p.$0)
+   }:c$14.p.$==0?{
+    $:0,
+    $0:View$1.Apply(View$1.Const(c$14.f.$0),c$14.p.$0)
+   }:{
+    $:1,
+    $0:c$14.f.$0(c$14.p.$0)
+   },p$5);
+  }))));
+  SC$1.pName=UoM$1.Tag$3("NewLY");
+  AppFramework.addPlugIn((b$7=AppFramework.plugin(),b$7.AddDoc(b$7.AddDoc(b$7.AddDoc(b$7.AddDoc(b$7.AddDoc(b$7.AddDoc(b$7.AddVar(b$7.AddVar(b$7.Name(b$7.Yield(),UoM$1.Untag$3(NewLY.pName())),"name",NewLY.name()),"a",NewLY.aString()),"split",Lazy.Create(function()
+  {
+   var p$6;
+   p$6=NewLY.split();
+   return NewLY.callDocPFn(NewLY.pName(),p$6);
   })),"split2",Lazy.Create(function()
   {
-   var f$13;
-   f$13=NewLY.split2();
-   return Doc.BindView(function()
-   {
-    var m;
-    m=f$13.f.$==0?f$13.p.$==1?{
-     $:0,
-     $0:View$1.Apply(f$13.f.$0,View$1.Const(f$13.p.$0))
-    }:{
-     $:0,
-     $0:View$1.Apply(f$13.f.$0,f$13.p.$0)
-    }:f$13.p.$==0?{
-     $:0,
-     $0:View$1.Apply(View$1.Const(f$13.f.$0),f$13.p.$0)
-    }:{
-     $:1,
-     $0:f$13.f.$0(f$13.p.$0)
-    };
-    return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-   },AppFramework.mainDocV().get_View());
+   var p$6;
+   p$6=NewLY.split2();
+   return NewLY.callDocPFn(NewLY.pName(),p$6);
   })),"main",Lazy.Create(function()
   {
-   var f$13;
-   f$13=NewLY.main();
-   return Doc.BindView(function()
-   {
-    var m;
-    m=f$13.f.$==0?f$13.p.$==1?{
-     $:0,
-     $0:View$1.Apply(f$13.f.$0,View$1.Const(f$13.p.$0))
-    }:{
-     $:0,
-     $0:View$1.Apply(f$13.f.$0,f$13.p.$0)
-    }:f$13.p.$==0?{
-     $:0,
-     $0:View$1.Apply(View$1.Const(f$13.f.$0),f$13.p.$0)
-    }:{
-     $:1,
-     $0:f$13.f.$0(f$13.p.$0)
-    };
-    return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-   },AppFramework.mainDocV().get_View());
+   var p$6;
+   p$6=NewLY.main();
+   return NewLY.callDocPFn(NewLY.pName(),p$6);
   })),"main2",Lazy.Create(NewLY.main2)),"sayHello",Lazy.Create(function()
   {
-   var f$13;
-   f$13=NewLY.sayHello();
-   return Doc.BindView(function()
-   {
-    var m;
-    m=f$13.f.$==0?f$13.p.$==1?{
-     $:0,
-     $0:View$1.Apply(f$13.f.$0,View$1.Const(f$13.p.$0))
-    }:{
-     $:0,
-     $0:View$1.Apply(f$13.f.$0,f$13.p.$0)
-    }:f$13.p.$==0?{
-     $:0,
-     $0:View$1.Apply(View$1.Const(f$13.f.$0),f$13.p.$0)
-    }:{
-     $:1,
-     $0:f$13.f.$0(f$13.p.$0)
-    };
-    return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-   },AppFramework.mainDocV().get_View());
+   var p$6;
+   p$6=NewLY.sayHello();
+   return NewLY.callDocPFn(NewLY.pName(),p$6);
   })),"sayHello2",Lazy.Create(function()
   {
-   var f$13;
-   f$13=NewLY.sayHello();
-   return Doc.BindView(function()
-   {
-    var m;
-    m=f$13.f.$==0?f$13.p.$==1?{
-     $:0,
-     $0:View$1.Apply(f$13.f.$0,View$1.Const(f$13.p.$0))
-    }:{
-     $:0,
-     $0:View$1.Apply(f$13.f.$0,f$13.p.$0)
-    }:f$13.p.$==0?{
-     $:0,
-     $0:View$1.Apply(View$1.Const(f$13.f.$0),f$13.p.$0)
-    }:{
-     $:1,
-     $0:f$13.f.$0(f$13.p.$0)
-    };
-    return m.$==0?Doc.BindView(Global.id,m.$0):m.$0;
-   },AppFramework.mainDocV().get_View());
+   var p$6;
+   p$6=NewLY.sayHello();
+   return NewLY.callDocPFn(NewLY.pName(),p$6);
   }))));
+  SC$1.drag=DragInfo.DragNone;
+  SC$1.TemplateFileName="D:\\Abe\\CIPHERWorkspace\\FSharpStation\\website\\Templates.html";
+  SC$1.snippetsLM=ListModel$1.Create(function(e)
+  {
+   return e.snpId;
+  },List.T.Empty);
+  SC$1.collapsedV=Var$1.Create$1(new FSharpSet.New$1(null));
+  SC$1.codeSnippetIdV=Var$1.Create$1(null);
+  SC$1.searchFor=Var$1.Create$1("");
+  SC$1.allPredecessors=function(s$1)
+  {
+   return SnippetModule.allPredecessors(t$18,s$1);
+  };
+  SC$1.indPredIds=function(t$20)
+  {
+   return SnippetModule.indirectPredecessorIds(t$19,t$20[0],t$20[1],t$20[2]);
+  };
+  SC$1.allCodePredsW=View$1.Map(function($1)
+  {
+   var sid,m;
+   return $1!=null&&$1.$==1?(sid=$1.$0,(m=SnippetsUI.snippetsLM().TryFindByKey(sid),m!=null&&m.$==1?(SnippetsUI.allPredecessors())(m.$0):new FSharpSet.New$1(null))):new FSharpSet.New$1(null);
+  },SnippetsUI.codeSnippetIdV().get_View());
+  SC$1.allCodePredIdsW=View$1.Map(function($1)
+  {
+   return Seq$1.map(function(snp)
+   {
+    return snp.snpId;
+   },$1);
+  },SnippetsUI.allCodePredsW());
+  SC$1.shdDef=SnippetHierData.New(0,0,false,true,[],null);
+  SC$1.snpIdParentsW=(v=View$1.Map(function($1)
+  {
+   return Arrays.ofSeq(Seq$1.map(function(snp)
+   {
+    return[snp.snpId,snp.snpParentIdO];
+   },$1));
+  },SnippetsUI.snippetsLM().v),(prior=[Var$1.Create$1(null)],(View$1.Sink(function(v$1)
+  {
+   if(!Unchecked.Equals(prior[0].Get(),v$1))
+    prior[0].Set(v$1);
+  },v),prior[0].get_View())));
+  SC$1.processHierW=(b$8=View$1.get_Do(),View$1.Bind(function(a$1)
+  {
+   return View$1.Bind(function(a$2)
+   {
+    return View$1.Const(SnippetsUI.processHier(a$1,a$2));
+   },SnippetsUI.collapsedV().get_View());
+  },SnippetsUI.snpIdParentsW()));
+  SC$1.search=(b$9=View$1.get_Do(),View$1.Bind(function(a$1)
+  {
+   function visibleF(snp)
+   {
+    var o,o$1,k;
+    o=(o$1=(k=snp.snpId,function(d)
+    {
+     var res;
+     res=null;
+     return d.TryGetValue(k,{
+      get:function()
+      {
+       return res;
+      },
+      set:function(v$1)
+      {
+       res=v$1;
+      }
+     })?{
+      $:1,
+      $0:res
+     }:null;
+    }(a$1)),o$1==null?null:{
+     $:1,
+     $0:o$1.$0.visible
+    });
+    return o==null||o.$0;
+   }
+   return View$1.Bind(function(a$2)
+   {
+    return a$2===""?View$1.Const(visibleF):View$1.Bind(function(a$3)
+    {
+     return View$1.Bind(function(a$4)
+     {
+      return a$2==="."?View$1.Const(function(snp)
+      {
+       return(Unchecked.Equals(a$4,{
+        $:1,
+        $0:snp.snpId
+       })||Seq$1.contains(snp.snpId,a$3))&&visibleF(snp);
+      }):View$1.Const(function(snp)
+      {
+       return snp.snpName.indexOf(a$2)!=-1||snp.snpContent.indexOf(a$2)!=-1;
+      });
+     },SnippetsUI.codeSnippetIdV().get_View());
+    },SnippetsUI.allCodePredIdsW());
+   },SnippetsUI.searchFor().get_View());
+  },SnippetsUI.processHierW()));
+  SC$1.snippetList=LM.getDocFor(SnippetsUI.snippetsLM(),SnippetModule.defaultSnippet(),function()
+  {
+   return SnippetModule.New("","",null);
+  },{
+   $:1,
+   $0:SnippetsUI.search()
+  },function(l)
+  {
+   return SnippetsUI.calcUI(SnippetsUI.wrapNothing,true,l);
+  });
+  View$1.Sink(function(a$1)
+  {
+   var sid;
+   if(a$1!=null&&a$1.$==1)
+    {
+     sid=a$1.$0;
+     View$1.Get(function(allCodePredIds)
+     {
+      if(!Unchecked.Equals(SnippetsUI.codeSnippetIdV().Get(),{
+       $:1,
+       $0:sid
+      }))
+       if(!Seq$1.contains(sid,allCodePredIds))
+        SnippetsUI.codeSnippetIdV().Set({
+         $:1,
+         $0:sid
+        });
+     },SnippetsUI.allCodePredIdsW());
+    }
+  },SnippetsUI.snippetList().selV.get_View());
+  SC$1.currentSnippetV=Var$1.Lens(SnippetsUI.snippetList().get_CurrentV(),Global.id,function(a$1,x$2)
+  {
+   return x$2;
+  });
+  SC$1.currentSnippetNameV=Var$1.Lens(SnippetsUI.currentSnippetV(),function($1)
+  {
+   return $1.snpName;
+  },function($1,$2)
+  {
+   return Snippet.New($1.snpId,$2,$1.snpContent,$1.snpParentIdO,$1.snpPredIds,$1.snpProperties,$1.snpModified);
+  });
+  SC$1.currentSnippetContentV=Var$1.Lens(SnippetsUI.currentSnippetV(),function($1)
+  {
+   return $1.snpContent;
+  },function($1,$2)
+  {
+   return Snippet.New($1.snpId,$1.snpName,$2,$1.snpParentIdO,$1.snpPredIds,$1.snpProperties,$1.snpModified);
+  });
+  SC$1.curSnp=(b$10=AF.plugin(),b$10.AddVar(b$10.AddVar(b$10.Yield(),"name",SnippetsUI.currentSnippetNameV()),"content",SnippetsUI.currentSnippetContentV()));
+  SC$1.monaco=(i$2=SnippetsUI.monacoNew(Var$1.Lens(SnippetsUI.currentSnippetV(),function($1)
+  {
+   return $1.snpContent;
+  },function($1,$2)
+  {
+   return Snippet.New($1.snpId,$1.snpName,$2,$1.snpParentIdO,$1.snpPredIds,$1.snpProperties,$1.snpModified);
+  })),GenEditor$1.New(i$2["var"],i$2.disabled,View$1.Const([]),i$2.onChange,i$2.onRender,null,null,null,i$2.editorO,i$2.editorHook));
+  SC$1.parseW=View$1.Map((f$1=(g$1=function(s$1)
+  {
+   return Seq$1.choose(c$13,s$1);
+  },function(x$2)
+  {
+   return g$1(f$4(x$2));
+  }),function(x$2)
+  {
+   return g$5(f$1(x$2));
+  }),SnippetsUI.currentSnippetContentV().get_View());
+  AF.addPlugIn2((b$11=AppFramework.plugin(),b$11.AddAct(b$11.AddAct(b$11.AddAct(b$11.AddAct(b$11.AddAct(b$11.AddAct(b$11.AddAct(b$11.Merge(b$11.Merge(b$11.AddDoc(b$11.AddViw(b$11.AddVar(b$11.Name(b$11.Yield(),"Snippets"),"searchFor",SnippetsUI.searchFor()),"parseOut",SnippetsUI.parseW()),"editor",Lazy.Create(function()
+  {
+   return Doc.Element("div",[],[GenEditor.generateDoc(SnippetsUI.monaco())]);
+  })),"snippets_",SnippetsUI.snippetList().PlugIn(SnippetsUI.selectorLensGuidId)),"curSnp_",SnippetsUI.curSnp()),"LoadSnippets",function()
+  {
+   SaveLoad.loadTextFile(self.document.getElementById("LoadSnippets").firstElementChild.firstElementChild.firstElementChild.firstElementChild);
+  }),"SaveSnippets",function()
+  {
+   SaveLoad.saveAs();
+  }),"IndentIn",function()
+  {
+   SnippetsUI.indentIn();
+  }),"IndentOut",function()
+  {
+   SnippetsUI.indentOut();
+  }),"AddSnippet",function()
+  {
+   SnippetsUI.addSnippet();
+  }),"DeleteSnippet",function()
+  {
+   SnippetsUI.deleteSnippet();
+  }),"ParseNewLY",function()
+  {
+   SnippetsUI.parseNewLY();
+  })));
+  LayoutEngine.addLayout0(LayoutEngineModule.newLyt("lytTarget","\r\n            main horizontal 10-50-70 part1 part2\r\n            \r\n            part1 div \"\" \r\n            : h1 \"\" \"Demo123 \" message\r\n            :: div \"\" \"Message:\"\r\n            :: textarea message \"height:200px;width:500px\"\r\n            \r\n            part2 div \"\" lytTarget.Layout\r\n            \r\n            message Var \"Hello\"     \r\n                "));
+  LayoutEngine.addLayout0(LayoutEngineModule.newLyt("SnippetsLyt","\r\n                    split horizontal 0-50-100 AppFramework.AppFwkClient main\r\n                    main vertical 0-25-100 list snippet\r\n                    SearchFor   Doc InputLabel \"\" \"Search\" Snippets.searchFor\r\n                    File        Doc InputFile  \"id=LoadSnippets\" \"Open File\" Snippets.LoadSnippets \"\"\r\n                    list div \"display: flex;flex-direction: column\" File\r\n                    : button \"click=@{Snippets.AddSnippet}\"    \"Add New Snippet\"\r\n                    : button \"click=@{Snippets.DeleteSnippet}\" \"Delete Snippet\"\r\n                    : button \"click=@{Snippets.IndentIn}\"      \"Indent in\"\r\n                    : button \"click=@{Snippets.IndentOut}\"     \"Indent out\"\r\n                    : div    \"\" SearchFor \r\n                    : div \"overflow:auto;width:100%;max-width:100%\" Snippets.snippets_list\r\n                    snippet div \"display: flex;flex-direction: column\"\r\n                    : div    \"\" Snippets.snippets_sel\r\n                    : Doc    InputLabel \"\" \"Name:\" Snippets.curSnp_name\r\n                    : div \"height:100%;class=relative\" Snippets.editor                \r\n                "));
+  LayoutEngine.addLayout0(LayoutEngineModule.newLyt("lytDemo","\r\n            SetTarget Action AppFramework.SetVar     \"lytTarget.Layout\"         \"@{target}\" \r\n            SetMain2  Action AppFramework.SetVar     \"AppFramework.mainDocV\"    \"lytDemo.main2\"\r\n            SetMain   Action AppFramework.SetVar     \"AppFramework.mainDocV\"    \"lytDemo.main\"\r\n            \r\n            main2 vertical 0-50-100 Left2 lytTarget.main            \r\n            Left2 vertical 0-25-100 list snippet\r\n            gotoMain  button \"click=@{SetMain};width:16px\" \"<<\"\r\n            \r\n            main vertical 0-50-100 Left lytTarget.main\r\n            Left div \"display:flex;flex-direction:column\" gotoMain2 snippet\r\n            gotoMain2 button \"click=@{SetMain2};width:16px\" \">>\"\r\n            \r\n            list div \"display: flex;flex-direction: column\" gotoMain File\r\n            : div    \"margin:5px\" SearchFor \r\n            : Concat buttons\r\n            : div \"overflow:auto;width:100%;max-width:calc(100% - 10px)\" Snippets.snippets_list\r\n            : ul \"margin:3px\"\r\n            :: button \"click=@{Snippets.AddSnippet}   ;title=Add New Snippet\" \"+\"\r\n            :: button \"margin-left:20px;click=@{Snippets.DeleteSnippet};title=Delete  Snippet\" \"x\"\r\n            \r\n            snippet div \"display: flex;flex-direction: column;flex:1\" Trigger\r\n            : button \"click=@{SetTarget}\"  \"Apply\"\r\n            : button \"click=@{Snippets.ParseNewLY}\" \"Apply NewLY\"\r\n            : div    \"click=@{SetTarget}\" Snippets.snippets_sel\r\n            : Doc    InputLabel \"\" \"Name:\" Snippets.curSnp_name\r\n            : div \"height:100%;class=relative;flex:1\" Snippets.editor            \r\n            : textarea   Snippets.parseOut \"height:7em\"\r\n            \r\n            buttons ul \"\"\r\n            : div \"margin:3px\"\r\n            :: button \"click=@{Snippets.IndentOut};title=indent out\"     \"<--\"\r\n            :: button \"click=@{Snippets.IndentIn};title=indent in\"       \"--> \"\r\n            \r\n            SearchFor   Doc InputLabel \"\" \"Search\" Snippets.searchFor\r\n            \r\n            File span \"class=input-group;margin:5px;id=LoadSnippets\"\r\n            : div \"class=input-group-btn\"\r\n            :: label \"class=btn btn-info\" \"Load File\"\r\n            ::: div \"\"\r\n            :::: input \"class=form-control;type=file;display: none;change=@{Snippets.LoadSnippets}\" \r\n            :: label \"class=btn btn-primary;click=@{Snippets.SaveSnippets}\" \"Save File\"\r\n            \r\n            Trigger   Doc    AppFramework.TrigAction Snippets.snippets_sel lytDemo.SetTarget\r\n            target    View \"n => n.includes('main ')?n:'main Contact \"\" \"\"'\" Snippets.curSnp_content\r\n                "));
+ };
+ testing_GeneratedPrintf.p=function($1)
+ {
+  return $1.$==1?"VConst "+testing_GeneratedPrintf.p$2($1.$0):"VView "+testing_GeneratedPrintf.p$1($1.$0);
+ };
+ testing_GeneratedPrintf.p$2=function($1)
+ {
+  return $1.$==1?"Choice2Of2 "+GeneratedPrintf.p($1.$0):"Choice1Of2 "+Utils.prettyPrint($1.$0);
+ };
+ testing_GeneratedPrintf.p$1=function($1)
+ {
+  return"View <fun>";
+ };
+ testing_GeneratedPrintf.p$3=function($1)
+ {
+  return $1.$==5?"EnPlgRef "+("("+Utils.prettyPrint($1.$0[0])+", "+testing_GeneratedPrintf.p$25($1.$0[1])+")"):$1.$==4?"EnPlgDef "+testing_GeneratedPrintf.p$24($1.$0):$1.$==3?"EnViwDef "+testing_GeneratedPrintf.p$23($1.$0):$1.$==2?"EnVarDef "+testing_GeneratedPrintf.p$22($1.$0):$1.$==1?"EnActDef "+testing_GeneratedPrintf.p$21($1.$0):"EnDocDef "+testing_GeneratedPrintf.p$4($1.$0);
+ };
+ testing_GeneratedPrintf.p$25=function($1)
+ {
+  return $1.$==4?"RPlg":$1.$==3?"RAct":$1.$==2?"RViw":$1.$==1?"RVar":"RDoc";
+ };
+ testing_GeneratedPrintf.p$24=function($1)
+ {
+  return"PlgDef "+Utils.prettyPrint($1.$0);
+ };
+ testing_GeneratedPrintf.p$23=function($1)
+ {
+  return"ViwDef "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$17($2);
+  },$1.$0);
+ };
+ testing_GeneratedPrintf.p$22=function($1)
+ {
+  return"VarDef "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$11($2);
+  },$1.$0);
+ };
+ testing_GeneratedPrintf.p$21=function($1)
+ {
+  return"ActDef ("+testing_GeneratedPrintf.p$9($1.$0)+", "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$17($2);
+  },$1.$1)+")";
+ };
+ testing_GeneratedPrintf.p$4=function($1)
+ {
+  return $1.$==6?"DcElement "+testing_GeneratedPrintf.p$20($1.$0):$1.$==5?"DcConcat "+testing_GeneratedPrintf.p$18($1.$0):$1.$==4?"DcDocF "+testing_GeneratedPrintf.p$16($1.$0):$1.$==3?"DcTextArea "+testing_GeneratedPrintf.p$15($1.$0):$1.$==2?"DcInput "+testing_GeneratedPrintf.p$14($1.$0):$1.$==1?"DcButton "+testing_GeneratedPrintf.p$8($1.$0):"DcSplitter "+testing_GeneratedPrintf.p$5($1.$0);
+ };
+ testing_GeneratedPrintf.p$20=function($1)
+ {
+  return"ElementDef ("+Utils.prettyPrint($1.$0)+", "+Utils.printArray(function($2)
+  {
+   return testing_GeneratedPrintf.p$10($2);
+  },$1.$1)+", "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$19($2);
+  },$1.$2)+")";
+ };
+ testing_GeneratedPrintf.p$18=function($1)
+ {
+  return"ConcatDef "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$19($2);
+  },$1.$0);
+ };
+ testing_GeneratedPrintf.p$19=function($1)
+ {
+  return $1.$==3?"NdViwRef "+testing_GeneratedPrintf.p$13($1.$0):$1.$==2?"NdVarRef "+testing_GeneratedPrintf.p$12($1.$0):$1.$==1?"NdDocRef "+testing_GeneratedPrintf.p$7($1.$0):"NdTextValL "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$11($2);
+  },$1.$0);
+ };
+ testing_GeneratedPrintf.p$16=function($1)
+ {
+  return"DocFDef ("+testing_GeneratedPrintf.p$7($1.$0)+", "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$17($2);
+  },$1.$1)+")";
+ };
+ testing_GeneratedPrintf.p$17=function($1)
+ {
+  return $1.$==4?"PrActRef "+testing_GeneratedPrintf.p$9($1.$0):$1.$==3?"PrViwRef "+testing_GeneratedPrintf.p$13($1.$0):$1.$==2?"PrVarRef "+testing_GeneratedPrintf.p$12($1.$0):$1.$==1?"PrDocRef "+testing_GeneratedPrintf.p$7($1.$0):"PrTextValL "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$11($2);
+  },$1.$0);
+ };
+ testing_GeneratedPrintf.p$15=function($1)
+ {
+  return"TextAreaDef ("+testing_GeneratedPrintf.p$12($1.$0)+", "+Utils.printArray(function($2)
+  {
+   return testing_GeneratedPrintf.p$10($2);
+  },$1.$1)+")";
+ };
+ testing_GeneratedPrintf.p$14=function($1)
+ {
+  return"InputDef ("+testing_GeneratedPrintf.p$12($1.$0)+", "+Utils.printArray(function($2)
+  {
+   return testing_GeneratedPrintf.p$10($2);
+  },$1.$1)+")";
+ };
+ testing_GeneratedPrintf.p$8=function($1)
+ {
+  return"ButtonDef ("+testing_GeneratedPrintf.p$9($1.$0)+", "+Utils.printArray(function($2)
+  {
+   return testing_GeneratedPrintf.p$10($2);
+  },$1.$1)+", "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$11($2);
+  },$1.$2)+")";
+ };
+ testing_GeneratedPrintf.p$10=function($1)
+ {
+  return $1.$==2?"AtAct ("+Utils.prettyPrint($1.$0)+", "+testing_GeneratedPrintf.p$9($1.$1)+")":$1.$==1?"AtAttr ("+Utils.prettyPrint($1.$0)+", "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$11($2);
+  },$1.$1)+")":"AtStyle ("+Utils.prettyPrint($1.$0)+", "+Utils.printList(function($2)
+  {
+   return testing_GeneratedPrintf.p$11($2);
+  },$1.$1)+")";
+ };
+ testing_GeneratedPrintf.p$11=function($1)
+ {
+  return $1.$==2?"TvViwRef "+testing_GeneratedPrintf.p$13($1.$0):$1.$==1?"TvVarRef "+testing_GeneratedPrintf.p$12($1.$0):"TvConst "+Utils.prettyPrint($1.$0);
+ };
+ testing_GeneratedPrintf.p$13=function($1)
+ {
+  return"ViwRef "+LayoutEngine_GeneratedPrintf.p$3($1.$0);
+ };
+ testing_GeneratedPrintf.p$12=function($1)
+ {
+  return"VarRef "+LayoutEngine_GeneratedPrintf.p$3($1.$0);
+ };
+ testing_GeneratedPrintf.p$9=function($1)
+ {
+  return"ActRef "+LayoutEngine_GeneratedPrintf.p$3($1.$0);
+ };
+ testing_GeneratedPrintf.p$5=function($1)
+ {
+  return"SplitterDef ("+Utils.prettyPrint($1.$0)+", "+testing_GeneratedPrintf.p$6($1.$1)+", "+testing_GeneratedPrintf.p$7($1.$2)+", "+testing_GeneratedPrintf.p$7($1.$3)+")";
+ };
+ testing_GeneratedPrintf.p$7=function($1)
+ {
+  return"DocRef "+LayoutEngine_GeneratedPrintf.p$3($1.$0);
+ };
+ testing_GeneratedPrintf.p$6=function($1)
+ {
+  return $1.$==1?"Variable ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+", "+Utils.prettyPrint($1.$2)+")":"Fixed ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+")";
+ };
+ testing_Templates.snippet=function(h)
+ {
+  Templates.LoadLocalTemplates("templates");
+  return h?Templates.NamedTemplate("templates",{
+   $:1,
+   $0:"snippet"
+  },h):void 0;
  };
  Runtime.OnLoad(function()
  {
-  NewLY.mainProgram();
+  SnippetsUI.main();
  });
 }());

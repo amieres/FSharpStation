@@ -1,4 +1,5 @@
 #nowarn "3242"
+#nowarn "42"
 ////-d:FSharpStation1572445936800 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
@@ -25,6 +26,7 @@
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\LayoutEngine\bin\LayoutEngine.dll"
 //#nowarn "3242"
+//#nowarn "42"
 /// Root namespace for all code
 //#define FSharpStation1572445936800
 #if INTERACTIVE
@@ -98,6 +100,71 @@ namespace FsRoot
         module Library = 
             let Error = Result.Error
         
+            let [<Inline>] inline swap f a b = f b a
+            
+            /// swap: for use with operators: [1..5] |> List.map (__ (/) 2)
+            let [<Inline>] inline __   f a b = f b a
+            
+            /// taken from http://fssnip.net/7UH/title/Generalized-Units-of-Measure-Revisited-using-method-overloading
+            //#nowarn "42"
+            [<AutoOpen>]
+            module UoM = 
+            
+                open System
+            
+                [<MeasureAnnotatedAbbreviation>] type bool<          [<Measure>] 'm> = bool
+                [<MeasureAnnotatedAbbreviation>] type uint64<        [<Measure>] 'm> = uint64
+                [<MeasureAnnotatedAbbreviation>] type Guid<          [<Measure>] 'm> = Guid
+                [<MeasureAnnotatedAbbreviation>] type string<        [<Measure>] 'm> = string
+                [<MeasureAnnotatedAbbreviation>] type TimeSpan<      [<Measure>] 'm> = TimeSpan
+                [<MeasureAnnotatedAbbreviation>] type DateTime<      [<Measure>] 'm> = DateTime
+                [<MeasureAnnotatedAbbreviation>] type DateTimeOffset<[<Measure>] 'm> = DateTimeOffset
+            
+                module private Unsafe = let inline cast<'a, 'b> (a : 'a) : 'b = (# "" a : 'b #)
+            
+                type UoM =
+                    static member inline Tag<  [<Measure>]'m                 > (x : bool               ) : bool<          'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : int                ) : int<           'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : int64              ) : int64<         'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : uint64             ) : uint64<        'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : float              ) : float<         'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : decimal            ) : decimal<       'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : Guid               ) : Guid<          'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : string             ) : string<        'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : TimeSpan           ) : TimeSpan<      'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : DateTime           ) : DateTime<      'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : DateTimeOffset     ) : DateTimeOffset<'m > = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : bool<          'm >) : bool                = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : int<           'm >) : int                 = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : int64<         'm >) : int64               = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : uint64<        'm >) : uint64              = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : float<         'm >) : float               = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : decimal<       'm >) : decimal             = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : Guid<          'm >) : Guid                = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : string<        'm >) : string              = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : TimeSpan<      'm >) : TimeSpan            = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : DateTime<      'm >) : DateTime            = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : DateTimeOffset<'m >) : DateTimeOffset      = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : bool<          'm1>) : bool<          'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : int<           'm1>) : int<           'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : int64<         'm1>) : int64<         'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : uint64<        'm1>) : uint64<        'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : float<         'm1>) : float<         'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : decimal<       'm1>) : decimal<       'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : Guid<          'm1>) : Guid<          'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : string<        'm1>) : string<        'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : TimeSpan<      'm1>) : TimeSpan<      'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : DateTime<      'm1>) : DateTime<      'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : DateTimeOffset<'m1>) : DateTimeOffset<'m2> = Unsafe.cast x
+            
+            (*
+                [<Measure>] type m
+                [<Measure>] type n
+            
+                let x = UoM.tag<m> "string"
+                let y = UoM.cast<m,n> x
+                let z = UoM.untag y
+            *)
             
             type StringId<'T> = StringId of string 
             with
@@ -151,6 +218,67 @@ namespace FsRoot
                     f p
                     let elapsedSpan = new System.TimeSpan(System.DateTime.UtcNow.Ticks - start)
                     print <| elapsedSpan.ToString()
+            
+            
+            module Memoize =
+            
+                /// returns 3 functions:
+                ///    checkO  : ('p->'v option) 
+                ///    getOrAdd: ('p->('p->'v)->'v) 
+                ///    clear   : (unit->unit)
+                [<Inline>]
+                let getStoreWithDict (cache: System.Collections.Generic.Dictionary<_, _>) =
+                    let checkO v     = let mutable res = Unchecked.defaultof<_>
+                                       let ok          = cache.TryGetValue(v, &res)
+                                       if  ok then Some res else None
+                    let store  v res = cache.[v] <- res
+                                       res
+                    let getOrAdd p f = checkO p |> Option.defaultWith (fun () -> f p |> store p )
+                    (checkO, getOrAdd), cache.Clear
+            
+                /// creates a Dictionary to store memoized values
+                /// returns 3 functions:
+                ///    checkO  : ('p->'v option) 
+                ///    getOrAdd: ('p->('p->'v)->'v) 
+                ///    clear   : (unit->unit)
+                [<Inline>]
+                let getStore() = getStoreWithDict (System.Collections.Generic.Dictionary<_, _>() )
+            
+                /// Memoizes function f using the provided cache
+                /// getCache() returns 1 function:
+                ///    getOrAdd: ('p->('p->'v)->'v) 
+                [< Inline >]
+                let memoizeStore (getOrAdd:('key -> ('key -> 'value) -> 'value) ) f =
+                    fun p -> getOrAdd p f
+            
+            
+                /// Memoizes the function f using a Dictionary
+                /// Returns the memoized function and a clear() function
+                /// The dictionary can be reset using the clear() function
+                [< Inline >]
+                let memoizeResetable f =
+                    let (check, getOrAdd), clear = getStore()
+                    let memoF = memoizeStore getOrAdd f
+                    memoF, clear
+            
+                /// Memoizes the function f using the provided Dictionary
+                [<Inline>]
+                let memoizeWithDict dict f =
+                    let (check, getOrAdd), clear = getStoreWithDict dict
+                    let memoF = memoizeStore getOrAdd f
+                    memoF
+            
+                /// Memoizes the function f and returns Dictionary
+                [<Inline>]
+                let memoizeDict f =
+                    let dict = System.Collections.Generic.Dictionary<_, _>() 
+                    let (check, getOrAdd), clear = getStoreWithDict dict
+                    let memoF = memoizeStore getOrAdd f
+                    memoF, dict
+            
+                /// Memoizes the function f using a Dictionary
+                [<Inline>]
+                let memoize f = memoizeResetable f |> fst
             
             
             [< AutoOpen >]
@@ -238,6 +366,7 @@ namespace FsRoot
                         bindR pa
                     let rtn = NoMore
                     let map f = bind (f >> rtn)
+                    let inline apply fR vR = fR |> bind (swap map  vR)
                 
                     let replacer lst depend =
                         let rec replace =
@@ -305,8 +434,13 @@ namespace FsRoot
                         |> String.concat "\n"
                 
                     module Operators =
-                        let (>>=) ma f = bind f ma
-                        let (|>>) ma f = map  f ma
+                        let (>>=) ma  f = bind f ma
+                        let (|>>) ma  f = map  f ma
+                        let (|*>) p  mf = apply mf (rtn p)
+                        let (>>*) mp mf = apply mf     mp
+                        let (<*>) mf mp = apply mf     mp
+                        let rtn        = rtn
+                        let depend     = depend
                 
                 
             type System.String with
@@ -1245,12 +1379,24 @@ namespace FsRoot
             
                 open Html
             
+                type [< Measure >] PlugInNameM
+                type PlugInName= string<PlugInNameM>
+            
                 type  Fun<'P, 'R> = { f : Val<'P -> 'R> ; p : Val<'P> }
                 and   Val<'P    > = VView of View<'P> | VConst of 'P
                     with
                     //[<Inline>] static member ( <* )(vf:Val<'a->'b> , a :    'a ) = VConst a
                     [<Inline>] static member ( <* )(vf:Val<'a->'b> , aV:Var<'a>) = VView  aV.View
             
+                type P<'T> = { r:Depend.Depend<'T> }
+            
+                type PFn<'P, 'R> = P<Fun<'P, 'R>>
+                type PVl<'P    > = P<Val<'P    >>
+            
+                open Depend.Operators
+            
+                let bindWrap       f  pv       : P<'b> = { r = pv   >>= fun v -> (f v).r }
+                let unwrapBindWrap f (pv:P<_>) : P<'b> = { r = pv.r |>> fun v ->  f v    }
             
                 let add1 a = a + 1
                 let a11V = Var.Create 11
@@ -1280,7 +1426,14 @@ namespace FsRoot
                 let [<Inline>] ff f p = { f = f       ; p = p }
                 let [<Inline>] fc c p = { f = callF c ; p = p }
             
+                let [<Inline>] pff pf p = { r = pf.r |>> fun f -> ff f p }
+                let [<Inline>] pfc pc p = { r = pc.r |>> fun c -> fc c p }
+            
                 module Val =
+            
+                    let map f = function
+                    | VConst p  -> VConst (         f p )
+                    | VView  pv -> VView  (View.Map f pv)
             
                     let addDoc d (docs:Val<seq<Doc>>) =
                         match docs with
@@ -1298,14 +1451,30 @@ namespace FsRoot
             
                     let textAtt : Val<string> -> Attr = failwithf "textAtt not implemented"
             
-                module Extract0 =
+                let toViewString   = function Choice1Of2 v -> v | Choice2Of2 r -> sprintf "@{expecting string, got Action: %A}" r
+                let valToStyle atn = function
+                | VConst(Choice1Of2 s) -> Attr.Style  atn s
+                | VView             w  -> Attr.DynamicStyle atn (View.Map toViewString w)
+                | v -> failwithf "Illegal value %A" v
             
-                    let getDocFromReference      ref = sprintf "getDocFromReference not implemented: @{%s}"      ref |> text
-                    let getTextViewFromReference ref = sprintf "getTextViewFromReference not implemented: @{%s}" ref |> View.Const
+                let valToAttr atn = function
+                | VConst(Choice1Of2 s) -> Attr.Create atn s
+                | VView             w  ->
+                    w |> Attr.DynamicCustom(fun el -> function
+                        | Choice1Of2 s   -> el.SetAttribute(atn, s.Trim())
+                        | Choice2Of2 act -> el.AddEventListener(atn, (fun (ev:JavaScript.Dom.Event) -> (act:AF.PlugInAction).actFunction |> AF.callFunction el ev), false)
+                    )
+                | v -> failwithf "Illegal value %A" v
+            
+            
+                module Extract0 =
             
                     type TextType =
                     | TSimple    of string
                     | TReference of string
+            
+                    let getDocFromReference         ref = sprintf "getDocFromReference not implemented: @{%s}"         ref |> text
+                    let getTextActViewFromReference ref = sprintf "getTextActViewFromReference not implemented: @{%s}" ref |> Choice1Of2 |> View.Const : View<Choice<string, AF.PlugInAction>>
             
                     let rec getOneTextData(bef, name, aft) =
                         TReference name ::  match aft with
@@ -1321,156 +1490,178 @@ namespace FsRoot
                         |> Option.map getOneTextData
                         |> Option.defaultWith (fun () -> [ TSimple txt ])
             
-                    let getDocFromReferenceD      = Depend.dependByName "getDocFromReference"      getDocFromReference id
-                    let getTextViewFromReferenceD = Depend.dependByName "getTextViewFromReference" getTextViewFromReference id
+                    let getDocFromReferenceD         = Depend.dependByName "getDocFromReference"         getDocFromReference         id
+                    let getTextActViewFromReferenceD = Depend.dependByName "getTextActViewFromReference" getTextActViewFromReference id
             
-                    let extractDocD = Depend.depend {
+                    let getDocFromTextTypesD = Depend.depend {
                         let! getDoc = getDocFromReferenceD
-                        return fun txt ->
-                            getTextData txt 
-                            |> List.map (function
+                        return
+                            List.map (function
                                 | TSimple    t -> text   t
                                 | TReference r -> getDoc r
                             ) 
-                            |> function
+                            >> function
                             | [ d ] -> d
                             |   ls  -> Doc.Concat ls
                     }
             
-                    let extractAtsD = Depend.depend {
-                        let! getTextView = getTextViewFromReferenceD
-                        let getTextVal txt = 
+                    let extractDocD = Depend.depend {
+                        let! getDocFromTextTypes = getDocFromTextTypesD
+                        return getTextData >> getDocFromTextTypes
+                    }
+            
+                    let getTextValFromSeqD = Depend.depend {
+                        let! getTextActView = getTextActViewFromReferenceD
+                        return 
+                            View.traverseListApp (function
+                                | TSimple    v -> View.Const     v
+                                | TReference r -> getTextActView r |> View.Map toViewString
+                            )
+                            >> View.Apply (View.Const (String.concat "" >> Choice1Of2))
+                            >> VView
+                    }
+            
+                    let getTextValD = Depend.depend {
+                        let! getTextActView    = getTextActViewFromReferenceD
+                        let! getTextValFromSeq = getTextValFromSeqD
+                        return fun txt ->
                             getTextData txt
                             |> function
-                                | [ TSimple v ] -> VConst v
-                                | vs ->
-                                vs
-                                |> View.traverseListApp (function
-                                    | TSimple    v -> View.Const v
-                                    | TReference r -> getTextView r
-                                )
-                                |> View.Apply (View.Const (String.concat ""))
-                                |> VView
+                                | [ TSimple    v ] -> VConst (Choice1Of2     v)
+                                | [ TReference r ] -> VView  (getTextActView r)
+                                | vs               -> getTextValFromSeq vs
+                    }
+            
+                    let extractAtsD = Depend.depend {
+                        let! getTextVal = getTextValD
                         return fun (txt:string) ->
                             txt.Split ';'
                             |> Seq.map    (fun t -> t.Trim())
                             |> Seq.filter ((<>) "")
-                            |> Seq.map (fun t -> 
+                            |> Seq.map    (fun t -> 
                                 match t.Split ':' with
-                                | [| atn ; sty |] ->    match getTextVal sty with
-                                                        | VConst s -> Attr.Style        atn s
-                                                        | VView  w -> Attr.DynamicStyle atn w
+                                | [| atn ; sty |] -> getTextVal sty |> valToStyle atn
                                 | _ ->
-                                match t.Split '=' with
-                                | [| atn ; atv |] ->    match getTextVal atv with
-                                                        | VConst s -> Attr.Create       atn s
-                                                        | VView  w -> Attr.Dynamic      atn w
+                                match t.Split '=' |> Array.map (fun t -> t.Trim()) with
+                                | [| atn ; atv |] -> getTextVal atv |> valToAttr  atn   
                                 | _ -> failwithf "single reference attribute not implemented %s" t
-                                                        //match getTextVal t with
-                                                        //| VConst s -> Attr.Create       atn s
-                                                        //| VView  w -> Attr.DynamicStyle atn w
             
                             )
-                            //getTextData txt 
-                            //|> List.map (function
-                            //    | TSimple    t -> text   t
-                            //    | TReference r -> getAtt r
-                            //) 
-                            //|> function
-                            //| [ d ] -> d
-                            //|   ls  -> Att.Concat ls
                     }
-            
-                    let extractDoc = Depend.resolver [] extractDocD
-                    let extractAts = Depend.resolver [] extractAtsD
-            
             
                 let concat a b = sprintf "Concat(%d, %f)" a b 
                 let aV = Var.Create 4
                 let pa = aV.View
                 let pb = 6.2
             
-                let getDoc r =
-                    let pName, oName = AF.splitName "NewLY" r
-                    AF.tryGetDocW pName oName
-                    |> Doc.BindView (fun docO -> 
-                        docO
-                        |> Option.map AF.getLazyDoc
-                        |> Option.defaultWith (fun () ->
-                            AF.tryGetWoWW pName oName
-                            |> View.Map (Option.defaultWith (fun () -> sprintf "Reference not found @{%s}" r))
-                            |> Doc.TextView
+                let currentPlugInNameDef : PlugInName = UoM.Tag<_> "NewLYx"
+                let currentPlugInNameD                = Depend.dependByName "currentPlugInName" currentPlugInNameDef id
+            
+                let getDocD = Depend.depend {
+                    let! currentPlugInName = currentPlugInNameD
+                    return fun r ->
+                        let pName, oName = AF.splitName (UoM.Untag currentPlugInName) r
+                        AF.tryGetDocW pName oName
+                        |> Doc.BindView (fun docO -> 
+                            docO
+                            |> Option.map AF.getLazyDoc
+                            |> Option.defaultWith (fun () ->
+                                AF.tryGetWoWW pName oName
+                                |> View.Map (Option.defaultWith (fun () -> sprintf "Reference not found @{%s}" r))
+                                |> Doc.TextView
+                            )
                         )
-                    )
+                }
             
-                let getTextView r =
-                    let pName, oName = AF.splitName "NewLY" r
-                    AF.tryGetWoWW pName oName
-                    |> View.Map (Option.defaultWith (fun () -> sprintf "Text Reference not found @{%s}" r))
+                let getTextActViewD = Depend.depend {
+                    let! currentPlugInName = currentPlugInNameD
+                    return fun r ->
+                        let pName, oName = AF.splitName (UoM.Untag currentPlugInName) r
+                        AF.tryGetActW pName oName
+                        |> View.Bind(function
+                            | Some act -> View.Const <| Choice2Of2 act
+                            | None     ->
+                            AF.tryGetWoWW pName oName
+                            |> View.Map (Option.defaultWith (fun () -> sprintf "Text Reference not found @{%s}" r))
+                            |> View.Map Choice1Of2
+                        )
+                }
             
-                let extractDoc   = Depend.resolver [ "getDocFromReference"     , getDoc      ] Extract0.extractDocD
-                let extractAts   = Depend.resolver [ "getTextViewFromReference", getTextView ] Extract0.extractAtsD
-                let extractAtt p = extractAts p |> Attr.Concat
+                let extractDocD     = Extract0.extractDocD
+                let extractAtsD     = Extract0.extractAtsD
+                let extractAttD     = depend { 
+                    let! extractAts = extractAtsD
+                    return fun p -> extractAts p |> Attr.Concat 
+                }
             
-                let vvv = 
-                    { f = VConst concat ; p = VView  pa } |> callF
-                    |> fun f -> { f = f ; p = VConst pb } |> callF
-            
-                type Val<'P> with
-                    [<Inline>] static member (<*)(vf:Val<    'a   ->'b> , a :      'a   ) = ff vf (VConst  a                     )
-                    [<Inline>] static member (<!)(vf:Val<    'a   ->'b> , av:Val<  'a  >) = ff vf          av
-                    [<Inline>] static member (<!)(vf:Val<    'a   ->'b> , aW:View< 'a  >) = ff vf (VView   aW                    )
-                    [<Inline>] static member (<!)(vf:Val<    'a   ->'b> , aV:Var<  'a  >) = ff vf (VView   aV.View               )
-                    [<Inline>] static member (<!)(vf:Val<    'a   ->'b> , aF:Fun<_,'a  >) = ff vf (callF   aF                    )
-                    [<Inline>] static member (<&)(vf:Val<seq<Doc >->'b> , a :   string  ) = ff vf (VConst (seq [extractDoc a  ]) )
-                    [<Inline>] static member (<&)(vf:Val<seq<Doc >->'b> , aF:Fun<_,Doc >) = ff vf (VConst (seq [callDoc    aF ]) )
-                    [<Inline>] static member (<&)(vf:Val<    Doc  ->'b> , a :   string  ) = ff vf (VConst (     extractDoc a   ) )
-                    [<Inline>] static member (<&)(vf:Val<    Doc  ->'b> , aF:Fun<_,Doc >) = ff vf (VConst (     callDoc    aF  ) )
+                type P<'P> with
+                    [<Inline>] static member (<*)(vf:PVl<    'a   ->'b> ,  a :      'a   )  =                                            pff vf (VConst  a                     )
+                    [<Inline>] static member (<!)(vf:PVl<    'a   ->'b> , pav:PVl<  'a  >) = pav.r       |> bindWrap (fun av         -> pff vf          av )
+                    [<Inline>] static member (<!)(vf:PVl<    'a   ->'b> ,  aW:View< 'a  >)  =                                            pff vf (VView   aW                    )
+                    [<Inline>] static member (<!)(vf:PVl<    'a   ->'b> ,  aV:Var<  'a  >)  =                                            pff vf (VView   aV.View               )
+                    [<Inline>] static member (<!)(vf:PVl<    'a   ->'b> , paF:PFn<_,'a  >) = paF.r       |> bindWrap (fun aF         -> pff vf (callF   aF                    ) )
+                    [<Inline>] static member (<&)(vf:PVl<seq<Doc >->'b> ,  a :   string  ) = extractDocD |> bindWrap (fun extractDoc -> pff vf (VConst (seq [extractDoc a  ]) ) )
+                    [<Inline>] static member (<&)(vf:PVl<seq<Doc >->'b> , paF:PFn<_,Doc >) = paF.r       |> bindWrap (fun aF         -> pff vf (VConst (seq [callDoc    aF ]) ) )
+                    [<Inline>] static member (<&)(vf:PVl<    Doc  ->'b> ,  a :   string  ) = extractDocD |> bindWrap (fun extractDoc -> pff vf (VConst (     extractDoc a   ) ) )
+                    [<Inline>] static member (<&)(vf:PVl<    Doc  ->'b> , paF:PFn<_,Doc >) = paF.r       |> bindWrap (fun aF         -> pff vf (VConst (     callDoc    aF  ) ) )
             //        [<Inline>] static member (<&)(vf:Val<seq<Doc>->'b> , aF:Fun<_,Doc>) = ff vf (VConst (seq [callDoc aF ]) )
             
-                    [<Inline>] static member (<&)(vf:Val<seq<Attr>->'b> , a :   string  ) = ff vf (VConst (     extractAts a   ) )
-                    [<Inline>] static member (<&)(vf:Val<seq<Attr>->'b> , aF:Fun<_,Attr>) = ff vf (VConst (seq [callAtt    aF ]) )
-                    [<Inline>] static member (<&)(vf:Val<    Attr ->'b> , a :   string  ) = ff vf (VConst (     extractAtt a   ) )
-                    [<Inline>] static member (<&)(vf:Val<    Attr ->'b> , aF:Fun<_,Attr>) = ff vf (VConst (     callAtt    aF  ) )
+                    [<Inline>] static member (<&)(vf:PVl<seq<Attr>->'b> ,  a :   string  ) = extractAtsD |> bindWrap (fun extractAts -> pff vf (VConst (     extractAts a   ) ) )
+                    [<Inline>] static member (<&)(vf:PVl<seq<Attr>->'b> , paF:PFn<_,Attr>) = paF.r       |> bindWrap (fun aF         -> pff vf (VConst (seq [callAtt    aF ]) ) )
+                    [<Inline>] static member (<&)(vf:PVl<    Attr ->'b> ,  a :   string  ) = extractAttD |> bindWrap (fun extractAtt -> pff vf (VConst (     extractAtt a   ) ) )
+                    [<Inline>] static member (<&)(vf:PVl<    Attr ->'b> , paF:PFn<_,Attr>) = paF.r       |> bindWrap (fun aF         -> pff vf (VConst (     callAtt    aF  ) ) )
             
-                type Fun<'P,'R> with    
-                    [<Inline>] static member (<*)(vc , p         ) = fc vc  (VConst p)
-                    [<Inline>] static member (<!)(vc , p         ) = fc vc          p
-                    [<Inline>] static member (<!)(vc , p         ) = fc vc  (VView  p)
-                    [<Inline>] static member (<!)(vc , pV:Var< _>) = fc vc  (VView  pV.View)
-                    [<Inline>] static member (<!)(vc , p:Fun<_,_>) = fc vc  (callF  p)
+                type P<'P> with    
+                    [<Inline>] static member (<*)(vc , p         ) = pfc vc  (VConst p       )
+                    [<Inline>] static member (<!)(vc , p         ) = pfc vc          p
+                    [<Inline>] static member (<!)(vc , p         ) = pfc vc  (VView  p       )
+                    [<Inline>] static member (<!)(vc , pV:Var< _>) = pfc vc  (VView  pV.View )
+                    [<Inline>] static member (<!)(vc , p:Fun<_,_>) = pfc vc  (callF  p       )
             
-                    [<Inline>] static member (<&)(c:Fun<_,     Attr  -> _> , p:      string ) = fc c       (VConst (              extractAtt p   ) )
-                    [<Inline>] static member (<&)(c:Fun<_,     Attr  -> _> , p:Val<  string>) = fc c       (VConst (      Val.textAtt        p   ) )
-                    [<Inline>] static member (<&)(c:Fun<_,     Attr  -> _> , p:Fun<_,string>) = fc c       (VConst (      Val.textAtt (callF p)  ) )
-                    [<Inline>] static member (<&)(c:Fun<_,     Attr  -> _> , p:Fun<_,Attr  >) = fc c       (VConst (                 callAtt p   ) )
-                    [<Inline>] static member (<&)(c:Fun<_,     Attr  -> _> , p:      Attr   ) = fc c       (VConst (                         p   ) )
-                    [<Inline>] static member (<&)(c:Fun<_, seq<Attr> -> _> , p:      string ) = fc c       (VConst (              extractAts p   ) )
-                    [<Inline>] static member (<&)(c:Fun<_, seq<Attr> -> _> , p:Val<  string>) = fc c       (VConst (seq [ Val.textAtt        p  ]) )
-                    [<Inline>] static member (<&)(c:Fun<_, seq<Attr> -> _> , p:Fun<_,string>) = fc c       (VConst (seq [ Val.textAtt (callF p) ]) )
-                    [<Inline>] static member (<&)(c:Fun<_, seq<Attr> -> _> , p:Fun<_,Attr  >) = fc c       (VConst (seq [            callAtt p  ]) )
-                    [<Inline>] static member (<!)(c:Fun<   seq<Attr>   ,_> , p:      string ) =  { c with p = Val.addAtt(         extractAtt p  ) c.p }
-                    [<Inline>] static member (<!)(c:Fun<   seq<Attr>   ,_> , p:Val<  string>) =  { c with p = Val.addAtt( Val.textAtt        p  ) c.p }
-                    [<Inline>] static member (<!)(c:Fun<   seq<Attr>   ,_> , p:Fun<_,string>) =  { c with p = Val.addAtt( Val.textAtt (callF p) ) c.p }
-                    [<Inline>] static member (<!)(c:Fun<   seq<Attr>   ,_> , p:Fun<_,Attr  >) =  { c with p = Val.addAtt(            callAtt p  ) c.p }
-                    [<Inline>] static member (<!)(c:Fun<   seq<Attr>   ,_> , p:      Attr   ) =  { c with p = Val.addAtt                     p    c.p }
+                    [<Inline>] static member (<&)(c:PFn<_,     Attr  -> _> ,  p :      string ) = extractAttD |> bindWrap (fun extractAtt -> pfc c       (VConst (       extractAtt        p   ) ) )
+                    [<Inline>] static member (<&)(c:PFn<_,     Attr  -> _> ,  p :Val<  string>) =                                            pfc c       (VConst (      Val.textAtt        p   ) )
+                    [<Inline>] static member (<&)(c:PFn<_,     Attr  -> _> , paF:PFn<_,string>) = paF.r       |> bindWrap (fun aF         -> pfc c       (VConst (      Val.textAtt (callF aF) ) ) )
+                    [<Inline>] static member (<&)(c:PFn<_,     Attr  -> _> , paF:PFn<_,Attr  >) = paF.r       |> bindWrap (fun aF         -> pfc c       (VConst (          callAtt        aF  ) ) )
+                    [<Inline>] static member (<&)(c:PFn<_,     Attr  -> _> , p  :      Attr   ) =                                            pfc c       (VConst (                         p   ) )
+                    [<Inline>] static member (<&)(c:PFn<_, seq<Attr> -> _> , p  :      string ) = extractAtsD |> bindWrap (fun extractAts -> pfc c       (VConst (       extractAts        p   ) ) )
+                    [<Inline>] static member (<&)(c:PFn<_, seq<Attr> -> _> , p  :Val<  string>) =                                            pfc c       (VConst (seq [ Val.textAtt        p  ]) )
+                    [<Inline>] static member (<&)(c:PFn<_, seq<Attr> -> _> , paF:PFn<_,string>) = paF.r       |> bindWrap (fun aF         -> pfc c       (VConst (seq [ Val.textAtt (callF aF)]) ) )
+                    [<Inline>] static member (<&)(c:PFn<_, seq<Attr> -> _> , paF:PFn<_,Attr  >) = paF.r       |> bindWrap (fun aF         -> pfc c       (VConst (seq [     callAtt        aF ]) ) )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Attr>,   _> , p  :      string ) = extractAttD |> bindWrap (fun extractAtt -> c |> unwrapBindWrap (fun c -> { c with p = Val.addAtt(  extractAtt        p  ) c.p } ) )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Attr>,   _> , p  :Val<  string>) =                                            c |> unwrapBindWrap (fun c -> { c with p = Val.addAtt( Val.textAtt        p  ) c.p } )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Attr>,   _> , paF:PFn<_,string>) = paF.r       |> bindWrap (fun aF         -> c |> unwrapBindWrap (fun c -> { c with p = Val.addAtt( Val.textAtt (callF aF)) c.p } ) )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Attr>,   _> , paF:PFn<_,Attr  >) = paF.r       |> bindWrap (fun aF         -> c |> unwrapBindWrap (fun c -> { c with p = Val.addAtt(     callAtt        aF ) c.p } ) )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Attr>,   _> , p  :      Attr   ) =                                          c |> unwrapBindWrap (fun c -> { c with p = Val.addAtt                     p    c.p } )
             
-                    [<Inline>] static member (<&)(c:Fun<_,     Doc   -> _> , p:      string ) = fc c       (VConst (              extractDoc p   ) )
-                    [<Inline>] static member (<&)(c:Fun<_,     Doc   -> _> , p:Val<  string>) = fc c       (VConst (      Val.textDoc        p   ) )
-                    [<Inline>] static member (<&)(c:Fun<_,     Doc   -> _> , p:Fun<_,string>) = fc c       (VConst (      Val.textDoc (callF p)  ) )
-                    [<Inline>] static member (<&)(c:Fun<_,     Doc   -> _> , p:Fun<_,Doc   >) = fc c       (VConst (                 callDoc p   ) )
-                    [<Inline>] static member (<&)(c:Fun<_,     Doc   -> _> , p:      Doc    ) = fc c       (VConst (                         p   ) )
-                    [<Inline>] static member (<&)(c:Fun<_, seq<Doc > -> _> , p:      string ) = fc c       (VConst (seq [         extractDoc p  ]) )
-                    [<Inline>] static member (<&)(c:Fun<_, seq<Doc > -> _> , p:Val<  string>) = fc c       (VConst (seq [ Val.textDoc        p  ]) )
-                    [<Inline>] static member (<&)(c:Fun<_, seq<Doc > -> _> , p:Fun<_,string>) = fc c       (VConst (seq [ Val.textDoc (callF p) ]) )
-                    [<Inline>] static member (<&)(c:Fun<_, seq<Doc > -> _> , p:Fun<_,Doc   >) = fc c       (VConst (seq [            callDoc p  ]) )
-                    [<Inline>] static member (<!)(c:Fun<   seq<Doc >   ,_> , p:      string ) =  { c with p = Val.addDoc(         extractDoc p  ) c.p }
-                    [<Inline>] static member (<!)(c:Fun<   seq<Doc >   ,_> , p:Val<  string>) =  { c with p = Val.addDoc( Val.textDoc        p  ) c.p }
-                    [<Inline>] static member (<!)(c:Fun<   seq<Doc >   ,_> , p:Fun<_,string>) =  { c with p = Val.addDoc( Val.textDoc (callF p) ) c.p }
-                    [<Inline>] static member (<!)(c:Fun<   seq<Doc >   ,_> , p:Fun<_,Doc   >) =  { c with p = Val.addDoc(            callDoc p  ) c.p }
-                    [<Inline>] static member (<!)(c:Fun<   seq<Doc >   ,_> , p:      Doc    ) =  { c with p = Val.addDoc                     p    c.p }
+                    [<Inline>] static member (<&)(c:PFn<_,     Doc   -> _> , p  :      string ) = extractDocD |> bindWrap (fun extractDoc -> pfc c       (VConst (       extractDoc        p   ) ) )
+                    [<Inline>] static member (<&)(c:PFn<_,     Doc   -> _> , p  :Val<  string>) =                                            pfc c       (VConst (      Val.textDoc        p   ) )
+                    [<Inline>] static member (<&)(c:PFn<_,     Doc   -> _> , paF:PFn<_,string>) = paF.r     |> bindWrap (fun aF           -> pfc c       (VConst (      Val.textDoc (callF aF) ) ) )
+                    [<Inline>] static member (<&)(c:PFn<_,     Doc   -> _> , paF:PFn<_,Doc   >) = paF.r     |> bindWrap (fun aF           -> pfc c       (VConst (          callDoc        aF  ) ) )
+                    [<Inline>] static member (<&)(c:PFn<_,     Doc   -> _> , p  :      Doc    ) =                                            pfc c       (VConst (                         p   ) )
+                    [<Inline>] static member (<&)(c:PFn<_, seq<Doc > -> _> , p  :      string ) = extractDocD |> bindWrap (fun extractDoc -> pfc c       (VConst (seq [  extractDoc        p  ]) ) )
+                    [<Inline>] static member (<&)(c:PFn<_, seq<Doc > -> _> , p  :Val<  string>) =                                            pfc c       (VConst (seq [ Val.textDoc        p  ]) )
+                    [<Inline>] static member (<&)(c:PFn<_, seq<Doc > -> _> , paF:PFn<_,string>) = paF.r     |> bindWrap (fun aF           -> pfc c       (VConst (seq [ Val.textDoc (callF aF)]) ) )
+                    [<Inline>] static member (<&)(c:PFn<_, seq<Doc > -> _> , paF:PFn<_,Doc   >) = paF.r     |> bindWrap (fun aF           -> pfc c       (VConst (seq [     callDoc        aF ]) ) )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Doc >,   _> , p  :      string ) = extractDocD |> bindWrap (fun extractDoc -> c |> unwrapBindWrap (fun c -> { c with p = Val.addDoc(  extractDoc        p  ) c.p }) )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Doc >,   _> , p  :Val<  string>) =                                            c |> unwrapBindWrap (fun c -> { c with p = Val.addDoc( Val.textDoc        p  ) c.p } )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Doc >,   _> , paF:PFn<_,string>) = paF.r     |> bindWrap (fun aF           -> c |> unwrapBindWrap (fun c -> { c with p = Val.addDoc( Val.textDoc (callF aF)) c.p } ) )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Doc >,   _> , paF:PFn<_,Doc   >) = paF.r     |> bindWrap (fun aF           -> c |> unwrapBindWrap (fun c -> { c with p = Val.addDoc(     callDoc        aF ) c.p } ) )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Doc >,   _> , p  :      Doc    ) =                                            c |> unwrapBindWrap (fun c -> { c with p = Val.addDoc                     p    c.p } )
             
-                let inline (!) v = VConst v
+                let inline (!) v = { r = VConst v |> rtn }
+            
+                module P =
+                    let run (pin:PlugInName) (p:P<_>) =
+                        depend {
+                            let! getDoc         = getDocD
+                            let! getTextActView = getTextActViewD
+                            return 
+                                p.r 
+                                |> Depend.resolver [
+                                    "getDocFromReference"        , getDoc         :> obj
+                                    "getTextActViewFromReference", getTextActView :> obj
+                                ]
+                        } |> Depend.resolver [ "currentPlugInName", pin ]
             
                 let name       = Var.Create "World"
             
@@ -1488,34 +1679,118 @@ namespace FsRoot
             
                 let main0 = ! concat <! aV <* 3.2
                 let main1 = !(sprintf "result = %s %s") <! main0 <* "main0"
-                let main  = ! h3 <& "color:@{name}" <& "MAIN:" <! main1 <! main1 <! ":" <! sayHello <! ":" <! " Más >> " <! sayHello <! " <<"
+                let main  = ! h3 <& "color:@{name}; background:red; click=@{AppFramework.Hello}" <& "MAIN:" <! main1 <! main1 <! ":" <! sayHello <! ":" <! " Más >> " <! sayHello <! " <<"
             
                 let makeAViewDoc  f = AF.mainDocV.View |> Doc.BindView(fun _ -> f())
                 let makeAViewDocL f = lazy makeAViewDoc f
             
-                let main2 = makeAViewDoc <| fun () -> h4 [ attr.styleDyn name.View ] [ text "MAIN2:" ; Doc.TextView name.View] 
+                let main2 = makeAViewDoc <| fun () -> h4 [ attr.styleDyn <| V("color:" + name.V) ] [ text "MAIN2:" ; Doc.TextView name.View] 
             
-                let appFwk = ! div <* [] <& "@{AppFramework.AppFwkClient}"
+                let appFwk = ! div <& "color:@{name}" <& "@{AppFramework.AppFwkClient}"
                 let split  = ! (LayoutEngine.variableSplitter false 0. 50. 100.) <& appFwk <& main
                 let split2 = ! (LayoutEngine.variableSplitter false 0. 50. 100.) <& appFwk <& main2
             
+                let callDocPFn pin pf = pf |> P.run pin |> callDoc
+            
+                let pName = UoM.Tag<_> "NewLY" 
+            
                 AF.plugin {
-                    plgName "NewLY"
-                    plgVar  "name"     name
-                    plgVar  "a"        aString
-                    plgDoc  "split"    (lazy         (split      |> callDoc ) )
-                    plgDoc  "split2"   (lazy         (split2     |> callDoc ) )
-                    plgDoc  "main"     (lazy         (main       |> callDoc ) )
-                    plgDoc  "main2"    (lazy          main2                   )
-                    plgDoc  "sayHello" (lazy         (sayHello   |> callDoc ) )
-                    plgDoc  "sayHello2"(lazy         (sayHello   |> callDoc ) )
+                    plgName (UoM.Untag pName)
+                    plgVar  "name"      name
+                    plgVar  "a"         aString
+                    plgDoc  "split"     (lazy         (split      |> callDocPFn pName ) )
+                    plgDoc  "split2"    (lazy         (split2     |> callDocPFn pName ) )
+                    plgDoc  "main"      (lazy         (main       |> callDocPFn pName ) )
+                    plgDoc  "main2"     (lazy          main2                            )
+                    plgDoc  "sayHello"  (lazy         (sayHello   |> callDocPFn pName ) )
+                    plgDoc  "sayHello2" (lazy         (sayHello   |> callDocPFn pName ) )
                 }
                 |> AF.addPlugIn
             
-                [< SPAEntryPoint >]
-                let mainProgram() =
-                    do (StartAppFramework.startWithHtmlD 
-                        |> Depend.resolver [
-                            "AppFrameworkTemplate.html", AppFrameworkTemplate.html + SnippetTemplates.html
-                        ]) ()
+                //[< SPAEntryPoint >]
+                //let mainProgram() =
+                //    do (StartAppFramework.startWithHtmlD 
+                //        |> Depend.resolver [
+                //            "AppFrameworkTemplate.html", AppFrameworkTemplate.html + SnippetTemplates.html
+                //        ]) ()
             
+                open LayoutEngine
+                open LayoutEngine.Syntax
+            
+                let itemRefToTextType = function
+                | LocalRef     t  -> Extract0.TReference t
+                | FullRef(pr, er) -> Extract0.TReference (sprintf "%s.%s" pr er)
+            
+                let textValToTextType = function
+                | TvConst  s          -> Extract0.TSimple  s
+                | TvVarRef (VarRef v)  
+                | TvViwRef (ViwRef v) -> itemRefToTextType v
+            
+                let (|ActRVs|) = function | ActRef v -> [ TvVarRef (VarRef v)]
+            
+                let attrValToAttrD = Depend.depend {
+                    let! getTextValFromSeq  = Extract0.getTextValFromSeqD
+                    return
+                        function
+                        | AtStyle (an,        vs) -> vs, valToStyle an
+                        | AtAct   (an, ActRVs vs) 
+                        | AtAttr  (an,        vs) -> vs, valToAttr  an
+                        >> fun (vs, f) -> 
+                            List.map textValToTextType vs
+                            |> getTextValFromSeq
+                            |> f
+                }
+            
+                let nodeRefToDocD = Depend.depend {
+                    let! getDocFromTextTypes = Extract0.getDocFromTextTypesD
+                    return function
+                        | NdTextValL       vs ->  vs |> List.map textValToTextType |> getDocFromTextTypes
+                        | NdDocRef (DocRef r)
+                        | NdVarRef (VarRef r)
+                        | NdViwRef (ViwRef r) -> [ itemRefToTextType r ] |> getDocFromTextTypes
+                }
+            
+                let resolvePlugIn (lytN:string) = Depend.resolver [ "currentPlugInName", lytN]
+            
+                let defVar(lytN, n, v) = Var.Create v
+                let defElement(lytN, n:string, elem, attrs : AttrVal seq, docs:NodeRef list) = 
+                    Depend.depend {
+                        let! attrValToAttr = attrValToAttrD
+                        let! nodeRefToDoc  = nodeRefToDocD
+                        return
+                            lazy
+                                Doc.Element elem
+                                    <| (attrs |> Seq.map attrValToAttr)
+                                    <| (docs  |> Seq.map nodeRefToDoc )
+                                :> Doc
+                    } |> resolvePlugIn lytN
+                let defConcat(lytN, n:string, docs:NodeRef list) = 
+                    Depend.depend {
+                        let! attrValToAttr = attrValToAttrD
+                        let! nodeRefToDoc  = nodeRefToDocD
+                        return
+                            lazy (docs |> Seq.map nodeRefToDoc |> Doc.Concat)
+                    } |> resolvePlugIn lytN
+            
+                let defVarM     = Memoize.memoize defVar
+                let defElementM = Memoize.memoize defElement
+                let defConcatM  = Memoize.memoize defConcat
+            
+                let parseNewLayout lytN =
+                    LayoutEngine.parseEntries lytN
+                    >> Seq.choose(function Ok p  -> Some p |_-> None)
+                    >> Seq.choose(function
+                        | n, EnVarDef( VarDef      v           ) -> defVarM(lytN, n, v) |> AF.newVar n |> EntryVar |> Some
+                        | n, EnActDef( ActDef     (aref, parms)) -> None
+                        | n, EnViwDef( ViwDef            parms ) -> None
+                        | n, EnDocDef( DcSplitter (splitterDef)) -> None   
+                        | n, EnDocDef( DcButton   (ButtonDef(ac, ats, tx))) -> None
+                        | n, EnDocDef( DcInput    (inputDef   )) -> None
+                        | n, EnDocDef( DcTextArea (textAreaDef)) -> None
+                        | n, EnDocDef( DcDocF     (docFDef    )) -> None
+                        | n, EnDocDef( DcConcat   (ConcatDef           ds  )) -> defConcat(  lytN, n,          ds) |> AF.newDoc n |> EntryDoc |> Some
+                        | n, EnDocDef( DcElement  (ElementDef(el, ats, ds) )) -> defElementM(lytN, n, el, ats, ds) |> AF.newDoc n |> EntryDoc |> Some
+                        | _ -> None
+                    )
+                    >> refreshEntries lytN
+                    

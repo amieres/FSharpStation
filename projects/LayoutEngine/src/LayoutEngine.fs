@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1572021320917 -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1572445936800 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -24,7 +24,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1572021320917
+//#define FSharpStation1572445936800
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -344,9 +344,15 @@ namespace FsRoot
                 let rtn  = View.Const
             
                 let (>>=)                              v f = bind f v
-                let rec    traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                let        traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                              Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                 let inline sequenceSeq                  sq = traverseSeq id sq
+            
+                let (<*>)                        =  View.Apply
+                let       traverseListApp f list =  let cons head tail = head :: tail
+                                                    let folder head tail = rtn cons <*> f head <*> tail
+                                                    List.foldBack folder list (rtn [])
+                let inline sequenceListApp  list =  traverseListApp id list
             
             module Var =
                 let mutable private counter = 1
@@ -1772,7 +1778,7 @@ namespace FsRoot
                     type ElementDef  = ElementDef  of string * AttrVal[] * NodeRef list
             
                     type ActDef      = ActDef      of ActRef * ParmRef list
-                    type VarDef      = VarDef      of TextValL
+                    type VarDef      = VarDef      of string
                     type ViwDef      = ViwDef      of ParmRef  list
                     type PlgDef      = PlgDef      of ElemNames
                     type DocDef      = 
@@ -1869,6 +1875,10 @@ namespace FsRoot
                         | Quoted (Tx tv) -> tv |> Some
                         |_-> None
             
+                        let (|STx|_|) = function
+                        | QTx [TvConst v] -> v |> Some
+                        |_-> None
+            
                         let (|At|_|) = function 
                         | Quoted s ->
                             s.Trim().Split ';'
@@ -1927,7 +1937,7 @@ namespace FsRoot
                         | [ Name name ;  Button     ;  ActRf      act    ;  At att  ; QTx text ] -> entryDoc  name <| DcButton  (ButtonDef  (act  , att     , text) )
                         | [ Name name ;  Input      ;  VarRf      var    ;  At att             ] -> entryDoc  name <| DcInput   (InputDef   (var  , att           ) )
                         | [ Name name ;  TextArea   ;  VarRf      var    ;  At att             ] -> entryDoc  name <| DcTextArea(TextAreaDef(var  , att           ) )
-                        | [ Name name ;  Var        ;                       QTx v              ] -> entryVar  name <| VarDef     v                     
+                        | [ Name name ;  Var        ;                       STx v              ] -> entryVar  name <| VarDef    (v.Trim())
                         |   Name name :: Doc        :: DocRf      dr               :: Prs ps     -> entryDoc  name <| DcDocF    (DocFDef    ( dr  , ps            ) )
                         |   Name name :: View       ::                                Prs ps     -> entryView name <| ViwDef            ps              
                         //|   Name name :: Template   :: (S temp )         :: At att :: holes      -> entryDoc  name <| entryTemplate(lytNm, name, temp , attrs   , holes)
@@ -2224,30 +2234,31 @@ namespace FsRoot
                         | TDAct   act -> sprintf "HtmlDoc: unexpected action %A" act |> AF.errDoc
                     )
             
+                let refreshEntries lytN entries =
+                    let plg =   match AF.tryGetPlugIn lytN with
+                                | Some plg -> plg
+                                | None     -> 
+                                    let plg = { AF.defaultPlugIn() with plgName = lytN }
+                                    AF.addPlugIn plg
+                                    plg
+                    ListModel.refreshLM plg.plgVars    [| yield! getVarEntries    entries |]
+                    ListModel.refreshLM plg.plgViews   [| yield! getViewEntries   entries |]
+                    ListModel.refreshLM plg.plgActions [| yield! getActionEntries entries |]
+                    ListModel.refreshLM plg.plgQueries [| yield! getQueryEntries  entries |]
+                    ListModel.refreshLM plg.plgDocs    [| 
+                        yield! getDocEntries    entries
+                        yield  AF.newDocF "InputFile"  <| AF.FunDoc4(inputFile  lytN, "attrs", "Label", "Action", "[Doc]")
+                        yield  AF.newDocF "InputLabel" <| AF.FunDoc3(inputLabel lytN, "attrs", "Label", "Var"            )
+                        yield  AF.newDocF "HtmlDoc"    <| AF.FunDoc1(htmlDoc    lytN, "html"                             )
+                        yield  AF.newDocF "none"       <| AF.FunDoc1(none           , "x"                                )
+                    |]
+            
                 let addLayout (lyt:LayoutEngine) =
                     lyt.lytDefinition.View |> View.Sink(fun txt ->
                         currentViewTriggger <- V ( lyt.lytDefinition.V + AF.mainDocV.V)
-                        let entries = createEntries lyt.lytName txt
-                        let plg =   match AF.tryGetPlugIn lyt.lytName with
-                                    | Some plg -> plg
-                                    | None     -> 
-                                        let plg = { AF.defaultPlugIn() with plgName = lyt.lytName }
-                                        AF.addPlugIn plg
-                                        plg
-                        ListModel.refreshLM plg.plgVars    [|
-                            yield  AF.newVar "Layout" lyt.lytDefinition  
-                            yield! getVarEntries    entries
-                        |]
-                        ListModel.refreshLM plg.plgViews   [| yield! getViewEntries   entries  |]
-                        ListModel.refreshLM plg.plgActions [| yield! getActionEntries entries  |]
-                        ListModel.refreshLM plg.plgQueries [| yield! getQueryEntries  entries  |]
-                        ListModel.refreshLM plg.plgDocs    [| 
-                            yield! getDocEntries    entries
-                            yield  AF.newDocF "InputFile"  <| AF.FunDoc4(inputFile  lyt.lytName, "attrs", "Label", "Action", "[Doc]")
-                            yield  AF.newDocF "InputLabel" <| AF.FunDoc3(inputLabel lyt.lytName, "attrs", "Label", "Var"            )
-                            yield  AF.newDocF "HtmlDoc"    <| AF.FunDoc1(htmlDoc    lyt.lytName, "html"                             )
-                            yield  AF.newDocF "none"       <| AF.FunDoc1(none                  , "x"                                )
-                        |]
+                        createEntries lyt.lytName txt
+                        |> Seq.append [ AF.newVar "Layout" lyt.lytDefinition |> EntryVar ]
+                        |> refreshEntries lyt.lytName
                     )
             
                 let newLyt name (lyt:string) = {
