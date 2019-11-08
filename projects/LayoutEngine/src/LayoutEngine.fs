@@ -1,5 +1,6 @@
 #nowarn "3242"
-////-d:FSharpStation1572445936800 -d:TEE -d:WEBSHARPER
+#nowarn "42"
+////-d:FSharpStation1573054420242 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -23,8 +24,9 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#nowarn "3242"
+//#nowarn "42"
 /// Root namespace for all code
-//#define FSharpStation1572445936800
+//#define FSharpStation1573054420242
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -92,10 +94,75 @@ namespace FsRoot
     #endif
     
         /// Essentials that can be converted to JavaScript with WebSharper
-        [< JavaScript ; AutoOpen >]
+        [< JavaScriptExport ; AutoOpen >]
         module Library = 
             let Error = Result.Error
         
+            let [<Inline>] inline swap f a b = f b a
+            
+            /// swap: for use with operators: [1..5] |> List.map (__ (/) 2)
+            let [<Inline>] inline __   f a b = f b a
+            
+            /// taken from http://fssnip.net/7UH/title/Generalized-Units-of-Measure-Revisited-using-method-overloading
+            //#nowarn "42"
+            [<AutoOpen>]
+            module UoM = 
+            
+                open System
+            
+                [<MeasureAnnotatedAbbreviation>] type bool<          [<Measure>] 'm> = bool
+                [<MeasureAnnotatedAbbreviation>] type uint64<        [<Measure>] 'm> = uint64
+                [<MeasureAnnotatedAbbreviation>] type Guid<          [<Measure>] 'm> = Guid
+                [<MeasureAnnotatedAbbreviation>] type string<        [<Measure>] 'm> = string
+                [<MeasureAnnotatedAbbreviation>] type TimeSpan<      [<Measure>] 'm> = TimeSpan
+                [<MeasureAnnotatedAbbreviation>] type DateTime<      [<Measure>] 'm> = DateTime
+                [<MeasureAnnotatedAbbreviation>] type DateTimeOffset<[<Measure>] 'm> = DateTimeOffset
+            
+                module private Unsafe = let inline cast<'a, 'b> (a : 'a) : 'b = (# "" a : 'b #)
+            
+                type UoM =
+                    static member inline Tag<  [<Measure>]'m                 > (x : bool               ) : bool<          'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : int                ) : int<           'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : int64              ) : int64<         'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : uint64             ) : uint64<        'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : float              ) : float<         'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : decimal            ) : decimal<       'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : Guid               ) : Guid<          'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : string             ) : string<        'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : TimeSpan           ) : TimeSpan<      'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : DateTime           ) : DateTime<      'm > = Unsafe.cast x
+                    static member inline Tag<  [<Measure>]'m                 > (x : DateTimeOffset     ) : DateTimeOffset<'m > = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : bool<          'm >) : bool                = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : int<           'm >) : int                 = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : int64<         'm >) : int64               = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : uint64<        'm >) : uint64              = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : float<         'm >) : float               = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : decimal<       'm >) : decimal             = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : Guid<          'm >) : Guid                = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : string<        'm >) : string              = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : TimeSpan<      'm >) : TimeSpan            = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : DateTime<      'm >) : DateTime            = Unsafe.cast x
+                    static member inline Untag<[<Measure>]'m                 > (x : DateTimeOffset<'m >) : DateTimeOffset      = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : bool<          'm1>) : bool<          'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : int<           'm1>) : int<           'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : int64<         'm1>) : int64<         'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : uint64<        'm1>) : uint64<        'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : float<         'm1>) : float<         'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : decimal<       'm1>) : decimal<       'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : Guid<          'm1>) : Guid<          'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : string<        'm1>) : string<        'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : TimeSpan<      'm1>) : TimeSpan<      'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : DateTime<      'm1>) : DateTime<      'm2> = Unsafe.cast x
+                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : DateTimeOffset<'m1>) : DateTimeOffset<'m2> = Unsafe.cast x
+            
+            (*
+                [<Measure>] type m
+                [<Measure>] type n
+            
+                let x = UoM.tag<m> "string"
+                let y = UoM.cast<m,n> x
+                let z = UoM.untag y
+            *)
             /// call a function but return the input value
             /// for logging, debugging
             /// use: (5 * 8) |> tee (printfn "value = %d") |> doSomethingElse
@@ -240,6 +307,170 @@ namespace FsRoot
                     module Operators =
                         let (>>=) ma f = bind f ma
                         let (|>>) ma f = map  f ma
+                module Depend =
+                
+                    type Depend<'T> = 
+                    | Dependency of (string * obj) option * (obj -> Depend<'T>)
+                    | NoMore     of 'T
+                
+                    let dependByName nm (defF:'f) (kf:'f->'T) = Dependency(Some(nm, box defF), fun f -> NoMore (kf (unbox f)) )
+                
+                    #if !WEBSHARPER
+                    open Microsoft.FSharp.Quotations.Patterns 
+                    open Microsoft.FSharp.Quotations.DerivedPatterns 
+                
+                    let pname (prop  :System.Reflection.PropertyInfo) = prop  .DeclaringType.FullName + "." + prop  .Name
+                    let mname (method:System.Reflection.MethodInfo  ) = method.DeclaringType.FullName + "." + method.Name
+                
+                    let shouldBe q = 
+                        let rec shouldBe l =
+                            function
+                            | Call(_, method, _) -> Some(mname method, l)
+                            | Lambda(a, q2)      -> shouldBe (l + 1) q2
+                            | _ -> None
+                        match q with
+                        | PropertyGet(o,                                          prop  , [         ]     )-> pname prop  , "should be 0"
+                        | Lambda(a,                                    Call(None, method, [         ])    )
+                        | Lambda(a,                                    Call(None, method, [_        ])    )-> mname method, "should be 1"
+                        | Lambda(a,Lambda(b,                           Call(None, method, [p;q      ]))   )-> mname method, "should be 2"
+                        | Lambda(a,Lambda(b,Lambda(c,                  Call(None, method, [p;q;r    ])))  )-> mname method, "should be 3"
+                        | Lambda(a,Lambda(b,Lambda(c,Lambda(d,         Call(None, method, [p;q;r;s  ])))) )-> mname method, "should be 4"
+                        | Lambda(a,Lambda(b,Lambda(c,Lambda(d,Lambda(e,Call(None, method, [p;q;r;s;t]))))))-> mname method, "should be 5"
+                        | q -> 
+                            shouldBe 0 q 
+                            |> Option.map(fun (nm,l) -> nm, sprintf "Not covered %d parms: %A" l q) 
+                            |> Option.defaultWith(fun () -> "?", sprintf "Not covered: %A" q)
+                        |> fun (nm, m) -> failwithf " %s : %s" nm m
+                
+                    let getName0(q:Quotations.Expr<                    'T>) : string *                      'T = 
+                        match q with
+                        | PropertyGet(o,                                          prop  , [         ]     )-> pname prop  ,                  prop.GetValue(null, [|         |]) |> unbox 
+                        |_-> shouldBe q
+                    let getName1(q:Quotations.Expr<'a                ->'T>) : string * ('a                ->'T) = 
+                        match q with
+                        | Lambda(a,                                    Call(None, method, [         ])    )-> mname method, fun a         -> method.Invoke(null, [|         |]) |> unbox 
+                        | Lambda(a,                                    Call(None, method, [p        ])    )-> mname method, fun a         -> method.Invoke(null, [|a        |]) |> unbox 
+                        |_-> shouldBe q
+                    let getName2(q:Quotations.Expr<'a->'b            ->'T>) : string * ('a->'b            ->'T) = 
+                        match q with
+                        | Lambda(a,Lambda(b,                           Call(None, method, [p;q      ]))   )-> mname method, fun a b       -> method.Invoke(null, [|a;b      |]) |> unbox
+                        |_-> shouldBe q
+                    let getName3(q:Quotations.Expr<'a->'b->'c        ->'T>) : string * ('a->'b->'c        ->'T) = 
+                        match q with
+                        | Lambda(a,Lambda(b,Lambda(c,                  Call(None, method, [p;q;r    ])))  )-> mname method, fun a b c     -> method.Invoke(null, [|a;b;c    |]) |> unbox
+                        |_-> shouldBe q
+                    let getName4(q:Quotations.Expr<'a->'b->'c->'d    ->'T>) : string * ('a->'b->'c->'d    ->'T) = 
+                        match q with
+                        | Lambda(a,Lambda(b,Lambda(c,Lambda(d,         Call(None, method, [p;q;r;s  ])))) )-> mname method, fun a b c d   -> method.Invoke(null, [|a;b;c;d  |]) |> unbox
+                        |_-> shouldBe q
+                    let getName5(q:Quotations.Expr<'a->'b->'c->'d->'e->'T>) : string * ('a->'b->'c->'d->'e->'T) = 
+                        match q with
+                        | Lambda(a,Lambda(b,Lambda(c,Lambda(d,Lambda(e,Call(None, method, [p;q;r;s;t]))))))-> mname method, fun a b c d e -> method.Invoke(null, [|a;b;c;d;e|]) |> unbox
+                        |_-> shouldBe q
+                
+                    let depend0   q                                                                      = let (nm, f) = getName0 q in dependByName nm f id
+                    let depend1   q                                                                      = let (nm, f) = getName1 q in dependByName nm f id
+                    let depend2   q                                                                      = let (nm, f) = getName2 q in dependByName nm f id
+                    let depend3   q                                                                      = let (nm, f) = getName3 q in dependByName nm f id
+                    let depend4   q                                                                      = let (nm, f) = getName4 q in dependByName nm f id
+                    let depend5   q                                                                      = let (nm, f) = getName5 q in dependByName nm f id
+                    let replace0 (q:Quotations.Expr<                    'T>) (fr:                    'T) = let (nm, _) = getName0 q in nm, box fr
+                    let replace1 (q:Quotations.Expr<'a->                'T>) (fr:'a->                'T) = let (nm, _) = getName1 q in nm, box fr
+                    let replace2 (q:Quotations.Expr<'a->'b->            'T>) (fr:'a->'b->            'T) = let (nm, _) = getName2 q in nm, box fr
+                    let replace3 (q:Quotations.Expr<'a->'b->'c->        'T>) (fr:'a->'b->'c->        'T) = let (nm, _) = getName3 q in nm, box fr
+                    let replace4 (q:Quotations.Expr<'a->'b->'c->'d->    'T>) (fr:'a->'b->'c->'d->    'T) = let (nm, _) = getName4 q in nm, box fr
+                    let replace5 (q:Quotations.Expr<'a->'b->'c->'d->'e->'T>) (fr:'a->'b->'c->'d->'e->'T) = let (nm, _) = getName5 q in nm, box fr
+                    #endif
+                
+                    let bind (f: 'a -> Depend<'b>) (pa:Depend<'a>) : Depend<'b> = 
+                        let rec bindR =
+                            function
+                            | Dependency(dep, k) -> Dependency(dep , fun p -> bindR (k p) ) 
+                            | NoMore     v       -> Dependency(None, fun p -> f v         )
+                        bindR pa
+                    let rtn = NoMore
+                    let map f = bind (f >> rtn)
+                    let inline apply fR vR = fR |> bind (swap map  vR)
+                
+                    let replacer lst depend =
+                        let rec replace =
+                            function
+                            | Dependency(None       , k)      -> Dependency(None        , k >> replace)
+                            | Dependency(Some(nm, v), k)      ->
+                                lst 
+                                |> Seq.tryFind (fst >> ((=) nm))
+                                |> Option.map  (snd >> fun v2 -> Dependency(Some(nm, v2), k >> replace) )
+                                |> Option.defaultWith(fun ()  -> Dependency(Some(nm, v ), k >> replace) )
+                            | NoMore v                        -> NoMore              v
+                        replace depend
+                
+                    let replacerDef lst depend =
+                        let rec replace =
+                            function
+                            | Dependency(None       , k)          -> Dependency(None         , k >> replace)
+                            | Dependency(Some(nm, v), k)          ->
+                                lst 
+                                |> Seq.tryFind (fun (_, (nm2, _)) -> nm2 = nm)
+                                |> Option.map  (fun (nmN,(_, v2)) -> Dependency(Some(nmN, v2), k >> replace) )
+                                |> Option.defaultWith(fun ()      -> Dependency(Some(nm , v ), k >> replace) )
+                            | NoMore v                            -> NoMore               v
+                        replace depend
+                
+                    let resolver lst depend = 
+                        let rec resolve =
+                            function
+                            | Dependency(None       , k)      -> k () |> resolve
+                            | Dependency(Some(nm, v), k)      ->
+                                lst 
+                                |> Seq.tryFind (fst >> ((=) nm))
+                                |> Option.map  (snd >> fun v2 -> k v2  )
+                                |> Option.defaultWith(fun ()  -> k v )
+                                |> resolve
+                            | NoMore v                        ->   v
+                        resolve depend
+                
+                    type DependBuilder() =
+                        member __.Bind   (m, f) = bind f m
+                        member __.Return     v  = rtn v
+                        member __.Delay      f  = f ()
+                
+                    let depend = DependBuilder()
+                
+                    let getDependencies dep =
+                        let rec collect lst dep =
+                            let     lst2 = dep :: lst
+                            match dep with
+                            | Dependency(None      , k) -> collect lst2 (k () )
+                            | Dependency(Some(_, v), k) -> collect lst2 (k v  )
+                            | NoMore f                  -> lst2
+                        collect [] dep
+                        |> List.filter (function| Depend.Dependency(None,_) -> false |_-> true) 
+                        |> List.rev 
+                
+                    let toString dep =
+                        getDependencies dep
+                        |> Seq.map       
+                            (function 
+                            | Depend.Dependency(Some(nm, v), next) -> sprintf "%-50s %A" nm v
+                            | x -> string x)
+                        |> Seq.distinct
+                        |> Seq.sort
+                        |> String.concat "\n"
+                
+                    module Operators =
+                        let rtn        = rtn
+                        let depend     = depend
+                        let (>>=) ma  f = bind f ma
+                        let (|>>) ma  f = map  f ma
+                        let (|*>) p  mf = apply mf (rtn p)
+                        let (>=*) mp mf = apply mf     mp
+                        let (<*>) mf mp = apply mf     mp
+                        let (>*>)  g mf = depend {
+                            let! f = mf
+                            return g >> f
+                        }
+                
+                
             type System.String with
                 member this.Substring2(from, n) = 
                     if   n    <= 0           then ""
@@ -1017,17 +1248,19 @@ namespace FsRoot
                         let ie = coll.GetEnumerator()
                         while ie.MoveNext() do
                             func ie.Current
-                    [<CustomOperation("plgName"   )>] member __.Name  ( plg:PlugIn, name              ) = { plg with plgName    =    name }
-                    [<CustomOperation("plgVar"    )>] member __.AddVar( plg:PlugIn, name, var         ) = plg.plgVars   .Add(newVar  name var)  ; plg
-                    [<CustomOperation("plgDoc"    )>] member __.AddDoc( plg:PlugIn, name, doc         ) = plg.plgDocs   .Add(newDoc  name doc)  ; plg
-                    [<CustomOperation("plgDoc2"   )>] member __.AddDoc2(plg:PlugIn, name, doc, p1, p2 ) = plg.plgDocs   .Add(newDocF name (FunDoc2(doc,p1,p2)))  ; plg
-                    [<CustomOperation("plgDoc3"   )>] member __.AddDoc3(plg:PlugIn, name, doc,a,b,c   ) = plg.plgDocs   .Add(newDocF name (FunDoc3(doc,a,b,c)))  ; plg
+                    [<CustomOperation("plgName"   )>] member __.Name  ( plg:PlugIn, name               ) = { plg with plgName    =    name }
+                    [<CustomOperation("plgVar"    )>] member __.AddVar( plg:PlugIn, name, var          ) = plg.plgVars   .Add(newVar  name var)  ; plg
+                    [<CustomOperation("plgDoc"    )>] member __.AddDoc( plg:PlugIn, name, doc          ) = plg.plgDocs   .Add(newDoc  name doc)  ; plg
+                    [<CustomOperation("plgDoc2"   )>] member __.AddDoc2(plg:PlugIn, name, doc, p1, p2  ) = plg.plgDocs   .Add(newDocF name (FunDoc2(doc,p1,p2    )))  ; plg
+                    [<CustomOperation("plgDoc3"   )>] member __.AddDoc3(plg:PlugIn, name, doc,a,b,c    ) = plg.plgDocs   .Add(newDocF name (FunDoc3(doc,a,b,c    )))  ; plg
+                    [<CustomOperation("plgDoc4"   )>] member __.AddDoc4(plg:PlugIn, name, doc,a,b,c,d  ) = plg.plgDocs   .Add(newDocF name (FunDoc4(doc,a,b,c,d  )))  ; plg
+                    [<CustomOperation("plgDoc5"   )>] member __.AddDoc5(plg:PlugIn, name, doc,a,b,c,d,e) = plg.plgDocs   .Add(newDocF name (FunDoc5(doc,a,b,c,d,e)))  ; plg
                     //[<CustomOperation("plgDocDyn" )>] member __.AddDocF(plg:PlugIn, name, docF)  = plg.plgDocs   .Add(newDoc name (lazy LayoutEngine.turnToView docF) ) ; plg
-                    [<CustomOperation("plgQuery"  )>] member __.AddQry( plg:PlugIn, name, qry         ) = plg.plgQueries.Add(newQry  name qry) ; plg
-                    [<CustomOperation("plgAct"    )>] member __.AddAct( plg:PlugIn, name, act         ) = plg.plgActions.Add(newAct  name act) ; plg
-                    [<CustomOperation("plgAct1"   )>] member __.AddAct1(plg:PlugIn, name, act, p1     ) = plg.plgActions.Add(newActF name (FunAct1(act,p1   )) ) ; plg
-                    [<CustomOperation("plgAct2"   )>] member __.AddAct2(plg:PlugIn, name, act, p1, p2 ) = plg.plgActions.Add(newActF name (FunAct2(act,p1,p2)) ) ; plg
-                    [<CustomOperation("plgActOpt" )>] member __.AddActO(plg:PlugIn, name,         actO) = 
+                    [<CustomOperation("plgQuery"  )>] member __.AddQry( plg:PlugIn, name, qry          ) = plg.plgQueries.Add(newQry  name qry) ; plg
+                    [<CustomOperation("plgAct"    )>] member __.AddAct( plg:PlugIn, name, act          ) = plg.plgActions.Add(newAct  name act) ; plg
+                    [<CustomOperation("plgAct1"   )>] member __.AddAct1(plg:PlugIn, name, act, p1      ) = plg.plgActions.Add(newActF name (FunAct1(act,p1   )) ) ; plg
+                    [<CustomOperation("plgAct2"   )>] member __.AddAct2(plg:PlugIn, name, act, p1, p2  ) = plg.plgActions.Add(newActF name (FunAct2(act,p1,p2)) ) ; plg
+                    [<CustomOperation("plgActOpt" )>] member __.AddActO(plg:PlugIn, name,         actO ) = 
                                                         match actO with 
                                                         | Some act -> plg.plgActions.Add(newAct name act)
                                                         | None     -> ()
@@ -1155,7 +1388,256 @@ namespace FsRoot
                                 |_      -> None )
                 ]
             
-                let errDoc txt = Html.div [] [ Html.text txt ]
+                type [< Measure >] PlugInNameM
+                type PlugInName= string<PlugInNameM>
+            
+                type  Fun<'P, 'R> = { f : Val<'P -> 'R> ; p : Val<'P> }
+                and   Val<'P    > = VView of View<'P> | VConst of 'P
+                    with
+                    //[<Inline>] static member ( <* )(vf:Val<'a->'b> , a :    'a ) = VConst a
+                    [<Inline>] static member ( <* )(vf:Val<'a->'b> , aV:Var<'a>) = VView  aV.View
+            
+                type P<'T> = { r:Depend.Depend<'T> }
+            
+                type PFn<'P, 'R> = P<Fun<'P, 'R>>
+                type PVl<'P    > = P<Val<'P    >>
+            
+                open Depend.Operators
+            
+                let bindWrap       f  pv       : P<'b> = { r = pv   >>= fun v -> (f v).r }
+                let unwrapBindWrap f (pv:P<_>) : P<'b> = { r = pv.r |>> fun v ->  f v    }
+            
+                let add1 a = a + 1
+                let a11V = Var.Create 11
+            
+                let mainX = VConst add1 <* a11V
+            
+                let [<Inline>] callF f = 
+                    match f with
+                    | { f = VConst f  ; p = VConst p  } -> VConst (                       f              p )
+                    | { f = VConst f  ; p = VView  pV } -> VView  (View.Apply (View.Const f)             pV)
+                    | { f = VView  fV ; p = VView  pV } -> VView  (View.Apply             fV             pV)
+                    | { f = VView  fV ; p = VConst p  } -> VView  (View.Apply             fV (View.Const p))
+            
+            
+                let baseView        = mainDocV.View
+                let makeAViewDoc  f = baseView |> Doc.BindView(fun _ -> f())
+                let makeAViewDocL f = lazy makeAViewDoc f
+            
+                let [<Inline>] callDoc f =
+                    makeAViewDoc(fun _ -> 
+                        match callF f with
+                        | VConst d  -> d
+                        | VView  dW -> Doc.BindView id dW
+                    )
+            
+                let [<Inline>] callAtt f : Attr =
+                    match callF f with
+                    | VConst a  -> a
+                    | VView  aW -> failwithf "View<Attr> not implemented"
+            
+                let [<Inline>] ff f p = { f = f       ; p = p }
+                let [<Inline>] fc c p = { f = callF c ; p = p }
+            
+                let [<Inline>] pff pf p = { r = pf.r |>> fun f -> ff f p }
+                let [<Inline>] pfc pc p = { r = pc.r |>> fun c -> fc c p }
+            
+                module Val =
+            
+                    let map f = function
+                    | VConst p  -> VConst (         f p )
+                    | VView  pv -> VView  (View.Map f pv)
+            
+                    let toView = function
+                    | VConst p  -> View.Const p
+                    | VView  pv ->            pv
+            
+                    let addDoc d (docs:Val<seq<Doc>>) =
+                        match docs with
+                        | VConst ds  -> VConst (Seq.append ds [ d ] )
+                        | VView  dsW -> VConst (seq [ Doc.BindView Doc.Concat dsW ; d ])
+            
+                    let addAtt a (atts:Val<seq<Attr>>) =
+                        match atts with
+                        | VConst ats  -> VConst (Seq.append ats [ a ] )
+                        | VView  atsW -> failwithf "addAtt for VView not implemented"// VConst (seq [ Doc.BindView Doc.Concat atsW ; a ])
+            
+                    let textDoc = function
+                    | VConst txt  -> Html.text     txt
+                    | VView  txtW -> Html.textView txtW
+            
+                    let textAtt : Val<string> -> Attr = failwithf "textAtt not implemented"
+            
+                let choiceToString   = function Choice1Of2 v -> v | Choice2Of2 r -> sprintf "@{expecting string, got Action: %A}" r
+                let valToStyle atn = function
+                | VConst(Choice1Of2 s) -> Attr.Style  atn s
+                | VView             w  -> Attr.DynamicStyle atn (View.Map choiceToString w)
+                |                   v  -> failwithf "Illegal reference %A" v
+            
+                let valToAttr atn = function
+                | VConst(Choice1Of2 s) -> Attr.Create atn s
+                | VView             w  ->
+                    w |> Attr.DynamicCustom(fun el -> function
+                        | Choice1Of2 s   -> el.SetAttribute(atn, s.Trim())
+                        | Choice2Of2 act -> el.AddEventListener(atn, (fun (ev:JavaScript.Dom.Event) -> (act:PlugInAction).actFunction |> callFunction el ev), false)
+                    )
+                | v -> failwithf "Illegal value %A" v
+            
+                module Extract0 =
+            
+                    type TextType =
+                    | TSimple    of string
+                    | TReference of string
+            
+                    let getDocFromReference         ref = sprintf "getDocFromReference not implemented: @{%s}"         ref |> Html.text
+                    let getTextActViewFromReference ref = sprintf "getTextActViewFromReference not implemented: @{%s}" ref |> Choice1Of2 |> View.Const : View<Choice<string, PlugInAction>>
+            
+                    let rec getOneTextData(bef, name, aft) =
+                        TReference name ::  match aft with
+                                            | ""  -> []
+                                            | aft -> getTextData aft
+                        |> 
+                        match bef with
+                        | ""  -> id
+                        | bef -> fun ls -> TSimple bef :: ls
+                    and getTextData (txt:string) =
+                        txt
+                        |> String.delimitedO "@{" "}"
+                        |> Option.map getOneTextData
+                        |> Option.defaultWith (fun () -> [ TSimple txt ])
+            
+                    let getDocFromReferenceD         = Depend.dependByName "getDocFromReference"         getDocFromReference         id
+                    let getTextActViewFromReferenceD = Depend.dependByName "getTextActViewFromReference" getTextActViewFromReference id
+            
+                    let getDocFromTextTypesD = Depend.depend {
+                        let! getDoc = getDocFromReferenceD
+                        return
+                            List.map (function
+                                | TSimple    t -> Html.text   t
+                                | TReference r -> getDoc r
+                            ) 
+                            >> function
+                            | [ d ] -> d
+                            |   ls  -> Doc.Concat ls
+                    }
+            
+                    let extractDocD = Depend.depend {
+                        let! getDocFromTextTypes = getDocFromTextTypesD
+                        return getTextData >> getDocFromTextTypes
+                    }
+            
+                    let getTextValFromSeqD = Depend.depend {
+                        let! getTextActView = getTextActViewFromReferenceD
+                        return 
+                            View.traverseListApp (function
+                                | TSimple    v -> View.Const     v
+                                | TReference r -> getTextActView r |> View.Map choiceToString
+                            )
+                            >> View.Apply (View.Const (String.concat "" >> Choice1Of2))
+                            >> VView
+                    }
+            
+                    let getTextValFromTextTypesD = Depend.depend {
+                        let! getTextActView    = getTextActViewFromReferenceD
+                        let! getTextValFromSeq = getTextValFromSeqD
+                        return function
+                            | [ TSimple    v ] -> VConst (Choice1Of2     v)
+                            | [ TReference r ] -> VView  (getTextActView r)
+                            | vs               -> getTextValFromSeq vs
+                    }
+            
+                    let getTextValD = getTextData >*> getTextValFromTextTypesD
+            
+                    let extractAtsD = Depend.depend {
+                        let! getTextVal = getTextValD
+                        return fun (txt:string) ->
+                            txt.Split ';'
+                            |> Seq.map    (fun t -> t.Trim())
+                            |> Seq.filter ((<>) "")
+                            |> Seq.map    (fun t -> 
+                                match t.Split ':' with
+                                | [| atn ; sty |] -> getTextVal sty |> valToStyle atn
+                                | _ ->
+                                match t.Split '=' |> Array.map (fun t -> t.Trim()) with
+                                | [| atn ; atv |] -> getTextVal atv |> valToAttr  atn   
+                                | _ -> failwithf "single reference attribute not implemented %s" t
+            
+                            )
+                    }
+            
+                    let extractTextD = Depend.depend {
+                        let! getTextVal = getTextValD
+                        return fun (txt:string) ->
+                            getTextVal txt 
+                            |> Val.map choiceToString
+                            |> Val.toView
+                    }
+            
+                let currentPlugInNameDef : PlugInName = UoM.Tag<_> "NewLYx"
+                let currentPlugInNameD                = Depend.dependByName "currentPlugInName" currentPlugInNameDef id
+            
+                let getDocD = Depend.depend {
+                    let! currentPlugInName = currentPlugInNameD
+                    return fun r -> 
+                        let pName, oName = splitName (UoM.Untag currentPlugInName) r
+                        tryGetDocW pName oName
+                        |> Doc.BindView (fun docO -> 
+                            docO
+                            |> Option.map getLazyDoc
+                            |> Option.defaultWith (fun () ->
+                                tryGetWoWW pName oName
+                                |> View.Map (Option.defaultWith (fun () -> sprintf "Reference not found @{%s}" r))
+                                |> Doc.TextView
+                            )
+                        )
+                }
+            
+                let getTextActViewD = Depend.depend {
+                    let! currentPlugInName = currentPlugInNameD
+                    return fun r ->
+                        let pName, oName = splitName (UoM.Untag currentPlugInName) r
+                        tryGetActW pName oName
+                        |> View.Bind(function
+                            | Some act -> View.Const <| Choice2Of2 act
+                            | None     ->
+                            tryGetWoWW pName oName
+                            |> View.Map (Option.defaultWith (fun () -> sprintf "Text Reference not found @{%s}" r))
+                            |> View.Map Choice1Of2
+                        )
+                }
+            
+                let errDoc  txt = Html.div [] [ Html.text txt ]
+                let errDocf fmt = Printf.ksprintf errDoc fmt
+            
+                let run (pin:PlugInName) d =
+                    depend {
+                        let! getDoc         = getDocD
+                        let! getTextActView = getTextActViewD
+                        return 
+                            d
+                            |> Depend.resolver [
+                                "getDocFromReference"        , getDoc         :> obj
+                                "getTextActViewFromReference", getTextActView :> obj
+                                "currentPlugInName"          , pin            :> obj
+                            ]
+                    } |> Depend.resolver [ "currentPlugInName", pin ]
+            
+                let extractTextD    = Extract0.extractTextD
+                let extractDocD     = Extract0.extractDocD
+                let extractAtsD     = Extract0.extractAtsD
+                let extractAttD     = depend { 
+                    let! extractAts = extractAtsD
+                    return fun p -> extractAts p |> Attr.Concat 
+                }
+            
+                let runDef = run (UoM.Tag "AppFramework")
+            
+                let getParmRef var = 
+                    var
+                    |> String.delimitedO "@{" "}"
+                    |> Option.map (fun (a,b,c) -> b)
+                    |> Option.defaultValue var
+                    |>  splitName ""
             
                 let inputFile attrs labelName actName =
                     splitName "AppFramework" actName
@@ -1180,16 +1662,25 @@ namespace FsRoot
                     ) |> Option.defaultWith(fun () ->  sprintf "Action not found %s" actName |> errDoc )
             
                 let inputLabel attrs labelName varName =
-                    splitName  "AppFramework" varName
-                    ||> tryGetVar
-                    |> Option.map(fun var -> 
-                        Html.div (getAttrs "AppFramework"  attrs) [
-                            Html.div      [ attr.``class`` "input-group"       ] [
-                                Html.span [ attr.``class`` "input-group-addon" ] [ Html.text labelName ]
-                                Doc.Input [ attr.``class`` "form-control"      ]   var.varVar
-                            ]
-                        ]
-                    ) |> Option.defaultWith(fun () ->  sprintf "Var not found %s" varName |> errDoc )
+                    Depend.depend {
+                        let! extractAts = extractAtsD
+                        let! extractDoc = extractDocD
+                        let! currentPlugInName = currentPlugInNameD
+                        return
+                            getParmRef varName
+                            ||> tryGetVarW
+                            |> Doc.BindView (
+                                Option.map(fun var -> 
+                                    Html.div (extractAts attrs) [
+                                        Html.div      [ attr.``class`` "input-group"       ] [
+                                            Html.span [ attr.``class`` "input-group-addon" ] [ extractDoc labelName ]
+                                            Doc.Input [ attr.``class`` "form-control"      ]   var.varVar
+                                        ]
+                                    ]
+                                ) 
+                                >> Option.defaultWith(fun () ->  sprintf "Var not found %s" varName |> errDoc )
+                            )
+                    } |> runDef
             
                 let none x = Html.span [][]
             
@@ -1202,12 +1693,12 @@ namespace FsRoot
             
                 let setVar  (varN   :obj   ) (value:obj   ) = splitName "AppFramework" (unbox varN) ||> tryGetVar |> Option.iter(fun v -> v.varVar.Set (unbox value)       )
                 let trigAct (trigger:string) (actN :string) =
-                    splitName "AppFramework" trigger
+                    getParmRef trigger
                     ||> tryGetWoWW
                     |> View.consistent
                     |> View.Map(function
                         | Some txt ->
-                            splitName "AppFramework" actN
+                            getParmRef actN
                             ||> tryGetAct 
                             |> function
                                 | Some a -> callFunction () () a.actFunction
@@ -1215,6 +1706,29 @@ namespace FsRoot
                             ""
                         | None -> ""
                     ) |>  Doc.TextView
+            
+                let select attrs none vals var = 
+                    Depend.depend {
+                        let! extractAts  = extractAtsD
+                        let! extractText = extractTextD
+                        return
+                            getParmRef var
+                            ||> tryGetVarW
+                            |> Doc.BindView (
+                                Option.map (fun v ->
+                                    let valsW = V ((extractText vals).V.Split ';' |> Seq.toList)
+                                    let varO  = 
+                                        Var.Make 
+                                            (V (match v.varVar.V with 
+                                                | s when Seq.contains (s.Trim()) valsW.V -> Some(s.Trim()) 
+                                                |_-> None )) 
+                                            (function None ->  v.varVar.Set "" | Some s -> valsW |> View.Get (fun vs -> if Seq.contains s vs then v.varVar.Set s) )
+                                    Doc.SelectDynOptional (extractAts attrs) none id valsW varO
+                                ) 
+                                >> Option.defaultWith (fun () -> errDocf "Var not found %s" var )
+                            )
+                    }
+                    |> runDef
             
                 if IsClient then
                     plugin { 
@@ -1230,8 +1744,9 @@ namespace FsRoot
                     plugin { 
                         plgName  "AF"
                         plgDoc2  "TrigAction"   trigAct     "Trigger"  "Action"
-                        plgDoc3  "InputFile"    inputFile   "attrs" "Label" "Action"
-                        plgDoc3  "InputLabel"   inputLabel  "attrs" "Label" "Var"
+                        plgDoc4  "Select"       select      "Attrs" "None" "Vals" "Var"
+                        plgDoc3  "InputFile"    inputFile   "Attrs" "Label" "Action"
+                        plgDoc3  "InputLabel"   inputLabel  "Attrs" "Label" "Var"
                         plgAct2  "SetVar"       setVar   "Var"      "Value"
                         plgAct   "Hello"        (fun () -> JS.Window.Alert "Hello!")
                         plgQuery "getDocNames"  (fun (_:obj) -> plugIns.Value |> Seq.collect (fun plg -> plg.plgDocs |> Seq.map (fun doc -> plg.plgName + "." + doc.docName)) |> Seq.toArray |> box)
@@ -1257,6 +1772,66 @@ namespace FsRoot
                     mainDoc()
             
                 let addPlugIn p = plugIns.Add p
+            
+            
+            /////////////////////////////////////////////////////////////////////////////////////////////
+            
+                type P<'P> with
+                    [<Inline>] static member (<*)(vf:PVl<    'a   ->'b> ,  a :      'a   )  =                                            pff vf (VConst  a                     )
+                    [<Inline>] static member (<!)(vf:PVl<    'a   ->'b> , pav:PVl<  'a  >) = pav.r       |> bindWrap (fun av         -> pff vf          av )
+                    [<Inline>] static member (<!)(vf:PVl<    'a   ->'b> ,  aW:View< 'a  >)  =                                            pff vf (VView   aW                    )
+                    [<Inline>] static member (<!)(vf:PVl<    'a   ->'b> ,  aV:Var<  'a  >)  =                                            pff vf (VView   aV.View               )
+                    [<Inline>] static member (<!)(vf:PVl<    'a   ->'b> , paF:PFn<_,'a  >) = paF.r       |> bindWrap (fun aF         -> pff vf (callF   aF                    ) )
+                    [<Inline>] static member (<&)(vf:PVl<seq<Doc >->'b> ,  a :   string  ) = extractDocD |> bindWrap (fun extractDoc -> pff vf (VConst (seq [extractDoc a  ]) ) )
+                    [<Inline>] static member (<&)(vf:PVl<seq<Doc >->'b> , paF:PFn<_,Doc >) = paF.r       |> bindWrap (fun aF         -> pff vf (VConst (seq [callDoc    aF ]) ) )
+                    [<Inline>] static member (<&)(vf:PVl<    Doc  ->'b> ,  a :   string  ) = extractDocD |> bindWrap (fun extractDoc -> pff vf (VConst (     extractDoc a   ) ) )
+                    [<Inline>] static member (<&)(vf:PVl<    Doc  ->'b> , paF:PFn<_,Doc >) = paF.r       |> bindWrap (fun aF         -> pff vf (VConst (     callDoc    aF  ) ) )
+            //        [<Inline>] static member (<&)(vf:Val<seq<Doc>->'b> , aF:Fun<_,Doc>) = ff vf (VConst (seq [callDoc aF ]) )
+            
+                    [<Inline>] static member (<&)(vf:PVl<seq<Attr>->'b> ,  a :   string  ) = extractAtsD |> bindWrap (fun extractAts -> pff vf (VConst (     extractAts a   ) ) )
+                    [<Inline>] static member (<&)(vf:PVl<seq<Attr>->'b> , paF:PFn<_,Attr>) = paF.r       |> bindWrap (fun aF         -> pff vf (VConst (seq [callAtt    aF ]) ) )
+                    [<Inline>] static member (<&)(vf:PVl<    Attr ->'b> ,  a :   string  ) = extractAttD |> bindWrap (fun extractAtt -> pff vf (VConst (     extractAtt a   ) ) )
+                    [<Inline>] static member (<&)(vf:PVl<    Attr ->'b> , paF:PFn<_,Attr>) = paF.r       |> bindWrap (fun aF         -> pff vf (VConst (     callAtt    aF  ) ) )
+            
+                type P<'P> with    
+                    [<Inline>] static member (<*)(vc , p         ) = pfc vc  (VConst p       )
+                    [<Inline>] static member (<!)(vc , p         ) = pfc vc          p
+                    [<Inline>] static member (<!)(vc , p         ) = pfc vc  (VView  p       )
+                    [<Inline>] static member (<!)(vc , pV:Var< _>) = pfc vc  (VView  pV.View )
+                    [<Inline>] static member (<!)(vc , p:Fun<_,_>) = pfc vc  (callF  p       )
+            
+                    [<Inline>] static member (<&)(c:PFn<_,     Attr  -> _> ,  p :      string ) = extractAttD |> bindWrap (fun extractAtt -> pfc c       (VConst (       extractAtt        p   ) ) )
+                    [<Inline>] static member (<&)(c:PFn<_,     Attr  -> _> ,  p :Val<  string>) =                                            pfc c       (VConst (      Val.textAtt        p   ) )
+                    [<Inline>] static member (<&)(c:PFn<_,     Attr  -> _> , paF:PFn<_,string>) = paF.r       |> bindWrap (fun aF         -> pfc c       (VConst (      Val.textAtt (callF aF) ) ) )
+                    [<Inline>] static member (<&)(c:PFn<_,     Attr  -> _> , paF:PFn<_,Attr  >) = paF.r       |> bindWrap (fun aF         -> pfc c       (VConst (          callAtt        aF  ) ) )
+                    [<Inline>] static member (<&)(c:PFn<_,     Attr  -> _> , p  :      Attr   ) =                                            pfc c       (VConst (                         p   ) )
+                    [<Inline>] static member (<&)(c:PFn<_, seq<Attr> -> _> , p  :      string ) = extractAtsD |> bindWrap (fun extractAts -> pfc c       (VConst (       extractAts        p   ) ) )
+                    [<Inline>] static member (<&)(c:PFn<_, seq<Attr> -> _> , p  :Val<  string>) =                                            pfc c       (VConst (seq [ Val.textAtt        p  ]) )
+                    [<Inline>] static member (<&)(c:PFn<_, seq<Attr> -> _> , paF:PFn<_,string>) = paF.r       |> bindWrap (fun aF         -> pfc c       (VConst (seq [ Val.textAtt (callF aF)]) ) )
+                    [<Inline>] static member (<&)(c:PFn<_, seq<Attr> -> _> , paF:PFn<_,Attr  >) = paF.r       |> bindWrap (fun aF         -> pfc c       (VConst (seq [     callAtt        aF ]) ) )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Attr>,   _> , p  :      string ) = extractAttD |> bindWrap (fun extractAtt -> c |> unwrapBindWrap (fun c -> { c with p = Val.addAtt(  extractAtt        p  ) c.p } ) )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Attr>,   _> , p  :Val<  string>) =                                            c |> unwrapBindWrap (fun c -> { c with p = Val.addAtt( Val.textAtt        p  ) c.p } )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Attr>,   _> , paF:PFn<_,string>) = paF.r       |> bindWrap (fun aF         -> c |> unwrapBindWrap (fun c -> { c with p = Val.addAtt( Val.textAtt (callF aF)) c.p } ) )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Attr>,   _> , paF:PFn<_,Attr  >) = paF.r       |> bindWrap (fun aF         -> c |> unwrapBindWrap (fun c -> { c with p = Val.addAtt(     callAtt        aF ) c.p } ) )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Attr>,   _> , p  :      Attr   ) =                                          c |> unwrapBindWrap (fun c -> { c with p = Val.addAtt                     p    c.p } )
+            
+                    [<Inline>] static member (<&)(c:PFn<_,     Doc   -> _> , p  :      string ) = extractDocD |> bindWrap (fun extractDoc -> pfc c       (VConst (       extractDoc        p   ) ) )
+                    [<Inline>] static member (<&)(c:PFn<_,     Doc   -> _> , p  :Val<  string>) =                                            pfc c       (VConst (      Val.textDoc        p   ) )
+                    [<Inline>] static member (<&)(c:PFn<_,     Doc   -> _> , paF:PFn<_,string>) = paF.r     |> bindWrap (fun aF           -> pfc c       (VConst (      Val.textDoc (callF aF) ) ) )
+                    [<Inline>] static member (<&)(c:PFn<_,     Doc   -> _> , paF:PFn<_,Doc   >) = paF.r     |> bindWrap (fun aF           -> pfc c       (VConst (          callDoc        aF  ) ) )
+                    [<Inline>] static member (<&)(c:PFn<_,     Doc   -> _> , p  :      Doc    ) =                                            pfc c       (VConst (                         p   ) )
+                    [<Inline>] static member (<&)(c:PFn<_, seq<Doc > -> _> , p  :      string ) = extractDocD |> bindWrap (fun extractDoc -> pfc c       (VConst (seq [  extractDoc        p  ]) ) )
+                    [<Inline>] static member (<&)(c:PFn<_, seq<Doc > -> _> , p  :Val<  string>) =                                            pfc c       (VConst (seq [ Val.textDoc        p  ]) )
+                    [<Inline>] static member (<&)(c:PFn<_, seq<Doc > -> _> , paF:PFn<_,string>) = paF.r     |> bindWrap (fun aF           -> pfc c       (VConst (seq [ Val.textDoc (callF aF)]) ) )
+                    [<Inline>] static member (<&)(c:PFn<_, seq<Doc > -> _> , paF:PFn<_,Doc   >) = paF.r     |> bindWrap (fun aF           -> pfc c       (VConst (seq [     callDoc        aF ]) ) )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Doc >,   _> , p  :      string ) = extractDocD |> bindWrap (fun extractDoc -> c |> unwrapBindWrap (fun c -> { c with p = Val.addDoc(  extractDoc        p  ) c.p }) )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Doc >,   _> , p  :Val<  string>) =                                            c |> unwrapBindWrap (fun c -> { c with p = Val.addDoc( Val.textDoc        p  ) c.p } )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Doc >,   _> , paF:PFn<_,string>) = paF.r     |> bindWrap (fun aF           -> c |> unwrapBindWrap (fun c -> { c with p = Val.addDoc( Val.textDoc (callF aF)) c.p } ) )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Doc >,   _> , paF:PFn<_,Doc   >) = paF.r     |> bindWrap (fun aF           -> c |> unwrapBindWrap (fun c -> { c with p = Val.addDoc(     callDoc        aF ) c.p } ) )
+                    [<Inline>] static member (<!)(c:PFn<   seq<Doc >,   _> , p  :      Doc    ) =                                            c |> unwrapBindWrap (fun c -> { c with p = Val.addDoc                     p    c.p } )
+            
+                let inline (!) v = { r = VConst v |> rtn }
+            
             
             [< JavaScriptExport >]
             type LayoutEngine = {
@@ -1948,7 +2523,10 @@ namespace FsRoot
             
                     let createEntryO2 lytNm (refs:System.Collections.Generic.Dictionary<string, _>) =
                         let ok nm en = refs.Add(nm, en) ; Some (Ok(nm, en)) 
-                        let ko msg   = Result.Error msg |> Some
+                        let ko msg (line:string) =
+                            let nm = line.Split ' ' |> Seq.head
+                            refs.Add(nm, ElementDef("div", [||], [NdTextValL [ TvConst msg ] ] ) |> DcElement |> EnDocDef )
+                            Result.Error msg |> Some
                         let getRef nm =
                             try refs.[nm]
                             with e -> failwithf "Could not find reference to %s" nm
@@ -1973,10 +2551,10 @@ namespace FsRoot
                         fun (line:string) ->
                             try 
                                 createEntryO getType lytNm line
-                                |> function 
+                                |> function
                                 | Some(EntryDef(nm, en)) -> ok nm en
-                                | None -> ko (sprintf "Line not matched!: %s" line)
-                            with e     -> ko e.Message
+                                | None -> line |> ko (sprintf "Line not matched!: %s" line)
+                            with e     -> line |> ko e.Message
             
                 module Layout =
                     open ParseO
