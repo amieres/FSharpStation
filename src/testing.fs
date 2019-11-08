@@ -3458,7 +3458,7 @@ namespace FsRoot
             
             
                 let defPlugInName = (UoM.Tag "AppFramework")
-                let runDef = run defPlugInName
+                let runDef d = run defPlugInName d
             
                 let getParmRef var = 
                     var
@@ -3466,6 +3466,22 @@ namespace FsRoot
                     |> Option.map (fun (a,b,c) -> b)
                     |> Option.defaultValue var
                     |>  splitName defPlugInName
+            
+                let depWithExtracts f =
+                    Depend.depend {
+                        let! extractAts = extractAtsD
+                        let! extractDoc = extractDocD
+                        let! extractText = extractTextD
+                        return f(extractAts, extractDoc, extractText)
+                    } |> runDef
+            
+                let docWithVar f var =
+                    getParmRef var
+                    ||> tryGetVoVW
+                    |> Doc.BindView (
+                        Option.map f
+                        >> Option.defaultWith(fun () ->  sprintf "Var not found %s" var |> errDoc )
+                    )
             
                 let inputFile attrs labelName actName =
                     splitName defPlugInName actName
@@ -3489,26 +3505,24 @@ namespace FsRoot
                         ]
                     ) |> Option.defaultWith(fun () ->  sprintf "Action not found %s" actName |> errDoc )
             
-                let inputLabel attrs labelName varName =
-                    Depend.depend {
-                        let! extractAts = extractAtsD
-                        let! extractDoc = extractDocD
-                        let! currentPlugInName = currentPlugInNameD
-                        return
-                            getParmRef varName
-                            ||> tryGetVarW
-                            |> Doc.BindView (
-                                Option.map(fun var -> 
-                                    Html.div (extractAts attrs) [
-                                        Html.div      [ attr.``class`` "input-group"       ] [
-                                            Html.span [ attr.``class`` "input-group-addon" ] [ extractDoc labelName ]
-                                            Doc.Input [ attr.``class`` "form-control"      ]   var.varVar
-                                        ]
-                                    ]
-                                ) 
-                                >> Option.defaultWith(fun () ->  sprintf "Var not found %s" varName |> errDoc )
-                            )
-                    } |> runDef
+                let inputLabel =
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) attrs labelName ->
+                        docWithVar (fun var -> 
+                            Html.div (extractAts attrs) [
+                                Html.div      [ attr.``class`` "input-group"       ] [
+                                    Html.span [ attr.``class`` "input-group-addon" ] [ extractDoc labelName ]
+                                    Doc.Input [ attr.``class`` "form-control"      ]   var
+                                ]
+                            ]
+                        )
+            
+                let input =
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) attrs ->
+                        docWithVar (Doc.Input <| extractAts attrs )
+            
+                let textArea =
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) attrs ->
+                        docWithVar (Doc.InputArea <| extractAts attrs)
             
                 let none x = Html.span [][]
             
@@ -3520,58 +3534,44 @@ namespace FsRoot
                     )
             
                 let setVar  (varN   :obj   ) (value:obj   ) = splitName defPlugInName (unbox varN) ||> tryGetVar |> Option.iter(fun v -> v.varVar.Set (unbox value)       )
-                let trigAct (trigger:string) (actN :string) =
-                    getParmRef trigger
-                    ||> tryGetWoWW
-                    |> View.consistent
-                    |> View.Map(function
-                        | Some txt ->
+                let trigAct =
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) trigger actN ->
+                        extractText trigger
+                        |> View.consistent
+                        |> View.Map(fun _ ->
                             getParmRef actN
                             ||> tryGetAct 
-                            |> function
-                                | Some a -> callFunction () () a.actFunction
-                                | None -> ()
+                            |>  Option.iter(fun a -> callFunction () () a.actFunction )
                             ""
-                        | None -> ""
-                    ) |>  Doc.TextView
+                        ) |>  Doc.TextView
             
-                let select attrs none vals var = 
-                    Depend.depend {
-                        let! extractAts  = extractAtsD
-                        let! extractText = extractTextD
-                        return
-                            getParmRef var
-                            ||> tryGetVarW
-                            |> Doc.BindView (
-                                Option.map (fun v ->
-                                    let valsW = V ((extractText vals).V.Split ';' |> Seq.toList)
-                                    let varO  = 
-                                        Var.Make 
-                                            (V (match v.varVar.V with 
-                                                | s when Seq.contains (s.Trim()) valsW.V -> Some(s.Trim()) 
-                                                |_-> None )) 
-                                            (function None ->  v.varVar.Set "" | Some s -> valsW |> View.Get (fun vs -> if Seq.contains s vs then v.varVar.Set s) )
-                                    Doc.SelectDynOptional (extractAts attrs) none id valsW varO
-                                ) 
-                                >> Option.defaultWith (fun () -> errDocf "Var not found %s" var )
-                            )
-                    }
-                    |> runDef
+                let select =
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) attrs none vals ->
+                        docWithVar (fun var ->
+                            let valsW = V ((extractText vals).V.Split ';' |> Seq.toList)
+                            let varO  = 
+                                Var.Make 
+                                    (V (match var.V with 
+                                        | s when Seq.contains (s.Trim()) valsW.V -> Some(s.Trim()) 
+                                        |_-> None )) 
+                                    (function 
+                                     | None   ->                                                        var.Set "" 
+                                     | Some s -> valsW |> View.Get (fun vs -> if Seq.contains s vs then var.Set s ) )
+                            Doc.SelectDynOptional (extractAts attrs) none id valsW varO
+                        )
             
                 if IsClient then
                     plugin { 
                         plgName  "AppFramework" 
                         plgVar   "mainDocV"     mainDocV
                         plgDoc   "AppFwkClient" AppFwkClient
-                        plgDoc2  "TrigAction"   trigAct     "Trigger"  "Action"
-                        plgDoc3  "InputFile"    inputFile   "attrs" "Label" "Action"
-                        plgDoc3  "InputLabel"   inputLabel  "attrs" "Label" "Var"
-                        plgAct2  "SetVar"       setVar   "Var"      "Value"
                         plgAct   "Hello"        (fun () -> JS.Window.Alert "Hello!")
                     } |> plugIns.Add
                     plugin { 
                         plgName  "AF"
                         plgDoc2  "TrigAction"   trigAct     "Trigger"  "Action"
+                        plgDoc2  "Input"        input       "Attrs"               "Var"
+                        plgDoc2  "TextArea"     textArea    "Attrs"               "Var"
                         plgDoc4  "Select"       select      "Attrs" "None" "Vals" "Var"
                         plgDoc3  "InputFile"    inputFile   "Attrs" "Label" "Action"
                         plgDoc3  "InputLabel"   inputLabel  "Attrs" "Label" "Var"
@@ -5328,26 +5328,8 @@ namespace FsRoot
                             with e -> e.Message |> View.Const
                         )
                     } |> run lytN
-                let defInput(  lytN, n:string, v, attrs : AttrVal seq) =
-                    Depend.depend {
-                        let! attrValToAttr = attrValToAttrD
-                        let! varRefToVar   = varRefToVarD
-                        return
-                            makeAViewDocL <| fun () ->
-                                Doc.Input
-                                    <| (attrs |> Seq.map attrValToAttr)
-                                    <| varRefToVar v
-                    } |> run lytN
-                let defTextArea(  lytN, n:string, v, attrs : AttrVal seq) =
-                    Depend.depend {
-                        let! attrValToAttr = attrValToAttrD
-                        let! varRefToVar   = varRefToVarD
-                        return
-                            makeAViewDocL <| fun () ->
-                                Doc.InputArea
-                                    <| (attrs |> Seq.map attrValToAttr)
-                                    <| varRefToVar v
-                    } |> run lytN
+                let defInput(     lytN, n:string, v, attrs : AttrVal seq) = lazy (AF.errDocf "input deprecated use AF.Input"       )
+                let defTextArea(  lytN, n:string, v, attrs : AttrVal seq) = lazy (AF.errDocf "TextArea deprecated use AF.TextArea" )
                 let defElement(lytN, n:string, elem, attrs : AttrVal seq, docs:NodeRef list) = 
                     Depend.depend {
                         let! attrValToAttr = attrValToAttrD
@@ -5387,8 +5369,8 @@ namespace FsRoot
                             |>  Option.map (fun d -> passParm(d.docDoc, ds) )
                             |>  Option.defaultWith  (fun ()  -> lazy (sprintf "Missing doc: %A" dc |> AF.errDoc ) |> AF.DocFunction.LazyDoc)
                     } |> run   lytN
-                let defButton( lytN, n:string, ac, attrs : AttrVal seq, tx:TextVal list) = 
-                    defElement(lytN, n, "button", Seq.append [ AtAct("click", ac) ] attrs, [ NdTextValL tx ])
+                let defButton( lytN, n:string, ac, attrs : AttrVal seq, tx:TextVal list) = lazy (AF.errDocf "Button deprecated use button \"click=@{Action}\"" )
+                    //defElement(lytN, n, "button", Seq.append [ AtAct("click", ac) ] attrs, [ NdTextValL tx ])
             
                 let defSplitter(lytN, n, v , m, DocRef l, DocRef r) =
                     Depend.depend {
@@ -5876,10 +5858,12 @@ namespace FsRoot
             
                 LayoutEngine.newLyt (UoM.Tag "lytDemo") """
             AF PlugIn
-            : Doc Select
-            : Action SetVar
-            : Doc TrigAction
             : Doc InputLabel
+            : Doc Select
+            : Doc Input
+            : Doc TextArea
+            : Doc TrigAction
+            : Action SetVar
             
             Snippets PlugIn
             : Var snippets_sel
@@ -5942,7 +5926,7 @@ namespace FsRoot
             : Doc    AF.InputLabel "" "Name:" Snippets.curSnp_name
             : Doc    AF.Select "" "<Content>" "Values" editorDataSel
             : div "height:100%;class=relative;flex:1" Snippets.editor
-            : textarea   lytTarget2.ParseMsgs "height:7em"
+            : Doc    AF.TextArea "height:7em"   lytTarget2.ParseMsgs
             
             Left2 vertical 0-25-100 list snippet
             main2 vertical 0-50-100 Left2 lytTarget2.main            
