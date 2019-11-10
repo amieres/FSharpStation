@@ -1,6 +1,6 @@
 #nowarn "3242"
 #nowarn "42"
-////-d:FSharpStation1573054420242 -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1573315290648 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -27,7 +27,7 @@
 //#nowarn "3242"
 //#nowarn "42"
 /// Root namespace for all code
-//#define FSharpStation1573054420242
+//#define FSharpStation1573315290648
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -1964,7 +1964,7 @@ namespace FsRoot
                                 let start    : float              ref = ref 0.0
                                 let domElem  : Dom.Element option ref = ref None                 
                                 let mouseCoord (ev: Dom.MouseEvent) = if vertical then float ev.ClientX else float ev.ClientY
-                                let drag (ev: Dom.Event) =
+                                let drag       (ev: Dom.Event     ) =
                                     ev :?> Dom.MouseEvent
                                     |> mouseCoord
                                     |> fun m   -> (m - !start) * 100.0 / (fst !size) + !startP
@@ -3274,6 +3274,21 @@ namespace FsRoot
                     | VConst p  -> VConst (         f p )
                     | VView  pv -> VView  (View.Map f pv)
             
+                    let rtn = VConst
+                    let apply (fv:Val<'a->'b>) (vv:Val<'a>) : Val<'b> = 
+                        match fv, vv with
+                        | VConst f  , VConst p  -> VConst (                       f              p )
+                        | VConst f  , VView  pV -> VView  (View.Apply (View.Const f)             pV)
+                        | VView  fV , VView  pV -> VView  (View.Apply             fV             pV)
+                        | VView  fV , VConst p  -> VView  (View.Apply             fV (View.Const p))
+            
+                    let (<*>)                        =  apply
+                    let       traverseListApp f list =  let cons head tail = head :: tail
+                                                        let folder head tail = rtn cons <*> f head <*> tail
+                                                        List.foldBack folder list (rtn [])
+                    let inline sequenceListApp  list =  traverseListApp id list
+            
+            
                     let toView = function
                     | VConst p  -> View.Const p
                     | VView  pv ->            pv
@@ -3294,20 +3309,20 @@ namespace FsRoot
             
                     let textAtt : Val<string> -> Attr = failwithf "textAtt not implemented"
             
-                let choiceToString   = function Choice1Of2 v -> v | Choice2Of2 r -> sprintf "@{expecting string, got Action: %A}" r
+                let choiceToString   = function Choice1Of2 v -> v | Choice2Of2 r -> sprintf "@{%A}" r
                 let valToStyle atn = function
-                | VConst(Choice1Of2 s) -> Attr.Style  atn s
-                | VView             w  -> Attr.DynamicStyle atn (View.Map choiceToString w)
-                |                   v  -> failwithf "Illegal reference %A" v
+                | VConst s -> Attr.Style  atn s
+                | VView  w -> Attr.DynamicStyle atn w
             
                 let valToAttr atn = function
-                | VConst(Choice1Of2 s) -> Attr.Create atn s
-                | VView             w  ->
-                    w |> Attr.DynamicCustom(fun el -> function
-                        | Choice1Of2 s   -> el.SetAttribute(atn, s.Trim())
-                        | Choice2Of2 act -> el.AddEventListener(atn, (fun (ev:JavaScript.Dom.Event) -> (act:PlugInAction).actFunction |> callFunction el ev), false)
-                    )
-                | v -> failwithf "Illegal value %A" v
+                | VConst s -> Attr.Create  atn s
+                | VView  w -> Attr.Dynamic atn w
+            
+                type AAttr = 
+                | AStyle of string * string
+                | AAttr  of string * string
+                | AAttrX of string * string
+                | AEmpty
             
                 module Extract0 =
             
@@ -3342,9 +3357,7 @@ namespace FsRoot
                                 | TSimple    t -> Html.text   t
                                 | TReference r -> getDoc r
                             ) 
-                            >> function
-                            | [ d ] -> d
-                            |   ls  -> Doc.Concat ls
+                            >> Doc.Concat
                     }
             
                     let extractDocD = Depend.depend {
@@ -3355,48 +3368,86 @@ namespace FsRoot
                     let getTextValFromSeqD = Depend.depend {
                         let! getTextActView = getTextActViewFromReferenceD
                         return 
-                            View.traverseListApp (function
-                                | TSimple    v -> View.Const     v
-                                | TReference r -> getTextActView r |> View.Map choiceToString
+                            Val.traverseListApp (function
+                                | TSimple    v -> VConst     v
+                                | TReference r -> getTextActView r |> View.Map (function Choice1Of2 s -> s | Choice2Of2 _ -> sprintf "@{%s}" r) |> VView
                             )
-                            >> View.Apply (View.Const (String.concat "" >> Choice1Of2))
-                            >> VView
+                            >> Val.apply (VConst (String.concat ""))
                     }
             
-                    let getTextValFromTextTypesD = Depend.depend {
-                        let! getTextActView    = getTextActViewFromReferenceD
-                        let! getTextValFromSeq = getTextValFromSeqD
-                        return function
-                            | [ TSimple    v ] -> VConst (Choice1Of2     v)
-                            | [ TReference r ] -> VView  (getTextActView r)
-                            | vs               -> getTextValFromSeq vs
-                    }
-            
-                    let getTextValD = getTextData >*> getTextValFromTextTypesD
+                    let getTextValD = getTextData >*> getTextValFromSeqD
             
                     let extractAtsD = Depend.depend {
-                        let! getTextVal = getTextValD
-                        return fun (txt:string) ->
-                            txt.Split ';'
-                            |> Seq.map    (fun t -> t.Trim())
-                            |> Seq.filter ((<>) "")
-                            |> Seq.map    (fun t -> 
+                        let! getTextVal     = getTextValD
+                        let! getTextActView = getTextActViewFromReferenceD
+                        return fun txt ->
+                            let parseAttr (t:string) =
                                 match t.Split ':' with
-                                | [| atn ; sty |] -> getTextVal sty |> valToStyle atn
+                                | [| atn ; sty |] -> AStyle(atn, sty)
                                 | _ ->
                                 match t.Split '=' |> Array.map (fun t -> t.Trim()) with
-                                | [| atn ; atv |] -> getTextVal atv |> valToAttr  atn   
-                                | _ -> failwithf "single reference attribute not implemented %s" t
-            
-                            )
+                                | [| atn; atv |] -> match getTextData atv with
+                                                    | [ TReference r ] -> AAttrX(atn, r  )
+                                                    |_                 -> AAttr (atn, atv)
+                                | [| at       |] -> AAttr(at, "")
+                                |_-> AEmpty
+                            let splitAttrs (txt:string) =
+                                txt.Split ';'
+                                |> Seq.map    (fun t -> t.Trim())
+                                |> Seq.filter ((<>) "")
+                            let addedListeners el : (string * obj) [] = el?addedListeners |> fun v -> if isUndefined v then [||] else v
+                            let setCustomAttr atn (el:Dom.Element) = function
+                                | Choice1Of2 s   -> el.SetAttribute(atn, (s:string).Trim())
+                                | Choice2Of2 act ->
+                                    let listener = fun (ev:JavaScript.Dom.Event) -> (act:PlugInAction).actFunction |> callFunction el ev
+                                    el.AddEventListener(   atn, listener, false)
+                                    el?addedListeners <- Array.append (addedListeners el) [| atn, (listener :> obj) |]
+                            let viewAttr atn = Attr.DynamicCustom (setCustomAttr atn)
+                            let constAttr = function
+                                | AStyle(n, v) -> getTextVal     v |> valToStyle n
+                                | AAttr (n, v) -> getTextVal     v |> valToAttr  n
+                                | AAttrX(n, v) -> getTextActView v |> viewAttr   n
+                                | AEmpty       -> Attr.Empty
+                            let viewAttrs = 
+                                Attr.DynamicCustom(fun el sq ->
+                                    let styles = sq |> Seq.choose (function AStyle(n,v) -> Some (n + ":" + v) |_-> None)
+                                    let atts = [|
+                                        if Seq.isEmpty styles |> not then
+                                            yield ("style", String.concat ";" styles)
+                                        yield! sq
+                                            |> Seq.choose (function
+                                                | AStyle _     -> None
+                                                | AAttr (n, v) -> Some(n, v)
+                                                | AAttrX(n, v) -> Some(n, v)
+                                                | AEmpty       -> None
+                                            )
+                                    |]
+                                    let attsNow = seq [ for i in [0..el.Attributes.Length-1] -> el.Attributes.[i].Name, el.Attributes.[i].Value ]
+                                    let names   = Seq.map fst >> Set
+                                    for nm in names attsNow - names atts do 
+                                        el.Attributes.RemoveNamedItem nm |> ignore
+                                    for (n,v) in Set atts - Set attsNow do
+                                        el.SetAttribute(n, v)
+                                    for (n,l) in addedListeners el do el.RemoveEventListener(n, (unbox l : System.Action) )
+                                    for (n,v) in sq |> Seq.choose (function AAttrX(n, v) -> Some(n, v) |_-> None) do
+                                        getTextActView v |> View.Get (setCustomAttr n el)
+                                )
+                            let extract (txt:string) =
+                                splitAttrs txt
+                                |> Seq.toArray
+                                |> function
+                                    | [| v |] ->    
+                                        match getTextVal v with
+                                        | VConst v -> parseAttr v |> constAttr
+                                        | VView  w -> w |> View.Map (splitAttrs >> Seq.map parseAttr) |> viewAttrs
+                                        |> Seq.singleton
+                                    | vs -> vs |> Seq.map (parseAttr >> constAttr) 
+                            extract txt
                     }
             
                     let extractTextD = Depend.depend {
                         let! getTextVal = getTextValD
-                        return fun (txt:string) ->
-                            getTextVal txt 
-                            |> Val.map choiceToString
-                            |> Val.toView
+                        return getTextVal >> Val.toView 
                     }
             
                 let currentPlugInNameDef : PlugInName = UoM.Tag<_> "NewLYx"
@@ -3560,6 +3611,11 @@ namespace FsRoot
                             Doc.SelectDynOptional (extractAts attrs) none id valsW varO
                         )
             
+            //    let splitterPrc =
+            //        depWithExtracts <| fun (extractAts, extractDoc, extractText) attrs none vals ->
+            //            docWithVar (fun var ->
+            //            )
+            
                 if IsClient then
                     plugin { 
                         plgName  "AppFramework" 
@@ -3570,11 +3626,12 @@ namespace FsRoot
                     plugin { 
                         plgName  "AF"
                         plgDoc2  "TrigAction"   trigAct     "Trigger"  "Action"
-                        plgDoc2  "Input"        input       "Attrs"               "Var"
-                        plgDoc2  "TextArea"     textArea    "Attrs"               "Var"
-                        plgDoc4  "Select"       select      "Attrs" "None" "Vals" "Var"
-                        plgDoc3  "InputFile"    inputFile   "Attrs" "Label" "Action"
-                        plgDoc3  "InputLabel"   inputLabel  "Attrs" "Label" "Var"
+                        plgDoc2  "Input"        input       "Attrs"                  "Var"
+                        plgDoc2  "TextArea"     textArea    "Attrs"                  "Var"
+                        plgDoc4  "Select"       select      "Attrs"    "None" "Vals" "Var"
+                        plgDoc3  "InputFile"    inputFile   "Attrs"    "Label" "Action"
+                        plgDoc3  "InputLabel"   inputLabel  "Attrs"    "Label" "Var"
+                        //plgDoc5  "SplitPerc"    splitterPrc "vertical" "minmax" "doc1" "doc2" "Var"
                         plgAct2  "SetVar"       setVar   "Var"      "Value"
                         plgAct   "Hello"        (fun () -> JS.Window.Alert "Hello!")
                         plgQuery "getDocNames"  (fun (_:obj) -> plugIns.Value |> Seq.collect (fun plg -> plg.plgDocs |> Seq.map (fun doc -> UoM.Untag plg.plgName + "." + UoM.Untag doc.docName)) |> Seq.toArray |> box)
@@ -3712,12 +3769,13 @@ namespace FsRoot
                     | UnQuoted s when s = "select"     -> Select
                     |                               _ -> Nothing
             
-                let (|Var|Doc|View|Concat|Action|Nothing|) =
+                let (|Var|Doc|View|ViewJS|Docs|Action|Nothing|) =
                     function
                     | UnQuoted s when s = "Var"        -> Var
                     | UnQuoted s when s = "Doc"        -> Doc
                     | UnQuoted s when s = "View"       -> View
-                    | UnQuoted s when s = "Concat"     -> Concat
+                    | UnQuoted s when s = "ViewJS"     -> ViewJS
+                    | UnQuoted s when s = "Docs"       -> Docs
                     | UnQuoted s when s = "Action"     -> Action
                     |                                _ -> Nothing
             
@@ -4110,7 +4168,7 @@ namespace FsRoot
                         |   Identifier name :: Doc        :: (S doc  )                  :: parms   -> entryDoc  <| UoM.Tag name <| createDocM     (lytNm, name, doc  , parms          ) 
                         |   Identifier name :: View       ::                               parms   -> entryView <| UoM.Tag name <| createViewM    (lytNm, name,        parms          )
                         |   Identifier name :: Template   :: (S temp )         :: attrs :: holes   -> entryDoc  <| UoM.Tag name <| createTemplateM(lytNm, name, temp , attrs   , holes)
-                        |   Identifier name :: Concat                                   :: docs    -> entryDoc  <| UoM.Tag name <| createConcatM  (lytNm, name,                  docs )
+                        |   Identifier name :: Docs                                   :: docs    -> entryDoc  <| UoM.Tag name <| createConcatM  (lytNm, name,                  docs )
                         |   Identifier name :: Action     :: Identifier act             :: parms   -> entryAct  <| UoM.Tag name <| createActionM  (lytNm, name, act  , parms          )
                         |   Identifier name :: Elem elem                       :: attrs :: docs    -> entryDoc  <| UoM.Tag name <| createElementM (lytNm, name, elem , attrs   , docs ) 
                         | _                                                                        -> None
@@ -4141,6 +4199,8 @@ namespace FsRoot
                     | TvConst  of string
                     | TvVarRef of VarRef
                     | TvViwRef of ViwRef
+                    | TvActRef of ActRef
+                    | TvDocRef of DocRef
             
                     type TextValL = TextVal list
             
@@ -4178,11 +4238,12 @@ namespace FsRoot
                     type TextAreaDef = TextAreaDef of VarRef * AttrVal[]
                     type DocFDef     = DocFDef     of DocRef * ParmRef list
                     type ConcatDef   = ConcatDef   of NodeRef list
-                    type ElementDef  = ElementDef  of string * AttrVal[] * NodeRef list
+                    type ElementDef  = ElementDef  of string * ParmRef * NodeRef list
             
                     type ActDef      = ActDef      of ActRef * ParmRef list
                     type VarDef      = VarDef      of string
-                    type ViwDef      = ViwDef      of ParmRef  list
+                    type ViwDef      = ViwDef      of ParmRef list
+                    type VJSDef      = VJSDef      of ParmRef list
                     type PlgDef      = PlgDef      of ElemNames
                     type DocDef      = 
                     | DcSplitter of SplitterDef
@@ -4198,6 +4259,7 @@ namespace FsRoot
                     | EnActDef of ActDef
                     | EnVarDef of VarDef
                     | EnViwDef of ViwDef
+                    | EnVJSDef of VJSDef
                     | EnPlgDef of PlgDef
                     | EnPlgRef of ElemName
             
@@ -4207,6 +4269,7 @@ namespace FsRoot
                     let entryDoc  n d = EnDocDef d |> entryDef n |> Some
                     let entryAct  n a = EnActDef a |> entryDef n |> Some
                     let entryView n w = EnViwDef w |> entryDef n |> Some
+                    let entryVJS  n w = EnVJSDef w |> entryDef n |> Some
                     let entryVar  n v = EnVarDef v |> entryDef n |> Some
                     let entryPlg  n p = EnPlgDef p |> entryDef n |> Some
                     let entryRef  n e = EnPlgRef e |> entryDef n |> Some
@@ -4251,6 +4314,7 @@ namespace FsRoot
                         let (|Tr|_|) = function
                         | VarRf vr -> TvVarRef vr |> Some
                         | ViwRf wr -> TvViwRef wr |> Some
+                        | ActRf wr -> TvActRef wr |> Some
                         |_-> None
             
                         let (|Indi|_|) txt =
@@ -4335,26 +4399,27 @@ namespace FsRoot
                         | [ NamU name ;  Var        ;  Name nm                                 ] -> entryRef  name <| ElemName(nm, RVar)
                         | [ NamU name ;  View       ;  Name nm                                 ] -> entryRef  name <| ElemName(nm, RViw)
                         | [ NamU name ;  Action     ;  Name nm                                 ] -> entryRef  name <| ElemName(nm, RAct)
-                        | [ Name name ;  Vertical   ;  Measures measures ;  DocRf l ; DocRf r  ] -> entryDoc  name <| DcSplitter(SplitterDef(true , measures, l, r) )
-                        | [ Name name ;  Horizontal ;  Measures measures ;  DocRf l ; DocRf r  ] -> entryDoc  name <| DcSplitter(SplitterDef(false, measures, l, r) ) 
-                        | [ Name name ;  Button     ;  ActRf      act    ;  At att  ; QTx text ] -> entryDoc  name <| DcButton  (ButtonDef  (act  , att     , text) )
-                        | [ Name name ;  Input      ;  VarRf      var    ;  At att             ] -> entryDoc  name <| DcInput   (InputDef   (var  , att           ) )
-                        | [ Name name ;  TextArea   ;  VarRf      var    ;  At att             ] -> entryDoc  name <| DcTextArea(TextAreaDef(var  , att           ) )
+                    (**)| [ Name name ;  Vertical   ;  Measures measures ;  DocRf l ; DocRf r  ] -> entryDoc  name <| DcSplitter(SplitterDef(true , measures, l, r) )
+                    (**)| [ Name name ;  Horizontal ;  Measures measures ;  DocRf l ; DocRf r  ] -> entryDoc  name <| DcSplitter(SplitterDef(false, measures, l, r) ) 
+                    (**)| [ Name name ;  Button     ;  ActRf      act    ;  At att  ; QTx text ] -> entryDoc  name <| DcButton  (ButtonDef  (act  , att     , text) )
+                    (**)| [ Name name ;  Input      ;  VarRf      var    ;  At att             ] -> entryDoc  name <| DcInput   (InputDef   (var  , att           ) )
+                    (**)| [ Name name ;  TextArea   ;  VarRf      var    ;  At att             ] -> entryDoc  name <| DcTextArea(TextAreaDef(var  , att           ) )
                         | [ Name name ;  Var        ;                       STx v              ] -> entryVar  name <| VarDef    (v.Trim())
                         |   Name name :: Doc        :: DocRf      dr               :: Prs ps     -> entryDoc  name <| DcDocF    (DocFDef    ( dr  , ps            ) )
-                        |   Name name :: View       ::                                Prs ps     -> entryView name <| ViwDef            ps              
-                        //|   Name name :: Template   :: (S temp )         :: At att :: holes      -> entryDoc  name <| entryTemplate(lytNm, name, temp , attrs   , holes)
-                        |   Name name :: Concat                                    :: Nds ns     -> entryDoc  name <| DcConcat  (ConcatDef                  ns      )
+                        |   Name name :: View       ::                                Prs ps     -> entryView name <| ViwDef           ps
+                        |   Name name :: ViewJS     ::                                Prs ps     -> entryVJS  name <| VJSDef           ps
+                        |   Name name :: Docs                                      :: Nds ns     -> entryDoc  name <| DcConcat  (ConcatDef                  ns      )
                         |   Name name :: Action     :: ActRf      act              :: Prs ps     -> entryAct  name <| ActDef  ( act  , ps          )
-                        |   Name name :: Elem elem                       :: At att :: Nds ns     -> entryDoc  name <| DcElement (ElementDef(elem , att   , ns ) )
+                        |   Name name :: Elem elem  :: Pr         att              :: Nds ns     -> entryDoc  name <| DcElement (ElementDef(elem , att   , ns ) )
                         | _                                                                      -> None
             
                     let createEntryO2 lytNm (refs:System.Collections.Generic.Dictionary<string, _>) =
-                        let ok nm en = refs.Add(nm, en) ; Some (Ok(nm, en)) 
+                        let addR nm en = if refs.ContainsKey nm then Result.errorf "Already exists %s : %A " nm en else refs.Add(nm, en) ; Ok()
+                        let ok   nm en = addR nm en |> Result.map (fun () -> nm, en)
                         let ko msg (line:string) =
                             let nm = line.Split([| ' ' ; '\t' |], System.StringSplitOptions.RemoveEmptyEntries) |> Seq.head
-                            refs.Add(nm, ElementDef("div", [||], [NdTextValL [ TvConst msg ] ] ) |> DcElement |> EnDocDef )
-                            Result.Error msg |> Some
+                            addR nm (ElementDef("div", PrTextValL [], [NdTextValL [ TvConst msg ] ] ) |> DcElement |> EnDocDef )
+                            |> Result.bind (fun () -> Result.Error msg)
                         let getRef nm =
                             try refs.[nm]
                             with e -> failwithf "Could not find reference to %s" nm
@@ -4367,22 +4432,36 @@ namespace FsRoot
                                 | EnActDef _ -> RAct
                                 | EnVarDef _ -> RVar
                                 | EnViwDef _ -> RViw
+                                | EnVJSDef _ -> RViw
                                 | EnPlgRef _ -> RPlg
                                 | EnPlgDef _ -> failwithf "PlugIn should not be referenced by itself: %A" rf
                                 , Some entry
-                            | FullRef  (ly, nm) -> 
-                                getRef ly
-                                |> function
-                                | EnPlgDef(PlgDef ps) -> try ps.[nm] with e-> failwithf "Could not find reference to %s.%s" ly nm
-                                | _                   -> failwithf "PlugIn not registered: %A" rf
-                                , None
+                            | FullRef  (ly, nm) ->
+                                try
+                                    getRef ly
+                                    |> function
+                                    | EnPlgDef(PlgDef ps) -> try ps.[nm] with e-> failwithf "Could not find reference to %s.%s" ly nm
+                                    | _                   -> failwithf "PlugIn not registered: %A" rf
+                                    , None
+                                with e ->
+                                    match AF.tryGetPlugIn (UoM.Tag ly) with
+                                    | None    -> failwith e.Message
+                                    | Some pg ->
+                                    let nmm = UoM.Tag nm
+                                    if   pg.plgDocs   .ContainsKey nmm then RDoc
+                                    elif pg.plgActions.ContainsKey nmm then RAct
+                                    elif pg.plgVars   .ContainsKey nmm then RVar
+                                    elif pg.plgViews  .ContainsKey nmm then RViw
+                                    else failwithf "Could not find reference to %s.%s" ly nm
+                                    , None
                         fun (line:string) ->
                             try 
                                 createEntryO getType lytNm line
                                 |> function
-                                | Some(EntryDef(nm, en)) -> ok nm en
-                                | None -> line |> ko (sprintf "Line not matched!: %s" line)
-                            with e     -> line |> ko e.Message
+                                | Some(EntryDef(nm, en)) ->         ok nm en
+                                | None                   -> line |> ko (sprintf "Line not matched!: %s" line)
+                            with e                       -> line |> ko e.Message
+                            |> Some
             
                 module Layout =
                     open ParseO
@@ -5206,32 +5285,35 @@ namespace FsRoot
             
                 let textValToTextType = function
                 | TvConst  s          -> Extract0.TSimple  s
+                | TvActRef (ActRef v)  
+                | TvDocRef (DocRef v)  
                 | TvVarRef (VarRef v)  
                 | TvViwRef (ViwRef v) -> itemRefToTextType v
             
                 let (|ActRVs|) = function | ActRef v -> [ TvVarRef (VarRef v)]
             
-                let attrValToAttrD = Depend.depend {
-                    let! getTextValFromTextTypes = Extract0.getTextValFromTextTypesD
-                    let! getTextVal              = Extract0.getTextValD
-                    return
-                        function
-                        | AtStyle (an,        vs) -> vs, valToStyle an
-                        | AtAct   (an, ActRVs vs) 
-                        | AtAttr  (an,        vs) -> vs, valToAttr  an
-                        >> fun (vs, f) -> 
-                            List.map textValToTextType vs
-                            |> getTextValFromTextTypes
-                            |> f
-                }
+            //    let attrValToAttrD = Depend.depend {
+            //        let! getTextValFromTextTypes = Extract0.getTextValFromTextTypesD
+            //        let! getTextVal              = Extract0.getTextValD
+            //        return
+            //            function
+            //            | AtStyle (an,        vs) -> vs, valToStyle an
+            //            | AtAct   (an, ActRVs vs) 
+            //            | AtAttr  (an,        vs) -> vs, valToAttr  an
+            //            >> fun (vs, f) -> 
+            //                List.map textValToTextType vs
+            //                |> getTextValFromTextTypes
+            //                |> f
+            //    }
             
                 let nodeRefToDocD = Depend.depend {
                     let! getDocFromTextTypes = Extract0.getDocFromTextTypesD
                     return function
-                        | NdTextValL       vs ->  vs |> List.map textValToTextType |> getDocFromTextTypes
+                        | NdTextValL       vs ->  vs |> List.map textValToTextType 
                         | NdDocRef (DocRef r)
                         | NdVarRef (VarRef r)
-                        | NdViwRef (ViwRef r) -> [ itemRefToTextType r ] |> getDocFromTextTypes
+                        | NdViwRef (ViwRef r) -> [ itemRefToTextType r ]
+                        >> getDocFromTextTypes
                 }
             
                 let varRefToVarD = Depend.depend {
@@ -5250,7 +5332,7 @@ namespace FsRoot
                     return fun (p:ParmRef) ->
                         let refToSplit = itemRefToString >> AF.splitName currentPlugInName
                         match p with
-                        | PrTextValL       ts -> ts|> List.map textValToTextType |> getTextValFromSeq |> Val.map choiceToString |> Val.toView |> View.Map box
+                        | PrTextValL       ts -> ts|> List.map textValToTextType |> getTextValFromSeq |> Val.toView |> View.Map box
                         | PrDocRef (DocRef r) -> r |> refToSplit ||> AF.tryGetDocW |> View.Map  (Option.map ((fun d -> d.docDoc     ) >> box          ) >> Option.defaultWith (fun () -> sprintf "missing ref Doc %A"    r :> obj              ) )
                         | PrVarRef (VarRef r) -> r |> refToSplit ||> AF.tryGetVarW |> View.Bind (Option.map ((fun v -> v.varVar.View) >> View.Map box ) >> Option.defaultWith (fun () -> sprintf "missing ref Var %A"    r :> obj |> View.Const) )
                         | PrViwRef (ViwRef r) -> r |> refToSplit ||> AF.tryGetViwW |> View.Bind (Option.map ((fun v -> v.viwView    ) >> View.Map box ) >> Option.defaultWith (fun () -> sprintf "missing ref View %A"   r :> obj |> View.Const) )
@@ -5268,8 +5350,14 @@ namespace FsRoot
                     let! getTextValFromSeq = Extract0.getTextValFromSeqD
                     return fun (p:ParmRef) ->
                         let toAbs = itemRefToAbsolute (UoM.Untag currentPlugInName) >> sprintf "@{%s}"
+                        let toAbsRef = function 
+                        | TvConst s-> s 
+                        | TvVarRef (VarRef r) 
+                        | TvActRef (ActRef r) 
+                        | TvDocRef (DocRef r) 
+                        | TvViwRef (ViwRef r) -> toAbs r
                         match p with
-                        | PrTextValL       ts -> ts|> Seq.map (function TvConst s-> s | TvVarRef (VarRef r) | TvViwRef (ViwRef r) -> toAbs r) |> String.concat ""
+                        | PrTextValL       ts -> ts|> Seq.map toAbsRef |> String.concat ""
                         | PrViwRef (ViwRef r) 
                         | PrDocRef (DocRef r) 
                         | PrVarRef (VarRef r) 
@@ -5282,7 +5370,7 @@ namespace FsRoot
                     return fun (p:ParmRef) f ->
                         let refToSplit = itemRefToString >> AF.splitName currentPlugInName
                         match p with
-                        | PrTextValL       ts -> ts|> List.map textValToTextType  |> getTextValFromSeq |> Val.map choiceToString |> Val.toView |> View.Get(box >> f)
+                        | PrTextValL       ts -> ts|> List.map textValToTextType  |> getTextValFromSeq |> Val.toView |> View.Get(box >> f)
                         | PrDocRef (DocRef r) -> r |> refToSplit ||> AF.tryGetDoc |> Option.iter ((fun d -> d.docDoc     ) >> box           >> f  )
                         | PrVarRef (VarRef r) -> r |> refToSplit ||> AF.tryGetVar |> Option.iter ((fun v -> v.varVar.View) >> View.Get (box >> f) )
                         | PrViwRef (ViwRef r) -> r |> refToSplit ||> AF.tryGetViw |> Option.iter ((fun v -> v.viwView    ) >> View.Get (box >> f) )
@@ -5309,6 +5397,17 @@ namespace FsRoot
                             |>  Option.defaultWith  (fun ()  -> AF.FunAct0 (fun () -> printfn "Action Not Found %s" r) )
                         )
                     } |> run lytN
+                let defView( lytN, n:string, ps:ParmRef list) =
+                    Depend.depend {
+                        let! currentPlugInName = currentPlugInNameD
+                        let! getParam2         = getParam2D
+                        let! extractText       = extractTextD
+                        return baseView |> View.Bind(fun _ ->
+                            ps
+                            |> View.traverseSeq (getParam2 >> extractText)
+                            |> View.Map (Seq.toArray >> String.concat "")
+                        )
+                    } |> run lytN
                 let defViewJS( lytN, n:string, ps:ParmRef list) =
                     Depend.depend {
                         let! currentPlugInName = currentPlugInNameD
@@ -5330,20 +5429,20 @@ namespace FsRoot
                     } |> run lytN
                 let defInput(     lytN, n:string, v, attrs : AttrVal seq) = lazy (AF.errDocf "input deprecated use AF.Input"       )
                 let defTextArea(  lytN, n:string, v, attrs : AttrVal seq) = lazy (AF.errDocf "TextArea deprecated use AF.TextArea" )
-                let defElement(lytN, n:string, elem, attrs : AttrVal seq, docs:NodeRef list) = 
+                let defElement(lytN, n:string, elem, attrs : ParmRef, docs:NodeRef list) = 
                     Depend.depend {
-                        let! attrValToAttr = attrValToAttrD
                         let! nodeRefToDoc  = nodeRefToDocD
+                        let! extractAts    = extractAtsD
+                        let! getParam2     = getParam2D
                         return
                             makeAViewDocL <| fun () ->
                                 Doc.Element elem
-                                    <| (attrs |> Seq.map attrValToAttr)
+                                    <| extractAts (getParam2 attrs)
                                     <| (docs  |> Seq.map nodeRefToDoc )
                                 :> Doc
                     } |> run   lytN
                 let defConcat( lytN, n:string, docs:NodeRef list) = 
                     Depend.depend {
-                        let! attrValToAttr = attrValToAttrD
                         let! nodeRefToDoc  = nodeRefToDocD
                         return
                             makeAViewDocL <| fun () ->
@@ -5370,7 +5469,6 @@ namespace FsRoot
                             |>  Option.defaultWith  (fun ()  -> lazy (sprintf "Missing doc: %A" dc |> AF.errDoc ) |> AF.DocFunction.LazyDoc)
                     } |> run   lytN
                 let defButton( lytN, n:string, ac, attrs : AttrVal seq, tx:TextVal list) = lazy (AF.errDocf "Button deprecated use button \"click=@{Action}\"" )
-                    //defElement(lytN, n, "button", Seq.append [ AtAct("click", ac) ] attrs, [ NdTextValL tx ])
             
                 let defSplitter(lytN, n, v , m, DocRef l, DocRef r) =
                     Depend.depend {
@@ -5383,7 +5481,6 @@ namespace FsRoot
                         )
                     } |> run lytN
             
-                    //defElement(lytN, n, "button", Seq.append [ AtAct("click", ac) ] attrs, [ NdTextValL tx ])
             
                 let initVal = "-<InitValue>-"
             
@@ -5396,22 +5493,25 @@ namespace FsRoot
                 let defTextAreaM  = Memoize.memoize defTextArea
                 let defElementM   = Memoize.memoize defElement
                 let defConcatM    = Memoize.memoize defConcat
+                let defViewM      = Memoize.memoize defView
                 let defViewJSM    = Memoize.memoize defViewJS
                 let defSplitterM  = Memoize.memoize defSplitter
             
                 let generateEntries lytN =
                     Seq.choose(function
                         | n, EnVarDef( VarDef      v                         ) -> defVarM(     lytN, n, v          ) |> AF.newVar  (UoM.Tag n) |> EntryVar |> Some
-                        | n, EnDocDef( DcSplitter (SplitterDef(v , m, l, r) )) -> defSplitterM(lytN, n, v , m, l, r) |> AF.newDoc  (UoM.Tag n) |> EntryDoc    |> Some
-                        | n, EnDocDef( DcButton   (ButtonDef(  ac, ats, tx) )) -> defButtonM(  lytN, n, ac, ats, tx) |> AF.newDoc  (UoM.Tag n) |> EntryDoc    |> Some
-                        | n, EnDocDef( DcInput    (InputDef(   v , ats    ) )) -> defInputM(   lytN, n, v , ats    ) |> AF.newDoc  (UoM.Tag n) |> EntryDoc    |> Some
-                        | n, EnDocDef( DcTextArea (TextAreaDef(v , ats    ) )) -> defTextAreaM(lytN, n, v , ats    ) |> AF.newDoc  (UoM.Tag n) |> EntryDoc    |> Some
+                    (**)| n, EnDocDef( DcSplitter (SplitterDef(v , m, l, r) )) -> defSplitterM(lytN, n, v , m, l, r) |> AF.newDoc  (UoM.Tag n) |> EntryDoc    |> Some
+                    (**)| n, EnDocDef( DcButton   (ButtonDef(  ac, ats, tx) )) -> defButtonM(  lytN, n, ac, ats, tx) |> AF.newDoc  (UoM.Tag n) |> EntryDoc    |> Some
+                    (**)| n, EnDocDef( DcInput    (InputDef(   v , ats    ) )) -> defInputM(   lytN, n, v , ats    ) |> AF.newDoc  (UoM.Tag n) |> EntryDoc    |> Some
+                    (**)| n, EnDocDef( DcTextArea (TextAreaDef(v , ats    ) )) -> defTextAreaM(lytN, n, v , ats    ) |> AF.newDoc  (UoM.Tag n) |> EntryDoc    |> Some
                         | n, EnDocDef( DcConcat   (ConcatDef            ds  )) -> defConcatM(  lytN, n,          ds) |> AF.newDoc  (UoM.Tag n) |> EntryDoc    |> Some
                         | n, EnDocDef( DcElement  (ElementDef( el, ats, ds) )) -> defElementM( lytN, n, el, ats, ds) |> AF.newDoc  (UoM.Tag n) |> EntryDoc    |> Some
                         | n, EnDocDef( DcDocF     (DocFDef(    dc,      ds) )) -> defDocFM(    lytN, n, dc,      ds) |> AF.newDocF (UoM.Tag n) |> EntryDoc    |> Some
                         | n, EnActDef( ActDef               (  ac, parms  )  ) -> defActionM(  lytN, n, ac, parms  ) |> AF.newActF (UoM.Tag n) |> EntryAction |> Some
-                        | n, EnViwDef( ViwDef                      parms     ) -> defViewJSM(  lytN, n,     parms  ) |> AF.newViw  (UoM.Tag n) |> EntryView   |> Some
-                        | _ -> None
+                        | n, EnViwDef( ViwDef                      parms     ) -> defViewM(    lytN, n,     parms  ) |> AF.newViw  (UoM.Tag n) |> EntryView   |> Some
+                        | n, EnVJSDef( VJSDef                      parms     ) -> defViewJSM(  lytN, n,     parms  ) |> AF.newViw  (UoM.Tag n) |> EntryView   |> Some
+                        | n, EnPlgRef _ -> None
+                        | n, EnPlgDef _ -> None
                     )
             
                 let parseNewLayout lytN =
@@ -5857,36 +5957,13 @@ namespace FsRoot
                 |> LayoutEngine.addLayout0
             
                 LayoutEngine.newLyt (UoM.Tag "lytDemo") """
-            AF PlugIn
-            : Doc InputLabel
-            : Doc Select
-            : Doc Input
-            : Doc TextArea
-            : Doc TrigAction
-            : Action SetVar
-            
-            Snippets PlugIn
-            : Var snippets_sel
-            : Var curSnp_content
-            : Var curSnp_name
-            : Var searchFor
-            : Action IndentOut
-            : Action IndentIn
-            : Doc snippets_list
-            : Action AddSnippet
-            : Action DeleteSnippet
-            : Action ParseNewLY
-            : Action LoadSnippets
-            : Action SaveSnippets
-            : Doc editor
-            
             lytTarget2 PlugIn
             : Var ParseMsgs
             : Doc main 
             
             editorDataSel Var ""
             
-            target    View "n => n.includes('main ')?n:'main Concat "" ""'" Snippets.curSnp_content
+            target    ViewJS "n => n.includes('main ')?n:'main Docs "" ""'" Snippets.curSnp_content
             
             SetTarget Action AF.SetVar     "lytTarget2.Layout"        target
             SetMain2  Action AF.SetVar     "AppFramework.mainDocV"    "lytDemo.main2"
@@ -5913,7 +5990,7 @@ namespace FsRoot
             
             list div "display: flex;flex-direction: column" gotoMain File
             : div    "margin:5px" SearchFor 
-            : Concat buttons
+            : Docs buttons
             : div "overflow:auto;width:100%;max-width:calc(100% - 10px)" Snippets.snippets_list
             : ul "margin:3px"
             :: button "click=@{Snippets.AddSnippet}   ;title=Add New Snippet" "+"
