@@ -4798,28 +4798,6 @@ namespace FsRoot
                 open Html
             
                 let disabled disW = attr.disabledDynPred (V "") disW
-                let inputLabel attrs disW txt var =
-                    div attrs [
-                        div [           attr.``class`` "input-group"                       ] [
-                            span      [ attr.``class`` "input-group-addon"                 ] [ text txt ]
-                            Doc.Input [ attr.``class`` "form-control"      ; disabled disW ]   var
-                        ]
-                    ]
-            
-                let areaLabel attrs disW txt (var:Var<string>) =
-                    div attrs [
-                        div [                attr.``class`` "input-group"                       ] [
-                            span           [ attr.``class`` "input-group-addon"                 ] [ text txt ]
-                            Doc.InputAreaV [ attr.``class`` "form-control"      ; disabled disW ]   var.V
-                        ]
-                    ]
-            
-                let elemsUI doc addNew =
-                    div [] [
-                        doc
-                        Doc.Button "New" [] addNew
-                    ]
-            
                 let lensFloat2Str(v:Var<float>) = Var.Make (V (sprintf "%A" v.V)) (ParseO.parseDoubleO >> function Some d when d <> v.Value -> v.Set d |_->())
                 let textLine txtW = div [] [ textView txtW ]
             
@@ -4833,11 +4811,6 @@ namespace FsRoot
                     Var.Make(V (sel.V |> Option.map toB)) 
                             (function Some s -> ofBO s |> Option.iter (Some >> sel.Set) |_-> sel.Set None) 
             
-                //let selectorLens toStr ofStrO (sel:Var<_ option>) =
-                //    Var.Make 
-                //        (V ( match sel.V with Some v -> sprintf "%s" (toStr v) |_-> "" )) 
-                //        (fun s -> if s = "" then sel.Set None
-                //                  else ofStrO s |> Option.iter (Some >> sel.Set) )
                 let selectorLens toStr ofStrO = mapVarO toStr ofStrO >> lensStrO
             
                 let selectorLensInt    sel = selectorLens (fun (v          ) -> v   .ToString()) (ParseO.parseIntO                      ) sel
@@ -4855,43 +4828,6 @@ namespace FsRoot
                 //open FsRoot
                 open AppFramework
             
-                //type PlugInBuilder() =
-                //    member __.Zero() = { defaultPlugIn() with plgName    = "Main" }
-                //    member this.Yield(()) = this.Zero()
-                //    member __.For(coll:seq<_>, func) =
-                //        let ie = coll.GetEnumerator()
-                //        while ie.MoveNext() do
-                //            func ie.Current
-                //    [<CustomOperation("name"   )>]
-                //    member __.Name  (plg:PlugIn, name     )   = { plg with plgName    = name }
-                //    [<CustomOperation("var"    )>]  
-                //    member __.AddVar(plg:PlugIn, name, var)   = plg.plgVars   .Add(newVar name var)  ; plg
-                //    [<CustomOperation("doc"    )>]  
-                //    member __.AddDoc(plg:PlugIn, name, doc)   = plg.plgDocs   .Add(newDoc name doc)  ; plg
-                //    [<CustomOperation("docDyn" )>]  
-                //    member __.AddDocF(plg:PlugIn, name, docF) = plg.plgDocs   .Add(newDoc name (lazy LayoutEngine.turnToView docF) ) ; plg
-                //    [<CustomOperation("act"    )>]
-                //    member __.AddAct(plg:PlugIn, name, act)   = plg.plgActions.Add(newAct name act) ; plg
-                //    [<CustomOperation("actOpt"    )>]
-                //    member __.AddActO(plg:PlugIn, name,actO) = match actO with 
-                //                                               | Some act -> plg.plgActions.Add(newAct name act)
-                //                                               | None     -> ()
-                //                                               plg
-                //    //[<CustomOperation("mainDoc")>]
-                //    //member __.InsDoc(plg:PlugIn, name, doc) = plg.plgDocs.    = [| newDoc name doc |] |> Array.append <| plg.plgDocs    }
-                //    [<CustomOperation("view"   )>]  
-                //    member __.AddViw(plg:PlugIn, name, viw) = plg.plgViews.Add(newViw name viw) ; plg
-                //    [<CustomOperation("merge"  )>]
-                //    member __.Merge (plg:PlugIn, prefix, p2:PlugIn) = 
-                //        plg.plgVars   .AppendMany(p2.plgVars    |> Seq.map (fun v -> { v with varName = prefix + v.varName } ) ) 
-                //        plg.plgViews  .AppendMany(p2.plgViews   |> Seq.map (fun w -> { w with viwName = prefix + w.viwName } ) ) 
-                //        plg.plgDocs   .AppendMany(p2.plgDocs    |> Seq.map (fun d -> { d with docName = prefix + d.docName } ) ) 
-                //        plg.plgActions.AppendMany(p2.plgActions |> Seq.map (fun a -> { a with actName = prefix + a.actName } ) ) 
-                //        plg.plgQueries.AppendMany(p2.plgQueries |> Seq.map (fun q -> { q with qryName = prefix + q.qryName } ) ) 
-                //        plg
-            //
-                //let plugin = PlugInBuilder()
-            
                 let concatMainDocs plugins = 
                     plugins 
                     |> Seq.choose (fun plg -> Seq.tryHead plg.plgDocs) 
@@ -4904,7 +4840,6 @@ namespace FsRoot
                     selV   : Var<'K option>
                     add    : unit -> 'D  
                     delCur : unit -> unit
-                    //getDoc : View<'K option> -> Var<'D> -> Doc
                     def    : 'D
                 } with 
                     member this.PlugIn selectorLens = plugin {
@@ -4921,14 +4856,6 @@ namespace FsRoot
                     member this.CurrentV =
                         Var.Make this.CurrentW
                                 (fun v -> match this.selV.Value with Some k when this.elems.ContainsKey k -> this.elems.Add v |_-> ())
-                    //member this.CurrentDoc   = this.getDoc this.selV.View this.CurrentV
-            
-                //type ListModelDataGuidId<'D> = ListModelData<GuidId<'D> , 'D>
-                //type ListModelDataGuid<  'D> = ListModelData<System.Guid, 'D>
-                //type ListModelDataInt<   'D> = ListModelData<int        , 'D>
-            //
-                //type ListModelDataGuidId<'D> with
-                //    member this.PlugIn () = (box this |> unbox<ListModelData<GuidId<'D>, 'D>>).PlugIn Util.selectorLensGuidId
             
             module LayoutEngine =
                 open LayoutEngine
@@ -5779,20 +5706,23 @@ namespace FsRoot
             
                 module AF = AppFramework
             
-                let monacoNew (var : Var<string> ) =
+                let monacoNew (var : Var<string> ) (langW: View<string>) (themeW: View<string>) =
                     MonacoGenAdapter.newVar JSObject JSObject var
                     |> GenEditor.onRender(fun ged ->
                         ged.editorO
-                        |> Option.iter (fun ed -> Monaco.Editor.SetModelLanguage(ed.GetModel(), "fsharp") )
-                        Monaco.Editor.SetTheme("vs-dark")
+                        |> Option.iter (fun ed -> 
+                            langW 
+                            |> View.Sink (fun lang -> Monaco.Editor.SetModelLanguage(ed.GetModel(), lang) ) 
+                        )
+                        themeW |> View.Sink Monaco.Editor.SetTheme
                     )
             
-                let monaco = { monacoNew (Lens (currentSnippetV.V.snpContent)) with 
-                                annotations    = View.Const (seq[])
-                                toolTip        = None
-                                declaration    = None
-                                autoCompletion = None
-                            }
+                //let monaco = { monacoNew (Lens (currentSnippetV.V.snpContent)) with 
+                //                annotations    = View.Const (seq[])
+                //                toolTip        = None
+                //                declaration    = None
+                //                autoCompletion = None
+                //            }
             
                 let addSnippet () =
                     processHierW
@@ -5910,7 +5840,7 @@ namespace FsRoot
                     plgName   "Snippets"
                     plgVar    "searchFor"      searchFor
                     plgView   "parseOut"       parseW
-                    plgDoc    "editor"        (lazy (div [] [ monaco |> GenEditor.generateDoc ]) )
+                    //plgDoc    "editor"        (lazy (div [] [ monaco |> GenEditor.generateDoc ]) )
                     plgMerge  "snippets_"     (snippetList.PlugIn selectorLensGuidId  )
                     plgMerge  "curSnp_"        curSnp
                     plgAct    "LoadSnippets"  (fun () -> SaveLoad.loadTextFile (JS.Document.GetElementById "LoadSnippets")?firstElementChild?firstElementChild?firstElementChild?firstElementChild )
@@ -5920,6 +5850,29 @@ namespace FsRoot
                     plgAct    "AddSnippet"     addSnippet
                     plgAct    "DeleteSnippet"  deleteSnippet
                     plgAct    "ParseNewLY"     parseNewLY
+                }
+                |> AF.addPlugIn
+            
+            
+                let createMonacoEditor =
+                    AF.depWithExtracts 
+                    <| fun (extractAts, extractDoc, extractText) varP (lang:string) (theme:string) (annotations:string)  ->
+                    AF.docWithVar 
+                    <| fun var ->
+                        let editor = {
+                            monacoNew var (extractText lang) (extractText theme)
+                              with 
+                                annotations    = View.Const (seq[])
+                                toolTip        = None
+                                declaration    = None
+                                autoCompletion = None
+                            }    
+                        div [] [ editor |> GenEditor.generateDoc ]
+                    <| varP
+            
+                AF.plugin {
+                    plgName   "Monaco"
+                    plgDoc4   "editor"    createMonacoEditor "var" "Language" "theme" "Annotations"
                 }
                 |> AF.addPlugIn
             
@@ -5996,13 +5949,15 @@ namespace FsRoot
             :: button "click=@{Snippets.AddSnippet}   ;title=Add New Snippet" "+"
             :: button "margin-left:20px;click=@{Snippets.DeleteSnippet};title=Delete  Snippet" "x"
             
+            editor Doc Monaco.editor Snippets.curSnp_content "fsharp" "vs-dark" ""
+            
             snippet div "display: flex;flex-direction: column;flex:1" Trigger
             : button "click=@{SetTarget}"  "Apply"
             : button "click=@{Snippets.ParseNewLY}" "Apply NewLY"
             : div    "click=@{SetTarget}" Snippets.snippets_sel
             : Doc    AF.InputLabel "" "Name:" Snippets.curSnp_name
             : Doc    AF.Select "" "<Content>" "Values" editorDataSel
-            : div "height:100%;class=relative;flex:1" Snippets.editor
+            : div "height:100%;class=relative;flex:1" editor
             : Doc    AF.TextArea "height:7em"   lytTarget2.ParseMsgs
             
             Left2 vertical 0-25-100 list snippet

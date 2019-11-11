@@ -8332,21 +8332,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return AttrModule.DynamicPred("disabled",disW,View.Const(""));
  };
- Util.inputLabel=function(attrs,disW,txt,_var)
- {
-  return Doc.Element("div",attrs,[Doc.Element("div",[AttrProxy.Create("class","input-group")],[Doc.Element("span",[AttrProxy.Create("class","input-group-addon")],[Doc.TextNode(txt)]),Doc.Input([AttrProxy.Create("class","form-control"),Util.disabled(disW)],_var)])]);
- };
- Util.areaLabel=function(attrs,disW,txt,_var)
- {
-  return Doc.Element("div",attrs,[Doc.Element("div",[AttrProxy.Create("class","input-group")],[Doc.Element("span",[AttrProxy.Create("class","input-group-addon")],[Doc.TextNode(txt)]),Doc.InputArea([AttrProxy.Create("class","form-control"),Util.disabled(disW)],Var$1.Lens(_var,Global.id,function($1,$2)
-  {
-   return $2;
-  }))])]);
- };
- Util.elemsUI=function(doc,addNew)
- {
-  return Doc.Element("div",[],[doc,Doc.Button("New",[],addNew)]);
- };
  Util.lensFloat2Str=function(v)
  {
   var f;
@@ -10038,7 +10023,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return g(f(x));
   })))(sel);
  };
- SnippetsUI.monacoNew=function(_var)
+ SnippetsUI.monacoNew=function(_var,langW,themeW)
  {
   return GenEditor.onRender(function(ged)
   {
@@ -10046,11 +10031,17 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    x=ged.editorO;
    (Option.iter(function(ed)
    {
-    var _m;
-    _m=ed.getModel();
-    self.monaco.editor.setModelLanguage(_m,"fsharp");
+    View.Sink(function(lang)
+    {
+     var _m;
+     _m=ed.getModel();
+     self.monaco.editor.setModelLanguage(_m,lang);
+    },langW);
    }))(x);
-   self.monaco.editor.setTheme("vs-dark");
+   View.Sink(function(a)
+   {
+    self.monaco.editor.setTheme(a);
+   },themeW);
   },MonacoGenAdapter.newVar(function()
   {
    return{};
@@ -10058,11 +10049,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return{};
   },_var));
- };
- SnippetsUI.monaco=function()
- {
-  SC$1.$cctor();
-  return SC$1.monaco;
  };
  SnippetsUI.addSnippet=function()
  {
@@ -10391,6 +10377,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    o.Set(a);
   }),x);
+ };
+ SnippetsUI.createMonacoEditor=function()
+ {
+  SC$1.$cctor();
+  return SC$1.createMonacoEditor;
  };
  SnippetsUI.main=function()
  {
@@ -12197,7 +12188,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  },CancellationTokenSource);
  SC$1.$cctor=function()
  {
-  var f,g,t,s,x,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,t$9,t$10,t$11,i,x$1,t$12,t$13,t$14,t$15,t$16,t$17,i$1,b,x$2,b$1,b$2,b$3,b$4,b$5,b$6,b$7,b$8,a,b$9,a$1,b$10,p,cache,getOrAdd,p$1,cache$1,getOrAdd$1,p$2,cache$2,getOrAdd$2,p$3,cache$3,getOrAdd$3,p$4,cache$4,getOrAdd$4,p$5,cache$5,getOrAdd$5,p$6,cache$6,getOrAdd$6,p$7,cache$7,getOrAdd$7,p$8,cache$8,getOrAdd$8,p$9,cache$9,getOrAdd$9,p$10,cache$10,getOrAdd$10,x$3,b$11,pf,p$11,pf$1,p$12,sayHello_0,c,vf,a$2,vf$1,c$1,vf$2,pc,pf$2,p$13,p$14,pc$1,vf$3,p$15,c$2,c$3,c$4,c$5,c$6,c$7,c$8,c$9,c$10,vf$4,c$11,vf$5,c$12,vf$6,pc$2,vf$7,p$16,b$12,b$13,b$14,b$15,b$16,b$17,p$17,cache$11,getOrAdd$11,p$18,cache$12,getOrAdd$12,p$19,cache$13,getOrAdd$13,p$20,cache$14,getOrAdd$14,p$21,cache$15,getOrAdd$15,p$22,cache$16,getOrAdd$16,p$23,cache$17,getOrAdd$17,p$24,cache$18,getOrAdd$18,p$25,cache$19,getOrAdd$19,p$26,cache$20,getOrAdd$20,p$27,cache$21,getOrAdd$21,v,prior,b$18,b$19,b$20,i$2,f$1,g$1,b$21;
+  var f,g,t,s,x,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,t$9,t$10,t$11,i,x$1,t$12,t$13,t$14,t$15,t$16,t$17,i$1,b,x$2,b$1,b$2,b$3,b$4,b$5,b$6,b$7,b$8,a,b$9,a$1,b$10,p,cache,getOrAdd,p$1,cache$1,getOrAdd$1,p$2,cache$2,getOrAdd$2,p$3,cache$3,getOrAdd$3,p$4,cache$4,getOrAdd$4,p$5,cache$5,getOrAdd$5,p$6,cache$6,getOrAdd$6,p$7,cache$7,getOrAdd$7,p$8,cache$8,getOrAdd$8,p$9,cache$9,getOrAdd$9,p$10,cache$10,getOrAdd$10,x$3,b$11,pf,p$11,pf$1,p$12,sayHello_0,c,vf,a$2,vf$1,c$1,vf$2,pc,pf$2,p$13,p$14,pc$1,vf$3,p$15,c$2,c$3,c$4,c$5,c$6,c$7,c$8,c$9,c$10,vf$4,c$11,vf$5,c$12,vf$6,pc$2,vf$7,p$16,b$12,b$13,b$14,b$15,b$16,b$17,p$17,cache$11,getOrAdd$11,p$18,cache$12,getOrAdd$12,p$19,cache$13,getOrAdd$13,p$20,cache$14,getOrAdd$14,p$21,cache$15,getOrAdd$15,p$22,cache$16,getOrAdd$16,p$23,cache$17,getOrAdd$17,p$24,cache$18,getOrAdd$18,p$25,cache$19,getOrAdd$19,p$26,cache$20,getOrAdd$20,p$27,cache$21,getOrAdd$21,v,prior,b$18,b$19,b$20,f$1,g$1,b$21,b$22;
   SC$1.$cctor=Global.ignore;
   function g$2(s$1)
   {
@@ -12209,13 +12200,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   }
   function g$3(s$1)
   {
-   var a$4,b$22;
+   var a$4,b$23;
    return Slice.array(s$1,{
     $:1,
     $0:0
    },{
     $:1,
-    $0:(a$4=0,(b$22=Arrays.length(s$1)-2,Unchecked.Compare(a$4,b$22)===1?a$4:b$22))
+    $0:(a$4=0,(b$23=Arrays.length(s$1)-2,Unchecked.Compare(a$4,b$23)===1?a$4:b$23))
    });
   }
   function g$4(s$1)
@@ -12229,7 +12220,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   function a$3(a$4)
   {
    var f$8;
-   function b$22(a$5)
+   function b$23(a$5)
    {
     return AppFramework.plugIns().TryFindByKey(a$5);
    }
@@ -12239,7 +12230,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
    f$8=function(o)
    {
-    return o==null?null:b$22(o.$0);
+    return o==null?null:b$23(o.$0);
    };
    return function(x$4)
    {
@@ -13339,8 +13330,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   });
   SC$1.AppFwkClient=Lazy.Create(function()
   {
-   var b$22,Q,A,D,V,V$1,P$2,p$28,i$3;
-   return(b$22=(Q=AppFramework.renderQueries(),(A=AppFramework.renderActions(),(D=AppFramework.renderDocs(),(V=AppFramework.renderViews(),(V$1=AppFramework.renderVars(),(P$2=AppFramework.renderPlugIns(),ProviderBuilder.Make().WithHole({
+   var b$23,Q,A,D,V,V$1,P$2,p$28,i$2;
+   return(b$23=(Q=AppFramework.renderQueries(),(A=AppFramework.renderActions(),(D=AppFramework.renderDocs(),(V=AppFramework.renderViews(),(V$1=AppFramework.renderVars(),(P$2=AppFramework.renderPlugIns(),ProviderBuilder.Make().WithHole({
     $:0,
     $0:"plugins",
     $1:P$2
@@ -13371,7 +13362,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     $:0,
     $0:"queries",
     $1:Q
-   })),(p$28=Handler.CompleteHoles(b$22.k,b$22.h,[]),(i$3=new TemplateInstance.New(p$28[1],testing_Templates.appfwkclient(p$28[0])),(b$22.i=i$3,i$3)))).get_Doc();
+   })),(p$28=Handler.CompleteHoles(b$23.k,b$23.h,[]),(i$2=new TemplateInstance.New(p$28[1],testing_Templates.appfwkclient(p$28[0])),(b$23.i=i$2,i$2)))).get_Doc();
   });
   SC$1.plugin=new PlugInBuilder.New();
   SC$1.a11V=Var$1.Create$1(11);
@@ -13545,7 +13536,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
       }
       function s$1(el,sq)
       {
-       var f$8,styles,atts,attsNow,names,i$3,e,nm,i$4,e$1,f$9,a$7,i$5,$1,f$10,i$6,e$2;
+       var f$8,styles,atts,attsNow,names,i$2,e,nm,i$3,e$1,f$9,a$7,i$4,$1,f$10,i$5,e$2;
        function m$1(t$20)
        {
         return t$20[0];
@@ -13579,9 +13570,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        }));
        attsNow=List.ofSeq(Seq$1.delay(function()
        {
-        return Seq$1.map(function(i$7)
+        return Seq$1.map(function(i$6)
         {
-         return[el.attributes.item(i$7).name,el.attributes.item(i$7).value];
+         return[el.attributes.item(i$6).name,el.attributes.item(i$6).value];
         },List.ofSeq(Operators$5.range(0,el.attributes.length-1)));
        }));
        names=(f$8=function(s$2)
@@ -13591,8 +13582,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        {
         return g$7(f$8(x$4));
        });
-       i$3=FSharpSet.op_Subtraction(names(attsNow),names(atts));
-       e=Enumerator.Get(i$3);
+       i$2=FSharpSet.op_Subtraction(names(attsNow),names(atts));
+       e=Enumerator.Get(i$2);
        try
        {
         while(e.MoveNext())
@@ -13606,8 +13597,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
         if(typeof e=="object"&&"Dispose"in e)
          e.Dispose();
        }
-       i$4=FSharpSet.op_Subtraction(new FSharpSet.New(atts),new FSharpSet.New(attsNow));
-       e$1=Enumerator.Get(i$4);
+       i$3=FSharpSet.op_Subtraction(new FSharpSet.New(atts),new FSharpSet.New(attsNow));
+       e$1=Enumerator.Get(i$3);
        try
        {
         while(e$1.MoveNext())
@@ -13622,18 +13613,18 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
          e$1.Dispose();
        }
        a$7=addedListeners(el);
-       for(i$5=0,$1=a$7.length-1;i$5<=$1;i$5++){
-        f$10=Arrays.get(a$7,i$5);
+       for(i$4=0,$1=a$7.length-1;i$4<=$1;i$4++){
+        f$10=Arrays.get(a$7,i$4);
         el.removeEventListener(f$10[0],f$10[1]);
        }
-       i$6=Seq$1.choose(function(a$8)
+       i$5=Seq$1.choose(function(a$8)
        {
         return a$8.$==2?{
          $:1,
          $0:[a$8.$0,a$8.$1]
         }:null;
        },sq);
-       e$2=Enumerator.Get(i$6);
+       e$2=Enumerator.Get(i$5);
        try
        {
         while(e$2.MoveNext())
@@ -14226,9 +14217,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   });
   SC$1.main0=(pc=(pf$2=AppFramework.op_Dereference(function(a$4)
   {
-   return function(b$22)
+   return function(b$23)
    {
-    return NewLY.concat(a$4,b$22);
+    return NewLY.concat(a$4,b$23);
    };
   }),(p$13={
    $:0,
@@ -15228,13 +15219,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return Snippet.New($1.snpId,$1.snpName,$2,$1.snpParentIdO,$1.snpPredIds,$1.snpProperties,$1.snpModified);
   });
   SC$1.curSnp=(b$20=AppFramework.plugin(),b$20.AddVar(b$20.AddVar(b$20.Yield(),"name",SnippetsUI.currentSnippetNameV()),"content",SnippetsUI.currentSnippetContentV()));
-  SC$1.monaco=(i$2=SnippetsUI.monacoNew(Var$1.Lens(SnippetsUI.currentSnippetV(),function($1)
-  {
-   return $1.snpContent;
-  },function($1,$2)
-  {
-   return Snippet.New($1.snpId,$1.snpName,$2,$1.snpParentIdO,$1.snpPredIds,$1.snpProperties,$1.snpModified);
-  })),GenEditor$1.New(i$2["var"],i$2.disabled,View.Const([]),i$2.onChange,i$2.onRender,null,null,null,i$2.editorO,i$2.editorHook));
   SC$1.parseW=View.Map((f$1=(g$1=function(s$1)
   {
    return Seq$1.choose(c$13,s$1);
@@ -15247,10 +15231,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   }),SnippetsUI.currentSnippetContentV().get_View());
   SC$1.target2=LayoutEngineModule.newLyt(UoM$1.Tag$3("lytTarget2"),"");
   NewLY.addLayout(SnippetsUI.target2());
-  AppFramework.addPlugIn((b$21=AppFramework.plugin(),b$21.AddAct(b$21.AddAct(b$21.AddAct(b$21.AddAct(b$21.AddAct(b$21.AddAct(b$21.AddAct(b$21.Merge(b$21.Merge(b$21.AddDoc(b$21.AddViw(b$21.AddVar(b$21.Name(b$21.Yield(),"Snippets"),"searchFor",SnippetsUI.searchFor()),"parseOut",SnippetsUI.parseW()),"editor",Lazy.Create(function()
-  {
-   return Doc.Element("div",[],[GenEditor.generateDoc(SnippetsUI.monaco())]);
-  })),"snippets_",SnippetsUI.snippetList().PlugIn(SnippetsUI.selectorLensGuidId)),"curSnp_",SnippetsUI.curSnp()),"LoadSnippets",function()
+  AppFramework.addPlugIn((b$21=AppFramework.plugin(),b$21.AddAct(b$21.AddAct(b$21.AddAct(b$21.AddAct(b$21.AddAct(b$21.AddAct(b$21.AddAct(b$21.Merge(b$21.Merge(b$21.AddViw(b$21.AddVar(b$21.Name(b$21.Yield(),"Snippets"),"searchFor",SnippetsUI.searchFor()),"parseOut",SnippetsUI.parseW()),"snippets_",SnippetsUI.snippetList().PlugIn(SnippetsUI.selectorLensGuidId)),"curSnp_",SnippetsUI.curSnp()),"LoadSnippets",function()
   {
    SaveLoad.loadTextFile(self.document.getElementById("LoadSnippets").firstElementChild.firstElementChild.firstElementChild.firstElementChild);
   }),"SaveSnippets",function()
@@ -15272,9 +15253,21 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    SnippetsUI.parseNewLY();
   })));
+  SC$1.createMonacoEditor=AppFramework.depWithExtracts(function($1,$2,extractText)
+  {
+   return Runtime$1.Curried(function(varP,lang,theme,$3)
+   {
+    return AppFramework.docWithVar(function(_var)
+    {
+     var i$2;
+     return Doc.Element("div",[],[GenEditor.generateDoc((i$2=SnippetsUI.monacoNew(_var,extractText(lang),extractText(theme)),GenEditor$1.New(i$2["var"],i$2.disabled,View.Const([]),i$2.onChange,i$2.onRender,null,null,null,i$2.editorO,i$2.editorHook)))]);
+    },varP);
+   },4);
+  });
+  AppFramework.addPlugIn((b$22=AppFramework.plugin(),b$22.AddDoc4(b$22.Name(b$22.Yield(),"Monaco"),"editor",SnippetsUI.createMonacoEditor(),"var","Language","theme","Annotations")));
   LayoutEngine$1.addLayout0(LayoutEngineModule.newLyt(UoM$1.Tag$3("lytTarget"),"\r\n            main horizontal 10-50-70 part1 part2\r\n            \r\n            part1 div \"\" \r\n            : h1 \"\" \"Demo123 \" message\r\n            :: div \"\" \"Message:\"\r\n            :: textarea message \"height:200px;width:500px\"\r\n            \r\n            part2 div \"\" lytTarget.Layout\r\n            \r\n            message Var \"Hello\"     \r\n                "));
   LayoutEngine$1.addLayout0(LayoutEngineModule.newLyt(UoM$1.Tag$3("SnippetsLyt"),"\r\n                    split horizontal 0-50-100 AppFramework.AppFwkClient main\r\n                    main vertical 0-25-100 list snippet\r\n                    SearchFor   Doc InputLabel \"\" \"Search\" Snippets.searchFor\r\n                    File        Doc InputFile  \"id=LoadSnippets\" \"Open File\" Snippets.LoadSnippets \"\"\r\n                    list div \"display: flex;flex-direction: column\" File\r\n                    : button \"click=@{Snippets.AddSnippet}\"    \"Add New Snippet\"\r\n                    : button \"click=@{Snippets.DeleteSnippet}\" \"Delete Snippet\"\r\n                    : button \"click=@{Snippets.IndentIn}\"      \"Indent in\"\r\n                    : button \"click=@{Snippets.IndentOut}\"     \"Indent out\"\r\n                    : div    \"\" SearchFor \r\n                    : div \"overflow:auto;width:100%;max-width:100%\" Snippets.snippets_list\r\n                    snippet div \"display: flex;flex-direction: column\"\r\n                    : div    \"\" Snippets.snippets_sel\r\n                    : Doc    InputLabel \"\" \"Name:\" Snippets.curSnp_name\r\n                    : div \"height:100%;class=relative\" Snippets.editor                \r\n                "));
-  NewLY.addLayout(LayoutEngineModule.newLyt(UoM$1.Tag$3("lytDemo"),"\r\n            lytTarget2 PlugIn\r\n            : Var ParseMsgs\r\n            : Doc main \r\n            \r\n            editorDataSel Var \"\"\r\n            \r\n            target    ViewJS \"n => n.includes('main ')?n:'main Docs \"\" \"\"'\" Snippets.curSnp_content\r\n            \r\n            SetTarget Action AF.SetVar     \"lytTarget2.Layout\"        target\r\n            SetMain2  Action AF.SetVar     \"AppFramework.mainDocV\"    \"lytDemo.main2\"\r\n            SetMain   Action AF.SetVar     \"AppFramework.mainDocV\"    \"lytDemo.main\"\r\n            \r\n            Trigger   Doc    AF.TrigAction Snippets.snippets_sel \"lytDemo.SetTarget\"\r\n            \r\n            gotoMain  button \"click=@{SetMain};width:16px\" \"<<\"\r\n            gotoMain2 button \"click=@{SetMain2};width:16px\" \">>\"\r\n            \r\n            SearchFor   Doc AF.InputLabel \"\" \"Search\" Snippets.searchFor\r\n            \r\n            buttons ul \"\"\r\n            : div \"margin:3px\"\r\n            :: button \"click=@{Snippets.IndentOut};title=indent out\"     \"<--\"\r\n            :: button \"click=@{Snippets.IndentIn};title=indent in\"       \"--> \"\r\n            \r\n            File span \"class=input-group;margin:5px;id=LoadSnippets\"\r\n            : div \"class=input-group-btn\"\r\n            :: label \"class=btn btn-info\" \"Load File\"\r\n            ::: div \"\"\r\n            :::: input \"class=form-control;type=file;display: none;change=@{Snippets.LoadSnippets}\" \r\n            :: label \"class=btn btn-primary;click=@{Snippets.SaveSnippets}\" \"Save File\"\r\n            \r\n            list div \"display: flex;flex-direction: column\" gotoMain File\r\n            : div    \"margin:5px\" SearchFor \r\n            : Docs buttons\r\n            : div \"overflow:auto;width:100%;max-width:calc(100% - 10px)\" Snippets.snippets_list\r\n            : ul \"margin:3px\"\r\n            :: button \"click=@{Snippets.AddSnippet}   ;title=Add New Snippet\" \"+\"\r\n            :: button \"margin-left:20px;click=@{Snippets.DeleteSnippet};title=Delete  Snippet\" \"x\"\r\n            \r\n            snippet div \"display: flex;flex-direction: column;flex:1\" Trigger\r\n            : button \"click=@{SetTarget}\"  \"Apply\"\r\n            : button \"click=@{Snippets.ParseNewLY}\" \"Apply NewLY\"\r\n            : div    \"click=@{SetTarget}\" Snippets.snippets_sel\r\n            : Doc    AF.InputLabel \"\" \"Name:\" Snippets.curSnp_name\r\n            : Doc    AF.Select \"\" \"<Content>\" \"Values\" editorDataSel\r\n            : div \"height:100%;class=relative;flex:1\" Snippets.editor\r\n            : Doc    AF.TextArea \"height:7em\"   lytTarget2.ParseMsgs\r\n            \r\n            Left2 vertical 0-25-100 list snippet\r\n            main2 vertical 0-50-100 Left2 lytTarget2.main            \r\n                \r\n            Left div \"display:flex;flex-direction:column\" gotoMain2 snippet\r\n            main vertical 0-50-100 Left lytTarget2.main\r\n                "));
+  NewLY.addLayout(LayoutEngineModule.newLyt(UoM$1.Tag$3("lytDemo"),"\r\n            lytTarget2 PlugIn\r\n            : Var ParseMsgs\r\n            : Doc main \r\n            \r\n            editorDataSel Var \"\"\r\n            \r\n            target    ViewJS \"n => n.includes('main ')?n:'main Docs \"\" \"\"'\" Snippets.curSnp_content\r\n            \r\n            SetTarget Action AF.SetVar     \"lytTarget2.Layout\"        target\r\n            SetMain2  Action AF.SetVar     \"AppFramework.mainDocV\"    \"lytDemo.main2\"\r\n            SetMain   Action AF.SetVar     \"AppFramework.mainDocV\"    \"lytDemo.main\"\r\n            \r\n            Trigger   Doc    AF.TrigAction Snippets.snippets_sel \"lytDemo.SetTarget\"\r\n            \r\n            gotoMain  button \"click=@{SetMain};width:16px\" \"<<\"\r\n            gotoMain2 button \"click=@{SetMain2};width:16px\" \">>\"\r\n            \r\n            SearchFor   Doc AF.InputLabel \"\" \"Search\" Snippets.searchFor\r\n            \r\n            buttons ul \"\"\r\n            : div \"margin:3px\"\r\n            :: button \"click=@{Snippets.IndentOut};title=indent out\"     \"<--\"\r\n            :: button \"click=@{Snippets.IndentIn};title=indent in\"       \"--> \"\r\n            \r\n            File span \"class=input-group;margin:5px;id=LoadSnippets\"\r\n            : div \"class=input-group-btn\"\r\n            :: label \"class=btn btn-info\" \"Load File\"\r\n            ::: div \"\"\r\n            :::: input \"class=form-control;type=file;display: none;change=@{Snippets.LoadSnippets}\" \r\n            :: label \"class=btn btn-primary;click=@{Snippets.SaveSnippets}\" \"Save File\"\r\n            \r\n            list div \"display: flex;flex-direction: column\" gotoMain File\r\n            : div    \"margin:5px\" SearchFor \r\n            : Docs buttons\r\n            : div \"overflow:auto;width:100%;max-width:calc(100% - 10px)\" Snippets.snippets_list\r\n            : ul \"margin:3px\"\r\n            :: button \"click=@{Snippets.AddSnippet}   ;title=Add New Snippet\" \"+\"\r\n            :: button \"margin-left:20px;click=@{Snippets.DeleteSnippet};title=Delete  Snippet\" \"x\"\r\n            \r\n            editor Doc Monaco.editor Snippets.curSnp_content \"fsharp\" \"vs-dark\" \"\"\r\n            \r\n            snippet div \"display: flex;flex-direction: column;flex:1\" Trigger\r\n            : button \"click=@{SetTarget}\"  \"Apply\"\r\n            : button \"click=@{Snippets.ParseNewLY}\" \"Apply NewLY\"\r\n            : div    \"click=@{SetTarget}\" Snippets.snippets_sel\r\n            : Doc    AF.InputLabel \"\" \"Name:\" Snippets.curSnp_name\r\n            : Doc    AF.Select \"\" \"<Content>\" \"Values\" editorDataSel\r\n            : div \"height:100%;class=relative;flex:1\" editor\r\n            : Doc    AF.TextArea \"height:7em\"   lytTarget2.ParseMsgs\r\n            \r\n            Left2 vertical 0-25-100 list snippet\r\n            main2 vertical 0-50-100 Left2 lytTarget2.main            \r\n                \r\n            Left div \"display:flex;flex-direction:column\" gotoMain2 snippet\r\n            main vertical 0-50-100 Left lytTarget2.main\r\n                "));
   AppFramework.mainDocV().Set("lytDemo.main2");
  };
  T=List.T=Runtime$1.Class({
