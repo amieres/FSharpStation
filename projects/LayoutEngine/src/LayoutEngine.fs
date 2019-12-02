@@ -1,6 +1,5 @@
 #nowarn "3242"
-#nowarn "42"
-////-d:FSharpStation1573054420242 -d:TEE -d:WEBSHARPER
+////-d:DLL -d:FSharpStation1574860018857 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -24,13 +23,16 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#nowarn "3242"
-//#nowarn "42"
 /// Root namespace for all code
-//#define FSharpStation1573054420242
+//#define FSharpStation1574860018857
 #if INTERACTIVE
 module FsRoot   =
 #else
+#if DLL
+namespace FsRootDll
+#else
 namespace FsRoot
+#endif
 #endif
 
     #if !NETSTANDARD20
@@ -81,6 +83,10 @@ namespace FsRoot
             inherit System.Attribute()
             let a = 1
             new() = JavaScriptAttribute true
+        type JavaScriptExportAttribute(translate:bool) =
+            inherit System.Attribute()
+            let a = 1
+            new() = JavaScriptExportAttribute true
         type InlineAttribute(code:string) =
             inherit System.Attribute()
             let a = 1
@@ -103,66 +109,15 @@ namespace FsRoot
             /// swap: for use with operators: [1..5] |> List.map (__ (/) 2)
             let [<Inline>] inline __   f a b = f b a
             
-            /// taken from http://fssnip.net/7UH/title/Generalized-Units-of-Measure-Revisited-using-method-overloading
-            //#nowarn "42"
-            [<AutoOpen>]
-            module UoM = 
             
-                open System
+            type StringId<'T> = StringId of string 
+            with
+                member this.Id = match this with StringId v -> v
             
-                [<MeasureAnnotatedAbbreviation>] type bool<          [<Measure>] 'm> = bool
-                [<MeasureAnnotatedAbbreviation>] type uint64<        [<Measure>] 'm> = uint64
-                [<MeasureAnnotatedAbbreviation>] type Guid<          [<Measure>] 'm> = Guid
-                [<MeasureAnnotatedAbbreviation>] type string<        [<Measure>] 'm> = string
-                [<MeasureAnnotatedAbbreviation>] type TimeSpan<      [<Measure>] 'm> = TimeSpan
-                [<MeasureAnnotatedAbbreviation>] type DateTime<      [<Measure>] 'm> = DateTime
-                [<MeasureAnnotatedAbbreviation>] type DateTimeOffset<[<Measure>] 'm> = DateTimeOffset
+            type GuidId<'T> = GuidId of System.Guid
+            with
+                member this.Id = match this with GuidId v -> v
             
-                module private Unsafe = let inline cast<'a, 'b> (a : 'a) : 'b = (# "" a : 'b #)
-            
-                type UoM =
-                    static member inline Tag<  [<Measure>]'m                 > (x : bool               ) : bool<          'm > = Unsafe.cast x
-                    static member inline Tag<  [<Measure>]'m                 > (x : int                ) : int<           'm > = Unsafe.cast x
-                    static member inline Tag<  [<Measure>]'m                 > (x : int64              ) : int64<         'm > = Unsafe.cast x
-                    static member inline Tag<  [<Measure>]'m                 > (x : uint64             ) : uint64<        'm > = Unsafe.cast x
-                    static member inline Tag<  [<Measure>]'m                 > (x : float              ) : float<         'm > = Unsafe.cast x
-                    static member inline Tag<  [<Measure>]'m                 > (x : decimal            ) : decimal<       'm > = Unsafe.cast x
-                    static member inline Tag<  [<Measure>]'m                 > (x : Guid               ) : Guid<          'm > = Unsafe.cast x
-                    static member inline Tag<  [<Measure>]'m                 > (x : string             ) : string<        'm > = Unsafe.cast x
-                    static member inline Tag<  [<Measure>]'m                 > (x : TimeSpan           ) : TimeSpan<      'm > = Unsafe.cast x
-                    static member inline Tag<  [<Measure>]'m                 > (x : DateTime           ) : DateTime<      'm > = Unsafe.cast x
-                    static member inline Tag<  [<Measure>]'m                 > (x : DateTimeOffset     ) : DateTimeOffset<'m > = Unsafe.cast x
-                    static member inline Untag<[<Measure>]'m                 > (x : bool<          'm >) : bool                = Unsafe.cast x
-                    static member inline Untag<[<Measure>]'m                 > (x : int<           'm >) : int                 = Unsafe.cast x
-                    static member inline Untag<[<Measure>]'m                 > (x : int64<         'm >) : int64               = Unsafe.cast x
-                    static member inline Untag<[<Measure>]'m                 > (x : uint64<        'm >) : uint64              = Unsafe.cast x
-                    static member inline Untag<[<Measure>]'m                 > (x : float<         'm >) : float               = Unsafe.cast x
-                    static member inline Untag<[<Measure>]'m                 > (x : decimal<       'm >) : decimal             = Unsafe.cast x
-                    static member inline Untag<[<Measure>]'m                 > (x : Guid<          'm >) : Guid                = Unsafe.cast x
-                    static member inline Untag<[<Measure>]'m                 > (x : string<        'm >) : string              = Unsafe.cast x
-                    static member inline Untag<[<Measure>]'m                 > (x : TimeSpan<      'm >) : TimeSpan            = Unsafe.cast x
-                    static member inline Untag<[<Measure>]'m                 > (x : DateTime<      'm >) : DateTime            = Unsafe.cast x
-                    static member inline Untag<[<Measure>]'m                 > (x : DateTimeOffset<'m >) : DateTimeOffset      = Unsafe.cast x
-                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : bool<          'm1>) : bool<          'm2> = Unsafe.cast x
-                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : int<           'm1>) : int<           'm2> = Unsafe.cast x
-                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : int64<         'm1>) : int64<         'm2> = Unsafe.cast x
-                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : uint64<        'm1>) : uint64<        'm2> = Unsafe.cast x
-                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : float<         'm1>) : float<         'm2> = Unsafe.cast x
-                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : decimal<       'm1>) : decimal<       'm2> = Unsafe.cast x
-                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : Guid<          'm1>) : Guid<          'm2> = Unsafe.cast x
-                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : string<        'm1>) : string<        'm2> = Unsafe.cast x
-                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : TimeSpan<      'm1>) : TimeSpan<      'm2> = Unsafe.cast x
-                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : DateTime<      'm1>) : DateTime<      'm2> = Unsafe.cast x
-                    static member inline Cast< [<Measure>]'m1, [<Measure>]'m2> (x : DateTimeOffset<'m1>) : DateTimeOffset<'m2> = Unsafe.cast x
-            
-            (*
-                [<Measure>] type m
-                [<Measure>] type n
-            
-                let x = UoM.tag<m> "string"
-                let y = UoM.cast<m,n> x
-                let z = UoM.untag y
-            *)
             /// call a function but return the input value
             /// for logging, debugging
             /// use: (5 * 8) |> tee (printfn "value = %d") |> doSomethingElse
@@ -180,6 +135,35 @@ namespace FsRoot
                 | __             -> printfn "%A" v
             
             //#define TEE
+            [< Inline "(function (n) { return n.getFullYear() + '-' + ('0'+(n.getMonth()+1)).slice(-2) + '-' +  ('0'+n.getDate()).slice(-2) + ' '+('0'+n.getHours()).slice(-2)+ ':'+('0'+n.getMinutes()).slice(-2)+ ':'+('0'+n.getSeconds()).slice(-2)+ ':'+('00'+n.getMilliseconds()).slice(-3) })(new Date(Date.now()))" >]
+            let nowStamp() = 
+                let t = System.DateTime.UtcNow // in two steps to avoid Warning: The value has been copied to ensure the original is not mutated
+                t.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
+            
+            let [<Inline>] inline traceT t v = tee (sprintf "%A" >> (fun s -> s.[..min 100 s.Length-1]) >> printfn "%s %s: %A" (nowStamp()) t) v
+            let [<Inline>] inline trace   v = traceT "trace" v
+            let [<Inline>] inline traceI  v = trace          v |> ignore
+            
+            module Log =
+                let [<Inline>] inline In     n f   =      (traceT (sprintf "%s in " n)) >> f
+                let [<Inline>] inline Out    n f   = f >> (traceT (sprintf "%s out" n))
+                let [<Inline>] inline InA    n f p = async { return! In  n f p }
+                let [<Inline>] inline OutA   n f p = async { return! Out n f p }
+                let [<Inline>] inline InOut  n     = In  n >> Out  n
+                let [<Inline>] inline InOutA n f p = async {
+                    let!   r = InA n f  p
+                    do         Out n id r |> ignore
+                    return r 
+                  }
+            
+                let [<Inline>] inline TimeIt n f p =
+                    printfn "Starting %s" n
+                    let start = System.DateTime.UtcNow.Ticks
+                    f p
+                    let elapsedSpan = new System.TimeSpan(System.DateTime.UtcNow.Ticks - start)
+                    print <| elapsedSpan.ToString()
+            
+            
             // issues with websharper Type not found in JavaScript compilation: System.Collections.Generic.IDictionary`2
             #if !WEBSHARPER
             module IDict =
@@ -307,6 +291,62 @@ namespace FsRoot
                     module Operators =
                         let (>>=) ma f = bind f ma
                         let (|>>) ma f = map  f ma
+                module Result =
+                    open Result
+                
+                    let errorf fmt = Printf.ksprintf Error fmt
+                
+                    let rtn                          = Ok
+                    let join                       r = Result.bind id r
+                    let flatten                    r = Result.bind id r
+                    let toOption                   r = r   |> function Ok v -> Some v |       _ -> None
+                    let defaultWith              f r = r   |> function Ok v ->      v | Error e -> f e
+                    let defaultValue             d r = r   |> function Ok v ->      v | Error _ -> d
+                    let failIfTrue               m v = if     v then m |> Error  else Ok () 
+                    let failIfFalse              m v = if not v then m |> Error  else Ok () 
+                    let iter                  fE f r = r   |> map  f |> defaultWith fE                                                 : unit
+                    let get                        r = r   |>          defaultWith (string >> failwith)
+                    let ofOption              f   vO = vO  |> Option.map Ok           |> Option.defaultWith (f >> Error)
+                    let insertO                  vRO = vRO |> Option.map(map Some)    |> Option.defaultWith(fun () -> Ok None)
+                    let absorbO               f  vOR = vOR |> bind (ofOption f)
+                    let (>>=)                    r f = bind f r
+                    let traverseSeq           f   sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                       Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq        sq = traverseSeq id sq
+                        
+                    
+                    type Builder() =
+                        member inline this.Return          x       = rtn  x
+                        member inline this.ReturnFrom      x       =     (x:Result<_,_>)
+                        member        this.Bind           (w , r ) = Result.bind  r w
+                        member inline this.Zero           ()       = rtn ()
+                        member inline this.Delay           f       = f
+                        member inline this.Combine        (a, b)   = bind b a
+                        member inline this.Run             f       = Ok () |> bind f
+                        member this.TryWith   (body, handler     ) = try body() with e -> handler     e
+                        member this.TryFinally(body, compensation) = try body() finally   compensation()
+                        member this.Using     (disposable, body  ) = using (disposable:#System.IDisposable) body
+                        member this.While(guard, body) =
+                            let rec whileLoop guard body =
+                                if guard() then body() |> bind (fun () -> whileLoop guard body)
+                                else rtn   ()
+                            whileLoop guard body
+                        member this.For(sequence:seq<_>, body) =
+                            this.Using(sequence.GetEnumerator(),fun enum -> 
+                                this.While(enum.MoveNext, 
+                                    this.Delay(fun () -> body enum.Current)))
+                                    
+                    let result = Builder()
+                    
+                    module Operators =
+                        let inline (|>>) v f   = map   f v
+                        let inline (>>=) v f   = bind  f v
+                        let inline (>>>) f g v = f v |>> g
+                        let inline (>=>) f g v = f v >>= g
+                        let inline rtn   v     = rtn    v
+                        let result = result
+                
+                
                 module Depend =
                 
                     type Depend<'T> = 
@@ -564,6 +604,7 @@ namespace FsRoot
                     function
                     | Some v -> View.Map Some v
                     | None   -> View.Const None
+                    
                 let [<Inline>] inline consistent   (vl:View<_>)  = 
                     let prior      = ref <| Var.Create Unchecked.defaultof<_>
                     let setPrior v = if (!prior).Value <> v then (!prior).Value <- v 
@@ -655,6 +696,15 @@ namespace FsRoot
                     lm |> Seq.cache |> Seq.iter(fun e ->
                         if keys |> Set.contains (lm.Key e) |> not then lm.RemoveByKey (lm.Key e)
                     )
+            
+                let MapLens predO (f: 'Key -> Var<'T> -> 'V) (m:ListModel<_,_>) =
+                    let get k v = f k (m.Lens k)
+                    match predO with
+                    | None       -> m.ViewState |> View.MapSeqCachedViewBy m.Key get 
+                    | Some predW ->
+                        (m.ViewState, predW) 
+                        ||> View.Map2(fun vms pred -> vms.ToArray (System.Predicate pred)) 
+                        |> View.MapSeqCachedViewBy m.Key get 
             
             [< Inline """(!$v)""">]
             let isUndefined v = v.GetType() = v.GetType()
@@ -869,7 +919,11 @@ namespace FsRoot
                         let mutable added = false
                         let selected = Var.Create 1
                         do printfn "WcTabStripT initializer"
+                        #if DLL 
+                        [< Inline """$global.FsRootDll.LibraryJS.WebComponent.WcTabStrip.WcTabStripT.New""" >] static member NewPointer = X<_>
+                        #else
                         [< Inline """$global.FsRoot.LibraryJS.WebComponent.WcTabStrip.WcTabStripT.New""" >] static member NewPointer = X<_>
+                        #endif
                         static member Constructor() = 
                             let this = ReflectConstruct()
                             WcTabStripT.NewPointer?call this
@@ -915,7 +969,11 @@ namespace FsRoot
                     type WcSplitterT () =
                         let mutable added = false
                         do printfn "WcSplitterT initializer"
+                        #if DLL 
+                        [< Inline """$global.FsRootDll.LibraryJS.WebComponent.WcSplitter.WcSplitterT.New""" >] static member NewPointer = X<_>
+                        #else
                         [< Inline """$global.FsRoot.LibraryJS.WebComponent.WcSplitter.WcSplitterT.New""" >] static member NewPointer = X<_>
+                        #endif
                         static member Constructor() = 
                             let this = ReflectConstruct()
                             WcSplitterT.NewPointer?call this
@@ -953,7 +1011,7 @@ namespace FsRoot
                                 let start    : float              ref = ref 0.0
                                 let domElem  : Dom.Element option ref = ref None                 
                                 let mouseCoord (ev: Dom.MouseEvent) = if vertical then float ev.ClientX else float ev.ClientY
-                                let drag (ev: Dom.Event) =
+                                let drag       (ev: Dom.Event     ) =
                                     ev :?> Dom.MouseEvent
                                     |> mouseCoord
                                     |> fun m   -> (m - !start) * 100.0 / (fst !size) + !startP
@@ -1007,18 +1065,420 @@ namespace FsRoot
                         layoutVertical   <- layoutV
                         if IsClient then defineWebComponent "wcomp-splitter" WcSplitterT.Constructor WcSplitterT.NewPointer
                     
+            module AppFrameworkTemplate =
+                let html = """
+            <div style="display:none" >
+                <div links>
+                    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+                    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"  type="text/javascript"></script>
+                </div>
+                <div ws-template="AppFramework" style="height: calc(100vh - 4px); width: calc(100vw - 4px) " class="relative" >
+                    <div ws-hole="MainClient"></div>
+                    <div class="AppFrameworkGo"><button ws-onclick="GoClient">${MainDoc}</button></div>
+                </div>
+                <style>
+                    .AppFrameworkGo {
+                        max-width: 2px;
+                        max-height: 2px;
+                        z-index: 4000;
+                        overflow: hidden;
+                        position: fixed;
+                        top: 0px;
+                        left: 0px;
+                    }
+                </style>
+                <div ws-template="FixedSplitterVer" 
+                    style="display: grid; 
+                           grid-gap: 0px; 
+                           box-sizing: border-box; 
+                           height: 100%;
+                           width : 100%;
+                           grid-template-areas: 'one two'; 
+                           grid-template-rows   :100%; 
+                           overflow: hidden; 
+                           grid-template-columns: ${PartSizes}"  >
+                   <div ws-hole="First"  style="grid-area: one; " class="relative" ></div>
+                   <div ws-hole="Second" style="grid-area: two; " class="relative" ></div>
+                </div>               
+                <div ws-template="FixedSplitterHor" 
+               style="display: grid; 
+                      grid-gap: 0px; 
+                      box-sizing: border-box; 
+                      height: 100%;
+                      width : 100%;
+                      grid-template-areas: 'one' 'two'; 
+                      grid-template-columns:100%; 
+                      overflow: hidden; 
+                      grid-template-rows   : ${PartSizes}"  >
+              <div ws-hole="First"  style="grid-area: one; " class="relative" ></div>
+              <div ws-hole="Second" style="grid-area: two; " class="relative" ></div>
+                </div>               
+                <div ws-template="WCompSplitterHor" 
+                     ws-onafterrender="AfterRender"
+                     style="display: grid;
+                            grid-gap: 5px; 
+                            box-sizing: border-box; 
+                            grid-template-areas: 'one' 'two'; 
+                            grid-template-columns:100%; 
+                            overflow: hidden; 
+                            grid-template-rows   : ${PartSizes}" 
+                     >
+                     <slot></slot>
+                    <slot name="splitter">  <div style="grid-row:2; grid-column:1 / 1 ; cursor: row-resize; z-index: 3; background-color: #eef ; height: ${Gap}; margin-top :-${Gap}" ws-onmousedown="MouseDown" ws-onafterrender="AfterRenderSp" ></div> </slot>
+                    <style>
+                        ::slotted(*) {
+                            display: grid;
+                            height : 100%;
+                            width  : 100%;
+                            overflow: hidden;
+                        }
+                        ::slotted(*:nth-child(2)) {
+                            grid-area: two;
+                        }
+                        ::slotted(*[slot="splitter"]) {
+                            grid-row:2; grid-column:1 / 1 ; 
+                            cursor: row-resize; 
+                            z-index: 3; 
+                            background-color: #eef ; 
+                            height: ${Gap}; 
+                            margin-top :-${Gap}
+                        }
+                    </style>
+                </div>        
+                <div ws-template="WCompSplitterVer" 
+                     ws-onafterrender="AfterRender"
+                     style="display: grid; 
+                            grid-gap: 5px; 
+                            box-sizing: border-box; 
+                            grid-template-areas: 'one two'; 
+                            grid-template-rows   :100%; 
+                            overflow: hidden; 
+                            grid-template-columns: ${PartSizes}"  >
+                    <slot></slot>
+                    <slot name="splitter"> <div style="grid-column:2; grid-row:1 / 1 ; cursor: col-resize; z-index: 3; background-color: #eef ; width: ${Gap}; margin-left :-${Gap}" ws-onmousedown="MouseDown" ws-onafterrender="AfterRenderSp" ></div> </slot>
+                    <style>
+                        ::slotted(*) {
+                            display: grid;
+                            height : 100%;
+                            width  : 100%;
+                            overflow: hidden;
+                        }
+                        ::slotted(*:nth-child(2)) {
+                            grid-area: two;
+                        }
+                        ::slotted(*[slot="splitter"]) {
+                            grid-column:2; grid-row:1 / 1
+                            cursor: column-resize; 
+                            z-index: 3; 
+                            background-color: #eef ; 
+                            width: ${Gap}; 
+                            margin-left:-${Gap}
+                        }
+                    </style>
+                </div>
+                <div ws-template="AppFwkClient" >
+                    <ws-FixedSplitterHor>
+                        <PartSizes>55px calc(100% - 55px)</PartSizes>
+                        <First>
+                            <span style="display: grid;
+                                  grid-template-columns: 30% 20% 20% 10%;
+                                  grid-gap: 25px;
+                                ">
+                                <div class="mainTitle">AppFramework</div>
+                            </span>
+                        </First>
+                        <Second>
+                                <ws-FixedSplitterVer>
+                                    <PartSizes>calc(100% - 150px) 150px</PartSizes>
+                                    <First>
+                                        <wcomp-splitter vertical value="18" max="100">
+                                            <div><div ws-hole="PlugIns" style="overflow:auto" >
+                                                <div ws-template="Tile">
+                                                    <div draggable="true" class="code-editor-list-tile ${Predecessor} ${Selected}" 
+                                                    ws-ondrag="Drag"
+                                                    ws-ondragover="DragOver"
+                                                    ws-ondrop="Drop"
+                                                   >
+                                                   <span class="node ${Parent} ${ErrorMsg}" title="expand" ws-onclick="ToggleCollapse"></span>
+                                                   <div  class="code-editor-list-text" style="text-indent:${Indent}em; white-space: pre" ws-onclick="Select" ws-onafterrender="AfterRender" >${Name}</div>
+                                                   <span class="predecessor" title="toggle predecessor" ws-onclick="TogglePred">X</span>
+                                               </div>
+                                       
+                                                </div>
+                                            </div></div>
+                                            <wcomp-splitter vertical value="100" min="30" max="100">
+                                                <ws-FixedSplitterHor>
+                                                    <PartSizes>32px calc(100% - 32px)</PartSizes>
+                                                    <First>
+                                                        <div>
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">name:</span>
+                                                                <span class="input-group-addon">${PlugInName}</span>
+                                                            </div>
+                                                        </div>
+                                                    </First>
+                                                    <Second>
+                                                        <div style="overflow:auto">
+                                                            <div>
+                                                                <div>Docs:</div>
+                                                                <div ws-hole="Docs" style="overflow:auto" ></div>
+                                                            </div>
+                                                            <div>
+                                                                <div>Views:</div>
+                                                                <div ws-hole="Views" style="overflow:auto" >
+                                                                    <div ws-template="NameValue" class="input-group">
+                                                                        <span class="input-group-addon">${Name}:</span>
+                                                                        <span class="input-group-addon">${Value}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <div>Queries:</div>
+                                                                <div ws-hole="Queries" style="overflow:auto" ></div>
+                                                            </div>
+                                                            <div>
+                                                                <div>Vars:</div>
+                                                                <div ws-hole="Vars" style="overflow:auto" >
+                                                                    <div ws-template="NameValueInput" class="input-group">
+                                                                        <span class="input-group-addon">${Name}:</span>
+                                                                        <textarea class="form-control" id="" placeholder="Value..." ws-var="Value" spellcheck="false">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </Second>
+                                                </ws-FixedSplitterHor>
+                                                <wcomp-tabstrip >
+                                                    <div tabname="Properties">
+                                                        <div>
+                                                            <table style="border-spacing:0px">
+                                                                <thead>
+                                                                    <th style="width: 30%  ">Name</th>
+                                                                    <th style="width: 70% ">Value</th>
+                                                                </thead>
+                                                                <tbody ws-hole="Properties" ws-children-template="Property">
+                                                                    <tr ws-onclick="Select" style="margin-bottom: 2px" class="level  ">
+                                                                        <td class="level-item">
+                                                                            <div>
+                                                                                <input ws-var="Name" type="text" class="form-control" id="" placeholder="Property...">
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="level-item">
+                                                                            <div>
+                                                                                <textarea ws-var="Value" class="form-control" id="" placeholder="Value..."></textarea>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="level-item">
+                                                                            <div style=" cursor: pointer " title="remove">
+                                                                                <button ws-onclick="Remove" class="delete is-small">x</button>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <button ws-onclick="AddProperty" class="add is-small">add ...</button>
+                                                        </div>
+                                                    </div>
+                                                </wcomp-tabstrip>
+                                            </wcomp-splitter>
+                                        </wcomp-splitter>
+                                    </First>
+                                    <Second>
+                                        <div style="
+                                            overflow: hidden;
+                                            display: grid;
+                                            grid-template-columns: 100%;
+                                            grid-template-rows: repeat(15, calc(100% / 15));
+                                            bxackground-color: #eee;
+                                            box-sizing: border-box;
+                                            padding : 5px;
+                                            grid-gap: 5px;
+                                            margin-right: 21px;
+                                       "  class="absolute" ws-hole="Actions" >
+                                            <button ws-template="Action"         ws-onclick="Click" class="btn" type="button" id=""          >${Name}</button>
+                                            <button ws-template="ActionDisabled" ws-onclick="Click" class="btn" type="button" id="" disabled >${Name}</button>
+                                        </div>
+                                    </Second>
+                                </ws-FixedSplitterVer>
+                        </Second>
+                    </ws-FixedSplitterHor>
+                </div>
+                <style style="display: none">
+                        .Hidden     { display   : none         }
+                        table th,table td { padding:0 5px 0 5px; text-overflow: ellipsis }
+                        td input.form-control { 
+                            padding    : 0px; 
+                            font-family: monospace;
+                            font-size  :   small;
+                            margin-top :   0px;
+                            margin-left: -2px;
+                            width      : 100%
+                        }
+                        td select {
+                            font-size : smaller;
+                            max-width : 8ch;
+                        }
+                        textarea {
+                           resize : vertical;
+                        }
+                        .tab-content {
+                            overflow: hidden
+                        }
+                        .tab-children {
+                            position:relative;
+                        }
+                        .tab-children>div>* {
+                            position:absolute;
+                            height: 100%;
+                            width:  100%;
+                            display: grid;
+                        }
+                        .relative {
+                            position:relative;
+                        }
+                        .relative>* {
+                            position:absolute;
+                            height: 100%;
+                            width:  100%;
+                            display: grid;
+                        }
+                        table.table-striped    tbody tr:nth-child(even) { background: #EEE  }
+                        table.table-striped    tbody tr:nth-child(odd ) { background: #FFF  }
+                        table.table-striped    tbody input              { background: transparent; border: none}
+                        table.table-striped    tbody select             { background: transparent; border: none}
+                        table.table-nonstriped tbody tr:nth-child(even) { background: inherit }
+                        table.table-nonstriped tbody tr:nth-child(odd ) { background: inherit }
+                        table.table            tbody tr.hover           { border    : solid thin transparent; } 
+                        table.table            tbody tr.hover:hover     { border    : solid thin blue     ; } 
+                        table.table            tbody th:hover           { background: gray; cursor: pointer }
+                        table.table            tbody tr.hover:hover>td  { border-top: solid thin blue     ; 
+                                                                   border-bottom: solid thin blue     ; } 
+                        table.table            tbody tr.selected { background   : #b9eeff             ; }
+                        table.table            tbody tr.formula.selected { background: #20f7f7             ; }
+                        thead { color: gray }
+                        h3 { 
+                            color: gray;
+                            line-height: 1em;
+                        }
+                        button       { border: solid thin transparent ; border-radius: 3px; }
+                        button:hover { border: solid thin blue }
+                        .indenter { position  : absolute; 
+                                    top:0px; bottom:0px; left:0px; 
+                                    background: white; color:white;
+                                    border-right: gray thin dotted;
+                                    }
+                        body {
+                            color      : #333;
+                            font-size  : small;
+                            font-family: monospace;
+                            line-height: 1.2;
+                        }
+                        .mainTitle {  
+                            font-size: 48px;
+                            font-weight: 500;
+                            color: gray;
+                            margin-top: -12px;
+                        }
+                        .CodeMirror {
+                            height: 100%;
+                        }
+                        
+                      
+                        body { margin: 0px }     
+                             
+                        div textarea {
+                            font-family     : monospace;
+                        }
+                        .code-editor-list-tile {
+                            white-space     : nowrap; 
+                            border-style    : solid none none;
+                            border-color    : white;
+                            border-width    : 1px;
+                            background-color: #D8D8D8;
+                            display         : flex;
+                        }
+                        .code-editor-list-text{
+                            padding         : 1px 10px 1px 5px;
+                            overflow        : hidden;
+                            text-overflow   : ellipsis;
+                            white-space     : nowrap;
+                            flex            : 1;
+                        }
+                        
+                        .code-editor-list-tile span.node.ErrorMsg {
+                            background-color: red
+                        }
+                        .code-editor-list-tile span.node.expanded::before {
+                            content: "-"
+                        }
+                        .code-editor-list-tile span.node.collapsed::before {
+                            content: "+"
+                        }
+                        .code-editor-list-tile.direct-predecessor {
+                            font-weight     : bold;
+                            color           : blue;
+                        }
+                        .code-editor-list-tile.indirect-predecessor {
+                            color           : blue;
+                        }
+                        .code-editor-list-tile.included-predecessor {
+                            color           : chocolate;
+                        }
+                        .code-editor-list-tile.selected {
+                            background-color: #77F;
+                            color           : white;
+                        }
+                        .code-editor-list-tile.codeSnippet {
+                            text-decoration: underline
+                        }
+                        .code-editor-list-tile:hover {
+                            background      : lightgray;
+                        }
+                        .code-editor-list-tile.selected:hover {
+                            background      : blue;
+                        }
+                        .code-editor-list-tile>.predecessor {
+                            font-weight     : bold;
+                            border-style    : inset;
+                            border-width    : 1px;
+                            text-align      : center;
+                            color           : transparent;
+                        }
+                        .code-editor-list-tile.direct-predecessor>.predecessor {
+                            color           : blue;
+                        }
+                        
+                        .CodeMirror { height: 100%; }
+                        
+                        .node {
+                            background-color: white; 
+                            width           : 2ch; 
+                            color           : #A03; 
+                            font-weight     : bold; 
+                            text-align      : center;
+                            font-family     : arial;
+                        }
+                        .Warning { text-decoration: underline lightblue } 
+                        .Error   { text-decoration: underline red       } 
+                        
+                    </style>
+            </div>
+            """
             [< JavaScriptExport >]
             module AppFramework =
                 open WebSharper.JavaScript
             
-                type PlugInVar = { 
-                    varName        : string
-                    varVar         : Var<string>
+                type PlgElemName = PlgElemName of string with member this.Id = match this with PlgElemName v -> v
+                type PlugInName  = PlugInName  of string with member this.Id = match this with PlugInName  v -> v
+            
+                type PlugInVar   = { 
+                    varName      : PlgElemName
+                    varVar       : Var<string>
                 }
             
-                type PlugInView = {
-                    viwName        : string
-                    viwView        : View<string>
+                type PlugInView  = {
+                    viwName      : PlgElemName
+                    viwView      : View<string>
                 }
             
                 type DocFunction =
@@ -1030,7 +1490,7 @@ namespace FsRoot
                 | FunDoc5 of (string -> string -> string -> string -> string -> Doc) * string * string * string * string * string  
             
                 type PlugInDoc = {
-                    docName        : string
+                    docName        : PlgElemName
                     docDoc         : DocFunction
                 }
             
@@ -1040,26 +1500,26 @@ namespace FsRoot
                 | FunAct2 of (                                   obj -> obj -> unit) * string * string
             
                 type PlugInAction = {
-                    actName        : string
+                    actName        : PlgElemName
                     actFunction    : ActFunction
                     actEnabled     : View<bool>
                 }
             
                 type PlugInQuery = {
-                    qryName        : string
+                    qryName        : PlgElemName
                     qryFunction    : obj -> obj
                 }
             
                 type PlugIn = {
-                    plgName        : string
-                    plgVars        : ListModel<string, PlugInVar   >
-                    plgViews       : ListModel<string, PlugInView  >
-                    plgDocs        : ListModel<string, PlugInDoc   >
-                    plgActions     : ListModel<string, PlugInAction>
-                    plgQueries     : ListModel<string, PlugInQuery >
+                    plgName        : PlugInName
+                    plgVars        : ListModel<PlgElemName, PlugInVar   >
+                    plgViews       : ListModel<PlgElemName, PlugInView  >
+                    plgDocs        : ListModel<PlgElemName, PlugInDoc   >
+                    plgActions     : ListModel<PlgElemName, PlugInAction>
+                    plgQueries     : ListModel<PlgElemName, PlugInQuery >
                 }
              
-                let private plugIns = ListModel (fun plg -> plg.plgName)
+                let plugIns = ListModel (fun plg -> plg.plgName)
             
                 let mainDocV = Var.Create "AppFramework.AppFwkClient"
                 //let titleV   = Var.Create "AppFramework.mainDocV"
@@ -1072,7 +1532,7 @@ namespace FsRoot
                 type AppFwkTemplate = Templating.Template<TemplateFileName, ClientLoad.FromDocument, ServerLoad.WhenChanged, LegacyMode.New>
             
                 let defaultPlugIn() = {
-                        plgName    = ""
+                        plgName    = PlugInName ""
                         plgVars    = ListModel (fun (var:PlugInVar   ) -> var.varName)
                         plgViews   = ListModel (fun (viw:PlugInView  ) -> viw.viwName)
                         plgDocs    = ListModel (fun (doc:PlugInDoc   ) -> doc.docName)
@@ -1080,15 +1540,15 @@ namespace FsRoot
                         plgQueries = ListModel (fun (qry:PlugInQuery ) -> qry.qryName)
                     }
             
-                let splitName lytNm = String.splitByChar '.' >>  (fun a -> if a.Length = 1 then (lytNm, a.[0]) else (a.[0],a.[1]) )
+                let splitName (lytNm:PlugInName) : _ -> PlugInName * PlgElemName = String.splitByChar '.' >>  (fun a -> if a.Length = 1 then (lytNm, a.[0].Trim() |> PlgElemName ) else (a.[0].Trim() |> PlugInName, a.[1].Trim() |> PlgElemName) )
             
-                let selectionPlugInO = Var.Create <| Some "AppFramework"
-                let currentPlugInW   = selectionPlugInO.View |>  View.Map2(fun _ -> Option.bind plugIns.TryFindByKey >> Option.defaultWith defaultPlugIn ) plugIns.View
+                let selectionPlugInO = Var.Create <| Some (PlugInName "AppFramework")
+                let currentPlugInW   = selectionPlugInO.View |>  View.Bind(function Some k -> plugIns.TryFindByKeyAsView k | None -> View.Const (Some <| defaultPlugIn())) |> View.Map (Option.defaultWith defaultPlugIn)
                 let currentPlugInV   = Var.Make currentPlugInW plugIns.Add
             
                 let renderPlugIns() = plugIns.DocLens(fun name plug -> 
                     AppFwkTemplate.Tile()
-                        .Name(     name                                                      )
+                        .Name(     name.Id                                                   )
                         .Select(   fun _ -> selectionPlugInO.Set <| Some name                )
                         .Selected( if selectionPlugInO.V = Some name then "selected" else "" )
                         .Doc() 
@@ -1099,8 +1559,8 @@ namespace FsRoot
                     |> View.Map (fun plg -> plg.plgVars |> Seq.map (fun v -> plg, v))
                     |> Doc.BindSeqCachedBy (fun (plg, var) -> plg.plgName, var.varName) (fun (plg, var) -> 
                         AppFwkTemplate.NameValueInput()
-                            .Name(    var.varName  ) 
-                            .Value(   var.varVar   )
+                            .Name(    var.varName.Id ) 
+                            .Value(   var.varVar     )
                             .Doc() 
                     ) 
             
@@ -1109,14 +1569,14 @@ namespace FsRoot
                     |> View.Map (fun plg -> plg.plgViews |> Seq.map (fun v -> plg, v))
                     |> Doc.BindSeqCachedBy (fun (plg, viw) -> plg.plgName, viw.viwName) (fun (plg, viw) -> 
                         AppFwkTemplate.NameValue()
-                            .Name(    viw.viwName  )
-                            .Value(   viw.viwView  )
+                            .Name(    viw.viwName.Id )
+                            .Value(   viw.viwView    )
                             .Doc() 
                     ) 
             
                 let renderDocs() =
                     currentPlugInW
-                    |> View.Map (fun plg -> plg.plgDocs |> Seq.map (fun v -> plg, v))
+                    |> View.Bind (fun plg -> plg.plgDocs.View |> View.Map (Seq.map (fun v -> plg, v)) )
                     |> Doc.BindSeqCachedBy (fun (plg, doc) -> plg.plgName, doc.docName) (fun (plg, doc) -> 
                         let parms = match doc.docDoc with
                                     | LazyDoc _                          -> ""
@@ -1126,8 +1586,8 @@ namespace FsRoot
                                     | FunDoc4(_, p1 , p2 , p3 , p4     ) -> [ p1; p2; p3; p4    ] |> String.concat ", " |> sprintf "(%s)"
                                     | FunDoc5(_, p1 , p2 , p3 , p4 , p5) -> [ p1; p2; p3; p4; p5] |> String.concat ", " |> sprintf "(%s)"
                         AppFwkTemplate.Tile()
-                            .Name(     doc.docName + parms)
-                            .Select(   fun _ -> currentPlugInW |> View.Get (fun plg ->  mainDocV.Set <| plg.plgName + "." + doc.docName ) )
+                            .Name(     doc.docName.Id + parms)
+                            .Select(   fun _ -> currentPlugInW |> View.Get (fun plg ->  mainDocV.Set <| plg.plgName.Id + "." + doc.docName.Id ) )
                             .Doc() 
                     ) 
             
@@ -1148,11 +1608,11 @@ namespace FsRoot
                         act.actEnabled
                         |> View.Map (function
                             | true  -> AppFwkTemplate.Action() 
-                                        .Name(     act.actName + parms                             )
+                                        .Name(     act.actName.Id + parms                             )
                                         .Click(    fun ev -> act.actFunction |> callFunction ev () )
                                         .Doc() 
                             | false -> AppFwkTemplate.ActionDisabled() 
-                                        .Name(     act.actName                                 )
+                                        .Name(     act.actName.Id                                 )
                                         .Click(    fun ev -> act.actFunction |> callFunction ev () )
                                         .Doc() 
                         ) |> Doc.EmbedView
@@ -1163,7 +1623,7 @@ namespace FsRoot
                     |> View.Map (fun plg -> plg.plgQueries |> Seq.map (fun v -> plg, v))
                     |> Doc.BindSeqCachedBy (fun (plg, qry) -> plg.plgName, qry.qryName) (fun (plg, qry) -> 
                         AppFwkTemplate.Tile()
-                            .Name(    qry.qryName  )
+                            .Name(     qry.qryName.Id  )
                             .Select(   fun _ -> () |> box |> qry.qryFunction |> unbox |> JS.Alert )
                             .Doc() 
                     ) 
@@ -1172,7 +1632,7 @@ namespace FsRoot
                     lazy
                         AppFwkTemplate.AppFwkClient()
                             .PlugIns(     renderPlugIns()           )
-                            .PlugInName(  currentPlugInW.V.plgName  )
+                            .PlugInName(  currentPlugInW.V.plgName.Id )
                             .Vars(        renderVars()              )
                             .Views(       renderViews()             ) 
                             .Docs(        renderDocs()              )
@@ -1187,10 +1647,10 @@ namespace FsRoot
             
                 let getMainClientDoc() =
                     plugIns.View
-                    |> View.Map2(fun mainDoc plgs -> 
+                    |> View.Map2(fun (mainDoc:string) plgs -> 
                         plgs |> Seq.tryPick(fun plg ->
                             plg.plgDocs 
-                            |> Seq.tryFind(fun doc -> plg.plgName = mainDoc || plg.plgName + "." + doc.docName = mainDoc) 
+                            |> Seq.tryFind(fun doc -> plg.plgName.Id = mainDoc || plg.plgName.Id + "." + doc.docName.Id = mainDoc) 
                             |> Option.map getLazyDoc
                         )
                         |> Option.defaultValue AppFwkClient.Value
@@ -1242,37 +1702,38 @@ namespace FsRoot
                 let newDocF name docF = { docName = name ; docDoc = docF }
             
                 type PlugInBuilder() =
-                    member __.Zero() = { defaultPlugIn() with plgName    = "Main" }
+                    member __.Zero() = { defaultPlugIn() with plgName    = PlugInName "Main" }
                     member this.Yield(()) = this.Zero()
                     member __.For(coll:seq<_>, func) =
                         let ie = coll.GetEnumerator()
                         while ie.MoveNext() do
                             func ie.Current
-                    [<CustomOperation("plgName"   )>] member __.Name  ( plg:PlugIn, name               ) = { plg with plgName    =    name }
-                    [<CustomOperation("plgVar"    )>] member __.AddVar( plg:PlugIn, name, var          ) = plg.plgVars   .Add(newVar  name var)  ; plg
-                    [<CustomOperation("plgDoc"    )>] member __.AddDoc( plg:PlugIn, name, doc          ) = plg.plgDocs   .Add(newDoc  name doc)  ; plg
-                    [<CustomOperation("plgDoc2"   )>] member __.AddDoc2(plg:PlugIn, name, doc, p1, p2  ) = plg.plgDocs   .Add(newDocF name (FunDoc2(doc,p1,p2    )))  ; plg
-                    [<CustomOperation("plgDoc3"   )>] member __.AddDoc3(plg:PlugIn, name, doc,a,b,c    ) = plg.plgDocs   .Add(newDocF name (FunDoc3(doc,a,b,c    )))  ; plg
-                    [<CustomOperation("plgDoc4"   )>] member __.AddDoc4(plg:PlugIn, name, doc,a,b,c,d  ) = plg.plgDocs   .Add(newDocF name (FunDoc4(doc,a,b,c,d  )))  ; plg
-                    [<CustomOperation("plgDoc5"   )>] member __.AddDoc5(plg:PlugIn, name, doc,a,b,c,d,e) = plg.plgDocs   .Add(newDocF name (FunDoc5(doc,a,b,c,d,e)))  ; plg
-                    //[<CustomOperation("plgDocDyn" )>] member __.AddDocF(plg:PlugIn, name, docF)  = plg.plgDocs   .Add(newDoc name (lazy LayoutEngine.turnToView docF) ) ; plg
-                    [<CustomOperation("plgQuery"  )>] member __.AddQry( plg:PlugIn, name, qry          ) = plg.plgQueries.Add(newQry  name qry) ; plg
-                    [<CustomOperation("plgAct"    )>] member __.AddAct( plg:PlugIn, name, act          ) = plg.plgActions.Add(newAct  name act) ; plg
-                    [<CustomOperation("plgAct1"   )>] member __.AddAct1(plg:PlugIn, name, act, p1      ) = plg.plgActions.Add(newActF name (FunAct1(act,p1   )) ) ; plg
-                    [<CustomOperation("plgAct2"   )>] member __.AddAct2(plg:PlugIn, name, act, p1, p2  ) = plg.plgActions.Add(newActF name (FunAct2(act,p1,p2)) ) ; plg
-                    [<CustomOperation("plgActOpt" )>] member __.AddActO(plg:PlugIn, name,         actO ) = 
+                    [<CustomOperation("plgName"   )>] member __.Name  ( plg:PlugIn, name:string        ) = { plg with plgName    =    PlugInName name }
+                    [<CustomOperation("plgVar"    )>] member __.AddVar( plg:PlugIn, name:string, var          ) = plg.plgVars   .Add(newVar  (PlgElemName name) var)  ; plg
+                    [<CustomOperation("plgDoc"    )>] member __.AddDoc( plg:PlugIn, name:string, doc          ) = plg.plgDocs   .Add(newDoc  (PlgElemName name) doc)  ; plg
+                    [<CustomOperation("plgDoc1"   )>] member __.AddDoc1(plg:PlugIn, name:string, doc, p1      ) = plg.plgDocs   .Add(newDocF (PlgElemName name) (FunDoc1(doc,p1       )))  ; plg
+                    [<CustomOperation("plgDoc2"   )>] member __.AddDoc2(plg:PlugIn, name:string, doc, p1, p2  ) = plg.plgDocs   .Add(newDocF (PlgElemName name) (FunDoc2(doc,p1,p2    )))  ; plg
+                    [<CustomOperation("plgDoc3"   )>] member __.AddDoc3(plg:PlugIn, name:string, doc,a,b,c    ) = plg.plgDocs   .Add(newDocF (PlgElemName name) (FunDoc3(doc,a,b,c    )))  ; plg
+                    [<CustomOperation("plgDoc4"   )>] member __.AddDoc4(plg:PlugIn, name:string, doc,a,b,c,d  ) = plg.plgDocs   .Add(newDocF (PlgElemName name) (FunDoc4(doc,a,b,c,d  )))  ; plg
+                    [<CustomOperation("plgDoc5"   )>] member __.AddDoc5(plg:PlugIn, name:string, doc,a,b,c,d,e) = plg.plgDocs   .Add(newDocF (PlgElemName name) (FunDoc5(doc,a,b,c,d,e)))  ; plg
+                    //[<CustomOperation("plgDocDyn" )>] member __.AddDocF(plg:PlugIn, name:string, docF)  = plg.plgDocs   .Add(newDoc name (lazy LayoutEngine.turnToView docF) ) ; plg
+                    [<CustomOperation("plgQuery"  )>] member __.AddQry( plg:PlugIn, name:string, qry          ) = plg.plgQueries.Add(newQry  (PlgElemName name) qry) ; plg
+                    [<CustomOperation("plgAct"    )>] member __.AddAct( plg:PlugIn, name:string, act          ) = plg.plgActions.Add(newAct  (PlgElemName name) act) ; plg
+                    [<CustomOperation("plgAct1"   )>] member __.AddAct1(plg:PlugIn, name:string, act, p1      ) = plg.plgActions.Add(newActF (PlgElemName name) (FunAct1(act,p1   )) ) ; plg
+                    [<CustomOperation("plgAct2"   )>] member __.AddAct2(plg:PlugIn, name:string, act, p1, p2  ) = plg.plgActions.Add(newActF (PlgElemName name) (FunAct2(act,p1,p2)) ) ; plg
+                    [<CustomOperation("plgActOpt" )>] member __.AddActO(plg:PlugIn, name:string,         actO ) = 
                                                         match actO with 
-                                                        | Some act -> plg.plgActions.Add(newAct name act)
+                                                        | Some act -> plg.plgActions.Add(newAct (PlgElemName name) act)
                                                         | None     -> ()
                                                         plg
-                    //[<CustomOperation("mainDoc")>] member __.InsDoc(plg:PlugIn, name, doc) = plg.plgDocs.    = [| newDoc name doc |] |> Array.append <| plg.plgDocs    }
-                    [<CustomOperation("plgView"   )>] member __.AddViw( plg:PlugIn, name, viw )  = plg.plgViews.Add(newViw name viw) ; plg
-                    [<CustomOperation("plgMerge"  )>] member __.Merge ( plg:PlugIn, prefix, p2:PlugIn) = 
-                                                        plg.plgVars   .AppendMany(p2.plgVars    |> Seq.map (fun v -> { v with varName = prefix + v.varName } ) ) 
-                                                        plg.plgViews  .AppendMany(p2.plgViews   |> Seq.map (fun w -> { w with viwName = prefix + w.viwName } ) ) 
-                                                        plg.plgDocs   .AppendMany(p2.plgDocs    |> Seq.map (fun d -> { d with docName = prefix + d.docName } ) ) 
-                                                        plg.plgActions.AppendMany(p2.plgActions |> Seq.map (fun a -> { a with actName = prefix + a.actName } ) ) 
-                                                        plg.plgQueries.AppendMany(p2.plgQueries |> Seq.map (fun q -> { q with qryName = prefix + q.qryName } ) ) 
+                    //[<CustomOperation("mainDoc")>] member __.InsDoc(plg:PlugIn, name:string, doc) = plg.plgDocs.    = [| newDoc (PlgElemName name) doc |] |> Array.append <| plg.plgDocs    }
+                    [<CustomOperation("plgView"   )>] member __.AddViw( plg:PlugIn, name:string, viw )  = plg.plgViews.Add(newViw (PlgElemName name) viw) ; plg
+                    [<CustomOperation("plgMerge"  )>] member __.Merge ( plg:PlugIn, prefix:string, p2:PlugIn) = 
+                                                        plg.plgVars   .AppendMany(p2.plgVars    |> Seq.map (fun v -> { v with varName = PlgElemName (prefix + v.varName.Id) } ) ) 
+                                                        plg.plgViews  .AppendMany(p2.plgViews   |> Seq.map (fun w -> { w with viwName = PlgElemName (prefix + w.viwName.Id) } ) ) 
+                                                        plg.plgDocs   .AppendMany(p2.plgDocs    |> Seq.map (fun d -> { d with docName = PlgElemName (prefix + d.docName.Id) } ) ) 
+                                                        plg.plgActions.AppendMany(p2.plgActions |> Seq.map (fun a -> { a with actName = PlgElemName (prefix + a.actName.Id) } ) ) 
+                                                        plg.plgQueries.AppendMany(p2.plgQueries |> Seq.map (fun q -> { q with qryName = PlgElemName (prefix + q.qryName.Id) } ) ) 
                                                         plg
             
                 let plugin = PlugInBuilder()
@@ -1280,11 +1741,11 @@ namespace FsRoot
             
                 let tryGetPlugInW plgName = plugIns.TryFindByKeyAsView plgName
             
-                let tryGetVarW plgName varName = tryGetPlugInW plgName |> View.Bind (function Some plg -> plg.plgVars   .TryFindByKeyAsView varName |_-> View.Const None ) 
-                let tryGetViwW plgName viwName = tryGetPlugInW plgName |> View.Bind (function Some plg -> plg.plgViews  .TryFindByKeyAsView viwName |_-> View.Const None ) 
-                let tryGetActW plgName actName = tryGetPlugInW plgName |> View.Bind (function Some plg -> plg.plgActions.TryFindByKeyAsView actName |_-> View.Const None ) 
-                let tryGetQryW plgName qryName = tryGetPlugInW plgName |> View.Bind (function Some plg -> plg.plgQueries.TryFindByKeyAsView qryName |_-> View.Const None ) 
-                let tryGetDocW plgName docName = tryGetPlugInW plgName |> View.Bind (function Some plg -> plg.plgDocs   .TryFindByKeyAsView docName |_-> View.Const None ) 
+                let tryGetVarW plgName varName = tryGetPlugInW plgName |> View.Bind (function Some plg -> plg.plgVars   .TryFindByKeyAsView varName |_-> View.Const None ) |> View.consistent
+                let tryGetViwW plgName viwName = tryGetPlugInW plgName |> View.Bind (function Some plg -> plg.plgViews  .TryFindByKeyAsView viwName |_-> View.Const None ) |> View.consistent
+                let tryGetActW plgName actName = tryGetPlugInW plgName |> View.Bind (function Some plg -> plg.plgActions.TryFindByKeyAsView actName |_-> View.Const None )
+                let tryGetQryW plgName qryName = tryGetPlugInW plgName |> View.Bind (function Some plg -> plg.plgQueries.TryFindByKeyAsView qryName |_-> View.Const None )
+                let tryGetDocW plgName docName = tryGetPlugInW plgName |> View.Bind (function Some plg -> plg.plgDocs   .TryFindByKeyAsView docName |_-> View.Const None )
                 let tryGetVoVW plgName varName = 
                     tryGetVarW plgName varName
                     |> View.Bind(function
@@ -1344,7 +1805,7 @@ namespace FsRoot
                             getTextData lytNm aft
                             |> View.Bind (function
                                 | TDText  b    -> View.Const <| (TDText  <|     bef + txt + b                             )
-                                | TDAct   act  -> View.Const <| (TDText  <| sprintf "Unexpected Action @{%s}" act.actName )
+                                | TDAct   act  -> View.Const <| (TDText  <| sprintf "Unexpected Action @{%s}" (act.actName.Id) )
                             )
                         | None                 -> View.Const <| (TDText  <| sprintf "%s @{Missing %s}%s" bef name aft     )  
                         )
@@ -1366,8 +1827,8 @@ namespace FsRoot
                                         value.Trim() 
                                         |> getTextData lytNm
                                         |> Attr.DynamicCustom (fun el -> function
-                                            | TDText  v   -> el.SetAttribute(name.Trim(), v.Trim())
-                                            | TDAct   act -> el.AddEventListener(name.Trim(), (fun (ev:Dom.Event) -> act.actFunction |> callFunction el ev), false)
+                                            | TDText  v   -> try el.SetAttribute(name.Trim(), v.Trim())                                                                 with e -> printfn "%A" e
+                                            | TDAct   act -> try el.AddEventListener(name.Trim(), (fun (ev:Dom.Event) -> act.actFunction |> callFunction el ev), false) with e -> printfn "%A" e
                                         )
                                         |> Some
                                 |_      -> None )
@@ -1381,15 +1842,12 @@ namespace FsRoot
                                         |> getTextData lytNm
                                         |> View.Map(function
                                             | TDText  v   -> v.Trim()
-                                            | TDAct   act -> sprintf "@{%s}" act.actName
+                                            | TDAct   act -> sprintf "@{%s}" (act.actName.Id)
                                         )
                                         |> Attr.DynamicStyle (name.Trim())
                                         |> Some
                                 |_      -> None )
                 ]
-            
-                type [< Measure >] PlugInNameM
-                type PlugInName= string<PlugInNameM>
             
                 type  Fun<'P, 'R> = { f : Val<'P -> 'R> ; p : Val<'P> }
                 and   Val<'P    > = VView of View<'P> | VConst of 'P
@@ -1448,6 +1906,21 @@ namespace FsRoot
                     | VConst p  -> VConst (         f p )
                     | VView  pv -> VView  (View.Map f pv)
             
+                    let rtn = VConst
+                    let apply (fv:Val<'a->'b>) (vv:Val<'a>) : Val<'b> = 
+                        match fv, vv with
+                        | VConst f  , VConst p  -> VConst (                       f              p )
+                        | VConst f  , VView  pV -> VView  (View.Apply (View.Const f)             pV)
+                        | VView  fV , VView  pV -> VView  (View.Apply             fV             pV)
+                        | VView  fV , VConst p  -> VView  (View.Apply             fV (View.Const p))
+            
+                    let (<*>)                        =  apply
+                    let       traverseListApp f list =  let cons head tail = head :: tail
+                                                        let folder head tail = rtn cons <*> f head <*> tail
+                                                        List.foldBack folder list (rtn [])
+                    let inline sequenceListApp  list =  traverseListApp id list
+            
+            
                     let toView = function
                     | VConst p  -> View.Const p
                     | VView  pv ->            pv
@@ -1468,20 +1941,20 @@ namespace FsRoot
             
                     let textAtt : Val<string> -> Attr = failwithf "textAtt not implemented"
             
-                let choiceToString   = function Choice1Of2 v -> v | Choice2Of2 r -> sprintf "@{expecting string, got Action: %A}" r
+                let choiceToString   = function Choice1Of2 v -> v | Choice2Of2 r -> sprintf "@{%A}" r
                 let valToStyle atn = function
-                | VConst(Choice1Of2 s) -> Attr.Style  atn s
-                | VView             w  -> Attr.DynamicStyle atn (View.Map choiceToString w)
-                |                   v  -> failwithf "Illegal reference %A" v
+                | VConst s -> Attr.Style  atn s
+                | VView  w -> Attr.DynamicStyle atn w
             
                 let valToAttr atn = function
-                | VConst(Choice1Of2 s) -> Attr.Create atn s
-                | VView             w  ->
-                    w |> Attr.DynamicCustom(fun el -> function
-                        | Choice1Of2 s   -> el.SetAttribute(atn, s.Trim())
-                        | Choice2Of2 act -> el.AddEventListener(atn, (fun (ev:JavaScript.Dom.Event) -> (act:PlugInAction).actFunction |> callFunction el ev), false)
-                    )
-                | v -> failwithf "Illegal value %A" v
+                | VConst s -> Attr.Create  atn s
+                | VView  w -> Attr.Dynamic atn w
+            
+                type AAttr = 
+                | AStyle of string * string
+                | AAttr  of string * string
+                | AAttrX of string * string
+                | AEmpty
             
                 module Extract0 =
             
@@ -1516,9 +1989,7 @@ namespace FsRoot
                                 | TSimple    t -> Html.text   t
                                 | TReference r -> getDoc r
                             ) 
-                            >> function
-                            | [ d ] -> d
-                            |   ls  -> Doc.Concat ls
+                            >> Doc.Concat
                     }
             
                     let extractDocD = Depend.depend {
@@ -1529,57 +2000,99 @@ namespace FsRoot
                     let getTextValFromSeqD = Depend.depend {
                         let! getTextActView = getTextActViewFromReferenceD
                         return 
-                            View.traverseListApp (function
-                                | TSimple    v -> View.Const     v
-                                | TReference r -> getTextActView r |> View.Map choiceToString
+                            Val.traverseListApp (function
+                                | TSimple    v -> VConst     v
+                                | TReference r -> getTextActView r |> View.Map (function Choice1Of2 s -> s | Choice2Of2 _ -> sprintf "@{%s}" r) |> VView
                             )
-                            >> View.Apply (View.Const (String.concat "" >> Choice1Of2))
-                            >> VView
+                            >> Val.apply (VConst (String.concat ""))
                     }
             
-                    let getTextValFromTextTypesD = Depend.depend {
-                        let! getTextActView    = getTextActViewFromReferenceD
-                        let! getTextValFromSeq = getTextValFromSeqD
-                        return function
-                            | [ TSimple    v ] -> VConst (Choice1Of2     v)
-                            | [ TReference r ] -> VView  (getTextActView r)
-                            | vs               -> getTextValFromSeq vs
-                    }
-            
-                    let getTextValD = getTextData >*> getTextValFromTextTypesD
+                    let getTextValD = getTextData >*> getTextValFromSeqD
             
                     let extractAtsD = Depend.depend {
-                        let! getTextVal = getTextValD
-                        return fun (txt:string) ->
-                            txt.Split ';'
-                            |> Seq.map    (fun t -> t.Trim())
-                            |> Seq.filter ((<>) "")
-                            |> Seq.map    (fun t -> 
+                        let! getTextVal     = getTextValD
+                        let! getTextActView = getTextActViewFromReferenceD
+                        return fun txt ->
+                            let parseAttr (t:string) =
                                 match t.Split ':' with
-                                | [| atn ; sty |] -> getTextVal sty |> valToStyle atn
+                                | [| atn ; sty |] -> AStyle(atn, sty)
                                 | _ ->
                                 match t.Split '=' |> Array.map (fun t -> t.Trim()) with
-                                | [| atn ; atv |] -> getTextVal atv |> valToAttr  atn   
-                                | _ -> failwithf "single reference attribute not implemented %s" t
-            
-                            )
+                                | [| atn; atv |] -> match getTextData atv with
+                                                    | [ TReference r ] -> AAttrX(atn, r  )
+                                                    |_                 -> AAttr (atn, atv)
+                                | [| at       |] -> AAttr(at, "")
+                                |_-> AEmpty
+                            let splitAttrs (txt:string) =
+                                txt.Split ';'
+                                |> Seq.map    (fun t -> t.Trim())
+                                |> Seq.filter ((<>) "")
+                            let addedListeners el : (string * (Dom.Event -> unit)) [] = el?addedListeners |> fun v -> if isUndefined v then [||] else v
+                            let setCustomAttr atn (el:Dom.Element) = function
+                                | Choice1Of2 s   -> try el.SetAttribute(atn, (s:string).Trim()) with e -> printfn "%A" e
+                                | Choice2Of2 act ->
+                                    let listener (ev:Dom.Event) = (act:PlugInAction).actFunction |> callFunction el ev
+                                    let same, others = addedListeners el |> Array.partition (fst >> (=) atn)
+                                    for (_,f) in same do
+                                        el.RemoveEventListener(atn, f)
+                                    el.AddEventListener(   atn, listener, false)
+                                    el?addedListeners <- Array.append others [| atn, listener |]
+                            let viewAttr atn = Attr.DynamicCustom (setCustomAttr atn)
+                            let constAttr = function
+                                | AStyle(n, v) -> getTextVal     v |> valToStyle n
+                                | AAttr (n, v) -> getTextVal     v |> valToAttr  n
+                                | AAttrX(n, v) -> getTextActView v |> viewAttr   n
+                                | AEmpty       -> Attr.Empty
+                            let viewAttrs = 
+                                Attr.DynamicCustom(fun el sq ->
+                                    let styles = sq |> Seq.choose (function AStyle(n,v) -> Some (n + ":" + v) |_-> None)
+                                    let atts = [|
+                                        if Seq.isEmpty styles |> not then
+                                            yield ("style", String.concat ";" styles)
+                                        yield! sq
+                                            |> Seq.choose (function
+                                                | AStyle _     -> None
+                                                | AAttr (n, v) -> Some(n, v)
+                                                | AAttrX(n, v) -> Some(n, v)
+                                                | AEmpty       -> None
+                                            )
+                                    |]
+                                    let attsNow = seq [ for i in [0..el.Attributes.Length-1] -> el.Attributes.[i].Name, el.Attributes.[i].Value ]
+                                    let names   = Seq.map fst >> Set
+                                    for nm in names attsNow - names atts do 
+                                        try el.Attributes.RemoveNamedItem nm |> ignore            with e -> printfn "%A" e
+                                    for (n,v) in Set atts - Set attsNow do
+                                        try el.SetAttribute(n, v)                                 with e -> printfn "%A" e
+                                    for (n,l) in addedListeners el do 
+                                        try el.RemoveEventListener(n, (unbox l : System.Action) ) with e -> printfn "%A" e
+                                    for (n,v) in sq |> Seq.choose (function AAttrX(n, v) -> Some(n, v) |_-> None) do
+                                        getTextActView v |> View.Get (setCustomAttr n el)
+                                )
+                            let extract (txt:string) =
+                                splitAttrs txt
+                                |> Seq.toArray
+                                |> function
+                                    | [| v |] ->    
+                                        match getTextVal v with
+                                        | VConst v -> parseAttr v |> constAttr
+                                        | VView  w -> w |> View.Map (splitAttrs >> Seq.map parseAttr) |> viewAttrs
+                                        |> Seq.singleton
+                                    | vs -> vs |> Seq.map (parseAttr >> constAttr) 
+                            extract txt
                     }
             
                     let extractTextD = Depend.depend {
                         let! getTextVal = getTextValD
-                        return fun (txt:string) ->
-                            getTextVal txt 
-                            |> Val.map choiceToString
-                            |> Val.toView
+                        return getTextVal >> Val.toView 
                     }
             
-                let currentPlugInNameDef : PlugInName = UoM.Tag<_> "NewLYx"
+                let currentPlugInNameDef : PlugInName = PlugInName "NewLYx"
                 let currentPlugInNameD                = Depend.dependByName "currentPlugInName" currentPlugInNameDef id
             
                 let getDocD = Depend.depend {
                     let! currentPlugInName = currentPlugInNameD
                     return fun r -> 
-                        let pName, oName = splitName (UoM.Untag currentPlugInName) r
+                        let pName, oName = splitName currentPlugInName r
                         tryGetDocW pName oName
                         |> Doc.BindView (fun docO -> 
                             docO
@@ -1595,7 +2108,7 @@ namespace FsRoot
                 let getTextActViewD = Depend.depend {
                     let! currentPlugInName = currentPlugInNameD
                     return fun r ->
-                        let pName, oName = splitName (UoM.Untag currentPlugInName) r
+                        let pName, oName = splitName currentPlugInName r
                         tryGetActW pName oName
                         |> View.Bind(function
                             | Some act -> View.Const <| Choice2Of2 act
@@ -1630,20 +2143,38 @@ namespace FsRoot
                     return fun p -> extractAts p |> Attr.Concat 
                 }
             
-                let runDef = run (UoM.Tag "AppFramework")
             
-                let getParmRef var = 
+                let defPlugInName = PlugInName "AppFramework"
+                let runDef d = run defPlugInName d
+            
+                let getParmRef var =
                     var
                     |> String.delimitedO "@{" "}"
                     |> Option.map (fun (a,b,c) -> b)
                     |> Option.defaultValue var
-                    |>  splitName ""
+                    |> splitName defPlugInName
+            
+                let depWithExtracts f =
+                    Depend.depend {
+                        let! extractAts = extractAtsD
+                        let! extractDoc = extractDocD
+                        let! extractText = extractTextD
+                        return f(extractAts, extractDoc, extractText)
+                    } |> runDef
+            
+                let docWithVar f var =
+                    getParmRef var
+                    ||> tryGetVoVW
+                    |> Doc.BindView (
+                        Option.map f
+                        >> Option.defaultWith(fun () ->  sprintf "Var not found %s" var |> errDoc )
+                    )
             
                 let inputFile attrs labelName actName =
-                    splitName "AppFramework" actName
+                    splitName defPlugInName actName
                     ||> tryGetAct
                     |> Option.map(fun act -> 
-                        Html.div (getAttrs "AppFramework" attrs) [
+                        Html.div (getAttrs defPlugInName attrs) [
                             Html.div              [ attr.``class`` "input-group"       ] [
                                 Html.span         [ attr.``class`` "input-group-btn"   ] [ 
                                     Html.label    [ attr.``class`` "btn"               ] [ 
@@ -1661,95 +2192,122 @@ namespace FsRoot
                         ]
                     ) |> Option.defaultWith(fun () ->  sprintf "Action not found %s" actName |> errDoc )
             
-                let inputLabel attrs labelName varName =
-                    Depend.depend {
-                        let! extractAts = extractAtsD
-                        let! extractDoc = extractDocD
-                        let! currentPlugInName = currentPlugInNameD
-                        return
-                            getParmRef varName
-                            ||> tryGetVarW
-                            |> Doc.BindView (
-                                Option.map(fun var -> 
-                                    Html.div (extractAts attrs) [
-                                        Html.div      [ attr.``class`` "input-group"       ] [
-                                            Html.span [ attr.``class`` "input-group-addon" ] [ extractDoc labelName ]
-                                            Doc.Input [ attr.``class`` "form-control"      ]   var.varVar
-                                        ]
-                                    ]
-                                ) 
-                                >> Option.defaultWith(fun () ->  sprintf "Var not found %s" varName |> errDoc )
+                let inputLabel =
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) attrs labelName ->
+                        docWithVar (fun var -> 
+                            Html.div (extractAts attrs) [
+                                Html.div      [ attr.``class`` "input-group"       ] [
+                                    Html.span [ attr.``class`` "input-group-addon" ] [ extractDoc labelName ]
+                                    Doc.Input [ attr.``class`` "form-control"      ]   var
+                                ]
+                            ]
+                        )
+            
+                let input =
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) attrs ->
+                        docWithVar (Doc.Input <| extractAts attrs )
+            
+                let textArea =
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) attrs ->
+                        docWithVar (Doc.InputArea <| extractAts attrs)
+            
+                let htmlDoc =
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) html ->
+                        extractText html
+                        |> Doc.BindView Doc.Verbatim
+            
+                let docReference =
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) docName ->
+                        extractText docName
+                        |> View.Map  (splitName defPlugInName)
+                        |> View.Bind ( __ (||>) tryGetDocW   )
+                        |> Doc.BindView (function
+                            | Some { docDoc = LazyDoc d} -> mainDocV.Set mainDocV.Value ; d.Value
+                            | Some d -> errDocf "Doc parameters not resolved: %A" d
+                            | None   -> errDocf "Doc not found: %s" docName
+                        )
+            
+                let setVar0 = 
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) (varN:obj, value:obj) ->
+                        unbox varN
+                        |>  getParmRef
+                        ||> tryGetVoV
+                        |>  Option.iter(fun var -> 
+                                unbox value
+                                |> extractText
+                                |> View.Get var.Set
                             )
-                    } |> runDef
             
-                let none x = Html.span [][]
+                let setVar varN value = setVar0(varN, value)
             
-                let htmlDoc lytNm html =
-                    getTextData lytNm html
-                    |> Doc.BindView(function
-                        | TDText  v   -> Doc.Verbatim v
-                        | TDAct   act -> sprintf "HtmlDoc: unexpected action %A" act |> errDoc
-                    )
+                let setVarDirect0 = 
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) (varN:obj, text:obj) ->
+                        unbox varN
+                        |>  getParmRef
+                        ||> tryGetVoV
+                        |>  Option.iter(fun var -> 
+                                unbox text
+                                |> var.Set
+                            )
             
-                let setVar  (varN   :obj   ) (value:obj   ) = splitName "AppFramework" (unbox varN) ||> tryGetVar |> Option.iter(fun v -> v.varVar.Set (unbox value)       )
-                let trigAct (trigger:string) (actN :string) =
-                    getParmRef trigger
-                    ||> tryGetWoWW
-                    |> View.consistent
-                    |> View.Map(function
-                        | Some txt ->
+                let setVarDirect varN value = setVarDirect0(varN, value)
+            
+                let trigAct =
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) trigger actN ->
+                        extractText trigger
+                        |> View.consistent
+                        |> View.Map(fun _ ->
                             getParmRef actN
                             ||> tryGetAct 
-                            |> function
-                                | Some a -> callFunction () () a.actFunction
-                                | None -> ()
+                            |>  Option.iter(fun a -> callFunction () () a.actFunction )
                             ""
-                        | None -> ""
-                    ) |>  Doc.TextView
+                        ) |>  Doc.TextView
             
-                let select attrs none vals var = 
-                    Depend.depend {
-                        let! extractAts  = extractAtsD
-                        let! extractText = extractTextD
-                        return
-                            getParmRef var
-                            ||> tryGetVarW
-                            |> Doc.BindView (
-                                Option.map (fun v ->
-                                    let valsW = V ((extractText vals).V.Split ';' |> Seq.toList)
-                                    let varO  = 
-                                        Var.Make 
-                                            (V (match v.varVar.V with 
-                                                | s when Seq.contains (s.Trim()) valsW.V -> Some(s.Trim()) 
-                                                |_-> None )) 
-                                            (function None ->  v.varVar.Set "" | Some s -> valsW |> View.Get (fun vs -> if Seq.contains s vs then v.varVar.Set s) )
-                                    Doc.SelectDynOptional (extractAts attrs) none id valsW varO
-                                ) 
-                                >> Option.defaultWith (fun () -> errDocf "Var not found %s" var )
-                            )
-                    }
-                    |> runDef
+                let callAction0 =
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) actN (p1:obj) (p2:obj) ->
+                        getParmRef actN
+                        ||> tryGetAct 
+                        |>  Option.iter(fun a -> callFunction p1 p2 a.actFunction )
+            
+                let callAction actN p1 p2 = callAction0 actN p1 p2
+            
+                let select =
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) attrs none vals ->
+                        docWithVar (fun var ->
+                            let valsW = V ((extractText vals).V.Split ';' |> Seq.toList)
+                            let varO  = 
+                                Var.Make 
+                                    (V (match var.V with 
+                                        | s when Seq.contains (s.Trim()) valsW.V -> Some(s.Trim()) 
+                                        |_-> None )) 
+                                    (function 
+                                     | None   ->                                                        var.Set "" 
+                                     | Some s -> valsW |> View.Get (fun vs -> if Seq.contains s vs then var.Set s ) )
+                            Doc.SelectDynOptional (extractAts attrs) none id valsW varO
+                        )
             
                 if IsClient then
                     plugin { 
                         plgName  "AppFramework" 
                         plgVar   "mainDocV"     mainDocV
                         plgDoc   "AppFwkClient" AppFwkClient
-                        plgDoc2  "TrigAction"   trigAct     "Trigger"  "Action"
-                        plgDoc3  "InputFile"    inputFile   "attrs" "Label" "Action"
-                        plgDoc3  "InputLabel"   inputLabel  "attrs" "Label" "Var"
-                        plgAct2  "SetVar"       setVar   "Var"      "Value"
                         plgAct   "Hello"        (fun () -> JS.Window.Alert "Hello!")
                     } |> plugIns.Add
                     plugin { 
                         plgName  "AF"
-                        plgDoc2  "TrigAction"   trigAct     "Trigger"  "Action"
-                        plgDoc4  "Select"       select      "Attrs" "None" "Vals" "Var"
-                        plgDoc3  "InputFile"    inputFile   "Attrs" "Label" "Action"
-                        plgDoc3  "InputLabel"   inputLabel  "Attrs" "Label" "Var"
-                        plgAct2  "SetVar"       setVar   "Var"      "Value"
-                        plgAct   "Hello"        (fun () -> JS.Window.Alert "Hello!")
-                        plgQuery "getDocNames"  (fun (_:obj) -> plugIns.Value |> Seq.collect (fun plg -> plg.plgDocs |> Seq.map (fun doc -> plg.plgName + "." + doc.docName)) |> Seq.toArray |> box)
+                        plgDoc1  "DocReference"  docReference  "DocName"
+                        plgDoc1  "HtmlDoc"       htmlDoc       "Html"
+                        plgDoc2  "TrigAction"    trigAct       "Trigger"  "Action"
+                        plgDoc2  "Input"         input         "Attrs"                  "Var"
+                        plgDoc2  "TextArea"      textArea      "Attrs"                  "Var"
+                        plgDoc4  "Select"        select        "Attrs"    "None" "Vals" "Var"
+                        plgDoc3  "InputFile"     inputFile     "Attrs"    "Label" "Action"
+                        plgDoc3  "InputLabel"    inputLabel    "Attrs"    "Label" "Var"
+                        //plgDoc5  "SplitPerc"     splitterPrc "vertical" "minmax" "doc1" "doc2" "Var"
+                        plgAct2  "SetVar"        setVar        "Var"      "Value"
+                        plgAct2  "SetVarDirect"  setVarDirect  "Var"      "from"
+                        plgAct   "Hello"         (fun () -> JS.Window.Alert "Hello!")
+                        plgQuery "getDocNames"   (fun (_:obj) -> plugIns.Value |> Seq.collect (fun plg -> plg.plgDocs |> Seq.map (fun doc -> plg.plgName.Id + "." + doc.docName.Id)) |> Seq.toArray |> box)
                     } |> plugIns.Add
             
                     //titleV.View
@@ -1832,10 +2390,270 @@ namespace FsRoot
             
                 let inline (!) v = { r = VConst v |> rtn }
             
+                let concatMainDocs plugins = 
+                    plugins 
+                    |> Seq.choose (fun plg -> Seq.tryHead plg.plgDocs) 
+                    |> Seq.choose (function {docDoc = (LazyDoc d)}-> Some d.Value|_-> None) 
+                    |> Doc.Concat
+            
+                let lensStrO (sel:Var<string option>) =
+                    Var.Make 
+                        (V ( match sel.V with Some s -> s |_-> "" )) 
+                        (fun s -> if s = "" then sel.Set None
+                                  else Some s |> sel.Set)
+                let mapVarO ofBO toB (sel:Var<_ option>) = 
+                    Var.Make(V (sel.V |> Option.map toB)) 
+                            (function Some s -> ofBO s |> Option.iter (Some >> sel.Set) |_-> sel.Set None) 
+            
+                type ListModelData<'K, 'D when 'K : equality> = {
+                    elemsW : View<ListModel<'K, 'D>>
+                    doc    : Doc
+                    selV   : Var<'K option>
+                    add    : unit -> 'D  
+                    delCur : unit -> unit
+                    def    : 'D
+                } with 
+                    member this.PlugIn ofStrO toStr = plugin {
+                        plgDoc    "list" (lazy this.doc         )
+                        //doc    "cur"  (lazy this.CurrentDoc  )
+                        plgVar    "sel"  (this.selV |> mapVarO ofStrO toStr |> lensStrO )
+                        plgAct    "add"  (this.add >> ignore    )
+                        plgAct    "del"  this.delCur
+                    }
+                    member this.CurrentW = View.Do {
+                            let! elems = this.elemsW
+                            let! selO  = this.selV.View
+                            match selO with
+                            | Some sel   -> let! elemO = elems.TryFindByKeyAsView sel
+                                            match elemO with
+                                            | Some elem -> return elem
+                                            | None      -> return this.def
+                            | None                      -> return this.def
+                        }
+                    member this.CurrentV =
+                        Var.Make this.CurrentW
+                                (fun v -> 
+                                    match this.selV.Value with 
+                                    | Some k -> this.elemsW |> View.Get (fun elems -> if elems.ContainsKey k then elems.Add v ) 
+                                    | None -> ())
+            
+            //module LayoutEngine =
+            //    open LayoutEngine
+            //    module AF = AppFramework
+            //
+            //    let addLayout0 lyt = 
+            //        addLayout  lyt
+            //        AF.mainDocV.Set <| UoM.Untag lyt.lytName
+            
+            //module ListModel =
+            //    let MapLens predO (f: 'Key -> Var<'T> -> 'V) (m:ListModel<_,_>) =
+            //        let get k v = f k (m.Lens k)
+            //        match predO with
+            //        | None       -> m.ViewState |> View.MapSeqCachedViewBy m.Key get 
+            //        | Some predW ->
+            //            (m.ViewState, predW) 
+            //            ||> View.Map2(fun vms pred -> vms.ToArray (System.Predicate pred)) 
+            //            |> View.MapSeqCachedViewBy m.Key get 
+            
+            module LM =
+                module AF = AppFramework
+            
+                let getDocForW (elementsW: View<ListModel<_,_>>) keyF def newF predWO elUI =
+                    let selected0 : Var<_ option>  = Var.Create None
+                    let selView = View.Do {
+                        let! elements = elementsW
+                        let! selO = selected0.View
+                        match selO with 
+                        | None      -> return None
+                        | Some sel  ->
+                        let! exists = elements.ContainsKeyAsView sel
+                        if not exists then return None else
+                        return Some sel
+                        //match predWO with
+                        //| None       -> return Some sel
+                        //| Some predW ->
+                        //let! v    = elements.FindByKeyAsView sel
+                        //let! pred = predW
+                        //return if pred v then Some sel else None
+                    }
+                    let selectedV : Var<_ option>  = 
+                        Var.Make
+                            selView
+                            (fun v -> elementsW |> View.Get(fun elements -> 
+                                match v with 
+                                | Some k when elements.ContainsKey k -> Some k 
+                                |_-> None
+                                |> fun v -> if selected0.Value <> v then selected0.Set v )
+                            )
+                    let addNew () =
+                        let n = newF()
+                        elementsW |> View.Get (fun elements ->
+                            elements.Add n
+                            selectedV.Set (Some <| keyF n)
+                        )
+                        n
+                    let delete  k = fun () -> selectedV.Set None ; elementsW |> View.Get (fun elements -> elements.RemoveByKey k)
+                    let result = {
+                        AF.elemsW = elementsW
+                        AF.doc    = Doc.Empty
+                        AF.selV   = selectedV
+                        AF.delCur = fun () -> selectedV.Value |> Option.iter (fun k -> delete k () )
+                        AF.add    = addNew
+                        //AF.getDoc = elUI selectedV ignore
+                        AF.def    = def
+                    }
+                    let elUIF     = elUI result
+                    let listW     = elementsW |> View.Bind ( fun elems -> elems |> ListModel.MapLens predWO (fun k v -> elUIF (View.Const (Some k)) v ) )
+                    { result with AF.doc = listW |> Doc.BindSeqCached id }
+            
+                let getDocFor (elements: ListModel<_,_>) def newF predWO elUI = getDocForW (View.Const elements) elements.Key def newF predWO elUI
+            
+                let getDoc keyF def newF predWO elUI =
+                    let elements  : ListModel<_,_> = ListModel.Create keyF []
+                    getDocFor elements def newF predWO elUI
+            
+                //let setCurrentDoc docF li = { li with AF.getDoc = docF Util.unselectorV ignore }
+                let addElements (li:AF.ListModelData<_,_>) elems = li.elemsW |> View.Get (fun elements -> elements.AppendMany elems)
+            
+            //module LMX =
+            //    module AF = AppFramework
+            //    open System
+            //
+            //    let addNewO newF firstKey nextKey=
+            //        let mutable k = firstKey
+            //        fun () ->
+            //            let e = k, newF()
+            //            k <- nextKey k
+            //            e
+            //
+            //    let elemUI2 elemUI a b (v:Var<_>) = elemUI a b (v.Lens snd (fun (i, _) nv -> i, nv ) )
+            //
+            //    let getDocInt    def newElem elemUI = addNewO newElem 0                          ((+) 1)                             |> LM.getDoc fst (-1               , def) <| None <| elemUI2 elemUI
+            //    let getDocGuid   def newElem elemUI = addNewO newElem (Guid.NewGuid())           (fun _ -> Guid.NewGuid())           |> LM.getDoc fst (       Guid.Empty, def) <| None <| elemUI2 elemUI
+            //    let getDocGuidId def newElem elemUI = addNewO newElem (Guid.NewGuid() |> GuidId) (fun _ -> Guid.NewGuid() |> GuidId) |> LM.getDoc fst (GuidId Guid.Empty, def) <| None <| elemUI2 elemUI
+            //                                            : AF.ListModelData<GuidId<'C>, GuidId<'C> * 'C>
+            //
+            //    //let setCurrentDoc docF = elemUI2 docF |> LM.setCurrentDoc
+            //
+            //    let addElements (li:AF.ListModelData<_,_>) elems = elems |> Seq.iter (fun v -> (li.add() |> fst, v) |> li.elems.Add )
+            
+            [< JavaScript ; JavaScriptExport (typeof<WebComponent.WcSplitter.WcSplitterT>) >]
+            module StartAppFramework =
+                //open FsRoot
+                open WebSharper.JavaScript
+            
+                let htmlD = Depend.dependByName "AppFrameworkTemplate.html" AppFrameworkTemplate.html box
+            
+                let startWithHtmlD = Depend.depend {
+                    let! html = htmlD
+                    return fun () ->
+                        let d = JS.Window.Document.CreateElement "div"
+                        let _ = JS.Window.Document.Body.AppendChild d
+                        d?outerHTML <- html
+                        AppFramework.getMainDoc.Value 
+                        |> Doc.RunAppend JS.Window.Document.Body 
+                }
+            
+                let startWith html =
+                    (startWithHtmlD 
+                    |> Depend.resolver [
+                        "AppFrameworkTemplate.html", AppFrameworkTemplate.html + html
+                    ]) ()
+            
+            
+            module AppFrameworkUI =
+            
+                module AF = AppFramework
+            
+                let showPlugIn (lmd:AF.ListModelData<_,AF.PlugIn    >) (k:View<_ option>) (plgV:Var<AF.PlugIn>) =
+                    AF.AppFwkTemplate.Tile()
+                        .Name(     plgV.V.plgName.Id                            )
+                        .Select(   fun _ -> View.Get lmd.selV.Set k             )
+                        .Selected( if lmd.selV.V = k.V then "selected" else ""  )
+                        .Doc() 
+            
+                let showVar  (lmd:AF.ListModelData<_,AF.PlugInVar   >) (k:View<_ option>) (varV:Var<AF.PlugInVar>) =
+                    let nameW = View.Do {
+                        let! var = varV.View
+                        let! v   = var.varVar.View
+                        return var.varName.Id + " = " + v
+                    }
+                    AF.AppFwkTemplate.Tile()
+                        .Name(     nameW                                        )
+                        .Select(   fun _ -> View.Get lmd.selV.Set k             )
+                        .Selected( if lmd.selV.V = k.V then "selected" else ""  )
+                        .Doc() 
+            
+                let showView (lmd:AF.ListModelData<_,AF.PlugInView  >) (k:View<_ option>) (viwV:Var<AF.PlugInView>) =
+                    let nameW = View.Do {
+                        let! viw = viwV  .View
+                        let! v   = viw.viwView
+                        return viw.viwName.Id + " = " + v
+                    }
+                    AF.AppFwkTemplate.Tile()
+                        .Name(     nameW                                        )
+                        .Select(   fun _ -> View.Get lmd.selV.Set k             )
+                        .Selected( if lmd.selV.V = k.V then "selected" else ""  )
+                        .Doc() 
+            
+                let showAct  (lmd:AF.ListModelData<_,AF.PlugInAction>) (k:View<_ option>) (actV:Var<AF.PlugInAction>) =
+                    let parms (act:AF.PlugInAction) = 
+                        match act.actFunction with
+                        | AF.FunAct0(_        ) -> ""
+                        | AF.FunAct1(_, p1    ) -> [ p1      ] |> String.concat ", " |> sprintf "(%s)"
+                        | AF.FunAct2(_, p1, p2) -> [ p1 ; p2 ] |> String.concat ", " |> sprintf "(%s)"
+                    AF.AppFwkTemplate.Tile()
+                        .Name(     actV.V.actName.Id + parms actV.V             )
+                        .Select(   fun _ -> View.Get lmd.selV.Set k             )
+                        .Selected( if lmd.selV.V = k.V then "selected" else ""  )
+                        .Doc() 
+            
+                let showDoc  (lmd:AF.ListModelData<_,AF.PlugInDoc   >) (k:View<_ option>) (docV:Var<AF.PlugInDoc>) =
+                    let parms (doc:AF.PlugInDoc) = 
+                        match doc.docDoc with
+                        | AF.LazyDoc _                          -> ""
+                        | AF.FunDoc1(_, p1                    ) -> [ p1                ] |> String.concat ", " |> sprintf "(%s)"
+                        | AF.FunDoc2(_, p1 , p2               ) -> [ p1; p2            ] |> String.concat ", " |> sprintf "(%s)"
+                        | AF.FunDoc3(_, p1 , p2 , p3          ) -> [ p1; p2; p3        ] |> String.concat ", " |> sprintf "(%s)"
+                        | AF.FunDoc4(_, p1 , p2 , p3 , p4     ) -> [ p1; p2; p3; p4    ] |> String.concat ", " |> sprintf "(%s)"
+                        | AF.FunDoc5(_, p1 , p2 , p3 , p4 , p5) -> [ p1; p2; p3; p4; p5] |> String.concat ", " |> sprintf "(%s)"
+                    AF.AppFwkTemplate.Tile()
+                        .Name(     docV.V.docName.Id + parms docV.V )
+                        .Select(   fun _ -> View.Get lmd.selV.Set k )
+                        .Selected( if lmd.selV.V = k.V then "selected" else ""  )
+                        .Doc() 
+            
+                let defPlg = AF.defaultPlugIn()
+                let defDoc = AF.newDoc (AF.PlgElemName "_") (lazy Doc.Empty)
+                let defVar = AF.newVar (AF.PlgElemName "_") (Var.Create "" )
+                let defViw = AF.newViw (AF.PlgElemName "_") (View.Const "" )
+                let defAct = AF.newAct (AF.PlgElemName "_") (fun () -> ()  )
+            
+                let failCreate s = fun () -> failwithf "Create %s not implemented" s
+            
+                let pluginsList  = LM.getDocFor   AF.plugIns                                                          defPlg (failCreate "plugin" ) None showPlugIn
+                let plgVarsList  = LM.getDocForW (V pluginsList.CurrentW.V.plgVars   ) (fun plgVar -> plgVar.varName) defVar (failCreate "Var"    ) None showVar
+                let plgViewsList = LM.getDocForW (V pluginsList.CurrentW.V.plgViews  ) (fun plgViw -> plgViw.viwName) defViw (failCreate "View"   ) None showView
+                let plgActsList  = LM.getDocForW (V pluginsList.CurrentW.V.plgActions) (fun plgAct -> plgAct.actName) defAct (failCreate "Action" ) None showAct
+                let plgDocsList  = LM.getDocForW (V pluginsList.CurrentW.V.plgDocs   ) (fun plgDoc -> plgDoc.docName) defDoc (failCreate "Doc"    ) None showDoc
+            
+                let plugInAdded =
+                    AF.plugin {
+                        plgName   "AppFrmkUI"
+                        plgMerge  "plugIns_"     (pluginsList .PlugIn (AF.PlugInName  >> Some) (fun n -> n.Id) )
+                        plgMerge  "plgVars_"     (plgVarsList .PlugIn (AF.PlgElemName >> Some) (fun n -> n.Id) )
+                        plgMerge  "plgViews_"    (plgViewsList.PlugIn (AF.PlgElemName >> Some) (fun n -> n.Id) )
+                        plgMerge  "plgActs_"     (plgActsList .PlugIn (AF.PlgElemName >> Some) (fun n -> n.Id) )
+                        plgMerge  "plgDocs_"     (plgDocsList .PlugIn (AF.PlgElemName >> Some) (fun n -> n.Id) )
+                    }
+                    |> AF.addPlugIn
+            
+            
+            //#define DLL
             
             [< JavaScriptExport >]
             type LayoutEngine = {
-                lytName       : string
+                lytName       : AppFramework.PlugInName 
                 lytDefinition : Var<string>
             }
             
@@ -1884,12 +2702,13 @@ namespace FsRoot
                     | UnQuoted s when s = "select"     -> Select
                     |                               _ -> Nothing
             
-                let (|Var|Doc|View|Concat|Action|Nothing|) =
+                let (|Var|Doc|View|ViewJS|Docs|Action|Nothing|) =
                     function
                     | UnQuoted s when s = "Var"        -> Var
                     | UnQuoted s when s = "Doc"        -> Doc
                     | UnQuoted s when s = "View"       -> View
-                    | UnQuoted s when s = "Concat"     -> Concat
+                    | UnQuoted s when s = "ViewJS"     -> ViewJS
+                    | UnQuoted s when s = "Docs"       -> Docs
                     | UnQuoted s when s = "Action"     -> Action
                     |                                _ -> Nothing
             
@@ -1990,7 +2809,7 @@ namespace FsRoot
                             getTextData lytNm aft
                             |> View.Bind (function
                                 | TDText  b    -> View.Const <| (TDText  <|     bef + txt + b                             )
-                                | TDAct   act  -> View.Const <| (TDText  <| sprintf "Unexpected Action @{%s}" act.actName )
+                                | TDAct   act  -> View.Const <| (TDText  <| sprintf "Unexpected Action @{%s}" (act.actName.Id) )
                             )
                         | None                 -> View.Const <| (TDText  <| sprintf "%s @{Missing %s}%s" bef name aft     )  
                         )
@@ -2031,7 +2850,7 @@ namespace FsRoot
                                             value.Trim() |> getTextData lytNm
                                             |> View.Map(function
                                                 | TDText  v   -> v.Trim()
-                                                | TDAct   act -> sprintf "@{%s}" act.actName
+                                                | TDAct   act -> sprintf "@{%s}" (act.actName.Id)
                                             )
                                             |> Attr.DynamicStyle (name.Trim())
                                             |> Some
@@ -2073,7 +2892,7 @@ namespace FsRoot
                                         |> getTextData lytNm
                                         |> View.Map(function
                                             | TDText  v   ->  v 
-                                            | TDAct   act -> sprintf "Unexpected action: %s" act.actName
+                                            | TDAct   act -> sprintf "Unexpected action: %s" (act.actName.Id)
                                         )
                                         |> Doc.TextView
             
@@ -2096,7 +2915,7 @@ namespace FsRoot
                                                 |> getTextData lytNm
                                                 |> View.Map(function
                                                     | TDText  v   ->  v 
-                                                    | TDAct   act -> sprintf "Unexpected action: %s" act.actName
+                                                    | TDAct   act -> sprintf "Unexpected action: %s" (act.actName.Id)
                                                 )
                                                 |> Doc.TextView, rest
                     | []                     -> Doc.Empty, []
@@ -2273,18 +3092,18 @@ namespace FsRoot
                 let createEntryO lytNm (line:string) =
                     try
                         match splitTokens line with
-                        |   Identifier name :: Vertical   :: Measures measures          :: docs    -> entryDoc  name <| createSplitterM(lytNm, name, true , measures, docs ) 
-                        |   Identifier name :: Horizontal :: Measures measures          :: docs    -> entryDoc  name <| createSplitterM(lytNm, name, false, measures, docs ) 
-                        | [ Identifier name ;  Button     ;  Identifier act    ;  attrs ;  text  ] -> entryDoc  name <| createButtonM  (lytNm, name, act  , attrs   , text ) 
-                        | [ Identifier name ;  Input      ;  Identifier var    ;  attrs          ] -> entryDoc  name <| createInputM   (lytNm, name, var  , attrs          ) 
-                        | [ Identifier name ;  TextArea   ;  Identifier var    ;  attrs          ] -> entryDoc  name <| createTextAreaM(lytNm, name, var  , attrs          ) 
-                        | [ Identifier name ;  Var        ;                       (S v)          ] -> entryVar  name <| createVarM     (lytNm, name, v                     ) 
-                        |   Identifier name :: Doc        :: (S doc  )                  :: parms   -> entryDoc  name <| createDocM     (lytNm, name, doc  , parms          ) 
-                        |   Identifier name :: View       ::                               parms   -> entryView name <| createViewM    (lytNm, name,        parms          )
-                        |   Identifier name :: Template   :: (S temp )         :: attrs :: holes   -> entryDoc  name <| createTemplateM(lytNm, name, temp , attrs   , holes)
-                        |   Identifier name :: Concat                                   :: docs    -> entryDoc  name <| createConcatM  (lytNm, name,                  docs )
-                        |   Identifier name :: Action     :: Identifier act             :: parms   -> entryAct  name <| createActionM  (lytNm, name, act  , parms          )
-                        |   Identifier name :: Elem elem                       :: attrs :: docs    -> entryDoc  name <| createElementM (lytNm, name, elem , attrs   , docs ) 
+                        |   Identifier name :: Vertical   :: Measures measures          :: docs    -> entryDoc  <| AF.PlgElemName name <| createSplitterM(lytNm, name, true , measures, docs ) 
+                        |   Identifier name :: Horizontal :: Measures measures          :: docs    -> entryDoc  <| AF.PlgElemName name <| createSplitterM(lytNm, name, false, measures, docs ) 
+                        | [ Identifier name ;  Button     ;  Identifier act    ;  attrs ;  text  ] -> entryDoc  <| AF.PlgElemName name <| createButtonM  (lytNm, name, act  , attrs   , text ) 
+                        | [ Identifier name ;  Input      ;  Identifier var    ;  attrs          ] -> entryDoc  <| AF.PlgElemName name <| createInputM   (lytNm, name, var  , attrs          ) 
+                        | [ Identifier name ;  TextArea   ;  Identifier var    ;  attrs          ] -> entryDoc  <| AF.PlgElemName name <| createTextAreaM(lytNm, name, var  , attrs          ) 
+                        | [ Identifier name ;  Var        ;                       (S v)          ] -> entryVar  <| AF.PlgElemName name <| createVarM     (lytNm, name, v                     ) 
+                        |   Identifier name :: Doc        :: (S doc  )                  :: parms   -> entryDoc  <| AF.PlgElemName name <| createDocM     (lytNm, name, doc  , parms          ) 
+                        |   Identifier name :: View       ::                               parms   -> entryView <| AF.PlgElemName name <| createViewM    (lytNm, name,        parms          )
+                        |   Identifier name :: Template   :: (S temp )         :: attrs :: holes   -> entryDoc  <| AF.PlgElemName name <| createTemplateM(lytNm, name, temp , attrs   , holes)
+                        |   Identifier name :: Docs                                     :: docs    -> entryDoc  <| AF.PlgElemName name <| createConcatM  (lytNm, name,                  docs )
+                        |   Identifier name :: Action     :: Identifier act             :: parms   -> entryAct  <| AF.PlgElemName name <| createActionM  (lytNm, name, act  , parms          )
+                        |   Identifier name :: Elem elem                       :: attrs :: docs    -> entryDoc  <| AF.PlgElemName name <| createElementM (lytNm, name, elem , attrs   , docs ) 
                         | _                                                                        -> None
                     with e -> 
                         None
@@ -2313,6 +3132,8 @@ namespace FsRoot
                     | TvConst  of string
                     | TvVarRef of VarRef
                     | TvViwRef of ViwRef
+                    | TvActRef of ActRef
+                    | TvDocRef of DocRef
             
                     type TextValL = TextVal list
             
@@ -2350,11 +3171,12 @@ namespace FsRoot
                     type TextAreaDef = TextAreaDef of VarRef * AttrVal[]
                     type DocFDef     = DocFDef     of DocRef * ParmRef list
                     type ConcatDef   = ConcatDef   of NodeRef list
-                    type ElementDef  = ElementDef  of string * AttrVal[] * NodeRef list
+                    type ElementDef  = ElementDef  of string * ParmRef * NodeRef list
             
                     type ActDef      = ActDef      of ActRef * ParmRef list
                     type VarDef      = VarDef      of string
-                    type ViwDef      = ViwDef      of ParmRef  list
+                    type ViwDef      = ViwDef      of ParmRef list
+                    type VJSDef      = VJSDef      of ParmRef list
                     type PlgDef      = PlgDef      of ElemNames
                     type DocDef      = 
                     | DcSplitter of SplitterDef
@@ -2370,6 +3192,7 @@ namespace FsRoot
                     | EnActDef of ActDef
                     | EnVarDef of VarDef
                     | EnViwDef of ViwDef
+                    | EnVJSDef of VJSDef
                     | EnPlgDef of PlgDef
                     | EnPlgRef of ElemName
             
@@ -2379,6 +3202,7 @@ namespace FsRoot
                     let entryDoc  n d = EnDocDef d |> entryDef n |> Some
                     let entryAct  n a = EnActDef a |> entryDef n |> Some
                     let entryView n w = EnViwDef w |> entryDef n |> Some
+                    let entryVJS  n w = EnVJSDef w |> entryDef n |> Some
                     let entryVar  n v = EnVarDef v |> entryDef n |> Some
                     let entryPlg  n p = EnPlgDef p |> entryDef n |> Some
                     let entryRef  n e = EnPlgRef e |> entryDef n |> Some
@@ -2423,6 +3247,7 @@ namespace FsRoot
                         let (|Tr|_|) = function
                         | VarRf vr -> TvVarRef vr |> Some
                         | ViwRf wr -> TvViwRef wr |> Some
+                        | ActRf wr -> TvActRef wr |> Some
                         |_-> None
             
                         let (|Indi|_|) txt =
@@ -2507,26 +3332,27 @@ namespace FsRoot
                         | [ NamU name ;  Var        ;  Name nm                                 ] -> entryRef  name <| ElemName(nm, RVar)
                         | [ NamU name ;  View       ;  Name nm                                 ] -> entryRef  name <| ElemName(nm, RViw)
                         | [ NamU name ;  Action     ;  Name nm                                 ] -> entryRef  name <| ElemName(nm, RAct)
-                        | [ Name name ;  Vertical   ;  Measures measures ;  DocRf l ; DocRf r  ] -> entryDoc  name <| DcSplitter(SplitterDef(true , measures, l, r) )
-                        | [ Name name ;  Horizontal ;  Measures measures ;  DocRf l ; DocRf r  ] -> entryDoc  name <| DcSplitter(SplitterDef(false, measures, l, r) ) 
-                        | [ Name name ;  Button     ;  ActRf      act    ;  At att  ; QTx text ] -> entryDoc  name <| DcButton  (ButtonDef  (act  , att     , text) )
-                        | [ Name name ;  Input      ;  VarRf      var    ;  At att             ] -> entryDoc  name <| DcInput   (InputDef   (var  , att           ) )
-                        | [ Name name ;  TextArea   ;  VarRf      var    ;  At att             ] -> entryDoc  name <| DcTextArea(TextAreaDef(var  , att           ) )
+                    (**)| [ Name name ;  Vertical   ;  Measures measures ;  DocRf l ; DocRf r  ] -> entryDoc  name <| DcSplitter(SplitterDef(true , measures, l, r) )
+                    (**)| [ Name name ;  Horizontal ;  Measures measures ;  DocRf l ; DocRf r  ] -> entryDoc  name <| DcSplitter(SplitterDef(false, measures, l, r) ) 
+                    (**)| [ Name name ;  Button     ;  ActRf      act    ;  At att  ; QTx text ] -> entryDoc  name <| DcButton  (ButtonDef  (act  , att     , text) )
+                    (**)| [ Name name ;  Input      ;  VarRf      var    ;  At att             ] -> entryDoc  name <| DcInput   (InputDef   (var  , att           ) )
+                    (**)| [ Name name ;  TextArea   ;  VarRf      var    ;  At att             ] -> entryDoc  name <| DcTextArea(TextAreaDef(var  , att           ) )
                         | [ Name name ;  Var        ;                       STx v              ] -> entryVar  name <| VarDef    (v.Trim())
                         |   Name name :: Doc        :: DocRf      dr               :: Prs ps     -> entryDoc  name <| DcDocF    (DocFDef    ( dr  , ps            ) )
-                        |   Name name :: View       ::                                Prs ps     -> entryView name <| ViwDef            ps              
-                        //|   Name name :: Template   :: (S temp )         :: At att :: holes      -> entryDoc  name <| entryTemplate(lytNm, name, temp , attrs   , holes)
-                        |   Name name :: Concat                                    :: Nds ns     -> entryDoc  name <| DcConcat  (ConcatDef                  ns      )
+                        |   Name name :: View       ::                                Prs ps     -> entryView name <| ViwDef           ps
+                        |   Name name :: ViewJS     ::                                Prs ps     -> entryVJS  name <| VJSDef           ps
+                        |   Name name :: Docs                                      :: Nds ns     -> entryDoc  name <| DcConcat  (ConcatDef                  ns      )
                         |   Name name :: Action     :: ActRf      act              :: Prs ps     -> entryAct  name <| ActDef  ( act  , ps          )
-                        |   Name name :: Elem elem                       :: At att :: Nds ns     -> entryDoc  name <| DcElement (ElementDef(elem , att   , ns ) )
+                        |   Name name :: Elem elem  :: Pr         att              :: Nds ns     -> entryDoc  name <| DcElement (ElementDef(elem , att   , ns ) )
                         | _                                                                      -> None
             
                     let createEntryO2 lytNm (refs:System.Collections.Generic.Dictionary<string, _>) =
-                        let ok nm en = refs.Add(nm, en) ; Some (Ok(nm, en)) 
+                        let addR nm en = if refs.ContainsKey nm then Result.errorf "Already exists %s : %A " nm en else refs.Add(nm, en) ; Ok()
+                        let ok   nm en = addR nm en |> Result.map (fun () -> nm, en)
                         let ko msg (line:string) =
-                            let nm = line.Split ' ' |> Seq.head
-                            refs.Add(nm, ElementDef("div", [||], [NdTextValL [ TvConst msg ] ] ) |> DcElement |> EnDocDef )
-                            Result.Error msg |> Some
+                            let nm = line.Split([| ' ' ; '\t' |], System.StringSplitOptions.RemoveEmptyEntries) |> Seq.head
+                            addR nm (ElementDef("div", PrTextValL [], [NdTextValL [ TvConst msg ] ] ) |> DcElement |> EnDocDef )
+                            |> Result.bind (fun () -> Result.Error msg)
                         let getRef nm =
                             try refs.[nm]
                             with e -> failwithf "Could not find reference to %s" nm
@@ -2539,22 +3365,36 @@ namespace FsRoot
                                 | EnActDef _ -> RAct
                                 | EnVarDef _ -> RVar
                                 | EnViwDef _ -> RViw
+                                | EnVJSDef _ -> RViw
                                 | EnPlgRef _ -> RPlg
                                 | EnPlgDef _ -> failwithf "PlugIn should not be referenced by itself: %A" rf
                                 , Some entry
-                            | FullRef  (ly, nm) -> 
-                                getRef ly
-                                |> function
-                                | EnPlgDef(PlgDef ps) -> try ps.[nm] with e-> failwithf "Could not find reference to %s.%s" ly nm
-                                | _                   -> failwithf "PlugIn not registered: %A" rf
-                                , None
+                            | FullRef  (ly, nm) ->
+                                try
+                                    getRef ly
+                                    |> function
+                                    | EnPlgDef(PlgDef ps) -> try ps.[nm] with e-> failwithf "Could not find reference to %s.%s" ly nm
+                                    | _                   -> failwithf "PlugIn not registered: %A" rf
+                                    , None
+                                with e ->
+                                    match AF.tryGetPlugIn (AF.PlugInName ly) with
+                                    | None    -> failwith e.Message
+                                    | Some pg ->
+                                    let nmm = AF.PlgElemName nm
+                                    if   pg.plgDocs   .ContainsKey nmm then RDoc
+                                    elif pg.plgActions.ContainsKey nmm then RAct
+                                    elif pg.plgVars   .ContainsKey nmm then RVar
+                                    elif pg.plgViews  .ContainsKey nmm then RViw
+                                    else failwithf "Could not find reference to %s.%s" ly nm
+                                    , None
                         fun (line:string) ->
                             try 
                                 createEntryO getType lytNm line
                                 |> function
-                                | Some(EntryDef(nm, en)) -> ok nm en
-                                | None -> line |> ko (sprintf "Line not matched!: %s" line)
-                            with e     -> line |> ko e.Message
+                                | Some(EntryDef(nm, en)) ->         ok nm en
+                                | None                   -> line |> ko (sprintf "Line not matched!: %s" line)
+                            with e                       -> line |> ko e.Message
+                            |> Some
             
                 module Layout =
                     open ParseO
@@ -2659,14 +3499,19 @@ namespace FsRoot
                                          yield! def1
                                          yield! def2 |]
             
+                let emptyLine (l:string) = 
+                    let lt = l.Trim()
+                    lt = "" || lt.StartsWith "//"
+                let notEmpty = emptyLine >> not
+            
                 let getExtraLines pred (ls: string[]) =
                     ls 
                     |> Seq.skip 1 
-                    |> Seq.tryFindIndex (fun l -> l.Trim() <> "" && not(pred l) )
+                    |> Seq.tryFindIndex (fun l -> notEmpty l && not(pred l) )
                     |> Option.map ((+) 1)
                     |> Option.defaultValue ls.Length
                     |> fun i -> 
-                        ls.[1..i-1], ls.[i..] 
+                        ls.[1..i-1] |> Array.filter notEmpty, ls.[i..] 
             
                 let rec createLines baseName n (names: string[]) (lines: string[]) i (ls:string[]) =
                     let prefix  = String.replicate n ":"
@@ -2805,13 +3650,6 @@ namespace FsRoot
             
                 let none x = Html.span [][]
             
-                let htmlDoc lytNm html =
-                    getTextData lytNm html
-                    |> Doc.BindView(function
-                        | TDText  v   -> Doc.Verbatim              v
-                        | TDAct   act -> sprintf "HtmlDoc: unexpected action %A" act |> AF.errDoc
-                    )
-            
                 let refreshEntries lytN entries =
                     let plg =   match AF.tryGetPlugIn lytN with
                                 | Some plg -> plg
@@ -2825,17 +3663,16 @@ namespace FsRoot
                     ListModel.refreshLM plg.plgQueries [| yield! getQueryEntries  entries |]
                     ListModel.refreshLM plg.plgDocs    [| 
                         yield! getDocEntries    entries
-                        yield  AF.newDocF "InputFile"  <| AF.FunDoc4(inputFile  lytN, "attrs", "Label", "Action", "[Doc]")
-                        yield  AF.newDocF "InputLabel" <| AF.FunDoc3(inputLabel lytN, "attrs", "Label", "Var"            )
-                        yield  AF.newDocF "HtmlDoc"    <| AF.FunDoc1(htmlDoc    lytN, "html"                             )
-                        yield  AF.newDocF "none"       <| AF.FunDoc1(none           , "x"                                )
+                        yield  AF.newDocF <| AF.PlgElemName "InputFile"  <| AF.FunDoc4(inputFile  lytN, "attrs", "Label", "Action", "[Doc]")
+                        yield  AF.newDocF <| AF.PlgElemName "InputLabel" <| AF.FunDoc3(inputLabel lytN, "attrs", "Label", "Var"            )
+                        yield  AF.newDocF <| AF.PlgElemName "none"       <| AF.FunDoc1(none           , "x"                                )
                     |]
             
                 let addLayout (lyt:LayoutEngine) =
                     lyt.lytDefinition.View |> View.Sink(fun txt ->
                         currentViewTriggger <- V ( lyt.lytDefinition.V + AF.mainDocV.V)
                         createEntries lyt.lytName txt
-                        |> Seq.append [ AF.newVar "Layout" lyt.lytDefinition |> EntryVar ]
+                        |> Seq.append [ AF.newVar (AF.PlgElemName "Layout") lyt.lytDefinition |> EntryVar ]
                         |> refreshEntries lyt.lytName
                     )
             
@@ -2844,18 +3681,366 @@ namespace FsRoot
                     lytDefinition = Var.Create lyt
                 }
             
-                let addNewLayout (name:obj) (layout:obj) = 
+            //    let addNewLayout (name:obj) (layout:obj) =
+            //        (if layout <> null then unbox layout else """
+            //split horizontal 0-50-100 AppFramework.AppFwkClient Hello
+            //Hello h1 "color:blue; class=btn-primary" "How are you today?" Ask
+            //Ask Doc InputLabel "placeholder=Type you answer here..." "Answer:" AppFramework.mainDocV  
+            //"""     |> String.unindentStr)
+            //        |> newLyt (if layout <> null then unbox name else System.Guid.NewGuid() |> string |> fun s -> "Lyt_" + s.Replace("-", "") |> AF.PlugInName )
+            //        |> addLayout
+            //
+            //    if IsClient then
+            //        AF.tryGetPlugIn AF.defPlugInName
+            //        |> Option.iter(fun plg ->
+            //            plg.plgActions.Add <| ( AF.newActF <| AF.PlgElemName  "AddLayout" <| AF.FunAct2(addNewLayout, "[Name]", "[Layout]") )
+            //        )
+            
+            module NewLY =
+                //open FsRoot
+                open WebSharper.UI
+                open WebSharper.UI.Client
+            
+                open AppFramework
+                module AF = AppFramework
+            
+                open Html
+            
+                open Depend.Operators
+            
+                let concat a b = sprintf "Concat(%d, %f)" a b 
+                let aV = Var.Create 4
+                let pa = aV.View
+                let pb = 6.2
+            
+                let currentPlugInNameDef : PlugInName = PlugInName "NewLYx"
+                let currentPlugInNameD                = Depend.dependByName "currentPlugInName" currentPlugInNameDef id
+            
+                module P =
+                    let run pin (p:P<_>) = p.r |> run pin
+            
+                let name       = Var.Create "World"
+            
+                let checkName (n:string) = if n = "World".[0..n.Length-1] || n.Length <= 1 then "<---- Please enter your name" else "" 
+            
+                let enterName  = ! checkName             <! name
+                let now        = ! (fun _ -> nowStamp()) <! name
+            
+                let sayHello  =
+                    let sayHello_0 = ! Doc.Concat <& "Hello @{name}!" <! enterName
+                    let sayHello_1 = ! Doc.Concat <& "How are you?"
+                    ! Doc.Concat <& sayHello_0       <! sayHello_1
+            
+                let aString = Var.Lens aV string (fun _ -> int)
+            
+                let main0 = ! concat <! aV <* 3.2
+                let main1 = !(sprintf "result = %s %s") <! main0 <* "main0"
+                let main  = ! h3 <& "color:@{name}; background:red; click=@{AppFramework.Hello}" <& "MAIN:" <! main1 <! main1 <! ":" <! sayHello <! ":" <! " Más >> " <! sayHello <! " <<"
+            
+                let main2 = makeAViewDoc <| fun () -> h4 [ attr.styleDyn <| V("color:" + name.V) ] [ text "MAIN2:" ; Doc.TextView name.View] 
+            
+                let appFwk = ! div <& "color:@{name}" <& "@{AppFramework.AppFwkClient}"
+                let split  = ! (LayoutEngine.variableSplitter false 0. 50. 100.) <& appFwk <& main
+                let split2 = ! (LayoutEngine.variableSplitter false 0. 50. 100.) <& appFwk <& main2
+            
+                let callDocPFn pin pf = pf |> P.run pin |> callDoc
+            
+                //let pName = PlugInName "NewLY" 
+            //
+                //AF.plugin {
+                //    plgName pName.Id
+                //    plgVar  "name"      name
+                //    plgVar  "a"         aString
+                //    plgDoc  "split"     (lazy         (split      |> callDocPFn pName ) )
+                //    plgDoc  "split2"    (lazy         (split2     |> callDocPFn pName ) )
+                //    plgDoc  "main"      (lazy         (main       |> callDocPFn pName ) )
+                //    plgDoc  "main2"     (lazy          main2                            )
+                //    plgDoc  "sayHello"  (lazy         (sayHello   |> callDocPFn pName ) )
+                //    plgDoc  "sayHello2" (lazy         (sayHello   |> callDocPFn pName ) )
+                //}
+                //|> AF.addPlugIn
+            
+            
+                //[< SPAEntryPoint >]
+                //let mainProgram() =
+                //    do (StartAppFramework.startWithHtmlD 
+                //        |> Depend.resolver [
+                //            "AppFrameworkTemplate.html", AppFrameworkTemplate.html + SnippetTemplates.html
+                //        ]) ()
+            
+                open LayoutEngine
+                open LayoutEngine.Syntax
+            
+                let itemRefToTextType = function
+                | LocalRef     t  -> Extract0.TReference t
+                | FullRef(pr, er) -> Extract0.TReference (sprintf "%s.%s" pr er)
+            
+                let itemRefToString = function
+                | LocalRef     t  -> t
+                | FullRef(pr, er) -> (sprintf "%s.%s" pr er)
+            
+                let textValToTextType = function
+                | TvConst  s          -> Extract0.TSimple  s
+                | TvActRef (ActRef v)  
+                | TvDocRef (DocRef v)  
+                | TvVarRef (VarRef v)  
+                | TvViwRef (ViwRef v) -> itemRefToTextType v
+            
+                let (|ActRVs|) = function | ActRef v -> [ TvVarRef (VarRef v)]
+            
+            //    let attrValToAttrD = Depend.depend {
+            //        let! getTextValFromTextTypes = Extract0.getTextValFromTextTypesD
+            //        let! getTextVal              = Extract0.getTextValD
+            //        return
+            //            function
+            //            | AtStyle (an,        vs) -> vs, valToStyle an
+            //            | AtAct   (an, ActRVs vs) 
+            //            | AtAttr  (an,        vs) -> vs, valToAttr  an
+            //            >> fun (vs, f) -> 
+            //                List.map textValToTextType vs
+            //                |> getTextValFromTextTypes
+            //                |> f
+            //    }
+            
+                let nodeRefToDocD = Depend.depend {
+                    let! getDocFromTextTypes = Extract0.getDocFromTextTypesD
+                    return function
+                        | NdTextValL       vs ->  vs |> List.map textValToTextType 
+                        | NdDocRef (DocRef r)
+                        | NdVarRef (VarRef r)
+                        | NdViwRef (ViwRef r) -> [ itemRefToTextType r ]
+                        >> getDocFromTextTypes
+                }
+            
+                let varRefToVarD = Depend.depend {
+                    let! currentPlugInName = currentPlugInNameD
+                    return fun (VarRef ref) ->
+                        let r = itemRefToString ref
+                        AF.splitName currentPlugInName r
+                        ||> AF.tryGetVar
+                        |>  Option.map (fun v -> v.varVar)
+                        |>  Option.defaultWith(fun () -> Var.Make (View.Const <| sprintf "Could not find var %s" r) ignore )
+                }
+            
+                let getParamD = Depend.depend {
+                    let! currentPlugInName = currentPlugInNameD
+                    let! getTextValFromSeq = Extract0.getTextValFromSeqD
+                    return fun (p:ParmRef) ->
+                        let refToSplit = itemRefToString >> AF.splitName currentPlugInName
+                        match p with
+                        | PrTextValL       ts -> ts|> List.map textValToTextType |> getTextValFromSeq |> Val.toView |> View.Map box
+                        | PrDocRef (DocRef r) -> r |> refToSplit ||> AF.tryGetDocW |> View.Map  (Option.map ((fun d -> d.docDoc     ) >> box          ) >> Option.defaultWith (fun () -> sprintf "missing ref Doc %A"    r :> obj              ) )
+                        | PrVarRef (VarRef r) -> r |> refToSplit ||> AF.tryGetVarW |> View.Bind (Option.map ((fun v -> v.varVar.View) >> View.Map box ) >> Option.defaultWith (fun () -> sprintf "missing ref Var %A"    r :> obj |> View.Const) )
+                        | PrViwRef (ViwRef r) -> r |> refToSplit ||> AF.tryGetViwW |> View.Bind (Option.map ((fun v -> v.viwView    ) >> View.Map box ) >> Option.defaultWith (fun () -> sprintf "missing ref View %A"   r :> obj |> View.Const) )
+                        | PrActRef (ActRef r) -> r |> refToSplit ||> AF.tryGetActW |> View.Map  (Option.map ((fun v -> v.actFunction) >> box          ) >> Option.defaultWith (fun () -> sprintf "missing ref Action %A" r :> obj              ) )
+                }
+            
+                let itemRefToAbsolute lyt = 
+                    function
+                    | LocalRef     t  -> lyt, t
+                    | FullRef(pr, er) -> pr , er
+                    >> fun (a,b) -> sprintf "%s.%s" a b
+            
+                let getParam2D = Depend.depend {
+                    let! currentPlugInName = currentPlugInNameD
+                    let! getTextValFromSeq = Extract0.getTextValFromSeqD
+                    return fun (p:ParmRef) ->
+                        let toAbs = itemRefToAbsolute currentPlugInName.Id >> sprintf "@{%s}"
+                        let toAbsRef = function 
+                        | TvConst s-> s 
+                        | TvVarRef (VarRef r) 
+                        | TvActRef (ActRef r) 
+                        | TvDocRef (DocRef r) 
+                        | TvViwRef (ViwRef r) -> toAbs r
+                        match p with
+                        | PrTextValL       ts -> ts|> Seq.map toAbsRef |> String.concat ""
+                        | PrViwRef (ViwRef r) 
+                        | PrDocRef (DocRef r) 
+                        | PrVarRef (VarRef r) 
+                        | PrActRef (ActRef r) -> toAbs r
+                }
+            
+                let getParamTextD = Depend.depend {
+                    let! currentPlugInName = currentPlugInNameD
+                    let! getTextValFromSeq = Extract0.getTextValFromSeqD
+                    return fun (p:ParmRef) f ->
+                        let refToSplit = itemRefToString >> AF.splitName currentPlugInName
+                        match p with
+                        | PrTextValL       ts -> ts|> List.map textValToTextType  |> getTextValFromSeq |> Val.toView |> View.Get(box >> f)
+                        | PrDocRef (DocRef r) -> r |> refToSplit ||> AF.tryGetDoc |> Option.iter ((fun d -> d.docDoc     ) >> box           >> f  )
+                        | PrVarRef (VarRef r) -> r |> refToSplit ||> AF.tryGetVar |> Option.iter ((fun v -> v.varVar.View) >> View.Get (box >> f) )
+                        | PrViwRef (ViwRef r) -> r |> refToSplit ||> AF.tryGetViw |> Option.iter ((fun v -> v.viwView    ) >> View.Get (box >> f) )
+                        | PrActRef (ActRef r) -> r |> refToSplit ||> AF.tryGetAct |> Option.iter ((fun v -> v.actFunction) >> box           >> f  )
+                }
+            
+                let defVar(    lytN, n:string, v) = Var.Create v
+                let defAction( lytN, n:string, ActRef ac:ActRef, ps:ParmRef list) =
+                    Depend.depend {
+                        let! currentPlugInName = currentPlugInNameD
+                        let! getParamText      = getParamTextD
+                        return (
+                            let r     = itemRefToString ac
+                            AF.splitName currentPlugInName r
+                            ||> AF.tryGetAct
+                            |>  Option.map          (fun act -> 
+                                if ps = [] then act.actFunction else
+                                match act.actFunction, ps with
+                                | AF.FunAct1(f,_    ), [ t1     ] -> AF.FunAct0( fun () -> getParamText t1                             f              )
+                                | AF.FunAct2(f,_, _ ), [ t1; t2 ] -> AF.FunAct0( fun () -> getParamText t1 (fun p1 -> getParamText t2 (f p1   ) )     )
+                                | AF.FunAct2(f,_, n2), [ t1     ] -> AF.FunAct1((fun p2 -> getParamText t1 (fun p1 ->                  f p1 p2) ) , n2)
+                                | _ -> AF.FunAct0 (fun () -> printfn "Parameters do not coincide for Action %s %A %A" r ps act )
+                            )
+                            |>  Option.defaultWith  (fun ()  -> AF.FunAct0 (fun () -> printfn "Action Not Found %s" r) )
+                        )
+                    } |> run lytN
+                let defView( lytN, n:string, ps:ParmRef list) =
+                    Depend.depend {
+                        let! currentPlugInName = currentPlugInNameD
+                        let! getParam2         = getParam2D
+                        let! extractText       = extractTextD
+                        return baseView |> View.Bind(fun _ ->
+                            ps
+                            |> View.traverseSeq (getParam2 >> extractText)
+                            |> View.Map (Seq.toArray >> String.concat "")
+                        )
+                    } |> run lytN
+                let defViewJS( lytN, n:string, ps:ParmRef list) =
+                    Depend.depend {
+                        let! currentPlugInName = currentPlugInNameD
+                        let! getParam          = getParamD
+                        return baseView |> View.Bind(fun _ ->
+                            try
+                                ps
+                                |> View.traverseSeq getParam
+                                |> View.Map Seq.toArray
+                                |> View.Map (fun ar ->
+                                    try match ar with
+                                        | [|   |] -> "No JS function specified"
+                                        | [| _ |] ->  JavaScript.JS.Eval (unbox ar.[0])                                                         |> string
+                                        | _       -> (JavaScript.JS.Eval (unbox ar.[0]) |> unbox<JavaScript.FuncWithArgs<_,obj>>).Call ar.[1..] |> string
+                                    with e -> e.Message
+                                )
+                            with e -> e.Message |> View.Const
+                        )
+                    } |> run lytN
+                let defInput(     lytN, n:string, v, attrs : AttrVal seq) = lazy (AF.errDocf "input deprecated use AF.Input"       )
+                let defTextArea(  lytN, n:string, v, attrs : AttrVal seq) = lazy (AF.errDocf "TextArea deprecated use AF.TextArea" )
+                let defElement(lytN, n:string, elem, attrs : ParmRef, docs:NodeRef list) = 
+                    Depend.depend {
+                        let! nodeRefToDoc  = nodeRefToDocD
+                        let! extractAts    = extractAtsD
+                        let! getParam2     = getParam2D
+                        return
+                            makeAViewDocL <| fun () ->
+                                try
+                                    Doc.Element elem
+                                        <| extractAts (getParam2 attrs)
+                                        <| (docs |> Seq.map nodeRefToDoc )
+                                    :> Doc
+                                with e -> text e.Message
+                    } |> run   lytN
+                let defConcat( lytN, n:string, docs:NodeRef list) = 
+                    Depend.depend {
+                        let! nodeRefToDoc  = nodeRefToDocD
+                        return
+                            makeAViewDocL <| fun () ->
+                                docs |> Seq.map nodeRefToDoc |> Doc.Concat
+                    } |> run   lytN
+                let defDocF(   lytN, n:string, DocRef dc, ds:ParmRef list) =
+                    Depend.depend {
+                        let! currentPlugInName    = currentPlugInNameD
+                        let! getParam2            = getParam2D
+                        let  getP                 = getParam2
+                        let rec passParm          = function
+                            | df                                  , []   ->                          df
+                            | AF.DocFunction.LazyDoc ld           , _    ->  AF.DocFunction.LazyDoc  ld
+                            | AF.DocFunction.FunDoc1(f1,_        ), a::r ->  AF.DocFunction.LazyDoc(lazy(f1 <| getP a)       )
+                            | AF.DocFunction.FunDoc2(f2,_,b      ), a::r -> (AF.DocFunction.FunDoc1(     f2 <| getP a,b      ),r) |> passParm
+                            | AF.DocFunction.FunDoc3(f3,_,b,c    ), a::r -> (AF.DocFunction.FunDoc2(     f3 <| getP a,b,c    ),r) |> passParm
+                            | AF.DocFunction.FunDoc4(f4,_,b,c,d  ), a::r -> (AF.DocFunction.FunDoc3(     f4 <| getP a,b,c,d  ),r) |> passParm
+                            | AF.DocFunction.FunDoc5(f5,_,b,c,d,e), a::r -> (AF.DocFunction.FunDoc4(     f5 <| getP a,b,c,d,e),r) |> passParm
+                        return
+                            itemRefToString dc
+                            |> splitName currentPlugInName
+                            ||> AF.tryGetDoc
+                            |>  Option.map (fun d -> passParm(d.docDoc, ds) )
+                            |>  Option.defaultWith  (fun ()  -> lazy (sprintf "Missing doc: %A" dc |> AF.errDoc ) |> AF.DocFunction.LazyDoc)
+                    } |> run   lytN
+                let defButton( lytN, n:string, ac, attrs : AttrVal seq, tx:TextVal list) = lazy (AF.errDocf "Button deprecated use button \"click=@{Action}\"" )
+            
+                let defSplitter(lytN, n, v , m, DocRef l, DocRef r) =
+                    Depend.depend {
+                        let! getDocFromTextTypes = Extract0.getDocFromTextTypesD
+                        return lazy (
+                            let getDoc d = makeAViewDoc (fun () -> itemRefToTextType d |> List.singleton |> getDocFromTextTypes)
+                            match m with
+                            | Fixed    (pixel,    first) ->    fixedSplitter v pixel first   (getDoc l) (getDoc r)
+                            | Variable (min, value, max) -> variableSplitter v min value max (getDoc l) (getDoc r)
+                        )
+                    } |> run lytN
+            
+            
+                let initVal = "-<InitValue>-"
+            
+                let defVarM0      = Memoize.memoize defVar
+                let defVarM(l,n,i)= defVarM0(l,n,initVal) |>! fun v -> if v.Value = initVal then v.Set i
+                let defDocFM      = Memoize.memoize defDocF
+                let defActionM    = Memoize.memoize defAction
+                let defButtonM    = Memoize.memoize defButton
+                let defInputM     = Memoize.memoize defInput
+                let defTextAreaM  = Memoize.memoize defTextArea
+                let defElementM   = Memoize.memoize defElement
+                let defConcatM    = Memoize.memoize defConcat
+                let defViewM      = Memoize.memoize defView
+                let defViewJSM    = Memoize.memoize defViewJS
+                let defSplitterM  = Memoize.memoize defSplitter
+            
+                let generateEntries lytN =
+                    Seq.choose(function
+                        | n, EnVarDef( VarDef      v                         ) -> defVarM(     lytN, n, v          ) |> AF.newVar  (AF.PlgElemName n) |> EntryVar |> Some
+                    (**)| n, EnDocDef( DcSplitter (SplitterDef(v , m, l, r) )) -> defSplitterM(lytN, n, v , m, l, r) |> AF.newDoc  (AF.PlgElemName n) |> EntryDoc    |> Some
+                    (**)| n, EnDocDef( DcButton   (ButtonDef(  ac, ats, tx) )) -> defButtonM(  lytN, n, ac, ats, tx) |> AF.newDoc  (AF.PlgElemName n) |> EntryDoc    |> Some
+                    (**)| n, EnDocDef( DcInput    (InputDef(   v , ats    ) )) -> defInputM(   lytN, n, v , ats    ) |> AF.newDoc  (AF.PlgElemName n) |> EntryDoc    |> Some
+                    (**)| n, EnDocDef( DcTextArea (TextAreaDef(v , ats    ) )) -> defTextAreaM(lytN, n, v , ats    ) |> AF.newDoc  (AF.PlgElemName n) |> EntryDoc    |> Some
+                        | n, EnDocDef( DcConcat   (ConcatDef            ds  )) -> defConcatM(  lytN, n,          ds) |> AF.newDoc  (AF.PlgElemName n) |> EntryDoc    |> Some
+                        | n, EnDocDef( DcElement  (ElementDef( el, ats, ds) )) -> defElementM( lytN, n, el, ats, ds) |> AF.newDoc  (AF.PlgElemName n) |> EntryDoc    |> Some
+                        | n, EnDocDef( DcDocF     (DocFDef(    dc,      ds) )) -> defDocFM(    lytN, n, dc,      ds) |> AF.newDocF (AF.PlgElemName n) |> EntryDoc    |> Some
+                        | n, EnActDef( ActDef               (  ac, parms  )  ) -> defActionM(  lytN, n, ac, parms  ) |> AF.newActF (AF.PlgElemName n) |> EntryAction |> Some
+                        | n, EnViwDef( ViwDef                      parms     ) -> defViewM(    lytN, n,     parms  ) |> AF.newViw  (AF.PlgElemName n) |> EntryView   |> Some
+                        | n, EnVJSDef( VJSDef                      parms     ) -> defViewJSM(  lytN, n,     parms  ) |> AF.newViw  (AF.PlgElemName n) |> EntryView   |> Some
+                        | n, EnPlgRef _ -> None
+                        | n, EnPlgDef _ -> None
+                    )
+            
+                let parseNewLayout lytN =
+                    LayoutEngine.parseEntries lytN
+                    >> Seq.choose(function Ok p  -> Some p | Error m -> print m ; None)
+                    >> generateEntries lytN
+            
+                let addNewLayout (lyt:LayoutEngine) =
+                    let parseW      = lyt.lytDefinition.View |> View.Map (LayoutEngine.parseEntries lyt.lytName)
+                    let errorsW     = parseW |> View.Map(Seq.choose(function Error msg -> Some msg |_-> None) >> String.concat "\n")
+                    let defsW       = parseW |> View.Map(Seq.choose(function Ok    def -> Some def |_-> None) >> generateEntries lyt.lytName)
+                    let entries     = [ AF.newVar (AF.PlgElemName "Layout"   ) lyt.lytDefinition |> EntryVar
+                                        AF.newViw (AF.PlgElemName "ParseMsgs") errorsW           |> EntryView ]
+                    defsW |> View.Sink( Seq.append entries >> refreshEntries lyt.lytName )
+            
+                let addLayout name content =
+                    newLyt (AF.PlugInName name) content
+                    |> addNewLayout
+            
+                let addNewLayoutAct (name:obj) (layout:obj) =
                     (if layout <> null then unbox layout else """
-            split horizontal 0-50-100 AppFramework.AppFwkClient Hello
+            Ask Doc AF.InputLabel "placeholder=Type you answer here..." "Answer:" AppFramework.mainDocV  
             Hello h1 "color:blue; class=btn-primary" "How are you today?" Ask
-            Ask Doc InputLabel "placeholder=Type you answer here..." "Answer:" AppFramework.mainDocV  
+            split horizontal 0-50-100 AppFramework.AppFwkClient Hello
             """     |> String.unindentStr)
-                    |> newLyt (if layout <> null then unbox name else System.Guid.NewGuid() |> string |> fun s -> "Lyt_" + s.Replace("-", ""))
-                    |> addLayout
+                    |> newLyt (if layout <> null then unbox name else System.Guid.NewGuid() |> string |> fun s -> "Lyt_" + s.Replace("-", "") |> AF.PlugInName )
+                    |> addNewLayout
             
                 if IsClient then
-                    AF.tryGetPlugIn "AppFramework"
+                    AF.tryGetPlugIn AF.defPlugInName
                     |> Option.iter(fun plg ->
-                        plg.plgActions.Add <| ( AF.newActF "AddLayout" <| AF.FunAct2(addNewLayout, "[Name]", "[Layout]") )
+                        plg.plgActions.Add <| ( AF.newActF <| AF.PlgElemName  "AddLayout" <| AF.FunAct2(addNewLayoutAct, "[Name]", "[Layout]") )
                     )
             

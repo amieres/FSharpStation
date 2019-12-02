@@ -69,6 +69,7 @@ group Testing
     nuget Logary.Adapters.Facade
     nuget canopy
     nuget Http.fs
+    nuget ExcelProvider
 
 group Other
     framework: net461, net46

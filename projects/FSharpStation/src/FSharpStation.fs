@@ -1,6 +1,6 @@
 #nowarn "3242"
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1568639954583 -d:TEE -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1574084738106 -d:TEE -d:WEBSHARPER
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\FSharpStation\src"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
@@ -46,11 +46,15 @@
 //#nowarn "3242"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1568639954583
+//#define FSharpStation1574084738106
 #if INTERACTIVE
 module FsRoot   =
 #else
+#if DLL
+namespace FsRootDll
+#else
 namespace FsRoot
+#endif
 #endif
 
     #if !NETSTANDARD20
@@ -86,7 +90,7 @@ namespace FsRoot
     //#nowarn "3242" 
     
     open WebSharper
-    open WebSharper.JavaScript
+    //open WebSharper.JavaScript
     open WebSharper.UI
     open WebSharper.UI.Client
     type on   = WebSharper.UI.Html.on
@@ -101,6 +105,10 @@ namespace FsRoot
             inherit System.Attribute()
             let a = 1
             new() = JavaScriptAttribute true
+        type JavaScriptExportAttribute(translate:bool) =
+            inherit System.Attribute()
+            let a = 1
+            new() = JavaScriptExportAttribute true
         type InlineAttribute(code:string) =
             inherit System.Attribute()
             let a = 1
@@ -114,7 +122,7 @@ namespace FsRoot
     #endif
     
         /// Essentials that can be converted to JavaScript with WebSharper
-        [< JavaScript ; AutoOpen >]
+        [< JavaScriptExport ; AutoOpen >]
         module Library = 
             let Error = Result.Error
         
@@ -2507,12 +2515,16 @@ namespace FsRoot
         [< JavaScript ; AutoOpen >]
         module LibraryJS =
             module Promise =
+                open WebSharper.JavaScript
+            
                 let ofAsyncResult (v: Async<Result<'a,'b>>) : Promise<'a> =
                     new Promise<'a>(fun (resolve, reject) ->
                         Async.StartWithContinuations(v, (function Ok ok -> resolve ok | Error er -> reject <| sprintf "%A" er), reject, reject)
                     )
             
             module PromiseM =
+                open WebSharper.JavaScript
+            
                 let ofAsyncResultM (v: Async<ResultM<'a,'b>>) : Promise<'a> =
                     new Promise<'a>(fun (resolve, reject) ->
                         Async.StartWithContinuations(v, (function OkM(ok, _) -> resolve ok | ErrorM er -> reject <| ResultMessage.summarized er), reject, reject)
@@ -2533,9 +2545,15 @@ namespace FsRoot
                 let rtn  = View.Const
             
                 let (>>=)                              v f = bind f v
-                let rec    traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                let        traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                              Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                 let inline sequenceSeq                  sq = traverseSeq id sq
+            
+                let (<*>)                        =  View.Apply
+                let       traverseListApp f list =  let cons head tail = head :: tail
+                                                    let folder head tail = rtn cons <*> f head <*> tail
+                                                    List.foldBack folder list (rtn [])
+                let inline sequenceListApp  list =  traverseListApp id list
             
             module Pojo =
                 let addProp prop (pojo:JSObject) = pojo.Add prop ; pojo
@@ -2670,6 +2688,7 @@ namespace FsRoot
             
             module Serializer =
                 open System
+                open WebSharper.JavaScript
                 
                 type SerS<'T> = ('T  -> string)        //      Serialization function
                 type SerD<'T> = (obj -> 'T    )        //    deSerialization function
@@ -2729,7 +2748,7 @@ namespace FsRoot
             
             let (|REGEX|_|) (expr: string) (opt: string) (value: string) =
                 if value = null then None else
-                match JavaScript.String(value).Match(RegExp(expr, opt)) with
+                match JavaScript.String(value).Match(WebSharper.JavaScript.RegExp(expr, opt)) with
                 | null         -> None
                 | [| |]        -> None
                 | m            -> Some m
@@ -2775,6 +2794,7 @@ namespace FsRoot
                 
             [< JavaScript >]
             module ResizeObserver =
+                open WebSharper.JavaScript
             
                 [< Inline "try { return !!(ResizeObserver) } catch(e) { return false }" >] 
                 let implementedResizeObserver() = false
@@ -2813,6 +2833,7 @@ namespace FsRoot
                         
             [< JavaScriptExport >]
             module WebComponent =
+                open WebSharper.JavaScript
             
                 [< Inline """return Reflect.construct($global.HTMLElement, [], this.__proto__.constructor);""" >]
                 let ReflectConstruct () = X<_>
@@ -2934,7 +2955,11 @@ namespace FsRoot
                         let mutable added = false
                         let selected = Var.Create 1
                         do printfn "WcTabStripT initializer"
+                        #if DLL 
+                        [< Inline """$global.FsRootDll.LibraryJS.WebComponent.WcTabStrip.WcTabStripT.New""" >] static member NewPointer = X<_>
+                        #else
                         [< Inline """$global.FsRoot.LibraryJS.WebComponent.WcTabStrip.WcTabStripT.New""" >] static member NewPointer = X<_>
+                        #endif
                         static member Constructor() = 
                             let this = ReflectConstruct()
                             WcTabStripT.NewPointer?call this
@@ -2980,7 +3005,11 @@ namespace FsRoot
                     type WcSplitterT () =
                         let mutable added = false
                         do printfn "WcSplitterT initializer"
+                        #if DLL 
+                        [< Inline """$global.FsRootDll.LibraryJS.WebComponent.WcSplitter.WcSplitterT.New""" >] static member NewPointer = X<_>
+                        #else
                         [< Inline """$global.FsRoot.LibraryJS.WebComponent.WcSplitter.WcSplitterT.New""" >] static member NewPointer = X<_>
+                        #endif
                         static member Constructor() = 
                             let this = ReflectConstruct()
                             WcSplitterT.NewPointer?call this
@@ -3018,7 +3047,7 @@ namespace FsRoot
                                 let start    : float              ref = ref 0.0
                                 let domElem  : Dom.Element option ref = ref None                 
                                 let mouseCoord (ev: Dom.MouseEvent) = if vertical then float ev.ClientX else float ev.ClientY
-                                let drag (ev: Dom.Event) =
+                                let drag       (ev: Dom.Event     ) =
                                     ev :?> Dom.MouseEvent
                                     |> mouseCoord
                                     |> fun m   -> (m - !start) * 100.0 / (fst !size) + !startP
@@ -3074,6 +3103,7 @@ namespace FsRoot
                     
             [< JavaScriptExport >]
             module Monaco =
+                open WebSharper.JavaScript
                 open WebSharper.UI.Html
             
                 type Position = {
@@ -3989,7 +4019,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/47149dff-c248-4229-8076-db0dc48a3b0e"
+                    "http://localhost:9005/#/Snippet/a817abcc-6cb2-42cf-843c-f1525420c0d4"
                 #endif
                 
                 let extractEndPoint() = 
@@ -4184,7 +4214,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1568639954583"
+                let mutable fsharpStationAddress = Address "FSharpStation1574084738106"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -4663,6 +4693,7 @@ namespace FsRoot
             open TreeReader
             open FusionM
             open Operators
+            open WebSharper.JavaScript
             
             let private snippets               = ListModel<SnippetId, Snippet> (fun s -> s.snpId)
             let private hierarchy              = Var.Create [||]
@@ -5004,6 +5035,7 @@ namespace FsRoot
         
         module RenderSnippets =
             open Snippets
+            open WebSharper.JavaScript
             
             let scrollIntoView selW (e:Dom.Element) = selW |> View.Sink (fun s -> if s then try e?scrollIntoViewIfNeeded() with e -> printfn "%A" e) 
             
@@ -5160,6 +5192,7 @@ namespace FsRoot
         module Monaco =
             open WebSharper.UI
             open WebSharper.UI.Html
+            open WebSharper.JavaScript
             open FsAutoComplete
             open Monaco
             
@@ -5466,6 +5499,7 @@ namespace FsRoot
         
         
         module JumpTo =
+            open WebSharper.JavaScript
         
             let rexGuid = """\((\d+)\,\s*(\d+)\) - \((\d+)\,\s*(\d+)\).*([0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})"""
             
@@ -5485,6 +5519,7 @@ namespace FsRoot
                 |> Seq.pick (fun (line, from, to_) -> if s >= from && s < to_ then Some line else None)
                 |> jumpToLine        
         module CustomAction =
+            open WebSharper.JavaScript
             open FusionAsyncM
             open Operators
             open FStation
@@ -5539,11 +5574,12 @@ namespace FsRoot
                 return Snippets.prepAnyCode code2
             }
         
-            module AF = FsRoot.LibraryJS.AppFramework
+            module AF = FsRootDll.LibraryJS.AppFramework
         
             let fetchValue button v =
                 if v = "button" then button else
                 "Snp_" + (string Snippets.currentSnippetV.Value.snpId.Id).Replace("-", "")
+                |> AF.PlugInName
                 |> swap AF.splitName v
                 ||> AF.tryGetWoW
                 |> Option.bind View.TryGet
@@ -5563,7 +5599,7 @@ namespace FsRoot
                 fusion {
                     let!  snpO  = snpPath.Split '/' |> SnippetReference.RefSnippetPath |> Snippet.snippetFromRefORm |> ofFusionM
                     match snpO with
-                    | None     -> return! ofResultRM <| Error (ErrorMsg (sprintf "Snippet %s not found" snpPath) )
+                    | None     -> return! ofResultRM <| Result.Error (ErrorMsg (sprintf "Snippet %s not found" snpPath) )
                     | Some snp ->
                     { snp with snpContent = content }
                     |> Snippets.setSnippet
@@ -5573,7 +5609,7 @@ namespace FsRoot
             let actionSnpRm (snpPath:string) name = fusion {
                 let! snpO        = snpPath.Split '/' |> SnippetReference.RefSnippetPath |> Snippet.snippetFromRefORm |> ofFusionM
                 match snpO with
-                | None     -> return! ofResultRM <| Error (ErrorMsg (sprintf "Snippet %s not found" snpPath) )
+                | None     -> return! ofResultRM <| Result.Error (ErrorMsg (sprintf "Snippet %s not found" snpPath) )
                 | Some snp ->
                 let! code        = getCode snp name |>> translateString (fetchValue name)
                 do!     ofAsync <| FSharpStationClient.setAddress (WebSockets.Address FStation.id)
@@ -5635,6 +5671,7 @@ namespace FsRoot
                 
         
         module LoadSave =
+            open WebSharper.JavaScript
         
             let fileName  = Var.Create ""
             let canLoad() = Snippets.SaveAsClassW |> View.TryGet = Some "" || JS.Confirm "Changes have not been saved, do you really want to load?"
@@ -5671,6 +5708,7 @@ namespace FsRoot
                 Snippets.updateGeneration()
         
         module Importer =
+            open WebSharper.JavaScript
             open Serializer
         
             let serSnippetId2 : Ser<SnippetId> = sprintU, fun (x: obj) -> x?Item |> deserGuid |> SnippetId
@@ -5705,6 +5743,7 @@ namespace FsRoot
                             files.[0] |> reader.ReadAsText
         
         module MainProgram =
+            open WebSharper.JavaScript
             open WebComponent
             open FusionAsyncM
             open Operators
@@ -5773,28 +5812,28 @@ namespace FsRoot
                 && JS.Confirm (sprintf "Do you want to delete %s?" <| Snippet.snippetName snp.snpName snp.snpContent) then 
                     Snippets.deleteCurrentSnippet()
         
-            open FsRoot
-            module AF = AppFramework 
+            module AF = FsRootDll.LibraryJS.AppFramework
+            module LE = FsRootDll.LibraryJS.LayoutEngine
         
-            let FStationLyt = "FStationLyt"
+            let FStationLyt = AF.PlugInName "FStationLyt"
         
             let hookVar plug name func obj =
-                AF.tryGetVar plug name
+                AF.tryGetVar (AF.PlugInName plug) (AF.PlgElemName name)
                 |> Option.map        (fun var -> printfn "Var    %s.%s hooked"    plug name ;  func obj var.varVar                  )
                 |> Option.defaultWith(fun ()  -> printfn "Var    %s.%s not found" plug name ;       obj                             )
         
             let hookViw plug name func obj =
-                AF.tryGetViw plug name
+                AF.tryGetViw (AF.PlugInName plug) (AF.PlgElemName name)
                 |> Option.map        (fun viw -> printfn "View   %s.%s hooked"    plug name ;  func obj viw.viwView                 )
                 |> Option.defaultWith(fun ()  -> printfn "View   %s.%s not found" plug name ;       obj                             )
         
             let hookAct plug name func obj =
-                AF.tryGetAct plug name
+                AF.tryGetAct (AF.PlugInName plug) (AF.PlgElemName name)
                 |> Option.map        (fun act -> printfn "Action %s.%s hooked"    plug name ;  func obj (fun _-> act.actFunction |> AF.callFunction () () ) )
                 |> Option.defaultWith(fun ()  -> printfn "Action %s.%s not found" plug name ;       obj                             )
         
             let hookDoc plug name func obj =
-                AF.tryGetDoc plug name
+                AF.tryGetDoc (AF.PlugInName plug) (AF.PlgElemName name)
                 |> Option.map        (fun doc -> printfn "Doc    %s.%s hooked"    plug name ;  func obj (AF.mainDocV.View |> View.Map (fun _ -> AF.getLazyDoc doc) |> Doc.EmbedView) )
                 |> Option.defaultWith(fun ()  -> printfn "Doc    %s.%s not found" plug name ;       obj                             )
         
@@ -5842,47 +5881,47 @@ namespace FsRoot
             [< WebSharper.Sitelets.Website >]    
             let mainProgram() =
                 AF.addPlugIn {
-                    AF.plgName    = "FSharpStation"
-                    AF.plgVars    = [| AF.newVar  "fileName"           LoadSave.fileName
-                                       AF.newVar  "SnippetName"        (Lens Snippets.currentSnippetV.V.snpName)
-                                       AF.newVar  "Content"            (Lens Snippets.currentSnippetV.V.snpContent)
-                                       AF.newVar  "Output"             outputMsgs
-                                       AF.newVar  "Parser"             FStation.annotationsV
-                                    |]  
-                    AF.plgViews   = [| AF.newViw  "FsCode"             Snippets.FsCodeW
-                                       AF.newViw  "SaveNeeded"         Snippets.SaveAsClassW
-                                       AF.newViw  "CurrentPath"        Snippets.currentPathW
-                                       AF.newViw  "FStationId"         (View.Const FStation.id)
-                                       AF.newViw  "CurrentSid"         (Snippets.CurrentSnippetIdW |> View.Map (fun sid -> sid.Id |> string))
-                                    |]  
-                    AF.plgDocs    = [| AF.newDoc  "mainDoc"            (lazy mainDoc()                 )
-                                       AF.newDoc  "editor"             (lazy (WebSharper.UI.Html.div [] [ Monaco.editorDoc() ]) )
-                                       AF.newDoc  "Snippets"           (lazy RenderSnippets  .render() )
-                                       AF.newDoc  "Properties"         (lazy RenderProperties.render() )
-                                       AF.newDoc  "ButtonsRight"       (lazy buttonsRight           () )
-                                    |]  
-                    AF.plgActions = [| AF.newAct  "AddSnippet"         Snippets.newSnippet
-                                       AF.newAct  "RemoveSnippet"      deleteSnippet       
-                                       AF.newAct  "IndentIn"           Snippets.indentIn       
-                                       AF.newAct  "IndentOut"          Snippets.indentOut
-                                       AF.newAct  "AddProperty"        RenderProperties.addProperty
-                                       AF.newAct  "SaveAs"             LoadSave.saveAs
-                                       AF.newAct  "RunFS"              runFsCode
-                                       AF.newAct  "SelectionToFsi"     selectionToFsi
-                                       AF.newAct  "AbortFsi"           FsiAgent.abortFsiExe
-                                       AF.newAct  "DisposeFsi"         FsiAgent.disposeFsiExe
-                                       AF.newActF "LoadFile"           <| AF.FunAct1 ((fun o     -> unbox o  |> LoadSave.loadTextFile              ), "FileElement")
-                                       AF.newActF "Import"             <| AF.FunAct1 ((fun o     -> unbox o  |> Importer.importFile                ), "FileElement")
-                                       AF.newActF "JumpTo"             <| AF.FunAct1 ((fun o     -> unbox o  |> JumpTo.jumpToRef                   ), "textarea"   )
-                                       AF.newActF "ButtonClick"        <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.buttonClick           ), "button"     )
-                                       AF.newActF "ActionClick"        <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.actionClick           ), "name"       )
-                                       AF.newActF "SetScrollToBottom"  <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.setScrollToBottom     ), "textarea"   )
-                                       AF.newActF "ActionSnp"          <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.actionSnp (unbox o1)  ), "snpPath", "name" )
-                                       AF.newActF "setCurrentProperty" <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.setCurrentProperty (unbox o1)  ), "name", "value" )
-                                       AF.newActF "setSnippetContent"  <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.setSnippetContent  (unbox o1)  ), "path", "value" )
-                                    |]
-                    AF.plgQueries = [| AF.newQry  "PropertyRA"         <| (fun p -> unbox<string> p |> CustomAction.getCurrentProperty |> box)
-                                    |]
+                    AF.plgName    = AF.PlugInName "FSharpStation"
+                    AF.plgVars    = [| AF.newVar  (AF.PlgElemName "fileName"          ) LoadSave.fileName
+                                       AF.newVar  (AF.PlgElemName "SnippetName"       ) (Lens Snippets.currentSnippetV.V.snpName)
+                                       AF.newVar  (AF.PlgElemName "Content"           ) (Lens Snippets.currentSnippetV.V.snpContent)
+                                       AF.newVar  (AF.PlgElemName "Output"            ) outputMsgs
+                                       AF.newVar  (AF.PlgElemName "Parser"            ) FStation.annotationsV
+                                    |] |> ListModel.Create (fun v -> v.varName)
+                    AF.plgViews   = [| AF.newViw  (AF.PlgElemName "FsCode"            ) Snippets.FsCodeW
+                                       AF.newViw  (AF.PlgElemName "SaveNeeded"        ) Snippets.SaveAsClassW
+                                       AF.newViw  (AF.PlgElemName "CurrentPath"       ) Snippets.currentPathW
+                                       AF.newViw  (AF.PlgElemName "FStationId"        ) (View.Const FStation.id)
+                                       AF.newViw  (AF.PlgElemName "CurrentSid"        ) (Snippets.CurrentSnippetIdW |> View.Map (fun sid -> sid.Id |> string))
+                                    |] |> ListModel.Create (fun w -> w.viwName)
+                    AF.plgDocs    = [| AF.newDoc  (AF.PlgElemName "mainDoc"           ) (lazy mainDoc()                 )
+                                       AF.newDoc  (AF.PlgElemName "editor"            ) (lazy (WebSharper.UI.Html.div [] [ Monaco.editorDoc() ]) )
+                                       AF.newDoc  (AF.PlgElemName "Snippets"          ) (lazy RenderSnippets  .render() )
+                                       AF.newDoc  (AF.PlgElemName "Properties"        ) (lazy RenderProperties.render() )
+                                       AF.newDoc  (AF.PlgElemName "ButtonsRight"      ) (lazy buttonsRight           () )
+                                    |] |> ListModel.Create (fun w -> w.docName)
+                    AF.plgActions = [| AF.newAct  (AF.PlgElemName "AddSnippet"        ) Snippets.newSnippet
+                                       AF.newAct  (AF.PlgElemName "RemoveSnippet"     ) deleteSnippet       
+                                       AF.newAct  (AF.PlgElemName "IndentIn"          ) Snippets.indentIn       
+                                       AF.newAct  (AF.PlgElemName "IndentOut"         ) Snippets.indentOut
+                                       AF.newAct  (AF.PlgElemName "AddProperty"       ) RenderProperties.addProperty
+                                       AF.newAct  (AF.PlgElemName "SaveAs"            ) LoadSave.saveAs
+                                       AF.newAct  (AF.PlgElemName "RunFS"             ) runFsCode
+                                       AF.newAct  (AF.PlgElemName "SelectionToFsi"    ) selectionToFsi
+                                       AF.newAct  (AF.PlgElemName "AbortFsi"          ) FsiAgent.abortFsiExe
+                                       AF.newAct  (AF.PlgElemName "DisposeFsi"        ) FsiAgent.disposeFsiExe
+                                       AF.newActF (AF.PlgElemName "LoadFile"          ) <| AF.FunAct1 ((fun o     -> unbox o  |> LoadSave.loadTextFile              ), "FileElement")
+                                       AF.newActF (AF.PlgElemName "Import"            ) <| AF.FunAct1 ((fun o     -> unbox o  |> Importer.importFile                ), "FileElement")
+                                       AF.newActF (AF.PlgElemName "JumpTo"            ) <| AF.FunAct1 ((fun o     -> unbox o  |> JumpTo.jumpToRef                   ), "textarea"   )
+                                       AF.newActF (AF.PlgElemName "ButtonClick"       ) <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.buttonClick           ), "button"     )
+                                       AF.newActF (AF.PlgElemName "ActionClick"       ) <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.actionClick           ), "name"       )
+                                       AF.newActF (AF.PlgElemName "SetScrollToBottom" ) <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.setScrollToBottom     ), "textarea"   )
+                                       AF.newActF (AF.PlgElemName "ActionSnp"         ) <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.actionSnp (unbox o1)  ), "snpPath", "name" )
+                                       AF.newActF (AF.PlgElemName "setCurrentProperty") <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.setCurrentProperty (unbox o1)  ), "name", "value" )
+                                       AF.newActF (AF.PlgElemName "setSnippetContent" ) <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.setSnippetContent  (unbox o1)  ), "path", "value" )
+                                    |] |> ListModel.Create (fun w -> w.actName)
+                    AF.plgQueries = [| AF.newQry  (AF.PlgElemName "PropertyRA"        ) <| (fun p -> unbox<string> p |> CustomAction.getCurrentProperty |> box)
+                                    |] |> ListModel.Create (fun w -> w.qryName)
                 }
         
                 match JS.Document.GetElementById("GlobalLayout") with
@@ -5924,8 +5963,8 @@ namespace FsRoot
                     FileName         div                                 "class=form-control"  FSharpStation.fileName
                   """
                 | e -> e.TextContent
-                |> LayoutEngine.newLyt FStationLyt
-                |> LayoutEngine.addLayout
+                |> LE.newLyt FStationLyt
+                |> LE.addLayout
         
                 Snippets.currentLayoutJSDW
                 |> View.consistent
@@ -5945,12 +5984,12 @@ namespace FsRoot
                     lytO
                     |> Option.bind (fun (name, txt) ->
                         txt 
-                        |> LayoutEngine.newLyt    name
-                        |> LayoutEngine.addLayout 
+                        |> LE.newLyt    (AF.PlugInName name)
+                        |> LE.addLayout 
                         if txt = "" then None else 
                         Some name
                     )
-                    |> Option.defaultValue FStationLyt
+                    |> Option.defaultValue FStationLyt.Id
                     |> AF.mainDocV.Set
                 )
         
@@ -5976,34 +6015,34 @@ namespace FsRoot
         
         //#define FSS_SERVER
         module Messaging =
+            open WebSharper.JavaScript 
             open FStation
             open FusionAsyncM
             open Operators
             open MainProgram
         
-            open FsRoot
-            module AF = AppFramework 
+            module AF = FsRootDll.LibraryJS.AppFramework 
             module Fusion = FusionAsyncM
         
             let wsStationClient = if IsClient then new WebSockets.WSMessagingClient(FStation.id) else new WebSockets.WSMessagingClient("FStation.id", WebSockets.FSStation)
         
             let actionCall actN p1 p2 = fusion {
                 match actN |> AF.splitName FStationLyt ||> AF.tryGetAct with
-                | None     -> return! ofResultRM <| Error (ErrorMsg (sprintf "Action %s not found" actN) )
+                | None     -> return! ofResultRM <| Result.Error (ErrorMsg (sprintf "Action %s not found" actN) )
                 | Some act -> AF.callFunction p1 p2 act.actFunction
                               return FSResponse.RespString "Ok"
             }
         
             let getValue vname = fusion {
                 match vname |> AF.splitName FStationLyt ||> AF.tryGetWoW with
-                | None     -> return! ofResultRM <| Error (ErrorMsg (sprintf "Var or View %s not found" vname) )
+                | None     -> return! ofResultRM <| Result.Error (ErrorMsg (sprintf "Var or View %s not found" vname) )
                 | Some  vw -> let! v = vw |> View.GetAsync |> ofAsync
                               return FSResponse.RespString v
             }
         
             let setValue vname v = fusion {
                 match vname |> AF.splitName FStationLyt ||> AF.tryGetVar with
-                | None     -> return! ofResultRM <| Error (ErrorMsg (sprintf "Var %s not found" vname) )
+                | None     -> return! ofResultRM <| Result.Error (ErrorMsg (sprintf "Var %s not found" vname) )
                 | Some var -> var.varVar.Set v
                               return FSResponse.RespString "Ok"
             }
@@ -6028,7 +6067,7 @@ namespace FsRoot
                     | MsgAction [| "AddOutput" ; txt |] -> appendMsgs txt
                                                            return  FSResponse.RespString "Ok"
                     | MsgAction [| "ExecJS"    ; js  |] -> let! v = try  JS.Apply JS.Window "eval" [| js |] |> (function null -> "" | s -> sprintf "%A" s) |> Ok
-                                                                    with e -> ExceptMsg(e.Message, e.StackTrace) |> Error
+                                                                    with e -> ExceptMsg(e.Message, e.StackTrace) |> Result.Error
                                                                     |> FusionAsyncM.ofResultRM
                                                            return  FSResponse.RespString v
                     | MsgAction [| "SetProperty"; path ; prop ; v  |] -> 
