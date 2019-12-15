@@ -1,8 +1,23 @@
 <div style="display:none" >
     <div links>
-        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" rel="stylesheet">
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"  type="text/javascript"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"  type="text/javascript"></script>
     </div>
+    <div ws-template="AppFramework" style="height: calc(100vh - 4px); width: calc(100vw - 4px) " class="relative" >
+        <div ws-hole="MainClient"></div>
+        <div class="AppFrameworkGo"><button ws-onclick="GoClient">${MainDoc}</button></div>
+    </div>
+    <style>
+        .AppFrameworkGo {
+            max-width: 2px;
+            max-height: 2px;
+            z-index: 4000;
+            overflow: hidden;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+        }
+    </style>
     <div ws-template="FixedSplitterVer" 
         style="display: grid; 
                grid-gap: 0px; 
@@ -140,26 +155,35 @@
                                                     <div ws-hole="Docs" style="overflow:auto" ></div>
                                                 </div>
                                                 <div>
-                                                    <div>Vars:</div>
-                                                    <div ws-hole="Vars" style="overflow:auto" >
-                                                            <div ws-template="NameValueInput" class="input-group">
-                                                            <span class="input-group-addon">${Name}:</span>
-                                                            <textarea class="form-control" id="" placeholder="Value..." ws-var="Value" spellcheck="false">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div>
                                                     <div>Views:</div>
-                                                    <div ws-hole="Views" style="overflow:auto" >
-                                                        <div ws-template="NameValue" class="input-group">
-                                                            <span class="input-group-addon">${Name}:</span>
-                                                            <span class="input-group-addon">${Value}</span>
-                                                        </div>
-                                                    </div>
+                                                    <table style="overflow:auto" >
+                                                        <tbody ws-hole="Views" >
+                                                        <tr ws-template="NameValue" class="">
+                                                            <td>${Name}:</td>
+                                                            <td>${Value}</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                                 <div>
                                                     <div>Queries:</div>
-                                                    <div ws-hole="Queries" style="overflow:auto" ></div>
+                                                    <table style="overflow:auto" >
+                                                        <tbody ws-hole="Queries" >
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div>
+                                                    <div>Vars:</div>
+                                                    <table style="overflow:auto" >
+                                                        <tbody ws-hole="Vars">
+                                                        <tr ws-template="NameValueInput" >
+                                                            <td >${Name}:</td>
+                                                            <td>
+                                                            <textarea placeholder="Value..." ws-var="Value" style="" spellcheck="false" ></textarea>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </Second>
@@ -200,28 +224,13 @@
                             </wcomp-splitter>
                         </First>
                         <Second>
-                            <div style="
-                                overflow: hidden;
-                                display: grid;
-                                grid-template-columns: 100%;
-                                grid-template-rows: repeat(15, calc(100% / 15));
-                                bxackground-color: #eee;
-                                box-sizing: border-box;
-                                padding : 5px;
-                                grid-gap: 5px;
-                                margin-right: 21px;
-                           "  class="absolute" ws-hole="Actions" >
-                                <button ws-template="Action"         ws-onclick="Click" class="btn" type="button" id=""          >${Name}</button>
-                                <button ws-template="ActionDisabled" ws-onclick="Click" class="btn" type="button" id="" disabled >${Name}</button>
+                            <div style="font-size:small; overflow: hidden; display: flex; flex-direction: column;"  class="absolute" ws-hole="Actions" >
+                                <button ws-template="Action" style="font-size:small" ws-onclick="Click" class="btn" type="button" id="" ws-attr="Attrs" >${Name}</button>
                             </div>
                         </Second>
                     </ws-FixedSplitterVer>
             </Second>
         </ws-FixedSplitterHor>
-    </div>
-    <div ws-template="AppFramework" style="height: calc(100vh - 4px); width: calc(100vw - 4px) " class="relative" >
-        <div ws-hole="MainClient"></div>
-        <div class="AppFrameworkGo"><button ws-onclick="GoClient">${MainDoc}</button></div>
     </div>
     <style style="display: none">
             .Hidden     { display   : none         }
@@ -238,8 +247,8 @@
                 font-size : smaller;
                 max-width : 8ch;
             }
-            xtextarea {
-               resize : none;
+            textarea {
+               resize : vertical;
             }
             .tab-content {
                 overflow: hidden
