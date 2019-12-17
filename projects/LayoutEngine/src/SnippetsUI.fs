@@ -1,6 +1,6 @@
 #nowarn "3242"
 #nowarn "42"
-////-d:DLL -d:FSharpStation1574860018857 -d:WEBSHARPER
+////-d:DLL -d:FSharpStation1575955814138 -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -27,7 +27,7 @@
 //#nowarn "3242"
 //#nowarn "42"
 /// Root namespace for all code
-//#define FSharpStation1574860018857
+//#define FSharpStation1575955814138
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -933,6 +933,13 @@ namespace FsRoot
                                     )
                         with e ->   JS.Alert <| e.ToString()
                                     printfn "%A" e
+            
+                    let loadURL (url:string) = 
+                        async {
+                            let! resp     = JavaScript.JS.Fetch url |> Promise.AsAsync
+                            let! snippets = resp.Text()             |> Promise.AsAsync
+                            updateSnippets snippets 
+                        } |> Async.Start
             
                     let loadTextFile element  =
                         FileList.OfElement element

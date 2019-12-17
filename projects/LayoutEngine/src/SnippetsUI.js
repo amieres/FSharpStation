@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRootDll,Library,UoM,Unsafe,Dict,Monads,Seq,Option,ParseO,Serializer,JsonIntermediate,Snippet,SnippetModule,SnippetSerialize,Model,LibraryJS,View,Serializer$1,Util,DragDrop,DragInfo,SnippetsUI,SnippetHierData,SaveLoad,SC$1,SnippetsUI_Templates,WebSharper,Seq$1,Arrays,List,Unchecked,Collections,FSharpMap,IntelliFactory,Runtime,Utils,FSharpSet,BalancedTree,Strings,Operators,Option$1,System,Guid,Date,UI,View$1,JSON,Var$1,Doc,FromView,AttrModule,console,Slice,Templating,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,Dictionary,Enumerator,LayoutEngineModule,DateUtil,Numeric,ListModel,LM,AppFramework,Client,Templates;
+ var Global,FsRootDll,Library,UoM,Unsafe,Dict,Monads,Seq,Option,ParseO,Serializer,JsonIntermediate,Snippet,SnippetModule,SnippetSerialize,Model,LibraryJS,View,Serializer$1,Util,DragDrop,DragInfo,SnippetsUI,SnippetHierData,SaveLoad,SC$1,SnippetsUI_Templates,WebSharper,Seq$1,Arrays,List,Unchecked,Collections,FSharpMap,IntelliFactory,Runtime,Utils,FSharpSet,BalancedTree,Strings,Operators,Option$1,System,Guid,Date,UI,View$1,JSON,Var$1,Doc,FromView,AttrModule,Concurrency,JavaScript,Promise,console,Slice,Templating,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,Dictionary,Enumerator,LayoutEngineModule,DateUtil,Numeric,ListModel,LM,AppFramework,Client,Templates;
  Global=self;
  FsRootDll=Global.FsRootDll=Global.FsRootDll||{};
  Library=FsRootDll.Library=FsRootDll.Library||{};
@@ -54,6 +54,9 @@
  Doc=UI&&UI.Doc;
  FromView=UI&&UI.FromView;
  AttrModule=UI&&UI.AttrModule;
+ Concurrency=WebSharper&&WebSharper.Concurrency;
+ JavaScript=WebSharper&&WebSharper.JavaScript;
+ Promise=JavaScript&&JavaScript.Promise;
  console=Global.console;
  Slice=WebSharper&&WebSharper.Slice;
  Templating=UI&&UI.Templating;
@@ -1373,6 +1376,21 @@
   {
    return SaveLoad.updateSnippets(e.target.result);
   },reader.readAsText(files.item(0))):void 0;
+ };
+ SaveLoad.loadURL=function(url)
+ {
+  var b;
+  Concurrency.Start((b=null,Concurrency.Delay(function()
+  {
+   return Concurrency.Bind(Promise.AsAsync(self.fetch(url)),function(a)
+   {
+    return Concurrency.Bind(Promise.AsAsync(a.text()),function(a$1)
+    {
+     SaveLoad.updateSnippets(a$1);
+     return Concurrency.Zero();
+    });
+   });
+  })),null);
  };
  SaveLoad.updateSnippets=function(snps)
  {
