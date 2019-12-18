@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:DLL -d:FSharpStation1575955814138 -d:TEE -d:WEBSHARPER
+////-d:DLL -d:FSharpStation1576598175747 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -24,7 +24,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1575955814138
+//#define FSharpStation1576598175747
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -607,7 +607,7 @@ namespace FsRoot
                     
                 let [<Inline>] inline consistent   (vl:View<_>)  = 
                     let prior      = ref <| Var.Create Unchecked.defaultof<_>
-                    let setPrior v = if (!prior).Value <> v then (!prior).Value <- v 
+                    let setPrior v = if (!prior).Value <> v then (!prior).Set v 
                     View.Sink setPrior vl
                     !prior |> View.FromVar
             
@@ -2298,22 +2298,26 @@ namespace FsRoot
                 let trigAct =
                     depWithExtracts <| fun (extractAts, extractDoc, extractText) trigger actN ->
                         extractText trigger
-                        |> View.Map(fun _ ->
+                        |> Doc.BindView(function
+                        | null -> ()
+                        |_     ->
                             getParmRef actN
                             ||> tryGetAct 
                             |>  Option.iter(fun a -> callFunction () () a.actFunction )
-                            ""
-                        ) |>  Doc.TextView
+                        >> fun _ -> Html.div [] []
+                        )
             
                 let trigActChange =
                     depWithExtracts <| fun (extractAts, extractDoc, extractText) trigger actN ->
                         extractText trigger
                         |> View.consistent
-                        |> View.Map(fun _ ->
+                        |> View.Map(function
+                        | null -> ()
+                        |_     ->
                             getParmRef actN
                             ||> tryGetAct 
                             |>  Option.iter(fun a -> callFunction () () a.actFunction )
-                            ""
+                        >> fun _ -> ""
                         ) |>  Doc.TextView
             
                 let callAction0 =
@@ -2464,14 +2468,14 @@ namespace FsRoot
             
                 type ListModelData<'K, 'D when 'K : equality> = {
                     elemsW : View<ListModel<'K, 'D>>
-                    doc    : Doc
+                    doc    : unit -> Doc
                     selV   : Var<'K option>
                     add    : unit -> 'D  
                     delCur : unit -> unit
                     def    : 'D
                 } with 
                     member this.PlugIn ofStrO toStr = plugin {
-                        plgDoc    "list" (lazy this.doc         )
+                        plgDoc0   "list" (this.doc         )
                         //doc    "cur"  (lazy this.CurrentDoc  )
                         plgVar    "sel"  (this.selV |> mapVarO ofStrO toStr |> lensStrO )
                         plgAct    "add"  (this.add >> ignore    )
@@ -2552,7 +2556,7 @@ namespace FsRoot
                     let delete  k = fun () -> selectedV.Set None ; elementsW |> View.Get (fun elements -> elements.RemoveByKey k)
                     let result = {
                         AF.elemsW = elementsW
-                        AF.doc    = Doc.Empty
+                        AF.doc    = fun () -> Doc.Empty
                         AF.selV   = selectedV
                         AF.delCur = fun () -> selectedV.Value |> Option.iter (fun k -> delete k () )
                         AF.add    = addNew
@@ -2561,7 +2565,7 @@ namespace FsRoot
                     }
                     let elUIF     = elUI result
                     let listW     = elementsW |> View.Bind ( fun elems -> elems |> ListModel.MapLens predWO (fun k v -> elUIF (View.Const (Some k)) v ) )
-                    { result with AF.doc = listW |> Doc.BindSeqCached id }
+                    { result with AF.doc = fun () -> listW |> Doc.BindSeqCached id }
             
                 let getDocFor (elements: ListModel<_,_>) def newF predWO elUI = getDocForW (View.Const elements) elements.Key def newF predWO elUI
             
@@ -4029,9 +4033,9 @@ namespace FsRoot
                         let! getParam2            = getParam2D
                         let  getP                 = getParam2
                         let rec passParm          = function
+                            | AF.DocFunction.FunDoc0 f0           , _    ->  AF.DocFunction.JustDoc( f0()                )
                             | df                                  , []   ->                          df
                             | AF.DocFunction.JustDoc ld           , _    ->  AF.DocFunction.JustDoc  ld
-                            | AF.DocFunction.FunDoc0 f0           , _    ->  AF.DocFunction.JustDoc( f0()                )
                             | AF.DocFunction.FunDoc1(f1,_        ), a::r ->  AF.DocFunction.FunDoc0(fun () ->  getP a  |> f1 )
                             | AF.DocFunction.FunDoc2(f2,_,b      ), a::r -> (AF.DocFunction.FunDoc1(     f2 <| getP a,b      ),r) |> passParm
                             | AF.DocFunction.FunDoc3(f3,_,b,c    ), a::r -> (AF.DocFunction.FunDoc2(     f3 <| getP a,b,c    ),r) |> passParm

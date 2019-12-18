@@ -1,6 +1,6 @@
 #nowarn "3242"
 #nowarn "42"
-////-d:DLL -d:FSharpStation1575955814138 -d:WEBSHARPER
+////-d:DLL -d:FSharpStation1576598175747 -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -27,7 +27,7 @@
 //#nowarn "3242"
 //#nowarn "42"
 /// Root namespace for all code
-//#define FSharpStation1575955814138
+//#define FSharpStation1576598175747
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -574,7 +574,7 @@ namespace FsRoot
                     
                 let [<Inline>] inline consistent   (vl:View<_>)  = 
                     let prior      = ref <| Var.Create Unchecked.defaultof<_>
-                    let setPrior v = if (!prior).Value <> v then (!prior).Value <- v 
+                    let setPrior v = if (!prior).Value <> v then (!prior).Set v 
                     View.Sink setPrior vl
                     !prior |> View.FromVar
             

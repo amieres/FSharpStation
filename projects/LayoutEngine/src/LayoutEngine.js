@@ -2446,16 +2446,12 @@
   },
   PlugIn:function(ofStrO,toStr)
   {
-   var $this,b,f;
+   var b,f;
    function g(v)
    {
    }
-   $this=this;
    b=AppFramework.plugin();
-   return b.AddAct(b.AddAct(b.AddVar(b.AddDoc(b.Yield(),"list",Lazy.Create(function()
-   {
-    return $this.doc;
-   })),"sel",AppFramework.lensStrO(AppFramework.mapVarO(ofStrO,toStr,this.selV))),"add",(f=this.add,function(x)
+   return b.AddAct(b.AddAct(b.AddVar(b.AddDoc0(b.Yield(),"list",this.doc),"sel",AppFramework.lensStrO(AppFramework.mapVarO(ofStrO,toStr,this.selV))),"add",(f=this.add,function(x)
    {
     return g(f(x));
    })),"del",this.delCur);
@@ -3736,7 +3732,7 @@
  };
  LM.getDocForW=function(elementsW,keyF,def,newF,predWO,elUI)
  {
-  var selected0,selectedV,b,result,elUIF;
+  var selected0,selectedV,b,result,elUIF,listW;
   function _delete(k,u)
   {
    selectedV.Set(null);
@@ -3771,7 +3767,7 @@
     !Unchecked.Equals(selected0.Get(),v$1)?selected0.Set(v$1):void 0;
    },elementsW);
   });
-  result=ListModelData.New(elementsW,Doc.get_Empty(),selectedV,function()
+  result=ListModelData.New(elementsW,Doc.get_Empty,selectedV,function()
   {
    var n;
    n=newF();
@@ -3791,7 +3787,7 @@
    o==null?void 0:_delete(o.$0,null);
   },def);
   elUIF=elUI(result);
-  return ListModelData.New(result.elemsW,Doc.Convert(Global.id,View$1.Bind(function(elems)
+  listW=View$1.Bind(function(elems)
   {
    return ListModel.MapLens(predWO,function(k,v)
    {
@@ -3800,7 +3796,11 @@
      $0:k
     })))(v);
    },elems);
-  },elementsW)),result.selV,result.add,result.delCur,result.def);
+  },elementsW);
+  return ListModelData.New(result.elemsW,function()
+  {
+   return Doc.Convert(Global.id,listW);
+  },result.selV,result.add,result.delCur,result.def);
  };
  StartAppFramework.startWith=function(html)
  {
@@ -3883,7 +3883,7 @@
   SC$1.$cctor();
   return SC$1.defPlg;
  };
- AppFrameworkUI.showDoc$2671$35=function(k,lmd)
+ AppFrameworkUI.showDoc$2675$35=function(k,lmd)
  {
   return function()
   {
@@ -3923,7 +3923,7 @@
    },lmd.selV.get_View(),k)
   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.tile(p[0])),(b.i=i,i)))).get_Doc();
  };
- AppFrameworkUI.showAct$2664$35=function(k,lmd)
+ AppFrameworkUI.showAct$2668$35=function(k,lmd)
  {
   return function()
   {
@@ -3981,7 +3981,7 @@
    },lmd.selV.get_View(),k)
   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.tile(p[0])),(b.i=i,i)))).get_Doc();
  };
- AppFrameworkUI.showView$2652$35=function(k,lmd)
+ AppFrameworkUI.showView$2656$35=function(k,lmd)
  {
   return function()
   {
@@ -4025,7 +4025,7 @@
    },lmd.selV.get_View(),k)
   }),(p=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.tile(p[0])),(b$1.i=i,i)))).get_Doc();
  };
- AppFrameworkUI.showVar$2640$35=function(k,lmd)
+ AppFrameworkUI.showVar$2644$35=function(k,lmd)
  {
   return function()
   {
@@ -4069,7 +4069,7 @@
    },lmd.selV.get_View(),k)
   }),(p=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.tile(p[0])),(b$1.i=i,i)))).get_Doc();
  };
- AppFrameworkUI.showPlugIn$2628$35=function(k,lmd)
+ AppFrameworkUI.showPlugIn$2632$35=function(k,lmd)
  {
   return function()
   {
@@ -5336,7 +5336,7 @@
       });
       break;
      case 3:
-      throw new MatchFailureException.New("D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\LayoutEngine\\src\\LayoutEngine.fs",2822,38);
+      throw new MatchFailureException.New("D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\LayoutEngine\\src\\LayoutEngine.fs",2826,38);
     }
     return $2;
   }
@@ -5844,41 +5844,41 @@
      function passParm($1,$2)
      {
       var a$3,f1;
-      return $2.$==1?$1.$==1?{
+      return $1.$==0?$2.$==0?$1:{
        $:0,
-       $0:$1.$0()
-      }:$1.$==2?(a$3=$2.$0,(f1=$1.$0,{
+       $0:$1.$0
+      }:$1.$==2?$2.$==1?(a$3=$2.$0,(f1=$1.$0,{
        $:1,
        $0:function()
        {
         return f1(a$2(a$3));
        }
-      })):$1.$==3?passParm({
+      })):$1:$1.$==3?$2.$==1?passParm({
        $:2,
        $0:$1.$0(a$2($2.$0)),
        $1:$1.$2
-      },$2.$1):$1.$==4?passParm({
+      },$2.$1):$1:$1.$==4?$2.$==1?passParm({
        $:3,
        $0:$1.$0(a$2($2.$0)),
        $1:$1.$2,
        $2:$1.$3
-      },$2.$1):$1.$==5?passParm({
+      },$2.$1):$1:$1.$==5?$2.$==1?passParm({
        $:4,
        $0:$1.$0(a$2($2.$0)),
        $1:$1.$2,
        $2:$1.$3,
        $3:$1.$4
-      },$2.$1):$1.$==6?passParm({
+      },$2.$1):$1:$1.$==6?$2.$==1?passParm({
        $:5,
        $0:$1.$0(a$2($2.$0)),
        $1:$1.$2,
        $2:$1.$3,
        $3:$1.$4,
        $4:$1.$5
-      },$2.$1):{
+      },$2.$1):$1:{
        $:0,
-       $0:$1.$0
-      }:$1;
+       $0:$1.$0()
+      };
      }
      p=(x=NewLY.itemRefToString(dc),(AppFramework.splitName(a$1))(x));
      lyt=p[0];
@@ -7709,13 +7709,25 @@
    {
     return function(actN)
     {
-     return Doc.TextView(View$1.Map(function()
+     function f$13(a$3)
      {
       var o$1,t;
-      o$1=(t=AppFramework.getParmRef(actN),AppFramework.tryGetAct(t[0],t[1]));
-      o$1==null?void 0:AppFramework.callFunction(null,null,o$1.$0.actFunction);
-      return"";
-     },extractText(trigger)));
+      if(a$3===null)
+       ;
+      else
+       {
+        o$1=(t=AppFramework.getParmRef(actN),AppFramework.tryGetAct(t[0],t[1]));
+        o$1==null?void 0:AppFramework.callFunction(null,null,o$1.$0.actFunction);
+       }
+     }
+     function g$10()
+     {
+      return Doc.Element("div",[],[]);
+     }
+     return Doc.BindView(function(x)
+     {
+      return g$10(f$13(x));
+     },extractText(trigger));
     };
    };
   });
@@ -7726,12 +7738,24 @@
     return function(actN)
     {
      var v,prior;
-     return Doc.TextView(View$1.Map(function()
+     function f$13(a$3)
      {
       var o$1,t;
-      o$1=(t=AppFramework.getParmRef(actN),AppFramework.tryGetAct(t[0],t[1]));
-      o$1==null?void 0:AppFramework.callFunction(null,null,o$1.$0.actFunction);
+      if(a$3===null)
+       ;
+      else
+       {
+        o$1=(t=AppFramework.getParmRef(actN),AppFramework.tryGetAct(t[0],t[1]));
+        o$1==null?void 0:AppFramework.callFunction(null,null,o$1.$0.actFunction);
+       }
+     }
+     function g$10()
+     {
       return"";
+     }
+     return Doc.TextView(View$1.Map(function(x)
+     {
+      return g$10(f$13(x));
      },(v=extractText(trigger),(prior=[Var$2.Create$1(null)],(View$1.Sink(function(v$1)
      {
       if(!Unchecked.Equals(prior[0].Get(),v$1))
