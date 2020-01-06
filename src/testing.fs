@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:DLL -d:FSharpStation1574084738106 -d:WEBSHARPER
+////-d:DLL -d:FSharpStation1577742742861 -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -26,7 +26,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/LayoutEngine/bin/LayoutEngine.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1574084738106
+//#define FSharpStation1577742742861
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -109,13 +109,31 @@ namespace FsRoot
                 let html = """
             <div style="display:none" >
                 <div links>
-                    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" rel="stylesheet">
-                    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"  type="text/javascript"></script>
+                    <link  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+                    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"   type="text/javascript"></script>
                 </div>
                 <div ws-template="AppFramework" style="height: calc(100vh - 4px); width: calc(100vw - 4px) " class="relative" >
                     <div ws-hole="MainClient"></div>
                     <div class="AppFrameworkGo"><button ws-onclick="GoClient">${MainDoc}</button></div>
                 </div>
+                <div ws-template="SplitterV1" class="versplitter" ws-attr="Attrs">
+                    <div style="min-width :Calc((100% - ${gap}) *        ${width}   / 100);max-width :Calc((100% - ${gap}) *        ${height}  / 100)">${doc1}</div>
+                    <div style="min-width :             ${gap}; ws-onmousedown="MouseDown" ></div>
+                    <div style="min-width :Calc((100% - ${gap}) * (100 - ${width} ) / 100);max-width :Calc((100% - ${gap}) * (100 - ${height}) / 100)">${doc2}</div>
+                </div>
+                <div ws-template="SplitterH1" class="horsplitter" ws-attr="Attrs">
+                    <div style="min-height:Calc((100% - ${gap}) *        ${height}  / 100);max-height:Calc((100% - ${gap}) *        ${height}  / 100)">${doc1}</div>
+                    <div style="min-height:             ${gap}" ws-onmousedown="MouseDown" ></div>
+                    <div style="min-height:Calc((100% - ${gap}) * (100 - ${height}) / 100);max-height:Calc((100% - ${gap}) * (100 - ${height}) / 100)">${doc2}</div>
+                </div>
+                <style>
+                    .horsplitter                    { display: flex; flex-direction:column              } 
+                    .horsplitter > div:nth-child(2) { background: #eef; cursor: row-resize; z-index:400 }
+                    .horsplitter > div              { overflow: hidden                                  }
+                    .versplitter                    { display: flex; flex-direction:row                 } 
+                    .versplitter > div:nth-child(2) { background: #eef; cursor: col-resize; z-index:400 }
+                    .versplitter > div              { overflow: hidden                                  }
+                </style>
                 <style>
                     .AppFrameworkGo {
                         max-width: 2px;
@@ -229,7 +247,7 @@ namespace FsRoot
                         </First>
                         <Second>
                                 <ws-FixedSplitterVer>
-                                    <PartSizes>calc(100% - 150px) 150px</PartSizes>
+                                    <PartSizes>calc(100% - 2px) 2px</PartSizes>
                                     <First>
                                         <wcomp-splitter vertical value="18" max="100">
                                             <div><div ws-hole="PlugIns" style="overflow:auto" >
@@ -246,7 +264,7 @@ namespace FsRoot
                                        
                                                 </div>
                                             </div></div>
-                                            <wcomp-splitter vertical value="100" min="30" max="100">
+                                            <wcomp-splitter vertical value="80" min="30" max="100">
                                                 <ws-FixedSplitterHor>
                                                     <PartSizes>32px calc(100% - 32px)</PartSizes>
                                                     <First>
@@ -260,34 +278,58 @@ namespace FsRoot
                                                     <Second>
                                                         <div style="overflow:auto">
                                                             <div>
-                                                                <div>Docs:</div>
+                                                                <h3>Vars:</h3>
+                                                                <table style="overflow:auto;width:100%" class="table table-condensed table-striped">
+                                                                    <thead>
+                                                                        <th style="width: 10%  ">Name</th>
+                                                                        <th style="width: 90% ">Value</th>
+                                                                    </thead>
+                                                                    <tbody ws-hole="Vars">
+                                                                    <tr ws-template="NameValueInput" >
+                                                                        <td >${Name}:</td>
+                                                                        <td>
+                                                                        <textarea placeholder="Value..." ws-var="Value" style="resize:vertical; width:100%" spellcheck="false"></textarea>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div>
+                                                                <h3>Views:</h3>
+                                                                <table style="overflow:auto" class="table table-condensed table-striped" >
+                                                                    <thead>
+                                                                        <th style="width: 10%  ">Name</th>
+                                                                        <th style="width: 90% ">Value</th>
+                                                                    </thead>
+                                                                    <tbody ws-hole="Views" >
+                                                                    <tr ws-template="NameValue" class="">
+                                                                        <td>${Name}:</td>
+                                                                        <td>${Value}</td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div>
+                                                                <h3>Docs:</h3>
                                                                 <div ws-hole="Docs" style="overflow:auto" ></div>
                                                             </div>
                                                             <div>
-                                                                <div>Views:</div>
-                                                                <div ws-hole="Views" style="overflow:auto" >
-                                                                    <div ws-template="NameValue" class="input-group">
-                                                                        <span class="input-group-addon">${Name}:</span>
-                                                                        <span class="input-group-addon">${Value}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div>
-                                                                <div>Queries:</div>
-                                                                <div ws-hole="Queries" style="overflow:auto" ></div>
-                                                            </div>
-                                                            <div>
-                                                                <div>Vars:</div>
-                                                                <div ws-hole="Vars" style="overflow:auto" >
-                                                                    <div ws-template="NameValueInput" class="input-group">
-                                                                        <span class="input-group-addon">${Name}:</span>
-                                                                        <textarea class="form-control" id="" placeholder="Value..." ws-var="Value" spellcheck="false">
-                                                                    </div>
-                                                                </div>
+                                                                <h3>Queries:</h3>
+                                                                <table style="overflow:auto" >
+                                                                    <tbody ws-hole="Queries" >
+                                                                    </tbody>
+                                                                </table>
                                                             </div>
                                                         </div>
                                                     </Second>
                                                 </ws-FixedSplitterHor>
+                                        <div style="font-size:small; overflow: hidden; display: flex; flex-direction: column;"  class="absolute" ws-hole="Actions" >
+                                            <button ws-template="Action" style="font-size:small" ws-onclick="Click" class="btn" type="button" id="" ws-attr="Attrs" >${Name}</button>
+                                        </div>
+                                            </wcomp-splitter>
+                                        </wcomp-splitter>
+                                    </First>
+                                    <Second>
                                                 <wcomp-tabstrip >
                                                     <div tabname="Properties">
                                                         <div>
@@ -320,24 +362,6 @@ namespace FsRoot
                                                         </div>
                                                     </div>
                                                 </wcomp-tabstrip>
-                                            </wcomp-splitter>
-                                        </wcomp-splitter>
-                                    </First>
-                                    <Second>
-                                        <div style="
-                                            overflow: hidden;
-                                            display: grid;
-                                            grid-template-columns: 100%;
-                                            grid-template-rows: repeat(15, calc(100% / 15));
-                                            bxackground-color: #eee;
-                                            box-sizing: border-box;
-                                            padding : 5px;
-                                            grid-gap: 5px;
-                                            margin-right: 21px;
-                                       "  class="absolute" ws-hole="Actions" >
-                                            <button ws-template="Action"         ws-onclick="Click" class="btn" type="button" id=""          >${Name}</button>
-                                            <button ws-template="ActionDisabled" ws-onclick="Click" class="btn" type="button" id="" disabled >${Name}</button>
-                                        </div>
                                     </Second>
                                 </ws-FixedSplitterVer>
                         </Second>

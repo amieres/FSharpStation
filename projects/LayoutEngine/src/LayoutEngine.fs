@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:DLL -d:FSharpStation1576598175747 -d:TEE -d:WEBSHARPER
+////-d:DLL -d:FSharpStation1577742742861 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -24,7 +24,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1576598175747
+//#define FSharpStation1577742742861
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -1069,13 +1069,31 @@ namespace FsRoot
                 let html = """
             <div style="display:none" >
                 <div links>
-                    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" rel="stylesheet">
-                    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"  type="text/javascript"></script>
+                    <link  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+                    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"   type="text/javascript"></script>
                 </div>
                 <div ws-template="AppFramework" style="height: calc(100vh - 4px); width: calc(100vw - 4px) " class="relative" >
                     <div ws-hole="MainClient"></div>
                     <div class="AppFrameworkGo"><button ws-onclick="GoClient">${MainDoc}</button></div>
                 </div>
+                <div ws-template="SplitterV1" class="versplitter" ws-attr="Attrs">
+                    <div style="min-width :Calc((100% - ${gap}) *        ${width}   / 100);max-width :Calc((100% - ${gap}) *        ${height}  / 100)">${doc1}</div>
+                    <div style="min-width :             ${gap}; ws-onmousedown="MouseDown" ></div>
+                    <div style="min-width :Calc((100% - ${gap}) * (100 - ${width} ) / 100);max-width :Calc((100% - ${gap}) * (100 - ${height}) / 100)">${doc2}</div>
+                </div>
+                <div ws-template="SplitterH1" class="horsplitter" ws-attr="Attrs">
+                    <div style="min-height:Calc((100% - ${gap}) *        ${height}  / 100);max-height:Calc((100% - ${gap}) *        ${height}  / 100)">${doc1}</div>
+                    <div style="min-height:             ${gap}" ws-onmousedown="MouseDown" ></div>
+                    <div style="min-height:Calc((100% - ${gap}) * (100 - ${height}) / 100);max-height:Calc((100% - ${gap}) * (100 - ${height}) / 100)">${doc2}</div>
+                </div>
+                <style>
+                    .horsplitter                    { display: flex; flex-direction:column              } 
+                    .horsplitter > div:nth-child(2) { background: #eef; cursor: row-resize; z-index:400 }
+                    .horsplitter > div              { overflow: hidden                                  }
+                    .versplitter                    { display: flex; flex-direction:row                 } 
+                    .versplitter > div:nth-child(2) { background: #eef; cursor: col-resize; z-index:400 }
+                    .versplitter > div              { overflow: hidden                                  }
+                </style>
                 <style>
                     .AppFrameworkGo {
                         max-width: 2px;
@@ -1603,8 +1621,8 @@ namespace FsRoot
             
                 let callFunction p1 p2 actF =
                     match actF with
-                    | FunAct0(f      ) -> f ()
-                    | FunAct1(f, _   ) -> f p1
+                    | FunAct0(f      ) -> f    ()
+                    | FunAct1(f, _   ) -> f    p2
                     | FunAct2(f, _, _) -> f p1 p2
             
                 let renderActions() = 
@@ -1617,7 +1635,7 @@ namespace FsRoot
                                     | FunAct2(_, p1, p2) -> [ p1 ; p2 ] |> String.concat ", " |> sprintf "(%s)"
                         AppFwkTemplate.Action() 
                             .Name(     act.actName.Id + parms                             )
-                            .Click(    fun ev -> act.actFunction |> callFunction ev () )
+                            .Click(    fun ev -> act.actFunction |> callFunction () ev )
                             .Attrs(    Attr.DynamicPred "disabled" (V (not act.actEnabled.V)) (View.Const "") )
                             .Doc()            
                     ) 
@@ -1715,7 +1733,7 @@ namespace FsRoot
                         let ie = coll.GetEnumerator()
                         while ie.MoveNext() do
                             func ie.Current
-                    [<CustomOperation("plgName"   )>] member __.Name  ( plg:PlugIn, name:string        ) = { plg with plgName    =    PlugInName name }
+                    [<CustomOperation("plgName"   )>] member __.Name  ( plg:PlugIn, name:string               ) = { plg with plgName    =    PlugInName name }
                     [<CustomOperation("plgVar"    )>] member __.AddVar( plg:PlugIn, name:string, var          ) = plg.plgVars   .Add(newVar  (PlgElemName name)          var            )  ; plg
                     [<CustomOperation("plgDoc"    )>] member __.AddDoc( plg:PlugIn, name:string, doc          ) = plg.plgDocs   .Add(newDoc  (PlgElemName name)          doc            )  ; plg
                     [<CustomOperation("plgDoc0"   )>] member __.AddDoc0(plg:PlugIn, name:string, doc          ) = plg.plgDocs   .Add(newDoc0 (PlgElemName name)          doc            )  ; plg
@@ -1948,7 +1966,7 @@ namespace FsRoot
                     | VConst txt  -> Html.text     txt
                     | VView  txtW -> Html.textView txtW
             
-                    let textAtt : Val<string> -> Attr = failwithf "textAtt not implemented"
+                    let textAtt : Val<string> -> Attr = fun _ -> failwithf "textAtt not implemented"
             
                 let choiceToString   = function Choice1Of2 v -> v | Choice2Of2 r -> sprintf "@{%A}" r
                 let valToStyle atn = function
@@ -2206,7 +2224,7 @@ namespace FsRoot
                                                     attr.``type`` "file" 
                                                     Attr.Style "display" "none" 
                                                     Html.on.click (fun el ev -> el?value <- "")
-                                                    Html.on.change(fun el ev -> act.actFunction |> callFunction el () )
+                                                    Html.on.change(fun el ev -> act.actFunction |> callFunction el ev )
                                                     ] []
                                     ]
                                 ]
@@ -2292,8 +2310,18 @@ namespace FsRoot
                                 unbox text
                                 |> var.Set
                             )
-            
                 let setVarDirect varN value = setVarDirect0(varN, value)
+            
+                let dragSplitter0 = 
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) (varN:obj, eventD:obj) ->
+                        unbox varN
+                        |>  getParmRef
+                        ||> tryGetVoV
+                        |>  Option.iter(fun var ->
+                                JavaScript.Console.Log var.Value
+                                JavaScript.Console.Log eventD
+                            )
+                let dragSplitter varN eventD = dragSplitter0(varN, eventD)
             
                 let trigAct =
                     depWithExtracts <| fun (extractAts, extractDoc, extractText) trigger actN ->
@@ -2343,13 +2371,18 @@ namespace FsRoot
                             Doc.SelectDynOptional (extractAts attrs) none id valsW varO
                         )
             
+                let addPlugIn p =
+                    newViw (PlgElemName "PlugInName") (View.Const p.plgName.Id)
+                    |> p.plgViews.Append
+                    plugIns.Add p
+            
                 if IsClient then
                     plugin { 
                         plgName  "AppFramework" 
                         plgVar   "mainDocV"     mainDocV
                         plgDoc   "AppFwkClient" AppFwkClient
                         plgAct   "Hello"        (fun () -> JS.Window.Alert "Hello!")
-                    } |> plugIns.Add
+                    } |> addPlugIn
                     plugin { 
                         plgName  "AF"
                         plgDoc1  "DocReference"  docReference  "DocName"
@@ -2361,12 +2394,19 @@ namespace FsRoot
                         plgDoc4  "Select"        select        "Attrs"    "None" "Vals" "Var"
                         plgDoc3  "InputFile"     inputFile     "Attrs"    "Label" "Action"
                         plgDoc3  "InputLabel"    inputLabel    "Attrs"    "Label" "Var"
-                        //plgDoc5  "SplitPerc"     splitterPrc "vertical" "minmax" "doc1" "doc2" "Var"
+                        //plgDoc5  "SplitPerc"     splitterPrc   "doc1"     "doc2" "Var" "min" "max" "vertical"
                         plgAct2  "SetVar"        setVar        "Var"      "Value"
                         plgAct2  "SetVarDirect"  setVarDirect  "Var"      "from"
                         plgAct   "Hello"         (fun () -> JS.Window.Alert "Hello!")
+                        plgAct2  "DragSplitter"  dragSplitter  "Var"      "dragEvent"
                         plgQuery "getDocNames"   (fun (_:obj) -> plugIns.Value |> Seq.collect (fun plg -> plg.plgDocs |> Seq.map (fun doc -> plg.plgName.Id + "." + doc.docName.Id)) |> Seq.toArray |> box)
-                    } |> plugIns.Add
+                        plgView  "MouseX"        (View.Map (fst >> string               ) UI.Input.Mouse   .Position     )
+                        plgView  "MouseY"        (View.Map (snd >> string               ) UI.Input.Mouse   .Position     )
+                        plgView  "MouseLeft"     (View.Map (function true -> "1" |_->"0") UI.Input.Mouse   .LeftPressed  )
+                        plgView  "MouseRight"    (View.Map (function true -> "1" |_->"0") UI.Input.Mouse   .RightPressed )
+                        plgView  "MouseMiddle"   (View.Map (function true -> "1" |_->"0") UI.Input.Mouse   .MiddlePressed)
+                        plgView  "Keyboard"      (View.Map (sprintf "%A"                ) UI.Input.Keyboard.KeysPressed  )
+                    } |> addPlugIn
             
                     //titleV.View
                     //|> View.Bind(fun nm ->
@@ -2387,7 +2427,6 @@ namespace FsRoot
                     WcTabStrip.init.Value
                     mainDoc()
             
-                let addPlugIn p = plugIns.Add p
             
             
             /////////////////////////////////////////////////////////////////////////////////////////////
@@ -2774,6 +2813,9 @@ namespace FsRoot
                             | Fixed(        v, f  ) -> string (int (if f then v else -v) )
                             | Variable(min, v, max) -> sprintf "%d-%d-%d" (int min) (int v) (int max)
             
+                let splitChar   ch = String.splitByChar ch >> Seq.map    String.trim
+                let splitSemiColon = splitChar         ';' >> Seq.filter ((<>) "")
+                let splitInTwo  ch = splitChar          ch >> Seq.toArray
             
                 let (|Measures|_|) =
                     function 
@@ -2831,7 +2873,7 @@ namespace FsRoot
                     | h::rest                                       -> h :: doubleQuote rest
             
                 let splitTokens line : Token list = // """main h1 "" "Hello World!"""" |> printfn "dd"
-                    line
+                    (if Seq.tryHead line = Some '"' then " " + line else line)
                     |> String.splitByChar '"'
                     |> Seq.mapi(fun i s -> 
                         if  i % 2 = 1  then [| Quoted s    |] else
@@ -3227,6 +3269,23 @@ namespace FsRoot
                     type DocFDef     = DocFDef     of DocRef * ParmRef list
                     type ConcatDef   = ConcatDef   of NodeRef list
                     type ElementDef  = ElementDef  of string * ParmRef * NodeRef list
+                    type TemplateDef = { 
+                        tmpName : string 
+                        vars    : (string * VarRef )[]
+                        views   : (string * ParmRef)[]
+                        docs    : (string * DocRef )[] 
+                        actions : (string * ActRef )[]
+                        attrs   : ParmRef
+                    }
+            
+                    let templateDef nm ats vs ws ds acs = { 
+                        tmpName = nm
+                        attrs   = ats
+                        vars    = vs
+                        views   = ws
+                        docs    = ds
+                        actions = acs
+                    }
             
                     type ActDef      = ActDef      of ActRef * ParmRef list
                     type ActDefs     = ActDefs     of ActRef  list
@@ -3242,6 +3301,7 @@ namespace FsRoot
                     | DcDocF     of DocFDef
                     | DcConcat   of ConcatDef
                     | DcElement  of ElementDef
+                    | DcTemplate of TemplateDef
             
                     type Entry =
                     | EnDocDef  of DocDef
@@ -3339,14 +3399,13 @@ namespace FsRoot
             
                         let (|At|_|) = function 
                         | Quoted s ->
-                            s.Trim().Split ';'
-                            |> Seq.filter (fun v -> v.Trim() <> "")
+                            splitSemiColon s
                             |> Seq.choose(fun a ->
-                                match a.Trim().Split '=' with
+                                match splitInTwo '=' a with
                                 | [| nm ; ActI  ar |] -> AtAct  (nm.Trim(), ar)  |> Some
                                 | [| nm ; Tx    vl |] -> AtAttr (nm.Trim(), vl)  |> Some
                                 |_->
-                                match a.Trim().Split ':' with
+                                match splitInTwo ':' a with
                                 | [| nm ; Tx vl |] -> AtStyle(nm.Trim(), vl) |> Some
                                 |_->    failwithf "Attributes should be like: \"name=val\" or \"name:val\" and separated by ';' : %s" a
                             )
@@ -3362,6 +3421,42 @@ namespace FsRoot
                         | ActRf v -> Some (PrActRef   v)
                         |_        -> None
             
+                        let (|Vs|_|) = function 
+                        | Quoted s ->
+                            splitSemiColon s
+                            |> Seq.choose(fun a ->
+                                match splitInTwo ':' a |> Array.map UnQuoted with
+                                | [| Name nm ; VarRf v |] -> (nm, v) |> Some
+                                |_->    failwithf "Expecting Vars \"name:var\" separated by ';' : %s" a
+                            )
+                            |> Seq.toArray
+                            |> Some
+                        |_-> None
+            
+                        let (|Ws|_|) = function 
+                        | Quoted s ->
+                            splitSemiColon s
+                            |> Seq.choose(fun a ->
+                                match splitInTwo ':' a |> Array.map splitTokens with
+                                | [| [ Name nm ] ; [ Pr v ] |] -> (nm, v) |> Some
+                                |_->    failwithf "Expecting Views \"name:view\" separated by ';' : %s" a
+                            )
+                            |> Seq.toArray
+                            |> Some
+                        |_-> None
+            
+                        let (|Ds|_|) = function 
+                        | Quoted s ->
+                            splitSemiColon s
+                            |> Seq.choose(fun a ->
+                                match splitInTwo ':' a |> Array.map UnQuoted with
+                                | [| Name nm ; DocRf v |] -> (nm, v) |> Some
+                                |_->    failwithf "Expecting Docs \"name:doc\" separated by ';' : %s" a
+                            )
+                            |> Seq.toArray
+                            |> Some
+                        |_-> None
+            
                         let rec (|Prs|_|) = function
                         | []                -> Some []
                         | Pr pr :: Prs rest -> Some( pr :: rest)
@@ -3371,6 +3466,18 @@ namespace FsRoot
                         | []                      -> Some []
                         | ActRf ar :: ActRfs rest -> Some( ar :: rest)
                         |_                        -> None
+            
+                        let (|Acs|_|) = function 
+                        | Quoted s ->
+                            splitSemiColon s
+                            |> Seq.choose(fun a ->
+                                match splitInTwo ':' a |> Array.map splitTokens with
+                                | [| [ Name nm ] ; [ ActRf v ] |] -> (nm, v) |> Some
+                                |_->    failwithf "Expecting Actions \"name:action\" separated by ';' : %s" a
+                            )
+                            |> Seq.toArray
+                            |> Some
+                        |_-> None
             
                         let (|Nd|_|) = function 
                         | QTx   v -> Some (NdTextValL v)
@@ -3407,7 +3514,8 @@ namespace FsRoot
                         |   Name name :: Docs                                      :: Nds    ns  -> entryDoc  name <| DcConcat  (ConcatDef                  ns      )
                         |   Name name :: Actions    ::                                ActRfs acs -> entryActs name <| ActDefs  acs
                         |   Name name :: Action     :: ActRf      act              :: Prs    ps  -> entryAct  name <| ActDef  ( act  , ps          )
-                        |   Name name :: Elem elem  :: Pr         att              :: Nds    ns  -> entryDoc  name <| DcElement (ElementDef(elem , att   , ns ) )
+                        | [ Name name ;  Template   ;  Name tn; Ws w; Ds d; Vs v; Acs a; Pr att] -> entryDoc  name <| DcTemplate (templateDef tn att v w d a )
+                        |   Name name :: Elem elem  ::           Pr att            :: Nds    ns  -> entryDoc  name <| DcElement (ElementDef(elem , att   , ns ) )
                         | _                                                                      -> None
             
                     let createEntryO2 lytNm (refs:System.Collections.Generic.Dictionary<string, _>) =
@@ -3723,7 +3831,11 @@ namespace FsRoot
                                     AF.addPlugIn plg
                                     plg
                     ListModel.refreshLM plg.plgVars    [| yield! getVarEntries    entries |]
-                    ListModel.refreshLM plg.plgViews   [| yield! getViewEntries   entries |]
+                    ListModel.refreshLM plg.plgViews   [| yield! getViewEntries   entries 
+                                                          match plg.plgViews.TryFindByKey(AF.PlgElemName "PlugInName") with
+                                                          | Some w -> yield w
+                                                          |_-> () 
+                                                        |]
                     ListModel.refreshLM plg.plgActions [| yield! getActionEntries entries |]
                     ListModel.refreshLM plg.plgQueries [| yield! getQueryEntries  entries |]
                     ListModel.refreshLM plg.plgDocs    [| 
@@ -3887,6 +3999,16 @@ namespace FsRoot
                         |>  Option.defaultWith(fun () -> Var.Make (View.Const <| sprintf "Could not find var %s" r) ignore )
                 }
             
+                let actRefToActD = Depend.depend {
+                    let! currentPlugInName = currentPlugInNameD
+                    return fun (ActRef ref) ->
+                        let r = itemRefToString ref
+                        AF.splitName currentPlugInName r
+                        ||> AF.tryGetAct
+                        //|>  Option.map (fun v -> v.)
+                        |>  Option.defaultWith(fun () -> AF.newAct (PlgElemName r) (fun () -> printfn "Could not find action %s" r) ) 
+                }
+            
                 let getParamD = Depend.depend {
                     let! currentPlugInName = currentPlugInNameD
                     let! getTextValFromSeq = Extract0.getTextValFromSeqD
@@ -3931,11 +4053,11 @@ namespace FsRoot
                     return fun (p:ParmRef) f ->
                         let refToSplit = itemRefToString >> AF.splitName currentPlugInName
                         match p with
-                        | PrTextValL       ts -> ts|> List.map textValToTextType  |> getTextValFromSeq |> Val.toView |> View.Get(box >> f)
-                        | PrDocRef (DocRef r) -> r |> refToSplit ||> AF.tryGetDoc |> Option.iter ((fun d -> d.docDoc     ) >> box           >> f  )
+                        | PrTextValL       ts -> ts|> List.map textValToTextType  |> getTextValFromSeq |> Val.toView       |> View.Get (box >> f)
+                        | PrDocRef (DocRef r) -> r |> refToSplit ||> AF.tryGetDoc |> Option.iter ((fun d -> d.docDoc     ) >>           box >> f  )
                         | PrVarRef (VarRef r) -> r |> refToSplit ||> AF.tryGetVar |> Option.iter ((fun v -> v.varVar.View) >> View.Get (box >> f) )
                         | PrViwRef (ViwRef r) -> r |> refToSplit ||> AF.tryGetViw |> Option.iter ((fun v -> v.viwView    ) >> View.Get (box >> f) )
-                        | PrActRef (ActRef r) -> r |> refToSplit ||> AF.tryGetAct |> Option.iter ((fun v -> v.actFunction) >> box           >> f  )
+                        | PrActRef (ActRef r) -> r |> refToSplit ||> AF.tryGetAct |> Option.iter ((fun v -> v.actFunction) >>           box >> f  )
                 }
             
                 let defVar(    lytN, n:string, v) = Var.Create v
@@ -4004,9 +4126,9 @@ namespace FsRoot
                             with e -> e.Message |> View.Const
                         )
                     } |> run lytN
-                let defInput(     lytN, n:string, v, attrs : AttrVal seq) = makeAViewDoc0 <| fun () -> (AF.errDocf "input deprecated use AF.Input"       )
-                let defTextArea(  lytN, n:string, v, attrs : AttrVal seq) = makeAViewDoc0 <| fun () -> (AF.errDocf "TextArea deprecated use AF.TextArea" )
-                let defElement(lytN, n:string, elem, attrs : ParmRef, docs:NodeRef list) = 
+                let defInput(   lytN, n:string, v   , attrs : AttrVal seq) = makeAViewDoc0 <| fun () -> (AF.errDocf "input deprecated use AF.Input"       )
+                let defTextArea(lytN, n:string, v   , attrs : AttrVal seq) = makeAViewDoc0 <| fun () -> (AF.errDocf "TextArea deprecated use AF.TextArea" )
+                let defElement( lytN, n:string, elem, attrs : ParmRef, docs:NodeRef list) = 
                     Depend.depend {
                         let! nodeRefToDoc  = nodeRefToDocD
                         let! extractAts    = extractAtsD
@@ -4062,6 +4184,34 @@ namespace FsRoot
                         
                     } |> run lytN
             
+                let defTemplate(lytN, n, tmpDef : TemplateDef) =
+                    Depend.depend {
+                        let! nodeRefToDoc  = nodeRefToDocD
+                        let! varRefToVar   = varRefToVarD
+                        let! extractText   = extractTextD
+                        let! extractAts    = extractAtsD
+                        let! actRefToAct   = actRefToActD
+                        let! getParam2     = getParam2D
+                        return
+                            makeAViewDoc0 <| fun () ->
+                                let eventAct act = fun (el:JavaScript.Dom.Element) (ev:JavaScript.Dom.Event) -> act.actFunction |> AF.callFunction el ev
+                                try
+                                    let attrs = extractAts (getParam2 tmpDef.attrs)
+                                    Client.Doc.LoadLocalTemplates "local"
+                                    seq {
+                                        yield!  tmpDef.vars    |> Seq.map (fun (nm, vr) -> TemplateHole.VarStr(  nm.ToLower(), varRefToVar               vr  ) )
+                                        yield!  tmpDef.views   |> Seq.map (fun (nm, wr) -> TemplateHole.TextView(nm.ToLower(), extractText  (getParam2   wr) ) )
+                                        yield!  tmpDef.docs    |> Seq.map (fun (nm, nr) -> TemplateHole.Elt(     nm.ToLower(), nodeRefToDoc (NdDocRef    nr) ) )
+                                        yield!  tmpDef.actions |> Seq.map (fun (nm, ar) -> TemplateHole.Event(   nm.ToLower(), eventAct     (actRefToAct ar) ) )
+                                    }
+                                    |> (if Seq.isEmpty attrs then id else TemplateHole.Attribute("attrs", Attr.Concat attrs) |> Seq.singleton |> Seq.append)
+                                    |> Client.Doc.NamedTemplate "local" (tmpDef.tmpName.ToLower() |> Some)
+                                    ///                                //    | TDText  v   -> TemplateHole.Text(    nm.ToLower(), v )
+                                    ///                                //    | TDView  vw  -> TemplateHole.TextView(nm.ToLower(), vw)
+                                    ///                                //    | TDAct   act -> TemplateHole.Event(   nm.ToLower(), (fun el ev -> act.actFunction |> AF.callFunction el ev ))
+                                    ///                                TemplateHole.Elt(nm.ToLower(), sprintf "Not implemented: %s" txt |> AF.errDoc) 
+                                with e -> text e.Message
+                    } |> run   lytN
             
                 let initVal = "-<InitValue>-"
             
@@ -4078,6 +4228,7 @@ namespace FsRoot
                 let defViewM      = Memoize.memoize defView
                 let defViewJSM    = Memoize.memoize defViewJS
                 let defSplitterM  = Memoize.memoize defSplitter
+                let defTemplateM  = Memoize.memoize defTemplate
             
                 let generateEntries lytN =
                     Seq.choose(function
@@ -4093,6 +4244,7 @@ namespace FsRoot
                         | n, EnActDefs( ActDefs                 acs           ) -> defActionsM( lytN, n, acs        ) |> AF.newActF (AF.PlgElemName n) |> EntryAction |> Some
                         | n, EnViwDef ( ViwDef                      parms     ) -> defViewM(    lytN, n,     parms  ) |> AF.newViw  (AF.PlgElemName n) |> EntryView   |> Some
                         | n, EnVJSDef ( VJSDef                      parms     ) -> defViewJSM(  lytN, n,     parms  ) |> AF.newViw  (AF.PlgElemName n) |> EntryView   |> Some
+                        | n, EnDocDef ( DcTemplate tmpDef                     ) -> defTemplateM(lytN, n,     tmpDef ) |> AF.newDoc0 (AF.PlgElemName n) |> EntryDoc    |> Some
                         | n, EnPlgRef  _ -> None
                         | n, EnPlgDef  _ -> None
                     )
@@ -4115,13 +4267,24 @@ namespace FsRoot
                     |> addNewLayout
             
                 let addNewLayoutAct (name:obj) (layout:obj) =
-                    (if layout <> null then unbox layout else """
-            Ask Doc AF.InputLabel "placeholder=Type you answer here..." "Answer:" AppFramework.mainDocV  
-            Hello h1 "color:blue; class=btn-primary" "How are you today?" Ask
-            split horizontal 0-50-100 AppFramework.AppFwkClient Hello
-            """     |> String.unindentStr)
-                    |> newLyt (if layout <> null then unbox name else System.Guid.NewGuid() |> string |> fun s -> "Lyt_" + s.Replace("-", "") |> AF.PlugInName )
-                    |> addNewLayout
+                    let name'   = if name   <> null                 then unbox name   else System.Guid.NewGuid() |> string |> fun s -> "Lyt_" + s.Replace("-", "")
+                    let layout' = if layout <> null && name <> null then unbox layout else """
+                                        height Var "50"
+                                        width  Var "50"
+            
+                                        Ask1 div "background:lightblue; height:100%"
+                                        : Doc AF.InputLabel "placeholder=Type you answer here..." "Answer1:" height
+                                        Ask2 div "background:pink;height:100%" "Hello"
+                                        : Doc AF.InputLabel "placeholder=Type you answer here..." "Answer2:" width
+            
+                                        dragSplitter Action AF.DragSplitter "@{PlugInName}.height"
+            
+                                        main div ""
+                                        : template SplitterH1 "gap:""5px"" " "doc1: Ask1 ; doc2:Ask2" "height:height; width:width" "MouseDown:dragSplitter" ""
+            
+                                        split horizontal 0-50-100 AppFramework.AppFwkClient main
+                                    """ |> String.unindentStr
+                    addLayout name' layout'
             
                 if IsClient then
                     AF.tryGetPlugIn AF.defPlugInName
