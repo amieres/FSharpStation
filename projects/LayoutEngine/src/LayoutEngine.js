@@ -2586,6 +2586,54 @@
   SC$1.$cctor();
   return SC$1.dragSplitter0;
  };
+ AppFramework.draggingEvent=function(vertical,first,value)
+ {
+  var dragging,size,padding,gap,startP,start;
+  function getSize(el)
+  {
+   return vertical?first?el.getBoundingClientRect().width:-el.getBoundingClientRect().width:first?el.getBoundingClientRect().height:-el.getBoundingClientRect().height;
+  }
+  function mouseCoord(ev)
+  {
+   return vertical?ev.clientX:ev.clientY;
+  }
+  function drag(ev)
+  {
+   var e,e$1,a,a$1;
+   value.Set(Global.String((e=(e$1=(mouseCoord(ev)-start)*100/(size-gap)+startP,(a=0,Unchecked.Compare(a,e$1)===1?a:e$1)),(a$1=100,Unchecked.Compare(a$1,e)===-1?a$1:e))));
+  }
+  function finishDragging()
+  {
+   if(dragging)
+    {
+     dragging=false;
+     self.removeEventListener("mousemove",drag,false);
+     self.removeEventListener("mouseup",finishDragging,false);
+    }
+  }
+  dragging=false;
+  size=0;
+  padding=0;
+  gap=0;
+  startP=0;
+  start=0;
+  return function(ev)
+  {
+   var el,o,x;
+   if(!dragging)
+    {
+     el=ev.toElement;
+     dragging=true;
+     startP=(o=(x=value.Get(),(ParseO.parseDoubleO())(x)),o==null?0:o.$0);
+     start=mouseCoord(ev);
+     gap=getSize(el);
+     size=getSize(el.parentElement);
+     self.addEventListener("mousemove",drag,false);
+     self.addEventListener("mouseup",finishDragging,false);
+     ev.preventDefault();
+    }
+  };
+ };
  AppFramework.setVarDirect=function(varN,value)
  {
   (AppFramework.setVarDirect0())([varN,value]);
@@ -3901,7 +3949,7 @@
   SC$1.$cctor();
   return SC$1.defPlg;
  };
- AppFrameworkUI.showDoc$2714$35=function(k,lmd)
+ AppFrameworkUI.showDoc$2753$35=function(k,lmd)
  {
   return function()
   {
@@ -3941,7 +3989,7 @@
    },lmd.selV.get_View(),k)
   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.tile(p[0])),(b.i=i,i)))).get_Doc();
  };
- AppFrameworkUI.showAct$2707$35=function(k,lmd)
+ AppFrameworkUI.showAct$2746$35=function(k,lmd)
  {
   return function()
   {
@@ -3999,7 +4047,7 @@
    },lmd.selV.get_View(),k)
   }),(p=Handler.CompleteHoles(b.k,b.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.tile(p[0])),(b.i=i,i)))).get_Doc();
  };
- AppFrameworkUI.showView$2695$35=function(k,lmd)
+ AppFrameworkUI.showView$2734$35=function(k,lmd)
  {
   return function()
   {
@@ -4043,7 +4091,7 @@
    },lmd.selV.get_View(),k)
   }),(p=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.tile(p[0])),(b$1.i=i,i)))).get_Doc();
  };
- AppFrameworkUI.showVar$2683$35=function(k,lmd)
+ AppFrameworkUI.showVar$2722$35=function(k,lmd)
  {
   return function()
   {
@@ -4087,7 +4135,7 @@
    },lmd.selV.get_View(),k)
   }),(p=Handler.CompleteHoles(b$1.k,b$1.h,[]),(i=new TemplateInstance.New(p[1],LayoutEngine_Templates.tile(p[0])),(b$1.i=i,i)))).get_Doc();
  };
- AppFrameworkUI.showPlugIn$2671$35=function(k,lmd)
+ AppFrameworkUI.showPlugIn$2710$35=function(k,lmd)
  {
   return function()
   {
@@ -5158,15 +5206,7 @@
   })));
   ListModel.refreshLM(plg.plgViews,Arrays.ofSeq(Seq.delay(function()
   {
-   return Seq.append(LayoutEngineModule.getViewEntries(entries),Seq.delay(function()
-   {
-    var m$1;
-    m$1=plg.plgViews.TryFindByKey(new PlgElemName({
-     $:0,
-     $0:"PlugInName"
-    }));
-    return m$1!=null&&m$1.$==1?[m$1.$0]:[];
-   }));
+   return LayoutEngineModule.getViewEntries(entries);
   })));
   ListModel.refreshLM(plg.plgActions,Arrays.ofSeq(Seq.delay(function()
   {
@@ -5299,7 +5339,13 @@
  };
  LayoutEngineModule.parseEntries=function(lytNm,txt)
  {
-  return LayoutEngineModule.processText(Syntax.createEntryO2(lytNm,new Dictionary.New$5()),txt);
+  var localRefs,x;
+  localRefs=new Dictionary.New$5();
+  x=(((Runtime.Curried3(function($1,$2,$3)
+  {
+   return $1("PlugInName View \""+Utils.toSafe($2)+"\"\n"+Utils.toSafe($3));
+  }))(Global.id))(lytNm.get_Id()))(txt);
+  return LayoutEngineModule.processText(Syntax.createEntryO2(lytNm,localRefs),x);
  };
  LayoutEngineModule.processText=function(f,txt)
  {
@@ -5460,7 +5506,7 @@
       });
       break;
      case 3:
-      throw new MatchFailureException.New("D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\LayoutEngine\\src\\LayoutEngine.fs",2868,38);
+      throw new MatchFailureException.New("D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\LayoutEngine\\src\\LayoutEngine.fs",2907,38);
     }
     return $2;
   }
@@ -6773,7 +6819,7 @@
   {
    var o$1,t$2;
    o$1=(t$2=AppFramework.getParmRef(t$1[0]),AppFramework.tryGetVoV(t$2[0],t$2[1]));
-   o$1==null?void 0:(console.log(o$1.$0.Get()),console.log(t$1[1]));
+   o$1==null?void 0:(AppFramework.draggingEvent(false,true,o$1.$0))(t$1[1]);
   }
   function f$9(t,actN,p1,p2)
   {

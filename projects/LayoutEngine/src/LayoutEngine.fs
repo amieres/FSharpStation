@@ -2312,16 +2312,55 @@ namespace FsRoot
                             )
                 let setVarDirect varN value = setVarDirect0(varN, value)
             
+                let draggingEvent vertical first (value: Var<string>) =
+                    let mutable dragging = false
+                    let mutable size    = 0.0
+                    let mutable padding = 0.0
+                    let mutable gap     = 0.0
+                    let mutable startP  = 0.0
+                    let mutable start   = 0.0
+                    let getSize (el:Dom.Element) : float =
+                        el.GetBoundingClientRect() 
+                        |> fun r ->
+                                match vertical, first with
+                                | true , true  ->  r.Width 
+                                | true , false -> -r.Width 
+                                | false, true  ->  r.Height
+                                | false, false -> -r.Height
+                    let mouseCoord (ev: Dom.MouseEvent) = if vertical then float ev.ClientX else float ev.ClientY
+                    let drag       (ev: Dom.Event     ) =
+                        ev :?> Dom.MouseEvent
+                        |> mouseCoord
+                        |> fun m   -> (m - start) * 100.0 / (size - gap) + startP
+                        |> max 0. 
+                        |> min 100.
+                        |> string
+                        |> value.Set
+                        
+                    let rec finishDragging (_: Dom.Event) =
+                        if  dragging then
+                            dragging <- false
+                            JS.Window.RemoveEventListener("mousemove", drag          , false) 
+                            JS.Window.RemoveEventListener("mouseup"  , finishDragging, false)
+                    fun (ev: Dom.MouseEvent) ->
+                        if not dragging then
+                            let el : Dom.Element = ev?toElement
+                            dragging <- true
+                            startP   <- value.Value |> ParseO.parseDoubleO |> Option.defaultValue 0.
+                            start    <- mouseCoord ev
+                            gap      <- getSize    el
+                            size     <- getSize    el.ParentElement
+                            JS.Window.AddEventListener("mousemove", drag          , false) 
+                            JS.Window.AddEventListener("mouseup"  , finishDragging, false) 
+                            ev.PreventDefault()
+            
                 let dragSplitter0 = 
-                    depWithExtracts <| fun (extractAts, extractDoc, extractText) (varN:obj, eventD:obj) ->
-                        unbox varN
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) (varN, eventD:Dom.MouseEvent) ->
+                        varN
                         |>  getParmRef
                         ||> tryGetVoV
-                        |>  Option.iter(fun var ->
-                                JavaScript.Console.Log var.Value
-                                JavaScript.Console.Log eventD
-                            )
-                let dragSplitter varN eventD = dragSplitter0(varN, eventD)
+                        |>  Option.iter(fun var -> draggingEvent false true var eventD )
+                let dragSplitter varN eventD = dragSplitter0(unbox varN, unbox eventD)
             
                 let trigAct =
                     depWithExtracts <| fun (extractAts, extractDoc, extractText) trigger actN ->
@@ -3518,7 +3557,7 @@ namespace FsRoot
                         |   Name name :: Elem elem  ::           Pr att            :: Nds    ns  -> entryDoc  name <| DcElement (ElementDef(elem , att   , ns ) )
                         | _                                                                      -> None
             
-                    let createEntryO2 lytNm (refs:System.Collections.Generic.Dictionary<string, _>) =
+                    let createEntryO2 (lytNm:AF.PlugInName) (refs:System.Collections.Generic.Dictionary<string, _>) =
                         let addR nm en = if refs.ContainsKey nm then Result.errorf "Already exists %s : %A " nm en else refs.Add(nm, en) ; Ok()
                         let ok   nm en = addR nm en |> Result.map (fun () -> nm, en)
                         let ko msg (line:string) =
@@ -3743,9 +3782,10 @@ namespace FsRoot
                     txt.Split(  [|'\n' ; '\r' |], System.StringSplitOptions.RemoveEmptyEntries)
                     |> processLines f
             
-                let parseEntries lytNm txt =
+                let parseEntries (lytNm:AF.PlugInName) txt =
                     let localRefs = System.Collections.Generic.Dictionary<_,_>()
-                    processText (Syntax.createEntryO2 lytNm localRefs) txt
+                    sprintf "PlugInName View \"%s\"\n%s" lytNm.Id txt
+                    |> processText (Syntax.createEntryO2 lytNm localRefs)
             
                 //let createEntries lytNm = processText (createEntryO lytNm)
                                         //|> Seq.choose (createEntryO lytNm)
@@ -3831,11 +3871,7 @@ namespace FsRoot
                                     AF.addPlugIn plg
                                     plg
                     ListModel.refreshLM plg.plgVars    [| yield! getVarEntries    entries |]
-                    ListModel.refreshLM plg.plgViews   [| yield! getViewEntries   entries 
-                                                          match plg.plgViews.TryFindByKey(AF.PlgElemName "PlugInName") with
-                                                          | Some w -> yield w
-                                                          |_-> () 
-                                                        |]
+                    ListModel.refreshLM plg.plgViews   [| yield! getViewEntries   entries |]
                     ListModel.refreshLM plg.plgActions [| yield! getActionEntries entries |]
                     ListModel.refreshLM plg.plgQueries [| yield! getQueryEntries  entries |]
                     ListModel.refreshLM plg.plgDocs    [| 

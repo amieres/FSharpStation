@@ -361,7 +361,7 @@ if (!console) {
 (function()
 {
  "use strict";
- var Global,FsRootDll,TestingJS,SnippetTemplates,AppFrameworkUI,SC$1,WebSharper,Operators,LibraryJS,StartAppFramework,Library,Monads,Depend,List,AppFrameworkTemplate,SC$2,Seq,T,Arrays,Obj,State,CEBuilder,Result,Builder,DependBuilder,String,Strings,Slice,ParseO,Unchecked,Numeric,System,Guid,Lazy,WebComponent,WcTabStrip,WcTabStripT,UI,Doc,ListModel,AppFramework,PlugIn,Var$1,PlugInName,Var,View,Templating,Runtime,Server,TemplateInstance,ProviderBuilder,Handler,LayoutEngine_Templates,GeneratedPrintf,LayoutEngine_GeneratedPrintf,PlugInBuilder,Val,Extract0,Utils,Operators$1,AAttr,JavaScript,Pervasives,PlugInAction,EventTarget,Node,AttrProxy,AttrModule,Collections,FSharpSet,HtmlModule,attr,PlugInDoc,View$1,WindowOrWorkerGlobalScope,JS,PlgElemName,Input,Mouse,Keyboard,WcSplitter,LM,AppFrameworkUI$1,ListModelData,PlugInVar,PlugInView,LayoutEngineModule,NewLY,P,Enumerator,DateUtil,LazyExtensionsProxy,LazyRecord,PlugInQuery,ConcreteVar,Snap,Dictionary,FromView,List$1,HashSet,Client,Array,Object,T$1,Attrs,BalancedTree,Set,Docs,MousePosSt,Event,UIEvent,MouseBtnSt,KeyListenerSt,WcSplitterT,Client$1,Templates,ListModel$1,ViewBuilder,Fun,Abbrev,Fresh,Syntax,TemplateDef,DomUtility,Hoverable,Hoverable$1,CancellationTokenSource,Storage,CheckedInput,DictionaryUtil,SC$3,DynamicAttrNode,Tree,DocElemNode,SC$4,ResizeObserver,Elt,Error,AggregateException,Concurrency,CharacterData,ArrayStorage,Attrs$1,Dyn,SC$5,SC$6,LayoutEngine,FormatException,Updates,SC$7,An,Settings,Mailbox,CT,AsyncBody,SC$8,Prepare,KeyCollection,HashSetUtil,Docs$1,RunState,NodeSet,Anims,SC$9,Scheduler,OperationCanceledException,Queue,Result$1,FSharpMap,RefType,SC$10,AppendList,String$1,Layout,Easing,HashSet$1,Char,MapUtil,Measures,Pair,DomNodes,MatchFailureException,SC$11,Math,console,IntelliFactory,Runtime$1,Date,Reflect,$;
+ var Global,FsRootDll,TestingJS,SnippetTemplates,AppFrameworkUI,SC$1,WebSharper,Operators,LibraryJS,StartAppFramework,Library,Monads,Depend,List,AppFrameworkTemplate,SC$2,Seq,T,Arrays,Obj,State,CEBuilder,Result,Builder,DependBuilder,String,Strings,Slice,ParseO,Unchecked,Numeric,System,Guid,Lazy,WebComponent,WcTabStrip,WcTabStripT,UI,Doc,ListModel,AppFramework,PlugIn,Var$1,PlugInName,Var,View,Templating,Runtime,Server,TemplateInstance,ProviderBuilder,Handler,LayoutEngine_Templates,GeneratedPrintf,LayoutEngine_GeneratedPrintf,PlugInBuilder,Val,Extract0,Utils,Operators$1,AAttr,JavaScript,Pervasives,PlugInAction,EventTarget,Node,AttrProxy,AttrModule,Collections,FSharpSet,HtmlModule,attr,PlugInDoc,View$1,WindowOrWorkerGlobalScope,JS,PlgElemName,Input,Mouse,Keyboard,WcSplitter,LM,AppFrameworkUI$1,ListModelData,PlugInVar,PlugInView,LayoutEngineModule,NewLY,P,Enumerator,DateUtil,LazyExtensionsProxy,LazyRecord,PlugInQuery,ConcreteVar,Snap,Dictionary,FromView,List$1,HashSet,Client,Array,Object,T$1,Attrs,BalancedTree,Set,Docs,Event,UIEvent,MousePosSt,MouseBtnSt,KeyListenerSt,WcSplitterT,Client$1,Templates,ListModel$1,ViewBuilder,Fun,Abbrev,Fresh,Syntax,TemplateDef,DomUtility,Hoverable,Hoverable$1,CancellationTokenSource,Storage,CheckedInput,DictionaryUtil,SC$3,DynamicAttrNode,Tree,DocElemNode,SC$4,ResizeObserver,Elt,Error,AggregateException,Concurrency,CharacterData,ArrayStorage,Attrs$1,Dyn,SC$5,SC$6,LayoutEngine,FormatException,Updates,SC$7,An,Settings,Mailbox,CT,AsyncBody,SC$8,Prepare,KeyCollection,HashSetUtil,Docs$1,RunState,NodeSet,Anims,SC$9,Scheduler,OperationCanceledException,Queue,Result$1,FSharpMap,RefType,SC$10,AppendList,String$1,Layout,Easing,HashSet$1,Char,MapUtil,Measures,Pair,DomNodes,MatchFailureException,SC$11,Math,IntelliFactory,Runtime$1,console,Date,Reflect,$;
  Global=self;
  FsRootDll=Global.FsRootDll=Global.FsRootDll||{};
  TestingJS=FsRootDll.TestingJS=FsRootDll.TestingJS||{};
@@ -470,9 +470,9 @@ if (!console) {
  BalancedTree=Collections.BalancedTree=Collections.BalancedTree||{};
  Set=Collections.Set=Collections.Set||{};
  Docs=UI.Docs=UI.Docs||{};
- MousePosSt=Input.MousePosSt=Input.MousePosSt||{};
  Event=Global.Event;
  UIEvent=Global.UIEvent;
+ MousePosSt=Input.MousePosSt=Input.MousePosSt||{};
  MouseBtnSt=Input.MouseBtnSt=Input.MouseBtnSt||{};
  KeyListenerSt=Input.KeyListenerSt=Input.KeyListenerSt||{};
  WcSplitterT=WcSplitter.WcSplitterT=WcSplitter.WcSplitterT||{};
@@ -546,9 +546,9 @@ if (!console) {
  MatchFailureException=WebSharper.MatchFailureException=WebSharper.MatchFailureException||{};
  SC$11=Global.StartupCode$WebSharper_UI$AppendList=Global.StartupCode$WebSharper_UI$AppendList||{};
  Math=Global.Math;
- console=Global.console;
  IntelliFactory=Global.IntelliFactory;
  Runtime$1=IntelliFactory&&IntelliFactory.Runtime;
+ console=Global.console;
  Date=Global.Date;
  Reflect=Global.Reflect;
  $=Global.jQuery;
@@ -917,7 +917,7 @@ if (!console) {
   {
    var o$1,t$2;
    o$1=(t$2=AppFramework.getParmRef(t$1[0]),AppFramework.tryGetVoV(t$2[0],t$2[1]));
-   o$1==null?void 0:(console.log(o$1.$0.Get()),console.log(t$1[1]));
+   o$1==null?void 0:(AppFramework.draggingEvent(false,true,o$1.$0))(t$1[1]);
   }
   function f$9(t,actN,p1,p2)
   {
@@ -5891,6 +5891,54 @@ if (!console) {
    $0:new FromView.New(o$2.$0.viwView,Global.ignore)
   }):o.$0;
  };
+ AppFramework.draggingEvent=function(vertical,first,value)
+ {
+  var dragging,size,padding,gap,startP,start;
+  function getSize(el)
+  {
+   return vertical?first?el.getBoundingClientRect().width:-el.getBoundingClientRect().width:first?el.getBoundingClientRect().height:-el.getBoundingClientRect().height;
+  }
+  function mouseCoord(ev)
+  {
+   return vertical?ev.clientX:ev.clientY;
+  }
+  function drag(ev)
+  {
+   var e,e$1,a,a$1;
+   value.Set(Global.String((e=(e$1=(mouseCoord(ev)-start)*100/(size-gap)+startP,(a=0,Unchecked.Compare(a,e$1)===1?a:e$1)),(a$1=100,Unchecked.Compare(a$1,e)===-1?a$1:e))));
+  }
+  function finishDragging()
+  {
+   if(dragging)
+    {
+     dragging=false;
+     self.removeEventListener("mousemove",drag,false);
+     self.removeEventListener("mouseup",finishDragging,false);
+    }
+  }
+  dragging=false;
+  size=0;
+  padding=0;
+  gap=0;
+  startP=0;
+  start=0;
+  return function(ev)
+  {
+   var el,o,x;
+   if(!dragging)
+    {
+     el=ev.toElement;
+     dragging=true;
+     startP=(o=(x=value.Get(),(ParseO.parseDoubleO())(x)),o==null?0:o.$0);
+     start=mouseCoord(ev);
+     gap=getSize(el);
+     size=getSize(el.parentElement);
+     self.addEventListener("mousemove",drag,false);
+     self.addEventListener("mouseup",finishDragging,false);
+     ev.preventDefault();
+    }
+  };
+ };
  AppFramework.tryGetAct=function(plgName,actName)
  {
   var o;
@@ -8720,7 +8768,13 @@ if (!console) {
  };
  LayoutEngineModule.parseEntries=function(lytNm,txt)
  {
-  return LayoutEngineModule.processText(Syntax.createEntryO2(lytNm,new Dictionary.New$5()),txt);
+  var localRefs,x;
+  localRefs=new Dictionary.New$5();
+  x=(((Runtime$1.Curried3(function($1,$2,$3)
+  {
+   return $1("PlugInName View \""+Utils.toSafe($2)+"\"\n"+Utils.toSafe($3));
+  }))(Global.id))(lytNm.get_Id()))(txt);
+  return LayoutEngineModule.processText(Syntax.createEntryO2(lytNm,localRefs),x);
  };
  LayoutEngineModule.refreshEntries=function(lytN,entries)
  {
@@ -8732,15 +8786,7 @@ if (!console) {
   })));
   ListModel$1.refreshLM(plg.plgViews,Arrays.ofSeq(Seq.delay(function()
   {
-   return Seq.append(LayoutEngineModule.getViewEntries(entries),Seq.delay(function()
-   {
-    var m$1;
-    m$1=plg.plgViews.TryFindByKey(new PlgElemName({
-     $:0,
-     $0:"PlugInName"
-    }));
-    return m$1!=null&&m$1.$==1?[m$1.$0]:[];
-   }));
+   return LayoutEngineModule.getViewEntries(entries);
   })));
   ListModel$1.refreshLM(plg.plgActions,Arrays.ofSeq(Seq.delay(function()
   {
@@ -9130,7 +9176,7 @@ if (!console) {
       });
       break;
      case 3:
-      throw new MatchFailureException.New("D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\LayoutEngine\\src\\LayoutEngine.fs",2868,38);
+      throw new MatchFailureException.New("D:\\Abe\\CIPHERWorkspace\\FSharpStation\\projects\\LayoutEngine\\src\\LayoutEngine.fs",2907,38);
     }
     return $2;
   }
