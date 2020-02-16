@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:DLL -d:FSharpStation1577742742861 -d:TEE -d:WEBSHARPER
+////-d:DLL -d:FSharpStation1578472578279 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -24,7 +24,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1577742742861
+//#define FSharpStation1578472578279
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -538,6 +538,8 @@ namespace FsRoot
                     )
                 let contains     sub  (whole: string) = whole.Contains sub
                 let trim                  (s: string) = s.Trim()
+                let left  n (s:string) = s.Left  n
+                let right n (s:string) = s.Right n
                 let append     (a: string)(b: string) =  a + b
                 let skipFirstLine (txt:string) = txt.IndexOf '\n' |> fun i -> if i < 0 then "" else txt.[i + 1..]
                 let unindent (s:string) =
@@ -1076,15 +1078,15 @@ namespace FsRoot
                     <div ws-hole="MainClient"></div>
                     <div class="AppFrameworkGo"><button ws-onclick="GoClient">${MainDoc}</button></div>
                 </div>
-                <div ws-template="SplitterV1" class="versplitter" ws-attr="Attrs">
-                    <div style="min-width :Calc((100% - ${gap}) *        ${width}   / 100);max-width :Calc((100% - ${gap}) *        ${height}  / 100)">${doc1}</div>
-                    <div style="min-width :             ${gap}; ws-onmousedown="MouseDown" ></div>
-                    <div style="min-width :Calc((100% - ${gap}) * (100 - ${width} ) / 100);max-width :Calc((100% - ${gap}) * (100 - ${height}) / 100)">${doc2}</div>
+                <div ws-template="VSplitter1" class="versplitter" ws-attr="Attrs" vertical>
+                    <div style="min-width :Calc((100% - ${gap}) *        ${perc}  / 100);max-width :Calc((100% - ${gap}) *        ${perc}  / 100)">${doc1}</div>
+                    <div style="min-width :             ${gap}" ws-onmousedown="MouseDown" ></div>
+                    <div style="min-width :Calc((100% - ${gap}) * (100 - ${perc}) / 100);max-width :Calc((100% - ${gap}) * (100 - ${perc}) / 100)">${doc2}</div>
                 </div>
-                <div ws-template="SplitterH1" class="horsplitter" ws-attr="Attrs">
-                    <div style="min-height:Calc((100% - ${gap}) *        ${height}  / 100);max-height:Calc((100% - ${gap}) *        ${height}  / 100)">${doc1}</div>
+                <div ws-template="HSplitter1" class="horsplitter" ws-attr="Attrs">
+                    <div style="min-height:Calc((100% - ${gap}) *        ${perc}  / 100);max-height:Calc((100% - ${gap}) *        ${perc}  / 100)">${doc1}</div>
                     <div style="min-height:             ${gap}" ws-onmousedown="MouseDown" ></div>
-                    <div style="min-height:Calc((100% - ${gap}) * (100 - ${height}) / 100);max-height:Calc((100% - ${gap}) * (100 - ${height}) / 100)">${doc2}</div>
+                    <div style="min-height:Calc((100% - ${gap}) * (100 - ${perc}) / 100);max-height:Calc((100% - ${gap}) * (100 - ${perc}) / 100)">${doc2}</div>
                 </div>
                 <style>
                     .horsplitter                    { display: flex; flex-direction:column              } 
@@ -2312,13 +2314,9 @@ namespace FsRoot
                             )
                 let setVarDirect varN value = setVarDirect0(varN, value)
             
-                let draggingEvent vertical first (value: Var<string>) =
-                    let mutable dragging = false
-                    let mutable size    = 0.0
-                    let mutable padding = 0.0
-                    let mutable gap     = 0.0
-                    let mutable startP  = 0.0
-                    let mutable start   = 0.0
+                let draggingEvent first (value: Var<string>) (ev: Dom.MouseEvent) =
+                    let el : Dom.Element = ev?toElement
+                    let vertical = el.ParentElement.HasAttribute "vertical"
                     let getSize (el:Dom.Element) : float =
                         el.GetBoundingClientRect() 
                         |> fun r ->
@@ -2328,38 +2326,32 @@ namespace FsRoot
                                 | false, true  ->  r.Height
                                 | false, false -> -r.Height
                     let mouseCoord (ev: Dom.MouseEvent) = if vertical then float ev.ClientX else float ev.ClientY
-                    let drag       (ev: Dom.Event     ) =
+                    let startP   = value.Value |> ParseO.parseDoubleO |> Option.defaultValue 0.
+                    let start    = mouseCoord ev
+                    let gap      = getSize    el
+                    let size     = getSize    el.ParentElement
+                    let drag (ev: Dom.Event) =
                         ev :?> Dom.MouseEvent
                         |> mouseCoord
                         |> fun m   -> (m - start) * 100.0 / (size - gap) + startP
                         |> max 0. 
                         |> min 100.
                         |> string
-                        |> value.Set
-                        
+                        |> String.left 5
+                        |> fun v -> if value.Value <> v then value.Set v
                     let rec finishDragging (_: Dom.Event) =
-                        if  dragging then
-                            dragging <- false
-                            JS.Window.RemoveEventListener("mousemove", drag          , false) 
-                            JS.Window.RemoveEventListener("mouseup"  , finishDragging, false)
-                    fun (ev: Dom.MouseEvent) ->
-                        if not dragging then
-                            let el : Dom.Element = ev?toElement
-                            dragging <- true
-                            startP   <- value.Value |> ParseO.parseDoubleO |> Option.defaultValue 0.
-                            start    <- mouseCoord ev
-                            gap      <- getSize    el
-                            size     <- getSize    el.ParentElement
-                            JS.Window.AddEventListener("mousemove", drag          , false) 
-                            JS.Window.AddEventListener("mouseup"  , finishDragging, false) 
-                            ev.PreventDefault()
+                        JS.Window.RemoveEventListener("mousemove", drag          , false) 
+                        JS.Window.RemoveEventListener("mouseup"  , finishDragging, false)
+                    do  JS.Window.AddEventListener   ("mousemove", drag          , false) 
+                    do  JS.Window.AddEventListener   ("mouseup"  , finishDragging, false) 
+                    ev.PreventDefault()
             
                 let dragSplitter0 = 
                     depWithExtracts <| fun (extractAts, extractDoc, extractText) (varN, eventD:Dom.MouseEvent) ->
                         varN
                         |>  getParmRef
                         ||> tryGetVoV
-                        |>  Option.iter(fun var -> draggingEvent false true var eventD )
+                        |>  Option.iter(fun var -> draggingEvent true var eventD )
                 let dragSplitter varN eventD = dragSplitter0(unbox varN, unbox eventD)
             
                 let trigAct =
@@ -3553,7 +3545,7 @@ namespace FsRoot
                         |   Name name :: Docs                                      :: Nds    ns  -> entryDoc  name <| DcConcat  (ConcatDef                  ns      )
                         |   Name name :: Actions    ::                                ActRfs acs -> entryActs name <| ActDefs  acs
                         |   Name name :: Action     :: ActRf      act              :: Prs    ps  -> entryAct  name <| ActDef  ( act  , ps          )
-                        | [ Name name ;  Template   ;  Name tn; Ws w; Ds d; Vs v; Acs a; Pr att] -> entryDoc  name <| DcTemplate (templateDef tn att v w d a )
+                        | [ Name name ;  Template   ;  Name tn; Pr att; Ws w; Ds d; Vs v; Acs a] -> entryDoc  name <| DcTemplate (templateDef tn att v w d a )
                         |   Name name :: Elem elem  ::           Pr att            :: Nds    ns  -> entryDoc  name <| DcElement (ElementDef(elem , att   , ns ) )
                         | _                                                                      -> None
             
@@ -4305,18 +4297,26 @@ namespace FsRoot
                 let addNewLayoutAct (name:obj) (layout:obj) =
                     let name'   = if name   <> null                 then unbox name   else System.Guid.NewGuid() |> string |> fun s -> "Lyt_" + s.Replace("-", "")
                     let layout' = if layout <> null && name <> null then unbox layout else """
-                                        height Var "50"
-                                        width  Var "50"
+                                        perc  Var "50"
+                                        perc2 Var "50"
+                                        gap  Var "5px"
             
                                         Ask1 div "background:lightblue; height:100%"
-                                        : Doc AF.InputLabel "placeholder=Type you answer here..." "Answer1:" height
-                                        Ask2 div "background:pink;height:100%" "Hello"
-                                        : Doc AF.InputLabel "placeholder=Type you answer here..." "Answer2:" width
+                                        : Doc AF.InputLabel "placeholder=Type percentage here..." "Percentage (%):" perc
             
-                                        dragSplitter Action AF.DragSplitter "@{PlugInName}.height"
+                                        Ask2a div "background:pink; height:100%"
+                                        : Doc AF.InputLabel "placeholder=Type percentage here..." "Percentage (%):" perc2
+            
+                                        Ask2b div "background:lightgreen; height:100%"
+                                        : Doc AF.InputLabel "placeholder=Type gap here..." "Gap:" gap
+            
+                                        dragSplitter  Action AF.DragSplitter "@{PlugInName}.perc"
+                                        dragSplitter2 Action AF.DragSplitter "@{PlugInName}.perc2"
+            
+                                        Ask2 template HSplitter1 "height:100%" "gap:gap" "doc1: Ask2a; doc2:Ask2b" "perc:perc2" "MouseDown:dragSplitter2"
             
                                         main div ""
-                                        : template SplitterH1 "gap:""5px"" " "doc1: Ask1 ; doc2:Ask2" "height:height; width:width" "MouseDown:dragSplitter" ""
+                                        :    template VSplitter1  "height:100%" "gap:gap" "doc1: Ask1 ; doc2:Ask2 " "perc:perc " "MouseDown:dragSplitter "
             
                                         split horizontal 0-50-100 AppFramework.AppFwkClient main
                                     """ |> String.unindentStr
