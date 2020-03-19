@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:DLL -d:FSharpStation1578472578279 -d:TEE -d:WEBSHARPER
+////-d:DLL -d:FSharpStation1584484416768 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -24,7 +24,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1578472578279
+//#define FSharpStation1584484416768
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -253,18 +253,21 @@ namespace FsRoot
             
             
             /// returns a function that delays its execution
-            /// runs only once even if multiple calls happen before the delay
-            let delayed delay doF =
-                let cancellationTokenSourceO = ref None
+            /// cancels prior when multiple calls happen before the delay
+            let delayedA delay doF =
+                let mutable cancelTokenO = None
                 fun parm -> 
                     let asy = async {
                         do! Async.Sleep delay
-                        doF parm
+                        do! doF parm
                     } 
-                    !cancellationTokenSourceO |> Option.iter (fun (tokenSource:System.Threading.CancellationTokenSource) -> tokenSource.Cancel())
-                    cancellationTokenSourceO := Some <| new System.Threading.CancellationTokenSource()
-                    Async.Start(asy, cancellationToken = (!cancellationTokenSourceO).Value.Token)
+                    cancelTokenO |> Option.iter (fun (tokenSource: System.Threading.CancellationTokenSource) -> tokenSource.Cancel())
+                    cancelTokenO <- Some <| new System.Threading.CancellationTokenSource()
+                    Async.Start(asy, cancellationToken = cancelTokenO.Value.Token)
             
+            /// returns a function that delays its execution
+            /// cancels prior when multiple calls happen before the delay
+            let delayed delay doF = delayedA delay (doF >> async.Return)
             
             [< AutoOpen >]
             module Monads =
@@ -924,7 +927,7 @@ namespace FsRoot
                         #if DLL 
                         [< Inline """$global.FsRootDll.LibraryJS.WebComponent.WcTabStrip.WcTabStripT.New""" >] static member NewPointer = X<_>
                         #else
-                        [< Inline """$global.FsRoot.LibraryJS.WebComponent.WcTabStrip.WcTabStripT.New""" >] static member NewPointer = X<_>
+                        [< Inline """$global.FsRoot   .LibraryJS.WebComponent.WcTabStrip.WcTabStripT.New""" >] static member NewPointer = X<_>
                         #endif
                         static member Constructor() = 
                             let this = ReflectConstruct()
@@ -974,7 +977,7 @@ namespace FsRoot
                         #if DLL 
                         [< Inline """$global.FsRootDll.LibraryJS.WebComponent.WcSplitter.WcSplitterT.New""" >] static member NewPointer = X<_>
                         #else
-                        [< Inline """$global.FsRoot.LibraryJS.WebComponent.WcSplitter.WcSplitterT.New""" >] static member NewPointer = X<_>
+                        [< Inline """$global.FsRoot   .LibraryJS.WebComponent.WcSplitter.WcSplitterT.New""" >] static member NewPointer = X<_>
                         #endif
                         static member Constructor() = 
                             let this = ReflectConstruct()
@@ -1232,13 +1235,12 @@ namespace FsRoot
                                                     <First>
                                                         <div>
                                                             <div class="input-group">
-                                                                <span class="input-group-addon">name:</span>
                                                                 <span class="input-group-addon">${PlugInName}</span>
                                                             </div>
                                                         </div>
                                                     </First>
                                                     <Second>
-                                                        <div style="overflow:auto">
+                                                        <div style="overflow:auto; display:flex; flex-direction:column">
                                                             <div>
                                                                 <h3>Vars:</h3>
                                                                 <table style="overflow:auto;width:100%" class="table table-condensed table-striped">
@@ -2312,7 +2314,16 @@ namespace FsRoot
                                 unbox text
                                 |> var.Set
                             )
-                let setVarDirect varN value = setVarDirect0(varN, value)
+                let setVarDirect  varN value = setVarDirect0(varN, value)
+                let setVarDirectD varN value = delayed 100 (setVarDirect varN) value
+            
+                let getValDirect = 
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) (varN:string) ->
+                        varN
+                        |>  getParmRef
+                        ||> tryGetWoW
+                        |>  Option.bind View.TryGet
+                        |>  Option.defaultValue null
             
                 let draggingEvent first (value: Var<string>) (ev: Dom.MouseEvent) =
                     let el : Dom.Element = ev?toElement
@@ -2387,6 +2398,18 @@ namespace FsRoot
             
                 let callAction actN p1 p2 = callAction0 actN p1 p2
             
+                let delayAction =
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) delay actN ->
+                        getParmRef (unbox actN)
+                        ||> tryGetAct 
+                        |> Option.iter(fun a -> 
+                            async {
+                                let! d = extractText (unbox delay) |> View.GetAsync
+                                do! Async.Sleep (ParseO.parseIntO d |> Option.defaultValue 100)
+                                callFunction () () a.actFunction
+                            } |> Async.Start
+                        )
+            
                 let select =
                     depWithExtracts <| fun (extractAts, extractDoc, extractText) attrs none vals ->
                         docWithVar (fun var ->
@@ -2407,6 +2430,14 @@ namespace FsRoot
                     |> p.plgViews.Append
                     plugIns.Add p
             
+                let splitterPerc =
+                    depWithExtracts <| fun (extractAts, extractDoc, extractText) template attrs doc1 doc2 ->
+                        docWithVar (fun var -> 
+                            Html.div (extractAts attrs) [
+                                docReference doc1
+                                docReference doc2
+                            ]
+                        )
                 if IsClient then
                     plugin { 
                         plgName  "AppFramework" 
@@ -2424,10 +2455,12 @@ namespace FsRoot
                         plgDoc2  "TextArea"      textArea      "Attrs"                  "Var"
                         plgDoc4  "Select"        select        "Attrs"    "None" "Vals" "Var"
                         plgDoc3  "InputFile"     inputFile     "Attrs"    "Label" "Action"
-                        plgDoc3  "InputLabel"    inputLabel    "Attrs"    "Label" "Var"
-                        //plgDoc5  "SplitPerc"     splitterPrc   "doc1"     "doc2" "Var" "min" "max" "vertical"
+                        plgDoc3  "InputLabel"    inputLabel    "Attrs"    "Label"       "Var"
+                        plgDoc5  "SplitterPerc"  splitterPerc  "Template" "Attrs" "doc1" "doc2" "Var"
                         plgAct2  "SetVar"        setVar        "Var"      "Value"
                         plgAct2  "SetVarDirect"  setVarDirect  "Var"      "from"
+                        plgAct2  "SetVarDirectD" setVarDirectD "Var"      "from"
+                        plgAct2  "DelayAction"   delayAction   "delay"    "Äction"
                         plgAct   "Hello"         (fun () -> JS.Window.Alert "Hello!")
                         plgAct2  "DragSplitter"  dragSplitter  "Var"      "dragEvent"
                         plgQuery "getDocNames"   (fun (_:obj) -> plugIns.Value |> Seq.collect (fun plg -> plg.plgDocs |> Seq.map (fun doc -> plg.plgName.Id + "." + doc.docName.Id)) |> Seq.toArray |> box)

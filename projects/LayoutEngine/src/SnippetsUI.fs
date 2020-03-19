@@ -1,6 +1,6 @@
 #nowarn "3242"
 #nowarn "42"
-////-d:DLL -d:FSharpStation1576598175747 -d:WEBSHARPER
+////-d:DLL -d:FSharpStation1584484416768 -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -27,7 +27,7 @@
 //#nowarn "3242"
 //#nowarn "42"
 /// Root namespace for all code
-//#define FSharpStation1576598175747
+//#define FSharpStation1584484416768
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -1119,7 +1119,7 @@ namespace FsRoot
                 let parseW =
                     currentSnippetContentV.View
                     |> View.Map (
-                        LE.parseEntries "lytTarget"
+                        LE.parseEntries (AF.PlugInName "lytTarget")
                         >> Seq.choose (function Error msg -> Some msg |_-> None)
                         >> String.concat "\n"
                     )

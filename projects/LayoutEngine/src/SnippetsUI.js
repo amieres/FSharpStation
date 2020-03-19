@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRootDll,Library,UoM,Unsafe,Dict,Monads,Seq,Option,ParseO,Serializer,JsonIntermediate,Snippet,SnippetModule,SnippetSerialize,Model,LibraryJS,View,Serializer$1,Util,DragDrop,DragInfo,SnippetsUI,SnippetHierData,SaveLoad,SC$1,SnippetsUI_Templates,WebSharper,Seq$1,Arrays,List,Unchecked,Collections,FSharpMap,IntelliFactory,Runtime,Utils,FSharpSet,BalancedTree,Strings,Operators,Option$1,System,Guid,Date,UI,View$1,JSON,Var$1,Doc,FromView,AttrModule,Concurrency,JavaScript,Promise,console,Slice,Templating,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,Dictionary,Enumerator,LayoutEngineModule,DateUtil,Numeric,ListModel,LM,AppFramework,Client,Templates;
+ var Global,FsRootDll,Library,UoM,Unsafe,Dict,Monads,Seq,Option,ParseO,Serializer,JsonIntermediate,Snippet,SnippetModule,SnippetSerialize,Model,LibraryJS,View,Serializer$1,Util,DragDrop,DragInfo,SnippetsUI,SnippetHierData,SaveLoad,SC$1,SnippetsUI_Templates,WebSharper,Seq$1,Arrays,List,Unchecked,Collections,FSharpMap,IntelliFactory,Runtime,Utils,FSharpSet,BalancedTree,Strings,Operators,Option$1,System,Guid,Date,UI,View$1,JSON,Var$1,Doc,FromView,AttrModule,Concurrency,JavaScript,Promise,console,Slice,Templating,Runtime$1,Server,ProviderBuilder,Handler,TemplateInstance,Dictionary,Enumerator,DateUtil,Numeric,ListModel,LM,AppFramework,LayoutEngineModule,Client,Templates;
  Global=self;
  FsRootDll=Global.FsRootDll=Global.FsRootDll||{};
  Library=FsRootDll.Library=FsRootDll.Library||{};
@@ -67,12 +67,12 @@
  TemplateInstance=Server&&Server.TemplateInstance;
  Dictionary=Collections&&Collections.Dictionary;
  Enumerator=WebSharper&&WebSharper.Enumerator;
- LayoutEngineModule=LibraryJS&&LibraryJS.LayoutEngineModule;
  DateUtil=WebSharper&&WebSharper.DateUtil;
  Numeric=WebSharper&&WebSharper.Numeric;
  ListModel=UI&&UI.ListModel;
  LM=LibraryJS&&LibraryJS.LM;
  AppFramework=LibraryJS&&LibraryJS.AppFramework;
+ LayoutEngineModule=LibraryJS&&LibraryJS.LayoutEngineModule;
  Client=UI&&UI.Client;
  Templates=Client&&Client.Templates;
  Unsafe.cast=Global.id;
@@ -2374,9 +2374,9 @@
  };
  SC$1.$cctor=function()
  {
-  var g,t,s,x,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,t$9,t$10,t$11,i,x$1,t$12,t$13,t$14,t$15,t$16,t$17,i$1,v,prior,b,b$1,propsV,b$2,f,g$1,b$3,a,f$1,g$2;
+  var g,t,s,x,t$1,t$2,t$3,t$4,t$5,t$6,t$7,t$8,t$9,t$10,t$11,i,x$1,t$12,t$13,t$14,t$15,t$16,t$17,i$1,v,prior,b,b$1,propsV,b$2,x$2,f,f$1,l,g$1,b$3,a,f$2,g$2;
   SC$1.$cctor=Global.ignore;
-  function f$2(s$1)
+  function f$3(s$1)
   {
    return s$1+"T00:00:00";
   }
@@ -2387,10 +2387,6 @@
   function t$19(a$1)
   {
    return SnippetsUI.snippetsLM().TryFindByKey(a$1);
-  }
-  function f$3(t$20)
-  {
-   return LayoutEngineModule.parseEntries("lytTarget",t$20);
   }
   function c(a$1)
   {
@@ -2412,9 +2408,9 @@
    var o,m;
    o=0;
    return[(m=DateUtil.TryParse(a$1),m!=null&&m.$==1&&(o=m.$0,true)),o];
-  }),function(x$2)
+  }),function(x$3)
   {
-   return g(f$2(x$2));
+   return g(f$3(x$3));
   });
   SC$1.parseDateO=ParseO.tryParseWith$1(function(a$1)
   {
@@ -2537,9 +2533,9 @@
   {
    return j.tryBool();
   }];
-  SC$1.serDate=[function(x$2)
+  SC$1.serDate=[function(x$3)
   {
-   return Global.String(Global.id(x$2));
+   return Global.String(Global.id(x$3));
   },function(j)
   {
    var o;
@@ -2554,12 +2550,12 @@
   SC$1.defaultSnippet=Snippet.New("00000000-0000-0000-0000-000000000000","","",null,new FSharpSet.New$1(null),[],(new Date(0)).getTime());
   SC$1.serSnippetId=(s="SnippetId",[function(gid)
   {
-   var x$2;
-   x$2=Global.String(gid);
+   var x$3;
+   x$3=Global.String(gid);
    return(((Runtime.Curried3(function($1,$2,$3)
    {
     return $1("{"+Utils.prettyPrint($2)+" :"+Utils.prettyPrint($3)+"}");
-   }))(Global.id))(s))(x$2);
+   }))(Global.id))(s))(x$3);
   },function(j)
   {
    var o,o$1,o$2,f$4;
@@ -2619,21 +2615,21 @@
    return Snippet.New(s$1.snpId,s$1.snpName,s$1.snpContent,s$1.snpParentIdO,s$1.snpPredIds,s$1.snpProperties,v$1);
   },t$11[0],t$11[1]))],(i=SnippetModule.New("","",null),[function(rc)
   {
-   var x$2;
+   var x$3;
    function c$1(n,ser,_deser)
    {
-    var x$3,m;
-    x$3=ser(rc);
+    var x$4,m;
+    x$4=ser(rc);
     m=((Runtime.Curried3(function($1,$2,$3)
     {
      return $1(Utils.prettyPrint($2)+": "+Utils.toSafe($3));
     }))(Global.id))(n);
-    return x$3==null?null:{
+    return x$4==null?null:{
      $:1,
-     $0:m(x$3.$0)
+     $0:m(x$4.$0)
     };
    }
-   x$2=Strings.concat(", ",Seq$1.choose(function($1)
+   x$3=Strings.concat(", ",Seq$1.choose(function($1)
    {
     return c$1($1[0],$1[1],$1[2]);
    },x));
@@ -2643,16 +2639,16 @@
     {
      return $1("{"+Utils.toSafe($2)+"}");
     };
-   }(Global.id))(x$2);
+   }(Global.id))(x$3);
   },function(j)
   {
    return{
     $:1,
     $0:Seq$1.fold(function(rc,t$20)
     {
-     var x$2;
-     x$2=j.tryField(t$20[0]);
-     return(t$20[2](rc))(x$2);
+     var x$3;
+     x$3=j.tryField(t$20[0]);
+     return(t$20[2](rc))(x$3);
     },i,x)
    };
   }]));
@@ -2682,21 +2678,21 @@
    return Model.New(m.snippets,m.modified,v$1);
   },t$16[0],t$16[1]))],(i$1=Model.New([],(new Date(0)).getTime(),new FSharpSet.New$1(null)),[function(rc)
   {
-   var x$2;
+   var x$3;
    function c$1(n,ser,_deser)
    {
-    var x$3,m;
-    x$3=ser(rc);
+    var x$4,m;
+    x$4=ser(rc);
     m=((Runtime.Curried3(function($1,$2,$3)
     {
      return $1(Utils.prettyPrint($2)+": "+Utils.toSafe($3));
     }))(Global.id))(n);
-    return x$3==null?null:{
+    return x$4==null?null:{
      $:1,
-     $0:m(x$3.$0)
+     $0:m(x$4.$0)
     };
    }
-   x$2=Strings.concat(", ",Seq$1.choose(function($1)
+   x$3=Strings.concat(", ",Seq$1.choose(function($1)
    {
     return c$1($1[0],$1[1],$1[2]);
    },x$1));
@@ -2706,16 +2702,16 @@
     {
      return $1("{"+Utils.toSafe($2)+"}");
     };
-   }(Global.id))(x$2);
+   }(Global.id))(x$3);
   },function(j)
   {
    return{
     $:1,
     $0:Seq$1.fold(function(rc,t$20)
     {
-     var x$2;
-     x$2=j.tryField(t$20[0]);
-     return(t$20[2](rc))(x$2);
+     var x$3;
+     x$3=j.tryField(t$20[0]);
+     return(t$20[2](rc))(x$3);
     },i$1,x$1)
    };
   }]));
@@ -2822,9 +2818,9 @@
   },{
    $:1,
    $0:SnippetsUI.search()
-  },function(l)
+  },function(l$1)
   {
-   return SnippetsUI.calcUI(SnippetsUI.wrapNothing,true,l);
+   return SnippetsUI.calcUI(SnippetsUI.wrapNothing,true,l$1);
   });
   View$1.Sink(function(a$1)
   {
@@ -2846,9 +2842,9 @@
      },SnippetsUI.allCodePredIdsW());
     }
   },SnippetsUI.snippetList().selV.get_View());
-  SC$1.currentSnippetV=Var$1.Lens(SnippetsUI.snippetList().get_CurrentV(),Global.id,function(a$1,x$2)
+  SC$1.currentSnippetV=Var$1.Lens(SnippetsUI.snippetList().get_CurrentV(),Global.id,function(a$1,x$3)
   {
-   return x$2;
+   return x$3;
   });
   SC$1.currentSnippetNameV=Var$1.Lens(SnippetsUI.currentSnippetV(),function($1)
   {
@@ -2953,25 +2949,31 @@
    };
    return o==null?"":o.$0;
   },SnippetsUI.nextSnpW());
-  SC$1.parseW=View$1.Map((f=(g$1=function(s$1)
+  SC$1.parseW=(x$2=SnippetsUI.currentSnippetContentV().get_View(),View$1.Map((f=(f$1=(l=new AppFramework.PlugInName({
+   $:0,
+   $0:"lytTarget"
+  }),function(t$20)
+  {
+   return LayoutEngineModule.parseEntries(l,t$20);
+  }),(g$1=function(s$1)
   {
    return Seq$1.choose(c,s$1);
-  },function(x$2)
+  },function(x$3)
   {
-   return g$1(f$3(x$2));
-  }),function(x$2)
+   return g$1(f$1(x$3));
+  })),function(x$3)
   {
-   return g$3(f(x$2));
-  }),SnippetsUI.currentSnippetContentV().get_View());
-  SC$1.plugInAdded=AppFramework.addPlugIn((b$3=AppFramework.plugin(),b$3.AddAct(b$3.AddAct(b$3.AddAct(b$3.AddAct(b$3.AddAct(b$3.AddAct(b$3.Merge(b$3.Merge(b$3.AddViw(b$3.AddViw(b$3.AddViw(b$3.AddViw(b$3.AddViw(b$3.AddVar(b$3.Name(b$3.Yield(),"Snippets"),"searchFor",SnippetsUI.searchFor()),"parseOut",SnippetsUI.parseW()),"prevSel",SnippetsUI.prevSelW()),"nextSel",SnippetsUI.nextSelW()),"prevTxt",SnippetsUI.prevTxtW()),"nextTxt",SnippetsUI.nextTxtW()),"snippets_",(a=(f$1=ParseO.parseGuidO$1(),(g$2=function(o)
+   return g$3(f(x$3));
+  }),x$2));
+  SC$1.plugInAdded=AppFramework.addPlugIn((b$3=AppFramework.plugin(),b$3.AddAct(b$3.AddAct(b$3.AddAct(b$3.AddAct(b$3.AddAct(b$3.AddAct(b$3.Merge(b$3.Merge(b$3.AddViw(b$3.AddViw(b$3.AddViw(b$3.AddViw(b$3.AddViw(b$3.AddVar(b$3.Name(b$3.Yield(),"Snippets"),"searchFor",SnippetsUI.searchFor()),"parseOut",SnippetsUI.parseW()),"prevSel",SnippetsUI.prevSelW()),"nextSel",SnippetsUI.nextSelW()),"prevTxt",SnippetsUI.prevTxtW()),"nextTxt",SnippetsUI.nextTxtW()),"snippets_",(a=(f$2=ParseO.parseGuidO$1(),(g$2=function(o)
   {
    return o==null?null:{
     $:1,
     $0:Global.id(o.$0)
    };
-  },function(x$2)
+  },function(x$3)
   {
-   return g$2(f$1(x$2));
+   return g$2(f$2(x$3));
   })),SnippetsUI.snippetList().PlugIn(a,Global.String))),"curSnp_",SnippetsUI.curSnp()),"LoadSnippets",function()
   {
    SaveLoad.loadTextFile(self.document.getElementById("LoadSnippets").firstElementChild.firstElementChild.firstElementChild.firstElementChild);
