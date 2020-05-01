@@ -14,6 +14,7 @@ nuget Websharper.UI	     = 4.5.1.141
 nuget Websharper.Owin
 nuget WebSharper.Owin.WebSocket
 nuget WebSharper.Moment
+nuget WebSharper.Data
 nuget Microsoft.Owin
 nuget Owin.Compression
 nuget Microsoft.AspNet.SignalR.SelfHost
@@ -69,7 +70,6 @@ group Testing
     nuget Logary.Adapters.Facade
     nuget canopy
     nuget Http.fs
-    nuget ExcelProvider
 
 group Other
     framework: net461, net46
@@ -85,6 +85,7 @@ group Other
     nuget Microsoft.Azure.WebJobs.Core
     nuget SendGrid
     nuget Microsoft.IdentityModel.Clients.ActiveDirectory
+    nuget FSharp.ComProvider
 
 group Test
     framework: netstandard2.0, netcoreapp2.1

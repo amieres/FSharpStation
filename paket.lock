@@ -21,9 +21,8 @@ NUGET
       FSharp.Core (>= 4.2.3)
       System.Reactive (>= 4.0)
     FSharp.Core (4.6.2)
-    FSharp.Data (3.0)
-      FSharp.Core (>= 4.0.0.1) - restriction: || (== net461) (&& (== netstandard2.0) (>= net45))
-      FSharp.Core (>= 4.3.4) - restriction: || (&& (== net461) (< net45) (>= netstandard2.0)) (== netstandard2.0)
+    FSharp.Data (2.4.6)
+      Zlib.Portable (>= 1.11) - restriction: || (&& (== net461) (< net40)) (== netstandard2.0)
     FSharp.Formatting (2.14.4)
       FSharp.Compiler.Service (2.0.0.6)
       FSharpVSPowerTools.Core (>= 2.3 < 2.4)
@@ -1010,6 +1009,9 @@ NUGET
       System.Xml.XmlDocument (>= 4.3)
       System.Xml.XPath (>= 4.3)
     WebSharper (4.5.1.304)
+    WebSharper.Data (4.5.1.192)
+      FSharp.Data (>= 2.4.6 < 2.5)
+      WebSharper (>= 4.5.1 < 4.6)
     WebSharper.FSharp (4.5.1.304)
       WebSharper (4.5.1.304)
     WebSharper.Moment (4.5.0.124)
@@ -1028,6 +1030,7 @@ NUGET
       HtmlAgilityPack (>= 1.7.1)
       System.Xml.XDocument (>= 4.3)
       WebSharper (>= 4.5.1 < 4.6)
+    Zlib.Portable (1.11) - restriction: || (&& (== net461) (< net40)) (== netstandard2.0)
 
 GROUP FSharp47
 RESTRICTION: || (== net461) (== netstandard2.0)
@@ -1040,6 +1043,7 @@ RESTRICTION: || (== net46) (== net461)
 NUGET
   remote: https://www.nuget.org/api/v2
     AuthorizeNet (2.0)
+    FSharp.ComProvider (1.0.0-pre1)
     FSharp.Core (4.5.4)
     FSharp.Data.SqlClient (2.0.2)
       FSharp.Core (>= 4.1.18)
@@ -4987,14 +4991,6 @@ NUGET
       System.Reflection.TypeExtensions (>= 4.3) - restriction: || (&& (== net461) (< net35)) (== netstandard2.0)
       System.Xml.XmlDocument (>= 4.3) - restriction: || (&& (== net461) (< net35)) (== netstandard2.0)
     CommandLineParser (2.4.3) - restriction: || (== net461) (&& (== netstandard2.0) (>= net461)) (&& (== netstandard2.0) (>= netcoreapp2.0))
-    ExcelDataReader (3.6) - restriction: == net461
-    ExcelDataReader.DataSet (3.6) - restriction: == net461
-      ExcelDataReader (>= 3.6)
-    ExcelProvider (1.0.1)
-      ExcelDataReader (>= 3.4.1) - restriction: == net461
-      ExcelDataReader.DataSet (>= 3.4.1) - restriction: == net461
-      FSharp.Core (>= 4.1.17) - restriction: == net461
-      System.Text.Encoding.CodePages (>= 4.5) - restriction: || (&& (== net461) (>= netstandard2.0)) (== netstandard2.0)
     Expecto (8.7)
       Argu (>= 5.2)
       Mono.Cecil (>= 0.10.1)
@@ -5414,7 +5410,7 @@ NUGET
       Microsoft.NETCore.Platforms (>= 1.1) - restriction: || (&& (== net461) (< net45)) (&& (== net461) (< portable-net45+win8+wp8+wpa81)) (== netstandard2.0)
       Microsoft.NETCore.Targets (>= 1.1) - restriction: || (&& (== net461) (< net45)) (&& (== net461) (< portable-net45+win8+wp8+wpa81)) (== netstandard2.0)
       System.Runtime (>= 4.3) - restriction: || (&& (== net461) (< net45)) (&& (== net461) (< portable-net45+win8+wp8+wpa81)) (== netstandard2.0)
-    System.Text.Encoding.CodePages (4.5.1)
+    System.Text.Encoding.CodePages (4.5.1) - restriction: || (== net461) (&& (== netstandard2.0) (>= net461)) (&& (== netstandard2.0) (>= netcoreapp2.0))
       System.Runtime.CompilerServices.Unsafe (>= 4.5.2)
     System.Text.Encoding.Extensions (4.3)
     System.Text.RegularExpressions (4.3) - restriction: || (&& (== net461) (< net35)) (== netstandard2.0)

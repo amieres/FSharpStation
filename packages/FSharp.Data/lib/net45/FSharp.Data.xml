@@ -2,7 +2,7 @@
 <doc>
 <assembly><name>FSharp.Data</name></assembly>
 <members>
-<member name="M:FSharp.Data.Http.RequestString(System.String,Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Data.HttpRequestBody},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Core.FSharpFunc{System.Net.HttpWebRequest,System.Net.HttpWebRequest}},Microsoft.FSharp.Core.FSharpOption{System.Int32})">
+<member name="M:FSharp.Data.Http.RequestString(System.String,Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Data.HttpRequestBody},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Core.FSharpFunc{System.Net.HttpWebRequest,System.Net.HttpWebRequest}},Microsoft.FSharp.Core.FSharpOption{System.Int32})">
 <summary>
  Download an HTTP web resource from the specified URL synchronously
  (allows specifying query string parameters and HTTP headers including
@@ -11,7 +11,7 @@
  that will be encoded, and the method will automatically be set if not specified
 </summary>
 </member>
-<member name="M:FSharp.Data.Http.RequestStream(System.String,Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Data.HttpRequestBody},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Core.FSharpFunc{System.Net.HttpWebRequest,System.Net.HttpWebRequest}},Microsoft.FSharp.Core.FSharpOption{System.Int32})">
+<member name="M:FSharp.Data.Http.RequestStream(System.String,Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Data.HttpRequestBody},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Core.FSharpFunc{System.Net.HttpWebRequest,System.Net.HttpWebRequest}},Microsoft.FSharp.Core.FSharpOption{System.Int32})">
 <summary>
  Download an HTTP web resource from the specified URL synchronously
  (allows specifying query string parameters and HTTP headers including
@@ -20,7 +20,7 @@
  that will be encoded, and the method will automatically be set if not specified
 </summary>
 </member>
-<member name="M:FSharp.Data.Http.Request(System.String,Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Data.HttpRequestBody},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Core.FSharpFunc{System.Net.HttpWebRequest,System.Net.HttpWebRequest}},Microsoft.FSharp.Core.FSharpOption{System.Int32})">
+<member name="M:FSharp.Data.Http.Request(System.String,Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Data.HttpRequestBody},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Core.FSharpFunc{System.Net.HttpWebRequest,System.Net.HttpWebRequest}},Microsoft.FSharp.Core.FSharpOption{System.Int32})">
 <summary>
  Download an HTTP web resource from the specified URL synchronously
  (allows specifying query string parameters and HTTP headers including
@@ -36,7 +36,7 @@
  and https://msdn.microsoft.com/en-us/library/system.uri.escapedatastring(v=vs.110).aspx
 </summary>
 </member>
-<member name="M:FSharp.Data.Http.AsyncRequestString(System.String,Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Data.HttpRequestBody},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Core.FSharpFunc{System.Net.HttpWebRequest,System.Net.HttpWebRequest}},Microsoft.FSharp.Core.FSharpOption{System.Int32})">
+<member name="M:FSharp.Data.Http.AsyncRequestString(System.String,Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Data.HttpRequestBody},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Core.FSharpFunc{System.Net.HttpWebRequest,System.Net.HttpWebRequest}},Microsoft.FSharp.Core.FSharpOption{System.Int32})">
 <summary>
  Download an HTTP web resource from the specified URL asynchronously
  (allows specifying query string parameters and HTTP headers including
@@ -45,16 +45,16 @@
  that will be encoded, and the method will automatically be set if not specified
 </summary>
 </member>
-<member name="M:FSharp.Data.Http.AsyncRequestStream(System.String,Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Data.HttpRequestBody},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Core.FSharpFunc{System.Net.HttpWebRequest,System.Net.HttpWebRequest}},Microsoft.FSharp.Core.FSharpOption{System.Int32})">
+<member name="M:FSharp.Data.Http.AsyncRequestStream(System.String,Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Data.HttpRequestBody},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Core.FSharpFunc{System.Net.HttpWebRequest,System.Net.HttpWebRequest}},Microsoft.FSharp.Core.FSharpOption{System.Int32})">
 <summary>
- Download an HTTP web resource from the specified URL asynchronously
+ Download an HTTP web resource from the specified URL synchronously
  (allows specifying query string parameters and HTTP headers including
  headers that have to be handled specially - such as Accept, Content-Type &amp; Referer)
  The body for POST request can be specified either as text or as a list of parameters
  that will be encoded, and the method will automatically be set if not specified
 </summary>
 </member>
-<member name="M:FSharp.Data.Http.AsyncRequest(System.String,Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Data.HttpRequestBody},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Core.FSharpFunc{System.Net.HttpWebRequest,System.Net.HttpWebRequest}},Microsoft.FSharp.Core.FSharpOption{System.Int32})">
+<member name="M:FSharp.Data.Http.AsyncRequest(System.String,Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{FSharp.Data.HttpRequestBody},Microsoft.FSharp.Core.FSharpOption{System.Collections.Generic.IEnumerable{System.Tuple{System.String,System.String}}},Microsoft.FSharp.Core.FSharpOption{System.Net.CookieContainer},Microsoft.FSharp.Core.FSharpOption{System.Boolean},Microsoft.FSharp.Core.FSharpOption{System.String},Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Core.FSharpFunc{System.Net.HttpWebRequest,System.Net.HttpWebRequest}},Microsoft.FSharp.Core.FSharpOption{System.Int32})">
 <summary>
  Download an HTTP web resource from the specified URL asynchronously
  (allows specifying query string parameters and HTTP headers including
@@ -158,7 +158,7 @@
 </member>
 <member name="T:FSharp.Data.TextConversions">
 <summary>
- Conversions from string to string/int/int64/decimal/float/boolean/datetime/timespan/guid options
+ Conversions from string to string/int/int64/decimal/float/boolean/datetime/guid options
 </summary>
 </member>
 <member name="P:FSharp.Data.JsonValue._Print">
@@ -171,7 +171,7 @@
  Serializes the JsonValue to the specified System.IO.TextWriter.
 </summary>
 </member>
-<member name="M:FSharp.Data.JsonValue.TryParse(System.String)">
+<member name="M:FSharp.Data.JsonValue.TryParse(System.String,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
 <summary>
  Attempts to parse the specified JSON string
 </summary>
@@ -186,32 +186,37 @@
  Sends the JSON to the specified URL synchronously. Defaults to a POST request.
 </summary>
 </member>
-<member name="M:FSharp.Data.JsonValue.ParseMultiple(System.String)">
+<member name="M:FSharp.Data.JsonValue.ParseSample(System.String,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
+<summary>
+ Parses the specified JSON string, tolerating invalid errors like trailing commans, and ignore content with elipsis ... or {...}
+</summary>
+</member>
+<member name="M:FSharp.Data.JsonValue.ParseMultiple(System.String,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
 <summary>
  Parses the specified string into multiple JSON values
 </summary>
 </member>
-<member name="M:FSharp.Data.JsonValue.Parse(System.String)">
+<member name="M:FSharp.Data.JsonValue.Parse(System.String,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
 <summary>
  Parses the specified JSON string
 </summary>
 </member>
-<member name="M:FSharp.Data.JsonValue.Load(System.String,Microsoft.FSharp.Core.FSharpOption{System.Text.Encoding})">
+<member name="M:FSharp.Data.JsonValue.Load(System.String,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo},Microsoft.FSharp.Core.FSharpOption{System.Text.Encoding})">
 <summary>
  Loads JSON from the specified uri
 </summary>
 </member>
-<member name="M:FSharp.Data.JsonValue.Load(System.IO.TextReader)">
+<member name="M:FSharp.Data.JsonValue.Load(System.IO.TextReader,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
 <summary>
  Loads JSON from the specified reader
 </summary>
 </member>
-<member name="M:FSharp.Data.JsonValue.Load(System.IO.Stream)">
+<member name="M:FSharp.Data.JsonValue.Load(System.IO.Stream,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
 <summary>
  Loads JSON from the specified stream
 </summary>
 </member>
-<member name="M:FSharp.Data.JsonValue.AsyncLoad(System.String,Microsoft.FSharp.Core.FSharpOption{System.Text.Encoding})">
+<member name="M:FSharp.Data.JsonValue.AsyncLoad(System.String,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo},Microsoft.FSharp.Core.FSharpOption{System.Text.Encoding})">
 <summary>
  Loads JSON from the specified uri asynchronously
 </summary>
@@ -275,12 +280,6 @@
  Get all the elements of a JSON value (assuming that the value is an array)
 </summary>
 </member>
-<member name="M:FSharp.Data.JsonExtensions.AsTimeSpan(FSharp.Data.JsonValue,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
-<summary>
- Get the timespan value of an element (assuming that the value is a string
- containing well-formed time span)
-</summary>
-</member>
 <member name="M:FSharp.Data.JsonExtensions.AsString(FSharp.Data.JsonValue,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
 <summary>
  Get the string value of an element (assuming that the value is a scalar)
@@ -310,12 +309,6 @@
 <member name="M:FSharp.Data.JsonExtensions.AsDecimal(FSharp.Data.JsonValue,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
 <summary>
  Get a number as a decimal (assuming that the value fits in decimal)
-</summary>
-</member>
-<member name="M:FSharp.Data.JsonExtensions.AsDateTimeOffset(FSharp.Data.JsonValue,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
-<summary>
- Get the datetime offset value of an element (assuming that the value is a string
- containing well-formed ISO date time with offset or MSFT JSON datetime with offset)
 </summary>
 </member>
 <member name="M:FSharp.Data.JsonExtensions.AsDateTime(FSharp.Data.JsonValue,Microsoft.FSharp.Core.FSharpOption{System.Globalization.CultureInfo})">
@@ -1088,11 +1081,6 @@
  multipart/form-data
 </summary>
 </member>
-<member name="P:FSharp.Data.HttpContentTypes.JsonRpc">
-<summary>
- application/json-rpc
-</summary>
-</member>
 <member name="P:FSharp.Data.HttpContentTypes.Csv">
 <summary>
  text/csv
@@ -1176,316 +1164,6 @@
 <member name="T:FSharp.Data.HttpContentTypes">
 <summary>
  Constants for common HTTP content types
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.NetworkAuthenticationRequired">
-<summary>
- The client needs to authenticate to gain network access.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.NotExtended">
-<summary>
- Further extensions to the request are required for the server to fulfil it.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.LoopDetected">
-<summary>
- The server detected an infinite loop while processing the request.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.InsufficientStorage">
-<summary>
- The server is unable to store the representation needed to complete the request.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.VariantAlsoNegotiates">
-<summary>
- Transparent content negotiation for the request results in a circular reference.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.HTTPVersionNotSupported">
-<summary>
- The server does not support the HTTP protocol version used in the request.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.GatewayTimeout">
-<summary>
- The server was acting as a gateway or proxy and did not receive a timely response from the upstream server.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.ServiceUnavailable">
-<summary>
- The server is currently unavailable (because it is overloaded or down for maintenance).
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.BadGateway">
-<summary>
- The server was acting as a gateway or proxy and received an invalid response from the upstream server.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.NotImplemented">
-<summary>
- The server either does not recognize the request method, or it lacks the ability to fulfil the request. 
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.InternalServerError">
-<summary>
- A generic error message, given when an unexpected condition was encountered and no more specific message is suitable.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.UnavailableForLegalReasons">
-<summary>
- A server operator has received a legal demand to deny access to a resource or to a set of resources that includes the requested resource.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.RequestHeaderFieldsTooLarge">
-<summary>
- The server is unwilling to process the request because either an individual header field, or all the header fields collectively, are too large.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.TooManyRequests">
-<summary>
- The user has sent too many requests in a given amount of time.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.PreconditionRequired">
-<summary>
- The origin server requires the request to be conditional.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.UpgradeRequired">
-<summary>
- The client should switch to a different protocol such as TLS/1.0, given in the Upgrade header field.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.FailedDependency">
-<summary>
- The request failed because it depended on another request and that request failed (e.g., a PROPPATCH).
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.Locked">
-<summary>
- The resource that is being accessed is locked.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.UnprocessableEntity">
-<summary>
- The request was well-formed but was unable to be followed due to semantic errors.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.MisdirectedRequest">
-<summary>
- The request was directed at a server that is not able to produce a response.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.ExpectationFailed">
-<summary>
- The server cannot meet the requirements of the Expect request-header field.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.RangeNotSatisfiable">
-<summary>
- The client has asked for a portion of the file (byte serving), but the server cannot supply that portion.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.UnsupportedMediaType">
-<summary>
- The request entity has a media type which the server or resource does not support.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.URITooLong">
-<summary>
- The URI provided was too long for the server to process.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.PayloadTooLarge">
-<summary>
- The request is larger than the server is willing or able to process.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.PreconditionFailed">
-<summary>
- The server does not meet one of the preconditions that the requester put on the request.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.LengthRequired">
-<summary>
- The request did not specify the length of its content, which is required by the requested resource.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.Gone">
-<summary>
- Indicates that the resource requested is no longer available and will not be available again.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.Conflict">
-<summary>
- Indicates that the request could not be processed because of conflict in the request, such as an edit conflict between multiple simultaneous updates.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.RequestTimeout">
-<summary>
- The server timed out waiting for the request.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.ProxyAuthenticationRequired">
-<summary>
- The client must first authenticate itself with the proxy.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.NotAcceptable">
-<summary>
- The requested resource is capable of generating only content not acceptable according to the Accept headers sent in the request.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.MethodNotAllowed">
-<summary>
- A request method is not supported for the requested resource.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.NotFound">
-<summary>
- The requested resource could not be found but may be available in the future. Subsequent requests by the client are permissible.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.Forbidden">
-<summary>
- The request was valid, but the server is refusing action. The user might not have the necessary permissions for a resource, or may need an account of some sort.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.PaymentRequired">
-<summary>
- Reserved for future use. 
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.Unauthorized">
-<summary>
- Similar to 403 Forbidden, but specifically for use when authentication is required and has failed or has not yet been provided.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.BadRequest">
-<summary>
- The server cannot or will not process the request due to an apparent client error.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.PermanentRedirect">
-<summary>
- The request and all future requests should be repeated using another URI. 
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.TemporaryRedirect">
-<summary>
- In this case, the request should be repeated with another URI; however, future requests should still use the original URI.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.SwitchProxy">
-<summary>
- No longer used. Originally meant &quot;Subsequent requests should use the specified proxy.&quot;
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.UseProxy">
-<summary>
- The requested resource is available only through a proxy, the address for which is provided in the response. 
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.NotModified">
-<summary>
- Indicates that the resource has not been modified since the version specified by the request headers If-Modified-Since or If-None-Match.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.SeeOther">
-<summary>
- The response to the request can be found under another URI using the GET method.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.Found">
-<summary>
- Tells the client to look at (browse to) another url. 302 has been superseded by 303 and 307. 
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.MovedPermanently">
-<summary>
- This and all future requests should be directed to the given URI.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.MultipleChoices">
-<summary>
- Indicates multiple options for the resource from which the client may choose (via agent-driven content negotiation).
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.IMUsed">
-<summary>
- The server has fulfilled a request for the resource, and the response is a representation of the result of one or more instance-manipulations applied to the current instance.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.AlreadyReported">
-<summary>
- The members of a DAV binding have already been enumerated in a preceding part of the (multistatus) response, and are not being included again.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.MultiStatus">
-<summary>
- The message body that follows is by default an XML message and can contain a number of separate response codes, depending on how many sub-requests were made.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.PartialContent">
-<summary>
- The server is delivering only part of the resource (byte serving) due to a range header sent by the client.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.ResetContent">
-<summary>
- The server successfully processed the request, but is not returning any content.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.NoContent">
-<summary>
- The server successfully processed the request and is not returning any content.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.NonAuthoritativeInformation">
-<summary>
- The server is a transforming proxy (e.g. a Web accelerator) that received a 200 OK from its origin, but is returning a modified version of the origin&apos;s response.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.Accepted">
-<summary>
- The request has been accepted for processing, but the processing has not been completed.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.Created">
-<summary>
- The request has been fulfilled, resulting in the creation of a new resource.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.OK">
-<summary>
- Standard response for successful HTTP requests.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.EarlyHints">
-<summary>
- Used to return some response headers before final HTTP message.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.Processing">
-<summary>
- This code indicates that the server has received and is processing the request, but no response is available yet.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.SwitchingProtocols">
-<summary>
- The requester has asked the server to switch protocols and the server has agreed to do so.
-</summary>
-</member>
-<member name="P:FSharp.Data.HttpStatusCodes.Continue">
-<summary>
- The server has received the request headers and the client should proceed to send the request body.
-</summary>
-</member>
-<member name="T:FSharp.Data.HttpStatusCodes">
-<summary>
- Status codes that can be received in an HTTP response
 </summary>
 </member>
 <member name="P:FSharp.Data.HttpResponseHeaders.WWWAuthenticate">
@@ -1728,11 +1406,6 @@
 <member name="M:FSharp.Data.HttpRequestHeaders.ProxyAuthorization(System.String)">
 <summary>
  Authorization credentials for connecting to a proxy.
-</summary>
-</member>
-<member name="M:FSharp.Data.HttpRequestHeaders.Prefer(System.String)">
-<summary>
- Optional instructions to the server to control request processing. See RFC https://tools.ietf.org/html/rfc7240 for more details
 </summary>
 </member>
 <member name="M:FSharp.Data.HttpRequestHeaders.Pragma(System.String)">
@@ -2393,7 +2066,7 @@
 </member>
 <member name="T:FSharp.Data.Runtime.JsonConversions">
 <summary>
- Conversions from JsonValue to string/int/int64/decimal/float/boolean/datetime/datetimeoffset/timespan/guid options
+ Conversions from JsonValue to string/int/int64/decimal/float/boolean/datetime/guid options
 </summary>
 </member>
 <member name="M:FSharp.Data.Runtime.JsonRuntime.TryGetValueByTypeTag``1(FSharp.Data.Runtime.BaseTypes.IJsonDocument,System.String,System.String,System.Func{FSharp.Data.Runtime.BaseTypes.IJsonDocument,``0})">
@@ -2478,12 +2151,12 @@
  [omit]
 </summary>
 </member>
-<member name="M:FSharp.Data.Runtime.XmlRuntime.TryGetJsonValue(FSharp.Data.Runtime.BaseTypes.XmlElement)">
+<member name="M:FSharp.Data.Runtime.XmlRuntime.TryGetJsonValue(FSharp.Data.Runtime.BaseTypes.XmlElement,System.String)">
 <summary>
  Tries to return the contents of the element as a JsonValue
 </summary>
 </member>
-<member name="M:FSharp.Data.Runtime.XmlRuntime.GetJsonValue(FSharp.Data.Runtime.BaseTypes.XmlElement)">
+<member name="M:FSharp.Data.Runtime.XmlRuntime.GetJsonValue(FSharp.Data.Runtime.BaseTypes.XmlElement,System.String)">
 <summary>
  Returns the contents of the element as a JsonValue
 </summary>
@@ -2679,7 +2352,7 @@
  Returns a TextReader for the uri using the runtime resolution rules
 </summary>
 </member>
-<member name="M:FSharp.Data.Runtime.IO.asyncRead(FSharp.Data.Runtime.IO.UriResolver,System.String,System.String,System.Uri)">
+<member name="M:FSharp.Data.Runtime.IO.asyncRead(Microsoft.FSharp.Core.FSharpOption{System.Tuple{FSharp.Data.Runtime.IO.IDisposableTypeProvider,System.String}},FSharp.Data.Runtime.IO.UriResolver,System.String,System.String,System.Uri)">
 <summary>
  Opens a stream to the uri using the uriResolver resolution rules
  It the uri is a file, uses shared read, so it works when the file locked by Excel or similar tools,
@@ -2689,6 +2362,11 @@
 <member name="T:FSharp.Data.Runtime.IO">
 <summary>
  Helper functions called from the generated code for working with files
+</summary>
+</member>
+<member name="T:FSharp.Data.Runtime.Caching.ICache`1">
+<summary>
+ Represents a cache (various implementations are available)
 </summary>
 </member>
 <member name="M:FSharp.Data.Runtime.Caching.createInternetFileCache(System.String,System.TimeSpan)">
@@ -2701,9 +2379,14 @@
  Get hash code of a string - used to determine cache file
 </summary>
 </member>
-<member name="M:FSharp.Data.Runtime.Caching.createInMemoryCache``2(System.TimeSpan)">
+<member name="M:FSharp.Data.Runtime.Caching.createInMemoryCache``1(System.TimeSpan)">
 <summary>
  Creates a cache that uses in-memory collection
+</summary>
+</member>
+<member name="M:FSharp.Data.Runtime.Caching.createNonCachingCache``1">
+<summary>
+ Creates a fake cache
 </summary>
 </member>
 <member name="T:FSharp.Data.Runtime.Caching">
@@ -2728,7 +2411,7 @@
  implementation that is somewhat faster than regular expression.)
 </summary>
 </member>
-<member name="M:FSharp.Data.Runtime.NameUtils.uniqueGenerator(Microsoft.FSharp.Core.FSharpFunc{System.String,System.String})">
+<member name="M:FSharp.Data.Runtime.NameUtils.uniqueGenerator``1(Microsoft.FSharp.Core.FSharpFunc{``0,System.String})">
 <summary>
  Given a function to format names (such as `niceCamelName` or `nicePascalName`)
  returns a name generator that never returns duplicate name (by appending an
@@ -2863,7 +2546,7 @@
 <member name="M:FSharp.Data.Runtime.StructuralInference.inferPrimitiveType(System.Globalization.CultureInfo,System.String)">
 <summary>
  Infers the type of a simple string value
- Returns one of null|typeof&lt;Bit0&gt;|typeof&lt;Bit1&gt;|typeof&lt;bool&gt;|typeof&lt;int&gt;|typeof&lt;int64&gt;|typeof&lt;decimal&gt;|typeof&lt;float&gt;|typeof&lt;Guid&gt;|typeof&lt;DateTime&gt;|typeof&lt;TimeSpan&gt;|typeof&lt;string&gt;
+ Returns one of null|typeof&lt;Bit0&gt;|typeof&lt;Bit1&gt;|typeof&lt;bool&gt;|typeof&lt;int&gt;|typeof&lt;int64&gt;|typeof&lt;decimal&gt;|typeof&lt;float&gt;|typeof&lt;Guid&gt;|typeof&lt;DateTime&gt;|typeof&lt;string&gt;
 </summary>
 </member>
 <member name="M:FSharp.Data.Runtime.StructuralInference.inferCollectionType(System.Boolean,System.Collections.Generic.IEnumerable{FSharp.Data.Runtime.StructuralTypes.InferedType})">
@@ -2967,13 +2650,6 @@
  Implements type inference for unstructured documents like XML or JSON
 </summary>
 </member>
-<member name="T:FSharp.Data.Runtime.XmlSchema.ResolutionFolderResolver">
-<summary>
- A custom XmlResolver is needed for included files because we get the contents of the main file
- directly as a string from the FSharp.Data infrastructure. Hence the default XmlResolver is not
- able to find the location of included schema files.
-</summary>
-</member>
 <member name="T:FSharp.Data.Runtime.CsvHelpers.ReentrantEnumerable`1">
 <summary>
  An enumerable that will return elements from the &apos;firstSeq&apos; first time it
@@ -2994,7 +2670,7 @@
  * inferRows - Number of rows to use for inference. If this is zero, all rows are used
  * missingValues - The set of strings recogized as missing values
  * cultureInfo - The culture used for parsing numbers and dates
- * schema - Optional column types, in a comma separated list. Valid types are &quot;int&quot;, &quot;int64&quot;, &quot;bool&quot;, &quot;float&quot;, &quot;decimal&quot;, &quot;date&quot;, &quot;timespan&quot;, &quot;guid&quot;, &quot;string&quot;, &quot;int?&quot;, &quot;int64?&quot;, &quot;bool?&quot;, &quot;float?&quot;, &quot;decimal?&quot;, &quot;date?&quot;, &quot;guid?&quot;, &quot;int option&quot;, &quot;int64 option&quot;, &quot;bool option&quot;, &quot;float option&quot;, &quot;decimal option&quot;, &quot;date option&quot;, &quot;guid option&quot; and &quot;string option&quot;. You can also specify a unit and the name of the column like this: Name (type&amp;lt;unit&amp;gt;). You can also override only the name. If you don&apos;t want to specify all the columns, you can specify by name like this: &apos;ColumnName=type&apos;
+ * schema - Optional column types, in a comma separated list. Valid types are &quot;int&quot;, &quot;int64&quot;, &quot;bool&quot;, &quot;float&quot;, &quot;decimal&quot;, &quot;date&quot;, &quot;guid&quot;, &quot;string&quot;, &quot;int?&quot;, &quot;int64?&quot;, &quot;bool?&quot;, &quot;float?&quot;, &quot;decimal?&quot;, &quot;date?&quot;, &quot;guid?&quot;, &quot;int option&quot;, &quot;int64 option&quot;, &quot;bool option&quot;, &quot;float option&quot;, &quot;decimal option&quot;, &quot;date option&quot;, &quot;guid option&quot; and &quot;string option&quot;. You can also specify a unit and the name of the column like this: Name (type&amp;lt;unit&amp;gt;). You can also override only the name. If you don&apos;t want to specify all the columns, you can specify by name like this: &apos;ColumnName=type&apos;
  * assumeMissingValues - Assumes all columns can have missing values
  * preferOptionals - when set to true, inference will prefer to use the option type instead of nullable types, double.NaN or &quot;&quot; for missing values
  * unitsOfMeasureProvider - optional function to resolve Units of Measure
@@ -3010,7 +2686,7 @@
   - Optional fields of type &apos;int64&apos; are generated as Nullable&lt;int64&gt;
   - Optional fields of type &apos;float&apos; are just floats (and null becomes NaN)
   - Optional fields of type &apos;decimal&apos; are generated as floats too
-  - Optional fields of any other non-nullable T (bool/date/timespan/guid) become option&lt;T&gt;
+  - Optional fields of any other non-nullable T (bool/date/guid) become option&lt;T&gt;
   - All other types are simply strings.
 
  When preferOptionals is true:
@@ -3305,12 +2981,12 @@
  [omit]
 </summary>
 </member>
-<member name="M:FSharp.Data.Runtime.BaseTypes.JsonDocument.CreateList(System.IO.TextReader)">
+<member name="M:FSharp.Data.Runtime.BaseTypes.JsonDocument.CreateList(System.IO.TextReader,System.String)">
 <summary>
  [omit]
 </summary>
 </member>
-<member name="M:FSharp.Data.Runtime.BaseTypes.JsonDocument.Create(System.IO.TextReader)">
+<member name="M:FSharp.Data.Runtime.BaseTypes.JsonDocument.Create(System.IO.TextReader,System.String)">
 <summary>
  [omit]
 </summary>

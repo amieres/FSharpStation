@@ -1,30 +1,32 @@
+#nowarn "3242"
 #nowarn "3180"
 #nowarn "1182"
 #nowarn "52"
 #nowarn "1178"
-////-d:FSharpStation1553872630655 -d:NOFRAMEWORK --noframework -d:WEBSHARPER
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0"
+////-d:FSharpStation1587350505683 -d:TEE -d:WEBSHARPER
+//#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
+//#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\\packages\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\netstandard.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\mscorlib.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Core.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Core.JavaScript.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Collections.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.InterfaceGenerator.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Main.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.JQuery.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.JavaScript.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Web.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Sitelets.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Control.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\HtmlAgilityPack.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Runtime.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Common.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Reactive\lib\net46\System.Reactive.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Control.Reactive\lib\net46\FSharp.Control.Reactive.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
@@ -32,66 +34,57 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40\Owin.dll"
 //#r @"System.Web"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Globalization.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Reflection.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Numerics.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Core.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.Linq.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Net.Http.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Runtime.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.IO.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.Tasks.dll"
+//#nowarn "3242"
 //#nowarn "3180"
 //#nowarn "1182"
 //#nowarn "52"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1553872630655
+//#define FSharpStation1587350505683
 #if INTERACTIVE
 module FsRoot   =
 #else
+#if DLL
+namespace FsRootDll
+#else
 namespace FsRoot
 #endif
+#endif
 
-    //#define WEBSHARPER
-    #if WEBSHARPER
-    //#define NOFRAMEWORK --noframework
-    
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\\packages\FSharp.Core\lib\netstandard1.6\FSharp.Core.dll"
-    
+    #if !NETSTANDARD20
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
     
-    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\netstandard.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\mscorlib.dll"
+    #if WEBSHARPER
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
     
-    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
-    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0"
-    
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Core.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Core.JavaScript.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Collections.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.InterfaceGenerator.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Main.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.JQuery.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.JavaScript.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Web.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Sitelets.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0\WebSharper.Control.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\HtmlAgilityPack.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Runtime.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0\WebSharper.UI.Templating.Common.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    #endif
+    #endif
+    #if WEBSHARPER
+    //#nowarn "3242" 
     
     open WebSharper
-    open WebSharper.JavaScript
+    //open WebSharper.JavaScript
     open WebSharper.UI
     open WebSharper.UI.Client
     type on   = WebSharper.UI.Html.on
@@ -100,14 +93,22 @@ namespace FsRoot
     /// dummy WebSharper definition in order to avoid having to use #if WEBSHARPER all the time
     module WebSharper =
         type RpcAttribute() =
+            inherit System.Attribute()
             let a = 1
         type JavaScriptAttribute(translate:bool) =
+            inherit System.Attribute()
             let a = 1
             new() = JavaScriptAttribute true
+        type JavaScriptExportAttribute(translate:bool) =
+            inherit System.Attribute()
+            let a = 1
+            new() = JavaScriptExportAttribute true
         type InlineAttribute(code:string) =
+            inherit System.Attribute()
             let a = 1
             new() = InlineAttribute ""
         type DirectAttribute(code:string) =
+            inherit System.Attribute()
             let a = 1
     
     open WebSharper
@@ -115,8 +116,8 @@ namespace FsRoot
     #endif
     
         /// Essentials that can be converted to JavaScript with WebSharper
-        [< JavaScript ; AutoOpen >]
-        module Library =
+        [< JavaScriptExport ; AutoOpen >]
+        module Library = 
             let Error = Result.Error
         
             let [<Inline>] inline swap f a b = f b a
@@ -139,6 +140,13 @@ namespace FsRoot
                 match box v with
                 | :? string as s -> printfn "%s" s
                 | __             -> printfn "%A" v
+            
+            //#define TEE
+            
+            let [< Inline "new Date(0).getTime()" >] Utc1970_01_01                 = System.DateTime(1970,1,1,0,0,0,System.DateTimeKind.Utc)
+            let [< Inline "$d"                    >] date2Long (d:System.DateTime) = d.Subtract(Utc1970_01_01).Ticks / 10000L
+            let [< Inline "$l"                    >] long2Date (l:int64          ) = Utc1970_01_01.Add(System.TimeSpan(l * 10000L) )
+            
             
             /// Extensible type for error messages, warnings and exceptions
             type ResultMessage<'M> =
@@ -318,7 +326,6 @@ namespace FsRoot
                 
                     let errorf fmt = Printf.ksprintf Error fmt
                 
-                    let freeMessage                r = r   |> function Ok v -> Ok v   | Error e -> ResultMessage.freeMessage e |> Error
                     let rtn                          = Ok
                     let join                       r = Result.bind id r
                     let flatten                    r = Result.bind id r
@@ -327,18 +334,11 @@ namespace FsRoot
                     let defaultValue             d r = r   |> function Ok v ->      v | Error _ -> d
                     let failIfTrue               m v = if     v then m |> Error  else Ok () 
                     let failIfFalse              m v = if not v then m |> Error  else Ok () 
-                    /// bind version that protects against exceptions
-                    let bindP                 f    r = match r with
-                                                       | Ok    v -> try   f v
-                                                                    with  e -> ExceptMsg (e.Message, e.StackTrace) |> Error
-                                                       | Error e ->       e                                        |> Error
-                    /// map version that protects against exceptions
-                    let inline mapP           f    m = bindP (f >> rtn) m            
-                    let iter                  fE f r = r   |> mapP f |> defaultWith fE                                                 : unit
+                    let iter                  fE f r = r   |> map  f |> defaultWith fE                                                 : unit
                     let get                        r = r   |>          defaultWith (string >> failwith)
                     let ofOption              f   vO = vO  |> Option.map Ok           |> Option.defaultWith (f >> Error)
                     let insertO                  vRO = vRO |> Option.map(map Some)    |> Option.defaultWith(fun () -> Ok None)
-                    let absorbO               f  vOR = vOR |> bindP (ofOption f)
+                    let absorbO               f  vOR = vOR |> bind (ofOption f)
                     let (>>=)                    r f = bind f r
                     let traverseSeq           f   sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                        Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
@@ -346,6 +346,49 @@ namespace FsRoot
                         
                     
                     type Builder() =
+                        member inline this.Return          x       = rtn  x
+                        member inline this.ReturnFrom      x       =     (x:Result<_,_>)
+                        member        this.Bind           (w , r ) = Result.bind  r w
+                        member inline this.Zero           ()       = rtn ()
+                        member inline this.Delay           f       = f
+                        member inline this.Combine        (a, b)   = bind b a
+                        member inline this.Run             f       = Ok () |> bind f
+                        member this.TryWith   (body, handler     ) = try body() with e -> handler     e
+                        member this.TryFinally(body, compensation) = try body() finally   compensation()
+                        member this.Using     (disposable, body  ) = using (disposable:#System.IDisposable) body
+                        member this.While(guard, body) =
+                            let rec whileLoop guard body =
+                                if guard() then body() |> bind (fun () -> whileLoop guard body)
+                                else rtn   ()
+                            whileLoop guard body
+                        member this.For(sequence:seq<_>, body) =
+                            this.Using(sequence.GetEnumerator(),fun enum -> 
+                                this.While(enum.MoveNext, 
+                                    this.Delay(fun () -> body enum.Current)))
+                                    
+                    let result = Builder()
+                    
+                    module Operators =
+                        let inline (|>>) v f   = map   f v
+                        let inline (>>=) v f   = bind  f v
+                        let inline (>>>) f g v = f v |>> g
+                        let inline (>=>) f g v = f v >>= g
+                        let inline rtn   v     = rtn    v
+                        let result = result
+                
+                
+                    
+                    let freeMessage                r = r   |> function Ok v -> Ok v   | Error e -> ResultMessage.freeMessage e |> Error
+                    /// bind version that protects against exceptions
+                    let bindP                 f    r = match r with
+                                                        | Ok   v -> try   f v
+                                                                    with  e -> ExceptMsg (e.Message, e.StackTrace) |> Error
+                                                        | Error e ->      e                                        |> Error
+                    /// map version that protects against exceptions
+                    let inline mapP           f    m = bindP (f >> rtn) m            
+                    let iterP                 fE f r = r   |> mapP f |> defaultWith fE                                                 : unit    
+                    
+                    type BuilderP() =
                         member inline this.Return          x       = rtn  x
                         member inline this.ReturnFrom      x       =     (x:Result<_,_>)
                         member        this.Bind           (w , r ) = Result.bind  r w
@@ -366,17 +409,9 @@ namespace FsRoot
                                 this.While(enum.MoveNext, 
                                     this.Delay(fun () -> body enum.Current)))
                                     
-                    let result = Builder()
+                    let resultP = BuilderP()
                     
-                    module Operators =
-                        let inline (|>>) v f   = mapP  f v
-                        let inline (>>=) v f   = bindP f v
-                        let inline (>>>) f g v = f v |>> g
-                        let inline (>=>) f g v = f v >>= g
-                        let inline rtn   v     = rtn    v
-                        let result = result
-                
-                
+                    
                 type FusionM<'T, 'S, 'M> = FM of ('S * ResultMessage<'M> -> 'T option * 'S * ResultMessage<'M>)
                 
                 module FusionM =
@@ -659,107 +694,6 @@ namespace FsRoot
                         
                     
                     
-                type ResultM<'v, 'm> = ResultM of Option<'v> * ResultMessage<'m>
-                
-                let inline OkM              v    = ResultM (Some v, NoMsg)
-                let inline OkMWithMsg       v m  = ResultM(Some v, m)
-                //let inline OkMWithMsgs      v ms = ms |> ResultMessage.reduceMsgs |> OkMWithMsg v
-                
-                let inline ErrorM             m  = ResultM (None  , m    )
-                //let inline ErrorMWithMsgs     ms = ms |> ResultMessage.reduceMsgs |> ErrorM
-                let (|OkM|ErrorM|)             r = match r with
-                                                    | ResultM(Some v, m) -> OkM   (v, m)
-                                                    | ResultM(None  , e) -> ErrorM e
-                module ResultM =
-                
-                    type CheckError<'T> = CheckErrorF of ('T -> bool)
-                    let checkError   () = CheckErrorF (fun _ -> true )
-                    let checkErrorW  () = CheckErrorF (fun _ -> false)
-                
-                    let inline rtn                 v = OkM v
-                    let inline rtnM                m = OkMWithMsg () m
-                    let inline rtnr               vR = vR  |> Result.map OkM          |> Result.defaultWith       ErrorM
-                    let freeMessage                r = r   |> function Ok v -> Ok v   | Error e -> ResultMessage.freeMessage e |> Error
-                    let inline toResult            r = match r with
-                                                       | ResultM(Some v, _) -> Ok     v
-                                                       | ResultM(None  , e) -> Error  e
-                    let inline toResultD           r = match r with
-                                                       | ResultM(Some v, m) -> Ok    (v, m)
-                                                       | ResultM(None  , e) -> Error  e
-                    let toOption                   r = r   |> function ResultM (v,_) -> v
-                    let defaultWith              f r = r   |> toResult |> Result.defaultWith   f
-                    let defaultValue             d r = r   |> toResult |> Result.defaultValue  d
-                    let map         f  (ResultM (v, m)) = ResultM (v |> Option.map f, m)
-                    let mapMessage  fM (ResultM (v, m)) = ResultM (v, fM m)
-                    let bind                  f    r = match r with
-                                                       | ResultM(Some v, m) -> f v |> mapMessage (ResultMessage.addMsg m)
-                                                       | ResultM(None  , e) -> ResultM(None  , e)
-                    /// bind version that protects against exceptions
-                    let bindP                 f    r = match r with
-                                                       | ResultM(Some v, m) -> try f v |> mapMessage (ResultMessage.addMsg m)
-                                                                               with  e -> ExceptMsg (e.Message, e.StackTrace) |> ErrorM
-                                                       | ResultM(None  , e) -> ResultM(None  , e)
-                    let bindM                 f    m = rtnM m |> bindP f
-                
-                    let check (CheckErrorF k) vR = vR |> function ResultM(Some _, m) when ResultMessage.isFatalF k m -> ErrorM m |_-> vR
-                
-                    /// map version that protects against exceptions
-                    let inline mapP           f    m = bindP (f >> rtn) m
-                    let iter                  fM f r = r   |> mapP f |> function | ResultM(Some (), m) -> () | ResultM(None, m) -> fM m  : unit
-                    let get                        r = r   |>          defaultWith (string >> failwith)
-                    let ofOption              f   vO = vO  |> Option.map OkM          |> Option.defaultWith (f >> ErrorM)
-                    let ofResult                  vR = vR  |> rtnr
-                    let insertO                  vRO = vRO |> Option.map(map Some)    |> Option.defaultWith(fun () -> OkM None)
-                    let absorbO               f  vOR = vOR |> bindP (ofOption f)
-                    let addMsg                  m  r = r |> mapMessage (ResultMessage.addMsg m)
-                    let failIfFatalMsgF         f  r = r |> function OkM (v, m) when ResultMessage.isFatalF f m -> ErrorM m |_-> r
-                    let failIfFatalMsg             r = r |> function OkM (v, m) when ResultMessage.isFatal    m -> ErrorM m |_-> r
-                    let failIfFatalMsgW            r = r |> function OkM (v, m) when ResultMessage.isFatalW   m -> ErrorM m |_-> r
-                    let (>>=)                    r f = bind f r
-                    let rec    traverseSeq    f   sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
-                                                       Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
-                    let inline sequenceSeq        sq = traverseSeq id sq
-                        
-                    
-                    type Builder() =
-                        member inline __.Return          x       = rtn  x
-                        member inline __.ReturnFrom      x       =     (x:ResultM<_,_>)
-                        member inline __.ReturnFrom      x       =     (x:Result< _,_>)
-                        member inline __.ReturnFrom      x       = rtnM x
-                        member        __.Bind           (w , r ) = bindP  r w
-                        member        __.Bind           (w , r ) = bindM  r w
-                        member inline __.Zero           ()       = rtn ()
-                        member inline __.Delay           f       = f
-                        member inline __.Combine        (a, b)   = a |> bind b
-                        member inline __.Run             f       = OkM () |> bindP f
-                        member __.TryWith   (body, handler     ) = try body() with e -> handler     e
-                        member __.TryFinally(body, compensation) = try body() finally   compensation()
-                        member __.Using     (disposable, body  ) = using (disposable:#System.IDisposable) body
-                        member __.While(guard, body) =
-                            let rec whileLoop guard body =
-                                if guard() then body() |> bind (fun () -> whileLoop guard body)
-                                else rtn   ()
-                            whileLoop guard body
-                        member this.For(sequence:seq<_>, body) =
-                            this.Using(sequence.GetEnumerator(),fun enum -> 
-                                this.While(enum.MoveNext, 
-                                    this.Delay(fun () -> body enum.Current)))
-                                    
-                    module Operators =
-                        let inline (|>>) v f   = mapP  f v
-                        let inline (>>=) v f   = bindP f v
-                        let inline (>>>) f g v = f v |>> g
-                        let inline (>=>) f g v = f v >>= g
-                        let inline rtn   v     = rtn    v
-                
-                [< AutoOpen >]
-                module ResultMAutoOpen =
-                    open ResultM
-                    
-                    let resultM = Builder()
-                    
-                
-                
                 type AsyncResult<'v, 'm> = Async<Result<'v, 'm>>
                 
                 /// A computation expression to build an Async<Result<'ok, 'error>> value
@@ -856,97 +790,17 @@ namespace FsRoot
                 
                 
                 
-                type AsyncResultM<'v, 'm> = Async<ResultM<'v, 'm>>
-                
-                /// A computation expression to build an Async<Result<'ok, 'error>> value
-                module AsyncResultM =
-                    let mapError fE v  = v |> Async.map (ResultM.mapMessage fE)
-                    let freeMessage v  = v |> Async.map  ResultM.freeMessage
-                
-                    let rtn         v   = async.Return(OkM v  )
-                    let rtnr        vR  = async.Return(ResultM.rtnr vR)
-                    let rtnR        vR  = async.Return    vR
-                    let rtnM        vM  = async.Return(ResultM.rtnM vM)
-                    let rtnrA       vrA = vrA |> Async.map    ResultM.ofResult
-                    let errorMsgf   v   = async.Return(errorMsgf v |> ErrorM )
-                    let iterS  fE f vRA = Async.iterS (ResultM.iter fE f) vRA
-                    let iterA  fE f vRA = Async.iterA (ResultM.iter fE f) vRA
-                    let iterpS    f vRA = vRA |> iterS (ResultMessage.summarized >> print) f
-                    let iterpA    f vRA = vRA |> iterA (ResultMessage.summarized >> print) f
-                    let bind  (fRA:'a -> Async<ResultM<'b,'c>>)  (vRA: Async<ResultM<'a,'c>>) : Async<ResultM<'b,'c>>= async {
-                        try 
-                            let!  vR = vRA
-                            match vR with
-                            | OkM   (v, m) -> return! fRA   v |> Async.map (ResultM.addMsg m)
-                            | ErrorM    m  -> return  ErrorM m
-                        with  e -> return ExceptMsg (e.Message, e.StackTrace) |> ErrorM
-                    }
-                    let inline bindr  f a  = rtnr   a |> bind f : AsyncResultM<_,_>
-                    let inline bindM  f a  = rtnM   a |> bind f : AsyncResultM<_,_>
-                    let inline bindrA f a  = rtnrA  a |> bind f : AsyncResultM<_,_>
-                    let inline bindR  f a  = rtnR   a |> bind f : AsyncResultM<_,_>
-                    let inline map    f m = bind  (f >> rtn) m            
-                    let rec whileLoop cond fRA =
-                        if   cond () 
-                        then fRA  () |> bind (fun () -> whileLoop cond fRA)
-                        else rtn  ()
-                    let (>>=)                              v f = bind f v
-                    let rec    traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
-                                                                 Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
-                    let inline sequenceSeq                  sq = traverseSeq id sq
-                    let insertO   vRAO                         = vRAO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
-                    let insertR ( vRAR:Result<_,_>)            = vRAR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
-                    let absorbR   vRRA                         = vRRA |> Async.map (ResultM.bindP   id)
-                    let absorbO f vORA                         = vORA |> Async.map (ResultM.absorbO  f)
-                    let getResultM       (a:AsyncResultM<_,_>) = a    |> Async.map  OkM   
-                    type AsyncResultMBuilder() =
-                        member __.ReturnFrom vRA        : Async<ResultM<'v  , 'm>> =           vRA
-                        member __.ReturnFrom vR         : Async<ResultM<'v  , 'm>> = rtnr      vR
-                        member __.ReturnFrom vR         : Async<ResultM<unit, 'm>> = rtnM      vR
-                        member __.ReturnFrom vR         : Async<ResultM<'v  , 'm>> = rtnR      vR
-                        member __.ReturnFrom vR         : Async<ResultM<'v  , 'm>> = rtnrA     vR
-                        member __.Return     v          : Async<ResultM<'v  , 'm>> = rtn       v  
-                        member __.Zero       ()         : Async<ResultM<unit, 'm>> = rtn       () 
-                        member __.Bind      (vRA,  fRA) : Async<ResultM<'b  , 'm>> = bind fRA  vRA
-                        member __.Bind       (w , r )                              = bindr   r w
-                        member __.Bind       (w , r )                              = bindM   r w
-                        member __.Bind       (w , r )                              = bindR   r w
-                        member __.Bind       (w , r )                              = bindrA  r w
-                        member __.Combine   (vRA,  fRA) : Async<ResultM<'b  , 'm>> = bind fRA  vRA
-                        member __.Combine   (vR ,  fRA) : Async<ResultM<'b  , 'm>> = bind fRA (vR  |> rtnR)
-                        member __.Delay            fRA                             = fRA
-                        member __.Run              fRA                             = rtn () |> bind fRA
-                        member __.TryWith   (fRA , hnd) : Async<ResultM<'a  , 'm>> = async { try return! fRA() with e -> return! hnd e  }
-                        member __.TryFinally(fRA , fn ) : Async<ResultM<'a  , 'm>> = async { try return! fRA() finally   fn  () }
-                        member __.Using(resource , fRA) : Async<ResultM<'a  , 'm>> = async.Using(resource,       fRA)
-                        member __.While   (guard , fRA) : Async<ResultM<unit, 'a>> = whileLoop guard fRA 
-                        member th.For  (s: 'a seq, fRA) : Async<ResultM<unit, 'b>> = th.Using(s.GetEnumerator (), fun enum ->
-                                                                                        th.While(enum.MoveNext,
-                                                                                            th.Delay(fun () -> fRA enum.Current)))
-                
-                [<AutoOpen>]
-                module AsyncResultMAutoOpen =
-                    open AsyncResultM
-                
-                    let asyncResultM = AsyncResultMBuilder()
-                
-                    // Having Async<_> members as extensions gives them lower priority in
-                    // overload resolution between Async<_> and Async<Result<_,_>>.
-                    type AsyncResultMBuilder with
-                    member __.ReturnFrom (vA: Async<_>     ) : Async<ResultM<_,_>> =           Async.map OkM vA
-                    member __.Bind       (vA: Async<_>, fRA) : Async<ResultM<_,_>> = bind fRA (Async.map OkM vA)
-                    member __.Combine    (vA: Async<_>, fRA) : Async<ResultM<_,_>> = bind fRA (Async.map OkM vA)
-                
             type System.String with
                 member this.Substring2(from, n) = 
                     if   n    <= 0           then ""
-                    elif from <  0           then this.Substring2(0, n + from)
                     elif from >= this.Length then ""
+                    elif from <  0           then this.Substring2(0, n + from)
                     else this.Substring(from, min n (this.Length - from))
                 member this.Left             n  = if n < 0 
                                                   then this.Substring2(0, this.Length + n)
                                                   else this.Substring2(0, n              )
                 member this.Right            n  = this.Substring2(max 0 (this.Length - n), this.Length)
+                member this.toUnderscore        = this |> Seq.mapi(fun i c -> if i > 0 && System.Char.IsUpper(c) then [ '_' ; c ] else [ c ])  |> Seq.collect id |> Seq.toArray |> System.String
             
             module String =
                 let splitByChar (c: char) (s: string) = s.Split c
@@ -963,6 +817,8 @@ namespace FsRoot
                     )
                 let contains     sub  (whole: string) = whole.Contains sub
                 let trim                  (s: string) = s.Trim()
+                let left  n (s:string) = s.Left  n
+                let right n (s:string) = s.Right n
                 let append     (a: string)(b: string) =  a + b
                 let skipFirstLine (txt:string) = txt.IndexOf '\n' |> fun i -> if i < 0 then "" else txt.[i + 1..]
                 let unindent (s:string) =
@@ -987,6 +843,14 @@ namespace FsRoot
                 let (|StartsWith|_|) (start:string) (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
                 let (|EndsWith  |_|) (ends :string) (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
                 
+                let thousands n =
+                    let v = n.ToString()
+                    let r = v.Length % 3 
+                    let s = if r = 0 then 3 else r
+                    [   yield v.[0.. s - 1]
+                        for i in 0..(v.Length - s)/ 3 - 1 do
+                            yield v.[i * 3 + s .. i * 3 + s + 2]
+                    ] |> String.concat ","
             
             [< Inline "$a + '/' + $b" >]
             let inline (+/+) a b = System.IO.Path.Combine(a, b)
@@ -1335,6 +1199,52 @@ namespace FsRoot
                     static member (+) (args: CommArgCollection<_>, (CommArgCollection args2)) = args |> CommArgCollection.addPairs args2
                 
                 
+            type ITempFileName =
+                inherit System.IDisposable
+                abstract Name : string
+            
+            type NonTempFileName(fn) =
+                interface ITempFileName      with member __.Name      = fn
+                interface System.IDisposable with member __.Dispose() = ()
+            
+            type FileName               = FileName of string with member this.V = match this with FileName v -> v
+            let  FileName (name:string) = FileName <| name.Replace(@"\", "/")
+            
+            type FileState = FileState of (System.DateTime * int64) option
+            
+            [< AutoOpen >]
+            module ILocalFileM =
+            
+                type ILocalFile =
+                    abstract GetLocalFileState : FileName -> FileState
+                    abstract CopyFile          : FileName -> FileName -> unit
+                    abstract WriteFile         : FileName -> string   -> unit
+                    abstract ReadFile          : FileName -> string
+                    abstract TempFileName      : unit     -> ITempFileName
+                //let getLocalFileState fname = Reader.ask() |>> fun (lf:#ILocalFile) -> lf.GetLocalFileState fname
+                //let copyFile          f1 f2 = Reader.ask() |>> fun (lf:#ILocalFile) -> lf.CopyFile          f1 f2
+                //let writeFile         fi tx = Reader.ask() |>> fun (lf:#ILocalFile) -> lf.WriteFile         fi tx
+                //let readFile          fi    = Reader.ask() |>> fun (lf:#ILocalFile) -> lf.ReadFile          fi
+                //let tempFileName      ()    = Reader.ask() |>> fun (lf:#ILocalFile) -> lf.TempFileName      ()
+            
+                let getMimeO (name :string)=
+                    match name.ToLower() with
+                    | String.EndsWith ".pdf"  _ -> Some "application/pdf"
+                    | String.EndsWith ".rtf"  _ -> Some "application/rtf"
+                    | String.EndsWith ".pbm"  _ -> Some "image/x-portable-bitmap"
+                    | String.EndsWith ".bmp"  _ -> Some "image/bmp"
+                    | String.EndsWith ".gif"  _ -> Some "image/gif"
+                    | String.EndsWith ".tif"  _
+                    | String.EndsWith ".tiff" _ -> Some "image/tiff"
+                    | String.EndsWith ".png"  _ -> Some "image/png"
+                    | String.EndsWith ".jpe"  _ 
+                    | String.EndsWith ".jpeg" _ 
+                    | String.EndsWith ".jpg"  _ -> Some "image/jpeg"
+                    | String.EndsWith ".png"  _ -> Some "image/png"
+                    | String.EndsWith ".html" _ -> Some "text/html"
+                    | _-> None
+            
+            
             type FsCode = FsCode of string
             
             module FsCode =
@@ -1348,6 +1258,7 @@ namespace FsRoot
                 | PrepoNoWarn of string
                 | PrepoI      of string
                 | PrepoIf     of string
+                | PrepoElIf   of string
                 | PrepoElse   
                 | PrepoEndIf
                 | PrepoLight  of bool
@@ -1361,33 +1272,93 @@ namespace FsRoot
             
                 let separatePrepros (code:string[]) =
                     let  quoted (line:string) = line.Trim().Split([| "\""       |], System.StringSplitOptions.RemoveEmptyEntries) |> Seq.tryLast |> Option.defaultValue line
-                    let  define (line:string) = line.Trim().Split([| "#define " |], System.StringSplitOptions.RemoveEmptyEntries) |> Seq.tryHead |> Option.defaultValue ""
+                    let  rest   (line:string) = line.Trim() |> String.splitInTwoO " " |> Option.map snd |> Option.defaultValue "" |> fun s -> s.Trim()
                     let  comment = ((+)"//") 
-                    let  prepro (line:string) = match true with 
-                                                | true when line.StartsWith("#define"       ) -> (comment line, line |> define |> PrepoDefine)
-                                                | true when line.StartsWith("#cd"           ) -> (comment line, line |> quoted |> PrepoCd    )
-                                                | true when line.StartsWith("#r"            ) -> (comment line, line |> quoted |> PrepoR     )
-                                                | true when line.StartsWith("#load"         ) -> (comment line, line |> quoted |> PrepoLoad  )
-                                                | true when line.StartsWith("#nowarn"       ) -> (comment line, line |> quoted |> PrepoNoWarn)
-                                                | true when line.Trim().StartsWith("# "     ) -> (comment line, line |> quoted |> PrepoLine  )
-                                                | true when line.Trim().StartsWith("#line"  ) -> (comment line, line |> quoted |> PrepoLine  )
-                                                | true when line.StartsWith("#I"            ) -> (comment line, line |> quoted |> PrepoI     )
-                                                | true when line.StartsWith("#if"           ) -> (        line, line           |> PrepoIf    )
-                                                | true when line.StartsWith("#else"         ) -> (        line,                   PrepoElse  )
-                                                | true when line.StartsWith("#endif"        ) -> (        line,                   PrepoEndIf )
-                                                | true when line.StartsWith("#light"        ) -> (        line, false          |> PrepoLight )
-                                                | true when line.StartsWith("#"             ) -> (comment line, line           |> PrepoOther )
-                                                | _                                           -> (        line,                   NoPrepo    ) 
+                    let  prepro (line:string) = 
+                        match true with 
+                        | true when line       .StartsWith("#define") -> (comment line, line |> rest   |> PrepoDefine)
+                        | true when line       .StartsWith("#cd"    ) -> (comment line, line |> quoted |> PrepoCd    )
+                        | true when line       .StartsWith("#r"     ) -> (comment line, line |> quoted |> PrepoR     )
+                        | true when line       .StartsWith("#load"  ) -> (comment line, line |> quoted |> PrepoLoad  )
+                        | true when line       .StartsWith("#nowarn") -> (comment line, line |> quoted |> PrepoNoWarn)
+                        | true when line.Trim().StartsWith("# "     ) -> (comment line, line |> quoted |> PrepoLine  )
+                        | true when line.Trim().StartsWith("#line"  ) -> (comment line, line |> quoted |> PrepoLine  )
+                        | true when line       .StartsWith("#I"     ) -> (comment line, line |> quoted |> PrepoI     )
+                        | true when line       .StartsWith("#if"    ) -> (        line, line |> rest   |> PrepoIf    )
+                        | true when line       .StartsWith("#elif"  ) -> (        line, line |> rest   |> PrepoElIf  )
+                        | true when line       .StartsWith("#else"  ) -> (        line,                   PrepoElse  )
+                        | true when line       .StartsWith("#endif" ) -> (        line,                   PrepoEndIf )
+                        | true when line       .StartsWith("#light" ) -> (        line, false          |> PrepoLight )
+                        | true when line       .StartsWith("#"      ) -> (comment line, line           |> PrepoOther )
+                        | _                                           -> (        line,                   NoPrepo    ) 
                     code |> Array.map prepro
+            
+                type PrepState = 
+                | LevelZero
+                | TrueValue of PrepState
+                | Looking   of PrepState
+                | Found     of PrepState
+            
+                let isActive = function
+                | LevelZero
+                | TrueValue _ -> true
+                | Looking   _ -> false
+                | Found     _ -> false
+            
+                let prev = function
+                | LevelZero    -> LevelZero
+                | TrueValue pr -> pr
+                | Looking   pr -> pr
+                | Found     pr -> pr
+            
+                let filterPreps (preps:PreproDirective seq) =
+                    let  defines  = preps |> Seq.choose (function | PrepoDefine d -> Some d | _ -> None) |> Seq.distinct |> Seq.toArray
+                    let isDefined (def:string) =    defines |> Seq.contains (def.Replace("!","").Trim()) |> (if def.Trim().StartsWith "!" then not else id)
+                    (LevelZero, preps) 
+                    ||> Seq.mapFold(fun st prep ->
+                        match st, prep with
+                        | TrueValue _ , PrepoIf    def             
+                        | LevelZero   , PrepoIf    def -> None     , if isDefined def then TrueValue st else Looking st
+                        | Looking   _ , PrepoIf    _             
+                        | Found     _ , PrepoIf    _   -> None     , Found st
+                        |           _ , PrepoEndIf     -> None     , prev  st
+                        | TrueValue pr, PrepoElIf  _
+                        | TrueValue pr, PrepoElse      -> None     , Found     pr
+                        | Looking   pr, PrepoElIf  def -> None     , if isDefined def then TrueValue st else Looking pr
+                        | Looking   pr, PrepoElse      -> None     , TrueValue pr
+                        | Found     pr, PrepoElIf  _
+                        | Found     pr, PrepoElse      -> None     , Found     pr
+                        | TrueValue _ , _             
+                        | LevelZero   , _              -> Some prep, st
+                        | _                            -> None     , st
+                        )
+                    |>  fst
+                    |>  Seq.choose id
+                    |>  Seq.toArray
+            
+                let getTopDirectives (fsNass:(string * PreproDirective) seq) =
+                    let  directs  = fsNass |> Seq.map snd |> Seq.filter (function 
+                                        | PrepoDefine _
+                                        | PrepoR      _ 
+                                        | PrepoI      _
+                                        | PrepoNoWarn _
+                                        | PrepoCd     _ 
+                                        | PrepoIf     _
+                                        | PrepoEndIf  
+                                        | PrepoElIf   _
+                                        | PrepoElse    -> true
+                                        |_             -> false) |> Seq.toArray
+                    let  code     = fsNass |> Seq.map fst |> Seq.toArray
+                    code, directs
                     
-                let separateDirectives (fsNass:(string * PreproDirective) seq) =
-                    let  assembs  = fsNass |> Seq.choose (snd >> (function | PrepoR assemb -> Some assemb | _ -> None)) |> Seq.distinct |> Seq.toArray
-                    let  defines  = fsNass |> Seq.choose (snd >> (function | PrepoDefine d -> Some d      | _ -> None)) |> Seq.distinct |> Seq.toArray
-                    let  prepoIs  = fsNass |> Seq.choose (snd >> (function | PrepoI      d -> Some d      | _ -> None)) |> Seq.distinct |> Seq.toArray
-                    let  nowarns  = fsNass |> Seq.choose (snd >> (function | PrepoNoWarn d -> Some d      | _ -> None)) |> Seq.distinct |> Seq.toArray
-                    let  cd       = fsNass |> Seq.choose (snd >> (function | PrepoCd   dir -> Some dir    | _ -> None)) |> Seq.tryHead
-                    let  code     = fsNass |> Seq.map     fst                                                                           |> Seq.toArray
-                    code, assembs, defines, prepoIs, nowarns, cd
+                let separateDirectives (fsNass:PreproDirective seq) =
+                    let  defines  = fsNass |> Seq.choose (function | PrepoDefine d      -> Some d      | _ -> None) |> Seq.distinct |> Seq.toArray
+                    let  preps    = filterPreps fsNass
+                    let  assembs  = preps  |> Seq.choose (function | PrepoR      assemb -> Some assemb | _ -> None) |> Seq.distinct |> Seq.toArray
+                    let  prepoIs  = preps  |> Seq.choose (function | PrepoI      d      -> Some d      | _ -> None) |> Seq.distinct |> Seq.toArray
+                    let  nowarns  = preps  |> Seq.choose (function | PrepoNoWarn d      -> Some d      | _ -> None) |> Seq.distinct |> Seq.toArray
+                    let  cd       = preps  |> Seq.choose (function | PrepoCd     dir    -> Some dir    | _ -> None) |> Seq.tryHead
+                    assembs, defines, prepoIs, nowarns, cd
                     
                 let getSourceDir srcDir (lines:string[]) =
                     match lines.[0], Array.tryItem 1 lines with
@@ -1414,17 +1385,17 @@ namespace FsRoot
                 snpParentIdO    : SnippetId option
                 snpPredIds      : SnippetId Set
                 snpProperties   : (string* string) []
-                snpGeneration   : int
+                snpModified     : System.DateTime
             }
             
             type SnippetReference =
             | RefSnippetId   of SnippetId
             | RefSnippetPath of string[]
             
-            type Reduced = ((SnippetId * string * int * int) [] * string [] * string [] * string [] * string [] * string [] * string option) option
+            type Reduced = ((SnippetId * string * int * int) [] * string [] * FsCode.PreproDirective [] ) option
             
             type SnippetCollection = {
-                generation       : int
+                generation       : System.DateTime
                 ordered          : Snippet seq
                 fetcher          : SnippetId -> Snippet Option
                 predecesorsCache : unit -> ((SnippetId -> SnippetId list option) * (SnippetId -> (SnippetId -> SnippetId list) -> SnippetId list))
@@ -1437,10 +1408,11 @@ namespace FsRoot
                 open FusionM
                 open Operators
             
-                let getNextGeneration, setGeneration = 
-                    let mutable generation  = 1
-                    (fun () -> generation <- generation + 1 ; generation)
-                  , (fun n  -> generation <- n                          )  
+                let getNextModified() = DateTime.Now
+                //let getNextGeneration, setGeneration = 
+                //    let mutable generation  = 1
+                //    (fun () -> generation <- generation + 1 ; generation)
+                //  , (fun n  -> generation <- n                          )  
                 let New name content parentO = 
                     {
                         snpId           = SnippetId <| System.Guid.NewGuid()   
@@ -1449,7 +1421,7 @@ namespace FsRoot
                         snpParentIdO    = parentO
                         snpPredIds      = Set.empty
                         snpProperties   = Array.empty
-                        snpGeneration   = getNextGeneration()
+                        snpModified     = getNextModified()
                     }
                 let defaultSnippet              = {
                     snpId           = SnippetId <| System.Guid.Empty
@@ -1458,7 +1430,7 @@ namespace FsRoot
                     snpParentIdO    = None
                     snpPredIds      = Set.empty
                     snpProperties   = Array.empty
-                    snpGeneration   = 0
+                    snpModified     = Utc1970_01_01
                 }    
                 let snippetName name (content: string) =
                     if name <> "" then name else 
@@ -1478,12 +1450,13 @@ namespace FsRoot
                     |> fun c -> c + " " + snp.snpId.Id.ToString()
                 let propertyO       n snp = snp.snpProperties |> Array.tryPick (fun (name, value) -> if name = n then Some value else None)
                 let tieFighter            = "|" + "-" + "|"
-                let propertyPairO   n snp = propertyO n snp |> Option.map(fun v -> v.Split([| tieFighter |], StringSplitOptions.RemoveEmptyEntries) |> fun vs -> vs.[0], vs |> Array.tryItem 1 |> Option.defaultValue vs.[0])
+                let propertyPair      prv = (prv:string).Split([| tieFighter |], StringSplitOptions.None) |> fun vs -> vs.[0], vs |> Array.tryItem 1 |> Option.defaultValue vs.[0]
+                let propertyPairO   n snp = propertyO n snp |> Option.map propertyPair
                 let snippetORm        sid = readerFun (fun { fetcher    = ftch } -> ftch sid                                               )
                 let parentORm         snp = readerFun (fun { fetcher    = ftch } -> snp.snpParentIdO |> Option.bind ftch                   )
                 let predecessorsRm    snp = readerFun (fun { fetcher    = ftch } -> snp.snpPredIds   |> Seq.choose  ftch                   )
-                let maxGenerationRm   ()  = readerFun (fun { ordered    = snps } -> snps |> Seq.map (fun s -> s.snpGeneration) |> Seq.max  )
-                let modifiedRm        snp = readerFun (fun { generation = gen  } -> snp.snpGeneration > gen                                )
+                let maxGenerationRm   ()  = readerFun (fun { ordered    = snps } -> snps |> Seq.map (fun s -> s.snpModified  ) |> Seq.max  )
+                let modifiedRm        snp = readerFun (fun { generation = gen  } -> snp.snpModified   > gen                                )
                 let childrenRm        sid = readerFun (fun { ordered    = snps } -> snps |> Seq.filter(fun s -> s.snpParentIdO = Some sid) )
                 let orderedRm         ()  = readerFun (fun { ordered    = snps } -> snps                                                   )
                 let prepareCodeRm     snp = readerFun (fun { prepCode   = prep } -> prep snp                                               )
@@ -1541,7 +1514,7 @@ namespace FsRoot
                 let uniquePredsRm     snp = predsLRmMemo() snp.snpId
                 let predsGenerationRm snp = fusion {
                                                 let! preds = uniquePredsRm snp >>= traverseSeq snippetRm
-                                                return preds (* |> Seq.append [ snp ] *) |> Seq.map (fun snp -> snp.snpGeneration) |> Seq.max 
+                                                return preds (* |> Seq.append [ snp ] *) |> Seq.map (fun snp -> snp.snpModified  ) |> Seq.max 
                                             }
                 let rec modifiedRecRm snp = fusion {
                     let! modified         = modifiedRm     snp
@@ -1553,7 +1526,7 @@ namespace FsRoot
                 }
                 let rec propertyHierORm n snp = fusion {
                     match propertyO n snp with
-                    | Some v -> return Some (snp, v.Split([| @"|-|" |], StringSplitOptions.RemoveEmptyEntries) |> fun vs -> vs.[0], if vs.Length > 1 then vs.[1] else vs.[0])
+                    | Some v -> return Some (snp, propertyPair v)
                     | None   -> let! parentO = parentORm   snp
                                 match parentO with
                                 | Some p -> let!   propO = propertyHierORm n p
@@ -1592,33 +1565,30 @@ namespace FsRoot
                     let  indentF, prfx = if indent = 0         then (id, "") else (Array.map    (fun (l, pr) -> String.replicate indent " " + l, pr), sprintf"(%d)" indent)
                     let! code          = prepareCodeRm snp
                     //let  name          = nameSanitized snp
-                    let  code, assembs, defines, prepIs, nowarns, cdO =
+                    let  code, directs =
                         code.Split('\n')
                         |> FsCode.separatePrepros
                         |> indentF
-                        |> FsCode.separateDirectives
+                        |> FsCode.getTopDirectives
                     return
-                        [| snp.snpId, snippetName snp.snpName snp.snpContent, code.Length, indent |] , code, assembs, defines, prepIs, nowarns,cdO
+                        [| snp.snpId, snippetName snp.snpName snp.snpContent, code.Length, indent |] , code, directs
                 }
-                let addSeps (lines1:(SnippetId*string*int*int)[], code1:string[], assembs1:string[], defines1:string[], prepIs1:string[], nowarns1:string[], cdO1:string option)
-                            (lines2:(SnippetId*string*int*int)[], code2:string[], assembs2:string[], defines2:string[], prepIs2:string[], nowarns2:string[], cdO2:string option) =
+                let addSeps (lines1:(SnippetId*string*int*int)[], code1:string[], directs1:FsCode.PreproDirective[])
+                            (lines2:(SnippetId*string*int*int)[], code2:string[], directs2:FsCode.PreproDirective[]) =
                     Array.append lines1   lines2
                   , Array.append code1    code2
-                  , Seq  .append assembs1 assembs2 |> Seq.distinct |> Seq.toArray
-                  , Seq  .append defines1 defines2 |> Seq.distinct |> Seq.toArray
-                  , Seq  .append prepIs1  prepIs2  |> Seq.distinct |> Seq.toArray
-                  , Seq  .append nowarns1 nowarns2 |> Seq.distinct |> Seq.toArray
-                  , cdO1 |> function None -> cdO2 |_-> cdO1
+                  , Array.append directs1 directs2
                 let reducedCodeRm  snippets = fusion {
                     let! parts    = snippets |> traverseSeq separateCodeRm
                     let  reduced  = parts
-                                    |> fun snps -> if snps |> Seq.isEmpty then seq [ [||],  [||],  [||],  [||],  [||],  [||], None ] else snps
+                                    |> fun snps -> if snps |> Seq.isEmpty then seq [ [||],  [||],  [||] ] else snps
                                     |> Seq.reduce addSeps
-                                    |> fun (lines, code                                         , assembs, defines, prepIs, nowarns, cdO) ->
-                                           (lines, code |> String.concat "\n" |> Array.singleton, assembs, defines, prepIs, nowarns, cdO)
+                                    |> fun (lines, code                                         , directs) ->
+                                           (lines, code |> String.concat "\n" |> Array.singleton, directs)
                     return reduced
                 }
-                let finishCode (lines:(SnippetId*string*int*int)[],code:string[], assembs:string[], defines:string[], prepIs:string[], nowarns:string[], cdO: string option) =
+                let finishCode (lines:(SnippetId*string*int*int)[],code:string[], directs:FsCode.PreproDirective[]) =
+                    let assembs, defines, prepIs, nowarns, cdO = FsCode.separateDirectives directs
                     let config = defines |> Seq.sort |> Seq.map ((+)"-d:") |> String.concat " "
                     let part1  =
                       [ if config <> "" then yield "////" + config
@@ -1842,12 +1812,27 @@ namespace FsRoot
             type TempFileName(fn) =
                 new () = new TempFileName(System.IO.Path.GetTempFileName())
                 member __.Name = fn
-                interface System.IDisposable with
-                    member __.Dispose() = 
-                        //printfn "trying to delete %s"  fn
-                        if System.IO.File.Exists fn then (*printfn "deleting %s"  fn ;*) System.IO.File.Delete fn 
-                    
-                    
+                interface ITempFileName      with member __.Name      = fn
+                interface System.IDisposable with member __.Dispose() = 
+                                                    if System.IO.File.Exists fn then 
+                                                        System.IO.File.Delete fn 
+            
+            module IO =
+                open System.IO
+                let getLocalFileState fname =
+                    let fileInfo =  FileInfo fname
+                    if   fileInfo.Exists 
+                    then Some (fileInfo.LastWriteTimeUtc, fileInfo.Length)
+                    else None
+            
+                let copyFile  f1 f2 = 
+                    if File.Exists f2 then File.Delete f2
+                    File.Copy(f1, f2)
+            
+                let readFile  fi     = File.ReadAllText  fi
+                let writeFile fi txt = File.WriteAllText(fi, txt)
+            
+            
             module FsCode =
                 open CommArg
                 open CommArgCollection
@@ -1983,10 +1968,10 @@ namespace FsRoot
                   CommArgCollection
                     [|
                        wscProjectType /=       "Site"
-                       wscWebSite     /= (rtn (fun d -> d +/+ "website" ) <*> gS intDirectory )
+                       wscWebSite     /= (rtn (fun d   -> d +/+ "website"  ) <*> gS intDirectory )
+                       wscJsOutput    /= (rtn (fun d n -> d +/+ n + "0.js" ) <*> gS wscWebSite  <*> gS intName )
                        wscProjectFile /=       gS intName
                        wscJSMap       /=       true
-                       wscJsOutput    /= (rtn (fun d n   -> d +/+ n + "0.js" ) <*> gS wscWebSite    <*> gS intName                     )
                     |] 
                  
                 let wsProjectOptions ()=
@@ -2078,7 +2063,7 @@ namespace FsRoot
                 let endToken = "xXxY" + "yYyhH"
                 type FsiExe(config:string, workingDir, ?outHndl, ?errHndl) =
                     let silent                     = ref false
-                    let fsiexe                     = @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Compiler.Tools\tools" +/+ if config.Contains "-d:FSI32BIT" then "fsi.exe" else "fsianycpu.exe"
+                    let fsiexe                     = @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Test2\FSharp.Compiler.Tools\tools" +/+ if config.Contains "-d:FSI32BIT" then "fsi.exe" else "fsianycpu.exe"
                     let startInfo                  = ProcessStartInfo(fsiexe, config, WorkingDirectory= workingDir)
                     let outHndlS                   = outHndl |> Option.map(fun outh v -> if !silent then () else outh v)
                     let errHndlS                   = errHndl |> Option.map(fun errh v -> if !silent then () else errh v)
@@ -2086,9 +2071,11 @@ namespace FsRoot
                     do  startInfo.CreateNoWindow  <- false
                         shell.Start() |> ignore
                     member __.Eval (FsCode code)   = asyncResult {
-                                                         shell.Send code
-                                                         shell.Send ";;"
-                                                         return! shell.SendAndWait("printfn \"" + endToken + "\";;", endToken)
+                                                        shell.Output() |> ignore
+                                                        shell.Error () |> ignore
+                                                        shell.Send code
+                                                        shell.Send ";;"
+                                                        return! shell.SendAndWait("printfn \"" + endToken + "\";;", endToken)
                                                      }
                     member __.IsAlive              = not shell.HasExited
                     member __.Abort()              = shell.Abort()
@@ -2160,8 +2147,8 @@ namespace FsRoot
                     let  allArgIds  = Set.union WebSharpArgs FSharpArgs 
                     let! args       = ofFusionM <| argumentsRm (fun (arg,_) -> Set.contains arg.cargId allArgIds )
                     let! createDir  = ofFusionM <| getBoolRm false intCreateDir
-                    if createDir then let! site = ofFusionM <| getStringRm wscWebSite
-                                      Directory.CreateDirectory(site) |> ignore
+                    if   createDir then let! site = ofFusionM <| getStringRm wscWebSite
+                                        Directory.CreateDirectory(site) |> ignore
                     let! out, err   = args
                                       |> String.concat "  "
                                       |> fun ops -> (new RunProcess.ShellEx(@"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\wsfsc.exe", ops, priorityClass = System.Diagnostics.ProcessPriorityClass.RealTime)).StartAndWaitR()
@@ -2185,13 +2172,15 @@ namespace FsRoot
                 let translateJs (CommArgCollection args) (FsCode codeFs) = fusion {
                     let  code           = codeFs.Split '\n'
                     let  defines0       = (FsCode.extractDefines <| FsCode codeFs).Split([| " " ; "-d:" |], StringSplitOptions.RemoveEmptyEntries) 
-                    let  fs, assembs, defines1, prepIs, nowarns, _ = separatePrepros code |> separateDirectives
+            //        let  fs, assembs, defines1, prepIs, nowarns, _ = separatePrepros code |> separateDirectives
+                    let  fs, directs    = separatePrepros code |> FsCode.getTopDirectives
+                    let  assembs, defines1, prepIs, nowarns, _ = separateDirectives directs 
                     let  defines        = Array.append defines0 defines1
                     let  name           = "testing"
                     let  args1          = compileOptionsDll name
                                           + siteOptions()
                                           + wscProjectType /= "bundle"
-                                          + wscWebSite     /= @"..\website\testing"
+                                          + wscWebSite     /= @"D:\Abe\CIPHERWorkspace\FSharpStation\website\testing"
                                           + wscProjectFile /= (getStringRm intFileName |> FusionM.map (fun f -> Path.GetDirectoryName f +/+ name + ".json"))
                                           + args
                     let  args2          = prepOptions args1 (assembs, defines, prepIs)
@@ -2204,7 +2193,7 @@ namespace FsRoot
                         let! wsconfig   = ofFusionM <| getStringRm wscProjectFile
                         //use temp1 = new TempFileName(source            )
                         //use temp2 = new TempFileName(outputJs          )
-                        use temp3 = new TempFileName(output            )
+                        //use temp3 = new TempFileName(output            )
                         use temp4 = new TempFileName(output + ".failed")
                         use temp5 = new TempFileName(wsconfig          )
                         //use temp6 = new TempFileName(Path.ChangeExtension(outputJs, "min.js"   ) )
@@ -2236,20 +2225,6 @@ namespace FsRoot
                     return js0Incs 
                 }
             
-        /// Essentials that run in Javascript (WebSharper)
-        //#define WEBSHARPER
-        [< JavaScript ; AutoOpen >]
-        module LibraryJS =
-            module Promise =
-                let ofAsyncResult (v: Async<Result<'a,'b>>) : Promise<'a> =
-                    new Promise<'a>(fun (resolve, reject) ->
-                        Async.StartWithContinuations(v, (function Ok ok -> resolve ok | Error er -> reject <| sprintf "%A" er), reject, reject)
-                    )
-            
-                let ofAsyncResultM (v: Async<ResultM<'a,'b>>) : Promise<'a> =
-                    new Promise<'a>(fun (resolve, reject) ->
-                        Async.StartWithContinuations(v, (function OkM(ok, _) -> resolve ok | ErrorM er -> reject <| ResultMessage.summarized er), reject, reject)
-                    )        
         /// Essentials that part runs in Javascript and part runs in the server
         [< AutoOpen >]
         module Library2 =
@@ -2341,8 +2316,8 @@ namespace FsRoot
                     fusion {    
                         let! currentValueO  = getPresenceRm presenceKey
                         if   currentValueO <> Some presenceValue then
-                            do!  evaluateRm    presenceCode |>> ignore
                             do!  addPresenceRm presenceKey presenceValue
+                            do!  evaluateRm    presenceCode |>> ignore
                         return! evaluateRm code
                     }
                     |> AgentReaderM.ofResourceRm
@@ -2363,7 +2338,7 @@ namespace FsRoot
                 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
                 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
                 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
-                
+                //#define WEBSHARPER
                 open WebSharper
                 
                 let MessageBrokerId  = "<MessageBroker>"
@@ -2474,6 +2449,7 @@ namespace FsRoot
                     abstract member Close : unit           -> unit
                 
                 type CMessage<'C2S> = WebSharper.Owin.WebSocket.Client.Message<'C2S>
+                
                 
                 open System
                 open System.Threading
@@ -2674,7 +2650,7 @@ namespace FsRoot
                         }
                 
                     let checkServer = Mailbox.callA print ( fun () -> async {
-                        printfn "getServer"
+                        //printfn "getServer"
                         if serverO.IsNone then
                             printfn "getServer Connecting"
                             do! connectToWebSocketServer()
@@ -2796,16 +2772,19 @@ namespace FsRoot
             | MsgAction          of string[]
             | MsgGetUrl
             | MsgGetValue        of string
+            | MsgSetValue        of string * string
+            | MsgGetModified     of SnippetReference
             
             [< JavaScript >]
             type FSResponse =
             | RespString         of string
             | RespSnippets       of Snippet[]
+            | RespDateTime       of System.DateTime
             
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1553872630655"
+                let mutable fsharpStationAddress = Address "FSharpStation1587350505683"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -2832,6 +2811,12 @@ namespace FsRoot
                     | _               -> return! Error <| ErrorMsg (sprintf "Unexpected %A" response)
                 }
             
+                let respDateTime response = asyncResult { 
+                    match response with
+                    | RespDateTime time -> return time
+                    | _                 -> return! Error <| ErrorMsg (sprintf "Unexpected %A" response)
+                }
+            
                 let respSnippet response = asyncResult { 
                     match response with
                     | RespSnippets [| snp |] -> return snp
@@ -2846,6 +2831,14 @@ namespace FsRoot
                     |> sendMessage
                     |> AsyncResult.bind respString
             
+                let getModified path = 
+                    path
+                    |> String.splitByChar '/'
+                    |> RefSnippetPath
+                    |> MsgGetModified
+                    |> sendMessage
+                    |> AsyncResult.bind respDateTime
+            
                 let getSnippet path = 
                     path
                     |> String.splitByChar '/'
@@ -2855,8 +2848,9 @@ namespace FsRoot
                     |> sendMessage
                     |> AsyncResult.bind respSnippet
             
-                let getUrl  () = MsgGetUrl     |> sendMessage |> AsyncResult.bind respString
-                let getValue v = MsgGetValue v |> sendMessage |> AsyncResult.bind respString
+                let getUrl      () = MsgGetUrl            |> sendMessage |> AsyncResult.bind respString
+                let getValue vrw   = MsgGetValue vrw      |> sendMessage |> AsyncResult.bind respString
+                let setValue var v = MsgSetValue (var, v) |> sendMessage |> AsyncResult.bind respString
             
                 let execJS      js          = sendMessage (MsgAction [| "ExecJS"      ; js              |]) |> AsyncResult.bind respString
                 let setProperty path prop v = sendMessage (MsgAction [| "SetProperty" ; path ; prop ; v |]) |> AsyncResult.bind respString
@@ -2867,80 +2861,80 @@ namespace FsRoot
                                         
                 let getBrokerProcessId() = fsharpStationClient.MBProcessId
     
-        //#r "System.Web"
-        //#nowarn "3180"
-        //#nowarn "1182"
-        //#nowarn "52"
-        //#nowarn "1178"
-        
-        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
-        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
-        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
-        
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Globalization.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Reflection.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Numerics.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Core.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.Linq.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Net.Http.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Runtime.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.IO.dll"   
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.Tasks.dll"  
-        
-        
-        module RunTestingJs =
-            open FusionAsyncM
-            open FusionAsyncM.Operators
-            open System.IO
-            open RunProcess
-            open WsTranslate
-            open FsCode
-        
-            let testLoadFile() = Path.GetFullPath @"..\website\testing\testingLoad.js"
-        
-            let run () = fusion {
-                let! url      = FSharpStationClient.getUrl()        |> ofAsyncResultRM
-                let  uri      = System.Uri url
-                let  modif    = testLoadFile() |>! print |> File.GetLastWriteTime
-                do   startProcess (sprintf "http://%s:%d/testing/testing.html?q=%A" uri.Host uri.Port modif)     "" |> ignore
-            } 
-        
-            let uncanopyName (name:string) =
-                if name.EndsWith ".canopy" 
-                then name.[0..name.Length - ".canopy".Length - 1]
-                else name
-        
-            [< Inline "throw 'runTest is not intended for JavaScript client'" >]
-            let compile show name = fusion {
-                let! code         = FSharpStationClient.getCode <| name |> ofAsyncResultRM
-                let  args         = [ intShowArgs    /= (show:bool)
-                                      //fscGenFSharp2  /= "noframework"
-                                      //fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
-                                      //fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
-                                      //fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
-                                      ]
-                let! (_, incs)   = FsCode code |> translate (CommArgCollection args)
-                let  incs2       = sprintf "\"testing.js?q=%A\"" System.DateTime.Now |> Seq.singleton |> Seq.append incs |> String.concat ", "
-                do                 File.WriteAllText(testLoadFile(),  sprintf "CIPHERSpaceLoadFiles([%s], function() {})" incs2)
-            }
-        
-            let justRun                   =                                   run >> iterResult print id
-            let compileAndRun        show = uncanopyName >> compile show  >=> run >> iterResult print id
-        
-            open FsiAgent
-        
-            let testSnippet name = fusion {
-                outHndl <- print
-                errHndl <- print
-                let! code   = FSharpStationClient.getCode <| name                    |> ofAsyncResultRM
-                let! out    = FsCode code |> evalCode "." |> AsyncResult.freeMessage |> ofAsyncResultRM
-                abortFsiExe()
-            }
-        
-            let test                           = uncanopyName       >> __ (+) ".canopy" >>             testSnippet
-            let testCanopy                     =                                                    test        >> iterResult print id
-            let compileAndTestCanopy show name = uncanopyName name  |> compile show     >>= (fun () -> test name)  |> iterResult print id
-         
+    //#r "System.Web"
+    //#nowarn "3180"
+    //#nowarn "1182"
+    //#nowarn "52"
+    //#nowarn "1178"
+    
+    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+    
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Globalization.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Reflection.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Numerics.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Core.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Xml.Linq.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Net.Http.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Runtime.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.IO.dll"   
+    //#r "D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref\System.Threading.Tasks.dll"  
+    
+    module RunTestingJs =
+        open FusionAsyncM
+        open FusionAsyncM.Operators
+        open System.IO
+        open RunProcess
+        open WsTranslate
+        open FsCode
+    
+        let testLoadFile() = Path.GetFullPath @"..\website\testing\testingLoad.js"
+    
+        let run () = fusion {
+            let! url      = FSharpStationClient.getUrl()        |> ofAsyncResultRM
+            let  uri      = System.Uri url
+            let  modif    = testLoadFile() |>! print |> File.GetLastWriteTime
+            do   startProcess (sprintf "http://%s:%d/testing/testing.html?q=%A" uri.Host uri.Port modif)     "" |> ignore
+        } 
+    
+        let uncanopyName (name:string) =
+            if name.EndsWith ".canopy" 
+            then name.[0..name.Length - ".canopy".Length - 1]
+            else name
+    
+        [< Inline "throw 'runTest is not intended for JavaScript client'" >]
+        let compile show name = fusion {
+            let! code         = FSharpStationClient.getCode <| name |> ofAsyncResultRM
+            let  args         = [ intShowArgs    /= (show:bool)
+                                  //fscGenFSharp2  /= "noframework"
+                                  //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+                                  fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+                                  //fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+                                  //fscReference   /= @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+                                  ]
+            let! (_, incs)   = FsCode code |> translate (CommArgCollection args)
+            let  incs2       = sprintf "\"testing.js?q=%A\"" System.DateTime.Now |> Seq.singleton |> Seq.append incs |> String.concat ", "
+            do                 File.WriteAllText(testLoadFile(),  sprintf "CIPHERSpaceLoadFiles([%s], function() {})" incs2)
+        }
+    
+        let justRun                   =                                   run >> iterResult print id
+        let compileAndRun        show = uncanopyName >> compile show  >=> run >> iterResult print id
+    
+        open FsiAgent
+    
+        let testSnippet name = fusion {
+            outHndl <- print
+            errHndl <- print
+            let! code   = FSharpStationClient.getCode <| name                    |> ofAsyncResultRM
+            let! out    = FsCode code |> evalCode "." |> AsyncResult.freeMessage |> ofAsyncResultRM
+            abortFsiExe()
+        }
+    
+        let test                           = uncanopyName       >> __ (+) ".canopy" >>             testSnippet
+        let testCanopy                     =                                                    test        >> iterResult print id
+        let compileAndTestCanopy show name = uncanopyName name  |> compile show     >>= (fun () -> test name)  |> iterResult print id
+     
