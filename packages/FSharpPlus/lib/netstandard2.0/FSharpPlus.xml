@@ -2,9 +2,999 @@
 <doc>
 <assembly><name>FSharpPlus</name></assembly>
 <members>
+<member name="M:FSharpPlus.Option.protect``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``0)">
+<summary>
+ Creates a safe version of the supplied function, which returns an option&lt;&apos;U&gt; instead of throwing exceptions.
+</summary>
+</member>
+<member name="M:FSharpPlus.Option.ofResult``2(Microsoft.FSharp.Core.FSharpResult{``0,``1})">
+ <summary>Converts a Result to an option.</summary>
+ <remarks>The error value (if any) is lost.</remarks>
+ <param name="source">The Result value.</param>
+ <returns>The resulting option value.</returns>
+</member>
+<member name="M:FSharpPlus.Option.toResultWith``2(``0,Microsoft.FSharp.Core.FSharpOption{``1})">
+ <summary>Converts an option to a Result.</summary>
+ <param name="errorValue">The error value to be used in case of None.</param>
+ <param name="source">The option value.</param>
+ <returns>The resulting Result value.</returns>
+</member>
+<member name="M:FSharpPlus.Option.toResult``1(Microsoft.FSharp.Core.FSharpOption{``0})">
+ <summary>Converts an option to a Result.</summary>
+ <param name="source">The option value.</param>
+ <returns>The resulting Result value.</returns>
+</member>
+<member name="M:FSharpPlus.Option.zip``2(Microsoft.FSharp.Core.FSharpOption{``0},Microsoft.FSharp.Core.FSharpOption{``1})">
+ <summary>If both value are Some, returns both of them tupled. Otherwise it returns None.</summary>
+ <param name="x">The first value.</param>
+ <param name="y">The second value.</param>
+ <returns>The resulting option.</returns>
+</member>
+<member name="M:FSharpPlus.Option.unzip``2(Microsoft.FSharp.Core.FSharpOption{System.Tuple{``0,``1}})">
+ <summary>If value is Some, returns both of them tupled. Otherwise it returns None tupled.</summary>
+ <param name="v">The value.</param>
+ <returns>The resulting tuple.</returns>
+</member>
+<member name="M:FSharpPlus.Option.apply``2(Microsoft.FSharp.Core.FSharpOption{Microsoft.FSharp.Core.FSharpFunc{``0,``1}},Microsoft.FSharp.Core.FSharpOption{``0})">
+ <summary>Applies an option value to an option function.</summary>
+ <param name="f">The option function.</param>
+ <param name="x">The option value.</param>
+ <returns>An option of the function applied to the value, or <c>None</c> if either the function or the value is <c>None</c>.</returns>
+</member>
+<member name="T:FSharpPlus.Option">
+<summary>
+ Additional operations on Option
+</summary>
+</member>
+<member name="M:FSharpPlus.Nullable.toList``1(System.Nullable{``0})">
+ <summary>Converts a Nullable to a list with 0 or 1 items.</summary>
+ <param name="n">The Nullable value.</param>
+ <returns>A list that contains the value in the Nullable if there is one, or an empty list.</returns>
+</member>
+<member name="M:FSharpPlus.Nullable.toArray``1(System.Nullable{``0})">
+ <summary>Converts a Nullable to an array with 0 or 1 items.</summary>
+ <param name="n">The Nullable value.</param>
+ <returns>An array that contains the value in the Nullable if there is one, or an empty array.</returns>
+</member>
+<member name="M:FSharpPlus.Nullable.forall``1(Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},System.Nullable{``0})">
+ <summary>Returns whether a Nullable is empty or its value passes the given predicate. Like exists, but returns true when there is no value.</summary>
+ <param name="pred">Function to test against the inner value.</param>
+ <param name="n">The Nullable value.</param>
+ <returns>True if the Nullable is empty or the value matches the predicate, false otherwise.</returns>
+</member>
+<member name="M:FSharpPlus.Nullable.foldBack``2(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``1}},``1,System.Nullable{``0})">
+ <summary>Fold, but the update function has reversed arguments.</summary>
+ <param name="f">A function to update the state data when given a value from the Nullable.</param>
+ <param name="state">The initial state.</param>
+ <param name="n">The Nullable value.</param>
+ <returns>The new state if the Nullable contained a value, the original state otherwise.</returns>
+</member>
+<member name="M:FSharpPlus.Nullable.fold``2(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``0}},``0,System.Nullable{``1})">
+ <summary>Updates state data with an update function and the value from a Nullable if it has one.</summary>
+ <param name="f">A function to update the state data when given a value from the Nullable.</param>
+ <param name="state">The initial state.</param>
+ <param name="n">The Nullable value.</param>
+ <returns>The new state if the Nullable contained a value, the original state otherwise.</returns>
+</member>
+<member name="M:FSharpPlus.Nullable.filter``1(Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},System.Nullable{``0})">
+ <summary>Filters the value in a Nullable with the given predicate.</summary>
+ <param name="pred">Function that returns whether the value in the Nullable should remain.</param>
+ <param name="n">The Nullable value.</param>
+ <returns>The original Nullable value if the predicate matched the value, empty Nullable otherwise.</returns>
+</member>
+<member name="M:FSharpPlus.Nullable.exists``1(Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},System.Nullable{``0})">
+ <summary>Returns whether a Nullable contains a value for which the given predicate returns true.</summary>
+ <param name="pred">Function to test against the inner value.</param>
+ <param name="n">The Nullable value.</param>
+ <returns>True if the Nullable contains a value that matches the predicate, false otherwise.</returns>
+</member>
+<member name="M:FSharpPlus.Nullable.defaultWith``1(Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.Unit,``0},System.Nullable{``0})">
+ <summary>Returns the value inside a Nullable if it has one, otherwise returns the result of evaluating defThunk.</summary>
+ <param name="defThunk">The function that returns a default value.</param>
+ <param name="n">The Nullable value.</param>
+ <returns>The value inside the Nullable or the result of defThunk.</returns>
+</member>
+<member name="M:FSharpPlus.Nullable.defaultValue``1(``0,System.Nullable{``0})">
+ <summary>Returns the value inside a Nullable if it has one, otherwise returns defValue.</summary>
+ <param name="defValue">The value to use if the Nullable does not have a value.</param>
+ <param name="n">The Nullable value.</param>
+ <returns>The value inside the Nullable or defValue.</returns>
+</member>
+<member name="M:FSharpPlus.Nullable.count``1(System.Nullable{``0})">
+ <summary>Returns the number of values in the Nullable (0 or 1).</summary>
+ <param name="n">The Nullable value.</param>
+ <returns>1 if the Nullable has a value, 0 otherwise.</returns>
+</member>
+<member name="M:FSharpPlus.Nullable.isNull``1(System.Nullable{``0})">
+ <summary>Returns whether a Nullable is empty.</summary>
+ <param name="n">The Nullable value.</param>
+ <returns>True if the Nullable does not have a value, false otherwise.</returns>
+</member>
+<member name="M:FSharpPlus.Nullable.hasValue``1(System.Nullable{``0})">
+ <summary>Returns whether a Nullable has a value.</summary>
+ <param name="n">The Nullable value.</param>
+ <returns>True if the Nullable has a value, false otherwise.</returns>
+</member>
+<member name="M:FSharpPlus.Nullable.iter``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},System.Nullable{``0})">
+ <summary>Invokes a side-effect function to the value of a Nullable if present and ignores the result.</summary>
+ <param name="f">The function to apply to the value of a Nullable.</param>
+ <param name="n">The Nullable value.</param>
+</member>
+<member name="M:FSharpPlus.Nullable.map``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},System.Nullable{``0})">
+ <summary>Transforms the value inside a Nullable by using a specified mapping function.</summary>
+ <param name="f">The value mapping function.</param>
+ <param name="n">The Nullable value.</param>
+</member>
+<member name="M:FSharpPlus.Nullable.bind``2(Microsoft.FSharp.Core.FSharpFunc{``0,System.Nullable{``1}},System.Nullable{``0})">
+ <summary>Monadic Bind; Transforms the value inside a Nullable to a Nullable using a specified binding function.</summary>
+ <param name="f">The value binding function.</param>
+ <param name="n">The Nullable value.</param>
+</member>
+<member name="T:FSharpPlus.Nullable">
+<summary>
+ Additional operations on Nullable
+</summary>
+</member>
+<member name="M:FSharpPlus.Result.partition``2(Microsoft.FSharp.Collections.FSharpList{Microsoft.FSharp.Core.FSharpResult{``0,``1}})">
+ <summary>
+ Creates two lists by classifying the values depending on whether they were wrapped with Ok or Error.
+ </summary>
+ <returns>
+ A tuple with both resulting lists, Oks are in the first list.
+ </returns>
+</member>
+<member name="M:FSharpPlus.Result.ofChoice``2(Microsoft.FSharp.Core.FSharpChoice{``0,``1})">
+<summary>
+ Creates a Result&lt;&apos;T,&apos;Error&gt; from a Choice&lt;&apos;T,&apos;Error&gt;.
+</summary>
+</member>
+<member name="M:FSharpPlus.Result.toChoice``2(Microsoft.FSharp.Core.FSharpResult{``0,``1})">
+<summary>
+ Converts a Result&lt;&apos;T,&apos;Error&gt; to a Choice&lt;&apos;T,&apos;Error&gt;.
+</summary>
+</member>
+<member name="M:FSharpPlus.Result.defaultWith``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpResult{``1,``0})">
+<summary>
+ Extracts the Ok value or applies the compensation function over the Error.
+</summary>
+</member>
+<member name="M:FSharpPlus.Result.defaultValue``2(``0,Microsoft.FSharp.Core.FSharpResult{``0,``1})">
+<summary>
+ Extracts the Ok value or use the supplied default value when it&apos;s an Error.
+</summary>
+</member>
+<member name="M:FSharpPlus.Result.get``2(Microsoft.FSharp.Core.FSharpResult{``0,``1})">
+<summary>
+ Gets the &apos;Ok&apos; value. If it&apos;s an &apos;Error&apos; this function will throw an exception.
+</summary>
+</member>
+<member name="M:FSharpPlus.Result.protect``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``0)">
+<summary>
+ Creates a safe version of the supplied function, which returns a Result&lt;&apos;U,exn&gt; instead of throwing exceptions.
+</summary>
+</member>
+<member name="M:FSharpPlus.Result.either``3(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpFunc{``2,``1},Microsoft.FSharp.Core.FSharpResult{``0,``2})">
+ <summary> Extracts a value from either side of a Result.</summary>
+ <param name="fOk">Function to be applied to source, if it contains an Ok value.</param>
+ <param name="fError">Function to be applied to source, if it contains an Error value.</param>
+ <param name="source">The source value, containing an Ok or an Error.</param>
+ <returns>The result of applying either functions.</returns>
+</member>
+<member name="M:FSharpPlus.Result.bindError``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpResult{``1,``2}},Microsoft.FSharp.Core.FSharpResult{``1,``0})">
+ <summary>If the input value is an Ok leaves it unchanged, otherwise maps the Error value and flattens the resulting nested Result.</summary>
+ <param name="binder">A function that takes the error and transforms it into a result.</param>
+ <param name="source">The source input value.</param>
+ <returns>A result of the output type of the binder.</returns>
+</member>
+<member name="M:FSharpPlus.Result.flatten``2(Microsoft.FSharp.Core.FSharpResult{Microsoft.FSharp.Core.FSharpResult{``0,``1},``1})">
+ <summary>Flattens two nested Results.</summary>
+ <param name="source">The nested Results.</param>
+ <returns>A single Ok of the value when it was nested with OKs, or the Error.</returns>
+ <remarks><c>flatten</c> is equivalent to <c>bind id</c>.</remarks>
+</member>
+<member name="M:FSharpPlus.Result.map2``4(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},Microsoft.FSharp.Core.FSharpResult{``0,``3},Microsoft.FSharp.Core.FSharpResult{``1,``3})">
+ <summary>Creates a Result value from a pair of Result values, using a function to combine them.</summary>
+ <param name="x">The first Result value.</param>
+ <param name="y">The second Result value.</param>
+
+ <returns>The combined value, or the first Error.</returns>
+</member>
+<member name="M:FSharpPlus.Result.apply``3(Microsoft.FSharp.Core.FSharpResult{Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2},Microsoft.FSharp.Core.FSharpResult{``0,``2})">
+<summary>
+ Applies the wrapped value to the wrapped function when both are Ok and returns a wrapped result or the first Error.
+ &lt;param name=&quot;f&quot;&gt;The function wrapped in an Ok or an Error.&lt;/param&gt;
+ &lt;param name=&quot;x&quot;&gt;The value wrapped in an Ok or an Error.&lt;/param&gt;
+ &lt;returns&gt;An Ok of the function applied to the value, or the first &lt;c&gt;Error&lt;/c&gt; if either the function or the value is &lt;c&gt;Error&lt;/c&gt;.&lt;/returns&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.Result.throw``2(``0)">
+<summary>
+ Creates an Error With the supplied value.
+</summary>
+</member>
+<member name="M:FSharpPlus.Result.result``2(``0)">
+<summary>
+ Creates an Ok with the supplied value.
+</summary>
+</member>
+<member name="T:FSharpPlus.Result">
+<summary>
+ Additional operations on Result&lt;&apos;T,&apos;Error&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.Choice.protect``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``0)">
+<summary>
+ Creates a safe version of the supplied function, which returns a Choice&lt;&apos;U,exn&gt; instead of throwing exceptions.
+</summary>
+</member>
+<member name="M:FSharpPlus.Choice.either``3(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpFunc{``2,``1},Microsoft.FSharp.Core.FSharpChoice{``0,``2})">
+ <summary> Extracts a value from either side of a Choice.</summary>
+ <param name="fChoice1Of2">Function to be applied to source, if it contains a Choice1Of2 value.</param>
+ <param name="fChoice2Of2">Function to be applied to source, if it contains a Choice2Of2 value.</param>
+ <param name="source">The source value, containing a Choice1Of2 or a Choice2Of2.</param>
+ <returns>The result of applying either functions.</returns>
+</member>
+<member name="M:FSharpPlus.Choice.bindChoice2Of2``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpChoice{``1,``2}},Microsoft.FSharp.Core.FSharpChoice{``1,``0})">
+ <summary>If the input value is a Choice1Of2 leaves it unchanged, otherwise maps the value on the Choice2Of2 and flattens the resulting nested Choice.</summary>
+ <param name="binder">A function that takes the value of type T and transforms it into a Choice containing (potentially) a value of type U.</param>
+ <param name="source">The source input value.</param>
+ <returns>A result of the output type of the binder.</returns>
+</member>
+<member name="M:FSharpPlus.Choice.bind``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpChoice{``1,``2}},Microsoft.FSharp.Core.FSharpChoice{``0,``2})">
+ <summary>If the input value is a Choice2Of2 leaves it unchanged, otherwise maps the value on the Choice1Of2 and flattens the resulting nested Choice.</summary>
+ <param name="binder">A function that takes the value of type T and transforms it into a Choice containing (potentially) a value of type U.</param>
+ <param name="source">The source input value.</param>
+ <returns>A result of the output type of the binder.</returns>
+</member>
+<member name="M:FSharpPlus.Choice.flatten``2(Microsoft.FSharp.Core.FSharpChoice{Microsoft.FSharp.Core.FSharpChoice{``0,``1},``1})">
+ <summary>Flattens two nested Choice.</summary>
+ <param name="source">The nested Choice.</param>
+ <returns>A single Choice1Of2 of the value when it was nested with Choice1Of2s, or the Choice2Of2.</returns>
+ <remarks><c>flatten</c> is equivalent to <c>bind id</c>.</remarks>
+</member>
+<member name="M:FSharpPlus.Choice.map2``4(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},Microsoft.FSharp.Core.FSharpChoice{``0,``3},Microsoft.FSharp.Core.FSharpChoice{``1,``3})">
+ <summary>Creates a Choice value from a pair of Choice values, using a function to combine the Choice1Of2 values.</summary>
+ <param name="x">The first Choice value.</param>
+ <param name="y">The second Choice value.</param>
+
+ <returns>The combined value, or the first Choice2Of2.</returns>
+</member>
+<member name="M:FSharpPlus.Choice.map``3(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpChoice{``0,``2})">
+ <summary>Maps the value on the Choice1Of2 if any.</summary>
+ <param name="mapping">A function to apply to the Choice1Of2 value.</param>
+ <param name="value">The source input value.</param>
+ <returns>A Choice1Of2 of the input value after applying the mapping function, or the original Choice2Of2 value if the input is Choice2Of2.</returns>
+</member>
+<member name="M:FSharpPlus.Choice.apply``3(Microsoft.FSharp.Core.FSharpChoice{Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2},Microsoft.FSharp.Core.FSharpChoice{``0,``2})">
+<summary>
+ Applies the wrapped value to the wrapped function when both are Choice1Of2 and returns a wrapped result or the first Choice2Of2.
+ This is as if Choice1Of2 respresents a Success value and Choice2Of2 a Failure.
+ &lt;param name=&quot;f&quot;&gt;The function wrapped in a Choice1Of2 or a Choice2Of2.&lt;/param&gt;
+ &lt;param name=&quot;x&quot;&gt;The value wrapped in a Choice1Of2 or a Choice2Of2.&lt;/param&gt;
+ &lt;returns&gt;A Choice1Of2 of the function applied to the value, or the first &lt;c&gt;Choice2Of2&lt;/c&gt; if either the function or the value is &lt;c&gt;Choice2Of2&lt;/c&gt;.&lt;/returns&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.Choice.throw``2(``0)">
+<summary>
+ Creates a Choice2Of2 with the supplied value.
+</summary>
+</member>
+<member name="M:FSharpPlus.Choice.result``2(``0)">
+<summary>
+ Creates a Choice1Of2 with the supplied value.
+</summary>
+</member>
+<member name="T:FSharpPlus.Choice">
+<summary>
+ Additional operations on Choice
+</summary>
+</member>
+<member name="M:FSharpPlus.Seq.tryFindSliceIndex``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+ <summary>
+ Gets the index of the first occurrence of the specified slice in the source.
+ Returns <c>None</c> if not found.
+ </summary>
+ <remarks>
+ It is assumed that 1) the slice is finite and 2) either the source is finite or actually contains the slice, otherwise it will not return forever.
+ The slice will always be iterated to the end.
+ The source will be iterated until the slice is found or it reaches the end.
+ </remarks>
+ <returns>
+ The index of the slice or <c>None</c>.
+ </returns>
+</member>
+<member name="M:FSharpPlus.Seq.findSliceIndex``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+ <summary>
+ Gets the index of the first occurrence of the specified slice in the source.
+ </summary>
+ <remarks>
+ It is assumed that 1) the slice is finite and 2) either the source is finite or actually contains the slice, otherwise it will not return forever.
+ The slice will always be iterated to the end.
+ The source will be iterated until the slice is found or it reaches the end.
+ </remarks>
+ <exception cref="System.ArgumentException">
+ Thrown when the slice was not found in the sequence.
+ </exception>
+ <returns>
+ The index of the slice.
+ </returns>
+</member>
+<member name="M:FSharpPlus.Seq.drop``1(System.Int32,System.Collections.Generic.IEnumerable{``0})">
+ <summary>Returns a sequence that drops N elements of the original sequence and then yields the
+ remaining elements of the sequence.</summary>
+ <remarks>When count exceeds the number of elements in the sequence it
+ returns an empty sequence instead of throwing an exception.</remarks>
+ <param name="count">The number of items to drop.</param>
+ <param name="source">The input sequence.</param>
+
+ <returns>The result sequence.</returns>
+</member>
+<member name="M:FSharpPlus.Seq.split``2(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``1})">
+<summary>
+ Creates a sequence of sequences by splitting the source sequence on any of the given separators.
+</summary>
+</member>
+<member name="M:FSharpPlus.Seq.intercalate``2(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``1})">
+<summary>
+ Inserts a separator between each element in the source sequence.
+</summary>
+</member>
+<member name="M:FSharpPlus.Seq.chunkBy``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},System.Collections.Generic.IEnumerable{``0})">
+ <summary>Applies a key-generating function to each element of a sequence and yields a sequence of 
+ keys tupled with values. Each key contains an array of all adjacent elements that match 
+ to this key, therefore keys are not unique but they can't be adjacent
+ as each time the key changes, a new group is yield.</summary>
+ 
+ <remarks>The ordering of the original sequence is respected.</remarks>
+
+ <param name="projection">A function that transforms an element of the sequence into a comparable key.</param>
+ <param name="source">The input collection.</param>
+
+ <returns>The result sequence.</returns>
+</member>
+<member name="M:FSharpPlus.Seq.bind``2(Microsoft.FSharp.Core.FSharpFunc{``0,System.Collections.Generic.IEnumerable{``1}},System.Collections.Generic.IEnumerable{``0})">
+ <summary>Applies the given function to each element of the sequence and concatenates all the
+ results.</summary>
+
+ <remarks>Remember sequence is lazy, effects are delayed until it is enumerated.</remarks>
+ <remarks>This is the same as Seq.collect but the type of the mapping function is not flexible.</remarks>
+
+ <param name="mapping">A function to transform elements of the input sequence into the sequences
+ that will then be concatenated.</param>
+ <param name="source">The input sequence.</param>
+
+ <returns>The result sequence.</returns>
+
+ <exception cref="System.ArgumentNullException">Thrown when the input sequence is null.</exception>
+</member>
+<member name="T:FSharpPlus.Seq">
+<summary>
+ Additional operations on Seq
+</summary>
+</member>
+<member name="T:FSharpPlus.IList">
+<summary>
+ Additional operations IList&lt;&apos;T&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.List.partitionMap``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpChoice{``1,``2}},Microsoft.FSharp.Collections.FSharpList{``0})">
+ <summary>
+ Creates two lists by applying the mapping function to each element in the list
+ and classifying the transformed values depending on whether they were wrapped with Choice1Of2 or Choice2Of2.
+ </summary>
+ <returns>
+ A tuple with both resulting lists.
+ </returns>
+</member>
+<member name="M:FSharpPlus.List.tryFindSliceIndex``1(Microsoft.FSharp.Collections.FSharpList{``0},Microsoft.FSharp.Collections.FSharpList{``0})">
+ <summary>
+ Gets the index of the first occurrence of the specified slice in the source.
+ Returns <c>None</c> if not found.
+ </summary>
+ <returns>
+ The index of the slice or <c>None</c>.
+ </returns>
+</member>
+<member name="M:FSharpPlus.List.findSliceIndex``1(Microsoft.FSharp.Collections.FSharpList{``0},Microsoft.FSharp.Collections.FSharpList{``0})">
+ <summary>
+ Gets the index of the first occurrence of the specified slice in the source.
+ </summary>
+ <exception cref="System.ArgumentException">
+ Thrown when the slice was not found in the sequence.
+ </exception>
+ <returns>
+ The index of the slice.
+ </returns>
+</member>
+<member name="M:FSharpPlus.List.replace``1(System.Collections.Generic.IEnumerable{``0},Microsoft.FSharp.Collections.FSharpList{``0},Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Replace a subsequence of the source list with the given replacement list.
+</summary>
+</member>
+<member name="M:FSharpPlus.List.split``1(System.Collections.Generic.IEnumerable{Microsoft.FSharp.Collections.FSharpList{``0}},Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Creates a sequence of lists by splitting the source list on any of the given separators.
+</summary>
+</member>
+<member name="M:FSharpPlus.List.intersperse``1(``0,Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Inserts a separator between each element in the source list.
+</summary>
+</member>
+<member name="M:FSharpPlus.List.drop``1(System.Int32,Microsoft.FSharp.Collections.FSharpList{``0})">
+ <summary>Returns a list that drops N elements of the original list and then yields the
+ remaining elements of the list.</summary>
+ <remarks>When count exceeds the number of elements in the list it
+ returns an empty list instead of throwing an exception.</remarks>
+ <param name="count">The number of items to drop.</param>
+ <param name="source">The input list.</param>
+
+ <returns>The result list.</returns>
+</member>
+<member name="M:FSharpPlus.List.tails``1(Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Returns a list with all possible tails of the source list.
+</summary>
+</member>
+<member name="M:FSharpPlus.List.lift2``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},Microsoft.FSharp.Collections.FSharpList{``0},Microsoft.FSharp.Collections.FSharpList{``1})">
+<summary>
+ Combines all values from the first list with the second, using the supplied mapping function.
+</summary>
+</member>
+<member name="M:FSharpPlus.List.singleton``1(``0)">
+<summary>
+ Creates a list with a single element.
+</summary>
+</member>
+<member name="T:FSharpPlus.List">
+<summary>
+ Additional operations on List
+</summary>
+</member>
+<member name="M:FSharpPlus.Array.partitionMap``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpChoice{``1,``2}},``0[])">
+ <summary>
+ Creates two arrays by applying the mapper function to each element in the array
+ and classifying the transformed values depending on whether they were wrapped with Choice1Of2 or Choice2Of2.
+ </summary>
+ <returns>
+ A tuple with both resulting arrays.
+ </returns>
+</member>
+<member name="M:FSharpPlus.Array.tryFindSliceIndex``1(``0[],``0[])">
+ <summary>
+ Returns the index of the first occurrence of the specified slice in the source.
+ Returns <c>None</c> if not found.
+ </summary>
+ <returns>
+ The index of the slice or <c>None</c>.
+ </returns>
+</member>
+<member name="M:FSharpPlus.Array.findSliceIndex``1(``0[],``0[])">
+ <summary>
+ Returns the index of the first occurrence of the specified slice in the source.
+ </summary>
+ <exception cref="System.ArgumentException">
+ Thrown when the slice was not found in the sequence.
+ </exception>
+ <returns>
+ The index of the slice.
+ </returns>
+</member>
+<member name="M:FSharpPlus.Array.replace``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0},``0[])">
+<summary>
+ Replace a subsequence of the source array with the given replacement array.
+</summary>
+</member>
+<member name="M:FSharpPlus.Array.split``1(System.Collections.Generic.IEnumerable{``0[]},``0[])">
+<summary>
+ Creates a sequence of arrays by splitting the source array on any of the given separators.
+</summary>
+</member>
+<member name="M:FSharpPlus.Array.intersperse``1(``0,``0[])">
+<summary>
+ Inserts a separator between each element in the source array.
+</summary>
+</member>
+<member name="M:FSharpPlus.Array.lift2``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},``0[],``1[])">
+<summary>
+ Combines all values from the first array with the second, using the supplied mapping function.
+</summary>
+</member>
+<member name="T:FSharpPlus.Array">
+<summary>
+ Additional operations on Array
+</summary>
+</member>
+<member name="M:FSharpPlus.ResizeArray.partitionMap``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpChoice{``1,``2}},``0[])">
+ <summary>
+ Creates two arrays by applying the mapper function to each element in the array
+ and classifying the transformed values depending on whether they were wrapped with Choice1Of2 or Choice2Of2.
+ </summary>
+ <returns>
+ A tuple with both resulting arrays.
+ </returns>
+</member>
+<member name="M:FSharpPlus.ResizeArray.tryFindSliceIndex``1(``0[],``0[])">
+ <summary>
+ Returns the index of the first occurrence of the specified slice in the source.
+ Returns <c>None</c> if not found.
+ </summary>
+ <returns>
+ The index of the slice or <c>None</c>.
+ </returns>
+</member>
+<member name="M:FSharpPlus.ResizeArray.findSliceIndex``1(``0[],``0[])">
+ <summary>
+ Returns the index of the first occurrence of the specified slice in the source.
+ </summary>
+ <exception cref="System.ArgumentException">
+ Thrown when the slice was not found in the sequence.
+ </exception>
+ <returns>
+ The index of the slice.
+ </returns>
+</member>
+<member name="M:FSharpPlus.ResizeArray.replace``1(``0[],``0[],``0[])">
+<summary>
+ Replace a subsequence of the source array with the given replacement array.
+</summary>
+</member>
+<member name="M:FSharpPlus.ResizeArray.split``1(System.Collections.Generic.IEnumerable{``0[]},``0[])">
+<summary>
+ Creates a sequence of arrays by splitting the source array on any of the given separators.
+</summary>
+</member>
+<member name="M:FSharpPlus.ResizeArray.intersperse``1(``0,``0[])">
+<summary>
+ Inserts a separator between each element in the source array.
+</summary>
+</member>
+<member name="M:FSharpPlus.ResizeArray.lift2``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},System.Collections.Generic.List{``0},System.Collections.Generic.List{``1})">
+<summary>
+ Combine all values from the first ResizeArray with the second, using the supplied mapping function.
+</summary>
+</member>
+<member name="M:FSharpPlus.ResizeArray.map``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},System.Collections.Generic.List{``0})">
+ <summary>Builds a new ResizeArray whose elements are the results of applying the given function
+ to each of the elements of the ResizeArray.</summary>
+
+ <param name="mapping">A function to transform items from the input ResizeArray.</param>
+ <param name="source">The input ResizeArray.</param>
+
+ <returns>The result ResizeArray.</returns>
+
+ <exception cref="System.ArgumentNullException">Thrown when the input ResizeArray is null.</exception>
+</member>
+<member name="T:FSharpPlus.ResizeArray">
+<summary>
+ Additional operations on Array
+</summary>
+</member>
+<member name="M:FSharpPlus.String.getBytes(System.Text.Encoding,System.String)">
+<summary>
+ Converts a string to a byte-array using the specified encoding.
+</summary>
+</member>
+<member name="M:FSharpPlus.String.ofCodePoints(System.Collections.Generic.IEnumerable{System.Int32})">
+<summary>
+ Converts the array of Int32 code-points (the actual Unicode Code Point number) to a string.
+</summary>
+</member>
+<member name="M:FSharpPlus.String.toCodePoints(System.String)">
+<summary>
+ Converts the string to an array of Int32 code-points (the actual Unicode Code Point number).
+</summary>
+</member>
+<member name="M:FSharpPlus.String.tryFindSliceIndex(System.String,System.String)">
+ <summary>
+ Returns the index of the first occurrence of the specified slice in the source.
+ Returns <c>None</c> if not found.
+ </summary>
+ <returns>
+ The index of the slice or <c>None</c>.
+ </returns>
+</member>
+<member name="M:FSharpPlus.String.findSliceIndex(System.String,System.String)">
+ <summary>
+ Returns the index of the first occurrence of the specified slice in the source.
+ </summary>
+ <exception cref="System.ArgumentException">
+ Thrown when the slice was not found in the sequence.
+ </exception>
+ <returns>
+ The index of the slice.
+ </returns>
+</member>
+<member name="M:FSharpPlus.String.drop(System.Int32,System.String)">
+<summary>
+ Returns a string that drops first N characters of the original string.
+ When count exceeds the length of the string it returns an empty string.
+</summary>
+</member>
+<member name="M:FSharpPlus.String.truncate(System.Int32,System.String)">
+<summary>
+ Returns a string that have at most N characters from the beginning of the original string.
+ It returns the original string if it is shorter than count.
+</summary>
+</member>
+<member name="M:FSharpPlus.String.trimEnd(System.Collections.Generic.IEnumerable{System.Char},System.String)">
+<summary>
+ Removes all trailing occurrences of specified characters from the given string.
+</summary>
+</member>
+<member name="M:FSharpPlus.String.trimStart(System.Collections.Generic.IEnumerable{System.Char},System.String)">
+<summary>
+ Removes all leading occurrences of specified characters from the given string.
+</summary>
+</member>
+<member name="M:FSharpPlus.String.trim(System.Collections.Generic.IEnumerable{System.Char},System.String)">
+<summary>
+ Removes all leading and trailing occurrences of specified characters from the given string.
+</summary>
+</member>
+<member name="M:FSharpPlus.String.padRightWith(System.Int32,System.Char,System.String)">
+<summary>
+ Pads the end of the given string with a specified character so that it has a specified total length.
+</summary>
+</member>
+<member name="M:FSharpPlus.String.padRight(System.Int32,System.String)">
+<summary>
+ Pads the end of the given string with spaces so that it has a specified total length.
+</summary>
+</member>
+<member name="M:FSharpPlus.String.padLeftWith(System.Int32,System.Char,System.String)">
+<summary>
+ Pads the beginning of the given string with a specified character so that it has a specified total length.
+</summary>
+</member>
+<member name="M:FSharpPlus.String.padLeft(System.Int32,System.String)">
+<summary>
+ Pads the beginning of the given string with spaces so that it has a specified total length.
+</summary>
+</member>
+<member name="M:FSharpPlus.String.replace(System.String,System.String,System.String)">
+<summary>
+ Replace a substring with the given replacement string.
+</summary>
+</member>
+<member name="M:FSharpPlus.String.split(System.Collections.Generic.IEnumerable{System.String},System.String)">
+<summary>
+ Creates a sequence of strings by splitting the srouce string on any of the given separators.
+</summary>
+</member>
+<member name="M:FSharpPlus.String.intersperse(System.Char,System.String)">
+<summary>
+ Inserts a separator between each char in the source string.
+</summary>
+</member>
+<member name="M:FSharpPlus.String.intercalate(System.String,System.Collections.Generic.IEnumerable{System.String})">
+<summary>
+ Concatenates all elements, using the specified separator between each element.
+</summary>
+</member>
+<member name="T:FSharpPlus.String">
+<summary>
+ Additional operations on String
+</summary>
+</member>
+<member name="T:FSharpPlus.IReadOnlyCollection">
+<summary>
+ Additional operations on IReadOnlyCollection&lt;&apos;T&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.IReadOnlyList.trySetItem``1(System.Int32,``0,System.Collections.Generic.IReadOnlyList{``0})">
+<summary>
+ Returns a new IReadOnlyList from a given IReadOnlyList, with replaced binding for index.
+</summary>
+</member>
+<member name="T:FSharpPlus.IReadOnlyList">
+<summary>
+ Additional operations on ReadOnlyList&lt;&apos;T&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.Lazy.apply``2(System.Lazy{Microsoft.FSharp.Core.FSharpFunc{``0,``1}},System.Lazy{``0})">
+ <summary>Applies a Lazy value to a Lazy function.</summary>
+ <param name="f">The Lazy function.</param>
+ <param name="x">The Lazy value.</param>
+ <returns>A Lazy value of the function applied to the value.</returns>
+</member>
+<member name="M:FSharpPlus.Lazy.map2``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},System.Lazy{``0},System.Lazy{``1})">
+ <summary>Creates a Lazy value from a pair of Lazy values, using a mapping function to combine them.</summary>
+</member>
+<member name="M:FSharpPlus.Lazy.map``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},System.Lazy{``0})">
+ <summary>Creates a Lazy value from another Lazy value, mapping through a function.</summary>
+</member>
+<member name="T:FSharpPlus.Lazy">
+<summary>
+ Additional operations on Option
+</summary>
+</member>
+<member name="M:FSharpPlus.Map.intersectWith``2(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``0,``0}},Microsoft.FSharp.Collections.FSharpMap{``1,``0},Microsoft.FSharp.Collections.FSharpMap{``1,``0})">
+<summary>
+ Returns the intersection of two maps, using the combiner function for duplicate keys.
+</summary>
+</member>
+<member name="M:FSharpPlus.Map.union``2(Microsoft.FSharp.Collections.FSharpMap{``0,``1},Microsoft.FSharp.Collections.FSharpMap{``0,``1})">
+<summary>
+ Returns the union of two maps, preferring values from the first in case of duplicate keys.
+</summary>
+</member>
+<member name="M:FSharpPlus.Map.unionWith``2(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``0,``0}},Microsoft.FSharp.Collections.FSharpMap{``1,``0},Microsoft.FSharp.Collections.FSharpMap{``1,``0})">
+<summary>
+ Returns the union of two maps, using the combiner function for duplicate keys.
+</summary>
+</member>
+<member name="M:FSharpPlus.Map.zip``3(Microsoft.FSharp.Collections.FSharpMap{``0,``1},Microsoft.FSharp.Collections.FSharpMap{``0,``2})">
+ <summary>Tuple values of two Maps.</summary>
+ <remarks>Keys that are not present on both Maps are dropped.</remarks>
+ <param name="x">The first input Map.</param>
+ <param name="y">The second input Map.</param>
+
+ <returns>The tupled Map.</returns>
+</member>
+<member name="M:FSharpPlus.Map.mapValues2``4(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},Microsoft.FSharp.Collections.FSharpMap{``3,``0},Microsoft.FSharp.Collections.FSharpMap{``3,``1})">
+ <summary>Map values of two Maps.</summary>
+ <remarks>Keys that are not present on both Maps are dropped.</remarks>
+ <param name="f">The mapping function.</param>
+ <param name="x">The first input Map.</param>
+ <param name="y">The second input Map.</param>
+
+ <returns>The mapped Map.</returns>
+</member>
+<member name="M:FSharpPlus.Map.mapValues``3(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Collections.FSharpMap{``2,``0})">
+ <summary>Map values of the original Map.</summary>
+ <remarks>Keys remain unchanged.</remarks>
+ <param name="f">The mapping function.</param>
+ <param name="x">The input Map.</param>
+
+ <returns>The mapped Map.</returns>
+</member>
+<member name="T:FSharpPlus.Map">
+<summary>
+ Additional operations on Map&lt;&apos;Key, &apos;Value&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.Dictionary.intersectWith``2(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``0,``0}},System.Collections.Generic.Dictionary{``1,``0},System.Collections.Generic.Dictionary{``1,``0})">
+<summary>
+ Returns the intersection of two Dicts, using the combiner function for duplicate keys.
+</summary>
+</member>
+<member name="M:FSharpPlus.Dictionary.unionWith``2(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``0,``0}},System.Collections.Generic.Dictionary{``1,``0},System.Collections.Generic.Dictionary{``1,``0})">
+<summary>
+ Returns the union of two dictionaries, using the combiner function for duplicate keys.
+</summary>
+</member>
+<member name="M:FSharpPlus.Dictionary.zip``3(System.Collections.Generic.Dictionary{``0,``1},System.Collections.Generic.Dictionary{``0,``2})">
+ <summary>Tuple values of two dictionaries.</summary>
+ <remarks>Keys that are not present on both dictionaries are dropped.</remarks>
+ <param name="x">The first input dictionary.</param>
+ <param name="y">The second input dictionary.</param>
+
+ <returns>The tupled dictionary.</returns>
+</member>
+<member name="M:FSharpPlus.Dictionary.map2``4(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},System.Collections.Generic.Dictionary{``3,``0},System.Collections.Generic.Dictionary{``3,``1})">
+ <summary>Creates a Dictionary value from a pair of Dictionaries, using a function to combine them.</summary>
+ <remarks>Keys that are not present on both dictionaries are dropped.</remarks>
+ <param name="x">The first input dictionary.</param>
+ <param name="y">The second input dictionary.</param>
+
+ <returns>The combined dictionary.</returns>
+</member>
+<member name="T:FSharpPlus.Dictionary">
+<summary>
+ Additional operations on Dictionary&lt;&apos;Key, &apos;Value&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.Dict.intersectWith``2(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``0,``0}},System.Collections.Generic.IDictionary{``1,``0},System.Collections.Generic.IDictionary{``1,``0})">
+<summary>
+ Returns the intersection of two Dicts, using the combiner function for duplicate keys.
+</summary>
+</member>
+<member name="M:FSharpPlus.Dict.unionWith``2(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``0,``0}},System.Collections.Generic.IDictionary{``1,``0},System.Collections.Generic.IDictionary{``1,``0})">
+<summary>
+ Returns the union of two dictionaries, using the combiner function for duplicate keys.
+</summary>
+</member>
+<member name="M:FSharpPlus.Dict.zip``3(System.Collections.Generic.IDictionary{``0,``1},System.Collections.Generic.IDictionary{``0,``2})">
+ <summary>Tuple values of two dictionaries.</summary>
+ <remarks>Keys that are not present on both dictionaries are dropped.</remarks>
+ <param name="x">The first input dictionary.</param>
+ <param name="y">The second input dictionary.</param>
+
+ <returns>The tupled dictionary.</returns>
+</member>
+<member name="M:FSharpPlus.Dict.map2``4(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},System.Collections.Generic.IDictionary{``3,``0},System.Collections.Generic.IDictionary{``3,``1})">
+ <summary>Creates a Dictionary value from a pair of Dictionaries, using a function to combine them.</summary>
+ <remarks>Keys that are not present on both dictionaries are dropped.</remarks>
+ <param name="x">The first input dictionary.</param>
+ <param name="y">The second input dictionary.</param>
+
+ <returns>The combined dictionary.</returns>
+</member>
+<member name="T:FSharpPlus.Dict">
+<summary>
+ Additional operations on IDictionary&lt;&apos;Key, &apos;Value&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.IReadOnlyDictionary.intersect``2(System.Collections.Generic.IReadOnlyDictionary{``0,``1},System.Collections.Generic.IReadOnlyDictionary{``0,``1})">
+<summary>
+ Returns the intersection of two readonly dictionaries, preferring values from the first in case of duplicate keys.
+</summary>
+</member>
+<member name="M:FSharpPlus.IReadOnlyDictionary.intersectWith``2(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``0,``0}},System.Collections.Generic.IReadOnlyDictionary{``1,``0},System.Collections.Generic.IReadOnlyDictionary{``1,``0})">
+<summary>
+ Returns the intersection of two read-only dictionaries, using the combiner function for duplicate keys.
+</summary>
+</member>
+<member name="M:FSharpPlus.IReadOnlyDictionary.union``2(System.Collections.Generic.IReadOnlyDictionary{``0,``1},System.Collections.Generic.IReadOnlyDictionary{``0,``1})">
+<summary>
+ Returns the union of two dictionaries, preferring values from the first in case of duplicate keys.
+</summary>
+</member>
+<member name="M:FSharpPlus.IReadOnlyDictionary.unionWith``2(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``0,``0}},System.Collections.Generic.IReadOnlyDictionary{``1,``0},System.Collections.Generic.IReadOnlyDictionary{``1,``0})">
+<summary>
+ Returns the union of two dictionaries, using the combiner function for duplicate keys.
+</summary>
+</member>
+<member name="M:FSharpPlus.IReadOnlyDictionary.zip``3(System.Collections.Generic.IReadOnlyDictionary{``0,``1},System.Collections.Generic.IReadOnlyDictionary{``0,``2})">
+ <summary>Tuple values of two dictionaries.</summary>
+ <remarks>Keys that are not present on both dictionaries are dropped.</remarks>
+ <param name="x">The first input dictionary.</param>
+ <param name="y">The second input dictionary.</param>
+
+ <returns>The tupled dictionary.</returns>
+</member>
+<member name="M:FSharpPlus.IReadOnlyDictionary.tryGetValue``2(``0,System.Collections.Generic.IReadOnlyDictionary{``0,``1})">
+<summary>
+ Gets the value associated with the specified key. Returns None if a value associated with the key is not found.
+</summary>
+</member>
+<member name="M:FSharpPlus.IReadOnlyDictionary.add``2(``0,``1,System.Collections.Generic.IReadOnlyDictionary{``0,``1})">
+<summary>
+ Replaces or sets the item associated with a specified key with the specified value.
+</summary>
+</member>
+<member name="T:FSharpPlus.IReadOnlyDictionary">
+<summary>
+ Additional operations on IReadOnlyDictionary&lt;&apos;Key, &apos;Value&gt;
+</summary>
+</member>
+<member name="T:FSharpPlus.Enumerator.ConcatEnumerator`1">
+<summary>
+ [omit]
+</summary>
+</member>
+<member name="T:FSharpPlus.Enumerator.IFinallyEnumerator">
+<summary>
+ [omit]
+</summary>
+</member>
+<member name="T:FSharpPlus.Enumerator.EmptyEnumerator`1">
+<summary>
+ A concrete implementation of an enumerator that returns no values
+ [omit]
+</summary>
+</member>
+<member name="M:FSharpPlus.Enumerator.dispose(System.IDisposable)">
+<summary>
+ [omit]
+</summary>
+</member>
+<member name="M:FSharpPlus.Enumerator.check(System.Boolean)">
+<summary>
+ [omit]
+</summary>
+</member>
+<member name="M:FSharpPlus.Enumerator.alreadyFinished``1">
+<summary>
+ [omit]
+</summary>
+</member>
+<member name="M:FSharpPlus.Enumerator.notStarted``1">
+<summary>
+ [omit]
+</summary>
+</member>
+<member name="M:FSharpPlus.Enumerator.noReset``1">
+<summary>
+ [omit]
+</summary>
+</member>
+<member name="M:FSharpPlus.Enumerator.invalidArgFmt``1(System.String,System.String,System.Object[])">
+<summary>
+ [omit]
+</summary>
+</member>
+<member name="T:FSharpPlus.Enumerator">
+<summary>
+ Additional operations on IEnumerator
+</summary>
+</member>
+<member name="M:FSharpPlus.Task.join``1(System.Threading.Tasks.Task{System.Threading.Tasks.Task{``0}})">
+<summary>
+ Flatten two nested tasks into one.
+</summary>
+</member>
+<member name="M:FSharpPlus.Task.zip``2(System.Threading.Tasks.Task{``0},System.Threading.Tasks.Task{``1})">
+ <summary>Creates a task workflow from two workflows 'x' and 'y', tupling it results.</summary>
+</member>
+<member name="M:FSharpPlus.Task.apply``2(System.Threading.Tasks.Task{Microsoft.FSharp.Core.FSharpFunc{``0,``1}},System.Threading.Tasks.Task{``0})">
+ <summary>Create a task workflow that is the result of applying the resulting function of a task workflow
+ to the resulting value of another task workflow</summary>
+ <param name="f">Task workflow returning a function</param>
+ <param name="x">Task workflow returning a value</param>
+</member>
+<member name="M:FSharpPlus.Task.map2``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},System.Threading.Tasks.Task{``0},System.Threading.Tasks.Task{``1})">
+ <summary>Creates a task workflow from two workflows 'x' and 'y', mapping it results with 'f'.</summary>
+ <remarks>Workflows are run in sequence.</remarks>
+ <param name="f">The mapping function.</param>
+ <param name="x">First task workflow.</param>
+ <param name="y">Second task workflow.</param>
+</member>
+<member name="M:FSharpPlus.Task.map``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},System.Threading.Tasks.Task{``0})">
+ <summary>Creates a task workflow from another workflow 'x', mapping its result with 'f'.</summary>
+</member>
+<member name="T:FSharpPlus.Task">
+<summary>
+ Additional operations on Task&lt;&apos;T&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.Async.raise``1(System.Exception)">
+<summary>
+ Raise an exception in the async workflow
+</summary>
+</member>
+<member name="M:FSharpPlus.Async.apply``2(Microsoft.FSharp.Control.FSharpAsync{Microsoft.FSharp.Core.FSharpFunc{``0,``1}},Microsoft.FSharp.Control.FSharpAsync{``0})">
+ <summary>Create an async workflow that is the result of applying the resulting function of an async workflow to the resulting value of another async workflow.</summary>
+ <param name="f">Async workflow returning a function.</param>
+ <param name="x">Async workflow returning a value.</param>
+</member>
+<member name="M:FSharpPlus.Async.join``1(Microsoft.FSharp.Control.FSharpAsync{Microsoft.FSharp.Control.FSharpAsync{``0}})">
+<summary>
+ Flatten two nested asyncs into one.
+</summary>
+</member>
+<member name="M:FSharpPlus.Async.zip``2(Microsoft.FSharp.Control.FSharpAsync{``0},Microsoft.FSharp.Control.FSharpAsync{``1})">
+ <summary>Creates an async workflow from two workflows 'x' and 'y', tupling it results.</summary>
+</member>
+<member name="M:FSharpPlus.Async.map2``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},Microsoft.FSharp.Control.FSharpAsync{``0},Microsoft.FSharp.Control.FSharpAsync{``1})">
+ <summary>Creates an async workflow from two workflows 'x' and 'y', mapping it results with 'f'.</summary>
+ <remarks>Workflows are run in sequence.</remarks>
+ <param name="f">The mapping function.</param>
+ <param name="x">First async workflow.</param>
+ <param name="y">Second async workflow.</param>
+</member>
+<member name="M:FSharpPlus.Async.map``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Control.FSharpAsync{``0})">
+ <summary>Creates an async workflow from another workflow 'x', mapping its result with 'f'.</summary>
+</member>
+<member name="T:FSharpPlus.Async">
+<summary>
+ Additional operations on Async
+</summary>
+</member>
 <member name="M:FSharpPlus.Extensions.Option`1.Sequence.Static``2(System.Collections.Generic.IEnumerable{Microsoft.FSharp.Core.FSharpOption{``1}})">
 <summary>
  Returns None if it contains a None element, otherwise a list of all elements
+</summary>
+</member>
+<member name="M:FSharpPlus.Extensions.Async`1.Bisequence.Static``3(Microsoft.FSharp.Core.FSharpChoice{Microsoft.FSharp.Control.FSharpAsync{``1},Microsoft.FSharp.Control.FSharpAsync{``2}})">
+<summary>
+ Creates an async Choice from a Choice where both cases are async.
+</summary>
+</member>
+<member name="M:FSharpPlus.Extensions.Async`1.Bisequence.Static``3(Microsoft.FSharp.Core.FSharpResult{Microsoft.FSharp.Control.FSharpAsync{``1},Microsoft.FSharp.Control.FSharpAsync{``2}})">
+<summary>
+ Creates an async Result from a Result where both cases are async.
+</summary>
+</member>
+<member name="M:FSharpPlus.Extensions.Async`1.Sequence.Static``3(Microsoft.FSharp.Core.FSharpChoice{Microsoft.FSharp.Control.FSharpAsync{``1},``2})">
+<summary>
+ Creates an async Choice from a Choice where the Choice1Of2 case is async.
+</summary>
+</member>
+<member name="M:FSharpPlus.Extensions.Async`1.Sequence.Static``3(Microsoft.FSharp.Core.FSharpResult{Microsoft.FSharp.Control.FSharpAsync{``1},``2})">
+<summary>
+ Creates an async Result from a Result where the Ok case is async.
 </summary>
 </member>
 <member name="M:FSharpPlus.Extensions.Async`1.Sequence.Static``2(Microsoft.FSharp.Control.FSharpAsync{``1}[])">
@@ -24,77 +1014,7 @@
 </member>
 <member name="T:FSharpPlus.Extensions">
 <summary>
- Module containing F#+ Extension Methods  
-</summary>
-</member>
-<member name="T:FSharpPlus.Enumerator.EmptyEnumerator`1">
-<summary>
- A concrete implementation of an enumerator that returns no values
-</summary>
-</member>
-<member name="T:FSharpPlus.Enumerator">
-<summary>
- Additional operations on IEnumerator
-</summary>
-</member>
-<member name="T:FSharpPlus.Dict">
-<summary>
- Additional operations on IDictionary&lt;&apos;Key, &apos;Value&gt;
-</summary>
-</member>
-<member name="T:FSharpPlus.String">
-<summary>
- Additional operations on String
-</summary>
-</member>
-<member name="T:FSharpPlus.Array">
-<summary>
- Additional operations on Array
-</summary>
-</member>
-<member name="M:FSharpPlus.List.drop``1(System.Int32,Microsoft.FSharp.Collections.FSharpList{``0})">
- <summary>Returns a list that drops N elements of the original list and then yields the
- remaining elements of the list.</summary>
- <remarks>When count exceeds the number of elements in the list it
- returns an empty list instead of throwing an exception.</remarks>
- <param name="count">The number of items to drop.</param>
- <param name="source">The input list.</param>
-
- <returns>The result list.</returns>
-</member>
-<member name="T:FSharpPlus.List">
-<summary>
- Additional operations on List
-</summary>
-</member>
-<member name="M:FSharpPlus.Seq.drop``1(System.Int32,System.Collections.Generic.IEnumerable{``0})">
- <summary>Returns a sequence that drops N elements of the original sequence and then yields the
- remaining elements of the sequence.</summary>
- <remarks>When count exceeds the number of elements in the sequence it
- returns an empty sequence instead of throwing an exception.</remarks>
- <param name="count">The number of items to drop.</param>
- <param name="source">The input sequence.</param>
-
- <returns>The result sequence.</returns>
-</member>
-<member name="T:FSharpPlus.Seq">
-<summary>
- Additional operations on Seq
-</summary>
-</member>
-<member name="T:FSharpPlus.Choice">
-<summary>
- Additional operations on Choice
-</summary>
-</member>
-<member name="T:FSharpPlus.Result">
-<summary>
- Additional operations on Result&lt;&apos;Ok,&apos;Error&gt;
-</summary>
-</member>
-<member name="T:FSharpPlus.Option">
-<summary>
- Additional operations on Option
+ Module containing F#+ Extension Methods on existing types
 </summary>
 </member>
 <member name="M:FSharpPlus.Internals.BitConverter.ToUInt64(System.Byte[],System.Int32,System.Boolean)">
@@ -218,53 +1138,14 @@
  Converts a byte into an array of bytes with length one.
 </summary>
 </member>
-<member name="M:FSharpPlus.Math.Generic.gcd``1(``0,``0)">
+<member name="M:FSharpPlus.Internals.Constraints.whenNestedTuple``9(``0)">
 <summary>
- Greatest Common Divisor
+ Constrain &apos;t to be a nested tuple of &lt;&apos;t1,&apos;t2,&apos;t3,&apos;t4,&apos;t5,&apos;t6,&apos;t7,&apos;tr&gt;
 </summary>
-</member>
-<member name="M:FSharpPlus.Math.Generic.divRemE``1(``0,``0)">
-<summary>
- Euclidean division-remainder, following the mathematical convention where the mod is always positive.
-</summary>
-</member>
-<member name="M:FSharpPlus.Math.Generic.remE``1(``0,``0)">
-<summary>
- Euclidean remainder of integer division, following the mathematical convention where the mod is always positive.
-</summary>
-</member>
-<member name="M:FSharpPlus.Math.Generic.rem``1(``0,``0)">
-<summary>
- Remainder of Integer division. Same as (%).
-</summary>
-</member>
-<member name="M:FSharpPlus.Math.Generic.divE``1(``0,``0)">
-<summary>
- Euclidean integer division, following the mathematical convention where the mod is always positive.
-</summary>
-</member>
-<member name="M:FSharpPlus.Math.Generic.div``1(``0,``0)">
-<summary>
- Integer division. Same as (/) for Integral types.
-</summary>
-</member>
-<member name="T:FSharpPlus.Math.Generic">
- <summary>
- Generic numbers, functions and operators.
- By opening this module some common operators become restricted, like (+) to 'a->'a->'a
- </summary>
-</member>
-<member name="T:FSharpPlus.Math.Applicative">
- <summary>Math Operators ready to use over Applicative Functors.</summary>
 </member>
 <member name="M:FSharpPlus.Operators.dispose(System.IDisposable)">
 <summary>
  Safely dispose a resource (includes null-checking).
-</summary>
-</member>
-<member name="M:FSharpPlus.Operators.liftM``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
-<summary>
- Equivalent to map but only for Monads.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.|Parse|_|``1(System.String)">
@@ -277,9 +1158,9 @@
  Converts using the implicit operator. 
 </summary>
 </member>
-<member name="M:FSharpPlus.Operators.sum``3(``0)">
+<member name="M:FSharpPlus.Operators.sum``2(``0)">
 <summary>
- Returns the sum of the monoid elements in the Foldable.
+ Folds the sum of all monoid elements in the Foldable.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.mfilter``2(Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},``1)">
@@ -289,82 +1170,90 @@
 </member>
 <member name="M:FSharpPlus.Operators.choice``2(``0)">
 <summary>
- Fold using alternative operator `&lt;|&gt;`
+ Reduces using alternative operator `&lt;|&gt;`.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.abs'``1(``0)">
- <summary> Gets the absolute value of a number.
+ <summary> Gets the absolute value of the given number.
            Works also for unsigned types. 
- <para/>   Rule: signum x * abs x = x        </summary>
+ <para/>   Rule: signum x * abs x = x </summary>
+ <param name="value">The input value.</param>
+ <returns>The absolute value of the input.</returns>
 </member>
 <member name="M:FSharpPlus.Operators.abs``1(``0)">
- <summary> Gets the absolute value of a number.
- <para/>   Rule: signum x * abs x = x        </summary>
+ <summary> Gets the absolute value of the given number.
+ <para/>   Rule: signum x * abs x = x </summary>
+ <param name="value">The input value.</param>
+ <returns>The absolute value of the input.</returns>
 </member>
 <member name="M:FSharpPlus.Operators.signum'``1(``0)">
- <summary> Returns a number which represents the sign.
+ <summary>Sign of the given number
            Works also for unsigned types. 
- <para/>   Rule: signum x * abs x = x        </summary>
+ <para/>   Rule: signum x * abs x = x </summary>
+ <param name="value">The input value.</param>
+ <returns>-1, 0, or 1 depending on the sign of the input.</returns>
 </member>
 <member name="M:FSharpPlus.Operators.signum``1(``0)">
- <summary> Returns a number which represents the sign.
- <para/>   Rule: signum x * abs x = x        </summary>
+ <summary>Sign of the given number
+ <para/>   Rule: signum x * abs x = x </summary>
+ <param name="value">The input value.</param>
+ <returns>-1, 0, or 1 depending on the sign of the input.</returns>
 </member>
 <member name="M:FSharpPlus.Operators.sqrtRem``1(``0)">
 <summary>
- Returns the square root of an integral number.
+ Square root of an integral number.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.isqrt``1(``0)">
 <summary>
- Returns the square root of an integral number.
+ Square root of an integral number.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.trySqrt``1(``0)">
 <summary>
- Returns the square root of a number of any type. Returns None if there is no square root.
+ Square root of a number of any type. Returns None if there is no square root.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.sqrt``1(``0)">
 <summary>
- Returns the square root of a number of any type. Throws an exception if there is no square root.
+ Square root of a number of any type. Throws an exception if there is no square root.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.tryDiv``1(``0,``0)">
 <summary>
- Returns the division between two numbers. Returns None if the numbers are not divisible.
+ Division between two numbers. Returns None if the numbers are not divisible.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.div``1(``0,``0)">
 <summary>
- Returns the division between two numbers. If the numbers are not divisible throws an error.
+ Division between two numbers. If the numbers are not divisible throws an error.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.trySubtract``1(``0,``0)">
 <summary>
- Returns the subtraction between two numbers. Returns None if the result is negative on unsigned types.
+ Subtraction between two numbers. Returns None if the result is negative on unsigned types.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.subtract``1(``0,``0)">
 <summary>
- Returns the subtraction between two numbers. Throws an error if the result is negative on unsigned types.
+ Subtraction between two numbers. Throws an error if the result is negative on unsigned types.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.tryNegate'``1(``0)">
 <summary>
- Returns the additive inverse of the number.
+ Additive inverse of the number.
  Works also for unsigned types (Returns none if there is no inverse).
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.negate'``1(``0)">
 <summary>
- Returns the additive inverse of the number.
+ Additive inverse of the number.
  Works also for unsigned types (Throws an exception if there is no inverse).
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.negate``1(``0)">
 <summary>
- Returns the additive inverse of the number.
+ Additive inverse of the number.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.getPi``1">
@@ -384,12 +1273,12 @@
 </member>
 <member name="M:FSharpPlus.Operators.getMaxValue``1">
 <summary>
- Returns the largest possible value.
+ Gets the largest possible value.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.getMinValue``1">
 <summary>
- Returns the smallest possible value.
+ Gets the smallest possible value.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.divRem``1(``0,``0)">
@@ -412,12 +1301,62 @@
  Converts to a value from its string representation.
 </summary>
 </member>
-<member name="M:FSharpPlus.Operators.explicit``2(``0)">
+<member name="M:FSharpPlus.Operators.toBytesBE``1(``0)">
 <summary>
- Convert using the explicit operator.
+ Convert to a byte array value, assuming big endian
 </summary>
 </member>
-<member name="M:FSharpPlus.Operators.item5``5(``0,``1,``2,``3,``4)">
+<member name="M:FSharpPlus.Operators.toBytes``1(``0)">
+<summary>
+ Convert to a byte array value, assuming little endian
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.ofBytesBE``1(System.Byte[])">
+<summary>
+ Convert from a byte array value, assuming big-endian
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.ofBytes``1(System.Byte[])">
+<summary>
+ Convert from a byte array value, assuming little-endian
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.ofBytesWithOptions``1(System.Boolean,System.Int32,System.Byte[])">
+<summary>
+ Convert from a byte array value, given options of little-endian, and startIndex
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.explicit``2(``0)">
+<summary>
+ Converts using the explicit operator.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.mapItem5``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
+<summary>
+ Maps the fifth value of a tuple.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.mapItem4``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
+<summary>
+ Maps the fourth value of a tuple.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.mapItem3``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
+<summary>
+ Maps the third value of a tuple.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.mapItem2``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
+<summary>
+ Maps the second value of a tuple.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.mapItem1``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
+<summary>
+ Maps the first value of a tuple.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.item5``2(``0)">
 <summary>
  Gets the value of the fifth component of a tuple.
 </summary>
@@ -442,13 +1381,166 @@
  Gets the value of the first component of a tuple.
 </summary>
 </member>
+<member name="M:FSharpPlus.Operators.split``2(``0,``1)">
+<summary>
+ Splits a given ordered collection at each of the given sub-ordered collections
+
+ &lt;example&gt;
+ &lt;code&gt;
+ &gt; &quot;asdf&quot; |&gt; split [&quot;s&quot;];;
+ val it : string list = [&quot;a&quot;; &quot;df&quot;]
+
+ &gt; [1;2;3;4;5;6;7] |&gt; split [ [2;3]; [5] ];;
+ val it : int list list = [[1]; [4]; [6; 7]]
+ &lt;/code&gt;
+ &lt;/example&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.sortByDescending``3(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
+ <summary>Yields a collection ordered descending by keys.</summary>
+ 
+ <remarks>This function makes no assumption on the ordering of the original collection.
+
+ This is a stable sort, that is the original order of equal elements is preserved.</remarks>
+
+ <param name="source">The input collection.</param>
+
+ <returns>The result collection.</returns>
+
+ <exception cref="System.ArgumentNullException">Thrown when the input collection is null.</exception>
+</member>
+<member name="M:FSharpPlus.Operators.sortBy``3(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
+ <summary>Applies a key-generating function to each element of a collection and returns a collection ordered
+ by keys. The keys are compared using generic comparison as implemented by <c>Operators.compare</c>.</summary> 
+ 
+ <remarks>This function makes no assumption on the ordering of the original collection.
+
+ This is a stable sort, that is the original order of equal elements is preserved.</remarks>
+
+ <param name="projection">A function to transform items of the input collection into comparable keys.</param>
+ <param name="source">The input collection.</param>
+
+ <returns>The result collection.</returns>
+
+ <exception cref="System.ArgumentNullException">Thrown when the input collection is null.</exception>
+</member>
+<member name="M:FSharpPlus.Operators.sort``1(``0)">
+ <summary>Returns a collection ordered by keys.</summary>
+ 
+ <remarks>This function makes no assumption on the ordering of the original collection.
+
+ This is a stable sort, that is the original order of equal elements is preserved.</remarks>
+
+ <param name="source">The input collection.</param>
+
+ <returns>The result collection.</returns>
+
+ <exception cref="System.ArgumentNullException">Thrown when the input collection is null.</exception>
+</member>
+<member name="M:FSharpPlus.Operators.scan``4(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``0}},``0,``2)">
+ <summary>Like fold, but computes on-demand and returns the collection of intermediary and final results.</summary>
+
+ <param name="folder">A function that updates the state with each element from the collection.</param>
+ <param name="state">The initial state.</param>
+ <param name="source">The input collection.</param>
+
+ <returns>The resulting collection of computed states.</returns>
+
+ <exception cref="System.ArgumentNullException">Thrown when the input collection is null.</exception>
+</member>
+<member name="M:FSharpPlus.Operators.rev``1(``0)">
+ <summary>Returns a new collection with the elements in reverse order.</summary>
+ <param name="source">The input collection.</param>
+ <returns>The reversed collection.</returns>
+ <exception cref="System.ArgumentNullException">Thrown when the input collection is null.</exception>
+</member>
+<member name="M:FSharpPlus.Operators.replace``1(``0,``0,``0)">
+ <summary>Replaces part of the collection with a new part</summary>
+
+ <param name="oldValue">A collection that if part of the source collection
+ should be replaced with newValue.</param>
+ <param name="newValue">The collection to replace oldValue with.</param>
+ <param name="source">The input collection.</param>
+
+ <returns>The resulting collection with oldValue replaced with newValue.</returns>
+</member>
+<member name="M:FSharpPlus.Operators.intersperse``2(``0,``1)">
+<summary>
+ Inserts a separator between each element.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.distinctBy``3(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
+ <summary>Returns a collection that contains no duplicate entries according to the 
+ generic hash and equality comparisons on the keys returned by the given key-generating function.
+ If an element occurs multiple times in the collection then the later occurrences are discarded.</summary>
+
+ <param name="projection">A function transforming the collection items into comparable keys.</param>
+ <param name="source">The input collection.</param>
+
+ <returns>The result collection.</returns>
+
+ <exception cref="System.ArgumentNullException">Thrown when the input collection is null.</exception>
+</member>
+<member name="M:FSharpPlus.Operators.distinct``1(``0)">
+ <summary>Returns a collection that contains no duplicate entries according to generic hash and
+ equality comparisons on the entries.
+ If an element occurs multiple times in the collection then the later occurrences are discarded.</summary>
+
+ <param name="source">The input collection.</param>
+
+ <returns>The result collection.</returns>
+
+ <exception cref="System.ArgumentNullException">Thrown when the input collection is null.</exception>
+</member>
+<member name="M:FSharpPlus.Operators.choose``4(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpOption{``1}},``2)">
+ <summary>
+ Generic 'choose' for any collection.
+ 
+ A combination of map and filter, `choose` enables you to transform
+ and select elements at the same time.
+ </summary>
+
+ <param name="chooser">
+ A function that is applied to each element in the
+ collection and returns an option value. When the result is a Some then
+ the unwrapped value is included in the result collection, otherwise
+ it is discarded.
+ </param>
+ <param name="source">The input collection.</param>
+
+ <returns>The result collection.</returns>
+
+ <exception cref="System.InvalidOperationException">Thrown when the input collection is an Id.</exception>
+</member>
+<member name="M:FSharpPlus.Operators.skipWhile``2(Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},``1)">
+ <summary>Bypasses elements in a collection while the given predicate returns true, and then returns
+ the remaining elements of the collection.</summary>
+
+ <param name="predicate">A function that evaluates to false when no more items should be skipped.</param>
+ <param name="source">The input collection.</param>
+
+ <returns>The result collection.</returns>
+
+ <exception cref="System.ArgumentNullException">Thrown when the input collection is null.</exception>
+</member>
+<member name="M:FSharpPlus.Operators.takeWhile``2(Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},``1)">
+ <summary>Returns a collection that contains all elements of the original collection while the
+ given predicate returns true, and then returns no further elements.</summary>
+
+ <param name="predicate">A function that evaluates to false when no more items should be returned.</param>
+ <param name="source">The input collection.</param>
+
+ <returns>The result collection.</returns>
+
+ <exception cref="System.ArgumentNullException">Thrown when the input collection is null.</exception>
+</member>
 <member name="M:FSharpPlus.Operators.chunkBy``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
  <summary>Applies a key-generating function to each element of a collection and yields a collection of 
- keys. Each key contains a collection of all adjacent elements that match 
- to this key.</summary>
+ keys tupled with values. Each key contains a collection of all adjacent elements that match 
+ to this key, therefore keys are not unique but they can't be adjacent
+ as each time the key changes, a new group is yield.</summary>
  
- <remarks>The function makes no assumption on the ordering of the original 
- collection.</remarks>
+ <remarks>The ordering of the original collection is respected.</remarks>
 
  <param name="projection">A function that transforms an element of the collection into a comparable key.</param>
  <param name="source">The input collection.</param>
@@ -491,7 +1583,7 @@
  <returns>The result collection.</returns>
 </member>
 <member name="M:FSharpPlus.Operators.take``1(System.Int32,``0)">
- <summary>Returns the first N elements of the collection.</summary>
+ <summary>Gets the first N elements of the collection.</summary>
  <remarks>Throws <c>InvalidOperationException</c>
  if the count exceeds the number of elements in the collection. <c>limit</c>
  returns as many items as the collection contains instead of throwing an exception.</remarks>
@@ -521,8 +1613,25 @@
  <exception cref="System.InvalidOperationException">Thrown when count exceeds the number of elements
  in the collection.</exception>
 </member>
+<member name="M:FSharpPlus.Operators.filter``2(Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},``1)">
+ <summary>Returns a new collection containing only the elements of the collection
+ for which the given predicate returns "true"</summary>
+ <param name="predicate">The function to test the input elements.</param>
+ <param name="source">The input collection.</param>
+ <returns>A collection containing only the elements that satisfy the predicate.</returns>
+</member>
+<member name="M:FSharpPlus.Operators.ofSeq``2(System.Collections.Generic.IEnumerable{``0})">
+<summary>
+ Converts to a Collection from a seq.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.ofList``2(Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Converts to a Collection from a list.
+</summary>
+</member>
 <member name="M:FSharpPlus.Operators.catch``3(``0,Microsoft.FSharp.Core.FSharpFunc{``2,``1})">
- <summary> Executes a handler when the value contained in the Error monad represents an error.  </summary>
+ <summary> Executes a handler when the value contained in the Error monad represents an error. </summary>
 </member>
 <member name="M:FSharpPlus.Operators.throw``2(``0)">
 <summary>
@@ -531,11 +1640,11 @@
 </member>
 <member name="M:FSharpPlus.Operators.pass``2(``0)">
 <summary>
- Action that executes the action m, which returns a value and a function, and returns the value, applying the function to the output.
+ Executes the action &lt;paramref name=&quot;m&quot;/&gt;, which returns a value and a function, and returns the value, applying the function to the output.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.listen``2(``0)">
- <summary> An action that executes the action <paramref name="m"/> and adds its output to the value of the computation. </summary>
+ <summary> Executes the action <paramref name="m"/> and adds its output to the value of the computation. </summary>
  <param name="m">The action to be executed.</param>
 </member>
 <member name="M:FSharpPlus.Operators.tell``2(``0)">
@@ -548,50 +1657,110 @@
  <param name="f"> The function to modify the environment.    </param>
  <param name="m"> Reader to run in the modified environment. </param>
 </member>
+<member name="M:FSharpPlus.Operators.modify``3(Microsoft.FSharp.Core.FSharpFunc{``0,``0})">
+<summary>
+ Modifies the state inside the monad by applying a function.
+</summary>
+</member>
 <member name="M:FSharpPlus.Operators.put``2(``0)">
 <summary>
- Replace the state inside the monad.
+ Replaces the state inside the monad.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.gets``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1})">
+<summary>
+ Gets a value which depends on the current state.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.callCC``3(Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2})">
 <summary>
- (call-with-current-continuation) calls a function with the current continuation as its argument.
+ Calls a function with the current continuation as its argument (call-with-current-continuation).
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.liftAsync``2(Microsoft.FSharp.Control.FSharpAsync{``0})">
 <summary>
- A lift specializaed for Async&lt;&apos;T&gt; which is able to bring an Async value from any depth of monad-layers.
+ A specialized lift for Async&lt;&apos;T&gt; which is able to bring an Async value from any depth of monad-layers.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.lift``2(``0)">
 <summary>
- Lift a computation from the inner monad to the constructed monad.
+ Lifts a computation from the inner monad to the constructed monad.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.duplicate``2(``0)">
 <summary>
- Duplicate a comonadic context.
+ Duplicates a comonadic context.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.op_EqualsGreaterGreater``3(``0,Microsoft.FSharp.Core.FSharpFunc{``0,``2})">
-<summary>
- Extend a local context-dependent computation to a global computation.
- Same as extend but with flipped arguments.
-</summary>
+ <summary> Extends a local context-dependent computation to a global computation.
+ Same as <c>extend</c> but with flipped arguments. </summary>
 </member>
 <member name="M:FSharpPlus.Operators.extend``3(Microsoft.FSharp.Core.FSharpFunc{``0,``2},``0)">
-<summary>
- Extend a local context-dependent computation to a global computation.
-</summary>
+ <summary> Extends a local context-dependent computation to a global computation. </summary>
 </member>
 <member name="M:FSharpPlus.Operators.extract``2(``0)">
 <summary>
- Extract a value from a comonadic context.
+ Extracts a value from a comonadic context.
 </summary>
+</member>
+<member name="M:FSharpPlus.Operators.tryFindSliceIndex``2(``0,``0)">
+ <summary>
+ Gets the index of the first occurrence of the specified slice in the source.
+ Returns <c>None</c> if not found.
+ </summary>
+ <param name="slice">The slice to be searched.</param>
+ <param name="source">The input collection.</param>
+ <returns>
+ The index of the slice or <c>None</c>.
+ </returns>
+</member>
+<member name="M:FSharpPlus.Operators.findSliceIndex``2(``0,``0)">
+ <summary>
+ Gets the index of the first occurrence of the specified slice in the source.
+ </summary>
+ <param name="slice">The slice to be searched.</param>
+ <param name="source">The input collection.</param>
+ <exception cref="System.ArgumentException">
+ Thrown when the slice was not found in the source.
+ </exception>
+ <returns>
+ The index of the slice.
+ </returns>
+</member>
+<member name="M:FSharpPlus.Operators.tryFindIndex``3(Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},``1)">
+ <summary>
+ Gets the index of the first element in the source
+ that satisfies the given predicate.
+ Returns <c>None</c> if not found.
+ </summary>
+ <param name="predicate">
+ The function to test the input elements.
+ </param>
+ <param name="source">The input collection.</param>
+ <returns> 
+ The index of the first element that satisfies the predicate, or <c>None</c>.
+ </returns>
+</member>
+<member name="M:FSharpPlus.Operators.findIndex``3(Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},``1)">
+ <summary>
+ Gets the index of the first element in the source
+ that satisfies the given predicate.
+ </summary>
+ <param name="predicate">
+ The function to test the input elements.
+ </param>
+ <param name="source">The input collection.</param>
+ <returns> 
+ The index of the first element that satisfies the predicate.
+ </returns>
+ <exception cref="System.ArgumentException">
+ Thrown if the predicate evaluates to false for all the elements of the source.
+ </exception>
 </member>
 <member name="M:FSharpPlus.Operators.traversei``5(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},``3)">
 <summary>
- Traverse an indexed container. Behaves exactly like a regular traverse except that the traversing function also has access to the key associated with a value.
+ Traverses an indexed container. Behaves exactly like a regular traverse except that the traversing function also has access to the key associated with a value.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.foldi``4(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,Microsoft.FSharp.Core.FSharpFunc{``2,``0}}},``0,``3)">
@@ -601,22 +1770,42 @@
 </member>
 <member name="M:FSharpPlus.Operators.iteri``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,Microsoft.FSharp.Core.Unit}},``2)">
 <summary>
- Map an action with access to an index.
+ Maps an action with access to an index.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.mapi``5(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},``3)">
 <summary>
- Map with access to the index.
+ Maps with access to the index.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.tryItem``3(``0,``1)">
 <summary>
- Try to get an item from the given index.
+ Tries to get an item from the given index.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.item``3(``0,``1)">
 <summary>
- Get an item from the given index.
+ Gets an item from the given index.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.bisum``2(``0)">
+<summary>
+ Combines the elements of a structure using a monoid.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.bifoldBack``4(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``1}},Microsoft.FSharp.Core.FSharpFunc{``2,Microsoft.FSharp.Core.FSharpFunc{``1,``1}},``3,``1)">
+<summary>
+ Combines the elements of a structure in a left associative manner.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.bifold``4(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``0}},Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``2,``0}},``0,``3)">
+<summary>
+ Combines the elements of a structure in a right associative manner.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.bifoldMap``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpFunc{``2,``1},``3)">
+<summary>
+ Combines the elements of a structure, given ways of mapping them to a common monoid.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.sequence``2(``0)">
@@ -629,54 +1818,207 @@
  Map each element of a structure to an action, evaluate these actions from left to right, and collect the results.
 </summary>
 </member>
+<member name="M:FSharpPlus.Operators.reduce``2(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``0,``0}},``1)">
+ <summary>Applies a function to each element of the reducible, threading an accumulator argument
+ through the computation. Apply the function to the first two elements of the reducible.
+ Then feed this result into the function along with the third element and so on. 
+ Return the final result. If the input function is <c>f</c> and the elements are <c>i0...iN</c> then computes 
+ <c>f (... (f i0 i1) i2 ...) iN</c>.</summary>
+ <param name="reduction">The function to reduce two reducible elements to a single element.</param>
+ <param name="source">The input reducible.</param>
+ <returns>The final reduced value.</returns>
+</member>
+<member name="M:FSharpPlus.Operators.nth``2(System.Int32,``0)">
+<summary>
+ Gets the nth value in the foldable - i.e. at position &apos;n&apos;
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.minBy``3(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
+<summary>
+ Gets the minimum value after projecting in the foldable
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.maxBy``3(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
+<summary>
+ Gets the maximum value after projecting in the foldable
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.minimum``2(``0)">
+<summary>
+ Gets the minimum value in the foldable
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.maximum``2(``0)">
+<summary>
+ Gets the maximum value in the foldable
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.length``1(``0)">
+ <summary>Gets the number of elements in the foldable.</summary>
+ <param name="list">The input foldable.</param>
+ <returns>The length of the foldable.</returns>
+</member>
+<member name="M:FSharpPlus.Operators.tryHead``2(``0)">
+ <summary>Gets the first element of the foldable, or
+ <c>None</c> if the foldable is empty.</summary>
+ <param name="source">The input foldable.</param>
+ <returns>The first element of the foldable or None.</returns>
+</member>
+<member name="M:FSharpPlus.Operators.head``2(``0)">
+ <summary>Gets the first element of the foldable.</summary>
+
+ <param name="source">The input flodable.</param>
+ <exception cref="System.ArgumentException">Thrown when the foldable is empty.</exception>
+ <returns>The first element of the foldable.</returns>
+</member>
+<member name="M:FSharpPlus.Operators.intercalate``2(``0,``1)">
+<summary>
+ Folds the source, inserting a separator between each element.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.tryPick``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpOption{``1}},``2)">
+ <summary>Applies the given function to successive elements, returning <c>Some(x)</c> the first
+ result where function returns <c>Some(x)</c> for some x. If no such element 
+ exists then return <c>None</c>.</summary>
+ <param name="chooser">The function to generate options from the elements.</param>
+ <param name="source">The input foldable.</param>
+ <returns>The first resulting value or None.</returns>
+</member>
+<member name="M:FSharpPlus.Operators.pick``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpOption{``1}},``2)">
+ <summary>Applies the given function to successive elements, returning the first
+ result where function returns <c>Some(x)</c> for some x. If no such
+ element exists then raise <c>System.Collections.Generic.KeyNotFoundException</c></summary>
+ <param name="chooser">The function to generate options from the elements.</param>
+ <param name="source">The input foldable.</param>
+ <exception cref="System.Collections.Generic.KeyNotFoundException">Thrown when the foldable is empty.</exception>
+ <returns>The first resulting value.</returns>
+</member>
+<member name="M:FSharpPlus.Operators.tryFind``2(Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},``1)">
+ <summary>Gets the first element for which the given function returns true.
+ Returns None if no such element exists.</summary>
+ <param name="predicate">The function to test the input elements.</param>
+ <param name="source">The input foldable.</param>
+ <returns>The first element for which the predicate returns true, or None if
+ every element evaluates to false.</returns>
+</member>
+<member name="M:FSharpPlus.Operators.find``2(Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},``1)">
+ <summary>Gets the first element for which the given function returns true.
+ Raises <c>KeyNotFoundException</c> if no such element exists.</summary>
+ <param name="predicate">The function to test the input elements.</param>
+ <param name="source">The input foldable.</param>
+ <exception cref="System.Collections.Generic.KeyNotFoundException">Thrown if the predicate evaluates to false for
+ all the elements of the foldable.</exception>
+ <returns>The first element that satisfies the predicate.</returns>
+</member>
+<member name="M:FSharpPlus.Operators.forall``2(Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},``1)">
+ <summary>Tests if all elements of the collection satisfy the given predicate.</summary>
+
+ <remarks>The predicate is applied to the elements of the input foldable. If any application 
+ returns false then the overall result is false and no further elements are tested. 
+ Otherwise, true is returned.</remarks>
+ <param name="predicate">The function to test the input elements.</param>
+ <param name="source">The input foldable.</param>
+ <returns>True if all of the elements satisfy the predicate.</returns>
+</member>
+<member name="M:FSharpPlus.Operators.exists``2(Microsoft.FSharp.Core.FSharpFunc{``0,System.Boolean},``1)">
+ <summary>Tests if any element of the list satisfies the given predicate.</summary>
+
+ <remarks>The predicate is applied to the elements of the input foldable. If any application 
+ returns true then the overall result is true and no further elements are tested. 
+ Otherwise, false is returned.</remarks>
+ <param name="predicate">The function to test the input elements.</param>
+ <param name="source">The input foldable.</param>
+ <returns>True if any element satisfies the predicate.</returns>
+</member>
+<member name="M:FSharpPlus.Operators.toSeq``2(``0)">
+ <summary>Views the given foldable as a sequence.</summary>
+ <param name="source">The input foldable.</param>
+ <returns>The sequence of elements in the foldable.</returns>
+</member>
+<member name="M:FSharpPlus.Operators.toArray``2(``0)">
+ <summary>Builds an array from the given foldable.</summary>
+ <param name="source">The input foldable.</param>
+ <returns>The array of foldable elements.</returns>
+</member>
+<member name="M:FSharpPlus.Operators.toList``2(``0)">
+ <summary>Builds a list from the given foldable.</summary>
+ <param name="source">The input foldable.</param>
+ <returns>The list of foldable elements.</returns>
+</member>
+<member name="M:FSharpPlus.Operators.foldMap``3(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
+<summary>
+ Folds by mapping all values to a Monoid
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.fold``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``0}},``0,``2)">
+ <summary>Applies a function to each element of the foldable, threading an accumulator argument
+ through the computation. Take the second argument, and apply the function to it
+ and the first element of the foldable. Then feed this result into the function along
+ with the second element and so on. Return the final result.
+ If the input function is <c>f</c> and the elements are <c>i0...iN</c> then 
+ computes <c>f (... (f s i0) i1 ...) iN</c>.</summary>
+ <param name="folder">The function to update the state given the input elements.</param>
+ <param name="state">The initial state.</param>
+ <param name="foldable">The input foldable.</param>
+ <returns>The final state value.</returns>
+</member>
+<member name="M:FSharpPlus.Operators.foldBack``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``1}},``2,``1)">
+ <summary>Applies a function to each element of the foldable, starting from the end, threading an accumulator argument
+ through the computation. If the input function is <c>f</c> and the elements are <c>i0...iN</c> then 
+ computes <c>f i0 (...(f iN s))</c>.</summary>
+ <param name="folder">The function to update the state given the input elements.</param>
+ <param name="foldable">The input foldable.</param>
+ <param name="state">The initial state.</param>
+ <returns>The state object after the folding function is applied to each element of the foldable.</returns>
+</member>
 <member name="M:FSharpPlus.Operators.getApp``1">
 <summary>
- Apply an arrow produced as the output of some previous computation to an input, producing its output as the output of app.
+ Applies an arrow produced as the output of some previous computation to an input, producing its output as the output of app.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.right``2(``0)">
 <summary>
- Feed marked inputs through the right argument arrow, passing the rest through unchanged to the output.
+ Feeds marked inputs through the right argument arrow, passing the rest through unchanged to the output.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.left``2(``0)">
 <summary>
- Feed marked inputs through the left argument arrow, passing the rest through unchanged to the output.
+ Feeds marked inputs through the left argument arrow, passing the rest through unchanged to the output.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.op_PlusPlusPlus``3(``0,``1)">
 <summary>
- Split the input between both argument arrows, retagging and merging their outputs. Note that this is in general not a functor.
+ Splits the input between both argument arrows, retagging and merging their outputs. Note that this is in general not a functor.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.fanin``3(``0,``1)">
 <summary>
- Split the input between the two argument arrows and merge their outputs. Also known as the (|||) operator.
+ Splits the input between the two argument arrows and merge their outputs. Also known as the (|||) operator.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.fanout``3(``0,``1)">
 <summary>
- Send the input to both argument arrows and combine their output. Also known as the (&amp;&amp;&amp;) operator.
+ Sends the input to both argument arrows and combine their output. Also known as the (&amp;&amp;&amp;) operator.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.op_MultiplyMultiplyMultiply``3(``0,``1)">
 <summary>
- Split the input between the two argument arrows and combine their output. Note that this is in general not a functor.
+ Splits the input between the two argument arrows and combine their output. Note that this is in general not a functor.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.arrSecond``2(``0)">
 <summary>
- Send the second component of the input through the argument arrow, and copy the rest unchanged to the output.
+ Sends the second component of the input through the argument arrow, and copy the rest unchanged to the output.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.arrFirst``2(``0)">
 <summary>
- Send the first component of the input through the argument arrow, and copy the rest unchanged to the output.
+ Sends the first component of the input through the argument arrow, and copy the rest unchanged to the output.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.arr``3(Microsoft.FSharp.Core.FSharpFunc{``0,``1})">
 <summary>
- Lift a function to an arrow.
+ Lifts a function to an arrow.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.catComp``3(``0,``1)">
@@ -689,36 +2031,52 @@
  Gets the identity morphism.
 </summary>
 </member>
+<member name="M:FSharpPlus.Operators.invmap``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpFunc{``1,``0},``2)">
+<summary>
+ Maps a pair of functions over an Invariant Functor
+</summary>
+</member>
 <member name="M:FSharpPlus.Operators.rmap``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
 <summary>
- Can be thought of as mapping the right part of a Profunctor 
- For instance (Ok) when working on Result&lt;_,_&gt;
+ Maps over the right part of a Profunctor.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.lmap``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
 <summary>
- Can be thought of as mapping the left part of a Profunctor
- For instance (Error) when working on Result&lt;_,_&gt;
+ Maps over the left part of a Profunctor.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.dimap``6(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpFunc{``2,``3},``4)">
 <summary>
- Map over both arguments at the same time of a Profunctor.
+ Maps over both arguments at the same time of a Profunctor.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.second``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
 <summary>
- Map covariantly over the second argument of the Bifunctor.
+ Maps covariantly over the second argument of the Bifunctor.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.first``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
 <summary>
- Map covariantly over the first argument of the Bifunctor.
+ Maps covariantly over the first argument of the Bifunctor.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.bimap``6(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpFunc{``2,``3},``4)">
 <summary>
- Map over both arguments of the Bifunctor at the same time.
+ Maps over both arguments of the Bifunctor at the same time.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.contramap``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
+<summary>
+ Maps over the input.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.guard``1(System.Boolean)">
+<summary>
+ Conditional failure of Alternative computations.
+ If true it lifts the unit value, else it returns empty.
+
+ Common uses of guard include conditionally signaling an error in an error monad and conditionally rejecting the current choice in an Alternative-based parser.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.op_LessBarGreater``1(``0,``0)">
@@ -726,9 +2084,29 @@
  Combines two Alternatives
 </summary>
 </member>
+<member name="M:FSharpPlus.Operators.getEmpty``1">
+<summary>
+ Gets a functor representing the empty value.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.plus``1(``0,``0)">
+<summary>
+ Combines two monoids in one.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.op_PlusPlus``1(``0,``0)">
+<summary>
+ Combines two monoids in one.
+</summary>
+</member>
 <member name="M:FSharpPlus.Operators.getZero``1">
 <summary>
- Gets a value that represents the 0 element.
+ Gets a value that represents the 0 element of a Monoid.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.liftM``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
+<summary>
+ Equivalent to map but only for Monads.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.join``2(``0)">
@@ -736,9 +2114,14 @@
  Flattens two layers of monadic information into one.
 </summary>
 </member>
+<member name="M:FSharpPlus.Operators.op_LessEqualsLess``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpFunc{``3,``2},``3)">
+<summary>
+ Composes right-to-left two monadic functions (Kleisli composition).
+</summary>
+</member>
 <member name="M:FSharpPlus.Operators.op_GreaterEqualsGreater``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpFunc{``3,``2},``0)">
 <summary>
- Kleisli composition (fish) operator
+ Composes left-to-right two monadic functions (Kleisli composition).
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.op_EqualsLessLess``3(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
@@ -751,19 +2134,50 @@
  Takes a monadic value and a function from a plain type to a monadic value, and returns a new monadic value.
 </summary>
 </member>
-<member name="M:FSharpPlus.Operators.liftA2``7(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},``3,``5)">
+<member name="M:FSharpPlus.Operators.bind``3(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
 <summary>
- Apply 2 lifted arguments to a lifted function.
+ Takes a function from a plain type to a monadic value and a monadic value, and returns a new monadic value.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.opt``3(``0)">
+<summary>
+ Transforms an alternative value (which has the notion of success/failure) to an alternative
+ that always succeed, wrapping the original value into an option to signify success/failure of the original alternative.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.op_LessMultiplyMultiplyGreater``3(``0)">
+<summary>
+ Apply a lifted argument to a lifted function (flipped): arg &lt;**&gt; f
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.op_LessMultiply``5(``0,``2)">
+<summary>
+ Sequences two applicatives left-to-right, discarding the value of the second argument.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.op_MultiplyGreater``5(``0,``2)">
+<summary>
+ Sequences two applicatives left-to-right, discarding the value of the first argument.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.liftA2``6(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},``3,``4)">
+<summary>
+ Apply 2 lifted arguments to a non-lifted function.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.lift2``6(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},``3,``4)">
+<summary>
+ Applies 2 lifted arguments to a non-lifted function. Equivalent to map2 in non list-like types.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.op_LessMultiplyGreater``3(``0,``1)">
 <summary>
- Apply a lifted argument to a lifted function.
+ Apply a lifted argument to a lifted function: f &lt;*&gt; arg
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.result``2(``0)">
 <summary>
- Lift a value into a Functor. Same as return in Computation Expressions.
+ Lifts a value into a Functor. Same as return in Computation Expressions.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.iter``2(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.Unit},``1)">
@@ -773,34 +2187,127 @@
 </member>
 <member name="M:FSharpPlus.Operators.op_BarGreaterGreater``4(``0,Microsoft.FSharp.Core.FSharpFunc{``2,``3})">
 <summary>
- Lift a function into a Functor. Same as map but with flipped arguments.
- To be used in pipe-forward stlye expressions
+ Lifts a function into a Functor. Same as map but with flipped arguments.
+ To be used in pipe-forward style expressions
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.op_LessLessBar``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
 <summary>
- Lift a function into a Functor. Same as map.
+ Lifts a function into a Functor. Same as map.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.op_LessBangGreater``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
 <summary>
- Lift a function into a Functor. Same as map.
- To by used in Applicative Style expressions, combined with &lt;*&gt;
+ Lifts a function into a Functor. Same as map.
+ To be used in Applicative Style expressions, combined with &lt;*&gt;
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.map``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
 <summary>
- Lift a function into a Functor.
+ Lifts a function into a Functor.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.tuple8``8(``0,``1,``2,``3,``4,``5,``6,``7)">
+<summary>
+ Tuple eight arguments
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.tuple7``7(``0,``1,``2,``3,``4,``5,``6)">
+<summary>
+ Tuple seven arguments
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.tuple6``6(``0,``1,``2,``3,``4,``5)">
+<summary>
+ Tuple six arguments
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.tuple5``5(``0,``1,``2,``3,``4)">
+<summary>
+ Tuple five arguments
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.tuple4``4(``0,``1,``2,``3)">
+<summary>
+ Tuple four arguments
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.tuple3``3(``0,``1,``2)">
+<summary>
+ Tuple three arguments
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.tuple2``2(``0,``1)">
+<summary>
+ Tuple two arguments
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.option``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``1,Microsoft.FSharp.Core.FSharpOption{``0})">
+<summary>
+ Takes a function, a default value and a option value. If the option value is None, the function returns the default value.
+ Otherwise, it applies the function to the value inside Some and returns the result.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.either``3(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpFunc{``2,``1},Microsoft.FSharp.Core.FSharpResult{``0,``2})">
+ <summary> Extracts a value from either side of a Result.</summary>
+ <param name="fOk">Function to be applied to source, if it contains an Ok value.</param>
+ <param name="fError">Function to be applied to source, if it contains an Error value.</param>
+ <param name="source">The source value, containing an Ok or an Error.</param>
+ <returns>The result of applying either functions.</returns>
+</member>
+<member name="M:FSharpPlus.Operators.tap``1(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.Unit},``0)">
+<summary>
+ Executes a side-effect function and returns the original input value.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.op_DivideGreater``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}})">
+<summary>
+ Used in conjunction with &lt;/ to make an ad-hoc binary operator out of a function (x &lt;/f/&gt; y).
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.op_LessDivide``2(``0)">
+<summary>
+ Used in conjunction with /&gt; to make an ad-hoc binary operator out of a function (x &lt;/f/&gt; y).
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.uncurryN``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
+<summary>
+ Takes a function expecting any N number of curried arguments and returns a function expecting a tuple of N elements.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.uncurry``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},``0,``1)">
+<summary>
+ Takes a function expecting two curried arguments and returns a function expecting a tuple of two elements. Same as (&lt;||).
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.curryN``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``2)">
+<summary>
+ Takes a function expecting a tuple of any N number of elements and returns a function expecting N curried arguments.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.curry``3(Microsoft.FSharp.Core.FSharpFunc{System.Tuple{``0,``1},``2},``0,``1)">
+<summary>
+ Takes a function expecting a tuple of two elements and returns a function expecting two curried arguments.
+</summary>
+</member>
+<member name="M:FSharpPlus.Operators.konst``2(``0,``1)">
+ <summary> Creates a constant function.</summary>
+ <param name="k">The constant value.</param>
+ <returns>The constant value function.</returns>
+</member>
+<member name="M:FSharpPlus.Operators.flip``3(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},``1,``0)">
+<summary>
+ Creates a new function with first two arguments flipped.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.Arrows.op_BitwiseOr``3(``0,``1)">
 <summary>
- Split the input between the two argument arrows and merge their outputs. Also known as fanin.
+ Splits the input between the two argument arrows and merge their outputs. Also known as fanin.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.Arrows.op_BitwiseAnd``3(``0,``1)">
 <summary>
- Send the input to both argument arrows and combine their output. Also known as fanout.
+ Sends the input to both argument arrows and combine their output. Also known as fanout.
 </summary>
 </member>
 <member name="M:FSharpPlus.Operators.Arrows.op_RightShift``3(``0,``1)">
@@ -810,7 +2317,7 @@
 </member>
 <member name="M:FSharpPlus.Operators.Arrows.op_LeftShift``3(``0,``1)">
 <summary>
- Right-to-left morphism composition.        
+ Right-to-left morphism composition.
 </summary>
 </member>
 <member name="T:FSharpPlus.Operators.Arrows">
@@ -818,7 +2325,7 @@
 </member>
 <member name="M:FSharpPlus.Operators.Seq.sum``1(System.Collections.Generic.IEnumerable{``0})">
 <summary>
- Fold all values in the sequence using the monoidal addition
+ Folds all values in the sequence using the monoidal addition.
 </summary>
 </member>
 <member name="T:FSharpPlus.Operators">
@@ -826,34 +2333,123 @@
  Generic functions and operators
 </summary>
 </member>
+<member name="T:FSharpPlus.Math.Applicative">
+ <summary>Math Operators ready to use over Applicative Functors.</summary>
+</member>
+<member name="M:FSharpPlus.Math.Generic.gcd``1(``0,``0)">
+<summary>
+ Greatest Common Divisor.
+</summary>
+</member>
+<member name="M:FSharpPlus.Math.Generic.divRemE``1(``0,``0)">
+<summary>
+ Euclidean division-remainder, following the mathematical convention where the mod is always positive.
+</summary>
+</member>
+<member name="M:FSharpPlus.Math.Generic.remE``1(``0,``0)">
+<summary>
+ Euclidean remainder of integer division, following the mathematical convention where the mod is always positive.
+</summary>
+</member>
+<member name="M:FSharpPlus.Math.Generic.rem``1(``0,``0)">
+<summary>
+ Remainder of Integer division. Same as (%).
+</summary>
+</member>
+<member name="M:FSharpPlus.Math.Generic.divE``1(``0,``0)">
+<summary>
+ Euclidean integer division, following the mathematical convention where the mod is always positive.
+</summary>
+</member>
+<member name="M:FSharpPlus.Math.Generic.div``1(``0,``0)">
+<summary>
+ Integer division. Same as (/) for Integral types.
+</summary>
+</member>
+<member name="T:FSharpPlus.Math.Generic">
+ <summary>
+ Generic numbers, functions and operators.
+ By opening this module some common operators become restricted, like (+) to 'T->'T->'T
+ </summary>
+</member>
+<member name="P:FSharpPlus.Builders.MonadFxBuilder.plus'">
+<summary>
+ Makes it a strict monadplus computation expression.
+</summary>
+</member>
+<member name="P:FSharpPlus.Builders.MonadFxBuilder.plus">
+<summary>
+ Makes it a (lazy) monadplus computation expression.
+</summary>
+</member>
+<member name="P:FSharpPlus.Builders.MonadFxBuilder.fx'">
+<summary>
+ Makes it a strict monadic computation expression with side-effects
+</summary>
+</member>
+<member name="P:FSharpPlus.Builders.MonadFxBuilder.fx">
+<summary>
+ Makes it a (lazy) monadic computation expression with side-effects
+</summary>
+</member>
+<member name="P:FSharpPlus.Builders.monad'">
+<summary>
+ Creates a strict monadic computation expression with side-effects (see http://fsprojects.github.io/FSharpPlus/computation-expressions.html for more information)
+</summary>
+</member>
+<member name="P:FSharpPlus.Builders.monad">
+<summary>
+ Creates a (lazy) monadic computation expression with side-effects (see http://fsprojects.github.io/FSharpPlus/computation-expressions.html for more information)
+</summary>
+</member>
 <member name="T:FSharpPlus.Builders">
 <summary>
  Constructs to express generic computations
 </summary>
 </member>
+<member name="M:FSharpPlus.Lens.op_LessAmpGreater``4(``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2})">
+ <summary>An infix flipped map, restricted to non-primitive types.</summary>
+ <param name="x">The functor.</param>
+ <param name="f">The mapper function.</param>
+ <returns>The mapped Functor.</returns>
+</member>
 <member name="M:FSharpPlus.Lens.op_HatDotDot``5(``0,Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.FSharpFunc{``1,FSharpPlus.Data.Const{FSharpPlus.Data.Endo{Microsoft.FSharp.Collections.FSharpList{``1}},``2}},Microsoft.FSharp.Core.FSharpFunc{``0,FSharpPlus.Data.Const{FSharpPlus.Data.Endo{Microsoft.FSharp.Collections.FSharpList{``3}},``4}}})">
 <summary>
- Extract a list of the targets of a Fold. Same as ``toListOf``.
+ Extract a list of the targets of a Fold. Same as ``toListOf`` but with the arguments flipped.
 </summary>
 </member>
 <member name="M:FSharpPlus.Lens.op_HatQmark``5(``0,Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.FSharpFunc{``1,FSharpPlus.Data.Const{FSharpPlus.Data.First{``1},``2}},Microsoft.FSharp.Core.FSharpFunc{``0,FSharpPlus.Data.Const{FSharpPlus.Data.First{``3},``4}}})">
-<summary>
- Retrieve the first value targeted by a Prism, Fold or Traversal (or Some result from a Getter or Lens). Same as ``preview``.
-</summary>
+ <summary>Retrieve the first value targeted by a Prism, Fold or Traversal (or Some result from a Getter or Lens). Same as ``preview`` but with the arguments flipped.</summary>
+ <param name="prism">The prism.</param>
+ <param name="source">The object.</param>
+ <returns>The value (if any) the prism is targeting.</returns>
 </member>
 <member name="M:FSharpPlus.Lens.op_PercentMinusGreater``4(Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.FSharpFunc{``0,FSharpPlus.Data.Identity{``1}},Microsoft.FSharp.Core.FSharpFunc{``2,FSharpPlus.Data.Identity{``3}}},Microsoft.FSharp.Core.FSharpFunc{``0,``1})">
-<summary>
- Update a value in a lens. Same as ``over``.
-</summary>
+ <summary>Update a value in a lens. Same as ``over``.</summary>
+ <param name="lens">The lens.</param>
+ <param name="updater">A function that converts the value we want to write in the part targeted by the lens.</param>
+ <returns>The new object with the value modified.</returns>
 </member>
 <member name="M:FSharpPlus.Lens.op_DotMinusGreater``4(Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.FSharpFunc{``0,FSharpPlus.Data.Identity{``1}},Microsoft.FSharp.Core.FSharpFunc{``2,FSharpPlus.Data.Identity{``3}}},``1)">
-<summary>
- Write to a lens. Same as ``setl``.
-</summary>
+ <summary>Write to a lens. Same as ``setl``.</summary>
+ <param name="lens">The lens.</param>
+ <param name="value">The value we want to write in the part targeted by the lens.</param>
+ <returns>The new object with the value modified.</returns>
 </member>
 <member name="M:FSharpPlus.Lens.op_HatDot``5(``0,Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.FSharpFunc{``1,FSharpPlus.Data.Const{``1,``2}},Microsoft.FSharp.Core.FSharpFunc{``0,FSharpPlus.Data.Const{``3,``4}}})">
+ <summary>Read from a lens. Same as ``view`` but with the arguments flipped.</summary>
+ <param name="lens">The lens.</param>
+ <param name="source">The object.</param>
+ <returns>The part the lens is targeting.</returns>
+</member>
+<member name="M:FSharpPlus.Lens.minimumOf``5(Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.FSharpFunc{``0,FSharpPlus.Data.Const{FSharpPlus.Data.Dual{FSharpPlus.Data.Endo{Microsoft.FSharp.Core.FSharpOption{``0}}},``1}},Microsoft.FSharp.Core.FSharpFunc{``2,FSharpPlus.Data.Const{FSharpPlus.Data.Dual{FSharpPlus.Data.Endo{Microsoft.FSharp.Core.FSharpOption{``3}}},``4}}})">
 <summary>
- Read from a lens. Same as ``view``.
+ Get the smallest target of a Fold.
+</summary>
+</member>
+<member name="M:FSharpPlus.Lens.maximumOf``5(Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.FSharpFunc{``0,FSharpPlus.Data.Const{FSharpPlus.Data.Dual{FSharpPlus.Data.Endo{Microsoft.FSharp.Core.FSharpOption{``0}}},``1}},Microsoft.FSharp.Core.FSharpFunc{``2,FSharpPlus.Data.Const{FSharpPlus.Data.Dual{FSharpPlus.Data.Endo{Microsoft.FSharp.Core.FSharpOption{``3}}},``4}}})">
+<summary>
+ Get the largest target of a Fold.
 </summary>
 </member>
 <member name="M:FSharpPlus.Lens.toListOf``5(Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.FSharpFunc{``0,FSharpPlus.Data.Const{FSharpPlus.Data.Endo{Microsoft.FSharp.Collections.FSharpList{``0}},``1}},Microsoft.FSharp.Core.FSharpFunc{``2,FSharpPlus.Data.Const{FSharpPlus.Data.Endo{Microsoft.FSharp.Collections.FSharpList{``3}},``4}}})">
@@ -861,7 +2457,32 @@
  Extract a list of the targets of a Fold. See also (^..).
 </summary>
 </member>
-<member name="M:FSharpPlus.Lens._5``8(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``4,``5,``6,``7,``0)">
+<member name="M:FSharpPlus.Lens._None``4(Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.Unit,``0})">
+<summary>
+ Prism providing a Traversal for targeting the &apos;None&apos; part of an Option&lt;&apos;T&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.Lens._Some``4(Microsoft.FSharp.Core.FSharpFunc{``0,``1})">
+<summary>
+ Prism providing a Traversal for targeting the &apos;Some&apos; part of an Option&lt;&apos;T&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.Lens._Error``5(Microsoft.FSharp.Core.FSharpFunc{``0,``1})">
+<summary>
+ Prism providing a Traversal for targeting the &apos;Error&apos; part of a Result&lt;&apos;T,&apos;Error&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.Lens._Ok``5(Microsoft.FSharp.Core.FSharpFunc{``0,``1})">
+<summary>
+ Prism providing a Traversal for targeting the &apos;Ok&apos; part of a Result&lt;&apos;T,&apos;Error&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.Lens.non``3(``0,Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpOption{``0})">
+<summary>
+ Lens for the value inside an Option or the given default value if the Option is None.  Works well when combined with Map._item
+</summary>
+</member>
+<member name="M:FSharpPlus.Lens._5``7(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``5)">
 <summary>
  Lens for the fifth element of a tuple
 </summary>
@@ -886,44 +2507,76 @@
  Lens for the first element of a tuple
 </summary>
 </member>
-<member name="M:FSharpPlus.Lens.choosing``10(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``9,``4}},``0,Microsoft.FSharp.Core.FSharpResult{``9,``1})">
-<summary>
- Merge two lenses, getters, setters, folds or traversals.
-</summary>
-</member>
 <member name="M:FSharpPlus.Lens.iso``8(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpFunc{``2,``3})">
-<summary>
- Build an iso from a pair of inverse functions.
-</summary>
+ <summary>Build an 'Iso' from a pair of inverse functions.</summary>
+ <param name="func">The transform function.</param>
+ <param name="inv">The inverse of the transform function.</param>
+ <returns>The iso.</returns>
 </member>
-<member name="M:FSharpPlus.Lens.prism``6(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpFunc{``2,Microsoft.FSharp.Core.FSharpResult{``3,``1}})">
-<summary>
- Build a Prism using Result instead of Option to permit the types of &apos;s and &apos;t to differ.
-</summary>
+<member name="M:FSharpPlus.Lens.prism'``5(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpFunc{``1,Microsoft.FSharp.Core.FSharpOption{``2}},Microsoft.FSharp.Core.FSharpFunc{``2,``3})">
+ <summary>Build a 'Prism' from a constructor and a getter.</summary>
+ <remarks>The prism should be assigned as an inline function of the free parameter, not a value, otherwise compiler will fail with a type constraint mismatch.</remarks>
+ <remarks>Using Option which makes 's and 't the same type.</remarks>
+ <param name="constructor">The constructor function.</param>
+ <param name="getter">The getter function, having as first parameter the object and second the value to set.</param>
+ <param name="f">The free parameter.</param>
+ <returns>The prism.</returns>
+</member>
+<member name="M:FSharpPlus.Lens.prism``6(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpFunc{``2,Microsoft.FSharp.Core.FSharpResult{``3,``1}},Microsoft.FSharp.Core.FSharpFunc{``3,``4})">
+ <summary>Build a 'Prism' from a constructor and a getter.</summary>
+ <remarks>The prism should be assigned as an inline function of the free parameter, not a value, otherwise compiler will fail with a type constraint mismatch.</remarks>
+ <remarks>Using Result instead of Option to permit the types of 's and 't to differ.</remarks>
+ <param name="constructor">The constructor function.</param>
+ <param name="getter">The getter function, having as first parameter the object and second the value to set.</param>
+ <param name="f">The free parameter.</param>
+ <returns>The prism.</returns>
 </member>
 <member name="M:FSharpPlus.Lens.lens``6(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``2,``3}},Microsoft.FSharp.Core.FSharpFunc{``1,``4},``0)">
-<summary>
- Build a &apos;Lens&apos; from a getter and a setter.
-</summary>
+ <summary>Build a 'Lens' from a getter and a setter.</summary>
+ <remarks>The lens should be assigned as an inline function of the free parameter, not a value, otherwise compiler will fail with a type constraint mismatch.</remarks>
+ <param name="getter">The getter function.</param>
+ <param name="setter">The setter function, having as first parameter the object and second the value to set.</param>
+ <param name="f">The free parameter.</param>
+ <returns>The lens.</returns>
 </member>
 <member name="M:FSharpPlus.Lens.preview``5(Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.FSharpFunc{``0,FSharpPlus.Data.Const{FSharpPlus.Data.First{``0},``1}},Microsoft.FSharp.Core.FSharpFunc{``2,FSharpPlus.Data.Const{FSharpPlus.Data.First{``3},``4}}})">
-<summary>
- Retrieve the first value targeted by a Prism, Fold or Traversal (or Some result from a Getter or Lens). See also (^?).
-</summary>
+ <summary>Retrieve the first value targeted by a Prism, Fold or Traversal (or Some result from a Getter or Lens). See also (^?).</summary>
+ <param name="prism">The prism.</param>
+ <param name="source">The object.</param>
+ <returns>The value (if any) the prism is targeting.</returns>
 </member>
 <member name="M:FSharpPlus.Lens.view``5(Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.FSharpFunc{``0,FSharpPlus.Data.Const{``0,``1}},Microsoft.FSharp.Core.FSharpFunc{``2,FSharpPlus.Data.Const{``3,``4}}})">
-<summary>
- Read from a lens
-</summary>
+ <summary>Read from a lens.</summary>
+ <param name="lens">The lens.</param>
+ <param name="source">The object.</param>
+ <returns>The part the lens is targeting.</returns>
 </member>
 <member name="M:FSharpPlus.Lens.over``4(Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.FSharpFunc{``0,FSharpPlus.Data.Identity{``1}},Microsoft.FSharp.Core.FSharpFunc{``2,FSharpPlus.Data.Identity{``3}}},Microsoft.FSharp.Core.FSharpFunc{``0,``1})">
-<summary>
- Update a value in a lens
-</summary>
+ <summary>Update a value in a lens.</summary>
+ <param name="lens">The lens.</param>
+ <param name="f">A function that converts the value we want to write in the part targeted by the lens.</param>
+ <param name="source">The original object.</param>
+ <returns>The new object with the value modified.</returns>
 </member>
 <member name="M:FSharpPlus.Lens.setl``4(Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.FSharpFunc{``0,FSharpPlus.Data.Identity{``1}},Microsoft.FSharp.Core.FSharpFunc{``2,FSharpPlus.Data.Identity{``3}}},``1)">
+ <summary>Write to a lens.</summary>
+ <param name="lens">The lens.</param>
+ <param name="v">The value we want to write in the part targeted by the lens.</param>
+ <param name="source">The original object.</param>
+ <returns>The new object with the value modified.</returns>
+</member>
+<member name="M:FSharpPlus.Lens.IReadOnlyDictionary._item``4(``0,Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.FSharpOption{``1},``2},System.Collections.Generic.IReadOnlyDictionary{``0,``1})">
 <summary>
- Write to a lens
+ Given a specific key, produces a Lens from a IReadOnlyDictionary&lt;key, value&gt; to an Option&lt;value&gt;.  When setting,
+ a Some(value) will insert or replace the value into the dictionary at the given key.  Setting a value of
+ None will delete the value at the specified key.  Works well together with non.
+</summary>
+</member>
+<member name="M:FSharpPlus.Lens.Map._item``4(``0,Microsoft.FSharp.Core.FSharpFunc{Microsoft.FSharp.Core.FSharpOption{``1},``2},Microsoft.FSharp.Collections.FSharpMap{``0,``1})">
+<summary>
+ Given a specific key, produces a Lens from a Map&lt;key, value&gt; to an Option&lt;value&gt;.  When setting,
+ a Some(value) will insert or replace the value into the map at the given key.  Setting a value of
+ None will delete the value at the specified key.  Works well together with non.
 </summary>
 </member>
 <member name="T:FSharpPlus.Lens.Internals">
@@ -1074,52 +2727,52 @@
 </member>
 <member name="P:FSharpPlus.Data.DList`1.Uncons">
 <summary>
-O(log n). Returns the first element and tail.
+ O(log n). Returns the first element and tail.
 </summary>
 </member>
 <member name="P:FSharpPlus.Data.DList`1.TryUncons">
 <summary>
-O(log n). Returns option first element and tail.
+ O(log n). Returns option first element and tail.
 </summary>
 </member>
 <member name="P:FSharpPlus.Data.DList`1.TryTail">
 <summary>
-O(log n). Returns option DList of the elements trailing the first element.
+ O(log n). Returns option DList of the elements trailing the first element.
 </summary>
 </member>
 <member name="P:FSharpPlus.Data.DList`1.TryHead">
 <summary>
-O(log n). Returns option first element
+ O(log n). Returns option first element
 </summary>
 </member>
 <member name="P:FSharpPlus.Data.DList`1.Tail">
 <summary>
-O(log n). Returns a new DList of the elements trailing the first element.
+ O(log n). Returns a new DList of the elements trailing the first element.
 </summary>
 </member>
 <member name="P:FSharpPlus.Data.DList`1.Length">
 <summary>
-O(1). Returns the count of elememts.
+ O(1). Returns the count of elememts.
 </summary>
 </member>
 <member name="P:FSharpPlus.Data.DList`1.IsEmpty">
 <summary>
-O(1). Returns true if the DList has no elements.
+ O(1). Returns true if the DList has no elements.
 </summary>
 </member>
 <member name="P:FSharpPlus.Data.DList`1.Head">
 <summary>
-O(log n). Returns the first element.
+ O(log n). Returns the first element.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.DList`1.Cons(`0)">
 <summary>
-O(1). Returns a new DList with the element added to the front.
+ O(1). Returns a new DList with the element added to the front.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.DList`1.Add(`0)">
 <summary>
-O(1). Returns a new DList with the element added to the end.
+ O(1). Returns a new DList with the element added to the end.
 </summary>
 </member>
 <member name="T:FSharpPlus.Data.DList`1">
@@ -1131,15 +2784,12 @@ O(1). Returns a new DList with the element added to the end.
 </member>
 <member name="T:FSharpPlus.Data.Validation`2">
 <summary>
- A &apos;Validation&apos; is either a value of the type &apos;err or &apos;a, similar to &apos;Result&apos;. However,
- the &apos;Applicative&apos; instance for &apos;Validation&apos; /accumulates/ errors using a &apos;Semigroup&apos; on &apos;err.
+ A &apos;Validation&apos; is either a value of the type &apos;error or &apos;t, similar to &apos;Result&apos;. However,
+ the &apos;Applicative&apos; instance for &apos;Validation&apos; accumulates errors using a &apos;Semigroup&apos; on &apos;error.
  In contrast, the Applicative for &apos;Result&apos; returns only the first error.
 
  A consequence of this is that &apos;Validation&apos; is not a monad. There is no F#+ &apos;Bind&apos; method since
  that would violate monad rules.
-
- An example of typical usage can be found &lt;a href=&quot;https://github.com/gusty/FSharpPlus/tree/master/src/FSharpPlus/Samples/Validations.fsx&quot;&gt;here&lt;/a&gt;.
-
 </summary>
 </member>
 <member name="T:FSharpPlus.Data.Kleisli`2">
@@ -1152,6 +2802,11 @@ O(1). Returns a new DList with the element added to the end.
  Basic operations on Identity
 </summary>
 </member>
+<member name="M:FSharpPlus.Data.ListT.lift``4(``0)">
+<summary>
+ Embed a Monad&lt;&apos;T&gt; into a ListT&lt;&apos;Monad&lt;list&lt;&apos;T&gt;&gt;&gt;
+</summary>
+</member>
 <member name="T:FSharpPlus.Data.ListT">
 <summary>
  Basic operations on ListT
@@ -1160,6 +2815,11 @@ O(1). Returns a new DList with the element added to the end.
 <member name="T:FSharpPlus.Data.List">
 <summary>
  Additional operations on List
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.SeqT.lift``4(``0)">
+<summary>
+ Embed a Monad&lt;&apos;T&gt; into a SeqT&lt;&apos;Monad&lt;seq&lt;&apos;T&gt;&gt;&gt;
 </summary>
 </member>
 <member name="T:FSharpPlus.Data.SeqT">
@@ -1172,6 +2832,16 @@ O(1). Returns a new DList with the element added to the end.
  Additional operations on Seq
 </summary>
 </member>
+<member name="M:FSharpPlus.Data.OptionT.hoist``2(Microsoft.FSharp.Core.FSharpOption{``0})">
+<summary>
+ Transform an option&lt;&apos;T,&apos;Error&gt; to an OptionT&lt;&apos;Monad&lt;option&lt;&apos;T,&apos;Error&gt;&gt;&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.OptionT.lift``4(``0)">
+<summary>
+ Embed a Monad&lt;&apos;T&gt; into an OptionT&lt;&apos;Monad&lt;option&lt;&apos;T&gt;&gt;&gt;
+</summary>
+</member>
 <member name="T:FSharpPlus.Data.OptionT">
 <summary>
  Basic operations on OptionT
@@ -1180,6 +2850,26 @@ O(1). Returns a new DList with the element added to the end.
 <member name="T:FSharpPlus.Data.Option">
 <summary>
  Additional operations on Option
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.ChoiceT.hoist``3(Microsoft.FSharp.Core.FSharpChoice{``0,``1})">
+<summary>
+ Transform a Choice&lt;&apos;T,&apos;Error&gt; to a ChoiceT&lt;&apos;Monad&lt;Choice&lt;&apos;T,&apos;Error&gt;&gt;&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.ChoiceT.lift``6(``0)">
+<summary>
+ Embed a Monad&lt;&apos;T&gt; into a ChoiceT&lt;&apos;Monad&lt;Choice&lt;&apos;T,&apos;Error&gt;&gt;&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.ResultT.hoist``3(Microsoft.FSharp.Core.FSharpResult{``0,``1})">
+<summary>
+ Transform a Result&lt;&apos;T,&apos;Error&gt; to a ResultT&lt;&apos;Monad&lt;Result&lt;&apos;T,&apos;Error&gt;&gt;&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.ResultT.lift``6(``0)">
+<summary>
+ Embed a Monad&lt;&apos;T&gt; into a ChoiceT&lt;&apos;Monad&lt;Choice&lt;&apos;T,&apos;Error&gt;&gt;&gt;
 </summary>
 </member>
 <member name="T:FSharpPlus.Data.ResultT">
@@ -1212,6 +2902,16 @@ O(1). Returns a new DList with the element added to the end.
  Basic operations on Cont
 </summary>
 </member>
+<member name="M:FSharpPlus.Data.ReaderT.lift``2(``0)">
+<summary>
+ Embed a Monad&lt;&apos;T&gt; into an ReaderT&lt;&apos;R, &apos;Monad&lt;&apos;T&gt;&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.ReaderT.zip``7(FSharpPlus.Data.ReaderT{``0,``1},FSharpPlus.Data.ReaderT{``0,``5})">
+<summary>
+ Zips two ReaderTs into one.
+</summary>
+</member>
 <member name="T:FSharpPlus.Data.ReaderT">
 <summary>
  Basic operations on Reader
@@ -1227,9 +2927,24 @@ O(1). Returns a new DList with the element added to the end.
  Retrieves the monad environment.
 </summary>
 </member>
+<member name="M:FSharpPlus.Data.Reader.zip``3(FSharpPlus.Data.Reader{``0,``1},FSharpPlus.Data.Reader{``0,``2})">
+<summary>
+ Zips two Readers into one.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.Reader.map2``4(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},FSharpPlus.Data.Reader{``3,``0},FSharpPlus.Data.Reader{``3,``1})">
+<summary>
+ Combines two Readers into one by applying a mapping function.
+</summary>
+</member>
 <member name="T:FSharpPlus.Data.Reader">
 <summary>
  Basic operations on Reader
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.WriterT.lift``6(``0)">
+<summary>
+ Embed a Monad&lt;&apos;T&gt; into a WriterT&lt;&apos;Monad&lt;&apos;T * &apos;Monoid&gt;&gt;
 </summary>
 </member>
 <member name="T:FSharpPlus.Data.WriterT">
@@ -1267,14 +2982,44 @@ O(1). Returns a new DList with the element added to the end.
  Basic operations on Writer
 </summary>
 </member>
+<member name="M:FSharpPlus.Data.StateT.zip``10(FSharpPlus.Data.StateT{``0,``1},FSharpPlus.Data.StateT{``0,``9})">
+<summary>
+ Zips two StateTs into one.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.StateT.hoist``3(FSharpPlus.Data.State{``0,``1})">
+<summary>
+ Transform a State&lt;&apos;S, &apos;T&gt; to a StateT&lt;&apos;S, &apos;``Monad&lt;&apos;T * &apos;S&gt;``&gt;
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.StateT.lift``5(``0)">
+<summary>
+ Embed a Monad&lt;&apos;T&gt; into a StateT&lt;&apos;S,&apos;``Monad&lt;&apos;T * &apos;S&gt;``&gt;
+</summary>
+</member>
 <member name="T:FSharpPlus.Data.StateT">
 <summary>
  Basic operations on StateT
 </summary>
 </member>
+<member name="M:FSharpPlus.Data.State.zip``3(FSharpPlus.Data.State{``0,``1},FSharpPlus.Data.State{``0,``2})">
+<summary>
+ Zips two States into one.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.State.modify``1(Microsoft.FSharp.Core.FSharpFunc{``0,``0})">
+<summary>
+ Modify the state inside the monad by applying a function.
+</summary>
+</member>
 <member name="M:FSharpPlus.Data.State.put``1(``0)">
 <summary>
  Replace the state inside the monad.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.State.gets``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1})">
+<summary>
+ Get a value which depends on the current state.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.State.get``1">
@@ -1307,10 +3052,156 @@ O(1). Returns a new DList with the element added to the end.
  Basic operations on Dual
 </summary>
 </member>
+<member name="M:FSharpPlus.Data.NonEmptyList.tryOfList``1(Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Transforms a list to a NonEmptyList, returning an option to signal when the original list was empty.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.choice``1(FSharpPlus.Data.NonEmptyList{``0})">
+<summary>
+ Reduces using alternative operator `&lt;|&gt;`.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.range``1(``0,``0)">
+<summary>
+ Equivalent to [start..stop] on regular lists.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.minBy``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},FSharpPlus.Data.NonEmptyList{``0})">
+ <summary>Returns the lowest of all elements of the list, compared via Operators.min on the function result</summary>
+ <param name="projection">The function to transform list elements into the type to be compared.</param>
+ <param name="list">The input list.</param>
+ <returns>The minimum value.</returns>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.min``1(FSharpPlus.Data.NonEmptyList{``0})">
+ <summary>Returns the lowest of all elements of the list, compared via Operators.min.</summary>
+ <param name="list">The input list.</param>
+ <returns>The minimum value.</returns>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.maxBy``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},FSharpPlus.Data.NonEmptyList{``0})">
+ <summary>Returns the greatest of all elements of the list, compared via Operators.max on the function result.</summary>
+ <param name="projection">The function to transform the list elements into the type to be compared.</param>
+ <param name="list">The input list.</param>
+ <returns>The maximum element.</returns>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.max``1(FSharpPlus.Data.NonEmptyList{``0})">
+ <summary>Returns the greatest of all elements of the list, compared via Operators.max.</summary>
+ <param name="list">The input list.</param>
+ <returns>The maximum element.</returns>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.reduceBack``1(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``0,``0}},FSharpPlus.Data.NonEmptyList{``0})">
+ <summary>Applies a function to each element of the list, starting from the end, threading an accumulator argument
+ through the computation. If the input function is <c>f</c> and the elements are <c>i0...iN</c> then computes 
+ <c>f i0 (...(f iN-1 iN))</c>.</summary>
+ <param name="reduction">A function that takes in the next-to-last element of the list and the
+ current accumulated result to produce the next accumulated result.</param>
+ <param name="list">The input list.</param>
+ <returns>The final result of the reductions.</returns>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.reduce``1(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``0,``0}},FSharpPlus.Data.NonEmptyList{``0})">
+ <summary>Applies a function to each element of the list, threading an accumulator argument
+ through the computation. Apply the function to the first two elements of the list.
+ Then feed this result into the function along with the third element and so on. 
+ Return the final result. If the input function is <c>f</c> and the elements are <c>i0...iN</c> then computes 
+ <c>f (... (f i0 i1) i2 ...) iN</c>.</summary>
+ <param name="reduction">The function to reduce two list elements to a single element.</param>
+ <param name="list">The input list.</param>
+ <returns>The final reduced value.</returns>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.averageBy``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},FSharpPlus.Data.NonEmptyList{``0})">
+ <summary>Returns the average of the elements generated by applying the function to each element of the list.</summary>
+ <param name="projection">The function to transform the list elements into the type to be averaged.</param>
+ <param name="list">The input list.</param>
+ <returns>The resulting average.</returns>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.average``1(FSharpPlus.Data.NonEmptyList{``0})">
+ <summary>Returns the average of the elements in the list.</summary>
+ <param name="list">The input list.</param>
+ <returns>The resulting average.</returns>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.tail``1(FSharpPlus.Data.NonEmptyList{``0})">
+ <summary>Returns a new NonEmptyList of the elements trailing the first element.</summary>
+ <exception cref="System.ArgumentException">Thrown when the tail is empty.</exception>
+ <remarks>Throws exception for empty tail</remarks>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.head``1(FSharpPlus.Data.NonEmptyList{``0})">
+<summary>
+ Returns the first element of a new non empty list. You can also use property nel.Head.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.cons``1(``0,FSharpPlus.Data.NonEmptyList{``0})">
+<summary>
+ Returns a new NonEmptyList with the element added to the beginning.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.zip``2(FSharpPlus.Data.NonEmptyList{``0},FSharpPlus.Data.NonEmptyList{``1})">
+ <summary>Combines the two lists into a list of pairs. The two lists must have equal lengths.</summary>
+ <param name="list1">The first input list.</param>
+ <param name="list2">The second input list.</param>
+ <returns>A single list containing pairs of matching elements from the input lists.</returns>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.unzip``2(FSharpPlus.Data.NonEmptyList{System.Tuple{``0,``1}})">
+ <summary>Splits a list of pairs into two lists.</summary>
+ <param name="list">The input list.</param>
+ <returns>Two lists of split elements.</returns>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.map``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},FSharpPlus.Data.NonEmptyList{``0})">
+ <summary>Build a new non empty list whose elements are the results of applying the given function
+ to each of the elements of the non empty list.</summary>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.length``1(FSharpPlus.Data.NonEmptyList{``0})">
+<summary>
+ Returns the length of a non empty list. You can also use property nel.Length.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.ofSeq``1(System.Collections.Generic.IEnumerable{``0})">
+ <summary>Builds a non empty list from the given sequence.</summary>
+ <param name="seq">The input list.</param>
+ <returns>Non empty list containing the elements of the list.</returns>
+ <exception cref="System.ArgumentException">Thrown when the input list is empty.</exception>
+ <remarks>Throws exception for empty list</remarks>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.ofList``1(Microsoft.FSharp.Collections.FSharpList{``0})">
+ <summary>Builds a non empty list from the given list.</summary>
+ <param name="list">The input list.</param>
+ <returns>Non empty list containing the elements of the list.</returns>
+ <exception cref="System.ArgumentException">Thrown when the input list is empty.</exception>
+ <remarks>Throws exception for empty list</remarks>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.ofArray``1(``0[])">
+ <summary>Builds a non empty list from the given array.</summary>
+ <param name="array">The input array.</param>
+ <returns>Non empty list containing the elements of the array.</returns>
+ <exception cref="System.ArgumentException">Thrown when the input array is empty.</exception>
+ <remarks>Throws exception for empty array</remarks>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.toArray``1(FSharpPlus.Data.NonEmptyList{``0})">
+ <summary>Builds an array from the given non empty list.</summary>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.toSeq``1(FSharpPlus.Data.NonEmptyList{``0})">
+ <summary>Builds a sequence from the given non empty list.</summary>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.toList``1(FSharpPlus.Data.NonEmptyList{``0})">
+ <summary>Builds a list from the given non empty list.</summary>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.singleton``1(``0)">
+ <summary>Builds a non empty list with a single element.</summary>
+</member>
+<member name="M:FSharpPlus.Data.NonEmptyList.create``1(``0,Microsoft.FSharp.Collections.FSharpList{``0})">
+ <summary>Builds a non empty list.</summary>
+</member>
 <member name="T:FSharpPlus.Data.NonEmptyList">
 <summary>
  Basic operations on NonEmptyList
 </summary>
+</member>
+<member name="M:FSharpPlus.Data.ZipList.zip``2(FSharpPlus.Data.ZipList{``0},FSharpPlus.Data.ZipList{``1})">
+ <summary>Combines the two lists into a list of pairs. The two lists need not have equal lengths:
+ when one list is exhausted any remaining elements in the other
+ list are ignored.</summary>
+ <param name="list1">The first input list.</param>
+ <param name="list2">The second input list.</param>
+ <returns>A single list containing pairs of matching elements from the input lists.</returns>
 </member>
 <member name="T:FSharpPlus.Data.ZipList">
 <summary>
@@ -1329,98 +3220,93 @@ O(1). Returns a new DList with the element added to the end.
 </member>
 <member name="M:FSharpPlus.Data.DListModule.toSeq``1(FSharpPlus.Data.DList{``0})">
 <summary>
-O(n). Returns a seq of the DList elements.
+ O(n). Returns a seq of the DList elements.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.DListModule.toList``1(FSharpPlus.Data.DList{``0})">
 <summary>
-O(n). Returns a list of the DList elements.
+ O(n). Returns a list of the DList elements.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.DListModule.ofSeq``1(System.Collections.Generic.IEnumerable{``0})">
 <summary>
-O(n). Returns a DList of the seq.
+ O(n). Returns a DList of the seq.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.DListModule.tryUncons``1(FSharpPlus.Data.DList{``0})">
 <summary>
-O(log n). Returns option first element and tail.
+ O(log n). Returns option first element and tail.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.DListModule.uncons``1(FSharpPlus.Data.DList{``0})">
 <summary>
-O(log n). Returns the first element and tail.
+ O(log n). Returns the first element and tail.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.DListModule.tryTail``1(FSharpPlus.Data.DList{``0})">
 <summary>
-O(log n). Returns option DList of the elements trailing the first element.
+ O(log n). Returns option DList of the elements trailing the first element.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.DListModule.tail``1(FSharpPlus.Data.DList{``0})">
 <summary>
-O(log n). Returns a new DList of the elements trailing the first element.
+ O(log n). Returns a new DList of the elements trailing the first element.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.DListModule.add``1(``0,FSharpPlus.Data.DList{``0})">
 <summary>
-O(1). Returns a new DList with the element added to the end.
+ O(1). Returns a new DList with the element added to the end.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.DListModule.singleton``1(``0)">
 <summary>
-O(1). Returns DList of one elements.
+ O(1). Returns DList of one elements.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.DListModule.length``1(FSharpPlus.Data.DList{``0})">
 <summary>
-O(1). Returns the count of elememts.
+ O(1). Returns the count of elememts.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.DListModule.isEmpty``1(FSharpPlus.Data.DList{``0})">
 <summary>
-O(1). Returns true if the DList has no elements.
+ O(1). Returns true if the DList has no elements.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.DListModule.tryHead``1(FSharpPlus.Data.DList{``0})">
 <summary>
-O(log n). Returns option first element.
+ O(log n). Returns option first element.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.DListModule.head``1(FSharpPlus.Data.DList{``0})">
 <summary>
-O(log n). Returns the first element.
+ O(log n). Returns the first element.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.DListModule.foldBack``2(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``1}},FSharpPlus.Data.DList{``0},``1)">
 <summary>
-O(n). Fold walks the DList using constant stack space. Implementation is from Norman Ramsey.
+ O(n). Fold walks the DList using constant stack space. Implementation is from Norman Ramsey.
  See http://stackoverflow.com/questions/5324623/functional-o1-append-and-on-iteration-from-first-element-list-data-structure/5334068#5334068
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.DListModule.empty``1">
 <summary>
-O(1). Returns DList of no elements.
+ O(1). Returns DList of no elements.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.DListModule.cons``1(``0,FSharpPlus.Data.DList{``0})">
 <summary>
-O(1). Returns a new DList with the element added to the beginning.
+ O(1). Returns a new DList with the element added to the beginning.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.DListModule.append``1(FSharpPlus.Data.DList{``0},FSharpPlus.Data.DList{``0})">
 <summary>
-O(1). Returns a new DList of two lists.
+ O(1). Returns a new DList of two lists.
 </summary>
 </member>
-<member name="M:FSharpPlus.Data.Validation.ensure``2(``0,Microsoft.FSharp.Core.FSharpFunc{``1,System.Boolean},FSharpPlus.Data.Validation{``0,``1})">
+<member name="M:FSharpPlus.Data.Validation.protect``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},``0)">
 <summary>
- Leaves the validation unchanged when the predicate holds, or
- fails with [e] otherwise.
-
- This can be thought of as having the less general type:
-
- ensure : &apos;e -&gt; (&apos;a -&gt; &apos;bool) -&gt; Validation&lt;&apos;a,&apos;e&gt; -&gt; Validation&lt;&apos;a,&apos;e&gt;
+ Creates a safe version of the supplied function, which returns a Validation&lt;exn,&apos;U&gt; instead of throwing exceptions.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.Validation.validationNel``2(Microsoft.FSharp.Core.FSharpResult{``0,``1})">
@@ -1430,41 +3316,64 @@ O(1). Returns a new DList of two lists.
  they are a common semigroup to use.
 </summary>
 </member>
-<member name="M:FSharpPlus.Data.Validation.validate``2(``0,Microsoft.FSharp.Core.FSharpFunc{``1,System.Boolean},``1)">
+<member name="M:FSharpPlus.Data.Validation.either``3(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpFunc{``2,``1},FSharpPlus.Data.Validation{``2,``0})">
+ <summary> Extracts a value from either side of a Validation.</summary>
+ <param name="fSuccess">Function to be applied to source, if it contains a Success value.</param>
+ <param name="fFailure">Function to be applied to source, if it contains a Failure value.</param>
+ <param name="source">The source value, containing a Success or a Failure.</param>
+ <returns>The result of applying either functions.</returns>
+</member>
+<member name="M:FSharpPlus.Data.Validation.ofChoice``2(Microsoft.FSharp.Core.FSharpChoice{``0,``1})">
 <summary>
- Validate&apos;s the [a] with the given predicate, returning [e] if the predicate does not hold.
-
- This can be thought of as having the less general type:
-
- validate : &apos;e -&gt; (&apos;a -&gt; bool) -&gt; &apos;a -&gt; Validation&lt;&apos;e, &apos;a&gt;
-
+ Creates a Validation&lt;&apos;Error,&apos;T&gt; from a Choice&lt;&apos;T,&apos;Error&gt;.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.Validation.toChoice``2(FSharpPlus.Data.Validation{``0,``1})">
+<summary>
+ Converts a Validation&lt;&apos;Error,&apos;T&gt; to a Choice&lt;&apos;T,&apos;Error&gt;.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.Validation.ofResult``2(Microsoft.FSharp.Core.FSharpResult{``0,``1})">
+<summary>
+ Creates a Validation&lt;&apos;Error,&apos;T&gt; from a Result&lt;&apos;T,&apos;Error&gt;.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.Validation.toResult``2(FSharpPlus.Data.Validation{``0,``1})">
+<summary>
+ Converts a Validation&lt;&apos;Error,&apos;T&gt; to a Result&lt;&apos;T,&apos;Error&gt;.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.Validation.appValidation``2(Microsoft.FSharp.Core.FSharpFunc{``0,Microsoft.FSharp.Core.FSharpFunc{``0,``0}},FSharpPlus.Data.Validation{``0,``1},FSharpPlus.Data.Validation{``0,``1})">
+<summary>
+ Takes two Validations and returns the first Success.
+ If both are Failures it returns both Failures combined with the supplied function.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.Validation.liftChoice``3(Microsoft.FSharp.Core.FSharpFunc{``0,``1})">
 <summary>
- &apos;liftChoice&apos; is useful for converting a &apos;Choice&apos; to an &apos;Validation&apos;
+ Converting a &apos;Choice&apos; to a &apos;Validation&apos;
  when the &apos;Choice2Of2&apos; of the &apos;Choice&apos; needs to be lifted into a &apos;Semigroup&apos;.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.Validation.liftResult``3(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpResult{``2,``0})">
 <summary>
- &apos;liftResult&apos; is useful for converting a &apos;Result&apos; to an &apos;Validation&apos;
+ Converts a &apos;Result&apos; to a &apos;Validation&apos;
  when the &apos;Error&apos; of the &apos;Result&apos; needs to be lifted into a &apos;Semigroup&apos;.
 </summary>
 </member>
-<member name="M:FSharpPlus.Data.Validation.valueOr``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},FSharpPlus.Data.Validation{``0,``1})">
+<member name="M:FSharpPlus.Data.Validation.defaultWith``2(Microsoft.FSharp.Core.FSharpFunc{``0,``1},FSharpPlus.Data.Validation{``0,``1})">
 <summary>
- Return the &apos;a or run the given function over the &apos;e.
+ Extracts the Success value or applies the compensation function over the Failure.
 </summary>
 </member>
-<member name="M:FSharpPlus.Data.Validation.orElse``2(FSharpPlus.Data.Validation{``0,``1},``1)">
+<member name="M:FSharpPlus.Data.Validation.defaultValue``2(``0,FSharpPlus.Data.Validation{``1,``0})">
 <summary>
- orElse v a returns &apos;a when v is Failure, and the a in Success a.
+ Extracts the Success value or use the supplied default value when it&apos;s a Failure.
 </summary>
 </member>
 <member name="M:FSharpPlus.Data.Validation.bind``3(Microsoft.FSharp.Core.FSharpFunc{``0,FSharpPlus.Data.Validation{``1,``2}},FSharpPlus.Data.Validation{``1,``0})">
 <summary>
- &apos;bind&apos; binds through a Validation, which is useful for
+ Binds through a Validation, which is useful for
  composing Validations sequentially. Note that despite having a bind
  function of the correct type, Validation is not a monad.
  The reason is, this bind does not accumulate errors, so it does not
@@ -1474,9 +3383,92 @@ O(1). Returns a new DList of two lists.
  valid Monad instance.
 </summary>
 </member>
+<member name="M:FSharpPlus.Data.Validation.bisequence``5(FSharpPlus.Data.Validation{``0,``2})">
+<summary>
+ Like sequence but traversing the Failure part as well.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.Validation.bitraverse``7(Microsoft.FSharp.Core.FSharpFunc{``0,``1},Microsoft.FSharp.Core.FSharpFunc{``6,``3},FSharpPlus.Data.Validation{``0,``6})">
+<summary>
+ Like traverse but taking an additional function to traverse the Failure part as well.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.Validation.sequence``4(FSharpPlus.Data.Validation{``0,``1})">
+<summary>
+ Traverse the Success case.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.Validation.traverse``5(Microsoft.FSharp.Core.FSharpFunc{``0,``1},FSharpPlus.Data.Validation{``4,``0})">
+<summary>
+ Traverse the Success case with the supplied function.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.Validation.apply``3(FSharpPlus.Data.Validation{``0,Microsoft.FSharp.Core.FSharpFunc{``1,``2}},FSharpPlus.Data.Validation{``0,``1})">
+<summary>
+ Applies the wrapped value to the wrapped function when both are Success and returns a wrapped result or the Failure(s).
+ &lt;param name=&quot;f&quot;&gt;The function wrapped in a Success or a Failure.&lt;/param&gt;
+ &lt;param name=&quot;x&quot;&gt;The value wrapped in a Success or a Failure.&lt;/param&gt;
+ &lt;returns&gt;A Success of the function applied to the value when both are Success, or the Failure(s) if more than one, combined with the Semigroup (++) operation of the Error type.&lt;/returns&gt;
+</summary>
+</member>
 <member name="T:FSharpPlus.Data.Kleisli">
 <summary>
  Basic operations on Kleisli
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.Free.liftF``3(``0)">
+<summary>
+ Lift any Functor into a Free structure
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.Free.iterM``5(Microsoft.FSharp.Core.FSharpFunc{``0,``4},FSharpPlus.Data.Free{``2,``3})">
+<summary>
+ Tear down a Free monad using iteration.
+</summary>
+</member>
+<member name="M:FSharpPlus.Data.Free.fold``3(Microsoft.FSharp.Core.FSharpFunc{``0,``2},FSharpPlus.Data.Free{``0,``1})">
+<summary>
+ Folds the Free structure into a Monad
+</summary>
+</member>
+<member name="T:FSharpPlus.Data.Free">
+<summary>
+ Basic operations on Free Monads
+</summary>
+</member>
+<member name="M:FSharpPlus.Parsing.tryScanfn``5(Microsoft.FSharp.Core.PrintfFormat{``0,``1,``2,``3,``4})">
+<summary>
+ Gets a tuple with the result of parsing each element of a formatted text from the Console. Returns None in case of failure.
+</summary>
+</member>
+<member name="M:FSharpPlus.Parsing.trySscanf``5(Microsoft.FSharp.Core.PrintfFormat{``0,``1,``2,``3,``4},System.String)">
+<summary>
+ Gets a tuple with the result of parsing each element of a formatted text. Returns None in case of failure.
+</summary>
+</member>
+<member name="M:FSharpPlus.Parsing.tryParseArray``1(System.String[])">
+<summary>
+ Gets a tuple with the result of parsing each element of a string array. Returns None in case of failure.
+</summary>
+</member>
+<member name="M:FSharpPlus.Parsing.scanfn``5(Microsoft.FSharp.Core.PrintfFormat{``0,``1,``2,``3,``4})">
+<summary>
+ Gets a tuple with the result of parsing each element of a formatted text from the Console.
+</summary>
+</member>
+<member name="M:FSharpPlus.Parsing.sscanf``5(Microsoft.FSharp.Core.PrintfFormat{``0,``1,``2,``3,``4},System.String)">
+<summary>
+ Gets a tuple with the result of parsing each element of a formatted text.
+</summary>
+</member>
+<member name="M:FSharpPlus.Parsing.parseArray``1(System.String[])">
+<summary>
+ Gets a tuple with the result of parsing each element of a string array.
+</summary>
+</member>
+<member name="T:FSharpPlus.Parsing.Internals">
+<summary>
+ [omit]
 </summary>
 </member>
 </members>

@@ -2,23 +2,29 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>FSharpPlus</id>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <title>FSharpPlus</title>
     <authors>Gusty</authors>
     <owners>Gusty</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
-    <projectUrl>https://github.com/gusty/FSharpPlus</projectUrl>
-    <iconUrl>https://raw.github.com/gusty/FSharpPlus/master/docs/files/img/logo.png</iconUrl>
+    <projectUrl>https://github.com/fsprojects/FSharpPlus</projectUrl>
+    <iconUrl>https://raw.github.com/fsprojects/FSharpPlus/master/docsrc/files/img/logo.png</iconUrl>
     <description>A complete and extensible base library for F#.</description>
+    <copyright>2012-2020 Gustavo P. Leon (and contributors https://github.com/fsprojects/FSharpPlus/graphs/contributors)</copyright>
     <tags>f# FSharp Applicative Monad MonadTransformer Arrow Overloading</tags>
+    <repository type="git" url="https://github.com/fsprojects/FSharpPlus.git" />
     <dependencies>
       <group targetFramework=".NETFramework4.5">
-        <dependency id="FSharp.Core" version="4.3.4" exclude="Build,Analyzers" />
+        <dependency id="FSharp.Core" version="4.6.2" exclude="Build,Analyzers" />
+        <dependency id="System.ValueTuple" version="4.4.0" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETStandard2.0">
-        <dependency id="FSharp.Core" version="4.3.4" exclude="Build,Analyzers" />
+        <dependency id="FSharp.Core" version="4.6.2" exclude="Build,Analyzers" />
       </group>
     </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Runtime" targetFramework=".NETFramework4.5" />
+    </frameworkAssemblies>
   </metadata>
 </package>

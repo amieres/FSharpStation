@@ -27,7 +27,7 @@ nuget FSharp.Data
 nuget FSharp.Configuration
 nuget System.Reactive    = 4.0.0
 nuget FSharp.Control.Reactive
-nuget FSharpPlus 
+nuget FSharpPlus         = 1.1.0
 nuget Microsoft.NETCore.UniversalWindowsPlatform = 5.2.4
 nuget FSharp.Formatting
 nuget Fake.IO.FileSystem
@@ -72,7 +72,7 @@ group Testing
     nuget Http.fs
 
 group Other
-    framework: net461, net46
+    framework: netstandard2, net461
     source https://www.nuget.org/api/v2
 
     nuget OpenCvSharp3-AnyCPU
@@ -86,6 +86,7 @@ group Other
     nuget SendGrid
     nuget Microsoft.IdentityModel.Clients.ActiveDirectory
     nuget FSharp.ComProvider
+    nuget FSharp.Control.AsyncSeq
 
 group Test
     framework: netstandard2.0, netcoreapp2.1
