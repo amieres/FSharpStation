@@ -27,7 +27,7 @@ nuget FSharp.Data
 nuget FSharp.Configuration
 nuget System.Reactive    = 4.0.0
 nuget FSharp.Control.Reactive
-nuget FSharpPlus         = 1.1.0
+nuget FSharpPlus         = 1.1.1
 nuget Microsoft.NETCore.UniversalWindowsPlatform = 5.2.4
 nuget FSharp.Formatting
 nuget Fake.IO.FileSystem

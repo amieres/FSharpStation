@@ -85,10 +85,10 @@ D: /package
 D: /package/services
 D: /package/services/metadata
 D: /package/services/metadata/core-properties
-F: /package/services/metadata/core-properties/f45689034c864a9aa06adf4f958272c1.psmdcp
+F: /package/services/metadata/core-properties/b831167c9e49401a9492c54b7cae36dc.psmdcp
 D: /_rels
 F: /_rels/.rels
 F: /.signature.p7s
-F: /fsharpplus.1.1.0.nupkg
+F: /fsharpplus.1.1.1.nupkg
 F: /FSharpPlus.nuspec
 F: /[Content_Types].xml

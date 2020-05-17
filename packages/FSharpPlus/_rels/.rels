@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
   <Relationship Type="http://schemas.microsoft.com/packaging/2010/07/manifest" Target="/FSharpPlus.nuspec" Id="R485336522D3F947B" />
-  <Relationship Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="/package/services/metadata/core-properties/f45689034c864a9aa06adf4f958272c1.psmdcp" Id="R40D864C5D95B2CBB" />
+  <Relationship Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="/package/services/metadata/core-properties/b831167c9e49401a9492c54b7cae36dc.psmdcp" Id="R40EBAE14069AC0AB" />
 </Relationships>
