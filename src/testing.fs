@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1587997886679 -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1590721639276 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -27,7 +27,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Data\lib\net461\WebSharper.Data.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1587997886679
+//#define FSharpStation1590721639276
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -254,6 +254,14 @@ namespace FsRoot
                     let traverseSeq             f           sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                                  Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                     let inline sequenceSeq                  sq = traverseSeq id sq
+                    [< Inline "throw 'traverseSeqS cannot be used in JavaScript!'" >]
+                    let traverseSeqS (f: 't->Async<_>) (t: 't seq) = async {
+                                                                 let! ct = Async.CancellationToken
+                                                                 return seq {
+                                                                     use enum = t.GetEnumerator ()
+                                                                     while enum.MoveNext() do
+                                                                         yield Async.RunSynchronously (f enum.Current, cancellationToken = ct) }}
+                    let inline sequenceSeqS          sq = traverseSeqS id sq
                     let insertO  vAO                           = vAO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
                     let insertR (vAR:Result<_,_>)              = vAR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
                 
@@ -310,6 +318,7 @@ namespace FsRoot
                     >> String.concat "\n"
                 let (|StartsWith|_|) (start:string) (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
                 let (|EndsWith  |_|) (ends :string) (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
+                let (|WhiteSpace|_|) (s:string) = if s |> Seq.exists (System.Char.IsWhiteSpace >> not) then None else Some()
                 
                 let thousands n =
                     let v = (if n < 0 then -n else n).ToString()
@@ -1393,11 +1402,11 @@ namespace FsRoot
                     "Wyoming"                       , State "WY"
                     "American Samoa"                , State "AS"
                     "District of Columbia"          , State "DC"
-                    "Federated States of Micronesia", State "FM"
+                    //"Federated States of Micronesia", State "FM"
                     "Guam"                          , State "GU"
-                    "Marshall Islands"              , State "MH"
+                    //"Marshall Islands"              , State "MH"
                     "Northern Mariana Islands"      , State "MP"
-                    "Palau"                         , State "PW"
+                    //"Palau"                         , State "PW"
                     "Puerto Rico"                   , State "PR"
                     "Virgin Islands"                , State "VI"
                 ]
@@ -1467,7 +1476,7 @@ namespace FsRoot
                 let ahora = System.DateTime.Now
             
                 let toggleSt  = Var.Create None
-                let statesV   = Var.Create "NJ CT NY MA MI RI LA PA IL IN GA CO WA FL MN NV AL NM NC MO WY TX OR ND MT AR SD AK US"
+                let statesV   = Var.Create (statesCodes |> List.map (snd >> function State st -> st) |> String.concat " ")
                 let delayedV  = delayedVar 1000 statesV
                 let statesW   = delayedV.View |> View.Map splitStates
                 let totalizeW = statesW |> View.Map (Seq.filter ((<>) (State "US")) >> Seq.length >> __ (>) 1 )
@@ -1569,40 +1578,53 @@ namespace FsRoot
                         |> statesV.Set
                     )
             
-                let alignRight() = Attr.Style "text-align" "right"
+                let alignRight   () = Attr.Style "text-align" "right"
+                let bootstrap    () = Doc.Verbatim """<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> """
+                let reorderButton() = Doc.Button "Reorder" [] reorderStates
+                let statesInput  () = Doc.Input [ attr.style "width: 70%" ] statesV
+                let statesList   () = Doc.SelectOptional [] "Add State" fst statesCodes toggleSt
+                let title        () = h1 [] [ text "Covid Statistics" ]
+                let dataSel         = Doc.Select [] fname funcs functionV
+                let statesBar    () =
+                    div [] [
+                        text "States: "
+                        statesInput  ()
+                        reorderButton()
+                        statesList   ()
+                    ]
+            
+                let columns   () = columnsW |> Doc.BindSeqCached (fun col -> th [ alignRight() ] [ text col ])
+                let thousandsO v = v |> Option.map thousands |> Option.defaultValue ""
+                let valueCell  v = td [ alignRight() ] [ text <| thousandsO v ]
+                let valuesRow (date : DateTime, values :(State * int option) [], totalO : int option) =
+                    tr [] [
+                        yield  th [  ] [ text (date.ToShortDateString()) ]
+                        yield! values |> Seq.map (snd >> valueCell)
+                        match totalO with 
+                        | Some v -> yield th [ alignRight() ] [ text <| thousands v ]
+                        | None   -> ()
+                    ]
+            
+                let dataTable() =
+                    table [ Attr.Class "table table-sm" ] [
+                        tr[] [
+                            th [] [ text "Date" ]
+                            columns()
+                        ]
+                        rowsW |> Doc.BindSeqCached valuesRow
+                    ]
             
                 [< SPAEntryPoint >]
                 let main() =
                     div    [ Attr.Class "xcontainer"  ] [
-                        h1 [] [ text "Covid Statistics" ]
-                        div [] [
-                            text "States: "
-                            Doc.Input [ attr.style "width: 70%" ] statesV
-                            Doc.Button "Reorder" [] reorderStates
-                            Doc.SelectOptional [] "Add State" fst statesCodes toggleSt
-                        ]
+                        title    ()
+                        statesBar()
                         div [] [
                             text "Data: "
-                            Doc.Select [] fname funcs functionV                
+                            dataSel
                         ]
-                        table [ Attr.Class "table table-sm" ] [
-                            tr[] [
-                                th [] [ text "Date" ]
-                                columnsW |> Doc.BindSeqCached (fun col -> th [ alignRight() ] [ text col ]) 
-                            ]
-                            rowsW
-                            |> Doc.BindSeqCached (fun (date, values, totalO) ->
-                                tr [] [
-                                    yield     th [  ] [ text (date.ToShortDateString()) ]
-                                    for v in values do
-                                        yield td [ alignRight() ] [ text ( snd v |> Option.map thousands |> Option.defaultValue "" ) ]
-                                    match totalO with 
-                                    | Some v -> yield th [ alignRight() ] [ text <| thousands v ]
-                                    | None   -> ()
-                                ]
-                            )
-                        ]
-                        Doc.Verbatim """<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> """
+                        dataTable()
+                        bootstrap()
                     ]
                     |> Doc.Run JS.Document.Body
             

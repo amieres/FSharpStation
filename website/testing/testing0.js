@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,Monads,Seq,Async,String,ParseO,TestingJS,Covid,State,Function,SC$1,WebSharper,Seq$1,Concurrency,Arrays,List,Strings,Slice,Operators,Char,Unchecked,UI,Var$1,View,CancellationTokenSource,Utils,console,IntelliFactory,Runtime,Doc,AttrModule,AttrProxy,Client,Templates,Collections,Map,FSharpMap,Data,TxtRuntime,FSharp,Data$1,Runtime$1,IO,JSON,FSharpSet,BalancedTree,Set,DateUtil,Numeric,System,Guid,Dictionary,Date;
+ var Global,FsRoot,Library,Monads,Seq,Async,String,ParseO,TestingJS,Covid,State,Function,SC$1,WebSharper,Seq$1,Concurrency,Arrays,List,Strings,Slice,Operators,Char,Unchecked,UI,Var$1,View,CancellationTokenSource,Utils,console,IntelliFactory,Runtime,Doc,AttrModule,Client,Templates,AttrProxy,Collections,Map,FSharpMap,Data,TxtRuntime,FSharp,Data$1,Runtime$1,IO,JSON,FSharpSet,BalancedTree,Set,DateUtil,Numeric,System,Guid,Dictionary,Date;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -35,9 +35,9 @@
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
  Doc=UI&&UI.Doc;
  AttrModule=UI&&UI.AttrModule;
- AttrProxy=UI&&UI.AttrProxy;
  Client=UI&&UI.Client;
  Templates=Client&&Client.Templates;
+ AttrProxy=UI&&UI.AttrProxy;
  Collections=WebSharper&&WebSharper.Collections;
  Map=Collections&&Collections.Map;
  FSharpMap=Collections&&Collections.FSharpMap;
@@ -145,6 +145,10 @@
    })
   };
   return o==null?Concurrency.Return(null):o.$0;
+ };
+ Async.sequenceSeqS=function(sq)
+ {
+  throw"traverseSeqS cannot be used in JavaScript!";
  };
  Async.sequenceSeq=function(sq)
  {
@@ -260,6 +264,20 @@
     },Operators.range(0,((v.length-s)/3>>0)-1));
    }));
   })));
+ };
+ String.WhiteSpace=function(s)
+ {
+  function g(v)
+  {
+   return!v;
+  }
+  return Seq$1.exists(function(x)
+  {
+   return g(Char.IsWhiteSpace(x));
+  },s)?null:{
+   $:1,
+   $0:null
+  };
  };
  String.EndsWith=function(ends,s)
  {
@@ -612,42 +630,92 @@
  Covid.main=function()
  {
   var x,a;
-  function a$1(date,values,totalO)
-  {
-   return Doc.Element("tr",[],List.ofSeq(Seq$1.delay(function()
-   {
-    return Seq$1.append([Doc.Element("th",[],[Doc.TextNode((new Global.Date(date)).toLocaleDateString())])],Seq$1.delay(function()
-    {
-     return Seq$1.append(Seq$1.map(function(v)
-     {
-      var o,o$1;
-      return Doc.Element("td",[Covid.alignRight()],[Doc.TextNode((o=(o$1=v[1],o$1==null?null:{
-       $:1,
-       $0:Covid.thousands(o$1.$0)
-      }),o==null?"":o.$0))]);
-     },values),Seq$1.delay(function()
-     {
-      return totalO==null?[]:[Doc.Element("th",[Covid.alignRight()],[Doc.TextNode(Covid.thousands(totalO.$0))])];
-     }));
-    }));
-   })));
-  }
-  x=Doc.Element("div",[AttrModule.Class("xcontainer")],[Doc.Element("h1",[],[Doc.TextNode("Covid Statistics")]),Doc.Element("div",[],[Doc.TextNode("States: "),Doc.Input([AttrProxy.Create("style","width: 70%")],Covid.statesV()),Doc.Button("Reorder",[],function()
-  {
-   Covid.reorderStates();
-  }),Doc.SelectOptional([],"Add State",function(t)
-  {
-   return t[0];
-  },Covid.statesCodes(),Covid.toggleSt())]),Doc.Element("div",[],[Doc.TextNode("Data: "),Doc.Select([],Covid.fname,Covid.funcs(),Covid.functionV())]),Doc.Element("table",[AttrModule.Class("table table-sm")],[Doc.Element("tr",[],[Doc.Element("th",[],[Doc.TextNode("Date")]),Doc.Convert(function(col)
-  {
-   return Doc.Element("th",[Covid.alignRight()],[Doc.TextNode(col)]);
-  },Covid.columnsW())]),Doc.Convert(function($1)
-  {
-   return a$1($1[0],$1[1],$1[2]);
-  },Covid.rowsW())]),Doc.Verbatim("<link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css\" integrity=\"sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh\" crossorigin=\"anonymous\"> ")]);
+  x=Doc.Element("div",[AttrModule.Class("xcontainer")],[Covid.title(),Covid.statesBar(),Doc.Element("div",[],[Doc.TextNode("Data: "),Covid.dataSel()]),Covid.dataTable(),Covid.bootstrap()]);
   a=self.document.body;
   Templates.LoadLocalTemplates("");
   Doc.Run(a,x);
+ };
+ Covid.dataTable=function()
+ {
+  return Doc.Element("table",[AttrModule.Class("table table-sm")],[Doc.Element("tr",[],[Doc.Element("th",[],[Doc.TextNode("Date")]),Covid.columns()]),Doc.Convert(function($1)
+  {
+   return Covid.valuesRow($1[0],$1[1],$1[2]);
+  },Covid.rowsW())]);
+ };
+ Covid.valuesRow=function(date,values,totalO)
+ {
+  return Doc.Element("tr",[],List.ofSeq(Seq$1.delay(function()
+  {
+   return Seq$1.append([Doc.Element("th",[],[Doc.TextNode((new Global.Date(date)).toLocaleDateString())])],Seq$1.delay(function()
+   {
+    function f(t)
+    {
+     return t[1];
+    }
+    return Seq$1.append(Seq$1.map(function(x)
+    {
+     return Covid.valueCell(f(x));
+    },values),Seq$1.delay(function()
+    {
+     return totalO==null?[]:[Doc.Element("th",[Covid.alignRight()],[Doc.TextNode(Covid.thousands(totalO.$0))])];
+    }));
+   }));
+  })));
+ };
+ Covid.valueCell=function(v)
+ {
+  return Doc.Element("td",[Covid.alignRight()],[Doc.TextNode(Covid.thousandsO(v))]);
+ };
+ Covid.thousandsO=function(v)
+ {
+  var o;
+  o=v==null?null:{
+   $:1,
+   $0:Covid.thousands(v.$0)
+  };
+  return o==null?"":o.$0;
+ };
+ Covid.columns=function()
+ {
+  return Doc.Convert(function(col)
+  {
+   return Doc.Element("th",[Covid.alignRight()],[Doc.TextNode(col)]);
+  },Covid.columnsW());
+ };
+ Covid.statesBar=function()
+ {
+  return Doc.Element("div",[],[Doc.TextNode("States: "),Covid.statesInput(),Covid.reorderButton(),Covid.statesList()]);
+ };
+ Covid.dataSel=function()
+ {
+  SC$1.$cctor();
+  return SC$1.dataSel;
+ };
+ Covid.title=function()
+ {
+  return Doc.Element("h1",[],[Doc.TextNode("Covid Statistics")]);
+ };
+ Covid.statesList=function()
+ {
+  return Doc.SelectOptional([],"Add State",function(t)
+  {
+   return t[0];
+  },Covid.statesCodes(),Covid.toggleSt());
+ };
+ Covid.statesInput=function()
+ {
+  return Doc.Input([AttrProxy.Create("style","width: 70%")],Covid.statesV());
+ };
+ Covid.reorderButton=function()
+ {
+  return Doc.Button("Reorder",[],function()
+  {
+   Covid.reorderStates();
+  });
+ };
+ Covid.bootstrap=function()
+ {
+  return Doc.Verbatim("<link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css\" integrity=\"sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh\" crossorigin=\"anonymous\"> ");
  };
  Covid.alignRight=function()
  {
@@ -975,13 +1043,21 @@
    cache.set_Item(v,res);
    return res;
   }
-  function getOrAdd$1(p$2,f$6)
+  function getOrAdd$1(p$2,f$7)
   {
    var o;
    o=checkO(p$2);
-   return o==null?store(p$2,f$6(p$2)):o.$0;
+   return o==null?store(p$2,f$7(p$2)):o.$0;
   }
-  function f$5(x$2,y)
+  function f$5(t)
+  {
+   return t[1];
+  }
+  function g$5(a$1)
+  {
+   return a$1.$0;
+  }
+  function f$6(x$2,y)
   {
    return x$2>y;
   }
@@ -1407,21 +1483,12 @@
   })],["District of Columbia",new State({
    $:0,
    $0:"DC"
-  })],["Federated States of Micronesia",new State({
-   $:0,
-   $0:"FM"
   })],["Guam",new State({
    $:0,
    $0:"GU"
-  })],["Marshall Islands",new State({
-   $:0,
-   $0:"MH"
   })],["Northern Mariana Islands",new State({
    $:0,
    $0:"MP"
-  })],["Palau",new State({
-   $:0,
-   $0:"PW"
   })],["Puerto Rico",new State({
    $:0,
    $0:"PR"
@@ -1446,7 +1513,10 @@
   SC$1.CovidStatesDailyUrl="https://covidtracking.com/api/v1/states/TX/daily.json";
   SC$1.ahora=Date.now();
   SC$1.toggleSt=Var$1.Create$1(null);
-  SC$1.statesV=Var$1.Create$1("NJ CT NY MA MI RI LA PA IL IN GA CO WA FL MN NV AL NM NC MO WY TX OR ND MT AR SD AK US");
+  SC$1.statesV=Var$1.Create$1(Strings.concat(" ",List.map(function(x$2)
+  {
+   return g$5(f$5(x$2));
+  },Covid.statesCodes())));
   SC$1.delayedV=Library.delayedVar(1000,Covid.statesV());
   SC$1.statesW=View.Map(Covid.splitStates,Covid.delayedV().get_View());
   SC$1.totalizeW=(x=Covid.statesW(),View.Map((f$1=(f$2=(p$1=(x$1=new State({
@@ -1463,7 +1533,7 @@
    return Seq$1.length(f$2(x$2));
   }),(g$1=function(b$1)
   {
-   return f$5(b$1,1);
+   return f$6(b$1,1);
   },function(x$2)
   {
    return g$1(f$1(x$2));
@@ -1554,10 +1624,10 @@
       {
        return(Covid.getStatesPop())(new FSharpSet.New(a$1));
       }
-      function f$6(all,t)
+      function f$7(all,t)
       {
        var st,data;
-       function f$7(m$2,kvp)
+       function f$8(m$2,kvp)
        {
         var text,newV,x$2,v;
         text=((((a$4.get_F())(data))(kvp.K))(kvp.V))(function()
@@ -1569,7 +1639,7 @@
        }
        st=t[0];
        data=t[1];
-       return(((Runtime.Curried3(Seq$1.fold))(f$7))(all))(data);
+       return(((Runtime.Curried3(Seq$1.fold))(f$8))(all))(data);
       }
       function m(date,value,a$5)
       {
@@ -1603,7 +1673,7 @@
         };
        },dayvp.V));
        return[dayvp.K,total,dayvp.V];
-      },(((Runtime.Curried3(Seq$1.fold))(f$6))(new FSharpMap.New([])))(a$2));
+      },(((Runtime.Curried3(Seq$1.fold))(f$7))(new FSharpMap.New([])))(a$2));
       totals2=new FSharpMap.New(Seq$1.map(function($3)
       {
        return m($3[0],$3[1],$3[2]);
@@ -1616,6 +1686,7 @@
     },Covid.totalizeW());
    },View.MapAsync(Global.id,View.Const(Concurrency.Parallel(Arrays.map(Covid.deaths,a$1)))));
   },Covid.statesW()));
+  SC$1.dataSel=Doc.Select([],Covid.fname,Covid.funcs(),Covid.functionV());
  };
  Runtime.OnLoad(function()
  {
