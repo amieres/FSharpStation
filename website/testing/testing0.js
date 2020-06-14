@@ -932,7 +932,7 @@
  {
   var st;
   st=a.$0;
-  return TxtRuntime.AsyncMap(IO.asyncReadTextAtRuntime(false,"D:\\Abe\\CIPHERWorkspace\\FSharpStation\\src","","JSON","",Strings.Replace("https://covidtracking.com/api/v1/states/TX/daily.json",st==="US"?"/states/TX/":"/TX/","/"+st+"/")),function(t)
+  return TxtRuntime.AsyncMap(IO.asyncReadTextAtRuntime(false,"D:\\Abe\\CIPHERWorkspace\\FSharpStation\\src","","JSON","",Strings.Replace("https://covidtracking.com/api/v1/states/TX/daily.json",st==="US"?"/states/TX/":"/TX/","/"+st.toLowerCase()+"/")),function(t)
   {
    return Unchecked.Equals(typeof t,"string")?JSON.parse(t):t;
   });
@@ -1562,10 +1562,17 @@
   },Covid.toggleSt().get_View());
   SC$1.funcs=List.ofArray([new Function({
    $:0,
-   $0:"deaths per 100K",
+   $0:"yearly deaths per 100K",
    $1:Runtime.Curried(function(data,d,v,getPop)
    {
     return Covid.yearly(data,d,v)*100000/getPop()>>0;
+   },4)
+  }),new Function({
+   $:0,
+   $0:"total deaths per 1M",
+   $1:Runtime.Curried(function($3,$4,v,getPop)
+   {
+    return v*1000000/getPop()>>0;
    },4)
   }),new Function({
    $:0,

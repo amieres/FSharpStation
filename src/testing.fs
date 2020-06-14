@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1590721639276 -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1591826328884 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -27,7 +27,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Data\lib\net461\WebSharper.Data.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1590721639276
+//#define FSharpStation1591826328884
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -1429,7 +1429,7 @@ namespace FsRoot
                 [< Literal >]
                 let  CovidStatesDailyUrl     = "https://covidtracking.com/api/v1/states/TX/daily.json"
                 type CovidStatesDaily        =  JsonProvider<CovidStatesDailyUrl>
-                let getStateDaily (State st) = CovidStatesDailyUrl.Replace((if st = "US" then "/states/TX/" else "/TX/"), "/" + st + "/")
+                let getStateDaily (State st) = CovidStatesDailyUrl.Replace((if st = "US" then "/states/TX/" else "/TX/"), "/" + st.ToLower() + "/")
                                                |> CovidStatesDaily.AsyncLoad
             
                 //let current = (getStateCurrent "TX")
@@ -1529,7 +1529,8 @@ namespace FsRoot
                 let fname = function Function(nm,_) -> nm
             
                 let funcs = [
-                    Function("deaths per 100K", fun (data:Map<_,_>) d v getPop -> yearly  data d v * 100_000 / (getPop())                     )
+                    Function("yearly deaths per 100K", fun (data:Map<_,_>) d v getPop -> yearly  data d v * 100_000 / (getPop())                     )
+                    Function("total deaths per 1M", fun (data:Map<_,_>) d v getPop -> v * 1_000_000 / (getPop())                     )
                     Function("total deaths"   , fun  data           d v getPop -> v                                       |> __ (/) 1<people> )
                     Function("day deaths"     , fun  data           d v getPop -> daily   data d v                        |> __ (/) 1<people> )
                     Function("week deaths"    , fun  data           d v getPop -> weekly  data d v                        |> __ (/) 1<people> )
