@@ -87,6 +87,8 @@ group Other
     nuget Microsoft.IdentityModel.Clients.ActiveDirectory
     nuget FSharp.ComProvider
     nuget FSharp.Control.AsyncSeq
+    nuget FsPickler = 5.2.2
+    nuget FSharp.Json
 
 group Test
     framework: netstandard2.0, netcoreapp2.1
