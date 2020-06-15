@@ -1,4 +1,4 @@
-////-d:FSharpStation1592020998181 -d:NETSTANDARD20 -d:NOFRAMEWORK --noframework
+////-d:FSharpStation1592158653585 -d:NETSTANDARD20 -d:NOFRAMEWORK --noframework
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\test\NETStandard.Library\build\netstandard2.0\ref"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\netstandard2.0"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\netstandard2.0"
@@ -25,7 +25,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\netstandard2.0\WebSharper.Compiler.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\netstandard2.0\WebSharper.Compiler.FSharp.dll"
 /// Root namespace for all code
-//#define FSharpStation1592020998181
+//#define FSharpStation1592158653585
 #if INTERACTIVE
 module FsRoot   =
 #else

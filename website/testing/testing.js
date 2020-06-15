@@ -361,7 +361,7 @@ if (!console) {
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,Monads,Seq,Async,String,ParseO,TestingJS,Covid,State,Function,WebSharper,Operators,Utils,Arrays,Unchecked,Obj,Collections,Dictionary,CancellationTokenSource,UI,Var$1,Var,View,SC$1,Seq$1,List,T,Char,Slice,Strings,Map,Set,FSharp,Data,Runtime,IO,FSharpMap,AttrModule,Doc,HtmlModule,attr,EventTarget,Node,JavaScript,JS,Pervasives,Object,DictionaryUtil,Error,AggregateException,Concurrency,ConcreteVar,Snap,Abbrev,Async$1,Numeric,System,Guid,ViewBuilder,FSharpSet,Enumerator,T$1,BalancedTree,Data$1,TxtRuntime,Pervasives$1,MapUtil,Attrs,DomUtility,Array,Docs,AttrProxy,Client,Templates,WindowOrWorkerGlobalScope,CT,AsyncBody,Fresh,DateUtil,TimeoutException,Pair,Tree,SC$2,DocElemNode,Scheduler,OperationCanceledException,HashSet,CharacterData,Attrs$1,Dyn,SC$3,Elt,SC$4,An,Settings,Mailbox,SC$5,Updates,SC$6,Prepare,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$7,FormatException,SC$8,AppendList,Queue,DynamicAttrNode,Easing,HashSet$1,HashSetUtil,DomNodes,Lazy,SC$9,LazyExtensionsProxy,LazyRecord,console,JSON,IntelliFactory,Runtime$1,Date,$,Math;
+ var Global,FsRoot,Library,Monads,Seq,Async,String,ParseO,TestingJS,Covid,State,Function,WebSharper,Operators,Utils,Arrays,Unchecked,Obj,Collections,Dictionary,CancellationTokenSource,UI,Var$1,Var,View,SC$1,Seq$1,List,T,Slice,Strings,Char,Map,Set,FSharp,Data,Runtime,IO,FSharpMap,AttrModule,Doc,HtmlModule,attr,EventTarget,Node,JavaScript,JS,Pervasives,Object,DictionaryUtil,Error,AggregateException,Concurrency,ConcreteVar,Snap,Abbrev,Async$1,Numeric,System,Guid,ViewBuilder,FSharpSet,Enumerator,T$1,BalancedTree,Data$1,TxtRuntime,Pervasives$1,MapUtil,Attrs,DomUtility,Array,Docs,AttrProxy,Client,Templates,WindowOrWorkerGlobalScope,CT,AsyncBody,Fresh,DateUtil,TimeoutException,Pair,Tree,SC$2,DocElemNode,Scheduler,OperationCanceledException,HashSet,CharacterData,Attrs$1,Dyn,SC$3,Elt,SC$4,An,Settings,Mailbox,SC$5,Updates,SC$6,Prepare,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$7,FormatException,SC$8,AppendList,Queue,DynamicAttrNode,Easing,HashSet$1,HashSetUtil,DomNodes,Lazy,SC$9,LazyExtensionsProxy,LazyRecord,console,JSON,IntelliFactory,Runtime$1,Date,$,Math;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -391,9 +391,9 @@ if (!console) {
  Seq$1=WebSharper.Seq=WebSharper.Seq||{};
  List=WebSharper.List=WebSharper.List||{};
  T=List.T=List.T||{};
- Char=WebSharper.Char=WebSharper.Char||{};
  Slice=WebSharper.Slice=WebSharper.Slice||{};
  Strings=WebSharper.Strings=WebSharper.Strings||{};
+ Char=WebSharper.Char=WebSharper.Char||{};
  Map=Collections.Map=Collections.Map||{};
  Set=Collections.Set=Collections.Set||{};
  FSharp=Global.FSharp=Global.FSharp||{};
@@ -600,13 +600,6 @@ if (!console) {
  {
   var a,b;
   return Library["String.Substring2"](_this,(a=0,(b=_this.length-n,Unchecked.Compare(a,b)===1?a:b)),_this.length);
- };
- Library["String.get_toUnderscore"]=function(_this,u)
- {
-  return Arrays.ofSeq(Seq$1.collect(Global.id,Seq$1.mapi(function(i,c)
-  {
-   return i>0&&Char.IsUpper(c)?List.ofArray(["_",c]):List.ofArray([c]);
-  },_this))).join("");
  };
  Seq.rtn=function()
  {
@@ -1455,24 +1448,24 @@ if (!console) {
    return m($1[0],$1[1]);
   },JS.GetFields(o)))+"}":s):Global.String(o));
  };
+ Arrays.length=function(arr)
+ {
+  return arr.dims===2?arr.length*arr.length:arr.length;
+ };
  Arrays.get=function(arr,n)
  {
   Arrays.checkBounds(arr,n);
   return arr[n];
  };
- Arrays.length=function(arr)
+ Arrays.set=function(arr,n,x)
  {
-  return arr.dims===2?arr.length*arr.length:arr.length;
+  Arrays.checkBounds(arr,n);
+  arr[n]=x;
  };
  Arrays.checkBounds=function(arr,n)
  {
   if(n<0||n>=arr.length)
    Operators.FailWith("Index was outside the bounds of the array.");
- };
- Arrays.set=function(arr,n,x)
- {
-  Arrays.checkBounds(arr,n);
-  arr[n]=x;
  };
  Unchecked.Equals=function(a,b)
  {
@@ -2721,14 +2714,6 @@ if (!console) {
    return m==null?T.Empty:List.ofArray([m.$0]);
   },s);
  };
- Seq$1.mapi=function(f,s)
- {
-  return Seq$1.map2(f,Seq$1.initInfinite(Global.id),s);
- };
- Seq$1.collect=function(f,s)
- {
-  return Seq$1.concat(Seq$1.map(f,s));
- };
  Seq$1.tryFind=function(ok,s)
  {
   var e,r,x;
@@ -2968,38 +2953,27 @@ if (!console) {
     e.Dispose();
   }
  };
- Seq$1.map2=function(f,s1,s2)
+ Seq$1.collect=function(f,s)
  {
-  return{
-   GetEnumerator:function()
-   {
-    var e1,e2;
-    e1=Enumerator.Get(s1);
-    e2=Enumerator.Get(s2);
-    return new T$1.New(null,null,function(e)
-    {
-     return e1.MoveNext()&&e2.MoveNext()&&(e.c=f(e1.Current(),e2.Current()),true);
-    },function()
-    {
-     e1.Dispose();
-     e2.Dispose();
-    });
-   }
-  };
+  return Seq$1.concat(Seq$1.map(f,s));
  };
- Seq$1.initInfinite=function(f)
+ Seq$1.init=function(n,f)
  {
-  return{
-   GetEnumerator:function()
-   {
-    return new T$1.New(0,null,function(e)
-    {
-     e.c=f(e.s);
-     e.s=e.s+1;
-     return true;
-    },void 0);
-   }
-  };
+  return Seq$1.take(n,Seq$1.initInfinite(f));
+ };
+ Seq$1.sortBy=function(f,s)
+ {
+  return Seq$1.delay(function()
+  {
+   var array;
+   array=Arrays.ofSeq(s);
+   Arrays.sortInPlaceBy(f,array);
+   return array;
+  });
+ };
+ Seq$1.seqEmpty=function()
+ {
+  return Operators.FailWith("The input sequence was empty.");
  };
  Seq$1.concat=function(ss)
  {
@@ -3050,24 +3024,6 @@ if (!console) {
    }
   };
  };
- Seq$1.init=function(n,f)
- {
-  return Seq$1.take(n,Seq$1.initInfinite(f));
- };
- Seq$1.sortBy=function(f,s)
- {
-  return Seq$1.delay(function()
-  {
-   var array;
-   array=Arrays.ofSeq(s);
-   Arrays.sortInPlaceBy(f,array);
-   return array;
-  });
- };
- Seq$1.seqEmpty=function()
- {
-  return Operators.FailWith("The input sequence was empty.");
- };
  Seq$1.take=function(n,s)
  {
   n<0?Seq$1.nonNegative():void 0;
@@ -3087,6 +3043,20 @@ if (!console) {
      x=e[0];
      !Unchecked.Equals(x,null)?x.Dispose():void 0;
     });
+   }
+  };
+ };
+ Seq$1.initInfinite=function(f)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    return new T$1.New(0,null,function(e)
+    {
+     e.c=f(e.s);
+     e.s=e.s+1;
+     return true;
+    },void 0);
    }
   };
  };
@@ -3576,14 +3546,6 @@ if (!console) {
  T.Empty=new T({
   $:0
  });
- Char.IsUpper=function(c)
- {
-  return c>="A"&&c<="Z";
- };
- Char.IsWhiteSpace=function(c)
- {
-  return c.match(new Global.RegExp("\\s"))!==null;
- };
  Slice.string=function(source,start,finish)
  {
   return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):"":finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
@@ -3652,6 +3614,10 @@ if (!console) {
  Strings.ReplaceChar=function(s,oldC,newC)
  {
   return Strings.Replace(s,oldC,newC);
+ };
+ Char.IsWhiteSpace=function(c)
+ {
+  return c.match(new Global.RegExp("\\s"))!==null;
  };
  Map.TryFind=function(k,m)
  {

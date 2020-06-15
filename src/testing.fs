@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1591826328884 -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1592212925139 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -22,12 +22,13 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Data\lib\net461\WebSharper.Data.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1591826328884
+//#define FSharpStation1592212925139
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -39,6 +40,7 @@ namespace FsRoot
 #endif
 
     #if !NETSTANDARD20
+    
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
@@ -276,7 +278,7 @@ namespace FsRoot
                                                   then this.Substring2(0, this.Length + n)
                                                   else this.Substring2(0, n              )
                 member this.Right            n  = this.Substring2(max 0 (this.Length - n), this.Length)
-                member this.toUnderscore        = this |> Seq.mapi(fun i c -> if i > 0 && System.Char.IsUpper(c) then [ '_' ; c ] else [ c ])  |> Seq.collect id |> Seq.toArray |> System.String
+                //member this.toUnderscore        = this |> Seq.mapi(fun i c -> if i > 0 && System.Char.IsUpper(c) then [ '_' ; c ] else [ c ])  |> Seq.collect id |> Seq.toArray |> System.String
             
             module String =
                 let splitByChar (c: char) (s: string) = s.Split c
@@ -358,6 +360,8 @@ namespace FsRoot
                 
     
         //#define WEBSHARPER
+        
+        //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
         
         [< JavaScriptExport >]
         module TestingJS =

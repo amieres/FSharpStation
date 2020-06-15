@@ -1,4 +1,4 @@
-////-d:FSharpStation1592020998181 -d:TEE
+////-d:FSharpStation1592212925139 -d:TEE
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
@@ -6,7 +6,7 @@
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
 //#r @"..\packages\WebSharper.FSharp\tools\net461\FSharp.Compiler.Service.dll"
 /// Root namespace for all code
-//#define FSharpStation1592020998181
+//#define FSharpStation1592212925139
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -18,6 +18,7 @@ namespace FsRoot
 #endif
 
     #if !NETSTANDARD20
+    
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
@@ -788,7 +789,7 @@ namespace FsRoot
                                                   then this.Substring2(0, this.Length + n)
                                                   else this.Substring2(0, n              )
                 member this.Right            n  = this.Substring2(max 0 (this.Length - n), this.Length)
-                member this.toUnderscore        = this |> Seq.mapi(fun i c -> if i > 0 && System.Char.IsUpper(c) then [ '_' ; c ] else [ c ])  |> Seq.collect id |> Seq.toArray |> System.String
+                //member this.toUnderscore        = this |> Seq.mapi(fun i c -> if i > 0 && System.Char.IsUpper(c) then [ '_' ; c ] else [ c ])  |> Seq.collect id |> Seq.toArray |> System.String
             
             module String =
                 let splitByChar (c: char) (s: string) = s.Split c
@@ -865,7 +866,9 @@ namespace FsRoot
                 and  CommArgCollection<'M> = CommArgCollection of ArgValueTuple<'M> seq
                     with 
                         member oo.CommArgs = match oo with CommArgCollection v -> v
-                
+            
+                let CommArgCollection agvts = Seq.cache agvts |> CommArgCollection
+            
                 type TypedCommArg<'T> = TypedCommArg of CommArg
                     with
                     member oo.CommArg = match oo with TypedCommArg v -> v
@@ -885,18 +888,18 @@ namespace FsRoot
                     let NewString(name, unique, build) : TypedCommArg<string> = New(name, unique, build)
                     let NewBool  (name, unique, build) : TypedCommArg<bool  > = New(name, unique, build)
                     let NewFloat (name, unique, build) : TypedCommArg<float > = New(name, unique, build)
-                    let argumentRm show (a:CommArg) (vRm:CommArgValue<obj,_>) = fusion {
+                    let argumentRm (a:CommArg) (vRm:CommArgValue<obj,_>) = fusion {
                         let! v = vRm
                         let  r = a.build v
-                        if show then printfn "%s %s" a.name r
                         return r
                     }
-                    let inline argumentTRm show (a,v) = argumentRm show a v
-                    let getValueR (a: TypedCommArg<'T>) (o:obj) : Result<'T,_> = unbox<'T> o |> Ok
-                    let inline getIntR    a o : Result<int   ,_> = getValueR a o
-                    let inline getStringR a o : Result<string,_> = getValueR a o
-                    let inline getBoolR   a o : Result<bool  ,_> = getValueR a o
-                    let inline getFloatR  a o : Result<float ,_> = getValueR a o
+                    let inline argumentTRm (a,v) = argumentRm a v
+                    let getVRm (a: TypedCommArg<'T>) (vRm:CommArgValue<obj,_>) : FusionM<'T,_,_> = vRm |>> unbox
+                    let        internal getValueR (a: TypedCommArg<'T>) (o:obj) : Result<'T,_> = unbox<'T> o |> Ok
+                    let inline internal getIntR    a o : Result<int   ,_> = getValueR a o
+                    let inline internal getStringR a o : Result<string,_> = getValueR a o
+                    let inline internal getBoolR   a o : Result<bool  ,_> = getValueR a o
+                    let inline internal getFloatR  a o : Result<float ,_> = getValueR a o
                 
                 module CommArgCollection =
                 
@@ -905,11 +908,11 @@ namespace FsRoot
                     let argsRm                           () = readerFun(fun (CommArgCollection args) -> args                 )
                     let existsRm                          f = readerFun(fun (CommArgCollection args) -> args |> Seq.exists f )
                     let filterRm                          p = readerFun(fun (CommArgCollection args) -> args |> Seq.filter p )
-                    let argumentsRm      show        filter = filterRm filter >>= traverseSeq (CommArg.argumentTRm show)
+                    let argumentsRm                  filter = filterRm filter >>= traverseSeq CommArg.argumentTRm |>> Seq.filter ((<>) "")
                     let containsAnyOfRm (ids:CommArgId Set) = readerFun(fun (CommArgCollection args) -> args |> Seq.exists (fun (a,_) -> Set.contains a.cargId ids) )
                     let argumentNotFound  targ = fun () -> match targ with | TypedCommArg arg -> sprintf "argument not found: %s" arg.name |> ErrorMsg
                     let tryFindArgO   (TypedCommArg arg) (CommArgCollection args) = Seq.tryFind (fun (a,_) -> a.cargId = arg.cargId) args 
-                    let tryFindArgORm     targ = readerFun(fun coll -> tryFindArgO targ coll |> Option.map insertFst |> insertO ) >>= id
+                    let tryFindArgORm     targ = readerFun(fun coll -> tryFindArgO targ coll |> Option.map insertFst |> insertO) >>= id
                     let tryGetValueORm    targ = tryFindArgORm   targ |>> (Option.map (fun (_, o) -> CommArg.getValueR  targ o)) |>> Result.insertO >>= ofResultRM
                     let tryGetIntORm      targ = tryFindArgORm   targ |>> (Option.map (fun (_, o) -> CommArg.getIntR    targ o)) |>> Result.insertO >>= ofResultRM
                     let tryGetStringORm   targ = tryFindArgORm   targ |>> (Option.map (fun (_, o) -> CommArg.getStringR targ o)) |>> Result.insertO >>= ofResultRM
@@ -935,6 +938,15 @@ namespace FsRoot
                         |> CommArgCollection
                     let append (args1: CommArgCollection<'M>) (args2: CommArgCollection<'M> ) = args2.CommArgs |> Seq.fold (swap (unbox >> addPair)) args1
                     let addPairs pairs collection = append collection (CommArgCollection pairs)
+            
+                    let appendRm args2 = fusion {
+                        let! args1 = getS()
+                        do!         putS(append args1 args2)
+                    }
+                    let addPairsRm pairs = fusion {
+                        let! args = getS()
+                        do!         putS(addPairs pairs args)
+                    }
                         
                 //    let produceRm = ReaderM(fun (CommArgCollection args) ->
                 //        args
@@ -1235,14 +1247,13 @@ namespace FsRoot
                         intConfig      /= (rtn (fun o     -> o + ".config"                          ) <*> gS intOutputFile                                    )
                         intWebSharper  /=       containsAnyOfRm WebSharpArgs
                         fscSource      /=       gS intFileName
-                        fscNoFramework /=  fusion {
-                                                let!   show  = getValueRm intShowArgs
-                                                let!   args  = filterRm (fun (a,v) -> a.cargId = fscReference.CommArg.cargId)
-                                                let!   args2 = args |> traverseSeq (fun (a,b) -> argumentRm show a b)
-                                                return args2 
-                                                       |> Seq.map(fun s -> s.ToLower()) 
-                                                       |> Seq.exists(fun s -> s.Contains("fsharp.core.dll") || s.Contains("mscorlib.dll") )
-                                            }
+                        fscNoFramework /= fusion {
+                                            let!    args  = filterRm (fun (a,v) -> a.cargId = fscReference.CommArg.cargId)
+                                            let!    args2 = args |> traverseSeq (fun (a,b) -> getVRm fscReference b )
+                                            return  args2
+                                                    |> Seq.map   (fun s -> s.ToLower()) 
+                                                    |> Seq.exists(fun s -> s.Contains("fsharp.core.dll") || s.Contains("mscorlib.dll") )
+                                          }
                     ]
                     
                 let siteOptions ()=
@@ -1300,29 +1311,37 @@ namespace FsRoot
                 let compileOptionsExeDebug    snp         = compileOptionsDllDebug snp + exeOptions   ()
                 let compileOptionsWinExeDebug snp         = compileOptionsDllDebug snp + winExeOptions()
                     
-                let prepOptions (args:CommArgCollection<_>) (assembs : string [], defines : string [], prepoIs : string []) =
-                    let staticLinksAll = CommArgCollection.getBoolR false intStaticLinkAll args
-                    args + [
+                let prepOptionsRm (assembs : string [], defines : string [], prepoIs : string []) = fusion {
+                    let! staticLinksAll = getBoolRm false intStaticLinkAll
+                    return [
                         yield! prepoIs |> Array.map ((/=) fscIOption  ) 
                         yield! assembs |> Array.map ((/=) fscReference)
                         yield! defines |> Array.map ((/=) fscDefine   )
-                        if staticLinksAll = Ok true then 
+                        if staticLinksAll then 
                             yield! assembs |> Array.map (fun f -> fscStaticLink /= System.IO.Path.GetFileNameWithoutExtension f)
                     ]
+                }
                     
                 let processArgs code assembs nowarns = fusion {        
-                    let! show      = gB intShowArgs
-                    if show      then 
-                        let! args = argumentsRm show (fun _ -> true)
-                        ()
-                    let! workDir   = getStringRm intDirectory
+                    let! nofrwk    = gB fscNoFramework
+                    printfn "%b && %b" nofrwk  (assembs |> Seq.exists (fun (a:string) -> a.EndsWith "mscorlib.dll" ) |> not)
+                    if nofrwk && (assembs |> Seq.exists (fun (a:string) -> a.EndsWith "mscorlib.dll" ) |> not) then
+                        do!          addPairsRm [ fscReference /= "mscorlib.dll" ]
+                        printfn "adding mscorlib.dll"
+                    let! show      = getBoolRm false intShowArgs
+                    if   show then 
+                        let! args  = filterRm trueForAll
+                        for (targ, vRm) in args do 
+                            let! v = vRm
+                            printfn "%s = %A" targ.name v
+                    let! workDir   = gS intDirectory
                     let! fileName  = gS intFileName
                     let! output    = gS fscOutput
                     let! copyAssem = gB intCopyAssem
                     let! createDir = gB intCreateDir
                     let  srcDir    = Path.GetDirectoryName fileName
                     let  outDir    = Path.GetDirectoryName output
-                    if createDir then 
+                    if   createDir then 
                                      Directory.CreateDirectory workDir |> ignore
                                      Directory.CreateDirectory  srcDir |> ignore
                                      Directory.CreateDirectory  outDir |> ignore
@@ -1334,6 +1353,31 @@ namespace FsRoot
                     if copyAssem then assembs |> Array.iter (fun f -> outDir |> CopyIfMust.toDir f)      
                 }
                 
+                type PreparedCode = {
+                    assemblies : string []
+                    defines    : string []
+                    prepIs     : string []
+                    nowarns    : string []
+                    cd         : string option
+                    code       : FsCode
+                }
+            
+                let prepareCodeRm (FsCode codeFs) = fusion {
+                    let  fs, directs                            = codeFs.Split '\n' |> separatePrepros |> getTopDirectives
+                    let  assembs, defines, prepIs, nowarns, cdO = separateDirectives directs
+                    let! args2                                  = prepOptionsRm (assembs, defines, prepIs)
+                    do!                                           addPairsRm  args2
+                    do!                                           processArgs fs assembs nowarns
+                    return {
+                        assemblies = assembs
+                        defines    = defines
+                        prepIs     = prepIs
+                        nowarns    = nowarns
+                        cd         = cdO
+                        code       = FsCode codeFs
+                    }
+                }
+            
             //#r @"..\packages\WebSharper.FSharp\tools\net461\FSharp.Compiler.Service.dll"
             
             module FsCompiler =
@@ -1357,12 +1401,11 @@ namespace FsRoot
                     )
             
                 let compileRm() = fusion {
-                    let! args       = argumentsRm false (fun (arg,_) -> Set.contains arg.cargId FSharpArgs) |> ofFusionM
+                    let! args       = argumentsRm (fun (arg,_) -> Set.contains arg.cargId FSharpArgs) |> ofFusionM
                     let! msgs, exit = args
                                       |> Seq.append [| "IGNORED_Fsc.exe" |]
                                       |> Seq.map (fun (s:string) -> s.Replace("\"",""))
                                       |> Seq.toArray
-                                      |>! print
                                       |> FSharpChecker.Create().Compile
                                       |> ofAsync
                     do!               msgs 
@@ -1373,4 +1416,5 @@ namespace FsRoot
                 }         
                 let compileMsgs args = compileRm() |> runReader args |> Async.RunSynchronously |> (Result.map snd >> Result.defaultWith id)
                 let compile     args = compileMsgs args |> ResultMessage.summarized |> printfn "%s"
+                
                 

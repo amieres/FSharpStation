@@ -485,13 +485,6 @@
    return g.apply(null,tryParseFunc(x));
   };
  };
- Library["String.get_toUnderscore"]=function(_this,u)
- {
-  return Arrays.ofSeq(Seq$1.collect(Global.id,Seq$1.mapi(function(i,c)
-  {
-   return i>0&&Char.IsUpper(c)?List.ofArray(["_",c]):List.ofArray([c]);
-  },_this))).join("");
- };
  Library["String.Right"]=function(_this,n)
  {
   var a,b;
