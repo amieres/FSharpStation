@@ -3,7 +3,7 @@
 #nowarn "1182"
 #nowarn "52"
 #nowarn "1178"
-////-d:FSharpStation1592212925139 -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1592268759864 -d:TEE -d:WEBSHARPER
 ////#cd @"..\projects\Modules\src"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
@@ -39,7 +39,8 @@
 //#nowarn "52"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1592212925139
+//#define FSharpStation1592268759864
+#if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -49,7 +50,7 @@ namespace FsRootDll
 namespace FsRoot
 #endif
 #endif
-
+#endif
     #if !NETSTANDARD20
     
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
@@ -2332,7 +2333,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1592212925139"
+                let mutable fsharpStationAddress = Address "FSharpStation1592268759864"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -2432,7 +2433,10 @@ namespace FsRoot
         open FusionAsyncM.Operators
         open CommArgCollection
     
-        let compileSnippetRm         (show:bool) snpName = fusion {
+        let compileSnippetRm         (show:bool) snpName = 
+          printfn "in compileSnippetRm"
+          fusion {
+            printfn "in fusion compileSnippetRm"
             do! ofFusionM <| appendRm(     
                     compileOptionsDll            snpName
                     + debugOptions()
