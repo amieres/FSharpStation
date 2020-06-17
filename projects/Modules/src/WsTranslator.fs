@@ -146,7 +146,9 @@ namespace FsRoot
                     projectName
                     { CommandTools.WsConfig.Empty with JavaScriptScope = CommandTools.JavaScriptScope.JSAssembly }
                     ast
+            if not comp.Errors.IsEmpty then "", comp.Errors, comp.Warnings else
             Translator.DotNetToJavaScript.CompileFull comp
+            if not comp.Errors.IsEmpty then "", comp.Errors, comp.Warnings else
             let currentMeta = comp.ToCurrentMetadata()
             let js =
                 Packager.packageAssembly metadata currentMeta None Packager.OnLoadIfExists    
