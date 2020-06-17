@@ -304,11 +304,7 @@ namespace FsRoot
                 wprintfn    : string           -> unit
             }
     
-            [< Inline "$global.WASM_WsTranslator_FsRoot_WsTranslator_runRpc($header, $data)" >]
-            let runRpc0 (header:string) (data:string) = runRpc(header, data)
-    
             let getHeaderRpc headers : string = headers?("x-websharper-rpc")
-    
             let private originalProvider = WebSharper.Remoting.AjaxProvider
     
             module ReturnQueue  = 
@@ -332,6 +328,8 @@ namespace FsRoot
                         Some fs
                     )
     
+            [< Inline "$global.WASM_WsTranslator_FsRoot_WsTranslator_runRpc($header, $data)" >]
+            let runRpc0 (header:string) (data:string) = runRpc(header, data)
             let returnValue0 (md, v:string) = ReturnQueue.tryGet md |> Option.iter(fun (ok, er) -> ok v )
             let returnExnExn (md, e:exn   ) = ReturnQueue.tryGet md |> Option.iter(fun (ok, er) -> er e )
             let returnExn0   (md, e:string) = returnExnExn(md, exn e)
@@ -561,7 +559,7 @@ namespace FsRoot
                                                         printfn "Initiating translation:"
                                                         callWasmA translateToJs        (getParms())
                                                 )
-                    Doc.Button "Dir"       [] (fun () -> callWasmA dir "/")
+                    Doc.Button "Dir"       [] (fun () -> callWasmA dirRpc "/")
                     Doc.Button "Clean"     [] (fun () -> detailsV.Set "")
                     Doc.Button "Load as Worker" [] (fun () -> WasmLoad.loadWasmInWorker() )
                 ]

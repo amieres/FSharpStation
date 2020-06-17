@@ -96,7 +96,7 @@ namespace FsRoot
             } |> Async.Start
     
         [< Remote >]
-        let dir (d:string) = async {
+        let dirRpc (d:string) = async {
             let rec dir (d:string) =
                 try 
                     if d = "/proc/self/fd" then Console.WriteLine "skip /proc/self/fd"  else

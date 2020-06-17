@@ -531,7 +531,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   {
    WasmLoader.callWasmA(function(d)
    {
-    return(new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator.dir:-1181784350",[d]);
+    return(new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator.dirRpc:-1181784350",[d]);
    },"/");
   }),Doc.Button("Clean",[],function()
   {

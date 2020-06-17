@@ -972,7 +972,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    WasmLoader.callWasmA(function(d)
    {
-    return(new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator.dir:-1181784350",[d]);
+    return(new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator.dirRpc:-1181784350",[d]);
    },"/");
   }),Doc.Button("Clean",[],function()
   {
