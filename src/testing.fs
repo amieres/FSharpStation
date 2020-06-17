@@ -248,7 +248,7 @@ namespace FsRoot
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\Facades\netstandard.dll"
     
     //#define WEBSHARPER
-    [< JavaScriptExport >]
+    [< JavaScript >]
     module WasmLoader =
         open WebSharper
         open WebSharper.JavaScript
@@ -257,25 +257,55 @@ namespace FsRoot
     
         open FsRoot.WsTranslator
     
-        let mainMessage = Var.Create "Wasm not loaded yet."
+        [< Inline "(!$global.document)" >]
+        let isWorker = true
+    
+        type WasmStatus =
+        | WasmNotLoaded
+        | WasmLoading
+        | WasmLoaded
+        | WasmFinished
+        | WasmWorkerLoading
+        | WasmWorkerLoaded
+        | WasmWorkerFinished
+    
+        type MsgFromWorker =
+        | WorkerReturnValue  of string * string
+        | WorkerReturnExn    of string * string
+        | WorkerPrintfn      of string
+        | WorkerWasmStatus   of WasmStatus
+    
+        type MsgToWorker =
+        | RunRpc       of string * string
+        | PrintfnW     of string
+    
+        let wasmStatusV = Var.Create WasmNotLoaded
         let detailsV    = Var.Create ""
         let fsErrsV     = Var.Create [||]
         let wsErrsV     = Var.Create [||]
         let wsWrnsV     = Var.Create [||]
         let codeV       = Var.Create "printfn \"Hello\""
-        let optsV       = Var.Create "/tmp/source.fsx\n-o:source.exe\n--simpleresolution\n--nowarn:3186\n--optimize-\n--noframework\n--fullpaths\n--warn:3\n--target:exe\n-r:/tmp/FSharp.Core.dll\n-r:/tmp/mscorlib.dll\n-r:/tmp/netstandard.dll\n-r:/tmp/System.dll\n-r:/tmp/System.Core.dll\n-r:/tmp/System.IO.dll\n-r:/tmp/System.Runtime.dll\n-r:/tmp/System.Net.Http.dll\n-r:/tmp/System.Threading.dll\n-r:/tmp/WebAssembly.Bindings.dll\n-r:/tmp/WebAssembly.Net.WebSockets.dll\n-r:/tmp/System.Numerics.dll"
-    
-        let appendMsg (txt:string) =
-            Console.Log txt
-            let pre = detailsV.Value
-            pre + (if pre = "" then "" else "\n") + txt
-            |> detailsV.Set
+        let optsV       = Var.Create "/tmp/source.fsx\n-o:source.exe\n--simpleresolution\n--nowarn:3186\n--optimize-\n--noframework\n--fullpaths\n--warn:3\n--target:exe\n-r:/tmp/FSharp.Core.dll\n-r:/tmp/mscorlib.dll\n-r:/tmp/netstandard.dll\n-r:/tmp/System.dll\n-r:/tmp/System.Core.dll\n-r:/tmp/System.IO.dll\n-r:/tmp/System.Runtime.dll\n-r:/tmp/System.Net.Http.dll\n-r:/tmp/System.Threading.dll\n-r:/tmp/System.Numerics.dll"
     
         module Remoting =
             open WebSharper.JavaScript
     
+            let appendMsg (txt:string) =
+                Console.Log txt
+                if not isWorker then
+                    let pre = detailsV.Value
+                    pre + (if pre = "" then "" else "\n") + txt
+                    |> detailsV.Set
+    
+            type IMessagingO = {
+                runRpc      : string -> string -> unit
+                returnValue : string *  string -> unit
+                returnExn   : string *  string -> unit
+                wprintfn    : string           -> unit
+            }
+    
             [< Inline "$global.WASM_WsTranslator_FsRoot_WsTranslator_runRpc($header, $data)" >]
-            let runRpc (header:string) (data:string) = runRpc(header, data)
+            let runRpc0 (header:string) (data:string) = runRpc(header, data)
     
             let getHeaderRpc headers : string = headers?("x-websharper-rpc")
     
@@ -302,9 +332,20 @@ namespace FsRoot
                         Some fs
                     )
     
-            let returnValue (md, v:string) = ReturnQueue.tryGet md |> Option.iter(fun (ok, er) -> ok v )
-            let returnExnExn(md, e:exn   ) = ReturnQueue.tryGet md |> Option.iter(fun (ok, er) -> er e )
-            let returnExn   (md, e:string) = returnExnExn(md, exn e)
+            let returnValue0 (md, v:string) = ReturnQueue.tryGet md |> Option.iter(fun (ok, er) -> ok v )
+            let returnExnExn (md, e:exn   ) = ReturnQueue.tryGet md |> Option.iter(fun (ok, er) -> er e )
+            let returnExn0   (md, e:string) = returnExnExn(md, exn e)
+    
+            let mutable messaging = {
+                runRpc      = runRpc0
+                returnValue = returnValue0
+                returnExn   = returnExn0
+                wprintfn    = appendMsg
+            }
+    
+            let callRunRpc (header:string) (data:string) = messaging.runRpc header data 
+            let returnValue(header:string,  data:string) = messaging.returnValue(header, data)
+            let returnExn  (header:string,     e:string) = messaging.returnExn(header, e)
     
             type CustomXhrProvider () =
                 interface WebSharper.Remoting.IAjaxProvider with
@@ -313,14 +354,31 @@ namespace FsRoot
                             let md = getHeaderRpc headers
                             ReturnQueue.add(md, (ok, err))
                             try 
-                                runRpc md data
+                                callRunRpc md data
                             with e -> returnExnExn(md, e)
                         } |> Async.Start
                     member this.Sync url headers data = failwith "CustomXhrProvider.Sync not suppported"
                     
-            let installBearer() =
-                WebSharper.Remoting.AjaxProvider <- CustomXhrProvider()
+            let installProvider() = WebSharper.Remoting.AjaxProvider <- CustomXhrProvider()
     
+        let printfn fmt = Printf.kprintf Remoting.messaging.wprintfn fmt
+    
+        module WWorker =
+            open WebSharper.JavaScript
+    
+            let mutable workerO = None
+    
+            let receiveMessage (evt: MessageEvent) =
+                match evt.Data :?> MsgToWorker with
+                | RunRpc(header, data) -> Remoting.callRunRpc header data
+                | PrintfnW txt         -> printfn "%s" txt
+    
+            let fromWorker (evt: MessageEvent) =
+                match evt.Data :?> MsgFromWorker with
+                | WorkerReturnValue  (h,d) -> Remoting.returnValue(h, d)
+                | WorkerReturnExn    (h,d) -> Remoting.returnExn0 (h, d)
+                | WorkerPrintfn      txt   -> printfn "%s" txt
+                | WorkerWasmStatus   v     -> if wasmStatusV.Value <> v then wasmStatusV.Set v
     
         module WasmLoad =
             open WebSharper.Core.Resources
@@ -403,34 +461,57 @@ namespace FsRoot
                 for from, toPath, files in filesToPreload do
                     loadFiles(from, toPath, files)
     
-            //module Load =
-    
             let loadWasm = 
                 lazy
-                    printfn "Loading Dlls metadata. Hold on this will take a while..."
                     Async.FromContinuations(fun (ok, ko, ca) ->
                         let init () =
                             bindWasm()
-                            printfn         "WASM Initialized!"
-                            mainMessage.Set "WASM Initialized!"
+                            printfn "WASM Initialized!"
+                            wasmStatusV.Set (if isWorker then WasmWorkerLoaded  else WasmLoaded )
                             ok()
                         async {
-                            mainMessage.Set "WASM Loading..."
+                            if wasmStatusV.Value <> WasmNotLoaded then printfn "Wasm is already %A" wasmStatusV.Value ; ok() else
+                            printfn "Loading WASM. Hold on this will take a while..."
+                            wasmStatusV.Set (if isWorker then WasmWorkerLoading else WasmLoading)
                             do! Async.Sleep 50
-                            Remoting.installBearer()
+                            if not isWorker then Remoting.installProvider()
                             JS.Window?App <- Pojo.newPojo [
                                                 "init", init
                                             ]
                             let! v = requireJsA [| rootPath + "mono-config.js" |]
                             let! v = requireJsA [| rootPath + "runtime.js" |]
-                            Global.Module?print    <- appendMsg
-                            Global.Module?printErr <- appendMsg
+                            Global.Module?print    <- printfn "%s"
+                            Global.Module?printErr <- printfn "%s"
                             Global.Module?preRun   <- [| preloadFiles |]
                             let! v = requireJsA [| rootPath + "dotnet.js" |]
                             ()
                         } |> Async.Start
                     ) |> Async.StartAsTask
     
+            let loadWasmInWorker() =
+                if isWorker                           then printfn "Already in a worker cannot load Wasm in another worker" else
+                if wasmStatusV.Value <> WasmNotLoaded then printfn "Wasm is already %A" wasmStatusV.Value                   else
+                wasmStatusV.Set WasmLoading
+                let w = new Worker("WasmWorker", false, fun self ->
+                    wasmStatusV.View   |> View.Sink(fun v -> self.PostMessage(WorkerWasmStatus v) )
+                    self.Onmessage     <- System.Action<_> WWorker.receiveMessage
+                    Remoting.messaging <- {
+                        runRpc      = Remoting.runRpc0
+                        returnValue = fun v -> self.PostMessage(WorkerReturnValue v)
+                        returnExn   = fun v -> self.PostMessage(WorkerReturnExn   v)
+                        wprintfn    = fun v -> self.PostMessage(WorkerPrintfn     v)
+                    }
+                    loadWasm.Value   |> Async.AwaitTask |> Async.Start
+                )
+                w.Onmessage         <- System.Action<_> WWorker.fromWorker
+                WWorker.workerO     <- Some w
+                Remoting.messaging  <- {
+                    runRpc      = fun h d -> w.PostMessage(RunRpc(h, d))
+                    returnValue = Remoting.returnValue0
+                    returnExn   = Remoting.returnExn0
+                    wprintfn    = Remoting.appendMsg
+                }
+                Remoting.installProvider()
     
         let parseAndCheckProject(projectName, opts, code)  = async {
             let! errs, deps, crit = parseAndCheckProjectRpc projectName opts code
@@ -458,15 +539,17 @@ namespace FsRoot
             async {
                 do! Async.Sleep 50
                 do! Async.AwaitTask WasmLoad.loadWasm.Value
+                printfn "goind to call function"
                 do! f p
+                printfn "called function"
             } |> Async.Start
     
         let getParms() = ("WasmTest", ("fsc.exe\n" + optsV.Value).Split '\n', codeV.Value)
     
         let mainDoc() =
             div     [] [
-                h1  [] [ text "HELLO WASM!" ]
-                h2  [] [ text mainMessage.V ]
+                h1  [] [ text     <| "HELLO WASM!"           ]
+                h2  [] [ textView <| V(sprintf "%A" wasmStatusV.V) ]
                 div [] [
                     Doc.InputArea [] codeV
                     Doc.InputArea [] optsV
@@ -474,11 +557,12 @@ namespace FsRoot
                 span [] [
                     Doc.Button "Check"     [] (fun ()-> callWasmA parseAndCheckProject (getParms()))
                     Doc.Button "Translate" [] (fun ()-> detailsV.Set ""
-                                                        appendMsg "Initiating translation:"
+                                                        printfn "Initiating translation:"
                                                         callWasmA translateToJs        (getParms())
                                                 )
                     Doc.Button "Dir"       [] (fun () -> callWasmA dir "/")
                     Doc.Button "Clean"     [] (fun () -> detailsV.Set "")
+                    Doc.Button "Load as Worker" [] (fun () -> WasmLoad.loadWasmInWorker() )
                 ]
                 ol [] [ fsErrsV.View |> Doc.BindSeqCached(fun x -> li [] [ text <| sprintf "%A" x ] ) ]
                 ol [] [ wsErrsV.View |> Doc.BindSeqCached(fun x -> li [] [ text <| sprintf "%A" x ] ) ]

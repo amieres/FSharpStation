@@ -11,7 +11,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Web.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Compiler.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Compiler.FSharp.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebAssembly.Bindings.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos/WasmRepo/wasm-sdk/framework\WebAssembly.Bindings.dll"
 /// Root namespace for all code
 //#define FSharpStation1592310559857
 #if !NOFSROOT
@@ -41,7 +41,7 @@ namespace FsRoot
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Compiler.FSharp.dll"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Reflection.Metadata\lib\netstandard2.0"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Collections.Immutable\lib\netstandard2.0"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebAssembly.Bindings.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos/WasmRepo/wasm-sdk/framework\WebAssembly.Bindings.dll"
     
     module WsTranslator =
     
@@ -68,7 +68,7 @@ namespace FsRoot
             open WebAssembly.Host
     
             let (?) o prop = (unbox<JSObject> o).GetObjectProperty prop
-            let remoting   = Runtime.GetGlobalObject("window")?FsRoot?WasmLoader?Remoting |> unbox<JSObject>
+            let remoting   = Runtime.GetGlobalObject()?FsRoot?WasmLoader?Remoting |> unbox<JSObject>
             let returnValue (md : string, v : string) = remoting.Invoke("returnValue", md, v) |> ignore
             let returnExn   (md : string, e : string) = remoting.Invoke("returnExn"  , md, e) |> ignore
             let wsServer   = lazy (

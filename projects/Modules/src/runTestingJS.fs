@@ -3,7 +3,7 @@
 #nowarn "1182"
 #nowarn "52"
 #nowarn "1178"
-////-d:FSharpStation1592212925139 -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1592310559857 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -40,7 +40,8 @@
 //#nowarn "52"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1592212925139
+//#define FSharpStation1592310559857
+#if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -50,7 +51,7 @@ namespace FsRootDll
 namespace FsRoot
 #endif
 #endif
-
+#endif
     #if !NETSTANDARD20
     
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
@@ -2255,15 +2256,17 @@ namespace FsRoot
                     //use temp2 = new TempFileName(outputJs          )
                     //use temp3 = new TempFileName(output            )
                     use temp4 = new TempFileName(output + ".failed")
-                    use temp5 = new TempFileName(wsconfig          )
+                    ////use temp5 = new TempFileName(wsconfig          )
                     //use temp6 = new TempFileName(Path.ChangeExtension(outputJs, "min.js"   ) )
                     //use temp7 = new TempFileName(Path.ChangeExtension(outputJs, "head.js"  ) )
                     //use temp8 = new TempFileName(Path.ChangeExtension(outputJs, "head.html") )
                     //use temp9 = new TempFileName(Path.ChangeExtension(outputJs, "css"      ) )
                     File.WriteAllText(wsconfig, sprintf """
                         {
-                            "$schema"         : "https://websharper.com/wsconfig.schema.json",
-                            "outputDir"       : "%s"
+                             "$schema"         : "https://websharper.com/wsconfig.schema.json"
+                            ,"outputDir"       : "%s"
+                            ,"scriptBaseUrl"   : "/testing/"
+                            ,"dce"             : true
                         }
                     """  <| Path.GetDirectoryName(outputJs0).Replace(@"\", @"\\") )
                     do!             WsCompiler.compileRm()
@@ -2834,7 +2837,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1592212925139"
+                let mutable fsharpStationAddress = Address "FSharpStation1592310559857"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
