@@ -337,7 +337,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
 (function()
 {
  "use strict";
- var Global,FsRoot,WasmLoader,WebSharper,Operators,Obj,UI,Var,View,EventTarget,WindowOrWorkerGlobalScope,WorkerGlobalScope,WWorker,Remoting,IMessagingO,WasmLoad,Node,JavaScript,JS,SC$1,Snap,Arrays,Event,Utils,Pervasives,Concurrency,testing_GeneratedPrintf,GeneratedPrintf,Remoting$1,AjaxRemotingProvider,HtmlModule,attr,Client,Templates,Doc,Library,String,Strings,Slice,ParseO,Unchecked,Numeric,System,Guid,Var$1,WasmStatus,Collections,Dictionary,List,Lazy,LibraryJS,Pojo,Global$1,Task,Task1,Error,OperationCanceledException,CT,AsyncBody,Seq,T,AttrProxy,Docs,DateUtil,ConcreteVar,SC$2,DictionaryUtil,ReturnQueue,Object,LazyExtensionsProxy,LazyRecord,CustomXhrProvider,Require,XMLHttpRequestEventTarget,ArrayBufferView,AggregateException,SC$3,Scheduler,DomUtility,AttrModule,Attrs,SC$4,HashSet,An,Settings,Abbrev,Mailbox,Enumerator,T$1,Fresh,XhrProvider,TaskCompletionSource,InvalidOperationException,CancellationTokenSource,Elt,Array,Prepare,KeyCollection,DocElemNode,CharacterData,Docs$1,RunState,NodeSet,Anims,SC$5,Json,SC$6,Updates,Attrs$1,Dyn,SC$7,AppendList,FormatException,SC$8,Queue,SC$9,Easing,HashSet$1,HashSetUtil,DomNodes,DynamicAttrNode,SC$10,IntelliFactory,Runtime,console,JSON,$,Date;
+ var Global,FsRoot,WasmLoader,WebSharper,Operators,Obj,UI,Var,View,EventTarget,WindowOrWorkerGlobalScope,WorkerGlobalScope,WWorker,Remoting,IMessagingO,WasmLoad,Node,JavaScript,JS,SC$1,Snap,Arrays,Event,Utils,Concurrency,Pervasives,testing_GeneratedPrintf,GeneratedPrintf,Remoting$1,AjaxRemotingProvider,HtmlModule,attr,Client,Templates,Doc,Library,String,Strings,Slice,ParseO,Unchecked,Numeric,System,Guid,Var$1,WasmStatus,Collections,Dictionary,List,Lazy,LibraryJS,Pojo,Global$1,CT,AsyncBody,Seq,T,AttrProxy,Docs,DateUtil,ConcreteVar,SC$2,DictionaryUtil,ReturnQueue,Object,LazyExtensionsProxy,LazyRecord,CustomXhrProvider,Require,XMLHttpRequestEventTarget,ArrayBufferView,Task,Task1,Error,OperationCanceledException,SC$3,Scheduler,DomUtility,AttrModule,Attrs,SC$4,HashSet,An,Settings,Abbrev,Mailbox,Enumerator,T$1,Fresh,XhrProvider,TaskCompletionSource,AggregateException,CancellationTokenSource,Elt,Array,Prepare,KeyCollection,DocElemNode,CharacterData,Docs$1,RunState,NodeSet,Anims,SC$5,InvalidOperationException,Json,SC$6,Updates,Attrs$1,Dyn,SC$7,AppendList,FormatException,SC$8,Queue,SC$9,Easing,HashSet$1,HashSetUtil,DomNodes,DynamicAttrNode,SC$10,IntelliFactory,Runtime,console,JSON,$,Date;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  WasmLoader=FsRoot.WasmLoader=FsRoot.WasmLoader||{};
@@ -362,8 +362,8 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  Arrays=WebSharper.Arrays=WebSharper.Arrays||{};
  Event=Global.Event;
  Utils=WebSharper.Utils=WebSharper.Utils||{};
- Pervasives=JavaScript.Pervasives=JavaScript.Pervasives||{};
  Concurrency=WebSharper.Concurrency=WebSharper.Concurrency||{};
+ Pervasives=JavaScript.Pervasives=JavaScript.Pervasives||{};
  testing_GeneratedPrintf=Global.testing_GeneratedPrintf=Global.testing_GeneratedPrintf||{};
  GeneratedPrintf=Global.GeneratedPrintf=Global.GeneratedPrintf||{};
  Remoting$1=WebSharper.Remoting=WebSharper.Remoting||{};
@@ -391,10 +391,6 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
  Pojo=LibraryJS.Pojo=LibraryJS.Pojo||{};
  Global$1=WasmLoad.Global=WasmLoad.Global||{};
- Task=WebSharper.Task=WebSharper.Task||{};
- Task1=WebSharper.Task1=WebSharper.Task1||{};
- Error=Global.Error;
- OperationCanceledException=WebSharper.OperationCanceledException=WebSharper.OperationCanceledException||{};
  CT=Concurrency.CT=Concurrency.CT||{};
  AsyncBody=Concurrency.AsyncBody=Concurrency.AsyncBody||{};
  Seq=WebSharper.Seq=WebSharper.Seq||{};
@@ -413,7 +409,10 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  Require=WasmLoad.Require=WasmLoad.Require||{};
  XMLHttpRequestEventTarget=Global.XMLHttpRequestEventTarget;
  ArrayBufferView=Global.ArrayBufferView;
- AggregateException=WebSharper.AggregateException=WebSharper.AggregateException||{};
+ Task=WebSharper.Task=WebSharper.Task||{};
+ Task1=WebSharper.Task1=WebSharper.Task1||{};
+ Error=Global.Error;
+ OperationCanceledException=WebSharper.OperationCanceledException=WebSharper.OperationCanceledException||{};
  SC$3=Global.StartupCode$WebSharper_Main$Concurrency=Global.StartupCode$WebSharper_Main$Concurrency||{};
  Scheduler=Concurrency.Scheduler=Concurrency.Scheduler||{};
  DomUtility=UI.DomUtility=UI.DomUtility||{};
@@ -430,7 +429,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  Fresh=Abbrev.Fresh=Abbrev.Fresh||{};
  XhrProvider=Remoting$1.XhrProvider=Remoting$1.XhrProvider||{};
  TaskCompletionSource=WebSharper.TaskCompletionSource=WebSharper.TaskCompletionSource||{};
- InvalidOperationException=WebSharper.InvalidOperationException=WebSharper.InvalidOperationException||{};
+ AggregateException=WebSharper.AggregateException=WebSharper.AggregateException||{};
  CancellationTokenSource=WebSharper.CancellationTokenSource=WebSharper.CancellationTokenSource||{};
  Elt=UI.Elt=UI.Elt||{};
  Array=UI.Array=UI.Array||{};
@@ -443,6 +442,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  NodeSet=Docs$1.NodeSet=Docs$1.NodeSet||{};
  Anims=UI.Anims=UI.Anims||{};
  SC$5=Global.StartupCode$WebSharper_UI$Doc_Proxy=Global.StartupCode$WebSharper_UI$Doc_Proxy||{};
+ InvalidOperationException=WebSharper.InvalidOperationException=WebSharper.InvalidOperationException||{};
  Json=WebSharper.Json=WebSharper.Json||{};
  SC$6=Global.StartupCode$WebSharper_UI$DomUtility=Global.StartupCode$WebSharper_UI$DomUtility||{};
  Updates=UI.Updates=UI.Updates||{};
@@ -518,7 +518,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    },WasmLoader.getParms());
   }),Doc.Button("Translate",[],function()
   {
-   WasmLoader.detailsV().Set("");
+   WasmLoader.clean();
    WasmLoader.printfn(function($1)
    {
     return $1("Initiating translation:");
@@ -531,14 +531,17 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   {
    WasmLoader.callWasmA(function(d)
    {
-    return(new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator.dirRpc:-1181784350",[d]);
+    return(new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.dirRpc:-1181784350",[d]);
    },"/");
   }),Doc.Button("Clean",[],function()
   {
-   WasmLoader.detailsV().Set("");
+   WasmLoader.clean();
   }),Doc.Button("Load as Worker",[],function()
   {
    WasmLoad.loadWasmInWorker();
+  }),Doc.Button("Load in Main thread",[],function()
+  {
+   Concurrency.Start(WasmLoad.loadInThisThread(),null);
   })]),Doc.Element("ol",[],[Doc.Convert(function(x)
   {
    return Doc.Element("li",[],[Doc.TextNode((function($1)
@@ -575,16 +578,34 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   var b;
   Concurrency.Start((b=null,Concurrency.Delay(function()
   {
-   return Concurrency.Bind(Concurrency.Sleep(50),function()
+   return Concurrency.Combine(WasmLoader.wasmStatusV().Get().$===0?(WasmLoad.loadWasmInWorker(),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
    {
-    return Concurrency.Bind(Concurrency.AwaitTask1(WasmLoad.loadWasm().f()),function()
+    return Concurrency.Bind(Concurrency.Sleep(50),function()
     {
-     return Concurrency.Bind(f(p),function()
+     return Concurrency.Combine(Concurrency.While(function()
      {
-      return Concurrency.Return(null);
-     });
+      var m;
+      m=WasmLoader.wasmStatusV().Get();
+      return m.$==2?false:m.$==5?false:m.$==3?Operators.FailWith("Wasm is already finished (Refresh browser to restart it"):true;
+     },Concurrency.Delay(function()
+     {
+      WasmLoader.printfn(function($1)
+      {
+       return $1("Waiting for WASM to load...");
+      });
+      return Concurrency.Bind(Concurrency.Sleep(2000),function()
+      {
+       return Concurrency.Return(null);
+      });
+     })),Concurrency.Delay(function()
+     {
+      return Concurrency.Bind(f(p),function()
+      {
+       return Concurrency.Return(null);
+      });
+     }));
     });
-   });
+   }));
   })),null);
  };
  WasmLoader.parseAndCheckProject=function(projectName,opts,code)
@@ -593,10 +614,12 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   b=null;
   return Concurrency.Delay(function()
   {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator.parseAndCheckProjectRpc:-1474163089",[projectName,opts,code]),function(a)
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.parseAndCheckProjectRpc:-1474163089",[projectName,opts,code]),function(a)
    {
     var a$1;
     WasmLoader.fsErrsV().Set(Arrays.ofSeq(a[0]));
+    WasmLoader.wsErrsV().Set([]);
+    WasmLoader.wsWrnsV().Set([]);
     a$1=(function($1)
     {
      return function($2)
@@ -613,10 +636,9 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  {
   return["WasmTest",Strings.SplitChars("fsc.exe\n"+WasmLoader.optsV().Get(),["\n"],0),WasmLoader.codeV().Get()];
  };
- WasmLoader.detailsV=function()
+ WasmLoader.clean=function()
  {
-  SC$1.$cctor();
-  return SC$1.detailsV;
+  WasmLoader.detailsV().Set("");
  };
  WasmLoader.translateToJs=function(projectName,opts,code)
  {
@@ -624,12 +646,12 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   b=null;
   return Concurrency.Delay(function()
   {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator.translateFsToJsRpc:957452724",[projectName,opts,code]),function(a)
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.translateFsToJsRpc:957452724",[projectName,opts,code]),function(a)
    {
     var wsO;
     wsO=a[1];
     WasmLoader.fsErrsV().Set(a[0]);
-    return wsO==null?(WasmLoader.detailsV().Set(""),WasmLoader.wsErrsV().Set([]),WasmLoader.wsWrnsV().Set([]),Concurrency.Zero()):(WasmLoader.detailsV().Set(wsO.$0[0]),WasmLoader.wsErrsV().Set(Arrays.ofSeq(wsO.$0[1])),WasmLoader.wsWrnsV().Set(Arrays.ofSeq(wsO.$0[2])),Concurrency.Zero());
+    return wsO==null?(WasmLoader.clean(),WasmLoader.wsErrsV().Set([]),WasmLoader.wsWrnsV().Set([]),Concurrency.Zero()):(WasmLoader.detailsV().Set(wsO.$0[0]),WasmLoader.wsErrsV().Set(Arrays.ofSeq(wsO.$0[1])),WasmLoader.wsWrnsV().Set(Arrays.ofSeq(wsO.$0[2])),Concurrency.Zero());
    });
   });
  };
@@ -647,6 +669,11 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  {
   SC$1.$cctor();
   return SC$1.wsWrnsV;
+ };
+ WasmLoader.detailsV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.detailsV;
  };
  Operators.FailWith=function(msg)
  {
@@ -858,6 +885,10 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    wprintfn:wprintfn
   };
  };
+ WasmLoad.loadInThisThread=function()
+ {
+  return Concurrency.AwaitTask1(WasmLoad.loadWasm().f());
+ };
  WasmLoad.loadWasm=function()
  {
   SC$1.$cctor();
@@ -1049,6 +1080,23 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   {
    return s+"T00:00:00";
   }
+  function f$3($1,$2,$3)
+  {
+   var b;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    return Concurrency.Bind(WasmLoader.translateToJs($1,$2,$3),function()
+    {
+     WasmLoader.clean();
+     WasmLoader.printfn(function($4)
+     {
+      return $4("System initiated!");
+     });
+     return Concurrency.Zero();
+    });
+   });
+  }
   SC$1.unindentStr=function(x)
   {
    return g$1(String.unindent(x));
@@ -1238,6 +1286,14 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
     })),null);
    }),null);
   });
+  WasmLoader.printfn(function($1)
+  {
+   return $1("Initiating system...");
+  });
+  WasmLoader.callWasmA(function($1)
+  {
+   return f$3($1[0],$1[1],$1[2]);
+  },WasmLoader.getParms());
  };
  Snap.WhenRun=function(snap,avail,obs)
  {
@@ -1462,37 +1518,6 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  {
   return"["+Strings.concat("; ",Seq.map(p,o))+"]";
  };
- Pervasives.NewFromSeq=function(fields)
- {
-  var r,e,f;
-  r={};
-  e=Enumerator.Get(fields);
-  try
-  {
-   while(e.MoveNext())
-    {
-     f=e.Current();
-     r[f[0]]=f[1];
-    }
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
-  return r;
- };
- Concurrency.AwaitTask1=function(t)
- {
-  return Concurrency.FromContinuations(function(ok,err,cc)
-  {
-   t.get_Status()===0?t.Start():void 0;
-   t.ContinueWith$1(function(t$1)
-   {
-    return t$1.get_IsCanceled()?cc(new OperationCanceledException.New(Concurrency.noneCT())):t$1.get_IsFaulted()?err(t$1.get_Exception()):ok(t$1.get_Result());
-   },Concurrency.noneCT());
-  });
- };
  Concurrency.Start=function(c,ctOpt)
  {
   var ct,d;
@@ -1506,6 +1531,26 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
       Concurrency.UncaughtAsyncError(a.$0);
     },ct));
   });
+ };
+ Concurrency.AwaitTask1=function(t)
+ {
+  return Concurrency.FromContinuations(function(ok,err,cc)
+  {
+   t.get_Status()===0?t.Start():void 0;
+   t.ContinueWith$1(function(t$1)
+   {
+    return t$1.get_IsCanceled()?cc(new OperationCanceledException.New(Concurrency.noneCT())):t$1.get_IsFaulted()?err(t$1.get_Exception()):ok(t$1.get_Result());
+   },Concurrency.noneCT());
+  });
+ };
+ Concurrency.defCTS=function()
+ {
+  SC$3.$cctor();
+  return SC$3.defCTS;
+ };
+ Concurrency.UncaughtAsyncError=function(e)
+ {
+  console.log("WebSharper: Uncaught asynchronous exception",e);
  };
  Concurrency.FromContinuations=function(subscribe)
  {
@@ -1552,15 +1597,6 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
     });
    });
   };
- };
- Concurrency.defCTS=function()
- {
-  SC$3.$cctor();
-  return SC$3.defCTS;
- };
- Concurrency.UncaughtAsyncError=function(e)
- {
-  console.log("WebSharper: Uncaught asynchronous exception",e);
  };
  Concurrency.Delay=function(mk)
  {
@@ -1676,6 +1712,13 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   SC$3.$cctor();
   return SC$3.scheduler;
  };
+ Concurrency.While=function(g,c)
+ {
+  return g()?Concurrency.Bind(c,function()
+  {
+   return Concurrency.While(g,c);
+  }):Concurrency.Return();
+ };
  Concurrency.Return=function(x)
  {
   return function(c)
@@ -1768,6 +1811,26 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
       c.k(a);
    },c.ct));
   };
+ };
+ Pervasives.NewFromSeq=function(fields)
+ {
+  var r,e,f;
+  r={};
+  e=Enumerator.Get(fields);
+  try
+  {
+   while(e.MoveNext())
+    {
+     f=e.Current();
+     r[f[0]]=f[1];
+    }
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+  return r;
  };
  testing_GeneratedPrintf.p=function($1)
  {
@@ -3275,139 +3338,6 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    s:State
   };
  };
- Task=WebSharper.Task=Runtime.Class({
-  get_Status:function()
-  {
-   return this.status;
-  },
-  Start:function()
-  {
-   var $this;
-   $this=this;
-   this.status===0?(this.status=2,Concurrency.scheduler().Fork(function()
-   {
-    var $1;
-    $this.status=3;
-    try
-    {
-     $this.Execute();
-     $this.status=5;
-    }
-    catch(m)
-    {
-     m instanceof OperationCanceledException&&(Unchecked.Equals(m.ct,$this.token)&&($1=m,true))?(console.log("Task cancellation caught:",$1),$this.exc=new AggregateException.New$3([$1]),$this.status=6):(console.log("Task error caught:",m),$this.exc=new AggregateException.New$3([m]),$this.status=7);
-    }
-    $this.RunContinuations();
-   })):Operators.InvalidOp("Task not in initial state");
-  },
-  get_IsCanceled:function()
-  {
-   return this.status===6;
-  },
-  get_IsFaulted:function()
-  {
-   return this.status===7;
-  },
-  get_Exception:function()
-  {
-   return this.exc;
-  },
-  Execute:function()
-  {
-   this.action();
-  },
-  RunContinuations:function()
-  {
-   var a,i,$1;
-   a=this.continuations;
-   for(i=0,$1=a.length-1;i<=$1;i++)Arrays.get(a,i).StartContinuation();
-  },
-  StartContinuation:function()
-  {
-   var $this;
-   $this=this;
-   this.status===1?(this.status=2,Concurrency.scheduler().Fork(function()
-   {
-    if($this.status===2)
-     {
-      $this.status=3;
-      try
-      {
-       $this.Execute();
-       $this.status=5;
-      }
-      catch(e)
-      {
-       $this.exc=new AggregateException.New$3([e]);
-       $this.status=7;
-      }
-      $this.RunContinuations();
-     }
-   })):void 0;
-  },
-  ContinueWith$1:function(action,ct)
-  {
-   var $this,res;
-   $this=this;
-   res=new Task.New$4(function()
-   {
-    return action($this);
-   },ct,1,null);
-   this.get_IsCompleted()?res.StartContinuation():this.continuations.push(res);
-   return res;
-  },
-  get_IsCompleted:function()
-  {
-   return this.status===5||this.status===7||this.status===6;
-  }
- },Obj,Task);
- Task.New$4=Runtime.Ctor(function(action,token,status,exc)
- {
-  Obj.New.call(this);
-  this.action=action;
-  this.token=token;
-  this.status=status;
-  this.continuations=[];
-  this.exc=exc;
- },Task);
- Task1=WebSharper.Task1=Runtime.Class({
-  get_Result:function()
-  {
-   var $1;
-   switch(this.get_Status())
-   {
-    case 5:
-     return this.result;
-    case 7:
-    case 6:
-     throw this.get_Exception();
-    default:
-     return Operators.InvalidOp("Task has not been completed, has no Result");
-   }
-  },
-  Execute:function()
-  {
-   this.result=this.func();
-  }
- },Task,Task1);
- Task1.New$4=Runtime.Ctor(function(func,token,status,exc,result)
- {
-  Task.New$4.call(this,null,token,status,exc);
-  this.func=func;
-  this.result=result;
- },Task1);
- OperationCanceledException=WebSharper.OperationCanceledException=Runtime.Class({},Error,OperationCanceledException);
- OperationCanceledException.New=Runtime.Ctor(function(ct)
- {
-  OperationCanceledException.New$1.call(this,"The operation was canceled.",null,ct);
- },OperationCanceledException);
- OperationCanceledException.New$1=Runtime.Ctor(function(message,inner,ct)
- {
-  this.message=message;
-  this.inner=inner;
-  Object.setPrototypeOf(this,OperationCanceledException.prototype);
-  this.ct=ct;
- },OperationCanceledException);
  CT.New=function(IsCancellationRequested,Registrations)
  {
   return{
@@ -4022,17 +3952,139 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   Obj.New.call(this);
  },CustomXhrProvider);
  Require=WasmLoad.Require=Runtime.Class({},Obj,Require);
- AggregateException=WebSharper.AggregateException=Runtime.Class({},Error,AggregateException);
- AggregateException.New$3=Runtime.Ctor(function(innerExceptions)
+ Task=WebSharper.Task=Runtime.Class({
+  get_Status:function()
+  {
+   return this.status;
+  },
+  Start:function()
+  {
+   var $this;
+   $this=this;
+   this.status===0?(this.status=2,Concurrency.scheduler().Fork(function()
+   {
+    var $1;
+    $this.status=3;
+    try
+    {
+     $this.Execute();
+     $this.status=5;
+    }
+    catch(m)
+    {
+     m instanceof OperationCanceledException&&(Unchecked.Equals(m.ct,$this.token)&&($1=m,true))?(console.log("Task cancellation caught:",$1),$this.exc=new AggregateException.New$3([$1]),$this.status=6):(console.log("Task error caught:",m),$this.exc=new AggregateException.New$3([m]),$this.status=7);
+    }
+    $this.RunContinuations();
+   })):Operators.InvalidOp("Task not in initial state");
+  },
+  get_IsCanceled:function()
+  {
+   return this.status===6;
+  },
+  get_IsFaulted:function()
+  {
+   return this.status===7;
+  },
+  get_Exception:function()
+  {
+   return this.exc;
+  },
+  Execute:function()
+  {
+   this.action();
+  },
+  RunContinuations:function()
+  {
+   var a,i,$1;
+   a=this.continuations;
+   for(i=0,$1=a.length-1;i<=$1;i++)Arrays.get(a,i).StartContinuation();
+  },
+  get_IsCompleted:function()
+  {
+   return this.status===5||this.status===7||this.status===6;
+  },
+  StartContinuation:function()
+  {
+   var $this;
+   $this=this;
+   this.status===1?(this.status=2,Concurrency.scheduler().Fork(function()
+   {
+    if($this.status===2)
+     {
+      $this.status=3;
+      try
+      {
+       $this.Execute();
+       $this.status=5;
+      }
+      catch(e)
+      {
+       $this.exc=new AggregateException.New$3([e]);
+       $this.status=7;
+      }
+      $this.RunContinuations();
+     }
+   })):void 0;
+  },
+  ContinueWith$1:function(action,ct)
+  {
+   var $this,res;
+   $this=this;
+   res=new Task.New$4(function()
+   {
+    return action($this);
+   },ct,1,null);
+   this.get_IsCompleted()?res.StartContinuation():this.continuations.push(res);
+   return res;
+  }
+ },Obj,Task);
+ Task.New$4=Runtime.Ctor(function(action,token,status,exc)
  {
-  AggregateException.New$4.call(this,"One or more errors occurred.",innerExceptions);
- },AggregateException);
- AggregateException.New$4=Runtime.Ctor(function(message,innerExceptions)
+  Obj.New.call(this);
+  this.action=action;
+  this.token=token;
+  this.status=status;
+  this.continuations=[];
+  this.exc=exc;
+ },Task);
+ Task1=WebSharper.Task1=Runtime.Class({
+  get_Result:function()
+  {
+   var $1;
+   switch(this.get_Status())
+   {
+    case 5:
+     return this.result;
+    case 7:
+    case 6:
+     throw this.get_Exception();
+    default:
+     return Operators.InvalidOp("Task has not been completed, has no Result");
+   }
+  },
+  Execute:function()
+  {
+   this.result=this.func();
+  }
+ },Task,Task1);
+ Task1.New$4=Runtime.Ctor(function(func,token,status,exc,result)
+ {
+  Task.New$4.call(this,null,token,status,exc);
+  this.func=func;
+  this.result=result;
+ },Task1);
+ OperationCanceledException=WebSharper.OperationCanceledException=Runtime.Class({},Error,OperationCanceledException);
+ OperationCanceledException.New=Runtime.Ctor(function(ct)
+ {
+  OperationCanceledException.New$1.call(this,"The operation was canceled.",null,ct);
+ },OperationCanceledException);
+ OperationCanceledException.New$1=Runtime.Ctor(function(message,inner,ct)
  {
   this.message=message;
-  Object.setPrototypeOf(this,AggregateException.prototype);
-  this.innerExceptions=innerExceptions;
- },AggregateException);
+  this.inner=inner;
+  Object.setPrototypeOf(this,OperationCanceledException.prototype);
+  this.ct=ct;
+ },OperationCanceledException);
  SC$3.$cctor=function()
  {
   SC$3.$cctor=Global.ignore;
@@ -4678,17 +4730,17 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   Obj.New.call(this);
   this.task=new Task1.New$4(null,Concurrency.noneCT(),1,null,void 0);
  },TaskCompletionSource);
- InvalidOperationException=WebSharper.InvalidOperationException=Runtime.Class({},Error,InvalidOperationException);
- InvalidOperationException.New=Runtime.Ctor(function(message)
+ AggregateException=WebSharper.AggregateException=Runtime.Class({},Error,AggregateException);
+ AggregateException.New$3=Runtime.Ctor(function(innerExceptions)
  {
-  InvalidOperationException.New$2.call(this,message,null);
- },InvalidOperationException);
- InvalidOperationException.New$2=Runtime.Ctor(function(message,innerExn)
+  AggregateException.New$4.call(this,"One or more errors occurred.",innerExceptions);
+ },AggregateException);
+ AggregateException.New$4=Runtime.Ctor(function(message,innerExceptions)
  {
   this.message=message;
-  this.inner=innerExn;
-  Object.setPrototypeOf(this,InvalidOperationException.prototype);
- },InvalidOperationException);
+  Object.setPrototypeOf(this,AggregateException.prototype);
+  this.innerExceptions=innerExceptions;
+ },AggregateException);
  CancellationTokenSource=WebSharper.CancellationTokenSource=Runtime.Class({},Obj,CancellationTokenSource);
  CancellationTokenSource.New=Runtime.Ctor(function()
  {
@@ -5198,6 +5250,17 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   SC$5.$cctor=Global.ignore;
   SC$5.BatchUpdatesEnabled=true;
  };
+ InvalidOperationException=WebSharper.InvalidOperationException=Runtime.Class({},Error,InvalidOperationException);
+ InvalidOperationException.New=Runtime.Ctor(function(message)
+ {
+  InvalidOperationException.New$2.call(this,message,null);
+ },InvalidOperationException);
+ InvalidOperationException.New$2=Runtime.Ctor(function(message,innerExn)
+ {
+  this.message=message;
+  this.inner=innerExn;
+  Object.setPrototypeOf(this,InvalidOperationException.prototype);
+ },InvalidOperationException);
  Json.Activate=function(json)
  {
   var $1,types,i,$2,$3,$4,m;
@@ -5625,7 +5688,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    $0:v
   });
  }));
- Concurrency.Start(Concurrency.AwaitTask1(WasmLoad.loadWasm().f()),null);
+ Concurrency.Start(WasmLoad.loadInThisThread(),null);
 }());
 
 

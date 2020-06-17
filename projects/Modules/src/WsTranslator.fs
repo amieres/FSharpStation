@@ -95,22 +95,6 @@ namespace FsRoot
                     Remoting.returnExn  (header, sprintf "%A" e)
             } |> Async.Start
     
-        [< Remote >]
-        let dirRpc (d:string) = async {
-            let rec dir (d:string) =
-                try 
-                    if d = "/proc/self/fd" then Console.WriteLine "skip /proc/self/fd"  else
-                    for file in Directory.GetFiles(d, "*") do
-                        Console.Write "F: "
-                        Console.WriteLine file  
-                    for subdir in Directory.EnumerateDirectories d do
-                        Console.Write "D: "
-                        Console.WriteLine subdir
-                        dir               subdir
-                with e -> Console.WriteLine e.Message 
-            dir d
-        }
-    
         let dlls = 
             [
                 "/tmp/WebSharper.Main.dll"
@@ -163,20 +147,39 @@ namespace FsRoot
             return results
         }
     
-        [< Remote >]
-        let parseAndCheckProjectRpc projectName opts code = async {
-            let! results = parseAndCheckProject projectName opts code
-            return results.Errors, results.DependencyFiles, results.HasCriticalErrors
-        }
+        module Rpc =
     
-        [< Remote >]
-        let translateFsToJsRpc projectName opts code = async {
-            let! results = parseAndCheckProject projectName opts code
-            let wsRes =
-                if results.HasCriticalErrors then None else
-                translateFromAst projectName metadata.Value results
-                |> Some
-            return results.Errors, wsRes
-        }
+            [< Remote >]
+            let parseAndCheckProjectRpc projectName opts code = async {
+                let! results = parseAndCheckProject projectName opts code
+                return results.Errors, results.DependencyFiles, results.HasCriticalErrors
+            }
+    
+            [< Remote >]
+            let translateFsToJsRpc projectName opts code = async {
+                let! results = parseAndCheckProject projectName opts code
+                let wsRes =
+                    if results.HasCriticalErrors then None else
+                    translateFromAst projectName metadata.Value results
+                    |> Some
+                return results.Errors, wsRes
+            }
+    
+            [< Remote >]
+            let dirRpc (d:string) = async {
+                let rec dir (d:string) =
+                    try 
+                        if d = "/proc/self/fd" then Console.WriteLine "skip /proc/self/fd"  else
+                        for file in Directory.GetFiles(d, "*") do
+                            Console.Write "F: "
+                            Console.WriteLine file  
+                        for subdir in Directory.EnumerateDirectories d do
+                            Console.Write "D: "
+                            Console.WriteLine subdir
+                            dir               subdir
+                    with e -> Console.WriteLine e.Message 
+                dir d
+            }
+    
     
     

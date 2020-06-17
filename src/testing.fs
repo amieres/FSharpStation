@@ -287,6 +287,8 @@ namespace FsRoot
         let codeV       = Var.Create "printfn \"Hello\""
         let optsV       = Var.Create "/tmp/source.fsx\n-o:source.exe\n--simpleresolution\n--nowarn:3186\n--optimize-\n--noframework\n--fullpaths\n--warn:3\n--target:exe\n-r:/tmp/FSharp.Core.dll\n-r:/tmp/mscorlib.dll\n-r:/tmp/netstandard.dll\n-r:/tmp/System.dll\n-r:/tmp/System.Core.dll\n-r:/tmp/System.IO.dll\n-r:/tmp/System.Runtime.dll\n-r:/tmp/System.Net.Http.dll\n-r:/tmp/System.Threading.dll\n-r:/tmp/System.Numerics.dll"
     
+        let clean() = detailsV.Set ""
+    
         module Remoting =
             open WebSharper.JavaScript
     
@@ -486,6 +488,8 @@ namespace FsRoot
                         } |> Async.Start
                     ) |> Async.StartAsTask
     
+            let loadInThisThread() = Async.AwaitTask loadWasm.Value
+    
             let loadWasmInWorker() =
                 if isWorker                           then printfn "Already in a worker cannot load Wasm in another worker" else
                 if wasmStatusV.Value <> WasmNotLoaded then printfn "Wasm is already %A" wasmStatusV.Value                   else
@@ -499,7 +503,7 @@ namespace FsRoot
                         returnExn   = fun v -> self.PostMessage(WorkerReturnExn   v)
                         wprintfn    = fun v -> self.PostMessage(WorkerPrintfn     v)
                     }
-                    loadWasm.Value   |> Async.AwaitTask |> Async.Start
+                    loadInThisThread() |> Async.Start
                     let rv = Remoting.returnValue
                     let re = Remoting.returnExn
                     ()
@@ -515,15 +519,17 @@ namespace FsRoot
                 Remoting.installProvider()
     
         let parseAndCheckProject(projectName, opts, code)  = async {
-            let! errs, deps, crit = parseAndCheckProjectRpc projectName opts code
+            let! errs, deps, crit = Rpc.parseAndCheckProjectRpc projectName opts code
             fsErrsV.Set (Seq.toArray errs)
+            wsErrsV .Set [||]
+            wsWrnsV .Set [||]
             (crit, deps)
             |> sprintf "%A"
             |> detailsV.Set
         }
     
         let translateToJs(projectName, opts, code)  = async {
-            let! fsErrs, wsO = translateFsToJsRpc projectName opts code
+            let! fsErrs, wsO = Rpc.translateFsToJsRpc projectName opts code
             fsErrsV.Set fsErrs
             match wsO with
             | Some (js, errs, wrns) -> 
@@ -531,15 +537,23 @@ namespace FsRoot
                 wsErrsV .Set (Seq.toArray errs)
                 wsWrnsV .Set (Seq.toArray wrns)
             | None -> 
-                detailsV.Set ""
+                clean()
                 wsErrsV .Set [||]
                 wsWrnsV .Set [||]
         }
     
         let inline callWasmA f p = 
             async {
+                if wasmStatusV.Value = WasmNotLoaded then WasmLoad.loadWasmInWorker()
                 do! Async.Sleep 50
-                do! Async.AwaitTask WasmLoad.loadWasm.Value
+                while
+                    match wasmStatusV.Value with
+                    | WasmLoaded | WasmWorkerLoaded -> false
+                    | WasmFinished -> failwith "Wasm is already finished (Refresh browser to restart it"
+                    |_-> true 
+                    do
+                        printfn "Waiting for WASM to load..."
+                        do! Async.Sleep 2000
                 do! f p
             } |> Async.Start
     
@@ -554,14 +568,15 @@ namespace FsRoot
                     Doc.InputArea [] optsV
                 ]
                 span [] [
-                    Doc.Button "Check"     [] (fun ()-> callWasmA parseAndCheckProject (getParms()))
-                    Doc.Button "Translate" [] (fun ()-> detailsV.Set ""
-                                                        printfn "Initiating translation:"
-                                                        callWasmA translateToJs        (getParms())
-                                                )
-                    Doc.Button "Dir"       [] (fun () -> callWasmA dirRpc "/")
-                    Doc.Button "Clean"     [] (fun () -> detailsV.Set "")
-                    Doc.Button "Load as Worker" [] (fun () -> WasmLoad.loadWasmInWorker() )
+                    Doc.Button "Check"               [] (fun ()-> callWasmA parseAndCheckProject (getParms()))
+                    Doc.Button "Translate"           [] (fun ()-> clean()
+                                                                  printfn "Initiating translation:"
+                                                                  callWasmA translateToJs        (getParms())
+                                                          )
+                    Doc.Button "Dir"                 [] (fun () -> callWasmA Rpc.dirRpc "/")
+                    Doc.Button "Clean"               [] (fun () -> clean() )
+                    Doc.Button "Load as Worker"      [] (fun () -> WasmLoad.loadWasmInWorker() )
+                    Doc.Button "Load in Main thread" [] (fun () -> WasmLoad.loadInThisThread() |> Async.Start )
                 ]
                 ol [] [ fsErrsV.View |> Doc.BindSeqCached(fun x -> li [] [ text <| sprintf "%A" x ] ) ]
                 ol [] [ wsErrsV.View |> Doc.BindSeqCached(fun x -> li [] [ text <| sprintf "%A" x ] ) ]
@@ -573,4 +588,11 @@ namespace FsRoot
     
         [< SPAEntryPoint >]
         let main() = mainDoc() |> Doc.Run JS.Document.Body
+        printfn "Initiating system..."
+        (getParms())
+        |> callWasmA (fun parms -> async {
+            do! translateToJs parms
+            clean()
+            printfn "System initiated!"
+        })
     

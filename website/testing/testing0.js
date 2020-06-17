@@ -681,6 +681,10 @@
      Remoting.installProvider();
     }
  };
+ WasmLoad.loadInThisThread=function()
+ {
+  return Concurrency.AwaitTask1(WasmLoad.loadWasm().f());
+ };
  WasmLoad.loadWasm=function()
  {
   SC$1.$cctor();
@@ -825,7 +829,7 @@
    },WasmLoader.getParms());
   }),Doc.Button("Translate",[],function()
   {
-   WasmLoader.detailsV().Set("");
+   WasmLoader.clean();
    WasmLoader.printfn(function($1)
    {
     return $1("Initiating translation:");
@@ -838,14 +842,17 @@
   {
    WasmLoader.callWasmA(function(d)
    {
-    return(new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator.dirRpc:-1181784350",[d]);
+    return(new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.dirRpc:-1181784350",[d]);
    },"/");
   }),Doc.Button("Clean",[],function()
   {
-   WasmLoader.detailsV().Set("");
+   WasmLoader.clean();
   }),Doc.Button("Load as Worker",[],function()
   {
    WasmLoad.loadWasmInWorker();
+  }),Doc.Button("Load in Main thread",[],function()
+  {
+   Concurrency.Start(WasmLoad.loadInThisThread(),null);
   })]),Doc.Element("ol",[],[Doc.Convert(function(x)
   {
    return Doc.Element("li",[],[Doc.TextNode((function($1)
@@ -872,16 +879,34 @@
   var b;
   Concurrency.Start((b=null,Concurrency.Delay(function()
   {
-   return Concurrency.Bind(Concurrency.Sleep(50),function()
+   return Concurrency.Combine(WasmLoader.wasmStatusV().Get().$===0?(WasmLoad.loadWasmInWorker(),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
    {
-    return Concurrency.Bind(Concurrency.AwaitTask1(WasmLoad.loadWasm().f()),function()
+    return Concurrency.Bind(Concurrency.Sleep(50),function()
     {
-     return Concurrency.Bind(f(p),function()
+     return Concurrency.Combine(Concurrency.While(function()
      {
-      return Concurrency.Return(null);
-     });
+      var m;
+      m=WasmLoader.wasmStatusV().Get();
+      return m.$==2?false:m.$==5?false:m.$==3?Operators.FailWith("Wasm is already finished (Refresh browser to restart it"):true;
+     },Concurrency.Delay(function()
+     {
+      WasmLoader.printfn(function($1)
+      {
+       return $1("Waiting for WASM to load...");
+      });
+      return Concurrency.Bind(Concurrency.Sleep(2000),function()
+      {
+       return Concurrency.Return(null);
+      });
+     })),Concurrency.Delay(function()
+     {
+      return Concurrency.Bind(f(p),function()
+      {
+       return Concurrency.Return(null);
+      });
+     }));
     });
-   });
+   }));
   })),null);
  };
  WasmLoader.translateToJs=function(projectName,opts,code)
@@ -890,12 +915,12 @@
   b=null;
   return Concurrency.Delay(function()
   {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator.translateFsToJsRpc:957452724",[projectName,opts,code]),function(a)
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.translateFsToJsRpc:957452724",[projectName,opts,code]),function(a)
    {
     var wsO;
     wsO=a[1];
     WasmLoader.fsErrsV().Set(a[0]);
-    return wsO==null?(WasmLoader.detailsV().Set(""),WasmLoader.wsErrsV().Set([]),WasmLoader.wsWrnsV().Set([]),Concurrency.Zero()):(WasmLoader.detailsV().Set(wsO.$0[0]),WasmLoader.wsErrsV().Set(Arrays.ofSeq(wsO.$0[1])),WasmLoader.wsWrnsV().Set(Arrays.ofSeq(wsO.$0[2])),Concurrency.Zero());
+    return wsO==null?(WasmLoader.clean(),WasmLoader.wsErrsV().Set([]),WasmLoader.wsWrnsV().Set([]),Concurrency.Zero()):(WasmLoader.detailsV().Set(wsO.$0[0]),WasmLoader.wsErrsV().Set(Arrays.ofSeq(wsO.$0[1])),WasmLoader.wsWrnsV().Set(Arrays.ofSeq(wsO.$0[2])),Concurrency.Zero());
    });
   });
  };
@@ -905,10 +930,12 @@
   b=null;
   return Concurrency.Delay(function()
   {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator.parseAndCheckProjectRpc:-1474163089",[projectName,opts,code]),function(a)
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.parseAndCheckProjectRpc:-1474163089",[projectName,opts,code]),function(a)
    {
     var a$1;
     WasmLoader.fsErrsV().Set(Arrays.ofSeq(a[0]));
+    WasmLoader.wsErrsV().Set([]);
+    WasmLoader.wsWrnsV().Set([]);
     a$1=(function($1)
     {
      return function($2)
@@ -924,6 +951,10 @@
  WasmLoader.printfn=function(fmt)
  {
   return fmt(Remoting.messaging().wprintfn);
+ };
+ WasmLoader.clean=function()
+ {
+  WasmLoader.detailsV().Set("");
  };
  WasmLoader.optsV=function()
  {
@@ -990,6 +1021,23 @@
   function f$2(s)
   {
    return s+"T00:00:00";
+  }
+  function f$3($1,$2,$3)
+  {
+   var b;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    return Concurrency.Bind(WasmLoader.translateToJs($1,$2,$3),function()
+    {
+     WasmLoader.clean();
+     WasmLoader.printfn(function($4)
+     {
+      return $4("System initiated!");
+     });
+     return Concurrency.Zero();
+    });
+   });
   }
   SC$1.unindentStr=function(x)
   {
@@ -1180,6 +1228,14 @@
     })),null);
    }),null);
   });
+  WasmLoader.printfn(function($1)
+  {
+   return $1("Initiating system...");
+  });
+  WasmLoader.callWasmA(function($1)
+  {
+   return f$3($1[0],$1[1],$1[2]);
+  },WasmLoader.getParms());
  };
  testing_GeneratedPrintf.p$3=function($1)
  {
