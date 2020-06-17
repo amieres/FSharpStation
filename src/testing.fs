@@ -248,7 +248,7 @@ namespace FsRoot
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\Facades\netstandard.dll"
     
     //#define WEBSHARPER
-    [< JavaScript >]
+    [< JavaScriptExport >]
     module WasmLoader =
         open WebSharper
         open WebSharper.JavaScript
@@ -375,8 +375,8 @@ namespace FsRoot
     
             let fromWorker (evt: MessageEvent) =
                 match evt.Data :?> MsgFromWorker with
-                | WorkerReturnValue  (h,d) -> Remoting.returnValue(h, d)
-                | WorkerReturnExn    (h,d) -> Remoting.returnExn0 (h, d)
+                | WorkerReturnValue  (h,d) -> Remoting.returnValue0(h, d)
+                | WorkerReturnExn    (h,d) -> Remoting.returnExn0  (h, d)
                 | WorkerPrintfn      txt   -> printfn "%s" txt
                 | WorkerWasmStatus   v     -> if wasmStatusV.Value <> v then wasmStatusV.Set v
     
@@ -471,7 +471,7 @@ namespace FsRoot
                             ok()
                         async {
                             if wasmStatusV.Value <> WasmNotLoaded then printfn "Wasm is already %A" wasmStatusV.Value ; ok() else
-                            printfn "Loading WASM. Hold on this will take a while..."
+                            printfn "Loading WASM. Hold on, this will take a while..."
                             wasmStatusV.Set (if isWorker then WasmWorkerLoading else WasmLoading)
                             do! Async.Sleep 50
                             if not isWorker then Remoting.installProvider()
@@ -502,6 +502,9 @@ namespace FsRoot
                         wprintfn    = fun v -> self.PostMessage(WorkerPrintfn     v)
                     }
                     loadWasm.Value   |> Async.AwaitTask |> Async.Start
+                    let rv = Remoting.returnValue
+                    let re = Remoting.returnExn
+                    ()
                 )
                 w.Onmessage         <- System.Action<_> WWorker.fromWorker
                 WWorker.workerO     <- Some w
@@ -539,9 +542,7 @@ namespace FsRoot
             async {
                 do! Async.Sleep 50
                 do! Async.AwaitTask WasmLoad.loadWasm.Value
-                printfn "goind to call function"
                 do! f p
-                printfn "called function"
             } |> Async.Start
     
         let getParms() = ("WasmTest", ("fsc.exe\n" + optsV.Value).Split '\n', codeV.Value)

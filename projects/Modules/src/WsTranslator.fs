@@ -50,7 +50,7 @@ namespace FsRoot
         open Microsoft.FSharp.Compiler.SourceCodeServices
     
         let  fsharpChecker = lazy (
-                printfn "Loading FCS. Hold on this will take a while..."
+                printfn "Loading FCS. Hold on, this will take a while..."
                 let checker = FSharpChecker.Create( keepAssemblyContents = true)
                 printfn "FCS loaded!"
                 checker
@@ -72,7 +72,7 @@ namespace FsRoot
             let returnValue (md : string, v : string) = remoting.Invoke("returnValue", md, v) |> ignore
             let returnExn   (md : string, e : string) = remoting.Invoke("returnExn"  , md, e) |> ignore
             let wsServer   = lazy (
-                printfn "Loading remoting server. Hold on this will take a while..."
+                printfn "Loading remoting server. Hold on, this will take a while..."
                 let srv = RM.Server.Create WebSharper.Web.Shared.Metadata WebSharper.Web.Shared.Json
                 printfn "Remoting server loaded!"
                 srv
@@ -133,7 +133,7 @@ namespace FsRoot
         let getMetaInfoFromAssemblyO = FrontEnd.ReadFromFile FrontEnd.ReadOptions.FullMetadata
     
         let metadata = lazy (
-            printfn "Loading Dlls metadata. Hold on this will take a while..."
+            printfn "Loading Dlls metadata. Hold on, this will take a while..."
             let meta = readMetadata getMetaInfoFromAssemblyO
             printfn "Metadata loaded!"
             meta

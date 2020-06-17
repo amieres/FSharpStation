@@ -598,7 +598,7 @@
    {
     return $1(Utils.toSafe($2));
    };
-  }))(m.$0):m.$==3?(v=m.$0,!Unchecked.Equals(WasmLoader.wasmStatusV().Get(),v)?WasmLoader.wasmStatusV().Set(v):void 0):Remoting.returnValue(m.$0,m.$1);
+  }))(m.$0):m.$==3?(v=m.$0,!Unchecked.Equals(WasmLoader.wasmStatusV().Get(),v)?WasmLoader.wasmStatusV().Set(v):void 0):Remoting.returnValue0(m.$0,m.$1);
  };
  WWorker.receiveMessage=function(evt)
  {
@@ -876,17 +876,9 @@
    {
     return Concurrency.Bind(Concurrency.AwaitTask1(WasmLoad.loadWasm().f()),function()
     {
-     WasmLoader.printfn(function($1)
-     {
-      return $1("goind to call function");
-     });
      return Concurrency.Bind(f(p),function()
      {
-      WasmLoader.printfn(function($1)
-      {
-       return $1("called function");
-      });
-      return Concurrency.Zero();
+      return Concurrency.Return(null);
      });
     });
    });
@@ -1149,7 +1141,7 @@
       };
      }))(WasmLoader.wasmStatusV().Get()),ok(),Concurrency.Zero()):(WasmLoader.printfn(function($1)
      {
-      return $1("Loading WASM. Hold on this will take a while...");
+      return $1("Loading WASM. Hold on, this will take a while...");
      }),WasmLoader.wasmStatusV().Set(!self.document?WasmStatus.WasmWorkerLoading:WasmStatus.WasmLoading),Concurrency.Bind(Concurrency.Sleep(50),function()
      {
       return Concurrency.Combine(!(!self.document)?(Remoting.installProvider(),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()

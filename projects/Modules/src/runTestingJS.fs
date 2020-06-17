@@ -2266,7 +2266,7 @@ namespace FsRoot
                              "$schema"         : "https://websharper.com/wsconfig.schema.json"
                             ,"outputDir"       : "%s"
                             ,"scriptBaseUrl"   : "/testing/"
-                            ,"dce"             : true
+                            ,"dce"             : false
                         }
                     """  <| Path.GetDirectoryName(outputJs0).Replace(@"\", @"\\") )
                     do!             WsCompiler.compileRm()

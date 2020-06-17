@@ -334,7 +334,6 @@ if (!console) {
     }
 };
 importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js"]);
-
 (function()
 {
  "use strict";
@@ -580,17 +579,9 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    {
     return Concurrency.Bind(Concurrency.AwaitTask1(WasmLoad.loadWasm().f()),function()
     {
-     WasmLoader.printfn(function($1)
-     {
-      return $1("goind to call function");
-     });
      return Concurrency.Bind(f(p),function()
      {
-      WasmLoader.printfn(function($1)
-      {
-       return $1("called function");
-      });
-      return Concurrency.Zero();
+      return Concurrency.Return(null);
      });
     });
    });
@@ -799,7 +790,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    {
     return $1(Utils.toSafe($2));
    };
-  }))(m.$0):m.$==3?(v=m.$0,!Unchecked.Equals(WasmLoader.wasmStatusV().Get(),v)?WasmLoader.wasmStatusV().Set(v):void 0):Remoting.returnValue(m.$0,m.$1);
+  }))(m.$0):m.$==3?(v=m.$0,!Unchecked.Equals(WasmLoader.wasmStatusV().Get(),v)?WasmLoader.wasmStatusV().Set(v):void 0):Remoting.returnValue0(m.$0,m.$1);
  };
  WWorker.set_workerO=function($1)
  {
@@ -811,9 +802,22 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   SC$1.$cctor();
   SC$1.messaging=$1;
  };
+ Remoting.returnValue=function(header,data)
+ {
+  Remoting.messaging().returnValue([header,data]);
+ };
+ Remoting.returnExn=function(header,e)
+ {
+  Remoting.messaging().returnExn([header,e]);
+ };
  Remoting.callRunRpc=function(header,data)
  {
   (Remoting.messaging().runRpc(header))(data);
+ };
+ Remoting.messaging=function()
+ {
+  SC$1.$cctor();
+  return SC$1.messaging;
  };
  Remoting.returnValue0=function(md,v)
  {
@@ -835,20 +839,11 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  {
   Remoting$1.set_AjaxProvider(new CustomXhrProvider.New());
  };
- Remoting.messaging=function()
- {
-  SC$1.$cctor();
-  return SC$1.messaging;
- };
  Remoting.returnExnExn=function(md,e)
  {
   var o,$1;
   o=ReturnQueue.tryGet(md);
   o==null?void 0:($1=o.$0,$1[0],$1[1](e));
- };
- Remoting.returnValue=function(header,data)
- {
-  Remoting.messaging().returnValue([header,data]);
  };
  Remoting.getHeaderRpc=function(headers)
  {
@@ -1204,7 +1199,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
       };
      }))(WasmLoader.wasmStatusV().Get()),ok(),Concurrency.Zero()):(WasmLoader.printfn(function($1)
      {
-      return $1("Loading WASM. Hold on this will take a while...");
+      return $1("Loading WASM. Hold on, this will take a while...");
      }),WasmLoader.wasmStatusV().Set(!self.document?WasmStatus.WasmWorkerLoading:WasmStatus.WasmLoading),Concurrency.Bind(Concurrency.Sleep(50),function()
      {
       return Concurrency.Combine(!(!self.document)?(Remoting.installProvider(),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
@@ -1681,6 +1676,16 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   SC$3.$cctor();
   return SC$3.scheduler;
  };
+ Concurrency.Return=function(x)
+ {
+  return function(c)
+  {
+   c.k({
+    $:0,
+    $0:x
+   });
+  };
+ };
  Concurrency.checkCancel=function(r)
  {
   return function(c)
@@ -1732,16 +1737,6 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  {
   SC$3.$cctor();
   return SC$3.noneCT;
- };
- Concurrency.Return=function(x)
- {
-  return function(c)
-  {
-   c.k({
-    $:0,
-    $0:x
-   });
-  };
  };
  Concurrency.GetCT=function()
  {
