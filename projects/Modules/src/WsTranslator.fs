@@ -1,4 +1,4 @@
-////-d:FSharpStation1592310559857 -d:NETSTANDARD20 -d:NOFSROOTx
+////-d:FSharpStation1592664150800 -d:NETSTANDARD20 -d:NOFSROOTx
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Reflection.Metadata\lib\netstandard2.0"
@@ -9,11 +9,13 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Core.JavaScript.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Core.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Web.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.UI.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Compiler.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.JQuery.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Compiler.FSharp.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos/WasmRepo/wasm-sdk/framework\WebAssembly.Bindings.dll"
 /// Root namespace for all code
-//#define FSharpStation1592310559857
+//#define FSharpStation1592664150800
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -37,7 +39,9 @@ namespace FsRoot
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Core.JavaScript.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Core.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Web.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.UI.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Compiler.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.JQuery.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Compiler.FSharp.dll"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Reflection.Metadata\lib\netstandard2.0"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Collections.Immutable\lib\netstandard2.0"
@@ -55,6 +59,15 @@ namespace FsRoot
                 printfn "FCS loaded!"
                 checker
             )
+    
+        let startLoading (l:Lazy<_>) = 
+            async {
+                do! Async.Sleep 40
+                let _ = l.Value
+                ()
+            } |> Async.Start
+    
+        startLoading fsharpChecker
     
         open WebSharper
         open WebSharper.Core
@@ -77,6 +90,7 @@ namespace FsRoot
                 printfn "Remoting server loaded!"
                 srv
             )
+            startLoading wsServer
     
         let runRpc(header, data) = 
             async {
@@ -95,22 +109,23 @@ namespace FsRoot
                     Remoting.returnExn  (header, sprintf "%A" e)
             } |> Async.Start
     
+        [< JavaScript >]
         let dlls = 
-            [
-                "/tmp/WebSharper.Main.dll"
-                "/tmp/WebSharper.Collections.dll"
-                "/tmp/WebSharper.Control.dll"
-                "/tmp/WebSharper.Web.dll"
-                "/tmp/WebSharper.Sitelets.dll"
-                "/tmp/WebSharper.UI.dll"
-                "/tmp/WebSharper.UI.Templating.Runtime.dll"
-                "/tmp/WebSharper.Data.dll"
-            ]
+            [|
+                "/dlls/WebSharper.Main.dll"
+                "/dlls/WebSharper.Collections.dll"
+                "/dlls/WebSharper.Control.dll"
+                "/dlls/WebSharper.Web.dll"
+                "/dlls/WebSharper.Sitelets.dll"
+                "/dlls/WebSharper.UI.dll"
+                "/dlls/WebSharper.UI.Templating.Runtime.dll"
+                "/dlls/WebSharper.Data.dll"
+            |]
     
         open WebSharper.Compiler
     
         let readMetadata (dllToMetaInfoO : string -> Metadata.Info option)  =
-            let metas = dlls |> Seq.choose dllToMetaInfoO |> Seq.cache
+            let metas = dlls  |> Seq.choose dllToMetaInfoO |> Seq.cache
             let deps  = metas |> Seq.map (fun m -> m.Dependencies) |> WebSharper.Core.DependencyGraph.Graph.NewWithDependencyAssemblies
             { WebSharper.Core.Metadata.Info.UnionWithoutDependencies metas with Dependencies = deps.GetData() }
     
@@ -123,10 +138,16 @@ namespace FsRoot
             meta
         )
     
+        startLoading metadata
+    
         let translateFromAst projectName metadata ast =
+            let macroType = typedefof<WebSharper.UI.Macros.TextView> // necessary so the linker keeps the macros
+            //macroType.AssemblyQualifiedName |> printfn "%A"
+            //let macrotype2 = System.Type.GetType("WebSharper.UI.Macros+TextView, WebSharper.UI, Version=4.5.0.0, Culture=neutral, PublicKeyToken=null", true)
+            //macrotype2.AssemblyQualifiedName |> printfn "%A"
             let comp = 
                 WebSharper.Compiler.FSharp.ProjectReader.transformAssembly
-                    (WebSharper.Compiler.Compilation(metadata, false, UseLocalMacros = false))
+                    (WebSharper.Compiler.Compilation(metadata, false, UseLocalMacros = true))
                     projectName
                     { CommandTools.WsConfig.Empty with JavaScriptScope = CommandTools.JavaScriptScope.JSAssembly }
                     ast

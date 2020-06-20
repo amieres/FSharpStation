@@ -362,7 +362,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,String,ParseO,WasmLoader,WasmStatus,Remoting,IMessagingO,ReturnQueue,WebSharper,Obj,CustomXhrProvider,WWorker,WasmLoad,Require,Global$1,Operators,Utils,Arrays,Slice,Seq,Strings,SC$1,Char,UI,Var,JavaScript,Pervasives,Unchecked,Collections,Dictionary,Remoting$1,Event,JS,List,LibraryJS,Pojo,EventTarget,XMLHttpRequestEventTarget,ArrayBufferView,testing_GeneratedPrintf,GeneratedPrintf,AjaxRemotingProvider,T,View,HtmlModule,attr,Node,Enumerator,T$1,Numeric,System,Guid,Var$1,Lazy,Object,SC$2,Concurrency,Doc,Snap,AttrProxy,Client,Templates,WindowOrWorkerGlobalScope,DateUtil,ConcreteVar,DictionaryUtil,LazyExtensionsProxy,LazyRecord,XhrProvider,AsyncBody,Task,Task1,Error,OperationCanceledException,SC$3,CT,DomUtility,AttrModule,Attrs,Docs,Abbrev,Fresh,TaskCompletionSource,Scheduler,AggregateException,CancellationTokenSource,Elt,Array,SC$4,HashSet,An,Settings,Mailbox,Json,InvalidOperationException,DocElemNode,CharacterData,SC$5,Updates,Prepare,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$6,FormatException,SC$7,Attrs$1,Dyn,Queue,SC$8,SC$9,AppendList,Easing,HashSet$1,HashSetUtil,DynamicAttrNode,DomNodes,SC$10,console,IntelliFactory,Runtime,JSON,$,Date;
+ var Global,FsRoot,Library,String,ParseO,WasmLoader,WasmStatus,Remoting,IMessagingO,ReturnQueue,WebSharper,Obj,CustomXhrProvider,WWorker,WasmLoad,Require,GlobalModule,UI,WSFrameworkTest,AssemblyData,ModuleName,TypeName,MethodName,AssemblyName,AssemblyRef,JSCode,TypeRef,MethodDef,ModuleDef,AssemblyDef,LoadAsm,WSFramework,Operators,Utils,Arrays,Slice,Seq,Strings,SC$1,Char,JavaScript,Pervasives,Unchecked,Collections,Dictionary,Remoting$1,Event,UI$1,Var,EventTarget,JS,List,LibraryJS,Pojo,XMLHttpRequestEventTarget,ArrayBufferView,WsTranslator,testing_GeneratedPrintf,GeneratedPrintf,Doc,AjaxRemotingProvider,T,View,HtmlModule,attr,Node,ListModel,FSharp,Data,Runtime,IO,AttrModule,ViewBuilder,Enumerator,T$1,Numeric,System,Guid,Var$1,Object,SC$2,Concurrency,SC$3,Array,Snap,AttrProxy,Client,Templates,WindowOrWorkerGlobalScope,Data$1,TxtRuntime,Pervasives$1,DomUtility,DateUtil,ConcreteVar,DictionaryUtil,Storage,XhrProvider,AsyncBody,HashSet,SC$4,CT,Attrs,Docs,Elt,Abbrev,Fresh,ArrayStorage,DocElemNode,CharacterData,Scheduler,Error,OperationCanceledException,CancellationTokenSource,SC$5,An,Settings,Mailbox,Updates,SC$6,Json,Attrs$1,Dyn,Prepare,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$7,SC$8,FormatException,SC$9,Queue,SC$10,AppendList,HashSetUtil,Easing,HashSet$1,DynamicAttrNode,DomNodes,Lazy,SC$11,LazyExtensionsProxy,LazyRecord,console,IntelliFactory,Runtime$1,Date,JSON,$,Math;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -379,7 +379,22 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  WWorker=WasmLoader.WWorker=WasmLoader.WWorker||{};
  WasmLoad=WasmLoader.WasmLoad=WasmLoader.WasmLoad||{};
  Require=WasmLoad.Require=WasmLoad.Require||{};
- Global$1=WasmLoad.Global=WasmLoad.Global||{};
+ GlobalModule=WasmLoad.GlobalModule=WasmLoad.GlobalModule||{};
+ UI=WasmLoader.UI=WasmLoader.UI||{};
+ WSFrameworkTest=FsRoot.WSFrameworkTest=FsRoot.WSFrameworkTest||{};
+ AssemblyData=FsRoot.AssemblyData=FsRoot.AssemblyData||{};
+ ModuleName=AssemblyData.ModuleName=AssemblyData.ModuleName||{};
+ TypeName=AssemblyData.TypeName=AssemblyData.TypeName||{};
+ MethodName=AssemblyData.MethodName=AssemblyData.MethodName||{};
+ AssemblyName=AssemblyData.AssemblyName=AssemblyData.AssemblyName||{};
+ AssemblyRef=AssemblyData.AssemblyRef=AssemblyData.AssemblyRef||{};
+ JSCode=AssemblyData.JSCode=AssemblyData.JSCode||{};
+ TypeRef=AssemblyData.TypeRef=AssemblyData.TypeRef||{};
+ MethodDef=AssemblyData.MethodDef=AssemblyData.MethodDef||{};
+ ModuleDef=AssemblyData.ModuleDef=AssemblyData.ModuleDef||{};
+ AssemblyDef=AssemblyData.AssemblyDef=AssemblyData.AssemblyDef||{};
+ LoadAsm=AssemblyData.LoadAsm=AssemblyData.LoadAsm||{};
+ WSFramework=FsRoot.WSFramework=FsRoot.WSFramework||{};
  Operators=WebSharper.Operators=WebSharper.Operators||{};
  Utils=WebSharper.Utils=WebSharper.Utils||{};
  Arrays=WebSharper.Arrays=WebSharper.Arrays||{};
@@ -388,8 +403,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Strings=WebSharper.Strings=WebSharper.Strings||{};
  SC$1=Global.StartupCode$testing$testing=Global.StartupCode$testing$testing||{};
  Char=WebSharper.Char=WebSharper.Char||{};
- UI=WebSharper.UI=WebSharper.UI||{};
- Var=UI.Var=UI.Var||{};
  JavaScript=WebSharper.JavaScript=WebSharper.JavaScript||{};
  Pervasives=JavaScript.Pervasives=JavaScript.Pervasives||{};
  Unchecked=WebSharper.Unchecked=WebSharper.Unchecked||{};
@@ -397,100 +410,111 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Dictionary=Collections.Dictionary=Collections.Dictionary||{};
  Remoting$1=WebSharper.Remoting=WebSharper.Remoting||{};
  Event=Global.Event;
+ UI$1=WebSharper.UI=WebSharper.UI||{};
+ Var=UI$1.Var=UI$1.Var||{};
+ EventTarget=Global.EventTarget;
  JS=JavaScript.JS=JavaScript.JS||{};
  List=WebSharper.List=WebSharper.List||{};
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
  Pojo=LibraryJS.Pojo=LibraryJS.Pojo||{};
- EventTarget=Global.EventTarget;
  XMLHttpRequestEventTarget=Global.XMLHttpRequestEventTarget;
  ArrayBufferView=Global.ArrayBufferView;
+ WsTranslator=FsRoot.WsTranslator=FsRoot.WsTranslator||{};
  testing_GeneratedPrintf=Global.testing_GeneratedPrintf=Global.testing_GeneratedPrintf||{};
  GeneratedPrintf=Global.GeneratedPrintf=Global.GeneratedPrintf||{};
+ Doc=UI$1.Doc=UI$1.Doc||{};
  AjaxRemotingProvider=Remoting$1.AjaxRemotingProvider=Remoting$1.AjaxRemotingProvider||{};
  T=List.T=List.T||{};
- View=UI.View=UI.View||{};
- HtmlModule=UI.HtmlModule=UI.HtmlModule||{};
+ View=UI$1.View=UI$1.View||{};
+ HtmlModule=UI$1.HtmlModule=UI$1.HtmlModule||{};
  attr=HtmlModule.attr=HtmlModule.attr||{};
  Node=Global.Node;
+ ListModel=UI$1.ListModel=UI$1.ListModel||{};
+ FSharp=Global.FSharp=Global.FSharp||{};
+ Data=FSharp.Data=FSharp.Data||{};
+ Runtime=Data.Runtime=Data.Runtime||{};
+ IO=Runtime.IO=Runtime.IO||{};
+ AttrModule=UI$1.AttrModule=UI$1.AttrModule||{};
+ ViewBuilder=UI$1.ViewBuilder=UI$1.ViewBuilder||{};
  Enumerator=WebSharper.Enumerator=WebSharper.Enumerator||{};
  T$1=Enumerator.T=Enumerator.T||{};
  Numeric=WebSharper.Numeric=WebSharper.Numeric||{};
  System=Global.System=Global.System||{};
  Guid=System.Guid=System.Guid||{};
- Var$1=UI.Var$1=UI.Var$1||{};
- Lazy=WebSharper.Lazy=WebSharper.Lazy||{};
+ Var$1=UI$1.Var$1=UI$1.Var$1||{};
  Object=Global.Object;
  SC$2=Global.StartupCode$WebSharper_Main$Remoting=Global.StartupCode$WebSharper_Main$Remoting||{};
  Concurrency=WebSharper.Concurrency=WebSharper.Concurrency||{};
- Doc=UI.Doc=UI.Doc||{};
- Snap=UI.Snap=UI.Snap||{};
- AttrProxy=UI.AttrProxy=UI.AttrProxy||{};
- Client=UI.Client=UI.Client||{};
+ SC$3=Global.StartupCode$WsTranslator$WsTranslator=Global.StartupCode$WsTranslator$WsTranslator||{};
+ Array=UI$1.Array=UI$1.Array||{};
+ Snap=UI$1.Snap=UI$1.Snap||{};
+ AttrProxy=UI$1.AttrProxy=UI$1.AttrProxy||{};
+ Client=UI$1.Client=UI$1.Client||{};
  Templates=Client.Templates=Client.Templates||{};
  WindowOrWorkerGlobalScope=Global.WindowOrWorkerGlobalScope;
+ Data$1=WebSharper.Data=WebSharper.Data||{};
+ TxtRuntime=Data$1.TxtRuntime=Data$1.TxtRuntime||{};
+ Pervasives$1=Data$1.Pervasives=Data$1.Pervasives||{};
+ DomUtility=UI$1.DomUtility=UI$1.DomUtility||{};
  DateUtil=WebSharper.DateUtil=WebSharper.DateUtil||{};
- ConcreteVar=UI.ConcreteVar=UI.ConcreteVar||{};
+ ConcreteVar=UI$1.ConcreteVar=UI$1.ConcreteVar||{};
  DictionaryUtil=Collections.DictionaryUtil=Collections.DictionaryUtil||{};
- LazyExtensionsProxy=WebSharper.LazyExtensionsProxy=WebSharper.LazyExtensionsProxy||{};
- LazyRecord=LazyExtensionsProxy.LazyRecord=LazyExtensionsProxy.LazyRecord||{};
+ Storage=UI$1.Storage=UI$1.Storage||{};
  XhrProvider=Remoting$1.XhrProvider=Remoting$1.XhrProvider||{};
  AsyncBody=Concurrency.AsyncBody=Concurrency.AsyncBody||{};
- Task=WebSharper.Task=WebSharper.Task||{};
- Task1=WebSharper.Task1=WebSharper.Task1||{};
+ HashSet=Collections.HashSet=Collections.HashSet||{};
+ SC$4=Global.StartupCode$WebSharper_Main$Concurrency=Global.StartupCode$WebSharper_Main$Concurrency||{};
+ CT=Concurrency.CT=Concurrency.CT||{};
+ Attrs=UI$1.Attrs=UI$1.Attrs||{};
+ Docs=UI$1.Docs=UI$1.Docs||{};
+ Elt=UI$1.Elt=UI$1.Elt||{};
+ Abbrev=UI$1.Abbrev=UI$1.Abbrev||{};
+ Fresh=Abbrev.Fresh=Abbrev.Fresh||{};
+ ArrayStorage=Storage.ArrayStorage=Storage.ArrayStorage||{};
+ DocElemNode=UI$1.DocElemNode=UI$1.DocElemNode||{};
+ CharacterData=Global.CharacterData;
+ Scheduler=Concurrency.Scheduler=Concurrency.Scheduler||{};
  Error=Global.Error;
  OperationCanceledException=WebSharper.OperationCanceledException=WebSharper.OperationCanceledException||{};
- SC$3=Global.StartupCode$WebSharper_Main$Concurrency=Global.StartupCode$WebSharper_Main$Concurrency||{};
- CT=Concurrency.CT=Concurrency.CT||{};
- DomUtility=UI.DomUtility=UI.DomUtility||{};
- AttrModule=UI.AttrModule=UI.AttrModule||{};
- Attrs=UI.Attrs=UI.Attrs||{};
- Docs=UI.Docs=UI.Docs||{};
- Abbrev=UI.Abbrev=UI.Abbrev||{};
- Fresh=Abbrev.Fresh=Abbrev.Fresh||{};
- TaskCompletionSource=WebSharper.TaskCompletionSource=WebSharper.TaskCompletionSource||{};
- Scheduler=Concurrency.Scheduler=Concurrency.Scheduler||{};
- AggregateException=WebSharper.AggregateException=WebSharper.AggregateException||{};
  CancellationTokenSource=WebSharper.CancellationTokenSource=WebSharper.CancellationTokenSource||{};
- Elt=UI.Elt=UI.Elt||{};
- Array=UI.Array=UI.Array||{};
- SC$4=Global.StartupCode$WebSharper_UI$Templates=Global.StartupCode$WebSharper_UI$Templates||{};
- HashSet=Collections.HashSet=Collections.HashSet||{};
- An=UI.An=UI.An||{};
+ SC$5=Global.StartupCode$WebSharper_UI$Templates=Global.StartupCode$WebSharper_UI$Templates||{};
+ An=UI$1.An=UI$1.An||{};
  Settings=Client.Settings=Client.Settings||{};
  Mailbox=Abbrev.Mailbox=Abbrev.Mailbox||{};
+ Updates=UI$1.Updates=UI$1.Updates||{};
+ SC$6=Global.StartupCode$WebSharper_UI$DomUtility=Global.StartupCode$WebSharper_UI$DomUtility||{};
  Json=WebSharper.Json=WebSharper.Json||{};
- InvalidOperationException=WebSharper.InvalidOperationException=WebSharper.InvalidOperationException||{};
- DocElemNode=UI.DocElemNode=UI.DocElemNode||{};
- CharacterData=Global.CharacterData;
- SC$5=Global.StartupCode$WebSharper_UI$DomUtility=Global.StartupCode$WebSharper_UI$DomUtility||{};
- Updates=UI.Updates=UI.Updates||{};
+ Attrs$1=Client.Attrs=Client.Attrs||{};
+ Dyn=Attrs$1.Dyn=Attrs$1.Dyn||{};
  Prepare=Templates.Prepare=Templates.Prepare||{};
  KeyCollection=Collections.KeyCollection=Collections.KeyCollection||{};
  Docs$1=Client.Docs=Client.Docs||{};
  RunState=Docs$1.RunState=Docs$1.RunState||{};
  NodeSet=Docs$1.NodeSet=Docs$1.NodeSet||{};
- Anims=UI.Anims=UI.Anims||{};
- SC$6=Global.StartupCode$WebSharper_UI$Doc_Proxy=Global.StartupCode$WebSharper_UI$Doc_Proxy||{};
- FormatException=WebSharper.FormatException=WebSharper.FormatException||{};
- SC$7=Global.StartupCode$WebSharper_UI$Abbrev=Global.StartupCode$WebSharper_UI$Abbrev||{};
- Attrs$1=Client.Attrs=Client.Attrs||{};
- Dyn=Attrs$1.Dyn=Attrs$1.Dyn||{};
- Queue=WebSharper.Queue=WebSharper.Queue||{};
+ Anims=UI$1.Anims=UI$1.Anims||{};
+ SC$7=Global.StartupCode$WebSharper_UI$Doc_Proxy=Global.StartupCode$WebSharper_UI$Doc_Proxy||{};
  SC$8=Global.StartupCode$WebSharper_UI$Attr_Client=Global.StartupCode$WebSharper_UI$Attr_Client||{};
- SC$9=Global.StartupCode$WebSharper_UI$Animation=Global.StartupCode$WebSharper_UI$Animation||{};
- AppendList=UI.AppendList=UI.AppendList||{};
- Easing=UI.Easing=UI.Easing||{};
- HashSet$1=Abbrev.HashSet=Abbrev.HashSet||{};
+ FormatException=WebSharper.FormatException=WebSharper.FormatException||{};
+ SC$9=Global.StartupCode$WebSharper_UI$Abbrev=Global.StartupCode$WebSharper_UI$Abbrev||{};
+ Queue=WebSharper.Queue=WebSharper.Queue||{};
+ SC$10=Global.StartupCode$WebSharper_UI$Animation=Global.StartupCode$WebSharper_UI$Animation||{};
+ AppendList=UI$1.AppendList=UI$1.AppendList||{};
  HashSetUtil=Collections.HashSetUtil=Collections.HashSetUtil||{};
- DynamicAttrNode=UI.DynamicAttrNode=UI.DynamicAttrNode||{};
+ Easing=UI$1.Easing=UI$1.Easing||{};
+ HashSet$1=Abbrev.HashSet=Abbrev.HashSet||{};
+ DynamicAttrNode=UI$1.DynamicAttrNode=UI$1.DynamicAttrNode||{};
  DomNodes=Docs$1.DomNodes=Docs$1.DomNodes||{};
- SC$10=Global.StartupCode$WebSharper_UI$AppendList=Global.StartupCode$WebSharper_UI$AppendList||{};
+ Lazy=WebSharper.Lazy=WebSharper.Lazy||{};
+ SC$11=Global.StartupCode$WebSharper_UI$AppendList=Global.StartupCode$WebSharper_UI$AppendList||{};
+ LazyExtensionsProxy=WebSharper.LazyExtensionsProxy=WebSharper.LazyExtensionsProxy||{};
+ LazyRecord=LazyExtensionsProxy.LazyRecord=LazyExtensionsProxy.LazyRecord||{};
  console=Global.console;
  IntelliFactory=Global.IntelliFactory;
- Runtime=IntelliFactory&&IntelliFactory.Runtime;
+ Runtime$1=IntelliFactory&&IntelliFactory.Runtime;
+ Date=Global.Date;
  JSON=Global.JSON;
  $=Global.jQuery;
- Date=Global.Date;
+ Math=Global.Math;
  Library.Error=function(a)
  {
   return{
@@ -828,230 +852,24 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$1.$cctor();
   return SC$1.wasmStatusV;
  };
- WasmLoader.detailsV=function()
- {
-  SC$1.$cctor();
-  return SC$1.detailsV;
- };
- WasmLoader.fsErrsV=function()
- {
-  SC$1.$cctor();
-  return SC$1.fsErrsV;
- };
- WasmLoader.wsErrsV=function()
- {
-  SC$1.$cctor();
-  return SC$1.wsErrsV;
- };
- WasmLoader.wsWrnsV=function()
- {
-  SC$1.$cctor();
-  return SC$1.wsWrnsV;
- };
- WasmLoader.codeV=function()
- {
-  SC$1.$cctor();
-  return SC$1.codeV;
- };
- WasmLoader.optsV=function()
- {
-  SC$1.$cctor();
-  return SC$1.optsV;
- };
- WasmLoader.clean=function()
- {
-  WasmLoader.detailsV().Set("");
- };
  WasmLoader.printfn=function(fmt)
  {
   return fmt(Remoting.messaging().wprintfn);
- };
- WasmLoader.parseAndCheckProject=function(projectName,opts,code)
- {
-  var b;
-  b=null;
-  return Concurrency.Delay(function()
-  {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.parseAndCheckProjectRpc:-1474163089",[projectName,opts,code]),function(a)
-   {
-    var a$1;
-    WasmLoader.fsErrsV().Set(Arrays.ofSeq(a[0]));
-    WasmLoader.wsErrsV().Set([]);
-    WasmLoader.wsWrnsV().Set([]);
-    a$1=(function($1)
-    {
-     return function($2)
-     {
-      return $1("("+Utils.prettyPrint($2[0])+", "+Utils.printArray(Utils.prettyPrint,$2[1])+")");
-     };
-    }(Global.id))([a[2],a[1]]);
-    WasmLoader.detailsV().Set(a$1);
-    return Concurrency.Zero();
-   });
-  });
- };
- WasmLoader.translateToJs=function(projectName,opts,code)
- {
-  var b;
-  b=null;
-  return Concurrency.Delay(function()
-  {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.translateFsToJsRpc:957452724",[projectName,opts,code]),function(a)
-   {
-    var wsO;
-    wsO=a[1];
-    WasmLoader.fsErrsV().Set(a[0]);
-    return wsO==null?(WasmLoader.clean(),WasmLoader.wsErrsV().Set([]),WasmLoader.wsWrnsV().Set([]),Concurrency.Zero()):(WasmLoader.detailsV().Set(wsO.$0[0]),WasmLoader.wsErrsV().Set(Arrays.ofSeq(wsO.$0[1])),WasmLoader.wsWrnsV().Set(Arrays.ofSeq(wsO.$0[2])),Concurrency.Zero());
-   });
-  });
- };
- WasmLoader.callWasmA=function(f,p)
- {
-  var b;
-  Concurrency.Start((b=null,Concurrency.Delay(function()
-  {
-   return Concurrency.Combine(WasmLoader.wasmStatusV().Get().$===0?(WasmLoad.loadWasmInWorker(),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
-   {
-    return Concurrency.Bind(Concurrency.Sleep(50),function()
-    {
-     return Concurrency.Combine(Concurrency.While(function()
-     {
-      var m;
-      m=WasmLoader.wasmStatusV().Get();
-      return m.$==2?false:m.$==5?false:m.$==3?Operators.FailWith("Wasm is already finished (Refresh browser to restart it"):true;
-     },Concurrency.Delay(function()
-     {
-      WasmLoader.printfn(function($1)
-      {
-       return $1("Waiting for WASM to load...");
-      });
-      return Concurrency.Bind(Concurrency.Sleep(2000),function()
-      {
-       return Concurrency.Return(null);
-      });
-     })),Concurrency.Delay(function()
-     {
-      return Concurrency.Bind(f(p),function()
-      {
-       return Concurrency.Return(null);
-      });
-     }));
-    });
-   }));
-  })),null);
- };
- WasmLoader.getParms=function()
- {
-  return["WasmTest",Strings.SplitChars("fsc.exe\n"+WasmLoader.optsV().Get(),["\n"],0),WasmLoader.codeV().Get()];
- };
- WasmLoader.mainDoc=function()
- {
-  function a($1,$2)
-  {
-   return Doc.Element("li",[],[Doc.TextNode((function($3)
-   {
-    return function($4)
-    {
-     return $3("("+testing_GeneratedPrintf.p$1($4[0])+", "+testing_GeneratedPrintf.p$2($4[1])+")");
-    };
-   }(Global.id))([$1,$2]))]);
-  }
-  function a$1($1,$2)
-  {
-   return Doc.Element("li",[],[Doc.TextNode((function($3)
-   {
-    return function($4)
-    {
-     return $3("("+testing_GeneratedPrintf.p$1($4[0])+", "+testing_GeneratedPrintf.p$3($4[1])+")");
-    };
-   }(Global.id))([$1,$2]))]);
-  }
-  return Doc.Element("div",[],[Doc.Element("h1",[],[Doc.TextNode("HELLO WASM!")]),Doc.Element("h2",[],[Doc.TextView(View.Map(function($1)
-  {
-   return(function($2)
-   {
-    return function($3)
-    {
-     return $2(testing_GeneratedPrintf.p($3));
-    };
-   }(Global.id))($1);
-  },WasmLoader.wasmStatusV().get_View()))]),Doc.Element("div",[],[Doc.InputArea([],WasmLoader.codeV()),Doc.InputArea([],WasmLoader.optsV())]),Doc.Element("span",[],[Doc.Button("Check",[],function()
-  {
-   WasmLoader.callWasmA(function(t)
-   {
-    return WasmLoader.parseAndCheckProject(t[0],t[1],t[2]);
-   },WasmLoader.getParms());
-  }),Doc.Button("Translate",[],function()
-  {
-   WasmLoader.clean();
-   WasmLoader.printfn(function($1)
-   {
-    return $1("Initiating translation:");
-   });
-   WasmLoader.callWasmA(function(t)
-   {
-    return WasmLoader.translateToJs(t[0],t[1],t[2]);
-   },WasmLoader.getParms());
-  }),Doc.Button("Dir",[],function()
-  {
-   WasmLoader.callWasmA(function(d)
-   {
-    return(new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.dirRpc:-1181784350",[d]);
-   },"/");
-  }),Doc.Button("Clean",[],function()
-  {
-   WasmLoader.clean();
-  }),Doc.Button("Load as Worker",[],function()
-  {
-   WasmLoad.loadWasmInWorker();
-  }),Doc.Button("Load in Main thread",[],function()
-  {
-   Concurrency.Start(WasmLoad.loadInThisThread(),null);
-  })]),Doc.Element("ol",[],[Doc.Convert(function(x)
-  {
-   return Doc.Element("li",[],[Doc.TextNode((function($1)
-   {
-    return function($2)
-    {
-     return $1(Utils.prettyPrint($2));
-    };
-   }(Global.id))(x))]);
-  },WasmLoader.fsErrsV().get_View())]),Doc.Element("ol",[],[Doc.Convert(function($1)
-  {
-   return a($1[0],$1[1]);
-  },WasmLoader.wsErrsV().get_View())]),Doc.Element("ol",[],[Doc.Convert(function($1)
-  {
-   return a$1($1[0],$1[1]);
-  },WasmLoader.wsWrnsV().get_View())]),Doc.Element("div",[AttrProxy.Create("style","font-family: monospace; white-space:pre")],[Doc.TextView(WasmLoader.detailsV().get_View())])]);
- };
- WasmLoader.main=function()
- {
-  var x,a;
-  x=WasmLoader.mainDoc();
-  a=self.document.body;
-  Templates.LoadLocalTemplates("");
-  Doc.Run(a,x);
- };
- WasmStatus.WasmLoading={
-  $:1
  };
  WasmStatus.WasmNotLoaded={
   $:0
  };
  WasmStatus.WasmWorkerLoading={
-  $:4
+  $:3
+ };
+ WasmStatus.WasmLoading={
+  $:1
  };
  WasmStatus.WasmWorkerLoaded={
-  $:5
+  $:4
  };
  WasmStatus.WasmLoaded={
   $:2
- };
- Remoting.appendMsg=function(txt)
- {
-  var pre;
-  console.log(txt);
-  !(!self.document)?(pre=WasmLoader.detailsV().Get(),WasmLoader.detailsV().Set(pre+(pre===""?"":"\n")+txt)):void 0;
  };
  Remoting.getHeaderRpc=function(headers)
  {
@@ -1154,7 +972,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:m.$0
   })):null));
  };
- Obj=WebSharper.Obj=Runtime.Class({
+ Obj=WebSharper.Obj=Runtime$1.Class({
   Equals:function(obj)
   {
    return this===obj;
@@ -1164,10 +982,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return -1;
   }
  },null,Obj);
- Obj.New=Runtime.Ctor(function()
+ Obj.New=Runtime$1.Ctor(function()
  {
  },Obj);
- CustomXhrProvider=Remoting.CustomXhrProvider=Runtime.Class({
+ CustomXhrProvider=Remoting.CustomXhrProvider=Runtime$1.Class({
   Async:function(url,headers,data,ok,err)
   {
    var b;
@@ -1188,7 +1006,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    })),null);
   }
  },Obj,CustomXhrProvider);
- CustomXhrProvider.New=Runtime.Ctor(function()
+ CustomXhrProvider.New=Runtime$1.Ctor(function()
  {
   Obj.New.call(this);
  },CustomXhrProvider);
@@ -1202,7 +1020,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$1.$cctor();
   return SC$1.workerO;
  };
- WWorker.receiveMessage=function(evt)
+ WWorker.receiveMessage=function(loadInThisThread,evt)
  {
   var m;
   m=evt.data;
@@ -1212,7 +1030,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     return $1(Utils.toSafe($2));
    };
-  }))(m.$0):Remoting.callRunRpc(m.$0,m.$1);
+  }))(m.$0):m.$==2?loadInThisThread(m.$0):Remoting.callRunRpc(m.$0,m.$1);
  };
  WWorker.fromWorker=function(evt)
  {
@@ -1225,6 +1043,25 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     return $1(Utils.toSafe($2));
    };
   }))(m.$0):m.$==3?(v=m.$0,!Unchecked.Equals(WasmLoader.wasmStatusV().Get(),v)?WasmLoader.wasmStatusV().Set(v):void 0):Remoting.returnValue0(m.$0,m.$1);
+ };
+ WWorker.terminate=function()
+ {
+  var $1;
+  if($1=WWorker.workerO(),$1!=null&&$1.$==1)
+   {
+    WWorker.workerO().$0.terminate();
+    WWorker.set_workerO(null);
+    WasmLoader.printfn(function($2)
+    {
+     return $2("Worker terminated!");
+    });
+    WasmLoader.wasmStatusV().Set(WasmStatus.WasmNotLoaded);
+   }
+  else
+   WasmLoader.printfn(function($2)
+   {
+    return $2("Worker is not present");
+   });
  };
  WasmLoad.rootPath=function()
  {
@@ -1241,10 +1078,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  WasmLoad.bindStaticMethod=function(assmbly,path,methd)
  {
   var m;
-  self[((((Runtime.Curried(function($1,$2,$3,$4)
+  self[((((Runtime$1.Curried(function($1,$2,$3,$4)
   {
    return $1("WASM_"+Utils.toSafe($2)+"_"+Utils.toSafe($3)+"_"+Utils.toSafe($4));
-  },4))(Global.id))(assmbly))(Strings.Replace(path,".","_")))(methd)]=(m=((((Runtime.Curried(function($1,$2,$3,$4)
+  },4))(Global.id))(assmbly))(Strings.Replace(path,".","_")))(methd)]=(m=((((Runtime$1.Curried(function($1,$2,$3,$4)
   {
    return $1("["+Utils.toSafe($2)+"]"+Utils.toSafe($3)+":"+Utils.toSafe($4));
   },4))(Global.id))(assmbly))(path))(methd),self.Module.mono_bind_static_method(m));
@@ -1256,14 +1093,9 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    WasmLoad.bindStaticMethod(t[0],t[1],t[2]);
   },List.ofArray([["WsTranslator","FsRoot.WsTranslator","runRpc"]]));
  };
- WasmLoad.filesToPreload=function()
+ WasmLoad.preloadFiles=function(files)
  {
-  SC$1.$cctor();
-  return SC$1.filesToPreload;
- };
- WasmLoad.preloadFiles=function()
- {
-  var e,f,pathTo,e$1,file;
+  var dirFiles,e,f,file,dir,from;
   self.Browser=Pojo.newPojo([["init",Global.ignore],["asyncLoad",function(url,onload,onerror)
   {
    var xhr;
@@ -1281,35 +1113,50 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return xhr.send(null);
   }]]);
   self.Module.preloadPlugins=[];
-  e=Enumerator.Get(WasmLoad.filesToPreload());
+  dirFiles=Seq.cache(Seq.distinct(Seq.map(function(a)
+  {
+   return[Strings.concat("/",Slice.array(a,null,{
+    $:1,
+    $0:Arrays.length(a)-2
+   })),Seq.last(a)];
+  },Seq.map(function(a)
+  {
+   return Arrays.map(Strings.Trim,a);
+  },Seq.map(function(s)
+  {
+   return Strings.SplitChars(Strings.Replace(s,"\\","/"),["/"],0);
+  },files)))));
+  Seq.iter(function(dir$1)
+  {
+   try
+   {
+    self.FS.mkdir(dir$1);
+   }
+   catch(e$1)
+   {
+    null;
+   }
+  },Seq.distinct(Seq.map(function(t)
+  {
+   return t[0];
+  },dirFiles)));
+  e=Enumerator.Get(dirFiles);
   try
   {
    while(e.MoveNext())
     {
      f=e.Current();
-     pathTo=f[1];
-     try
+     file=f[1];
+     dir=f[0];
+     from=Strings.Replace(WasmLoad.rootPath()+dir+"/"+file,"//","/");
+     (WasmLoader.printfn(function($1)
      {
-      self.FS.mkdir(pathTo);
-     }
-     catch(e$2)
-     {
-      null;
-     }
-     e$1=Enumerator.Get(f[2]);
-     try
-     {
-      while(e$1.MoveNext())
-       {
-        file=e$1.Current();
-        self.FS.createPreloadedFile(pathTo,file,f[0]+"/"+file,1,Global.$op21);
-       }
-     }
-     finally
-     {
-      if(typeof e$1=="object"&&"Dispose"in e$1)
-       e$1.Dispose();
-     }
+      return function($2)
+      {
+       return $1("Preloading "+Utils.toSafe($2));
+      };
+     }))(from);
+     self.FS.createPreloadedFile(dir,file,from,1,Global.$op21);
     }
   }
   finally
@@ -1318,16 +1165,129 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     e.Dispose();
   }
  };
- WasmLoad.loadWasm=function()
+ WasmLoad.filesToPreload=function(opts)
  {
-  SC$1.$cctor();
-  return SC$1.loadWasm;
+  return List.ofSeq(Seq.delay(function()
+  {
+   return Seq.append(WsTranslator.dlls(),Seq.delay(function()
+   {
+    return Arrays.choose(function(a)
+    {
+     var a$1;
+     a$1=String.StartsWith("-r:",a);
+     return a$1!=null&&a$1.$==1?{
+      $:1,
+      $0:a$1.$0
+     }:null;
+    },Strings.SplitChars(opts,["\n"],0));
+   }));
+  }));
  };
- WasmLoad.loadInThisThread=function()
+ WasmLoad.loadInThisThread=function(opts)
  {
-  return Concurrency.AwaitTask1(WasmLoad.loadWasm().f());
+  var $1,$2,$3;
+  $2=!self.document;
+  $3=WasmLoader.wasmStatusV().Get();
+  switch($2?$3.$==3?1:$3.$==1?2:$3.$==2?4:$3.$==0?6:0:$3.$==1?1:$3.$==3?3:$3.$==4?5:$3.$==0?6:0)
+  {
+   case 0:
+    null;
+    break;
+   case 1:
+    WasmLoader.printfn(function($4)
+    {
+     return $4("WASM is loading");
+    });
+    break;
+   case 2:
+    WasmLoader.printfn(function($4)
+    {
+     return $4("WASM is loading in the main thread");
+    });
+    break;
+   case 3:
+    WasmLoader.printfn(function($4)
+    {
+     return $4("WASM is loading in a WebWorker");
+    });
+    break;
+   case 4:
+    WasmLoader.printfn(function($4)
+    {
+     return $4("WASM is loaded in the main thread");
+    });
+    break;
+   case 5:
+    WasmLoader.printfn(function($4)
+    {
+     return $4("WASM is loaded in a WebWorker");
+    });
+    break;
+   case 6:
+    Concurrency.Start(Concurrency.FromContinuations(function(ok)
+    {
+     var b;
+     function init()
+     {
+      WasmLoad.bindWasm();
+      WasmLoader.printfn(function($4)
+      {
+       return $4("WASM Initialized!");
+      });
+      WasmLoader.wasmStatusV().Set(!self.document?WasmStatus.WasmWorkerLoaded:WasmStatus.WasmLoaded);
+      ok();
+     }
+     return Concurrency.Start((b=null,Concurrency.Delay(function()
+     {
+      WasmLoader.printfn(function($4)
+      {
+       return $4("Loading WASM. Hold on, this will take a while...");
+      });
+      WasmLoader.wasmStatusV().Set(!self.document?WasmStatus.WasmWorkerLoading:WasmStatus.WasmLoading);
+      return Concurrency.Bind(Concurrency.Sleep(50),function()
+      {
+       return Concurrency.Combine(!(!self.document)?(Remoting.installProvider(),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
+       {
+        self.App=Pojo.newPojo([["init",init]]);
+        return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"mono-config.js"]),function()
+        {
+         return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"runtime.js"]),function()
+         {
+          var a,a$1;
+          a=WasmLoader.printfn(function($4)
+          {
+           return function($5)
+           {
+            return $4(Utils.toSafe($5));
+           };
+          });
+          self.Module.print=a;
+          a$1=WasmLoader.printfn(function($4)
+          {
+           return function($5)
+           {
+            return $4(Utils.toSafe($5));
+           };
+          });
+          self.Module.printErr=a$1;
+          self.Module.preRun=[function()
+          {
+           WasmLoad.preloadFiles(WasmLoad.filesToPreload(opts));
+          }];
+          return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"dotnet.js"]),function()
+          {
+           return Concurrency.Zero();
+          });
+         });
+        });
+       }));
+      });
+     })),null);
+    }),null);
+    break;
+  }
  };
- WasmLoad.loadWasmInWorker=function()
+ WasmLoad.loadWasmInWorker=function(opts)
  {
   var w;
   if(!self.document)
@@ -1347,7 +1307,15 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    else
     {
      WasmLoader.wasmStatusV().Set(WasmStatus.WasmLoading);
-     w=new Global.Worker("/WASM/publish/testing.WasmWorker.js");
+     WasmLoader.printfn(function($1)
+     {
+      return $1("Initiating WebWorker");
+     });
+     w=new Global.Worker(Runtime$1.ScriptPath("../WASM/publish/","testing.WasmWorker.js"));
+     w.postMessage({
+      $:2,
+      $0:opts
+     });
      w.onmessage=WWorker.fromWorker;
      WWorker.set_workerO({
       $:1,
@@ -1369,23 +1337,840 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      },function(t)
      {
       Remoting.returnExn0(t[0],t[1]);
-     },function(t)
-     {
-      Remoting.appendMsg(t);
-     }));
+     },Remoting.messaging().wprintfn));
      Remoting.installProvider();
     }
  };
- Require=WasmLoad.Require=Runtime.Class({},Obj,Require);
- Require.New=Runtime.Ctor(function()
+ Require=WasmLoad.Require=Runtime$1.Class({},Obj,Require);
+ Require.New=Runtime$1.Ctor(function()
  {
   Obj.New.call(this);
  },Require);
- Global$1=WasmLoad.Global=Runtime.Class({},Obj,Global$1);
- Global$1.New=Runtime.Ctor(function()
+ GlobalModule=WasmLoad.GlobalModule=Runtime$1.Class({},Obj,GlobalModule);
+ GlobalModule.New=Runtime$1.Ctor(function()
  {
   Obj.New.call(this);
- },Global$1);
+ },GlobalModule);
+ UI.detailsV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.detailsV;
+ };
+ UI.fsErrsV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.fsErrsV;
+ };
+ UI.wsErrsV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.wsErrsV;
+ };
+ UI.wsWrnsV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.wsWrnsV;
+ };
+ UI.codeV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.codeV;
+ };
+ UI.optsV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.optsV;
+ };
+ UI.clean=function()
+ {
+  UI.detailsV().Set("");
+ };
+ UI.callWasmA=function(f,p)
+ {
+  var b;
+  Concurrency.Start((b=null,Concurrency.Delay(function()
+  {
+   return Concurrency.Combine(WasmLoader.wasmStatusV().Get().$===0?(WasmLoad.loadWasmInWorker(UI.optsV().Get()),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
+   {
+    return Concurrency.Bind(Concurrency.Sleep(50),function()
+    {
+     return Concurrency.Combine(Concurrency.While(function()
+     {
+      var m;
+      m=WasmLoader.wasmStatusV().Get();
+      return m.$==2?false:m.$!=4;
+     },Concurrency.Delay(function()
+     {
+      WasmLoader.printfn(function($1)
+      {
+       return $1("Waiting for WASM to load...");
+      });
+      return Concurrency.Bind(Concurrency.Sleep(2000),function()
+      {
+       return Concurrency.Return(null);
+      });
+     })),Concurrency.Delay(function()
+     {
+      return Concurrency.Bind(f(p),function()
+      {
+       return Concurrency.Return(null);
+      });
+     }));
+    });
+   }));
+  })),null);
+ };
+ UI.getParms=function()
+ {
+  return["WasmTest",Arrays.filter(function(s)
+  {
+   return Strings.Trim(s)!=="";
+  },Strings.SplitChars("fsc.exe\n"+UI.optsV().Get(),["\n"],0)),UI.codeV().Get()];
+ };
+ UI.showMessages=function(name,f,msgsW)
+ {
+  return Doc.BindView(function(msgs)
+  {
+   return Arrays.length(msgs)===0?Doc.get_Empty():Doc.Element("div",[],[Doc.TextNode(name),Doc.Element("ol",[],[Doc.Concat(Seq.map(function(x)
+   {
+    return Doc.Element("li",[],[Doc.TextNode(f(x))]);
+   },msgs))])]);
+  },msgsW);
+ };
+ UI.parseAndCheckProject=function(projectName,opts,code)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.parseAndCheckProjectRpc:-1474163089",[projectName,opts,code]),function(a)
+   {
+    var a$1;
+    UI.fsErrsV().Set(Arrays.ofSeq(a[0]));
+    UI.wsErrsV().Set([]);
+    UI.wsWrnsV().Set([]);
+    a$1=(function($1)
+    {
+     return function($2)
+     {
+      return $1("("+Utils.prettyPrint($2[0])+", "+Utils.printArray(Utils.prettyPrint,$2[1])+")");
+     };
+    }(Global.id))([a[2],a[1]]);
+    UI.detailsV().Set(a$1);
+    return Concurrency.Zero();
+   });
+  });
+ };
+ UI.translateToJs=function(projectName,opts,code)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.translateFsToJsRpc:957452724",[projectName,opts,code]),function(a)
+   {
+    var wsO;
+    wsO=a[1];
+    UI.fsErrsV().Set(a[0]);
+    return wsO==null?(UI.clean(),UI.wsErrsV().Set([]),UI.wsWrnsV().Set([]),Concurrency.Zero()):(UI.detailsV().Set(wsO.$0[0]),UI.wsErrsV().Set(Arrays.ofSeq(wsO.$0[1])),UI.wsWrnsV().Set(Arrays.ofSeq(wsO.$0[2])),Concurrency.Zero());
+   });
+  });
+ };
+ UI.mainDoc=function()
+ {
+  var c,c$1;
+  return Doc.Element("div",[],[Doc.Element("h1",[],[Doc.TextNode("HELLO WASM!")]),Doc.Element("h2",[],[Doc.TextView(View.Map(function($1)
+  {
+   return(function($2)
+   {
+    return function($3)
+    {
+     return $2(testing_GeneratedPrintf.p($3));
+    };
+   }(Global.id))($1);
+  },WasmLoader.wasmStatusV().get_View()))]),Doc.Element("span",[],[Doc.Button("Load as Worker",[],function()
+  {
+   WasmLoad.loadWasmInWorker(UI.optsV().Get());
+  }),Doc.Button("Load in Main thread",[],function()
+  {
+   WasmLoad.loadInThisThread(UI.optsV().Get());
+  }),Doc.Button("Terminate Worker",[],function()
+  {
+   WWorker.terminate();
+  })]),Doc.Element("div",[],[Doc.InputArea([],UI.codeV()),Doc.InputArea([],UI.optsV())]),Doc.Element("span",[],[Doc.Button("Check",[],function()
+  {
+   UI.callWasmA(function(t)
+   {
+    return UI.parseAndCheckProject(t[0],t[1],t[2]);
+   },UI.getParms());
+  }),Doc.Button("Translate",[],function()
+  {
+   UI.clean();
+   WasmLoader.printfn(function($1)
+   {
+    return $1("Initiating translation:");
+   });
+   UI.callWasmA(function(t)
+   {
+    return UI.translateToJs(t[0],t[1],t[2]);
+   },UI.getParms());
+  }),Doc.Button("Dir",[],function()
+  {
+   UI.callWasmA(function(d)
+   {
+    return(new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.dirRpc:-1181784350",[d]);
+   },"/");
+  }),Doc.Button("Clean",[],function()
+  {
+   UI.clean();
+  })]),UI.showMessages("Fsc Messages",function($1)
+  {
+   return function($2)
+   {
+    return $1(Utils.prettyPrint($2));
+   };
+  }(Global.id),UI.fsErrsV().get_View()),UI.showMessages("Ws  Errors",(c=function($1)
+  {
+   return function($2)
+   {
+    return $1("("+testing_GeneratedPrintf.p$1($2[0])+", "+testing_GeneratedPrintf.p$2($2[1])+")");
+   };
+  }(Global.id),function(t)
+  {
+   return c([t[0],t[1]]);
+  }),UI.wsErrsV().get_View()),UI.showMessages("Ws  Warnings",(c$1=function($1)
+  {
+   return function($2)
+   {
+    return $1("("+testing_GeneratedPrintf.p$1($2[0])+", "+testing_GeneratedPrintf.p$3($2[1])+")");
+   };
+  }(Global.id),function(t)
+  {
+   return c$1([t[0],t[1]]);
+  }),UI.wsWrnsV().get_View()),Doc.Element("div",[AttrProxy.Create("style","font-family: monospace; white-space:pre")],[Doc.TextView(UI.detailsV().get_View())])]);
+ };
+ UI.main=function()
+ {
+  var x,a;
+  x=UI.mainDoc();
+  a=self.document.body;
+  Templates.LoadLocalTemplates("");
+  Doc.Run(a,x);
+ };
+ WSFrameworkTest.testVar=function()
+ {
+  SC$1.$cctor();
+  return SC$1.testVar;
+ };
+ WSFrameworkTest.testVarInput=function()
+ {
+  return Doc.Element("div",[],[Doc.Input([],WSFrameworkTest.testVar())]);
+ };
+ WSFrameworkTest.testVarOut=function()
+ {
+  return Doc.Element("div",[],[Doc.TextView(WSFrameworkTest.testVar().get_View())]);
+ };
+ WSFrameworkTest.mainDoc=function()
+ {
+  return Doc.Element("div",[],[Doc.Element("h1",[],[Doc.TextNode("Hello WSFramework")]),WSFrameworkTest.testVarInput(),WSFrameworkTest.testVarOut()]);
+ };
+ WSFrameworkTest.mainDocNameVar=function()
+ {
+  SC$1.$cctor();
+  return SC$1.mainDocNameVar;
+ };
+ AssemblyData["loadAssembly'"]=function(isLoaded,loadDef,fetchAsmData,asm)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return isLoaded(asm)?Concurrency.Zero():Concurrency.Bind(fetchAsmData(asm),function(a)
+   {
+    return Concurrency.Combine(Concurrency.For(a.dependencies,function(a$1)
+    {
+     return Concurrency.Bind(AssemblyData["loadAssembly'"](isLoaded,loadDef,fetchAsmData,a$1),function()
+     {
+      return Concurrency.Return(null);
+     });
+    }),Concurrency.Delay(function()
+    {
+     loadDef(a);
+     return Concurrency.Zero();
+    }));
+   });
+  });
+ };
+ AssemblyData.assemblies=function()
+ {
+  SC$1.$cctor();
+  return SC$1.assemblies;
+ };
+ AssemblyData.isLoaded=function(asmRef)
+ {
+  return AssemblyData.assemblies().TryFind(function(ad)
+  {
+   return Unchecked.Equals(ad.self,asmRef);
+  })!=null;
+ };
+ AssemblyData.loadDef=function(def)
+ {
+  var asms;
+  try
+  {
+   asms=List.ofSeq((AssemblyData.assemblies())["var"].Get());
+   Global["eval"]((((Runtime$1.Curried3(function($1,$2,$3)
+   {
+    return $1("console.log('loading "+Utils.toSafe($2)+" ...');"+Utils.toSafe($3));
+   }))(Global.id))(def.name.get_Id()))(def.javaScript.get_Id()));
+   AssemblyData.assemblies().Set(new T({
+    $:1,
+    $0:def,
+    $1:asms
+   }));
+  }
+  catch(e)
+  {
+   ((function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(e));
+  }
+ };
+ AssemblyData.Folder=function()
+ {
+  SC$1.$cctor();
+  return SC$1.Folder;
+ };
+ AssemblyData.saveAssemblies=function(asms)
+ {
+  AssemblyData.assemblies().Set(asms);
+ };
+ AssemblyData.loadAssembly=function(asm)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind(AssemblyData["loadAssembly'"](AssemblyData.isLoaded,function(d)
+   {
+    AssemblyData.loadDef(d);
+   },function(a)
+   {
+    return LoadAsm.fetchAsmData(AssemblyData.Folder(),a);
+   },asm),function()
+   {
+    var asms;
+    asms=Arrays.ofSeq((AssemblyData.assemblies())["var"].Get());
+    self.IntelliFactory.Runtime.Start();
+    AssemblyData.saveAssemblies(asms);
+    return Concurrency.Zero();
+   });
+  });
+ };
+ AssemblyData.loadTesting=function()
+ {
+  Concurrency.Start(AssemblyData.loadAssembly(new AssemblyRef({
+   $:0,
+   $0:(function($1)
+   {
+    return function($2)
+    {
+     return $1("testing.asm?q="+Utils.prettyPrint($2));
+    };
+   }(Global.id))(Date.now())
+  })),null);
+ };
+ AssemblyData.alreadyLoaded=function()
+ {
+  return Seq.length((AssemblyData.assemblies())["var"].Get())>0;
+ };
+ AssemblyData.thisModuleV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.thisModuleV;
+ };
+ AssemblyData.loadThisModule=function()
+ {
+  Concurrency.Start(AssemblyData.loadAssembly(new AssemblyRef({
+   $:0,
+   $0:AssemblyData.thisModuleV().Get()
+  })),null);
+ };
+ AssemblyData.nobr=function()
+ {
+  return AttrProxy.Create("style","white-space: nowrap");
+ };
+ AssemblyData.click=function(f)
+ {
+  return AttrProxy.HandlerImpl("click",function()
+  {
+   return function()
+   {
+    return f();
+   };
+  });
+ };
+ AssemblyData.selectedAssembly=function()
+ {
+  SC$1.$cctor();
+  return SC$1.selectedAssembly;
+ };
+ AssemblyData.listAssembliesDoc=function()
+ {
+  var m;
+  function f(r,asmW)
+  {
+   return Doc.Element("tr",[],[Doc.Element("td",[AssemblyData.click(function()
+   {
+    AssemblyData.selectedAssembly().Set({
+     $:1,
+     $0:r
+    });
+   })],[Doc.TextView(View.Map(function($1)
+   {
+    return $1.name.get_Id();
+   },asmW))])]);
+  }
+  return Doc.Element("table",[],[(m=AssemblyData.assemblies(),Doc.ConvertSeqBy(m.key,function($1)
+  {
+   return function($2)
+   {
+    return f($1,$2);
+   };
+  },m["var"].get_View()))]);
+ };
+ AssemblyData.selectedMethod=function()
+ {
+  SC$1.$cctor();
+  return SC$1.selectedMethod;
+ };
+ AssemblyData.methodRows=function(p,asm,f)
+ {
+  return Doc.Element("table",[AttrProxy.Create("style","font-family: monospace")],List.ofSeq(Seq.delay(function()
+  {
+   return Seq.collect(function(mo)
+   {
+    var methods;
+    methods=Seq.filter(p,mo.methods);
+    return Seq.length(methods)>0?[Doc.Element("tr",[],List.ofSeq(Seq.delay(function()
+    {
+     return[Doc.Element("td",[],List.ofSeq(Seq.delay(function()
+     {
+      return Seq.append([Doc.Element("b",[],[Doc.TextNode(mo.name.get_Id2())])],Seq.delay(function()
+      {
+       return Seq.collect(function(me)
+       {
+        var x;
+        return[Doc.Element("tr",[AssemblyData.click(function()
+        {
+         AssemblyData.selectedMethod().Set({
+          $:1,
+          $0:[mo.name,me.name]
+         });
+        })],[Doc.Element("td",[],[Doc.TextNode(me.name.get_Id())]),Doc.Element("td",[],[Doc.TextNode(me.isField?"":(x=Strings.concat(", ",Seq.map(function(t)
+        {
+         return t.name.get_Id();
+        },me.parms)),(function($1)
+        {
+         return function($2)
+         {
+          return $1("("+Utils.toSafe($2)+")");
+         };
+        }(Global.id))(x)))]),Doc.Element("td",[AssemblyData.nobr()],[Doc.TextNode(me.isField?":":" -> ")]),Doc.Element("td",[],[Doc.TextNode(me.retType.name.get_Id())]),Doc.Element("td",[],[f(mo,me)])])];
+       },methods);
+      }));
+     })))];
+    })))]:[];
+   },asm.modules);
+  })));
+ };
+ AssemblyData.styleDoc=function()
+ {
+  return Doc.Element("style",T.Empty,List.ofArray([Doc.TextNode("\r\n                    .wsfmwk-alternate > * :nth-child(even) {background: #CCF}\r\n                    .wsfmwk-alternate > * :nth-child(odd ) {background: #CFC}\r\n                    .wsfmwk-alternate td { border: white ; border-style: solid ; border-width: thin}\r\n                    .wsfmwk-alternate tr { border: white ; border-style: solid ; border-width: thin}\r\n                ")]));
+ };
+ AssemblyData.assemblyDoc=function(asm)
+ {
+  var groups,y;
+  function emptyDoc(mo,me)
+  {
+   return Doc.get_Empty();
+  }
+  function inputVar(mo,me)
+  {
+   if(me.retType.name.get_Id()!=="Var<string>")
+    return Doc.get_Empty();
+   else
+    try
+    {
+     return Doc.Input(T.Empty,Global["eval"]((((Runtime$1.Curried3(function($1,$2,$3)
+     {
+      return $1(Utils.toSafe($2)+"."+Utils.toSafe($3)+"()");
+     }))(Global.id))(mo.name.get_Id2()))(me.name.get_Id())));
+    }
+    catch(e)
+    {
+     return Doc.TextNode(e.message);
+    }
+  }
+  function printText(mo,me)
+  {
+   var $1,x;
+   if(me.retType.name.get_Id().indexOf("<")!=-1)
+    return Doc.get_Empty();
+   else
+    {
+     try
+     {
+      $1=(x=Global["eval"]((((Runtime$1.Curried3(function($2,$3,$4)
+      {
+       return $2(Utils.toSafe($3)+"."+Utils.toSafe($4)+"()");
+      }))(Global.id))(mo.name.get_Id2()))(me.name.get_Id())),(function($2)
+      {
+       return function($3)
+       {
+        return $2(Utils.prettyPrint($3));
+       };
+      }(Global.id))(x));
+     }
+     catch(e)
+     {
+      $1=e.message;
+     }
+     return Doc.TextNode($1);
+    }
+  }
+  function showDoc(mo,me)
+  {
+   return Doc.Concat([Doc.Button("Show",[],function()
+   {
+    var a,x;
+    a=(x=(((Runtime$1.Curried3(function($1,$2,$3)
+    {
+     return $1(Utils.toSafe($2)+"."+Utils.toSafe($3)+"()");
+    }))(Global.id))(mo.name.get_Id2()))(me.name.get_Id()),(function($1)
+    {
+     return function($2)
+     {
+      return $1("WebSharper.UI.Doc.Concat(["+Utils.toSafe($2)+"])");
+     };
+    }(Global.id))(x));
+    WSFrameworkTest.mainDocNameVar().Set(a);
+   }),Doc.Button("Add",[],function()
+   {
+    var code,a,x;
+    code=WSFrameworkTest.mainDocNameVar().Get();
+    a=(x=(((Runtime$1.Curried3(function($1,$2,$3)
+    {
+     return $1(Utils.toSafe($2)+"."+Utils.toSafe($3)+"()");
+    }))(Global.id))(mo.name.get_Id2()))(me.name.get_Id()),(((Runtime$1.Curried3(function($1,$2,$3)
+    {
+     return $1(Utils.toSafe($2)+", "+Utils.toSafe($3)+"])");
+    }))(Global.id))(Slice.string(code,null,{
+     $:1,
+     $0:code.length-3
+    })))(x));
+    WSFrameworkTest.mainDocNameVar().Set(a);
+   })]);
+  }
+  function m(oldp,t)
+  {
+   var p;
+   p=t[1];
+   return[[t[0],function(me)
+   {
+    return p(me)&&!oldp(me);
+   }],function(me)
+   {
+    return p(me)||oldp(me);
+   }];
+  }
+  groups=(y=List.ofArray([[function($1)
+  {
+   return function($2)
+   {
+    return inputVar($1,$2);
+   };
+  },function(me)
+  {
+   return Strings.StartsWith(me.retType.name.get_Id(),"Var<")&&me.isField;
+  }],[function($1)
+  {
+   return function($2)
+   {
+    return emptyDoc($1,$2);
+   };
+  },function(me)
+  {
+   return Strings.StartsWith(me.retType.name.get_Id(),"View<")&&me.isField;
+  }],[function($1)
+  {
+   return function($2)
+   {
+    return printText($1,$2);
+   };
+  },function(me)
+  {
+   return me.retType.name.get_Id()!=="Doc"&&me.isField&&!(me.retType.name.get_Id().indexOf("->")!=-1);
+  }],[function($1)
+  {
+   return function($2)
+   {
+    return showDoc($1,$2);
+   };
+  },function(me)
+  {
+   return me.retType.name.get_Id()==="Doc"&&(me.isField||Seq.isEmpty(me.parms));
+  }],[function($1)
+  {
+   return function($2)
+   {
+    return emptyDoc($1,$2);
+   };
+  },function()
+  {
+   return true;
+  }]]),(((Runtime$1.Curried3(Seq.mapFold))(m))(function()
+  {
+   return false;
+  }))(y))[0];
+  return Doc.Concat([Doc.Element("h3",[],[Doc.TextNode(asm.name.get_Id())]),Doc.Element("div",[AttrModule.Class("wsfmwk-alternate")],List.ofSeq(Seq.delay(function()
+  {
+   return Seq.collect(function(m$1)
+   {
+    var f;
+    f=m$1[0];
+    return[AssemblyData.methodRows(m$1[1],asm,function($1,$2)
+    {
+     return(f($1))($2);
+    })];
+   },groups);
+  })))]);
+ };
+ AssemblyData.currentAssembly=function()
+ {
+  var b;
+  return Doc.BindView(Global.id,(b=View.get_Do(),View.Bind(function(a)
+  {
+   return a!=null&&a.$==1?View.Bind(function(a$1)
+   {
+    return a$1!=null&&a$1.$==1?View.Const(AssemblyData.assemblyDoc(a$1.$0)):View.Const(Doc.get_Empty());
+   },AssemblyData.assemblies().TryFindByKeyAsView(a.$0)):View.Const(Doc.get_Empty());
+  },AssemblyData.selectedAssembly().get_View())));
+ };
+ AssemblyData.assembliesDoc=function()
+ {
+  return Doc.Concat([Doc.Button("Load module:",[],function()
+  {
+   AssemblyData.loadThisModule();
+  }),Doc.Input([],AssemblyData.thisModuleV()),AssemblyData.listAssembliesDoc(),AssemblyData.currentAssembly(),AssemblyData.styleDoc()]);
+ };
+ ModuleName=AssemblyData.ModuleName=Runtime$1.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  },
+  get_Id2:function()
+  {
+   return Strings.Replace(this.get_Id(),"+",".");
+  }
+ },null,ModuleName);
+ TypeName=AssemblyData.TypeName=Runtime$1.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,TypeName);
+ MethodName=AssemblyData.MethodName=Runtime$1.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,MethodName);
+ AssemblyName=AssemblyData.AssemblyName=Runtime$1.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,AssemblyName);
+ AssemblyRef=AssemblyData.AssemblyRef=Runtime$1.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,AssemblyRef);
+ JSCode=AssemblyData.JSCode=Runtime$1.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,JSCode);
+ TypeRef.New=function(name,asm)
+ {
+  return{
+   name:name,
+   asm:asm
+  };
+ };
+ MethodDef.New=function(name,retType,parms,isField)
+ {
+  return{
+   name:name,
+   retType:retType,
+   parms:parms,
+   isField:isField
+  };
+ };
+ ModuleDef.New=function(name,methods)
+ {
+  return{
+   name:name,
+   methods:methods
+  };
+ };
+ AssemblyDef.New=function(name,self$1,modules,dependencies,javaScript)
+ {
+  return{
+   name:name,
+   self:self$1,
+   modules:modules,
+   dependencies:dependencies,
+   javaScript:javaScript
+  };
+ };
+ LoadAsm.fetchAsmData=function(folder,a)
+ {
+  var url,b;
+  url=a.$0;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind(TxtRuntime.AsyncMap(IO.asyncReadTextAtRuntime(false,"D:\\Abe\\CIPHERWorkspace\\FSharpStation\\src","","JSON","",url.indexOf("/")!=-1?url:folder+url),function(t)
+   {
+    return Unchecked.Equals(typeof t,"string")?JSON.parse(t):t;
+   }),function(a$1)
+   {
+    var n,prop,opt,s,j,prop$1,opt$1,d;
+    return Concurrency.Return((n=new AssemblyName({
+     $:0,
+     $0:(opt=(prop="asName",prop in a$1?{
+      $:1,
+      $0:a$1[prop]
+     }:null),opt==null?null:opt.$0)
+    }),(s=new AssemblyRef({
+     $:0,
+     $0:url
+    }),(j=new JSCode({
+     $:0,
+     $0:(opt$1=(prop$1="js",prop$1 in a$1?{
+      $:1,
+      $0:a$1[prop$1]
+     }:null),opt$1==null?null:opt$1.$0)
+    }),(d=Arrays.map(function(a$2)
+    {
+     return new AssemblyRef({
+      $:0,
+      $0:a$2
+     });
+    },a$1.dependencies),AssemblyDef.New(n,s,Arrays.map(function(mo)
+    {
+     var prop$2,opt$2;
+     return ModuleDef.New(new ModuleName({
+      $:0,
+      $0:(opt$2=(prop$2="moName",prop$2 in mo?{
+       $:1,
+       $0:mo[prop$2]
+      }:null),opt$2==null?null:opt$2.$0)
+     }),Arrays.map(function(me)
+     {
+      var n$1,prop$3,opt$3,i,v,prop$4,opt$4,x,prop$5,opt$5,x$1,prop$6,opt$6;
+      n$1=new MethodName({
+       $:0,
+       $0:(opt$3=(prop$3="meName",prop$3 in me?{
+        $:1,
+        $0:me[prop$3]
+       }:null),opt$3==null?null:opt$3.$0)
+      });
+      i=(v=(prop$4="isField",prop$4 in me?{
+       $:1,
+       $0:me[prop$4]
+      }:null),(opt$4=v==null?null:{
+       $:1,
+       $0:1*v.$0
+      },opt$4==null?null:opt$4.$0))===1;
+      return MethodDef.New(n$1,TypeRef.New(new TypeName({
+       $:0,
+       $0:(opt$5=(x=me.type,(prop$5="tName",prop$5 in x?{
+        $:1,
+        $0:x[prop$5]
+       }:null)),opt$5==null?null:opt$5.$0)
+      }),new AssemblyName({
+       $:0,
+       $0:(opt$6=(x$1=me.type,(prop$6="asm",prop$6 in x$1?{
+        $:1,
+        $0:x$1[prop$6]
+       }:null)),opt$6==null?null:opt$6.$0)
+      })),Arrays.map(function(p)
+      {
+       var prop$7,opt$7,prop$8,opt$8;
+       return TypeRef.New(new TypeName({
+        $:0,
+        $0:(opt$7=(prop$7="tName",prop$7 in p?{
+         $:1,
+         $0:p[prop$7]
+        }:null),opt$7==null?null:opt$7.$0)
+       }),new AssemblyName({
+        $:0,
+        $0:(opt$8=(prop$8="asm",prop$8 in p?{
+         $:1,
+         $0:p[prop$8]
+        }:null),opt$8==null?null:opt$8.$0)
+       }));
+      },me.parms),i);
+     },mo.methods));
+    },a$1.modules),d,j))))));
+   });
+  });
+ };
+ WSFramework.mainDocNameVar=function()
+ {
+  SC$1.$cctor();
+  return SC$1.mainDocNameVar$1;
+ };
+ WSFramework.mainDocVar=function()
+ {
+  SC$1.$cctor();
+  return SC$1.mainDocVar;
+ };
+ WSFramework.mainDocInput=function()
+ {
+  return Doc.Element("div",[],[Doc.Input([AttrProxy.Create("style","width: 100%")],WSFramework.mainDocNameVar())]);
+ };
+ WSFramework.mainSubDoc=function()
+ {
+  SC$1.$cctor();
+  return SC$1.mainSubDoc;
+ };
+ WSFramework.main=function()
+ {
+  var x,a;
+  if(!(!self.document))
+   if(AssemblyData.alreadyLoaded())
+    {
+     x=Doc.Element("div",[],[WSFramework.mainDocInput(),AssemblyData.assembliesDoc(),UI.mainDoc(),Doc.Element("div",[],[WSFramework.mainSubDoc()])]);
+     a=self.document.body;
+     Templates.LoadLocalTemplates("");
+     Doc.Run(a,x);
+    }
+   else
+    AssemblyData.loadTesting();
+ };
  Operators.range=function(min,max)
  {
   var count;
@@ -1395,17 +2180,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return x+min;
   });
  };
- Operators.FailWith=function(msg)
- {
-  throw new Error(msg);
- };
  Operators.KeyValue=function(kvp)
  {
   return[kvp.K,kvp.V];
  };
- Operators.InvalidOp=function(msg)
+ Operators.FailWith=function(msg)
  {
-  throw new InvalidOperationException.New(msg);
+  throw new Error(msg);
  };
  Utils.toSafe=function(s)
  {
@@ -1617,9 +2398,148 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     e.Dispose();
   }
  };
+ Seq.distinct=function(s)
+ {
+  return Seq.distinctBy(Global.id,s);
+ };
+ Seq.cache=function(s)
+ {
+  var cache,o;
+  cache=[];
+  o=[Enumerator.Get(s)];
+  return{
+   GetEnumerator:function()
+   {
+    return new T$1.New(0,null,function(e)
+    {
+     var en;
+     return e.s<cache.length?(e.c=cache[e.s],e.s=e.s+1,true):(en=o[0],Unchecked.Equals(en,null)?false:en.MoveNext()?(e.s=e.s+1,e.c=en.Current(),cache.push(e.c),true):(en.Dispose(),o[0]=null,false));
+    },void 0);
+   }
+  };
+ };
+ Seq.length=function(s)
+ {
+  var i,e;
+  i=0;
+  e=Enumerator.Get(s);
+  try
+  {
+   while(e.MoveNext())
+    i=i+1;
+   return i;
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ Seq.collect=function(f,s)
+ {
+  return Seq.concat(Seq.map(f,s));
+ };
+ Seq.mapFold=function(f,zero,s)
+ {
+  return Arrays.mapFold(f,zero,Arrays.ofSeq(s));
+ };
+ Seq.isEmpty=function(s)
+ {
+  var e;
+  e=Enumerator.Get(s);
+  try
+  {
+   return!e.MoveNext();
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
  Seq.init=function(n,f)
  {
   return Seq.take(n,Seq.initInfinite(f));
+ };
+ Seq.distinctBy=function(f,s)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    var o,seen;
+    o=Enumerator.Get(s);
+    seen=new HashSet.New$3();
+    return new T$1.New(null,null,function(e)
+    {
+     var cur,has;
+     if(o.MoveNext())
+      {
+       cur=o.Current();
+       has=seen.Add(f(cur));
+       while(!has&&o.MoveNext())
+        {
+         cur=o.Current();
+         has=seen.Add(f(cur));
+        }
+       return has&&(e.c=cur,true);
+      }
+     else
+      return false;
+    },function()
+    {
+     o.Dispose();
+    });
+   }
+  };
+ };
+ Seq.concat=function(ss)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    var outerE;
+    outerE=Enumerator.Get(ss);
+    return new T$1.New(null,null,function(st)
+    {
+     var m;
+     while(true)
+      {
+       m=st.s;
+       if(Unchecked.Equals(m,null))
+       {
+        if(outerE.MoveNext())
+         {
+          st.s=Enumerator.Get(outerE.Current());
+          st=st;
+         }
+        else
+         {
+          outerE.Dispose();
+          return false;
+         }
+       }
+       else
+        if(m.MoveNext())
+         {
+          st.c=m.Current();
+          return true;
+         }
+        else
+         {
+          st.Dispose();
+          st.s=null;
+          st=st;
+         }
+      }
+    },function(st)
+    {
+     var x;
+     x=st.s;
+     !Unchecked.Equals(x,null)?x.Dispose():void 0;
+     !Unchecked.Equals(outerE,null)?outerE.Dispose():void 0;
+    });
+   }
+  };
  };
  Seq.take=function(n,s)
  {
@@ -1771,6 +2691,10 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return str.split(pat);
  };
+ Strings.ReplaceChar=function(s,oldC,newC)
+ {
+  return Strings.Replace(s,oldC,newC);
+ };
  SC$1.$cctor=function()
  {
   var f,g;
@@ -1801,23 +2725,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   function f$2(s)
   {
    return s+"T00:00:00";
-  }
-  function f$3($1,$2,$3)
-  {
-   var b;
-   b=null;
-   return Concurrency.Delay(function()
-   {
-    return Concurrency.Bind(WasmLoader.translateToJs($1,$2,$3),function()
-    {
-     WasmLoader.clean();
-     WasmLoader.printfn(function($4)
-     {
-      return $4("System initiated!");
-     });
-     return Concurrency.Zero();
-    });
-   });
   }
   SC$1.unindentStr=function(x)
   {
@@ -1909,12 +2816,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   SC$1["|Double|_|"]=ParseO.parseDoubleO();
   SC$1["|Guid|_|"]=ParseO.parseGuidO();
   SC$1.wasmStatusV=Var$1.Create$1(WasmStatus.WasmNotLoaded);
-  SC$1.detailsV=Var$1.Create$1("");
-  SC$1.fsErrsV=Var$1.Create$1([]);
-  SC$1.wsErrsV=Var$1.Create$1([]);
-  SC$1.wsWrnsV=Var$1.Create$1([]);
-  SC$1.codeV=Var$1.Create$1("printfn \"Hello\"");
-  SC$1.optsV=Var$1.Create$1("/tmp/source.fsx\n-o:source.exe\n--simpleresolution\n--nowarn:3186\n--optimize-\n--noframework\n--fullpaths\n--warn:3\n--target:exe\n-r:/tmp/FSharp.Core.dll\n-r:/tmp/mscorlib.dll\n-r:/tmp/netstandard.dll\n-r:/tmp/System.dll\n-r:/tmp/System.Core.dll\n-r:/tmp/System.IO.dll\n-r:/tmp/System.Runtime.dll\n-r:/tmp/System.Net.Http.dll\n-r:/tmp/System.Threading.dll\n-r:/tmp/System.Numerics.dll");
   SC$1.originalProvider=Remoting$1.AjaxProvider();
   SC$1.queues=new Dictionary.New$5();
   SC$1.messaging=IMessagingO.New(function(h)
@@ -1929,103 +2830,71 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   },function(t)
   {
    Remoting.returnExn0(t[0],t[1]);
-  },function(t)
+  },function($1)
   {
-   Remoting.appendMsg(t);
-  });
+   return function($2)
+   {
+    return $1("EARLY PRINTING!: "+Utils.toSafe($2));
+   };
+  }(function(s)
+  {
+   console.log(s);
+  }));
   SC$1.workerO=null;
   SC$1.rootPath="/WASM/publish/";
-  SC$1.filesToPreload=List.ofArray([[WasmLoad.rootPath()+"dlls","/tmp",["WebSharper.Main.dll","WebSharper.Collections.dll","WebSharper.Control.dll","WebSharper.Web.dll","WebSharper.Sitelets.dll","WebSharper.UI.dll","WebSharper.UI.Templating.Runtime.dll","WebSharper.Data.dll"]],[WasmLoad.rootPath()+"managed","/tmp",Arrays.choose(function(a)
+  SC$1.detailsV=Var$1.Create$1("");
+  SC$1.fsErrsV=Var$1.Create$1([]);
+  SC$1.wsErrsV=Var$1.Create$1([]);
+  SC$1.wsWrnsV=Var$1.Create$1([]);
+  SC$1.codeV=Var$1.Create$1("\r\n    open WebSharper\r\n    open WebSharper.UI\r\n    open WebSharper.UI.Html\r\n    \r\n    let name = Var.Create \"World\"\r\n    \r\n    [< Inline \"'Hello inline '\" >]\r\n    let bDoc() = \"Hello\"\r\n    \r\n    let cDoc() = text name.V\r\n    \r\n    let aDoc() = \r\n        div [] [\r\n            text <| bDoc()\r\n            cDoc()\r\n        ]\r\n    \r\n            ");
+  SC$1.optsV=Var$1.Create$1(Strings.concat("\n",Seq.map(Strings.Trim,Strings.SplitChars("\r\n                                    /tmp/source.fsx\r\n                                    -o:source.exe\r\n                                    --simpleresolution\r\n                                    --nowarn:3186\r\n                                    --optimize-\r\n                                    --noframework\r\n                                    --fullpaths\r\n                                    --warn:3\r\n                                    --target:exe\r\n                                    -r:/dlls/WebSharper.Core.dll\r\n                                    -r:/dlls/WebSharper.UI.dll\r\n                                    -r:/dlls/WebSharper.Sitelets.dll\r\n                                    -r:/managed/FSharp.Core.dll\r\n                                    -r:/managed/mscorlib.dll\r\n                                    -r:/managed/netstandard.dll\r\n                                    -r:/managed/System.dll\r\n                                    -r:/managed/System.Core.dll\r\n                                    -r:/managed/System.IO.dll\r\n                                    -r:/managed/System.Runtime.dll\r\n                                    -r:/managed/System.Net.Http.dll\r\n                                    -r:/managed/System.Threading.dll\r\n                                    -r:/managed/System.Numerics.dll\r\n                                ",["\n"],0))));
+  !(!self.document)?Remoting.set_messaging(IMessagingO.New(Remoting.messaging().runRpc,Remoting.messaging().returnValue,Remoting.messaging().returnExn,function(txt)
   {
-   var a$1;
-   a$1=String.StartsWith("-r:/tmp/",a);
-   return a$1!=null&&a$1.$==1?{
-    $:1,
-    $0:a$1.$0
-   }:null;
-  },Strings.SplitChars(WasmLoader.optsV().Get(),["\n"],0))]]);
-  SC$1.loadWasm=Lazy.Create(function()
+   var pre;
+   console.log(txt);
+   pre=UI.detailsV().Get();
+   UI.detailsV().Set(pre+(pre===""?"":"\n")+txt);
+  })):void 0;
+  SC$1.testVar=Var$1.Create$1("Hello WSFrameWork");
+  SC$1.mainDocNameVar=Var$1.Create$1("FsRoot.TestingJS.WSFrameworkTest.mainDoc()");
+  SC$1.assemblies=ListModel.Create(function(ad)
   {
-   return Concurrency.StartAsTask(Concurrency.FromContinuations(function(ok)
+   return ad.name;
+  },T.Empty);
+  SC$1.Folder="/EPFileX/Assemblies/";
+  SC$1.thisModuleV=Var$1.Create$1("Covid.asm");
+  SC$1.selectedAssembly=Var$1.Create$1(null);
+  SC$1.selectedMethod=Var$1.Create$1(null);
+  SC$1.mainDocNameVar$1=WSFrameworkTest.mainDocNameVar();
+  SC$1.mainDocVar=Var$1.Create$1(Doc.Element("h1",[],[Doc.TextNode("mainDocVar not initialized")]));
+  View.Sink(function(nm)
+  {
+   var docObj;
+   try
    {
-    var b;
-    function init()
+    docObj=Global["eval"](nm);
+    docObj instanceof Doc?WSFramework.mainDocVar().Set(docObj):typeof docObj=="string"?WSFramework.mainDocVar().Set(Doc.TextNode(docObj)):docObj instanceof Var?WSFramework.mainDocVar().Set(Doc.TextView(docObj.get_View())):docObj instanceof View?WSFramework.mainDocVar().Set(Doc.TextView(docObj)):console.log("mainDocNameVar type mismatch: ",docObj);
+   }
+   catch(e)
+   {
+    ((function($1)
     {
-     WasmLoad.bindWasm();
-     WasmLoader.printfn(function($1)
+     return function($2)
      {
-      return $1("WASM Initialized!");
-     });
-     WasmLoader.wasmStatusV().Set(!self.document?WasmStatus.WasmWorkerLoaded:WasmStatus.WasmLoaded);
-     ok();
-    }
-    return Concurrency.Start((b=null,Concurrency.Delay(function()
+      return $1(Utils.prettyPrint($2));
+     };
+    }(function(s)
     {
-     return WasmLoader.wasmStatusV().Get().$!==0?((WasmLoader.printfn(function($1)
-     {
-      return function($2)
-      {
-       return $1("Wasm is already "+testing_GeneratedPrintf.p($2));
-      };
-     }))(WasmLoader.wasmStatusV().Get()),ok(),Concurrency.Zero()):(WasmLoader.printfn(function($1)
-     {
-      return $1("Loading WASM. Hold on, this will take a while...");
-     }),WasmLoader.wasmStatusV().Set(!self.document?WasmStatus.WasmWorkerLoading:WasmStatus.WasmLoading),Concurrency.Bind(Concurrency.Sleep(50),function()
-     {
-      return Concurrency.Combine(!(!self.document)?(Remoting.installProvider(),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
-      {
-       self.App=Pojo.newPojo([["init",init]]);
-       return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"mono-config.js"]),function()
-       {
-        return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"runtime.js"]),function()
-        {
-         self.Module.print=WasmLoader.printfn(function($1)
-         {
-          return function($2)
-          {
-           return $1(Utils.toSafe($2));
-          };
-         });
-         self.Module.printErr=WasmLoader.printfn(function($1)
-         {
-          return function($2)
-          {
-           return $1(Utils.toSafe($2));
-          };
-         });
-         self.Module.preRun=[function()
-         {
-          WasmLoad.preloadFiles();
-         }];
-         return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"dotnet.js"]),function()
-         {
-          return Concurrency.Zero();
-         });
-        });
-       });
-      }));
-     }));
-    })),null);
-   }),null);
-  });
-  WasmLoader.printfn(function($1)
-  {
-   return $1("Initiating system...");
-  });
-  WasmLoader.callWasmA(function($1)
-  {
-   return f$3($1[0],$1[1],$1[2]);
-  },WasmLoader.getParms());
+     console.log(s);
+    }))(e));
+   }
+  },WSFramework.mainDocNameVar().get_View());
+  SC$1.mainSubDoc=Doc.BindView(Global.id,WSFramework.mainDocVar().get_View());
  };
  Char.IsWhiteSpace=function(c)
  {
   return c.match(new Global.RegExp("\\s"))!==null;
  };
- Var=UI.Var=Runtime.Class({},Obj,Var);
- Var.New=Runtime.Ctor(function()
- {
-  Obj.New.call(this);
- },Var);
  Pervasives.NewFromSeq=function(fields)
  {
   var r,e,f;
@@ -2065,7 +2934,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        if(a instanceof Global.Array&&b instanceof Global.Array)
         return Unchecked.arrayEquals(a,b);
        else
-        if(a instanceof Global.Date&&b instanceof Global.Date)
+        if(a instanceof Date&&b instanceof Date)
          return Unchecked.dateEquals(a,b);
         else
          {
@@ -2124,7 +2993,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
           if(a instanceof Global.Array&&b instanceof Global.Array)
            $2=Unchecked.compareArrays(a,b);
           else
-           if(a instanceof Global.Date&&b instanceof Global.Date)
+           if(a instanceof Date&&b instanceof Date)
             $2=Unchecked.compareDates(a,b);
            else
             {
@@ -2239,7 +3108,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return(x<<5)+x+y;
  };
- Dictionary=Collections.Dictionary=Runtime.Class({
+ Dictionary=Collections.Dictionary=Runtime$1.Class({
   TryGetValue:function(k,res)
   {
    var $this,d,v;
@@ -2294,6 +3163,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   set_Item:function(k,v)
   {
    this.set(k,v);
+  },
+  Clear:function()
+  {
+   this.data=[];
+   this.count=0;
   },
   set:function(k,v)
   {
@@ -2357,11 +3231,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return Enumerator.Get0(Arrays.concat(JS.GetFieldValues(this.data)));
   }
  },Obj,Dictionary);
- Dictionary.New$5=Runtime.Ctor(function()
+ Dictionary.New$5=Runtime$1.Ctor(function()
  {
   Dictionary.New$6.call(this,[],Unchecked.Equals,Unchecked.Hash);
  },Dictionary);
- Dictionary.New$6=Runtime.Ctor(function(init,equals,hash)
+ Dictionary.New$6=Runtime$1.Ctor(function(init,equals,hash)
  {
   var e,x;
   Obj.New.call(this);
@@ -2391,13 +3265,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   for(i=0,$1=arr.length-1;i<=$1;i++)r[i]=f(arr[i]);
   return r;
  };
- Arrays.create=function(size,value)
- {
-  var r,i,$1;
-  r=new Global.Array(size);
-  for(i=0,$1=size-1;i<=$1;i++)r[i]=value;
-  return r;
- };
  Arrays.choose=function(f,arr)
  {
   var q,i,$1,m;
@@ -2407,6 +3274,21 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    m==null?void 0:q.push(m.$0);
   }
   return q;
+ };
+ Arrays.filter=function(f,arr)
+ {
+  var r,i,$1;
+  r=[];
+  for(i=0,$1=arr.length-1;i<=$1;i++)if(f(arr[i]))
+   r.push(arr[i]);
+  return r;
+ };
+ Arrays.create=function(size,value)
+ {
+  var r,i,$1;
+  r=new Global.Array(size);
+  for(i=0,$1=size-1;i<=$1;i++)r[i]=value;
+  return r;
  };
  Arrays.tryPick=function(f,arr)
  {
@@ -2446,6 +3328,21 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      }
     }
  };
+ Arrays.tryFind=function(f,arr)
+ {
+  var res,i;
+  res=null;
+  i=0;
+  while(i<arr.length&&res==null)
+   {
+    f(arr[i])?res={
+     $:1,
+     $0:arr[i]
+    }:void 0;
+    i=i+1;
+   }
+  return res;
+ };
  Arrays.exists=function(f,x)
  {
   var e,i,$1,l;
@@ -2458,14 +3355,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    else
     i=i+1;
   return e;
- };
- Arrays.filter=function(f,arr)
- {
-  var r,i,$1;
-  r=[];
-  for(i=0,$1=arr.length-1;i<=$1;i++)if(f(arr[i]))
-   r.push(arr[i]);
-  return r;
  };
  Arrays.ofList=function(xs)
  {
@@ -2599,6 +3488,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    };
   xhr.send(data);
  };
+ Var=UI$1.Var=Runtime$1.Class({},Obj,Var);
+ Var.New=Runtime$1.Ctor(function()
+ {
+  Obj.New.call(this);
+ },Var);
  JS.GetFields=function(o)
  {
   var r,k;
@@ -2708,9 +3602,14 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   pojo[p]=p$1;
   return pojo;
  };
+ WsTranslator.dlls=function()
+ {
+  SC$3.$cctor();
+  return SC$3.dlls;
+ };
  testing_GeneratedPrintf.p=function($1)
  {
-  return $1.$==6?"WasmWorkerFinished":$1.$==5?"WasmWorkerLoaded":$1.$==4?"WasmWorkerLoading":$1.$==3?"WasmFinished":$1.$==2?"WasmLoaded":$1.$==1?"WasmLoading":"WasmNotLoaded";
+  return $1.$==4?"WasmWorkerLoaded":$1.$==3?"WasmWorkerLoading":$1.$==2?"WasmLoaded":$1.$==1?"WasmLoading":"WasmNotLoaded";
  };
  testing_GeneratedPrintf.p$1=function($1)
  {
@@ -2728,7 +3627,141 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return"{"+("FileName = "+Utils.prettyPrint($1.FileName))+"; "+("Start = "+("("+Utils.prettyPrint($1.Start[0])+", "+Utils.prettyPrint($1.Start[1])+")"))+"; "+("End = "+("("+Utils.prettyPrint($1.End[0])+", "+Utils.prettyPrint($1.End[1])+")"))+"}";
  };
- AjaxRemotingProvider=Remoting$1.AjaxRemotingProvider=Runtime.Class({
+ Doc=UI$1.Doc=Runtime$1.Class({},Obj,Doc);
+ Doc.get_Empty=function()
+ {
+  return Doc.Mk(null,View.Const());
+ };
+ Doc.Concat=function(xs)
+ {
+  var x;
+  x=Array.ofSeqNonCopying(xs);
+  return Array.TreeReduce(Doc.get_Empty(),Doc.Append,x);
+ };
+ Doc.Element=function(name,attr$1,children)
+ {
+  var a,a$1;
+  a=AttrProxy.Concat(attr$1);
+  a$1=Doc.Concat(children);
+  return Elt.New(DomUtility.CreateElement(name),a,a$1);
+ };
+ Doc.BindView=function(f,view)
+ {
+  return Doc.EmbedView(View.Map(f,view));
+ };
+ Doc.Mk=function(node,updates)
+ {
+  return new Doc.New(node,updates);
+ };
+ Doc.TextNode=function(v)
+ {
+  return Doc.Mk({
+   $:5,
+   $0:DomUtility.CreateText(v)
+  },View.Const());
+ };
+ Doc.Append=function(a,b)
+ {
+  return Doc.Mk({
+   $:0,
+   $0:a.docNode,
+   $1:b.docNode
+  },View.Map2Unit(a.updates,b.updates));
+ };
+ Doc.Button=function(caption,attrs,action)
+ {
+  var attrs$1;
+  attrs$1=AttrProxy.Concat(attrs);
+  return Elt.New(Doc.Clickable("button",action),attrs$1,Doc.TextNode(caption));
+ };
+ Doc.InputArea=function(attr$1,_var)
+ {
+  return Doc.InputInternal("textarea",function()
+  {
+   return Seq.append(attr$1,[AttrModule.Value(_var)]);
+  });
+ };
+ Doc.TextView=function(txt)
+ {
+  var node;
+  node=Docs.CreateTextNode();
+  return Doc.Mk({
+   $:4,
+   $0:node
+  },View.Map(function(t)
+  {
+   Docs.UpdateTextNode(node,t);
+  },txt));
+ };
+ Doc.Run=function(parent,doc)
+ {
+  Docs.LinkElement(parent,doc.docNode);
+  Doc.RunInPlace(false,parent,doc);
+ };
+ Doc.Input=function(attr$1,_var)
+ {
+  return Doc.InputInternal("input",function()
+  {
+   return Seq.append(attr$1,[AttrModule.Value(_var)]);
+  });
+ };
+ Doc.EmbedView=function(view)
+ {
+  var node;
+  node=Docs.CreateEmbedNode();
+  return Doc.Mk({
+   $:2,
+   $0:node
+  },View.Map(Global.ignore,View.Bind(function(doc)
+  {
+   Docs.UpdateEmbedNode(node,doc.docNode);
+   return doc.updates;
+  },view)));
+ };
+ Doc.Clickable=function(elem,action)
+ {
+  var el;
+  el=DomUtility.CreateElement(elem);
+  el.addEventListener("click",function(ev)
+  {
+   ev.preventDefault();
+   return action();
+  },false);
+  return el;
+ };
+ Doc.InputInternal=function(elemTy,attr$1)
+ {
+  var el;
+  el=DomUtility.CreateElement(elemTy);
+  return Elt.New(el,AttrProxy.Concat(attr$1(el)),Doc.get_Empty());
+ };
+ Doc.RunInPlace=function(childrenOnly,parent,doc)
+ {
+  var st;
+  st=Docs.CreateRunState(parent,doc.docNode);
+  View.Sink(An.get_UseAnimations()||Settings.BatchUpdatesEnabled()?Mailbox.StartProcessor(Docs.PerformAnimatedUpdate(childrenOnly,st,doc.docNode)):function()
+  {
+   Docs.PerformSyncUpdate(childrenOnly,st,doc.docNode);
+  },doc.updates);
+ };
+ Doc.ConvertSeqBy=function(key,render,view)
+ {
+  return Doc.Flatten(View.MapSeqCachedViewBy(key,function($1,$2)
+  {
+   return(render($1))($2);
+  },view));
+ };
+ Doc.Flatten=function(view)
+ {
+  return Doc.EmbedView(View.Map(Doc.Concat,view));
+ };
+ Doc.New=Runtime$1.Ctor(function(docNode,updates)
+ {
+  Obj.New.call(this);
+  this.docNode=docNode;
+  this.updates=updates;
+ },Doc);
+ AjaxRemotingProvider=Remoting$1.AjaxRemotingProvider=Runtime$1.Class({
   AsyncBase:function(m,data)
   {
    var $this,b;
@@ -2784,11 +3817,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return this.AsyncBase(m,data);
   }
  },Obj,AjaxRemotingProvider);
- AjaxRemotingProvider.New=Runtime.Ctor(function()
+ AjaxRemotingProvider.New=Runtime$1.Ctor(function()
  {
   Obj.New.call(this);
  },AjaxRemotingProvider);
- T=List.T=Runtime.Class({
+ T=List.T=Runtime$1.Class({
   GetEnumerator:function()
   {
    return new T$1.New(this,null,function(e)
@@ -2813,6 +3846,33 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return Snap.Map(fn,a());
   });
  };
+ View.get_Do=function()
+ {
+  return ViewBuilder.B;
+ };
+ View.Sink=function(act,a)
+ {
+  function loop()
+  {
+   Snap.WhenRun(a(),act,function()
+   {
+    Concurrency.scheduler().Fork(loop);
+   });
+  }
+  Concurrency.scheduler().Fork(loop);
+ };
+ View.Const=function(x)
+ {
+  var o;
+  o=Snap.New({
+   $:0,
+   $0:x
+  });
+  return function()
+  {
+   return o;
+  };
+ };
  View.CreateLazy=function(observe)
  {
   var lv;
@@ -2830,23 +3890,25 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }),c):c;
   };
  };
- View.Const=function(x)
+ View.Bind=function(fn,view)
  {
-  var o;
-  o=Snap.New({
-   $:0,
-   $0:x
-  });
-  return function()
+  return View.Join(View.Map(fn,view));
+ };
+ View.Map2Unit=function(a,a$1)
+ {
+  return View.CreateLazy(function()
   {
-   return o;
-  };
+   return Snap.Map2Unit(a(),a$1());
+  });
  };
- View.MapSeqCached=function(conv,view)
+ View.Join=function(a)
  {
-  return View.MapSeqCachedBy(Global.id,conv,view);
+  return View.CreateLazy(function()
+  {
+   return Snap.Join(a());
+  });
  };
- View.MapSeqCachedBy=function(key,conv,view)
+ View.MapSeqCachedViewBy=function(key,conv,view)
  {
   var state;
   state=[new Dictionary.New$5()];
@@ -2857,46 +3919,226 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    newState=new Dictionary.New$5();
    result=Array.mapInPlace(function(x)
    {
-    var k,res;
+    var k,node,n;
     k=key(x);
-    res=prevState.ContainsKey(k)?prevState.get_Item(k):conv(x);
-    newState.set_Item(k,res);
-    return res;
+    node=prevState.ContainsKey(k)?(n=prevState.get_Item(k),(Var$1.Set(n.r,x),n)):View.ConvertSeqNode(function(v)
+    {
+     return conv(k,v);
+    },x);
+    newState.set_Item(k,node);
+    return node.e;
    },Arrays.ofSeq(xs));
    state[0]=newState;
    return result;
   },view);
  };
- View.Sink=function(act,a)
+ View.ConvertSeqNode=function(conv,value)
  {
-  function loop()
+  var _var,view;
+  _var=Var$1.Create$1(value);
+  view=_var.get_View();
+  return{
+   e:conv(view),
+   r:_var,
+   w:view
+  };
+ };
+ attr=HtmlModule.attr=Runtime$1.Class({},Obj,attr);
+ ListModel=UI$1.ListModel=Runtime$1.Class({
+  TryFind:function(pred)
   {
-   Snap.WhenRun(a(),act,function()
+   return Arrays.tryFind(pred,this["var"].Get());
+  },
+  Set:function(lst)
+  {
+   this["var"].Set(this.storage.SSet(lst));
+   this.ObsoleteAll();
+  },
+  TryFindByKeyAsView:function(key)
+  {
+   var $this;
+   $this=this;
+   return function()
    {
-    Concurrency.scheduler().Fork(loop);
+    var m,o,sn;
+    m=(o=null,[$this.it.TryGetValue(key,{
+     get:function()
+     {
+      return o;
+     },
+     set:function(v)
+     {
+      o=v;
+     }
+    }),o]);
+    return m[0]?m[1]:(sn=Snap.New({
+     $:2,
+     $0:$this.TryFindByKey(key),
+     $1:[]
+    }),($this.it.Add(key,sn),sn));
+   };
+  },
+  ObsoleteAll:function()
+  {
+   Seq.iter(function(ksn)
+   {
+    Snap.Obsolete(ksn.V);
+   },this.it);
+   this.it.Clear();
+  },
+  TryFindByKey:function(key)
+  {
+   var $this;
+   $this=this;
+   return Arrays.tryFind(function(it)
+   {
+    return Unchecked.Equals($this.key(it),key);
+   },this["var"].Get());
+  },
+  GetEnumerator:function()
+  {
+   return Enumerator.Get(this["var"].Get());
+  },
+  GetEnumerator0:function()
+  {
+   return Enumerator.Get0(this["var"].Get());
+  }
+ },Obj,ListModel);
+ ListModel.New=Runtime$1.Ctor(function(key,storage)
+ {
+  ListModel.New$3.call(this,key,Var$1.Create$1(Arrays.ofSeq(Seq.distinctBy(key,storage.SInit()))),storage);
+ },ListModel);
+ ListModel.New$3=Runtime$1.Ctor(function(key,_var,storage)
+ {
+  Obj.New.call(this);
+  this.key=key;
+  this["var"]=_var;
+  this.storage=storage;
+  this.v=View.Map(function(x)
+  {
+   return x.slice();
+  },this["var"].get_View());
+  this.it=new Dictionary.New$5();
+ },ListModel);
+ IO.asyncReadTextAtRuntime=function(forFSI,defaultResolutionFolder,resolutionFolder,formatName,encodingStr,uri)
+ {
+  function a(ok,ko)
+  {
+   var p,l,settings,r,fn;
+   p=(l=uri.toLowerCase(),Strings.StartsWith(l,"jsonp|")?[uri.substring(6),true]:Strings.StartsWith(l,"json|")?[uri.substring(5),false]:[uri,false]);
+   settings=(r={},r.dataType="json",r.success=function(data)
+   {
+    return ok(data);
+   },r.error=function(a$1,a$2,err)
+   {
+    return ko(new Error(err));
+   },r);
+   p[1]?(fn=Pervasives$1.randomFunctionName(),settings.dataType="jsonp",settings.jsonp="prefix",settings.jsonpCallback="jsonp"+fn):void 0;
+   $.ajax(p[0],settings);
+  }
+  return Concurrency.FromContinuations(function($1,$2,$3)
+  {
+   return a.apply(null,[$1,$2,$3]);
+  });
+ };
+ AttrModule.Class=function(name)
+ {
+  return AttrModule.ClassPred(name,true);
+ };
+ AttrModule.ClassPred=function(name,isSet)
+ {
+  return Attrs.Static(function(el)
+  {
+   if(isSet)
+    DomUtility.AddClass(el,name);
+   else
+    DomUtility.RemoveClass(el,name);
+  });
+ };
+ AttrModule.Value=function(_var)
+ {
+  function g(a)
+  {
+   return{
+    $:1,
+    $0:a
+   };
+  }
+  return AttrModule.CustomValue(_var,Global.id,function(x)
+  {
+   return g(Global.id(x));
+  });
+ };
+ AttrModule.CustomValue=function(_var,toString,fromString)
+ {
+  return AttrModule.CustomVar(_var,function($1,$2)
+  {
+   $1.value=toString($2);
+  },function(e)
+  {
+   return fromString(e.value);
+  });
+ };
+ AttrModule.CustomVar=function(_var,set,get)
+ {
+  function onChange(el,e)
+  {
+   return _var.UpdateMaybe(function(v)
+   {
+    var m,$1;
+    m=get(el);
+    return m!=null&&m.$==1&&(!Unchecked.Equals(m.$0,v)&&($1=[m,m.$0],true))?$1[0]:null;
    });
   }
-  Concurrency.scheduler().Fork(loop);
- };
- View.Map2Unit=function(a,a$1)
- {
-  return View.CreateLazy(function()
+  function set$1(e,v)
   {
-   return Snap.Map2Unit(a(),a$1());
+   var m,$1;
+   m=get(e);
+   return m!=null&&m.$==1&&(Unchecked.Equals(m.$0,v)&&($1=m.$0,true))?null:set(e,v);
+  }
+  return AttrProxy.Concat([AttrModule.Handler("change",function($1)
+  {
+   return function($2)
+   {
+    return onChange($1,$2);
+   };
+  }),AttrModule.Handler("input",function($1)
+  {
+   return function($2)
+   {
+    return onChange($1,$2);
+   };
+  }),AttrModule.Handler("keypress",function($1)
+  {
+   return function($2)
+   {
+    return onChange($1,$2);
+   };
+  }),AttrModule.DynamicCustom(function($1)
+  {
+   return function($2)
+   {
+    return set$1($1,$2);
+   };
+  },_var.get_View())]);
+ };
+ AttrModule.Handler=function(name,callback)
+ {
+  return Attrs.Static(function(el)
+  {
+   el.addEventListener(name,function(d)
+   {
+    return(callback(el))(d);
+   },false);
   });
  };
- View.Bind=function(fn,view)
+ AttrModule.DynamicCustom=function(set,view)
  {
-  return View.Join(View.Map(fn,view));
+  return Attrs.Dynamic(view,set);
  };
- View.Join=function(a)
- {
-  return View.CreateLazy(function()
-  {
-   return Snap.Join(a());
-  });
+ ViewBuilder.B={
+  $:0
  };
- attr=HtmlModule.attr=Runtime.Class({},Obj,attr);
  Enumerator.Get=function(x)
  {
   return x instanceof Global.Array?Enumerator.ArrayEnumerator(x):Unchecked.Equals(typeof x,"string")?Enumerator.StringEnumerator(x):x.GetEnumerator();
@@ -2923,7 +4165,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return x instanceof Global.Array?Enumerator.ArrayEnumerator(x):Unchecked.Equals(typeof x,"string")?Enumerator.StringEnumerator(x):"GetEnumerator0"in x?x.GetEnumerator0():x.GetEnumerator();
  };
- T$1=Enumerator.T=Runtime.Class({
+ T$1=Enumerator.T=Runtime$1.Class({
   MoveNext:function()
   {
    return this.n(this);
@@ -2938,7 +4180,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     this.d(this);
   }
  },Obj,T$1);
- T$1.New=Runtime.Ctor(function(s,c,n,d)
+ T$1.New=Runtime$1.Ctor(function(s,c,n,d)
  {
   Obj.New.call(this);
   this.s=s;
@@ -3001,6 +4243,16 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
    return $1;
   }
+ };
+ Guid.NewGuid=function()
+ {
+  return"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(new Global.RegExp("[xy]","g"),function(c)
+  {
+   var r,v;
+   r=Math.random()*16|0;
+   v=c=="x"?r:r&3|8;
+   return v.toString(16);
+  });
  };
  Guid.ParseExact=function(input,format)
  {
@@ -3125,7 +4377,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   throw new FormatException.New$1("Format String can be only \"D\", \"d\", \"N\", \"n\", \"P\", \"p\", \"B\", \"b\", \"X\" or \"x\".");
  };
- Var$1=UI.Var$1=Runtime.Class({},Obj,Var$1);
+ Var$1=UI$1.Var$1=Runtime$1.Class({},Obj,Var$1);
  Var$1.Create$1=function(v)
  {
   return new ConcreteVar.New(false,Snap.New({
@@ -3134,23 +4386,19 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $1:[]
   }),v);
  };
- Lazy.Create=function(f)
+ Var$1.Set=function(_var,value)
  {
-  return LazyRecord.New(false,f,Lazy.forceLazy);
+  _var.Set(value);
  };
- Lazy.forceLazy=function()
+ ListModel.Create=function(key,init)
  {
-  var v;
-  v=this.v();
-  this.c=true;
-  this.v=v;
-  this.f=Lazy.cachedLazy;
-  return v;
+  return ListModel.CreateWithStorage(key,Storage.InMemory(Arrays.ofSeq(init)));
  };
- Lazy.cachedLazy=function()
+ ListModel.CreateWithStorage=function(key,storage)
  {
-  return this.v;
+  return new ListModel.New(key,storage);
  };
+ View=UI$1.View=Runtime$1.Class({},null,View);
  Seq.tryHead=function(s)
  {
   var e;
@@ -3168,13 +4416,47 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     e.Dispose();
   }
  };
- Seq.nonNegative=function()
+ Seq.last=function(s)
  {
-  return Operators.FailWith("The input must be non-negative.");
+  var e,$1;
+  e=Enumerator.Get(s);
+  try
+  {
+   if(!e.MoveNext())
+    $1=Seq.insufficient();
+   else
+    {
+     while(e.MoveNext())
+      ;
+     $1=e.Current();
+    }
+   return $1;
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ Arrays.mapFold=function(f,zero,arr)
+ {
+  var acc,r,i,$1,p;
+  r=new Global.Array(arr.length);
+  acc=zero;
+  for(i=0,$1=arr.length-1;i<=$1;i++){
+   p=f(acc,arr[i]);
+   r[i]=p[0];
+   acc=p[1];
+  }
+  return[r,acc];
  };
  Seq.insufficient=function()
  {
   return Operators.FailWith("The input sequence has an insufficient number of elements.");
+ };
+ Seq.nonNegative=function()
+ {
+  return Operators.FailWith("The input must be non-negative.");
  };
  SC$2.$cctor=function()
  {
@@ -3228,17 +4510,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    });
   };
  };
- Concurrency.AwaitTask1=function(t)
- {
-  return Concurrency.FromContinuations(function(ok,err,cc)
-  {
-   t.get_Status()===0?t.Start():void 0;
-   t.ContinueWith$1(function(t$1)
-   {
-    return t$1.get_IsCanceled()?cc(new OperationCanceledException.New(Concurrency.noneCT())):t$1.get_IsFaulted()?err(t$1.get_Exception()):ok(t$1.get_Result());
-   },Concurrency.noneCT());
-  });
- };
  Concurrency.Delay=function(mk)
  {
   return function(c)
@@ -3289,18 +4560,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    },c.ct));
   });
  };
- Concurrency.Zero=function()
- {
-  SC$3.$cctor();
-  return SC$3.Zero;
- };
- Concurrency.Combine=function(a,b)
- {
-  return Concurrency.Bind(a,function()
-  {
-   return b;
-  });
- };
  Concurrency.Sleep=function(ms)
  {
   return function(c)
@@ -3329,6 +4588,32 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    });
   };
  };
+ Concurrency.Combine=function(a,b)
+ {
+  return Concurrency.Bind(a,function()
+  {
+   return b;
+  });
+ };
+ Concurrency.Zero=function()
+ {
+  SC$4.$cctor();
+  return SC$4.Zero;
+ };
+ Concurrency.Start=function(c,ctOpt)
+ {
+  var ct,d;
+  ct=(d=(Concurrency.defCTS())[0],ctOpt==null?d:ctOpt.$0);
+  Concurrency.scheduler().Fork(function()
+  {
+   if(!ct.c)
+    c(AsyncBody.New(function(a)
+    {
+     if(a.$==1)
+      Concurrency.UncaughtAsyncError(a.$0);
+    },ct));
+  });
+ };
  Concurrency.While=function(g,c)
  {
   return g()?Concurrency.Bind(c,function()
@@ -3346,38 +4631,18 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    });
   };
  };
- Concurrency.Start=function(c,ctOpt)
+ Concurrency.For=function(s,b)
  {
-  var ct,d;
-  ct=(d=(Concurrency.defCTS())[0],ctOpt==null?d:ctOpt.$0);
-  Concurrency.scheduler().Fork(function()
+  return Concurrency.Using(Enumerator.Get(s),function(ie)
   {
-   if(!ct.c)
-    c(AsyncBody.New(function(a)
-    {
-     if(a.$==1)
-      Concurrency.UncaughtAsyncError(a.$0);
-    },ct));
+   return Concurrency.While(function()
+   {
+    return ie.MoveNext();
+   },Concurrency.Delay(function()
+   {
+    return b(ie.Current());
+   }));
   });
- };
- Concurrency.StartAsTask=function(c,ctOpt)
- {
-  var tcs;
-  tcs=new TaskCompletionSource.New();
-  Concurrency.scheduler().Fork(function()
-  {
-   Concurrency.StartWithContinuations(c,function(a)
-   {
-    tcs.SetResult(a);
-   },function(a)
-   {
-    tcs.SetException$1(a);
-   },function()
-   {
-    tcs.SetCanceled();
-   },ctOpt);
-  });
-  return tcs.get_Task();
  };
  Concurrency.checkCancel=function(r)
  {
@@ -3413,42 +4678,55 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Concurrency.defCTS=function()
  {
-  SC$3.$cctor();
-  return SC$3.defCTS;
+  SC$4.$cctor();
+  return SC$4.defCTS;
  };
  Concurrency.UncaughtAsyncError=function(e)
  {
   console.log("WebSharper: Uncaught asynchronous exception",e);
  };
- Concurrency.StartWithContinuations=function(c,s,f,cc,ctOpt)
+ Concurrency.Using=function(x,f)
  {
-  var ct,d;
-  ct=(d=(Concurrency.defCTS())[0],ctOpt==null?d:ctOpt.$0);
-  !ct.c?c(AsyncBody.New(function(a)
+  return Concurrency.TryFinally(f(x),function()
   {
-   if(a.$==1)
-    f(a.$0);
-   else
-    if(a.$==2)
-     cc(a.$0);
-    else
-     s(a.$0);
-  },ct)):void 0;
+   x.Dispose();
+  });
  };
  Concurrency.scheduler=function()
  {
-  SC$3.$cctor();
-  return SC$3.scheduler;
+  SC$4.$cctor();
+  return SC$4.scheduler;
  };
  Concurrency.noneCT=function()
  {
-  SC$3.$cctor();
-  return SC$3.noneCT;
+  SC$4.$cctor();
+  return SC$4.noneCT;
+ };
+ Concurrency.TryFinally=function(run,f)
+ {
+  return function(c)
+  {
+   run(AsyncBody.New(function(r)
+   {
+    try
+    {
+     f();
+     c.k(r);
+    }
+    catch(e)
+    {
+     c.k({
+      $:1,
+      $0:e
+     });
+    }
+   },c.ct));
+  };
  };
  Concurrency.GetCT=function()
  {
-  SC$3.$cctor();
-  return SC$3.GetCT;
+  SC$4.$cctor();
+  return SC$4.GetCT;
  };
  Concurrency.TryWith=function(r,f)
  {
@@ -3476,126 +4754,67 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    },c.ct));
   };
  };
- Doc=UI.Doc=Runtime.Class({},Obj,Doc);
- Doc.TextNode=function(v)
+ SC$3.$cctor=function()
  {
-  return Doc.Mk({
-   $:5,
-   $0:DomUtility.CreateText(v)
-  },View.Const());
+  SC$3.$cctor=Global.ignore;
+  SC$3.dlls=["/dlls/WebSharper.Main.dll","/dlls/WebSharper.Collections.dll","/dlls/WebSharper.Control.dll","/dlls/WebSharper.Web.dll","/dlls/WebSharper.Sitelets.dll","/dlls/WebSharper.UI.dll","/dlls/WebSharper.UI.Templating.Runtime.dll","/dlls/WebSharper.Data.dll"];
  };
- Doc.InputArea=function(attr$1,_var)
+ Array.ofSeqNonCopying=function(xs)
  {
-  return Doc.InputInternal("textarea",function()
+  var q,o;
+  if(xs instanceof Global.Array)
+   return xs;
+  else
+   if(xs instanceof T)
+    return Arrays.ofList(xs);
+   else
+    if(xs===null)
+     return[];
+    else
+     {
+      q=[];
+      o=Enumerator.Get(xs);
+      try
+      {
+       while(o.MoveNext())
+        q.push(o.Current());
+       return q;
+      }
+      finally
+      {
+       if(typeof o=="object"&&"Dispose"in o)
+        o.Dispose();
+      }
+     }
+ };
+ Array.TreeReduce=function(defaultValue,reduction,array)
+ {
+  var l;
+  function loop(off,len)
   {
-   return Seq.append(attr$1,[AttrModule.Value(_var)]);
-  });
+   var $1,l2;
+   return len<=0?defaultValue:len===1&&(off>=0&&off<l)?Arrays.get(array,off):(l2=len/2>>0,reduction(loop(off,l2),loop(off+l2,len-l2)));
+  }
+  l=Arrays.length(array);
+  return loop(0,l);
  };
- Doc.Button=function(caption,attrs,action)
+ Array.MapTreeReduce=function(mapping,defaultValue,reduction,array)
  {
-  var attrs$1;
-  attrs$1=AttrProxy.Concat(attrs);
-  return Elt.New(Doc.Clickable("button",action),attrs$1,Doc.TextNode(caption));
- };
- Doc.Convert=function(render,view)
- {
-  return Doc.Flatten(View.MapSeqCached(render,view));
- };
- Doc.TextView=function(txt)
- {
-  var node;
-  node=Docs.CreateTextNode();
-  return Doc.Mk({
-   $:4,
-   $0:node
-  },View.Map(function(t)
+  var l;
+  function loop(off,len)
   {
-   Docs.UpdateTextNode(node,t);
-  },txt));
+   var $1,l2;
+   return len<=0?defaultValue:len===1&&(off>=0&&off<l)?mapping(Arrays.get(array,off)):(l2=len/2>>0,reduction(loop(off,l2),loop(off+l2,len-l2)));
+  }
+  l=Arrays.length(array);
+  return loop(0,l);
  };
- Doc.Run=function(parent,doc)
+ Array.mapInPlace=function(f,arr)
  {
-  Docs.LinkElement(parent,doc.docNode);
-  Doc.RunInPlace(false,parent,doc);
+  var i,$1;
+  for(i=0,$1=arr.length-1;i<=$1;i++)arr[i]=f(arr[i]);
+  return arr;
  };
- Doc.Element=function(name,attr$1,children)
- {
-  var a,a$1;
-  a=AttrProxy.Concat(attr$1);
-  a$1=Doc.Concat(children);
-  return Elt.New(DomUtility.CreateElement(name),a,a$1);
- };
- Doc.Mk=function(node,updates)
- {
-  return new Doc.New(node,updates);
- };
- Doc.InputInternal=function(elemTy,attr$1)
- {
-  var el;
-  el=DomUtility.CreateElement(elemTy);
-  return Elt.New(el,AttrProxy.Concat(attr$1(el)),Doc.get_Empty());
- };
- Doc.Clickable=function(elem,action)
- {
-  var el;
-  el=DomUtility.CreateElement(elem);
-  el.addEventListener("click",function(ev)
-  {
-   ev.preventDefault();
-   return action();
-  },false);
-  return el;
- };
- Doc.Flatten=function(view)
- {
-  return Doc.EmbedView(View.Map(Doc.Concat,view));
- };
- Doc.RunInPlace=function(childrenOnly,parent,doc)
- {
-  var st;
-  st=Docs.CreateRunState(parent,doc.docNode);
-  View.Sink(An.get_UseAnimations()||Settings.BatchUpdatesEnabled()?Mailbox.StartProcessor(Docs.PerformAnimatedUpdate(childrenOnly,st,doc.docNode)):function()
-  {
-   Docs.PerformSyncUpdate(childrenOnly,st,doc.docNode);
-  },doc.updates);
- };
- Doc.Concat=function(xs)
- {
-  var x;
-  x=Array.ofSeqNonCopying(xs);
-  return Array.TreeReduce(Doc.get_Empty(),Doc.Append,x);
- };
- Doc.get_Empty=function()
- {
-  return Doc.Mk(null,View.Const());
- };
- Doc.EmbedView=function(view)
- {
-  var node;
-  node=Docs.CreateEmbedNode();
-  return Doc.Mk({
-   $:2,
-   $0:node
-  },View.Map(Global.ignore,View.Bind(function(doc)
-  {
-   Docs.UpdateEmbedNode(node,doc.docNode);
-   return doc.updates;
-  },view)));
- };
- Doc.Append=function(a,b)
- {
-  return Doc.Mk({
-   $:0,
-   $0:a.docNode,
-   $1:b.docNode
-  },View.Map2Unit(a.updates,b.updates));
- };
- Doc.New=Runtime.Ctor(function(docNode,updates)
- {
-  Obj.New.call(this);
-  this.docNode=docNode;
-  this.updates=updates;
- },Doc);
  Snap.Map=function(fn,sn)
  {
   var m,res;
@@ -3611,6 +4830,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    Snap.MarkDone(res,sn,fn(a));
   },res),res));
+ };
+ Snap.WhenRun=function(snap,avail,obs)
+ {
+  var m;
+  m=snap.s;
+  m==null?obs():m!=null&&m.$==2?(m.$1.push(obs),avail(m.$0)):m!=null&&m.$==3?(m.$0.push(avail),m.$1.push(obs)):avail(m.$0);
  };
  Snap.WhenObsoleteRun=function(snap,obs)
  {
@@ -3631,6 +4856,30 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    Snap.MarkForever(res,v);
   else
    Snap.MarkReady(res,v);
+ };
+ Snap.Map2Unit=function(sn1,sn2)
+ {
+  var $1,$2,res;
+  function cont()
+  {
+   var m,$3,$4;
+   if(!(m=res.s,m!=null&&m.$==0||m!=null&&m.$==2))
+    {
+     $3=Snap.ValueAndForever(sn1);
+     $4=Snap.ValueAndForever(sn2);
+     $3!=null&&$3.$==1?$4!=null&&$4.$==1?$3.$0[1]&&$4.$0[1]?Snap.MarkForever(res,null):Snap.MarkReady(res,null):void 0:void 0;
+    }
+  }
+  $1=sn1.s;
+  $2=sn2.s;
+  return $1!=null&&$1.$==0?$2!=null&&$2.$==0?Snap.New({
+   $:0,
+   $0:null
+  }):sn2:$2!=null&&$2.$==0?sn1:(res=Snap.New({
+   $:3,
+   $0:[],
+   $1:[]
+  }),(Snap.When(sn1,cont,res),Snap.When(sn2,cont,res),res));
  };
  Snap.EnqueueSafe=function(q,x)
  {
@@ -3688,71 +4937,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   else
    void 0;
  };
- Snap.WhenRun=function(snap,avail,obs)
- {
-  var m;
-  m=snap.s;
-  m==null?obs():m!=null&&m.$==2?(m.$1.push(obs),avail(m.$0)):m!=null&&m.$==3?(m.$0.push(avail),m.$1.push(obs)):avail(m.$0);
- };
- Snap.Copy=function(sn)
- {
-  var m,res,res$1;
-  m=sn.s;
-  return m==null?sn:m!=null&&m.$==2?(res=Snap.New({
-   $:2,
-   $0:m.$0,
-   $1:[]
-  }),(Snap.WhenObsolete(sn,res),res)):m!=null&&m.$==3?(res$1=Snap.New({
-   $:3,
-   $0:[],
-   $1:[]
-  }),(Snap.When(sn,function(v)
-  {
-   Snap.MarkDone(res$1,sn,v);
-  },res$1),res$1)):sn;
- };
- Snap.Map2Unit=function(sn1,sn2)
- {
-  var $1,$2,res;
-  function cont()
-  {
-   var m,$3,$4;
-   if(!(m=res.s,m!=null&&m.$==0||m!=null&&m.$==2))
-    {
-     $3=Snap.ValueAndForever(sn1);
-     $4=Snap.ValueAndForever(sn2);
-     $3!=null&&$3.$==1?$4!=null&&$4.$==1?$3.$0[1]&&$4.$0[1]?Snap.MarkForever(res,null):Snap.MarkReady(res,null):void 0:void 0;
-    }
-  }
-  $1=sn1.s;
-  $2=sn2.s;
-  return $1!=null&&$1.$==0?$2!=null&&$2.$==0?Snap.New({
-   $:0,
-   $0:null
-  }):sn2:$2!=null&&$2.$==0?sn1:(res=Snap.New({
-   $:3,
-   $0:[],
-   $1:[]
-  }),(Snap.When(sn1,cont,res),Snap.When(sn2,cont,res),res));
- };
- Snap.WhenObsolete=function(snap,obs)
- {
-  var m;
-  m=snap.s;
-  m==null?Snap.Obsolete(obs):m!=null&&m.$==2?Snap.EnqueueSafe(m.$1,obs):m!=null&&m.$==3?Snap.EnqueueSafe(m.$1,obs):void 0;
- };
- Snap.ValueAndForever=function(snap)
- {
-  var m;
-  m=snap.s;
-  return m!=null&&m.$==0?{
-   $:1,
-   $0:[m.$0,true]
-  }:m!=null&&m.$==2?{
-   $:1,
-   $0:[m.$0,false]
-  }:null;
- };
  Snap.Join=function(snap)
  {
   var res;
@@ -3776,12 +4960,57 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   },res);
   return res;
  };
- AttrProxy=UI.AttrProxy=Runtime.Class({},null,AttrProxy);
+ Snap.ValueAndForever=function(snap)
+ {
+  var m;
+  m=snap.s;
+  return m!=null&&m.$==0?{
+   $:1,
+   $0:[m.$0,true]
+  }:m!=null&&m.$==2?{
+   $:1,
+   $0:[m.$0,false]
+  }:null;
+ };
+ Snap.Copy=function(sn)
+ {
+  var m,res,res$1;
+  m=sn.s;
+  return m==null?sn:m!=null&&m.$==2?(res=Snap.New({
+   $:2,
+   $0:m.$0,
+   $1:[]
+  }),(Snap.WhenObsolete(sn,res),res)):m!=null&&m.$==3?(res$1=Snap.New({
+   $:3,
+   $0:[],
+   $1:[]
+  }),(Snap.When(sn,function(v)
+  {
+   Snap.MarkDone(res$1,sn,v);
+  },res$1),res$1)):sn;
+ };
+ Snap.WhenObsolete=function(snap,obs)
+ {
+  var m;
+  m=snap.s;
+  m==null?Snap.Obsolete(obs):m!=null&&m.$==2?Snap.EnqueueSafe(m.$1,obs):m!=null&&m.$==3?Snap.EnqueueSafe(m.$1,obs):void 0;
+ };
+ AttrProxy=UI$1.AttrProxy=Runtime$1.Class({},null,AttrProxy);
  AttrProxy.Create=function(name,value)
  {
   return Attrs.Static(function(el)
   {
    DomUtility.SetAttr(el,name,value);
+  });
+ };
+ AttrProxy.HandlerImpl=function(event,q)
+ {
+  return Attrs.Static(function(el)
+  {
+   el.addEventListener(event,function(d)
+   {
+    return(q(el))(d);
+   },false);
   });
  };
  AttrProxy.Concat=function(xs)
@@ -3801,13 +5030,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Templates.LocalTemplatesLoaded=function()
  {
-  SC$4.$cctor();
-  return SC$4.LocalTemplatesLoaded;
+  SC$5.$cctor();
+  return SC$5.LocalTemplatesLoaded;
  };
  Templates.set_LocalTemplatesLoaded=function($1)
  {
-  SC$4.$cctor();
-  SC$4.LocalTemplatesLoaded=$1;
+  SC$5.$cctor();
+  SC$5.LocalTemplatesLoaded=$1;
  };
  Templates.LoadNestedTemplates=function(root,baseName)
  {
@@ -3861,8 +5090,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Templates.LoadedTemplates=function()
  {
-  SC$4.$cctor();
-  return SC$4.LoadedTemplates;
+  SC$5.$cctor();
+  return SC$5.LoadedTemplates;
  };
  Templates.LoadedTemplateFile=function(name)
  {
@@ -4110,8 +5339,95 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Templates.TextHoleRE=function()
  {
-  SC$4.$cctor();
-  return SC$4.TextHoleRE;
+  SC$5.$cctor();
+  return SC$5.TextHoleRE;
+ };
+ TxtRuntime.AsyncMap=function(comp,mapping)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind(comp,function(a)
+   {
+    return Concurrency.Return(mapping(a));
+   });
+  });
+ };
+ Pervasives$1.randomFunctionName=function()
+ {
+  var c;
+  return Strings.ReplaceChar((c=Guid.NewGuid(),Global.String(c)).toLowerCase(),"-","_");
+ };
+ DomUtility.CreateElement=function(name)
+ {
+  return DomUtility.Doc().createElement(name);
+ };
+ DomUtility.CreateText=function(s)
+ {
+  return DomUtility.Doc().createTextNode(s);
+ };
+ DomUtility.SetAttr=function(el,name,value)
+ {
+  el.setAttribute(name,value);
+ };
+ DomUtility.Doc=function()
+ {
+  SC$6.$cctor();
+  return SC$6.Doc;
+ };
+ DomUtility.AddClass=function(element,cl)
+ {
+  var c;
+  c=DomUtility.getClass(element);
+  c===""?DomUtility.setClass(element,cl):!DomUtility.clsRE(cl).test(c)?DomUtility.setClass(element,c+" "+cl):void 0;
+ };
+ DomUtility.RemoveClass=function(element,cl)
+ {
+  var _this;
+  DomUtility.setClass(element,(_this=DomUtility.clsRE(cl),DomUtility.getClass(element).replace(_this,function($1,$2,$3)
+  {
+   return $2===""||$3===""?"":" ";
+  })));
+ };
+ DomUtility.ChildrenArray=function(element)
+ {
+  var a,i,$1;
+  a=[];
+  for(i=0,$1=element.childNodes.length-1;i<=$1;i++)a.push(element.childNodes[i]);
+  return a;
+ };
+ DomUtility.getClass=function(element)
+ {
+  return element instanceof Global.SVGElement?element.getAttribute("class"):element.className;
+ };
+ DomUtility.setClass=function(element,value)
+ {
+  if(element instanceof Global.SVGElement)
+   element.setAttribute("class",value);
+  else
+   element.className=value;
+ };
+ DomUtility.clsRE=function(cls)
+ {
+  return new Global.RegExp("(\\s+|^)"+cls+"(?:\\s+"+cls+")*(\\s+|$)","g");
+ };
+ DomUtility.IterSelector=function(el,selector,f)
+ {
+  var l,i,$1;
+  l=el.querySelectorAll(selector);
+  for(i=0,$1=l.length-1;i<=$1;i++)f(l[i]);
+ };
+ DomUtility.InsertAt=function(parent,pos,node)
+ {
+  var m;
+  if(!(node.parentNode===parent&&pos===(m=node.nextSibling,Unchecked.Equals(m,null)?null:m)))
+   parent.insertBefore(node,pos);
+ };
+ DomUtility.RemoveNode=function(parent,el)
+ {
+  if(el.parentNode===parent)
+   parent.removeChild(el);
  };
  DateUtil.TryParse=function(s)
  {
@@ -4130,7 +5446,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   ok?r.set(x):void 0;
   return ok;
  };
- ConcreteVar=UI.ConcreteVar=Runtime.Class({
+ ConcreteVar=UI$1.ConcreteVar=Runtime$1.Class({
   Set:function(v)
   {
    if(this.isConst)
@@ -4167,7 +5483,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    m!=null&&m.$==1?this.Set(m.$0):void 0;
   }
  },Var,ConcreteVar);
- ConcreteVar.New=Runtime.Ctor(function(isConst,initSnap,initValue)
+ ConcreteVar.New=Runtime$1.Ctor(function(isConst,initSnap,initValue)
  {
   var $this;
   $this=this;
@@ -4189,15 +5505,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return Operators.FailWith("The given key was not present in the dictionary.");
  };
- LazyRecord.New=function(created,evalOrVal,force)
+ Storage.InMemory=function(init)
  {
-  return{
-   c:created,
-   v:evalOrVal,
-   f:force
-  };
+  return new ArrayStorage.New(init);
  };
- XhrProvider=Remoting$1.XhrProvider=Runtime.Class({
+ XhrProvider=Remoting$1.XhrProvider=Runtime$1.Class({
   Async:function(url,headers,data,ok,err)
   {
    Remoting$1.ajax(true,url,headers,data,ok,err,function()
@@ -4206,7 +5518,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    });
   }
  },Obj,XhrProvider);
- XhrProvider.New=Runtime.Ctor(function()
+ XhrProvider.New=Runtime$1.Ctor(function()
  {
   Obj.New.call(this);
  },XhrProvider);
@@ -4217,147 +5529,140 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    ct:ct
   };
  };
- Task=WebSharper.Task=Runtime.Class({
-  get_Status:function()
+ HashSet=Collections.HashSet=Runtime$1.Class({
+  Add:function(item)
   {
-   return this.status;
+   return this.add(item);
   },
-  Start:function()
+  add:function(item)
   {
-   var $this;
-   $this=this;
-   this.status===0?(this.status=2,Concurrency.scheduler().Fork(function()
+   var h,arr;
+   h=this.hash(item);
+   arr=this.data[h];
+   return arr==null?(this.data[h]=[item],this.count=this.count+1,true):this.arrContains(item,arr)?false:(arr.push(item),this.count=this.count+1,true);
+  },
+  Contains:function(item)
+  {
+   var arr;
+   arr=this.data[this.hash(item)];
+   return arr==null?false:this.arrContains(item,arr);
+  },
+  arrContains:function(item,arr)
+  {
+   var c,i,$1,l;
+   c=true;
+   i=0;
+   l=arr.length;
+   while(c&&i<l)
+    if(this.equals.apply(null,[arr[i],item]))
+     c=false;
+    else
+     i=i+1;
+   return!c;
+  },
+  ExceptWith:function(xs)
+  {
+   var e;
+   e=Enumerator.Get(xs);
+   try
    {
-    var $1;
-    $this.status=3;
-    try
-    {
-     $this.Execute();
-     $this.status=5;
-    }
-    catch(m)
-    {
-     m instanceof OperationCanceledException&&(Unchecked.Equals(m.ct,$this.token)&&($1=m,true))?(console.log("Task cancellation caught:",$1),$this.exc=new AggregateException.New$3([$1]),$this.status=6):(console.log("Task error caught:",m),$this.exc=new AggregateException.New$3([m]),$this.status=7);
-    }
-    $this.RunContinuations();
-   })):Operators.InvalidOp("Task not in initial state");
-  },
-  get_IsCanceled:function()
-  {
-   return this.status===6;
-  },
-  get_IsFaulted:function()
-  {
-   return this.status===7;
-  },
-  get_Exception:function()
-  {
-   return this.exc;
-  },
-  Execute:function()
-  {
-   this.action();
-  },
-  RunContinuations:function()
-  {
-   var a,i,$1;
-   a=this.continuations;
-   for(i=0,$1=a.length-1;i<=$1;i++)Arrays.get(a,i).StartContinuation();
-  },
-  get_IsCompleted:function()
-  {
-   return this.status===5||this.status===7||this.status===6;
-  },
-  StartContinuation:function()
-  {
-   var $this;
-   $this=this;
-   this.status===1?(this.status=2,Concurrency.scheduler().Fork(function()
+    while(e.MoveNext())
+     this.Remove(e.Current());
+   }
+   finally
    {
-    if($this.status===2)
-     {
-      $this.status=3;
-      try
-      {
-       $this.Execute();
-       $this.status=5;
-      }
-      catch(e)
-      {
-       $this.exc=new AggregateException.New$3([e]);
-       $this.status=7;
-      }
-      $this.RunContinuations();
-     }
-   })):void 0;
-  },
-  ContinueWith$1:function(action,ct)
-  {
-   var $this,res;
-   $this=this;
-   res=new Task.New$4(function()
-   {
-    return action($this);
-   },ct,1,null);
-   this.get_IsCompleted()?res.StartContinuation():this.continuations.push(res);
-   return res;
-  }
- },Obj,Task);
- Task.New$4=Runtime.Ctor(function(action,token,status,exc)
- {
-  Obj.New.call(this);
-  this.action=action;
-  this.token=token;
-  this.status=status;
-  this.continuations=[];
-  this.exc=exc;
- },Task);
- Task1=WebSharper.Task1=Runtime.Class({
-  get_Result:function()
-  {
-   var $1;
-   switch(this.get_Status())
-   {
-    case 5:
-     return this.result;
-    case 7:
-    case 6:
-     throw this.get_Exception();
-    default:
-     return Operators.InvalidOp("Task has not been completed, has no Result");
+    if(typeof e=="object"&&"Dispose"in e)
+     e.Dispose();
    }
   },
-  Execute:function()
+  get_Count:function()
   {
-   this.result=this.func();
+   return this.count;
+  },
+  CopyTo:function(arr)
+  {
+   var i,all,i$1,$1;
+   i=0;
+   all=HashSetUtil.concat(this.data);
+   for(i$1=0,$1=all.length-1;i$1<=$1;i$1++)Arrays.set(arr,i$1,all[i$1]);
+  },
+  IntersectWith:function(xs)
+  {
+   var other,all,i,$1,item;
+   other=new HashSet.New$4(xs,this.equals,this.hash);
+   all=HashSetUtil.concat(this.data);
+   for(i=0,$1=all.length-1;i<=$1;i++){
+    item=all[i];
+    !other.Contains(item)?this.Remove(item):void 0;
+   }
+  },
+  Remove:function(item)
+  {
+   var arr;
+   arr=this.data[this.hash(item)];
+   return arr==null?false:this.arrRemove(item,arr)&&(this.count=this.count-1,true);
+  },
+  arrRemove:function(item,arr)
+  {
+   var c,i,$1,l;
+   c=true;
+   i=0;
+   l=arr.length;
+   while(c&&i<l)
+    if(this.equals.apply(null,[arr[i],item]))
+     {
+      arr.splice.apply(arr,[i,1]);
+      c=false;
+     }
+    else
+     i=i+1;
+   return!c;
+  },
+  GetEnumerator:function()
+  {
+   return Enumerator.Get(HashSetUtil.concat(this.data));
+  },
+  GetEnumerator0:function()
+  {
+   return Enumerator.Get(HashSetUtil.concat(this.data));
   }
- },Task,Task1);
- Task1.New$4=Runtime.Ctor(function(func,token,status,exc,result)
+ },Obj,HashSet);
+ HashSet.New$3=Runtime$1.Ctor(function()
  {
-  Task.New$4.call(this,null,token,status,exc);
-  this.func=func;
-  this.result=result;
- },Task1);
- OperationCanceledException=WebSharper.OperationCanceledException=Runtime.Class({},Error,OperationCanceledException);
- OperationCanceledException.New=Runtime.Ctor(function(ct)
+  HashSet.New$4.call(this,[],Unchecked.Equals,Unchecked.Hash);
+ },HashSet);
+ HashSet.New$4=Runtime$1.Ctor(function(init,equals,hash)
  {
-  OperationCanceledException.New$1.call(this,"The operation was canceled.",null,ct);
- },OperationCanceledException);
- OperationCanceledException.New$1=Runtime.Ctor(function(message,inner,ct)
+  var e;
+  Obj.New.call(this);
+  this.equals=equals;
+  this.hash=hash;
+  this.data=[];
+  this.count=0;
+  e=Enumerator.Get(init);
+  try
+  {
+   while(e.MoveNext())
+    this.add(e.Current());
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ },HashSet);
+ HashSet.New$2=Runtime$1.Ctor(function(init)
  {
-  this.message=message;
-  this.inner=inner;
-  Object.setPrototypeOf(this,OperationCanceledException.prototype);
-  this.ct=ct;
- },OperationCanceledException);
- SC$3.$cctor=function()
+  HashSet.New$4.call(this,init,Unchecked.Equals,Unchecked.Hash);
+ },HashSet);
+ SC$4.$cctor=function()
  {
-  SC$3.$cctor=Global.ignore;
-  SC$3.noneCT=CT.New(false,[]);
-  SC$3.scheduler=new Scheduler.New();
-  SC$3.defCTS=[new CancellationTokenSource.New()];
-  SC$3.Zero=Concurrency.Return();
-  SC$3.GetCT=function(c)
+  SC$4.$cctor=Global.ignore;
+  SC$4.noneCT=CT.New(false,[]);
+  SC$4.scheduler=new Scheduler.New();
+  SC$4.defCTS=[new CancellationTokenSource.New()];
+  SC$4.Zero=Concurrency.Return();
+  SC$4.GetCT=function(c)
   {
    c.k({
     $:0,
@@ -4371,47 +5676,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    c:IsCancellationRequested,
    r:Registrations
   };
- };
- DomUtility.CreateText=function(s)
- {
-  return DomUtility.Doc().createTextNode(s);
- };
- DomUtility.SetAttr=function(el,name,value)
- {
-  el.setAttribute(name,value);
- };
- DomUtility.CreateElement=function(name)
- {
-  return DomUtility.Doc().createElement(name);
- };
- DomUtility.Doc=function()
- {
-  SC$5.$cctor();
-  return SC$5.Doc;
- };
- DomUtility.ChildrenArray=function(element)
- {
-  var a,i,$1;
-  a=[];
-  for(i=0,$1=element.childNodes.length-1;i<=$1;i++)a.push(element.childNodes[i]);
-  return a;
- };
- DomUtility.IterSelector=function(el,selector,f)
- {
-  var l,i,$1;
-  l=el.querySelectorAll(selector);
-  for(i=0,$1=l.length-1;i<=$1;i++)f(l[i]);
- };
- DomUtility.InsertAt=function(parent,pos,node)
- {
-  var m;
-  if(!(node.parentNode===parent&&pos===(m=node.nextSibling,Unchecked.Equals(m,null)?null:m)))
-   parent.insertBefore(node,pos);
- };
- DomUtility.RemoveNode=function(parent,el)
- {
-  if(el.parentNode===parent)
-   parent.removeChild(el);
  };
  Snap.Obsolete=function(sn)
  {
@@ -4436,87 +5700,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   return{
    s:State
   };
- };
- AttrModule.Value=function(_var)
- {
-  function g(a)
-  {
-   return{
-    $:1,
-    $0:a
-   };
-  }
-  return AttrModule.CustomValue(_var,Global.id,function(x)
-  {
-   return g(Global.id(x));
-  });
- };
- AttrModule.CustomValue=function(_var,toString,fromString)
- {
-  return AttrModule.CustomVar(_var,function($1,$2)
-  {
-   $1.value=toString($2);
-  },function(e)
-  {
-   return fromString(e.value);
-  });
- };
- AttrModule.CustomVar=function(_var,set,get)
- {
-  function onChange(el,e)
-  {
-   return _var.UpdateMaybe(function(v)
-   {
-    var m,$1;
-    m=get(el);
-    return m!=null&&m.$==1&&(!Unchecked.Equals(m.$0,v)&&($1=[m,m.$0],true))?$1[0]:null;
-   });
-  }
-  function set$1(e,v)
-  {
-   var m,$1;
-   m=get(e);
-   return m!=null&&m.$==1&&(Unchecked.Equals(m.$0,v)&&($1=m.$0,true))?null:set(e,v);
-  }
-  return AttrProxy.Concat([AttrModule.Handler("change",function($1)
-  {
-   return function($2)
-   {
-    return onChange($1,$2);
-   };
-  }),AttrModule.Handler("input",function($1)
-  {
-   return function($2)
-   {
-    return onChange($1,$2);
-   };
-  }),AttrModule.Handler("keypress",function($1)
-  {
-   return function($2)
-   {
-    return onChange($1,$2);
-   };
-  }),AttrModule.DynamicCustom(function($1)
-  {
-   return function($2)
-   {
-    return set$1($1,$2);
-   };
-  },_var.get_View())]);
- };
- AttrModule.Handler=function(name,callback)
- {
-  return Attrs.Static(function(el)
-  {
-   el.addEventListener(name,function(d)
-   {
-    return(callback(el))(d);
-   },false);
-  });
- };
- AttrModule.DynamicCustom=function(set,view)
- {
-  return Attrs.Dynamic(view,set);
  };
  Attrs.Static=function(attr$1)
  {
@@ -4667,6 +5850,18 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   Docs.InsertDoc(el,children,null);
  };
+ Docs.CreateEmbedNode=function()
+ {
+  return{
+   Current:null,
+   Dirty:false
+  };
+ };
+ Docs.UpdateEmbedNode=function(node,upd)
+ {
+  node.Current=upd;
+  node.Dirty=true;
+ };
  Docs.InsertDoc=function(parent,doc,pos)
  {
   var d;
@@ -4713,19 +5908,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   var attr$2;
   Docs.LinkElement(el,children);
   attr$2=Attrs.Insert(el,attr$1);
-  return DocElemNode.New(attr$2,children,null,el,Fresh.Int(),Runtime.GetOptional(attr$2.OnAfterRender));
- };
- Docs.CreateEmbedNode=function()
- {
-  return{
-   Current:null,
-   Dirty:false
-  };
- };
- Docs.UpdateEmbedNode=function(node,upd)
- {
-  node.Current=upd;
-  node.Dirty=true;
+  return DocElemNode.New(attr$2,children,null,el,Fresh.Int(),Runtime$1.GetOptional(attr$2.OnAfterRender));
  };
  Docs.InsertNode=function(parent,node,pos)
  {
@@ -4846,8 +6029,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Docs.AfterRender=function(el)
  {
   var m;
-  m=Runtime.GetOptional(el.Render);
-  m!=null&&m.$==1?(m.$0(el.El),Runtime.SetOptional(el,"Render",null)):void 0;
+  m=Runtime$1.GetOptional(el.Render);
+  m!=null&&m.$==1?(m.$0(el.El),Runtime$1.SetOptional(el,"Render",null)):void 0;
  };
  Docs.DoSyncElement=function(el)
  {
@@ -4864,9 +6047,28 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   DomNodes.Iter((p=el.El,function(e)
   {
    DomUtility.RemoveNode(p,e);
-  }),DomNodes.Except(DomNodes.DocChildren(el),DomNodes.Children(el.El,Runtime.GetOptional(el.Delimiters))));
-  ins(el.Children,(m=Runtime.GetOptional(el.Delimiters),m!=null&&m.$==1?m.$0[1]:null));
+  }),DomNodes.Except(DomNodes.DocChildren(el),DomNodes.Children(el.El,Runtime$1.GetOptional(el.Delimiters))));
+  ins(el.Children,(m=Runtime$1.GetOptional(el.Delimiters),m!=null&&m.$==1?m.$0[1]:null));
  };
+ Elt=UI$1.Elt=Runtime$1.Class({},Doc,Elt);
+ Elt.New=function(el,attr$1,children)
+ {
+  var node,rvUpdates;
+  node=Docs.CreateElemNode(el,attr$1,children.docNode);
+  rvUpdates=Updates.Create(children.updates);
+  return new Elt.New$1({
+   $:1,
+   $0:node
+  },View.Map2Unit(Attrs.Updates(node.Attr),rvUpdates.v),el,rvUpdates);
+ };
+ Elt.New$1=Runtime$1.Ctor(function(docNode,updates,elt,rvUpdates)
+ {
+  Doc.New.call(this,docNode,updates);
+  this.docNode$1=docNode;
+  this.updates$1=updates;
+  this.elt=elt;
+  this.rvUpdates=rvUpdates;
+ },Elt);
  Fresh.Int=function()
  {
   Fresh.set_counter(Fresh.counter()+1);
@@ -4874,46 +6076,50 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Fresh.set_counter=function($1)
  {
-  SC$7.$cctor();
-  SC$7.counter=$1;
+  SC$9.$cctor();
+  SC$9.counter=$1;
  };
  Fresh.counter=function()
  {
-  SC$7.$cctor();
-  return SC$7.counter;
+  SC$9.$cctor();
+  return SC$9.counter;
  };
- TaskCompletionSource=WebSharper.TaskCompletionSource=Runtime.Class({
-  SetResult:function(res)
+ ArrayStorage=Storage.ArrayStorage=Runtime$1.Class({
+  SSet:function(coll)
   {
-   this.task.get_IsCompleted()?Operators.FailWith("Task already completed."):void 0;
-   this.task.status=5;
-   this.task.result=res;
-   this.task.RunContinuations();
+   return Arrays.ofSeq(coll);
   },
-  SetException$1:function(exc)
+  SInit:function()
   {
-   this.task.get_IsCompleted()?Operators.FailWith("Task already completed."):void 0;
-   this.task.status=7;
-   this.task.exc=new AggregateException.New$3([exc]);
-   this.task.RunContinuations();
-  },
-  SetCanceled:function()
-  {
-   this.task.get_IsCompleted()?Operators.FailWith("Task already completed."):void 0;
-   this.task.status=6;
-   this.task.RunContinuations();
-  },
-  get_Task:function()
-  {
-   return this.task;
+   return this.init;
   }
- },Obj,TaskCompletionSource);
- TaskCompletionSource.New=Runtime.Ctor(function()
+ },Obj,ArrayStorage);
+ ArrayStorage.New=Runtime$1.Ctor(function(init)
  {
   Obj.New.call(this);
-  this.task=new Task1.New$4(null,Concurrency.noneCT(),1,null,void 0);
- },TaskCompletionSource);
- Scheduler=Concurrency.Scheduler=Runtime.Class({
+  this.init=init;
+ },ArrayStorage);
+ DocElemNode=UI$1.DocElemNode=Runtime$1.Class({
+  Equals:function(o)
+  {
+   return this.ElKey===o.ElKey;
+  },
+  GetHashCode:function()
+  {
+   return this.ElKey;
+  }
+ },null,DocElemNode);
+ DocElemNode.New=function(Attr,Children,Delimiters,El,ElKey,Render)
+ {
+  var $1;
+  return new DocElemNode(($1={
+   Attr:Attr,
+   Children:Children,
+   El:El,
+   ElKey:ElKey
+  },(Runtime$1.SetOptional($1,"Delimiters",Delimiters),Runtime$1.SetOptional($1,"Render",Render),$1)));
+ };
+ Scheduler=Concurrency.Scheduler=Runtime$1.Class({
   Fork:function(action)
   {
    var $this;
@@ -4946,25 +6152,26 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      }
   }
  },Obj,Scheduler);
- Scheduler.New=Runtime.Ctor(function()
+ Scheduler.New=Runtime$1.Ctor(function()
  {
   Obj.New.call(this);
   this.idle=true;
   this.robin=[];
  },Scheduler);
- AggregateException=WebSharper.AggregateException=Runtime.Class({},Error,AggregateException);
- AggregateException.New$3=Runtime.Ctor(function(innerExceptions)
+ OperationCanceledException=WebSharper.OperationCanceledException=Runtime$1.Class({},Error,OperationCanceledException);
+ OperationCanceledException.New=Runtime$1.Ctor(function(ct)
  {
-  AggregateException.New$4.call(this,"One or more errors occurred.",innerExceptions);
- },AggregateException);
- AggregateException.New$4=Runtime.Ctor(function(message,innerExceptions)
+  OperationCanceledException.New$1.call(this,"The operation was canceled.",null,ct);
+ },OperationCanceledException);
+ OperationCanceledException.New$1=Runtime$1.Ctor(function(message,inner,ct)
  {
   this.message=message;
-  Object.setPrototypeOf(this,AggregateException.prototype);
-  this.innerExceptions=innerExceptions;
- },AggregateException);
- CancellationTokenSource=WebSharper.CancellationTokenSource=Runtime.Class({},Obj,CancellationTokenSource);
- CancellationTokenSource.New=Runtime.Ctor(function()
+  this.inner=inner;
+  Object.setPrototypeOf(this,OperationCanceledException.prototype);
+  this.ct=ct;
+ },OperationCanceledException);
+ CancellationTokenSource=WebSharper.CancellationTokenSource=Runtime$1.Class({},Obj,CancellationTokenSource);
+ CancellationTokenSource.New=Runtime$1.Ctor(function()
  {
   Obj.New.call(this);
   this.c=false;
@@ -4972,215 +6179,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   this.r=[];
   this.init=1;
  },CancellationTokenSource);
- View=UI.View=Runtime.Class({},null,View);
- Elt=UI.Elt=Runtime.Class({},Doc,Elt);
- Elt.New=function(el,attr$1,children)
+ SC$5.$cctor=function()
  {
-  var node,rvUpdates;
-  node=Docs.CreateElemNode(el,attr$1,children.docNode);
-  rvUpdates=Updates.Create(children.updates);
-  return new Elt.New$1({
-   $:1,
-   $0:node
-  },View.Map2Unit(Attrs.Updates(node.Attr),rvUpdates.v),el,rvUpdates);
+  SC$5.$cctor=Global.ignore;
+  SC$5.LoadedTemplates=new Dictionary.New$5();
+  SC$5.LocalTemplatesLoaded=false;
+  SC$5.TextHoleRE="\\${([^}]+)}";
  };
- Elt.New$1=Runtime.Ctor(function(docNode,updates,elt,rvUpdates)
- {
-  Doc.New.call(this,docNode,updates);
-  this.docNode$1=docNode;
-  this.updates$1=updates;
-  this.elt=elt;
-  this.rvUpdates=rvUpdates;
- },Elt);
- Array.ofSeqNonCopying=function(xs)
- {
-  var q,o;
-  if(xs instanceof Global.Array)
-   return xs;
-  else
-   if(xs instanceof T)
-    return Arrays.ofList(xs);
-   else
-    if(xs===null)
-     return[];
-    else
-     {
-      q=[];
-      o=Enumerator.Get(xs);
-      try
-      {
-       while(o.MoveNext())
-        q.push(o.Current());
-       return q;
-      }
-      finally
-      {
-       if(typeof o=="object"&&"Dispose"in o)
-        o.Dispose();
-      }
-     }
- };
- Array.TreeReduce=function(defaultValue,reduction,array)
- {
-  var l;
-  function loop(off,len)
-  {
-   var $1,l2;
-   return len<=0?defaultValue:len===1&&(off>=0&&off<l)?Arrays.get(array,off):(l2=len/2>>0,reduction(loop(off,l2),loop(off+l2,len-l2)));
-  }
-  l=Arrays.length(array);
-  return loop(0,l);
- };
- Array.mapInPlace=function(f,arr)
- {
-  var i,$1;
-  for(i=0,$1=arr.length-1;i<=$1;i++)arr[i]=f(arr[i]);
-  return arr;
- };
- Array.MapTreeReduce=function(mapping,defaultValue,reduction,array)
- {
-  var l;
-  function loop(off,len)
-  {
-   var $1,l2;
-   return len<=0?defaultValue:len===1&&(off>=0&&off<l)?mapping(Arrays.get(array,off)):(l2=len/2>>0,reduction(loop(off,l2),loop(off+l2,len-l2)));
-  }
-  l=Arrays.length(array);
-  return loop(0,l);
- };
- SC$4.$cctor=function()
- {
-  SC$4.$cctor=Global.ignore;
-  SC$4.LoadedTemplates=new Dictionary.New$5();
-  SC$4.LocalTemplatesLoaded=false;
-  SC$4.TextHoleRE="\\${([^}]+)}";
- };
- HashSet=Collections.HashSet=Runtime.Class({
-  Add:function(item)
-  {
-   return this.add(item);
-  },
-  Contains:function(item)
-  {
-   var arr;
-   arr=this.data[this.hash(item)];
-   return arr==null?false:this.arrContains(item,arr);
-  },
-  add:function(item)
-  {
-   var h,arr;
-   h=this.hash(item);
-   arr=this.data[h];
-   return arr==null?(this.data[h]=[item],this.count=this.count+1,true):this.arrContains(item,arr)?false:(arr.push(item),this.count=this.count+1,true);
-  },
-  arrContains:function(item,arr)
-  {
-   var c,i,$1,l;
-   c=true;
-   i=0;
-   l=arr.length;
-   while(c&&i<l)
-    if(this.equals.apply(null,[arr[i],item]))
-     c=false;
-    else
-     i=i+1;
-   return!c;
-  },
-  ExceptWith:function(xs)
-  {
-   var e;
-   e=Enumerator.Get(xs);
-   try
-   {
-    while(e.MoveNext())
-     this.Remove(e.Current());
-   }
-   finally
-   {
-    if(typeof e=="object"&&"Dispose"in e)
-     e.Dispose();
-   }
-  },
-  get_Count:function()
-  {
-   return this.count;
-  },
-  CopyTo:function(arr)
-  {
-   var i,all,i$1,$1;
-   i=0;
-   all=HashSetUtil.concat(this.data);
-   for(i$1=0,$1=all.length-1;i$1<=$1;i$1++)Arrays.set(arr,i$1,all[i$1]);
-  },
-  IntersectWith:function(xs)
-  {
-   var other,all,i,$1,item;
-   other=new HashSet.New$4(xs,this.equals,this.hash);
-   all=HashSetUtil.concat(this.data);
-   for(i=0,$1=all.length-1;i<=$1;i++){
-    item=all[i];
-    !other.Contains(item)?this.Remove(item):void 0;
-   }
-  },
-  Remove:function(item)
-  {
-   var arr;
-   arr=this.data[this.hash(item)];
-   return arr==null?false:this.arrRemove(item,arr)&&(this.count=this.count-1,true);
-  },
-  arrRemove:function(item,arr)
-  {
-   var c,i,$1,l;
-   c=true;
-   i=0;
-   l=arr.length;
-   while(c&&i<l)
-    if(this.equals.apply(null,[arr[i],item]))
-     {
-      arr.splice.apply(arr,[i,1]);
-      c=false;
-     }
-    else
-     i=i+1;
-   return!c;
-  },
-  GetEnumerator:function()
-  {
-   return Enumerator.Get(HashSetUtil.concat(this.data));
-  },
-  GetEnumerator0:function()
-  {
-   return Enumerator.Get(HashSetUtil.concat(this.data));
-  }
- },Obj,HashSet);
- HashSet.New$3=Runtime.Ctor(function()
- {
-  HashSet.New$4.call(this,[],Unchecked.Equals,Unchecked.Hash);
- },HashSet);
- HashSet.New$4=Runtime.Ctor(function(init,equals,hash)
- {
-  var e;
-  Obj.New.call(this);
-  this.equals=equals;
-  this.hash=hash;
-  this.data=[];
-  this.count=0;
-  e=Enumerator.Get(init);
-  try
-  {
-   while(e.MoveNext())
-    this.add(e.Current());
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- },HashSet);
- HashSet.New$2=Runtime.Ctor(function(init)
- {
-  HashSet.New$4.call(this,init,Unchecked.Equals,Unchecked.Hash);
- },HashSet);
  An.get_UseAnimations=function()
  {
   return Anims.UseAnimations();
@@ -5248,8 +6253,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Settings.BatchUpdatesEnabled=function()
  {
-  SC$6.$cctor();
-  return SC$6.BatchUpdatesEnabled;
+  SC$7.$cctor();
+  return SC$7.BatchUpdatesEnabled;
  };
  Mailbox.StartProcessor=function(procAsync)
  {
@@ -5275,6 +6280,35 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    m=st[0];
    m===0?(st[0]=1,Concurrency.Start(work(),null)):m===1?st[0]=2:void 0;
   };
+ };
+ Updates=UI$1.Updates=Runtime$1.Class({},null,Updates);
+ Updates.Create=function(v)
+ {
+  var _var;
+  _var=null;
+  _var=Updates.New(v,null,function()
+  {
+   var c;
+   c=_var.s;
+   return c===null?(c=Snap.Copy(_var.c()),_var.s=c,Snap.WhenObsoleteRun(c,function()
+   {
+    _var.s=null;
+   }),c):c;
+  });
+  return _var;
+ };
+ Updates.New=function(Current,Snap$1,VarView)
+ {
+  return new Updates({
+   c:Current,
+   s:Snap$1,
+   v:VarView
+  });
+ };
+ SC$6.$cctor=function()
+ {
+  SC$6.$cctor=Global.ignore;
+  SC$6.Doc=self.document;
  };
  Json.Activate=function(json)
  {
@@ -5379,65 +6413,16 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
   return r;
  };
- InvalidOperationException=WebSharper.InvalidOperationException=Runtime.Class({},Error,InvalidOperationException);
- InvalidOperationException.New=Runtime.Ctor(function(message)
- {
-  InvalidOperationException.New$2.call(this,message,null);
- },InvalidOperationException);
- InvalidOperationException.New$2=Runtime.Ctor(function(message,innerExn)
- {
-  this.message=message;
-  this.inner=innerExn;
-  Object.setPrototypeOf(this,InvalidOperationException.prototype);
- },InvalidOperationException);
- DocElemNode=UI.DocElemNode=Runtime.Class({
-  Equals:function(o)
-  {
-   return this.ElKey===o.ElKey;
-  },
-  GetHashCode:function()
-  {
-   return this.ElKey;
-  }
- },null,DocElemNode);
- DocElemNode.New=function(Attr,Children,Delimiters,El,ElKey,Render)
+ Dyn.New=function(DynElem,DynFlags,DynNodes,OnAfterRender)
  {
   var $1;
-  return new DocElemNode(($1={
-   Attr:Attr,
-   Children:Children,
-   El:El,
-   ElKey:ElKey
-  },(Runtime.SetOptional($1,"Delimiters",Delimiters),Runtime.SetOptional($1,"Render",Render),$1)));
- };
- SC$5.$cctor=function()
- {
-  SC$5.$cctor=Global.ignore;
-  SC$5.Doc=self.document;
- };
- Updates=UI.Updates=Runtime.Class({},null,Updates);
- Updates.Create=function(v)
- {
-  var _var;
-  _var=null;
-  _var=Updates.New(v,null,function()
-  {
-   var c;
-   c=_var.s;
-   return c===null?(c=Snap.Copy(_var.c()),_var.s=c,Snap.WhenObsoleteRun(c,function()
-   {
-    _var.s=null;
-   }),c):c;
-  });
-  return _var;
- };
- Updates.New=function(Current,Snap$1,VarView)
- {
-  return new Updates({
-   c:Current,
-   s:Snap$1,
-   v:VarView
-  });
+  $1={
+   DynElem:DynElem,
+   DynFlags:DynFlags,
+   DynNodes:DynNodes
+  };
+  Runtime$1.SetOptional($1,"OnAfterRender",OnAfterRender);
+  return $1;
  };
  Prepare.convertTextNode=function(n)
  {
@@ -5601,7 +6586,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      return s.replace(new Global.RegExp("\\${"+a$1[0]+"}","ig"),"${"+a$1[1]+"}");
     }
     attrName=Arrays.get(holeAttrs,i);
-    return e.setAttribute(attrName,(((Runtime.Curried3(Seq.fold))(f))(e.getAttribute(attrName)))(mappings));
+    return e.setAttribute(attrName,(((Runtime$1.Curried3(Seq.fold))(f))(e.getAttribute(attrName)))(mappings));
    }());
   });
  };
@@ -5648,7 +6633,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    el.removeAttribute(a$1);
   },toRemove);
  };
- KeyCollection=Collections.KeyCollection=Runtime.Class({
+ KeyCollection=Collections.KeyCollection=Runtime$1.Class({
   GetEnumerator$1:function()
   {
    return Enumerator.Get(Seq.map(function(kvp)
@@ -5665,7 +6650,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    return this.GetEnumerator$1();
   }
  },Obj,KeyCollection);
- KeyCollection.New=Runtime.Ctor(function(d)
+ KeyCollection.New=Runtime$1.Ctor(function(d)
  {
   Obj.New.call(this);
   this.d=d;
@@ -5743,8 +6728,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Anims.UseAnimations=function()
  {
-  SC$9.$cctor();
-  return SC$9.UseAnimations;
+  SC$10.$cctor();
+  return SC$10.UseAnimations;
  };
  Anims.Actions=function(a)
  {
@@ -5818,52 +6803,41 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    Duration:nextDuration
   };
  };
- SC$6.$cctor=function()
- {
-  SC$6.$cctor=Global.ignore;
-  SC$6.BatchUpdatesEnabled=true;
- };
- FormatException=WebSharper.FormatException=Runtime.Class({},Error,FormatException);
- FormatException.New$1=Runtime.Ctor(function(message)
- {
-  this.message=message;
-  Object.setPrototypeOf(this,FormatException.prototype);
- },FormatException);
  SC$7.$cctor=function()
  {
   SC$7.$cctor=Global.ignore;
-  SC$7.counter=0;
- };
- Dyn.New=function(DynElem,DynFlags,DynNodes,OnAfterRender)
- {
-  var $1;
-  $1={
-   DynElem:DynElem,
-   DynFlags:DynFlags,
-   DynNodes:DynNodes
-  };
-  Runtime.SetOptional($1,"OnAfterRender",OnAfterRender);
-  return $1;
- };
- Queue.Clear=function(a)
- {
-  a.splice(0,Arrays.length(a));
+  SC$7.BatchUpdatesEnabled=true;
  };
  SC$8.$cctor=function()
  {
   SC$8.$cctor=Global.ignore;
   SC$8.EmptyAttr=null;
  };
+ FormatException=WebSharper.FormatException=Runtime$1.Class({},Error,FormatException);
+ FormatException.New$1=Runtime$1.Ctor(function(message)
+ {
+  this.message=message;
+  Object.setPrototypeOf(this,FormatException.prototype);
+ },FormatException);
  SC$9.$cctor=function()
  {
   SC$9.$cctor=Global.ignore;
-  SC$9.CubicInOut=Easing.Custom(function(t)
+  SC$9.counter=0;
+ };
+ Queue.Clear=function(a)
+ {
+  a.splice(0,Arrays.length(a));
+ };
+ SC$10.$cctor=function()
+ {
+  SC$10.$cctor=Global.ignore;
+  SC$10.CubicInOut=Easing.Custom(function(t)
   {
    var t2;
    t2=t*t;
    return 3*t2-2*(t2*t);
   });
-  SC$9.UseAnimations=true;
+  SC$10.UseAnimations=true;
  };
  AppendList.Append=function(x,y)
  {
@@ -5905,15 +6879,22 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  AppendList.Empty=function()
  {
-  SC$10.$cctor();
-  return SC$10.Empty;
+  SC$11.$cctor();
+  return SC$11.Empty;
  };
- Easing=UI.Easing=Runtime.Class({},Obj,Easing);
+ HashSetUtil.concat=function(o)
+ {
+  var r,k;
+  r=[];
+  for(var k$1 in o)r.push.apply(r,o[k$1]);
+  return r;
+ };
+ Easing=UI$1.Easing=Runtime$1.Class({},Obj,Easing);
  Easing.Custom=function(f)
  {
   return new Easing.New(f);
  };
- Easing.New=Runtime.Ctor(function(transformTime)
+ Easing.New=Runtime$1.Ctor(function(transformTime)
  {
   Obj.New.call(this);
   this.transformTime=transformTime;
@@ -5943,14 +6924,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   set.IntersectWith(HashSet$1.ToArray(b));
   return set;
  };
- HashSetUtil.concat=function(o)
- {
-  var r,k;
-  r=[];
-  for(var k$1 in o)r.push.apply(r,o[k$1]);
-  return r;
- };
- DynamicAttrNode=UI.DynamicAttrNode=Runtime.Class({
+ DynamicAttrNode=UI$1.DynamicAttrNode=Runtime$1.Class({
   NChanged:function()
   {
    return this.updates;
@@ -5976,7 +6950,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     }
   }
  },Obj,DynamicAttrNode);
- DynamicAttrNode.New=Runtime.Ctor(function(view,push)
+ DynamicAttrNode.New=Runtime$1.Ctor(function(view,push)
  {
   var $this;
   $this=this;
@@ -6076,16 +7050,41 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    $0:Array.ofSeqNonCopying(q)
   };
  };
- SC$10.$cctor=function()
+ Lazy.Create=function(f)
  {
-  SC$10.$cctor=Global.ignore;
-  SC$10.Empty={
+  return LazyRecord.New(false,f,Lazy.forceLazy);
+ };
+ Lazy.forceLazy=function()
+ {
+  var v;
+  v=this.v();
+  this.c=true;
+  this.v=v;
+  this.f=Lazy.cachedLazy;
+  return v;
+ };
+ Lazy.cachedLazy=function()
+ {
+  return this.v;
+ };
+ SC$11.$cctor=function()
+ {
+  SC$11.$cctor=Global.ignore;
+  SC$11.Empty={
    $:0
   };
  };
- Runtime.OnLoad(function()
+ LazyRecord.New=function(created,evalOrVal,force)
  {
-  WasmLoader.main();
+  return{
+   c:created,
+   v:evalOrVal,
+   f:force
+  };
+ };
+ Runtime$1.OnLoad(function()
+ {
+  WSFramework.main();
  });
 }());
 

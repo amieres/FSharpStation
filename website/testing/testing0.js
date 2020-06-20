@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,String,ParseO,LibraryJS,Pojo,WasmLoader,WasmStatus,Remoting,IMessagingO,ReturnQueue,WebSharper,Obj,CustomXhrProvider,WWorker,WasmLoad,Require,Global$1,SC$1,testing_GeneratedPrintf,GeneratedPrintf,Strings,List,Seq,Slice,Operators,Char,Unchecked,Utils,console,IntelliFactory,Runtime,Concurrency,Remoting$1,Enumerator,Arrays,UI,Client,Templates,Doc,View,AjaxRemotingProvider,AttrProxy,DateUtil,Numeric,System,Guid,Var$1,Collections,Dictionary,Lazy;
+ var Global,FsRoot,Library,String,ParseO,LibraryJS,Pojo,WasmLoader,WasmStatus,Remoting,IMessagingO,ReturnQueue,WebSharper,Obj,CustomXhrProvider,WWorker,WasmLoad,Require,GlobalModule,UI,WSFrameworkTest,AssemblyData,ModuleName,TypeName,MethodName,AssemblyName,AssemblyRef,JSCode,ModuleRef,TypeRef,MethodDef,ModuleDef,AssemblyDef,LoadAsm,WSFramework,SC$1,testing_GeneratedPrintf,GeneratedPrintf,Strings,List,Seq,Slice,Operators,Char,Unchecked,Utils,console,IntelliFactory,Runtime,Concurrency,Remoting$1,WsTranslator,Arrays,Enumerator,UI$1,Client,Templates,Doc,View,AjaxRemotingProvider,AttrProxy,Data,TxtRuntime,FSharp,Data$1,Runtime$1,IO,JSON,AttrModule,Date,DateUtil,Numeric,System,Guid,Var$1,Collections,Dictionary,ListModel;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -20,7 +20,23 @@
  WWorker=WasmLoader.WWorker=WasmLoader.WWorker||{};
  WasmLoad=WasmLoader.WasmLoad=WasmLoader.WasmLoad||{};
  Require=WasmLoad.Require=WasmLoad.Require||{};
- Global$1=WasmLoad.Global=WasmLoad.Global||{};
+ GlobalModule=WasmLoad.GlobalModule=WasmLoad.GlobalModule||{};
+ UI=WasmLoader.UI=WasmLoader.UI||{};
+ WSFrameworkTest=FsRoot.WSFrameworkTest=FsRoot.WSFrameworkTest||{};
+ AssemblyData=FsRoot.AssemblyData=FsRoot.AssemblyData||{};
+ ModuleName=AssemblyData.ModuleName=AssemblyData.ModuleName||{};
+ TypeName=AssemblyData.TypeName=AssemblyData.TypeName||{};
+ MethodName=AssemblyData.MethodName=AssemblyData.MethodName||{};
+ AssemblyName=AssemblyData.AssemblyName=AssemblyData.AssemblyName||{};
+ AssemblyRef=AssemblyData.AssemblyRef=AssemblyData.AssemblyRef||{};
+ JSCode=AssemblyData.JSCode=AssemblyData.JSCode||{};
+ ModuleRef=AssemblyData.ModuleRef=AssemblyData.ModuleRef||{};
+ TypeRef=AssemblyData.TypeRef=AssemblyData.TypeRef||{};
+ MethodDef=AssemblyData.MethodDef=AssemblyData.MethodDef||{};
+ ModuleDef=AssemblyData.ModuleDef=AssemblyData.ModuleDef||{};
+ AssemblyDef=AssemblyData.AssemblyDef=AssemblyData.AssemblyDef||{};
+ LoadAsm=AssemblyData.LoadAsm=AssemblyData.LoadAsm||{};
+ WSFramework=FsRoot.WSFramework=FsRoot.WSFramework||{};
  SC$1=Global.StartupCode$testing$testing=Global.StartupCode$testing$testing||{};
  testing_GeneratedPrintf=Global.testing_GeneratedPrintf=Global.testing_GeneratedPrintf||{};
  GeneratedPrintf=Global.GeneratedPrintf=Global.GeneratedPrintf||{};
@@ -37,23 +53,33 @@
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
  Concurrency=WebSharper&&WebSharper.Concurrency;
  Remoting$1=WebSharper&&WebSharper.Remoting;
- Enumerator=WebSharper&&WebSharper.Enumerator;
+ WsTranslator=FsRoot&&FsRoot.WsTranslator;
  Arrays=WebSharper&&WebSharper.Arrays;
- UI=WebSharper&&WebSharper.UI;
- Client=UI&&UI.Client;
+ Enumerator=WebSharper&&WebSharper.Enumerator;
+ UI$1=WebSharper&&WebSharper.UI;
+ Client=UI$1&&UI$1.Client;
  Templates=Client&&Client.Templates;
- Doc=UI&&UI.Doc;
- View=UI&&UI.View;
+ Doc=UI$1&&UI$1.Doc;
+ View=UI$1&&UI$1.View;
  AjaxRemotingProvider=Remoting$1&&Remoting$1.AjaxRemotingProvider;
- AttrProxy=UI&&UI.AttrProxy;
+ AttrProxy=UI$1&&UI$1.AttrProxy;
+ Data=WebSharper&&WebSharper.Data;
+ TxtRuntime=Data&&Data.TxtRuntime;
+ FSharp=Global.FSharp;
+ Data$1=FSharp&&FSharp.Data;
+ Runtime$1=Data$1&&Data$1.Runtime;
+ IO=Runtime$1&&Runtime$1.IO;
+ JSON=Global.JSON;
+ AttrModule=UI$1&&UI$1.AttrModule;
+ Date=Global.Date;
  DateUtil=WebSharper&&WebSharper.DateUtil;
  Numeric=WebSharper&&WebSharper.Numeric;
  System=Global.System;
  Guid=System&&System.Guid;
- Var$1=UI&&UI.Var$1;
+ Var$1=UI$1&&UI$1.Var$1;
  Collections=WebSharper&&WebSharper.Collections;
  Dictionary=Collections&&Collections.Dictionary;
- Lazy=WebSharper&&WebSharper.Lazy;
+ ListModel=UI$1&&UI$1.ListModel;
  String.thousands=function(n)
  {
   var v,c,r,s;
@@ -431,16 +457,10 @@
   pojo[p]=p$1;
   return pojo;
  };
- WasmStatus.WasmWorkerFinished={
-  $:6
- };
  WasmStatus.WasmWorkerLoaded={
-  $:5
- };
- WasmStatus.WasmWorkerLoading={
   $:4
  };
- WasmStatus.WasmFinished={
+ WasmStatus.WasmWorkerLoading={
   $:3
  };
  WasmStatus.WasmLoaded={
@@ -582,11 +602,24 @@
  {
   return headers["x-websharper-rpc"];
  };
- Remoting.appendMsg=function(txt)
+ WWorker.terminate=function()
  {
-  var pre;
-  console.log(txt);
-  !(!self.document)?(pre=WasmLoader.detailsV().Get(),WasmLoader.detailsV().Set(pre+(pre===""?"":"\n")+txt)):void 0;
+  var $1;
+  if($1=WWorker.workerO(),$1!=null&&$1.$==1)
+   {
+    WWorker.workerO().$0.terminate();
+    WWorker.set_workerO(null);
+    WasmLoader.printfn(function($2)
+    {
+     return $2("Worker terminated!");
+    });
+    WasmLoader.wasmStatusV().Set(WasmStatus.WasmNotLoaded);
+   }
+  else
+   WasmLoader.printfn(function($2)
+   {
+    return $2("Worker is not present");
+   });
  };
  WWorker.fromWorker=function(evt)
  {
@@ -600,7 +633,7 @@
    };
   }))(m.$0):m.$==3?(v=m.$0,!Unchecked.Equals(WasmLoader.wasmStatusV().Get(),v)?WasmLoader.wasmStatusV().Set(v):void 0):Remoting.returnValue0(m.$0,m.$1);
  };
- WWorker.receiveMessage=function(evt)
+ WWorker.receiveMessage=function(loadInThisThread,evt)
  {
   var m;
   m=evt.data;
@@ -610,7 +643,7 @@
    {
     return $1(Utils.toSafe($2));
    };
-  }))(m.$0):Remoting.callRunRpc(m.$0,m.$1);
+  }))(m.$0):m.$==2?loadInThisThread(m.$0):Remoting.callRunRpc(m.$0,m.$1);
  };
  WWorker.workerO=function()
  {
@@ -627,12 +660,12 @@
  {
   Obj.New.call(this);
  },Require);
- Global$1=WasmLoad.Global=Runtime.Class({},Obj,Global$1);
- Global$1.New=Runtime.Ctor(function()
+ GlobalModule=WasmLoad.GlobalModule=Runtime.Class({},Obj,GlobalModule);
+ GlobalModule.New=Runtime.Ctor(function()
  {
   Obj.New.call(this);
- },Global$1);
- WasmLoad.loadWasmInWorker=function()
+ },GlobalModule);
+ WasmLoad.loadWasmInWorker=function(opts)
  {
   var w;
   if(!self.document)
@@ -652,7 +685,15 @@
    else
     {
      WasmLoader.wasmStatusV().Set(WasmStatus.WasmLoading);
+     WasmLoader.printfn(function($1)
+     {
+      return $1("Initiating WebWorker");
+     });
      w=new Global.Worker(Runtime.ScriptPath("testing","testing.WasmWorker.js"));
+     w.postMessage({
+      $:2,
+      $0:opts
+     });
      w.onmessage=WWorker.fromWorker;
      WWorker.set_workerO({
       $:1,
@@ -674,25 +715,135 @@
      },function(t)
      {
       Remoting.returnExn0(t[0],t[1]);
-     },function(t)
-     {
-      Remoting.appendMsg(t);
-     }));
+     },Remoting.messaging().wprintfn));
      Remoting.installProvider();
     }
  };
- WasmLoad.loadInThisThread=function()
+ WasmLoad.loadInThisThread=function(opts)
  {
-  return Concurrency.AwaitTask1(WasmLoad.loadWasm().f());
+  var $1,$2,$3;
+  $2=!self.document;
+  $3=WasmLoader.wasmStatusV().Get();
+  switch($2?$3.$==3?1:$3.$==1?2:$3.$==2?4:$3.$==0?6:0:$3.$==1?1:$3.$==3?3:$3.$==4?5:$3.$==0?6:0)
+  {
+   case 0:
+    null;
+    break;
+   case 1:
+    WasmLoader.printfn(function($4)
+    {
+     return $4("WASM is loading");
+    });
+    break;
+   case 2:
+    WasmLoader.printfn(function($4)
+    {
+     return $4("WASM is loading in the main thread");
+    });
+    break;
+   case 3:
+    WasmLoader.printfn(function($4)
+    {
+     return $4("WASM is loading in a WebWorker");
+    });
+    break;
+   case 4:
+    WasmLoader.printfn(function($4)
+    {
+     return $4("WASM is loaded in the main thread");
+    });
+    break;
+   case 5:
+    WasmLoader.printfn(function($4)
+    {
+     return $4("WASM is loaded in a WebWorker");
+    });
+    break;
+   case 6:
+    Concurrency.Start(Concurrency.FromContinuations(function(ok)
+    {
+     var b;
+     function init()
+     {
+      WasmLoad.bindWasm();
+      WasmLoader.printfn(function($4)
+      {
+       return $4("WASM Initialized!");
+      });
+      WasmLoader.wasmStatusV().Set(!self.document?WasmStatus.WasmWorkerLoaded:WasmStatus.WasmLoaded);
+      ok();
+     }
+     return Concurrency.Start((b=null,Concurrency.Delay(function()
+     {
+      WasmLoader.printfn(function($4)
+      {
+       return $4("Loading WASM. Hold on, this will take a while...");
+      });
+      WasmLoader.wasmStatusV().Set(!self.document?WasmStatus.WasmWorkerLoading:WasmStatus.WasmLoading);
+      return Concurrency.Bind(Concurrency.Sleep(50),function()
+      {
+       return Concurrency.Combine(!(!self.document)?(Remoting.installProvider(),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
+       {
+        self.App=Pojo.newPojo([["init",init]]);
+        return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"mono-config.js"]),function()
+        {
+         return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"runtime.js"]),function()
+         {
+          var a,a$1;
+          a=WasmLoader.printfn(function($4)
+          {
+           return function($5)
+           {
+            return $4(Utils.toSafe($5));
+           };
+          });
+          self.Module.print=a;
+          a$1=WasmLoader.printfn(function($4)
+          {
+           return function($5)
+           {
+            return $4(Utils.toSafe($5));
+           };
+          });
+          self.Module.printErr=a$1;
+          self.Module.preRun=[function()
+          {
+           WasmLoad.preloadFiles(WasmLoad.filesToPreload(opts));
+          }];
+          return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"dotnet.js"]),function()
+          {
+           return Concurrency.Zero();
+          });
+         });
+        });
+       }));
+      });
+     })),null);
+    }),null);
+    break;
+  }
  };
- WasmLoad.loadWasm=function()
+ WasmLoad.filesToPreload=function(opts)
  {
-  SC$1.$cctor();
-  return SC$1.loadWasm;
+  return List.ofSeq(Seq.delay(function()
+  {
+   return Seq.append(WsTranslator.dlls(),Seq.delay(function()
+   {
+    return Arrays.choose(function(a)
+    {
+     var a$1;
+     a$1=String.StartsWith("-r:",a);
+     return a$1!=null&&a$1.$==1?{
+      $:1,
+      $0:a$1.$0
+     }:null;
+    },Strings.SplitChars(opts,["\n"],0));
+   }));
+  }));
  };
- WasmLoad.preloadFiles=function()
+ WasmLoad.preloadFiles=function(files)
  {
-  var e,f,pathTo,e$1,file;
+  var dirFiles,e,f,file,dir,from;
   self.Browser=Pojo.newPojo([["init",Global.ignore],["asyncLoad",function(url,onload,onerror)
   {
    var xhr;
@@ -710,35 +861,50 @@
    return xhr.send(null);
   }]]);
   self.Module.preloadPlugins=[];
-  e=Enumerator.Get(WasmLoad.filesToPreload());
+  dirFiles=Seq.cache(Seq.distinct(Seq.map(function(a)
+  {
+   return[Strings.concat("/",Slice.array(a,null,{
+    $:1,
+    $0:Arrays.length(a)-2
+   })),Seq.last(a)];
+  },Seq.map(function(a)
+  {
+   return Arrays.map(Strings.Trim,a);
+  },Seq.map(function(s)
+  {
+   return Strings.SplitChars(Strings.Replace(s,"\\","/"),["/"],0);
+  },files)))));
+  Seq.iter(function(dir$1)
+  {
+   try
+   {
+    self.FS.mkdir(dir$1);
+   }
+   catch(e$1)
+   {
+    null;
+   }
+  },Seq.distinct(Seq.map(function(t)
+  {
+   return t[0];
+  },dirFiles)));
+  e=Enumerator.Get(dirFiles);
   try
   {
    while(e.MoveNext())
     {
      f=e.Current();
-     pathTo=f[1];
-     try
+     file=f[1];
+     dir=f[0];
+     from=Strings.Replace(WasmLoad.rootPath()+dir+"/"+file,"//","/");
+     (WasmLoader.printfn(function($1)
      {
-      self.FS.mkdir(pathTo);
-     }
-     catch(e$2)
-     {
-      null;
-     }
-     e$1=Enumerator.Get(f[2]);
-     try
-     {
-      while(e$1.MoveNext())
-       {
-        file=e$1.Current();
-        self.FS.createPreloadedFile(pathTo,file,f[0]+"/"+file,1,Global.$op21);
-       }
-     }
-     finally
-     {
-      if(typeof e$1=="object"&&"Dispose"in e$1)
-       e$1.Dispose();
-     }
+      return function($2)
+      {
+       return $1("Preloading "+Utils.toSafe($2));
+      };
+     }))(from);
+     self.FS.createPreloadedFile(dir,file,from,1,Global.$op21);
     }
   }
   finally
@@ -746,11 +912,6 @@
    if(typeof e=="object"&&"Dispose"in e)
     e.Dispose();
   }
- };
- WasmLoad.filesToPreload=function()
- {
-  SC$1.$cctor();
-  return SC$1.filesToPreload;
  };
  WasmLoad.bindWasm=function()
  {
@@ -782,36 +943,17 @@
   SC$1.$cctor();
   return SC$1.rootPath;
  };
- WasmLoader.main=function()
+ UI.main=function()
  {
   var x,a;
-  x=WasmLoader.mainDoc();
+  x=UI.mainDoc();
   a=self.document.body;
   Templates.LoadLocalTemplates("");
   Doc.Run(a,x);
  };
- WasmLoader.mainDoc=function()
+ UI.mainDoc=function()
  {
-  function a($1,$2)
-  {
-   return Doc.Element("li",[],[Doc.TextNode((function($3)
-   {
-    return function($4)
-    {
-     return $3("("+testing_GeneratedPrintf.p$1($4[0])+", "+testing_GeneratedPrintf.p$2($4[1])+")");
-    };
-   }(Global.id))([$1,$2]))]);
-  }
-  function a$1($1,$2)
-  {
-   return Doc.Element("li",[],[Doc.TextNode((function($3)
-   {
-    return function($4)
-    {
-     return $3("("+testing_GeneratedPrintf.p$1($4[0])+", "+testing_GeneratedPrintf.p$3($4[1])+")");
-    };
-   }(Global.id))([$1,$2]))]);
-  }
+  var c,c$1;
   return Doc.Element("div",[],[Doc.Element("h1",[],[Doc.TextNode("HELLO WASM!")]),Doc.Element("h2",[],[Doc.TextView(View.Map(function($1)
   {
    return(function($2)
@@ -821,65 +963,129 @@
      return $2(testing_GeneratedPrintf.p($3));
     };
    }(Global.id))($1);
-  },WasmLoader.wasmStatusV().get_View()))]),Doc.Element("div",[],[Doc.InputArea([],WasmLoader.codeV()),Doc.InputArea([],WasmLoader.optsV())]),Doc.Element("span",[],[Doc.Button("Check",[],function()
+  },WasmLoader.wasmStatusV().get_View()))]),Doc.Element("span",[],[Doc.Button("Load as Worker",[],function()
   {
-   WasmLoader.callWasmA(function(t)
+   WasmLoad.loadWasmInWorker(UI.optsV().Get());
+  }),Doc.Button("Load in Main thread",[],function()
+  {
+   WasmLoad.loadInThisThread(UI.optsV().Get());
+  }),Doc.Button("Terminate Worker",[],function()
+  {
+   WWorker.terminate();
+  })]),Doc.Element("div",[],[Doc.InputArea([],UI.codeV()),Doc.InputArea([],UI.optsV())]),Doc.Element("span",[],[Doc.Button("Check",[],function()
+  {
+   UI.callWasmA(function(t)
    {
-    return WasmLoader.parseAndCheckProject(t[0],t[1],t[2]);
-   },WasmLoader.getParms());
+    return UI.parseAndCheckProject(t[0],t[1],t[2]);
+   },UI.getParms());
   }),Doc.Button("Translate",[],function()
   {
-   WasmLoader.clean();
+   UI.clean();
    WasmLoader.printfn(function($1)
    {
     return $1("Initiating translation:");
    });
-   WasmLoader.callWasmA(function(t)
+   UI.callWasmA(function(t)
    {
-    return WasmLoader.translateToJs(t[0],t[1],t[2]);
-   },WasmLoader.getParms());
+    return UI.translateToJs(t[0],t[1],t[2]);
+   },UI.getParms());
   }),Doc.Button("Dir",[],function()
   {
-   WasmLoader.callWasmA(function(d)
+   UI.callWasmA(function(d)
    {
     return(new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.dirRpc:-1181784350",[d]);
    },"/");
   }),Doc.Button("Clean",[],function()
   {
-   WasmLoader.clean();
-  }),Doc.Button("Load as Worker",[],function()
+   UI.clean();
+  })]),UI.showMessages("Fsc Messages",function($1)
   {
-   WasmLoad.loadWasmInWorker();
-  }),Doc.Button("Load in Main thread",[],function()
-  {
-   Concurrency.Start(WasmLoad.loadInThisThread(),null);
-  })]),Doc.Element("ol",[],[Doc.Convert(function(x)
-  {
-   return Doc.Element("li",[],[Doc.TextNode((function($1)
+   return function($2)
    {
-    return function($2)
-    {
-     return $1(Utils.prettyPrint($2));
-    };
-   }(Global.id))(x))]);
-  },WasmLoader.fsErrsV().get_View())]),Doc.Element("ol",[],[Doc.Convert(function($1)
+    return $1(Utils.prettyPrint($2));
+   };
+  }(Global.id),UI.fsErrsV().get_View()),UI.showMessages("Ws  Errors",(c=function($1)
   {
-   return a($1[0],$1[1]);
-  },WasmLoader.wsErrsV().get_View())]),Doc.Element("ol",[],[Doc.Convert(function($1)
+   return function($2)
+   {
+    return $1("("+testing_GeneratedPrintf.p$1($2[0])+", "+testing_GeneratedPrintf.p$2($2[1])+")");
+   };
+  }(Global.id),function(t)
   {
-   return a$1($1[0],$1[1]);
-  },WasmLoader.wsWrnsV().get_View())]),Doc.Element("div",[AttrProxy.Create("style","font-family: monospace; white-space:pre")],[Doc.TextView(WasmLoader.detailsV().get_View())])]);
+   return c([t[0],t[1]]);
+  }),UI.wsErrsV().get_View()),UI.showMessages("Ws  Warnings",(c$1=function($1)
+  {
+   return function($2)
+   {
+    return $1("("+testing_GeneratedPrintf.p$1($2[0])+", "+testing_GeneratedPrintf.p$3($2[1])+")");
+   };
+  }(Global.id),function(t)
+  {
+   return c$1([t[0],t[1]]);
+  }),UI.wsWrnsV().get_View()),Doc.Element("div",[AttrProxy.Create("style","font-family: monospace; white-space:pre")],[Doc.TextView(UI.detailsV().get_View())])]);
  };
- WasmLoader.getParms=function()
+ UI.translateToJs=function(projectName,opts,code)
  {
-  return["WasmTest",Strings.SplitChars("fsc.exe\n"+WasmLoader.optsV().Get(),["\n"],0),WasmLoader.codeV().Get()];
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.translateFsToJsRpc:957452724",[projectName,opts,code]),function(a)
+   {
+    var wsO;
+    wsO=a[1];
+    UI.fsErrsV().Set(a[0]);
+    return wsO==null?(UI.clean(),UI.wsErrsV().Set([]),UI.wsWrnsV().Set([]),Concurrency.Zero()):(UI.detailsV().Set(wsO.$0[0]),UI.wsErrsV().Set(Arrays.ofSeq(wsO.$0[1])),UI.wsWrnsV().Set(Arrays.ofSeq(wsO.$0[2])),Concurrency.Zero());
+   });
+  });
  };
- WasmLoader.callWasmA=function(f,p)
+ UI.parseAndCheckProject=function(projectName,opts,code)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.parseAndCheckProjectRpc:-1474163089",[projectName,opts,code]),function(a)
+   {
+    var a$1;
+    UI.fsErrsV().Set(Arrays.ofSeq(a[0]));
+    UI.wsErrsV().Set([]);
+    UI.wsWrnsV().Set([]);
+    a$1=(function($1)
+    {
+     return function($2)
+     {
+      return $1("("+Utils.prettyPrint($2[0])+", "+Utils.printArray(Utils.prettyPrint,$2[1])+")");
+     };
+    }(Global.id))([a[2],a[1]]);
+    UI.detailsV().Set(a$1);
+    return Concurrency.Zero();
+   });
+  });
+ };
+ UI.showMessages=function(name,f,msgsW)
+ {
+  return Doc.BindView(function(msgs)
+  {
+   return Arrays.length(msgs)===0?Doc.get_Empty():Doc.Element("div",[],[Doc.TextNode(name),Doc.Element("ol",[],[Doc.Concat(Seq.map(function(x)
+   {
+    return Doc.Element("li",[],[Doc.TextNode(f(x))]);
+   },msgs))])]);
+  },msgsW);
+ };
+ UI.getParms=function()
+ {
+  return["WasmTest",Arrays.filter(function(s)
+  {
+   return Strings.Trim(s)!=="";
+  },Strings.SplitChars("fsc.exe\n"+UI.optsV().Get(),["\n"],0)),UI.codeV().Get()];
+ };
+ UI.callWasmA=function(f,p)
  {
   var b;
   Concurrency.Start((b=null,Concurrency.Delay(function()
   {
-   return Concurrency.Combine(WasmLoader.wasmStatusV().Get().$===0?(WasmLoad.loadWasmInWorker(),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
+   return Concurrency.Combine(WasmLoader.wasmStatusV().Get().$===0?(WasmLoad.loadWasmInWorker(UI.optsV().Get()),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
    {
     return Concurrency.Bind(Concurrency.Sleep(50),function()
     {
@@ -887,7 +1093,7 @@
      {
       var m;
       m=WasmLoader.wasmStatusV().Get();
-      return m.$==2?false:m.$==5?false:m.$==3?Operators.FailWith("Wasm is already finished (Refresh browser to restart it"):true;
+      return m.$==2?false:m.$!=4;
      },Concurrency.Delay(function()
      {
       WasmLoader.printfn(function($1)
@@ -909,87 +1115,673 @@
    }));
   })),null);
  };
- WasmLoader.translateToJs=function(projectName,opts,code)
+ UI.clean=function()
  {
-  var b;
-  b=null;
-  return Concurrency.Delay(function()
-  {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.translateFsToJsRpc:957452724",[projectName,opts,code]),function(a)
-   {
-    var wsO;
-    wsO=a[1];
-    WasmLoader.fsErrsV().Set(a[0]);
-    return wsO==null?(WasmLoader.clean(),WasmLoader.wsErrsV().Set([]),WasmLoader.wsWrnsV().Set([]),Concurrency.Zero()):(WasmLoader.detailsV().Set(wsO.$0[0]),WasmLoader.wsErrsV().Set(Arrays.ofSeq(wsO.$0[1])),WasmLoader.wsWrnsV().Set(Arrays.ofSeq(wsO.$0[2])),Concurrency.Zero());
-   });
-  });
+  UI.detailsV().Set("");
  };
- WasmLoader.parseAndCheckProject=function(projectName,opts,code)
+ UI.optsV=function()
  {
-  var b;
-  b=null;
-  return Concurrency.Delay(function()
-  {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.parseAndCheckProjectRpc:-1474163089",[projectName,opts,code]),function(a)
-   {
-    var a$1;
-    WasmLoader.fsErrsV().Set(Arrays.ofSeq(a[0]));
-    WasmLoader.wsErrsV().Set([]);
-    WasmLoader.wsWrnsV().Set([]);
-    a$1=(function($1)
-    {
-     return function($2)
-     {
-      return $1("("+Utils.prettyPrint($2[0])+", "+Utils.printArray(Utils.prettyPrint,$2[1])+")");
-     };
-    }(Global.id))([a[2],a[1]]);
-    WasmLoader.detailsV().Set(a$1);
-    return Concurrency.Zero();
-   });
-  });
+  SC$1.$cctor();
+  return SC$1.optsV;
+ };
+ UI.codeV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.codeV;
+ };
+ UI.wsWrnsV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.wsWrnsV;
+ };
+ UI.wsErrsV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.wsErrsV;
+ };
+ UI.fsErrsV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.fsErrsV;
+ };
+ UI.detailsV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.detailsV;
  };
  WasmLoader.printfn=function(fmt)
  {
   return fmt(Remoting.messaging().wprintfn);
  };
- WasmLoader.clean=function()
- {
-  WasmLoader.detailsV().Set("");
- };
- WasmLoader.optsV=function()
- {
-  SC$1.$cctor();
-  return SC$1.optsV;
- };
- WasmLoader.codeV=function()
- {
-  SC$1.$cctor();
-  return SC$1.codeV;
- };
- WasmLoader.wsWrnsV=function()
- {
-  SC$1.$cctor();
-  return SC$1.wsWrnsV;
- };
- WasmLoader.wsErrsV=function()
- {
-  SC$1.$cctor();
-  return SC$1.wsErrsV;
- };
- WasmLoader.fsErrsV=function()
- {
-  SC$1.$cctor();
-  return SC$1.fsErrsV;
- };
- WasmLoader.detailsV=function()
- {
-  SC$1.$cctor();
-  return SC$1.detailsV;
- };
  WasmLoader.wasmStatusV=function()
  {
   SC$1.$cctor();
   return SC$1.wasmStatusV;
+ };
+ WSFrameworkTest.mainDocNameVar=function()
+ {
+  SC$1.$cctor();
+  return SC$1.mainDocNameVar;
+ };
+ WSFrameworkTest.mainDoc=function()
+ {
+  return Doc.Element("div",[],[Doc.Element("h1",[],[Doc.TextNode("Hello WSFramework")]),WSFrameworkTest.testVarInput(),WSFrameworkTest.testVarOut()]);
+ };
+ WSFrameworkTest.testVarOut=function()
+ {
+  return Doc.Element("div",[],[Doc.TextView(WSFrameworkTest.testVar().get_View())]);
+ };
+ WSFrameworkTest.testVarInput=function()
+ {
+  return Doc.Element("div",[],[Doc.Input([],WSFrameworkTest.testVar())]);
+ };
+ WSFrameworkTest.testVar=function()
+ {
+  SC$1.$cctor();
+  return SC$1.testVar;
+ };
+ ModuleName=AssemblyData.ModuleName=Runtime.Class({
+  get_Id2:function()
+  {
+   return Strings.Replace(this.get_Id(),"+",".");
+  },
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,ModuleName);
+ TypeName=AssemblyData.TypeName=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,TypeName);
+ MethodName=AssemblyData.MethodName=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,MethodName);
+ AssemblyName=AssemblyData.AssemblyName=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,AssemblyName);
+ AssemblyRef=AssemblyData.AssemblyRef=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,AssemblyRef);
+ JSCode=AssemblyData.JSCode=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,JSCode);
+ ModuleRef.New=function(name,asmName)
+ {
+  return{
+   name:name,
+   asmName:asmName
+  };
+ };
+ TypeRef.New=function(name,asm)
+ {
+  return{
+   name:name,
+   asm:asm
+  };
+ };
+ MethodDef.New=function(name,retType,parms,isField)
+ {
+  return{
+   name:name,
+   retType:retType,
+   parms:parms,
+   isField:isField
+  };
+ };
+ ModuleDef.New=function(name,methods)
+ {
+  return{
+   name:name,
+   methods:methods
+  };
+ };
+ AssemblyDef.New=function(name,self$1,modules,dependencies,javaScript)
+ {
+  return{
+   name:name,
+   self:self$1,
+   modules:modules,
+   dependencies:dependencies,
+   javaScript:javaScript
+  };
+ };
+ LoadAsm.fetchAsmData=function(folder,a)
+ {
+  var url,b;
+  url=a.$0;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind(TxtRuntime.AsyncMap(IO.asyncReadTextAtRuntime(false,"D:\\Abe\\CIPHERWorkspace\\FSharpStation\\src","","JSON","",url.indexOf("/")!=-1?url:folder+url),function(t)
+   {
+    return Unchecked.Equals(typeof t,"string")?JSON.parse(t):t;
+   }),function(a$1)
+   {
+    var n,prop,opt,s,j,prop$1,opt$1,d;
+    return Concurrency.Return((n=new AssemblyName({
+     $:0,
+     $0:(opt=(prop="asName",prop in a$1?{
+      $:1,
+      $0:a$1[prop]
+     }:null),opt==null?null:opt.$0)
+    }),(s=new AssemblyRef({
+     $:0,
+     $0:url
+    }),(j=new JSCode({
+     $:0,
+     $0:(opt$1=(prop$1="js",prop$1 in a$1?{
+      $:1,
+      $0:a$1[prop$1]
+     }:null),opt$1==null?null:opt$1.$0)
+    }),(d=Arrays.map(function(a$2)
+    {
+     return new AssemblyRef({
+      $:0,
+      $0:a$2
+     });
+    },a$1.dependencies),AssemblyDef.New(n,s,Arrays.map(function(mo)
+    {
+     var prop$2,opt$2;
+     return ModuleDef.New(new ModuleName({
+      $:0,
+      $0:(opt$2=(prop$2="moName",prop$2 in mo?{
+       $:1,
+       $0:mo[prop$2]
+      }:null),opt$2==null?null:opt$2.$0)
+     }),Arrays.map(function(me)
+     {
+      var n$1,prop$3,opt$3,i,v,prop$4,opt$4,x,prop$5,opt$5,x$1,prop$6,opt$6;
+      n$1=new MethodName({
+       $:0,
+       $0:(opt$3=(prop$3="meName",prop$3 in me?{
+        $:1,
+        $0:me[prop$3]
+       }:null),opt$3==null?null:opt$3.$0)
+      });
+      i=(v=(prop$4="isField",prop$4 in me?{
+       $:1,
+       $0:me[prop$4]
+      }:null),(opt$4=v==null?null:{
+       $:1,
+       $0:1*v.$0
+      },opt$4==null?null:opt$4.$0))===1;
+      return MethodDef.New(n$1,TypeRef.New(new TypeName({
+       $:0,
+       $0:(opt$5=(x=me.type,(prop$5="tName",prop$5 in x?{
+        $:1,
+        $0:x[prop$5]
+       }:null)),opt$5==null?null:opt$5.$0)
+      }),new AssemblyName({
+       $:0,
+       $0:(opt$6=(x$1=me.type,(prop$6="asm",prop$6 in x$1?{
+        $:1,
+        $0:x$1[prop$6]
+       }:null)),opt$6==null?null:opt$6.$0)
+      })),Arrays.map(function(p)
+      {
+       var prop$7,opt$7,prop$8,opt$8;
+       return TypeRef.New(new TypeName({
+        $:0,
+        $0:(opt$7=(prop$7="tName",prop$7 in p?{
+         $:1,
+         $0:p[prop$7]
+        }:null),opt$7==null?null:opt$7.$0)
+       }),new AssemblyName({
+        $:0,
+        $0:(opt$8=(prop$8="asm",prop$8 in p?{
+         $:1,
+         $0:p[prop$8]
+        }:null),opt$8==null?null:opt$8.$0)
+       }));
+      },me.parms),i);
+     },mo.methods));
+    },a$1.modules),d,j))))));
+   });
+  });
+ };
+ AssemblyData.assembliesDoc=function()
+ {
+  return Doc.Concat([Doc.Button("Load module:",[],function()
+  {
+   AssemblyData.loadThisModule();
+  }),Doc.Input([],AssemblyData.thisModuleV()),AssemblyData.listAssembliesDoc(),AssemblyData.currentAssembly(),AssemblyData.styleDoc()]);
+ };
+ AssemblyData.currentAssembly=function()
+ {
+  var b;
+  return Doc.BindView(Global.id,(b=View.get_Do(),View.Bind(function(a)
+  {
+   return a!=null&&a.$==1?View.Bind(function(a$1)
+   {
+    return a$1!=null&&a$1.$==1?View.Const(AssemblyData.assemblyDoc(a$1.$0)):View.Const(Doc.get_Empty());
+   },AssemblyData.assemblies().TryFindByKeyAsView(a.$0)):View.Const(Doc.get_Empty());
+  },AssemblyData.selectedAssembly().get_View())));
+ };
+ AssemblyData.assemblyDoc=function(asm)
+ {
+  var groups,y;
+  function emptyDoc(mo,me)
+  {
+   return Doc.get_Empty();
+  }
+  function inputVar(mo,me)
+  {
+   if(me.retType.name.get_Id()!=="Var<string>")
+    return Doc.get_Empty();
+   else
+    try
+    {
+     return Doc.Input(List.T.Empty,Global["eval"]((((Runtime.Curried3(function($1,$2,$3)
+     {
+      return $1(Utils.toSafe($2)+"."+Utils.toSafe($3)+"()");
+     }))(Global.id))(mo.name.get_Id2()))(me.name.get_Id())));
+    }
+    catch(e)
+    {
+     return Doc.TextNode(e.message);
+    }
+  }
+  function printText(mo,me)
+  {
+   var $1,x;
+   if(me.retType.name.get_Id().indexOf("<")!=-1)
+    return Doc.get_Empty();
+   else
+    {
+     try
+     {
+      $1=(x=Global["eval"]((((Runtime.Curried3(function($2,$3,$4)
+      {
+       return $2(Utils.toSafe($3)+"."+Utils.toSafe($4)+"()");
+      }))(Global.id))(mo.name.get_Id2()))(me.name.get_Id())),(function($2)
+      {
+       return function($3)
+       {
+        return $2(Utils.prettyPrint($3));
+       };
+      }(Global.id))(x));
+     }
+     catch(e)
+     {
+      $1=e.message;
+     }
+     return Doc.TextNode($1);
+    }
+  }
+  function showDoc(mo,me)
+  {
+   return Doc.Concat([Doc.Button("Show",[],function()
+   {
+    var a,x;
+    a=(x=(((Runtime.Curried3(function($1,$2,$3)
+    {
+     return $1(Utils.toSafe($2)+"."+Utils.toSafe($3)+"()");
+    }))(Global.id))(mo.name.get_Id2()))(me.name.get_Id()),(function($1)
+    {
+     return function($2)
+     {
+      return $1("WebSharper.UI.Doc.Concat(["+Utils.toSafe($2)+"])");
+     };
+    }(Global.id))(x));
+    WSFrameworkTest.mainDocNameVar().Set(a);
+   }),Doc.Button("Add",[],function()
+   {
+    var code,a,x;
+    code=WSFrameworkTest.mainDocNameVar().Get();
+    a=(x=(((Runtime.Curried3(function($1,$2,$3)
+    {
+     return $1(Utils.toSafe($2)+"."+Utils.toSafe($3)+"()");
+    }))(Global.id))(mo.name.get_Id2()))(me.name.get_Id()),(((Runtime.Curried3(function($1,$2,$3)
+    {
+     return $1(Utils.toSafe($2)+", "+Utils.toSafe($3)+"])");
+    }))(Global.id))(Slice.string(code,null,{
+     $:1,
+     $0:code.length-3
+    })))(x));
+    WSFrameworkTest.mainDocNameVar().Set(a);
+   })]);
+  }
+  function m(oldp,t)
+  {
+   var p;
+   p=t[1];
+   return[[t[0],function(me)
+   {
+    return p(me)&&!oldp(me);
+   }],function(me)
+   {
+    return p(me)||oldp(me);
+   }];
+  }
+  groups=(y=List.ofArray([[function($1)
+  {
+   return function($2)
+   {
+    return inputVar($1,$2);
+   };
+  },function(me)
+  {
+   return Strings.StartsWith(me.retType.name.get_Id(),"Var<")&&me.isField;
+  }],[function($1)
+  {
+   return function($2)
+   {
+    return emptyDoc($1,$2);
+   };
+  },function(me)
+  {
+   return Strings.StartsWith(me.retType.name.get_Id(),"View<")&&me.isField;
+  }],[function($1)
+  {
+   return function($2)
+   {
+    return printText($1,$2);
+   };
+  },function(me)
+  {
+   return me.retType.name.get_Id()!=="Doc"&&me.isField&&!(me.retType.name.get_Id().indexOf("->")!=-1);
+  }],[function($1)
+  {
+   return function($2)
+   {
+    return showDoc($1,$2);
+   };
+  },function(me)
+  {
+   return me.retType.name.get_Id()==="Doc"&&(me.isField||Seq.isEmpty(me.parms));
+  }],[function($1)
+  {
+   return function($2)
+   {
+    return emptyDoc($1,$2);
+   };
+  },function()
+  {
+   return true;
+  }]]),(((Runtime.Curried3(Seq.mapFold))(m))(function()
+  {
+   return false;
+  }))(y))[0];
+  return Doc.Concat([Doc.Element("h3",[],[Doc.TextNode(asm.name.get_Id())]),Doc.Element("div",[AttrModule.Class("wsfmwk-alternate")],List.ofSeq(Seq.delay(function()
+  {
+   return Seq.collect(function(m$1)
+   {
+    var f;
+    f=m$1[0];
+    return[AssemblyData.methodRows(m$1[1],asm,function($1,$2)
+    {
+     return(f($1))($2);
+    })];
+   },groups);
+  })))]);
+ };
+ AssemblyData.styleDoc=function()
+ {
+  return Doc.Element("style",List.T.Empty,List.ofArray([Doc.TextNode("\r\n                    .wsfmwk-alternate > * :nth-child(even) {background: #CCF}\r\n                    .wsfmwk-alternate > * :nth-child(odd ) {background: #CFC}\r\n                    .wsfmwk-alternate td { border: white ; border-style: solid ; border-width: thin}\r\n                    .wsfmwk-alternate tr { border: white ; border-style: solid ; border-width: thin}\r\n                ")]));
+ };
+ AssemblyData.methodRows=function(p,asm,f)
+ {
+  return Doc.Element("table",[AttrProxy.Create("style","font-family: monospace")],List.ofSeq(Seq.delay(function()
+  {
+   return Seq.collect(function(mo)
+   {
+    var methods;
+    methods=Seq.filter(p,mo.methods);
+    return Seq.length(methods)>0?[Doc.Element("tr",[],List.ofSeq(Seq.delay(function()
+    {
+     return[Doc.Element("td",[],List.ofSeq(Seq.delay(function()
+     {
+      return Seq.append([Doc.Element("b",[],[Doc.TextNode(mo.name.get_Id2())])],Seq.delay(function()
+      {
+       return Seq.collect(function(me)
+       {
+        var x;
+        return[Doc.Element("tr",[AssemblyData.click(function()
+        {
+         AssemblyData.selectedMethod().Set({
+          $:1,
+          $0:[mo.name,me.name]
+         });
+        })],[Doc.Element("td",[],[Doc.TextNode(me.name.get_Id())]),Doc.Element("td",[],[Doc.TextNode(me.isField?"":(x=Strings.concat(", ",Seq.map(function(t)
+        {
+         return t.name.get_Id();
+        },me.parms)),(function($1)
+        {
+         return function($2)
+         {
+          return $1("("+Utils.toSafe($2)+")");
+         };
+        }(Global.id))(x)))]),Doc.Element("td",[AssemblyData.nobr()],[Doc.TextNode(me.isField?":":" -> ")]),Doc.Element("td",[],[Doc.TextNode(me.retType.name.get_Id())]),Doc.Element("td",[],[f(mo,me)])])];
+       },methods);
+      }));
+     })))];
+    })))]:[];
+   },asm.modules);
+  })));
+ };
+ AssemblyData.selectedMethod=function()
+ {
+  SC$1.$cctor();
+  return SC$1.selectedMethod;
+ };
+ AssemblyData.listAssembliesDoc=function()
+ {
+  var m;
+  function f(r,asmW)
+  {
+   return Doc.Element("tr",[],[Doc.Element("td",[AssemblyData.click(function()
+   {
+    AssemblyData.selectedAssembly().Set({
+     $:1,
+     $0:r
+    });
+   })],[Doc.TextView(View.Map(function($1)
+   {
+    return $1.name.get_Id();
+   },asmW))])]);
+  }
+  return Doc.Element("table",[],[(m=AssemblyData.assemblies(),Doc.ConvertSeqBy(m.key,function($1)
+  {
+   return function($2)
+   {
+    return f($1,$2);
+   };
+  },m["var"].get_View()))]);
+ };
+ AssemblyData.selectedAssembly=function()
+ {
+  SC$1.$cctor();
+  return SC$1.selectedAssembly;
+ };
+ AssemblyData.click$1052$37=Runtime.Curried3(function(f,$1,$2)
+ {
+  return f();
+ });
+ AssemblyData.click=function(f)
+ {
+  return AttrProxy.HandlerImpl("click",function()
+  {
+   return function()
+   {
+    return f();
+   };
+  });
+ };
+ AssemblyData.nobr=function()
+ {
+  return AttrProxy.Create("style","white-space: nowrap");
+ };
+ AssemblyData.loadThisModule=function()
+ {
+  Concurrency.Start(AssemblyData.loadAssembly(new AssemblyRef({
+   $:0,
+   $0:AssemblyData.thisModuleV().Get()
+  })),null);
+ };
+ AssemblyData.thisModuleV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.thisModuleV;
+ };
+ AssemblyData.alreadyLoaded=function()
+ {
+  return Seq.length((AssemblyData.assemblies())["var"].Get())>0;
+ };
+ AssemblyData.loadTesting=function()
+ {
+  Concurrency.Start(AssemblyData.loadAssembly(new AssemblyRef({
+   $:0,
+   $0:(function($1)
+   {
+    return function($2)
+    {
+     return $1("testing.asm?q="+Utils.prettyPrint($2));
+    };
+   }(Global.id))(Date.now())
+  })),null);
+ };
+ AssemblyData.loadAssembly=function(asm)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind(AssemblyData["loadAssembly'"](AssemblyData.isLoaded,function(d)
+   {
+    AssemblyData.loadDef(d);
+   },function(a)
+   {
+    return LoadAsm.fetchAsmData(AssemblyData.Folder(),a);
+   },asm),function()
+   {
+    var asms;
+    asms=Arrays.ofSeq((AssemblyData.assemblies())["var"].Get());
+    self.IntelliFactory.Runtime.Start();
+    AssemblyData.saveAssemblies(asms);
+    return Concurrency.Zero();
+   });
+  });
+ };
+ AssemblyData.saveAssemblies=function(asms)
+ {
+  AssemblyData.assemblies().Set(asms);
+ };
+ AssemblyData.Folder=function()
+ {
+  SC$1.$cctor();
+  return SC$1.Folder;
+ };
+ AssemblyData.loadDef=function(def)
+ {
+  var asms;
+  try
+  {
+   asms=List.ofSeq((AssemblyData.assemblies())["var"].Get());
+   Global["eval"]((((Runtime.Curried3(function($1,$2,$3)
+   {
+    return $1("console.log('loading "+Utils.toSafe($2)+" ...');"+Utils.toSafe($3));
+   }))(Global.id))(def.name.get_Id()))(def.javaScript.get_Id()));
+   AssemblyData.assemblies().Set(new List.T({
+    $:1,
+    $0:def,
+    $1:asms
+   }));
+  }
+  catch(e)
+  {
+   ((function($1)
+   {
+    return function($2)
+    {
+     return $1(Utils.prettyPrint($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(e));
+  }
+ };
+ AssemblyData.isLoaded=function(asmRef)
+ {
+  return AssemblyData.assemblies().TryFind(function(ad)
+  {
+   return Unchecked.Equals(ad.self,asmRef);
+  })!=null;
+ };
+ AssemblyData.assemblies=function()
+ {
+  SC$1.$cctor();
+  return SC$1.assemblies;
+ };
+ AssemblyData["loadAssembly'"]=function(isLoaded,loadDef,fetchAsmData,asm)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return isLoaded(asm)?Concurrency.Zero():Concurrency.Bind(fetchAsmData(asm),function(a)
+   {
+    return Concurrency.Combine(Concurrency.For(a.dependencies,function(a$1)
+    {
+     return Concurrency.Bind(AssemblyData["loadAssembly'"](isLoaded,loadDef,fetchAsmData,a$1),function()
+     {
+      return Concurrency.Return(null);
+     });
+    }),Concurrency.Delay(function()
+    {
+     loadDef(a);
+     return Concurrency.Zero();
+    }));
+   });
+  });
+ };
+ WSFramework.main=function()
+ {
+  var x,a;
+  if(!(!self.document))
+   if(AssemblyData.alreadyLoaded())
+    {
+     x=Doc.Element("div",[],[WSFramework.mainDocInput(),AssemblyData.assembliesDoc(),UI.mainDoc(),Doc.Element("div",[],[WSFramework.mainSubDoc()])]);
+     a=self.document.body;
+     Templates.LoadLocalTemplates("");
+     Doc.Run(a,x);
+    }
+   else
+    AssemblyData.loadTesting();
+ };
+ WSFramework.mainSubDoc=function()
+ {
+  SC$1.$cctor();
+  return SC$1.mainSubDoc;
+ };
+ WSFramework.mainDocInput=function()
+ {
+  return Doc.Element("div",[],[Doc.Input([AttrProxy.Create("style","width: 100%")],WSFramework.mainDocNameVar())]);
+ };
+ WSFramework.mainDocVar=function()
+ {
+  SC$1.$cctor();
+  return SC$1.mainDocVar;
+ };
+ WSFramework.mainDocNameVar=function()
+ {
+  SC$1.$cctor();
+  return SC$1.mainDocNameVar$1;
  };
  SC$1.$cctor=function()
  {
@@ -1021,23 +1813,6 @@
   function f$2(s)
   {
    return s+"T00:00:00";
-  }
-  function f$3($1,$2,$3)
-  {
-   var b;
-   b=null;
-   return Concurrency.Delay(function()
-   {
-    return Concurrency.Bind(WasmLoader.translateToJs($1,$2,$3),function()
-    {
-     WasmLoader.clean();
-     WasmLoader.printfn(function($4)
-     {
-      return $4("System initiated!");
-     });
-     return Concurrency.Zero();
-    });
-   });
   }
   SC$1.unindentStr=function(x)
   {
@@ -1129,12 +1904,6 @@
   SC$1["|Double|_|"]=ParseO.parseDoubleO();
   SC$1["|Guid|_|"]=ParseO.parseGuidO();
   SC$1.wasmStatusV=Var$1.Create$1(WasmStatus.WasmNotLoaded);
-  SC$1.detailsV=Var$1.Create$1("");
-  SC$1.fsErrsV=Var$1.Create$1([]);
-  SC$1.wsErrsV=Var$1.Create$1([]);
-  SC$1.wsWrnsV=Var$1.Create$1([]);
-  SC$1.codeV=Var$1.Create$1("printfn \"Hello\"");
-  SC$1.optsV=Var$1.Create$1("/tmp/source.fsx\n-o:source.exe\n--simpleresolution\n--nowarn:3186\n--optimize-\n--noframework\n--fullpaths\n--warn:3\n--target:exe\n-r:/tmp/FSharp.Core.dll\n-r:/tmp/mscorlib.dll\n-r:/tmp/netstandard.dll\n-r:/tmp/System.dll\n-r:/tmp/System.Core.dll\n-r:/tmp/System.IO.dll\n-r:/tmp/System.Runtime.dll\n-r:/tmp/System.Net.Http.dll\n-r:/tmp/System.Threading.dll\n-r:/tmp/System.Numerics.dll");
   SC$1.originalProvider=Remoting$1.AjaxProvider();
   SC$1.queues=new Dictionary.New$5();
   SC$1.messaging=IMessagingO.New(function(h)
@@ -1149,93 +1918,70 @@
   },function(t)
   {
    Remoting.returnExn0(t[0],t[1]);
-  },function(t)
+  },function($1)
   {
-   Remoting.appendMsg(t);
-  });
+   return function($2)
+   {
+    return $1("EARLY PRINTING!: "+Utils.toSafe($2));
+   };
+  }(function(s)
+  {
+   console.log(s);
+  }));
   SC$1.workerO=null;
   SC$1.rootPath="/WASM/publish/";
-  SC$1.filesToPreload=List.ofArray([[WasmLoad.rootPath()+"dlls","/tmp",["WebSharper.Main.dll","WebSharper.Collections.dll","WebSharper.Control.dll","WebSharper.Web.dll","WebSharper.Sitelets.dll","WebSharper.UI.dll","WebSharper.UI.Templating.Runtime.dll","WebSharper.Data.dll"]],[WasmLoad.rootPath()+"managed","/tmp",Arrays.choose(function(a)
+  SC$1.detailsV=Var$1.Create$1("");
+  SC$1.fsErrsV=Var$1.Create$1([]);
+  SC$1.wsErrsV=Var$1.Create$1([]);
+  SC$1.wsWrnsV=Var$1.Create$1([]);
+  SC$1.codeV=Var$1.Create$1("\r\n    open WebSharper\r\n    open WebSharper.UI\r\n    open WebSharper.UI.Html\r\n    \r\n    let name = Var.Create \"World\"\r\n    \r\n    [< Inline \"'Hello inline '\" >]\r\n    let bDoc() = \"Hello\"\r\n    \r\n    let cDoc() = text name.V\r\n    \r\n    let aDoc() = \r\n        div [] [\r\n            text <| bDoc()\r\n            cDoc()\r\n        ]\r\n    \r\n            ");
+  SC$1.optsV=Var$1.Create$1(Strings.concat("\n",Seq.map(Strings.Trim,Strings.SplitChars("\r\n                                    /tmp/source.fsx\r\n                                    -o:source.exe\r\n                                    --simpleresolution\r\n                                    --nowarn:3186\r\n                                    --optimize-\r\n                                    --noframework\r\n                                    --fullpaths\r\n                                    --warn:3\r\n                                    --target:exe\r\n                                    -r:/dlls/WebSharper.Core.dll\r\n                                    -r:/dlls/WebSharper.UI.dll\r\n                                    -r:/dlls/WebSharper.Sitelets.dll\r\n                                    -r:/managed/FSharp.Core.dll\r\n                                    -r:/managed/mscorlib.dll\r\n                                    -r:/managed/netstandard.dll\r\n                                    -r:/managed/System.dll\r\n                                    -r:/managed/System.Core.dll\r\n                                    -r:/managed/System.IO.dll\r\n                                    -r:/managed/System.Runtime.dll\r\n                                    -r:/managed/System.Net.Http.dll\r\n                                    -r:/managed/System.Threading.dll\r\n                                    -r:/managed/System.Numerics.dll\r\n                                ",["\n"],0))));
+  !(!self.document)?Remoting.set_messaging(IMessagingO.New(Remoting.messaging().runRpc,Remoting.messaging().returnValue,Remoting.messaging().returnExn,function(txt)
   {
-   var a$1;
-   a$1=String.StartsWith("-r:/tmp/",a);
-   return a$1!=null&&a$1.$==1?{
-    $:1,
-    $0:a$1.$0
-   }:null;
-  },Strings.SplitChars(WasmLoader.optsV().Get(),["\n"],0))]]);
-  SC$1.loadWasm=Lazy.Create(function()
+   var pre;
+   console.log(txt);
+   pre=UI.detailsV().Get();
+   UI.detailsV().Set(pre+(pre===""?"":"\n")+txt);
+  })):void 0;
+  SC$1.testVar=Var$1.Create$1("Hello WSFrameWork");
+  SC$1.mainDocNameVar=Var$1.Create$1("FsRoot.TestingJS.WSFrameworkTest.mainDoc()");
+  SC$1.assemblies=ListModel.Create(function(ad)
   {
-   return Concurrency.StartAsTask(Concurrency.FromContinuations(function(ok)
+   return ad.name;
+  },List.T.Empty);
+  SC$1.Folder="/EPFileX/Assemblies/";
+  SC$1.thisModuleV=Var$1.Create$1("Covid.asm");
+  SC$1.selectedAssembly=Var$1.Create$1(null);
+  SC$1.selectedMethod=Var$1.Create$1(null);
+  SC$1.mainDocNameVar$1=WSFrameworkTest.mainDocNameVar();
+  SC$1.mainDocVar=Var$1.Create$1(Doc.Element("h1",[],[Doc.TextNode("mainDocVar not initialized")]));
+  View.Sink(function(nm)
+  {
+   var docObj;
+   try
    {
-    var b;
-    function init()
+    docObj=Global["eval"](nm);
+    docObj instanceof Doc?WSFramework.mainDocVar().Set(docObj):typeof docObj=="string"?WSFramework.mainDocVar().Set(Doc.TextNode(docObj)):docObj instanceof UI$1.Var?WSFramework.mainDocVar().Set(Doc.TextView(docObj.get_View())):docObj instanceof View?WSFramework.mainDocVar().Set(Doc.TextView(docObj)):console.log("mainDocNameVar type mismatch: ",docObj);
+   }
+   catch(e)
+   {
+    ((function($1)
     {
-     WasmLoad.bindWasm();
-     WasmLoader.printfn(function($1)
+     return function($2)
      {
-      return $1("WASM Initialized!");
-     });
-     WasmLoader.wasmStatusV().Set(!self.document?WasmStatus.WasmWorkerLoaded:WasmStatus.WasmLoaded);
-     ok();
-    }
-    return Concurrency.Start((b=null,Concurrency.Delay(function()
+      return $1(Utils.prettyPrint($2));
+     };
+    }(function(s)
     {
-     return WasmLoader.wasmStatusV().Get().$!==0?((WasmLoader.printfn(function($1)
-     {
-      return function($2)
-      {
-       return $1("Wasm is already "+testing_GeneratedPrintf.p($2));
-      };
-     }))(WasmLoader.wasmStatusV().Get()),ok(),Concurrency.Zero()):(WasmLoader.printfn(function($1)
-     {
-      return $1("Loading WASM. Hold on, this will take a while...");
-     }),WasmLoader.wasmStatusV().Set(!self.document?WasmStatus.WasmWorkerLoading:WasmStatus.WasmLoading),Concurrency.Bind(Concurrency.Sleep(50),function()
-     {
-      return Concurrency.Combine(!(!self.document)?(Remoting.installProvider(),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
-      {
-       self.App=Pojo.newPojo([["init",init]]);
-       return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"mono-config.js"]),function()
-       {
-        return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"runtime.js"]),function()
-        {
-         self.Module.print=WasmLoader.printfn(function($1)
-         {
-          return function($2)
-          {
-           return $1(Utils.toSafe($2));
-          };
-         });
-         self.Module.printErr=WasmLoader.printfn(function($1)
-         {
-          return function($2)
-          {
-           return $1(Utils.toSafe($2));
-          };
-         });
-         self.Module.preRun=[function()
-         {
-          WasmLoad.preloadFiles();
-         }];
-         return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"dotnet.js"]),function()
-         {
-          return Concurrency.Zero();
-         });
-        });
-       });
-      }));
-     }));
-    })),null);
-   }),null);
-  });
-  WasmLoader.printfn(function($1)
-  {
-   return $1("Initiating system...");
-  });
-  WasmLoader.callWasmA(function($1)
-  {
-   return f$3($1[0],$1[1],$1[2]);
-  },WasmLoader.getParms());
+     console.log(s);
+    }))(e));
+   }
+  },WSFramework.mainDocNameVar().get_View());
+  SC$1.mainSubDoc=Doc.BindView(Global.id,WSFramework.mainDocVar().get_View());
+ };
+ testing_GeneratedPrintf.p=function($1)
+ {
+  return $1.$==4?"WasmWorkerLoaded":$1.$==3?"WasmWorkerLoading":$1.$==2?"WasmLoaded":$1.$==1?"WasmLoading":"WasmNotLoaded";
  };
  testing_GeneratedPrintf.p$3=function($1)
  {
@@ -1253,12 +1999,8 @@
  {
   return"{"+("FileName = "+Utils.prettyPrint($1.FileName))+"; "+("Start = "+("("+Utils.prettyPrint($1.Start[0])+", "+Utils.prettyPrint($1.Start[1])+")"))+"; "+("End = "+("("+Utils.prettyPrint($1.End[0])+", "+Utils.prettyPrint($1.End[1])+")"))+"}";
  };
- testing_GeneratedPrintf.p=function($1)
- {
-  return $1.$==6?"WasmWorkerFinished":$1.$==5?"WasmWorkerLoaded":$1.$==4?"WasmWorkerLoading":$1.$==3?"WasmFinished":$1.$==2?"WasmLoaded":$1.$==1?"WasmLoading":"WasmNotLoaded";
- };
  Runtime.OnLoad(function()
  {
-  WasmLoader.main();
+  WSFramework.main();
  });
 }());
