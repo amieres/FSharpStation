@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:DLL -d:FSharpStation1584484416768 -d:WEBSHARPER
+////-d:DLL -d:FSharpStation1592724446410 -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -25,7 +25,8 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/LayoutEngine/bin/LayoutEngine.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1584484416768
+//#define FSharpStation1592724446410
+#if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -35,8 +36,9 @@ namespace FsRootDll
 namespace FsRoot
 #endif
 #endif
-
+#endif
     #if !NETSTANDARD20
+    
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"

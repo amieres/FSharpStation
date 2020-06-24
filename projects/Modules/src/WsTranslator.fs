@@ -1,4 +1,4 @@
-////-d:FSharpStation1592664150800 -d:NETSTANDARD20 -d:NOFSROOTx
+////-d:FSharpStation1592724446410 -d:NETSTANDARD20 -d:NOFSROOTx -d:WEBSHARPER
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Reflection.Metadata\lib\netstandard2.0"
@@ -9,13 +9,17 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Core.JavaScript.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Core.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Web.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Sitelets.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Main.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.UI.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Compiler.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.JQuery.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Compiler.FSharp.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos/WasmRepo/wasm-sdk/framework\WebAssembly.Bindings.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\FShUIAssemblyData.dll"
 /// Root namespace for all code
-//#define FSharpStation1592664150800
+//#define FSharpStation1592724446410
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -30,6 +34,7 @@ namespace FsRoot
     
     //#define NOFSROOTx
     //#define NETSTANDARD20
+    //#define WEBSHARPER
     
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\Facades"
@@ -39,6 +44,9 @@ namespace FsRoot
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Core.JavaScript.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Core.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Web.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Sitelets.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Main.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.UI.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Compiler.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.JQuery.dll"
@@ -47,8 +55,10 @@ namespace FsRoot
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Collections.Immutable\lib\netstandard2.0"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos/WasmRepo/wasm-sdk/framework\WebAssembly.Bindings.dll"
     
-    module WsTranslator =
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\FShUIAssemblyData.dll"
     
+    module WsTranslator =
+        open FsRoot.Library.FShUI_AssemblyData
         open System
         open System.IO
         open Microsoft.FSharp.Compiler.SourceCodeServices
@@ -80,8 +90,8 @@ namespace FsRoot
             open WebAssembly.Core
             open WebAssembly.Host
     
-            let (?) o prop = (unbox<JSObject> o).GetObjectProperty prop
-            let remoting   = Runtime.GetGlobalObject()?FsRoot?WasmLoader?Remoting |> unbox<JSObject>
+            let (?) o prop = printfn "?%s" prop; (unbox<JSObject> o).GetObjectProperty prop
+            let remoting   = Runtime.GetGlobalObject()?FsRoot?LibraryJS?WsTranslatorLoader?Remoting |> unbox<JSObject>
             let returnValue (md : string, v : string) = remoting.Invoke("returnValue", md, v) |> ignore
             let returnExn   (md : string, e : string) = remoting.Invoke("returnExn"  , md, e) |> ignore
             let wsServer   = lazy (
@@ -109,6 +119,8 @@ namespace FsRoot
                     Remoting.returnExn  (header, sprintf "%A" e)
             } |> Async.Start
     
+        open WebSharper.Compiler
+    
         [< JavaScript >]
         let dlls = 
             [|
@@ -121,8 +133,6 @@ namespace FsRoot
                 "/dlls/WebSharper.UI.Templating.Runtime.dll"
                 "/dlls/WebSharper.Data.dll"
             |]
-    
-        open WebSharper.Compiler
     
         let readMetadata (dllToMetaInfoO : string -> Metadata.Info option)  =
             let metas = dlls  |> Seq.choose dllToMetaInfoO |> Seq.cache
@@ -151,15 +161,16 @@ namespace FsRoot
                     projectName
                     { CommandTools.WsConfig.Empty with JavaScriptScope = CommandTools.JavaScriptScope.JSAssembly }
                     ast
-            if not comp.Errors.IsEmpty then "", comp.Errors, comp.Warnings else
+            if not comp.Errors.IsEmpty then None, comp.Errors, comp.Warnings else
             Translator.DotNetToJavaScript.CompileFull comp
-            if not comp.Errors.IsEmpty then "", comp.Errors, comp.Warnings else
+            if not comp.Errors.IsEmpty then None, comp.Errors, comp.Warnings else
             let currentMeta = comp.ToCurrentMetadata()
             let js =
                 Packager.packageAssembly metadata currentMeta None Packager.OnLoadIfExists    
                 |> Packager.exprToString JavaScript.Readable JavaScript.Writer.CodeWriter
                 |> fst
-            js, comp.Errors, comp.Warnings
+            (Some(CreateAsm.asmFromMeta comp.AssemblyName comp.AssemblyName currentMeta [| "WebSharper.js", JSCode js |]))
+            , comp.Errors, comp.Warnings
     
         let parseAndCheckProject projectName opts code = async {
             let  projOpts = fsharpChecker.Value.GetProjectOptionsFromCommandLineArgs(projectName, opts)

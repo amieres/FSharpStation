@@ -1,0 +1,119 @@
+(function()
+{
+ "use strict";
+ var Global,FsRoot,Library,FShUI_AssemblyData,ModuleName,TypeName,MethodName,AssemblyName,AssemblyRef,JSCode,Resource,ModuleRef,TypeRef,MethodDef,ModuleDef,AssemblyDef,IntelliFactory,Runtime,WebSharper,Strings;
+ Global=self;
+ FsRoot=Global.FsRoot=Global.FsRoot||{};
+ Library=FsRoot.Library=FsRoot.Library||{};
+ FShUI_AssemblyData=Library.FShUI_AssemblyData=Library.FShUI_AssemblyData||{};
+ ModuleName=FShUI_AssemblyData.ModuleName=FShUI_AssemblyData.ModuleName||{};
+ TypeName=FShUI_AssemblyData.TypeName=FShUI_AssemblyData.TypeName||{};
+ MethodName=FShUI_AssemblyData.MethodName=FShUI_AssemblyData.MethodName||{};
+ AssemblyName=FShUI_AssemblyData.AssemblyName=FShUI_AssemblyData.AssemblyName||{};
+ AssemblyRef=FShUI_AssemblyData.AssemblyRef=FShUI_AssemblyData.AssemblyRef||{};
+ JSCode=FShUI_AssemblyData.JSCode=FShUI_AssemblyData.JSCode||{};
+ Resource=FShUI_AssemblyData.Resource=FShUI_AssemblyData.Resource||{};
+ ModuleRef=FShUI_AssemblyData.ModuleRef=FShUI_AssemblyData.ModuleRef||{};
+ TypeRef=FShUI_AssemblyData.TypeRef=FShUI_AssemblyData.TypeRef||{};
+ MethodDef=FShUI_AssemblyData.MethodDef=FShUI_AssemblyData.MethodDef||{};
+ ModuleDef=FShUI_AssemblyData.ModuleDef=FShUI_AssemblyData.ModuleDef||{};
+ AssemblyDef=FShUI_AssemblyData.AssemblyDef=FShUI_AssemblyData.AssemblyDef||{};
+ IntelliFactory=Global.IntelliFactory;
+ Runtime=IntelliFactory&&IntelliFactory.Runtime;
+ WebSharper=Global.WebSharper;
+ Strings=WebSharper&&WebSharper.Strings;
+ ModuleName=FShUI_AssemblyData.ModuleName=Runtime.Class({
+  get_Id2:function()
+  {
+   return Strings.Replace(this.get_Id(),"+",".");
+  },
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,ModuleName);
+ TypeName=FShUI_AssemblyData.TypeName=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,TypeName);
+ MethodName=FShUI_AssemblyData.MethodName=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,MethodName);
+ AssemblyName=FShUI_AssemblyData.AssemblyName=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,AssemblyName);
+ AssemblyRef=FShUI_AssemblyData.AssemblyRef=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,AssemblyRef);
+ JSCode=FShUI_AssemblyData.JSCode=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,JSCode);
+ Resource=FShUI_AssemblyData.Resource=Runtime.Class({
+  get_Id:function()
+  {
+   return this.$0;
+  }
+ },null,Resource);
+ ModuleRef.New=function(name,asmName)
+ {
+  return{
+   name:name,
+   asmName:asmName
+  };
+ };
+ TypeRef.New=function(name,asm)
+ {
+  return{
+   name:name,
+   asm:asm
+  };
+ };
+ MethodDef.New=function(name,retType,parms,isField)
+ {
+  return{
+   name:name,
+   retType:retType,
+   parms:parms,
+   isField:isField
+  };
+ };
+ ModuleDef.New=function(name,methods)
+ {
+  return{
+   name:name,
+   methods:methods
+  };
+ };
+ AssemblyDef.New=function(name,self$1,modules,dependencies,resources,javaScripts)
+ {
+  return{
+   name:name,
+   self:self$1,
+   modules:modules,
+   dependencies:dependencies,
+   resources:resources,
+   javaScripts:javaScripts
+  };
+ };
+ Library.Error=function(a)
+ {
+  return{
+   $:1,
+   $0:a
+  };
+ };
+}());

@@ -3,7 +3,7 @@
 #nowarn "1182"
 #nowarn "52"
 #nowarn "1178"
-////-d:FSharpStation1592310559857 -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1592724446410 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -40,7 +40,7 @@
 //#nowarn "52"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1592310559857
+//#define FSharpStation1592724446410
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -2218,6 +2218,7 @@ namespace FsRoot
                                         Directory.CreateDirectory(site) |> ignore
                     let! out, err   = args
                                       |> String.concat "  "
+                                      |>! print
                                       |> fun ops -> (new RunProcess.ShellEx(@"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\wsfsc.exe", ops, priorityClass = System.Diagnostics.ProcessPriorityClass.RealTime)).StartAndWaitR()
                                       |> ofResult
                     do! (if out = "" then "Compiled!" else out + err) |> ResultMessage.Info |> FusionAsyncM.ofResultMessage
@@ -2837,7 +2838,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1592310559857"
+                let mutable fsharpStationAddress = Address "FSharpStation1592724446410"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
