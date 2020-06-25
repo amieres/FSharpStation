@@ -256,7 +256,7 @@
   {
    return Doc.Element("tr",[],[Doc.Element("td",[],List.ofSeq(Seq.delay(function()
    {
-    return Seq.append(i>0?[Doc.Button("^",[],function()
+    return i>0?[Doc.Button("^",[],function()
     {
      setDOCH(tO,Arrays.collect(Global.id,[Slice.array(dcs,null,{
       $:1,
@@ -265,19 +265,19 @@
       $:1,
       $0:i+1
      },null)]));
-    })]:[],Seq.delay(function()
+    })]:[];
+   }))),Doc.Element("td",[],List.ofSeq(Seq.delay(function()
+   {
+    return i<Arrays.length(dcs)-1?[Doc.Button("v",[],function()
     {
-     return i<Arrays.length(dcs)-1?[Doc.Button("v",[],function()
-     {
-      setDOCH(tO,Arrays.collect(Global.id,[Slice.array(dcs,null,{
-       $:1,
-       $0:i-1
-      }),[Arrays.get(dcs,i+1),dc],Slice.array(dcs,{
-       $:1,
-       $0:i+2
-      },null)]));
-     })]:[];
-    }));
+     setDOCH(tO,Arrays.collect(Global.id,[Slice.array(dcs,null,{
+      $:1,
+      $0:i-1
+     }),[Arrays.get(dcs,i+1),dc],Slice.array(dcs,{
+      $:1,
+      $0:i+2
+     },null)]));
+    })]:[];
    }))),Doc.Element("td",[],[WsComposition.getUIDoc(function(ndc)
    {
     setDOCH(tO,Arrays.collect(Global.id,[Slice.array(dcs,null,{
@@ -874,7 +874,7 @@
   SC$1.$cctor();
   return SC$1.selectedAssembly;
  };
- AssemblyUI.click$494$45=Runtime.Curried3(function(f,$1,$2)
+ AssemblyUI.click$496$45=Runtime.Curried3(function(f,$1,$2)
  {
   return f();
  });

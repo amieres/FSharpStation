@@ -374,6 +374,8 @@ namespace FsRoot
                             |> Array.mapi (fun i dc -> tr [] [ 
                                 td[] [
                                     if i > 0              then yield Doc.Button "^" [] (fun ()  -> setDOCH(tO, Array.collect id [| dcs.[..i-2] ; [| dc        ; dcs.[i-1] |] ; dcs.[i+1..] |] ) )
+                                ]
+                                td[] [
                                     if i < dcs.Length - 1 then yield Doc.Button "v" [] (fun ()  -> setDOCH(tO, Array.collect id [| dcs.[..i-1] ; [| dcs.[i+1] ; dc        |] ; dcs.[i+2..] |] ) )
                                 ]
                                 td[] [
