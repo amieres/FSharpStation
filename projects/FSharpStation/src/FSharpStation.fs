@@ -1,6 +1,6 @@
 #nowarn "3242"
 #nowarn "52"
-////-d:FSS_SERVER -d:FSharpStation1574084738106 -d:TEE -d:WEBSHARPER
+////-d:FSS_SERVER -d:FSharpStation1592911141642 -d:TEE -d:WEBSHARPER
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\FSharpStation\src"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
@@ -35,7 +35,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\NewtonSoft.JSon\lib\net45\NewtonSoft.JSon.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\LayoutEngine\bin\LayoutEngine.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\bin\LayoutEngine.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.Hosting\lib\net451\Microsoft.Owin.Hosting.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin.Host.HttpListener\lib\net451\Microsoft.Owin.Host.HttpListener.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin\lib\net461\WebSharper.Owin.dll"
@@ -46,7 +46,8 @@
 //#nowarn "3242"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1574084738106
+//#define FSharpStation1592911141642
+#if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -56,8 +57,9 @@ namespace FsRootDll
 namespace FsRoot
 #endif
 #endif
-
+#endif
     #if !NETSTANDARD20
+    
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
@@ -347,18 +349,30 @@ namespace FsRoot
             
             
             /// returns a function that delays its execution
-            /// runs only once even if multiple calls happen before the delay
-            let delayed delay doF =
-                let cancellationTokenSourceO = ref None
+            /// cancels prior when multiple calls happen before the delay
+            let delayedA delay doF =
+                let mutable cancelTokenO = None
                 fun parm -> 
                     let asy = async {
                         do! Async.Sleep delay
-                        doF parm
+                        do! doF parm
                     } 
-                    !cancellationTokenSourceO |> Option.iter (fun (tokenSource:System.Threading.CancellationTokenSource) -> tokenSource.Cancel())
-                    cancellationTokenSourceO := Some <| new System.Threading.CancellationTokenSource()
-                    Async.Start(asy, cancellationToken = (!cancellationTokenSourceO).Value.Token)
+                    cancelTokenO |> Option.iter (fun (tokenSource: System.Threading.CancellationTokenSource) -> tokenSource.Cancel())
+                    cancelTokenO <- Some <| new System.Threading.CancellationTokenSource()
+                    Async.Start(asy, cancellationToken = cancelTokenO.Value.Token)
             
+            /// returns a function that delays its execution
+            /// cancels prior when multiple calls happen before the delay
+            let delayed delay doF = delayedA delay (doF >> async.Return)
+            
+            #if WEBSHARPER
+            
+            let delayedVar delay (var:Var<_>) =
+                let delayedV = Var.Create var.Value
+                var.View |> View.Sink (delayed delay delayedV.Set)
+                delayedV
+            
+            #endif
             
             [< AutoOpen >]
             module Monads =
@@ -422,6 +436,14 @@ namespace FsRoot
                     let traverseSeq             f           sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
                                                                  Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
                     let inline sequenceSeq                  sq = traverseSeq id sq
+                    [< Inline "throw 'traverseSeqS cannot be used in JavaScript!'" >]
+                    let traverseSeqS (f: 't->Async<_>) (t: 't seq) = async {
+                                                                 let! ct = Async.CancellationToken
+                                                                 return seq {
+                                                                     use enum = t.GetEnumerator ()
+                                                                     while enum.MoveNext() do
+                                                                         yield Async.RunSynchronously (f enum.Current, cancellationToken = ct) }}
+                    let inline sequenceSeqS          sq = traverseSeqS id sq
                     let insertO  vAO                           = vAO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
                     let insertR (vAR:Result<_,_>)              = vAR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
                 
@@ -926,19 +948,40 @@ namespace FsRoot
                         with  e -> return  ExceptMsg (e.Message, e.StackTrace) |> Error
                     }
                     let inline map  f m = bind  (f >> rtn) m            
-                    let inline mapP f m = bindP (f >> rtn) m            
+                    let inline mapP f m = bindP (f >> rtn) m
+                    let inline getResult (v:AsyncResult<_,_>) = v |> Async.map Result.Ok
                     let rec whileLoop cond fRA =
                         if   cond () 
                         then fRA  () |> bind (fun () -> whileLoop cond fRA)
                         else rtn  ()
-                    let (>>=)                              v f = bind f v
-                    let rec    traverseSeq     f            sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
-                                                                 Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
-                    let inline sequenceSeq                  sq = traverseSeq id sq
-                    let insertO   vRAO                         = vRAO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
-                    let insertR ( vRAR:Result<_,_>)            = vRAR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
-                    let absorbR   vRRA                         = vRRA |> Async.map  Result.join
-                    let absorbO f vORA                         = vORA |> Async.map (Result.absorbO  f)
+                    let (>>=)                       v f = bind f v
+                    let        traverseSeq         f sq = let folder tail head = f head >>= (fun h -> tail >>= (fun t -> Seq.append t (Seq.singleton h) |> rtn))
+                                                          Seq.fold folder  (rtn Seq.empty) sq
+                    let inline sequenceSeq           sq = traverseSeq id sq
+                    /// uses Async.RunSynchronously
+                    /// handleError - handles individual error messages. true = continue, false = stop
+                    [< Inline "throw ('Not to be used in JS traverseSeqS')" >]
+                    let traverseSeqS (f: 't->AsyncResult<'u, _>) handleError (t: 't seq)  = async {
+                        let! ct = Async.CancellationToken
+                        return seq {
+                                use enum = t.GetEnumerator ()
+                                let mutable stillOk = true
+                                while enum.MoveNext() do
+                                    match Async.RunSynchronously (f enum.Current, cancellationToken = ct) with
+                                    | Ok v -> yield v
+                                    | Error msg -> stillOk <- handleError msg
+                                } 
+                            |> Ok
+                        }
+                    let inline sequenceSeqS          sq = traverseSeqS id sq
+                    let insertO   vRAO                  = vRAO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
+                    let insertR ( vRAR:Result<_,_>)     = vRAR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
+                    let absorbR   vRRA                  = vRRA |> Async.map  Result.join
+                    let absorbO f vORA                  = vORA |> Async.map (Result.absorbO  f)
+                
+                    let tryWith    hnd (fRA:unit -> AsyncResult<_,_>) : Async<Result<'a  , 'm>> = async { try return! fRA() with e -> return! hnd e  }
+                    let tryFinally fn  (fRA:unit -> AsyncResult<_,_>) : Async<Result<'a  , 'm>> = async { try return! fRA() finally   fn  () }
+                
                 
                 type AsyncResultBuilder() =
                     member __.ReturnFrom vRA        : Async<Result<'v  , 'm>> =                       vRA
@@ -1094,7 +1137,7 @@ namespace FsRoot
                                                   then this.Substring2(0, this.Length + n)
                                                   else this.Substring2(0, n              )
                 member this.Right            n  = this.Substring2(max 0 (this.Length - n), this.Length)
-                member this.toUnderscore        = this |> Seq.mapi(fun i c -> if i > 0 && System.Char.IsUpper(c) then [ '_' ; c ] else [ c ])  |> Seq.collect id |> Seq.toArray |> System.String
+                //member this.toUnderscore        = this |> Seq.mapi(fun i c -> if i > 0 && System.Char.IsUpper(c) then [ '_' ; c ] else [ c ])  |> Seq.collect id |> Seq.toArray |> System.String
             
             module String =
                 let splitByChar (c: char) (s: string) = s.Split c
@@ -1111,6 +1154,8 @@ namespace FsRoot
                     )
                 let contains     sub  (whole: string) = whole.Contains sub
                 let trim                  (s: string) = s.Trim()
+                let left  n (s:string) = s.Left  n
+                let right n (s:string) = s.Right n
                 let append     (a: string)(b: string) =  a + b
                 let skipFirstLine (txt:string) = txt.IndexOf '\n' |> fun i -> if i < 0 then "" else txt.[i + 1..]
                 let unindent (s:string) =
@@ -1134,15 +1179,19 @@ namespace FsRoot
                     >> String.concat "\n"
                 let (|StartsWith|_|) (start:string) (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
                 let (|EndsWith  |_|) (ends :string) (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
+                let (|WhiteSpace|_|) (s:string) = if s |> Seq.exists (System.Char.IsWhiteSpace >> not) then None else Some()
                 
                 let thousands n =
-                    let v = n.ToString()
+                    let v = (if n < 0 then -n else n).ToString()
                     let r = v.Length % 3 
                     let s = if r = 0 then 3 else r
                     [   yield v.[0.. s - 1]
                         for i in 0..(v.Length - s)/ 3 - 1 do
                             yield v.[i * 3 + s .. i * 3 + s + 2]
-                    ] |> String.concat ","
+                    ] 
+                    |> String.concat ","
+                    |> fun s -> if n < 0 then "-" + s else s
+            
             
             [< Inline "$a + '/' + $b" >]
             let inline (+/+) a b = System.IO.Path.Combine(a, b)
@@ -1381,24 +1430,20 @@ namespace FsRoot
             
                 type CommArgId = CommArgId of System.Guid
                 
-                type CommArgBuild =
-                    | TInt    of (int    -> string)
-                    | TString of (string -> string)
-                    | TBool   of (bool   -> string)
-                    | TFloat  of (float  -> string)
-                
                 type CommArg = {
                     cargId : CommArgId
                     name   : string
                     unique : bool
-                    build  : CommArgBuild
+                    build  : obj -> string
                 }
                 type CommArgValue<'T,  'M> = FusionM<'T, CommArgCollection<     'M>, 'M>
                 and  ArgValueTuple<    'M> = CommArg *   CommArgValue<obj,      'M>
                 and  CommArgCollection<'M> = CommArgCollection of ArgValueTuple<'M> seq
                     with 
                         member oo.CommArgs = match oo with CommArgCollection v -> v
-                
+            
+                let CommArgCollection agvts = Seq.cache agvts |> CommArgCollection
+            
                 type TypedCommArg<'T> = TypedCommArg of CommArg
                     with
                     member oo.CommArg = match oo with TypedCommArg v -> v
@@ -1407,42 +1452,29 @@ namespace FsRoot
                     static member (/=) (arg: TypedCommArg<'T>, f: CommArgCollection<'M>->'T    ) : ArgValueTuple<'M> = match arg with TypedCommArg arg -> (arg, getS() |>> f |>> box)
                 
                 module CommArg  =
-                    let New0 (name, unique, build) = {
-                        cargId = CommArgId <| System.Guid.NewGuid()
-                        name   = name
-                        unique = unique
-                        build  = build
-                    }
-                    let NewInt   (name, unique, build): TypedCommArg<int   > = New0(name, unique, build |> TInt   ) |> TypedCommArg
-                    let NewString(name, unique, build): TypedCommArg<string> = New0(name, unique, build |> TString) |> TypedCommArg
-                    let NewBool  (name, unique, build): TypedCommArg<bool  > = New0(name, unique, build |> TBool  ) |> TypedCommArg
-                    let NewFloat (name, unique, build): TypedCommArg<float > = New0(name, unique, build |> TFloat ) |> TypedCommArg
+                    let New (name, unique, build: 'T -> _) : TypedCommArg<'T> = 
+                        {
+                            cargId = CommArgId <| System.Guid.NewGuid()
+                            name   = name
+                            unique = unique
+                            build  = unbox >> build
+                        }  |> TypedCommArg
+                    let NewInt   (name, unique, build) : TypedCommArg<int   > = New(name, unique, build)
+                    let NewString(name, unique, build) : TypedCommArg<string> = New(name, unique, build)
+                    let NewBool  (name, unique, build) : TypedCommArg<bool  > = New(name, unique, build)
+                    let NewFloat (name, unique, build) : TypedCommArg<float > = New(name, unique, build)
                     let argumentRm (a:CommArg) (vRm:CommArgValue<obj,_>) = fusion {
                         let! v = vRm
-                        return
-                            match a.build with
-                            | TInt    f -> unbox<int   > v |> f
-                            | TString f -> unbox<string> v |> f
-                            | TBool   f -> unbox<bool  > v |> f
-                            | TFloat  f -> unbox<float > v |> f
+                        let  r = a.build v
+                        return r
                     }
-                    let argumentTRm(a,v) = argumentRm a v
-                    let getIntR    (TypedCommArg a) (o:obj) = 
-                        match a.build with
-                        | TInt    _ -> unbox<int   > o |> Ok
-                        | _         -> Error <| ErrorMsg "expecting TInt"
-                    let getStringR (TypedCommArg a) (o:obj) = 
-                        match a.build with
-                        | TString _ -> unbox<string> o |> Ok
-                        | _         -> Error <| ErrorMsg "expecting TString"
-                    let getBoolR   (TypedCommArg a) (o:obj) = 
-                        match a.build with
-                        | TBool   _ -> unbox<bool  > o |> Ok
-                        | _         -> Error <| ErrorMsg "expecting TBool"
-                    let getFloatR  (TypedCommArg a) (o:obj) = 
-                        match a.build with
-                        | TFloat  _ -> unbox<float > o |> Ok
-                        | _         -> Error <| ErrorMsg "expecting TFloat"
+                    let inline argumentTRm (a,v) = argumentRm a v
+                    let getVRm (a: TypedCommArg<'T>) (vRm:CommArgValue<obj,_>) : FusionM<'T,_,_> = vRm |>> unbox
+                    let        internal getValueR (a: TypedCommArg<'T>) (o:obj) : Result<'T,_> = unbox<'T> o |> Ok
+                    let inline internal getIntR    a o : Result<int   ,_> = getValueR a o
+                    let inline internal getStringR a o : Result<string,_> = getValueR a o
+                    let inline internal getBoolR   a o : Result<bool  ,_> = getValueR a o
+                    let inline internal getFloatR  a o : Result<float ,_> = getValueR a o
                 
                 module CommArgCollection =
                 
@@ -1451,20 +1483,24 @@ namespace FsRoot
                     let argsRm                           () = readerFun(fun (CommArgCollection args) -> args                 )
                     let existsRm                          f = readerFun(fun (CommArgCollection args) -> args |> Seq.exists f )
                     let filterRm                          p = readerFun(fun (CommArgCollection args) -> args |> Seq.filter p )
-                    let argumentsRm                  filter = filterRm filter >>= traverseSeq CommArg.argumentTRm
+                    let argumentsRm                  filter = filterRm filter >>= traverseSeq CommArg.argumentTRm |>> Seq.filter ((<>) "")
                     let containsAnyOfRm (ids:CommArgId Set) = readerFun(fun (CommArgCollection args) -> args |> Seq.exists (fun (a,_) -> Set.contains a.cargId ids) )
                     let argumentNotFound  targ = fun () -> match targ with | TypedCommArg arg -> sprintf "argument not found: %s" arg.name |> ErrorMsg
                     let tryFindArgO   (TypedCommArg arg) (CommArgCollection args) = Seq.tryFind (fun (a,_) -> a.cargId = arg.cargId) args 
-                    let tryFindArgORm     targ = readerFun(fun coll -> tryFindArgO targ coll |> Option.map insertFst |> insertO ) >>= id
+                    let tryFindArgORm     targ = readerFun(fun coll -> tryFindArgO targ coll |> Option.map insertFst |> insertO) >>= id
+                    let tryGetValueORm    targ = tryFindArgORm   targ |>> (Option.map (fun (_, o) -> CommArg.getValueR  targ o)) |>> Result.insertO >>= ofResultRM
                     let tryGetIntORm      targ = tryFindArgORm   targ |>> (Option.map (fun (_, o) -> CommArg.getIntR    targ o)) |>> Result.insertO >>= ofResultRM
                     let tryGetStringORm   targ = tryFindArgORm   targ |>> (Option.map (fun (_, o) -> CommArg.getStringR targ o)) |>> Result.insertO >>= ofResultRM
                     let tryGetBoolORm     targ = tryFindArgORm   targ |>> (Option.map (fun (_, o) -> CommArg.getBoolR   targ o)) |>> Result.insertO >>= ofResultRM
                     let tryGetFloatORm    targ = tryFindArgORm   targ |>> (Option.map (fun (_, o) -> CommArg.getFloatR  targ o)) |>> Result.insertO >>= ofResultRM
+                    let tryBuildArgORm    targ = tryFindArgORm   targ |>> (Option.map (fun (c, o) -> c.build                 o)) 
                     let findArgRm         targ = tryFindArgORm   targ >>= ofOption (argumentNotFound targ)
+                    let getValueRm        targ = tryGetValueORm  targ >>= ofOption (argumentNotFound targ)
                     let getIntRm          targ = tryGetIntORm    targ >>= ofOption (argumentNotFound targ)
                     let getStringRm       targ = tryGetStringORm targ >>= ofOption (argumentNotFound targ)
                     let getFloatRm        targ = tryGetFloatORm  targ >>= ofOption (argumentNotFound targ)
                     let getBoolRm   def   targ = tryGetBoolORm   targ |>> Option.defaultValue def
+                    let buildArgRm        targ = tryBuildArgORm  targ >>= ofOption (argumentNotFound targ)
                     //[< Inline "throw 'getBoolR not available in JavaScript'" >]
                     let getBoolR def targ args = getBoolRm def targ |> run args |> fun (bO, _, m) -> bO |> Result.ofOption (fun () -> m)   //|> Async.RunSynchronously //|> Result. Option.defaultValue false
                 
@@ -1477,6 +1513,15 @@ namespace FsRoot
                         |> CommArgCollection
                     let append (args1: CommArgCollection<'M>) (args2: CommArgCollection<'M> ) = args2.CommArgs |> Seq.fold (swap (unbox >> addPair)) args1
                     let addPairs pairs collection = append collection (CommArgCollection pairs)
+            
+                    let appendRm args2 = fusion {
+                        let! args1 = getS()
+                        do!         putS(append args1 args2)
+                    }
+                    let addPairsRm pairs = fusion {
+                        let! args = getS()
+                        do!         putS(addPairs pairs args)
+                    }
                         
                 //    let produceRm = ReaderM(fun (CommArgCollection args) ->
                 //        args
@@ -1494,6 +1539,7 @@ namespace FsRoot
             type FsCode = FsCode of string
             
             module FsCode =
+                open System
             
                 type PreproDirective =
                 | PrepoCd     of string
@@ -1513,11 +1559,11 @@ namespace FsRoot
                 
                 let extractDefines(FsCode code) = 
                     if code.StartsWith "////-d:" 
-                    then code.[4..code.IndexOf '\n' - 1]
+                    then code.[4.. (match code.IndexOf '\n' with -1 -> code.Length | n -> n)  - 1]
                     else ""
             
                 let separatePrepros (code:string[]) =
-                    let  quoted (line:string) = line.Trim().Split([| "\""       |], System.StringSplitOptions.RemoveEmptyEntries) |> Seq.tryLast |> Option.defaultValue line
+                    let  quoted (line:string) = line.Trim().Split([| "\"" |], System.StringSplitOptions.RemoveEmptyEntries) |> Seq.tryLast |> Option.defaultValue line
                     let  rest   (line:string) = line.Trim() |> String.splitInTwoO " " |> Option.map snd |> Option.defaultValue "" |> fun s -> s.Trim()
                     let  comment = ((+)"//") 
                     let  prepro (line:string) = 
@@ -1583,6 +1629,11 @@ namespace FsRoot
                     |>  Seq.toArray
             
                 let getTopDirectives (fsNass:(string * PreproDirective) seq) =
+                    let definesFirstLine = 
+                        Seq.tryHead fsNass 
+                        |> Option.map (fst >> FsCode >> extractDefines>> fun s-> s.Split([| " " ; "-d:" |], StringSplitOptions.RemoveEmptyEntries) ) 
+                        |> Option.defaultValue [||]
+                        |> Seq.map PrepoDefine
                     let  directs  = fsNass |> Seq.map snd |> Seq.filter (function 
                                         | PrepoDefine _
                                         | PrepoR      _ 
@@ -1593,7 +1644,9 @@ namespace FsRoot
                                         | PrepoEndIf  
                                         | PrepoElIf   _
                                         | PrepoElse    -> true
-                                        |_             -> false) |> Seq.toArray
+                                        |_             -> false) 
+                                        |> Seq.append definesFirstLine
+                                        |> Seq.toArray
                     let  code     = fsNass |> Seq.map fst |> Seq.toArray
                     code, directs
                     
@@ -2329,13 +2382,13 @@ namespace FsRoot
                         intConfig      /= (rtn (fun o     -> o + ".config"                          ) <*> gS intOutputFile                                    )
                         intWebSharper  /=       containsAnyOfRm WebSharpArgs
                         fscSource      /=       gS intFileName
-                        fscNoFramework /=  fusion {
-                                                let!   args  = filterRm (fun (a,v) -> a.cargId = fscReference.CommArg.cargId)
-                                                let!   args2 = args |> traverseSeq (fun (a,b) -> argumentRm a b)
-                                                return args2 
-                                                       |> Seq.map(fun s -> s.ToLower()) 
-                                                       |> Seq.exists(fun s -> s.Contains("fsharp.core.dll") || s.Contains("mscorlib.dll") )
-                                            }
+                        fscNoFramework /= fusion {
+                                            let!    args  = filterRm (fun (a,v) -> a.cargId = fscReference.CommArg.cargId)
+                                            let!    args2 = args |> traverseSeq (fun (a,b) -> getVRm fscReference b )
+                                            return  args2
+                                                    |> Seq.map   (fun s -> s.ToLower()) 
+                                                    |> Seq.exists(fun s -> s.Contains("fsharp.core.dll") || s.Contains("mscorlib.dll") )
+                                          }
                     ]
                     
                 let siteOptions ()=
@@ -2393,28 +2446,32 @@ namespace FsRoot
                 let compileOptionsExeDebug    snp         = compileOptionsDllDebug snp + exeOptions   ()
                 let compileOptionsWinExeDebug snp         = compileOptionsDllDebug snp + winExeOptions()
                     
-                let prepOptions (args:CommArgCollection<_>) (assembs : string [], defines : string [], prepoIs : string []) =
-                    let staticLinksAll = CommArgCollection.getBoolR false intStaticLinkAll args
-                    args + [
+                let prepOptionsRm (assembs : string [], defines : string [], prepoIs : string []) = fusion {
+                    let! staticLinksAll = getBoolRm false intStaticLinkAll
+                    return [
                         yield! prepoIs |> Array.map ((/=) fscIOption  ) 
                         yield! assembs |> Array.map ((/=) fscReference)
                         yield! defines |> Array.map ((/=) fscDefine   )
-                        if staticLinksAll = Ok true then 
+                        if staticLinksAll then 
                             yield! assembs |> Array.map (fun f -> fscStaticLink /= System.IO.Path.GetFileNameWithoutExtension f)
                     ]
+                }
                     
                 let processArgs code assembs nowarns = fusion {        
-                    let! show      = gB intShowArgs
-                    if show      then let! args = argumentsRm (fun _ -> true)
-                                      args |> Seq.sort |> Seq.iter (printfn "%s")
-                    let! workDir   = getStringRm intDirectory
+                    let! show      = getBoolRm false intShowArgs
+                    if   show then 
+                        let! args  = filterRm trueForAll
+                        for (targ, vRm) in args do 
+                            let! v = vRm
+                            printfn "%25s = %A" targ.name v
+                    let! workDir   = gS intDirectory
                     let! fileName  = gS intFileName
                     let! output    = gS fscOutput
                     let! copyAssem = gB intCopyAssem
                     let! createDir = gB intCreateDir
                     let  srcDir    = Path.GetDirectoryName fileName
                     let  outDir    = Path.GetDirectoryName output
-                    if createDir then 
+                    if   createDir then 
                                      Directory.CreateDirectory workDir |> ignore
                                      Directory.CreateDirectory  srcDir |> ignore
                                      Directory.CreateDirectory  outDir |> ignore
@@ -2426,6 +2483,31 @@ namespace FsRoot
                     if copyAssem then assembs |> Array.iter (fun f -> outDir |> CopyIfMust.toDir f)      
                 }
                 
+                type PreparedCode = {
+                    assemblies : string []
+                    defines    : string []
+                    prepIs     : string []
+                    nowarns    : string []
+                    cd         : string option
+                    code       : FsCode
+                }
+            
+                let prepareCodeRm (FsCode codeFs) = fusion {
+                    let  fs, directs                            = codeFs.Split '\n' |> separatePrepros |> getTopDirectives
+                    let  assembs, defines, prepIs, nowarns, cdO = separateDirectives directs
+                    let! args2                                  = prepOptionsRm (assembs, defines, prepIs)
+                    do!                                           addPairsRm  args2
+                    do!                                           processArgs fs assembs nowarns
+                    return {
+                        assemblies = assembs
+                        defines    = defines
+                        prepIs     = prepIs
+                        nowarns    = nowarns
+                        cd         = cdO
+                        code       = FsCode codeFs
+                    }
+                }
+            
             module FsiEvaluator =
                 open System.Diagnostics
                 open RunProcess
@@ -2437,7 +2519,7 @@ namespace FsRoot
                 let endToken = "xXxY" + "yYyhH"
                 type FsiExe(config:string, workingDir, ?outHndl, ?errHndl) =
                     let silent                     = ref false
-                    let fsiexe                     = @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Test2\FSharp.Compiler.Tools\tools" +/+ if config.Contains "-d:FSI32BIT" then "fsi.exe" else "fsianycpu.exe"
+                    let fsiexe                     = if config.Contains "-d:FSI32BIT" then "fsi.exe" else "fsianycpu.exe"
                     let startInfo                  = ProcessStartInfo(fsiexe, config, WorkingDirectory= workingDir)
                     let outHndlS                   = outHndl |> Option.map(fun outh v -> if !silent then () else outh v)
                     let errHndlS                   = errHndl |> Option.map(fun errh v -> if !silent then () else errh v)
@@ -2534,9 +2616,10 @@ namespace FsRoot
                     function
                     | Some v -> View.Map Some v
                     | None   -> View.Const None
+                    
                 let [<Inline>] inline consistent   (vl:View<_>)  = 
                     let prior      = ref <| Var.Create Unchecked.defaultof<_>
-                    let setPrior v = if (!prior).Value <> v then (!prior).Value <- v 
+                    let setPrior v = if (!prior).Value <> v then (!prior).Set v 
                     View.Sink setPrior vl
                     !prior |> View.FromVar
             
@@ -2958,7 +3041,7 @@ namespace FsRoot
                         #if DLL 
                         [< Inline """$global.FsRootDll.LibraryJS.WebComponent.WcTabStrip.WcTabStripT.New""" >] static member NewPointer = X<_>
                         #else
-                        [< Inline """$global.FsRoot.LibraryJS.WebComponent.WcTabStrip.WcTabStripT.New""" >] static member NewPointer = X<_>
+                        [< Inline """$global.FsRoot   .LibraryJS.WebComponent.WcTabStrip.WcTabStripT.New""" >] static member NewPointer = X<_>
                         #endif
                         static member Constructor() = 
                             let this = ReflectConstruct()
@@ -3008,7 +3091,7 @@ namespace FsRoot
                         #if DLL 
                         [< Inline """$global.FsRootDll.LibraryJS.WebComponent.WcSplitter.WcSplitterT.New""" >] static member NewPointer = X<_>
                         #else
-                        [< Inline """$global.FsRoot.LibraryJS.WebComponent.WcSplitter.WcSplitterT.New""" >] static member NewPointer = X<_>
+                        [< Inline """$global.FsRoot   .LibraryJS.WebComponent.WcSplitter.WcSplitterT.New""" >] static member NewPointer = X<_>
                         #endif
                         static member Constructor() = 
                             let this = ReflectConstruct()
@@ -4019,7 +4102,7 @@ namespace FsRoot
                 #if FSS_SERVER
                     "No Endpoint required, should use WSMessagingClient with FSStation parameter not FSharp"
                 #else
-                    "http://localhost:9005/#/Snippet/a817abcc-6cb2-42cf-843c-f1525420c0d4"
+                    "http://localhost:9005/#/Snippet/a17730c1-09a7-48f8-bba8-a24ba4c61dd5"
                 #endif
                 
                 let extractEndPoint() = 
@@ -4214,7 +4297,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1574084738106"
+                let mutable fsharpStationAddress = Address "FSharpStation1592911141642"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -4651,7 +4734,7 @@ namespace FsRoot
     //#define WEBSHARPER
     [< JavaScript >]
     module FSharpStation =
-        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\projects\LayoutEngine\bin\LayoutEngine.dll"
+        //#r "D:\Abe\CIPHERWorkspace\FSharpStation\bin\LayoutEngine.dll"
         //#nowarn "1178" "1182" "3180" "52"
         module FStation =
         
@@ -5574,12 +5657,12 @@ namespace FsRoot
                 return Snippets.prepAnyCode code2
             }
         
-            module AF = FsRootDll.LibraryJS.AppFramework
+            module AF = FsRoot.LibraryJS.AppFramework
         
             let fetchValue button v =
                 if v = "button" then button else
                 "Snp_" + (string Snippets.currentSnippetV.Value.snpId.Id).Replace("-", "")
-                |> AF.PlugInName
+                //|> AF.PlugInName
                 |> swap AF.splitName v
                 ||> AF.tryGetWoW
                 |> Option.bind View.TryGet
@@ -5812,28 +5895,28 @@ namespace FsRoot
                 && JS.Confirm (sprintf "Do you want to delete %s?" <| Snippet.snippetName snp.snpName snp.snpContent) then 
                     Snippets.deleteCurrentSnippet()
         
-            module AF = FsRootDll.LibraryJS.AppFramework
-            module LE = FsRootDll.LibraryJS.LayoutEngine
+            module AF = FsRoot.LibraryJS.AppFramework
+            module LE = FsRoot.LibraryJS.LayoutEngine
         
-            let FStationLyt = AF.PlugInName "FStationLyt"
+            let FStationLyt = "FStationLyt"
         
             let hookVar plug name func obj =
-                AF.tryGetVar (AF.PlugInName plug) (AF.PlgElemName name)
+                AF.tryGetVar plug name
                 |> Option.map        (fun var -> printfn "Var    %s.%s hooked"    plug name ;  func obj var.varVar                  )
                 |> Option.defaultWith(fun ()  -> printfn "Var    %s.%s not found" plug name ;       obj                             )
         
             let hookViw plug name func obj =
-                AF.tryGetViw (AF.PlugInName plug) (AF.PlgElemName name)
+                AF.tryGetViw plug name
                 |> Option.map        (fun viw -> printfn "View   %s.%s hooked"    plug name ;  func obj viw.viwView                 )
                 |> Option.defaultWith(fun ()  -> printfn "View   %s.%s not found" plug name ;       obj                             )
         
             let hookAct plug name func obj =
-                AF.tryGetAct (AF.PlugInName plug) (AF.PlgElemName name)
+                AF.tryGetAct plug name
                 |> Option.map        (fun act -> printfn "Action %s.%s hooked"    plug name ;  func obj (fun _-> act.actFunction |> AF.callFunction () () ) )
                 |> Option.defaultWith(fun ()  -> printfn "Action %s.%s not found" plug name ;       obj                             )
         
             let hookDoc plug name func obj =
-                AF.tryGetDoc (AF.PlugInName plug) (AF.PlgElemName name)
+                AF.tryGetDoc plug name
                 |> Option.map        (fun doc -> printfn "Doc    %s.%s hooked"    plug name ;  func obj (AF.mainDocV.View |> View.Map (fun _ -> AF.getLazyDoc doc) |> Doc.EmbedView) )
                 |> Option.defaultWith(fun ()  -> printfn "Doc    %s.%s not found" plug name ;       obj                             )
         
@@ -5881,47 +5964,47 @@ namespace FsRoot
             [< WebSharper.Sitelets.Website >]    
             let mainProgram() =
                 AF.addPlugIn {
-                    AF.plgName    = AF.PlugInName "FSharpStation"
-                    AF.plgVars    = [| AF.newVar  (AF.PlgElemName "fileName"          ) LoadSave.fileName
-                                       AF.newVar  (AF.PlgElemName "SnippetName"       ) (Lens Snippets.currentSnippetV.V.snpName)
-                                       AF.newVar  (AF.PlgElemName "Content"           ) (Lens Snippets.currentSnippetV.V.snpContent)
-                                       AF.newVar  (AF.PlgElemName "Output"            ) outputMsgs
-                                       AF.newVar  (AF.PlgElemName "Parser"            ) FStation.annotationsV
-                                    |] |> ListModel.Create (fun v -> v.varName)
-                    AF.plgViews   = [| AF.newViw  (AF.PlgElemName "FsCode"            ) Snippets.FsCodeW
-                                       AF.newViw  (AF.PlgElemName "SaveNeeded"        ) Snippets.SaveAsClassW
-                                       AF.newViw  (AF.PlgElemName "CurrentPath"       ) Snippets.currentPathW
-                                       AF.newViw  (AF.PlgElemName "FStationId"        ) (View.Const FStation.id)
-                                       AF.newViw  (AF.PlgElemName "CurrentSid"        ) (Snippets.CurrentSnippetIdW |> View.Map (fun sid -> sid.Id |> string))
-                                    |] |> ListModel.Create (fun w -> w.viwName)
-                    AF.plgDocs    = [| AF.newDoc  (AF.PlgElemName "mainDoc"           ) (lazy mainDoc()                 )
-                                       AF.newDoc  (AF.PlgElemName "editor"            ) (lazy (WebSharper.UI.Html.div [] [ Monaco.editorDoc() ]) )
-                                       AF.newDoc  (AF.PlgElemName "Snippets"          ) (lazy RenderSnippets  .render() )
-                                       AF.newDoc  (AF.PlgElemName "Properties"        ) (lazy RenderProperties.render() )
-                                       AF.newDoc  (AF.PlgElemName "ButtonsRight"      ) (lazy buttonsRight           () )
-                                    |] |> ListModel.Create (fun w -> w.docName)
-                    AF.plgActions = [| AF.newAct  (AF.PlgElemName "AddSnippet"        ) Snippets.newSnippet
-                                       AF.newAct  (AF.PlgElemName "RemoveSnippet"     ) deleteSnippet       
-                                       AF.newAct  (AF.PlgElemName "IndentIn"          ) Snippets.indentIn       
-                                       AF.newAct  (AF.PlgElemName "IndentOut"         ) Snippets.indentOut
-                                       AF.newAct  (AF.PlgElemName "AddProperty"       ) RenderProperties.addProperty
-                                       AF.newAct  (AF.PlgElemName "SaveAs"            ) LoadSave.saveAs
-                                       AF.newAct  (AF.PlgElemName "RunFS"             ) runFsCode
-                                       AF.newAct  (AF.PlgElemName "SelectionToFsi"    ) selectionToFsi
-                                       AF.newAct  (AF.PlgElemName "AbortFsi"          ) FsiAgent.abortFsiExe
-                                       AF.newAct  (AF.PlgElemName "DisposeFsi"        ) FsiAgent.disposeFsiExe
-                                       AF.newActF (AF.PlgElemName "LoadFile"          ) <| AF.FunAct1 ((fun o     -> unbox o  |> LoadSave.loadTextFile              ), "FileElement")
-                                       AF.newActF (AF.PlgElemName "Import"            ) <| AF.FunAct1 ((fun o     -> unbox o  |> Importer.importFile                ), "FileElement")
-                                       AF.newActF (AF.PlgElemName "JumpTo"            ) <| AF.FunAct1 ((fun o     -> unbox o  |> JumpTo.jumpToRef                   ), "textarea"   )
-                                       AF.newActF (AF.PlgElemName "ButtonClick"       ) <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.buttonClick           ), "button"     )
-                                       AF.newActF (AF.PlgElemName "ActionClick"       ) <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.actionClick           ), "name"       )
-                                       AF.newActF (AF.PlgElemName "SetScrollToBottom" ) <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.setScrollToBottom     ), "textarea"   )
-                                       AF.newActF (AF.PlgElemName "ActionSnp"         ) <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.actionSnp (unbox o1)  ), "snpPath", "name" )
-                                       AF.newActF (AF.PlgElemName "setCurrentProperty") <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.setCurrentProperty (unbox o1)  ), "name", "value" )
-                                       AF.newActF (AF.PlgElemName "setSnippetContent" ) <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.setSnippetContent  (unbox o1)  ), "path", "value" )
-                                    |] |> ListModel.Create (fun w -> w.actName)
-                    AF.plgQueries = [| AF.newQry  (AF.PlgElemName "PropertyRA"        ) <| (fun p -> unbox<string> p |> CustomAction.getCurrentProperty |> box)
-                                    |] |> ListModel.Create (fun w -> w.qryName)
+                    AF.plgName    = "FSharpStation"
+                    AF.plgVars    = [| AF.newVar  "fileName"           LoadSave.fileName
+                                       AF.newVar  "SnippetName"        (Lens Snippets.currentSnippetV.V.snpName)
+                                       AF.newVar  "Content"            (Lens Snippets.currentSnippetV.V.snpContent)
+                                       AF.newVar  "Output"             outputMsgs
+                                       AF.newVar  "Parser"             FStation.annotationsV
+                                    |]// |> ListModel.Create (fun v -> v.varName)
+                    AF.plgViews   = [| AF.newViw  "FsCode"             Snippets.FsCodeW
+                                       AF.newViw  "SaveNeeded"         Snippets.SaveAsClassW
+                                       AF.newViw  "CurrentPath"        Snippets.currentPathW
+                                       AF.newViw  "FStationId"         (View.Const FStation.id)
+                                       AF.newViw  "CurrentSid"         (Snippets.CurrentSnippetIdW |> View.Map (fun sid -> sid.Id |> string))
+                                    |]// |> ListModel.Create (fun w -> w.viwName)
+                    AF.plgDocs    = [| AF.newDoc  "mainDoc"            (lazy mainDoc()                 )
+                                       AF.newDoc  "editor"             (lazy (WebSharper.UI.Html.div [] [ Monaco.editorDoc() ]) )
+                                       AF.newDoc  "Snippets"           (lazy RenderSnippets  .render() )
+                                       AF.newDoc  "Properties"         (lazy RenderProperties.render() )
+                                       AF.newDoc  "ButtonsRight"       (lazy buttonsRight           () )
+                                    |]// |> ListModel.Create (fun w -> w.docName)
+                    AF.plgActions = [| AF.newAct  "AddSnippet"         Snippets.newSnippet
+                                       AF.newAct  "RemoveSnippet"      deleteSnippet       
+                                       AF.newAct  "IndentIn"           Snippets.indentIn       
+                                       AF.newAct  "IndentOut"          Snippets.indentOut
+                                       AF.newAct  "AddProperty"        RenderProperties.addProperty
+                                       AF.newAct  "SaveAs"             LoadSave.saveAs
+                                       AF.newAct  "RunFS"              runFsCode
+                                       AF.newAct  "SelectionToFsi"     selectionToFsi
+                                       AF.newAct  "AbortFsi"           FsiAgent.abortFsiExe
+                                       AF.newAct  "DisposeFsi"         FsiAgent.disposeFsiExe
+                                       AF.newActF "LoadFile"           <| AF.FunAct1 ((fun o     -> unbox o  |> LoadSave.loadTextFile              ), "FileElement")
+                                       AF.newActF "Import"             <| AF.FunAct1 ((fun o     -> unbox o  |> Importer.importFile                ), "FileElement")
+                                       AF.newActF "JumpTo"             <| AF.FunAct1 ((fun o     -> unbox o  |> JumpTo.jumpToRef                   ), "textarea"   )
+                                       AF.newActF "ButtonClick"        <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.buttonClick           ), "button"     )
+                                       AF.newActF "ActionClick"        <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.actionClick           ), "name"       )
+                                       AF.newActF "SetScrollToBottom"  <| AF.FunAct1 ((fun o     -> unbox o  |> CustomAction.setScrollToBottom     ), "textarea"   )
+                                       AF.newActF "ActionSnp"          <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.actionSnp (unbox o1)  ), "snpPath", "name" )
+                                       AF.newActF "setCurrentProperty" <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.setCurrentProperty (unbox o1)  ), "name", "value" )
+                                       AF.newActF "setSnippetContent"  <| AF.FunAct2 ((fun o1 o2 -> unbox o2 |> CustomAction.setSnippetContent  (unbox o1)  ), "path", "value" )
+                                    |]// |> ListModel.Create (fun w -> w.actName)
+                    AF.plgQueries = [| AF.newQry  "PropertyRA"         <| (fun p -> unbox<string> p |> CustomAction.getCurrentProperty |> box)
+                                    |]// |> ListModel.Create (fun w -> w.qryName)
                 }
         
                 match JS.Document.GetElementById("GlobalLayout") with
@@ -5984,12 +6067,12 @@ namespace FsRoot
                     lytO
                     |> Option.bind (fun (name, txt) ->
                         txt 
-                        |> LE.newLyt    (AF.PlugInName name)
+                        |> LE.newLyt     name
                         |> LE.addLayout 
                         if txt = "" then None else 
                         Some name
                     )
-                    |> Option.defaultValue FStationLyt.Id
+                    |> Option.defaultValue FStationLyt
                     |> AF.mainDocV.Set
                 )
         
@@ -6021,7 +6104,7 @@ namespace FsRoot
             open Operators
             open MainProgram
         
-            module AF = FsRootDll.LibraryJS.AppFramework 
+            module AF = FsRoot.LibraryJS.AppFramework 
             module Fusion = FusionAsyncM
         
             let wsStationClient = if IsClient then new WebSockets.WSMessagingClient(FStation.id) else new WebSockets.WSMessagingClient("FStation.id", WebSockets.FSStation)

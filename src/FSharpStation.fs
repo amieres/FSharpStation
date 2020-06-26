@@ -2428,7 +2428,7 @@ namespace FsRoot
                 let endToken = "xXxY" + "yYyhH"
                 type FsiExe(config:string, workingDir, ?outHndl, ?errHndl) =
                     let silent                     = ref false
-                    let fsiexe                     = @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Test2\FSharp.Compiler.Tools\tools" +/+ if config.Contains "-d:FSI32BIT" then "fsi.exe" else "fsianycpu.exe"
+                    let fsiexe                     = if config.Contains "-d:FSI32BIT" then "fsi.exe" else "fsianycpu.exe"
                     let startInfo                  = ProcessStartInfo(fsiexe, config, WorkingDirectory= workingDir)
                     let outHndlS                   = outHndl |> Option.map(fun outh v -> if !silent then () else outh v)
                     let errHndlS                   = errHndl |> Option.map(fun errh v -> if !silent then () else errh v)
