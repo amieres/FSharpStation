@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1592911141642 -d:WEBSHARPER
+////-d:FSharpStation1593197096670 -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -24,7 +24,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1592911141642
+//#define FSharpStation1593197096670
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -101,12 +101,163 @@ namespace FsRoot
     
     #endif
     
-        /// Essentials that can be converted to JavaScript with WebSharper
-        [< JavaScriptExport ; AutoOpen >]
-        module Library = 
-            let Error = Result.Error
-        
+        /// Essentials that cannot run in Javascript (WebSharper)
+        [< AutoOpen >]
+        module LibraryNoJS =
+            [< AutoOpen >]
+            module Regex =
+                open System.Text.RegularExpressions
+            
+                let (|Regex|_|) pattern input =
+                    if input = null then None else
+                    try 
+                        let m = Regex.Match(input, pattern)
+                        if m.Success then Some(List.tail [ for g in m.Groups -> g.Value ])
+                        else None
+                    with e -> None
+            
+                let (|Regexs|) pattern input =
+                    if input = null then [| |] else
+                    try 
+                        let ms = Regex.Matches(input, pattern)
+                        [| for m in ms do yield (List.tail [ for g in m.Groups -> g.Value ]) |] 
+                    with e -> [| |]
+            
+                module p =
+            
+                    let lit(v:string) = 
+                        v 
+                        |> Seq.collect (
+                            function
+                            | '_'                                -> [       '_' ]
+                            | c when System.Char.IsSymbol      c -> [ '\\' ; c  ]  
+                            | c when System.Char.IsPunctuation c -> [ '\\' ; c  ] 
+                            | c                                  -> [        c  ]
+                        ) 
+                        |> Seq.toArray 
+                        |> fun ar ->  new System.String(ar)
+                    let cr            = @"\r"
+                    let nl            = @"\n"
+                    let anychar       =  "."
+                    let tab           = @"\t"
+                    let blank         = @"\s"
+                    let noblank       = @"\S"
+                    let capt          = sprintf "(%s)"
+                    let nocapt        = sprintf "(?:%s)"
+                    let opt           = nocapt >> sprintf "%s?"
+                    module g =
+                        let inline anything mny        = mny anychar
+                        let inline blanks   mny        = mny blank
+                        let inline noblanks mny        = mny noblank
+                        let inline spaceaft mny  x     = x + blanks mny
+                        let inline listof1  mny0 x sep = x + mny0(sep + x)
+            
+                    module e =
+                        let inline many0 a = nocapt a + "*"
+                        let inline many1 a = nocapt a + "+"
+            
+                    module e1 =
+                        let many                = e.many1
+                        let anything            = g.anything  many
+                        let blanks              = g.blanks    many
+                        let noblanks            = g.noblanks  many
+                        let spaceaft            = g.spaceaft  many
+                        let inline listof x sep = g.listof1 e.many0 x sep
+            
+                    module e0 =
+                        let many                = e.many0
+                        let anything            = g.anything many
+                        let blanks              = g.blanks   many
+                        let noblanks            = g.noblanks many
+                        let spaceaft            = g.spaceaft many
+                        let inline listof x sep = e1.listof x sep |> opt
+            
+                    module l =
+                        let many0 a   = e.many0 a + "?"
+                        let many1 a   = e.many1 a + "?"
+            
+                    module l1 =
+                        let many                = l.many1
+                        let anything            = g.anything  many
+                        let blanks              = g.blanks    many
+                        let noblanks            = g.noblanks  many
+                        let spaceaft            = g.spaceaft  many
+                        let inline listof x sep = g.listof1 l.many0 x sep
+            
+                    module l0 =
+                        let many                = l.many0
+                        let anything            = g.anything many
+                        let blanks              = g.blanks   many
+                        let noblanks            = g.noblanks many
+                        let spaceaft            = g.spaceaft many
+                        let inline listof x sep = l1.listof x sep |> opt
+            
+                    let either patterns = patterns |> String.concat "|" |> nocapt
+                    let word      = sprintf "\\b%s\\b"
+                    let oneof     = sprintf "[%s]"
+                    let noneof    = sprintf "[^%s]"
+                    let caseins   = sprintf "(?i)%s(?-i)"
+            
+                    let multiline  = either [ cr ; nl ; anychar ] |> l.many0
+                    let letter     = oneof "_a-zA-Z"
+                    let digit      = oneof "0-9"
+                    let letters    = e.many1 letter
+                    let digits     = e.many1 digit
+                    let ident      = letter + (either [letter ; digit] |> l.many0) |> word
+                    let dottedid   = e1.listof ident (e0.spaceaft "\.")
+                    let typename   = dottedid + opt (@"<" + e1.listof dottedid (e0.spaceaft ",") + "\>")
+            
+                    let regmatch regex = function Regex regex ms -> Some ms |_-> None
+            
+                module r =
+                    open p
+            
+                    let remove patterns = p.either patterns, ""
+            
+                    let tabs     = p.tab                , "    "
+                    let comments = @"\/\/" + e1.anything, "\n"
+            
+                    let regexReplaceFunc f (regex:string) (input:string) =
+                        System.Text.RegularExpressions
+                            .Regex(regex)
+                            .Replace(input, MatchEvaluator(fun m -> f m.Value))
+            
+                    let regexReplaceGroups f (regex:string) (input:string) =
+                        System.Text.RegularExpressions
+                            .Regex(regex)
+                            .Replace(input, MatchEvaluator(fun m -> [ for g in m.Groups -> g.Value ] |> f))
+            
+                    let regexReplace (regex:string) (repl:string) (input:string) = 
+                        System.Text.RegularExpressions
+                            .Regex(regex)
+                            .Replace(input, repl)
+            
+                    let replaceToF (regex, repl) = regexReplace regex repl
+                    let replacesToFs rs = rs |> Seq.map replaceToF
+                    /// a replace function for multiple replacements applied in sequence
+                    let replace0 repls inp = repls |> Seq.fold (fun txt (regex, repl) -> regexReplace txt regex repl) inp
+                    /// same as replace0: a function for multiple replacements
+                    let replace1 v = replacesToFs v |> Seq.reduce (>>)
+            
+                    /// find a section (like: module XXX = ..) and capture its name, make replacements using that sections name
+                    let byLine init st f (inp:string) =
+                        inp.Split '\n'
+                        |> Array.mapFold (fun md ln -> 
+                            match st ln with
+                            | Some nm -> ln     , nm
+                            |_        -> f md ln, md
+                        ) init
+                        |> fst
+                        |> String.concat "\n"
+            
+            
+        /// Essentials that run in Javascript (WebSharper)
+        //#define WEBSHARPER 
+        [< JavaScript ; AutoOpen >]
+        module LibraryJS =
             //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
+            
+            //
             
             //#define WEBSHARPER
             [< JavaScriptExport >]
@@ -183,14 +334,15 @@ namespace FsRoot
             
                 [< JavaScript false >]
                 module CreateAsm =
+                    open WebSharper.Core
             
                     let getInfo fname =
                         use stream = new System.IO.FileStream(fname, System.IO.FileMode.Open)
-                        WebSharper.Core.Metadata.IO.Decode stream
+                        Metadata.IO.Decode stream
             
                     module Desc = 
                         open WebSharper.Core.AST
-                        open WebSharper.Core.Metadata
+                        open Metadata
             
                         let replcs = [
                             "`1"                                   , ""      
@@ -307,23 +459,43 @@ namespace FsRoot
             
                     open Desc
             
-                    let asmFromMeta asm path (info:Core.Metadata.Info) jss =
-                        let deps, ress = 
-                                    info.Dependencies.Nodes
+                    open WebSharper.Core.Resources
+            
+                    let getResource (assem:System.Reflection.Assembly) (tp:AST.TypeDefinition) =
+                        let ctx =     {
+                            DebuggingEnabled        = true
+                            DefaultToHttp           = true
+                            ScriptBaseUrl           = None
+                            GetAssemblyRendering    = fun   s -> RenderInline s
+                            GetSetting              = fun   s -> None
+                            GetWebResourceRendering = fun t s -> RenderInline s
+                            WebRoot                 = "/"
+                            RenderingCache          = System.Collections.Concurrent.ConcurrentDictionary<IResource, (RenderLocation -> HtmlTextWriter) -> unit>()
+                            ResourceDependencyCache = System.Collections.Concurrent.ConcurrentDictionary<Metadata.Node Set, IResource list>()
+                        }
+                        let typ         = assem.GetType(tp.Value.FullName)
+                        if  typ         = null then None else
+                        use strW        = new System.IO.StringWriter() 
+                        use htmlW       = new HtmlTextWriter(strW)
+                        let ires        = System.Activator.CreateInstance(typ) |> unbox<IResource>
+                        do                ires.Render ctx (fun loc -> htmlW)
+                        let patScript   = p.lit "<script" + p.multiline + p.lit "</script>"
+                        let patLink     = p.lit "<link"   + p.multiline + p.lit ">"
+                        let pattern     = p.either [ patScript ;  patLink ] |> p.capt // |>! printfn "pattern = %A"
+                        match strW.ToString() with
+                        | Regexs pattern rs -> rs // |>! printfn "rs = %A"
+                        |> Array.map (Seq.head >> (fun s -> s.Replace("\n", "").Replace("\r", "")) >> Resource)
+                        |> Some
+            
+                    let asmFromMeta (assem:System.Reflection.Assembly) asm path (info:Core.Metadata.Info) jss =
+                        let rsDp =  info.Dependencies.Nodes
                                     |> Seq.choose (function 
-                                        | WebSharper.Core.Metadata.AssemblyNode(nm, true) when nm <> asm-> AssemblyRef <| nm + ".asm" |> Choice1Of2 |> Some
-                                        | WebSharper.Core.Metadata.ResourceNode(nm, Some names) -> names |> Choice2Of2 |> Some
+                                        | Metadata.AssemblyNode(nm, true) when nm <> asm-> AssemblyRef <| nm + ".asm" |> Choice1Of2 |> Some
+                                        | Metadata.ResourceNode(tp, _) -> getResource assem tp |> Option.map Choice2Of2
                                         | _ -> None)
-                                    |> Seq.toArray
-                                    |> Array.partition (function Choice1Of2 _ -> true |_-> false)
-                        let deps  = deps
-                                    |> Seq.choose (function Choice1Of2 dep -> Some dep |_-> None)
-                                    |> Seq.toArray
-                        let ress  = ress
-                                    |> Seq.choose(function Choice2Of2(Core.Metadata.ParameterObject.Array ress) -> Some ress |_-> None)
-                                    |> Seq.collect id
-                                    |> Seq.choose(function Core.Metadata.ParameterObject.String res -> Some (Resource res) |_-> None)
-                                    |> Seq.toArray
+                                    |> Seq.cache
+                        let deps  = rsDp |> Seq.choose (function Choice1Of2 dep -> Some dep |_-> None) |> Seq.toArray
+                        let ress  = rsDp |> Seq.choose (function Choice2Of2 r   -> Some r   |_-> None) |> Seq.toArray
                         let modules =
                             info.Classes
                             |> Seq.map(fun kvp ->
@@ -339,7 +511,7 @@ namespace FsRoot
                             self          = AssemblyRef  (path + asm + ".asm")
                             modules       = modules
                             dependencies  = deps
-                            resources     = ress
+                            resources     = ress |> Array.collect id
                             javaScripts   = jss
                         }
             
@@ -349,7 +521,7 @@ namespace FsRoot
                     type ReferenceLoader() =
                         inherit System.MarshalByRefObject()
                         member this.MetaFromAsm(asmRef:string) =
-                            let asmR  = System.IO.File.ReadAllBytes asmRef |> System.Reflection.Assembly.ReflectionOnlyLoad
+                            let asmR  = System.IO.File.ReadAllBytes asmRef |> System.Reflection.Assembly.Load //ReflectionOnlyLoad
                             let jss   = asmR.GetManifestResourceNames() 
                                         |> Seq.choose(fun nm ->
                                             printfn "%s" nm
@@ -361,8 +533,8 @@ namespace FsRoot
                                         ) |> Seq.toArray
                             let asm   = System.IO.Path.GetFileNameWithoutExtension asmRef
                             let path  = System.IO.Path.GetDirectoryName asmRef
-                            let info  = WebSharper.Core.Metadata.IO.LoadReflected asmR |> Option.defaultWith(fun () -> failwithf "Assembly not compiled with WebSharper: %s" asmRef)
-                            asmFromMeta asm path info jss
+                            let info  = Metadata.IO.LoadReflected asmR |> Option.defaultWith(fun () -> failwithf "Assembly not compiled with WebSharper: %s" asmRef)
+                            asmFromMeta asmR asm path info jss
             
                     let readDll asmRef  =
                         //let settings    = AppDomainSetup(ApplicationBase = AppDomain.CurrentDomain.BaseDirectory)
@@ -379,4 +551,17 @@ namespace FsRoot
                         let res         = loader.MetaFromAsm asmRef
                         //AppDomain.Unload childDomain
                         res
+            (*
             
+            FsRoot.LibraryJS.FShUI_AssemblyData.CreateAsm.readDll @"D:\Abe\CIPHERWorkspace\FSharpStation\projects/FSharpStation/bin/FSharpStation.exe"
+            FsRoot.LibraryJS.FShUI_AssemblyData.CreateAsm.readDll @"D:\Abe\CIPHERWorkspace\FSharpStation\projects/LayoutEngine/bin/MonacoPlugIn.dll"
+            
+            FsRoot.LibraryJS.FShUI_AssemblyData.CreateAsm.readDll @"D:\Abe\CIPHERWorkspace\FSharpStation\projects/LayoutEngine/bin/LayoutEngine.dll"
+            
+            open FsRoot.LibraryNoJS
+            open System.Text.RegularExpressions
+            Regex.Matches("""<script src="/EPFileX/monaco/package/min/vs/loader.js" type="text/javascript" charset="UTF-8">
+            </script>""", "(?:\<script(?:(?:\r|\n|.))*?\<\/script\>|\<link(?:(?:\r|\n|.))*?\>)")
+            |> printfn "%A"
+            
+            // *)

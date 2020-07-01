@@ -1,10 +1,9 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,TestingJS,WSFrameworkTest,WSFramework,SC$1,WebSharper,UI,Doc,Concurrency,LibraryJS,FShUI,FShUI_AssemblyData,Seq,AssemblyUI,Client,Templates,Var$1,IntelliFactory,Runtime;
+ var Global,FsRoot,TestingJS,WSFrameworkTest,WSFramework,SC$1,WebSharper,UI,Doc,Concurrency,LibraryJS,FShUI,FShUI_AssemblyData,Seq,AssemblyUI,Client,Templates,Var$1,IntelliFactory,Runtime;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
- Library=FsRoot.Library=FsRoot.Library||{};
  TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
  WSFrameworkTest=TestingJS.WSFrameworkTest=TestingJS.WSFrameworkTest||{};
  WSFramework=TestingJS.WSFramework=TestingJS.WSFramework||{};
@@ -15,7 +14,7 @@
  Concurrency=WebSharper&&WebSharper.Concurrency;
  LibraryJS=FsRoot&&FsRoot.LibraryJS;
  FShUI=LibraryJS&&LibraryJS.FShUI;
- FShUI_AssemblyData=Library&&Library.FShUI_AssemblyData;
+ FShUI_AssemblyData=LibraryJS&&LibraryJS.FShUI_AssemblyData;
  Seq=WebSharper&&WebSharper.Seq;
  AssemblyUI=LibraryJS&&LibraryJS.AssemblyUI;
  Client=UI&&UI.Client;
@@ -23,13 +22,6 @@
  Var$1=UI&&UI.Var$1;
  IntelliFactory=Global.IntelliFactory;
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
- Library.Error$2=function(a)
- {
-  return{
-   $:1,
-   $0:a
-  };
- };
  WSFrameworkTest.mainDoc=function()
  {
   return Doc.Element("div",[],[Doc.Element("h1",[],[Doc.TextNode("Hello WSFramework")]),WSFrameworkTest.testVarInput(),WSFrameworkTest.testVarOut()]);

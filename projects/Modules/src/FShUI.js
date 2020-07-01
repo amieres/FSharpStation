@@ -40,7 +40,7 @@
  IO=Runtime$1&&Runtime$1.IO;
  Unchecked=WebSharper&&WebSharper.Unchecked;
  JSON=Global.JSON;
- FShUI_AssemblyData=Library&&Library.FShUI_AssemblyData;
+ FShUI_AssemblyData=LibraryJS&&LibraryJS.FShUI_AssemblyData;
  AssemblyDef=FShUI_AssemblyData&&FShUI_AssemblyData.AssemblyDef;
  ModuleDef=FShUI_AssemblyData&&FShUI_AssemblyData.ModuleDef;
  MethodDef=FShUI_AssemblyData&&FShUI_AssemblyData.MethodDef;
@@ -99,7 +99,7 @@
    });
   };
  };
- Library.Error$1=function(a)
+ Library.Error=function(a)
  {
   return{
    $:1,
@@ -168,12 +168,12 @@
  DocComposition=WsComposition.DocComposition=Runtime.Class({
   GetDoc:function()
   {
-   var ref,x,x$1,x$2,x$3,x$4,x$5,o,o$1,$1;
+   var x,x$1,x$2,x$3,x$4,x$5,o,o$1,$1;
    function m(tag,ds)
    {
     return Doc.Element(tag.get_Id(),List.T.Empty,ds);
    }
-   return this.$==1?Doc.TextView(this.$1.get_View()):this.$==2?(ref=this.$0,Doc.Button(Global.String(ref),[],ref.GetFunc())):this.$==3?Doc.TextNode((x=(this.$0.GetFunc())(),(function($2)
+   return this.$==1?Doc.TextView(this.$1.get_View()):this.$==2?Doc.Button(this.$1,[],this.$0.GetFunc()):this.$==3?Doc.TextNode((x=(this.$0.GetFunc())(),(function($2)
    {
     return function($3)
     {
@@ -209,7 +209,7 @@
     {
      return $2(Utils.prettyPrint($3));
     };
-   }(Global.id),x$5))):this.$==9?Doc.TextNode((this.$0.GetFunc())()):this.$==10?Doc.TextView((this.$0.GetFunc())()):this.$==11?Doc.TextView((this.$0.GetFunc())().get_View()):this.$==12?Doc.Input(List.T.Empty,(this.$0.GetFunc())()):this.$==13?(this.$0.GetFunc())():this.$==14?Doc.EmbedView((this.$0.GetFunc())()):this.$==15?this.$1():this.$==16?Doc.get_Empty():this.$==17?(o=(o$1=this.$0,o$1==null?null:{
+   }(Global.id),x$5))):this.$==9?Doc.TextNode((this.$0.GetFunc())()):this.$==10?Doc.TextView((this.$0.GetFunc())()):this.$==11?Doc.TextView((this.$0.GetFunc())().get_View()):this.$==12?Doc.Input(List.T.Empty,(this.$0.GetFunc())()):this.$==13?Doc.InputArea(List.T.Empty,(this.$0.GetFunc())()):this.$==14?(this.$0.GetFunc())():this.$==15?Doc.EmbedView((this.$0.GetFunc())()):this.$==16?this.$1():this.$==17?Doc.get_Empty():this.$==18?(o=(o$1=this.$0,o$1==null?null:{
     $:1,
     $0:($1=o$1.$0,function($2)
     {
@@ -222,27 +222,34 @@
   }
  },null,DocComposition);
  DocComposition.DOCEmpty=new DocComposition({
-  $:16
+  $:17
  });
  WsComposition.getUIDoc=function(setDOC,a)
  {
-  var tO,dcs,tagV,o,nm;
+  var ref,tO,dcs,tagV,o,nm;
   function setDOCH(tO$1,dcs$1)
   {
    setDOC(new DocComposition({
-    $:17,
+    $:18,
     $0:tO$1,
     $1:dcs$1
    }));
   }
-  return a.$==1?Doc.TextNode(a.$0.get_Id()):a.$==2?Doc.TextNode(Global.String(a.$0)):a.$==3?Doc.TextNode(Global.String(a.$0)):a.$==4?Doc.TextNode(Global.String(a.$0)):a.$==5?Doc.TextNode(Global.String(a.$0)):a.$==6?Doc.TextNode(Global.String(a.$0)):a.$==7?Doc.TextNode(Global.String(a.$0)):a.$==8?Doc.TextNode(Global.String(a.$0)):a.$==9?Doc.TextNode(Global.String(a.$0)):a.$==10?Doc.TextNode(Global.String(a.$0)):a.$==11?Doc.TextNode(Global.String(a.$0)):a.$==12?Doc.TextNode(Global.String(a.$0)):a.$==13?Doc.TextNode(Global.String(a.$0)):a.$==14?Doc.TextNode(Global.String(a.$0)):a.$==15?Doc.TextNode(a.$0.get_Id()):a.$==16?Doc.TextNode("Empty"):a.$==17?(tO=a.$0,(dcs=a.$1,(tagV=new FromView.New(View.Const((o=tO==null?null:{
+  return a.$==1?Doc.TextNode(a.$0.get_Id()):a.$==2?(ref=a.$0,Doc.Input(List.T.Empty,new FromView.New(View.Const(a.$1),Library.delayed(1000,function(v)
+  {
+   setDOC(new DocComposition({
+    $:2,
+    $0:ref,
+    $1:v
+   }));
+  })))):a.$==3?Doc.TextNode(Global.String(a.$0)):a.$==4?Doc.TextNode(Global.String(a.$0)):a.$==5?Doc.TextNode(Global.String(a.$0)):a.$==6?Doc.TextNode(Global.String(a.$0)):a.$==7?Doc.TextNode(Global.String(a.$0)):a.$==8?Doc.TextNode(Global.String(a.$0)):a.$==9?Doc.TextNode(Global.String(a.$0)):a.$==10?Doc.TextNode(Global.String(a.$0)):a.$==11?Doc.TextNode(Global.String(a.$0)):a.$==12?Doc.TextNode(Global.String(a.$0)):a.$==13?Doc.TextNode(Global.String(a.$0)):a.$==14?Doc.TextNode(Global.String(a.$0)):a.$==15?Doc.TextNode(Global.String(a.$0)):a.$==16?Doc.TextNode(a.$0.get_Id()):a.$==17?Doc.TextNode("Empty"):a.$==18?(tO=a.$0,(dcs=a.$1,(tagV=new FromView.New(View.Const((o=tO==null?null:{
    $:1,
    $0:tO.$0.get_Id()
   },o==null?"":o.$0)),Library.delayed(1000,function(v)
   {
    var m;
    setDOC(new DocComposition({
-    $:17,
+    $:18,
     $0:(m=Strings.Trim(v),m===""?null:{
      $:1,
      $0:new HtmlElemTag({
@@ -314,6 +321,11 @@
     $1:v
    }));
   }))));
+ };
+ WsComposition.currentNodeO=function()
+ {
+  SC$1.$cctor();
+  return SC$1.currentNodeO;
  };
  LoadAsm.fetchAsmData=function(folder,a)
  {
@@ -537,16 +549,35 @@
   b=null;
   return Concurrency.Delay(function()
   {
-   return Concurrency.Combine(Concurrency.For(def.dependencies,function(a)
+   return Concurrency.Combine(Concurrency.For(def.resources,function(a)
    {
-    return Concurrency.Bind(FShUI["loadAssembly'"](isLoaded,loadDef,fetchAsmData,a),function()
+    var pelem,elem,nelem;
+    pelem=self.document.createElement("div");
+    pelem.innerHTML=a.get_Id();
+    elem=pelem.firstChild;
+    nelem=self.document.createElement(elem.localName);
+    return Concurrency.Combine(Concurrency.For(Operators.range(0,elem.attributes.length-1),function(a$1)
     {
-     return Concurrency.Return(null);
-    });
+     nelem.setAttribute(elem.attributes.item(a$1).nodeName,elem.attributes.item(a$1).nodeValue);
+     return Concurrency.Zero();
+    }),Concurrency.Delay(function()
+    {
+     self.document.head.appendChild(nelem);
+     return Concurrency.Zero();
+    }));
    }),Concurrency.Delay(function()
    {
-    loadDef(def);
-    return Concurrency.Zero();
+    return Concurrency.Combine(Concurrency.For(def.dependencies,function(a)
+    {
+     return Concurrency.Bind(FShUI["loadAssembly'"](isLoaded,loadDef,fetchAsmData,a),function()
+     {
+      return Concurrency.Return(null);
+     });
+    }),Concurrency.Delay(function()
+    {
+     loadDef(def);
+     return Concurrency.Zero();
+    }));
    }));
   });
  };
@@ -580,7 +611,7 @@
   }),Doc.Button("Add html",[],function()
   {
    AssemblyUI.addDOC(new DocComposition({
-    $:17,
+    $:18,
     $0:{
      $:1,
      $0:new HtmlElemTag({
@@ -646,7 +677,7 @@
   }
   function inputVar(mo,me)
   {
-   var ref,doci;
+   var ref,doci,doca;
    return me.retType.name.get_Id()==="Var<string>"?(ref=new Reference({
     $:1,
     $0:mo.name,
@@ -654,10 +685,13 @@
    }),(doci=new DocComposition({
     $:12,
     $0:ref
+   }),(doca=new DocComposition({
+    $:13,
+    $0:ref
    }),Doc.Concat([AssemblyUI.showAdd("Text",new DocComposition({
     $:11,
     $0:ref
-   })),AssemblyUI.showAdd("Input",doci),AssemblyUI.showAdd("Area",doci),doci.GetDoc()]))):AssemblyUI.showAdd("Add",new DocComposition({
+   })),AssemblyUI.showAdd("Input",doci),AssemblyUI.showAdd("Area",doca),doci.GetDoc()])))):AssemblyUI.showAdd("Add",new DocComposition({
     $:8,
     $0:new Reference({
      $:1,
@@ -688,7 +722,7 @@
   function showDoc(mo,me)
   {
    return AssemblyUI.showAdd("Add",new DocComposition({
-    $:13,
+    $:14,
     $0:new Reference({
      $:1,
      $0:mo.name,
@@ -696,19 +730,37 @@
     })
    }));
   }
+  function showAct(mo,me)
+  {
+   return AssemblyUI.showAdd("Add",new DocComposition({
+    $:2,
+    $0:new Reference({
+     $:1,
+     $0:mo.name,
+     $1:me
+    }),
+    $1:me.name.get_Id()
+   }));
+  }
   function m(oldp,t)
   {
    var p;
-   p=t[1];
-   return[[t[0],function(me)
+   p=t[2];
+   return[[t[0],[t[1],function(me)
    {
     return p(me)&&!oldp(me);
-   }],function(me)
+   }]],function(me)
    {
     return p(me)||oldp(me);
    }];
   }
-  groups=(y=List.ofArray([[function($1)
+  groups=Arrays.ofSeq(Seq.map(function(t)
+  {
+   return t[1];
+  },Seq.sortBy(function(t)
+  {
+   return t[0];
+  },(y=List.ofArray([[1,function($1)
   {
    return function($2)
    {
@@ -717,7 +769,7 @@
   },function(me)
   {
    return Strings.StartsWith(me.retType.name.get_Id(),"Var<")&&me.isField;
-  }],[function($1)
+  }],[2,function($1)
   {
    return function($2)
    {
@@ -726,7 +778,7 @@
   },function(me)
   {
    return Strings.StartsWith(me.retType.name.get_Id(),"View<")&&me.isField;
-  }],[function($1)
+  }],[3,function($1)
   {
    return function($2)
    {
@@ -735,7 +787,7 @@
   },function(me)
   {
    return me.retType.name.get_Id()!=="Doc"&&me.isField&&!(me.retType.name.get_Id().indexOf("->")!=-1);
-  }],[function($1)
+  }],[0,function($1)
   {
    return function($2)
    {
@@ -744,7 +796,16 @@
   },function(me)
   {
    return me.retType.name.get_Id()==="Doc"&&(me.isField||Seq.isEmpty(me.parms));
-  }],[function($1)
+  }],[1,function($1)
+  {
+   return function($2)
+   {
+    return showAct($1,$2);
+   };
+  },function(me)
+  {
+   return me.retType.name.get_Id()==="unit"&&!me.isField&&Seq.isEmpty(me.parms);
+  }],[4,function($1)
   {
    return function($2)
    {
@@ -756,7 +817,7 @@
   }]]),(((Runtime.Curried3(Seq.mapFold))(m))(function()
   {
    return false;
-  }))(y))[0];
+  }))(y))[0])));
   return Doc.Concat([Doc.Element("h3",[],[Doc.TextNode(asm.name.get_Id())]),Doc.Element("div",[AttrModule.Class("wsfmwk-alternate")],List.ofSeq(Seq.delay(function()
   {
    return Seq.collect(function(m$1)
@@ -780,12 +841,12 @@
  AssemblyUI.addDOC=function(docc)
  {
   var a,m;
-  a=(m=AssemblyUI.mainDocNameVar().Get(),m.$==16?docc:m.$==17?new DocComposition({
-   $:17,
+  a=(m=AssemblyUI.mainDocNameVar().Get(),m.$==17?docc:m.$==18?new DocComposition({
+   $:18,
    $0:m.$0,
    $1:m.$1.concat([docc])
   }):new DocComposition({
-   $:17,
+   $:18,
    $0:null,
    $1:[m,docc]
   }));
@@ -874,7 +935,7 @@
   SC$1.$cctor();
   return SC$1.selectedAssembly;
  };
- AssemblyUI.click$496$45=Runtime.Curried3(function(f,$1,$2)
+ AssemblyUI.click$510$45=Runtime.Curried3(function(f,$1,$2)
  {
   return f();
  });
@@ -927,6 +988,7 @@
  SC$1.$cctor=function()
  {
   SC$1.$cctor=Global.ignore;
+  SC$1.currentNodeO=null;
   SC$1.assemblies=ListModel.Create(function(ad)
   {
    return ad.name;

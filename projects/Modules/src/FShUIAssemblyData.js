@@ -1,11 +1,11 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,FShUI_AssemblyData,ModuleName,TypeName,MethodName,AssemblyName,AssemblyRef,JSCode,Resource,ModuleRef,TypeRef,MethodDef,ModuleDef,AssemblyDef,IntelliFactory,Runtime,WebSharper,Strings;
+ var Global,FsRoot,LibraryJS,FShUI_AssemblyData,ModuleName,TypeName,MethodName,AssemblyName,AssemblyRef,JSCode,Resource,ModuleRef,TypeRef,MethodDef,ModuleDef,AssemblyDef,IntelliFactory,Runtime,WebSharper,Strings;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
- Library=FsRoot.Library=FsRoot.Library||{};
- FShUI_AssemblyData=Library.FShUI_AssemblyData=Library.FShUI_AssemblyData||{};
+ LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
+ FShUI_AssemblyData=LibraryJS.FShUI_AssemblyData=LibraryJS.FShUI_AssemblyData||{};
  ModuleName=FShUI_AssemblyData.ModuleName=FShUI_AssemblyData.ModuleName||{};
  TypeName=FShUI_AssemblyData.TypeName=FShUI_AssemblyData.TypeName||{};
  MethodName=FShUI_AssemblyData.MethodName=FShUI_AssemblyData.MethodName||{};
@@ -107,13 +107,6 @@
    dependencies:dependencies,
    resources:resources,
    javaScripts:javaScripts
-  };
- };
- Library.Error=function(a)
- {
-  return{
-   $:1,
-   $0:a
   };
  };
 }());

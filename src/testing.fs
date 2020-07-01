@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1592911141642 -d:WEBSHARPER
+////-d:FSharpStation1593197096670 -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -30,7 +30,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\FShUI.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1592911141642
+//#define FSharpStation1593197096670
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -107,11 +107,10 @@ namespace FsRoot
     
     #endif
     
-        /// Essentials that can be converted to JavaScript with WebSharper
-        [< JavaScriptExport ; AutoOpen >]
-        module Library = 
-            let Error = Result.Error
-        
+        /// Essentials that run in Javascript (WebSharper)
+        //#define WEBSHARPER 
+        [< JavaScript ; AutoOpen >]
+        module LibraryJS =
             //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Data\lib\net461\WebSharper.Data.dll"
             //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
             //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
@@ -121,7 +120,7 @@ namespace FsRoot
             
             [< JavaScriptExport >]
             module FShUI_AssemblyData2 =
-                open FsRoot.Library.FShUI_AssemblyData
+                open FsRoot.LibraryJS.FShUI_AssemblyData
                 open FSharp.Data
             
                 type AsmJson = JsonProvider<"""

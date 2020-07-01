@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1592911141642 -d:WEBSHARPER
+////-d:FSharpStation1593197096670 -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -28,7 +28,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\FShUIAssemblyData.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1592911141642
+//#define FSharpStation1593197096670
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -136,6 +136,10 @@ namespace FsRoot
             
             #endif
             
+        /// Essentials that run in Javascript (WebSharper)
+        //#define WEBSHARPER 
+        [< JavaScript ; AutoOpen >]
+        module LibraryJS =
             //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Data\lib\net461\WebSharper.Data.dll"
             //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
             //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
@@ -145,7 +149,7 @@ namespace FsRoot
             
             [< JavaScriptExport >]
             module FShUI_AssemblyData2 =
-                open FsRoot.Library.FShUI_AssemblyData
+                open FsRoot.LibraryJS.FShUI_AssemblyData
                 open FSharp.Data
             
                 type AsmJson = JsonProvider<"""
@@ -248,13 +252,9 @@ namespace FsRoot
             
             //*)
             
-        /// Essentials that run in Javascript (WebSharper)
-        //#define WEBSHARPER 
-        [< JavaScript ; AutoOpen >]
-        module LibraryJS =
             //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\FShUIAssemblyData.dll"
             module WsComposition =
-                open FsRoot.Library.FShUI_AssemblyData
+                open FsRoot.LibraryJS.FShUI_AssemblyData
                 open WebSharper.JavaScript
             
                 type Reference<'I, 'R> =
@@ -283,29 +283,30 @@ namespace FsRoot
                                         member this.Id = match this with LocalId  t -> t
             
                 type DocComposition =
-                    | DOCLcText  of name: LocalId *      string   
-                    | DOCLcVar   of name: LocalId *  Var<string  >
-                    | DOCAction  of Reference<unit,      unit    >
-                    | DOCInt     of Reference<unit,      int     >
-                    | DOCIntW    of Reference<unit, View<int   > >
-                    | DOCIntV    of Reference<unit, Var< int   > >
-                    | DOCOther   of Reference<unit,      obj     >
-                    | DOCOtherW  of Reference<unit, View<obj   > >
-                    | DOCOtherV  of Reference<unit, Var< obj   > >
-                    | DOCString  of Reference<unit,      string  >
-                    | DOCView    of Reference<unit, View<string> >
-                    | DOCVar     of Reference<unit, Var< string> >
-                    | DOCVarInp  of Reference<unit, Var< string> >
-                    | DOCRef     of Reference<unit, Doc          >
-                    | DOCRefW    of Reference<unit, View<Doc   > >
-                    | DOCOne     of name: LocalId * (unit -> Doc)
+                    | DOCLcText   of name: LocalId *      string   
+                    | DOCLcVar    of name: LocalId *  Var<string  >
+                    | DOCAction   of Reference<unit,      unit    > * string
+                    | DOCInt      of Reference<unit,      int     >
+                    | DOCIntW     of Reference<unit, View<int   > >
+                    | DOCIntV     of Reference<unit, Var< int   > >
+                    | DOCOther    of Reference<unit,      obj     >
+                    | DOCOtherW   of Reference<unit, View<obj   > >
+                    | DOCOtherV   of Reference<unit, Var< obj   > >
+                    | DOCString   of Reference<unit,      string  >
+                    | DOCView     of Reference<unit, View<string> >
+                    | DOCVar      of Reference<unit, Var< string> >
+                    | DOCVarInput of Reference<unit, Var< string> >
+                    | DOCVarArea  of Reference<unit, Var< string> >
+                    | DOCRef      of Reference<unit, Doc          >
+                    | DOCRefW     of Reference<unit, View<Doc   > >
+                    | DOCOne      of name: LocalId * (unit -> Doc)
                     | DOCEmpty
-                    | DOCHtml    of HtmlElemTag option * DocComposition[]
+                    | DOCHtml     of HtmlElemTag option * DocComposition[]
                     member this.GetDoc() =
                         match this with
                         | DOCLcText(nm, s ) ->    s                                              |> Doc.TextNode
                         | DOCLcVar (nm, sV) ->    sV           .View                             |> Doc.TextView
-                        | DOCAction    ref  ->  Doc.Button (ref.ToString()) [] (ref.GetFunc() )
+                        | DOCAction(ref, s) ->  Doc.Button s [] (ref.GetFunc() )
                         | DOCInt       ref  ->  ref.GetFunc()()       |>           sprintf "%d"  |> Doc.TextNode
                         | DOCIntW      ref  ->  ref.GetFunc()()       |> View.Map (sprintf "%d") |> Doc.TextView
                         | DOCIntV      ref  -> (ref.GetFunc()()).View |> View.Map (sprintf "%d") |> Doc.TextView
@@ -315,7 +316,8 @@ namespace FsRoot
                         | DOCString    ref  ->  ref.GetFunc()()                                  |> Doc.TextNode
                         | DOCView      ref  ->  ref.GetFunc()()                                  |> Doc.TextView
                         | DOCVar       ref  -> (ref.GetFunc()()).View                            |> Doc.TextView
-                        | DOCVarInp    ref  -> (ref.GetFunc()())                                 |> Doc.Input []
+                        | DOCVarInput  ref  -> (ref.GetFunc()())                                 |> Doc.Input     []
+                        | DOCVarArea   ref  -> (ref.GetFunc()())                                 |> Doc.InputArea []
                         | DOCRef       ref  ->  ref.GetFunc()()
                         | DOCRefW      ref  ->  ref.GetFunc()()                                  |> Doc.EmbedView
                         | DOCOne  (_, fd  ) ->  fd()
@@ -328,6 +330,8 @@ namespace FsRoot
             
                 open WebSharper.UI
                 open WebSharper.UI.Html
+            
+                let currentNodeO  = None
             
                 let rec getUIDoc (setDOC ) =
                     function
@@ -342,7 +346,13 @@ namespace FsRoot
                         |> Doc.Input []
                     
                     | DOCLcVar (nm, _ ) ->  text <| nm.Id
-                    | DOCAction    ref  ->  text <| ref.ToString()
+                    | DOCAction(ref, s) ->  
+                        Var.Make 
+                             (View.Const s)
+                             (delayed 1000
+                                 <| fun v -> setDOC(DOCAction(ref, v)) 
+                             )
+                        |> Doc.Input []
                     | DOCInt       ref  ->  text <| ref.ToString()
                     | DOCIntW      ref  ->  text <| ref.ToString()
                     | DOCIntV      ref  ->  text <| ref.ToString()
@@ -352,7 +362,8 @@ namespace FsRoot
                     | DOCString    ref  ->  text <| ref.ToString()
                     | DOCView      ref  ->  text <| ref.ToString()
                     | DOCVar       ref  ->  text <| ref.ToString()
-                    | DOCVarInp    ref  ->  text <| ref.ToString()
+                    | DOCVarInput  ref  ->  text <| ref.ToString()
+                    | DOCVarArea   ref  ->  text <| ref.ToString()
                     | DOCRef       ref  ->  text <| ref.ToString()
                     | DOCRefW      ref  ->  text <| ref.ToString()
                     | DOCOne  (nm, _  ) ->  text <| nm.Id
@@ -372,30 +383,33 @@ namespace FsRoot
                             Doc.Input [] tagV
                             dcs
                             |> Array.mapi (fun i dc -> tr [] [ 
-                                td[] [
-                                    if i > 0              then yield Doc.Button "^" [] (fun ()  -> setDOCH(tO, Array.collect id [| dcs.[..i-2] ; [| dc        ; dcs.[i-1] |] ; dcs.[i+1..] |] ) )
-                                ]
-                                td[] [
-                                    if i < dcs.Length - 1 then yield Doc.Button "v" [] (fun ()  -> setDOCH(tO, Array.collect id [| dcs.[..i-1] ; [| dcs.[i+1] ; dc        |] ; dcs.[i+2..] |] ) )
-                                ]
-                                td[] [
-                                    dc |> getUIDoc                                     (fun ndc -> setDOCH(tO, Array.collect id [| dcs.[..i-1] ; [|            ndc        |] ; dcs.[i+1..] |] ) )  
-                                ]
-                                td[] [
-                                    yield                            Doc.Button "x" [] (fun ()  -> setDOCH(tO, Array.collect id [| dcs.[..i-1]                               ; dcs.[i+1..] |] ) )
-                                ]
-                                ])
+                                td[] [ if i > 0              then yield Doc.Button "^" [] (fun ()  -> setDOCH(tO, Array.collect id [| dcs.[..i-2] ; [| dc        ; dcs.[i-1] |] ; dcs.[i+1..] |] ) ) ]
+                                td[] [ if i < dcs.Length - 1 then yield Doc.Button "v" [] (fun ()  -> setDOCH(tO, Array.collect id [| dcs.[..i-1] ; [| dcs.[i+1] ; dc        |] ; dcs.[i+2..] |] ) ) ]
+                                td[] [ dc |> getUIDoc                                     (fun ndc -> setDOCH(tO, Array.collect id [| dcs.[..i-1] ; [|            ndc        |] ; dcs.[i+1..] |] ) ) ]
+                                td[] [                            yield Doc.Button "x" [] (fun ()  -> setDOCH(tO, Array.collect id [| dcs.[..i-1]                               ; dcs.[i+1..] |] ) ) ]
+                            ])
                             |> table []
                         ]
             
             
+            // to be compiled with compileWASMLoader
+            
             module FShUI =
-                open FsRoot.Library.FShUI_AssemblyData
+                open FsRoot.LibraryJS.FShUI_AssemblyData
                 open FShUI_AssemblyData2
                 open WebSharper.UI
+                open WebSharper.JavaScript
             
                 let rec processAssembly' (isLoaded) (loadDef) (fetchAsmData: _ -> Async<AssemblyDef>) (def:AssemblyDef) = 
                     async {
+                        for res in def.resources do
+                            let pelem = JS.Document.CreateElement "div"
+                            pelem.InnerHTML <- res.Id
+                            let elem = pelem.FirstChild
+                            let nelem = JS.Document.CreateElement elem.LocalName
+                            for i in 0.. elem.Attributes.Length - 1 do
+                                nelem.SetAttribute(elem.Attributes.[i].NodeName, elem.Attributes.[i].NodeValue)
+                            JS.Document.Head.AppendChild nelem |> ignore
                         for dep in def.dependencies do
                             do! loadAssembly' isLoaded loadDef fetchAsmData dep
                         loadDef def
@@ -562,29 +576,36 @@ namespace FsRoot
                     let inputVar (mo:ModuleDef) (me:MethodDef) = 
                         match me.retType.name.Id with
                         | "Var<string>"  -> let ref  = Reference<unit, Var< string>>.RefAsm(mo.name, me)
-                                            let doci = DOCVarInp ref
-                                            Doc.Concat [ showAdd "Text" (DOCVar ref) ; showAdd "Input" doci ; showAdd "Area" doci ; doci.GetDoc() ]
+                                            let doci = DOCVarInput ref
+                                            let doca = DOCVarArea  ref
+                                            Doc.Concat [ showAdd "Text" (DOCVar ref) ; showAdd "Input" doci ; showAdd "Area" doca ; doci.GetDoc() ]
                         | _              -> showAdd "Add" (Reference<unit, Var< _     >>.RefAsm(mo.name, me) |> DOCOtherV)
                     let printText (mo:ModuleDef) (me:MethodDef) = 
                         match me.retType.name.Id with
                         | "string"       -> let docc = Reference<unit,      string >.RefAsm(mo.name, me) |> DOCString
                                             Doc.Concat [ showAdd "Add" docc ; docc.GetDoc() ]
                         | _              -> showAdd "Add" (Reference<unit,      _      >.RefAsm(mo.name, me) |> DOCOther)
-                    let showDoc (mo:ModuleDef) (me:MethodDef) = RefAsm(mo.name, me) |> DOCRef |> showAdd "Add"
+                    let showDoc (mo:ModuleDef) (me:MethodDef) = DOCRef   (RefAsm(mo.name, me)            )  |> showAdd "Add"
+                    let showAct (mo:ModuleDef) (me:MethodDef) = DOCAction(RefAsm(mo.name, me), me.name.Id)  |> showAdd "Add"
                     let groups0 = 
                         [
-                            inputVar  , fun me -> me.retType.name.Id.StartsWith "Var<"  &&  me.isField
-                            showView  , fun me -> me.retType.name.Id.StartsWith "View<" &&  me.isField
-                            printText , fun me -> me.retType.name.Id         <> "Doc"   &&  me.isField && (not <| me.retType.name.Id.Contains "->")
-                            showDoc   , fun me -> me.retType.name.Id         =  "Doc"   && (me.isField || Seq.isEmpty me.parms)
-                            emptyDoc  , fun me -> true
+                            1, inputVar  , fun me -> me.retType.name.Id.StartsWith "Var<"  &&      me.isField
+                            2, showView  , fun me -> me.retType.name.Id.StartsWith "View<" &&      me.isField
+                            3, printText , fun me -> me.retType.name.Id         <> "Doc"   &&      me.isField && (not <| me.retType.name.Id.Contains "->")
+                            0, showDoc   , fun me -> me.retType.name.Id         =  "Doc"   && (    me.isField || Seq.isEmpty me.parms)
+                            1, showAct   , fun me -> me.retType.name.Id         =  "unit"  && (not me.isField) && Seq.isEmpty me.parms
+                            4, emptyDoc  , fun me -> true
                         ]
-                    let groups, _ = 
+                    let groups = 
                         ((fun _ -> false), 
                          groups0) 
-                        ||> Seq.mapFold (fun oldp (f,p) -> 
-                            (f, fun me -> p me && not (oldp me)), 
-                            (   fun me -> p me ||      oldp me))
+                        ||> Seq.mapFold (fun oldp (order, f,p) -> 
+                            (order,(f, fun me -> p me && not (oldp me))), 
+                            (          fun me -> p me ||      oldp me))
+                        |> fst
+                        |> Seq.sortBy fst
+                        |> Seq.map    snd
+                        |> Seq.toArray
                     Doc.Concat [
                         h3  [] [ text asm.name.Id ]
                         div [ Attr.Class "wsfmwk-alternate"] [
