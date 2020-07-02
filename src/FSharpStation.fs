@@ -3122,6 +3122,7 @@ namespace FsRoot
                     [< Inline "$mo.getPositionAt($_i)                            " >] member mo.GetPositionAt(_i: int     )     : Position       = X<_>
                     [< Inline "$mo.getOffsetAt($_p)                              " >] member mo.GetOffsetAt(  _p: Position)     : int            = X<_>
                     [< Inline "$mo.dispose()                                     " >] member mo.Dispose()                       : unit           = X<_>
+                    [< Inline "$mo.getValueInRange($_r)                          " >] member mo.GetValueInRange(  _r: Range)    : string         = X<_>
                     
                 type MarkDownString = {
                     value      : string
@@ -3213,6 +3214,7 @@ namespace FsRoot
                     [< Inline "$monc.updateOptions($_o)"           >] member monc.UpdateOptions(_o:obj)                       : unit            = X<_>
                     [< Inline "$monc.setPosition($_p)            " >] member monc.SetPosition(_p:Position)                    : unit            = X<_>
                     [< Inline "$monc.focus()                     " >] member monc.Focus()                                     : unit            = X<_>
+                    [< Inline "$monc.getSelection()              " >] member monc.GetSelection()                              : Range           = X<_>
                     
             //        [< Inline "$monc.refresh()"                 >] member monc.Refresh()                                   : unit            = X<_>
             //        [< Inline "$monc.setOption($_o, $_v)"       >] member monc.SetOption(_o:string, _v:obj)                : unit            = X<_>
@@ -5452,8 +5454,11 @@ namespace FsRoot
                 | _       -> ()
             }
         
-                
-        
+            let getSelection () =
+                match editorConfigO |> Option.bind (fun cfg -> cfg.editorO) with
+                | Some ed -> ed.GetSelection() |> ed.GetModel().GetValueInRange
+                | _       -> ""                
+
         
         module JumpTo =
         
@@ -5750,11 +5755,11 @@ namespace FsRoot
                     } |> iterResultA (sprintf "Error:\n%A" >> out) ignore
                 )
         
-            let lastLineToFsi () = 
+            let selectionToFsi () = 
                 let out (v:string) = appendMsgs <| v.Replace(FsiEvaluator.endToken, "Done!")
                 fusion {
                     do! FSharpStationClient.setAddress (WebSockets.Address FStation.id)  |> ofAsync
-                    do! outputMsgs.Value.Split '\n' |> Seq.last |> fun s -> s + ";;" |> FsiAgent.sendFsiInput |> ofAsync 
+                    do! Monaco.getSelection() |> fun s -> s + ";;" |> FsiAgent.sendFsiInput |> ofAsync 
                 } |> iterResultA (sprintf "Error:\n%A" >> out) ignore
         
             let deleteSnippet() =
@@ -5858,7 +5863,7 @@ namespace FsRoot
                                        AF.newAct  "AddProperty"        RenderProperties.addProperty
                                        AF.newAct  "SaveAs"             LoadSave.saveAs
                                        AF.newAct  "RunFS"              runFsCode
-                                       AF.newAct  "LastLineToFsi"      lastLineToFsi
+                                       AF.newAct  "selectionToFsi"     selectionToFsi
                                        AF.newAct  "AbortFsi"           FsiAgent.abortFsiExe
                                        AF.newAct  "DisposeFsi"         FsiAgent.disposeFsiExe
                                        AF.newActF "LoadFile"           <| AF.FunAct1 ((fun o     -> unbox o  |> LoadSave.loadTextFile              ), "FileElement")
@@ -5899,7 +5904,7 @@ namespace FsRoot
                     btnIndentIn      button FSharpStation.IndentIn       ""                  "Indent In  >> "
                     btnIndentOut     button FSharpStation.IndentOut      ""                  "Indent Out << "
                     btnRunFS         button FSharpStation.RunFS          ""                  "Run F#        "
-                    btnInputFsi      button FSharpStation.LastLineToFsi  ""                  "last line |> Fsi"
+                    btnInputFsi      button FSharpStation.selectionToFsi ""                  "selection |> Fsi"
                     btnAbortFsi      button FSharpStation.AbortFsi       ""                  "Abort Fsi     "
         
                     messagesLeft     wcomp-tabstrip                      ""                  Output FsCode
