@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,LibraryJS,FShUI_AssemblyData,ModuleName,TypeName,MethodName,AssemblyName,AssemblyRef,JSCode,Resource,ModuleRef,TypeRef,MethodDef,ModuleDef,AssemblyDef,IntelliFactory,Runtime,WebSharper,Strings;
+ var Global,FsRoot,LibraryJS,FShUI_AssemblyData,ModuleName,TypeName,MethodName,AssemblyName,AssemblyRef,JSCode,Resource,ModuleRef,MethodRef,TypeRef,MethodDef,ModuleDef,AssemblyDef,IntelliFactory,Runtime,WebSharper,Strings;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
@@ -14,6 +14,7 @@
  JSCode=FShUI_AssemblyData.JSCode=FShUI_AssemblyData.JSCode||{};
  Resource=FShUI_AssemblyData.Resource=FShUI_AssemblyData.Resource||{};
  ModuleRef=FShUI_AssemblyData.ModuleRef=FShUI_AssemblyData.ModuleRef||{};
+ MethodRef=FShUI_AssemblyData.MethodRef=FShUI_AssemblyData.MethodRef||{};
  TypeRef=FShUI_AssemblyData.TypeRef=FShUI_AssemblyData.TypeRef||{};
  MethodDef=FShUI_AssemblyData.MethodDef=FShUI_AssemblyData.MethodDef||{};
  ModuleDef=FShUI_AssemblyData.ModuleDef=FShUI_AssemblyData.ModuleDef||{};
@@ -73,6 +74,13 @@
   return{
    name:name,
    asmName:asmName
+  };
+ };
+ MethodRef.New=function(name,modRef)
+ {
+  return{
+   name:name,
+   modRef:modRef
   };
  };
  TypeRef.New=function(name,asm)

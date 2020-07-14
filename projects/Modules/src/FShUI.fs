@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1593197096670 -d:WEBSHARPER
+////-d:FSharpStation1594498658169 -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -28,7 +28,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\FShUIAssemblyData.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1593197096670
+//#define FSharpStation1594498658169
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -44,7 +44,7 @@ namespace FsRoot
     
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
-    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+    ////#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
@@ -110,6 +110,11 @@ namespace FsRoot
         module Library = 
             let Error = Result.Error
         
+            let [<Inline>] inline swap f a b = f b a
+            
+            /// swap: for use with operators: [1..5] |> List.map (__ (/) 2)
+            let [<Inline>] inline __   f a b = f b a
+            
             /// returns a function that delays its execution
             /// cancels prior when multiple calls happen before the delay
             let delayedA delay doF =
@@ -253,6 +258,207 @@ namespace FsRoot
             //*)
             
             //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\FShUIAssemblyData.dll"
+            module Composition =
+                open FsRoot.LibraryJS.FShUI_AssemblyData
+                open WebSharper.JavaScript
+            
+                type MethodDef2 = {
+                    def     : MethodDef
+                    modName : ModuleName
+                }
+            
+                let invokeMethodJS (md:MethodDef2) (parms:string) = sprintf "%s.%s(%s)" md.modName.Id2 md.def.name.Id parms
+            
+                let composeMethod name (pre:MethodDef2) (pos:MethodDef2) (rparms:int seq) =
+                    let nparms =
+                        [|
+                            yield! pre.def.parms
+                            for i in 0 .. pos.def.parms.Length - 1 do
+                                if Seq.contains i rparms |> not then
+                                    yield pos.def.parms.[i]
+                        |]
+                    let nparmsDecl = [0..       nparms.Length - 1 ] |> Seq.map    (sprintf "p%d") |> String.concat ", "
+                    let preParms   = [0..pre.def.parms.Length - 1 ] |> Seq.map    (sprintf "p%d") |> String.concat ", "
+                    let posParms   = [0..pos.def.parms.Length - 1 ] |> Seq.mapFold(fun j i -> 
+                                                                        if Seq.contains i rparms 
+                                                                        then (         "v"   , j    ) 
+                                                                        else (sprintf "p%d" j, j + 1) ) pre.def.parms.Length
+                                                                    |> fst                        |> String.concat ", "
+                    let preCall    = invokeMethodJS pre preParms
+                    let posCall    = invokeMethodJS pos posParms
+                    {
+                        name    = name
+                        isField = false
+                        retType = pos.def.retType
+                        parms   = nparms
+                    }, (sprintf "%s : function(%s) { var v = %s; return %s; }" name.Id nparmsDecl preCall posCall )
+            
+                type SimpleComposition = 
+                    {
+                        name    : MethodName
+                        pre     : MethodDef2
+                        pos     : MethodDef2
+                        rparms  : int seq
+                    }
+                    member this.GetMethodDefsJS() = composeMethod this.name this.pre this.pos this.rparms
+            
+                let composeString (name:string) (ss:string) =
+                    {
+                        name    = MethodName name
+                        isField = true
+                        retType = {
+                            TypeRef.name = TypeName     "string"
+                            TypeRef.asm  = AssemblyName "netstandard"
+                        }
+                        parms   = [||]
+                    }, (sprintf "%s : function() { return '%s' }" name <| ss.Replace("'", "''") )
+            
+                let composeVarStr (name:string) (ss:string) =
+                    {
+                        name    = MethodName name
+                        isField = true
+                        retType = {
+                            TypeRef.name = TypeName     "Var<string>"
+                            TypeRef.asm  = AssemblyName "WebSharper.UI"
+                        }
+                        parms   = [||]
+                    }, (sprintf "%s : (function(v) { return function() { return v} })(WebSharper.UI.Var$1.Create$1('%s'))" name <| ss.Replace("'", "''") )
+            
+                type SimpleEntry =
+                    | SimpleComposition of SimpleComposition
+                    | SimpleString      of name:string * value:string
+                    | SimpleVarStr      of name:string * init :string
+                    member this.GetMethodDefsJS() = 
+                        match this with
+                        | SimpleComposition sc -> sc.GetMethodDefsJS()
+                        | SimpleString(nm, ss) -> composeString nm ss
+                        | SimpleVarStr(nm, ss) -> composeVarStr nm ss
+            
+                let createComposedModule (name:ModuleName) (comps:SimpleEntry[]) =
+                    let defs, jss = comps |> Array.map (fun x -> x.GetMethodDefsJS()) |> Array.unzip
+                    { 
+                        name     = name
+                        methods  = defs
+                    }, jss |> String.concat ",\n    " |> sprintf "%s = {\n    %s\n}" name.Id2 |> JSCode 
+            
+                let createComposedAssembly (name:AssemblyName) (comps:SimpleEntry[]) =
+                    let cmod, js = createComposedModule (ModuleName name.Id) comps
+                    {
+                        name            = name
+                        self            = AssemblyRef name.Id
+                        dependencies    = [| |]
+                        resources       = [| |]
+                        modules         = [| cmod |]
+                        javaScripts     = [| name.Id, js |]
+                    }
+            
+                open WebSharper.UI
+                open WebSharper.UI.Html
+            
+                let selectedMethod : Var<(AssemblyName * MethodDef2) option> = Var.Create None
+            
+                let compositionsL : ListModel<_, _ * SimpleEntry> = ListModel.Create fst [||]
+            
+                let showSimpleString id (idcompV:Var<System.Guid * (string * string)>) =
+                    let nameV = idcompV.Lens (snd >> fst) (fun (f, (_ , v)) nm -> f, (nm, v) )
+                    let valV  = idcompV.Lens (snd >> snd) (fun (f, (nm, _)) v  -> f, (nm, v) )
+                    Doc.Concat [
+                        tr [] [ Doc.Input [] nameV
+                                text " = "
+                                Doc.Input [] valV
+                                Doc.Button "x" [] (fun () -> compositionsL.RemoveByKey id)
+                        ]
+                    ]
+            
+                let showSimpleComposition id (idcompV:Var<System.Guid * SimpleComposition>) =
+                    let compV = idcompV.Lens snd (fun (f, _) v -> f, v)
+                    let clickPre () =
+                        match selectedMethod.Value with
+                        | None -> ()
+                        | Some (an, df) ->
+                        compV.Set { compV.Value with pre = df }
+                    let clickPos () =
+                        match selectedMethod.Value with
+                        | None -> ()
+                        | Some (an, df) ->
+                        compV.Set { compV.Value with pos = df }
+                    Doc.Concat [
+                        tr [] [ compV.Lens (fun c -> c.name.Id) (fun c v -> { c with name = MethodName v } ) |> Doc.Input []
+                                text " = "
+                                button [ on.dblClick (fun _ _ -> clickPre() ) ] [ compV.View |> View.Map (fun c -> c.pre.def.name.Id ) |> textView ]
+                                text " : ("
+                                compV.View |> Doc.BindView (fun comp -> 
+                                    comp.pre.def.parms
+                                    |> Seq.map (fun t -> t.name.Id)
+                                    |> String.concat " -> "
+                                    |> text
+                                )
+                                text " -> "
+                                compV.View |> View.Map (fun c -> c.pre.def.retType.name.Id ) |> textView 
+                                text ") >> "
+                                button [ on.dblClick (fun _ _ -> clickPos() ) ] [ compV.View |> View.Map (fun c -> c.pos.def.name.Id ) |> textView ]
+                                text " : ("
+                                compV.View |> Doc.BindView (fun comp -> 
+                                    [   for i in 0 .. comp.pos.def.parms.Length - 1 do
+                                            let set v  = compV.Set { compV.Value with rparms = compV.Value.rparms |> (if v then Seq.append [| i |] else Seq.filter ((<>) i) ) |> Seq.cache }
+                                            let checkV = Var.Make   <| V (Seq.contains i comp.rparms) 
+                                                                    <| set
+                                            let attrOK = if Seq.contains i comp.rparms && comp.pre.def.retType <> comp.pos.def.parms.[i] 
+                                                         then "text-decoration: line-through"
+                                                         else "" 
+                                                         |> attr.style
+                                            yield span [] [ 
+                                                    Doc.CheckBox [] checkV
+                                                    span [ attrOK ] [ text comp.pos.def.parms.[i].name.Id ]
+                                                    text " -> " ]
+                                    ] |> Doc.Concat
+                                )
+                                compV.View |> View.Map (fun c -> c.pos.def.retType.name.Id ) |> textView 
+                                text " ) "
+                                Doc.Button "x" [] (fun () -> compositionsL.RemoveByKey id)
+                        ]
+                        //tr [] [ compV.View |> View.Map (fun c -> c.GetMethodDefsJS() |> snd) |> textView ]
+                    ]
+            
+                let showSimpleEntry id (idcompV:Var<System.Guid * SimpleEntry>) =
+                    let compV = idcompV.Lens snd (fun (f, _) v -> f, v)
+                    ()
+            
+                let createComposedFunction() =
+                    let clickFunc()   = match selectedMethod.Value with
+                                        | None -> ()
+                                        | Some (an, md) ->
+                                        compositionsL.Add (System.Guid.NewGuid(), SimpleComposition {
+                                            name    = MethodName "newMethod"
+                                            pre     = md
+                                            pos     = md
+                                            rparms  = [| 0 |]
+                                        })
+                    let clickString() = compositionsL.Add (System.Guid.NewGuid(), SimpleString("newString", "value"))
+                    let clickVarStr() = compositionsL.Add (System.Guid.NewGuid(), SimpleVarStr("newString", "value"))
+                    [
+                        button [ on.click (fun _ _ -> clickFunc())  ] [
+                            selectedMethod.View
+                            |> View.Map(function 
+                                        | None -> "Select a function to compose"
+                                        | Some (an:AssemblyName, md:MethodDef2) -> sprintf "Compose %s" md.def.name.Id
+                            ) |> textView
+                        ]
+                        button [ on.click (fun _ _ -> clickString())  ] [ text "Add string"      ]
+                        button [ on.click (fun _ _ -> clickVarStr())  ] [ text "Add Var<string>" ]
+                    ] |> Doc.Concat
+            
+                let showCompositions() =
+                    div [] [
+                        compositionsL.DocLens (fun id itemV ->
+                            match itemV.Value with
+                            | id, SimpleComposition sc   -> showSimpleComposition id (itemV.Lens (fun (id, se) -> match se with SimpleComposition sc -> id, sc       |_-> failwith "Should not happen") (fun _ (id, sc) -> id, SimpleComposition sc))
+                            | id, SimpleString   (nm, s) -> showSimpleString      id (itemV.Lens (fun (id, se) -> match se with SimpleString(nm, ss) -> id, (nm, ss) |_-> failwith "Should not happen") (fun _ (id, ss) -> id, SimpleString      ss))
+                            | id, SimpleVarStr   (nm, s) -> showSimpleString      id (itemV.Lens (fun (id, se) -> match se with SimpleVarStr(nm, ss) -> id, (nm, ss) |_-> failwith "Should not happen") (fun _ (id, ss) -> id, SimpleVarStr      ss))
+                        )
+                        createComposedFunction()
+                    ]
+            
             module WsComposition =
                 open FsRoot.LibraryJS.FShUI_AssemblyData
                 open WebSharper.JavaScript
@@ -494,14 +700,19 @@ namespace FsRoot
                 open WebSharper.UI
                 open WsComposition
             
-                let loadTesting() =
-                    FShUI.loadAssembly (AssemblyRef <| sprintf  "testing.asm?q=%A" System.DateTime.Now)
-                    |> Async.Start
-            
                 let thisModuleV = Var.Create "Covid.asm"
             
                 let loadThisModule  () = FShUI.loadAssembly (AssemblyRef thisModuleV.Value       ) |> Async.Start
                 let loadFsTranslator() = FShUI.loadAssembly (AssemblyRef "WsTranslatorLoader.asm") |> Async.Start
+            
+                let loadCompossedAssembly() =
+                    let name = AssemblyName "ComposedAssembly"
+                    Composition.compositionsL.Value
+                    |> Seq.map snd
+                    |> Seq.toArray
+                    |> Composition.createComposedAssembly name
+                    |> FShUI.processAssembly
+                    |> Async.Start
             
                 open WebSharper.UI
                 open WebSharper.UI.Html
@@ -520,8 +731,6 @@ namespace FsRoot
                         )
                     ]
             
-                let selectedMethod = Var.Create None
-            
                 let methodRows p (asm: AssemblyDef) f =
                     table [ attr.style "font-family: monospace" ] [
                         for mo in asm.modules do
@@ -532,11 +741,11 @@ namespace FsRoot
                                         yield td [] [ 
                                             yield b [] [ text mo.name.Id2 ]
                                             for me in methods do
-                                                let selMethod() = selectedMethod.Set (Some (mo.name, me.name))
+                                                let selMethod() = Composition.selectedMethod.Set (Some (asm.name, { Composition.MethodDef2.modName = mo.name ; def = me }))
                                                 yield
                                                     tr [ click selMethod ] [ 
                                                         td [        ] [ me        .name.Id                    |> text ] 
-                                                        td [        ] [ (if me.isField then ""  else me.parms |> Seq.map (fun t -> t.name.Id) |> String.concat ", " |> sprintf "(%s)") |>  text ] 
+                                                        td [        ] [ (if me.isField then ""  else me.parms |> Seq.map (fun t -> t.name.Id) |> String.concat " -> " |> (fun s -> if s = "" then "unit" else s) ) |>  text ] 
                                                         td [ nobr() ] [ (if me.isField then ":" else " -> ")  |> text ] 
                                                         td [        ] [ me.retType.name.Id                    |> text ] 
                                                         td [        ] [ f mo me                                       ] 
@@ -631,10 +840,12 @@ namespace FsRoot
                 let assembliesDoc() =
                     Doc.Concat [
                         div [] [
-                            Doc.Button "Load module:"        [] loadThisModule
-                            Doc.Input                        []     thisModuleV
+                            Doc.Button "Load module:"           [] loadThisModule
+                            Doc.Input                           []     thisModuleV
                         ]
-                        Doc    .Button "Load F# Translator:" [] loadFsTranslator
+                        Doc    .Button "Load F# Translator"     [] loadFsTranslator
+                        Composition.showCompositions()
+                        Doc    .Button "Load Compossed Assemby" [] loadCompossedAssembly
                         listAssembliesDoc()
                         currentAssembly  ()
                         styleDoc         ()

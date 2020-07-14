@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1593197096670 -d:WEBSHARPER
+////-d:FSharpStation1593735151845 -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -24,7 +24,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1593197096670
+//#define FSharpStation1593735151845
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -40,7 +40,7 @@ namespace FsRoot
     
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
-    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+    ////#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
@@ -257,7 +257,7 @@ namespace FsRoot
         module LibraryJS =
             //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
             
-            //
+            // Should be compiled using: WsCompile dll
             
             //#define WEBSHARPER
             [< JavaScriptExport >]
@@ -275,6 +275,11 @@ namespace FsRoot
                 type ModuleRef    = {
                     name          : ModuleName
                     asmName       : AssemblyName
+                }
+            
+                type MethodRef    = {
+                    name          : MethodName
+                    modRef        : ModuleRef
                 }
             
                 type TypeRef      = {
@@ -297,9 +302,9 @@ namespace FsRoot
                 type AssemblyDef  = {
                     name          : AssemblyName
                     self          : AssemblyRef
-                    modules       : ModuleDef   []
-                    dependencies  : AssemblyRef []
-                    resources     : Resource    []
+                    modules       : ModuleDef         []
+                    dependencies  : AssemblyRef       []
+                    resources     : Resource          []
                     javaScripts   : (string * JSCode) []
                 }
             

@@ -1,11 +1,15 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,LibraryJS,WsComposition,Reference,HtmlElemTag,LocalId,DocComposition,FShUI,LoadAsm,AssemblyUI,SC$1,WebSharper,UI,Var$1,View,Concurrency,CancellationTokenSource,IntelliFactory,Runtime,Utils,Operators,Doc,List,Arrays,FromView,Strings,Seq,Slice,Data,TxtRuntime,FSharp,Data$1,Runtime$1,IO,Unchecked,JSON,FShUI_AssemblyData,AssemblyDef,ModuleDef,MethodDef,TypeRef,console,AttrModule,AttrProxy,Date,ListModel;
+ var Global,FsRoot,Library,LibraryJS,Composition,MethodDef2,SimpleComposition,SimpleEntry,WsComposition,Reference,HtmlElemTag,LocalId,DocComposition,FShUI,LoadAsm,AssemblyUI,SC$1,WebSharper,UI,Var$1,View,Concurrency,CancellationTokenSource,IntelliFactory,Runtime,Doc,Operators,System,Guid,FShUI_AssemblyData,List,AttrProxy,Utils,Strings,Seq,FromView,Unchecked,Arrays,AssemblyDef,ModuleDef,MethodDef,TypeRef,Slice,Data,TxtRuntime,FSharp,Data$1,Runtime$1,IO,JSON,console,AttrModule,ListModel;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
  LibraryJS=FsRoot.LibraryJS=FsRoot.LibraryJS||{};
+ Composition=LibraryJS.Composition=LibraryJS.Composition||{};
+ MethodDef2=Composition.MethodDef2=Composition.MethodDef2||{};
+ SimpleComposition=Composition.SimpleComposition=Composition.SimpleComposition||{};
+ SimpleEntry=Composition.SimpleEntry=Composition.SimpleEntry||{};
  WsComposition=LibraryJS.WsComposition=LibraryJS.WsComposition||{};
  Reference=WsComposition.Reference=WsComposition.Reference||{};
  HtmlElemTag=WsComposition.HtmlElemTag=WsComposition.HtmlElemTag||{};
@@ -23,14 +27,23 @@
  CancellationTokenSource=WebSharper&&WebSharper.CancellationTokenSource;
  IntelliFactory=Global.IntelliFactory;
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
- Utils=WebSharper&&WebSharper.Utils;
- Operators=WebSharper&&WebSharper.Operators;
  Doc=UI&&UI.Doc;
+ Operators=WebSharper&&WebSharper.Operators;
+ System=Global.System;
+ Guid=System&&System.Guid;
+ FShUI_AssemblyData=LibraryJS&&LibraryJS.FShUI_AssemblyData;
  List=WebSharper&&WebSharper.List;
- Arrays=WebSharper&&WebSharper.Arrays;
- FromView=UI&&UI.FromView;
+ AttrProxy=UI&&UI.AttrProxy;
+ Utils=WebSharper&&WebSharper.Utils;
  Strings=WebSharper&&WebSharper.Strings;
  Seq=WebSharper&&WebSharper.Seq;
+ FromView=UI&&UI.FromView;
+ Unchecked=WebSharper&&WebSharper.Unchecked;
+ Arrays=WebSharper&&WebSharper.Arrays;
+ AssemblyDef=FShUI_AssemblyData&&FShUI_AssemblyData.AssemblyDef;
+ ModuleDef=FShUI_AssemblyData&&FShUI_AssemblyData.ModuleDef;
+ MethodDef=FShUI_AssemblyData&&FShUI_AssemblyData.MethodDef;
+ TypeRef=FShUI_AssemblyData&&FShUI_AssemblyData.TypeRef;
  Slice=WebSharper&&WebSharper.Slice;
  Data=WebSharper&&WebSharper.Data;
  TxtRuntime=Data&&Data.TxtRuntime;
@@ -38,17 +51,9 @@
  Data$1=FSharp&&FSharp.Data;
  Runtime$1=Data$1&&Data$1.Runtime;
  IO=Runtime$1&&Runtime$1.IO;
- Unchecked=WebSharper&&WebSharper.Unchecked;
  JSON=Global.JSON;
- FShUI_AssemblyData=LibraryJS&&LibraryJS.FShUI_AssemblyData;
- AssemblyDef=FShUI_AssemblyData&&FShUI_AssemblyData.AssemblyDef;
- ModuleDef=FShUI_AssemblyData&&FShUI_AssemblyData.ModuleDef;
- MethodDef=FShUI_AssemblyData&&FShUI_AssemblyData.MethodDef;
- TypeRef=FShUI_AssemblyData&&FShUI_AssemblyData.TypeRef;
  console=Global.console;
  AttrModule=UI&&UI.AttrModule;
- AttrProxy=UI&&UI.AttrProxy;
- Date=Global.Date;
  ListModel=UI&&UI.ListModel;
  Library.delayedVar=function(delay,_var)
  {
@@ -105,6 +110,469 @@
    $:1,
    $0:a
   };
+ };
+ MethodDef2.New=function(def,modName)
+ {
+  return{
+   def:def,
+   modName:modName
+  };
+ };
+ SimpleComposition=Composition.SimpleComposition=Runtime.Class({
+  GetMethodDefsJS:function()
+  {
+   return Composition.composeMethod(this.name,this.pre,this.pos,this.rparms);
+  }
+ },null,SimpleComposition);
+ SimpleComposition.New=function(name,pre,pos,rparms)
+ {
+  return new SimpleComposition({
+   name:name,
+   pre:pre,
+   pos:pos,
+   rparms:rparms
+  });
+ };
+ SimpleEntry=Composition.SimpleEntry=Runtime.Class({
+  GetMethodDefsJS:function()
+  {
+   return this.$==1?Composition.composeString(this.$0,this.$1):this.$==2?Composition.composeVarStr(this.$0,this.$1):this.$0.GetMethodDefsJS();
+  }
+ },null,SimpleEntry);
+ Composition.showCompositions=function()
+ {
+  return Doc.Element("div",[],[Doc.Flatten(Composition.compositionsL().MapLens(function($1,$2)
+  {
+   var m;
+   function a(id,se)
+   {
+    return se.$==1?[id,[se.$0,se.$1]]:Operators.FailWith("Should not happen");
+   }
+   function a$1(id,se)
+   {
+    return se.$==2?[id,[se.$0,se.$1]]:Operators.FailWith("Should not happen");
+   }
+   function a$2(id,se)
+   {
+    return se.$==0?[id,se.$0]:Operators.FailWith("Should not happen");
+   }
+   m=$2.Get();
+   return m[1].$==1?Composition.showSimpleString(m[0],Var$1.Lens($2,function($3)
+   {
+    return a($3[0],$3[1]);
+   },function(a$3,t)
+   {
+    var t$1;
+    return[t[0],(t$1=t[1],new SimpleEntry({
+     $:1,
+     $0:t$1[0],
+     $1:t$1[1]
+    }))];
+   })):m[1].$==2?Composition.showSimpleString(m[0],Var$1.Lens($2,function($3)
+   {
+    return a$1($3[0],$3[1]);
+   },function(a$3,t)
+   {
+    var t$1;
+    return[t[0],(t$1=t[1],new SimpleEntry({
+     $:2,
+     $0:t$1[0],
+     $1:t$1[1]
+    }))];
+   })):Composition.showSimpleComposition(m[0],Var$1.Lens($2,function($3)
+   {
+    return a$2($3[0],$3[1]);
+   },function(a$3,t)
+   {
+    return[t[0],new SimpleEntry({
+     $:0,
+     $0:t[1]
+    })];
+   }));
+  })),Composition.createComposedFunction()]);
+ };
+ Composition.createComposedFunction$448$43=Runtime.Curried3(function(clickVarStr,$1,$2)
+ {
+  return clickVarStr();
+ });
+ Composition.createComposedFunction$447$43=Runtime.Curried3(function(clickString,$1,$2)
+ {
+  return clickString();
+ });
+ Composition.createComposedFunction$440$43=Runtime.Curried3(function(clickFunc,$1,$2)
+ {
+  return clickFunc();
+ });
+ Composition.createComposedFunction=function()
+ {
+  function clickFunc()
+  {
+   var m,md;
+   m=Composition.selectedMethod().Get();
+   m!=null&&m.$==1?(md=m.$0[1],Composition.compositionsL().Append([Guid.NewGuid(),new SimpleEntry({
+    $:0,
+    $0:SimpleComposition.New(new FShUI_AssemblyData.MethodName({
+     $:0,
+     $0:"newMethod"
+    }),md,md,[0])
+   })])):void 0;
+  }
+  function clickString()
+  {
+   Composition.compositionsL().Append([Guid.NewGuid(),new SimpleEntry({
+    $:1,
+    $0:"newString",
+    $1:"value"
+   })]);
+  }
+  function clickVarStr()
+  {
+   Composition.compositionsL().Append([Guid.NewGuid(),new SimpleEntry({
+    $:2,
+    $0:"newString",
+    $1:"value"
+   })]);
+  }
+  return Doc.Concat(List.ofArray([Doc.Element("button",[AttrProxy.HandlerImpl("click",function()
+  {
+   return function()
+   {
+    return clickFunc();
+   };
+  })],[Doc.TextView(View.Map(function(a)
+  {
+   return a!=null&&a.$==1?(function($1)
+   {
+    return function($2)
+    {
+     return $1("Compose "+Utils.toSafe($2));
+    };
+   }(Global.id))(a.$0[1].def.name.get_Id()):"Select a function to compose";
+  },Composition.selectedMethod().get_View()))]),Doc.Element("button",[AttrProxy.HandlerImpl("click",function()
+  {
+   return function()
+   {
+    return clickString();
+   };
+  })],[Doc.TextNode("Add string")]),Doc.Element("button",[AttrProxy.HandlerImpl("click",function()
+  {
+   return function()
+   {
+    return clickVarStr();
+   };
+  })],[Doc.TextNode("Add Var<string>")])]));
+ };
+ Composition.showSimpleEntry=function(id,idcompV)
+ {
+  function a(f,v)
+  {
+   return[f,v];
+  }
+  Var$1.Lens(idcompV,function(t)
+  {
+   return t[1];
+  },function($1,$2)
+  {
+   return(function($3)
+   {
+    var $4;
+    $4=$3[0];
+    return function($5)
+    {
+     return a($4,$5);
+    };
+   }($1))($2);
+  });
+ };
+ Composition.showSimpleComposition$399$54=Runtime.Curried3(function(clickPos,$1,$2)
+ {
+  return clickPos();
+ });
+ Composition.showSimpleComposition$388$54=Runtime.Curried3(function(clickPre,$1,$2)
+ {
+  return clickPre();
+ });
+ Composition.showSimpleComposition=function(id,idcompV)
+ {
+  var compV;
+  function a(f,v)
+  {
+   return[f,v];
+  }
+  function clickPre()
+  {
+   var m,i;
+   m=Composition.selectedMethod().Get();
+   m!=null&&m.$==1?compV.Set((i=compV.Get(),SimpleComposition.New(i.name,m.$0[1],i.pos,i.rparms))):void 0;
+  }
+  function clickPos()
+  {
+   var m,i;
+   m=Composition.selectedMethod().Get();
+   m!=null&&m.$==1?compV.Set((i=compV.Get(),SimpleComposition.New(i.name,i.pre,m.$0[1],i.rparms))):void 0;
+  }
+  compV=Var$1.Lens(idcompV,function(t)
+  {
+   return t[1];
+  },function($1,$2)
+  {
+   return(function($3)
+   {
+    var $4;
+    $4=$3[0];
+    return function($5)
+    {
+     return a($4,$5);
+    };
+   }($1))($2);
+  });
+  return Doc.Concat([Doc.Element("tr",[],[Doc.Input(List.T.Empty,Var$1.Lens(compV,function(c)
+  {
+   return c.name.get_Id();
+  },function(c,v)
+  {
+   return SimpleComposition.New(new FShUI_AssemblyData.MethodName({
+    $:0,
+    $0:v
+   }),c.pre,c.pos,c.rparms);
+  })),Doc.TextNode(" = "),Doc.Element("button",[AttrProxy.HandlerImpl("dblclick",function()
+  {
+   return function()
+   {
+    return clickPre();
+   };
+  })],[Doc.TextView(View.Map(function(c)
+  {
+   return c.pre.def.name.get_Id();
+  },compV.get_View()))]),Doc.TextNode(" : ("),Doc.BindView(function(comp)
+  {
+   return Doc.TextNode(Strings.concat(" -> ",Seq.map(function(t)
+   {
+    return t.name.get_Id();
+   },comp.pre.def.parms)));
+  },compV.get_View()),Doc.TextNode(" -> "),Doc.TextView(View.Map(function(c)
+  {
+   return c.pre.def.retType.name.get_Id();
+  },compV.get_View())),Doc.TextNode(") >> "),Doc.Element("button",[AttrProxy.HandlerImpl("dblclick",function()
+  {
+   return function()
+   {
+    return clickPos();
+   };
+  })],[Doc.TextView(View.Map(function(c)
+  {
+   return c.pos.def.name.get_Id();
+  },compV.get_View()))]),Doc.TextNode(" : ("),Doc.BindView(function(comp)
+  {
+   return Doc.Concat(List.ofSeq(Seq.delay(function()
+   {
+    return Seq.collect(function(i)
+    {
+     var checkV,attrOK;
+     checkV=new FromView.New(View.Const(Seq.contains(i,comp.rparms)),function(v)
+     {
+      var i$1,s;
+      function p(y)
+      {
+       return i!==y;
+      }
+      compV.Set((i$1=compV.Get(),SimpleComposition.New(i$1.name,i$1.pre,i$1.pos,Seq.cache((v?(s=[i],function(s$1)
+      {
+       return Seq.append(s,s$1);
+      }):function(s$1)
+      {
+       return Seq.filter(p,s$1);
+      })(compV.Get().rparms)))));
+     });
+     attrOK=AttrProxy.Create("style",Seq.contains(i,comp.rparms)&&!Unchecked.Equals(comp.pre.def.retType,Arrays.get(comp.pos.def.parms,i))?"text-decoration: line-through":"");
+     return[Doc.Element("span",[],[Doc.CheckBox([],checkV),Doc.Element("span",[attrOK],[Doc.TextNode(Arrays.get(comp.pos.def.parms,i).name.get_Id())]),Doc.TextNode(" -> ")])];
+    },Operators.range(0,Arrays.length(comp.pos.def.parms)-1));
+   })));
+  },compV.get_View()),Doc.TextView(View.Map(function(c)
+  {
+   return c.pos.def.retType.name.get_Id();
+  },compV.get_View())),Doc.TextNode(" ) "),Doc.Button("x",[],function()
+  {
+   Composition.compositionsL().RemoveByKey(id);
+  })])]);
+ };
+ Composition.showSimpleString=function(id,idcompV)
+ {
+  var nameV,valV;
+  function a(f$2,a$2)
+  {
+   return function(nm)
+   {
+    return[f$2,[nm,a$2[1]]];
+   };
+  }
+  function f(t)
+  {
+   return t[1];
+  }
+  function g(t)
+  {
+   return t[0];
+  }
+  function a$1(f$2,a$2)
+  {
+   return function(v)
+   {
+    return[f$2,[a$2[0],v]];
+   };
+  }
+  function f$1(t)
+  {
+   return t[1];
+  }
+  function g$1(t)
+  {
+   return t[1];
+  }
+  nameV=Var$1.Lens(idcompV,function(x)
+  {
+   return g(f(x));
+  },function($1,$2)
+  {
+   return(function($3)
+   {
+    return a($3[0],$3[1]);
+   }($1))($2);
+  });
+  valV=Var$1.Lens(idcompV,function(x)
+  {
+   return g$1(f$1(x));
+  },function($1,$2)
+  {
+   return(function($3)
+   {
+    return a$1($3[0],$3[1]);
+   }($1))($2);
+  });
+  return Doc.Concat([Doc.Element("tr",[],[Doc.Input([],nameV),Doc.TextNode(" = "),Doc.Input([],valV),Doc.Button("x",[],function()
+  {
+   Composition.compositionsL().RemoveByKey(id);
+  })])]);
+ };
+ Composition.compositionsL=function()
+ {
+  SC$1.$cctor();
+  return SC$1.compositionsL;
+ };
+ Composition.selectedMethod=function()
+ {
+  SC$1.$cctor();
+  return SC$1.selectedMethod;
+ };
+ Composition.createComposedAssembly=function(name,comps)
+ {
+  var p;
+  p=Composition.createComposedModule(new FShUI_AssemblyData.ModuleName({
+   $:0,
+   $0:name.get_Id()
+  }),comps);
+  return AssemblyDef.New(name,new FShUI_AssemblyData.AssemblyRef({
+   $:0,
+   $0:name.get_Id()
+  }),[p[0]],[],[],[[name.get_Id(),p[1]]]);
+ };
+ Composition.createComposedModule=function(name,comps)
+ {
+  var p,x;
+  p=Arrays.unzip(Arrays.map(function(x$1)
+  {
+   return x$1.GetMethodDefsJS();
+  },comps));
+  return[ModuleDef.New(name,p[0]),new FShUI_AssemblyData.JSCode({
+   $:0,
+   $0:(x=Strings.concat(",\n    ",p[1]),(((Runtime.Curried3(function($1,$2,$3)
+   {
+    return $1(Utils.toSafe($2)+" = {\n    "+Utils.toSafe($3)+"\n}");
+   }))(Global.id))(name.get_Id2()))(x))
+  })];
+ };
+ Composition.composeVarStr=function(name,ss)
+ {
+  return[MethodDef.New(new FShUI_AssemblyData.MethodName({
+   $:0,
+   $0:name
+  }),TypeRef.New(new FShUI_AssemblyData.TypeName({
+   $:0,
+   $0:"Var<string>"
+  }),new FShUI_AssemblyData.AssemblyName({
+   $:0,
+   $0:"WebSharper.UI"
+  })),[],true),(((Runtime.Curried3(function($1,$2,$3)
+  {
+   return $1(Utils.toSafe($2)+" : (function(v) { return function() { return v} })(WebSharper.UI.Var$1.Create$1('"+Utils.toSafe($3)+"'))");
+  }))(Global.id))(name))(Strings.Replace(ss,"'","''"))];
+ };
+ Composition.composeString=function(name,ss)
+ {
+  return[MethodDef.New(new FShUI_AssemblyData.MethodName({
+   $:0,
+   $0:name
+  }),TypeRef.New(new FShUI_AssemblyData.TypeName({
+   $:0,
+   $0:"string"
+  }),new FShUI_AssemblyData.AssemblyName({
+   $:0,
+   $0:"netstandard"
+  })),[],true),(((Runtime.Curried3(function($1,$2,$3)
+  {
+   return $1(Utils.toSafe($2)+" : function() { return '"+Utils.toSafe($3)+"' }");
+  }))(Global.id))(name))(Strings.Replace(ss,"'","''"))];
+ };
+ Composition.composeMethod=function(name,pre,pos,rparms)
+ {
+  var nparms,nparmsDecl,x,preParms,x$1,posParms,x$2,preCall,posCall;
+  nparms=Arrays.ofSeq(Seq.delay(function()
+  {
+   return Seq.append(pre.def.parms,Seq.delay(function()
+   {
+    return Seq.collect(function(i)
+    {
+     return!Seq.contains(i,rparms)?[Arrays.get(pos.def.parms,i)]:[];
+    },Operators.range(0,Arrays.length(pos.def.parms)-1));
+   }));
+  }));
+  nparmsDecl=Strings.concat(", ",(x=List.ofSeq(Operators.range(0,Arrays.length(nparms)-1)),Seq.map(function($1)
+  {
+   return function($2)
+   {
+    return $1("p"+Global.String($2));
+   };
+  }(Global.id),x)));
+  preParms=Strings.concat(", ",(x$1=List.ofSeq(Operators.range(0,Arrays.length(pre.def.parms)-1)),Seq.map(function($1)
+  {
+   return function($2)
+   {
+    return $1("p"+Global.String($2));
+   };
+  }(Global.id),x$1)));
+  posParms=Strings.concat(", ",(x$2=List.ofSeq(Operators.range(0,Arrays.length(pos.def.parms)-1)),Seq.mapFold(function(j,i)
+  {
+   return Seq.contains(i,rparms)?["v",j]:[(function($1)
+   {
+    return function($2)
+    {
+     return $1("p"+Global.String($2));
+    };
+   }(Global.id))(j),j+1];
+  },Arrays.length(pre.def.parms),x$2))[0]);
+  preCall=Composition.invokeMethodJS(pre,preParms);
+  posCall=Composition.invokeMethodJS(pos,posParms);
+  return[MethodDef.New(name,pos.def.retType,nparms,false),(((((Runtime.Curried(function($1,$2,$3,$4,$5)
+  {
+   return $1(Utils.toSafe($2)+" : function("+Utils.toSafe($3)+") { var v = "+Utils.toSafe($4)+"; return "+Utils.toSafe($5)+"; }");
+  },5))(Global.id))(name.get_Id()))(nparmsDecl))(preCall))(posCall)];
+ };
+ Composition.invokeMethodJS=function(md,parms)
+ {
+  return((((Runtime.Curried(function($1,$2,$3,$4)
+  {
+   return $1(Utils.toSafe($2)+"."+Utils.toSafe($3)+"("+Utils.toSafe($4)+")");
+  },4))(Global.id))(md.modName.get_Id2()))(md.def.name.get_Id()))(parms);
  };
  Reference=WsComposition.Reference=Runtime.Class({
   toString:function()
@@ -633,9 +1101,12 @@
   return Doc.Concat([Doc.Element("div",[],[Doc.Button("Load module:",[],function()
   {
    AssemblyUI.loadThisModule();
-  }),Doc.Input([],AssemblyUI.thisModuleV())]),Doc.Button("Load F# Translator:",[],function()
+  }),Doc.Input([],AssemblyUI.thisModuleV())]),Doc.Button("Load F# Translator",[],function()
   {
    AssemblyUI.loadFsTranslator();
+  }),Composition.showCompositions(),Doc.Button("Load Compossed Assemby",[],function()
+  {
+   AssemblyUI.loadCompossedAssembly();
   }),AssemblyUI.listAssembliesDoc(),AssemblyUI.currentAssembly(),AssemblyUI.styleDoc()]);
  };
  AssemblyUI.currentAssembly=function()
@@ -872,34 +1343,23 @@
       {
        return Seq.collect(function(me)
        {
-        var x;
+        var s;
         return[Doc.Element("tr",[AssemblyUI.click(function()
         {
-         AssemblyUI.selectedMethod().Set({
+         Composition.selectedMethod().Set({
           $:1,
-          $0:[mo.name,me.name]
+          $0:[asm.name,MethodDef2.New(me,mo.name)]
          });
-        })],[Doc.Element("td",[],[Doc.TextNode(me.name.get_Id())]),Doc.Element("td",[],[Doc.TextNode(me.isField?"":(x=Strings.concat(", ",Seq.map(function(t)
+        })],[Doc.Element("td",[],[Doc.TextNode(me.name.get_Id())]),Doc.Element("td",[],[Doc.TextNode(me.isField?"":(s=Strings.concat(" -> ",Seq.map(function(t)
         {
          return t.name.get_Id();
-        },me.parms)),(function($1)
-        {
-         return function($2)
-         {
-          return $1("("+Utils.toSafe($2)+")");
-         };
-        }(Global.id))(x)))]),Doc.Element("td",[AssemblyUI.nobr()],[Doc.TextNode(me.isField?":":" -> ")]),Doc.Element("td",[],[Doc.TextNode(me.retType.name.get_Id())]),Doc.Element("td",[],[f(mo,me)])])];
+        },me.parms)),s===""?"unit":s))]),Doc.Element("td",[AssemblyUI.nobr()],[Doc.TextNode(me.isField?":":" -> ")]),Doc.Element("td",[],[Doc.TextNode(me.retType.name.get_Id())]),Doc.Element("td",[],[f(mo,me)])])];
        },methods);
       }));
      })))];
     })))]:[];
    },asm.modules);
   })));
- };
- AssemblyUI.selectedMethod=function()
- {
-  SC$1.$cctor();
-  return SC$1.selectedMethod;
  };
  AssemblyUI.listAssembliesDoc=function()
  {
@@ -935,7 +1395,7 @@
   SC$1.$cctor();
   return SC$1.selectedAssembly;
  };
- AssemblyUI.click$510$45=Runtime.Curried3(function(f,$1,$2)
+ AssemblyUI.click$721$45=Runtime.Curried3(function(f,$1,$2)
  {
   return f();
  });
@@ -952,6 +1412,16 @@
  AssemblyUI.nobr=function()
  {
   return AttrProxy.Create("style","white-space: nowrap");
+ };
+ AssemblyUI.loadCompossedAssembly=function()
+ {
+  Concurrency.Start(FShUI.processAssembly(Composition.createComposedAssembly(new FShUI_AssemblyData.AssemblyName({
+   $:0,
+   $0:"ComposedAssembly"
+  }),Arrays.ofSeq(Seq.map(function(t)
+  {
+   return t[1];
+  },(Composition.compositionsL())["var"].Get())))),null);
  };
  AssemblyUI.loadFsTranslator=function()
  {
@@ -972,22 +1442,14 @@
   SC$1.$cctor();
   return SC$1.thisModuleV;
  };
- AssemblyUI.loadTesting=function()
- {
-  Concurrency.Start(FShUI.loadAssembly(new FShUI_AssemblyData.AssemblyRef({
-   $:0,
-   $0:(function($1)
-   {
-    return function($2)
-    {
-     return $1("testing.asm?q="+Utils.prettyPrint($2));
-    };
-   }(Global.id))(Date.now())
-  })),null);
- };
  SC$1.$cctor=function()
  {
   SC$1.$cctor=Global.ignore;
+  SC$1.selectedMethod=Var$1.Create$1(null);
+  SC$1.compositionsL=ListModel.Create(function(t)
+  {
+   return t[0];
+  },[]);
   SC$1.currentNodeO=null;
   SC$1.assemblies=ListModel.Create(function(ad)
   {
@@ -1004,7 +1466,6 @@
    }),
    $1:"mainDocNameVar Not initialized yet"
   }));
-  SC$1.selectedMethod=Var$1.Create$1(null);
   SC$1.mainDocVar=Var$1.Create$1(Doc.Element("h1",[],[Doc.TextNode("mainDocVar not initialized")]));
   View.Sink(function(docc)
   {

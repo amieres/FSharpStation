@@ -361,7 +361,7 @@ if (!console) {
 (function()
 {
  "use strict";
- var Global,FsRoot,TestingJS,WSFrameworkTest,WSFramework,SC$1,WebSharper,Obj,UI,Var,Operators,LibraryJS,FShUI,FShUI_AssemblyData,AssemblyRef,ListModel,Seq,AssemblyUI,EventTarget,Node,JavaScript,JS,Var$1,Pervasives,Doc,Concurrency,LoadAsm,SC$2,Enumerator,T,Unchecked,WsComposition,DocComposition,LocalId,HtmlElemTag,Client,Templates,WindowOrWorkerGlobalScope,ConcreteVar,Snap,AttrModule,View,DomUtility,AsyncBody,AssemblyDef,Arrays,Utils,AssemblyName,JSCode,FSharp,Data,Runtime,IO,ModuleDef,ModuleName,MethodDef,TypeRef,TypeName,MethodName,Resource,Collections,Dictionary,List,T$1,Slice,Library,Reference,Array,ViewBuilder,Docs,CT,Abbrev,Fresh,AttrProxy,Scheduler,Strings,Data$1,TxtRuntime,Pervasives$1,Object,SC$3,Storage,Error,OperationCanceledException,FromView,SC$4,HashSet,An,Settings,Mailbox,Elt,DocElemNode,CharacterData,SC$5,System,Guid,CancellationTokenSource,ArrayStorage,HtmlModule,attr,DictionaryUtil,Prepare,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$6,SC$7,Updates,Attrs,Attrs$1,Dyn,AggregateException,SC$8,AppendList,SC$9,Easing,HashSet$1,HashSetUtil,DynamicAttrNode,Queue,DomNodes,Lazy,SC$10,LazyExtensionsProxy,LazyRecord,IntelliFactory,Runtime$1,console,JSON,$,Date,Math;
+ var Global,FsRoot,TestingJS,WSFrameworkTest,WSFramework,SC$1,WebSharper,Obj,UI,Var,Operators,LibraryJS,FShUI,FShUI_AssemblyData,AssemblyRef,ListModel,Seq,AssemblyUI,EventTarget,Node,JavaScript,JS,Var$1,Pervasives,Doc,Concurrency,LoadAsm,SC$2,Enumerator,T,Unchecked,WsComposition,DocComposition,LocalId,HtmlElemTag,Client,Templates,WindowOrWorkerGlobalScope,ConcreteVar,Snap,AttrModule,View,DomUtility,AsyncBody,AssemblyDef,Arrays,Utils,AssemblyName,JSCode,FSharp,Data,Runtime,IO,ModuleDef,ModuleName,MethodDef,TypeRef,TypeName,MethodName,Resource,Collections,Dictionary,List,T$1,Library,Slice,Reference,Array,ViewBuilder,Docs,CT,Abbrev,Fresh,AttrProxy,Scheduler,Strings,Data$1,TxtRuntime,Pervasives$1,Object,SC$3,Storage,Error,OperationCanceledException,FromView,SC$4,HashSet,An,Settings,Mailbox,Elt,DocElemNode,CharacterData,SC$5,System,Guid,CancellationTokenSource,ArrayStorage,HtmlModule,attr,DictionaryUtil,Prepare,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$6,SC$7,Updates,Attrs,Attrs$1,Dyn,AggregateException,SC$8,AppendList,SC$9,Easing,HashSet$1,HashSetUtil,DynamicAttrNode,Queue,DomNodes,Lazy,SC$10,LazyExtensionsProxy,LazyRecord,IntelliFactory,Runtime$1,console,JSON,$,Date,Math;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
@@ -426,8 +426,8 @@ if (!console) {
  Dictionary=Collections.Dictionary=Collections.Dictionary||{};
  List=WebSharper.List=WebSharper.List||{};
  T$1=List.T=List.T||{};
- Slice=WebSharper.Slice=WebSharper.Slice||{};
  Library=FsRoot.Library=FsRoot.Library||{};
+ Slice=WebSharper.Slice=WebSharper.Slice||{};
  Reference=WsComposition.Reference=WsComposition.Reference||{};
  Array=UI.Array=UI.Array||{};
  ViewBuilder=UI.ViewBuilder=UI.ViewBuilder||{};
@@ -860,6 +860,33 @@ if (!console) {
  {
   return Arrays.mapFold(f,zero,Arrays.ofSeq(s));
  };
+ Seq.sortBy=function(f,s)
+ {
+  return Seq.delay(function()
+  {
+   var array;
+   array=Arrays.ofSeq(s);
+   Arrays.sortInPlaceBy(f,array);
+   return array;
+  });
+ };
+ Seq.map=function(f,s)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    var en;
+    en=Enumerator.Get(s);
+    return new T.New(null,null,function(e)
+    {
+     return en.MoveNext()&&(e.c=f(en.Current()),true);
+    },function()
+    {
+     en.Dispose();
+    });
+   }
+  };
+ };
  Seq.isEmpty=function(s)
  {
   var e;
@@ -937,23 +964,6 @@ if (!console) {
      x=st.s;
      !Unchecked.Equals(x,null)?x.Dispose():void 0;
      !Unchecked.Equals(outerE,null)?outerE.Dispose():void 0;
-    });
-   }
-  };
- };
- Seq.map=function(f,s)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var en;
-    en=Enumerator.Get(s);
-    return new T.New(null,null,function(e)
-    {
-     return en.MoveNext()&&(e.c=f(en.Current()),true);
-    },function()
-    {
-     en.Dispose();
     });
    }
   };
@@ -1143,7 +1153,7 @@ if (!console) {
   }),Doc.Button("Add html",[],function()
   {
    AssemblyUI.addDOC(new DocComposition({
-    $:17,
+    $:18,
     $0:{
      $:1,
      $0:new HtmlElemTag({
@@ -1178,12 +1188,12 @@ if (!console) {
  AssemblyUI.addDOC=function(docc)
  {
   var a,m;
-  a=(m=AssemblyUI.mainDocNameVar().Get(),m.$==16?docc:m.$==17?new DocComposition({
-   $:17,
+  a=(m=AssemblyUI.mainDocNameVar().Get(),m.$==17?docc:m.$==18?new DocComposition({
+   $:18,
    $0:m.$0,
    $1:m.$1.concat([docc])
   }):new DocComposition({
-   $:17,
+   $:18,
    $0:null,
    $1:[m,docc]
   }));
@@ -1295,7 +1305,7 @@ if (!console) {
   }
   function inputVar(mo,me)
   {
-   var ref,doci;
+   var ref,doci,doca;
    return me.retType.name.get_Id()==="Var<string>"?(ref=new Reference({
     $:1,
     $0:mo.name,
@@ -1303,10 +1313,13 @@ if (!console) {
    }),(doci=new DocComposition({
     $:12,
     $0:ref
+   }),(doca=new DocComposition({
+    $:13,
+    $0:ref
    }),Doc.Concat([AssemblyUI.showAdd("Text",new DocComposition({
     $:11,
     $0:ref
-   })),AssemblyUI.showAdd("Input",doci),AssemblyUI.showAdd("Area",doci),doci.GetDoc()]))):AssemblyUI.showAdd("Add",new DocComposition({
+   })),AssemblyUI.showAdd("Input",doci),AssemblyUI.showAdd("Area",doca),doci.GetDoc()])))):AssemblyUI.showAdd("Add",new DocComposition({
     $:8,
     $0:new Reference({
      $:1,
@@ -1337,7 +1350,7 @@ if (!console) {
   function showDoc(mo,me)
   {
    return AssemblyUI.showAdd("Add",new DocComposition({
-    $:13,
+    $:14,
     $0:new Reference({
      $:1,
      $0:mo.name,
@@ -1345,19 +1358,37 @@ if (!console) {
     })
    }));
   }
+  function showAct(mo,me)
+  {
+   return AssemblyUI.showAdd("Add",new DocComposition({
+    $:2,
+    $0:new Reference({
+     $:1,
+     $0:mo.name,
+     $1:me
+    }),
+    $1:me.name.get_Id()
+   }));
+  }
   function m(oldp,t)
   {
    var p;
-   p=t[1];
-   return[[t[0],function(me)
+   p=t[2];
+   return[[t[0],[t[1],function(me)
    {
     return p(me)&&!oldp(me);
-   }],function(me)
+   }]],function(me)
    {
     return p(me)||oldp(me);
    }];
   }
-  groups=(y=List.ofArray([[function($1)
+  groups=Arrays.ofSeq(Seq.map(function(t)
+  {
+   return t[1];
+  },Seq.sortBy(function(t)
+  {
+   return t[0];
+  },(y=List.ofArray([[1,function($1)
   {
    return function($2)
    {
@@ -1366,7 +1397,7 @@ if (!console) {
   },function(me)
   {
    return Strings.StartsWith(me.retType.name.get_Id(),"Var<")&&me.isField;
-  }],[function($1)
+  }],[2,function($1)
   {
    return function($2)
    {
@@ -1375,7 +1406,7 @@ if (!console) {
   },function(me)
   {
    return Strings.StartsWith(me.retType.name.get_Id(),"View<")&&me.isField;
-  }],[function($1)
+  }],[3,function($1)
   {
    return function($2)
    {
@@ -1384,7 +1415,7 @@ if (!console) {
   },function(me)
   {
    return me.retType.name.get_Id()!=="Doc"&&me.isField&&!(me.retType.name.get_Id().indexOf("->")!=-1);
-  }],[function($1)
+  }],[0,function($1)
   {
    return function($2)
    {
@@ -1393,7 +1424,16 @@ if (!console) {
   },function(me)
   {
    return me.retType.name.get_Id()==="Doc"&&(me.isField||Seq.isEmpty(me.parms));
-  }],[function($1)
+  }],[1,function($1)
+  {
+   return function($2)
+   {
+    return showAct($1,$2);
+   };
+  },function(me)
+  {
+   return me.retType.name.get_Id()==="unit"&&!me.isField&&Seq.isEmpty(me.parms);
+  }],[4,function($1)
   {
    return function($2)
    {
@@ -1405,7 +1445,7 @@ if (!console) {
   }]]),(((Runtime$1.Curried3(Seq.mapFold))(m))(function()
   {
    return false;
-  }))(y))[0];
+  }))(y))[0])));
   return Doc.Concat([Doc.Element("h3",[],[Doc.TextNode(asm.name.get_Id())]),Doc.Element("div",[AttrModule.Class("wsfmwk-alternate")],List.ofSeq(Seq.delay(function()
   {
    return Seq.collect(function(m$1)
@@ -1631,6 +1671,13 @@ if (!console) {
    Docs.UpdateEmbedNode(node,doc.docNode);
    return doc.updates;
   },view)));
+ };
+ Doc.InputArea=function(attr$1,_var)
+ {
+  return Doc.InputInternal("textarea",function()
+  {
+   return Seq.append(attr$1,[AttrModule.Value(_var)]);
+  });
  };
  Doc.ConvertSeqBy=function(key,render,view)
  {
@@ -2166,46 +2213,6 @@ if (!console) {
   m=typeof o;
   return m=="function"?0:m=="boolean"?o?1:0:m=="number"?o:m=="string"?Unchecked.hashString(o):m=="object"?o==null?0:o instanceof Global.Array?Unchecked.hashArray(o):Unchecked.hashObject(o):0;
  };
- Unchecked.hashString=function(s)
- {
-  var hash,i,$1;
-  if(s===null)
-   return 0;
-  else
-   {
-    hash=5381;
-    for(i=0,$1=s.length-1;i<=$1;i++)hash=Unchecked.hashMix(hash,s[i].charCodeAt());
-    return hash;
-   }
- };
- Unchecked.hashArray=function(o)
- {
-  var h,i,$1;
-  h=-34948909;
-  for(i=0,$1=Arrays.length(o)-1;i<=$1;i++)h=Unchecked.hashMix(h,Unchecked.Hash(Arrays.get(o,i)));
-  return h;
- };
- Unchecked.hashObject=function(o)
- {
-  var h,k;
-  if("GetHashCode"in o)
-   return o.GetHashCode();
-  else
-   {
-    h=[0];
-    for(var k$1 in o)if(function(key)
-    {
-     h[0]=Unchecked.hashMix(Unchecked.hashMix(h[0],Unchecked.hashString(key)),Unchecked.Hash(o[key]));
-     return false;
-    }(k$1))
-     break;
-    return h[0];
-   }
- };
- Unchecked.hashMix=function(x,y)
- {
-  return(x<<5)+x+y;
- };
  Unchecked.Compare=function(a,b)
  {
   var $1,m,$2,cmp,k,k$1;
@@ -2262,6 +2269,42 @@ if (!console) {
     }
    }
  };
+ Unchecked.hashString=function(s)
+ {
+  var hash,i,$1;
+  if(s===null)
+   return 0;
+  else
+   {
+    hash=5381;
+    for(i=0,$1=s.length-1;i<=$1;i++)hash=Unchecked.hashMix(hash,s[i].charCodeAt());
+    return hash;
+   }
+ };
+ Unchecked.hashArray=function(o)
+ {
+  var h,i,$1;
+  h=-34948909;
+  for(i=0,$1=Arrays.length(o)-1;i<=$1;i++)h=Unchecked.hashMix(h,Unchecked.Hash(Arrays.get(o,i)));
+  return h;
+ };
+ Unchecked.hashObject=function(o)
+ {
+  var h,k;
+  if("GetHashCode"in o)
+   return o.GetHashCode();
+  else
+   {
+    h=[0];
+    for(var k$1 in o)if(function(key)
+    {
+     h[0]=Unchecked.hashMix(Unchecked.hashMix(h[0],Unchecked.hashString(key)),Unchecked.Hash(o[key]));
+     return false;
+    }(k$1))
+     break;
+    return h[0];
+   }
+ };
  Unchecked.compareArrays=function(a,b)
  {
   var cmp,i;
@@ -2286,15 +2329,19 @@ if (!console) {
  {
   return Unchecked.Compare(a.getTime(),b.getTime());
  };
+ Unchecked.hashMix=function(x,y)
+ {
+  return(x<<5)+x+y;
+ };
  DocComposition=WsComposition.DocComposition=Runtime$1.Class({
   GetDoc:function()
   {
-   var ref,x,x$1,x$2,x$3,x$4,x$5,o,o$1,$1;
+   var x,x$1,x$2,x$3,x$4,x$5,o,o$1,$1;
    function m(tag,ds)
    {
     return Doc.Element(tag.get_Id(),T$1.Empty,ds);
    }
-   return this.$==1?Doc.TextView(this.$1.get_View()):this.$==2?(ref=this.$0,Doc.Button(Global.String(ref),[],ref.GetFunc())):this.$==3?Doc.TextNode((x=(this.$0.GetFunc())(),(function($2)
+   return this.$==1?Doc.TextView(this.$1.get_View()):this.$==2?Doc.Button(this.$1,[],this.$0.GetFunc()):this.$==3?Doc.TextNode((x=(this.$0.GetFunc())(),(function($2)
    {
     return function($3)
     {
@@ -2330,7 +2377,7 @@ if (!console) {
     {
      return $2(Utils.prettyPrint($3));
     };
-   }(Global.id),x$5))):this.$==9?Doc.TextNode((this.$0.GetFunc())()):this.$==10?Doc.TextView((this.$0.GetFunc())()):this.$==11?Doc.TextView((this.$0.GetFunc())().get_View()):this.$==12?Doc.Input(T$1.Empty,(this.$0.GetFunc())()):this.$==13?(this.$0.GetFunc())():this.$==14?Doc.EmbedView((this.$0.GetFunc())()):this.$==15?this.$1():this.$==16?Doc.get_Empty():this.$==17?(o=(o$1=this.$0,o$1==null?null:{
+   }(Global.id),x$5))):this.$==9?Doc.TextNode((this.$0.GetFunc())()):this.$==10?Doc.TextView((this.$0.GetFunc())()):this.$==11?Doc.TextView((this.$0.GetFunc())().get_View()):this.$==12?Doc.Input(T$1.Empty,(this.$0.GetFunc())()):this.$==13?Doc.InputArea(T$1.Empty,(this.$0.GetFunc())()):this.$==14?(this.$0.GetFunc())():this.$==15?Doc.EmbedView((this.$0.GetFunc())()):this.$==16?this.$1():this.$==17?Doc.get_Empty():this.$==18?(o=(o$1=this.$0,o$1==null?null:{
     $:1,
     $0:($1=o$1.$0,function($2)
     {
@@ -2343,27 +2390,34 @@ if (!console) {
   }
  },null,DocComposition);
  DocComposition.DOCEmpty=new DocComposition({
-  $:16
+  $:17
  });
  WsComposition.getUIDoc=function(setDOC,a)
  {
-  var tO,dcs,tagV,o,nm;
+  var ref,tO,dcs,tagV,o,nm;
   function setDOCH(tO$1,dcs$1)
   {
    setDOC(new DocComposition({
-    $:17,
+    $:18,
     $0:tO$1,
     $1:dcs$1
    }));
   }
-  return a.$==1?Doc.TextNode(a.$0.get_Id()):a.$==2?Doc.TextNode(Global.String(a.$0)):a.$==3?Doc.TextNode(Global.String(a.$0)):a.$==4?Doc.TextNode(Global.String(a.$0)):a.$==5?Doc.TextNode(Global.String(a.$0)):a.$==6?Doc.TextNode(Global.String(a.$0)):a.$==7?Doc.TextNode(Global.String(a.$0)):a.$==8?Doc.TextNode(Global.String(a.$0)):a.$==9?Doc.TextNode(Global.String(a.$0)):a.$==10?Doc.TextNode(Global.String(a.$0)):a.$==11?Doc.TextNode(Global.String(a.$0)):a.$==12?Doc.TextNode(Global.String(a.$0)):a.$==13?Doc.TextNode(Global.String(a.$0)):a.$==14?Doc.TextNode(Global.String(a.$0)):a.$==15?Doc.TextNode(a.$0.get_Id()):a.$==16?Doc.TextNode("Empty"):a.$==17?(tO=a.$0,(dcs=a.$1,(tagV=new FromView.New(View.Const((o=tO==null?null:{
+  return a.$==1?Doc.TextNode(a.$0.get_Id()):a.$==2?(ref=a.$0,Doc.Input(T$1.Empty,new FromView.New(View.Const(a.$1),Library.delayed(1000,function(v)
+  {
+   setDOC(new DocComposition({
+    $:2,
+    $0:ref,
+    $1:v
+   }));
+  })))):a.$==3?Doc.TextNode(Global.String(a.$0)):a.$==4?Doc.TextNode(Global.String(a.$0)):a.$==5?Doc.TextNode(Global.String(a.$0)):a.$==6?Doc.TextNode(Global.String(a.$0)):a.$==7?Doc.TextNode(Global.String(a.$0)):a.$==8?Doc.TextNode(Global.String(a.$0)):a.$==9?Doc.TextNode(Global.String(a.$0)):a.$==10?Doc.TextNode(Global.String(a.$0)):a.$==11?Doc.TextNode(Global.String(a.$0)):a.$==12?Doc.TextNode(Global.String(a.$0)):a.$==13?Doc.TextNode(Global.String(a.$0)):a.$==14?Doc.TextNode(Global.String(a.$0)):a.$==15?Doc.TextNode(Global.String(a.$0)):a.$==16?Doc.TextNode(a.$0.get_Id()):a.$==17?Doc.TextNode("Empty"):a.$==18?(tO=a.$0,(dcs=a.$1,(tagV=new FromView.New(View.Const((o=tO==null?null:{
    $:1,
    $0:tO.$0.get_Id()
   },o==null?"":o.$0)),Library.delayed(1000,function(v)
   {
    var m;
    setDOC(new DocComposition({
-    $:17,
+    $:18,
     $0:(m=Strings.Trim(v),m===""?null:{
      $:1,
      $0:new HtmlElemTag({
@@ -3427,6 +3481,19 @@ if (!console) {
    }
   return res;
  };
+ Arrays.sortInPlaceBy=function(f,arr)
+ {
+  Arrays.mapInPlace(function(t)
+  {
+   return t[0];
+  },Arrays.mapiInPlace(function($1,$2)
+  {
+   return[$2,[f($2),$1]];
+  },arr).sort(function($1,$2)
+  {
+   return Unchecked.Compare($1[1],$2[1]);
+  }));
+ };
  Arrays.exists=function(f,x)
  {
   var e,i,$1,l;
@@ -3829,14 +3896,6 @@ if (!console) {
  T$1.Empty=new T$1({
   $:0
  });
- Slice.array=function(source,start,finish)
- {
-  return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):[]:finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
- };
- Slice.string=function(source,start,finish)
- {
-  return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):"":finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
- };
  Library.delayed=function(delay,doF)
  {
   function g()
@@ -3874,6 +3933,14 @@ if (!console) {
     $0:cancelTokenO.$0
    });
   };
+ };
+ Slice.array=function(source,start,finish)
+ {
+  return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):[]:finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
+ };
+ Slice.string=function(source,start,finish)
+ {
+  return start==null?finish!=null&&finish.$==1?source.slice(0,finish.$0+1):"":finish==null?source.slice(start.$0):source.slice(start.$0,finish.$0+1);
  };
  Reference=WsComposition.Reference=Runtime$1.Class({
   GetFunc:function()
@@ -4841,6 +4908,17 @@ if (!console) {
  Seq.insufficient=function()
  {
   return Operators.FailWith("The input sequence has an insufficient number of elements.");
+ };
+ Arrays.mapiInPlace=function(f,arr)
+ {
+  var i,$1;
+  for(i=0,$1=arr.length-1;i<=$1;i++)arr[i]=f(i,arr[i]);
+  return arr;
+ };
+ Arrays.mapInPlace=function(f,arr)
+ {
+  var i,$1;
+  for(i=0,$1=arr.length-1;i<=$1;i++)arr[i]=f(arr[i]);
  };
  Seq.nonNegative=function()
  {
