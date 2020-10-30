@@ -78,6 +78,7 @@ group Other
     nuget OpenCvSharp3-AnyCPU
     nuget SSH.NET
     nuget FSharp.Data.SqlClient
+    nuget SQLProvider
     nuget FSharp.Data.TypeProviders
     nuget Microsoft.Orleans.Core.Abstractions
     nuget AuthorizeNet
@@ -90,6 +91,7 @@ group Other
     nuget FsPickler = 5.2.2
     nuget FSharp.Json
     nuget BenchmarkDotNet
+    nuget ExcelProvider
 
 group Test
     framework: netstandard2.0, netcoreapp2.1
