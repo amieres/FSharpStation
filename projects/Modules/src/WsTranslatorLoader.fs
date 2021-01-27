@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1592724446410 -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1611569356546 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -23,14 +23,12 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\FShUIAssemblyData.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\FShUI.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\WsTranslator.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\FSharp.Compiler.Service.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Compiler.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1592724446410
+//#define FSharpStation1611569356546
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -46,7 +44,7 @@ namespace FsRoot
     
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
-    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+    ////#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
@@ -159,7 +157,7 @@ namespace FsRoot
                         splitInTwoO cl sec
                         |> Option.map(fun (mid, aft) -> bef, mid, aft)
                     )
-                let contains     sub  (whole: string) = whole.Contains sub
+                let contains (sub:string)  (whole: string) = whole.Contains sub
                 let trim                  (s: string) = s.Trim()
                 let left  n (s:string) = s.Left  n
                 let right n (s:string) = s.Right n
@@ -278,7 +276,7 @@ namespace FsRoot
                 type MsgFromHost =
                 | HostRunRpc       of string * string
                 | HostPrintfnW     of string
-                | HostLoadWasm     of string
+                | HostLoadWasm     of bool   * string
             
                 /// this Var is an exception because is not in the UI section
                 /// it is used to also communication from Worker to Host with a Sink
@@ -360,7 +358,7 @@ namespace FsRoot
                         match evt.Data :?> MsgFromHost with
                         | HostRunRpc(header, data) -> Remoting.callRunRpc header data
                         | HostPrintfnW txt         -> printfn "%s" txt
-                        | HostLoadWasm opts        -> loadInThisThread opts
+                        | HostLoadWasm(debug,opts) -> loadInThisThread debug opts
             
                     let fromWorker (evt: MessageEvent) =
                         match evt.Data :?> MsgFromWorker with
@@ -395,6 +393,8 @@ namespace FsRoot
             
                     [< Inline "$global.Module.mono_bind_static_method($methodRef)" >]
                     let monoBindStaticMethod (methodRef:string) = ()
+                    [< Inline "$global.Module.cwrap('mono_wasm_setenv', 'void', ['string', 'string'])" >]
+                    let getMonoSetEnv() : System.Action<string, string> = X<_>
             
                     let bindStaticMethod(assmbly, path:string, methd) =
                         JS.Window?(sprintf "WASM_%s_%s_%s" assmbly (path.Replace(".", "_")) methd ) <- 
@@ -408,21 +408,31 @@ namespace FsRoot
                             "WsTranslator", "FsRoot.WsTranslator", "runRpc"
                         ] |> Seq.iter bindStaticMethod
             
-                    type GlobalModule() =
-                        [< Inline "$global.Module.preloadPlugins   = $arr" >]
-                        static member SetPreloadPlugins  (arr:(unit   -> unit)[]) : unit = X<_>
-                        [< Inline "$global.Module.preRun           = $arr" >]
-                        static member SetPreRun          (arr:(unit   -> unit)[]) : unit = X<_>
-                        [< Inline "$global.Module.print            = $f  " >]
-                        static member SetPrint           (f  : string -> unit   ) : unit = X<_>
-                        [< Inline "$global.Module.printErr         = $f  " >]
-                        static member SetPrintErr        (f  : string -> unit   ) : unit = X<_>
+                    type GlobalModule[< Inline "$global.Module = $global.Module || {} " >]() =
+                        [< Inline "$global.Module.preloadPlugins       = $arr" >]
+                        member __.SetPreloadPlugins   (arr:(unit   -> unit)[]) : unit = X<_>
+                        [< Inline "$global.Module.preRun               = $arr" >]
+                        member __.SetPreRun           (arr:(unit   -> unit)[]) : unit = X<_>
+                        [< Inline "$global.Module.print                = $f  " >]
+                        member __.SetPrint            (f  : string -> unit   ) : unit = X<_>
+                        [< Inline "$global.Module.printErr             = $f  " >]
+                        member __.SetPrintErr         (f  : string -> unit   ) : unit = X<_>
+                        [< Inline "$global.Module.onRuntimeInitialized = $f  " >]
+                        member __.OnRuntimeInitialized(f  : unit   -> unit   ) : unit = X<_>
             
                     module FS =
                         [< Inline "$global.FS.mkdir($path)" >]
                         let mkdir path = X<_>
                         [< Inline "$global.FS.createPreloadedFile($pathTo, $file, $pathFrom, $op1, $op21)">]
                         let createPreloadedFile(pathTo:string, file:string, pathFrom:string, op1:int, op2:int) = X<_>
+            
+                    module MONO =
+                        [< Inline "$global.MONO.mono_load_runtime_and_bcl($vfs_prefix, $deploy_prefix, $enable_debugging, $file_list, $app_init)" >]
+                        let mono_load_runtime_and_bcl(vfs_prefix:string, deploy_prefix:string, enable_debugging:bool, file_list:string[], app_init:unit -> unit) = ()
+            
+                    module Runtime =
+                        [< Inline "$global.Intellifactory.Runtime.ScriptPath = $f" >]
+                        let setScriptPath(f: FuncWithArgs<string * string, string>) = ()
             
                     let preloadFiles (files: string seq) =
                         let asyncLoad url onload onerror =
@@ -440,7 +450,7 @@ namespace FsRoot
                             "init"     , ignore    :> obj
                             "asyncLoad", System.Action<_,_,_> asyncLoad :> obj
                         ]
-                        GlobalModule.SetPreloadPlugins [||]
+                        GlobalModule().SetPreloadPlugins [||]
                         let dirFiles = 
                             files
                             |> Seq.map(fun s -> s.Replace("\\","/").Split '/')
@@ -466,7 +476,7 @@ namespace FsRoot
                                 |> Array.choose(function String.StartsWith "-r:" f -> Some f |_-> None )
                     ]
             
-                    let loadInThisThread opts =
+                    let loadInThisThread debug opts =
                         match isWorker, wasmStatusV.Value with
                         | false, WasmLoaded
                         | true , WasmWorkerLoaded  -> ()
@@ -483,29 +493,45 @@ namespace FsRoot
                                 printfn "WASM Initialized!"
                                 wasmStatusV.Set (if isWorker then WasmWorkerLoaded  else WasmLoaded )
                                 ok()
+                            let initializeRuntime() =
+                                let monoSetEnv = getMonoSetEnv().Invoke
+                                if debug then
+                                    monoSetEnv("MONO_LOG_LEVEL", "debug")  
+                                    monoSetEnv("MONO_LOG_MASK" , "all"  )
+                                let config = JS.Inline("$global.config")
+                                MONO.mono_load_runtime_and_bcl(
+                                        config?vfs_prefix,
+                                        config?deploy_prefix,
+                                        config?enable_debugging,
+                                        config?file_list,
+                                        init
+                                    )
                             async {
                                 printfn "Loading WASM. Hold on, this will take a while..."
                                 wasmStatusV.Set (if isWorker then WasmWorkerLoading else WasmLoading)
                                 do! Async.Sleep 50
                                 if not isWorker then Remoting.installProvider()
-                                JS.Window?App <- Pojo.newPojo [
-                                                    "init", init
-                                                ]
+                                //JS.Window?App <- Pojo.newPojo [
+                                //                    "init", init
+                                //                ]
                                 let! v = requireJsA [| rootPath + "mono-config.js" |]
-                                let! v = requireJsA [| rootPath + "runtime.js" |]
-                                GlobalModule.SetPrint    <| printfn "%s"
-                                GlobalModule.SetPrintErr <| printfn "%s"
-                                GlobalModule.SetPreRun   <| [| fun () -> filesToPreload opts |> preloadFiles |]
+                                //let! v = requireJsA [| rootPath + "runtime.js" |]
+                                let Module = GlobalModule()
+                                Module.OnRuntimeInitialized <| initializeRuntime
+                                Module.SetPrint             <| printfn "%s"
+                                Module.SetPrintErr          <| printfn "%s"
+                                Module.SetPreRun            <| [| fun () -> filesToPreload opts |> preloadFiles |]
                                 let! v = requireJsA [| rootPath + "dotnet.js" |]
                                 ()
                             } |> Async.Start
                         ) |> Async.Start
             
-                    let loadWasmInWorker opts =
+                    let loadWasmInWorker debug opts =
                         if isWorker                           then printfn "Already in a worker cannot load Wasm in another worker" else
                         if wasmStatusV.Value <> WasmNotLoaded then printfn "Wasm is already %A" wasmStatusV.Value                   else
                         wasmStatusV.Set WasmLoading
                         printfn "Initiating WebWorker"
+                        Runtime.setScriptPath <| FuncWithArgs(fun (_, f) -> "/WASM/publish/" +  f)
                         let w = new Worker(fun self ->
                             wasmStatusV.View   |> View.Sink(fun v -> self.PostMessage(WorkerWasmStatus v) )
                             self.Onmessage     <- System.Action<_> (WWorker.receiveMessage loadInThisThread)
@@ -519,7 +545,7 @@ namespace FsRoot
                             let re = Remoting.returnExn   // this references are so the functions are not Dead Code Eliminated
                             ()
                         )
-                        w.PostMessage(HostLoadWasm opts)
+                        w.PostMessage(HostLoadWasm(debug, opts))
                         w.Onmessage         <- System.Action<_> WWorker.fromWorker
                         WWorker.workerO     <- Some w
                         Remoting.messaging  <- {
@@ -535,6 +561,7 @@ namespace FsRoot
                     let fsErrsV     = Var.Create [||]
                     let wsErrsV     = Var.Create [||]
                     let wsWrnsV     = Var.Create [||]
+                    let debugV      = Var.Create false
                     let codeV       = Var.Create """
             open WebSharper
             open WebSharper.UI
@@ -565,6 +592,7 @@ namespace FsRoot
                                             --warn:3
                                             --target:exe
                                             -r:/dlls/WebSharper.Core.dll
+                                            -r:/dlls/WebSharper.Main.dll
                                             -r:/dlls/WebSharper.UI.dll
                                             -r:/dlls/WebSharper.Sitelets.dll
                                             -r:/managed/FSharp.Core.dll
@@ -577,6 +605,7 @@ namespace FsRoot
                                             -r:/managed/System.Net.Http.dll
                                             -r:/managed/System.Threading.dll
                                             -r:/managed/System.Numerics.dll
+                                            -r:/managed/System.Runtime.Numerics.dll
                                         """.Split '\n' |> Seq.map (fun s ->  s.Trim()) |> String.concat "\n")
             
                     if not isWorker then
@@ -593,7 +622,7 @@ namespace FsRoot
             
                     let inline callWasmA f p = 
                         async {
-                            if wasmStatusV.Value = WasmNotLoaded then WasmLoad.loadWasmInWorker optsV.Value
+                            if wasmStatusV.Value = WasmNotLoaded then WasmLoad.loadWasmInWorker debugV.Value optsV.Value
                             do! Async.Sleep 50
                             while
                                 match wasmStatusV.Value with
@@ -627,7 +656,7 @@ namespace FsRoot
                     }
             
                     open FsRoot
-                    open FShUI_AssemblyData
+            //        open FShUI_AssemblyData
             
                     let translateToJs(projectName, opts, code)  = async {
                         let! fsErrs, wsO = Rpc.translateFsToJsRpc projectName opts code
@@ -635,12 +664,8 @@ namespace FsRoot
                         match wsO with
                         | Some (asmO, errs, wrns) -> 
                             match asmO with
-                            | Some asm -> 
-                                async {
-                                    do! FShUI.processAssembly asm
-                                } |> Async.Start
-                                "Assembly (asm) loaded"
-                            | None -> "No translation"
+                            | Some asm -> asm
+                            | None     -> "No translation"
                             |> detailsV.Set
                             wsErrsV .Set (Seq.toArray errs)
                             wsWrnsV .Set (Seq.toArray wrns)
@@ -655,9 +680,11 @@ namespace FsRoot
                             h1  [] [ text     <| "HELLO WASM!"           ]
                             h2  [] [ textView <| V(sprintf "%A" wasmStatusV.V) ]
                             span [] [
-                                Doc.Button "Load as Worker"       [] (fun () -> WasmLoad.loadWasmInWorker optsV.Value )
-                                Doc.Button "Load in Main thread"  [] (fun () -> WasmLoad.loadInThisThread optsV.Value )
+                                Doc.Button "Load as Worker"       [] (fun () -> WasmLoad.loadWasmInWorker debugV.Value optsV.Value )
+                                Doc.Button "Load in Main thread"  [] (fun () -> WasmLoad.loadInThisThread debugV.Value optsV.Value )
                                 Doc.Button "Terminate Worker"     [] (fun () -> WWorker.terminate() )
+                                text " Debug:"
+                                Doc.CheckBox [] debugV
                             ]
                             div [] [
                                 Doc.InputArea [] codeV

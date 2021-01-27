@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1593735151845 -d:WEBSHARPER
+////-d:FSharpStation1611569356546 -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -24,7 +24,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1593735151845
+//#define FSharpStation1611569356546
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -192,6 +192,7 @@ namespace FsRoot
                         let spaceaft            = g.spaceaft many
                         let inline listof x sep = l1.listof x sep |> opt
             
+                    let repl    n = Seq.replicate n >> String.concat ""
                     let either patterns = patterns |> String.concat "|" |> nocapt
                     let word      = sprintf "\\b%s\\b"
                     let oneof     = sprintf "[%s]"
@@ -206,6 +207,8 @@ namespace FsRoot
                     let ident      = letter + (either [letter ; digit] |> l.many0) |> word
                     let dottedid   = e1.listof ident (e0.spaceaft "\.")
                     let typename   = dottedid + opt (@"<" + e1.listof dottedid (e0.spaceaft ",") + "\>")
+                    /// match whole string
+                    let full       = sprintf "^%s$"
             
                     let regmatch regex = function Regex regex ms -> Some ms |_-> None
             

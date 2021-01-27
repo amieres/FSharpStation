@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,String,ParseO,LibraryJS,Pojo,WsTranslatorLoader,WasmStatus,Remoting,IMessagingO,ReturnQueue,WebSharper,Obj,CustomXhrProvider,WWorker,WasmLoad,Require,GlobalModule,UI,SC$1,WsTranslatorLoader_GeneratedPrintf,GeneratedPrintf,Strings,List,Seq,Slice,Operators,Char,Unchecked,Utils,console,IntelliFactory,Runtime,Concurrency,Remoting$1,WsTranslator,Arrays,Enumerator,UI$1,Client,Templates,Doc,View,AjaxRemotingProvider,AttrProxy,FShUI,DateUtil,Numeric,System,Guid,Var$1,Collections,Dictionary;
+ var Global,FsRoot,Library,String,ParseO,LibraryJS,Pojo,WsTranslatorLoader,WasmStatus,Remoting,IMessagingO,ReturnQueue,WebSharper,Obj,CustomXhrProvider,WWorker,WasmLoad,Require,UI,SC$1,WsTranslatorLoader_GeneratedPrintf,GeneratedPrintf,Strings,List,Seq,Slice,Operators,Char,Unchecked,Utils,console,IntelliFactory,Runtime,Concurrency,Remoting$1,WsTranslator,Arrays,Enumerator,UI$1,Client,Templates,Doc,View,AjaxRemotingProvider,AttrProxy,DateUtil,Numeric,System,Guid,Var$1,Collections,Dictionary;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -20,7 +20,6 @@
  WWorker=WsTranslatorLoader.WWorker=WsTranslatorLoader.WWorker||{};
  WasmLoad=WsTranslatorLoader.WasmLoad=WsTranslatorLoader.WasmLoad||{};
  Require=WasmLoad.Require=WasmLoad.Require||{};
- GlobalModule=WasmLoad.GlobalModule=WasmLoad.GlobalModule||{};
  UI=WsTranslatorLoader.UI=WsTranslatorLoader.UI||{};
  SC$1=Global.StartupCode$WsTranslatorLoader$WsTranslatorLoader=Global.StartupCode$WsTranslatorLoader$WsTranslatorLoader||{};
  WsTranslatorLoader_GeneratedPrintf=Global.WsTranslatorLoader_GeneratedPrintf=Global.WsTranslatorLoader_GeneratedPrintf||{};
@@ -48,7 +47,6 @@
  View=UI$1&&UI$1.View;
  AjaxRemotingProvider=Remoting$1&&Remoting$1.AjaxRemotingProvider;
  AttrProxy=UI$1&&UI$1.AttrProxy;
- FShUI=LibraryJS&&LibraryJS.FShUI;
  DateUtil=WebSharper&&WebSharper.DateUtil;
  Numeric=WebSharper&&WebSharper.Numeric;
  System=Global.System;
@@ -381,7 +379,7 @@
     console.log(s);
    }))(v));
  };
- Library.Error$2=function(a)
+ Library.Error=function(a)
  {
   return{
    $:1,
@@ -619,7 +617,7 @@
    {
     return $1(Utils.toSafe($2));
    };
-  }))(m.$0):m.$==2?loadInThisThread(m.$0):Remoting.callRunRpc(m.$0,m.$1);
+  }))(m.$0):m.$==2?loadInThisThread(m.$0,m.$1):Remoting.callRunRpc(m.$0,m.$1);
  };
  WWorker.workerO=function()
  {
@@ -636,12 +634,7 @@
  {
   Obj.New.call(this);
  },Require);
- GlobalModule=WasmLoad.GlobalModule=Runtime.Class({},Obj,GlobalModule);
- GlobalModule.New=Runtime.Ctor(function()
- {
-  Obj.New.call(this);
- },GlobalModule);
- WasmLoad.loadWasmInWorker=function(opts)
+ WasmLoad.loadWasmInWorker=function(debug,opts)
  {
   var w;
   if(!self.document)
@@ -665,10 +658,15 @@
      {
       return $1("Initiating WebWorker");
      });
+     self.Intellifactory.Runtime.ScriptPath=function($1,$2)
+     {
+      return"/WASM/publish/"+$2;
+     };
      w=new Global.Worker(Runtime.ScriptPath("WsTranslatorLoader","WsTranslatorLoader.worker.js"));
      w.postMessage({
       $:2,
-      $0:opts
+      $0:debug,
+      $1:opts
      });
      w.onmessage=WWorker.fromWorker;
      WWorker.set_workerO({
@@ -695,7 +693,7 @@
      Remoting.installProvider();
     }
  };
- WasmLoad.loadInThisThread=function(opts)
+ WasmLoad.loadInThisThread=function(debug,opts)
  {
   var $1,$2,$3;
   $2=!self.document;
@@ -749,6 +747,21 @@
       WsTranslatorLoader.wasmStatusV().Set(!self.document?WasmStatus.WasmWorkerLoaded:WasmStatus.WasmLoaded);
       ok();
      }
+     function initializeRuntime()
+     {
+      var monoSetEnv,o,config,vfs_prefix,deploy_prefix,enable_debugging,file_list;
+      monoSetEnv=(o=self.Module.cwrap("mono_wasm_setenv","void",["string","string"]),function(t)
+      {
+       o(t[0],t[1]);
+      });
+      debug?(monoSetEnv(["MONO_LOG_LEVEL","debug"]),monoSetEnv(["MONO_LOG_MASK","all"])):void 0;
+      config=self.config;
+      vfs_prefix=config.vfs_prefix;
+      deploy_prefix=config.deploy_prefix;
+      enable_debugging=config.enable_debugging;
+      file_list=config.file_list;
+      self.MONO.mono_load_runtime_and_bcl(vfs_prefix,deploy_prefix,enable_debugging,file_list,init);
+     }
      return Concurrency.Start((b=null,Concurrency.Delay(function()
      {
       WsTranslatorLoader.printfn(function($4)
@@ -760,36 +773,34 @@
       {
        return Concurrency.Combine(!(!self.document)?(Remoting.installProvider(),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
        {
-        self.App=Pojo.newPojo([["init",init]]);
         return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"mono-config.js"]),function()
         {
-         return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"runtime.js"]),function()
+         var a,a$1;
+         self.Module=self.Module||{};
+         self.Module.onRuntimeInitialized=initializeRuntime;
+         a=WsTranslatorLoader.printfn(function($4)
          {
-          var a,a$1;
-          a=WsTranslatorLoader.printfn(function($4)
+          return function($5)
           {
-           return function($5)
-           {
-            return $4(Utils.toSafe($5));
-           };
-          });
-          self.Module.print=a;
-          a$1=WsTranslatorLoader.printfn(function($4)
+           return $4(Utils.toSafe($5));
+          };
+         });
+         self.Module.print=a;
+         a$1=WsTranslatorLoader.printfn(function($4)
+         {
+          return function($5)
           {
-           return function($5)
-           {
-            return $4(Utils.toSafe($5));
-           };
-          });
-          self.Module.printErr=a$1;
-          self.Module.preRun=[function()
-          {
-           WasmLoad.preloadFiles(WasmLoad.filesToPreload(opts));
-          }];
-          return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"dotnet.js"]),function()
-          {
-           return Concurrency.Zero();
-          });
+           return $4(Utils.toSafe($5));
+          };
+         });
+         self.Module.printErr=a$1;
+         self.Module.preRun=[function()
+         {
+          WasmLoad.preloadFiles(WasmLoad.filesToPreload(opts));
+         }];
+         return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"dotnet.js"]),function()
+         {
+          return Concurrency.Zero();
          });
         });
        }));
@@ -836,6 +847,7 @@
    };
    return xhr.send(null);
   }]]);
+  self.Module=self.Module||{};
   self.Module.preloadPlugins=[];
   dirFiles=Seq.cache(Seq.distinct(Seq.map(function(a)
   {
@@ -941,14 +953,14 @@
    }(Global.id))($1);
   },WsTranslatorLoader.wasmStatusV().get_View()))]),Doc.Element("span",[],[Doc.Button("Load as Worker",[],function()
   {
-   WasmLoad.loadWasmInWorker(UI.optsV().Get());
+   WasmLoad.loadWasmInWorker(UI.debugV().Get(),UI.optsV().Get());
   }),Doc.Button("Load in Main thread",[],function()
   {
-   WasmLoad.loadInThisThread(UI.optsV().Get());
+   WasmLoad.loadInThisThread(UI.debugV().Get(),UI.optsV().Get());
   }),Doc.Button("Terminate Worker",[],function()
   {
    WWorker.terminate();
-  })]),Doc.Element("div",[],[Doc.InputArea([],UI.codeV()),Doc.InputArea([],UI.optsV())]),Doc.Element("span",[],[Doc.Button("Check",[],function()
+  }),Doc.TextNode(" Debug:"),Doc.CheckBox([],UI.debugV())]),Doc.Element("div",[],[Doc.InputArea([],UI.codeV()),Doc.InputArea([],UI.optsV())]),Doc.Element("span",[],[Doc.Button("Check",[],function()
   {
    UI.callWasmA(function(t)
    {
@@ -1006,18 +1018,12 @@
   b=null;
   return Concurrency.Delay(function()
   {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.translateFsToJsRpc:-829776470",[projectName,opts,code]),function(a)
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.translateFsToJsRpc:-435757094",[projectName,opts,code]),function(a)
    {
-    var wsO,asmO,a$1,asm,b$1;
+    var wsO,asmO;
     wsO=a[1];
     UI.fsErrsV().Set(a[0]);
-    return wsO==null?(UI.clean(),UI.wsErrsV().Set([]),UI.wsWrnsV().Set([]),Concurrency.Zero()):(asmO=wsO.$0[0],(a$1=asmO==null?"No translation":(asm=asmO.$0,(Concurrency.Start((b$1=null,Concurrency.Delay(function()
-    {
-     return Concurrency.Bind(FShUI.processAssembly(asm),function()
-     {
-      return Concurrency.Return(null);
-     });
-    })),null),"Assembly (asm) loaded")),UI.detailsV().Set(a$1),UI.wsErrsV().Set(Arrays.ofSeq(wsO.$0[1])),UI.wsWrnsV().Set(Arrays.ofSeq(wsO.$0[2])),Concurrency.Zero()));
+    return wsO==null?(UI.clean(),UI.wsErrsV().Set([]),UI.wsWrnsV().Set([]),Concurrency.Zero()):(asmO=wsO.$0[0],(UI.detailsV().Set(asmO==null?"No translation":asmO.$0),UI.wsErrsV().Set(Arrays.ofSeq(wsO.$0[1])),UI.wsWrnsV().Set(Arrays.ofSeq(wsO.$0[2])),Concurrency.Zero()));
    });
   });
  };
@@ -1067,7 +1073,7 @@
   var b;
   Concurrency.Start((b=null,Concurrency.Delay(function()
   {
-   return Concurrency.Combine(WsTranslatorLoader.wasmStatusV().Get().$===0?(WasmLoad.loadWasmInWorker(UI.optsV().Get()),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
+   return Concurrency.Combine(WsTranslatorLoader.wasmStatusV().Get().$===0?(WasmLoad.loadWasmInWorker(UI.debugV().Get(),UI.optsV().Get()),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
    {
     return Concurrency.Bind(Concurrency.Sleep(50),function()
     {
@@ -1110,6 +1116,11 @@
  {
   SC$1.$cctor();
   return SC$1.codeV;
+ };
+ UI.debugV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.debugV;
  };
  UI.wsWrnsV=function()
  {
@@ -1291,8 +1302,9 @@
   SC$1.fsErrsV=Var$1.Create$1([]);
   SC$1.wsErrsV=Var$1.Create$1([]);
   SC$1.wsWrnsV=Var$1.Create$1([]);
+  SC$1.debugV=Var$1.Create$1(false);
   SC$1.codeV=Var$1.Create$1("\r\n            open WebSharper\r\n            open WebSharper.UI\r\n            open WebSharper.UI.Html\r\n            \r\n            let name = Var.Create \"World\"\r\n            \r\n            [< Inline \"'Hello inline '\" >]\r\n            let bDoc() = \"Hello\"\r\n            \r\n            let cDoc() = text name.V\r\n            \r\n            let aDoc() = \r\n                div [] [\r\n                    text <| bDoc()\r\n                    cDoc()\r\n                ]\r\n            \r\n                    ");
-  SC$1.optsV=Var$1.Create$1(Strings.concat("\n",Seq.map(Strings.Trim,Strings.SplitChars("\r\n                                            /tmp/source.fsx\r\n                                            -o:source.exe\r\n                                            --simpleresolution\r\n                                            --nowarn:3186\r\n                                            --optimize-\r\n                                            --noframework\r\n                                            --fullpaths\r\n                                            --warn:3\r\n                                            --target:exe\r\n                                            -r:/dlls/WebSharper.Core.dll\r\n                                            -r:/dlls/WebSharper.UI.dll\r\n                                            -r:/dlls/WebSharper.Sitelets.dll\r\n                                            -r:/managed/FSharp.Core.dll\r\n                                            -r:/managed/mscorlib.dll\r\n                                            -r:/managed/netstandard.dll\r\n                                            -r:/managed/System.dll\r\n                                            -r:/managed/System.Core.dll\r\n                                            -r:/managed/System.IO.dll\r\n                                            -r:/managed/System.Runtime.dll\r\n                                            -r:/managed/System.Net.Http.dll\r\n                                            -r:/managed/System.Threading.dll\r\n                                            -r:/managed/System.Numerics.dll\r\n                                        ",["\n"],0))));
+  SC$1.optsV=Var$1.Create$1(Strings.concat("\n",Seq.map(Strings.Trim,Strings.SplitChars("\r\n                                            /tmp/source.fsx\r\n                                            -o:source.exe\r\n                                            --simpleresolution\r\n                                            --nowarn:3186\r\n                                            --optimize-\r\n                                            --noframework\r\n                                            --fullpaths\r\n                                            --warn:3\r\n                                            --target:exe\r\n                                            -r:/dlls/WebSharper.Core.dll\r\n                                            -r:/dlls/WebSharper.Main.dll\r\n                                            -r:/dlls/WebSharper.UI.dll\r\n                                            -r:/dlls/WebSharper.Sitelets.dll\r\n                                            -r:/managed/FSharp.Core.dll\r\n                                            -r:/managed/mscorlib.dll\r\n                                            -r:/managed/netstandard.dll\r\n                                            -r:/managed/System.dll\r\n                                            -r:/managed/System.Core.dll\r\n                                            -r:/managed/System.IO.dll\r\n                                            -r:/managed/System.Runtime.dll\r\n                                            -r:/managed/System.Net.Http.dll\r\n                                            -r:/managed/System.Threading.dll\r\n                                            -r:/managed/System.Numerics.dll\r\n                                            -r:/managed/System.Runtime.Numerics.dll\r\n                                        ",["\n"],0))));
   !(!self.document)?Remoting.set_messaging(IMessagingO.New(Remoting.messaging().runRpc,Remoting.messaging().returnValue,Remoting.messaging().returnExn,function(txt)
   {
    var pre;

@@ -337,7 +337,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
 (function()
 {
  "use strict";
- var Global,WebSharper,Operators,Obj,UI,Var,FsRoot,LibraryJS,WsTranslatorLoader,View,EventTarget,WindowOrWorkerGlobalScope,WorkerGlobalScope,WWorker,WasmLoad,Remoting,IMessagingO,SC$1,Snap,Arrays,Event,Utils,WasmStatus,JavaScript,Pervasives,JS,Pojo,GlobalModule,Library,String,Strings,Slice,ParseO,Unchecked,Numeric,System,Guid,Var$1,Remoting$1,Collections,Dictionary,Seq,UI$1,Concurrency,CustomXhrProvider,Require,WsTranslator,XMLHttpRequestEventTarget,ArrayBufferView,List,DateUtil,ConcreteVar,SC$2,DictionaryUtil,ReturnQueue,Enumerator,T,AsyncBody,SC$3,SC$4,Object,CT,T$1,Abbrev,Fresh,XhrProvider,Scheduler,Error,OperationCanceledException,CancellationTokenSource,HashSet,FormatException,SC$5,HashSetUtil,IntelliFactory,Runtime,console,Date;
+ var Global,WebSharper,Operators,Obj,UI,Var,FsRoot,LibraryJS,WsTranslatorLoader,View,EventTarget,WindowOrWorkerGlobalScope,WorkerGlobalScope,WWorker,WasmLoad,Remoting,IMessagingO,SC$1,Snap,Arrays,Event,Utils,WasmStatus,JavaScript,JS,Pervasives,Library,String,Strings,Slice,ParseO,Unchecked,Numeric,System,Guid,Var$1,Remoting$1,Collections,Dictionary,Seq,UI$1,Concurrency,CustomXhrProvider,Require,WsTranslator,Pojo,XMLHttpRequestEventTarget,ArrayBufferView,List,DateUtil,ConcreteVar,SC$2,DictionaryUtil,ReturnQueue,Enumerator,T,AsyncBody,SC$3,SC$4,Object,CT,T$1,Abbrev,Fresh,XhrProvider,Scheduler,Error,OperationCanceledException,CancellationTokenSource,HashSet,FormatException,SC$5,HashSetUtil,IntelliFactory,Runtime,console,Date;
  Global=self;
  WebSharper=Global.WebSharper=Global.WebSharper||{};
  Operators=WebSharper.Operators=WebSharper.Operators||{};
@@ -362,10 +362,8 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  Utils=WebSharper.Utils=WebSharper.Utils||{};
  WasmStatus=WsTranslatorLoader.WasmStatus=WsTranslatorLoader.WasmStatus||{};
  JavaScript=WebSharper.JavaScript=WebSharper.JavaScript||{};
- Pervasives=JavaScript.Pervasives=JavaScript.Pervasives||{};
  JS=JavaScript.JS=JavaScript.JS||{};
- Pojo=LibraryJS.Pojo=LibraryJS.Pojo||{};
- GlobalModule=WasmLoad.GlobalModule=WasmLoad.GlobalModule||{};
+ Pervasives=JavaScript.Pervasives=JavaScript.Pervasives||{};
  Library=FsRoot.Library=FsRoot.Library||{};
  String=Library.String=Library.String||{};
  Strings=WebSharper.Strings=WebSharper.Strings||{};
@@ -385,6 +383,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  CustomXhrProvider=Remoting.CustomXhrProvider=Remoting.CustomXhrProvider||{};
  Require=WasmLoad.Require=WasmLoad.Require||{};
  WsTranslator=FsRoot.WsTranslator=FsRoot.WsTranslator||{};
+ Pojo=LibraryJS.Pojo=LibraryJS.Pojo||{};
  XMLHttpRequestEventTarget=Global.XMLHttpRequestEventTarget;
  ArrayBufferView=Global.ArrayBufferView;
  List=WebSharper.List=WebSharper.List||{};
@@ -472,9 +471,9 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    {
     return $1(Utils.toSafe($2));
    };
-  }))(m.$0):m.$==2?loadInThisThread(m.$0):Remoting.callRunRpc(m.$0,m.$1);
+  }))(m.$0):m.$==2?loadInThisThread(m.$0,m.$1):Remoting.callRunRpc(m.$0,m.$1);
  };
- WasmLoad.loadInThisThread=function(opts)
+ WasmLoad.loadInThisThread=function(debug,opts)
  {
   var $1,$2,$3;
   $2=!self.document;
@@ -528,6 +527,21 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
       WsTranslatorLoader.wasmStatusV().Set(!self.document?WasmStatus.WasmWorkerLoaded:WasmStatus.WasmLoaded);
       ok();
      }
+     function initializeRuntime()
+     {
+      var monoSetEnv,o,config,vfs_prefix,deploy_prefix,enable_debugging,file_list;
+      monoSetEnv=(o=self.Module.cwrap("mono_wasm_setenv","void",["string","string"]),function(t)
+      {
+       o(t[0],t[1]);
+      });
+      debug?(monoSetEnv(["MONO_LOG_LEVEL","debug"]),monoSetEnv(["MONO_LOG_MASK","all"])):void 0;
+      config=self.config;
+      vfs_prefix=config.vfs_prefix;
+      deploy_prefix=config.deploy_prefix;
+      enable_debugging=config.enable_debugging;
+      file_list=config.file_list;
+      self.MONO.mono_load_runtime_and_bcl(vfs_prefix,deploy_prefix,enable_debugging,file_list,init);
+     }
      return Concurrency.Start((b=null,Concurrency.Delay(function()
      {
       WsTranslatorLoader.printfn(function($4)
@@ -539,36 +553,34 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
       {
        return Concurrency.Combine(!(!self.document)?(Remoting.installProvider(),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
        {
-        self.App=Pojo.newPojo([["init",init]]);
         return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"mono-config.js"]),function()
         {
-         return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"runtime.js"]),function()
+         var a,a$1;
+         self.Module=self.Module||{};
+         self.Module.onRuntimeInitialized=initializeRuntime;
+         a=WsTranslatorLoader.printfn(function($4)
          {
-          var a,a$1;
-          a=WsTranslatorLoader.printfn(function($4)
+          return function($5)
           {
-           return function($5)
-           {
-            return $4(Utils.toSafe($5));
-           };
-          });
-          self.Module.print=a;
-          a$1=WsTranslatorLoader.printfn(function($4)
+           return $4(Utils.toSafe($5));
+          };
+         });
+         self.Module.print=a;
+         a$1=WsTranslatorLoader.printfn(function($4)
+         {
+          return function($5)
           {
-           return function($5)
-           {
-            return $4(Utils.toSafe($5));
-           };
-          });
-          self.Module.printErr=a$1;
-          self.Module.preRun=[function()
-          {
-           WasmLoad.preloadFiles(WasmLoad.filesToPreload(opts));
-          }];
-          return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"dotnet.js"]),function()
-          {
-           return Concurrency.Zero();
-          });
+           return $4(Utils.toSafe($5));
+          };
+         });
+         self.Module.printErr=a$1;
+         self.Module.preRun=[function()
+         {
+          WasmLoad.preloadFiles(WasmLoad.filesToPreload(opts));
+         }];
+         return Concurrency.Bind(WasmLoad.requireJsA([WasmLoad.rootPath()+"dotnet.js"]),function()
+         {
+          return Concurrency.Zero();
          });
         });
        }));
@@ -627,6 +639,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    };
    return xhr.send(null);
   }]]);
+  self.Module=self.Module||{};
   self.Module.preloadPlugins=[];
   dirFiles=Seq.cache(Seq.distinct(Seq.map(function(a)
   {
@@ -900,8 +913,9 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   SC$1.fsErrsV=Var$1.Create$1([]);
   SC$1.wsErrsV=Var$1.Create$1([]);
   SC$1.wsWrnsV=Var$1.Create$1([]);
+  SC$1.debugV=Var$1.Create$1(false);
   SC$1.codeV=Var$1.Create$1("\r\n            open WebSharper\r\n            open WebSharper.UI\r\n            open WebSharper.UI.Html\r\n            \r\n            let name = Var.Create \"World\"\r\n            \r\n            [< Inline \"'Hello inline '\" >]\r\n            let bDoc() = \"Hello\"\r\n            \r\n            let cDoc() = text name.V\r\n            \r\n            let aDoc() = \r\n                div [] [\r\n                    text <| bDoc()\r\n                    cDoc()\r\n                ]\r\n            \r\n                    ");
-  SC$1.optsV=Var$1.Create$1(Strings.concat("\n",Seq.map(Strings.Trim,Strings.SplitChars("\r\n                                            /tmp/source.fsx\r\n                                            -o:source.exe\r\n                                            --simpleresolution\r\n                                            --nowarn:3186\r\n                                            --optimize-\r\n                                            --noframework\r\n                                            --fullpaths\r\n                                            --warn:3\r\n                                            --target:exe\r\n                                            -r:/dlls/WebSharper.Core.dll\r\n                                            -r:/dlls/WebSharper.UI.dll\r\n                                            -r:/dlls/WebSharper.Sitelets.dll\r\n                                            -r:/managed/FSharp.Core.dll\r\n                                            -r:/managed/mscorlib.dll\r\n                                            -r:/managed/netstandard.dll\r\n                                            -r:/managed/System.dll\r\n                                            -r:/managed/System.Core.dll\r\n                                            -r:/managed/System.IO.dll\r\n                                            -r:/managed/System.Runtime.dll\r\n                                            -r:/managed/System.Net.Http.dll\r\n                                            -r:/managed/System.Threading.dll\r\n                                            -r:/managed/System.Numerics.dll\r\n                                        ",["\n"],0))));
+  SC$1.optsV=Var$1.Create$1(Strings.concat("\n",Seq.map(Strings.Trim,Strings.SplitChars("\r\n                                            /tmp/source.fsx\r\n                                            -o:source.exe\r\n                                            --simpleresolution\r\n                                            --nowarn:3186\r\n                                            --optimize-\r\n                                            --noframework\r\n                                            --fullpaths\r\n                                            --warn:3\r\n                                            --target:exe\r\n                                            -r:/dlls/WebSharper.Core.dll\r\n                                            -r:/dlls/WebSharper.Main.dll\r\n                                            -r:/dlls/WebSharper.UI.dll\r\n                                            -r:/dlls/WebSharper.Sitelets.dll\r\n                                            -r:/managed/FSharp.Core.dll\r\n                                            -r:/managed/mscorlib.dll\r\n                                            -r:/managed/netstandard.dll\r\n                                            -r:/managed/System.dll\r\n                                            -r:/managed/System.Core.dll\r\n                                            -r:/managed/System.IO.dll\r\n                                            -r:/managed/System.Runtime.dll\r\n                                            -r:/managed/System.Net.Http.dll\r\n                                            -r:/managed/System.Threading.dll\r\n                                            -r:/managed/System.Numerics.dll\r\n                                            -r:/managed/System.Runtime.Numerics.dll\r\n                                        ",["\n"],0))));
   !(!self.document)?Remoting.set_messaging(IMessagingO.New(Remoting.messaging().runRpc,Remoting.messaging().returnValue,Remoting.messaging().returnExn,function(txt)
   {
    var pre;
@@ -954,6 +968,13 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  WasmStatus.WasmNotLoaded={
   $:0
  };
+ JS.GetFieldValues=function(o)
+ {
+  var r,k;
+  r=[];
+  for(var k$1 in o)r.push(o[k$1]);
+  return r;
+ };
  Pervasives.NewFromSeq=function(fields)
  {
   var r,e,f;
@@ -974,45 +995,6 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   }
   return r;
  };
- JS.GetFieldValues=function(o)
- {
-  var r,k;
-  r=[];
-  for(var k$1 in o)r.push(o[k$1]);
-  return r;
- };
- Pojo.newPojo=function(props)
- {
-  var pojo,f;
-  function f$1(a,a$1)
-  {
-   return function(p)
-   {
-    return Pojo.addProp(a,a$1,p);
-   };
-  }
-  function g(v)
-  {
-  }
-  pojo={};
-  Seq.iter((f=function(b)
-  {
-   return(function($1)
-   {
-    return f$1($1[0],$1[1]);
-   }(b))(pojo);
-  },function(x)
-  {
-   return g(f(x));
-  }),props);
-  return pojo;
- };
- Pojo.addProp=function(p,p$1,pojo)
- {
-  pojo[p]=p$1;
-  return pojo;
- };
- GlobalModule=WasmLoad.GlobalModule=Runtime.Class({},Obj,GlobalModule);
  String.unindent=function(s)
  {
   var lines,n,o,o$1;
@@ -1663,21 +1645,6 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    }
   };
  };
- Seq.iter=function(p,s)
- {
-  var e;
-  e=Enumerator.Get(s);
-  try
-  {
-   while(e.MoveNext())
-    p(e.Current());
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
  Seq.delay=function(f)
  {
   return{
@@ -1727,6 +1694,21 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
     },void 0);
    }
   };
+ };
+ Seq.iter=function(p,s)
+ {
+  var e;
+  e=Enumerator.Get(s);
+  try
+  {
+   while(e.MoveNext())
+    p(e.Current());
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
  };
  Seq.tryFind=function(ok,s)
  {
@@ -2196,6 +2178,37 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    else
     i=i+1;
   return e;
+ };
+ Pojo.newPojo=function(props)
+ {
+  var pojo,f;
+  function f$1(a,a$1)
+  {
+   return function(p)
+   {
+    return Pojo.addProp(a,a$1,p);
+   };
+  }
+  function g(v)
+  {
+  }
+  pojo={};
+  Seq.iter((f=function(b)
+  {
+   return(function($1)
+   {
+    return f$1($1[0],$1[1]);
+   }(b))(pojo);
+  },function(x)
+  {
+   return g(f(x));
+  }),props);
+  return pojo;
+ };
+ Pojo.addProp=function(p,p$1,pojo)
+ {
+  pojo[p]=p$1;
+  return pojo;
  };
  List.ofArray=function(arr)
  {
@@ -2678,10 +2691,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  },WsTranslatorLoader.wasmStatusV().get_View());
  Global.onmessage=function(d)
  {
-  return WWorker.receiveMessage(function(o)
-  {
-   WasmLoad.loadInThisThread(o);
-  },d);
+  return WWorker.receiveMessage(WasmLoad.loadInThisThread,d);
  };
  Remoting.set_messaging(IMessagingO.New(function(h)
  {
