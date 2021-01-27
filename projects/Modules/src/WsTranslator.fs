@@ -1,4 +1,4 @@
-////-d:FSharpStation1611569356546 -d:NETSTANDARD20 -d:NOFSROOTx -d:WEBSHARPER
+////-d:FSharpStation1611709443608 -d:NETSTANDARD20 -d:NOFSROOTx -d:WEBSHARPER
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Reflection.Metadata\lib\netstandard2.0"
@@ -18,7 +18,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Compiler.FSharp.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos/WasmRepo/wasm-sdk/framework\WebAssembly.Bindings.dll"
 /// Root namespace for all code
-//#define FSharpStation1611569356546
+//#define FSharpStation1611709443608
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -218,9 +218,9 @@ namespace FsRoot
             open WebAssembly.Host
     
             let (?) o prop = Console.WriteLine("?" + prop); (unbox<JSObject> o).GetObjectProperty prop
-            let remoting   = Runtime.GetGlobalObject()?FsRoot?LibraryJS?WsTranslatorLoader?Remoting |> unbox<JSObject>
-            let returnValue (md : string, v : string) = remoting.Invoke("returnValue", md, v) |> ignore
-            let returnExn   (md : string, e : string) = remoting.Invoke("returnExn"  , md, e) |> ignore
+            let remoting   = lazy (Runtime.GetGlobalObject()?FsRoot?LibraryJS?WsTranslatorLoader?Remoting |> unbox<JSObject>)
+            let returnValue (md : string, v : string) = remoting.Value.Invoke("returnValue", md, v) |> ignore
+            let returnExn   (md : string, e : string) = remoting.Value.Invoke("returnExn"  , md, e) |> ignore
             let wsServer   = lazy (
                 printfn "Loading remoting server. Hold on, this will take a while..."
                 let srv = RM.Server.Create WebSharper.Web.Shared.Metadata WebSharper.Web.Shared.Json

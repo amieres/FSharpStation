@@ -431,7 +431,7 @@ namespace FsRoot
                         let mono_load_runtime_and_bcl(vfs_prefix:string, deploy_prefix:string, enable_debugging:bool, file_list:string[], app_init:unit -> unit) = ()
             
                     module Runtime =
-                        [< Inline "$global.Intellifactory.Runtime.ScriptPath = $f" >]
+                        [< Inline "$global.IntelliFactory.Runtime.ScriptPath = $f" >]
                         let setScriptPath(f: FuncWithArgs<string * string, string>) = ()
             
                     let preloadFiles (files: string seq) =

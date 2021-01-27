@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1611569356546 -d:WEBSHARPER
+////-d:FSharpStation1611709443608 -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -27,7 +27,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\WsTranslator.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1611569356546
+//#define FSharpStation1611709443608
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =

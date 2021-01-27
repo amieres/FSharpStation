@@ -857,7 +857,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      {
       return $1("Initiating WebWorker");
      });
-     self.Intellifactory.Runtime.ScriptPath=function($1,$2)
+     self.IntelliFactory.Runtime.ScriptPath=function($1,$2)
      {
       return"/WASM/publish/"+$2;
      };

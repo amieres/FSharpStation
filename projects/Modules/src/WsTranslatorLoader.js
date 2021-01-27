@@ -658,7 +658,7 @@
      {
       return $1("Initiating WebWorker");
      });
-     self.Intellifactory.Runtime.ScriptPath=function($1,$2)
+     self.IntelliFactory.Runtime.ScriptPath=function($1,$2)
      {
       return"/WASM/publish/"+$2;
      };
