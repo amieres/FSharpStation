@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1611569356546 -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1612100328464 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -28,7 +28,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Compiler.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1611569356546
+//#define FSharpStation1612100328464
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -322,16 +322,19 @@ namespace FsRoot
                     let returnExnExn (md, e:exn   ) = ReturnQueue.tryGet md |> Option.iter(fun (ok, er) -> er e )
                     let returnExn0   (md, e:string) = returnExnExn(md, exn e)
             
-                    let mutable messaging = {
+                    let messaging = Dependency {
                         runRpc      = runRpc0
                         returnValue = returnValue0
                         returnExn   = returnExn0
                         wprintfn    = printfn "EARLY PRINTING!: %s"
                     }
             
-                    let callRunRpc (header:string) (data:string) = messaging.runRpc header data 
-                    let returnValue(header:string,  data:string) = messaging.returnValue(header, data)
-                    let returnExn  (header:string,     e:string) = messaging.returnExn(header, e)
+                    let callRunRpc (header:string) (data:string) = messaging.D.runRpc      header  data 
+                    let returnValue(header:string,  data:string) = messaging.D.returnValue(header, data)
+                    let returnExn  (header:string,     e:string) = messaging.D.returnExn  (header, e   )
+            
+                    let rv = returnValue // this references are so the functions are not Dead Code Eliminated
+                    let re = returnExn   // this references are so the functions are not Dead Code Eliminated
             
                     type CustomXhrProvider () =
                         interface WebSharper.Remoting.IAjaxProvider with
@@ -347,7 +350,7 @@ namespace FsRoot
                             
                     let installProvider() = WebSharper.Remoting.AjaxProvider <- CustomXhrProvider()
             
-                let printfn fmt = Printf.kprintf Remoting.messaging.wprintfn fmt
+                let printfn fmt = Printf.kprintf Remoting.messaging.D.wprintfn fmt
             
                 module WWorker =
                     open WebSharper.JavaScript
@@ -471,7 +474,7 @@ namespace FsRoot
                             FS.createPreloadedFile(dir, file, from, 1, 1);
             
                     let filesToPreload (opts:string) = [   
-                        yield! dlls
+                        yield! dlls()
                         yield! opts.Split '\n' 
                                 |> Array.choose(function String.StartsWith "-r:" f -> Some f |_-> None )
                     ]
@@ -531,11 +534,11 @@ namespace FsRoot
                         if wasmStatusV.Value <> WasmNotLoaded then printfn "Wasm is already %A" wasmStatusV.Value                   else
                         wasmStatusV.Set WasmLoading
                         printfn "Initiating WebWorker"
-                        Runtime.setScriptPath <| FuncWithArgs(fun (_, f) -> "/WASM/publish/" +  f)
+                        Runtime.setScriptPath    <| FuncWithArgs(fun (_, f) -> "/WASM/publish/" +  f)
                         let w = new Worker(fun self ->
-                            wasmStatusV.View   |> View.Sink(fun v -> self.PostMessage(WorkerWasmStatus v) )
-                            self.Onmessage     <- System.Action<_> (WWorker.receiveMessage loadInThisThread)
-                            Remoting.messaging <- {
+                            wasmStatusV.View     |> View.Sink(fun v -> self.PostMessage(WorkerWasmStatus v) )
+                            self.Onmessage       <- System.Action<_> (WWorker.receiveMessage loadInThisThread)
+                            Remoting.messaging.D <- {
                                 runRpc      = Remoting.runRpc0
                                 returnValue = fun v -> self.PostMessage(WorkerReturnValue v)
                                 returnExn   = fun v -> self.PostMessage(WorkerReturnExn   v)
@@ -546,13 +549,13 @@ namespace FsRoot
                             ()
                         )
                         w.PostMessage(HostLoadWasm(debug, opts))
-                        w.Onmessage         <- System.Action<_> WWorker.fromWorker
-                        WWorker.workerO     <- Some w
-                        Remoting.messaging  <- {
+                        w.Onmessage          <- System.Action<_> WWorker.fromWorker
+                        WWorker.workerO      <- Some w
+                        Remoting.messaging.D <- {
                             runRpc      = fun h d -> w.PostMessage(HostRunRpc(h, d))
                             returnValue = Remoting.returnValue0
                             returnExn   = Remoting.returnExn0
-                            wprintfn    = Remoting.messaging.wprintfn
+                            wprintfn    = Remoting.messaging.D.wprintfn
                         }
                         Remoting.installProvider()
             
@@ -609,8 +612,8 @@ namespace FsRoot
                                         """.Split '\n' |> Seq.map (fun s ->  s.Trim()) |> String.concat "\n")
             
                     if not isWorker then
-                        Remoting    .messaging <- {
-                            Remoting.messaging with 
+                        Remoting    .messaging.D <- {
+                            Remoting.messaging.D with 
                                 wprintfn = fun (txt:string) ->
                                     Console.Log txt
                                     let pre = detailsV.Value
@@ -631,7 +634,8 @@ namespace FsRoot
                                 do
                                     printfn "Waiting for WASM to load..."
                                     do! Async.Sleep 2000
-                            do! f p
+                            try  do! f p
+                            with e -> printfn "%A" e
                         } |> Async.Start
             
                     let getParms() = ("WasmTest", ("fsc.exe\n" + optsV.Value).Split '\n' |> Array.filter (fun s -> s.Trim() <> ""), codeV.Value)

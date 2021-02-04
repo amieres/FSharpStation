@@ -1,7 +1,7 @@
 (function()
 {
  "use strict";
- var Global,FsRoot,Library,String,ParseO,LibraryJS,Pojo,WsTranslatorLoader,WasmStatus,Remoting,IMessagingO,ReturnQueue,WebSharper,Obj,CustomXhrProvider,WWorker,WasmLoad,Require,UI,SC$1,WsTranslatorLoader_GeneratedPrintf,GeneratedPrintf,Strings,List,Seq,Slice,Operators,Char,Unchecked,Utils,console,IntelliFactory,Runtime,Concurrency,Remoting$1,WsTranslator,Arrays,Enumerator,UI$1,Client,Templates,Doc,View,AjaxRemotingProvider,AttrProxy,DateUtil,Numeric,System,Guid,Var$1,Collections,Dictionary;
+ var Global,FsRoot,Library,String,ParseO,LibraryJS,Pojo,WsTranslatorLoader,WasmStatus,Remoting,IMessagingO,ReturnQueue,WebSharper,Obj,CustomXhrProvider,WWorker,WasmLoad,Require,UI,SC$1,WsTranslatorLoader_GeneratedPrintf,GeneratedPrintf,Strings,List,Seq,Slice,Operators,Char,Unchecked,Utils,console,IntelliFactory,Runtime,Concurrency,Remoting$1,WsTranslator,Arrays,Enumerator,UI$1,Client,Templates,Doc,View,AjaxRemotingProvider,AttrProxy,DateUtil,Numeric,System,Guid,Var$1,Collections,Dictionary,Dependency;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
@@ -54,6 +54,7 @@
  Var$1=UI$1&&UI$1.Var$1;
  Collections=WebSharper&&WebSharper.Collections;
  Dictionary=Collections&&Collections.Dictionary;
+ Dependency=WsTranslator&&WsTranslator.Dependency;
  String.thousands=function(n)
  {
   var v,c,r,s;
@@ -529,27 +530,32 @@
  {
   Remoting$1.set_AjaxProvider(new CustomXhrProvider.New());
  };
+ Remoting.re=function()
+ {
+  SC$1.$cctor();
+  return SC$1.re;
+ };
+ Remoting.rv=function()
+ {
+  SC$1.$cctor();
+  return SC$1.rv;
+ };
  Remoting.returnExn=function(header,e)
  {
-  Remoting.messaging().returnExn([header,e]);
+  Remoting.messaging().get_D().returnExn([header,e]);
  };
  Remoting.returnValue=function(header,data)
  {
-  Remoting.messaging().returnValue([header,data]);
+  Remoting.messaging().get_D().returnValue([header,data]);
  };
  Remoting.callRunRpc=function(header,data)
  {
-  (Remoting.messaging().runRpc(header))(data);
+  (Remoting.messaging().get_D().runRpc(header))(data);
  };
  Remoting.messaging=function()
  {
   SC$1.$cctor();
   return SC$1.messaging;
- };
- Remoting.set_messaging=function($1)
- {
-  SC$1.$cctor();
-  SC$1.messaging=$1;
  };
  Remoting.returnExn0=function(md,e)
  {
@@ -673,7 +679,7 @@
       $:1,
       $0:w
      });
-     Remoting.set_messaging(IMessagingO.New(function(h)
+     Remoting.messaging().set_D(IMessagingO.New(function(h)
      {
       return function(d)
       {
@@ -689,7 +695,7 @@
      },function(t)
      {
       Remoting.returnExn0(t[0],t[1]);
-     },Remoting.messaging().wprintfn));
+     },Remoting.messaging().get_D().wprintfn));
      Remoting.installProvider();
     }
  };
@@ -1094,9 +1100,22 @@
       });
      })),Concurrency.Delay(function()
      {
-      return Concurrency.Bind(f(p),function()
+      return Concurrency.TryWith(Concurrency.Delay(function()
       {
-       return Concurrency.Return(null);
+       return Concurrency.Bind(f(p),function()
+       {
+        return Concurrency.Return(null);
+       });
+      }),function(a)
+      {
+       (WsTranslatorLoader.printfn(function($1)
+       {
+        return function($2)
+        {
+         return $1(Utils.prettyPrint($2));
+        };
+       }))(a);
+       return Concurrency.Zero();
       });
      }));
     });
@@ -1144,7 +1163,7 @@
  };
  WsTranslatorLoader.printfn=function(fmt)
  {
-  return fmt(Remoting.messaging().wprintfn);
+  return fmt(Remoting.messaging().get_D().wprintfn);
  };
  WsTranslatorLoader.wasmStatusV=function()
  {
@@ -1153,7 +1172,7 @@
  };
  SC$1.$cctor=function()
  {
-  var f,g;
+  var f,g,i;
   SC$1.$cctor=Global.ignore;
   function g$1(s)
   {
@@ -1274,7 +1293,7 @@
   SC$1.wasmStatusV=Var$1.Create$1(WasmStatus.WasmNotLoaded);
   SC$1.originalProvider=Remoting$1.AjaxProvider();
   SC$1.queues=new Dictionary.New$5();
-  SC$1.messaging=IMessagingO.New(function(h)
+  SC$1.messaging=new Dependency.New(IMessagingO.New(function(h)
   {
    return function(d)
    {
@@ -1295,7 +1314,15 @@
   }(function(s)
   {
    console.log(s);
-  }));
+  })));
+  SC$1.rv=function(t)
+  {
+   Remoting.returnValue(t[0],t[1]);
+  };
+  SC$1.re=function(t)
+  {
+   Remoting.returnExn(t[0],t[1]);
+  };
   SC$1.workerO=null;
   SC$1.rootPath="/WASM/publish/";
   SC$1.detailsV=Var$1.Create$1("");
@@ -1305,13 +1332,13 @@
   SC$1.debugV=Var$1.Create$1(false);
   SC$1.codeV=Var$1.Create$1("\r\n            open WebSharper\r\n            open WebSharper.UI\r\n            open WebSharper.UI.Html\r\n            \r\n            let name = Var.Create \"World\"\r\n            \r\n            [< Inline \"'Hello inline '\" >]\r\n            let bDoc() = \"Hello\"\r\n            \r\n            let cDoc() = text name.V\r\n            \r\n            let aDoc() = \r\n                div [] [\r\n                    text <| bDoc()\r\n                    cDoc()\r\n                ]\r\n            \r\n                    ");
   SC$1.optsV=Var$1.Create$1(Strings.concat("\n",Seq.map(Strings.Trim,Strings.SplitChars("\r\n                                            /tmp/source.fsx\r\n                                            -o:source.exe\r\n                                            --simpleresolution\r\n                                            --nowarn:3186\r\n                                            --optimize-\r\n                                            --noframework\r\n                                            --fullpaths\r\n                                            --warn:3\r\n                                            --target:exe\r\n                                            -r:/dlls/WebSharper.Core.dll\r\n                                            -r:/dlls/WebSharper.Main.dll\r\n                                            -r:/dlls/WebSharper.UI.dll\r\n                                            -r:/dlls/WebSharper.Sitelets.dll\r\n                                            -r:/managed/FSharp.Core.dll\r\n                                            -r:/managed/mscorlib.dll\r\n                                            -r:/managed/netstandard.dll\r\n                                            -r:/managed/System.dll\r\n                                            -r:/managed/System.Core.dll\r\n                                            -r:/managed/System.IO.dll\r\n                                            -r:/managed/System.Runtime.dll\r\n                                            -r:/managed/System.Net.Http.dll\r\n                                            -r:/managed/System.Threading.dll\r\n                                            -r:/managed/System.Numerics.dll\r\n                                            -r:/managed/System.Runtime.Numerics.dll\r\n                                        ",["\n"],0))));
-  !(!self.document)?Remoting.set_messaging(IMessagingO.New(Remoting.messaging().runRpc,Remoting.messaging().returnValue,Remoting.messaging().returnExn,function(txt)
+  !(!self.document)?Remoting.messaging().set_D((i=Remoting.messaging().get_D(),IMessagingO.New(i.runRpc,i.returnValue,i.returnExn,function(txt)
   {
    var pre;
    console.log(txt);
    pre=UI.detailsV().Get();
    UI.detailsV().Set(pre+(pre===""?"":"\n")+txt);
-  })):void 0;
+  }))):void 0;
  };
  WsTranslatorLoader_GeneratedPrintf.p=function($1)
  {

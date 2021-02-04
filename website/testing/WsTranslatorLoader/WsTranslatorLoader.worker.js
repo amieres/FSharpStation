@@ -337,7 +337,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
 (function()
 {
  "use strict";
- var Global,WebSharper,Operators,Obj,UI,Var,FsRoot,LibraryJS,WsTranslatorLoader,View,EventTarget,WindowOrWorkerGlobalScope,WorkerGlobalScope,WWorker,WasmLoad,Remoting,IMessagingO,SC$1,Snap,Arrays,Event,Utils,WasmStatus,JavaScript,JS,Pervasives,Library,String,Strings,Slice,ParseO,Unchecked,Numeric,System,Guid,Var$1,Remoting$1,Collections,Dictionary,Seq,UI$1,Concurrency,CustomXhrProvider,Require,WsTranslator,Pojo,XMLHttpRequestEventTarget,ArrayBufferView,List,DateUtil,ConcreteVar,SC$2,DictionaryUtil,ReturnQueue,Enumerator,T,AsyncBody,SC$3,SC$4,Object,CT,T$1,Abbrev,Fresh,XhrProvider,Scheduler,Error,OperationCanceledException,CancellationTokenSource,HashSet,FormatException,SC$5,HashSetUtil,IntelliFactory,Runtime,console,Date;
+ var Global,WebSharper,Operators,Obj,UI,Var,FsRoot,LibraryJS,WsTranslatorLoader,View,EventTarget,WindowOrWorkerGlobalScope,WorkerGlobalScope,WWorker,WasmLoad,WsTranslator,Dependency,Remoting,IMessagingO,SC$1,Snap,Arrays,Event,Utils,WasmStatus,JavaScript,JS,Pervasives,Library,String,Strings,Slice,ParseO,Unchecked,Numeric,System,Guid,Var$1,Remoting$1,Collections,Dictionary,Seq,UI$1,Concurrency,CustomXhrProvider,Require,Pojo,XMLHttpRequestEventTarget,ArrayBufferView,List,DateUtil,ConcreteVar,SC$2,DictionaryUtil,ReturnQueue,Enumerator,T,AsyncBody,SC$3,Object,CT,T$1,Abbrev,Fresh,XhrProvider,Scheduler,Error,OperationCanceledException,CancellationTokenSource,SC$4,HashSet,FormatException,SC$5,HashSetUtil,IntelliFactory,Runtime,console,Date;
  Global=self;
  WebSharper=Global.WebSharper=Global.WebSharper||{};
  Operators=WebSharper.Operators=WebSharper.Operators||{};
@@ -353,6 +353,8 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  WorkerGlobalScope=Global.WorkerGlobalScope;
  WWorker=WsTranslatorLoader.WWorker=WsTranslatorLoader.WWorker||{};
  WasmLoad=WsTranslatorLoader.WasmLoad=WsTranslatorLoader.WasmLoad||{};
+ WsTranslator=FsRoot.WsTranslator=FsRoot.WsTranslator||{};
+ Dependency=WsTranslator.Dependency=WsTranslator.Dependency||{};
  Remoting=WsTranslatorLoader.Remoting=WsTranslatorLoader.Remoting||{};
  IMessagingO=Remoting.IMessagingO=Remoting.IMessagingO||{};
  SC$1=Global.StartupCode$WsTranslatorLoader$WsTranslatorLoader=Global.StartupCode$WsTranslatorLoader$WsTranslatorLoader||{};
@@ -382,7 +384,6 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  Concurrency=WebSharper.Concurrency=WebSharper.Concurrency||{};
  CustomXhrProvider=Remoting.CustomXhrProvider=Remoting.CustomXhrProvider||{};
  Require=WasmLoad.Require=WasmLoad.Require||{};
- WsTranslator=FsRoot.WsTranslator=FsRoot.WsTranslator||{};
  Pojo=LibraryJS.Pojo=LibraryJS.Pojo||{};
  XMLHttpRequestEventTarget=Global.XMLHttpRequestEventTarget;
  ArrayBufferView=Global.ArrayBufferView;
@@ -396,7 +397,6 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  T=Enumerator.T=Enumerator.T||{};
  AsyncBody=Concurrency.AsyncBody=Concurrency.AsyncBody||{};
  SC$3=Global.StartupCode$WebSharper_Main$Concurrency=Global.StartupCode$WebSharper_Main$Concurrency||{};
- SC$4=Global.StartupCode$WsTranslator$WsTranslator=Global.StartupCode$WsTranslator$WsTranslator||{};
  Object=Global.Object;
  CT=Concurrency.CT=Concurrency.CT||{};
  T$1=List.T=List.T||{};
@@ -407,6 +407,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  Error=Global.Error;
  OperationCanceledException=WebSharper.OperationCanceledException=WebSharper.OperationCanceledException||{};
  CancellationTokenSource=WebSharper.CancellationTokenSource=WebSharper.CancellationTokenSource||{};
+ SC$4=Global.StartupCode$WsTranslator$WsTranslator=Global.StartupCode$WsTranslator$WsTranslator||{};
  HashSet=Collections.HashSet=Collections.HashSet||{};
  FormatException=WebSharper.FormatException=WebSharper.FormatException||{};
  SC$5=Global.StartupCode$WebSharper_UI$Abbrev=Global.StartupCode$WebSharper_UI$Abbrev||{};
@@ -448,7 +449,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  };
  WsTranslatorLoader.printfn=function(fmt)
  {
-  return fmt(Remoting.messaging().wprintfn);
+  return fmt(Remoting.messaging().get_D().wprintfn);
  };
  View.Sink=function(act,a)
  {
@@ -711,31 +712,41 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    return $1("["+Utils.toSafe($2)+"]"+Utils.toSafe($3)+":"+Utils.toSafe($4));
   },4))(Global.id))(assmbly))(path))(methd),self.Module.mono_bind_static_method(m));
  };
- Remoting.set_messaging=function($1)
+ Dependency=WsTranslator.Dependency=Runtime.Class({
+  set_D:function(v)
+  {
+   this.D=v;
+  },
+  get_D:function()
+  {
+   return this.D;
+  }
+ },Obj,Dependency);
+ Dependency.New=Runtime.Ctor(function(def)
  {
-  SC$1.$cctor();
-  SC$1.messaging=$1;
- };
- Remoting.returnValue=function(header,data)
- {
-  Remoting.messaging().returnValue([header,data]);
- };
- Remoting.returnExn=function(header,e)
- {
-  Remoting.messaging().returnExn([header,e]);
- };
- Remoting.callRunRpc=function(header,data)
- {
-  (Remoting.messaging().runRpc(header))(data);
- };
- Remoting.installProvider=function()
- {
-  Remoting$1.set_AjaxProvider(new CustomXhrProvider.New());
- };
+  Obj.New.call(this);
+  this.D=def;
+ },Dependency);
  Remoting.messaging=function()
  {
   SC$1.$cctor();
   return SC$1.messaging;
+ };
+ Remoting.returnValue=function(header,data)
+ {
+  Remoting.messaging().get_D().returnValue([header,data]);
+ };
+ Remoting.returnExn=function(header,e)
+ {
+  Remoting.messaging().get_D().returnExn([header,e]);
+ };
+ Remoting.callRunRpc=function(header,data)
+ {
+  (Remoting.messaging().get_D().runRpc(header))(data);
+ };
+ Remoting.installProvider=function()
+ {
+  Remoting$1.set_AjaxProvider(new CustomXhrProvider.New());
  };
  Remoting.returnValue0=function(md,v)
  {
@@ -764,7 +775,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  };
  SC$1.$cctor=function()
  {
-  var f,g;
+  var f,g,i;
   SC$1.$cctor=Global.ignore;
   function g$1(s)
   {
@@ -885,7 +896,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   SC$1.wasmStatusV=Var$1.Create$1(WasmStatus.WasmNotLoaded);
   SC$1.originalProvider=Remoting$1.AjaxProvider();
   SC$1.queues=new Dictionary.New$5();
-  SC$1.messaging=IMessagingO.New(function(h)
+  SC$1.messaging=new Dependency.New(IMessagingO.New(function(h)
   {
    return function(d)
    {
@@ -906,7 +917,15 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   }(function(s)
   {
    console.log(s);
-  }));
+  })));
+  SC$1.rv=function(t)
+  {
+   Remoting.returnValue(t[0],t[1]);
+  };
+  SC$1.re=function(t)
+  {
+   Remoting.returnExn(t[0],t[1]);
+  };
   SC$1.workerO=null;
   SC$1.rootPath="/WASM/publish/";
   SC$1.detailsV=Var$1.Create$1("");
@@ -916,13 +935,13 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   SC$1.debugV=Var$1.Create$1(false);
   SC$1.codeV=Var$1.Create$1("\r\n            open WebSharper\r\n            open WebSharper.UI\r\n            open WebSharper.UI.Html\r\n            \r\n            let name = Var.Create \"World\"\r\n            \r\n            [< Inline \"'Hello inline '\" >]\r\n            let bDoc() = \"Hello\"\r\n            \r\n            let cDoc() = text name.V\r\n            \r\n            let aDoc() = \r\n                div [] [\r\n                    text <| bDoc()\r\n                    cDoc()\r\n                ]\r\n            \r\n                    ");
   SC$1.optsV=Var$1.Create$1(Strings.concat("\n",Seq.map(Strings.Trim,Strings.SplitChars("\r\n                                            /tmp/source.fsx\r\n                                            -o:source.exe\r\n                                            --simpleresolution\r\n                                            --nowarn:3186\r\n                                            --optimize-\r\n                                            --noframework\r\n                                            --fullpaths\r\n                                            --warn:3\r\n                                            --target:exe\r\n                                            -r:/dlls/WebSharper.Core.dll\r\n                                            -r:/dlls/WebSharper.Main.dll\r\n                                            -r:/dlls/WebSharper.UI.dll\r\n                                            -r:/dlls/WebSharper.Sitelets.dll\r\n                                            -r:/managed/FSharp.Core.dll\r\n                                            -r:/managed/mscorlib.dll\r\n                                            -r:/managed/netstandard.dll\r\n                                            -r:/managed/System.dll\r\n                                            -r:/managed/System.Core.dll\r\n                                            -r:/managed/System.IO.dll\r\n                                            -r:/managed/System.Runtime.dll\r\n                                            -r:/managed/System.Net.Http.dll\r\n                                            -r:/managed/System.Threading.dll\r\n                                            -r:/managed/System.Numerics.dll\r\n                                            -r:/managed/System.Runtime.Numerics.dll\r\n                                        ",["\n"],0))));
-  !(!self.document)?Remoting.set_messaging(IMessagingO.New(Remoting.messaging().runRpc,Remoting.messaging().returnValue,Remoting.messaging().returnExn,function(txt)
+  !(!self.document)?Remoting.messaging().set_D((i=Remoting.messaging().get_D(),IMessagingO.New(i.runRpc,i.returnValue,i.returnExn,function(txt)
   {
    var pre;
    console.log(txt);
    pre=UI$1.detailsV().Get();
    UI$1.detailsV().Set(pre+(pre===""?"":"\n")+txt);
-  })):void 0;
+  }))):void 0;
  };
  Snap.WhenRun=function(snap,avail,obs)
  {
@@ -1790,6 +1809,10 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    }
   };
  };
+ Seq.collect=function(f,s)
+ {
+  return Seq.concat(Seq.map(f,s));
+ };
  Seq.distinctBy=function(f,s)
  {
   return{
@@ -1817,6 +1840,55 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
     },function()
     {
      o.Dispose();
+    });
+   }
+  };
+ };
+ Seq.concat=function(ss)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    var outerE;
+    outerE=Enumerator.Get(ss);
+    return new T.New(null,null,function(st)
+    {
+     var m;
+     while(true)
+      {
+       m=st.s;
+       if(Unchecked.Equals(m,null))
+       {
+        if(outerE.MoveNext())
+         {
+          st.s=Enumerator.Get(outerE.Current());
+          st=st;
+         }
+        else
+         {
+          outerE.Dispose();
+          return false;
+         }
+       }
+       else
+        if(m.MoveNext())
+         {
+          st.c=m.Current();
+          return true;
+         }
+        else
+         {
+          st.Dispose();
+          st.s=null;
+          st=st;
+         }
+      }
+    },function(st)
+    {
+     var x;
+     x=st.s;
+     !Unchecked.Equals(x,null)?x.Dispose():void 0;
+     !Unchecked.Equals(outerE,null)?outerE.Dispose():void 0;
     });
    }
   };
@@ -2069,8 +2141,28 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  Require=WasmLoad.Require=Runtime.Class({},Obj,Require);
  WsTranslator.dlls=function()
  {
+  return Arrays.ofSeq(List.ofSeq(Seq.delay(function()
+  {
+   return Seq.collect(function(f)
+   {
+    return Seq.append([f.$0],Seq.delay(function()
+    {
+     return[WsTranslator.fromDll2Meta(f).$0];
+    }));
+   },WsTranslator.justDlls());
+  })));
+ };
+ WsTranslator.fromDll2Meta=function(a)
+ {
+  return{
+   $:0,
+   $0:Strings.Replace(a.$0,".dll",".meta")
+  };
+ };
+ WsTranslator.justDlls=function()
+ {
   SC$4.$cctor();
-  return SC$4.dlls;
+  return SC$4.justDlls;
  };
  Arrays.choose=function(f,arr)
  {
@@ -2452,11 +2544,6 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    });
   };
  };
- SC$4.$cctor=function()
- {
-  SC$4.$cctor=Global.ignore;
-  SC$4.dlls=["/dlls/WebSharper.Main.dll","/dlls/WebSharper.Collections.dll","/dlls/WebSharper.Control.dll","/dlls/WebSharper.Web.dll","/dlls/WebSharper.Sitelets.dll","/dlls/WebSharper.UI.dll","/dlls/WebSharper.UI.Templating.Runtime.dll","/dlls/WebSharper.Data.dll"];
- };
  Seq.last=function(s)
  {
   var e,$1;
@@ -2605,6 +2692,35 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   this.r=[];
   this.init=1;
  },CancellationTokenSource);
+ SC$4.$cctor=function()
+ {
+  SC$4.$cctor=Global.ignore;
+  SC$4.justDlls=[{
+   $:0,
+   $0:"/dlls/WebSharper.Main.dll"
+  },{
+   $:0,
+   $0:"/dlls/WebSharper.Collections.dll"
+  },{
+   $:0,
+   $0:"/dlls/WebSharper.Control.dll"
+  },{
+   $:0,
+   $0:"/dlls/WebSharper.Web.dll"
+  },{
+   $:0,
+   $0:"/dlls/WebSharper.Sitelets.dll"
+  },{
+   $:0,
+   $0:"/dlls/WebSharper.UI.dll"
+  },{
+   $:0,
+   $0:"/dlls/WebSharper.UI.Templating.Runtime.dll"
+  },{
+   $:0,
+   $0:"/dlls/WebSharper.Data.dll"
+  }];
+ };
  HashSet=Collections.HashSet=Runtime.Class({
   Add:function(item)
   {
@@ -2693,7 +2809,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  {
   return WWorker.receiveMessage(WasmLoad.loadInThisThread,d);
  };
- Remoting.set_messaging(IMessagingO.New(function(h)
+ Remoting.messaging().set_D(IMessagingO.New(function(h)
  {
   return function(d)
   {

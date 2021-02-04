@@ -3,7 +3,7 @@
 #nowarn "1182"
 #nowarn "3180"
 #nowarn "52"
-////-d:FSharpStation1592724446410 -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1612100328464 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -39,7 +39,7 @@
 //#nowarn "3180"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1592724446410
+//#define FSharpStation1612100328464
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -55,7 +55,7 @@ namespace FsRoot
     
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
-    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+    ////#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
@@ -291,7 +291,26 @@ namespace FsRoot
                     let ofOption vO = 
                         match vO with
                         | Some v -> Seq.singleton v
-                        | None   -> Seq.empty
+                        | None   -> Seq.empty    
+                
+                    type SplitByOption = Exclude | IncludeFirst | IncludeSecond
+                
+                    let splitBy (f: 'a -> bool) opt (s: 'a seq) = //: 'a seq seq =
+                        (0, s)
+                        ||> Seq.mapFold(fun i a -> 
+                            match f a with
+                            | false         -> Some(a, i    ), i
+                            | true          ->
+                            (match opt with
+                            | Exclude       -> None          
+                            | IncludeFirst  -> Some(a, i    )
+                            | IncludeSecond -> Some(a, i + 1) 
+                            ), i + 1
+                        )
+                        |> fst
+                        |> Seq.choose   id
+                        |> Seq.groupBy snd
+                        |> Seq.map    (snd >> Seq.map fst)
                 
                 /// Extensions to Async
                 module Async =
@@ -741,6 +760,7 @@ namespace FsRoot
                     let inline sequenceSeq           sq = traverseSeq id sq
                     /// uses Async.RunSynchronously
                     /// handleError - handles individual error messages. true = continue, false = stop
+                    [< Inline "throw 'traverseSeqS cannot be used in JavaScript!'" >]
                     let traverseSeqS (f: 't->AsyncResult<'u, _>) handleError (t: 't seq)  = async {
                         let! ct = Async.CancellationToken
                         return seq {
@@ -844,7 +864,7 @@ namespace FsRoot
                         splitInTwoO cl sec
                         |> Option.map(fun (mid, aft) -> bef, mid, aft)
                     )
-                let contains     sub  (whole: string) = whole.Contains sub
+                let contains (sub:string)  (whole: string) = whole.Contains sub
                 let trim                  (s: string) = s.Trim()
                 let left  n (s:string) = s.Left  n
                 let right n (s:string) = s.Right n
@@ -2463,7 +2483,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1592724446410"
+                let mutable fsharpStationAddress = Address "FSharpStation1612100328464"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
