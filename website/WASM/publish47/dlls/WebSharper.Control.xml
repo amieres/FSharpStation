@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>WebSharper.Control</name></assembly>
+<members>
+<member name="T:WebSharper.Control.HotStream.HotStream`1">
+<summary>
+ Implementation for &quot;hot stream&quot;.
+ Subscribers to hot streams will only observe the latest
+ and future values.
+</summary>
+</member>
+</members>
+</doc>

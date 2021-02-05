@@ -1,31 +1,30 @@
 #nowarn "3242"
-////-d:FSharpStation1612100328464 -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1612100328464 -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
-//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\WsTranslator.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\FSharp.Compiler.Service.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Compiler.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Core.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Collections.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Main.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.JQuery.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Web.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Control.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\WsTranslator47.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\FSharp.Compiler.Service.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Compiler.dll"
 //#nowarn "3242"
 /// Root namespace for all code
 //#define FSharpStation1612100328464
@@ -50,6 +49,26 @@ namespace FsRoot
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
     
     #if WEBSHARPER
+    #if WEBSHARPER47
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461"
+    
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Collections.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Main.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.JQuery.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Web.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Control.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    #else
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
     
@@ -68,6 +87,7 @@ namespace FsRoot
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    #endif
     #endif
     #endif
     #if WEBSHARPER
@@ -132,6 +152,42 @@ namespace FsRoot
                 | __             -> printfn "%A" v
             
             //#define TEE
+            [< Inline "(function (n) { return n.getFullYear() + '-' + ('0'+(n.getMonth()+1)).slice(-2) + '-' +  ('0'+n.getDate()).slice(-2) + ' '+('0'+n.getHours()).slice(-2)+ ':'+('0'+n.getMinutes()).slice(-2)+ ':'+('0'+n.getSeconds()).slice(-2)+ ':'+('00'+n.getMilliseconds()).slice(-3) })(new Date(Date.now()))" >]
+            let nowStamp() = 
+                let t = System.DateTime.UtcNow // in two steps to avoid Warning: The value has been copied to ensure the original is not mutated
+                t.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
+            
+            let [<Inline>] inline traceT t v = tee (sprintf "%A" >> (fun s -> s.[..min 100 s.Length-1]) >> printfn "%s %s: %A" (nowStamp()) t) v
+            let [<Inline>] inline trace   v = traceT "trace" v
+            let [<Inline>] inline traceI  v = trace          v |> ignore
+            
+            module Log =
+                let [<Inline>] inline In     n f   =      (traceT (sprintf "%s in " n)) >> f
+                let [<Inline>] inline Out    n f   = f >> (traceT (sprintf "%s out" n))
+                let [<Inline>] inline InA    n f p = async { return! In  n f p }
+                let [<Inline>] inline OutA   n f p = async { return! Out n f p }
+                let [<Inline>] inline InOut  n     = In  n >> Out  n
+                let [<Inline>] inline InOutA n f p = async {
+                    let!   r = InA n f  p
+                    do         Out n id r |> ignore
+                    return r 
+                  }
+            
+                let [<Inline>] inline TimeIt n f p =
+                    printfn "%s Starting %s" (nowStamp()) n
+                    let start = System.DateTime.UtcNow.Ticks
+                    f p
+                    let elapsedSpan = new System.TimeSpan(System.DateTime.UtcNow.Ticks - start)
+                    printfn "%s Finished %s %0d:%02d:%02d.%03d" (nowStamp()) n (int elapsedSpan.TotalHours) elapsedSpan.Minutes elapsedSpan.Seconds elapsedSpan.Milliseconds
+            
+                let [<Inline>] inline TimeItA n f p = async {
+                    printfn "%s Starting %s" (nowStamp()) n
+                    let start = System.DateTime.UtcNow.Ticks
+                    do! f p
+                    let elapsedSpan = new System.TimeSpan(System.DateTime.UtcNow.Ticks - start)
+                    printfn "%s Finished %s %0d:%02d:%02d.%03d" (nowStamp()) n (int elapsedSpan.TotalHours) elapsedSpan.Minutes elapsedSpan.Seconds elapsedSpan.Milliseconds
+                }
+            
             type System.String with
                 member this.Substring2(from, n) = 
                     if   n    <= 0           then ""
@@ -240,13 +296,18 @@ namespace FsRoot
                     |> Seq.choose(fun (n,vO) -> vO |> Option.map(fun v -> n,v))
                     |> newPojo
             
-            //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
-            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\FShUIAssemblyData.dll"
-            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\FShUI.dll"
+            
+             // if WEBSHARPER47 then use the compileWASMLoader47 button otherwise use 45 button
+            //#define WEBSHARPER47
+            #if WEBSHARPER47
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\WsTranslator47.dll"
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\FSharp.Compiler.Service.dll"
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Compiler.dll"
+            #else
             //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\WsTranslator.dll"
             //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\FSharp.Compiler.Service.dll"
             //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Compiler.dll"
-            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\Facades\netstandard.dll"
+            #endif
             
             [< JavaScriptExport >]
             module WsTranslatorLoader =
@@ -256,6 +317,12 @@ namespace FsRoot
                 open WebSharper.UI.Html
             
                 open FsRoot.WsTranslator
+            
+            #if WEBSHARPER47
+                let WasmLoaderVersion = "47"
+            #else
+                let WasmLoaderVersion = "45"
+            #endif
             
                 [< Inline "(!$global.document)" >]
                 let isWorker = true
@@ -342,7 +409,7 @@ namespace FsRoot
                                 async {
                                     let md = getHeaderRpc headers
                                     ReturnQueue.add(md, (ok, err))
-                                    try 
+                                    try printfn "CustomXhrProvider %A %A" md data
                                         callRunRpc md data
                                     with e -> returnExnExn(md, e)
                                 } |> Async.Start
@@ -382,8 +449,11 @@ namespace FsRoot
                 module WasmLoad =
                     open WebSharper.Core.Resources
             
+            #if WEBSHARPER47
+                    let rootPath    = "/WASM/publish47/" 
+            #else        
                     let rootPath    = "/WASM/publish/"
-            
+            #endif
                     [< Require(typeof<BaseResource>, "//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js") >]
                     type Require() =
                         [< Inline "requirejs($files, $f1)" >]
@@ -426,7 +496,7 @@ namespace FsRoot
                     module FS =
                         [< Inline "$global.FS.mkdir($path)" >]
                         let mkdir path = X<_>
-                        [< Inline "$global.FS.createPreloadedFile($pathTo, $file, $pathFrom, $op1, $op21)">]
+                        [< Inline "$global.FS.createPreloadedFile($pathTo, $file, $pathFrom, $op1, $op2)">]
                         let createPreloadedFile(pathTo:string, file:string, pathFrom:string, op1:int, op2:int) = X<_>
             
                     module MONO =
@@ -534,7 +604,7 @@ namespace FsRoot
                         if wasmStatusV.Value <> WasmNotLoaded then printfn "Wasm is already %A" wasmStatusV.Value                   else
                         wasmStatusV.Set WasmLoading
                         printfn "Initiating WebWorker"
-                        Runtime.setScriptPath    <| FuncWithArgs(fun (_, f) -> "/WASM/publish/" +  f)
+                        Runtime.setScriptPath    <| FuncWithArgs(fun (_, f) -> rootPath +  f)
                         let w = new Worker(fun self ->
                             wasmStatusV.View     |> View.Sink(fun v -> self.PostMessage(WorkerWasmStatus v) )
                             self.Onmessage       <- System.Action<_> (WWorker.receiveMessage loadInThisThread)
@@ -636,7 +706,11 @@ namespace FsRoot
                                     do! Async.Sleep 2000
                             try  do! f p
                             with e -> printfn "%A" e
-                        } |> Async.Start
+                        }
+            
+                    let inline callWasmTimed nm f p =
+                        Log.TimeItA nm (callWasmA f) p
+                        |> Async.Start
             
                     let getParms() = ("WasmTest", ("fsc.exe\n" + optsV.Value).Split '\n' |> Array.filter (fun s -> s.Trim() <> ""), codeV.Value)
                     let showMessages name f (msgsW:View<_[]>) =
@@ -681,8 +755,8 @@ namespace FsRoot
             
                     let mainDoc() =
                         div     [] [
-                            h1  [] [ text     <| "HELLO WASM!"           ]
-                            h2  [] [ textView <| V(sprintf "%A" wasmStatusV.V) ]
+                            h1  [] [ text     <|   sprintf "HELLO WASM%s!" WasmLoaderVersion ]
+                            h2  [] [ textView <| V(sprintf "%A"            wasmStatusV.V)    ]
                             span [] [
                                 Doc.Button "Load as Worker"       [] (fun () -> WasmLoad.loadWasmInWorker debugV.Value optsV.Value )
                                 Doc.Button "Load in Main thread"  [] (fun () -> WasmLoad.loadInThisThread debugV.Value optsV.Value )
@@ -695,12 +769,11 @@ namespace FsRoot
                                 Doc.InputArea [] optsV
                             ]
                             span [] [
-                                Doc.Button "Check"                [] (fun () -> callWasmA parseAndCheckProject (getParms()))
+                                Doc.Button "Check"                [] (fun () -> clean()
+                                                                                callWasmTimed "Check"     parseAndCheckProject (getParms()) )
                                 Doc.Button "Translate"            [] (fun () -> clean()
-                                                                                printfn "Initiating translation:"
-                                                                                callWasmA translateToJs        (getParms())
-                                                                      )
-                                Doc.Button "Dir"                  [] (fun () -> callWasmA Rpc.dirRpc "/")
+                                                                                callWasmTimed "Translate" translateToJs        (getParms()) )
+                                Doc.Button "Dir"                  [] (fun () -> callWasmTimed "Dir"       Rpc.dirRpc "/"                    )
                                 Doc.Button "Clean"                [] (fun () -> clean() )
                             ]
                             showMessages "Fsc Messages" (sprintf "%A") fsErrsV.View

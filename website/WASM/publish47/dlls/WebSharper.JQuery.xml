@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>WebSharper.JQuery</name>
+  </assembly>
+  <member name="M:WebSharper.JQuery.Fx.Extend(System.Object)">
+    <summary>Merge the contents of an object onto the jQuery prototype to provide new jQuery instance methods.</summary>
+  </member>
+  <member name="P:WebSharper.JQuery.Fx.Off">
+    <summary>Globally disable all animations</summary>
+  </member>
+  <member name="P:WebSharper.JQuery.Event.AsDomEvent">
+    <summary>Casts this JQuery.Event to a Dom.Event</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.#ctor(System.Action)">
+    <summary>Binds a function to be executed when the DOM has finished loading.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.#ctor(System.String,System.Object)">
+    <summary>Creates DOM elements on the fly from the provided string of raw HTML.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.#ctor(System.String,WebSharper.JavaScript.Dom.Document)">
+    <summary>Creates DOM elements on the fly from the provided string of raw HTML.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.#ctor">
+    <summary>This signature does not accept any arguments.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.#ctor(WebSharper.JQuery.JQuery)">
+    <summary>Accepts an existing jQuery object to clone.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.#ctor(System.Object)">
+    <summary>Accepts a plain object to wrap in a jQuery object.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.#ctor(WebSharper.JavaScript.Dom.Node[])">
+    <summary>Accepts an array containing a set of DOM elements to wrap in a jQuery object.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.#ctor(WebSharper.JavaScript.Dom.Node)">
+    <summary>Accepts a DOM element to wrap in a jQuery object.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.#ctor(System.String,WebSharper.JavaScript.Dom.Element)">
+    <summary>Accepts a string containing a CSS selector and a DOM Element, Document, or jQuery to use as context.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.#ctor(System.String,WebSharper.JQuery.JQuery)">
+    <summary>Accepts a string containing a CSS selector and a DOM Element, Document, or jQuery to use as context.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.#ctor(System.String)">
+    <summary>Accepts a string containing a CSS selector which is then used to match a set of elements.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.GlobalEval(System.String)">
+    <summary>Execute some JavaScript code globally</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.Of(System.Action)">
+    <summary>Binds a function to be executed when the DOM has finished loading.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.Of(System.String,System.Object)">
+    <summary>Creates DOM elements on the fly from the provided string of raw HTML.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.Of(System.String,WebSharper.JavaScript.Dom.Document)">
+    <summary>Creates DOM elements on the fly from the provided string of raw HTML.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.Of">
+    <summary>This signature does not accept any arguments.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.Of(WebSharper.JQuery.JQuery)">
+    <summary>Accepts an existing jQuery object to clone.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.Of(System.Object)">
+    <summary>Accepts a plain object to wrap in a jQuery object.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.Of(WebSharper.JavaScript.Dom.Node[])">
+    <summary>Accepts an array containing a set of DOM elements to wrap in a jQuery object.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.Of(WebSharper.JavaScript.Dom.Node)">
+    <summary>Accepts a DOM element to wrap in a jQuery object.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.Of(System.String,WebSharper.JavaScript.Dom.Element)">
+    <summary>Accepts a string containing a CSS selector and a DOM Element, Document, or jQuery to use as context.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.Of(System.String,WebSharper.JQuery.JQuery)">
+    <summary>Accepts a string containing a CSS selector and a DOM Element, Document, or jQuery to use as context.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.Of(System.String)">
+    <summary>Accepts a string containing a CSS selector which is then used to match a set of elements.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.Delegate(System.String,WebSharper.JQuery.Event,Microsoft.FSharp.Core.FSharpFunc{WebSharper.JavaScript.Dom.Element,Microsoft.FSharp.Core.FSharpFunc{WebSharper.JQuery.Event,Microsoft.FSharp.Core.Unit}})">
+    <summary>Attach a handler to one or more events for all elements that match the selector, now or in the future, based on a specific set of root elements.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.Delegate(System.String,WebSharper.JQuery.Event,WebSharper.JavaScript.ThisAction{WebSharper.JavaScript.Dom.Element,WebSharper.JQuery.Event})">
+    <summary>Attach a handler to one or more events for all elements that match the selector, now or in the future, based on a specific set of root elements.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.Delegate(System.String,WebSharper.JQuery.Event,WebSharper.JavaScript.Object{System.String},Microsoft.FSharp.Core.FSharpFunc{WebSharper.JavaScript.Dom.Element,Microsoft.FSharp.Core.FSharpFunc{WebSharper.JQuery.Event,Microsoft.FSharp.Core.Unit}})">
+    <summary>Attach a handler to one or more events for all elements that match the selector, now or in the future, based on a specific set of root elements.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.Delegate(System.String,WebSharper.JQuery.Event,WebSharper.JavaScript.Object{System.String},WebSharper.JavaScript.ThisAction{WebSharper.JavaScript.Dom.Element,WebSharper.JQuery.Event})">
+    <summary>Attach a handler to one or more events for all elements that match the selector, now or in the future, based on a specific set of root elements.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.Error(Microsoft.FSharp.Core.FSharpFunc{WebSharper.JavaScript.Dom.Element,Microsoft.FSharp.Core.FSharpFunc{WebSharper.JQuery.Event,Microsoft.FSharp.Core.Unit}})">
+    <summary>Bind an event handler to the "error" JavaScript event.</summary>
+  </member>
+  <member name="M:WebSharper.JQuery.JQuery.Error(WebSharper.JavaScript.ThisAction{WebSharper.JavaScript.Dom.Element,WebSharper.JQuery.Event})">
+    <summary>Bind an event handler to the "error" JavaScript event.</summary>
+  </member>
+</doc>

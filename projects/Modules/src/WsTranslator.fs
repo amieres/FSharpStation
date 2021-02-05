@@ -613,8 +613,8 @@ namespace FsRoot
                 match cache.TryGetValue t with
                 | true, e -> e
                 | _ -> raise (NoEncodingException t)
-            override this.Decode r = self.Value.Decode r
-            override this.Encode(w, x) = self.Value.Encode(w, x)
+            override this.Decode r = self.Force().Decode r
+            override this.Encode(w, x) = self.Force().Encode(w, x)
             override this.Type = t
     
         let rec getCachedEncoder (cache: Dictionary<_,_>) t =
@@ -647,11 +647,28 @@ namespace FsRoot
         open System.IO
         open Microsoft.FSharp.Compiler.SourceCodeServices
     
+        #if   EXECMODE_INTERP
+        let   ExecMode = "INTERP"
+        #else
+        #if   EXECMODE_AOTINTERP
+        let   ExecMode = "AOTINTERP"
+        #else
+        #if   EXECMODE_AOT
+        let   ExecMode = "AOT"
+        #else
+        let   ExecMode = "NONE??"
+        #endif
+        #endif
+        #endif
+    
+        printfn "WsTranslator Running in mode: %s" ExecMode
+    
         [< WebSharper.JavaScript >]
         type Dependency<'T>(def:'T) = member val D = def with get, set
     
         let  fsharpChecker = lazy (
                 printfn "Loading FCS. Hold on, this will take a while..."
+                System.Environment.SetEnvironmentVariable("FSHARP_COMPILER_BIN", "/managed")
                 let checker = FSharpChecker.Create( keepAssemblyContents = true)
                 printfn "FCS loaded!"
                 checker
@@ -660,7 +677,7 @@ namespace FsRoot
         let startLoading (l:Lazy<_>) = ()
             //async {
             //    do! Async.Sleep 40
-            //    let _ = l.Value
+            //    let _ = l.Force()
             //    ()
             //} |> Async.Start
     
@@ -771,9 +788,9 @@ namespace FsRoot
             , comp.Errors, comp.Warnings
     
         let parseAndCheckProject projectName opts code = async {
-            let  projOpts = fsharpChecker.Value.GetProjectOptionsFromCommandLineArgs(projectName, opts)
+            let  projOpts = fsharpChecker.Force().GetProjectOptionsFromCommandLineArgs(projectName, opts)
             File.WriteAllText(projOpts.OtherOptions.[1], code)
-            let! results = fsharpChecker.Value.ParseAndCheckProject projOpts
+            let! results = fsharpChecker.Force().ParseAndCheckProject projOpts
             return results
         }
     
@@ -851,7 +868,7 @@ namespace FsRoot
                     let wsRes =
                         if results.HasCriticalErrors then None else
                         startLoading metadataL
-                        translateFromAst "TestCompile" metadataL.Value results
+                        translateFromAst "TestCompile" (metadataL.Force()) results
                         |> Some
                     Console.WriteLine "WsErrors:"
                     match wsRes with
@@ -902,7 +919,7 @@ namespace FsRoot
                   //do  checkGZip()   // this fails in AOT and AOT-interp
                   //do  dirWasm "/"   // this works
                   //do! testCompile() // this fails in AOT and AOT-interp
-                    let! wsResp = Remoting.wsServer.Value.HandleRequest wsReq
+                    let! wsResp = Remoting.wsServer.Force().HandleRequest wsReq
                     Remoting.returnValue(header, wsResp.Content)
                 with e -> 
                     Remoting.returnExn  (header, sprintf "%A" e)
@@ -922,7 +939,7 @@ namespace FsRoot
                 let wsRes =
                     if results.HasCriticalErrors then None else
                     startLoading metadataL
-                    translateFromAst projectName metadataL.Value results
+                    translateFromAst projectName (metadataL.Force()) results
                     |> Some
                 return results.Errors, wsRes
             }

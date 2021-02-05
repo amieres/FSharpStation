@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1611569356546 -d:WEBSHARPER
+////-d:FSharpStation1612100328464 -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -24,7 +24,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1611569356546
+//#define FSharpStation1612100328464
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -46,6 +46,26 @@ namespace FsRoot
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
     
     #if WEBSHARPER
+    #if WEBSHARPER47
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461"
+    
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Collections.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Main.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.JQuery.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Web.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Control.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    #else
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
     
@@ -64,6 +84,7 @@ namespace FsRoot
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    #endif
     #endif
     #endif
     #if WEBSHARPER
@@ -527,7 +548,23 @@ namespace FsRoot
                     open System.Reflection
             
                     type ReferenceLoader() =
-                        inherit System.MarshalByRefObject()
+            
+                        let LoadReflected(a: System.Reflection.Assembly) =
+                            if a.FullName.StartsWith "System" then None else
+                                let n = "WebSharper.meta"
+                                if Array.exists ((=) n) (a.GetManifestResourceNames()) then
+                                    try
+                                        use s = a.GetManifestResourceStream n
+                                        Metadata.IO.MetadataEncoding.Decode(s) :?> Metadata.Info 
+                                        |> Some
+                                    with e ->
+                                        use s = a.GetManifestResourceStream n
+                                        Metadata.IO.MetadataEncoding.Decode(s, "4.7") :?> Metadata.Info 
+                                        |> Some
+            //                            failwithf "Failed to load metadata for: %s. Error: %s" a.FullName e.Message
+                                else
+                                    None
+                        //inherit System.MarshalByRefObject()
                         member this.MetaFromAsm(asmRef:string) =
                             let asmR  = System.IO.File.ReadAllBytes asmRef |> System.Reflection.Assembly.Load //ReflectionOnlyLoad
                             let jss   = asmR.GetManifestResourceNames() 
@@ -541,7 +578,7 @@ namespace FsRoot
                                         ) |> Seq.toArray
                             let asm   = System.IO.Path.GetFileNameWithoutExtension asmRef
                             let path  = System.IO.Path.GetDirectoryName asmRef
-                            let info  = Metadata.IO.LoadReflected asmR |> Option.defaultWith(fun () -> failwithf "Assembly not compiled with WebSharper: %s" asmRef)
+                            let info  = LoadReflected asmR |> Option.defaultWith(fun () -> failwithf "Assembly not compiled with WebSharper: %s" asmRef)
                             asmFromMeta asmR asm path info jss
             
                     let readDll asmRef  =

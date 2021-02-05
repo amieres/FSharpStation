@@ -1,14 +1,51 @@
-////-d:FSharpStation1592268759864 -d:TEE -d:WASMPACKAGER
+#nowarn "3242"
+////-d:FSharpStation1612100328464 -d:TEE -d:WASMPACKAGER -d:WEBSHARPER -d:WsTranslatorWASM
+////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\src"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Reactive\lib\net46\System.Reactive.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Control.Reactive\lib\net46\FSharp.Control.Reactive.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/Modules/bin/FsCompileDll.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Data\lib\net461\WebSharper.Data.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\FShUIAssemblyData.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\WebSharper.Core.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\WebSharper.Compiler.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\WebSharper.Compiler.FSharp.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\System.Reflection.Metadata.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\FSharp.Compiler.Service.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\Mono.Cecil.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\Mono.Cecil.Pdb.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\Mono.Cecil.Mdb.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40\Owin.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/Modules/bin/WsCompileDll.dll"
+//#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1592268759864
+//#define FSharpStation1612100328464
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -24,12 +61,32 @@ namespace FsRoot
     
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
-    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+    ////#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
     
     #if WEBSHARPER
+    #if WEBSHARPER47
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461"
+    
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Collections.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Main.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.JQuery.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Web.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Control.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    #else
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
     
@@ -48,6 +105,7 @@ namespace FsRoot
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    #endif
     #endif
     #endif
     #if WEBSHARPER
@@ -249,7 +307,26 @@ namespace FsRoot
                     let ofOption vO = 
                         match vO with
                         | Some v -> Seq.singleton v
-                        | None   -> Seq.empty
+                        | None   -> Seq.empty    
+                
+                    type SplitByOption = Exclude | IncludeFirst | IncludeSecond
+                
+                    let splitBy (f: 'a -> bool) opt (s: 'a seq) = //: 'a seq seq =
+                        (0, s)
+                        ||> Seq.mapFold(fun i a -> 
+                            match f a with
+                            | false         -> Some(a, i    ), i
+                            | true          ->
+                            (match opt with
+                            | Exclude       -> None          
+                            | IncludeFirst  -> Some(a, i    )
+                            | IncludeSecond -> Some(a, i + 1) 
+                            ), i + 1
+                        )
+                        |> fst
+                        |> Seq.choose   id
+                        |> Seq.groupBy snd
+                        |> Seq.map    (snd >> Seq.map fst)
                 
                 /// Extensions to Async
                 module Async =
@@ -417,6 +494,7 @@ namespace FsRoot
                     let inline sequenceSeq           sq = traverseSeq id sq
                     /// uses Async.RunSynchronously
                     /// handleError - handles individual error messages. true = continue, false = stop
+                    [< Inline "throw 'traverseSeqS cannot be used in JavaScript!'" >]
                     let traverseSeqS (f: 't->AsyncResult<'u, _>) handleError (t: 't seq)  = async {
                         let! ct = Async.CancellationToken
                         return seq {
@@ -586,6 +664,7 @@ namespace FsRoot
                         let spaceaft            = g.spaceaft many
                         let inline listof x sep = l1.listof x sep |> opt
             
+                    let repl    n = Seq.replicate n >> String.concat ""
                     let either patterns = patterns |> String.concat "|" |> nocapt
                     let word      = sprintf "\\b%s\\b"
                     let oneof     = sprintf "[%s]"
@@ -600,6 +679,8 @@ namespace FsRoot
                     let ident      = letter + (either [letter ; digit] |> l.many0) |> word
                     let dottedid   = e1.listof ident (e0.spaceaft "\.")
                     let typename   = dottedid + opt (@"<" + e1.listof dottedid (e0.spaceaft ",") + "\>")
+                    /// match whole string
+                    let full       = sprintf "^%s$"
             
                     let regmatch regex = function Regex regex ms -> Some ms |_-> None
             
@@ -789,9 +870,157 @@ namespace FsRoot
                     shell.RunOutputToFile file 
                 
                 
+        /// Essentials that run in Javascript (WebSharper)
+        //#define WEBSHARPER 
+        [< JavaScript ; AutoOpen >]
+        module LibraryJS =
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Data\lib\net461\WebSharper.Data.dll"
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.dll"
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Data\lib\net45\FSharp.Data.DesignTime.dll"
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
+            
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\FShUIAssemblyData.dll"
+            
+            [< JavaScriptExport >]
+            module FShUI_AssemblyData2 =
+                open FsRoot.LibraryJS.FShUI_AssemblyData
+                open FSharp.Data
+            
+                type AsmJson = JsonProvider<"""
+                    { "asName"            : "ss"
+                    , "dependencies"      : ["ref1"]
+                    , "resources"         : ["res"]
+                    , "modules"           : 
+                        [{ "moName"        : "mm"
+                        , "methods"       : 
+                            [{ "meName"    : "me"
+                            , "isField"   : 1
+                            , "type"      : 
+                                { "tName" : "tn"
+                                , "asm"   : "asm"
+                                }
+                            , "parms" :
+                                [{ "tName" : "tn"
+                                , "asm"   : "asm"
+                                }]
+                            }]
+                        }]
+                    , "jsModules" :
+                                [{ "jsName" : "jn"
+                                , "code"   : "code"
+                                }]
+                    }""", RootName="asm">
+            
+                [< JavaScript false ; AutoOpen >]
+                module CreateJson =
+                    let typeToJson (ty: TypeRef) =
+                        AsmJson.Type(   tName        = ty.name.Id,
+                                        asm          = ty.asm .Id
+                        )
+            
+                    let jsToJson   (js: string, code: JSCode) =
+                        AsmJson.JsModule(jsName      = js,
+                                            code        = code.Id
+                        )
+            
+                    let methodToJson (me: MethodDef) =
+                        AsmJson.Method( meName       = me.name.Id,
+                                        isField      = (if me.isField then 1 else 0           ),
+                                        ``type``     = ( typeToJson me.retType                ),
+                                        parms        = (me.parms |> Array.map typeToJson      ) 
+                        )
+            
+                    let moduleToJson (md: ModuleDef) =
+                        AsmJson.Module( moName       = md.name.Id,
+                                        methods      = (md.methods |> Array.map methodToJson)
+                        )
+            
+                    let asmToJson (asmDef:AssemblyDef) =
+                        AsmJson.Asm(    asName       = asmDef.name      .Id,
+                                        jsModules    = (asmDef.javaScripts  |> Array.map jsToJson ),
+                                        dependencies = (asmDef.dependencies |> Array.map (fun r -> r.Id)),
+                                        resources    = (asmDef.resources    |> Array.map (fun r -> r.Id)),
+                                        modules      = (asmDef.modules      |> Array.map moduleToJson)
+                        )
+            
+                    [< JavaScript false >]
+                    let writeAsm fname (asm:AssemblyDef) =
+                        System.IO.File.WriteAllText(fname, (asmToJson asm).JsonValue.ToString())
+                        
+                    [< JavaScript false >]
+                    let convertDll fin fout = CreateAsm.readDll fin |> writeAsm fout
+            
+            (*
+            
+            module Test =
+                open FsRoot
+                open FShUI_AssemblyData.CreateAsm
+                open FShUI_AssemblyData2
+            
+                let PathOut = @"D:\Abe\CIPHERWorkspace\FSharpStation\website\EPFileX\Assemblies\"
+                let Folder  = "/EPFileX/Assemblies/"
+            
+                let dlls = 
+                    [
+                        @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\FShUIAssemblyData.dll"
+                        //@"D:\Abe\CIPHERWorkspace\FSharpStation\website\EPFileX\Assemblies\Covid.dll"
+                        @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\WsTranslatorLoader.dll" //|> readDll |> printfn "%A"
+                        @"D:\Abe\CIPHERWorkspace\FSharpStation\bin\testing.dll"
+                        @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\WsTranslator.dll"
+                        @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
+                        @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
+                        @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
+                        @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+                        @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
+                        @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+                        @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+                        @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Data\lib\net461\WebSharper.Data.dll"
+                    ]
+                    //|> Seq.take 1
+            
+                dlls
+                |> Seq.iter (fun dll ->
+                    let fn = System.IO.Path.GetFileNameWithoutExtension dll
+                    convertDll dll (PathOut + fn + ".asm")
+                )
+            
+            //*)
+            
     
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/Modules/bin/FsCompileDll.dll"
+    //#cd @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\src"
+    
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Reactive\lib\net46\System.Reactive.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp.Control.Reactive\lib\net46\FSharp.Control.Reactive.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\WebSharper.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\WebSharper.Compiler.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\WebSharper.Compiler.FSharp.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\System.Reflection.Metadata.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\FSharp.Compiler.Service.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\Mono.Cecil.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\Mono.Cecil.Pdb.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\Mono.Cecil.Mdb.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40\Owin.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/Modules/bin/WsCompileDll.dll"
     //#define WASMPACKAGER
+    
+    //#cd @"..\projects\Modules\src"
+    //#define WsTranslatorWASM
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\FShUIAssemblyData.dll"
+    
     
     module WasmPackager =
         open FsRoot
@@ -812,13 +1041,16 @@ namespace FsRoot
             p.capt p.letter + p.lit ":"  |> r.regexReplaceGroups convertDrive
             >> r.replace1 [ p.lit @"\", "/" ]
     
-        let mutable toUnix = id
+        let mutable toUnix1 = id
+    
+        let toUnix v = toUnix1 v
     
         let flagArg   arg v = if v then "--" + arg else ""
         let boolArg   arg v = sprintf "--%s%s" (if v then "" else "no-") arg
         let stringArg arg v = if v <> "" then sprintf "--%s=%s" arg v else ""
         let fileArg   arg v = if v <> "" then sprintf "--%s=%s" arg (toUnix v) else ""
         let filesArg  arg v = v |> List.map Path.GetFileNameWithoutExtension |> String.concat "," |> stringArg arg
+        let idArg     arg v = v
     
         let argExecMode  = 
             function 
@@ -851,8 +1083,9 @@ namespace FsRoot
         let wpkHelp           = CommArg.New("help"           , true , flagArg   "help"                     ) // Show command arguments
         let wpkExecMode       = CommArg.New("execMode"       , true , argExecMode                          ) //  
         let wpkPrefix         = CommArg.New("prefix"         , true , stringArg "prefix"                   ) // Set the input assembly prefix to 'x' (default to the current directory )
-        let wpkOut            = CommArg.New("out"            , true , fileArg   "out"                      ) // out           Set the output directory to 'x' (default to the current directory )
+        let wpkOut            = CommArg.New("wpkOut"         , true , fileArg   "out"                      ) // out           Set the output directory to 'x' (default to the current directory )
         let wpkMonoSdkdir     = CommArg.New("mono-sdkdir"    , true , fileArg   "mono-sdkdir"              ) // mono-sdkdir=x Set the mono sdk directory to 'x'
+        let wpkEmscriptSdkdir = CommArg.New("emscript-sdkdir", true , fileArg   "emscripten-sdkdir"        ) // mono-sdkdir=x Set the mono sdk directory to 'x'
         let wpkDeploy         = CommArg.New("deploy"         , true , fileArg   "deploy"                   ) // deploy        Set the deploy prefix to 'x' (default to 'managed'  )
         let wpkVfs            = CommArg.New("vfs"            , true , fileArg   "vfs"                      ) // vfs           Set the VFS prefix to 'x' (default to 'managed'  )
         let wpkTemplate       = CommArg.New("template"       , true , stringArg "template"                 ) // template      Set the template name to  'x' (default to 'runtime.js'       )
@@ -880,6 +1113,10 @@ namespace FsRoot
     
         let wpkConvertToUnix  = CommArg.New("toUnix"         , true , flagArg   "toUnix"                   ) // convert file names to unix
     
+        let wpkPreCommand     = CommArg.New("preCmd"         , false, idArg     "preCmd"                   ) // command to be executed before
+        let wpkPostCommand    = CommArg.New("postCmd"        , false, idArg     "postCmd"                  ) // command to be executed before
+        
+    
         let wpkIds = Set [
             //wpkPackagerDir   .CommArg.cargId DO NOT include this parameter as a parameter for packager
             // wpkConvertToUnix
@@ -893,6 +1130,7 @@ namespace FsRoot
             wpkPrefix        .CommArg.cargId
             wpkOut           .CommArg.cargId
             wpkMonoSdkdir    .CommArg.cargId
+            wpkEmscriptSdkdir.CommArg.cargId
             wpkDeploy        .CommArg.cargId
             wpkVfs           .CommArg.cargId
             wpkTemplate      .CommArg.cargId
@@ -923,30 +1161,38 @@ namespace FsRoot
     
         let invokePackager() = FusionM.fusion {
             let! unix   = getBoolRm false wpkConvertToUnix
-            toUnix     <- if unix then toUnix0 else id
+            toUnix1    <- if unix then toUnix0 else id
             let! exec   = buildArgRm wpkPackagerDir
-            let! ops    = argumentsRm      isWpk   
-            let  ops2   = ops |> String.concat "  "
+            let! ops    = argumentsRm      isWpk
+            let! pres   = argumentsRm  (fun (arg,_) -> arg.cargId = wpkPreCommand .CommArg.cargId)
+            let! posts  = argumentsRm  (fun (arg,_) -> arg.cargId = wpkPostCommand.CommArg.cargId)   
+            let  ops2   = ops   |> String.concat "  "
+            let  pres2  = pres  |> String.concat "\n"
+            let  posts2 = posts |> String.concat "\n"
             let! show   = getBoolRm false FsCode.intShowArgs
             if unix then 
-                return sprintf "copy paste in Unix:\n\nmono %s %s"  exec ops2 
+                return sprintf "copy paste in Unix (run WSL as Administrator):\n\n%s\nmono %s %s\n%s\n" pres2 exec ops2 posts2
             else
                 if show then printfn "%s %s"  exec ops2
-                return RunProcess.runToFinish exec ops2
+                let txt  = RunProcess.runToFinish exec ops2
+                if txt.Contains "Could not find a part of the path" then
+                    printfn "\n\nTypical packager error. Trying again...\n"
+                    RunProcess.runToFinish exec ops2 |> ignore
+                return  "Success!"
         }
     
         let compileAndPackage show snpName = fusion {
             printfn "in compileAndPackage"
-            let! info  = FsCompileDll.compileSnippetRm show snpName
+            let! info  = WsCompileDll.compileSnippetRm show snpName
             let  dirs  = info.assemblies |> Seq.map System.IO.Path.GetDirectoryName |> Seq.append info.prepIs |> Seq.distinct |> Seq.filter (fun s -> s.Trim() <> "")
             let! out   = ofFusionM <| getValueRm FsCode.fscOutput
             do!          ofFusionM <| addPairsRm (dirs |> Seq.map (fun v -> wpkSearchPath /= v))
             do!          ofFusionM <| addPairsRm (seq [
-                                        wpkDll         /= getValueRm FsCode.fscOutput
-                                        wpkPackagerDir /= @"D:\Abe\CIPHERWorkspace\FSharpStation/../Repos/WasmRepo/wasm-sdk"
-                                        wpkOut         /= @"D:\Abe\CIPHERWorkspace\FSharpStation/website/wasm/publish"
-                                        wpkDebug       /= true
-                                        wpkDebugrt     /= true
+                                        wpkDll              /= getValueRm FsCode.fscOutput
+                                        wpkPackagerDir      /= @"D:\Abe\CIPHERWorkspace\FSharpStation/../Repos/WasmRepo/wasm-sdk"
+                                        wpkEmscriptSdkdir   /= @"D:\Abe\CIPHERWorkspace\FSharpStation/../mono/sdks/builds/toolchains/emsdk"
+                                        wpkDebug            /= true
+                                        wpkDebugrt          /= true
                                     ])
             let! res   = ofFusionM <| invokePackager()
             return res
@@ -968,20 +1214,134 @@ namespace FsRoot
             invokePackager() 
             |> FusionM.iterReader print print args
     
-        let packager_WsTranslator parmSnpPath =
-            CommArgCollection[
-                wpkPreloadFile   /= @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\buildFStation\WsTranslator.fs"
-                wpkEmbedFile     /= @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\buildFStation\paket.dependencies"
-                wpkBuildDir      /= @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\buildFStation"
-                wpkConvertToUnix /= true
+        open FusionM.Operators
+    
+        let fromString (m:string) : ExecMode = 
+            match m.ToLower() with 
+            | "aot" -> ExecMode.Aot
+            | "aotinterp" -> ExecMode.AotInterp
+            | _ -> ExecMode.Interp
+            
+        let settingsWsTranslator45() =
+            [
+                wpkBuildDir       /= @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\buildFStation"
+                wpkOut            /= @"D:\Abe\CIPHERWorkspace\FSharpStation/website/wasm/publish"
+                fscDefine         /= "WASM45"
             ]
+    
+        let settingsWsTranslator47() =
+            [
+                wpkBuildDir       /= @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\build47"
+                wpkOut            /= @"D:\Abe\CIPHERWorkspace\FSharpStation/website/wasm/publish47"
+                intWsFscExe       /= @"D:\Abe\CIPHERWorkspace\FSharpStation\..\WebSharper4.7\packages\WebSharper.FSharp\tools\net461\wsfsc.exe"
+                fscDefine         /= "WASM47"
+                fscDefine         /= "WEBSHARPER47"
+            ]
+    
+        let packager_WsTranslator settings parmSnpPath modeS =
+            let mode = fromString modeS
+            printfn "MODE: %A" mode
+            [
+                yield fscDefine         /= ("EXECMODE_" + modeS.ToUpper())
+                yield intShowCommand    /= true
+                //yield wpkPreloadFile    /= @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\buildFStation\WsTranslator.fs"
+                //yield wpkEmbedFile      /= @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\buildFStation\paket.dependencies"
+                yield wpkCopy           /= Always
+                yield wpkExecMode       /= mode
+                yield wpkConvertToUnix  /= true
+    
+                yield wpkPreCommand     /= (rtn (toUnix >> sprintf "cd %s/..") <*> gS wpkBuildDir)
+                yield wpkPostCommand    /= (rtn (toUnix >> sprintf "cd %s"   ) <*> gS wpkBuildDir)
+                yield wpkPostCommand    /= "sed -i 's/monolinker.exe -out/monolinker.exe -x ..\/Linker.xml -out/' build.ninja"
+                yield wpkPostCommand    /= "sed -i 's/--gen-icall-table \$runtime_table \$in > \$out/--gen-icall-table \$runtime_table \$in | grep -v \"uint64_t ves_icall_System_Threading_Thread_VolatileRead8 (int);\" | grep -v \"void ves_icall_System_Threading_Thread_VolatileWrite8 (int,uint64_t);\" > \$out/' build.ninja"
+                yield wpkPostCommand    /= "ninja -v -j 1"
+    
+                if mode <> ExecMode.Interp then
+                    yield wpkAotAssemblies  /= [ "mscorlib.dll" ; "FSharp.Compiler.Service.dll" ; "System.dll" ; "FSharp.Core.dll" ; "WebSharper.Core.dll" ; "WebSharper.Compiler.FSharp.dll" ; "WebSharper.Compiler.dll" ; "WebSharper.Web.dll" ; "WsTranslator.dll"]
+                    yield wpkIlStrip        /= false
+                    yield wpkLinkIcalls     /= true
+                    yield wpkLinker         /= false
+                    yield wpkNativeStrip    /= false
+                    yield wpkDynamicRuntime /= true
+                  //yield wpkZlib           /= true  // it is not necessary, System.dll needs to be compiled
+                  //yield wpkBinding        /= false // this doesn't even start
+            ] @ settings()
+            |> CommArgCollection 
             |> wasmSnippetCompile true parmSnpPath
     
+    module WasmLoader =
+        open FsRoot
+    
+        open Library.CommArgRoot.CommArgCollection
+        open WsCompileDll
+        open FsCode
+        open FusionAsyncM
+        open System.IO
+        open LibraryJS.FShUI_AssemblyData
+        open FShUI_AssemblyData2
+    
+        //let  WASMDir   = "/WASM/publish/"
+    
+        let isWorker (fn:string) = fn.EndsWith ".worker.js"
+    
+        let processAsm fix dll fileTo =
+            printfn "extracting %s" dll
+            let asm =  CreateAsm.readDll dll
+            { asm with javaScripts = 
+                            asm.javaScripts 
+                            |> Array.filter(fst >> isWorker >> not)
+                            |> Array.map(fun (nm, code) -> nm, fix code.Id |> JSCode) }
+            |> writeAsm fileTo
+            asm
+    
+        let compileWASMLoader settings show snp =
+            fusion {
+                //FSharpStationClient.fsharpStationAddress <- WebSockets.Address "FSharpStation1612100328464"
+                let! _         = compileSnippetRm show snp
+                let! out       = ofFusionM <| getValueRm FsCode.fscOutput
+                let! name      = ofFusionM <| getValueRm FsCode.intName
+                let! wasmDir0  = ofFusionM <| getValueRm  WasmPackager.wpkOut
+                let  path      = "D:\Abe\CIPHERWorkspace\FSharpStation/website/" |> Path.GetFullPath
+                let  wasmDir   = (Path.GetFullPath wasmDir0).Replace(path, "/") |> WasmPackager.toUnix
+    
+                let fixJs name (txt:string) = txt.Replace(sprintf ".ScriptPath(%A," name, sprintf ".ScriptPath(\"..%s\"," wasmDir )        
+                let asm        = sprintf @"%s\EPFileX\Assemblies\%s.asm" path name
+                                |>  processAsm (fixJs name) out
+    
+                asm.javaScripts
+                |> Array.filter(fst >> isWorker)
+                |> Array.iter(fun (fn, JSCode js) ->
+                    let fileTo = path + wasmDir + "/" + fn
+                    printfn "converting worker %s" fileTo
+                    js.Split '\n'
+                    |> fun lines -> 
+                        match lines |> Seq.tryFindIndex(fun l -> l.Contains "importScripts" && l.Contains "require.min.js")
+                            ,lines |> Seq.tryFindIndex(fun l -> l.Contains "importScripts" && l.Contains "jquery") with
+                        | Some first, Some last -> Seq.append  lines.[..first]  lines.[last + 1..]
+                        |_                      -> Seq.ofArray lines
+                        |> String.concat "\n"
+                    |> fun txt   -> File.WriteAllText(fileTo, txt)
+                )
+            } 
+            |> mapReader (settings() |> CommArgCollection)
+            |> iterResult print id
+    
+    
+    
     (*
+    MODIFICATIONS TO
+    ninja.build:
+    rule linker
+      command = mono $tools_dir/monolinker.exe -x ../Linker.xml -out $builddir/linker-out -l none --deterministic --disable-opt unreachablebodies --exclude-feature com,remoting,etw $linker_args || exit 1; mono $tools_dir/wasm-tuner.exe --gen-empty-assemblies $out
+    
+    rule gen-icall-table
+      command = mono $tools_dir/wasm-tuner.exe --gen-icall-table $runtime_table $in | grep -v "uint64_t ves_icall_System_Threading_Thread_VolatileRead8 (int);" | grep -v "void ves_icall_System_Threading_Thread_VolatileWrite8 (int,uint64_t);" > $out
+    
     
     try
-      FsRoot.WasmPackager.packager_WsTranslator()
-    with e -> printfn "%A" e
+        FsRoot.Library2.FSharpStationClient.fsharpStationAddress <- FsRoot.Library2.WebSockets.Address "FSharpStation1611569356546"
+        FsRoot.WasmPackager.packager_WsTranslator "FsRoot/Applications/WsTranslator"
+    with e -> printfn "------%A" e
     
     module Test =
         open FsRoot

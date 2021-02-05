@@ -1,8 +1,7 @@
-(function()
+(function(Global)
 {
  "use strict";
- var Global,FsRoot,TestingJS,LibraryJS,WsTranslatorLoader,UI,WebSharper,UI$1,Client,Templates,Doc,IntelliFactory,Runtime;
- Global=self;
+ var FsRoot,TestingJS,LibraryJS,WsTranslatorLoader,UI,WebSharper,UI$1,Client,Templates,Doc,IntelliFactory,Runtime;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
  LibraryJS=FsRoot&&FsRoot.LibraryJS;
@@ -27,4 +26,4 @@
  {
   TestingJS.main();
  });
-}());
+}(self));

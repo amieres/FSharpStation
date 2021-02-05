@@ -1,8 +1,7 @@
-(function()
+(function(Global)
 {
  "use strict";
- var Global,FsRoot,Library,String,ParseO,LibraryJS,Pojo,WsTranslatorLoader,WasmStatus,Remoting,IMessagingO,ReturnQueue,WebSharper,Obj,CustomXhrProvider,WWorker,WasmLoad,Require,UI,SC$1,WsTranslatorLoader_GeneratedPrintf,GeneratedPrintf,Strings,List,Seq,Slice,Operators,Char,Unchecked,Utils,console,IntelliFactory,Runtime,Concurrency,Remoting$1,WsTranslator,Arrays,Enumerator,UI$1,Client,Templates,Doc,View,AjaxRemotingProvider,AttrProxy,DateUtil,Numeric,System,Guid,Var$1,Collections,Dictionary,Dependency;
- Global=self;
+ var FsRoot,Library,String,ParseO,LibraryJS,Pojo,WsTranslatorLoader,WasmStatus,Remoting,IMessagingO,ReturnQueue,WebSharper,Obj,CustomXhrProvider,WWorker,WasmLoad,Require,UI,SC$1,WsTranslatorLoader_GeneratedPrintf,GeneratedPrintf,Strings,List,Seq,Slice,Operators,Char,Unchecked,Utils,console,IntelliFactory,Runtime,Concurrency,Remoting$1,WsTranslator,Arrays,Enumerator,UI$1,Client,Templates,Doc,View,AjaxRemotingProvider,AttrProxy,Date,Math,DateUtil,Numeric,System,Guid,Var$1,Collections,Dictionary,Dependency;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
  String=Library.String=Library.String||{};
@@ -47,6 +46,8 @@
  View=UI$1&&UI$1.View;
  AjaxRemotingProvider=Remoting$1&&Remoting$1.AjaxRemotingProvider;
  AttrProxy=UI$1&&UI$1.AttrProxy;
+ Date=Global.Date;
+ Math=Global.Math;
  DateUtil=WebSharper&&WebSharper.DateUtil;
  Numeric=WebSharper&&WebSharper.Numeric;
  System=Global.System;
@@ -512,6 +513,13 @@
     ReturnQueue.add(md,[ok,err]);
     return Concurrency.TryWith(Concurrency.Delay(function()
     {
+     (((Runtime.Curried3(function($1,$2,$3)
+     {
+      return $1("CustomXhrProvider "+Utils.prettyPrint($2)+" "+Utils.prettyPrint($3));
+     }))(function(s)
+     {
+      console.log(s);
+     }))(md))(data);
      Remoting.callRunRpc(md,data);
      return Concurrency.Zero();
     }),function(a)
@@ -666,7 +674,7 @@
      });
      self.IntelliFactory.Runtime.ScriptPath=function($1,$2)
      {
-      return"/WASM/publish/"+$2;
+      return WasmLoad.rootPath()+$2;
      };
      w=new Global.Worker(Runtime.ScriptPath("WsTranslatorLoader","WsTranslatorLoader.worker.js"));
      w.postMessage({
@@ -898,7 +906,7 @@
        return $1("Preloading "+Utils.toSafe($2));
       };
      }))(from);
-     self.FS.createPreloadedFile(dir,file,from,1,Global.$op21);
+     self.FS.createPreloadedFile(dir,file,from,1,1);
     }
   }
   finally
@@ -948,7 +956,13 @@
  UI.mainDoc=function()
  {
   var c,c$1;
-  return Doc.Element("div",[],[Doc.Element("h1",[],[Doc.TextNode("HELLO WASM!")]),Doc.Element("h2",[],[Doc.TextView(View.Map(function($1)
+  return Doc.Element("div",[],[Doc.Element("h1",[],[Doc.TextNode((function($1)
+  {
+   return function($2)
+   {
+    return $1("HELLO WASM"+Utils.toSafe($2)+"!");
+   };
+  }(Global.id))(WsTranslatorLoader.WasmLoaderVersion()))]),Doc.Element("h2",[],[Doc.TextView(View.Map(function($1)
   {
    return(function($2)
    {
@@ -968,26 +982,23 @@
    WWorker.terminate();
   }),Doc.TextNode(" Debug:"),Doc.CheckBox([],UI.debugV())]),Doc.Element("div",[],[Doc.InputArea([],UI.codeV()),Doc.InputArea([],UI.optsV())]),Doc.Element("span",[],[Doc.Button("Check",[],function()
   {
-   UI.callWasmA(function(t)
+   UI.clean();
+   UI.callWasmTimed("Check",function(t)
    {
     return UI.parseAndCheckProject(t[0],t[1],t[2]);
    },UI.getParms());
   }),Doc.Button("Translate",[],function()
   {
    UI.clean();
-   WsTranslatorLoader.printfn(function($1)
-   {
-    return $1("Initiating translation:");
-   });
-   UI.callWasmA(function(t)
+   UI.callWasmTimed("Translate",function(t)
    {
     return UI.translateToJs(t[0],t[1],t[2]);
    },UI.getParms());
   }),Doc.Button("Dir",[],function()
   {
-   UI.callWasmA(function(d)
+   UI.callWasmTimed("Dir",function(d)
    {
-    return(new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.dirRpc:-1181784350",[d]);
+    return(new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.dirRpc:-1181784350",[d]);
    },"/");
   }),Doc.Button("Clean",[],function()
   {
@@ -1024,7 +1035,7 @@
   b=null;
   return Concurrency.Delay(function()
   {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.translateFsToJsRpc:-435757094",[projectName,opts,code]),function(a)
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.translateFsToJsRpc:488677094",[projectName,opts,code]),function(a)
    {
     var wsO,asmO;
     wsO=a[1];
@@ -1039,7 +1050,7 @@
   b=null;
   return Concurrency.Delay(function()
   {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator:FsRoot.WsTranslator+Rpc.parseAndCheckProjectRpc:-1474163089",[projectName,opts,code]),function(a)
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.parseAndCheckProjectRpc:-456933061",[projectName,opts,code]),function(a)
    {
     var a$1;
     UI.fsErrsV().Set(Arrays.ofSeq(a[0]));
@@ -1074,10 +1085,50 @@
    return Strings.Trim(s)!=="";
   },Strings.SplitChars("fsc.exe\n"+UI.optsV().Get(),["\n"],0)),UI.codeV().Get()];
  };
+ UI.callWasmTimed=function(nm,f,p)
+ {
+  var b;
+  function f$1(p$1)
+  {
+   return UI.callWasmA(f,p$1);
+  }
+  Concurrency.Start((b=null,Concurrency.Delay(function()
+  {
+   var start,c;
+   (((Runtime.Curried3(function($1,$2,$3)
+   {
+    return $1(Utils.toSafe($2)+" Starting "+Utils.toSafe($3));
+   }))(function(s)
+   {
+    console.log(s);
+   }))(function(n)
+   {
+    return n.getFullYear()+"-"+("0"+(n.getMonth()+1)).slice(-2)+"-"+("0"+n.getDate()).slice(-2)+" "+("0"+n.getHours()).slice(-2)+":"+("0"+n.getMinutes()).slice(-2)+":"+("0"+n.getSeconds()).slice(-2)+":"+("00"+n.getMilliseconds()).slice(-3);
+   }(new Global.Date(Date.now()))))(nm);
+   start=(c=Date.now(),c*10000);
+   return Concurrency.Bind(f$1(p),function()
+   {
+    var elapsedSpan,c$1;
+    elapsedSpan=((c$1=Date.now(),c$1*10000)-start)/10000;
+    (((((((Runtime.Curried(function($1,$2,$3,$4,$5,$6,$7)
+    {
+     return $1(Utils.toSafe($2)+" Finished "+Utils.toSafe($3)+" "+Global.String($4)+":"+Utils.padNumLeft(Global.String($5),2)+":"+Utils.padNumLeft(Global.String($6),2)+"."+Utils.padNumLeft(Global.String($7),3));
+    },7))(function(s)
+    {
+     console.log(s);
+    }))(function(n)
+    {
+     return n.getFullYear()+"-"+("0"+(n.getMonth()+1)).slice(-2)+"-"+("0"+n.getDate()).slice(-2)+" "+("0"+n.getHours()).slice(-2)+":"+("0"+n.getMinutes()).slice(-2)+":"+("0"+n.getSeconds()).slice(-2)+":"+("00"+n.getMilliseconds()).slice(-3);
+    }(new Date(Date.now()))))(nm))(Operators.toInt(elapsedSpan/3600000)))(Math.floor(elapsedSpan/60000)%60))(Math.floor(elapsedSpan/1000)%60))(elapsedSpan%1000);
+    return Concurrency.Zero();
+   });
+  })),null);
+ };
  UI.callWasmA=function(f,p)
  {
   var b;
-  Concurrency.Start((b=null,Concurrency.Delay(function()
+  b=null;
+  return Concurrency.Delay(function()
   {
    return Concurrency.Combine(WsTranslatorLoader.wasmStatusV().Get().$===0?(WasmLoad.loadWasmInWorker(UI.debugV().Get(),UI.optsV().Get()),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
    {
@@ -1120,7 +1171,7 @@
      }));
     });
    }));
-  })),null);
+  });
  };
  UI.clean=function()
  {
@@ -1169,6 +1220,11 @@
  {
   SC$1.$cctor();
   return SC$1.wasmStatusV;
+ };
+ WsTranslatorLoader.WasmLoaderVersion=function()
+ {
+  SC$1.$cctor();
+  return SC$1.WasmLoaderVersion;
  };
  SC$1.$cctor=function()
  {
@@ -1290,6 +1346,7 @@
   SC$1["|Single|_|"]=ParseO.parseSingleO();
   SC$1["|Double|_|"]=ParseO.parseDoubleO();
   SC$1["|Guid|_|"]=ParseO.parseGuidO();
+  SC$1.WasmLoaderVersion="47";
   SC$1.wasmStatusV=Var$1.Create$1(WasmStatus.WasmNotLoaded);
   SC$1.originalProvider=Remoting$1.AjaxProvider();
   SC$1.queues=new Dictionary.New$5();
@@ -1324,7 +1381,7 @@
    Remoting.returnExn(t[0],t[1]);
   };
   SC$1.workerO=null;
-  SC$1.rootPath="/WASM/publish/";
+  SC$1.rootPath="/WASM/publish47/";
   SC$1.detailsV=Var$1.Create$1("");
   SC$1.fsErrsV=Var$1.Create$1([]);
   SC$1.wsErrsV=Var$1.Create$1([]);
@@ -1360,4 +1417,4 @@
  {
   return"{"+("FileName = "+Utils.prettyPrint($1.FileName))+"; "+("Start = "+("("+Utils.prettyPrint($1.Start[0])+", "+Utils.prettyPrint($1.Start[1])+")"))+"; "+("End = "+("("+Utils.prettyPrint($1.End[0])+", "+Utils.prettyPrint($1.End[1])+")"))+"}";
  };
-}());
+}(self));

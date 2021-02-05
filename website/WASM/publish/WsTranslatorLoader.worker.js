@@ -685,7 +685,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
        return $1("Preloading "+Utils.toSafe($2));
       };
      }))(from);
-     self.FS.createPreloadedFile(dir,file,from,1,Global.$op21);
+     self.FS.createPreloadedFile(dir,file,from,1,1);
     }
   }
   finally
@@ -893,6 +893,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   SC$1["|Single|_|"]=ParseO.parseSingleO();
   SC$1["|Double|_|"]=ParseO.parseDoubleO();
   SC$1["|Guid|_|"]=ParseO.parseGuidO();
+  SC$1.WasmLoaderVersion="45";
   SC$1.wasmStatusV=Var$1.Create$1(WasmStatus.WasmNotLoaded);
   SC$1.originalProvider=Remoting$1.AjaxProvider();
   SC$1.queues=new Dictionary.New$5();

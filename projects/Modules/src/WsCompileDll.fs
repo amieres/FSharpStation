@@ -61,6 +61,26 @@ namespace FsRoot
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
     
     #if WEBSHARPER
+    #if WEBSHARPER47
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461"
+    
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Collections.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Main.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.JQuery.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Web.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Control.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    #else
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
     
@@ -79,6 +99,7 @@ namespace FsRoot
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    #endif
     #endif
     #endif
     #if WEBSHARPER
@@ -1073,7 +1094,7 @@ namespace FsRoot
             [< AutoOpen >]
             module CommArgRoot =
                 open FusionM
-                open Operators
+                open FusionM.Operators
             
                 type CommArgId = CommArgId of System.Guid
                 
@@ -1142,6 +1163,7 @@ namespace FsRoot
                     let tryGetFloatORm    targ = tryFindArgORm   targ |>> (Option.map (fun (_, o) -> CommArg.getFloatR  targ o)) |>> Result.insertO >>= ofResultRM
                     let tryBuildArgORm    targ = tryFindArgORm   targ |>> (Option.map (fun (c, o) -> c.build                 o)) 
                     let findArgRm         targ = tryFindArgORm   targ >>= ofOption (argumentNotFound targ)
+                    let getValuesRm       targ = filterRm (fun (arg, _) ->  arg.cargId = (targ:TypedCommArg<'a>).CommArg.cargId ) >>= traverseSeq (snd >> CommArg.getVRm targ) 
                     let getValueRm        targ = tryGetValueORm  targ >>= ofOption (argumentNotFound targ)
                     let getIntRm          targ = tryGetIntORm    targ >>= ofOption (argumentNotFound targ)
                     let getStringRm       targ = tryGetStringORm targ >>= ofOption (argumentNotFound targ)
@@ -1765,6 +1787,7 @@ namespace FsRoot
                 let flagpm   p = flag "+" "-" p
             
                 let intRootDir       = NewString("RootDir"      , true , sprintf  "++root:%s"        )
+                let intWsFscExe      = NewString("WsFscExe"     , true , sprintf  "++WsFscExe:%s"    )
                 let intSnippet       = NewString("Snippet"      , true , sprintf  "++snippet:%s"     )
                 let intCreateDir     = NewBool  ("CreateDir"    , true , fun v ->  if v then "++createdirectory" else "")
                 let intDirectory     = NewString("Directory"    , true , sprintf  "++directory:%s"   )
@@ -1778,6 +1801,7 @@ namespace FsRoot
                 let intStaticLinkAll = NewBool  ("StaticLinkAll", true , flagpm   "++staticlinkall"  )
                 let intCopyAssem     = NewBool  ("CopyAssem"    , true , flagpm   "++copyassemblies" )
                 let intShowArgs      = NewBool  ("ShowArgs"     , true , flagpm   "++showargs"       )
+                let intShowCommand   = NewBool  ("ShowCommand"  , true , flagpm   "++showcommand"    )
                 let intRemLineDir    = NewBool  ("RemLineDir"   , true , flagpm   "++remlinedir"     )
                 
                 let internalArgs = 
@@ -1793,6 +1817,7 @@ namespace FsRoot
                         intStaticLinkAll.CommArg.cargId
                         intCopyAssem    .CommArg.cargId
                         intShowArgs     .CommArg.cargId
+                        intShowCommand  .CommArg.cargId
                     ]
             
                 let fscIOption     = NewString("IOption"    , false, sprintf "-I:%A"          )
@@ -1988,8 +2013,9 @@ namespace FsRoot
                 }
             
                 let prepareCodeRm (FsCode codeFs) = fusion {
-                    let  fs, directs                            = codeFs.Split '\n' |> separatePrepros |> getTopDirectives
-                    let  assembs, defines, prepIs, nowarns, cdO = separateDirectives directs
+                    let  fs, directs0                           = codeFs.Split '\n' |> separatePrepros |> getTopDirectives
+                    let! defines0                               = getValuesRm fscDefine |>> Seq.map PrepoDefine
+                    let  assembs, defines, prepIs, nowarns, cdO = Seq.append defines0 directs0 |> separateDirectives
                     let! args2                                  = prepOptionsRm (assembs, defines, prepIs)
                     do!                                           addPairsRm  args2
                     do!                                           processArgs fs assembs nowarns
@@ -2013,13 +2039,16 @@ namespace FsRoot
                 let compileRm() = fusion {
                     let  allArgIds  = Set.union WebSharpArgs FSharpArgs 
                     let! args       = ofFusionM <| argumentsRm (fun (arg,_) -> Set.contains arg.cargId allArgIds )
+                    let! show       = ofFusionM <| getBoolRm false intShowCommand
                     let! createDir  = ofFusionM <| getBoolRm false intCreateDir
                     if   createDir then let! site = ofFusionM <| getStringRm wscWebSite
                                         Directory.CreateDirectory(site) |> ignore
+                    let! compilerO  = ofFusionM <| tryGetStringORm intWsFscExe
+                    let  compiler   = compilerO |> Option.defaultValue @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\wsfsc.exe"
                     let! out, err   = args
                                       |> String.concat "  "
-                                      //|>! print
-                                      |> fun ops -> (new RunProcess.ShellEx(@"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\wsfsc.exe", ops, priorityClass = System.Diagnostics.ProcessPriorityClass.RealTime)).StartAndWaitR()
+                                      |>! if show then printfn "\n%s  %s\n" compiler else ignore
+                                      |> fun ops -> (new RunProcess.ShellEx(compiler, ops, priorityClass = System.Diagnostics.ProcessPriorityClass.RealTime)).StartAndWaitR()
                                       |> ofResult
                     do! (if out = "" then "Compiled!" else out + err) |> ResultMessage.Info |> FusionAsyncM.ofResultMessage
                 }
@@ -2587,6 +2616,7 @@ namespace FsRoot
                     + debugOptions()
                     + [
                         intShowArgs    /= show
+                        intShowCommand /= show
                         wscProjectType /= "library"
                         wscJsOutput    /= (gS intName     |>> (__ (+) ".js"))
                         wscProjectFile /= (gS intFileName |>> (fun f -> Path.GetDirectoryName f +/+ "wsconfig.json"))

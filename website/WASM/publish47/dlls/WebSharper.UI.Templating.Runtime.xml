@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>WebSharper.UI.Templating.Runtime</name></assembly>
+<members>
+<member name="T:WebSharper.UI.Templating.DynamicTemplate">
+<summary>
+ Create a template from the given HTML.
+ Fill more holes with .With() and finish it with .Doc().
+</summary>
+</member>
+<member name="F:WebSharper.UI.Templating.Runtime.Server.Runtime.templateWrappers">
+<summary>
+ Different nodes need to be wrapped in different container to be handled properly.
+ See http://krasimirtsonev.com/blog/article/Revealing-the-magic-how-to-properly-convert-HTML-string-to-a-DOM-element
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.WithAfterRender(System.String,Microsoft.FSharp.Quotations.FSharpExpr{Microsoft.FSharp.Core.FSharpFunc{WebSharper.JavaScript.Dom.Element,Microsoft.FSharp.Core.Unit}})">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,System.Boolean)">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,WebSharper.UI.Var{System.Boolean})">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,WebSharper.UI.Client.CheckedInput{System.Double})">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,System.Double)">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,WebSharper.UI.Var{WebSharper.UI.Client.CheckedInput{System.Double}})">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,WebSharper.UI.Var{System.Double})">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,WebSharper.UI.Client.CheckedInput{System.Int32})">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,System.Int32)">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,WebSharper.UI.Var{WebSharper.UI.Client.CheckedInput{System.Int32}})">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,WebSharper.UI.Var{System.Int32})">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,WebSharper.UI.Var{System.String})">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,Microsoft.FSharp.Quotations.FSharpExpr{Microsoft.FSharp.Core.FSharpFunc{WebSharper.JavaScript.Dom.Element,Microsoft.FSharp.Core.FSharpFunc{WebSharper.JavaScript.Dom.Event,Microsoft.FSharp.Core.Unit}}})">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,WebSharper.UI.Attr[])">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,System.Collections.Generic.IEnumerable{WebSharper.UI.Attr})">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,WebSharper.UI.Attr)">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,WebSharper.UI.Doc[])">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,System.Collections.Generic.IEnumerable{WebSharper.UI.Doc})">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,WebSharper.UI.Doc)">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,WebSharper.UI.View{System.String})">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(System.String,System.String)">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Runtime.Server.ProviderBuilder.With(WebSharper.UI.TemplateHole)">
+<summary>
+ Fill a hole of the template.
+</summary>
+</member>
+<member name="P:WebSharper.UI.Templating.Runtime.Server.TemplateEvent`2.Event">
+<summary>
+ The DOM event data.
+</summary>
+</member>
+<member name="P:WebSharper.UI.Templating.Runtime.Server.TemplateEvent`2.Target">
+<summary>
+ The DOM element targeted by this event.
+</summary>
+</member>
+<member name="P:WebSharper.UI.Templating.Runtime.Server.TemplateEvent`2.Vars">
+<summary>
+ The reactive variables of this template instance.
+</summary>
+</member>
+</members>
+</doc>

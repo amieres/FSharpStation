@@ -3,11 +3,16 @@
 #nowarn "1182"
 #nowarn "52"
 #nowarn "1178"
-////-d:FSharpStation1593735151845 -d:TEE -d:WEBSHARPER
+////-d:FSharpStation1612100328464 -d:TEE -d:WEBSHARPER
 ////#cd @"..\projects\Modules\src"
+//#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
+//#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
+//#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
@@ -36,7 +41,7 @@
 //#nowarn "52"
 //#nowarn "1178"
 /// Root namespace for all code
-//#define FSharpStation1593735151845
+//#define FSharpStation1612100328464
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -58,6 +63,26 @@ namespace FsRoot
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
     
     #if WEBSHARPER
+    #if WEBSHARPER47
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461"
+    
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Collections.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Main.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.JQuery.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Web.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Control.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    #else
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
     
@@ -76,6 +101,7 @@ namespace FsRoot
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    #endif
     #endif
     #endif
     #if WEBSHARPER
@@ -288,7 +314,26 @@ namespace FsRoot
                     let ofOption vO = 
                         match vO with
                         | Some v -> Seq.singleton v
-                        | None   -> Seq.empty
+                        | None   -> Seq.empty    
+                
+                    type SplitByOption = Exclude | IncludeFirst | IncludeSecond
+                
+                    let splitBy (f: 'a -> bool) opt (s: 'a seq) = //: 'a seq seq =
+                        (0, s)
+                        ||> Seq.mapFold(fun i a -> 
+                            match f a with
+                            | false         -> Some(a, i    ), i
+                            | true          ->
+                            (match opt with
+                            | Exclude       -> None          
+                            | IncludeFirst  -> Some(a, i    )
+                            | IncludeSecond -> Some(a, i + 1) 
+                            ), i + 1
+                        )
+                        |> fst
+                        |> Seq.choose   id
+                        |> Seq.groupBy snd
+                        |> Seq.map    (snd >> Seq.map fst)
                 
                 /// Extensions to Async
                 module Async =
@@ -842,7 +887,7 @@ namespace FsRoot
                         splitInTwoO cl sec
                         |> Option.map(fun (mid, aft) -> bef, mid, aft)
                     )
-                let contains     sub  (whole: string) = whole.Contains sub
+                let contains (sub:string)  (whole: string) = whole.Contains sub
                 let trim                  (s: string) = s.Trim()
                 let left  n (s:string) = s.Left  n
                 let right n (s:string) = s.Right n
@@ -1116,7 +1161,7 @@ namespace FsRoot
             [< AutoOpen >]
             module CommArgRoot =
                 open FusionM
-                open Operators
+                open FusionM.Operators
             
                 type CommArgId = CommArgId of System.Guid
                 
@@ -1185,6 +1230,7 @@ namespace FsRoot
                     let tryGetFloatORm    targ = tryFindArgORm   targ |>> (Option.map (fun (_, o) -> CommArg.getFloatR  targ o)) |>> Result.insertO >>= ofResultRM
                     let tryBuildArgORm    targ = tryFindArgORm   targ |>> (Option.map (fun (c, o) -> c.build                 o)) 
                     let findArgRm         targ = tryFindArgORm   targ >>= ofOption (argumentNotFound targ)
+                    let getValuesRm       targ = filterRm (fun (arg, _) ->  arg.cargId = (targ:TypedCommArg<'a>).CommArg.cargId ) >>= traverseSeq (snd >> CommArg.getVRm targ) 
                     let getValueRm        targ = tryGetValueORm  targ >>= ofOption (argumentNotFound targ)
                     let getIntRm          targ = tryGetIntORm    targ >>= ofOption (argumentNotFound targ)
                     let getStringRm       targ = tryGetStringORm targ >>= ofOption (argumentNotFound targ)
@@ -1878,6 +1924,7 @@ namespace FsRoot
                 let flagpm   p = flag "+" "-" p
             
                 let intRootDir       = NewString("RootDir"      , true , sprintf  "++root:%s"        )
+                let intWsFscExe      = NewString("WsFscExe"     , true , sprintf  "++WsFscExe:%s"    )
                 let intSnippet       = NewString("Snippet"      , true , sprintf  "++snippet:%s"     )
                 let intCreateDir     = NewBool  ("CreateDir"    , true , fun v ->  if v then "++createdirectory" else "")
                 let intDirectory     = NewString("Directory"    , true , sprintf  "++directory:%s"   )
@@ -1891,6 +1938,7 @@ namespace FsRoot
                 let intStaticLinkAll = NewBool  ("StaticLinkAll", true , flagpm   "++staticlinkall"  )
                 let intCopyAssem     = NewBool  ("CopyAssem"    , true , flagpm   "++copyassemblies" )
                 let intShowArgs      = NewBool  ("ShowArgs"     , true , flagpm   "++showargs"       )
+                let intShowCommand   = NewBool  ("ShowCommand"  , true , flagpm   "++showcommand"    )
                 let intRemLineDir    = NewBool  ("RemLineDir"   , true , flagpm   "++remlinedir"     )
                 
                 let internalArgs = 
@@ -1906,6 +1954,7 @@ namespace FsRoot
                         intStaticLinkAll.CommArg.cargId
                         intCopyAssem    .CommArg.cargId
                         intShowArgs     .CommArg.cargId
+                        intShowCommand  .CommArg.cargId
                     ]
             
                 let fscIOption     = NewString("IOption"    , false, sprintf "-I:%A"          )
@@ -2101,8 +2150,9 @@ namespace FsRoot
                 }
             
                 let prepareCodeRm (FsCode codeFs) = fusion {
-                    let  fs, directs                            = codeFs.Split '\n' |> separatePrepros |> getTopDirectives
-                    let  assembs, defines, prepIs, nowarns, cdO = separateDirectives directs
+                    let  fs, directs0                           = codeFs.Split '\n' |> separatePrepros |> getTopDirectives
+                    let! defines0                               = getValuesRm fscDefine |>> Seq.map PrepoDefine
+                    let  assembs, defines, prepIs, nowarns, cdO = Seq.append defines0 directs0 |> separateDirectives
                     let! args2                                  = prepOptionsRm (assembs, defines, prepIs)
                     do!                                           addPairsRm  args2
                     do!                                           processArgs fs assembs nowarns
@@ -2210,13 +2260,19 @@ namespace FsRoot
                 let compileRm() = fusion {
                     let  allArgIds  = Set.union WebSharpArgs FSharpArgs 
                     let! args       = ofFusionM <| argumentsRm (fun (arg,_) -> Set.contains arg.cargId allArgIds )
+                    let! show       = ofFusionM <| getBoolRm false intShowCommand
                     let! createDir  = ofFusionM <| getBoolRm false intCreateDir
                     if   createDir then let! site = ofFusionM <| getStringRm wscWebSite
                                         Directory.CreateDirectory(site) |> ignore
+                    let! compilerO  = ofFusionM <| tryGetStringORm intWsFscExe
+                    let  compiler   = compilerO |> Option.defaultValue 
+                                                (if args |> Seq.contains "--define:WEBSHARPER47"
+                                                 then @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.FSharp\tools\net461\wsfsc.exe" 
+                                                 else @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\wsfsc.exe")
                     let! out, err   = args
                                       |> String.concat "  "
-                                      //|>! print
-                                      |> fun ops -> (new RunProcess.ShellEx(@"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.FSharp\tools\net461\wsfsc.exe", ops, priorityClass = System.Diagnostics.ProcessPriorityClass.RealTime)).StartAndWaitR()
+                                      |>! if show then printfn "\n%s  %s\n" compiler else ignore
+                                      |> fun ops -> (new RunProcess.ShellEx(compiler, ops, priorityClass = System.Diagnostics.ProcessPriorityClass.RealTime)).StartAndWaitR()
                                       |> ofResult
                     do! (if out = "" then "Compiled!" else out + err) |> ResultMessage.Info |> FusionAsyncM.ofResultMessage
                 }
@@ -2387,8 +2443,13 @@ namespace FsRoot
             [<WebSharper.JavaScript>]
             module WebSockets =
                 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
+                #if WEBSHARPER47
+                //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
+                //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
+                #else
                 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
                 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
+                #endif
                 //#define WEBSHARPER
                 open WebSharper
                 
@@ -2582,8 +2643,13 @@ namespace FsRoot
                 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40"
                 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Owin\lib\net40\Owin.dll"
                 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\Microsoft.Owin\lib\net451\Microsoft.Owin.dll"
+                #if WEBSHARPER47
+                //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
+                //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
+                #else
                 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\Owin.WebSocket.dll"
                 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.Owin.WebSocket\lib\net461\WebSharper.Owin.WebSocket.dll"
+                #endif
                 
                 open System
                 open WebSharper.Owin.WebSocket
@@ -2835,7 +2901,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1593735151845"
+                let mutable fsharpStationAddress = Address "FSharpStation1612100328464"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
