@@ -350,7 +350,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
 (function(Global)
 {
  "use strict";
- var FsRoot,TestingJS,WebSharper,Operators,LibraryJS,WsTranslatorLoader,UI,EventTarget,Node,JavaScript,JS,Utils,UI$1,View,WsTranslatorLoader_GeneratedPrintf,GeneratedPrintf,Obj,Var,WasmLoad,WWorker,Remoting,AjaxRemotingProvider,HtmlModule,attr,Client,Templates,Doc,Pervasives,WindowOrWorkerGlobalScope,SC$1,Unchecked,Snap,WasmStatus,WsTranslator,Dependency,Remoting$1,IMessagingO,Seq,Arrays,List,T,Strings,AttrProxy,Collections,Dictionary,Docs,DomUtility,Library,String,Slice,ParseO,Numeric,System,Guid,Var$1,Event,ReturnQueue,CustomXhrProvider,Concurrency,Require,Pojo,XMLHttpRequestEventTarget,ArrayBufferView,AttrModule,Object,Enumerator,T$1,Array,Attrs,SC$2,HashSet,An,Settings,Abbrev,Mailbox,DateUtil,ConcreteVar,SC$3,DictionaryUtil,Elt,AsyncBody,SC$4,CT,BindVar,Prepare,KeyCollection,DocElemNode,CharacterData,Docs$1,RunState,NodeSet,Anims,SC$5,Error,OperationCanceledException,Json,Fresh,XhrProvider,Updates,Scheduler,CancellationTokenSource,SC$6,SC$7,Attrs$1,Dyn,SC$8,AppendList,Queue,String$1,CheckedInput,DynamicAttrNode,SC$9,Easing,HashSet$1,HashSetUtil,FormatException,SC$10,Char,DomNodes,Lazy,SC$11,LazyExtensionsProxy,LazyRecord,Math,IntelliFactory,Runtime,console,Date,JSON;
+ var FsRoot,TestingJS,WebSharper,Operators,LibraryJS,WsTranslatorLoader,UI,EventTarget,Node,JavaScript,JS,Utils,UI$1,View,WsTranslatorLoader_GeneratedPrintf,GeneratedPrintf,Obj,Var,WasmLoad,WWorker,Remoting,AjaxRemotingProvider,HtmlModule,attr,Client,Templates,Doc,Pervasives,WindowOrWorkerGlobalScope,SC$1,Unchecked,Snap,WasmStatus,Dependency,Remoting$1,IMessagingO,Seq,Arrays,Strings,AttrProxy,Collections,Dictionary,Docs,DomUtility,Library,String,Slice,ParseO,Numeric,System,Guid,Var$1,Event,ReturnQueue,CustomXhrProvider,Concurrency,Require,WsTranslator,Pojo,XMLHttpRequestEventTarget,ArrayBufferView,List,AttrModule,Object,Enumerator,T,Array,Attrs,SC$2,HashSet,An,Settings,Abbrev,Mailbox,DateUtil,ConcreteVar,SC$3,DictionaryUtil,Elt,AsyncBody,SC$4,CT,T$1,BindVar,Prepare,KeyCollection,DocElemNode,CharacterData,Docs$1,RunState,NodeSet,Anims,SC$5,Error,OperationCanceledException,Json,Fresh,XhrProvider,Updates,Scheduler,CancellationTokenSource,SC$6,SC$7,Attrs$1,Dyn,SC$8,AppendList,Queue,String$1,CheckedInput,DynamicAttrNode,SC$9,Easing,HashSet$1,HashSetUtil,FormatException,SC$10,Char,DomNodes,Lazy,SC$11,LazyExtensionsProxy,LazyRecord,Math,IntelliFactory,Runtime,console,Date,JSON;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
  WebSharper=Global.WebSharper=Global.WebSharper||{};
@@ -384,14 +384,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  Unchecked=WebSharper.Unchecked=WebSharper.Unchecked||{};
  Snap=UI$1.Snap=UI$1.Snap||{};
  WasmStatus=WsTranslatorLoader.WasmStatus=WsTranslatorLoader.WasmStatus||{};
- WsTranslator=FsRoot.WsTranslator=FsRoot.WsTranslator||{};
- Dependency=WsTranslator.Dependency=WsTranslator.Dependency||{};
+ Dependency=WsTranslatorLoader.Dependency=WsTranslatorLoader.Dependency||{};
  Remoting$1=WsTranslatorLoader.Remoting=WsTranslatorLoader.Remoting||{};
  IMessagingO=Remoting$1.IMessagingO=Remoting$1.IMessagingO||{};
  Seq=WebSharper.Seq=WebSharper.Seq||{};
  Arrays=WebSharper.Arrays=WebSharper.Arrays||{};
- List=WebSharper.List=WebSharper.List||{};
- T=List.T=List.T||{};
  Strings=WebSharper.Strings=WebSharper.Strings||{};
  AttrProxy=UI$1.AttrProxy=UI$1.AttrProxy||{};
  Collections=WebSharper.Collections=WebSharper.Collections||{};
@@ -411,13 +408,15 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  CustomXhrProvider=Remoting$1.CustomXhrProvider=Remoting$1.CustomXhrProvider||{};
  Concurrency=WebSharper.Concurrency=WebSharper.Concurrency||{};
  Require=WasmLoad.Require=WasmLoad.Require||{};
+ WsTranslator=FsRoot.WsTranslator=FsRoot.WsTranslator||{};
  Pojo=LibraryJS.Pojo=LibraryJS.Pojo||{};
  XMLHttpRequestEventTarget=Global.XMLHttpRequestEventTarget;
  ArrayBufferView=Global.ArrayBufferView;
+ List=WebSharper.List=WebSharper.List||{};
  AttrModule=UI$1.AttrModule=UI$1.AttrModule||{};
  Object=Global.Object;
  Enumerator=WebSharper.Enumerator=WebSharper.Enumerator||{};
- T$1=Enumerator.T=Enumerator.T||{};
+ T=Enumerator.T=Enumerator.T||{};
  Array=UI$1.Array=UI$1.Array||{};
  Attrs=UI$1.Attrs=UI$1.Attrs||{};
  SC$2=Global.StartupCode$WebSharper_UI$Templates=Global.StartupCode$WebSharper_UI$Templates||{};
@@ -434,6 +433,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  AsyncBody=Concurrency.AsyncBody=Concurrency.AsyncBody||{};
  SC$4=Global.StartupCode$WebSharper_Main$Concurrency=Global.StartupCode$WebSharper_Main$Concurrency||{};
  CT=Concurrency.CT=Concurrency.CT||{};
+ T$1=List.T=List.T||{};
  BindVar=UI$1.BindVar=UI$1.BindVar||{};
  Prepare=Templates.Prepare=Templates.Prepare||{};
  KeyCollection=Collections.KeyCollection=Collections.KeyCollection||{};
@@ -508,7 +508,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  UI.mainDoc=function()
  {
-  var c,c$1;
+  var c,c$1,c$2;
   return Doc.Element("div",[],[Doc.Element("h1",[],[Doc.TextNode((function($1)
   {
    return function($2)
@@ -556,30 +556,33 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   }),Doc.Button("Clean",[],function()
   {
    UI.clean();
-  })]),UI.showMessages("Fsc Messages",function($1)
+  })]),UI.showMessages("Fsc Messages",(c=function($1)
   {
    return function($2)
    {
-    return $1(Utils.prettyPrint($2));
-   };
-  }(Global.id),UI.fsErrsV().get_View()),UI.showMessages("Ws  Errors",(c=function($1)
-  {
-   return function($2)
-   {
-    return $1("("+WsTranslatorLoader_GeneratedPrintf.p$1($2[0])+", "+WsTranslatorLoader_GeneratedPrintf.p$2($2[1])+")");
+    return $1("("+GeneratedPrintf.p($2[0])+", "+Utils.prettyPrint($2[1])+")");
    };
   }(Global.id),function(t)
   {
    return c([t[0],t[1]]);
-  }),UI.wsErrsV().get_View()),UI.showMessages("Ws  Warnings",(c$1=function($1)
+  }),UI.fsErrsV().get_View()),UI.showMessages("Ws  Errors",(c$1=function($1)
   {
    return function($2)
    {
-    return $1("("+WsTranslatorLoader_GeneratedPrintf.p$1($2[0])+", "+WsTranslatorLoader_GeneratedPrintf.p$3($2[1])+")");
+    return $1("("+WsTranslatorLoader_GeneratedPrintf.p$1($2[0])+", "+Utils.prettyPrint($2[1])+")");
    };
   }(Global.id),function(t)
   {
    return c$1([t[0],t[1]]);
+  }),UI.wsErrsV().get_View()),UI.showMessages("Ws  Warnings",(c$2=function($1)
+  {
+   return function($2)
+   {
+    return $1("("+WsTranslatorLoader_GeneratedPrintf.p$1($2[0])+", "+Utils.prettyPrint($2[1])+")");
+   };
+  }(Global.id),function(t)
+  {
+   return c$2([t[0],t[1]]);
   }),UI.wsWrnsV().get_View()),Doc.Element("div",[AttrProxy.Create("style","font-family: monospace; white-space:pre")],[Doc.TextView(UI.detailsV().get_View())])]);
  };
  UI.debugV=function()
@@ -646,7 +649,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   b=null;
   return Concurrency.Delay(function()
   {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.parseAndCheckProjectRpc:-456933061",[projectName,opts,code]),function(a)
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.parseAndCheckProjectRpc:1033688720",[projectName,opts,code]),function(a)
    {
     var a$1;
     UI.fsErrsV().Set(Arrays.ofSeq(a[0]));
@@ -677,12 +680,12 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   b=null;
   return Concurrency.Delay(function()
   {
-   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.translateFsToJsRpc:488677094",[projectName,opts,code]),function(a)
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.translateFsToJsRpc:1355092715",[projectName,opts,code]),function(a)
    {
     var wsO,asmO;
     wsO=a[1];
     UI.fsErrsV().Set(a[0]);
-    return wsO==null?(UI.clean(),UI.wsErrsV().Set([]),UI.wsWrnsV().Set([]),Concurrency.Zero()):(asmO=wsO.$0[0],(UI.detailsV().Set(asmO==null?"No translation":asmO.$0),UI.wsErrsV().Set(Arrays.ofSeq(wsO.$0[1])),UI.wsWrnsV().Set(Arrays.ofSeq(wsO.$0[2])),Concurrency.Zero()));
+    return wsO==null?(UI.clean(),UI.wsErrsV().Set([]),UI.wsWrnsV().Set([]),Concurrency.Zero()):(asmO=wsO.$0[0],(UI.detailsV().Set(asmO==null?"No translation":asmO.$0),UI.wsErrsV().Set(wsO.$0[1]),UI.wsWrnsV().Set(wsO.$0[2]),Concurrency.Zero()));
    });
   });
  };
@@ -813,10 +816,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return o===null?"null":"[|"+Strings.concat("; ",Arrays.map(p,o))+"|]";
  };
- Utils.printList=function(p,o)
- {
-  return"["+Strings.concat("; ",Seq.map(p,o))+"]";
- };
  Utils.padNumLeft=function(s,l)
  {
   var f;
@@ -892,21 +891,13 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return $1.$==4?"WasmWorkerLoaded":$1.$==3?"WasmWorkerLoading":$1.$==2?"WasmLoaded":$1.$==1?"WasmLoading":"WasmNotLoaded";
  };
- WsTranslatorLoader_GeneratedPrintf.p$1=function($1)
- {
-  return $1==null?"null":"Some "+GeneratedPrintf.p($1.$0);
- };
- WsTranslatorLoader_GeneratedPrintf.p$2=function($1)
- {
-  return $1.$==6?"FieldNotFound ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+")":$1.$==5?"ConstructorNotFound ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+", "+Utils.printList(Utils.prettyPrint,$1.$2)+")":$1.$==4?"MethodNameNotFound ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+", "+Utils.printList(Utils.prettyPrint,$1.$2)+")":$1.$==3?"MethodNotFound ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+", "+Utils.printList(Utils.prettyPrint,$1.$2)+")":$1.$==2?"TypeNotFound "+Utils.prettyPrint($1.$0):$1.$==1?"NameConflict ("+Utils.prettyPrint($1.$0)+", "+Utils.prettyPrint($1.$1)+")":"SourceError "+Utils.prettyPrint($1.$0);
- };
- WsTranslatorLoader_GeneratedPrintf.p$3=function($1)
- {
-  return $1.$==1?"PublicProxy "+Utils.prettyPrint($1.$0):"SourceWarning "+Utils.prettyPrint($1.$0);
- };
  GeneratedPrintf.p=function($1)
  {
   return"{"+("FileName = "+Utils.prettyPrint($1.FileName))+"; "+("Start = "+("("+Utils.prettyPrint($1.Start[0])+", "+Utils.prettyPrint($1.Start[1])+")"))+"; "+("End = "+("("+Utils.prettyPrint($1.End[0])+", "+Utils.prettyPrint($1.End[1])+")"))+"}";
+ };
+ WsTranslatorLoader_GeneratedPrintf.p$1=function($1)
+ {
+  return $1==null?"null":"Some "+GeneratedPrintf.p($1.$0);
  };
  Obj=WebSharper.Obj=Runtime.Class({
   Equals:function(obj)
@@ -1210,7 +1201,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   Seq.iter(function(t)
   {
    WasmLoad.bindStaticMethod(t[0],t[1],t[2]);
-  },List.ofArray([["WsTranslator","FsRoot.WsTranslator","runRpc"]]));
+  },List.ofArray([["WsTranslator47","FsRoot.WsTranslator","runRpc"]]));
  };
  WasmLoad.bindStaticMethod=function(assmbly,path,methd)
  {
@@ -1920,7 +1911,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   {
    return function(d)
    {
-    return self.WASM_WsTranslator_FsRoot_WsTranslator_runRpc(h,d);
+    return self.WASM_WsTranslator47_FsRoot_WsTranslator_runRpc(h,d);
    };
   },function(t)
   {
@@ -2351,7 +2342,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  WasmStatus.WasmNotLoaded={
   $:0
  };
- Dependency=WsTranslator.Dependency=Runtime.Class({
+ Dependency=WsTranslatorLoader.Dependency=Runtime.Class({
   set_D:function(v)
   {
    this.D=v;
@@ -2423,7 +2414,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     var en;
     en=Enumerator.Get(s);
-    return new T$1.New(null,null,function(e)
+    return new T.New(null,null,function(e)
     {
      return en.MoveNext()&&(e.c=f(en.Current()),true);
     },function()
@@ -2450,7 +2441,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     var e1,first;
     e1=Enumerator.Get(s1);
     first=[true];
-    return new T$1.New(e1,null,function(x)
+    return new T.New(e1,null,function(x)
     {
      var x$1;
      return x.s.MoveNext()?(x.c=x.s.Current(),true):(x$1=x.s,!Unchecked.Equals(x$1,null)?x$1.Dispose():void 0,x.s=null,first[0]&&(first[0]=false,x.s=Enumerator.Get(s2),x.s.MoveNext()?(x.c=x.s.Current(),true):(x.s.Dispose(),x.s=null,false)));
@@ -2475,7 +2466,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   return{
    GetEnumerator:function()
    {
-    return new T$1.New(0,null,function(e)
+    return new T.New(0,null,function(e)
     {
      var en;
      return e.s<cache.length?(e.c=cache[e.s],e.s=e.s+1,true):(en=o[0],Unchecked.Equals(en,null)?false:en.MoveNext()?(e.s=e.s+1,e.c=en.Current(),cache.push(e.c),true):(en.Dispose(),o[0]=null,false));
@@ -2566,7 +2557,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    {
     var o;
     o=Enumerator.Get(s);
-    return new T$1.New(null,null,function(e)
+    return new T.New(null,null,function(e)
     {
      var loop,c,res;
      loop=o.MoveNext();
@@ -2592,10 +2583,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    }
   };
  };
- Seq.collect=function(f,s)
- {
-  return Seq.concat(Seq.map(f,s));
- };
  Seq.distinctBy=function(f,s)
  {
   return{
@@ -2604,7 +2591,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     var o,seen;
     o=Enumerator.Get(s);
     seen=new HashSet.New$3();
-    return new T$1.New(null,null,function(e)
+    return new T.New(null,null,function(e)
     {
      var cur,has;
      if(o.MoveNext())
@@ -2623,56 +2610,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     },function()
     {
      o.Dispose();
-    });
-   }
-  };
- };
- Seq.concat=function(ss)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var outerE;
-    function next(st)
-    {
-     var m;
-     while(true)
-      {
-       m=st.s;
-       if(Unchecked.Equals(m,null))
-       {
-        if(outerE.MoveNext())
-         {
-          st.s=Enumerator.Get(outerE.Current());
-          st=st;
-         }
-        else
-         {
-          outerE.Dispose();
-          return false;
-         }
-       }
-       else
-        if(m.MoveNext())
-         {
-          st.c=m.Current();
-          return true;
-         }
-        else
-         {
-          st.Dispose();
-          st.s=null;
-          st=st;
-         }
-      }
-    }
-    outerE=Enumerator.Get(ss);
-    return new T$1.New(null,null,next,function(st)
-    {
-     var x;
-     x=st.s;
-     !Unchecked.Equals(x,null)?x.Dispose():void 0;
-     !Unchecked.Equals(outerE,null)?outerE.Dispose():void 0;
     });
    }
   };
@@ -2775,7 +2712,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
   if(xs instanceof Global.Array)
    return xs.slice();
   else
-   if(xs instanceof T)
+   if(xs instanceof T$1)
     return Arrays.ofList(xs);
    else
     {
@@ -2898,24 +2835,6 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
     a=false;
   return a;
  };
- T=List.T=Runtime.Class({
-  GetEnumerator:function()
-  {
-   return new T$1.New(this,null,function(e)
-   {
-    var m;
-    m=e.s;
-    return m.$==0?false:(e.c=m.$0,e.s=m.$1,true);
-   },void 0);
-  },
-  GetEnumerator0:function()
-  {
-   return Enumerator.Get(this);
-  }
- },null,T);
- T.Empty=new T({
-  $:0
- });
  Arrays.length=function(arr)
  {
   return arr.dims===2?arr.length*arr.length:arr.length;
@@ -4225,21 +4144,11 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return Arrays.ofSeq(List.ofSeq(Seq.delay(function()
   {
-   return Seq.collect(function(f)
+   return Seq.map(function(f)
    {
-    return Seq.append([f.$0],Seq.delay(function()
-    {
-     return[WsTranslator.fromDll2Meta(f).$0];
-    }));
+    return f.$0;
    },WsTranslator.justDlls());
   })));
- };
- WsTranslator.fromDll2Meta=function(a)
- {
-  return{
-   $:0,
-   $0:Strings.Replace(a.$0,".dll",".meta")
-  };
  };
  WsTranslator.justDlls=function()
  {
@@ -4280,8 +4189,8 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  List.ofArray=function(arr)
  {
   var r,i,$1;
-  r=T.Empty;
-  for(i=Arrays.length(arr)-1,$1=0;i>=$1;i--)r=new T({
+  r=T$1.Empty;
+  for(i=Arrays.length(arr)-1,$1=0;i>=$1;i--)r=new T$1({
    $:1,
    $0:Arrays.get(arr,i),
    $1:r
@@ -4291,7 +4200,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  List.ofSeq=function(s)
  {
   var e,$1,go,r,res,t;
-  if(s instanceof T)
+  if(s instanceof T$1)
    return s;
   else
    if(s instanceof Global.Array)
@@ -4303,21 +4212,21 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
      {
       go=e.MoveNext();
       if(!go)
-       $1=T.Empty;
+       $1=T$1.Empty;
       else
        {
-        res=new T({
+        res=new T$1({
          $:1
         });
         r=res;
         while(go)
          {
           r.$0=e.Current();
-          e.MoveNext()?r=(t=new T({
+          e.MoveNext()?r=(t=new T$1({
            $:1
           }),r.$1=t,t):go=false;
          }
-        r.$1=T.Empty;
+        r.$1=T$1.Empty;
         $1=res;
        }
       return $1;
@@ -4369,7 +4278,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Enumerator.ArrayEnumerator=function(s)
  {
-  return new T$1.New(0,null,function(e)
+  return new T.New(0,null,function(e)
   {
    var i;
    i=e.s;
@@ -4378,7 +4287,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  };
  Enumerator.StringEnumerator=function(s)
  {
-  return new T$1.New(0,null,function(e)
+  return new T.New(0,null,function(e)
   {
    var i;
    i=e.s;
@@ -4389,7 +4298,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
  {
   return x instanceof Global.Array?Enumerator.ArrayEnumerator(x):Unchecked.Equals(typeof x,"string")?Enumerator.StringEnumerator(x):"GetEnumerator0"in x?x.GetEnumerator0():x.GetEnumerator();
  };
- T$1=Enumerator.T=Runtime.Class({
+ T=Enumerator.T=Runtime.Class({
   MoveNext:function()
   {
    return this.n(this);
@@ -4403,22 +4312,22 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    if(this.d)
     this.d(this);
   }
- },Obj,T$1);
- T$1.New=Runtime.Ctor(function(s,c,n,d)
+ },Obj,T);
+ T.New=Runtime.Ctor(function(s,c,n,d)
  {
   Obj.New.call(this);
   this.s=s;
   this.c=c;
   this.n=n;
   this.d=d;
- },T$1);
+ },T);
  Array.ofSeqNonCopying=function(xs)
  {
   var q,o;
   if(xs instanceof Global.Array)
    return xs;
   else
-   if(xs instanceof T)
+   if(xs instanceof T$1)
     return Arrays.ofList(xs);
    else
     if(xs===null)
@@ -5011,6 +4920,24 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
    r:Registrations
   };
  };
+ T$1=List.T=Runtime.Class({
+  GetEnumerator:function()
+  {
+   return new T.New(this,null,function(e)
+   {
+    var m;
+    m=e.s;
+    return m.$==0?false:(e.c=m.$0,e.s=m.$1,true);
+   },void 0);
+  },
+  GetEnumerator0:function()
+  {
+   return Enumerator.Get(this);
+  }
+ },null,T$1);
+ T$1.Empty=new T$1({
+  $:0
+ });
  BindVar.BoolCheckedApply=function()
  {
   SC$7.$cctor();

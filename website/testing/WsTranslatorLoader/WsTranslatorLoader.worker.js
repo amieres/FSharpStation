@@ -321,7 +321,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
 (function(Global)
 {
  "use strict";
- var WebSharper,Operators,Obj,UI,Var,FsRoot,LibraryJS,WsTranslatorLoader,View,EventTarget,WindowOrWorkerGlobalScope,WorkerGlobalScope,WWorker,WasmLoad,WsTranslator,Dependency,Remoting,IMessagingO,SC$1,Snap,Concurrency,Arrays,Event,Utils,WasmStatus,JavaScript,JS,Pervasives,Library,String,Strings,Slice,ParseO,Unchecked,Numeric,System,Guid,Var$1,Remoting$1,Collections,Dictionary,Seq,UI$1,CustomXhrProvider,Require,Pojo,XMLHttpRequestEventTarget,ArrayBufferView,List,DateUtil,ConcreteVar,SC$2,DictionaryUtil,ReturnQueue,Enumerator,T,Scheduler,AsyncBody,SC$3,Object,CT,T$1,Abbrev,Fresh,XhrProvider,Error,OperationCanceledException,CancellationTokenSource,SC$4,HashSet,FormatException,SC$5,HashSetUtil,IntelliFactory,Runtime,console,Date;
+ var WebSharper,Operators,Obj,UI,Var,FsRoot,LibraryJS,WsTranslatorLoader,View,EventTarget,WindowOrWorkerGlobalScope,WorkerGlobalScope,WWorker,WasmLoad,Dependency,Remoting,IMessagingO,SC$1,Snap,Concurrency,Arrays,Event,Utils,WasmStatus,JavaScript,JS,Pervasives,Library,String,Strings,Slice,ParseO,Unchecked,Numeric,System,Guid,Var$1,Remoting$1,Collections,Dictionary,Seq,UI$1,CustomXhrProvider,Require,WsTranslator,Pojo,XMLHttpRequestEventTarget,ArrayBufferView,List,DateUtil,ConcreteVar,SC$2,DictionaryUtil,ReturnQueue,Enumerator,T,Scheduler,AsyncBody,SC$3,Object,CT,T$1,Abbrev,Fresh,XhrProvider,Error,OperationCanceledException,CancellationTokenSource,SC$4,HashSet,FormatException,SC$5,HashSetUtil,IntelliFactory,Runtime,console,Date;
  WebSharper=Global.WebSharper=Global.WebSharper||{};
  Operators=WebSharper.Operators=WebSharper.Operators||{};
  Obj=WebSharper.Obj=WebSharper.Obj||{};
@@ -336,8 +336,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  WorkerGlobalScope=Global.WorkerGlobalScope;
  WWorker=WsTranslatorLoader.WWorker=WsTranslatorLoader.WWorker||{};
  WasmLoad=WsTranslatorLoader.WasmLoad=WsTranslatorLoader.WasmLoad||{};
- WsTranslator=FsRoot.WsTranslator=FsRoot.WsTranslator||{};
- Dependency=WsTranslator.Dependency=WsTranslator.Dependency||{};
+ Dependency=WsTranslatorLoader.Dependency=WsTranslatorLoader.Dependency||{};
  Remoting=WsTranslatorLoader.Remoting=WsTranslatorLoader.Remoting||{};
  IMessagingO=Remoting.IMessagingO=Remoting.IMessagingO||{};
  SC$1=Global.StartupCode$WsTranslatorLoader$WsTranslatorLoader=Global.StartupCode$WsTranslatorLoader$WsTranslatorLoader||{};
@@ -367,6 +366,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  UI$1=WsTranslatorLoader.UI=WsTranslatorLoader.UI||{};
  CustomXhrProvider=Remoting.CustomXhrProvider=Remoting.CustomXhrProvider||{};
  Require=WasmLoad.Require=WasmLoad.Require||{};
+ WsTranslator=FsRoot.WsTranslator=FsRoot.WsTranslator||{};
  Pojo=LibraryJS.Pojo=LibraryJS.Pojo||{};
  XMLHttpRequestEventTarget=Global.XMLHttpRequestEventTarget;
  ArrayBufferView=Global.ArrayBufferView;
@@ -682,7 +682,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   Seq.iter(function(t)
   {
    WasmLoad.bindStaticMethod(t[0],t[1],t[2]);
-  },List.ofArray([["WsTranslator","FsRoot.WsTranslator","runRpc"]]));
+  },List.ofArray([["WsTranslator47","FsRoot.WsTranslator","runRpc"]]));
  };
  WasmLoad.bindStaticMethod=function(assmbly,path,methd)
  {
@@ -695,7 +695,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    return $1("["+Utils.toSafe($2)+"]"+Utils.toSafe($3)+":"+Utils.toSafe($4));
   },4))(Global.id))(assmbly))(path))(methd),self.Module.mono_bind_static_method(m));
  };
- Dependency=WsTranslator.Dependency=Runtime.Class({
+ Dependency=WsTranslatorLoader.Dependency=Runtime.Class({
   set_D:function(v)
   {
    this.D=v;
@@ -884,7 +884,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   {
    return function(d)
    {
-    return self.WASM_WsTranslator_FsRoot_WsTranslator_runRpc(h,d);
+    return self.WASM_WsTranslator47_FsRoot_WsTranslator_runRpc(h,d);
    };
   },function(t)
   {
@@ -2004,10 +2004,6 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    }
   };
  };
- Seq.collect=function(f,s)
- {
-  return Seq.concat(Seq.map(f,s));
- };
  Seq.distinctBy=function(f,s)
  {
   return{
@@ -2035,56 +2031,6 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
     },function()
     {
      o.Dispose();
-    });
-   }
-  };
- };
- Seq.concat=function(ss)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var outerE;
-    function next(st)
-    {
-     var m;
-     while(true)
-      {
-       m=st.s;
-       if(Unchecked.Equals(m,null))
-       {
-        if(outerE.MoveNext())
-         {
-          st.s=Enumerator.Get(outerE.Current());
-          st=st;
-         }
-        else
-         {
-          outerE.Dispose();
-          return false;
-         }
-       }
-       else
-        if(m.MoveNext())
-         {
-          st.c=m.Current();
-          return true;
-         }
-        else
-         {
-          st.Dispose();
-          st.s=null;
-          st=st;
-         }
-      }
-    }
-    outerE=Enumerator.Get(ss);
-    return new T.New(null,null,next,function(st)
-    {
-     var x;
-     x=st.s;
-     !Unchecked.Equals(x,null)?x.Dispose():void 0;
-     !Unchecked.Equals(outerE,null)?outerE.Dispose():void 0;
     });
    }
   };
@@ -2128,21 +2074,11 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  {
   return Arrays.ofSeq(List.ofSeq(Seq.delay(function()
   {
-   return Seq.collect(function(f)
+   return Seq.map(function(f)
    {
-    return Seq.append([f.$0],Seq.delay(function()
-    {
-     return[WsTranslator.fromDll2Meta(f).$0];
-    }));
+    return f.$0;
    },WsTranslator.justDlls());
   })));
- };
- WsTranslator.fromDll2Meta=function(a)
- {
-  return{
-   $:0,
-   $0:Strings.Replace(a.$0,".dll",".meta")
-  };
  };
  WsTranslator.justDlls=function()
  {
@@ -2798,7 +2734,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  {
   return function(d)
   {
-   return self.WASM_WsTranslator_FsRoot_WsTranslator_runRpc(h,d);
+   return self.WASM_WsTranslator47_FsRoot_WsTranslator_runRpc(h,d);
   };
  },function(v)
  {

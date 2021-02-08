@@ -1,12 +1,13 @@
 (function(Global)
 {
  "use strict";
- var WebSharper,Obj,FsRoot,WsTranslator,Dependency,SC$1,IntelliFactory,Runtime,Arrays,List,Seq,Strings;
+ var WebSharper,Obj,FsRoot,WsTranslator,Dependency,Position,SC$1,IntelliFactory,Runtime,Arrays,List,Seq,Strings;
  WebSharper=Global.WebSharper;
  Obj=WebSharper&&WebSharper.Obj;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  WsTranslator=FsRoot.WsTranslator=FsRoot.WsTranslator||{};
  Dependency=WsTranslator.Dependency=WsTranslator.Dependency||{};
+ Position=WsTranslator.Position=WsTranslator.Position||{};
  SC$1=Global.StartupCode$WsTranslator47$WsTranslator47=Global.StartupCode$WsTranslator47$WsTranslator47||{};
  IntelliFactory=Global.IntelliFactory;
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
@@ -29,16 +30,21 @@
   Obj.New.call(this);
   this.D=def;
  },Dependency);
+ Position.New=function(FileName,Start,End)
+ {
+  return{
+   FileName:FileName,
+   Start:Start,
+   End:End
+  };
+ };
  WsTranslator.dlls=function()
  {
   return Arrays.ofSeq(List.ofSeq(Seq.delay(function()
   {
-   return Seq.collect(function(f)
+   return Seq.map(function(f)
    {
-    return Seq.append([f.$0],Seq.delay(function()
-    {
-     return[WsTranslator.fromDll2Meta(f).$0];
-    }));
+    return f.$0;
    },WsTranslator.justDlls());
   })));
  };

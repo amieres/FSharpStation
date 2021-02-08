@@ -1,11 +1,29 @@
-////-d:FSharpStation1612100328464 -d:NETSTANDARD20 -d:NOFSROOTx -d:WEBSHARPER -d:WEBSHARPER47
+#nowarn "1182"
+////-d:FSharpStation1612787654537 -d:NETSTANDARD20 -d:NOFSROOTx -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\Facades"
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Reflection.Metadata\lib\netstandard2.0"
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Collections.Immutable\lib\netstandard2.0"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\Facades\netstandard.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\System.Core.dll"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\FSharp.Core.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\FSharp.Compiler.Service.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\mscorlib.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\netstandard.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Core.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.ComponentModel.Composition.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Data.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Data.DataSetExtensions.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Drawing.Common.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.IO.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.IO.Compression.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.IO.Compression.FileSystem.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Memory.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Net.Http.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Numerics.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Runtime.Serialization.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Transactions.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Xml.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Xml.Linq.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\framework\WebAssembly.Bindings.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Core.JavaScript.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Core.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Web.dll"
@@ -16,10 +34,9 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Compiler.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.JQuery.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Compiler.FSharp.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos/WasmRepo/wasm-sdk/framework\WebAssembly.Bindings.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\System.dll"
+//#nowarn "1182"
 /// Root namespace for all code
-//#define FSharpStation1612100328464
+//#define FSharpStation1612787654537
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -37,11 +54,36 @@ namespace FsRoot
     //#define WEBSHARPER
     //#define WEBSHARPER47
     
+    //#nowarn "1182"
+    
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\Facades"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\Facades\netstandard.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\System.Core.dll"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\FSharp.Core.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\FSharp.Compiler.Service.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\mscorlib.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\netstandard.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.ComponentModel.Composition.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Data.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Data.DataSetExtensions.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Drawing.Common.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.IO.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.IO.Compression.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.IO.Compression.FileSystem.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Memory.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Net.Http.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Numerics.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Runtime.Serialization.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Transactions.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Xml.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Xml.Linq.dll"
+    
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Diagnostics.PerformanceCounter.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\framework\WebAssembly.Bindings.dll"
+    
+    #if WEBSHARPER
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Core.JavaScript.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Core.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Web.dll"
@@ -52,12 +94,33 @@ namespace FsRoot
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Compiler.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.JQuery.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Compiler.FSharp.dll"
-    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Reflection.Metadata\lib\netstandard2.0"
-    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\System.Collections.Immutable\lib\netstandard2.0"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos/WasmRepo/wasm-sdk/framework\WebAssembly.Bindings.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\System.dll" 
     
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\FShUIAssemblyData.dll"
+    module RM = WebSharper.Core.Remoting
+    
+    #else
+    module WebSharper =
+        type RpcAttribute() =
+            inherit System.Attribute()
+            let a = 1
+        type RemoteAttribute() =
+            inherit System.Attribute()
+            let a = 1
+        type JavaScriptAttribute(translate:bool) =
+            inherit System.Attribute()
+            let a = 1
+            new() = JavaScriptAttribute true
+        type JavaScriptExportAttribute(translate:bool) =
+            inherit System.Attribute()
+            let a = 1
+            new() = JavaScriptExportAttribute true
+        type InlineAttribute(code:string) =
+            inherit System.Attribute()
+            let a = 1
+            new() = InlineAttribute ""
+        type DirectAttribute(code:string) =
+            inherit System.Attribute()
+            let a = 1
+    #endif        
     
     module WsTranslator =
     //    open FsRoot.Library.FShUI_AssemblyData
@@ -79,15 +142,23 @@ namespace FsRoot
         #endif
         #endif
     
-        printfn "WsTranslator47 Running in mode: %s" ExecMode
-    
-        [< WebSharper.JavaScript >]
-        type Dependency<'T>(def:'T) = member val D = def with get, set
+        let environment() =
+            printfn "*****************************************"
+            printfn "WsTranslator47 Running in mode: %s"       ExecMode
+            printfn "System.Environment.OSVersion.Platform %A" System.Environment.OSVersion.Platform
+            let runningOnMono = try System.Type.GetType("Mono.Runtime") <> null with e-> false
+            printfn "running on MONO = %A" runningOnMono
+            let isRunningOnCoreClr = (typeof<obj>.Assembly).FullName.StartsWith("System.Private.CoreLib", StringComparison.InvariantCultureIgnoreCase)
+            //printfn "running on CoreClr = %A" isRunningOnCoreClr
+            let is32Bit = IntPtr.Size = 4
+            printfn "is 32Bit = %A" is32Bit
+            printfn "*****************************************"
     
         let  fsharpChecker = lazy (
                 printfn "Loading FCS. Hold on, this will take a while..."
                 System.Environment.SetEnvironmentVariable("FSHARP_COMPILER_BIN", "/managed")
-                let checker = FSharpChecker.Create( keepAssemblyContents = true)
+                System.Environment.SetEnvironmentVariable("FSC_MONO", "/managed")
+                let checker = FSharpChecker.Create( keepAssemblyContents = true) 
                 printfn "FCS loaded!"
                 checker
             )
@@ -97,15 +168,17 @@ namespace FsRoot
             //    do! Async.Sleep 40
             //    let _ = l.Force()
             //    ()
-            //} |> Async.Start
+            //} |> Async.Start 
     
-        startLoading fsharpChecker
-    
+        //***startLoading fsharpChecker
+     
         open WebSharper
         open WebSharper.Core
         open WebSharper.Compiler.Translator
     
-        module RM = WebSharper.Core.Remoting
+    
+        [< JavaScript >]
+        type Dependency<'T>(def:'T) = member val D = def with get, set
     
         let dirWasm (d:string) =
             let rec dir (d:string) =
@@ -146,7 +219,7 @@ namespace FsRoot
             seq [ 
                 for f in justDlls do
                     yield f              |> function DllFileName  s -> s
-                    yield fromDll2Meta f |> function MetaFileName s -> s
+                    //yield fromDll2Meta f |> function MetaFileName s -> s
             ] |> Seq.toArray
     
         /// works on Interp mode but not AOT or AOTInterp (now it works in AOTInterp)
@@ -188,8 +261,7 @@ namespace FsRoot
                 Packager.packageAssembly metadata currentMeta None Packager.OnLoadIfExists    
                 |> Packager.exprToString JavaScript.Readable JavaScript.Writer.CodeWriter
                 |> fst
-            (Some js )
-            , comp.Errors, comp.Warnings
+            (Some js ), comp.Errors, comp.Warnings
     
         let parseAndCheckProject projectName opts code = async {
             let  projOpts = fsharpChecker.Force().GetProjectOptionsFromCommandLineArgs(projectName, opts)
@@ -198,9 +270,22 @@ namespace FsRoot
             return results
         }
     
+        let checkMemoryFile() = // it does not work on mono, it is going to be excluded should return Nulls
+            try
+                Console.WriteLine "in checkMemoryFile"
+                System.IO.MemoryMappedFiles.MemoryMappedFileAccess.ReadWriteExecute.ToString()
+                |> Console.WriteLine
+                Console.WriteLine "before mmf"
+                use mmf  = System.IO.MemoryMappedFiles.MemoryMappedFile.CreateFromFile("/dlls/WebSharper.Control.meta", System.IO.FileMode.Open)
+                ()
+            with e ->
+                e.ToString() |> Console.WriteLine 
+            Console.WriteLine "after mmf"
+    
+    
         let checkGZip() = 
             Console.WriteLine "before new System.IO.MemoryStream()"
-            use mem    = new System.IO.MemoryStream()
+            use mem    = new System.IO.MemoryStream() 
             Console.WriteLine "before new System.IO.Compression.GZipStream(mem, System.IO.Compression.CompressionMode.Compress  )"
             use comp   = new System.IO.Compression.GZipStream(mem, System.IO.Compression.CompressionMode.Compress  ) // fails here
             Console.WriteLine "after new System.IO.Compression.GZipStream(mem, System.IO.Compression.CompressionMode.Compress  )"
@@ -259,7 +344,7 @@ namespace FsRoot
             cDoc()
         ]
             """
-            async {
+            async { 
                 try 
                     Console.WriteLine "before parseAndCheckProject"
                     let! results = parseAndCheckProject "source" opts code
@@ -269,22 +354,23 @@ namespace FsRoot
                     Console.WriteLine "Dependencies:"
                     for dep in results.DependencyFiles do
                         Console.WriteLine("Dependency: " + dep.ToString())
-                    let wsRes =
-                        if results.HasCriticalErrors then None else
-                        startLoading metadataL
-                        translateFromAst "TestCompile" (metadataL.Force()) results
-                        |> Some
-                    Console.WriteLine "WsErrors:"
-                    match wsRes with
-                    | None -> Console.WriteLine("No translation")
-                    | Some(jsO, errs, warns) ->
-                    for err in errs do
-                        Console.WriteLine("WsError: "   + err.ToString())
-                    for warn in warns do
-                        Console.WriteLine("WsWarning: " + warn.ToString())
-                    jsO |> Option.iter Console.WriteLine
+                    //let wsRes =
+                    //    if results.HasCriticalErrors then None else
+                    //    startLoading metadataL
+                    //    translateFromAst "TestCompile" (metadataL.Force()) results
+                    //    |> Some
+                    //Console.WriteLine "WsErrors:"
+                    //match wsRes with
+                    //| None -> Console.WriteLine("No translation")
+                    //| Some(jsO, errs, warns) ->
+                    //for err in errs do
+                    //    Console.WriteLine("WsError: "   + err.ToString())
+                    //for warn in warns do
+                    //    Console.WriteLine("WsWarning: " + warn.ToString())
+                    //jsO |> Option.iter Console.WriteLine
                 with e ->
                     printfn "*************\n%A\n*************" <| e
+                    printfn "Inner: \n%A\n*************" <| e.InnerException 
             }
     
         module Remoting =
@@ -307,9 +393,11 @@ namespace FsRoot
                 printfn "Remoting server loaded!"
                 srv
             )
-            startLoading wsServer
+            //startLoading wsServer
     
-        let runRpc(header, data) = 
+        environment()
+    
+        let runRpc(header:string, data:string) = 
             async {
                 printfn "WsTranslator47 runRpc %A %A" header data
                 let  wsReq    = {
@@ -321,21 +409,45 @@ namespace FsRoot
                         | _  -> None
                 }
                 try
-                  //do  checkGZip()   // this fails in AOT and AOT-interp
-                  //do  dirWasm "/"   // this works
-                  //do! testCompile() // this fails in AOT and AOT-interp
+                  //do  environment()
+                  //do  checkMemoryFile() // this fails in AOT and AOT-interp
+                  //do  checkGZip()       // this works
+                  //do  dirWasm "/"       // this works
+                  //do! testCompile()     // this fails in AOT and AOT-interp
                     let! wsResp = Remoting.wsServer.Force().HandleRequest wsReq
                     Remoting.returnValue(header, wsResp.Content)
                 with e -> 
                     Remoting.returnExn  (header, sprintf "%A" e)
             } |> Async.Start
     
+        [< JavaScript >]
+        type Position = {
+            FileName : string
+            Start    : int * int
+            End      : int * int
+        }
+    
+        let fromFSharpToAst (fserr:FSharpErrorInfo) = 
+            {
+                Position.FileName = fserr.FileName
+                Position.Start    = fserr.Start.Line, fserr.Start.Column
+                Position.End      = fserr.End  .Line, fserr.End  .Column
+            }
+            , sprintf "Error %5d: %s" fserr.ErrorNumber fserr.Message
+    
+        let fromWSPos (wserr:AST.SourcePos) =
+            {
+                Position.FileName = wserr.FileName
+                Position.Start    = wserr.Start
+                Position.End      = wserr.End  
+            }
+    
         module Rpc =
     
             [< Remote >]
             let parseAndCheckProjectRpc projectName opts code = async {
                 let! results = parseAndCheckProject projectName opts code
-                return results.Errors, results.DependencyFiles, results.HasCriticalErrors
+                return results.Errors |> Array.map fromFSharpToAst, results.DependencyFiles, results.HasCriticalErrors
             }
     
             [< Remote >]
@@ -343,10 +455,12 @@ namespace FsRoot
                 let! results = parseAndCheckProject projectName opts code
                 let wsRes =
                     if results.HasCriticalErrors then None else
-                    startLoading metadataL
-                    translateFromAst projectName (metadataL.Force()) results
+                    match translateFromAst projectName (metadataL.Force()) results with
+                    | (jsO, errs, warns) -> jsO
+                                            , errs  |> Seq.map(fun (p, e) ->  p |> Option.map fromWSPos, e.ToString() ) |> Seq.toArray
+                                            , warns |> Seq.map(fun (p, e) ->  p |> Option.map fromWSPos, e.ToString() ) |> Seq.toArray
                     |> Some
-                return results.Errors, wsRes
+                return results.Errors |> Array.map fromFSharpToAst, wsRes 
             }
     
             [< Remote >]

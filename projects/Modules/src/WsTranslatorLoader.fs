@@ -1,33 +1,33 @@
 #nowarn "3242"
-////-d:FSharpStation1612100328464 -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
+////-d:FSharpStation1612787654537 -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461"
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Core.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Collections.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Main.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.JQuery.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.JavaScript.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Web.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Sitelets.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Control.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Core.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Collections.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Main.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.JQuery.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Web.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Control.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\WsTranslator47.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\FSharp.Compiler.Service.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Compiler.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1612100328464
+//#define FSharpStation1612787654537
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -50,24 +50,24 @@ namespace FsRoot
     
     #if WEBSHARPER
     #if WEBSHARPER47
-    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461"
-    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461"
     
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Core.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Collections.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Main.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.JQuery.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.JavaScript.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Web.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Sitelets.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper\lib\net461\WebSharper.Control.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\FSharp47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Collections.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Main.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.JQuery.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Web.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Control.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
     #else
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
@@ -324,6 +324,9 @@ namespace FsRoot
                 let WasmLoaderVersion = "45"
             #endif
             
+                [< JavaScript >]
+                type Dependency<'T>(def:'T) = member val D = def with get, set
+            
                 [< Inline "(!$global.document)" >]
                 let isWorker = true
             
@@ -382,8 +385,11 @@ namespace FsRoot
                                 queues.Add(md, narr)
                                 Some fs
                             )
-            
+            #if WEBSHARPER47
+                    [< Inline "$global.WASM_WsTranslator47_FsRoot_WsTranslator_runRpc($header, $data)" >]
+            #else
                     [< Inline "$global.WASM_WsTranslator_FsRoot_WsTranslator_runRpc($header, $data)" >]
+            #endif
                     let runRpc0 (header:string) (data:string) = runRpc(header, data)
                     let returnValue0 (md, v:string) = ReturnQueue.tryGet md |> Option.iter(fun (ok, er) -> ok v )
                     let returnExnExn (md, e:exn   ) = ReturnQueue.tryGet md |> Option.iter(fun (ok, er) -> er e )
@@ -478,7 +484,11 @@ namespace FsRoot
                         [
                             //"WsTranslator", "FsRoot.WsTranslator", "translateToJs"
                             //"WsTranslator", "FsRoot.WsTranslator", "dir"
-                            "WsTranslator", "FsRoot.WsTranslator", "runRpc"
+            #if WEBSHARPER47
+                            "WsTranslator47", "FsRoot.WsTranslator", "runRpc"
+            #else
+                            "WsTranslator"  , "FsRoot.WsTranslator", "runRpc"
+            #endif                
                         ] |> Seq.iter bindStaticMethod
             
                     type GlobalModule[< Inline "$global.Module = $global.Module || {} " >]() =
@@ -745,8 +755,8 @@ namespace FsRoot
                             | Some asm -> asm
                             | None     -> "No translation"
                             |> detailsV.Set
-                            wsErrsV .Set (Seq.toArray errs)
-                            wsWrnsV .Set (Seq.toArray wrns)
+                            wsErrsV .Set errs
+                            wsWrnsV .Set wrns
                         | None -> 
                             clean()
                             wsErrsV .Set [||]
@@ -772,7 +782,8 @@ namespace FsRoot
                                 Doc.Button "Check"                [] (fun () -> clean()
                                                                                 callWasmTimed "Check"     parseAndCheckProject (getParms()) )
                                 Doc.Button "Translate"            [] (fun () -> clean()
-                                                                                callWasmTimed "Translate" translateToJs        (getParms()) )
+                                                                                callWasmTimed "Translate" translateToJs        (getParms()) 
+                                                                                )
                                 Doc.Button "Dir"                  [] (fun () -> callWasmTimed "Dir"       Rpc.dirRpc "/"                    )
                                 Doc.Button "Clean"                [] (fun () -> clean() )
                             ]
