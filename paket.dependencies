@@ -118,14 +118,24 @@ group Test2
     nuget Microsoft.AspNetCore.All <= 2.1
     #nuget System.Identity.Model
 
+group WebSharper47
+    framework: netstandard2.0
+    source https://www.nuget.org/api/v2
+    nuget WebSharper                
+    nuget Websharper.FSharp         
+    nuget Websharper.UI	            
+    nuget Websharper.Owin 
+    nuget WebSharper.Owin.WebSocket 
+    nuget WebSharper.Moment         
+    nuget WebSharper.Data           
+
 group FSharp47
     framework: netstandard2.0, net461
     source https://www.nuget.org/api/v2
-    nuget FSharp.Core = 4.6.2
-    nuget WebSharper         
-    nuget Websharper.FSharp  
-    nuget Websharper.UI	     
-    nuget Websharper.Owin
-    nuget WebSharper.Owin.WebSocket
-    nuget WebSharper.Moment
-    nuget WebSharper.Data
+    nuget FSharp.Core
+    nuget FSharp.Compiler.Service
+    nuget Microsoft.Windows.Compatibility
+    nuget Microsoft.Build.Utilities.Core
+    nuget Microsoft.Build.Framework
+    nuget Mono.Cecil
+    
