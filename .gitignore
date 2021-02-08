@@ -1,2 +1,4 @@
 packages/
 .ionide/
+*.wasm
+website/WASM/**
