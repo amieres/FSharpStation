@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1612787654537 -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
+////-d:FSharpStation1612884909147 -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461"
@@ -27,7 +27,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Compiler.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1612787654537
+//#define FSharpStation1612884909147
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -330,6 +330,8 @@ namespace FsRoot
                 [< Inline "(!$global.document)" >]
                 let isWorker = true
             
+                type WasmPath = WasmPath of string
+            
                 type WasmStatus =
                 | WasmNotLoaded
                 | WasmLoading
@@ -341,16 +343,16 @@ namespace FsRoot
                 | WorkerReturnValue  of string * string
                 | WorkerReturnExn    of string * string
                 | WorkerPrintfn      of string
-                | WorkerWasmStatus   of WasmStatus
+                | WorkerWasmStatus   of WasmStatus * WasmPath option
             
                 type MsgFromHost =
                 | HostRunRpc       of string * string
                 | HostPrintfnW     of string
-                | HostLoadWasm     of bool   * string
+                | HostLoadWasm     of WasmPath * debug:bool   * opts:string
             
                 /// this Var is an exception because is not in the UI section
                 /// it is used to also communication from Worker to Host with a Sink
-                let wasmStatusV = Var.Create WasmNotLoaded 
+                let wasmStatusV = Var.Create (WasmNotLoaded, None) 
             
                 module Remoting =
                     open WebSharper.JavaScript
@@ -432,16 +434,16 @@ namespace FsRoot
             
                     let receiveMessage loadInThisThread (evt: MessageEvent) =
                         match evt.Data :?> MsgFromHost with
-                        | HostRunRpc(header, data) -> Remoting.callRunRpc header data
-                        | HostPrintfnW txt         -> printfn "%s" txt
-                        | HostLoadWasm(debug,opts) -> loadInThisThread debug opts
+                        | HostRunRpc  (header, data)             -> Remoting.callRunRpc header data
+                        | HostPrintfnW txt                       -> printfn "%s" txt
+                        | HostLoadWasm(publishPath, debug, opts) -> loadInThisThread publishPath debug opts
             
                     let fromWorker (evt: MessageEvent) =
                         match evt.Data :?> MsgFromWorker with
                         | WorkerReturnValue  (h,d) -> Remoting.returnValue0(h, d)
                         | WorkerReturnExn    (h,d) -> Remoting.returnExn0  (h, d)
                         | WorkerPrintfn      txt   -> printfn "%s" txt
-                        | WorkerWasmStatus   v     -> if wasmStatusV.Value <> v then wasmStatusV.Set v
+                        | WorkerWasmStatus   (s,v) -> if wasmStatusV.Value <> (s,v) then wasmStatusV.Set (s,v)
             
                     let terminate() =
                         match workerO with
@@ -450,7 +452,7 @@ namespace FsRoot
                         w.Terminate()
                         workerO <- None
                         printfn "Worker terminated!"
-                        wasmStatusV.Set WasmNotLoaded
+                        wasmStatusV.Set (WasmNotLoaded, None)
             
                 module WasmLoad =
                     open WebSharper.Core.Resources
@@ -559,22 +561,22 @@ namespace FsRoot
                                 |> Array.choose(function String.StartsWith "-r:" f -> Some f |_-> None )
                     ]
             
-                    let loadInThisThread debug opts =
+                    let loadInThisThread (publishPath:WasmPath) debug opts =
                         match isWorker, wasmStatusV.Value with
-                        | false, WasmLoaded
-                        | true , WasmWorkerLoaded  -> ()
-                        | false, WasmLoading
-                        | true , WasmWorkerLoading -> printfn "WASM is loading"
-                        | true , WasmLoading       -> printfn "WASM is loading in the main thread"
-                        | false, WasmWorkerLoading -> printfn "WASM is loading in a WebWorker"
-                        | true , WasmLoaded        -> printfn "WASM is loaded in the main thread"
-                        | false, WasmWorkerLoaded  -> printfn "WASM is loaded in a WebWorker"
-                        | _    , WasmNotLoaded     ->
+                        | false, (WasmLoaded       , _)
+                        | true , (WasmWorkerLoaded , _) -> ()
+                        | false, (WasmLoading      , _)
+                        | true , (WasmWorkerLoading, _) -> printfn "WASM is loading"
+                        | true , (WasmLoading      , _) -> printfn "WASM is loading in the main thread"
+                        | false, (WasmWorkerLoading, _) -> printfn "WASM is loading in a WebWorker"
+                        | true , (WasmLoaded       , _) -> printfn "WASM is loaded in the main thread"
+                        | false, (WasmWorkerLoaded , _) -> printfn "WASM is loaded in a WebWorker"
+                        | _    , (WasmNotLoaded    , _) ->
                         Async.FromContinuations(fun (ok, ko, ca) ->
                             let init () =
                                 bindWasm()
                                 printfn "WASM Initialized!"
-                                wasmStatusV.Set (if isWorker then WasmWorkerLoaded  else WasmLoaded )
+                                wasmStatusV.Set ((if isWorker then WasmWorkerLoaded else WasmLoaded), Some publishPath )
                                 ok()
                             let initializeRuntime() =
                                 let monoSetEnv = getMonoSetEnv().Invoke
@@ -590,8 +592,8 @@ namespace FsRoot
                                         init
                                     )
                             async {
-                                printfn "Loading WASM. Hold on, this will take a while..."
-                                wasmStatusV.Set (if isWorker then WasmWorkerLoading else WasmLoading)
+                                printfn "Loading WASM. Hold on, this may take a while..."
+                                wasmStatusV.Set ((if isWorker then WasmWorkerLoading else WasmLoading), Some publishPath )
                                 do! Async.Sleep 50
                                 if not isWorker then Remoting.installProvider()
                                 //JS.Window?App <- Pojo.newPojo [
@@ -609,15 +611,15 @@ namespace FsRoot
                             } |> Async.Start
                         ) |> Async.Start
             
-                    let loadWasmInWorker debug opts =
-                        if isWorker                           then printfn "Already in a worker cannot load Wasm in another worker" else
-                        if wasmStatusV.Value <> WasmNotLoaded then printfn "Wasm is already %A" wasmStatusV.Value                   else
-                        wasmStatusV.Set WasmLoading
+                    let loadWasmInWorker publishPath debug opts =
+                        if isWorker                                   then printfn "Already in a worker cannot load Wasm in another worker" else
+                        if wasmStatusV.Value <> (WasmNotLoaded, None) then printfn "Wasm is already %A" wasmStatusV.Value                   else
+                        wasmStatusV.Set (WasmLoading, Some publishPath)
                         printfn "Initiating WebWorker"
                         Runtime.setScriptPath    <| FuncWithArgs(fun (_, f) -> rootPath +  f)
                         let w = new Worker(fun self ->
                             wasmStatusV.View     |> View.Sink(fun v -> self.PostMessage(WorkerWasmStatus v) )
-                            self.Onmessage       <- System.Action<_> (WWorker.receiveMessage loadInThisThread)
+                            self.Onmessage       <- System.Action<_> (WWorker.receiveMessage loadInThisThread )
                             Remoting.messaging.D <- {
                                 runRpc      = Remoting.runRpc0
                                 returnValue = fun v -> self.PostMessage(WorkerReturnValue v)
@@ -628,7 +630,7 @@ namespace FsRoot
                             let re = Remoting.returnExn   // this references are so the functions are not Dead Code Eliminated
                             ()
                         )
-                        w.PostMessage(HostLoadWasm(debug, opts))
+                        w.PostMessage(HostLoadWasm(publishPath, debug, opts))
                         w.Onmessage          <- System.Action<_> WWorker.fromWorker
                         WWorker.workerO      <- Some w
                         Remoting.messaging.D <- {
@@ -645,6 +647,7 @@ namespace FsRoot
                     let wsErrsV     = Var.Create [||]
                     let wsWrnsV     = Var.Create [||]
                     let debugV      = Var.Create false
+                    let wasmPathV   = Var.Create (WasmPath "\WASM\publish47")
                     let codeV       = Var.Create """
             open WebSharper
             open WebSharper.UI
@@ -705,11 +708,11 @@ namespace FsRoot
             
                     let inline callWasmA f p = 
                         async {
-                            if wasmStatusV.Value = WasmNotLoaded then WasmLoad.loadWasmInWorker debugV.Value optsV.Value
+                            if wasmStatusV.Value = (WasmNotLoaded, None) then WasmLoad.loadWasmInWorker wasmPathV.Value debugV.Value optsV.Value
                             do! Async.Sleep 50
                             while
                                 match wasmStatusV.Value with
-                                | WasmLoaded | WasmWorkerLoaded -> false
+                                | WasmLoaded, _ | WasmWorkerLoaded, _ -> false
                                 |_-> true 
                                 do
                                     printfn "Waiting for WASM to load..."
@@ -768,8 +771,12 @@ namespace FsRoot
                             h1  [] [ text     <|   sprintf "HELLO WASM%s!" WasmLoaderVersion ]
                             h2  [] [ textView <| V(sprintf "%A"            wasmStatusV.V)    ]
                             span [] [
-                                Doc.Button "Load as Worker"       [] (fun () -> WasmLoad.loadWasmInWorker debugV.Value optsV.Value )
-                                Doc.Button "Load in Main thread"  [] (fun () -> WasmLoad.loadInThisThread debugV.Value optsV.Value )
+                                text " WasmPath:"
+                                Doc.Input [] (wasmPathV.Lens (fun (WasmPath v) -> v) (fun _ -> WasmPath) )
+                            ]
+                            span [] [
+                                Doc.Button "Load as Worker"       [] (fun () -> WasmLoad.loadWasmInWorker wasmPathV.Value debugV.Value optsV.Value )
+                                Doc.Button "Load in Main thread"  [] (fun () -> WasmLoad.loadInThisThread wasmPathV.Value debugV.Value optsV.Value )
                                 Doc.Button "Terminate Worker"     [] (fun () -> WWorker.terminate() )
                                 text " Debug:"
                                 Doc.CheckBox [] debugV
@@ -779,12 +786,9 @@ namespace FsRoot
                                 Doc.InputArea [] optsV
                             ]
                             span [] [
-                                Doc.Button "Check"                [] (fun () -> clean()
-                                                                                callWasmTimed "Check"     parseAndCheckProject (getParms()) )
-                                Doc.Button "Translate"            [] (fun () -> clean()
-                                                                                callWasmTimed "Translate" translateToJs        (getParms()) 
-                                                                                )
-                                Doc.Button "Dir"                  [] (fun () -> callWasmTimed "Dir"       Rpc.dirRpc "/"                    )
+                                Doc.Button "Check"                [] (fun () -> clean() ; callWasmTimed "Check"     parseAndCheckProject (getParms()) )
+                                Doc.Button "Translate"            [] (fun () -> clean() ; callWasmTimed "Translate" translateToJs        (getParms()) )
+                                Doc.Button "Dir"                  [] (fun () ->           callWasmTimed "Dir"       Rpc.dirRpc "/"                    )
                                 Doc.Button "Clean"                [] (fun () -> clean() )
                             ]
                             showMessages "Fsc Messages" (sprintf "%A") fsErrsV.View

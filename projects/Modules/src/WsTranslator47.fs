@@ -1,5 +1,5 @@
 #nowarn "1182"
-////-d:FSharpStation1612787654537 -d:NETSTANDARD20 -d:NOFSROOTx -d:WEBSHARPER -d:WEBSHARPER47
+////-d:FSharpStation1612884909147 -d:NETSTANDARD20 -d:NOFSROOTx -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls"
@@ -36,7 +36,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Compiler.FSharp.dll"
 //#nowarn "1182"
 /// Root namespace for all code
-//#define FSharpStation1612787654537
+//#define FSharpStation1612884909147
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -143,16 +143,16 @@ namespace FsRoot
         #endif
     
         let environment() =
-            printfn "*****************************************"
-            printfn "WsTranslator47 Running in mode: %s"       ExecMode
-            printfn "System.Environment.OSVersion.Platform %A" System.Environment.OSVersion.Platform
+            printfn "************************************************"
+            printfn "WsTranslator47 Running in mode = %s"       ExecMode
+            printfn "System.Environment.OSVersion.Platform = %A" System.Environment.OSVersion.Platform
             let runningOnMono = try System.Type.GetType("Mono.Runtime") <> null with e-> false
             printfn "running on MONO = %A" runningOnMono
             let isRunningOnCoreClr = (typeof<obj>.Assembly).FullName.StartsWith("System.Private.CoreLib", StringComparison.InvariantCultureIgnoreCase)
             //printfn "running on CoreClr = %A" isRunningOnCoreClr
             let is32Bit = IntPtr.Size = 4
             printfn "is 32Bit = %A" is32Bit
-            printfn "*****************************************"
+            printfn "************************************************"
     
         let  fsharpChecker = lazy (
                 printfn "Loading FCS. Hold on, this will take a while..."

@@ -1,7 +1,7 @@
 (function(Global)
 {
  "use strict";
- var FsRoot,Library,String,ParseO,LibraryJS,Pojo,WebSharper,Obj,WsTranslatorLoader,Dependency,WasmStatus,Remoting,IMessagingO,ReturnQueue,CustomXhrProvider,WWorker,WasmLoad,Require,UI,SC$1,WsTranslatorLoader_GeneratedPrintf,GeneratedPrintf,Strings,List,Seq,Slice,Operators,Char,Unchecked,Utils,console,IntelliFactory,Runtime,Concurrency,Remoting$1,WsTranslator,Arrays,Enumerator,UI$1,Client,Templates,Doc,View,AjaxRemotingProvider,AttrProxy,Date,Math,DateUtil,Numeric,System,Guid,Var$1,Collections,Dictionary;
+ var FsRoot,Library,String,ParseO,LibraryJS,Pojo,WebSharper,Obj,WsTranslatorLoader,Dependency,WasmStatus,Remoting,IMessagingO,ReturnQueue,CustomXhrProvider,WWorker,WasmLoad,Require,UI,SC$1,WsTranslatorLoader_GeneratedPrintf,GeneratedPrintf,Strings,List,Seq,Slice,Operators,Char,Unchecked,Utils,console,IntelliFactory,Runtime,Concurrency,Remoting$1,WsTranslator,Arrays,Enumerator,UI$1,Client,Templates,Doc,View,Var$1,AjaxRemotingProvider,AttrProxy,Date,Math,DateUtil,Numeric,System,Guid,Collections,Dictionary;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
  String=Library.String=Library.String||{};
@@ -45,6 +45,7 @@
  Templates=Client&&Client.Templates;
  Doc=UI$1&&UI$1.Doc;
  View=UI$1&&UI$1.View;
+ Var$1=UI$1&&UI$1.Var$1;
  AjaxRemotingProvider=Remoting$1&&Remoting$1.AjaxRemotingProvider;
  AttrProxy=UI$1&&UI$1.AttrProxy;
  Date=Global.Date;
@@ -53,7 +54,6 @@
  Numeric=WebSharper&&WebSharper.Numeric;
  System=Global.System;
  Guid=System&&System.Guid;
- Var$1=UI$1&&UI$1.Var$1;
  Collections=WebSharper&&WebSharper.Collections;
  Dictionary=Collections&&Collections.Dictionary;
  String.thousands=function(n)
@@ -616,7 +616,7 @@
     {
      return $2("Worker terminated!");
     });
-    WsTranslatorLoader.wasmStatusV().Set(WasmStatus.WasmNotLoaded);
+    WsTranslatorLoader.wasmStatusV().Set([WasmStatus.WasmNotLoaded,null]);
    }
   else
    WsTranslatorLoader.printfn(function($2)
@@ -626,7 +626,7 @@
  };
  WWorker.fromWorker=function(evt)
  {
-  var m,v;
+  var m,v,s;
   m=evt.data;
   m.$==1?Remoting.returnExn0(m.$0,m.$1):m.$==2?(WsTranslatorLoader.printfn(function($1)
   {
@@ -634,7 +634,7 @@
    {
     return $1(Utils.toSafe($2));
    };
-  }))(m.$0):m.$==3?(v=m.$0,!Unchecked.Equals(WsTranslatorLoader.wasmStatusV().Get(),v)?WsTranslatorLoader.wasmStatusV().Set(v):void 0):Remoting.returnValue0(m.$0,m.$1);
+  }))(m.$0):m.$==3?(v=m.$1,s=m.$0,!Unchecked.Equals(WsTranslatorLoader.wasmStatusV().Get(),[s,v])?WsTranslatorLoader.wasmStatusV().Set([s,v]):void 0):Remoting.returnValue0(m.$0,m.$1);
  };
  WWorker.receiveMessage=function(loadInThisThread,evt)
  {
@@ -646,7 +646,7 @@
    {
     return $1(Utils.toSafe($2));
    };
-  }))(m.$0):m.$==2?loadInThisThread(m.$0,m.$1):Remoting.callRunRpc(m.$0,m.$1);
+  }))(m.$0):m.$==2?loadInThisThread(m.$0,m.$1,m.$2):Remoting.callRunRpc(m.$0,m.$1);
  };
  WWorker.workerO=function()
  {
@@ -663,26 +663,33 @@
  {
   Obj.New.call(this);
  },Require);
- WasmLoad.loadWasmInWorker=function(debug,opts)
+ WasmLoad.loadWasmInWorker=function(publishPath,debug,opts)
  {
-  var w;
+  var c,t,w;
   if(!self.document)
    WsTranslatorLoader.printfn(function($1)
    {
     return $1("Already in a worker cannot load Wasm in another worker");
    });
   else
-   if(WsTranslatorLoader.wasmStatusV().Get().$!==0)
-    (WsTranslatorLoader.printfn(function($1)
+   if(!Unchecked.Equals(WsTranslatorLoader.wasmStatusV().Get(),[WasmStatus.WasmNotLoaded,null]))
     {
-     return function($2)
+     c=WsTranslatorLoader.printfn(function($1)
      {
-      return $1("Wasm is already "+WsTranslatorLoader_GeneratedPrintf.p($2));
-     };
-    }))(WsTranslatorLoader.wasmStatusV().Get());
+      return function($2)
+      {
+       return $1("Wasm is already "+("("+WsTranslatorLoader_GeneratedPrintf.p($2[0])+", "+WsTranslatorLoader_GeneratedPrintf.p$1($2[1])+")"));
+      };
+     });
+     t=WsTranslatorLoader.wasmStatusV().Get();
+     c([t[0],t[1]]);
+    }
    else
     {
-     WsTranslatorLoader.wasmStatusV().Set(WasmStatus.WasmLoading);
+     WsTranslatorLoader.wasmStatusV().Set([WasmStatus.WasmLoading,{
+      $:1,
+      $0:publishPath
+     }]);
      WsTranslatorLoader.printfn(function($1)
      {
       return $1("Initiating WebWorker");
@@ -694,8 +701,9 @@
      w=new Global.Worker(Runtime.ScriptPath("WsTranslatorLoader","WsTranslatorLoader.worker.js"));
      w.postMessage({
       $:2,
-      $0:debug,
-      $1:opts
+      $0:publishPath,
+      $1:debug,
+      $2:opts
      });
      w.onmessage=WWorker.fromWorker;
      WWorker.set_workerO({
@@ -712,22 +720,22 @@
         $1:d
        });
       };
-     },function(t)
+     },function(t$1)
      {
-      Remoting.returnValue0(t[0],t[1]);
-     },function(t)
+      Remoting.returnValue0(t$1[0],t$1[1]);
+     },function(t$1)
      {
-      Remoting.returnExn0(t[0],t[1]);
+      Remoting.returnExn0(t$1[0],t$1[1]);
      },Remoting.messaging().get_D().wprintfn));
      Remoting.installProvider();
     }
  };
- WasmLoad.loadInThisThread=function(debug,opts)
+ WasmLoad.loadInThisThread=function(publishPath,debug,opts)
  {
   var $1,$2,$3;
   $2=!self.document;
   $3=WsTranslatorLoader.wasmStatusV().Get();
-  switch($2?$3.$==3?1:$3.$==1?2:$3.$==2?4:$3.$==0?6:0:$3.$==1?1:$3.$==3?3:$3.$==4?5:$3.$==0?6:0)
+  switch($2?$3[0].$==3?1:$3[0].$==1?2:$3[0].$==2?4:$3[0].$==0?6:0:$3[0].$==1?1:$3[0].$==3?3:$3[0].$==4?5:$3[0].$==0?6:0)
   {
    case 0:
     null;
@@ -773,7 +781,10 @@
       {
        return $4("WASM Initialized!");
       });
-      WsTranslatorLoader.wasmStatusV().Set(!self.document?WasmStatus.WasmWorkerLoaded:WasmStatus.WasmLoaded);
+      WsTranslatorLoader.wasmStatusV().Set([!self.document?WasmStatus.WasmWorkerLoaded:WasmStatus.WasmLoaded,{
+       $:1,
+       $0:publishPath
+      }]);
       ok();
      }
      function initializeRuntime()
@@ -795,9 +806,12 @@
      {
       WsTranslatorLoader.printfn(function($4)
       {
-       return $4("Loading WASM. Hold on, this will take a while...");
+       return $4("Loading WASM. Hold on, this may take a while...");
       });
-      WsTranslatorLoader.wasmStatusV().Set(!self.document?WasmStatus.WasmWorkerLoading:WasmStatus.WasmLoading);
+      WsTranslatorLoader.wasmStatusV().Set([!self.document?WasmStatus.WasmWorkerLoading:WasmStatus.WasmLoading,{
+       $:1,
+       $0:publishPath
+      }]);
       return Concurrency.Bind(Concurrency.Sleep(50),function()
       {
        return Concurrency.Combine(!(!self.document)?(Remoting.installProvider(),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
@@ -983,15 +997,24 @@
    {
     return function($3)
     {
-     return $2(WsTranslatorLoader_GeneratedPrintf.p($3));
+     return $2("("+WsTranslatorLoader_GeneratedPrintf.p($3[0])+", "+WsTranslatorLoader_GeneratedPrintf.p$1($3[1])+")");
     };
-   }(Global.id))($1);
-  },WsTranslatorLoader.wasmStatusV().get_View()))]),Doc.Element("span",[],[Doc.Button("Load as Worker",[],function()
+   }(Global.id))([$1[0],$1[1]]);
+  },WsTranslatorLoader.wasmStatusV().get_View()))]),Doc.Element("span",[],[Doc.TextNode(" WasmPath:"),Doc.Input([],Var$1.Lens(UI.wasmPathV(),function(a)
   {
-   WasmLoad.loadWasmInWorker(UI.debugV().Get(),UI.optsV().Get());
+   return a.$0;
+  },function(a,a$1)
+  {
+   return{
+    $:0,
+    $0:a$1
+   };
+  }))]),Doc.Element("span",[],[Doc.Button("Load as Worker",[],function()
+  {
+   WasmLoad.loadWasmInWorker(UI.wasmPathV().Get(),UI.debugV().Get(),UI.optsV().Get());
   }),Doc.Button("Load in Main thread",[],function()
   {
-   WasmLoad.loadInThisThread(UI.debugV().Get(),UI.optsV().Get());
+   WasmLoad.loadInThisThread(UI.wasmPathV().Get(),UI.debugV().Get(),UI.optsV().Get());
   }),Doc.Button("Terminate Worker",[],function()
   {
    WWorker.terminate();
@@ -1031,7 +1054,7 @@
   {
    return function($2)
    {
-    return $1("("+WsTranslatorLoader_GeneratedPrintf.p$1($2[0])+", "+Utils.prettyPrint($2[1])+")");
+    return $1("("+WsTranslatorLoader_GeneratedPrintf.p$3($2[0])+", "+Utils.prettyPrint($2[1])+")");
    };
   }(Global.id),function(t)
   {
@@ -1040,7 +1063,7 @@
   {
    return function($2)
    {
-    return $1("("+WsTranslatorLoader_GeneratedPrintf.p$1($2[0])+", "+Utils.prettyPrint($2[1])+")");
+    return $1("("+WsTranslatorLoader_GeneratedPrintf.p$3($2[0])+", "+Utils.prettyPrint($2[1])+")");
    };
   }(Global.id),function(t)
   {
@@ -1148,7 +1171,7 @@
   b=null;
   return Concurrency.Delay(function()
   {
-   return Concurrency.Combine(WsTranslatorLoader.wasmStatusV().Get().$===0?(WasmLoad.loadWasmInWorker(UI.debugV().Get(),UI.optsV().Get()),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
+   return Concurrency.Combine(Unchecked.Equals(WsTranslatorLoader.wasmStatusV().Get(),[WasmStatus.WasmNotLoaded,null])?(WasmLoad.loadWasmInWorker(UI.wasmPathV().Get(),UI.debugV().Get(),UI.optsV().Get()),Concurrency.Zero()):Concurrency.Zero(),Concurrency.Delay(function()
    {
     return Concurrency.Bind(Concurrency.Sleep(50),function()
     {
@@ -1156,7 +1179,7 @@
      {
       var m;
       m=WsTranslatorLoader.wasmStatusV().Get();
-      return m.$==2?false:m.$!=4;
+      return m[0].$==2?false:m[0].$!=4;
      },Concurrency.Delay(function()
      {
       WsTranslatorLoader.printfn(function($1)
@@ -1204,6 +1227,11 @@
  {
   SC$1.$cctor();
   return SC$1.codeV;
+ };
+ UI.wasmPathV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.wasmPathV;
  };
  UI.debugV=function()
  {
@@ -1365,7 +1393,7 @@
   SC$1["|Double|_|"]=ParseO.parseDoubleO();
   SC$1["|Guid|_|"]=ParseO.parseGuidO();
   SC$1.WasmLoaderVersion="47";
-  SC$1.wasmStatusV=Var$1.Create$1(WasmStatus.WasmNotLoaded);
+  SC$1.wasmStatusV=Var$1.Create$1([WasmStatus.WasmNotLoaded,null]);
   SC$1.originalProvider=Remoting$1.AjaxProvider();
   SC$1.queues=new Dictionary.New$5();
   SC$1.messaging=new Dependency.New(IMessagingO.New(function(h)
@@ -1405,6 +1433,10 @@
   SC$1.wsErrsV=Var$1.Create$1([]);
   SC$1.wsWrnsV=Var$1.Create$1([]);
   SC$1.debugV=Var$1.Create$1(false);
+  SC$1.wasmPathV=Var$1.Create$1({
+   $:0,
+   $0:"\\WASM\\publish47"
+  });
   SC$1.codeV=Var$1.Create$1("\r\n            open WebSharper\r\n            open WebSharper.UI\r\n            open WebSharper.UI.Html\r\n            \r\n            let name = Var.Create \"World\"\r\n            \r\n            [< Inline \"'Hello inline '\" >]\r\n            let bDoc() = \"Hello\"\r\n            \r\n            let cDoc() = text name.V\r\n            \r\n            let aDoc() = \r\n                div [] [\r\n                    text <| bDoc()\r\n                    cDoc()\r\n                ]\r\n            \r\n                    ");
   SC$1.optsV=Var$1.Create$1(Strings.concat("\n",Seq.map(Strings.Trim,Strings.SplitChars("\r\n                                            /tmp/source.fsx\r\n                                            -o:source.exe\r\n                                            --simpleresolution\r\n                                            --nowarn:3186\r\n                                            --optimize-\r\n                                            --noframework\r\n                                            --fullpaths\r\n                                            --warn:3\r\n                                            --target:exe\r\n                                            -r:/dlls/WebSharper.Core.dll\r\n                                            -r:/dlls/WebSharper.Main.dll\r\n                                            -r:/dlls/WebSharper.UI.dll\r\n                                            -r:/dlls/WebSharper.Sitelets.dll\r\n                                            -r:/managed/FSharp.Core.dll\r\n                                            -r:/managed/mscorlib.dll\r\n                                            -r:/managed/netstandard.dll\r\n                                            -r:/managed/System.dll\r\n                                            -r:/managed/System.Core.dll\r\n                                            -r:/managed/System.IO.dll\r\n                                            -r:/managed/System.Runtime.dll\r\n                                            -r:/managed/System.Net.Http.dll\r\n                                            -r:/managed/System.Threading.dll\r\n                                            -r:/managed/System.Numerics.dll\r\n                                            -r:/managed/System.Runtime.Numerics.dll\r\n                                        ",["\n"],0))));
   !(!self.document)?Remoting.messaging().set_D((i=Remoting.messaging().get_D(),IMessagingO.New(i.runRpc,i.returnValue,i.returnExn,function(txt)
@@ -1415,11 +1447,19 @@
    UI.detailsV().Set(pre+(pre===""?"":"\n")+txt);
   }))):void 0;
  };
+ WsTranslatorLoader_GeneratedPrintf.p$1=function($1)
+ {
+  return $1==null?"null":"Some "+WsTranslatorLoader_GeneratedPrintf.p$2($1.$0);
+ };
+ WsTranslatorLoader_GeneratedPrintf.p$2=function($1)
+ {
+  return"WasmPath "+Utils.prettyPrint($1.$0);
+ };
  WsTranslatorLoader_GeneratedPrintf.p=function($1)
  {
   return $1.$==4?"WasmWorkerLoaded":$1.$==3?"WasmWorkerLoading":$1.$==2?"WasmLoaded":$1.$==1?"WasmLoading":"WasmNotLoaded";
  };
- WsTranslatorLoader_GeneratedPrintf.p$1=function($1)
+ WsTranslatorLoader_GeneratedPrintf.p$3=function($1)
  {
   return $1==null?"null":"Some "+GeneratedPrintf.p($1.$0);
  };
