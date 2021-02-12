@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1613067960900 -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
+////-d:FSharpStation1613148993245 -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461"
@@ -27,7 +27,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Compiler.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1613067960900
+//#define FSharpStation1613148993245
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -655,28 +655,32 @@ namespace FsRoot
                     let wsWrnsV     = Var.Create [||]
                     let debugV      = Var.Create false
                     let wasmPathV   = Var.Create (WasmPath "/WASM/v47/Interp/")
+                    let commandV    = Var.Create "/tmp/bin.exe 1 2 10 20 30 40"
                     let codeV       = Var.Create """
-            open WebSharper
-            open WebSharper.UI
-            open WebSharper.UI.Html
+            let tryParseWith tryParseFunc : string -> _  = tryParseFunc >> function
+                    | true, v    -> Some v
+                    | false, _   -> None
+            let parseIntO = tryParseWith System.Int32   .TryParse
             
-            let name = Var.Create "World"
+            let rec fibo = function
+                | 0 | 1 -> 1
+                | n -> fibo (n - 1) + fibo (n - 2)
             
-            [< Inline "'Hello inline '" >]
-            let bDoc() = "Hello"
+            let printFibo n = printfn "fibo(%d) = %i" n (fibo n)
             
-            let cDoc() = text name.V
+            let [< EntryPoint >] main args =
+                args
+                |> Seq.collect (fun s -> s.Split[| ' ' |])
+                |> Seq.choose parseIntO
+                |> Seq.iter   printFibo
             
-            let aDoc() = 
-                div [] [
-                    text <| bDoc()
-                    cDoc()
-                ]
+                0
             
                     """
                     let optsV       = Var.Create ("""
                                             /tmp/source.fsx
-                                            -o:source.exe
+                                            -o:/tmp/bin.exe
+                                            -d:WEBSHARPER
                                             --simpleresolution
                                             --nowarn:3186
                                             --optimize-
@@ -753,6 +757,13 @@ namespace FsRoot
                         |> detailsV.Set
                     }
             
+                    let compileProject(projectName, opts, code)  = async {
+                        let! errs, res = Rpc.compileProjectRpc projectName opts code
+                        fsErrsV.Set (Seq.toArray errs)
+                        sprintf "Compilation Result = %d" res
+                        |> detailsV.Set
+                    }
+            
                     open FsRoot
             //        open FShUI_AssemblyData
             
@@ -789,11 +800,14 @@ namespace FsRoot
                                 Doc.CheckBox [] debugV
                             ]
                             div [] [
+                                div [] [ text "Command: " ; Doc.Input [] commandV ]
                                 Doc.InputArea [] codeV
                                 Doc.InputArea [] optsV
                             ]
                             span [] [
                                 Doc.Button "Check"                [] (fun () -> clean() ; callWasmTimed "Check"     parseAndCheckProject (getParms()) )
+                                Doc.Button "Compile"              [] (fun () -> clean() ; callWasmTimed "Compile"   compileProject       (getParms()) )
+                                Doc.Button "Run"                  [] (fun () -> clean() ; callWasmTimed "Run"       Rpc.runRpc         commandV.Value )
                                 Doc.Button "Translate"            [] (fun () -> clean() ; callWasmTimed "Translate" translateToJs        (getParms()) )
                                 Doc.Button "Dir"                  [] (fun () ->           callWasmTimed "Dir"       Rpc.dirRpc "/"                    )
                                 Doc.Button "Clean"                [] (fun () -> clean() )

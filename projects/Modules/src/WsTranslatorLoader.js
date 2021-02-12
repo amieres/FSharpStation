@@ -1018,13 +1018,27 @@
   }),Doc.Button("Terminate Worker",[],function()
   {
    WWorker.terminate();
-  }),Doc.TextNode(" Debug:"),Doc.CheckBox([],UI.debugV())]),Doc.Element("div",[],[Doc.InputArea([],UI.codeV()),Doc.InputArea([],UI.optsV())]),Doc.Element("span",[],[Doc.Button("Check",[],function()
+  }),Doc.TextNode(" Debug:"),Doc.CheckBox([],UI.debugV())]),Doc.Element("div",[],[Doc.Element("div",[],[Doc.TextNode("Command: "),Doc.Input([],UI.commandV())]),Doc.InputArea([],UI.codeV()),Doc.InputArea([],UI.optsV())]),Doc.Element("span",[],[Doc.Button("Check",[],function()
   {
    UI.clean();
    UI.callWasmTimed("Check",function(t)
    {
     return UI.parseAndCheckProject(t[0],t[1],t[2]);
    },UI.getParms());
+  }),Doc.Button("Compile",[],function()
+  {
+   UI.clean();
+   UI.callWasmTimed("Compile",function(t)
+   {
+    return UI.compileProject(t[0],t[1],t[2]);
+   },UI.getParms());
+  }),Doc.Button("Run",[],function()
+  {
+   UI.clean();
+   UI.callWasmTimed("Run",function(c$3)
+   {
+    return(new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.runRpc:-1181784350",[c$3]);
+   },UI.commandV().Get());
   }),Doc.Button("Translate",[],function()
   {
    UI.clean();
@@ -1082,6 +1096,28 @@
     wsO=a[1];
     UI.fsErrsV().Set(a[0]);
     return wsO==null?(UI.clean(),UI.wsErrsV().Set([]),UI.wsWrnsV().Set([]),Concurrency.Zero()):(asmO=wsO.$0[0],(UI.detailsV().Set(asmO==null?"No translation":asmO.$0),UI.wsErrsV().Set(wsO.$0[1]),UI.wsWrnsV().Set(wsO.$0[2]),Concurrency.Zero()));
+   });
+  });
+ };
+ UI.compileProject=function(projectName,opts,code)
+ {
+  var b;
+  b=null;
+  return Concurrency.Delay(function()
+  {
+   return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.compileProjectRpc:35333862",[projectName,opts,code]),function(a)
+   {
+    var a$1;
+    UI.fsErrsV().Set(Arrays.ofSeq(a[0]));
+    a$1=(function($1)
+    {
+     return function($2)
+     {
+      return $1("Compilation Result = "+Global.String($2));
+     };
+    }(Global.id))(a[1]);
+    UI.detailsV().Set(a$1);
+    return Concurrency.Zero();
    });
   });
  };
@@ -1227,6 +1263,11 @@
  {
   SC$1.$cctor();
   return SC$1.codeV;
+ };
+ UI.commandV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.commandV;
  };
  UI.wasmPathV=function()
  {
@@ -1441,8 +1482,9 @@
    $:0,
    $0:"/WASM/v47/Interp/"
   });
-  SC$1.codeV=Var$1.Create$1("\r\n            open WebSharper\r\n            open WebSharper.UI\r\n            open WebSharper.UI.Html\r\n            \r\n            let name = Var.Create \"World\"\r\n            \r\n            [< Inline \"'Hello inline '\" >]\r\n            let bDoc() = \"Hello\"\r\n            \r\n            let cDoc() = text name.V\r\n            \r\n            let aDoc() = \r\n                div [] [\r\n                    text <| bDoc()\r\n                    cDoc()\r\n                ]\r\n            \r\n                    ");
-  SC$1.optsV=Var$1.Create$1(Strings.concat("\n",Seq.map(Strings.Trim,Strings.SplitChars("\r\n                                            /tmp/source.fsx\r\n                                            -o:source.exe\r\n                                            --simpleresolution\r\n                                            --nowarn:3186\r\n                                            --optimize-\r\n                                            --noframework\r\n                                            --fullpaths\r\n                                            --warn:3\r\n                                            --target:exe\r\n                                            -r:/dlls/WebSharper.Core.dll\r\n                                            -r:/dlls/WebSharper.Main.dll\r\n                                            -r:/dlls/WebSharper.UI.dll\r\n                                            -r:/dlls/WebSharper.Sitelets.dll\r\n                                            -r:/managed/FSharp.Core.dll\r\n                                            -r:/managed/mscorlib.dll\r\n                                            -r:/managed/netstandard.dll\r\n                                            -r:/managed/System.dll\r\n                                            -r:/managed/System.Core.dll\r\n                                            -r:/managed/System.IO.dll\r\n                                            -r:/managed/System.Runtime.dll\r\n                                            -r:/managed/System.Net.Http.dll\r\n                                            -r:/managed/System.Threading.dll\r\n                                            -r:/managed/System.Numerics.dll\r\n                                            -r:/managed/System.Runtime.Numerics.dll\r\n                                        ",["\n"],0))));
+  SC$1.commandV=Var$1.Create$1("/tmp/bin.exe 1 2 10 20 30 40");
+  SC$1.codeV=Var$1.Create$1("\r\n            let tryParseWith tryParseFunc : string -> _  = tryParseFunc >> function\r\n                    | true, v    -> Some v\r\n                    | false, _   -> None\r\n            let parseIntO = tryParseWith System.Int32   .TryParse\r\n            \r\n            let rec fibo = function\r\n                | 0 | 1 -> 1\r\n                | n -> fibo (n - 1) + fibo (n - 2)\r\n            \r\n            let printFibo n = printfn \"fibo(%d) = %i\" n (fibo n)\r\n            \r\n            let [< EntryPoint >] main args =\r\n                args\r\n                |> Seq.collect (fun s -> s.Split[| ' ' |])\r\n                |> Seq.choose parseIntO\r\n                |> Seq.iter   printFibo\r\n            \r\n                0\r\n            \r\n                    ");
+  SC$1.optsV=Var$1.Create$1(Strings.concat("\n",Seq.map(Strings.Trim,Strings.SplitChars("\r\n                                            /tmp/source.fsx\r\n                                            -o:/tmp/bin.exe\r\n                                            -d:WEBSHARPER\r\n                                            --simpleresolution\r\n                                            --nowarn:3186\r\n                                            --optimize-\r\n                                            --noframework\r\n                                            --fullpaths\r\n                                            --warn:3\r\n                                            --target:exe\r\n                                            -r:/dlls/WebSharper.Core.dll\r\n                                            -r:/dlls/WebSharper.Main.dll\r\n                                            -r:/dlls/WebSharper.UI.dll\r\n                                            -r:/dlls/WebSharper.Sitelets.dll\r\n                                            -r:/managed/FSharp.Core.dll\r\n                                            -r:/managed/mscorlib.dll\r\n                                            -r:/managed/netstandard.dll\r\n                                            -r:/managed/System.dll\r\n                                            -r:/managed/System.Core.dll\r\n                                            -r:/managed/System.IO.dll\r\n                                            -r:/managed/System.Runtime.dll\r\n                                            -r:/managed/System.Net.Http.dll\r\n                                            -r:/managed/System.Threading.dll\r\n                                            -r:/managed/System.Numerics.dll\r\n                                            -r:/managed/System.Runtime.Numerics.dll\r\n                                        ",["\n"],0))));
   !(!self.document)?Remoting.messaging().set_D((i=Remoting.messaging().get_D(),IMessagingO.New(i.runRpc,i.returnValue,i.returnExn,function(txt)
   {
    var pre;

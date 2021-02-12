@@ -1,5 +1,5 @@
 #nowarn "1182"
-////-d:FSharpStation1613131589238 -d:NETSTANDARD20 -d:NOFSROOTx -d:WEBSHARPER -d:WEBSHARPER47
+////-d:FSharpStation1613148993245 -d:NETSTANDARD20 -d:NOFSROOTx -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls"
@@ -36,7 +36,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Compiler.FSharp.dll"
 //#nowarn "1182"
 /// Root namespace for all code
-//#define FSharpStation1613131589238
+//#define FSharpStation1613148993245
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -263,12 +263,14 @@ namespace FsRoot
                 |> fst
             (Some js ), comp.Errors, comp.Warnings
     
-        let parseAndCheckProject projectName opts code = async {
+        let saveCode projectName opts code =
             let  projOpts = fsharpChecker.Force().GetProjectOptionsFromCommandLineArgs(projectName, opts)
             File.WriteAllText(projOpts.OtherOptions.[1], code)
-            let! results = fsharpChecker.Force().ParseAndCheckProject projOpts
-            return results
-        }
+            projOpts
+    
+        let parseAndCheckProject projectName opts code = 
+            saveCode projectName opts code
+            |> fsharpChecker.Force().ParseAndCheckProject
     
         let checkMemoryFile() = // it does not work on mono, it is going to be excluded should return Nulls
             try
@@ -443,12 +445,66 @@ namespace FsRoot
                 Position.End      = wserr.End  
             }
     
-        module Rpc =
+        let mutable counter = 0
+        // WASM has trouble running initializer code in the dll. This does not run (newFileName = 0):
+        // let newFileName =
+        //    System.Environment.SetEnvironmentVariable("FSHARP_COMPILER_BIN", "/tmp")
+        //    let mutable counter = 0
+        //    fun () -> 
+        //        counter <- counter + 1
+        //        sprintf "/tmp/app%d.exe" counter
+        let newFileName() =
+            //if counter = 0 then
+            //    printfn "before System.Environment.SetEnvironmentVariable(\"FSHARP_COMPILER_BIN\", \"/tmp\")"
+            //    System.Environment.SetEnvironmentVariable("FSHARP_COMPILER_BIN", "/tmp")
+            //    printfn "after System.Environment.SetEnvironmentVariable(\"FSHARP_COMPILER_BIN\", \"/tmp\")"
+            printfn "before counter <- counter + 1"
+            counter <- counter + 1
+            printfn "counter = %A" counter
+            sprintf "/tmp/app%d.exe" counter
+            |> fun v -> printfn "newFileName = %A" v; v
     
+    
+        module Token =
+    
+            type Token = Quoted of string | UnQuoted of string
+    
+    
+            let rec doubleQuote = function
+                | []                                            -> []
+                | UnQuoted c :: _ when c.StartsWith "//"        -> []
+                | Quoted t1 :: Quoted "\"" :: Quoted t2 :: rest -> (Quoted(t1 + "\"" + t2) :: rest) |> doubleQuote
+                | Quoted t1 :: Quoted "\"" :: []                -> [Quoted t1 ]
+                | h::rest                                       -> h :: doubleQuote rest
+    
+            let splitTokens line : Token list = // """main h1 "" "Hello World!"""" |> printfn "dd"
+                (if Seq.tryHead line = Some '"' then " " + line else line).Split '"'
+                |> Seq.mapi(fun i s -> 
+                    if  i % 2 = 1  then [| Quoted s    |] else
+                    if  s     = "" then [| Quoted "\"" |] else
+                    let t     = s.Trim()
+                    if  t     = "" then [|             |] else
+                    t.Split([| ' ' |], System.StringSplitOptions.RemoveEmptyEntries)
+                    |> Array.map         UnQuoted
+                )
+                |> Seq.collect id
+                |> Seq.toList
+                |> doubleQuote
+    
+            let splitArgs v = v |> splitTokens |> Seq.map (function Quoted s | UnQuoted s -> s) |> Seq.toArray
+    
+        module Rpc =
             [< Remote >]
             let parseAndCheckProjectRpc projectName opts code = async {
                 let! results = parseAndCheckProject projectName opts code
                 return results.Errors |> Array.map fromFSharpToAst, results.DependencyFiles, results.HasCriticalErrors
+            }
+    
+            [< Remote >]
+            let compileProjectRpc projectName opts code = async {
+                let _projOpts = saveCode projectName opts code
+                let! errors, res = fsharpChecker.Force().Compile opts
+                return errors |> Array.map fromFSharpToAst, res
             }
     
             [< Remote >]
@@ -466,5 +522,34 @@ namespace FsRoot
     
             [< Remote >]
             let dirRpc (d:string) = async { dirWasm d }
+    
+            open System.Reflection
+    
+            [< Remote >]
+            let runRpc(commandLine: string) = async {
+                //printfn "Environment.CommandLine      = %A" <| Environment.CommandLine
+                //printfn "commandLine = %A" commandLine
+                let args = Token.splitArgs commandLine
+                //printfn "args = %A" args
+                let path = args.[0] 
+                Environment.CurrentDirectory <- System.IO.Path.GetDirectoryName path
+                //printfn "Environment.CurrentDirectory = %s" <| Environment.CurrentDirectory
+                //printfn "run(path: string) = %s" path
+                //printfn "before: let bytes = System.IO.File.ReadAllBytes path"
+                //let bytes = System.IO.File.ReadAllBytes path
+                //printfn "bytes.Length = %d" bytes.Length
+                //printfn "before: let asm = Assembly.LoadFrom(path)"
+                let asm = //Assembly.LoadFrom(path)
+                    Assembly.Load(File.ReadAllBytes(path))
+                // Run entry point
+                //printfn "asm.EntryPoint = %A " <| asm.EntryPoint
+                //printfn "before: asm.EntryPoint.Invoke(null, [||]) |> ignore"
+                let parms = 
+                    asm.EntryPoint.GetParameters() 
+                    |> Array.map(fun p -> if p.ParameterType.IsArray then args :> obj else null)
+                //printfn "parms = %A" parms
+                let _ = asm.EntryPoint.Invoke(null, parms) //|> printfn "res = %A"
+                ()
+            }
     
     
