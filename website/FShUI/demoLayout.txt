@@ -1,0 +1,175 @@
+lytTarget  PlugIn
+: View ParseMsgs
+: Doc  main 
+
+editorDataSel Var ""
+
+setMainView  Action AF.SetVar "AppFramework.mainDocV" "lytDemo.main"
+setFullView1 Action AF.SetVar "AppFramework.mainDocV" "lytDemo.FullView1"
+setFullView2 Action AF.SetVar "AppFramework.mainDocV" "lytDemo.FullView2"
+setFullView3 Action AF.SetVar "AppFramework.mainDocV" "lytDemo.FullView3"
+
+toMainView   button "click=@{setMainView} ;Title=Back to normal view" "normal view"
+toFullView1  button "click=@{setFullView1};Title=to full view"        "container view"
+toFullView2  button "click=@{setFullView2};Title=to full view"        "full view"
+toFullView3  button "click=@{setFullView3};Title=to full view"        "split view"
+
+target      ViewJS "n => n.includes('main ')?n:'main Docs "" ""'" Snippets.curSnp_content
+
+goPrev      Action AF.SetVar       "Snippets.snippets_sel"    Snippets.prevSel
+goNext      Action AF.SetVar       "Snippets.snippets_sel"    Snippets.nextSel
+
+SetTarget   Action AF.SetVarDirect "lytTarget.Layout"         target
+
+textToCopy  Var ""
+
+Trigger Doc
+: Doc    AF.TrigChange   Snippets.snippets_sel      SetTarget
+
+TriggerCopy Doc
+: Doc    AF.TrigAction   textToCopy
+::  Actions
+::: Action  AF.SetVarDirect "Snippets.curSnp_content" textToCopy
+::: Actions SetTarget
+
+mode         Var    "View"
+activeView   ViewJS "n => n=='View'   ?'active':''" mode
+activeEdit   ViewJS "n => n=='Edit'   ?'active':''" mode
+activeFSharp ViewJS "n => n=='FSharp' ?'active':''" mode
+setView      Action AF.SetVar      "lytDemo.mode" "View"
+setEdit      Action AF.SetVar      "lytDemo.mode" "Edit"
+setFSharp    Action AF.SetVar      "lytDemo.mode" "FSharp"
+
+applyColor  ViewJS "(a,b) => a == b ? '' : 'btn btn-primary' " lytTarget.Layout target
+
+SearchFor   Doc    AF.InputLabel "" "Search" Snippets.searchFor
+
+indentUnindent ul "width:100%"
+: div "margin:3px"
+:: button "click=@{Snippets.IndentOut};title=indent out"     "<--"
+:: button "click=@{Snippets.IndentIn};title=indent in"       "--> "
+
+File span "class=input-group;margin:5px;id=LoadSnippets" 
+: div "class=input-group-btn"
+:: label "class=btn btn-info" "Load File"
+::: div ""
+:::: input "class=form-control;type=file;display: none;change=@{Snippets.LoadSnippets}" 
+:: label "class=btn btn-primary;click=@{Snippets.SaveSnippets}" "Save File"
+
+addRemove ul "margin:3px;width:100%"
+: button "click=@{Snippets.AddSnippet}   ;title=Add New Snippet" "+"
+: button "margin-left:20px;click=@{Snippets.DeleteSnippet};title=Delete  Snippet" "x"
+
+list div "display: flex;flex-direction: column;height:100%;" File
+: div    "margin:5px" SearchFor 
+: Docs indentUnindent
+: div "overflow:auto;width:100%" Snippets.snippets_list
+: Docs addRemove
+
+editor    Doc    Monaco.editor Snippets.curSnp_content     "fsharp"   "vs-dark" ""
+editor2   Doc    Monaco.editor Snippets.curSnp_explanation "markdown" "vs-dark" ""
+editor3   Doc    Monaco.editor Snippets.curSnp_content     "fsharp"   "vs-dark" ""
+MarkDown0 ViewJS "t => marked(t).replace(/<\/pre>/g,'<i onclick=""copyToEditor(this)"" title=""Copy to Editor"" class=""rightArrow"" ></i> </pre>')" Snippets.curSnp_explanation
+
+copyToEditor Docs
+: style  "" ".rightArrow { float:right; border: solid blue; border-width: 0 6px 6px 0; display: inline-block; padding: 3px; color: red; background: white;  transform: rotate(-45deg);  -webkit-transform: rotate(-45deg); } "
+: script "" "copyToEditor = function(el) { FsRootDll.LibraryJS.AppFramework.setVarDirect('lytDemo.textToCopy', el.parentElement.innerText); }"
+
+markdownHtml div "" copyToEditor
+:  h2        "margin-top:0px"              Snippets.curSnp_name
+:  Doc       AF.HtmlDoc MarkDown0
+
+prev button    "click=@{goPrev};title=@{Snippets.prevTxt}"  "Prev."     
+next button    "click=@{goNext};title=@{Snippets.nextTxt}"  "Next"
+
+content div "margin:10px" Trigger TriggerCopy
+:  span      "width:100%; margin-bottom:20px" prev  " " next
+:  Docs                             markdownHtml
+
+snippet div "overflow:auto" content
+
+RightX div "display: flex; flex-direction:column" lytTarget.main
+
+fshuiEditor div "width:100%;display:flex;flex-direction: column;flex:1"
+:  h4        "background:blue;color:white;margin:0px" "FShUI Editor:"
+:  div       "class=relative;flex:2" editor
+:  div       "color:red;font-weight:800;white-space:pre-wrap"  Snippets.parseOut
+
+tryMe span "width:100%"
+: button    "click=@{SetTarget};class=@{applyColor}"  "Try me! >>"
+
+Right horizontal 0-35-100
+:   div       "height:100%;display:flex;flex-direction: column" 
+::  Docs      fshuiEditor 
+::  spam     "" tryMe " " toFullView2 " " toFullView1 " " toFullView3
+: div "display: flex; flex-direction:column" lytTarget.main
+
+editorCombo div "display:flex;flex-direction:column; height:100%; flex:1"
+:  Doc       AF.InputLabel "" "Name:" Snippets.curSnp_name
+:  div       "class=relative;flex:1"      editor2
+
+snippetListEdit   div "display:flex;flex-direction:column" 
+: div "max-height:50%" list 
+: Docs editorCombo
+    
+snippetListView   div "display:block;overflow:auto;width:100%" Snippets.snippets_list
+
+snippetListFSharp div "display:flex;flex-direction:column"
+: button "onclick=FsRootDll.LibraryJS.SnippetsUI.SaveLoad.loadURL('//raw.githubusercontent.com/amieres/FSharpStation/master/basic18.snippets')" "Load FSharp Snippets"
+: button "onclick=FsRootDll.LibraryJS.SnippetsUI.SaveLoad.loadURL('/FShUI/tutorial.snippets'                                                 )" "Load Tutorial Snippets"
+: div "max-height:100%" list 
+
+navBar  div "class=xcontainer;margin-right:10px"
+:       div "class=navbar-header"
+::      button "type=button;class=navbar-toggle collapsed;data-toggle=collapse;data-target=#navbar;aria-expanded=false;aria-controls=navbar"
+:::     span "class=sr-only" "Toggle navigation"
+:::     span "class=icon-bar"
+:::     span "class=icon-bar"
+:::     span "class=icon-bar"
+::      a    "class=navbar-brand;href=#" "FShUI"
+:       div  "id=navbar;class=navbar-collapse collapse"
+::      ul   "class=nav navbar-nav"
+:::     li   "class=@{activeView}"
+::::    a    "href=#;click=@{setView}" "View"
+:::     li   "class=@{activeEdit}"
+::::    a    "href=#;click=@{setEdit}" "Edit"
+:::     li   "class=@{activeFSharp}"
+::::    a    "href=#;click=@{setFSharp}" "F#"
+::      ul   "class=nav navbar-nav navbar-right"
+:::     li   ""
+::::    a    "href=//github.com/amieres/amieres.github.io/issues/new" "Feedback"
+:::     li   "class=active"
+::::    a    "href=//github.com/amieres/amieres.github.io" "About"
+:::::   span "class=sr-only" "(current)"
+
+nav nav "class=navbar navbar-default navbar-fixed-top" navBar
+
+Center       vertical 0-60-100 snippet Right
+Center_      Doc Center ""
+
+CenterView   Docs Center_
+CenterEdit   Docs Center_
+CenterFSharp div "display:flex;flex-direction:column; height:100%"
+:  Doc       AF.InputLabel "" "Name:" Snippets.curSnp_name
+:  div       "class=relative;flex:1"      editor3
+
+main  horizontal 51 nav
+:   vertical 0-15-100
+::  Doc  AF.DocReference "lytDemo.snippetList@{mode}"
+::  Doc  AF.DocReference "lytDemo.Center@{mode}"
+
+split vertical 0-60-100
+: Doc  Monaco.editor lytDemo.Layout     "fsharp"   "vs-dark" ""
+: Docs lytDemo.mainLower1
+
+FullView1 div "class=container" toMainView " " toFullView2 " " toFullView3 snippet 
+: div "class=well; background:white;display:flex;flex-direction:column;min-height:300px" lytTarget.main
+
+FullView2 div "display:flex;flex-direction:column"
+: div "" toMainView " " toFullView1 " " toFullView3 
+: Docs lytTarget.main
+
+FullView3 div "display:flex;flex-direction:column" 
+:    div "" tryMe " " toMainView " " toFullView1 " " toFullView2
+:    div "class=relative;flex:1"
+::   vertical 0-50-100 fshuiEditor lytTarget.main

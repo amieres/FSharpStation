@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1612884909147 -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
+////-d:FSharpStation1613067960900 -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461"
@@ -23,11 +23,11 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\WsTranslator47.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\FSharp.Compiler.Service.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Compiler.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\FSharp.Compiler.Service.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Compiler.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1612884909147
+//#define FSharpStation1613067960900
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -301,12 +301,12 @@ namespace FsRoot
             //#define WEBSHARPER47
             #if WEBSHARPER47
             //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\WsTranslator47.dll"
-            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\FSharp.Compiler.Service.dll"
-            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Compiler.dll"
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\FSharp.Compiler.Service.dll"
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Compiler.dll"
             #else
             //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\bin\WsTranslator.dll"
-            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\FSharp.Compiler.Service.dll"
-            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish\dlls\WebSharper.Compiler.dll"
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\dlls\FSharp.Compiler.Service.dll"
+            //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\dlls\WebSharper.Compiler.dll"
             #endif
             
             [< JavaScriptExport >]
@@ -330,7 +330,9 @@ namespace FsRoot
                 [< Inline "(!$global.document)" >]
                 let isWorker = true
             
-                type WasmPath = WasmPath of string
+                type WasmPath = WasmPath of string 
+            
+                let getId (WasmPath v) = v
             
                 type WasmStatus =
                 | WasmNotLoaded
@@ -458,10 +460,11 @@ namespace FsRoot
                     open WebSharper.Core.Resources
             
             #if WEBSHARPER47
-                    let rootPath    = "/WASM/publish47/" 
-            #else        
-                    let rootPath    = "/WASM/publish/"
-            #endif
+                    let rootPath    = "/WASM/v47/" 
+            #else
+                    let rootPath    = "/WASM/v45/" 
+            #endif                
+            
                     [< Require(typeof<BaseResource>, "//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js") >]
                     type Require() =
                         [< Inline "requirejs($files, $f1)" >]
@@ -519,6 +522,10 @@ namespace FsRoot
                         [< Inline "$global.IntelliFactory.Runtime.ScriptPath = $f" >]
                         let setScriptPath(f: FuncWithArgs<string * string, string>) = ()
             
+                        [< Inline "$global.importScripts($fs)" >]
+                        let importScripts(fs:string[]) = ()
+            
+            
                     let preloadFiles (files: string seq) =
                         let asyncLoad url onload onerror =
                             let xhr : XMLHttpRequest = JS.Inline("new $global.XMLHttpRequest()", [||])
@@ -528,8 +535,8 @@ namespace FsRoot
                                 if (xhr.Status = 200 || xhr.Status = 0 && xhr.Response <> null) then
                                     onload(new Uint8Array(xhr.Response :?> byte[]))
                                 else
-                                    onerror())
-                            xhr.Onerror <- System.Action<_> (fun _ -> onerror())
+                                    (*onerror*)())
+                            xhr.Onerror <- System.Action<_> (fun _ -> (*onerror*)())
                             xhr.Send null
                         JS.Window?Browser <- Pojo.newPojo [
                             "init"     , ignore    :> obj
@@ -551,7 +558,7 @@ namespace FsRoot
                             with e -> ()
                         )
                         for dir, file in dirFiles do
-                            let from = (rootPath + dir + "/" + file).Replace("//", "/")
+                            let from = ((if dir = "/managed" then "." else "..") + dir + "/" + file).Replace("//", "/")
                             printfn "Preloading %s" from
                             FS.createPreloadedFile(dir, file, from, 1, 1);
             
@@ -599,14 +606,14 @@ namespace FsRoot
                                 //JS.Window?App <- Pojo.newPojo [
                                 //                    "init", init
                                 //                ]
-                                let! v = requireJsA [| rootPath + "mono-config.js" |]
-                                //let! v = requireJsA [| rootPath + "runtime.js" |]
+                                let! v = requireJsA [| getId publishPath + "mono-config.js" |]
+                                //let! v = requireJsA [| getId publishPath + "runtime.js" |]
                                 let Module = GlobalModule()
                                 Module.OnRuntimeInitialized <| initializeRuntime
                                 Module.SetPrint             <| printfn "%s"
                                 Module.SetPrintErr          <| printfn "%s"
                                 Module.SetPreRun            <| [| fun () -> filesToPreload opts |> preloadFiles |]
-                                let! v = requireJsA [| rootPath + "dotnet.js" |]
+                                let! v = requireJsA [| getId publishPath + "dotnet.js" |]
                                 ()
                             } |> Async.Start
                         ) |> Async.Start
@@ -616,7 +623,7 @@ namespace FsRoot
                         if wasmStatusV.Value <> (WasmNotLoaded, None) then printfn "Wasm is already %A" wasmStatusV.Value                   else
                         wasmStatusV.Set (WasmLoading, Some publishPath)
                         printfn "Initiating WebWorker"
-                        Runtime.setScriptPath    <| FuncWithArgs(fun (_, f) -> rootPath +  f)
+                        Runtime.setScriptPath    <| FuncWithArgs(fun (_, f) -> getId publishPath + "loadworker.js")
                         let w = new Worker(fun self ->
                             wasmStatusV.View     |> View.Sink(fun v -> self.PostMessage(WorkerWasmStatus v) )
                             self.Onmessage       <- System.Action<_> (WWorker.receiveMessage loadInThisThread )
@@ -647,7 +654,7 @@ namespace FsRoot
                     let wsErrsV     = Var.Create [||]
                     let wsWrnsV     = Var.Create [||]
                     let debugV      = Var.Create false
-                    let wasmPathV   = Var.Create (WasmPath "\WASM\publish47")
+                    let wasmPathV   = Var.Create (WasmPath "/WASM/v47/Interp/")
                     let codeV       = Var.Create """
             open WebSharper
             open WebSharper.UI

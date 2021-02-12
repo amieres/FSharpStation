@@ -1,42 +1,42 @@
 #nowarn "1182"
-////-d:FSharpStation1612884909147 -d:NETSTANDARD20 -d:NOFSROOTx -d:WEBSHARPER -d:WEBSHARPER47
+////-d:FSharpStation1613131589238 -d:NETSTANDARD20 -d:NOFSROOTx -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\Facades"
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\FSharp.Core.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\FSharp.Compiler.Service.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\mscorlib.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\netstandard.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Core.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.ComponentModel.Composition.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Data.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Data.DataSetExtensions.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Drawing.Common.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.IO.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.IO.Compression.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.IO.Compression.FileSystem.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Memory.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Net.Http.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Numerics.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Runtime.Serialization.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Transactions.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Xml.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Xml.Linq.dll"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\FSharp.Core.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\FSharp.Compiler.Service.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\mscorlib.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\netstandard.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Core.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.ComponentModel.Composition.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Data.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Data.DataSetExtensions.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Drawing.Common.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.IO.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.IO.Compression.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.IO.Compression.FileSystem.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Memory.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Net.Http.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Numerics.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Runtime.Serialization.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Transactions.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Xml.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Xml.Linq.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\framework\WebAssembly.Bindings.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Core.JavaScript.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Core.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Web.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Sitelets.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.JavaScript.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Main.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.UI.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Compiler.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.JQuery.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Compiler.FSharp.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Core.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Core.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Web.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Sitelets.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Main.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.UI.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Compiler.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.JQuery.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Compiler.FSharp.dll"
 //#nowarn "1182"
 /// Root namespace for all code
-//#define FSharpStation1612884909147
+//#define FSharpStation1613131589238
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -58,42 +58,42 @@ namespace FsRoot
     
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\Facades"
-    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\FSharp.Core.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\FSharp.Compiler.Service.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\mscorlib.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\netstandard.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Core.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.ComponentModel.Composition.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Data.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Data.DataSetExtensions.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Drawing.Common.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.IO.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.IO.Compression.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.IO.Compression.FileSystem.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Memory.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Net.Http.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Numerics.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Runtime.Serialization.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Transactions.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Xml.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Xml.Linq.dll"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\FSharp.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\FSharp.Compiler.Service.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\mscorlib.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\netstandard.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.ComponentModel.Composition.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Data.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Data.DataSetExtensions.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Drawing.Common.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.IO.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.IO.Compression.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.IO.Compression.FileSystem.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Memory.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Net.Http.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Numerics.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Runtime.Serialization.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Transactions.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Xml.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Xml.Linq.dll"
     
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\System.Diagnostics.PerformanceCounter.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\System.Diagnostics.PerformanceCounter.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\framework\WebAssembly.Bindings.dll"
     
     #if WEBSHARPER
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Core.JavaScript.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Core.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Web.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Sitelets.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.JavaScript.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Main.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.UI.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Compiler.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.JQuery.dll"
-    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\publish47\dlls\WebSharper.Compiler.FSharp.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Core.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Web.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Sitelets.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Main.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.UI.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Compiler.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.JQuery.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Compiler.FSharp.dll"
     
     module RM = WebSharper.Core.Remoting
     
@@ -185,10 +185,10 @@ namespace FsRoot
                 try 
                     if d = "/proc/self/fd" then Console.WriteLine "skip /proc/self/fd"  else
                     for file in Directory.GetFiles(d, "*") do
-                        printfn "F: %s" file  
+                        printfn "%s" file  
                     for subdir in Directory.EnumerateDirectories d do
-                        printfn "D: %s" subdir
-                        dir             subdir
+                        printfn "%s/" subdir
+                        dir           subdir
                 with e -> Console.WriteLine e.Message 
             printfn "dirWasm:"
             dir d
@@ -302,6 +302,7 @@ namespace FsRoot
         let testCompile() =
             let opts = getParms("""
                                     /tmp/source.fsx
+                                    -d:WEBSHARPER
                                     -o:source.exe
                                     --simpleresolution
                                     --nowarn:3186

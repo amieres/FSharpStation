@@ -1,30 +1,31 @@
 #nowarn "3242"
-////-d:DLL -d:FSharpStation1584484416768 -d:TEE -d:WEBSHARPER
+////-d:DLL -d:FSharpStation1613067960900 -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Core.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Collections.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Main.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.JQuery.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Web.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Control.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1584484416768
+//#define FSharpStation1613067960900
+#if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
 #else
@@ -34,16 +35,37 @@ namespace FsRootDll
 namespace FsRoot
 #endif
 #endif
-
+#endif
     #if !NETSTANDARD20
+    
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
     //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
-    //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
+    ////#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
     //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
     
     #if WEBSHARPER
+    #if WEBSHARPER47
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461"
+    //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461"
+    
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Core.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Collections.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Main.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.JQuery.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Web.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Control.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+    //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    #else
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
     //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
     
@@ -62,6 +84,7 @@ namespace FsRoot
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
     //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+    #endif
     #endif
     #endif
     #if WEBSHARPER
@@ -157,12 +180,19 @@ namespace FsRoot
                   }
             
                 let [<Inline>] inline TimeIt n f p =
-                    printfn "Starting %s" n
+                    printfn "%s Starting %s" (nowStamp()) n
                     let start = System.DateTime.UtcNow.Ticks
                     f p
                     let elapsedSpan = new System.TimeSpan(System.DateTime.UtcNow.Ticks - start)
-                    print <| elapsedSpan.ToString()
+                    printfn "%s Finished %s %0d:%02d:%02d.%03d" (nowStamp()) n (int elapsedSpan.TotalHours) elapsedSpan.Minutes elapsedSpan.Seconds elapsedSpan.Milliseconds
             
+                let [<Inline>] inline TimeItA n f p = async {
+                    printfn "%s Starting %s" (nowStamp()) n
+                    let start = System.DateTime.UtcNow.Ticks
+                    do! f p
+                    let elapsedSpan = new System.TimeSpan(System.DateTime.UtcNow.Ticks - start)
+                    printfn "%s Finished %s %0d:%02d:%02d.%03d" (nowStamp()) n (int elapsedSpan.TotalHours) elapsedSpan.Minutes elapsedSpan.Seconds elapsedSpan.Milliseconds
+                }
             
             // issues with websharper Type not found in JavaScript compilation: System.Collections.Generic.IDictionary`2
             #if !WEBSHARPER
@@ -268,6 +298,15 @@ namespace FsRoot
             /// returns a function that delays its execution
             /// cancels prior when multiple calls happen before the delay
             let delayed delay doF = delayedA delay (doF >> async.Return)
+            
+            #if WEBSHARPER
+            
+            let delayedVar delay (var:Var<_>) =
+                let delayedV = Var.Create var.Value
+                var.View |> View.Sink (delayed delay delayedV.Set)
+                delayedV
+            
+            #endif
             
             [< AutoOpen >]
             module Monads =
@@ -524,7 +563,7 @@ namespace FsRoot
                                                   then this.Substring2(0, this.Length + n)
                                                   else this.Substring2(0, n              )
                 member this.Right            n  = this.Substring2(max 0 (this.Length - n), this.Length)
-                member this.toUnderscore        = this |> Seq.mapi(fun i c -> if i > 0 && System.Char.IsUpper(c) then [ '_' ; c ] else [ c ])  |> Seq.collect id |> Seq.toArray |> System.String
+                //member this.toUnderscore        = this |> Seq.mapi(fun i c -> if i > 0 && System.Char.IsUpper(c) then [ '_' ; c ] else [ c ])  |> Seq.collect id |> Seq.toArray |> System.String
             
             module String =
                 let splitByChar (c: char) (s: string) = s.Split c
@@ -539,7 +578,7 @@ namespace FsRoot
                         splitInTwoO cl sec
                         |> Option.map(fun (mid, aft) -> bef, mid, aft)
                     )
-                let contains     sub  (whole: string) = whole.Contains sub
+                let contains (sub:string)  (whole: string) = whole.Contains sub
                 let trim                  (s: string) = s.Trim()
                 let left  n (s:string) = s.Left  n
                 let right n (s:string) = s.Right n
@@ -566,15 +605,19 @@ namespace FsRoot
                     >> String.concat "\n"
                 let (|StartsWith|_|) (start:string) (s:string) = if s.StartsWith start then Some s.[start.Length..                          ] else None
                 let (|EndsWith  |_|) (ends :string) (s:string) = if s.EndsWith   ends  then Some s.[0           ..s.Length - ends.Length - 1] else None
+                let (|WhiteSpace|_|) (s:string) = if s |> Seq.exists (System.Char.IsWhiteSpace >> not) then None else Some()
                 
                 let thousands n =
-                    let v = n.ToString()
+                    let v = (if n < 0 then -n else n).ToString()
                     let r = v.Length % 3 
                     let s = if r = 0 then 3 else r
                     [   yield v.[0.. s - 1]
                         for i in 0..(v.Length - s)/ 3 - 1 do
                             yield v.[i * 3 + s .. i * 3 + s + 2]
-                    ] |> String.concat ","
+                    ] 
+                    |> String.concat ","
+                    |> fun s -> if n < 0 then "-" + s else s
+            
             
             module ParseO =
                 let tryParseWith tryParseFunc = tryParseFunc >> function
@@ -776,7 +819,7 @@ namespace FsRoot
                 
                 let mutable observers : obj list = []
                 
-                let domRect2Tuple (r:Dom.DomRect) = (r.Top, r.Left, r.Width, r.Height)
+                let domRect2Tuple (r:Dom.Rect) = (r.Top, r.Left, r.Width, r.Height)
                 
                 let [< Inline "$_el.isConnected" >] isValidElement (_el:Dom.Element) = true
                 
@@ -2787,25 +2830,27 @@ namespace FsRoot
             
                 let failCreate s = fun () -> failwithf "Create %s not implemented" s
             
-                let pluginsList  = LM.getDocFor   AF.plugIns                                                          defPlg (failCreate "plugin" ) None showPlugIn
-                let plgVarsList  = LM.getDocForW (V pluginsList.CurrentW.V.plgVars   ) (fun plgVar -> plgVar.varName) defVar (failCreate "Var"    ) None showVar
-                let plgViewsList = LM.getDocForW (V pluginsList.CurrentW.V.plgViews  ) (fun plgViw -> plgViw.viwName) defViw (failCreate "View"   ) None showView
-                let plgActsList  = LM.getDocForW (V pluginsList.CurrentW.V.plgActions) (fun plgAct -> plgAct.actName) defAct (failCreate "Action" ) None showAct
-                let plgDocsList  = LM.getDocForW (V pluginsList.CurrentW.V.plgDocs   ) (fun plgDoc -> plgDoc.docName) defDoc (failCreate "Doc"    ) None showDoc
+                if IsClient then
+                    let pluginsList  = LM.getDocFor   AF.plugIns                                                          defPlg (failCreate "plugin" ) None showPlugIn
+                    let plgVarsList  = LM.getDocForW (V pluginsList.CurrentW.V.plgVars   ) (fun plgVar -> plgVar.varName) defVar (failCreate "Var"    ) None showVar
+                    let plgViewsList = LM.getDocForW (V pluginsList.CurrentW.V.plgViews  ) (fun plgViw -> plgViw.viwName) defViw (failCreate "View"   ) None showView
+                    let plgActsList  = LM.getDocForW (V pluginsList.CurrentW.V.plgActions) (fun plgAct -> plgAct.actName) defAct (failCreate "Action" ) None showAct
+                    let plgDocsList  = LM.getDocForW (V pluginsList.CurrentW.V.plgDocs   ) (fun plgDoc -> plgDoc.docName) defDoc (failCreate "Doc"    ) None showDoc
             
-                let plugInAdded =
-                    AF.plugin {
-                        plgName   "AppFrmkUI"
-                        plgMerge  "plugIns_"     (pluginsList .PlugIn (AF.PlugInName  >> Some) (fun n -> n.Id) )
-                        plgMerge  "plgVars_"     (plgVarsList .PlugIn (AF.PlgElemName >> Some) (fun n -> n.Id) )
-                        plgMerge  "plgViews_"    (plgViewsList.PlugIn (AF.PlgElemName >> Some) (fun n -> n.Id) )
-                        plgMerge  "plgActs_"     (plgActsList .PlugIn (AF.PlgElemName >> Some) (fun n -> n.Id) )
-                        plgMerge  "plgDocs_"     (plgDocsList .PlugIn (AF.PlgElemName >> Some) (fun n -> n.Id) )
-                    }
-                    |> AF.addPlugIn
-            
+                    let plugInAdded =
+                        AF.plugin {
+                            plgName   "AppFrmkUI"
+                            plgMerge  "plugIns_"     (pluginsList .PlugIn (AF.PlugInName  >> Some) (fun n -> n.Id) )
+                            plgMerge  "plgVars_"     (plgVarsList .PlugIn (AF.PlgElemName >> Some) (fun n -> n.Id) )
+                            plgMerge  "plgViews_"    (plgViewsList.PlugIn (AF.PlgElemName >> Some) (fun n -> n.Id) )
+                            plgMerge  "plgActs_"     (plgActsList .PlugIn (AF.PlgElemName >> Some) (fun n -> n.Id) )
+                            plgMerge  "plgDocs_"     (plgDocsList .PlugIn (AF.PlgElemName >> Some) (fun n -> n.Id) )
+                        }
+                        |> AF.addPlugIn
+                    ()
             
             //#define DLL
+            //#define WEBSHARPER47
             
             [< JavaScriptExport >]
             type LayoutEngine = {
@@ -3957,32 +4002,36 @@ namespace FsRoot
                 module P =
                     let run pin (p:P<_>) = p.r |> run pin
             
-                let name       = Var.Create "World"
+                if IsClient then
             
-                let checkName (n:string) = if n = "World".[0..n.Length-1] || n.Length <= 1 then "<---- Please enter your name" else "" 
+            //        let name       = Var.Create "World"
+            //
+            //        let checkName (n:string) = if n = "World".[0..n.Length-1] || n.Length <= 1 then "<---- Please enter your name" else "" 
+            //
+            //        let enterName  = ! checkName             <! name
+            //        let now        = ! (fun _ -> nowStamp()) <! name
+            //
+            //        let sayHello  =
+            //            let sayHello_0 = ! Doc.Concat <& "Hello @{name}!" <! enterName
+            //            let sayHello_1 = ! Doc.Concat <& "How are you?"
+            //            ! Doc.Concat <& sayHello_0       <! sayHello_1
+            //
+            //        let aString = Var.Lens aV string (fun _ -> int)
+            //
+            //        let main0 = ! concat <! aV <* 3.2
+            //        let main1 = !(sprintf "result = %s %s") <! main0 <* "main0"
+            //        let main  = ! h3 <& "color:@{name}; background:red; click=@{AppFramework.Hello}" <& "MAIN:" <! main1 <! main1 <! ":" <! sayHello <! ":" <! " Más >> " <! sayHello <! " <<"
+            //
+            //        let main2 = makeAViewDoc <| fun () -> h4 [ attr.styleDyn <| V("color:" + name.V) ] [ text "MAIN2:" ; Doc.TextView name.View] 
+            //
+            //        let appFwk = ! div <& "color:@{name}" <& "@{AppFramework.AppFwkClient}"
+            //        let split  = ! (LayoutEngine.variableSplitter false 0. 50. 100.) <& appFwk <& main
+            //        let split2 = ! (LayoutEngine.variableSplitter false 0. 50. 100.) <& appFwk <& main2
+            //
+            //        let callDocPFn pin pf = pf |> P.run pin |> callDoc
             
-                let enterName  = ! checkName             <! name
-                let now        = ! (fun _ -> nowStamp()) <! name
-            
-                let sayHello  =
-                    let sayHello_0 = ! Doc.Concat <& "Hello @{name}!" <! enterName
-                    let sayHello_1 = ! Doc.Concat <& "How are you?"
-                    ! Doc.Concat <& sayHello_0       <! sayHello_1
-            
-                let aString = Var.Lens aV string (fun _ -> int)
-            
-                let main0 = ! concat <! aV <* 3.2
-                let main1 = !(sprintf "result = %s %s") <! main0 <* "main0"
-                let main  = ! h3 <& "color:@{name}; background:red; click=@{AppFramework.Hello}" <& "MAIN:" <! main1 <! main1 <! ":" <! sayHello <! ":" <! " Más >> " <! sayHello <! " <<"
-            
-                let main2 = makeAViewDoc <| fun () -> h4 [ attr.styleDyn <| V("color:" + name.V) ] [ text "MAIN2:" ; Doc.TextView name.View] 
-            
-                let appFwk = ! div <& "color:@{name}" <& "@{AppFramework.AppFwkClient}"
-                let split  = ! (LayoutEngine.variableSplitter false 0. 50. 100.) <& appFwk <& main
-                let split2 = ! (LayoutEngine.variableSplitter false 0. 50. 100.) <& appFwk <& main2
-            
-                let callDocPFn pin pf = pf |> P.run pin |> callDoc
-            
+                    ()
+                    
                 //let pName = PlugInName "NewLY" 
             //
                 //AF.plugin {
