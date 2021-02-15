@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:DLL -d:FSharpStation1613067960900 -d:WEBSHARPER -d:WEBSHARPER47
+////-d:DLL -d:FSharpStation1613322720562 -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461"
@@ -26,7 +26,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/Modules/bin/WsTranslatorLoader.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1613067960900
+//#define FSharpStation1613322720562
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -140,14 +140,38 @@ namespace FsRoot
                 
                 let statusW = V(sprintf "%A" WsTranslatorLoader.wasmStatusV.V)
             
+            
+            
                 let plugInAdded =
                     AF.plugin {
                         plgName   "WsTranslatorPlugIn"
-                        plgView   "Status"  statusW
-                        plgVar    "Source"  WsTranslatorLoader.UI.codeV
-                        plgVar    "Options" WsTranslatorLoader.UI.optsV
-                        plgDoc0   "Form"    WsTranslatorLoader.UI.mainDoc
-                        //plgDoc4   "editor"    createMonacoEditor "var" "Language" "theme" "Annotations"
+            
+                        plgView   "Status"                      statusW
+                        plgView   "FSharpErrors"                WsTranslatorLoader.UI.fsErrsW
+                        plgView   "WebSharperErrors"            WsTranslatorLoader.UI.wsErrsW
+                        plgView   "WebSharperWarnings"          WsTranslatorLoader.UI.wsWrnsW
+                        plgView   "DebugMode"                   (WsTranslatorLoader.UI.debugV.View.Map string)
+            
+                        plgVar    "JS"                          WsTranslatorLoader.UI.jsV
+                        plgVar    "WasmPath"                    WsTranslatorLoader.UI.wasmPathTV
+                        plgVar    "Command"                     WsTranslatorLoader.UI.commandV
+                        plgVar    "Source"                      WsTranslatorLoader.UI.codeV
+                        plgVar    "Options"                     WsTranslatorLoader.UI.optsV
+                        plgVar    "Output"                      WsTranslatorLoader.UI.detailsV
+            
+                        plgAct    "LoadAsWorker"                WsTranslatorLoader.UI.actLoadAsWorker
+                        plgAct    "TerminateWorker"             WsTranslatorLoader.UI.actTerminateWorker
+                        plgAct    "LoadInMainThread"            WsTranslatorLoader.UI.actLoadInMainThread
+                        plgAct    "ToggleDebug"                 WsTranslatorLoader.UI.actToggleDebug
+                        plgAct    "Clean"                       WsTranslatorLoader.UI.clean
+                        plgAct    "Check"            (fun () -> WsTranslatorLoader.UI.actCheck     () |> Async.Start)     
+                        plgAct    "Compile"          (fun () -> WsTranslatorLoader.UI.actCompile   () |> Async.Start)       
+                        plgAct    "Run"              (fun () -> WsTranslatorLoader.UI.actRun       () |> Async.Start)   
+                        plgAct    "Translate"        (fun () -> WsTranslatorLoader.UI.actTranslate () |> Async.Start)         
+                        plgAct    "Dir"              (fun () -> WsTranslatorLoader.UI.actDir       () |> Async.Start)
+                        plgAct    "EvalJS"                      WsTranslatorLoader.UI.actEvalJS   
+                        
+                        plgDoc0   "Form"                        WsTranslatorLoader.UI.mainDoc
                     }
                     |> AF.addPlugIn
             

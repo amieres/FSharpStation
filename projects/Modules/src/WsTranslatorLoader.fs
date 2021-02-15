@@ -1,5 +1,6 @@
 #nowarn "3242"
-////-d:FSharpStation1613148993245 -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
+#nowarn "52"
+////-d:FSharpStation1613338450871 -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461"
@@ -26,8 +27,9 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\FSharp.Compiler.Service.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Compiler.dll"
 //#nowarn "3242"
+//#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1613148993245
+//#define FSharpStation1613338450871
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -297,6 +299,10 @@ namespace FsRoot
                     |> newPojo
             
             
+            [< Inline """(!$v)""">]
+            let isUndefined v = v.GetType() = v.GetType()
+                
+            
              // if WEBSHARPER47 then use the compileWASMLoader47 button otherwise use 45 button
             //#define WEBSHARPER47
             #if WEBSHARPER47
@@ -348,6 +354,7 @@ namespace FsRoot
                 | WorkerWasmStatus   of WasmStatus * WasmPath option
             
                 type MsgFromHost =
+                | HostEvalJS       of string
                 | HostRunRpc       of string * string
                 | HostPrintfnW     of string
                 | HostLoadWasm     of WasmPath * debug:bool   * opts:string
@@ -360,6 +367,7 @@ namespace FsRoot
                     open WebSharper.JavaScript
             
                     type IMessagingO = {
+                        evalJS      : string           -> unit
                         runRpc      : string -> string -> unit
                         returnValue : string *  string -> unit
                         returnExn   : string *  string -> unit
@@ -395,18 +403,21 @@ namespace FsRoot
                     [< Inline "$global.WASM_WsTranslator_FsRoot_WsTranslator_runRpc($header, $data)" >]
             #endif
                     let runRpc0 (header:string) (data:string) = runRpc(header, data)
+                    let evalJS0      (   js:string) = JS.Eval js |> printfn "JS: %A"
                     let returnValue0 (md, v:string) = ReturnQueue.tryGet md |> Option.iter(fun (ok, er) -> ok v )
                     let returnExnExn (md, e:exn   ) = ReturnQueue.tryGet md |> Option.iter(fun (ok, er) -> er e )
                     let returnExn0   (md, e:string) = returnExnExn(md, exn e)
             
                     let messaging = Dependency {
+                        evalJS      = evalJS0
                         runRpc      = runRpc0
                         returnValue = returnValue0
                         returnExn   = returnExn0
-                        wprintfn    = printfn "EARLY PRINTING!: %s"
+                        wprintfn    = fun txt -> printfn "EARLY PRINTING!: %s" txt
                     }
             
                     let callRunRpc (header:string) (data:string) = messaging.D.runRpc      header  data 
+                    let callEvalJS                 (js  :string) = messaging.D.evalJS              js 
                     let returnValue(header:string,  data:string) = messaging.D.returnValue(header, data)
                     let returnExn  (header:string,     e:string) = messaging.D.returnExn  (header, e   )
             
@@ -436,6 +447,9 @@ namespace FsRoot
             
                     let receiveMessage loadInThisThread (evt: MessageEvent) =
                         match evt.Data :?> MsgFromHost with
+                        | HostEvalJS    js                       -> try let r = JS.Eval js
+                                                                        if not (isUndefined r) then printfn "%A" r
+                                                                    with e -> e |> printfn "%A" 
                         | HostRunRpc  (header, data)             -> Remoting.callRunRpc header data
                         | HostPrintfnW txt                       -> printfn "%s" txt
                         | HostLoadWasm(publishPath, debug, opts) -> loadInThisThread publishPath debug opts
@@ -524,7 +538,6 @@ namespace FsRoot
             
                         [< Inline "$global.importScripts($fs)" >]
                         let importScripts(fs:string[]) = ()
-            
             
                     let preloadFiles (files: string seq) =
                         let asyncLoad url onload onerror =
@@ -628,10 +641,11 @@ namespace FsRoot
                             wasmStatusV.View     |> View.Sink(fun v -> self.PostMessage(WorkerWasmStatus v) )
                             self.Onmessage       <- System.Action<_> (WWorker.receiveMessage loadInThisThread )
                             Remoting.messaging.D <- {
+                                evalJS      = Remoting.evalJS0
                                 runRpc      = Remoting.runRpc0
                                 returnValue = fun v -> self.PostMessage(WorkerReturnValue v)
                                 returnExn   = fun v -> self.PostMessage(WorkerReturnExn   v)
-                                wprintfn    = fun v -> self.PostMessage(WorkerPrintfn     v)
+                                wprintfn    = fun v -> self.PostMessage(WorkerPrintfn     v) 
                             }
                             let rv = Remoting.returnValue // this references are so the functions are not Dead Code Eliminated
                             let re = Remoting.returnExn   // this references are so the functions are not Dead Code Eliminated
@@ -641,6 +655,7 @@ namespace FsRoot
                         w.Onmessage          <- System.Action<_> WWorker.fromWorker
                         WWorker.workerO      <- Some w
                         Remoting.messaging.D <- {
+                            evalJS      = fun  js -> w.PostMessage(HostEvalJS   js)
                             runRpc      = fun h d -> w.PostMessage(HostRunRpc(h, d))
                             returnValue = Remoting.returnValue0
                             returnExn   = Remoting.returnExn0
@@ -654,9 +669,13 @@ namespace FsRoot
                     let wsErrsV     = Var.Create [||]
                     let wsWrnsV     = Var.Create [||]
                     let debugV      = Var.Create false
-                    let wasmPathV   = Var.Create (WasmPath "/WASM/v47/Interp/")
+                    let wasmPathV   = Var.Create <| WasmPath "/WASM/v47/Interp/"
+                    let wasmPathTV  = (wasmPathV.Lens (fun (WasmPath v) -> v) (fun _ -> WasmPath) )
                     let commandV    = Var.Create "/tmp/bin.exe 1 2 10 20 30 40"
+                    let jsV         = Var.Create ""
                     let codeV       = Var.Create """
+            //#nowarn "52"
+            
             let tryParseWith tryParseFunc : string -> _  = tryParseFunc >> function
                     | true, v    -> Some v
                     | false, _   -> None
@@ -668,17 +687,30 @@ namespace FsRoot
             
             let printFibo n = printfn "fibo(%d) = %i" n (fibo n)
             
-            let [< EntryPoint >] main args =
+            let doFibos (args: string []) =
                 args
                 |> Seq.collect (fun s -> s.Split[| ' ' |])
                 |> Seq.choose parseIntO
                 |> Seq.iter   printFibo
             
+            let nowStamp() = 
+                let t = System.DateTime.UtcNow // in two steps to avoid Warning: The value has been copied to ensure the original is not mutated
+                t.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
+            
+            let inline TimeIt n f p =
+                printfn "%s Starting %s" (nowStamp()) n
+                let start = System.DateTime.UtcNow.Ticks
+                f p
+                let elapsedSpan = System.TimeSpan(System.DateTime.UtcNow.Ticks - start)
+                printfn "%s Finished %s %0d:%02d:%02d.%03d" (nowStamp()) n (int elapsedSpan.TotalHours) elapsedSpan.Minutes elapsedSpan.Seconds elapsedSpan.Milliseconds
+            
+            let [< EntryPoint >] main args =
+                TimeIt "doFibos" doFibos args
                 0
             
                     """
                     let optsV       = Var.Create ("""
-                                            /tmp/source.fsx
+                                            /tmp/source.fs
                                             -o:/tmp/bin.exe
                                             -d:WEBSHARPER
                                             --simpleresolution
@@ -708,14 +740,16 @@ namespace FsRoot
                     if not isWorker then
                         Remoting    .messaging.D <- {
                             Remoting.messaging.D with 
-                                wprintfn = fun (txt:string) ->
+                                wprintfn = fun (txt:string) -> 
                                     Console.Log txt
                                     let pre = detailsV.Value
                                     pre + (if pre = "" then "" else "\n") + txt
                                     |> detailsV.Set
                         }
             
-                    let clean() = detailsV.Set ""
+                    let clean() = 
+                        detailsV.Set ""
+                        jsV.Set ""
             
                     let inline callWasmA f p = 
                         async {
@@ -747,21 +781,24 @@ namespace FsRoot
                             ]
                         )
             
+                    let fsErrsW     = fsErrsV.View.Map(Seq.map (sprintf "%A") >> String.concat "\n")
+                    let wsErrsW     = wsErrsV.View.Map(Seq.map (sprintf "%A") >> String.concat "\n")
+                    let wsWrnsW     = wsWrnsV.View.Map(Seq.map (sprintf "%A") >> String.concat "\n")
+            
+            
                     let parseAndCheckProject(projectName, opts, code)  = async {
                         let! errs, deps, crit = Rpc.parseAndCheckProjectRpc projectName opts code
                         fsErrsV.Set (Seq.toArray errs)
                         wsErrsV .Set [||]
                         wsWrnsV .Set [||]
                         (crit, deps)
-                        |> sprintf "%A"
-                        |> detailsV.Set
+                        |> printfn "%A"
                     }
             
                     let compileProject(projectName, opts, code)  = async {
                         let! errs, res = Rpc.compileProjectRpc projectName opts code
                         fsErrsV.Set (Seq.toArray errs)
-                        sprintf "Compilation Result = %d" res
-                        |> detailsV.Set
+                        printfn "Compilation Result = %d" res
                     }
             
                     open FsRoot
@@ -773,9 +810,9 @@ namespace FsRoot
                         match wsO with
                         | Some (asmO, errs, wrns) -> 
                             match asmO with
-                            | Some asm -> asm
+                            | Some asm -> jsV.Set asm ; "Translated!"
                             | None     -> "No translation"
-                            |> detailsV.Set
+                            |> printfn "%s"
                             wsErrsV .Set errs
                             wsWrnsV .Set wrns
                         | None -> 
@@ -784,32 +821,41 @@ namespace FsRoot
                             wsWrnsV .Set [||]
                     }
             
+                    let actLoadAsWorker     () = WasmLoad.loadWasmInWorker wasmPathV.Value debugV.Value optsV.Value
+                    let actTerminateWorker  () = WWorker.terminate()
+                    let actLoadInMainThread () = WasmLoad.loadInThisThread wasmPathV.Value debugV.Value optsV.Value
+                    let actToggleDebug      () = debugV.Set (not debugV.Value)
+            
+                    let actCheck            () =  parseAndCheckProject   (getParms()) 
+                    let actCompile          () =  compileProject         (getParms()) 
+                    let actRun              () =  Rpc.runRpc           commandV.Value 
+                    let actEvalJS           () =  Remoting.callEvalJS       jsV.Value 
+                    let actTranslate        () =  translateToJs          (getParms()) 
+                    let actDir              () =  Rpc.dirRpc              "/"                    
+            
                     let mainDoc() =
-                        div     [] [
-                            h1  [] [ text     <|   sprintf "HELLO WASM%s!" WasmLoaderVersion ]
-                            h2  [] [ textView <| V(sprintf "%A"            wasmStatusV.V)    ]
+                        div      [] [
+                            h1   [] [ text     <|   sprintf "HELLO WASM%s!" WasmLoaderVersion ]
+                            h2   [] [ textView <| V(sprintf "%A"            wasmStatusV.V)    ]
+                            div  [] [ text " WasmPath:" ; Doc.Input [] wasmPathTV ]
                             span [] [
-                                text " WasmPath:"
-                                Doc.Input [] (wasmPathV.Lens (fun (WasmPath v) -> v) (fun _ -> WasmPath) )
+                                Doc.Button "Load as Worker"       [] actLoadAsWorker
+                                Doc.Button "Terminate Worker"     [] actTerminateWorker
+                                Doc.Button "Load in Main thread"  [] actLoadInMainThread
+                                text " Debug:"            ; Doc.CheckBox [] debugV
                             ]
-                            span [] [
-                                Doc.Button "Load as Worker"       [] (fun () -> WasmLoad.loadWasmInWorker wasmPathV.Value debugV.Value optsV.Value )
-                                Doc.Button "Load in Main thread"  [] (fun () -> WasmLoad.loadInThisThread wasmPathV.Value debugV.Value optsV.Value )
-                                Doc.Button "Terminate Worker"     [] (fun () -> WWorker.terminate() )
-                                text " Debug:"
-                                Doc.CheckBox [] debugV
-                            ]
-                            div [] [
-                                div [] [ text "Command: " ; Doc.Input [] commandV ]
+                            div  [] [
+                                div [] [ text "Command: " ; Doc.Input    [] commandV ]
                                 Doc.InputArea [] codeV
                                 Doc.InputArea [] optsV
+                                Doc.InputArea [] jsV
                             ]
                             span [] [
-                                Doc.Button "Check"                [] (fun () -> clean() ; callWasmTimed "Check"     parseAndCheckProject (getParms()) )
-                                Doc.Button "Compile"              [] (fun () -> clean() ; callWasmTimed "Compile"   compileProject       (getParms()) )
-                                Doc.Button "Run"                  [] (fun () -> clean() ; callWasmTimed "Run"       Rpc.runRpc         commandV.Value )
-                                Doc.Button "Translate"            [] (fun () -> clean() ; callWasmTimed "Translate" translateToJs        (getParms()) )
-                                Doc.Button "Dir"                  [] (fun () ->           callWasmTimed "Dir"       Rpc.dirRpc "/"                    )
+                                Doc.Button "Check"                [] (fun () -> clean() ; callWasmTimed "Check"     actCheck     () )
+                                Doc.Button "Compile"              [] (fun () -> clean() ; callWasmTimed "Compile"   actCompile   () )
+                                Doc.Button "Run"                  [] (fun () -> clean() ; callWasmTimed "Run"       actRun       () )
+                                Doc.Button "Translate"            [] (fun () -> clean() ; callWasmTimed "Translate" actTranslate () )
+                                Doc.Button "Dir"                  [] (fun () ->           callWasmTimed "Dir"       actDir       () )
                                 Doc.Button "Clean"                [] (fun () -> clean() )
                             ]
                             showMessages "Fsc Messages" (sprintf "%A") fsErrsV.View

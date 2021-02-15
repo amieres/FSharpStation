@@ -1,5 +1,5 @@
 #nowarn "1182"
-////-d:FSharpStation1613148993245 -d:NETSTANDARD20 -d:NOFSROOTx -d:WEBSHARPER -d:WEBSHARPER47
+////-d:FSharpStation1613322720562 -d:NETSTANDARD20 -d:NOFSROOTx -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls"
@@ -36,7 +36,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls\WebSharper.Compiler.FSharp.dll"
 //#nowarn "1182"
 /// Root namespace for all code
-//#define FSharpStation1613148993245
+//#define FSharpStation1613322720562
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -402,7 +402,8 @@ namespace FsRoot
     
         let runRpc(header:string, data:string) = 
             async {
-                printfn "WsTranslator47 runRpc %A %A" header data
+                //printfn "WsTranslator47 runRpc %A %A" header data
+                printfn "%s" header
                 let  wsReq    = {
                     RM.Request.Body    = data
                     RM.Request.Headers = 

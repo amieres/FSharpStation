@@ -1,0 +1,48 @@
+WsTranslatorPlugIn PlugIn
+: View   Status
+: View   FSharpErrors
+: View   WebSharperErrors
+: View   WebSharperWarnings
+: Var    JS
+: Var    Command
+: Var    Source
+: Var    Options
+: Var    Output
+: Var    WasmPath
+: Action LoadAsWorker
+: Action TerminateWorker
+: Action LoadInMainThread
+: Action ToggleDebug
+: Action Check
+: Action Compile
+: Action Run
+: Action Translate
+: Action Dir
+: Doc    Form
+
+paths View "/WASM/v47/Interp/;/WASM/v47/AotInterp/"
+
+statusW ViewJS "(status)=> status.replaceAll(/some|path|null|wasm|[()"",//]/ig, '').replace('Load', ' Load') " WsTranslatorPlugIn.Status
+
+main div "overflow:auto" 
+:   div    ""
+::  span   ""
+::: h1     "" "F# in WASM"
+::  span   "" 
+::: br     ""
+::  span   "" "Instance: "
+::: Doc  AF.Select "" "-"  paths WsTranslatorPlugIn.WasmPath
+::: button "click=@{WsTranslatorPlugIn.LoadAsWorker}"     "Load as Worker"
+::: button "click=@{WsTranslatorPlugIn.TerminateWorker}"  "Terminate Worker"
+::: br     ""
+::: button "click=@{WsTranslatorPlugIn.LoadInMainThread}" "Load In Main Thread"
+::: h3     "" statusW
+::  div    "" "Command: "
+::: Doc   AF.Input  "width:50%"  WsTranslatorPlugIn.Command
+::: button "click=@{WsTranslatorPlugIn.Run}"     "Run"
+::  button "click=@{WsTranslatorPlugIn.Clean}"   "Clean"
+::  button "click=@{WsTranslatorPlugIn.Dir}"     "Dir"
+::  div    "font-family: monospace; white-space:pre" WsTranslatorPlugIn.Output
+:   Doc    WsTranslatorPlugIn.Form
+
+ 

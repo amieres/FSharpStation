@@ -1,7 +1,7 @@
 (function(Global)
 {
  "use strict";
- var FsRoot,Library,String,ParseO,LibraryJS,Pojo,WebSharper,Obj,WsTranslatorLoader,Dependency,WasmStatus,Remoting,IMessagingO,ReturnQueue,CustomXhrProvider,WWorker,WasmLoad,Require,UI,SC$1,WsTranslatorLoader_GeneratedPrintf,GeneratedPrintf,Strings,List,Seq,Slice,Operators,Char,Unchecked,Utils,console,IntelliFactory,Runtime,Concurrency,Remoting$1,WsTranslator,Arrays,Enumerator,UI$1,Client,Templates,Doc,View,Var$1,AjaxRemotingProvider,AttrProxy,Date,Math,DateUtil,Numeric,System,Guid,Collections,Dictionary;
+ var FsRoot,Library,String,ParseO,LibraryJS,Pojo,WebSharper,Obj,WsTranslatorLoader,Dependency,WasmStatus,Remoting,IMessagingO,ReturnQueue,CustomXhrProvider,WWorker,WasmLoad,Require,UI,SC$1,WsTranslatorLoader_GeneratedPrintf,GeneratedPrintf,Strings,List,Seq,Slice,Operators,Char,Unchecked,Utils,console,IntelliFactory,Runtime,Concurrency,Remoting$1,WsTranslator,Arrays,Enumerator,UI$1,Client,Templates,Doc,View,AttrProxy,AjaxRemotingProvider,Date,Math,DateUtil,Numeric,System,Guid,Var$1,Collections,Dictionary;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  Library=FsRoot.Library=FsRoot.Library||{};
  String=Library.String=Library.String||{};
@@ -45,15 +45,15 @@
  Templates=Client&&Client.Templates;
  Doc=UI$1&&UI$1.Doc;
  View=UI$1&&UI$1.View;
- Var$1=UI$1&&UI$1.Var$1;
- AjaxRemotingProvider=Remoting$1&&Remoting$1.AjaxRemotingProvider;
  AttrProxy=UI$1&&UI$1.AttrProxy;
+ AjaxRemotingProvider=Remoting$1&&Remoting$1.AjaxRemotingProvider;
  Date=Global.Date;
  Math=Global.Math;
  DateUtil=WebSharper&&WebSharper.DateUtil;
  Numeric=WebSharper&&WebSharper.Numeric;
  System=Global.System;
  Guid=System&&System.Guid;
+ Var$1=UI$1&&UI$1.Var$1;
  Collections=WebSharper&&WebSharper.Collections;
  Dictionary=Collections&&Collections.Dictionary;
  String.thousands=function(n)
@@ -463,9 +463,10 @@
  WasmStatus.WasmNotLoaded={
   $:0
  };
- IMessagingO.New=function(runRpc,returnValue,returnExn,wprintfn)
+ IMessagingO.New=function(evalJS,runRpc,returnValue,returnExn,wprintfn)
  {
   return{
+   evalJS:evalJS,
    runRpc:runRpc,
    returnValue:returnValue,
    returnExn:returnExn,
@@ -571,6 +572,10 @@
  {
   Remoting.messaging().get_D().returnValue([header,data]);
  };
+ Remoting.callEvalJS=function(js)
+ {
+  Remoting.messaging().get_D().evalJS(js);
+ };
  Remoting.callRunRpc=function(header,data)
  {
   (Remoting.messaging().get_D().runRpc(header))(data);
@@ -595,6 +600,21 @@
   var o,$1,ok;
   o=ReturnQueue.tryGet(md);
   o==null?void 0:($1=o.$0,ok=$1[0],$1[1],ok(v));
+ };
+ Remoting.evalJS0=function(js)
+ {
+  var x;
+  x=Global["eval"](js);
+  ((function($1)
+  {
+   return function($2)
+   {
+    return $1("JS: "+Utils.prettyPrint($2));
+   };
+  }(function(s)
+  {
+   console.log(s);
+  }))(x));
  };
  Remoting.originalProvider=function()
  {
@@ -638,15 +658,44 @@
  };
  WWorker.receiveMessage=function(loadInThisThread,evt)
  {
-  var m;
+  var m,r;
   m=evt.data;
-  m.$==1?(WsTranslatorLoader.printfn(function($1)
-  {
-   return function($2)
-   {
-    return $1(Utils.toSafe($2));
-   };
-  }))(m.$0):m.$==2?loadInThisThread(m.$0,m.$1,m.$2):Remoting.callRunRpc(m.$0,m.$1);
+  if(m.$==1)
+   Remoting.callRunRpc(m.$0,m.$1);
+  else
+   if(m.$==2)
+    (WsTranslatorLoader.printfn(function($1)
+    {
+     return function($2)
+     {
+      return $1(Utils.toSafe($2));
+     };
+    }))(m.$0);
+   else
+    if(m.$==3)
+     loadInThisThread(m.$0,m.$1,m.$2);
+    else
+     try
+     {
+      r=Global["eval"](m.$0);
+      !(!r)?(WsTranslatorLoader.printfn(function($1)
+      {
+       return function($2)
+       {
+        return $1(Utils.prettyPrint($2));
+       };
+      }))(r):null;
+     }
+     catch(e)
+     {
+      (WsTranslatorLoader.printfn(function($1)
+      {
+       return function($2)
+       {
+        return $1(Utils.prettyPrint($2));
+       };
+      }))(e);
+     }
  };
  WWorker.workerO=function()
  {
@@ -678,7 +727,7 @@
      {
       return function($2)
       {
-       return $1("Wasm is already "+("("+WsTranslatorLoader_GeneratedPrintf.p($2[0])+", "+WsTranslatorLoader_GeneratedPrintf.p$1($2[1])+")"));
+       return $1("Wasm is already "+("("+WsTranslatorLoader_GeneratedPrintf.p$1($2[0])+", "+WsTranslatorLoader_GeneratedPrintf.p$2($2[1])+")"));
       };
      });
      t=WsTranslatorLoader.wasmStatusV().Get();
@@ -700,7 +749,7 @@
      });
      w=new Global.Worker(Runtime.ScriptPath("WsTranslatorLoader","WsTranslatorLoader.worker.js"));
      w.postMessage({
-      $:2,
+      $:3,
       $0:publishPath,
       $1:debug,
       $2:opts
@@ -710,12 +759,18 @@
       $:1,
       $0:w
      });
-     Remoting.messaging().set_D(IMessagingO.New(function(h)
+     Remoting.messaging().set_D(IMessagingO.New(function(js)
+     {
+      w.postMessage({
+       $:0,
+       $0:js
+      });
+     },function(h)
      {
       return function(d)
       {
        return w.postMessage({
-        $:0,
+        $:1,
         $0:h,
         $1:d
        });
@@ -997,61 +1052,37 @@
    {
     return function($3)
     {
-     return $2("("+WsTranslatorLoader_GeneratedPrintf.p($3[0])+", "+WsTranslatorLoader_GeneratedPrintf.p$1($3[1])+")");
+     return $2("("+WsTranslatorLoader_GeneratedPrintf.p$1($3[0])+", "+WsTranslatorLoader_GeneratedPrintf.p$2($3[1])+")");
     };
    }(Global.id))([$1[0],$1[1]]);
-  },WsTranslatorLoader.wasmStatusV().get_View()))]),Doc.Element("span",[],[Doc.TextNode(" WasmPath:"),Doc.Input([],Var$1.Lens(UI.wasmPathV(),function(a)
+  },WsTranslatorLoader.wasmStatusV().get_View()))]),Doc.Element("div",[],[Doc.TextNode(" WasmPath:"),Doc.Input([],UI.wasmPathTV())]),Doc.Element("span",[],[Doc.Button("Load as Worker",[],function()
   {
-   return a.$0;
-  },function(a,a$1)
-  {
-   return{
-    $:0,
-    $0:a$1
-   };
-  }))]),Doc.Element("span",[],[Doc.Button("Load as Worker",[],function()
-  {
-   WasmLoad.loadWasmInWorker(UI.wasmPathV().Get(),UI.debugV().Get(),UI.optsV().Get());
-  }),Doc.Button("Load in Main thread",[],function()
-  {
-   WasmLoad.loadInThisThread(UI.wasmPathV().Get(),UI.debugV().Get(),UI.optsV().Get());
+   UI.actLoadAsWorker();
   }),Doc.Button("Terminate Worker",[],function()
   {
-   WWorker.terminate();
-  }),Doc.TextNode(" Debug:"),Doc.CheckBox([],UI.debugV())]),Doc.Element("div",[],[Doc.Element("div",[],[Doc.TextNode("Command: "),Doc.Input([],UI.commandV())]),Doc.InputArea([],UI.codeV()),Doc.InputArea([],UI.optsV())]),Doc.Element("span",[],[Doc.Button("Check",[],function()
+   UI.actTerminateWorker();
+  }),Doc.Button("Load in Main thread",[],function()
+  {
+   UI.actLoadInMainThread();
+  }),Doc.TextNode(" Debug:"),Doc.CheckBox([],UI.debugV())]),Doc.Element("div",[],[Doc.Element("div",[],[Doc.TextNode("Command: "),Doc.Input([],UI.commandV())]),Doc.InputArea([],UI.codeV()),Doc.InputArea([],UI.optsV()),Doc.InputArea([],UI.jsV())]),Doc.Element("span",[],[Doc.Button("Check",[],function()
   {
    UI.clean();
-   UI.callWasmTimed("Check",function(t)
-   {
-    return UI.parseAndCheckProject(t[0],t[1],t[2]);
-   },UI.getParms());
+   UI.callWasmTimed("Check",UI.actCheck,null);
   }),Doc.Button("Compile",[],function()
   {
    UI.clean();
-   UI.callWasmTimed("Compile",function(t)
-   {
-    return UI.compileProject(t[0],t[1],t[2]);
-   },UI.getParms());
+   UI.callWasmTimed("Compile",UI.actCompile,null);
   }),Doc.Button("Run",[],function()
   {
    UI.clean();
-   UI.callWasmTimed("Run",function(c$3)
-   {
-    return(new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.runRpc:-1181784350",[c$3]);
-   },UI.commandV().Get());
+   UI.callWasmTimed("Run",UI.actRun,null);
   }),Doc.Button("Translate",[],function()
   {
    UI.clean();
-   UI.callWasmTimed("Translate",function(t)
-   {
-    return UI.translateToJs(t[0],t[1],t[2]);
-   },UI.getParms());
+   UI.callWasmTimed("Translate",UI.actTranslate,null);
   }),Doc.Button("Dir",[],function()
   {
-   UI.callWasmTimed("Dir",function(d)
-   {
-    return(new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.dirRpc:-1181784350",[d]);
-   },"/");
+   UI.callWasmTimed("Dir",UI.actDir,null);
   }),Doc.Button("Clean",[],function()
   {
    UI.clean();
@@ -1068,7 +1099,7 @@
   {
    return function($2)
    {
-    return $1("("+WsTranslatorLoader_GeneratedPrintf.p$3($2[0])+", "+Utils.prettyPrint($2[1])+")");
+    return $1("("+WsTranslatorLoader_GeneratedPrintf.p($2[0])+", "+Utils.prettyPrint($2[1])+")");
    };
   }(Global.id),function(t)
   {
@@ -1077,12 +1108,58 @@
   {
    return function($2)
    {
-    return $1("("+WsTranslatorLoader_GeneratedPrintf.p$3($2[0])+", "+Utils.prettyPrint($2[1])+")");
+    return $1("("+WsTranslatorLoader_GeneratedPrintf.p($2[0])+", "+Utils.prettyPrint($2[1])+")");
    };
   }(Global.id),function(t)
   {
    return c$2([t[0],t[1]]);
   }),UI.wsWrnsV().get_View()),Doc.Element("div",[AttrProxy.Create("style","font-family: monospace; white-space:pre")],[Doc.TextView(UI.detailsV().get_View())])]);
+ };
+ UI.actDir=function()
+ {
+  return(new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.dirRpc:-1181784350",["/"]);
+ };
+ UI.actTranslate=function()
+ {
+  var t;
+  t=UI.getParms();
+  return UI.translateToJs(t[0],t[1],t[2]);
+ };
+ UI.actEvalJS=function()
+ {
+  Remoting.callEvalJS(UI.jsV().Get());
+ };
+ UI.actRun=function()
+ {
+  return(new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.runRpc:-1181784350",[UI.commandV().Get()]);
+ };
+ UI.actCompile=function()
+ {
+  var t;
+  t=UI.getParms();
+  return UI.compileProject(t[0],t[1],t[2]);
+ };
+ UI.actCheck=function()
+ {
+  var t;
+  t=UI.getParms();
+  return UI.parseAndCheckProject(t[0],t[1],t[2]);
+ };
+ UI.actToggleDebug=function()
+ {
+  UI.debugV().Set(!UI.debugV().Get());
+ };
+ UI.actLoadInMainThread=function()
+ {
+  WasmLoad.loadInThisThread(UI.wasmPathV().Get(),UI.debugV().Get(),UI.optsV().Get());
+ };
+ UI.actTerminateWorker=function()
+ {
+  WWorker.terminate();
+ };
+ UI.actLoadAsWorker=function()
+ {
+  WasmLoad.loadWasmInWorker(UI.wasmPathV().Get(),UI.debugV().Get(),UI.optsV().Get());
  };
  UI.translateToJs=function(projectName,opts,code)
  {
@@ -1092,10 +1169,16 @@
   {
    return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.translateFsToJsRpc:1355092715",[projectName,opts,code]),function(a)
    {
-    var wsO,asmO;
+    var wsO,asmO,x;
     wsO=a[1];
     UI.fsErrsV().Set(a[0]);
-    return wsO==null?(UI.clean(),UI.wsErrsV().Set([]),UI.wsWrnsV().Set([]),Concurrency.Zero()):(asmO=wsO.$0[0],(UI.detailsV().Set(asmO==null?"No translation":asmO.$0),UI.wsErrsV().Set(wsO.$0[1]),UI.wsWrnsV().Set(wsO.$0[2]),Concurrency.Zero()));
+    return wsO==null?(UI.clean(),UI.wsErrsV().Set([]),UI.wsWrnsV().Set([]),Concurrency.Zero()):(asmO=wsO.$0[0],(x=asmO==null?"No translation":(UI.jsV().Set(asmO.$0),"Translated!"),(WsTranslatorLoader.printfn(function($1)
+    {
+     return function($2)
+     {
+      return $1(Utils.toSafe($2));
+     };
+    }))(x),UI.wsErrsV().Set(wsO.$0[1]),UI.wsWrnsV().Set(wsO.$0[2]),Concurrency.Zero()));
    });
   });
  };
@@ -1107,16 +1190,14 @@
   {
    return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.compileProjectRpc:35333862",[projectName,opts,code]),function(a)
    {
-    var a$1;
     UI.fsErrsV().Set(Arrays.ofSeq(a[0]));
-    a$1=(function($1)
+    (WsTranslatorLoader.printfn(function($1)
     {
      return function($2)
      {
       return $1("Compilation Result = "+Global.String($2));
      };
-    }(Global.id))(a[1]);
-    UI.detailsV().Set(a$1);
+    }))(a[1]);
     return Concurrency.Zero();
    });
   });
@@ -1129,21 +1210,34 @@
   {
    return Concurrency.Bind((new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.parseAndCheckProjectRpc:1033688720",[projectName,opts,code]),function(a)
    {
-    var a$1;
     UI.fsErrsV().Set(Arrays.ofSeq(a[0]));
     UI.wsErrsV().Set([]);
     UI.wsWrnsV().Set([]);
-    a$1=(function($1)
+    (WsTranslatorLoader.printfn(function($1)
     {
      return function($2)
      {
       return $1("("+Utils.prettyPrint($2[0])+", "+Utils.printArray(Utils.prettyPrint,$2[1])+")");
      };
-    }(Global.id))([a[2],a[1]]);
-    UI.detailsV().Set(a$1);
+    }))([a[2],a[1]]);
     return Concurrency.Zero();
    });
   });
+ };
+ UI.wsWrnsW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.wsWrnsW;
+ };
+ UI.wsErrsW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.wsErrsW;
+ };
+ UI.fsErrsW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.fsErrsW;
  };
  UI.showMessages=function(name,f,msgsW)
  {
@@ -1253,6 +1347,7 @@
  UI.clean=function()
  {
   UI.detailsV().Set("");
+  UI.jsV().Set("");
  };
  UI.optsV=function()
  {
@@ -1264,10 +1359,20 @@
   SC$1.$cctor();
   return SC$1.codeV;
  };
+ UI.jsV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.jsV;
+ };
  UI.commandV=function()
  {
   SC$1.$cctor();
   return SC$1.commandV;
+ };
+ UI.wasmPathTV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.wasmPathTV;
  };
  UI.wasmPathV=function()
  {
@@ -1319,13 +1424,13 @@
  };
  SC$1.$cctor=function()
  {
-  var f,g,i;
+  var f,g,i,v,f$1,m,c,v$1,f$2,m$1,c$1,v$2,f$3,m$2,c$2;
   SC$1.$cctor=Global.ignore;
   function g$1(s)
   {
    return Strings.concat("\n",s);
   }
-  function f$1(s)
+  function f$4(s)
   {
    return String.splitByChar("\n",s);
   }
@@ -1344,9 +1449,21 @@
   {
    return Strings.concat("\n",s);
   }
-  function f$2(s)
+  function f$5(s)
   {
    return s+"T00:00:00";
+  }
+  function g$4(s)
+  {
+   return Strings.concat("\n",s);
+  }
+  function g$5(s)
+  {
+   return Strings.concat("\n",s);
+  }
+  function g$6(s)
+  {
+   return Strings.concat("\n",s);
   }
   SC$1.unindentStr=function(x)
   {
@@ -1354,25 +1471,25 @@
   };
   SC$1.skipLastLine=(f=function(x)
   {
-   return g$2(f$1(x));
+   return g$2(f$4(x));
   },function(x)
   {
    return g$3(f(x));
   });
   SC$1.parseDateO2=(g=ParseO.tryParseWith(function(a)
   {
-   var o,m;
+   var o,m$3;
    o=0;
-   return[(m=DateUtil.TryParse(a),m!=null&&m.$==1&&(o=m.$0,true)),o];
+   return[(m$3=DateUtil.TryParse(a),m$3!=null&&m$3.$==1&&(o=m$3.$0,true)),o];
   }),function(x)
   {
-   return g(f$2(x));
+   return g(f$5(x));
   });
   SC$1.parseDateO=ParseO.tryParseWith(function(a)
   {
-   var o,m;
+   var o,m$3;
    o=0;
-   return[(m=DateUtil.TryParse(a),m!=null&&m.$==1&&(o=m.$0,true)),o];
+   return[(m$3=DateUtil.TryParse(a),m$3!=null&&m$3.$==1&&(o=m$3.$0,true)),o];
   });
   SC$1.parseIntO=ParseO.tryParseWith(function(a)
   {
@@ -1383,9 +1500,9 @@
     {
      return o;
     },
-    set:function(v)
+    set:function(v$3)
     {
-     o=v;
+     o=v$3;
     }
    }),o];
   });
@@ -1398,9 +1515,9 @@
     {
      return o;
     },
-    set:function(v)
+    set:function(v$3)
     {
-     o=v;
+     o=v$3;
     }
    }),o];
   });
@@ -1425,9 +1542,9 @@
     {
      return o;
     },
-    set:function(v)
+    set:function(v$3)
     {
-     o=v;
+     o=v$3;
     }
    }),o];
   });
@@ -1441,7 +1558,10 @@
   SC$1.wasmStatusV=Var$1.Create$1([WasmStatus.WasmNotLoaded,null]);
   SC$1.originalProvider=Remoting$1.AjaxProvider();
   SC$1.queues=new Dictionary.New$5();
-  SC$1.messaging=new Dependency.New(IMessagingO.New(function(h)
+  SC$1.messaging=new Dependency.New(IMessagingO.New(function(j)
+  {
+   Remoting.evalJS0(j);
+  },function(h)
   {
    return function(d)
    {
@@ -1453,16 +1573,19 @@
   },function(t)
   {
    Remoting.returnExn0(t[0],t[1]);
-  },function($1)
+  },function(txt)
   {
-   return function($2)
+   ((function($1)
    {
-    return $1("EARLY PRINTING!: "+Utils.toSafe($2));
-   };
-  }(function(s)
-  {
-   console.log(s);
-  })));
+    return function($2)
+    {
+     return $1("EARLY PRINTING!: "+Utils.toSafe($2));
+    };
+   }(function(s)
+   {
+    console.log(s);
+   }))(txt));
+  }));
   SC$1.rv=function(t)
   {
    Remoting.returnValue(t[0],t[1]);
@@ -1482,35 +1605,94 @@
    $:0,
    $0:"/WASM/v47/Interp/"
   });
+  SC$1.wasmPathTV=Var$1.Lens(UI.wasmPathV(),function(a)
+  {
+   return a.$0;
+  },function(a,a$1)
+  {
+   return{
+    $:0,
+    $0:a$1
+   };
+  });
   SC$1.commandV=Var$1.Create$1("/tmp/bin.exe 1 2 10 20 30 40");
-  SC$1.codeV=Var$1.Create$1("\r\n            let tryParseWith tryParseFunc : string -> _  = tryParseFunc >> function\r\n                    | true, v    -> Some v\r\n                    | false, _   -> None\r\n            let parseIntO = tryParseWith System.Int32   .TryParse\r\n            \r\n            let rec fibo = function\r\n                | 0 | 1 -> 1\r\n                | n -> fibo (n - 1) + fibo (n - 2)\r\n            \r\n            let printFibo n = printfn \"fibo(%d) = %i\" n (fibo n)\r\n            \r\n            let [< EntryPoint >] main args =\r\n                args\r\n                |> Seq.collect (fun s -> s.Split[| ' ' |])\r\n                |> Seq.choose parseIntO\r\n                |> Seq.iter   printFibo\r\n            \r\n                0\r\n            \r\n                    ");
-  SC$1.optsV=Var$1.Create$1(Strings.concat("\n",Seq.map(Strings.Trim,Strings.SplitChars("\r\n                                            /tmp/source.fsx\r\n                                            -o:/tmp/bin.exe\r\n                                            -d:WEBSHARPER\r\n                                            --simpleresolution\r\n                                            --nowarn:3186\r\n                                            --optimize-\r\n                                            --noframework\r\n                                            --fullpaths\r\n                                            --warn:3\r\n                                            --target:exe\r\n                                            -r:/dlls/WebSharper.Core.dll\r\n                                            -r:/dlls/WebSharper.Main.dll\r\n                                            -r:/dlls/WebSharper.UI.dll\r\n                                            -r:/dlls/WebSharper.Sitelets.dll\r\n                                            -r:/managed/FSharp.Core.dll\r\n                                            -r:/managed/mscorlib.dll\r\n                                            -r:/managed/netstandard.dll\r\n                                            -r:/managed/System.dll\r\n                                            -r:/managed/System.Core.dll\r\n                                            -r:/managed/System.IO.dll\r\n                                            -r:/managed/System.Runtime.dll\r\n                                            -r:/managed/System.Net.Http.dll\r\n                                            -r:/managed/System.Threading.dll\r\n                                            -r:/managed/System.Numerics.dll\r\n                                            -r:/managed/System.Runtime.Numerics.dll\r\n                                        ",["\n"],0))));
-  !(!self.document)?Remoting.messaging().set_D((i=Remoting.messaging().get_D(),IMessagingO.New(i.runRpc,i.returnValue,i.returnExn,function(txt)
+  SC$1.jsV=Var$1.Create$1("");
+  SC$1.codeV=Var$1.Create$1("\r\n            //#nowarn \"52\"\r\n            \r\n            let tryParseWith tryParseFunc : string -> _  = tryParseFunc >> function\r\n                    | true, v    -> Some v\r\n                    | false, _   -> None\r\n            let parseIntO = tryParseWith System.Int32   .TryParse\r\n            \r\n            let rec fibo = function\r\n                | 0 | 1 -> 1\r\n                | n -> fibo (n - 1) + fibo (n - 2)\r\n            \r\n            let printFibo n = printfn \"fibo(%d) = %i\" n (fibo n)\r\n            \r\n            let doFibos (args: string []) =\r\n                args\r\n                |> Seq.collect (fun s -> s.Split[| ' ' |])\r\n                |> Seq.choose parseIntO\r\n                |> Seq.iter   printFibo\r\n            \r\n            let nowStamp() = \r\n                let t = System.DateTime.UtcNow // in two steps to avoid Warning: The value has been copied to ensure the original is not mutated\r\n                t.ToString(\"yyyy-MM-dd HH:mm:ss.fff\", System.Globalization.CultureInfo.InvariantCulture)\r\n            \r\n            let inline TimeIt n f p =\r\n                printfn \"%s Starting %s\" (nowStamp()) n\r\n                let start = System.DateTime.UtcNow.Ticks\r\n                f p\r\n                let elapsedSpan = System.TimeSpan(System.DateTime.UtcNow.Ticks - start)\r\n                printfn \"%s Finished %s %0d:%02d:%02d.%03d\" (nowStamp()) n (int elapsedSpan.TotalHours) elapsedSpan.Minutes elapsedSpan.Seconds elapsedSpan.Milliseconds\r\n            \r\n            let [< EntryPoint >] main args =\r\n                TimeIt \"doFibos\" doFibos args\r\n                0\r\n            \r\n                    ");
+  SC$1.optsV=Var$1.Create$1(Strings.concat("\n",Seq.map(Strings.Trim,Strings.SplitChars("\r\n                                            /tmp/source.fs\r\n                                            -o:/tmp/bin.exe\r\n                                            -d:WEBSHARPER\r\n                                            --simpleresolution\r\n                                            --nowarn:3186\r\n                                            --optimize-\r\n                                            --noframework\r\n                                            --fullpaths\r\n                                            --warn:3\r\n                                            --target:exe\r\n                                            -r:/dlls/WebSharper.Core.dll\r\n                                            -r:/dlls/WebSharper.Main.dll\r\n                                            -r:/dlls/WebSharper.UI.dll\r\n                                            -r:/dlls/WebSharper.Sitelets.dll\r\n                                            -r:/managed/FSharp.Core.dll\r\n                                            -r:/managed/mscorlib.dll\r\n                                            -r:/managed/netstandard.dll\r\n                                            -r:/managed/System.dll\r\n                                            -r:/managed/System.Core.dll\r\n                                            -r:/managed/System.IO.dll\r\n                                            -r:/managed/System.Runtime.dll\r\n                                            -r:/managed/System.Net.Http.dll\r\n                                            -r:/managed/System.Threading.dll\r\n                                            -r:/managed/System.Numerics.dll\r\n                                            -r:/managed/System.Runtime.Numerics.dll\r\n                                        ",["\n"],0))));
+  !(!self.document)?Remoting.messaging().set_D((i=Remoting.messaging().get_D(),IMessagingO.New(i.evalJS,i.runRpc,i.returnValue,i.returnExn,function(txt)
   {
    var pre;
    console.log(txt);
    pre=UI.detailsV().Get();
    UI.detailsV().Set(pre+(pre===""?"":"\n")+txt);
   }))):void 0;
- };
- WsTranslatorLoader_GeneratedPrintf.p$1=function($1)
- {
-  return $1==null?"null":"Some "+WsTranslatorLoader_GeneratedPrintf.p$2($1.$0);
+  SC$1.fsErrsW=(v=UI.fsErrsV().get_View(),View.Map((f$1=(m=(c=function($1)
+  {
+   return function($2)
+   {
+    return $1("("+GeneratedPrintf.p($2[0])+", "+Utils.prettyPrint($2[1])+")");
+   };
+  }(Global.id),function(t)
+  {
+   return c([t[0],t[1]]);
+  }),function(s)
+  {
+   return Seq.map(m,s);
+  }),function(x)
+  {
+   return g$4(f$1(x));
+  }),v));
+  SC$1.wsErrsW=(v$1=UI.wsErrsV().get_View(),View.Map((f$2=(m$1=(c$1=function($1)
+  {
+   return function($2)
+   {
+    return $1("("+WsTranslatorLoader_GeneratedPrintf.p($2[0])+", "+Utils.prettyPrint($2[1])+")");
+   };
+  }(Global.id),function(t)
+  {
+   return c$1([t[0],t[1]]);
+  }),function(s)
+  {
+   return Seq.map(m$1,s);
+  }),function(x)
+  {
+   return g$5(f$2(x));
+  }),v$1));
+  SC$1.wsWrnsW=(v$2=UI.wsWrnsV().get_View(),View.Map((f$3=(m$2=(c$2=function($1)
+  {
+   return function($2)
+   {
+    return $1("("+WsTranslatorLoader_GeneratedPrintf.p($2[0])+", "+Utils.prettyPrint($2[1])+")");
+   };
+  }(Global.id),function(t)
+  {
+   return c$2([t[0],t[1]]);
+  }),function(s)
+  {
+   return Seq.map(m$2,s);
+  }),function(x)
+  {
+   return g$6(f$3(x));
+  }),v$2));
  };
  WsTranslatorLoader_GeneratedPrintf.p$2=function($1)
  {
-  return"WasmPath "+Utils.prettyPrint($1.$0);
- };
- WsTranslatorLoader_GeneratedPrintf.p=function($1)
- {
-  return $1.$==4?"WasmWorkerLoaded":$1.$==3?"WasmWorkerLoading":$1.$==2?"WasmLoaded":$1.$==1?"WasmLoading":"WasmNotLoaded";
+  return $1==null?"null":"Some "+WsTranslatorLoader_GeneratedPrintf.p$3($1.$0);
  };
  WsTranslatorLoader_GeneratedPrintf.p$3=function($1)
  {
-  return $1==null?"null":"Some "+GeneratedPrintf.p($1.$0);
+  return"WasmPath "+Utils.prettyPrint($1.$0);
+ };
+ WsTranslatorLoader_GeneratedPrintf.p$1=function($1)
+ {
+  return $1.$==4?"WasmWorkerLoaded":$1.$==3?"WasmWorkerLoading":$1.$==2?"WasmLoaded":$1.$==1?"WasmLoading":"WasmNotLoaded";
  };
  GeneratedPrintf.p=function($1)
  {
   return"{"+("FileName = "+Utils.prettyPrint($1.FileName))+"; "+("Start = "+("("+Utils.prettyPrint($1.Start[0])+", "+Utils.prettyPrint($1.Start[1])+")"))+"; "+("End = "+("("+Utils.prettyPrint($1.End[0])+", "+Utils.prettyPrint($1.End[1])+")"))+"}";
+ };
+ WsTranslatorLoader_GeneratedPrintf.p=function($1)
+ {
+  return $1==null?"null":"Some "+GeneratedPrintf.p($1.$0);
  };
 }(self));
