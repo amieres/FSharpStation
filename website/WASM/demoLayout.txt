@@ -1,0 +1,302 @@
+
+
+wasmInstances View   "/WASM/v47/Interp/;/WASM/v47/AotInterp/"
+sourceFsx     View   "/tmp/source.fsx"
+executable    View   "/tmp/@{Snippets.snippets_sel}.exe"
+compilerOpts  ViewJS "(s, o) => 'fcs.exe\n' + s + '\n-o:' + o + '\n--simpleresolution\n--nowarn:3186\n--optimize-\n--noframework\n--fullpaths\n--warn:3\n--target:exe\n-r:/tmp/FSharp.Core.dll\n-r:/tmp/mscorlib.dll\n-r:/tmp/netstandard.dll\n-r:/tmp/System.dll\n-r:/tmp/System.Core.dll\n-r:/tmp/System.IO.dll\n-r:/tmp/System.Runtime.dll\n-r:/tmp/System.Net.Http.dll\n-r:/tmp/System.Threading.dll\n-r:/tmp/WebAssembly.Net.Http.dll\n-r:/tmp/WebAssembly.Bindings.dll\n-r:/tmp/WebAssembly.Net.WebSockets.dll\n-r:/tmp/System.Numerics.dll'" sourceFsx executable
+translateOpts ViewJS "'\n-d:WEBSHARPER\n-r:/tmp/WebSharper.Core.dll\n-r:/tmp/WebSharper.Core.JavaScript.dll\n-r:/tmp/WebSharper.Collections.dll\n-r:/tmp/WebSharper.InterfaceGenerator.dll\n-r:/tmp/WebSharper.Main.dll\n-r:/tmp/WebSharper.JQuery.dll\n-r:/tmp/WebSharper.JavaScript.dll\n-r:/tmp/WebSharper.Web.dll\n-r:/tmp/WebSharper.Sitelets.dll\n-r:/tmp/WebSharper.Control.dll\n--ws:BundleOnly\n--wsoutput:/tmp/website\n--project:/tmp/trs\n--jsmap\n--jsoutput:/tmp/tr0.js'"
+
+editorDataSel Var ""
+
+
+varCounter    Var "0"
+viwCounter    ViewJS "n => n + 1" varCounter
+actCounter    Action AF.SetVarDirect "lytDemo.varCounter" viwCounter
+
+wasmStatus    Var ""
+viwStatus     ViewJS "n => n == '' ? 'display:None' : '' " wasmStatus
+App           ViewJS "n => n == '' ? '' : 'App'          " wasmStatus
+
+setMainView   Action AF.SetVar "AppFramework.mainDocV" "lytDemo.main"
+setFullView1  Action AF.SetVar "AppFramework.mainDocV" "lytDemo.FullView1"
+setFullView2  Action AF.SetVar "AppFramework.mainDocV" "lytDemo.FullView2"
+setFullView3  Action AF.SetVar "AppFramework.mainDocV" "lytDemo.FullView3"
+
+toMainView    button "click=@{setMainView} ;Title=Back to normal view" "normal view"
+toFullView1   button "click=@{setFullView1};Title=to full view"        "container view"
+toFullView2   button "click=@{setFullView2};Title=to full view"        "full view"
+toFullView3   button "click=@{setFullView3};Title=to full view"        "split view"
+
+target        ViewJS "n => n.includes('main ')?n:'main Docs "" ""'" Snippets.curSnp_content
+
+varTmp          Var ""
+
+actSaveFsxFile  Action AF.SetVarDirect "WsTranslatorPlugIn.Source"      Snippets.curSnp_content
+
+//viwSetFSHARPBIN ViewJS "(vn, vl    , _st) => @{App}.wasm_setenv(vn, vl) )" "FSHARP_COMPILER_BIN" "/tmp" wasmStatus
+//actSetFSHARPBIN Action AF.SetVarDirect "lytDemo.varTmp"      viwSaveFsxFile
+
+//viwTranslate   ViewJS "(ops,_st) => @{App}.translate(ops)" "@{compilerOpts}@{translateOpts}"  wasmStatus
+actTranslate   Actions
+: Action  WsTranslatorPlugIn.Clean
+: Action  AF.SetVarDirect "WsTranslatorPlugIn.Output"  "Translating..."
+: Actions  actSaveFsxFile WsTranslatorPlugIn.Translate
+: Action  AF.SetVarDirect "lytDemo.wasmStatus"  ""
+
+actCompile  Actions
+: Action  WsTranslatorPlugIn.Clean
+: Action  AF.SetVarDirect "WsTranslatorPlugIn.Output"  "Compiling..."
+: Actions  actSaveFsxFile WsTranslatorPlugIn.Compile
+: Action  AF.SetVarDirect "lytDemo.wasmStatus"  ""
+
+viwRun   ViewJS "(function(n,_st) { var r = @{App}.runAsm(n); return r == undefined ? '' : r })" executable wasmStatus
+actRun   Actions
+: Action  WsTranslatorPlugIn.Clean
+: Action  AF.SetVarDirect "lytDemo.msgAdd"  "Running @{WsTranslatorPlugIn.Command}..."
+: Actions WsTranslatorPlugIn.Run
+: Action  AF.SetVarDirect "lytDemo.wasmStatus"  ""
+
+actPrintJS Actions
+: Action AF.SetVarDirect "WsTranslatorPlugIn.Output"  WsTranslatorPlugIn.JS
+: Action AF.SetVarDirect "lytDemo.wasmStatus"  ""
+
+varJS Var ""
+viwRunJS0 ViewJS "(function(code, suf) { return code == ''? '' : code.endsWith(suf)? code : code.replace(/console\.log\(/g, 'Module.print(') + suf; }) " WsTranslatorPlugIn.JS "StartupCode$WasmTest$source.$cctor();"
+actRunJS2 Actions WsTranslatorPlugIn.EvalJS
+: Action AF.SetVarDirect "lytDemo.wasmStatus"  ""
+actRunJS Actions
+: Action AF.SetVarDirect "WsTranslatorPlugIn.Output" ""
+: Action AF.SetVarDirect "lytDemo.wasmStatus"        "Running JS..."
+: Action AF.SetVarDirect "WsTranslatorPlugIn.JS"     viwRunJS0
+: Action AF.DelayAction  "100" "lytDemo.actRunJS2"
+
+viwFibo  ViewJS "(p,_st) => @{App}.fibo(p)" "data 1 10 20 30 40" wasmStatus
+actFibo2 Actions
+: Action AF.SetVarDirect "lytDemo.varJS"       viwFibo
+: Action AF.SetVarDirect "lytDemo.wasmStatus"  ""
+actFibo Actions
+: Action AF.SetVarDirect "lytDemo.wasmStatus"  "fibonacci..."
+: Action AF.DelayAction  "100" "lytDemo.actFibo2"
+
+viwInstance ViewJS "n => n == '' ? 'none' : '' " WsTranslatorPlugIn.WasmPath
+actLoadWASM Actions
+: Action  AF.SetVarDirect "lytDemo.wasmStatus"      "Loading @{WsTranslatorPlugIn.WasmPath}..."
+: Action  AF.DelayAction  "100" "WsTranslatorPlugIn.LoadAsWorker"
+
+actListDir  Actions WsTranslatorPlugIn.Dir
+
+msgAdd      Var ""
+viwAddMsg   ViewJS "(a,b) => b == '' ? a : a == '' ? b : a + '\n' + b " WsTranslatorPlugIn.OutputmsgAdd
+actAddMsg   Actions
+: Action AF.SetVarDirect "WsTranslatorPlugIn.Output" viwAddMsg
+: Action AF.SetVarDirect "lytDemo.msgAdd"     ""
+
+TriggerMsgAdd Doc
+: Doc    AF.TrigChange   msgAdd      actAddMsg
+
+actClearMsg Action AF.SetVarDirect "WsTranslatorPlugIn.Output" ""
+
+goPrev      Action AF.SetVar       "Snippets.snippets_sel"    Snippets.prevSel
+goNext      Action AF.SetVar       "Snippets.snippets_sel"    Snippets.nextSel
+
+//SetTarget   Action AF.SetVarDirect "lytTarget.Layout"         target
+
+textToCopy  Var ""
+
+Trigger Doc ""
+//: Doc    AF.TrigChange   Snippets.snippets_sel      SetTarget
+
+TriggerCopy Doc
+: Doc    AF.TrigAction   textToCopy
+::  Actions
+::: Action  AF.SetVarDirect "Snippets.curSnp_content" textToCopy
+//::: Actions SetTarget
+
+mode         Var    "View"
+activeView   ViewJS "n => n=='View'   ?'active':''" mode
+activeEdit   ViewJS "n => n=='Edit'   ?'active':''" mode
+activeFSharp ViewJS "n => n=='FSharp' ?'active':''" mode
+setView      Action AF.SetVar      "lytDemo.mode" "View"
+setEdit      Action AF.SetVar      "lytDemo.mode" "Edit"
+setFSharp    Action AF.SetVar      "lytDemo.mode" "FSharp"
+
+applyColor  ViewJS "(a,b) => a == b ? '' : 'btn btn-primary' " "lytTarget.Layout" target
+
+SearchFor   Doc    AF.InputLabel "" "Search" Snippets.searchFor
+
+indentUnindent ul "width:100%"
+: div "margin:3px"
+:: button "click=@{Snippets.IndentOut};title=indent out"     "<--"
+:: button "click=@{Snippets.IndentIn};title=indent in"       "--> "
+
+File span "class=input-group;margin:5px;id=LoadSnippets" 
+: div "class=input-group-btn"
+:: label "class=btn btn-info" "Load File"
+::: div ""
+:::: input "class=form-control;type=file;display: none;change=@{Snippets.LoadSnippets}" 
+:: label "class=btn btn-primary;click=@{Snippets.SaveSnippets}" "Save File"
+
+addRemove ul "margin:3px;width:100%"
+: button "click=@{Snippets.AddSnippet}   ;title=Add New Snippet" "+"
+: button "margin-left:20px;click=@{Snippets.DeleteSnippet};title=Delete  Snippet" "x"
+
+list div "display: flex;flex-direction: column;height:100%;" File
+: div    "margin:5px" SearchFor 
+: Docs indentUnindent
+: div "overflow:auto;width:100%" Snippets.snippets_list
+: Docs addRemove
+
+editor    Doc    Monaco.editor Snippets.curSnp_content     "fsharp"   "vs-dark" ""
+editor2   Doc    Monaco.editor Snippets.curSnp_explanation "markdown" "vs-dark" ""
+//editor3   Doc    Monaco.editor Snippets.curSnp_content     "fsharp"   "vs-dark" ""
+MarkDown0 ViewJS "t => marked(t).replace(/<\/pre>/g,'<i onclick=""copyToEditor(this)"" title=""Copy to Editor"" class=""rightArrow"" ></i> </pre>')" Snippets.curSnp_explanation
+
+copyToEditor Docs
+: style  "" ".rightArrow { float:right; border: solid blue; border-width: 0 6px 6px 0; display: inline-block; padding: 3px; color: red; background: white;  transform: rotate(-45deg);  -webkit-transform: rotate(-45deg); } "
+: script "" "copyToEditor = function(el) { FsRootDll.LibraryJS.AppFramework.setVarDirect('lytDemo.textToCopy', el.parentElement.innerText); }"
+
+markdownHtml div "" copyToEditor
+:  h2        "margin-top:0px"              Snippets.curSnp_name
+:  Doc       AF.HtmlDoc MarkDown0
+
+prev button    "click=@{goPrev};title=@{Snippets.prevTxt}"  "Prev."     
+next button    "click=@{goNext};title=@{Snippets.nextTxt}"  "Next"
+
+content div "margin:10px" Trigger TriggerCopy
+:  span      "width:100%; margin-bottom:20px" prev  " " next
+:  Docs                             markdownHtml
+
+fshuiEditor div "width:100%;display:flex;flex-direction: column;flex:1"
+:  h4        "background:blue;color:white;margin:0px" "FSharp Editor:"
+:  div       "class=relative;flex:2" editor
+//:  div       "color:red;font-weight:800;white-space:pre-wrap"  Snippets.parseOut
+
+snippet div "display: flex;flex:2 ; flex-direction:column" 
+: div "" content 
+: Docs fshuiEditor
+
+viwMsgs ViewJS "(a, b, c) => a + '\n' + b + '\n' + c" WsTranslatorPlugIn.FSharpErrors WsTranslatorPlugIn.WebSharperErrors WsTranslatorPlugIn.WebSharperWarnings
+
+wasmOutputDoc div "display: grid;flex-direction: column;flex: 1;"
+:   horizontal 0-75-100
+::  Doc AF.TextArea "flex: 1;resize:both;height:100%;width:100%;spellcheck=false" WsTranslatorPlugIn.Output
+::  Doc AF.TextArea "flex: 1;resize:both;height:100%;width:100%;spellcheck=false" viwMsgs
+
+RightX div "display: flex; flex-direction:column" wasmOutputDoc
+
+tryMe span "width:100%"
+: button    "click=@{actCompile};class=@{applyColor}"  "Compile"
+: Docs " "
+: button    "click=@{actRun}    ;class=@{applyColor}"  "Run"
+: Docs " "
+: button    "click=@{actTranslate};class=@{applyColor}"  "Translate to JS"
+: Docs " "
+: button    "click=@{actPrintJS}  ;class=@{applyColor}"  "Print JS"
+: Docs " "
+: button    "click=@{actRunJS}    ;class=@{applyColor}"  "Run JS"
+: br   ""
+: button    "click=@{actClearMsg}"                     "Clear"
+: Docs " "
+: button    "click=@{actListDir}"                      "Dir"
+: Docs " "
+: button    "click=@{actFibo}"                         "fibo"
+
+statusW ViewJS "(status)=> status.replaceAll(/some|path|null|wasm|[()"",//]/ig, '').replace('Load', ' Load') " WsTranslatorPlugIn.Status
+
+Righttrue div "display: flex; flex-direction:column"
+:   div       "display:flex;flex-direction: column" 
+::  span     "" 
+::: h4       "display:inline-block" statusW
+::: button   "click=@{WsTranslatorPlugIn.TerminateWorker}"  "Terminate"
+::  span     "" tryMe " " toFullView2 " " toFullView1 " " toFullView3
+:  div "@{viwStatus}" 
+:: img "src=//cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif"
+:: Docs wasmStatus
+
+: div "display: flex;flex-direction: column;flex: 1;" wasmOutputDoc
+
+viwDebugMode ViewJS "(debug)=> debug == 'true'? 'btn-primary' : '' " WsTranslatorPlugIn.DebugMode
+
+Rightfalse div "display: flex; flex-direction:column" 
+: h1 "" "Start by loading WASM: "
+: h3 ""
+:: Doc    AF.Select "" "SELECT WASM INSTANCE" wasmInstances WsTranslatorPlugIn.WasmPath
+:: button "click=@{WsTranslatorPlugIn.ToggleDebug};class=@{viwDebugMode}" "Debug"
+: button "click=@{actLoadWASM};display:@{viwInstance};class=btn btn-primary" "Load @{WsTranslatorPlugIn.WasmPath}" 
+
+viwIsLoaded ViewJS "(st)=>!st.includes('NotLoaded')" WsTranslatorPlugIn.Status
+
+Right Doc AF.DocReference "lytDemo.Right@{viwIsLoaded}"
+
+editorCombo div "display:flex;flex-direction:column; height:100%; flex:1"
+:  Doc       AF.InputLabel "" "Name:" Snippets.curSnp_name
+:  div       "class=relative;flex:1"      editor2
+
+snippetListEdit   div "display:flex;flex-direction:column" 
+: div "max-height:50%" list 
+: Docs editorCombo
+    
+snippetListView   div "display:block;overflow:auto;width:100%" Snippets.snippets_list
+
+snippetListFSharp div "display:flex;flex-direction:column"
+: button "onclick=FsRootDll.LibraryJS.SnippetsUI.SaveLoad.loadURL('//raw.githubusercontent.com/amieres/FSharpStation/master/basic18.snippets')" "Load FSharp Snippets"
+: button "onclick=FsRootDll.LibraryJS.SnippetsUI.SaveLoad.loadURL('/WASM/tutorial.snippets'                                                  )" "Load Tutorial Snippets"
+: div "max-height:100%" list 
+
+navBar  div "class=xcontainer;margin-right:10px"
+:       div "class=navbar-header"
+::      button "type=button;class=navbar-toggle collapsed;data-toggle=collapse;data-target=#navbar;aria-expanded=false;aria-controls=navbar"
+:::     span "class=sr-only" "Toggle navigation"
+:::     span "class=icon-bar"
+:::     span "class=icon-bar"
+:::     span "class=icon-bar"
+::      a    "class=navbar-brand;href=#" "WASM"
+:       div  "id=navbar;class=navbar-collapse collapse"
+::      ul   "class=nav navbar-nav"
+:::     li   "class=@{activeView}"
+::::    a    "href=#;click=@{setView}" "View"
+:::     li   "class=@{activeEdit}"
+::::    a    "href=#;click=@{setEdit}" "Edit"
+:::     li   "class=@{activeFSharp}"
+::::    a    "href=#;click=@{setFSharp}" "F#"
+::      ul   "class=nav navbar-nav navbar-right"
+:::     li   ""
+::::    a    "href=//github.com/amieres/amieres.github.io/issues/new" "Feedback"
+:::     li   "class=active"
+::::    a    "href=//github.com/amieres/amieres.github.io" "About"
+:::::   span "class=sr-only" "(current)"
+
+nav nav "class=navbar navbar-default navbar-fixed-top" navBar TriggerMsgAdd
+
+Center       vertical 0-60-100 snippet Right
+Center_      Doc Center ""
+
+CenterView   Docs Center_
+CenterEdit   Docs Center_
+CenterFSharp div "display:flex;flex-direction:column; height:100%"
+:  Doc       AF.InputLabel "" "Name:" Snippets.curSnp_name
+:  div       "class=relative;flex:1"      editor
+
+main  horizontal 51 nav
+:   vertical 0-15-100
+::  Doc  AF.DocReference "lytDemo.snippetList@{mode}"
+::  Doc  AF.DocReference "lytDemo.Center@{mode}"
+
+FullView1 div "display:flex;flex-direction:column;flex:1"
+:  div "class=container;display:flex;flex-direction:column;flex:1" 
+:: div "" toMainView " " toFullView2 " " toFullView3 
+:: div "class=well;flex:1; background:white;display:flex;flex-direction:column;min-height:300px" snippet wasmOutputDoc
+
+FullView2 div "display:flex;flex-direction:column"
+: div "" toMainView " " toFullView1 " " toFullView3 
+: div "class=relative;flex:1"
+:: horizontal 0-66-100 snippet wasmOutputDoc
+
+FullView3 div "display:flex;flex-direction:column" 
+:    div "" tryMe " " toMainView " " toFullView1 " " toFullView2
+:    div "class=relative;flex:1"
+::   vertical 0-50-100 fshuiEditor wasmOutputDoc
+
+split vertical 0-40-100
+: Doc  Monaco.editor lytDemo.Layout     "fsharp"   "vs-dark" ""
+: Docs lytDemo.main

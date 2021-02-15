@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>WebSharper.UI.Templating.Common</name></assembly>
+<members>
+<member name="F:WebSharper.UI.Templating.LegacyMode.New">
+<summary>
+ Use Zafir templating engine (experimental)
+</summary>
+</member>
+<member name="F:WebSharper.UI.Templating.LegacyMode.Old">
+<summary>
+ Use the templating syntax inherited from WebSharper 3
+</summary>
+</member>
+<member name="F:WebSharper.UI.Templating.LegacyMode.Both">
+<summary>
+ Both old and new-style template construction methods are generated, warnings on old syntax
+</summary>
+</member>
+<member name="F:WebSharper.UI.Templating.ServerLoad.WhenChanged">
+<summary>
+ The HTML file is watched for changes and reloaded accordingly.
+</summary>
+</member>
+<member name="F:WebSharper.UI.Templating.ServerLoad.PerRequest">
+<summary>
+ The HTML is loaded from the file system on every use.
+</summary>
+</member>
+<member name="F:WebSharper.UI.Templating.ServerLoad.Once">
+<summary>
+ The HTML is loaded from the file system on first use.
+</summary>
+</member>
+<member name="T:WebSharper.UI.Templating.ServerLoad">
+<summary>
+ Decide how the HTML is loaded when the template is used on the server side.
+ This only has an effect when passing a path to the provider, not inline HTML. (default: Once)
+</summary>
+</member>
+<member name="F:WebSharper.UI.Templating.ClientLoad.FromDocument">
+<summary>
+ The HTML is loaded from the current document.
+</summary>
+</member>
+<member name="F:WebSharper.UI.Templating.ClientLoad.Inline">
+<summary>
+ The HTML is built into the compiled JavaScript.
+</summary>
+</member>
+<member name="T:WebSharper.UI.Templating.ClientLoad">
+<summary>
+ Decide how the HTML is loaded when the template is used on the client side.
+ This only has an effect when passing a path to the provider, not inline HTML. (default: Inline)
+</summary>
+</member>
+<member name="P:WebSharper.UI.Templating.Parsing.WrappedTemplateName.NameAsOption">
+<summary>
+ None is the root template, Some x is a child template.
+</summary>
+</member>
+<member name="P:WebSharper.UI.Templating.Parsing.WrappedTemplateName.IdAsOption">
+<summary>
+ None is the root template, Some x is a child template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Parsing.WrappedTemplateName.OfOption(Microsoft.FSharp.Core.FSharpOption{System.String})">
+<summary>
+ None is the root template, Some x is a child template.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Parsing.Impl.detachAllChildrenTemplateNodes(HtmlAgilityPack.HtmlNode[],System.Collections.Generic.Dictionary{WebSharper.UI.Templating.Parsing.WrappedTemplateName,HtmlAgilityPack.HtmlNode})">
+<summary>
+ Find all the ws-children-template nodes, detach them and populate wsTemplates.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Parsing.Impl.detachAllTemplateNodes(HtmlAgilityPack.HtmlNode[],System.Collections.Generic.Dictionary{WebSharper.UI.Templating.Parsing.WrappedTemplateName,HtmlAgilityPack.HtmlNode})">
+<summary>
+ Find all the ws-template nodes, detach them and populate wsTemplates.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Parsing.Impl.detachChildrenTemplateNode(HtmlAgilityPack.HtmlNode)">
+<summary>
+ Detach the contents of a ws-children-template node from their parent.
+ Returns them in a new artificial parent.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Parsing.Impl.detachTemplateNode(HtmlAgilityPack.HtmlNode)">
+<summary>
+ Detach a ws-template node from its parent.
+ If it had a ws-replace attr, leave a dummy instead.
+ Return it wrapped in a dummy parent.
+</summary>
+</member>
+<member name="M:WebSharper.UI.Templating.Parsing.Impl.getParts(Microsoft.FSharp.Core.FSharpFunc{System.String,Microsoft.FSharp.Core.FSharpFunc{WebSharper.UI.Templating.AST.HoleKind,Microsoft.FSharp.Core.Unit}},System.String)">
+<summary>
+ Parse a text string as a series of StringParts.
+</summary>
+</member>
+</members>
+</doc>
