@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<linker>
+  <assembly fullname="FSharp.Core" />
+  <assembly fullname="FSharp.Compiler.Service" />
+
+  <assembly fullname="mscorlib" />
+  <assembly fullname="netstandard" />
+  <assembly fullname="System" />
+  <assembly fullname="System.Collections" />
+  <assembly fullname="System.Collections.Immutable" />
+  <assembly fullname="System.ComponentModel.Composition" />
+  <assembly fullname="System.Core" />
+  <assembly fullname="System.Data" />
+  <assembly fullname="System.Data.DataSetExtensions" />
+  <assembly fullname="System.Drawing.Common" />
+  <assembly fullname="System.IO" />
+  <assembly fullname="System.IO.Compression" />
+  <assembly fullname="System.IO.Compression.FileSystem" />
+  <assembly fullname="System.Net.Http" />
+  <assembly fullname="System.Numerics" />
+  <assembly fullname="System.Runtime.Serialization" />
+  <assembly fullname="System.Reflection.Metadata" />
+  <assembly fullname="System.Transactions" />
+  <assembly fullname="System.ValueTuple" />
+  <assembly fullname="System.Xml" />
+  <assembly fullname="System.Xml.Linq" />
+
+  <assembly fullname="Mono.Security" />
+  <assembly fullname="WebAssembly.Net.WebSockets" />
+  <assembly fullname="System.Memory" />
+  <assembly fullname="System.Net.Http.WebAssemblyHttpHandler" />
+  <assembly fullname="System.ServiceModel.Internals" />
+
+  <assembly fullname="WebSharper.Compiler" />
+  <assembly fullname="WebSharper.Compiler.FSharp" />
+  <assembly fullname="WebSharper.Core" include="nothing" />
+  <assembly fullname="WebSharper.Core.JavaScript" include="nothing" />
+  <!--assembly fullname="WebSharper.InterfaceGenerator" /-->
+  <assembly fullname="WebSharper.JavaScript" />
+  <assembly fullname="WebSharper.JQuery" />
+  <assembly fullname="WebSharper.Main" />
+  <assembly fullname="WebSharper.Sitelets" />
+  <assembly fullname="WebSharper.UI" />
+  <assembly fullname="WebSharper.UI.Templating.Common" />
+  <assembly fullname="WebSharper.Web" />
+
+  <assembly fullname="WsTranslator47" />
+
+</linker>
+
