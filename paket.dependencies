@@ -138,4 +138,5 @@ group FSharp47
     nuget Microsoft.Build.Utilities.Core
     nuget Microsoft.Build.Framework
     nuget Mono.Cecil
+    nuget Toolbelt.Blazor.TimeZoneKit
     

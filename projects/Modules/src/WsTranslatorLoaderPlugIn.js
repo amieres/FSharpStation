@@ -1,25 +1,52 @@
 (function(Global)
 {
  "use strict";
- var FsRootDll,LibraryJS,WsTranslatorLoaderPlugIn,SC$1,WebSharper,UI,View,WsTranslatorLoader_GeneratedPrintf,FsRoot,LibraryJS$1,WsTranslatorLoader,AppFramework,UI$1,Concurrency;
+ var FsRootDll,LibraryJS,WsTranslatorLoaderPlugIn,SC$1,WebSharper,UI,FromView,View,FsRoot,LibraryJS$1,WsTranslatorLoader,UI$1,WsTranslatorLoader_GeneratedPrintf,AppFramework,Concurrency;
  FsRootDll=Global.FsRootDll=Global.FsRootDll||{};
  LibraryJS=FsRootDll.LibraryJS=FsRootDll.LibraryJS||{};
  WsTranslatorLoaderPlugIn=LibraryJS.WsTranslatorLoaderPlugIn=LibraryJS.WsTranslatorLoaderPlugIn||{};
  SC$1=Global.StartupCode$WsTranslatorLoaderPlugIn$WsTranslatorLoaderPlugIn=Global.StartupCode$WsTranslatorLoaderPlugIn$WsTranslatorLoaderPlugIn||{};
  WebSharper=Global.WebSharper;
  UI=WebSharper&&WebSharper.UI;
+ FromView=UI&&UI.FromView;
  View=UI&&UI.View;
- WsTranslatorLoader_GeneratedPrintf=Global.WsTranslatorLoader_GeneratedPrintf;
  FsRoot=Global.FsRoot;
  LibraryJS$1=FsRoot&&FsRoot.LibraryJS;
  WsTranslatorLoader=LibraryJS$1&&LibraryJS$1.WsTranslatorLoader;
- AppFramework=LibraryJS&&LibraryJS.AppFramework;
  UI$1=WsTranslatorLoader&&WsTranslatorLoader.UI;
+ WsTranslatorLoader_GeneratedPrintf=Global.WsTranslatorLoader_GeneratedPrintf;
+ AppFramework=LibraryJS&&LibraryJS.AppFramework;
  Concurrency=WebSharper&&WebSharper.Concurrency;
  WsTranslatorLoaderPlugIn.plugInAdded=function()
  {
   SC$1.$cctor();
   return SC$1.plugInAdded;
+ };
+ WsTranslatorLoaderPlugIn.lensChannelV=function(ch,lm)
+ {
+  var f;
+  function m(a,a$1)
+  {
+   return a$1[0];
+  }
+  function g(o)
+  {
+   return o==null?"":o.$0;
+  }
+  return new FromView.New(View.Map((f=function(o)
+  {
+   var $1;
+   return o==null?null:{
+    $:1,
+    $0:($1=o.$0,m($1[0],$1[1]))
+   };
+  },function(x)
+  {
+   return g(f(x));
+  }),lm.TryFindByKeyAsView(ch)),function(txt)
+  {
+   UI$1.setChannel(ch,txt);
+  });
  };
  WsTranslatorLoaderPlugIn.statusW=function()
  {
@@ -36,11 +63,11 @@
    {
     return function($3)
     {
-     return $2("("+WsTranslatorLoader_GeneratedPrintf.p$1($3[0])+", "+WsTranslatorLoader_GeneratedPrintf.p$2($3[1])+")");
+     return $2("("+WsTranslatorLoader_GeneratedPrintf.p($3[0])+", "+WsTranslatorLoader_GeneratedPrintf.p$1($3[1])+")");
     };
    }(Global.id))([$1[0],$1[1]]);
   },WsTranslatorLoader.wasmStatusV().get_View());
-  SC$1.plugInAdded=AppFramework.addPlugIn((b=AppFramework.plugin(),b.AddDoc0(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddViw(b.AddViw(b.AddViw(b.AddViw(b.AddViw(b.Name(b.Yield(),"WsTranslatorPlugIn"),"Status",WsTranslatorLoaderPlugIn.statusW()),"FSharpErrors",UI$1.fsErrsW()),"WebSharperErrors",UI$1.wsErrsW()),"WebSharperWarnings",UI$1.wsWrnsW()),"DebugMode",View.Map(Global.String,UI$1.debugV().get_View())),"JS",UI$1.jsV()),"WasmPath",UI$1.wasmPathTV()),"Command",UI$1.commandV()),"Source",UI$1.codeV()),"Options",UI$1.optsV()),"Output",UI$1.detailsV()),"LoadAsWorker",function()
+  SC$1.plugInAdded=AppFramework.addPlugIn((b=AppFramework.plugin(),b.AddDoc0(b.AddDoc0(b.AddDoc0(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddViw(b.AddViw(b.Name(b.Yield(),"WsTranslatorPlugIn"),"Status",WsTranslatorLoaderPlugIn.statusW()),"DebugMode",View.Map(Global.String,UI$1.debugV().get_View())),"JS",UI$1.jsV()),"WasmPath",UI$1.wasmPathTV()),"Command",UI$1.commandV()),"Source",UI$1.codeV()),"Options",UI$1.optsV()),"stdout",WsTranslatorLoaderPlugIn.lensChannelV("stdout",UI$1.detailsV())),"stderr",WsTranslatorLoaderPlugIn.lensChannelV("stderr",UI$1.detailsV())),"Timings",WsTranslatorLoaderPlugIn.lensChannelV("Timings",UI$1.detailsV())),"WASM",WsTranslatorLoaderPlugIn.lensChannelV("WASM",UI$1.detailsV())),"LoadAsWorker",function()
   {
    UI$1.actLoadAsWorker();
   }),"TerminateWorker",function()
@@ -72,7 +99,7 @@
    Concurrency.Start(UI$1.actDir(),null);
   }),"EvalJS",function()
   {
-   UI$1.actEvalJS();
-  }),"Form",UI$1.mainDoc)));
+   Concurrency.Start(UI$1.actEvalJS(),null);
+  }),"Tabs",UI$1.tabsDoc),"Details",UI$1.detailsDoc),"Form",UI$1.mainDoc)));
  };
 }(self));

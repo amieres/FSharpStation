@@ -1701,6 +1701,7 @@ NUGET
     System.Threading.ThreadPool (4.3) - restriction: || (&& (== net461) (>= netstandard2.0)) (== netstandard2.0)
       System.Runtime (>= 4.3) - restriction: || (&& (== net461) (< net46)) (== netstandard2.0)
       System.Runtime.Handles (>= 4.3) - restriction: || (&& (== net461) (< net46)) (== netstandard2.0)
+    Toolbelt.Blazor.TimeZoneKit (7.0)
 
 GROUP Other
 RESTRICTION: || (== net461) (== netstandard2.0)

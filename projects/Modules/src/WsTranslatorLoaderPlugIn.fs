@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:DLL -d:FSharpStation1613322720562 -d:WEBSHARPER -d:WEBSHARPER47
+////-d:DLL -d:FSharpStation1613431272838 -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461"
@@ -26,7 +26,7 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/Modules/bin/WsTranslatorLoader.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1613322720562
+//#define FSharpStation1613431272838
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -140,16 +140,16 @@ namespace FsRoot
                 
                 let statusW = V(sprintf "%A" WsTranslatorLoader.wasmStatusV.V)
             
-            
+                let lensChannelV ch (lm: ListModel<string, (string * (string * bool))>) =
+                    Var.Make
+                        (lm.TryFindByKeyAsView ch |> View.Map (Option.map(fun (_,(txt,_)) -> txt) >> Option.defaultValue "") )
+                        (fun txt -> WsTranslatorLoader.UI.setChannel ch txt)
             
                 let plugInAdded =
                     AF.plugin {
                         plgName   "WsTranslatorPlugIn"
             
                         plgView   "Status"                      statusW
-                        plgView   "FSharpErrors"                WsTranslatorLoader.UI.fsErrsW
-                        plgView   "WebSharperErrors"            WsTranslatorLoader.UI.wsErrsW
-                        plgView   "WebSharperWarnings"          WsTranslatorLoader.UI.wsWrnsW
                         plgView   "DebugMode"                   (WsTranslatorLoader.UI.debugV.View.Map string)
             
                         plgVar    "JS"                          WsTranslatorLoader.UI.jsV
@@ -157,7 +157,10 @@ namespace FsRoot
                         plgVar    "Command"                     WsTranslatorLoader.UI.commandV
                         plgVar    "Source"                      WsTranslatorLoader.UI.codeV
                         plgVar    "Options"                     WsTranslatorLoader.UI.optsV
-                        plgVar    "Output"                      WsTranslatorLoader.UI.detailsV
+                        plgVar    "stdout"                     (WsTranslatorLoader.UI.detailsV |> lensChannelV "stdout"  )
+                        plgVar    "stderr"                     (WsTranslatorLoader.UI.detailsV |> lensChannelV "stderr"  )
+                        plgVar    "Timings"                    (WsTranslatorLoader.UI.detailsV |> lensChannelV "Timings" )
+                        plgVar    "WASM"                       (WsTranslatorLoader.UI.detailsV |> lensChannelV "WASM"    )
             
                         plgAct    "LoadAsWorker"                WsTranslatorLoader.UI.actLoadAsWorker
                         plgAct    "TerminateWorker"             WsTranslatorLoader.UI.actTerminateWorker
@@ -169,8 +172,10 @@ namespace FsRoot
                         plgAct    "Run"              (fun () -> WsTranslatorLoader.UI.actRun       () |> Async.Start)   
                         plgAct    "Translate"        (fun () -> WsTranslatorLoader.UI.actTranslate () |> Async.Start)         
                         plgAct    "Dir"              (fun () -> WsTranslatorLoader.UI.actDir       () |> Async.Start)
-                        plgAct    "EvalJS"                      WsTranslatorLoader.UI.actEvalJS   
+                        plgAct    "EvalJS"           (fun () -> WsTranslatorLoader.UI.actEvalJS    () |> Async.Start)
                         
+                        plgDoc0   "Tabs"                        WsTranslatorLoader.UI.tabsDoc
+                        plgDoc0   "Details"                     WsTranslatorLoader.UI.detailsDoc
                         plgDoc0   "Form"                        WsTranslatorLoader.UI.mainDoc
                     }
                     |> AF.addPlugIn
