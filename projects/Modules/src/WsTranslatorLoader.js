@@ -1131,6 +1131,10 @@
   {
    UI.clean();
    UI.callWasmTimed("Run",UI.actRun,null);
+  }),Doc.Button("Evaluate",[],function()
+  {
+   UI.clean();
+   UI.callWasmTimed("Evaluate",UI.actEvalFS,null);
   }),Doc.Button("Translate",[],function()
   {
    UI.clean();
@@ -1275,6 +1279,10 @@
     return Concurrency.Return(a$1);
    });
   });
+ };
+ UI.actEvalFS=function()
+ {
+  return(new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.evaluateRpc:-1181784350",[UI.codeV().Get()]);
  };
  UI.actRun=function()
  {
@@ -1642,7 +1650,8 @@
   function w(ch,txt)
   {
    console.log(ch+":: "+txt);
-   return UI.addChannel(ch,txt);
+   UI.addChannel(ch,txt);
+   return ch==="stderr"?UI.addChannel("stdout",txt):null;
   }
   SC$1.unindentStr=function(x)
   {

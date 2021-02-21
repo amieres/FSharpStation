@@ -53,6 +53,10 @@ actCompile  Actions
 : Actions  actSaveFsxFile WsTranslatorPlugIn.Compile
 : Action  AF.SetVarDirect "lytDemo.wasmStatus"  ""
 
+actFSI  Actions
+: Action   AF.SetVarDirect "WsTranslatorPlugIn.stderr"  ""
+: Actions  actSaveFsxFile WsTranslatorPlugIn.EvalFS
+
 viwRun   ViewJS "(function(n,_st) { var r = @{App}.runAsm(n); return r == undefined ? '' : r })" executable wasmStatus
 actRun   Actions
 : Action  WsTranslatorPlugIn.Clean
@@ -216,9 +220,11 @@ wasmOutputDoc div "display: flex; flex-direction: column; overflow:hidden; flex:
 RightX div "display: flex; flex-direction: column; overflow:hidden; flex: 1 1 0%" wasmOutputDoc
 
 tryMe span "width:100%"
-: button    "click=@{actCompile};class=@{applyColor}"  "Compile"
+: button    "click=@{actCompile}  ;class=@{applyColor}"  "Compile"
 : Docs " "
-: button    "click=@{actRun}    ;class=@{applyColor}"  "Run"
+: button    "click=@{actRun}      ;class=@{applyColor}"  "Run"
+: Docs " "
+: button    "click=@{actFSI}      ;class=@{applyColor}"  "FSI"
 : Docs " "
 : button    "click=@{actTranslate};class=@{applyColor}"  "Translate to JS"
 : Docs " "
@@ -259,14 +265,14 @@ editorCombo div "display:flex;flex-direction:column; height:100%; flex:1"
 :  div       "class=relative;flex:1"      editorMd
 
 snippetListEdit   div "display:flex;flex-direction:column" 
-: div "max-height:50%" list 
-: Docs editorCombo
+: div "max-height:100%" list 
+
     
 snippetListView   div "display:block;overflow:auto;width:100%" Snippets.snippets_list
 
 snippetListFSharp div "display:flex;flex-direction:column"
 : button "onclick=FsRootDll.LibraryJS.SnippetsUI.SaveLoad.loadURL('//raw.githubusercontent.com/amieres/FSharpStation/master/basic18.snippets')" "Load FSharp Snippets"
-: button "onclick=FsRootDll.LibraryJS.SnippetsUI.SaveLoad.loadURL('/WASM/tutorial.snippets'                                                  )" "Load Tutorial Snippets"
+: button "onclick=FsRootDll.LibraryJS.SnippetsUI.SaveLoad.loadURL('/WASM/WASM.snippets'                                                      )" "Load Tutorial Snippets"
 : div "max-height:100%" list 
 
 navBar  div "class=xcontainer;margin-right:10px"
@@ -298,10 +304,15 @@ Center       vertical 0-60-100 snippet Right
 Center_      Doc Center ""
 
 CenterView   Docs Center_
-CenterEdit   Docs Center_
 CenterFSharp div "display:flex;flex-direction:column; height:100%"
 :  Doc       AF.InputLabel "" "Name:" Snippets.curSnp_name
 :  div       "class=relative;flex:1"      editorFS
+CenterEdit   vertical 0-60-100
+: div "display: flex;flex:2 ; flex-direction:column" 
+:: div                "" content 
+:: Doc  AF.InputLabel "" "Name:" Snippets.curSnp_name
+:: Docs fshuiEditor
+:  Docs Right
 
 main  horizontal 51 nav
 :   vertical 0-15-100

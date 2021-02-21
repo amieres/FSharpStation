@@ -748,6 +748,8 @@ namespace FsRoot
                                 wprintfn = fun ch (txt:string) -> 
                                     Console.Log (ch + ":: " + txt)
                                     addChannel ch txt
+                                    if ch = "stderr" then 
+                                        addChannel "stdout" txt
                         }
             
                     let inline callWasmA f p = 
@@ -826,6 +828,7 @@ namespace FsRoot
                     let actCheck            () =  parseAndCheckProject        (getParms()) 
                     let actCompile          () =  compileProject              (getParms()) 
                     let actRun              () =  async { try do! WsTranslator.Rpc.runRpc    commandV.Value with e -> eprintfn "%A" e }
+                    let actEvalFS           () =  WsTranslator.Rpc.evaluateRpc codeV.Value
                     let actEvalJS           () =  async { try do!              Rpc.evalJSRpc jsV     .Value with e -> eprintfn "%A" e } 
                                                     |> Log.TimeItAsync "Eval JS"
                     let actTranslate        () =  translateToJs               (getParms()) 
@@ -874,6 +877,7 @@ namespace FsRoot
                                 Doc.Button "Check"                [] (fun () -> clean() ; callWasmTimed "Check"     actCheck     () )
                                 Doc.Button "Compile"              [] (fun () -> clean() ; callWasmTimed "Compile"   actCompile   () )
                                 Doc.Button "Run"                  [] (fun () -> clean() ; callWasmTimed "Run"       actRun       () )
+                                Doc.Button "Evaluate"             [] (fun () -> clean() ; callWasmTimed "Evaluate"  actEvalFS    () )
                                 Doc.Button "Translate"            [] (fun () -> clean() ; callWasmTimed "Translate" actTranslate () )
                                 Doc.Button "Run JS"               [] (fun () -> clean() ; callWasmTimed "Run JS"    actEvalJS    () )
                                 Doc.Button "Dir"                  [] (fun () -> clean() ; callWasmTimed "Dir"       actDir       () )

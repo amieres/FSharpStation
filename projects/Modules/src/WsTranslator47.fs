@@ -254,9 +254,11 @@ namespace FsRoot
                 let [<Inline>] inline TimeItA n f p = async {
                     printfn "%s Starting %s" (nowStamp()) n
                     let start = System.DateTime.UtcNow.Ticks
-                    do! f p
-                    let elapsedSpan = new System.TimeSpan(System.DateTime.UtcNow.Ticks - start)
-                    printfn "%s Finished %s %0d:%02d:%02d.%03d" (nowStamp()) n (int elapsedSpan.TotalHours) elapsedSpan.Minutes elapsedSpan.Seconds elapsedSpan.Milliseconds
+                    try
+                        do! f p
+                    finally
+                        let elapsedSpan = new System.TimeSpan(System.DateTime.UtcNow.Ticks - start)
+                        printfn "%s Finished %s %0d:%02d:%02d.%03d" (nowStamp()) n (int elapsedSpan.TotalHours) elapsedSpan.Minutes elapsedSpan.Seconds elapsedSpan.Milliseconds
                 }
             
                 let [<Inline>] inline TimeItAsync n a = async {
@@ -1204,14 +1206,13 @@ namespace FsRoot
             printfnLog "WASM"  "   Standard name is: %s" localZone.StandardName
             printfnLog "WASM"  "   Daylight saving name is: %s" localZone.DaylightName
             printfnLog "WASM"  "Local time is : %s" <| Log.nowStamp()
+            System.Environment.SetEnvironmentVariable("FSHARP_COMPILER_BIN", "/managed")
+            System.Environment.SetEnvironmentVariable("FSC_MONO", "/managed")
             printfnLog "WASM"  "************************************************"
     
         let fsharpChecker = 
             lazy (
-                System.Environment.SetEnvironmentVariable("FSHARP_COMPILER_BIN", "/managed")
-                System.Environment.SetEnvironmentVariable("FSC_MONO", "/managed")
                 FSharpChecker.Create( keepAssemblyContents = true) 
-    
             ) |> Log.TimeItLazy "FCS checker"
     
         let startLoading (l:Lazy<_>) = ()
@@ -1266,7 +1267,7 @@ namespace FsRoot
             ] |> Seq.toArray
     
         /// takes almost 15 seconds to decompress and load
-        let getMetaInfoFromAssemblyO = Dependency (fun (DllFileName f) ->FrontEnd.ReadFromFile FrontEnd.ReadOptions.FullMetadata f)
+        let getMetaInfoFromAssemblyO = Dependency (fun (DllFileName f) -> FrontEnd.ReadFromFile FrontEnd.ReadOptions.FullMetadata f)
     
         let readMetadata (dllToMetaInfoO : DllFileName -> Metadata.Info option) files =
             let metas = files |> Seq.choose dllToMetaInfoO         |> Seq.cache
@@ -1314,6 +1315,28 @@ namespace FsRoot
             saveCode projectName opts code
             |> fsharpChecker.Force().ParseAndCheckProject
             |> Log.TimeItAsync "ParseAndCheckProject"
+    
+        open FSharp.Compiler.Interactive.Shell
+    
+        let evaluator = 
+            lazy (
+                try 
+                    FsiEvaluationSession.Create(
+                        FsiEvaluationSession.GetDefaultConfiguration()
+                        , [| "C:\\fsi.exe" ; "--noninteractive" |]
+                        , (new StringReader(""))
+                        , Console.Out, Console.Error
+                        , collectible = true)
+                with e -> failwithf "%A" e
+            ) |> Log.TimeItLazy "create evaluator"
+    
+        let evaluate code = 
+            let res, msgs = evaluator.Force().EvalInteractionNonThrowing code
+            for msg in msgs do
+                eprintfn "%A" msg 
+            match res with
+            | Choice1Of2 _ -> ()
+            | Choice2Of2 e -> eprintfn "%A" e
     
         let checkMemoryFile() = // it does not work on mono, it is going to be excluded should return Nulls
             try
@@ -1438,8 +1461,12 @@ namespace FsRoot
             printer.D <- logThis
             let wsServer   = 
                 lazy (
-                    RM.Server.Create WebSharper.Web.Shared.Metadata WebSharper.Web.Shared.Json
-                ) |> Log.TimeItLazy "Loading remoting server"
+                    match WebSharper.Core.Metadata.IO.LoadReflected typeof<DllFileName>.Assembly with
+                    | None      -> failwith "Could not load metadata for this assembly"
+                    | Some meta ->
+                    WebSharper.Core.Json.Provider.CreateTyped meta // WebSharper.Web.Shared.Json // avoid module: WebSharper.Web.Shared TOO SLOW
+                    |> RM.Server.Create meta
+                ) |> Log.TimeItLazy "Load remoting server"
             //startLoading wsServer
     
         environment()
@@ -1596,4 +1623,7 @@ namespace FsRoot
                 ()
             }
     
-    
+            [< Remote >]
+            let evaluateRpc(code:string) = async {
+                evaluate code
+            }

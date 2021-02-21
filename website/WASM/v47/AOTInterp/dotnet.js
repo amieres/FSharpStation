@@ -1433,13 +1433,6 @@ function createExportWrapper(name, fixedasm) {
   };
 }
 
-var _appendBuffer = function(buffer1, buffer2) {
-  var tmp = new Uint8Array(buffer1.byteLength + buffer2.byteLength);
-  tmp.set(new Uint8Array(buffer1), 0);
-  tmp.set(new Uint8Array(buffer2), buffer1.byteLength);
-  return tmp.buffer;
-};
-
 var wasmBinaryFile = 'dotnet.wasm';
 if (!isDataURI(wasmBinaryFile)) {
   wasmBinaryFile = locateFile(wasmBinaryFile);
@@ -1451,7 +1444,7 @@ function getBinary(file) {
       return new Uint8Array(wasmBinary);
     }
     if (readBinary) {
-      return _appendBuffer(readBinary(file + '1'), readBinary(file + '2'));        
+      return readBinary(file);
     } else {
       throw "both async and sync fetching of the wasm failed";
     }
@@ -1468,7 +1461,7 @@ function getBinaryPromise() {
   // Cordova or Electron apps are typically loaded from a file:// url.
   // So use fetch if it is available and the url is not a file, otherwise fall back to XHR.
   if (!wasmBinary && (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER)) {
-    if (typeof fetch === 'funxction' // Abe: ALWAYS FALSE 
+    if (typeof fetch === 'function'
       && !isFileURI(wasmBinaryFile)
     ) {
       return fetch(wasmBinaryFile, { credentials: 'same-origin' }).then(function(response) {
@@ -1484,13 +1477,7 @@ function getBinaryPromise() {
       if (readAsync) {
         // fetch is not available or url is file => try XHR (readAsync uses XHR internally)
         return new Promise(function(resolve, reject) {
-          readAsync(  wasmBinaryFile + '1', function(response1) { 
-            var   buffer1 = new Uint8Array(/** @type{!ArrayBuffer} */(response1));
-            readAsync(wasmBinaryFile + '2', function(response2) { 
-              var buffer2 = new Uint8Array(/** @type{!ArrayBuffer} */(response2));
-              resolve(_appendBuffer(buffer1, buffer2));
-            }, reject)
-          }, reject)
+          readAsync(wasmBinaryFile, function(response) { resolve(new Uint8Array(/** @type{!ArrayBuffer} */(response))) }, reject)
         });
       }
     }
@@ -1560,7 +1547,7 @@ function createWasm() {
   // Prefer streaming instantiation if available.
   function instantiateAsync() {
     if (!wasmBinary &&
-        typeof WebAssembly.instantiateStreaming === 'funxction' && //ABE: always false
+        typeof WebAssembly.instantiateStreaming === 'function' &&
         !isDataURI(wasmBinaryFile) &&
         // Don't use streaming for file:// delivered objects in a webview, fetch them synchronously.
         !isFileURI(wasmBinaryFile) &&

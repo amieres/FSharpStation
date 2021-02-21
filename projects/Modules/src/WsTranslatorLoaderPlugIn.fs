@@ -173,6 +173,7 @@ namespace FsRoot
                         plgAct    "Translate"        (fun () -> WsTranslatorLoader.UI.actTranslate () |> Async.Start)         
                         plgAct    "Dir"              (fun () -> WsTranslatorLoader.UI.actDir       () |> Async.Start)
                         plgAct    "EvalJS"           (fun () -> WsTranslatorLoader.UI.actEvalJS    () |> Async.Start)
+                        plgAct    "EvalFS"           (fun () -> WsTranslatorLoader.UI.actEvalFS    () |> Async.Start)
                         
                         plgDoc0   "Tabs"                        WsTranslatorLoader.UI.tabsDoc
                         plgDoc0   "Details"                     WsTranslatorLoader.UI.detailsDoc

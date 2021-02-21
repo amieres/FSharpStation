@@ -904,7 +904,8 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   function w(ch,txt)
   {
    console.log(ch+":: "+txt);
-   return UI$1.addChannel(ch,txt);
+   UI$1.addChannel(ch,txt);
+   return ch==="stderr"?UI$1.addChannel("stdout",txt):null;
   }
   SC$1.unindentStr=function(x)
   {
