@@ -567,7 +567,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
        {
         o(t[0],t[1]);
        });
-       debug?(monoSetEnv(["MONO_LOG_LEVEL","debug"]),monoSetEnv(["MONO_LOG_MASK","all"])):void 0;
+       debug?(monoSetEnv(["MONO_LOG_LEVEL","debug"]),monoSetEnv(["MONO_LOG_MASK","all"])):(monoSetEnv(["MONO_LOG_LEVEL",""]),monoSetEnv(["MONO_LOG_MASK",""]));
        config=self.config;
        vfs_prefix=config.vfs_prefix;
        deploy_prefix=config.deploy_prefix;

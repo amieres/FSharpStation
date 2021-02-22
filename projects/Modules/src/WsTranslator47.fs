@@ -1,6 +1,6 @@
 #nowarn "3242"
 #nowarn "1182"
-////-d:FSharpStation1613431272838 -d:NETSTANDARD20 -d:NOFSROOTx -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
+////-d:FSharpStation1613939389406 -d:NETSTANDARD20 -d:NOFSROOTx -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls"
@@ -38,7 +38,7 @@
 //#nowarn "3242"
 //#nowarn "1182"
 /// Root namespace for all code
-//#define FSharpStation1613431272838
+//#define FSharpStation1613939389406
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -1308,7 +1308,11 @@ namespace FsRoot
     
         let saveCode projectName opts code =
             let  projOpts = fsharpChecker.Force().GetProjectOptionsFromCommandLineArgs(projectName, opts)
-            File.WriteAllText(projOpts.OtherOptions.[1], code)
+            let  fn =   projOpts.OtherOptions
+                        |> Seq.skip 1
+                        |> Seq.filter (fun o -> o.StartsWith "-" |> not)
+                        |> Seq.last
+            File.WriteAllText(fn, code)
             projOpts
     
         let parseAndCheckProject projectName opts code = 
@@ -1323,7 +1327,7 @@ namespace FsRoot
                 try 
                     FsiEvaluationSession.Create(
                         FsiEvaluationSession.GetDefaultConfiguration()
-                        , [| "C:\\fsi.exe" ; "--noninteractive" |]
+                        , [| "C:\\fsi.exe" ; "--noninteractive" ; "--quiet" |]
                         , (new StringReader(""))
                         , Console.Out, Console.Error
                         , collectible = true)
@@ -1335,8 +1339,49 @@ namespace FsRoot
             for msg in msgs do
                 eprintfn "%A" msg 
             match res with
-            | Choice1Of2 _ -> ()
-            | Choice2Of2 e -> eprintfn "%A" e
+            | Choice1Of2 None    ->  ()
+            | Choice2Of2 e       -> eprintfn "%A" e
+            | Choice1Of2(Some v) ->  
+            match v.ReflectionValue with
+            | null               ->  ()
+            | rv                 ->  printfn "%A" rv
+    
+        let evaluateWithPresence code id ver =
+            let res, msgs = evaluator.Force().EvalInteractionNonThrowing (sprintf "%s\nCodePresence.add \"%s\" \"%s\"" code id ver)
+            for msg in msgs do
+                eprintfn "%A" msg 
+            match res with
+            | Choice1Of2 None    ->  ()
+            | Choice2Of2 e       -> eprintfn "%A" e
+            | Choice1Of2(Some v) ->  
+            match v.ReflectionValue with
+            | null               ->  ()
+            | rv                 ->  printfn "%A" rv
+    
+        let installPresence () =
+            """
+    module CodePresence =
+        let mutable present : Map<string, string>  = Map.empty
+        let get (ids:string[]) = ids |> Array.choose (fun k -> present |> Map.tryFind k |> Option.map (fun v -> k,v))
+        let add (k:string) (v:string) = present <- present |> Map.add k v 
+            """
+            |> evaluator.Force().EvalInteractionNonThrowing
+            |> ignore
+    
+        let getPresences(presIds:string[]) : (string * string) [] =
+            let code =
+                presIds
+                |> Seq.map (sprintf "\"%s\"")
+                |> String.concat "; "
+                |> sprintf "CodePresence.get [| %s |]"
+            let res, msgs = evaluator.Force().EvalInteractionNonThrowing code
+            match res with
+            | Choice1Of2 None    -> installPresence (); [||]
+            | Choice2Of2 e       -> installPresence (); [||]
+            | Choice1Of2(Some v) ->  
+            match v.ReflectionValue with
+            | null               -> installPresence (); [||]
+            | rv                 -> rv :?> (string * string) []
     
         let checkMemoryFile() = // it does not work on mono, it is going to be excluded should return Nulls
             try
@@ -1627,3 +1672,15 @@ namespace FsRoot
             let evaluateRpc(code:string) = async {
                 evaluate code
             }
+    
+            [< Remote >]
+            let evaluateWithPresenceRpc(code:string) id ver = async {
+                evaluateWithPresence code id ver
+            }
+    
+            [< Remote >]
+            let getPresencesRpc ps = async {
+                return getPresences ps
+            }
+    
+    

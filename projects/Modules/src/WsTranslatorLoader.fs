@@ -1,6 +1,6 @@
 #nowarn "3242"
 #nowarn "52"
-////-d:FSharpStation1613431272838 -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
+////-d:FSharpStation1613939389406 -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461"
@@ -29,7 +29,7 @@
 //#nowarn "3242"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1613431272838
+//#define FSharpStation1613939389406
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -576,6 +576,9 @@ namespace FsRoot
                                     if debug then
                                         monoSetEnv("MONO_LOG_LEVEL", "debug")  
                                         monoSetEnv("MONO_LOG_MASK" , "all"  )
+                                    else
+                                        monoSetEnv("MONO_LOG_LEVEL", "")  
+                                        monoSetEnv("MONO_LOG_MASK" , ""  )
                                     let config = JS.Inline("$global.config")
                                     MONO.mono_load_runtime_and_bcl(
                                             config?vfs_prefix,
