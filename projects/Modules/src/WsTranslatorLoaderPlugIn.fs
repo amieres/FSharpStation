@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:DLL -d:FSharpStation1613431272838 -d:WEBSHARPER -d:WEBSHARPER47
+////-d:DLL -d:FSharpStation1614641116564 -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461"
@@ -22,11 +22,11 @@
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/LayoutEngine/bin/LayoutEngine.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/LayoutEngine/bin/LayoutEngine47.dll"
 //#r @"D:\Abe\CIPHERWorkspace\FSharpStation/projects/Modules/bin/WsTranslatorLoader.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1613431272838
+//#define FSharpStation1614641116564
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -128,7 +128,7 @@ namespace FsRoot
         //#define WEBSHARPER 
         [< JavaScript ; AutoOpen >]
         module LibraryJS =
-            //#r "D:\Abe\CIPHERWorkspace\FSharpStation/projects/LayoutEngine/bin/LayoutEngine.dll"
+            //#r "D:\Abe\CIPHERWorkspace\FSharpStation/projects/LayoutEngine/bin/LayoutEngine47.dll"
             //#r "D:\Abe\CIPHERWorkspace\FSharpStation/projects/Modules/bin/WsTranslatorLoader.dll"
             
             //#define DLL
@@ -145,12 +145,30 @@ namespace FsRoot
                         (lm.TryFindByKeyAsView ch |> View.Map (Option.map(fun (_,(txt,_)) -> txt) >> Option.defaultValue "") )
                         (fun txt -> WsTranslatorLoader.UI.setChannel ch txt)
             
+                let ifThen cond actN = if unbox cond = "1" then AF.callFunction () () (unbox actN)
+                    //AF.depWithExtracts <| fun (extractAts, extractDoc, extractText) cond actN ->
+                    //    AF.getParmRef (unbox actN)
+                    //    ||> AF.tryGetAct 
+                    //    |> Option.iter(fun a -> 
+                    //        async {
+                    //            let! d = extractText (unbox cond) |> View.GetAsync
+                    //            let  c = ParseO.parseIntO d |> Option.defaultValue 0
+                    //            if c <> 0 then
+                    //                AF.callFunction () () a.actFunction
+                    //        } |> Async.Start
+                    //    )
+            
+            
+            
                 let plugInAdded =
                     AF.plugin {
                         plgName   "WsTranslatorPlugIn"
             
                         plgView   "Status"                      statusW
-                        plgView   "DebugMode"                   (WsTranslatorLoader.UI.debugV.View.Map string)
+                        plgView   "DebugMode"                  (WsTranslatorLoader.UI.debugV.View.Map string)
+                        plgView   "presences"                   WsTranslatorLoader.UI.presencesW 
+                        plgView   "errorsJson"                  WsTranslatorLoader.UI.fileErrorsW
+                        plgView   "editorResp"                  WsTranslatorLoader.UI.editorRespW
             
                         plgVar    "JS"                          WsTranslatorLoader.UI.jsV
                         plgVar    "WasmPath"                    WsTranslatorLoader.UI.wasmPathTV
@@ -161,6 +179,9 @@ namespace FsRoot
                         plgVar    "stderr"                     (WsTranslatorLoader.UI.detailsV |> lensChannelV "stderr"  )
                         plgVar    "Timings"                    (WsTranslatorLoader.UI.detailsV |> lensChannelV "Timings" )
                         plgVar    "WASM"                       (WsTranslatorLoader.UI.detailsV |> lensChannelV "WASM"    )
+                        plgVar    "getPresences"                WsTranslatorLoader.UI.getPresencesV
+                        plgVar    "fileName"                    WsTranslatorLoader.UI.fileNameV
+                        plgVar    "editorCmd"                   WsTranslatorLoader.UI.editorCmdV
             
                         plgAct    "LoadAsWorker"                WsTranslatorLoader.UI.actLoadAsWorker
                         plgAct    "TerminateWorker"             WsTranslatorLoader.UI.actTerminateWorker
@@ -174,6 +195,8 @@ namespace FsRoot
                         plgAct    "Dir"              (fun () -> WsTranslatorLoader.UI.actDir       () |> Async.Start)
                         plgAct    "EvalJS"           (fun () -> WsTranslatorLoader.UI.actEvalJS    () |> Async.Start)
                         plgAct    "EvalFS"           (fun () -> WsTranslatorLoader.UI.actEvalFS    () |> Async.Start)
+            
+                        plgAct2    "ifThen"                     ifThen "Cond" "Action"
                         
                         plgDoc0   "Tabs"                        WsTranslatorLoader.UI.tabsDoc
                         plgDoc0   "Details"                     WsTranslatorLoader.UI.detailsDoc

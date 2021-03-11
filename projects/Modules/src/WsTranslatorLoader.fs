@@ -1,6 +1,6 @@
 #nowarn "3242"
 #nowarn "52"
-////-d:FSharpStation1613939389406 -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
+////-d:FSharpStation1614641116564 -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461"
@@ -29,7 +29,7 @@
 //#nowarn "3242"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1613939389406
+//#define FSharpStation1614641116564
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -154,6 +154,75 @@ namespace FsRoot
                 | __             -> printfn "%A" v
             
             //#define TEE
+            [< AutoOpen >]
+            module Monads =
+                module Seq =    
+                    let rtn = Seq.singleton
+                    let insertO  vSO              = vSO |> Option.map(Seq.map Some) |> Option.defaultWith(fun () -> rtn None)
+                    let insertR (vSR:Result<_,_>) = vSR |> function | Error m -> rtn (Error m) | Ok v -> Seq.map Ok v
+                    let absorbO  vOS              = vOS |> Seq.choose id
+                    let absorbR  vOS              = vOS |> Seq.choose (function Ok v -> Some v |_-> None)
+                    let ofOption vO = 
+                        match vO with
+                        | Some v -> Seq.singleton v
+                        | None   -> Seq.empty    
+                
+                    type SplitByOption = Exclude | IncludeFirst | IncludeSecond
+                
+                    let splitBy (f: 'a -> bool) opt (s: 'a seq) = //: 'a seq seq =
+                        (0, s)
+                        ||> Seq.mapFold(fun i a -> 
+                            match f a with
+                            | false         -> Some(a, i    ), i
+                            | true          ->
+                            (match opt with
+                            | Exclude       -> None          
+                            | IncludeFirst  -> Some(a, i    )
+                            | IncludeSecond -> Some(a, i + 1) 
+                            ), i + 1
+                        )
+                        |> fst
+                        |> Seq.choose   id
+                        |> Seq.groupBy snd
+                        |> Seq.map    (snd >> Seq.map fst)
+                
+                /// Extensions to Async
+                module Async =
+                    let [< Inline >] inline rtn   v    = async.Return v
+                    let [< Inline >] inline bind  f vA = async.Bind(  vA, f)
+                    let [< Inline >] inline map   f    = bind (f >> rtn)
+                    /// Executes f Synchronously
+                    [< Inline "throw 'iterS cannot be used in JavaScript!'" >] 
+                    let inline iterS (f: 'a->unit) = map f >> Async.RunSynchronously
+                    /// Executes f Asynchronously
+                    let [< Inline >] inline iterA f             = map f >> Async.Start
+                    let apply fA vA = async {
+                        let! fChild = Async.StartChild fA
+                        let! vChild = Async.StartChild vA
+                        let! f = fChild
+                        let! v = vChild 
+                        return f v 
+                    }
+                    let sleepThen f milliseconds = async {
+                        do! Async.Sleep milliseconds
+                        return f()
+                    }
+                    let (>>=)                              v f = bind f v
+                    let traverseSeq             f           sq = let folder head tail = f head >>= (fun h -> tail >>= (fun t -> List.Cons(h,t) |> rtn))
+                                                                 Array.foldBack folder (Seq.toArray sq) (rtn List.empty) |> map Seq.ofList
+                    let inline sequenceSeq                  sq = traverseSeq id sq
+                    [< Inline "throw 'traverseSeqS cannot be used in JavaScript!'" >]
+                    let traverseSeqS (f: 't->Async<_>) (t: 't seq) = async {
+                                                                 let! ct = Async.CancellationToken
+                                                                 return seq {
+                                                                     use enum = t.GetEnumerator ()
+                                                                     while enum.MoveNext() do
+                                                                         yield Async.RunSynchronously (f enum.Current, cancellationToken = ct) }}
+                    let inline sequenceSeqS          sq = traverseSeqS id sq
+                    let insertO  vAO                           = vAO |> Option.map(map Some) |> Option.defaultWith(fun () -> rtn None)
+                    let insertR (vAR:Result<_,_>)              = vAR |> function | Error m -> rtn (Error m) | Ok v -> map Ok v
+                
+                
             type System.String with
                 member this.Substring2(from, n) = 
                     if   n    <= 0           then ""
@@ -227,13 +296,13 @@ namespace FsRoot
             
             
                 /// Javascript adds time zone information when parsing a date and that can change the result
-                let parseDateO2  = (fun s -> s + "T00:00:00") >> tryParseWith System.DateTime.TryParse
-                let parseDateO   = tryParseWith System.DateTime.TryParse
-                let parseIntO    = tryParseWith System.Int32   .TryParse
-                let parseInt64O  = tryParseWith System.Int64   .TryParse
-                let parseSingleO = tryParseWith System.Single  .TryParse
-                let parseDoubleO = tryParseWith System.Double  .TryParse
-                let parseGuidO   = tryParseWith System.Guid    .TryParse
+                let parseDateO2  : string -> _ = (fun s -> s + "T00:00:00") >> tryParseWith System.DateTime.TryParse
+                let parseDateO   : string -> _ = tryParseWith System.DateTime.TryParse
+                let parseIntO    : string -> _ = tryParseWith System.Int32   .TryParse
+                let parseInt64O  : string -> _ = tryParseWith System.Int64   .TryParse
+                let parseSingleO : string -> _ = tryParseWith System.Single  .TryParse
+                let parseDoubleO : string -> _ = tryParseWith System.Double  .TryParse
+                let parseGuidO   : string -> _ = tryParseWith System.Guid    .TryParse
                 // etc.
                 
                 // active patterns for try-parsing strings
@@ -579,6 +648,7 @@ namespace FsRoot
                                     else
                                         monoSetEnv("MONO_LOG_LEVEL", "")  
                                         monoSetEnv("MONO_LOG_MASK" , ""  )
+                                    monoSetEnv("PATH" , "/dlls/;/managed/"  )
                                     let config = JS.Inline("$global.config")
                                     MONO.mono_load_runtime_and_bcl(
                                             config?vfs_prefix,
@@ -661,14 +731,16 @@ namespace FsRoot
                         )
             
                 module UI =
-                    let detailsV    = ListModel.Create fst ([||] : (string * (string * bool) ) [])
-                    let debugV      = Var.Create false
-                    let wasmPathV   = Var.Create <| WasmPath "/WASM/v47/Interp/"
-                    let wasmPathTV  = (wasmPathV.Lens (fun (WasmPath v) -> v) (fun _ -> WasmPath) )
-                    let commandV    = Var.Create "/tmp/bin.exe 1 2 10 20 30 40"
-                    let jsV         = Var.Create ""
-                    let curChannel  = Var.Create "WASM"
-                    let codeV       = Var.Create """
+                    let detailsV      = ListModel.Create fst ([||] : (string * (string * bool) ) [])
+                    let debugV        = Var.Create false
+                    let wasmPathV     = Var.Create <| WasmPath "/WASM/v47/Interp/"
+                    let wasmPathTV    = (wasmPathV.Lens (fun (WasmPath v) -> v) (fun _ -> WasmPath) )
+                    let commandV      = Var.Create "/tmp/bin.exe 1 2 10 20 30 40"
+                    let jsV           = Var.Create ""
+                    let getPresencesV = Var.Create ""
+                    let curChannel    = Var.Create "WASM"
+                    let errorsV       = Var.Create [||]
+                    let codeV         = Var.Create """
             //#nowarn "52"
             
             let tryParseWith tryParseFunc : string -> _  = tryParseFunc >> function
@@ -718,6 +790,7 @@ namespace FsRoot
                                             -r:/dlls/WebSharper.Core.dll
                                             -r:/dlls/WebSharper.Main.dll
                                             -r:/dlls/WebSharper.UI.dll
+                                            -r:/dlls/WebSharper.JavaScript.dll
                                             -r:/dlls/WebSharper.Sitelets.dll
                                             -r:/managed/FSharp.Core.dll
                                             -r:/managed/mscorlib.dll
@@ -787,40 +860,76 @@ namespace FsRoot
                             ]
                         )
             
-                    let addErrors errs =
+                    let setErrors (errs:WsTranslator.FileAnnotation []) =
+                        errorsV.Set errs
                         errs 
-                        |> Seq.map (sprintf "%A")
-                        |> String.concat "\n"
-                        |> addChannel "stderr"
+                        |> Seq.map (fun e -> 
+                                        sprintf "%A(%d,%d)-(%d,%d) %A %s." 
+                                            e.fileName
+                                            e.annotation.startP.line e.annotation.startP.col
+                                            e.annotation.endP  .line e.annotation.endP  .col
+                                            e.annotation.severity
+                                            e.annotation.message
+                                    )
+                        |> Seq.iter (eprintfn "%s")
             
                     let parseAndCheckProject(projectName, opts, code)  = async {
                         let! errs, deps, crit = WsTranslator.Rpc.parseAndCheckProjectRpc projectName opts code
-                        addErrors errs 
+                        setErrors errs 
                         printfn "%A" (crit, deps)
                     }
             
                     let compileProject(projectName, opts, code)  = async {
                         let! errs, res = WsTranslator.Rpc.compileProjectRpc projectName opts code
-                        addErrors errs 
-                        printfn "Compilation Result = %d" res
+                        setErrors errs 
+                        if res = 0 then
+                            printfn "Compiled!"
+                        else
+                            printfn "Compilatin failed!"
                     }
             
             //        open FShUI_AssemblyData
             
+                    let editorCmdV  = Var.Create ""
+            
+                    let (|Coords|_|) (cmd:string) (inp:string) = 
+                        match inp.Split [| ' ' |] with
+                        | [| cm ; ParseO.Int line; ParseO.Int col |] when cm = cmd -> Some({ GenEditor.Position.line = line ; GenEditor.Position.col = col })
+                        |_-> None
+                            
+                    let editorRespW =
+                        editorCmdV.View.MapAsync(fun inp -> async {
+                            match inp with
+                            | Coords "declaration"    pos -> 
+                                                            return Some(pos, "definition") |> Json.Serialize
+                            | Coords "tooltip"        pos -> 
+                                                            let! tipO   = WsTranslator.Rpc.getTooltip <||| getParms() <| pos
+                                                            return tipO |> Option.defaultValue "" |> Json.Serialize
+                            | Coords "autocompletion" pos -> 
+                                                            let! compls = WsTranslator.Rpc.getAutoCompletion <||| getParms() <| pos
+                                                            return Json.Serialize compls
+                            | _-> return ""
+                        }
+                        )
+            
                     let translateToJs(projectName, opts, code)  = async {
                         let! fsErrs, wsO = WsTranslator.Rpc.translateFsToJsRpc projectName opts code
-                        addErrors fsErrs
                         match wsO with
-                        | Some (asmO, errs, wrns) -> 
+                        | Some (asmO, errs) -> 
                             match asmO with
                             | Some asm -> jsV.Set asm ; "Translated!"
                             | None     -> "No translation"
                             |> printfn "%s"
-                            addErrors errs
-                            addErrors wrns
+                            Array.append fsErrs errs
+                            |> setErrors
                         | None -> 
-                            clean()
+                            setErrors fsErrs
                             jsV     .Set ""
+                    }
+            
+                    let evaulateFS code = async {
+                        let! msgs = WsTranslator.Rpc.evaluateRpc code
+                        setErrors msgs
                     }
             
                     let actLoadAsWorker     () = WasmLoad.loadWasmInWorker wasmPathV.Value debugV.Value optsV.Value
@@ -831,11 +940,21 @@ namespace FsRoot
                     let actCheck            () =  parseAndCheckProject        (getParms()) 
                     let actCompile          () =  compileProject              (getParms()) 
                     let actRun              () =  async { try do! WsTranslator.Rpc.runRpc    commandV.Value with e -> eprintfn "%A" e }
-                    let actEvalFS           () =  WsTranslator.Rpc.evaluateRpc codeV.Value
+                    let actEvalFS           () =  evaulateFS                   codeV.Value
                     let actEvalJS           () =  async { try do!              Rpc.evalJSRpc jsV     .Value with e -> eprintfn "%A" e } 
                                                     |> Log.TimeItAsync "Eval JS"
                     let actTranslate        () =  translateToJs               (getParms()) 
                     let actDir              () =  WsTranslator.Rpc.dirRpc     "/"                    
+            
+                    let presencesW = getPresencesV.View.MapAsync WsTranslator.Rpc.getPresencesRpc
+            
+                    let fileNameV      = Var.Create ""
+                    let fileErrorsW    = (errorsV.View, fileNameV.View) 
+                                            ||> View.Map2 (fun ers fn -> 
+                                                ers
+                                                |> Array.choose (fun e -> if e.fileName = fn then Some e.annotation else None )
+                                                |> Json.Serialize
+                                            )
             
                     let tabsDoc() =
                         detailsV.Doc(fun ch textW -> 

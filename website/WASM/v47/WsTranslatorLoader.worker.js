@@ -317,11 +317,12 @@
   }
 }(self));
 ;
+var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n:n}function f(n){return o.lastIndex=0,o.test(n)?'"'+n.replace(o,function(n){var t=s[n];return typeof t=="string"?t:"\\u"+("0000"+n.charCodeAt(0).toString(16)).slice(-4)})+'"':'"'+n+'"'}function r(i,e){var s,l,h,a,v=n,c,o=e[i];o&&typeof o=="object"&&typeof o.toJSON=="function"&&(o=o.toJSON(i)),typeof t=="function"&&(o=t.call(e,i,o));switch(typeof o){case"string":return f(o);case"number":return isFinite(o)?String(o):"null";case"boolean":case"null":return String(o);case"object":if(!o)return"null";if(n+=u,c=[],Object.prototype.toString.apply(o)==="[object Array]"){for(a=o.length,s=0;s<a;s+=1)c[s]=r(s,o)||"null";return h=c.length===0?"[]":n?"[\n"+n+c.join(",\n"+n)+"\n"+v+"]":"["+c.join(",")+"]",n=v,h}if(t&&typeof t=="object")for(a=t.length,s=0;s<a;s+=1)typeof t[s]=="string"&&(l=t[s],h=r(l,o),h&&c.push(f(l)+(n?": ":":")+h));else for(l in o)Object.prototype.hasOwnProperty.call(o,l)&&(h=r(l,o),h&&c.push(f(l)+(n?": ":":")+h));return h=c.length===0?"{}":n?"{\n"+n+c.join(",\n"+n)+"\n"+v+"}":"{"+c.join(",")+"}",n=v,h}}typeof Date.prototype.toJSON!="function"&&(Date.prototype.toJSON=function(){return isFinite(this.valueOf())?this.getUTCFullYear()+"-"+i(this.getUTCMonth()+1)+"-"+i(this.getUTCDate())+"T"+i(this.getUTCHours())+":"+i(this.getUTCMinutes())+":"+i(this.getUTCSeconds())+"Z":null},String.prototype.toJSON=Number.prototype.toJSON=Boolean.prototype.toJSON=function(){return this.valueOf()});var e=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,o=/[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,n,u,s={"\b":"\\b","\t":"\\t","\n":"\\n","\f":"\\f","\r":"\\r",'"':'\\"',"\\":"\\\\"},t;typeof JSON.stringify!="function"&&(JSON.stringify=function(i,f,e){var o;if(n="",u="",typeof e=="number")for(o=0;o<e;o+=1)u+=" ";else typeof e=="string"&&(u=e);if(t=f,f&&typeof f!="function"&&(typeof f!="object"||typeof f.length!="number"))throw new Error("JSON.stringify");return r("",{"":i})}),typeof JSON.parse!="function"&&(JSON.parse=function(n,t){function r(n,i){var f,e,u=n[i];if(u&&typeof u=="object")for(f in u)Object.prototype.hasOwnProperty.call(u,f)&&(e=r(u,f),e!==undefined?u[f]=e:delete u[f]);return t.call(n,i,u)}var i;if(n=String(n),e.lastIndex=0,e.test(n)&&(n=n.replace(e,function(n){return"\\u"+("0000"+n.charCodeAt(0).toString(16)).slice(-4)})),/^[\],:{}\s]*$/.test(n.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,"@").replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,"]").replace(/(?:^|:|,)(?:\s*\[)+/g,"")))return i=eval("("+n+")"),typeof t=="function"?r({"":i},""):i;throw new SyntaxError("JSON.parse");})}();;
 importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js"]);
 (function(Global)
 {
  "use strict";
- var WebSharper,Operators,Obj,UI,Var,FsRoot,LibraryJS,WsTranslatorLoader,View,EventTarget,WindowOrWorkerGlobalScope,WorkerGlobalScope,WWorker,WasmLoad,Dependency,Remoting,IMessagingO,SC$1,Snap,Concurrency,Arrays,Event,WasmStatus,Utils,JavaScript,JS,Pervasives,Unchecked,Library,String,Strings,Slice,ParseO,Numeric,System,Guid,Var$1,Remoting$1,Collections,Dictionary,ListModel,UI$1,Seq,Dependency$1,Log,CustomXhrProvider,Require,WsTranslator,Pojo,XMLHttpRequestEventTarget,ArrayBufferView,List,DateUtil,ConcreteVar,SC$2,DictionaryUtil,ReturnQueue,Storage,Enumerator,T,SC$3,Scheduler,AsyncBody,SC$4,Object,CT,T$1,Abbrev,Fresh,XhrProvider,ArrayStorage,Error,OperationCanceledException,CancellationTokenSource,HashSet,FormatException,SC$5,HashSetUtil,Queue,IntelliFactory,Runtime,console,Date;
+ var WebSharper,Operators,Obj,UI,Var,FsRoot,LibraryJS,WsTranslatorLoader,View,EventTarget,WindowOrWorkerGlobalScope,WorkerGlobalScope,WWorker,WasmLoad,Dependency,Remoting,IMessagingO,SC$1,Snap,Concurrency,Arrays,Event,WasmStatus,Utils,JavaScript,JS,Pervasives,Unchecked,Seq,Library,String,Strings,Slice,ParseO,Numeric,System,Guid,Var$1,Remoting$1,Collections,Dictionary,ListModel,UI$1,Dependency$1,Log,GenEditor,Position,Json,WsTranslatorLoader_JsonEncoder,AjaxRemotingProvider,ClientSideJson,Provider,CustomXhrProvider,Require,WsTranslator,Pojo,XMLHttpRequestEventTarget,ArrayBufferView,List,DateUtil,ConcreteVar,SC$2,DictionaryUtil,ReturnQueue,Storage,Enumerator,T,SC$3,Object,Scheduler,AsyncBody,SC$4,CT,T$1,Abbrev,Fresh,XhrProvider,ArrayStorage,Error,OperationCanceledException,CancellationTokenSource,HashSet,Async,FormatException,SC$5,Queue,HashSetUtil,IntelliFactory,Runtime,console,JSON,Date;
  WebSharper=Global.WebSharper=Global.WebSharper||{};
  Operators=WebSharper.Operators=WebSharper.Operators||{};
  Obj=WebSharper.Obj=WebSharper.Obj||{};
@@ -350,6 +351,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  JS=JavaScript.JS=JavaScript.JS||{};
  Pervasives=JavaScript.Pervasives=JavaScript.Pervasives||{};
  Unchecked=WebSharper.Unchecked=WebSharper.Unchecked||{};
+ Seq=WebSharper.Seq=WebSharper.Seq||{};
  Library=FsRoot.Library=FsRoot.Library||{};
  String=Library.String=Library.String||{};
  Strings=WebSharper.Strings=WebSharper.Strings||{};
@@ -364,9 +366,15 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  Dictionary=Collections.Dictionary=Collections.Dictionary||{};
  ListModel=UI.ListModel=UI.ListModel||{};
  UI$1=WsTranslatorLoader.UI=WsTranslatorLoader.UI||{};
- Seq=WebSharper.Seq=WebSharper.Seq||{};
  Dependency$1=Library.Dependency=Library.Dependency||{};
  Log=Library.Log=Library.Log||{};
+ GenEditor=LibraryJS.GenEditor=LibraryJS.GenEditor||{};
+ Position=GenEditor.Position=GenEditor.Position||{};
+ Json=WebSharper.Json=WebSharper.Json||{};
+ WsTranslatorLoader_JsonEncoder=Global.WsTranslatorLoader_JsonEncoder=Global.WsTranslatorLoader_JsonEncoder||{};
+ AjaxRemotingProvider=Remoting$1.AjaxRemotingProvider=Remoting$1.AjaxRemotingProvider||{};
+ ClientSideJson=WebSharper.ClientSideJson=WebSharper.ClientSideJson||{};
+ Provider=ClientSideJson.Provider=ClientSideJson.Provider||{};
  CustomXhrProvider=Remoting.CustomXhrProvider=Remoting.CustomXhrProvider||{};
  Require=WasmLoad.Require=WasmLoad.Require||{};
  WsTranslator=FsRoot.WsTranslator=FsRoot.WsTranslator||{};
@@ -383,10 +391,10 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  Enumerator=WebSharper.Enumerator=WebSharper.Enumerator||{};
  T=Enumerator.T=Enumerator.T||{};
  SC$3=Global.StartupCode$WsTranslator47$WsTranslator47=Global.StartupCode$WsTranslator47$WsTranslator47||{};
+ Object=Global.Object;
  Scheduler=Concurrency.Scheduler=Concurrency.Scheduler||{};
  AsyncBody=Concurrency.AsyncBody=Concurrency.AsyncBody||{};
  SC$4=Global.StartupCode$WebSharper_Main$Concurrency=Global.StartupCode$WebSharper_Main$Concurrency||{};
- Object=Global.Object;
  CT=Concurrency.CT=Concurrency.CT||{};
  T$1=List.T=List.T||{};
  Abbrev=UI.Abbrev=UI.Abbrev||{};
@@ -397,13 +405,15 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  OperationCanceledException=WebSharper.OperationCanceledException=WebSharper.OperationCanceledException||{};
  CancellationTokenSource=WebSharper.CancellationTokenSource=WebSharper.CancellationTokenSource||{};
  HashSet=Collections.HashSet=Collections.HashSet||{};
+ Async=Abbrev.Async=Abbrev.Async||{};
  FormatException=WebSharper.FormatException=WebSharper.FormatException||{};
  SC$5=Global.StartupCode$WebSharper_UI$Abbrev=Global.StartupCode$WebSharper_UI$Abbrev||{};
- HashSetUtil=Collections.HashSetUtil=Collections.HashSetUtil||{};
  Queue=WebSharper.Queue=WebSharper.Queue||{};
+ HashSetUtil=Collections.HashSetUtil=Collections.HashSetUtil||{};
  IntelliFactory=Global.IntelliFactory;
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
  console=Global.console;
+ JSON=Global.JSON;
  Date=Global.Date;
  Operators.FailWith=function(msg)
  {
@@ -464,11 +474,18 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   }
   Concurrency.scheduler().Fork(loop);
  };
- View.Map=function(fn,a$1)
+ View.Map2=function(fn,a$1,a$2)
  {
   return View.CreateLazy(function()
   {
-   return Snap.Map(fn,a$1());
+   return Snap.Map2(fn,a$1(),a$2());
+  });
+ };
+ View.MapAsync=function(fn,a$1)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.MapAsync(fn,a$1());
   });
  };
  View.CreateLazy=function(observe)
@@ -487,6 +504,13 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
     lv.c=null;
    }),c):c;
   };
+ };
+ View.Map=function(fn,a$1)
+ {
+  return View.CreateLazy(function()
+  {
+   return Snap.Map(fn,a$1());
+  });
  };
  WWorker.receiveMessage=function(loadInThisThread,evt)
  {
@@ -568,6 +592,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
         o(t[0],t[1]);
        });
        debug?(monoSetEnv(["MONO_LOG_LEVEL","debug"]),monoSetEnv(["MONO_LOG_MASK","all"])):(monoSetEnv(["MONO_LOG_LEVEL",""]),monoSetEnv(["MONO_LOG_MASK",""]));
+       monoSetEnv(["PATH","/dlls/;/managed/"]);
        config=self.config;
        vfs_prefix=config.vfs_prefix;
        deploy_prefix=config.deploy_prefix;
@@ -860,6 +885,10 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   o=ReturnQueue.tryGet(md);
   o==null?void 0:($1=o.$0,$1[0],$1[1](e));
  };
+ Remoting.getHeaderRpc=function(headers)
+ {
+  return headers["x-websharper-rpc"];
+ };
  IMessagingO.New=function(evalJS,runRpc,returnValue,returnExn,wprintfn)
  {
   return{
@@ -872,7 +901,7 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  };
  SC$1.$cctor=function()
  {
-  var f,g,i;
+  var f,g,i,$1,$2;
   SC$1.$cctor=Global.ignore;
   function g$1(s)
   {
@@ -884,13 +913,13 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   }
   function g$2(s)
   {
-   var a$1,b;
+   var a$2,b;
    return Slice.array(s,{
     $:1,
     $0:0
    },{
     $:1,
-    $0:(a$1=0,(b=Arrays.length(s)-2,Unchecked.Compare(a$1,b)===1?a$1:b))
+    $0:(a$2=0,(b=Arrays.length(s)-2,Unchecked.Compare(a$2,b)===1?a$2:b))
    });
   }
   function g$3(s)
@@ -907,6 +936,22 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    UI$1.addChannel(ch,txt);
    return ch==="stderr"?UI$1.addChannel("stdout",txt):null;
   }
+  function a$1(ers,fn)
+  {
+   var a$2;
+   a$2=Arrays.choose(function(e)
+   {
+    return e.fileName===fn?{
+     $:1,
+     $0:e.annotation
+    }:null;
+   },ers);
+   return JSON.stringify(((Provider.EncodeArray(WsTranslatorLoader_JsonEncoder.j$3))())(a$2));
+  }
+  SC$1.rtn=function(v)
+  {
+   return[v];
+  };
   SC$1.unindentStr=function(x)
   {
    return g$1(String.unindent(x));
@@ -918,26 +963,26 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   {
    return g$3(f(x));
   });
-  SC$1.parseDateO2=(g=ParseO.tryParseWith(function(a$1)
+  SC$1.parseDateO2=(g=ParseO.tryParseWith(function(a$2)
   {
    var o,m;
    o=0;
-   return[(m=DateUtil.TryParse(a$1),m!=null&&m.$==1&&(o=m.$0,true)),o];
+   return[(m=DateUtil.TryParse(a$2),m!=null&&m.$==1&&(o=m.$0,true)),o];
   }),function(x)
   {
    return g(f$2(x));
   });
-  SC$1.parseDateO=ParseO.tryParseWith(function(a$1)
+  SC$1.parseDateO=ParseO.tryParseWith(function(a$2)
   {
    var o,m;
    o=0;
-   return[(m=DateUtil.TryParse(a$1),m!=null&&m.$==1&&(o=m.$0,true)),o];
+   return[(m=DateUtil.TryParse(a$2),m!=null&&m.$==1&&(o=m.$0,true)),o];
   });
-  SC$1.parseIntO=ParseO.tryParseWith(function(a$1)
+  SC$1.parseIntO=ParseO.tryParseWith(function(a$2)
   {
    var o;
    o=0;
-   return[Numeric.TryParseInt32(a$1,{
+   return[Numeric.TryParseInt32(a$2,{
     get:function()
     {
      return o;
@@ -948,11 +993,11 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
     }
    }),o];
   });
-  SC$1.parseInt64O=ParseO.tryParseWith(function(a$1)
+  SC$1.parseInt64O=ParseO.tryParseWith(function(a$2)
   {
    var o;
    o=0;
-   return[Numeric.TryParseInt64(a$1,{
+   return[Numeric.TryParseInt64(a$2,{
     get:function()
     {
      return o;
@@ -963,23 +1008,23 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
     }
    }),o];
   });
-  SC$1.parseSingleO=ParseO.tryParseWith(function(a$1)
+  SC$1.parseSingleO=ParseO.tryParseWith(function(a$2)
   {
-   var o,$1;
+   var o,$3;
    o=0;
-   return[($1=Global.Number(a$1),Global.isNaN($1)?false:(o=$1,true)),o];
+   return[($3=Global.Number(a$2),Global.isNaN($3)?false:(o=$3,true)),o];
   });
-  SC$1.parseDoubleO=ParseO.tryParseWith(function(a$1)
+  SC$1.parseDoubleO=ParseO.tryParseWith(function(a$2)
   {
-   var o,$1;
+   var o,$3;
    o=0;
-   return[($1=Global.Number(a$1),Global.isNaN($1)?false:(o=$1,true)),o];
+   return[($3=Global.Number(a$2),Global.isNaN($3)?false:(o=$3,true)),o];
   });
-  SC$1.parseGuidO=ParseO.tryParseWith(function(a$1)
+  SC$1.parseGuidO=ParseO.tryParseWith(function(a$2)
   {
    var o;
    o=null;
-   return[Guid.TryParse(a$1,{
+   return[Guid.TryParse(a$2,{
     get:function()
     {
      return o;
@@ -1019,9 +1064,9 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   {
    return function(txt)
    {
-    return(((Runtime.Curried3(function($1,$2,$3)
+    return(((Runtime.Curried3(function($3,$4,$5)
     {
-     return $1("EARLY PRINTING! "+Utils.toSafe($2)+":: "+Utils.toSafe($3));
+     return $3("EARLY PRINTING! "+Utils.toSafe($4)+":: "+Utils.toSafe($5));
     }))(function(s)
     {
      console.log(s);
@@ -1058,37 +1103,66 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    $:0,
    $0:"/WASM/v47/Interp/"
   });
-  SC$1.wasmPathTV=Var$1.Lens(UI$1.wasmPathV(),function(a$1)
+  SC$1.wasmPathTV=Var$1.Lens(UI$1.wasmPathV(),function(a$2)
   {
-   return a$1.$0;
-  },function(a$1,a$2)
+   return a$2.$0;
+  },function(a$2,a$3)
   {
    return{
     $:0,
-    $0:a$2
+    $0:a$3
    };
   });
   SC$1.commandV=Var$1.Create$1("/tmp/bin.exe 1 2 10 20 30 40");
   SC$1.jsV=Var$1.Create$1("");
+  SC$1.getPresencesV=Var$1.Create$1("");
   SC$1.curChannel=Var$1.Create$1("WASM");
+  SC$1.errorsV=Var$1.Create$1([]);
   SC$1.codeV=Var$1.Create$1("\r\n            //#nowarn \"52\"\r\n            \r\n            let tryParseWith tryParseFunc : string -> _  = tryParseFunc >> function\r\n                    | true, v    -> Some v\r\n                    | false, _   -> None\r\n            let parseIntO = tryParseWith System.Int32   .TryParse\r\n            \r\n            let rec fibo = function\r\n                | 0 | 1 -> 1\r\n                | n -> fibo (n - 1) + fibo (n - 2)\r\n            \r\n            let printFibo n = printfn \"fibo(%d) = %i\" n (fibo n)\r\n            \r\n            let doFibos (args: string []) =\r\n                args\r\n                |> Seq.collect (fun s -> s.Split[| ' ' |])\r\n                |> Seq.choose parseIntO\r\n                |> Seq.iter   printFibo\r\n            \r\n            let nowStamp() = \r\n                let t = System.DateTime.UtcNow // in two steps to avoid Warning: The value has been copied to ensure the original is not mutated\r\n                t.ToString(\"yyyy-MM-dd HH:mm:ss.fff\", System.Globalization.CultureInfo.InvariantCulture)\r\n            \r\n            let inline TimeIt n f p =\r\n                printfn \"%s Starting %s\" (nowStamp()) n\r\n                let start = System.DateTime.UtcNow.Ticks\r\n                f p\r\n                let elapsedSpan = System.TimeSpan(System.DateTime.UtcNow.Ticks - start)\r\n                printfn \"%s Finished %s %0d:%02d:%02d.%03d\" (nowStamp()) n (int elapsedSpan.TotalHours) elapsedSpan.Minutes elapsedSpan.Seconds elapsedSpan.Milliseconds\r\n            \r\n            let [< EntryPoint >] main args =\r\n                TimeIt \"doFibos\" doFibos args\r\n                0\r\n            \r\n                    ");
-  SC$1.optsV=Var$1.Create$1(Strings.concat("\n",Seq.map(Strings.Trim,Strings.SplitChars("\r\n                                            /tmp/source.fs\r\n                                            -o:/tmp/bin.exe\r\n                                            -d:WEBSHARPER\r\n                                            --simpleresolution\r\n                                            --nowarn:3186\r\n                                            --optimize-\r\n                                            --noframework\r\n                                            --fullpaths\r\n                                            --warn:3\r\n                                            --target:exe\r\n                                            -r:/dlls/WebSharper.Core.dll\r\n                                            -r:/dlls/WebSharper.Main.dll\r\n                                            -r:/dlls/WebSharper.UI.dll\r\n                                            -r:/dlls/WebSharper.Sitelets.dll\r\n                                            -r:/managed/FSharp.Core.dll\r\n                                            -r:/managed/mscorlib.dll\r\n                                            -r:/managed/netstandard.dll\r\n                                            -r:/managed/System.dll\r\n                                            -r:/managed/System.Core.dll\r\n                                            -r:/managed/System.IO.dll\r\n                                            -r:/managed/System.Runtime.dll\r\n                                            -r:/managed/System.Net.Http.dll\r\n                                            -r:/managed/System.Threading.dll\r\n                                            -r:/managed/System.Numerics.dll\r\n                                            -r:/managed/System.Runtime.Numerics.dll\r\n                                        ",["\n"],0))));
+  SC$1.optsV=Var$1.Create$1(Strings.concat("\n",Seq.map(Strings.Trim,Strings.SplitChars("\r\n                                            /tmp/source.fs\r\n                                            -o:/tmp/bin.exe\r\n                                            -d:WEBSHARPER\r\n                                            --simpleresolution\r\n                                            --nowarn:3186\r\n                                            --optimize-\r\n                                            --noframework\r\n                                            --fullpaths\r\n                                            --warn:3\r\n                                            --target:exe\r\n                                            -r:/dlls/WebSharper.Core.dll\r\n                                            -r:/dlls/WebSharper.Main.dll\r\n                                            -r:/dlls/WebSharper.UI.dll\r\n                                            -r:/dlls/WebSharper.JavaScript.dll\r\n                                            -r:/dlls/WebSharper.Sitelets.dll\r\n                                            -r:/managed/FSharp.Core.dll\r\n                                            -r:/managed/mscorlib.dll\r\n                                            -r:/managed/netstandard.dll\r\n                                            -r:/managed/System.dll\r\n                                            -r:/managed/System.Core.dll\r\n                                            -r:/managed/System.IO.dll\r\n                                            -r:/managed/System.Runtime.dll\r\n                                            -r:/managed/System.Net.Http.dll\r\n                                            -r:/managed/System.Threading.dll\r\n                                            -r:/managed/System.Numerics.dll\r\n                                            -r:/managed/System.Runtime.Numerics.dll\r\n                                        ",["\n"],0))));
   UI$1.cleanChannel("stdout");
   UI$1.cleanChannel("stderr");
   !(!self.document)?Remoting.messaging().set_D((i=Remoting.messaging().get_D(),IMessagingO.New(function(t)
   {
    Remoting.evalJS0(t[0],t[1]);
-  },i.runRpc,i.returnValue,i.returnExn,function($1)
+  },i.runRpc,i.returnValue,i.returnExn,function($3)
   {
-   return function($2)
+   return function($4)
    {
-    return w($1,$2);
+    return w($3,$4);
    };
   }))):void 0;
   Log.printer().set_D(function(txt)
   {
    Remoting.logThis("Timings",txt);
   });
+  SC$1.editorCmdV=Var$1.Create$1("");
+  SC$1.editorRespW=View.MapAsync(function(inp)
+  {
+   var b;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    var a$2,a$3,t,a$4,t$1;
+    a$2=UI$1.Coords("declaration",inp);
+    return a$2!=null&&a$2.$==1?Concurrency.Return(JSON.stringify((WsTranslatorLoader_JsonEncoder.j())({
+     $:1,
+     $0:[a$2.$0,"definition"]
+    }))):(a$3=UI$1.Coords("tooltip",inp),a$3!=null&&a$3.$==1?Concurrency.Bind((t=UI$1.getParms(),(new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.getTooltip:996654537",[t[0],t[1],t[2],a$3.$0])),function(a$5)
+    {
+     return Concurrency.Return(JSON.stringify(((Provider.Id())())(a$5==null?"":a$5.$0)));
+    }):(a$4=UI$1.Coords("autocompletion",inp),a$4!=null&&a$4.$==1?Concurrency.Bind((t$1=UI$1.getParms(),(new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.getAutoCompletion:501996274",[t$1[0],t$1[1],t$1[2],a$4.$0])),function(a$5)
+    {
+     return Concurrency.Return(JSON.stringify(((Provider.EncodeArray(WsTranslatorLoader_JsonEncoder.j$2))())(a$5)));
+    }):Concurrency.Return("")));
+   });
+  },UI$1.editorCmdV().get_View());
+  SC$1.presencesW=View.MapAsync(function(p)
+  {
+   return(new AjaxRemotingProvider.New()).Async("WsTranslator47:FsRoot.WsTranslator+Rpc.getPresencesRpc:-1840423385",[p]);
+  },UI$1.getPresencesV().get_View());
+  SC$1.fileNameV=Var$1.Create$1("");
+  SC$1.fileErrorsW=($1=UI$1.errorsV().get_View(),($2=UI$1.fileNameV().get_View(),(((Runtime.Curried3(View.Map2))(a$1))($1))($2)));
  };
  Snap.WhenRun=function(snap,avail,obs)
  {
@@ -1096,21 +1170,46 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   m=snap.s;
   m==null?obs():m!=null&&m.$==2?(m.$1.push(obs),avail(m.$0)):m!=null&&m.$==3?(m.$0.push(avail),m.$1.push(obs)):avail(m.$0);
  };
- Snap.Map=function(fn,sn)
+ Snap.Map2=function(fn,sn1,sn2)
  {
-  var m,res;
-  m=sn.s;
-  return m!=null&&m.$==0?Snap.New({
+  var $1,$2,res;
+  function cont(a$1)
+  {
+   var m,$3,$4;
+   if(!(m=res.s,m!=null&&m.$==0||m!=null&&m.$==2))
+    {
+     $3=Snap.ValueAndForever(sn1);
+     $4=Snap.ValueAndForever(sn2);
+     $3!=null&&$3.$==1?$4!=null&&$4.$==1?$3.$0[1]&&$4.$0[1]?Snap.MarkForever(res,fn($3.$0[0],$4.$0[0])):Snap.MarkReady(res,fn($3.$0[0],$4.$0[0])):void 0:void 0;
+    }
+  }
+  $1=sn1.s;
+  $2=sn2.s;
+  return $1!=null&&$1.$==0?$2!=null&&$2.$==0?Snap.New({
    $:0,
-   $0:fn(m.$0)
-  }):(res=Snap.New({
+   $0:fn($1.$0,$2.$0)
+  }):Snap.Map2Opt1(fn,$1.$0,sn2):$2!=null&&$2.$==0?Snap.Map2Opt2(fn,$2.$0,sn1):(res=Snap.New({
    $:3,
    $0:[],
    $1:[]
-  }),(Snap.When(sn,function(a$1)
+  }),(Snap.When(sn1,cont,res),Snap.When(sn2,cont,res),res));
+ };
+ Snap.MapAsync=function(fn,snap)
+ {
+  var res;
+  res=Snap.New({
+   $:3,
+   $0:[],
+   $1:[]
+  });
+  Snap.When(snap,function(v)
   {
-   Snap.MarkDone(res,sn,fn(a$1));
-  },res),res));
+   Async.StartTo(fn(v),function(v$1)
+   {
+    Snap.MarkDone(res,snap,v$1);
+   });
+  },res);
+  return res;
  };
  Snap.WhenObsoleteRun=function(snap,obs)
  {
@@ -1118,42 +1217,31 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   m=snap.s;
   m==null?obs():m!=null&&m.$==2?m.$1.push(obs):m!=null&&m.$==3?m.$1.push(obs):void 0;
  };
- Snap.When=function(snap,avail,obs)
+ Snap.Map2Opt1=function(fn,x,sn2)
+ {
+  return Snap.Map(function(y)
+  {
+   return fn(x,y);
+  },sn2);
+ };
+ Snap.Map2Opt2=function(fn,y,sn1)
+ {
+  return Snap.Map(function(x)
+  {
+   return fn(x,y);
+  },sn1);
+ };
+ Snap.ValueAndForever=function(snap)
  {
   var m;
   m=snap.s;
-  m==null?Snap.Obsolete(obs):m!=null&&m.$==2?(Snap.EnqueueSafe(m.$1,obs),avail(m.$0)):m!=null&&m.$==3?(m.$0.push(avail),Snap.EnqueueSafe(m.$1,obs)):avail(m.$0);
- };
- Snap.MarkDone=function(res,sn,v)
- {
-  var $1;
-  if($1=sn.s,$1!=null&&$1.$==0)
-   Snap.MarkForever(res,v);
-  else
-   Snap.MarkReady(res,v);
- };
- Snap.EnqueueSafe=function(q,x)
- {
-  var qcopy,i,$1,o;
-  q.push(x);
-  if(q.length%20===0)
-   {
-    qcopy=q.slice(0);
-    Queue.Clear(q);
-    for(i=0,$1=Arrays.length(qcopy)-1;i<=$1;i++){
-     o=Arrays.get(qcopy,i);
-     typeof o=="object"?function(sn)
-     {
-      if(sn.s)
-       q.push(sn);
-     }(o):function(f)
-     {
-      q.push(f);
-     }(o);
-    }
-   }
-  else
-   void 0;
+  return m!=null&&m.$==0?{
+   $:1,
+   $0:[m.$0,true]
+  }:m!=null&&m.$==2?{
+   $:1,
+   $0:[m.$0,false]
+  }:null;
  };
  Snap.MarkForever=function(sn,v)
  {
@@ -1184,6 +1272,59 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
     };
     qa=m.$0;
     for(i=0,$1=Arrays.length(qa)-1;i<=$1;i++)(Arrays.get(qa,i))(v);
+   }
+  else
+   void 0;
+ };
+ Snap.When=function(snap,avail,obs)
+ {
+  var m;
+  m=snap.s;
+  m==null?Snap.Obsolete(obs):m!=null&&m.$==2?(Snap.EnqueueSafe(m.$1,obs),avail(m.$0)):m!=null&&m.$==3?(m.$0.push(avail),Snap.EnqueueSafe(m.$1,obs)):avail(m.$0);
+ };
+ Snap.Map=function(fn,sn)
+ {
+  var m,res;
+  m=sn.s;
+  return m!=null&&m.$==0?Snap.New({
+   $:0,
+   $0:fn(m.$0)
+  }):(res=Snap.New({
+   $:3,
+   $0:[],
+   $1:[]
+  }),(Snap.When(sn,function(a$1)
+  {
+   Snap.MarkDone(res,sn,fn(a$1));
+  },res),res));
+ };
+ Snap.MarkDone=function(res,sn,v)
+ {
+  var $1;
+  if($1=sn.s,$1!=null&&$1.$==0)
+   Snap.MarkForever(res,v);
+  else
+   Snap.MarkReady(res,v);
+ };
+ Snap.EnqueueSafe=function(q,x)
+ {
+  var qcopy,i,$1,o;
+  q.push(x);
+  if(q.length%20===0)
+   {
+    qcopy=q.slice(0);
+    Queue.Clear(q);
+    for(i=0,$1=Arrays.length(qcopy)-1;i<=$1;i++){
+     o=Arrays.get(qcopy,i);
+     typeof o=="object"?function(sn)
+     {
+      if(sn.s)
+       q.push(sn);
+     }(o):function(f)
+     {
+      q.push(f);
+     }(o);
+    }
    }
   else
    void 0;
@@ -1364,6 +1505,16 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
     },ct));
   });
  };
+ Concurrency.Return=function(x)
+ {
+  return function(c)
+  {
+   c.k({
+    $:0,
+    $0:x
+   });
+  };
+ };
  Concurrency.scheduler=function()
  {
   SC$4.$cctor();
@@ -1415,15 +1566,25 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   SC$4.$cctor();
   return SC$4.noneCT;
  };
- Concurrency.Return=function(x)
+ Concurrency.GetCT=function()
  {
-  return function(c)
+  SC$4.$cctor();
+  return SC$4.GetCT;
+ };
+ Concurrency.StartWithContinuations=function(c,s,f,cc,ctOpt)
+ {
+  var ct,d;
+  ct=(d=(Concurrency.defCTS())[0],ctOpt==null?d:ctOpt.$0);
+  !ct.c?c(AsyncBody.New(function(a$1)
   {
-   c.k({
-    $:0,
-    $0:x
-   });
-  };
+   if(a$1.$==1)
+    f(a$1.$0);
+   else
+    if(a$1.$==2)
+     cc(a$1.$0);
+    else
+     s(a$1.$0);
+  },ct)):void 0;
  };
  Arrays.length=function(arr)
  {
@@ -1434,15 +1595,15 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   Arrays.checkBounds(arr,n);
   return arr[n];
  };
- Arrays.set=function(arr,n,x)
- {
-  Arrays.checkBounds(arr,n);
-  arr[n]=x;
- };
  Arrays.checkBounds=function(arr,n)
  {
   if(n<0||n>=arr.length)
    Operators.FailWith("Index was outside the bounds of the array.");
+ };
+ Arrays.set=function(arr,n,x)
+ {
+  Arrays.checkBounds(arr,n);
+  arr[n]=x;
  };
  WasmStatus.WasmWorkerLoading={
   $:3
@@ -1702,6 +1863,199 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  {
   return(x<<5)+x+y;
  };
+ Seq.map=function(f,s)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    var en;
+    en=Enumerator.Get(s);
+    return new T.New(null,null,function(e)
+    {
+     return en.MoveNext()&&(e.c=f(en.Current()),true);
+    },function()
+    {
+     en.Dispose();
+    });
+   }
+  };
+ };
+ Seq.delay=function(f)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    return Enumerator.Get(f());
+   }
+  };
+ };
+ Seq.append=function(s1,s2)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    var e1,first;
+    e1=Enumerator.Get(s1);
+    first=[true];
+    return new T.New(e1,null,function(x)
+    {
+     var x$1;
+     return x.s.MoveNext()?(x.c=x.s.Current(),true):(x$1=x.s,!Unchecked.Equals(x$1,null)?x$1.Dispose():void 0,x.s=null,first[0]&&(first[0]=false,x.s=Enumerator.Get(s2),x.s.MoveNext()?(x.c=x.s.Current(),true):(x.s.Dispose(),x.s=null,false)));
+    },function(x)
+    {
+     var x$1;
+     x$1=x.s;
+     !Unchecked.Equals(x$1,null)?x$1.Dispose():void 0;
+    });
+   }
+  };
+ };
+ Seq.distinct=function(s)
+ {
+  return Seq.distinctBy(Global.id,s);
+ };
+ Seq.cache=function(s)
+ {
+  var cache,o;
+  cache=[];
+  o=[Enumerator.Get(s)];
+  return{
+   GetEnumerator:function()
+   {
+    return new T.New(0,null,function(e)
+    {
+     var en;
+     return e.s<cache.length?(e.c=cache[e.s],e.s=e.s+1,true):(en=o[0],Unchecked.Equals(en,null)?false:en.MoveNext()?(e.s=e.s+1,e.c=en.Current(),cache.push(e.c),true):(en.Dispose(),o[0]=null,false));
+    },void 0);
+   }
+  };
+ };
+ Seq.iter=function(p,s)
+ {
+  var e;
+  e=Enumerator.Get(s);
+  try
+  {
+   while(e.MoveNext())
+    p(e.Current());
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ Seq.tryFind=function(ok,s)
+ {
+  var e,r,x;
+  e=Enumerator.Get(s);
+  try
+  {
+   r=null;
+   while(r==null&&e.MoveNext())
+    {
+     x=e.Current();
+     ok(x)?r={
+      $:1,
+      $0:x
+     }:void 0;
+    }
+   return r;
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ Seq.tryFindIndex=function(ok,s)
+ {
+  var e,loop,i;
+  e=Enumerator.Get(s);
+  try
+  {
+   loop=true;
+   i=0;
+   while(loop&&e.MoveNext())
+    if(ok(e.Current()))
+     loop=false;
+    else
+     i=i+1;
+   return loop?null:{
+    $:1,
+    $0:i
+   };
+  }
+  finally
+  {
+   if(typeof e=="object"&&"Dispose"in e)
+    e.Dispose();
+  }
+ };
+ Seq.filter=function(f,s)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    var o;
+    o=Enumerator.Get(s);
+    return new T.New(null,null,function(e)
+    {
+     var loop,c,res;
+     loop=o.MoveNext();
+     c=o.Current();
+     res=false;
+     while(loop)
+      if(f(c))
+       {
+        e.c=c;
+        res=true;
+        loop=false;
+       }
+      else
+       if(o.MoveNext())
+        c=o.Current();
+       else
+        loop=false;
+     return res;
+    },function()
+    {
+     o.Dispose();
+    });
+   }
+  };
+ };
+ Seq.distinctBy=function(f,s)
+ {
+  return{
+   GetEnumerator:function()
+   {
+    var o,seen;
+    o=Enumerator.Get(s);
+    seen=new HashSet.New$3();
+    return new T.New(null,null,function(e)
+    {
+     var cur,has;
+     if(o.MoveNext())
+      {
+       cur=o.Current();
+       has=seen.Add(f(cur));
+       while(!has&&o.MoveNext())
+        {
+         cur=o.Current();
+         has=seen.Add(f(cur));
+        }
+       return has&&(e.c=cur,true);
+      }
+     else
+      return false;
+    },function()
+    {
+     o.Dispose();
+    });
+   }
+  };
+ };
  String.unindent=function(s)
  {
   var lines,n,o,o$1;
@@ -1835,6 +2189,11 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
  {
   SC$1.$cctor();
   return SC$1.parseGuidO;
+ };
+ ParseO.Int=function()
+ {
+  SC$1.$cctor();
+  return SC$1["|Int|_|"];
  };
  Numeric.TryParseInt32=function(s,r)
  {
@@ -2086,6 +2445,57 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   SC$2.$cctor();
   SC$2.AjaxProvider=$1;
  };
+ Remoting$1.makePayload=function(data)
+ {
+  return JSON.stringify(data);
+ };
+ Remoting$1.makeHeaders=function(m)
+ {
+  return{
+   "content-type":"application/json",
+   "x-websharper-rpc":m
+  };
+ };
+ Remoting$1.EndPoint=function()
+ {
+  SC$2.$cctor();
+  return SC$2.EndPoint;
+ };
+ Remoting$1.ajax=function(async,url,headers,data,ok,err,csrf)
+ {
+  var xhr,csrf$1,h;
+  xhr=new Global.XMLHttpRequest();
+  csrf$1=Global.document.cookie.replace(new Global.RegExp("(?:(?:^|.*;)\\s*csrftoken\\s*\\=\\s*([^;]*).*$)|^.*$"),"$1");
+  xhr.open("POST",url,async);
+  if(async==true)
+   xhr.withCredentials=true;
+  for(var h$1 in headers)xhr.setRequestHeader(h$1,headers[h$1]);
+  if(csrf$1)
+   xhr.setRequestHeader("x-csrftoken",csrf$1);
+  function k()
+  {
+   var msg;
+   if(xhr.status==200)
+    ok(xhr.responseText);
+   else
+    if(csrf&&xhr.status==403&&xhr.responseText=="CSRF")
+     csrf();
+    else
+     {
+      msg="Response status is not 200: ";
+      err(new Error(msg+xhr.status));
+     }
+  }
+  if("onload"in xhr)
+   xhr.onload=xhr.onerror=xhr.onabort=k;
+  else
+   xhr.onreadystatechange=function()
+   {
+    if(xhr.readyState==4)
+     k();
+   };
+  xhr.send(data);
+ };
  Dictionary=Collections.Dictionary=Runtime.Class({
   set:function(k,v)
   {
@@ -2217,6 +2627,42 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   pre=UI$1.getChannel(ch);
   UI$1.setChannel(ch,pre+(pre===""?"":"\n")+v);
  };
+ UI$1.Coords=function(cmd,inp)
+ {
+  var m,$1,a$1,a$2;
+  m=Strings.SplitChars(inp,[" "],0);
+  return!Unchecked.Equals(m,null)&&m.length===3&&(a$1=(ParseO.Int())(Arrays.get(m,1)),a$1!=null&&a$1.$==1&&(a$2=(ParseO.Int())(Arrays.get(m,2)),a$2!=null&&a$2.$==1&&(Arrays.get(m,0)===cmd&&($1=[Arrays.get(m,0),a$2.$0,a$1.$0],true))))?{
+   $:1,
+   $0:Position.New($1[2],$1[1])
+  }:null;
+ };
+ UI$1.getParms=function()
+ {
+  return["WasmTest",Arrays.filter(function(s)
+  {
+   return Strings.Trim(s)!=="";
+  },Strings.SplitChars("fsc.exe\n"+UI$1.optsV().Get(),["\n"],0)),UI$1.codeV().Get()];
+ };
+ UI$1.editorCmdV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.editorCmdV;
+ };
+ UI$1.getPresencesV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.getPresencesV;
+ };
+ UI$1.errorsV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.errorsV;
+ };
+ UI$1.fileNameV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.fileNameV;
+ };
  UI$1.setChannel=function(ch,v)
  {
   UI$1.detailsV().Append([ch,[v,v!==""]]);
@@ -2230,203 +2676,20 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   });
   return o==null?"":o.$0;
  };
+ UI$1.optsV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.optsV;
+ };
+ UI$1.codeV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.codeV;
+ };
  UI$1.detailsV=function()
  {
   SC$1.$cctor();
   return SC$1.detailsV;
- };
- Seq.map=function(f,s)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var en;
-    en=Enumerator.Get(s);
-    return new T.New(null,null,function(e)
-    {
-     return en.MoveNext()&&(e.c=f(en.Current()),true);
-    },function()
-    {
-     en.Dispose();
-    });
-   }
-  };
- };
- Seq.delay=function(f)
- {
-  return{
-   GetEnumerator:function()
-   {
-    return Enumerator.Get(f());
-   }
-  };
- };
- Seq.append=function(s1,s2)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var e1,first;
-    e1=Enumerator.Get(s1);
-    first=[true];
-    return new T.New(e1,null,function(x)
-    {
-     var x$1;
-     return x.s.MoveNext()?(x.c=x.s.Current(),true):(x$1=x.s,!Unchecked.Equals(x$1,null)?x$1.Dispose():void 0,x.s=null,first[0]&&(first[0]=false,x.s=Enumerator.Get(s2),x.s.MoveNext()?(x.c=x.s.Current(),true):(x.s.Dispose(),x.s=null,false)));
-    },function(x)
-    {
-     var x$1;
-     x$1=x.s;
-     !Unchecked.Equals(x$1,null)?x$1.Dispose():void 0;
-    });
-   }
-  };
- };
- Seq.distinct=function(s)
- {
-  return Seq.distinctBy(Global.id,s);
- };
- Seq.cache=function(s)
- {
-  var cache,o;
-  cache=[];
-  o=[Enumerator.Get(s)];
-  return{
-   GetEnumerator:function()
-   {
-    return new T.New(0,null,function(e)
-    {
-     var en;
-     return e.s<cache.length?(e.c=cache[e.s],e.s=e.s+1,true):(en=o[0],Unchecked.Equals(en,null)?false:en.MoveNext()?(e.s=e.s+1,e.c=en.Current(),cache.push(e.c),true):(en.Dispose(),o[0]=null,false));
-    },void 0);
-   }
-  };
- };
- Seq.iter=function(p,s)
- {
-  var e;
-  e=Enumerator.Get(s);
-  try
-  {
-   while(e.MoveNext())
-    p(e.Current());
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
- Seq.tryFind=function(ok,s)
- {
-  var e,r,x;
-  e=Enumerator.Get(s);
-  try
-  {
-   r=null;
-   while(r==null&&e.MoveNext())
-    {
-     x=e.Current();
-     ok(x)?r={
-      $:1,
-      $0:x
-     }:void 0;
-    }
-   return r;
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
- Seq.tryFindIndex=function(ok,s)
- {
-  var e,loop,i;
-  e=Enumerator.Get(s);
-  try
-  {
-   loop=true;
-   i=0;
-   while(loop&&e.MoveNext())
-    if(ok(e.Current()))
-     loop=false;
-    else
-     i=i+1;
-   return loop?null:{
-    $:1,
-    $0:i
-   };
-  }
-  finally
-  {
-   if(typeof e=="object"&&"Dispose"in e)
-    e.Dispose();
-  }
- };
- Seq.filter=function(f,s)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var o;
-    o=Enumerator.Get(s);
-    return new T.New(null,null,function(e)
-    {
-     var loop,c,res;
-     loop=o.MoveNext();
-     c=o.Current();
-     res=false;
-     while(loop)
-      if(f(c))
-       {
-        e.c=c;
-        res=true;
-        loop=false;
-       }
-      else
-       if(o.MoveNext())
-        c=o.Current();
-       else
-        loop=false;
-     return res;
-    },function()
-    {
-     o.Dispose();
-    });
-   }
-  };
- };
- Seq.distinctBy=function(f,s)
- {
-  return{
-   GetEnumerator:function()
-   {
-    var o,seen;
-    o=Enumerator.Get(s);
-    seen=new HashSet.New$3();
-    return new T.New(null,null,function(e)
-    {
-     var cur,has;
-     if(o.MoveNext())
-      {
-       cur=o.Current();
-       has=seen.Add(f(cur));
-       while(!has&&o.MoveNext())
-        {
-         cur=o.Current();
-         has=seen.Add(f(cur));
-        }
-       return has&&(e.c=cur,true);
-      }
-     else
-      return false;
-    },function()
-    {
-     o.Dispose();
-    });
-   }
-  };
  };
  Dependency$1=Library.Dependency=Runtime.Class({
   set_D:function(v)
@@ -2444,50 +2707,288 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   SC$3.$cctor();
   return SC$3.printer;
  };
- Snap.Obsolete=function(sn)
- {
-  var $1,m,i,$2,o;
-  m=sn.s;
-  if(m==null||(m!=null&&m.$==2?($1=m.$1,false):m!=null&&m.$==3?($1=m.$1,false):true))
-   void 0;
-  else
-   {
-    sn.s=null;
-    for(i=0,$2=Arrays.length($1)-1;i<=$2;i++){
-     o=Arrays.get($1,i);
-     typeof o=="object"?function(sn$1)
-     {
-      Snap.Obsolete(sn$1);
-     }(o):o();
-    }
-   }
- };
- Snap.New=function(State)
+ View=UI.View=Runtime.Class({},null,View);
+ Position.New=function(line,col)
  {
   return{
-   s:State
+   line:line,
+   col:col
   };
  };
- CustomXhrProvider=Remoting.CustomXhrProvider=Runtime.Class({},Obj,CustomXhrProvider);
- CustomXhrProvider.New=Runtime.Ctor(function()
+ Json.Activate=function(json)
+ {
+  var $1,types,i,$2,$3,$4,m;
+  function decode(x)
+  {
+   var o,ti,t,r,k;
+   if(Unchecked.Equals(x,null))
+    return x;
+   else
+    if(typeof x=="object")
+    {
+     if(x instanceof Global.Array)
+      return Json.shallowMap(decode,x);
+     else
+      {
+       o=Json.shallowMap(decode,x.$V);
+       ti=x.$T;
+       if(ti===void 0)
+        return o;
+       else
+        {
+         t=Arrays.get(types,ti);
+         if(t===1)
+          return List.ofArray(o);
+         else
+          if(t===2)
+           return self.WebSharper.Decimal.CreateDecimalBits(o);
+          else
+           {
+            r=new(Arrays.get(types,ti))();
+            for(var k$1 in o)if(function(k$2)
+            {
+             r[k$2]=o[k$2];
+             return false;
+            }(k$1))
+             break;
+            return r;
+           }
+        }
+      }
+    }
+    else
+     return x;
+  }
+  types=json?json.$TYPES:void 0;
+  if(types===void 0)
+   $1=json;
+  else
+   {
+    for(i=0,$2=Arrays.length(types)-1;i<=$2;i++){
+     m=Arrays.get(types,i);
+     switch(!Unchecked.Equals(m,null)&&m.length===3?Arrays.get(m,0)==="WebSharper"?Arrays.get(m,1)==="List"?Arrays.get(m,2)==="T"?0:($4=m,2):($4=m,2):($4=m,2):!Unchecked.Equals(m,null)&&m.length===2?Arrays.get(m,0)==="WebSharper"?Arrays.get(m,1)==="Decimal"?1:($4=m,2):($4=m,2):($4=m,2))
+     {
+      case 0:
+       $3=1;
+       break;
+      case 1:
+       $3=2;
+       break;
+      case 2:
+       $3=Json.lookup($4);
+       break;
+     }
+     Arrays.set(types,i,$3);
+    }
+    $1=json.$DATA;
+   }
+  return decode($1);
+ };
+ Json.shallowMap=function(f,x)
+ {
+  var r,k;
+  if(x instanceof Global.Array)
+   return Arrays.map(f,x);
+  else
+   if(typeof x=="object")
+    {
+     r={};
+     for(var k$1 in x)if(function(y)
+     {
+      r[y]=f(x[y]);
+      return false;
+     }(k$1))
+      break;
+     return r;
+    }
+   else
+    return x;
+ };
+ Json.lookup=function(x)
+ {
+  var r,i,k,n,rn;
+  k=Arrays.length(x);
+  r=self;
+  i=0;
+  while(i<k)
+   {
+    n=Arrays.get(x,i);
+    rn=r[n];
+    !Unchecked.Equals(typeof rn,void 0)?(r=rn,i=i+1):Operators.FailWith("Invalid server reply. Failed to find type: "+n);
+   }
+  return r;
+ };
+ WsTranslatorLoader_JsonEncoder.j=function()
+ {
+  return WsTranslatorLoader_JsonEncoder._v?WsTranslatorLoader_JsonEncoder._v:WsTranslatorLoader_JsonEncoder._v=(Provider.EncodeUnion(void 0,"$",[null,[1,[["$0","Value",Provider.EncodeTuple([Provider.Id(),Provider.Id()]),0]]]]))();
+ };
+ WsTranslatorLoader_JsonEncoder.j$2=function()
+ {
+  return WsTranslatorLoader_JsonEncoder._v$2?WsTranslatorLoader_JsonEncoder._v$2:WsTranslatorLoader_JsonEncoder._v$2=(Provider.EncodeRecord(void 0,[["kind",Provider.Id(),0],["label",Provider.Id(),0],["detail",Provider.Id(),0],["replace",Provider.EncodeTuple([Provider.Id(),Provider.Id()]),0]]))();
+ };
+ WsTranslatorLoader_JsonEncoder.j$3=function()
+ {
+  return WsTranslatorLoader_JsonEncoder._v$3?WsTranslatorLoader_JsonEncoder._v$3:WsTranslatorLoader_JsonEncoder._v$3=(Provider.EncodeRecord(void 0,[["startP",Provider.Id(),0],["endP",Provider.Id(),0],["severity",WsTranslatorLoader_JsonEncoder.j$4,0],["message",Provider.Id(),0]]))();
+ };
+ WsTranslatorLoader_JsonEncoder.j$4=function()
+ {
+  return WsTranslatorLoader_JsonEncoder._v$4?WsTranslatorLoader_JsonEncoder._v$4:WsTranslatorLoader_JsonEncoder._v$4=(Provider.EncodeUnion(void 0,"$",[[0,[]],[1,[]],[2,[]],[3,[]],[4,[["$0","Item",Provider.Id(),0]]]]))();
+ };
+ AjaxRemotingProvider=Remoting$1.AjaxRemotingProvider=Runtime.Class({
+  AsyncBase:function(m,data)
+  {
+   var $this,b;
+   $this=this;
+   b=null;
+   return Concurrency.Delay(function()
+   {
+    var headers,payload;
+    headers=Remoting$1.makeHeaders(m);
+    payload=Remoting$1.makePayload(data);
+    return Concurrency.Bind(Concurrency.GetCT(),function(a$1)
+    {
+     return Concurrency.FromContinuations(function(ok,err,cc)
+     {
+      var waiting,reg,a$2;
+      function callback(u)
+      {
+       return waiting[0]?(waiting[0]=false,cc(new OperationCanceledException.New(a$1))):null;
+      }
+      waiting=[true];
+      reg=Concurrency.Register(a$1,function()
+      {
+       callback();
+      });
+      a$2=$this.get_EndPoint();
+      return Remoting$1.AjaxProvider().Async(a$2,headers,payload,function(x)
+      {
+       if(waiting[0])
+        {
+         waiting[0]=false;
+         reg.Dispose();
+         ok(Json.Activate(JSON.parse(x)));
+        }
+      },function(e)
+      {
+       if(waiting[0])
+        {
+         waiting[0]=false;
+         reg.Dispose();
+         err(e);
+        }
+      });
+     });
+    });
+   });
+  },
+  get_EndPoint:function()
+  {
+   return Remoting$1.EndPoint();
+  },
+  Async:function(m,data)
+  {
+   return this.AsyncBase(m,data);
+  }
+ },Obj,AjaxRemotingProvider);
+ AjaxRemotingProvider.New=Runtime.Ctor(function()
  {
   Obj.New.call(this);
- },CustomXhrProvider);
- Require=WasmLoad.Require=Runtime.Class({},Obj,Require);
- WsTranslator.dlls=function()
+ },AjaxRemotingProvider);
+ Provider.Id=Runtime.Curried3(function($1,$2,x)
  {
-  return Arrays.ofSeq(List.ofSeq(Seq.delay(function()
+  return x;
+ });
+ Provider.EncodeArray=Runtime.Curried3(function(encEl,$1,a$1)
+ {
+  return Arrays.map(encEl(),a$1);
+ });
+ Provider.EncodeUnion=function(a$1,discr,cases)
+ {
+  return function()
   {
-   return Seq.map(function(f)
+   return function(x)
    {
-    return f.$0;
-   },WsTranslator.justDlls());
-  })));
+    var o,p;
+    function a$2(from,to,enc,kind)
+    {
+     var record,k,m;
+     if(from===null)
+      {
+       record=(enc(null))(x.$0);
+       for(var k$1 in record)if(function(f)
+       {
+        o[f]=record[f];
+        return false;
+       }(k$1))
+        break;
+      }
+     else
+      if(kind===0)
+       o[to]=(enc(null))(x[from]);
+      else
+       if(kind===1)
+        {
+         m=x[from];
+         m==null?void 0:o[to]=(enc(null))(m.$0);
+        }
+       else
+        Operators.FailWith("Invalid field option kind");
+    }
+    return typeof x==="object"&&x!=null?(o={},(p=Arrays.get(cases,x.$),(Unchecked.Equals(typeof discr,"string")?o[discr]=p[0]:void 0,Arrays.iter(function($1)
+    {
+     return a$2($1[0],$1[1],$1[2],$1[3]);
+    },p[1]),o))):x;
+   };
+  };
  };
- WsTranslator.justDlls=function()
+ Provider.EncodeTuple=Runtime.Curried3(function(encs,$1,args)
  {
-  SC$3.$cctor();
-  return SC$3.justDlls;
+  return Arrays.map2(function($2,$3)
+  {
+   return($2(null))($3);
+  },encs,args);
+ });
+ Provider.EncodeRecord=function(a$1,fields)
+ {
+  return function()
+  {
+   return function(x)
+   {
+    var o;
+    function a$2(name,enc,kind)
+    {
+     var m;
+     if(kind===0)
+      o[name]=(enc(null))(x[name]);
+     else
+      if(kind===1)
+       {
+        m=x[name];
+        m==null?void 0:o[name]=(enc(null))(m.$0);
+       }
+      else
+       if(kind===2)
+       {
+        if(x.hasOwnProperty(name))
+         o[name]=(enc(null))(x[name]);
+       }
+       else
+        if(kind===3)
+        {
+         if(x[name]===void 0)
+          o[name]=(enc(null))(x[name]);
+        }
+        else
+         Operators.FailWith("Invalid field option kind");
+    }
+    o={};
+    Arrays.iter(function($1)
+    {
+     return a$2($1[0],$1[1],$1[2]);
+    },fields);
+    return o;
+   };
+  };
  };
  Arrays.choose=function(f,arr)
  {
@@ -2504,6 +3005,14 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   var r,i,$1;
   r=new Global.Array(arr.length);
   for(i=0,$1=arr.length-1;i<=$1;i++)r[i]=f(arr[i]);
+  return r;
+ };
+ Arrays.filter=function(f,arr)
+ {
+  var r,i,$1;
+  r=[];
+  for(i=0,$1=arr.length-1;i<=$1;i++)if(f(arr[i]))
+   r.push(arr[i]);
   return r;
  };
  Arrays.ofSeq=function(xs)
@@ -2530,6 +3039,19 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
        o.Dispose();
      }
     }
+ };
+ Arrays.iter=function(f,arr)
+ {
+  var i,$1;
+  for(i=0,$1=arr.length-1;i<=$1;i++)f(arr[i]);
+ };
+ Arrays.map2=function(f,arr1,arr2)
+ {
+  var r,i,$1;
+  Arrays.checkLength(arr1,arr2);
+  r=new Global.Array(arr2.length);
+  for(i=0,$1=arr2.length-1;i<=$1;i++)r[i]=f(arr1[i],arr2[i]);
+  return r;
  };
  Arrays.ofList=function(xs)
  {
@@ -2558,14 +3080,6 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    }
   return res;
  };
- Arrays.filter=function(f,arr)
- {
-  var r,i,$1;
-  r=[];
-  for(i=0,$1=arr.length-1;i<=$1;i++)if(f(arr[i]))
-   r.push(arr[i]);
-  return r;
- };
  Arrays.tryFind=function(f,arr)
  {
   var res,i;
@@ -2580,6 +3094,11 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
     i=i+1;
    }
   return res;
+ };
+ Arrays.checkLength=function(arr1,arr2)
+ {
+  if(arr1.length!==arr2.length)
+   Operators.FailWith("The arrays have different lengths.");
  };
  Arrays.concat=function(xs)
  {
@@ -2610,6 +3129,73 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
    else
     i=i+1;
   return e;
+ };
+ Snap.Obsolete=function(sn)
+ {
+  var $1,m,i,$2,o;
+  m=sn.s;
+  if(m==null||(m!=null&&m.$==2?($1=m.$1,false):m!=null&&m.$==3?($1=m.$1,false):true))
+   void 0;
+  else
+   {
+    sn.s=null;
+    for(i=0,$2=Arrays.length($1)-1;i<=$2;i++){
+     o=Arrays.get($1,i);
+     typeof o=="object"?function(sn$1)
+     {
+      Snap.Obsolete(sn$1);
+     }(o):o();
+    }
+   }
+ };
+ Snap.New=function(State)
+ {
+  return{
+   s:State
+  };
+ };
+ CustomXhrProvider=Remoting.CustomXhrProvider=Runtime.Class({
+  Async:function(url,headers,data,ok,err)
+  {
+   var md;
+   md=Remoting.getHeaderRpc(headers);
+   ReturnQueue.add(md,[ok,err]);
+   try
+   {
+    ((Remoting.printfnLog("Timings",Runtime.Curried3(function($1,$2,$3)
+    {
+     return $1(Utils.toSafe($2)+" CustomXhrProvider: "+Utils.toSafe($3));
+    })))(function(n)
+    {
+     return n.getFullYear()+"-"+("0"+(n.getMonth()+1)).slice(-2)+"-"+("0"+n.getDate()).slice(-2)+" "+("0"+n.getHours()).slice(-2)+":"+("0"+n.getMinutes()).slice(-2)+":"+("0"+n.getSeconds()).slice(-2)+"."+("00"+n.getMilliseconds()).slice(-3);
+    }(new Global.Date(Date.now()))))(md);
+    Remoting.callRunRpc(md,data);
+   }
+   catch(e)
+   {
+    Remoting.returnExnExn(md,e);
+   }
+  }
+ },Obj,CustomXhrProvider);
+ CustomXhrProvider.New=Runtime.Ctor(function()
+ {
+  Obj.New.call(this);
+ },CustomXhrProvider);
+ Require=WasmLoad.Require=Runtime.Class({},Obj,Require);
+ WsTranslator.dlls=function()
+ {
+  return Arrays.ofSeq(List.ofSeq(Seq.delay(function()
+  {
+   return Seq.map(function(f)
+   {
+    return f.$0;
+   },WsTranslator.justDlls());
+  })));
+ };
+ WsTranslator.justDlls=function()
+ {
+  SC$3.$cctor();
+  return SC$3.justDlls;
  };
  Pojo.newPojo=function(props)
  {
@@ -2823,6 +3409,12 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   SC$1.$cctor();
   return SC$1.queues;
  };
+ ReturnQueue.add=function(md,fs)
+ {
+  var narr,m;
+  narr=(m=ReturnQueue.tryGetS(md),m==null?[fs]:(ReturnQueue.queues().Remove(md),m.$0.concat([fs])));
+  ReturnQueue.queues().Add(md,narr);
+ };
  Storage.InMemory=function(init)
  {
   return new ArrayStorage.New(init);
@@ -2886,6 +3478,9 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   SC$3.justDlls=[{
    $:0,
    $0:"/dlls/WebSharper.Main.dll"
+  },{
+   $:0,
+   $0:"/dlls/WebSharper.JavaScript.dll"
   },{
    $:0,
    $0:"/dlls/WebSharper.Collections.dll"
@@ -3058,7 +3653,15 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   SC$5.$cctor();
   return SC$5.counter;
  };
- XhrProvider=Remoting$1.XhrProvider=Runtime.Class({},Obj,XhrProvider);
+ XhrProvider=Remoting$1.XhrProvider=Runtime.Class({
+  Async:function(url,headers,data,ok,err)
+  {
+   Remoting$1.ajax(true,url,headers,data,ok,err,function()
+   {
+    Remoting$1.ajax(true,url,headers,data,ok,err,void 0);
+   });
+  }
+ },Obj,XhrProvider);
  XhrProvider.New=Runtime.Ctor(function()
  {
   Obj.New.call(this);
@@ -3226,7 +3829,17 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
     e.Dispose();
   }
  },HashSet);
- View=UI.View=Runtime.Class({},null,View);
+ Async.StartTo=function(comp,k)
+ {
+  Concurrency.StartWithContinuations(comp,k,function(e)
+  {
+   Async.OnError(e);
+  },Global.ignore,null);
+ };
+ Async.OnError=function(e)
+ {
+  return console.log("WebSharper UI: Uncaught asynchronous exception",e);
+ };
  FormatException=WebSharper.FormatException=Runtime.Class({},Error,FormatException);
  FormatException.New$1=Runtime.Ctor(function(message)
  {
@@ -3238,16 +3851,16 @@ importScripts(["//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js
   SC$5.$cctor=Global.ignore;
   SC$5.counter=0;
  };
+ Queue.Clear=function(a$1)
+ {
+  a$1.splice(0,Arrays.length(a$1));
+ };
  HashSetUtil.concat=function(o)
  {
   var r,k;
   r=[];
   for(var k$1 in o)r.push.apply(r,o[k$1]);
   return r;
- };
- Queue.Clear=function(a$1)
- {
-  a$1.splice(0,Arrays.length(a$1));
  };
  function a($1,$2)
  {

@@ -1,6 +1,6 @@
 #nowarn "3242"
 #nowarn "1182"
-////-d:FSharpStation1613939389406 -d:NETSTANDARD20 -d:NOFSROOTx -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
+////-d:FSharpStation1614641116564 -d:NETSTANDARD20 -d:NOFSROOTx -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\wasm-sdk\wasm-bcl\wasm\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\website\WASM\v47\dlls"
@@ -38,7 +38,7 @@
 //#nowarn "3242"
 //#nowarn "1182"
 /// Root namespace for all code
-//#define FSharpStation1613939389406
+//#define FSharpStation1614641116564
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -1100,6 +1100,123 @@ namespace FsRoot
                     TimeZoneKit.SetLocalTimeZoneByIANAName ianaTimeZoneName
             
             
+        /// Essentials that run in Javascript (WebSharper)
+        //#define WEBSHARPER 
+        [< JavaScript ; AutoOpen >]
+        module LibraryJS =
+            module GenEditor =
+                open WebSharper.UI.Html
+            
+                type Position = {
+                    line : int
+                    col  : int
+                }
+            
+                type AnnotationType =
+                | Error   
+                | Warning 
+                | Info    
+                | Hint
+                | Other of string
+            
+                type Annotation = {
+                    startP        : Position
+                    endP          : Position
+                    severity      : AnnotationType
+                    message       : string
+                }
+            
+                type Completion = {
+                    kind                : string
+                    label               : string
+                    detail              : string
+                    replace             : Position * Position
+                }
+            
+                [<NoComparison ; NoEquality>]
+                type GenEditorHook<'T> = {
+                    generateDoc       :  GenEditor<'T> -> ('T -> unit)     -> Doc
+                    getValue          :  unit                              -> string
+                    setValue          :  string                            -> unit
+                    setDisabled       :  bool                              -> unit
+                    showAnnotations   :  Annotation seq                    -> unit
+                    posFromIndex      :  int                               -> Position
+                    indexFromPos      :  Position                          -> int
+                    getWordAt         :  Position                          -> (string * Position) option
+                    getSelectionText  :  unit                              -> string
+                    getUri            :  unit                              -> string
+                    setUri            :  string                            -> unit
+                    hookOnChange      : (obj           -> unit           ) -> unit
+                }
+            
+                and GenEditor<'T> = {
+                    var             :  Var< string        >
+                    disabled        :  View<bool          >
+                    annotations     :  View<Annotation seq>
+                    onChange        : (GenEditor<'T> -> string      -> unit                              ) option
+                    onRender        : (GenEditor<'T>                -> unit                              )
+                    autoCompletion  : (GenEditor<'T> -> Position    -> Async<Completion []>              ) option
+                    toolTip         : (GenEditor<'T> -> Position    -> Async<string              option >) option
+                    declaration     : (GenEditor<'T> -> Position    -> Async<(Position * string) option >) option
+                    mutable editorO :  'T option
+            
+                    editorHook      : GenEditorHook<'T>
+                }
+                
+                let inline setVar   v   genE = { genE with var      = v   }
+                let inline onChange f   genE = { genE with onChange = f   }
+                let inline onRender f   genE = { genE with onRender = f   }
+                let inline disabled dis genE = { genE with disabled = dis }
+            
+                let inline var          genE = genE.var
+            
+                let newVar edh var = {
+                    var            = var 
+                    disabled       = V false
+                    annotations    = V Seq.empty
+                    onChange       = None
+                    onRender       = ignore
+                    editorHook     = edh
+                    autoCompletion = None
+                    toolTip        = None
+                    declaration    = None
+                    editorO        = None
+                }
+            
+                let newText edh (v:string)             = newVar edh (Var.Create v)
+                let newVarO edh (v:Var<string option>) = 
+                    Var.Lens v (Option.defaultValue "") (fun sO s -> sO |> Option.map (fun _ -> s) )
+                    |> newVar edh
+                    |> disabled(V (Option.isNone v.V))
+            
+                /// binds an Editor with a Var<string> to avoid annoying jumps to the end when fast typing
+                /// onChange gets called when the editor changes but not when the var changes
+                let bindVarEditor setEvent getVal setVal onChange (var:Var<_>) =
+                    let editorChanged = ref 0L
+                    let varChanged    = ref 0L
+                    setEvent(fun _ ->
+                        let v = getVal() 
+                        if var.Value <> v then editorChanged := !editorChanged + 1L; var.Value <- v; onChange v 
+                    )
+                    var.View |> View.Sink (fun _ ->
+                        if  !editorChanged > !varChanged then varChanged := !editorChanged
+                        elif getVal() <> var.Value then setVal var.Value
+                    )
+            
+                let generateDoc genE = 
+                    let onChange = genE.onChange |> Option.map(fun f -> f genE) |> Option.defaultValue ignore
+                    genE.editorHook.generateDoc genE (fun ed ->
+                        genE.editorO        <- Some ed
+                        genE.var            |> bindVarEditor  genE.editorHook.hookOnChange    
+                                                              genE.editorHook.getValue 
+                                                              genE.editorHook.setValue 
+                                                              onChange
+                        genE.annotations    |> View.Sink      genE.editorHook.showAnnotations
+                        genE.disabled       |> View.Sink      genE.editorHook.setDisabled
+                        genE.onRender genE
+                    )
+            
+            
     
     //#define NOFSROOTx
     //#define NETSTANDARD20
@@ -1246,6 +1363,7 @@ namespace FsRoot
         let justDlls = 
             [|
                 DllFileName "/dlls/WebSharper.Main.dll"
+                DllFileName "/dlls/WebSharper.JavaScript.dll"
                 DllFileName "/dlls/WebSharper.Collections.dll"
                 DllFileName "/dlls/WebSharper.Control.dll"
                 DllFileName "/dlls/WebSharper.Web.dll"
@@ -1255,7 +1373,7 @@ namespace FsRoot
                 DllFileName "/dlls/WebSharper.Data.dll"
             |] 
     
-        [< JavaScript >]
+        //[< JavaScript >]
         let fromDll2Meta (DllFileName fname) = fname.Replace(".dll", ".meta") |> MetaFileName
             
         [< JavaScript >]
@@ -1306,12 +1424,16 @@ namespace FsRoot
                 (Some js ), comp.Errors, comp.Warnings
             ) |> Log.TimeItLazy "translateFromAst" |> fun r -> r.Force()
     
-        let saveCode projectName opts code =
+        let getFileNameProjOpts projectName opts =
             let  projOpts = fsharpChecker.Force().GetProjectOptionsFromCommandLineArgs(projectName, opts)
             let  fn =   projOpts.OtherOptions
                         |> Seq.skip 1
                         |> Seq.filter (fun o -> o.StartsWith "-" |> not)
                         |> Seq.last
+            fn, projOpts
+    
+        let saveCode projectName opts code =
+            let fn, projOpts = getFileNameProjOpts projectName opts
             File.WriteAllText(fn, code)
             projOpts
     
@@ -1332,56 +1454,34 @@ namespace FsRoot
                         , Console.Out, Console.Error
                         , collectible = true)
                 with e -> failwithf "%A" e
-            ) |> Log.TimeItLazy "create evaluator"
+            ) |> Log.TimeItLazy "load FSI"
     
         let evaluate code = 
             let res, msgs = evaluator.Force().EvalInteractionNonThrowing code
-            for msg in msgs do
-                eprintfn "%A" msg 
             match res with
             | Choice1Of2 None    ->  ()
             | Choice2Of2 e       -> eprintfn "%A" e
             | Choice1Of2(Some v) ->  
-            match v.ReflectionValue with
-            | null               ->  ()
-            | rv                 ->  printfn "%A" rv
+                match v.ReflectionValue with
+                | null               ->  ()
+                | rv                 ->  printfn "%s" <| evaluator.Force().FormatValue(rv, v.ReflectionType)
+            msgs
     
-        let evaluateWithPresence code id ver =
-            let res, msgs = evaluator.Force().EvalInteractionNonThrowing (sprintf "%s\nCodePresence.add \"%s\" \"%s\"" code id ver)
-            for msg in msgs do
-                eprintfn "%A" msg 
-            match res with
-            | Choice1Of2 None    ->  ()
-            | Choice2Of2 e       -> eprintfn "%A" e
-            | Choice1Of2(Some v) ->  
-            match v.ReflectionValue with
-            | null               ->  ()
-            | rv                 ->  printfn "%A" rv
-    
-        let installPresence () =
-            """
-    module CodePresence =
-        let mutable present : Map<string, string>  = Map.empty
-        let get (ids:string[]) = ids |> Array.choose (fun k -> present |> Map.tryFind k |> Option.map (fun v -> k,v))
-        let add (k:string) (v:string) = present <- present |> Map.add k v 
-            """
-            |> evaluator.Force().EvalInteractionNonThrowing
-            |> ignore
-    
-        let getPresences(presIds:string[]) : (string * string) [] =
-            let code =
-                presIds
-                |> Seq.map (sprintf "\"%s\"")
-                |> String.concat "; "
-                |> sprintf "CodePresence.get [| %s |]"
-            let res, msgs = evaluator.Force().EvalInteractionNonThrowing code
-            match res with
-            | Choice1Of2 None    -> installPresence (); [||]
-            | Choice2Of2 e       -> installPresence (); [||]
-            | Choice1Of2(Some v) ->  
-            match v.ReflectionValue with
-            | null               -> installPresence (); [||]
-            | rv                 -> rv :?> (string * string) []
+        let getPresences code = async {
+            let! pcheck, check, prcheck = evaluator.Force().ParseAndCheckInteraction code
+            return
+                if check.Errors.Length > 0 then "--" else
+                let res, msgs = evaluator.Force().EvalInteractionNonThrowing code
+                match res with
+                | Choice2Of2 e                  -> failwith "Should be unreachable" //"--"
+                | Choice1Of2 None               -> ""
+                | Choice1Of2(Some v)            ->  
+                match v.ReflectionValue with
+                | null                          -> ""
+                | :?  string               as r -> r
+                | :? ((string * string)[]) as rs-> rs |> Seq.map (fun (a, b) -> sprintf "%s %s" a b) |> String.concat "\n"
+                | v                             -> sprintf "%A" v
+        }
     
         let checkMemoryFile() = // it does not work on mono, it is going to be excluded should return Nulls
             try
@@ -1426,6 +1526,7 @@ namespace FsRoot
                                     -r:/dlls/WebSharper.Core.dll
                                     -r:/dlls/WebSharper.Main.dll
                                     -r:/dlls/WebSharper.UI.dll
+                                    -r:/dlls/WebSharper.JavaScript.dll
                                     -r:/dlls/WebSharper.Sitelets.dll
                                     -r:/managed/FSharp.Core.dll
                                     -r:/managed/mscorlib.dll
@@ -1491,7 +1592,7 @@ namespace FsRoot
             open WebAssembly.Core
             open WebAssembly.Host
     
-            let (?) o prop = printfnLog "Remoting" "?%s" prop; (unbox<JSObject> o).GetObjectProperty prop
+            let (?) o prop = (* printfnLog "Remoting" "?%s" prop;*) (unbox<JSObject> o).GetObjectProperty prop
             let remoting   = lazy (Runtime.GetGlobalObject()?FsRoot?LibraryJS?WsTranslatorLoader?Remoting |> unbox<JSObject>) 
             let returnValue (md : string, v : string) = 
                 try       remoting.Force().Invoke("returnValue", md, v) |> ignore
@@ -1540,26 +1641,42 @@ namespace FsRoot
             } |> Log.TimeItAsync header |> Async.Start
     
         [< JavaScript >]
-        type Position = {
-            FileName : string
-            Start    : int * int
-            End      : int * int
+        type FileAnnotation = {
+            fileName   : string
+            annotation : GenEditor.Annotation
         }
     
-        let fromFSharpToAst (fserr:FSharpErrorInfo) = 
-            {
-                Position.FileName = fserr.FileName
-                Position.Start    = fserr.Start.Line, fserr.Start.Column
-                Position.End      = fserr.End  .Line, fserr.End  .Column
+        let fromFSharpToAnnot (fserr:FSharpErrorInfo) = {
+            FileAnnotation.fileName = fserr.FileName
+            FileAnnotation.annotation = {
+                    GenEditor.Annotation.startP   = {
+                        GenEditor.Position.line = fserr.Start.Line
+                        GenEditor.Position.col  = fserr.Start.Column + 1
+                    }
+                    GenEditor.Annotation.endP     =  {
+                        GenEditor.Position.line = fserr.End  .Line
+                        GenEditor.Position.col  = fserr.End  .Column + 1
+                    }
+                    GenEditor.Annotation.message  = sprintf "FSI%d: %s" fserr.ErrorNumber fserr.Message
+                    GenEditor.Annotation.severity = GenEditor.AnnotationType.Error
             }
-            , sprintf "Error %5d: %s" fserr.ErrorNumber fserr.Message
+        }
     
-        let fromWSPos (wserr:AST.SourcePos) =
-            {
-                Position.FileName = wserr.FileName
-                Position.Start    = wserr.Start
-                Position.End      = wserr.End  
+        let fromWSPos typ msg (wserr:AST.SourcePos) = {
+            FileAnnotation.fileName = wserr.FileName
+            FileAnnotation.annotation = {
+                    GenEditor.Annotation.startP   = {
+                        GenEditor.Position.line = fst wserr.Start
+                        GenEditor.Position.col  = snd wserr.Start
+                    }
+                    GenEditor.Annotation.endP     =  {
+                        GenEditor.Position.line = fst wserr.End
+                        GenEditor.Position.col  = snd wserr.End
+                    }
+                    GenEditor.Annotation.message  = msg
+                    GenEditor.Annotation.severity = typ
             }
+        }
     
         let mutable counter = 0
         // WASM has trouble running initializer code in the dll. This does not run (newFileName = 0):
@@ -1609,18 +1726,257 @@ namespace FsRoot
     
             let splitArgs v = v |> splitTokens |> Seq.map (function Quoted s | UnQuoted s -> s) |> Seq.toArray
     
+        module FSAutoComplete =
+    
+            open FSharp.Compiler.SourceCodeServices
+    
+            type SymbolKind =
+                | Ident
+                | Operator
+                | GenericTypeParameter
+                | StaticallyResolvedTypeParameter
+                | ActivePattern
+                | Keyword
+                | Dot
+                | Other
+    
+            type LexerSymbol =
+                {   Kind: SymbolKind
+                    Line: int
+                    LeftColumn: int
+                    RightColumn: int
+                    Text: string }
+    
+            [<RequireQualifiedAccess>]
+            type SymbolLookupKind =
+                | Fuzzy
+                | ByRightColumn
+                | ByLongIdent
+                | Simple
+    
+            type private DraftToken =
+                {   Kind: SymbolKind
+                    Token: FSharpTokenInfo
+                    RightColumn: int }
+                static member inline Create kind token =
+                    { Kind = kind; Token = token; RightColumn = token.LeftColumn + token.FullMatchedLength - 1 }
+    
+            module Lexer =
+                /// Return all tokens of current line
+                let tokenizeLine (args: string[]) lineStr =
+                    let defines =
+                        args |> Seq.choose (fun s -> if s.StartsWith "--define:" then Some s.[9..] else None)
+                            |> Seq.toList
+                    let sourceTokenizer = FSharpSourceTokenizer(defines, Some "/tmp.fsx")
+                    let lineTokenizer = sourceTokenizer.CreateLineTokenizer lineStr
+                    let rec loop lexState acc =
+                        match lineTokenizer.ScanToken lexState with
+                        | Some tok, state -> loop state (tok :: acc)
+                        |_-> List.rev acc
+                    loop FSharpTokenizerLexState.Initial []
+    
+                let inline private isIdentifier t = t.CharClass = FSharpTokenCharKind.Identifier
+                let inline private isOperator t = t.CharClass = FSharpTokenCharKind.Operator
+                let inline private isKeyword t = t.ColorClass = FSharpTokenColorKind.Keyword
+                let inline private isPunctuation t = t.ColorClass = FSharpTokenColorKind.Punctuation
+    
+                let inline private (|GenericTypeParameterPrefix|StaticallyResolvedTypeParameterPrefix|ActivePattern|Other|) ((token: FSharpTokenInfo), (lineStr:string)) =
+                    if token.Tag = FSharpTokenTag.QUOTE then GenericTypeParameterPrefix
+                    elif token.Tag = FSharpTokenTag.INFIX_AT_HAT_OP then
+                        // The lexer return INFIX_AT_HAT_OP token for both "^" and "@" symbols.
+                        // We have to check the char itself to distinguish one from another.
+                        if token.FullMatchedLength = 1 && lineStr.[token.LeftColumn] = '^' then
+                            StaticallyResolvedTypeParameterPrefix
+                        else Other
+                    elif token.Tag = FSharpTokenTag.LPAREN then
+                        if token.FullMatchedLength = 1 && lineStr.[token.LeftColumn+1] = '|' then
+                            ActivePattern
+                        else Other
+                    else Other
+    
+                // Operators: Filter out overlapped operators (>>= operator is tokenized as three distinct tokens: GREATER, GREATER, EQUALS.
+                // Each of them has FullMatchedLength = 3. So, we take the first GREATER and skip the other two).
+                //
+                // Generic type parameters: we convert QUOTE + IDENT tokens into single IDENT token, altering its LeftColumn
+                // and FullMathedLength (for "'type" which is tokenized as (QUOTE, left=2) + (IDENT, left=3, length=4)
+                // we'll get (IDENT, left=2, length=5).
+                //
+                // Statically resolved type parameters: we convert INFIX_AT_HAT_OP + IDENT tokens into single IDENT token, altering its LeftColumn
+                // and FullMathedLength (for "^type" which is tokenized as (INFIX_AT_HAT_OP, left=2) + (IDENT, left=3, length=4)
+                // we'll get (IDENT, left=2, length=5).
+                let private fixTokens lineStr (tokens : FSharpTokenInfo list) =
+                    tokens
+                    |> List.fold (fun (acc, (lastToken: DraftToken option)) token ->
+                        match lastToken with
+                        //Operator starting with . (like .>>) should be operator
+                        | Some ( {Kind = SymbolKind.Dot} as lastToken) when isOperator token && token.LeftColumn <= lastToken.RightColumn ->
+                            let mergedToken = {lastToken.Token with Tag = token.Tag; RightColumn = token.RightColumn }
+                            acc, Some {lastToken with Token = mergedToken; Kind = SymbolKind.Operator}
+                        | Some t when token.LeftColumn <= t.RightColumn ->
+                            acc, lastToken
+                        | Some ( {Kind = SymbolKind.ActivePattern} as lastToken) when token.Tag = FSharpTokenTag.BAR || token.Tag = FSharpTokenTag.IDENT || token.Tag = FSharpTokenTag.UNDERSCORE ->
+                            let mergedToken = {lastToken.Token 
+                                                with    Tag               = FSharpTokenTag.IDENT
+                                                        RightColumn       = token.RightColumn
+                                                        FullMatchedLength = lastToken.Token.FullMatchedLength + token.FullMatchedLength }
+                            acc, Some { lastToken with Token = mergedToken; RightColumn = lastToken.RightColumn + token.FullMatchedLength }
+                        |_->
+                        match token, lineStr with
+                        | GenericTypeParameterPrefix -> acc, Some (DraftToken.Create GenericTypeParameter token)
+                        | StaticallyResolvedTypeParameterPrefix -> acc, Some (DraftToken.Create StaticallyResolvedTypeParameter token)
+                        | ActivePattern -> acc, Some (DraftToken.Create ActivePattern token)
+                        | Other ->
+                            let draftToken =
+                                match lastToken with
+                                | Some { Kind = GenericTypeParameter | StaticallyResolvedTypeParameter as kind } when isIdentifier token ->
+                                    DraftToken.Create kind { token with LeftColumn        = token.LeftColumn - 1
+                                                                        FullMatchedLength = token.FullMatchedLength + 1 }
+                                | Some ( { Kind = SymbolKind.ActivePattern } as ap) when token.Tag = FSharpTokenTag.RPAREN ->
+                                    DraftToken.Create SymbolKind.Ident ap.Token
+                                | Some ( { Kind = SymbolKind.Operator } as op) when token.Tag = FSharpTokenTag.RPAREN ->
+                                    DraftToken.Create SymbolKind.Operator op.Token
+                                // ^ operator
+                                | Some { Kind = SymbolKind.StaticallyResolvedTypeParameter } ->
+                                        {   Kind        = SymbolKind.Operator
+                                            RightColumn = token.RightColumn - 1
+                                            Token       = token }
+                                |_->
+                                    let kind =
+                                        if   isOperator    token then Operator
+                                        elif isIdentifier  token then Ident
+                                        elif isKeyword     token then Keyword
+                                        elif isPunctuation token then Dot
+                                        else                          Other
+                                    DraftToken.Create kind token
+                            draftToken :: acc, Some draftToken
+                        ) ([], None)
+                    |> fst
+    
+                // Returns symbol at a given position.
+                let private getSymbolFromTokens (tokens: FSharpTokenInfo list) line col (lineStr: string) lookupKind: LexerSymbol option =
+                    let tokens = fixTokens lineStr tokens
+    
+                    // One or two tokens that in touch with the cursor (for "let x|(g) = ()" the tokens will be "x" and "(")
+                    let tokensUnderCursor =
+                        match lookupKind with
+                        | SymbolLookupKind.Simple | SymbolLookupKind.Fuzzy ->
+                            tokens |> List.filter (fun x -> x.Token.LeftColumn <= col && x.RightColumn + 1 >= col)
+                        | SymbolLookupKind.ByRightColumn ->
+                            tokens |> List.filter (fun x -> x.RightColumn = col)
+                        | SymbolLookupKind.ByLongIdent ->
+                            tokens |> List.filter (fun x -> x.Token.LeftColumn <= col)
+    
+                    match lookupKind with
+                    | SymbolLookupKind.ByLongIdent ->
+                        // Try to find start column of the long identifiers
+                        // Assume that tokens are ordered in an decreasing order of start columns
+                        let rec tryFindStartColumn tokens =
+                            match tokens with
+                            | {Kind = Ident; Token = t1} :: {Kind = SymbolKind.Other; Token = t2} :: remainingTokens ->
+                                    if t2.Tag = FSharpTokenTag.DOT then
+                                        tryFindStartColumn remainingTokens
+                                    else
+                                        Some t1.LeftColumn
+                            | {Kind = Ident; Token = t} :: _ ->
+                                Some t.LeftColumn
+                            | _ :: _ | [] ->
+                                None
+                        let decreasingTokens =
+                            match tokensUnderCursor |> List.sortBy (fun token -> - token.Token.LeftColumn) with
+                            // Skip the first dot if it is the start of the identifier
+                            | {Kind = SymbolKind.Other; Token = t} :: remainingTokens when t.Tag = FSharpTokenTag.DOT ->
+                                remainingTokens
+                            | newTokens -> newTokens
+    
+                        match decreasingTokens with
+                        | [] -> None
+                        | first :: _ ->
+                            tryFindStartColumn decreasingTokens
+                            |> Option.map (fun leftCol ->
+                                {   Kind = Ident
+                                    Line = line
+                                    LeftColumn = leftCol
+                                    RightColumn = first.RightColumn + 1
+                                    Text = lineStr.[leftCol..first.RightColumn] })
+                    | SymbolLookupKind.Fuzzy
+                    | SymbolLookupKind.ByRightColumn ->
+                        // Select IDENT token. If failed, select OPERATOR token.
+                        tokensUnderCursor
+                        |> List.tryFind (fun { DraftToken.Kind = k } ->
+                            match k with
+                            | Ident | GenericTypeParameter | StaticallyResolvedTypeParameter | Keyword -> true
+                            |_-> false)
+                            /// Gets the option if Some x, otherwise try to get another value
+                        |> Option.orElseWith (fun _ -> tokensUnderCursor |> List.tryFind (fun { DraftToken.Kind = k } -> k = Operator))
+                        |> Option.map (fun token ->
+                            {   Kind = token.Kind
+                                Line = line
+                                LeftColumn = token.Token.LeftColumn
+                                RightColumn = token.RightColumn + 1
+                                Text = lineStr.Substring(token.Token.LeftColumn, token.Token.FullMatchedLength) })
+                    | SymbolLookupKind.Simple ->
+                        tokensUnderCursor
+                        |> List.tryLast
+                        |> Option.map (fun token ->
+                            {   Kind = token.Kind
+                                Line = line
+                                LeftColumn = token.Token.LeftColumn
+                                RightColumn = token.RightColumn + 1
+                                Text = lineStr.Substring(token.Token.LeftColumn, token.Token.FullMatchedLength) })
+    
+                let getSymbol line col lineStr lookupKind (args: string[]) =
+                    let tokens = tokenizeLine args lineStr
+                    try getSymbolFromTokens tokens line col lineStr lookupKind
+                    with _ ->
+                        //LoggingService.LogInfo (sprintf "Getting lex symbols failed with %O" e)
+                        None
+    
+                let inline private tryGetLexerSymbolIslands sym =
+                    match sym.Text with
+                    | "" -> None
+                    | _  -> Some (sym.RightColumn, sym.Text.Split '.')
+    
+                // Parsing - find the identifier around the current location
+                // (we look for full identifier in the backward direction, but only
+                // for a short identifier forward - this means that when you hover
+                // 'B' in 'A.B.C', you will get intellisense for 'A.B' module)
+                let findIdents col lineStr lookupType =
+                    if lineStr = "" then None
+                    else
+                        getSymbol 0 col lineStr lookupType [||]
+                        |> Option.bind tryGetLexerSymbolIslands
+    
+                let findLongIdents (col, lineStr) =
+                    findIdents col lineStr SymbolLookupKind.Fuzzy
+    
+                let findLongIdentsAndResidue (col, lineStr:string) =
+                    let lineStr = lineStr.Substring(0, System.Math.Max(0,col))
+    
+                    match getSymbol 0 col lineStr SymbolLookupKind.ByLongIdent [||] with
+                    | Some sym ->
+                        match sym.Text with
+                        | "" -> [], ""
+                        | text ->
+                            let res = text.Split '.' |> List.ofArray |> List.rev
+                            if lineStr.[col - 1] = '.' then res |> List.rev, ""
+                            else
+                                match res with
+                                | head :: tail -> tail |> List.rev, head
+                                | [] -> [], ""
+                    |_-> [], ""
+    
         module Rpc =
             [< Remote >]
             let parseAndCheckProjectRpc projectName opts code = async {
                 let! results = parseAndCheckProject projectName opts code 
-                return results.Errors |> Array.map fromFSharpToAst, results.DependencyFiles, results.HasCriticalErrors
+                return results.Errors |> Array.map fromFSharpToAnnot, results.DependencyFiles, results.HasCriticalErrors
             }
     
             [< Remote >]
             let compileProjectRpc projectName opts code = async {
                 let _projOpts = saveCode projectName opts code
                 let! errors, res = fsharpChecker.Force().Compile opts |> Log.TimeItAsync "Compile"
-                return errors |> Array.map fromFSharpToAst, res
+                return errors |> Array.map fromFSharpToAnnot, res
             }
     
             [< Remote >]
@@ -1630,10 +1986,12 @@ namespace FsRoot
                     if results.HasCriticalErrors then None else
                     match translateFromAst projectName (metadataL.Force()) results with
                     | (jsO, errs, warns) -> jsO
-                                            , errs  |> Seq.map(fun (p, e) ->  p |> Option.map fromWSPos, e.ToString() ) |> Seq.toArray
-                                            , warns |> Seq.map(fun (p, e) ->  p |> Option.map fromWSPos, e.ToString() ) |> Seq.toArray
+                                            , [|
+                                                 yield! errs  |> Seq.choose (fun (p, e) ->  p |> Option.map (fromWSPos GenEditor.AnnotationType.Error   (e.ToString()) ) )
+                                                 yield! warns |> Seq.choose (fun (p, e) ->  p |> Option.map (fromWSPos GenEditor.AnnotationType.Warning (e.ToString()) ) )
+                                              |]
                     |> Some
-                return results.Errors |> Array.map fromFSharpToAst, wsRes 
+                return results.Errors |> Array.map fromFSharpToAnnot, wsRes 
             }
     
             [< Remote >]
@@ -1670,17 +2028,107 @@ namespace FsRoot
     
             [< Remote >]
             let evaluateRpc(code:string) = async {
-                evaluate code
+                let msgs = evaluate code
+                return msgs |> Array.map fromFSharpToAnnot
             }
     
             [< Remote >]
-            let evaluateWithPresenceRpc(code:string) id ver = async {
-                evaluateWithPresence code id ver
+            let getPresencesRpc ps = getPresences ps
+    
+            open FSharp.Compiler
+    
+            [< Remote >]
+            let getAutoCompletion projectName opts code (pos:GenEditor.Position) = async {
+                let  checker      = fsharpChecker.Force()
+                let  fn, projOpts = getFileNameProjOpts projectName opts
+                let! fsfpr, answ  = checker.ParseAndCheckFileInProject(fn, 0, FSharp.Compiler.Text.SourceText.ofString code, projOpts)
+                match answ with
+                | FSharpCheckFileAnswer.Succeeded fscfr -> 
+                    let lines    = code.Split '\n'
+                    let lineText = lines.[pos.line - 1]
+                    let partialName = QuickParse.GetPartialLongNameEx(lineText, pos.col)
+                    //printfn "line %A" lineText
+                    //printfn "partialNameEx %A" partialName
+                    let! decls = fscfr.GetDeclarationListInfo(Some fsfpr, pos.line, lineText, partialName )
+                    return decls.Items |> Array.map (fun it -> {
+                        GenEditor.Completion.label   = it.Name
+                        GenEditor.Completion.kind    = 
+                           match it.Glyph with
+                           | FSharpGlyph.Class      -> "C" 
+                           | FSharpGlyph.Enum       -> "E" 
+                           | FSharpGlyph.EnumMember -> "E" 
+                           | FSharpGlyph.Error      -> "S" 
+                           | FSharpGlyph.Exception  -> "S" 
+                           | FSharpGlyph.Interface  -> "I" 
+                           | FSharpGlyph.Module     -> "N" 
+                           | FSharpGlyph.Method     -> "M" 
+                           | FSharpGlyph.Property   -> "P" 
+                           | FSharpGlyph.Field      -> "F" 
+                           | FSharpGlyph.Type       -> "T" 
+                           | FSharpGlyph.Typedef    -> "T" 
+                           | v                      -> (string v).[1..1]
+                        GenEditor.Completion.replace = pos, pos
+                        GenEditor.Completion.detail  = it.FullName
+                     }
+                     )
+                |_-> return [||]
             }
     
             [< Remote >]
-            let getPresencesRpc ps = async {
-                return getPresences ps
+            let getTooltip projectName opts code (pos:GenEditor.Position) = async {
+                try
+                    let  checker      = fsharpChecker.Force()
+                    let  fn, projOpts = getFileNameProjOpts projectName opts
+                    let! fsfpr, answ  = checker.ParseAndCheckFileInProject(fn, 0, FSharp.Compiler.Text.SourceText.ofString code, projOpts)
+                    match answ with
+                    | FSharpCheckFileAnswer.Aborted         -> return None
+                    | FSharpCheckFileAnswer.Succeeded fscfr -> 
+                    let  lines    = code.Split '\n'
+                    let  lineText = lines.[pos.line - 1]
+                    match FSAutoComplete.Lexer.findLongIdents(pos.col - 1, lineText) with
+                    | None -> return None
+                    | Some(col, identIsland) ->
+                    let  identIsland = Array.toList identIsland
+                    match! fscfr.GetSymbolUseAtLocation(pos.line, col, lineText, identIsland) with
+                    | None -> return None
+                    | Some symbol ->
+                    match! fscfr.GetToolTipText        (pos.line, col, lineText, identIsland, FSharpTokenTag.Identifier) with
+                    | FSharpToolTipText(elems) ->
+                    if elems |> List.forall ((=) FSharpToolTipElement.None) then return None else
+                    //match SignatureFormatter.getTooltipDetailsFromSymbolUse symbol with
+                    //| None -> return None
+                    //| Some (signature, footer) ->
+                    //let typeDoc = getTypeIfConstructor symbol.Symbol |> Option.map (fun n -> n.XmlDocSig)
+                    return 
+                            elems
+                            |> Seq.collect (function
+                            | FSharpToolTipElement.None                 -> seq []
+                            | FSharpToolTipElement.Group            grs -> 
+                                grs 
+                                |> Seq.map(fun gr -> 
+                                    seq {
+                                        yield  gr.MainDescription
+                                        yield  Option.defaultValue "" gr.ParamName
+                                        yield  gr.TypeMapping |> Seq.map (sprintf "- %s") |> String.concat "\n"
+                                        yield  Option.defaultValue "" gr.Remarks
+                                        let xml =
+                                            seq {
+                                                match  gr.XmlDoc with
+                                                | FSharpXmlDoc.None -> ()
+                                                | FSharpXmlDoc.Text(us, xs)             -> yield! us ; yield! xs
+                                                | FSharpXmlDoc.XmlDocFileSignature(a,b) -> yield  a  ; yield  b
+                                            } 
+                                            |> String.concat "\n"
+                                        if xml <> "" then yield sprintf "```\n%s\n```" xml 
+                                    }
+                                    |> Seq.filter ((<>)"")
+                                    |> Seq.map(fun txt -> if txt.Contains "\n" then txt else "`" + txt + "`")
+                                    |> String.concat "\n\n"
+                                    )
+                            | FSharpToolTipElement.CompositionError ce  -> seq [ ce ]
+                            )
+                            |> String.concat "\n---------\n"
+                            |> Some
+                with e -> return None
             }
-    
     

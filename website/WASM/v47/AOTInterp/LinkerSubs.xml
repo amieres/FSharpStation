@@ -20,4 +20,10 @@
   	</type>
   </assembly>
 
+  <assembly fullname="System">
+    <type fullname="System.Diagnostics.TraceInternal">
+      <method signature="System.Void TraceEvent(System.Diagnostics.TraceEventType,System.Int32,System.String,System.Object[])"  body="stub" />
+  	</type>
+  </assembly>
+
 </linker>

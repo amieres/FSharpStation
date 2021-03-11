@@ -1,30 +1,30 @@
 #nowarn "3242"
-////-d:DLL -d:FSharpStation1613067960900 -d:TEE -d:WEBSHARPER -d:WEBSHARPER47
+////-d:DLL -d:FSharpStation1614103290560 -d:TEE -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461"
-//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
+//#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Core.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll"
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.Web.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Core.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Collections.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Main.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.JQuery.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.JavaScript.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Web.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Sitelets.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper\lib\net461\WebSharper.Control.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
-//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper47\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Core.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Collections.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.InterfaceGenerator.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Main.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JQuery.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.JavaScript.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Web.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Sitelets.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461\WebSharper.Control.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\HtmlAgilityPack.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Runtime.dll"
+//#r @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper.UI\lib\net461\WebSharper.UI.Templating.Common.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1613067960900
+//#define FSharpStation1614103290560
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -158,16 +158,81 @@ namespace FsRoot
                 | __             -> printfn "%A" v
             
             //#define TEE
-            [< Inline "(function (n) { return n.getFullYear() + '-' + ('0'+(n.getMonth()+1)).slice(-2) + '-' +  ('0'+n.getDate()).slice(-2) + ' '+('0'+n.getHours()).slice(-2)+ ':'+('0'+n.getMinutes()).slice(-2)+ ':'+('0'+n.getSeconds()).slice(-2)+ ':'+('00'+n.getMilliseconds()).slice(-3) })(new Date(Date.now()))" >]
-            let nowStamp() = 
-                let t = System.DateTime.UtcNow // in two steps to avoid Warning: The value has been copied to ensure the original is not mutated
-                t.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
+            type Dependency<'T>(def:'T) = member val D = def with get, set
             
-            let [<Inline>] inline traceT t v = tee (sprintf "%A" >> (fun s -> s.[..min 100 s.Length-1]) >> printfn "%s %s: %A" (nowStamp()) t) v
-            let [<Inline>] inline trace   v = traceT "trace" v
-            let [<Inline>] inline traceI  v = trace          v |> ignore
+            (*
+            module SimplerDependency =
+                let log   = Dependency(fun v -> printfn "Log   : %s" v)
+                let debug = Dependency(fun v -> printfn "Debug : %s" v)
             
+                let doSomething () =
+                    log  .D "Hello"
+                    debug.D "Hello2"
+            
+                log  .D <- fun v -> printfn "LogX  : %s" v
+                debug.D <- fun v -> printfn "DebugX: %s" v
+            
+                doSomething()
+            
+            
+            module CommonDefs =
+            
+                type Reservation = {
+                    Date        : System.DateTime
+                    Quantity    : int
+                    IsAccepted  : bool
+                }
+            
+                module Globals =
+                    let capacity         = Dependency 100
+                    let connectionString = Dependency "some connection string"
+            
+                module DB =
+                    let readReservations  = Dependency (fun (connectionString:string) (date:System.DateTime   ) -> failwith "readReservations Not Implemented"  : Reservation list)
+                    let createReservation = Dependency (fun (connectionString:string) (reservation:Reservation) -> failwith "createReservation Not implemented" : int)
+            
+                module Log =
+                    let   log fmt = Printf.ksprintf (printfn "%s") fmt
+                    type ILogger  = abstract Log : Printf.StringFormat<'a,unit> -> 'a
+                    let   logger  = Dependency { new ILogger with member __.Log fmt = log fmt }
+            
+            module Reservation =
+                open CommonDefs
+            
+                let tryAccept reservation =
+                    let reservedSeats =
+                        DB.readReservations.D   Globals.connectionString.D reservation.Date |> List.sumBy (fun x -> x.Quantity)
+                    if reservedSeats + reservation.Quantity <= Globals.capacity.D
+                    then DB.createReservation.D Globals.connectionString.D { reservation with IsAccepted = true } |> Some
+                    else None
+            
+                Globals.capacity        .D <-  25
+                DB.readReservations     .D <- (fun cs _ -> printfn "readReservations  Connection String: %s" cs;[]        ) 
+                DB.createReservation    .D <- (fun cs r -> printfn "createReservation Connection String: %s" cs;r.Quantity) 
+                Globals.connectionString.D <- "new Connx Str"
+            
+                {
+                    Date        = System.DateTime.Today
+                    Quantity    = 5
+                    IsAccepted  = false
+                } 
+                |> tryAccept
+                |> printfn "%A"
+            
+            //*)
             module Log =
+                let printer     = Dependency (fun (txt:string) -> System.Console.WriteLine txt )
+                let printfn fmt = Printf.ksprintf printer.D fmt
+            
+                [< Inline "(function (n) { return n.getFullYear() + '-' + ('0'+(n.getMonth()+1)).slice(-2) + '-' +  ('0'+n.getDate()).slice(-2) + ' '+('0'+n.getHours()).slice(-2)+ ':'+('0'+n.getMinutes()).slice(-2)+ ':'+('0'+n.getSeconds()).slice(-2)+ '.'+('00'+n.getMilliseconds()).slice(-3) })(new Date(Date.now()))" >]
+                let nowStamp() = 
+                    let t = System.DateTime.Now // in two steps to avoid Warning: The value has been copied to ensure the original is not mutated
+                    t.ToString("yyyy-MM-dd HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture)
+            
+                let [<Inline>] inline traceT t v = tee (sprintf "%A" >> (fun s -> s.[..min 100 s.Length-1]) >> printfn "%s %s: %A" (nowStamp()) t) v
+                let [<Inline>] inline trace    v = traceT "trace" v
+                let [<Inline>] inline traceI   v = trace          v |> ignore
+            
                 let [<Inline>] inline In     n f   =      (traceT (sprintf "%s in " n)) >> f
                 let [<Inline>] inline Out    n f   = f >> (traceT (sprintf "%s out" n))
                 let [<Inline>] inline InA    n f p = async { return! In  n f p }
@@ -189,10 +254,30 @@ namespace FsRoot
                 let [<Inline>] inline TimeItA n f p = async {
                     printfn "%s Starting %s" (nowStamp()) n
                     let start = System.DateTime.UtcNow.Ticks
-                    do! f p
+                    try
+                        do! f p
+                    finally
+                        let elapsedSpan = new System.TimeSpan(System.DateTime.UtcNow.Ticks - start)
+                        printfn "%s Finished %s %0d:%02d:%02d.%03d" (nowStamp()) n (int elapsedSpan.TotalHours) elapsedSpan.Minutes elapsedSpan.Seconds elapsedSpan.Milliseconds
+                }
+            
+                let [<Inline>] inline TimeItAsync n a = async {
+                    printfn "%s Starting %s" (nowStamp()) n
+                    let start = System.DateTime.UtcNow.Ticks
+                    let! res = a
                     let elapsedSpan = new System.TimeSpan(System.DateTime.UtcNow.Ticks - start)
                     printfn "%s Finished %s %0d:%02d:%02d.%03d" (nowStamp()) n (int elapsedSpan.TotalHours) elapsedSpan.Minutes elapsedSpan.Seconds elapsedSpan.Milliseconds
+                    return res
                 }
+            
+                let [<Inline>] inline TimeItLazy n (l:Lazy<_>) = lazy (
+                    printfn "%s Starting %s" (nowStamp()) n
+                    let start = System.DateTime.UtcNow.Ticks
+                    let res = l.Force()
+                    let elapsedSpan = new System.TimeSpan(System.DateTime.UtcNow.Ticks - start)
+                    printfn "%s Finished %s %0d:%02d:%02d.%03d" (nowStamp()) n (int elapsedSpan.TotalHours) elapsedSpan.Minutes elapsedSpan.Seconds elapsedSpan.Milliseconds
+                    res
+                )
             
             // issues with websharper Type not found in JavaScript compilation: System.Collections.Generic.IDictionary`2
             #if !WEBSHARPER
@@ -819,7 +904,11 @@ namespace FsRoot
                 
                 let mutable observers : obj list = []
                 
-                let domRect2Tuple (r:Dom.Rect) = (r.Top, r.Left, r.Width, r.Height)
+            #if WEBSHARPER47    
+                let domRect2Tuple (r:Dom.Rect   ) = (r.Top, r.Left, r.Width, r.Height)
+            #else
+                let domRect2Tuple (r:Dom.DomRect) = (r.Top, r.Left, r.Width, r.Height)
+            #endif
                 
                 let [< Inline "$_el.isConnected" >] isValidElement (_el:Dom.Element) = true
                 

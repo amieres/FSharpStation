@@ -1,11 +1,12 @@
 (function(Global)
 {
  "use strict";
- var FsRootDll,LibraryJS,WsTranslatorLoaderPlugIn,SC$1,WebSharper,UI,FromView,View,FsRoot,LibraryJS$1,WsTranslatorLoader,UI$1,WsTranslatorLoader_GeneratedPrintf,AppFramework,Concurrency;
+ var FsRootDll,LibraryJS,WsTranslatorLoaderPlugIn,SC$1,AppFramework,WebSharper,UI,FromView,View,FsRoot,LibraryJS$1,WsTranslatorLoader,UI$1,WsTranslatorLoader_GeneratedPrintf,Concurrency;
  FsRootDll=Global.FsRootDll=Global.FsRootDll||{};
  LibraryJS=FsRootDll.LibraryJS=FsRootDll.LibraryJS||{};
  WsTranslatorLoaderPlugIn=LibraryJS.WsTranslatorLoaderPlugIn=LibraryJS.WsTranslatorLoaderPlugIn||{};
  SC$1=Global.StartupCode$WsTranslatorLoaderPlugIn$WsTranslatorLoaderPlugIn=Global.StartupCode$WsTranslatorLoaderPlugIn$WsTranslatorLoaderPlugIn||{};
+ AppFramework=LibraryJS&&LibraryJS.AppFramework;
  WebSharper=Global.WebSharper;
  UI=WebSharper&&WebSharper.UI;
  FromView=UI&&UI.FromView;
@@ -15,12 +16,16 @@
  WsTranslatorLoader=LibraryJS$1&&LibraryJS$1.WsTranslatorLoader;
  UI$1=WsTranslatorLoader&&WsTranslatorLoader.UI;
  WsTranslatorLoader_GeneratedPrintf=Global.WsTranslatorLoader_GeneratedPrintf;
- AppFramework=LibraryJS&&LibraryJS.AppFramework;
  Concurrency=WebSharper&&WebSharper.Concurrency;
  WsTranslatorLoaderPlugIn.plugInAdded=function()
  {
   SC$1.$cctor();
   return SC$1.plugInAdded;
+ };
+ WsTranslatorLoaderPlugIn.ifThen=function(cond,actN)
+ {
+  if(cond==="1")
+   AppFramework.callFunction(null,null,actN);
  };
  WsTranslatorLoaderPlugIn.lensChannelV=function(ch,lm)
  {
@@ -67,7 +72,7 @@
     };
    }(Global.id))([$1[0],$1[1]]);
   },WsTranslatorLoader.wasmStatusV().get_View());
-  SC$1.plugInAdded=AppFramework.addPlugIn((b=AppFramework.plugin(),b.AddDoc0(b.AddDoc0(b.AddDoc0(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddViw(b.AddViw(b.Name(b.Yield(),"WsTranslatorPlugIn"),"Status",WsTranslatorLoaderPlugIn.statusW()),"DebugMode",View.Map(Global.String,UI$1.debugV().get_View())),"JS",UI$1.jsV()),"WasmPath",UI$1.wasmPathTV()),"Command",UI$1.commandV()),"Source",UI$1.codeV()),"Options",UI$1.optsV()),"stdout",WsTranslatorLoaderPlugIn.lensChannelV("stdout",UI$1.detailsV())),"stderr",WsTranslatorLoaderPlugIn.lensChannelV("stderr",UI$1.detailsV())),"Timings",WsTranslatorLoaderPlugIn.lensChannelV("Timings",UI$1.detailsV())),"WASM",WsTranslatorLoaderPlugIn.lensChannelV("WASM",UI$1.detailsV())),"LoadAsWorker",function()
+  SC$1.plugInAdded=AppFramework.addPlugIn((b=AppFramework.plugin(),b.AddDoc0(b.AddDoc0(b.AddDoc0(b.AddAct2(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddAct(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddVar(b.AddViw(b.AddViw(b.AddViw(b.AddViw(b.AddViw(b.Name(b.Yield(),"WsTranslatorPlugIn"),"Status",WsTranslatorLoaderPlugIn.statusW()),"DebugMode",View.Map(Global.String,UI$1.debugV().get_View())),"presences",UI$1.presencesW()),"errorsJson",UI$1.fileErrorsW()),"editorResp",UI$1.editorRespW()),"JS",UI$1.jsV()),"WasmPath",UI$1.wasmPathTV()),"Command",UI$1.commandV()),"Source",UI$1.codeV()),"Options",UI$1.optsV()),"stdout",WsTranslatorLoaderPlugIn.lensChannelV("stdout",UI$1.detailsV())),"stderr",WsTranslatorLoaderPlugIn.lensChannelV("stderr",UI$1.detailsV())),"Timings",WsTranslatorLoaderPlugIn.lensChannelV("Timings",UI$1.detailsV())),"WASM",WsTranslatorLoaderPlugIn.lensChannelV("WASM",UI$1.detailsV())),"getPresences",UI$1.getPresencesV()),"fileName",UI$1.fileNameV()),"editorCmd",UI$1.editorCmdV()),"LoadAsWorker",function()
   {
    UI$1.actLoadAsWorker();
   }),"TerminateWorker",function()
@@ -103,6 +108,12 @@
   }),"EvalFS",function()
   {
    Concurrency.Start(UI$1.actEvalFS(),null);
-  }),"Tabs",UI$1.tabsDoc),"Details",UI$1.detailsDoc),"Form",UI$1.mainDoc)));
+  }),"ifThen",function(c)
+  {
+   return function(a)
+   {
+    return WsTranslatorLoaderPlugIn.ifThen(c,a);
+   };
+  },"Cond","Action"),"Tabs",UI$1.tabsDoc),"Details",UI$1.detailsDoc),"Form",UI$1.mainDoc)));
  };
 }(self));

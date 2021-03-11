@@ -35,7 +35,8 @@ target        ViewJS "n => n.includes('main ')?n:'main Docs "" ""'" Snippets.cur
 
 varTmp          Var ""
 
-actSaveFsxFile  Action AF.SetVarDirect "WsTranslatorPlugIn.Source"      Snippets.curSnp_content
+fsCombined     ViewJS "(a,b,nm)=> a + '\n#line 1 @""' + nm + '""\n' + b" Snippets.codeRequired Snippets.curSnp_content Snippets.curSnp_name
+actSaveFsFile  Action AF.SetVarDirect "WsTranslatorPlugIn.Source"      fsCombined
 
 //viwSetFSHARPBIN ViewJS "(vn, vl    , _st) => @{App}.wasm_setenv(vn, vl) )" "FSHARP_COMPILER_BIN" "/tmp" wasmStatus
 //actSetFSHARPBIN Action AF.SetVarDirect "lytDemo.varTmp"      viwSaveFsxFile
@@ -44,18 +45,48 @@ actSaveFsxFile  Action AF.SetVarDirect "WsTranslatorPlugIn.Source"      Snippets
 actTranslate   Actions
 : Action  WsTranslatorPlugIn.Clean
 : Action  AF.SetVarDirect "WsTranslatorPlugIn.Output"  "Translating..."
-: Actions  actSaveFsxFile WsTranslatorPlugIn.Translate
+: Action   AF.SetVar "Snippets.presences"               "--"
+: Action AF.DelayAction  "100" "lytDemo.actTranslate2"
+actTranslate2  Actions
+: Actions  actSaveFsFile WsTranslatorPlugIn.Translate
 : Action  AF.SetVarDirect "lytDemo.wasmStatus"  ""
 
 actCompile  Actions
 : Action  WsTranslatorPlugIn.Clean
 : Action  AF.SetVarDirect "WsTranslatorPlugIn.Output"  "Compiling..."
-: Actions  actSaveFsxFile WsTranslatorPlugIn.Compile
+: Action  AF.SetVar "Snippets.presences"               "--"
+: Action  AF.DelayAction  "100" "lytDemo.actCompile2"
+actCompile2  Actions
+: Actions actSaveFsFile WsTranslatorPlugIn.Compile
 : Action  AF.SetVarDirect "lytDemo.wasmStatus"  ""
 
+actCheck  Actions
+: Action  WsTranslatorPlugIn.Clean
+: Action  AF.SetVarDirect "WsTranslatorPlugIn.Output"  "Checking..."
+: Action  AF.SetVar "Snippets.presences"               "--"
+: Action  AF.DelayAction  "100" "lytDemo.actCheck2"
+actCheck2 Actions
+: Actions actSaveFsFile WsTranslatorPlugIn.Check
+: Action  AF.SetVarDirect "lytDemo.wasmStatus"  ""
+
+actFSINext ViewJS "a => 'lytDemo.actFSI' + (a == '' ? '2' : '1')" Snippets.getPresences
+
 actFSI  Actions
-: Action   AF.SetVarDirect "WsTranslatorPlugIn.stderr"  ""
-: Actions  actSaveFsxFile WsTranslatorPlugIn.EvalFS
+: Action  WsTranslatorPlugIn.Clean
+: Action   AF.SetVar "WsTranslatorPlugIn.getPresences"  Snippets.getPresences
+: Action AF.DelayAction  "10" actFSINext
+actFSI1  Actions
+: Action   AF.SetVar "Snippets.presences"               WsTranslatorPlugIn.presences
+: Action AF.DelayAction  "1000" "lytDemo.actFSI1b"
+actFSI1b  Actions
+: Action   AF.SetVar "Snippets.presences"               WsTranslatorPlugIn.presences
+: Action AF.DelayAction  "100" "lytDemo.actFSI2"
+actFSI2  Actions
+: Action   AF.SetVar "WsTranslatorPlugIn.Source"        fsCombined
+: Action AF.DelayAction  "100" "lytDemo.actFSI2b"
+actFSI2b Actions
+: Action   AF.SetVar "WsTranslatorPlugIn.Source"        fsCombined
+: Actions  WsTranslatorPlugIn.EvalFS
 
 viwRun   ViewJS "(function(n,_st) { var r = @{App}.runAsm(n); return r == undefined ? '' : r })" executable wasmStatus
 actRun   Actions
@@ -69,7 +100,7 @@ actPrintJS Actions
 : Action AF.SetVarDirect "lytDemo.wasmStatus"  ""
 
 varJS Var ""
-viwRunJS0 ViewJS "(function(code, suf) { return code == ''? '' : code.endsWith(suf)? code : code.replace(/console\.log\(/g, 'Module.print(') + suf; }) " WsTranslatorPlugIn.JS "StartupCode$WasmTest$source.$cctor();"
+viwRunJS0 ViewJS "(function(code, suf) { return code == ''? '' : code.endsWith(suf)? code : code.replace(/console\.log\(/g, 'Module.print(') + suf; }) " WsTranslatorPlugIn.JS "self['StartupCode$WasmTest$@{Snippets.curSnp_name}'].$cctor();"
 actRunJS2 Actions WsTranslatorPlugIn.EvalJS
 actRunJS Actions
 : Action AF.SetVarDirect "WsTranslatorPlugIn.stdout" ""
@@ -82,8 +113,9 @@ actFibo2 Actions
 : Action AF.SetVarDirect "lytDemo.varJS"       viwFibo
 : Action AF.SetVarDirect "lytDemo.wasmStatus"  ""
 actFibo Actions
-: Action AF.SetVarDirect "lytDemo.wasmStatus"  "fibonacci..."
-: Action AF.DelayAction  "100" "lytDemo.actFibo2"
+: Action AF.SetVarDirect "WsTranslatorPlugIn.stdout" Snippets.codeRequired
+//: Action AF.SetVarDirect "lytDemo.wasmStatus"  "fibonacci..."
+//: Action AF.DelayAction  "100" "lytDemo.actFibo2"
 
 viwInstance ViewJS "n => n == '' ? 'none' : '' " WsTranslatorPlugIn.WasmPath
 actLoadWASM Actions
@@ -151,7 +183,25 @@ list div "display: flex;flex-direction: column;height:100%;" File
 : div "overflow:auto;width:100%" Snippets.snippets_list
 : Docs addRemove
 
-editorFS  Doc    Monaco.editor Snippets.curSnp_content     "fsharp"     "vs-dark" ""
+TriggerAnnots Doc
+: Doc       AF.TrigAction   Snippets.curSnp_name
+::  Actions
+::: Action  AF.SetVarDirect "WsTranslatorPlugIn.fileName"   Snippets.curSnp_name
+
+cmdV         Var    ""
+cmdW         ViewJS "(t, pre )=> (console.log('cmdW', t), t == '' ? t    : (a = t.split(' '), a[0] + ' ' + (parseInt(a[1]) + pre.split('\n').length + 1) + ' ' + a[2]) )" cmdV Snippets.codeRequired
+cmdVW        ViewJS "(t, loaded) =>  t == '' || loaded == 'false' ? 0 : 1 " cmdV viwIsLoaded
+
+TriggerCmd Doc
+: Doc       AF.TrigAction   cmdW
+::  Action  WsTranslatorPlugIn.ifThen cmdVW
+::: Actions
+:::: Action  AF.SetVarDirect "WsTranslatorPlugIn.Source"     fsCombined
+:::: Action  AF.SetVarDirect "WsTranslatorPlugIn.editorCmd"  cmdW
+
+respW ViewJS "v =>(console.log(v), v)"  WsTranslatorPlugIn.editorResp cmdV
+
+editorFS  Doc    Monaco.editor5 Snippets.curSnp_content     "fsharp"    WsTranslatorPlugIn.errorsJson  cmdV  respW
 editorJS  Doc    Monaco.editor WsTranslatorPlugIn.JS       "javascript" "vs-dark" ""
 editorOp  Doc    Monaco.editor WsTranslatorPlugIn.Options  ""           "vs-dark" ""
 editorCm  Doc    Monaco.editor WsTranslatorPlugIn.Command  ""           "vs-dark" ""
@@ -198,7 +248,7 @@ editors span "width:100%;display:flex;flex-direction: row;flex:0 0;background: l
 : button "click=@{actCmEditor};style=@{viwCmButton}" "Command"
 : button "click=@{actMdEditor};style=@{viwMdButton}" "Markdown"
 
-fshuiEditor div "width:100%;display:flex;flex-direction: column;flex:1" editors
+fshuiEditor div "width:100%;display:flex;flex-direction: column;flex:1" editors TriggerAnnots TriggerCmd
 :  div       "class=relative;style=@{viwFSStyle}" editorFS
 :  div       "class=relative;style=@{viwJSStyle}" editorJS
 :  div       "class=relative;style=@{viwOpStyle}" editorOp
@@ -220,11 +270,13 @@ wasmOutputDoc div "display: flex; flex-direction: column; overflow:hidden; flex:
 RightX div "display: flex; flex-direction: column; overflow:hidden; flex: 1 1 0%" wasmOutputDoc
 
 tryMe span "width:100%"
+: button    "click=@{actCheck}    ;class=@{applyColor}"  "Check"
+: Docs " "
+: button    "click=@{actFSI}      ;class=@{applyColor}"  "FSI"
+: Docs " "
 : button    "click=@{actCompile}  ;class=@{applyColor}"  "Compile"
 : Docs " "
 : button    "click=@{actRun}      ;class=@{applyColor}"  "Run"
-: Docs " "
-: button    "click=@{actFSI}      ;class=@{applyColor}"  "FSI"
 : Docs " "
 : button    "click=@{actTranslate};class=@{applyColor}"  "Translate to JS"
 : Docs " "

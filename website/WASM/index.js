@@ -22,11 +22,11 @@ requirejs([
         ,"/FShUI/WebSharper/WebSharper.UI.js?h=-1840229558"
         ,"/FShUI/WebSharper/WebSharper.UI.Templating.Runtime.js?h=-177383966"      
         ,"/FShUI/LayoutEngine.js"
-        ,"/FShUI/MonacoPlugIn.js"
+        ,"/WASM/v47/MonacoPlugIn.js"
         ,"/WASM/v47/WsTranslator47.js"
         ,"/WASM/v47/WsTranslatorLoader.js"
         ,"/WASM/v47/WsTranslatorLoaderPlugIn.js"
-        ,"/FShUI/SnippetsUI.js"
+        ,"/WASM/v45/SnippetsUI.js"
     ], function() {
         IntelliFactory.Runtime.ScriptBasePath = 'FShUI/WebSharper/';
         IntelliFactory.Runtime.Start();
