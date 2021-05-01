@@ -1,5 +1,5 @@
 #nowarn "3242"
-////-d:FSharpStation1614783634688 -d:WEBSHARPER
+////-d:FSharpStation1615673368698 -d:WEBSHARPER
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
 //#I @"D:\Abe\CIPHERWorkspace\FSharpStation\packages\WebSharper\lib\net461"
@@ -25,7 +25,7 @@
 //#r @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\mscorlib.dll"
 //#nowarn "3242"
 /// Root namespace for all code
-//#define FSharpStation1614783634688
+//#define FSharpStation1615673368698
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -146,47 +146,47 @@ namespace FsRoot
                                     )
                         member this.applyChildren children =
                             children
-                            |> Seq.fold (fun state (t:#ITransformSuperDocCtor) -> t.Transform state) this
+                            |> Seq.fold (fun state (t:#ITransform) -> t.Transform state) this
                         member this.getSuperDoc children = (this.applyChildren children).getSuperDoc()
                         static member New f = SuperDocCtor(f,[||],[||])
             
-                and SuperDoc  = 
+                and  SuperDoc  = 
                     SuperDoc of (unit -> Doc)
                         member this.Transform (SuperDocCtor(f, atts, docs)) = SuperDocCtor(f, atts, Array.append docs (Array.singleton this) )
-                        interface ITransformSuperDocCtor with member this.Transform c = this.Transform c
-                        member this.T     = this :> ITransformSuperDocCtor
+                        interface ITransform with member this.Transform c = this.Transform c
+                        member this.T     = this :> ITransform
                         member this.Doc() = match this with SuperDoc f -> f()
-                        [< Inline >] static member inline ( +  ) (a:SuperDoc, b:     string ) = [| a.T ; (SuperText b).T |]
-                        [< Inline >] static member inline ( +  ) (a:SuperDoc, b:View<string>) = [| a.T ; (SuperView b).T |]
-                        [< Inline >] static member inline ( +  ) (a:SuperDoc, b:Var< string>) = [| a.T ; (SuperVar  b).T |]
-                        [< Inline >] static member inline ( +  ) (a:SuperDoc, b:SuperText   ) = [| a.T ;            b .T |]
-                        [< Inline >] static member inline ( +  ) (a:SuperDoc, b:SuperAttr   ) = [| a.T ;            b .T |]
-                        [< Inline >] static member inline ( +  ) (a:SuperDoc, b:SuperDoc    ) = [| a.T ;            b .T |]
-                        [< Inline >] static member inline ( +  ) (l:ITransformSuperDocCtor [], b:SuperDoc) : ITransformSuperDocCtor [] = Array.append l [| b.T |]
-                        [< Inline >] static member inline ( ++ ) (l:ITransformSuperDocCtor [], b:SuperDoc) : ITransformSuperDocCtor [] = Array.append l [| b.T |]
-                        [< Inline >] static member inline ( ++ ) (a:SuperDoc, b:_           ) = a + SuperText " " + b
+                        [< Inline >] static member inline ( +  ) (a:SuperDoc    , b:     string ) = [| a.T ; (SuperText b).T |]
+                        [< Inline >] static member inline ( +  ) (a:SuperDoc    , b:View<string>) = [| a.T ; (SuperView b).T |]
+                        [< Inline >] static member inline ( +  ) (a:SuperDoc    , b:Var< string>) = [| a.T ; (SuperVar  b).T |]
+                        [< Inline >] static member inline ( +  ) (a:SuperDoc    , b:SuperText   ) = [| a.T ;            b .T |]
+                        [< Inline >] static member inline ( +  ) (a:SuperDoc    , b:SuperAttr   ) = [| a.T ;            b .T |]
+                        [< Inline >] static member inline ( +  ) (a:SuperDoc    , b:SuperDoc    ) = [| a.T ;            b .T |]
+                        [< Inline >] static member inline ( +  ) (l:ITransform[], b:SuperDoc    ) = Array.append l   [| b .T |]
+                        [< Inline >] static member inline ( ++ ) (l:ITransform[], b:SuperDoc    ) = Array.append l   [| b .T |]
+                        [< Inline >] static member inline ( ++ ) (a:SuperDoc    , b:_           ) = a + SuperText " " + b
             
-                and SuperAttr = 
+                and  SuperAttr = 
                     SuperAttr of (unit -> Attr)
                         member this.Transform (SuperDocCtor(f, atts, docs)) = SuperDocCtor(f, Array.append atts (Array.singleton this), docs )
-                        interface ITransformSuperDocCtor with member this.Transform c = this.Transform c
-                        member this.T = this :> ITransformSuperDocCtor
-                        [< Inline >] static member inline ( +  ) (a:SuperAttr, b:     string ) = [| a.T ; (SuperText b).T |]
-                        [< Inline >] static member inline ( +  ) (a:SuperAttr, b:View<string>) = [| a.T ; (SuperView b).T |]
-                        [< Inline >] static member inline ( +  ) (a:SuperAttr, b:Var< string>) = [| a.T ; (SuperVar  b).T |]
-                        [< Inline >] static member inline ( +  ) (a:SuperAttr, b:SuperText   ) = [| a.T ;            b .T |]
-                        [< Inline >] static member inline ( +  ) (a:SuperAttr, b:SuperAttr   ) = [| a.T ;            b .T |]
-                        [< Inline >] static member inline ( +  ) (a:SuperAttr, b:SuperDoc    ) = [| a.T ;            b .T |]
-                        [< Inline >] static member inline ( +  ) (l:ITransformSuperDocCtor[], b:SuperAttr) : ITransformSuperDocCtor[] = Array.append l [| b.T |]
-            //            [< Inline >] static member inline ( ++ ) (l:ITransformSuperDocCtor[], b:SuperAttr) : ITransformSuperDocCtor[] = Array.append l [| b.T |]
-            //            [< Inline >] static member inline ( ++ ) (a:SuperAttr, b:_           ) = a + SuperText " " + b
+                        interface ITransform with member this.Transform c = this.Transform c
+                        member this.T = this :> ITransform
+                        [< Inline >] static member inline ( +  ) (a:SuperAttr   , b:     string ) = [| a.T ; (SuperText b).T |]
+                        [< Inline >] static member inline ( +  ) (a:SuperAttr   , b:View<string>) = [| a.T ; (SuperView b).T |]
+                        [< Inline >] static member inline ( +  ) (a:SuperAttr   , b:Var< string>) = [| a.T ; (SuperVar  b).T |]
+                        [< Inline >] static member inline ( +  ) (a:SuperAttr   , b:SuperText   ) = [| a.T ;            b .T |]
+                        [< Inline >] static member inline ( +  ) (a:SuperAttr   , b:SuperAttr   ) = [| a.T ;            b .T |]
+                        [< Inline >] static member inline ( +  ) (a:SuperAttr   , b:SuperDoc    ) = [| a.T ;            b .T |]
+                        [< Inline >] static member inline ( +  ) (l:ITransform[], b:SuperAttr   ) = Array.append l [| b.T |]
+                        //[< Inline >] static member inline ( ++ ) (l:ITransform[], b:SuperAttr) = Array.append l [| b.T |]
+                        //[< Inline >] static member inline ( ++ ) (a:SuperAttr, b:_           ) = a + SuperText " " + b
             
-                and  ITransformSuperDocCtor = abstract Transform: SuperDocCtor -> SuperDocCtor
+                and  ITransform = abstract Transform: SuperDocCtor -> SuperDocCtor
             
                 and SuperText =
-                | SuperText of               string 
-                | SuperView of          View<string>
-                | SuperVar  of          Var< string>
+                    | SuperText of               string 
+                    | SuperView of          View<string>
+                    | SuperVar  of          Var< string>
                     member this.Transform (SuperDocCtor(f, atts, docs)) = 
                         SuperDocCtor(f, atts,
                             match this with
@@ -197,7 +197,7 @@ namespace FsRoot
                             |> Array.singleton
                             |> Array.append docs
                         )
-                    member this.T = this :> ITransformSuperDocCtor
+                    member this.T = this :> ITransform
                     member this.V =
                         match this with
                         | SuperView w -> Var.Make w ignore
@@ -209,46 +209,56 @@ namespace FsRoot
                         | SuperVar  v -> v.View           
                         | SuperText t -> t                    |> View.Const
                     interface IView                  with member this.GetView  () = this.Txt()
-                    interface ITransformSuperDocCtor with member this.Transform c = this.Transform c
+                    interface ITransform with member this.Transform c = this.Transform c
                     //member this.Map   f = this.Txt().Map  f |> SuperView
                     //member this.BindW f = this.Txt().Bind f |> SuperView
                     //member this.Bind  f p = (this.Txt().Bind f p).Txt() |> SuperView
-                    [< Inline >] static member inline ( +  ) (a:     string , b:SuperText) =           b.Txt()   |> View.Map (fun   b -> a + b ) |> SuperView
-                    [< Inline >] static member inline ( +  ) (a:View<string>, b:SuperText) = (a      , b.Txt()) ||> View.Map2(fun a b -> a + b ) |> SuperView
-                    [< Inline >] static member inline ( +  ) (a:Var< string>, b:SuperText) = (a.View , b.Txt()) ||> View.Map2(fun a b -> a + b ) |> SuperView
-                    [< Inline >] static member inline ( +  ) (a:SuperText, b:     string ) =  a.Txt()            |> View.Map (fun a   -> a + b ) |> SuperView
-                    [< Inline >] static member inline ( +  ) (a:SuperText, b:View<string>) = (a.Txt(), b      ) ||> View.Map2(fun a b -> a + b ) |> SuperView
-                    [< Inline >] static member inline ( +  ) (a:SuperText, b:Var< string>) = (a.Txt(), b.View ) ||> View.Map2(fun a b -> a + b ) |> SuperView
-                    [< Inline >] static member inline ( +  ) (a:SuperText, b:SuperText   ) = (a.Txt(), b.Txt()) ||> View.Map2(fun a b -> a + b ) |> SuperView
-                    [< Inline >] static member inline ( +  ) (a:SuperText, b:SuperAttr   ) = [| a.T ;            b .T |]
-                    [< Inline >] static member inline ( +  ) (a:SuperText, b:SuperDoc    ) = [| a.T ;            b .T |]
-                    [< Inline >] static member inline ( +  ) (l:ITransformSuperDocCtor [], b:              SuperText) : ITransformSuperDocCtor[] = Array.append l [| b.T |]
-                    [< Inline >] static member inline ( ++ ) (l:ITransformSuperDocCtor [], b:     string            ) : ITransformSuperDocCtor[] = Array.append l [| (SuperText (         ((+)" ") b     )).T |]
-                    [< Inline >] static member inline ( ++ ) (l:ITransformSuperDocCtor [], b:View<string>           ) : ITransformSuperDocCtor[] = Array.append l [| (SuperView (View.Map ((+)" ") b     )).T |]
-                    [< Inline >] static member inline ( ++ ) (l:ITransformSuperDocCtor [], b:Var< string>           ) : ITransformSuperDocCtor[] = Array.append l [| (SuperView (View.Map ((+)" ") b.View)).T |]
-                    [< Inline >] static member inline ( ++ ) (l:ITransformSuperDocCtor [], b:              SuperText) : ITransformSuperDocCtor[] = Array.append l [| b.T |]
-                    [< Inline >] static member inline ( ++ ) (a:SuperText, b:SuperText   ) = (a.Txt(), b.Txt()) ||> View.Map2(         sprintf "%s %s"     ) |> SuperView
-                    [< Inline >] static member inline ( ++ ) (a:SuperText, b:     string ) =  a.Txt()            |> View.Map (fun a -> sprintf "%s %s" a b ) |> SuperView
-                    [< Inline >] static member inline ( ++ ) (a:SuperText, b:View<string>) = (a.Txt(), b      ) ||> View.Map2(         sprintf "%s %s"     ) |> SuperView
-                    [< Inline >] static member inline ( ++ ) (a:SuperText, b:Var< string>) = (a.Txt(), b.View ) ||> View.Map2(         sprintf "%s %s"     ) |> SuperView
-                    [< Inline >] static member inline ( ++ ) (a:     string , b:SuperText) =           b.Txt()   |> View.Map (fun b -> sprintf "%s %s" a b ) |> SuperView
-                    [< Inline >] static member inline ( ++ ) (a:View<string>, b:SuperText) = (a      , b.Txt()) ||> View.Map2(         sprintf "%s %s"     ) |> SuperView
-                    [< Inline >] static member inline ( ++ ) (a:Var< string>, b:SuperText) = (a.View , b.Txt()) ||> View.Map2(         sprintf "%s %s"     ) |> SuperView
+                    [< Inline >] static member inline ( +  ) (a:     string , b:SuperText   ) =           b.Txt()   |> View.Map (fun   b -> a + b ) |> SuperView
+                    [< Inline >] static member inline ( +  ) (a:View<string>, b:SuperText   ) = (a      , b.Txt()) ||> View.Map2(fun a b -> a + b ) |> SuperView
+                    [< Inline >] static member inline ( +  ) (a:Var< string>, b:SuperText   ) = (a.View , b.Txt()) ||> View.Map2(fun a b -> a + b ) |> SuperView
+                    [< Inline >] static member inline ( +  ) (a:SuperText   , b:     string ) =  a.Txt()            |> View.Map (fun a   -> a + b ) |> SuperView
+                    [< Inline >] static member inline ( +  ) (a:SuperText   , b:View<string>) = (a.Txt(), b      ) ||> View.Map2(fun a b -> a + b ) |> SuperView
+                    [< Inline >] static member inline ( +  ) (a:SuperText   , b:Var< string>) = (a.Txt(), b.View ) ||> View.Map2(fun a b -> a + b ) |> SuperView
+                    [< Inline >] static member inline ( +  ) (a:SuperText   , b:SuperText   ) = (a.Txt(), b.Txt()) ||> View.Map2(fun a b -> a + b ) |> SuperView
+                    [< Inline >] static member inline ( +  ) (a:SuperText   , b:SuperAttr   ) = [| a.T ;          b .T |]
+                    [< Inline >] static member inline ( +  ) (a:SuperText   , b:SuperDoc    ) = [| a.T ;          b .T |]
+                    [< Inline >] static member inline ( +  ) (l:ITransform[], b:   SuperText) = Array.append l [| b .T |]
+                    [< Inline >] static member inline ( ++ ) (l:ITransform[], b:     string ) = Array.append l [| (SuperText (         ((+)" ") b     )).T |]
+                    [< Inline >] static member inline ( ++ ) (l:ITransform[], b:View<string>) = Array.append l [| (SuperView (View.Map ((+)" ") b     )).T |]
+                    [< Inline >] static member inline ( ++ ) (l:ITransform[], b:Var< string>) = Array.append l [| (SuperView (View.Map ((+)" ") b.View)).T |]
+                    [< Inline >] static member inline ( ++ ) (l:ITransform[], b:   SuperText) = Array.append l [| b.T |]
+                    [< Inline >] static member inline ( ++ ) (a:SuperText   , b:SuperText   ) = (a.Txt(), b.Txt()) ||> View.Map2(         sprintf "%s %s"     ) |> SuperView
+                    [< Inline >] static member inline ( ++ ) (a:SuperText   , b:     string ) =  a.Txt()            |> View.Map (fun a -> sprintf "%s %s" a b ) |> SuperView
+                    [< Inline >] static member inline ( ++ ) (a:SuperText   , b:View<string>) = (a.Txt(), b      ) ||> View.Map2(         sprintf "%s %s"     ) |> SuperView
+                    [< Inline >] static member inline ( ++ ) (a:SuperText   , b:Var< string>) = (a.Txt(), b.View ) ||> View.Map2(         sprintf "%s %s"     ) |> SuperView
+                    [< Inline >] static member inline ( ++ ) (a:     string , b:SuperText   ) =           b.Txt()   |> View.Map (fun b -> sprintf "%s %s" a b ) |> SuperView
+                    [< Inline >] static member inline ( ++ ) (a:View<string>, b:SuperText   ) = (a      , b.Txt()) ||> View.Map2(         sprintf "%s %s"     ) |> SuperView
+                    [< Inline >] static member inline ( ++ ) (a:Var< string>, b:SuperText   ) = (a.View , b.Txt()) ||> View.Map2(         sprintf "%s %s"     ) |> SuperView
             
                 let W (x:Var<string>) = { new IView with member __.GetView() = x.View }
             
                 let mapW f (x:#IView) = x.GetView() |> View.Map f |> SuperView
             
-                let TA    f a = SuperAttr    (fun () -> f a)
-                let TT      a = SuperText    a
-                let TW      a = SuperView    a
-                let TV      a = SuperVar     a
-                let ( ! )   a = View.Const   a
-                let ( * ) f a = View.Apply f a
+                let inline T (p:#ITransform) = p :> ITransform
+                let inline TD            f a = SuperDoc   (fun () -> f a)
+                let inline TA            f a = SuperAttr  (fun () -> f a)
+                let inline TT              a = SuperText               a
+                let inline TW              a = SuperView               a
+                let inline TV              a = SuperVar                a
+                let inline ( ! )           a = View.Const              a
+                let inline ( * )         f a = View.Apply            f a
             
                 let inline getSuperDoc (s:SuperDocCtor) = s.getSuperDoc()
             
-                //let mainDoc() : SuperDoc = SuperNone
+                let htmlF    f  children = SuperDocCtor.New(           f                          ).getSuperDoc children
+                let htmlTag tag children = SuperDocCtor.New(fun a d -> Doc.Element tag a d  :> Doc).getSuperDoc children
+            
+                let inline div       ch  = htmlF Html.div    ch
+                let inline button    ch  = htmlF Html.button ch
+                let input (v:Var<string>) children = SuperDocCtor((fun attrs docs -> Doc.Input attrs v), [||], [||] ).getSuperDoc children
+            
+            module Test =
+                open SuperDoc
             
                 let worldW = TT "World"
                 let nameV  = Var.Create "Abe"
@@ -260,15 +270,10 @@ namespace FsRoot
             
                 let colorW =  ! (sprintf "color:%s") * nameV.View
             
-                let superElt f children : SuperDoc = (SuperDocCtor(f, [||], [||]) ).getSuperDoc children
-            
-                let inline T (p:#ITransformSuperDocCtor) : ITransformSuperDocCtor = p :> ITransformSuperDocCtor
-            
                 open WebSharper.JavaScript
             
-                let div p = superElt Html.div p
             
-                let HelloWorld  = div [ helloW ++ iAmW ]
+                let HelloWorld  = div ( helloW ++ iAmW + TA attr.style "background-color:coral" )
             
                 let HelloWorld2 = 
                     div [ 
@@ -278,22 +283,12 @@ namespace FsRoot
                         T (div [ "Hello" + worldW + "!, my name is" + nameV + "."  ])
                     ]
             
-                let input (v:Var<string>) children = SuperDocCtor((fun attrs docs -> Doc.Input attrs v), [||], [||] ).getSuperDoc children
-            
-                let eventClick act = SuperAttr(fun () -> Html.on.click act)
-                let htmlF   f   children = SuperDocCtor.New(f                                     ).getSuperDoc children
-                let htmlTag tag children = SuperDocCtor.New(fun a d -> Doc.Element tag a d  :> Doc).getSuperDoc children
-            
-                let button0 act children = SuperDocCtor.New(Html.button                           ).getSuperDoc (Seq.append [ eventClick act ] children)
-                let inline button    ch  = htmlF Html.button ch
-            
                 let helloAct _ _ = sprintf "Hello %s!"           nameV.Value |> JS.Alert 
                 let hiAct    _ _ = sprintf "Hi %s, How are you?" nameV.Value |> JS.Alert 
-                let buttonHello  = htmlTag   "button" ("Say Hello to my little" ++ TV nameV + eventClick helloAct + TA attr.style "font-weight:800" + TA attr.styleDyn colorW )
-                let buttonHi     =            button  ("Hi" ++ TV nameV ++ "How are you?"   + eventClick hiAct   )
-                let buttonMore   = htmlF Html.button  ("Hi" ++ TV nameV ++ "How are you?"   + eventClick hiAct   )
-                //button (fun _ _ -> sprintf "Hello %s!" nameV.Value |> JS.Alert ) [ -"Say Hello to " + nameV ]
-            
+                let buttonHello  = htmlTag   "button" ("Say Hello to my little" ++ TV nameV + TA Html.on.click helloAct + TA attr.style "font-weight:800" + TA attr.styleDyn colorW )
+                let buttonHi     =            button  ("Hi" ++ TV nameV ++ "How are you?"   + TA Html.on.click hiAct    )
+                let buttonMore   = htmlF Html.button  ("Hi" ++ TV nameV ++ "How are you?"   + TA Html.on.click hiAct    )
+             
                 let inpName      = input nameV []
              
                 let HelloWorld3  = div [ SuperView helloIamW  ]

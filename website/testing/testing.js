@@ -361,7 +361,7 @@ if (!console) {
 (function()
 {
  "use strict";
- var Global,FsRoot,TestingJS,SuperDoc,SuperDocCtor,SuperDoc$1,SuperAttr,SuperText,WebSharper,Operators,Arrays,Seq,UI,View,Obj,Var,Var$1,Utils,SC$1,Doc,JavaScript,JS,EventTarget,Node,Object,Enumerator,FromView,Snap,Pervasives,Unchecked,HtmlModule,attr,AttrProxy,DomUtility,T,Client,Templates,WindowOrWorkerGlobalScope,Abbrev,Fresh,ConcreteVar,AttrModule,Attrs,Elt,Array,Collections,Dictionary,Docs,DocElemNode,CharacterData,Updates,SC$2,List,T$1,SC$3,HashSet,An,Settings,Mailbox,SC$4,DynamicAttrNode,Attrs$1,Dyn,SC$5,DictionaryUtil,Prepare,Slice,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$6,Queue,Strings,SC$7,Concurrency,AppendList,Easing,AsyncBody,SC$8,CT,HashSet$1,HashSetUtil,Scheduler,CancellationTokenSource,DomNodes,Error,OperationCanceledException,Lazy,SC$9,LazyExtensionsProxy,LazyRecord,IntelliFactory,Runtime,console,$,Date;
+ var Global,FsRoot,TestingJS,SuperDoc,SuperDocCtor,SuperDoc$1,SuperAttr,SuperText,Test,WebSharper,Operators,Arrays,Seq,UI,View,Obj,Var,Var$1,Utils,Doc,SC$1,JavaScript,JS,EventTarget,Node,Object,Enumerator,FromView,Snap,Pervasives,Unchecked,DomUtility,AttrProxy,HtmlModule,attr,Client,Templates,WindowOrWorkerGlobalScope,Abbrev,Fresh,Elt,Array,AttrModule,ConcreteVar,Collections,Dictionary,Docs,T,DocElemNode,CharacterData,Updates,Attrs,SC$2,List,T$1,SC$3,HashSet,An,Settings,Mailbox,SC$4,Attrs$1,Dyn,SC$5,DynamicAttrNode,DictionaryUtil,Prepare,Slice,KeyCollection,Docs$1,RunState,NodeSet,Anims,SC$6,Queue,Strings,SC$7,Concurrency,AppendList,Easing,AsyncBody,SC$8,CT,HashSet$1,HashSetUtil,Scheduler,CancellationTokenSource,DomNodes,Error,OperationCanceledException,Lazy,SC$9,LazyExtensionsProxy,LazyRecord,IntelliFactory,Runtime,console,$,Date;
  Global=self;
  FsRoot=Global.FsRoot=Global.FsRoot||{};
  TestingJS=FsRoot.TestingJS=FsRoot.TestingJS||{};
@@ -370,6 +370,7 @@ if (!console) {
  SuperDoc$1=SuperDoc.SuperDoc=SuperDoc.SuperDoc||{};
  SuperAttr=SuperDoc.SuperAttr=SuperDoc.SuperAttr||{};
  SuperText=SuperDoc.SuperText=SuperDoc.SuperText||{};
+ Test=TestingJS.Test=TestingJS.Test||{};
  WebSharper=Global.WebSharper=Global.WebSharper||{};
  Operators=WebSharper.Operators=WebSharper.Operators||{};
  Arrays=WebSharper.Arrays=WebSharper.Arrays||{};
@@ -380,8 +381,8 @@ if (!console) {
  Var=UI.Var=UI.Var||{};
  Var$1=UI.Var$1=UI.Var$1||{};
  Utils=WebSharper.Utils=WebSharper.Utils||{};
- SC$1=Global.StartupCode$testing$testing=Global.StartupCode$testing$testing||{};
  Doc=UI.Doc=UI.Doc||{};
+ SC$1=Global.StartupCode$testing$testing=Global.StartupCode$testing$testing||{};
  JavaScript=WebSharper.JavaScript=WebSharper.JavaScript||{};
  JS=JavaScript.JS=JavaScript.JS||{};
  EventTarget=Global.EventTarget;
@@ -392,27 +393,27 @@ if (!console) {
  Snap=UI.Snap=UI.Snap||{};
  Pervasives=JavaScript.Pervasives=JavaScript.Pervasives||{};
  Unchecked=WebSharper.Unchecked=WebSharper.Unchecked||{};
+ DomUtility=UI.DomUtility=UI.DomUtility||{};
+ AttrProxy=UI.AttrProxy=UI.AttrProxy||{};
  HtmlModule=UI.HtmlModule=UI.HtmlModule||{};
  attr=HtmlModule.attr=HtmlModule.attr||{};
- AttrProxy=UI.AttrProxy=UI.AttrProxy||{};
- DomUtility=UI.DomUtility=UI.DomUtility||{};
- T=Enumerator.T=Enumerator.T||{};
  Client=UI.Client=UI.Client||{};
  Templates=Client.Templates=Client.Templates||{};
  WindowOrWorkerGlobalScope=Global.WindowOrWorkerGlobalScope;
  Abbrev=UI.Abbrev=UI.Abbrev||{};
  Fresh=Abbrev.Fresh=Abbrev.Fresh||{};
- ConcreteVar=UI.ConcreteVar=UI.ConcreteVar||{};
- AttrModule=UI.AttrModule=UI.AttrModule||{};
- Attrs=UI.Attrs=UI.Attrs||{};
  Elt=UI.Elt=UI.Elt||{};
  Array=UI.Array=UI.Array||{};
+ AttrModule=UI.AttrModule=UI.AttrModule||{};
+ ConcreteVar=UI.ConcreteVar=UI.ConcreteVar||{};
  Collections=WebSharper.Collections=WebSharper.Collections||{};
  Dictionary=Collections.Dictionary=Collections.Dictionary||{};
  Docs=UI.Docs=UI.Docs||{};
+ T=Enumerator.T=Enumerator.T||{};
  DocElemNode=UI.DocElemNode=UI.DocElemNode||{};
  CharacterData=Global.CharacterData;
  Updates=UI.Updates=UI.Updates||{};
+ Attrs=UI.Attrs=UI.Attrs||{};
  SC$2=Global.StartupCode$WebSharper_UI$DomUtility=Global.StartupCode$WebSharper_UI$DomUtility||{};
  List=WebSharper.List=WebSharper.List||{};
  T$1=List.T=List.T||{};
@@ -422,10 +423,10 @@ if (!console) {
  Settings=Client.Settings=Client.Settings||{};
  Mailbox=Abbrev.Mailbox=Abbrev.Mailbox||{};
  SC$4=Global.StartupCode$WebSharper_UI$Abbrev=Global.StartupCode$WebSharper_UI$Abbrev||{};
- DynamicAttrNode=UI.DynamicAttrNode=UI.DynamicAttrNode||{};
  Attrs$1=Client.Attrs=Client.Attrs||{};
  Dyn=Attrs$1.Dyn=Attrs$1.Dyn||{};
  SC$5=Global.StartupCode$WebSharper_UI$Attr_Client=Global.StartupCode$WebSharper_UI$Attr_Client||{};
+ DynamicAttrNode=UI.DynamicAttrNode=UI.DynamicAttrNode||{};
  DictionaryUtil=Collections.DictionaryUtil=Collections.DictionaryUtil||{};
  Prepare=Templates.Prepare=Templates.Prepare||{};
  Slice=WebSharper.Slice=WebSharper.Slice||{};
@@ -479,6 +480,17 @@ if (!console) {
    $0:View.Map(f,x.FsRoot_TestingJS_SuperDoc_IView$GetView())
   });
  };
+ SuperDoc.T=Global.id;
+ SuperDoc.TD=function(f,a)
+ {
+  return new SuperDoc$1({
+   $:0,
+   $0:function()
+   {
+    return f(a);
+   }
+  });
+ };
  SuperDoc.TA=function(f,a)
  {
   return new SuperAttr({
@@ -522,59 +534,21 @@ if (!console) {
  {
   return s.getSuperDoc$1();
  };
- SuperDoc.worldW=function()
+ SuperDoc.htmlF=function(f,children)
  {
-  SC$1.$cctor();
-  return SC$1.worldW;
+  return SuperDocCtor.New(f).getSuperDoc(children);
  };
- SuperDoc.nameV=function()
+ SuperDoc.htmlTag=function(tag,children)
  {
-  SC$1.$cctor();
-  return SC$1.nameV;
+  return SuperDocCtor.New((Runtime.Curried3(Doc.Element))(tag)).getSuperDoc(children);
  };
- SuperDoc.helloW=function()
+ SuperDoc.div=function(ch)
  {
-  SC$1.$cctor();
-  return SC$1.helloW;
+  return SuperDoc.htmlF((Runtime.Curried3(Doc.Element))("div"),ch);
  };
- SuperDoc.iAmW=function()
+ SuperDoc.button=function(ch)
  {
-  SC$1.$cctor();
-  return SC$1.iAmW;
- };
- SuperDoc.helloIamW=function()
- {
-  SC$1.$cctor();
-  return SC$1.helloIamW;
- };
- SuperDoc.colorW=function()
- {
-  SC$1.$cctor();
-  return SC$1.colorW;
- };
- SuperDoc.superElt=function(f,children)
- {
-  return(new SuperDocCtor({
-   $:0,
-   $0:f,
-   $1:[],
-   $2:[]
-  })).getSuperDoc(children);
- };
- SuperDoc.T=Global.id;
- SuperDoc.div=function(p)
- {
-  return SuperDoc.superElt((Runtime.Curried3(Doc.Element))("div"),p);
- };
- SuperDoc.HelloWorld=function()
- {
-  SC$1.$cctor();
-  return SC$1.HelloWorld;
- };
- SuperDoc.HelloWorld2=function()
- {
-  SC$1.$cctor();
-  return SC$1.HelloWorld2;
+  return SuperDoc.htmlF((Runtime.Curried3(Doc.Element))("button"),ch);
  };
  SuperDoc.input=function(v,children)
  {
@@ -590,95 +564,6 @@ if (!console) {
    $1:[],
    $2:[]
   })).getSuperDoc(children);
- };
- SuperDoc.eventClick=function(act)
- {
-  return new SuperAttr({
-   $:0,
-   $0:function()
-   {
-    return AttrProxy.HandlerImpl("click",act);
-   }
-  });
- };
- SuperDoc.htmlF=function(f,children)
- {
-  return SuperDocCtor.New(f).getSuperDoc(children);
- };
- SuperDoc.htmlTag=function(tag,children)
- {
-  return SuperDocCtor.New((Runtime.Curried3(Doc.Element))(tag)).getSuperDoc(children);
- };
- SuperDoc.button0=function(act,children)
- {
-  return SuperDocCtor.New((Runtime.Curried3(Doc.Element))("button")).getSuperDoc(Seq.append([SuperDoc.eventClick(act)],children));
- };
- SuperDoc.button=function(ch)
- {
-  return SuperDoc.htmlF((Runtime.Curried3(Doc.Element))("button"),ch);
- };
- SuperDoc.helloAct=function(a,a$1)
- {
-  Global.alert((function($1)
-  {
-   return function($2)
-   {
-    return $1("Hello "+Utils.toSafe($2)+"!");
-   };
-  }(Global.id))(SuperDoc.nameV().Get()));
- };
- SuperDoc.hiAct=function(a,a$1)
- {
-  Global.alert((function($1)
-  {
-   return function($2)
-   {
-    return $1("Hi "+Utils.toSafe($2)+", How are you?");
-   };
-  }(Global.id))(SuperDoc.nameV().Get()));
- };
- SuperDoc.buttonHello=function()
- {
-  SC$1.$cctor();
-  return SC$1.buttonHello;
- };
- SuperDoc.buttonHi=function()
- {
-  SC$1.$cctor();
-  return SC$1.buttonHi;
- };
- SuperDoc.buttonMore=function()
- {
-  SC$1.$cctor();
-  return SC$1.buttonMore;
- };
- SuperDoc.inpName=function()
- {
-  SC$1.$cctor();
-  return SC$1.inpName;
- };
- SuperDoc.HelloWorld3=function()
- {
-  SC$1.$cctor();
-  return SC$1.HelloWorld3;
- };
- SuperDoc.HelloWorld4=function()
- {
-  SC$1.$cctor();
-  return SC$1.HelloWorld4;
- };
- SuperDoc.mainDoc=function()
- {
-  SC$1.$cctor();
-  return SC$1.mainDoc;
- };
- SuperDoc.main=function()
- {
-  var x,a;
-  x=SuperDoc.mainDoc().Doc();
-  a=self.document.body;
-  Templates.LoadLocalTemplates("");
-  Doc.Run(a,x);
  };
  SuperDocCtor=SuperDoc.SuperDocCtor=Runtime.Class({
   getSuperDoc$1:function()
@@ -706,7 +591,7 @@ if (!console) {
   {
    return Seq.fold(function(state,t)
    {
-    return t.FsRoot_TestingJS_SuperDoc_ITransformSuperDocCtor$Transform(state);
+    return t.FsRoot_TestingJS_SuperDoc_ITransform$Transform(state);
    },this,children);
   },
   getSuperDoc:function(children)
@@ -741,7 +626,7 @@ if (!console) {
   {
    return this.$0();
   },
-  FsRoot_TestingJS_SuperDoc_ITransformSuperDocCtor$Transform:function(c)
+  FsRoot_TestingJS_SuperDoc_ITransform$Transform:function(c)
   {
    return this.Transform(c);
   }
@@ -760,7 +645,7 @@ if (!console) {
   {
    return this;
   },
-  FsRoot_TestingJS_SuperDoc_ITransformSuperDocCtor$Transform:function(c)
+  FsRoot_TestingJS_SuperDoc_ITransform$Transform:function(c)
   {
    return this.Transform(c);
   }
@@ -800,7 +685,7 @@ if (!console) {
   {
    return this.$==2?this.$0.get_View():this.$==0?View.Const(this.$0):this.$0;
   },
-  FsRoot_TestingJS_SuperDoc_ITransformSuperDocCtor$Transform:function(c)
+  FsRoot_TestingJS_SuperDoc_ITransform$Transform:function(c)
   {
    return this.Transform(c);
   },
@@ -809,6 +694,109 @@ if (!console) {
    return this.Txt();
   }
  },null,SuperText);
+ Test.worldW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.worldW;
+ };
+ Test.nameV=function()
+ {
+  SC$1.$cctor();
+  return SC$1.nameV;
+ };
+ Test.helloW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.helloW;
+ };
+ Test.iAmW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.iAmW;
+ };
+ Test.helloIamW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.helloIamW;
+ };
+ Test.colorW=function()
+ {
+  SC$1.$cctor();
+  return SC$1.colorW;
+ };
+ Test.HelloWorld=function()
+ {
+  SC$1.$cctor();
+  return SC$1.HelloWorld;
+ };
+ Test.HelloWorld2=function()
+ {
+  SC$1.$cctor();
+  return SC$1.HelloWorld2;
+ };
+ Test.helloAct=function(a,a$1)
+ {
+  Global.alert((function($1)
+  {
+   return function($2)
+   {
+    return $1("Hello "+Utils.toSafe($2)+"!");
+   };
+  }(Global.id))(Test.nameV().Get()));
+ };
+ Test.hiAct=function(a,a$1)
+ {
+  Global.alert((function($1)
+  {
+   return function($2)
+   {
+    return $1("Hi "+Utils.toSafe($2)+", How are you?");
+   };
+  }(Global.id))(Test.nameV().Get()));
+ };
+ Test.buttonHello=function()
+ {
+  SC$1.$cctor();
+  return SC$1.buttonHello;
+ };
+ Test.buttonHi=function()
+ {
+  SC$1.$cctor();
+  return SC$1.buttonHi;
+ };
+ Test.buttonMore=function()
+ {
+  SC$1.$cctor();
+  return SC$1.buttonMore;
+ };
+ Test.inpName=function()
+ {
+  SC$1.$cctor();
+  return SC$1.inpName;
+ };
+ Test.HelloWorld3=function()
+ {
+  SC$1.$cctor();
+  return SC$1.HelloWorld3;
+ };
+ Test.HelloWorld4=function()
+ {
+  SC$1.$cctor();
+  return SC$1.HelloWorld4;
+ };
+ Test.mainDoc=function()
+ {
+  SC$1.$cctor();
+  return SC$1.mainDoc;
+ };
+ Test.main=function()
+ {
+  var x,a;
+  x=Test.mainDoc().Doc();
+  a=self.document.body;
+  Templates.LoadLocalTemplates("");
+  Doc.Run(a,x);
+ };
  Operators.KeyValue=function(kvp)
  {
   return[kvp.K,kvp.V];
@@ -1206,156 +1194,6 @@ if (!console) {
  {
   return s==null?"":s;
  };
- SC$1.$cctor=function()
- {
-  var x,x$1,a,b,$1,$2,a$1,a$2,b$1,$3,$4,a$3,b$2,a$4,b$3,a$5,b$4,a$6,b$5,b$6,a$7,b$7;
-  SC$1.$cctor=Global.ignore;
-  function a$8(a$9,b$8)
-  {
-   return a$9+b$8;
-  }
-  SC$1.worldW=SuperDoc.TT("World");
-  SC$1.nameV=Var$1.Create$1("Abe");
-  SC$1.helloW=(x=SuperDoc.worldW(),SuperDoc.mapW(function($5)
-  {
-   return function($6)
-   {
-    return $5("Hello "+Utils.toSafe($6)+"!");
-   };
-  }(Global.id),x));
-  SC$1.iAmW=(x$1=SuperDoc.W(SuperDoc.nameV()),SuperDoc.mapW(function($5)
-  {
-   return function($6)
-   {
-    return $5("My name is "+Utils.toSafe($6)+".");
-   };
-  }(Global.id),x$1));
-  SC$1.helloIamW=SuperDoc.op_Multiply(SuperDoc.op_Multiply(SuperDoc.op_Dereference((Runtime.Curried3(function($5,$6,$7)
-  {
-   return $5("Hello "+Utils.toSafe($6)+"!, my name is "+Utils.toSafe($7)+".");
-  }))(Global.id)),SuperDoc.worldW().Txt()),SuperDoc.nameV().get_View());
-  SC$1.colorW=SuperDoc.op_Multiply(SuperDoc.op_Dereference(function($5)
-  {
-   return function($6)
-   {
-    return $5("color:"+Utils.toSafe($6));
-   };
-  }(Global.id)),SuperDoc.nameV().get_View());
-  SC$1.HelloWorld=SuperDoc.div([(a=SuperDoc.helloW(),(b=SuperDoc.iAmW(),new SuperText({
-   $:1,
-   $0:($1=a.Txt(),($2=b.Txt(),((a$1=(Runtime.Curried3(function($5,$6,$7)
-   {
-    return $5(Utils.toSafe($6)+" "+Utils.toSafe($7));
-   }))(Global.id),(Runtime.Curried3(View.Map2))(function($5,$6)
-   {
-    return(a$1($5))($6);
-   }))($1))($2)))
-  })))]);
-  SC$1.HelloWorld2=SuperDoc.div([SuperDoc.T(SuperDoc.HelloWorld()),SuperDoc.T(SuperDoc.helloW()),SuperDoc.T(SuperDoc.iAmW()),SuperDoc.T(SuperDoc.div([new SuperText({
-   $:1,
-   $0:View.Map(function(a$9)
-   {
-    return a$9+".";
-   },(a$2=new SuperText({
-    $:1,
-    $0:View.Map(function(a$9)
-    {
-     return a$9+"!, my name is";
-    },(new SuperText({
-     $:1,
-     $0:View.Map(function(b$8)
-     {
-      return"Hello"+b$8;
-     },SuperDoc.worldW().Txt())
-    })).Txt())
-   }),(b$1=SuperDoc.nameV(),new SuperText({
-    $:1,
-    $0:($3=a$2.Txt(),($4=b$1.get_View(),(((Runtime.Curried3(View.Map2))(a$8))($3))($4)))
-   }))).Txt())
-  })]))]);
-  SC$1.buttonHello=SuperDoc.htmlTag("button",(a$3=new SuperText({
-   $:1,
-   $0:View.Map(function(b$8)
-   {
-    return(((Runtime.Curried3(function($5,$6,$7)
-    {
-     return $5(Utils.toSafe($6)+" "+Utils.toSafe($7));
-    }))(Global.id))("Say Hello to my little"))(b$8);
-   },SuperDoc.TV(SuperDoc.nameV()).Txt())
-  }),(b$2=SuperDoc.eventClick(function(a$9)
-  {
-   return function(a$10)
-   {
-    return SuperDoc.helloAct(a$9,a$10);
-   };
-  }),[a$3.get_T(),b$2.get_T()])).concat([SuperDoc.TA(function(a$9)
-  {
-   return AttrProxy.Create("style",a$9);
-  },"font-weight:800").get_T()]).concat([SuperDoc.TA(function(a$9)
-  {
-   return AttrModule.Dynamic("style",a$9);
-  },SuperDoc.colorW()).get_T()]));
-  SC$1.buttonHi=SuperDoc.button((a$4=new SuperText({
-   $:1,
-   $0:View.Map(function(a$9)
-   {
-    return(((Runtime.Curried3(function($5,$6,$7)
-    {
-     return $5(Utils.toSafe($6)+" "+Utils.toSafe($7));
-    }))(Global.id))(a$9))("How are you?");
-   },(new SuperText({
-    $:1,
-    $0:View.Map(function(b$8)
-    {
-     return(((Runtime.Curried3(function($5,$6,$7)
-     {
-      return $5(Utils.toSafe($6)+" "+Utils.toSafe($7));
-     }))(Global.id))("Hi"))(b$8);
-    },SuperDoc.TV(SuperDoc.nameV()).Txt())
-   })).Txt())
-  }),(b$3=SuperDoc.eventClick(function(a$9)
-  {
-   return function(a$10)
-   {
-    return SuperDoc.hiAct(a$9,a$10);
-   };
-  }),[a$4.get_T(),b$3.get_T()])));
-  SC$1.buttonMore=SuperDoc.htmlF((Runtime.Curried3(Doc.Element))("button"),(a$5=new SuperText({
-   $:1,
-   $0:View.Map(function(a$9)
-   {
-    return(((Runtime.Curried3(function($5,$6,$7)
-    {
-     return $5(Utils.toSafe($6)+" "+Utils.toSafe($7));
-    }))(Global.id))(a$9))("How are you?");
-   },(new SuperText({
-    $:1,
-    $0:View.Map(function(b$8)
-    {
-     return(((Runtime.Curried3(function($5,$6,$7)
-     {
-      return $5(Utils.toSafe($6)+" "+Utils.toSafe($7));
-     }))(Global.id))("Hi"))(b$8);
-    },SuperDoc.TV(SuperDoc.nameV()).Txt())
-   })).Txt())
-  }),(b$4=SuperDoc.eventClick(function(a$9)
-  {
-   return function(a$10)
-   {
-    return SuperDoc.hiAct(a$9,a$10);
-   };
-  }),[a$5.get_T(),b$4.get_T()])));
-  SC$1.inpName=SuperDoc.input(SuperDoc.nameV(),[]);
-  SC$1.HelloWorld3=SuperDoc.div([new SuperText({
-   $:1,
-   $0:SuperDoc.helloIamW()
-  })]);
-  SC$1.HelloWorld4=SuperDoc.div((a$6=SuperDoc.HelloWorld(),(b$5=SuperDoc.helloW(),(b$6=new SuperText({
-   $:0,
-   $0:" "
-  }),[a$6.get_T(),b$6.get_T()]).concat([b$5.get_T()]))).concat([SuperDoc.iAmW().get_T()]).concat([SuperDoc.HelloWorld().get_T()]));
-  SC$1.mainDoc=SuperDoc.div((a$7=SuperDoc.HelloWorld(),(b$7=SuperDoc.HelloWorld2(),[a$7.get_T(),b$7.get_T()])).concat([SuperDoc.HelloWorld3().get_T()]).concat([SuperDoc.HelloWorld4().get_T()]).concat([SuperDoc.inpName().get_T()]).concat([SuperDoc.buttonHello().get_T()]).concat([SuperDoc.buttonHi().get_T()]));
- };
  Doc=UI.Doc=Runtime.Class({},Obj,Doc);
  Doc.Element=function(name,attr$1,children)
  {
@@ -1371,18 +1209,18 @@ if (!console) {
    $0:DomUtility.CreateText(v)
   },View.Const());
  };
+ Doc.Concat=function(xs)
+ {
+  var x;
+  x=Array.ofSeqNonCopying(xs);
+  return Array.TreeReduce(Doc.get_Empty(),Doc.Append,x);
+ };
  Doc.Input=function(attr$1,_var)
  {
   return Doc.InputInternal("input",function()
   {
    return Seq.append(attr$1,[AttrModule.Value(_var)]);
   });
- };
- Doc.Concat=function(xs)
- {
-  var x;
-  x=Array.ofSeqNonCopying(xs);
-  return Array.TreeReduce(Doc.get_Empty(),Doc.Append,x);
  };
  Doc.Run=function(parent,doc)
  {
@@ -1405,12 +1243,6 @@ if (!console) {
  {
   return new Doc.New(node,updates);
  };
- Doc.InputInternal=function(elemTy,attr$1)
- {
-  var el;
-  el=DomUtility.CreateElement(elemTy);
-  return Elt.New(el,AttrProxy.Concat(attr$1(el)),Doc.get_Empty());
- };
  Doc.Append=function(a,b)
  {
   return Doc.Mk({
@@ -1422,6 +1254,12 @@ if (!console) {
  Doc.get_Empty=function()
  {
   return Doc.Mk(null,View.Const());
+ };
+ Doc.InputInternal=function(elemTy,attr$1)
+ {
+  var el;
+  el=DomUtility.CreateElement(elemTy);
+  return Elt.New(el,AttrProxy.Concat(attr$1(el)),Doc.get_Empty());
  };
  Doc.RunInPlace=function(childrenOnly,parent,doc)
  {
@@ -1438,6 +1276,168 @@ if (!console) {
   this.docNode=docNode;
   this.updates=updates;
  },Doc);
+ SC$1.$cctor=function()
+ {
+  var x,x$1,a,a$1,b,$1,$2,a$2,b$1,a$3,b$2,$3,$4,a$4,b$3,a$5,b$4,a$6,b$5,a$7,b$6,b$7,a$8,b$8;
+  SC$1.$cctor=Global.ignore;
+  function a$9(a$10,b$9)
+  {
+   return a$10+b$9;
+  }
+  SC$1.worldW=SuperDoc.TT("World");
+  SC$1.nameV=Var$1.Create$1("Abe");
+  SC$1.helloW=(x=Test.worldW(),SuperDoc.mapW(function($5)
+  {
+   return function($6)
+   {
+    return $5("Hello "+Utils.toSafe($6)+"!");
+   };
+  }(Global.id),x));
+  SC$1.iAmW=(x$1=SuperDoc.W(Test.nameV()),SuperDoc.mapW(function($5)
+  {
+   return function($6)
+   {
+    return $5("My name is "+Utils.toSafe($6)+".");
+   };
+  }(Global.id),x$1));
+  SC$1.helloIamW=SuperDoc.op_Multiply(SuperDoc.op_Multiply(SuperDoc.op_Dereference((Runtime.Curried3(function($5,$6,$7)
+  {
+   return $5("Hello "+Utils.toSafe($6)+"!, my name is "+Utils.toSafe($7)+".");
+  }))(Global.id)),Test.worldW().Txt()),Test.nameV().get_View());
+  SC$1.colorW=SuperDoc.op_Multiply(SuperDoc.op_Dereference(function($5)
+  {
+   return function($6)
+   {
+    return $5("color:"+Utils.toSafe($6));
+   };
+  }(Global.id)),Test.nameV().get_View());
+  SC$1.HelloWorld=SuperDoc.div((a=(a$1=Test.helloW(),(b=Test.iAmW(),new SuperText({
+   $:1,
+   $0:($1=a$1.Txt(),($2=b.Txt(),((a$2=(Runtime.Curried3(function($5,$6,$7)
+   {
+    return $5(Utils.toSafe($6)+" "+Utils.toSafe($7));
+   }))(Global.id),(Runtime.Curried3(View.Map2))(function($5,$6)
+   {
+    return(a$2($5))($6);
+   }))($1))($2)))
+  }))),(b$1=SuperDoc.TA(function(a$10)
+  {
+   return AttrProxy.Create("style",a$10);
+  },"background-color:coral"),[a.get_T(),b$1.get_T()])));
+  SC$1.HelloWorld2=SuperDoc.div([SuperDoc.T(Test.HelloWorld()),SuperDoc.T(Test.helloW()),SuperDoc.T(Test.iAmW()),SuperDoc.T(SuperDoc.div([new SuperText({
+   $:1,
+   $0:View.Map(function(a$10)
+   {
+    return a$10+".";
+   },(a$3=new SuperText({
+    $:1,
+    $0:View.Map(function(a$10)
+    {
+     return a$10+"!, my name is";
+    },(new SuperText({
+     $:1,
+     $0:View.Map(function(b$9)
+     {
+      return"Hello"+b$9;
+     },Test.worldW().Txt())
+    })).Txt())
+   }),(b$2=Test.nameV(),new SuperText({
+    $:1,
+    $0:($3=a$3.Txt(),($4=b$2.get_View(),(((Runtime.Curried3(View.Map2))(a$9))($3))($4)))
+   }))).Txt())
+  })]))]);
+  SC$1.buttonHello=SuperDoc.htmlTag("button",(a$4=new SuperText({
+   $:1,
+   $0:View.Map(function(b$9)
+   {
+    return(((Runtime.Curried3(function($5,$6,$7)
+    {
+     return $5(Utils.toSafe($6)+" "+Utils.toSafe($7));
+    }))(Global.id))("Say Hello to my little"))(b$9);
+   },SuperDoc.TV(Test.nameV()).Txt())
+  }),(b$3=SuperDoc.TA(function(a$10)
+  {
+   return AttrProxy.HandlerImpl("click",a$10);
+  },function(a$10)
+  {
+   return function(a$11)
+   {
+    return Test.helloAct(a$10,a$11);
+   };
+  }),[a$4.get_T(),b$3.get_T()])).concat([SuperDoc.TA(function(a$10)
+  {
+   return AttrProxy.Create("style",a$10);
+  },"font-weight:800").get_T()]).concat([SuperDoc.TA(function(a$10)
+  {
+   return AttrModule.Dynamic("style",a$10);
+  },Test.colorW()).get_T()]));
+  SC$1.buttonHi=SuperDoc.button((a$5=new SuperText({
+   $:1,
+   $0:View.Map(function(a$10)
+   {
+    return(((Runtime.Curried3(function($5,$6,$7)
+    {
+     return $5(Utils.toSafe($6)+" "+Utils.toSafe($7));
+    }))(Global.id))(a$10))("How are you?");
+   },(new SuperText({
+    $:1,
+    $0:View.Map(function(b$9)
+    {
+     return(((Runtime.Curried3(function($5,$6,$7)
+     {
+      return $5(Utils.toSafe($6)+" "+Utils.toSafe($7));
+     }))(Global.id))("Hi"))(b$9);
+    },SuperDoc.TV(Test.nameV()).Txt())
+   })).Txt())
+  }),(b$4=SuperDoc.TA(function(a$10)
+  {
+   return AttrProxy.HandlerImpl("click",a$10);
+  },function(a$10)
+  {
+   return function(a$11)
+   {
+    return Test.hiAct(a$10,a$11);
+   };
+  }),[a$5.get_T(),b$4.get_T()])));
+  SC$1.buttonMore=SuperDoc.htmlF((Runtime.Curried3(Doc.Element))("button"),(a$6=new SuperText({
+   $:1,
+   $0:View.Map(function(a$10)
+   {
+    return(((Runtime.Curried3(function($5,$6,$7)
+    {
+     return $5(Utils.toSafe($6)+" "+Utils.toSafe($7));
+    }))(Global.id))(a$10))("How are you?");
+   },(new SuperText({
+    $:1,
+    $0:View.Map(function(b$9)
+    {
+     return(((Runtime.Curried3(function($5,$6,$7)
+     {
+      return $5(Utils.toSafe($6)+" "+Utils.toSafe($7));
+     }))(Global.id))("Hi"))(b$9);
+    },SuperDoc.TV(Test.nameV()).Txt())
+   })).Txt())
+  }),(b$5=SuperDoc.TA(function(a$10)
+  {
+   return AttrProxy.HandlerImpl("click",a$10);
+  },function(a$10)
+  {
+   return function(a$11)
+   {
+    return Test.hiAct(a$10,a$11);
+   };
+  }),[a$6.get_T(),b$5.get_T()])));
+  SC$1.inpName=SuperDoc.input(Test.nameV(),[]);
+  SC$1.HelloWorld3=SuperDoc.div([new SuperText({
+   $:1,
+   $0:Test.helloIamW()
+  })]);
+  SC$1.HelloWorld4=SuperDoc.div((a$7=Test.HelloWorld(),(b$6=Test.helloW(),(b$7=new SuperText({
+   $:0,
+   $0:" "
+  }),[a$7.get_T(),b$7.get_T()]).concat([b$6.get_T()]))).concat([Test.iAmW().get_T()]).concat([Test.HelloWorld().get_T()]));
+  SC$1.mainDoc=SuperDoc.div((a$8=Test.HelloWorld(),(b$8=Test.HelloWorld2(),[a$8.get_T(),b$8.get_T()])).concat([Test.HelloWorld3().get_T()]).concat([Test.HelloWorld4().get_T()]).concat([Test.inpName().get_T()]).concat([Test.buttonHello().get_T()]).concat([Test.buttonHi().get_T()]));
+ };
  JS.GetFieldValues=function(o)
  {
   var r,k;
@@ -1946,35 +1946,6 @@ if (!console) {
  {
   return Unchecked.Compare(a.getTime(),b.getTime());
  };
- attr=HtmlModule.attr=Runtime.Class({},Obj,attr);
- AttrProxy=UI.AttrProxy=Runtime.Class({},null,AttrProxy);
- AttrProxy.HandlerImpl=function(event,q)
- {
-  return Attrs.Static(function(el)
-  {
-   el.addEventListener(event,function(d)
-   {
-    return(q(el))(d);
-   },false);
-  });
- };
- AttrProxy.Concat=function(xs)
- {
-  var x;
-  x=Array.ofSeqNonCopying(xs);
-  return Array.TreeReduce(Attrs.EmptyAttr(),AttrProxy.Append,x);
- };
- AttrProxy.Create=function(name,value)
- {
-  return Attrs.Static(function(el)
-  {
-   DomUtility.SetAttr(el,name,value);
-  });
- };
- AttrProxy.Append=function(a,b)
- {
-  return Attrs.AppendTree(a,b);
- };
  DomUtility.CreateElement=function(name)
  {
   return DomUtility.Doc().createElement(name);
@@ -2016,29 +1987,35 @@ if (!console) {
   if(el.parentNode===parent)
    parent.removeChild(el);
  };
- T=Enumerator.T=Runtime.Class({
-  MoveNext:function()
-  {
-   return this.n(this);
-  },
-  Current:function()
-  {
-   return this.c;
-  },
-  Dispose:function()
-  {
-   if(this.d)
-    this.d(this);
-  }
- },Obj,T);
- T.New=Runtime.Ctor(function(s,c,n,d)
+ AttrProxy=UI.AttrProxy=Runtime.Class({},null,AttrProxy);
+ AttrProxy.Concat=function(xs)
  {
-  Obj.New.call(this);
-  this.s=s;
-  this.c=c;
-  this.n=n;
-  this.d=d;
- },T);
+  var x;
+  x=Array.ofSeqNonCopying(xs);
+  return Array.TreeReduce(Attrs.EmptyAttr(),AttrProxy.Append,x);
+ };
+ AttrProxy.Append=function(a,b)
+ {
+  return Attrs.AppendTree(a,b);
+ };
+ AttrProxy.Create=function(name,value)
+ {
+  return Attrs.Static(function(el)
+  {
+   DomUtility.SetAttr(el,name,value);
+  });
+ };
+ AttrProxy.HandlerImpl=function(event,q)
+ {
+  return Attrs.Static(function(el)
+  {
+   el.addEventListener(event,function(d)
+   {
+    return(q(el))(d);
+   },false);
+  });
+ };
+ attr=HtmlModule.attr=Runtime.Class({},Obj,attr);
  Templates.LoadLocalTemplates=function(baseName)
  {
   !Templates.LocalTemplatesLoaded()?(Templates.set_LocalTemplatesLoaded(true),Templates.LoadNestedTemplates(self.document.body,"")):void 0;
@@ -2397,280 +2374,6 @@ if (!console) {
    s:State
   };
  };
- ConcreteVar=UI.ConcreteVar=Runtime.Class({
-  get_View:function()
-  {
-   return this.view;
-  },
-  Get:function()
-  {
-   return this.current;
-  },
-  UpdateMaybe:function(f)
-  {
-   var m;
-   m=f(this.Get());
-   m!=null&&m.$==1?this.Set(m.$0):void 0;
-  },
-  Set:function(v)
-  {
-   if(this.isConst)
-    (function($1)
-    {
-     return $1("WebSharper.UI: invalid attempt to change value of a Var after calling SetFinal");
-    }(function(s)
-    {
-     console.log(s);
-    }));
-   else
-    {
-     Snap.Obsolete(this.snap);
-     this.current=v;
-     this.snap=Snap.New({
-      $:2,
-      $0:v,
-      $1:[]
-     });
-    }
-  }
- },Var,ConcreteVar);
- ConcreteVar.New=Runtime.Ctor(function(isConst,initSnap,initValue)
- {
-  var $this;
-  $this=this;
-  Var.New.call(this);
-  this.isConst=isConst;
-  this.current=initValue;
-  this.snap=initSnap;
-  this.view=function()
-  {
-   return $this.snap;
-  };
-  this.id=Fresh.Int();
- },ConcreteVar);
- AttrModule.Dynamic=function(name,view)
- {
-  return Attrs.Dynamic(view,function(el)
-  {
-   return function(v)
-   {
-    return DomUtility.SetAttr(el,name,v);
-   };
-  });
- };
- AttrModule.Value=function(_var)
- {
-  function g(a)
-  {
-   return{
-    $:1,
-    $0:a
-   };
-  }
-  return AttrModule.CustomValue(_var,Global.id,function(x)
-  {
-   return g(Global.id(x));
-  });
- };
- AttrModule.CustomValue=function(_var,toString,fromString)
- {
-  return AttrModule.CustomVar(_var,function($1,$2)
-  {
-   $1.value=toString($2);
-  },function(e)
-  {
-   return fromString(e.value);
-  });
- };
- AttrModule.CustomVar=function(_var,set,get)
- {
-  function onChange(el,e)
-  {
-   return _var.UpdateMaybe(function(v)
-   {
-    var m,$1;
-    m=get(el);
-    return m!=null&&m.$==1&&(!Unchecked.Equals(m.$0,v)&&($1=[m,m.$0],true))?$1[0]:null;
-   });
-  }
-  function set$1(e,v)
-  {
-   var m,$1;
-   m=get(e);
-   return m!=null&&m.$==1&&(Unchecked.Equals(m.$0,v)&&($1=m.$0,true))?null:set(e,v);
-  }
-  return AttrProxy.Concat([AttrModule.Handler("change",function($1)
-  {
-   return function($2)
-   {
-    return onChange($1,$2);
-   };
-  }),AttrModule.Handler("input",function($1)
-  {
-   return function($2)
-   {
-    return onChange($1,$2);
-   };
-  }),AttrModule.Handler("keypress",function($1)
-  {
-   return function($2)
-   {
-    return onChange($1,$2);
-   };
-  }),AttrModule.DynamicCustom(function($1)
-  {
-   return function($2)
-   {
-    return set$1($1,$2);
-   };
-  },_var.get_View())]);
- };
- AttrModule.Handler=function(name,callback)
- {
-  return Attrs.Static(function(el)
-  {
-   el.addEventListener(name,function(d)
-   {
-    return(callback(el))(d);
-   },false);
-  });
- };
- AttrModule.DynamicCustom=function(set,view)
- {
-  return Attrs.Dynamic(view,set);
- };
- Attrs.Static=function(attr$1)
- {
-  return new AttrProxy({
-   $:3,
-   $0:attr$1
-  });
- };
- Attrs.Dynamic=function(view,set)
- {
-  return new AttrProxy({
-   $:1,
-   $0:new DynamicAttrNode.New(view,set)
-  });
- };
- Attrs.Updates=function(dyn)
- {
-  return Array.MapTreeReduce(function(x)
-  {
-   return x.NChanged();
-  },View.Const(),View.Map2Unit,dyn.DynNodes);
- };
- Attrs.AppendTree=function(a,b)
- {
-  var x;
-  return a===null?b:b===null?a:(x=new AttrProxy({
-   $:2,
-   $0:a,
-   $1:b
-  }),(Attrs.SetFlags(x,Attrs.Flags(a)|Attrs.Flags(b)),x));
- };
- Attrs.EmptyAttr=function()
- {
-  SC$5.$cctor();
-  return SC$5.EmptyAttr;
- };
- Attrs.Insert=function(elem,tree)
- {
-  var nodes,oar,arr;
-  function loop(node)
-  {
-   if(!(node===null))
-    if(node!=null&&node.$==1)
-     nodes.push(node.$0);
-    else
-     if(node!=null&&node.$==2)
-      {
-       loop(node.$0);
-       loop(node.$1);
-      }
-     else
-      if(node!=null&&node.$==3)
-       node.$0(elem);
-      else
-       if(node!=null&&node.$==4)
-        oar.push(node.$0);
-  }
-  nodes=[];
-  oar=[];
-  loop(tree);
-  arr=nodes.slice(0);
-  return Dyn.New(elem,Attrs.Flags(tree),arr,oar.length===0?null:{
-   $:1,
-   $0:function(el)
-   {
-    Seq.iter(function(f)
-    {
-     f(el);
-    },oar);
-   }
-  });
- };
- Attrs.SetFlags=function(a,f)
- {
-  a.flags=f;
- };
- Attrs.Flags=function(a)
- {
-  return a!==null&&a.hasOwnProperty("flags")?a.flags:0;
- };
- Attrs.HasExitAnim=function(attr$1)
- {
-  var flag;
-  flag=2;
-  return(attr$1.DynFlags&flag)===flag;
- };
- Attrs.GetExitAnim=function(dyn)
- {
-  return Attrs.GetAnim(dyn,function($1,$2)
-  {
-   return $1.NGetExitAnim($2);
-  });
- };
- Attrs.HasEnterAnim=function(attr$1)
- {
-  var flag;
-  flag=1;
-  return(attr$1.DynFlags&flag)===flag;
- };
- Attrs.GetEnterAnim=function(dyn)
- {
-  return Attrs.GetAnim(dyn,function($1,$2)
-  {
-   return $1.NGetEnterAnim($2);
-  });
- };
- Attrs.HasChangeAnim=function(attr$1)
- {
-  var flag;
-  flag=4;
-  return(attr$1.DynFlags&flag)===flag;
- };
- Attrs.GetChangeAnim=function(dyn)
- {
-  return Attrs.GetAnim(dyn,function($1,$2)
-  {
-   return $1.NGetChangeAnim($2);
-  });
- };
- Attrs.GetAnim=function(dyn,f)
- {
-  return An.Concat(Arrays.map(function(n)
-  {
-   return f(n,dyn.DynElem);
-  },dyn.DynNodes));
- };
- Attrs.Sync=function(elem,dyn)
- {
-  Arrays.iter(function(d)
-  {
-   d.NSync(elem);
-  },dyn.DynNodes);
- };
  Elt=UI.Elt=Runtime.Class({},Doc,Elt);
  Elt.New=function(el,attr$1,children)
  {
@@ -2740,6 +2443,148 @@ if (!console) {
   l=Arrays.length(array);
   return loop(0,l);
  };
+ AttrModule.Value=function(_var)
+ {
+  function g(a)
+  {
+   return{
+    $:1,
+    $0:a
+   };
+  }
+  return AttrModule.CustomValue(_var,Global.id,function(x)
+  {
+   return g(Global.id(x));
+  });
+ };
+ AttrModule.Dynamic=function(name,view)
+ {
+  return Attrs.Dynamic(view,function(el)
+  {
+   return function(v)
+   {
+    return DomUtility.SetAttr(el,name,v);
+   };
+  });
+ };
+ AttrModule.CustomValue=function(_var,toString,fromString)
+ {
+  return AttrModule.CustomVar(_var,function($1,$2)
+  {
+   $1.value=toString($2);
+  },function(e)
+  {
+   return fromString(e.value);
+  });
+ };
+ AttrModule.CustomVar=function(_var,set,get)
+ {
+  function onChange(el,e)
+  {
+   return _var.UpdateMaybe(function(v)
+   {
+    var m,$1;
+    m=get(el);
+    return m!=null&&m.$==1&&(!Unchecked.Equals(m.$0,v)&&($1=[m,m.$0],true))?$1[0]:null;
+   });
+  }
+  function set$1(e,v)
+  {
+   var m,$1;
+   m=get(e);
+   return m!=null&&m.$==1&&(Unchecked.Equals(m.$0,v)&&($1=m.$0,true))?null:set(e,v);
+  }
+  return AttrProxy.Concat([AttrModule.Handler("change",function($1)
+  {
+   return function($2)
+   {
+    return onChange($1,$2);
+   };
+  }),AttrModule.Handler("input",function($1)
+  {
+   return function($2)
+   {
+    return onChange($1,$2);
+   };
+  }),AttrModule.Handler("keypress",function($1)
+  {
+   return function($2)
+   {
+    return onChange($1,$2);
+   };
+  }),AttrModule.DynamicCustom(function($1)
+  {
+   return function($2)
+   {
+    return set$1($1,$2);
+   };
+  },_var.get_View())]);
+ };
+ AttrModule.Handler=function(name,callback)
+ {
+  return Attrs.Static(function(el)
+  {
+   el.addEventListener(name,function(d)
+   {
+    return(callback(el))(d);
+   },false);
+  });
+ };
+ AttrModule.DynamicCustom=function(set,view)
+ {
+  return Attrs.Dynamic(view,set);
+ };
+ ConcreteVar=UI.ConcreteVar=Runtime.Class({
+  get_View:function()
+  {
+   return this.view;
+  },
+  Get:function()
+  {
+   return this.current;
+  },
+  UpdateMaybe:function(f)
+  {
+   var m;
+   m=f(this.Get());
+   m!=null&&m.$==1?this.Set(m.$0):void 0;
+  },
+  Set:function(v)
+  {
+   if(this.isConst)
+    (function($1)
+    {
+     return $1("WebSharper.UI: invalid attempt to change value of a Var after calling SetFinal");
+    }(function(s)
+    {
+     console.log(s);
+    }));
+   else
+    {
+     Snap.Obsolete(this.snap);
+     this.current=v;
+     this.snap=Snap.New({
+      $:2,
+      $0:v,
+      $1:[]
+     });
+    }
+  }
+ },Var,ConcreteVar);
+ ConcreteVar.New=Runtime.Ctor(function(isConst,initSnap,initValue)
+ {
+  var $this;
+  $this=this;
+  Var.New.call(this);
+  this.isConst=isConst;
+  this.current=initValue;
+  this.snap=initSnap;
+  this.view=function()
+  {
+   return $this.snap;
+  };
+  this.id=Fresh.Int();
+ },ConcreteVar);
  Dictionary=Collections.Dictionary=Runtime.Class({
   set_Item:function(k,v)
   {
@@ -3069,6 +2914,29 @@ if (!console) {
   }),DomNodes.Except(DomNodes.DocChildren(el),DomNodes.Children(el.El,Runtime.GetOptional(el.Delimiters))));
   ins(el.Children,(m=Runtime.GetOptional(el.Delimiters),m!=null&&m.$==1?m.$0[1]:null));
  };
+ T=Enumerator.T=Runtime.Class({
+  MoveNext:function()
+  {
+   return this.n(this);
+  },
+  Current:function()
+  {
+   return this.c;
+  },
+  Dispose:function()
+  {
+   if(this.d)
+    this.d(this);
+  }
+ },Obj,T);
+ T.New=Runtime.Ctor(function(s,c,n,d)
+ {
+  Obj.New.call(this);
+  this.s=s;
+  this.c=c;
+  this.n=n;
+  this.d=d;
+ },T);
  DocElemNode=UI.DocElemNode=Runtime.Class({
   Equals:function(o)
   {
@@ -3112,6 +2980,138 @@ if (!console) {
    s:Snap$1,
    v:VarView
   });
+ };
+ Attrs.Updates=function(dyn)
+ {
+  return Array.MapTreeReduce(function(x)
+  {
+   return x.NChanged();
+  },View.Const(),View.Map2Unit,dyn.DynNodes);
+ };
+ Attrs.AppendTree=function(a,b)
+ {
+  var x;
+  return a===null?b:b===null?a:(x=new AttrProxy({
+   $:2,
+   $0:a,
+   $1:b
+  }),(Attrs.SetFlags(x,Attrs.Flags(a)|Attrs.Flags(b)),x));
+ };
+ Attrs.EmptyAttr=function()
+ {
+  SC$5.$cctor();
+  return SC$5.EmptyAttr;
+ };
+ Attrs.Static=function(attr$1)
+ {
+  return new AttrProxy({
+   $:3,
+   $0:attr$1
+  });
+ };
+ Attrs.Dynamic=function(view,set)
+ {
+  return new AttrProxy({
+   $:1,
+   $0:new DynamicAttrNode.New(view,set)
+  });
+ };
+ Attrs.Insert=function(elem,tree)
+ {
+  var nodes,oar,arr;
+  function loop(node)
+  {
+   if(!(node===null))
+    if(node!=null&&node.$==1)
+     nodes.push(node.$0);
+    else
+     if(node!=null&&node.$==2)
+      {
+       loop(node.$0);
+       loop(node.$1);
+      }
+     else
+      if(node!=null&&node.$==3)
+       node.$0(elem);
+      else
+       if(node!=null&&node.$==4)
+        oar.push(node.$0);
+  }
+  nodes=[];
+  oar=[];
+  loop(tree);
+  arr=nodes.slice(0);
+  return Dyn.New(elem,Attrs.Flags(tree),arr,oar.length===0?null:{
+   $:1,
+   $0:function(el)
+   {
+    Seq.iter(function(f)
+    {
+     f(el);
+    },oar);
+   }
+  });
+ };
+ Attrs.SetFlags=function(a,f)
+ {
+  a.flags=f;
+ };
+ Attrs.Flags=function(a)
+ {
+  return a!==null&&a.hasOwnProperty("flags")?a.flags:0;
+ };
+ Attrs.HasExitAnim=function(attr$1)
+ {
+  var flag;
+  flag=2;
+  return(attr$1.DynFlags&flag)===flag;
+ };
+ Attrs.GetExitAnim=function(dyn)
+ {
+  return Attrs.GetAnim(dyn,function($1,$2)
+  {
+   return $1.NGetExitAnim($2);
+  });
+ };
+ Attrs.HasEnterAnim=function(attr$1)
+ {
+  var flag;
+  flag=1;
+  return(attr$1.DynFlags&flag)===flag;
+ };
+ Attrs.GetEnterAnim=function(dyn)
+ {
+  return Attrs.GetAnim(dyn,function($1,$2)
+  {
+   return $1.NGetEnterAnim($2);
+  });
+ };
+ Attrs.HasChangeAnim=function(attr$1)
+ {
+  var flag;
+  flag=4;
+  return(attr$1.DynFlags&flag)===flag;
+ };
+ Attrs.GetChangeAnim=function(dyn)
+ {
+  return Attrs.GetAnim(dyn,function($1,$2)
+  {
+   return $1.NGetChangeAnim($2);
+  });
+ };
+ Attrs.GetAnim=function(dyn,f)
+ {
+  return An.Concat(Arrays.map(function(n)
+  {
+   return f(n,dyn.DynElem);
+  },dyn.DynNodes));
+ };
+ Attrs.Sync=function(elem,dyn)
+ {
+  Arrays.iter(function(d)
+  {
+   d.NSync(elem);
+  },dyn.DynNodes);
  };
  SC$2.$cctor=function()
  {
@@ -3366,6 +3366,34 @@ if (!console) {
   SC$4.$cctor=Global.ignore;
   SC$4.counter=0;
  };
+ Dyn.New=function(DynElem,DynFlags,DynNodes,OnAfterRender)
+ {
+  var $1;
+  $1={
+   DynElem:DynElem,
+   DynFlags:DynFlags,
+   DynNodes:DynNodes
+  };
+  Runtime.SetOptional($1,"OnAfterRender",OnAfterRender);
+  return $1;
+ };
+ List.head=function(l)
+ {
+  return l.$==1?l.$0:List.listEmpty();
+ };
+ List.tail=function(l)
+ {
+  return l.$==1?l.$1:List.listEmpty();
+ };
+ List.listEmpty=function()
+ {
+  return Operators.FailWith("The input list was empty.");
+ };
+ SC$5.$cctor=function()
+ {
+  SC$5.$cctor=Global.ignore;
+  SC$5.EmptyAttr=null;
+ };
  DynamicAttrNode=UI.DynamicAttrNode=Runtime.Class({
   NChanged:function()
   {
@@ -3406,34 +3434,6 @@ if (!console) {
    $this.dirty=true;
   },view);
  },DynamicAttrNode);
- Dyn.New=function(DynElem,DynFlags,DynNodes,OnAfterRender)
- {
-  var $1;
-  $1={
-   DynElem:DynElem,
-   DynFlags:DynFlags,
-   DynNodes:DynNodes
-  };
-  Runtime.SetOptional($1,"OnAfterRender",OnAfterRender);
-  return $1;
- };
- List.head=function(l)
- {
-  return l.$==1?l.$0:List.listEmpty();
- };
- List.tail=function(l)
- {
-  return l.$==1?l.$1:List.listEmpty();
- };
- List.listEmpty=function()
- {
-  return Operators.FailWith("The input list was empty.");
- };
- SC$5.$cctor=function()
- {
-  SC$5.$cctor=Global.ignore;
-  SC$5.EmptyAttr=null;
- };
  DictionaryUtil.notPresent=function()
  {
   return Operators.FailWith("The given key was not present in the dictionary.");
@@ -4322,7 +4322,7 @@ if (!console) {
  };
  Runtime.OnLoad(function()
  {
-  SuperDoc.main();
+  Test.main();
  });
 }());
 
