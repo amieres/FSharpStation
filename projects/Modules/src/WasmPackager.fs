@@ -3,7 +3,7 @@
 #nowarn "1182"
 #nowarn "3180"
 #nowarn "52"
-////-d:FSharpStation1613067960900 -d:TEE -d:WASMPACKAGER -d:WEBSHARPER -d:WEBSHARPER47 -d:WsTranslatorWASM
+////-d:FSharpStation1626345327133 -d:TEE -d:WASMPACKAGER -d:WEBSHARPER -d:WEBSHARPER47 -d:WsTranslatorWASM
 ////#cd @"D:\Abe\CIPHERWorkspace\FSharpStation\projects\Modules\src"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1"
 //#I @"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\Facades"
@@ -40,7 +40,7 @@
 //#nowarn "3180"
 //#nowarn "52"
 /// Root namespace for all code
-//#define FSharpStation1613067960900
+//#define FSharpStation1626345327133
 #if !NOFSROOT
 #if INTERACTIVE
 module FsRoot   =
@@ -937,13 +937,13 @@ namespace FsRoot
             
             
                 /// Javascript adds time zone information when parsing a date and that can change the result
-                let parseDateO2  = (fun s -> s + "T00:00:00") >> tryParseWith System.DateTime.TryParse
-                let parseDateO   = tryParseWith System.DateTime.TryParse
-                let parseIntO    = tryParseWith System.Int32   .TryParse
-                let parseInt64O  = tryParseWith System.Int64   .TryParse
-                let parseSingleO = tryParseWith System.Single  .TryParse
-                let parseDoubleO = tryParseWith System.Double  .TryParse
-                let parseGuidO   = tryParseWith System.Guid    .TryParse
+                let parseDateO2  : string -> _ = (fun s -> s + "T00:00:00") >> tryParseWith System.DateTime.TryParse
+                let parseDateO   : string -> _ = tryParseWith System.DateTime.TryParse
+                let parseIntO    : string -> _ = tryParseWith System.Int32   .TryParse
+                let parseInt64O  : string -> _ = tryParseWith System.Int64   .TryParse
+                let parseSingleO : string -> _ = tryParseWith System.Single  .TryParse
+                let parseDoubleO : string -> _ = tryParseWith System.Double  .TryParse
+                let parseGuidO   : string -> _ = tryParseWith System.Guid    .TryParse
                 // etc.
                 
                 // active patterns for try-parsing strings
@@ -3008,7 +3008,7 @@ namespace FsRoot
             module FSharpStationClient =
                 open WebSockets
             
-                let mutable fsharpStationAddress = Address "FSharpStation1613067960900"
+                let mutable fsharpStationAddress = Address "FSharpStation1626345327133"
             
                 let [< Rpc >] setAddress address = async { 
                     fsharpStationAddress <- address 
@@ -3340,6 +3340,74 @@ namespace FsRoot
                 return  "Success!"
         }
     
+        module WasmLoader =
+            //open FsRoot
+    
+            open Library.CommArgRoot.CommArgCollection
+            open FsCode
+            open FusionAsyncM
+            open System.IO
+            open LibraryJS.FShUI_AssemblyData
+            open FShUI_AssemblyData
+    
+            //let  WASMDir   = "/WASM/publish/"
+    
+            let isWorker (fn:string) = fn.EndsWith ".worker.js"
+    
+            let processAsm fix dll fileTo =
+                printfn "extracting %s" dll
+                let asm =  CreateAsm.readDll dll
+                //{ asm with javaScripts = 
+                //                asm.javaScripts 
+                //                |> Array.filter(fst >> isWorker >> not)
+                //                |> Array.map(fun (nm, code) -> nm, fix code.Id |> JSCode) }
+                //|> writeAsm fileTo
+                asm
+    
+            let saveJSs() =
+                fusion {
+                    let! out       = ofFusionM <| getValueRm FsCode.fscOutput
+                    let! name      = ofFusionM <| getValueRm FsCode.intName
+                    let! wasmDir0  = ofFusionM <| getValueRm  wpkOut
+                    let  wasmDir0  = wasmDir0 + "/.." |> Path.GetFullPath
+                    let  path      = "D:\Abe\CIPHERWorkspace\FSharpStation/website/" |> Path.GetFullPath
+                    let  wasmDir   = (Path.GetFullPath wasmDir0).Replace(path, "/") |> toUnix
+    
+                    //let fixJs name (txt:string) = txt.Replace(sprintf ".ScriptPath(%A," name, sprintf ".ScriptPath(\"..%s\"," wasmDir )        
+                    let asm        = sprintf @"%s\EPFileX\Assemblies\%s.asm" path name
+                                     |>  processAsm id (*fixJs name*) out
+                    let save  f js = 
+                        let fn = path + wasmDir + "/" + f
+                        printfn "Saving %s" fn
+                        File.WriteAllText(fn, js )
+    
+                    asm.javaScripts
+                    //|> Array.filter(fst >> isWorker)
+                    |> Array.iter(fun (fn, JSCode js) ->
+                        if isWorker fn then
+                            //js.Split '\n'
+                            //|> fun lines -> 
+                            //    match lines |> Seq.tryFindIndex(fun l -> l.Contains "importScripts" && l.Contains "require.min.js")
+                            //        , lines |> Seq.tryFindIndex(fun l -> l.Contains "importScripts" && l.Contains "jquery") with
+                            //    | Some first, Some last -> Seq.append  lines.[..first]  lines.[last + 1..]
+                            //    |_                      -> Seq.ofArray lines
+                            //    |> String.concat "\n"
+                            js
+                            |> save fn
+                        else if fn = "WebSharper.js" then
+                               save (name + ".js") js
+                    )
+                }
+    
+            let compileWASMLoader settings show snp =
+                fusion {
+                    //FSharpStationClient.fsharpStationAddress <- WebSockets.Address "FSharpStation1626345327133"
+                    let! _         = WsCompileDll.compileSnippetRm show snp
+                    do! saveJSs()
+                } 
+                |> mapReader (settings() |> CommArgCollection)
+                |> iterResult print id
+    
         let compileAndPackage show snpName = fusion {
             printfn "in compileAndPackage"
             let! info  = WsCompileDll.compileSnippetRm show snpName
@@ -3353,6 +3421,7 @@ namespace FsRoot
                                         wpkDebug            /= true
                                         wpkDebugrt          /= true
                                     ])
+            do! WasmLoader.saveJSs()
             let! res   = ofFusionM <| invokePackager()
             return res
         }
@@ -3380,31 +3449,25 @@ namespace FsRoot
             | "aot"       -> ExecMode.Aot
             | "aotinterp" -> ExecMode.AotInterp
             | _           -> ExecMode.Interp
-            
-        let modeSuffix  = 
-            function 
-            | ExecMode.Aot       -> "AOT"
-            | ExecMode.AotInterp -> "AOTInterp"
-            | _                  -> ""
-            
-        let publishTo folderBase = (rtn (function Some mode -> folderBase + modeSuffix mode |_-> "") <*> tryGetValueORm wpkExecMode )
+                    
+        let pointTo folderBase = (rtn (Option.defaultValue ExecMode.Interp >> fun mode -> folderBase + "/" + string mode ) <*> tryGetValueORm wpkExecMode )
     
         let settingsWsTranslator45() =
             [
-                wpkBuildDir       /=           @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\buildFStation"
-                wpkOut            /= publishTo @"D:\Abe\CIPHERWorkspace\FSharpStation/website/wasm/publish"
+                wpkBuildDir       /= pointTo @"/home/amieres/v45"
+                wpkOut            /= pointTo @"D:\Abe\CIPHERWorkspace\FSharpStation/website/WASM/v45"
             ]
     
         let settingsWsTranslator47() =
             [
-                wpkBuildDir       /=            @"D:\Abe\CIPHERWorkspace\FSharpStation\..\Repos\WasmRepo\build47"
-                wpkOut            /=  publishTo @"D:\Abe\CIPHERWorkspace\FSharpStation/website/wasm/publish47"
+                wpkBuildDir       /=  pointTo @"/home/amieres/v47"
+                wpkOut            /=  pointTo @"D:\Abe\CIPHERWorkspace\FSharpStation/website/WASM/v47"
                 fscDefine         /=  "WEBSHARPER47"
                 intWebSharper     /=   false
             ]
     
         let packager_WsTranslator settings parmSnpPath modeS =
-            let mode = fromString modeS
+            let mode       = fromString modeS
             printfn "MODE: %A" mode
             [
                 yield fscDefine         /= ("EXECMODE_" + modeS.ToUpper())
@@ -3417,8 +3480,9 @@ namespace FsRoot
     
                 yield wpkPreCommand     /= (rtn (toUnix >> sprintf "cd %s/..") <*> gS wpkBuildDir)
                 yield wpkPostCommand    /= (rtn (toUnix >> sprintf "cd %s"   ) <*> gS wpkBuildDir)
-                yield wpkPostCommand    /= "sed -i 's/monolinker.exe -out/monolinker.exe -x ..\/Linker.xml --substitutions ..\/LinkerSubs.xml -out/' build.ninja"
+                yield wpkPostCommand    /= (rtn ((fun s -> (toUnix0 s).Replace(@"/", @"\/")) >>  fun rootBuildX ->  sprintf "sed -i 's/monolinker.exe -out/monolinker.exe -x %s\/Linker.xml --substitutions %s\/LinkerSubs.xml -out/' build.ninja" rootBuildX rootBuildX) <*> gS wpkOut)
                 yield wpkPostCommand    /= "sed -i 's/--gen-icall-table \$runtime_table \$in > \$out/--gen-icall-table \$runtime_table \$in | grep -v \"uint64_t ves_icall_System_Threading_Thread_VolatileRead8 (int);\" | grep -v \"void ves_icall_System_Threading_Thread_VolatileWrite8 (int,uint64_t);\" > \$out/' build.ninja"
+                yield wpkPostCommand    /= "sed -i 's/\/Repos\/WasmRepo\/wasm-sdk\/wasm-bcl\/wasm\/mscorlib.dll/\/FSharpStation\/website\/WASM\/v47\/dlls\/mscorlib.dll/' build.ninja"
                 yield wpkPostCommand    /= "ninja -v -j 1"
     
                 if mode <> ExecMode.Interp then
@@ -3449,68 +3513,7 @@ namespace FsRoot
             |> CommArgCollection 
             |> wasmSnippetCompile true parmSnpPath
     
-        module WasmLoader =
-            //open FsRoot
     
-            open Library.CommArgRoot.CommArgCollection
-            open FsCode
-            open FusionAsyncM
-            open System.IO
-            open LibraryJS.FShUI_AssemblyData
-            open FShUI_AssemblyData
-    
-            //let  WASMDir   = "/WASM/publish/"
-    
-            let isWorker (fn:string) = fn.EndsWith ".worker.js"
-    
-            let processAsm fix dll fileTo =
-                printfn "extracting %s" dll
-                let asm =  CreateAsm.readDll dll
-                //{ asm with javaScripts = 
-                //                asm.javaScripts 
-                //                |> Array.filter(fst >> isWorker >> not)
-                //                |> Array.map(fun (nm, code) -> nm, fix code.Id |> JSCode) }
-                //|> writeAsm fileTo
-                asm
-    
-            let compileWASMLoader settings show snp =
-                fusion {
-                    //FSharpStationClient.fsharpStationAddress <- WebSockets.Address "FSharpStation1613067960900"
-                    let! _         = WsCompileDll.compileSnippetRm show snp
-                    let! out       = ofFusionM <| getValueRm FsCode.fscOutput
-                    let! name      = ofFusionM <| getValueRm FsCode.intName
-                    //let! wasmDir0  = ofFusionM <| getValueRm  wpkOut
-                    let  wasmDir0  = "D:\Abe\CIPHERWorkspace\FSharpStation/website/WASM" |> Path.GetFullPath
-                    let  path      = "D:\Abe\CIPHERWorkspace\FSharpStation/website/" |> Path.GetFullPath
-                    let  wasmDir   = (Path.GetFullPath wasmDir0).Replace(path, "/") |> toUnix
-    
-                    //let fixJs name (txt:string) = txt.Replace(sprintf ".ScriptPath(%A," name, sprintf ".ScriptPath(\"..%s\"," wasmDir )        
-                    let asm        = sprintf @"%s\EPFileX\Assemblies\%s.asm" path name
-                                     |>  processAsm id (*fixJs name*) out
-                    let save  f js = 
-                        let fn = path + wasmDir + "/" + f
-                        printfn "Saving %s" fn
-                        File.WriteAllText(fn, js )
-    
-                    asm.javaScripts
-                    //|> Array.filter(fst >> isWorker)
-                    |> Array.iter(fun (fn, JSCode js) ->
-                        if isWorker fn then
-                            //js.Split '\n'
-                            //|> fun lines -> 
-                            //    match lines |> Seq.tryFindIndex(fun l -> l.Contains "importScripts" && l.Contains "require.min.js")
-                            //        , lines |> Seq.tryFindIndex(fun l -> l.Contains "importScripts" && l.Contains "jquery") with
-                            //    | Some first, Some last -> Seq.append  lines.[..first]  lines.[last + 1..]
-                            //    |_                      -> Seq.ofArray lines
-                            //    |> String.concat "\n"
-                            js
-                            |> save fn
-                        else if fn = "WebSharper.js" then
-                               save (name + ".js") js
-                    )
-                } 
-                |> mapReader (settings() |> CommArgCollection)
-                |> iterResult print id
     
     #if WEBSHARPER47
         printfn "if WEBSHARPER47 produces some warnings. Execute the command using \"selection |> FSI\" button."
