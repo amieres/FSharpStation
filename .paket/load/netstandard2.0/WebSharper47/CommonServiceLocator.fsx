@@ -1,0 +1,1 @@
+#r "../../../../packages/websharper47/CommonServiceLocator/lib/portable-net4+sl5+netcore45+wpa81+wp8/Microsoft.Practices.ServiceLocation.dll" 

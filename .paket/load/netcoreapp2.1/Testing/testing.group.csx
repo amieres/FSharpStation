@@ -4,6 +4,7 @@
 #r "../../../../packages/testing/System.ComponentModel.TypeConverter/lib/netstandard1.5/System.ComponentModel.TypeConverter.dll" 
 #r "../../../../packages/testing/System.Dynamic.Runtime/lib/netstandard1.3/System.Dynamic.Runtime.dll" 
 #r "../../../../packages/testing/System.Xml.XmlDocument/lib/netstandard1.3/System.Xml.XmlDocument.dll" 
+#r "../../../../packages/testing/Http.fs/lib/netstandard2.0/HttpFs.dll" 
 #r "../../../../packages/testing/System.Collections.Specialized/lib/netstandard1.3/System.Collections.Specialized.dll" 
 #r "../../../../packages/testing/System.Linq.Expressions/lib/netstandard1.6/System.Linq.Expressions.dll" 
 #r "../../../../packages/testing/System.Xml.ReaderWriter/lib/netstandard1.3/System.Xml.ReaderWriter.dll" 

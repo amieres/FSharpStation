@@ -1,0 +1,7 @@
+#load "Microsoft.Diagnostics.NETCore.Client.fsx" 
+#load "System.Buffers.fsx" 
+#load "System.Collections.Immutable.fsx" 
+#load "System.Memory.fsx" 
+#load "System.Reflection.Metadata.fsx" 
+#load "System.Runtime.CompilerServices.Unsafe.fsx" 
+#r "../../../../packages/other/Microsoft.Diagnostics.Runtime/lib/netstandard2.0/Microsoft.Diagnostics.Runtime.dll" 

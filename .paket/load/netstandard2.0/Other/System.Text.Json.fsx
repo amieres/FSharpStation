@@ -1,0 +1,8 @@
+#load "Microsoft.Bcl.AsyncInterfaces.fsx" 
+#load "System.Buffers.fsx" 
+#load "System.Memory.fsx" 
+#load "System.Numerics.Vectors.fsx" 
+#load "System.Runtime.CompilerServices.Unsafe.fsx" 
+#load "System.Text.Encodings.Web.fsx" 
+#load "System.Threading.Tasks.Extensions.fsx" 
+#r "../../../../packages/other/System.Text.Json/lib/netstandard2.0/System.Text.Json.dll" 

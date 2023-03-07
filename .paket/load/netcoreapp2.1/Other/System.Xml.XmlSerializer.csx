@@ -1,0 +1,6 @@
+#load "System.Linq.csx" 
+#load "System.Text.RegularExpressions.csx" 
+#load "System.Threading.csx" 
+#load "System.Xml.ReaderWriter.csx" 
+#load "System.Xml.XmlDocument.csx" 
+#r "../../../../packages/other/System.Xml.XmlSerializer/lib/netstandard1.3/System.Xml.XmlSerializer.dll" 

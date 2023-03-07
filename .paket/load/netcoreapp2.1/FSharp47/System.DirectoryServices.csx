@@ -1,0 +1,5 @@
+#load "System.IO.FileSystem.AccessControl.csx" 
+#load "System.Security.AccessControl.csx" 
+#load "System.Security.Permissions.csx" 
+#load "System.Security.Principal.Windows.csx" 
+#r "../../../../packages/fsharp47/System.DirectoryServices/lib/netstandard2.0/System.DirectoryServices.dll" 

@@ -1,0 +1,1 @@
+#r "../../../../packages/fsharp47/System.Linq/lib/netstandard1.6/System.Linq.dll" 

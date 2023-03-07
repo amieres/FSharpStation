@@ -1,3 +1,6 @@
 #load "Newtonsoft.Json.fsx" 
-#load "System.Net.Http.fsx" 
-#r "../../../../packages/other/Sendgrid/lib/net452/SendGrid.dll" 
+#r "Microsoft.CSharp" 
+#r "System" 
+#r "System.Net.Http" 
+#r "System.Runtime.Serialization" 
+#r "../../../../packages/other/SendGrid/lib/net452/SendGrid.dll" 

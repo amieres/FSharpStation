@@ -1,0 +1,1 @@
+#r "../../../../packages/other/System.Security.Cryptography.Cng/lib/netcoreapp2.1/System.Security.Cryptography.Cng.dll" 

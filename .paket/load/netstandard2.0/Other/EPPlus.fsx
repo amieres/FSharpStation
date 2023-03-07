@@ -1,0 +1,8 @@
+#load "EPPlus.Interfaces.fsx" 
+#load "EPPlus.System.Drawing.fsx" 
+#load "Microsoft.Extensions.Configuration.Json.fsx" 
+#load "Microsoft.IO.RecyclableMemoryStream.fsx" 
+#load "System.Drawing.Primitives.fsx" 
+#load "System.Security.Cryptography.Pkcs.fsx" 
+#load "System.Text.Encoding.CodePages.fsx" 
+#r "../../../../packages/other/EPPlus/lib/netstandard2.0/EPPlus.dll" 

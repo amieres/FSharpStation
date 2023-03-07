@@ -1,0 +1,6 @@
+#load "Microsoft.Owin.fsx" 
+#load "Owin.fsx" 
+#load "WebSharper.fsx" 
+#r "System.Configuration" 
+#r "../../../../packages/websharper47/WebSharper.Owin/lib/net461/HttpMultipartParser.dll" 
+#r "../../../../packages/websharper47/WebSharper.Owin/lib/net461/WebSharper.Owin.dll" 

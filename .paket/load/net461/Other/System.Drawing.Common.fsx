@@ -1,0 +1,1 @@
+#r "../../../../packages/other/System.Drawing.Common/lib/net461/System.Drawing.Common.dll" 

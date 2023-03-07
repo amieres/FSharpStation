@@ -1,3 +1,5 @@
+#load "System.Configuration.ConfigurationManager.csx" 
+#load "System.Data.SqlClient.csx" 
 #r "System.Data" 
 #r "System.Xml" 
 #r "../../../../packages/other/FSharp.Data.SqlClient/lib/net40/FSharp.Data.SqlClient.dll" 

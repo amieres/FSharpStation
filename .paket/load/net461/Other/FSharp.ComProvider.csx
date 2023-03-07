@@ -1,0 +1,1 @@
+#r "../../../../packages/other/FSharp.ComProvider/lib/net40/FSharp.ComProvider.dll" 

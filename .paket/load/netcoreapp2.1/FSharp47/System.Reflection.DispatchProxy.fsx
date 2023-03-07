@@ -1,0 +1,1 @@
+#r "../../../../packages/fsharp47/System.Reflection.DispatchProxy/lib/netcoreapp2.0/System.Reflection.DispatchProxy.dll" 

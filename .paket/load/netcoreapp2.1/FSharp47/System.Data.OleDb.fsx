@@ -1,0 +1,6 @@
+#load "Microsoft.Win32.Registry.fsx" 
+#load "System.Configuration.ConfigurationManager.fsx" 
+#load "System.Diagnostics.PerformanceCounter.fsx" 
+#load "System.Memory.fsx" 
+#load "System.Security.Principal.Windows.fsx" 
+#r "../../../../packages/fsharp47/System.Data.OleDb/lib/netstandard2.0/System.Data.OleDb.dll" 

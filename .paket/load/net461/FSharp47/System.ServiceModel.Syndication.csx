@@ -1,0 +1,6 @@
+#r "System" 
+#r "System.Runtime.Serialization" 
+#r "System.ServiceModel" 
+#r "System.Xml" 
+#r "mscorlib" 
+#r "../../../../packages/fsharp47/System.ServiceModel.Syndication/lib/net461/System.ServiceModel.Syndication.dll" 

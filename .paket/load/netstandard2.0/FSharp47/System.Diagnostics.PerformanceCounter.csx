@@ -1,0 +1,1 @@
+#r "../../../../packages/fsharp47/System.Diagnostics.PerformanceCounter/lib/netstandard2.0/System.Diagnostics.PerformanceCounter.dll" 

@@ -1,0 +1,1 @@
+#r "../../../../packages/other/Microsoft.Diagnostics.NETCore.Client/lib/netcoreapp2.1/Microsoft.Diagnostics.NETCore.Client.dll" 

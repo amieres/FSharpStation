@@ -1,0 +1,6 @@
+#load "Microsoft.Win32.Registry.csx" 
+#load "System.Diagnostics.DiagnosticSource.csx" 
+#load "System.Memory.csx" 
+#load "System.Security.Principal.Windows.csx" 
+#load "System.Text.Encoding.CodePages.csx" 
+#r "../../../../packages/other/System.Data.SqlClient/lib/netcoreapp2.1/System.Data.SqlClient.dll" 

@@ -1,0 +1,1 @@
+#load "System.Diagnostics.FileVersionInfo.csx" 

@@ -49,7 +49,7 @@
 #r "../../../../packages/test2/Microsoft.AspNetCore.JsonPatch/lib/netstandard2.0/Microsoft.AspNetCore.JsonPatch.dll" 
 #r "../../../../packages/test2/Microsoft.Extensions.DiagnosticAdapter/lib/netstandard2.0/Microsoft.Extensions.DiagnosticAdapter.dll" 
 #r "../../../../packages/test2/System.Security.Principal.Windows/lib/netstandard2.0/System.Security.Principal.Windows.dll" 
-#r "../../../../packages/test2/FSharp.Core/lib/netstandard1.6/FSharp.Core.dll" 
+#r "../../../../packages/test2/FSharp.Core/lib/netstandard2.0/FSharp.Core.dll" 
 #r "../../../../packages/test2/Microsoft.AspNetCore.Cryptography.Internal/lib/netstandard2.0/Microsoft.AspNetCore.Cryptography.Internal.dll" 
 #r "../../../../packages/test2/Microsoft.AspNetCore.DataProtection.Abstractions/lib/netstandard2.0/Microsoft.AspNetCore.DataProtection.Abstractions.dll" 
 #r "../../../../packages/test2/Microsoft.AspNetCore.Diagnostics.Abstractions/lib/netstandard2.0/Microsoft.AspNetCore.Diagnostics.Abstractions.dll" 

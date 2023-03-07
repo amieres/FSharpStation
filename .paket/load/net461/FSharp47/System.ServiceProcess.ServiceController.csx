@@ -1,0 +1,7 @@
+#load "System.Buffers.csx" 
+#load "System.Diagnostics.EventLog.csx" 
+#load "System.Memory.csx" 
+#r "System" 
+#r "System.ServiceProcess" 
+#r "mscorlib" 
+#r "../../../../packages/fsharp47/System.ServiceProcess.ServiceController/lib/net461/System.ServiceProcess.ServiceController.dll" 

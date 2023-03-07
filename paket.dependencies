@@ -92,6 +92,7 @@ group Other
     nuget FSharp.Json
     nuget BenchmarkDotNet
     nuget ExcelProvider
+    nuget EPPlus
 
 group Test
     framework: netstandard2.0, netcoreapp2.1

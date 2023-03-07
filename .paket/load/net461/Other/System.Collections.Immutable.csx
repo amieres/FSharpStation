@@ -1,0 +1,5 @@
+#load "System.Memory.csx" 
+#r "System" 
+#r "System.Core" 
+#r "mscorlib" 
+#r "../../../../packages/other/System.Collections.Immutable/lib/net461/System.Collections.Immutable.dll" 

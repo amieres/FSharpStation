@@ -1,0 +1,1 @@
+#r "../../../../packages/fsharp47/System.Runtime.Numerics/lib/netstandard1.3/System.Runtime.Numerics.dll" 

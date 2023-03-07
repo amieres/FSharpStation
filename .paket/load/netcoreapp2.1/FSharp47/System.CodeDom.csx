@@ -1,0 +1,1 @@
+#r "../../../../packages/fsharp47/System.CodeDom/lib/netstandard2.0/System.CodeDom.dll" 

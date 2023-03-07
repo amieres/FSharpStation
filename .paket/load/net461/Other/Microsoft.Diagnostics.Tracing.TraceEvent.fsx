@@ -1,0 +1,6 @@
+#load "System.Runtime.CompilerServices.Unsafe.fsx" 
+#r "../../../../packages/other/Microsoft.Diagnostics.Tracing.TraceEvent/lib/net45/TraceReloggerLib.dll" 
+#r "../../../../packages/other/Microsoft.Diagnostics.Tracing.TraceEvent/lib/net45/OSExtensions.dll" 
+#r "../../../../packages/other/Microsoft.Diagnostics.Tracing.TraceEvent/lib/net45/Microsoft.Diagnostics.FastSerialization.dll" 
+#r "../../../../packages/other/Microsoft.Diagnostics.Tracing.TraceEvent/lib/net45/Dia2Lib.dll" 
+#r "../../../../packages/other/Microsoft.Diagnostics.Tracing.TraceEvent/lib/net45/Microsoft.Diagnostics.Tracing.TraceEvent.dll" 

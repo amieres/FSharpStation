@@ -1,0 +1,5 @@
+#load "System.Private.ServiceModel.csx" 
+#load "System.ServiceModel.Primitives.csx" 
+#r "System.ServiceModel" 
+#r "System.IdentityModel" 
+#r "../../../../packages/fsharp47/System.ServiceModel.NetTcp/lib/net461/System.ServiceModel.NetTcp.dll" 

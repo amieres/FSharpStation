@@ -1,0 +1,6 @@
+#load "System.Buffers.fsx" 
+#load "System.Diagnostics.EventLog.fsx" 
+#load "System.Memory.fsx" 
+#r "System" 
+#r "System.ServiceProcess" 
+#r "../../../../packages/fsharp47/System.ServiceProcess.ServiceController/lib/net461/System.ServiceProcess.ServiceController.dll" 

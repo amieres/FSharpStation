@@ -1,0 +1,1 @@
+#r "../../../../packages/other/ExcelDataReader/lib/netstandard2.0/ExcelDataReader.dll" 

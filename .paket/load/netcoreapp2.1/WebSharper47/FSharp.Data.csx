@@ -1,0 +1,1 @@
+#r "../../../../packages/websharper47/FSharp.Data/lib/netstandard2.0/FSharp.Data.dll" 

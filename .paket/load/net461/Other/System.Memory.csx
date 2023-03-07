@@ -1,0 +1,6 @@
+#load "System.Buffers.csx" 
+#load "System.Numerics.Vectors.csx" 
+#load "System.Runtime.CompilerServices.Unsafe.csx" 
+#r "System" 
+#r "mscorlib" 
+#r "../../../../packages/other/System.Memory/lib/net461/System.Memory.dll" 

@@ -1,0 +1,5 @@
+#load "System.Memory.csx" 
+#load "System.Runtime.CompilerServices.Unsafe.csx" 
+#r "System" 
+#r "mscorlib" 
+#r "../../../../packages/fsharp47/System.Diagnostics.DiagnosticSource/lib/net46/System.Diagnostics.DiagnosticSource.dll" 

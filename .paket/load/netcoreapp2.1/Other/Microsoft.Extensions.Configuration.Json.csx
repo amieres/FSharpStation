@@ -1,0 +1,5 @@
+#load "Microsoft.Extensions.Configuration.csx" 
+#load "Microsoft.Extensions.Configuration.FileExtensions.csx" 
+#load "System.Text.Json.csx" 
+#load "System.Threading.Tasks.Extensions.csx" 
+#r "../../../../packages/other/Microsoft.Extensions.Configuration.Json/lib/netstandard2.0/Microsoft.Extensions.Configuration.Json.dll" 

@@ -1,0 +1,1 @@
+#r "../../../../packages/fsharp47/System.ComponentModel.Composition/lib/netstandard2.0/System.ComponentModel.Composition.dll" 

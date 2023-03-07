@@ -1,0 +1,1 @@
+#r "../../../../packages/other/System.Data.Odbc/lib/netstandard2.0/System.Data.Odbc.dll" 

@@ -1,0 +1,1 @@
+#r "../../../../packages/other/BenchmarkDotNet.Annotations/lib/netstandard2.0/BenchmarkDotNet.Annotations.dll" 

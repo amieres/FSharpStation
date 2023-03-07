@@ -1,0 +1,6 @@
+#load "Microsoft.Diagnostics.NETCore.Client.csx" 
+#load "System.Collections.Immutable.csx" 
+#load "System.Memory.csx" 
+#load "System.Reflection.Metadata.csx" 
+#load "System.Runtime.CompilerServices.Unsafe.csx" 
+#r "../../../../packages/other/Microsoft.Diagnostics.Runtime/lib/netstandard2.0/Microsoft.Diagnostics.Runtime.dll" 

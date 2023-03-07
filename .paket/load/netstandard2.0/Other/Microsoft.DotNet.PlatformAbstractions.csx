@@ -1,0 +1,1 @@
+#r "../../../../packages/other/Microsoft.DotNet.PlatformAbstractions/lib/netstandard2.0/Microsoft.DotNet.PlatformAbstractions.dll" 

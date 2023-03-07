@@ -1,0 +1,1 @@
+#r "../../../../packages/fsharp47/System.Drawing.Common/lib/netstandard2.0/System.Drawing.Common.dll" 

@@ -50,7 +50,7 @@
 #r "../../../../packages/test2/Microsoft.Extensions.Primitives/lib/netstandard2.0/Microsoft.Extensions.Primitives.dll" 
 #r "../../../../packages/test2/System.Security.Cryptography.Pkcs/lib/netcoreapp2.1/System.Security.Cryptography.Pkcs.dll" 
 #r "../../../../packages/test2/System.Security.Principal.Windows/lib/netstandard2.0/System.Security.Principal.Windows.dll" 
-#r "../../../../packages/test2/FSharp.Core/lib/netstandard1.6/FSharp.Core.dll" 
+#r "../../../../packages/test2/FSharp.Core/lib/netstandard2.0/FSharp.Core.dll" 
 #r "../../../../packages/test2/Microsoft.AspNetCore.Cryptography.Internal/lib/netstandard2.0/Microsoft.AspNetCore.Cryptography.Internal.dll" 
 #r "../../../../packages/test2/Microsoft.AspNetCore.DataProtection.Abstractions/lib/netstandard2.0/Microsoft.AspNetCore.DataProtection.Abstractions.dll" 
 #r "../../../../packages/test2/Microsoft.AspNetCore.Diagnostics.Abstractions/lib/netstandard2.0/Microsoft.AspNetCore.Diagnostics.Abstractions.dll" 

@@ -1,0 +1,5 @@
+#load "System.Collections.Immutable.csx" 
+#r "System" 
+#r "System.Core" 
+#r "mscorlib" 
+#r "../../../../packages/fsharp47/System.Reflection.Metadata/lib/net461/System.Reflection.Metadata.dll" 

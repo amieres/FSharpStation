@@ -1,0 +1,8 @@
+#load "CommonServiceLocator.csx" 
+#load "Microsoft.Owin.csx" 
+#load "Owin.csx" 
+#load "WebSharper.csx" 
+#load "WebSharper.Owin.csx" 
+#r "System.Configuration" 
+#r "../../../../packages/websharper47/WebSharper.Owin.WebSocket/lib/net461/Owin.WebSocket.dll" 
+#r "../../../../packages/websharper47/WebSharper.Owin.WebSocket/lib/net461/WebSharper.Owin.WebSocket.dll" 

@@ -1,0 +1,1 @@
+#r "../../../../packages/fsharp47/System.Data.DataSetExtensions/lib/netstandard2.0/System.Data.DataSetExtensions.dll" 

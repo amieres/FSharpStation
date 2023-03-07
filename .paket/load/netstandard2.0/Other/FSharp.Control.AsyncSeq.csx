@@ -1,0 +1,1 @@
+#r "../../../../packages/other/FSharp.Control.AsyncSeq/lib/netstandard2.0/FSharp.Control.AsyncSeq.dll" 

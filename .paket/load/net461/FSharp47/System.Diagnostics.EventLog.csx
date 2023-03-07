@@ -1,0 +1,5 @@
+#load "System.Security.Principal.Windows.csx" 
+#r "System" 
+#r "System.Core" 
+#r "mscorlib" 
+#r "../../../../packages/fsharp47/System.Diagnostics.EventLog/lib/net461/System.Diagnostics.EventLog.dll" 

@@ -1,0 +1,5 @@
+#load "System.Runtime.csx" 
+#load "System.Runtime.Extensions.csx" 
+#r "System.Drawing" 
+#r "mscorlib" 
+#r "../../../../packages/other/System.Drawing.Primitives/lib/net45/System.Drawing.Primitives.dll" 

@@ -1,0 +1,7 @@
+#load "System.Collections.Immutable.csx" 
+#load "System.Memory.csx" 
+#load "System.Reflection.Metadata.csx" 
+#load "System.Runtime.CompilerServices.Unsafe.csx" 
+#load "System.Text.Encoding.CodePages.csx" 
+#load "System.Threading.Tasks.Extensions.csx" 
+#r "../../../../packages/other/Microsoft.CodeAnalysis.Common/lib/netstandard2.0/Microsoft.CodeAnalysis.dll" 

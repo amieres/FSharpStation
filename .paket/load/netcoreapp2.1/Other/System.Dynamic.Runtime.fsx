@@ -1,0 +1,5 @@
+#load "System.Linq.fsx" 
+#load "System.Linq.Expressions.fsx" 
+#load "System.ObjectModel.fsx" 
+#load "System.Threading.fsx" 
+#r "../../../../packages/other/System.Dynamic.Runtime/lib/netstandard1.3/System.Dynamic.Runtime.dll" 

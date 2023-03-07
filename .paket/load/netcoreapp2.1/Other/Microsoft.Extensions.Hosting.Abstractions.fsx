@@ -1,0 +1,6 @@
+#load "Microsoft.Bcl.AsyncInterfaces.fsx" 
+#load "Microsoft.Extensions.Configuration.Abstractions.fsx" 
+#load "Microsoft.Extensions.DependencyInjection.Abstractions.fsx" 
+#load "Microsoft.Extensions.FileProviders.Abstractions.fsx" 
+#load "Microsoft.Extensions.Logging.Abstractions.fsx" 
+#r "../../../../packages/other/Microsoft.Extensions.Hosting.Abstractions/lib/netstandard2.0/Microsoft.Extensions.Hosting.Abstractions.dll" 

@@ -1,0 +1,1 @@
+#r "../../../../packages/other/EPPlus.Interfaces/lib/net452/EPPlus.Interfaces.dll" 

@@ -1,0 +1,6 @@
+#load "Microsoft.Build.Framework.fsx" 
+#load "Microsoft.Win32.Registry.fsx" 
+#load "System.Collections.Immutable.fsx" 
+#load "System.Security.Permissions.fsx" 
+#load "System.Text.Encoding.CodePages.fsx" 
+#r "System.Configuration" 

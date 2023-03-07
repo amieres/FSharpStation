@@ -1,0 +1,2 @@
+#load "Microsoft.Extensions.Configuration.Json.csx" 
+#r "../../../../packages/other/Microsoft.Extensions.Configuration.UserSecrets/lib/netstandard2.0/Microsoft.Extensions.Configuration.UserSecrets.dll" 

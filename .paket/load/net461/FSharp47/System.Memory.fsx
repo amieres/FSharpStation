@@ -1,0 +1,5 @@
+#load "System.Buffers.fsx" 
+#load "System.Numerics.Vectors.fsx" 
+#load "System.Runtime.CompilerServices.Unsafe.fsx" 
+#r "System" 
+#r "../../../../packages/fsharp47/System.Memory/lib/net461/System.Memory.dll" 
